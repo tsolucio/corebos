@@ -13,6 +13,8 @@ global $adb;
 global $log, $current_user;
 
 $cvid = (int) vtlib_purify($_REQUEST["record"]);
+$buttonname =  vtlib_purify($_REQUEST["newsave"]);
+if ($buttonname) unset($cvid);
 $cvmodule = vtlib_purify($_REQUEST["cvmodule"]);
 $parenttab = getParentTab();
 $return_action = vtlib_purify($_REQUEST["return_action"]);
