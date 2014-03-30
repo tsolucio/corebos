@@ -87,6 +87,43 @@ elseif(isset($_REQUEST['sendmail']) && $_REQUEST['sendmail'] !='')
 	$smarty->assign('IDLISTS',$mailids['idlists']);	
 	$focus->mode = '';
 }
+elseif(!empty($_REQUEST['invmodid'])) 
+{
+	$crmid = vtlib_purify($_REQUEST['invmodid']);
+	switch (getSalesEntityType($crmid)) {
+		case 'Invoice':
+			$emailcrmid=$adb->query_result($adb->pquery('select case accountid when 0 then contactid else accountid end from vtiger_invoice where invoiceid=?',array($crmid)),0,0);
+			break;
+		case 'Quotes':
+			$emailcrmid=$adb->query_result($adb->pquery('select case accountid when 0 then contactid else accountid end from vtiger_quotes where quoteid=?',array($crmid)),0,0);
+			break;
+		case 'SalesOrder':
+			$emailcrmid=$adb->query_result($adb->pquery('select case accountid when 0 then contactid else accountid end from vtiger_salesorder where salesorderid=?',array($crmid)),0,0);
+			break;
+		case 'PurchaseOrder':
+			$emailcrmid=$adb->query_result($adb->pquery('select case vendorid when 0 then contactid else vendorid end from vtiger_purchaseorder where purchaseorderid=?',array($crmid)),0,0);
+			break;
+	}
+	$pmodule = getSalesEntityType($emailcrmid);
+	switch ($pmodule) {
+		case 'Accounts':
+			$_REQUEST["field_lists"]=9;
+			break;
+		case 'Contacts':
+			$_REQUEST["field_lists"]=80;
+			break;
+		case 'Vendors':
+			$_REQUEST["field_lists"]=292;
+			break;
+	}
+	$_REQUEST["idlist"]=$emailcrmid;
+	$mailids = get_to_emailids($pmodule);
+	if($mailids['mailds'] != '')
+		$to_add = trim($mailids['mailds'],",").",";
+	$smarty->assign('TO_MAIL',$to_add);
+	$smarty->assign('IDLISTS',$mailids['idlists']);	
+	$focus->mode = '';
+}
 
 // INTERNAL MAILER
 if($_REQUEST["internal_mailer"] == "true") {

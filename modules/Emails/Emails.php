@@ -551,11 +551,16 @@ function get_to_emailids($module) {global $log;$log->fatal($_REQUEST);
 				  INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_contactdetails.contactid
 				  LEFT JOIN vtiger_contactscf ON vtiger_contactdetails.contactid = vtiger_contactscf.contactid
 				  WHERE vtiger_crmentity.deleted=0 AND vtiger_contactdetails.contactid IN ('.generateQuestionMarks($idlist).') AND vtiger_contactdetails.emailoptout=0';
-	} else {
+	} else if ($module == 'Accounts'){
 		$query = 'SELECT vtiger_account.accountname, '.implode(",", $emailFields).',vtiger_account.accountid as id FROM vtiger_account
 				   INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_account.accountid
 				   LEFT JOIN vtiger_accountscf ON vtiger_accountscf.accountid= vtiger_account.accountid
 				   WHERE vtiger_crmentity.deleted=0 AND vtiger_account.accountid IN ('.generateQuestionMarks($idlist).') AND vtiger_account.emailoptout=0';
+	} else { // vendors
+		$query = 'SELECT vtiger_vendor.vendorname, '.implode(",", $emailFields).',vtiger_vendor.vendorid as id FROM vtiger_vendor
+				   INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_vendor.vendorid
+				   LEFT JOIN vtiger_vendorcf ON vtiger_vendorcf.vendorid= vtiger_vendor.vendorid
+				   WHERE vtiger_crmentity.deleted=0 AND vtiger_vendor.vendorid IN ('.generateQuestionMarks($idlist).')';
 	}
 	$result = $adb->pquery($query,$idlist);
 	

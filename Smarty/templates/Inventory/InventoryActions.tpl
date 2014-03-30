@@ -292,13 +292,13 @@ function sendpdf_submit()
 {/literal}
 
 	{if $MODULE eq 'Invoice'}
-		OpenCompose('{$INV_NO}','Invoice');
+		OpenCompose('{$INV_NO}','Invoice',{$ID});
 	{elseif $MODULE eq 'Quotes'}
-		OpenCompose('{$QUO_NO}','Quote');
+		OpenCompose('{$QUO_NO}','Quote',{$ID});
 	{elseif $MODULE eq 'PurchaseOrder'}
-		OpenCompose('{$PO_NO}','PurchaseOrder');
+		OpenCompose('{$PO_NO}','PurchaseOrder',{$ID});
 	{elseif $MODULE eq 'SalesOrder'}
-		OpenCompose('{$SO_NO}','SalesOrder');
+		OpenCompose('{$SO_NO}','SalesOrder',{$ID});
 	{/if}
 {literal}
 }

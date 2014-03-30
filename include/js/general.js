@@ -1977,7 +1977,7 @@ function ReplyCompose(id,mode)
 
 	openPopUp('xComposeEmail',this,url,'createemailWin',820,689,'menubar=no,toolbar=no,location=no,status=no,resizable=no,scrollbars=yes');
 }
-function OpenCompose(id,mode)
+function OpenCompose(id,mode,crmid)
 {
 	switch(mode)
 	{
@@ -1991,16 +1991,16 @@ function OpenCompose(id,mode)
 			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&record='+id+'&forward=true';
 			break;
 		case 'Invoice':
-			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+mode+'_'+id+'.pdf';
+			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+mode+'_'+id+'.pdf&invmodid='+crmid;
 			break;
 		case 'PurchaseOrder':
-			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+mode+'_'+id+'.pdf';
+			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+mode+'_'+id+'.pdf&invmodid='+crmid;
 			break;
 		case 'SalesOrder':
-			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+mode+'_'+id+'.pdf';
+			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+mode+'_'+id+'.pdf&invmodid='+crmid;
 			break;
 		case 'Quote':
-			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+mode+'_'+id+'.pdf';
+			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+mode+'_'+id+'.pdf&invmodid='+crmid;
 			break;
 		case 'Documents':
 			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+id+'';
