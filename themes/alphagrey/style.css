@@ -1942,7 +1942,7 @@ textarea {
     border-left:1px solid #eaeaea;
     border-top:1px solid #eaeaea;
     border-right:1px solid #999;
-    border-left:1px solid #999;;
+    border-left:1px solid #999;
 }
 
 .mailClientCSSButton {
@@ -2398,7 +2398,7 @@ div.goog-te-sectional-gadget-all{
 	bottom: 0;
 	background: url(images/help_header.png) repeat-x;
 	border-top:2px solid #717351;
-	heigth:30px;
+	height:30px;
 }
 
 div#vtigerHelpPopupLay{
@@ -2475,7 +2475,7 @@ input {
     font-weight: bold;
 }
 .mm_message p {
-    border: 2px solid #AAAAAA;;
+    border: 2px solid #AAAAAA;
     padding: 2px;
     position: fixed;
     left: 50%;
@@ -2648,7 +2648,7 @@ a.allMnu:Hover{
 }
 .searchBtn{
 	width:48px;
-	height:31px;
+	height:24px;
 }
 
 .selectall{

@@ -2038,7 +2038,7 @@ textarea {
     border-left:1px solid #eaeaea;
     border-top:1px solid #eaeaea;
     border-right:1px solid #939271;
-    border-left:1px solid #939271;;
+    border-left:1px solid #939271;
 }
 
 .mailClientCSSButton {
@@ -2536,7 +2536,7 @@ div.goog-te-sectional-gadget-all{
     bottom: 0;
     background: url(images/help_header.png) repeat-x;
 	border-top:2px solid #717351;
-	heigth:30px;
+	height:30px;
 }
 div#vtigerHelpPopupLay{
     position : relative !important;
@@ -2824,7 +2824,7 @@ a.allMnu:Hover{
 }
 .searchBtn{
 	width:48px;
-	height:31px;
+	height:24px;
 }
 
 .selectall{
