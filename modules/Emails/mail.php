@@ -192,7 +192,7 @@ function setMailerProperties($mail,$subject,$contents,$from_email,$from_name,$to
 	
 	$mail->FromName = decode_html($from_name);
 
-	$mail->Sender= getReturnPath($mail->Host);
+	$mail->Sender= getReturnPath($mail->Host, $from_email);
 
 	if($to_email != '')
 	{

@@ -3248,12 +3248,39 @@ function getMenuStructure($selectModule = '') {
 	return $resultant_array;
 }
 
+function getReturnPath($host, $from_email) {
+	$returnname = 'info';
+	$returnpath = $from_email;
+	// Remove the trailing protocol information
+	if (preg_match("/[^:]+:\/\/(.*)/", $host, $m)) {
+		$host = $m[1];
+	}
+	// Remove the port address if any
+	if (preg_match("/([^:]+):.*/", $host, $m)) {
+		$host = $m[1];
+	}
+	// Remove any extra-spaces
+	$host = trim($host);
 
-function getReturnPath($host){
-	$arr=explode('.',$host);
-	unset($arr[0]);
-	$domain=implode('.',$arr);
-	$Return_Path='noreply@'.$domain;
-	return $Return_Path;
+	// Review if the host is not local
+	if (!in_array(strtolower($host), array('localhost'))) {
+		list($from_name, $from_domain) = explode('@', $from_email);
+
+		//strip [,] from domain name in case ip address is used as domain: xyz@[192.45.32.67]
+		preg_replace("/[\[\]]/",$from_domain,$from_domain);
+
+		// If from-email domain is not matching (or sub-domain) of host
+		// reset the return-path
+		if (strpos($host, $from_domain)== false) {
+			$from_domain = trim($from_domain);
+
+			if(preg_match( '/^((\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3}))$/', $host)){
+				$returnpath = $returnname . '@[' . $host.']';
+			}else{
+				$returnpath = $returnname . '@' . $host;
+			}
+		}
+	}
+	return $returnpath;
 }
 ?>
