@@ -64,9 +64,8 @@ class VTCreateTodoTask extends VTTask{
 			'taskpriority'=>$this->priority,
 			'taskstatus'=>$this->status,
 			'assigned_user_id'=>$userId,
-			'time_start'=> $startDate->getDisplayTime(),
-			'sendnotification'=>($this->sendNotification!='' && $this->sendNotification!='N')?
-					true: false,
+			'time_start'=> self::conv12to24hour($this->time),
+			'sendnotification'=>($this->sendNotification!='' && $this->sendNotification!='N')? true: false,
 			'date_start'=>$date,
 			'due_date'=>$date,
 			'visibility'=>'all',

@@ -172,9 +172,11 @@
 		}
 
 		public function formatTimeForTimePicker($time) {
+			$AM_PM = array('am', 'pm');
+			if (in_array(strtolower(substr($time, -2)),$AM_PM))
+				return $time; // ya tiene el formato correcto, devolverlo sin más
 			list($h, $m, $s) = explode(':', $time);
 			$mn = str_pad($m - $m % 15, 2, 0, STR_PAD_LEFT);
-			$AM_PM = array('am', 'pm');
 			return str_pad(($h%12), 2, 0, STR_PAD_LEFT).':'.$mn.$AM_PM[($h/12)%2];
 		}
 
