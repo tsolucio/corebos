@@ -286,6 +286,10 @@ class browser extends uploader {
         )
             $this->errorMsg("Unknown error.");
 
+		if(!$this->filePathAccessible($file)) {
+			$this->errorMsg("Invalid file location access.");
+		}
+
         header("Pragma: public");
         header("Expires: 0");
         header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
@@ -308,6 +312,10 @@ class browser extends uploader {
             !file_exists($file) || !is_readable($file) || !file::isWritable($file)
         )
             $this->errorMsg("Unknown error.");
+
+		if(!$this->filePathAccessible($file)) {
+			$this->errorMsg("Invalid file location access.");
+		}
 
         $newName = trim($this->post['newName']);
         if (!strlen($newName))
@@ -335,6 +343,12 @@ class browser extends uploader {
 
     protected function act_delete() {
         $dir = $this->postDir();
+
+		$file = "$dir/{$this->post['file']}";
+		if(!$this->filePathAccessible($file)) {
+			$this->errorMsg("Invalid file location access.");
+		}
+
         if ($this->config['readonly'] ||
             !isset($this->post['dir']) ||
             !isset($this->post['file']) ||
@@ -769,6 +783,16 @@ class browser extends uploader {
             die($this->output(array('message' => $message), 'error'));
         }
     }
+
+	protected function filePathAccessible($file) {
+		// Ensure the file operation is constrained to the uploadDir configured.
+		$uploadDirPath = realpath($this->config['uploadDir']);
+		$filePath = realpath($file);
+		if (strpos($filePath, $uploadDirPath) !== 0) {
+			return false;
+		}
+		return true;
+	}
 }
 
 ?>
