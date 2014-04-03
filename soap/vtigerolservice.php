@@ -288,6 +288,9 @@ function SearchContactsByEmail($username,$session,$emailaddress)
      $seed_contact = new Contacts();
      $output_list = Array();
      
+	 //To avoid Blind SQL injection we are validating the Email address.
+	 if(filter_var($emailaddress, FILTER_VALIDATE_EMAIL) == false ) return null;
+
      $response = $seed_contact->get_searchbyemailid($username,$emailaddress);
      $contactList = $response['list'];
      
@@ -457,12 +460,14 @@ function CheckActivityPermission($username,$session)
 
 function AddEmailAttachment($emailid,$filedata,$filename,$filesize,$filetype,$username,$session)
 {
-	if(!validateSession($username,$session))
-	return null;
-	global $adb;
+	if(!validateSession($username,$session)) return null;
+
+	if(empty($emailid)) return null;
+
+	global $adb, $upload_badext;
 	require_once('modules/Users/Users.php');
 	require_once('include/utils/utils.php');
-	$filename = preg_replace('/\s+/', '_', $filename);//replace space with _ in filename
+	$filename = vtlib_purifyForSql(sanitizeUploadFileName(str_replace('..','_',$filename), $upload_badext)); // Avoid relative file path attacks.
 	$date_var = date('Y-m-d H:i:s');
 
 	$seed_user = new Users();
@@ -1381,17 +1386,16 @@ function validateSession($username, $sessionid)
 	$seed_user = new Users();
 	$id = $seed_user->retrieve_user_id($username);
 
+	if(empty($sessionid)) return false;
+
 	$server_sessionid = getServerSessionId($id);
 
 	$adb->println("Checking Server session id and customer input session id ==> $server_sessionid == $sessionid");
 
-	if($server_sessionid == $sessionid)
-	{
+	if($server_sessionid == $sessionid) {
 		$adb->println("Session id match. Authenticated to do the current operation.");
 		return true;
-	}
-	else
-	{
+	} else {
 		$adb->println("Session id does not match. Not authenticated to do the current operation.");
 		return false;
 	}
@@ -1419,9 +1423,12 @@ function getServerSessionId($id)
 	//To avoid SQL injection we are type casting as well as bound the id variable. In each and every function we will call this function
 	$id = (int) $id;
 
-	$query = "select * from vtiger_soapservice where type='Outlook' and id={$id}";
-	$sessionid = $adb->query_result($adb->query($query),0,'sessionid');
-
+	$query = "SELECT * FROM vtiger_soapservice WHERE type='Outlook' AND id = ?";
+	$result = $adb->pquery($query, array($id));
+	$sessionid = '';
+	if($adb->num_rows($result) > 0) {
+		$sessionid = $adb->query_result($result,0,'sessionid');
+	}
 	return $sessionid;
 }
 /* Begin the HTTP listener service and exit. */ 

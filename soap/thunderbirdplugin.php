@@ -192,6 +192,8 @@ function SearchContactsByEmail($username,$password,$emailaddress)
      $seed_contact = new Contacts();
      $output_list = Array();
 
+	 if(filter_var($emailaddress, FILTER_VALIDATE_EMAIL) == false ) return null;
+	 
      $response = $seed_contact->get_searchbyemailid($username,$emailaddress);
      $contactList = $response['list'];
 
@@ -278,7 +280,7 @@ function GetContacts($username,$password)
 		$output_list = Array();
 	
 		$query = $seed_contact->get_contactsforol($username);
-		$result = $adb->query($query);
+		$result = $adb->pquery($query, array());
 	
 		while($contact = $adb->fetch_array($result))
 		{
@@ -382,7 +384,9 @@ function AddContact($user_name,$first_name, $last_name, $email_address ,$account
 		$user_id = $seed_user->retrieve_user_id($user_name);
 		$current_user = $seed_user;
 		$current_user->retrieve_entity_info($user_id,"Users");
+		checkFileAccessForInclusion('user_privileges/user_privileges_'.$current_user->id.'.php');
 		require('user_privileges/user_privileges_'.$current_user->id.'.php');
+		checkFileAccessForInclusion('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 	
 		if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
@@ -447,7 +451,9 @@ function AddLead($user_name, $first_name, $last_name, $email_address ,$account_n
 		$user_id = $seed_user->retrieve_user_id($user_name);
 		$current_user = $seed_user;
 		$current_user->retrieve_entity_info($user_id,"Users");
+		checkFileAccessForInclusion('user_privileges/user_privileges_'.$current_user->id.'.php');
 		require('user_privileges/user_privileges_'.$current_user->id.'.php');
+		checkFileAccessForInclusion('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 	
 		if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
