@@ -716,6 +716,11 @@ function deleteCustomField() {
 	if($uitype == 15) {
 		$deltablequery = 'drop table vtiger_'.$adb->sql_escape_string($colName);
 		$adb->pquery($deltablequery, array());
+		
+		$deltablequery_seq = 'drop table vtiger_'.$adb->sql_escape_string($colName).'_seq';
+		$adb->pquery($deltablequery_seq, array());
+		//Remove picklist dependencies
+		$adb->query("DELETE FROM vtiger_picklist_dependency WHERE vtiger_picklist_dependency.targetfield = '".$colName."'");
 	}
 }
 
