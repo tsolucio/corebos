@@ -105,6 +105,19 @@ function mass_edit_formload(idstring,module,parenttab) {
 	var excludedRecords=document.getElementById("excludedRecords").value;
 	var viewid =getviewId();
 	$("status").style.display="inline";
+    var urlstring = '';
+    var searchtype = document.basicSearch.searchtype.value;
+    if(document.basicSearch.searchtype.searchlaunched != undefined && document.basicSearch.searchtype.searchlaunched=='basic') {
+    	search_fld_val= $('bas_searchfield').options[$('bas_searchfield').selectedIndex].value;
+    	search_txt_val= encodeURIComponent(document.basicSearch.search_text.value);
+    	if (search_txt_val!='') {  // if the search fields are not empty
+        urlstring = '&query=true&ajax=true&search=true&search_field='+search_fld_val+'&searchtype=BasicSearch&search_text='+search_txt_val;
+    	}
+    } else if(document.basicSearch.searchtype.searchlaunched != undefined && document.basicSearch.searchtype.searchlaunched=='advance' && checkAdvancedFilter()) {
+		var advft_criteria = $('advft_criteria').value;
+		var advft_criteria_groups = $('advft_criteria_groups').value;
+		urlstring = '&query=true&ajax=true&search=true&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups+'&searchtype=advance';
+    }
 	new Ajax.Request(
 		'index.php',
 		{
@@ -113,7 +126,7 @@ function mass_edit_formload(idstring,module,parenttab) {
 				scope: 'command'
 			},
 			method: 'post',
-			postBody:"module="+encodeURIComponent(module)+"&action="+encodeURIComponent(module+'Ajax')+"&parenttab="+encodeURIComponent(parenttab)+"&file=MassEdit&mode=ajax&idstring="+idstring+"&viewname="+viewid+"&excludedRecords="+excludedRecords,
+			postBody:"module="+encodeURIComponent(module)+"&action="+encodeURIComponent(module+'Ajax')+"&parenttab="+encodeURIComponent(parenttab)+"&file=MassEdit&mode=ajax&idstring="+idstring+"&viewname="+viewid+"&excludedRecords="+excludedRecords+urlstring,
 			onComplete: function(response) {
 				$("status").style.display="none";
 				var result = response.responseText;
