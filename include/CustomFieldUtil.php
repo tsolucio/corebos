@@ -256,7 +256,7 @@ function getCalendarCustomFields($tabid,$mode='edit',$col_fields='') {
  		if ($mode == 'edit') {
  			$custquery .= "  AND vtiger_profile2field.readonly = 0";
  		}
- 		$custquery .= " ORDER BY vtiger_field.fieldid";
+ 		$custquery .= " GROUP BY vtiger_field.fieldid";
  		array_push($custparams, $profileList);		
 	}
 	$custresult = $adb->pquery($custquery, $custparams);
@@ -272,6 +272,10 @@ function getCalendarCustomFields($tabid,$mode='edit',$col_fields='') {
 		$maxlength = $adb->query_result($custresult,$i,"maximumlength");
 		$generatedtype = $adb->query_result($custresult,$i,"generatedtype");
 		$typeofdata = $adb->query_result($custresult,$i,"typeofdata");
+		$defaultvalue = $adb->query_result($custresult,$i,"defaultvalue");
+		if(empty($col_fields[$fieldname])) {
+			$col_fields[$fieldname] = $defaultvalue;
+		}
 
 		if ($mode == 'edit')
 			$custfld = getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields,$generatedtype,'Calendar',$mode, $typeofdata);
