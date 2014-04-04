@@ -449,10 +449,12 @@ class QueryGenerator {
 			$tableJoinMapping['vtiger_attachmentsfolder'] = 'INNER JOIN';
 		}
 
+		$alias_count=2;
 		foreach ($tableJoinCondition as $fieldName=>$conditionInfo) {
 			foreach ($conditionInfo as $tableName=>$condition) {
 				if(!empty($tableList[$tableName])) {
-					$tableNameAlias = $tableName.'2';
+					$tableNameAlias = $tableName.$alias_count;
+					$alias_count++;
 					$condition = str_replace($tableName, $tableNameAlias, $condition);
 				} else {
 					$tableNameAlias = '';
