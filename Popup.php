@@ -147,6 +147,8 @@ switch($currentModule)
 		require_once("modules/$currentModule/Vendors.php");
 		$focus = new Vendors();
 		$smarty->assign("SINGLE_MOD",'Vendor');
+		if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='')
+			$smarty->assign("RETURN_MODULE",vtlib_purify($_REQUEST['return_module']));
 		$alphabetical = AlphabeticalSearch($currentModule,'Popup','vendorname','true','basic',$popuptype,"","",$url);
 		break;
 	case 'SalesOrder':
