@@ -222,7 +222,7 @@ function sendfile_email()
 														 id="More_Information_Modules_List" class="drop_mnu" style="left: 502px; top: 76px; display: none;">
 														<table border="0" cellpadding="0" cellspacing="0" width="100%">
 															{foreach key=_RELATION_ID item=_RELATED_MODULE from=$IS_REL_LIST}
-																<tr><td><a class="drop_down" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}&selected_header={$_RELATED_MODULE}&relation_id={$_RELATION_ID}">{$_RELATED_MODULE|@getTranslatedString:$MODULE}</a></td></tr>
+																<tr><td><a class="drop_down" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}&selected_header={$_RELATED_MODULE}&relation_id={$_RELATION_ID}">{$_RELATED_MODULE|@getTranslatedString:$_RELATED_MODULE}</a></td></tr>
 															{/foreach}
 														</table>
 													</div>

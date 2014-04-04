@@ -53,7 +53,7 @@ function vtlib_modulemanager_toggleTab(shownode, hidenode, highlighttab, dehighl
 {if $modinfo.customized eq true}
 	{assign var="totalCustomModules" value=$totalCustomModules+1}
 
-	{assign var="modulelabel" value=$modulename}
+	{assign var="modulelabel" value=$modulename|getTranslatedString:$modulename}
 	{if $APP.$modulename}{assign var="modulelabel" value=$APP.$modulename}{/if}
 	<tr>
 		<td class="cellText small" width="20px"><img src="{'uparrow.gif'|@vtiger_imageurl:$THEME}" border="0"></td>

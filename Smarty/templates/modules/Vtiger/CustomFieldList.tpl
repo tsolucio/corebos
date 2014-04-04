@@ -119,7 +119,7 @@ var gselected_fieldtype = '';
 					<tbody>
 						<tr align="left">
 							<td rowspan="2" valign="top" width="50"><img src="{'custom.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" title="{$MOD.LBL_USERS}" border="0" height="48" width="48" onmouseover="tooltip.tip(this,'{'LBL_FIELD_SETTINGS'|@getTranslatedString:$MODULE}');" onmouseout="tooltip.untip(true);"></td>
-							<td class="heading2" valign="bottom"><b><a href="index.php?module=Settings&action=ModuleManager&parenttab=Settings">{$MOD.VTLIB_LBL_MODULE_MANAGER}</a> &gt; <a href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$MODULE}&parenttab=Settings">{$MODULE}</a> &gt; {'LBL_FIELD_SETTINGS'|@getTranslatedString:$MODULE}</b></td>
+							<td class="heading2" valign="bottom"><b><a href="index.php?module=Settings&action=ModuleManager&parenttab=Settings">{$MOD.VTLIB_LBL_MODULE_MANAGER}</a> &gt; <a href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$MODULE}&parenttab=Settings">{$MODULE|@getTranslatedString:$MODULE}</a> &gt; {'LBL_FIELD_SETTINGS'|@getTranslatedString:$MODULE}</b></td>
 						</tr>
 					</tbody>
 				</table>

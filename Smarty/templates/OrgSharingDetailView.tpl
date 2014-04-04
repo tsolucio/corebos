@@ -75,10 +75,7 @@ DIV.fixedLay {
 				</table>
 				<table cellspacing="0" cellpadding="5" class="listTable" width="100%">
 				{foreach item=module from=$DEFAULT_SHARING}	
-				  {assign var="MODULELABEL" value=$module.0}
-				  {if $APP[$module.0] neq ''}
-					{assign var="MODULELABEL" value=$APP[$module.0]}
-				  {/if}	
+				  {assign var="MODULELABEL" value=$module.0|getTranslatedString:$module.0}
                   <tr>
                     <td width="20%" class="colHeader small" nowrap>{$MODULELABEL}</td>
                     <td width="30%" class="listTableRow small" nowrap>

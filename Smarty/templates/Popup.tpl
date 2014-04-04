@@ -102,12 +102,12 @@ function set_focus() {ldelim}
 			<table width="100%" border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					{if $recid_var_value neq ''}
-                            <td class="moduleName" width="80%" style="padding-left:10px;">{$APP[$MODULE]}&nbsp;{$APP.LBL_RELATED_TO}&nbsp;{$APP[$PARENT_MODULE]}</td>
+                            <td class="moduleName" width="80%" style="padding-left:10px;">{$MODULE|@getTranslatedString:$MODULE}&nbsp;{$APP.LBL_RELATED_TO}&nbsp;{$PARENT_MODULE|@getTranslatedString:$PARENT_MODULE}</td>
                     {else}
                             {if $RECORD_ID}
-	                            <td class="moduleName" width="80%" style="padding-left:10px;"><a href="javascript:;" onclick="window.history.back();">{$APP[$MODULE]}</a> > {$PRODUCT_NAME}</td>
+	                            <td class="moduleName" width="80%" style="padding-left:10px;"><a href="javascript:;" onclick="window.history.back();">{$MODULE|@getTranslatedString:$MODULE}</a> > {$PRODUCT_NAME}</td>
 							{else}
-	                            <td class="moduleName" width="80%" style="padding-left:10px;">{$APP[$MODULE]}</td>
+	                            <td class="moduleName" width="80%" style="padding-left:10px;">{$MODULE|@getTranslatedString:$MODULE}</td>
 							{/if}
                     {/if}
 					<td  width=30% nowrap class="componentName" align=right>{$APP.VTIGER}</td>

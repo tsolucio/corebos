@@ -74,7 +74,7 @@ if(!is_admin($current_user)) {
 	}
 	
 	$smarty->assign('MODULE',$module);
-	$smarty->assign('MODULE_LBL',getTranslatedString($module));
+	$smarty->assign('MODULE_LBL',getTranslatedString($module,$module));
 	$smarty->assign('MENU_ARRAY', $menu_array);
 
 	$smarty->display(vtlib_getModuleTemplate('Vtiger','Settings.tpl'));

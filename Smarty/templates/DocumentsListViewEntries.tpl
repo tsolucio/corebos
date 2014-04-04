@@ -230,7 +230,7 @@
 																										{$MODULE_CREATE}
 																										{/if}
 																										{$APP.LBL_NOW}. {$APP.LBL_CLICK_THE_LINK}:<br>
-																										&nbsp;&nbsp;-<a href="index.php?module={$MODULE}&action=EditView&return_action=DetailView&parenttab={$CATEGORY}">{$APP.LBL_CREATE} {$APP.$vowel_conf} {$MOD.$MODULE_CREATE}</a>
+																										&nbsp;&nbsp;-<a href="index.php?module={$MODULE}&action=EditView&return_action=DetailView&parenttab={$CATEGORY}">{$APP.LBL_CREATE} {$APP.$vowel_conf} {$APP.$MODULE_CREATE}</a>
 																								</td>
 																							</tr>
 																						</table>

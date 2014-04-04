@@ -44,7 +44,7 @@ var moduleName = '{$entityName}';
 		</td>
 		<td style='padding-top: 10px;'>
 			<select class="small" id="task_timefields">
-					<option value="">Select Meta Variables</option>
+					<option value="">{'Select Meta Variables'|@getTranslatedString:$MODULE}</option>
 					{foreach key=META_LABEL item=META_VALUE from=$META_VARIABLES}
 					<option value="{$META_VALUE}">{$META_LABEL|@getTranslatedString:$MODULE_NAME}</option>
 					{/foreach}

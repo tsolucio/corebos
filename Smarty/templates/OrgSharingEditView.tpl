@@ -49,10 +49,7 @@
 	
 				<table cellspacing="0" cellpadding="5" class="listTable" width="100%">
 				{foreach item=elements from=$ORGINFO}	
-				{assign var="MODULELABEL" value=$elements.0}
-				{if $APP[$elements.0] neq ''}
-					{assign var="MODULELABEL" value=$APP[$elements.0]}
-				{/if}	
+				{assign var="MODULELABEL" value=$elements.0|getTranslatedString:$elements.0}
 				<tr>
                     		    <td width="30%" class="colHeader small" nowrap>{$MODULELABEL}</td>
 				    <td width="70%" class="listTable small">{$elements.2}</td>

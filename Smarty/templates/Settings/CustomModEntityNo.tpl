@@ -154,9 +154,7 @@ function updateModEntityExisting(button, form) {
                         	{assign var = "selected_val" value=""}
                         {/if}
                         {assign var="MODULE_LABEL" value=$value}
-						{if $APP.$value neq ''}		
-							{assign var="MODULE_LABEL" value=$APP.$value}
-						{/if}
+						{assign var="MODULE_LABEL" value=$value|getTranslatedString:$value}
 	                    <option value="{$sel_value}" {$selected_val}>{$MODULE_LABEL}</option>
         		        {/foreach}
 			        </select>

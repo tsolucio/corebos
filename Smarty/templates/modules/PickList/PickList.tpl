@@ -46,9 +46,7 @@
 					<select name="pickmodule" id="pickmodule" class="detailedViewTextBox" onChange="changeModule();">
 					{foreach key=modulelabel item=module from=$MODULE_LISTS}
 						{*<!-- vtlib customization: Use translation only if available -->*}
-						{if $APP.$module}
-							{assign var="modulelabel" value=$APP.$module}
-						{/if}
+						{assign var="modulelabel" value=$module|getTranslatedString:$module}
 						{if $MODULE eq $module}
 							<option value="{$module}" selected>{$modulelabel}</option>
 						{else}

@@ -61,9 +61,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$parent_id = $col_fields[$fieldname];
 		if (!empty($parent_id)) {
 			$parent_module = getSalesEntityType($parent_id);
-			$valueTitle = $parent_module;
-			if ($app_strings[$valueTitle])
-				$valueTitle = $app_strings[$valueTitle];
+			$valueTitle = getTranslatedString($parent_module,$parent_module);
 
 			$displayValueArray = getEntityName($parent_module, $parent_id);
 			if (!empty($displayValueArray)) {
