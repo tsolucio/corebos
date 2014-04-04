@@ -76,7 +76,7 @@ function loadRelatedListBlock(urldata,target,imagesuffix) {
 							}
 						}else{
 							$(imagesuffix+'_linkForSelectAll').hide();
-							rel_toggleSelect(false,imagesuffix+'_selected_id',relatedModule);
+							//rel_toggleSelect(false,imagesuffix+'_selected_id',relatedModule);
 						}
 						updateParentCheckbox(obj,imagesuffix);
 					}

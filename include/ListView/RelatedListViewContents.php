@@ -46,8 +46,8 @@ if($ajaxaction == "LOADRELATEDLIST") {
 					!$resetCookie) {
 				//TODO for 5.3 this should be COOKIE not REQUEST, change here else where
 				// this logic is used for listview checkbox selection propogation.
-				$checkedRecordIdString = $_REQUEST[$relatedModule.'_all'];
-				$checkedRecordIdString = rtrim($checkedRecordIdString);
+				$checkedRecordIdString = (empty($_REQUEST[$relatedModule.'_all']) ? $_COOKIE[$relatedModule.'_all'] : $_REQUEST[$relatedModule.'_all']);
+				$checkedRecordIdString = rtrim($checkedRecordIdString,';');
 				$checkedRecordIdList = explode(';', $checkedRecordIdString);
 				$relatedListData["checked"]=array();
 				if (isset($relatedListData['entries'])) {
