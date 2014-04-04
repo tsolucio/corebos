@@ -197,6 +197,8 @@ class CurrencyField {
 			$number = str_replace('.', $decimalSeparator, $value);
 			return $number;
 		}
+		$negativeNumber=($value<0);
+		$value=abs($value);
 		if($currencyPattern == $this->CURRENCY_PATTERN_SINGLE_GROUPING) {
 			// Separate the numeric and decimal parts
 			$numericParts = explode('.', $value);
@@ -215,6 +217,7 @@ class CurrencyField {
 			}
 			// Re-create the currency value combining the whole number and the decimal part using Decimal separator
 			$number = implode($decimalSeparator, $numericParts);
+			if ($negativeNumber) $number='-'.$number;
 			return $number;
         }
 		if($currencyPattern == $this->CURRENCY_PATTERN_THOUSAND_GROUPING) {
@@ -239,6 +242,7 @@ class CurrencyField {
 			}
 			// Re-create the currency value combining the whole number and the decimal part using Decimal separator
 			$number = implode($decimalSeparator, $numericParts);
+			if ($negativeNumber) $number='-'.$number;
 			return $number;
 		}
 		if($currencyPattern == $this->CURRENCY_PATTERN_MIXED_GROUPING) {
@@ -275,6 +279,7 @@ class CurrencyField {
 			}
 			// Re-create the currency value combining the whole number and the decimal part using Decimal separator
 			$number = implode($decimalSeparator, $numericParts);
+			if ($negativeNumber) $number='-'.$number;
 			return $number;
 		}
 		return $number;

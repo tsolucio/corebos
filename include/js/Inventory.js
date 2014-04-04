@@ -338,8 +338,8 @@ function validateInventory(module)
 
 		if (!emptyCheck("productName"+i,alert_arr.LINE_ITEM,"text")) return false
 		if (!emptyCheck("qty"+i,"Qty","text")) return false
-		if (!numValidate("qty"+i,"Qty","any")) return false
-		if (!numConstComp("qty"+i,"Qty","G","0")) return false
+		if (!numValidate("qty"+i,"Qty","any",true)) return false
+		//if (!numConstComp("qty"+i,"Qty","G","0")) return false
 		if (!emptyCheck("listPrice"+i,alert_arr.LIST_PRICE,"text")) return false
 		if (!numValidate("listPrice"+i,alert_arr.LIST_PRICE,"any")) return false           
 	}
@@ -747,7 +747,7 @@ function setDiscount(currObj,curr_row)
 	var discount_checks = new Array();
 
 	discount_checks = document.getElementsByName("discount"+curr_row);
-
+	calcProductTotal(curr_row);
 	if(discount_checks[0].checked == true)
 	{
 		document.getElementById("discount_type"+curr_row).value = 'zero';
