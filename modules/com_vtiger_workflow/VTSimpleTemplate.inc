@@ -80,7 +80,7 @@ class VTSimpleTemplate{
 	}
 
 	function parseTemplate(){
-		return preg_replace_callback('/\\$(\w+|\((\w+) : \(([_\w]+)\) (\w+)\)),?/', array($this,"matchHandler"), $this->template);
+		return preg_replace_callback('/\\$(\w+|\((\w+) : \(([_\w]+)\) (\w+)\))/', array($this,"matchHandler"), $this->template);
 	}
 
 	function getMetaValue($fieldname){
