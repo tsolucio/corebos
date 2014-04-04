@@ -141,7 +141,7 @@ class VTScheduledReport extends Reports {
 		$vtigerMailer->Body    = $contents;
 		$vtigerMailer->ContentType = "text/html";
 
-		$baseFileName = preg_replace('/[^a-zA-Z0-9_-\s]/', '', $this->reportname).'_'. preg_replace('/[^a-zA-Z0-9_-\s]/', '', $currentTime);
+		$baseFileName = utf8_decode(preg_replace('/[^a-zA-Z0-9_-\s]/', '', $this->reportname).'_'. preg_replace('/[^a-zA-Z0-9_-\s]/', '', $currentTime));
 
 		$oReportRun = new ReportRun($this->id);
 		$reportFormat = $this->scheduledFormat;
@@ -151,14 +151,14 @@ class VTScheduledReport extends Reports {
 			$fileName = $baseFileName.'.pdf';
 			$filePath = 'storage/'.$fileName;
 			$attachments[$fileName] = $filePath;
-			$pdf = $oReportRun->getReportPDF();
+			$pdf = $oReportRun->getReportPDF(NULL);
 			$pdf->Output($filePath,'F');
 		}
 		if ($reportFormat == 'excel' || $reportFormat == 'both') {
 			$fileName = $baseFileName.'.xls';
 			$filePath = 'storage/'.$fileName;
 			$attachments[$fileName] = $filePath;
-			$oReportRun->writeReportToExcelFile($filePath);
+			$oReportRun->writeReportToExcelFile($filePath, NULL);
 		}
 
 		foreach($attachments as $attachmentName => $path) {
