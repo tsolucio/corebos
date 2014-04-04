@@ -854,7 +854,7 @@ class DefaultDataPopulator extends CRMEntity {
 		$this->db->query("insert into vtiger_field values (23," . $this->db->getUniqueID("vtiger_field") . ",'taxtype','vtiger_invoice',1,'16','hdnTaxType','Tax Type',1,2,'',100,13,$invoicebasicblock,3,'V~O',3,null,'BAS',1)");
 		$this->db->query("insert into vtiger_field values (23," . $this->db->getUniqueID("vtiger_field") . ",'discount_percent','vtiger_invoice',1,'1','hdnDiscountPercent','Discount Percent',1,2,'',100,13,$invoicebasicblock,3,'N~O',3,null,'BAS',1)");
 		$this->db->query("insert into vtiger_field values (23," . $this->db->getUniqueID("vtiger_field") . ",'discount_amount','vtiger_invoice',1,'72','hdnDiscountAmount','Discount Amount',1,2,'',100,13,$invoicebasicblock,3,'N~O',3,null,'BAS',1)");
-		$this->db->query("insert into vtiger_field values (23," . $this->db->getUniqueID("vtiger_field") . ",'s_h_amount','vtiger_invoice',1,'72','hdnS_H_Amount','S&H Amount',1,2,'',100,14,57,3,'N~O',3,null,'BAS',1)");
+		$this->db->query("insert into vtiger_field values (23," . $this->db->getUniqueID("vtiger_field") . ",'s_h_amount','vtiger_invoice',1,'72','hdnS_H_Amount','S&H Amount',1,2,'',100,14,67,3,'N~O',3,null,'BAS',1)");
 
 		$this->db->query("insert into vtiger_field values (23," . $this->db->getUniqueID("vtiger_field") . ",'accountid','vtiger_invoice',1,'73','account_id','Account Name',1,2,'',100,14,$invoicebasicblock,1,'I~M',3,null,'BAS',1)");
 		$this->db->query("insert into vtiger_field values (23," . $this->db->getUniqueID("vtiger_field") . ",'invoicestatus','vtiger_invoice',1,'15','invoicestatus','Status',1,2,'',100,15,$invoicebasicblock,1,'V~O',3,null,'BAS',1)");
