@@ -3815,9 +3815,10 @@ function getEntityId($module, $entityName) {
 	$entityidfield = $adb->query_result($result, 0, 'entityidfield');
 	if (!(strpos($fieldsname, ',') === false)) {
 		$fieldlists = explode(',', $fieldsname);
-		$fieldsname = "concat(";
+		$fieldsname = "trim(concat(";  // Add trim function to weed-out extra character values
 		$fieldsname = $fieldsname . implode(",' ',", $fieldlists);
-		$fieldsname = $fieldsname . ")";
+		$fieldsname = $fieldsname . "))";
+		$entityName = trim($entityName); // Trim the input to be consistent in comparison
 	}
 
 	if ($entityName != '') {
