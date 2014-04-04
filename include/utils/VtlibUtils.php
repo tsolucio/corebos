@@ -607,4 +607,18 @@ function vtlib_module_icon($modulename){
 	return "modules/Vtiger/Vtiger.png";
 }
 
+/**
+ * Function to return the valid SQl input.
+ * @param <String> $string
+ * @param <Boolean> $skipEmpty Skip the check if string is empty.
+ * @return <String> $string/false
+ */
+function vtlib_purifyForSql($string, $skipEmpty=true) {
+       $pattern = "/^[_a-zA-Z0-9.]+$/";
+       if ((empty($string) && $skipEmpty) || preg_match($pattern, $string)) {
+               return $string;
+       }
+       return false;
+}
+
 ?>

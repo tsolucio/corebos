@@ -25,7 +25,7 @@ function vtws_deleteUser($id, $newOwnerId,$user){
 		$meta = $handler->getMeta();
 		$entityName = $meta->getObjectEntityName($id);
 
-		$types = vtws_listtypes($user);
+		$types = vtws_listtypes(null, $user);
 		if(!in_array($entityName,$types['types'])){
 			throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,
 					"Permission to perform the operation is denied, EntityName = ".$entityName);

@@ -380,9 +380,12 @@ function twoDigit( $no ){
 }
 
 function timeString($datetime,$fmt){
-	
+        if (is_object($datetime))
+            $dateStr = $datetime->year."-".twoDigit($datetime->month)."-".twoDigit($datetime->day);
+        else
+            $dateStr = $datetime['year']."-".twoDigit($datetime['month'])."-".twoDigit($datetime['day']);
 	$timeStr = formatUserTimeString($datetime, $fmt);
-	$date = new DateTimeField($timeStr);
+	$date = new DateTimeField($dateStr." ".$timeStr);
 	list($h, $m) = explode(':', $date->getDisplayTime());
 	$timeStr = formatUserTimeString(array('hour'=>$h, 'minute'=>$m), $fmt);
 	return $timeStr;

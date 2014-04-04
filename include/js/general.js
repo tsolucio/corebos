@@ -254,7 +254,7 @@ function patternValidate(fldName,fldLabel,type) {
 		/*changes made to fix -- ticket#3278 & ticket#3461
 		  var re=new RegExp(/^.+@.+\..+$/)*/
 		//Changes made to fix tickets #4633, #5111  to accomodate all possible email formats
- 	    var re=new RegExp(/^[a-zA-Z0-9]+([!"#$%&'()*+,./:;<=>?@\^_`{|}~-]?[a-zA-Z0-9])*@[a-zA-Z0-9]+([\_\-\.]?[a-zA-Z0-9]+)*\.([\-\_]?[a-zA-Z0-9])+(\.?[a-zA-Z0-9]+)?$/);
+ 	    var re=new RegExp(/^[a-zA-Z0-9]+([!"#$%&'()*+,./:;<=>?@\^_`{|}~-]?[a-zA-Z0-9]+[\_\-]?)*@[a-zA-Z0-9]+([\_\-\.]?[a-zA-Z0-9]+)*\.([\-\_]?[a-zA-Z0-9])+(\.?[a-zA-Z0-9]+)?$/);
 	}
 
 	if (type.toUpperCase()=="DATE") {//DATE validation
@@ -2206,7 +2206,7 @@ function fnDropDown(obj,Lay){
 	}
 	else
 		tagName.style.left= leftSide + 'px';
-		tagName.style.top= topSide + 28 +'px';
+		tagName.style.top= topSide + 22 +'px';
 		tagName.style.display = 'block';
 }
 

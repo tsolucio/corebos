@@ -107,7 +107,7 @@ function sendPrdStckMail($product_id,$upd_qty,$prod_name,$qtyinstk,$qty,$module)
 	{
 		//send mail to the handler
 		$handler = getRecordOwnerId($product_id);
-		$handler_name = getOwnerName($handler);
+		$handler_name = getOwnerName(array_shift(array_values($handler)));
 		if(vtws_isRecordOwnerUser($handler)) {
 			$to_address = getUserEmail($handler);
 		} else {

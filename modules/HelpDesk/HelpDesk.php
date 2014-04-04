@@ -785,7 +785,7 @@ case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_gro
 		$desc .= getTicketComments($entityId);
 
 		$sql = "SELECT * FROM vtiger_ticketcf WHERE ticketid = ?";
-		$result = $adb->pquery($sql, array($id));
+		$result = $adb->pquery($sql, array($entityId));
 		$cffields = $adb->getFieldsArray($result);
 		foreach ($cffields as $cfOneField) {
 			if ($cfOneField != 'ticketid') {

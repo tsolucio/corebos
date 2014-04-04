@@ -69,8 +69,14 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 					$displayValue = $value;
 				}
 			}
+			// vtlib customization: For listview javascript triggers
+			$modMetaInfo=getEntityFieldNames($parent_module);
+			$modEName=(is_array($modMetaInfo['fieldname']) ? $modMetaInfo['fieldname'][0] : $modMetaInfo['fieldname']);
+			$vtlib_metainfo = "<span type='vtlib_metainfo' vtrecordid='$parent_id' vtfieldname=".
+					"'$modEName' vtmodule='$parent_module' style='display:none;'></span>";
+			// END
 			$label_fld = array($fieldlabel,
-				"<a href='index.php?module=$parent_module&action=DetailView&record=$parent_id' title='$valueTitle'>$displayValue</a>");
+				"<a href='index.php?module=$parent_module&action=DetailView&record=$parent_id' title='$valueTitle'>$displayValue</a>$vtlib_metainfo");
 		} else {
 			$moduleSpecificMessage = 'MODULE_NOT_SELECTED';
 			if ($mod_strings[$moduleSpecificMessage] != "") {

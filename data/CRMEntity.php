@@ -2431,6 +2431,7 @@ class CRMEntity {
 	 * return array  $list_buttons - for module (eg: 'Accounts')
 	 */
 	function getListButtons($app_strings) {
+		global $currentModule;
 		$list_buttons = Array();
 
 		if (isPermitted($currentModule, 'Delete', '') == 'yes')

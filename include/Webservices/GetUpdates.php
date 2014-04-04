@@ -11,7 +11,7 @@ require_once 'include/Webservices/Utils.php';
 require_once 'include/Webservices/ModuleTypes.php';
 require_once 'include/utils/CommonUtils.php';
 
-	function vtws_sync($mtime,$elementType,$syncType,$user){
+	function vtws_sync($mtime,$elementType,$syncType='',$user=''){
 		global $adb, $recordString,$modifiedTimeString;
         
 		$numRecordsLimit = 100;

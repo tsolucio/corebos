@@ -1081,8 +1081,8 @@ class CustomView extends CRMEntity {
 					// Fix for http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/5423
 					if ($columns[1] == 'birthday') {
 						$tableColumnSql = "DATE_FORMAT(" . $columns[0] . "." . $columns[1] . ", '%m%d')";
-						$startDateTime = "DATE_FORMAT('$startDate', '%m%d')";
-						$endDateTime = "DATE_FORMAT('$endDate', '%m%d')";
+						$startDateTime = "DATE_FORMAT('$startDateTime', '%m%d')";
+						$endDateTime = "DATE_FORMAT('$endDateTime', '%m%d')";
 						$stdfiltersql = $tableColumnSql . " BETWEEN " . $startDateTime . " and " . $endDateTime;
 					} else {
 						if ($this->customviewmodule == 'Calendar' && ($columns[1] == 'date_start' || $columns[1] == 'due_date')) {

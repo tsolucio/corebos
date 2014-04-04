@@ -1410,6 +1410,9 @@ class Users extends CRMEntity {
 		//delete from user vtiger_table;
 		$sql = "delete from vtiger_users where id=?";
 		$adb->pquery($sql, array($userId));
+                //Delete user extension in asterisk.
+                $sql = "delete from vtiger_asteriskextensions where userid=?";
+                $adb->pquery($sql, array($userId));
 	}
 
     /**

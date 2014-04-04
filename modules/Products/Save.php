@@ -52,7 +52,7 @@ if($_REQUEST['return_action'] != '') {
 }
 if($_REQUEST['return_id'] != '') $return_id = vtlib_purify($_REQUEST['return_id']);
 
-if(isset($_request['activity_mode']))
+if(isset($_REQUEST['activity_mode']))
 	$return_action .= '&activity_mode='.$activity_mode;
 
 if($image_error=="true") { //If there is any error in the file upload then moving all the data to EditView.
