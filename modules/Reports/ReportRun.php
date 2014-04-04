@@ -98,7 +98,7 @@ class ReportRun extends CRMEntity
 			$fieldcolname = $columnslistrow["columnname"];
 			list($tablename,$colname,$module_field,$fieldname,$single) = split(":",$fieldcolname);
 			list($module,$field) = split("_",$module_field,2);
-			$inventory_fields = array('quantity','listprice','serviceid','productid','discount','comment');
+			$inventory_fields = array('quantity','listprice','serviceid','productid','discount_amount','comment');
 			$inventory_modules = array('SalesOrder','Quotes','PurchaseOrder','Invoice');
 			require('user_privileges/user_privileges_'.$current_user->id.'.php');
 			if(sizeof($permitted_fields[$module]) == 0 && $is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1)
@@ -106,7 +106,7 @@ class ReportRun extends CRMEntity
 				$permitted_fields[$module] = $this->getaccesfield($module);
 			}
 			if(in_array($module,$inventory_modules)){
-				$permitted_fields = array_merge($permitted_fields,$inventory_fields);
+				$permitted_fields[$module] = array_merge($permitted_fields[$module],$inventory_fields);
 			}
 			$selectedfields = explode(":",$fieldcolname);
 			if($is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1
@@ -216,7 +216,7 @@ class ReportRun extends CRMEntity
 					}
 					elseif($selectedfields[0] == 'vtiger_inventoryproductrel')//handled for product fields in Campaigns Module Reports
 					{
-						if($selectedfields[1] == 'discount'){
+						if($selectedfields[1] == 'discount_amount'){
 							$columnslist[$fieldcolname] = " case when (vtiger_inventoryproductrel{$module}.discount_amount != '') then vtiger_inventoryproductrel{$module}.discount_amount else ROUND((vtiger_inventoryproductrel{$module}.listprice * vtiger_inventoryproductrel{$module}.quantity * (vtiger_inventoryproductrel{$module}.discount_percent/100)),3) end as '" . $header_label ."'";
 						} else if($selectedfields[1] == 'productid'){
 							$columnslist[$fieldcolname] = "vtiger_products{$module}.productname as '" . $header_label ."'";
@@ -224,6 +224,18 @@ class ReportRun extends CRMEntity
 							$columnslist[$fieldcolname] = "vtiger_service{$module}.servicename as '" . $header_label ."'";
 						} else {
 							$columnslist[$fieldcolname] = $selectedfields[0].$module.".".$selectedfields[1]." as '".$header_label."'";
+						}
+					}
+					elseif($selectedfields[0] == 'vtiger_inventoryproductrel'.$module)//handled for product fields in Campaigns Module Reports
+					{
+						if($selectedfields[1] == 'discount_amount'){
+							$columnslist[$fieldcolname] = " case when (vtiger_inventoryproductrel{$module}.discount_amount != '') then vtiger_inventoryproductrel{$module}.discount_amount else ROUND((vtiger_inventoryproductrel{$module}.listprice * vtiger_inventoryproductrel{$module}.quantity * (vtiger_inventoryproductrel{$module}.discount_percent/100)),3) end as '" . $header_label ."'";
+						} else if($selectedfields[1] == 'productid'){
+							$columnslist[$fieldcolname] = "vtiger_products{$module}.productname as '" . $header_label ."'";
+						} else if($selectedfields[1] == 'serviceid'){
+							$columnslist[$fieldcolname] = "vtiger_service{$module}.servicename as '" . $header_label ."'";
+						} else {
+							$columnslist[$fieldcolname] = $selectedfields[0].".".$selectedfields[1]." as '".$header_label."'";
 						}
 					}
 					elseif(stristr($selectedfields[1],'cf_')==true && stripos($selectedfields[1],'cf_')==0)
@@ -688,6 +700,12 @@ class ReportRun extends CRMEntity
 							} else if($selectedfields[1] == 'serviceid'){
 								$fieldvalue = "vtiger_service{$this->primarymodule}.servicename ".$this->getAdvComparator($comparator,trim($value),$datatype);
 							}
+						} elseif($selectedfields[0] == 'vtiger_inventoryproductrel'.$this->primarymodule && ($selectedfields[1] == 'productid' || $selectedfields[1] == 'serviceid')) {
+							if($selectedfields[1] == 'productid'){
+								$fieldvalue = "vtiger_products{$this->primarymodule}.productname ".$this->getAdvComparator($comparator,trim($value),$datatype);
+							} else if($selectedfields[1] == 'serviceid'){
+								$fieldvalue = "vtiger_service{$this->primarymodule}.servicename ".$this->getAdvComparator($comparator,trim($value),$datatype);
+							}							
 						} elseif($fieldInfo['uitype'] == '10' || isReferenceUIType($fieldInfo['uitype'])) {
 
 							$comparatorValue = $this->getAdvComparator($comparator,trim($value),$datatype);
@@ -1446,7 +1464,7 @@ class ReportRun extends CRMEntity
 	 *  this returns join query for the given module
 	 */
 
-	function getReportsQuery($module, $type='')
+	function getReportsQuery($module, $type='', $where_condition = '')
 	{
 		global $log, $current_user;
 		$secondary_module ="'";
@@ -1607,7 +1625,7 @@ class ReportRun extends CRMEntity
 				inner join vtiger_quotesbillads on vtiger_quotes.quoteid=vtiger_quotesbillads.quotebilladdressid
 				inner join vtiger_quotesshipads on vtiger_quotes.quoteid=vtiger_quotesshipads.quoteshipaddressid
 				left join vtiger_currency_info as vtiger_currency_info$module on vtiger_currency_info$module.id = vtiger_quotes.currency_id";
-			if($type !== 'COLUMNSTOTOTAL') {
+			if(($type !== 'COLUMNSTOTOTAL') || ($type == 'COLUMNSTOTOTAL' && $where_condition == 'add')) {
 				$query .= " left join vtiger_inventoryproductrel as vtiger_inventoryproductrelQuotes on vtiger_quotes.quoteid = vtiger_inventoryproductrelQuotes.id
 				left join vtiger_products as vtiger_productsQuotes on vtiger_productsQuotes.productid = vtiger_inventoryproductrelQuotes.productid
 				left join vtiger_service as vtiger_serviceQuotes on vtiger_serviceQuotes.serviceid = vtiger_inventoryproductrelQuotes.productid";
@@ -1634,7 +1652,7 @@ class ReportRun extends CRMEntity
 				inner join vtiger_pobillads on vtiger_purchaseorder.purchaseorderid=vtiger_pobillads.pobilladdressid
 				inner join vtiger_poshipads on vtiger_purchaseorder.purchaseorderid=vtiger_poshipads.poshipaddressid
 				left join vtiger_currency_info as vtiger_currency_info$module on vtiger_currency_info$module.id = vtiger_purchaseorder.currency_id";
-			if($type !== 'COLUMNSTOTOTAL') {
+			if(($type !== 'COLUMNSTOTOTAL') || ($type == 'COLUMNSTOTOTAL' && $where_condition == 'add')) {
 				$query .= " left join vtiger_inventoryproductrel as vtiger_inventoryproductrelPurchaseOrder on vtiger_purchaseorder.purchaseorderid = vtiger_inventoryproductrelPurchaseOrder.id
 				left join vtiger_products as vtiger_productsPurchaseOrder on vtiger_productsPurchaseOrder.productid = vtiger_inventoryproductrelPurchaseOrder.productid
 				left join vtiger_service as vtiger_servicePurchaseOrder on vtiger_servicePurchaseOrder.serviceid = vtiger_inventoryproductrelPurchaseOrder.productid";
@@ -1659,7 +1677,7 @@ class ReportRun extends CRMEntity
 				inner join vtiger_invoicebillads on vtiger_invoice.invoiceid=vtiger_invoicebillads.invoicebilladdressid
 				inner join vtiger_invoiceshipads on vtiger_invoice.invoiceid=vtiger_invoiceshipads.invoiceshipaddressid
 				left join vtiger_currency_info as vtiger_currency_info$module on vtiger_currency_info$module.id = vtiger_invoice.currency_id";
-			if($type !== 'COLUMNSTOTOTAL') {
+			if(($type !== 'COLUMNSTOTOTAL') || ($type == 'COLUMNSTOTOTAL' && $where_condition == 'add')) {
 				$query .=" left join vtiger_inventoryproductrel as vtiger_inventoryproductrelInvoice on vtiger_invoice.invoiceid = vtiger_inventoryproductrelInvoice.id
 					left join vtiger_products as vtiger_productsInvoice on vtiger_productsInvoice.productid = vtiger_inventoryproductrelInvoice.productid
 					left join vtiger_service as vtiger_serviceInvoice on vtiger_serviceInvoice.serviceid = vtiger_inventoryproductrelInvoice.productid";
@@ -1684,7 +1702,7 @@ class ReportRun extends CRMEntity
 				inner join vtiger_sobillads on vtiger_salesorder.salesorderid=vtiger_sobillads.sobilladdressid
 				inner join vtiger_soshipads on vtiger_salesorder.salesorderid=vtiger_soshipads.soshipaddressid
 				left join vtiger_currency_info as vtiger_currency_info$module on vtiger_currency_info$module.id = vtiger_salesorder.currency_id";
-			if($type !== 'COLUMNSTOTOTAL') {
+			if(($type !== 'COLUMNSTOTOTAL') || ($type == 'COLUMNSTOTOTAL' && $where_condition == 'add')) {
 				$query .= " left join vtiger_inventoryproductrel as vtiger_inventoryproductrelSalesOrder on vtiger_salesorder.salesorderid = vtiger_inventoryproductrelSalesOrder.id
 				left join vtiger_products as vtiger_productsSalesOrder on vtiger_productsSalesOrder.productid = vtiger_inventoryproductrelSalesOrder.productid
 				left join vtiger_service as vtiger_serviceSalesOrder on vtiger_serviceSalesOrder.serviceid = vtiger_inventoryproductrelSalesOrder.productid";
@@ -1795,11 +1813,18 @@ class ReportRun extends CRMEntity
 		if(isset($filtersql) && $filtersql !== false) {
 			$advfiltersql = $filtersql;
 		}
+		$where_condition = '';
 		if($advfiltersql != "") {
+			if($type == 'COLUMNSTOTOTAL')
+			{
+				if (strstr($advfiltersql,'vtiger_products'.$this->primarymodule))
+					$where_condition='add';
+			}
 			$wheresql .= " and ".$advfiltersql;
 		}
 
-		$reportquery = $this->getReportsQuery($this->primarymodule, $type);
+
+		$reportquery = $this->getReportsQuery($this->primarymodule, $type,$where_condition);
 
 		// If we don't have access to any columns, let us select one column and limit result to shown we have not results
                 // Fix for: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/4758 - Prasad

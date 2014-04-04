@@ -199,8 +199,7 @@ class Reports extends CRMEntity{
 				</tbody></table>
 				</div>";
 				echo "</td></tr></table>";
-				break;
-
+				exit;
 			}
 		}
 	}
@@ -678,13 +677,16 @@ class Reports extends CRMEntity{
 			);
 			$fields_datatype = array('productid'=>'V',
 							'serviceid'=>'V',
-							'listprice'=>'I',
-							'discount'=>'I',
-							'quantity'=>'I',
+							'listprice'=>'N',
+							'discount'=>'N',
+							'quantity'=>'N',
 							'comment'=>'V',
 			);
 			foreach($fields as $fieldcolname=>$label){
 				$fieldtypeofdata = $fields_datatype[$fieldcolname];
+				if($fieldcolname != 'productid' || $fieldcolname !='serviceid')
+					$optionvalue =  $fieldtablename.$module.":".$fieldcolname.":".$module."_".$label.":".$fieldcolname.":".$fieldtypeofdata;
+				else
 				$optionvalue =  $fieldtablename.":".$fieldcolname.":".$module."_".$label.":".$fieldcolname.":".$fieldtypeofdata;
 				$module_columnlist[$optionvalue] = $label;
 			}
@@ -1506,7 +1508,7 @@ function getEscapedColumns($selectedfields)
 		{
 			$typeofdata = explode("~",$columntototalrow["typeofdata"]);
 
-			if($typeofdata[0] == "N" || $typeofdata[0] == "I")
+			if($typeofdata[0] == "N" || $typeofdata[0] == "NN" || $typeofdata[0] == "I" || $typeofdata[0] == "T")
 			{
 				$options = Array();
 				if(isset($this->columnssummary))
