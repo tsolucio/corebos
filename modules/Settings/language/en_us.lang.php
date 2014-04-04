@@ -872,7 +872,7 @@ $mod_strings = Array(
 'LBL_SELECT_ENTITY'=>'Select an entity below',
 'LBL_CAN_BE_ACCESSED_BY'=>'Can be accessed by',
 'LBL_PERMISSIONS'=>'Permissions',
-'LBL_DOC_MSWORD'=>'File has to be a Document of type doc/msword',
+'LBL_DOC_MSWORD'=>'File has to be a Document of type doc/msword, or OpenOffice/odt or Rich Text Format/rtf',
 'LBL_NODOC'=>'No doc File in this directory.Please try again!',
 
 //Added for error messages on Company Info.

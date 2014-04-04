@@ -8,30 +8,10 @@
  * All Rights Reserved.
 *
 ********************************************************************************/
-?>
-<html>
-<body>
-<script>
-if (document.layers)
-{
-	document.write("This feature requires IE 5.5 or higher for Windows on Microsoft Windows 2000, Windows NT4 SP6, Windows XP.");
-	document.write("<br><br>Click <a href='#' onclick='window.history.back();'>here</a> to return to the previous page");
-}	
-else if (document.layers || (!document.all && document.getElementById))
-{
-	document.write("This feature requires IE 5.5 or higher for Windows on Microsoft Windows 2000, Windows NT4 SP6, Windows XP.");
-	document.write("<br><br>Click <a href='#' onclick='window.history.back();'>here</a> to return to the previous page");	
-}
-else if(document.all)
-{
-	document.write("<br><br>Click <a href='#' onclick='window.history.back();'>here</a> to return to the previous page");
-	document.write("<OBJECT Name='vtigerCRM' codebase='modules/Settings/vtigerCRM.CAB#version=1,5,0,0' id='objMMPage' classid='clsid:0FC436C2-2E62-46EF-A3FB-E68E94705126' width=0 height=0></object>");
-}
-</script>
-<?php
 require_once('include/database/PearDatabase.php');
 require_once('config.php');
-
+require_once('include/utils/MergeUtils.php');
+global $app_strings;
 global $default_charset;
 
 // Fix For: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/2107
@@ -51,9 +31,9 @@ $temparray = $adb->fetch_array($result);
 
 $fileContent = $temparray['data'];
 $filename=html_entity_decode($temparray['filename'], ENT_QUOTES, $default_charset);
-
+$extension=GetFileExtension($filename);
 // Fix For: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/2107
-$filename= $randomfilename . "_word.doc";
+$filename= $randomfilename . "_mmrg.$extension";
 
 $filesize=$temparray['filesize'];
 $wordtemplatedownloadpath =$root_directory ."/test/wordtemplatedownload/";
@@ -62,6 +42,28 @@ $wordtemplatedownloadpath =$root_directory ."/test/wordtemplatedownload/";
 $handle = fopen($wordtemplatedownloadpath .$filename,"wb");
 fwrite($handle,base64_decode($fileContent),$filesize);
 fclose($handle);
+
+if (GetFileExtension($filename)=="doc") {
+echo "<html>
+<body>
+<script>
+if (document.layers)
+{
+	document.write(\"This feature requires IE 5.5 or higher for Windows on Microsoft Windows 2000, Windows NT4 SP6, Windows XP.\");
+	document.write(\"<br><br>Click <a href='#' onclick='window.history.back();'>here</a> to return to the previous page\");
+}	
+else if (document.layers || (!document.all && document.getElementById))
+{
+	document.write(\"This feature requires IE 5.5 or higher for Windows on Microsoft Windows 2000, Windows NT4 SP6, Windows XP.\");
+	document.write(\"<br><br>Click <a href='#' onclick='window.history.back();'>here</a> to return to the previous page\");	
+}
+else if(document.all)
+{
+	document.write(\"<br><br>Click <a href='#' onclick='window.history.back();'>here</a> to return to the previous page\");
+	document.write(\"<OBJECT Name='vtigerCRM' codebase='modules/Settings/vtigerCRM.CAB#version=1,5,0,0' id='objMMPage' classid='clsid:0FC436C2-2E62-46EF-A3FB-E68E94705126' width=0 height=0></object>\");
+}
+</script>";    
+}
 
 //for mass merge
 $mass_merge = $_REQUEST['allselectedboxes'];
@@ -122,6 +124,18 @@ for ($x=0; $x<$y; $x++)
   			$field_label[$x] = $field_label[$x].",USER_FIRSTNAME,USER_LASTNAME,USER_USERNAME,USER_SECONDARYEMAIL,USER_TITLE,USER_OFFICEPHONE,USER_DEPARTMENT,USER_MOBILE,USER_OTHERPHONE,USER_FAX,USER_EMAIL,USER_HOMEPHONE,USER_OTHEREMAIL,USER_PRIMARYADDRESS,USER_CITY,USER_STATE,USER_POSTALCODE,USER_COUNTRY";
   		}
 }
+// Ordena etiquetas más grandes primero para que no se sutituyan subcadenas en el documento
+// Por ejemplo, pongo LEAD_TIPOVIVIENDA delante de LEAD_TIPO, para que no se sustituya la subcadena LEAD_TIPO
+$labels_length=$field_label;
+function strlength($label,$clave) {
+    global $labels_length;
+    $labels_length[$clave] = strlen($label);
+}
+array_walk($labels_length,'strlength');
+array_multisort($labels_length, $field_label, $querycolumns);
+$field_label=array_reverse($field_label);
+$querycolumns=array_reverse($querycolumns);
+$labels_length=array_reverse($labels_length);
 $csvheader = implode(",",$field_label);
 //<<<<<<<<<<<<<<<<End>>>>>>>>>>>>>>>>>>>>>>>>
 	
@@ -173,7 +187,20 @@ while($columnValues = $adb->fetch_array($result))
 		//if value contains any line feed or carriage return replace the value with ".value."
 		if (preg_match ("/(\r?\n)/", $actual_values[$x]))
 		{
-			$actual_values[$x] = '"'.$actual_values[$x].'"';
+			// <<< pag 21-Sep-2011 >>>
+			
+			// Replacement see: php.net/manual/en/function.str-replace.php
+			// $str     = "Line 1\nLine 2\rLine 3\r\nLine 4\n";
+			$order   = array("\r\n", "\n", "\r"); // order of replacement matters
+			$replace = '!!'; // you choose your appropriate delimiters 
+			// They'll be replaced by an OO/LO macro once the resulting document has been downloaded
+			
+			// We now processes \r\n's first so they aren't converted twice.
+			// $newstr = str_replace($order, $replace, $str);
+			$actual_values[$x] = str_replace($order, $replace, $actual_values[$x]);
+			// <<< pag 21-Sep-2011 END >>>
+			
+			// not needed ??? // $actual_values[$x] = '"'.$actual_values[$x].'"';
 		}
 		$actual_values[$x] = decode_html(str_replace(","," ",$actual_values[$x]));
   }
@@ -184,13 +211,68 @@ $csvdata = implode($mergevalue,"###");
 {
 	die("No vtiger_fields to do Merge");
 }
-// Fix for: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/2107
-$datafilename = $randomfilename . "_data.csv";
-
-$handle = fopen($wordtemplatedownloadpath.$datafilename,"wb");
-fwrite($handle,$csvheader."\r\n");
-fwrite($handle,str_replace("###","\r\n",$csvdata));
-fclose($handle);
+echo "<br><br><br>";
+$extension = GetFileExtension($filename);
+if($extension == "doc")
+{
+    // Fix for: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/2107
+    $datafilename = $randomfilename . "_data.csv";
+    
+    $handle = fopen($wordtemplatedownloadpath.$datafilename,"wb");
+    fwrite($handle,$csvheader."\r\n");
+    fwrite($handle,str_replace("###","\r\n",$csvdata));
+    fclose($handle);
+}
+else if($extension == "odt")
+{
+    //delete old .odt files in the wordtemplatedownload directory
+    foreach (glob("$wordtemplatedownloadpath/*.odt") as $delefile) 
+    {
+        unlink($delefile);
+    }
+    if (!is_array($mass_merge)) $mass_merge = array($mass_merge);
+    foreach($mass_merge as $idx => $entityid) {
+        $temp_dir=entpack($filename,$wordtemplatedownloadpath,$fileContent);
+        $concontent=file_get_contents($wordtemplatedownloadpath.$temp_dir.'/content.xml');
+        unlink($wordtemplatedownloadpath.$temp_dir.'/content.xml');
+        $new_filecontent=crmmerge($csvheader,$concontent,$idx,'htmlspecialchars');
+        $stycontent=file_get_contents($wordtemplatedownloadpath.$temp_dir.'/styles.xml');
+        unlink($wordtemplatedownloadpath.$temp_dir.'/styles.xml');
+        $new_filestyle=crmmerge($csvheader,$stycontent,$idx,'htmlspecialchars');
+        packen($entityid.$filename,$wordtemplatedownloadpath,$temp_dir,$new_filecontent,$new_filestyle);
+        
+        //Send Document to the Browser 
+        
+        //header("Content-Type: $mimetype");
+        //header("Content-Disposition: attachment; filename=$filename");
+        
+        //echo file_get_contents($wordtemplatedownloadpath .$filename);
+        //readfile($root_directory .$wordtemplatedownloadpath .$filename);
+        
+        echo "&nbsp;&nbsp;<font size=+1><b><a href=test/wordtemplatedownload/$entityid$filename>".$app_strings['DownloadMergeFile']."</a></b></font><br>";
+        remove_dir($wordtemplatedownloadpath.$temp_dir);
+    }
+}
+else if($extension == "rtf")
+{
+    foreach (glob("$wordtemplatedownloadpath/*.rtf") as $delefile) 
+    {
+        unlink($delefile);
+    }
+    $filecontent = base64_decode($fileContent);
+    if (!is_array($mass_merge)) $mass_merge = array($mass_merge);
+    foreach($mass_merge as $idx => $entityid) {
+        $handle = fopen($wordtemplatedownloadpath.$entityid.$filename,"wb");
+        $new_filecontent = crmmerge($csvheader,$filecontent,$idx,'utf8Unicode');
+        fwrite($handle,$new_filecontent);
+        fclose($handle);
+        echo "&nbsp;&nbsp;<font size=+1><b><a href=test/wordtemplatedownload/$entityid$filename>".$app_strings['DownloadMergeFile']."</a></b></font><br>";
+    }
+}
+else
+{
+    die("unknown file format");
+}
 
 ?>
 

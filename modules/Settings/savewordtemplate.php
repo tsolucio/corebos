@@ -37,7 +37,8 @@ if(move_uploaded_file($_FILES["binFile"]["tmp_name"],$uploaddir.$_FILES["binFile
   
     if($filesize != 0)	
     {
-	    if($file_type_value == "msword" || $file_type_value == "doc" || $file_type_value == "document")
+        $merge_ext = array('msword','doc','document','rtf','odt','vnd.oasis.opendocument.text','octet-stream','vnd.oasi');
+        if (in_array($file_type_value, $merge_ext))
 	    {
 		    if($result!=false)
 	    	    {

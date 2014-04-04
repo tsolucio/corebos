@@ -8,30 +8,10 @@
  * All Rights Reserved.
 *
  ********************************************************************************/
-?>
-<html>
-<body>
-<script>
-if (document.layers)
-{
-	document.write("This feature requires IE 5.5 or higher for Windows on Microsoft Windows 2000, Windows NT4 SP6, Windows XP.");
-	document.write("<br><br>Click <a href='#' onclick='window.history.back();'>here</a> to return to the previous page");
-}	
-else if (document.layers || (!document.all && document.getElementById))
-{
-	document.write("This feature requires IE 5.5 or higher for Windows on Microsoft Windows 2000, Windows NT4 SP6, Windows XP.");
-	document.write("<br><br>Click <a href='#' onclick='window.history.back();'>here</a> to return to the previous page");	
-}
-else if(document.all)
-{
-	document.write("<br><br>Click <a href='#' onclick='window.history.back();'>here</a> to return to the previous page");
-	document.write("<OBJECT Name='vtigerCRM' codebase='modules/Settings/vtigerCRM.CAB#version=1,5,0,0' id='objMMPage' classid='clsid:0FC436C2-2E62-46EF-A3FB-E68E94705126' width=0 height=0></object>");
-}
-</script>
-<?php
 require_once('include/database/PearDatabase.php');
 require_once('config.php');
-
+require_once('include/utils/MergeUtils.php');
+global $app_strings;
 global $default_charset;
 
 // Fix For: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/2107
@@ -52,8 +32,9 @@ $temparray = $adb->fetch_array($result);
 
 $fileContent = $temparray['data'];
 $filename=html_entity_decode($temparray['filename'], ENT_QUOTES, $default_charset);
+$extension=GetFileExtension($filename);
 // Fix For: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/2107
-$filename= $randomfilename . "_word.doc";
+$filename= $randomfilename . "_mmrg.$extension";
 
 $filesize=$temparray['filesize'];
 $wordtemplatedownloadpath =$root_directory ."/test/wordtemplatedownload/";
@@ -61,6 +42,28 @@ $wordtemplatedownloadpath =$root_directory ."/test/wordtemplatedownload/";
 $handle = fopen($wordtemplatedownloadpath.$filename,"wb");
 fwrite($handle,base64_decode($fileContent),$filesize);
 fclose($handle);
+
+if (GetFileExtension($filename)=="doc") {
+echo "<html>
+<body>
+<script>
+if (document.layers)
+{
+    document.write(\"This feature requires IE 5.5 or higher for Windows on Microsoft Windows 2000, Windows NT4 SP6, Windows XP.\");
+    document.write(\"<br><br>Click <a href='#' onclick='window.history.back();'>here</a> to return to the previous page\");
+}   
+else if (document.layers || (!document.all && document.getElementById))
+{
+    document.write(\"This feature requires IE 5.5 or higher for Windows on Microsoft Windows 2000, Windows NT4 SP6, Windows XP.\");
+    document.write(\"<br><br>Click <a href='#' onclick='window.history.back();'>here</a> to return to the previous page\"); 
+}
+else if(document.all)
+{
+    document.write(\"<br><br>Click <a href='#' onclick='window.history.back();'>here</a> to return to the previous page\");
+    document.write(\"<OBJECT Name='vtigerCRM' codebase='modules/Settings/vtigerCRM.CAB#version=1,5,0,0' id='objMMPage' classid='clsid:0FC436C2-2E62-46EF-A3FB-E68E94705126' width=0 height=0></object>\");
+}
+</script>";    
+}
 
 //<<<<<<<<<<<<<<<<<<<<<<<<<<<for mass merge>>>>>>>>>>>>>>>>>>>>>>>>>>>
 $mass_merge = $_REQUEST['allselectedboxes'];
@@ -104,13 +107,14 @@ global $current_user;
 require('user_privileges/user_privileges_'.$current_user->id.'.php');
 if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0 || $module == "Users" || $module == "Emails")
 {
-	$query1="select vtiger_tab.name,vtiger_field.tablename,vtiger_field.columnname,vtiger_field.fieldlabel from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid where vtiger_field.tabid in (4,6) and vtiger_field.block <> 75 and vtiger_field.presence in (0,2) order by vtiger_field.tablename";
+	// $query1="select vtiger_tab.name,vtiger_field.tablename,vtiger_field.columnname,vtiger_field.fieldlabel from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid where vtiger_field.tabid in (6) and vtiger_field.block <> 75 and vtiger_field.presence in (0,2) order by vtiger_field.tablename";
+	$query1="select vtiger_tab.name,vtiger_field.tablename,vtiger_field.columnname,vtiger_field.fieldlabel from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid where vtiger_field.tabid in (6) and vtiger_field.uitype <> 61 and block <> 75 and block <> 30 and vtiger_field.presence in (0,2) and vtiger_field.tablename <> 'vtiger_campaignrelstatus' order by vtiger_field.tablename";
 	$params1 = array();
 }
 else
 {
 	$profileList = getCurrentUserProfileList();
-	$query1="select vtiger_tab.name,vtiger_field.tablename,vtiger_field.columnname,vtiger_field.fieldlabel from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid where vtiger_field.tabid in (4,6) and vtiger_field.block <> 75 AND vtiger_profile2field.visible=0 AND vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN (". generateQuestionMarks($profileList) .") and vtiger_field.presence in (0,2) GROUP BY vtiger_field.fieldid order by vtiger_field.tablename";
+	$query1="select vtiger_tab.name,vtiger_field.tablename,vtiger_field.columnname,vtiger_field.fieldlabel from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid where vtiger_field.tabid in (6) and vtiger_field.uitype <> 61 and vtiger_field.block <> 75 AND vtiger_profile2field.visible=0 AND vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN (". generateQuestionMarks($profileList) .") and vtiger_field.presence in (0,2) and vtiger_field.tablename <> 'vtiger_campaignrelstatus' GROUP BY vtiger_field.fieldid order by vtiger_field.tablename";
 	$params1 = array($profileList);
 	//Postgres 8 fixes
 	if( $adb->dbType == "pgsql")
@@ -178,6 +182,18 @@ for ($x=0; $x<$y; $x++)
 
 }
 
+// Ordena etiquetas más grandes primero para que no se sutituyan subcadenas en el documento
+// Por ejemplo, pongo LEAD_TIPOVIVIENDA delante de LEAD_TIPO, para que no se sustituya la subcadena LEAD_TIPO
+$labels_length=$field_label;
+function strlength($label,$clave) {
+    global $labels_length;
+    $labels_length[$clave] = strlen($label);
+}
+array_walk($labels_length,'strlength');
+array_multisort($labels_length, $field_label, $querycolumns);
+$field_label=array_reverse($field_label);
+$querycolumns=array_reverse($querycolumns);
+$labels_length=array_reverse($labels_length);
 $csvheader = implode(",",$field_label);
 //<<<<<<<<<<<<<<<<End>>>>>>>>>>>>>>>>>>>>>>>>
 	
@@ -240,7 +256,20 @@ while($columnValues = $adb->fetch_array($result))
 		//if value contains any line feed or carriage return replace the value with ".value."
 		if (preg_match ("/(\r?\n)/", $actual_values[$x]))
 		{
-			$actual_values[$x] = '"'.$actual_values[$x].'"';
+			// <<< pag 21-Sep-2011 >>>
+			
+			// Replacement see: php.net/manual/en/function.str-replace.php
+			// $str     = "Line 1\nLine 2\rLine 3\r\nLine 4\n";
+			$order   = array("\r\n", "\n", "\r"); // order of replacement matters
+			$replace = '!!'; // you choose your appropriate delimiters 
+			// They'll be replaced by an OO/LO macro once the resulting document has been downloaded
+			
+			// We now processes \r\n's first so they aren't converted twice.
+			// $newstr = str_replace($order, $replace, $str);
+			$actual_values[$x] = str_replace($order, $replace, $actual_values[$x]);
+			// <<< pag 21-Sep-2011 END >>>
+			
+			// not needed ??? // $actual_values[$x] = '"'.$actual_values[$x].'"';
 		}
 		$actual_values[$x] = decode_html(str_replace(","," ",$actual_values[$x]));
   }
@@ -251,14 +280,60 @@ $csvdata = implode($mergevalue,"###");
 {
 	die("No fields to do Merge");
 }
+echo "<br><br><br>";
+$extension = GetFileExtension($filename);
+if($extension == "doc")
+{
+    // Fix for: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/2107
+    $datafilename = $randomfilename . "_data.csv";
 
-// Fix for: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/2107
-$datafilename = $randomfilename . "_data.csv";
+    $handle = fopen($wordtemplatedownloadpath.$datafilename,"wb");
+    fwrite($handle,$csvheader."\r\n");
+    fwrite($handle,str_replace("###","\r\n",$csvdata));
+    fclose($handle);
+}
+else if($extension == "odt")
+{
+    //delete old .odt files in the wordtemplatedownload directory
+    foreach (glob("$wordtemplatedownloadpath/*.odt") as $delefile) 
+    {
+        unlink($delefile);
+    }
+    if (!is_array($mass_merge)) $mass_merge = array($mass_merge);
+    foreach($mass_merge as $idx => $entityid) {
+        $temp_dir=entpack($filename,$wordtemplatedownloadpath,$fileContent);
+        $concontent=file_get_contents($wordtemplatedownloadpath.$temp_dir.'/content.xml');
+        unlink($wordtemplatedownloadpath.$temp_dir.'/content.xml');
+        $new_filecontent=crmmerge($csvheader,$concontent,$idx,'htmlspecialchars');
+        $stycontent=file_get_contents($wordtemplatedownloadpath.$temp_dir.'/styles.xml');
+        unlink($wordtemplatedownloadpath.$temp_dir.'/styles.xml');
+        $new_filestyle=crmmerge($csvheader,$stycontent,$idx,'htmlspecialchars');
+        packen($entityid.$filename,$wordtemplatedownloadpath,$temp_dir,$new_filecontent,$new_filestyle);
 
-$handle = fopen($wordtemplatedownloadpath.$datafilename,"wb");
-fwrite($handle,$csvheader."\r\n");
-fwrite($handle,str_replace("###","\r\n",$csvdata));
-fclose($handle);
+        echo "&nbsp;&nbsp;<font size=+1><b><a href=test/wordtemplatedownload/$entityid$filename>".$app_strings['DownloadMergeFile']."</a></b></font><br>";
+        remove_dir($wordtemplatedownloadpath.$temp_dir);
+    }
+}
+else if($extension == "rtf")
+{
+    foreach (glob("$wordtemplatedownloadpath/*.rtf") as $delefile) 
+    {
+        unlink($delefile);
+    }
+    if (!is_array($mass_merge)) $mass_merge = array($mass_merge);
+    $filecontent = base64_decode($fileContent);
+    foreach($mass_merge as $idx => $entityid) {
+        $handle = fopen($wordtemplatedownloadpath.$entityid.$filename,"wb");
+        $new_filecontent = crmmerge($csvheader,$filecontent,$idx,'utf8Unicode');
+        fwrite($handle,$new_filecontent);
+        fclose($handle);
+        echo "&nbsp;&nbsp;<font size=+1><b><a href=test/wordtemplatedownload/$entityid$filename>".$app_strings['DownloadMergeFile']."</a></b></font><br>";
+    }
+}
+else
+{
+    die("unknown file format");
+}
 ?>
 <script>
 if (window.ActiveXObject){
