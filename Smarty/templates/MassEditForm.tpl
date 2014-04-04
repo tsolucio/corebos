@@ -14,7 +14,7 @@
 	<tr>
 		<td class=small >		
 			<!-- popup specific content fill in starts -->
-	      <form name="EditView" id="massedit_form" action="index.php" onsubmit="VtigerJS_DialogBox.block();">
+	      <form name="EditView" id="massedit_form" action="index.php" onsubmit="VtigerJS_DialogBox.block();" method="POST">
 				<input id="idstring" value="{$IDS}" type="hidden" />
 				<table border=0 cellspacing=0 cellpadding=0 width=100% align=center bgcolor=white>
 				<tr>

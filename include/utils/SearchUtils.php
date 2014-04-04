@@ -1081,6 +1081,18 @@ function getUnifiedWhere($listquery,$module,$search_val){
 			$columnname = "accountname";
 			$tablename = "vtiger_account";
 		}
+		if($module == 'HelpDesk' && $columnname == 'parent_id') {
+			$columnname = "accountname";
+			$tablename = "vtiger_account";
+			if(strstr($listquery,$tablename)){
+				if($where != ''){
+					$where .= " OR ";
+				}
+				$where .= $tablename.".".$columnname." LIKE '". formatForSqlLike($search_val) ."'";
+			}
+			$columnname = "firstname";
+			$tablename = "vtiger_contactdetails";
+		}
 		// END
 
 		//Before form the where condition, check whether the table for the field has been added in the listview query
