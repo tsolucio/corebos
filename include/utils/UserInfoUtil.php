@@ -1472,7 +1472,7 @@ $log->debug("Entering getProfileTabsPermission(".$profileid.") method ...");
   // Once that is done, Webmails need to be removed permanently.
   $emailsTabId = getTabid('Emails');
   $webmailsTabid = getTabid('Webmails');
-  if(array_key_exists($emailsTabId, $copy)) {
+  if(array_key_exists($emailsTabId, $copy) and !empty($webmailsTabid)) {
 	  $copy[$webmailsTabid] = $copy[$emailsTabId];
   }
 
