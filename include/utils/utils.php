@@ -4858,7 +4858,7 @@ function getBlockName($blockid) {
 }
 
 function validateAlphaNumericInput($string){
-    preg_match('/^[\w _\-]+$/', $string, $matches);
+    preg_match('/^[\w _\-\/]+$/', $string, $matches);
     if(count($matches) == 0) {
         return false;
     }
