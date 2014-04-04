@@ -16,7 +16,7 @@
 				<table  class="listTableTopButtons" border="0" cellpadding="5" cellspacing="0" width="100%">
 					<tr>
 						<td class="big" align="left"><strong>{$MOD.LBL_MAPPED_FIELDS}</strong> </td>
-						<td align="right"><input type="button" class="crmButton create small" onclick="javascript: submitForm('form','index.php?module=Settings&action=LeadCustomFieldMapping');" alt="Edit" title="Edit" value="Edit"/>
+						<td align="right"><input type="button" class="crmButton create small" onclick="javascript: submitForm('form','index.php?module=Settings&action=LeadCustomFieldMapping');" alt="{$MOD.Edit}" title="{$MOD.Edit}" value="{$MOD.Edit}"/>
 						</td>
 					{if $MODULE eq 'Calendar'}
 						<input type="radio" name="activitytype" value="E" checked>&nbsp;{$APP.Event}
@@ -28,17 +28,21 @@
 				<table class="listTable" border="0" cellpadding="5" cellspacing="0" width="100%">
 					{if $MODULE eq 'Leads'}
 					<tr>
-						<td rowspan="2" class="colHeader small" width="5%">#</td>
-						<td rowspan="2" class="colHeader small" width="20%">{$MOD.FieldLabel}</td>
-					    <td rowspan="2" class="colHeader small" width="20%">{$MOD.FieldType}</td>
-						<td colspan="4" class="colHeader small" valign="top"><div align="center">{$MOD.LBL_MAPPING_OTHER_MODULES}</div></td>
+						<td class="colHeader small" width="5%">#</td>
+						<td class="colHeader small" width="20%">{$MOD.FieldLabel}</td>
+					    <td class="colHeader small" width="20%">{$MOD.FieldType}</td>
+						<td colspan="3" class="colHeader small" valign="top"><div align="center">{$MOD.LBL_MAPPING_OTHER_MODULES}</div></td>
+						<td class="colHeader small" width="20%">{$MOD.LBL_CURRENCY_TOOL}</td>
 					</tr>
 
 					<tr>
+					  <td class="colHeader small" valign="top" width="5%"></td>
+					  <td class="colHeader small" valign="top" width="20%"></td>
+					  <td class="colHeader small" valign="top" width="20%"></td>
 					  <td class="colHeader small" valign="top" width="18%">{$APP.Accounts}</td>
 					  <td class="colHeader small" valign="top" width="18%">{$APP.Contacts}</td>
 					  <td class="colHeader small" valign="top" width="19%">{$APP.Potentials}</td>
-					  <td class="colHeader small" width="20%">{$MOD.LBL_CURRENCY_TOOL}</td>
+					  <td class="colHeader small" width="20%"></td>
 
 					</tr>
 					{else}
