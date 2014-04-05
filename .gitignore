@@ -1,0 +1,7 @@
+cache/**/*
+test/**/*
+Smarty/templates_c/*
+storage/**/*
+logs/*
+backup/*
+user_privileges/*
