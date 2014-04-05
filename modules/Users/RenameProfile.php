@@ -13,8 +13,8 @@ global $adb;
 
 $profileid = vtlib_purify($_REQUEST['profileid']);
 if(strtolower($default_charset) == 'utf-8') {	
-	$profilename = $_REQUEST['profilename'];
-	$profileDesc = $_REQUEST['description'];
+	$profilename = vtlib_purify($_REQUEST['profilename']);
+	$profileDesc = vtlib_purify($_REQUEST['description']);
 } else {
 	$profilename = utf8RawUrlDecode($_REQUEST['profilename']);
 	$profileDesc = utf8RawUrlDecode($_REQUEST['description']);

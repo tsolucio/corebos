@@ -21,7 +21,7 @@ $smarty->assign("APP", $app_strings);
 $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH","themes/$theme/images/");
 
-$scannername = $_REQUEST['scannername'];
+$scannername = vtlib_purify($_REQUEST['scannername']);
 $scannerinfo = new Vtiger_MailScannerInfo($scannername);
 
 $mailbox = new Vtiger_MailBox($scannerinfo);

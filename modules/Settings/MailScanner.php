@@ -12,10 +12,10 @@
 require_once('include/utils/utils.php');
 require_once('Smarty_setup.php');
 
-$mode = $_REQUEST['mode'];
+$mode = vtlib_purify($_REQUEST['mode']);
 
 if($mode == 'Ajax' && !empty($_REQUEST['xmode'])) {
-	$mode = $_REQUEST['xmode'];
+	$mode = vtlib_purify($_REQUEST['xmode']);
 }
 
 /** Based on the mode include the MailScanner file. */

@@ -13,7 +13,7 @@ require_once('include/database/PearDatabase.php');
 require_once('include/utils/VtlibUtils.php');
 
 global $adb;
-if(isset($_REQUEST['record']) && $_REQUEST['record']!='')
+if(isset($_REQUEST['record']) && vtlib_purify($_REQUEST['record']) !='')
 {
 	$query="UPDATE vtiger_inventorynotification set notificationsubject=?, notificationbody=?, status=?  where notificationid=?";
 	$params = array(vtlib_purify($_REQUEST['notifysubject']), vtlib_purify($_REQUEST['notifybody']), vtlib_purify($_REQUEST['status']), vtlib_purify($_REQUEST['record']) );

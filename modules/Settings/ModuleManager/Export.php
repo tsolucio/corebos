@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-$module_export = $_REQUEST['module_export'];
+$module_export = vtlib_purify($_REQUEST['module_export']);
 
 require_once("vtlib/Vtiger/Package.php");
 require_once("vtlib/Vtiger/Module.php");

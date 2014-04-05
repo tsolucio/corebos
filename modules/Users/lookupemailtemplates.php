@@ -41,6 +41,7 @@ $theme_path="themes/".$theme."/";
 $cnt=1;
 
 require_once('include/utils/UserInfoUtil.php');
+checkFileAccessForInclusion('user_privileges/user_privileges_'.$current_user->id.'.php');
 require('user_privileges/user_privileges_'.$current_user->id.'.php');
 do
 {

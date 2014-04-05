@@ -44,7 +44,7 @@ $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH",$image_path);
 $smarty->assign("APP", $app_strings);
 $smarty->assign("CMOD", $mod_strings);
-if($_REQUEST['directmode'] != '')
+if(vtlib_purify($_REQUEST['directmode']) != '')
 	$smarty->display("Settings/EmailNotificationContents.tpl");
 else
 	$smarty->display("Settings/EmailNotification.tpl");

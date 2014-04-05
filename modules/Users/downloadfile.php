@@ -13,7 +13,7 @@ require_once('include/database/PearDatabase.php');
 
 global $fileId, $default_charset;
 
-$templateid = $_REQUEST['record'];
+$templateid = vtlib_purify($_REQUEST['record']);
 $dbQuery = "SELECT filename,filetype, data ";
 $dbQuery .= "FROM vtiger_wordtemplates ";
 $dbQuery .= "WHERE templateid=?";

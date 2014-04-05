@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-$idlist = $_REQUEST['idlist'];
+$idlist = vtlib_purify($_REQUEST['idlist']);
 $id_array=explode(';', $idlist);
 
 for($i=0; $i < count($id_array)-1; $i++) {

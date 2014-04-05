@@ -10,18 +10,18 @@
 require_once("include/database/PearDatabase.php");
 require_once("modules/Users/Users.php");
 global $current_user;
-$displayname=$_REQUEST['displayname'];
+$displayname= vtlib_purify($_REQUEST['displayname']);
 $userid = $current_user->id;
-$email=$_REQUEST['email'];
-$account_name=$_REQUEST['account_name'];
-$mailprotocol=$_REQUEST['mailprotocol'];
-$server_username = $_REQUEST['server_username'];
-$server_password = $_REQUEST['server_password'];
-$mail_servername = $_REQUEST['mail_servername'];
-$box_refresh = $_REQUEST['box_refresh'];
-$mails_per_page = $_REQUEST['mails_per_page'];
-$ssltype = $_REQUEST["ssltype"];
-$sslmeth = $_REQUEST["sslmeth"];
+$email= vtlib_purify($_REQUEST['email']);
+$account_name= vtlib_purify($_REQUEST['account_name']);
+$mailprotocol= vtlib_purify($_REQUEST['mailprotocol']);
+$server_username = vtlib_purify($_REQUEST['server_username']);
+$server_password = vtlib_purify($_REQUEST['server_password']);
+$mail_servername = vtlib_purify($_REQUEST['mail_servername']);
+$box_refresh = vtlib_purify($_REQUEST['box_refresh']);
+$mails_per_page = vtlib_purify($_REQUEST['mails_per_page']);
+$ssltype = vtlib_purify($_REQUEST["ssltype"]);
+$sslmeth = vtlib_purify($_REQUEST["sslmeth"]);
 
 if($mails_per_page == '') $mails_per_page='0';
 

@@ -27,7 +27,7 @@ $smarty->assign('MODULE',$currentModule);
 $smarty->assign('APP',$app_strings);
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
-$storearray = getSelectedRecords($_REQUEST, $currentModule, $_REQUEST['idstring'],$excludedRecords);
+$storearray = getSelectedRecords($_REQUEST, $currentModule, vtlib_purify($_REQUEST['idstring']),$excludedRecords);
 $idstringval=implode(';',$storearray);
 $smarty->assign("IDS",$idstringval);
 $smarty->assign('MASS_EDIT','1');

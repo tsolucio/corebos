@@ -26,7 +26,7 @@ $flag=0;
 //pass the vtiger_table id as a parameter and then update directly instead of using the name vtiger_field 
 for ($i=1;$i<10;$i++)
 {
-  if($_POST[$i] == 'on')
+  if(vtlib_purify($_POST[$i]) == 'on')
   {
     $flag=1;
   }

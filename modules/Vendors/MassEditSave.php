@@ -42,15 +42,15 @@ if(isset($idlist)) {
 				{
 					if($fieldname == 'assigned_user_id'){
 						if($_REQUEST['assigntype'] == 'U')  {
-							$value = $_REQUEST['assigned_user_id'];
+							$value = vtlib_purify($_REQUEST['assigned_user_id']);
 						} elseif($_REQUEST['assigntype'] == 'T') {
-							$value = $_REQUEST['assigned_group_id'];
+							$value = vtlib_purify($_REQUEST['assigned_group_id']);
 						}
 					} else {
 						if(is_array($_REQUEST[$fieldname]))
-							$value = $_REQUEST[$fieldname];
+							$value = vtlib_purify($_REQUEST[$fieldname]);
 						else
-							$value = trim($_REQUEST[$fieldname]);
+							$value = trim(vtlib_purify($_REQUEST[$fieldname]));
 					}
 					$focus->column_fields[$fieldname] = $value;
 				}

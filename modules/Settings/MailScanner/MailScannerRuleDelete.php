@@ -10,8 +10,8 @@
  ********************************************************************************/
 require_once('modules/Settings/MailScanner/core/MailScannerRule.php');
 
-$scannername = $_REQUEST['scannername'];
-$scannerruleid= $_REQUEST['ruleid'];
+$scannername = vtlib_purify($_REQUEST['scannername']);
+$scannerruleid= vtlib_purify($_REQUEST['ruleid']);
 $scannerrule = new Vtiger_MailScannerRule($scannerruleid);
 $scannerrule->delete();
 

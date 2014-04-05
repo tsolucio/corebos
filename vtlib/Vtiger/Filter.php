@@ -281,9 +281,9 @@ class Vtiger_Filter {
 				$cvids[] = $adb->query_result($cvidres, $index, 'cvid');
 			}
 			if(!empty($cvids)) {
-				$adb->query("DELETE FROM vtiger_cvadvfilter WHERE cvid  IN (" . implode(',', $cvids) . ")");
-				$adb->query("DELETE FROM vtiger_cvcolumnlist WHERE cvid IN (" . implode(',', $cvids) . ")");
-				$adb->query("DELETE FROM vtiger_customview WHERE cvid   IN (" . implode(',', $cvids) . ")");
+				$adb->pquery("DELETE FROM vtiger_cvadvfilter WHERE cvid  IN (" . implode(',', $cvids) . ")", array());
+				$adb->pquery("DELETE FROM vtiger_cvcolumnlist WHERE cvid IN (" . implode(',', $cvids) . ")", array());
+				$adb->pquery("DELETE FROM vtiger_customview WHERE cvid   IN (" . implode(',', $cvids) . ")", array());
 			}
 		}
 	}

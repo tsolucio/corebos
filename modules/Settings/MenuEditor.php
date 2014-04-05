@@ -10,9 +10,9 @@
 include_once('vtlib/Vtiger/Utils.php');
 require_once('include/utils/CommonUtils.php');
 require_once('Smarty_setup.php');
-$module_disable = $_REQUEST['module_disable'];
-$module_name = $_REQUEST['module_name'];
-$module_enable = $_REQUEST['module_enable'];
+$module_disable = vtlib_purify($_REQUEST['module_disable']);
+$module_name = vtlib_purify($_REQUEST['module_name']);
+$module_enable = vtlib_purify($_REQUEST['module_enable']);
 global $mod_strings,$app_strings,$theme;
 global $log;
 require_once('include/utils/CommonUtils.php');
@@ -23,7 +23,7 @@ $smarty->assign("ALLMENUS",getAllMenuModules());
 $smarty->assign("APP",$app_strings);
 $smarty->assign("THEME",$theme);
 $smarty->assign("ASSIGNED_VALUES",getTopMenuModules());
-if($_REQUEST['ajax'] == true) {
+if(vtlib_purify($_REQUEST['ajax']) == true) {
     $smarty->display("Settings/MenuEditorAssign.tpl");
 } else {
     $smarty->display('Settings/MenuEditor.tpl');

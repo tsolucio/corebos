@@ -149,7 +149,7 @@ class Vtiger_Utils {
 		$adb->dieOnError = false;
 
 		$tablename = Vtiger_Utils::SQLEscape($tablename);
-		$tablecheck = $adb->query("SELECT 1 FROM $tablename LIMIT 1");
+		$tablecheck = $adb->pquery("SELECT 1 FROM $tablename LIMIT 1", array());
 
 		$tablePresent = true;
 		if(empty($tablecheck))
@@ -183,7 +183,7 @@ class Vtiger_Utils {
 			}
 			$sql .= $suffixTableMeta;
 		}
-		$adb->query($sql);
+		$adb->pquery($sql, array());
 		$adb->dieOnError = $org_dieOnError;	
 	}
 
@@ -195,7 +195,7 @@ class Vtiger_Utils {
 	 */
 	static function AlterTable($tablename, $criteria) {
 		global $adb;
-		$adb->query("ALTER TABLE " . $tablename . $criteria);
+		$adb->pquery("ALTER TABLE " . $tablename . $criteria, array());
 	}
 
 	/**
@@ -221,7 +221,7 @@ class Vtiger_Utils {
 
 		if($supressdie) $adb->dieOnError = false;
 
-		$adb->query($sqlquery);
+		$adb->pquery($sqlquery, array());
 
 		$adb->dieOnError = $old_dieOnError;
 	}
@@ -233,7 +233,7 @@ class Vtiger_Utils {
 	static function CreateTableSql($tablename) {
 		global $adb;
 
-		$create_table = $adb->query("SHOW CREATE TABLE $tablename");
+		$create_table = $adb->pquery("SHOW CREATE TABLE $tablename", array());
 		$sql = decode_html($adb->query_result($create_table, 0, 1));
 		return $sql;
 	}

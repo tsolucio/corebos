@@ -22,7 +22,7 @@ $smarty = new vtigerCRM_Smarty;
 if(isset($_REQUEST['record']) && $_REQUEST['record']!='') 
 {
 //Added to show the previous selected value when editing
-	$id = $_REQUEST['record'];
+	$id = vtlib_purify($_REQUEST['record']);
 
 	$query='select vtiger_emailtemplates.templateid,vtiger_emailtemplates.templatename from vtiger_notificationscheduler inner join vtiger_emailtemplates on vtiger_emailtemplates.templateid=vtiger_notificationscheduler.notificationbody where schedulednotificationid=?';
 	$result = $adb->pquery($query, array($id));

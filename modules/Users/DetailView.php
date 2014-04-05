@@ -41,8 +41,8 @@ $focus = new Users();
 
 if(!empty($_REQUEST['record'])) 
 {
-	$focus->retrieve_entity_info($_REQUEST['record'],'Users');
-	$focus->id = $_REQUEST['record'];
+	$focus->retrieve_entity_info(vtlib_purify($_REQUEST['record']),'Users');
+	$focus->id = vtlib_purify($_REQUEST['record']);
 }
 else
 {
@@ -127,7 +127,7 @@ if(isset($focus->imagename) && $focus->imagename!='')
 
 if(isset($_REQUEST['modechk']) && $_REQUEST['modechk'] != '' )
 {
-	$modepref = $_REQUEST['modechk'];
+	$modepref = vtlib_purify($_REQUEST['modechk']);
 }
 	if($_REQUEST['modechk'] == 'prefview')
 		$parenttab = '';

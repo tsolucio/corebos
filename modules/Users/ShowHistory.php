@@ -37,7 +37,7 @@ $smarty = new vtigerCRM_Smarty;
 
 $category = getParenttab();
 
-$userid = $_REQUEST['record'];
+$userid = vtlib_purify($_REQUEST['record']);
 $username = getUserName($userid);
 $qry = "Select * from vtiger_loginhistory where user_name= ?";
 $qry_result = $adb->pquery($qry, array($username));

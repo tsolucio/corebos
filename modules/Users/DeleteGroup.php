@@ -11,17 +11,17 @@
 require_once('include/utils/UserInfoUtil.php');
 
 global $adb;
-$del_id =  $_REQUEST['delete_group_id'];
-$transfer_group_id = $_REQUEST['transfer_group_id'];
-$assignType = $_REQUEST['assigntype'];
+$del_id = vtlib_purify($_REQUEST['delete_group_id']);
+$transfer_group_id = vtlib_purify($_REQUEST['transfer_group_id']);
+$assignType = vtlib_purify($_REQUEST['assigntype']);
 
 if($assignType == 'T')
 {
-	$transferId = $_REQUEST['transfer_group_id'];
+	$transferId = vtlib_purify($_REQUEST['transfer_group_id']);
 }
 elseif($assignType == 'U')
 {
-	$transferId = $_REQUEST['transfer_user_id'];
+	$transferId = vtlib_purify($_REQUEST['transfer_user_id']);
 }
 
 //Updating the user2 vtiger_role vtiger_table

@@ -23,7 +23,7 @@ $image_path=$theme_path."images/";
 $smarty = new vtigerCRM_Smarty;
 if(isset($_REQUEST['record']) && $_REQUEST['record']!='') 
 {
-    $id = $_REQUEST['record'];
+    $id = vtlib_purify($_REQUEST['record']);
 	$sql="select * from vtiger_inventorynotification where notificationid = ?";
 	$result = $adb->pquery($sql, array($id));
 	if($adb->num_rows($result) ==1);

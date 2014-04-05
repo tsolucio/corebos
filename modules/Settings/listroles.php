@@ -163,7 +163,7 @@ $smarty->assign("MOD", return_module_language($current_language,'Settings'));
 $smarty->assign("CMOD", $mod_strings);
 $smarty->assign("ROLETREE", $roleout);
 
-if($_REQUEST['ajax'] == 'true')
+if(vtlib_purify($_REQUEST['ajax']) == 'true')
 {
 	$smarty->display("RoleTree.tpl");
 }

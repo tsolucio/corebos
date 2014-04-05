@@ -73,9 +73,9 @@ $theme_path="themes/".$theme."/";
 <BODY marginheight="0" marginwidth="0" leftmargin="0" rightmargin="0" bottommargin="0" topmargin="0">
 <FORM METHOD="post" onsubmit="VtigerJS_DialogBox.block();" action="index.php?module=uploads&action=add2db&return_module=<?php echo vtlib_purify($_REQUEST['return_module'])?>" enctype="multipart/form-data" style="margin:0px;">
 <?php
-	$ret_module = ($_REQUEST['return_module'] != "")?vtlib_purify($_REQUEST['return_module']):$_SESSION['return_mod'];
-	$ret_action = ($_REQUEST['return_action'] != "")?vtlib_purify($_REQUEST['return_action']):$_SESSION['return_act'];
-	$ret_id = ($_REQUEST['return_id'] != "")?vtlib_purify($_REQUEST['return_id']):$_SESSION['returnid'];
+	$ret_module = (vtlib_purify($_REQUEST['return_module']) != "")?vtlib_purify($_REQUEST['return_module']):$_SESSION['return_mod'];
+	$ret_action = (vtlib_purify($_REQUEST['return_action']) != "")?vtlib_purify($_REQUEST['return_action']):$_SESSION['return_act'];
+	$ret_id = (vtlib_purify($_REQUEST['return_id']) != "")?vtlib_purify($_REQUEST['return_id']):$_SESSION['returnid'];
 
 	$_SESSION['return_act'] = $ret_action;	
 	$_SESSION['return_mod'] = $ret_module;	

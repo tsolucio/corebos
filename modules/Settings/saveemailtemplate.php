@@ -12,10 +12,10 @@ require_once('include/utils/utils.php');
 global $log;
 $db = PearDatabase::getInstance();
 $folderName = vtlib_purify($_REQUEST["foldername"]);
-$templateName = from_html($_REQUEST["templatename"]);
+$templateName = vtlib_purify($_REQUEST["templatename"]);
 $templateid = vtlib_purify($_REQUEST["templateid"]);
-$description = from_html($_REQUEST["description"]);
-$subject = from_html($_REQUEST["subject"]);
+$description = vtlib_purify($_REQUEST["description"]);
+$subject = vtlib_purify($_REQUEST["subject"]);
 $body = fck_from_html($_REQUEST["body"]);
 
 if(isset($templateid) && $templateid !='')

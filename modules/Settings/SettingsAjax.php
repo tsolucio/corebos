@@ -9,10 +9,11 @@
  ********************************************************************************/
 
 if(isset($_REQUEST['file']) && ($_REQUEST['file'] !='')) {
-	checkFileAccessForInclusion('modules/Settings/'.$_REQUEST['file'].'.php');
-	require_once('modules/Settings/'.$_REQUEST['file'].'.php');
+	checkFileAccessForInclusion('modules/Settings/'.vtlib_purify($_REQUEST['file']).'.php');
+	require_once('modules/Settings/'.vtlib_purify($_REQUEST['file']).'.php');
 }
 if(isset($_REQUEST['orgajax']) && ($_REQUEST['orgajax'] !='')) {
+	checkFileAccessForInclusion('modules/Settings/CreateSharingRule.php');
 	require_once('modules/Settings/CreateSharingRule.php');
 } elseif(isset($_REQUEST['announce_save']) && ($_REQUEST['announce_save'] != '')) {
 	$date_var = date('Y-m-d H:i:s');

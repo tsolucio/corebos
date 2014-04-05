@@ -13,14 +13,14 @@ global $adb, $mod_strings;
 
 $groupName = from_html(trim($_REQUEST['groupName']));
 $description = from_html($_REQUEST['description']);
-$mode = $_REQUEST['mode'];
+$mode = vtlib_purify($_REQUEST['mode']);
 
 if(isset($_REQUEST['dup_check']) && $_REQUEST['dup_check']!='') {
 	if($mode != 'edit') {
 		$query = 'select groupname from vtiger_groups where groupname=?';
 		$params = array($groupName);
 	} else {
-		$groupid = $_REQUEST['groupid'];
+		$groupid = vtlib_purify($_REQUEST['groupid']);
 		$query = 'select groupname from vtiger_groups  where groupname=? and groupid !=?';
 		$params = array($groupName, $groupid);
 	}
@@ -104,8 +104,8 @@ function constructGroupMemberArray($member_array)
 	//Inserting values into Role Table
 	if(isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'edit')
 	{
-		$groupId = $_REQUEST['groupId'];
-		$selected_col_string = 	$_REQUEST['selectedColumnsString'];
+		$groupId = vtlib_purify($_REQUEST['groupId']);
+		$selected_col_string = vtlib_purify($_REQUEST['selectedColumnsString']);
 		$member_array = explode(';',$selected_col_string);
 		$groupMemberArray=constructGroupMemberArray($member_array);
 		updateGroup($groupId,$groupName,$groupMemberArray,$description);
@@ -114,7 +114,7 @@ function constructGroupMemberArray($member_array)
 	}
 	elseif(isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'create')
 	{
-		$selected_col_string = 	$_REQUEST['selectedColumnsString'];
+		$selected_col_string = vtlib_purify($_REQUEST['selectedColumnsString']);
 		$member_array = explode(';',$selected_col_string);
 		$groupMemberArray=constructGroupMemberArray($member_array);
 		$groupId=createGroup($groupName,$groupMemberArray,$description);

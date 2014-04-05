@@ -10,8 +10,8 @@
 
 include_once('vtlib/Vtiger/Utils.php');
 
-if($_REQUEST['module_settings'] == 'true') {
-	$targetmodule = $_REQUEST['formodule'];
+if(vtlib_purify($_REQUEST['module_settings']) == 'true') {
+	$targetmodule = vtlib_purify($_REQUEST['formodule']);
 
 	$targetSettingPage = "modules/$targetmodule/Settings.php";
 	if(file_exists($targetSettingPage)) {
@@ -22,14 +22,14 @@ if($_REQUEST['module_settings'] == 'true') {
 else{
 	$modulemanager_uploaddir = 'test/vtlib';
 	
-	if($_REQUEST['module_import'] != '') {
+	if(vtlib_purify($_REQUEST['module_import']) != '') {
 		require_once('modules/Settings/ModuleManager/Import.php');
 		exit;
-	} else if($_REQUEST['module_update'] != '') {
+	} else if(vtlib_purify ($_REQUEST['module_update']) != '') {
 		require_once('modules/Settings/ModuleManager/Update.php');
 		exit;
-	} else if($_REQUEST['module_import_cancel'] == 'true') {
-		$uploadfile = $_REQUEST['module_import_file'];
+	} else if(vtlib_purify ($_REQUEST['module_import_cancel']) == 'true') {
+		$uploadfile = vtlib_purify($_REQUEST['module_import_file']);
 		$uploadfilename = "$modulemanager_uploaddir/$uploadfile";
 		checkFileAccess($uploadfilename);
 		if(file_exists($uploadfilename)) unlink($uploadfilename);
@@ -44,10 +44,10 @@ else{
 	$smarty->assign("THEME", $theme);
 	$smarty->assign("IMAGE_PATH", "themes/$theme/images/");
 	
-	$module_disable = $_REQUEST['module_disable'];
-	$module_name = $_REQUEST['module_name'];
-	$module_enable = $_REQUEST['module_enable'];
-	$module_type = $_REQUEST['module_type'];
+	$module_disable = vtlib_purify($_REQUEST['module_disable']);
+	$module_name = vtlib_purify($_REQUEST['module_name']);
+	$module_enable = vtlib_purify($_REQUEST['module_enable']);
+	$module_type = vtlib_purify($_REQUEST['module_type']);
 	
 	if($module_name != '') {
 		if($module_type == 'language') {

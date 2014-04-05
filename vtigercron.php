@@ -20,7 +20,7 @@ if(PHP_SAPI === "cli" || (isset($_SESSION["authenticated_user_id"]) &&	isset($_S
 $cronTasks = false;
 if (isset($_REQUEST['service'])) {
 	// Run specific service
-	$cronTasks = array(Vtiger_Cron::getInstance($_REQUEST['service']));
+	$cronTasks = array(Vtiger_Cron::getInstance(vtlib_purify($_REQUEST['service'])));
 }
 else {
 	// Run all service
@@ -46,7 +46,7 @@ foreach ($cronTasks as $cronTask) {
 		// Mark the status - running		
 		$cronTask->markRunning();
 		
-		checkFileAccess($cronTask->getHandlerFile());		
+		checkFileAccess($cronTask->getHandlerFile());
 		require_once $cronTask->getHandlerFile();
 		
 		// Mark the status - finished

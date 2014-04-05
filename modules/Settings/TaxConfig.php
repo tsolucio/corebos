@@ -26,8 +26,8 @@ $sh_tax_details = getAllTaxes('all','sh');
 if($_REQUEST['save_tax'] == 'true')
 {
 	for($i=0;$i<count($tax_details); $i++) {
-		$new_labels[$tax_details[$i]['taxid']] = $_REQUEST[bin2hex($tax_details[$i]['taxlabel'])];
-		$new_percentages[$tax_details[$i]['taxid']] = $_REQUEST[$tax_details[$i]['taxname']];
+		$new_labels[$tax_details[$i]['taxid']] = vtlib_purify($_REQUEST[bin2hex($tax_details[$i]['taxlabel'])]);
+		$new_percentages[$tax_details[$i]['taxid']] = vtlib_purify($_REQUEST[$tax_details[$i]['taxname']]);
 	}
 	updateTaxPercentages($new_percentages);
 	echo updateTaxLabels($new_labels);
@@ -38,8 +38,8 @@ elseif($_REQUEST['sh_save_tax'] == 'true')
  
 	for($i=0;$i<count($sh_tax_details);$i++)
 	{
-	  $new_labels[$sh_tax_details[$i]['taxid']] = $_REQUEST[bin2hex($sh_tax_details[$i]['taxlabel'])];
-		$new_percentages[$sh_tax_details[$i]['taxid']] = $_REQUEST[$sh_tax_details[$i]['taxname']];
+	  $new_labels[$sh_tax_details[$i]['taxid']] = vtlib_purify($_REQUEST[bin2hex($sh_tax_details[$i]['taxlabel'])]);
+		$new_percentages[$sh_tax_details[$i]['taxid']] = vtlib_purify($_REQUEST[$sh_tax_details[$i]['taxname']]);
 	}
 	
 	updateTaxPercentages($new_percentages,'sh');
@@ -61,7 +61,7 @@ elseif($_REQUEST['sh_edit_tax'] == 'true')
 if($_REQUEST['add_tax_type'] == 'true')
 {
 	//Add the given tax name and value as a new tax type
-	echo addTaxType($_REQUEST['addTaxLabel'],$_REQUEST['addTaxValue']);
+	echo addTaxType(vtlib_purify($_REQUEST['addTaxLabel']),  vtlib_purify($_REQUEST['addTaxValue']));
 	$getlist = true;
 }
 elseif($_REQUEST['sh_add_tax_type'] == 'true')
@@ -74,17 +74,17 @@ elseif($_REQUEST['sh_add_tax_type'] == 'true')
 if(($_REQUEST['disable'] == 'true' || $_REQUEST['enable'] == 'true') && $_REQUEST['taxname'] != '')
 {
 	if($_REQUEST['disable'] == 'true')
-		changeDeleted($_REQUEST['taxname'],1);
+		changeDeleted(vtlib_purify ($_REQUEST['taxname']),1);
 	else
-		changeDeleted($_REQUEST['taxname'],0);
+		changeDeleted(vtlib_purify ($_REQUEST['taxname']),0);
 	$getlist = true;
 }
 elseif(($_REQUEST['sh_disable'] == 'true' || $_REQUEST['sh_enable'] == 'true') && $_REQUEST['sh_taxname'] != '')
 {
 	if($_REQUEST['sh_disable'] == 'true')
-		changeDeleted($_REQUEST['sh_taxname'],1,'sh');
+		changeDeleted(vtlib_purify ($_REQUEST['sh_taxname']),1,'sh');
 	else
-		changeDeleted($_REQUEST['sh_taxname'],0,'sh');
+		changeDeleted(vtlib_purify ($_REQUEST['sh_taxname']),0,'sh');
 	$getlist = true;
 }
 

@@ -14,7 +14,7 @@ require_once('modules/Webmails/MailBox.php');
 
 if(isset($_REQUEST["mailbox"]) && $_REQUEST["mailbox"] != "")
 {
-	        $mailbox=$_REQUEST["mailbox"];
+	        $mailbox= vtlib_purify($_REQUEST["mailbox"]);
 }
 else
 {
@@ -25,11 +25,11 @@ $mail = $MailBox->mbox;
 
 if(!isset($HTTP_USER_AGENT))
 	$HTTP_USER_AGENT = $_SERVER['HTTP_USER_AGENT'];
-$mailid = $_REQUEST['mailid'];
-$mime = $_REQUEST['mime'];
-$filename = $_REQUEST['filename'];
-$transfer = $_REQUEST['transfer'];
-$part = $_REQUEST['part'];
+$mailid = vtlib_purify($_REQUEST['mailid']);
+$mime = vtlib_purify($_REQUEST['mime']);
+$filename = vtlib_purify($_REQUEST['filename']);
+$transfer = vtlib_purify($_REQUEST['transfer']);
+$part = vtlib_purify($_REQUEST['part']);
 $filename = base64_decode($filename);
 $filename = preg_replace('/[\\/:\*\?"<>\|;]/', '_', str_replace('&#32;', ' ', $filename));
 $isIE = $isIE6 = 0;

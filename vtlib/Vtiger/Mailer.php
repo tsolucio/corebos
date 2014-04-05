@@ -214,7 +214,7 @@ class Vtiger_Mailer extends PHPMailer {
 		if(!Vtiger_Utils::CheckTable('vtiger_mailer_queue')) return;
 
 		$mailer = new self();
-		$queue = $adb->query('SELECT * FROM vtiger_mailer_queue WHERE failed != 1');
+		$queue = $adb->pquery('SELECT * FROM vtiger_mailer_queue WHERE failed != ?', array(1));
 		if($adb->num_rows($queue)) {
 			for($index = 0; $index < $adb->num_rows($queue); ++$index) {
 				$mailer->reinitialize();

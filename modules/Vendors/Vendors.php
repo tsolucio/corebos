@@ -93,6 +93,7 @@ class Vendors extends CRMEntity {
 		$this_module = $currentModule;
 
         $related_module = vtlib_getModuleNameById($rel_tab_id);
+		checkFileAccessForInclusion("modules/$related_module/$related_module.php");
 		require_once("modules/$related_module/$related_module.php");
 		$other = new $related_module();
         vtlib_setup_modulevars($related_module, $other);
@@ -150,6 +151,7 @@ class Vendors extends CRMEntity {
 		$this_module = $currentModule;
 
         $related_module = vtlib_getModuleNameById($rel_tab_id);
+		checkFileAccessForInclusion("modules/$related_module/$related_module.php");
 		require_once("modules/$related_module/$related_module.php");
 		$other = new $related_module();
         vtlib_setup_modulevars($related_module, $other);
@@ -238,6 +240,7 @@ class Vendors extends CRMEntity {
 		$this_module = $currentModule;
 
         $related_module = vtlib_getModuleNameById($rel_tab_id);
+		checkFileAccessForInclusion("modules/$related_module/$related_module.php");
 		require_once("modules/$related_module/$related_module.php");
 		$other = new $related_module();
         vtlib_setup_modulevars($related_module, $other);
@@ -325,6 +328,7 @@ class Vendors extends CRMEntity {
 		$this_module = $currentModule;
 
         $related_module = vtlib_getModuleNameById($rel_tab_id);
+		checkFileAccessForInclusion("modules/$related_module/$related_module.php");
 		require_once("modules/$related_module/$related_module.php");
 		$other = new $related_module();
         vtlib_setup_modulevars($related_module, $other);

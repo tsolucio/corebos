@@ -15,10 +15,10 @@ require_once('include/database/PearDatabase.php');
 global $adb;
 global $fileId, $default_charset, $app_strings;
 
-$attachmentsid = $_REQUEST['fileid'];
-$entityid = $_REQUEST['entityid'];
+$attachmentsid = vtlib_purify($_REQUEST['fileid']);
+$entityid = vtlib_purify($_REQUEST['entityid']);
 
-$returnmodule=$_REQUEST['return_module'];
+$returnmodule= vtlib_purify($_REQUEST['return_module']);
 
 $deletecheck = false;
 if(!empty($entityid)) $deletecheck = $adb->pquery("SELECT deleted FROM vtiger_crmentity WHERE crmid=?", array($entityid));

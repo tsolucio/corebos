@@ -3785,15 +3785,15 @@ function getListViewDeleteLink($module, $entity_id, $relatedlist, $returnset) {
 	$del_link .= "&parenttab=" . $tabname . "&return_viewname=" . $viewname . $url;
 
 	// vtlib customization: override default delete link for custom modules
-	$requestModule = vtlib_purify($_REQUEST['module']);
-	$requestRecord = vtlib_purify($_REQUEST['record']);
+	$requestModule = $current_module;
 	$requestAction = vtlib_purify($_REQUEST['action']);
-	$parenttab = vtlib_purify($_REQUEST['parenttab']);
 	$isCustomModule = vtlib_isCustomModule($requestModule);
 	if ($requestAction == $requestModule . "Ajax") {
 		$requestAction = vtlib_purify($_REQUEST['file']);
 	}
 	if ($isCustomModule && !in_array($requestAction, Array('index', 'ListView'))) {
+		$requestRecord = vtlib_purify($_REQUEST['record']);
+		$parenttab = vtlib_purify($_REQUEST['parenttab']);
 		$del_link = "index.php?module=$requestModule&action=updateRelations&parentid=$requestRecord";
 		$del_link .= "&destination_module=$module&idlist=$entity_id&mode=delete&parenttab=$parenttab";
 	}

@@ -231,7 +231,7 @@ function getParentMailId($returnmodule,$parentid)
         if($returnmodule == 'Contacts' || $returnmodule == 'HelpDesk')
         {
 		if($returnmodule == 'HelpDesk')
-			$parentid = $_REQUEST['contact_id'];
+			$parentid = vtlib_purify ($_REQUEST['contact_id']);
                 $tablename = 'vtiger_contactdetails';
                 $idname = 'contactid';
         }

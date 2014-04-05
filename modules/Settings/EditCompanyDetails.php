@@ -17,7 +17,7 @@ $smarty = new vtigerCRM_Smarty;
 //error handling
 if(isset($_REQUEST['flag']) && $_REQUEST['flag'] != '')
 {
-	$flag = $_REQUEST['flag'];
+	$flag = vtlib_purify($_REQUEST['flag']);
 	switch($flag)
 	{
 		case 1:

@@ -7,9 +7,11 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
+global $mod_strings,$adb,$root_directory;
 
+checkFileAccessForInclusion($root_directory."include/database/PearDatabase.php");
 require_once($root_directory."include/database/PearDatabase.php");
-global $mod_strings,$adb;
+
 $server=vtlib_purify($_REQUEST['server']);
 $port=vtlib_purify($_REQUEST['port']);
 $server_username=vtlib_purify($_REQUEST['server_username']);

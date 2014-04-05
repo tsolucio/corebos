@@ -10,10 +10,11 @@
  ********************************************************************************/
 include_once 'modules/Invoice/InvoicePDFController.php';
 
+$currentModule = vtlib_purify($_REQUEST['module']);
 $controller = new Vtiger_InvoicePDFController($currentModule);
 $controller->loadRecord(vtlib_purify($_REQUEST['record']));
 
-$filenameid = $_REQUEST['record'];
+$filenameid = vtlib_purify($_REQUEST['record']);
 $invoice_no = getModuleSequenceNumber($currentModule,vtlib_purify($_REQUEST['record']));
 if(empty($filenameid)) $filenameid = time();
 $filepath="storage/Invoice_".$invoice_no.".pdf";

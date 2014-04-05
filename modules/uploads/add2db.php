@@ -15,11 +15,11 @@ global $current_user, $upload_badext;
 $vtigerpath = $_SERVER['REQUEST_URI'];
 $vtigerpath = str_replace("/index.php?module=uploads&action=add2db", "", $vtigerpath);
 
-$crmid = $_REQUEST['return_id'];
+$crmid = vtlib_purify($_REQUEST['return_id']);
 $log->debug("DEBUG In add2db.php");
 
 	if(isset($_REQUEST['filename_hidden'])) {
-		$file = $_REQUEST['filename_hidden'];
+		$file = vtlib_purify($_REQUEST['filename_hidden']);
 	} else {
 		$file = $_FILES['filename']['name'];
 	}
@@ -39,13 +39,13 @@ $log->debug("DEBUG In add2db.php");
 
 		if($filesize != 0)	
 		{
-			$desc = $_REQUEST['txtDescription'];
-			$subject = $_REQUEST['uploadsubject'];
+			$desc = vtlib_purify($_REQUEST['txtDescription']);
+			$subject = vtlib_purify($_REQUEST['uploadsubject']);
 			$date_var = $adb->formatDate(date('Y-m-d H:i:s'), true);	
 			$current_date = getdate();
 			$current_date = $adb->formatDate(date('Y-m-d H:i:s'), true);	
 			$query = "insert into vtiger_crmentity (crmid,smcreatorid,smownerid,setype,description,createdtime,modifiedtime) values(?,?,?,?,?,?,?)";
-			$params = array($current_id, $current_user->id, $current_user->id, $_REQUEST['return_module'].' Attachment', $desc, $date_var, $current_date);	
+			$params = array($current_id, $current_user->id, $current_user->id, vtlib_purify($_REQUEST['return_module']).' Attachment', $desc, $date_var, $current_date);	
 			$result = $adb->pquery($query, $params);
 
 			# Added by DG 26 Oct 2005
@@ -53,7 +53,7 @@ $log->debug("DEBUG In add2db.php");
 			$log->debug("DEBUG return_module: ".$_REQUEST['return_module']);
 			if ($_REQUEST['return_module'] == 'Contacts')
 			{
-				$crmid = $_REQUEST['return_id'];
+				$crmid = vtlib_purify($_REQUEST['return_id']);
 				$query = 'select accountid from vtiger_contactdetails where contactid=?';
 				$result = $adb->pquery($query, array($crmid));
 				if($adb->num_rows($result) != 0)

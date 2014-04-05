@@ -120,7 +120,7 @@ if(isset($_REQUEST["duplicate"]) && $_REQUEST["duplicate"] == "yes")
 	$fieldlength=vtlib_purify($_REQUEST["fldlength"]);
 	$decimalvalue=vtlib_purify($_REQUEST["flddecimal"]);
 	$fldVal = vtlib_purify($_REQUEST["fldPickList"]);
-	$selectedvalue = $typeVal[$_REQUEST["fldType"]];
+	$selectedvalue = $typeVal[vtlib_purify($_REQUEST["fldType"])];
 }
 elseif($fieldid == '')
 {

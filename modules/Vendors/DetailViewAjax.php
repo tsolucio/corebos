@@ -19,10 +19,10 @@ $modObj = CRMEntity::getInstance($currentModule);
 $ajaxaction = $_REQUEST["ajxaction"];
 if($ajaxaction == "DETAILVIEW")
 {
-	$crmid = $_REQUEST["recordid"];
-	$tablename = $_REQUEST["tableName"];
-	$fieldname = $_REQUEST["fldName"];
-	$fieldvalue = utf8RawUrlDecode($_REQUEST["fieldValue"]); 
+	$crmid = vtlib_purify($_REQUEST["recordid"]);
+	$tablename = vtlib_purify($_REQUEST["tableName"]);
+	$fieldname = vtlib_purify($_REQUEST["fldName"]);
+	$fieldvalue = utf8RawUrlDecode(vtlib_purify($_REQUEST["fieldValue"])); 
 	if($crmid != "")
 	{
 		$modObj->retrieve_entity_info($crmid,"Vendors");

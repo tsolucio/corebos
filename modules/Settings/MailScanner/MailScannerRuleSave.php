@@ -15,25 +15,25 @@ require_once('Smarty_setup.php');
 
 global $app_strings, $mod_strings, $currentModule, $theme, $current_language;
 
-$scannername = $_REQUEST['scannername'];
-$scannerruleid= $_REQUEST['ruleid'];
-$scanneractionid=$_REQUEST['actionid'];
+$scannername = vtlib_purify($_REQUEST['scannername']);
+$scannerruleid= vtlib_purify($_REQUEST['ruleid']);
+$scanneractionid= vtlib_purify($_REQUEST['actionid']);
 
 $scannerinfo = new Vtiger_MailScannerInfo($scannername);
 $scannerrule = new Vtiger_MailScannerRule($scannerruleid);
 
 $scannerrule->scannerid   = $scannerinfo->scannerid;
-$scannerrule->fromaddress = $_REQUEST['rule_from'];
-$scannerrule->toaddress = $_REQUEST['rule_to'];
-$scannerrule->subjectop = $_REQUEST['rule_subjectop'];
-$scannerrule->subject   = $_REQUEST['rule_subject'];
-$scannerrule->bodyop    = $_REQUEST['rule_bodyop'];
-$scannerrule->body      = $_REQUEST['rule_body'];
-$scannerrule->matchusing= $_REQUEST['rule_matchusing'];
+$scannerrule->fromaddress = vtlib_purify($_REQUEST['rule_from']);
+$scannerrule->toaddress = vtlib_purify($_REQUEST['rule_to']);
+$scannerrule->subjectop = vtlib_purify($_REQUEST['rule_subjectop']);
+$scannerrule->subject   = vtlib_purify($_REQUEST['rule_subject']);
+$scannerrule->bodyop    = vtlib_purify($_REQUEST['rule_bodyop']);
+$scannerrule->body      = vtlib_purify($_REQUEST['rule_body']);
+$scannerrule->matchusing= vtlib_purify($_REQUEST['rule_matchusing']);
 
 $scannerrule->update();
 
-$scannerrule->updateAction($scanneractionid, $_REQUEST['rule_actiontext']);
+$scannerrule->updateAction($scanneractionid, vtlib_purify($_REQUEST['rule_actiontext']));
 
 include('modules/Settings/MailScanner/MailScannerRule.php');
 

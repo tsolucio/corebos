@@ -9,7 +9,7 @@
  ********************************************************************************/
 require_once('include/utils/UserInfoUtil.php');
 global $adb;
-$shareid =  $_REQUEST['shareid'];
+$shareid = vtlib_purify($_REQUEST['shareid']);
 deleteSharingRule($shareid);
 
 header("Location: index.php?module=Settings&action=OrgSharingDetailView&parenttab=Settings");

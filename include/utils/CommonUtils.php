@@ -2842,6 +2842,36 @@ function checkFileAccessForInclusion($filepath) {
 	}
 }
 
+/** Function to check the file deletion within the deletable (safe) directories*/
+function checkFileAccessForDeletion($filepath) {
+	global $root_directory;
+	// Set the base directory to compare with
+	$use_root_directory = $root_directory;
+	if (empty($use_root_directory)) {
+		$use_root_directory = realpath(dirname(__FILE__) . '/../../.');
+	}
+
+	$safeDirectories = array('storage', 'cache', 'test');
+
+	$realfilepath = realpath($filepath);
+
+	/** Replace all \\ with \ first */
+	$realfilepath = str_replace('\\\\', '\\', $realfilepath);
+	$rootdirpath = str_replace('\\\\', '\\', $use_root_directory);
+
+	/** Replace all \ with / now */
+	$realfilepath = str_replace('\\', '/', $realfilepath);
+	$rootdirpath = str_replace('\\', '/', $rootdirpath);
+
+	$relativeFilePath = str_replace($rootdirpath, '', $realfilepath);
+	$filePathParts = explode('/', $relativeFilePath);
+
+	if (stripos($realfilepath, $rootdirpath) !== 0 || !in_array($filePathParts[0], $safeDirectories)) {
+		die("Sorry! Attempt to access restricted file.");
+	}
+	
+}
+
 /** Function to check the file access is made within web root directory. */
 function checkFileAccess($filepath) {
 	if (!isFileAccessible($filepath)) {

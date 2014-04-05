@@ -27,7 +27,7 @@ $smarty = new vtigerCRM_Smarty;
 //echo '<pre>';print_r($_REQUEST);echo '</pre>';
 if(isset($_REQUEST['flag']) && $_REQUEST['flag'] != '')
 {
-	$flag = $_REQUEST['flag'];
+	$flag = vtlib_purify($_REQUEST['flag']);
 	switch($flag)
 	{
 		case 1:
@@ -42,7 +42,7 @@ if(isset($_REQUEST['flag']) && $_REQUEST['flag'] != '')
 	}		
 }
 
-$tempModule=$_REQUEST['tempModule'];
+$tempModule= vtlib_purify($_REQUEST['tempModule']);
 $smarty->assign("MOD", return_module_language($current_language,'Settings'));
 $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH",$image_path);

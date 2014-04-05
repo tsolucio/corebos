@@ -661,6 +661,7 @@ class Users extends CRMEntity {
      */
 
     function retrieveCurrentUserInfoFromFile($userid) {
+		checkFileAccessForInclusion('user_privileges/user_privileges_'.$userid.'.php');
         require('user_privileges/user_privileges_'.$userid.'.php');
         foreach($this->column_fields as $field=>$value_iter) {
             if(isset($user_info[$field])) {
@@ -1212,7 +1213,7 @@ class Users extends CRMEntity {
         $tc = $adb->getUniqueID("vtiger_homestuff");
         $visibility=0;
         $sql="insert into vtiger_homestuff values($tc, 15, 'Tag Cloud', $uid, $visibility, 'Tag Cloud')";
-        $adb->query($sql);
+        $adb->pquery($sql, array());
 
         // Customization
         global $VtigerOndemandConfig;
@@ -1232,46 +1233,46 @@ class Users extends CRMEntity {
 
 
         $sql="insert into vtiger_homedefault values(".$s1.",'ALVT',5,'Accounts')";
-        $adb->query($sql);
+        $adb->pquery($sql, array());
 
         $sql="insert into vtiger_homedefault values(".$s2.",'HDB',5,'Dashboard')";
-        $adb->query($sql);
+        $adb->pquery($sql, array());
 
         $sql="insert into vtiger_homedefault values(".$s3.",'PLVT',5,'Potentials')";
-        $adb->query($sql);
+        $adb->pquery($sql, array());
 
         $sql="insert into vtiger_homedefault values(".$s4.",'QLTQ',5,'Quotes')";
-        $adb->query($sql);
+        $adb->pquery($sql, array());
 
         $sql="insert into vtiger_homedefault values(".$s5.",'CVLVT',5,'NULL')";
-        $adb->query($sql);
+        $adb->pquery($sql, array());
 
         $sql="insert into vtiger_homedefault values(".$s6.",'HLT',5,'HelpDesk')";
-        $adb->query($sql);
+        $adb->pquery($sql, array());
 
         $sql="insert into vtiger_homedefault values(".$s7.",'UA',5,'Calendar')";
         $adb->pquery($sql,array());
 
         $sql="insert into vtiger_homedefault values(".$s8.",'GRT',5,'NULL')";
-        $adb->query($sql);
+        $adb->pquery($sql, array());
 
         $sql="insert into vtiger_homedefault values(".$s9.",'OLTSO',5,'SalesOrder')";
-        $adb->query($sql);
+        $adb->pquery($sql, array());
 
         $sql="insert into vtiger_homedefault values(".$s10.",'ILTI',5,'Invoice')";
-        $adb->query($sql);
+        $adb->pquery($sql, array());
 
         $sql="insert into vtiger_homedefault values(".$s11.",'MNL',5,'Leads')";
-        $adb->query($sql);
+        $adb->pquery($sql, array());
 
         $sql="insert into vtiger_homedefault values(".$s12.",'OLTPO',5,'PurchaseOrder')";
-        $adb->query($sql);
+        $adb->pquery($sql, array());
 
         $sql="insert into vtiger_homedefault values(".$s13.",'PA',5,'Calendar')";
         $adb->pquery($sql,array());
 
         $sql="insert into vtiger_homedefault values(".$s14.",'LTFAQ',5,'Faq')";
-        $adb->query($sql);
+        $adb->pquery($sql, array());
 
     }
 
@@ -1291,12 +1292,12 @@ class Users extends CRMEntity {
 				 {
                     $save_array[] = $this->homeorder_array[$i];
                     $qry=" update vtiger_homestuff,vtiger_homedefault set vtiger_homestuff.visible=0 where vtiger_homestuff.stuffid=vtiger_homedefault.stuffid and vtiger_homestuff.userid=".$id." and vtiger_homedefault.hometype='".$this->homeorder_array[$i]."'";//To show the default Homestuff on the the Home Page
-                    $result=$adb->query($qry);
+                    $result=$adb->pquery($qry, array());
                 }
 				 else
 				 {
                     $qry="update vtiger_homestuff,vtiger_homedefault set vtiger_homestuff.visible=1 where vtiger_homestuff.stuffid=vtiger_homedefault.stuffid and vtiger_homestuff.userid=".$id." and vtiger_homedefault.hometype='".$this->homeorder_array[$i]."'";//To hide the default Homestuff on the the Home Page
-                    $result=$adb->query($qry);
+                    $result=$adb->pquery($qry, array());
                 }
             }
             if($save_array !="")

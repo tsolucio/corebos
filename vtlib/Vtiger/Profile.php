@@ -63,7 +63,7 @@ class Vtiger_Profile {
 	static function getAllIds() {
 		global $adb;
 		$profileids = Array();
-		$result = $adb->query('SELECT profileid FROM vtiger_profile');
+		$result = $adb->pquery('SELECT profileid FROM vtiger_profile', array());
 		for($index = 0; $index < $adb->num_rows($result); ++$index) {
 			$profileids[] = $adb->query_result($result, $index, 'profileid');
 		}
@@ -79,8 +79,8 @@ class Vtiger_Profile {
 		global $adb;
 
 		$actionids = Array();
-		$result = $adb->query("SELECT actionid from vtiger_actionmapping WHERE actionname IN 
-			('Save','EditView','Delete','index','DetailView')");
+		$result = $adb->pquery("SELECT actionid from vtiger_actionmapping WHERE actionname IN 
+			(?,?,?,?,?)", array('Save','EditView','Delete','index','DetailView'));
 		/* 
 		 * NOTE: Other actionname (actionid >= 5) is considered as utility (tools) for a profile.
 		 * Gather all the actionid for associating to profile.

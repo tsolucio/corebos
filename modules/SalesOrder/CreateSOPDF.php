@@ -10,6 +10,7 @@
  ********************************************************************************/
 include_once 'modules/SalesOrder/SalesOrderPDFController.php';
 
+$currentModule = vtlib_purify($_REQUEST['module']);
 $controller = new Vtiger_SalesOrderPDFController($currentModule);
 $controller->loadRecord(vtlib_purify($_REQUEST['record']));
 $salesorder_no = getModuleSequenceNumber($currentModule,vtlib_purify($_REQUEST['record']));

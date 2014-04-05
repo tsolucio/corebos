@@ -10,8 +10,8 @@
 
 require_once('include/utils/utils.php');
 
-$idlist= $_REQUEST['idlist'];
-$leadstatusval = $_REQUEST['leadval'];
+$idlist= vtlib_purify($_REQUEST['idlist']);
+$leadstatusval = vtlib_purify($_REQUEST['leadval']);
 $viewid = vtlib_purify($_REQUEST['viewname']);
 $return_module = vtlib_purify($_REQUEST['return_module']);
 $return_action = vtlib_purify($_REQUEST['return_action']);
@@ -37,7 +37,7 @@ if(isset($_REQUEST['owner_id']) && $_REQUEST['owner_id']!='')
 	{
 		if(isPermitted($return_module,'EditView',$id) == 'yes')
 		{
-			$idval = $_REQUEST['owner_id'];
+			$idval = vtlib_purify($_REQUEST['owner_id']);
 			//Inserting changed owner information to salesmanactivityrel table
 			if($return_module == "Calendar"){
 				$del_act = "delete from vtiger_salesmanactivityrel where smid=(select smownerid from vtiger_crmentity where crmid=?) and activityid=?";

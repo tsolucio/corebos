@@ -22,7 +22,7 @@ $smarty->assign("SEARCH", $searchurl);
 
 if(isset($_REQUEST['record']) && $_REQUEST['record'] != '')
 {
-	$focus->id = $_REQUEST['record'];
+	$focus->id = vtlib_purify($_REQUEST['record']);
 	$focus->mode = 'edit';
 	$focus->retrieve_entity_info($_REQUEST['record'],"Vendors");
 	$focus->name = $focus->column_fields['vendorname'];

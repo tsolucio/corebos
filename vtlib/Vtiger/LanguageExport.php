@@ -110,8 +110,8 @@ class Vtiger_LanguageExport extends Vtiger_Package {
 		$languageinfo = Array();
 
 		if($hastable) {
-			if($includeInActive) $result = $adb->query('SELECT * FROM '.self::TABLENAME);
-			else $result = $adb->query('SELECT * FROM '.self::TABLENAME . ' WHERE active=1');
+			if($includeInActive) $result = $adb->pquery('SELECT * FROM '.self::TABLENAME, array());
+			else $result = $adb->pquery('SELECT * FROM '.self::TABLENAME . ' WHERE active=?', array(1));
 
 			for($index = 0; $index < $adb->num_rows($result); ++$index) {
 				$resultrow = $adb->fetch_array($result);

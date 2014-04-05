@@ -16,7 +16,7 @@ $focus = CRMEntity::getInstance($currentModule);
 
 if(isset($_REQUEST['record']) && isset($_REQUEST['record'])) 
 {
-	$focus->retrieve_entity_info($_REQUEST['record'],"Vendors");
+	$focus->retrieve_entity_info(vtlib_purify($_REQUEST['record']),"Vendors");
 	$focus->id = $_REQUEST['record'];
 	$focus->name = $focus->column_fields['vendorname'];
 }
@@ -78,7 +78,7 @@ $data = split_validationdataArray($validationData);
 $smarty->assign("VALIDATION_DATA_FIELDNAME",$data['fieldname']);
 $smarty->assign("VALIDATION_DATA_FIELDDATATYPE",$data['datatype']);
 $smarty->assign("VALIDATION_DATA_FIELDLABEL",$data['fieldlabel']);
-$smarty->assign("EDIT_PERMISSION",isPermitted($currentModule,'EditView',$_REQUEST['record']));
+$smarty->assign("EDIT_PERMISSION",isPermitted($currentModule,'EditView', vtlib_purify($_REQUEST['record'])));
 
 $smarty->assign("IS_REL_LIST",isPresentRelatedLists($currentModule));
 

@@ -10,8 +10,8 @@
 
 require_once('include/database/PearDatabase.php');
 global $adb, $mod_strings;
-$rolename = $_REQUEST['roleName'];
-$mode = $_REQUEST['mode'];
+$rolename = vtlib_purify($_REQUEST['roleName']);
+$mode = vtlib_purify($_REQUEST['mode']);
 if(isset($_REQUEST['dup_check']) && $_REQUEST['dup_check']!='')
 {
 	if($mode != 'edit')
@@ -21,7 +21,7 @@ if(isset($_REQUEST['dup_check']) && $_REQUEST['dup_check']!='')
 	}
 	else
 	{
-		$roleid=$_REQUEST['roleid'];
+		$roleid= vtlib_purify($_REQUEST['roleid']);
 		$query = 'select rolename from vtiger_role where rolename=? and roleid !=?';
 		$params = array($rolename, $roleid);
 	}
@@ -37,11 +37,11 @@ if(isset($_REQUEST['dup_check']) && $_REQUEST['dup_check']!='')
 	}
 
 }
-$parentRoleId=$_REQUEST['parent'];
+$parentRoleId= vtlib_purify($_REQUEST['parent']);
 //Inserting values into Role Table
 if(isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'edit')
 {
-	$roleId = $_REQUEST['roleid'];
+	$roleId = vtlib_purify($_REQUEST['roleid']);
 	$selected_col_string = 	$_REQUEST['selectedColumnsString'];
 	$profile_array = explode(';',$selected_col_string);
 	updateRole($roleId,$rolename,$profile_array);
@@ -49,7 +49,7 @@ if(isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'edit')
 }
 elseif(isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'create')
 {
-	$selected_col_string = 	$_REQUEST['selectedColumnsString'];
+	$selected_col_string = vtlib_purify($_REQUEST['selectedColumnsString']);
 	$profile_array = explode(';',$selected_col_string);
 	//Inserting into vtiger_role Table
 	$roleId = createRole($rolename,$parentRoleId,$profile_array);

@@ -30,7 +30,7 @@ require_once('include/Zend/Json.php');
 function checkAsteriskDetails(){
 	global $adb,$current_user;
 	$sql = "select * from vtiger_asterisk";
-	$result = $adb->query($sql);
+	$result = $adb->pquery($sql, array());
 	$count = $adb->num_rows($result);
 	
 	if($count > 0){

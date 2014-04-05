@@ -9,7 +9,7 @@
   *
  ********************************************************************************/
 
-if(isset($_REQUEST['enable_ftp_backup']) && $_REQUEST['enable_ftp_backup'] != '')
+if(isset($_REQUEST['enable_ftp_backup']) && vtlib_purify($_REQUEST['enable_ftp_backup']) != '')
 {
 	global $root_directory;
 	$filename = $root_directory.'user_privileges/enable_backup.php';
@@ -44,7 +44,7 @@ if(isset($_REQUEST['enable_ftp_backup']) && $_REQUEST['enable_ftp_backup'] != ''
 	fputs($handle, $new_buffer);
 	fclose($handle);
 }
-elseif(isset($_REQUEST['GetBackupDetail']) && $_REQUEST['GetBackupDetail'] != '' && $_REQUEST['servertype'] == 'ftp_backup')
+elseif(isset($_REQUEST['GetBackupDetail']) && vtlib_purify ($_REQUEST['GetBackupDetail']) != '' && $_REQUEST['servertype'] == 'ftp_backup')
 {
 	require_once("include/database/PearDatabase.php");
 	global $mod_strings,$adb;
@@ -58,7 +58,7 @@ elseif(isset($_REQUEST['GetBackupDetail']) && $_REQUEST['GetBackupDetail'] != ''
 		echo "FAILURE";
 
 }
-if(isset($_REQUEST['enable_local_backup']) && $_REQUEST['enable_local_backup'] != '')
+if(isset($_REQUEST['enable_local_backup']) && vtlib_purify($_REQUEST['enable_local_backup']) != '')
 {
 	global $root_directory;
 	$filename = $root_directory.'user_privileges/enable_backup.php';
@@ -92,7 +92,7 @@ if(isset($_REQUEST['enable_local_backup']) && $_REQUEST['enable_local_backup'] !
 	fputs($handle, $new_buffer);
 	fclose($handle);
 }
-elseif(isset($_REQUEST['GetBackupDetail']) && $_REQUEST['GetBackupDetail'] != '' && $_REQUEST['servertype'] == 'local_backup')
+elseif(isset($_REQUEST['GetBackupDetail']) && vtlib_purify ($_REQUEST['GetBackupDetail']) != '' && $_REQUEST['servertype'] == 'local_backup')
 {
 	require_once("include/database/PearDatabase.php");
 	global $mod_strings,$adb;

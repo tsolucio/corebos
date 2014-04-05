@@ -222,6 +222,7 @@ class Vtiger_Link {
 			$instance = new self();
 			$instance->initialize($row);
 			if(!empty($row['handler_path']) && isFileAccessible($row['handler_path'])) {
+				checkFileAccessForInclusion($row['handler_path']);
 				require_once $row['handler_path'];
 				$linkData = new Vtiger_LinkData($instance, $current_user);
 				$ignore = call_user_func(array($row['handler_class'], $row['handler']), $linkData);

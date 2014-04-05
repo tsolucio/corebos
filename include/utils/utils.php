@@ -1010,8 +1010,8 @@ function to_html($string, $encode=true)
 	global $log,$default_charset;
 	//$log->debug("Entering to_html(".$string.",".$encode.") method ...");
 	global $toHtml;
-	$action = $_REQUEST['action'];
-	$search = $_REQUEST['search'];
+	$action = vtlib_purify($_REQUEST['action']);
+	$search = vtlib_purify($_REQUEST['search']);
 
 	$doconvert = false;
 

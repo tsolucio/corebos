@@ -13,7 +13,7 @@ require_once('include/utils/GetUserGroups.php');
 require_once('Smarty_setup.php');
 
 
-$user_id = $_REQUEST['record'];
+$user_id = vtlib_purify($_REQUEST['record']);
 global $current_user;
 global $mod_strings;
 $smarty = new vtigerCRM_Smarty;

@@ -177,6 +177,7 @@ class Vtiger_Module extends Vtiger_ModuleBasic {
 		$instance = false;
 		$filepath = "modules/$modulename/$modulename.php";
 		if(Vtiger_Utils::checkFileAccessForInclusion($filepath, false)) {
+			checkFileAccessForInclusion($filepath);
 			include_once($filepath);
 			if(class_exists($modulename)) {
 				$instance = new $modulename();

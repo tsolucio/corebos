@@ -36,7 +36,7 @@ $smarty->assign("IMAGE_PATH", $image_path);
 if(isset($_REQUEST['templateid']) && $_REQUEST['templateid']!='')
 {
 	$log->info("The templateid is set");
-	$tempid = $_REQUEST['templateid'];
+	$tempid = vtlib_purify($_REQUEST['templateid']);
 	$sql = "select * from vtiger_emailtemplates where templateid=?";
 	$result = $adb->pquery($sql, array($tempid));
 	$emailtemplateResult = $adb->fetch_array($result);

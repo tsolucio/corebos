@@ -14,7 +14,7 @@ require_once('Smarty_setup.php');
 
 global $app_strings, $mod_strings, $currentModule, $theme, $current_language;
 
-$scannername = $_REQUEST['scannername'];
+$scannername = vtlib_purify($_REQUEST['scannername']);
 $scannerinfo = new Vtiger_MailScannerInfo($scannername);
 
 $smarty = new vtigerCRM_Smarty;

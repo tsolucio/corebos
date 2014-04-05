@@ -649,6 +649,17 @@ function get_tickets_list($input_array) {
 	if(!validateSession($id,$sessionid))
 		return null;
 
+	//To avoid SQL injection we are type casting as well as bound the id variable.
+	$id = (int) vtlib_purify($input_array['id']);
+	
+	$only_mine = $input_array['onlymine'];
+	$where = vtlib_purifyForSql($input_array['where']); //addslashes is already added with where condition fields in portal itself
+	$match = $input_array['match'];
+	$sessionid = $input_array['sessionid'];
+
+	if(!validateSession($id,$sessionid))
+		return null;
+	
 	require_once('modules/HelpDesk/HelpDesk.php');
 	require_once('include/utils/UserInfoUtil.php');
 
@@ -2063,9 +2074,14 @@ function get_product_list_values($id,$modulename,$sessionid,$only_mine='true')
 	if($check == false){
 		return array("#MODULE INACTIVE#");
 	}
+	
+	//To avoid SQL injection we are type casting as well as bound the id variable.
+	$id = (int) vtlib_purify($id);
 	$user = new Users();
 	$userid = getPortalUserid();
 	$current_user = $user->retrieveCurrentUserInfoFromFile($userid);
+	//To avoid SQL injection we are type casting as well as bound the id variable
+	$id = (int) vtlib_purify($id);
 	$entity_ids_list = array();
 	$show_all=show_all($modulename);
 

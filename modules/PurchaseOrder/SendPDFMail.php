@@ -9,10 +9,12 @@
  *
  ********************************************************************************/
 include_once 'modules/PurchaseOrder/PurchaseOrderPDFController.php';
+
+$currentModule = vtlib_purify($_REQUEST['module']);
 $controller = new Vtiger_PurchaseOrderPDFController($currentModule);
 $controller->loadRecord(vtlib_purify($_REQUEST['record']));
 
-$filenameid = $_REQUEST['record'];
+$filenameid = vtlib_purify($_REQUEST['record']);
 $purchaseorder_no = getModuleSequenceNumber($currentModule,vtlib_purify($_REQUEST['record']));
 if(empty($filenameid)) $filenameid = time();
 $filepath="storage/PurchaseOrder_".$purchaseorder_no.".pdf";

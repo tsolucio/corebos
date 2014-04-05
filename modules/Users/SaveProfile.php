@@ -42,10 +42,10 @@ $num_act_per = $adb->num_rows($act_perr_result);
 $num_act_util_per = $adb->num_rows($act_utility_result);
 
 	//Updating vtiger_profile2global permissons vtiger_table
-	$view_all_req=$_REQUEST['view_all'];
+	$view_all_req= vtlib_purify($_REQUEST['view_all']);
 	$view_all = getPermissionValue($view_all_req);
 
-	$edit_all_req=$_REQUEST['edit_all'];
+	$edit_all_req= vtlib_purify($_REQUEST['edit_all']);
 	$edit_all = getPermissionValue($edit_all_req);
 
 

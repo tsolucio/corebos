@@ -29,7 +29,7 @@ if(!empty($_REQUEST['idlist'])) {
 	// Split the string of ids
 	$storearray = explode (";",trim($idlist,";"));
 } else if(!empty($_REQUEST['entityid'])){
-	$storearray = array($_REQUEST['entityid']);
+	$storearray = array(vtlib_purify($_REQUEST['entityid']));
 }
 $focus = CRMEntity::getInstance($currentModule);
 if(!empty($storearray)) {

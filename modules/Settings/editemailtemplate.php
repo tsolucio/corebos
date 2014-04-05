@@ -28,7 +28,7 @@ $mode = 'create';
 if(isset($_REQUEST['templateid']) && $_REQUEST['templateid']!='')
 {
 	$mode = 'edit';
-	$templateid = $_REQUEST['templateid'];
+	$templateid = vtlib_purify($_REQUEST['templateid']);
 	 $log->debug("the templateid is set to the value ".$templateid);
 }
 $sql = "select * from vtiger_emailtemplates where templateid=?";

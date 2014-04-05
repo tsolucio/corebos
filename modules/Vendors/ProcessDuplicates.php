@@ -60,7 +60,7 @@ if($mode == 'mergesave') {
 		// Delete the records by id specified in the list
 		foreach($del_value as $value)
 		{
-			DeleteEntity($_REQUEST['module'],$_REQUEST['return_module'],$focus,$value,"");
+			DeleteEntity(vtlib_purify($_REQUEST['module']),  vtlib_purify($_REQUEST['return_module']),$focus,$value,"");
 		}
 	}
 	

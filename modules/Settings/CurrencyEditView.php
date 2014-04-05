@@ -15,7 +15,7 @@ $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 $smarty=new vtigerCRM_Smarty;
 
-if(isset($_REQUEST['record']) && $_REQUEST['record']!='')
+if(isset($_REQUEST['record']) && $_REQUEST['record'] != '' )
 {
 	$tempid = vtlib_purify($_REQUEST['record']);
     $currency = '';

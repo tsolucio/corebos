@@ -10,8 +10,8 @@
  ********************************************************************************/
 
 require_once('include/utils/UserInfoUtil.php');
-$toid=$_REQUEST['parentId'];
-$fromid=$_REQUEST['childId'];
+$toid= vtlib_purify($_REQUEST['parentId']);
+$fromid= vtlib_purify($_REQUEST['childId']);
 
 
 global $adb,$mod_strings;

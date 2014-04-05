@@ -9,7 +9,7 @@
  ********************************************************************************/
 require_once('include/database/PearDatabase.php');
 
-$id=$_REQUEST['record'];
+$id= vtlib_purify($_REQUEST['record']);
 
 $sql = "delete from vtiger_seattachmentsrel where attachmentsid =?";
 $adb->pquery($sql, array($id));

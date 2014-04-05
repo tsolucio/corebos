@@ -59,7 +59,7 @@ $debug = true;
 if(isset($_REQUEST['scannername'])) {
 	
 	// Target scannername specified?	
-	$scannername = $_REQUEST['scannername'];
+	$scannername = vtlib_purify($_REQUEST['scannername']);
 	$scannerinfo = new Vtiger_MailScannerInfo($scannername);
 	
 	service_MailScanner_performScanNow($scannerinfo, $debug);

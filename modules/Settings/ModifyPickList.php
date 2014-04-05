@@ -37,8 +37,8 @@
 	
 	if($mode == 'addnew')
 	{
-		$newValues = $_REQUEST['newValues'];
-		$selectedRoles = $_REQUEST['selectedRoles'];
+		$newValues = vtlib_purify($_REQUEST['newValues']);
+		$selectedRoles = vtlib_purify($_REQUEST['selectedRoles']);
 		
 		$newPicklist = explode(",",$newValues);
 		$roleIds = explode(":",$selectedRoles);
@@ -73,16 +73,16 @@
 	}
 	if($mode == 'replace')
 	{
-		$mode_type = $_REQUEST['mode_type'];
-		$replaceWith = addslashes($_REQUEST['replaceFields']);
+		$mode_type = vtlib_purify($_REQUEST['mode_type']);
+		$replaceWith = addslashes(vtlib_purify($_REQUEST['replaceFields']));
 		if($replaceWith == '--None--')
 		{
 			$replaceWith='';
 		}
-		$selectedFields = $_REQUEST['selectedFields'];
+		$selectedFields = vtlib_purify($_REQUEST['selectedFields']);
 		$unwantedPicklist = explode(',',$selectedFields);
 		
-		$selectedRoles = $_REQUEST['selectedRoles'];
+		$selectedRoles = vtlib_purify($_REQUEST['selectedRoles']);
 		$roleIds = explode(":",$selectedRoles);
 		
 		foreach($unwantedPicklist as $key => $val)
@@ -188,8 +188,8 @@
 		if($mode == "transfer")
 		{
 			$option='';
-			$selectedFields = $_REQUEST['selectedFields'];
-			$pick_arr = explode(",",$_REQUEST['selectedFields']);
+			$selectedFields = vtlib_purify($_REQUEST['selectedFields']);
+			$pick_arr = explode(",",  vtlib_purify($_REQUEST['selectedFields']));
 			foreach($pick_arr as $v)
 			{
 				$v = urldecode($v);

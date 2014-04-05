@@ -11,14 +11,14 @@
 require_once('modules/Settings/MailScanner/core/MailScannerInfo.php');
 require_once('Smarty_setup.php');
 
-$scannername = $_REQUEST['scannername'];
+$scannername = vtlib_purify($_REQUEST['scannername']);
 $scannerinfo = new Vtiger_MailScannerInfo($scannername);
 
 $folderinfo = Array();
 foreach($_REQUEST as $key=>$value) {
 	$matches = Array();
-	if(preg_match("/folder_([0-9]+)/", $key, $matches)) {
-		$folderinfo[$value] = Array('folderid'=>$matches[1], 'enabled'=>1);
+	if(preg_match("/folder_([0-9]+)/", vtlib_purify($key), $matches)) {
+		$folderinfo[vtlib_purify($value)] = Array('folderid'=>$matches[1], 'enabled'=>1);
 	}
 }
 $scannerinfo->enableFoldersForScan($folderinfo);

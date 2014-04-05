@@ -50,16 +50,16 @@ $smarty->assign("MAINTAB",$act_tab);
 			
 // This is added to support the type of popup and callback
 if(isset($_REQUEST['popupmode']) && isset($_REQUEST['callback'])) {
-	$url = "&popupmode=".$_REQUEST['popupmode']."&callback=".$_REQUEST['callback'];
-	$smarty->assign("POPUPMODE", $_REQUEST['popupmode']);
-	$smarty->assign("CALLBACK", $_REQUEST['callback']);
+	$url = "&popupmode=".vtlib_purify($_REQUEST['popupmode'])."&callback=".vtlib_purify($_REQUEST['callback']);
+	$smarty->assign("POPUPMODE", vtlib_purify($_REQUEST['popupmode']));
+	$smarty->assign("CALLBACK", vtlib_purify($_REQUEST['callback']));
 }
-			
+
+$focus = CRMEntity::getInstance($currentModule);
+
 switch($currentModule)
 {
 	case 'Contacts':
-		require_once("modules/$currentModule/Contacts.php");
-		$focus = new Contacts();
 		$log = LoggerManager::getLogger('contact_list');
 		$smarty->assign("SINGLE_MOD",'Contact');
 		if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='')
@@ -70,8 +70,6 @@ switch($currentModule)
 		$alphabetical = AlphabeticalSearch($currentModule,'Popup','lastname','true','basic',$popuptype,"","",$url);
 		break;
 	case 'Campaigns':
-		require_once("modules/$currentModule/Campaigns.php");
-		$focus = new Campaigns();
 		$log = LoggerManager::getLogger('campaign_list');
 		$smarty->assign("SINGLE_MOD",'Campaign');
 		if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='')
@@ -80,8 +78,6 @@ switch($currentModule)
 		$alphabetical = AlphabeticalSearch($currentModule,'Popup','campaignname','true','basic',$popuptype,"","",$url);
 		break;
 	case 'Accounts':
-		require_once("modules/$currentModule/Accounts.php");
-		$focus = new Accounts();
 		$log = LoggerManager::getLogger('account_list');
 		if (isset($_REQUEST['select'])) $smarty->assign("SELECT",'enable');
 		$smarty->assign("SINGLE_MOD",'Account');
@@ -92,8 +88,6 @@ switch($currentModule)
 		$alphabetical = AlphabeticalSearch($currentModule,'Popup','accountname','true','basic',$popuptype,"","",$url);
 		break;
 	case 'Leads':
-		require_once("modules/$currentModule/Leads.php");
-		$focus = new Leads();
 		$log = LoggerManager::getLogger('contact_list');
 		$smarty->assign("SINGLE_MOD",'Lead');
 		if (isset($_REQUEST['select'])) $smarty->assign("SELECT",'enable');
@@ -104,8 +98,6 @@ switch($currentModule)
 		$alphabetical = AlphabeticalSearch($currentModule,'Popup','lastname','true','basic',$popuptype,"","",$url);
 		break;
 	case 'Potentials':
-		require_once("modules/$currentModule/Potentials.php");
-		$focus = new Potentials();
 		$log = LoggerManager::getLogger('potential_list');
 		if (isset($_REQUEST['select'])) $smarty->assign("SELECT",'enable');
 		$smarty->assign("SINGLE_MOD",'Opportunity');
@@ -114,23 +106,17 @@ switch($currentModule)
 		$alphabetical = AlphabeticalSearch($currentModule,'Popup','potentialname','true','basic',$popuptype,"","",$url);
 		break;
 	case 'Quotes':
-		require_once("modules/$currentModule/Quotes.php");	
-		$focus = new Quotes();
 		$log = LoggerManager::getLogger('quotes_list');
 		$smarty->assign("SINGLE_MOD",'Quote');
 		$alphabetical = AlphabeticalSearch($currentModule,'Popup','subject','true','basic',$popuptype,"","",$url);
 		break;
 	case 'Invoice':
-		require_once("modules/$currentModule/Invoice.php");
-		$focus = new Invoice();
 		$smarty->assign("SINGLE_MOD",'Invoice');
 		if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='')
 			$smarty->assign("RETURN_MODULE",vtlib_purify($_REQUEST['return_module']));
 		$alphabetical = AlphabeticalSearch($currentModule,'Popup','subject','true','basic',$popuptype,"","",$url);
 		break;
 	case 'Products':
-		require_once("modules/$currentModule/$currentModule.php");
-		$focus = new $currentModule();
 		$smarty->assign("SINGLE_MOD",getTranslatedString('SINGLE_'.$currentModule));
 		if(isset($_REQUEST['curr_row']))
 		{
@@ -144,32 +130,24 @@ switch($currentModule)
 		$alphabetical = AlphabeticalSearch($currentModule,'Popup','productname','true','basic',$popuptype,"","",$url);
 		break;
 	case 'Vendors':
-		require_once("modules/$currentModule/Vendors.php");
-		$focus = new Vendors();
 		$smarty->assign("SINGLE_MOD",'Vendor');
 		if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='')
 			$smarty->assign("RETURN_MODULE",vtlib_purify($_REQUEST['return_module']));
 		$alphabetical = AlphabeticalSearch($currentModule,'Popup','vendorname','true','basic',$popuptype,"","",$url);
 		break;
 	case 'SalesOrder':
-		require_once("modules/$currentModule/SalesOrder.php");
-		$focus = new SalesOrder();
 		$smarty->assign("SINGLE_MOD",'SalesOrder');
 		if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='')
 			$smarty->assign("RETURN_MODULE",vtlib_purify($_REQUEST['return_module']));
 		$alphabetical = AlphabeticalSearch($currentModule,'Popup','subject','true','basic',$popuptype,"","",$url);
 		break;
 	case 'PurchaseOrder':
-		require_once("modules/$currentModule/PurchaseOrder.php");
-		$focus = new PurchaseOrder();
 		$smarty->assign("SINGLE_MOD",'PurchaseOrder');
 		if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='')
 			$smarty->assign("RETURN_MODULE",vtlib_purify($_REQUEST['return_module']));
 		$alphabetical = AlphabeticalSearch($currentModule,'Popup','subject','true','basic',$popuptype,"","",$url);
 		break;
 	case 'PriceBooks':
-		require_once("modules/$currentModule/PriceBooks.php");
-		$focus = new PriceBooks();
 		$smarty->assign("SINGLE_MOD",'PriceBook');
 		if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='')
 			$smarty->assign("RETURN_MODULE",vtlib_purify($_REQUEST['return_module']));
@@ -186,17 +164,14 @@ switch($currentModule)
 		$alphabetical = AlphabeticalSearch($currentModule,'Popup','bookname','true','basic',$popuptype,"","",$url);
 		break;
 	case 'Users':
-                require_once("modules/$currentModule/Users.php");
-                $focus = new Users();
-                $smarty->assign("SINGLE_MOD",'Users');
-                if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='')
-                    $smarty->assign("RETURN_MODULE",vtlib_purify($_REQUEST['return_module']));
-                $alphabetical = AlphabeticalSearch($currentModule,'Popup','user_name','true','basic',$popuptype,"","",$url);
-		if (isset($_REQUEST['select'])) $smarty->assign("SELECT",'enable');
-                break;	
+		$smarty->assign("SINGLE_MOD", 'Users');
+		if (isset($_REQUEST['return_module']) && $_REQUEST['return_module'] != '')
+			$smarty->assign("RETURN_MODULE", vtlib_purify($_REQUEST['return_module']));
+		$alphabetical = AlphabeticalSearch($currentModule, 'Popup', 'user_name', 'true', 'basic', $popuptype, "", "", $url);
+		if (isset($_REQUEST['select']))
+			$smarty->assign("SELECT", 'enable');
+		break;
 	case 'HelpDesk':
-		require_once("modules/$currentModule/HelpDesk.php");
-		$focus = new HelpDesk();
 		$smarty->assign("SINGLE_MOD",'HelpDesk');
 		if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='')
 			$smarty->assign("RETURN_MODULE",vtlib_purify($_REQUEST['return_module']));
@@ -205,8 +180,6 @@ switch($currentModule)
 		break;
 
 	case 'Documents':
-		require_once("modules/$currentModule/Documents.php");
-		$focus = new Documents();
 		$smarty->assign("SINGLE_MOD",'Document');
 		if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='')
 			$smarty->assign("RETURN_MODULE",vtlib_purify($_REQUEST['return_module']));
@@ -226,9 +199,7 @@ switch($currentModule)
 		}
 	// vtlib customization: Generic hook for Popup selection
 	default:
-		require_once("modules/$currentModule/$currentModule.php");
-		$focus = new $currentModule();
-		$smarty->assign("SINGLE_MOD", $currentModule);		
+		$smarty->assign("SINGLE_MOD", $currentModule);
 		if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='')
 			$smarty->assign("RETURN_MODULE",vtlib_purify($_REQUEST['return_module']));
 		$alphabetical = AlphabeticalSearch($currentModule,'Popup',$focus->def_basicsearch_col,'true','basic',$popuptype,"","",$url);
@@ -248,8 +219,8 @@ $smarty->assign("RETURN_ACTION",vtlib_purify($_REQUEST['return_action']));
 //Retreive the list from Database
 if($currentModule == 'PriceBooks')
 {
-	$productid=$_REQUEST['productid'];
-	$currency_id=$_REQUEST['currencyid'];
+	$productid= vtlib_purify($_REQUEST['productid']);
+	$currency_id= vtlib_purify($_REQUEST['currencyid']);
 	if($currency_id == null) $currency_id = fetchCurrency($current_user->id);
 	$query = 'select vtiger_pricebook.*, vtiger_pricebookproductrel.productid, vtiger_pricebookproductrel.listprice, ' .
 					'vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_crmentity.modifiedtime ' .
@@ -291,7 +262,7 @@ else
 		$smarty->assign("mod_var_value", vtlib_purify($_REQUEST['task_parent_module']));
 		$smarty->assign("recid_var_name", "task_relmod_id");
 		$smarty->assign("recid_var_value",vtlib_purify($_REQUEST['task_relmod_id']));
-		$where_relquery.= getPopupCheckquery($currentModule,$_REQUEST['task_parent_module'],$_REQUEST['task_relmod_id']);
+		$where_relquery.= getPopupCheckquery($currentModule, vtlib_purify($_REQUEST['task_parent_module']),  vtlib_purify($_REQUEST['task_relmod_id']));
 	}
 	if($currentModule == 'Products' && !$_REQUEST['record_id'] && ($popuptype == 'inventory_prod' || $popuptype == 'inventory_prod_po'))
        		$where_relquery .=" and vtiger_products.discontinued <> 0 AND (vtiger_products.productid NOT IN (SELECT crmid FROM vtiger_seproductsrel WHERE setype='Products'))";
@@ -328,7 +299,7 @@ else
 
 if($currentModule == 'Products' && $_REQUEST['record_id'] && ($popuptype == 'inventory_prod' || $popuptype == 'inventory_prod_po'))
 {
-	$product_name = getProductName($_REQUEST['record_id']);
+	$product_name = getProductName(vtlib_purify($_REQUEST['record_id']));
 	$smarty->assign("PRODUCT_NAME", $product_name);
 	$smarty->assign("RECORD_ID", vtlib_purify($_REQUEST['record_id']));
 }
@@ -367,7 +338,7 @@ if(method_exists($focus, 'getQueryByModuleField')) {
 // END
 
 if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true){
-	$count_result = $adb->query( mkCountQuery( $query));
+	$count_result = $adb->pquery( mkCountQuery( $query), array());
 	$noofrows = $adb->query_result($count_result,0,"count");
 }else{
 	$noofrows = null;
@@ -377,7 +348,7 @@ if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true){
 if(isset($_REQUEST['start']) && $_REQUEST['start'] != '') {
 	$start = vtlib_purify($_REQUEST['start']);
 	if($start == 'last'){
-		$count_result = $adb->query( mkCountQuery($query));
+		$count_result = $adb->pquery( mkCountQuery($query), array());
 		$noofrows = $adb->query_result($count_result,0,"count");
 		if($noofrows > 0){
 			$start = ceil($noofrows/$list_max_entries_per_page);
@@ -394,7 +365,7 @@ if(isset($_REQUEST['start']) && $_REQUEST['start'] != '') {
 }
 $limstart=($start-1)*$list_max_entries_per_page;
 $query.=" LIMIT $limstart,$list_max_entries_per_page";
-$list_result = $adb->query($query);
+$list_result = $adb->pquery($query, array());
 
 //Retreive the Navigation array
 $navigation_array = VT_getSimpleNavigationValues($start, $list_max_entries_per_page,$noofrows);

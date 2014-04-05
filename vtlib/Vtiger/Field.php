@@ -85,8 +85,8 @@ class Vtiger_Field extends Vtiger_FieldBasic {
 			++$sortid;
 
 			// Associate picklist values to all the role
-			$adb->query("INSERT INTO vtiger_role2picklist(roleid, picklistvalueid, picklistid, sortid) SELECT roleid,
-				$new_picklistvalueid, $new_picklistid, $sortid FROM vtiger_role");
+			$adb->pquery("INSERT INTO vtiger_role2picklist(roleid, picklistvalueid, picklistid, sortid) SELECT roleid,
+				$new_picklistvalueid, $new_picklistid, $sortid FROM vtiger_role", array());
 		}
 	}
 

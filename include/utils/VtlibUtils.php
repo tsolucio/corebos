@@ -539,6 +539,15 @@ $__htmlpurifier_instance = false;
 function vtlib_purify($input, $ignore=false) {
 	global $__htmlpurifier_instance, $root_directory, $default_charset;
 
+	static $purified_cache = array();
+	
+	if (!is_array($input)) {  // thank you Boris and Adam (from developers list)
+		$md5OfInput = md5($input);
+		if (array_key_exists($md5OfInput, $purified_cache)) {
+			return $purified_cache[$md5OfInput];
+		}
+	}
+
 	$use_charset = $default_charset;
 	$use_root_directory = $root_directory;
 
@@ -568,6 +577,7 @@ function vtlib_purify($input, $ignore=false) {
 				$value = $__htmlpurifier_instance->purify($input);
 			}
 		}
+		$purified_cache[$md5OfInput] = $value;
 	}
 	$value = str_replace('&amp;','&',$value);
 	return $value;

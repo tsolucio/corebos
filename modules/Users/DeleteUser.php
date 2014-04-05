@@ -11,8 +11,8 @@
 require_once 'modules/Users/Users.php';
 
 global $adb;
-$del_id =  $_REQUEST['delete_user_id'];
-$tran_id = $_REQUEST['transfer_user_id'];
+$del_id = vtlib_purify($_REQUEST['delete_user_id']);
+$tran_id = vtlib_purify($_REQUEST['transfer_user_id']);
 
 $userObj = new Users();
 $userObj->transformOwnerShipAndDelete($del_id, $tran_id);	

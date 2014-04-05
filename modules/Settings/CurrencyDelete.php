@@ -9,8 +9,8 @@
 *
  ********************************************************************************/
 
-$del_id = $_REQUEST['delete_currency_id'];
-$tran_id = $_REQUEST['transfer_currency_id'];
+$del_id = vtlib_purify($_REQUEST['delete_currency_id']);
+$tran_id = vtlib_purify($_REQUEST['transfer_currency_id']);
 
 // Transfer all the data refering to currency $del_id to currency $tran_id
 transferCurrency($del_id, $tran_id);

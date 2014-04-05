@@ -11,8 +11,8 @@
 require_once 'modules/Users/Role.php';
 require_once ('config.php');
 global $adb;
-$del_id =  $_REQUEST['delete_role_id'];
-$tran_id = $_REQUEST['user_role'];
+$del_id = vtlib_purify($_REQUEST['delete_role_id']);
+$tran_id = vtlib_purify($_REQUEST['user_role']);
 
 $role = Vtiger_Role::getInstanceById($del_id);
 $targetRole = Vtiger_Role::getInstanceById($tran_id);

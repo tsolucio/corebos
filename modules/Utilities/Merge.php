@@ -16,7 +16,7 @@ global $default_charset;
 // Fix For: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/2107
 $randomfilename = "vt_" . str_replace(array("."," "), "", microtime());
 
-$mergeFileName = $_REQUEST['mergefile'];
+$mergeFileName = vtlib_purify($_REQUEST['mergefile']);
 //get the particular file from db and store it in the local hard disk.
 //store the path to the location where the file is stored and pass it  as parameter to the method 
 $sql = "select filename,data,filesize from vtiger_wordtemplatestorage where filename=?";

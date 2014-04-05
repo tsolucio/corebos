@@ -11,9 +11,9 @@
 global $adb;
 
 if($_REQUEST['idstring'] != '')
-	$idlist = $_REQUEST['idstring'];
+	$idlist = vtlib_purify ($_REQUEST['idstring']);
 elseif($_REQUEST['idlist'] != '')
-	$idlist = $_REQUEST['idlist'];
+	$idlist = vtlib_purify ($_REQUEST['idlist']);
 
 $selected_array = explode(";",$idlist);
 foreach($selected_array as $account_id) {

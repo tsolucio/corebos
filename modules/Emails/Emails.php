@@ -618,6 +618,7 @@ function pdfAttach($obj, $module, $file_name, $id) {
 		$adb->pquery($query3, array($id, $current_id));
 
 		// Delete the file that was copied
+		checkFileAccessForDeletion($source_file_path);
 		unlink($source_file_path);
 
 		return true;

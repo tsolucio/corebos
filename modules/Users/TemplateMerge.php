@@ -13,7 +13,7 @@ global $default_charset;
 
 if(isset($_REQUEST['templateid']) && $_REQUEST['templateid'] !='')
 {
-	$templatedetails = getTemplateDetails($_REQUEST['templateid']);
+	$templatedetails = getTemplateDetails(vtlib_purify($_REQUEST['templateid']));
 }
 ?>
 <form name="frmrepstr" onsubmit="VtigerJS_DialogBox.block();">

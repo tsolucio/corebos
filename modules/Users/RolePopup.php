@@ -76,7 +76,7 @@ $query = "select * from vtiger_role";
 $result = $adb->pquery($query, array());
 $num_rows=$adb->num_rows($result);
 $mask_roleid=Array();
-$del_roleid=$_REQUEST['maskid'];
+$del_roleid= vtlib_purify($_REQUEST['maskid']);
 if($del_roleid != '' && strlen($del_roleid) >0)
 {
 	$mask_roleid= getRoleAndSubordinatesRoleIds($del_roleid);
@@ -124,7 +124,7 @@ function indent($hrarray,$roleout,$role_det,$mask_roleid='')
 		}
 		else
 		{
-			$type =$_REQUEST['type'];
+			$type = vtlib_purify($_REQUEST['type']);
 			if($type == '')
 			{
 				$roleout .= '&nbsp;<a href="javascript:loadValue(\'user_'.$roleid.'\',\''.$roleid.'\');" class="x" id="user_'.$roleid.'">'.$rolename.'</a>';

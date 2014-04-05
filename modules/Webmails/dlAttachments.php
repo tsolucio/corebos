@@ -17,7 +17,7 @@ require_once('modules/Webmails/MailBox.php');
 global $MailBox, $mod_strings,$theme;
 $theme_path="themes/".$theme."/style.css";
 
-$MailBox = new MailBox($_REQUEST["mailbox"]);
+$MailBox = new MailBox(vtlib_purify($_REQUEST["mailbox"]));
 
 $mailid=vtlib_purify($_REQUEST["mailid"]);
 $num=vtlib_purify($_REQUEST["num"]);

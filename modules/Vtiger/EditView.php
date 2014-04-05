@@ -14,7 +14,7 @@ $focus = CRMEntity::getInstance($currentModule);
 $smarty = new vtigerCRM_Smarty();
 
 $category = getParentTab($currentModule);
-$record = $_REQUEST['record'];
+$record = vtlib_purify($_REQUEST['record']);
 $isduplicate = vtlib_purify($_REQUEST['isDuplicate']);
 
 //added to fix the issue4600

@@ -12,7 +12,7 @@
 require_once('modules/Settings/MailScanner/core/MailScannerInfo.php');
 require_once('modules/Settings/MailScanner/core/MailBox.php');
 
-$scannerinfo = new Vtiger_MailScannerInfo(trim($_REQUEST['scannername']));
+$scannerinfo = new Vtiger_MailScannerInfo(trim(vtlib_purify($_REQUEST['scannername'])));
 
 $scannerinfo->delete();
 

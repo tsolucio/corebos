@@ -27,9 +27,9 @@ $log =& LoggerManager::getLogger('index');
 
 
 global $adb;
-$user_name = $_REQUEST['userName'];
+$user_name = vtlib_purify($_REQUEST['userName']);
 if(isset($_REQUEST['status']) && $_REQUEST['status'] != '')
-	$_REQUEST['status']=$_REQUEST['status'];
+	$_REQUEST['status']= vtlib_purify ($_REQUEST['status']);
 else
 	$_REQUEST['status']='Active';
 
@@ -51,6 +51,26 @@ if(isset($_REQUEST['dup_check']) && $_REQUEST['dup_check'] != '')
 	        die;
 	}
 }
+if($_REQUEST['user_role'] != '' && !is_admin($current_user) && $_REQUEST['user_role'] != $current_user->roleid){ 
+	$log->fatal("SECURITY:Non-Admin user:". $current_user->id . " attempted to change user role");
+	echo "<link rel='stylesheet' type='text/css' href='themes/$theme/style.css'>";	
+	echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
+	echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
+		<table border='0' cellpadding='5' cellspacing='0' width='98%'>
+		<tbody><tr>
+		<td rowspan='2' width='11%'><img src='". vtiger_imageurl('denied.gif', $theme) . "' ></td>
+		<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>SECURITY: Non-Admin user attempted to change user role</span></td>
+		</tr>
+		<tr>
+		<td class='small' align='right' nowrap='nowrap'>			   	
+		<a href='index.php?module=Users&action=Logout'> $app_strings[LBL_GO_BACK]</a><br></td>
+		</tr>
+		</tbody></table> 
+		</div>";
+	echo "</td></tr></table>";
+	exit;
+}
+
 if((empty($_SESSION['Users_FORM_TOKEN']) || $_SESSION['Users_FORM_TOKEN']
 		!== (int)$_REQUEST['form_token']) && $_REQUEST['deleteImage'] != 'true' &&
 		$_REQUEST['changepassword'] != 'true') {
@@ -66,7 +86,7 @@ $focus = new Users();
 if(isset($_REQUEST["record"]) && $_REQUEST["record"] != '')
 {
     $focus->mode='edit';
-	$focus->id = $_REQUEST["record"];
+	$focus->id = vtlib_purify($_REQUEST["record"]);
 }
 else
 {
@@ -75,7 +95,7 @@ else
 
 
 if($_REQUEST['deleteImage'] == 'true') {
-	$focus->id = $_REQUEST['recordid'];
+	$focus->id = vtlib_purify($_REQUEST['recordid']);
 	$focus->deleteImage();
 	echo "SUCCESS";
 	exit;
@@ -83,9 +103,9 @@ if($_REQUEST['deleteImage'] == 'true') {
 
 if($_REQUEST['changepassword'] == 'true') {
 	$focus->retrieve_entity_info($_REQUEST['record'],'Users');
-	$focus->id = $_REQUEST['record'];
+	$focus->id = vtlib_purify($_REQUEST['record']);
 	if (isset($_REQUEST['new_password'])) {
-		if (!$focus->change_password($_REQUEST['old_password'], $_REQUEST['new_password'])) {
+		if (!$focus->change_password(vtlib_purify($_REQUEST['old_password']), vtlib_purify($_REQUEST['new_password']))) {
 			header("Location: index.php?action=Error&module=Users&error_string=".urlencode($focus->error_string));
 			exit;
 		}

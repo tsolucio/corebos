@@ -17,7 +17,7 @@ global $log;
 
 //download the template file and store it in some specific location
 $sql = "select templatename,body from vtiger_emailtemplates where templateid=?";
-$tempresult = $adb->pquery($sql, array($_REQUEST["templateid"]));
+$tempresult = $adb->pquery($sql, array(vtlib_purify($_REQUEST["templateid"])));
 $tempArray = $adb->fetch_array($tempresult);
 $fileContent = $tempArray["body"];
 
@@ -41,8 +41,8 @@ $myString .= " * All Rights Reserved.\n";
 $myString .= " * Contributor(s): ______________________________________.\n";
 $myString .= "********************************************************************************/\n\n";
 
-$module = $_REQUEST['entity'];
-$recordid = $_REQUEST['entityid'];
+$module = vtlib_purify($_REQUEST['entity']);
+$recordid = vtlib_purify($_REQUEST['entityid']);
 
 $focus = CRMEntity::getInstance($module);
 $focus->retrieve_entity_info($recordid,$module);

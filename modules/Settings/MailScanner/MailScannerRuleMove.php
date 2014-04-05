@@ -11,9 +11,9 @@
 
 require_once('modules/Settings/MailScanner/core/MailScannerRule.php');
 
-$mode = $_REQUEST['mode'];
-$targetruleid = $_REQUEST['targetruleid'];
-$ruleid = $_REQUEST['ruleid'];
+$mode = vtlib_purify($_REQUEST['mode']);
+$targetruleid = vtlib_purify($_REQUEST['targetruleid']);
+$ruleid = vtlib_purify($_REQUEST['ruleid']);
 	
 if($mode == 'rulemove_up') {
 	Vtiger_MailScannerRule::resetSequence($ruleid, $targetruleid);

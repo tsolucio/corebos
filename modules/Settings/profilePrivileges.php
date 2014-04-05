@@ -36,12 +36,12 @@ if($_REQUEST['mode'] =='create' && $_REQUEST['radiobutton'] != 'baseprofile')
 
 
 $smarty = new vtigerCRM_Smarty;
-if(isset($_REQUEST['selected_tab']) && $_REQUEST['selected_tab']!='')
+if(isset($_REQUEST['selected_tab']) && vtlib_purify($_REQUEST['selected_tab']) != '')
 	$smarty->assign("SELECTED_TAB", vtlib_purify($_REQUEST['selected_tab']));
 else
 	$smarty->assign("SELECTED_TAB", "global_privileges");
 
-if(isset($_REQUEST['selected_module']) && $_REQUEST['selected_module']!='')
+if(isset($_REQUEST['selected_module']) && vtlib_purify($_REQUEST['selected_module']) != '')
 	$smarty->assign("SELECTED_MODULE", vtlib_purify($_REQUEST['selected_module']));
 else
 	$smarty->assign("SELECTED_MODULE", "field_Leads");
@@ -58,13 +58,13 @@ $smarty->assign("MOD", return_module_language($current_language,'Settings'));
 $smarty->assign("APP", $app_strings);
 $smarty->assign("THEME", $theme);
 $smarty->assign("CMOD", $mod_strings);
-if(isset($_REQUEST['return_action']) && $_REQUEST['return_action'] != '')
+if(isset($_REQUEST['return_action']) && vtlib_purify($_REQUEST['return_action']) != '')
 	$smarty->assign("RETURN_ACTION", vtlib_purify($_REQUEST['return_action']));
 
 
-if(isset($_REQUEST['profile_name']) && $_REQUEST['profile_name'] != '' && $_REQUEST['mode'] == 'create')
+if(isset($_REQUEST['profile_name']) && vtlib_purify($_REQUEST['profile_name']) != '' && $_REQUEST['mode'] == 'create')
 {
-	$profileName=$_REQUEST['profile_name'];
+	$profileName= vtlib_purify($_REQUEST['profile_name']);
 	$smarty->assign("PROFILE_NAME", to_html($profileName));
 }
 else
@@ -76,7 +76,7 @@ else
 
 //$smarty->assign("PROFILE_NAME", to_html($profileName));
 
-if(isset($_REQUEST['profile_description']) && $_REQUEST['profile_description'] != '' && $_REQUEST['mode'] == 'create')
+if(isset($_REQUEST['profile_description']) && vtlib_purify($_REQUEST['profile_description']) != '' && $_REQUEST['mode'] == 'create')
 	
 	$profileDescription = vtlib_purify($_REQUEST['profile_description']);
 else
@@ -89,8 +89,8 @@ else
 
 $smarty->assign("PROFILE_DESCRIPTION", $profileDescription);
 
-if(isset($_REQUEST['mode']) && $_REQUEST['mode'] != '') {
-	$mode = vtlib_purify($_REQUEST['mode']);
+if(isset($_REQUEST['mode']) && vtlib_purify($_REQUEST['mode']) != '') {
+	$mode = $_REQUEST['mode'];
 	$smarty->assign("MODE", $mode);
 }
 
