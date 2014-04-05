@@ -443,11 +443,13 @@ class ListViewController {
 					}
 				} elseif ( in_array($uitype,array(7,9,90)) ) {
 					$value = "<span align='right'>".textlength_check($value)."</div>";
+				} elseif ($field->getUIType() == 55) {
+					$value = getTranslatedString($value,$currentModule);
 				} else {
 					$value = textlength_check($value);
 				}
 
-                                    $parenttab = getParentTab();
+				$parenttab = getParentTab();
 				$nameFields = $this->queryGenerator->getModuleNameFields($module);
 				$nameFieldList = explode(',',$nameFields);
 				if(in_array($fieldName, $nameFieldList) && $module != 'Emails' ) {
