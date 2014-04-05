@@ -159,6 +159,9 @@ if(isset($query_string) && $query_string != ''){
 				//Do not display the Header if there are no entires in listview_entries
 				if(count($listview_entries) > 0){
 					$display_header = 1;
+					if(count($listview_entries) == 1){
+						$listview_entries_for1 = $listview_entries;
+					}
 				}else{
 					$display_header = 0;
 				}
@@ -184,6 +187,16 @@ if(isset($query_string) && $query_string != ''){
 			}
 		}
 	}
+	if ($total_record_count == 1) {
+		// we have just one record in one module > we go there directly
+		$modwith1 = array_filter($moduleRecordCount, function ($e) {return ($e['count']==1);});
+		$modfound = array_keys($modwith1);
+		$modfound = $modfound[0];
+		$recfound = array_keys($listview_entries_for1);
+		$recfound = $recfound[0];
+		echo "<script type='text/javascript'>gotourl('index.php?module=$modfound&record=$recfound&action=DetailView');</script>";
+	}
+	
 	//Added to display the Total record count
 	if(empty($_REQUEST['ajax'])) {
 ?>
