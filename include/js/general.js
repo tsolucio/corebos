@@ -226,8 +226,8 @@ function emptyCheck(fldName,fldLabel, fldType) {
 			return true
 		}
 	}else if((fldType == "textarea")
-		&& (typeof(CKEDITOR)!=='undefined' && CKEDITOR.intances[fldName] !== 'undefined')) {
-		var textObj = CKEDITOR.intances[fldName];
+		&& (typeof(CKEDITOR)!=='undefined' && CKEDITOR.instances[fldName] !== 'undefined')) {
+		var textObj = CKEDITOR.instances[fldName];  // thank you Stefan (from developers list)
 		var textValue = textObj.getData();
 		if (trim(textValue) == '' || trim(textValue) == '<br>') {
 			alert(fldLabel+alert_arr.CANNOT_BE_NONE);
