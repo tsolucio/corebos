@@ -20,6 +20,7 @@ require_once("VTWorkflowUtils.php");
 	function vtTaskEdit($adb, $request, $current_language, $app_strings){
 		global $theme;
 		$util = new VTWorkflowUtils();
+		$request = vtlib_purify($request);  // this cleans all values of the array
 		$image_path = "themes/$theme/images/";
 
 		$module = new VTWorkflowApplication('edittask');

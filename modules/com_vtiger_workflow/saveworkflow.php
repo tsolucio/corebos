@@ -19,7 +19,7 @@ require_once("VTWorkflowUtils.php");
 		$util = new VTWorkflowUtils();
 		$module = new VTWorkflowApplication("saveworkflow");
 		$mod = return_module_language($current_language, $module->name);
-
+		$request = vtlib_purify($request);  // this cleans all values of the array
 		if(!$util->checkAdminAccess()){
 			$errorUrl = $module->errorPageUrl($mod['LBL_ERROR_NOT_ADMIN']);
 			$util->redirectTo($errorUrl, $mod['LBL_ERROR_NOT_ADMIN']);
