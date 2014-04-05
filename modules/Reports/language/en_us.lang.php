@@ -191,8 +191,8 @@ $mod_strings = Array(
 'Next 60 Days'=>'Next 60 Days',
 'Next 90 Days'=>'Next 90 Days',
 'Next 120 Days'=>'Next 120 Days',
-'TITLE_VTIGERCRM_CREATE_REPORT' => 'vtiger CRM - Create Report',
-'TITLE_VTIGERCRM_PRINT_REPORT' => 'vtiger -  Print Report',
+'TITLE_VTIGERCRM_CREATE_REPORT' => 'Create Report',
+'TITLE_VTIGERCRM_PRINT_REPORT' => 'Print Report',
 'NO_FILTER_SELECTED' => 'No filter Selected',
 
 'LBL_GENERATE_NOW'=>'Generate Now',

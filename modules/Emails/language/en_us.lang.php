@@ -145,10 +145,10 @@ $mod_strings = Array(
 'LBL_MAILSELECT_INFO2'=>'Select the Email ID types to which,the email should be sent',
 'LBL_MULTIPLE'=>'Multiple',
 'LBL_COMPOSE_EMAIL'=>'Compose E-Mail',
-'LBL_VTIGER_EMAIL_CLIENT'=>'vtiger Webmail Client',
+'LBL_VTIGER_EMAIL_CLIENT'=>'Webmail Client',
 
 //Added for 5.0.3
-'TITLE_VTIGERCRM_MAIL'=>'vtigerCRM Mail',
+'TITLE_VTIGERCRM_MAIL'=>'Mail',
 'TITLE_COMPOSE_MAIL'=>'Compose Mail',
 
 'MESSAGE_MAIL_COULD_NOT_BE_SEND'=>'Mail could not be sent to the assigned to user.',
@@ -160,7 +160,6 @@ $mod_strings = Array(
 'LBL_BCC_EMAIL_ERROR'=>'Your bcc mailid is not proper',
 'LBL_NO_RCPTS_EMAIL_ERROR'=>'No recepients specified',
 'LBL_CONF_MAILSERVER_ERROR'=>'Please configure your outgoing mailserver under Settings ---> Outgoing Server link',
-'LBL_VTIGER_EMAIL_CLIENT'=>'vtiger Webmail Client',
 'LBL_MAILSELECT_INFO3'=>'You don\'t have permission to view email id(s) of the selected Record(s).',
 //Added  for script alerts
 'FEATURE_AVAILABLE_INFO' => 'This feature is currently only available for Microsoft Internet Explorer 5.5+ users\n\nWait f

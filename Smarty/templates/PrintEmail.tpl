@@ -16,7 +16,7 @@
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset={$APP.LBL_CHARSET}">
 <title>{$MOD.TITLE_VTIGERCRM_MAIL}</title>
-<link REL="SHORTCUT ICON" HREF="include/images/vtigercrm_icon.ico">	
+<link REL="SHORTCUT ICON" HREF="themes/images/favicon.ico">	
 <style type="text/css">@import url("themes/{$THEME}/style.css");</style>
 	<body  onLoad=window.print()>
 		<table>

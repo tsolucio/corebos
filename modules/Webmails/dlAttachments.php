@@ -28,7 +28,7 @@ $email->loadMail($attach_tab);
 echo "<html><head><title>".$mod_strings['LBL_ATTACHMENTS']."</title>";
 echo "<meta http-equiv=\"Content-Type\" content=\"text/html; charset=".$email->charsets."\">\n";
 echo "<script src='modules/Webmails/Webmails.js' type='text/javascript'></script>";
-echo "<link REL='SHORTCUT ICON' HREF='include/images/vtigercrm_icon.ico'>";	
+echo "<link REL='SHORTCUT ICON' HREF='themes/images/favicon.ico'>";	
 echo "<style type='text/css'>@import url('$theme_path');</style>";
 echo "</head><body>";
 

@@ -71,7 +71,7 @@ $mod_strings = Array(
 Then you can give this Database name in config.inc.php file to use this Database ie., $dbconfig[\'db_name\'] = \'new db name\';',
 
 'LBL_ENTER_MYSQL_SERVER_PATH'=>'Enter MySQL Server Path',
-'LBL_SERVER_PATH_DESC'=>'MySQL path in the server like <b>/home/5beta/vtigerCRM5_beta/mysql/bin</b> or <b>c:\Program Files\mysql\bin</b>',
+'LBL_SERVER_PATH_DESC'=>'MySQL path in the server like <b>/usr/bin</b> or <b>c:\Program Files\mysql\bin</b>',
 'LBL_MYSQL_SERVER_PATH'=>'MySQL Server Path : ',
 'LBL_MIGRATE_BUTTON'=>'Migrate',
 'LBL_CANCEL_BUTTON'=>'Cancel',

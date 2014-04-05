@@ -12,7 +12,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
-<title>Vtiger Bookmarklet</title>
+<title>{'APP_NAME'|getTranslatedString:$MODULE} Bookmarklet</title>
 <script type="text/javascript" src="modules/Emails/GmailBookmarklet.js"></script>
 <style type="text/css">
 {literal}
@@ -94,7 +94,7 @@ ul.searchResult li a:hover {
 <body onload="init();" class="small">
 	<div id="__vtigerBookMarkletDiv__">
 		<div>
-		<img src="themes/images/vtigerlogo.jpg" alt="vtiger CRM" title="vtiger CRM" border="0" style="width: 80px; height: 30px"
+		<img src="themes/images/logo_mail.jpg" alt="{'APP_NAME'|getTranslatedString:$MODULE}" title="{'APP_NAME'|getTranslatedString:$MODULE}" border="0" style="width: 80px; height: 30px"
 		</div>
 								
 		<table width="99%" cellspacing="0" cellpadding="5" border="0" class="tableHeading">

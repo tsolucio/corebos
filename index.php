@@ -814,22 +814,10 @@ if((!$viewAttachment) && (!$viewAttachment && $action != 'home_rss') && $action 
 	
 	{
 		echo $copyrightstatement;
-		// Status tracking
-		$statimage = '';
-		if($currentModule == 'Users' && empty($current_user->id)) {
-			global $disable_stats_tracking;
-			if(isset($disable_stats_tracking) && !empty($disable_stats_tracking)) {
-				$statimage = "";
-			} else {
-				$statimage = "<img src='http://stats.vtiger.com/stats.php?uid=$application_unique_key&v=$vtiger_current_version&type=U' 
-				alt='|' title='' border=0 width='1px' height='1px'>";
-			}
-		}
 		// END
-		echo "<script language = 'JavaScript' type='text/javascript' src = 'include/js/popup.js'></script>";
 		echo "<br><br><br><table border=0 cellspacing=0 cellpadding=5 width=100% class=settingsSelectedUI >";
-		echo "<tr><td class=small align=left><span style='color: rgb(153, 153, 153);'>Powered by vtiger CRM <span id='_vtiger_product_version_'>$vtiger_current_version</span></span></td>";
-		echo "<td class=small align=right><span>&copy; 2004-".date('Y')." <a href='http://www.vtiger.com' target='_blank'>vtiger.com</a> | <a href='javascript:mypopup()'>".$app_strings['LNK_READ_LICENSE']."</a> | <a href='http://www.vtiger.com/products/crm/privacy_policy.html' target='_blank'>".getTranslatedString('LNK_PRIVACY_POLICY')."</a></span> $statimage</td></tr></table>";
+		echo "<tr><td class=small align=left><span style='color: rgb(153, 153, 153);'>Powered by ".getTranslatedString('APP_NAME')." <span id='_vtiger_product_version_'>$vtiger_current_version</span></span></td>";
+		echo "<td class=small align=right><span>&copy; 2004-".date('Y')." <a href='$coreBOS_app_url' target='_blank'>$coreBOS_app_name</a> | <a href='copyright.html' target='_blank'>".$app_strings['LNK_READ_LICENSE']."</a> | <a href='http://corebos.org/page/privacy-policy' target='_blank'>".getTranslatedString('LNK_PRIVACY_POLICY')."</a></span></td></tr></table>";
 			
 	//	echo "<table align='center'><tr><td align='center'>";
 		// Under the Sugar Public License referenced above, you are required to leave in all copyright statements

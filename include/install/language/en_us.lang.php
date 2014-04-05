@@ -26,16 +26,16 @@ $optionalModuleStrings = array(
 );
 
 $installationStrings = array(
-	'LBL_VTIGER_CRM_5' => 'vtiger CRM 5',
+	'APP_NAME' => 'coreBOS',
 	'LBL_CONFIG_WIZARD' => 'Configuration Wizard',
 	'LBL_WELCOME' => 'Welcome',
 	'LBL_WELCOME_CONFIG_WIZARD' => 'Welcome to Configuration Wizard',
-	'LBL_ABOUT_CONFIG_WIZARD' => 'This configuration wizard helps you install vtigerCRM ',
-	'LBL_ABOUT_VTIGER' => 'vtiger CRM is a community-driven, fully open source, CRM software project. <br><br>
-							The aim of the project is to provide the best and most open CRM solution with the lowest total cost of ownership to small and medium enterprises.<br><br> 
-							The product is widely used throughout the world, with over a thousand downloads a day. <br><br>
-							vtiger CRM has an active community of developers and users, with contributors from many different countries.<br> <br>
-							It is available in many languages, with a strong partner network in dozens of countries.',
+	'LBL_ABOUT_CONFIG_WIZARD' => 'This configuration wizard helps you install coreBOS ',
+	'LBL_ABOUT_VTIGER' => 'coreBOS is a community-driven, fully open source, Business empowering software project. <br><br>
+							The aim of the project is to provide a powerful software environment for your company to grow upon with the lowest total cost of ownership for small and medium enterprises.<br><br> 
+							The product is widely used throughout the world. <br><br>
+							coreBOS has an active community of developers and users, with contributors from many different countries.<br> <br>
+							It is available in many languages.',
 	'LBL_INSTALL' => 'Install',
 	'LBL_MIGRATE' => 'Migrate',
 	'ERR_RESTRICTED_FILE_ACCESS' => 'Sorry! Attempt to access restricted file',
@@ -57,7 +57,7 @@ $installationStrings = array(
 	'MSG_CONFIG_FILE_CREATED' => 'Configuration file (config.inc.php) was successfully created',
 	'LBL_FINISH' => 'Finish',
 	'LBL_CONFIG_COMPLETED' => 'Configuration Completed',
-	'LBL_PHP_VERSION_GT_5' => 'PHP version >= 5.2',
+	'LBL_PHP_VERSION_GT_5' => 'PHP version >= 5.3',
 	'LBL_YES' => 'Yes',
 	'LBL_NO' => 'No',
 	'LBL_NOT_CONFIGURED' => 'Not Configured',
@@ -72,7 +72,7 @@ $installationStrings = array(
 	'LBL_NOT_RECOMMENDED' => 'Not Recommended',
 	'LBL_PHP_DIRECTIVES_HAVE_RECOMMENDED_VALUES' => 'Your PHP directives have the Recommended values',
 	'MSG_PROVIDE_READ_WRITE_ACCESS_TO_PROCEED' => 'Provide Read/Write access to the files and directories listed to Proceed',
-	'WARNING_PHP_DIRECTIVES_NOT_RECOMMENDED_STILL_WANT_TO_PROCEED' => 'Some of the PHP Settings do not meet the recommended values. This might affect some of the features of vtiger CRM. Are you sure, you want to proceed?',
+	'WARNING_PHP_DIRECTIVES_NOT_RECOMMENDED_STILL_WANT_TO_PROCEED' => 'Some of the PHP Settings do not meet the recommended values. This might affect some of the features of coreBOS. Are you sure, you want to proceed?',
 	'LBL_CHANGE' => 'Change',
 	'LBL_DATABASE_INFORMATION' => 'Database Information',
 	'LBL_CRM_CONFIGURATION' => 'CRM Configuration',
@@ -98,7 +98,7 @@ $installationStrings = array(
 	'LBL_MISSING_REQUIRED_FIELDS' => 'Missing required fields',
 	'ERR_ADMIN_EMAIL_INVALID' => 'The email id in the admin email field is invalid',
 	'ERR_STANDARDUSER_EMAIL_INVALID' => 'The email id in the standard user email field is invalid',
-	'WARNING_LOCALHOST_IN_SITE_URL' => 'Specify the exact host name instead of \"localhost\" in Site URL field, otherwise you will experience some issues while working with vtiger plug-ins. Do you wish to Continue?',
+	'WARNING_LOCALHOST_IN_SITE_URL' => 'Specify the exact host name instead of \"localhost\" in Site URL field, otherwise you will experience some issues while working with coreBOS plug-ins. Do you wish to Continue?',
 	'LBL_DATABASE_CONFIGURATION' => 'Database Configuration',
 	'LBL_ENABLED' => 'Enabled',
 	'LBL_NOT_ENABLED' => 'Not Enabled',
@@ -127,16 +127,15 @@ $installationStrings = array(
 	'LBL_LOGIN_USING_ADMIN' => 'Please log in using the "admin" user name and the password you entered in step 3/4',
 	'LBL_SET_OUTGOING_EMAIL_SERVER' => 'Do not forget to set the outgoing email server (setup accessible from Settings-&gt;Outgoing Server)',
 	'LBL_RENAME_HTACCESS_FILE' => 'Rename htaccess.txt file to .htaccess to control public file access',
-	'MSG_HTACCESS_DETAILS' => 'This .htaccess file will work if "<b>AllowOverride All</b>" is set on Apache server configuration file (httpd.conf) for the DocumentRoot or for the current vtiger path.<br>
+	'MSG_HTACCESS_DETAILS' => 'This .htaccess file will work if "<b>AllowOverride All</b>" is set on Apache server configuration file (httpd.conf) for the DocumentRoot or for the current coreBOS path.<br>
 				   				If this AllowOverride is set as None ie., "<b>AllowOverride None</b>" then .htaccess file will not take into effect.<br>
 				   				If AllowOverride is None then add the following configuration in the apache server configuration file (httpd.conf) <br>
-				   				<b>&lt;Directory "C:/Program Files/vtigercrm/apache/htdocs/vtigerCRM"&gt;<br>Options -Indexes<br>&lt;/Directory&gt;</b><br>
+				   				<b>&lt;Directory "C:/Program Files/corebos/apache/htdocs/coreBOS"&gt;<br>Options -Indexes<br>&lt;/Directory&gt;</b><br>
 				   				So that without .htaccess file we can restrict the directory listing',
 	'LBL_YOU_ARE_IMPORTANT' => 'You are very important to us!',
 	'LBL_PRIDE_BEING_ASSOCIATED' => 'We take pride in being associated with you',
-	'LBL_TALK_TO_US_AT_FORUMS' => 'Talk to us at <a href="http://forums.vtiger.com" target="_blank">forums</a>',
-	'LBL_DISCUSS_WITH_US_AT_BLOGS' => 'Discuss with us at <a href="http://blogs.vtiger.com" target="_blank">blogs</a>',
-	'LBL_WE_AIM_TO_BE_BEST' => 'We aim to be - simply the best',
+	'LBL_TALK_TO_US_AT_FORUMS' => 'Talk to us in our <a href="https://plus.google.com/communities/109845486286232591652" target="_blank">Google+ Community</a> or <a href="http://www.linkedin.com/groups/coreBOS-7479130?trk=my_groups-b-grp-v" target="_blank">LinkedIn Group</a>',
+	'LBL_WE_AIM_TO_BE_BEST' => 'We aim to help you do your business',
 	'LBL_SPACE_FOR_YOU' => 'Come on over, there is space for you too!',	
 	'LBL_NO_OPTIONAL_MODULES_FOUND' => 'No Optional Modules found',
 	'LBL_PREVIOUS_INSTALLATION_INFORMATION' => 'Previous Installation Information',
@@ -169,7 +168,7 @@ $installationStrings = array(
 	'LBL_DATABASE_CHECK' => 'Database Check',
 	'MSG_TABLES_IN_INNODB' => 'Required tables were detected to be in proper Engine type (InnoDB)',
 	'MSG_CLOSE_WINDOW_TO_PROCEED' => 'You can close this window and proceed further with migration',
-	'LBL_RECOMMENDATION_FOR_PROPERLY_WORKING_CRM' => 'For proper functionality of vtiger CRM, we recommend the following',
+	'LBL_RECOMMENDATION_FOR_PROPERLY_WORKING_CRM' => 'For proper functionality of coreBOS, we recommend the following',
 	'LBL_TABLES_SHOULD_BE_INNODB' => 'Tables to have InnoDB engine type',
 	'QUESTION_WHAT_IS_INNODB' => 'What is InnoDB',
 	'LBL_TABLES_CHARSET_TO_BE_UTF8' => 'To get complete UTF-8 support, tables should have default charset UTF8',
@@ -207,7 +206,7 @@ $installationStrings = array(
 	'MSG_DATABASE_COPY_SUCCEDED' => 'Database copy was successfully created.<br />Click Next &#187; to proceed',
 	'MSG_SUCCESSFULLY_FIXED_TABLE_TYPES' => 'Successfully changed tables to InnoDB engine',
 	'LBL_MIGRATION' => 'Migration',
-	'LBL_SOURCE_VERSION_NOT_SET' => 'Source Version is not set. Please check vtigerversion.php and continue the Patch Process',
+	'LBL_SOURCE_VERSION_NOT_SET' => 'Source Version is not set. Please check corebosversion.php and continue the Patch Process',
 	'LBL_GOING_TO_APPLY_DB_CHANGES' => 'Going to apply the Database Changes',
 	'LBL_DATABASE_CHANGES' => 'Database changes',
 	'LBL_STARTS' => 'Starts',

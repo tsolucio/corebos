@@ -51,7 +51,7 @@
 				<table width="100%" border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td class="moduleName" width="80%" style="padding-left:10px;">{$CMOD.LBL_ASSIGN_ROLE}</td>
-					<td  width=30% nowrap class="componentName" align=right>{$APP.VTIGER}</td>
+					<td  width=30% nowrap class="componentName" align=right>{'APP_NAME'|@getTranslatedString}</td>
 				</tr>
 			</table>
 			</td>

@@ -12,7 +12,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title><?php echo $installationStrings['LBL_VTIGER_CRM_5']. ' - ' . $installationStrings['LBL_CONFIG_WIZARD']. ' - ' . $installationStrings['LBL_FINISH']?></title>
+	<title><?php echo $installationStrings['APP_NAME']. ' - ' . $installationStrings['LBL_CONFIG_WIZARD']. ' - ' . $installationStrings['LBL_FINISH']?></title>
 	<link href="include/install/install.css" rel="stylesheet" type="text/css">
 	<link href="themes/softed/style.css" rel="stylesheet" type="text/css">
 	<script type="text/javascript">
@@ -21,7 +21,7 @@
 		if(div_style == "inline")
 			document.getElementById("htaccess_div").style.display = "none";
 		else
-			document.getElementById("htaccess_div").style.display = "inline";		
+			document.getElementById("htaccess_div").style.display = "inline";
 	}
 	</script>
 </head>
@@ -33,7 +33,7 @@
 	<table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
 		<tr>
 			<td class="cwHeadBg" align=left><img src="include/install/images/configwizard.gif" alt="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>" hspace="20" title="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>"></td>
-			<td class="cwHeadBg1" align=right><img src="include/install/images/vtigercrm5.gif" alt="<?php echo $installationStrings['LBL_VTIGER_CRM_5']; ?>" title="<?php echo $installationStrings['LBL_VTIGER_CRM_5']; ?>"></td>
+			<td class="cwHeadBg1" align=right><img src="include/install/images/app_logo.png" alt="<?php echo $installationStrings['APP_NAME']; ?>" title="<?php echo $installationStrings['APP_NAME']; ?>"></td>
 			<td class="cwHeadBg1" width=2%></td>
 		</tr>
 	</table>
@@ -66,24 +66,13 @@ $renamefile = $renameResult['renamefile'];
 $ins_file_renamed = $renameResult['install_file_renamed'];
 $ins_dir_renamed = $renameResult['install_directory_renamed'];
 
-// Status tracking
-$statimage = '';
 @include_once('config.inc.php');
-global $disable_stats_tracking;
-if(isset($application_unique_key) && !empty($application_unique_key)) {
-	if(isset($disable_stats_tracking) && !empty($disable_stats_tracking)) {
-		$statimage = "";
-	} else {
-		$statimage = "<img src='http://stats.vtiger.com/stats.php?uid=$application_unique_key&v=$vtiger_current_version&type=I' 
-		alt='|' title='' border=0 width='1px' height='1px'>";
-	}
-}
 
 ?>
 	<table border=0 cellspacing=0 cellpadding=5 align="center" width="80%" class="contentDisplay">
 		<tr>
 			<td align=center class=small>
-				<b>vtigercrm-<?php echo $vtiger_current_version. ' ' .$installationStrings['LBL_ALL_SET_TO_GO']; ?></b>
+				<b><?php echo $installationStrings['APP_NAME'].' - '.$vtiger_current_version. ' ' .$installationStrings['LBL_ALL_SET_TO_GO']; ?></b>
 				<hr noshade size=1>
 				<div style="width:100%;padding:10px;" align=left>
 					<strong><?php echo $installationStrings['LBL_GETTING_STARTED']; ?>&nbsp;</strong>
@@ -121,9 +110,8 @@ if(isset($application_unique_key) && !empty($application_unique_key)) {
 					<strong><?php echo $installationStrings['LBL_WE_AIM_TO_BE_BEST']. '. ' .$installationStrings['LBL_WELCOME_FEEDBACK'].'.'; ?></strong>
 					<ul><b>
 						<li><?php echo $installationStrings['LBL_TALK_TO_US_AT_FORUMS']; ?></li>
-						<li><?php echo $installationStrings['LBL_DISCUSS_WITH_US_AT_BLOGS']; ?></li>
 						<li><?php echo $installationStrings['LBL_DROP_A_MAIL']; ?>
-							<a href="mailto:feedback@vtiger.com" target="_blank">feedback@vtiger.com</a>
+							<a href="mailto:corebos@tsolucio.com" target="_blank">corebos@tsolucio.com</a>
 						</li>
 					</b></ul>
 					<ul>
@@ -182,7 +170,7 @@ if(isset($application_unique_key) && !empty($application_unique_key)) {
 </table>
 <table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
 	<tr>
-		<td class=small align=center> <a href="http://www.vtiger.com" target="_blank">www.vtiger.com</a></td> | <?php echo $statimage ?>
+		<td class=small align=center> <a href="<?php echo $coreBOS_app_url; ?>" target="_blank"><?php echo $coreBOS_app_name; ?></a></td>
 	</tr>
 </table>
 </body>

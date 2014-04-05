@@ -56,7 +56,7 @@ $check_mysql_extension = Common_Install_Wizard_Utils::check_mysql_extension();
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title><?php echo $installationStrings['LBL_VTIGER_CRM_5']. ' - ' . $installationStrings['LBL_CONFIG_WIZARD']. ' - ' . $installationStrings['LBL_INSTALLATION_CHECK']?></title>
+	<title><?php echo $installationStrings['APP_NAME']. ' - ' . $installationStrings['LBL_CONFIG_WIZARD']. ' - ' . $installationStrings['LBL_INSTALLATION_CHECK']?></title>
 	<link href="include/install/install.css" rel="stylesheet" type="text/css">
 	<link href="themes/softed/style.css" rel="stylesheet" type="text/css">
 </head>
@@ -69,7 +69,7 @@ $check_mysql_extension = Common_Install_Wizard_Utils::check_mysql_extension();
 	<table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
 		<tr>
 			<td class="cwHeadBg" align=left><img src="include/install/images/configwizard.gif" alt="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>" hspace="20" title="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>"></td>
-			<td class="cwHeadBg1" align=right><img src="include/install/images/vtigercrm5.gif" alt="<?php echo $installationStrings['LBL_VTIGER_CRM_5']; ?>" title="<?php echo $installationStrings['LBL_VTIGER_CRM_5']; ?>"></td>
+			<td class="cwHeadBg1" align=right><img src="include/install/images/app_logo.png" alt="<?php echo $installationStrings['APP_NAME']; ?>" title="<?php echo $installationStrings['APP_NAME']; ?>"></td>
 			<td class="cwHeadBg1" width=2%></td>
 		</tr>
 	</table>
@@ -264,7 +264,7 @@ $check_mysql_extension = Common_Install_Wizard_Utils::check_mysql_extension();
 	</table>	
 	<table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
       	<tr>
-        	<td class=small align=center> <a href="http://www.vtiger.com" target="_blank">www.vtiger.com</a></td>
+        	<td class=small align=center> <a href="<?php echo $coreBOS_app_url; ?>" target="_blank"><?php echo $coreBOS_app_name; ?></a></td>
       	</tr>
 	</table>
     	  	

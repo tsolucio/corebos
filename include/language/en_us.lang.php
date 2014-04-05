@@ -21,6 +21,7 @@
  ********************************************************************************/
 $app_strings = array (
 'LBL_BROWSER_TITLE' => 'coreBOS',
+'APP_NAME' => 'coreBOS',
 'LBL_MY_ACCOUNT' => 'My Organization',
 'LBL_MY_PREFERENCES' => 'My Preferences',
 'LBL_ADMIN' => 'Admin',
@@ -603,7 +604,6 @@ $app_strings = array (
 'LBL_CPY_MAILING_ADDRESS' => 'Copy Mailing Address',
 'LBL_CPY_OTHER_ADDRESS' => 'Copy Other Address',
 'LBL_PERMISSION' => 'You are not permitted to execute this Operation',
-'VTIGER' => 'coreBOS',
 'LBL_DIRECT_AMOUNT_DISCOUNT' => 'Direct Amount Discount',
 'LBL_NO_DISCOUNT_FOR_THIS_PRODUCT' => 'No Discount for this Product',
 'LBL_NO_DISCOUNT_FOR_THIS_LINE_ITEM'=> 'No Discount for this line item',

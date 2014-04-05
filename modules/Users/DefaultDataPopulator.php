@@ -1860,8 +1860,8 @@ Should any need arise,please do give us a call.';
 		//Insert into vtiger_organizationdetails vtiger_table
 		$organizationId = $this->db->getUniqueID('vtiger_organizationdetails');
 		$this->db->query("insert into vtiger_organizationdetails(organization_id,organizationname,address,city,state,country,code,phone,fax,website,logoname)
-								values ($organizationId,'vtiger',' 40-41-42, Sivasundar Apartments, Flat D-II, Shastri Street, Velachery','Chennai',
-										'Tamil Nadu','India','600 042','+91-44-5202-1990','+91-44-5202-1990','www.vtiger.com','vtiger-crm-logo.gif')");
+								values ($organizationId,'Your Company',' Your Address','Your City',
+										'Your State','Your Country','ZIP CODE','+99-98-7654-3210','+99-98-7654-3210','www.your-company.tld','app-logo.png')");
 
 
 		$this->db->query("insert into vtiger_actionmapping values(0,'Save',0)");

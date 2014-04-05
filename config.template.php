@@ -27,10 +27,10 @@ $CALCULATOR_DISPLAY = 'true';
 $CHAT_DISPLAY = 'true'; 
 $USE_RTE = 'true';
 
-// url for customer portal (Example: http://vtiger.com/portal)
-$PORTAL_URL = 'http://vtiger.com/customerportal';
+// url for customer portal (Example: http://your_support_domain.tld/portal)
+$PORTAL_URL = 'http://your_support_domain.tld/customerportal';
 
-// helpdesk support email id and support name (Example: 'support@vtiger.com' and 'vtiger support')
+// helpdesk support email id and support name (Example: 'support@your_support_domain.tld' and 'your-support name')
 $HELPDESK_SUPPORT_EMAIL_ID = '_USER_SUPPORT_EMAIL_';
 $HELPDESK_SUPPORT_NAME = 'your-support name';
 $HELPDESK_SUPPORT_EMAIL_REPLY_ID = $HELPDESK_SUPPORT_EMAIL_ID;

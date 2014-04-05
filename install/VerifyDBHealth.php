@@ -63,7 +63,7 @@ if ($_REQUEST['viewDBReport'] == true) {
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title><?php echo $installationStrings['LBL_VTIGER_CRM_5']. ' - ' . $installationStrings['LBL_DATABASE_CHECK']; ?></title>
+	<title><?php echo $installationStrings['APP_NAME']. ' - ' . $installationStrings['LBL_DATABASE_CHECK']; ?></title>
 	<link href="include/install/install.css" rel="stylesheet" type="text/css">
 	<link href="themes/softed/style.css" rel="stylesheet" type="text/css">
 	<script type='text/javascript'>
@@ -79,7 +79,7 @@ if ($_REQUEST['viewDBReport'] == true) {
 		<table width="99%" cellspacing="0" cellpadding="0" border="0" align="center">
 			<tr>
 				<td align="left" class="cwHeadBg heading2">&nbsp;<?php echo $installationStrings['LBL_DATABASE_CHECK']; ?></td>
-				<td align="right" class="cwHeadBg1"><img src="include/install/images/vtigercrm5.gif" alt="<?php echo $installationStrings['LBL_VTIGER_CRM_5']; ?>" title="<?php echo $installationStrings['LBL_VTIGER_CRM_5']; ?>"></td>
+				<td align="right" class="cwHeadBg1"><img src="include/install/images/app_logo.png" alt="<?php echo $installationStrings['APP_NAME']; ?>" title="<?php echo $installationStrings['APP_NAME']; ?>"></td>
 				<td width="2%" class="cwHeadBg1"/>
 			</tr>
 		</table>

@@ -51,9 +51,9 @@
 				</form>
 			</div>
 			<div class="importantLinks">
-			<a href='javascript:mypopup()'>{$APP.LNK_READ_LICENSE}</a>
+			<a href='copyright.html' target='_blank'>{$APP.LNK_READ_LICENSE}</a>
 			|
-			<a href='http://www.vtiger.com/products/crm/privacy_policy.html' target='_blank'>{$APP.LNK_PRIVACY_POLICY}</a>
+			<a href='http://corebos.org/page/privacy-policy' target='_blank'>{$APP.LNK_PRIVACY_POLICY}</a>
 			|
 			&copy; 2004- {php} echo date('Y'); {/php}
 			</div>

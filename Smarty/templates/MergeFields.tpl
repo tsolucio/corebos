@@ -14,7 +14,7 @@
 <html>
 <head>
 	<title>{$APP.$MODULE_NAME} - {$APP.LBL_BROWSER_TITLE}</title>
-	<link REL="SHORTCUT ICON" HREF="themes/images/vtigercrm_icon.ico">	
+	<link REL="SHORTCUT ICON" HREF="themes/images/favicon.ico">	
 	<style type="text/css">@import url("themes/{$THEME}/style.css");</style>
 	<!-- ActivityReminder customization for callback -->
 	{literal}

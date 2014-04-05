@@ -112,7 +112,7 @@ function set_focus() {ldelim}
 	                            <td class="moduleName" width="80%" style="padding-left:10px;">{$MODULE|@getTranslatedString:$MODULE}</td>
 							{/if}
                     {/if}
-					<td  width=30% nowrap class="componentName" align=right>{$APP.VTIGER}</td>
+					<td  width=30% nowrap class="componentName" align=right>{'APP_NAME'|@getTranslatedString}</td>
 				</tr>
 			</table>
 			<div id="status" style="position:absolute;display:none;right:135px;top:15px;height:27px;white-space:nowrap;"><img src="{'status.gif'|@vtiger_imageurl:$THEME}"></div>

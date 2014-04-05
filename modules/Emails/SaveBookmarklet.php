@@ -76,6 +76,6 @@ $smarty->assign("types",$wsFieldDetails['type']['refersTo']);
 $smarty->assign("entityNameFields",$json->encode($moduleEntityNameDetails));
 $smarty->assign("emailFields",$json->encode($moduleEmailFieldDetails));
 $smarty->assign("userEmail",$current_user->column_fields['email1']);
-
+$smarty->assign("MODULE",$currentModule);
 $smarty->display("modules/Bookmarklet/Bookmarklet.tpl");
 ?>

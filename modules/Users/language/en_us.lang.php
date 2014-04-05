@@ -649,7 +649,6 @@ $mod_strings = Array(
 
 'LBL_ENTER_PROFILE'=>'Enter The Profile Name',
 'TITLE_USER_DOCUMENT'=>'Untitled Document',
-'TITLE_VTIGER_CRM_5'=>'vtiger CRM 5 - Free, Commercial grade Open Source CRM',
 'ROLE_DRAG_ERR_MSG'=>'You cannot move a Parent Node under a Child Node',
 
 'LBL_NOTIFICATION_ACTIVITY'=>'Notification Activity',

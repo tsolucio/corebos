@@ -23,7 +23,7 @@
 	<table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
 	<tr>
 		<td class="cwHeadBg" align=left>&nbsp;</td>
-		<td class="cwHeadBg" align=right><img src="include/install/images/vtigercrm5.gif" alt="vtiger CRM 5" title="vtiger CRM 5"></td>
+		<td class="cwHeadBg" align=right><img src="include/install/images/app_logo.png" alt="vtiger CRM 5" title="vtiger CRM 5"></td>
 	</tr>
 	</table>
 
@@ -68,7 +68,7 @@
     	<table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
 
       	<tr>
-        	<td class=small align=center> <a href="http://www.vtiger.com" target="_blank">www.vtiger.com</a></td>
+        	<td class=small align=center> <a href="<?php echo $coreBOS_app_url; ?>" target="_blank"><?php echo $coreBOS_app_name; ?></a></td>
       	</tr>
     	</table>
 </body>

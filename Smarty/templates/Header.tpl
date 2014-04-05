@@ -13,7 +13,7 @@
 <html>
 <head>
 	<title>{$USER} - {$MODULE_NAME|@getTranslatedString:$MODULE_NAME} - {$APP.LBL_BROWSER_TITLE}</title>
-	<link REL="SHORTCUT ICON" HREF="themes/images/vtigercrm_icon.ico">
+	<link REL="SHORTCUT ICON" HREF="themes/images/favicon.ico">
 	<style type="text/css">@import url("themes/{$THEME}/style.css?v={$VERSION}");</style>
 	<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
 {* vtlib customization: Inclusion of custom javascript and css as registered *}
@@ -626,14 +626,6 @@ function getFormValidate(divValidate)
 </div>
 
 <div id="status" style="position:absolute;display:none;left:850px;top:95px;height:27px;white-space:nowrap;"><img src="{'status.gif'|@vtiger_imageurl:$THEME}"></div>
-<script>
-function openwin()
-{ldelim}
-            window.open("index.php?module=Users&action=about_us","aboutwin","height=520,width=515,top=200,left=300")
-{rdelim}
-
-</script>
-
 
 <div id="tracker" style="display:none;position:absolute;z-index:100000001;" class="layerPopup">
 

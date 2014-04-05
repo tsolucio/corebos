@@ -14,7 +14,6 @@
 <meta http-equiv="Content-Type" content="text/html; charset={$LBL_CHARSET}">
 <title>{$APP.LBL_BROWSER_TITLE}</title>
 <style type="text/css">@import url("include/style.css");</style>
-<script language="JavaScript" type="text/javascript" src="include/js/popup.js"></script>
 <script type="text/javascript" language="JavaScript">
 function set_focus() {ldelim}
 	if (document.DetailView.user_name.value != '') {ldelim}

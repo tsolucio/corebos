@@ -11,5 +11,7 @@ $patch_version = '';
 $modified_database = '';
 $vtiger_current_version = '5.4.0';
 $_SESSION['vtiger_version'] = $vtiger_current_version;
-
+$coreBOS_app_version = '1.0';
+$coreBOS_app_name ='coreBOS';
+$coreBOS_app_url = 'http://corebos.org';
 ?>
