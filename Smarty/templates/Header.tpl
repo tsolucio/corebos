@@ -118,12 +118,12 @@
 					<span class="userName">{$USER}</span>
 				</td>
 				{* ondemand customization: Header links on the top panel *}
-				<td class="small"  onmouseover="fnDropDownUser(this,'ondemand_sub','~{$CURRENT_USER_MAIL}`');" onmouseout="fnHideDrop('ondemand_sub');" valign="bottom" nowrap style="padding-bottom: 1em;"><img src="{$IMAGEPATH}user.PNG" border=0 style="padding: 0px;padding-left:5px"></td>
+				<td class="small" valign="bottom" nowrap style="padding-bottom: 1em;"><a href="index.php?module=Users&action=DetailView&record={$CURRENT_USER_ID}&modechk=prefview"><img src="{$IMAGEPATH}user.PNG" border=0 style="padding: 0px;padding-left:5px" title="{$APP.LBL_MY_PREFERENCES}" alt="{$APP.LBL_MY_PREFERENCES}"></a></td>
 				{* END *}
 				{* vtlib customization: Header links on the top panel *}
 				{if $HEADERLINKS}
-				<td style="padding-left:10px;padding-right:5px" class=small nowrap>
-					<a href="javascript:;" onmouseover="fnvshobj(this,'vtlib_headerLinksLay');" onclick="fnvshobj(this,'vtlib_headerLinksLay');">{$APP.LBL_MORE}</a> <img src="{'arrow_down.gif'|@vtiger_imageurl:$THEME}" border=0>
+			<td style="padding-bottom:1em;padding-left:10px;padding-right:5px" class=small nowrap valign="bottom">
+				<a href="javascript:;" onmouseover="fnvshobj(this,'vtlib_headerLinksLay');" onclick="fnvshobj(this,'vtlib_headerLinksLay');"><img src="{'menu_more.png'|@vtiger_imageurl:$THEME}" border=0 style="padding: 0px;padding-left:5px"></a>
 					<div style="display: none; left: 193px; top: 106px;width:155px; position:absolute;" id="vtlib_headerLinksLay"
 					onmouseout="fninvsh('vtlib_headerLinksLay')" onmouseover="fnvshNrm('vtlib_headerLinksLay')">
 					<table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -154,10 +154,11 @@
 				{if $ADMIN_LINK neq ''}
 					{foreach key=maintabs item=detail from=$HEADERS}
 						{if $maintabs eq "Settings"}
-							<td  valign="bottom" nowrap style="padding-bottom: 1em;" class="small" onmouseout="fnHideDrop('mainsettings');" onmouseover="fnDropDown(this,'mainsettings');" nowrap><img src="{$IMAGEPATH}mainSettings.PNG"  border=0 style="padding: 0px;padding-left:5px "></td>
+							<td  valign="bottom" nowrap style="padding-bottom: 1em;" class="small" onmouseout="fnHideDrop('mainsettings');" onmouseover="fnDropDown(this,'mainsettings');" nowrap><a href="index.php?module=Settings&action=index&parenttab="><img src="{$IMAGEPATH}mainSettings.PNG"  border=0 style="padding: 0px;padding-left:5px "></a></td>
 						{/if}
 					{/foreach}
 				{/if}
+				<td  valign="bottom" nowrap style="padding-bottom: 1em;" class="small" nowrap><a href="index.php?module=Users&action=Logout"> <img src="themes/images/logout.png" border=0 style="padding: 0px;padding-left:5px " title="{$APP.LBL_LOGOUT}" alt="{$APP.LBL_LOGOUT}"></a></td>
 			</tr>
 			</table>
         </td>

@@ -20,7 +20,7 @@
  * Contributor(s): ______________________________________..
  ********************************************************************************/
 $app_strings = array (
-'LBL_BROWSER_TITLE' => 'vtiger CRM 5 - Commercial Open Source CRM',
+'LBL_BROWSER_TITLE' => 'coreBOS',
 'LBL_MY_ACCOUNT' => 'My Organization',
 'LBL_MY_PREFERENCES' => 'My Preferences',
 'LBL_ADMIN' => 'Admin',
@@ -34,8 +34,8 @@ $app_strings = array (
 'all'=>'All',
 'LBL_UPCOMING_EVENTS'=>'Upcoming Activities',
 'LBL_PENDING_EVENTS'=>'Pending Activities',
-'NTC_WELCOME_MESSAGE' => 'Welcome to vtiger CRM!',
-'NTC_DESCRIPTION' => 'Use a valid username and password to login to the vtiger CRM.',
+'NTC_WELCOME_MESSAGE' => 'Welcome to coreBOS!',
+'NTC_DESCRIPTION' => 'Use a valid username and password to login to the coreBOS.',
 'NTC_WELCOME' => 'Welcome',
 'NTC_NO_ITEMS_DISPLAY' => 'none',
 'LBL_OR' => 'or',
@@ -140,7 +140,7 @@ $app_strings = array (
 'LBL_LIST_OF' => 'of',
 'LNK_PRINT' => 'Print',
 'LNK_HELP' => 'Help',
-'LNK_VTDOCS' => 'vtiger Docs',
+'LNK_VTDOCS' => 'coreBOS Docs',
 'LNK_ABOUT' => 'About',
 'LNK_OUTLOOK' => './include/images/outlook_download.gif',
 'SINGLE_Accounts' => 'Organization',
@@ -603,7 +603,7 @@ $app_strings = array (
 'LBL_CPY_MAILING_ADDRESS' => 'Copy Mailing Address',
 'LBL_CPY_OTHER_ADDRESS' => 'Copy Other Address',
 'LBL_PERMISSION' => 'You are not permitted to execute this Operation',
-'VTIGER' => 'vtiger',
+'VTIGER' => 'coreBOS',
 'LBL_DIRECT_AMOUNT_DISCOUNT' => 'Direct Amount Discount',
 'LBL_NO_DISCOUNT_FOR_THIS_PRODUCT' => 'No Discount for this Product',
 'LBL_NO_DISCOUNT_FOR_THIS_LINE_ITEM'=> 'No Discount for this line item',
@@ -822,7 +822,7 @@ $app_strings = array (
 'MSG_THANK_YOU'=>'Thank You',
 'MSG_HAS_BEEN_CREATED_FOR'=>'has been created for',
 'MSG_THANKS'=>'Thanks,',
-'MSG_VTIGERTEAM'=>' vTiger Team',
+'MSG_VTIGERTEAM'=>' coreBOS Team',
 'MSG_IS_NOT_UPLOADED'=>'is not uploaded. Allowed file types - jpeg, png, jpg, pjpeg, x-png or gif',
 'MSG_IMAGE_ERROR'=>'Image not found',
 
