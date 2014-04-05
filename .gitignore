@@ -1,6 +1,9 @@
+cache/*
 cache/**/*
+test/*
 test/**/*
 Smarty/templates_c/*
+storage/*
 storage/**/*
 logs/*
 backup/*

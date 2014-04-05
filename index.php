@@ -109,7 +109,7 @@ if (!isset($dbconfig['db_hostname']) || $dbconfig['db_status']=='_DB_STAT_') {
 		header("Location: install.php");
 		exit();
 }
-			
+
 // load up the config_override.php file.  This is used to provide default user settings
 if (is_file('config_override.php')) 
 {

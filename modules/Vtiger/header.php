@@ -101,6 +101,11 @@ $result = $adb->pquery($sql, array());
 //Handle for allowed organation logo/logoname likes UTF-8 Character
 $organization_logo = decode_html($adb->query_result($result,0,'logoname'));
 $smarty->assign("LOGO",$organization_logo);
+$companyDetails = array();
+$companyDetails['name'] = $adb->query_result($result,0,'organizationname');
+$companyDetails['website'] = $adb->query_result($result,0,'website');
+$companyDetails['logo'] = $organization_logo;
+$smarty->assign("COMPANY_DETAILS",$companyDetails);
 
 $smarty->display("Header.tpl");
 ?>

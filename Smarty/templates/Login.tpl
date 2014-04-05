@@ -13,7 +13,7 @@
 <table class="loginWrapper" width="100%" height="100%" cellpadding="10" cellspacing="0" border="0">
 	<tr valign="top">
 		<td valign="top" align="left" colspan="2">
-			<img align="absmiddle" src="test/logo/{$COMPANY_DETAILS.logo}" alt="logo"/>
+			<img align="absmiddle" src="test/logo/{$COMPANY_DETAILS.logo}" alt="{$COMPANY_DETAILS.name}"/>
 			<br />
 			<a target="_blank" href="http://{$COMPANY_DETAILS.website}">{$COMPANY_DETAILS.name}</a>
 			<br />
