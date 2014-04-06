@@ -76,6 +76,37 @@ function putMsg($msg) {
 echo "<table width=80% align=center border=1>";
 
 ExecuteQuery("update vtiger_field set block=67 where tabid=23 and columnname='s_h_amount'");
+ExecuteQuery("ALTER TABLE vtiger_loginhistory CHANGE user_name user_name VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL");
+
+$delimg = array('include/images/AppStore.png',
+	'include/images/AppStoreQRCode.png',
+	'include/images/ExchangeConnector.png',
+	'include/images/GooglePlay.png',
+	'include/images/GooglePlayQRCode.png',
+	'include/images/OutlookPlugin.png',
+	'include/images/vtigercrm_icon.ico',
+	'themes/alphagrey/images/vtiger-crm.gif',
+	'themes/bluelagoon/images/vtiger-crm.gif',
+	'themes/images/aboutUS.jpg',
+	'themes/images/bullets.gif',
+	'themes/images/honestCRM.gif',
+	'themes/images/honestCRMTop.gif',
+	'themes/images/loginTopHeaderBg.gif',
+	'themes/images/loginTopHeaderName.gif',
+	'themes/images/loginTopVersion.gif',
+	'themes/images/vtiger-paw.jpg',
+	'themes/images/vtiger.jpg',
+	'themes/images/vtigerName.gif',
+	'themes/images/vtigercrm_icon.ico',
+	'themes/images/vtigerlogo.jpg',
+	'themes/softed/images/vtiger-crm.gif',
+	'themes/woodspice/images/vtiger-crm.gif',
+	'test/logo/vtiger-crm-logo.gif',
+);
+foreach ($delimg as $dimg) {
+	@unlink($dimg);
+	putmsg("image $dimg deleted");
+}
 
 ?>
 </table>
