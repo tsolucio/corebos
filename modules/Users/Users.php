@@ -578,7 +578,11 @@ class Users extends CRMEntity {
         global $adb;
         $query = "SELECT id from vtiger_users where user_name=? AND deleted=0";
         $result  =$adb->pquery($query, array($user_name));
+        if ($result and $adb->num_rows($result)>0) {
         $userid = $adb->query_result($result,0,'id');
+        } else {
+        $userid = 0;
+        }
         return $userid;
     }
 

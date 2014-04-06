@@ -13,6 +13,9 @@
 		$user = new Users();
 		$userId = $user->retrieve_user_id($username);
 		
+		if (empty($userId)) {
+			throw new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED,'Given user cannot be found');
+		}
 		$token = vtws_getActiveToken($userId);
 		if($token == null){
 			throw new WebServiceException(WebServiceErrorCode::$INVALIDTOKEN,"Specified token is invalid or expired");

@@ -14,6 +14,10 @@
 		
 		$user = new Users();
 		$userid = $user->retrieve_user_id($username);
+		if (empty($userid)) {
+			throw new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED,'Given user cannot be found');
+		}
+		
 		$authToken = uniqid();
 		
 		$servertime = time();
