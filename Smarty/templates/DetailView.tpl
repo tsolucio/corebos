@@ -446,7 +446,7 @@ function sendfile_email()
 																</td>
 															</tr>
 														{/if}
-													{elseif $TODO_PERMISSION eq 'true' || $EVENT_PERMISSION eq 'true' || $CONTACT_PERMISSION eq 'true'|| $MODULE eq 'Contacts' || ($MODULE eq 'Documents')}
+													{elseif $TODO_PERMISSION eq 'true' || $EVENT_PERMISSION eq 'true' || $CONTACT_PERMISSION eq 'true'|| $MODULE eq 'Contacts' || $MODULE eq 'Leads' || ($MODULE eq 'Documents')}
 
 														{if $MODULE eq 'Contacts'}
 															{assign var=subst value="contact_id"}
