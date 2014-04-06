@@ -661,10 +661,7 @@ function getFormValidate(divValidate)
 <div  id="usersettings" class="drop_mnu_user" onmouseout="fnHideDrop('usersettings');" onmouseover="fnvshNrm('usersettings');"  style="width:110px;left:1226px;">
 	<table border=0 width="100%" border="0" cellpadding="0" cellspacing="0" >
         <tr >
-			<td style="padding-left:0px;padding-right:10px font-weight:bold"  nowrap> <a href="http://wiki.vtiger.com/index.php/Main_Page" target="_blank" class="drop_down_usersettings">{$APP.LNK_HELP}</a> </td>
-        </tr>
-        <tr>
-			<td style="padding-left:0px;padding-right:10px font-weight:bold" nowrap> <a href="javascript:void(0);" onclick="vtiger_feedback();" class="drop_down_usersettings">{$APP.LBL_FEEDBACK}</a></td>
+			<td style="padding-left:0px;padding-right:10px font-weight:bold"  nowrap> <a href="{$smarty.const.MAIN_HELP_PAGE}" target="_blank" class="drop_down_usersettings">{$APP.LNK_HELP}</a> </td>
         </tr>
 	</table>
 </div>
@@ -691,14 +688,6 @@ function getFormValidate(divValidate)
 	{/foreach}
         </table>
 </div>
-<!-- vtiger Feedback -->
-<script type="text/javascript">
-{literal}
-function vtiger_feedback() {
-	window.open("http://vtiger.com/products/crm/feedback.php?uid={/literal}{php}global $application_unique_key; echo $application_unique_key;{/php}&version={php}global $vtiger_current_version; echo $vtiger_current_version;{/php}&email={$CURRENT_USER_MAIL}{literal}","feedbackwin","height=300,width=515,top=200,left=300")
-}
-{/literal}
-</script>
 <script type="text/javascript">
 {literal}
 function vtiger_news(obj) {

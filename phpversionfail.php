@@ -7,13 +7,13 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
+include_once 'vtigerversion.php';
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-	<title>vtiger CRM 5 - PHP Version Check</title>
+	<title><?php echo $coreBOS_app_name; ?> - PHP Version Check</title>
 	<link href="include/install/install.css" rel="stylesheet" type="text/css">
 </head>
 
@@ -23,7 +23,7 @@
 	<table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
 	<tr>
 		<td class="cwHeadBg" align=left>&nbsp;</td>
-		<td class="cwHeadBg" align=right><img src="include/install/images/app_logo.png" alt="vtiger CRM 5" title="vtiger CRM 5"></td>
+		<td class="cwHeadBg" align=right><img src="include/install/images/app_logo.png" alt="<?php echo $coreBOS_app_name; ?>" title="<?php echo $coreBOS_app_name; ?>"></td>
 	</tr>
 	</table>
 
@@ -36,7 +36,7 @@
 	<table border=0 cellspacing=0 cellpadding=10 width=80% align=center>
 	<tr>
 		<td class="small" bgcolor="#FFFFFF" align=center>
-			PHP 5.2.x or above is required. Your current PHP version is
+			PHP 5.2.x or PHP 5.3.x is required. Your current PHP version is
 			<?php
 				if(isset($serverPhpVersion)) {
 					echo $serverPhpVersion;
@@ -44,7 +44,7 @@
 					echo '???';
 				}
 			?> <br/>
-			Kindly upgrade the PHP installation, and try again! <br/>
+			Kindly adapt your PHP installation, and try again! <br/>
 		</td>
 	</tr>
 	</table>

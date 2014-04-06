@@ -23,7 +23,7 @@ global $entityDel;
 global $display;
 global $category;
 
-if(version_compare(phpversion(), '5.2.0') < 0) {
+if(version_compare(phpversion(), '5.2.0') < 0 or version_compare(phpversion(), '5.4.0','ge') > 0) {
         insert_charset_header();
 		$serverPhpVersion = phpversion();
         require_once('phpversionfail.php');
@@ -115,6 +115,8 @@ if (is_file('config_override.php'))
 {
 	require_once('config_override.php');
 }
+// load global help links
+require_once 'config.help.link.php';
 
 /**
  * Check for vtiger installed version and codebase
