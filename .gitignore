@@ -8,3 +8,4 @@ storage/**/*
 logs/*
 backup/*
 user_privileges/*
+config-dev.inc.php
