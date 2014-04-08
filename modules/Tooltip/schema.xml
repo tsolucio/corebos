@@ -1,0 +1,16 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_quickview</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_quickview` (
+  `fieldid` int(19) NOT NULL,
+  `related_fieldid` int(19) NOT NULL,
+  `sequence` int(19) NOT NULL,
+  `currentview` int(19) NOT NULL,
+  KEY `fk_1_vtiger_quickview` (`fieldid`),
+  CONSTRAINT `fk_1_vtiger_quickview` FOREIGN KEY (`fieldid`) REFERENCES `vtiger_field` (`fieldid`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

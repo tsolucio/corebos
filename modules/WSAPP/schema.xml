@@ -1,0 +1,55 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_wsapp</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_wsapp` (
+  `appid` int(11) NOT NULL auto_increment,
+  `name` varchar(200) NOT NULL,
+  `appkey` varchar(255) default NULL,
+  `type` varchar(100) default NULL,
+  PRIMARY KEY  (`appid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_wsapp_recordmapping</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_wsapp_recordmapping` (
+  `id` int(19) NOT NULL auto_increment,
+  `serverid` varchar(10) default NULL,
+  `clientid` varchar(255) default NULL,
+  `clientmodifiedtime` datetime default NULL,
+  `appid` int(11) default NULL,
+  `servermodifiedtime` datetime default NULL,
+  `serverappid` int(11) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_wsapp_handlerdetails</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_wsapp_handlerdetails` (
+  `type` varchar(200) NOT NULL,
+  `handlerclass` varchar(100) default NULL,
+  `handlerpath` varchar(300) default NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_wsapp_queuerecords</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_wsapp_queuerecords` (
+  `syncserverid` int(19) default NULL,
+  `details` varchar(300) default NULL,
+  `flag` varchar(100) default NULL,
+  `appid` int(19) default NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_wsapp_sync_state</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_wsapp_sync_state` (
+	`id` int(19) NOT NULL auto_increment,
+	`name` varchar(200) default NULL,
+	`stateencodedvalues` varchar(300) NOT NULL,
+	`userid` int(19) default NULL,
+	PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

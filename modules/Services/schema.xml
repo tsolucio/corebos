@@ -1,0 +1,35 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_service</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_service` (
+  `serviceid` int(11) NOT NULL,
+  `service_no` varchar(100) NOT NULL,
+  `servicename` varchar(50) NOT NULL,
+  `servicecategory` varchar(200) default NULL,
+  `qty_per_unit` decimal(11,2) default '0.00',
+  `unit_price` decimal(25,2) default NULL,
+  `sales_start_date` date default NULL,
+  `sales_end_date` date default NULL,
+  `start_date` date default NULL,
+  `expiry_date` date default NULL,
+  `discontinued` int(1) NOT NULL default '0',
+  `service_usageunit` varchar(200) default NULL,
+  `website` varchar(100) default NULL,
+  `taxclass` varchar(200) default NULL,
+  `currency_id` int(19) NOT NULL default '1',
+  `commissionrate` decimal(7,3) default NULL,
+  PRIMARY KEY  (`serviceid`),
+  CONSTRAINT `fk_1_vtiger_service` FOREIGN KEY (`serviceid`) REFERENCES `vtiger_crmentity` (`crmid`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_servicecf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_servicecf` (
+  `serviceid` int(19) NOT NULL default '0',
+  PRIMARY KEY  (`serviceid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

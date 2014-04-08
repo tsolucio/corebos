@@ -1,0 +1,15 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_pbxmanager</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_pbxmanager` (
+  `pbxmanagerid` int(11) default NULL,
+  `callfrom` varchar(255) default NULL,
+  `callto` varchar(255) default NULL,
+  `timeofcall` varchar(255) default NULL,
+  `status` varchar(255) default NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

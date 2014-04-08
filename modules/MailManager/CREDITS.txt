@@ -1,0 +1,10 @@
+Thanks to contributors of the open source library which is used for development.
+
+1. HTML_Safe (http://pear.php.net/package/HTML_Safe)
+Under: BSD (3 Clause) License
+
+2. XML_HTMLSax3 (http://pear.php.net/package/XML_HTMLSax3)
+Under: PHP License
+
+3. jQuery Tokenizing Autocomplete (like facebook) (http://loopj.com/2009/04/25/jquery-plugin-tokenizing-autocomplete-text-entry/)
+Under: MIT License (choosen)

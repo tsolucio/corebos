@@ -1,0 +1,30 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_project</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_project` (
+  `projectid` int(11) default NULL,
+  `projectname` varchar(255) default NULL,
+  `project_no` varchar(100) default NULL,
+  `startdate` date default NULL,
+  `targetenddate` date default NULL,
+  `actualenddate` date default NULL,
+  `targetbudget` varchar(255) default NULL,
+  `projecturl` varchar(255) default NULL,
+  `projectstatus` varchar(100) default NULL,
+  `projectpriority` varchar(100) default NULL,
+  `projecttype` varchar(100) default NULL,
+  `progress` varchar(100) default NULL,
+  `linktoaccountscontacts` varchar(100) default NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_projectcf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_projectcf` (
+  `projectid` int(11) NOT NULL,
+  PRIMARY KEY  (`projectid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

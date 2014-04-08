@@ -1,0 +1,21 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_modcomments</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_modcomments` (
+  `modcommentsid` int(11) DEFAULT NULL,
+  `commentcontent` text,
+  `related_to` varchar(100) NOT NULL,
+  `parent_comments` varchar(100) default NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_modcommentscf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_modcommentscf` (
+  `modcommentsid` int(11) NOT NULL,
+  PRIMARY KEY (`modcommentsid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

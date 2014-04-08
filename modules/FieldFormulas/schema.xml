@@ -1,0 +1,14 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_fieldformulas</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_fieldformulas` (
+  `expressionid` int(11) NOT NULL default '0',
+  `modulename` varchar(100) default NULL,
+  `expression_engine` text,
+  PRIMARY KEY  (`expressionid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

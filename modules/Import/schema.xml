@@ -1,0 +1,32 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_import_locks</name>
+			<sql><![CDATA[
+			CREATE TABLE vtiger_import_locks
+				(vtiger_import_lock_id INT NOT NULL PRIMARY KEY,
+				userid INT NOT NULL,
+				tabid INT NOT NULL,
+				importid INT NOT NULL,
+				locked_since DATETIME)
+			ENGINE=InnoDB DEFAULT CHARSET=utf8
+		]]></sql>
+		</table>
+		<table>
+			<name>vtiger_import_queue</name>
+			<sql><![CDATA[
+			CREATE TABLE vtiger_import_queue
+				(importid INT NOT NULL PRIMARY KEY,
+				userid INT NOT NULL,
+				tabid INT NOT NULL,
+				field_mapping TEXT,
+				default_values TEXT,
+				merge_type INT,
+				merge_fields TEXT,
+				status INT default 0)
+			ENGINE=InnoDB DEFAULT CHARSET=utf8
+		]]></sql>
+		</table>
+	</tables>
+</schema>
