@@ -26,6 +26,7 @@ require_once('include/utils/CommonUtils.php'); //new
 require_once('user_privileges/default_module_view.php'); //new
 require_once('include/utils/UserInfoUtil.php');
 require_once('include/Zend/Json.php');
+require_once 'include/CustomFieldUtil.php';
 
 /* * This function is used to get the list view header values in a list view
  * Param $focus - module object
@@ -3804,13 +3805,17 @@ function getListViewDeleteLink($module, $entity_id, $relatedlist, $returnset) {
 
 /* Function to get the Entity Id of a given Entity Name */
 
-function getEntityId($module, $entityName) {
+function getEntityId($module, $entityName, $searchonfield='') {
 	global $log, $adb;
 	$log->info("in getEntityId " . $entityName);
 
 	$query = "select fieldname,tablename,entityidfield from vtiger_entityname where modulename = ?";
 	$result = $adb->pquery($query, array($module));
-	$fieldsname = $adb->query_result($result, 0, 'fieldname');
+	if (empty($searchonfield)) {
+		$fieldsname = $adb->query_result($result, 0, 'fieldname');
+	} else {
+		$fieldsname = $searchonfield;
+	}
 	$tablename = $adb->query_result($result, 0, 'tablename');
 	$entityidfield = $adb->query_result($result, 0, 'entityidfield');
 	if (!(strpos($fieldsname, ',') === false)) {
@@ -3822,8 +3827,17 @@ function getEntityId($module, $entityName) {
 	}
 
 	if ($entityName != '') {
-		$sql = "select $entityidfield from $tablename INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $tablename.$entityidfield " .
-				" WHERE vtiger_crmentity.deleted = 0 and $fieldsname=?";
+		$cfinfo = getCustomFieldTableInfo($module);
+		if (is_array($cfinfo)) {
+			$modulecftable = $cfinfo[0];
+			$modulecfindex = $cfinfo[1];
+			$cfquery = "inner join $modulecftable as $modulecftable on $modulecftable.$modulecfindex=$tablename.$entityidfield";
+		} else {
+			$cfquery = '';
+		}
+		
+		$sql = "select $tablename.$entityidfield from $tablename INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $tablename.$entityidfield " .
+				" $cfquery WHERE vtiger_crmentity.deleted = 0 and $fieldsname=?";
 		$result = $adb->pquery($sql, array($entityName));
 		if ($adb->num_rows($result) > 0) {
 			$entityId = $adb->query_result($result, 0, $entityidfield);

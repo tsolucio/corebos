@@ -155,6 +155,26 @@ function getCustomFieldData($tab,$id,$datatype)
 	return $return_data[$datatype];
 }
 
+/**
+ * Function to get customfield table and index field from a given module
+ * @param $module :: Module name -- Type string
+ * returns the corresponding custom field table name and index
+ */
+function getCustomFieldTableInfo($module)
+{
+	global $log;
+	$log->debug("Entering getCustomFieldTableInfo($module) method ...");
+	$primary = CRMEntity::getInstance($module);
+	vtlib_setup_modulevars($module, $primary);
+	if (isset($primary->customFieldTable)) {
+		$cfinfo = $primary->customFieldTable;
+	} else {
+		$cfinfo = '';
+	}
+	$log->debug("Exiting getCustomFieldTableInfo method ...");
+	return $cfinfo;
+}
+
 
 /**
  * Function to get customfield type,length value,decimal value and picklist value
