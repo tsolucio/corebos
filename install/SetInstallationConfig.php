@@ -20,7 +20,7 @@ $current_dir = pathinfo(dirname(__FILE__));
 $current_dir = $current_dir['dirname']."/";
 $cache_dir = "cache/";
 
-$newdbname = 'vtigercrm'.str_replace(array('.',' '),array(''),strtolower($vtiger_current_version));
+$newdbname = 'corebos'.str_replace(array('.',' '),array(''),strtolower($vtiger_current_version));
 
 require_once('modules/Utilities/Currencies.php');
 
