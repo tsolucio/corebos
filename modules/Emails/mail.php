@@ -293,7 +293,7 @@ function addAttachment($mail,$filename,$record)
 	$adb->println("The file name is => '".$filename."'");
 
 	//This is the file which has been selected in Email EditView
-        if(is_file($filename) && $filename != '')
+        if($filename != '' && is_file($root_directory."test/upload/".$filename))
         {
                 $mail->AddAttachment($root_directory."test/upload/".$filename);
         }
@@ -559,8 +559,8 @@ function getDefaultAssigneeEmailIds($groupId) {
 		$userGroups = new GetGroupUsers();
 		$userGroups->getAllUsersInGroup($groupId);
 		$result = $adb->pquery('SELECT email1,email2,secondaryemail FROM vtiger_users WHERE vtiger_users.id IN
-											('.  generateQuestionMarks($userGroups->group_users).')',
-								array($userGroups->group_users));
+											('.  generateQuestionMarks($userGroups->group_users).') AND vtiger_users.status= ?',
+								array($userGroups->group_users, 'Active'));
 		$rows = $adb->num_rows($result);
 		for($i = 0;$i < $rows; $i++) {
 			$email = $adb->query_result($result,$i,'email1');
