@@ -33,7 +33,7 @@ if( $_SESSION['mail_send_error']!="")
 {
 	echo '<b><font color=red>'. $mod_strings{"LBL_NOTIFICATION_ERROR"}.'</font></b><br>';
 }
-session_unregister('mail_send_error');
+unset($_SESSION['mail_send_error']);
 
 $focus = CRMEntity::getInstance($currentModule);
 $smarty =  new vtigerCRM_Smarty();
@@ -133,8 +133,8 @@ if($current_user->hour_format == '')
 	$format = 'am/pm';
 else
 	$format = $current_user->hour_format;
-list($stdate,$sttime) = split(' ',$finaldata['date_start']);
-list($enddate,$endtime) = split(' ',$finaldata['due_date']);
+list($stdate,$sttime) = explode(' ',$finaldata['date_start']);
+list($enddate,$endtime) = explode(' ',$finaldata['due_date']);
 $time_arr = getaddEventPopupTime($sttime,$endtime,$format);
 $data['starthr'] = $time_arr['starthour'];
 $data['startmin'] = $time_arr['startmin'];

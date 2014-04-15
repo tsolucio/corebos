@@ -31,7 +31,7 @@ $query = $adb->pquery("SELECT tablename,entityidfield, fieldname from vtiger_ent
 $table_name = $adb->query_result($query,0,'tablename');
 $field_name = $adb->query_result($query,0,'fieldname');
 $id_field = $adb->query_result($query,0,'entityidfield');
-$fieldname = split(",",$field_name);
+$fieldname = explode(",",$field_name);
 $fields_array = array($sModule=>$fieldname);
 $id_array = array($sModule=>$id_field);
 $tables_array = array($sModule=>$table_name);

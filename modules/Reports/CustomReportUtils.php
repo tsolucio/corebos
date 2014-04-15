@@ -33,8 +33,8 @@ Class CustomReportUtils {
 		foreach ($groupBy as $key => $value) {
 			// $groupByConditon = explode(" ",$value);
 			//$groupByNew = explode("'",$groupByConditon[0]);
-			list($tablename, $colname, $module_field, $fieldname, $single) = split(":", $key);
-			list($module, $field) = split("_", $module_field);
+			list($tablename, $colname, $module_field, $fieldname, $single) = explode(":", $key);
+			list($module, $field) = explode("_", $module_field);
 			$fieldDetails = $key;
 			break;
 		}
@@ -53,7 +53,7 @@ Class CustomReportUtils {
 	}
 
 	public static function IsDateField($reportColDetails) {
-		list($tablename, $colname, $module_field, $fieldname, $typeOfData) = split(":", $reportColDetails);
+		list($tablename, $colname, $module_field, $fieldname, $typeOfData) = explode(":", $reportColDetails);
 		if ($typeOfData == "D") {
 			return true;
 		} else {
@@ -62,9 +62,9 @@ Class CustomReportUtils {
 	}
 
 	public static function getAdvanceSearchCondition($fieldDetails, $criteria, $fieldvalue) {
-		list($tablename, $colname, $module_field, $fieldname, $single) = split(":", $fieldDetails);
-		list($module, $field) = split("_", $module_field);
-		list($year, $month, $day) = split("-", $fieldvalue);
+		list($tablename, $colname, $module_field, $fieldname, $single) = explode(":", $fieldDetails);
+		list($module, $field) = explode("_", $module_field);
+		list($year, $month, $day) = explode("-", $fieldvalue);
 		$grteqCondition = 'h';
 		$eqCondition = 'e';
 		$lessCondititon = 'l';

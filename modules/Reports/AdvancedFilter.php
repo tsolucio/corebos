@@ -166,13 +166,13 @@ function getRelatedColumns($selected=""){
 	global $ogReport;
 	$rel_fields = $ogReport->adv_rel_fields;
 	if($selected!='All'){
-		$selected = split(":",$selected);
+		$selected = explode(":",$selected);
 	}
 	$related_fields = array();
 	foreach($rel_fields as $i=>$index){
 		$shtml='';
 		foreach($index as $key=>$value){
-			$fieldarray = split("::",$value);
+			$fieldarray = explode("::",$value);
 			$shtml .= "<option value=\"".$fieldarray[0]."\">".$fieldarray[1]."</option>";
 		}
 		$related_fields[$i] = $shtml;

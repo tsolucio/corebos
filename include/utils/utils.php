@@ -3236,7 +3236,7 @@ function getMigrationCharsetFlag() {
 /** Function to convert a given time string to Minutes */
 function ConvertToMinutes($time_string)
 {
-	$interval = split(' ', $time_string);
+	$interval = explode(' ', $time_string);
 	$interval_minutes = intval($interval[0]);
 	$interval_string = strtolower($interval[1]);
 	if($interval_string == 'hour' || $interval_string == 'hours')
@@ -5005,7 +5005,7 @@ function getSelectAllQuery($input,$module) {
 		$query = $oCustomView->getModifiedCvListQuery($viewid,$listquery,$module);
 		$where = '';
 		if($input['query'] == 'true') {
-			list($where, $ustring) = split("#@@#",getWhereCondition($module, $input));
+			list($where, $ustring) = explode("#@@#",getWhereCondition($module, $input));
 			if(isset($where) && $where != '') {
 				$query .= " AND " .$where;
 			}

@@ -35,7 +35,7 @@ if($numOfRows > 0) {
 	$primarymodule = $ogReport->primodule;
 	$restrictedmodules = array();
 	if($ogReport->secmodule!='')
-		$rep_modules = split(":",$ogReport->secmodule);
+		$rep_modules = explode(":",$ogReport->secmodule);
 	else
 		$rep_modules = array();
 

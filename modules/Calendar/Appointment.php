@@ -141,7 +141,7 @@ class Appointment
 			for($j = $from; $j <= $to; $j=$j+(60*60*24))
 			{
 
-				$obj = &new Appointment();
+				$obj = new Appointment();
 				$temp_start = date("Y-m-d",$j);
 				$endTime = strtotime($temp_start. ' '.  $result['time_start']);
 				if($endTime > $windowTo) {
@@ -187,7 +187,7 @@ class Appointment
         $a = 0;
 		while ( $a < $n )
                 {
-			$obj = &new Appointment();
+			$obj = new Appointment();
                         $result = $adb->fetchByAssoc($r);
 			list($obj->temphour,$obj->tempmin) = explode(":",$result["time_start"]);
                         $obj->readResult($result,$view);

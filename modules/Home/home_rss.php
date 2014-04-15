@@ -14,11 +14,7 @@ require_once('include/utils/utils.php');
 global $current_user;
 global $adb;
 $db = PearDatabase::getInstance();
-if (!empty($HTTP_SERVER_VARS['SERVER_SOFTWARE']) && strstr($HTTP_SERVER_VARS['SERVER_SOFTWARE'], 'Apache/2')){
-	header ('Cache-Control: no-cache, pre-check=0, post-check=0, max-age=0');
-}else{
-	header ('Cache-Control: private, pre-check=0, post-check=0, max-age=0');
-}
+header ('Cache-Control: private, pre-check=0, post-check=0, max-age=0');
 
 header ('Expires: ' . gmdate('D, d M Y H:i:s', time()) . ' GMT');
 header ('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT');

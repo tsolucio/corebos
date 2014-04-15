@@ -36,7 +36,7 @@ $repObj = new Reports ();
 if($recordid!=''){
 	$oRep = new Reports($recordid);
 	if($oRep->secmodule!=''){
-		$sec_mod = split(":",$oRep->secmodule);
+		$sec_mod = explode(":",$oRep->secmodule);
 		$rel_modules = getReportRelatedModules($oRep->primodule,$oRep);
 		if(!empty($sec_mod)){
 			foreach($sec_mod as $module){
@@ -108,7 +108,7 @@ if($_REQUEST['reportName'] !='')
 	$list_report_form->assign("REPORTNAME",vtlib_purify($_REQUEST['reportName']));
 	$list_report_form->assign("REPORTDESC",vtlib_purify($_REQUEST['reportDesc']));
 	$list_report_form->assign("REP_MODULE",vtlib_purify($_REQUEST['primarymodule']));
-	$sec_mod = split(":",vtlib_purify($_REQUEST['secondarymodule']));
+	$sec_mod = explode(":",vtlib_purify($_REQUEST['secondarymodule']));
 	$sec_module = array();
 	foreach($sec_mod as $module){
 				$sec_module[$module] = 1;

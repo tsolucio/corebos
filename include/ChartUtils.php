@@ -370,7 +370,7 @@ Class ChartUtils {
 
 		if ($fieldDetails != '') {
 			list($tablename, $colname, $module_field, $fieldname, $single) = explode(":", $fieldDetails);
-			list($module, $field) = split("_", $module_field);
+			list($module, $field) = explode("_", $module_field);
 			$dateField = false;
 			if ($single == 'D') {
 				$dateField = true;

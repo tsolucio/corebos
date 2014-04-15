@@ -57,10 +57,10 @@ foreach($event_fields as $key=>$val){
 
 $tz = new iCalendar_timezone;
 if(!empty($default_timezone)){
-	$tzid = split('/',$default_timezone);
+	$tzid = explode('/',$default_timezone);
 } else {
 	$default_timezone = date_default_timezone_get();
-	$tzid = split('/',$default_timezone);
+	$tzid = explode('/',$default_timezone);
 }
 
 if(!empty($tzid[1])){

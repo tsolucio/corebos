@@ -55,7 +55,7 @@ class LoggerAppenderSyslog extends LoggerAppenderSkeleton {
 
     function activateOptions()
     {
-        define_syslog_variables();
+        //define_syslog_variables();
         $this->closed = false;
     }
 

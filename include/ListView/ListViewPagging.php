@@ -41,7 +41,7 @@ if(!is_string($_SESSION[$currentModule.'_listquery']) || !empty($_REQUEST['globa
 			$where = '(' . getUnifiedWhere($list_query,$currentModule,$searchValue) . ')';
 			$url_string .= '&query=true&globalSearch=true&globalSearchText='.$searchValue;
 		}else{
-			list($where, $ustring) = split('#@@#', getWhereCondition($currentModule));
+			list($where, $ustring) = explode('#@@#', getWhereCondition($currentModule));
 			$url_string .= "&query=true$ustring";
 		}
 	}

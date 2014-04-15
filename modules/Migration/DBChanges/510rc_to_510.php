@@ -34,10 +34,10 @@ for($index=0;$index<$noofrows;$index++){
 	$due_date = $adb->query_result($result,$index,'due_date');
 	$time_end = $adb->query_result($result,$index,'time_end');
 	
-	$start_date = split("-",$date_start);
-	$end_date = split("-",$due_date);
-	$start_time = split(":",$time_start);
-	$end_time = split(":",$time_end);
+	$start_date = explode("-",$date_start);
+	$end_date = explode("-",$due_date);
+	$start_time = explode(":",$time_start);
+	$end_time = explode(":",$time_end);
 	
 	$start = mktime(intval($start_time[0]),intval($start_time[1]),0,intval($start_date[1]),intval($start_date[2]),intval($start_date[0]));
 	$end = mktime(intval($end_time[0]),intval($end_time[1]),0,intval($end_date[1]),intval($end_date[2]),intval($end_date[0]));

@@ -21,8 +21,8 @@ global $app_strings;
 
 define('IN_PHPSYSINFO', true);
 
-ini_set('magic_quotes_runtime', 'off');
-ini_set('register_globals', 'off');
+//ini_set('magic_quotes_runtime', 'off');
+//ini_set('register_globals', 'off');
 // ini_set('display_errors','on');
 define('APP_ROOT', getcwd().'/modules/System');
 require_once(APP_ROOT . '/includes/class.error.inc.php');

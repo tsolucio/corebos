@@ -309,7 +309,7 @@ $smarty->assign("ALPHABETICAL", $alphabetical);
 
 if(isset($_REQUEST['query']) && $_REQUEST['query'] == 'true')
 {
-	list($where, $ustring) = split("#@@#",getWhereCondition($currentModule));
+	list($where, $ustring) = explode("#@@#",getWhereCondition($currentModule));
 	$url_string .="&query=true".$ustring;
 }
 

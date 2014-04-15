@@ -166,7 +166,7 @@ class MailBox {
 		$this->db->println("Building connection string");
                 if(preg_match("/@/",$this->login_username)) 
 		{
-                        $mailparts = split("@",$this->login_username);
+                        $mailparts = explode("@",$this->login_username);
                         $user="".trim($mailparts[0])."";
                         $domain="".trim($mailparts[1])."";
 

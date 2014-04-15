@@ -14,6 +14,8 @@
 
 // ==> Required parameters
 
+$conf = new stdClass();
+
 // Will be checked by html/*.php file. If it's not available, these files won't
 // be loaded.
 $conf->loaded = true;
@@ -53,6 +55,8 @@ $conf->default_smtp_port = 25;
 //  Port number to connect to smtp server (usually 25)
 
 $i = 0;
+
+$conf->domains[$i] = new stdClass();
 
 $conf->domains[$i]->domain = '';
 $conf->domains[$i]->in ='' ;
@@ -242,12 +246,6 @@ $conf->status_line = '1';
 // Be careful if you modify this, do not forget to write '\r\n' to switch
 // to the next line !
 $conf->ad = "___________________________________\r\nNOCC, http://nocc.sourceforge.net";
-
-// PHP error reporting for this application
-error_reporting($conf->debug_level);
-
-// Prevent mangling of uploaded attachments
-set_magic_quotes_runtime(0);
 
 // Delay between 2 mail send (in second)
 $conf->send_delay = 30;
