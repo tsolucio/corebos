@@ -853,7 +853,7 @@ class CRMEntity {
 				//$this->db->println("here is the bug");
 
 
-				$list[] = clone($this); //added by Richie to support PHP5
+				$list[] = clone $this; //added by Richie to support PHP5
 			}
 		}
 
@@ -891,7 +891,7 @@ class CRMEntity {
 				//data gets overridden hence all the rows that come in bear the same value. This in turn
 //provides a wrong display of the Dashboard graphs. The data is erroneously shown for a specific month alone
 //Added by Richie
-				$list[] = clone($this); //added by Richie to support PHP5
+				$list[] = clone $this; //added by Richie to support PHP5
 			}
 		}
 

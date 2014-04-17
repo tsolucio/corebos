@@ -131,7 +131,7 @@ $url_string = ''; // assigning http url string
 if(isset($_REQUEST['query']) && $_REQUEST['query'] == 'true')
 {
 
-	list($where, $ustring) = split("#@@#",getWhereCondition($currentModule));
+	list($where, $ustring) = explode("#@@#",getWhereCondition($currentModule));
 	// we have a query
 	$url_string .="&query=true".$ustring;
 	$log->info("Here is the where clause for the list view: $where");

@@ -96,8 +96,8 @@ class ReportRun extends CRMEntity
 		{
 			$fieldname ="";
 			$fieldcolname = $columnslistrow["columnname"];
-			list($tablename,$colname,$module_field,$fieldname,$single) = split(":",$fieldcolname);
-			list($module,$field) = split("_",$module_field,2);
+			list($tablename,$colname,$module_field,$fieldname,$single) = explode(":",$fieldcolname);
+			list($module,$field) = explode("_",$module_field,2);
 			$inventory_fields = array('quantity','listprice','serviceid','productid','discount_amount','comment');
 			$inventory_modules = array('SalesOrder','Quotes','PurchaseOrder','Invoice');
 			require('user_privileges/user_privileges_'.$current_user->id.'.php');
@@ -158,7 +158,7 @@ class ReportRun extends CRMEntity
 				{
 					if($selectedfields[4] == 'C')
 					{
-						$field_label_data = split("_",$selectedfields[2]);
+						$field_label_data = explode("_",$selectedfields[2]);
 						$module= $field_label_data[0];
 						if($module!=$this->primarymodule)
 							$columnslist[$fieldcolname] = "case when (".$selectedfields[0].".".$selectedfields[1]."='1')then 'yes' else case when (vtiger_crmentity$module.crmid !='') then 'no' else '-' end end as '$selectedfields[2]'";
@@ -502,7 +502,7 @@ class ReportRun extends CRMEntity
 	 */
 	function getFilterComparedField($field){
 		global $adb,$ogReport;
-			$field = split('#',$field);
+			$field = explode('#',$field);
 			$module = $field[0];
 			$fieldname = trim($field[1]);
 			$tabid = getTabId($module);
@@ -1315,7 +1315,7 @@ class ReportRun extends CRMEntity
 		while($reportsortrow = $adb->fetch_array($result))
 		{
 			$fieldcolname = $reportsortrow["columnname"];
-			list($tablename,$colname,$module_field,$fieldname,$single) = split(":",$fieldcolname);
+			list($tablename,$colname,$module_field,$fieldname,$single) = explode(":",$fieldcolname);
 			$sortorder = $reportsortrow["sortorder"];
 
 			if($sortorder == "Ascending")
@@ -1351,7 +1351,7 @@ class ReportRun extends CRMEntity
 					$sqlvalue = implode(", ",$groupByCondition);
 				}
 				$grouplist[$fieldcolname] = $sqlvalue;
-				$temp = split("_",$selectedfields[2],2);
+				$temp = explode("_",$selectedfields[2],2);
 				$module = $temp[0];
 				if(CheckFieldPermission($fieldname,$module) == 'true')
 				{
@@ -1897,7 +1897,7 @@ class ReportRun extends CRMEntity
 		$modules_selected = array();
 		$modules_selected[] = $this->primarymodule;
 		if(!empty($this->secondarymodule)){
-			$sec_modules = split(":",$this->secondarymodule);
+			$sec_modules = explode(":",$this->secondarymodule);
 			for($i=0;$i<count($sec_modules);$i++){
 				$modules_selected[] = $sec_modules[$i];
 			}
@@ -1961,7 +1961,7 @@ class ReportRun extends CRMEntity
 						$arrayHeaders[] = $headerLabel;
 					}
 					/*STRING TRANSLATION starts */
-					$mod_name = split(' ',$headerLabel,2);
+					$mod_name = explode(' ',$headerLabel,2);
 					$moduleLabel ='';
 					if(in_array($mod_name[0],$modules_selected)){
 						$moduleLabel = getTranslatedString($mod_name[0],$mod_name[0]);
@@ -2466,7 +2466,7 @@ class ReportRun extends CRMEntity
 						$arrayHeaders[] = $headerLabel;
 					}
 					/*STRING TRANSLATION starts */
-					$mod_name = split(' ',$headerLabel,2);
+					$mod_name = explode(' ',$headerLabel,2);
 					$moduleLabel ='';
 					if(in_array($mod_name[0],$modules_selected)){
 						$moduleLabel = getTranslatedString($mod_name[0],$mod_name[0]);
@@ -2763,7 +2763,7 @@ class ReportRun extends CRMEntity
 				if(CheckColumnPermission($field_tablename,$field_columnname,$premod) != "false"){
 					$field_permitted = true;
 				} else {
-					$mod = split(":",$secmod);
+					$mod = explode(":",$secmod);
 					foreach($mod as $key){
 						if(CheckColumnPermission($field_tablename,$field_columnname,$key) != "false"){
 							$field_permitted=true;
@@ -3091,7 +3091,7 @@ class ReportRun extends CRMEntity
 		require_once("include/php_writeexcel/class.writeexcel_workbook.inc.php");
 		require_once("include/php_writeexcel/class.writeexcel_worksheet.inc.php");
 
-		$workbook = &new writeexcel_workbook($fileName);
+		$workbook = new writeexcel_workbook($fileName);
 		$worksheet =& $workbook->addworksheet();
 
 		# Set the column width for columns 1, 2, 3 and 4
@@ -3156,7 +3156,7 @@ class ReportRun extends CRMEntity
         $num_rows = $adb->num_rows($groupByTimeRes);
         for($i=0;$i<$num_rows;$i++){
             $sortColName = $adb->query_result($groupByTimeRes, $i,'sortcolname');
-            list($tablename,$colname,$module_field,$fieldname,$single) = split(':',$sortColName);
+            list($tablename,$colname,$module_field,$fieldname,$single) = explode(':',$sortColName);
             $groupField = $module_field;
             $groupCriteria = $adb->query_result($groupByTimeRes, $i,'dategroupbycriteria');
             if(in_array($groupCriteria,array_keys($this->groupByTimeParent))){

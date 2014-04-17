@@ -137,7 +137,7 @@ if($reportid == "")
 					$selectedcolumn = explode(";",$shared_entities);
 					for($i=0 ;$i< count($selectedcolumn) -1 ;$i++)
 					{
-						$temp = split("::",$selectedcolumn[$i]);
+						$temp = explode("::",$selectedcolumn[$i]);
 						$icolumnsql = "insert into vtiger_reportsharing (reportid,shareid,setype) values (?,?,?)";
 						$icolumnsqlresult = $adb->pquery($icolumnsql, array($genQueryId,$temp[1],$temp[0]));
 					}
@@ -331,7 +331,7 @@ if($reportid == "")
 			$selectedcolumn = explode(";",$shared_entities);
 			for($i=0 ;$i< count($selectedcolumn) -1 ;$i++)
 			{
-				$temp = split("::",$selectedcolumn[$i]);
+				$temp = explode("::",$selectedcolumn[$i]);
 				$icolumnsql = "INSERT INTO vtiger_reportsharing (reportid,shareid,setype) VALUES (?,?,?)";
 				$icolumnsqlresult = $adb->pquery($icolumnsql, array($reportid,$temp[1],$temp[0]));
 			}

@@ -18,7 +18,9 @@ $uploaddir = $root_directory . "/test/logo/"; // set this to wherever
 $saveflag = "true";
 $error_flag = "";
 $binFile = $_FILES['binFile']['name'];
-$imageInfo = getimagesize($_FILES['binFile']['tmp_name']);
+if (!empty($binFile)) {
+	$imageInfo = getimagesize($_FILES['binFile']['tmp_name']);
+}
 $image_extensions_allowed = array('jpeg', 'png', 'jpg', 'pjpeg', 'x-png');
 
 if (!empty($imageInfo)) {

@@ -34,7 +34,7 @@ elseif(substr($_ENV["OS"],0,3) == "Win")
 	if(is_file($vtiger_home.'\mysql\bin\mysql.exe'))
 	{
 		$installed_mysql_path = $vtiger_home.'\mysql\bin\mysqldump.exe';
-		@session_unregister('set_server_mysql_path');
+		unset($_SESSION['set_server_mysql_path']);
 		$_SESSION['set_server_mysql_path'] = $vtiger_home.'\mysql\bin';
 		$getmysqlpath = 0;
 	}

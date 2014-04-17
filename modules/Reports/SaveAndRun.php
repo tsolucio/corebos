@@ -50,7 +50,7 @@ if($numOfRows > 0) {
 	$primarymodule = $ogReport->primodule;
 	$restrictedmodules = array();
 	if($ogReport->secmodule!='')
-		$rep_modules = split(":",$ogReport->secmodule);
+		$rep_modules = explode(":",$ogReport->secmodule);
 	else
 		$rep_modules = array();
 
@@ -95,8 +95,8 @@ if($numOfRows > 0) {
 				foreach ($groupBy as $key => $value) {
 					//$groupByConditon = explode(" ",$value);
 					//$groupByNew = explode("'",$groupByConditon[0]);
-					list($tablename,$colname,$module_field,$fieldname,$single) = split(":",$key);
-					list($module,$field)= split("_",$module_field);
+					list($tablename,$colname,$module_field,$fieldname,$single) = explode(":",$key);
+					list($module,$field)= explode("_",$module_field);
 					$fieldDetails = $key;
 					break;
 				}

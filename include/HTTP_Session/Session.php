@@ -511,7 +511,8 @@ class HTTP_Session
      */
     function register($name)
     {
-        return session_register($name);
+        $_SESSION[$name] = $GLOBALS[$name];
+        return true;
     }
 
     /**
@@ -528,7 +529,7 @@ class HTTP_Session
      */
     function unregister($name)
     {
-        return session_unregister($name);
+        return $_SESSION[$name];
     }
 
     /**

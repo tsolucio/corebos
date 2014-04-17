@@ -38,7 +38,7 @@ if(isset($_REQUEST['record']) && $_REQUEST['record']!='') {
         if($_SESSION['image_type_error'] != '')
         {
                 echo '<font color="red">'.$_SESSION['image_type_error'].'</font>';
-                session_unregister('image_type_error');
+                unset($_SESSION['image_type_error']);
         }
 
         $focus->id=$_REQUEST['record'];

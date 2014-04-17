@@ -67,9 +67,9 @@ if($focus->is_authenticated())
 	createUserPrivilegesfile($focus->id);
 	
 	//Security related entries end
-	session_unregister('login_password');
-	session_unregister('login_error');
-	session_unregister('login_user_name');
+	unset($_SESSION['login_password']);
+	unset($_SESSION['login_error']);
+	unset($_SESSION['login_user_name']);
 
 	$_SESSION['authenticated_user_id'] = $focus->id;
 	$_SESSION['app_unique_key'] = $application_unique_key;

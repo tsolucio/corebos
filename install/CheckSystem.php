@@ -96,7 +96,7 @@ $check_mysql_extension = Common_Install_Wizard_Utils::check_mysql_extension();
 										<form action="install.php" method="post" name="form" id="form">
 											<input type="hidden" name="filename" value="<?php echo $file_name?>" />
 							                <input type="hidden" name="file" value="CheckSystem.php" />	
-									        <input type="button" class="refreshButton" value='<?php echo $installationStrings['LBL_CHECK_AGAIN']; ?>' alt="<?php echo $installationStrings['LBL_CHECK_AGAIN']; ?>" title="<?php echo $installationStrings['LBL_REFRESH']; ?>" style="cursor:pointer;" onClick="submit();">
+									        <input type="button" class="refreshButton" value='<?php echo $installationStrings['LBL_CHECK_AGAIN']; ?>' alt="<?php echo $installationStrings['LBL_CHECK_AGAIN']; ?>" title="<?php echo $installationStrings['LBL_CHECK_AGAIN']; ?>" style="cursor:pointer;" onClick="submit();">
 										</form>
 									</td>  
 								</tr>

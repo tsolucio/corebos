@@ -746,11 +746,13 @@ alt="Clear" title="Clear" LANGUAGE=javascript	onClick="this.form.{$fldname}.valu
 					<br>{'LBL_IMG_FORMATS'|@getTranslatedString:$MODULE}
 					<input name="{$fldname}_hidden"  type="hidden" value="{$maindata[3].0.name}" />
 				{else}
-					<input name="{$fldname}"  type="file" value="{$maindata[3].0.name}" tabindex="{$vt_tab}" onchange="validateFilename(this);" /><br>{'LBL_IMG_FORMATS'|@getTranslatedString:$MODULE}
-					<input name="{$fldname}_hidden"  type="hidden" value="{$maindata[3].0.name}" />
+					<input name="{$fldname}"  type="file" value="" tabindex="{$vt_tab}" onchange="validateFilename(this);" /><br>{'LBL_IMG_FORMATS'|@getTranslatedString:$MODULE}
+					<input name="{$fldname}_hidden"  type="hidden" value="" />
 				{/if}
 					<input type="hidden" name="id" value=""/>
+					{if isset($maindata[3].0.name) }
 					{$maindata[3].0.name}
+					{/if}
 			</td>
 			{elseif $uitype eq 103}
 			<td width="20%" class="dvtCellLabel" align=right>

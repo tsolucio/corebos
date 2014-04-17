@@ -1906,8 +1906,8 @@ function updateReportColumns($table){
 			for($i=0;$i<$adb->num_rows($result);$i++){
 				$reportid = $adb->query_result($result,$i,"reportid");
 				$colname = $adb->query_result($result,$i,"columnname");
-				$column_array = split(":",$colname);
-				$column = split("_",$column_array[2]);
+				$column_array = explode(":",$colname);
+				$column = explode("_",$column_array[2]);
 				$mod_name = $column[0];
 				$newcolname = str_replace("$key",$key."$mod_name",$colname);
 				ExecuteQuery("UPDATE $table SET columnname = '".$newcolname."' WHERE queryid = ".$reportid." AND columnname = '".$colname."'");
@@ -1921,7 +1921,7 @@ function updateReportColumns($table){
 			$pri_module = $adb->query_result($result,$i,"reportid");
 			$reportid = $adb->query_result($result,$i,"reportid");
 			$colname = $adb->query_result($result,$i,"columnname");
-			$column_array = split(":",$colname);
+			$column_array = explode(":",$colname);
 			if($pri_module!="Products"){
 				$column_array[0]='vtiger_crmentityProducts';
 				$column_array[1]='description';
@@ -1939,7 +1939,7 @@ function updateReportColumns($table){
 		for($i=0;$i<$adb->num_rows($result);$i++){
 			$reportid = $adb->query_result($result,$i,"reportid");
 			$colname = $adb->query_result($result,$i,"columnname");
-			$column_array = split(":",$colname);
+			$column_array = explode(":",$colname);
 			$column_array[0]='vtiger_potential';
 			$column_array[1]='related_to';
 			$column_array[2]='Potentials_Related_To';

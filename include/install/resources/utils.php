@@ -958,15 +958,14 @@ class Common_Install_Wizard_Utils {
 
 	public static $recommendedDirectives = array (
 		'safe_mode' => 'Off',
-		'display_errors' => 'On',
+		'display_errors' => 'Off',
 		'file_uploads' => 'On',
-		'register_globals' => 'On',
+		'register_globals' => 'Off',
 		'output_buffering' => 'On',
 		'max_execution_time' => '600',
 		'memory_limit' => '32',
-		'error_reporting' => 'E_WARNING & ~E_NOTICE',
-		'allow_call_time_pass_reference' => 'On',
-		'log_errors' => 'Off',
+		'error_reporting' => 'E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT',
+		'allow_call_time_pass_reference' => 'Off',
 		'short_open_tag' => 'On'
 	);
 
@@ -1079,9 +1078,6 @@ class Common_Install_Wizard_Utils {
 		}';
 
 	function getRecommendedDirectives() {
-		if(version_compare(PHP_VERSION, '5.3.0') >= 0) {
-			self::$recommendedDirectives['error_reporting'] = 'E_WARNING & ~E_NOTICE & ~E_DEPRECATED';
-		}
 		return self::$recommendedDirectives;
 	}
 
@@ -1154,8 +1150,8 @@ class Common_Install_Wizard_Utils {
 		$directiveValues = array();
 		if (ini_get('safe_mode') == '1' || stripos(ini_get('safe_mode'), 'On') > -1)
 			$directiveValues['safe_mode'] = 'On';
-		if (ini_get('display_errors') != '1' || stripos(ini_get('display_errors'), 'Off') > -1)
-			$directiveValues['display_errors'] = 'Off';
+		if (ini_get('display_errors') == '1' || stripos(ini_get('display_errors'), 'On') > -1)
+			$directiveValues['display_errors'] = 'On';
 		if (ini_get('file_uploads') != '1' || stripos(ini_get('file_uploads'), 'Off') > -1)
 			$directiveValues['file_uploads'] = 'Off';
 		if (ini_get('register_globals') == '1' || stripos(ini_get('register_globals'), 'On') > -1)
@@ -1166,16 +1162,11 @@ class Common_Install_Wizard_Utils {
 			$directiveValues['max_execution_time'] = ini_get('max_execution_time');
 		if (ini_get('memory_limit') < 32)
 			$directiveValues['memory_limit'] = ini_get('memory_limit');
-		$errorReportingValue = E_WARNING & ~E_NOTICE;
-		if(version_compare(PHP_VERSION, '5.3.0') >= 0) {
-			$errorReportingValue = E_WARNING & ~E_NOTICE & ~E_DEPRECATED;
-		}
+		$errorReportingValue = self::$recommendedDirectives['error_reporting'];
 		if (ini_get('error_reporting') != $errorReportingValue)
 			$directiveValues['error_reporting'] = 'NOT RECOMMENDED';
-		if (ini_get('allow_call_time_pass_reference') != '1' || stripos(ini_get('allow_call_time_pass_reference'), 'Off') > -1)
-			$directiveValues['allow_call_time_pass_reference'] = 'Off';
-		if (ini_get('log_errors') == '1' || stripos(ini_get('log_errors'), 'On') > -1)
-			$directiveValues['log_errors'] = 'On';
+		if (ini_get('allow_call_time_pass_reference') == '1' || stripos(ini_get('allow_call_time_pass_reference'), 'On') > -1)
+			$directiveValues['allow_call_time_pass_reference'] = 'On';
 		if (ini_get('short_open_tag') != '1' || stripos(ini_get('short_open_tag'), 'Off') > -1)
 			$directiveValues['short_open_tag'] = 'Off';
 

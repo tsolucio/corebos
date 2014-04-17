@@ -109,7 +109,7 @@ if ($step == "ask")
     }
   }
   // now add the standard fields
-  getStdContactFlds(&$queryFields, $adb, $valueArray);
+  getStdContactFlds($queryFields, $adb, $valueArray);
   // get the list of fields
   $fieldList="";
   foreach ($queryFields as $myField)
