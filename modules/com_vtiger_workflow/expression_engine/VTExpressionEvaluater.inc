@@ -32,7 +32,11 @@ function __vt_mul($arr){
 }
 
 function __vt_div($arr){
+	try {
 	return $arr[0]/$arr[1];
+	}catch(Exception $e) {
+		return 0;
+	}
 }
 
 function __vt_equals($arr){
@@ -78,8 +82,8 @@ function __vt_time_diff($arr) {
 
     if(empty($time_operand1) || empty($time_operand2)) return 0;
 
-    $time_operand1 = getValidDBInsertDateValue($time_operand1);
-	$time_operand2 = getValidDBInsertDateValue($time_operand2);
+    $time_operand1 = getValidDBInsertDateTimeValue($time_operand1);
+	$time_operand2 = getValidDBInsertDateTimeValue($time_operand2);
 
     return (strtotime($time_operand1) - strtotime($time_operand2));
 }

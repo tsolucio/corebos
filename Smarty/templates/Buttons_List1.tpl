@@ -112,7 +112,7 @@
 			{/if}
 			{if $MODULE eq 'Contacts' || $MODULE eq 'Leads' || $MODULE eq 'Accounts'|| $MODULE eq 'Products'|| $MODULE eq 'HelpDesk'|| $MODULE eq 'Potentials'|| $MODULE eq 'Vendors'} 
 				{if $VIEW eq true}
-					<td style="padding-right:10px"><a href="index.php?module={$MODULE}&action=FindDuplicateRecords&button_view&list_view"><img src="{'findduplicates.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_FIND_DUPICATES}" title="{$APP.LBL_FIND_DUPLICATES}" border="0"></a></td>
+					<td style="padding-right:10px"><a href="index.php?module={$MODULE}&action=FindDuplicateRecords&button_view&list_view"><img src="{'findduplicates.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_FIND_DUPLICATES}" title="{$APP.LBL_FIND_DUPLICATES}" border="0"></a></td>
 				{else}
 					<td style="padding-right:10px"><img src="{'FindDuplicates-Faded.gif'|@vtiger_imageurl:$THEME}" border="0"></td>	
 				{/if}

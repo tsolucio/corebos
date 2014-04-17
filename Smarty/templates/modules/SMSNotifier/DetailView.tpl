@@ -342,6 +342,7 @@ function sendfile_email()
 							{else}
 							<div style="width:auto;display:none;" id="tbl{$header|replace:' ':''}" >
 							{/if}
+							{/if}
 							<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small">
 						   {foreach item=detail from=$detail}
 						     <tr style="height:25px">

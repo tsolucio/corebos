@@ -23,6 +23,10 @@ if($ajaxaction == 'WIDGETADDCOMMENT') {
 		if(empty($modObj->column_fields['smcreatorid'])) $modObj->column_fields['smcreatorid'] = $current_user->id;
 		if(empty($modObj->column_fields['modifiedtime'])) $modObj->column_fields['modifiedtime']= date('Y-m-d H:i:s');
 		
+		//update modifiedtime related module with modcomments modifiedtime
+		global $adb;
+		$adb->query("update vtiger_crmentity set modifiedtime ='".$modObj->column_fields['modifiedtime']."' where crmid =".$modObj->column_fields['related_to']);
+		//end update
 		$widgetInstance = $modObj->getWidget('DetailViewBlockCommentWidget');
 		echo ':#:SUCCESS'. $widgetInstance->processItem($modObj->getAsCommentModel($modObj->column_fields));
 	} else {

@@ -138,6 +138,7 @@ $mod_strings = Array(
 'Document No'=>'Número Documento',
 'Folder Name'=>"Nombre de carpeta",
 'Documents' => 'Documentos',
+'SINGLE_Documents' => 'Documento',
 'Documents ID'=>'Id Documento',
 );
 
