@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<module>
+	<type>language</type>
+	<name>Dutch</name>
+	<label>NL-Dutch</label>
+	<prefix>nl_nl</prefix>
+	<version>VEBv1.4 rc</version>
+	<encoding>UTF-8</encoding>
+	<creationDate>2012-02-28</creationDate>
+	<author>Vicus eBusiness Solutions bv www.vicus.nl</author>
+	<license>VPL1.0</license>
+	<dependencies>
+		<vtiger_version>5.3.0</vtiger_version>
+		<vtiger_max_version>5.*</vtiger_max_version>
+	</dependencies>
+  <license>
+   <inline><![CDATA[
+/*******************************************************************************
+ * Vicus eBusiness Solutions Version Control
+ * @package 	NL-Dutch
+ * Description	Dutch language pack for vtiger CRM version 5.3
+ * @author		$Author: luuk $
+ * @version 	$Revision: 1.7 $ $Date: 2012/02/28 23:40:22 $
+ * @source		$Source: /var/lib/cvs/vtiger530/Dutch/manifest.xml,v $
+ * @copyright	Copyright (c)2005-2012 Vicus eBusiness Solutions bv <info@vicus.nl>
+ * @license		vtiger CRM Public License Version 1.0 (by definition)
+ ********************************************************************************/
+]]></inline>
+  </license>
+</module>
+

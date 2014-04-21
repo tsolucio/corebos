@@ -1,0 +1,8 @@
+<?xml version='1.0'?>
+<module>
+<type>language</type>
+<name>Spanish</name>
+<label>ES Spanish</label>
+<prefix>es_es</prefix>
+<version>5.4.0</version>
+</module>

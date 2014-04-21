@@ -1,0 +1,12 @@
+<?xml version="1.0"?>
+<module>
+	<version>1.2</version>
+	<type>extension</type>
+	<name>VtigerBackup</name>
+	<label>Vtiger Backup</label>
+	<parent></parent>
+	<dependencies>
+		<vtiger_version>5.1.0</vtiger_version>
+	</dependencies>
+	<exporttime>2010-03-22 16:45:12</exporttime>
+</module>

@@ -8,6 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 
+define('cbPackageDirectory', 'packages/');
 /**
  * Provides few utility functions for installation/migration process
  * @package install
@@ -1202,7 +1203,7 @@ class Common_Install_Wizard_Utils {
 		require_once('vtlib/Vtiger/Module.php');
 		require_once('vtlib/Vtiger/Version.php');
 
-		$packageDir = 'packages/vtiger/optional/';
+		$packageDir = cbPackageDirectory.'optional/';
 		$handle = opendir($packageDir);
 		$optionalModules = array();
 
@@ -1217,6 +1218,7 @@ class Common_Install_Wizard_Utils {
 		    	$packagepath = "$packageDir/$file";
 				$package = new Vtiger_Package();
 				$moduleName = $package->getModuleNameFromZip($packagepath);
+				$desc = $package->getShortDescriptionFromZip($packagepath);
 				if($package->isModuleBundle()) {
 					$bundleOptionalModule = array();
 					$unzip = new Vtiger_Unzip($packagepath);
@@ -1231,7 +1233,7 @@ class Common_Install_Wizard_Utils {
 								$bundleOptionalModule);
 					}
 					$moduleDetails = array();
-					$moduleDetails['description'] = $optionalModuleStrings[$moduleName.'_description'];
+					$moduleDetails['description'] = (empty($desc) ? $optionalModuleStrings[$moduleName.'_description'] : $desc);
 					$moduleDetails['selected'] = true;
 					$moduleDetails['enabled'] = true;
 					$migrationAction = 'install';
@@ -1283,6 +1285,7 @@ class Common_Install_Wizard_Utils {
 		$moduleUpdateVersion = $package->getVersion();
 		$moduleForVtigerVersion = $package->getDependentVtigerVersion();
 		$moduleMaxVtigerVersion = $package->getDependentMaxVtigerVersion();
+		$desc = $package->getShortDescription();
 		if($package->isLanguageType()) {
 			$type = 'language';
 		} else {
@@ -1292,7 +1295,7 @@ class Common_Install_Wizard_Utils {
 		$moduleName = $package->getModuleName();
 		if($moduleName != null) {
 			$moduleDetails = array();
-			$moduleDetails['description'] = $optionalModuleStrings[$moduleName.'_description'];
+			$moduleDetails['description'] = (empty($desc) ? $optionalModuleStrings[$moduleName.'_description'] : $desc);
 
 			if(Vtiger_Version::check($moduleForVtigerVersion,'>=') && Vtiger_Version::check($moduleMaxVtigerVersion,'<')) {
 				$moduleDetails['selected'] = true;
@@ -1334,7 +1337,7 @@ class Common_Install_Wizard_Utils {
 		require_once('vtlib/Vtiger/Module.php');
 		require_once('include/utils/utils.php');
 
-		if ($handle = opendir('packages/vtiger/mandatory')) {
+		if ($handle = opendir(cbPackageDirectory.'mandatory')) {
 		    while (false !== ($file = readdir($handle))) {
 				$packageNameParts = explode(".",$file);
 				if($packageNameParts[count($packageNameParts)-1] != 'zip'){
@@ -1343,7 +1346,7 @@ class Common_Install_Wizard_Utils {
 				array_pop($packageNameParts);
 				$packageName = implode("",$packageNameParts);
 		        if (!empty($packageName)) {
-		        	$packagepath = "packages/vtiger/mandatory/$file";
+		        	$packagepath = cbPackageDirectory."mandatory/$file";
 					$package = new Vtiger_Package();
 	        		$module = $package->getModuleNameFromZip($packagepath);
 	        		if($module != null) {
@@ -1366,7 +1369,7 @@ class Common_Install_Wizard_Utils {
 		require_once('include/utils/utils.php');
 
 		$moduleList = array();
-		if ($handle = opendir('packages/vtiger/mandatory')) {
+		if ($handle = opendir(cbPackageDirectory.'mandatory')) {
 		    while (false !== ($file = readdir($handle))) {
 				$packageNameParts = explode(".",$file);
 				if($packageNameParts[count($packageNameParts)-1] != 'zip'){
@@ -1375,7 +1378,7 @@ class Common_Install_Wizard_Utils {
 				array_pop($packageNameParts);
 				$packageName = implode("",$packageNameParts);
 		        if (!empty($packageName)) {
-		        	$packagepath = "packages/vtiger/mandatory/$file";
+		        	$packagepath = cbPackageDirectory."mandatory/$file";
 					$package = new Vtiger_Package();
 	        		$moduleList[] = $package->getModuleNameFromZip($packagepath);
 		        }
@@ -1393,14 +1396,14 @@ class Common_Install_Wizard_Utils {
 		$selected_modules = explode(":",$selected_modules);
 
 		$languagePacks = array();
-		if ($handle = opendir('packages/vtiger/optional')) {
+		if ($handle = opendir(cbPackageDirectory.'optional')) {
 		    while (false !== ($file = readdir($handle))) {
 		        $filename_arr = explode(".", $file);
 				if($filename_arr[count($filename_arr)-1] != 'zip'){
 					continue;
 				}
 				$packagename = $filename_arr[0];
-				$packagepath = "packages/vtiger/optional/$file";
+				$packagepath = cbPackageDirectory."optional/$file";
 				$package = new Vtiger_Package();
 				$module = $package->getModuleNameFromZip($packagepath);
 

@@ -14,6 +14,30 @@ require_once("vtlib/Vtiger/Package.php");
 require_once("vtlib/Vtiger/Module.php");
 
 $package = new Vtiger_Package();
-$package->export(Vtiger_Module::getInstance($module_export),'',"$module_export.zip",true);
+$module = Vtiger_Module::getInstance($module_export);
+if ($module) {
+	$package->export($module,'',"$module_export.zip",true);
+} else {
+	global $adb,$vtiger_current_version;
+	$lngrs = $adb->pquery('select * from vtiger_language where prefix=?',array($module_export));
+	if ($lngrs and $adb->num_rows($lngrs)==1) { // we have a language file
+		$lnginfo = $adb->fetch_array($lngrs);
+		$lngxml = 'build/'.$lnginfo['name'].'/manifest.xml';
+		if (!file_exists($lngxml)) {
+			@mkdir('build/'.$lnginfo['name']);
+			$mnf = fopen($lngxml, 'w');
+			fwrite($mnf, "<?xml version='1.0'?>\n");
+			fwrite($mnf, "<module>\n");
+			fwrite($mnf, "<type>language</type>\n");
+			fwrite($mnf, "<name>".$lnginfo['name']."</name>\n");
+			fwrite($mnf, "<label>".$lnginfo['label']."</label>\n");
+			fwrite($mnf, "<prefix>".$lnginfo['prefix']."</prefix>\n");
+			fwrite($mnf, "<version>".$vtiger_current_version."</version>\n");
+			fwrite($mnf, "</module>\n");
+			fclose($mnf);
+		}
+		$package->languageFromFilesystem($lnginfo['prefix'],$lnginfo['name'],true);
+	}
+}
 exit;
 ?>

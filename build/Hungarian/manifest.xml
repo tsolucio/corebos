@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<module>
+	<type>language</type>
+	<name>Hungarian</name>
+	<label>HU Magyar</label>
+	<prefix>hu_hu</prefix>
+	<version>5.4.0</version>
+	<dependencies>
+		<vtiger_version>5.3.0</vtiger_version>
+		<vtiger_max_version>5.*</vtiger_max_version>
+	</dependencies>
+	<creationDate>2011-11-09 22:00:00</creationDate>
+	<author>Holbok István</author>
+
+	<license><![CDATA[
+ ********************************************************************************
+ * The contents of these file is subject to the vtiger Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License.
+ * Software distributed under the License is distributed on an  "AS IS"  basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
+ * the specific language governing rights and limitations under the License.
+ ********************************************************************************
+ *  Language     : Português Brasileiro
+ *  Version      : 5.4.0
+ *  Author       : TTCA Soluções Ltda | www.ttcasolucoes.com.br
+ ********************************************************************************
+]]></license>
+</module>
+

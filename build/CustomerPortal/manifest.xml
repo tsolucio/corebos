@@ -1,0 +1,29 @@
+<?xml version='1.0'?>
+<module>
+<exporttime>2009-03-03 08:18:37</exporttime>
+<name>CustomerPortal</name>
+<label>CustomerPortal</label>
+<parent></parent>
+<type>extension</type>
+<version>1.4</version>
+<dependencies>
+<vtiger_version>5.1.0</vtiger_version>
+<vtiger_max_version>5.*</vtiger_max_version>
+</dependencies>
+<migrations>
+	<migration version='1.0'>		
+	</migration>
+	<migration version='1.1'>		
+	</migration>	
+</migrations>
+<tables>
+	<table>
+	<name>vtiger_customerportal_fields</name>
+	<sql><![CDATA[CREATE TABLE `vtiger_customerportal_fields` (
+	  `tabid` int(19) NOT NULL,
+	  `fieldid` int(19) default NULL,
+	  `visible` int(1) default NULL
+	) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+	</table>
+</tables>
+</module>

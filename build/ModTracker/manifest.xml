@@ -1,0 +1,69 @@
+<?xml version='1.0'?>
+<module>
+<exporttime>2012-01-02 15:30:24</exporttime>
+<name>ModTracker</name>
+<label>ModTracker</label>
+<parent></parent>
+<type>extension</type>
+<version>1.0</version>
+<dependencies>
+<vtiger_version>5.1.0</vtiger_version>
+</dependencies>
+<tables>
+<table>
+<name>vtiger_modtracker_basic</name>
+<sql><![CDATA[CREATE TABLE `vtiger_modtracker_basic` (
+  `id` int(20) NOT NULL,
+  `crmid` int(20) default NULL,
+  `module` varchar(50) default NULL,
+  `whodid` int(20) default NULL,
+  `changedon` datetime default NULL,
+  `status` int(1) default '0',
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+<table>
+<name>vtiger_modtracker_tabs</name>
+<sql><![CDATA[CREATE TABLE `vtiger_modtracker_tabs` (
+  `tabid` int(11) NOT NULL,
+  `visible` int(11) default '0',
+  PRIMARY KEY  (`tabid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+<table>
+<name>vtiger_modtracker_detail</name>
+<sql><![CDATA[CREATE TABLE `vtiger_modtracker_detail` (
+  `id` int(11) default NULL,
+  `fieldname` varchar(100) default NULL,
+  `prevalue` text,
+  `postvalue` text
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+</tables>
+<events>
+<event>
+<eventname>vtiger.entity.aftersave.final</eventname>
+<classname><![CDATA[ModTrackerHandler]]></classname>
+<filename><![CDATA[modules/ModTracker/ModTrackerHandler.php]]></filename>
+<condition><![CDATA[]]></condition>
+</event>
+<event>
+<eventname>vtiger.entity.beforedelete</eventname>
+<classname><![CDATA[ModTrackerHandler]]></classname>
+<filename><![CDATA[modules/ModTracker/ModTrackerHandler.php]]></filename>
+<condition><![CDATA[]]></condition>
+</event>
+</events>
+<customlinks>
+<customlink>
+<linktype>HEADERSCRIPT</linktype>
+<linklabel>ModTrackerCommon_JS</linklabel>
+<linkurl><![CDATA[modules/ModTracker/ModTrackerCommon.js]]></linkurl>
+<linkicon><![CDATA[]]></linkicon>
+<sequence>0</sequence>
+<handler_path><![CDATA[]]></handler_path>
+<handler_class><![CDATA[]]></handler_class>
+<handler><![CDATA[]]></handler>
+</customlink>
+</customlinks>
+</module>

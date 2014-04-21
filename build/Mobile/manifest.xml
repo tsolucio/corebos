@@ -1,0 +1,27 @@
+<?xml version='1.0'?>
+<module>
+<exporttime>2012-02-23 08:39:58</exporttime>
+<name>Mobile</name>
+<label>Mobile</label>
+<parent></parent>
+<type>extension</type>
+<version>1.6</version>
+<dependencies>
+<vtiger_version>5.3.4</vtiger_version>
+</dependencies>
+<tables>
+<table>
+<name>vtiger_mobile_alerts</name>
+<sql><![CDATA[CREATE TABLE `vtiger_mobile_alerts` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `handler_path` varchar(500) DEFAULT NULL,
+  `handler_class` varchar(50) DEFAULT NULL,
+  `sequence` int(11) DEFAULT NULL,
+  `deleted` int(11) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=12 DEFAULT CHARSET=utf8]]></sql>
+</table>
+</tables>
+<crons>
+</crons>
+</module>

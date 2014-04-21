@@ -114,15 +114,16 @@ class Vtiger_PackageExport {
 		// Call module export function
 		$this->export_Module($moduleInstance);
 
-		$this->__finishExport();		
+		$this->__finishExport();
 
 		// Export as Zip
+		if ($todir == '') $todir = $this->_export_tmpdir;
 		if($zipfilename == '') $zipfilename = "$module-" . date('YmdHis') . ".zip";
-		$zipfilename = "$this->_export_tmpdir/$zipfilename";
+		$zipfilename = "$todir/$zipfilename";
 
 		$zip = new Vtiger_Zip($zipfilename);
 		// Add manifest file
-		$zip->addFile($this->__getManifestFilePath(), "manifest.xml");		
+		$zip->addFile($this->__getManifestFilePath(), "manifest.xml");
 		// Copy module directory
 		$zip->copyDirectoryFromDisk("modules/$module");
 		// Copy templates directory of the module (if any)
@@ -139,6 +140,72 @@ class Vtiger_PackageExport {
 			unlink($zipfilename);
 		}
 		$this->__cleanupExport();
+	}
+
+	static function packageFromFilesystem($moduleName, $mandatory=false, $directDownload=false) {
+		// first we check for the files
+		$bdir = "build/$moduleName";
+		$wehavefiles = is_dir($bdir);  // check for directory
+		$wehavefiles = $wehavefiles and file_exists("$bdir/manifest.xml");  // check for manifest
+		$wehavefiles = $wehavefiles and is_dir("modules/$moduleName");  // check for module directory
+		$wehavefiles = $wehavefiles and is_dir("modules/$moduleName/language");  // check for language directory
+		if ($wehavefiles) {
+			// Export as Zip
+			$mpkg = 'packages/'.($mandatory ? 'mandatory/' : 'optional/').$moduleName;
+			$zipfilename = $mpkg.'.zip';
+			if (file_exists($zipfilename)) @unlink($zipfilename);
+			$zip = new Vtiger_Zip($zipfilename);
+			// Add manifest file
+			$zip->addFile("$bdir/manifest.xml",'manifest.xml');
+			// Copy module directory
+			$zip->copyDirectoryFromDisk("modules/$moduleName");
+			// Copy templates directory of the module (if any)
+			if(is_dir("Smarty/templates/modules/$moduleName"))
+				$zip->copyDirectoryFromDisk("Smarty/templates/modules/$moduleName","templates");
+			// Copy cron files of the module (if any)
+			if(is_dir("cron/modules/$moduleName"))
+				$zip->copyDirectoryFromDisk("cron/modules/$moduleName","cron");
+			$zip->save();
+			if($directDownload) {
+				$zip->forceDownload($mpkg.'.zip');
+			}
+		} else {
+			echo "ERROR: One or more files necessary to create package are missing";
+		}
+	}
+
+	static function languageFromFilesystem($languageCode, $languageName, $directDownload=false) {
+		// first we check for the files
+		$bdir = "build/$languageName";
+		$wehavefiles = is_dir($bdir);  // check for directory
+		$wehavefiles = $wehavefiles and file_exists("$bdir/manifest.xml");  // check for manifest
+		if ($wehavefiles) {
+			// Export as Zip
+			$mpkg = 'packages/optional/'.$languageName;
+			$zipfilename = $mpkg.'.zip';
+			if (file_exists($zipfilename)) @unlink($zipfilename);
+			$zip = new Vtiger_Zip($zipfilename);
+			// Add manifest file
+			$zip->copyFileFromDisk($bdir,'','manifest.xml');
+			// Add calendar files
+			$zip->copyFileFromDisk('jscalendar/','jscalendar/','calendar-setup.js');
+			$zip->copyFileFromDisk('jscalendar/lang/','jscalendar/lang/','calendar-'.substr($languageCode, 0, 2).'.js');
+			$zip->copyFileFromDisk('modules/Emails/language/','modules/Emails/language/','phpmailer.lang-'.$languageCode.'.php');
+			// Copy module/include language files
+			foreach (glob('{modules,include}/*/language/es_es.lang.{php,js}',GLOB_BRACE) as $langfile) {
+				$fname = basename($langfile);
+				$dname = dirname($langfile);
+				$zip->copyFileFromDisk($dname,$dname,$fname);
+			}
+			$zip->copyFileFromDisk('include/language/','include/language/',$languageCode.'.lang.php');
+			$zip->copyFileFromDisk('include/js/','include/js/',$languageCode.'.lang.js');
+			$zip->save();
+			if($directDownload) {
+				$zip->forceDownload($mpkg.'.zip');
+			}
+		} else {
+			echo "ERROR: One or more files necessary to create package are missing";
+		}
 	}
 
 	/**
@@ -192,7 +259,7 @@ class Vtiger_PackageExport {
 		$tablabel= $tabresultrow['tablabel'];
 		$tabversion = isset($tabresultrow['version'])? $tabresultrow['version'] : false;
 
-		$this->openNode('module');		
+		$this->openNode('module');
 		$this->outputNode(date('Y-m-d H:i:s'),'exporttime');
 		$this->outputNode($tabname, 'name');
 		$this->outputNode($tablabel, 'label');

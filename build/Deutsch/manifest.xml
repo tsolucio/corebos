@@ -1,0 +1,27 @@
+<?xml version="1.0"?>
+<module>
+  <type>language</type>
+  <name>Deutsch</name>
+  <label>DE Deutsch</label>
+  <prefix>de_de</prefix>
+  <version>5.4.0</version>
+  <dependencies>
+    <vtiger_version>5.4.0</vtiger_version>
+	<vtiger_max_version>5.*</vtiger_max_version>
+  </dependencies>
+  <license>
+   <inline><![CDATA[
+ ********************************************************************************
+ * The contents of these file is subject to the vtiger Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License.
+ * Software distributed under the License is distributed on an  "AS IS"  basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
+ * the specific language governing rights and limitations under the License.
+ ********************************************************************************
+ *  Designe by Different Solutions GmbH
+ *  Language     : Deutsch
+ *  Version      : 5.4.0
+ ********************************************************************************
+]]></inline>
+  </license>
+</module>

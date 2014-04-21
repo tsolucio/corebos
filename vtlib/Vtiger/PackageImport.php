@@ -226,6 +226,25 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 	}
 
 	/**
+	 * Get short description packaged in the zip file
+	 * @access private
+	 */
+	function getShortDescriptionFromZip($zipfile) {
+		if(!$this->checkZip($zipfile)) return null;
+
+		return (string)$this->_modulexml->short_description;
+	}
+	
+
+	/**
+	 * Get short description packaged in the zip file
+	 * @access private
+	 */
+	function getShortDescription() {
+		return (string)$this->_modulexml->short_description;
+	}
+
+	/**
 	 * returns the name of the module.
 	 * @return String - name of the module as given in manifest file.
 	 */

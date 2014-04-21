@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<module>
+  <type>language</type>
+  <name>Mexican Spanish</name>
+  <label>ES Mexico</label>
+  <prefix>es_mx</prefix>
+  <version>5.4.0RC</version>
+  <dependencies>
+	  <vtiger_version>5.2.1</vtiger_version>
+	  <vtiger_max_version>5.*</vtiger_max_version>
+  </dependencies>
+  <license>
+   <inline><![CDATA[
+ ********************************************************************************
+ * The contents of these fileis are subject to the Mozilla Public License Version 1.1
+ * ("License"); You may not use this file except in compliance with the License.
+ * Software distributed under the License is distributed on an  "AS IS"  basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
+ * the specific language governing rights and limitations under the License.
+ ********************************************************************************
+ *  Language     : Español es_mx
+ *  Version      : 5.4.0RC
+ *  Author       : Francisco Hernandez Odin Consultores S de RL de CV
+ *  Author       : www.odin.mx
+ *  Author       : Joe Bordes JPL TSolucio, S. L. 5.2.1
+ ********************************************************************************
+]]></inline>
+  </license>
+</module>

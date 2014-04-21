@@ -1,0 +1,50 @@
+<?xml version='1.0'?>
+<module>
+<name>Webforms</name>
+<label>Webforms</label>
+<parent></parent>
+<type>extension</type>
+<version>1.2</version>
+<dependencies>
+  <vtiger_version>5.3.0</vtiger_version> 
+  <vtiger_max_version>5.*</vtiger_max_version> 
+</dependencies>
+<tables>
+<table>
+<name>vtiger_webforms</name>
+<sql><![CDATA[CREATE TABLE `vtiger_webforms` (
+  `id` int(19) NOT NULL AUTO_INCREMENT,
+  `name` varchar(100) NOT NULL,
+  `publicid` varchar(100) NOT NULL,
+  `enabled` int(1) NOT NULL DEFAULT '1',
+  `targetmodule` varchar(50) NOT NULL,
+  `description` varchar(250) DEFAULT NULL,
+  `ownerid` int(19) NOT NULL,
+  `returnurl` varchar(250) DEFAULT NULL,
+  PRIMARY KEY (`id`),
+  UNIQUE KEY `webformname` (`name`),
+  UNIQUE KEY `publicid` (`id`),
+  KEY `webforms_webforms_id_idx` (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+<table>
+<name>vtiger_webforms_field</name>
+<sql><![CDATA[CREATE TABLE `vtiger_webforms_field` (
+  `id` int(19) NOT NULL AUTO_INCREMENT,
+  `webformid` int(19) NOT NULL,
+  `fieldname` varchar(50) NOT NULL,
+  `neutralizedfield` varchar(50) NOT NULL,
+  `defaultvalue` varchar(200) DEFAULT NULL,
+  `required` int(10) NOT NULL DEFAULT '0',
+  PRIMARY KEY (`id`),
+  KEY `webforms_webforms_field_idx` (`id`),
+  KEY `fk_1_vtiger_webforms_field` (`webformid`),
+  KEY `fk_2_vtiger_webforms_field` (`fieldname`),
+  CONSTRAINT `fk_1_vtiger_webforms_field` FOREIGN KEY (`webformid`) REFERENCES `vtiger_webforms` (`id`) ON DELETE CASCADE,
+  CONSTRAINT `fk_3_vtiger_webforms_field` FOREIGN KEY (`fieldname`) REFERENCES `vtiger_field` (`fieldname`) ON DELETE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+</tables>
+<crons>
+</crons>
+</module>

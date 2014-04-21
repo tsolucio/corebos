@@ -1,0 +1,15 @@
+<?xml version='1.0'?>
+<module>
+<exporttime>2010-12-23 13:46:05</exporttime>
+<name>ConfigEditor</name>
+<label>ConfigEditor</label>
+<parent></parent>
+<type>extension</type>
+<version>1.9</version>
+<dependencies>
+<vtiger_version>5.1.0</vtiger_version>
+<vtiger_max_version>5.*</vtiger_max_version>
+</dependencies>
+<tables>
+</tables>
+</module>

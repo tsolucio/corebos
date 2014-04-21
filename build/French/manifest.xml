@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<module>
+	<type>language</type>
+	<name>French</name>
+	<label>Francais</label>
+	<prefix>fr_fr</prefix>
+	<version>1.1.0</version>
+	<encoding>UTF-8</encoding>
+	<creationDate>2012-04-09 22:56:14</creationDate>
+	<author>ABOnline solutions - http://www.vtiger-crm.fr/</author>
+	<license>GPL</license>
+	<dependencies>
+		<vtiger_version>5.4.0</vtiger_version>
+		<vtiger_max_version>5.*</vtiger_max_version>
+	</dependencies>
+</module>

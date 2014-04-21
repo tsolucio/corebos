@@ -1,0 +1,57 @@
+<?xml version='1.0'?>
+<module>
+<exporttime>2011-09-30 10:25:56</exporttime>
+<name>MailManager</name>
+<label>MailManager</label>
+<parent>Tools</parent>
+<type>extension</type>
+<version>1.4</version>
+<dependencies>
+<vtiger_version>5.2.0</vtiger_version>
+</dependencies>
+<tables>
+<table>
+<name>vtiger_mailmanager_mailrel</name>
+<sql><![CDATA[CREATE TABLE `vtiger_mailmanager_mailrel` (
+  `mailuid` varchar(999) default NULL,
+  `crmid` int(11) default NULL,
+  `emailid` int(11) default NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+<table>
+<name>vtiger_mailmanager_mailrecord</name>
+<sql><![CDATA[CREATE TABLE `vtiger_mailmanager_mailrecord` (
+  `userid` int(11) default NULL,
+  `mfrom` varchar(255) default NULL,
+  `mto` varchar(255) default NULL,
+  `mcc` varchar(500) default NULL,
+  `mbcc` varchar(500) default NULL,
+  `mdate` varchar(20) default NULL,
+  `msubject` varchar(500) default NULL,
+  `mbody` text,
+  `mcharset` varchar(10) default NULL,
+  `misbodyhtml` int(1) default NULL,
+  `mplainmessage` int(1) default NULL,
+  `mhtmlmessage` int(1) default NULL,
+  `muniqueid` varchar(500) default NULL,
+  `mbodyparsed` int(1) default NULL,
+  `muid` int(11) default NULL,
+  `lastsavedtime` int(11) default NULL,
+  KEY `userid_lastsavedtime_idx` (`userid`,`lastsavedtime`),
+  KEY `userid_muid_idx` (`userid`,`muid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+<table>
+<name>vtiger_mailmanager_mailattachments</name>
+<sql><![CDATA[CREATE TABLE `vtiger_mailmanager_mailattachments` (
+  `userid` int(11) default NULL,
+  `muid` int(11) default NULL,
+  `aname` varchar(100) default NULL,
+  `lastsavedtime` int(11) default NULL,
+  `attachid` int(19) NOT NULL,
+  `path` varchar(200) NOT NULL,
+  KEY `userid_muid_idx` (`userid`,`muid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+</tables>
+</module>

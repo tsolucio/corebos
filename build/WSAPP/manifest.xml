@@ -1,0 +1,87 @@
+<?xml version='1.0'?>
+<module>
+<exporttime>2010-11-30 13:44:28</exporttime>
+<name>WSAPP</name>
+<label>WSAPP</label>
+<parent></parent>
+<type>extension</type>
+<version>3.4.4</version>
+<dependencies>
+<vtiger_version>5.1.0</vtiger_version>
+</dependencies>
+<license>
+<inline><![CDATA[/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
+ * All Rights Reserved.
+ ************************************************************************************/]]></inline></license>
+<migrations>
+	<migration version='3.4.4'>
+		<tables>
+			<table>
+				<name>vtiger_wsapp</name>
+				<sql><![CDATA[ALTER TABLE vtiger_wsapp MODIFY COLUMN name varchar(200) NOT NULL]]></sql>
+			</table>
+			<table>
+				<name>vtiger_wsapp_handlerdetails</name>
+				<sql><![CDATA[ALTER TABLE vtiger_wsapp_handlerdetails MODIFY COLUMN type varchar(200) NOT NULL]]></sql>
+			</table>
+		</tables>
+	</migration>
+</migrations>
+<tables>
+<table>
+<name>vtiger_wsapp</name>
+<sql><![CDATA[CREATE TABLE `vtiger_wsapp` (
+  `appid` int(11) NOT NULL auto_increment,
+  `name` varchar(200) NOT NULL,
+  `appkey` varchar(255) default NULL,
+  `type` varchar(100) default NULL,
+  PRIMARY KEY  (`appid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+<table>
+<name>vtiger_wsapp_recordmapping</name>
+<sql><![CDATA[CREATE TABLE `vtiger_wsapp_recordmapping` (
+  `id` int(19) NOT NULL auto_increment,
+  `serverid` varchar(10) default NULL,
+  `clientid` varchar(255) default NULL,
+  `clientmodifiedtime` datetime default NULL,
+  `appid` int(11) default NULL,
+  `servermodifiedtime` datetime default NULL,
+  `serverappid` int(11) default NULL,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+<table>
+<name>vtiger_wsapp_handlerdetails</name>
+<sql><![CDATA[CREATE TABLE `vtiger_wsapp_handlerdetails` (
+  `type` varchar(200) NOT NULL,
+  `handlerclass` varchar(100) default NULL,
+  `handlerpath` varchar(300) default NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+<table>
+<name>vtiger_wsapp_queuerecords</name>
+<sql><![CDATA[CREATE TABLE `vtiger_wsapp_queuerecords` (
+  `syncserverid` int(19) default NULL,
+  `details` varchar(300) default NULL,
+  `flag` varchar(100) default NULL,
+  `appid` int(19) default NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+<table>
+<name>vtiger_wsapp_sync_state</name>
+<sql><![CDATA[CREATE TABLE `vtiger_wsapp_sync_state` (
+	`id` int(19) NOT NULL auto_increment,
+	`name` varchar(200) default NULL,
+	`stateencodedvalues` varchar(300) NOT NULL,
+	`userid` int(19) default NULL,
+	PRIMARY KEY  (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+</tables>
+</module>

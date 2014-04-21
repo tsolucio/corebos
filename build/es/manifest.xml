@@ -1,0 +1,34 @@
+<?xml version="1.0"?>
+<module>
+  <type>language</type>
+  <name>Spanish</name>
+  <label>ES Spanish</label>
+  <prefix>es_es</prefix>
+  <version>5.4.0</version>
+  <dependencies>
+	  <vtiger_version>5.2.1</vtiger_version>
+	  <vtiger_max_version>5.*</vtiger_max_version>
+  </dependencies>
+  <license>
+   <inline><![CDATA[
+ ********************************************************************************
+ * The contents of these fileis are subject to the Mozilla Public License Version 1.1
+ * ("License"); You may not use this file except in compliance with the License.
+ * Software distributed under the License is distributed on an  "AS IS"  basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
+ * the specific language governing rights and limitations under the License.
+ ********************************************************************************
+ *  Language     : Español es_es
+ *  Version      : 5.4.0
+ *  Author       : Joe Bordes JPL TSolucio, S. L. 5.4.0
+ *  Author       : Joe Bordes JPL TSolucio, S. L. 5.4.0RC
+ *  Author       : Joe Bordes JPL TSolucio, S. L. 5.3.0GA
+ *  Author       : Joe Bordes JPL TSolucio, S. L. 5.3.0RC
+ *  Author       : Joe Bordes JPL TSolucio, S. L. 5.2.1
+ *  Author       : Joe Bordes JPL TSolucio, S. L. 5.1.0
+ *  Author       : Joe Bordes JPL TSolucio. Rafael Soler. 5.0.4
+ *  Author       : Joe Bordes JPL TSolucio, S. L. 5.0.3
+ ********************************************************************************
+]]></inline>
+  </license>
+</module>

@@ -1,0 +1,244 @@
+<?xml version='1.0'?>
+<module>
+<exporttime>2010-04-14 15:45:36</exporttime>
+<name>SMSNotifier</name>
+<label>SMSNotifier</label>
+<parent>Tools</parent>
+<version>1.8</version>
+<dependencies>
+<vtiger_version>5.1.0</vtiger_version>
+<vtiger_max_version>5.*</vtiger_max_version>
+</dependencies>
+<tables>
+<table>
+<name>vtiger_smsnotifier</name>
+<sql><![CDATA[CREATE TABLE `vtiger_smsnotifier` (
+  `smsnotifierid` int(11) default NULL,
+  `message` text,
+  `status` varchar(100) default NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+<table>
+<name>vtiger_smsnotifiercf</name>
+<sql><![CDATA[CREATE TABLE `vtiger_smsnotifiercf` (
+  `smsnotifierid` int(11) NOT NULL,
+  PRIMARY KEY  (`smsnotifierid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+<table>
+<name>vtiger_smsnotifier_servers</name>
+<sql><![CDATA[CREATE TABLE `vtiger_smsnotifier_servers` (
+  `id` int(11) NOT NULL auto_increment,
+  `password` varchar(255) default NULL,
+  `isactive` int(1) default NULL,
+  `providertype` varchar(50) default NULL,
+  `username` varchar(255) default NULL,
+  `parameters` text,
+  PRIMARY KEY  (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8]]></sql>
+</table>
+<table>
+<name>vtiger_smsnotifier_status</name>
+<sql><![CDATA[CREATE TABLE `vtiger_smsnotifier_status` (
+  `smsnotifierid` int(11) default NULL,
+  `tonumber` varchar(20) default NULL,
+  `status` varchar(10) default NULL,
+  `smsmessageid` varchar(50) default NULL,
+  `needlookup` int(1) default '1',
+  `statusid` int(11) NOT NULL auto_increment,
+  `statusmessage` varchar(100) default NULL,
+  PRIMARY KEY  (`statusid`)
+) ENGINE=InnoDB AUTO_INCREMENT=25 DEFAULT CHARSET=utf8]]></sql>
+</table>
+</tables>
+<blocks>
+<block>
+<label>LBL_SMSNOTIFIER_INFORMATION</label>
+<fields>
+<field>
+<fieldname>assigned_user_id</fieldname>
+<uitype>53</uitype>
+<columnname>smownerid</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Assigned To</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>2</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~M</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence>NULL</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>createdtime</fieldname>
+<uitype>70</uitype>
+<columnname>createdtime</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Created Time</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>5</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>T~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence>NULL</quickcreatesequence>
+<displaytype>2</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+</field>
+<field>
+<fieldname>modifiedtime</fieldname>
+<uitype>70</uitype>
+<columnname>modifiedtime</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Modified Time</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>6</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>T~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence>NULL</quickcreatesequence>
+<displaytype>2</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+</field>
+<field>
+<fieldname>modifiedby</fieldname>
+<uitype>52</uitype>
+<columnname>modifiedby</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Last Modified By</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>7</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>3</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>3</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>0</masseditable>
+</field>
+<field>
+<fieldname>message</fieldname>
+<uitype>21</uitype>
+<columnname>message</columnname>
+<tablename>vtiger_smsnotifier</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>message</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>1</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~M</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence>NULL</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+<entityidentifier>
+<entityidfield>smsnotifierid</entityidfield>
+<entityidcolumn>smsnotifierid</entityidcolumn>
+</entityidentifier>
+</field>
+</fields>
+</block>
+<block>
+<label>LBL_CUSTOM_INFORMATION</label>
+</block>
+<block>
+<label>StatusInformation</label>
+</block>
+</blocks>
+<customviews>
+<customview>
+<viewname>All</viewname>
+<setdefault>false</setdefault>
+<setmetrics>false</setmetrics>
+<fields>
+<field>
+<fieldname>message</fieldname>
+<columnindex>0</columnindex>
+</field>
+<field>
+<fieldname>assigned_user_id</fieldname>
+<columnindex>2</columnindex>
+</field>
+<field>
+<fieldname>createdtime</fieldname>
+<columnindex>3</columnindex>
+</field>
+<field>
+<fieldname>modifiedtime</fieldname>
+<columnindex>4</columnindex>
+</field>
+</fields>
+</customview>
+</customviews>
+<relatedlists>
+<relatedlist>
+<function>get_related_list</function>
+<label>Accounts</label>
+<sequence>1</sequence>
+<presence>0</presence>
+<actions>
+<action> </action>
+</actions>
+<relatedmodule>Accounts</relatedmodule>
+</relatedlist>
+<relatedlist>
+<function>get_related_list</function>
+<label>Contacts</label>
+<sequence>2</sequence>
+<presence>0</presence>
+<actions>
+<action> </action>
+</actions>
+<relatedmodule>Contacts</relatedmodule>
+</relatedlist>
+<relatedlist>
+<function>get_related_list</function>
+<label>Leads</label>
+<sequence>3</sequence>
+<presence>0</presence>
+<actions>
+<action> </action>
+</actions>
+<relatedmodule>Leads</relatedmodule>
+</relatedlist>
+</relatedlists>
+<customlinks>
+<customlink>
+<linktype>DETAILVIEWBASIC</linktype>
+<linklabel>LBL_CHECK_STATUS</linklabel>
+<linkurl><![CDATA[javascript:SMSNotifier.checkstatus($RECORD$)]]></linkurl>
+<linkicon><![CDATA[themes/images/reload.gif]]></linkicon>
+<sequence>0</sequence>
+</customlink>
+<customlink>
+<linktype>HEADERSCRIPT</linktype>
+<linklabel>SMSNotifierCommonJS</linklabel>
+<linkurl><![CDATA[modules/SMSNotifier/SMSNotifierCommon.js]]></linkurl>
+<linkicon><![CDATA[]]></linkicon>
+<sequence>0</sequence>
+</customlink>
+</customlinks>
+</module>
