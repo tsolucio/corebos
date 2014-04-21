@@ -85,7 +85,7 @@ $selectedOptionalModuleNames = array();
 													<table cellpadding="5" cellspacing="1" align=right width="100%" border="0">
 													<?php if(count($optionalModules) > 0) {
 														foreach($optionalModules as $option=>$modules) {
-															if(count($modules) > 0) { ?>															
+															if(count($modules) > 0) { ?>
 												    			<tr>
 													    			<td colspan=3 style="font-size:13;">
 													    				<strong><?php echo $installationStrings['LBL_SELECT_OPTIONAL_MODULES_TO_'.$option]; ?> :</strong>
