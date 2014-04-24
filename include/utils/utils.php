@@ -1031,7 +1031,7 @@ function to_html($string, $encode=true)
 		}
 		if ($doconvert == true)
 		{
-			if(strtolower($default_charset) == 'utf-8')
+			if($default_charset == 'UTF-8')
 				$string = htmlentities($string, ENT_QUOTES, $default_charset);
 			else
 				$string = preg_replace(array('/</', '/>/', '/"/'), array('&lt;', '&gt;', '&quot;'), $string);
@@ -2948,7 +2948,7 @@ function utf8RawUrlDecode ($source) {
             $pos++;
         }
     }
-    if(strtolower($default_charset) == 'utf-8')
+    if($default_charset == 'UTF-8')
 	    return html_to_utf8($decodedStr);
     else
 	    return $decodedStr;
@@ -3203,7 +3203,7 @@ function getAccessPickListValues($module)
 
 function get_config_status() {
 	global $default_charset;
-	if(strtolower($default_charset) == 'utf-8')
+	if($default_charset == 'UTF-8')
 		$config_status=1;
 	else
 		$config_status=0;

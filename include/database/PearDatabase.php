@@ -339,7 +339,7 @@ class PearDatabase{
 	function executeSetNamesUTF8SQL($force = false) {
 		global $default_charset;
 		// Performance Tuning: If database default charset is UTF-8, we don't need this
-		if(strtoupper($default_charset) == 'UTF-8' && ($force || !$this->isdb_default_utf8_charset)) {
+		if($default_charset == 'UTF-8' && ($force || !$this->isdb_default_utf8_charset)) {
 
 			$sql_start_time = microtime(true);
 

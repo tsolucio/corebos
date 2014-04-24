@@ -12,7 +12,7 @@ require_once('include/database/PearDatabase.php');
 global $adb;
 
 $profileid = vtlib_purify($_REQUEST['profileid']);
-if(strtolower($default_charset) == 'utf-8') {	
+if($default_charset == 'UTF-8') {	
 	$profilename = vtlib_purify($_REQUEST['profilename']);
 	$profileDesc = vtlib_purify($_REQUEST['description']);
 } else {

@@ -21,7 +21,7 @@ $return_action = vtlib_purify($_REQUEST["return_action"]);
 if($cvmodule != "") {
 	$cv_tabid = getTabid($cvmodule);
 	$viewname = vtlib_purify($_REQUEST["viewName"]);
-	if(strtolower($default_charset) != 'utf-8')
+	if($default_charset != 'UTF-8')
 		$viewname = htmlentities($viewname);
 
 	//setStatus=0(Default);1(Private);2(Pending);3(Public).

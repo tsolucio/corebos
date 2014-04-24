@@ -162,6 +162,7 @@ $currency_name = '_MASTER_CURRENCY_';
 // default charset
 // default charset default value = 'UTF-8' or 'ISO-8859-1'
 $default_charset = '_VT_CHARSET_';
+$default_charset = strtoupper($default_charset);  // DO NOT MODIFY THIS LINE, IT IS IMPORTANT
 
 // default language
 // default_language default value = en_us
