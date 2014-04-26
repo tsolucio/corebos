@@ -13,12 +13,14 @@ class WebserviceField{
 	private $uitype;
 	private $blockId;
 	private $blockName;
+	private $blockSequence;
 	private $nullable;
 	private $default;
 	private $tableName;
 	private $columnName;
 	private $fieldName;
 	private $fieldLabel;
+	private $fieldSequence;
 	private $editable;
 	private $fieldType;
 	private $displayType;
@@ -48,10 +50,12 @@ class WebserviceField{
 		$this->uitype = $row['uitype'];
 		$this->blockId = $row['block'];
 		$this->blockName = null;
+		$this->blockSequence = $this->getBlockSequence();
 		$this->tableName = $row['tablename'];
 		$this->columnName = $row['columnname'];
 		$this->fieldName = $row['fieldname'];
 		$this->fieldLabel = $row['fieldlabel'];
+		$this->fieldSequence = $row['sequence'];
 		$this->displayType = $row['displaytype'];
 		$this->massEditable = ($row['masseditable'] === '1')? true: false;
 		$typeOfData = $row['typeofdata'];
@@ -143,6 +147,22 @@ class WebserviceField{
 			$this->blockName = getBlockName($this->blockId);
 		}
 		return $this->blockName;
+	}
+
+	public function getBlockSequence(){
+		if(empty($this->blockSequence)) {
+			if(empty($this->blockId)) {
+				$this->blockSequence = 0;
+			} else {
+				global $adb;
+				$this->blockSequence = $adb->query_result($adb->query('select sequence from vtiger_blocks where blockid='.$this->blockId),0,0);
+			}
+		}
+		return $this->blockSequence;
+	}
+
+	public function getFieldSequence(){
+		return $this->fieldSequence;
 	}
 
 	public function getTabId(){

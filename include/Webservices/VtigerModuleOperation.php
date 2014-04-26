@@ -214,10 +214,14 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		//set type name, in the type details array.
 		$typeDetails['name'] = $webserviceField->getFieldDataType();
 		$editable = $this->isEditable($webserviceField);
-		
+
+		$blkname = $webserviceField->getBlockName();
 		$describeArray = array('name'=>$webserviceField->getFieldName(),'label'=>$fieldLabel,'mandatory'=>
 			$webserviceField->isMandatory(),'type'=>$typeDetails,'nullable'=>$webserviceField->isNullable(),
-			"editable"=>$editable);
+			"editable"=>$editable,'uitype'=>$webserviceField->getUIType(),'typeofdata'=>$webserviceField->getTypeOfData(),
+			'sequence'=>$webserviceField->getFieldSequence(),
+			'block'=>array('blockid'=>$webserviceField->getBlockId(),'blocksequence'=>$webserviceField->getBlockSequence(),
+				'blocklabel'=>$blkname,'blockname'=>getTranslatedString($blkname,$this->meta->getTabName())));
 		if($webserviceField->hasDefault()){
 			$describeArray['default'] = $webserviceField->getDefault();
 		}
