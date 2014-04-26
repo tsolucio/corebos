@@ -3014,7 +3014,7 @@ function getEntityField($module) {
 			$fieldsname = $fieldsname . ")";
 		}
 	}
-	$data = array("tablename" => $tablename, "fieldname" => $fieldsname);
+	$data = array("tablename" => $tablename, "fieldname" => $fieldsname,"entityid"=>$entityidfield);
 	return $data;
 }
 

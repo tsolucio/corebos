@@ -288,6 +288,9 @@ class WebserviceField{
 				$referenceTypes[] = 'SalesOrder';
 				$referenceTypes[] = 'Campaigns';
 			}
+			if ($this->getUIType()==26) { // DocumentFolders
+				$referenceTypes[] = 'DocumentFolders';
+			}
 			
 			global $current_user;
 			$types = vtws_listtypes(null, $current_user);

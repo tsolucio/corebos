@@ -336,6 +336,18 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		return null;
 	}
 	
+    function getFieldUItypeFromFieldName($fieldName){
+                if(!$this->meta){
+                        $this->retrieveMeta();
+                }
+
+                if(isset($this->moduleFields[$fieldName])){
+                        $webserviceField = $this->moduleFields[$fieldName];
+                        return $webserviceField->getUIType();
+                }
+                return null;
+        }
+
 	function retrieveMeta(){
 		
 		require_once('modules/CustomView/CustomView.php');
