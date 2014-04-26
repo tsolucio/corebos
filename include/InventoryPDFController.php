@@ -83,7 +83,7 @@ class Vtiger_InventoryPDFController {
 		$pdfgenerator->setFooterViewer($this->getFooterViewer());
 		$pdfgenerator->setContentViewer($this->getContentViewer());
 		
-		$pdfgenerator->generate($filename, $type);
+		return $pdfgenerator->generate($filename, $type);
 	}
 
 

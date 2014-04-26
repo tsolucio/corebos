@@ -14,6 +14,10 @@ $currentModule = vtlib_purify($_REQUEST['module']);
 $controller = new Vtiger_SalesOrderPDFController($currentModule);
 $controller->loadRecord(vtlib_purify($_REQUEST['record']));
 $salesorder_no = getModuleSequenceNumber($currentModule,vtlib_purify($_REQUEST['record']));
+if($purpose == 'webservice') {
+$PDFBuffer = $controller->Output('','S'); // S means send the pdf output in buffer instead of file
+} else {
 $controller->Output('SalesOrder_'.$salesorder_no.'.pdf', 'D');//added file name to make it work in IE, also forces the download giving the user the option to save
 exit();
+}
 ?>

@@ -17,6 +17,9 @@ if(isset($_REQUEST['savemode']) && $_REQUEST['savemode'] == 'file') {
 	$filepath='test/product/'.$quote_id.'_Quotes_'.$quote_no.'.pdf';
 	//added file name to make it work in IE, also forces the download giving the user the option to save
 	$controller->Output($filepath,'F');
+} elseif($purpose == 'webservice') {
+   $log->debug("Switched to buffer. Purpose = ". $purpose);
+   $PDFBuffer = $controller->Output('','S'); // S means send the pdf output in buffer instead of file
 } else {
 	//added file name to make it work in IE, also forces the download giving the user the option to save
 	$controller->Output('Quotes_'.$quote_no.'.pdf', 'D');
