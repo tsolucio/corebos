@@ -45,7 +45,7 @@ if(!empty($deletecheck) && $adb->query_result($deletecheck, 0, 'deleted') == 1) 
 		header("Content-type: $fileType");
 		header("Pragma: public");
 		header("Cache-Control: private");
-		header("Content-Disposition: attachment; filename=$name");
+		header("Content-Disposition: attachment; filename=\"$name\"");
 		header("Content-Description: PHP Generated Data");
 		echo $fileContent;
 	}

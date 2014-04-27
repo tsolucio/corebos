@@ -57,7 +57,7 @@ if($adb->num_rows($result) == 1)
 	header("Content-type: $fileType");
 	header("Content-length: $filesize");
 	header("Cache-Control: private");
-	header("Content-Disposition: attachment; filename=$name");
+	header("Content-Disposition: attachment; filename=\"$name\"");
 	header("Content-Description: PHP Generated Data");
 	echo $fileContent;
 }
