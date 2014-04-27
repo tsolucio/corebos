@@ -354,6 +354,52 @@ function vtws_preserveGlobal($name,$value){
 }
 
 /**
+ * Given the details of a webservices definition, it creates it if it doesn't exist already
+ * @param $operationInfo array with the new web service method definition. Like this:
+  $operationInfo = array(
+	 'name'    => 'getRelatedRecords',
+	 'include' => 'include/Webservices/GetRelatedRecords.php',
+	 'handler' => 'getRelatedRecords',
+	 'prelogin'=> 0,
+	 'type'    => 'POST',
+	 'parameters' => array(
+	 	array('name' => 'id','type' => 'String'),
+	 	array('name' => 'module','type' => 'String'),
+	 	array('name' => 'relatedModule','type' => 'String'),
+	 	array('name' => 'queryParameters','type' => 'encoded')
+	 )
+  );
+ * @return false if already registered, true if registered correctly
+ * @errors Failed to create webservice and Failed to setup parameters
+ */
+function registerWSAPI($operationInfo) {
+	global $adb;
+
+	if (!isset($operationInfo['prelogin'])) $operationInfo['prelogin'] = 0;
+
+	$check = $adb->pquery('SELECT 1 FROM vtiger_ws_operation WHERE name=?', array($operationInfo['name']));
+	if ($check && $adb->num_rows($check)) {
+		return false;  // it exists > we leave
+	}
+
+	$operationId = vtws_addWebserviceOperation($operationInfo['name'], $operationInfo['include'],
+		$operationInfo['handler'], $operationInfo['type'], $operationInfo['prelogin']);
+
+	if(empty($operationId)){
+		throw new Exception('FAILED TO SETUP '.$operationInfo['name'].' WEBSERVICE');
+	}
+
+	$sequence = 1;
+	foreach ($operationInfo['parameters'] as $parameters) {
+		$status = vtws_addWebserviceOperationParam($operationId,$parameters['name'], $parameters['type'],$sequence++);
+		if($status === false){
+			throw new Exception('FAILED TO SETUP '.$parameters['name'].' WEBSERVICE HALFWAY THOURGH');
+		}
+	}
+	return true;
+}
+
+/**
  * Takes the details of a webservices and exposes it over http.
  * @param $name name of the webservice to be added with namespace.
  * @param $handlerFilePath file to be include which provides the handler method for the given webservice.
