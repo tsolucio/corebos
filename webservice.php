@@ -8,6 +8,14 @@
  * All Rights Reserved.
  ********************************************************************************/
 	
+	/** Workaround to enable capaturing relation query */
+	// include/RelatedListView.php checks for the existence of this
+	// function and proxies the call (if exists).
+	function GetRelatedList($module,$relatedmodule,$focus,$query,$button,$returnset,$id='',$edit_val='',$del_val='') {
+		return array( 'query' => $query );
+	}
+	/** END */
+	
 	require_once("config.inc.php");
 	require_once("include/HTTP_Session/Session.php");
 	require_once 'include/Webservices/Utils.php';

@@ -139,6 +139,86 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 	public function query($q){
 		
 		$parser = new Parser($this->user, $q);
+
+		if (stripos($q,'related.')>0) { // related query
+			require_once 'include/Webservices/Utils.php';
+			require_once 'include/Webservices/GetRelatedRecords.php';
+			$queryParameters['columns'] = trim(substr($q,6,stripos($q,' from ')-5));
+			$moduleRegex = "/[fF][rR][Oo][Mm]\s+([^\s;]+)/";
+			preg_match($moduleRegex, $q, $m);
+			$relatedModule = trim($m[1]);
+			$moduleRegex = "/[rR][eE][lL][aA][tT][eE][dD]\.([^\s;]+)\s*=\s*([^\s;]+)/";
+			preg_match($moduleRegex, $q, $m);
+			$moduleName = trim($m[1]);
+			$id = trim($m[2],"(')");
+			$mysql_query = __getRLQuery($id, $moduleName, $relatedModule, $queryParameters, $this->user);
+			// where, limit and order
+			$afterwhere=substr($q,stripos($q,' where ')+6);
+			// eliminate related conditions
+			$relatedCond = "/\(*[rR][eE][lL][aA][tT][eE][dD]\.([^\s;]+)\s*=\s*([^\s;]+)\)*\s*([aA][nN][dD]|[oO][rR]\s)*/";
+			preg_match($relatedCond,$afterwhere,$pieces);
+			$glue = isset($pieces[3]) ? trim($pieces[3]) : 'and'; 
+			$afterwhere=trim(preg_replace($relatedCond,'',$afterwhere),' ;');
+			$relatedCond = "/\s+([aA][nN][dD]|[oO][rR])+\s+([oO][rR][dD][eE][rR])+/";
+			$afterwhere=trim(preg_replace($relatedCond,' order ',$afterwhere),' ;');
+			$relatedCond = "/\s+([aA][nN][dD]|[oO][rR])+\s+([lL][iI][mM][iI][tT])+/";
+			$afterwhere=trim(preg_replace($relatedCond,' limit ',$afterwhere),' ;');
+			// if related is at the end of condition we need to strip last and|or
+			if (strtolower(substr($afterwhere,-3))=='and')
+				$afterwhere = substr($afterwhere,0,strlen($afterwhere)-3);
+			if (strtolower(substr($afterwhere,-2))=='or')
+				$afterwhere = substr($afterwhere,0,strlen($afterwhere)-2);
+			// transform REST ids
+			$relatedCond = "/=\s*'*\d+x(\d+)'*/";
+			$afterwhere=preg_replace($relatedCond,' = $1 ',$afterwhere);
+			// kill unbalanced parenthesis
+			$balanced=0;
+			$pila=array();
+			for ($ch=0;$ch<strlen($afterwhere);$ch++) {
+				if ($afterwhere[$ch]=='(') {
+					$pila[$balanced]=array('pos'=>$ch,'dir'=>'(');
+					$balanced++;
+				} elseif ($afterwhere[$ch]==')') {
+					if ($balanced>0 and $pila[$balanced-1]['dir']=='(') {
+						array_pop($pila);
+						$balanced--;
+					} else {
+						$pila[$balanced]=array('pos'=>$ch,'dir'=>')');
+						$balanced++;
+					}
+				}
+			}
+			foreach ($pila as $paren) {
+				$afterwhere[$paren['pos']]=' ';
+			}
+			// transform artificial commentcontent for FAQ and Ticket comments
+			if (strtolower($relatedModule)=='modcomments' and (strtolower($moduleName)=='helpdesk' or strtolower($moduleName)=='faq')) {
+				$afterwhere = str_ireplace('commentcontent','comments',$afterwhere);
+			}
+			// transform fieldnames to columnnames
+			$handler = vtws_getModuleHandlerFromName($relatedModule,$this->user);
+			$meta = $handler->getMeta();
+			$fldmap = $meta->getFieldColumnMapping();
+			$tblmap = $meta->getColumnTableMapping();
+			$tok = strtok($afterwhere,' ');
+			$chgawhere = '';
+			while ($tok !== false) {
+				if (!empty($fldmap[$tok]))
+					$chgawhere .= (strpos($tok, '.') ? '' : $tblmap[$fldmap[$tok]].'.').$fldmap[$tok].' ';
+				else
+					$chgawhere .= $tok.' ';
+				$tok = strtok(' ');
+			}
+			$afterwhere = $chgawhere;
+			if (!empty($afterwhere)) {
+				$start = strtolower(substr(trim($afterwhere),0,5));
+				if ($start!='limit' and $start!='order') // there is a condition we add the glue
+					$mysql_query.=" $glue ";
+				$mysql_query.=" $afterwhere";
+			}
+			if (stripos($q,'count(*)')>0)
+				$mysql_query = str_ireplace(' as count ','',mkCountQuery($mysql_query));
+		} else {
 		$error = $parser->parse();
 		
 		if($error){
@@ -147,6 +227,8 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		
 		$mysql_query = $parser->getSql();
 		$meta = $parser->getObjectMetaData();
+		}
+
 		$this->pearDB->startTransaction();
 		$result = $this->pearDB->pquery($mysql_query, array());
 		$error = $this->pearDB->hasFailedTransaction();
