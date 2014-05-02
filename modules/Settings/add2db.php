@@ -1,5 +1,4 @@
 <?php
-
 /* * *******************************************************************************
  * * The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
@@ -17,13 +16,12 @@ global $upload_badext, $root_directory, $adb;
 $uploaddir = $root_directory . "/test/logo/"; // set this to wherever
 $saveflag = "true";
 $error_flag = "";
-$binFile = $_FILES['binFile']['name'];
-if (!empty($binFile)) {
-	$imageInfo = getimagesize($_FILES['binFile']['tmp_name']);
-}
-$image_extensions_allowed = array('jpeg', 'png', 'jpg', 'pjpeg', 'x-png');
-
-if (!empty($imageInfo)) {
+$savelogo = "false";
+$nologo_specified="false";
+$binFile = '';
+if (isset($_FILES) and isset($_FILES['binFile']) and !empty($_FILES['binFile']['name'])) {
+	$binFile = $_FILES['binFile']['name'];
+	$image_extensions_allowed = array('jpeg', 'png', 'jpg', 'pjpeg', 'x-png');
 	if (isset($_REQUEST['binFile_hidden'])) {
 		$filename = sanitizeUploadFileName(vtlib_purify($_REQUEST['binFile_hidden']), $upload_badext);
 	} else {
@@ -38,12 +36,7 @@ if (!empty($imageInfo)) {
 
 	if ($filesize != 0) {
 		if (in_array($file_type_val, $image_extensions_allowed)) { //Checking whether the file is an image or not
-			if (stristr($binFile, '.gif') != FALSE) {
-				$savelogo = "false";
-				$error_flag = "1";
-			} else {
 				$savelogo = "true";
-			}
 		} else {
 			$savelogo = "false";
 			$error_flag = "1";
@@ -67,10 +60,11 @@ if (!empty($imageInfo)) {
 		$savelogo = "false";
 		$nologo_specified = "false";
 	}
-
+}
+if ($error_flag == "") {
 	if ($savelogo == "true") {
 		move_uploaded_file($_FILES["binFile"]["tmp_name"], $uploaddir . $_FILES["binFile"]["name"]);
-
+	}
 		$organization_name = vtlib_purify($_REQUEST['organization_name']);
 		$org_name = vtlib_purify($_REQUEST['org_name']);
 		$organization_address = from_html($_REQUEST['organization_address']);
@@ -124,9 +118,7 @@ if (!empty($imageInfo)) {
 		} elseif ($savelogo == "false") {
 			header("Location: index.php?parenttab=Settings&module=Settings&action=EditCompanyDetails&flag=" . $error_flag);
 		}
-	}
 } else {
-	$error_flag = 2;
 	header("Location: index.php?parenttab=Settings&module=Settings&action=EditCompanyDetails&flag=" . $error_flag);
 }
 ?>
