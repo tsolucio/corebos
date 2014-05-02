@@ -815,8 +815,8 @@ function create_ticket($input_array)
 
 	$ticket = new HelpDesk();
 
-	$ticket->column_fields[ticket_title] = $title;
-	$ticket->column_fields[description]=$description;
+	$ticket->column_fields[ticket_title] = vtlib_purify($title);
+	$ticket->column_fields[description]= vtlib_purify($description);
 	$ticket->column_fields[ticketpriorities]=$priority;
 	$ticket->column_fields[ticketseverities]=$severity;
 	$ticket->column_fields[ticketcategories]=$category;
@@ -933,6 +933,7 @@ function close_current_ticket($input_array)
 	$focus->column_fields['ticketstatus'] ='Closed';
 	// Blank out the comments information to avoid un-necessary duplication
 	$focus->column_fields['comments'] = '';
+    $focus->column_fields['from_portal'] = 1;
 	// END
 	$focus->save("HelpDesk");
 	return "closed";
