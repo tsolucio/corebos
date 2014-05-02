@@ -402,6 +402,7 @@ class Invoice extends CRMEntity {
 			}
 			if(count($col_value) > 0) {
 				$col_value['id'] = $this->id;
+				$col_value['comment']= decode_html($col_value['comment']);
 				$columns = array_keys($col_value);
 				$values = array_values($col_value);
 				$query2 = "INSERT INTO vtiger_inventoryproductrel(". implode(",",$columns) .") VALUES (". generateQuestionMarks($values) .")";
