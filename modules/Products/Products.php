@@ -92,8 +92,10 @@ class Products extends CRMEntity {
 		//Inserting into product_taxrel table
 		if($_REQUEST['ajxaction'] != 'DETAILVIEW' && $_REQUEST['action'] != 'MassEditSave' && $_REQUEST['action'] != 'ProcessDuplicates')
 		{
-			$this->insertTaxInformation('vtiger_producttaxrel', 'Products');
 			$this->insertPriceInformation('vtiger_productcurrencyrel', 'Products');
+		}
+		if($_REQUEST['ajxaction'] != 'DETAILVIEW' && $_REQUEST['action'] != 'ProcessDuplicates') {
+			$this->insertTaxInformation('vtiger_producttaxrel', 'Products');
 		}
 
 		// Update unit price value in vtiger_productcurrencyrel
@@ -121,9 +123,12 @@ class Products extends CRMEntity {
 		{
 			for($i=0;$i<count($tax_details);$i++)
 			{
+				$tax_checkname = $tax_details[$i]['taxname']."_check";
+				if($_REQUEST['action'] == 'MassEditSave' && ($_REQUEST[$tax_checkname] == 'on' || $_REQUEST[$tax_checkname] == 1)) {
 				$taxid = getTaxId($tax_details[$i]['taxname']);
 				$sql = "delete from vtiger_producttaxrel where productid=? and taxid=?";
 				$adb->pquery($sql, array($this->id,$taxid));
+				}
 			}
 		}
 		for($i=0;$i<count($tax_details);$i++)

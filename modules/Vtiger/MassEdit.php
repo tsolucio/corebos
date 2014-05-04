@@ -32,6 +32,14 @@ $idstringval=implode(';',$storearray);
 $smarty->assign("IDS",$idstringval);
 $smarty->assign('MASS_EDIT','1');
 $smarty->assign('BLOCKS',getBlocks($currentModule,$disp_view,$mode,$focus->column_fields));
+if ($currentModule=='Products') {
+	$tax_details = getAllTaxes('available');
+	for($i=0;$i<count($tax_details);$i++) {
+		$tax_details[$i]['check_name'] = $tax_details[$i]['taxname'].'_check';
+		$tax_details[$i]['check_value'] = 0;
+	}
+	$smarty->assign("TAX_DETAILS", $tax_details);
+}
 $smarty->assign("CATEGORY",getParentTab());
 
 // Field Validation Information
