@@ -140,10 +140,6 @@ class VTScheduledReport extends Reports {
 		$contents .= '<b>'.getTranslatedString('LBL_REPORT_NAME', $currentModule) .' :</b> '. $this->reportname .'<br/>';
 		$contents .= '<b>'.getTranslatedString('LBL_DESCRIPTION', $currentModule) .' :</b><br/>'. $this->reportdescription .'<br/><br/>';
 
-		$vtigerMailer->Subject = $subject;
-		$vtigerMailer->Body    = $contents;
-		$vtigerMailer->ContentType = "text/html";
-
 		$baseFileName = utf8_decode(preg_replace('/[^a-zA-Z0-9_-\s]/', '', $this->reportname).'_'. preg_replace('/[^a-zA-Z0-9_-\s]/', '', $currentTime));
 
 		$oReportRun = new ReportRun($this->id);
