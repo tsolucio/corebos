@@ -120,15 +120,18 @@ class VTScheduledReport extends Reports {
 	}
 
 	public function sendEmail() {
+		require_once('modules/Emails/mail.php');
+		require_once('modules/Emails/Emails.php');
+		
+		global $HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID;		
 		global $currentModule;
-		require_once 'vtlib/Vtiger/Mailer.php';
-
-		$vtigerMailer = new Vtiger_Mailer();
 
 		$recipientEmails = $this->getRecipientEmails();
+		$emails_to = '';
 		foreach($recipientEmails as $name => $email) {
-			$vtigerMailer->AddAddress($email, $name);
+			$emails_to = $email.',';
 		}
+		$emails_to = trim($emails_to, ',');
 
 		$currentTime = date('Y-m-d H:i:s');
 		$subject = $this->reportname .' - '. $currentTime .' ('. DateTimeField::getDBTimeZone() .')';
@@ -151,6 +154,7 @@ class VTScheduledReport extends Reports {
 			$fileName = $baseFileName.'.pdf';
 			$filePath = 'storage/'.$fileName;
 			$attachments[$fileName] = $filePath;
+			$_REQUEST['filename_hidden_pdf'] = $filePath;
 			$pdf = $oReportRun->getReportPDF(NULL);
 			$pdf->Output($filePath,'F');
 		}
@@ -158,15 +162,10 @@ class VTScheduledReport extends Reports {
 			$fileName = $baseFileName.'.xls';
 			$filePath = 'storage/'.$fileName;
 			$attachments[$fileName] = $filePath;
+			$_REQUEST['filename_hidden_xls'] = $filePath;
 			$oReportRun->writeReportToExcelFile($filePath, NULL);
 		}
-
-		foreach($attachments as $attachmentName => $path) {
-			$vtigerMailer->AddAttachment($path, $attachmentName);
-		}
-
-		$vtigerMailer->Send(true);
-
+		$mail_status = send_mail('Emails',$emails_to,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$subject,$contents,'','','attReports');
 		foreach($attachments as $attachmentName => $path) {
 			unlink($path);
 		}
