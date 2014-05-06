@@ -104,7 +104,7 @@ class VtigerCRMObject{
 		
 		$error = false;
 		$adb->startTransaction();
-		$this->instance->retrieve_entity_info($id,$this->getTabName());
+		$this->instance->retrieve_entity_info($id,$this->moduleName);
 		$error = $adb->hasFailedTransaction();
 		$adb->completeTransaction();
 		return !$error;
