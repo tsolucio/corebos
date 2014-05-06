@@ -1763,6 +1763,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						$cntct_focus = new Contacts();
 						$cntct_focus->retrieve_entity_info($entity_id, "Contacts");
 						$slashes_temp_val = popup_from_html($temp_val);
+						$slashes_temp_val = htmlspecialchars($slashes_temp_val, ENT_QUOTES, $default_charset);
 						//ADDED TO CHECK THE FIELD PERMISSIONS FOR
 						$xyz = array('mailingstreet', 'mailingcity', 'mailingzip', 'mailingpobox', 'mailingcountry', 'mailingstate', 'otherstreet', 'othercity', 'otherzip', 'otherpobox', 'othercountry', 'otherstate');
 						for ($i = 0; $i < 12; $i++) {
