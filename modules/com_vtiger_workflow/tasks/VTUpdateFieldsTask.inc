@@ -96,6 +96,22 @@ class VTUpdateFieldsTask extends VTTask {
 			foreach ($focus->column_fields as $fieldName => $fieldValue) {
 				$focus->column_fields[$fieldName] = html_entity_decode($fieldValue, ENT_QUOTES, $default_charset);
 			}
+
+			// Convert currency fields to User format before save
+			$webserviceObject = VtigerWebserviceObject::fromName($adb, $moduleName);
+			$handlerPath = $webserviceObject->getHandlerPath();
+			$handlerClass = $webserviceObject->getHandlerClass();
+			$handler = new $handlerClass($webserviceObject,$current_user,$adb,$log);
+			$meta = $handler->getMeta();
+			$moduleFields = $meta->getModuleFields();
+			foreach($moduleFields as $fieldName=>$fieldObj){
+				if($fieldObj->getFieldDataType()=="currency"){
+					if(!empty($focus->column_fields[$fieldName])){
+						$focus->column_fields[$fieldName] = CurrencyField::convertToUserFormat($focus->column_fields[$fieldName],$current_user);
+					}
+				}
+			}
+
 			$focus->saveentity($moduleName);
 			$util->revertUser();
 		}

@@ -506,10 +506,11 @@ class Import_Data_Controller {
 	}
 
 	public static function runScheduledImport() {
-		global $current_user;
+		require_once('modules/Emails/mail.php');
+		require_once('modules/Emails/Emails.php');		
+		global $current_user,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID;
 		$scheduledImports = self::getScheduledImport();
-		$vtigerMailer = new Vtiger_Mailer();
-		$vtigerMailer->IsHTML(true);
+
 		foreach ($scheduledImports as $scheduledId => $importDataController) {
 			$current_user = $importDataController->user;
 			$importDataController->batchImport = false;
@@ -519,22 +520,20 @@ class Import_Data_Controller {
 
 			$importStatusCount = $importDataController->getImportStatusCount();
 
-			$emailSubject = 'vtiger CRM - Scheduled Import Report for '.$importDataController->module;
+			$emailSubject = 'coreBOS - Scheduled Import Report for '.$importDataController->module;
 			$viewer = new Import_UI_Viewer();
 			$viewer->assign('FOR_MODULE', $importDataController->module);
 			$viewer->assign('IMPORT_RESULT', $importStatusCount);
 			$importResult = $viewer->fetch('Import_Result_Details.tpl');
 			$importResult = str_replace('align="center"', '', $importResult);
-			$emailData = 'vtiger CRM has just completed your import process. <br/><br/>' .
+			$emailData = 'coreBOS has just completed your import process. <br/><br/>' .
 							$importResult . '<br/><br/>'.
-							'We recommend you to login to the CRM and check few records to confirm that the import has been successful.';
+							'We recommend you to login to the coreBOS and check few records to confirm that the import has been successful.';
 
 			$userName = getFullNameFromArray('Users', $importDataController->user->column_fields);
 			$userEmail = $importDataController->user->email1;
-			$vtigerMailer->to = array( array($userEmail, $userName));
-			$vtigerMailer->Subject = $emailSubject;
-			$vtigerMailer->Body    = $emailData;
-			$vtigerMailer->Send();
+
+			send_mail('Emails',$userEmail,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$emailSubject,$emailData,'','');
 
 			$importDataController->finishImport();
 		}

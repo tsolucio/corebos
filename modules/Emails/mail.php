@@ -229,6 +229,19 @@ function setMailerProperties($mail,$subject,$contents,$from_email,$from_name,$to
 		addAllAttachments($mail,$emailid);
 	}
 
+	//If we send attachments from Reports
+	if($attachment == 'attReports')
+	{
+		if (isset($_REQUEST['filename_hidden_pdf'])) {
+			$file_name = $_REQUEST['filename_hidden_pdf'];
+			addAttachment($mail,$file_name,$emailid);
+		} 
+		if (isset($_REQUEST['filename_hidden_xls'])){
+			$file_name = $_REQUEST['filename_hidden_xls'];
+			addAttachment($mail,$file_name,$emailid);
+		}
+	}
+
 	$mail->IsHTML(true);		// set email format to HTML
 
 	return;
