@@ -12,7 +12,7 @@ DIR=$(dirname $(readlink -f $0))
 cd $DIR
 if [ -d $1 ]
 then
-	if [ -f $1/manifest.xml -a -d $1/modules ]
+	if [ -f $1/manifest.xml ]
 	then
 		if [ -f $1.zip ]
 		then
