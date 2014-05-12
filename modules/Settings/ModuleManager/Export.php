@@ -33,6 +33,10 @@ if ($module) {
 			fwrite($mnf, "<label>".$lnginfo['label']."</label>\n");
 			fwrite($mnf, "<prefix>".$lnginfo['prefix']."</prefix>\n");
 			fwrite($mnf, "<version>".$vtiger_current_version."</version>\n");
+			fwrite($mnf, "<dependencies>\n");
+			fwrite($mnf, "  <vtiger_version>".$vtiger_current_version."</vtiger_version>\n");
+			fwrite($mnf, "  <vtiger_max_version>".$vtiger_current_version."</vtiger_max_version>\n");
+			fwrite($mnf, "</dependencies>\n");
 			fwrite($mnf, "</module>\n");
 			fclose($mnf);
 		}
