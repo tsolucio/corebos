@@ -215,7 +215,7 @@ function alphabetic(module,url,dataid)
 	<td class="showPanelBg" valign="top" width=100% style="padding:10px;">
 	 <!-- SIMPLE SEARCH -->
 <div id="searchAcc" style="display: block;position:relative;">
-<form name="basicSearch" method="post" action="index.php" onSubmit="return callSearch('Basic');">
+<form name="basicSearch" method="post" action="index.php" onSubmit="document.basicSearch.searchtype.searchlaunched='basic';return callSearch('Basic');">
 <table width="100%" cellpadding="5" cellspacing="0"  class="searchUIBasic small" align="center" border=0>
 	<tr>
 		<td class="searchUIName small" nowrap align="left">
@@ -259,7 +259,7 @@ function alphabetic(module,url,dataid)
 </div>
 <!-- ADVANCED SEARCH -->
 <div id="advSearch" style="display:none;">
-<form name="advSearch" method="post" action="index.php" onSubmit="return callSearch('Advanced');">
+<form name="advSearch" method="post" action="index.php" onSubmit="document.basicSearch.searchtype.searchlaunched='advance';return callSearch('Advanced');">
 	<table  cellspacing=0 cellpadding=5 width=100% class="searchUIAdv1 small" align="center" border=0>
 		<tr>
 			<td class="searchUIName small" nowrap align="left"><span class="moduleName">{$APP.LBL_SEARCH}</span><br><span class="small"><a href="#" onClick="show('searchAcc');fnhide('advSearch');document.basicSearch.searchtype.searchlaunched='';">{$APP.LBL_GO_TO} {$APP.LNK_BASIC_SEARCH}</a></span></td>
