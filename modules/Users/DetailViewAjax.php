@@ -32,19 +32,19 @@ if($ajaxaction == "DETAILVIEW")
 		$userObj->retrieve_entity_info($userid,"Users");
 		$userObj->column_fields[$fieldname] = $fieldvalue;
 
-                if($fieldname=='asterisk_extension'){
+		if($fieldname=='asterisk_extension' and trim($fieldvalue)!=''){
 			$query = "select 1 from vtiger_asteriskextensions
                      inner join vtiger_users on vtiger_users.id=vtiger_asteriskextensions.userid
-                     where status='Active' and asterisk_extension =?";
-			$params = array($fieldvalue);
+                     where status='Active' and asterisk_extension =? and vtiger_users.id!=?";
+			$params = array(trim($fieldvalue),$userid);
 			
 			$result = $adb->pquery($query, $params);
-		        if($adb->num_rows($result) > 0)
+			if($adb->num_rows($result) > 0)
 			{
 				echo ":#:ERR".$mod_strings['LBL_ASTERISKEXTENSIONS_EXIST'];
 				return false;
 			}
-	     }
+		}
 		if($fieldname == 'internal_mailer'){
 			
 			if(isset($_SESSION['internal_mailer']) && $_SESSION['internal_mailer'] != $userObj->column_fields['internal_mailer'])
