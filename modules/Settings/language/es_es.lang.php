@@ -780,7 +780,7 @@ $mod_strings = array (
 
       'VTLIB_LBL_SELECT_PACKAGE_FILE'=>'Selecciona el Módulo Empaquetado',
       'VTLIB_LBL_FILE_LOCATION'=>'Ubicación fichero:',
-      'VTLIB_LBL_PACKAGE_FILE_HELP'=>'el módulo vtiger se empaqueta como un fichero zip.',
+      'VTLIB_LBL_PACKAGE_FILE_HELP'=>'un módulo se empaqueta como un fichero zip.',
       'VTLIB_LBL_IMPORT_FAILURE'=>'Error al importar',
       'VTLIB_LBL_INVALID_FILE'=>'Fichero de módulo inválido',
       'VTLIB_LBL_INVALID_IMPORT_TRY_AGAIN'=>'proporcionado para importar! Inténtalo de nuevo.',
