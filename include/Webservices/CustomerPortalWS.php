@@ -38,7 +38,43 @@ function vtws_changePortalUserPassword($email,$newPass)
 
     if ($nra) return true;
     else return false;
+}
+function vtws_findByPortalUserName($username) {
+	global $adb,$log;
+	$log->debug("Entering function vtws_findByPortalUserName");
+	$nra=$adb->query_result($adb->pquery("select count(*) from vtiger_portalinfo where isactive=1 and user_name=?",array($username)));
+	if (empty($nra))
+		$output=false;
+	else
+		$output=true;
+	$log->debug("Exiting function vtws_findByPortalUserName");
+	return $output;
+}
 
+function vtws_sendRecoverPassword($username) {
+	global $adb,$log,$current_user, $PORTAL_URL, $url_code;
+	$log->debug("Entering function vtws_sendRecoverPassword");
+
+	require_once("modules/Emails/mail.php");
+	require_once("include/utils/CommonUtils.php");
+	$ctors=$adb->query("select firstname,lastname,email,user_password
+			from vtiger_contactdetails
+			inner join vtiger_portalinfo on id=contactid
+			where isactive=1 and user_name='$username'");
+	$cto=$adb->fetch_array($ctors);
+	$data_array = Array();
+	$data_array['first_name'] = $cto['firstname'];
+	$data_array['last_name'] = $cto['lastname'];
+	$data_array['email'] = $cto['email'];
+	$data_array['username'] = $username;
+	$password = $cto['user_password'];
+	$data_array['portal_url'] = '<a href="'.$PORTAL_URL.'" style="font-family:Arial, Helvetica, sans-serif;font-size:12px; font-weight:bolder;text-decoration:none;color: #4242FD;">'.getTranslatedString('Please Login Here','Contacts').'</a>';
+	$contents= getmail_contents_portalUser($data_array,$password);
+	$subject = getTranslatedString('Customer Portal Login Details','Contacts');
+	$mail_status = send_mail('Contacts',$cto['email'],$current_user->user_name,"",$subject,$contents);
+
+	$log->debug("Exiting function vtws_sendRecoverPassword");
+	return $mail_status;
 }
 function vtws_getPortalUserDateFormat($user) {
 	global $adb,$log;
