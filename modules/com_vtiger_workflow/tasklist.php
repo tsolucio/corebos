@@ -47,5 +47,6 @@ require_once("VTWorkflowUtils.php");
 		$smarty->assign("moduleName", $moduleName);
 		$smarty->display("{$module->name}/ListTasks.tpl");
 	}
-	vtDisplayTaskList($adb, $_SERVER["REQUEST_URI"], $current_language);
+	$returl = 'index.php?'.$_SERVER['QUERY_STRING'];
+	vtDisplayTaskList($adb, $returl, $current_language);
 ?>

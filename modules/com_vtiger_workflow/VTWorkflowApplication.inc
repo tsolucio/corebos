@@ -14,7 +14,7 @@ class VTWorkflowApplication{
 		$this->name = "com_vtiger_workflow";
 		$this->label = "Workflow";
 		$this->action = $action;
-		$this->returnUrl = $_SERVER["REQUEST_URI"];
+		$this->returnUrl = 'index.php?'.$_SERVER['QUERY_STRING'];
 	}
 	
 	function currentUrl(){

@@ -56,5 +56,6 @@ function vtDisplayWorkflowList($adb, $request, $requestUrl, $app_strings, $curre
 	$smarty->assign("CRON_TASK", Vtiger_Cron::getInstance('Workflow'));
 	$smarty->display("{$module->name}/ListWorkflows.tpl");
 }
-vtDisplayWorkflowList($adb, $_REQUEST, $_SERVER["REQUEST_URI"], $app_strings, $current_language);
+$returl = 'index.php?'.$_SERVER['QUERY_STRING'];
+vtDisplayWorkflowList($adb, $_REQUEST, $returl, $app_strings, $current_language);
 ?>

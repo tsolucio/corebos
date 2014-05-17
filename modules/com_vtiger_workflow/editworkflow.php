@@ -86,5 +86,6 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 
 	$smarty->display("{$module->name}/EditWorkflow.tpl");
 }
-vtWorkflowEdit($adb, $_REQUEST, $_SERVER["REQUEST_URI"], $current_language, $app_strings);
+$returl = 'index.php?'.$_SERVER['QUERY_STRING'];
+vtWorkflowEdit($adb, $_REQUEST, $returl, $current_language, $app_strings);
 ?>
