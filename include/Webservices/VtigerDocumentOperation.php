@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2012 JPL TSolucio, S.L.  --  This file is a part of vtyiiCPNG.
+ * Copyright 2012-2014 JPL TSolucio, S.L.  --  This file is a part of coreBOS.
 * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
 * Vizsage Public License (the "License"). You may not use this file except in compliance with the
 * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit
@@ -14,7 +14,7 @@
 *************************************************************************************************/
 
 include_once 'include/Webservices/VtigerModuleOperation.php';
-include_once 'modules/Settings/MailScanner/core/MailAttachmentMIME.php';
+include_once 'include/Webservices/AttachmentHelper.php';
 
 class VtigerDocumentOperation extends VtigerModuleOperation {
 	protected $tabId;
@@ -43,10 +43,13 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 		$crmObject = new VtigerCRMObject($elementType, false);		
 
 		if ($element['filelocationtype']=='I' and !empty($element['filename'])) {
-                        $element['filesize']=$element['filename']['size'];
-                        $attachid=$this->__SaveAttachmentDB($element);
-                        $element['filetype']=$element['filename']['type'];
-                        $element['filename']=$filename = str_replace(' ', '_',$element['filename']['name']);
+			$file = $element['filename'];
+			$element['filesize']=$file['size'];
+			$file['assigned_user_id'] = $element['assigned_user_id'];
+			$file['setype'] = "Documents Attachment";
+			$attachid = SaveAttachmentDB($file);
+			$element['filetype']=$file['type'];
+			$element['filename']=$filename = str_replace(' ', '_',$file['name']);
 		}
 		$relations=$element['relations'];
 		unset($element['relations']);
@@ -70,15 +73,17 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 			$adb->pquery("INSERT INTO vtiger_seattachmentsrel(crmid, attachmentsid) VALUES(?,?)",Array($id, $attachid));
 		}
 		// Establish relations
-		if (!empty($relations) and !is_array($relations))
-			$relations = array($relations);
-		if (!empty($relations) and is_array($relations)) {
-		foreach ($relations as $rel) {
-			$ids = vtws_getIdComponents($rel);
-			$relid = $ids[1];
-			if (!empty($relid))
-				$adb->pquery("INSERT INTO vtiger_senotesrel(crmid, notesid) VALUES(?,?)",Array($relid, $id));
-		}}
+		//Comento este código porque ya se ha establecido la relacion en Create.php y al hacerlo otra vez falla
+		// Cuando se solucione el ticket 484 (las relaciones se establecen aquí) se debe descomentar
+		//if (!empty($relations) and !is_array($relations))
+		//	$relations = array($relations);
+		//if (!empty($relations) and is_array($relations)) {
+		//foreach ($relations as $rel) {
+		//	$ids = vtws_getIdComponents($rel);
+		//	$relid = $ids[1];
+		//	if (!empty($relid))
+		//		$adb->pquery("INSERT INTO vtiger_senotesrel(crmid, notesid) VALUES(?,?)",Array($relid, $id));
+		//}}
 
 		return DataTransform::filterAndSanitize($crmObject->getFields(),$this->meta);
 	}
@@ -111,10 +116,13 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 		global $adb;
 		$ids = vtws_getIdComponents($element["id"]);
 		if ($element['filelocationtype']=='I' and !empty($element['filename'])) {
-			$element['filesize']=$element['filename']['size'];
-                        $attachid=$this->__SaveAttachmentDB($element);
-                        $element['filetype']=$element['filename']['type'];
-                        $element['filename']=$filename = str_replace(' ', '_',$element['filename']['name']);
+			$file = $element['filename'];
+			$element['filesize']=$file['size'];
+			$file['assigned_user_id'] = $element['assigned_user_id'];
+			$file['setype'] = "Documents Attachment";
+			$attachid = SaveAttachmentDB($file);
+			$element['filetype']=$file['type'];
+			$element['filename']=$filename = str_replace(' ', '_',$file['name']);
 		}
 		$relations=$element['relations'];
 		unset($element['relations']);
@@ -151,54 +159,11 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 		return DataTransform::filterAndSanitize($crmObject->getFields(),$this->meta);
 	}
 
-	/**
-	 * Save the attachment to the database
-	 */
-	private function __SaveAttachmentDB($element) {
-		global $adb;
-		$attachid = $adb->getUniqueId('vtiger_crmentity');
-		$filename = $element['filename']['name'];
-		$description = $filename;
-		$date_var = $adb->formatDate(date('YmdHis'), true);
-		$usetime = $adb->formatDate($date_var, true);
-		$userid = vtws_getIdComponents($element['assigned_user_id']);
-		$userid = $userid[1];
-		$setype = "Documents Attachment";
-		$adb->pquery("INSERT INTO vtiger_crmentity(crmid, smcreatorid, smownerid,
-				modifiedby, setype, description, createdtime, modifiedtime, presence, deleted)
-				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
-				Array($attachid, $userid, $userid, $userid, $setype, $description, $usetime, $usetime, 1, 0));
-		$this->__SaveAttachmentFile($attachid, $filename, $element['filename']['content']);
-		return $attachid;
-	}
-
-	/**
-	 * Save the attachment to the file
-	 */
-	private function __SaveAttachmentFile($attachid, $filename, $filecontent) {
-		global $adb,$log;
-
-		$dirname = decideFilePath();
-		if(!is_dir($dirname)) mkdir($dirname);
-
-		$description = $filename;
-		$filename = str_replace(' ', '_', $filename);
-		$saveasfile = "$dirname$attachid" . "_$filename";              
-		if(!file_exists($saveasfile)) {                 
-			$fh = fopen($saveasfile, 'wb');
-			fwrite($fh, base64_decode($filecontent));
-			fclose($fh);
-		}
-
-		$mimetype = MailAttachmentMIME::detect($saveasfile);
-	
-		$adb->pquery("INSERT INTO vtiger_attachments SET attachmentsid=?, name=?, description=?, type=?, path=?",
-				Array($attachid, $filename, $description, $mimetype, $dirname));
-	}
-
 	private function vtyiicpng_getWSEntityId($entityName) {
 		global $adb;
-		return $adb->getone("select id from vtiger_ws_entity where name='$entityName'").'x';
+		$rs = $adb->query("select id from vtiger_ws_entity where name='$entityName'");
+		$wsid = @$adb->query_result($rs, 0, 'id').'x';
+		return $wsid;
 	}
 
 }

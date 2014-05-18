@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2012 JPL TSolucio, S.L.  --  This file is a part of vtyiiCPNG.
+ * Copyright 2012-2014 JPL TSolucio, S.L.  --  This file is a part of coreBOS.
 * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
 * Vizsage Public License (the "License"). You may not use this file except in compliance with the
 * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit
@@ -12,9 +12,8 @@
 * See the License for the specific language governing permissions and limitations under the
 * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
 *************************************************************************************************/
-	
-function vtws_retrievedocattachment($all_ids, $returnfile, $user){
-	
+
+function vtws_retrievedocattachment($all_ids, $returnfile, $user) {
 	global $log,$adb;
 	$entities=array();
 	$docWSId=vtyiicpng_getWSEntityId('Documents');
@@ -25,8 +24,7 @@ function vtws_retrievedocattachment($all_ids, $returnfile, $user){
                   INNER JOIN vtiger_crmentity c ON c.crmid=n.notesid
                   WHERE n.notesid in $all_ids and n.filelocationtype in ('I','E') and c.deleted=0";
 	$result = $adb->query($query);
-        
-        $nr=$adb->num_rows($result);
+	$nr=$adb->num_rows($result);
     for($i=0;$i<$nr;$i++){
         $id=$docWSId.$adb->query_result($result,$i,'notesid');
         $webserviceObject = VtigerWebserviceObject::fromId($adb,$id);
@@ -78,8 +76,7 @@ function vtws_retrievedocattachment($all_ids, $returnfile, $user){
 }
 
 
-function vtws_retrievedocattachment_get_attachment($fileid,$nr=false,$returnfile=true)
-{
+function vtws_retrievedocattachment_get_attachment($fileid,$nr=false,$returnfile=true) {
 	global $adb, $log, $default_charset;
 	$log->debug("Entering function vtws_retrievedocattachment_get_attachment($fileid)");
 	
@@ -137,7 +134,9 @@ function vtws_retrievedocattachment_get_attachment($fileid,$nr=false,$returnfile
 if (!function_exists(vtyiicpng_getWSEntityId)) {
 	function vtyiicpng_getWSEntityId($entityName) {
 		global $adb;
-		return $adb->getone("select id from vtiger_ws_entity where name='$entityName'").'x';
+		$rs = $adb->query("select id from vtiger_ws_entity where name='$entityName'");
+		$wsid = @$adb->query_result($rs, 0, 'id').'x';
+		return $wsid;
 	}
 }
 
