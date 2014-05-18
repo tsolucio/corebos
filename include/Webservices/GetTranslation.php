@@ -37,16 +37,16 @@ function vtws_gettranslation($totranslate, $portal_language, $module, $user){
 	// $mod_strings
 	$modlanguage_used = '';
 	if (!empty($module)) {
-	$modlanguage_used = $language;
-	if (file_exists("modules/$module/language/$language.lang.php"))
-		@include("modules/$module/language/$language.lang.php");
-	else {
-		$log->warn("Unable to find the module language file for language/module: $language/$module");
-		$modlanguage_used = $default_language;
-		if (file_exists("modules/$module/language/$default_language.lang.php"))
-			@include("modules/$module/language/$default_language.lang.php");
-		else
-			$modlanguage_used = false;
+		$modlanguage_used = $language;
+		if (file_exists("modules/$module/language/$language.lang.php")) {
+			@include("modules/$module/language/$language.lang.php");
+		} else {
+			$log->warn("Unable to find the module language file for language/module: $language/$module");
+			$modlanguage_used = $default_language;
+			if (file_exists("modules/$module/language/$default_language.lang.php"))
+				@include("modules/$module/language/$default_language.lang.php");
+			else
+				$modlanguage_used = false;
 		}
 	}
 	

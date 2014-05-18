@@ -42,7 +42,7 @@ function vtws_changePortalUserPassword($email,$newPass)
 function vtws_findByPortalUserName($username) {
 	global $adb,$log;
 	$log->debug("Entering function vtws_findByPortalUserName");
-	$nra=$adb->query_result($adb->pquery("select count(*) from vtiger_portalinfo where isactive=1 and user_name=?",array($username)));
+	$nra=$adb->query_result($adb->pquery("select count(*) from vtiger_portalinfo where isactive=1 and user_name=?",array($username)),0,0);
 	if (empty($nra))
 		$output=false;
 	else
@@ -102,7 +102,7 @@ function vtws_AuthenticateContact($email,$password)
      inner join vtiger_customerdetails on vtiger_portalinfo.id=vtiger_customerdetails.customerid
      inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_portalinfo.id
      where vtiger_crmentity.deleted=0 and user_name=? and user_password=?
-       and isactive=1 and vtiger_customerdetails.portal=1",array($email,$password)),0);
+       and isactive=1 and vtiger_customerdetails.portal=1",array($email,$password)),0,0);
 
     if (!empty($nra)) return vtyiicpng_getWSEntityId('Contacts').$nra;
     else return false;
