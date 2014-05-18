@@ -170,19 +170,26 @@ function vtws_getReferenceValue($strids) {
 // $restrictionids is an array which contains the user we are to search as and the account and contact restrictions
 function vtws_getSearchResults($query,$search_onlyin,$restrictionids,$user) {
 	global $adb,$log,$current_user;
-	require_once('modules/CustomView/CustomView.php');
-	require_once('include/utils/utils.php');
-	list($void,$userId) = explode('x',$restrictionids['userId']);
-	$current_user->retrieveCurrentUserInfoFromFile($userId);
+	$res=array();
+	// security restrictions
+	if (empty($query) or empty($restrictionids) or !is_array($restrictionids)) return serialize($res);
+	if (empty($restrictionids['userId']) or empty($restrictionids['accountId']) or empty($restrictionids['contactId'])) return serialize($res);
 	list($void,$accountId) = explode('x',$restrictionids['accountId']);
 	list($void,$contactId) = explode('x',$restrictionids['contactId']);
+	list($void,$userId) = explode('x',$restrictionids['userId']);
+	$current_user->retrieveCurrentUserInfoFromFile($userId);
+	// if connected user does not have admin privileges > user must be the connected user
+	if ($user->is_admin!='on' and $user->id!=$userId) return serialize($res);
+	// connected user must have access to account and contact > this will be restricted by the coreBOS system and the rest of the code
+	// start work
+	require_once('modules/CustomView/CustomView.php');
+	require_once('include/utils/utils.php');
 	// Was the search limited by user for specific modules?
 	$search_onlyin = (empty($search_onlyin) ? array() : explode(',',$search_onlyin));
 	$object_array = getSearchModules($search_onlyin);
 	$total_record_count = 0;
 	$i = 0;
 	$j=0;
-	$res=array();
 	$moduleRecordCount = array();
 	foreach($object_array as $module => $object_name){
 		$listquery = getListQuery($module);
