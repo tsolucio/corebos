@@ -258,7 +258,7 @@ class Import_Data_Controller {
 										$filteredFieldData[$fieldName] = $fieldValue;
 									}
 								}
-								$filteredFieldData = $this->transformForImport($filteredFieldData, $moduleMeta, false);
+								$filteredFieldData = $this->transformForImport($filteredFieldData, $moduleMeta, false, true);
 								$filteredFieldData['id'] = $baseEntityId;
 								$entityInfo = vtws_revise($filteredFieldData, $this->user);
 								$entityInfo['status'] = self::$IMPORT_RECORD_MERGED;
@@ -294,7 +294,7 @@ class Import_Data_Controller {
 		return true;
 	}
 
-	public function transformForImport($fieldData, $moduleMeta, $fillDefault=true) {
+	public function transformForImport($fieldData, $moduleMeta, $fillDefault=true, $mergeMode = false) {
 		$moduleFields = $moduleMeta->getModuleFields();
 		$defaultFieldValues = $this->getDefaultFieldValues($moduleMeta);
 		foreach ($fieldData as $fieldName => $fieldValue) {
@@ -413,7 +413,7 @@ class Import_Data_Controller {
 					}
 					$fieldData[$fieldName] = $fieldValue;
 				}
-				if (empty($fieldValue) && isset($defaultFieldValues[$fieldName])) {
+				if (empty($fieldValue) && isset($defaultFieldValues[$fieldName]) && !$mergeMode) {
 					$fieldData[$fieldName] = $fieldValue = $defaultFieldValues[$fieldName];
 				}
 			}
@@ -426,11 +426,13 @@ class Import_Data_Controller {
 			}
 		}
 
-		foreach ($moduleFields as $fieldName => $fieldInstance) {
-			if(empty($fieldData[$fieldName]) && $fieldInstance->isMandatory()) {
-				return null;
-			}
-		}
+        if(!$mergeMode){ //Do not check mandatory fields on merge !
+            foreach ($moduleFields as $fieldName => $fieldInstance) {
+                if(empty($fieldData[$fieldName]) && $fieldInstance->isMandatory()) {
+                    return null;
+                }
+            }
+        }
 
 		return DataTransform::sanitizeData($fieldData, $moduleMeta);
 	}
