@@ -22,7 +22,8 @@ function _vt_processtoken_symbol($token){
 }
 
 class VTExpressionTokenizer{
-	function __construct($expr){		
+	function __construct($expr){
+		global $default_charset;
 		$tokenTypes = array(
 				"SPACE" => array('\s+', '_vt_processtoken_id'),
 				"SYMBOL" => array('[a-zA-Z][\w]*', '_vt_processtoken_symbol'),
@@ -52,6 +53,7 @@ class VTExpressionTokenizer{
 		$this->EOF = new VTExpressionToken("EOF");
 			
 		$matches = array();
+		$expr = html_entity_decode($expr, ENT_QUOTES, $default_charset);
 		preg_match_all($tokenRe, $expr, $matches, PREG_SET_ORDER);
 		$this->matches = $matches;
 		$this->idx = 0;
