@@ -344,7 +344,7 @@ class SMTP
                 }
 
                 $lines_out[] = substr($line,0,$pos);
-                $line = substr($line,$pos + 1);
+                $line = substr($line,$pos);
                 # if we are processing vtiger_headers we need to
                 # add a LWSP-char to the front of the new line
                 # rfc 822 on long msg vtiger_headers
