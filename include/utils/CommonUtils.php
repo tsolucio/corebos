@@ -2838,7 +2838,11 @@ function checkFileAccessForInclusion($filepath) {
 	$filePathParts = explode('/', $relativeFilePath);
 
 	if (stripos($realfilepath, $rootdirpath) !== 0 || in_array($filePathParts[0], $unsafeDirectories)) {
-		die("Sorry! Attempt to access restricted file.");
+		echo "Sorry! Attempt to access restricted file.<br>";
+		echo "We are looking for this file path: $filepath<br>";
+		echo "We are looking here:<br> Real file path: $realfilepath<br>";
+		echo "Root dir path: $rootdirpath<br>";
+		die();
 	}
 }
 
@@ -2867,7 +2871,11 @@ function checkFileAccessForDeletion($filepath) {
 	$filePathParts = explode('/', $relativeFilePath);
 
 	if (stripos($realfilepath, $rootdirpath) !== 0 || !in_array($filePathParts[0], $safeDirectories)) {
-		die("Sorry! Attempt to access restricted file.");
+		echo "Sorry! Attempt to access restricted file.<br>";
+		echo "We are looking for this file path: $filepath<br>";
+		echo "We are looking here:<br> Real file path: $realfilepath<br>";
+		echo "Root dir path: $rootdirpath<br>";
+		die();
 	}
 	
 }
