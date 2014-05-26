@@ -1437,7 +1437,11 @@ class CRMEntity {
 					while ($recordinfo = $adb->fetch_array($records)) {
 						$value = "$prefix" . "$cur_id";
 						$adb->pquery("UPDATE $fld_table SET $fld_column = ? WHERE $this->table_index = ?", Array($value, $recordinfo['recordid']));
-						$cur_id += 1;
+						$strip = strlen($cur_id) - strlen($cur_id + 1);
+						if ($strip < 0)
+							$strip = 0;
+						$temp = str_repeat("0", $strip);
+						$cur_id = $temp . ($cur_id + 1);
 						$returninfo['updatedrecords'] = $returninfo['updatedrecords'] + 1;
 					}
 					if ($old_cur_id != $cur_id) {
