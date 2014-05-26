@@ -354,7 +354,9 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		$current_user = vtws_preserveGlobal('current_user',$this->user);
 		$theme = vtws_preserveGlobal('theme',$this->user->theme);
 		$default_language = VTWS_PreserveGlobal::getGlobal('default_language');
-		$current_language = vtws_preserveGlobal('current_language',$default_language);
+		global $current_language;
+		if(empty($current_language)) $current_language = $default_language;
+		$current_language = vtws_preserveGlobal('current_language',$current_language);
 		
 		$this->computeAccess();
 		
@@ -452,7 +454,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 				}
 			}
 		}else{
-			$sql = "select * from vtiger_crmentity where crmid=? and deleted=0";
+			$sql = "select setype from vtiger_crmentity where crmid=? and deleted=0";
 			$result = $adb->pquery($sql , array($id));
 			if($result != null && isset($result)){
 				if($adb->num_rows($result)>0){

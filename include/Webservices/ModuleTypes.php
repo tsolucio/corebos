@@ -106,7 +106,9 @@
 		}
 		
 		$default_language = VTWS_PreserveGlobal::getGlobal('default_language');
-		$current_language = vtws_preserveGlobal('current_language',$default_language);
+		global $current_language; 
+		if(empty($current_language)) $current_language = $default_language; 
+		$current_language = vtws_preserveGlobal('current_language',$current_language); 
 		
 		$appStrings = return_application_language($current_language);
 		$appListString = return_app_list_strings_language($current_language);
