@@ -435,7 +435,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 		/**
 		 * Record the changes in schema file
 		 */
-		$schemafile = fopen("modules/$modulenode->name/schema.xml", 'w');
+		$schemafile = @fopen("modules/$modulenode->name/schema.xml", 'w');
 		if($schemafile) {
 			fwrite($schemafile, "<?xml version='1.0'?>\n");
 			fwrite($schemafile, "<schema>\n");
@@ -448,10 +448,12 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 			$tablesql  = "$tablenode->sql"; // Convert to string format
 
 			// Save the information in the schema file.
-			fwrite($schemafile, "\t\t<table>\n");
-			fwrite($schemafile, "\t\t\t<name>$tablename</name>\n");
-			fwrite($schemafile, "\t\t\t<sql><![CDATA[$tablesql]]></sql>\n");
-			fwrite($schemafile, "\t\t</table>\n");
+			if($schemafile) {
+				fwrite($schemafile, "\t\t<table>\n");
+				fwrite($schemafile, "\t\t\t<name>$tablename</name>\n");
+				fwrite($schemafile, "\t\t\t<sql><![CDATA[$tablesql]]></sql>\n");
+				fwrite($schemafile, "\t\t</table>\n");
+			}
 
 			// Avoid executing SQL that will DELETE or DROP table data
 			if(Vtiger_Utils::IsCreateSql($tablesql)) {
