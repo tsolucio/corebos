@@ -1,29 +1,5 @@
 <?php
-////////////////////////////////////////////////////
-// PHPMailer - PHP email class
-//
-// Class for sending email using either
-// sendmail, PHP mail(), or SMTP.  Methods are
-// based upon the standard AspEmail(tm) classes.
-//
-// Copyright (C) 2001 - 2003  Brent R. Matzelle
-//
-// License: LGPL, see LICENSE
-////////////////////////////////////////////////////
-
-/**
- * PHPMailer - PHP email transport class
- * @package PHPMailer
- * @author Brent R. Matzelle
- * @copyright 2001 - 2003 Brent R. Matzelle
- */
-
-
-//file modified by richie
-
-
-require("class.smtp.php");
-require("class.phpmailer.php");
+require 'modules/Emails/PHPMailerAutoload.php';
 require_once 'include/utils/CommonUtils.php';
 
 function sendmail($to,$from,$subject,$contents,$mail_server,$mail_server_username,$mail_server_password,$filename,$smtp_auth='')

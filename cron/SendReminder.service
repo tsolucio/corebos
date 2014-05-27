@@ -1,43 +1,19 @@
 <?php
-////////////////////////////////////////////////////
-// PHPMailer - PHP email class
-//
-// Class for sending email using either
-// sendmail, PHP mail(), or SMTP.  Methods are
-// based upon the standard AspEmail(tm) classes.
-//
-// Copyright (C) 2001 - 2003  Brent R. Matzelle
-//
-// License: LGPL, see LICENSE
-////////////////////////////////////////////////////
-
-/**
- * PHPMailer - PHP email transport class
- * @package PHPMailer
- * @author Brent R. Matzelle
- * @copyright 2001 - 2003 Brent R. Matzelle
- */
-
-
-//file modified by richie
-
 require_once('include/utils/utils.php');
-require_once("modules/Emails/class.phpmailer.php");
 require_once("modules/Emails/mail.php");
 require_once('include/logging.php');
 require_once("config.php");
 
 $current_user = Users::getActiveAdminUser();
 // Set the default sender email id
-global $HELPDESK_SUPPORT_EMAIL_ID;
+global $HELPDESK_SUPPORT_EMAIL_ID,$HELPDESK_SUPPORT_NAME;
 $from = $HELPDESK_SUPPORT_EMAIL_ID;
 if(empty($from)) {
 	// default configuration is empty?
 	$from = "reminders@localserver.com";
 }
-			
-// Get the list of activity for which reminder needs to be sent
 
+// Get the list of activity for which reminder needs to be sent
 global $adb;
 global $log;
 $log =& LoggerManager::getLogger('SendReminder');
@@ -66,7 +42,7 @@ if($adb->num_rows($result) >= 1)
 		$parent_type = $result_set['setype']; 
 		$activity_sub = $result_set['subject'];
 		$to_addr='';
-			
+
 		if($parent_type!='')
 		$parent_content = getParentInfo($parent_type)."\n";
 		else
@@ -102,7 +78,7 @@ if($adb->num_rows($result) >= 1)
 				}
 			}
 		
-			// Retriving the Subject and message from reminder table		
+			// Retriving the Subject and message from reminder table
 			$sql = "select active,notificationsubject,notificationbody from vtiger_notificationscheduler where schedulednotificationid=8";
 			$result_main = $adb->pquery($sql, array());
 
@@ -115,10 +91,11 @@ if($adb->num_rows($result) >= 1)
 							$app_strings['Subject']." : ".$activity_sub."\n ". $parent_content ." ".
 							$app_strings['Date & Time']." : ".$date_start." ".$time_start."(". DateTimeField::getDBTimeZone() .")\n\n ".
 							$app_strings['Visit_Link']." <a href='".$site_URL."/index.php?action=DetailView&module=Calendar&record=".$activity_id."&activity_mode=".$activitymode."'>".$app_strings['Click here']."</a>";
-                                                        
+
 			if(count($to_addr) >=1)
 			{
-				send_email($to_addr,$from,$subject,$contents,$mail_server,$mail_server_username,$mail_server_password);
+				$sendto = implode(',', $to_addr);
+				$rdo = send_mail('Calendar',$sendto,$HELPDESK_SUPPORT_NAME,$from,$subject,nl2br($contents));
 				$upd_query = "UPDATE vtiger_activity_reminder SET reminder_sent=1 where activity_id=?";
 				$upd_params = array($activity_id);
 
@@ -129,74 +106,9 @@ if($adb->num_rows($result) >= 1)
 				}
 
 				$adb->pquery($upd_query, $upd_params);
-				
 			}
 		}
 	}
-}
-
-/**
- This function is used to assign parameters to the mail object and send it.
- It takes the following as parameters.
-	$to as string - to address
-	$from as string - from address
-	$subject as string - subject if the mail
-	$contents as text - content of the mail
-	$mail_server as string - sendmail server name 
-	$mail_server_username as string - sendmail server username 
-	$mail_server_password as string - sendmail server password
-
-*/
-function send_email($to,$from,$subject,$contents,$mail_server,$mail_server_username,$mail_server_password)
-{       
-	global $adb;
-	 global $log;
-        $log->info("This is send_mail function in SendReminder.php(vtiger home).");
-	global $root_directory;
-
-	$mail = new PHPMailer();
-
-
-	$mail->Subject = $subject;
-	$mail->Body    = nl2br($contents);//"This is the HTML message body <b>in bold!</b>";
-
-
-	$mail->IsSMTP();                                      // set mailer to use SMTP
-	
-		$mailserverresult=$adb->pquery("select * from vtiger_systems where server_type='email'", array());
-		$mail_server = $adb->query_result($mailserverresult,0,'server');
-		$mail_server_username = $adb->query_result($mailserverresult,0,'server_username');
-		$mail_server_password = $adb->query_result($mailserverresult,0,'server_password');
-		$smtp_auth = $adb->query_result($mailserverresult,0,'smtp_auth');
-
-		$_REQUEST['server']=$mail_server;
-		$log->info("Mail Server Details => '".$mail_server."','".$mail_server_username."','".$mail_server_password."'");
-
-	
-	$mail->Host = $mail_server;			// specify main and backup server
-	if($smtp_auth == 'true')
-		$mail->SMTPAuth = true;
-	else
-		$mail->SMTPAuth = false;
-	$mail->Username = $mail_server_username ;	// SMTP username
-	$mail->Password = $mail_server_password ;	// SMTP password
-	$mail->From = $from;
-	$mail->FromName = $initialfrom;
-	$log->info("Mail sending process : From Name & email id => '".$initialfrom."','".$from."'");
-	foreach($to as $pos=>$addr)
-	{
-		$mail->AddAddress($addr);                  // name is optional
-		$log->info("Mail sending process : To Email id = '".$addr."' (set in the mail object)");
-
-	}
-	$mail->WordWrap = 50;                                 // set word wrap to 50 characters
-
-	$mail->IsHTML(true);                                  // set email format to HTML
-	
-	$mail->AltBody = "This is the body in plain text for non-HTML mail clients";
-
-	$flag = MailSend($mail);
-	$log->info("After executing the mail->Send() function.");
 }
 
 /**
@@ -232,6 +144,6 @@ function getParentInfo($value)
 
 		$parent_name =$potentialname;
 	}
-	  return $parent_module ." : ".$parent_name;
+	return $parent_module ." : ".$parent_name;
 }
 ?>
