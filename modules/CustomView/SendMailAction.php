@@ -116,7 +116,7 @@ if(trim($subject) != "")
 function SendMailtoCustomView($module,$id,$to,$current_user_id,$subject,$contents)
 {
 
-	require_once("modules/Emails/class.phpmailer.php");
+	require_once 'modules/Emails/PHPMailerAutoload.php';
 
 	$mail = new PHPMailer();
 

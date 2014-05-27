@@ -6,11 +6,9 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
 
-
-require_once("modules/Emails/class.phpmailer.php");
+require_once 'modules/Emails/PHPMailerAutoload.php';
 require_once 'include/utils/CommonUtils.php';
 
 /**   Function used to send email
@@ -447,7 +445,7 @@ function getMailError($mail,$mail_status,$to)
 	global $adb;
 	$adb->println("Inside the function getMailError");
 
-	$msg = array_search($mail_status,$mail->language);
+	$msg = array_search($mail_status,$mail->getTranslations());
 	$adb->println("Error message ==> ".$msg);
 
 	if($msg == 'connect_host')
