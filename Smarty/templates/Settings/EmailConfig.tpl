@@ -103,13 +103,7 @@
 												</tr>
 												<tr>
 													<td nowrap class="small cellLabel"><strong>{$MOD.LBL_REQUIRES_AUTHENT}</strong></td>
-													<td class="small cellText">
-													{if $SMTP_AUTH eq 'checked'}
-													{$MOD.LBL_YES}
-													{else}
-													{$MOD.LBL_NO}
-													{/if}
-													</td>
+													<td class="small cellText">{if $SMTP_AUTH=='true'}{$MOD.LBL_YES}{elseif $SMTP_AUTH=='false'}{$MOD.LBL_NO}{else}{$SMTP_AUTH}{/if}</td>
 													<input type="hidden" value={$SMTP_AUTH} id="smtp_auth">
 												</tr>
 										</table>
@@ -145,7 +139,7 @@
 														<tr>
 															<td nowrap class="small cellLabel"><strong>{$MOD.LBL_REQUIRES_AUTHENT}</strong></td>
 															<td class="small cellText">
-															<input type="checkbox" name="smtp_auth" id="smtp_auth" {$SMTP_AUTH}/>
+															{html_options name="smtp_auth" options=$SMTP_AUTH_OPTIONS selected=$SMTP_AUTH class="small"}
 															</td>
 														</tr>
 													</table>

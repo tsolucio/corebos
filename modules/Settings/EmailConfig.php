@@ -67,24 +67,18 @@ if(isset($_REQUEST['from_email_field'])){
 }
 if(isset($_REQUEST['auth_check']))
 {
-	if($_REQUEST['auth_check'] == 'on')
-                $smarty->assign("SMTP_AUTH",'checked');
-        else
-                $smarty->assign("SMTP_AUTH",'');
+	$smarty->assign("SMTP_AUTH", vtlib_purify($_REQUEST['auth_check']));
 }
-elseif (isset($smtp_auth))
+else
 {
-	if($smtp_auth == 'true')
-		$smarty->assign("SMTP_AUTH",'checked');
-	else
-		$smarty->assign("SMTP_AUTH",'');
+	$smarty->assign("SMTP_AUTH", $smtp_auth);
 }
 
 if(isset($_REQUEST['emailconfig_mode']) && $_REQUEST['emailconfig_mode'] != '')
 	$smarty->assign("EMAILCONFIG_MODE",vtlib_purify($_REQUEST['emailconfig_mode']));
 else
 	$smarty->assign("EMAILCONFIG_MODE",'view');
-
+$smarty->assign("SMTP_AUTH_OPTIONS", array('false' => getTranslatedString('LBL_NO'), 'true' => getTranslatedString('LBL_YES'), 'ssl' => 'SSL', 'tls' => 'TLS'));
 $smarty->assign("MOD", return_module_language($current_language,'Settings'));
 $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH",$image_path);

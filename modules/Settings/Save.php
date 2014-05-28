@@ -20,10 +20,7 @@ $server_type = vtlib_purify($_REQUEST['server_type']);
 $server_path = vtlib_purify($_REQUEST['server_path']);
 $from_email_field = vtlib_purify($_REQUEST['from_email_field']);
 $db_update = true;
-if($_REQUEST['smtp_auth'] == 'on' || $_REQUEST['smtp_auth'] == 1)
-	$smtp_auth = 'true';
-else
-	$smtp_auth = 'false';
+$smtp_auth = vtlib_purify($_REQUEST['smtp_auth']);
 	
 $sql="select * from vtiger_systems where server_type = ?";
 $id=$adb->query_result($adb->pquery($sql, array($server_type)),0,"id");

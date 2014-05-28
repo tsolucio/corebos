@@ -267,27 +267,22 @@ function setMailServerProperties($mail)
 	else
         	$password = $adb->query_result($res,0,'server_password');
 	// Prasad: First time read smtp_auth from the request
-	if(isset($_REQUEST['smtp_auth']))
-	{
+	if(isset($_REQUEST['smtp_auth'])) {
 		$smtp_auth = $_REQUEST['smtp_auth'];
-		if($smtp_auth == 'on')
-			$smtp_auth = 'true';
-	}
-	else if (isset($_REQUEST['module']) && $_REQUEST['module'] == 'Settings' && (!isset($_REQUEST['smtp_auth'])))
-	{
-		//added to avoid issue while editing the values in the outgoing mail server.
-		$smtp_auth = 'false';
-	}
-	else
+	} else {
 		$smtp_auth = $adb->query_result($res,0,'smtp_auth');
+	}
 
 	$adb->println("Mail server name,username & password => '".$server."','".$username."','".$password."'");
-	if($smtp_auth == "true"){
-		$mail->SMTPAuth = true;	// turn on SMTP authentication
+	if ("false" != $smtp_auth) {
+		$mail->SMTPAuth = true;
+		if ("true" != $smtp_auth) {
+			$mail->SMTPSecure = $smtp_auth;
+		}
 	}
 	$mail->Host = $server;		// specify main and backup server
 	$mail->Username = $username ;	// SMTP username
-        $mail->Password = $password ;	// SMTP password
+	$mail->Password = $password ;	// SMTP password
 
 	return;
 }
