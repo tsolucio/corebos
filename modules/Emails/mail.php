@@ -299,9 +299,9 @@ function addAttachment($mail,$filename,$record)
 	$adb->println("The file name is => '".$filename."'");
 
 	//This is the file which has been selected in Email EditView
-        if($filename != '' && is_file($root_directory."test/upload/".$filename))
+        if(is_file($root_directory.$filename) && ($root_directory.$filename) != '')
         {
-                $mail->AddAttachment($root_directory."test/upload/".$filename);
+                $mail->AddAttachment($root_directory.$filename);
         }
 }
 
