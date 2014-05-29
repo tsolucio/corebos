@@ -3083,7 +3083,7 @@ class ReportRun extends CRMEntity
 		return $pdf;
 	}
 
-	function writeReportToExcelFile($fileName, $filterlist='') {
+	function writeReportToExcelFile($fileName, $filterlist=false) {
 
 		global $currentModule, $current_language;
 		$mod_strings = return_module_language($current_language, $currentModule);
