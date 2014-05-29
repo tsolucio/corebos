@@ -53,6 +53,7 @@ function vtDisplayWorkflowList($adb, $request, $requestUrl, $app_strings, $curre
 	$smarty->assign("PAGE_NAME", $mod['LBL_WORKFLOW_LIST']);
 	$smarty->assign("PAGE_TITLE", $mod['LBL_AVAILABLE_WORKLIST_LIST']);
 	$smarty->assign("module", $module);
+	$smarty->assign('MODULE', $module->name);
 	$smarty->assign("CRON_TASK", Vtiger_Cron::getInstance('Workflow'));
 	$smarty->display("{$module->name}/ListWorkflows.tpl");
 }

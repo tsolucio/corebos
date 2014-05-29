@@ -49,7 +49,7 @@
 					<td>
 						<span id="template_list_busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
 						<span id="template_list_foundnone" style='display:none;'><b>{$MOD.LBL_NO_TEMPLATES}</b></span>
-						<select id="template_list" name="template_id" class="small"></select>						
+						<select id="template_list" name="template_id" class="small"></select>
 					</td>
 				</tr>
 			</table>
@@ -107,13 +107,13 @@
 	<table class="listTable" width="100%" border="0" cellspacing="0" cellpadding="5" id='expressionlist'>
 		<tr>
 			<td class="colHeader small" width="20%">
-				Module
+				{'Module'|@getTranslatedString:$moduleName}
 			</td>
 			<td class="colHeader small" width="65">
-				Description
+				{'Description'|@getTranslatedString:$moduleName}
 			</td>
 			<td class="colHeader small" width="15%">
-				Tools
+				{'Tools'|@getTranslatedString:$moduleName}
 			</td>
 		</tr>
 {foreach item=workflow from=$workflows}
