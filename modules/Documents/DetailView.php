@@ -133,6 +133,14 @@ $smarty->assign("CHECK", $check_button);
 
 $smarty->assign("IS_REL_LIST",isPresentRelatedLists($currentModule));
 
+global $singlepane_view;
+$singlepane_view = 'true';
+if($singlepane_view == 'true')
+{
+	$related_array = getRelatedLists($currentModule,$focus);
+	$smarty->assign("RELATEDLISTS", $related_array);
+}
+$smarty->assign("SinglePane_View", $singlepane_view);
 
 $tabid = getTabid("Documents");
  $validationData = getDBValidationData($focus->tab_name,$tabid);

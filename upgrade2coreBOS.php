@@ -74,6 +74,7 @@ function putMsg($msg) {
 
 echo "<table width=80% align=center border=1>";
 
+// 5.4
 ExecuteQuery("update vtiger_field set block=67 where tabid=23 and columnname='s_h_amount'");
 ExecuteQuery("ALTER TABLE vtiger_loginhistory CHANGE user_name user_name VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL");
 
@@ -106,6 +107,12 @@ foreach ($delimg as $dimg) {
 	@unlink($dimg);
 	putmsg("image $dimg deleted");
 }
+
+// 5.5
+  // Relation with Entities
+  $newrelid = $adb->getUniqueID("vtiger_relatedlists");
+  $adb->query("INSERT INTO vtiger_relatedlists (relation_id, tabid, related_tabid, name, sequence, label, presence, actions) VALUES ($newrelid, 8, 0, 'getEntities', '1', 'Related To',0,'SELECT');");
+  putmsg('Document relations added.');
 
 ?>
 </table>

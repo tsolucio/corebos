@@ -23,8 +23,9 @@ class Documents extends CRMEntity {
 	var $table_index= 'notesid';
 	var $default_note_name_dom = array('Meeting vtiger_notes', 'Reminder');
 
-	var $tab_name = Array('vtiger_crmentity','vtiger_notes');
-	var $tab_name_index = Array('vtiger_crmentity'=>'crmid','vtiger_notes'=>'notesid','vtiger_senotesrel'=>'notesid');
+	var $tab_name = Array('vtiger_crmentity','vtiger_notes','vtiger_notescf');
+	var $tab_name_index = Array('vtiger_crmentity'=>'crmid','vtiger_notes'=>'notesid','vtiger_notescf'=>'notesid','vtiger_senotesrel'=>'notesid');
+	var $customFieldTable = Array('vtiger_notescf', 'notesid');
 
 	var $column_fields = Array();
 
@@ -476,5 +477,71 @@ class Documents extends CRMEntity {
 			return $query;
 		}
 	}
+
+    function getEntities($id, $cur_tab_id, $rel_tab_id, $actions=false)
+    {
+    	global $log;
+    	$log->debug("Entering getEntities($id, $cur_tab_id, $rel_tab_id, $actions) method ...");
+    	global $theme;
+    	$theme_path="themes/".$theme."/";
+    	$image_path=$theme_path."images/";
+    
+    	global $adb;
+    	global $mod_strings;
+    	global $app_strings;
+    
+		//Form the header columns
+		$header[] = $app_strings['LBL_ENTITY_NAME'];
+		$header[] = $app_strings['LBL_TYPE'];
+		$header[] = $app_strings['LBL_ASSIGNED_TO'];
+		$button = '';
+
+		$related_module='Documents';
+		$currentModule='Documents';
+		if(isPermitted($related_module,4, '') == 'yes') {
+			$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module). "' class='crmbutton small edit' " .
+					" type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\"" .
+					" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
+		}
+		
+	 	$query = "select case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name,
+				crm2.crmid, crm2.setype
+				from vtiger_notes
+				inner join vtiger_senotesrel on vtiger_senotesrel.notesid= vtiger_notes.notesid
+				inner join vtiger_crmentity on vtiger_crmentity.crmid= vtiger_notes.notesid and vtiger_crmentity.deleted=0
+				inner join vtiger_crmentity crm2 on crm2.crmid=vtiger_senotesrel.crmid and crm2.deleted=0
+				left join vtiger_groups on vtiger_groups.groupid = crm2.smownerid			
+				left join vtiger_users on vtiger_users.id = crm2.smownerid
+				where vtiger_notes.notesid=?
+				UNION
+				select case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name,
+				crm2.crmid, crm2.setype
+				from vtiger_notes
+				inner join vtiger_senotesrel on vtiger_senotesrel.crmid= vtiger_notes.notesid
+				inner join vtiger_crmentity on vtiger_crmentity.crmid= vtiger_notes.notesid and vtiger_crmentity.deleted=0
+				inner join vtiger_crmentity crm2 on crm2.crmid=vtiger_senotesrel.notesid and crm2.deleted=0
+				left join vtiger_groups on vtiger_groups.groupid = crm2.smownerid			
+				left join vtiger_users on vtiger_users.id = crm2.smownerid
+				where vtiger_notes.notesid=?";
+		
+		$drs = $adb->pquery($query,array($id,$id));
+		$entries_list = Array();
+		while($row = $adb->fetch_array($drs))
+		{
+		    $entries = Array();
+		    $edata = getEntityName($row['setype'],array($row['crmid']));
+		    $ename = $edata[$row['crmid']];
+			$elink = '<a href="index.php?module='.$row['setype'].'&action=DetailView&return_module=Documents&return_action=DetailView&record='.$row["crmid"] .'&return_id='.$id.'&parenttab='.vtlib_purify($_REQUEST['parenttab']).'">'.$ename.'</a>';
+			$entries[] = $elink;
+			$entries[] = getTranslatedString($row['setype']) ;
+			$entries[] = $row['user_name'];				
+			$entries_list[] = $entries;
+		}
+    	
+		$return_data = array('header'=>$header,'entries'=>$entries_list,'CUSTOM_BUTTON' => $button);
+		$log->debug("Exiting getEntities method ...");
+		return $return_data; 
+    }
+
 }
 ?>
