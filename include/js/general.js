@@ -4505,7 +4505,6 @@ function fnvshobjMore(obj,Lay,announcement){
 			tagName.style.left= leftSide- 200  + 'px';
 		}
 		else if((widthM >= 350) && (widthM < 500)) {
-			console.log(widthM);
 			tagName.style.left= leftSide- 300  + 'px';
 		}
 		else {

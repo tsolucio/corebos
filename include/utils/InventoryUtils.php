@@ -378,6 +378,7 @@ function getTaxDetailsForProduct($productid, $available='all')
 {
 	global $log, $adb;
 	$log->debug("Entering into function getTaxDetailsForProduct($productid)");
+	$tax_details = array();
 	if($productid != '')
 	{
 		//where condition added to avoid to retrieve the non available taxes

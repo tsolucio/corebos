@@ -1010,17 +1010,22 @@ function to_html($string, $encode=true)
 	global $log,$default_charset;
 	//$log->debug("Entering to_html(".$string.",".$encode.") method ...");
 	global $toHtml;
-	$action = vtlib_purify($_REQUEST['action']);
-	$search = vtlib_purify($_REQUEST['search']);
+	$request = $_REQUEST;
+	$chkvalue = array('action','search','module','file','submode');
+	foreach ($chkvalue as $value) {
+		$request[$value] = empty($request[$value]) ? '' : $request[$value];
+	}
+	$action = vtlib_purify($request['action']);
+	$search = vtlib_purify($request['search']);
 
 	$doconvert = false;
 
-	if($_REQUEST['module'] != 'Settings' && $_REQUEST['file'] != 'ListView' && $_REQUEST['module'] != 'Portal' && $_REQUEST['module'] != "Reports")// && $_REQUEST['module'] != 'Emails')
-		$ajax_action = $_REQUEST['module'].'Ajax';
+	if($request['module'] != 'Settings' && $request['file'] != 'ListView' && $request['module'] != 'Portal' && $request['module'] != "Reports")// && $request['module'] != 'Emails')
+		$ajax_action = $request['module'].'Ajax';
 
 	if(is_string($string))
 	{
-		if($action != 'CustomView' && $action != 'Export' && $action != $ajax_action && $action != 'LeadConvertToEntities' && $action != 'CreatePDF' && $action != 'ConvertAsFAQ' && $_REQUEST['module'] != 'Dashboard' && $action != 'CreateSOPDF' && $action != 'SendPDFMail' && (!isset($_REQUEST['submode'])) )
+		if($action != 'CustomView' && $action != 'Export' && $action != $ajax_action && $action != 'LeadConvertToEntities' && $action != 'CreatePDF' && $action != 'ConvertAsFAQ' && $request['module'] != 'Dashboard' && $action != 'CreateSOPDF' && $action != 'SendPDFMail' && (!isset($request['submode'])) )
 		{
 			$doconvert = true;
 		}
