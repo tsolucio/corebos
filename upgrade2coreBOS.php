@@ -114,6 +114,9 @@ foreach ($delimg as $dimg) {
   $adb->query("INSERT INTO vtiger_relatedlists (relation_id, tabid, related_tabid, name, sequence, label, presence, actions) VALUES ($newrelid, 8, 0, 'getEntities', '1', 'Related To',0,'SELECT');");
   putmsg('Document relations added.');
 
+ExecuteQuery("ALTER TABLE `vtiger_contactdetails` CHANGE `department` `department` VARCHAR( 230 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL");
+ExecuteQuery("ALTER TABLE `vtiger_users` CHANGE `department` `department` VARCHAR( 150 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL");
+
 ?>
 </table>
 <br /><br />
