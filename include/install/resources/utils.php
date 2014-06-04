@@ -1237,7 +1237,7 @@ class Common_Install_Wizard_Utils {
 					$moduleDetails['selected'] = true;
 					$moduleDetails['enabled'] = true;
 					$migrationAction = 'install';
-					if(count($bundleOptionalModule['update']) > 0 ) {
+					if(isset($bundleOptionalModule['update']) && count($bundleOptionalModule['update']) > 0 ) {
 						$moduleDetails['enabled'] = false;
 						$migrationAction = 'update';
 					}
@@ -1261,6 +1261,7 @@ class Common_Install_Wizard_Utils {
 		} else {
 			$optionalModules['install'] = $optionalModules['install']['module'];
 		}
+		if(isset($optionalModules['update']['language']) or isset($optionalModules['update']['module'])) {
 		if( is_array($optionalModules['update']['language']) &&
 				is_array($optionalModules['update']['module'])) {
 			$optionalModules['update'] = array_merge($optionalModules['update']['module'],
@@ -1270,6 +1271,7 @@ class Common_Install_Wizard_Utils {
 			$optionalModules['update'] = $optionalModules['update']['language'];
 		} else {
 			$optionalModules['update'] = $optionalModules['update']['module'];
+		}
 		}
 		return $optionalModules;
 	}
@@ -1295,7 +1297,7 @@ class Common_Install_Wizard_Utils {
 		$moduleName = $package->getModuleName();
 		if($moduleName != null) {
 			$moduleDetails = array();
-			$moduleDetails['description'] = (empty($desc) ? $optionalModuleStrings[$moduleName.'_description'] : $desc);
+			$moduleDetails['description'] = (empty($desc) ? (isset($optionalModuleStrings[$moduleName.'_description']) ? $optionalModuleStrings[$moduleName.'_description'] : '') : $desc);
 
 			if(Vtiger_Version::check($moduleForVtigerVersion,'>=') && Vtiger_Version::check($moduleMaxVtigerVersion,'<')) {
 				$moduleDetails['selected'] = true;
