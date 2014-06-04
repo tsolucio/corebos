@@ -124,6 +124,7 @@ function set_return_contact_address(account_id, account_name, bill_street, ship_
                 window.opener.document.EditView.account_name.value = account_name;
         if(typeof(window.opener.document.EditView.account_id) != 'undefined')
                 window.opener.document.EditView.account_id.value = account_id;
+	if(confirm(alert_arr.OVERWRITE_EXISTING_ACCOUNT1+account_name+alert_arr.OVERWRITE_EXISTING_ACCOUNT2)) {
         if(typeof(window.opener.document.EditView.mailingstreet) != 'undefined')
                 window.opener.document.EditView.mailingstreet.value = bill_street;
         if(typeof(window.opener.document.EditView.otherstreet) != 'undefined')
@@ -148,6 +149,7 @@ function set_return_contact_address(account_id, account_name, bill_street, ship_
                 window.opener.document.EditView.mailingpobox.value = bill_pobox;
         if(typeof(window.opener.document.EditView.otherpobox) != 'undefined')
                 window.opener.document.EditView.otherpobox.value = ship_pobox;
+	}
 }
 }
 
