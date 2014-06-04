@@ -33,7 +33,7 @@
 		</field>
 		<field name="modified_user_id" type="C" size="36" />
 		<field name="title" type="C" size="50" />
-		<field name="department" type="C" size="50" />
+		<field name="department" type="C" size="150" />
 		<field name="phone_home" type="C" size="50" />
 		<field name="phone_mobile" type="C" size="50" />
 		<field name="phone_work" type="C" size="50" />
@@ -473,7 +473,7 @@
 		<field name="phone" type="C" size="50" />
 		<field name="mobile" type="C" size="50" />
 		<field name="title" type="C" size="50" />
-		<field name="department" type="C" size="30" />
+		<field name="department" type="C" size="230" />
 		<field name="fax" type="C" size="50" />
 		<field name="reportsto" type="C" size="30" />
 		<field name="training" type="C" size="50" />
