@@ -27,8 +27,6 @@ class Vtiger_SalesOrderPDFController extends Vtiger_InventoryPDFController{
 	
 	function buildHeaderModelColumnLeft() {
 		$modelColumnLeft = parent::buildHeaderModelColumnLeft();
-		$modelColumnLeft['fieldlabel'] = getTranslatedString('Quote Name', $this->moduleName);
-		$modelColumnLeft['fieldvalue'] = $this->resolveReferenceLabel($this->focusColumnValue('quote_id'), 'Quotes');
 		return $modelColumnLeft;
 	}
 	
@@ -37,17 +35,20 @@ class Vtiger_SalesOrderPDFController extends Vtiger_InventoryPDFController{
 		$customerName = $this->resolveReferenceLabel($this->focusColumnValue('account_id'), 'Accounts');
 		$contactName = $this->resolveReferenceLabel($this->focusColumnValue('contact_id'), 'Contacts');
 		$purchaseOrder = $this->focusColumnValue('vtiger_purchaseorder');
+		$quote = $this->resolveReferenceLabel($this->focusColumnValue('quote_id'), 'Quotes');
 
 		$subjectLabel = getTranslatedString('Subject', $this->moduleName);
 		$customerNameLabel = getTranslatedString('Customer Name', $this->moduleName);
 		$contactNameLabel = getTranslatedString('Contact Name', $this->moduleName);
 		$purchaseOrderLabel = getTranslatedString('Purchase Order', $this->moduleName);
+		$quoteLabel = getTranslatedString('Quote Name', $this->moduleName);
 
 		$modelColumn1 = array(
 				$subjectLabel		=>	$subject,
 				$customerNameLabel	=>	$customerName,
 				$contactNameLabel	=>	$contactName,
-				$purchaseOrderLabel =>  $purchaseOrder
+				//$purchaseOrderLabel =>  $purchaseOrder,
+				$quoteLabel => $quote
 			);
 		return $modelColumn1;
 	}
