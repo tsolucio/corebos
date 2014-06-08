@@ -105,6 +105,9 @@ class VTUpdateFieldsTask extends VTTask {
 			$meta = $handler->getMeta();
 			$moduleFields = $meta->getModuleFields();
 			foreach($moduleFields as $fieldName=>$fieldObj){
+				if (in_array($moduleName, array('SalesOrder', 'PurchaseOrder', 'Invoice', 'Quotes')) && ($fieldName == 'hdnSubTotal' || $fieldName == 'hdnGrandTotal')) {
+					continue;
+				}
 				if($fieldObj->getFieldDataType()=="currency"){
 					if(!empty($focus->column_fields[$fieldName])){
 						$focus->column_fields[$fieldName] = CurrencyField::convertToUserFormat($focus->column_fields[$fieldName],$current_user);
