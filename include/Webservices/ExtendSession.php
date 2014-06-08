@@ -20,7 +20,7 @@
 			$resp = array("sessionName"=>$sessionManager->getSessionId(),"userId"=>$userId,"version"=>$API_VERSION,"vtigerVersion"=>$vtigerVersion);
 			return $resp;
 		}else{
-			throw new WebServiceException(WebServiceErrorCode::$AUTHFAILURE,"Authencation Failed");
+			throw new WebServiceException(WebServiceErrorCode::$AUTHFAILURE,"Authentication Failed");
 		}
 	}
 ?>

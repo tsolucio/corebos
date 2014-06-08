@@ -93,14 +93,14 @@
 				// END
 				$adoptSession = true;
 			}else{
-				writeErrorOutput($operationManager,new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED,"Authencation required"));
+				writeErrorOutput($operationManager,new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED,"Authentication required"));
 				return;
 			}
 		}
 		$sid = $sessionManager->startSession($sessionId,$adoptSession);
 		
 		if(!$sessionId && !$operationManager->isPreLoginOperation()){
-			writeErrorOutput($operationManager,new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED,"Authencation required"));
+			writeErrorOutput($operationManager,new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED,"Authentication required"));
 			return;
 		}
 		
