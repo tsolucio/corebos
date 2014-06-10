@@ -9,6 +9,9 @@
  ************************************************************************************/
 session_start();
 
+require_once('install/buildModules.php');
+buildModules();
+
 $configFileUtils = new ConfigFile_Utils($_SESSION['config_file_info']);
 
 if (!$configFileUtils->createConfigFile()) {
