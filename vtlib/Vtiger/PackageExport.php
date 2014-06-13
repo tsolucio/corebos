@@ -190,9 +190,8 @@ class Vtiger_PackageExport {
 			// Add calendar files
 			$zip->copyFileFromDisk('jscalendar/','jscalendar/','calendar-setup.js');
 			$zip->copyFileFromDisk('jscalendar/lang/','jscalendar/lang/','calendar-'.substr($languageCode, 0, 2).'.js');
-			$zip->copyFileFromDisk('modules/Emails/language/','modules/Emails/language/','phpmailer.lang-'.$languageCode.'.php');
 			// Copy module/include language files
-			foreach (glob('{modules,include}/*/language/es_es.lang.{php,js}',GLOB_BRACE) as $langfile) {
+			foreach (glob('{modules,include}/*/language/'.$languageCode.'.lang.{php,js}',GLOB_BRACE) as $langfile) {
 				$fname = basename($langfile);
 				$dname = dirname($langfile);
 				$zip->copyFileFromDisk($dname,$dname,$fname);

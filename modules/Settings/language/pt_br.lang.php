@@ -893,6 +893,8 @@ $mod_strings = Array(
 'LBL_ENTER_PROFILE'=>'Digite o Nome do Perfil',
 'LBL_ENABLE'=>'Habilitado',
 'LBL_DISABLE'=>'Desabilitado',
+'Language' => 'Language',
+'AlwaysActive' => 'always active',
 'LBL_PROXY'=>'proxy',
 'LBL_FIELDS_TO_BE_SHOWN'=>'Campos a serem apresentados',
 //Added for alerts
