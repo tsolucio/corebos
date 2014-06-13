@@ -114,7 +114,7 @@ class Activity extends CRMEntity {
 	{
 		global $adb;
 		//Handling module specific save
-		//Insert into seactivity rel			
+		//Insert into seactivity rel
 		if(isset($this->column_fields['parent_id']) && $this->column_fields['parent_id'] != '')
 		{
 			$this->insertIntoEntityTable("vtiger_seactivityrel", $module);
@@ -123,10 +123,16 @@ class Activity extends CRMEntity {
 		{
 			$this->deleteRelation("vtiger_seactivityrel");
 		}
-		//Insert into cntactivity rel		
+		//Insert into cntactivity rel
 		if(isset($this->column_fields['contact_id']) && $this->column_fields['contact_id'] != '')
 		{
-			$this->insertIntoEntityTable('vtiger_cntactivityrel', $module);
+			$ctovalue = $this->column_fields['contact_id'];
+			$listofctos = explode(';',$this->column_fields['contact_id']);
+			foreach ($listofctos as $cto) {
+				$this->column_fields['contact_id'] = $cto;
+				$this->insertIntoEntityTable('vtiger_cntactivityrel', $module);
+			}
+			$this->column_fields['contact_id'] = $ctovalue;
 		}
 		elseif($this->column_fields['contact_id'] =='' && $insertion_mode=="edit")
 		{
