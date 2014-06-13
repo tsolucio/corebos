@@ -663,6 +663,8 @@ $mod_strings = Array(
 'LBL_ENTER_PROFILE'=>'Geef profielnaam',
 'LBL_ENABLE'=>'Aanzetten',
 'LBL_DISABLE'=>'Uitzetten',
+'Language' => 'Language',
+'AlwaysActive' => 'always active',
 'LBL_PROXY'=>'proxy',
 'LBL_FIELDS_TO_BE_SHOWN'=>'Aanwezige velden',
 //Added for alerts
