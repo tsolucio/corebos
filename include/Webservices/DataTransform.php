@@ -89,6 +89,19 @@
 				} else {
 					$_REQUEST['set_reminder'] = "No";
 				}
+				if (isset($row['contact_id']) and strpos($row['contact_id'],';')!==false) {
+					$ctowsids = array();
+					$listofctos = explode(';',$row['contact_id']);
+					foreach ($listofctos as $cto) {
+						if(strpos($cto,'x')!==false){
+							$ctowsid = vtws_getIdComponents($cto);
+							$ctowsids[] = $ctowsid[1];
+						} else {
+							$ctowsids[] = $cto;
+						}
+					}
+					$row['contact_id'] = implode(';', $ctowsids);
+				}
 			} elseif(strtolower($meta->getEntityName()) == "calendar") {
 				if(empty($row['sendnotification']) || strtolower($row['sendnotificaiton'])=='no'
 						|| $row['sendnotificaiton'] == '0' || $row['sendnotificaiton'] == 'false'
