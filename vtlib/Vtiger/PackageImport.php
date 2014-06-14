@@ -373,6 +373,34 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 		}
 	}
 
+	/**
+	 * Import Module from manifest.xml file. Other files should already be in place
+	 * @param String manifest.xml file path
+	 */
+	function importManifest($manifestfile) {
+		global $adb,$log;
+		if (!file_exists($manifestfile))
+			$manifestfile .= $manifestfile.'/manifest.xml';  // in case they just give us the path
+		if (!file_exists($manifestfile))
+			return false;
+		$this->_modulexml = simplexml_load_file($manifestfile);
+		$module = (string) $this->_modulexml->name;
+		if($module != null) {
+			if ($this->isLanguageType()) {
+				require_once('vtlib/Vtiger/Language.php');
+				$languagePack = new Vtiger_Language();
+				@$languagePack->register((string) $this->_modulexml->prefix,(string) $this->_modulexml->label,$module);
+			} else {
+				$sql = "select tabid from vtiger_tab where name=?";
+				$result = $adb->pquery($sql, array($module));
+				if ($result and $adb->num_rows($result) > 0) {
+					return false; // module already installed
+				}
+				$this->import_Module();
+			}
+		}
+		return true;
+	}
 
 	/**
 	 * Import Module
