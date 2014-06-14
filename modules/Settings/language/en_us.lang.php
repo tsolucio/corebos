@@ -990,7 +990,7 @@ $mod_strings = Array(
 
 // vtlib customization: Language Stings
 'VTLIB_LBL_MODULE_MANAGER'=>'Module Manager',
-'VTLIB_LBL_MODULE_MANAGER_DESCRIPTION'=>'Manage module behavior inside vtiger CRM',
+'VTLIB_LBL_MODULE_MANAGER_DESCRIPTION'=>'Manage module behavior',
 'VTLIB_LBL_MODULE_MANAGER_CUSTOMMOD'=>'Custom Modules',
 'VTLIB_LBL_MODULE_MANAGER_STANDARDMOD'=>'Standard Modules',
 'VTLIB_LBL_MODULE_MANAGER_NOMODULES'=>'No custom modules found! Create one or Import New ...',
