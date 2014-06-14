@@ -158,7 +158,7 @@ class Vtiger_Filter {
 	 * @param String Value to use for comparision
 	 * @param Integer Index count to use
 	 */
-	function addRule($fieldInstance, $comparator, $comparevalue, $index=0) {
+	function addRule($fieldInstance, $comparator, $comparevalue, $index=0, $group=1, $condition='and') {
 		global $adb;
 
 		if(empty($comparator)) return $this;
@@ -167,9 +167,11 @@ class Vtiger_Filter {
 		$cvcolvalue = $this->__getColumnValue($fieldInstance);
 
 		$adb->pquery("UPDATE vtiger_cvadvfilter set columnindex=columnindex+1 WHERE cvid=? AND columnindex>=? ORDER BY columnindex DESC",
-			Array($this->id, $index));		
-		$adb->pquery("INSERT INTO vtiger_cvadvfilter(cvid, columnindex, columnname, comparator, value) VALUES(?,?,?,?,?)",
-			Array($this->id, $index, $cvcolvalue, $comparator, $comparevalue));
+			Array($this->id, $index));
+		$adb->pquery("INSERT INTO vtiger_cvadvfilter(cvid, columnindex, columnname, comparator, value, groupid, column_condition) VALUES(?,?,?,?,?,?,?)",
+			Array($this->id, $index, $cvcolvalue, $comparator, $comparevalue, $group, $condition));
+		$adb->pquery("INSERT INTO vtiger_cvadvfilter_grouping(groupid, cvid, group_condition, condition_expression) VALUES(?,?,'','')",
+				Array($group, $this->id));
 
 		Vtiger_Utils::Log("Adding Condition " . self::translateComparator($comparator,true) ." on $fieldInstance->name of $this->name filter ... DONE");
 		
