@@ -94,7 +94,7 @@
 		 * @return The entity id.
 		 */
 		function getId(){
-			return $this->focus->id;
+			return (isset($this->focus->id) ? $this->focus->id : 0);
 		}
 		
 		/**

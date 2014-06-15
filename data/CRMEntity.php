@@ -94,7 +94,7 @@ class CRMEntity {
 		$this->db->println("TRANS saveentity ends");
 
 		// vtlib customization: Hook provide to enable generic module relation.
-		if ($_REQUEST['createmode'] == 'link') {
+		if (isset($_REQUEST['createmode']) and $_REQUEST['createmode'] == 'link') {
 			$for_module = vtlib_purify($_REQUEST['return_module']);
 			$for_crmid = vtlib_purify($_REQUEST['return_id']);
 			$with_module = $module;
@@ -290,7 +290,7 @@ class CRMEntity {
 			$module = 'Calendar';
 		}
 		if ($this->mode == 'edit') {
-			$description_val = from_html($this->column_fields['description'], ($insertion_mode == 'edit') ? true : false);
+			$description_val = from_html($this->column_fields['description']);
 
 			checkFileAccessForInclusion('user_privileges/user_privileges_' . $current_user->id . '.php');
 			require('user_privileges/user_privileges_' . $current_user->id . '.php');
@@ -343,7 +343,7 @@ class CRMEntity {
 			}
 			// END
 
-			$description_val = from_html($this->column_fields['description'], ($insertion_mode == 'edit') ? true : false);
+			$description_val = from_html($this->column_fields['description']);
 			$sql = "insert into vtiger_crmentity (crmid,smcreatorid,smownerid,setype,description,modifiedby,createdtime,modifiedtime) values(?,?,?,?,?,?,?,?)";
 			$params = array($current_id, $current_user->id, $ownerid, $module, $description_val, $current_user->id, $created_date_var, $modified_date_var);
 			$adb->pquery($sql, $params);
@@ -473,7 +473,7 @@ class CRMEntity {
 			$datatype = $typeofdata_array[0];
 
 			$ajaxSave = false;
-			if (($_REQUEST['file'] == 'DetailViewAjax' && $_REQUEST['ajxaction'] == 'DETAILVIEW'
+			if ((isset($_REQUEST['file']) && $_REQUEST['file'] == 'DetailViewAjax' && isset($_REQUEST['ajxaction']) && $_REQUEST['ajxaction'] == 'DETAILVIEW'
 						&& isset($_REQUEST["fldName"]) && $_REQUEST["fldName"] != $fieldname)
 					|| ($_REQUEST['action'] == 'MassEditSave' && !isset($_REQUEST[$fieldname."_mass_edit_check"]))) {
 				$ajaxSave = true;
