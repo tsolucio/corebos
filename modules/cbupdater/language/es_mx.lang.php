@@ -27,9 +27,17 @@ $mod_strings = Array(
 	'systemupdate' => 'Actualización de Sistema',
 	'Execute' => 'Ejecutar',
 	'Undo' => 'Deshacer',
+	'ExportXML' => 'Exportar Cambios',
 	'GetUpdates' => 'Obtener Actualizaciones',
 	'Apply' => 'Aplicar',
 	'ApplyAll' => 'Aplicar Todos',
+	'ChangeSet' => 'Actualización',
+	'err_noupdatefile' => 'No existe el fichero de actualizaciones! Revisa la instalación.',
+	'err_invalidupdatefile' => 'Fichero de actualizaciones inválido! Revisa el contenido.',
+	'err_invalidchangeset' => 'Definición de cambio inválido! Probablemente fichero no se puede encontrar. Revisa la siguiente definición.',
+	'err_noupdatesselected' => 'No se han seleccionado actualizaciones para aplicar!',
+	'err_invalidclass' => 'Una clase con el nombre dado no existe! Revisa la configuración de la actualización.',
+	'err_nomethod' => 'La actualización no contiene una estructura válida: falta el método de actualización. Revisa el código de actualización.',
 );
 
 ?>

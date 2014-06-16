@@ -27,9 +27,17 @@ $mod_strings = Array(
 	'systemupdate' => 'System Update',
 	'Execute' => 'Execute',
 	'Undo' => 'Undo',
+	'ExportXML' => 'Export Changes',
 	'GetUpdates' => 'Get Updates',
 	'Apply' => 'Apply',
 	'ApplyAll' => 'Apply All',
+	'ChangeSet' => 'Update',
+	'err_noupdatefile' => 'Update file does not exist! Please review your installation.',
+	'err_invalidupdatefile' => "Invalid update file! Please review it's contents.",
+	'err_invalidchangeset' => "Invalid changeset definition! Probably can't find filename. Please review this changeset.",
+	'err_noupdatesselected' => 'No updates selected to apply!',
+	'err_invalidclass' => 'Specified class name does not exist! Please review your update configuration.',
+	'err_nomethod' => 'The specified update does not have the correct structue: update method missing. Please review your update code.',
 );
 
 ?>
