@@ -1,0 +1,6 @@
+ cp en_us.lang.php de_de.lang.php
+ cp en_us.lang.php en_gb.lang.php
+ cp en_us.lang.php fr_fr.lang.php
+ cp en_us.lang.php hu_hu.lang.php
+ cp en_us.lang.php nl_nl.lang.php
+ cp en_us.lang.php pt_br.lang.php

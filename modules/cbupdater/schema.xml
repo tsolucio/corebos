@@ -1,0 +1,27 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_cbupdater</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_cbupdater` (
+  `cbupdaterid` int(11) default NULL,
+  `cbupd_no` varchar(26) default NULL,
+  `author` varchar(83) default NULL,
+  `filename` varchar(183) default NULL,
+  `classname` varchar(183) default NULL,
+  `execstate` varchar(56) default NULL,
+  `systemupdate` varchar(3) default NULL,
+  `execdate` date default NULL,
+  `execorder` int(11) default NULL,
+  PRIMARY KEY (`cbupdaterid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_cbupdatercf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_cbupdatercf` (
+  `cbupdaterid` int(11) NOT NULL,
+  PRIMARY KEY (`cbupdaterid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

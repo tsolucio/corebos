@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<updatesChangeLog>
+<changeSet>
+	<author>joebordes</author>
+	<description>Example/Template update changeset</description>
+	<filename>build/changeSets/cbupdateexample.php</filename>
+	<classname>cbupdate_example</classname>
+</changeSet>
+</updatesChangeLog>
