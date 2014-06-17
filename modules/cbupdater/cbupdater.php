@@ -134,7 +134,7 @@ class cbupdater extends CRMEntity {
 			return false;
 		$sql = 'select count(*) from vtiger_cbupdater
 				inner join vtiger_crmentity on crmid=cbupdaterid 
-				where deleted=0 and filename=? and classname=?';
+				where deleted=0 and pathfilename=? and classname=?';
 		$rs = $adb->pquery($sql,array($cbinfo['filename'],$cbinfo['classname']));
 		return ($rs and $adb->query_result($rs,0,0)==1);
 	}

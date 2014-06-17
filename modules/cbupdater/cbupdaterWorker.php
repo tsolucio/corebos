@@ -78,7 +78,7 @@ class cbupdaterWorker {
 			$this->filename = $cbu['filename'];
 			$this->classname = $cbu['classname'];
 			$this->execstate = $cbu['execstate'];
-			$this->systemupdate = $cbu['systemupdate'];
+			$this->systemupdate = ($cbu['systemupdate']=='1' ? true : false);
 			$this->execdate = $cbu['execdate'];
 			$this->updError = false;
 		} else {  // it doesn't exist, we fail because it MUST exist
@@ -89,10 +89,10 @@ class cbupdaterWorker {
 	function applyChange() {
 		if ($this->hasError()) $this->sendError();
 		if ($this->isApplied()) {
-			$this->sendMsg('Changeset already applied!');
+			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			// do your magic here
-			$this->sendMsg('Changeset applied!');
+			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
 		$this->finishExecution();
@@ -100,18 +100,26 @@ class cbupdaterWorker {
 	
 	function undoChange() {
 		if ($this->hasError()) $this->sendError();
-		if ($this->isApplied()) {
-			// undo your magic here
-			$this->sendMsg('Changeset undone!');
-			$this->markUndone();
+		if ($this->isSystemUpdate()) {
+			$this->sendMsg('Changeset '.get_class($this).' is a system update, it cannot be undone!');
 		} else {
-			$this->sendMsg('Changeset not applied!');
+			if ($this->isApplied()) {
+				// undo your magic here
+				$this->sendMsg('Changeset '.get_class($this).' undone!');
+				$this->markUndone();
+			} else {
+				$this->sendMsg('Changeset '.get_class($this).' not applied!');
+			}
 		}
 		$this->finishExecution();
 	}
 	
 	function isApplied() {
 		return ($this->execstate=='Executed');
+	}
+
+	function isSystemUpdate() {
+		return $this->systemupdate;
 	}
 	
 	function hasError() {
