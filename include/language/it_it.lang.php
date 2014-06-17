@@ -118,6 +118,7 @@ $app_strings = array (
   'LBL_OR' => 'o',
   'LBL_ALT_HOT_KEY' => 'Alt+',
   'LBL_SAVE_LABEL' => 'Salva',
+  'LBL_SAVE_AS'=>" Salva ",
   'LBL_REPLACE_LABEL' => 'Sostituisci',
   'LBL_APPLY_LABEL' => 'Applica',
   'LBL_SEND_MAIL_BUTTON' => 'Invia Email',
