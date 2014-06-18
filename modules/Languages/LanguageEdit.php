@@ -42,18 +42,18 @@ $smarty->assign("MODULE",($_REQUEST['pick_module']!='')?$_REQUEST['pick_module']
 
 //REF_LANGUAGE
 $ref_language = $default_language;
-$dbQuery = "SELECT prefix,language,encoding FROM vtiger_languages WHERE prefix='".$ref_language."'";
+$dbQuery = "SELECT prefix,label FROM vtiger_language WHERE prefix='".$ref_language."'";
 $result = $adb->query($dbQuery);
 $row = $adb->fetch_array($result);
-$ref_encoding = $row['encoding'];
-$smarty->assign("REF_LANGUAGE",$row['language']);
+$ref_encoding = 'UTF-8';
+$smarty->assign("REF_LANGUAGE",$row['label']);
 
 //Get languguage info
-$dbQuery="SELECT prefix,language,encoding FROM vtiger_languages WHERE languageid=".$_REQUEST['languageid'];
+$dbQuery="SELECT prefix,label FROM vtiger_language WHERE id=".$_REQUEST['languageid'];
 $result = $adb->query($dbQuery);
 $row = $adb->fetch_array($result);
-$trans_encoding = $row['encoding'];
-$smarty->assign("LANGUAGE",$row['language']);
+$trans_encoding = 'UTF-8';
+$smarty->assign("LANGUAGE",$row['label']);
 $module_array=Array('General'=> $mod_strings['General']);
 $module_array['JavaScript']= $mod_strings['JavaScript'];
 

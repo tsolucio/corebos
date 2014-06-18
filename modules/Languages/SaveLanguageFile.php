@@ -44,7 +44,7 @@ $db = new PearDatabase();
 $line_break=chr(10);
 if(isset($_REQUEST['languageid']) && $_REQUEST['languageid'] !='' && $_POST['pick_module']!='' ){
 	//Get languguage info
-	$dbQuery="SELECT * FROM vtiger_languages WHERE languageid=".$_REQUEST['languageid'];
+	$dbQuery="SELECT * FROM vtiger_language WHERE id=".$_REQUEST['languageid'];
 	$result = $adb->query($dbQuery);
 	$row = $adb->fetch_array($result);
 	$now=date('Y-m-d H:i:s');
@@ -95,7 +95,7 @@ if(isset($_REQUEST['languageid']) && $_REQUEST['languageid'] !='' && $_POST['pic
 			}                         
 			fwrite($fd, ');'.$line_break.'?>');
 			fclose($fd);
-			$dbQuery="UPDATE vtiger_languages SET modifiedtime='".$now."' WHERE languageid=".$_REQUEST['languageid'];
+			//$dbQuery="UPDATE vtiger_languages SET modifiedtime='".$now."' WHERE languageid=".$_REQUEST['languageid'];
 			$result = $adb->query($dbQuery);
 		}
 	}
@@ -123,7 +123,7 @@ if(isset($_REQUEST['languageid']) && $_REQUEST['languageid'] !='' && $_POST['pic
 			}
 			fwrite($fd, '};');
 			fclose($fd);
-			$dbQuery="UPDATE vtiger_languages SET modifiedtime='".$now."' WHERE languageid=".$_REQUEST['languageid'];
+			//$dbQuery="UPDATE vtiger_languages SET modifiedtime='".$now."' WHERE languageid=".$_REQUEST['languageid'];
 			$result = $adb->query($dbQuery);
 		}
 	}
@@ -181,7 +181,7 @@ if(isset($_REQUEST['languageid']) && $_REQUEST['languageid'] !='' && $_POST['pic
              
 			fwrite($fd,  ');'.$line_break.'?>');
 			fclose($fd);
-			$dbQuery="UPDATE vtiger_languages SET modifiedtime='".$now."' WHERE languageid=".$_REQUEST['languageid'];
+			//$dbQuery="UPDATE vtiger_languages SET modifiedtime='".$now."' WHERE languageid=".$_REQUEST['languageid'];
 			$result = $adb->query($dbQuery);
 		}
 	}
