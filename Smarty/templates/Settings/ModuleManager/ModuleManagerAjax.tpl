@@ -85,6 +85,7 @@ function vtlib_modulemanager_toggleTab(shownode, hidenode, highlighttab, dehighl
 {/foreach}
 {foreach key=langprefix item=langinfo from=$TOGGLE_LANGINFO}
 	{assign var="totalCustomModules" value=$totalCustomModules+1}
+     
 	<tr>
 		<td class="cellText small"><img src="{'text.gif'|@vtiger_imageurl:$THEME}" border=0"></td>
 		<td class="cellLabel small">{$langinfo.label}</td>
@@ -104,6 +105,10 @@ function vtlib_modulemanager_toggleTab(shownode, hidenode, highlighttab, dehighl
 		</td>
 		<td class="cellText small" width="15px" align=center>
 			<a href="index.php?modules=Settings&action=ModuleManagerExport&module_export={$langprefix}"><img src="themes/images/webmail_uparrow.gif" border="0" align="absmiddle" alt="{$APP.LBL_EXPORT} {$langinfo.label}" title="{$APP.LBL_EXPORT} {$langinfo.label}"></a>
+		</td>
+                <td class="cellText small" width="15px" align=center>
+			<a href="index.php?module=Languages&action=LanguageEdit&parenttab=Settings&languageid={$langinfo.id}"><img src="{'Settings.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$langinfo.label} {$MOD.LBL_SETTINGS}" title="{$langinfo.label} {$MOD.LBL_SETTINGS}"></a>
+			
 		</td>
 	</tr>
 {/foreach}

@@ -29,30 +29,4 @@
  *************************************************************************************************
 ]]></inline>
 </license>
-<tables>
-<table>
-<name>vtiger_languages</name>
-<sql>CREATE TABLE IF NOT EXISTS vtiger_languages (
-  languageid int(11) NOT NULL AUTO_INCREMENT,
-  prefix varchar(5) NOT NULL,
-  encoding varchar(10) NOT NULL DEFAULT 'UTF-8',
-  language varchar(255) NOT NULL,
-  version varchar(100) DEFAULT NULL,
-  author varchar(255) DEFAULT NULL,
-  license text,
-  createddate timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-  date_modified timestamp NOT NULL DEFAULT '0000-00-00 00:00:00',
-  lockfor int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (languageid)
-) ENGINE=InnoDB  DEFAULT CHARSET=latin1 AUTO_INCREMENT=5 ;
-</sql>
-</table>
-<table><name>sqlcomand</name>
-<sql>
-INSERT INTO vtiger_languages (languageid, prefix, encoding, language, version, author, license, createddate, date_modified, lockfor) VALUES
-(1, 'en_us', 'UTF-8', 'US English', 'v5.0.4 Validation', 'Vtiger Core Team', ' * The contents of this file are subject to the SugarCRM Public License Version 1.1.2\r\n * ("License"); You may not use this file except in compliance with the\r\n * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL\r\n * Software distributed under the License is distributed on an  "AS IS"  basis,\r\n * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for\r\n * the specific language governing rights and limitations under the License.\r\n * The Original Code is:  SugarCRM Open Source\r\n * The Initial Developer of the Original Code is SugarCRM, Inc.\r\n * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;\r\n * All Rights Reserved.', '2007-09-29 22:00:00', '2007-09-29 22:00:00', 3),
-(3, 'it_it', 'utf8', 'Italian', '', 'OpenCubed', '', '2013-04-15 11:18:57', '2013-04-15 11:18:57', 0);
-</sql>
-</table>
-</tables>
 </module>
