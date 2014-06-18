@@ -2,8 +2,30 @@
 <updatesChangeLog>
 <changeSet>
 	<author>joebordes</author>
-	<description>Example/Template update changeset</description>
-	<filename>build/changeSets/cbupdateexample.php</filename>
-	<classname>cbupdate_example</classname>
+	<description>Upgrade from vtigerCRM5.4 to coreBOS5.4</description>
+	<filename>build/changeSets/vt54_cb54.php</filename>
+	<classname>vt54_cb54</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Apply coreBOS Customer Portal REST enhancements</description>
+	<filename>build/changeSets/coreboscp_rest.php</filename>
+	<classname>coreboscp_rest</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Document Related List enhancements</description>
+	<filename>build/changeSets/document_relatedlist.php</filename>
+	<classname>document_relatedlist</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Department field size limit #177</description>
+	<filename>build/changeSets/departmentfieldlimit_177.php</filename>
+	<classname>departmentfieldlimit</classname>
+	<systemupdate>true</systemupdate>
 </changeSet>
 </updatesChangeLog>
