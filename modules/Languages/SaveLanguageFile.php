@@ -1,12 +1,23 @@
 <?php
-/*********************************************************************************
- * $Header$
- * Description: Language Pack Wizard
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): Ga�tan KRONEISEN technique@expert-web.fr
- *                 Pius Tsch�mperlin ep-t.ch
- ********************************************************************************/
+/*************************************************************************************************
+ * Copyright 2014 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
+ * file except in compliance with the License. You can redistribute it and/or modify it
+ * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
+ * granted by the License. coreBOS distributed by JPL TSolucio S.L. is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. Unless required by
+ * applicable law or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT ANY WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language governing
+ * permissions and limitations under the License. You may obtain a copy of the License
+ * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
+ *************************************************************************************************
+ *  Module       : Languages
+ *  Version      : 5.4.0
+ *  Author       : Opencubed
+ * the code is based on the work of Gaëtan KRONEISEN technique@expert-web.fr and  Pius Tschümperlin ep-t.ch
+ *************************************************************************************************/
 
 require_once('modules/Languages/Config.inc.php');
 require_once('include/database/PearDatabase.php');
@@ -33,18 +44,18 @@ $db = new PearDatabase();
 $line_break=chr(10);
 if(isset($_REQUEST['languageid']) && $_REQUEST['languageid'] !='' && $_POST['pick_module']!='' ){
 	//Get languguage info
-	$dbQuery="SELECT * FROM vtiger_languages WHERE languageid=".$_REQUEST['languageid'];
+	$dbQuery="SELECT * FROM vtiger_language WHERE id=".$_REQUEST['languageid'];
 	$result = $adb->query($dbQuery);
 	$row = $adb->fetch_array($result);
 	$now=date('Y-m-d H:i:s');
-	$header='/***********************************************************'.$line_break
-			.'*  Module       : '.$_REQUEST['pick_module'].$line_break
-			.'*  Language     : '.$row['language'].$line_break
-			.'*  Version      : '.$row['version'].$line_break
-			.'*  Created Date : '.$row['createddate']. ' Last change : '.$now.$line_break
-			.'*  Author       : '.$row['author'].$line_break
-			.'*  License      : '.$line_break.$row['license'].$line_break
-			.'***********************************************************/'.$line_break.$line_break.$line_break;
+	$header='/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
+ * All Rights Reserved.
+ ********************************************************************************/'.$line_break.$line_break.$line_break;
 
 	if($_REQUEST['pick_module']=='General'){
 		$filename='include/language/'.$row['prefix'].'.lang.php';
@@ -84,7 +95,7 @@ if(isset($_REQUEST['languageid']) && $_REQUEST['languageid'] !='' && $_POST['pic
 			}                         
 			fwrite($fd, ');'.$line_break.'?>');
 			fclose($fd);
-			$dbQuery="UPDATE vtiger_languages SET modifiedtime='".$now."' WHERE languageid=".$_REQUEST['languageid'];
+			//$dbQuery="UPDATE vtiger_languages SET modifiedtime='".$now."' WHERE languageid=".$_REQUEST['languageid'];
 			$result = $adb->query($dbQuery);
 		}
 	}
@@ -112,7 +123,7 @@ if(isset($_REQUEST['languageid']) && $_REQUEST['languageid'] !='' && $_POST['pic
 			}
 			fwrite($fd, '};');
 			fclose($fd);
-			$dbQuery="UPDATE vtiger_languages SET modifiedtime='".$now."' WHERE languageid=".$_REQUEST['languageid'];
+			//$dbQuery="UPDATE vtiger_languages SET modifiedtime='".$now."' WHERE languageid=".$_REQUEST['languageid'];
 			$result = $adb->query($dbQuery);
 		}
 	}
@@ -170,7 +181,7 @@ if(isset($_REQUEST['languageid']) && $_REQUEST['languageid'] !='' && $_POST['pic
              
 			fwrite($fd,  ');'.$line_break.'?>');
 			fclose($fd);
-			$dbQuery="UPDATE vtiger_languages SET modifiedtime='".$now."' WHERE languageid=".$_REQUEST['languageid'];
+			//$dbQuery="UPDATE vtiger_languages SET modifiedtime='".$now."' WHERE languageid=".$_REQUEST['languageid'];
 			$result = $adb->query($dbQuery);
 		}
 	}

@@ -1,12 +1,23 @@
 <?php
-/*********************************************************************************
- * $Header$
- * Description: Language Pack Wizard
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): Ga�tan KRONEISEN technique@expert-web.fr
- * 				   Pius Tsch�mperlin ep-t.ch
- ********************************************************************************/
+/*************************************************************************************************
+ * Copyright 2014 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
+ * file except in compliance with the License. You can redistribute it and/or modify it
+ * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
+ * granted by the License. coreBOS distributed by JPL TSolucio S.L. is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. Unless required by
+ * applicable law or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT ANY WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language governing
+ * permissions and limitations under the License. You may obtain a copy of the License
+ * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
+ *************************************************************************************************
+ *  Module       : Languages
+ *  Version      : 5.4.0
+ *  Author       : Opencubed
+ * the code is based on the work of Gaëtan KRONEISEN technique@expert-web.fr and  Pius Tschümperlin ep-t.ch
+ *************************************************************************************************/
 
 require_once('modules/Languages/Config.inc.php');
 require_once('Smarty_setup.php');
@@ -31,18 +42,18 @@ $smarty->assign("MODULE",($_REQUEST['pick_module']!='')?$_REQUEST['pick_module']
 
 //REF_LANGUAGE
 $ref_language = $default_language;
-$dbQuery = "SELECT prefix,language,encoding FROM vtiger_languages WHERE prefix='".$ref_language."'";
+$dbQuery = "SELECT prefix,label FROM vtiger_language WHERE prefix='".$ref_language."'";
 $result = $adb->query($dbQuery);
 $row = $adb->fetch_array($result);
-$ref_encoding = $row['encoding'];
-$smarty->assign("REF_LANGUAGE",$row['language']);
+$ref_encoding = 'UTF-8';
+$smarty->assign("REF_LANGUAGE",$row['label']);
 
 //Get languguage info
-$dbQuery="SELECT prefix,language,encoding FROM vtiger_languages WHERE languageid=".$_REQUEST['languageid'];
+$dbQuery="SELECT prefix,label FROM vtiger_language WHERE id=".$_REQUEST['languageid'];
 $result = $adb->query($dbQuery);
 $row = $adb->fetch_array($result);
-$trans_encoding = $row['encoding'];
-$smarty->assign("LANGUAGE",$row['language']);
+$trans_encoding = 'UTF-8';
+$smarty->assign("LANGUAGE",$row['label']);
 $module_array=Array('General'=> $mod_strings['General']);
 $module_array['JavaScript']= $mod_strings['JavaScript'];
 
@@ -290,5 +301,5 @@ $smarty->assign("PERC_TRANSALTED",number_format($translated_string*100/$total_st
 $smarty->assign("TRANSLATION_STRING",$result2);
 $smarty->assign("TRANSLATION_LIST_STRING",$tr_list);
 $smarty->assign("TRANSLATION_LIST_STRING2",$tr_list2);
-$smarty->display('Settings/Languages/LanguageEdit.tpl');
+$smarty->display('modules/Languages/LanguageEdit.tpl');
 ?>
