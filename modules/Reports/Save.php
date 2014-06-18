@@ -110,7 +110,7 @@ $scheduledInterval	= vtlib_purify($_REQUEST['scheduledIntervalString']);
 //<<<<<<<scheduled report>>>>>>>>
 $saveas=$_REQUEST['saveashidden'];
 $newreportname=$_REQUEST['newreportname'];
-if($reportid == "" || ($reportid!='' && strstr($saveas,'saveas')!=''))
+if($reportid == "" || ($reportid!='' && strstr($saveas,'saveas')!='' && $newreportname!=''))
 {
 	$genQueryId = $adb->getUniqueID("vtiger_selectquery");
 	if($genQueryId != "")
