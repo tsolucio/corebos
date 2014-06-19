@@ -166,8 +166,29 @@ class cbupdaterWorker {
 		}
 	}
 	
+	function installManifestModule($module) {
+		$package = new Vtiger_Package();
+		ob_start();
+		$rdo = $package->importManifest("modules/$module/manifest.xml");
+		$out = ob_get_contents();
+		ob_end_clean();
+		$this->sendMsg($out);
+		if ($rdo) $this->sendMsg("$module installed!");
+		else $this->sendMsgError("ERROR installing $module!");
+	}
+	
+	function isModuleInstalled($module) {
+		global $adb;
+		$tabrs = $adb->pquery('select count(*) from vtiger_tab where name=?',array($module));
+		return ($tabrs and $adb->query_result($tabrs, 0,0)==1);
+	}
+	
 	function sendMsg($msg) {
 		echo '<tr width="100%"><td colspan=3>'.$msg.'</td></tr>';
+	}
+
+	function sendMsgError($msg) {
+		echo '<tr width="100%"><td colspan=3><span style="color:red">'.$msg.'</span></td></tr>';
 	}
 	
 	function sendError() {
