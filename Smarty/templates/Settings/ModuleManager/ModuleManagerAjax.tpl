@@ -84,8 +84,6 @@ function vtlib_modulemanager_toggleTab(shownode, hidenode, highlighttab, dehighl
 {/if}
 {/foreach}
 {foreach key=langprefix item=langinfo from=$TOGGLE_LANGINFO}
-	{if $langprefix neq 'en_us'}
-
 	{assign var="totalCustomModules" value=$totalCustomModules+1}
 	<tr>
 		<td class="cellText small"><img src="{'text.gif'|@vtiger_imageurl:$THEME}" border=0"></td>
@@ -94,17 +92,20 @@ function vtlib_modulemanager_toggleTab(shownode, hidenode, highlighttab, dehighl
 			<a href="index.php?module=Settings&action=ModuleManager&module_update=Step1&src_module={$langprefix}&parenttab=Settings"><img src="{'reload.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$MOD.LBL_UPGRADE} {$langinfo.label}" title="{$MOD.LBL_UPGRADE} {$langinfo.label}"></a>
 		</td>
 		<td class="cellText small" width="15px" align=center>
+		{if $langprefix neq 'en_us'}
 		{if $langinfo.active eq 1}
-			<a href="javascript:void(0);" onclick="vtlib_toggleModule('{$langprefix}', 'module_disable', 'language');"><img src="{'enabled.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$MOD.LBL_DISABLE} Language {$langinfo.label}" title="{$MOD.LBL_DISABLE} Language {$langinfo.label}"></a>
+			<a href="javascript:void(0);" onclick="vtlib_toggleModule('{$langprefix}', 'module_disable', 'language');"><img src="{'enabled.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$MOD.LBL_DISABLE} {$MOD.Language} {$langinfo.label}" title="{$MOD.LBL_DISABLE} {$MOD.Language} {$langinfo.label}"></a>
 		{else}
-			<a href="javascript:void(0);" onclick="vtlib_toggleModule('{$langprefix}', 'module_enable', 'language');"><img src="{'disabled.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$MOD.LBL_ENABLE} Language {$langinfo.label}" title="{$MOD.LBL_ENABLE} Language {$langinfo.label}"></a>
+			<a href="javascript:void(0);" onclick="vtlib_toggleModule('{$langprefix}', 'module_enable', 'language');"><img src="{'disabled.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$MOD.LBL_ENABLE} {$MOD.Language} {$langinfo.label}" title="{$MOD.LBL_ENABLE} {$MOD.Language} {$langinfo.label}"></a>
+		{/if}
+		{else}
+			<img src="{'enabled.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$MOD.Language} {$langinfo.label} {$MOD.LBL_ENABLE}" title="{$MOD.Language} {$langinfo.label} {$MOD.AlwaysActive}">
 		{/if}
 		</td>
 		<td class="cellText small" width="15px" align=center>
 			<a href="index.php?modules=Settings&action=ModuleManagerExport&module_export={$langprefix}"><img src="themes/images/webmail_uparrow.gif" border="0" align="absmiddle" alt="{$APP.LBL_EXPORT} {$langinfo.label}" title="{$APP.LBL_EXPORT} {$langinfo.label}"></a>
 		</td>
 	</tr>
-	{/if}
 {/foreach}
 {if $totalCustomModules eq 0}
 	<tr>

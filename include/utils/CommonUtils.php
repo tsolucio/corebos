@@ -375,8 +375,9 @@ function getTabid($module) {
 
 		if (file_exists('tabdata.php') && (filesize('tabdata.php') != 0)) {
 			include('tabdata.php');
+			if (!isset($tab_info_array[$module])) return null;
 			$tabid = $tab_info_array[$module];
-
+			
 			// Update information to cache for re-use
 			VTCacheUtils::updateTabidInfo($tabid, $module);
 		} else {
@@ -384,6 +385,7 @@ function getTabid($module) {
 			global $adb;
 			$sql = "select tabid from vtiger_tab where name=?";
 			$result = $adb->pquery($sql, array($module));
+			if (!$result or $adb->num_rows($result)==0) return null;
 			$tabid = $adb->query_result($result, 0, "tabid");
 
 			// Update information to cache for re-use

@@ -893,6 +893,8 @@ $mod_strings = Array(
 'LBL_ENTER_PROFILE'=>'Enter Profile Name',
 'LBL_ENABLE'=>'Enable',
 'LBL_DISABLE'=>'Disable',
+'Language' => 'Language',
+'AlwaysActive' => 'always active',
 'LBL_PROXY'=>'proxy',
 'LBL_FIELDS_TO_BE_SHOWN'=>'Fields to be shown',
 //Added for alerts
@@ -988,7 +990,7 @@ $mod_strings = Array(
 
 // vtlib customization: Language Stings
 'VTLIB_LBL_MODULE_MANAGER'=>'Module Manager',
-'VTLIB_LBL_MODULE_MANAGER_DESCRIPTION'=>'Manage module behavior inside vtiger CRM',
+'VTLIB_LBL_MODULE_MANAGER_DESCRIPTION'=>'Manage module behavior',
 'VTLIB_LBL_MODULE_MANAGER_CUSTOMMOD'=>'Custom Modules',
 'VTLIB_LBL_MODULE_MANAGER_STANDARDMOD'=>'Standard Modules',
 'VTLIB_LBL_MODULE_MANAGER_NOMODULES'=>'No custom modules found! Create one or Import New ...',
@@ -1012,8 +1014,6 @@ $mod_strings = Array(
 'LBL_VAL_SSL_CERT'=>'Validate SSL Certificate',
 'LBL_DONOT_VAL_SSL_CERT'=>'Do Not Validate SSL Certificate',
 'LBL_STATUS'=>'Status',
-'LBL_ENABLE'=>'Enable',
-'LBL_DISABLE'=>'Disable',
 'LBL_CONNECT'=>'Connect',
 'LBL_URL_CAPS'=>'URL',
 'LBL_ENABLED'=>'Enabled',

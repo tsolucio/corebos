@@ -664,6 +664,8 @@ $mod_strings = Array(
     'LBL_ENTER_PROFILE'=>'Profilenamen eingeben',
     'LBL_ENABLE'=>'Aktivierung der',
     'LBL_DISABLE'=>'Sperren',
+    'Language' => 'Language',
+    'AlwaysActive' => 'always active',
     'LBL_PROXY'=>'Proxy',
     'LBL_FIELDS_TO_BE_SHOWN'=>'angezeigte Felder',
     //Added for alerts

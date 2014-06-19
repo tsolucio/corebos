@@ -32,10 +32,10 @@ class Vtiger_Menu {
 	 * @access private
 	 */
 	function initialize($valuemap) {
-		$this->id       = $valuemap[parenttabid];
-		$this->label    = $valuemap[parenttab_label];
-		$this->sequence = $valuemap[sequence];
-		$this->visible  = $valuemap[visible];
+		$this->id       = $valuemap['parenttabid'];
+		$this->label    = $valuemap['parenttab_label'];
+		$this->sequence = $valuemap['sequence'];
+		$this->visible  = $valuemap['visible'];
 	}
 
 	/**
