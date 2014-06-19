@@ -74,48 +74,14 @@ function putMsg($msg) {
 
 echo "<table width=80% align=center border=1>";
 
-// 5.4
-ExecuteQuery("update vtiger_field set block=67 where tabid=23 and columnname='s_h_amount'");
-ExecuteQuery("ALTER TABLE vtiger_loginhistory CHANGE user_name user_name VARCHAR(255) CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL");
-
-$delimg = array('include/images/AppStore.png',
-	'include/images/AppStoreQRCode.png',
-	'include/images/ExchangeConnector.png',
-	'include/images/GooglePlay.png',
-	'include/images/GooglePlayQRCode.png',
-	'include/images/OutlookPlugin.png',
-	'include/images/vtigercrm_icon.ico',
-	'themes/alphagrey/images/vtiger-crm.gif',
-	'themes/bluelagoon/images/vtiger-crm.gif',
-	'themes/images/aboutUS.jpg',
-	'themes/images/bullets.gif',
-	'themes/images/honestCRM.gif',
-	'themes/images/honestCRMTop.gif',
-	'themes/images/loginTopHeaderBg.gif',
-	'themes/images/loginTopHeaderName.gif',
-	'themes/images/loginTopVersion.gif',
-	'themes/images/vtiger-paw.jpg',
-	'themes/images/vtiger.jpg',
-	'themes/images/vtigerName.gif',
-	'themes/images/vtigercrm_icon.ico',
-	'themes/images/vtigerlogo.jpg',
-	'themes/softed/images/vtiger-crm.gif',
-	'themes/woodspice/images/vtiger-crm.gif',
-	'test/logo/vtiger-crm-logo.gif',
-);
-foreach ($delimg as $dimg) {
-	@unlink($dimg);
-	putmsg("image $dimg deleted");
-}
-
-// 5.5
-  // Relation with Entities
-  $newrelid = $adb->getUniqueID("vtiger_relatedlists");
-  $adb->query("INSERT INTO vtiger_relatedlists (relation_id, tabid, related_tabid, name, sequence, label, presence, actions) VALUES ($newrelid, 8, 0, 'getEntities', '1', 'Related To',0,'SELECT');");
-  putmsg('Document relations added.');
-
-ExecuteQuery("ALTER TABLE `vtiger_contactdetails` CHANGE `department` `department` VARCHAR( 230 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL");
-ExecuteQuery("ALTER TABLE `vtiger_users` CHANGE `department` `department` VARCHAR( 150 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL");
+$package = new Vtiger_Package();
+ob_start();
+$rdo = $package->importManifest("modules/cbupdater/manifest.xml");
+$out = ob_get_contents();
+ob_end_clean();
+putMsg($out);
+if ($rdo) putMsg("$module installed: <a href='index.php?module=cbupdater&action=getupdates'>proceed to the rest of the updates by clicking here</a>");
+else putMsg("ERROR installing $module!");
 
 ?>
 </table>

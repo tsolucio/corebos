@@ -50,7 +50,7 @@ class vt54_cb54 extends cbupdaterWorker {
 			);
 			foreach ($delimg as $dimg) {
 				@unlink($dimg);
-				putmsg("image $dimg deleted");
+				$this->sendMsg("image $dimg deleted");
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();

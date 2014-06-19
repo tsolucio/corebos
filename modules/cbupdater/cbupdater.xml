@@ -17,7 +17,7 @@
 <changeSet>
 	<author>joebordes</author>
 	<description>Document Related List enhancements</description>
-	<filename>build/changeSets/document_relatedlist.php</filename>
+	<filename>build/changeSets/DocumentRelatedList.php</filename>
 	<classname>document_relatedlist</classname>
 	<systemupdate>false</systemupdate>
 </changeSet>
