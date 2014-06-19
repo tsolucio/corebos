@@ -18,7 +18,7 @@ if(!isset($__cache_vtiger_imagepath)) {
 }
 function vtiger_imageurl($imagename, $themename) {
 	global $__cache_vtiger_imagepath;
-	if($__cache_vtiger_imagepath[$imagename]) {
+	if(isset($__cache_vtiger_imagepath[$imagename]) and $__cache_vtiger_imagepath[$imagename]) {
         $imagepath = $__cache_vtiger_imagepath[$imagename];
     } else {
 		$imagepath = false;
