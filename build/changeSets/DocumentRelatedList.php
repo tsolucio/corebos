@@ -25,6 +25,8 @@ class document_relatedlist extends cbupdaterWorker {
 			// Relation with Entities
 			$newrelid = $adb->getUniqueID("vtiger_relatedlists");
 			$this->ExecuteQuery("INSERT INTO vtiger_relatedlists (relation_id, tabid, related_tabid, name, sequence, label, presence, actions) VALUES ($newrelid, 8, 0, 'getEntities', '1', 'Related To',0,'SELECT');");
+			//Create a new table to support custom fields in Documents module
+			$adb->query("CREATE TABLE IF NOT EXISTS vtiger_notescf (notesid INT(19), FOREIGN KEY fk_1_vtiger_notescf(notesid) REFERENCES vtiger_notes(notesid) ON DELETE CASCADE);");
 			$this->sendMsg('Document relations added.');
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
