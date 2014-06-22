@@ -12,7 +12,7 @@ $mod_strings = Array (
         'LBL_ACTIVE' => 'Activo',
         'LBL_INACTIVE' => 'InActivo',
         'LBL_STATUS' => 'Estado',
-        'LBL_SCHEDULER' => 'Planificador',
+        'LBL_SCHEDULER' => 'Planificador Tareas',
         'LBL_SETTINGS' => 'Configuración',
         'LBL_FREQUENCY'=> 'Frecuencia',
         'LBL_HOURMIN' => '(H:M)',
@@ -31,5 +31,7 @@ $mod_strings = Array (
 		'LBL_DAYS'=>'días',
 		'LBL_MONTHS'=>'meses',
 		'LBL_YEARS'=>'años',
+		'Allows you to Configure Cron Task' => 'Permite configurar las Tareas Programadas',
+		'Scheduler' => 'Planificador Tareas',
 );
 ?>

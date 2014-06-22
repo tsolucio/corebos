@@ -33,6 +33,7 @@
 
 $mod_strings = Array (
 	'Webforms' => 'Webformulieren',
+	'Allows you to manage Webforms' => 'Create and manage webforms which can be used to capture Leads',
 	'LBL_SUCCESS' => 'is toegevoegd aan het CRM.',
 	'LBL_FAILURE' => 'Toevoegen aan het CRM is mislukt.',
 	'LBL_ERROR_CODE' => 'Foutcode',

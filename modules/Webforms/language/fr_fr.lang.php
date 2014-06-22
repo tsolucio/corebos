@@ -9,6 +9,7 @@
 
 $mod_strings = Array (
 	'Webforms' => 'Formulaire Web',
+	'Allows you to manage Webforms' => 'Gérer les webforms pour acquérir des leads sur votre site web',
 	'LBL_SUCCESS' => 'ajouté à vtiger CRM.',
 	'LBL_FAILURE' => 'Erreur pendant l\'ajout à vtiger CRM.',
 	'LBL_ERROR_CODE' => 'Code d\'erreur',

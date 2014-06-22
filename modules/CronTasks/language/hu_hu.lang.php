@@ -33,6 +33,8 @@ $mod_strings = array(
 	'LBL_SECONDS' => 'másodperccel ezelőtt',
 	'LBL_MINUTES' => 'perccel ezelőtt',
 	'LBL_MONTHS' => 'hónappal ezelőtt',
-	'LBL_YEARS' => 'évvel ezelőtt'
+	'LBL_YEARS' => 'évvel ezelőtt',
+	'Allows you to Configure Cron Task' => 'Állítsd be az időzített feladatokat (Cron Task)',
+	'Scheduler' => 'Időzítő',
 );
 ?>

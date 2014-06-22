@@ -15,6 +15,7 @@
  ********************************************************************************/ 
 $mod_strings = array(
 	'Webforms' => 'Webűrlapok',
+	'Allows you to manage Webforms' => 'Create and manage webforms which can be used to capture Leads',
 	'LBL_SUCCESS' => 'Az adatokat sikeresen hozzáadtuk a VTiger CRM rendszerhez.',
 	'LBL_FAILURE' => 'az adatokat nem sikerült hozzáadni a VTiger CRM rendszerhez.',
 	'LBL_ERROR_CODE' => 'Hibakód',

@@ -35,7 +35,10 @@
 							</tr>
 		{foreach item=data from=$FIELDS.$BLOCKID}
 			{if $data.link neq ''}
+				{assign var=label value=$data.name|@getTranslatedString:$data.module}
+				{if $label eq $data.name}
 				{assign var=label value=$data.name|@getTranslatedString:'Settings'}
+				{/if}
 				{if ($smarty.request.action eq $data.action && $smarty.request.module eq $data.module)}
 							<tr>
 								<td class="settingsTabSelected" nowrap>
