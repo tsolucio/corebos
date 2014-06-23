@@ -230,7 +230,7 @@ class Reports extends CRMEntity{
 	function initListOfModules() {
 		global $adb, $current_user, $old_related_modules;
 
-		$restricted_modules = array('Emails','Events','Webmails');
+		$restricted_modules = array('Events','Webmails');
 		$restricted_blocks = array('LBL_IMAGE_INFORMATION','LBL_COMMENTS','LBL_COMMENT_INFORMATION');
 
 		$this->module_id = array();
@@ -334,6 +334,11 @@ class Reports extends CRMEntity{
 								$this->related_modules[$module] = array_unique($this->related_modules[$module]);
 							}
 						}
+					}
+				}
+				foreach($this->related_modules as $module=>$related_modules) {
+					if($module == 'Emails') {
+						$this->related_modules[$module] = getEmailRelatedModules();
 					}
 				}
 				// Put the information in cache for re-use
@@ -513,6 +518,15 @@ class Reports extends CRMEntity{
 				$ret_module_list[$module][$value] = $this->getColumnsListbyBlock($module,$key);
 			}
 		}
+		if($module == 'Emails') {
+			foreach($ret_module_list[$module] as $key => $value) {
+				foreach($value as $key1 => $value1) {
+					if($key1 == 'vtiger_activity:time_start:Emails_Time_Start:time_start:T') {
+						unset($ret_module_list[$module][$key][$key1]);
+					}
+				}
+			}
+		}
 		$this->pri_module_columnslist = $ret_module_list;
 		return true;
 	}
@@ -538,6 +552,15 @@ class Reports extends CRMEntity{
 						if($this->module_list['Events']){
 							$this->sec_module_columnslist['Events'] = $this->getModuleFieldList(
 									'Events');
+						}
+					}
+				}
+			}
+			if($module == 'Emails') {
+				foreach($this->sec_module_columnslist[$module] as $key => $value) {
+					foreach($value as $key1 => $value1) {
+						if($key1 == 'vtiger_activity:time_start:Emails_Time_Start:time_start:T') {
+							unset($this->sec_module_columnslist[$module][$key][$key1]);
 						}
 					}
 				}
@@ -587,6 +610,7 @@ class Reports extends CRMEntity{
 		global $current_user;
 
 		if(is_string($block)) $block = explode(",", $block);
+		$skipTalbes = array('vtiger_emaildetails','vtiger_attachments');
 
 		$tabid = getTabid($module);
 		if ($module == 'Calendar') {
@@ -598,7 +622,7 @@ class Reports extends CRMEntity{
 		//Security Check
 		if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] ==0)
 		{
-			$sql = "select * from vtiger_field where vtiger_field.tabid in (". generateQuestionMarks($tabid) .") and vtiger_field.block in (". generateQuestionMarks($block) .") and vtiger_field.displaytype in (1,2,3) and vtiger_field.presence in (0,2) ";
+			$sql = "select * from vtiger_field where vtiger_field.tabid in (". generateQuestionMarks($tabid) .") and vtiger_field.block in (". generateQuestionMarks($block) .") and vtiger_field.displaytype in (1,2,3) and vtiger_field.presence in (0,2) AND tablename NOT IN (".generateQuestionMarks($skipTalbes).") ";
 
 			//fix for Ticket #4016
 			if($module == "Calendar")
@@ -615,6 +639,7 @@ class Reports extends CRMEntity{
 				$sql .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
 				array_push($params, $profileList);
 			}
+			$sql .= ' and tablename NOT IN ('.generateQuestionMarks($skipTalbes).') ';
 
 			//fix for Ticket #4016
 			if($module == "Calendar")
@@ -622,6 +647,7 @@ class Reports extends CRMEntity{
 			else
 				$sql.=" group by vtiger_field.fieldid order by sequence";
 		}
+		array_push($params, $skipTalbes);
 
 		$result = $adb->pquery($sql, $params);
 		$noofrows = $adb->num_rows($result);
@@ -634,6 +660,7 @@ class Reports extends CRMEntity{
 			$uitype = $adb->query_result($result,$i,"uitype");
 			$fieldtype = explode("~",$fieldtype);
 			$fieldtypeofdata = $fieldtype[0];
+			$blockid = $adb->query_result($result, $i, "block");
 
 			//Here we Changing the displaytype of the field. So that its criteria will be displayed correctly in Reports Advance Filter.
 			$fieldtypeofdata=ChangeTypeOfData_Filter($fieldtablename,$fieldcolname,$fieldtypeofdata);
@@ -658,6 +685,10 @@ class Reports extends CRMEntity{
 			}
 
 			$fieldlabel = $adb->query_result($result,$i,"fieldlabel");
+			if ($module == 'Emails' and $fieldlabel == 'Date & Time Sent') {
+				$fieldlabel = 'Date Sent';
+				$fieldtypeofdata = 'D';
+			}
 			$fieldlabel1 = str_replace(" ","_",$fieldlabel);
 			$optionvalue = $fieldtablename.":".$fieldcolname.":".$module."_".$fieldlabel1.":".$fieldname.":".$fieldtypeofdata;
 			$this->adv_rel_fields[$fieldtypeofdata][] = '$'.$module.'#'.$fieldname.'$'."::".getTranslatedString($module,$module)." ".getTranslatedString($fieldlabel,$module);

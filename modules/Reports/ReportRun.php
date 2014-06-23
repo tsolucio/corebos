@@ -1617,7 +1617,24 @@ class ReportRun extends CRMEntity
 						getNonAdminAccessControlQuery($this->primarymodule,$current_user)."
 				WHERE vtiger_crmentity.deleted=0 and (vtiger_activity.activitytype != 'Emails')";
 		}
-
+		else if($module == "Emails") {
+			$query = "FROM vtiger_activity
+			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_activity.activityid AND vtiger_activity.activitytype = 'Emails'";
+		
+			$query .= " LEFT JOIN vtiger_email_track ON vtiger_email_track.mailid = vtiger_activity.activityid";
+			$query .= " LEFT JOIN vtiger_emaildetails ON vtiger_emaildetails.emailid=vtiger_activity.activityid";
+				
+			// TODO optimize inclusion of these tables
+			$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
+			$query .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
+		
+			$query .= " LEFT JOIN vtiger_users AS vtiger_lastModifiedBy".$module." ON vtiger_lastModifiedBy".$module.".id = vtiger_crmentity.modifiedby";
+		
+			$query .= " ".$this->getRelatedModulesQuery($module,$this->secondarymodule).
+			getNonAdminAccessControlQuery($this->primarymodule,$current_user).
+			" WHERE vtiger_crmentity.deleted = 0";
+		}
+		
 		else if($module == "Quotes")
 		{
 			$query = "from vtiger_quotes

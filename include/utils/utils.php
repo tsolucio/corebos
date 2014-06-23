@@ -4893,6 +4893,26 @@ function str_rsplit($string, $splitLength) {
 	return array_reverse($chunks);
 }
 
+//Function returns Email related Modules
+function getEmailRelatedModules() {
+	global $current_user;
+	$handler = vtws_getModuleHandlerFromName('Emails',$current_user);
+	$meta = $handler->getMeta();
+	$moduleFields = $meta->getModuleFields();
+	$fieldModel = $moduleFields['parent_id'];
+	$relatedModules = $fieldModel->getReferenceList();
+	foreach($relatedModules as $key=>$value) {
+		if($value == 'Users') {
+			unset($relatedModules[$key]);
+		}
+	}
+	return $relatedModules;
+}
+
+function getInventoryModules() {
+	return array('Invoice','Quotes','PurchaseOrder','SalesOrder');
+}
+
 /**
  * Function to get the list of Contacts related to an activity
  * @param Integer $activityId

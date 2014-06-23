@@ -28,4 +28,11 @@
 	<classname>departmentfieldlimit</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Email Reports</description>
+	<filename>build/changeSets/EmailReports.php</filename>
+	<classname>EmailReports</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
 </updatesChangeLog>
