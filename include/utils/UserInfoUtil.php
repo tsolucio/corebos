@@ -4379,7 +4379,7 @@ function getPermittedModuleIdList() {
 }
 
 /** Function to recalculate the Sharing Rules for all the vtiger_users
-  * This function will recalculate all the sharing rules for all the vtiger_users in the Organization and will write them in flat vtiger_files
+  * This function will recalculate all the sharing rules for all the users in the Organization and will write them in flat files
   *
  */
 function RecalculateSharingRules()

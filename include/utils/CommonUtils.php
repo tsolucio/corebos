@@ -2075,7 +2075,7 @@ function decideFilePath() {
 }
 
 /**
- * 	This function is used to get the Path in where we store the vtiger_files based on the module.
+ * 	This function is used to get the Path in where we store the files based on the module.
  * 	@param string $module   - module name
  * 	return string $storage_path - path inwhere the file will be uploaded (also where it was stored) will be return based on the module
  */
@@ -2098,7 +2098,7 @@ function getModuleFileStoragePath($module) {
 
 /**
  * 	This function is used to check whether the attached file is a image file or not
- * 	@param string $file_details  - vtiger_files array which contains all the uploaded file details
+ * 	@param string $file_details  - files array which contains all the uploaded file details
  * 	return string $save_image - true or false. if the image can be uploaded then true will return otherwise false.
  */
 function validateImageFile($file_details) {

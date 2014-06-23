@@ -2957,7 +2957,7 @@ function getRelatedToEntity($module, $list_result, $rset) {
  * Returns an string value
  */
 
-//used in home page listTop vtiger_files
+//used in home page listTop files
 function getRelatedTo($module, $list_result, $rset) {
 	global $adb, $log, $app_strings;
 	$tabname = getParentTab();

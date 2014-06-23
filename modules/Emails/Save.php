@@ -34,11 +34,11 @@ if(isset($_REQUEST['server_check']) && $_REQUEST['server_check'] == 'true')
 	die;	
 }
 
-//Added on 09-11-2005 to avoid loading the webmail vtiger_files in Email process
+//Added on 09-11-2005 to avoid loading the webmail files in Email process
 if($_REQUEST['smodule'] != '')
 {
 	define('SM_PATH','modules/squirrelmail-1.4.4/');
-	/* SquirrelMail required vtiger_files. */
+	/* SquirrelMail required files. */
 	require_once(SM_PATH . 'functions/strings.php');
 	require_once(SM_PATH . 'functions/imap_general.php');
 	require_once(SM_PATH . 'functions/imap_messages.php');

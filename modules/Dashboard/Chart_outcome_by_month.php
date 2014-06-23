@@ -105,7 +105,7 @@ else {
 	$ids = array_keys($ids);
 }
 
-//create unique prefix based on selected vtiger_users for image vtiger_files
+//create unique prefix based on selected users for image files
 $id_hash = '';
 if (isset($ids)) {
 	sort($ids);
