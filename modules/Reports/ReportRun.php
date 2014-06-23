@@ -3004,9 +3004,9 @@ class ReportRun extends CRMEntity
 
 			foreach($farr_val as $skkey=>$skvalue) {
 				if($skvalue[count($arr_val)-1] == 1) {
-					$col_width[] = ($skvalue[count($arr_val)-1] * 50);
+					$col_width[] = ($skvalue[count($arr_val)-1] * 35);
 				} else {
-					$col_width[] = ($skvalue[count($arr_val)-1] * 10) + 10 ;
+					$col_width[] = ($skvalue[count($arr_val)-1] * 6) + 10 ;
 				}
 			}
 			$count = 0;
@@ -3036,7 +3036,10 @@ class ReportRun extends CRMEntity
 		if($columnlength <= 420 ) {
 			$pdf = new TCPDF('P','mm','A5',true);
 
-		} elseif($columnlength >= 421 && $columnlength <= 1120) {
+		} elseif($columnlength >= 421 && $columnlength <= 800) {
+			$pdf = new TCPDF('L','mm','A4',true);
+
+		} elseif($columnlength >= 801 && $columnlength <= 1120) {
 			$pdf = new TCPDF('L','mm','A3',true);
 
 		}elseif($columnlength >=1121 && $columnlength <= 1600) {
