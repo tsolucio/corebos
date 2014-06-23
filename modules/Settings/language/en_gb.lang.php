@@ -561,8 +561,6 @@ $mod_strings = array(
 	'LBL_RECORD_NOEXIST' => 'Record not present',
 	'LBL_ENTER_PROFILE' => 'Enter Profile Name',
 	'LBL_DISABLE' => 'Disable',
-	'Language' => 'Language',
-	'AlwaysActive' => 'always active',
 	'LBL_PROXY' => 'proxy',
 	'LBL_FIELDS_TO_BE_SHOWN' => 'Fields to be shown',
 	'SPECIFY_FILE_TO_MERGE' => 'Please Specify a File to Merge',
@@ -735,7 +733,7 @@ $mod_strings = array(
 	'LBL_SELECT_FIELD_TO_MOVE' => 'Select Fields to move',
 	'VTLIB_LBL_SELECT_PACKAGE_FILE' => 'Select the Package File',
 	'VTLIB_LBL_FILE_LOCATION' => 'File location:',
-	'VTLIB_LBL_PACKAGE_FILE_HELP' => 'application module is packaged as a zip file.',
+	'VTLIB_LBL_PACKAGE_FILE_HELP' => 'vtiger CRM module is packaged as a zip file.',
 	'VTLIB_LBL_IMPORT_FAILURE' => 'Import Failure',
 	'VTLIB_LBL_INVALID_FILE' => 'Invalid file',
 	'VTLIB_LBL_INVALID_IMPORT_TRY_AGAIN' => 'provided for module import! Try again.',
@@ -839,5 +837,8 @@ $mod_strings = array(
 	'LBL_ALL_MODULES' => 'All Modules',
 	'LBL_SELECTED_MODULES' => 'Selected Modules',
 	'LBL_CRM_SETTINGS' => 'CRM Settings',
+        'LBL_PARAMETRIZE' => 'Personalizza Login Logo',
+        'LBL_PARAMETRIZE_DESCRIPTION' => 'Personalize Login Logo',
+        'LBL_LOGO_DETAILS' => 'Logo Details',
 );
 ?>

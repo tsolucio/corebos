@@ -3321,4 +3321,16 @@ function getReturnPath($host, $from_email) {
 	}
 	return $returnpath;
 }
+
+function fetch_logo()
+{
+	global $log,$adb;
+        $logo_arr=array();
+        $sql = "select logo_login,logo_top from vtiger_parametrize ";
+        $result = $adb->pquery($sql, array());
+        $logo_arr[0]=  $adb->query_result($result,0,"logo_login");
+        $logo_arr[1]=  $adb->query_result($result,0,"logo_top");
+
+	return $logo_arr;
+}
 ?>

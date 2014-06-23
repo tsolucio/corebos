@@ -87,7 +87,7 @@
 
 <TABLE border=0 cellspacing=0 cellpadding=0 width=100% class="small">
 	<tr>
-		<td valign=top align=left><img src="test/logo/{$LOGO}" alt="{$COMPANY_DETAILS.name}" title="{$COMPANY_DETAILS.name}" border=0 style="width: 15em;height: 4.2em;"></td>
+		<td valign=top align=left><img  src="{php} $logo_login=fetch_logo(); echo 'themes/login/images/'.$logo_login[1];{/php}" alt="{$COMPANY_DETAILS.name}" title="{$COMPANY_DETAILS.name}" border=0 style="width: 15em;height: 4.2em;"></td>
 		<td align="center" valign=bottom  >
 			<div align ="center" width ="50%" border='3' style="padding:5px;">
 				<table border=0 cellspacing=0 cellpadding=0 id="search" align="center">
