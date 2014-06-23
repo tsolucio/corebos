@@ -166,6 +166,11 @@ class cbupdaterWorker {
 		}
 	}
 	
+	function deleteWorkflow($wfid) {
+		$this->ExecuteQuery("DELETE FROM com_vtiger_workflowtasks WHERE workflow_id=?",array($wfid));
+		$this->ExecuteQuery("DELETE FROM com_vtiger_workflows WHERE workflow_id=?", array($wfid));
+	}
+
 	function installManifestModule($module) {
 		$package = new Vtiger_Package();
 		ob_start();

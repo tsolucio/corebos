@@ -80,8 +80,7 @@ class PotentialForecastAmount extends cbupdaterWorker {
 			$wfrs = $adb->query("SELECT workflow_id FROM com_vtiger_workflows WHERE summary='Calculate or Update forecast amount'");
 			if ($wfrs and $adb->num_rows($wfrs)==1) {
 				$wfid = $adb->query_result($wfrs,0,0);
-				$workflowManager = new VTWorkflowManager($adb);
-				$workflowManager->delete($wfid);
+				$this->deleteWorkflow($wfid);
 				$this->sendMsg('Workflow deleted!');
 			}
 			$this->sendMsg('Changeset '.get_class($this).' undone!');
