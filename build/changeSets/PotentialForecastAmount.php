@@ -82,7 +82,7 @@ class PotentialForecastAmount extends cbupdaterWorker {
 				$wfid = $adb->query_result($wfrs,0,0);
 				$workflowManager = new VTWorkflowManager($adb);
 				$workflowManager->delete($wfid);
-				$this->sendMsg('Workfolw deleted!');
+				$this->sendMsg('Workflow deleted!');
 			}
 			$this->sendMsg('Changeset '.get_class($this).' undone!');
 			$this->markUndone();
