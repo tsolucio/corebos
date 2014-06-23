@@ -1022,13 +1022,25 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			}
 
 		}
-		$editview_label[] = array($app_strings['COMBO_CONTACTS'],
-                                        $app_strings['COMBO_ACCOUNTS']
-                                        );
-                $editview_label[] = array($contact_selected,
-                                        $account_selected
-                                        );
-                $editview_label[] = array("Contacts","Accounts");
+		
+		$editview_label[0] = array();
+	        $editview_label[1] = array();
+	        $editview_label[2] = array();
+	                
+		if(vtlib_isModuleActive('Accounts'))
+	        {
+	            array_push($editview_label[0],$app_strings['COMBO_ACCOUNTS']);
+	            array_push($editview_label[1],$account_selected);
+	            array_push($editview_label[2],"Accounts");
+	        }
+	        
+	        if(vtlib_isModuleActive('Contacts'))
+	        {
+	            array_push($editview_label[0],$app_strings['COMBO_CONTACTS']);
+	            array_push($editview_label[1],$contact_selected);
+	            array_push($editview_label[2],"Contacts");
+	        }
+	        
 		$fieldvalue[] = $parent_name;
 		$fieldvalue[] = $value;
 	}
