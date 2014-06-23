@@ -35,4 +35,11 @@
 	<classname>EmailReports</classname>
 	<systemupdate>false</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Potential Forecast field and workflow</description>
+	<filename>build/changeSets/PotentialForecastAmount.php</filename>
+	<classname>PotentialForecastAmount</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
 </updatesChangeLog>
