@@ -21,6 +21,7 @@ class cleandatabase_140 extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
+			global $adb;
 			$droptable = array(
 				'vtiger_accountdepstatus', 'vtiger_accountownership', 'vtiger_accountregion', 'vtiger_activsubtype',
 				'vtiger_businesstype', 'vtiger_competitor', 'vtiger_dealintimation', 'vtiger_downloadpurpose',
@@ -148,7 +149,6 @@ class cleandatabase_140 extends cbupdaterWorker {
 			$this->ExecuteQuery('ALTER TABLE `vtiger_homestuff` DROP INDEX `stuff_stuffid_idx`');
 			$this->ExecuteQuery('ALTER TABLE `vtiger_inventorysubproductrel` ADD INDEX `inventorysubproductrel_productid_idx` ( `productid` )');
 			$this->ExecuteQuery('ALTER TABLE `vtiger_invoice` DROP INDEX `invoice_purchaseorderid_idx`, ADD INDEX `invoice_contactid_idx` ( `contactid` ), ADD INDEX `invoice_accountid_idx` ( `accountid` )');
-			$this->ExecuteQuery('ALTER TABLE `vtiger_invoice_recurring_info` ADD INDEX `invoice_recurring_info_salesorderid`  ( `salesorderid` )');
 			$this->ExecuteQuery('ALTER TABLE `vtiger_mail_accounts` ADD INDEX `userid_idx` ( `user_id` )');
 			$this->ExecuteQuery('ALTER TABLE `vtiger_modcomments` ADD INDEX `modcomments_related_to_idx` ( `related_to` ), ADD INDEX `modcomments_modcommentsid_idx` ( `modcommentsid` )');
 			$this->ExecuteQuery('ALTER TABLE `vtiger_modtracker_basic` ADD INDEX `modtracker_basic_crmid_idx` ( `crmid` ) , ADD INDEX `modtracker_basic_whodid_idx` ( `whodid` )');
