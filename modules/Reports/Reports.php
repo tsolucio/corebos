@@ -42,7 +42,7 @@ $adv_filter_options = array("e"=>"equals",
 //$report_modules = Array('Faq','Rss','Portal','Recyclebin','Emails','Reports','Dashboard','Home','Activities'
 	//	       );
 
-$old_related_modules = Array('Accounts'=>Array('Potentials','Contacts','Products','Quotes','Invoice'),
+$old_related_modules = Array('Accounts'=>Array('Potentials','Contacts','Products','Quotes','Invoice','SalesOrder'),
 			 'Contacts'=>Array('Accounts','Potentials','Quotes','PurchaseOrder'),
 			 'Potentials'=>Array('Accounts','Contacts','Quotes'),
 			 'Calendar'=>Array('Leads','Accounts','Contacts','Potentials'),
@@ -50,7 +50,8 @@ $old_related_modules = Array('Accounts'=>Array('Potentials','Contacts','Products
 			 'HelpDesk'=>Array('Products'),
 			 'Quotes'=>Array('Accounts','Contacts','Potentials'),
 			 'PurchaseOrder'=>Array('Contacts'),
-			 'Invoice'=>Array('Accounts'),
+			 'Invoice'=>Array('Accounts','Contacts'),
+			 'SalesOrder'=>Array('Accounts','Contacts','Potentials','Quotes'),
 			 'Campaigns'=>Array('Products'),
 			);
 
