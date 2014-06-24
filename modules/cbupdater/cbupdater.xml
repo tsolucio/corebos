@@ -42,4 +42,11 @@
 	<classname>PotentialForecastAmount</classname>
 	<systemupdate>false</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Clean database of unused fields and apply SQL optimizations: #140</description>
+	<filename>build/changeSets/cleanoptimizedatabase_140.php</filename>
+	<classname>cleandatabase_140</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
