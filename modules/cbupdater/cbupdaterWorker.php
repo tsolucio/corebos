@@ -128,15 +128,15 @@ class cbupdaterWorker {
 		return ($this->updError or empty($this->cbupdid));
 	}
 	
-	function markApplied() {
-		if ($this->hasError()) $this->sendError();
+	function markApplied($stoponerror=true) {
+		if ($this->hasError() and $stoponerror) $this->sendError();
 		global $adb,$log;
 		$adb->pquery('update vtiger_cbupdater set execstate=?,execdate=CURDATE() where cbupdaterid=?', array('Executed',$this->cbupdid));
 		$this->execstate = 'Executed';
 	}
 	
-	function markUndone() {
-		if ($this->hasError()) $this->sendError();
+	function markUndone($stoponerror=true) {
+		if ($this->hasError() and $stoponerror) $this->sendError();
 		global $adb,$log;
 		$adb->pquery('update vtiger_cbupdater set execstate=?,execdate=NULL where cbupdaterid=?', array('Pending',$this->cbupdid));
 		$this->execstate = 'Pending';
@@ -164,6 +164,7 @@ class cbupdaterWorker {
 		<td width="70%">'.$query.'</td>
 		</tr>';
 			$this->failure_query_array[$this->failure_query_count++] = $query;
+			$this->updError = true;
 			$log->debug("Query Failed ==> $query \n Error is ==> [".$adb->database->ErrorNo()."]".$adb->database->ErrorMsg());
 		}
 	}
@@ -196,6 +197,7 @@ class cbupdaterWorker {
 
 	function sendMsgError($msg) {
 		echo '<tr width="100%"><td colspan=3><span style="color:red">'.$msg.'</span></td></tr>';
+		$this->updError = true;
 	}
 	
 	function sendError() {

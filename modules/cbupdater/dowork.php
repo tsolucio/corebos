@@ -79,7 +79,7 @@ if (!empty($ids)) {
 						} else {
 							$updobj->applyChange();
 						}
-						$totalopsok++;
+						if (!$updobj->updError) $totalopsok++;
 					} catch (Exception $e) {
 						$error = true;
 						$errmsg = $e->getMessage();
