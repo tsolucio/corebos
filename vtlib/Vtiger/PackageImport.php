@@ -379,9 +379,9 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 	 */
 	function importManifest($manifestfile) {
 		global $adb,$log;
-		if (!file_exists($manifestfile))
-			$manifestfile .= $manifestfile.'/manifest.xml';  // in case they just give us the path
-		if (!file_exists($manifestfile))
+		if (!is_file($manifestfile))
+			$manifestfile .= '/manifest.xml';  // in case they just give us the path
+		if (!is_file($manifestfile))
 			return false;
 		$this->_modulexml = simplexml_load_file($manifestfile);
 		$module = (string) $this->_modulexml->name;

@@ -142,7 +142,7 @@ function vtlib_moduleAlwaysActive() {
 /**
  * Toggle the module (enable/disable)
  */
-function vtlib_toggleModuleAccess($module, $enable_disable) {
+function vtlib_toggleModuleAccess($module, $enable_disable, $noevents = false) {
 	global $adb, $__cache_module_activeinfo;
 
 	include_once('vtlib/Vtiger/Module.php');
@@ -171,7 +171,9 @@ function vtlib_toggleModuleAccess($module, $enable_disable) {
 		vtlib_RecreateUserPrivilegeFiles();
 	}
 
-	Vtiger_Module::fireEvent($module, $event_type);
+	if (!$noevents) {
+		Vtiger_Module::fireEvent($module, $event_type);
+	}
 }
 
 /**
