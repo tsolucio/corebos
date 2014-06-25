@@ -144,10 +144,8 @@ class Vtiger_PackageExport {
 
 	static function packageFromFilesystem($moduleName, $mandatory=false, $directDownload=false) {
 		// first we check for the files
-		$bdir = "build/$moduleName";
-		$wehavefiles = is_dir($bdir);  // check for directory
-		$wehavefiles = $wehavefiles and file_exists("$bdir/manifest.xml");  // check for manifest
-		$wehavefiles = $wehavefiles and is_dir("modules/$moduleName");  // check for module directory
+		$wehavefiles = is_dir("modules/$moduleName");  // check for module directory
+		$wehavefiles = $wehavefiles and file_exists("modules/$moduleName/manifest.xml");  // check for manifest
 		$wehavefiles = $wehavefiles and is_dir("modules/$moduleName/language");  // check for language directory
 		if ($wehavefiles) {
 			// Export as Zip
@@ -156,7 +154,7 @@ class Vtiger_PackageExport {
 			if (file_exists($zipfilename)) @unlink($zipfilename);
 			$zip = new Vtiger_Zip($zipfilename);
 			// Add manifest file
-			$zip->addFile("$bdir/manifest.xml",'manifest.xml');
+			$zip->addFile("modules/$moduleName/manifest.xml",'manifest.xml');
 			// Copy module directory
 			$zip->copyDirectoryFromDisk("modules/$moduleName");
 			// Copy templates directory of the module (if any)
@@ -176,17 +174,18 @@ class Vtiger_PackageExport {
 
 	static function languageFromFilesystem($languageCode, $languageName, $directDownload=false) {
 		// first we check for the files
-		$bdir = "build/$languageName";
-		$wehavefiles = is_dir($bdir);  // check for directory
-		$wehavefiles = $wehavefiles and file_exists("$bdir/manifest.xml");  // check for manifest
+		$wehavefiles = file_exists("include/language/$languageCode.manifest.xml");  // check for manifest
 		if ($wehavefiles) {
 			// Export as Zip
+			if (file_exists('packages/optional/manifest.xml'))
+				@unlink('packages/optional/manifest.xml');
+			@copy("include/language/$languageCode.manifest.xml", 'packages/optional/manifest.xml');
 			$mpkg = 'packages/optional/'.$languageName;
 			$zipfilename = $mpkg.'.zip';
 			if (file_exists($zipfilename)) @unlink($zipfilename);
 			$zip = new Vtiger_Zip($zipfilename);
 			// Add manifest file
-			$zip->copyFileFromDisk($bdir,'','manifest.xml');
+			$zip->copyFileFromDisk('packages/optional/','','manifest.xml');
 			// Add calendar files
 			$zip->copyFileFromDisk('jscalendar/','jscalendar/','calendar-setup.js');
 			$zip->copyFileFromDisk('jscalendar/lang/','jscalendar/lang/','calendar-'.substr($languageCode, 0, 2).'.js');
@@ -202,6 +201,7 @@ class Vtiger_PackageExport {
 			if($directDownload) {
 				$zip->forceDownload($mpkg.'.zip');
 			}
+			@unlink('packages/optional/manifest.xml');
 		} else {
 			echo "ERROR: One or more files necessary to create package are missing";
 		}

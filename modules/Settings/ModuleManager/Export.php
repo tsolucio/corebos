@@ -16,15 +16,17 @@ require_once("vtlib/Vtiger/Module.php");
 $package = new Vtiger_Package();
 $module = Vtiger_Module::getInstance($module_export);
 if ($module) {
+	if (isset($_REQUEST['manifestfs']))
+		Vtiger_Package::packageFromFilesystem($module_export,false,true);
+	else
 	$package->export($module,'',"$module_export.zip",true);
 } else {
 	global $adb,$vtiger_current_version;
 	$lngrs = $adb->pquery('select * from vtiger_language where prefix=?',array($module_export));
 	if ($lngrs and $adb->num_rows($lngrs)==1) { // we have a language file
 		$lnginfo = $adb->fetch_array($lngrs);
-		$lngxml = 'build/'.$lnginfo['name'].'/manifest.xml';
+		$lngxml = 'include/language/'.$lnginfo['prefix'].'.manifest.xml';
 		if (!file_exists($lngxml)) {
-			@mkdir('build/'.$lnginfo['name']);
 			$mnf = fopen($lngxml, 'w');
 			fwrite($mnf, "<?xml version='1.0'?>\n");
 			fwrite($mnf, "<module>\n");

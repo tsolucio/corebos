@@ -282,7 +282,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 			$unzip->unzipAllEx( ".",
 				Array(
 					// Include only file/folders that need to be extracted
-					'include' => Array('templates', "modules/$module", 'cron'),
+					'include' => Array('templates', "modules/$module", 'cron','manifest.xml'),
 					//'exclude' => Array('manifest.xml')
 					// NOTE: If excludes is not given then by those not mentioned in include are ignored.
 				),
@@ -296,6 +296,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 			);
 
 
+			@rename('manifest.xml',"modules/$module/manifest.xml");
 			if($unzip) $unzip->close();
 		}
 		return $module;
