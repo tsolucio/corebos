@@ -513,33 +513,63 @@ class Vtiger_PackageExport {
 				$this->openNode('field');
 				$this->outputNode($cvfieldname, 'fieldname');
 				$this->outputNode($cvcolumnindex,'columnindex');
-
-				$cvcolumnruleres = $adb->pquery("SELECT * FROM vtiger_cvadvfilter WHERE cvid=? AND columnname=?",
-					Array($cvid, $cvcolumnname));
-				$cvcolumnrulecount = $adb->num_rows($cvcolumnruleres);
-
-				if($cvcolumnrulecount) {
-					$this->openNode('rules');
-					for($rindex = 0; $rindex < $cvcolumnrulecount; ++$rindex) {
-						$cvcolumnruleindex = $adb->query_result($cvcolumnruleres, $rindex, 'columnindex');
-						$cvcolumnrulecomp  = $adb->query_result($cvcolumnruleres, $rindex, 'comparator');
-						$cvcolumnrulevalue = $adb->query_result($cvcolumnruleres, $rindex, 'value');
-						$cvcolumnrulecomp  = Vtiger_Filter::translateComparator($cvcolumnrulecomp, true);
-
-						$this->openNode('rule');
-						$this->outputNode($cvcolumnruleindex, 'columnindex');
-						$this->outputNode($cvcolumnrulecomp, 'comparator');
-						$this->outputNode($cvcolumnrulevalue, 'value');
-						$this->closeNode('rule');
-
-					}
-					$this->closeNode('rules');
-				}
-
 				$this->closeNode('field');
 			}
 			$this->closeNode('fields');
-
+			
+			$cvcolumnruleres = $adb->pquery("SELECT * FROM vtiger_cvadvfilter WHERE cvid=?",
+					Array($cvid));
+			$cvcolumnrulecount = $adb->num_rows($cvcolumnruleres);
+			
+			if($cvcolumnrulecount) {
+				$this->openNode('rules');
+				for($rindex = 0; $rindex < $cvcolumnrulecount; ++$rindex) {
+					$cvcolumnruleindex = $adb->query_result($cvcolumnruleres, $rindex, 'columnindex');
+					
+					$cvcolumnrulename = $adb->query_result($cvcolumnruleres, $rindex, 'columnname');
+					$cvcolumnnames= explode(':', $cvcolumnrulename);
+					$cvfieldname = $cvcolumnnames[2];
+					
+					$cvcolumnrulecomp  = $adb->query_result($cvcolumnruleres, $rindex, 'comparator');
+					$cvcolumnrulevalue = $adb->query_result($cvcolumnruleres, $rindex, 'value');
+					$cvcolumnrulecomp  = Vtiger_Filter::translateComparator($cvcolumnrulecomp, true);
+					
+					$cvcolumnrulegroupid = $adb->query_result($cvcolumnruleres, $rindex, 'groupid');
+					$cvcolumnrulecolumn_condition = $adb->query_result($cvcolumnruleres, $rindex, 'column_condition');
+			
+					$this->openNode('rule');
+					$this->outputNode($cvcolumnruleindex, 'columnindex');
+					$this->outputNode($cvfieldname, 'fieldname');
+					$this->outputNode($cvcolumnrulecomp, 'comparator');
+					$this->outputNode($cvcolumnrulevalue, 'value');
+					$this->outputNode($cvcolumnrulegroupid, 'groupid');
+					$this->outputNode($cvcolumnrulecolumn_condition, 'column_condition');
+					$this->closeNode('rule');
+			
+				}
+				$this->closeNode('rules');
+			}
+			$cvcolumngroups = $adb->pquery("SELECT * FROM vtiger_cvadvfilter_grouping WHERE cvid=?",
+					Array($cvid));
+			$cvcolumngroupcount = $adb->num_rows($cvcolumngroups);
+				
+			if($cvcolumngroupcount) {
+				$this->openNode('groups');
+				for($rindex = 0; $rindex < $cvcolumngroupcount; ++$rindex) {
+					$cvcolumngroupid = $adb->query_result($cvcolumngroups, $rindex, 'groupid');
+					
+					$cvcolumngroup_condition = $adb->query_result($cvcolumngroups, $rindex, 'group_condition');
+					$cvcolumncondition_expression  = $adb->query_result($cvcolumngroups, $rindex, 'condition_expression');
+					
+					$this->openNode('group');
+					$this->outputNode($cvcolumngroupid, 'groupid');
+					$this->outputNode($cvcolumngroup_condition, 'group_condition');
+					$this->outputNode($cvcolumncondition_expression, 'condition_expression');
+					$this->closeNode('group');
+					
+				}
+				$this->closeNode('groups');
+			}
 			$this->closeNode('customview');
 		}
 		$this->closeNode('customviews');

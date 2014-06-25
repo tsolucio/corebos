@@ -638,11 +638,16 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 		foreach($customviewnode->fields->field as $fieldnode) {
 			$fieldInstance = $this->__GetModuleFieldFromCache($moduleInstance, $fieldnode->fieldname);
 			$filterInstance->addField($fieldInstance, $fieldnode->columnindex);
-
-			if(!empty($fieldnode->rules->rule)) {
-				foreach($fieldnode->rules->rule as $rulenode) {
-					$filterInstance->addRule($fieldInstance, $rulenode->comparator, $rulenode->value, $rulenode->columnindex);
-				}
+		}
+		if(!empty($customviewnode->rules->rule)) {
+			foreach($customviewnode->rules->rule as $rulenode) {
+				$fieldInstance = $this->__GetModuleFieldFromCache($moduleInstance, $rulenode->fieldname);
+				$filterInstance->addRule($fieldInstance, $rulenode->comparator, $rulenode->value, $rulenode->columnindex, $rulenode->groupid, $rulenode->column_condition);
+			}
+		}
+		if(!empty($customviewnode->groups->group)) {
+			foreach($customviewnode->groups->group as $groupnode) {
+				$filterInstance->addGroup($groupnode->groupid, $groupnode->group_condition, $groupnode->condition_expression);
 			}
 		}
 	}
