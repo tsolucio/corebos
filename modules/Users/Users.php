@@ -142,7 +142,7 @@ class Users extends CRMEntity {
         $this->DEFAULT_PASSWORD_CRYPT_TYPE = (version_compare(PHP_VERSION, '5.3.0') >= 0)?
                 'PHP5.3MD5': 'MD5';
         $this->column_fields = getColumnFields('Users');
-        $this->column_fields['ccurrency_name'] = '';
+        $this->column_fields['currency_name'] = '';
         $this->column_fields['currency_code'] = '';
         $this->column_fields['currency_symbol'] = '';
         $this->column_fields['conv_rate'] = '';

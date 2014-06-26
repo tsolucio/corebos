@@ -194,7 +194,7 @@ $mod_strings = Array(
 //Added for 4.2 Release -- CustomView
 'Name'=>'Nome',
 'LBL_ALL'=>'Todos',
-'LBL_MAXIMUM_LIMIT_ERROR'=>'Desculpe, o arquivo transferido excedeu limite máximo do vtiger_filesize. Por favor, tente um arquivo menor que 800000 bytes',
+'LBL_MAXIMUM_LIMIT_ERROR'=>'Desculpe, o arquivo transferido excedeu limite máximo do file size. Por favor, tente um arquivo menor que 800000 bytes',
 'LBL_UPLOAD_ERROR'=>'Problemas na transferência do arquivo. Por favor tente novamente!',
 'LBL_IMAGE_ERROR'=>'O referido arquivo não é do tipo imagem(.gif/.jpg/.png)',
 'LBL_INVALID_IMAGE'=>'Arquivo inválido OU não possui dados',

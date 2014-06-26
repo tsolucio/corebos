@@ -375,8 +375,9 @@ function getTabid($module) {
 
 		if (file_exists('tabdata.php') && (filesize('tabdata.php') != 0)) {
 			include('tabdata.php');
+			if (!isset($tab_info_array[$module])) return null;
 			$tabid = $tab_info_array[$module];
-
+			
 			// Update information to cache for re-use
 			VTCacheUtils::updateTabidInfo($tabid, $module);
 		} else {
@@ -384,6 +385,7 @@ function getTabid($module) {
 			global $adb;
 			$sql = "select tabid from vtiger_tab where name=?";
 			$result = $adb->pquery($sql, array($module));
+			if (!$result or $adb->num_rows($result)==0) return null;
 			$tabid = $adb->query_result($result, 0, "tabid");
 
 			// Update information to cache for re-use
@@ -2073,7 +2075,7 @@ function decideFilePath() {
 }
 
 /**
- * 	This function is used to get the Path in where we store the vtiger_files based on the module.
+ * 	This function is used to get the Path in where we store the files based on the module.
  * 	@param string $module   - module name
  * 	return string $storage_path - path inwhere the file will be uploaded (also where it was stored) will be return based on the module
  */
@@ -2096,7 +2098,7 @@ function getModuleFileStoragePath($module) {
 
 /**
  * 	This function is used to check whether the attached file is a image file or not
- * 	@param string $file_details  - vtiger_files array which contains all the uploaded file details
+ * 	@param string $file_details  - files array which contains all the uploaded file details
  * 	return string $save_image - true or false. if the image can be uploaded then true will return otherwise false.
  */
 function validateImageFile($file_details) {
@@ -2317,7 +2319,7 @@ function getrecurringObjValue() {
 function getTranslatedString($str, $module = '') {
 	global $app_strings, $mod_strings, $log, $current_language;
 	$temp_mod_strings = ($module != '' ) ? return_module_language($current_language, $module) : $mod_strings;
-	$trans_str = ($temp_mod_strings[$str] != '') ? $temp_mod_strings[$str] : (($app_strings[$str] != '') ? $app_strings[$str] : $str);
+	$trans_str = (!empty($temp_mod_strings[$str]) ? $temp_mod_strings[$str] : (!empty($app_strings[$str]) ? $app_strings[$str] : $str));
 	$log->debug("function getTranslatedString($str) - translated to ($trans_str)");
 	return $trans_str;
 }

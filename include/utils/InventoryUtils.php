@@ -318,35 +318,29 @@ function getAllTaxes($available='all', $sh='',$mode='',$id='')
 		$inventory_tax_val_result=$adb->pquery("select * from $value_table where id=?",array($id));
 
 		//Finding which taxes are associated with this (SO,PO,Invoice,Quotes) and getting its taxid.
-		for($i=0;$i<$noofrows;$i++)
-		{
+			for ($i = 0; $i < $noofrows; $i++) {
 
 			$taxname=$adb->query_result($result,$i,'taxname');
 			$taxid=$adb->query_result($result,$i,'taxid');
 
 			$tax_val=$adb->query_result($inventory_tax_val_result,0,$taxname);
-			if($tax_val != '')
-			{
+				if ($tax_val != '') {
 				array_push($result_ids,$taxid);
 			}
 
 		}
 		//We are selecting taxes using that taxids. So It will get the tax even if the tax is disabled.
 		$where_ids='';
-		if (count($result_ids) > 0)
-		{
+			if (count($result_ids) > 0) {
 			$insert_str = str_repeat("?,", count($result_ids)-1);
 			$insert_str .= "?";
 			$where_ids="taxid in ($insert_str) or";
 		}
 
 		$res = $adb->pquery("select * from $tablename  where $where_ids  deleted=0 order by taxid",$result_ids);
-	}
-	else
-	{
+		} else {
 		//This where condition is added to get all products or only availble products
-		if($available != 'all' && $available == 'available')
-		{
+			if ($available != 'all' && $available == 'available') {
 			$where = " where $tablename.deleted=0";
 		}
 
@@ -355,8 +349,7 @@ function getAllTaxes($available='all', $sh='',$mode='',$id='')
 	}
 
 	$noofrows = $adb->num_rows($res);
-	for($i=0;$i<$noofrows;$i++)
-	{
+		for ($i = 0; $i < $noofrows; $i++) {
 		$taxtypes[$i]['taxid'] = $adb->query_result($res,$i,'taxid');
 		$taxtypes[$i]['taxname'] = $adb->query_result($res,$i,'taxname');
 		$taxtypes[$i]['taxlabel'] = $adb->query_result($res,$i,'taxlabel');
@@ -469,8 +462,7 @@ function updateInventoryProductRel($entity)
 
 	if(!empty($update_product_array)){
 		foreach($update_product_array as $id=>$seq){
-			foreach($seq as $seq=>$product_info)
-			{
+			foreach($seq as $seq=>$product_info) {
 				foreach($product_info as $key=>$index){
 					$updqtyinstk= getPrdQtyInStck($key);
 					$upd_qty = $updqtyinstk+$index;
@@ -518,11 +510,11 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 	//Added to get the convertid
 	if(isset($_REQUEST['convert_from']) && $_REQUEST['convert_from'] !='')
 	{
-		$id=$_REQUEST['return_id'];
+		$id=vtlib_purify($_REQUEST['return_id']); 
 	}
 	else if(isset($_REQUEST['duplicate_from']) && $_REQUEST['duplicate_from'] !='')
 	{
-		$id=$_REQUEST['duplicate_from'];
+		$id=vtlib_purify($_REQUEST['duplicate_from']); 
 	}
 
 	$ext_prod_arr = Array();
@@ -554,17 +546,17 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 		if($_REQUEST["deleted".$i] == 1)
 			continue;
 
-	    $prod_id = $_REQUEST['hdnProductId'.$i];
+	    $prod_id = vtlib_purify($_REQUEST['hdnProductId'.$i]); 
 		if(isset($_REQUEST['productDescription'.$i]))
-			$description = $_REQUEST['productDescription'.$i];
+			$description = vtlib_purify($_REQUEST['productDescription'.$i]); 
 		/*else{
 			$desc_duery = "select vtiger_crmentity.description AS product_description from vtiger_crmentity where vtiger_crmentity.crmid=?";
 			$desc_res = $adb->pquery($desc_duery,array($prod_id));
 			$description = $adb->query_result($desc_res,0,"product_description");
 		}	*/
-        $qty = $_REQUEST['qty'.$i];
-        $listprice = $_REQUEST['listPrice'.$i];
-		$comment = $_REQUEST['comment'.$i];
+		$qty = vtlib_purify($_REQUEST['qty'.$i]); 
+		$listprice = vtlib_purify($_REQUEST['listPrice'.$i]); 
+		$comment = vtlib_purify($_REQUEST['comment'.$i]); 
 
 		//we have to update the Product stock for PurchaseOrder if $update_prod_stock is true
 		if($module == 'PurchaseOrder' && $update_prod_stock == 'true')
@@ -630,7 +622,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 				$tax_val = $all_available_taxes[$tax_count]['percentage'];
 				$request_tax_name = $tax_name."_group_percentage";
 				if(isset($_REQUEST[$request_tax_name]))
-					$tax_val =$_REQUEST[$request_tax_name];
+					$tax_val =vtlib_purify($_REQUEST[$request_tax_name]); 
 				$updatequery .= " $tax_name = ?,";
 				array_push($updateparams,$tax_val);
 			}
@@ -646,7 +638,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 				$request_tax_name = $tax_name."_percentage".$i;
 
 				$updatequery .= " $tax_name = ?,";
-				array_push($updateparams, $_REQUEST[$request_tax_name]);
+				array_push($updateparams, vtlib_purify($_REQUEST[$request_tax_name]));
 			}
 				$updatequery = trim($updatequery,',')." where id=? and productid=? and lineitem_id = ?";
 				array_push($updateparams, $focus->id,$prod_id, $lineitem_id);
@@ -673,29 +665,29 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 	if($_REQUEST['discount_type_final'] == 'percentage')
 	{
 		$updatequery .= " discount_percent=?,";
-		array_push($updateparams, $_REQUEST['discount_percentage_final']);
+		array_push($updateparams, vtlib_purify($_REQUEST['discount_percentage_final']));
 	}
 	elseif($_REQUEST['discount_type_final'] == 'amount')
 	{
-		$discount_amount_final = $_REQUEST['discount_amount_final'];
+		$discount_amount_final = vtlib_purify($_REQUEST['discount_amount_final']);
 		$updatequery .= " discount_amount=?,";
 		array_push($updateparams, $discount_amount_final);
 	}
 
-	$shipping_handling_charge = $_REQUEST['shipping_handling_charge'];
+	$shipping_handling_charge = vtlib_purify($_REQUEST['shipping_handling_charge']);
 	$updatequery .= " s_h_amount=?,";
 	array_push($updateparams, $shipping_handling_charge);
 
 	//if the user gave - sign in adjustment then add with the value
 	$adjustmentType = '';
 	if($_REQUEST['adjustmentType'] == '-')
-		$adjustmentType = $_REQUEST['adjustmentType'];
+		$adjustmentType = vtlib_purify($_REQUEST['adjustmentType']); 
 
-	$adjustment = $_REQUEST['adjustment'];
+	$adjustment = vtlib_purify($_REQUEST['adjustment']); 
 	$updatequery .= " adjustment=?,";
 	array_push($updateparams, $adjustmentType.$adjustment);
 
-	$total = $_REQUEST['total'];
+	$total = vtlib_purify($_REQUEST['total']);
 	$updatequery .= " total=?";
 	array_push($updateparams, $total);
 
@@ -718,7 +710,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 		{
 			$sh_query_fields .= $sh_tax_details[$i]['taxname'].",";
 			$sh_query_values .= "?,";
-			array_push($sh_query_params, $_REQUEST[$tax_name]);
+			array_push($sh_query_params, vtlib_purify($_REQUEST[$tax_name])); 
 		}
 	}
 	$sh_query_fields = trim($sh_query_fields,',');
@@ -850,6 +842,8 @@ function getAllCurrencies($available='available') {
 		$currency_details[$i]['currencycode'] = $adb->query_result($res,$i,'currency_code');
 		$currency_details[$i]['currencysymbol'] = $adb->query_result($res,$i,'currency_symbol');
 		$currency_details[$i]['curid'] = $adb->query_result($res,$i,'id');
+		/* alias key added to be consistent with result of InventoryUtils::getInventoryCurrencyInfo */
+		$currency_details[$i]['currency_id'] = $adb->query_result($res,$i,'id');
 		$currency_details[$i]['conversionrate'] = $adb->query_result($res,$i,'conversion_rate');
 		$currency_details[$i]['curname'] = 'curname' . $adb->query_result($res,$i,'id');
 	}
@@ -1057,7 +1051,7 @@ function getPricesForProducts($currencyid, $product_ids, $module='Products') {
 		{
 			$product_id = $adb->query_result($result, $i, 'productid');
 			if(getFieldVisibilityPermission($module,$current_user->id,'unit_price') == '0') {
-				$actual_price = $adb->query_result($result, $i, 'actual_price');
+				$actual_price = (float)$adb->query_result($result, $i, 'actual_price');
 
 				if ($actual_price == null || $actual_price == '') {
 					$unit_price = $adb->query_result($result, $i, 'unit_price');

@@ -1,0 +1,12 @@
+<?xml version='1.0'?>
+<module>
+<name>CronTasks</name>
+<label>CronTasks</label>
+<parent></parent>
+<type>extension</type>
+<version>1.1</version>
+<dependencies>
+<vtiger_version>5.3.1</vtiger_version>
+<vtiger_max_version>5.*</vtiger_max_version>
+</dependencies>
+</module>

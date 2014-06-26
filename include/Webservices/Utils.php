@@ -853,16 +853,8 @@ function vtws_transferOwnership($ownerId, $newOwnerId, $delete=true) {
 		$db->pquery($sql, array($ownerId));
 	}
 
-	//updating created by in vtiger_lar
-	$sql = "update vtiger_lar set createdby=? where createdby=?";
-	$db->pquery($sql, array($newOwnerId, $ownerId));
-
 	//updating the vtiger_import_maps
 	$sql ="update vtiger_import_maps set assigned_user_id=? where assigned_user_id=?";
-	$db->pquery($sql, array($newOwnerId, $ownerId));
-
-	//update assigned_user_id in vtiger_files
-	$sql ="update vtiger_files set assigned_user_id=? where assigned_user_id=?";
 	$db->pquery($sql, array($newOwnerId, $ownerId));
 
 	if(Vtiger_Utils::CheckTable('vtiger_customerportal_prefs')) {

@@ -159,7 +159,7 @@ class Documents extends CRMEntity {
 
 	/**
 	 *      This function is used to add the vtiger_attachments. This will call the function uploadAndSaveFile which will upload the attachment into the server and save that attachment information in the database.
-	 *      @param int $id  - entity id to which the vtiger_files to be uploaded
+	 *      @param int $id  - entity id to which the files to be uploaded
 	 *      @param string $module  - the current module name
 	*/
 	function insertIntoAttachment($id,$module)

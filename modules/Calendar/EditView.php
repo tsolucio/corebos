@@ -30,7 +30,7 @@ require_once("modules/Emails/mail.php");
 include_once 'modules/Calendar/header.php';
 global $app_strings;
 global $mod_strings,$current_user;
-// Unimplemented until jscalendar language vtiger_files are fixed
+// Unimplemented until jscalendar language files are fixed
 
 $focus = CRMEntity::getInstance($currentModule);
 $smarty =  new vtigerCRM_Smarty();
@@ -233,7 +233,7 @@ $smarty->assign('CREATEMODE', vtlib_purify($_REQUEST['createmode']));
 $category = getParentTab();
 $smarty->assign("CATEGORY",$category);
 
-// Unimplemented until jscalendar language vtiger_files are fixed
+// Unimplemented until jscalendar language files are fixed
 $smarty->assign("CALENDAR_LANG", $app_strings['LBL_JSCALENDAR_LANG']);
 $smarty->assign("CALENDAR_DATEFORMAT", parse_calendardate($app_strings['NTC_DATE_FORMAT']));
 

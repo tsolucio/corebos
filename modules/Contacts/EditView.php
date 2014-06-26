@@ -138,7 +138,7 @@ $smarty->assign('CREATEMODE', vtlib_purify($_REQUEST['createmode']));
 if (isset($_REQUEST['activity_mode']) && $_REQUEST['activity_mode'] != '')
 	$smarty->assign("ACTIVITYMODE", vtlib_purify($_REQUEST['activity_mode']));
 
-// Unimplemented until jscalendar language vtiger_files are fixed
+// Unimplemented until jscalendar language files are fixed
 $smarty->assign("CALENDAR_LANG", $app_strings['LBL_JSCALENDAR_LANG']);
 $smarty->assign("CALENDAR_DATEFORMAT", parse_calendardate($app_strings['NTC_DATE_FORMAT']));
 

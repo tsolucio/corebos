@@ -884,7 +884,7 @@ $mod_strings = Array(
 'Invalid_file'=>'Invalid file OR',
 'File_has_no_data'=>'File has no data',
 'Sorry'=>'Sorry',
-'uploaded_file_exceeds_maximum_limit'=>'the uploaded file exceeds the maximum vtiger_filesize limit',
+'uploaded_file_exceeds_maximum_limit'=>'the uploaded file exceeds the maximum file size limit',
 'try_file_smaller'=>'Please try a file smaller than 800000 bytes',
 'Problems_in_upload'=>'Problems in file upload',
 'Please_try_again'=>'Please try again!',
@@ -993,7 +993,7 @@ $mod_strings = Array(
 
 // vtlib customization: Language Stings
 'VTLIB_LBL_MODULE_MANAGER'=>'Module Manager',
-'VTLIB_LBL_MODULE_MANAGER_DESCRIPTION'=>'Manage module behavior inside vtiger CRM',
+'VTLIB_LBL_MODULE_MANAGER_DESCRIPTION'=>'Manage module behavior',
 'VTLIB_LBL_MODULE_MANAGER_CUSTOMMOD'=>'Custom Modules',
 'VTLIB_LBL_MODULE_MANAGER_STANDARDMOD'=>'Standard Modules',
 'VTLIB_LBL_MODULE_MANAGER_NOMODULES'=>'No custom modules found! Create one or Import New ...',

@@ -42,11 +42,13 @@
 						</table>
 						<table class="listTable" id="mapTable" border="0" cellpadding="5" cellspacing="0" width="100%">
 							<tr>
-								<td rowspan="2" class="colHeader small" width="2%">#</td>
-								<td rowspan="2" class="colHeader small" width="15%">{$MOD.FieldLabel}</td>
+								<td class="colHeader small" width="2%"></td>
+								<td class="colHeader small" width="15%"></td>
 								<td colspan="3" class="colHeader small" valign="top"><div align="center">{$MOD.LBL_MAPPING_OTHER_MODULES}</div></td>
 							</tr>
 							<tr>
+								<td class="colHeader small" width="2%">#</td>
+								<td class="colHeader small" width="15%">{$MOD.FieldLabel}</td>
 								<td class="colHeader small" valign="top" width="23%">{$APP.Accounts}</td>
 								<td class="colHeader small" valign="top" width="23%">{$APP.Contacts}</td>
 								<td class="colHeader small" valign="top" width="24%">{$APP.Potentials}</td>

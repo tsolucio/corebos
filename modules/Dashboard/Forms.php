@@ -15,7 +15,7 @@
 /*********************************************************************************
  * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Dashboard/Forms.php,v 1.2 2004/10/06 09:02:05 jack Exp $
  * Description:  Contains a variety of utility functions used to display UI 
- * components such as form vtiger_headers and footers.  Intended to be modified on a per 
+ * components such as form headers and footers.  Intended to be modified on a per 
  * theme basis.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.

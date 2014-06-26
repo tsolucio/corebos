@@ -182,7 +182,7 @@ function render_graph($cache_file_name,$html_imagename,$cnt_val,$name_val,$width
 	{
 		//Getting the cached image
 		$imgMap_fp = fopen($cache_file_name.'.map', "rb");
-		$imgMap = fread($imgMap_fp, vtiger_filesize($cache_file_name.'.map'));
+		$imgMap = fread($imgMap_fp, filesize($cache_file_name.'.map'));
 		fclose($imgMap_fp);
 		$base_name_cache_file=basename($cache_file_name);
 		$ccc="cache/images/".$base_name_cache_file;

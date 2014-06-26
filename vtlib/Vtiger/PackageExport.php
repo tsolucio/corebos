@@ -144,10 +144,8 @@ class Vtiger_PackageExport {
 
 	static function packageFromFilesystem($moduleName, $mandatory=false, $directDownload=false) {
 		// first we check for the files
-		$bdir = "build/$moduleName";
-		$wehavefiles = is_dir($bdir);  // check for directory
-		$wehavefiles = $wehavefiles and file_exists("$bdir/manifest.xml");  // check for manifest
-		$wehavefiles = $wehavefiles and is_dir("modules/$moduleName");  // check for module directory
+		$wehavefiles = is_dir("modules/$moduleName");  // check for module directory
+		$wehavefiles = $wehavefiles and file_exists("modules/$moduleName/manifest.xml");  // check for manifest
 		$wehavefiles = $wehavefiles and is_dir("modules/$moduleName/language");  // check for language directory
 		if ($wehavefiles) {
 			// Export as Zip
@@ -156,7 +154,7 @@ class Vtiger_PackageExport {
 			if (file_exists($zipfilename)) @unlink($zipfilename);
 			$zip = new Vtiger_Zip($zipfilename);
 			// Add manifest file
-			$zip->addFile("$bdir/manifest.xml",'manifest.xml');
+			$zip->addFile("modules/$moduleName/manifest.xml",'manifest.xml');
 			// Copy module directory
 			$zip->copyDirectoryFromDisk("modules/$moduleName");
 			// Copy templates directory of the module (if any)
@@ -176,17 +174,18 @@ class Vtiger_PackageExport {
 
 	static function languageFromFilesystem($languageCode, $languageName, $directDownload=false) {
 		// first we check for the files
-		$bdir = "build/$languageName";
-		$wehavefiles = is_dir($bdir);  // check for directory
-		$wehavefiles = $wehavefiles and file_exists("$bdir/manifest.xml");  // check for manifest
+		$wehavefiles = file_exists("include/language/$languageCode.manifest.xml");  // check for manifest
 		if ($wehavefiles) {
 			// Export as Zip
+			if (file_exists('packages/optional/manifest.xml'))
+				@unlink('packages/optional/manifest.xml');
+			@copy("include/language/$languageCode.manifest.xml", 'packages/optional/manifest.xml');
 			$mpkg = 'packages/optional/'.$languageName;
 			$zipfilename = $mpkg.'.zip';
 			if (file_exists($zipfilename)) @unlink($zipfilename);
 			$zip = new Vtiger_Zip($zipfilename);
 			// Add manifest file
-			$zip->copyFileFromDisk($bdir,'','manifest.xml');
+			$zip->copyFileFromDisk('packages/optional/','','manifest.xml');
 			// Add calendar files
 			$zip->copyFileFromDisk('jscalendar/','jscalendar/','calendar-setup.js');
 			$zip->copyFileFromDisk('jscalendar/lang/','jscalendar/lang/','calendar-'.substr($languageCode, 0, 2).'.js');
@@ -202,6 +201,7 @@ class Vtiger_PackageExport {
 			if($directDownload) {
 				$zip->forceDownload($mpkg.'.zip');
 			}
+			@unlink('packages/optional/manifest.xml');
 		} else {
 			echo "ERROR: One or more files necessary to create package are missing";
 		}
@@ -513,33 +513,63 @@ class Vtiger_PackageExport {
 				$this->openNode('field');
 				$this->outputNode($cvfieldname, 'fieldname');
 				$this->outputNode($cvcolumnindex,'columnindex');
-
-				$cvcolumnruleres = $adb->pquery("SELECT * FROM vtiger_cvadvfilter WHERE cvid=? AND columnname=?",
-					Array($cvid, $cvcolumnname));
-				$cvcolumnrulecount = $adb->num_rows($cvcolumnruleres);
-
-				if($cvcolumnrulecount) {
-					$this->openNode('rules');
-					for($rindex = 0; $rindex < $cvcolumnrulecount; ++$rindex) {
-						$cvcolumnruleindex = $adb->query_result($cvcolumnruleres, $rindex, 'columnindex');
-						$cvcolumnrulecomp  = $adb->query_result($cvcolumnruleres, $rindex, 'comparator');
-						$cvcolumnrulevalue = $adb->query_result($cvcolumnruleres, $rindex, 'value');
-						$cvcolumnrulecomp  = Vtiger_Filter::translateComparator($cvcolumnrulecomp, true);
-
-						$this->openNode('rule');
-						$this->outputNode($cvcolumnruleindex, 'columnindex');
-						$this->outputNode($cvcolumnrulecomp, 'comparator');
-						$this->outputNode($cvcolumnrulevalue, 'value');
-						$this->closeNode('rule');
-
-					}
-					$this->closeNode('rules');
-				}
-
 				$this->closeNode('field');
 			}
 			$this->closeNode('fields');
-
+			
+			$cvcolumnruleres = $adb->pquery("SELECT * FROM vtiger_cvadvfilter WHERE cvid=?",
+					Array($cvid));
+			$cvcolumnrulecount = $adb->num_rows($cvcolumnruleres);
+			
+			if($cvcolumnrulecount) {
+				$this->openNode('rules');
+				for($rindex = 0; $rindex < $cvcolumnrulecount; ++$rindex) {
+					$cvcolumnruleindex = $adb->query_result($cvcolumnruleres, $rindex, 'columnindex');
+					
+					$cvcolumnrulename = $adb->query_result($cvcolumnruleres, $rindex, 'columnname');
+					$cvcolumnnames= explode(':', $cvcolumnrulename);
+					$cvfieldname = $cvcolumnnames[2];
+					
+					$cvcolumnrulecomp  = $adb->query_result($cvcolumnruleres, $rindex, 'comparator');
+					$cvcolumnrulevalue = $adb->query_result($cvcolumnruleres, $rindex, 'value');
+					$cvcolumnrulecomp  = Vtiger_Filter::translateComparator($cvcolumnrulecomp, true);
+					
+					$cvcolumnrulegroupid = $adb->query_result($cvcolumnruleres, $rindex, 'groupid');
+					$cvcolumnrulecolumn_condition = $adb->query_result($cvcolumnruleres, $rindex, 'column_condition');
+			
+					$this->openNode('rule');
+					$this->outputNode($cvcolumnruleindex, 'columnindex');
+					$this->outputNode($cvfieldname, 'fieldname');
+					$this->outputNode($cvcolumnrulecomp, 'comparator');
+					$this->outputNode($cvcolumnrulevalue, 'value');
+					$this->outputNode($cvcolumnrulegroupid, 'groupid');
+					$this->outputNode($cvcolumnrulecolumn_condition, 'column_condition');
+					$this->closeNode('rule');
+			
+				}
+				$this->closeNode('rules');
+			}
+			$cvcolumngroups = $adb->pquery("SELECT * FROM vtiger_cvadvfilter_grouping WHERE cvid=?",
+					Array($cvid));
+			$cvcolumngroupcount = $adb->num_rows($cvcolumngroups);
+				
+			if($cvcolumngroupcount) {
+				$this->openNode('groups');
+				for($rindex = 0; $rindex < $cvcolumngroupcount; ++$rindex) {
+					$cvcolumngroupid = $adb->query_result($cvcolumngroups, $rindex, 'groupid');
+					
+					$cvcolumngroup_condition = $adb->query_result($cvcolumngroups, $rindex, 'group_condition');
+					$cvcolumncondition_expression  = $adb->query_result($cvcolumngroups, $rindex, 'condition_expression');
+					
+					$this->openNode('group');
+					$this->outputNode($cvcolumngroupid, 'groupid');
+					$this->outputNode($cvcolumngroup_condition, 'group_condition');
+					$this->outputNode($cvcolumncondition_expression, 'condition_expression');
+					$this->closeNode('group');
+					
+				}
+				$this->closeNode('groups');
+			}
 			$this->closeNode('customview');
 		}
 		$this->closeNode('customviews');
