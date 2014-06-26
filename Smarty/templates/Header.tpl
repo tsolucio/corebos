@@ -198,7 +198,7 @@
 						<input class="small" type='radio' name='exportCalendar' value = 'iCal' onclick="$('ics_filename').removeAttribute('disabled');" checked /> iCal Format
 					</td>
 					<td align="left">
-						<input class="small" type='text' name='ics_filename' id='ics_filename' size='25' value='vtiger.calendar'/>
+						<input class="small" type='text' name='ics_filename' id='ics_filename' size='25' value='{php}global $coreBOS_app_name; echo $coreBOS_app_name;{/php}.calendar'/>
 					</td>
 				</tr>
 				</table>
