@@ -4735,6 +4735,7 @@ function getValidDBInsertDateValue($value) {
 	global $log;
 	$log->debug("Entering getValidDBInsertDateValue(".$value.") method ...");
 	$value = trim($value);
+	if (empty($value)) return '';
 	$delim = array('/','.');
 	foreach ($delim as $delimiter){
 		$x = strpos($value, $delimiter);
@@ -4890,6 +4891,26 @@ function str_rsplit($string, $splitLength) {
 	$reverseString = strrev($string);
 	$chunks = str_split($reverseString, $splitLength);
 	return array_reverse($chunks);
+}
+
+//Function returns Email related Modules
+function getEmailRelatedModules() {
+	global $current_user;
+	$handler = vtws_getModuleHandlerFromName('Emails',$current_user);
+	$meta = $handler->getMeta();
+	$moduleFields = $meta->getModuleFields();
+	$fieldModel = $moduleFields['parent_id'];
+	$relatedModules = $fieldModel->getReferenceList();
+	foreach($relatedModules as $key=>$value) {
+		if($value == 'Users') {
+			unset($relatedModules[$key]);
+		}
+	}
+	return $relatedModules;
+}
+
+function getInventoryModules() {
+	return array('Invoice','Quotes','PurchaseOrder','SalesOrder');
 }
 
 /**

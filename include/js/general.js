@@ -251,10 +251,7 @@ function patternValidate(fldName,fldLabel,type) {
 
 	if (type.toUpperCase()=="EMAIL") //Email ID validation
 	{
-		/*changes made to fix -- ticket#3278 & ticket#3461
-		  var re=new RegExp(/^.+@.+\..+$/)*/
-		//Changes made to fix tickets #4633, #5111  to accomodate all possible email formats
- 	    var re=new RegExp(/^[a-zA-Z0-9]+([!"#$%&'()*+,./:;<=>?@\^_`{|}~-]?[a-zA-Z0-9]+[\_\-]?)*@[a-zA-Z0-9]+([\_\-\.]?[a-zA-Z0-9]+)*\.([\-\_]?[a-zA-Z0-9])+(\.?[a-zA-Z0-9]+)?$/);
+ 	    var re=new RegExp(/^[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i);
 	}
 
 	if (type.toUpperCase()=="DATE") {//DATE validation

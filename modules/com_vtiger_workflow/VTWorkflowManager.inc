@@ -73,7 +73,7 @@
 
 			//my changes
 			$result=$adb->getColumnNames("com_vtiger_workflows");
-			if(in_array(defaultworkflow,$result)){
+			if(in_array('defaultworkflow',$result)){
 				$result = $adb->pquery("select workflow_id, module_name, summary, test, execution_condition, defaultworkflow, type
 									from com_vtiger_workflows where module_name=?",array($moduleName));
 			}

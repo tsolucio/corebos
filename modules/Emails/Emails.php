@@ -50,6 +50,7 @@ class Emails extends CRMEntity {
 		'Subject' => Array('activity' => 'subject'),
 		'Related to' => Array('seactivityrel' => 'parent_id'),
 		'Date Sent' => Array('activity' => 'date_start'),
+        'Time Sent' => Array('activity' => 'time_start'),
 		'Assigned To' => Array('crmentity', 'smownerid'),
 		'Access Count' => Array('email_track', 'access_count')
 	);
@@ -57,6 +58,7 @@ class Emails extends CRMEntity {
 		'Subject' => 'subject',
 		'Related to' => 'parent_id',
 		'Date Sent' => 'date_start',
+        'Time Sent' => 'time_start',
 		'Assigned To' => 'assigned_user_id',
 		'Access Count' => 'access_count'
 	);
@@ -65,7 +67,7 @@ class Emails extends CRMEntity {
 	var $sortby_fields = Array('subject', 'date_start', 'saved_toid');
 	//Added these variables which are used as default order by and sortorder in ListView
 	var $default_order_by = 'date_start';
-	var $default_sort_order = 'ASC';
+	var $default_sort_order = 'DESC';
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
 	var $mandatory_fields = Array('subject', 'assigned_user_id');
@@ -245,6 +247,36 @@ class Emails extends CRMEntity {
 		$adb->pquery($sql3, array($id, $current_id));
 		return true;
 		$log->debug("exiting from  saveforwardattachment function.");
+	}
+
+	/*
+	 * Function to get the secondary query part of a report
+	* @param - $module primary module name
+	* @param - $secmodule secondary module name
+	* returns the query string formed on fetching the related data for report for secondary module
+	*/
+	function generateReportsSecQuery($module, $secmodule, $queryPlanner){
+		$query = " LEFT JOIN vtiger_seactivityrel ON vtiger_crmentity.crmid=vtiger_seactivityrel.crmid";
+		$query .= " LEFT JOIN vtiger_activity ON vtiger_seactivityrel.activityid=vtiger_activity.activityid and vtiger_activity.activitytype = 'Emails'";
+		$query .= " LEFT JOIN vtiger_crmentity as vtiger_crmentityEmails ON vtiger_crmentityEmails.crmid=vtiger_activity.activityid and vtiger_crmentityEmails.deleted = 0";
+		$query .= " LEFT JOIN vtiger_emaildetails ON vtiger_emaildetails.emailid=vtiger_crmentityEmails.crmid";
+		$query .= " LEFT JOIN vtiger_email_track ON vtiger_email_track.mailid = vtiger_emaildetails.emailid and vtiger_email_track.crmid = vtiger_crmentity.crmid";
+		return $query;
+	}
+
+	/*
+	* Function to get the relation tables for related modules
+	* @param - $secmodule secondary module name
+	* returns the array with table names and fieldnames storing relations between module and this module
+	*/
+	function setRelationTables($secmodule) {
+		$rel_tables = array (
+			"Leads" => array("vtiger_seactivityrel" => array("activityid", "crmid"), "vtiger_activity" => "activityid"),
+			"Vendors" => array("vtiger_seactivityrel" => array("activityid", "crmid"), "vtiger_activity" => "activityid"),
+			"Contacts" => array("vtiger_seactivityrel" => array("activityid", "crmid"), "vtiger_activity" => "activityid"),
+			"Accounts" => array("vtiger_seactivityrel" => array("activityid", "crmid"), "vtiger_activity" => "activityid"),
+		);
+		return $rel_tables[$secmodule];
 	}
 
 	/** Returns a list of the associated contacts
@@ -494,12 +526,13 @@ class Emails extends CRMEntity {
 	function unlinkRelationship($id, $return_module, $return_id) {
 		global $log;
 
-		$sql = 'DELETE FROM vtiger_seactivityrel WHERE activityid=?';
-		$this->db->pquery($sql, array($id));
+		$sql = 'DELETE FROM vtiger_seactivityrel WHERE activityid=? AND crmid = ?';
+		$this->db->pquery($sql, array($id, $return_id));
 
 		$sql = 'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND relmodule=? AND relcrmid=?) OR (relcrmid=? AND module=? AND crmid=?)';
 		$params = array($id, $return_module, $return_id, $id, $return_module, $return_id);
 		$this->db->pquery($sql, $params);
+		$this->db->pquery('UPDATE vtiger_crmentity SET modifiedtime = ? WHERE crmid = ?', array(date('y-m-d H:i:d'), $id));
 	}
 
 	public function getNonAdminAccessControlQuery($module, $user, $scope='') {

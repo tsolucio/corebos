@@ -30,5 +30,7 @@ $mod_strings = Array (
 	'LBL_DAYS'=>'jour(s) auparavant',
 	'LBL_MONTHS'=>'mois auparavant',
 	'LBL_YEARS'=>'année(s) auparavant',
+	'Allows you to Configure Cron Task' => 'Configurer les crons',
+	'Scheduler' => 'Planificateur',
 );
 ?>

@@ -8,6 +8,8 @@
  * All Rights Reserved.
  ************************************************************************************/
 
+require_once('install/installAddons.php');
+
 global $php_max_execution_time;
 set_time_limit($php_max_execution_time);
 
@@ -33,6 +35,8 @@ if (isset($_SESSION['installation_info']['db_populate']))
 	$db_populate = $_SESSION['installation_info']['db_populate'];
 
 require_once('install/CreateTables.inc.php');
+
+installAddons();
 
 // Install Vtlib Compliant Modules
 Common_Install_Wizard_Utils::installMandatoryModules();

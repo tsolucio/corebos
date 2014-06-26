@@ -1,0 +1,36 @@
+<?xml version='1.0'?>
+<module>
+<exporttime>2009-05-25 05:57:50</exporttime>
+<name>FieldFormulas</name>
+<label>Field Formulas</label>
+<parent></parent>
+<type>extension</type>
+<version>1.2</version>
+<dependencies>
+<vtiger_version>5.1.0</vtiger_version>
+<vtiger_max_version>5.*</vtiger_max_version>
+</dependencies>
+<migrations>
+	<migration version='1.0'>		
+	</migration>
+</migrations>
+<tables>
+<table>
+<name>vtiger_fieldformulas</name>
+<sql><![CDATA[CREATE TABLE `vtiger_fieldformulas` (
+  `expressionid` int(11) NOT NULL default '0',
+  `modulename` varchar(100) default NULL,
+  `expression_engine` text,
+  PRIMARY KEY  (`expressionid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+</tables>
+<events>
+<event>
+<eventname>vtiger.entity.beforesave.modifiable</eventname>
+<classname><![CDATA[VTFieldFormulasEventHandler]]></classname>
+<filename><![CDATA[modules/FieldFormulas/VTFieldFormulasEventHandler.inc]]></filename>
+<condition><![CDATA[]]></condition>
+</event>
+</events>
+</module>

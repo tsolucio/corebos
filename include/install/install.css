@@ -329,3 +329,5 @@ table
 	border: 0;
 	padding-top: 0.2em;
 }
+
+.submit-disabled {opacity:.5;}

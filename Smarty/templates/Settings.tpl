@@ -40,7 +40,10 @@
 							{else}							
 							<table border=0 cellspacing=0 cellpadding=5 width=100%>
 								<tr>
+									{assign var=label value=$data.name|@getTranslatedString:$data.module}
+									{if $data.name eq $label}
 									{assign var=label value=$data.name|@getTranslatedString:'Settings'}
+									{/if}
 									{assign var=count value=$smarty.foreach.itr.iteration}
 									<td rowspan=2 valign=top>
 										<a href="{$data.link}">
@@ -54,7 +57,10 @@
 									</td>
 								</tr>
 								<tr>
+									{assign var=description value=$data.description|@getTranslatedString:$data.module}
+									{if $data.description eq $description}
 									{assign var=description value=$data.description|@getTranslatedString:'Settings'}
+									{/if}
 									<td class="small" valign=top>
 										{$description}
 									</td>

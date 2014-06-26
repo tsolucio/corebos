@@ -18,7 +18,7 @@ if(!isset($__cache_vtiger_imagepath)) {
 }
 function vtiger_imageurl($imagename, $themename) {
 	global $__cache_vtiger_imagepath;
-	if($__cache_vtiger_imagepath[$imagename]) {
+	if(isset($__cache_vtiger_imagepath[$imagename]) and $__cache_vtiger_imagepath[$imagename]) {
         $imagepath = $__cache_vtiger_imagepath[$imagename];
     } else {
 		$imagepath = false;
@@ -135,7 +135,6 @@ function vtlib_moduleAlwaysActive() {
 	$modules = Array (
 		'Administration', 'CustomView', 'Settings', 'Users', 'Migration',
 		'Utilities', 'uploads', 'Import', 'System', 'com_vtiger_workflow', 'PickList',
-		'Ondemand'
 	);
 	return $modules;
 }
@@ -143,7 +142,7 @@ function vtlib_moduleAlwaysActive() {
 /**
  * Toggle the module (enable/disable)
  */
-function vtlib_toggleModuleAccess($module, $enable_disable) {
+function vtlib_toggleModuleAccess($module, $enable_disable, $noevents = false) {
 	global $adb, $__cache_module_activeinfo;
 
 	include_once('vtlib/Vtiger/Module.php');
@@ -172,7 +171,9 @@ function vtlib_toggleModuleAccess($module, $enable_disable) {
 		vtlib_RecreateUserPrivilegeFiles();
 	}
 
-	Vtiger_Module::fireEvent($module, $event_type);
+	if (!$noevents) {
+		Vtiger_Module::fireEvent($module, $event_type);
+	}
 }
 
 /**

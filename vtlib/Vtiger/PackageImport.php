@@ -282,7 +282,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 			$unzip->unzipAllEx( ".",
 				Array(
 					// Include only file/folders that need to be extracted
-					'include' => Array('templates', "modules/$module", 'cron'),
+					'include' => Array('templates', "modules/$module", 'cron','manifest.xml'),
 					//'exclude' => Array('manifest.xml')
 					// NOTE: If excludes is not given then by those not mentioned in include are ignored.
 				),
@@ -296,6 +296,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 			);
 
 
+			@rename('manifest.xml',"modules/$module/manifest.xml");
 			if($unzip) $unzip->close();
 		}
 		return $module;
@@ -373,6 +374,34 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 		}
 	}
 
+	/**
+	 * Import Module from manifest.xml file. Other files should already be in place
+	 * @param String manifest.xml file path
+	 */
+	function importManifest($manifestfile) {
+		global $adb,$log;
+		if (!is_file($manifestfile))
+			$manifestfile .= '/manifest.xml';  // in case they just give us the path
+		if (!is_file($manifestfile))
+			return false;
+		$this->_modulexml = simplexml_load_file($manifestfile);
+		$module = (string) $this->_modulexml->name;
+		if($module != null) {
+			if ($this->isLanguageType()) {
+				require_once('vtlib/Vtiger/Language.php');
+				$languagePack = new Vtiger_Language();
+				@$languagePack->register((string) $this->_modulexml->prefix,(string) $this->_modulexml->label,$module);
+			} else {
+				$sql = "select tabid from vtiger_tab where name=?";
+				$result = $adb->pquery($sql, array($module));
+				if ($result and $adb->num_rows($result) > 0) {
+					return false; // module already installed
+				}
+				$this->import_Module();
+			}
+		}
+		return true;
+	}
 
 	/**
 	 * Import Module
@@ -610,11 +639,16 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 		foreach($customviewnode->fields->field as $fieldnode) {
 			$fieldInstance = $this->__GetModuleFieldFromCache($moduleInstance, $fieldnode->fieldname);
 			$filterInstance->addField($fieldInstance, $fieldnode->columnindex);
-
-			if(!empty($fieldnode->rules->rule)) {
-				foreach($fieldnode->rules->rule as $rulenode) {
-					$filterInstance->addRule($fieldInstance, $rulenode->comparator, $rulenode->value, $rulenode->columnindex);
-				}
+		}
+		if(!empty($customviewnode->rules->rule)) {
+			foreach($customviewnode->rules->rule as $rulenode) {
+				$fieldInstance = $this->__GetModuleFieldFromCache($moduleInstance, $rulenode->fieldname);
+				$filterInstance->addRule($fieldInstance, $rulenode->comparator, $rulenode->value, $rulenode->columnindex, $rulenode->groupid, $rulenode->column_condition);
+			}
+		}
+		if(!empty($customviewnode->groups->group)) {
+			foreach($customviewnode->groups->group as $groupnode) {
+				$filterInstance->addGroup($groupnode->groupid, $groupnode->group_condition, $groupnode->condition_expression);
 			}
 		}
 	}

@@ -362,7 +362,11 @@ class SalesOrder extends CRMEntity {
 		$rel_tables = array (
 			"Calendar" =>array("vtiger_seactivityrel"=>array("crmid","activityid"),"vtiger_salesorder"=>"salesorderid"),
 			"Invoice" =>array("vtiger_invoice"=>array("salesorderid","invoiceid"),"vtiger_salesorder"=>"salesorderid"),
+			"Quotes" =>array("vtiger_quotes"=>array("salesorderid","quoteid")),
+			"Potentials" =>array("vtiger_salesorder"=>array("salesorderid","potentialid")),
 			"Documents" => array("vtiger_senotesrel"=>array("crmid","notesid"),"vtiger_salesorder"=>"salesorderid"),
+			"Accounts" => array("vtiger_salesorder"=>array("salesorderid","accountid")),
+			"Contacts" => array("vtiger_salesorder"=>array("salesorderid","contactid")),
 		);
 		return $rel_tables[$secmodule];
 	}

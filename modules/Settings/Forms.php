@@ -15,7 +15,7 @@
 /*********************************************************************************
  * $Header$
  * Description:  Contains a variety of utility functions used to display UI
- * components such as form vtiger_headers and footers.  Intended to be modified on a per
+ * components such as form headers and footers.  Intended to be modified on a per
  * theme basis.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
