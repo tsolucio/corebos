@@ -57,17 +57,36 @@ $db_utf8_support = $dbCheckResult['db_utf8_support'];
 $vt_charset = ($db_utf8_support)? "UTF-8" : "ISO-8859-1";
 $_SESSION['config_file_info']['vt_charset']= $vt_charset;
 
+$configFileUtils = new ConfigFile_Utils($_SESSION['config_file_info']);
+
+if (!$configFileUtils->createConfigFile()) {
+	die("<strong class='big'><font color='red'>{$installationStrings['ERR_CANNOT_WRITE_CONFIG_FILE']}</font></strong>");
+}
+
+require_once('include/utils/utils.php');  // Required - Especially to create adb instance in global scope.
+
+$mode = $_REQUEST['mode'];
+if($mode == 'migration') {
+	$prev_file_name = 'SetMigrationConfig.php';
+	$file_name = 'MigrationProcess.php';
+} else {
+	$prev_file_name = 'SetInstallationConfig.php';
+	$file_name = 'CreateTables.php';
+}
+
 if($next == true) {
 	$_SESSION['authentication_key'] = md5(microtime());
 }
 ?>
-
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title><?php echo $installationStrings['APP_NAME']. ' - ' . $installationStrings['LBL_CONFIG_WIZARD']. ' - ' . $installationStrings['LBL_CONFIRM_SETTINGS']?></title>
 	<link href="include/install/install.css" rel="stylesheet" type="text/css">
+	<link href="themes/softed/style.css" rel="stylesheet" type="text/css">
+	<script language="javascript" type="text/javascript" src="include/scriptaculous/prototype.js"></script>
+	<script type="text/javascript" src="include/js/general.js"></script>
 </head>
 
 <body class="small cwPageBg" topmargin="0" leftmargin="0" marginheight="0" marginwidth="0">
@@ -128,7 +147,7 @@ if($next == true) {
 											</tr>
 											<tr>
 												<td noWrap width="40%"><?php echo $installationStrings['LBL_DATABASE'].' '.$installationStrings['LBL_UTF8_SUPPORT']; ?></td>
-												<td align="left" nowrap> <font class="dataInput"><?php echo ($db_utf8_support)? $installationStrings['LBL_ENABLED'] : "<strong style='color:#DF0000';>{$installationStrings['LBL_NOT_ENABLED']}</strong>" ?></font>&nbsp;<a href="http://www.vtiger.com/products/crm/help/<?php echo $vtiger_current_version; ?>/vtiger_CRM_Database_UTF8Config.pdf" target="_blank"><?php echo $installationStrings['LBL_MORE_INFORMATION']; ?></a></td>
+												<td align="left" nowrap> <font class="dataInput"><?php echo ($db_utf8_support)? $installationStrings['LBL_ENABLED'] : "<strong style='color:#DF0000';>{$installationStrings['LBL_NOT_ENABLED']}</strong>" ?></font></td>
 											</tr>
 										</table>
 									</td>
@@ -153,7 +172,7 @@ if($next == true) {
 									</td>
 								</tr>
 								<tr>
-									<td colspan=2>	
+									<td colspan=2>
 										<table width="100%" cellpadding="0" border="0" align=center class="level3" cellspacing="1">
 											<tr>
 												<td colspan=3 ><strong><?php echo $installationStrings['LBL_USER_CONFIGURATION']; ?></strong><hr noshade size=1></td>
@@ -172,7 +191,7 @@ if($next == true) {
 											<tr>
 												<td align="left" valign="bottom">
 												<form action="install.php" method="post" name="form" id="form">
-													<input type="hidden" name="file" value="SetInstallationConfig.php">
+													<input type="hidden" name="file" value="<?php echo $prev_file_name; ?>">
 													<input type="submit" class="button" value="&#139;&#139;&nbsp;<?php echo $installationStrings['LBL_CHANGE']; ?>" title="<?php echo $installationStrings['LBL_CHANGE']; ?>" />
 												</form>
 												</td>
@@ -181,13 +200,14 @@ if($next == true) {
 												<td align="right" valign="bottom">
 												<form action="install.php" method="post" name="form" id="form">
 													<input type="hidden" name="mode" value="installation">
-													<input type="hidden" name="file" value="SelectOptionalModules.php">
-													<input type="submit" class="button" value="<?php echo $installationStrings['LBL_NEXT']; ?>&nbsp;&#155;&#155;" title="<?php echo $installationStrings['LBL_NEXT']; ?>" />
+													<input type="hidden" name="file" value="<?php echo $file_name; ?>">
+													<input type="hidden" name="auth_key" value="<?php echo $_SESSION['authentication_key']; ?>" />
+													<input type="submit" class="button" value="<?php echo $installationStrings['LBL_NEXT']; ?>&nbsp;&#155;&#155;" title="<?php echo $installationStrings['LBL_NEXT']; ?>"  onClick="VtigerJS_DialogBox.progress();submit();"/>
 												</form>
 												</td>
 												<?php endif ?>
 											</tr>
-										</table>				
+										</table>
 									</td>
 								</tr>
 							</table>
@@ -213,6 +233,9 @@ if($next == true) {
       	<tr>
         	<td class=small align=center> <a href="<?php echo $coreBOS_app_url; ?>" target="_blank"><?php echo $coreBOS_app_name; ?></a></td>
       	</tr>
-	</table>	
+	</table>
+	<!-- Prefetch image to display later for Screen blocker -->	
+	<img style="display: none;" src="include/install/images/loading.gif">
+	<img src="themes/softed/images/layerPopupBg.gif" style="display: none;"/>
 </body>
 </html>
