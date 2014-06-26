@@ -2957,7 +2957,7 @@ function getRelatedToEntity($module, $list_result, $rset) {
  * Returns an string value
  */
 
-//used in home page listTop vtiger_files
+//used in home page listTop files
 function getRelatedTo($module, $list_result, $rset) {
 	global $adb, $log, $app_strings;
 	$tabname = getParentTab();
@@ -3883,7 +3883,9 @@ function getParentId($parent_name) {
 function decode_html($str) {
 	global $default_charset;
 	// Direct Popup action or Ajax Popup action should be treated the same.
-	if ($_REQUEST['action'] == 'Popup' || $_REQUEST['file'] == 'Popup')
+	$request['action'] = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
+	$request['file'] = isset($_REQUEST['file']) ? $_REQUEST['file'] : '';
+	if ($request['action'] == 'Popup' || $request['file'] == 'Popup')
 		return html_entity_decode($str);
 	else
 		return html_entity_decode($str, ENT_QUOTES, $default_charset);

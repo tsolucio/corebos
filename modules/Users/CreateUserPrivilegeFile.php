@@ -37,10 +37,10 @@ function createUserPrivilegesfile($userid)
 		$userInfo=Array();
 		$user_focus->column_fields["id"] = '';
 		$user_focus->id = $userid; 
-		foreach($user_focus->column_fields as $field=>$value_iter)
-        	{
-               		$userInfo[$field]= $user_focus->$field;
-        	}
+		foreach($user_focus->column_fields as $field=>$value_iter) {
+			if (isset($user_focus->$field))
+				$userInfo[$field]= $user_focus->$field;
+		}
 
 		if($user_focus->is_admin == 'on')
 		{
@@ -147,7 +147,7 @@ if($handle)
                 	{
                         	$parTabId=$adb->query_result($result,$i,'tabid');
                         	$relTabId=$adb->query_result($result,$i,'relatedto_tabid');
-				if(is_array($relModSharArr[$relTabId]))
+				if(isset($relModSharArr[$relTabId]) and is_array($relModSharArr[$relTabId]))
 				{
 					$temArr=$relModSharArr[$relTabId];
 					$temArr[]=$parTabId;
@@ -157,7 +157,7 @@ if($handle)
 					$temArr=Array();
 					$temArr[]=$parTabId;
 				}
-				$relModSharArr[$relTabId]=$temArr;	
+				$relModSharArr[$relTabId]=$temArr;
                 	}
 
 			$newbuf .= "\$related_module_share=".constructTwoDimensionalValueArray($relModSharArr).";\n\n";
@@ -422,7 +422,7 @@ function getUserModuleSharingObjects($module,$userid,$def_org_share,$current_use
 	$share_id_members=Array();
 	$share_id_groupmembers=Array();
 	//If Sharing of leads is Private
-	if($def_org_share[$mod_tabid] == 3 || $def_org_share[$mod_tabid] == 0)
+	if(isset($def_org_share[$mod_tabid]) and ($def_org_share[$mod_tabid] == 3 || $def_org_share[$mod_tabid] == 0))
 	{
 		$role_read_per=Array();
 		$role_write_per=Array();
@@ -1073,15 +1073,13 @@ function getRelatedModuleSharingArray($par_mod,$share_mod,$mod_sharingrule_membe
 	$par_mod_id=getTabid($par_mod);
 	$share_mod_id=getTabid($share_mod);
 
-	if($def_org_share[$share_mod_id] == 3 || $def_org_share[$share_mod_id] == 0)
+	if(isset($def_org_share[$share_mod_id]) and ($def_org_share[$share_mod_id] == 3 || $def_org_share[$share_mod_id] == 0))
 	{
 
 		$role_read_per=Array();
 		$role_write_per=Array();
 		$grp_read_per=Array();
 		$grp_write_per=Array();	
-
-
 
 		foreach($mod_sharingrule_members as $sharingid => $sharingInfoArr)
 		{

@@ -153,7 +153,7 @@ $mod_strings = Array(
 'LBL_ADD_PRODUCTS_PRICEBOOK'=>'Adicionar Produtos na Lista de Preços',
 
 //Added for 4.2 patch2 release
-'LBL_MAXIMUM_LIMIT_ERROR'=>'Desculpe, os arquivos transferidos excederam o limite máximo vtiger_filesize. Por favor, tente um arquivo menor que 800000 bytes',
+'LBL_MAXIMUM_LIMIT_ERROR'=>'Desculpe, os arquivos transferidos excederam o limite máximo file size. Por favor, tente um arquivo menor que 800000 bytes',
 'LBL_UPLOAD_ERROR'=>'Problemas na transferência do arquivo. Por favor tente novamente!',
 'LBL_IMAGE_ERROR'=>'O arquivo não é do tipo imagem(.gif/.jpg/.png)',
 'LBL_INVALID_IMAGE'=>'Arquivo inválido ou vazio',

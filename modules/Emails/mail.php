@@ -20,7 +20,7 @@ require_once 'include/utils/CommonUtils.php';
   *   $contents		-- body of the email you want to send
   *   $cc		-- add email ids with comma seperated. - optional
   *   $bcc		-- add email ids with comma seperated. - optional.
-  *   $attachment	-- whether we want to attach the currently selected file or all vtiger_files.[values = current,all] - optional
+  *   $attachment	-- whether we want to attach the currently selected file or all files.[values = current,all] - optional
   *   $emailid		-- id of the email object which will be used to get the vtiger_attachments
   */
 function send_mail($module,$to_email,$from_name,$from_email,$subject,$contents,$cc='',$bcc='',$attachment='',$emailid='',$logo='')
@@ -160,7 +160,7 @@ function addSignature($contents, $fromname)
   *	$from_name	-- from name which will be displayed in the mail
   *	$to_email 	-- to email address  -- This can be an email in a single string, a comma separated
   *			   list of emails or an array of email addresses
-  *	$attachment	-- whether we want to attach the currently selected file or all vtiger_files.
+  *	$attachment	-- whether we want to attach the currently selected file or all files.
   				[values = current,all] - optional
   *	$emailid	-- id of the email object which will be used to get the vtiger_attachments - optional
   */
@@ -221,7 +221,7 @@ function setMailerProperties($mail,$subject,$contents,$from_email,$from_name,$to
 		addAttachment($mail,$file_name,$emailid);
 	}
 
-	//This will add all the vtiger_files which are related to this record or email
+	//This will add all the files which are related to this record or email
 	if($attachment == 'all' && $emailid != '')
 	{
 		addAllAttachments($mail,$emailid);
@@ -305,7 +305,7 @@ function addAttachment($mail,$filename,$record)
         }
 }
 
-/**     Function to add all the vtiger_files as attachment with the mail object
+/**     Function to add all the files as attachment with the mail object
   *     $mail -- reference of the mail object
   *     $record -- email id ie., record id which is used to get the all vtiger_attachments from database
   */
@@ -314,7 +314,7 @@ function addAllAttachments($mail,$record)
 	global $adb,$log, $root_directory;
         $adb->println("Inside the function addAllAttachments");
 
-	//Retrieve the vtiger_files from database where avoid the file which has been currently selected
+	//Retrieve the files from database where avoid the file which has been currently selected
 	$sql = "select vtiger_attachments.* from vtiger_attachments inner join vtiger_seattachmentsrel on vtiger_attachments.attachmentsid = vtiger_seattachmentsrel.attachmentsid inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid where vtiger_crmentity.deleted=0 and vtiger_seattachmentsrel.crmid=?";
 	$res = $adb->pquery($sql, array($record));
 	$count = $adb->num_rows($res);

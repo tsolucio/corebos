@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<updatesChangeLog>
+<changeSet>
+	<author>joebordes</author>
+	<description>Upgrade from vtigerCRM5.4 to coreBOS5.4</description>
+	<filename>build/changeSets/vt54_cb54.php</filename>
+	<classname>vt54_cb54</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Apply coreBOS Customer Portal REST enhancements</description>
+	<filename>build/changeSets/coreboscp_rest.php</filename>
+	<classname>coreboscp_rest</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Document Related List enhancements</description>
+	<filename>build/changeSets/DocumentRelatedList.php</filename>
+	<classname>document_relatedlist</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Department field size limit #177</description>
+	<filename>build/changeSets/departmentfieldlimit_177.php</filename>
+	<classname>departmentfieldlimit</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Email Reports</description>
+	<filename>build/changeSets/EmailReports.php</filename>
+	<classname>EmailReports</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Potential Forecast field and workflow</description>
+	<filename>build/changeSets/PotentialForecastAmount.php</filename>
+	<classname>PotentialForecastAmount</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Clean database of unused fields and apply SQL optimizations: #140</description>
+	<filename>build/changeSets/cleanoptimizedatabase_140.php</filename>
+	<classname>cleandatabase_140</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+</updatesChangeLog>

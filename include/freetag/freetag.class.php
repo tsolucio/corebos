@@ -9,20 +9,18 @@
  *
  */
 /**
- *  Freetag API Implementation
+ *  Freetag - Simple PHP/MySQL tagging library
  *
- *  Freetag is a generic PHP class that can hook-in to existing database
+ *  Freetag is a generic PHP class that can hook in to existing database
  *  schemas and allows tagging of content within a social website. It's fun,
  *  fast, and easy!  Try it today and see what all the folksonomy fuss is
  *  about.
  * 
- *  Contributions and/or donations are welcome.
+ *  Contributions welcome.
  *
+ *  http://github.com/freetag
  *  Author: Gordon Luk
  *  http://www.getluky.net
- *  
- *  Version: 0.240
- *  Last Updated: 12/26/2005 
  * 
  */ 
 
@@ -30,55 +28,60 @@ class freetag {
 
 	/**#@+
 	 *  @access private
-	 *  @param string
+	 *  @var string
 	 */ 
 	/**#@-*/
 
 	/**
 	 * @access private
-	 * @param ADOConnection The ADODB Database connection instance.
+	 * @var ADOConnection The ADODB Database connection instance.
 	 */
 	//var $_db;
 	/**
 	 * @access private
-	 * @param bool Prints out limited debugging information if true, not fully implemented yet.
+	 * @var bool Prints out limited debugging information if true, not fully implemented yet.
 	 */
 	var $_debug = FALSE;
 	/**
 	 * @access private
-	 * @param string The prefix of freetag database vtiger_tables.
+	 * @var string The prefix of freetag database tables.
 	 */
 	var $_table_prefix = 'vtiger_';
 	/**
 	 * @access private
-	 * @param string The regex-style set of characters that are valid for normalized tags.
+	 * @var string The regex-style set of characters that are valid for normalized tags.
 	 */
 	var $_normalized_valid_chars = 'a-zA-Z0-9';
 	/**
 	 * @access private
-	 * @param string Whether to normalize tags at all.
+	 * @var string Whether to normalize tags at all.
 	 * value 0 saves the tag in case insensitive mode
 	 * value 1 save the tag in lower case
 	 */
 	var $_normalize_tags = 0;
 	/**
 	 * @access private
-	 * @param string Whether to prevent multiple vtiger_users from tagging the same object. By default, set to block (ala Upcoming.org)
+	 * @var string Whether to prevent multiple users from tagging the same object. By default, set to block (ala Upcoming.org)
 	 */
 	var $_block_multiuser_tag_on_object =0;
 	/**
 	 * @access private
-	 * @param bool Whether to use persistent ADODB connections. False by default.
+	 * @var string Will append this string to any integer tags sent through Freetag. This is supposed to prevent PHP casting "string" integer tags as ints. Won't do anything to floats or non-numeric strings.
+	 */
+	var $_append_to_integer = '';
+	/**
+	 * @access private
+	 * @var bool Whether to use persistent ADODB connections. False by default.
 	 */
 	//var $_PCONNECT = FALSE;
 	/**
 	 * @access private
-	 * @param int The maximum length of a tag.
+	 * @var int The maximum length of a tag.
 	 */ 
 	var $_MAX_TAG_LENGTH = 30;
 	/**
 	 * @access private
-	 * @param string The file path to the installation of ADOdb used.
+	 * @var string The file path to the installation of ADOdb used.
 	 */ 
 	//var $_ADODB_DIR = 'adodb/';
 
@@ -95,10 +98,11 @@ class freetag {
 	 * - db_pass: Database password
 	 * - db_host: Database hostname [default: localhost]
 	 * - db_name: Database name
-	 * - vtiger_table_prefix: If you wish to create multiple Freetag databases on the same database, you can put a prefix in front of the vtiger_table names and pass separate prefixes to the constructor. [default: '']
+	 * - table_prefix: If you wish to create multiple Freetag databases on the same database, you can put a prefix in front of the table names and pass separate prefixes to the constructor. [default: '']
 	 * - normalize_tags: Whether to normalize (lowercase and filter for valid characters) on tags at all. [default: 1]
 	 * - normalized_valid_chars: Pass a regex-style set of valid characters that you want your tags normalized against. [default: 'a-zA-Z0-9' for alphanumeric]
-	 * - block_multiuser_tag_on_object: Set to 0 in order to allow individual vtiger_users to all tag the same object with the same tag. Default is 1 to only allow one occurence of a tag per object. [default: 1]
+	 * - block_multiuser_tag_on_object: Set to 0 in order to allow individual users to all tag the same object with the same tag. Default is 1 to only allow one occurence of a tag per object. [default: 1]
+	 * - append_to_integer: Will append this string to any integer tags sent through Freetag. This is supposed to prevent PHP casting "string" integer tags as ints. Won't do anything to floats or non-numeric strings.
 	 * - MAX_TAG_LENGTH: maximum length of normalized tags in chars. [default: 30]
 	 * - ADODB_DIR: directory in which adodb is installed. Change if you don't want to use the bundled version. [default: adodb/]
 	 * - PCONNECT: Whether to use ADODB persistent connections. [default: FALSE]
@@ -106,7 +110,7 @@ class freetag {
 	 */ 
 	function freetag($options = NULL) {
 /*
-		$available_options = array('debug', 'db', 'db_user', 'db_pass', 'db_host', 'db_name', 'table_prefix', 'normalize_tags', 'normalized_valid_chars', 'block_multiuser_tag_on_object', 'MAX_TAG_LENGTH', 'ADODB_DIR', 'PCONNECT');
+		$available_options = array('debug', 'db', 'db_user', 'db_pass', 'db_host', 'db_name', 'table_prefix', 'normalize_tags', 'normalized_valid_chars', 'block_multiuser_tag_on_object', 'append_to_integer', 'MAX_TAG_LENGTH', 'ADODB_DIR', 'PCONNECT');
 		if (is_array($options)) {
 			foreach ($options as $key => $value) {
 				$this->debug_text("Option: $key");
@@ -238,7 +242,7 @@ class freetag {
 	 * get_objects_with_tag_combo
 	 *
 	 * Returns an array of object ID's that have all the tags passed in the
-	 * tagArray parameter. Use this to provide tag combo services to your vtiger_users.
+	 * tagArray parameter. Use this to provide tag combo services to your users.
 	 *
 	 * @param array - Pass an array of normalized form tags along to the function.
 	 * @param int (Optional) - The numerical offset to begin display at. Defaults to 0.
@@ -346,7 +350,7 @@ class freetag {
 	 * You can use this function to show the tags on an object. Since it supports both user-specific
 	 * and general modes with the $tagger_id parameter, you can use it twice on a page to make it work
 	 * similar to upcoming.org and flickr, where the page displays your own tags differently than
-	 * other vtiger_users' tags.
+	 * other users' tags.
 	 *
 	 * @param int The unique ID of the object in question.
 	 * @param int The offset of tags to return.
@@ -424,11 +428,18 @@ class freetag {
 		}
 		global $adb;
 
+		if ($this->_append_to_integer != '' && is_numeric($tag) && intval($tag) == $tag) {
+			// Converts numeric tag "123" to "123_" to facilitate
+			// alphanumeric sorting (otherwise, PHP converts string to
+			// true integer).
+			$tag = preg_replace('/^([0-9]+)$/', "$1".$this->_append_to_integer, $tag); 
+		}
+
 		$normalized_tag = $this->normalize_tag($tag);
 		$prefix = $this->_table_prefix;
 		$params = array();
 		// First, check for duplicate of the normalized form of the tag on this object.
-		// Dynamically switch between allowing duplication between vtiger_users on the constructor param 'block_multiuser_tag_on_object'.
+		// Dynamically switch between allowing duplication between users on the constructor param 'block_multiuser_tag_on_object'.
 		// If it's set not to block multiuser tags, then modify the existence
 		// check to look for a tag by this particular user. Otherwise, the following
 		// query will reveal whether that tag exists on that object for ANY user.
@@ -515,7 +526,7 @@ class freetag {
 	 *
 	 * @param int The unique ID of the person who tagged the object with this tag.
 	 * @param int The ID of the object in question.
-	 * @param string The raw string form of the tag to delete. See above for vtiger_notes.
+	 * @param string The raw string form of the tag to delete. See above for notes.
 	 *
 	 * @return string Returns the tag in normalized form.
 	 */ 
@@ -662,22 +673,50 @@ class freetag {
 	 * and the object referenced is set with that tag. 
 	 *
 	 * This method has been refactored to automatically look for existing tags and run
-	 * adds/updates/deletes as appropriate.
+	 * adds/updates/deletes as appropriate. It also has been refactored to accept comma-separated lists
+	 * of tagger_id's and objecct_id's to create either duplicate tagings from multiple taggers or 
+	 * apply the tags to multiple objects. However, a singular tagger_id and object_id still produces
+	 * the same behavior.
 	 *
-	 * @param int The unique ID of the person who tagged the object with this tag.
-	 * @param int The ID of the object in question.
-	 * @param string The raw string form of the tag to delete. See above for vtiger_notes.
+	 * @param int A comma-separated list of unique id's of the tagging subject(s).
+	 * @param int A comma-separated list of unique id's of the object(s) in question.
+	 * @param string The raw string form of the tag to delete. See above for notes.
 	 * @param int Whether to skip the update portion for objects that haven't been tagged. (Default: 1)
 	 *
 	 * @return string Returns the tag in normalized form.
 	 */
-	function tag_object($tagger_id, $object_id, $tag_string, $module, $skip_updates = 1) {
+	function tag_object($tagger_id_list, $object_id_list, $tag_string, $module, $skip_updates = 1) {
 		if($tag_string == '') {
 			// If an empty string was passed, just return true, don't die.
 			// die("Empty tag string passed");
 			return true;
 		}
+		// Break up CSL's for tagger id's and object id's
+		$tagger_id_array = split(',', $tagger_id_list);
+		$valid_tagger_id_array = array();
+		foreach ($tagger_id_array as $id) {
+			if (intval($id) > 0) {
+				$valid_tagger_id_array[] = intval($id);
+			}
+		}
+
+		if (count($valid_tagger_id_array) == 0) {
+			return true;
+		}
+
+		$object_id_array = split(',', $object_id_list);
+		$valid_object_id_array = array();
+		foreach ($object_id_array as $id) {
+			if (intval($id) > 0) {
+				$valid_object_id_array[] = intval($id);
+			}
+		}
+		if (count($valid_object_id_array) == 0) {
+			return true;
+		}
 		$tagArray = $this->_parse_tags($tag_string);
+		foreach ($valid_tagger_id_array as $tagger_id) {
+			foreach ($valid_object_id_array as $object_id) {
 
 		$oldTags = $this->get_tags_on_object($object_id, 0, 0, $tagger_id);
 
@@ -697,6 +736,8 @@ class freetag {
 		$newTags = array_diff($tagArray, $preserveTags);
 
 		$this->_tag_object_array($tagger_id, $object_id, $newTags, $module);
+			}
+		}
 
 		return true;
 	}
@@ -765,14 +806,6 @@ class freetag {
 	}
 
 	/**
-	 * update_tags
-	 *
-	 * This method supports a user updating their set of all tags on an object
-	 * in a streamlined manner. Very useful for interfaces where all tags on an
-	 * object from a user may be edited through a single text box.
-	 */
-
-	/**
 	 * get_most_popular_tags
 	 *
 	 * This function returns the most popular tags in the freetag system, with
@@ -824,6 +857,66 @@ class freetag {
 	}
 
 	/**
+	 * get_most_recent_objects
+	 *
+	 * This function returns the most recent object ids in the
+	 * freetag system, with offset and limit support for
+	 * pagination. It also supports restricting to an individual
+	 * user. Call it with no parameters for a list of 25 most
+	 * recent tags.
+	 *
+	 * @param int The unique ID of the person to restrict results to.
+	 * @param string Tag to filter by
+	 * @param int The offset of the object to start at.
+	 * @param int The number of object ids to return in the result set.
+	 *
+	 * @return array Returns a PHP array with object ids ordered by
+	 * timestamp descending.
+	 * Each element is an associative array with the following elements:
+	 * - 'object_id' => Object id
+	 * - 'tagged_on' => The timestamp of each object id
+	 */ 
+	function get_most_recent_objects($tagger_id = NULL, $tag = NULL, $offset = 0, $limit = 25) {
+		global $adb;
+		$params = array();
+		if (isset($tagger_id)) {
+			$tagger_sql = "AND tagger_id = ?";
+			$params[] = $tagger_id;
+		} else {
+			$tagger_sql = "";
+		}
+		$prefix = $this->_table_prefix;
+
+		$sql = "";
+		if (!$tag) {
+			$sql = "SELECT DISTINCT object_id, tagged_on FROM
+				${prefix}freetagged_objects
+				WHERE 1
+				$tagger_sql
+				ORDER BY tagged_on DESC
+				LIMIT $offset, $limit ";
+		} else {
+			$params = array_merge(array($tag) , $params);
+			$sql = "SELECT DISTINCT object_id, tagged_on
+				FROM ${prefix}freetagged_objects INNER JOIN ${prefix}freetags ON (tag_id = id)
+				WHERE tag = $tag
+				$tagger_sql
+				ORDER BY tagged_on DESC
+				LIMIT $offset, $limit ";
+		}
+
+		$rs = $adb->pquery($sql, $params) or die("Syntax Error: $sql");
+		$retarr = array();
+		while($fields = $adb->fetch_array($rs)) {
+			$retarr[] = array(
+					'object_id' => $fields['object_id'],
+					'tagged_on' => $fields['tagged_on']
+					);
+		}
+		return $retarr;
+	}
+
+	/**
 	 * count_tags
 	 *
 	 * Returns the total number of tag->object links in the system.
@@ -834,7 +927,7 @@ class freetag {
 	 *
 	 * @return int Returns the count 
 	 */
-	function count_tags($tagger_id = NULL) {
+	function count_tags($tagger_id = NULL, $normalized_version = 0) {
 		global $adb;
 		$params = array();
 		if(isset($tagger_id) && ($tagger_id > 0)) {
@@ -843,9 +936,14 @@ class freetag {
 		} else {
 			$tagger_sql = "";
 		}
+		if ($normalized_version == 1) {
+			$distinct_col = 'tag';
+		} else {
+			$distinct_col = 'tag_id';
+		}
 		$prefix = $this->_table_prefix;
 
-		$sql = "SELECT COUNT(*) as count
+		$sql = "SELECT COUNT(DISTINCT $distinct_col) as count
 			FROM ${prefix}freetags INNER JOIN ${prefix}freetagged_objects ON (id = tag_id)
 			WHERE 1
 			$tagger_sql
@@ -994,11 +1092,24 @@ class freetag {
 	}
 
 	/**
+	 * count_unique_tags
+	 * An alias to count_tags.
+	 *
+	 * @param int The unique ID of the person to restrict results to.
+	 * @param int Whether to count normalized tags or all raw tags (0 for raw, 1 for normalized, 0 default)
+	 *
+	 * @return int Returns the count
+	 */ 
+	function count_unique_tags($tagger_id = NULL, $normalized_version = 0) {
+		return $this->count_tags($tagger_id, $normalized_version);
+	} 
+
+	/**
 	 * similar_tags
 	 *
 	 * Finds tags that are "similar" or related to the given tag.
 	 * It does this by looking at the other tags on objects tagged with the tag specified.
-	 * Confusing? Think of it like e-commerce's "Other vtiger_users who bought this also bought," 
+	 * Confusing? Think of it like e-commerce's "Other users who bought this also bought," 
 	 * as that's exactly how this works.
 	 *
 	 * Returns an empty array if no tag is passed, or if no related tags are found.
@@ -1013,18 +1124,24 @@ class freetag {
 	 *
 	 * @param string The raw normalized form of the tag to fetch.
 	 * @param int The maximum number of tags to return.
+	 * @param int The unique id of a user to restrict the search to. Optional.
 	 *
 	 * @return array Returns an array where the keys are normalized tags, and the
 	 * values are numeric quantity of objects tagged with BOTH tags, sorted by
 	 * number of occurences of that tag (high to low).
 	 */ 
 
-	function similar_tags($tag, $max = 100) {
+	function similar_tags($tag, $max = 100, $tagger_id = NULL) {
 		$retarr = array();
 		if(!isset($tag)) {
 			return $retarr;
 		}
 		global $adb;
+		$where_sql = "";
+		if (isset($tagger_id) && intval($tagger_id) > 0) {
+			$tagger_id = intval($tagger_id);
+			$where_sql .= " AND o1.tagger_id = $tagger_id AND o2.tagger_id = $tagger_id ";
+		}
 
 		// This query was written using a double join for PHP. If you're trying to eke
 		// additional performance and are running MySQL 4.X, you might want to try a subselect
@@ -1037,6 +1154,7 @@ class freetag {
 			INNER JOIN ${prefix}freetagged_objects o2 ON ( o1.object_id = o2.object_id )
 			INNER JOIN ${prefix}freetags t2 ON ( t2.id = o2.tag_id )
 			WHERE t2.tag = ? AND t1.tag != ?
+			$where_sql
 			GROUP BY o1.tag_id
 			ORDER BY quantity DESC
 			LIMIT 0, ?";
@@ -1077,7 +1195,7 @@ class freetag {
 	 *
 	 */
 	function similar_objects($object_id, $threshold = 1, $max_objects = 5, $tagger_id = NULL) {
-		global $adb;	
+		global $adb;
 		$retarr = array();
 
 		$object_id = intval($object_id);

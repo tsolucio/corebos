@@ -4,6 +4,7 @@
 
 $mod_strings = Array (
 'Webforms' => 'formulario Web',
+'Allows you to manage Webforms' => 'Crea y administra formularios web para capturar oportunidades de negocio',
 'LBL_SUCCESS' => 'ha sido agregado a vtiger CRM.',
 'LBL_FAILURE' => 'No se ha podido agregar la entrada en vtiger CRM.',
 'LBL_ERROR_CODE' => 'Código Error',
