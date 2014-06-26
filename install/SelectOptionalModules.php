@@ -113,12 +113,6 @@ $selectedOptionalModuleNames = array();
 															}
 														}
 														?>
-														<tr  class="level2">
-															<td colspan="3" align="right">
-																<?php echo $installationStrings['LBL_OPTIONAL_MORE_LANGUAGE_PACK'] ?>
-																<a href="http://www.vtiger.com/market-place" target="_NEW">Marketplace</a>
-															</td>
-														</tr>
 													<?php
 													} else {
 													?>

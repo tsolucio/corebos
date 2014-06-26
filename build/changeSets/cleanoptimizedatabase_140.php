@@ -116,8 +116,6 @@ class cleandatabase_140 extends cbupdaterWorker {
 			/////////////////////////////////
 			//  SQL Optimizations
 			/////////////////////////////////
-			$this->ExecuteQuery('ALTER TABLE `vtiger_email_access` ADD PRIMARY KEY (`crmid` , `mailid`)');
-			
 			/*
 			 * Created by Boris CLEMENT - ABOnline solutions (boris@abo-s.com): http://www.abo-s.com/
 			 * Release on 2012-05-31   Available for vtigercrm 5.4

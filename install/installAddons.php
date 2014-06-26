@@ -14,6 +14,7 @@ function installAddons() {
 		'Services',
 		'VtigerBackup',
 		'WSAPP',
+		'cbupdater',
 		'Assets' => false,
 		'CronTasks' => false,
 		'CustomerPortal' => false,
