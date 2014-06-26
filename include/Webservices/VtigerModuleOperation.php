@@ -77,6 +77,13 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		
 		$crmObject = new VtigerCRMObject($this->tabId, true);
 		$crmObject->setObjectId($ids[1]);
+		$error = $crmObject->read($crmObject->getObjectId());
+		if($error == false){
+			return $error;
+		}
+		$cfields = $crmObject->getFields();
+		$cfields = DataTransform::sanitizeForInsert($cfields,$this->meta);
+		$element = array_merge($cfields,$element);
 		$error = $crmObject->update($element);
 		if(!$error){
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR,

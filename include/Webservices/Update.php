@@ -79,7 +79,12 @@
 				}
 			}
 		}
-		
+		//  Product line support
+		if(($entityName == 'Quotes' || $entityName == 'PurchaseOrder' || $entityName == 'SalesOrder' || $entityName == 'Invoice') && (is_array($element['pdoInformation']))) {
+			//  Product line support magic goes here
+		} else {
+			$_REQUEST['action'] = $entityName.'Ajax';
+		}
 		$entity = $handler->update($element);
 		VTWS_PreserveGlobal::flush();
 		return $entity;
