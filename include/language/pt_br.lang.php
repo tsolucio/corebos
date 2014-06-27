@@ -321,6 +321,7 @@ $app_strings = array (
 'LBL_USER' => 'Usuário',
 'LBL_TEAM' => 'Equipe',
 'LBL_GROUP' => 'Grupo',
+'LBL_SAVE_AS'=>" Salvar como",
 'LBL_NONE_NO_LINE' => 'nada',
 'LBL_SELECT_GROUP' => 'Selecionar um Grupo',
 'LBL_HOUR_AND_MINUTE' => '(horas/minutos)',
