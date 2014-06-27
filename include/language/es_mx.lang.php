@@ -22,6 +22,7 @@ $app_strings = array (
       'LBL_SHOW' => 'Mostrar :',
       'today' => 'Hoy -',
       'all' => 'Todos',
+      'LBL_SAVE_AS'=>" Save As",
       'LBL_UPCOMING_EVENTS' => 'Eventos Programados',
       'LBL_PENDING_EVENTS' => 'Eventos Pendientes',
       'NTC_WELCOME_MESSAGE' => '¡Bienvenido a vtiger CRM!',

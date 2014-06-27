@@ -108,8 +108,9 @@ $selectedRecipients	= vtlib_purify($_REQUEST['selectedRecipientsString']);
 $scheduledFormat	= vtlib_purify($_REQUEST['scheduledReportFormat']);
 $scheduledInterval	= vtlib_purify($_REQUEST['scheduledIntervalString']);
 //<<<<<<<scheduled report>>>>>>>>
-
-if($reportid == "")
+$saveas=$_REQUEST['saveashidden'];
+$newreportname=$_REQUEST['newreportname'];
+if($reportid == "" || ($reportid!='' && strstr($saveas,'saveas')!=''))
 {
 	$genQueryId = $adb->getUniqueID("vtiger_selectquery");
 	if($genQueryId != "")
@@ -147,7 +148,9 @@ if($reportid == "")
 			//<<<<step2 vtiger_selectcolumn>>>>>>>>
 
 			if($genQueryId != "")
-			{
+			{       if($reportid!='')
+                                $reportname=$newreportname;
+                        
 				$ireportsql = "insert into vtiger_report (REPORTID,FOLDERID,REPORTNAME,DESCRIPTION,REPORTTYPE,QUERYID,STATE,OWNER,SHARINGTYPE) values (?,?,?,?,?,?,?,?,?)";
 				$ireportparams = array($genQueryId, $folderid, $reportname, $reportdescription, $reporttype, $genQueryId,'CUSTOM',$current_user->id,$sharetype);
 				$ireportresult = $adb->pquery($ireportsql, $ireportparams);

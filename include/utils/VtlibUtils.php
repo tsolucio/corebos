@@ -213,7 +213,7 @@ function vtlib_getToggleLanguageInfo() {
 	if($sqlresult) {
 		for($idx = 0; $idx < $adb->num_rows($sqlresult); ++$idx) {
 			$row = $adb->fetch_array($sqlresult);
-			$langinfo[$row['prefix']] = Array( 'label'=>$row['label'], 'active'=>$row['active'] );
+			$langinfo[$row['prefix']] = Array( 'label'=>$row['label'], 'active'=>$row['active'] ,'id'=>$row['id']);
 		}
 	}
 	$adb->dieOnError = $old_dieOnError;

@@ -29,6 +29,7 @@ $app_strings = array (
 	'LBL_OR' => 'Ou',
 	'LBL_ALT_HOT_KEY' => 'Alt+ ',
 	'LBL_SAVE_LABEL' => 'Enregistrer',
+        'LBL_SAVE_AS'=>" Save As",
 	'LBL_REPLACE_LABEL' => 'Remplacer',
 	'LBL_APPLY_LABEL' => 'Appliquer',
 	'LBL_SEND_MAIL_BUTTON' => 'Envoyer email',
