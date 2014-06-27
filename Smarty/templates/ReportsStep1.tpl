@@ -42,6 +42,10 @@
 		<input type="hidden" name='reportName' value="{$REPORT_NAME}"/>
 		<input type="hidden" name='reportDesc' value="{$REPORT_DESC}"/>
 		<input type="hidden" name='folder' value="{$FOLDERID}"/>
+                <input type="hidden" name='saveashidden' value='saveas'/>
+                <input type="hidden" name='newreportname' id='newreportname' value=''/>
+
+
 		<!-- Heading -->
 		<table width="100%" border="0" cellspacing="0" cellpadding="5" >
 			<tr>
@@ -155,7 +159,8 @@
 						<td align="right" style="padding:10px;" >
 						<input type="button" id="back_rep" name="back_rep" value=" &nbsp;&lt;&nbsp;{$APP.LBL_BACK}&nbsp; " class="crmbutton small cancel" onClick="changeStepsback1();">&nbsp;
 						<input type="button" id="next" name="next" value=" &nbsp;{$APP.LNK_LIST_NEXT}&nbsp;&rsaquo;&nbsp; " class="crmbutton small save" onClick="changeSteps1();">
-						&nbsp;<input type="button" name="cancel" value=" &nbsp;{$APP.LBL_CANCEL_BUTTON_LABEL}&nbsp; " class="crmbutton small cancel" onClick="self.close();">
+						&nbsp;<input type="button" style='display:none; 'id="save_as" name="save_as" value=" &nbsp;{$APP.LBL_SAVE_AS}&nbsp;&rsaquo;&nbsp; " class="crmbutton small save" onClick="saveas();">&nbsp;
+                                                &nbsp;<input type="button" name="cancel" value=" &nbsp;{$APP.LBL_CANCEL_BUTTON_LABEL}&nbsp; " class="crmbutton small cancel" onClick="self.close();">
 						</td>
 					</tr>
 					</table>
