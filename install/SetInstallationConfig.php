@@ -224,8 +224,7 @@ function verify_data(form) {
 								            </tr>
 											<tr>
 												<td width="25%" nowrap ><?php echo $installationStrings['LBL_HOST_NAME']; ?> <sup><font color=red>*</font></sup></td>
-												<td width="75%" align="left"><input type="text" class="small" name="db_hostname" value="<?php if (isset($db_hostname)) echo "$db_hostname"; ?>" />
-										   			&nbsp;<a href="http://www.vtiger.com/products/crm/help/<?php echo $vtiger_current_version; ?>/vtiger_CRM_Database_Hostname.pdf" target="_blank">More...</a></td>
+												<td width="75%" align="left"><input type="text" class="small" name="db_hostname" value="<?php if (isset($db_hostname)) echo "$db_hostname"; ?>" /></td>
 											</tr>
 											<tr>
 												<td nowrap><?php echo $installationStrings['LBL_USER_NAME']; ?> <sup><font color=red>*</font></sup></td>
