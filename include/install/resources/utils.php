@@ -31,9 +31,10 @@ class Installation_Utils {
 		if(function_exists('mysql_connect')) {
 			$dbOptions['mysql'] = 'MySQL';
 		}
-		if(function_exists('pg_connect')) {
-			$dbOptions['pgsql'] = 'Postgres';
-		}
+// postgres is not supported
+// 		if(function_exists('pg_connect')) {
+// 			$dbOptions['pgsql'] = 'Postgres';
+// 		}
 		return $dbOptions;
 	}
 
