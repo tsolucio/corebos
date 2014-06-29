@@ -106,7 +106,7 @@ class Installation_Utils {
 		if(!$db_type_status || !$db_server_status) {
 			$error_msg = $installationStrings['ERR_DATABASE_CONNECTION_FAILED'].'. '.$installationStrings['ERR_INVALID_MYSQL_PARAMETERS'];
 			$error_msg_info = $installationStrings['MSG_LIST_REASONS'].':<br>
-					-  '.$installationStrings['MSG_DB_PARAMETERS_INVALID'].'. <a href="http://www.vtiger.com/products/crm/help/'.$vtiger_current_version.'/vtiger_CRM_Database_Hostname.pdf" target="_blank">'.$installationStrings['LBL_MORE_INFORMATION'].'</a><BR>
+					-  '.$installationStrings['MSG_DB_PARAMETERS_INVALID'].'.<BR>
 					-  '.$installationStrings['MSG_DB_USER_NOT_AUTHORIZED'];
 		}
 		elseif(Common_Install_Wizard_Utils::isMySQL($db_type) && $mysql_server_version < '4.1') {
