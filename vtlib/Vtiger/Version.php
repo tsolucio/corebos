@@ -42,7 +42,7 @@ class Vtiger_Version {
 		$strLen = strlen($string);
     	$endStrLen = strlen($endString);
     	if ($endStrLen > $strLen) return false;
-    	return substr_compare($string, $endString, -$endStrLen) === 0;		
+    	return substr_compare($string, $endString, -$endStrLen) === 0;
 	}
 	
 	static function getUpperLimitVersion($version) {
@@ -59,5 +59,20 @@ class Vtiger_Version {
 		}
 		return $version;
 	}
+	
+	static function updateVersionFile($version) {
+		$vfile = file_get_contents('vtigerversion.php');
+		$search = '$vtiger_current_version = \''.Vtiger_Version::current()."';";
+		$replace = '$vtiger_current_version = \''.$version."';";
+		$vfile = str_replace($search, $replace, $vfile);
+		file_put_contents('vtigerversion.php', $vfile);
+	}
+	
+	static function updateVersionDatabase($version) {
+		global $adb;
+		$adb->pquery('UPDATE `vtiger_version` SET `old_version`=`current_version`',array());
+		$adb->pquery('UPDATE `vtiger_version` SET `current_version`=?',array($version));
+	}
+	
 }
 ?>

@@ -70,6 +70,9 @@ class cb54_cb55 extends cbupdaterWorker {
 			@rmdir('vtlib/ModuleDir/5.0.4');
 			$this->sendMsg("modules/imports/Excel and vtlib/ModuleDir/5.0.4 deleted");
 			// I intentionally leave packages/Vtiger
+			Vtiger_Version::updateVersionDatabase('5.5.0');
+			Vtiger_Version::updateVersionFile('5.5.0');
+			$this->sendMsg('Updated to VERSION 5.5.0 !!!  <b>WELCOME!</b>');
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
