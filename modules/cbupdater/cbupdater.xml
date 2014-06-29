@@ -49,4 +49,11 @@
 	<classname>cleandatabase_140</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Upgrade from coreBOS5.4 to coreBOS5.5</description>
+	<filename>build/changeSets/cb54_cb55.php</filename>
+	<classname>cb54_cb55</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
