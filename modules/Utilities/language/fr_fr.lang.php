@@ -63,6 +63,4 @@ $mod_strings = array (
 	'SUCCESS' => 'Pack de langue installé',
 	'ERROR_CONFIG_INC' => 'Erreur: config.inc.php n\'est pas modifiable',
 );
-$mod_list_strings = array (
-);
 ?>

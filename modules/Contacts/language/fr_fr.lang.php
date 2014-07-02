@@ -202,6 +202,4 @@ $mod_strings = array (
 		'Contact Id' => 'N° Contact',
 
 );
-$mod_list_strings = array (
-);
 ?>

@@ -561,7 +561,7 @@ $mod_strings = array (
 
 		// Added for Create Custom Fields 
 		'LBL_USER_CUSTOMFIELDS_DESCRIPTION' => 'Champs personnalisés pour les collaborateurs',
-		'LBL_USER_CUSTOMFIELDS' => 'Champs personnalisés des collaborateurs',	
+		'LBL_USER_CUSTOMFIELDS' => 'Champs personnalisés des collaborateurs',
 		
 		'LBL_CURRENCY_CONFIGURATION' => 'Configuration des devises et monnaies',
 		'Digit Grouping Pattern' => 'Patterne de groupe',
@@ -576,7 +576,5 @@ $mod_strings = array (
 		'LBL_GROUPNAME_EXIST' => 'un groupe avec ce nom existe déjà!',
 		'LBL_PROFILENAME_EXIST' => 'Un profil avec ce nom existe déjà!',
 
-);
-$mod_list_strings = array (
 );
 ?>

@@ -561,42 +561,6 @@ function return_specified_module_language($language, $module)
 	return $return_value;
 }
 
-/** This function retrieves an application language file and returns the array of strings included in the $mod_list_strings var.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- * If you are using the current language, do not call this function unless you are loading it for the first time */
-function return_mod_list_strings_language($language,$module)
-{
-	global $log;
-	$log->debug("Entering return_mod_list_strings_language(".$language.",".$module.") method ...");
-	global $mod_list_strings, $default_language, $log, $currentModule,$translation_string_prefix;
-
-	$language_used = $language;
-	$temp_mod_list_strings = $mod_list_strings;
-
-	if($currentModule == $module && isset($mod_list_strings) && $mod_list_strings != null)
-	{
-		$log->debug("Exiting return_mod_list_strings_language method ...");
-		return $mod_list_strings;
-	}
-
-	@include("modules/$module/language/$language.lang.php");
-
-	if(!isset($mod_list_strings))
-	{
-		$log->fatal("Unable to load the application list language file for the selected language($language) or the default language($default_language)");
-		$log->debug("Exiting return_mod_list_strings_language method ...");
-		return null;
-	}
-
-	$return_value = $mod_list_strings;
-	$mod_list_strings = $temp_mod_list_strings;
-
-	$log->debug("Exiting return_mod_list_strings_language method ...");
-	return $return_value;
-}
-
 /** This function retrieves a theme's language file and returns the array of strings included.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.

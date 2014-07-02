@@ -189,6 +189,4 @@ $mod_strings = array (
 		'LBL_SHOW_ACCOUNT_HIERARCHY' => 'Afficher la hiérarchie des comptes', 
 		'Accounts ID' => 'Compte ID',
 );
-$mod_list_strings = array (
-);
 ?>

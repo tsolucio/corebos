@@ -213,6 +213,4 @@ $mod_strings = array (
 	'LBL_FIELD_SETTINGS' => 'Réglages des champs',
 	'Leads ID' => 'Prospect ID',
 );
-$mod_list_strings = array (
-);
 ?>

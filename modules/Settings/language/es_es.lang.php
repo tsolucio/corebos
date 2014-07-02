@@ -942,6 +942,4 @@ $mod_strings = array (
 		// language translation strings
 
 );
-$mod_list_strings = array (
-);
 ?>

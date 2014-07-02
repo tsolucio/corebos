@@ -142,6 +142,4 @@ $mod_strings = array (
 	'LBL_INSTEAD_OF_WEBMAILS_USE' => 'Au lieu du Webmails, Cliquez ici pour utiliser',
 	'LBL_PLEASE_CLICK_HERE_TO_GO_TO' => 'Cliquez ici pour aller ',
 );
-$mod_list_strings = array (
-);
 ?>

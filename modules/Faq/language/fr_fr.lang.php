@@ -103,6 +103,4 @@ $mod_strings = array (
 	'Faq No' => 'Faq N°',
 	'Faq ID' => 'FAQ ID',
 );
-$mod_list_strings = array (
-);
 ?>

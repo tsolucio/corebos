@@ -162,6 +162,4 @@ $mod_strings = array (
 'SINGLE_PurchaseOrder'=>'Cammande fournisseur',
 'PurchaseOrder ID'=>'Cammande fournisseur ID',
 );
-$mod_list_strings = array (
-);
 ?>

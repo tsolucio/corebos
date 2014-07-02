@@ -943,8 +943,5 @@ $mod_strings = array (
 		'FieldsTranslated' => 'Campos Traducidas',
 		'FieldsNotTranslated' => 'Campos No Traducidas',
 		// language translation strings
-
-);
-$mod_list_strings = array (
 );
 ?>
