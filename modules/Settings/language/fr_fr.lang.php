@@ -855,6 +855,26 @@ $mod_strings = array (
 		'LBL_SELECTED_MODULES' => 'Choix des Modules',
 
 		'LBL_CRM_SETTINGS' => 'Réglages CRM',
+		// language translation strings
+		'LBL_LANGUAGES_PACKS' => 'Packs de langue',
+		'LBL_EDIT_LANGUAGE_FILE' => 'Traduction des chaînes de caractères par modules',
+		'LBL_SELECT_TRANSLATE_MODULE' => 'Séléctionné un module à traduire :',
+		'LBL_TRANSLATE' => 'Traduction du module ',
+		'LBL_TRADE_PERCENTAGE' => 'Pourcentage de traduction (approx):',
+		'ERROR_MODULE_FILE_WRITE' => 'Le fichier de langue du module n\'est pas ouvert en écriture !!',
+		'ERROR_GENERAL_FILE_WRITE' => 'Le fichier de langue général n\'est pas ouvert en écriture !!',
+		'General' => 'Général',
+		'JavaScript' => 'JavaScript ',
+		'LBL_KEY' => 'Clé',
+		'LBL_SINGLEVALUE_STRINGS' => 'Valeur simple',
+		'LBL_MULTIVALUE_STRINGS' => 'Valeurs multiples',
+		'Legend' => 'Legend',
+		'RLTranslated' => 'List Title Translated',
+		'RLNotTranslated' => 'List Title Not Translated',
+		'FieldsTranslated' => 'Fields Translated',
+		'FieldsNotTranslated' => 'Fields Not Translated',
+		// language translation strings
+		
 );
 
 $mod_list_strings = array (
