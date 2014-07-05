@@ -526,7 +526,7 @@ class freetag {
 	 *
 	 * @param int The unique ID of the person who tagged the object with this tag.
 	 * @param int The ID of the object in question.
-	 * @param string A comma-separated list of tags to delete.
+	 * @param string A space-separated list of tags to delete.
 	 *
 	 * @return boolean true if deleted, false otherwise.
 	 */ 
@@ -535,22 +535,10 @@ class freetag {
 			die("delete_object_tag argument missing");
 			return false;
 		}
-		// Break up CSL's for tags
-		$tags_array = explode(',', $tag_list);
-		$valid_tags_array = array();
-		foreach ($tags_array as $tag) {
-			if (!empty($tag)) {
-				$valid_tags_array[] = $tag;
-			}
-		}
-		
-		if (count($valid_tags_array) == 0) {
-			return true;
-		}
-		
 		global $adb;
 		$delok = true;
 		$prefix = $this->_table_prefix;
+		$valid_tags_array = $this->_parse_tags($tag_list);
 		foreach ($valid_tags_array as $tag) {
 			$tag_id = $this->get_raw_tag_id($tag);
 			if ($tag_id > 0) {
@@ -571,11 +559,11 @@ class freetag {
 	 * Removes tag(s) from an object. Removes the given list of tags from the object for all users
 	 * This does not delete the tag itself from the database.
 	 * Since most applications will only allow a user to delete tags, it supports raw-form tags as its tag parameter,
-	 * because that's what is usually shown to a user for tags. The list is comma separated. However, a singular
+	 * because that's what is usually shown to a user for tags. The list is space separated. However, a singular
 	 * tag still produces the expected behavior.
 	 *
 	 * @param int The ID of the object in question.
-	 * @param string A comma-separated list of tags.
+	 * @param string A space-separated list of tags.
 	 *
 	 * @return boolean true if deleted, false otherwise.
 	 */ 
@@ -584,22 +572,10 @@ class freetag {
 			die("delete_object_tags argument missing");
 			return false;
 		}
-		// Break up CSL's for tags
-		$tags_array = explode(',', $tag_list);
-		$valid_tags_array = array();
-		foreach ($tags_array as $tag) {
-			if (!empty($tag)) {
-				$valid_tags_array[] = $tag;
-			}
-		}
-		
-		if (count($valid_tags_array) == 0) {
-			return true;
-		}
-		
 		global $adb;
 		$delok = true;
 		$prefix = $this->_table_prefix;
+		$valid_tags_array = $this->_parse_tags($tag_list);
 		foreach ($valid_tags_array as $tag) {
 			$tag_id = $this->get_raw_tag_id($tag);
 			if ($tag_id > 0) {
