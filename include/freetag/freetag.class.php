@@ -519,35 +519,50 @@ class freetag {
 	/**
 	 * delete_object_tag
 	 *
-	 * Removes a tag from an object. This does not delete the tag itself from
+	 * Removes tag(s) from an object. This does not delete the tag itself from
 	 * the database. Since most applications will only allow a user to delete
 	 * their own tags, it supports raw-form tags as its tag parameter, because
 	 * that's what is usually shown to a user for their own tags.
 	 *
 	 * @param int The unique ID of the person who tagged the object with this tag.
 	 * @param int The ID of the object in question.
-	 * @param string The raw string form of the tag to delete. See above for notes.
+	 * @param string A comma-separated list of tags to delete.
 	 *
-	 * @return string Returns the tag in normalized form.
+	 * @return boolean true if deleted, false otherwise.
 	 */ 
-	function delete_object_tag($tagger_id, $object_id, $tag) {
-		if(!isset($tagger_id)||!isset($object_id)||!isset($tag)) {
+	function delete_object_tag($tagger_id, $object_id, $tag_list) {
+		if(!isset($tagger_id)||!isset($object_id)||!isset($tag_list)) {
 			die("delete_object_tag argument missing");
 			return false;
 		}
-		global $adb;
-		$tag_id = $this->get_raw_tag_id($tag);
-		$prefix = $this->_table_prefix;
-		if($tag_id > 0) {
-
-			$sql = "DELETE FROM ${prefix}freetagged_objects
-				WHERE tagger_id = ? AND object_id = ? AND tag_id = ? LIMIT 1";
-			$params = array($tagger_id, $object_id, $tag_id);
-			$rs = $adb->pquery($sql, $params) or die("Syntax Error: $sql");
-			return true;
-		} else {
-			return false;
+		// Break up CSL's for tags
+		$tags_array = explode(',', $tag_list);
+		$valid_tags_array = array();
+		foreach ($tags_array as $tag) {
+			if (!empty($tag)) {
+				$valid_tags_array[] = $tag;
+			}
 		}
+		
+		if (count($valid_tags_array) == 0) {
+			return true;
+		}
+		
+		global $adb;
+		$delok = true;
+		$prefix = $this->_table_prefix;
+		foreach ($valid_tags_array as $tag) {
+			$tag_id = $this->get_raw_tag_id($tag);
+			if ($tag_id > 0) {
+				$sql = "DELETE FROM ${prefix}freetagged_objects WHERE tagger_id = ? AND object_id = ? AND tag_id = ? LIMIT 1";
+				$params = array($tagger_id, $object_id, $tag_id);
+				$rs = $adb->pquery($sql, $params) or die("Syntax Error: $sql");
+				if (!$rs) $delok = false;
+			} else {
+				$delok = false;
+			}
+		}
+		return $delok;
 	}
 
 	/**
@@ -570,7 +585,7 @@ class freetag {
 			return false;
 		}
 		// Break up CSL's for tags
-		$tags_array = split(',', $tag_list);
+		$tags_array = explode(',', $tag_list);
 		$valid_tags_array = array();
 		foreach ($tags_array as $tag) {
 			if (!empty($tag)) {
@@ -760,7 +775,7 @@ class freetag {
 			return true;
 		}
 		// Break up CSL's for tagger id's and object id's
-		$tagger_id_array = split(',', $tagger_id_list);
+		$tagger_id_array = explode(',', $tagger_id_list);
 		$valid_tagger_id_array = array();
 		foreach ($tagger_id_array as $id) {
 			if (intval($id) > 0) {
@@ -772,7 +787,7 @@ class freetag {
 			return true;
 		}
 
-		$object_id_array = split(',', $object_id_list);
+		$object_id_array = explode(',', $object_id_list);
 		$valid_object_id_array = array();
 		foreach ($object_id_array as $id) {
 			if (intval($id) > 0) {

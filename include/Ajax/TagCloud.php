@@ -56,7 +56,7 @@ elseif($ajaxaction == 'GETTAGCLOUD')
 		require_once('include/freetag/freetag.class.php');
 		$freetag = new freetag();
 		$tag = $freetag->get_tag_from_id($tagid);
-		$delok = $freetag->delete_object_tags($crmid, $tag);
+		$delok = $freetag->delete_object_tag($userid, $crmid, $tag);
 		if ($delok)
 			echo 'SUCCESS';
 		else
