@@ -551,6 +551,55 @@ class freetag {
 	}
 
 	/**
+	 * delete_object_tags
+	 *
+	 * Removes tag(s) from an object. Removes the given list of tags from the object for all users
+	 * This does not delete the tag itself from the database.
+	 * Since most applications will only allow a user to delete tags, it supports raw-form tags as its tag parameter,
+	 * because that's what is usually shown to a user for tags. The list is comma separated. However, a singular
+	 * tag still produces the expected behavior.
+	 *
+	 * @param int The ID of the object in question.
+	 * @param string A comma-separated list of tags.
+	 *
+	 * @return boolean true if deleted, false otherwise.
+	 */ 
+	function delete_object_tags($object_id, $tag_list) {
+		if(!isset($object_id)||!isset($tag_list)) {
+			die("delete_object_tags argument missing");
+			return false;
+		}
+		// Break up CSL's for tags
+		$tags_array = split(',', $tag_list);
+		$valid_tags_array = array();
+		foreach ($tags_array as $tag) {
+			if (!empty($tag)) {
+				$valid_tags_array[] = $tag;
+			}
+		}
+		
+		if (count($valid_tags_array) == 0) {
+			return true;
+		}
+		
+		global $adb;
+		$delok = true;
+		$prefix = $this->_table_prefix;
+		foreach ($valid_tags_array as $tag) {
+			$tag_id = $this->get_raw_tag_id($tag);
+			if ($tag_id > 0) {
+				$sql = "DELETE FROM ${prefix}freetagged_objects WHERE object_id = ? AND tag_id = ? LIMIT 1";
+				$params = array($object_id, $tag_id);
+				$rs = $adb->pquery($sql, $params) or die("Syntax Error: $sql");
+				if (!$rs) $delok = false;
+			} else {
+				$delok = false;
+			}
+		}
+		return $delok;
+	}
+
+	/**
 	 * delete_all_object_tags
 	 *
 	 * Removes all tag from an object. This does not
@@ -659,6 +708,28 @@ class freetag {
 			WHERE raw_tag = ? LIMIT 1 ";	
 			$rs = $adb->pquery($sql, array($tag)) or die("Syntax Error: $sql");
 		return $rs->fields['id'];
+	}
+
+	/**
+	 * get_tag_from_id
+	 *
+	 * Retrieves tag based upon its tag_id.
+	 *
+	 * @param string the tag in normalized form.
+	 *
+	 * @return int returns internal tag_id for the given tag.
+	 */
+	function get_tag_from_id($tag_id) {
+		if(!isset($tag_id)) {
+			die("get_tag_from_id argument missing");
+			return false;
+		}
+		global $adb;
+		$prefix = $this->_table_prefix;
+	
+		$sql = "SELECT tag FROM ${prefix}freetags WHERE id = ? LIMIT 1";
+		$rs = $adb->pquery($sql, array($tag_id)) or die("Syntax Error: $sql");
+		return $rs->fields['tag'];
 	}
 
 	/**
@@ -974,7 +1045,7 @@ class freetag {
 	function get_tag_cloud_html($module="",$tagger_id = NULL,$obj_id= NULL,$num_tags = 100, $min_font_size = 10, $max_font_size = 20, $font_units = 'px', $span_class = '', $tag_page_url = '/tag/') {
 		global $theme;
 		$theme_path="themes/".$theme."/";
-		$image_path=$theme_path."images/";	
+		$image_path=$theme_path."images/";
 		$tag_list = $this->get_tag_cloud_tags($num_tags, $tagger_id,$module,$obj_id);
 		if (count($tag_list[0])) {
 			// Get the maximum qty of tagged objects in the set
@@ -1010,7 +1081,8 @@ class freetag {
 		} else {
 			foreach($tag_list[0] as $tag => $qty) {
 				$size = $min_font_size + ($qty - $min_qty) * $step;
-				$cloud_span[] = '<span class="' . $span_class . '"><a class="tagit" href="index.php?module=Home&action=UnifiedSearch&search_module='.$module.'&search_tag=tag_search&query_string='. urlencode($tag) . '" style="font-size: '. $size . $font_units . '">' . htmlspecialchars(stripslashes($tag)) . '</a></span>';
+				//$cloud_span[] = '<span class="' . $span_class . '"><a class="tagit" href="index.php?module=Home&action=UnifiedSearch&search_module='.$module.'&search_tag=tag_search&query_string='. urlencode($tag) . '" style="font-size: '. $size . $font_units . '">' . htmlspecialchars(stripslashes($tag)) . '</a></span>';
+				$cloud_span[] = '<li class="' . $span_class . '"><a class="tagit" href="index.php?module=Home&action=UnifiedSearch&search_module='.$module.'&search_tag=tag_search&query_string='. urlencode($tag) . '" style="font-size: '. $size . $font_units . '">' . htmlspecialchars(stripslashes($tag)) . '</a></li>';
 			}
 		}
 		$cloud_html = join("\n ", $cloud_span);
