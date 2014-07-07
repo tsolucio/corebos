@@ -83,5 +83,11 @@ $mod_strings = array(
 	'LBL_NO_ENTITIES_FOUND' => 'Aucune entité disponible à la création',
 	'LBL_PARENT_OWNER' => 'Parent Record Owner',
 	'LBL_SPECIAL_OPTIONS' => 'Special Options',
+	'CBTagTask' => 'Add/Delete Tag',
+	'Add Tag' => 'Add Tag',
+	'Delete Tag' => 'Delete Tag',
+	'Tags' => 'Tags',
+	'ForAllUsers' => 'For All Users',
+	'ForCurrentUser' => 'Only For Current User',
 );
 ?>

@@ -88,6 +88,11 @@ $mod_strings = array(
 'LBL_NO_ENTITIES_FOUND' => 'No se han encontrado entidades para crear',
 'LBL_PARENT_OWNER' => 'Dueño del Registro Superior',
 'LBL_SPECIAL_OPTIONS' => 'Opciones Especiales',
-
+'CBTagTask' => 'Añadir/Eliminar Etiqueta',
+'Add Tag' => 'Añadir Etiqueta',
+'Delete Tag' => 'Eliminar Etiqueta',
+'Tags' => 'Etiquetas',
+'ForAllUsers' => 'Para todos los Usuarios',
+'ForCurrentUser' => 'Solo para el usuario Actual',
 );
 ?>

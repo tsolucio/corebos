@@ -63,4 +63,11 @@
 	<classname>create_workflow_taskstype</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add/Delete Tags workflow task</description>
+	<filename>build/changeSets/add_workflow_tags.php</filename>
+	<classname>add_workflow_tags</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
 </updatesChangeLog>
