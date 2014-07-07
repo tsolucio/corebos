@@ -98,6 +98,7 @@ if(isPermitted('Calendar','index') == 'yes'){
 					$cbstatus   = $focus->column_fields["eventstatus"];
 
 				$cbstatus = getTranslatedString($cbstatus, $currentModule);
+				$smarty->assign("activityimage", $cbactivitytype);
 				$cbactivitytype = getTranslatedString($cbactivitytype, $currentModule);
 
 				// Appending recordid we can get unique callback dom id for that record.
