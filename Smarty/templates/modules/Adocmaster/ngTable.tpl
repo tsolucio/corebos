@@ -96,6 +96,9 @@
                  <span ng-if="!user.$edit">  {literal} {{user.age}} {/literal}</span>
                 <div ng-if="user.$edit"><input class="form-control" type="text" ng-model="user.age" /></div>
                 </td>
+                <td data-title="'Adocdetailname'" sortable="'adocdetailname'">
+                   {literal} {{user.adocdetailname}} {/literal}
+                </td>
                 <td data-title="'Product'" sortable="'accountname'">
                   <a href ="index.php?module=Products&action=DetailView&record={literal}{{user.productid}}{/literal}"> {literal} {{user.accountname}} {/literal}</a>
                 </td>

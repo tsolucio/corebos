@@ -447,7 +447,8 @@ $arrz = array();
                      'adocdetailid'=>$rowsz['adocdetailid'],
                      'productid'=>$rowsz['adoc_product'],
                      'stockid'=>$rowsz['adoc_stock'],
-'adocid'=>$rowsz['adocdetailid']
+'adocid'=>$rowsz['adocdetailid'],
+'adocdetailname'=>$rowsz['adocdetailname']
     
             
                   );
