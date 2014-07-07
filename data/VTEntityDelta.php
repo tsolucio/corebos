@@ -104,12 +104,16 @@ class VTEntityDelta extends VTEventHandler {
 		return self::$newEntity[$moduleName][$recordId];
 	}
 	
-	function hasChanged($moduleName, $recordId, $fieldName) {
+	function hasChanged($moduleName, $recordId, $fieldName, $fieldValue = NULL) {
 		if(empty(self::$oldEntity[$moduleName][$recordId])) {
 			return false;
 		}
 		$fieldDelta = self::$entityDelta[$moduleName][$recordId][$fieldName];
-		return $fieldDelta['oldValue'] != $fieldDelta['currentValue'];
+		$result = $fieldDelta['oldValue'] != $fieldDelta['currentValue'];
+		if ($fieldValue !== NULL) {
+			$result = $result && ($fieldDelta['currentValue'] === $fieldValue);
+		}
+		return $result;
 	}
 
 }

@@ -210,19 +210,19 @@ function editworkflowscript($, conditions){
 
 	var operations = function(){
 		var op = {
-			string:["is", "contains", "does not contain", "starts with",
-						"ends with", "has changed"],
-			number:["equal to", "less than", "greater than", "does not equal",
-						"less than or equal to", "greater than or equal to", "has changed"],
-			value:['is', 'is not', "has changed"]
+			string:["is", "contains", "does not contain", "starts with", "ends with", "has changed", 'is empty', 'is not empty'],
+			number:["equal to", "less than", "greater than", "does not equal", "less than or equal to", "greater than or equal to", "has changed"],
+			value:['is', 'is not', "has changed", 'has changed to'],
+			date:['is', 'is not', "has changed", 'has changed to','between', 'before', 'after', 'is today', 'less than days ago', 'more than days ago', 'in less than', 'in more than', 'days ago', 'days later'],
+			datetime:['is', 'is not', "has changed", 'has changed to', 'less than hours before', 'less than hours later', 'more than hours before', 'more than hours later']
 		};
 		var mapping = [
 			['string', ['string', 'text', 'url', 'email', 'phone']],
 			['number', ['integer', 'double', 'currency']],
-			['value', ['reference', 'picklist', 'multipicklist', 'datetime',
-								'time', 'date', 'boolean']]
+			['value', ['reference', 'picklist', 'multipicklist', 'datetime', 'time', 'date', 'boolean']],
+			['date', ['date']],
+			['datetime', ['datetime', 'time']]
 		];
-
 
 		var out = {};
 		$.each(mapping, function(i, v){
@@ -236,7 +236,6 @@ function editworkflowscript($, conditions){
 	}();
 
 	var format = fn.format;
-
 
 	function fillOptions(el,options){
 		el.empty();

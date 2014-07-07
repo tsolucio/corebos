@@ -38,10 +38,11 @@ require_once("VTWorkflowUtils.php");
 		$smarty->assign('edit',isset($request["task_id"]));
 		if(isset($request["task_id"])){
 			$task = $tm->retrieveTask($request["task_id"]);
+			$taskClass = get_class($task);
 			$workflowId=$task->workflowId;
 		}else{
 			$workflowId = $request["workflow_id"];
-			$taskClass = $request["task_type"];
+			$taskClass = vtlib_purifyForSql($request["task_type"]);
 			$task = $tm->createTask($taskClass, $workflowId);
 		}
 
@@ -65,8 +66,10 @@ require_once("VTWorkflowUtils.php");
 		$smarty->assign("task", $task);
 		$smarty->assign("taskType", $taskClass);
 		$smarty->assign("saveType", $request['save_type']);
-		$taskClass = get_class($task);
-		$smarty->assign("taskTemplate", "{$module->name}/taskforms/$taskClass.tpl");
+
+		$taskTypeInstance = VTTaskType::getInstanceFromTaskType($taskClass);
+		$taskTemplateClass = $tm->retrieveTemplatePath($module->name, $taskTypeInstance);
+		$smarty->assign("taskTemplate", $taskTemplateClass);
 		$et = VTWSEntityType::usingGlobalCurrentUser($workflow->moduleName);
 		$smarty->assign("entityType", $et);
 		$smarty->assign('entityName', $workflow->moduleName);
