@@ -347,7 +347,7 @@ function sendfile_email()
     <td style="padding-top:0px;margin:0px;">
     <div style="" id="tbl_cont">
    <table><tr><td>
-   {*{include file="modules/Adocmaster/index.tpl}*}
+   {*{include file="modules/Adocmaster/ngTable.tpl}*}
    
 {php}
 
@@ -446,7 +446,8 @@ $arrz = array();
                      
                      'adocdetailid'=>$rowsz['adocdetailid'],
                      'productid'=>$rowsz['adoc_product'],
-                     'stockid'=>$rowsz['adoc_stock']
+                     'stockid'=>$rowsz['adoc_stock'],
+'adocid'=>$rowsz['adocdetailid']
     
             
                   );
@@ -487,7 +488,9 @@ $smarty = new vtigerCRM_Smarty;
 //$smarty->assign("selectContent", $select1);
 $smarty->assign("vleratest", $vleraz);
 //echo $vleraz;
+
 $smarty->display("modules/Adocmaster/ngTable.tpl");
+
 {/php}
 {/if}
 																				</table>
@@ -550,8 +553,9 @@ $smarty->display("modules/Adocmaster/ngTable.tpl");
 																			</td>
 																		</tr>
 																	{/foreach}
-																	{*-- End of Blocks--*}
-
+	
+ 
+					
 																	{* vtlib Customization: Embed DetailViewWidget block:// type if any *}
 																	{if $CUSTOM_LINKS && !empty($CUSTOM_LINKS.DETAILVIEWWIDGET)}
 																		{foreach item=CUSTOM_LINK_DETAILVIEWWIDGET from=$CUSTOM_LINKS.DETAILVIEWWIDGET}

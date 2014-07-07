@@ -1,3 +1,11 @@
+{php}
+    require_once('include/utils/UserInfoUtil.php');
+    global $current_user,$mod_strings;
+    $this->assign("ROLENAME", getRoleName($current_user->roleid));
+    $this->assign("MOD",$mod_strings);
+{/php}
+
+
 <!DOCTYPE html>
 <!--[if lt IE 7]> <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
 <!--[if IE 7]> <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
@@ -79,18 +87,21 @@
                 </a>
             </td>
         </tr>
-        <tr ng-hide="group.$hideRows" ng-repeat="user in group.data">
+        <tr ng-hide="group.$hideRows" ng-repeat="user in group.data" >
+            
            <td data-title="'AdocdetailNo'" sortable="'name'">
                   <a href="index.php?module=Adocdetail&action=DetailView&record={literal}{{user.adocdetailid}}{/literal}">  {literal}{{user.name}}{/literal}</a>
                 </td>
                 <td data-title="'Nr Line'" sortable="'age'">
-                   {literal} {{user.age}} {/literal}
+                 <span ng-if="!user.$edit">  {literal} {{user.age}} {/literal}</span>
+                <div ng-if="user.$edit"><input class="form-control" type="text" ng-model="user.age" /></div>
                 </td>
                 <td data-title="'Product'" sortable="'accountname'">
                   <a href ="index.php?module=Products&action=DetailView&record={literal}{{user.productid}}{/literal}"> {literal} {{user.accountname}} {/literal}</a>
                 </td>
                 <td data-title="'Quantity'" sortable="'quantity'">
-                   {literal} {{user.quantity}} {/literal}
+                  <span ng-if="!user.$edit">  {literal} {{user.quantity}} {/literal}</span>
+                   <div ng-if="user.$edit"><input class="form-control" type="text" ng-model="user.quantity" /></div>
                 </td>
                  <td data-title="'Price'" sortable="'price'">
                    {literal} {{user.price}} {/literal}
@@ -98,15 +109,29 @@
                 <td data-title="'Riferimento'" sortable="'riferimento'">
                    {literal} {{user.riferimento}} {/literal}
                 </td>
-                
+                <td data-title="'Stock'" sortable="'stock'">
+                 <a href="index.php?module=Stock&action=DetailView&record={literal}{{user.stockid}}{/literal}">  {literal} {{user.stock}} {/literal}</a>
+                </td>
+               
+                 <td data-title="'Actions'" width="200">
+                <a ng-if="!user.$edit" href="" class="btn btn-default btn-xs" ng-click="user.$edit = true">Edit</a>
+                <a ng-if="user.$edit" href="" class="btn btn-primary btn-xs" ng-click="user.$edit = false;setEditId(user.age,user.quantity,user.adocdetailid)">Save</a>
+                <a ng-if="user.$edit" href="" class="btn btn-primary btn-xs" ng-click="user.$edit = false;">Cancel</a>
+            </td>
         </tr>
         </tbody>
     </table>
 
         <script>
             {literal}
+                var prova7={/literal}{$vleratest}{literal};
+                var kURL = "module=Adocmaster&action=AdocmasterAjax&file=prova3&shembulli=prova7";
+               // alert(prova7);
+         var record=document.getElementsByName('record').item(0).value;
+         var prova7={/literal}{$vleratest}{literal};
+         //alert(record);
         var app = angular.module('main', ['ngTable']).
-        controller('DemoCtrl', function($scope, $filter,ngTableParams,$sce) {
+        controller('DemoCtrl', function($scope, $filter,$http,ngTableParams,$sce) {
        { 
           
              
@@ -129,11 +154,20 @@
                groupBy: $scope.groupby,
                         total: data.length, // length of data
                         getData: function($defer, params) {
+                            
                             var orderedData = params.sorting() ?
                                      $filter('orderBy')(data, params.orderBy()) :
                                 data;
 
                             $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                   $http.get('index.php?'+kURL+'&kaction=retrieve&record='+record).
+                    success(function(data, status) {
+                      var orderedData = data;
+                      params.total(data.length);
+                      $defer.resolve(orderedData.slice((params.page() - 1) * params.count(),params.page() * params.count()));
+                      //alert(record);
+                    
+    })
                 }
             });
             
@@ -144,7 +178,23 @@
                         console.log('new table',$scope.tableParams);
                         $scope.tableParams.reload();
                     });
+                         $http.post('index.php?'+kURL+'&kaction=update&record='+record+'&shembulli='+record
+                )
+                .success(function(data, status) {
+                      $scope.tableParams.reload();
+                     
+                 });
+                   $scope.setEditId =  function(age,quantity,adocdetailid) {
+             $http.post('index.php?'+kURL+'&kaction=update&stato='+age+'&sasia='+quantity+'&adocdetailid2='+adocdetailid
+                )
+                .success(function(data, status) {
+            alert('saving');
+                      $scope.tableParams.reload();
+                     
+                 });
+        }
         })
+          
         
         
      
