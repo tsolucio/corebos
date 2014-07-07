@@ -82,6 +82,8 @@ $mod_strings = array(
 	'LBL_Recepient' => 'Címzett',
 	'LBL_CC' => 'Másolatot kap',
 	'LBL_BCC' => 'Rejtett másolatot kap',
-	'LBL_Subject' => 'Tárgysor'
+	'LBL_Subject' => 'Tárgysor',
+	'LBL_PARENT_OWNER' => 'Szülő rekord tulajdonosa',
+	'LBL_SPECIAL_OPTIONS' => 'Különleges opciók',
 );
 ?>

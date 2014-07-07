@@ -81,6 +81,7 @@ $mod_strings = array(
 'LBL_ENTITY_TYPE' => 'Tipo Entidad',
 'LBL_SELECT_ENTITY_TYPE' => '-- Selecciona Tipo Entidad --',
 'LBL_NO_ENTITIES_FOUND' => 'No se han encontrado entidades para crear',
-
+'LBL_PARENT_OWNER' => 'Dueño del Registro Superior',
+'LBL_SPECIAL_OPTIONS' => 'Opciones Especiales',
 );
 ?>

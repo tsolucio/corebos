@@ -86,7 +86,8 @@ $mod_strings = array(
     'LBL_ENTITY_TYPE' => 'Objekttyp',
     'LBL_SELECT_ENTITY_TYPE' => '-- wähle Objekttyp --',
     'LBL_NO_ENTITIES_FOUND' => 'Keine Objekte zum erstellen gefunden',
+	'LBL_PARENT_OWNER' => 'Parent Record Owner',
+	'LBL_SPECIAL_OPTIONS' => 'Special Options',
 );
-
 
 ?>
