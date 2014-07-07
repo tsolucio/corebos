@@ -572,14 +572,14 @@ class freetag {
 			die("delete_object_tags argument missing");
 			return false;
 		}
-		global $adb;
+		global $adb,$log;
 		$delok = true;
 		$prefix = $this->_table_prefix;
 		$valid_tags_array = $this->_parse_tags($tag_list);
 		foreach ($valid_tags_array as $tag) {
 			$tag_id = $this->get_raw_tag_id($tag);
 			if ($tag_id > 0) {
-				$sql = "DELETE FROM ${prefix}freetagged_objects WHERE object_id = ? AND tag_id = ? LIMIT 1";
+				$sql = "DELETE FROM ${prefix}freetagged_objects WHERE object_id = ? AND tag_id = ?";
 				$params = array($object_id, $tag_id);
 				$rs = $adb->pquery($sql, $params) or die("Syntax Error: $sql");
 				if (!$rs) $delok = false;
