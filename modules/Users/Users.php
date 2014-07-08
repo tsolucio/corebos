@@ -1125,6 +1125,7 @@ class Users extends CRMEntity {
                 $return_array[$this->homeorder_array[$i]] = $this->homeorder_array[$i];
             }
         }
+        $return_array['Tag Cloud'] = (getTagCloudView($id) ? 'true' : 'false');
         return $return_array;
     }
 
