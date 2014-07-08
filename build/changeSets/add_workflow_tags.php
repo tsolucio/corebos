@@ -41,7 +41,7 @@ class add_workflow_tags extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			global $adb;
 			$result = $adb->pquery("SELECT * FROM `com_vtiger_workflowtasks` WHERE `task` like '%CBTagTask%'",array());
-			if ($result and $adb->num_rows($result)>1) {
+			if ($result and $adb->num_rows($result)>0) {
 				$this->sendMsg('<span style="font-size:large;weight:bold;">Workflows that use this task exist!! Please eliminate them before undoing this change.</span>');
 			} else {
 				$adb->pquery("DELETE FROM com_vtiger_workflow_tasktypes WHERE
