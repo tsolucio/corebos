@@ -70,4 +70,11 @@
 	<classname>add_workflow_tags</classname>
 	<systemupdate>false</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Workflow custom method to update assigned to of contacts on account save</description>
+	<filename>build/changeSets/workflow_contactassignedto.php</filename>
+	<classname>workflow_contactassignedto</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
 </updatesChangeLog>
