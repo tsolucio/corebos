@@ -660,33 +660,20 @@ function getFormValidate(divValidate)
 </div>
 <div  id="usersettings" class="drop_mnu_user" onmouseout="fnHideDrop('usersettings');" onmouseover="fnvshNrm('usersettings');"  style="width:110px;left:1226px;">
 	<table border=0 width="100%" border="0" cellpadding="0" cellspacing="0" >
-        <tr >
+		<tr>
 			<td style="padding-left:0px;padding-right:10px font-weight:bold"  nowrap> <a href="{$smarty.const.MAIN_HELP_PAGE}" target="_blank" class="drop_down_usersettings">{$APP.LNK_HELP}</a> </td>
-        </tr>
+		</tr>
 	</table>
 </div>
 <div  id="mainsettings" class="drop_mnu_user" onmouseout="fnHideDrop('mainsettings');" onmouseover="fnvshNrm('mainsettings');" style="width:110px;left:1226px;" >
 	<table border=0 width="100%" border="0" cellpadding="0" cellspacing="0" >
-        {foreach key=maintabs item=detail from=$HEADERS}
-				{if $maintabs eq "Settings"}
-				<tr><td style="padding-left:0px;padding-right:10px font-weight:bold"  nowrap><a href="index.php?module={$detail[0]}&action=index&parenttab=" class="drop_down_usersettings">{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}</a></td></tr>
-                                {/if}
-        {/foreach}
-{foreach item=ONDEMANDLINK from=$ONDEMANDLINKS}
-		{assign var="headerlink_href" value=$ONDEMANDLINK->linkurl}
-		{assign var="headerlink_label" value=$ONDEMANDLINK->linklabel}
-		{if $headerlink_label eq ''}
-			{assign var="headerlink_label" value=$headerlink_href}
-		{else}
-			{* Pickup the translated label provided by the module *}
-			{assign var="headerlink_label" value=$headerlink_label|@getTranslatedString:$ONDEMANDLINK->module()}
-		{/if}
-                                            {if $headerlink_label neq 'Profile' &&  $headerlink_label neq 'Plugin Setup'}
-
-						<tr><td><a href="{$headerlink_href}" class="drop_down_usersettings">{$headerlink_label|@getTranslatedString:$MODULE_NAME}</a></td></tr>
-                                            {/if}
-	{/foreach}
-        </table>
+		{foreach key=maintabs item=detail from=$HEADERS}
+			{if $maintabs eq "Settings"}
+			<tr><td style="padding-left:0px;padding-right:10px font-weight:bold"  nowrap><a href="index.php?module={$detail[0]}&action=index&parenttab=" class="drop_down_usersettings">{$detail[0]|@getTranslatedString:$detail[0]}</a></td></tr>
+			{/if}
+		{/foreach}
+		<tr><td style="padding-left:0px;padding-right:10px font-weight:bold"  nowrap><a href="index.php?module=Settings&action=index&parenttab=" class="drop_down_usersettings">{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}</a></td></tr>
+	</table>
 </div>
 <script type="text/javascript">
 {literal}
@@ -704,7 +691,6 @@ function vtiger_news(obj) {
 			}
 		}
 	);
-
 }
 {/literal}
 </script>
