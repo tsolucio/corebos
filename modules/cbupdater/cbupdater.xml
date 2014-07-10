@@ -77,4 +77,11 @@
 	<classname>workflow_contactassignedto</classname>
 	<systemupdate>false</systemupdate>
 </changeSet>
+<changeSet>
+    <author>joebordes</author>
+    <description>Custom field support on FAQ module</description>
+    <filename>build/changeSets/cffaq.php</filename>
+    <classname>cffaq</classname>
+    <systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

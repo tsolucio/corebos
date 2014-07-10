@@ -2171,6 +2171,21 @@
 		</data>
 	</table>
 
+	<table name="vtiger_faqcf">
+		<field name="faqid" type="I" size="19">
+			<key />
+			<default value="0" />
+		</field>
+		<opt platform="mysql">Engine=InnoDB</opt>
+	</table>
+
+	<table name="vtiger_faqcf" alter="true">
+		<constraint>ADD CONSTRAINT fk_1_vtiger_faqcf FOREIGN KEY (faqid) REFERENCES vtiger_faq(id) ON DELETE CASCADE</constraint>
+		<opt>Engine=InnoDB</opt>
+		<data>
+		</data>
+	</table>
+
 	<table name="vtiger_faqcomments">
 		<field name="commentid" type="I" size="19">
 			<key />
