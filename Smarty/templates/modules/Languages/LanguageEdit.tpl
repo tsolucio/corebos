@@ -114,6 +114,19 @@ function lang_changeEditTab(obj1, obj2, SelTab, unSelTab) {
 													<input value="{$APP.LBL_SAVE_BUTTON_LABEL}" class="crmButton small save" onclick="this.form.action.value='SaveLanguageFile'; this.form.parenttab.value='Settings'" type="submit"/>
 													<input type="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" class="crmButton small cancel" onclick="gotourl('index.php?action=ListPackages&module=Languages&parenttab=Settings')"/>
 												</div>
+                                                                                                   <div style="text-align:right;margin:3px;"> Select a filter: 
+                                                                                                    <select name='filter_translate' id='filter_translate' class="importBox" onchange='changeModule(this.form);'  >
+                                                                                                        <option value='none'> Select Filter </option>
+                                                                                                        <option value='all'> All </option>
+                                                                                                         <option value='new'> New </option>
+                                                                                                        <option value='not_translated'>Not Translated </option>
+                                                                                                        <option value='translated'> Translated</option>
+                                                                                                        <option value='fieldsnontranslated'>Fields Not Translated</option>
+                                                                                                        <option value='fieldstranslated'>Fields Translated</option>
+                                                                                                        <option value='rltranslated'> RL Translated</option>
+                                                                                                        <option value='rlnontranslated'>RL Not Translated</option>
+                                                                                                    </select>
+                                                                                             </div>
 
 												{if count($TRANSLATION_LIST_STRING) > 0 or count($TRANSLATION_LIST_STRING2) > 0}
 													{assign var = "has_multivalue_strings" value=true}
