@@ -197,7 +197,7 @@ function lang_changeEditTab(obj1, obj2, SelTab, unSelTab) {
 															    	<textarea style="width:100%" name="translate_value[{$string[2]}]" class="small">{if $string[3] eq 'new'}{$string[0]}{else}{$string[1]}{/if}</textarea>
 																{else}
 																	<input type="text" name="translate_value[{$string[2]}]" value="{if $string[3] eq 'new'}{$string[0]}{else}{$string[1]}{/if}" class="small" style="width:100%">
-																{/if}
+															{$string[3]} {$FILTER}	{/if}
 															</td>
 														</tr>
 														{/foreach}	
