@@ -152,6 +152,8 @@ function lang_changeEditTab(obj1, obj2, SelTab, unSelTab) {
                                                                                                                     <div style="width:30px;height:30px;background-color:#0276FD;"></div>RL NotTranslated</td>
 														<td width="33%"><div style="width:30px;height:30px;background-color:#FFC1C1;"></div>Fields Translated
                                                                                                                     <div style="width:30px;height:30px;background-color:#FF0000;"></div>Fields NotTranslated</td>
+                                                                                                                <td width="33%"><div style="width:30px;height:30px;background-color:#DADADA;"></div>Not Translated
+                                                                                                                    <div style="width:30px;height:30px;background-color:#FFF"></div>Translated</td>
                                                                                                                
                                                                                                     </tr>
 													<tr>
