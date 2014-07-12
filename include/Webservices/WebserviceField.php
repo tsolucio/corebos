@@ -78,7 +78,7 @@ class WebserviceField{
 
 		$this->readOnly = (isset($row['readonly']))? $row['readonly'] : 0;
 
-		if(array_key_exists('defaultvalue', $row)) {
+		if(is_array($row) && array_key_exists('defaultvalue', $row)) {
 			$this->setDefault($row['defaultvalue']);
 		}
 	}
