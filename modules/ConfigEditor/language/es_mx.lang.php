@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * 
  * ***********************************************************
 *  Module       : ConfigEditor
 *  Language     : ES Spanish
@@ -16,11 +15,10 @@
 *  License      : MPL 1.1
  ************************************************************************************/
 $mod_strings = Array (
-	
 	'ConfigEditor' => 'Editor de Configuración',
 	'LBL_CONFIG_EDITOR' => 'Editor de Config.inc.php',
 	'LBL_SETTINGS' => 'Parámetros',
-	'LBL_CONFIG_EDIT'=>'Editar la Configuración de vtiger CRM',
+	'LBL_CONFIG_EDIT'=>'Editar la Configuración',
 	'SINGLE_ConfigEditor' => 'Editor de Configuración',
 	'LBL_TRUE'=> 'verdadero',
 	'LBL_FALSE'=> 'Falso',
@@ -43,12 +41,12 @@ $mod_strings = Array (
 	'LBL_MAX_TEXT_LENGTH_IN_LISTVIEW'=>'Longitud de texto en vista de lista',
 	'LBL_MAX_ENTRIES_PER_PAGE_IN_LISTVIEW'=>'Entradas por página en vista de lista',
 	'LBL_CONFIG_FILE'=>'config.inc.php',
-	'LBL_CONFIG_EDIT_CAUTION_INFO' =>'Estás editando la configuración de vtiger CRM.',
+	'LBL_CONFIG_EDIT_CAUTION_INFO' =>'Estás editando la configuración.',
 	'LBL_DOUBLE_CHECK_INFO'=>'Por favor, revisa dos veces antes de salvar los valores.',
 	'LBL_HELP_INFO'=>"Esto se utiliza como correo de respuesta al notificar un usuario recién creado,
 					notificar de la asignación de un caso, otras notificaciones y recordatorios en general.",
 	'LBL_RESTRICTED_CHARACTERS'=>"Caracteres especiales como ' &#34 y ; no son permitidos",
-
+	'LBL_CORS_ENABLED_DOMAINS' => 'Dominios autorizados CORS',
 );
 
 ?>

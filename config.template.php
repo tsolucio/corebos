@@ -201,6 +201,9 @@ if(isset($default_timezone) && function_exists('date_default_timezone_set')) {
 /** minimum cron frequency -- In minutes */
 $MINIMUM_CRON_FREQUENCY = 15;
 
+// List of CORS Authorized Domains for Webservices
+$cors_enabled_domains = '';
+
 // Override with developer settings
 @include('config-dev.inc.php');
 

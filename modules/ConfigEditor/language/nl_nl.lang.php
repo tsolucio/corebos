@@ -32,11 +32,10 @@
  *********************************************************************************/
  
 $mod_strings = Array (
-	
 	'ConfigEditor' => 'ConfigEditor',
 	'LBL_CONFIG_EDITOR' => 'Configuratiebewerker',
 	'LBL_SETTINGS' => 'Instellingen',
-	'LBL_CONFIG_EDIT'=>'Bewerk de Configuratie van vtiger CRM',
+	'LBL_CONFIG_EDIT'=>'Bewerk de Configuratie',
 	'SINGLE_ConfigEditor' => 'ConfigEditor',
 	'LBL_TRUE'=> 'aan',
 	'LBL_FALSE'=> 'uit',
@@ -59,11 +58,11 @@ $mod_strings = Array (
 	'LBL_MAX_TEXT_LENGTH_IN_LISTVIEW'=>'Max. tekstlengte in lijsten',
 	'LBL_MAX_ENTRIES_PER_PAGE_IN_LISTVIEW'=>'Max. regels per pagina in de lijsten',
 	'LBL_CONFIG_FILE'=>'config.inc.php',
-	'LBL_CONFIG_EDIT_CAUTION_INFO' =>'U bewerkt momenteel de configuratieinstellingen van vtiger CRM.',
+	'LBL_CONFIG_EDIT_CAUTION_INFO' =>'U bewerkt momenteel de configuratieinstellingen.',
 	'LBL_DOUBLE_CHECK_INFO'=>'Controleer alles goed alvorens de waarden op te slaan.',
 	'LBL_HELP_INFO'=>"Dit wordt gebruikt als 'From e-mailadres' om een e-mail te sturen naar nieuw aangemaakte gebruikers met login credentials,
 					voor het sturen van e-mails naar ticket eigenaren over toegewezen tickets, e-mails met herinneringen en notificaties.",
-
+	'LBL_CORS_ENABLED_DOMAINS' => 'Domains authorized for CORS',
 );
 
 ?>

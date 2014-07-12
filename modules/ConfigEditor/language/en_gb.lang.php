@@ -12,7 +12,7 @@ $mod_strings = array(
 	'ConfigEditor' => 'Config Editor',
 	'LBL_CONFIG_EDITOR' => 'Configuration Editor',
 	'LBL_SETTINGS' => 'Settings',
-	'LBL_CONFIG_EDIT' => 'Edit the configuration details of vtiger CRM',
+	'LBL_CONFIG_EDIT' => 'Edit the configuration details',
 	'SINGLE_ConfigEditor' => 'Config Editor',
 	'LBL_TRUE' => 'true',
 	'LBL_FALSE' => 'false',
@@ -35,9 +35,10 @@ $mod_strings = array(
 	'LBL_MAX_TEXT_LENGTH_IN_LISTVIEW' => 'Max. text length in listview',
 	'LBL_MAX_ENTRIES_PER_PAGE_IN_LISTVIEW' => 'Max. entries per page in listview',
 	'LBL_CONFIG_FILE' => 'config.inc.php',
-	'LBL_CONFIG_EDIT_CAUTION_INFO' => 'You are editing the configuration details of vtiger CRM',
+	'LBL_CONFIG_EDIT_CAUTION_INFO' => 'You are editing the configuration details',
 	'LBL_DOUBLE_CHECK_INFO' => 'Please double check before saving the values',
 	'LBL_HELP_INFO' => 'This is the \'From email address\' used when sending an email to a new user informing them of their login credentials, sending an email to a trouble-ticket owner about the ticket assigned and when sending email reminders and notifications.',
-	'LBL_RESTRICTED_CHARACTERS' => 'Special characters like \' " and ; are not allowed'
+	'LBL_RESTRICTED_CHARACTERS' => 'Special characters like \' " and ; are not allowed',
+	'LBL_CORS_ENABLED_DOMAINS' => 'Domains authorized for CORS',
 );
 ?>

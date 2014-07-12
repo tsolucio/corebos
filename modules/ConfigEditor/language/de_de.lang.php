@@ -12,7 +12,7 @@ $mod_strings = Array (
 	'ConfigEditor' => 'Konfigurationseditor',
 	'LBL_CONFIG_EDITOR' => 'Konfigurations Editor',
 	'LBL_SETTINGS' => 'Einstellungen',
-	'LBL_CONFIG_EDIT'=>'Bearbeiten der vtiger CRM Konfigurationsdetails',
+	'LBL_CONFIG_EDIT'=>'Bearbeiten der Konfigurationsdetails',
 	'SINGLE_ConfigEditor' => 'Konfigurationseditor',
 	'LBL_TRUE'=> 'ja',
 	'LBL_FALSE'=> 'nein',
@@ -35,12 +35,12 @@ $mod_strings = Array (
 	'LBL_MAX_TEXT_LENGTH_IN_LISTVIEW'=>'Maximale Textlänge in der Listenansicht',
 	'LBL_MAX_ENTRIES_PER_PAGE_IN_LISTVIEW'=>'Maximale Einträge/Seite in der Listenansicht',
 	'LBL_CONFIG_FILE'=>'config.inc.php',
-	'LBL_CONFIG_EDIT_CAUTION_INFO' =>'Sie bearbeiten die Konfigurationsdateien von vtiger CRM. ',
+	'LBL_CONFIG_EDIT_CAUTION_INFO' =>'Sie bearbeiten die Konfigurationsdateien. ',
 	'LBL_DOUBLE_CHECK_INFO'=>'Bitte überprüfen Sie nochmals die Werte, bevor Sie die Änderungen speichern!',
 	'LBL_HELP_INFO'=>"Diese wird als 'Von E-Mail-Id' genutzt, 
 					um einen neuen Benutzer über seine Zugangsdaten zu informieren, 
 					falls Trouble Tickets einem Benutzer zugewiesen werden oder eine E-Mail als Erinnerung oder Benachrichtigung versendet wird. ",
-	
+	'LBL_CORS_ENABLED_DOMAINS' => 'Domains authorized for CORS',
 );
 
 ?>
