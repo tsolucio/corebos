@@ -84,4 +84,11 @@
     <classname>cffaq</classname>
     <systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+    <author>joebordes</author>
+    <description>Install Payment Control module</description>
+    <filename>build/changeSets/installcyp.php</filename>
+    <classname>installcyp</classname>
+    <systemupdate>false</systemupdate>
+</changeSet>
 </updatesChangeLog>
