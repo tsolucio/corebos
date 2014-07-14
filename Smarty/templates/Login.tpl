@@ -35,9 +35,8 @@
 			</div>
 		</div>
 	<div id="loginFooter">
-		<a href="http://www.evolutivo.it/" target="_blank"><img src="themes/login/images/icon_builder.png"></a>
-		<a href="http://www.evolutivo.it/index.php/comunita-vtiger" target="_blank"><img src="themes/login/images/icon_app.png"></a>
-		<a href="http://www.evolutivo.it/index.php/2011-05-02-12-33-35" target="_blank"><img src="themes/login/images/icon_more.png"></a>
+		<a href="http://corebos.org/" target="_blank"><img src="themes/login/images/corebosgrindbig.png" title="corebos.org"></a>
+		<a href="http://demo.corebos.it/" target="_blank"><img src="themes/login/images/coreboscrm.png" title="corebos demo"></a>
 </div>
 </div>
 
