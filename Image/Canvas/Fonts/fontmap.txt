@@ -19,16 +19,6 @@ Times New Roman,times.ttf
 Times New Roman Bold,timesbd.ttf
 Times New Roman Bold Italic,timesbi.ttf
 Times New Roman Italic,timesi.ttf
-Vera,Vera.ttf
-Vera Bold,VeraBd.ttf
-Vera Italic,VeraIt.ttf
-Vera Bold Italic,VeraBI.ttf
-Vera Mono,VeraMono.ttf
-Vera Bold,VeraMoBd.ttf
-Vera Italic,VeraMoIt.ttf
-Vera Bold Italic,VeraMoBI.ttf
-Vera Serif,VeraSe.ttf
-Vera Serif Bold,VeraSeBd.ttf
 Verdana,verdana.ttf
 Verdana Bold,verdanab.ttf
 Verdana Bold Italic,verdanaz.ttf

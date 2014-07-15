@@ -6,7 +6,7 @@
  * Class file containing a axis marker used for explicitly highlighting a point
  * (line) on the graph, based on an value specified on an axis.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -23,9 +23,10 @@
  * @package    Image_Graph
  * @subpackage Grid
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Line.php,v 1.11 2005/08/03 21:21:58 nosey Exp $
+ * @version    SVN: $Id: Line.php 291170 2009-11-23 03:50:22Z neufeind $
  * @link       http://pear.php.net/package/Image_Graph
  */
 
@@ -43,9 +44,10 @@ require_once 'Image/Graph/Grid.php';
  * @package    Image_Graph
  * @subpackage Grid
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: 0.7.2
+ * @version    Release: 0.8.0
  * @link       http://pear.php.net/package/Image_Graph
  */
 class Image_Graph_Axis_Marker_Line extends Image_Graph_Grid
@@ -62,6 +64,8 @@ class Image_Graph_Axis_Marker_Line extends Image_Graph_Grid
      * Sets the value of the line marker (value on the axis)
      *
      * @param double $value the value
+     *
+     * @return void
      */
     function setValue($value)
     {

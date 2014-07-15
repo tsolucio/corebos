@@ -5,7 +5,7 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Marker
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Value.php,v 1.10 2006/02/28 22:48:07 nosey Exp $
+ * @version    SVN: $Id: Value.php 291170 2009-11-23 03:50:22Z neufeind $
  * @link       http://pear.php.net/package/Image_Graph
  */
 
@@ -40,9 +41,10 @@ require_once 'Image/Graph/Marker.php';
  * @package    Image_Graph
  * @subpackage Marker
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: 0.7.2
+ * @version    Release: 0.8.0
  * @link       http://pear.php.net/package/Image_Graph
  */
 class Image_Graph_Marker_Value extends Image_Graph_Marker
@@ -71,7 +73,7 @@ class Image_Graph_Marker_Value extends Image_Graph_Marker
      */
     function Image_Graph_Marker_Value($useValue = IMAGE_GRAPH_VALUE_X)
     {
-        parent::Image_Graph_Marker();
+        parent::__construct();
         $this->_padding = array('left' => 2, 'top' => 2, 'right' => 2, 'bottom' => 2);
         $this->_useValue = $useValue;
         $this->_fillStyle = 'white';
@@ -81,7 +83,9 @@ class Image_Graph_Marker_Value extends Image_Graph_Marker
     /**
      * Sets the background fill style of the element
      *
-     * @param Image_Graph_Fill $background The background
+     * @param Image_Graph_Fill &$background The background
+     *
+     * @return void
      * @see Image_Graph_Fill
      */
     function setBackground(& $background)
@@ -93,6 +97,8 @@ class Image_Graph_Marker_Value extends Image_Graph_Marker
      * Sets the background color of the element
      *
      * @param mixed $color The color
+     *
+     * @return void
      */
     function setBackgroundColor($color)
     {
@@ -102,7 +108,8 @@ class Image_Graph_Marker_Value extends Image_Graph_Marker
     /**
      * Sets a data preprocessor for formatting the values
      *
-     * @param DataPreprocessor $dataPreprocessor The data preprocessor
+     * @param DataPreprocessor &$dataPreprocessor The data preprocessor
+     *
      * @return Image_Graph_DataPreprocessor The data preprocessor
      */
     function &setDataPreprocessor(& $dataPreprocessor)
@@ -114,8 +121,8 @@ class Image_Graph_Marker_Value extends Image_Graph_Marker
     /**
      * Get the value to display
      *
-     * @param array $values The values representing the data the marker 'points'
-     *   to
+     * @param array $values The values representing the data the marker 'points' to
+     *
      * @return string The display value, this is the pre-preprocessor value, to
      *   support for customized with multiple values. i.e show 'x = y' or '(x, y)'
      * @access private
@@ -146,8 +153,7 @@ class Image_Graph_Marker_Value extends Image_Graph_Marker
         case IMAGE_GRAPH_PCT_Y_TOTAL:
             if (isset($values['SUM_Y'])) {
                 $value = 100 * $values['Y'] / $values['SUM_Y'];
-            }
-            else {
+            } else {
                 $value = 0;
             }            
             break;
@@ -166,12 +172,14 @@ class Image_Graph_Marker_Value extends Image_Graph_Marker
     /**
      * Draw the marker on the canvas
      *
-     * @param int $x The X (horizontal) position (in pixels) of the marker on
+     * @param int   $x      The X (horizontal) position (in pixels) of the marker on
      *   the canvas
-     * @param int $y The Y (vertical) position (in pixels) of the marker on the
+     * @param int   $y      The Y (vertical) position (in pixels) of the marker on the
      *   canvas
      * @param array $values The values representing the data the marker 'points'
      *   to
+     *
+     * @return void
      * @access private
      */
     function _drawMarker($x, $y, $values = false)
@@ -198,11 +206,11 @@ class Image_Graph_Marker_Value extends Image_Graph_Marker
         $this->_getFillStyle();
         $this->_getBorderStyle();
         $this->_canvas->rectangle(
-        	array(
-        		'x0' => $x - $offsetX,
-            	'y0' => $y - $offsetY,
-            	'x1' => $x + $offsetX,
-            	'y1' => $y + $offsetY
+            array(
+                'x0' => $x - $offsetX,
+                'y0' => $y - $offsetY,
+                'x1' => $x + $offsetX,
+                'y1' => $y + $offsetY
             )
         );
 

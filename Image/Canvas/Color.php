@@ -1,31 +1,31 @@
 <?php
 /* vim: set expandtab tabstop=4 shiftwidth=4: */
-// +----------------------------------------------------------------------+
-// | PHP Version 4                                                        |
-// +----------------------------------------------------------------------+
-// | Copyright (c) 1997-2003 The PHP Group                                |
-// +----------------------------------------------------------------------+
-// | This source file is subject to version 2.02 of the PHP license,      |
-// | that is bundled with this package in the file LICENSE, and is        |
-// | available at through the world-wide-web at                           |
-// | http://www.php.net/license/2_02.txt.                                 |
-// | If you did not receive a copy of the PHP license and are unable to   |
-// | obtain it through the world-wide-web, please send a note to          |
-// | license@php.net so we can mail you a copy immediately.               |
-// +----------------------------------------------------------------------+
-// | Author: Stefan Neufeind <pear.neufeind@speedpartner.de>              |
-// +----------------------------------------------------------------------+
-//
-// $Id: Color.php,v 1.3 2005/09/14 17:25:46 nosey Exp $
-
 /**
-* Class for color-handling
-*
-* @author   Stefan Neufeind <pear.neufeind@speedpartner.de>
-* @package  Image_Canvas
-* @category images
-* @license  The PHP License, version 2.02
-*/
+ * Image_Canvas
+ *
+ * Canvas based creation of images to facilitate different output formats
+ *
+ * PHP versions 4 and 5
+ *
+ * LICENSE: This library is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU Lesser General Public License as published by
+ * the Free Software Foundation; either version 2.1 of the License, or (at your
+ * option) any later version. This library is distributed in the hope that it
+ * will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
+ * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser
+ * General Public License for more details. You should have received a copy of
+ * the GNU Lesser General Public License along with this library; if not, see
+ * <http://www.gnu.org/licenses/>
+ *
+ * @category  Images
+ * @package   Image_Canvas
+ * @author    Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @author    Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright 2003-2009 The PHP Group
+ * @license   http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
+ * @version   SVN: $Id$
+ * @link      http://pear.php.net/package/Image_Canvas
+ */
 
 /**
 * Color class to be extended; from package PEAR::Image_Color
@@ -50,11 +50,12 @@ class Image_Canvas_Color extends Image_Color
     * Userdefined color specifications get translated into
     * an array of rgb values.
     *
-    * @param    resource        GD-resource
-    * @param    mixed           any color representation supported by color2RGB()
-    * @return   resource        Image color handle
-    * @see      color2RGB()
-    * @access   public
+    * @param resource &$img  GD-resource
+    * @param mixed    $color Any color representation supported by color2RGB()
+    *
+    * @return resource Image color handle
+    * @see color2RGB()
+    * @access public
     * @static
     */
     function allocateColor(&$img, $color)
@@ -74,9 +75,10 @@ class Image_Canvas_Color extends Image_Color
     * Userdefined color specifications get translated into
     * an array of rgb values.
     *
-    * @param    mixed         any color representation supported by Image_Canvas_Color::color2RGB()
-    * @return   array         Array of 4 ints (RGBA-representation)
-    * @access   public
+    * @param mixed $color Any color representation supported by Image_Canvas_Color::color2RGB()
+    *
+    * @return array Array of 4 ints (RGBA-representation)
+    * @access public
     * @static
     */
     function color2RGB($color)
@@ -120,7 +122,7 @@ class Image_Canvas_Color extends Image_Color
                              (int) $tempColor[2],
                              $alpha);
             }
-            if (strpos($color,'%') !== false) {
+            if (strpos($color, '%') !== false) {
                 $tempColor = parent::percentageColor2RGB($color);
                 return array((int) $tempColor[0],
                              (int) $tempColor[1],
@@ -143,9 +145,10 @@ class Image_Canvas_Color extends Image_Color
     *   Given a degree, you can get the range of colors between one color and
     *   another color.
     *
-    *   @access     public
-    *   @param      string    How much each 'step' between the colors we should take.
-    *   @return     array     Returns an array of all the colors, one element for each color.
+    *   @param string $degrees How much each 'step' between the colors we should take.
+    *
+    *   @return array Array of all the colors, one element for each color.
+    *   @access public
     */
     function getRange ($degrees)
     {
@@ -153,14 +156,14 @@ class Image_Canvas_Color extends Image_Color
 
         // now add alpha-channel information
         $steps = count($tempColors);
-        for($counter=0;$counter<$steps;$counter++) {
+        for ($counter=0;$counter<$steps;$counter++) {
             $tempColors[$counter] = parent::hex2rgb($tempColors[$counter]);
             unset($tempColors[$counter]['hex']);
             $tempColors[$counter][3] = (int) round(
-                                         (((float) $this->color1[3]*($steps-$counter))+
-                                          ((float) $this->color2[3]*($counter))
-                                         ) / $steps
-                                                  );
+                (((float) $this->color1[3]*($steps-$counter))+
+                 ((float) $this->color2[3]*($counter))
+                ) / $steps
+            );
         }
 
         return $tempColors;
@@ -169,8 +172,10 @@ class Image_Canvas_Color extends Image_Color
     /**
     * Internal method to correctly set the colors.
     *
-    * @param    mixed         color 1
-    * @param    mixed         color 2
+    * @param mixed $col1 color 1
+    * @param mixed $col2 color 2
+    *
+    * @return void
     * @access   private
     */
     function _setColors ( $col1, $col2 )

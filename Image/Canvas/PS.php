@@ -3,9 +3,9 @@
 /* vim: set expandtab tabstop=4 shiftwidth=4 softtabstop=4: */
 
 /**
- * Class for handling output in PDF format.
+ * Class for handling output in Postscript format.
  * 
- * Requires PHP extension PDFlib
+ * Requires PHP extension pslib
  *
  * PHP versions 4 and 5
  *
@@ -40,7 +40,7 @@ require_once 'Image/Canvas.php';
 require_once 'Image/Canvas/Color.php';
 
 /**
- * PDF Canvas class.
+ * PostScript Canvas class.
  * 
  * @category  Images
  * @package   Image_Canvas
@@ -51,29 +51,29 @@ require_once 'Image/Canvas/Color.php';
  * @version   Release: @package_version@
  * @link      http://pear.php.net/package/Image_Canvas
  */
-class Image_Canvas_PDF extends Image_Canvas
+class Image_Canvas_PS extends Image_Canvas
 {
 
     /**
-     * The PDF document
+     * The PostScript document
      * @var resource
      * @access private
      */
-    var $_pdf;
+    var $_ps;
 
     /**
-     * The major version of PDFlib
+     * The major version of pslib
      * @var int
      * @access private
      */
-    var $_pdflib;
+    var $_pslib;
 
     /**
      * The font
      * @var mixed
      * @access private
      */
-    var $_pdfFont = false;
+    var $_psFont = false;
 
     /**
      * The width of the page
@@ -90,7 +90,7 @@ class Image_Canvas_PDF extends Image_Canvas
     var $_pageHeight;
 
     /**
-     * Create the PDF canvas.
+     * Create the PostScript canvas.
      *
      * Parameters available:
      *
@@ -105,11 +105,11 @@ class Image_Canvas_PDF extends Image_Canvas
      * 'orientation' Specifies the paper orientation, default is 'portrait' and
      * 'landscape' is also supported.
      *
-     * 'creator' The creator tag of the PDF/graph
+     * 'creator' The creator tag of the PostScript/graph
      *
-     * 'author' The author tag of the PDF/graph
+     * 'author' The author tag of the PostScript/graph
      *
-     * 'title' The title tag of the PDF/graph
+     * 'title' The title tag of the PostScript/graph
      *
      * 'width' The width of the graph on the page
      *
@@ -119,13 +119,10 @@ class Image_Canvas_PDF extends Image_Canvas
      *
      * 'top' The top offset of the graph on the page
      *
-     * 'filename' The PDF file to open/add page to, using 'filename' requires
-     * the commercial version of PDFlib (http://www.pdflib.com/), this has for
-     * obvious ($ 450) reasons not been tested
+     * 'filename' The PostScript file to open/add page to, using 'filename' requires
+     * 'ps' An existing pslib PostScript document to add the page to
      *
-     * 'pdf' An existing PDFlib PDF document to add the page to
-     *
-     * 'add_page' (true/false) Used together with 'pdf', to specify whether the
+     * 'add_page' (true/false) Used together with 'ps', to specify whether the
      * canvas should add a new graph page (true) or create the graph on the
      * current page (false), default is 'true'
      *
@@ -133,21 +130,21 @@ class Image_Canvas_PDF extends Image_Canvas
      * omitted the page is created using dimensions of width x height, and if
      * width and height are omitted the page dimensions are used for the graph.
      *
-     * If 'pdf' is specified, 'filename', 'creator', 'author' and 'title' has no
+     * If 'ps' is specified, 'filename', 'creator', 'author' and 'title' has no
      * effect.
      *
      * 'left' and 'top' are overridden by 'align'
      *
      * It is required either to specify 'width' & 'height' or 'page'.
      *
-     * The PDF format/PDFlib has some limitations on the capabilities, which
-     * means some functionality available using other canvass (fx. alpha
-     * blending and gradient fills) are not supported with PDF (see Canvas.txt
-     * in the docs/ folder for further details)
+     * The PostScript format/pslib has some limitations on the capabilities,
+     * which means some functionality available using other canvass (fx. alpha
+     * blending and gradient fills) are not supported with PostScript
+     * (see Canvas.txt in the docs/ folder for further details)
      *
      * @param array $param Parameter array
      */
-    function Image_Canvas_PDF($param)
+    function Image_Canvas_PS($param)
     {
         if (isset($param['page'])) {
             switch (strtoupper($param['page'])) {
@@ -228,6 +225,8 @@ class Image_Canvas_PDF extends Image_Canvas
             }
         }
 
+        $this->setDefaultFont(array('name' => 'Helvetica', 'color' => 'black', 'size' => 9));
+
         if ((isset($param['orientation'])) && (strtoupper($param['orientation']) == 'LANDSCAPE')) {
             $w = $this->_pageWidth;
             $this->_pageWidth = $this->_pageHeight;
@@ -303,33 +302,33 @@ class Image_Canvas_PDF extends Image_Canvas
         }
 
         $addPage = true;
-        if ((isset($param['pdf'])) && (is_resource($param['pdf']))) {
-            $this->_pdf =& $param['pdf'];
+        if ((isset($param['ps'])) && (is_resource($param['ps']))) {
+            $this->_ps =& $param['ps'];
             if ((isset($param['add_page'])) && ($param['add_page'] === false)) {
                 $addPage = false;
             }
         } else {
-            $this->_pdf = pdf_new();
+            $this->_ps = ps_new();
 
             if (isset($param['filename'])) {
-                pdf_open_file($this->_pdf, $param['filename']);
+                ps_open_file($this->_ps, $param['filename']);
             } else {
-                pdf_open_file($this->_pdf, '');
+                ps_open_file($this->_ps);
             }
 
-            pdf_set_parameter($this->_pdf, 'warning', 'true');
+            ps_set_parameter($this->_ps, 'warning', 'true');
 
-            pdf_set_info($this->_pdf, 'Creator', (isset($param['creator']) ? $param['creator'] : 'PEAR::Image_Canvas'));
-            pdf_set_info($this->_pdf, 'Author', (isset($param['author']) ? $param['author'] : 'Jesper Veggerby'));
-            pdf_set_info($this->_pdf, 'Title', (isset($param['title']) ? $param['title'] : 'Image_Canvas'));
+            ps_set_info($this->_ps, 'Creator', (isset($param['creator']) ? $param['creator'] : 'PEAR::Image_Canvas'));
+            ps_set_info($this->_ps, 'Author', (isset($param['author']) ? $param['author'] : 'Jesper Veggerby'));
+            ps_set_info($this->_ps, 'Title', (isset($param['title']) ? $param['title'] : 'Image_Canvas'));
         }
 
         if ($addPage) {
-            pdf_begin_page($this->_pdf, $this->_pageWidth, $this->_pageHeight);
+            ps_begin_page($this->_ps, $this->_pageWidth, $this->_pageHeight);
         }
         $this->_reset();
 
-        $this->_pdflib = $this->_version();
+        $this->_pslib = $this->_version();
     }
 
     /**
@@ -380,7 +379,7 @@ class Image_Canvas_PDF extends Image_Canvas
     }
 
     /**
-     * Get the PDF linestyle
+     * Get the PostScript linestyle
      *
      * @param mixed $lineStyle The line style to return, false if the one
      *   explicitly set
@@ -399,24 +398,20 @@ class Image_Canvas_PDF extends Image_Canvas
         }
         
         if (is_array($lineStyle)) {
-            // TODO Implement linestyles in PDFlib (using pdf_setcolor(.., 'pattern'...); ?
+            // TODO Implement linestyles in pslib (using ps_setcolor(.., 'pattern'...); ?
             reset($lineStyle);
             $lineStyle = current($lineStyle);
         } 
 
         $color = $this->_color($lineStyle);
 
-        pdf_setlinewidth($this->_pdf, $this->_thickness);
-        if ($this->_pdflib < 4) {
-            pdf_setrgbcolor_stroke($this->_pdf, $color[0]/255, $color[1]/255, $color[2]/255);
-        } else {
-            pdf_setcolor($this->_pdf, 'stroke', 'rgb', $color[0], $color[1], $color[2], 0);
-        }
+        ps_setlinewidth($this->_ps, $this->_thickness);
+        ps_setcolor($this->_ps, 'stroke', 'rgb', $color[0], $color[1], $color[2], 0);
         return true;
     }
 
     /**
-     * Set the PDF fill style
+     * Set the PostScript fill style
      *
      * @param mixed $fillStyle The fillstyle to return, false if the one
      *   explicitly set
@@ -436,30 +431,25 @@ class Image_Canvas_PDF extends Image_Canvas
 
         $color = $this->_color($fillStyle);
 
-        if ($this->_pdflib < 4) {
-            pdf_setrgbcolor_fill($this->_pdf, $color[0]/255, $color[1]/255, $color[2]/255);
-        } else {
-            pdf_setcolor($this->_pdf, 'fill', 'rgb', $color[0], $color[1], $color[2], 0);
-        }
+        ps_setcolor($this->_ps, 'fill', 'rgb', $color[0], $color[1], $color[2], 0);
         return true;
     }
 
     /**
-     * Set the PDF font
-     *
-     * @access private
+     * Set the PostScript font
      *
      * @return void
+     * @access private
      */
     function _setFont()
     {
-        $this->_pdfFont = false;
+        $this->_psFont = false;
         if (isset($this->_font['name'])) {
-            pdf_set_parameter($this->_pdf, 'FontOutline', $this->_font['name'] . '=' . $this->_font['file']);
-            $this->_pdfFont = pdf_findfont($this->_pdf, $this->_font['name'], $this->_font['encoding'], 1);
+            ps_set_parameter($this->_ps, 'FontOutline', $this->_font['name'] . '=' . $this->_font['file']);
+            $this->_psFont = ps_findfont($this->_ps, $this->_font['name'], $this->_font['encoding'], $this->_font['embed']);
 
-            if ($this->_pdfFont) {
-                pdf_setfont($this->_pdf, $this->_pdfFont, $this->_font['size']);
+            if ($this->_psFont) {
+                ps_setfont($this->_ps, $this->_psFont, $this->_font['size']);
                 $this->_setFillStyle($this->_font['color']);
             }
         } else {
@@ -470,7 +460,7 @@ class Image_Canvas_PDF extends Image_Canvas
     /**
      * Sets an image that should be used for filling.
      *
-     * Image filling is not supported with PDF, filling 'transparent'
+     * Image filling is not supported with PostScript, filling 'transparent'
      *
      * @param string $filename The filename of the image to fill with
      *
@@ -484,7 +474,7 @@ class Image_Canvas_PDF extends Image_Canvas
     /**
      * Sets a gradient fill
      *
-     * Gradient filling is not supported with PDF, end color used as solid fill.
+     * Gradient filling is not supported with PostScript, end color used as solid fill.
      *
      * @param array $gradient Gradient fill options
      *
@@ -520,7 +510,11 @@ class Image_Canvas_PDF extends Image_Canvas
         }
 
         if (!isset($this->_font['encoding'])) {
-            $this->_font['encoding'] = 'winansi';
+            $this->_font['encoding'] = null;
+        }
+
+        if ($this->_font['name'] == 'Helvetica') {
+            $this->_font['embed'] = 0;
         }
 
         if (!isset($this->_font['color'])) {
@@ -538,7 +532,7 @@ class Image_Canvas_PDF extends Image_Canvas
      */
     function _reset()
     {
-        pdf_initgraphics($this->_pdf);
+        // ps_initgraphics($this->_ps);
         parent::_reset();
     }
 
@@ -560,9 +554,9 @@ class Image_Canvas_PDF extends Image_Canvas
     {
         $color = (isset($params['color']) ? $params['color'] : false);
         if ($this->_setLineStyle($color)) {
-            pdf_moveto($this->_pdf, $this->_getX($params['x0']), $this->_getY($params['y0']));
-            pdf_lineto($this->_pdf, $this->_getX($params['x1']), $this->_getY($params['y1']));
-            pdf_stroke($this->_pdf);
+            ps_moveto($this->_ps, $this->_getX($params['x0']), $this->_getY($params['y0']));
+            ps_lineto($this->_ps, $this->_getX($params['x1']), $this->_getY($params['y1']));
+            ps_stroke($this->_ps);
         }
         parent::line($params);
     }
@@ -593,12 +587,12 @@ class Image_Canvas_PDF extends Image_Canvas
         $first = true;
         foreach ($this->_polygon as $point) {
             if ($first === true) {
-                pdf_moveto($this->_pdf, $point['X'], $point['Y']);
+                ps_moveto($this->_ps, $point['X'], $point['Y']);
                 $first = $point;
             } else {
                 if (isset($last['P1X'])) {
-                    pdf_curveto(
-                        $this->_pdf,
+                    ps_curveto(
+                        $this->_ps,
                         $last['P1X'],
                         $last['P1Y'],
                         $last['P2X'],
@@ -607,8 +601,8 @@ class Image_Canvas_PDF extends Image_Canvas
                         $point['Y']
                     );
                 } else {
-                    pdf_lineto(
-                        $this->_pdf,
+                    ps_lineto(
+                        $this->_ps,
                         $point['X'],
                         $point['Y']
                     );
@@ -619,8 +613,8 @@ class Image_Canvas_PDF extends Image_Canvas
 
         if ($connectEnds) {
             if (isset($last['P1X'])) {
-                pdf_curveto(
-                    $this->_pdf,
+                ps_curveto(
+                    $this->_ps,
                     $last['P1X'],
                     $last['P1Y'],
                     $last['P2X'],
@@ -629,8 +623,8 @@ class Image_Canvas_PDF extends Image_Canvas
                     $first['Y']
                 );
             } else {
-                pdf_lineto(
-                    $this->_pdf,
+                ps_lineto(
+                    $this->_ps,
                     $first['X'],
                     $first['Y']
                 );
@@ -638,11 +632,11 @@ class Image_Canvas_PDF extends Image_Canvas
         }
 
         if (($line) && ($fill)) {
-            pdf_fill_stroke($this->_pdf);
+            ps_fill_stroke($this->_ps);
         } elseif ($line) {
-            pdf_stroke($this->_pdf);
+            ps_stroke($this->_ps);
         } elseif ($fill) {
-            pdf_fill($this->_pdf);
+            ps_fill($this->_ps);
         }
         parent::polygon($params);
     }
@@ -674,13 +668,13 @@ class Image_Canvas_PDF extends Image_Canvas
         $line = $this->_setLineStyle($lineColor);
         $fill = $this->_setFillStyle($fillColor);
         if (($line) || ($fill)) {
-            pdf_rect($this->_pdf, min($x0, $x1), min($y0, $y1), abs($x1 - $x0), abs($y1 - $y0));
+            ps_rect($this->_ps, min($x0, $x1), min($y0, $y1), abs($x1 - $x0), abs($y1 - $y0));
             if (($line) && ($fill)) {
-                pdf_fill_stroke($this->_pdf);
+                ps_fill_stroke($this->_ps);
             } elseif ($line) {
-                pdf_stroke($this->_pdf);
+                ps_stroke($this->_ps);
             } elseif ($fill) {
-                pdf_fill($this->_pdf);
+                ps_fill($this->_ps);
             }
         }
         parent::rectangle($params);
@@ -714,29 +708,29 @@ class Image_Canvas_PDF extends Image_Canvas
         $fill = $this->_setFillStyle($fillColor);
         if (($line) || ($fill)) {
             if ($rx == $ry) {
-                pdf_circle($this->_pdf, $this->_getX($x), $this->_getY($y), $rx);
+                ps_circle($this->_ps, $this->_getX($x), $this->_getY($y), $rx);
             } else {
-                pdf_moveto($this->_pdf, $this->_getX($x - $rx), $this->_getY($y));
-                pdf_curveto(
-                    $this->_pdf,
+                ps_moveto($this->_ps, $this->_getX($x - $rx), $this->_getY($y));
+                ps_curveto(
+                    $this->_ps,
                     $this->_getX($x - $rx), $this->_getY($y),
                     $this->_getX($x - $rx), $this->_getY($y - $ry),
                     $this->_getX($x), $this->_getY($y - $ry)
                 );
-                pdf_curveto(
-                    $this->_pdf,
+                ps_curveto(
+                    $this->_ps,
                     $this->_getX($x), $this->_getY($y - $ry),
                     $this->_getX($x + $rx), $this->_getY($y - $ry),
                     $this->_getX($x + $rx), $this->_getY($y)
                 );
-                pdf_curveto(
-                    $this->_pdf,
+                ps_curveto(
+                    $this->_ps,
                     $this->_getX($x + $rx), $this->_getY($y),
                     $this->_getX($x + $rx), $this->_getY($y + $ry),
                     $this->_getX($x), $this->_getY($y + $ry)
                 );
-                pdf_curveto(
-                    $this->_pdf,
+                ps_curveto(
+                    $this->_ps,
                     $this->_getX($x), $this->_getY($y + $ry),
                     $this->_getX($x - $rx), $this->_getY($y + $ry),
                     $this->_getX($x - $rx), $this->_getY($y)
@@ -744,11 +738,11 @@ class Image_Canvas_PDF extends Image_Canvas
             }
 
             if (($line) && ($fill)) {
-                pdf_fill_stroke($this->_pdf);
+                ps_fill_stroke($this->_ps);
             } elseif ($line) {
-                pdf_stroke($this->_pdf);
+                ps_stroke($this->_ps);
             } elseif ($fill) {
-                pdf_fill($this->_pdf);
+                ps_fill($this->_ps);
             }
         }
         parent::ellipse($params);
@@ -786,7 +780,7 @@ class Image_Canvas_PDF extends Image_Canvas
         $fillColor = (isset($params['fill']) ? $params['fill'] : false);
         $lineColor = (isset($params['line']) ? $params['line'] : false);
 
-        // TODO Implement PDFLIB::pieSlice()
+        // TODO Implement pslib::pieSlice()
         parent::pieslice($params);
     }
 
@@ -799,10 +793,10 @@ class Image_Canvas_PDF extends Image_Canvas
      */
     function textWidth($text)
     {
-        if ($this->_pdfFont === false) {
+        if ($this->_psFont === false) {
              return $this->_font['size'] * 0.7 * strlen($text);
         } else {
-            return pdf_stringwidth($this->_pdf, $text, $this->_pdfFont, $this->_font['size']);
+            return ps_stringwidth($this->_ps, $text, $this->_psFont, $this->_font['size']);
         }
     }
 
@@ -879,7 +873,7 @@ class Image_Canvas_PDF extends Image_Canvas
             $color = $this->_font['color'];
         }
 
-        pdf_show_xy($this->_pdf, $text, $x, $y);
+        ps_show_xy($this->_ps, $text, $x, $y);
 
         parent::addText($params);
     }
@@ -914,9 +908,9 @@ class Image_Canvas_PDF extends Image_Canvas
             $type = 'jpeg';
         }
 
-        $image = pdf_load_image($this->_pdf, $type, realpath($filename), '');
-        $width_ = pdf_get_value($this->_pdf, 'imagewidth', $image);
-        $height_ = pdf_get_value($this->_pdf, 'imageheight', $image);
+        $image = ps_open_image_file($this->_ps, $type, realpath($filename), '');
+        $width_ = ps_get_value($this->_ps, 'imagewidth', $image);
+        $height_ = ps_get_value($this->_ps, 'imageheight', $image);
 
         $outputWidth = ($width !== false ? $width : $width_);
         $outputHeight = ($height !== false ? $height : $height_);
@@ -951,8 +945,8 @@ class Image_Canvas_PDF extends Image_Canvas
             $scale = max(($height/$height_), ($width/$width_));
         }   
 
-        pdf_place_image($this->_pdf, $image, $x, $y, $scale);
-        pdf_close_image($this->_pdf, $image);
+        ps_place_image($this->_ps, $image, $x, $y, $scale);
+        ps_close_image($this->_ps, $image);
         
         parent::image($params);
     }
@@ -968,18 +962,18 @@ class Image_Canvas_PDF extends Image_Canvas
     function show($param = false)
     {
         parent::show($param);
-        pdf_end_page($this->_pdf);
-        pdf_close($this->_pdf);
+        ps_end_page($this->_ps);
+        ps_close($this->_ps);
 
-        $buf = pdf_get_buffer($this->_pdf);
+        $buf = ps_get_buffer($this->_ps);
         $len = strlen($buf);
 
-        header('Content-type: application/pdf');
+        header('Content-type: application/postscript');
         header('Content-Length: ' . $len);
-        header('Content-Disposition: inline; filename=image_graph.pdf');
+        header('Content-Disposition: inline; filename=image_graph.ps');
         print $buf;
 
-        pdf_delete($this->_pdf);
+        ps_delete($this->_ps);
     }
 
     /**
@@ -993,18 +987,21 @@ class Image_Canvas_PDF extends Image_Canvas
     function save($param = false)
     {
         parent::save($param);
-        pdf_end_page($this->_pdf);
-        pdf_close($this->_pdf);
+        ps_end_page($this->_ps);
+        ps_close($this->_ps);
 
-        $buf = pdf_get_buffer($this->_pdf);
-        $len = strlen($buf);
+        if ($param['filename'] == "") {
+            $buf = ps_get_buffer($this->_ps);
+            $len = strlen($buf);
 
-        $fp = @fopen($param['filename'], 'wb');
-        if ($fp) {
-            fwrite($fp, $buf, strlen($buf));
-            fclose($fp);
+            $fp = @fopen($param['filename'], 'wb');
+            if ($fp) {
+                fwrite($fp, $buf, strlen($buf));
+                fclose($fp);
+            }
         }
-        pdf_delete($this->_pdf);
+
+        ps_delete($this->_ps);
     }
     
     /**
@@ -1030,26 +1027,27 @@ class Image_Canvas_PDF extends Image_Canvas
     }    
 
     /**
-     * Check which major version of PDFlib is installed
+     * Check which major version of pslib is installed
      *
-     * @return int The mahor version number of PDFlib
+     * @return int The mahor version number of pslib
      * @access private
      */
     function _version()
     {
         $result = false;
         $version = '';
-        if (function_exists('pdf_get_majorversion')) {
-            $version = pdf_get_majorversion();
-        } else if (function_exists('pdf_get_value')) {
-            $version = pdf_get_value($this->_pdf, 'major', 0);                
+        if (function_exists('ps_get_majorversion')) {
+            $version = ps_get_majorversion();
+        } else if (function_exists('ps_get_value')) {
+            $version = ps_get_value($this->_ps, 'major', 0);                
         } else {
             ob_start();
             phpinfo(8);
             $php_info = ob_get_contents();
             ob_end_clean();
 
-            if (preg_match("/<td[^>]*>PDFlib GmbH Version *<\/td><td[^>]*>([^<]*)<\/td>/", $php_info, $result)) {
+            if (preg_match("/<td[^>]*>pslib Version *<\/td><td[^>]*>([^<]*)<\/td>/", $php_info, $result)
+            ) {
                 $version = $result[1];
             }
         }               

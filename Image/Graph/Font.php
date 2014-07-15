@@ -5,7 +5,7 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Text
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Font.php,v 1.8 2005/08/24 20:35:55 nosey Exp $
+ * @version    SVN: $Id: Font.php 291170 2009-11-23 03:50:22Z neufeind $
  * @link       http://pear.php.net/package/Image_Graph
  */
 
@@ -40,9 +41,10 @@ require_once 'Image/Graph/Common.php';
  * @package    Image_Graph
  * @subpackage Text
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: 0.7.2
+ * @version    Release: 0.8.0
  * @link       http://pear.php.net/package/Image_Graph
  * @abstract
  */
@@ -79,15 +81,18 @@ class Image_Graph_Font extends Image_Graph_Common
 
     /**
      * Image_Graph_Font [Constructor]
+     *
+     * @param string $name Font name
+     * @param int    $size Font size
      */
     function Image_Graph_Font($name = false, $size = false)
     {
-        parent::Image_Graph_Common();
+        parent::__construct();
         if ($name !== false) {
-        	$this->_name = $name;
+            $this->_name = $name;
         }
         if ($size !== false) {
-        	$this->_size = $size;
+            $this->_size = $size;
         }
     }
 
@@ -95,18 +100,22 @@ class Image_Graph_Font extends Image_Graph_Common
      * Set the color of the font
      *
      * @param mixed $color The color object of the Font
+     *
+     * @return void
      */
     function setColor($color)
     {
         $this->_color = $color;
     }
 
-	/**
+    /**
      * Set the angle slope of the output font.
      *
      * 0 = normal, 90 = bottom and up, 180 = upside down, 270 = top and down
      *
      * @param int $angle The angle in degrees to slope the text
+     *
+     * @return void
      */
     function setAngle($angle)
     {
@@ -117,6 +126,8 @@ class Image_Graph_Font extends Image_Graph_Common
      * Set the size of the font
      *
      * @param int $size The size in pixels of the font
+     *
+     * @return void
      */
     function setSize($size)
     {
@@ -125,6 +136,8 @@ class Image_Graph_Font extends Image_Graph_Common
     
     /**
      * Get the font 'array'
+     *
+     * @param array $options Font options (optional)
      *
      * @return array The font 'summary' to pass to the canvas
      * @access private
@@ -136,7 +149,7 @@ class Image_Graph_Font extends Image_Graph_Common
         }
         
         if ($this->_name !== false) {
-        	$options['name'] = $this->_name;
+            $options['name'] = $this->_name;
         }
         
         if (!isset($options['color'])) {

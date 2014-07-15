@@ -5,7 +5,7 @@
 /**
  * Image_Graph - Main class for the graph creation.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -18,13 +18,14 @@
  * to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
  * 02111-1307 USA
  *
- * @category   Images
- * @package    Image_Graph
- * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
- * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Graph.php,v 1.58 2005/11/27 18:48:05 nosey Exp $
- * @link       http://pear.php.net/package/Image_Graph
+ * @category  Images
+ * @package   Image_Graph
+ * @author    Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @author    Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright 2003-2009 The PHP Group
+ * @license   http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
+ * @version   SVN: $Id: Graph.php 291756 2009-12-06 02:55:46Z neufeind $
+ * @link      http://pear.php.net/package/Image_Graph
  */
 
 
@@ -55,13 +56,14 @@ require_once 'Image/Graph/Constants.php';
  * This class also handles coordinates and the correct managment of setting the
  * correct coordinates on child elements.
  *
- * @category   Images
- * @package    Image_Graph
- * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
- * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: 0.7.2
- * @link       http://pear.php.net/package/Image_Graph
+ * @category  Images
+ * @package   Image_Graph
+ * @author    Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @author    Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright 2003-2009 The PHP Group
+ * @license   http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
+ * @version   Release: 0.8.0
+ * @link      http://pear.php.net/package/Image_Graph
  */
 class Image_Graph extends Image_Graph_Element
 {
@@ -87,7 +89,7 @@ class Image_Graph extends Image_Graph_Element
      * 
      * Fx.:
      * 
-     * $Graph =& new Image_Graph(400, 300);
+     * $Graph = new Image_Graph(400, 300);
      * 
      * or using the factory method:
      * 
@@ -112,28 +114,28 @@ class Image_Graph extends Image_Graph_Element
      * $Graph =& Image_Graph::factory('graph', array(array('width' => 400,
      * 'height' => 300, 'canvas' => 'jpg')));
      * 
-     * NB! In thïs case remember the "double" array (see {@link Image_Graph::
+     * NB! In thï¿½s case remember the "double" array (see {@link Image_Graph::
      * factory()})
      * 
      * 2) Use the canvas specified, pass a valid Image_Canvas as
      * parameter. Remember to pass by reference, i. e. &amp;$canvas, fx.:
      *
-     * $Graph =& new Image_Graph($Canvas);
+     * $Graph = new Image_Graph($Canvas);
      *
      * or using the factory method:
      *
      * $Graph =& Image_Graph::factory('graph', $Canvas));
      *
-     * @param mixed $params The width of the graph, an indexed array
-     * describing a new canvas or a valid {@link Image_Canvas} object
-     * @param int $height The height of the graph in pixels
-     * @param bool $createTransparent Specifies whether the graph should be
+     * @param mixed $params            The width of the graph, an indexed array
+     *   describing a new canvas or a valid {@link Image_Canvas} object
+     * @param int   $height            The height of the graph in pixels
+     * @param bool  $createTransparent Specifies whether the graph should be
      *   created with a transparent background (fx for PNG's - note: transparent
      *   PNG's is not supported by Internet Explorer!)
      */
     function Image_Graph($params, $height = false, $createTransparent = false)
     {
-        parent::Image_Graph_Element();
+        parent::__construct();
 
         $this->setFont(Image_Graph::factory('Image_Graph_Font'));
 
@@ -202,7 +204,8 @@ class Image_Graph extends Image_Graph_Element
      * 'outputs' are required. Invoke this method after calls to {@link
      * Image_Graph:: done()} has been performed, to switch canvass.
      *
-     * @param Image_Canvas $canvas The new canvas
+     * @param Image_Canvas &$canvas The new canvas
+     *
      * @return Image_Canvas The new canvas
      * @since 0.3.0dev2
      */
@@ -264,6 +267,8 @@ class Image_Graph extends Image_Graph_Element
      * Use this method to enforce errors to be displayed on the output. Calling
      * this method makes PHP uses this graphs error handler as default {@link
      * Image_Graph::_default_error_handler()}.
+     *
+     * @return void
      */
     function displayErrors()
     {
@@ -284,9 +289,10 @@ class Image_Graph extends Image_Graph_Element
      *
      * Logging requires {@link Log}.
      *
-     * @param mixed $log The log method, either a Log object or filename to log
-     * to
-	 * @since 0.3.0dev2
+     * @param mixed $log The log method, either a Log object or filename to log to
+     *
+     * @since 0.3.0dev2
+     * @return void
      */
     function setLog($log)
     {
@@ -384,60 +390,61 @@ class Image_Graph extends Image_Graph_Element
      *
      * 'value_marker' = Image_Graph_Marker_Value
      *
-     * @param string $class The class for the new object
-     * @param mixed $params The paramaters to pass to the constructor
+     * @param string $class  The class for the new object
+     * @param mixed  $params The paramaters to pass to the constructor
+     *
      * @return object A new object for the class
      * @static
      */
     function &factory($class, $params = null)
     {
-    	static $Image_Graph_classAliases = array(
-			'graph'          => 'Image_Graph',
-			'plotarea'       => 'Image_Graph_Plotarea',            
+        static $Image_Graph_classAliases = array(
+            'graph'          => 'Image_Graph',
+            'plotarea'       => 'Image_Graph_Plotarea',            
 
-			'line'           => 'Image_Graph_Plot_Line',
-			'area'           => 'Image_Graph_Plot_Area',
-			'bar'            => 'Image_Graph_Plot_Bar',
-			'smooth_line'    => 'Image_Graph_Plot_Smoothed_Line',
-			'smooth_area'    => 'Image_Graph_Plot_Smoothed_Area',
-			'pie'            => 'Image_Graph_Plot_Pie',
-			'radar'          => 'Image_Graph_Plot_Radar',
-			'step'           => 'Image_Graph_Plot_Step',
-			'impulse'        => 'Image_Graph_Plot_Impulse',
-			'dot'            => 'Image_Graph_Plot_Dot',
+            'line'           => 'Image_Graph_Plot_Line',
+            'area'           => 'Image_Graph_Plot_Area',
+            'bar'            => 'Image_Graph_Plot_Bar',
+            'smooth_line'    => 'Image_Graph_Plot_Smoothed_Line',
+            'smooth_area'    => 'Image_Graph_Plot_Smoothed_Area',
+            'pie'            => 'Image_Graph_Plot_Pie',
+            'radar'          => 'Image_Graph_Plot_Radar',
+            'step'           => 'Image_Graph_Plot_Step',
+            'impulse'        => 'Image_Graph_Plot_Impulse',
+            'dot'            => 'Image_Graph_Plot_Dot',
             'scatter'        => 'Image_Graph_Plot_Dot',
 
-			'dataset'        => 'Image_Graph_Dataset_Trivial',
-			'random'         => 'Image_Graph_Dataset_Random',
-			'function'       => 'Image_Graph_Dataset_Function',
-			'vector'         => 'Image_Graph_Dataset_VectorFunction',
+            'dataset'        => 'Image_Graph_Dataset_Trivial',
+            'random'         => 'Image_Graph_Dataset_Random',
+            'function'       => 'Image_Graph_Dataset_Function',
+            'vector'         => 'Image_Graph_Dataset_VectorFunction',
 
             'category'       => 'Image_Graph_Axis_Category',
-			'axis'           => 'Image_Graph_Axis',
-			'axis_log'       => 'Image_Graph_Axis_Logarithmic',
+            'axis'           => 'Image_Graph_Axis',
+            'axis_log'       => 'Image_Graph_Axis_Logarithmic',
 
-			'title'          => 'Image_Graph_Title',
+            'title'          => 'Image_Graph_Title',
 
-			'line_grid'      => 'Image_Graph_Grid_Lines',
-			'bar_grid'       => 'Image_Graph_Grid_Bars',
-			'polar_grid'     => 'Image_Graph_Grid_Polar',
+            'line_grid'      => 'Image_Graph_Grid_Lines',
+            'bar_grid'       => 'Image_Graph_Grid_Bars',
+            'polar_grid'     => 'Image_Graph_Grid_Polar',
 
-			'legend'         => 'Image_Graph_Legend',
-			'font'			 => 'Image_Graph_Font',
-			'ttf_font'       => 'Image_Graph_Font',
-			'Image_Graph_Font_TTF' => 'Image_Graph_Font', // BC with Image_Graph_Font_TTF
-			'gradient'       => 'Image_Graph_Fill_Gradient',
+            'legend'         => 'Image_Graph_Legend',
+            'font'			 => 'Image_Graph_Font',
+            'ttf_font'       => 'Image_Graph_Font',
+            'Image_Graph_Font_TTF' => 'Image_Graph_Font', // BC with Image_Graph_Font_TTF
+            'gradient'       => 'Image_Graph_Fill_Gradient',
 
-			'icon_marker'    => 'Image_Graph_Marker_Icon',
-			'value_marker'   => 'Image_Graph_Marker_Value'
-		);
-    		    		    	
+            'icon_marker'    => 'Image_Graph_Marker_Icon',
+            'value_marker'   => 'Image_Graph_Marker_Value'
+        );
+
         if (substr($class, 0, 11) != 'Image_Graph') {
-        	if (isset($Image_Graph_classAliases[$class])) {
-        		$class = $Image_Graph_classAliases[$class];
-        	} else {
-        		$class = 'Image_Graph_' . $class;
-        	}
+            if (isset($Image_Graph_classAliases[$class])) {
+                $class = $Image_Graph_classAliases[$class];
+            } else {
+                $class = 'Image_Graph_' . $class;
+            }
         }
 
         include_once str_replace('_', '/', $class) . '.php';
@@ -447,20 +454,20 @@ class Image_Graph extends Image_Graph_Element
         if (is_array($params)) {
             switch (count($params)) {
             case 1:
-                $obj =& new $class(
+                $obj = new $class(
                     $params[0]
                 );
                 break;
 
             case 2:
-                $obj =& new $class(
+                $obj = new $class(
                     $params[0],
                     $params[1]
                 );
                 break;
 
             case 3:
-                $obj =& new $class(
+                $obj = new $class(
                     $params[0],
                     $params[1],
                     $params[2]
@@ -468,7 +475,7 @@ class Image_Graph extends Image_Graph_Element
                 break;
 
             case 4:
-                $obj =& new $class(
+                $obj = new $class(
                     $params[0],
                     $params[1],
                     $params[2],
@@ -477,7 +484,7 @@ class Image_Graph extends Image_Graph_Element
                 break;
 
             case 5:
-                $obj =& new $class(
+                $obj = new $class(
                     $params[0],
                     $params[1],
                     $params[2],
@@ -487,7 +494,7 @@ class Image_Graph extends Image_Graph_Element
                 break;
 
             case 6:
-                $obj =& new $class(
+                $obj = new $class(
                     $params[0],
                     $params[1],
                     $params[2],
@@ -498,7 +505,7 @@ class Image_Graph extends Image_Graph_Element
                 break;
 
             case 7:
-                $obj =& new $class(
+                $obj = new $class(
                     $params[0],
                     $params[1],
                     $params[2],
@@ -510,7 +517,7 @@ class Image_Graph extends Image_Graph_Element
                 break;
 
             case 8:
-                $obj =& new $class(
+                $obj = new $class(
                     $params[0],
                     $params[1],
                     $params[2],
@@ -523,7 +530,7 @@ class Image_Graph extends Image_Graph_Element
                 break;
 
             case 9:
-                $obj =& new $class(
+                $obj = new $class(
                     $params[0],
                     $params[1],
                     $params[2],
@@ -537,7 +544,7 @@ class Image_Graph extends Image_Graph_Element
                 break;
 
             case 10:
-                $obj =& new $class(
+                $obj = new $class(
                     $params[0],
                     $params[1],
                     $params[2],
@@ -552,17 +559,17 @@ class Image_Graph extends Image_Graph_Element
                 break;
 
             default:
-                $obj =& new $class();
+                $obj = new $class();
                 break;
 
             }
         } else {
             if ($params == null) {
-                $obj =& new $class();
+                $obj = new $class();
             } else {
-                $obj =& new $class($params);
+                $obj = new $class($params);
             }
-    	}
+        }
         return $obj;
     }
 
@@ -578,11 +585,12 @@ class Image_Graph extends Image_Graph_Element
      * Use {@link Image_Graph::horizontal()} or {@link Image_Graph::vertical()}
      * instead for easier access.
      *
-     * @param mixed $layout The type of layout, can be either 'Vertical'
+     * @param mixed               $layout     The type of layout, can be either 'Vertical'
      *   or 'Horizontal' (case sensitive)
-     * @param Image_Graph_Element $part1 The 1st part of the layout
-     * @param Image_Graph_Element $part2 The 2nd part of the layout
-     * @param int $percentage The percentage of the layout to split at
+     * @param Image_Graph_Element &$part1     The 1st part of the layout
+     * @param Image_Graph_Element &$part2     The 2nd part of the layout
+     * @param int                 $percentage The percentage of the layout to split at
+     *
      * @return Image_Graph_Layout The newly created layout object
      * @static
      */
@@ -606,7 +614,7 @@ class Image_Graph extends Image_Graph_Element
         
         include_once "Image/Graph/Layout/$layout.php";
         $class = "Image_Graph_Layout_$layout";
-        $obj =& new $class($part1, $part2, $percentage);
+        $obj = new $class($part1, $part2, $percentage);
         return $obj;
     }
 
@@ -615,10 +623,11 @@ class Image_Graph extends Image_Graph_Element
      *
      * See {@link Image_Graph::layoutFactory()}
      *
-     * @param Image_Graph_Element $part1 The 1st (left) part of the layout
-     * @param Image_Graph_Element $part2 The 2nd (right) part of the layout
-     * @param int $percentage The percentage of the layout to split at
+     * @param Image_Graph_Element &$part1     The 1st (left) part of the layout
+     * @param Image_Graph_Element &$part2     The 2nd (right) part of the layout
+     * @param int                 $percentage The percentage of the layout to split at
      *   (percentage of total height from the left side)
+     *
      * @return Image_Graph_Layout The newly created layout object
      * @static
      */
@@ -633,10 +642,11 @@ class Image_Graph extends Image_Graph_Element
      *
      * See {@link Image_Graph::layoutFactory()}
      *
-     * @param Image_Graph_Element $part1 The 1st (top) part of the layout
-     * @param Image_Graph_Element $part2 The 2nd (bottom) part of the layout
-     * @param int $percentage The percentage of the layout to split at
+     * @param Image_Graph_Element &$part1     The 1st (top) part of the layout
+     * @param Image_Graph_Element &$part2     The 2nd (bottom) part of the layout
+     * @param int                 $percentage The percentage of the layout to split at
      *   (percentage of total width from the top edge)
+     *
      * @return Image_Graph_Layout The newly created layout object
      * @static
      */
@@ -652,12 +662,14 @@ class Image_Graph extends Image_Graph_Element
      * This method is used internaly by Image_Graph and PHP as a proxy for {@link
      * Image_Graph::_error()}. 
      *
-     * @param string $error_type The type of error being handled.
-     * @param string $error_msg The error message being handled.
-     * @param string $error_file The file in which the error occurred.
-     * @param integer $error_line The line in which the error occurred.
-     * @param string $error_context The context in which the error occurred.
+     * @param string  $error_type    The type of error being handled.
+     * @param string  $error_msg     The error message being handled.
+     * @param string  $error_file    The file in which the error occurred.
+     * @param integer $error_line    The line in which the error occurred.
+     * @param string  $error_context The context in which the error occurred.
+     *
      * @access private
+     * @return void
      */
     function _default_error_handler($error_type, $error_msg, $error_file, $error_line, $error_context)
     {
@@ -692,7 +704,8 @@ class Image_Graph extends Image_Graph_Element
 
         }
 
-        $this->_error("PHP $level: $error_msg",
+        $this->_error(
+            "PHP $level: $error_msg",
             array(
                 'type' => $error_type,
                 'file' => $error_file,
@@ -710,6 +723,7 @@ class Image_Graph extends Image_Graph_Element
      * method.
      *
      * @access private
+     * @return boolean
      */
     function _displayErrors()
     {
@@ -724,11 +738,12 @@ class Image_Graph extends Image_Graph_Element
      * and the error explicitly set by the system using {@link
      * Image_Graph_Common::_error()}.
      *
-     * @param int $x The horizontal position of the error message
-     * @param int $y The vertical position of the error message
+     * @param int   $x     The horizontal position of the error message
+     * @param int   $y     The vertical position of the error message
      * @param array $error The error context
      *
      * @access private
+     * @return void
      */
     function _displayError($x, $y, $error)
     {
@@ -754,8 +769,13 @@ class Image_Graph extends Image_Graph_Element
      * store the output (this file must be in DOCUMENT_ROOT scope), 'urlpath' The URL that the
      * 'filepath' corresponds to (i.e. filepath + filename must be reachable from a browser using
      * urlpath + filename) 
-     *
+     * 
+     * 'output' = 'none' Forces the graph to be drawn, but no output is sent to
+     * the browser. This allows working with an existing canvas after graphs has
+     * been drawn
+     * 
      * @param mixed $param The output parameters to pass to the canvas
+     *
      * @return bool Was the output 'good' (true) or 'bad' (false).
      */
     function done($param = false)
@@ -765,7 +785,7 @@ class Image_Graph extends Image_Graph_Element
             return $result;
         }
         return $this->_done($param);
-    }
+    }   
 
     /**
      * Outputs this graph using the canvas.
@@ -778,6 +798,7 @@ class Image_Graph extends Image_Graph_Element
      * supported by it).
      *
      * @param mixed $param The output parameters to pass to the canvas
+     *
      * @return bool Was the output 'good' (true) or 'bad' (false).
      * @access private
      */
@@ -791,7 +812,8 @@ class Image_Graph extends Image_Graph_Element
                 $this->_left,
                 $this->_top,
                 $this->_right - 10,
-                $this->_bottom - 10);
+                $this->_bottom - 10
+            );
         }
 
         $result = $this->_updateCoords();        
@@ -801,11 +823,11 @@ class Image_Graph extends Image_Graph_Element
 
         if ($this->_getBackground()) {
             $this->_canvas->rectangle(
-            	array(
-                	'x0' => $this->_left,
-                	'y0' => $this->_top,
-                	'x1' => $this->_right,
-                	'y1' => $this->_bottom
+                array(
+                    'x0' => $this->_left,
+                    'y0' => $this->_top,
+                    'x1' => $this->_right,
+                    'y1' => $this->_bottom
                 )
             );
         }
@@ -821,8 +843,8 @@ class Image_Graph extends Image_Graph_Element
 
         $timeEnd = $this->_getMicroTime();
 
-        if (($this->_showTime) || 
-            ((isset($param['showtime'])) && ($param['showtime'] === true))
+        if (($this->_showTime)
+            || ((isset($param['showtime'])) && ($param['showtime'] === true))
         ) {
             $text = 'Generated in ' .
                 sprintf('%0.3f', $timeEnd - $timeStart) . ' sec';
@@ -834,17 +856,18 @@ class Image_Graph extends Image_Graph_Element
                 array('color' => 'red')
             );
         }
-               
-		if (isset($param['filename'])) {
-            if ((isset($param['tohtml'])) && ($param['tohtml'])) {
-                return $this->_canvas->toHtml($param);
+
+        if ((!isset($param['output'])) || ($param['output'] !== 'none')) {               
+            if (isset($param['filename'])) {
+                if ((isset($param['tohtml'])) && ($param['tohtml'])) {
+                    return $this->_canvas->toHtml($param);
+                } else {
+                    return $this->_canvas->save($param);
+                }
+            } else {
+                return $this->_canvas->show($param);
             }
-            else {
-                return $this->_canvas->save($param);
-            }
-		} else {
-			return $this->_canvas->show($param);
-		}
+        }
     }
 }
 

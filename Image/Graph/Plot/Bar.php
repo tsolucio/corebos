@@ -5,7 +5,7 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Plot
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Bar.php,v 1.14 2005/11/27 22:21:16 nosey Exp $
+ * @version    SVN: $Id: Bar.php 291406 2009-11-29 00:54:22Z neufeind $
  * @link       http://pear.php.net/package/Image_Graph
  */
 
@@ -40,9 +41,10 @@ require_once 'Image/Graph/Plot.php';
  * @package    Image_Graph
  * @subpackage Plot
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: 0.7.2
+ * @version    Release: 0.8.0
  * @link       http://pear.php.net/package/Image_Graph
  */
 class Image_Graph_Plot_Bar extends Image_Graph_Plot
@@ -69,6 +71,8 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
      * @param int $y0 The top-left y-coordinate
      * @param int $x1 The bottom-right x-coordinate
      * @param int $y1 The bottom-right y-coordinate
+     *
+     * @return void
      * @access private
      */
     function _drawLegendSample($x0, $y0, $x1, $y1)
@@ -82,6 +86,8 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
      *
      * @param int $space The number of pixels between 2 bars, should be a
      *   multipla of 2 (ie an even number)
+     *
+     * @return void
      */
     function setSpacing($space)
     {
@@ -101,7 +107,9 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
      * 'px' The width specified in pixels
      *
      * @param string $width The width of any bar
-     * @param string $unit The unit of the width
+     * @param string $unit  The unit of the width (optional)
+     *
+     * @return void
      */
     function setBarWidth($width, $unit = false)
     {
@@ -156,7 +164,6 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
             $dataset =& $this->_dataset[$key];
             $dataset->_reset();
             while ($point = $dataset->_next()) {
-                
                 if ($this->_parent->_horizontal) {
                     $y1 = $this->_pointY($point) - $width;
                     $y2 = $this->_pointY($point) + $width;
@@ -170,8 +177,7 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
                         $y2 -= $this->_space;
                         $y1 += $this->_space;
                     }
-                }
-                else {               
+                } else {               
                     $x1 = $this->_pointX($point) - $width;
                     $x2 = $this->_pointX($point) + $width;
                     
@@ -187,9 +193,9 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
                 }                   
                     
 
-                if (($this->_multiType == 'stacked') ||
-                    ($this->_multiType == 'stacked100pct'))
-                {
+                if (($this->_multiType == 'stacked')
+                    || ($this->_multiType == 'stacked100pct')
+                ) {
                     $x = $point['X'];
 
                     if ($point['Y'] >= 0) {
@@ -237,8 +243,7 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
                         $w = 2 * ($width - $this->_space) / count($this->_dataset);                        
                         if ($this->_parent->_horizontal) {
                             $y2 = ($y1 = ($y1 + $y2) / 2  - ($width - $this->_space) + $number * $w) + $w;
-                        }
-                        else {
+                        } else {
                             $x2 = ($x1 = ($x1 + $x2) / 2  - ($width - $this->_space) + $number * $w) + $w;
                         }
                     }
@@ -246,8 +251,8 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
                     $p1 = $point;
                 }
 
-                if ((($minY = min($p0['Y'], $p1['Y'])) < $maxYaxis) &&
-                    (($maxY = max($p0['Y'], $p1['Y'])) > $minYaxis)
+                if ((($minY = min($p0['Y'], $p1['Y'])) < $maxYaxis)
+                    && (($maxY = max($p0['Y'], $p1['Y'])) > $minYaxis)
                 ) {
                     $p0['Y'] = $minY;
                     $p1['Y'] = $maxY;
@@ -262,8 +267,7 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
                     if ($this->_parent->_horizontal) {
                         $x1 = $this->_pointX($p0);
                         $x2 = $this->_pointX($p1);
-                    }
-                    else {                       
+                    } else {                       
                         $y1 = $this->_pointY($p0);
                         $y2 = $this->_pointY($p1);
                     }
@@ -279,11 +283,11 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
                         $this->_canvas->rectangle(
                             $this->_mergeData(
                                 $point,
-                            	array(
-                            		'x0' => min($x1, $x2),
-                                	'y0' => min($y1, $y2),
-                                	'x1' => max($x1, $x2),
-                                	'y1' => max($y1, $y2)
+                                array(
+                                    'x0' => min($x1, $x2),
+                                    'y0' => min($y1, $y2),
+                                    'x1' => max($x1, $x2),
+                                    'y1' => max($y1, $y2)
                                 )
                             )
                         );
@@ -293,11 +297,9 @@ class Image_Graph_Plot_Bar extends Image_Graph_Plot
             $number ++;
         }
         unset($keys);
-
-        $this->_drawMarker();
-
         $this->_clip(false);        
         
+        $this->_drawMarker();
         $this->_canvas->endGroup();        
 
         return true;

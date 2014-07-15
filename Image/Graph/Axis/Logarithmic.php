@@ -5,7 +5,7 @@
 /**
  * Class for axis handling.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Axis
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Logarithmic.php,v 1.15 2006/03/02 12:35:57 nosey Exp $
+ * @version    SVN: $Id: Logarithmic.php 291170 2009-11-23 03:50:22Z neufeind $
  * @link       http://pear.php.net/package/Image_Graph
  */
  
@@ -40,9 +41,10 @@ require_once 'Image/Graph/Axis.php';
  * @package    Image_Graph
  * @subpackage Axis
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: 0.7.2
+ * @version    Release: 0.8.0
  * @link       http://pear.php.net/package/Image_Graph
  */
 class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
@@ -61,7 +63,7 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
      */
     function Image_Graph_Axis_Logarithmic($type = IMAGE_GRAPH_AXIS_X)
     {
-        parent::Image_Graph_Axis($type);
+        parent::__construct($type);
         $this->showLabel(IMAGE_GRAPH_LABEL_MINIMUM + IMAGE_GRAPH_LABEL_MAXIMUM);
         $this->_minimum = 1;
         $this->_minimumSet = true;
@@ -86,6 +88,7 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
      * Preprocessor for values, ie for using logarithmic axis
      *
      * @param double $value The value to preprocess
+     *
      * @return double The preprocessed value
      * @access private
      */
@@ -97,8 +100,10 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
     /**
      * Get next label point
      *
-     * @param doubt $point The current point, if omitted or false, the first is
+     * @param doubt $currentLabel The current label point. If omitted or false, the first is
      *   returned
+     * @param int   $level        Label level
+     *
      * @return double The next label point
      * @access private
      */
@@ -136,6 +141,7 @@ class Image_Graph_Axis_Logarithmic extends Image_Graph_Axis
      * This is because it can change the axis range.
      *
      * @param double $value the intersection value to get the pixel-point for
+     *
      * @return double The pixel position along the axis
      * @access private
      */
