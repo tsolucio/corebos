@@ -212,6 +212,11 @@ class VTTaskType {
 		$adb = PearDatabase::getInstance();
 		$modules = Zend_Json::encode($taskType['modules']);
 
+		$exists = $adb->pquery('select count(*) from com_vtiger_workflow_tasktypes
+				where tasktypename=? and label=? and classname=? and classpath=? and
+				 templatepath=? and modules=? and sourcemodule=?',
+				array($taskType['name'], $taskType['label'], $taskType['classname'],  $taskType['classpath'], $taskType['templatepath'], $modules, $taskType['sourcemodule']));
+		if ($exists and $adb->query_result($exists,0,0)==0) {
 		$taskTypeId = $adb->getUniqueID("com_vtiger_workflow_tasktypes");
 		$taskType['id'] = $taskTypeId;
 
@@ -219,6 +224,7 @@ class VTTaskType {
 						(id, tasktypename, label, classname, classpath, templatepath, modules, sourcemodule)
 						values (?,?,?,?,?,?,?,?)",
 				array($taskTypeId, $taskType['name'], $taskType['label'], $taskType['classname'],  $taskType['classpath'], $taskType['templatepath'], $modules, $taskType['sourcemodule']));
+		}
 	}
 
 	public static function getAll($moduleName='') {
