@@ -62,6 +62,13 @@ class Image_Graph_Grid extends Image_Graph_Plotarea_Element
 {
 
     /**
+     * Constructor
+     */
+    function Image_Graph_Grid() {
+        parent::__construct();
+    }
+
+    /**
      * The primary axis: the grid 'refers' to
      * @var Axis
      * @access private

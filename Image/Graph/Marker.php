@@ -62,6 +62,13 @@ class Image_Graph_Marker extends Image_Graph_Plotarea_Element
     var $_secondaryMarker = false;
 
     /**
+     * Constructor
+     */
+    function Image_Graph_Marker() {
+        parent::__construct();
+    }
+
+    /**
      * The 'size' of the marker, the meaning depends on the specific Marker
      * implementation
      * @var int

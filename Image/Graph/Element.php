@@ -151,6 +151,13 @@ class Image_Graph_Element extends Image_Graph_Common
     var $_padding = array('left' => 0, 'top' => 0, 'right' => 0, 'bottom' => 0);
 
     /**
+     * Constructor
+     */
+    function Image_Graph_Element() {
+        parent::__construct();
+    }
+
+    /**
      * Sets the background fill style of the element
      *
      * @param Image_Graph_Fill &$background The background

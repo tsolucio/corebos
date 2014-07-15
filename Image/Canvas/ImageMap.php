@@ -83,6 +83,7 @@ class Image_Canvas_ImageMap extends Image_Canvas
             $this->_map[] =  '<area shape="' . $shape . '" coords="' . $coords . '" href="' . $url . '"' .
                     ($target ? ' target="' . $target . '"' : '') .
                     ($alt ? ' alt="' . $alt . '"' : '') .
+                    ($alt ? ' title="' . $alt .'"': '') . // Fix for http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/5354
                     (isset($params['id']) ? ' id="' . $params['id'] . '"' : '') .
                     $tags .
                     ' />';
