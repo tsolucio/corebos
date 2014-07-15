@@ -789,10 +789,6 @@ function write() {
     elseif (preg_match('[^(?:in|ex)ternal:]', $token)) {
         return call_user_method_array('write_url', $this, $_);
     }
-    # Match formula
-    elseif (preg_match('/^=/', $token)) {
-        return call_user_method_array('write_formula', $this, $_);
-    }
     # Match blank
     elseif ($token == '') {
         array_splice($_, 2, 1); # remove the empty string from the parameter list
