@@ -426,7 +426,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 		$moduleInstance = new Vtiger_Module();
 		$moduleInstance->name = $tabname;
 		$moduleInstance->label= $tablabel;
-        $moduleInstance->parent=$parenttab;
+        	$moduleInstance->parent=$parenttab;
 		$moduleInstance->isentitytype = ($isextension != true);
 		$moduleInstance->version = (!$tabversion)? 0 : $tabversion;
 		$moduleInstance->minversion = (!$vtigerMinVersion)? false : $vtigerMinVersion;
@@ -562,11 +562,13 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 		$fieldInstance->defaultvalue = $fieldnode->defaultvalue;
 		$fieldInstance->maximumlength= $fieldnode->maximumlength;
 		$fieldInstance->sequence     = $fieldnode->sequence;
-		$fieldInstance->quickcreate  = $fieldnode->quickcreate;
 		$fieldInstance->quicksequence= $fieldnode->quickcreatesequence;
 		$fieldInstance->typeofdata   = $fieldnode->typeofdata;
 		$fieldInstance->displaytype  = $fieldnode->displaytype;
 		$fieldInstance->info_type    = $fieldnode->info_type;
+		
+		if(!empty($fieldnode->quickcreate))
+			$fieldInstance->quickcreate = $fieldnode->quickcreate;
 
 		if(!empty($fieldnode->helpinfo))
 			$fieldInstance->helpinfo = $fieldnode->helpinfo;

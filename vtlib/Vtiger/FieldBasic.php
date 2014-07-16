@@ -158,14 +158,14 @@ class Vtiger_FieldBasic {
 
 		if(!$this->label) $this->label = $this->name;
 
-		$adb->pquery("INSERT INTO vtiger_field (tabid, fieldid, columnname, tablename, generatedtype,
-			uitype, fieldname, fieldlabel, readonly, presence, defaultvalue, maximumlength, sequence,
-			block, displaytype, typeofdata, quickcreate, quickcreatesequence, info_type, helpinfo) 
-			VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-				Array($this->getModuleId(), $this->id, $this->column, $this->table, $this->generatedtype,
-				$this->uitype, $this->name, $this->label, $this->readonly, $this->presence, $this->defaultvalue,
-				$this->maximumlength, $this->sequence, $this->getBlockId(), $this->displaytype, $this->typeofdata,
-				$this->quickcreate, $this->quicksequence, $this->info_type, $this->helpinfo));
+		$result = $adb->pquery("INSERT INTO vtiger_field (tabid, fieldid, columnname, tablename, generatedtype,
+				uitype, fieldname, fieldlabel, readonly, presence, defaultvalue, maximumlength, sequence,
+				block, displaytype, typeofdata, quickcreate, quickcreatesequence, info_type, helpinfo) 
+				VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
+					Array($this->getModuleId(), $this->id, $this->column, $this->table, $this->generatedtype,
+					$this->uitype, $this->name, $this->label, $this->readonly, $this->presence, $this->defaultvalue,
+					$this->maximumlength, $this->sequence, $this->getBlockId(), $this->displaytype, $this->typeofdata,
+					$this->quickcreate, $this->quicksequence, $this->info_type, $this->helpinfo));
 
 		// Set the field status for mass-edit (if set)
 		$adb->pquery('UPDATE vtiger_field SET masseditable=? WHERE fieldid=?', Array($this->masseditable, $this->id));
@@ -176,8 +176,14 @@ class Vtiger_FieldBasic {
 			Vtiger_Utils::AddColumn($this->table, $this->column, $this->columntype);
 		}	
 
-		self::log("Creating Field $this->name ... DONE");
-		self::log("Module language mapping for $this->label ... CHECK");
+		if($result) {
+                    self::log("Creating Field $this->name ... DONE");
+                    self::log("Module language mapping for $this->label ... CHECK");
+                }
+                else {
+                    self::log("Creating Field $this->name ... ERROR");
+                    self::log("Module language mapping for $this->label ... ERROR");
+                }
 	}
 
 	/**

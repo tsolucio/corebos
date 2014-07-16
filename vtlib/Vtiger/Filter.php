@@ -65,10 +65,13 @@ class Vtiger_Filter {
 		$this->isdefault = ($this->isdefault===true||$this->isdefault=='true')?1:0;
 		$this->inmetrics = ($this->inmetrics===true||$this->inmetrics=='true')?1:0;
 
-		$adb->pquery("INSERT INTO vtiger_customview(cvid,viewname,setdefault,setmetrics,entitytype) VALUES(?,?,?,?,?)", 
-			Array($this->id, $this->name, $this->isdefault, $this->inmetrics, $this->module->name));
+		$result = $adb->pquery("INSERT INTO vtiger_customview(cvid,viewname,setdefault,setmetrics,entitytype) VALUES(?,?,?,?,?)", 
+				Array($this->id, $this->name, $this->isdefault, $this->inmetrics, $this->module->name));
 
-		self::log("Creating Filter $this->name ... DONE");
+		if($result)
+                    self::log("Creating Filter $this->name ... DONE");
+                else
+                    self::log("Creating Filter $this->name ... ERROR");
 
 		// Filters are role based from 5.1.0 onwards
 		if(!$this->status) {
