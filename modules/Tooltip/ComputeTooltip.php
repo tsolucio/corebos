@@ -13,12 +13,25 @@ require_once 'include/Webservices/DescribeObject.php';
 require_once 'include/Webservices/Query.php';
 require_once 'modules/Tooltip/TooltipUtils.php';
 
-global $current_user,$log;
+global $current_user,$log,$adb;
 
 $modname = vtlib_purify($_REQUEST['modname']);
 $id = vtlib_purify($_REQUEST['id']);
 $fieldname = vtlib_purify($_REQUEST['fieldname']);
 $tabid = getTabid($modname);
+if ($fieldname=='invoice_product') {
+	list($invid,$pdoid,$line) = explode('::', $id);
+	$sql = 'select assetsid,asset_no,serialnumber,dateinservice from vtiger_assets where invoiceid = ? and product = ?';
+	$rdo = $adb->pquery($sql,array($invid,$pdoid));
+	$text = array();
+	while ($ast = $adb->fetch_array($rdo)) {
+		$text[$ast['asset_no']] = '<a href="index.php?module=Assets&action=DetailView&record='.$ast['assetsid'].'">'.$ast['serialnumber'].'</a>&nbsp;'.
+				DateTimeField::convertToUserFormat($ast['dateinservice']).'<br>';
+	}
+	$tip = getToolTip($text);
+	echo $tip;
+	die();
+}
 if($tabid == '13' && $fieldname == 'title')
 	$fieldname = 'ticket_title';
 $result = ToolTipExists($fieldname,$tabid);

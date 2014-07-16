@@ -57,6 +57,12 @@ var TOOLTIP = {
 			TOOLTIP._setStatus(module, fieldname, recordid, false);
 			TOOLTIP.hide(node, recordid, fieldname);
 			clearTimeout(_VT__TOOLTIP__TIMER);
+		} else if(evtparams['event'] == 'invoiceasset.onmouseout' ) {
+			setTimeout(function(){
+			TOOLTIP._setStatus(module, fieldname, recordid, false);
+			TOOLTIP.hide(node, recordid, fieldname);
+			clearTimeout(_VT__TOOLTIP__TIMER);
+			},TOOLTIP._mouseOverTimeOut*4);
 		}
 	},
 	
@@ -100,8 +106,8 @@ var TOOLTIP = {
 			TOOLTIP.show(node, module, fieldname, recordid);
 		}
 	}
-	
-}   
+}
 
 vtlib_listview.register( 'cell.onmouseover', TOOLTIP.handler);
 vtlib_listview.register( 'cell.onmouseout', TOOLTIP.handler);
+vtlib_listview.register( 'invoiceasset.onmouseout', TOOLTIP.handler);
