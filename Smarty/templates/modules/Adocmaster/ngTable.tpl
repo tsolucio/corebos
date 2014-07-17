@@ -36,14 +36,18 @@
     </head>
 <body ng-app="main">
 <!--<h1>Table with pagination</h1>-->
-
+<!--koment-->
 <div ng-controller="DemoCtrl">
-     Group by:
+     Grouping by:
     <select ng-model="groupby">
+        <option value="---">---</option>
+        <option value="product">Product</option>
         <option value="quantity">Quantity</option>
         <option value="price">Price</option>
         
     </select>
+     
+     
     <br>
     Grouped by: <b>{literal}{{groupby}}{/literal}</b>
 
@@ -52,6 +56,8 @@
 <!--<button ng-click="{literal}tableParams.sorting({}){/literal}" class="btn btn-default pull-right">Clear sorting</button>-->
     <!--<p><strong>Sorting:</strong> {literal}{{tableParams.sorting()|json}}{/literal}-->
 
+
+    
         <table ng-table="tableParams"  class="table" >
           <!--  <tr ng-repeat="user in $data">
                 <td data-title="'AdocdetailNo'" sortable="'name'">
@@ -99,8 +105,8 @@
                 <td data-title="'Adocdetailname'" sortable="'adocdetailname'">
                    {literal} {{user.adocdetailname}} {/literal}
                 </td>
-                <td data-title="'Product'" sortable="'accountname'">
-                  <a href ="index.php?module=Products&action=DetailView&record={literal}{{user.productid}}{/literal}"> {literal} {{user.accountname}} {/literal}</a>
+                <td data-title="'Product'" sortable="'product'">
+                  <a href ="index.php?module=Products&action=DetailView&record={literal}{{user.productid}}{/literal}"> {literal} {{user.product}} {/literal}</a>
                 </td>
                 <td data-title="'Quantity'" sortable="'quantity'">
                   <span ng-if="!user.$edit">  {literal} {{user.quantity}} {/literal}</span>
@@ -109,16 +115,32 @@
                  <td data-title="'Price'" sortable="'price'">
                    {literal} {{user.price}} {/literal}
                 </td>
-                <td data-title="'Riferimento'" sortable="'riferimento'">
-                   {literal} {{user.riferimento}} {/literal}
+                <td data-title="'Disocunt'" sortable="'discount'" >
+                   {literal} {{user.discount}} {/literal}</span>
+                  
                 </td>
-                <td data-title="'Stock'" sortable="'stock'">
-                 <a href="index.php?module=Stock&action=DetailView&record={literal}{{user.stockid}}{/literal}">  {literal} {{user.stock}} {/literal}</a>
+              
+                 <td data-title="'Adocdtotal'" sortable="'adocdtotal'">
+                   {literal} {{(user.quantity*user.precio)+(user.quantity*user.precio*user.vat)| number:2}} {/literal}
+                </td>
+               <td data-title="'Adocdtax'" sortable="'adocdtax'">
+                   {literal} {{user.quantity*user.precio*user.vat | number:2}} {/literal}
+                </td>
+                <td data-title="'Adocdtotalamount'" sortable="'adocdtotalamount'">
+                   {literal} {{user.adocdtotalamount | number:2}} {/literal}
+                </td>
+             {*   <td data-title="'New Price'" sortable="'precio'">
+                   {literal} {{user.precio}} {/literal}
+                </td>*}
+                 
+               <td data-title="'Total'" sortable="'total'" width="90%">
+                   {literal} {{user.quantity*user.precio | number:2}} {/literal}</span>
+                  
                 </td>
                
                  <td data-title="'Actions'" width="200">
                 <a ng-if="!user.$edit" href="" class="btn btn-default btn-xs" ng-click="user.$edit = true">Edit</a>
-                <a ng-if="user.$edit" href="" class="btn btn-primary btn-xs" ng-click="user.$edit = false;setEditId(user.age,user.quantity,user.adocdetailid)">Save</a>
+                <a ng-if="user.$edit" href="" class="btn btn-primary btn-xs" ng-click="user.$edit = false;setEditId(user.age,user.quantity,user.adocdetailid,user.adocmasterid,user.newtax,user.newadoctotal,user.newadoctotalamount,user.productid);setEditId2(user.age,user.quantity,user.adocdetailid,user.adocmasterid,user.newtax,user.newadoctotal,user.newadoctotalamount,user.productid);">Save</a>
                 <a ng-if="user.$edit" href="" class="btn btn-primary btn-xs" ng-click="user.$edit = false;">Cancel</a>
             </td>
         </tr>
@@ -129,7 +151,7 @@
             {literal}
                 var prova7={/literal}{$vleratest}{literal};
                 var kURL = "module=Adocmaster&action=AdocmasterAjax&file=prova3&shembulli=prova7";
-               // alert(prova7);
+               // alert(prova7);;
          var record=document.getElementsByName('record').item(0).value;
          var prova7={/literal}{$vleratest}{literal};
          //alert(record);
@@ -140,9 +162,9 @@
              
                        
                var data = {/literal}{$vleratest}{literal};
-            
+            var data2={/literal}{$vleratest2}{literal};
               
-       $scope.groupby='quantity';
+       $scope.groupby='---';
                     
         }
                  
@@ -173,6 +195,8 @@
     })
                 }
             });
+  
+            
             
              $scope.$watch('groupby', function(value){
                         $scope.tableParams.settings().groupBy = value;
@@ -187,14 +211,25 @@
                       $scope.tableParams.reload();
                      
                  });
-                   $scope.setEditId =  function(age,quantity,adocdetailid) {
-             $http.post('index.php?'+kURL+'&kaction=update&stato='+age+'&sasia='+quantity+'&adocdetailid2='+adocdetailid
+                   $scope.setEditId =  function(age,quantity,adocdetailid,adocmasterid,newtax,newadoctotal,newadoctotalamount,productid) {
+             $http.post('index.php?'+kURL+'&kaction=update&stato='+age+'&sasia='+quantity+'&adocdetailid2='+adocdetailid+'&adocmasterid2='+adocmasterid+'&newtax2='+newtax+'&newadoctotal2='+newadoctotal+'&newadoctotalamount2='+newadoctotalamount+'&productid2='+productid
                 )
                 .success(function(data, status) {
-            alert('saving');
+            
                       $scope.tableParams.reload();
                      
                  });
+                 
+        }
+             $scope.setEditId2 =  function(age,quantity,adocdetailid,adocmasterid,newtax,newadoctotal,newadoctotalamount,productid) {
+             $http.post('index.php?'+kURL+'&kaction=update&stato='+age+'&sasia='+quantity+'&adocdetailid2='+adocdetailid+'&adocmasterid2='+adocmasterid+'&newtax2='+newtax+'&newadoctotal2='+newadoctotal+'&newadoctotalamount2='+newadoctotalamount+'&productid2='+productid
+                )
+                .success(function(data, status) {
+            
+                      $scope.tableParams.reload();
+                     
+                 });
+                 
         }
         })
           
