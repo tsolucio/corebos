@@ -952,28 +952,11 @@ function set_default_config(&$defaults)
 	$log->debug("Exiting set_default_config method ...");
 }
 
-$toHtml = array(
-        '"' => '&quot;',
-        '<' => '&lt;',
-        '>' => '&gt;',
-        '& ' => '&amp; ',
-        "'" =>  '&#039;',
-	'' => '\r',
-        '\r\n'=>'\n',
-
-);
-
-/** Function to convert the given string to html
-  * @param $string -- string:: Type string
-  * @param $ecnode -- boolean:: Type boolean
-    * @returns $string -- string:: Type string
-      *
-       */
-function to_html($string, $encode=true)
-{
-	global $log,$default_charset;
-	//$log->debug("Entering to_html(".$string.",".$encode.") method ...");
-	global $toHtml;
+//this is an optimisation of the to_html function, here we make the decision
+//decide once if we are going to convert things to html
+// Alan Bell Libertus Solutions shared on vtiger CRM developer's list
+function decide_to_html(){
+	global $doconvert;
 	$request = $_REQUEST;
 	$chkvalue = array('action','search','module','file','submode');
 	foreach ($chkvalue as $value) {
@@ -981,33 +964,32 @@ function to_html($string, $encode=true)
 	}
 	$action = vtlib_purify($request['action']);
 	$search = vtlib_purify($request['search']);
-
-	$doconvert = false;
-
 	if($request['module'] != 'Settings' && $request['file'] != 'ListView' && $request['module'] != 'Portal' && $request['module'] != "Reports")// && $request['module'] != 'Emails')
 		$ajax_action = $request['module'].'Ajax';
 
-	if(is_string($string))
-	{
-		if($action != 'CustomView' && $action != 'Export' && $action != $ajax_action && $action != 'LeadConvertToEntities' && $action != 'CreatePDF' && $action != 'ConvertAsFAQ' && $request['module'] != 'Dashboard' && $action != 'CreateSOPDF' && $action != 'SendPDFMail' && (!isset($request['submode'])) )
-		{
-			$doconvert = true;
-		}
-		else if($search == true)
-		{
-			// Fix for tickets #4647, #4648. Conversion required in case of search results also.
-			$doconvert = true;
-		}
-		if ($doconvert == true)
-		{
-			if($default_charset == 'UTF-8')
-				$string = htmlentities($string, ENT_QUOTES, $default_charset);
-			else
-				$string = preg_replace(array('/</', '/>/', '/"/'), array('&lt;', '&gt;', '&quot;'), $string);
-		}
+	if($action != 'CustomView' && $action != 'Export' && $action != $ajax_action && $action != 'LeadConvertToEntities' && $action != 'CreatePDF' && $action != 'ConvertAsFAQ' && $_REQUEST['module'] != 'Dashboard' && $action != 'CreateSOPDF' && $action != 'SendPDFMail' && (!isset($_REQUEST['submode'])) ) {
+		$doconvert = true;
+	} else if($search == true) {
+		// Fix for tickets #4647, #4648. Conversion required in case of search results also.
+		$doconvert = true;
 	}
+}
+decide_to_html();//call the function once when loading
 
-	//$log->debug("Exiting to_html method ...");
+/** Function to convert the given string to html
+  * @param $string -- string:: Type string
+  * @param $ecnode -- boolean:: Type boolean
+    * @returns $string -- string:: Type string
+      *
+       */
+function to_html($string, $encode=true) {
+	global $doconvert,$default_charset;
+	if ($doconvert == true) {
+		if($default_charset == 'UTF-8')
+			$string = htmlentities($string, ENT_QUOTES, $default_charset);
+		else
+			$string = preg_replace(array('/</', '/>/', '/"/'), array('&lt;', '&gt;', '&quot;'), $string);
+	}
 	return $string;
 }
 
