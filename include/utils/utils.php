@@ -977,12 +977,10 @@ function decide_to_html(){
 decide_to_html();//call the function once when loading
 
 /** Function to convert the given string to html
-  * @param $string -- string:: Type string
-  * @param $ecnode -- boolean:: Type boolean
-    * @returns $string -- string:: Type string
-      *
-       */
-function to_html($string, $encode=true) {
+* @param $string -- string:: Type string
+* @returns $string -- string:: Type string
+*/
+function to_html($string) {
 	global $doconvert,$default_charset;
 	if ($doconvert == true) {
 		if($default_charset == 'UTF-8')
