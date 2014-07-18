@@ -47,19 +47,19 @@ class WebserviceField{
 	private $readOnly = 0;
 	
 	private function __construct($adb,$row){
-		$this->uitype = $row['uitype'];
-		$this->blockId = $row['block'];
+		$this->uitype = (isset($row['uitype']))? $row['uitype'] : 0;
+		$this->blockId = (isset($row['block']))? $row['block'] : 0;
 		$this->blockName = null;
 		$this->blockSequence = $this->getBlockSequence();
-		$this->tableName = $row['tablename'];
-		$this->columnName = $row['columnname'];
-		$this->fieldName = $row['fieldname'];
-		$this->fieldLabel = $row['fieldlabel'];
-		$this->fieldSequence = $row['sequence'];
-		$this->displayType = $row['displaytype'];
+		$this->tableName = (isset($row['tablename']))? $row['tablename'] : '';
+		$this->columnName = (isset($row['columnname']))? $row['columnname'] : '';
+		$this->fieldName = (isset($row['fieldname']))? $row['fieldname'] : '';
+		$this->fieldLabel = (isset($row['fieldlabel']))? $row['fieldlabel'] : '';
+		$this->fieldSequence = (isset($row['sequence']))? $row['sequence'] : 0;
+		$this->displayType = (isset($row['displaytype']))? $row['displaytype'] : -1;
 		$this->massEditable = ($row['masseditable'] === '1')? true: false;
-		$typeOfData = $row['typeofdata'];
-		$this->presence = $row['presence'];
+		$typeOfData = (isset($row['typeofdata']))? $row['typeofdata'] : '';
+		$this->presence = (isset($row['presence']))? $row['presence'] : -1;
 		$this->typeOfData = $typeOfData;
 		$typeOfData = explode("~",$typeOfData);
 		$this->mandatory = ($typeOfData[1] == 'M')? true: false;
@@ -67,8 +67,8 @@ class WebserviceField{
 			$this->mandatory = false;
 		}
 		$this->fieldType = $typeOfData[0];
-		$this->tabid = $row['tabid'];
-		$this->fieldId = $row['fieldid'];
+		$this->tabid = (isset($row['tabid']))? $row['tabid'] : 0;
+		$this->fieldId = (isset($row['fieldid']))? $row['fieldid'] : 0;
 		$this->pearDB = $adb;
 		$this->fieldDataType = null;
 		$this->dataFromMeta = false;

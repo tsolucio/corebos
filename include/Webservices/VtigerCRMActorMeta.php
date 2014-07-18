@@ -74,7 +74,7 @@ class VtigerCRMActorMeta extends EntityMeta {
 			$fieldType = $this->getTypeOfDataForType($dbField->type);
 		}
 		$typeOfData = null;
-		if(($dbField->not_null && !$dbField->primary_key) || $dbField->unique_key == 1){
+		if(($dbField->not_null && !$dbField->primary_key) || (isset($dbField->unique_key) && $dbField->unique_key == 1)){
 			$typeOfData = $fieldType.'~M';
 		}else{
 			$typeOfData = $fieldType.'~O';
