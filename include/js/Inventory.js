@@ -396,7 +396,7 @@ function validateInventory(module)
 		for(var i=1;i<=tax_count;i++)
 		{
 
-			temp = /^(0|[1-9]{1}\d{0,})(\.(\d{1}\d{0,}))?$/.test(document.getElementById("group_tax_percentage"+i).value);
+			temp = /^-?(0|[1-9]{1}\d{0,})(\.(\d{1}\d{0,}))?$/.test(document.getElementById("group_tax_percentage"+i).value);
 			if(!temp)
 			{
 				alert(alert_arr.VALID_TAX_PERCENT);
