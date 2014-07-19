@@ -303,9 +303,10 @@ function buildSelectStmt($sqlDump){
 		}
 		$this->query = $this->query.' LIMIT ';
 		foreach($sqlDump['limit'] as $ind=>$field){
-			if(!$offset){
-				$field = ($field>100)? 100: $field;
-			}
+			// get rid of 100 record limit on queries with specific limit
+// 			if(!$offset){
+// 				$field = ($field>100)? 100: $field;
+// 			}
 			if($i===0){
 				$this->query = $this->query.$field;
 				$i++;
