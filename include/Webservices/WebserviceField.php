@@ -374,9 +374,17 @@ class WebserviceField{
 	}
 
 	function getPickListOptions(){
+		global $app_strings, $mod_strings, $log, $current_language;
+		static $purified_plcache = array();
 		$fieldName = $this->getFieldName();
 		
 		$default_charset = VTWS_PreserveGlobal::getGlobal('default_charset');
+		$moduleName = getTabModuleName($this->getTabId());
+		if($moduleName == 'Events') $moduleName = 'Calendar';
+		$temp_mod_strings = ($moduleName != '' ) ? return_module_language($current_language, $moduleName) : $mod_strings;
+		if (array_key_exists($moduleName.$fieldName, $purified_plcache)) {
+			return $purified_plcache[$moduleName.$fieldName];
+		}
 		$options = array();
 		$sql = "select * from vtiger_picklist where name=?";
 		$result = $this->pearDB->pquery($sql,array($fieldName));
@@ -389,9 +397,9 @@ class WebserviceField{
 				$elem = array();
 				$picklistValue = $this->pearDB->query_result($result,$i,$fieldName);
 				$picklistValue = decode_html($picklistValue);
-				$moduleName = getTabModuleName($this->getTabId());
-				if($moduleName == 'Events') $moduleName = 'Calendar';
-				$elem["label"] = getTranslatedString($picklistValue,$moduleName);
+				$trans_str = ($temp_mod_strings[$picklistValue] != '') ? $temp_mod_strings[$picklistValue] : (($app_strings[$picklistValue] != '') ? $app_strings[$picklistValue] : $picklistValue);
+				while ($trans_str != preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str)) $trans_str = preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str);
+				$elem["label"] = $trans_str;
 				$elem["value"] = $picklistValue;
 				array_push($options,$elem);
 			}
@@ -401,13 +409,14 @@ class WebserviceField{
 			for($i=0;$i<sizeof($details);++$i){
 				$elem = array();
 				$picklistValue = decode_html($details[$i]);
-				$moduleName = getTabModuleName($this->getTabId());
-				if($moduleName == 'Events') $moduleName = 'Calendar';
-				$elem["label"] = getTranslatedString($picklistValue,$moduleName);
+				$trans_str = ($temp_mod_strings[$picklistValue] != '') ? $temp_mod_strings[$picklistValue] : (($app_strings[$picklistValue] != '') ? $app_strings[$picklistValue] : $picklistValue);
+				while ($trans_str != preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str)) $trans_str = preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str);
+				$elem["label"] = $trans_str;
 				$elem["value"] = $picklistValue;
 				array_push($options,$elem);
 			}
 		}
+		$purified_plcache[$moduleName.$fieldName] = $options;
 		return $options;
 	}
 
