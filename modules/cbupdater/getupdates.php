@@ -26,15 +26,20 @@ include_once 'modules/cbupdater/cbupdaterHelper.php';
 $error = false;
 $errmsg = '';
 $cbupdatesfound = array();
+$cbupdate_files = array();
 if (!empty($_REQUEST['update_file'])) {
-	$cbupdate_file = vtlib_purify($_REQUEST['update_file']);
+	$cbupdate_files[] = vtlib_purify($_REQUEST['update_file']);
 } else {
-	$cbupdate_file = 'modules/cbupdater/cbupdater.xml';
+	$cbupdate_files[] = 'modules/cbupdater/cbupdater.xml';
+	foreach (glob('modules/cbupdater/cbupdates/*.{xml}',GLOB_BRACE) as $tcode) {
+		$cbupdate_files[] = $tcode;
+	}
 }
 
-if (file_exists($cbupdate_file)) {
-	$cbupdate_file = realpath($cbupdate_file);
+if (count($cbupdate_files)>0) {
 	libxml_use_internal_errors(true);
+	foreach ($cbupdate_files as $cbupdate_file) {
+	$cbupdate_file = realpath($cbupdate_file);
 	$cbupdates= new DOMDocument();
 	if ($cbupdates->load($cbupdate_file)) {
 		if ($cbupdates->schemaValidate('modules/cbupdater/cbupdater.xsd')) {
@@ -89,6 +94,7 @@ if (file_exists($cbupdate_file)) {
 		}
 		libxml_clear_errors();
 	}
+	} //foreach
 } else {
 	$error = true;
 	$errmsg = getTranslatedString('err_noupdatefile',$currentModule);
