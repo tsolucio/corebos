@@ -147,7 +147,7 @@ function lang_changeEditTab(obj1, obj2, SelTab, unSelTab) {
 												</table>
 												<table border="0" cellspacing="0" cellpadding="5" width="100%">
                                                                                                     <tr>
-                                                                                                                <td width="32%">Legend:</td>
+                                                                                                              <center><strong> Legend: </strong></center><br/>
                                                                                                                 <td width="32%"><div style="width:30px;height:30px;background-color:#87CEFA;"></div>RL Translated
                                                                                                                     <div style="width:30px;height:30px;background-color:#0276FD;"></div>RL NotTranslated</td>
 														<td width="33%"><div style="width:30px;height:30px;background-color:#FFC1C1;"></div>Fields Translated

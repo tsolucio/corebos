@@ -314,7 +314,7 @@ foreach($result2 as $key=>$resulttrl)
         $resultfnt[$key][2]=$resulttrl[2];
         $resultfnt[$key][3]=$resulttrl[3];  
     }
-    elseif(($filter=='fieldstranslated'&& $resultrl[3]=='fieldstranslated')||($filter=='new'&& $resultrl[3]=='new'))
+    elseif(($filter=='fieldstranslated'&& $resulttrl[3]=='fieldstranslated')||($filter=='new'&& $resulttrl[3]=='new'))
     {  $resultft[$key][0]=$resulttrl[0];
        $resultft[$key][1]=$resulttrl[1];
        $resultft[$key][2]=$resulttrl[2];
