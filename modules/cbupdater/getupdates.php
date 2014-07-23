@@ -62,9 +62,9 @@ if (count($cbupdate_files)>0) {
 							$focus->column_fields['description'] = (empty($cbupd['description']) ? '' : $cbupd['description']);
 							$focus->column_fields['filename'] = basename($cbupd['filename'],'.php');
 							$focus->column_fields['classname'] = $cbupd['classname'];
-							$focus->column_fields['execstate'] = 'Pending';
+							$focus->column_fields['execstate'] = (empty($cbupd['continuous']) ? 'Pending' : ($cbupd['continuous']=='true' ? 'Continuous' : 'Pending'));
 							$focus->column_fields['systemupdate'] = (empty($cbupd['systemupdate']) ? '0' : ($cbupd['systemupdate']=='true' ? '1' : '0'));
-							$focus->column_fields['blocked'] = (empty($cbupd['blocked']) ? '0' : ($cbupd['blocked']=='true' ? '1' : '0'));
+							$focus->column_fields['blocked'] = '0';
 							$focus->column_fields['perspective'] = (empty($cbupd['perspective']) ? '0' : ($cbupd['perspective']=='true' ? '1' : '0'));
 							//$focus->column_fields['execdate'] = '';
 							$focus->column_fields['execorder'] = $execorder++;
