@@ -170,9 +170,10 @@ class Vtiger_Filter {
 		$cvcolvalue = $this->__getColumnValue($fieldInstance);
 
 		$adb->pquery("UPDATE vtiger_cvadvfilter set columnindex=columnindex+1 WHERE cvid=? AND columnindex>=? ORDER BY columnindex DESC",
-			Array($this->id, $index));		
+			Array($this->id, $index));
 		$adb->pquery("INSERT INTO vtiger_cvadvfilter(cvid, columnindex, columnname, comparator, value, groupid, column_condition) VALUES(?,?,?,?,?,?,?)",
-				Array($this->id, $index, $cvcolvalue, $comparator, $comparevalue, $group, $condition));
+			Array($this->id, $index, $cvcolvalue, $comparator, $comparevalue, $group, $condition));
+		$this->addGroup($group, $condition, '');
 		Vtiger_Utils::Log("Adding Condition " . self::translateComparator($comparator,true) ." on $fieldInstance->name of $this->name filter ... DONE");
 		
 		return $this;
