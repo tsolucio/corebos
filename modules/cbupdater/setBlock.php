@@ -14,41 +14,21 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************
 *  Module       : cbupdater
-*  Version      : 5.5.0
+*  Version      : 5.6.0
 *  Author       : JPL TSolucio, S. L.
 *************************************************************************************************/
 
-global $currentModule;
-
-$focus = CRMEntity::getInstance($currentModule);
-
+global $adb,$currentModule;
 $record = vtlib_purify($_REQUEST['record']);
-
 if($record) {
-	$focus->id = $record;
-	$focus->mode = 'edit';
-	$focus->retrieve_entity_info($record, $currentModule);
-	if ($focus->column_fields['execstate']=='Pending' or $focus->column_fields['execstate']=='Continuous') {
-		if (isset($focus->column_fields['blocked']) and $focus->column_fields['blocked']!='1') {
-		echo '<a href="index.php?module=cbupdater&action=dowork&idstring='.$record.'">'.getTranslatedString("Apply",$currentModule).'</a>';
-		}
-		if ($focus->column_fields['systemupdate']=='1') echo '<br><strong>'.getTranslatedString('systemupdate',$currentModule).'</strong>';
-	} elseif ($focus->column_fields['systemupdate']=='1') {
-		echo '<strong>'.getTranslatedString('systemupdate',$currentModule).'</strong>';
+	$set = vtlib_purify($_REQUEST['block']);
+	if ($set) {
+		$rdo = $adb->pquery("update vtiger_cbupdater set blocked='1' where cbupdaterid=?",array($record));
 	} else {
-		if (isset($focus->column_fields['blocked']) and $focus->column_fields['blocked']!='1') {
-		echo '<a href="index.php?module=cbupdater&action=dowork&doundo=1&idstring='.$record.'">'.getTranslatedString("Undo",$currentModule).'</a>';
-		}
+		$rdo = $adb->pquery("update vtiger_cbupdater set blocked='0' where cbupdaterid=?",array($record));
 	}
-	if (isset($focus->column_fields['blocked'])) {
-		echo '<br><a href="index.php?module=cbupdater&action=cbupdaterAjax&file=setBlock&record='.$record.'&block=';
-		if ($focus->column_fields['blocked']!='1') {
-			echo '1">'.getTranslatedString('Block Changeset',$currentModule).'</a>';
-		} else {
-			echo '0">'.getTranslatedString('UnBlock Changeset',$currentModule).'</a>';
-		}
-	}
+	header("Location: index.php?action=DetailView&module=cbupdater&record=$record");
 } else {
-	echo getTranslatedString('LBL_RECORD_NOT_FOUND');
+	header("Location: index.php?action=ListView&module=cbupdater");
 }
 ?>

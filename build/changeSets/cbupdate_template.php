@@ -8,6 +8,7 @@
 class your_update_classname extends cbupdaterWorker {
 	
 	function applyChange() {
+		if ($this->isBlocked()) return true;
 		if ($this->hasError()) $this->sendError();
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
@@ -16,12 +17,13 @@ class your_update_classname extends cbupdaterWorker {
 			// do your magic here
 			// ***
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			$this->markApplied(); // this should not be done if changeset is Continuous
 		}
 		$this->finishExecution();
 	}
 	
 	function undoChange() {
+		if ($this->isBlocked()) return true;
 		if ($this->hasError()) $this->sendError();
 		if ($this->isSystemUpdate()) {
 			$this->sendMsg('Changeset '.get_class($this).' is a system update, it cannot be undone!');
@@ -31,7 +33,7 @@ class your_update_classname extends cbupdaterWorker {
 				// undo your magic here
 				// ***
 				$this->sendMsg('Changeset '.get_class($this).' undone!');
-				$this->markUndone();
+				$this->markUndone(); // this should not be done if changeset is Continuous
 			} else {
 				$this->sendMsg('Changeset '.get_class($this).' not applied!');
 			}

@@ -13,6 +13,7 @@
 	<filename>build/changeSets/coreboscp_rest.php</filename>
 	<classname>coreboscp_rest</classname>
 	<systemupdate>true</systemupdate>
+	<continuous>true</continuous>
 </changeSet>
 <changeSet>
 	<author>joebordes</author>
@@ -90,5 +91,12 @@
     <filename>build/changeSets/installcyp.php</filename>
     <classname>installcyp</classname>
     <systemupdate>false</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Block, Perspective and Continuous</description>
+	<filename>build/changeSets/cbupdater_blockperspective.php</filename>
+	<classname>cbupdater_blockperspective</classname>
+	<systemupdate>true</systemupdate>
 </changeSet>
 </updatesChangeLog>
