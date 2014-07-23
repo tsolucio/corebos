@@ -438,6 +438,7 @@
 <rule>
 <columnindex>0</columnindex>
 <comparator>EQUALS</comparator>
+<fieldname>execstate</fieldname>
 <value>Executed</value>
 <groupid>1</groupid>
 <column_condition>and</column_condition>
@@ -540,6 +541,7 @@
 <rules>
 <rule>
 <columnindex>0</columnindex>
+<fieldname>execstate</fieldname>
 <comparator>EQUALS</comparator>
 <value>Error</value>
 <groupid>1</groupid>
