@@ -109,10 +109,16 @@ $scheduledFormat	= vtlib_purify($_REQUEST['scheduledReportFormat']);
 $scheduledInterval	= vtlib_purify($_REQUEST['scheduledIntervalString']);
 //<<<<<<<scheduled report>>>>>>>>
 
-$saveas=$_REQUEST['saveashidden'];
-$newreportname=$_REQUEST['newreportname'];
+$saveas=vtlib_purify($_REQUEST['saveashidden']);
+$newreportname=vtlib_purify($_REQUEST['newreportname']);
 if($reportid == "" || ($reportid!='' && strstr($saveas,'saveas')!='' && $newreportname!=''))
-{
+{   if($reportid!='' && $folderid=='')    { 
+    $reportdetails=$adb->pquery("select * from vtiger_report where reportid=?",array($reportid));
+    $folderid=$adb->query_result($reportdetails,0,'folderid') ;
+    $reporttype=$adb->query_result($reportdetails,0,'reporttype');
+    $sharetype=$adb->query_result($reportdetails,0,'sharingtype');
+    $reportdescription=$adb->query_result($reportdetails,0,'description');
+    }
 	$genQueryId = $adb->getUniqueID("vtiger_selectquery");
 	if($genQueryId != "")
 	{
@@ -152,7 +158,7 @@ if($reportid == "" || ($reportid!='' && strstr($saveas,'saveas')!='' && $newrepo
 			{
                              if($reportid!='')
                              $reportname=$newreportname;
-
+                                
 				$ireportsql = "insert into vtiger_report (REPORTID,FOLDERID,REPORTNAME,DESCRIPTION,REPORTTYPE,QUERYID,STATE,OWNER,SHARINGTYPE) values (?,?,?,?,?,?,?,?,?)";
 				$ireportparams = array($genQueryId, $folderid, $reportname, $reportdescription, $reporttype, $genQueryId,'CUSTOM',$current_user->id,$sharetype);
 				$ireportresult = $adb->pquery($ireportsql, $ireportparams);
@@ -309,7 +315,7 @@ if($reportid == "" || ($reportid!='' && strstr($saveas,'saveas')!='' && $newrepo
 			echo $errormessage;
 			die;
 		}
-		echo '<script>window.opener.location.href =window.opener.location.href;self.close();</script>';
+		echo '<script>window.opener.location.href ="index.php?module=Reports&action=SaveAndRun&record='.$genQueryId.'";self.close();</script>';
 	}
 }else
 {

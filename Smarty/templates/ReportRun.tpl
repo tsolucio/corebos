@@ -93,7 +93,9 @@
 		<td align="center">
 			<input type="button" class="small create" onclick="generateReport({$REPORTID});" value="{$MOD.LBL_GENERATE_NOW}" title="{$MOD.LBL_GENERATE_NOW}" />
 			&nbsp;
-			<input type="button" class="small edit" onclick="saveReportAdvFilter({$REPORTID});" value="     {$MOD.LBL_SAVE_REPORT}     " title="{$MOD.LBL_SAVE_REPORT}" />
+			<input type="button" class="small edit" onclick="saveReportAdvFilter({$REPORTID},'');" value="     {$MOD.LBL_SAVE_REPORT}     " title="{$MOD.LBL_SAVE_REPORT}" />
+                        &nbsp;
+			<input type="button" class="small edit" onclick="SaveAsReport({$REPORTID});" value="     {$APP.LBL_SAVE_AS}     " title="{$APP.LBL_SAVE_AS}" />
 		</td>
 	</tr>
 </table>
@@ -317,6 +319,35 @@ function selectReport() {
 	goToURL(url);
 }
 
+function SaveAsReport(id){
+if(!checkAdvancedFilter()) return false;
+var reportname = prompt(alert_arr.LBL_REPORT_NAME);
+    if (reportname != null) 
+      {  document.getElementById("newreportname").value = reportname;
+     	VtigerJS_DialogBox.block();
+	var advft_criteria = $('advft_criteria').value;
+	var advft_criteria_groups = $('advft_criteria_groups').value;
+
+	new Ajax.Request(
+                'index.php',
+                {queue: {position: 'end', scope: 'command'},
+                        method: 'post',
+                        postBody: 'action=ReportsAjax&file=Save&mode=ajax&module=Reports&record='+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups+'&saveashidden=saveas&newreportname='+reportname,
+                        onComplete: function(response) {
+							getObj('Generate').innerHTML = response.responseText;
+							// Performance Optimization: To update record count of the report result 
+							var __reportrun_directoutput_recordcount_scriptnode = $('__reportrun_directoutput_recordcount_script');
+							if(__reportrun_directoutput_recordcount_scriptnode) { eval(__reportrun_directoutput_recordcount_scriptnode.innerHTML); }
+							// END
+							VtigerJS_DialogBox.unblock();
+                        }
+                }
+        );
+        }
+         else
+         alert(alert_arr.LBL_REPORT_NAME_ERROR);
+     
+}
 {/literal}
 
 function goToPrintReport(id) {ldelim}
