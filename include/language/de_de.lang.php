@@ -322,6 +322,7 @@ $app_strings = array(
 'LBL_TEAM'=>'Team',
 'LBL_GROUP'=>'Gruppe',
 'LBL_NONE_NO_LINE'=>'keine',
+'LBL_SAVE_AS'=>" Save As",
 'LBL_SELECT_GROUP'=>'Wähle eine Gruppe',
 'LBL_HOUR_AND_MINUTE'=>'(Stunden/Minuten)',
 'YEAR_MONTH_DATE'=>'24:00',

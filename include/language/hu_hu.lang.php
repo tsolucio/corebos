@@ -321,6 +321,7 @@ $app_strings = array(
 	'LBL_TEAM' => 'Csapat',
 	'LBL_GROUP' => 'Csoport',
 	'LBL_NONE_NO_LINE' => 'semmi',
+        'LBL_SAVE_AS'=>" Save As",
 	'LBL_SELECT_GROUP' => 'Válassz egy csoportot',
 	'LBL_HOUR_AND_MINUTE' => '(órák/percek)',
 	'YEAR_MONTH_DATE' => '24:00',

@@ -329,6 +329,23 @@ function saveAndRunReport()
 	formSelectColumnString();
 	document.NewReport.submit();
 }
+function saveas()
+{
+if(selectedColumnsObj.options.length == 0)
+	{
+		alert(alert_arr.COLUMNS_CANNOT_BE_EMPTY);
+		return false;
+	}
+       	formSelectedColumnString();
+	formSelectColumnString();
+        var reportname = prompt("Please enter  name for the new report.");
+    if (reportname != null) {
+        document.getElementById("newreportname").value = reportname;
+        document.NewReport.submit();
+     }else
+         alert('You must give  new name to report.');
+}
+
 
 function changeSteps1()
 {
@@ -355,6 +372,13 @@ function changeSteps1()
 		}
 
 	}
+         if(getObj('step6').style.display != 'none')
+	{
+             var id = document.getElementById('save_as');
+             id.style.display = 'inline';
+        }
+
+
 	if (getObj('step7').style.display != 'none') {
 	//if (getObj('step6').style.display != 'none') {
 
