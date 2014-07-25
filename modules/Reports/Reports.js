@@ -338,15 +338,15 @@ if(selectedColumnsObj.options.length == 0)
 	}
        	formSelectedColumnString();
 	formSelectColumnString();
-        var reportname = prompt("Please enter  name for the new report.");
+        var reportname = prompt(alert_arr.LBL_REPORT_NAME);
     if (reportname != null) {
         document.getElementById("newreportname").value = reportname;
         document.NewReport.submit();
      }else
-         alert('You must give  new name to report.');
-	
-    
+         alert(alert_arr.LBL_REPORT_NAME_ERROR);
 }
+
+
 function changeSteps1()
 {
 	if(getObj('step5').style.display != 'none')
@@ -371,13 +371,12 @@ function changeSteps1()
 			return false;
 		}
 
-	}
-        if(getObj('step6').style.display != 'none')
-	{
-             var id = document.getElementById('save_as');
-                  id.style.display = 'inline';
-        }
-        
+	}  
+         if(getObj('step6').style.display != 'none' && document.getElementsByName('record')[0].value!='')
+	{   var id = document.getElementById('save_as');
+             id.style.display = 'inline';        }
+
+
 	if (getObj('step7').style.display != 'none') {
 	//if (getObj('step6').style.display != 'none') {
 

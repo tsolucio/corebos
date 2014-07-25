@@ -156,9 +156,9 @@
 						<td>&nbsp;</td>
 						<td align="right" style="padding:10px;" >
 						<input type="button" id="back_rep" name="back_rep" value=" &nbsp;&lt;&nbsp;{$APP.LBL_BACK}&nbsp; " class="crmbutton small cancel" onClick="changeStepsback1();">&nbsp;
-						<input type="button" id="next" name="next" value=" &nbsp;{$APP.LNK_LIST_NEXT}&nbsp;&rsaquo;&nbsp; " class="crmbutton small save" onClick="changeSteps1();">
-						&nbsp;<input type="button" style='display:none; 'id="save_as" name="save_as" value=" &nbsp;{$APP.LBL_SAVE_AS}&nbsp;&rsaquo;&nbsp; " class="crmbutton small save" onClick="saveas();">&nbsp;
-						&nbsp;<input type="button" name="cancel" value=" &nbsp;{$APP.LBL_CANCEL_BUTTON_LABEL}&nbsp; " class="crmbutton small cancel" onClick="self.close();">
+						<input type="button" id="next" name="next" value=" &nbsp;{$APP.LNK_LIST_NEXT}&nbsp;&rsaquo;&nbsp; " class="crmbutton small save" onClick="changeSteps1();">&nbsp;
+                                           {if $REPORT_ID neq ''}     <input type="button" style='display:none; 'id="save_as" name="save_as" value=" &nbsp;{$APP.LBL_SAVE_AS}&nbsp;&rsaquo;&nbsp; " class="crmbutton small save" onClick="saveas();">&nbsp;{/if}
+                                                &nbsp;<input type="button" name="cancel" value=" &nbsp;{$APP.LBL_CANCEL_BUTTON_LABEL}&nbsp; " class="crmbutton small cancel" onClick="self.close();">
 						</td>
 					</tr>
 					</table>
