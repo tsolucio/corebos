@@ -321,6 +321,7 @@ $app_strings = array (
       'LBL_NONE_NO_LINE' => 'ninguno',
       'LBL_SELECT_GROUP' => 'Seleccionar un Grupo',
       'LBL_HOUR_AND_MINUTE' => '(horas/minutos)',
+      'LBL_SAVE_AS'=>" Guardar como",
       'YEAR_MONTH_DATE' => '24:00',
       'COMBO_LEADS' => 'Prospectos',
       'COMBO_ACCOUNTS' => 'Cuentas',

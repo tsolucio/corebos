@@ -322,6 +322,7 @@ $app_strings = array (
 'LBL_CLOSE_LOST' => 'Closed Lost',
 'LBL_USER' => 'User',
 'LBL_TEAM' => 'Team',
+'LBL_SAVE_AS'=>" Save As",
 'LBL_GROUP' => 'Group',
 'LBL_NONE_NO_LINE' => 'none',
 'LBL_SELECT_GROUP' => 'Select a group',

@@ -329,6 +329,23 @@ function saveAndRunReport()
 	formSelectColumnString();
 	document.NewReport.submit();
 }
+function saveas()
+{
+if(selectedColumnsObj.options.length == 0)
+	{
+		alert(alert_arr.COLUMNS_CANNOT_BE_EMPTY);
+		return false;
+	}
+       	formSelectedColumnString();
+	formSelectColumnString();
+        var reportname = prompt(alert_arr.LBL_REPORT_NAME);
+    if (reportname != null) {
+        document.getElementById("newreportname").value = reportname;
+        document.NewReport.submit();
+     }else
+         alert(alert_arr.LBL_REPORT_NAME_ERROR);
+}
+
 
 function changeSteps1()
 {
@@ -354,7 +371,12 @@ function changeSteps1()
 			return false;
 		}
 
-	}
+	}  
+         if(getObj('step6').style.display != 'none' && document.getElementsByName('record')[0].value!='')
+	{   var id = document.getElementById('save_as');
+             id.style.display = 'inline';        }
+
+
 	if (getObj('step7').style.display != 'none') {
 	//if (getObj('step6').style.display != 'none') {
 

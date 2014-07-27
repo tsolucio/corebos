@@ -322,6 +322,7 @@ $app_strings = array(
 	'COMBO_HELPDESK' => 'Trouble Tickets',
 	'COMBO_USERS' => 'Users',
 	'COMBO_CAMPAIGNS' => 'Campaigns',
+        'LBL_SAVE_AS'=>" Save As",
 	'LBL_SELECT' => 'Select',
 	'LBL_EDIT' => 'Edit',
 	'LBL_DELETE' => 'Delete',

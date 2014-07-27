@@ -322,6 +322,7 @@ $app_strings = array (
 'LBL_NEW_POTENTIAL' => 'Nieuwe Verkoopkans',
 'LBL_LEAD_NAME' => 'Lead naam',
 'LBL_ACCOUNT_NAME' => 'Accountnaam',
+'LBL_SAVE_AS'=>" Save As",
 'LBL_ACCOUNT_TYPE' => 'Account Type',
 'LBL_USER_TITLE' => 'Gebruikers',
 'LBL_CONTACT_TITLE' => 'Contacten',
