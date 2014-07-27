@@ -343,6 +343,7 @@ var alert_arr = {
 	'LBL_CLOSE_DATE':'Feche Dados',
 	'LBL_EMAIL':'Email',
 	'MORE_THAN_500' : 'Você selecionou mais de 500 registros. Esta ação poderá demorar muito tempo. Tem certeza que deseja prosseguir?',
-	'LBL_MAPPEDALERT':'O campo já foi mapeado'
-
+	'LBL_MAPPEDALERT':'O campo já foi mapeado',
+	'LBL_REPORT_NAME': 'Please enter a name for the new report.',
+	'LBL_REPORT_NAME_ERROR': 'You must give a new name to the report.'
 };

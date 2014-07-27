@@ -343,6 +343,7 @@ var alert_arr = {
 	LBL_CLOSE_DATE:'geschlossen am',
 	LBL_EMAIL:'E-Mails',
 	MORE_THAN_500 : 'Sie mehr als 500 Datensätze ausgewählt, wodurch die gewählte Aktion wesentlich länger dauern kann. Sind Sie sicher, dass Sie fortsetzen wollen?',
-	LBL_MAPPEDALERT:'Dieses Feld wurde bereits zugewiesen.'
-                
+	LBL_MAPPEDALERT:'Dieses Feld wurde bereits zugewiesen.',
+	'LBL_REPORT_NAME': 'Please enter a name for the new report.',
+	'LBL_REPORT_NAME_ERROR': 'You must give a new name to the report.'
 };

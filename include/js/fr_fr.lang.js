@@ -328,4 +328,6 @@ var alert_arr = {
 	'LBL_EMAIL':'Email',
 	'MORE_THAN_500' : 'Vous avez sélectionné plus de 500 enregistrements. Cette opération peut prendre du temps. Etes vous sur de continuer?',
 	'LBL_MAPPEDALERT':'Le champ est déjà mappé',
+	'LBL_REPORT_NAME': 'Please enter a name for the new report.',
+	'LBL_REPORT_NAME_ERROR': 'You must give a new name to the report.'
 };

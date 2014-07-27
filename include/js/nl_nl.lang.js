@@ -294,7 +294,8 @@
 				RSS: 'RSS',
 				Default: 'Standaard',
 				Notebook: 'Notebook',
-				SPECIAL_CHARS:'\\ / < > + \' " '
+				SPECIAL_CHARS:'\\ / < > + \' " ',
+				'LBL_MAPPEDALERT':'The field has been already mapped',
+				'LBL_REPORT_NAME': 'Please enter a name for the new report.',
+				'LBL_REPORT_NAME_ERROR': 'You must give a new name to the report.'
 			};
-	
-
