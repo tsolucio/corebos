@@ -13,6 +13,7 @@
 /**
  * Start the cron services configured.
  */
+chdir(__DIR__);
 include_once 'vtlib/Vtiger/Cron.php';
 require_once 'config.inc.php';
 if(PHP_SAPI === "cli" || (isset($_SESSION["authenticated_user_id"]) &&	isset($_SESSION["app_unique_key"]) && $_SESSION["app_unique_key"] == $application_unique_key)){
