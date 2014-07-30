@@ -9,14 +9,13 @@
 
 global $app_strings, $mod_strings, $current_language, $currentModule, $theme, $current_user, $adb, $default_charset;
 
-
 $app = $app_strings;
 $mod = $mod_strings;
 
 $Activities = array();
 $record = "";
 
-require_once('include/fields/DateTimeField.php');           
+require_once('include/fields/DateTimeField.php');
 require_once("modules/Calendar4You/Calendar4You.php");
 require_once("modules/Calendar4You/CalendarUtils.php");
 
@@ -27,7 +26,6 @@ $user_view_type = $_REQUEST["user_view_type"];
 $save = $_REQUEST["save"];
 $full_calendar_view = $_REQUEST["view"];
 if (isset($_REQUEST["record"]) && $_REQUEST["record"] != "") $record = $_REQUEST["record"];
-
 
 if ($_REQUEST["usersids"] != "") {
     $all_users = true;
@@ -52,7 +50,7 @@ $task_status = $_REQUEST["task_status"];
 if ($task_status != "") {
     $Load_Task_Status = explode(",",$task_status);
 }
-                    
+
 $Calendar4You = new Calendar4You();
 $Calendar4You->GetDefPermission($current_user->id);
 
@@ -70,9 +68,9 @@ $u_params = array($current_user_parent_role_seq."::%");
 $u_result = $adb->pquery($u_query,$u_params);
 
 while($u_row = $adb->fetchByAssoc($u_result)) {
-    $ParentUsers[] = $u_row["id"];     
+    $ParentUsers[] = $u_row["id"];
 }
-          
+
 $view = convertFullCalendarView($full_calendar_view);
 
 $calendar_tabid = getTabId("Calendar");
@@ -100,11 +98,11 @@ if ($detailview_permissions) {
                 $Showed_Field[$row0['event']] = $Field_data;
             } else {
                 $Event_Info[$row0['event']][] = $Field_data;
-            }    
+            }
         }
     }
-}            
-   
+}
+
 if (isset($_REQUEST["start"]) && $_REQUEST["start"] != "") $start_time = $_REQUEST["start"]; else $start_time = time();
 if (isset($_REQUEST["end"]) && $_REQUEST["end"] != "") $end_time = $_REQUEST["end"]; else $end_time = time();
 
@@ -112,26 +110,26 @@ $start_date = date("Y-m-d",$start_time);
 $end_date = date("Y-m-d",$end_time);
 
 $Event_Status = array();
-if (count($Load_Event_Status) > 0) {    
+if (count($Load_Event_Status) > 0) {
     foreach ($Load_Event_Status AS $sid) {
         $s_sql = "SELECT eventstatus FROM vtiger_eventstatus WHERE picklist_valueid = ?";
         $s_result = $adb->pquery($s_sql, array($sid));
         $eventstatus = $adb->query_result($s_result,0,"eventstatus");
         array_push($Event_Status, $eventstatus); 
         $eventstatus = html_entity_decode($eventstatus,ENT_QUOTES,$default_charset);
-        array_push($Event_Status, $eventstatus);     
+        array_push($Event_Status, $eventstatus);
     }
 }
 
 $Task_Status = array();
-if (count($Load_Task_Status) > 0) {   
+if (count($Load_Task_Status) > 0) {
     foreach ($Load_Task_Status AS $sid) {
         $s_sql = "SELECT taskstatus FROM vtiger_taskstatus WHERE picklist_valueid = ?";
         $s_result = $adb->pquery($s_sql, array($sid));
         $taskstatus = $adb->query_result($s_result,0,"taskstatus");
         array_push($Task_Status, $taskstatus);
         $taskstatus = html_entity_decode($taskstatus,ENT_QUOTES,$default_charset);
-        array_push($Task_Status, $taskstatus);     
+        array_push($Task_Status, $taskstatus);
     }
 }
 
@@ -165,7 +163,6 @@ foreach($Users_Ids AS $userid) {
         if (!$invites) {
             $list_query .= " AND vtiger_crmentity.smownerid = ?";
             $list_query .= " AND vtiger_activity.activitytype = ?";
-                
             $list_array = array($userid,$activitytype);
         }
         
@@ -202,15 +199,19 @@ foreach($Users_Ids AS $userid) {
                     $editable = true; 
                 }
             }
+            if ($activitytypeid == "task")
+            	$activity_mode = "Task";
+            else
+           	$activity_mode = "Events";
             
             if ($record != "") {
                 $Actions = array();
                 if ($visibility == "public") {
-                    $Actions[] = "<a target='_new' href='index.php?action=EventDetailView&module=Calendar4You&record=".$record."&activity_mode=Events&parenttab=Tools'>".$mod['LBL_DETAIL']."</a>";
+                    $Actions[] = "<a target='_new' href='index.php?action=EventDetailView&module=Calendar4You&record=".$record."&activity_mode=$activity_mode&parenttab=Tools'>".$mod['LBL_DETAIL']."</a>";
                 }
                 
                 if($Calendar4You->CheckPermissions("EDIT",$record)) {
-                    $Actions[] = "<a target='_new' href='index.php?action=EventEditView&module=Calendar4You&record=".$record."&activity_mode=Events&parenttab=Tools'>".$app['LNK_EDIT']."</a>";
+                    $Actions[] = "<a target='_new' href='index.php?action=EventEditView&module=Calendar4You&record=".$record."&activity_mode=$activity_mode&parenttab=Tools'>".$app['LNK_EDIT']."</a>";
                 }
 
                 $actions = implode(" | ",$Actions);
@@ -224,14 +225,9 @@ foreach($Users_Ids AS $userid) {
                 if (count($Event_Info[$event]) > 0) {
                     foreach($Event_Info[$event] AS $CD) {
                         $title .= transferForAddIntoTitle(2,$row,$CD);
-                    }   
+                    }
                 } 
             }
-            
-            if ($activitytypeid == "task")
-                $activity_mode = "Task";
-            else
-                $activity_mode = "Events";
 
             $convert_date_start = DateTimeField::convertToUserTimeZone($row["date_start"]." ".$row["time_start"]);
 	        $user_date_start = $convert_date_start->format('Y-m-d H:i');
@@ -253,7 +249,7 @@ foreach($Users_Ids AS $userid) {
         }
     }
 }
- 
+
 echo json_encode($Activities);
- 
+
 ?>
