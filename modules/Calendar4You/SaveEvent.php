@@ -18,20 +18,28 @@ require_once('include/logging.php');
 require_once("config.php");
 require_once('include/database/PearDatabase.php');
 require_once('modules/Calendar/CalendarCommon.php');
+require_once 'modules/Calendar4You/CalendarUtils.php';
 global $adb,$theme,$mod_strings,$current_user;
 $local_log =& LoggerManager::getLogger('index');
 
 $focus = new Activity();
+$_REQUEST = vtlib_purify($_REQUEST);  // clean up ALL values
 $activity_mode = vtlib_purify($_REQUEST['activity_mode']);
+$record = vtlib_purify($_REQUEST['record']);
+if (empty($activity_mode) and !empty($record)) {
+	$activity_mode = getEventActivityMode($record);
+}
 $tab_type = 'Calendar';
-
+if ($activity_mode == 'Events') {
+	$tab_type = 'Events';
+}
 $search=vtlib_purify($_REQUEST['search_url']);
 
 $focus->column_fields["activitytype"] = 'Task';
-if(isset($_REQUEST['record'])) {
+if(isset($record)) {
 	$focus->id = $_REQUEST['record'];
 	$local_log->debug("id is ".$id);
-}    
+}
 
 if ($_REQUEST['mode'] == "event_drop" || $_REQUEST['mode'] == "event_resize") {
     $activityid = $focus->id;
@@ -40,14 +48,13 @@ if ($_REQUEST['mode'] == "event_drop" || $_REQUEST['mode'] == "event_resize") {
         $focus->retrieve_entity_info($focus->id,$tab_type);
         $focus->mode = "edit";
         
-        
         $day_drop = $_REQUEST['day'];
         
         $minute_drop = $_REQUEST['minute'];
         
         $Act = $focus->column_fields;
         
-        foreach($focus->column_fields as $fieldname => $val) {    	
+        foreach($focus->column_fields as $fieldname => $val) {
 			$focus->column_fields[$fieldname] = decode_html($focus->column_fields[$fieldname]);
 		}
         
@@ -99,7 +106,7 @@ if ($_REQUEST['mode'] == "event_drop" || $_REQUEST['mode'] == "event_resize") {
             
             $focus->column_fields["time_end"] = $new_time_end;
         }
-        $focus->save($tab_type);      	
+        $focus->save($tab_type);
     }
     exit;
 }
