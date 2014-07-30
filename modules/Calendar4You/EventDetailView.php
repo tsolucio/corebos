@@ -24,7 +24,7 @@ require_once("modules/Calendar4You/Calendar4You.php");
 require_once("modules/Calendar4You/CalendarUtils.php");
 
 global $mod_strings,$app_strings,$theme, $currentModule,$adb, $current_user, $singlepane_view, $current_language;
-  
+$_REQUEST = vtlib_purify($_REQUEST);  // clean up ALL values
 $record = vtlib_purify($_REQUEST['record']);
 
 $Calendar4You = new Calendar4You();
@@ -48,14 +48,13 @@ $focus = CRMEntity::getInstance("Calendar");
 $smarty =  new vtigerCRM_Smarty();
 $activity_mode = vtlib_purify($_REQUEST['activity_mode']);
 //If activity_mode == null
-
-if($activity_mode =='' || strlen($activity_mode) < 1) {
-    $activity_mode = getEventActivityMode($record);		
-}	
+if(empty($activity_mode)) {
+    $activity_mode = getEventActivityMode($record);
+}
 
 if($activity_mode == 'Task') {
-    $tab_type = 'Calendar';   
-    $rel_tab_type = 'Calendar4You';    
+    $tab_type = 'Calendar';
+    $rel_tab_type = 'Calendar4You';
 	$smarty->assign("SINGLE_MOD",$c_mod_strings['LBL_TODO']);
 } elseif($activity_mode == 'Events') {
     $rel_tab_type = $tab_type = 'Events';
@@ -64,7 +63,7 @@ if($activity_mode == 'Task') {
 
 if(isset($record) && $record!="") {
     $focus->retrieve_entity_info($record,$tab_type);
-    $focus->id = $record;	
+    $focus->id = $record;
     $focus->name=$focus->column_fields['subject'];
 }
 
@@ -262,7 +261,6 @@ if($Calendar4You->CheckPermissions("DELETE",$record))
 if($Calendar4You->CheckPermissions("EDIT",$record))
 	$smarty->assign("EDIT_PERMISSION","permitted");
 
-  
 $check_button = Button_Check($module);
 $smarty->assign("CHECK", $check_button);
 
