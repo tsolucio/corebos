@@ -470,23 +470,22 @@ function transferForAddIntoTitle($type, $row, $CD) {
     if ($type == "1")
         return $Cal_Data[1];
     else
-        return "<br><b>".$Cal_Data[0]."</b>: ".$value;                    
+        return "<br><b>".$Cal_Data[0]."</b>: ".$value;
 }
 
 function getEventActivityMode($id) {
-    global $adb;
-     
-    $query = "select activitytype from vtiger_activity where activityid=?";
+	global $adb;
+
+	$query = "select activitytype from vtiger_activity where activityid=?";
 	$result = $adb->pquery($query, array($id));
 	$actType = $adb->query_result($result,0,'activitytype');
 	
-    if( $actType == 'Task')	{
+	if( $actType == 'Task')	{
 		$activity_mode = $actType;	
 	} elseif($actType != 'Emails') {
 		$activity_mode = 'Events';
-	}   
-    
-    return $activity_mode;        
+	}
+	return $activity_mode;
 }
 
 function getITSActFieldCombo($fieldname,$tablename,$from_module = '') {
@@ -495,14 +494,14 @@ function getITSActFieldCombo($fieldname,$tablename,$from_module = '') {
 	$combo = '';
 	$js_fn = '';
 	$def = '';
-    
+
     if ($from_module != '') {
         $from_tab_id = getTabid($from_module);
         
         $sql_d = "SELECT defaultvalue FROM vtiger_field WHERE uitype = '15' AND fieldname = ? AND tabid = ?";
         $Res_D = $adb->pquery($sql_d,array($fieldname,$from_tab_id));
         $noofrows_d = $adb->num_rows($Res_D);
-    
+
         if ($noofrows_d == 1) {
             $def = $adb->query_result($Res_D,0,"defaultvalue");  
         }
