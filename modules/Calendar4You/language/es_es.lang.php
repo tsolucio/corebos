@@ -33,7 +33,7 @@ $mod_strings = Array (
 "LBL_LIST"=>"Lista",
 "LBL_SUCCESSFULY_CREATED"=>"Creado Correctamente", 
 "LBL_UNINSTALL" => "Desinstalar Calendar4You",
-"LBL_UNINSTALL_DESC" => "Desinstala Calendar4You de tu vtiger CRM.",
+"LBL_UNINSTALL_DESC" => "Desinstala Calendar4You de tu aplicación.",
 "LBL_UNINSTALL_CONFIRM" => "¿Seguro que quieres desinstalar Calendar4You y desactivar tu licencia?",
 "MOVE_EVENT_QUESTION" => "¿Seguro que quieres realizar este cambio?",
 "RESIZE_EVENT_QUESTION" => "¿Correcto?",
@@ -43,7 +43,7 @@ $mod_strings = Array (
 "LBL_EVENT_STATUS" => "Estado Evento",
 "LBL_TASK_STATUS" => "Estado Tarea", 
 "LBL_DETAIL"=>"detalle",
-"LBL_WEEK_STARTS_AT"=>"semana empieza en",
+"LBL_WEEK_STARTS_AT"=>"Semana empieza en",
 "LBL_INVITE"=>"Invitar",
 "LBL_DISPLAYED_INFO"=>"Información mostrada",
 "LBL_GOOGLE_SYNC"=>"Google Sync",
@@ -61,7 +61,7 @@ $mod_strings = Array (
 "LBL_CONNECTING_WORK_CORRECT"=>"Se ha conectado con Google",
 "LBL_GOOGLE_SYNC_CONTROL_ACCESS_DATA"=>"Verificando acceso a Google",
 "LBL_CHANGE_GOOGLE_ACCOUNT"=>"Cambiar cuenta de Google", 
-"LBL_INSERT_INTO_CRM"=>"Añadir a vtiger CRM",
+"LBL_INSERT_INTO_CRM"=>"Añadir a aplicación",
 "LBL_ALL_DAY"=>"Todo el día",
 );
 ?>
