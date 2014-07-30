@@ -127,4 +127,11 @@
 	<classname>user_showtagas</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>omar</author>
+	<description>Instalo Calendar4You</description>
+	<filename>build/changeSets/installc4y.php</filename>
+	<classname>installc4y</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
 </updatesChangeLog>
