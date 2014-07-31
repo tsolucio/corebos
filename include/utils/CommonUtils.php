@@ -2883,7 +2883,9 @@ function checkFileAccessForDeletion($filepath) {
 /** Function to check the file access is made within web root directory. */
 function checkFileAccess($filepath) {
 	if (!isFileAccessible($filepath)) {
-		die("Sorry! Attempt to access restricted file.");
+		echo "Sorry! Attempt to access restricted file.<br>";
+		echo "We are looking for this file path: $filepath<br>";
+		die();
 	}
 }
 
