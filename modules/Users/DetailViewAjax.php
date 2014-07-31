@@ -7,25 +7,25 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-	      
+
 require_once('include/logging.php');
 require_once('modules/Users/Users.php');
 require_once('include/database/PearDatabase.php');
-global $adb ,$mod_strings ;
+global $adb ,$mod_strings, $current_user;
 
 $local_log =& LoggerManager::getLogger('UsersAjax');
 $ajaxaction = vtlib_purify($_REQUEST["ajxaction"]);
 if($ajaxaction == "DETAILVIEW")
 {
-	if(empty($_SESSION['Users_FORM_TOKEN']) || $_SESSION['Users_FORM_TOKEN']
-			!== (int)$_REQUEST['form_token']) {
-		echo ":#:ERR".($app_strings['LBL_PERMISSION']);
-		die;
-	}
 	$userid = vtlib_purify($_REQUEST["recordid"]);
 	$tablename = vtlib_purify($_REQUEST["tableName"]);
 	$fieldname = vtlib_purify($_REQUEST["fldName"]);
 	$fieldvalue = utf8RawUrlDecode(vtlib_purify($_REQUEST["fieldValue"])); 
+	if(empty($_SESSION['Users_FORM_TOKEN']) || $_SESSION['Users_FORM_TOKEN'] !== (int)$_REQUEST['form_token'] ||
+		(!is_admin($current_user) && $current_user->id != $userid)) {
+		echo ":#:ERR".($app_strings['LBL_PERMISSION']);
+		die;
+	}
 	if($userid != "")
 	{
 		$userObj = new Users();
