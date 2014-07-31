@@ -99,4 +99,11 @@
 	<classname>cbupdater_blockperspective</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Workflow custom method to relate products/services with accounts/contacts/vendors on sales</description>
+	<filename>build/changeSets/ticket191_wfrelatepdosrv.php</filename>
+	<classname>ticket191</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
 </updatesChangeLog>

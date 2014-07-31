@@ -89,5 +89,10 @@ $mod_strings = array(
 'Tags' => 'Etiquetas',
 'ForAllUsers' => 'Para todos los Usuarios',
 'ForCurrentUser' => 'Solo para el usuario Actual',
+'CBRelateSales' => 'Relacionar Producto/Servicio',
+'Relate Product' => 'Relacionar Producto',
+'Relate Service' => 'Relacionar Servicio',
+'Relate with AccountVendor' => 'Relacionar con Cuenta/Proveedor',
+'Relate with Contact' => 'Relacionar con Contacto',
 );
 ?>
