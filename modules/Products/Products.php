@@ -661,14 +661,13 @@ class Products extends CRMEntity {
 			vtiger_quotes.*,
 			vtiger_potential.potentialname,
 			vtiger_account.accountname,
-			vtiger_inventoryproductrel.productid,
 			case when (vtiger_users.user_name not like '') then $userNameSql
 				else vtiger_groups.groupname end as user_name
 			FROM vtiger_quotes
 			INNER JOIN vtiger_crmentity
 				ON vtiger_crmentity.crmid = vtiger_quotes.quoteid
-			INNER JOIN vtiger_inventoryproductrel
-				ON vtiger_inventoryproductrel.id = vtiger_quotes.quoteid
+			INNER JOIN (SELECT DISTINCT(vtiger_inventoryproductrel.id) as id FROM vtiger_inventoryproductrel WHERE vtiger_inventoryproductrel.productid = $id) as invrel
+				ON invrel.id = vtiger_quotes.quoteid
 			LEFT OUTER JOIN vtiger_account
 				ON vtiger_account.accountid = vtiger_quotes.accountid
 			LEFT OUTER JOIN vtiger_potential
@@ -677,8 +676,7 @@ class Products extends CRMEntity {
 				ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 			LEFT JOIN vtiger_users
 				ON vtiger_users.id = vtiger_crmentity.smownerid
-			WHERE vtiger_crmentity.deleted = 0
-			AND vtiger_inventoryproductrel.productid = ".$id;
+			WHERE vtiger_crmentity.deleted = 0";
 
 		$return_value = GetRelatedList($this_module, $related_module, $other, $query, $button, $returnset);
 
@@ -796,25 +794,21 @@ class Products extends CRMEntity {
 							'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 		$query = "SELECT vtiger_crmentity.*,
 			vtiger_salesorder.*,
-			vtiger_products.productname AS productname,
 			vtiger_account.accountname,
 			case when (vtiger_users.user_name not like '') then $userNameSql
 				else vtiger_groups.groupname end as user_name
 			FROM vtiger_salesorder
 			INNER JOIN vtiger_crmentity
 				ON vtiger_crmentity.crmid = vtiger_salesorder.salesorderid
-			INNER JOIN vtiger_inventoryproductrel
-				ON vtiger_inventoryproductrel.id = vtiger_salesorder.salesorderid
-			INNER JOIN vtiger_products
-				ON vtiger_products.productid = vtiger_inventoryproductrel.productid
+			INNER JOIN (SELECT DISTINCT(vtiger_inventoryproductrel.id) as id FROM vtiger_inventoryproductrel WHERE vtiger_inventoryproductrel.productid = $id) as invrel
+				ON invrel.id = vtiger_salesorder.salesorderid
 			LEFT OUTER JOIN vtiger_account
 				ON vtiger_account.accountid = vtiger_salesorder.accountid
 			LEFT JOIN vtiger_groups
 				ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 			LEFT JOIN vtiger_users
 				ON vtiger_users.id = vtiger_crmentity.smownerid
-			WHERE vtiger_crmentity.deleted = 0
-			AND vtiger_products.productid = ".$id;
+			WHERE vtiger_crmentity.deleted = 0";
 
 		$return_value = GetRelatedList($this_module, $related_module, $other, $query, $button, $returnset);
 
@@ -865,7 +859,6 @@ class Products extends CRMEntity {
 							'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 		$query = "SELECT vtiger_crmentity.*,
 			vtiger_invoice.*,
-			vtiger_inventoryproductrel.quantity,
 			vtiger_account.accountname,
 			case when (vtiger_users.user_name not like '') then $userNameSql
 				else vtiger_groups.groupname end as user_name
@@ -874,14 +867,13 @@ class Products extends CRMEntity {
 				ON vtiger_crmentity.crmid = vtiger_invoice.invoiceid
 			LEFT OUTER JOIN vtiger_account
 				ON vtiger_account.accountid = vtiger_invoice.accountid
-			INNER JOIN vtiger_inventoryproductrel
-				ON vtiger_inventoryproductrel.id = vtiger_invoice.invoiceid
+			INNER JOIN (SELECT DISTINCT(vtiger_inventoryproductrel.id) as id FROM vtiger_inventoryproductrel WHERE vtiger_inventoryproductrel.productid = $id) as invrel
+				ON invrel.id = vtiger_invoice.invoiceid
 			LEFT JOIN vtiger_groups
 				ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 			LEFT JOIN vtiger_users
 				ON  vtiger_users.id=vtiger_crmentity.smownerid
-			WHERE vtiger_crmentity.deleted = 0
-			AND vtiger_inventoryproductrel.productid = ".$id;
+			WHERE vtiger_crmentity.deleted = 0";
 
 		$return_value = GetRelatedList($this_module, $related_module, $other, $query, $button, $returnset);
 
