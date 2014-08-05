@@ -136,10 +136,6 @@ Class OutlookHandler extends SyncHandler {
         }
     }
 
-
-
-
-
 }
 
 ?>

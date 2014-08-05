@@ -29,9 +29,8 @@ class vtigerCRMHandler extends SyncHandler {
     }
 
     public function get($module,$token,$user){
-        $syncModule = $module;
-        $this->user = $user;
-        $syncModule = $module;
+		$this->user = $user;
+		$syncModule = $module;
 		$syncType = 'user';
 		if(!$this->isClientUserSyncType()){
 			$syncType = 'application';
@@ -210,7 +209,6 @@ class vtigerCRMHandler extends SyncHandler {
         return $this->assignToChangedRecords;
     }
 
-	
 	public function fillNonExistingMandatoryPicklistValues($recordList){
 		//Meta is cached to eliminate overhead of doing the query every time to get the meta details(retrieveMeta)
 		$modulesMetaCache = array();

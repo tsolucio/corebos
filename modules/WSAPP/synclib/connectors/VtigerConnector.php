@@ -25,13 +25,12 @@ class WSAPP_VtigerConnector extends WSAPP_BaseConnector{
 	protected $nextSyncSate;
 
 	function __construct() {
-		$this->db = PearDatabase::getInstance();		
+		$this->db = PearDatabase::getInstance();
 	}
 
 	public function getDbInstance(){
 		return $this->db;
 	}
-
 
 	public function getName(){
 		return $this->name;

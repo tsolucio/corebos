@@ -23,7 +23,6 @@ class SyncServer {
         private $save = "save";
         private $syncTypes = array("user","app");
 
-        
     /**
 	 * Lookup application id using the key provided.
 	 */
@@ -39,23 +38,23 @@ class SyncServer {
 	 * application and serverid
 	 */
 	function idmap_get_clientmap($appid, $serverids) {
-        if (!is_array($serverids)) $serverids = array($serverids);
-		$db = PearDatabase::getInstance(); 		;
+		if (!is_array($serverids)) $serverids = array($serverids);
+		$db = PearDatabase::getInstance();
 		$result = $db->pquery(sprintf(
 			"SELECT serverid, clientid,clientmodifiedtime,servermodifiedtime,id FROM vtiger_wsapp_recordmapping WHERE appid=? AND serverid IN ('%s')",
 			implode("','", $serverids)), array($appid));
-                 
+
 		$mapping = array();
 		if ($db->num_rows($result)) {
 			while ($row = $db->fetch_array($result)) {
 				$mapping[$row['serverid']] = array("clientid"=>$row['clientid'],"clientmodifiedtime"=>$row['clientmodifiedtime'],
-                    "servermodifiedtime"=>$row['servermodifiedtime'],"id"=>$row['id']);
+				"servermodifiedtime"=>$row['servermodifiedtime'],"id"=>$row['id']);
 			}
 		}
 		return $mapping;
 	}
 
-        /**
+	 /**
 	 * Retrieve serverid-clientid record map information for the given
 	 * application and client
 	 */
@@ -243,7 +242,6 @@ class SyncServer {
 		}
 		return array ($name, $key);
 	}
-	
 	
 	/**
 	 * Handles Create/Update/Delete operations on record
@@ -458,7 +456,6 @@ class SyncServer {
 					}
                     $this->idmap_delete($appid, $serverId, $clientid,$serverAppId);
                 }
-
             }
         }
 		if(count($deleteQueueSyncServerIds)>0){
