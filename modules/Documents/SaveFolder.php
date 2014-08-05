@@ -13,8 +13,6 @@ require_once('include/database/PearDatabase.php');
 
 global $adb;
 
-
-
 	$local_log =& LoggerManager::getLogger('index');
 	$folderid = $_REQUEST['record'];
 	$foldername = utf8RawUrlDecode($_REQUEST["foldername"]);
@@ -55,29 +53,25 @@ global $adb;
 				echo "DUPLICATE_FOLDERNAME";
 		}
 		elseif($folderid != "")
-		{			
-			$dbQuery="select * from vtiger_attachmentsfolder";
-			$result1=$adb->pquery($dbQuery,array());
-			$flag=0;
-			for($i=0;$i<$adb->num_rows($result1);$i++)
-			{
-				$dbfldrname=$adb->query_result($result1,$i,'foldername');
-				if($dbfldrname == $foldername)
-					$flag = 1;
-			}			
-			if($flag == 0)
-			{
+		{
+			$dbQuery="select count(*) from vtiger_attachmentsfolder where foldername=? and folderid!=?";
+			$result1=$adb->pquery($dbQuery,array($foldername,$folderid));
+			if($result1 and $adb->query_result($result1,0,0)==0) {
+				if (empty($folderdesc)) {
 				$sql="update vtiger_attachmentsfolder set foldername= ? where folderid= ? ";
 				$result=$adb->pquery($sql,array($foldername,$folderid));
-				if(!$result)
-				{
-					echo "Failure";
+				} else {
+				$sql="update vtiger_attachmentsfolder set foldername= ?, description=? where folderid= ? ";
+				$result=$adb->pquery($sql,array($foldername,$folderdesc,$folderid));
 				}
+				if(!$result)
+					echo "Failure";
 				else
 					echo 'Success';
 			}
-			elseif($flag == 1)
+			else {
 				echo "DUPLICATE_FOLDERNAME";
+			}
 		}
 	}
 

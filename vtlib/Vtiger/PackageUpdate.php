@@ -400,7 +400,9 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
 				}
 			}
 			if(empty($importCronTask->status)){
-				$importCronTask->status=Vtiger_Cron::$STATUS_ENABLED;
+				$cronTask->status = Vtiger_Cron::$STATUS_DISABLED;
+			} else {
+				$cronTask->status = Vtiger_Cron::$STATUS_ENABLED;
 			}
 			if((empty($importCronTask->sequence))){
 				$importCronTask->sequence=Vtiger_Cron::nextSequence();

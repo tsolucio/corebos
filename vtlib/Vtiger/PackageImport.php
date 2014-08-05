@@ -783,7 +783,9 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 		if(empty($modulenode->crons) || empty($modulenode->crons->cron)) return;
 		foreach ($modulenode->crons->cron as $cronTask){
 			if(empty($cronTask->status)){
-				$cronTask->status=Vtiger_Cron::$STATUS_ENABLED;
+				$cronTask->status = Vtiger_Cron::$STATUS_DISABLED;
+			} else {
+				$cronTask->status = Vtiger_Cron::$STATUS_ENABLED;
 			}
 			if((empty($cronTask->sequence))){
 				$cronTask->sequence=Vtiger_Cron::nextSequence();
