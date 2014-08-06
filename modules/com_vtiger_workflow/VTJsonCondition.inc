@@ -123,6 +123,12 @@ class VTJsonCondition {
 		if ($expressionType == 'fieldname') {
 			if ($referredEntityData != null) {
 				$referredData = $referredEntityData->getData();
+				if (isset($referredEntityData->user)) {
+					preg_match('/(\w+) : \((\w+)\) (\w+)/', $value, $usermatches);
+					if ($usermatches[1]=='assigned_user_id') {
+						$referredData[$value] = $referredEntityData->user->column_fields[$usermatches[3]];
+					}
+				}
 			} else {
 				$referredData = $data;
 			}
