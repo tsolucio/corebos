@@ -84,7 +84,7 @@
 			return $this->getWorkflowsForResult($result);
 		}
 
-		protected function getWorkflowsForResult($result){
+		function getWorkflowsForResult($result){
 			$adb=$this->adb;
 
 			$it = new SqlResultIterator($adb, $result);
