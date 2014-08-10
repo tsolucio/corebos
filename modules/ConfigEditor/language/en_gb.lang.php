@@ -40,5 +40,6 @@ $mod_strings = array(
 	'LBL_HELP_INFO' => 'This is the \'From email address\' used when sending an email to a new user informing them of their login credentials, sending an email to a trouble-ticket owner about the ticket assigned and when sending email reminders and notifications.',
 	'LBL_RESTRICTED_CHARACTERS' => 'Special characters like \' " and ; are not allowed',
 	'LBL_CORS_ENABLED_DOMAINS' => 'Domains authorized for CORS',
+	'disable_stats_tracking' => 'Disable Email Statistics Tracking',
 );
 ?>

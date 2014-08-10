@@ -63,6 +63,7 @@ $mod_strings = Array (
 	'LBL_HELP_INFO'=>"Dit wordt gebruikt als 'From e-mailadres' om een e-mail te sturen naar nieuw aangemaakte gebruikers met login credentials,
 					voor het sturen van e-mails naar ticket eigenaren over toegewezen tickets, e-mails met herinneringen en notificaties.",
 	'LBL_CORS_ENABLED_DOMAINS' => 'Domains authorized for CORS',
+	'disable_stats_tracking' => 'Disable Email Statistics Tracking',
 );
 
 ?>

@@ -40,6 +40,7 @@ $mod_strings = Array (
 					envoi un email de dépôt de nouveau ticket, les envois de rappels et notifications.",
 	'LBL_RESTRICTED_CHARACTERS'=>"Les caractères spéciaux tel que ' &#34 et ; sont interdits",
 	'LBL_CORS_ENABLED_DOMAINS' => 'Domains authorized for CORS',
+	'disable_stats_tracking' => 'Disable Email Statistics Tracking',
 );
 
 ?>

@@ -47,6 +47,7 @@ $mod_strings = Array (
 					notificar de la asignación de una incidencia y otras notificaciones y recordatorios en general.",
 	'LBL_RESTRICTED_CHARACTERS'=>"Caracteres especiales como ' &#34 y ; no son permitidos",
 	'LBL_CORS_ENABLED_DOMAINS' => 'Dominios autorizados CORS',
+	'disable_stats_tracking' => 'Deshabilitar Estadísticas de Acceso a Emails',
 );
 
 ?>

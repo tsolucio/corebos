@@ -41,6 +41,7 @@ $mod_strings = Array (
 					send a mail to trouble-ticket owner about the ticket assigned,send a mail about reminder and notification.",
 	'LBL_RESTRICTED_CHARACTERS'=>"Special characters like ' &#34 and ; are not allowed",
 	'LBL_CORS_ENABLED_DOMAINS' => 'Domains authorized for CORS',
+	'disable_stats_tracking' => 'Disable Email Statistics Tracking',
 );
 
 ?>

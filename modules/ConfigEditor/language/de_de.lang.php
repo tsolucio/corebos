@@ -41,6 +41,7 @@ $mod_strings = Array (
 					um einen neuen Benutzer über seine Zugangsdaten zu informieren, 
 					falls Trouble Tickets einem Benutzer zugewiesen werden oder eine E-Mail als Erinnerung oder Benachrichtigung versendet wird. ",
 	'LBL_CORS_ENABLED_DOMAINS' => 'Domains authorized for CORS',
+	'disable_stats_tracking' => 'Disable Email Statistics Tracking',
 );
 
 ?>

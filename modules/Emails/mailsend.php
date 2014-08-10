@@ -132,7 +132,7 @@ for ($i=0;$i<(count($myids)-1);$i++)
 		{
 			$temp=$realid[$j];
 			$myquery='Select columnname from vtiger_field where fieldid = ? and vtiger_field.presence in (0,2)';
-			$fresult=$adb->pquery($myquery, array($temp));			
+			$fresult=$adb->pquery($myquery, array($temp));
 			if ($pmodule=='Contacts')
 			{
 				require_once('modules/Contacts/Contacts.php');
@@ -173,10 +173,12 @@ for ($i=0;$i<(count($myids)-1);$i++)
 			{
 				$description = getMergedDescription($_REQUEST['description'],$mycrmid,$pmodule);
 				//Email Open Tracking
-				global $site_URL, $application_unique_key;
+				global $site_URL, $application_unique_key, $disable_stats_tracking;
+				if (!$disable_stats_tracking) {
 				$emailid = $focus->id;
 				$track_URL = "$site_URL/modules/Emails/TrackAccess.php?record=$mycrmid&mailid=$emailid&app_key=$application_unique_key";
-				$description = "<img src='$track_URL' alt='' width='1' height='1'>$description";
+				$description = "$description<img src='$track_URL' alt='' width='1' height='1'>";
+				}
 				// END
 
 				$pos = strpos($description, '$logo$');

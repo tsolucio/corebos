@@ -39,6 +39,7 @@ $__ConfigEditor_Config = array(
 		'default_module' => array('label'=>getTranslatedString('LBL_DEFAULT_MODULE','ConfigEditor'),'values'=>$moduleLabels),
 		'listview_max_textlength' => array('label' => getTranslatedString('LBL_MAX_TEXT_LENGTH_IN_LISTVIEW','ConfigEditor'), 'values' => array() ),
 		'list_max_entries_per_page' => array('label' => getTranslatedString('LBL_MAX_ENTRIES_PER_PAGE_IN_LISTVIEW','ConfigEditor'), 'values'=> array()),
+		'disable_stats_tracking' => array('label'=>getTranslatedString('disable_stats_tracking','ConfigEditor'), 'values'=>$trueFalseArray),
 		'cors_enabled_domains' => array('label' => getTranslatedString('LBL_CORS_ENABLED_DOMAINS','ConfigEditor'), 'values'=> array()),
 	)
 	

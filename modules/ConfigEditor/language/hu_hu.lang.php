@@ -45,5 +45,6 @@ $mod_strings = array(
 	'LBL_HELP_INFO' => 'Ezt használjuk \'Küldő e-mail\' címnek például egy új felhasználó számára a belépési adatok küldésekor, vagy			ügyfélszolgálati kéréskor ezzel az e-mail címmel válaszolunk a kérést beküldőnek, ez küldi ki az emlékeztető e-maileket.',
 	'LBL_RESTRICTED_CHARACTERS' => 'A speciális karakterek, mint \' " és ; nem megengedettek.',
 	'LBL_CORS_ENABLED_DOMAINS' => 'Domains authorized for CORS',
+	'disable_stats_tracking' => 'Disable Email Statistics Tracking',
 );
 ?>
