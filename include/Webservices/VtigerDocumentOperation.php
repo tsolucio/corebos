@@ -50,7 +50,7 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 			$file['setype'] = "Documents Attachment";
 			$attachid = SaveAttachmentDB($file);
 			$element['filetype']=$file['type'];
-			$element['filename']=$filename = str_replace(' ', '_',$file['name']);
+			$element['filename']=$filename = str_replace(array(' ','/'), '_',$file['name']);  // no spaces nor slashes
 		}
 
 		$element = DataTransform::sanitizeForInsert($element,$this->meta);
@@ -77,7 +77,7 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 	}
 
 	public function retrieve($id){
-		global $adb;
+		global $adb,$default_charset,$site_URL;
 		$ids = vtws_getIdComponents($id);
 		$elemid = $ids[1];
 		$doc = parent::retrieve($id);
@@ -88,6 +88,19 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 			$rels[]=$this->vtyiicpng_getWSEntityId(getSalesEntityType($rl['crmid'])).$rl['crmid'];
 		}
 		$doc['relations']=$rels;
+		if ($doc['filelocationtype']=='I') { // Add direct download link
+			$relatt=$adb->pquery("SELECT attachmentsid FROM vtiger_seattachmentsrel WHERE crmid=?",Array($elemid));
+			if ($relatt and $adb->num_rows($relatt)==1) {
+				$fileid = $adb->query_result($relatt,0,0);
+				$attrs=$adb->pquery("SELECT * FROM vtiger_attachments WHERE attachmentsid = ?",Array($fileid));
+				if($attrs and $adb->num_rows($attrs) == 1) {
+					$name = @$adb->query_result($attrs, 0, "name");
+					$filepath = @$adb->query_result($attrs, 0, "path");
+					$name = html_entity_decode($name, ENT_QUOTES, $default_charset);
+					$doc['_downloadurl'] = $site_URL."/".$filepath.$fileid."_".$name;
+				}
+			}
+		}
 		return $doc;
 	}
 
