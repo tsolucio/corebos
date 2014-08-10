@@ -181,6 +181,31 @@ class Documents extends CRMEntity {
 		$log->debug("Exiting from insertIntoAttachment($id,$module) method.");
 	}
 
+	/**
+	* Save the related module record information. Triggered from CRMEntity->saveentity method or updateRelations.php
+	* @param String This module name
+	* @param Integer This module record number
+	* @param String Related module name
+	* @param mixed Integer or Array of related module record number
+	*/
+	function save_related_module($module, $crmid, $with_module, $with_crmid) {
+		global $adb;
+		if ($module=='Documents') {
+			// in this case we have to turn the parameters around to call the parent method correctly
+			if (!is_array($with_crmid))
+				$with_crmid = Array($with_crmid);
+			foreach ($with_crmid as $relcrmid) {
+				$checkpresence = $adb->pquery("SELECT crmid FROM vtiger_senotesrel WHERE crmid = ? AND notesid = ?", Array($relcrmid,$crmid));
+				// Relation already exists? No need to add again
+				if ($checkpresence && $adb->num_rows($checkpresence))
+					continue;
+				$adb->pquery("INSERT INTO vtiger_senotesrel(crmid, notesid) VALUES(?,?)", array($relcrmid,$crmid));
+			}
+		} else { // just call parent method
+			parent::save_related_module($module, $crmid, $with_module, $with_crmid);
+		}
+	}
+	
 	/**    Function used to get the sort order for Documents listview
 	*      @return string  $sorder - first check the $_REQUEST['sorder'] if request value is empty then check in the $_SESSION['NOTES_SORT_ORDER'] if this session value is empty then default sort order will be returned.
 	*/

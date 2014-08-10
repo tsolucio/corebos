@@ -36,11 +36,12 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 	 * 
 	 * 'relations'  this is an array of related entity id's, the id's must be in webservice extended format
 	 *     all the indicated entities will be related to the document being created
+	 *     *** this is done by the main vtws_create() function  ***
 	 * 
 	 */
 	public function create($elementType,$element){
-		global $adb,$log;                 
-		$crmObject = new VtigerCRMObject($elementType, false);		
+		global $adb,$log;
+		$crmObject = new VtigerCRMObject($elementType, false);
 
 		if ($element['filelocationtype']=='I' and !empty($element['filename'])) {
 			$file = $element['filename'];
@@ -51,8 +52,6 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 			$element['filetype']=$file['type'];
 			$element['filename']=$filename = str_replace(' ', '_',$file['name']);
 		}
-		$relations=$element['relations'];
-		unset($element['relations']);
 
 		$element = DataTransform::sanitizeForInsert($element,$this->meta);
 
@@ -72,18 +71,7 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 			// Link file attached to document
 			$adb->pquery("INSERT INTO vtiger_seattachmentsrel(crmid, attachmentsid) VALUES(?,?)",Array($id, $attachid));
 		}
-		// Establish relations
-		//Comento este código porque ya se ha establecido la relacion en Create.php y al hacerlo otra vez falla
-		// Cuando se solucione el ticket 484 (las relaciones se establecen aquí) se debe descomentar
-		//if (!empty($relations) and !is_array($relations))
-		//	$relations = array($relations);
-		//if (!empty($relations) and is_array($relations)) {
-		//foreach ($relations as $rel) {
-		//	$ids = vtws_getIdComponents($rel);
-		//	$relid = $ids[1];
-		//	if (!empty($relid))
-		//		$adb->pquery("INSERT INTO vtiger_senotesrel(crmid, notesid) VALUES(?,?)",Array($relid, $id));
-		//}}
+		// Establish relations *** this is done by the main vtws_create() function  ***
 
 		return DataTransform::filterAndSanitize($crmObject->getFields(),$this->meta);
 	}
@@ -124,8 +112,6 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 			$element['filetype']=$file['type'];
 			$element['filename']=$filename = str_replace(' ', '_',$file['name']);
 		}
-		$relations=$element['relations'];
-		unset($element['relations']);
 
 		$element = DataTransform::sanitizeForInsert($element,$this->meta);
 
@@ -147,13 +133,6 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 			// Link file attached to document
 			$adb->pquery("DELETE from vtiger_seattachmentsrel where crmid=?",Array($id));
 			$adb->pquery("INSERT INTO vtiger_seattachmentsrel(crmid, attachmentsid) VALUES(?,?)",Array($id, $attachid));
-		}
-		// Establish relations
-		$adb->pquery("DELETE from vtiger_senotesrel where crmid=?",Array($id));
-		foreach ($relations as $rel) {
-			$ids = vtws_getIdComponents($rel);
-			$relid = $ids[1];
-			$adb->pquery("INSERT INTO vtiger_senotesrel(crmid, notesid) VALUES(?,?)",Array($relid, $id));
 		}
 
 		return DataTransform::filterAndSanitize($crmObject->getFields(),$this->meta);

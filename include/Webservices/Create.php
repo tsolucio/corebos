@@ -17,8 +17,10 @@ function vtws_create($elementType, $element, $user) {
     }
 
     global $log, $adb;
-    $relations=$element['relations'];
-    unset($element['relations']);
+    if (!empty($element['relations'])) {
+      $relations=$element['relations'];
+      unset($element['relations']);
+    }
 
     // Cache the instance for re-use
 	if(!isset($vtws_create_cache[$elementType]['webserviceobject'])) {
@@ -27,7 +29,7 @@ function vtws_create($elementType, $element, $user) {
 	} else {
 		$webserviceObject = $vtws_create_cache[$elementType]['webserviceobject'];
 	}
-	// END			
+	// END
 
     $handlerPath = $webserviceObject->getHandlerPath();
     $handlerClass = $webserviceObject->getHandlerClass();
@@ -85,9 +87,9 @@ function vtws_create($elementType, $element, $user) {
         }
         $entity = $handler->create($elementType, $element);
         // Establish relations
-        list($wsid,$newrecid) = vtws_getIdComponents($entity['id']);
-        $modname = $meta->getEntityName();
         if (!empty($relations)) {
+        	list($wsid,$newrecid) = vtws_getIdComponents($entity['id']);
+        	$modname = $meta->getEntityName();
         	vtws_internal_setrelation($newrecid, $modname, $relations);
         }
         VTWS_PreserveGlobal::flush();
