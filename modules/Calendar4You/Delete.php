@@ -19,9 +19,10 @@ $Calendar4You->GetDefPermission($current_user->id);
 $delete_permissions = $Calendar4You->CheckPermissions("DELETE",$_REQUEST['record']);
 
 if(!$delete_permissions) {
-  	NOPermissionDiv();
+	NOPermissionDiv();
 }
-          
+
+$currentModule = 'Calendar';
 $focus = CRMEntity::getInstance($currentModule);
 
 require_once('include/logging.php');
@@ -31,7 +32,7 @@ $url = getBasic_Advance_SearchURL();
 if(!isset($_REQUEST['record']))
 	die($mod_strings['ERR_DELETE_RECORD']);
 
-DeleteEntity($_REQUEST['module'],$_REQUEST['return_module'],$focus,$_REQUEST['record'],$_REQUEST['return_id']);
+DeleteEntity('Calendar',$_REQUEST['return_module'],$focus,$_REQUEST['record'],$_REQUEST['return_id']);
 
 $parenttab=getParentTab();
 header("Location: index.php?module=".vtlib_purify($_REQUEST['return_module'])."&action=".vtlib_purify($_REQUEST['return_action'])."&record=".vtlib_purify($_REQUEST['return_id'])."&parenttab=".$parenttab."&relmodule=".vtlib_purify($_REQUEST['module']).$url);
