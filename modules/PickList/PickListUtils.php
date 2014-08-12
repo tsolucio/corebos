@@ -181,6 +181,12 @@ function getNonEditablePicklistValues($fieldName, $lang=array(), $adb){
  * @return array $val - the assigned picklist values in array format
  */
 function getAssignedPicklistValues($tableName, $roleid, $adb, $lang=array()){
+	static $cache = array();
+
+	if (isset($cache[$roleid])) {
+		return $cache[$roleid];
+	}
+
 	$arr = array();
 	
 	$sub = getSubordinateRoleAndUsers($roleid);
@@ -217,6 +223,8 @@ function getAssignedPicklistValues($tableName, $roleid, $adb, $lang=array()){
 		}
 	}
 	// END
+
+	$cache[$roleid] = $arr;
 	return $arr;
 }
 ?>
