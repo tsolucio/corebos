@@ -169,6 +169,4 @@ $mod_strings = array (
 	'Closed Won' => 'Fermé gagné',
 	'Closed Lost' => 'Fermé perdu',
 );
-$mod_list_strings = array (
-);
 ?>

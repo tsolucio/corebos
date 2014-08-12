@@ -710,8 +710,8 @@ Ajax.Request.prototype = Object.extend(new Ajax.Base(), {
        * a bug where XMLHttpReqeuest sends an incorrect Content-length
        * header. See Mozilla Bugzilla #246651.
        */
-      if (this.transport.overrideMimeType)
-        requestHeaders.push('Connection', 'close');
+      //if (this.transport.overrideMimeType)
+        //requestHeaders.push('Connection', 'close');
     }
 
     if (this.options.requestHeaders)

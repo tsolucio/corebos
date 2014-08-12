@@ -22,6 +22,9 @@ class PotentialForecastAmount extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
+			global $adb;
+			$chktbl = $adb->query('select 1 from com_vtiger_workflow_tasktypes limit 1');
+			if ($chktbl) {
 			$moduleInstance = Vtiger_Module::getInstance('Potentials');
 			$block = Vtiger_Block::getInstance('LBL_OPPORTUNITY_INFORMATION', $moduleInstance);
 			$field = Vtiger_Field::getInstance('forecast_amount',$moduleInstance);
@@ -40,7 +43,6 @@ class PotentialForecastAmount extends cbupdaterWorker {
 				$block->addField($forecast_field);
 			}
 			
-			global $adb;
 			$wfrs = $adb->query("SELECT workflow_id FROM com_vtiger_workflows WHERE summary='Calculate or Update forecast amount'");
 			if ($wfrs and $adb->num_rows($wfrs)==1) {
 				$this->sendMsg('Workfolw already exists!');
@@ -63,6 +65,9 @@ class PotentialForecastAmount extends cbupdaterWorker {
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
+			} else {
+				$this->sendMsgError('This changeset could not be applied because it depends on create_workflow_tasktype which probably has not been applied yet. Apply that changeset and try this one again.');
+			}
 		}
 		$this->finishExecution();
 	}

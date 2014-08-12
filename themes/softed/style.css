@@ -1264,7 +1264,8 @@ a.alpha:Hover{
 	border-right:1px solid #dedede;
 	border-bottom:0px solid #dedede;
 	border-top:1px solid #dedede;
-	background:#ffffff url(images/softedHomeMark.gif) repeat-x;
+	/* background:#ffffff url(images/softedHomeMark.gif) repeat-x; */
+	background:#ffffff;
 	background-position:bottom left;
 	width:31%;
 	visibility:visible;
@@ -2315,7 +2316,6 @@ a.drop_downnew_parent{
 }
 
 .winmarkModulesdef{
-    /*background-image:url(images/softedHomeMark.gif);*/
     /*background-image:url(images/softedHomeMark.gif);*/
     background-position:bottom left;
     background-repeat:repeat-x;

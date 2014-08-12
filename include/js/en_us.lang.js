@@ -156,20 +156,20 @@ var alert_arr = {
 	'LBL_FILENAME_LENGTH_EXCEED_ERR': 'Filename cannot exceed 255 characters',
 	'LBL_DONT_HAVE_EMAIL_PERMISSION': "You don't have permission for Email field so you can't choose the email id",
 	'LBL_NO_FEEDS_SELECTED': 'No Feeds Selected',
-	'LBL_SELECT_PICKLIST':'Please select atleast one value to delete',
+	'LBL_SELECT_PICKLIST':'Please select at least one value to delete',
 	'LBL_CANT_REMOVE':'You can\'t remove all the values',
 
 	// Added after 5.0.4 GA
 
 	/*For global add/delete in picklist*/
 	'LBL_GIVE_PICKLIST_VALUE':'Please provide some value for the selected picklist to be replaced',
-	'LBL_SELECT_ROLE':'Please select atleast one role for which the new values are to be added',
+	'LBL_SELECT_ROLE':'Please select at least one role for which the new values are to be added',
 	'LBL_ADD_PICKLIST_VALUE':'Please provide at least one new value to be added',
 	'LBL_NO_VALUES_TO_DELETE': "no values to delete",
 
 	/* For Duplicate merging feature */
 	'SAME_GROUPS': 'You have to select the records in the same groups for merging',
-	'ATLEAST_TWO': 'Select atleast two records for merging',
+	'ATLEAST_TWO': 'Select at least two records for merging',
 	'MAX_THREE': 'You are allowed to select a maximum of three records',
 	//PARENT_RECORD: 'Select a record as parent record',  MergeFields.tpl Line:59
 	'MAX_RECORDS': 'You are allowed to select a maximum of four records',
@@ -209,7 +209,7 @@ var alert_arr = {
 	'LBL_CANNOT_HAVE_EMPTY_VALUE': 'Cannot replace with blank value, to remove the value use Delete option.',
 	'LBL_DUPLICATE_VALUE_EXISTS': 'Duplicate value exists',
 	'LBL_WANT_TO_DELETE': "This will delete the selected picklist value(s) for all roles. You sure you want to continue? ",
-	'LBL_DELETE_ALL_WARNING': "Must have atleast one value for the picklist",
+	'LBL_DELETE_ALL_WARNING': "Must have at least one value for the picklist",
 	'LBL_PLEASE_CHANGE_REPLACEMENT': "please change the replacement value; it is also selected for delete",
 
 	/*layout Editor changes*/
@@ -234,7 +234,7 @@ var alert_arr = {
 	'ARE_YOU_SURE': 'Are You Sure You want to Delete?',
 	'LABEL_ALREADY_EXISTS': 'Label already exists. Please specify a different Label',
 	'LENGTH_OUT_OF_RANGE': 'Length of the Block should be less than 50 characters',
-	'LBL_SELECT_ONE_FILE': 'Please select atleast one File',
+	'LBL_SELECT_ONE_FILE': 'Please select at least one file',
 	'LBL_UNABLE_TO_ADD_FOLDER': 'Unable to add Folder. Please try again.',
 	'LBL_ARE_YOU_SURE_YOU_WANT_TO_DELETE_FOLDER': 'Are you sure you want to delete the folder?',
 	'LBL_ERROR_WHILE_DELETING_FOLDER': 'Error while deleting the folder.Please try again later.',
@@ -343,6 +343,8 @@ var alert_arr = {
 	'LBL_CLOSE_DATE':'Close Date',
 	'LBL_EMAIL':'Email',
 	'MORE_THAN_500' : 'You selected more than 500 records. For this action it may take longer time. Are you sure want to proceed?',
-	'LBL_MAPPEDALERT':'The field has been already mapped'
+	'LBL_MAPPEDALERT':'The field has been already mapped',
+	'LBL_REPORT_NAME': 'Please enter a name for the new report.',
+	'LBL_REPORT_NAME_ERROR': 'You must give a new name to the report.'
 
 };

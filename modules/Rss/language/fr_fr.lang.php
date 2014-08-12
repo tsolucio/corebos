@@ -32,8 +32,6 @@ $mod_strings = array (
 	'UNABLE_TO_SAVE' => 'Erreur : impossible de sauvegarder ce flux RSS',
 	'NOT_A_VALID' => 'Flux RSS non valide ou proxy incorrecte.',
 	'INVALID_RSS_URL' => 'URL de RSS invalide',
-	'UNABLE_TO_SAVE' => 'Impossible d\'enregistrer l\'URL',		
-);
-$mod_list_strings = array (
+	'UNABLE_TO_SAVE' => 'Impossible d\'enregistrer l\'URL',
 );
 ?>

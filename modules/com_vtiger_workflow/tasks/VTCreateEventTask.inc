@@ -31,7 +31,7 @@ class VTCreateEventTask extends VTTask{
 								 'status', 'priority','recurringcheck','repeat_frequency',
 								 'recurringtype','calendar_repeat_limit_date',
 								 'mon_flag','tue_flag','wed_flag','thu_flag','fri_flag','sat_flag','sun_flag',
-								 'repeatMonth','repeatMonth_date','repeatMonth_daytype','repeatMonth_day');
+								 'repeatMonth','repeatMonth_date','repeatMonth_daytype','repeatMonth_day', 'assigned_user_id');
 	}
 	
 	function getAdmin(){
@@ -59,6 +59,20 @@ class VTCreateEventTask extends VTTask{
 															$this->startDirection, $this->startDatefield);
 		$endDate = $this->calculateDate($entityData, $this->endDays, 
 															$this->endDirection, $this->endDatefield);
+		// Added to check if the user/group is active
+		if(!empty($this->assigned_user_id)) {
+			$userExists = $adb->pquery('SELECT 1 FROM vtiger_users WHERE id = ? AND status = ?', array($this->assigned_user_id, 'Active'));
+			if($adb->num_rows($userExists)) {
+				$assignedUserId = vtws_getWebserviceEntityId('Users', $this->assigned_user_id);
+				$userId = $assignedUserId;
+			} else {
+				$groupExist = $adb->pquery('SELECT 1 FROM vtiger_groups WHERE groupid = ?', array($this->assigned_user_id));
+				if($adb->num_rows($groupExist)) {
+					$assignedGroupId = vtws_getWebserviceEntityId('Groups', $this->assigned_user_id);
+					$userId = $assignedGroupId;
+				}
+			}
+		}
 
 		$fields = array(
 			'activitytype'=>$this->eventType,
@@ -174,7 +188,7 @@ class VTCreateEventTask extends VTTask{
 		preg_match('/\d\d\d\d-\d\d-\d\d/', $baseDate, $match);
 		$baseDate = strtotime($match[0]);
 		$date = strftime('%Y-%m-%d', $baseDate+$days*24*60*60*
-										 ($direction=='Before'?-1:1));
+										 (strtolower($direction)=='before'?-1:1));
 		return $date;
 	}
 

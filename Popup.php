@@ -118,6 +118,7 @@ switch($currentModule)
 		break;
 	case 'Products':
 		$smarty->assign("SINGLE_MOD",getTranslatedString('SINGLE_'.$currentModule));
+                if (isset($_REQUEST['select'])) $smarty->assign("SELECT",'enable');
 		if(isset($_REQUEST['curr_row']))
 		{
 			$curr_row = vtlib_purify($_REQUEST['curr_row']);

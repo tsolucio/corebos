@@ -81,5 +81,18 @@ $mod_strings = array(
 	'LBL_ENTITY_TYPE' => 'Type d\'entité',
 	'LBL_SELECT_ENTITY_TYPE' => '-- Choix du type d\'entité --',
 	'LBL_NO_ENTITIES_FOUND' => 'Aucune entité disponible à la création',
+	'LBL_PARENT_OWNER' => 'Parent Record Owner',
+	'LBL_SPECIAL_OPTIONS' => 'Special Options',
+	'CBTagTask' => 'Add/Delete Tag',
+	'Add Tag' => 'Add Tag',
+	'Delete Tag' => 'Delete Tag',
+	'Tags' => 'Tags',
+	'ForAllUsers' => 'For All Users',
+	'ForCurrentUser' => 'Only For Current User',
+	'CBRelateSales' => 'Relate Product/Service',
+	'Relate Product' => 'Relate Product',
+	'Relate Service' => 'Relate Service',
+	'Relate with AccountVendor' => 'Relate with Account/Vendor',
+	'Relate with Contact' => 'Relate with Contact',
 );
 ?>

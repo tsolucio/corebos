@@ -5,7 +5,7 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Figure
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Ellipse.php,v 1.9 2005/08/24 20:36:00 nosey Exp $
+ * @version    SVN: $Id: Ellipse.php 291170 2009-11-23 03:50:22Z neufeind $
  * @link       http://pear.php.net/package/Image_Graph
  */
 
@@ -40,9 +41,10 @@ require_once 'Image/Graph/Element.php';
  * @package    Image_Graph
  * @subpackage Figure
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: 0.7.2
+ * @version    Release: 0.8.0
  * @link       http://pear.php.net/package/Image_Graph
  */
 class Image_Graph_Figure_Ellipse extends Image_Graph_Element
@@ -51,14 +53,14 @@ class Image_Graph_Figure_Ellipse extends Image_Graph_Element
     /**
      * Ellipse [Constructor]
      *
-     * @param int $x The center pixel of the ellipse on the canvas
-     * @param int $y The center pixel of the ellipse on the canvas
+     * @param int $x       The center pixel of the ellipse on the canvas
+     * @param int $y       The center pixel of the ellipse on the canvas
      * @param int $radiusX The width in pixels of the box on the canvas
      * @param int $radiusY The height in pixels of the box on the canvas
      */
     function Image_Graph_Figure_Ellipse($x, $y, $radiusX, $radiusY)
     {
-        parent::Image_Graph_Element();
+        parent::__construct();
         $this->_setCoords($x - $radiusX, $y - $radiusY, $x + $radiusX, $y + $radiusY);
     }
 
@@ -79,11 +81,11 @@ class Image_Graph_Figure_Ellipse extends Image_Graph_Element
         $this->_getFillStyle();
         $this->_getLineStyle();
         $this->_canvas->ellipse(
-        	array(
-        		'x' => ($this->_left + $this->_right) / 2,
-            	'y' => ($this->_top + $this->_bottom) / 2,
-            	'rx' => $this->width(),
-            	'ry' => $this->height()
+            array(
+                'x' => ($this->_left + $this->_right) / 2,
+                'y' => ($this->_top + $this->_bottom) / 2,
+                'rx' => $this->width(),
+                'ry' => $this->height()
             )
         );
         

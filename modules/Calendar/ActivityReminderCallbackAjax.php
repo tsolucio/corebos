@@ -98,6 +98,8 @@ if(isPermitted('Calendar','index') == 'yes'){
 					$cbstatus   = $focus->column_fields["eventstatus"];
 
 				$cbstatus = getTranslatedString($cbstatus, $currentModule);
+				$actType = $adb->query_result($adb->pquery('select activitytype from vtiger_activity where activityid=?', array($cbrecord)),0,'activitytype');
+				$smarty->assign("activityimage", $actType);
 				$cbactivitytype = getTranslatedString($cbactivitytype, $currentModule);
 
 				// Appending recordid we can get unique callback dom id for that record.

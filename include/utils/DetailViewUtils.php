@@ -1310,10 +1310,26 @@ function getDetailAssociatedProducts($module, $focus) {
 		}
 
 		$sc_image_tag = '';
-		if ($entitytype == 'Services') {
-			$sc_image_tag = '<a href="index.php?module=ServiceContracts&action=EditView&service_id=' . $productid . '&return_module=' . $module . '&return_id=' . $focus->id . '">' .
+		if ($module == 'Invoice') {
+		  switch ($entitytype) {
+			case 'Services':
+				if (vtlib_isModuleActive('ServiceContracts')) {
+					$sc_image_tag = '<a href="index.php?module=ServiceContracts&action=EditView&service_id=' . $productid . '&sc_related_to=' . $focus->column_fields['account_id'] . '&start_date=' . DateTimeField::convertToUserFormat($focus->column_fields['invoicedate']) . '&return_module=' . $module . '&return_id=' . $focus->id . '">' .
 					'<img border="0" src="' . vtiger_imageurl('handshake.gif', $theme) . '" title="' . getTranslatedString('LBL_ADD_NEW',$module)." ".getTranslatedString('ServiceContracts','ServiceContracts'). '" style="cursor: pointer;" align="absmiddle" />' .
 					'</a>';
+				}
+			break;
+			case 'Products':
+				if (vtlib_isModuleActive('Assets')) {
+					$sc_image_tag = '<a href="index.php?module=Assets&action=EditView&invoiceid=' . $focus->id . '&product=' . $productid . '&account=' . $focus->column_fields['account_id'] . '&datesold=' . DateTimeField::convertToUserFormat($focus->column_fields['invoicedate']) . '&return_module=' . $module . '&return_id=' . $focus->id . '" onmouseout="vtlib_listview.trigger(\'invoiceasset.onmouseout\', $(this))" onmouseover="vtlib_listview.trigger(\'cell.onmouseover\', $(this))">' .
+					'<img border="0" src="' . vtiger_imageurl('barcode.png', $theme) . '" title="' . getTranslatedString('LBL_ADD_NEW',$module)." ".getTranslatedString('Assets','Assets'). '" style="cursor: pointer;" align="absmiddle" />' .
+					'<span style="display:none;" vtmodule="Assets" vtfieldname="invoice_product" vtrecordid="'.$focus->id.'::'.$productid.'::'.$i.'" type="vtlib_metainfo"></span>' .
+					'</a>';
+				}
+			break;
+			default:
+				$sc_image_tag = '';
+		  }
 		}
 
 		//For Product Name

@@ -43,6 +43,31 @@ var eventType = '{$task->eventType}';
 			<select id="event_type" value="{$task->eventType}" name="eventType" class="small" style="display: none;"></select>
 		</td>
 	</tr>
+	<tr valign="top">
+		<td class='dvtCellLabel' align="right" width=15% nowrap="nowrap"><b>{'LBL_ASSIGNED_TO'|@getTranslatedString}</b></td>
+		<td class='dvtCellLabel'>
+			<select id="task_assignedto" name="assigned_user_id" class="small">
+				<option value="">{'LBL_SELECT'|@getTranslatedString}</option>
+				<optgroup label="{'LBL_USER'|@getTranslatedString}">
+				{foreach from=$ASSIGNED_TO.user item=ASSIGNED_USER key=ASSIGNED_USER_KEY}
+				 {if $ASSIGNED_USER != ''}
+					<option value="{$ASSIGNED_USER_KEY}" {if $ASSIGNED_USER_KEY eq $TASK_OBJECT->assigned_user_id} selected="" {/if}>{$ASSIGNED_USER}</option>
+				 {/if}
+				{/foreach}
+				</optgroup>
+				<optgroup label="{'LBL_GROUP'|@getTranslatedString}">
+				{foreach from=$ASSIGNED_TO.group item=ASSIGNED_USER key=ASSIGNED_USER_KEY}
+				 {if $ASSIGNED_USER != ''}
+					<option value="{$ASSIGNED_USER_KEY}" {if $ASSIGNED_USER_KEY eq $TASK_OBJECT->assigned_user_id} selected="" {/if}>{$ASSIGNED_USER}</option>
+				 {/if}
+				{/foreach}
+				</optgroup>
+				<optgroup label="{'LBL_SPECIAL_OPTIONS'|@getTranslatedString}">
+					<option value="copyParentOwner" {if $TASK_OBJECT->assigned_user_id eq 'copyParentOwner'} selected="" {/if}>{'LBL_PARENT_OWNER'|@getTranslatedString}</option>
+				</optgroup>
+			</select>
+		</td>
+	</tr>
 	<tr><td colspan="2"><hr size="1" noshade="noshade" /></td></tr>
 	<tr>
 		<td colspan="2" align="right">

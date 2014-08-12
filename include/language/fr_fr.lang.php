@@ -324,6 +324,7 @@ $app_strings = array (
 	'COMBO_CAMPAIGNS' => 'Campagnes',
 	'LBL_SELECT' => 'Sélectionner',
 	'LBL_EDIT' => 'Editer',
+	'LBL_SAVE_AS'=>" Save As",
 	'LBL_DELETE' => 'Supprimer',
 	'Name' => 'Nom',
 	'Company' => 'Société',

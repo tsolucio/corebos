@@ -2949,7 +2949,7 @@ function fnshowHide(currObj,txtObj) {
 }
 
 function fntaxValidation(txtObj) {
-	if (!numValidate(txtObj,"Tax","any"))
+	if (!numValidate(txtObj,"Tax","any",true))
 		document.getElementById(txtObj).value = 0;
 }
 

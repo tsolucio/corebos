@@ -1,0 +1,44 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_cobropago</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_cobropago` (
+  `cobropagoid` int(11) default NULL,
+  `reference` varchar(256) default NULL,
+  `parent_id` int(11) default NULL,
+  `related_id` int(11) default NULL,
+  `register` date default NULL,
+  `duedate` date default NULL,
+  `paid` varchar(3) default NULL,
+  `credit` varchar(3) default NULL,
+  `paymentmode` varchar(256) default NULL,
+  `paymentcategory` varchar(256) default NULL,
+  `amount` decimal(14,2) default NULL,
+  `cost` decimal(14,2) default NULL,
+  `benefit` decimal(14,2) default NULL,
+  `comercialid` int(19) default NULL,
+  `update_log` text NOT NULL,
+  PRIMARY KEY (`cobropagoid`),
+  index (`parent_id`),
+  index (`related_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_cobropagocf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_cobropagocf` (
+  `cobropagoid` int(11) NOT NULL,
+  PRIMARY KEY (`cobropagoid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_cobropagoconfig</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_cobropagoconfig` (
+  `bluepay_accountid` varchar(200) default NULL,
+  `bluepay_secretkey` varchar(150) default NULL,
+  `bluepay_mode` varchar(150) default NULL,
+  `block_paid` varchar(3) default NULL
+) ENGINE=MyISAM DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

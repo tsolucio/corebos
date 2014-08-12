@@ -5,7 +5,7 @@
 /**
  * Class for axis handling.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Axis
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Groupn
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Category.php,v 1.19 2006/03/02 12:15:17 nosey Exp $
+ * @version    SVN: $Id: Category.php 291170 2009-11-23 03:50:22Z neufeind $
  * @link       http://pear.php.net/package/Image_Graph
  */
  
@@ -43,9 +44,10 @@ require_once 'Image/Graph/Axis.php';
  * @package    Image_Graph
  * @subpackage Axis
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: 0.7.2
+ * @version    Release: 0.8.0
  * @link       http://pear.php.net/package/Image_Graph
  */
 class Image_Graph_Axis_Category extends Image_Graph_Axis
@@ -65,7 +67,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
      */
     function Image_Graph_Axis_Category($type = IMAGE_GRAPH_AXIS_X)
     {
-        parent::Image_Graph_Axis($type);
+        parent::__construct($type);
         $this->_labels = array();
         $this->setlabelInterval(1);
     }
@@ -101,7 +103,9 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
      *
      * A minimum cannot be set on a SequentialAxis, it is always 0.
      *
-     * @param double Minimum The minumum value to use on the axis
+     * @param double $minimum The minumum value to use on the axis
+     *
+     * @return void
      * @access private
      */
     function _setMinimum($minimum)
@@ -114,7 +118,9 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
      * A maximum cannot be set on a SequentialAxis, it is always the number
      * of labels passed to the constructor.
      *
-     * @param double Maximum The maximum value to use on the axis
+     * @param double $maximum The maximum value to use on the axis
+     *
+     * @return void
      * @access private
      */
     function _setMaximum($maximum)
@@ -131,7 +137,10 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
      * values/labels the axis should display. <b>Note!</b> Only values in
      * this array will then be displayed on the graph!
      *
-     * @param double $minimum A minimum cannot be set on this type of axis
+     * @param double $minimum     A minimum cannot be set on this type of axis
+     * @param bool   $userEnforce ???
+     *
+     * @return void
      */
     function forceMinimum($minimum, $userEnforce = true)
     {
@@ -147,7 +156,10 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
      * values/labels the axis should display. <b>Note!</b> Only values in
      * this array will then be displayed on the graph!
      *
-     * @param double $maximum A maximum cannot be set on this type of axis
+     * @param double $maximum     A maximum cannot be set on this type of axis
+     * @param bool   $userEnforce ???
+     *
+     * @return void
      */
     function forceMaximum($maximum, $userEnforce = true)
     {
@@ -159,6 +171,9 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
      * The label interval is rounded to nearest integer value.
      *
      * @param double $labelInterval The interval with which labels are shown
+     * @param int    $level         Label level
+     *
+     * @return void
      */
     function setLabelInterval($labelInterval = 'auto', $level = 1)
     {
@@ -175,20 +190,21 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
      * Preprocessor for values, ie for using logarithmic axis
      *
      * @param double $value The value to preprocess
+     *
      * @return double The preprocessed value
      * @access private
      */
     function _value($value)
     {
-//        $the_value = array_search($value, $this->_labels);
-		if (isset($this->_labels[$value])) {
-	        $the_value = $this->_labels[$value];
-	        if ($the_value !== false) {
-	            return $the_value + ($this->_pushValues ? 0.5 : 0);
-	        } else {
-	            return 0;
-	        }
-		}
+        // $the_value = array_search($value, $this->_labels);
+        if (isset($this->_labels[$value])) {
+            $the_value = $this->_labels[$value];
+            if ($the_value !== false) {
+                return $the_value + ($this->_pushValues ? 0.5 : 0);
+            } else {
+                return 0;
+            }
+        }
     }
 
 
@@ -214,8 +230,8 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
      * @return int The size of the axis
      * @access private
      */
-     function _size()
-     {
+    function _size()
+    {
         if (!$this->_visible) {
             return 0;
         }
@@ -223,7 +239,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
         $this->_canvas->setFont($this->_getFont());
 
         $maxSize = 0;
-        foreach($this->_labels as $label => $id) {
+        foreach ($this->_labels as $label => $id) {
             $labelPosition = $this->_point($label);
 
             if (is_object($this->_dataPreProcessor)) {
@@ -232,9 +248,9 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
                 $labelText = $label;
             }
 
-            if ((($this->_type == IMAGE_GRAPH_AXIS_X) && (!$this->_transpose)) ||
-               (($this->_type != IMAGE_GRAPH_AXIS_X) && ($this->_transpose)))
-            {
+            if ((($this->_type == IMAGE_GRAPH_AXIS_X) && (!$this->_transpose))
+                || (($this->_type != IMAGE_GRAPH_AXIS_X) && ($this->_transpose))
+            ) {
                 $maxSize = max($maxSize, $this->_canvas->textHeight($labelText));
             } else {
                 $maxSize = max($maxSize, $this->_canvas->textWidth($labelText));
@@ -244,9 +260,9 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
         if ($this->_title) {
             $this->_canvas->setFont($this->_getTitleFont());
 
-            if ((($this->_type == IMAGE_GRAPH_AXIS_X) && (!$this->_transpose)) ||
-               (($this->_type != IMAGE_GRAPH_AXIS_X) && ($this->_transpose)))
-            {
+            if ((($this->_type == IMAGE_GRAPH_AXIS_X) && (!$this->_transpose))
+                || (($this->_type != IMAGE_GRAPH_AXIS_X) && ($this->_transpose))
+            ) {
                 $maxSize += $this->_canvas->textHeight($this->_title);
             } else {
                 $maxSize += $this->_canvas->textWidth($this->_title);
@@ -273,7 +289,9 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
      * a 1 in the X set. Hence:<p>
      * X: (0, 1, 2, 3, 4, 5, 6, 7)
      *
-     * @param Image_Graph_Dataset $dataset The dataset
+     * @param Image_Graph_Dataset &$dataset The dataset
+     *
+     * @return void
      * @access private
      */
     function _applyDataset(&$dataset)
@@ -305,15 +323,15 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
             // traverse all new and find their relative position withing the
             // intersec, fx value X0 is before X1 in the intersection, which
             // means that X0 should be placed before X1 in the label array
-            foreach($newLabels as $newLabel => $id) {
+            foreach ($newLabels as $newLabel => $id) {
                 $key = $allLabels[$newLabel];
                 reset($intersect);
                 $this_value = false;
                 // intersect indexes are the same as in allLabels!
                 $first = true;
-                while ((list($id, $value) = each($intersect)) &&
-                    ($this_value === false))
-                {
+                while ((list($id, $value) = each($intersect))
+                    && ($this_value === false)
+                ) {
                     if (($first) && ($id > $key)) {
                         $this_value = $value;
                     } elseif ($id >= $key) {
@@ -330,7 +348,7 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
                     // the new label was found before $this_value in the
                     // intersection, insert the label before this position in
                     // the label array
-//                    $key = $this->_labels[$this_value];
+                    // $key = $this->_labels[$this_value];
                     $keys = array_keys($this->_labels);
                     $key = array_search($this_value, $keys);
                     $pre = array_slice($keys, 0, $key);
@@ -348,12 +366,14 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
             $this->_labels[$label] = $i++;
         }
 
-//        $this->_labels = array_values(array_unique($this->_labels));
+        //$this->_labels = array_values(array_unique($this->_labels));
         $this->_calcLabelInterval();
     }
 
     /**
      * Return the label distance.
+     *
+     * @param int $level Label level
      *
      * @return int The distance between 2 adjacent labels
      * @access private
@@ -369,8 +389,10 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
     /**
      * Get next label point
      *
-     * @param doubt $point The current point, if omitted or false, the first is
+     * @param doubt $currentLabel The current label point. If omitted or false, the first is
      *   returned
+     * @param int   $level        Label level
+     *
      * @return double The next label point
      * @access private
      */
@@ -382,12 +404,12 @@ class Image_Graph_Axis_Category extends Image_Graph_Axis
         $result = false;
         $count = ($currentLabel === false ? $this->_labelInterval() - 1 : 0);
         while ($count < $this->_labelInterval()) {
-           $result = (list($label) = each($this->_labels));
-           $count++;
+            $result = (list($label) = each($this->_labels));
+            $count++;
         }
         if ($result) {
             return $label;
-        } else  {
+        } else {
             return false;
         }
     }

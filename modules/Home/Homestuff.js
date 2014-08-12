@@ -385,6 +385,14 @@ function loadStuff(stuffid,stufftype){
                 if(stufftype=="ReportCharts"){
                 	$('a_'+stuffid).href = "index.php?module=Reports&action=SaveAndRun&record="+$('more_'+stuffid).value;
                 }
+				if(stufftype=="Tag Cloud"){
+					TagCanvas.Start('tagcloudCanvas', '', {
+						shape: "hring",
+						lock: "x",
+						weight: true,
+						weightMode: 'both'
+					});
+				}
 				$('refresh_'+stuffid).innerHTML='';
 		    }
 		}
@@ -438,6 +446,13 @@ function loadAllWidgets(widgetInfoList, batchSize){
 								} else if(widgetType=="DashBoard"){
 									$('a_'+widgetId).href = "index.php?module=Dashboard&action="+
 										"index&type="+$('more_'+stuffid).value;
+								} else if(widgetType=="Tag Cloud"){
+									TagCanvas.Start('tagcloudCanvas', '', {
+										shape: "hring",
+										lock: "x",
+										weight: true,
+										weightMode: 'both'
+									});
 								}
 							}
 						}

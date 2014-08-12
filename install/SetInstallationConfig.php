@@ -146,7 +146,7 @@ function verify_data(form) {
 		alert("<?php echo $installationStrings['LBL_MISSING_REQUIRED_FIELDS']; ?>:" + errorMessage);
 		return false;
 	}
-	if (trim(form.admin_email.value) != "" && !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,4})+$/.test(form.admin_email.value)) {
+	if (trim(form.admin_email.value) != "" && !/^[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i.test(form.admin_email.value)) {
 		alert("<?php echo $installationStrings['ERR_ADMIN_EMAIL_INVALID']; ?> - \'"+form.admin_email.value+"\'");
 		form.admin_email.focus();
 		return false;

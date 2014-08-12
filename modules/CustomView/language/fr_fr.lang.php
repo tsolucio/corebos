@@ -214,6 +214,4 @@ $mod_strings = array (
 		'LBL_STATUS_PUBLIC_DENY' => 'Interdire',
 		'LBL_ADVANCED_FILTER' => 'Règle',
 );
-$mod_list_strings = array (
-);
 ?>

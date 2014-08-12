@@ -5,7 +5,7 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Fill
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Gradient.php,v 1.15 2005/08/24 20:36:03 nosey Exp $
+ * @version    SVN: $Id: Gradient.php 291170 2009-11-23 03:50:22Z neufeind $
  * @link       http://pear.php.net/package/Image_Graph
  */
 
@@ -60,9 +61,10 @@ require_once 'Image/Graph/Fill/Image.php';
  * @package    Image_Graph
  * @subpackage Fill
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: 0.7.2
+ * @version    Release: 0.8.0
  * @link       http://pear.php.net/package/Image_Graph
  */
 class Image_Graph_Fill_Gradient extends Image_Graph_Fill //Image_Graph_Fill_Image
@@ -92,13 +94,13 @@ class Image_Graph_Fill_Gradient extends Image_Graph_Fill //Image_Graph_Fill_Imag
     /**
      * Image_Graph_GradientFill [Constructor]
      *
-     * @param int $direction The direction of the gradient
+     * @param int   $direction  The direction of the gradient
      * @param mixed $startColor The value of the starting color
-     * @param mixed $endColor The value of the ending color
+     * @param mixed $endColor   The value of the ending color
      */
     function Image_Graph_Fill_Gradient($direction, $startColor, $endColor)
     {
-        parent::Image_Graph_Fill();
+        parent::__construct();
         $this->_direction = $direction;
         $this->_startColor = $startColor;
         $this->_endColor = $endColor;
@@ -107,35 +109,37 @@ class Image_Graph_Fill_Gradient extends Image_Graph_Fill //Image_Graph_Fill_Imag
     /**
      * Return the fillstyle
      *
+     * @param ??? $ID ???
+     *
      * @return int A GD fillstyle
      * @access private
      */
     function _getFillStyle($ID = false)
     {
-    	switch ($this->_direction) {
-			case IMAGE_GRAPH_GRAD_HORIZONTAL:
-				$direction = 'horizontal';
-				break;
-			case IMAGE_GRAPH_GRAD_VERTICAL:
-				$direction = 'vertical';
-				break;
-			case IMAGE_GRAPH_GRAD_HORIZONTAL_MIRRORED:
-				$direction = 'horizontal_mirror';
-				break;
-			case IMAGE_GRAPH_GRAD_VERTICAL_MIRRORED:
-				$direction = 'vertical_mirror';
-				break;
-			case IMAGE_GRAPH_GRAD_DIAGONALLY_TL_BR:
-			    $direction = 'diagonal_tl_br';
-			    break;
-			case IMAGE_GRAPH_GRAD_DIAGONALLY_BL_TR:
-			    $direction = 'diagonal_bl_tr';
-			    break;
-			case IMAGE_GRAPH_GRAD_RADIAL:
-			    $direction = 'radial';
-			    break;
-    	}
-    	
+        switch ($this->_direction) {
+            case IMAGE_GRAPH_GRAD_HORIZONTAL:
+                $direction = 'horizontal';
+                break;
+            case IMAGE_GRAPH_GRAD_VERTICAL:
+                $direction = 'vertical';
+                break;
+            case IMAGE_GRAPH_GRAD_HORIZONTAL_MIRRORED:
+                $direction = 'horizontal_mirror';
+                break;
+            case IMAGE_GRAPH_GRAD_VERTICAL_MIRRORED:
+                $direction = 'vertical_mirror';
+                break;
+            case IMAGE_GRAPH_GRAD_DIAGONALLY_TL_BR:
+                $direction = 'diagonal_tl_br';
+                break;
+            case IMAGE_GRAPH_GRAD_DIAGONALLY_BL_TR:
+                $direction = 'diagonal_bl_tr';
+                break;
+            case IMAGE_GRAPH_GRAD_RADIAL:
+                $direction = 'radial';
+                break;
+        }
+
         return array(
             'type' => 'gradient',
             'start' => $this->_startColor,

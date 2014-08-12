@@ -57,6 +57,8 @@ class cbupdaterWorker {
 	var $classname;
 	var $execstate = false;
 	var $systemupdate = false;
+	var $perspective = false;
+	var $blocked = false;
 	var $execdate;
 	var $updError = false;
 	var $query_count=0;
@@ -81,6 +83,8 @@ class cbupdaterWorker {
 			$this->classname = $cbu['classname'];
 			$this->execstate = $cbu['execstate'];
 			$this->systemupdate = ($cbu['systemupdate']=='1' ? true : false);
+			$this->perspective = ((isset($cbu['perspective']) and $cbu['perspective']=='1') ? true : false);
+			$this->blocked = ((isset($cbu['blocked']) and $cbu['blocked']=='1') ? true : false);
 			$this->execdate = $cbu['execdate'];
 			$this->updError = false;
 		} else {  // it doesn't exist, we fail because it MUST exist
@@ -89,6 +93,7 @@ class cbupdaterWorker {
 	}
 	
 	function applyChange() {
+		if ($this->isBlocked()) return true;
 		if ($this->hasError()) $this->sendError();
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
@@ -101,6 +106,7 @@ class cbupdaterWorker {
 	}
 	
 	function undoChange() {
+		if ($this->isBlocked()) return true;
 		if ($this->hasError()) $this->sendError();
 		if ($this->isSystemUpdate()) {
 			$this->sendMsg('Changeset '.get_class($this).' is a system update, it cannot be undone!');
@@ -123,12 +129,21 @@ class cbupdaterWorker {
 	function isSystemUpdate() {
 		return $this->systemupdate;
 	}
+
+	function isBlocked() {
+		return $this->blocked;
+	}
+	
+	function isContinuous() {
+		return ($this->execstate=='Continuous');
+	}
 	
 	function hasError() {
 		return ($this->updError or empty($this->cbupdid));
 	}
 	
 	function markApplied($stoponerror=true) {
+		if ($this->isBlocked() or $this->isContinuous()) return true;
 		if ($this->hasError() and $stoponerror) $this->sendError();
 		global $adb,$log;
 		$adb->pquery('update vtiger_cbupdater set execstate=?,execdate=CURDATE() where cbupdaterid=?', array('Executed',$this->cbupdid));
@@ -136,6 +151,7 @@ class cbupdaterWorker {
 	}
 	
 	function markUndone($stoponerror=true) {
+		if ($this->isBlocked() or $this->isContinuous()) return true;
 		if ($this->hasError() and $stoponerror) $this->sendError();
 		global $adb,$log;
 		$adb->pquery('update vtiger_cbupdater set execstate=?,execdate=NULL where cbupdaterid=?', array('Pending',$this->cbupdid));

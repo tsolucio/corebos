@@ -56,12 +56,19 @@
 			var maxEntries = document.getElementById('key_list_max_entries_per_page');
 			var history1 = document.getElementById('key_history_max_viewed');
 			var maxtext = document.getElementById('key_listview_max_textlength');
+			var cors = document.getElementById('key_cors_enabled_domains');
 			var reg1 = /^([0-9]*)$/;
 			name.value = trim(name.value);
 			if ((name.value).indexOf("\"") != -1 || (name.value).indexOf("'") != -1 || (name.value).indexOf(";") != -1){
 						var invalidSupportName = document.getElementById('invalidSupportName').value;
 						document.getElementById('msg_HELPDESK_SUPPORT_NAME').innerHTML = invalidSupportName;
 						name.focus();
+						return false;
+			}
+			if ((cors.value).indexOf("\"") != -1 || (cors.value).indexOf("'") != -1 || (cors.value).indexOf(";") != -1){
+						var invalidSupportName = document.getElementById('invalidSupportName').value;
+						document.getElementById('msg_cors_enabled_domains').innerHTML = invalidSupportName;
+						cors.focus();
 						return false;
 			}
 

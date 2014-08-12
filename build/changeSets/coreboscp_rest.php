@@ -36,7 +36,7 @@ class coreboscp_rest extends cbupdaterWorker {
 				}
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			//$this->markApplied();  // => Continuous
 		}
 		$this->finishExecution();
 	}

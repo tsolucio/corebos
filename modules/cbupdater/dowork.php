@@ -51,7 +51,11 @@ if (!empty($ids)) {
 			inner join vtiger_crmentity on crmid=cbupdaterid
 			where deleted=0 and ';
 	if ($ids=='all') {
-		$sql .= "execstate = 'Pending'";
+		$sql .= "execstate in ('Pending','Continuous')";
+		$cbacc=$adb->getColumnNames('vtiger_cbupdater');
+		if (in_array('blocked', $cbacc)) {
+			$sql .= " and blocked != '1' ";
+		}
 	} else {
 		$ids = str_replace(';', ',', $ids);
 		$ids = trim($ids,',');

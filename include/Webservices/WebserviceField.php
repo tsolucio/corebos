@@ -47,19 +47,19 @@ class WebserviceField{
 	private $readOnly = 0;
 	
 	private function __construct($adb,$row){
-		$this->uitype = $row['uitype'];
-		$this->blockId = $row['block'];
+		$this->uitype = (isset($row['uitype']))? $row['uitype'] : 0;
+		$this->blockId = (isset($row['block']))? $row['block'] : 0;
 		$this->blockName = null;
 		$this->blockSequence = $this->getBlockSequence();
-		$this->tableName = $row['tablename'];
-		$this->columnName = $row['columnname'];
-		$this->fieldName = $row['fieldname'];
-		$this->fieldLabel = $row['fieldlabel'];
-		$this->fieldSequence = $row['sequence'];
-		$this->displayType = $row['displaytype'];
+		$this->tableName = (isset($row['tablename']))? $row['tablename'] : '';
+		$this->columnName = (isset($row['columnname']))? $row['columnname'] : '';
+		$this->fieldName = (isset($row['fieldname']))? $row['fieldname'] : '';
+		$this->fieldLabel = (isset($row['fieldlabel']))? $row['fieldlabel'] : '';
+		$this->fieldSequence = (isset($row['sequence']))? $row['sequence'] : 0;
+		$this->displayType = (isset($row['displaytype']))? $row['displaytype'] : -1;
 		$this->massEditable = ($row['masseditable'] === '1')? true: false;
-		$typeOfData = $row['typeofdata'];
-		$this->presence = $row['presence'];
+		$typeOfData = (isset($row['typeofdata']))? $row['typeofdata'] : '';
+		$this->presence = (isset($row['presence']))? $row['presence'] : -1;
 		$this->typeOfData = $typeOfData;
 		$typeOfData = explode("~",$typeOfData);
 		$this->mandatory = ($typeOfData[1] == 'M')? true: false;
@@ -67,8 +67,8 @@ class WebserviceField{
 			$this->mandatory = false;
 		}
 		$this->fieldType = $typeOfData[0];
-		$this->tabid = $row['tabid'];
-		$this->fieldId = $row['fieldid'];
+		$this->tabid = (isset($row['tabid']))? $row['tabid'] : 0;
+		$this->fieldId = (isset($row['fieldid']))? $row['fieldid'] : 0;
 		$this->pearDB = $adb;
 		$this->fieldDataType = null;
 		$this->dataFromMeta = false;
@@ -78,7 +78,7 @@ class WebserviceField{
 
 		$this->readOnly = (isset($row['readonly']))? $row['readonly'] : 0;
 
-		if(array_key_exists('defaultvalue', $row)) {
+		if(is_array($row) && array_key_exists('defaultvalue', $row)) {
 			$this->setDefault($row['defaultvalue']);
 		}
 	}
@@ -374,9 +374,17 @@ class WebserviceField{
 	}
 
 	function getPickListOptions(){
+		global $app_strings, $mod_strings, $log, $current_language;
+		static $purified_plcache = array();
 		$fieldName = $this->getFieldName();
 		
 		$default_charset = VTWS_PreserveGlobal::getGlobal('default_charset');
+		$moduleName = getTabModuleName($this->getTabId());
+		if($moduleName == 'Events') $moduleName = 'Calendar';
+		$temp_mod_strings = ($moduleName != '' ) ? return_module_language($current_language, $moduleName) : $mod_strings;
+		if (array_key_exists($moduleName.$fieldName, $purified_plcache)) {
+			return $purified_plcache[$moduleName.$fieldName];
+		}
 		$options = array();
 		$sql = "select * from vtiger_picklist where name=?";
 		$result = $this->pearDB->pquery($sql,array($fieldName));
@@ -389,9 +397,9 @@ class WebserviceField{
 				$elem = array();
 				$picklistValue = $this->pearDB->query_result($result,$i,$fieldName);
 				$picklistValue = decode_html($picklistValue);
-				$moduleName = getTabModuleName($this->getTabId());
-				if($moduleName == 'Events') $moduleName = 'Calendar';
-				$elem["label"] = getTranslatedString($picklistValue,$moduleName);
+				$trans_str = ($temp_mod_strings[$picklistValue] != '') ? $temp_mod_strings[$picklistValue] : (($app_strings[$picklistValue] != '') ? $app_strings[$picklistValue] : $picklistValue);
+				while ($trans_str != preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str)) $trans_str = preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str);
+				$elem["label"] = $trans_str;
 				$elem["value"] = $picklistValue;
 				array_push($options,$elem);
 			}
@@ -401,13 +409,14 @@ class WebserviceField{
 			for($i=0;$i<sizeof($details);++$i){
 				$elem = array();
 				$picklistValue = decode_html($details[$i]);
-				$moduleName = getTabModuleName($this->getTabId());
-				if($moduleName == 'Events') $moduleName = 'Calendar';
-				$elem["label"] = getTranslatedString($picklistValue,$moduleName);
+				$trans_str = ($temp_mod_strings[$picklistValue] != '') ? $temp_mod_strings[$picklistValue] : (($app_strings[$picklistValue] != '') ? $app_strings[$picklistValue] : $picklistValue);
+				while ($trans_str != preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str)) $trans_str = preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str);
+				$elem["label"] = $trans_str;
 				$elem["value"] = $picklistValue;
 				array_push($options,$elem);
 			}
 		}
+		$purified_plcache[$moduleName.$fieldName] = $options;
 		return $options;
 	}
 

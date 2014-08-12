@@ -79,6 +79,4 @@ Then you can give this Database name in config.inc.php file to use this Database
       'SELECT_ANYONE_OPTION' => 'Seleccione alguna opción',
       'ENTER_CORRECT_MYSQL_PATH' => 'Introduzca una dirección Mysql correcta',
 );
-$mod_list_strings = array (
-);
 ?>

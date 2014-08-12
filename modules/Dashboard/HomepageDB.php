@@ -58,8 +58,12 @@ if (!empty($graph_details) && $graph_details[1] != 0) { // END
     $height=225;
     $top=30;
     $left=140;
+    $right=0;
     $bottom=120;
     $title=$graph_title;
+	//Giving the Cached image name
+	$cache_file_name=abs(crc32($current_user->id))."_".$type."_".crc32($date_start.$end_date).".png";
+	$html_imagename="setype"; //Html image name for the graph
 	$sHTML = render_graph($tmp_dir."vert_".$cache_file_name,$html_imagename."_vert",$cnt_val,$name_val,$width,$height,$left,$right,$top,$bottom,$title,$target_val,"vertical");
 	echo $sHTML;
 }else{

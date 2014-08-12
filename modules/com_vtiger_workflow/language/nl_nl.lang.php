@@ -110,6 +110,18 @@ $mod_strings = array(
 'LBL_ENTITY_TYPE' => 'Entiteittype',
 'LBL_SELECT_ENTITY_TYPE' => '-- Selecteer Entiteittype --',
 'LBL_NO_ENTITIES_FOUND' => 'Geen entiteiten gevonden om te maken',
-
+'LBL_PARENT_OWNER' => 'Parent Record Owner',
+'LBL_SPECIAL_OPTIONS' => 'Special Options',
+'CBTagTask' => 'Add/Delete Tag',
+'Add Tag' => 'Add Tag',
+'Delete Tag' => 'Delete Tag',
+'Tags' => 'Tags',
+'ForAllUsers' => 'For All Users',
+'ForCurrentUser' => 'Only For Current User',
+'CBRelateSales' => 'Relate Product/Service',
+'Relate Product' => 'Relate Product',
+'Relate Service' => 'Relate Service',
+'Relate with AccountVendor' => 'Relate with Account/Vendor',
+'Relate with Contact' => 'Relate with Contact',
 );
 ?>

@@ -5,7 +5,7 @@
 /**
  * Image_Graph - Main class for the graph creation.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -18,13 +18,14 @@
  * to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
  * 02111-1307 USA
  *
- * @category   Images
- * @package    Image_Graph
- * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
- * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Element.php,v 1.18 2006/02/28 22:48:07 nosey Exp $
- * @link       http://pear.php.net/package/Image_Graph
+ * @category  Images
+ * @package   Image_Graph
+ * @author    Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @author    Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright 2003-2009 The PHP Group
+ * @license   http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
+ * @version   SVN: $Id: Element.php 291170 2009-11-23 03:50:22Z neufeind $
+ * @link      http://pear.php.net/package/Image_Graph
  */
 
 /**
@@ -39,13 +40,14 @@ require_once 'Image/Graph/Common.php';
  * {@link Image_Graph_Line}, {@link Image_Graph_Fill}, border and background -
  * although not all of these may apply to all children.
  *
- * @category   Images
- * @package    Image_Graph
- * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
- * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: 0.7.2
- * @link       http://pear.php.net/package/Image_Graph
+ * @category  Images
+ * @package   Image_Graph
+ * @author    Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @author    Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright 2003-2009 The PHP Group
+ * @license   http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
+ * @version   Release: 0.8.0
+ * @link      http://pear.php.net/package/Image_Graph
  * @abstract
  */
 class Image_Graph_Element extends Image_Graph_Common
@@ -158,10 +160,12 @@ class Image_Graph_Element extends Image_Graph_Common
     /**
      * Sets the background fill style of the element
      *
-     * @param Image_Graph_Fill $background The background
+     * @param Image_Graph_Fill &$background The background
+     *
+     * @return void
      * @see Image_Graph_Fill
      */
-    function setBackground(& $background)
+    function setBackground(&$background)
     {
         if (!is_a($background, 'Image_Graph_Fill')) {
             $this->_error(
@@ -176,6 +180,11 @@ class Image_Graph_Element extends Image_Graph_Common
 
     /**
      * Shows shadow on the element
+     *
+     * @param string $color Shadow color
+     * @param int    $size  Shadow size
+     *
+     * @return void
      */
     function showShadow($color = 'black@0.2', $size = 5)
     {
@@ -191,6 +200,8 @@ class Image_Graph_Element extends Image_Graph_Common
      * See colors.txt in the docs/ folder for a list of available named colors.
      *
      * @param mixed $color The color
+     *
+     * @return void
      */
     function setBackgroundColor($color)
     {
@@ -219,10 +230,12 @@ class Image_Graph_Element extends Image_Graph_Common
     /**
      * Sets the border line style of the element
      *
-     * @param Image_Graph_Line $borderStyle The line style of the border
+     * @param Image_Graph_Line &$borderStyle The line style of the border
+     *
+     * @return void
      * @see Image_Graph_Line
      */
-    function setBorderStyle(& $borderStyle)
+    function setBorderStyle(&$borderStyle)
     {
         if (!is_a($borderStyle, 'Image_Graph_Line')) {
             $this->_error(
@@ -239,7 +252,10 @@ class Image_Graph_Element extends Image_Graph_Common
      * Sets the border color of the element.
      *
      * See colors.txt in the docs/ folder for a list of available named colors.
+     *
      * @param mixed $color The color
+     *
+     * @return void
      */
     function setBorderColor($color)
     {
@@ -271,7 +287,9 @@ class Image_Graph_Element extends Image_Graph_Common
     /**
      * Sets the line style of the element
      *
-     * @param Image_Graph_Line $lineStyle The line style of the element
+     * @param Image_Graph_Line &$lineStyle The line style of the element
+     *
+     * @return void
      * @see Image_Graph_Line
      */
     function setLineStyle(& $lineStyle)
@@ -293,6 +311,8 @@ class Image_Graph_Element extends Image_Graph_Common
      * See colors.txt in the docs/ folder for a list of available named colors.
      *
      * @param mixed $color The color
+     *
+     * @return void
      */
     function setLineColor($color)
     {
@@ -301,6 +321,8 @@ class Image_Graph_Element extends Image_Graph_Common
 
     /**
      * Gets the line style of the element
+     *
+     * @param int $ID Style ID
      *
      * @return int A GD linestyle representing the line style
      * @see Image_Graph_Line
@@ -329,7 +351,9 @@ class Image_Graph_Element extends Image_Graph_Common
     /**
      * Sets the fill style of the element
      *
-     * @param Image_Graph_Fill $fillStyle The fill style of the element
+     * @param Image_Graph_Fill &$fillStyle The fill style of the element
+     *
+     * @return void
      * @see Image_Graph_Fill
      */
     function setFillStyle(& $fillStyle)
@@ -351,6 +375,8 @@ class Image_Graph_Element extends Image_Graph_Common
      * See colors.txt in the docs/ folder for a list of available named colors.
      *
      * @param mixed $color The color
+     *
+     * @return void
      */
     function setFillColor($color)
     {
@@ -360,6 +386,8 @@ class Image_Graph_Element extends Image_Graph_Common
 
     /**
      * Gets the fill style of the element
+     *
+     * @param int $ID Fill style ID
      *
      * @return int A GD filestyle representing the fill style
      * @see Image_Graph_Fill
@@ -383,6 +411,8 @@ class Image_Graph_Element extends Image_Graph_Common
      * If not font has been set, the parent font is propagated through it's
      * children.
      *
+     * @param array $options Font options
+     *
      * @return array An associated array used for canvas
      * @access private
      */
@@ -393,9 +423,9 @@ class Image_Graph_Element extends Image_Graph_Common
         }
         
         if ($options === false) {
-        	$saveDefault = true;
+            $saveDefault = true;
         } else {
-        	$saveDefault = false;
+            $saveDefault = false;
         }
         
         if ($options === false) {
@@ -416,7 +446,7 @@ class Image_Graph_Element extends Image_Graph_Common
         }
         
         if ($saveDefault) {
-        	$this->_defaultFontOptions = $result;
+            $this->_defaultFontOptions = $result;
         }
         
         return $result;
@@ -425,7 +455,9 @@ class Image_Graph_Element extends Image_Graph_Common
     /**
      * Sets the font of the element
      *
-     * @param Image_Graph_Font $font The font of the element
+     * @param Image_Graph_Font &$font The font of the element
+     *
+     * @return void
      * @see Image_Graph_Font
      */
     function setFont(& $font)
@@ -442,6 +474,8 @@ class Image_Graph_Element extends Image_Graph_Common
      * Sets the font size
      *
      * @param int $size The size of the font
+     *
+     * @return void
      */
     function setFontSize($size)
     {
@@ -452,6 +486,8 @@ class Image_Graph_Element extends Image_Graph_Common
      * Sets the font angle
      *
      * @param int $angle The angle of the font
+     *
+     * @return void
      */
     function setFontAngle($angle)
     {
@@ -467,6 +503,8 @@ class Image_Graph_Element extends Image_Graph_Common
      * Sets the font color
      *
      * @param mixed $color The color of the font
+     *
+     * @return void
      */
     function setFontColor($color)
     {
@@ -476,7 +514,9 @@ class Image_Graph_Element extends Image_Graph_Common
     /**
      * Clip the canvas to the coordinates of the element
      * 
-     * @param $enable bool Whether clipping should be enabled or disabled
+     * @param bool $enable Whether clipping should be enabled or disabled
+     *
+     * @return void
      * @access protected
      */
     function _clip($enable)
@@ -497,10 +537,12 @@ class Image_Graph_Element extends Image_Graph_Common
     /**
      * Sets the coordinates of the element
      *
-     * @param int $left The leftmost pixel of the element on the canvas
-     * @param int $top The topmost pixel of the element on the canvas
-     * @param int $right The rightmost pixel of the element on the canvas
+     * @param int $left   The leftmost pixel of the element on the canvas
+     * @param int $top    The topmost pixel of the element on the canvas
+     * @param int $right  The rightmost pixel of the element on the canvas
      * @param int $bottom The bottommost pixel of the element on the canvas
+     *
+     * @return void
      * @access private
      */
     function _setCoords($left, $top, $right, $bottom)
@@ -534,6 +576,8 @@ class Image_Graph_Element extends Image_Graph_Common
      *   (negative values move to the left)
      * @param int $deltaY Number of pixels to move the element downwards
      *   (negative values move upwards)
+     *
+     * @return void
      * @access private
      */
     function _move($deltaX, $deltaY)
@@ -548,6 +592,8 @@ class Image_Graph_Element extends Image_Graph_Common
      * Sets the width of the element relative to the left side
      *
      * @param int $width Number of pixels the element should be in width
+     *
+     * @return void
      * @access private
      */
     function _setWidth($width)
@@ -558,7 +604,9 @@ class Image_Graph_Element extends Image_Graph_Common
     /**
      * Sets the height of the element relative to the top
      *
-     * @param int $width Number of pixels the element should be in height
+     * @param int $height Number of pixels the element should be in height
+     *
+     * @return void
      * @access private
      */
     function _setHeight($height)
@@ -570,7 +618,9 @@ class Image_Graph_Element extends Image_Graph_Common
      * Sets padding of the element
      *
      * @param mixed $padding Number of pixels the element should be padded with
-     * or an array of paddings (left, top, right and bottom as index)
+     *   or an array of paddings (left, top, right and bottom as index)
+     *
+     * @return void
      */
     function setPadding($padding)
     {
@@ -580,8 +630,7 @@ class Image_Graph_Element extends Image_Graph_Common
             $this->_padding['top'] = (isset($padding['top']) ? $padding['top'] : 0);         
             $this->_padding['right'] = (isset($padding['right']) ? $padding['right'] : 0);         
             $this->_padding['bottom'] = (isset($padding['bottom']) ? $padding['bottom'] : 0);         
-        }
-        else {
+        } else {
             $this->_padding = array(
                 'left' => $padding,
                 'top' => $padding,
@@ -680,8 +729,9 @@ class Image_Graph_Element extends Image_Graph_Common
     /**
      * Draws a shadow 'around' the element
      * 
-     * Not implemented yet.
+     * Not implemented yet. (???)
      *
+     * @return void
      * @access private
      */
     function _displayShadow()
@@ -703,10 +753,13 @@ class Image_Graph_Element extends Image_Graph_Common
     /**
      * Writes text to the canvas.
      *
-     * @param int $x The x position relative to alignment
-     * @param int $y The y position relative to alignment
-     * @param string $text The text
-     * @param int $alignmen The text alignment (both vertically and horizontally)
+     * @param int    $x         The x position relative to alignment
+     * @param int    $y         The y position relative to alignment
+     * @param string $text      The text
+     * @param int    $alignment The text alignment (both vertically and horizontally)
+     * @param ???    $font      The font to use
+     *
+     * @return void
      */
     function write($x, $y, $text, $alignment = false, $font = false)
     {
@@ -723,19 +776,19 @@ class Image_Graph_Element extends Image_Graph_Common
         $align = array();      
         
         if (($alignment & IMAGE_GRAPH_ALIGN_TOP) != 0) {
-        	$align['vertical'] = 'top';
+            $align['vertical'] = 'top';
         } else if (($alignment & IMAGE_GRAPH_ALIGN_BOTTOM) != 0) {       
-        	$align['vertical'] = 'bottom';
+            $align['vertical'] = 'bottom';
         } else {
-        	$align['vertical'] = 'center';
+            $align['vertical'] = 'center';
         }
 
         if (($alignment & IMAGE_GRAPH_ALIGN_LEFT) != 0) {
-        	$align['horizontal'] = 'left';
+            $align['horizontal'] = 'left';
         } else if (($alignment & IMAGE_GRAPH_ALIGN_RIGHT) != 0) {       
-        	$align['horizontal'] = 'right';
+            $align['horizontal'] = 'right';
         } else {
-        	$align['horizontal'] = 'center';
+            $align['horizontal'] = 'center';
         }
 
         $this->_canvas->setFont($font);

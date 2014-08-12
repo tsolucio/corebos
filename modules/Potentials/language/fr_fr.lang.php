@@ -118,6 +118,4 @@ $mod_strings = array (
 	'Related To' => 'Relatif à',
 	'Potentials ID' => 'Affaire ID',
 );
-$mod_list_strings = array (
-);
 ?>

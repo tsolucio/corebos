@@ -5,7 +5,7 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Plot
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Plot.php,v 1.20 2006/02/28 22:33:00 nosey Exp $
+ * @version    SVN: $Id: Plot.php 291755 2009-12-06 02:25:02Z neufeind $
  * @link       http://pear.php.net/package/Image_Graph
  */
 
@@ -40,9 +41,10 @@ require_once 'Image/Graph/Plotarea/Element.php';
  * @package    Image_Graph
  * @subpackage Plot
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Groupn
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: 0.7.2
+ * @version    Release: 0.8.0
  * @link       http://pear.php.net/package/Image_Graph
  * @abstract
  */
@@ -108,10 +110,10 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
      * type (fx. for a 'Image_Graph_Plot_Smoothed_Area' default title is
      * 'Smoothed Area')
      *
-     * @param Image_Graph_Dataset $dataset The data set (value containter) to
+     * @param Image_Graph_Dataset &$dataset  The data set (value containter) to
      *   plot or an array of datasets
-     * @param string $multiType The type of the plot
-     * @param string $title The title of the plot (used for legends,
+     * @param string              $multiType The type of the plot
+     * @param string              $title     The title of the plot (used for legends,
      *   {@link Image_Graph_Legend})
      */
     function Image_Graph_Plot(& $dataset, $multiType = 'normal', $title = '')
@@ -130,7 +132,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
             }
         }
 
-        parent::Image_Graph_Common();
+        parent::__construct();
         if ($dataset) {
             if (is_array($dataset)) {
                 $this->_dataset =& $dataset;
@@ -145,10 +147,10 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
         }
 
         $multiType = strtolower($multiType);
-        if (($multiType == 'normal') ||
-            ($multiType == 'stacked') ||
-            ($multiType == 'stacked100pct'))
-        {
+        if (($multiType == 'normal')
+            || ($multiType == 'stacked')
+            || ($multiType == 'stacked100pct')
+        ) {
             $this->_multiType = $multiType;
         } else {
             $this->_error(
@@ -163,6 +165,8 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
      * Sets the title of the plot, used for legend
      *
      * @param string $title The title of the plot
+     *
+     * @return void
      */
     function setTitle($title)
     {
@@ -173,8 +177,9 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
      * Parses the URL mapping data in the point and adds it to the parameter array used by
      * Image_Canvas
      * 
-     * @param array $point The data point (from the dataset)
+     * @param array $point      The data point (from the dataset)
      * @param array $canvasData The The for the canvas method
+     *
      * @return array The union of the canvas data points and the appropriate points for the dataset
      * @access private 
      */
@@ -202,15 +207,17 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
      * Sets the Y axis to plot the data
      *
      * @param int $axisY The Y axis (either IMAGE_GRAPH_AXIS_Y / 'y' or
-     * IMAGE_GRAPH_AXIS_Y_SECONDARY / 'ysec' (defaults to IMAGE_GRAPH_AXIS_Y))
+     *   IMAGE_GRAPH_AXIS_Y_SECONDARY / 'ysec' (defaults to IMAGE_GRAPH_AXIS_Y))
+     *
+     * @return void
      * @access private
      */
     function _setAxisY($axisY)
     {
         if ($axisY == 'y') {
-           $this->_axisY = IMAGE_GRAPH_AXIS_Y;
+            $this->_axisY = IMAGE_GRAPH_AXIS_Y;
         } elseif ($axisY == 'ysec') {
-           $this->_axisY = IMAGE_GRAPH_AXIS_Y_SECONDARY;
+            $this->_axisY = IMAGE_GRAPH_AXIS_Y_SECONDARY;
         } else {
             $this->_axisY = $axisY;
         }
@@ -219,7 +226,9 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
     /**
      * Sets the marker to 'display' data points on the graph
      *
-     * @param Marker $marker The marker
+     * @param Marker &$marker The marker
+     *
+     * @return Marker
      */
     function &setMarker(& $marker)
     {
@@ -232,7 +241,9 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
      * Sets the dataselector to specify which data should be displayed on the
      * plot as markers and which are not
      *
-     * @param DataSelector $dataSelector The dataselector
+     * @param DataSelector &$dataSelector The dataselector
+     *
+     * @return void
      */
     function setDataSelector(& $dataSelector)
     {
@@ -242,10 +253,11 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
     /**
      * Calculate marker point data
      *
-     * @param array Point The point to calculate data for
-     * @param array NextPoint The next point
-     * @param array PrevPoint The previous point
-     * @param array Totals The pre-calculated totals, if needed
+     * @param array $point     The point to calculate data for
+     * @param array $nextPoint The next point
+     * @param array $prevPoint The previous point
+     * @param array &$totals   The pre-calculated totals, if needed
+     *
      * @return array An array containing marker point data
      * @access private
      */
@@ -316,8 +328,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
                 $point['PCT_MAX_Y'] = 100 * $point['Y'] / $totals['MAXIMUM_Y'];
             }
 
-            $point['LENGTH'] = sqrt($point['AX'] * $point['AX'] +
-                $point['AY'] * $point['AY']);
+            $point['LENGTH'] = sqrt(($point['AX'] * $point['AX']) + ($point['AY'] * $point['AY']));
 
             if ((isset($point['LENGTH'])) && ($point['LENGTH'] != 0)) {
                 $point['ANGLE'] = asin($point['AY'] / $point['LENGTH']);
@@ -334,8 +345,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
                 $point['MARKER_Y2'] = $this->_pointY($point) +
                     (isset($totals['WIDTH']) ? $totals['WIDTH'] : 0);
     
-                $point['COLUMN_WIDTH'] = abs($point['MARKER_Y2'] -
-                    $point['MARKER_Y1']) / count($this->_dataset);
+                $point['COLUMN_WIDTH'] = abs(($point['MARKER_Y2'] - $point['MARKER_Y1']) / count($this->_dataset));
     
                 $point['MARKER_Y'] = $point['MARKER_Y1'] +
                     ((isset($totals['NUMBER']) ? $totals['NUMBER'] : 0) + 0.5) *
@@ -344,19 +354,16 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
                 $point['MARKER_X'] = $this->_pointX($point);
     
                 if ($this->_multiType == 'stacked') {
-                    $point['MARKER_Y'] =
-                        ($point['MARKER_Y1'] + $point['MARKER_Y2']) / 2;
+                    $point['MARKER_Y'] = ($point['MARKER_Y1'] + $point['MARKER_Y2']) / 2;
     
                     $P1 = array('Y' => $totals['SUM_Y'][$x]);
                     $P2 = array('Y' => $totals['SUM_Y'][$x] + $point['Y']);
     
-                    $point['MARKER_X'] =
-                        ($this->_pointX($P1) + $this->_pointX($P2)) / 2;
+                    $point['MARKER_X'] = ($this->_pointX($P1) + $this->_pointX($P2)) / 2;
                 } elseif ($this->_multiType == 'stacked100pct') {
                     $x = $point['X'];
                     if ($totals['TOTAL_Y'][$x] != 0) {
-                        $point['MARKER_Y'] =
-                            ($point['MARKER_Y1'] + $point['MARKER_Y2']) / 2;
+                        $point['MARKER_Y'] = ($point['MARKER_Y1'] + $point['MARKER_Y2']) / 2;
     
                         $P1 = array(
                             'Y' => 100 * $totals['SUM_Y'][$x] / $totals['TOTAL_Y'][$x]
@@ -366,43 +373,33 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
                             'Y' => 100 * ($totals['SUM_Y'][$x] + $point['Y']) / $totals['TOTAL_Y'][$x]
                         );
     
-                        $point['MARKER_X'] =
-                            ($this->_pointX($P1) + $this->_pointX($P2)) / 2;
+                        $point['MARKER_X'] = ($this->_pointX($P1) + $this->_pointX($P2)) / 2;
                     } else {
                         $point = false;
                     }
                 }
-            }
-            else {
-                $point['MARKER_X1'] = $this->_pointX($point) -
-                    (isset($totals['WIDTH']) ? $totals['WIDTH'] : 0);
+            } else {
+                $point['MARKER_X1'] = $this->_pointX($point) - (isset($totals['WIDTH']) ? $totals['WIDTH'] : 0);
     
-                $point['MARKER_X2'] = $this->_pointX($point) +
-                    (isset($totals['WIDTH']) ? $totals['WIDTH'] : 0);
+                $point['MARKER_X2'] = $this->_pointX($point) + (isset($totals['WIDTH']) ? $totals['WIDTH'] : 0);
     
-                $point['COLUMN_WIDTH'] = abs($point['MARKER_X2'] -
-                    $point['MARKER_X1']) / count($this->_dataset);
+                $point['COLUMN_WIDTH'] = abs(($point['MARKER_X2'] - $point['MARKER_X1']) / count($this->_dataset));
     
-                $point['MARKER_X'] = $point['MARKER_X1'] +
-                    ((isset($totals['NUMBER']) ? $totals['NUMBER'] : 0) + 0.5) *
-                    $point['COLUMN_WIDTH'];
+                $point['MARKER_X'] = $point['MARKER_X1'] + ((isset($totals['NUMBER']) ? $totals['NUMBER'] : 0) + 0.5) * $point['COLUMN_WIDTH'];
     
                 $point['MARKER_Y'] = $this->_pointY($point);
     
                 if ($this->_multiType == 'stacked') {
-                    $point['MARKER_X'] =
-                        ($point['MARKER_X1'] + $point['MARKER_X2']) / 2;
+                    $point['MARKER_X'] = ($point['MARKER_X1'] + $point['MARKER_X2']) / 2;
     
                     $P1 = array('Y' => $totals['SUM_Y'][$x]);
                     $P2 = array('Y' => $totals['SUM_Y'][$x] + $point['Y']);
     
-                    $point['MARKER_Y'] =
-                        ($this->_pointY($P1) + $this->_pointY($P2)) / 2;
+                    $point['MARKER_Y'] = ($this->_pointY($P1) + $this->_pointY($P2)) / 2;
                 } elseif ($this->_multiType == 'stacked100pct') {
                     $x = $point['X'];
                     if ($totals['TOTAL_Y'][$x] != 0) {
-                        $point['MARKER_X'] =
-                            ($point['MARKER_X1'] + $point['MARKER_X2']) / 2;
+                        $point['MARKER_X'] = ($point['MARKER_X1'] + $point['MARKER_X2']) / 2;
     
                         $P1 = array(
                             'Y' => 100 * $totals['SUM_Y'][$x] / $totals['TOTAL_Y'][$x]
@@ -412,8 +409,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
                             'Y' => 100 * ($totals['SUM_Y'][$x] + $point['Y']) / $totals['TOTAL_Y'][$x]
                         );
     
-                        $point['MARKER_Y'] =
-                            ($this->_pointY($P1) + $this->_pointY($P2)) / 2;
+                        $point['MARKER_Y'] = ($this->_pointY($P1) + $this->_pointY($P2)) / 2;
                     } else {
                         $point = false;
                     }
@@ -426,6 +422,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
     /**
      * Draws markers on the canvas
      *
+     * @return void
      * @access private
      */
     function _drawMarker()
@@ -452,9 +449,9 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
 
                     $x = $point['X'];
                     $y = $point['Y'];
-                    if (((!is_object($this->_dataSelector)) ||
-                        ($this->_dataSelector->_select($point))) && ($point['Y'] !== null))
-                    {
+                    if (((!is_object($this->_dataSelector))
+                        || ($this->_dataSelector->_select($point))) && ($point['Y'] !== null)
+                    ) {
 
                         $point = $this->_getMarkerData(
                             $point,
@@ -638,6 +635,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
      * Get the X pixel position represented by a value
      *
      * @param double $point The value to get the pixel-point for
+     *
      * @return double The pixel position along the axis
      * @access private
      */
@@ -651,6 +649,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
      * Get the Y pixel position represented by a value
      *
      * @param double $point the value to get the pixel-point for
+     *
      * @return double The pixel position along the axis
      * @access private
      */
@@ -663,6 +662,7 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
     /**
      * Update coordinates
      *
+     * @return void
      * @access private
      */
     function _updateCoords()
@@ -734,6 +734,8 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
      * @param int $y0 The top-left y-coordinate
      * @param int $x1 The bottom-right x-coordinate
      * @param int $y1 The bottom-right y-coordinate
+     *
+     * @return void
      * @access private
      */
     function _drawLegendSample($x0, $y0, $x1, $y1)
@@ -744,7 +746,9 @@ class Image_Graph_Plot extends Image_Graph_Plotarea_Element
     /**
      * Draw a sample for use with legend
      *
-     * @param array $param The parameters for the legend
+     * @param array &$param The parameters for the legend
+     *
+     * @return void
      * @access private
      */
     function _legendSample(&$param)

@@ -376,8 +376,6 @@ $mod_strings = array (
 	'LBL_FAILURE'=>'Erreur !',
 		
 	'LBL_ARE_YOU_SURE'=>'Etes-vous sûr?',
-	'Calendar ID' => 'Activité ID',	                             
-);
-$mod_list_strings = array (
+	'Calendar ID' => 'Activité ID',
 );
 ?>

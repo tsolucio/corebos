@@ -5,7 +5,7 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Figure
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Circle.php,v 1.6 2005/08/24 20:36:01 nosey Exp $
+ * @version    SVN: $Id: Circle.php 291170 2009-11-23 03:50:22Z neufeind $
  * @link       http://pear.php.net/package/Image_Graph
  */
 
@@ -40,9 +41,10 @@ require_once 'Image/Graph/Figure/Ellipse.php';
  * @package    Image_Graph
  * @subpackage Figure
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: 0.7.2
+ * @version    Release: 0.8.0
  * @link       http://pear.php.net/package/Image_Graph
  */
 class Image_Graph_Figure_Circle extends Image_Graph_Figure_Ellipse
@@ -51,13 +53,13 @@ class Image_Graph_Figure_Circle extends Image_Graph_Figure_Ellipse
     /**
      * Image_Graph_Circle [Constructor]
      *
-     * @param int $x The center pixel of the circle on the canvas
-     * @param int $y The center pixel of the circle on the canvas
+     * @param int $x      The center pixel of the circle on the canvas
+     * @param int $y      The center pixel of the circle on the canvas
      * @param int $radius The radius in pixels of the circle
      */
     function Image_Graph_Figure_Circle($x, $y, $radius)
     {
-        parent::Image_Graph_Ellipse($x, $y, $radius, $radius);
+        parent::__construct($x, $y, $radius, $radius);
     }
 
 }

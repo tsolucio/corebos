@@ -5,7 +5,7 @@
 /**
  * Image_Graph - Main class for the graph creation.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -18,13 +18,14 @@
  * to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
  * 02111-1307 USA
  *
- * @category   Images
- * @package    Image_Graph
- * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
- * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Tool.php,v 1.4 2005/09/14 20:27:24 nosey Exp $
- * @link       http://pear.php.net/package/Image_Graph
+ * @category  Images
+ * @package   Image_Graph
+ * @author    Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @author    Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright 2003-2009 The PHP Group
+ * @license   http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
+ * @version   SVN: $Id: Tool.php 291170 2009-11-23 03:50:22Z neufeind $
+ * @link      http://pear.php.net/package/Image_Graph
  */
 
 /**
@@ -32,13 +33,14 @@
  * 
  * These functions are all to be called statically
  *
- * @category   Images
- * @package    Image_Graph
- * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
- * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: 0.7.2
- * @link       http://pear.php.net/package/Image_Graph
+ * @category  Images
+ * @package   Image_Graph
+ * @author    Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @author    Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright 2003-2009 The PHP Group
+ * @license   http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
+ * @version   Release: 0.8.0
+ * @link      http://pear.php.net/package/Image_Graph
  */
 class Image_Graph_Tool
 {
@@ -46,8 +48,9 @@ class Image_Graph_Tool
     /**
      * Return the average of 2 points
      *
-     * @param double P1 1st point
-     * @param double P2 2nd point
+     * @param double $p1 1st point
+     * @param double $p2 2nd point
+     *
      * @return double The average of P1 and P2
      * @static
      */
@@ -59,10 +62,11 @@ class Image_Graph_Tool
     /**
      * Mirrors P1 in P2 by a amount of Factor
      *
-     * @param double $p1 1st point, point to mirror
-     * @param double $o2 2nd point, mirror point
+     * @param double $p1     1st point, point to mirror
+     * @param double $p2     2nd point, mirror point
      * @param double $factor Mirror factor, 0 returns $p2, 1 returns a pure
-     * mirror, ie $p1 on the exact other side of $p2
+     *   mirror, ie $p1 on the exact other side of $p2
+     *
      * @return double $p1 mirrored in $p2 by Factor
      * @static
      */
@@ -75,10 +79,12 @@ class Image_Graph_Tool
      * Calculates a Bezier control point, this function must be called for BOTH
      * X and Y coordinates (will it work for 3D coordinates!?)
      *
-     * @param double $p1 1st point
-     * @param double $p2 Point to
-     * @param double $factor Mirror factor, 0 returns P2, 1 returns a pure
+     * @param double $p1           1st point
+     * @param double $p2           2nd point
+     * @param double $factor       Mirror factor, 0 returns P2, 1 returns a pure
      *   mirror, i.e. P1 on the exact other side of P2
+     * @param double $smoothFactor How much to smooth the curve (0..1)
+     *
      * @return double P1 mirrored in P2 by Factor
      * @static
      */
@@ -98,11 +104,12 @@ class Image_Graph_Tool
      * Calculates a Bezier point, this function must be called for BOTH X and Y
      * coordinates (will it work for 3D coordinates!?)
      *
-     * @param double $t A position between $p2 and $p3, value between 0 and 1
+     * @param double $t  A position between $p2 and $p3, value between 0 and 1
      * @param double $p1 Point to use for calculating control points
      * @param double $p2 Point 1 to calculate bezier curve between
      * @param double $p3 Point 2 to calculate bezier curve between
      * @param double $p4 Point to use for calculating control points
+     *
      * @return double The bezier value of the point t between $p2 and $p3 using
      * $p1 and $p4 to calculate control points
      * @static
@@ -119,11 +126,12 @@ class Image_Graph_Tool
     /**
      * For a given point (x,y) return a point rotated by a given angle aroung the center (xy,yc)
      *
-     * @param int $x x coordinate of the point to rotate
-     * @param int $y y coordinate of the point to rotate
-     * @param int $xc x coordinate of the center of the rotation
-     * @param int $yc y coordinate of the center of the rotation
+     * @param int $x     x coordinate of the point to rotate
+     * @param int $y     y coordinate of the point to rotate
+     * @param int $xc    x coordinate of the center of the rotation
+     * @param int $yc    y coordinate of the center of the rotation
      * @param int $angle angle of the rotation
+     *
      * @return array the coordinate of the new point
      * @static
      */
@@ -141,8 +149,9 @@ class Image_Graph_Tool
     /**
      * If a number is close 0 zero (i.e. 0 within $decimal decimals) it is rounded down to zero
      * 
-     * @param double $value The value to round
-     * @param int $decimal The number of decimals
+     * @param double $value   The value to round
+     * @param int    $decimal The number of decimals
+     *
      * @return double The value or zero if "close enough" to zero
      * @static
      */
@@ -150,8 +159,7 @@ class Image_Graph_Tool
     {
         if (abs($value) < pow(10, -$decimal)) {
             return 0;
-        }
-        else {
+        } else {
             return $value;
         }
     }
@@ -161,6 +169,7 @@ class Image_Graph_Tool
      * 
      * @param int $v1 The angle at which the arc starts
      * @param int $v2 The angle at which the arc ends
+     *
      * @return array An array with the dimensions in a fraction of a circle width radius 1 'rx', 'ry' and the
      * center point of gravity ('cx', 'cy')
      * @static
@@ -193,18 +202,15 @@ class Image_Graph_Tool
             if ($r2x >= 0) {
                 $rx = max($r1x, $r2x) / 2;
                 $cx = 0; // center lies 0 percent along this "vector"
-            }
-            else {
+            } else {
                 $rx = abs($r1x - $r2x) / 2;
                 $cx = abs($r2x / 2) / $rx;
             }
-        }
-        else {  // start between ]90; 270[
+        } else {  // start between ]90; 270[
             if ($r2x < 0) {
                 $rx = max(abs($r1x), abs($r2x)) / 2;
                 $cx = $rx;
-            }
-            else {
+            } else {
                 $rx = abs($r1x - $r2x) / 2;
                 $cx = abs($r1x / 2) / $rx;
             }
@@ -229,18 +235,15 @@ class Image_Graph_Tool
             if ($r2y >= 0) {
                 $ry = max($r1y, $r2y) / 2;
                 $cy = 0; // center lies 0 percent along this "vector"
-            }
-            else {
+            } else {
                 $ry = abs($r1y - $r2y) / 2;
                 $cy = abs($r2y / 2) / $ry;
             }
-        }
-        else {  // start between ]180; 360[
+        } else {  // start between ]180; 360[
             if ($r2y < 0) {
                 $ry = max(abs($r1y), abs($r2y)) / 2;
                 $cy = $ry;
-            }
-            else {
+            } else {
                 $ry = abs($r1y - $r2y) / 2;
                 $cy = abs($r1y / 2) / $ry;
             }
@@ -256,7 +259,9 @@ class Image_Graph_Tool
     
     /**
      * Calculate linear regression on a dataset
-     * @param array $data The data to calculate regression upon
+     *
+     * @param array &$data The data to calculate regression upon
+     *
      * @return array The slope and intersection of the "best-fit" line
      * @static
      */    

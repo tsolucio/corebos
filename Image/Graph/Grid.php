@@ -5,7 +5,7 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -22,16 +22,17 @@
  * @package    Image_Graph
  * @subpackage Grid
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Grid.php,v 1.8 2005/02/21 20:49:47 nosey Exp $
+ * @version    SVN: $Id: Grid.php 291170 2009-11-23 03:50:22Z neufeind $
  * @link       http://pear.php.net/package/Image_Graph
  */
 
 /**
- * Include file Image/Graph/Element.php
+ * Include file Image/Graph/Plotarea/Element.php
  */
-require_once 'Image/Graph/Element.php';
+require_once 'Image/Graph/Plotarea/Element.php';
 
 /**
  * A grid displayed on the plotarea.
@@ -50,9 +51,10 @@ require_once 'Image/Graph/Element.php';
  * @package    Image_Graph
  * @subpackage Grid
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: 0.7.2
+ * @version    Release: 0.8.0
  * @link       http://pear.php.net/package/Image_Graph
  * @abstract
  */
@@ -79,11 +81,27 @@ class Image_Graph_Grid extends Image_Graph_Plotarea_Element
      * @access private
      */
     var $_secondaryAxis = null;
+    
+    /**
+     * The starting point of the grid
+     * @var mixed
+     * @access private
+     */
+    var $_gridStart = '#min#';
+    
+    /**
+     * The ending point of the grid
+     * @var mixed
+     * @access private
+     */
+    var $_gridEnd = '#max#';
 
     /**
      * Set the primary axis: the grid should 'refer' to
      *
-     * @param Image_Graph_Axis $axis The axis
+     * @param Image_Graph_Axis &$axis The axis
+     *
+     * @return void
      * @access private
      */
     function _setPrimaryAxis(& $axis)
@@ -94,7 +112,9 @@ class Image_Graph_Grid extends Image_Graph_Plotarea_Element
     /**
      * Set the secondary axis
      *
-     * @param Image_Graph_Axis $axis The axis
+     * @param Image_Graph_Axis &$axis The axis
+     *
+     * @return void
      * @access private
      */
     function _setSecondaryAxis(& $axis)
@@ -118,7 +138,7 @@ class Image_Graph_Grid extends Image_Graph_Plotarea_Element
             }
             $secondaryAxisPoints[] = $firstValue;
         } else {
-            $secondaryAxisPoints = array ('#min#', '#max#');
+            $secondaryAxisPoints = array ($this->_gridStart, $this->_gridEnd);
         }
         return $secondaryAxisPoints;
     }
@@ -127,14 +147,15 @@ class Image_Graph_Grid extends Image_Graph_Plotarea_Element
      * Get the X pixel position represented by a value
      *
      * @param double $point the value to get the pixel-point for
+     *
      * @return double The pixel position along the axis
      * @access private
      */
     function _pointX($point)
     {
-        if (($this->_primaryAxis->_type == IMAGE_GRAPH_AXIS_Y) ||
-            ($this->_primaryAxis->_type == IMAGE_GRAPH_AXIS_Y_SECONDARY))
-        {
+        if (($this->_primaryAxis->_type == IMAGE_GRAPH_AXIS_Y)
+            || ($this->_primaryAxis->_type == IMAGE_GRAPH_AXIS_Y_SECONDARY)
+        ) {
             $point['AXIS_Y'] = $this->_primaryAxis->_type;
         } else {
             $point['AXIS_Y'] = $this->_secondaryAxis->_type;
@@ -146,14 +167,15 @@ class Image_Graph_Grid extends Image_Graph_Plotarea_Element
      * Get the Y pixel position represented by a value
      *
      * @param double $point the value to get the pixel-point for
+     *
      * @return double The pixel position along the axis
      * @access private
      */
     function _pointY($point)
     {
-        if (($this->_primaryAxis->_type == IMAGE_GRAPH_AXIS_Y) ||
-            ($this->_primaryAxis->_type == IMAGE_GRAPH_AXIS_Y_SECONDARY))
-        {
+        if (($this->_primaryAxis->_type == IMAGE_GRAPH_AXIS_Y)
+            || ($this->_primaryAxis->_type == IMAGE_GRAPH_AXIS_Y_SECONDARY)
+        ) {
             $point['AXIS_Y'] = $this->_primaryAxis->_type;
         } else {
             $point['AXIS_Y'] = $this->_secondaryAxis->_type;
@@ -161,9 +183,10 @@ class Image_Graph_Grid extends Image_Graph_Plotarea_Element
         return parent::_pointY($point);
     }
 
-   /**
+    /**
      * Causes the object to update all sub elements coordinates.
      *
+     * @return void
      * @access private
      */
     function _updateCoords()
@@ -176,7 +199,24 @@ class Image_Graph_Grid extends Image_Graph_Plotarea_Element
         );
         parent::_updateCoords();
     }
-
+    
+    /**
+     * Sets the starting and ending points of the grid,
+     * these defaults to 'min' and 'max' which signals that the grid should
+     * span the entire the perpendicular axis
+     *
+     * @param mixed $start The starting value, use 'min' to start and "beginning"  of the perpendicular axis
+     * @param mixed $end   The starting value, use 'min' to start and "end" of the perpendicular axis
+     *
+     * @return void
+     */
+    function setAxisPoints($start = 'min', $end = 'max')
+    {
+        // no check for 'max' since it would make no sense
+        $this->_gridStart = ($start === 'min' ? '#min#' : $start);
+        // same - no check for 'min' 
+        $this->_gridEnd = ($end === 'max' ? '#max#' : $end);
+    }
 }
 
 ?>

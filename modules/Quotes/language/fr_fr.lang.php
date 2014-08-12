@@ -147,6 +147,4 @@ $mod_strings = array (
 	'Add Service Contract'=>'Ajouter un contrat de service',
 	'Quotes ID'=>'Devis ID',
 );
-$mod_list_strings = array (
-);
 ?>

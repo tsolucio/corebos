@@ -16,17 +16,17 @@
  * will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser
  * General Public License for more details. You should have received a copy of
- * the GNU Lesser General Public License along with this library; if not, write
- * to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
- * 02111-1307 USA
+ * the GNU Lesser General Public License along with this library; if not, see
+ * <http://www.gnu.org/licenses/>
  *
- * @category   Images
- * @package    Image_Canvas
- * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
- * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Canvas.php,v 1.7 2006/02/28 22:46:25 nosey Exp $
- * @link       http://pear.php.net/pepr/pepr-proposal-show.php?id=212
+ * @category  Images
+ * @package   Image_Canvas
+ * @author    Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @author    Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright 2003-2009 The PHP Group
+ * @license   http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
+ * @version   SVN: $Id$
+ * @link      http://pear.php.net/package/Image_Canvas
  */
 
 /**
@@ -50,13 +50,14 @@ if (!defined('IMAGE_CANVAS_SYSTEM_FONT_PATH')) {
 /**
  *  Class for handling different output formats
  * 
- * @category   Images
- * @package    Image_Canvas
- * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
- * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: @package_version@
- * @link       http://pear.php.net/pepr/pepr-proposal-show.php?id=212
+ * @category  Images
+ * @package   Image_Canvas
+ * @author    Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @author    Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright 2003-2009 The PHP Group
+ * @license   http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
+ * @version   Release: @package_version@
+ * @link      http://pear.php.net/package/Image_Canvas
  * @abstract
  */
 class Image_Canvas
@@ -146,6 +147,7 @@ class Image_Canvas
      * 'top' The top offset of the graph on the canvas
      *
      * @param array $params Parameter array
+     *
      * @abstract
      */
     function Image_Canvas($params)
@@ -173,6 +175,7 @@ class Image_Canvas
      * Get the x-point from the relative to absolute coordinates
      *
      * @param float $x The relative x-coordinate (in percentage of total width)
+     *
      * @return float The x-coordinate as applied to the canvas
      * @access private
      */
@@ -185,6 +188,7 @@ class Image_Canvas
      * Get the y-point from the relative to absolute coordinates
      *
      * @param float $y The relative y-coordinate (in percentage of total width)
+     *
      * @return float The y-coordinate as applied to the canvas
      * @access private
      */
@@ -217,6 +221,8 @@ class Image_Canvas
      * Sets the thickness of the line(s) to be drawn
      *
      * @param int $thickness The actual thickness (in pixels)
+     *
+     * @return void
      */
     function setLineThickness($thickness)
     {
@@ -227,6 +233,8 @@ class Image_Canvas
      * Sets the color of the line(s) to be drawn
      *
      * @param mixed $color The color of the line
+     *
+     * @return void
      */
     function setLineColor($color)
     {
@@ -240,6 +248,8 @@ class Image_Canvas
      * setGradientFill()
      *
      * @param mixed $fill The fill style
+     *
+     * @return void
      */
     function setFill($fill)
     {
@@ -256,6 +266,8 @@ class Image_Canvas
      * Sets the color of the filling of drawn objects
      *
      * @param mixed $color The fill color
+     *
+     * @return void
      */
     function setFillColor($color)
     {
@@ -266,6 +278,8 @@ class Image_Canvas
      * Sets an image that should be used for filling
      *
      * @param string $filename The filename of the image to fill with
+     *
+     * @return void
      */
     function setFillImage($filename)
     {
@@ -275,6 +289,8 @@ class Image_Canvas
      * Sets a gradient fill
      *
      * @param array $gradient Gradient fill options
+     *
+     * @return void
      */
     function setGradientFill($gradient)
     {
@@ -294,6 +310,8 @@ class Image_Canvas
      * 'angle'     The angle with which to write the text
      *
      * @param array $fontOptions The font options.
+     *
+     * @return void
      */
     function setFont($fontOptions)
     {
@@ -308,8 +326,8 @@ class Image_Canvas
         }
         
         if (isset($this->_font['angle'])) {
-            if ((($this->_font['angle'] > 45) && ($this->_font['angle'] < 135)) ||
-               (($this->_font['angle'] > 225) && ($this->_font['angle'] < 315))
+            if ((($this->_font['angle'] > 45) && ($this->_font['angle'] < 135))
+                || (($this->_font['angle'] > 225) && ($this->_font['angle'] < 315))
             ) {
                 $this->_font['vertical'] = true;
             }
@@ -334,6 +352,8 @@ class Image_Canvas
      * 'angle'  The angle with which to write the text
      *
      * @param array $fontOptions The font options.
+     *
+     * @return void
      */
     function setDefaultFont($fontOptions)
     {
@@ -346,6 +366,7 @@ class Image_Canvas
      *
      * Includes fillstyle, linestyle, thickness and polygon
      *
+     * @return void
      * @access private
      */
     function _reset()
@@ -361,6 +382,8 @@ class Image_Canvas
      * Reset the canvas.
      *
      * Includes fillstyle, linestyle, thickness and polygon
+     *
+     * @return void
      */
     function reset() 
     {
@@ -375,7 +398,10 @@ class Image_Canvas
      * 'y': int Y point
      * 'end': string The end type of the end
      * 'angle': int [optional] The angle with which to draw the end
+     *
      * @param array $params Parameter array
+     *
+     * @return void
      */
     function drawEnd($params) 
     {        
@@ -394,7 +420,10 @@ class Image_Canvas
      * 'size0': int [optional] The size of end0
      * 'size1': int [optional] The size of end1
      * 'color': mixed [optional] The line color
+     *
      * @param array $params Parameter array
+     *
+     * @return void
      */
     function line($params)
     {
@@ -442,7 +471,10 @@ class Image_Canvas
      * 'alt': string [optional] Alternative text to show in the image map (must be used with 'map_vertices' in polygon() on a canvas that support image maps)
      * 'target': string [optional] The link target on the image map (must be used with 'map_vertices' in polygon() on a canvas that support image maps)
      * 'mapsize': int [optional] The size of the "map", i.e. the size of the hot spot (must be used with 'map_vertices' in polygon() on a canvas that support image maps)
+     *
      * @param array $params Parameter array
+     *
+     * @return void
      */
     function addVertex($params)
     {
@@ -465,7 +497,10 @@ class Image_Canvas
      * 'alt': string [optional] Alternative text to show in the image map (must be used with 'map_vertices' in polygon() on a canvas that support image maps)
      * 'target': string [optional] The link target on the image map (must be used with 'map_vertices' in polygon() on a canvas that support image maps)
      * 'mapsize': int [optional] The size of the "map", i.e. the size of the hot spot (must be used with 'map_vertices' in polygon() on a canvas that support image maps)
+     *
      * @param array $params Parameter array
+     *
+     * @return void
      */
     function addSpline($params)
     {
@@ -486,7 +521,10 @@ class Image_Canvas
      *   connected to the endpoint (closed polygon) or not (connected line)
      * 'fill': mixed [optional] The fill color
      * 'line': mixed [optional] The line color
+     *
      * @param array $params Parameter array
+     *
+     * @return void
      */
     function polygon($params)
     {
@@ -503,7 +541,10 @@ class Image_Canvas
      * 'y1': int Y end point
      * 'fill': mixed [optional] The fill color
      * 'line': mixed [optional] The line color
+     *
      * @param array $params Parameter array
+     *
+     * @return void
      */
     function rectangle($params)
     {
@@ -520,7 +561,10 @@ class Image_Canvas
      * 'ry': int Y radius
      * 'fill': mixed [optional] The fill color
      * 'line': mixed [optional] The line color
+     *
      * @param array $params Parameter array
+     *
+     * @return void
      */
     function ellipse($params)
     {
@@ -541,7 +585,10 @@ class Image_Canvas
      * 'sry': int [optional] Starting Y-radius of the pie slice (i.e. for a doughnut)
      * 'fill': mixed [optional] The fill color
      * 'line': mixed [optional] The line color
+     *
      * @param array $params Parameter array
+     *
+     * @return void
      */
     function pieslice($params)
     {
@@ -552,6 +599,7 @@ class Image_Canvas
      * Get the width of a text,
      *
      * @param string $text The text to get the width of
+     *
      * @return int The width of the text
      */
     function textWidth($text)
@@ -562,6 +610,7 @@ class Image_Canvas
      * Get the height of a text,
      *
      * @param string $text The text to get the height of
+     *
      * @return int The height of the text
      */
     function textHeight($text)
@@ -577,6 +626,10 @@ class Image_Canvas
      * 'text': string The text to add
      * 'alignment': array [optional] Alignment
      * 'color': mixed [optional] The color of the text
+     *
+     * @param array $params Parameter array
+     *
+     * @return void
      */
     function addText($params)
     {
@@ -593,6 +646,10 @@ class Image_Canvas
      * 'width': int [optional] The width of the overlayed image (resizing if possible)
      * 'height': int [optional] The height of the overlayed image (resizing if possible)
      * 'alignment': array [optional] Alignment
+     *
+     * @param array $params Parameter array
+     *
+     * @return void
      */
     function image($params)
     {
@@ -607,6 +664,10 @@ class Image_Canvas
      * 'y0': int X point of Upper-left corner
      * 'x1': int X point of lower-right corner
      * 'y1': int Y point of lower-right corner
+     *
+     * @param array $params Parameter array (x0, y0, x1, y1)
+     *
+     * @return void
      */
     function setClipping($params = false) 
     {
@@ -618,6 +679,8 @@ class Image_Canvas
      * What this does, depends on the canvas/format.
      *
      * @param string $name The name of the group
+     *
+     * @return void
      */
     function startGroup($name = false)
     {
@@ -627,6 +690,8 @@ class Image_Canvas
      * End the "current" group.
      *
      * What this does, depends on the canvas/format.
+     *
+     * @return void
      */
     function endGroup()
     {
@@ -636,6 +701,8 @@ class Image_Canvas
      * Output the result of the canvas to the browser
      *
      * @param array $params Parameter array, the contents and meaning depends on the actual Canvas
+     *
+     * @return void
      * @abstract
      */
     function show($params = false)
@@ -653,7 +720,10 @@ class Image_Canvas
      *
      * Parameter array:
      * 'filename': string The file to output to
+     *
      * @param array $params Parameter array, the contents and meaning depends on the actual Canvas
+     *
+     * @return void
      * @abstract
      */
     function save($params = false)
@@ -670,6 +740,10 @@ class Image_Canvas
      * 'filename': string
      * 'filepath': string Path to the file on the file system. Remember the final slash
      * 'urlpath': string Path to the file available through an URL. Remember the final slash
+     *
+     * @param array $params Parameter array (filename, filepath, urlpath)
+     *
+     * @return void
      */
     function toHtml($params)
     {
@@ -687,8 +761,12 @@ class Image_Canvas
      *
      * 'pdf': output in PDF format (using PDFlib)
      *
+     * 'ps': output in PostScript format (using pslib)
+     *
      * 'svg': output in SVG format
      * 
+     * 'swf': output in SWF flash format (using ming extension)
+     *
      * 'imagemap': output as a html image map
      *
      * An example of usage:
@@ -702,8 +780,10 @@ class Image_Canvas
      * </code>
      *
      * @param string $canvas The canvas type
-     * @param array $params The parameters for the canvas constructor
-     * @return Image_Canvas The newly created canvas
+     * @param array  $params The parameters for the canvas constructor
+     *
+     * @return Image_Canvas The newly created canvas or
+     *         PEAR_Error on error
      * @static
      */
     function &factory($canvas, $params)
@@ -717,6 +797,19 @@ class Image_Canvas
             $canvas = 'GD_JPG';
         }
         
+        if ($canvas == 'SWF') {
+            // return PEAR_Error object if ming extension is not installed
+            if (!extension_loaded('ming')) {
+
+                include_once 'PEAR.php';
+
+                $error  = 'PHP extension ming is required for output in swf format.';
+                $error .= 'Please install the ming extension (http://de.php.net/ming).';
+                $error  = new PEAR_Error($error);
+                return $error;
+            }
+        }
+
         if ($canvas == 'IMAGEMAP') {
             $canvas = 'ImageMap';
         }
@@ -724,7 +817,7 @@ class Image_Canvas
         $class = 'Image_Canvas_'. $canvas;
         include_once 'Image/Canvas/'. str_replace('_', '/', $canvas) . '.php';
         
-        $obj =& new $class($params);
+        $obj = new $class($params);
         return $obj;
     }
 

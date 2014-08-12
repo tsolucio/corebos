@@ -235,12 +235,10 @@ function parse_calendardate($local_format) {
 function from_html($string, $encode = true) {
 	global $log;
 	//$log->debug("Entering from_html(".$string.",".$encode.") method ...");
-	global $toHtml;
 	//if($encode && is_string($string))$string = html_entity_decode($string, ENT_QUOTES);
 	if (is_string($string)) {
 		if (preg_match('/(script).*(\/script)/i', $string))
 			$string = preg_replace(array('/</', '/>/', '/"/'), array('&lt;', '&gt;', '&quot;'), $string);
-		//$string = str_replace(array_values($toHtml), array_keys($toHtml), $string);
 	}
 	//$log->debug("Exiting from_html method ...");
 	return $string;
@@ -2885,7 +2883,9 @@ function checkFileAccessForDeletion($filepath) {
 /** Function to check the file access is made within web root directory. */
 function checkFileAccess($filepath) {
 	if (!isFileAccessible($filepath)) {
-		die("Sorry! Attempt to access restricted file.");
+		echo "Sorry! Attempt to access restricted file.<br>";
+		echo "We are looking for this file path: $filepath<br>";
+		die();
 	}
 }
 

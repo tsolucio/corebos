@@ -5,7 +5,7 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Plot
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Bezier.php,v 1.8 2005/08/24 20:36:02 nosey Exp $
+ * @version    SVN: $Id: Bezier.php 291406 2009-11-29 00:54:22Z neufeind $
  * @link       http://pear.php.net/package/Image_Graph
  */
 
@@ -45,16 +46,17 @@ require_once 'Image/Graph/Tool.php';
  * Used in {@link Image_Graph_Plot_Smoothed_Line} and {@link
  * Image_Graph_Plot_Smoothed_Area}. Smoothed charts are only supported with non-
  * stacked types
- * @link http://homepages.borland.com/efg2lab/Graphics/Jean-
- * YvesQueinecBezierCurves.htm efg computer lab - description of bezier curves
+ * {@link http://homepages.borland.com/efg2lab/Graphics/Jean-
+ * YvesQueinecBezierCurves.htm} efg computer lab - description of bezier curves
  *
  * @category   Images
  * @package    Image_Graph
  * @subpackage Plot
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: 0.7.2
+ * @version    Release: 0.8.0
  * @link       http://pear.php.net/package/Image_Graph
  * @abstract
  */
@@ -66,8 +68,8 @@ class Image_Graph_Plot_Smoothed_Bezier extends Image_Graph_Plot
      *
      * Only 'normal' multitype supported
      *
-     * @param Dataset $dataset The data set (value containter) to plot
-     * @param string $title The title of the plot (used for legends, {@link
+     * @param Dataset &$dataset The data set (value containter) to plot
+     * @param string  $title    The title of the plot (used for legends, {@link
      *   Image_Graph_Legend})
      */
     function Image_Graph_Plot_Smoothed_Bezier(& $dataset, $title = '')
@@ -104,6 +106,7 @@ class Image_Graph_Plot_Smoothed_Bezier extends Image_Graph_Plot
      * @param array $p0 The point "just before" $p1
      * @param array $p2 The point "just after" $p1
      * @param array $p3 The point "just after" $p2
+     *
      * @return array Array of Bezier points
      * @access private
      */
@@ -151,6 +154,12 @@ class Image_Graph_Plot_Smoothed_Bezier extends Image_Graph_Plot
      *
      * Common for all smoothed plots
      *
+     * @param int $x0 ???
+     * @param int $y0 ???
+     * @param int $x1 ???
+     * @param int $y1 ???
+     *
+     * @return void
      * @access private
      */
     function _addSamplePoints($x0, $y0, $x1, $y1)

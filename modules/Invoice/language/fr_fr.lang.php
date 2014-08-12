@@ -160,6 +160,4 @@ $mod_strings = array (
 	'SINGLE_Invoice'=>'Facture',
 	'Invoice ID'=>'Facture ID',
 );
-$mod_list_strings = array (
-);
 ?>

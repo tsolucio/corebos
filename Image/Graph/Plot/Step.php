@@ -5,7 +5,7 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Plot
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Step.php,v 1.15 2005/11/27 22:21:16 nosey Exp $
+ * @version    SVN: $Id: Step.php 291406 2009-11-29 00:54:22Z neufeind $
  * @link       http://pear.php.net/package/Image_Graph
  */
 
@@ -40,9 +41,10 @@ require_once 'Image/Graph/Plot/Bar.php';
  * @package    Image_Graph
  * @subpackage Plot
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: 0.7.2
+ * @version    Release: 0.8.0
  * @link       http://pear.php.net/package/Image_Graph
  */
 class Image_Graph_Plot_Step extends Image_Graph_Plot
@@ -55,6 +57,8 @@ class Image_Graph_Plot_Step extends Image_Graph_Plot
      * @param int $y0 The top-left y-coordinate
      * @param int $x1 The bottom-right x-coordinate
      * @param int $y1 The bottom-right y-coordinate
+     *
+     * @return void
      * @access private
      */
     function _drawLegendSample($x0, $y0, $x1, $y1)
@@ -80,9 +84,9 @@ class Image_Graph_Plot_Step extends Image_Graph_Plot
      *
      * A 'normal' step chart is 'stacked'
      *
-     * @param Dataset $dataset The data set (value containter) to plot
-     * @param string $multiType The type of the plot
-     * @param string $title The title of the plot (used for legends,
+     * @param Dataset &$dataset  The data set (value containter) to plot
+     * @param string  $multiType The type of the plot
+     * @param string  $title     The title of the plot (used for legends,
      *   {@link Image_Graph_Legend})
      */
     function Image_Graph_Plot_Step(& $dataset, $multiType = 'stacked', $title = '')
@@ -91,7 +95,7 @@ class Image_Graph_Plot_Step extends Image_Graph_Plot
         if (($multiType != 'stacked') && ($multiType != 'stacked100pct')) {
             $multiType = 'stacked';
         }
-        parent::Image_Graph_Plot($dataset, $multiType, $title);
+        parent::__construct($dataset, $multiType, $title);
     }
 
     /**
@@ -115,8 +119,7 @@ class Image_Graph_Plot_Step extends Image_Graph_Plot
 
         if ($this->_parent->_horizontal) {
             $width = $this->height() / ($this->_maximumX() + 2) / 2;
-        }
-        else {
+        } else {
             $width = $this->width() / ($this->_maximumX() + 2) / 2;
         }
 
@@ -167,8 +170,7 @@ class Image_Graph_Plot_Step extends Image_Graph_Plot
                     $y0 = $last;
                     $x1 = $this->_pointX($point);
                     $last = $y1 = $this->_pointY($point) - $width;
-                }
-                else {
+                } else {
                     $x0 = $last;
                     $y0 = $this->_pointY($point);
                     $last = $x1 = $this->_pointX($point) + $width;
@@ -190,8 +192,9 @@ class Image_Graph_Plot_Step extends Image_Graph_Plot
             $this->_canvas->polygon(array('connect' => true));
         }
         unset($keys);
-        $this->_drawMarker();
         $this->_clip(false);
+
+        $this->_drawMarker();
         $this->_canvas->endGroup();
         return true;
     }

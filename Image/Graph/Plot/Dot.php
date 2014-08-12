@@ -5,7 +5,7 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Plot
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Dot.php,v 1.11 2005/11/27 22:21:16 nosey Exp $
+ * @version    SVN: $Id: Dot.php 291406 2009-11-29 00:54:22Z neufeind $
  * @link       http://pear.php.net/package/Image_Graph
  */
 
@@ -44,9 +45,10 @@ require_once 'Image/Graph/Plot.php';
  * @package    Image_Graph
  * @subpackage Plot
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: 0.7.2
+ * @version    Release: 0.8.0
  * @link       http://pear.php.net/package/Image_Graph
  */
 class Image_Graph_Plot_Dot extends Image_Graph_Plot
@@ -59,15 +61,17 @@ class Image_Graph_Plot_Dot extends Image_Graph_Plot
      * @param int $y0 The top-left y-coordinate
      * @param int $x1 The bottom-right x-coordinate
      * @param int $y1 The bottom-right y-coordinate
+     *
+     * @return void
      * @access private
      */
     function _drawLegendSample($x0, $y0, $x1, $y1)
     {
-    	if (isset($this->_marker)) {
-    		$key = key($this->_dataset);
-    		$samplePoint = $this->_dataset[$key]->_nearby();
-    		$this->_marker->_drawMarker(($x0 + $x1) / 2, ($y0 + $y1) / 2, $samplePoint);
-    	}
+        if (isset($this->_marker)) {
+            $key = key($this->_dataset);
+            $samplePoint = $this->_dataset[$key]->_nearby();
+            $this->_marker->_drawMarker(($x0 + $x1) / 2, ($y0 + $y1) / 2, $samplePoint);
+        }
     }
 
     /**
@@ -83,13 +87,7 @@ class Image_Graph_Plot_Dot extends Image_Graph_Plot
         }
 
         $this->_canvas->startGroup(get_class($this) . '_' . $this->_title);
-
-        $this->_clip(true);
-                
         $this->_drawMarker();
-        
-        $this->_clip(false);
-        
         $this->_canvas->endGroup();
         
         return true;

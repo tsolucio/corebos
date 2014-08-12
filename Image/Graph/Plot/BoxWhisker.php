@@ -5,7 +5,7 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Plot
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: BoxWhisker.php,v 1.14 2005/11/27 22:21:17 nosey Exp $
+ * @version    SVN: $Id: BoxWhisker.php 291406 2009-11-29 00:54:22Z neufeind $
  * @link       http://pear.php.net/package/Image_Graph
  * @since      File available since Release 0.3.0dev2
  */
@@ -41,9 +42,10 @@ require_once 'Image/Graph/Plot.php';
  * @package    Image_Graph
  * @subpackage Plot
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: 0.7.2
+ * @version    Release: 0.8.0
  * @link       http://pear.php.net/package/Image_Graph
  * @since      Class available since Release 0.3.0dev2
  */
@@ -59,15 +61,17 @@ class Image_Graph_Plot_BoxWhisker extends Image_Graph_Plot
     /**
      * Draws a box & whisker
      *
-     * @param int $x The x position
-     * @param int $w The width of the box
-     * @param int $r The radius of the circle markers
+     * @param int $x     The x position
+     * @param int $w     The width of the box
+     * @param int $r     The radius of the circle markers
      * @param int $y_min The Y position of the minimum value
-     * @param int $y_q1 The Y position of the median of the first quartile
+     * @param int $y_q1  The Y position of the median of the first quartile
      * @param int $y_med The Y position of the median
-     * @param int $y_q3 The Y position of the median of the third quartile
+     * @param int $y_q3  The Y position of the median of the third quartile
      * @param int $y_max The Y position of the maximum value
-     * @param int $key The ID tag
+     * @param int $key   The ID tag
+     *
+     * @return void
      * @access private
      */
     function _drawBoxWhiskerV($x, $w, $r, $y_min, $y_q1, $y_med, $y_q3, $y_max, $key = false)
@@ -111,15 +115,17 @@ class Image_Graph_Plot_BoxWhisker extends Image_Graph_Plot
     /**
      * Draws a box & whisker
      *
-     * @param int $y The x position
-     * @param int $h The width of the box
-     * @param int $r The radius of the circle markers
+     * @param int $y     The x position
+     * @param int $h     The width of the box
+     * @param int $r     The radius of the circle markers
      * @param int $x_min The Y position of the minimum value
-     * @param int $x_q1 The Y position of the median of the first quartile
+     * @param int $x_q1  The Y position of the median of the first quartile
      * @param int $x_med The Y position of the median
-     * @param int $x_q3 The Y position of the median of the third quartile
+     * @param int $x_q3  The Y position of the median of the third quartile
      * @param int $x_max The Y position of the maximum value
-     * @param int $key The ID tag
+     * @param int $key   The ID tag
+     *
+     * @return void
      * @access private
      */
     function _drawBoxWhiskerH($y, $h, $r, $x_min, $x_q1, $x_med, $x_q3, $x_max, $key = false)
@@ -167,6 +173,8 @@ class Image_Graph_Plot_BoxWhisker extends Image_Graph_Plot
      * @param int $y0 The top-left y-coordinate
      * @param int $x1 The bottom-right x-coordinate
      * @param int $y1 The bottom-right y-coordinate
+     *
+     * @return void
      * @access private
      */
     function _drawLegendSample($x0, $y0, $x1, $y1)
@@ -182,6 +190,8 @@ class Image_Graph_Plot_BoxWhisker extends Image_Graph_Plot
      * Sets the whisker circle size
      *
      * @param int $size Size (radius) of the whisker circle/dot
+     *
+     * @return void
      */
     function setWhiskerSize($size = false)
     {
@@ -253,8 +263,7 @@ class Image_Graph_Plot_BoxWhisker extends Image_Graph_Plot
                     $x_q3 = $this->_pointX($point);
     
                     $this->_drawBoxWhiskerH($y, $width, $r, $x_min, $x_q1, $x_med, $x_q3, $x_max, $key);
-                }
-                else {
+                } else {
                     $point['X'] = $data['X'];
                     $y = $data['Y'];
     
@@ -285,11 +294,11 @@ class Image_Graph_Plot_BoxWhisker extends Image_Graph_Plot
             }
         }
         unset($keys);
-        $this->_drawMarker();
-
         $this->_clip(false);        
 
+        $this->_drawMarker();
         $this->_canvas->endGroup();
+
         return true;
     }
 

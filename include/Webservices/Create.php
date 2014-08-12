@@ -8,6 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************ */
 
+require_once('include/Webservices/SetRelation.php');
 function vtws_create($elementType, $element, $user) {
 
     $types = vtws_listtypes(null, $user);
@@ -16,8 +17,10 @@ function vtws_create($elementType, $element, $user) {
     }
 
     global $log, $adb;
-    $relations=$element['relations'];
-    unset($element['relations']);
+    if (!empty($element['relations'])) {
+      $relations=$element['relations'];
+      unset($element['relations']);
+    }
 
     // Cache the instance for re-use
 	if(!isset($vtws_create_cache[$elementType]['webserviceobject'])) {
@@ -26,7 +29,7 @@ function vtws_create($elementType, $element, $user) {
 	} else {
 		$webserviceObject = $vtws_create_cache[$elementType]['webserviceobject'];
 	}
-	// END			
+	// END
 
     $handlerPath = $webserviceObject->getHandlerPath();
     $handlerClass = $webserviceObject->getHandlerClass();
@@ -84,24 +87,11 @@ function vtws_create($elementType, $element, $user) {
         }
         $entity = $handler->create($elementType, $element);
         // Establish relations
-        list($wsid,$newrecid) = vtws_getIdComponents($entity['id']);
-        $modname = $meta->getEntityName();
-        if (!empty($relations) and !is_array($relations))
-        	$relations = array($relations);
-        if (!empty($relations) and is_array($relations)) {
-        foreach ($relations as $rel) {
-        	$ids = vtws_getIdComponents($rel);
-        	$relid = $ids[1];
-        	if (!empty($relid))
-        		$modulename=$adb->query_result($adb->pquery('select name from vtiger_ws_entity where id=?',array($ids[0])),0,0);
-        		if ($modname=='Products') {
-        			$adb->pquery('INSERT INTO vtiger_seproductsrel(crmid,productid,setype) VALUES(?,?,?)',array($relid,$newrecid,$modulename));
-        		} elseif ($modname=='Documents') {
-        			$adb->pquery('INSERT INTO vtiger_senotesrel(crmid,notesid) VALUES(?,?)',array($relid,$newrecid));
-        		} else {
-        			$adb->pquery('INSERT INTO vtiger_crmentityrel(crmid,module,relcrmid,relmodule) VALUES(?,?,?,?)',array($newrecid,$modname,$relid,$modulename));
-        		}
-        }}
+        if (!empty($relations)) {
+        	list($wsid,$newrecid) = vtws_getIdComponents($entity['id']);
+        	$modname = $meta->getEntityName();
+        	vtws_internal_setrelation($newrecid, $modname, $relations);
+        }
         VTWS_PreserveGlobal::flush();
         return $entity;
     } else {
