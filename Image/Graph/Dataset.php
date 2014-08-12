@@ -5,7 +5,7 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Dataset
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Dataset.php,v 1.10 2005/08/24 20:35:55 nosey Exp $
+ * @version    SVN: $Id: Dataset.php 291167 2009-11-23 01:39:31Z neufeind $
  * @link       http://pear.php.net/package/Image_Graph
  */
 
@@ -36,9 +37,10 @@
  * @package    Image_Graph
  * @subpackage Dataset
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: 0.7.2
+ * @version    Release: 0.8.0
  * @link       http://pear.php.net/package/Image_Graph
  * @abstract
  */
@@ -105,6 +107,8 @@ class Image_Graph_Dataset
      * Sets the name of the data set, used for legending
      *
      * @param string $name The name of the dataset
+     *
+     * @return void
      */
     function setName($name)
     {
@@ -126,9 +130,11 @@ class Image_Graph_Dataset
      * 
      * 'htmltags' [optional] An associated array with html tags (tag as key), fx. 'onMouseOver' => 'history.go(-1);', 'id' => 'thelink'
      *
-     * @param int $x The X value to add
-     * @param int $y The Y value to add, can be omited
+     * @param int $x  The X value to add
+     * @param int $y  The Y value to add, can be omited
      * @param var $ID The ID of the point
+     *
+     * @return void
      */
     function addPoint($x, $y = false, $ID = false)
     {
@@ -176,6 +182,7 @@ class Image_Graph_Dataset
      *
      * @param var $x The variable to return an X value from, fx in a vector
      *   function data set
+     *
      * @return var The X value of the variable
      * @access private
      */
@@ -189,6 +196,7 @@ class Image_Graph_Dataset
      *
      * @param var $x The variable to return an Y value from, fx in a vector
      *   function data set
+     *
      * @return var The Y value of the variable
      * @access private
      */
@@ -202,6 +210,7 @@ class Image_Graph_Dataset
      *
      * @param var $x The variable to return an Y value from, fx in a vector
      *   function data set
+     *
      * @return var The ID value of the variable
      * @access private
      */
@@ -215,6 +224,7 @@ class Image_Graph_Dataset
      *
      * @param var $x The variable to return an Y value from, fx in a vector
      *   function data set
+     *
      * @return array The data for the point
      * @access private
      */
@@ -287,6 +297,8 @@ class Image_Graph_Dataset
      * The minimum X value
      *
      * @param var $value The minimum X value
+     *
+     * @return void
      * @access private
      */
     function _setMinimumX($value)
@@ -298,6 +310,8 @@ class Image_Graph_Dataset
      * The maximum X value
      *
      * @param var $value The maximum X value
+     *
+     * @return void
      * @access private
      */
     function _setMaximumX($value)
@@ -309,6 +323,8 @@ class Image_Graph_Dataset
      * The minimum Y value
      *
      * @param var $value The minimum X value
+     *
+     * @return void
      * @access private
      */
     function _setMinimumY($value)
@@ -320,6 +336,8 @@ class Image_Graph_Dataset
      * The maximum Y value
      *
      * @param var $value The maximum X value
+     *
+     * @return void
      * @access private
      */
     function _setMaximumY($value)
@@ -364,8 +382,9 @@ class Image_Graph_Dataset
     /**
      * Get a point close to the internal pointer
      *
-     * @param int Step Number of points next to the internal pointer, negative
+     * @param int $step Number of points next to the internal pointer, negative
      *   Step is towards lower X values, positive towards higher X values
+     *
      * @return array The point
      * @access private
      */
@@ -430,8 +449,9 @@ class Image_Graph_Dataset
     /**
      * Get the median of the array passed Y points
      *
-     * @param array $data The data-array to get the median from
-     * @param int $quartile The quartile to return the median from
+     * @param array $data     The data-array to get the median from
+     * @param int   $quartile The quartile to return the median from
+     *
      * @return var The Y-median across the dataset from the specified quartile
      * @access private
      */
@@ -465,6 +485,7 @@ class Image_Graph_Dataset
      * Get the median of the datasets Y points
      *
      * @param int $quartile The quartile to return the median from
+     *
      * @return var The Y-median across the dataset from the specified quartile
      * @access private
      */

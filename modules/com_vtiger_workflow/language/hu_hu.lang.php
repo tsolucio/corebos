@@ -82,6 +82,19 @@ $mod_strings = array(
 	'LBL_Recepient' => 'Címzett',
 	'LBL_CC' => 'Másolatot kap',
 	'LBL_BCC' => 'Rejtett másolatot kap',
-	'LBL_Subject' => 'Tárgysor'
+	'LBL_Subject' => 'Tárgysor',
+	'LBL_PARENT_OWNER' => 'Szülő rekord tulajdonosa',
+	'LBL_SPECIAL_OPTIONS' => 'Különleges opciók',
+	'CBTagTask' => 'Add/Delete Tag',
+	'Add Tag' => 'Add Tag',
+	'Delete Tag' => 'Delete Tag',
+	'Tags' => 'Tags',
+	'ForAllUsers' => 'For All Users',
+	'ForCurrentUser' => 'Only For Current User',
+	'CBRelateSales' => 'Relate Product/Service',
+	'Relate Product' => 'Relate Product',
+	'Relate Service' => 'Relate Service',
+	'Relate with AccountVendor' => 'Relate with Account/Vendor',
+	'Relate with Contact' => 'Relate with Contact',
 );
 ?>

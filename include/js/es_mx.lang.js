@@ -337,5 +337,8 @@ var alert_arr = {
 	'LBL_CLOSE_DATE':'Fecha Cierre',
 	'LBL_EMAIL':'Email',
 	'MORE_THAN_500' : 'Has seleccionado más de 500 registros. Esto puede tardar bastante tiempo. ¿Seguro que quieres continuar?',
-	'LBL_MAPPEDALERT':'Esta campo ya está vinculado'
+	'LBL_MAPPEDALERT':'Esta campo ya está vinculado',
+	'LBL_MAPPEDALERT':'The field has been already mapped',
+	'LBL_REPORT_NAME': 'Por favor introdúzca el nombre del nuevo informe.',
+	'LBL_REPORT_NAME_ERROR': 'Debes dar un nombre al informe.'
 };

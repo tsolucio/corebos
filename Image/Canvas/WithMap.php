@@ -16,30 +16,31 @@
  * will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser
  * General Public License for more details. You should have received a copy of
- * the GNU Lesser General Public License along with this library; if not, write
- * to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
- * 02111-1307 USA
+ * the GNU Lesser General Public License along with this library; if not, see
+ * <http://www.gnu.org/licenses/>
  *
- * @category   Images
- * @package    Image_Canvas
- * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
- * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: WithMap.php,v 1.3 2005/08/24 20:37:35 nosey Exp $
- * @link       http://pear.php.net/pepr/pepr-proposal-show.php?id=212
+ * @category  Images
+ * @package   Image_Canvas
+ * @author    Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @author    Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright 2003-2009 The PHP Group
+ * @license   http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
+ * @version   SVN: $Id$
+ * @link      http://pear.php.net/package/Image_Canvas
  */
 
 /**
  *  Class for handling different output formats including a HTML image map
  * 
- * @category   Images
- * @package    Image_Canvas
- * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
- * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: @package_version@
- * @link       http://pear.php.net/pepr/pepr-proposal-show.php?id=212
- * @since      version 0.2.0
+ * @category  Images
+ * @package   Image_Canvas
+ * @author    Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @author    Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright 2003-2009 The PHP Group
+ * @license   http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
+ * @version   Release: @package_version@
+ * @link      http://pear.php.net/package/Image_Canvas
+ * @since     version 0.2.0
  * @abstract
  */
 class Image_Canvas_WithMap extends Image_Canvas
@@ -68,6 +69,7 @@ class Image_Canvas_WithMap extends Image_Canvas
      * 'usemap' Initialize an image map
      *
      * @param array $params Parameter array
+     *
      * @abstract
      */
     function Image_Canvas_WithMap($params)
@@ -95,7 +97,10 @@ class Image_Canvas_WithMap extends Image_Canvas
      * 'x1': int X end point
      * 'y1': int Y end point
      * 'color': mixed [optional] The line color
+     *
      * @param array $params Parameter array
+     *
+     * @return void
      */
     function line($params)
     {
@@ -111,7 +116,10 @@ class Image_Canvas_WithMap extends Image_Canvas
      * Parameter array:
      * 'x': int X point
      * 'y': int Y point
+     *
      * @param array $params Parameter array
+     *
+     * @return void
      */
     function addVertex($params)
     {
@@ -131,7 +139,10 @@ class Image_Canvas_WithMap extends Image_Canvas
      * 'p1y': Y Control point 1
      * 'p2x': X Control point 2
      * 'p2y': Y Control point 2
+     *
      * @param array $params Parameter array
+     *
+     * @return void
      */
     function addSpline($params)
     {
@@ -149,7 +160,10 @@ class Image_Canvas_WithMap extends Image_Canvas
      *   connected to the endpoint (closed polygon) or not (connected line)
      * 'fill': mixed [optional] The fill color
      * 'line': mixed [optional] The line color
+     *
      * @param array $params Parameter array
+     *
+     * @return void
      */
     function polygon($params)
     {
@@ -169,7 +183,10 @@ class Image_Canvas_WithMap extends Image_Canvas
      * 'y1': int Y end point
      * 'fill': mixed [optional] The fill color
      * 'line': mixed [optional] The line color
+     *
      * @param array $params Parameter array
+     *
+     * @return void
      */
     function rectangle($params)
     {
@@ -189,7 +206,10 @@ class Image_Canvas_WithMap extends Image_Canvas
      * 'ry': int Y radius
      * 'fill': mixed [optional] The fill color
      * 'line': mixed [optional] The line color
+     *
      * @param array $params Parameter array
+     *
+     * @return void
      */
     function ellipse($params)
     {
@@ -213,7 +233,10 @@ class Image_Canvas_WithMap extends Image_Canvas
      * 'sry': int [optional] Starting Y-radius of the pie slice (i.e. for a doughnut)
      * 'fill': mixed [optional] The fill color
      * 'line': mixed [optional] The line color
+     *
      * @param array $params Parameter array
+     *
+     * @return void
      */
     function pieslice($params)
     {
@@ -232,6 +255,10 @@ class Image_Canvas_WithMap extends Image_Canvas
      * 'text': string The text to add
      * 'alignment': array [optional] Alignment
      * 'color': mixed [optional] The color of the text
+     *
+     * @param array $params Parameter array
+     *
+     * @return void
      */
     function addText($params)
     {
@@ -251,6 +278,10 @@ class Image_Canvas_WithMap extends Image_Canvas
      * 'width': int [optional] The width of the overlayed image (resizing if possible)
      * 'height': int [optional] The height of the overlayed image (resizing if possible)
      * 'alignment': array [optional] Alignment
+     *
+     * @param array $params Parameter array
+     *
+     * @return void
      */
     function image($params)
     {
@@ -262,6 +293,7 @@ class Image_Canvas_WithMap extends Image_Canvas
 
     /**
      * Get the imagemap
+     *
      * @return Image_Graph_ImageMap The image map (or false if none)
      */
     function &getImageMap()

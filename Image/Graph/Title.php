@@ -5,7 +5,7 @@
 /**
  * Image_Graph - Main class for the graph creation.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Text
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Title.php,v 1.12 2005/08/24 20:35:56 nosey Exp $
+ * @version    SVN: $Id: Title.php 291170 2009-11-23 03:50:22Z neufeind $
  * @link       http://pear.php.net/package/Image_Graph
  */
 
@@ -40,9 +41,10 @@ require_once 'Image/Graph/Layout.php';
  * @package    Image_Graph
  * @subpackage Text
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: 0.7.2
+ * @version    Release: 0.8.0
  * @link       http://pear.php.net/package/Image_Graph
  */
 class Image_Graph_Title extends Image_Graph_Layout
@@ -82,12 +84,12 @@ class Image_Graph_Title extends Image_Graph_Layout
      *
      * 'color' The font-face color
      *
-     * @param sting $text The text to represent the title
+     * @param sting $text        The text to represent the title
      * @param mixed $fontOptions The font to use in the title
      */
     function Image_Graph_Title($text, $fontOptions = false)
     {
-        parent::Image_Graph_Layout();
+        parent::__construct();
         if (is_object($fontOptions)) {
             $this->_font =& $fontOptions;
         } else {
@@ -104,6 +106,8 @@ class Image_Graph_Title extends Image_Graph_Layout
      * Set the text
      *
      * @param string $text The text to display
+     *
+     * @return void
      */
     function setText($text)
     {
@@ -131,6 +135,8 @@ class Image_Graph_Title extends Image_Graph_Layout
      * Set the alignment of the legend
      *
      * @param int $alignment The alignment
+     *
+     * @return void
      */
     function setAlignment($alignment)
     {

@@ -184,6 +184,4 @@ $mod_strings = array (
 	'Parent Product' => 'Produit parent',
 	'Products ID' => 'Produit ID',
 );
-$mod_list_strings = array (
-);
 ?>

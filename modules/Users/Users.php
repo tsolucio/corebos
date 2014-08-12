@@ -859,6 +859,10 @@ class Users extends CRMEntity {
                 $fldvalue = $this->get_column_value($columname, $fldvalue, $fieldname, $uitype, $datatype);
                 //$fldvalue =null;
             }
+            if ($columname=='is_admin' and !is_admin($current_user)) { // only admin users can change admin field
+            	// we force the same value that is currently set in database
+            	$fldvalue = $adb->query_result($adb->pquery('select is_admin from vtiger_users where id=?',array($this->id)),0,0);
+            }
             if($insertion_mode == 'edit') {
                 if($i == 0) {
                     $update = $columname."=?";
@@ -1068,7 +1072,11 @@ class Users extends CRMEntity {
      *
      */
     function save($module_name) {
-        global $log, $adb;
+        global $log, $adb, $current_user;
+        if (!is_admin($current_user) and $current_user->id != $this->id) { // only admin users can change other users profile
+        	return false;
+        }
+        
         //Save entity being called with the modulename as parameter
         $this->saveentity($module_name);
 
@@ -1125,6 +1133,7 @@ class Users extends CRMEntity {
                 $return_array[$this->homeorder_array[$i]] = $this->homeorder_array[$i];
             }
         }
+        $return_array['Tag Cloud'] = (getTagCloudView($id) ? 'true' : 'false');
         return $return_array;
     }
 

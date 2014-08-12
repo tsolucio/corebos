@@ -5,7 +5,7 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Plot
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: CandleStick.php,v 1.12 2005/11/27 22:21:16 nosey Exp $
+ * @version    SVN: $Id: CandleStick.php 291406 2009-11-29 00:54:22Z neufeind $
  * @link       http://pear.php.net/package/Image_Graph
  * @since      File available since Release 0.3.0dev2
  */
@@ -41,9 +42,10 @@ require_once 'Image/Graph/Plot.php';
  * @package    Image_Graph
  * @subpackage Plot
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: 0.7.2
+ * @version    Release: 0.8.0
  * @link       http://pear.php.net/package/Image_Graph
  * @since      Class available since Release 0.3.0dev2
  */
@@ -53,6 +55,15 @@ class Image_Graph_Plot_CandleStick extends Image_Graph_Plot
     /**
      * (Add basic description here)
      *
+     * @param ??? $y       ???
+     * @param ??? $h       ???
+     * @param ??? $x_min   ???
+     * @param ??? $x_open  ???
+     * @param ??? $x_close ???
+     * @param ??? $x_max   ???
+     * @param ??? $ID      ???
+     *
+     * @return void
      * @access private
      */
     function _drawCandleStickH($y, $h, $x_min, $x_open, $x_close, $x_max, $ID) 
@@ -91,39 +102,48 @@ class Image_Graph_Plot_CandleStick extends Image_Graph_Plot
     /**
      * (Add basic description here)
      *
+     * @param ??? $x       ???
+     * @param ??? $w       ???
+     * @param ??? $y_min   ???
+     * @param ??? $y_open  ???
+     * @param ??? $y_close ???
+     * @param ??? $y_max   ???
+     * @param ??? $ID      ???
+     *
+     * @return void
      * @access private
      */
     function _drawCandleStickV($x, $w, $y_min, $y_open, $y_close, $y_max, $ID) 
     {
         $this->_getLineStyle($ID);
         $this->_canvas->line(
-        	array(
-				'x0' => $x, 
-				'y0' => min($y_open, $y_close), 
-				'x1' => $x, 
-				'y1' => $y_max  
-			)
-		);
+            array(
+                'x0' => $x, 
+                'y0' => min($y_open, $y_close), 
+                'x1' => $x, 
+                'y1' => $y_max  
+            )
+        );
         $this->_getLineStyle($ID);
         $this->_canvas->line(
-        	array(
-				'x0' => $x, 
-				'y0' => max($y_open, $y_close), 
-				'x1' => $x, 
-				'y1' => $y_min
-			)
-		);
+            array(
+                'x0' => $x, 
+                'y0' => max($y_open, $y_close), 
+                'x1' => $x, 
+                'y1' => $y_min
+            )
+        );
     
         $this->_getLineStyle($ID);
         $this->_getFillStyle($ID);
         $this->_canvas->rectangle(
-        	array(
-				'x0' => $x - $w, 
-				'y0' => min($y_open, $y_close), 
-				'x1' => $x + $w, 
-				'y1' => max($y_open, $y_close)
-			)
-		);
+            array(
+                'x0' => $x - $w, 
+                'y0' => min($y_open, $y_close), 
+                'x1' => $x + $w, 
+                'y1' => max($y_open, $y_close)
+            )
+        );
     }
 
     /**
@@ -133,6 +153,8 @@ class Image_Graph_Plot_CandleStick extends Image_Graph_Plot
      * @param int $y0 The top-left y-coordinate
      * @param int $x1 The bottom-right x-coordinate
      * @param int $y1 The bottom-right y-coordinate
+     *
+     * @return void
      * @access private
      */
     function _drawLegendSample($x0, $y0, $x1, $y1)
@@ -204,8 +226,7 @@ class Image_Graph_Plot_CandleStick extends Image_Graph_Plot
                     }
     
                     $this->_drawCandleStickH($y, $width, $x_min, $x_open, $x_close, $x_max, $ID);
-                }
-                else {
+                } else {
                     $point['X'] = $data['X'];
                     //$y = $data['Y'];
     
@@ -237,10 +258,9 @@ class Image_Graph_Plot_CandleStick extends Image_Graph_Plot
             }
         }
         unset($keys);
-        $this->_drawMarker();
-        
         $this->_clip(false);        
         
+        $this->_drawMarker();       
         $this->_canvas->endGroup($this->_title);
         
         return true;

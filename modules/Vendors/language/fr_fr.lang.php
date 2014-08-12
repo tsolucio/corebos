@@ -51,6 +51,4 @@ $mod_strings = array (
 	'LBL_MODULE_NAME'=>'Fournisseurs',
 	'Vendors ID'=>'Fournisseurs ID',
 );
-$mod_list_strings = array (
-);
 ?>

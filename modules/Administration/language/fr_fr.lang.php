@@ -13,6 +13,4 @@ $mod_strings = array (
 	'LBL_NEW_FORM_TITLE' => 'Nouveau compte',
 	'ERR_DELETE_RECORD' => 'Un numéro d\'enregistrement doit être renseigné pour supprimer le compte.',
 );
-$mod_list_strings = array (
-);
 ?>

@@ -143,16 +143,16 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 				   </tr>
 				</table>
 				<br>
-						
+
 				<!-- Entity and More information tabs -->
 				<table border=0 cellspacing=0 cellpadding=0 width=95% align=center>
 				   <tr>
-					<td>						
+					<td>
    						<table border=0 cellspacing=0 cellpadding=3 width=100% class="small">
 						   <tr>
 								<td class="dvtTabCache" style="width:10px" nowrap>&nbsp;</td>
 								
-								<td class="dvtSelectedCell" align=center nowrap>{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</td>	
+								<td class="dvtSelectedCell" align=center nowrap>{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</td>
 								<td class="dvtTabCache" style="width:10px">&nbsp;</td>
 								{if $SinglePane_View eq 'false' && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
 									<td class="dvtUnSelectedCell" onmouseout="fnHideDrop('More_Information_Modules_List');" onmouseover="fnDropDown(this,'More_Information_Modules_List');" align="center" nowrap>
@@ -161,7 +161,7 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 													 id="More_Information_Modules_List" class="drop_mnu" style="left: 502px; top: 76px; display: none;">
 											<table border="0" cellpadding="0" cellspacing="0" width="100%">
 											{foreach key=_RELATION_ID item=_RELATED_MODULE from=$IS_REL_LIST}
-												<tr><td><a class="drop_down" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}&selected_header={$_RELATED_MODULE}&relation_id={$_RELATION_ID}">{$_RELATED_MODULE|@getTranslatedString:$MODULE}</a></td></tr>
+												<tr><td><a class="drop_down" href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}&selected_header={$_RELATED_MODULE}&relation_id={$_RELATION_ID}">{$_RELATED_MODULE|@getTranslatedString:$_RELATED_MODULE}</a></td></tr>
 											{/foreach}
 											</table>
 										</div>
@@ -177,12 +177,11 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 									{if $DELETE eq 'permitted'}
 									<input title="{$APP.LBL_DELETE_BUTTON_TITLE}" accessKey="{$APP.LBL_DELETE_BUTTON_KEY}" class="crmbutton small delete" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='index'; {if $MODULE eq 'Accounts'} var confirmMsg = '{$APP.NTC_ACCOUNT_DELETE_CONFIRMATION}' {else} var confirmMsg = '{$APP.NTC_DELETE_CONFIRMATION}' {/if}; submitFormForActionWithConfirmation('DetailView', 'Delete', confirmMsg);" type="button" name="Delete" value="{$APP.LBL_DELETE_BUTTON_LABEL}">&nbsp;
 									{/if}
-								
 									{if $privrecord neq ''}
 									<img align="absmiddle" title="{$APP.LNK_LIST_PREVIOUS}" accessKey="{$APP.LNK_LIST_PREVIOUS}" onclick="location.href='index.php?module={$MODULE}&viewtype={$VIEWTYPE}&action=DetailView&record={$privrecord}&parenttab={$CATEGORY}'" name="privrecord" value="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev.gif'|@vtiger_imageurl:$THEME}">&nbsp;
 									{else}
 									<img align="absmiddle" title="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev_disabled.gif'|@vtiger_imageurl:$THEME}">
-									{/if}							
+									{/if}
 									{if $privrecord neq '' || $nextrecord neq ''}
 									<img align="absmiddle" title="{$APP.LBL_JUMP_BTN}" accessKey="{$APP.LBL_JUMP_BTN}" onclick="var obj = this;var lhref = getListOfRecords(obj, '{$MODULE}',{$ID},'{$CATEGORY}');" name="jumpBtnIdTop" id="jumpBtnIdTop" src="{'rec_jump.gif'|@vtiger_imageurl:$THEME}">&nbsp;
 									{/if}
@@ -206,16 +205,14 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 								<form action="index.php" method="post" name="DetailView" id="form" onsubmit="VtigerJS_DialogBox.block();">
 								{include file='DetailViewHidden.tpl'}
 						
-								<!-- Entity informations display - starts -->	
+								<!-- Entity informations display - starts -->
 								<table border=0 cellspacing=0 cellpadding=0 width=100%>
 			                			   <tr>
 									<td style="padding:10px;border-right:1px dashed #CCCCCC;" width="80%">
 
-
-
 <!-- The following table is used to display the buttons -->
 <!-- Button displayed - finished-->
-							 {include_php file="include/DetailViewBlockStatus.php"}
+{include_php file="include/DetailViewBlockStatus.php"}
 
 <!-- Entity information(blocks) display - start -->
 {foreach key=header item=detail from=$BLOCKS}
@@ -294,10 +291,10 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 					{/if}
 				{/if}
 		{/foreach}
-	   </tr>	
-	   {/foreach}	
+	   </tr>
+	   {/foreach}
 	</table>
-							 </div> <!-- Line added by SAKTI on 10th Apr, 2008 -->
+	</div> <!-- Line added by SAKTI on 10th Apr, 2008 -->
 {/foreach}
 {*-- End of Blocks--*} 
 <!-- Entity information(blocks) display - ends -->
@@ -314,7 +311,7 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 {/foreach}
 {/if}
 {* END *}
-									<br>
+<br>
 
 										<!-- Product Details informations -->
 										{$ASSOCIATED_PRODUCTS}
@@ -333,7 +330,7 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 			{/if}
 		</td></tr></table>
 </td></tr></table>
-									<!-- Inventory Actions - ends -->	
+									<!-- Inventory Actions - ends -->
 									<td width=22% valign=top style="padding:10px;">
 										<!-- right side InventoryActions -->
 										{include file="Inventory/InventoryActions.tpl"}
@@ -345,12 +342,11 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 										</div>
 									</td>
 								   </tr>
-								   
 								</table>
 							</td>
 						   </tr>
 						    <tr>
-					<td>						
+					<td>
    						<table border=0 cellspacing=0 cellpadding=3 width=100% class="small">
 						   <tr>
 								<td class="dvtTabCacheBottom" style="width:10px" nowrap>&nbsp;</td>
@@ -375,7 +371,7 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 									<img align="absmiddle" title="{$APP.LNK_LIST_PREVIOUS}" accessKey="{$APP.LNK_LIST_PREVIOUS}" onclick="location.href='index.php?module={$MODULE}&viewtype={$VIEWTYPE}&action=DetailView&record={$privrecord}&parenttab={$CATEGORY}'" name="privrecord" value="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev.gif'|@vtiger_imageurl:$THEME}">&nbsp;
 									{else}
 									<img align="absmiddle" title="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev_disabled.gif'|@vtiger_imageurl:$THEME}">
-									{/if}							
+									{/if}
 									{if $privrecord neq '' || $nextrecord neq ''}
 									<img align="absmiddle" title="{$APP.LBL_JUMP_BTN}" accessKey="{$APP.LBL_JUMP_BTN}" onclick="var obj = this;var lhref = getListOfRecords(obj, '{$MODULE}',{$ID},'{$CATEGORY}');" name="jumpBtnIdBottom" id="jumpBtnIdBottom" src="{'rec_jump.gif'|@vtiger_imageurl:$THEME}">&nbsp;
 									{/if}
@@ -402,7 +398,6 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 		   </tr>
 		</table>
 		<!-- Contents - end -->
-
 <script>
 function getTagCloud()
 {ldelim}
@@ -432,4 +427,3 @@ getTagCloud();
   var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
   var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 </script>
-

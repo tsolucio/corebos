@@ -12,23 +12,22 @@
  * will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser
  * General Public License for more details. You should have received a copy of
- * the GNU Lesser General Public License along with this library; if not, write
- * to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
- * 02111-1307 USA
+ * the GNU Lesser General Public License along with this library; if not, see
+ * <http://www.gnu.org/licenses/>
  *
- * @category   Images
- * @package    Image_Canvas
- * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
- * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: SVG.php,v 1.12 2006/02/13 20:53:20 nosey Exp $
- * @link       http://pear.php.net/pepr/pepr-proposal-show.php?id=212
+ * @category  Images
+ * @package   Image_Canvas
+ * @author    Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @author    Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright 2003-2009 The PHP Group
+ * @license   http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
+ * @version   SVN: $Id$
+ * @link      http://pear.php.net/package/Image_Canvas
  */
 
 /**
  * Include file Image/Canvas.php
  */
-global $app_strings; 
 require_once 'Image/Canvas.php';
 
 /**
@@ -39,13 +38,14 @@ require_once 'Image/Canvas/Color.php';
 /**
  * SVG Canvas class.
  * 
- * @category   Images
- * @package    Image_Canvas
- * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
- * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: @package_version@
- * @link       http://pear.php.net/pepr/pepr-proposal-show.php?id=212
+ * @category  Images
+ * @package   Image_Canvas
+ * @author    Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @author    Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright 2003-2009 The PHP Group
+ * @license   http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
+ * @version   Release: @package_version@
+ * @link      http://pear.php.net/package/Image_Canvas
  */
 class Image_Canvas_SVG extends Image_Canvas
 {
@@ -84,6 +84,13 @@ class Image_Canvas_SVG extends Image_Canvas
      * @access private
      */
     var $_groupIDs = array();
+    
+    /**
+     * The XML encoding (default iso-8859-1)
+     * @var string
+     * @access private
+     */
+    var $_encoding = 'UTF-8';
 
     /**
      * Create the SVG canvas.
@@ -94,21 +101,33 @@ class Image_Canvas_SVG extends Image_Canvas
      *
      * 'height' The height of the graph
      *
-     * @param array $param Parameter array
+     * 'encoding' The encoding of the SVG document
+     *
+     * @param array $params Parameter array
+     *
+     * @return void
      */
-    function Image_Canvas_SVG($param)
+    function Image_Canvas_SVG($params)
     {
-        parent::Image_Canvas($param);
-        $this->_reset();        
+        parent::Image_Canvas($params);
+        $this->_reset();
+
+        if (isset($params['encoding'])) {
+            $this->_encoding = $params['encoding'];
+        }
     }
 
     /**
      * Add a SVG "element" to the output
      *
      * @param string $element The element
+     * @param array  $params  Parameter array (optional)
+     *
+     * @return void
      * @access private
      */
-    function _addElement($element, $params = array()) {
+    function _addElement($element, $params = array())
+    {
         $elementdata = $this->_indent . $element . "\n";
         
         if (isset($params['url'])) {
@@ -128,8 +147,7 @@ class Image_Canvas_SVG extends Image_Canvas
                 }
             }
             
-            $elementdata =
-                $this->_indent . '<a xlink:href="' . $url . '"' . ($target ? ' target="' . $target . '"' : '') . '>' . "\n" .
+            $elementdata = $this->_indent . '<a xlink:href="' . $url . '"' . ($target ? ' target="' . $target . '"' : '') . '>' . "\n" .
                 '    ' . $elementdata .
                 $this->_indent . '</a>' . "\n";                           
         }
@@ -142,9 +160,12 @@ class Image_Canvas_SVG extends Image_Canvas
      * Add a SVG "define" to the output
      *
      * @param string $def The define
+     *
+     * @return void
      * @access private
      */
-    function _addDefine($def) {
+    function _addDefine($def)
+    {
         $this->_defs .= '        ' . $def . "\n";
     }
 
@@ -152,6 +173,7 @@ class Image_Canvas_SVG extends Image_Canvas
      * Get the color index for the RGB color
      *
      * @param int $color The color
+     *
      * @return int A SVG compatible color
      * @access private
      */
@@ -169,6 +191,7 @@ class Image_Canvas_SVG extends Image_Canvas
      * Get the opacity for the RGB color
      *
      * @param int $color The color
+     *
      * @return int A SVG compatible opacity value
      * @access private
      */
@@ -191,6 +214,7 @@ class Image_Canvas_SVG extends Image_Canvas
      *
      * @param mixed $lineStyle The line style to return, false if the one
      *   explicitly set
+     *
      * @return mixed A SVG compatible linestyle
      * @access private
      */
@@ -203,13 +227,44 @@ class Image_Canvas_SVG extends Image_Canvas
 
         // TODO Linestyles (i.e. fx. dotted) does not work
 
-        if (($lineStyle != 'transparent') && ($lineStyle !== false)) {
-            $result = 'stroke-width:' . $this->_thickness . ';';
-            $result .= 'stroke:' .$this->_color($lineStyle) . ';';
-            if ($opacity = $this->_opacity($lineStyle)) {
-                $result .= 'stroke-opacity:' . $opacity . ';';
+        if (!is_array($lineStyle)) {
+            if (($lineStyle != 'transparent') && ($lineStyle !== false)) {
+                $result = 'stroke-width:' . $this->_thickness . ';';
+                $result .= 'stroke:' .$this->_color($lineStyle) . ';';
+                if ($opacity = $this->_opacity($lineStyle)) {
+                    $result .= 'stroke-opacity:' . $opacity . ';';
+                }
             }
+            return $result;
         }
+
+        //the following if-blocks are when $lineStyle is an array
+        //dotted line
+        if (count($lineStyle) == 2) {
+            if (($lineStyle[0] != 'transparent') && ($lineStyle[0] !== false)) {
+                $result = 'stroke-width:' . $this->_thickness . ';';
+                $result .= 'stroke:' .$this->_color($lineStyle[0]) . ';';
+                if ($opacity = $this->_opacity($lineStyle[0])) {
+                    $result .= 'stroke-opacity:' . $opacity . ';';
+                }
+                $result .= 'stroke-linecap:round;stroke-linejoin:miter;stroke-miterlimit:1;stroke-dasharray:1,4;stroke-dashoffset:1;';
+            }
+            return $result;
+        }
+
+        //dashed line
+        if (count($lineStyle) == 6) {
+            if (($lineStyle[0] != 'transparent') && ($lineStyle[0] !== false)) {
+                $result = 'stroke-width:' . $this->_thickness . ';';
+                $result .= 'stroke:' .$this->_color($lineStyle[0]) . ';';
+                if ($opacity = $this->_opacity($lineStyle[0])) {
+                    $result .= 'stroke-opacity:' . $opacity . ';';
+                }
+                $result .= 'stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:1;stroke-dasharray:4,4;stroke-dashoffset:1;';
+            }
+            return $result;
+        }
+
         return $result;
     }
 
@@ -218,6 +273,7 @@ class Image_Canvas_SVG extends Image_Canvas
      *
      * @param mixed $fillStyle The fillstyle to return, false if the one
      *   explicitly set
+     *
      * @return mixed A SVG compatible fillstyle
      * @access private
      */
@@ -280,44 +336,44 @@ class Image_Canvas_SVG extends Image_Canvas
                 if ($fillStyle['direction'] == 'radial') {
                     $this->_addDefine(
                         '<radialGradient id="' . $id . '" cx="' .
-                            $cx .'" cy="' . $cy .'" r="' . $r .'" fx="' .
-                            $fx .'" fy="' . $fy .'">'
+                        $cx .'" cy="' . $cy .'" r="' . $r .'" fx="' .
+                        $fx .'" fy="' . $fy .'">'
                     );
                     $this->_addDefine(
                         '    <stop offset="0%" style="stop-color:' .
-                            $startColor. ';' . ($startOpacity ? 'stop-opacity:' .
-                            $startOpacity . ';' : ''). '"/>'
+                        $startColor. ';' . ($startOpacity ? 'stop-opacity:' .
+                        $startOpacity . ';' : ''). '"/>'
                     );
                     $this->_addDefine(
                         '    <stop offset="100%" style="stop-color:' .
-                            $endColor. ';' . ($endOpacity ? 'stop-opacity:' .
-                            $endOpacity . ';' : ''). '"/>'
+                        $endColor. ';' . ($endOpacity ? 'stop-opacity:' .
+                        $endOpacity . ';' : ''). '"/>'
                     );
                     $this->_addDefine(
                         '</radialGradient>'
                     );
-                } elseif (($fillStyle['direction'] == 'vertical_mirror') ||
-                    ($fillStyle['direction'] == 'horizontal_mirror'))
-                {
+                } elseif (($fillStyle['direction'] == 'vertical_mirror')
+                    || ($fillStyle['direction'] == 'horizontal_mirror')
+                ) {
                     $this->_addDefine(
                         '<linearGradient id="' . $id . '" x1="' .
-                            $x1 .'" y1="' . $y1 .'" x2="' . $x2 .'" y2="' .
-                            $y2 .'">'
+                        $x1 .'" y1="' . $y1 .'" x2="' . $x2 .'" y2="' .
+                        $y2 .'">'
                     );
                     $this->_addDefine(
                         '    <stop offset="0%" style="stop-color:' .
-                            $startColor. ';' . ($startOpacity ? 'stop-opacity:' .
-                            $startOpacity . ';' : ''). '"/>'
+                        $startColor. ';' . ($startOpacity ? 'stop-opacity:' .
+                        $startOpacity . ';' : ''). '"/>'
                     );
                     $this->_addDefine(
                         '    <stop offset="50%" style="stop-color:' .
-                            $endColor. ';' . ($endOpacity ? 'stop-opacity:' .
-                            $endOpacity . ';' : ''). '"/>'
+                        $endColor. ';' . ($endOpacity ? 'stop-opacity:' .
+                        $endOpacity . ';' : ''). '"/>'
                     );
                     $this->_addDefine(
                         '    <stop offset="100%" style="stop-color:' .
-                            $startColor. ';' . ($startOpacity ? 'stop-opacity:' .
-                            $startOpacity . ';' : ''). '"/>'
+                        $startColor. ';' . ($startOpacity ? 'stop-opacity:' .
+                        $startOpacity . ';' : ''). '"/>'
                     );
                     $this->_addDefine(
                         '</linearGradient>'
@@ -325,18 +381,18 @@ class Image_Canvas_SVG extends Image_Canvas
                 } else {
                     $this->_addDefine(
                         '<linearGradient id="' . $id . '" x1="' .
-                            $x1 .'" y1="' . $y1 .'" x2="' . $x2 .'" y2="' .
-                            $y2 .'">'
+                        $x1 .'" y1="' . $y1 .'" x2="' . $x2 .'" y2="' .
+                        $y2 .'">'
                     );
                     $this->_addDefine(
                         '    <stop offset="0%" style="stop-color:' .
-                            $startColor. ';' . ($startOpacity ? 'stop-opacity:' .
-                            $startOpacity . ';' : ''). '"/>'
+                        $startColor. ';' . ($startOpacity ? 'stop-opacity:' .
+                        $startOpacity . ';' : ''). '"/>'
                     );
                     $this->_addDefine(
                         '    <stop offset="100%" style="stop-color:' .
-                            $endColor. ';' . ($endOpacity ? 'stop-opacity:' .
-                            $endOpacity . ';' : ''). '"/>'
+                        $endColor. ';' . ($endOpacity ? 'stop-opacity:' .
+                        $endOpacity . ';' : ''). '"/>'
                     );
                     $this->_addDefine(
                         '</linearGradient>'
@@ -360,6 +416,8 @@ class Image_Canvas_SVG extends Image_Canvas
      * Sets an image that should be used for filling
      *
      * @param string $filename The filename of the image to fill with
+     *
+     * @return void
      */
     function setFillImage($filename)
     {
@@ -369,6 +427,8 @@ class Image_Canvas_SVG extends Image_Canvas
      * Sets a gradient fill
      *
      * @param array $gradient Gradient fill options
+     *
+     * @return void
      */
     function setGradientFill($gradient)
     {
@@ -386,7 +446,9 @@ class Image_Canvas_SVG extends Image_Canvas
      * 'angle' = the angle with which to write the text
      * 'file' = the .ttf file (either the basename, filename or full path)
      *
-     * @param array $font The font options.
+     * @param array $fontOptions The font options.
+     *
+     * @return void
      */
     function setFont($fontOptions)
     {
@@ -403,7 +465,10 @@ class Image_Canvas_SVG extends Image_Canvas
      * 'x1': int X end point
      * 'y1': int Y end point
      * 'color': mixed [optional] The line color
+     *
      * @param array $params Parameter array
+     *
+     * @return void
      */
     function line($params)
     {
@@ -413,15 +478,18 @@ class Image_Canvas_SVG extends Image_Canvas
         $y1 = $this->_getY($params['y1']);
         $color = (isset($params['color']) ? $params['color'] : false);
 
+        $attrs = (isset($params['attrs']) && is_array($params['attrs'])) ? $this->_getAttributes($params['attrs']) : null;
+
         $style = $this->_getLineStyle($color) . $this->_getFillStyle('transparent');
         if ($style != '') {
             $this->_addElement(
                 '<line ' .
-                    'x1="' . round($x0) . '" ' .
-                    'y1="' . round($y0) . '" ' .
-                    'x2="' . round($x1) . '" ' .
-                    'y2="' . round($y1) . '" ' .
-                    'style="' . $style . '"' .
+                'x1="' . round($x0) . '" ' .
+                'y1="' . round($y0) . '" ' .
+                'x2="' . round($x1) . '" ' .
+                'y2="' . round($y1) . '" ' .
+                'style="' . $style . '"' .
+                ($attrs ? ' ' . $attrs : '') .
                 '/>',
                 $params
             );
@@ -435,12 +503,15 @@ class Image_Canvas_SVG extends Image_Canvas
      *   connected to the endpoint (closed polygon) or not (connected line)
      * 'fill': mixed [optional] The fill color
      * 'line': mixed [optional] The line color
+     *
      * @param array $params Parameter array
+     *
+     * @return void
      */
     function polygon($params = array())
     {
         $connectEnds = (isset($params['connect']) ? $params['connect'] : false);
-        $fillColor = (isset($params['fill']) ? $params['line'] : false);
+        $fillColor = (isset($params['fill']) ? $params['fill'] : false);
         $lineColor = (isset($params['line']) ? $params['line'] : false);
 
         if (!$connectEnds) {
@@ -448,10 +519,12 @@ class Image_Canvas_SVG extends Image_Canvas
         }
         $style = $this->_getLineStyle($lineColor) . $this->_getFillStyle($fillColor);
 
+        $attrs = (isset($params['attrs']) && is_array($params['attrs'])) ? $this->_getAttributes($params['attrs']) : null;
+
         $first = true;
         $spline = false;
         $lastpoint = false;
-        foreach($this->_polygon as $point) {
+        foreach ($this->_polygon as $point) {
             if ($first) {
                 $points = 'M';
             } elseif (!$spline) {
@@ -465,9 +538,9 @@ class Image_Canvas_SVG extends Image_Canvas
 
             $points .= ' ' . round($point['X']) . ',' . round($point['Y']);
 
-            if ((isset($point['P1X'])) && (isset($point['P1Y'])) &&
-                (isset($point['P2X'])) && (isset($point['P2Y'])))
-            {
+            if ((isset($point['P1X'])) && (isset($point['P1Y']))
+                && (isset($point['P2X'])) && (isset($point['P2Y']))
+            ) {
                 if (($first) || (!$spline)) {
                     $points .= ' C';
                 }
@@ -479,12 +552,13 @@ class Image_Canvas_SVG extends Image_Canvas
             $first = false;
         }
         if ($connectEnds) {
-            $point .= ' Z';
+            $points .= ' Z';
         }
         $this->_addElement(
             '<path ' .
-                 'd="' . $points . '" ' .
-                 'style="' . $style . '"' .
+            'd="' . $points . '" ' .
+            'style="' . $style . '"' .
+            ($attrs ? ' ' . $attrs : '') .
             '/>',
             $params
         );
@@ -502,7 +576,10 @@ class Image_Canvas_SVG extends Image_Canvas
      * 'y1': int Y end point
      * 'fill': mixed [optional] The fill color
      * 'line': mixed [optional] The line color
+     *
      * @param array $params Parameter array
+     *
+     * @return void
      */
     function rectangle($params)
     {
@@ -510,18 +587,21 @@ class Image_Canvas_SVG extends Image_Canvas
         $y0 = min($this->_getY($params['y0']), $this->_getY($params['y1']));
         $x1 = max($this->_getX($params['x0']), $this->_getX($params['x1']));
         $y1 = max($this->_getY($params['y0']), $this->_getY($params['y1']));
-        $fillColor = (isset($params['fill']) ? $params['line'] : false);
+        $fillColor = (isset($params['fill']) ? $params['fill'] : false);
         $lineColor = (isset($params['line']) ? $params['line'] : false);
 
+        $attrs = (isset($params['attrs']) && is_array($params['attrs'])) ? $this->_getAttributes($params['attrs']) : null;
+        
         $style = $this->_getLineStyle($lineColor) . $this->_getFillStyle($fillColor);
         if ($style != '') {
             $this->_addElement(
                 '<rect ' .
-                    'x="' . round($x0) . '" ' .
-                    'y="' . round($y0) . '" ' .
-                    'width="' . round(abs($x1 - $x0)) . '" ' .
-                    'height="' . round(abs($y1 - $y0)) . '" ' .
-                    'style="' . $style . '"' .
+                'x="' . round($x0) . '" ' .
+                'y="' . round($y0) . '" ' .
+                'width="' . round(abs($x1 - $x0)) . '" ' .
+                'height="' . round(abs($y1 - $y0)) . '" ' .
+                'style="' . $style . '"' .
+                ($attrs ? ' ' . $attrs : '') .
                 '/>',
                 $params
             );
@@ -539,7 +619,10 @@ class Image_Canvas_SVG extends Image_Canvas
      * 'ry': int Y radius
      * 'fill': mixed [optional] The fill color
      * 'line': mixed [optional] The line color
+     *
      * @param array $params Parameter array
+     *
+     * @return void
      */
     function ellipse($params)
     {
@@ -547,18 +630,21 @@ class Image_Canvas_SVG extends Image_Canvas
         $y = $this->_getY($params['y']);
         $rx = $this->_getX($params['rx']);
         $ry = $this->_getY($params['ry']);
-        $fillColor = (isset($params['fill']) ? $params['line'] : false);
+        $fillColor = (isset($params['fill']) ? $params['fill'] : false);
         $lineColor = (isset($params['line']) ? $params['line'] : false);
+
+        $attrs = (isset($params['attrs']) && is_array($params['attrs'])) ? $this->_getAttributes($params['attrs']) : null;
 
         $style = $this->_getLineStyle($lineColor) . $this->_getFillStyle($fillColor);
         if ($style != '') {
             $this->_addElement(
                 '<ellipse ' .
-                    'cx="' . round($x) . '" ' .
-                    'cy="' . round($y) . '" ' .
-                    'rx="' . round($rx) . '" ' .
-                    'ry="' . round($ry) . '" ' .
-                    'style="' . $style . '"' .
+                'cx="' . round($x) . '" ' .
+                'cy="' . round($y) . '" ' .
+                'rx="' . round($rx) . '" ' .
+                'ry="' . round($ry) . '" ' .
+                'style="' . $style . '"' .
+                ($attrs ? ' ' . $attrs : '') .
                 '/>',
                 $params
             );
@@ -580,7 +666,10 @@ class Image_Canvas_SVG extends Image_Canvas
      * 'sry': int [optional] Starting Y-radius of the pie slice (i.e. for a doughnut)
      * 'fill': mixed [optional] The fill color
      * 'line': mixed [optional] The line color
+     *
      * @param array $params Parameter array
+     *
+     * @return void
      */
     function pieslice($params)
     {
@@ -592,14 +681,15 @@ class Image_Canvas_SVG extends Image_Canvas
         $v2 = $this->_getY($params['v2']);
         $srx = (isset($params['srx']) ? $this->_getX($params['srx']) : false);
         $sry = (isset($params['sry']) ? $this->_getX($params['sry']) : false);
-        $fillColor = (isset($params['fill']) ? $params['line'] : false);
+        $fillColor = (isset($params['fill']) ? $params['fill'] : false);
         $lineColor = (isset($params['line']) ? $params['line'] : false);
+
+        $attrs = (isset($params['attrs']) && is_array($params['attrs'])) ? $this->_getAttributes($params['attrs']) : null;
 
         $dv = max($v2, $v1) - min($v2, $v1);
         if ($dv >= 360) {
             $this->ellipse($params);
-        }
-        else {
+        } else {
             $style = $this->_getLineStyle($lineColor) . $this->_getFillStyle($fillColor);
             if ($style != '') {
                 $x1 = ($x + $rx * cos(deg2rad(min($v1, $v2) % 360)));
@@ -608,12 +698,13 @@ class Image_Canvas_SVG extends Image_Canvas
                 $y2 = ($y + $ry * sin(deg2rad(max($v1, $v2) % 360)));
                 $this->_addElement(
                     '<path d="' .
-                        'M' . round($x) . ',' . round($y) . ' ' .
-                        'L' . round($x1) . ',' . round($y1) . ' ' .
-                        'A' . round($rx) . ',' . round($ry) . ($dv > 180 ? ' 0 1,1 ' : ' 0 0,1 ') .
-                              round($x2) . ',' . round($y2) . ' ' .
-                        'Z" ' .
-                        'style="' . $style . '"' .
+                    'M' . round($x) . ',' . round($y) . ' ' .
+                    'L' . round($x1) . ',' . round($y1) . ' ' .
+                    'A' . round($rx) . ',' . round($ry) . ($dv > 180 ? ' 0 1,1 ' : ' 0 0,1 ') .
+                    round($x2) . ',' . round($y2) . ' ' .
+                    'Z" ' .
+                    'style="' . $style . '"' .
+                    ($attrs ? ' ' . $attrs : '') .
                     '/>',
                     $params
                 );
@@ -627,12 +718,13 @@ class Image_Canvas_SVG extends Image_Canvas
      * Get the width of a text,
      *
      * @param string $text The text to get the width of
+     *
      * @return int The width of the text
      */
     function textWidth($text)
     {
         if ((isset($this->_font['vertical'])) && ($this->_font['vertical'])) {
-            return $this->_font['size'];
+            return $this->_font['size'] * count(explode("\n",$text));
         } else {
             return round($this->_font['size'] * 0.7 * strlen($text));
         }
@@ -642,6 +734,7 @@ class Image_Canvas_SVG extends Image_Canvas
      * Get the height of a text,
      *
      * @param string $text The text to get the height of
+     *
      * @return int The height of the text
      */
     function textHeight($text)
@@ -649,7 +742,7 @@ class Image_Canvas_SVG extends Image_Canvas
         if ((isset($this->_font['vertical'])) && ($this->_font['vertical'])) {
             return round($this->_font['size'] * 0.7 * strlen($text));
         } else {
-            return $this->_font['size'];
+            return $this->_font['size'] * count(explode("\n",$text));
         }
     }
 
@@ -662,6 +755,10 @@ class Image_Canvas_SVG extends Image_Canvas
      * 'text': string The text to add
      * 'alignment': array [optional] Alignment
      * 'color': mixed [optional] The color of the text
+     *
+     * @param array $params Parameter array
+     *
+     * @return void
      */
     function addText($params)
     {
@@ -671,7 +768,10 @@ class Image_Canvas_SVG extends Image_Canvas
         $color = (isset($params['color']) ? $params['color'] : false);
         $alignment = (isset($params['alignment']) ? $params['alignment'] : false);
 
-        $textHeight = $this->textHeight($text);
+        $attrs = (isset($params['attrs']) && is_array($params['attrs'])) ? $this->_getAttributes($params['attrs']) : null;
+        
+        $lines = explode("\n", $text);
+        $textHeight = $this->textHeight($lines[0]);
 
         if (!is_array($alignment)) {
             $alignment = array('vertical' => 'top', 'horizontal' => 'left');
@@ -688,7 +788,7 @@ class Image_Canvas_SVG extends Image_Canvas
         $align = '';
 
         if ((isset($this->_font['vertical'])) && ($this->_font['vertical'])) {
-//            $align .= 'writing-mode: tb-rl;';
+            // $align .= 'writing-mode: tb-rl;';
 
             if ($alignment['vertical'] == 'bottom') {
                 $align .= 'text-anchor:end;';
@@ -721,21 +821,23 @@ class Image_Canvas_SVG extends Image_Canvas
         $this->_addElement(
             '<g transform="translate(' . round($x) . ', ' . round($y) . ')">' . "\n" .
             $this->_indent . '    <text ' .
-                'x="0" ' .
-                'y="0" ' .
-                (isset($this->_font['angle']) && ($this->_font['angle'] > 0) ?
-                    'transform="rotate(' . $this->_font['angle'] . ')" ' :
+            'x="0" ' .
+            'y="0" ' .
+            (isset($this->_font['angle']) && ($this->_font['angle'] > 0) ?
+                'transform="rotate(' . (((-1) * $this->_font['angle']) % 360) . ')" ' :
                     ''
                 ) .
-                'style="' .
-                (isset($this->_font['name']) ?
-                    'font-family:' . $this->_font['name'] . ';' : '') .
-                        'font-size:' . $this->_font['size'] . 'px;fill:' .
-                        $textColor . ($textOpacity ? ';fill-opacity:' .
-                        $textOpacity :
-                    ''
-                ) . ';' . $align . '">' .
-                htmlspecialchars($text) .
+            'style="' .
+            (isset($this->_font['name']) ?
+            'font-family:' . $this->_font['name'] . ';' : '') .
+            'font-size:' . $this->_font['size'] . 'px;fill:' .
+            $textColor . ($textOpacity ? ';fill-opacity:' .
+            $textOpacity :
+            ''
+            ) . ';' . $align . '"' . 
+            ($attrs ? ' ' . $attrs : '') .
+            '>' .
+            ('<tspan x="0" dy="0em">'. implode('</tspan><tspan x="0" dy="1em">', explode("\n",htmlspecialchars($text))).'</tspan>') .
             '</text>' . "\n" . 
             $this->_indent . '</g>',
             $params
@@ -753,6 +855,10 @@ class Image_Canvas_SVG extends Image_Canvas
      * 'width': int [optional] The width of the overlayed image (resizing if possible)
      * 'height': int [optional] The height of the overlayed image (resizing if possible)
      * 'alignment': array [optional] Alignment
+     *
+     * @param array $params Parameter array
+     *
+     * @return void
      */
     function image($params)
     {
@@ -760,6 +866,8 @@ class Image_Canvas_SVG extends Image_Canvas
         $y = $this->_getY($params['y']);
         $filename = $params['filename'];
 
+        $attrs = (isset($params['attrs']) && is_array($params['attrs'])) ? $this->_getAttributes($params['attrs']) : null;
+        
         list($width, $height, $type, $attr) = getimagesize($filename);        
         $width = (isset($params['width']) ? $params['width'] : $width);
         $height = (isset($params['height']) ? $params['height'] : $height);
@@ -770,10 +878,12 @@ class Image_Canvas_SVG extends Image_Canvas
         fclose($file);
                 
         $data = 'data:' . image_type_to_mime_type($type) . ';base64,' . base64_encode($filedata);
+            
         $this->_addElement(
             '<image xlink:href="' . $data . '" x="' . $x . '" y="' . $y . '"' .
-                ($width ? ' width="' . $width . '"' : '') .
-                ($height ? ' height="' . $height . '"' : '') .
+            ($width ? ' width="' . $width . '"' : '') .
+            ($height ? ' height="' . $height . '"' : '') .
+            ($attrs ? ' ' . $attrs : '') .
             ' preserveAspectRatio="none"/>',
             $params
         );
@@ -786,6 +896,8 @@ class Image_Canvas_SVG extends Image_Canvas
      * What this does, depends on the canvas/format.
      *
      * @param string $name The name of the group
+     *
+     * @return void
      */
     function startGroup($name = false)
     {
@@ -803,6 +915,8 @@ class Image_Canvas_SVG extends Image_Canvas
      * End the "current" group.
      * 
      * What this does, depends on the canvas/format.
+     *
+     * @return void
      */
     function endGroup()
     {
@@ -814,23 +928,16 @@ class Image_Canvas_SVG extends Image_Canvas
      * Output the result of the canvas
      *
      * @param array $param Parameter array
+     *
+     * @return void
      */
     function show($param = false)
     {
         parent::show($param);
-        $output = '<?xml version="1.0" encoding='.$app_strings['LBL_CHARSET'].'?>' . "\n" .
-            '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN"' . "\n\t" .
-            ' "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">' . "\n" .
-            '<svg width="' . $this->_width . '" height="' . $this->_height .
-                '" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' . "\n" .
-            ($this->_defs ?
-                '    <defs>' . "\n" .
-                $this->_defs .
-                '    </defs>' . "\n" :
-                ''
-            ) .
-            $this->_elements .
-            '</svg>';
+        
+        $attrs = (isset($param['attrs']) && is_array($param['attrs'])) ? $this->_getAttributes($param['attrs']) : null;
+        
+        $output = $this->getData($param);
 
         header('Content-Type: image/svg+xml');
         header('Content-Disposition: inline; filename = "' . basename($_SERVER['PHP_SELF'], '.php') . '.svg"');
@@ -841,15 +948,39 @@ class Image_Canvas_SVG extends Image_Canvas
      * Output the result of the canvas
      *
      * @param array $param Parameter array
+     *
+     * @return void
      */
     function save($param = false)
     {
         parent::save($param);
-        $output = '<?xml version="1.0" encoding='.$app_strings['LBL_CHARSET'].'?>' . "\n" .
+
+        $output = $this->getData($param);
+        
+        $file = fopen($param['filename'], 'w+');
+        fwrite($file, $output);
+        fclose($file);
+    }
+    
+    
+    /**
+     * Get SVG data
+     *
+     * @param array $param Parameter array
+     *
+     * @return string
+     */
+    function getData($param = false)
+    {
+        $attrs = (isset($param['attrs']) && is_array($param['attrs'])) ? $this->_getAttributes($param['attrs']) : null;
+
+        return '<?xml version="1.0" encoding="'. $this->_encoding . '"?>' . "\n" .
             '<!DOCTYPE svg PUBLIC "-//W3C//DTD SVG 1.0//EN"' . "\n\t" .
             ' "http://www.w3.org/TR/2001/REC-SVG-20010904/DTD/svg10.dtd">' . "\n" .
             '<svg width="' . $this->_width . '" height="' . $this->_height .
-                '" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">' . "\n" .
+                '" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink"' .
+                ($attrs ? ' ' . $attrs : '') .
+                '>' . "\n" .
             ($this->_defs ?
                 '    <defs>' . "\n" .
                 $this->_defs .
@@ -858,12 +989,8 @@ class Image_Canvas_SVG extends Image_Canvas
             ) .
             $this->_elements .
             '</svg>';
-
-        $file = fopen($param['filename'], 'w+');
-        fwrite($file, $output);
-        fclose($file);
     }
-    
+ 
     /**
      * Set clipping to occur
      * 
@@ -873,24 +1000,29 @@ class Image_Canvas_SVG extends Image_Canvas
      * 'y0': int X point of Upper-left corner
      * 'x1': int X point of lower-right corner
      * 'y1': int Y point of lower-right corner
+     *
+     * @param array $params Parameter array (x0, y0, x1, y1)
+     *
+     * @return void
      */
     function setClipping($params = false) 
     {
         if ($params === false) {
             $this->_addElement('</g>');
-        }        
-        else {
+        } else {
             $group = "clipping_" . $this->_id;
             $this->_id++;
             $this->_addElement('<g clip-path="url(#' . $group . ')">');
             
             $this->_addDefine('<clipPath id="' . $group . '">');
-            $this->_addDefine('    <path d="' .
+            $this->_addDefine(
+                '    <path d="' .
                 'M' . $this->_getX($params['x0']) . ' ' . $this->_getY($params['y0']) . 
                 ' H' . $this->_getX($params['x1']) . 
                 ' V' . $this->_getY($params['y1']) . 
                 ' H' . $this->_getX($params['x0']) . 
-                ' Z"/>');
+                ' Z"/>'
+            );
             $this->_addDefine('</clipPath>');            
         }
     }
@@ -907,13 +1039,34 @@ class Image_Canvas_SVG extends Image_Canvas
      * 'urlpath': string Path to the file available through an URL. Remember the final slash
      * 'width': int The width in pixels
      * 'height': int The height in pixels
+     *
+     * @param array $params Parameter array
+     *
+     * @return string HTML code
      */
     function toHtml($params)
     {
         parent::toHtml($params);
         return '<embed src="' . $params['urlpath'] . $params['filename'] . '" width=' . $params['width'] . ' height=' . $params['height'] . ' type="image/svg+xml">';        
     }
-      
+
+    /**
+     * Converts array of attributes to string
+     *
+     * @param array $attrs Attributes array
+     *
+     * @return array
+     */
+    function _getAttributes($attrs)
+    {    
+        $string = '';
+        
+        foreach ($attrs as $key => $value) {
+            $string .= ' ' . $key . '="' . $value . '"';
+        }
+        
+        return $string;
+    }
 }
 
 ?>

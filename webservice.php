@@ -39,6 +39,15 @@
 	}
 	
 	function setResponseHeaders() {
+		global $cors_enabled_domains;
+		if (isset($_SERVER['HTTP_ORIGIN']) && !empty($cors_enabled_domains)) {
+			$parse = parse_url($_SERVER['HTTP_ORIGIN']);
+			if ($cors_enabled_domains=='*' or !(strpos($cors_enabled_domains,$parse['host'])===false)) {
+				header("Access-Control-Allow-Origin: {$_SERVER['HTTP_ORIGIN']}");
+				header('Access-Control-Allow-Credentials: true');
+				header('Access-Control-Max-Age: 86400');    // cache for 1 day
+			}
+		}
 		header('Content-type: application/json');
 	}
 

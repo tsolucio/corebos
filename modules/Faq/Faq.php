@@ -32,9 +32,10 @@ class Faq extends CRMEntity {
 	var $db;
 	var $table_name = "vtiger_faq";
 	var $table_index= 'id';
-	var $tab_name = Array('vtiger_crmentity','vtiger_faq');
-	var $tab_name_index = Array('vtiger_crmentity'=>'crmid','vtiger_faq'=>'id','vtiger_faqcomments'=>'faqid');
-				
+	var $tab_name = Array('vtiger_crmentity','vtiger_faq','vtiger_faqcf');
+	var $tab_name_index = Array('vtiger_crmentity'=>'crmid','vtiger_faq'=>'id','vtiger_faqcomments'=>'faqid','vtiger_faqcf'=>'faqid');
+	var $customFieldTable = Array('vtiger_faqcf', 'faqid');
+
 	var $entity_table = "vtiger_crmentity";
 	
 	var $column_fields = Array();

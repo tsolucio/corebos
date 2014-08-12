@@ -5,7 +5,7 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Plotarea
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Map.php,v 1.10 2006/02/28 22:48:07 nosey Exp $
+ * @version    SVN: $Id: Map.php 291406 2009-11-29 00:54:22Z neufeind $
  * @link       http://pear.php.net/package/Image_Graph
  */
 
@@ -50,9 +51,10 @@ require_once 'Image/Graph/Plotarea.php';
  * @package    Image_Graph
  * @subpackage Plotarea
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: 0.7.2
+ * @version    Release: 0.8.0
  * @link       http://pear.php.net/package/Image_Graph
  */
 class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
@@ -94,7 +96,7 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
      */
     function Image_Graph_Plotarea_Map($map)
     {
-        parent::Image_Graph_Plotarea();
+        parent::__construct();
 
         $this->_imageMap = dirname(__FILE__)."/../Images/Maps/$map.png";
         $points = file(dirname(__FILE__)."/../Images/Maps/$map.txt");
@@ -158,7 +160,9 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
     /**
      * Set the extrema of the axis
      *
-     * @param Image_Graph_Plot $plot The plot that 'hold' the values
+     * @param Image_Graph_Plot &$plot The plot that 'hold' the values
+     *
+     * @return void
      * @access private
      */
     function _setExtrema(& $plot)
@@ -169,6 +173,7 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
      * Get the X pixel position represented by a value
      *
      * @param double $value The value to get the pixel-point for
+     *
      * @return double The pixel position along the axis
      * @access private
      */
@@ -182,6 +187,7 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
      * Get the Y pixel position represented by a value
      *
      * @param double $value The value to get the pixel-point for
+     *
      * @return double The pixel position along the axis
      * @access private
      */
@@ -193,6 +199,8 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
 
     /**
      * Hides the axis
+     *
+     * @return void
      */
     function hideAxis()
     {
@@ -201,9 +209,11 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
     /**
      * Add a point to the maps
      *
-     * @param int $latitude The latitude of the point
-     * @param int $longiude The longitude of the point
-     * @param string $name The name of the plot
+     * @param int    $latitude  The latitude of the point
+     * @param int    $longitude The longitude of the point
+     * @param string $name      The name of the plot
+     *
+     * @return void
      */
     function addMappoint($latitude, $longitude, $name)
     {
@@ -215,9 +225,11 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
     /**
      * Add a point to the maps
      *
-     * @param int $x The latitude of the point
-     * @param int $y The longitude of the point
+     * @param int    $x    The latitude of the point
+     * @param int    $y    The longitude of the point
      * @param string $name The name of the plot
+     *
+     * @return void
      */
     function addPoint($x, $y, $name)
     {
@@ -227,6 +239,7 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
     /**
      * Update coordinates
      *
+     * @return void
      * @access private
      */
     function _updateCoords()
@@ -238,9 +251,9 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
 
         $scaleFactorX = ($mapAspectRatio > $plotAspectRatio);
 
-        if ((($this->_mapSize['X'] <= $width) && ($this->_mapSize['Y'] <= $height)) ||
-            (($this->_mapSize['X'] >= $width) && ($this->_mapSize['Y'] >= $height)))
-        {
+        if ((($this->_mapSize['X'] <= $width) && ($this->_mapSize['Y'] <= $height))
+            || (($this->_mapSize['X'] >= $width) && ($this->_mapSize['Y'] >= $height))
+        ) {
             if ($scaleFactorX) {
                 $this->_scale = $width / $this->_mapSize['X'];
             } else {
@@ -275,11 +288,11 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
     {
         $this->_getFillStyle();
         $this->_canvas->rectangle(
-        	array(
-        		'x0' => $this->_fillLeft(),
-            	'y0' => $this->_fillTop(),
-            	'x1' => $this->_fillRight(),
-            	'y1' => $this->_fillBottom()
+            array(
+                'x0' => $this->_fillLeft(),
+                'y0' => $this->_fillTop(),
+                'x1' => $this->_fillRight(),
+                'y1' => $this->_fillBottom()
             )
         );
 
@@ -287,12 +300,12 @@ class Image_Graph_Plotarea_Map extends Image_Graph_Plotarea
         $scaledHeight = $this->_mapSize['Y']*$this->_scale;
 
         $this->_canvas->image(
-        	array(
-            	'x' => $this->_plotLeft,
-            	'y' => $this->_plotTop,
-            	'filename' => $this->_imageMap,
-            	'width' => $scaledWidth,
-            	'height' => $scaledHeight
+            array(
+                'x' => $this->_plotLeft,
+                'y' => $this->_plotTop,
+                'filename' => $this->_imageMap,
+                'width' => $scaledWidth,
+                'height' => $scaledHeight
             )
         );
 

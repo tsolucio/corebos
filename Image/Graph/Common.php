@@ -5,7 +5,7 @@
 /**
  * Image_Graph - Main class for the graph creation.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -18,37 +18,15 @@
  * to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
  * 02111-1307 USA
  *
- * @category   Images
- * @package    Image_Graph
- * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
- * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Common.php,v 1.16 2006/02/28 22:48:07 nosey Exp $
- * @link       http://pear.php.net/package/Image_Graph
+ * @category  Images
+ * @package   Image_Graph
+ * @author    Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @author    Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright 2003-2009 The PHP Group
+ * @license   http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
+ * @version   SVN: $Id: Common.php 291167 2009-11-23 01:39:31Z neufeind $
+ * @link      http://pear.php.net/package/Image_Graph
  */
-
-if (!function_exists('is_a')) {
-
-    /**
-     * Check if an object is of a given class, this function is available as of PHP 4.2.0, so if it exist it will not be declared
-     *
-     * @link http://www.php.net/manual/en/function.is-a.php PHP.net Online Manual for function is_a()
-     * @param object $object The object to check class for
-     * @param string $class_name The name of the class to check the object for
-     * @return bool Returns TRUE if the object is of this class or has this class as one of its parents
-     */
-    function is_a($object, $class_name)
-    {
-        if (empty ($object)) {
-            return false;
-        }
-        $object = is_object($object) ? get_class($object) : $object;
-        if (strtolower($object) == strtolower($class_name)) {
-            return true;
-        }
-        return is_a(get_parent_class($object), $class_name);
-    }
-}
 
 /**
  * Include file Image/Canvas.php
@@ -60,13 +38,14 @@ require_once 'Image/Canvas.php';
  *
  * This class contains common functionality needed by all Image_Graph classes.
  *
- * @category   Images
- * @package    Image_Graph
- * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
- * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: 0.7.2
- * @link       http://pear.php.net/package/Image_Graph
+ * @category  Images
+ * @package   Image_Graph
+ * @author    Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @author    Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright 2003-2009 The PHP Group
+ * @license   http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
+ * @version   Release: 0.8.0
+ * @link      http://pear.php.net/package/Image_Graph
  * @abstract
  */
 class Image_Graph_Common
@@ -116,6 +95,7 @@ class Image_Graph_Common
     /**
      * Resets the elements
      *
+     * @return bool
      * @access private
      */
     function _reset()
@@ -124,7 +104,8 @@ class Image_Graph_Common
             $keys = array_keys($this->_elements);
             foreach ($keys as $key) {
                 if (is_object($this->_elements[$key])) {
-                    $this->_elements[$key]->_setParent($this);
+                    $this_ =& $this;
+                    $this->_elements[$key]->_setParent($this_);
                     $result =& $this->_elements[$key]->_reset();
                     if (PEAR::isError($result)) {
                         return $result;
@@ -139,8 +120,10 @@ class Image_Graph_Common
     /**
      * Sets the parent. The parent chain should ultimately be a GraPHP object
      *
+     * @param Image_Graph_Common &$parent The parent
+     *
+     * @return void
      * @see Image_Graph_Common
-     * @param Image_Graph_Common $parent The parent
      * @access private
      */
     function _setParent(& $parent)
@@ -161,6 +144,8 @@ class Image_Graph_Common
 
     /**
      * Hide the element
+     *
+     * @return void
      */
     function hide()
     {
@@ -192,10 +177,11 @@ class Image_Graph_Common
      *
      * The new Image_Graph_elements parent is automatically set.
      *
-     * @param Image_Graph_Common $element The new Image_Graph_element
+     * @param Image_Graph_Common &$element The new Image_Graph_element
+     *
      * @return Image_Graph_Common The new Image_Graph_element
      */
-    function &add(& $element)
+    function &add(&$element)
     {
         if (!is_a($element, 'Image_Graph_Font')) {
             $this->_elements[] = &$element;
@@ -214,10 +200,12 @@ class Image_Graph_Common
      * 'enclose' the parameter in an array. Similar if the constructor takes
      * more than one parameter specify the parameters in an array.
      *
-     * @see Image_Graph::factory()
-     * @param string $class The class for the object
-     * @param mixed $params The paramaters to pass to the constructor
+     * @param string $class      The class for the object
+     * @param mixed  $params     The paramaters to pass to the constructor
+     * @param mixed  $additional Additional parameter to be pass (optional)
+     *
      * @return Image_Graph_Common The new Image_Graph_element
+     * @see Image_Graph::factory()
      */
     function &addNew($class, $params = null, $additional = false)
     {
@@ -234,9 +222,11 @@ class Image_Graph_Common
     /**
      * Shows an error message box on the canvas
      *
-     * @param string $text The error text
-     * @param array $params An array containing error specific details
-     * @param int $error_code Error code
+     * @param string $text       The error text
+     * @param array  $params     An array containing error specific details
+     * @param int    $error_code Error code
+     *
+     * @return void
      * @access private
      */
     function _error($text, $params = false, $error_code = IMAGE_GRAPH_ERROR_GENERIC)
@@ -245,8 +235,7 @@ class Image_Graph_Common
             foreach ($params as $name => $key) {
                 if (isset($parameters)) {
                     $parameters .= ' ';
-                } 
-                else {
+                } else {
                     $parameters = '';
                 }
                 $parameters .= $name . '=' . $key;
@@ -265,6 +254,7 @@ class Image_Graph_Common
      * (Image_Graph_Common, does not itself have coordinates, this is basically
      * an abstract method)
      *
+     * @return bool
      * @access private
      */
     function _updateCoords()

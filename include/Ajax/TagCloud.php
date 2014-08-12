@@ -51,17 +51,18 @@ elseif($ajaxaction == 'GETTAGCLOUD')
 	}
 }elseif($ajaxaction == 'DELETETAG')
 {
-	if(is_numeric($_REQUEST['tagid']))
-	{
-		$tagid = $_REQUEST['tagid']; 
-		global $adb;
-		$query="delete from vtiger_freetagged_objects where tag_id=? and object_id=?";
-		$result=$adb->pquery($query, array($tagid, $crmid));
-		echo 'SUCCESS';
-	}else
-	{
-		 die("An invalid tagid to delete.");
+	if(is_numeric($_REQUEST['tagid'])) {
+		$tagid = vtlib_purify($_REQUEST['tagid']);
+		require_once('include/freetag/freetag.class.php');
+		$freetag = new freetag();
+		$tag = $freetag->get_tag_from_id($tagid);
+		$delok = $freetag->delete_object_tag($userid, $crmid, $tag);
+		if ($delok)
+			echo 'SUCCESS';
+		else
+			die("An invalid tagid to delete.");
+	} else {
+		die("An invalid tagid to delete.");
 	}
-	
 }
 ?>

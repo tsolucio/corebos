@@ -5,7 +5,7 @@
 /**
  * Image_Graph - Main class for the graph creation.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Legend
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Legend.php,v 1.16 2006/02/28 22:48:07 nosey Exp $
+ * @version    SVN: $Id: Legend.php 291170 2009-11-23 03:50:22Z neufeind $
  * @link       http://pear.php.net/package/Image_Graph
  */
 
@@ -46,9 +47,10 @@ require_once 'Image/Graph/Layout.php';
  * @package    Image_Graph
  * @subpackage Legend
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: 0.7.2
+ * @version    Release: 0.8.0
  * @link       http://pear.php.net/package/Image_Graph
  */
 class Image_Graph_Legend extends Image_Graph_Layout
@@ -80,7 +82,7 @@ class Image_Graph_Legend extends Image_Graph_Layout
      */
     function Image_Graph_Legend()
     {
-        parent::Image_Graph_Layout();
+        parent::__construct();
         $this->_padding = array('left' => 5, 'top' => 5, 'right' => 5, 'bottom' => 5);
     }
 
@@ -94,7 +96,7 @@ class Image_Graph_Legend extends Image_Graph_Layout
     {
         $count = 0;
         $keys = array_keys($this->_plotareas);
-        foreach($keys as $key) {
+        foreach ($keys as $key) {
             $plotarea =& $this->_plotareas[$key];
             if (is_a($plotarea, 'Image_Graph_Plotarea')) {
                 $keys2 = array_keys($plotarea->_elements);
@@ -113,8 +115,9 @@ class Image_Graph_Legend extends Image_Graph_Layout
     
     /**
      * Get a default parameter array for legendSamples
-     * @param bool $simulate Whether the array should be used for simulation or
-     * not
+     *
+     * @param bool $simulate Whether the array should be used for simulation or not
+     *
      * @return array Default parameter array
      * @access private
      */
@@ -154,10 +157,10 @@ class Image_Graph_Legend extends Image_Graph_Layout
             $param['align'] = IMAGE_GRAPH_ALIGN_VERTICAL;
             $param0 = $param;
             $keys = array_keys($this->_plotareas);
-            foreach($keys as $key) {
+            foreach ($keys as $key) {
                 $plotarea =& $this->_plotareas[$key];
                 $keys2 = array_keys($plotarea->_elements);
-                foreach($keys2 as $key) {
+                foreach ($keys2 as $key) {
                     $element =& $plotarea->_elements[$key];
                     if (is_a($element, 'Image_Graph_Plot')) {
                         $element->_legendSample($param);
@@ -186,10 +189,10 @@ class Image_Graph_Legend extends Image_Graph_Layout
             $param = $this->_parameterArray(true);
             $param['align'] = IMAGE_GRAPH_ALIGN_VERTICAL;
             $keys = array_keys($this->_plotareas);
-            foreach($keys as $key) {
+            foreach ($keys as $key) {
                 $plotarea =& $this->_plotareas[$key];
                 $keys2 = array_keys($plotarea->_elements);
-                foreach($keys2 as $key) {
+                foreach ($keys2 as $key) {
                     $element =& $plotarea->_elements[$key];
                     if (is_a($element, 'Image_Graph_Plot')) {
                         $element->_legendSample($param);
@@ -208,6 +211,8 @@ class Image_Graph_Legend extends Image_Graph_Layout
      * Set the alignment of the legend
      *
      * @param int $alignment The alignment
+     *
+     * @return void
      */
     function setAlignment($alignment)
     {
@@ -217,6 +222,7 @@ class Image_Graph_Legend extends Image_Graph_Layout
     /**
      * Update coordinates
      *
+     * @return void
      * @access private
      */
     function _updateCoords()
@@ -252,7 +258,9 @@ class Image_Graph_Legend extends Image_Graph_Layout
     /**
      * Sets Plotarea
      *
-     * @param Image_Graph_Plotarea $plotarea The plotarea
+     * @param Image_Graph_Plotarea &$plotarea The plotarea
+     *
+     * @return void
      */
     function setPlotarea(& $plotarea)
     {
@@ -264,8 +272,10 @@ class Image_Graph_Legend extends Image_Graph_Layout
     /**
      * Sets the parent. The parent chain should ultimately be a GraPHP object
      *
+     * @param Image_Graph_Common &$parent The parent
+     *
+     * @return void
      * @see Image_Graph
-     * @param Image_Graph_Common $parent The parent
      * @access private
      */
     function _setParent(& $parent)
@@ -280,6 +290,8 @@ class Image_Graph_Legend extends Image_Graph_Layout
      * Set if this legends should show markers
      *
      * @param bool $showMarker True if markers are to be shown, false is not
+     *
+     * @return void
      */
     function setShowMarker($showMarker)
     {
@@ -313,21 +325,21 @@ class Image_Graph_Legend extends Image_Graph_Layout
             $this->_getFillStyle();
             $this->_getLineStyle();
             $this->_canvas->rectangle(
-            	array(
-                	'x0' => $this->_left,
-                	'y0' => $this->_top,
-                	'x1' => $this->_right,
-                	'y1' => $this->_bottom
+                array(
+                    'x0' => $this->_left,
+                    'y0' => $this->_top,
+                    'x1' => $this->_right,
+                    'y1' => $this->_bottom
                 )
             );
 
             $param = $this->_parameterArray();
             
             $keys = array_keys($this->_plotareas);
-            foreach($keys as $key) {
+            foreach ($keys as $key) {
                 $plotarea =& $this->_plotareas[$key];
                 $keys2 = array_keys($plotarea->_elements);
-                foreach($keys2 as $key) {
+                foreach ($keys2 as $key) {
                     $element =& $plotarea->_elements[$key];
                     if (is_a($element, 'Image_Graph_Plot')) {
                         $element->_legendSample($param);
@@ -340,10 +352,10 @@ class Image_Graph_Legend extends Image_Graph_Layout
             $param0 = $param;
             $param0['simulate'] = true;
             $keys = array_keys($this->_plotareas);
-            foreach($keys as $key) {
+            foreach ($keys as $key) {
                 $plotarea =& $this->_plotareas[$key];
                 $keys2 = array_keys($plotarea->_elements);
-                foreach($keys2 as $key) {
+                foreach ($keys2 as $key) {
                     $element =& $plotarea->_elements[$key];
                     if (is_a($element, 'Image_Graph_Plot')) {
                         $element->_legendSample($param0);
@@ -363,10 +375,10 @@ class Image_Graph_Legend extends Image_Graph_Layout
             }
 
             $keys = array_keys($this->_plotareas);
-            foreach($keys as $key) {
+            foreach ($keys as $key) {
                 $plotarea =& $this->_plotareas[$key];
                 $keys2 = array_keys($plotarea->_elements);
-                foreach($keys2 as $key) {
+                foreach ($keys2 as $key) {
                     $element =& $plotarea->_elements[$key];
                     if (is_a($element, 'Image_Graph_Plot')) {
                         $element->_legendSample($param);

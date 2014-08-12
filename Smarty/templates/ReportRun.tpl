@@ -1,5 +1,4 @@
 {*<!--
-
 	/*********************************************************************************
 	 ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
 	 * ("License"); You may not use this file except in compliance with the License
@@ -9,7 +8,6 @@
 	 * All Rights Reserved.
 	 *
 	 ********************************************************************************/
-
 -->*}
 <br>
 <script type="text/javascript">
@@ -26,9 +24,6 @@
 <tbody><tr>
     <td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
-	
-	
-	
 <table class="small reportGenHdr mailClient mailClientBg" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
 	<form name="NewReport" action="index.php" method="POST" onsubmit="VtigerJS_DialogBox.block();">
     <input type="hidden" name="booleanoperator" value="5"/>
@@ -94,6 +89,8 @@
 			<input type="button" class="small create" onclick="generateReport({$REPORTID});" value="{$MOD.LBL_GENERATE_NOW}" title="{$MOD.LBL_GENERATE_NOW}" />
 			&nbsp;
 			<input type="button" class="small edit" onclick="saveReportAdvFilter({$REPORTID});" value="     {$MOD.LBL_SAVE_REPORT}     " title="{$MOD.LBL_SAVE_REPORT}" />
+			&nbsp;
+			<input type="button" class="small edit" onclick="SaveAsReport({$REPORTID});" value="     {$APP.LBL_SAVE_AS}     " title="{$APP.LBL_SAVE_AS}" />
 		</td>
 	</tr>
 </table>
@@ -114,7 +111,6 @@
 	</tr>
 </table>
 
-
 <div style="display: block;" id="Generate" align="center">
 	{include file="ReportRunContents.tpl"}
 </div>
@@ -124,7 +120,6 @@
 <td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
 </tr>
 </table>
-
 
 <!-- Save Report As.. UI -->
 <div id="duplicateReportLayout" style="display:none;width:350px;" class="layerPopup">
@@ -173,7 +168,6 @@
 		</tr>
 	</table>
 </div>
-
 {literal}
 
 <script type="text/javascript">
@@ -227,7 +221,6 @@ function duplicateReport(id) {
 }
 
 function createDuplicateReport(id) {
-	
 	var newreportname = $('newreportname').value;
 	var newreportdescription = $('newreportdescription').value;
 	var newreportfolder = $('reportfolder').value;
@@ -246,7 +239,7 @@ function createDuplicateReport(id) {
 							var responseArray = JSON.parse(response.responseText);
 							if(trim(responseArray['errormessage']) != '') {
 								VtigerJS_DialogBox.unblock();
-								alert(resonseArray['errormessage']);								
+								alert(resonseArray['errormessage']);
 							}
 							var reportid = responseArray['reportid'];
 							var folderid = responseArray['folderid'];
@@ -317,6 +310,32 @@ function selectReport() {
 	goToURL(url);
 }
 
+function SaveAsReport(id) {
+	if(!checkAdvancedFilter()) return false;
+	var reportname = prompt(alert_arr.LBL_REPORT_NAME);
+	if (reportname != null) {
+		document.getElementById("newreportname").value = reportname;
+		VtigerJS_DialogBox.block();
+		var advft_criteria = $('advft_criteria').value;
+		var advft_criteria_groups = $('advft_criteria_groups').value;
+		new Ajax.Request(
+			'index.php',
+			{queue: {position: 'end', scope: 'command'},
+				method: 'post',
+				postBody: 'action=ReportsAjax&file=Save&mode=ajax&module=Reports&record='+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups+'&saveashidden=saveas&newreportname='+reportname,
+				onComplete: function(response) {
+					getObj('Generate').innerHTML = response.responseText;
+					// Performance Optimization: To update record count of the report result 
+					var __reportrun_directoutput_recordcount_scriptnode = $('__reportrun_directoutput_recordcount_script');
+					if(__reportrun_directoutput_recordcount_scriptnode) { eval(__reportrun_directoutput_recordcount_scriptnode.innerHTML); }
+					// END
+					VtigerJS_DialogBox.unblock();
+				}
+			}
+		);
+	} else
+		alert(alert_arr.LBL_REPORT_NAME_ERROR);
+}
 {/literal}
 
 function goToPrintReport(id) {ldelim}
@@ -327,5 +346,4 @@ function goToPrintReport(id) {ldelim}
 	
 	window.open("index.php?module=Reports&action=ReportsAjax&file=PrintReport&record="+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups,"{$MOD.LBL_Print_REPORT}","width=800,height=650,resizable=1,scrollbars=1,left=100");
 {rdelim}
-
 </script>

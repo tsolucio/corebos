@@ -5,7 +5,7 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Line
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Array.php,v 1.7 2005/02/21 20:49:42 nosey Exp $
+ * @version    SVN: $Id: Array.php 291170 2009-11-23 03:50:22Z neufeind $
  * @link       http://pear.php.net/package/Image_Graph
  */
 
@@ -49,9 +50,10 @@ require_once 'Image/Graph/Common.php';
  * @package    Image_Graph
  * @subpackage Line
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: 0.7.2
+ * @version    Release: 0.8.0
  * @link       http://pear.php.net/package/Image_Graph
  */
 class Image_Graph_Line_Array extends Image_Graph_Common
@@ -67,7 +69,10 @@ class Image_Graph_Line_Array extends Image_Graph_Common
     /**
      * Add a line style to the array
      *
-     * @param Image_Graph_Line $style The style to add
+     * @param Image_Graph_Line &$style The style to add
+     * @param ???              $id     ???
+     *
+     * @return void
      */
     function add(& $style, $id = false)
     {
@@ -86,8 +91,10 @@ class Image_Graph_Line_Array extends Image_Graph_Common
     /**
      * Add a color to the array
      *
-     * @param int $color The color
-     * @param string $id The id or name of the color
+     * @param int    $color The color
+     * @param string $id    The id or name of the color
+     *
+     * @return void
      */
     function addColor($color, $id = false)
     {
@@ -101,6 +108,8 @@ class Image_Graph_Line_Array extends Image_Graph_Common
 
     /**
      * Return the linestyle
+     *
+     * @param ??? $ID ???
      *
      * @return int A GD Linestyle
      * @access private

@@ -24,7 +24,7 @@ require_once("modules/Users/Users.php");
 class VTCreateTodoTask extends VTTask{
 	public $executeImmediately = true;
 
-	public function getFieldNames(){return array('todo', 'description', 'sendNotification', 'time', 'date', 'status', 'priority', 'days', 'direction', 'datefield', 'sendNotification');}
+	public function getFieldNames(){return array('todo', 'description', 'sendNotification', 'time', 'date', 'status', 'priority', 'days', 'direction', 'datefield', 'sendNotification', 'assigned_user_id');}
 
 	function getAdmin(){
 		$user = Users::getActiveAdminUser();
@@ -54,7 +54,25 @@ class VTCreateTodoTask extends VTTask{
 		}
 		preg_match('/\d\d\d\d-\d\d-\d\d/', $baseDate, $match);
 		$baseDate = strtotime($match[0]);
-		$date = strftime('%Y-%m-%d', $baseDate+$this->days*24*60*60*($this->directions=='Before'?-1:1));
+		$date = strftime('%Y-%m-%d', $baseDate+$this->days*24*60*60*(strtolower($this->direction)=='before'?-1:1));
+		// Added to check if the user/group is active
+		if(!empty($this->assigned_user_id)) {
+			$userExists = $adb->pquery('SELECT 1 FROM vtiger_users WHERE id = ? AND status = ?', array($this->assigned_user_id, 'Active'));
+			if($adb->num_rows($userExists)) {
+				$assignedUserId = vtws_getWebserviceEntityId('Users', $this->assigned_user_id);
+				$userId = $assignedUserId;
+			} else {
+				$groupExist = $adb->pquery('SELECT 1 FROM vtiger_groups WHERE groupid = ?', array($this->assigned_user_id));
+				if($adb->num_rows($groupExist)) {
+					$assignedGroupId = vtws_getWebserviceEntityId('Groups', $this->assigned_user_id);
+					$userId = $assignedGroupId;
+				} else {
+					if ($this->assigned_user_id == 'copyParentOwner') {
+						$userId = $entityData->get('assigned_user_id');
+					}
+				}
+			}
+		}
 		$startDate = new DateTimeField($date.' '.$time[1]);
 		$date = $startDate->getDisplayDate();
 		$fields = array(

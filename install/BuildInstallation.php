@@ -100,6 +100,6 @@ if(isset($currencyName)){
 	$_SESSION['installation_info']['currency_symbol'] = $currencies[$currencyName][1];
 }
 
-require "install/SelectOptionalModules.php";
+require "install/CreateTables.php";
 
 ?>

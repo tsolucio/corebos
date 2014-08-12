@@ -5,7 +5,7 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Layout
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Vertical.php,v 1.6 2005/02/21 20:49:55 nosey Exp $
+ * @version    SVN: $Id: Vertical.php 291170 2009-11-23 03:50:22Z neufeind $
  * @link       http://pear.php.net/package/Image_Graph
  */
 
@@ -45,9 +46,10 @@ require_once 'Image/Graph/Layout/Horizontal.php';
  * @package    Image_Graph
  * @subpackage Layout
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: 0.7.2
+ * @version    Release: 0.8.0
  * @link       http://pear.php.net/package/Image_Graph
  */
 class Image_Graph_Layout_Vertical extends Image_Graph_Layout_Horizontal
@@ -56,9 +58,10 @@ class Image_Graph_Layout_Vertical extends Image_Graph_Layout_Horizontal
     /**
      * Gets the absolute size of one of the parts.
      *
-     * @param string $part The name of the part - auto_part(1|2)
+     * @param string &$part The name of the part - auto_part(1|2)
+     *
      * @return int The number of pixels the edge should be pushed
-	 * @since 0.3.0dev2
+     * @since 0.3.0dev2
      * @access private
      */
     function _getAbsolute(&$part)
@@ -77,7 +80,7 @@ class Image_Graph_Layout_Vertical extends Image_Graph_Layout_Horizontal
         }
 
         if ($part == 'auto_part2') {
-//            $height = $this->_fillHeight() - $height;
+            // $height = $this->_fillHeight() - $height;
         }
 
         return $height;
@@ -86,6 +89,7 @@ class Image_Graph_Layout_Vertical extends Image_Graph_Layout_Horizontal
     /**
      * Splits the layout between the parts, by the specified percentage
      *
+     * @return void
      * @access private
      */
     function _split()

@@ -75,6 +75,4 @@ $mod_strings = array (
 	'SELECT_ANYONE_OPTION' => 'Veuillez sélectionner au moins une option',
 	'ENTER_CORRECT_MYSQL_PATH' => 'Veuillez saisir un chemin correct vers le binaire MySQL',
 );
-$mod_list_strings = array (
-);
 ?>

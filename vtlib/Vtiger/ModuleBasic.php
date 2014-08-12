@@ -146,7 +146,7 @@ class Vtiger_ModuleBasic {
 
 		$this->__handleVtigerCoreSchemaChanges();
 
-		$adb->pquery("INSERT INTO vtiger_tab (tabid,name,presence,tabsequence,tablabel,modifiedby,
+		$result = $adb->pquery("INSERT INTO vtiger_tab (tabid,name,presence,tabsequence,tablabel,modifiedby,
 			modifiedtime,customized,ownedby,version,parent) VALUES (?,?,?,?,?,?,?,?,?,?,?)",
 			Array($this->id, $this->name, $this->presence, -1, $this->label, NULL, NULL, $customized, $this->ownedby, $this->version,$this->parent));
 
@@ -184,7 +184,10 @@ class Vtiger_ModuleBasic {
 			Vtiger_Access::initSharing($this);
 		}
 
+		if($result)
 		self::log("Creating Module $this->name ... DONE");
+		else
+			self::log("Creating Module $this->name ... <span style='color:red'>**ERROR**</span>");
 	}
 
 	/**

@@ -136,7 +136,7 @@ class cleandatabase_140 extends cbupdaterWorker {
 			$this->ExecuteQuery('ALTER TABLE `vtiger_crmentityrel` ADD INDEX `crmentityrel_crmid_relcrmid_idx` ( `crmid` , `relcrmid` )');
 			$this->ExecuteQuery('ALTER TABLE `vtiger_customview` ADD INDEX `userid_idx` ( `userid` ), ADD INDEX `setmetrics` ( `setmetrics` )');
 			$this->ExecuteQuery('ALTER TABLE `vtiger_cvstdfilter` DROP INDEX `cvstdfilter_cvid_idx`');
-			$this->ExecuteQuery('ALTER TABLE `vtiger_email_access` ADD PRIMARY KEY ( `crmid` , `mailid` )');
+			$this->ExecuteQuery('ALTER TABLE `vtiger_email_access` ADD INDEX ( `crmid` , `mailid` )');
 			$this->ExecuteQuery('ALTER TABLE `vtiger_entityname` DROP INDEX `entityname_tabid_idx`');
 			$this->ExecuteQuery('ALTER TABLE `vtiger_freetags` ADD INDEX `tag_idx` ( `tag` ),  ADD INDEX `multi_idx` ( `id` , `tag` )');
 			$this->ExecuteQuery('ALTER TABLE `vtiger_freetagged_objects` DROP INDEX `freetagged_objects_tag_id_tagger_id_object_id_idx`');

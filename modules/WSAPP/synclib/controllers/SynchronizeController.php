@@ -27,7 +27,6 @@ abstract class WSAPP_SynchronizeController {
 	
 	public $user;
 
-
 	abstract function getTargetConnector();
 	abstract function getSourceType();
 	abstract function getSyncType();

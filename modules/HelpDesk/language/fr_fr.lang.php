@@ -169,6 +169,4 @@ $mod_strings = array (
 	'From Portal' => 'Depuis le portail',
 	'HelpDesk ID' => 'Ticket ID',
 );
-$mod_list_strings = array (
-);
 ?>

@@ -167,11 +167,9 @@ $mod_strings = array (
 		'Payment Duration' => 'Echéance',
 		'Invoice Status' => 'Statut de la facture',
 		'Issued Date' => 'Date d\'émission',
-		'Valid Date' => 'Date de validité',			
+		'Valid Date' => 'Date de validité',
 		'Net 30 days' => 'Net 30 jours',
 		'Net 45 days' => 'Net 45 jours',
 		'Net 60 days' => 'Net 60 jours',
-);
-$mod_list_strings = array (
 );
 ?>

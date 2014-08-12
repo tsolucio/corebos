@@ -16,17 +16,17 @@
  * will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty
  * of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU Lesser
  * General Public License for more details. You should have received a copy of
- * the GNU Lesser General Public License along with this library; if not, write
- * to the Free Software Foundation, Inc., 59 Temple Place, Suite 330, Boston, MA
- * 02111-1307 USA
+ * the GNU Lesser General Public License along with this library; if not, see
+ * <http://www.gnu.org/licenses/>
  *
- * @category   Images
- * @package    Image_Canvas
- * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
- * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: PDF.php,v 1.5 2005/10/28 09:54:40 nosey Exp $
- * @link       http://pear.php.net/pepr/pepr-proposal-show.php?id=212
+ * @category  Images
+ * @package   Image_Canvas
+ * @author    Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @author    Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright 2003-2009 The PHP Group
+ * @license   http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
+ * @version   SVN: $Id$
+ * @link      http://pear.php.net/package/Image_Canvas
  */
  
 /**
@@ -42,13 +42,14 @@ require_once 'Image/Canvas/Color.php';
 /**
  * PDF Canvas class.
  * 
- * @category   Images
- * @package    Image_Canvas
- * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
- * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: @package_version@
- * @link       http://pear.php.net/pepr/pepr-proposal-show.php?id=212
+ * @category  Images
+ * @package   Image_Canvas
+ * @author    Jesper Veggerby <pear.nosey@veggerby.dk>
+ * @author    Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright 2003-2009 The PHP Group
+ * @license   http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
+ * @version   Release: @package_version@
+ * @link      http://pear.php.net/package/Image_Canvas
  */
 class Image_Canvas_PDF extends Image_Canvas
 {
@@ -250,8 +251,8 @@ class Image_Canvas_PDF extends Image_Canvas
         $this->_width = min($this->_width, $this->_pageWidth);
         $this->_height = min($this->_height, $this->_pageHeight);
 
-        if ((isset($param['align'])) &&
-            (($this->_width != $this->_pageWidth) || ($this->_height != $this->_pageHeight))
+        if ((isset($param['align']))
+            && (($this->_width != $this->_pageWidth) || ($this->_height != $this->_pageHeight))
         ) {
             switch (strtoupper($param['align'])) {
             case 'TOPLEFT':
@@ -301,8 +302,6 @@ class Image_Canvas_PDF extends Image_Canvas
             }
         }
 
-        $this->_pdflib = $this->_version();
-
         $addPage = true;
         if ((isset($param['pdf'])) && (is_resource($param['pdf']))) {
             $this->_pdf =& $param['pdf'];
@@ -329,12 +328,15 @@ class Image_Canvas_PDF extends Image_Canvas
             pdf_begin_page($this->_pdf, $this->_pageWidth, $this->_pageHeight);
         }
         $this->_reset();
+
+        $this->_pdflib = $this->_version();
     }
 
     /**
      * Get the x-point from the relative to absolute coordinates
      *
      * @param float $x The relative x-coordinate (in percentage of total width)
+     *
      * @return float The x-coordinate as applied to the canvas
      * @access private
      */
@@ -347,6 +349,7 @@ class Image_Canvas_PDF extends Image_Canvas
      * Get the y-point from the relative to absolute coordinates
      *
      * @param float $y The relative y-coordinate (in percentage of total width)
+     *
      * @return float The y-coordinate as applied to the canvas
      * @access private
      */
@@ -359,6 +362,7 @@ class Image_Canvas_PDF extends Image_Canvas
      * Get the color index for the RGB color
      *
      * @param int $color The color
+     *
      * @return int The GD image index of the color
      * @access private
      */
@@ -380,6 +384,7 @@ class Image_Canvas_PDF extends Image_Canvas
      *
      * @param mixed $lineStyle The line style to return, false if the one
      *   explicitly set
+     *
      * @return bool True if set (so that a line should be drawn)
      * @access private
      */
@@ -415,6 +420,7 @@ class Image_Canvas_PDF extends Image_Canvas
      *
      * @param mixed $fillStyle The fillstyle to return, false if the one
      *   explicitly set
+     *
      * @return bool True if set (so that a line should be drawn)
      * @access private
      */
@@ -442,6 +448,8 @@ class Image_Canvas_PDF extends Image_Canvas
      * Set the PDF font
      *
      * @access private
+     *
+     * @return void
      */
     function _setFont()
     {
@@ -465,6 +473,8 @@ class Image_Canvas_PDF extends Image_Canvas
      * Image filling is not supported with PDF, filling 'transparent'
      *
      * @param string $filename The filename of the image to fill with
+     *
+     * @return void
      */
     function setFillImage($filename)
     {
@@ -477,6 +487,8 @@ class Image_Canvas_PDF extends Image_Canvas
      * Gradient filling is not supported with PDF, end color used as solid fill.
      *
      * @param array $gradient Gradient fill options
+     *
+     * @return void
      */
     function setGradientFill($gradient)
     {
@@ -495,7 +507,9 @@ class Image_Canvas_PDF extends Image_Canvas
      *
      * 'angle' = the angle with which to write the text
      *
-     * @param array $font The font options.
+     * @param array $fontOptions The font options.
+     *
+     * @return void
      */
     function setFont($fontOptions)
     {
@@ -519,6 +533,7 @@ class Image_Canvas_PDF extends Image_Canvas
      *
      * Includes fillstyle, linestyle, thickness and polygon
      *
+     * @return void
      * @access private
      */
     function _reset()
@@ -536,14 +551,17 @@ class Image_Canvas_PDF extends Image_Canvas
      * 'x1': int X end point
      * 'y1': int Y end point
      * 'color': mixed [optional] The line color
+     *
      * @param array $params Parameter array
+     *
+     * @return void
      */
     function line($params)
     {
         $color = (isset($params['color']) ? $params['color'] : false);
         if ($this->_setLineStyle($color)) {
             pdf_moveto($this->_pdf, $this->_getX($params['x0']), $this->_getY($params['y0']));
-            pdf_lineto($this->_pdf, $this->_getX($params['x1']), $this->_getY($params['x1']));
+            pdf_lineto($this->_pdf, $this->_getX($params['x1']), $this->_getY($params['y1']));
             pdf_stroke($this->_pdf);
         }
         parent::line($params);
@@ -555,12 +573,15 @@ class Image_Canvas_PDF extends Image_Canvas
      *   connected to the endpoint (closed polygon) or not (connected line)
      * 'fill': mixed [optional] The fill color
      * 'line': mixed [optional] The line color
+     *
      * @param array $params Parameter array
+     *
+     * @return void
      */
     function polygon($params = array())
     {
         $connectEnds = (isset($params['connect']) ? $params['connect'] : false);
-        $fillColor = (isset($params['fill']) ? $params['line'] : false);
+        $fillColor = (isset($params['fill']) ? $params['fill'] : false);
         $lineColor = (isset($params['line']) ? $params['line'] : false);
 
         $line = $this->_setLineStyle($lineColor);
@@ -576,7 +597,8 @@ class Image_Canvas_PDF extends Image_Canvas
                 $first = $point;
             } else {
                 if (isset($last['P1X'])) {
-                    pdf_curveto($this->_pdf,
+                    pdf_curveto(
+                        $this->_pdf,
                         $last['P1X'],
                         $last['P1Y'],
                         $last['P2X'],
@@ -585,7 +607,8 @@ class Image_Canvas_PDF extends Image_Canvas
                         $point['Y']
                     );
                 } else {
-                    pdf_lineto($this->_pdf,
+                    pdf_lineto(
+                        $this->_pdf,
                         $point['X'],
                         $point['Y']
                     );
@@ -596,7 +619,8 @@ class Image_Canvas_PDF extends Image_Canvas
 
         if ($connectEnds) {
             if (isset($last['P1X'])) {
-                pdf_curveto($this->_pdf,
+                pdf_curveto(
+                    $this->_pdf,
                     $last['P1X'],
                     $last['P1Y'],
                     $last['P2X'],
@@ -605,7 +629,8 @@ class Image_Canvas_PDF extends Image_Canvas
                     $first['Y']
                 );
             } else {
-                pdf_lineto($this->_pdf,
+                pdf_lineto(
+                    $this->_pdf,
                     $first['X'],
                     $first['Y']
                 );
@@ -632,7 +657,10 @@ class Image_Canvas_PDF extends Image_Canvas
      * 'y1': int Y end point
      * 'fill': mixed [optional] The fill color
      * 'line': mixed [optional] The line color
+     *
      * @param array $params Parameter array
+     *
+     * @return void
      */
     function rectangle($params)
     {
@@ -640,13 +668,13 @@ class Image_Canvas_PDF extends Image_Canvas
         $y0 = $this->_getY($params['y0']);
         $x1 = $this->_getX($params['x1']);
         $y1 = $this->_getY($params['y1']);
-        $fillColor = (isset($params['fill']) ? $params['line'] : false);
+        $fillColor = (isset($params['fill']) ? $params['fill'] : false);
         $lineColor = (isset($params['line']) ? $params['line'] : false);
 
         $line = $this->_setLineStyle($lineColor);
         $fill = $this->_setFillStyle($fillColor);
         if (($line) || ($fill)) {
-            pdf_rect($this->_pdf, $this->_getX(min($x0, $x1)), $this->_getY(max($y0, $y1)), abs($x1 - $x0), abs($y1 - $y0));
+            pdf_rect($this->_pdf, min($x0, $x1), min($y0, $y1), abs($x1 - $x0), abs($y1 - $y0));
             if (($line) && ($fill)) {
                 pdf_fill_stroke($this->_pdf);
             } elseif ($line) {
@@ -668,15 +696,18 @@ class Image_Canvas_PDF extends Image_Canvas
      * 'ry': int Y radius
      * 'fill': mixed [optional] The fill color
      * 'line': mixed [optional] The line color
+     *
      * @param array $params Parameter array
+     *
+     * @return void
      */
     function ellipse($params)
     {
-        $x = $this->_getX($params['x']);
-        $y = $this->_getY($params['y']);
-        $rx = $this->_getX($params['rx']);
-        $ry = $this->_getY($params['ry']);
-        $fillColor = (isset($params['fill']) ? $params['line'] : false);
+        $x = $params['x'];
+        $y = $params['y'];
+        $rx = $params['rx'];
+        $ry = $params['ry'];
+        $fillColor = (isset($params['fill']) ? $params['fill'] : false);
         $lineColor = (isset($params['line']) ? $params['line'] : false);
 
         $line = $this->_setLineStyle($lineColor);
@@ -686,22 +717,26 @@ class Image_Canvas_PDF extends Image_Canvas
                 pdf_circle($this->_pdf, $this->_getX($x), $this->_getY($y), $rx);
             } else {
                 pdf_moveto($this->_pdf, $this->_getX($x - $rx), $this->_getY($y));
-                pdf_curveto($this->_pdf,
+                pdf_curveto(
+                    $this->_pdf,
                     $this->_getX($x - $rx), $this->_getY($y),
                     $this->_getX($x - $rx), $this->_getY($y - $ry),
                     $this->_getX($x), $this->_getY($y - $ry)
                 );
-                pdf_curveto($this->_pdf,
+                pdf_curveto(
+                    $this->_pdf,
                     $this->_getX($x), $this->_getY($y - $ry),
                     $this->_getX($x + $rx), $this->_getY($y - $ry),
                     $this->_getX($x + $rx), $this->_getY($y)
                 );
-                pdf_curveto($this->_pdf,
+                pdf_curveto(
+                    $this->_pdf,
                     $this->_getX($x + $rx), $this->_getY($y),
                     $this->_getX($x + $rx), $this->_getY($y + $ry),
                     $this->_getX($x), $this->_getY($y + $ry)
                 );
-                pdf_curveto($this->_pdf,
+                pdf_curveto(
+                    $this->_pdf,
                     $this->_getX($x), $this->_getY($y + $ry),
                     $this->_getX($x - $rx), $this->_getY($y + $ry),
                     $this->_getX($x - $rx), $this->_getY($y)
@@ -733,7 +768,10 @@ class Image_Canvas_PDF extends Image_Canvas
      * 'sry': int [optional] Starting Y-radius of the pie slice (i.e. for a doughnut)
      * 'fill': mixed [optional] The fill color
      * 'line': mixed [optional] The line color
+     *
      * @param array $params Parameter array
+     *
+     * @return void
      */
     function pieslice($params)
     {
@@ -745,7 +783,7 @@ class Image_Canvas_PDF extends Image_Canvas
         $v2 = $this->_getY($params['v2']);
         $srx = $this->_getX($params['srx']);
         $sry = $this->_getY($params['sry']);
-        $fillColor = (isset($params['fill']) ? $params['line'] : false);
+        $fillColor = (isset($params['fill']) ? $params['fill'] : false);
         $lineColor = (isset($params['line']) ? $params['line'] : false);
 
         // TODO Implement PDFLIB::pieSlice()
@@ -756,13 +794,14 @@ class Image_Canvas_PDF extends Image_Canvas
      * Get the width of a text,
      *
      * @param string $text The text to get the width of
+     *
      * @return int The width of the text
      */
     function textWidth($text)
     {
         if ($this->_pdfFont === false) {
              return $this->_font['size'] * 0.7 * strlen($text);
-         } else {
+        } else {
             return pdf_stringwidth($this->_pdf, $text, $this->_pdfFont, $this->_font['size']);
         }
     }
@@ -771,6 +810,7 @@ class Image_Canvas_PDF extends Image_Canvas
      * Get the height of a text,
      *
      * @param string $text The text to get the height of
+     *
      * @return int The height of the text
      */
     function textHeight($text)
@@ -791,6 +831,10 @@ class Image_Canvas_PDF extends Image_Canvas
      * 'text': string The text to add
      * 'alignment': array [optional] Alignment
      * 'color': mixed [optional] The color of the text
+     *
+     * @param array $params Parameter array
+     *
+     * @return void
      */
     function addText($params)
     {
@@ -823,7 +867,9 @@ class Image_Canvas_PDF extends Image_Canvas
             $x = $x - ($textWidth / 2);
         }
 
-        if ($alignment['vertical'] == 'top') {
+        $y -= $textHeight;
+
+        if ($alignment['vertical'] == 'bottom') {
             $y = $y + $textHeight;
         } elseif ($alignment['vertical'] == 'center') {
             $y = $y + ($textHeight / 2);
@@ -833,7 +879,7 @@ class Image_Canvas_PDF extends Image_Canvas
             $color = $this->_font['color'];
         }
 
-        pdf_show_xy($this->_pdf, $text, $this->_getX($x), $this->_getY($y));
+        pdf_show_xy($this->_pdf, $text, $x, $y);
 
         parent::addText($params);
     }
@@ -848,6 +894,10 @@ class Image_Canvas_PDF extends Image_Canvas
      * 'width': int [optional] The width of the overlayed image (resizing if possible)
      * 'height': int [optional] The height of the overlayed image (resizing if possible)
      * 'alignment': array [optional] Alignment
+     *
+     * @param array $params Parameter array
+     *
+     * @return void
      */
     function image($params)
     {
@@ -901,7 +951,7 @@ class Image_Canvas_PDF extends Image_Canvas
             $scale = max(($height/$height_), ($width/$width_));
         }   
 
-        pdf_place_image($this->_pdf, $image, $this->_getX($x), $this->_getY($y), $scale);
+        pdf_place_image($this->_pdf, $image, $x, $y, $scale);
         pdf_close_image($this->_pdf, $image);
         
         parent::image($params);
@@ -911,6 +961,8 @@ class Image_Canvas_PDF extends Image_Canvas
      * Output the result of the canvas
      *
      * @param array $param Parameter array
+     *
+     * @return void
      * @abstract
      */
     function show($param = false)
@@ -934,6 +986,8 @@ class Image_Canvas_PDF extends Image_Canvas
      * Output the result of the canvas
      *
      * @param array $param Parameter array
+     *
+     * @return void
      * @abstract
      */
     function save($param = false)
@@ -964,6 +1018,10 @@ class Image_Canvas_PDF extends Image_Canvas
      * 'filepath': string Path to the file on the file system. Remember the final slash
      * 'urlpath': string Path to the file available through an URL. Remember the final slash
      * 'title': string The url title
+     *
+     * @param array $params Parameter array
+     *
+     * @return string HTML code
      */
     function toHtml($params)
     {
@@ -980,25 +1038,26 @@ class Image_Canvas_PDF extends Image_Canvas
     function _version()
     {
         $result = false;
+        $version = '';
         if (function_exists('pdf_get_majorversion')) {
             $version = pdf_get_majorversion();
+        } else if (function_exists('pdf_get_value')) {
+            $version = pdf_get_value($this->_pdf, 'major', 0);                
         } else {
             ob_start();
             phpinfo(8);
             $php_info = ob_get_contents();
             ob_end_clean();
 
-            if (ereg("<td[^>]*>PDFlib GmbH Version *<\/td><td[^>]*>([^<]*)<\/td>",
-                $php_info, $result))
-            {
+            if (preg_match("/<td[^>]*>PDFlib GmbH Version *<\/td><td[^>]*>([^<]*)<\/td>/", $php_info, $result)) {
                 $version = $result[1];
             }
-        }
-
-        if (ereg('([0-9]{1,2})\.[0-9]{1,2}(\.[0-9]{1,2})?', trim($version), $result)) {
+        }               
+        
+        if (preg_match('/([0-9]{1,2})\.[0-9]{1,2}(\.[0-9]{1,2})?/', trim($version), $result)) {
             return $result[1];
         } else {
-            return 0;
+            return $version;
         }
     }
 

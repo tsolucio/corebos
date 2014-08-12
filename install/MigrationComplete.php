@@ -68,24 +68,24 @@ $_SESSION['VTIGER_DB_VERSION']= $vtiger_current_version;
 	<table border=0 cellspacing=0 cellpadding=5 align="center" width="80%" class="contentDisplay">
 		<tr>
 			<td align=center class=small>
-				<b><?php echo $installationStrings['LBL_MIGRATION_FINISHED']; ?>. vtigercrm-<?php echo $vtiger_current_version. ' ' .$installationStrings['LBL_ALL_SET_TO_GO']; ?></b>
-				<hr noshade size=1>			
+				<b><?php echo $installationStrings['LBL_MIGRATION_FINISHED'].'. '. $coreBOS_app_url. '-' .$vtiger_current_version. ' ' .$installationStrings['LBL_ALL_SET_TO_GO']; ?></b>
+				<hr noshade size=1>
 				<div style="width:100%;padding:10px;" align=left>
 					<ul>
 						<?php if($ins_file_renamed==true){ ?>
 						<li><?php echo $installationStrings['LBL_INSTALL_PHP_FILE_RENAMED']. ' ' .$renamefile;?>install.php.txt.</li>
-						<?php } else { ?>						
+						<?php } else { ?>
 						<li><font color='red'><?php echo $installationStrings['WARNING_RENAME_INSTALL_PHP_FILE']; ?>.</font></li>
 						<?php } ?>
 						
 						<?php /*if($mig_file_renamed==true){ ?>
 						<li><?php echo $installationStrings['LBL_MIGRATE_PHP_FILE_RENAMED']. ' ' .$renamefile;?>migrate.php.txt.</li>
-						<?php } else { ?>						
+						<?php } else { ?>
 						<li><font color='red'><?php echo $installationStrings['WARNING_RENAME_MIGRATE_PHP_FILE']; ?>.</font></li>
 						<?php } */ ?>
 						<?php if($ins_dir_renamed==true){ ?>
 						<li><?php echo $installationStrings['LBL_INSTALL_DIRECTORY_RENAMED']. ' ' .$renamefile;?>install.</li> 
-						<?php } else { ?>						
+						<?php } else { ?>
 						<li><font color='red'><?php echo $installationStrings['WARNING_RENAME_INSTALL_DIRECTORY']; ?>.</font></li>
 						<?php } ?>
 					</ul>
@@ -94,7 +94,7 @@ $_SESSION['VTIGER_DB_VERSION']= $vtiger_current_version;
 						<li><?php echo $installationStrings['LBL_OLD_VERSION_IS_AT'] . $source_directory;?>.
 						<li><?php echo $installationStrings['LBL_CURRENT_SOURCE_PATH_IS'] . $root_directory;?>.
 						<li><?php echo $installationStrings['LBL_LOGIN_USING_ADMIN']; ?>.</li>
-						<li><?php echo $installationStrings['LBL_SET_OUTGOING_EMAIL_SERVER']; ?></li>						
+						<li><?php echo $installationStrings['LBL_SET_OUTGOING_EMAIL_SERVER']; ?></li>
 						<li><?php echo $installationStrings['LBL_RENAME_HTACCESS_FILE']; ?>. <a href="javascript:void(0);" onclick="showhidediv();"><?php echo $installationStrings['LBL_MORE_INFORMATION']; ?></a>
 			   				<div id='htaccess_div' style="display:none"><br><br>
 				   				<?php echo $installationStrings['MSG_HTACCESS_DETAILS']; ?>
@@ -112,7 +112,7 @@ $_SESSION['VTIGER_DB_VERSION']= $vtiger_current_version;
 			</td>
 		</tr>
 	</table>
-	<br>		
+	<br>
 	<table border=0 cellspacing=0 cellpadding=10 width=100%>
 		<tr>
 			<td colspan=2 align="center">
@@ -126,7 +126,6 @@ $_SESSION['VTIGER_DB_VERSION']= $vtiger_current_version;
 </td>
 </tr>
 </table>
-		
 </td>
 </tr>
 </table>

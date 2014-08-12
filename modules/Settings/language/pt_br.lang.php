@@ -1264,5 +1264,24 @@ $mod_strings = Array(
 //Fields missing vtiger CRM
 'Add New'=> 'Adicionar Novo', // Added by Valmir Carlos Trindade - valmir@ttcasolucoes.com.br
 'SMSNotifier'=>'Notificador SMS', // Added by Valmir Carlos Trindade - valmir@ttcasolucoes.com.br
+// language translation strings
+'LBL_LANGUAGES_PACKS' => 'Language Extension',
+'LBL_EDIT_LANGUAGE_FILE' => 'Translate modules strings',
+'LBL_SELECT_TRANSLATE_MODULE' => 'Select a module to translate :',
+'LBL_TRANSLATE' => 'Module translation ',
+'LBL_TRADE_PERCENTAGE' => 'Percentage of translation (approx) :',
+'ERROR_MODULE_FILE_WRITE' => 'Your module language file is not writable !!',
+'ERROR_GENERAL_FILE_WRITE' => 'Your general language file is not writable !!',
+'General' => 'General',
+'JavaScript' => 'JavaScript ',
+'LBL_KEY' => 'Key',
+'LBL_SINGLEVALUE_STRINGS' => 'Single value',
+'LBL_MULTIVALUE_STRINGS' => 'Multi value',
+'Legend' => 'Legend',
+'RLTranslated' => 'List Title Translated',
+'RLNotTranslated' => 'List Title Not Translated',
+'FieldsTranslated' => 'Fields Translated',
+'FieldsNotTranslated' => 'Fields Not Translated',
+// language translation strings
 );
 ?>

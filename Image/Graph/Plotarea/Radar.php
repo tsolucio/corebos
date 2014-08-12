@@ -5,7 +5,7 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Plotarea
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Radar.php,v 1.8 2006/02/28 22:48:07 nosey Exp $
+ * @version    SVN: $Id: Radar.php 291406 2009-11-29 00:54:22Z neufeind $
  * @link       http://pear.php.net/package/Image_Graph
  */
 
@@ -40,9 +41,10 @@ require_once 'Image/Graph/Plotarea.php';
  * @package    Image_Graph
  * @subpackage Plotarea
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: 0.7.2
+ * @version    Release: 0.8.0
  * @link       http://pear.php.net/package/Image_Graph
  */
 class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
@@ -53,7 +55,7 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
      */
     function Image_Graph_Plotarea_Radar()
     {
-        parent::Image_Graph_Element();
+        parent::__construct();
         $this->_padding = array('left' => 10, 'top' => 10, 'right' => 10, 'bottom' => 10);
         $this->_axisX =& Image_Graph::factory('Image_Graph_Axis_Radar');
         $this->_axisX->_setParent($this);
@@ -132,6 +134,7 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
      * Get the X pixel position represented by a value
      *
      * @param double $value The value to get the pixel-point for
+     *
      * @return double The pixel position along the axis
      * @access private
      */
@@ -157,6 +160,7 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
      * Get the Y pixel position represented by a value
      *
      * @param double $value The value to get the pixel-point for
+     *
      * @return double The pixel position along the axis
      * @access private
      */
@@ -182,6 +186,7 @@ class Image_Graph_Plotarea_Radar extends Image_Graph_Plotarea
     /**
      * Update coordinates
      *
+     * @return void
      * @access private
      */
     function _updateCoords()

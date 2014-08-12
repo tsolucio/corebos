@@ -61,7 +61,7 @@ class ConfigEditor_Controller {
 	 */
 	function process(ConfigEditor_Request $request) {
 		$this->authCheck();
-		$type = $request->get('type');		
+		$type = $request->get('type');
 		if ($type == 'save') {
 			$this->processSave($request);
 		} else {

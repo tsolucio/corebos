@@ -115,6 +115,7 @@ class VTJsonCondition {
 		$data = $entityData->getData();
 
 		$condition = $cond['operation'];
+		if(empty($condition)) return false;
 		$fieldValue = $data[$cond['fieldname']];
 		$value = trim(html_entity_decode($cond['value']));
 		$expressionType = $cond['valuetype'];
@@ -122,6 +123,12 @@ class VTJsonCondition {
 		if ($expressionType == 'fieldname') {
 			if ($referredEntityData != null) {
 				$referredData = $referredEntityData->getData();
+				if (isset($referredEntityData->user)) {
+					preg_match('/(\w+) : \((\w+)\) (\w+)/', $value, $usermatches);
+					if ($usermatches[1]=='assigned_user_id') {
+						$referredData[$value] = $referredEntityData->user->column_fields[$usermatches[3]];
+					}
+				}
 			} else {
 				$referredData = $data;
 			}
@@ -175,8 +182,15 @@ class VTJsonCondition {
 					return $fieldValue != $value;
 				}
 			case "contains":
+				if(is_array($value)) {
+					return in_array($fieldValue, $value);
+				}
 				return strpos($fieldValue, $value) !== FALSE;
 			case "does not contain":
+				if(empty($value)) unset($value);
+				if(is_array($value)) {
+					return !in_array($fieldValue, $value);
+				}
 				return strpos($fieldValue, $value) === FALSE;
 			case "starts with":
 				return $this->startsWith($fieldValue, $value);
@@ -193,6 +207,149 @@ class VTJsonCondition {
 				} else {
 					return $hasChanged && $fieldValue == $value;
 				}
+			case 'has changed to' :
+				$entityDelta = new VTEntityDelta();
+				$idParts = vtws_getIdComponents($entityData->getId());
+				return $entityDelta->hasChanged($entityData->getModuleName(), $idParts[1], $cond['fieldname'], $value);
+			case "is empty":
+				if(empty($fieldValue)) {
+					return true;
+				}
+				return false;
+			case "is not empty":
+				if(empty($fieldValue)) {
+					return false;
+				}
+				return true;
+			case "before":
+				if(empty($fieldValue)) {
+					return false;
+				}
+				if($fieldValue < $value) {
+					return true;
+				}
+				return false;
+			case "after":
+				if(empty($fieldValue)) {
+					return false;
+				}
+				if($fieldValue > $value) {
+					return true;
+				}
+				return false;
+			case "between":
+				if(empty($fieldValue)) {
+					return false;
+				}
+				$values = explode(',', $value);
+				$values = array_map('getValidDBInsertDateValue',$values);
+				if($fieldValue > $values[0] && $fieldValue < $values[1]) {
+					return true;
+				}
+				return false;
+			case 'is today':
+				$today = date('Y-m-d');
+				if($fieldValue == $today) {
+					return true;
+				}
+				return false;
+			case 'less than days ago':
+				if(empty($fieldValue) || empty($value)) {
+					return false;
+				}
+				$today = date('Y-m-d');
+				$olderDate = date('Y-m-d', strtotime('-'.$value.' days'));
+				if($olderDate <= $fieldValue && $fieldValue <= $today) {
+					return true;
+				}
+				return false;
+			case 'more than days ago':
+				if(empty($fieldValue) || empty($value)) {
+					return false;
+				}
+				$olderDate = date('Y-m-d', strtotime('-'.$value.' days'));
+				if($fieldValue <= $olderDate) {
+					return true;
+				}
+				return false;
+			case 'in less than':
+				if(empty($fieldValue) || empty($value)) {
+					return false;
+				}
+				$today = date('Y-m-d');
+				$futureDate = date('Y-m-d', strtotime('+'.$value.' days'));
+				if($today <= $fieldValue && $fieldValue <= $futureDate) {
+					return true;
+				}
+				return false;
+			case 'in more than':
+				if(empty($fieldValue) || empty($value)) {
+					return false;
+				}
+				$futureDate = date('Y-m-d', strtotime('+'.$value.' days'));
+				if($fieldValue >= $futureDate) {
+					return true;
+				}
+				return false;
+			case 'days ago':
+				if(empty($fieldValue) || empty($value)) {
+					return false;
+				}
+				$olderDate = date('Y-m-d', strtotime('-'.$value.' days'));
+				if($fieldValue == $olderDate) {
+					return true;
+				}
+				return false;
+			case 'days later':
+				if(empty($fieldValue) || empty($value)) {
+					return false;
+				}
+				$futureDate = date('Y-m-d', strtotime('+'.$value.' days'));
+				if($fieldValue == $futureDate) {
+					return true;
+				}
+				return false;
+
+			case 'less than hours before':
+				if(empty($fieldValue) || empty($value)) {
+					return false;
+				}
+				$currentTime = date('Y-m-d H:i:s');
+				$olderDateTime = date('Y-m-d H:i:s', strtotime('-'.$value.' hours'));
+				if($olderDateTime <= $fieldValue && $fieldValue <= $currentTime) {
+					return true;
+				}
+				return false;
+
+			case 'less than hours later':
+				if(empty($fieldValue) || empty($value)) {
+					return false;
+				}
+				$currentTime = date('Y-m-d H:i:s');
+				$futureDateTime = date('Y-m-d H:i:s', strtotime('+'.$value.' hours'));
+				if($currentTime <= $fieldValue && $fieldValue <= $futureDateTime) {
+					return true;
+				}
+				return false;
+
+			case 'more than hours before':
+				if(empty($fieldValue) || empty($value)) {
+					return false;
+				}
+				$olderDateTime = date('Y-m-d H:i:s', strtotime('-'.$value.' hours'));
+				if($fieldValue <= $olderDateTime) {
+					return true;
+				}
+				return false;
+			case 'more than hours later':
+				if(empty($fieldValue) || empty($value)) {
+					return false;
+				}
+				$futureDateTime = date('Y-m-d H:i:s', strtotime('+'.$value.' hours'));
+				if($fieldValue >= $futureDateTime) {
+					return true;
+				}
+				return false;
 			default:
 				//Unexpected condition
 				throw new Exception("Found an unexpected condition: " . $condition);

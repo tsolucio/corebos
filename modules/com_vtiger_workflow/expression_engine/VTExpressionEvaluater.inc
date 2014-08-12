@@ -73,9 +73,11 @@ function __vt_time_diff($arr) {
 
     $time_operand1 = $time_operand2 = 0;
     if(count($arr) > 1) {
-            $time_operand1 = $arr[0];
-            $time_operand2 = $arr[1];
+            $time_operand1 = $time1 = $arr[0];
+            $time_operand2 = $time2 = $arr[1];
     } else {
+		// Added as we need to compare with the values based on the user date format and timezone
+		global $default_timezone;
             $time_operand1 = date('Y-m-d H:i:s'); // Current time
             $time_operand2 = $arr[0];
     }
@@ -85,6 +87,14 @@ function __vt_time_diff($arr) {
     $time_operand1 = getValidDBInsertDateTimeValue($time_operand1);
 	$time_operand2 = getValidDBInsertDateTimeValue($time_operand2);
 
+    //to give the difference if it is only time field
+    if(empty($time_operand1) && empty($time_operand2)) {
+        $pattern = "/([01]?[0-9]|2[0-3]):[0-5][0-9]/";
+        if(preg_match($pattern, $time1) && preg_match($pattern, $time2)){
+            $timeDiff = strtotime($time1) - strtotime($time2);
+            return date('H:i:s', $timeDiff);
+        }
+    }
     return (strtotime($time_operand1) - strtotime($time_operand2));
 }
 /**
@@ -139,11 +149,38 @@ function __vt_get_date($arr) {
 	switch ($type) {
 		case 'today': return date('Y-m-d');
 			break;
+		case 'tomorrow': return date('Y-m-d', strtotime('+1 day'));
+			break;
+		case 'yesterday': return date('Y-m-d', strtotime('-1 day'));
+			break;
 		default : return date('Y-m-d');
 			break;
 	}
 }
 
+function __vt_add_time($arr) {
+	if(count($arr) > 1) {
+		$baseTime = $arr[0];
+		$minutes = $arr[1];
+	} else {
+		$baseTime = date('H:i:s');
+		$minutes = $arr[0];
+	}
+	$endTime = strtotime("+$minutes minutes", strtotime($baseTime));
+	return date('H:i:s',$endTime);
+}
+
+function __vt_sub_time($arr) {
+	if(count($arr) > 1) {
+		$baseTime = $arr[0];
+		$minutes = $arr[1];
+	} else {
+		$baseTime = date('H:i:s');
+		$minutes = $arr[0];
+	}
+	$endTime = strtotime("-$minutes minutes", strtotime($baseTime));
+	return date('H:i:s',$endTime);
+}
 /** END * */
 class VTFieldExpressionEvaluater{
 	function __construct($expr){
@@ -165,7 +202,9 @@ class VTFieldExpressionEvaluater{
  	            'time_diffdays' => '__vt_time_diffdays',
 				'add_days' => '__vt_add_days',
 				'sub_days' => '__vt_sub_days',
-				'get_date' => '__vt_get_date'
+				'get_date' => '__vt_get_date',
+				'add_time' => '__vt_add_time',
+				'sub_time' => '__vt_sub_time'
 		);
 
 		$this->operations = array_merge($this->functions, $this->operators);
@@ -202,7 +241,11 @@ class VTFieldExpressionEvaluater{
 	}
 
 	function env($sym){
+		if($this->env) {
 		return $this->env->get($sym->value);
+		} else {
+			return $sym->value;
+		}
 	}
 }
 ?>

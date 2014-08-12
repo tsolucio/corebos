@@ -1032,5 +1032,24 @@ $mod_strings = Array(
     'LBL_SELECTED_MODULES' => 'gewählte Module',
 
     'LBL_CRM_SETTINGS' => 'CRM Einstellungen',
+	// language translation strings
+	'LBL_LANGUAGES_PACKS' => 'Sprachpakete',
+	'LBL_EDIT_LANGUAGE_FILE' => 'Modul-Zeichenketten übersetzen',
+	'LBL_SELECT_TRANSLATE_MODULE' => 'Ein Modul zum übersetzen auswählen :',
+	'LBL_TRANSLATE' => 'Modulübersetzung ',
+	'LBL_TRADE_PERCENTAGE' => 'Übersetzungsfortschritt (ungefähr):',
+	'ERROR_MODULE_FILE_WRITE' => 'Die Modul Sprachdatei ist schreibgeschützt!',
+	'ERROR_GENERAL_FILE_WRITE' => 'Die allgemeine Sprachdatei ist schreibgeschützt!',
+	'General' => 'Allgemein',
+	'JavaScript' => 'JavaScript ',
+	'LBL_KEY' => 'Schlüssel',
+	'LBL_SINGLEVALUE_STRINGS' => 'Einzelwert',
+	'LBL_MULTIVALUE_STRINGS' => 'Mehrfachwert',
+	'Legend' => 'Legend',
+	'RLTranslated' => 'List Title Translated',
+	'RLNotTranslated' => 'List Title Not Translated',
+	'FieldsTranslated' => 'Fields Translated',
+	'FieldsNotTranslated' => 'Fields Not Translated',
+	// language translation strings
 );
 ?>

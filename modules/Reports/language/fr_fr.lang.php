@@ -257,6 +257,4 @@ $mod_strings = array (
 	'LBL_UNDEFINED' => 'Indéfini',
 	
 );
-$mod_list_strings = array (
-);
 ?>

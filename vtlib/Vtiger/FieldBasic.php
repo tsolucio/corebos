@@ -158,7 +158,7 @@ class Vtiger_FieldBasic {
 
 		if(!$this->label) $this->label = $this->name;
 
-		$adb->pquery("INSERT INTO vtiger_field (tabid, fieldid, columnname, tablename, generatedtype,
+		$result = $adb->pquery("INSERT INTO vtiger_field (tabid, fieldid, columnname, tablename, generatedtype,
 			uitype, fieldname, fieldlabel, readonly, presence, defaultvalue, maximumlength, sequence,
 			block, displaytype, typeofdata, quickcreate, quickcreatesequence, info_type, helpinfo) 
 			VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
@@ -176,8 +176,13 @@ class Vtiger_FieldBasic {
 			Vtiger_Utils::AddColumn($this->table, $this->column, $this->columntype);
 		}	
 
+		if($result) {
 		self::log("Creating Field $this->name ... DONE");
 		self::log("Module language mapping for $this->label ... CHECK");
+		} else {
+			self::log("Creating Field $this->name ... <span style='color:red'>**ERROR**</span>");
+			self::log("Module language mapping for $this->label ... <span style='color:red'>**ERROR**</span>");
+		}
 	}
 
 	/**

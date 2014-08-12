@@ -5,7 +5,7 @@
 /**
  * Class for axis handling.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Axis
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Radar.php,v 1.6 2005/08/03 21:22:11 nosey Exp $
+ * @version    SVN: $Id: Radar.php 291170 2009-11-23 03:50:22Z neufeind $
  * @link       http://pear.php.net/package/Image_Graph
  */
  
@@ -45,9 +46,10 @@ require_once 'Image/Graph/Axis/Category.php';
  * @package    Image_Graph
  * @subpackage Axis
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: 0.7.2
+ * @version    Release: 0.8.0
  * @link       http://pear.php.net/package/Image_Graph
  */
 class Image_Graph_Axis_Radar extends Image_Graph_Axis_Category
@@ -108,6 +110,7 @@ class Image_Graph_Axis_Radar extends Image_Graph_Axis_Category
      * Get the pixel position represented by a value on the canvas
      *
      * @param double $value the value to get the pixel-point for
+     *
      * @return double The pixel position along the axis
      * @access private
      */
@@ -133,6 +136,8 @@ class Image_Graph_Axis_Radar extends Image_Graph_Axis_Category
      * Sets the distance from the end of the category lines to the label.
      *
      * @param int $distance The distance in pixels
+     *
+     * @return void
      */
     function setDistanceFromEnd($distance = 5)
     {
@@ -142,6 +147,7 @@ class Image_Graph_Axis_Radar extends Image_Graph_Axis_Category
     /**
      * Draws axis lines.
      *
+     * @return void
      * @access private
      */
     function _drawAxisLines()
@@ -152,6 +158,9 @@ class Image_Graph_Axis_Radar extends Image_Graph_Axis_Category
      * Output an axis tick mark.
      *
      * @param int $value The value to output
+     * @param int $level Tick mark level
+     *
+     * @return void
      * @access private
      */
     function _drawTick($value, $level = 1)

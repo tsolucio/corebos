@@ -5,7 +5,7 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Fill
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Array.php,v 1.8 2005/08/24 20:36:03 nosey Exp $
+ * @version    SVN: $Id: Array.php 291170 2009-11-23 03:50:22Z neufeind $
  * @link       http://pear.php.net/package/Image_Graph
  */
  
@@ -49,9 +50,10 @@ require_once 'Image/Graph/Fill.php';
  * @package    Image_Graph
  * @subpackage Fill
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: 0.7.2
+ * @version    Release: 0.8.0
  * @link       http://pear.php.net/package/Image_Graph
  */
 class Image_Graph_Fill_Array extends Image_Graph_Fill
@@ -67,6 +69,7 @@ class Image_Graph_Fill_Array extends Image_Graph_Fill
     /**
      * Resets the fillstyle
      *
+     * @return void
      * @access private
      */
     function _reset()
@@ -77,8 +80,10 @@ class Image_Graph_Fill_Array extends Image_Graph_Fill
     /**
      * Add a fill style to the array
      *
-     * @param Image_Graph_Fill $style The style to add
-     * @param string $id The id or name of the style
+     * @param Image_Graph_Fill &$style The style to add
+     * @param string           $id     The id or name of the style
+     *
+     * @return Image_Graph_Fill
      */
     function &add(& $style, $id = '')
     {
@@ -94,8 +99,10 @@ class Image_Graph_Fill_Array extends Image_Graph_Fill
     /**
      * Add a color to the array
      *
-     * @param int $color The color
-     * @param string $id The id or name of the color
+     * @param int    $color The color
+     * @param string $id    The id or name of the color
+     *
+     * @return void
      */
     function addColor($color, $id = false)
     {
@@ -109,6 +116,8 @@ class Image_Graph_Fill_Array extends Image_Graph_Fill
 
     /**
      * Return the fillstyle
+     *
+     * @param ??? $ID ???
      *
      * @return int A GD fillstyle
      * @access private

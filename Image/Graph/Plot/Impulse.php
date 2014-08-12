@@ -5,7 +5,7 @@
 /**
  * Image_Graph - PEAR PHP OO Graph Rendering Utility.
  *
- * PHP versions 4 and 5
+ * PHP version 5
  *
  * LICENSE: This library is free software; you can redistribute it and/or modify
  * it under the terms of the GNU Lesser General Public License as published by
@@ -22,9 +22,10 @@
  * @package    Image_Graph
  * @subpackage Plot
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    CVS: $Id: Impulse.php,v 1.13 2005/11/27 22:21:17 nosey Exp $
+ * @version    SVN: $Id: Impulse.php 291406 2009-11-29 00:54:22Z neufeind $
  * @link       http://pear.php.net/package/Image_Graph
  */
 
@@ -40,9 +41,10 @@ require_once 'Image/Graph/Plot.php';
  * @package    Image_Graph
  * @subpackage Plot
  * @author     Jesper Veggerby <pear.nosey@veggerby.dk>
- * @copyright  Copyright (C) 2003, 2004 Jesper Veggerby Hansen
+ * @author     Stefan Neufeind <pear.neufeind@speedpartner.de>
+ * @copyright  2003-2009 The PHP Group
  * @license    http://www.gnu.org/copyleft/lesser.html  LGPL License 2.1
- * @version    Release: 0.7.2
+ * @version    Release: 0.8.0
  * @link       http://pear.php.net/package/Image_Graph
  */
 class Image_Graph_Plot_Impulse extends Image_Graph_Plot
@@ -55,6 +57,8 @@ class Image_Graph_Plot_Impulse extends Image_Graph_Plot
      * @param int $y0 The top-left y-coordinate
      * @param int $x1 The bottom-right x-coordinate
      * @param int $y1 The bottom-right y-coordinate
+     *
+     * @return void
      * @access private
      */
     function _drawLegendSample($x0, $y0, $x1, $y1)
@@ -97,9 +101,9 @@ class Image_Graph_Plot_Impulse extends Image_Graph_Plot
             $dataset->_reset();
             while ($point = $dataset->_next()) {
                 $x0 = $this->_pointX($point);
-                if (($this->_multiType == 'stacked') ||
-                    ($this->_multiType == 'stacked100pct'))
-                {
+                if (($this->_multiType == 'stacked')
+                    || ($this->_multiType == 'stacked100pct')
+                ) {
                     $x = $point['X'];
 
                     if ($point['Y'] >= 0) {
@@ -147,8 +151,8 @@ class Image_Graph_Plot_Impulse extends Image_Graph_Plot
                     $p1 = $point;
                 }
 
-                if ((($minY = min($p0['Y'], $p1['Y'])) < $maxYaxis) &&
-                    (($maxY = max($p0['Y'], $p1['Y'])) > $minYaxis)
+                if ((($minY = min($p0['Y'], $p1['Y'])) < $maxYaxis)
+                    && (($maxY = max($p0['Y'], $p1['Y'])) > $minYaxis)
                 ) {
                     $p0['Y'] = $minY;
                     $p1['Y'] = $maxY;
@@ -193,8 +197,9 @@ class Image_Graph_Plot_Impulse extends Image_Graph_Plot
             $number++;
         }
         unset($keys);
-        $this->_drawMarker();
         $this->_clip(false);
+
+        $this->_drawMarker();
         $this->_canvas->endGroup();        
         return true;
     }

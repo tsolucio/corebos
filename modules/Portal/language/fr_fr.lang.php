@@ -24,6 +24,4 @@ $mod_strings = array (
 	'LBL_MY_SITES' => 'Mes sites',
 	'LBL_SET_DEFAULT_BUTTON' => 'Définir par défaut',
 );
-$mod_list_strings = array (
-);
 ?>

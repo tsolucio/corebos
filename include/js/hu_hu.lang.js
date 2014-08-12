@@ -313,5 +313,7 @@ var alert_arr = {
 	'LBL_EMAIL' : 'E-mail',
 	'MORE_THAN_500' : 'Több mint 500 rekordot választottál ki. Ennek a feldolgozása hosszabb ideig is eltarthat. Biztos vagy benne, hogy folytatni szeretnéd?',
 	'LBL_MAPPEDALERT' : 'Ezt a mezőt már leképeztük egyszer',
-	'RECURRING_FREQENCY_NOT_ENABLED' : 'Az ismétlődés gyakoriságát megadtad, de nem engedélyezett az ismétlődés'
+	'RECURRING_FREQENCY_NOT_ENABLED' : 'Az ismétlődés gyakoriságát megadtad, de nem engedélyezett az ismétlődés',
+	'LBL_REPORT_NAME': 'Please enter a name for the new report.',
+	'LBL_REPORT_NAME_ERROR': 'You must give a new name to the report.'
 };
