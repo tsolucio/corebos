@@ -114,6 +114,19 @@ function lang_changeEditTab(obj1, obj2, SelTab, unSelTab) {
 													<input value="{$APP.LBL_SAVE_BUTTON_LABEL}" class="crmButton small save" onclick="this.form.action.value='SaveLanguageFile'; this.form.parenttab.value='Settings'" type="submit"/>
 													<input type="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" class="crmButton small cancel" onclick="gotourl('index.php?action=ListPackages&module=Languages&parenttab=Settings')"/>
 												</div>
+                                                                                                   <div style="text-align:right;margin:3px;"> Select a filter: 
+                                                                                                    <select name='filter_translate' id='filter_translate' class="importBox" onchange='changeModule(this.form);'  >
+                                                                                                        <option value='none'> Select Filter </option>
+                                                                                                        <option value='all'> All </option>
+                                                                                                         <option value='new'> New </option>
+                                                                                                        <option value='not_translated'>Not Translated </option>
+                                                                                                        <option value='translated'> Translated</option>
+                                                                                                        <option value='fieldsnontranslated'>Fields Not Translated</option>
+                                                                                                        <option value='fieldstranslated'>Fields Translated</option>
+                                                                                                        <option value='rltranslated'> RL Translated</option>
+                                                                                                        <option value='rlnontranslated'>RL Not Translated</option>
+                                                                                                    </select>
+                                                                                             </div>
 
 												{if count($TRANSLATION_LIST_STRING) > 0 or count($TRANSLATION_LIST_STRING2) > 0}
 													{assign var = "has_multivalue_strings" value=true}
@@ -134,11 +147,13 @@ function lang_changeEditTab(obj1, obj2, SelTab, unSelTab) {
 												</table>
 												<table border="0" cellspacing="0" cellpadding="5" width="100%">
                                                                                                     <tr>
-                                                                                                                <td width="32%">Legend:</td>
+                                                                                                              <center><strong> Legend: </strong></center><br/>
                                                                                                                 <td width="32%"><div style="width:30px;height:30px;background-color:#87CEFA;"></div>RL Translated
                                                                                                                     <div style="width:30px;height:30px;background-color:#0276FD;"></div>RL NotTranslated</td>
 														<td width="33%"><div style="width:30px;height:30px;background-color:#FFC1C1;"></div>Fields Translated
                                                                                                                     <div style="width:30px;height:30px;background-color:#FF0000;"></div>Fields NotTranslated</td>
+                                                                                                                <td width="33%"><div style="width:30px;height:30px;background-color:#DADADA;"></div>Not Translated
+                                                                                                                    <div style="width:30px;height:30px;background-color:#FFF"></div>Translated</td>
                                                                                                                
                                                                                                     </tr>
 													<tr>
@@ -182,7 +197,7 @@ function lang_changeEditTab(obj1, obj2, SelTab, unSelTab) {
 															    	<textarea style="width:100%" name="translate_value[{$string[2]}]" class="small">{if $string[3] eq 'new'}{$string[0]}{else}{$string[1]}{/if}</textarea>
 																{else}
 																	<input type="text" name="translate_value[{$string[2]}]" value="{if $string[3] eq 'new'}{$string[0]}{else}{$string[1]}{/if}" class="small" style="width:100%">
-																{/if}
+															{$string[3]} {$FILTER}	{/if}
 															</td>
 														</tr>
 														{/foreach}	
