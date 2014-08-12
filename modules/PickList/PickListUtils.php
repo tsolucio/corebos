@@ -188,8 +188,8 @@ function getAssignedPicklistValues($tableName, $roleid, $adb, $lang=array()){
 	}
 
 	$arr = array();
-	
-	$sub = getSubordinateRoleAndUsers($roleid);
+
+	$sub = getSubordinateRoleAndUsers($roleid, false);
 	$subRoles = array($roleid);
 	$subRoles = array_merge($subRoles, array_keys($sub));
 

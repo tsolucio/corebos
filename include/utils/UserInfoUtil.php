@@ -3519,16 +3519,19 @@ function getRoleSubordinates($roleId)
 						|
 			       vtiger_roleidn=>Array(userid1,userid2,userid3));
  */
-function getSubordinateRoleAndUsers($roleId)
+function getSubordinateRoleAndUsers($roleId, $users = true)
 {
 	global $log;
 	$log->debug("Entering getSubordinateRoleAndUsers(".$roleId.") method ...");
 	global $adb;
 	$subRoleAndUsers=Array();
 	$subordinateRoles=getRoleSubordinates($roleId);
+	$userArray = array();
 	foreach($subordinateRoles as $subRoleId)
 	{
-		$userArray=getRoleUsers($subRoleId);
+		if ($users) {
+			$userArray=getRoleUsers($subRoleId);
+		}
 		$subRoleAndUsers[$subRoleId]=$userArray;
 
 	}
