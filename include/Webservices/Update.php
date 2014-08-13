@@ -81,7 +81,7 @@
 		}
 		//  Product line support
 		if(($entityName == 'Quotes' || $entityName == 'PurchaseOrder' || $entityName == 'SalesOrder' || $entityName == 'Invoice') && (is_array($element['pdoInformation']))) {
-			//  Product line support magic goes here
+			include_once 'include/Webservices/ProductLines.php';
 		} else {
 			$_REQUEST['action'] = $entityName.'Ajax';
 		}
