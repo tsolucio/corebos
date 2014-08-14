@@ -115,6 +115,16 @@ function lang_changeEditTab(obj1, obj2, SelTab, unSelTab) {
 													<input value="{$APP.LBL_SAVE_BUTTON_LABEL}" class="crmButton small save" onclick="this.form.file.value='LanguageSave';" type="submit"/>
 													<input type="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" class="crmButton small cancel" onclick="gotourl('index.php?module=Settings&action=ModuleManager&parenttab=Settings')"/>
 												</div>
+                                                                                                <div style="text-align:right;margin:3px;"> Select a filter: 
+                                                                                                    <select name='filter_translate' id='filter_translate' class="importBox" onchange='changeModule(this.form);'  >
+                                                                                                        <option value='none'> Select Filter </option>
+                                                                                                        <option value='all'> All </option>
+                                                                                                        <option value='fieldsnontranslated'>{$UMOD.FieldsNotTranslated}</option>
+                                                                                                        <option value='fieldstranslated'>{$UMOD.FieldsTranslated}</option>
+                                                                                                        <option value='rltranslated'> {$UMOD.RLTranslated}</option>
+                                                                                                        <option value='rlnontranslated'>{$UMOD.RLNotTranslated}</option>
+                                                                                                    </select>
+                                                                                              </div>
 												{if count($TRANSLATION_LIST_STRING) > 0 or count($TRANSLATION_LIST_STRING2) > 0}
 													{assign var = "has_multivalue_strings" value=true}
 												{else}
@@ -178,7 +188,7 @@ function lang_changeEditTab(obj1, obj2, SelTab, unSelTab) {
 															    	<textarea style="width:100%" name="translate_value[{$string[2]}]" class="small">{if $string[3] eq 'new'}{$string[0]}{else}{$string[1]}{/if}</textarea>
 																{else}
 																	<input type="text" name="translate_value[{$string[2]}]" value="{if $string[3] eq 'new'}{$string[0]}{else}{$string[1]}{/if}" class="small" style="width:100%">
-																{/if}
+															{/if}
 															</td>
 														</tr>
 														{/foreach}
