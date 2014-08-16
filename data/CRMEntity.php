@@ -708,7 +708,7 @@ class CRMEntity {
 			$result[$table_name] = $adb->pquery("select * from $table_name where $index=?", array($record));
 			$isRecordDeleted = $adb->query_result($result["vtiger_crmentity"], 0, "deleted");
 			if ($isRecordDeleted !== 0 && $isRecordDeleted !== '0') {
-				die("<br><br><center>" . $app_strings['LBL_RECORD_DELETE'] . " <a href='javascript:window.history.back()'>" . $app_strings['LBL_GO_BACK'] . ".</a></center>");
+				die("<br><br><center>" . $app_strings['LBL_RECORD_DELETE'] . " $module: $record <a href='javascript:window.history.back()'>" . $app_strings['LBL_GO_BACK'] . ".</a></center>");
 			}
 		}
 
