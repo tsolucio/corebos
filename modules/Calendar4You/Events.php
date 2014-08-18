@@ -209,9 +209,12 @@ foreach($Users_Ids AS $userid) {
                 if ($visibility == "public") {
                     $Actions[] = "<a target='_new' href='index.php?action=EventDetailView&module=Calendar4You&record=".$record."&activity_mode=$activity_mode&parenttab=Tools'>".$mod['LBL_DETAIL']."</a>";
                 }
-                
+
                 if($Calendar4You->CheckPermissions("EDIT",$record)) {
                     $Actions[] = "<a target='_new' href='index.php?action=EventEditView&module=Calendar4You&record=".$record."&activity_mode=$activity_mode&parenttab=Tools'>".$app['LNK_EDIT']."</a>";
+                }
+                if($Calendar4You->CheckPermissions("DELETE",$record)) {
+                	$Actions[] = "<a href='javascript:void(0)' onclick='EditView.record.value=".$record.";EditView.return_module.value=".'"Calendar4You"; EditView.return_action.value="index";  var confirmMsg = "'.getTranslatedString('NTC_DELETE_CONFIRMATION').'"; submitFormForActionWithConfirmation("EditView", "Delete", confirmMsg);\'>'.$app['LNK_DELETE'].'</a>';
                 }
 
                 $actions = implode(" | ",$Actions);
