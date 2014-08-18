@@ -324,7 +324,7 @@ function SaveAsReport(id) {
 				method: 'post',
 				postBody: 'action=ReportsAjax&file=Save&mode=ajax&module=Reports&record='+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups+'&saveashidden=saveas&newreportname='+reportname,
 				onComplete: function(response) {
-					getObj('Generate').innerHTML = response.responseText;
+					//getObj('Generate').innerHTML = response.responseText;
 					// Performance Optimization: To update record count of the report result 
 					var __reportrun_directoutput_recordcount_scriptnode = $('__reportrun_directoutput_recordcount_script');
 					if(__reportrun_directoutput_recordcount_scriptnode) { eval(__reportrun_directoutput_recordcount_scriptnode.innerHTML); }
