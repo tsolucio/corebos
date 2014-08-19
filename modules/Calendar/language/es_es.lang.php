@@ -105,7 +105,7 @@ $mod_strings = array (
 'LBL_APP_ERR002' =>'¡Empieza más tarde que la hora de fin!',
 'LBL_APP_ERR003' =>'¡Falta Contacto !',
 'LBL_APP_ERR004' =>'¡Falta Asunto!',
-'ERR_DELETE_RECORD'=>'Debe especificar un registro para eliminar la cuenta.',
+'ERR_DELETE_RECORD'=>'Debe especificar un registro para eliminar el evento.',
 'DELETE_CONFIRMATION'=>'¿Borrar el Evento?',
 
 'AppLoc'=> Array('0' => 'Oficina'
@@ -301,7 +301,6 @@ $mod_strings = array (
 'LBL_LIST_LAST_MODIFIED'=>'Última Modificación',
 'LBL_LIST_RECURRING_TYPE'=>'Tipo de recurrencia',
 
-'ERR_DELETE_RECORD'=>"Debe especificar un registro para eliminar la cuenta.",
 'NTC_NONE_SCHEDULED'=>'Nada Programado.',
 
 // Added vtiger_fields for Attachments in Activities/SubPanelView.php

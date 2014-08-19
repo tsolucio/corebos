@@ -98,7 +98,6 @@ $mod_strings = Array(
     'LBL_APP_ERR002' =>'Ihr Angabe zum Start liegt nach dem Ende!',
     'LBL_APP_ERR003' =>'Person fehlt!',
     'LBL_APP_ERR004' =>'Thema fehlt!',
-    'ERR_DELETE_RECORD'=>"Zum Löschen muss mindestens ein Eintrag markiert sein.",
     'DELETE_CONFIRMATION'=>"Möchten Sie diesen Eintrag löschen?",
 
     'AppLoc'=> Array('0' => 'Büro'
