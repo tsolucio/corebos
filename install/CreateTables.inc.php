@@ -740,7 +740,7 @@ function create_default_users_access() {
 		$user->column_fields["lead_view"] = 'Today';
         //added by philip for default admin emailid
 		if($admin_email == '')
-			$admin_email ="admin@vtigeruser.com";
+			$admin_email ="admin@corebos.org";
         $user->column_fields["email1"] = $admin_email;
 		$role_query = "select roleid from vtiger_role where rolename='CEO'";
 		$adb->checkConnection();
