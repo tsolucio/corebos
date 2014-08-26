@@ -349,7 +349,7 @@ function checkAdvancedFilter() {
 						if(!re_patternValidate(datime[1],selectedColumnLabel+" (Time)","TIMESECONDS")) {
 							return false
 						}
-					} else if(col[0] == 'vtiger_activity' && col[2] == 'date_start') {
+					} else if((col[0] == 'vtiger_activity' && col[2] == 'date_start') || col[4] == 'DT') {
 						if(!dateValidate(valueId,selectedColumnLabel+" (Current User Date Format)","OTH"))
 							return false
 					} else {
