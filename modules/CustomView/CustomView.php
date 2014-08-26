@@ -867,7 +867,7 @@ class CustomView extends CRMEntity {
 	 */
 	function getAdvFilterByCvid($cvid) {
 
-		global $adb, $log, $default_charset;
+		global $adb, $log, $default_charset, $current_user;
 
 		$advft_criteria = array();
 
@@ -914,6 +914,10 @@ class CustomView extends CRMEntity {
 						}
 					}
 					$advfilterval = implode(",", $val);
+				}
+				if (($col[1]=='smownerid' || $col[1]=='smcreatorid' || $col[1]=='modifiedby')
+					&& $advfilterval=='current_user' && $_REQUEST['action']!='CustomView' && empty($_REQUEST['record'])) {
+					$advfilterval = trim($current_user->first_name.' '.$current_user->last_name);
 				}
 				$criteria['value'] = $advfilterval;
 				$criteria['column_condition'] = $relcriteriarow["column_condition"];
