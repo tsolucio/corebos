@@ -1142,6 +1142,7 @@ $app_strings = array(
 	'LBL_FOLDER' => 'folder',
 	'LBL_ADD_MAPPING' => 'Add Mapping',
 	'LBL_FIELD_MAPPING' => 'Field Mapping',
+	'ERROR_GETTING_FILTER' => 'ERROR Retrieving information from filter. Please delete the filter and try again.',
 );
 
 $app_list_strings = array (

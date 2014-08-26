@@ -59,7 +59,7 @@
 												<td style="padding-left:5px;padding-right:5px" align="center">
 													<a href="index.php?module={$MODULE}&action=CustomView&parenttab={$CATEGORY}">{$APP.LNK_CV_CREATEVIEW}</a>
 													<span class="small">|</span>
-													{if $CV_EDIT_PERMIT neq 'yes'}
+													{if $CV_EDIT_PERMIT neq 'yes' || $SQLERROR}
 														<span class="small" disabled>{$APP.LNK_CV_EDIT}</span>
 													{else}
 														<a href="index.php?module={$MODULE}&action=CustomView&record={$VIEWID}&parenttab={$CATEGORY}">{$APP.LNK_CV_EDIT}</a>
@@ -200,6 +200,26 @@
 				{assign var=MODULE_CREATE value='Ticket'}
 				{/if}
 
+				{if $SQLERROR}
+				<table border="0" cellpadding="5" cellspacing="0" width="98%">
+				<tr>
+					<td rowspan="2" width="25%"><img src="{'empty.jpg'|@vtiger_imageurl:$THEME}" height="60" width="61"></td>
+					<td style="border-bottom: 1px solid rgb(204, 204, 204);" nowrap="nowrap" width="75%"><span class="genHeaderSmall">
+					{if $MODULE_CREATE eq 'SalesOrder' || $MODULE_CREATE eq 'PurchaseOrder' || $MODULE_CREATE eq 'Invoice' || $MODULE_CREATE eq 'Quotes'}
+						{$APP.LBL_NO} {$APP.$MODULE_CREATE} {$APP.LBL_FOUND} !
+					{elseif $MODULE eq 'Calendar'}
+						{$APP.LBL_NO} {$APP.ACTIVITIES} {$APP.LBL_FOUND} !
+					{else}
+						{* vtlib customization: Use translation string only if available *}
+						{$APP.LBL_NO} {if $APP.$MODULE_CREATE}{$APP.$MODULE_CREATE}{else}{$MODULE_CREATE}{/if} {$APP.LBL_FOUND} !
+					{/if}
+					</span></td>
+				</tr>
+				<tr>
+					<td class="small" align="left" nowrap="nowrap">{'ERROR_GETTING_FILTER'|@getTranslatedString:$MODULE}</td>
+				</tr>
+				</table>
+				{else}
 				{if $CHECK.EditView eq 'yes' && $MODULE neq 'Emails' && $MODULE neq 'Webmails'}
 
 				<table border="0" cellpadding="5" cellspacing="0" width="98%">
@@ -278,6 +298,7 @@
 				</tr>
 				</table>
 				{/if}
+			{/if} {* SQL ERROR ELSE END *}
 				</div>
 				</td></tr>
 			     {/foreach}

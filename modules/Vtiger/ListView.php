@@ -104,13 +104,22 @@ if($viewid ==0) {
 }
 
 global $current_user;
+$sql_error = false;
 $queryGenerator = new QueryGenerator($currentModule, $current_user);
-if ($viewid != "0") {
-	$queryGenerator->initForCustomViewById($viewid);
-} else {
-	$queryGenerator->initForDefaultCustomView();
+try {
+	if ($viewid != "0") {
+		$queryGenerator->initForCustomViewById($viewid);
+	} else {
+		$queryGenerator->initForDefaultCustomView();
+	}
+} catch (Exception $e) {
+	$sql_error = true;
 }
-
+$smarty->assign('SQLERROR',$sql_error);
+if ($sql_error) {
+	$smarty->assign('ERROR', getTranslatedString('ERROR_GETTING_FILTER'));
+	$smarty->assign("CUSTOMVIEW_OPTION",$customview_html);
+} else {
 // Enabling Module Search
 $url_string = '';
 if($_REQUEST['query'] == 'true') {
@@ -219,7 +228,7 @@ if(isPermitted($currentModule, "Merge") == 'yes' && file_exists("modules/$curren
 	}
 	$smarty->assign('WORDTEMPLATES', $wordTemplates);
 }
-
+}
 $smarty->assign('IS_ADMIN', is_admin($current_user));
 
 if(isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '')

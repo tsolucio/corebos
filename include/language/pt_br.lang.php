@@ -1320,6 +1320,7 @@ $app_strings = array (
 'LBL_FIELD_MAPPING' => 'Mapeamento Campo',
 
 'LBL_MANDATORY_FIELD_MISSING'=>'Esta faltando valor campo obrigatório',
+'ERROR_GETTING_FILTER' => 'ERROR Retrieving information from filter. Please delete the filter and try again.',
 );
 
 $app_list_strings = array (

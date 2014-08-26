@@ -1270,6 +1270,7 @@ $app_strings = array (
      'LBL_FIELD_MAPPING' => 'Vinculación de Campos',
 
 	'LBL_NEXT_BUTTON_LABEL' => 'Siguiente',
+	'ERROR_GETTING_FILTER' => 'ERROR Aplicando Filtro. Por favor elimínalo y crealo de nuevo.',
 );
 $app_list_strings = array (
       'moduleList' => array(

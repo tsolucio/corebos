@@ -1220,9 +1220,8 @@ $app_strings = array (
 	//added for creating a custom lead map row in UI
 	'LBL_ADD_MAPPING'=> 'ajouter Mapping',
 	'LBL_FIELD_MAPPING' => 'champ de Mapping',
-
+	'ERROR_GETTING_FILTER' => 'ERROR Retrieving information from filter. Please delete the filter and try again.',
 );
-
 
 $app_list_strings = array (
       'moduleList' => array(

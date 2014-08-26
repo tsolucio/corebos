@@ -1194,7 +1194,8 @@ $app_strings = array(
 	'LNK_RESTORE' => 'Helyreállítás',
 	'LBL_NO_PERMITTED_MODULES' => 'Nem engedélyezett modulok',
 	'FieldFormulas' => 'Mezőképletek',
-	'LBL_SEARCH_CRITRIA_RECORDS' => 'Rekordok keresési feltételei'
+	'LBL_SEARCH_CRITRIA_RECORDS' => 'Rekordok keresési feltételei',
+	'ERROR_GETTING_FILTER' => 'ERROR Retrieving information from filter. Please delete the filter and try again.',
 );
 $app_list_strings = array(
 	'moduleList' =>

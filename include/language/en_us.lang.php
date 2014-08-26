@@ -1306,6 +1306,7 @@ $app_strings = array (
 'LBL_ADD_MAPPING'=> 'Add Mapping',
 'LBL_FIELD_MAPPING' => 'Field Mapping',
 'LBL_MANDATORY_FIELD_MISSING'=>'Mandatory Field value is missing',
+'ERROR_GETTING_FILTER' => 'ERROR Retrieving information from filter. Please delete the filter and try again.',
 );
 
 $app_list_strings = array (
