@@ -44,7 +44,6 @@ $installationStrings = array(
 	'LBL_BACK' => 'Atrás',
 	'LBL_NEXT' => 'Siguiente',
 	'LBL_AGREE' => 'Acepto',
-	'LBL_REFRESH' => 'Actualizar',
 	'LBL_SYSTEM_CONFIGURATION'=> 'Configuración Sistema',
 	'LBL_INSTALLATION_CHECK' => 'Verificación de Instalación',
 	'LBL_PRE_INSTALLATION_CHECK' => 'Verificación antes de Instalación',

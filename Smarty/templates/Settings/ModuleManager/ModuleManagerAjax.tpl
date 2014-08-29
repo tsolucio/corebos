@@ -85,6 +85,7 @@ function vtlib_modulemanager_toggleTab(shownode, hidenode, highlighttab, dehighl
 {/foreach}
 {foreach key=langprefix item=langinfo from=$TOGGLE_LANGINFO}
 	{assign var="totalCustomModules" value=$totalCustomModules+1}
+     
 	<tr>
 		<td class="cellText small"><img src="{'text.gif'|@vtiger_imageurl:$THEME}" border=0"></td>
 		<td class="cellLabel small">{$langinfo.label}</td>

@@ -62,6 +62,7 @@ $app_strings = array (
 'LBL_SEND_MAIL_BUTTON' => 'Stuur e-mail',
 'LBL_SAVE_BUTTON_TITLE' => 'Bewaar [Alt+S]',
 'LBL_EDIT_BUTTON_TITLE' => 'Bewerk [Alt+E]',
+'LBL_SAVE_AS'=>" Save As",
 'LBL_CONVERTSO_BUTTON_TITLE' => 'Maak een verkooporder',
 'LBL_CONVERTINVOICE_BUTTON_TITLE' => 'Maak een factuur',
 'LBL_EDIT_BUTTON' => 'Bewerk',

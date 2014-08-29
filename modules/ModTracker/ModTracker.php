@@ -127,7 +127,7 @@ class ModTracker {
 		}
 		if(!self::isModTrackerLinkPresent($tabid)){
 			$moduleInstance=Vtiger_Module::getInstance($tabid);
-			$moduleInstance->addLink('DETAILVIEWBASIC', 'View History', "javascript:ModTrackerCommon.showhistory('\$RECORD\$')",'',0,
+			$moduleInstance->addLink('DETAILVIEWBASIC', 'View History', "javascript:ModTrackerCommon.showhistory('\$RECORD\$')",'','',
 									array('path'=>'modules/ModTracker/ModTracker.php','class'=>'ModTracker','method'=>'isViewPermitted'));
 		}
 	}
