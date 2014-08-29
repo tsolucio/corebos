@@ -1315,7 +1315,8 @@ $app_strings = array(
 
 //added for creating a custom lead map row in UI
 'LBL_ADD_MAPPING'=> 'Zuordnung hinzufügen',
-'LBL_FIELD_MAPPING' => 'Feldzuordnung'
+'LBL_FIELD_MAPPING' => 'Feldzuordnung',
+'ERROR_GETTING_FILTER' => 'ERROR Retrieving information from filter. Please delete the filter and try again.',
 );
 
 $app_list_strings = array (

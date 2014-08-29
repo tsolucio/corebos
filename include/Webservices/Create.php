@@ -80,10 +80,10 @@ function vtws_create($elementType, $element, $user) {
             }
         }
         //  Product line support
-        if(($entityName == 'Quotes' || $entityName == 'PurchaseOrder' || $entityName == 'SalesOrder' || $entityName == 'Invoice') && (is_array($element['pdoInformation']))) {
-        	//  Product line support magic goes here
+        if(($elementType == 'Quotes' || $elementType == 'PurchaseOrder' || $elementType == 'SalesOrder' || $elementType == 'Invoice') && (is_array($element['pdoInformation']))) {
+        	include_once 'include/Webservices/ProductLines.php';
         } else {
-        	$_REQUEST['action'] = $entityName.'Ajax';
+        	$_REQUEST['action'] = $elementType.'Ajax';
         }
         $entity = $handler->create($elementType, $element);
         // Establish relations

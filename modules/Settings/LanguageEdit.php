@@ -276,9 +276,58 @@ else {
 			$total_strings++;
 	}
 }
+$filter=vtlib_purify($_REQUEST['filter_translate']);
+foreach($result2 as $key=>$resulttrl) {
+	if ($filter=='not_translated' && $resulttrl[3]=='not_translated') {
+		$resultnt[$key][0]=$resulttrl[0];
+		$resultnt[$key][1]=$resulttrl[1];
+		$resultnt[$key][2]=$resulttrl[2];
+		$resultnt[$key][3]=$resulttrl[3];
+	} elseif ($filter=='translated' && $resulttrl[3]=='translated') {
+		$resultt[$key][0]=$resulttrl[0];
+		$resultt[$key][1]=$resulttrl[1];
+		$resultt[$key][2]=$resulttrl[2];
+		$resultt[$key][3]=$resulttrl[3];
+	} elseif ($filter=='fieldsnontranslated' && $resulttrl[3]=='fieldsnontranslated') {
+		$resultfnt[$key][0]=$resulttrl[0];
+		$resultfnt[$key][1]=$resulttrl[1];
+		$resultfnt[$key][2]=$resulttrl[2];
+		$resultfnt[$key][3]=$resulttrl[3];  
+	} elseif (($filter=='fieldstranslated'&& $resulttrl[3]=='fieldstranslated') || ($filter=='new'&& $resulttrl[3]=='new')) {
+		$resultft[$key][0]=$resulttrl[0];
+		$resultft[$key][1]=$resulttrl[1];
+		$resultft[$key][2]=$resulttrl[2];
+		$resultft[$key][3]=$resulttrl[3];
+	} elseif ($filter=='rltranslated' && $resulttrl[3]=='rltranslated') {
+		$resultrt[$key][0]=$resulttrl[0];
+		$resultrt[$key][1]=$resulttrl[1];
+		$resultrt[$key][2]=$resulttrl[2];
+		$resultrt[$key][3]=$resulttrl[3];
+	} elseif ($filter=='rlnontranslated' && $resulttrl[3]=='rlnontranslated') {
+		$resultrnt[$key][0]=$resulttrl[0];
+		$resultrnt[$key][1]=$resulttrl[1];
+		$resultrnt[$key][2]=$resulttrl[2];
+		$resultrnt[$key][3]=$resulttrl[3];
+	}
+}
+
+if($filter=='not_translated' )
+	$smarty->assign("TRANSLATION_STRING",$resultnt);
+elseif($filter=='translated')
+	$smarty->assign("TRANSLATION_STRING",$resultt);
+elseif($filter=='fieldsnontranslated')
+	$smarty->assign("TRANSLATION_STRING",$resultfnt);
+elseif($filter=='fieldstranslated')
+	$smarty->assign("TRANSLATION_STRING",$resultft);
+elseif($filter=='rltranslated')
+	$smarty->assign("TRANSLATION_STRING",$resultrt);
+elseif($filter=='rlnontranslated')
+	$smarty->assign("TRANSLATION_STRING",$resultrnt);
+else
+	$smarty->assign("TRANSLATION_STRING",$result2);
+$smarty->assign('FILTER',$filter);
 $smarty->assign("ERROR",$error);
 $smarty->assign("PERC_TRANSALTED",number_format($translated_string*100/$total_strings,2).'%');
-$smarty->assign("TRANSLATION_STRING",$result2);
 $smarty->assign("TRANSLATION_LIST_STRING",$tr_list);
 $smarty->assign("TRANSLATION_LIST_STRING2",$tr_list2);
 $smarty->display('Settings/LanguageEdit.tpl');

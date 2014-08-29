@@ -96,7 +96,7 @@ $mod_strings = Array(
 'NTC_REMOVE_CONFIRMATION'=>'Wilt u deze contactpersoon verwijderen?',
 'NTC_REMOVE_DIRECT_REPORT_CONFIRMATION'=>'Wilt u dit verwijderen?',
 'NTC_REMOVE_OPP_CONFIRMATION'=>'Wilt u dit verwijderen?',
-'ERR_DELETE_RECORD'=>"en_us Een veld moet gespecificeerd zijn om een contact te verwijderen.",
+'ERR_DELETE_RECORD'=>'Een veld moet gespecificeerd zijn om een contact te verwijderen.',
 'NTC_COPY_PRIMARY_ADDRESS'=>'Kopieer Postadres naar Afleveradres',
 'NTC_COPY_ALTERNATE_ADDRESS'=>'Kopieer Afleveradres naar Postadres',
 

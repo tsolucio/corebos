@@ -1273,6 +1273,7 @@ $app_strings = array (
      'LBL_FIELD_MAPPING' => 'Vinculación Campos',
 
 	'LBL_MANDATORY_FIELD_MISSING'=>'Falta rellenar un campo obligatorio',
+	'ERROR_GETTING_FILTER' => 'ERROR Aplicando Filtro. Por favor elimínalo y crealo de nuevo.',
 );
 $app_list_strings = array (
       'moduleList' => array(

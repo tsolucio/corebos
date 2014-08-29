@@ -22,7 +22,7 @@
 
 $mod_strings = Array(
 'LBL_MODULE_NAME'=>'Opportunities',
-'LBL_MODULE_TITLE'=>'Potentials: Home',
+'LBL_MODULE_TITLE'=>'Opportunity: Home',
 'LBL_SEARCH_FORM_TITLE'=>'Opportunity Search',
 'LBL_LIST_FORM_TITLE'=>'Opportunity List',
 'LBL_OPPORTUNITY_NAME'=>'Opportunity Name:',

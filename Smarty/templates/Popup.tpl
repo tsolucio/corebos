@@ -140,7 +140,7 @@ function set_focus() {ldelim}
 								<input name="recordid" id="recordid" type="hidden" value="{$RECORDID}">
 								<input name="record_id" id="record_id" type="hidden" value="{$RECORD_ID}">
 								<input name="return_module" id="return_module" type="hidden" value="{$RETURN_MODULE}">
-								<input name="from_link" id="from_link" type="hidden" value="{$smarty.request.fromlink.value|@vtlib_purify}">
+								<input name="from_link" id="from_link" type="hidden" value="{$smarty.request.fromlink|@vtlib_purify}">
 								<input name="maintab" id="maintab" type="hidden" value="{$MAINTAB}">
 								<input type="hidden" id="relmod" name="{$mod_var_name}" value="{$mod_var_value}">
                                 <input type="hidden" id="relrecord_id" name="{$recid_var_name}" value="{$recid_var_value}">

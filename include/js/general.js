@@ -4511,9 +4511,9 @@ function fnvshobjMore(obj,Lay,announcement){
 		tagName.style.left= leftSide  + 5 +'px';
 	}
 	if(announcement){
-		tagName.style.top = 110+'px';
+		tagName.style.top = 104+'px';
 	}else{
-		tagName.style.top = 76+'px';
+		tagName.style.top = 70+'px';
 	}
 	tagName.style.display = 'block';
 	tagName.style.visibility = "visible";

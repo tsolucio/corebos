@@ -301,7 +301,6 @@ $mod_strings = Array(
 'LBL_LIST_LAST_MODIFIED'=>'Last Modified',
 'LBL_LIST_RECURRING_TYPE'=>'Recurring Type',
 
-'ERR_DELETE_RECORD'=>"A record number must be specified to delete the vtiger_account.",
 'NTC_NONE_SCHEDULED'=>'None scheduled.',
 
 // Added vtiger_fields for Attachments in Activities/SubPanelView.php

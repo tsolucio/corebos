@@ -72,6 +72,7 @@
 					{if $reportdetails.state neq 'SAVED' && $reportdetails.editable eq 'true'}
 						&nbsp;| &nbsp;<a href="javascript:;" onclick="DeleteReport('{$reportdetails.reportid}');"><img src="{'delete.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" title="{$MOD.LBL_DELETE}..." border="0"></a>
 					{/if}
+                                              &nbsp;| &nbsp;<a href="javascript:void(0);" onclick="goToURL('index.php?module=Reports&action=ReportsAjax&file=CreateCSV&record={$reportdetails.reportid}');"><img src="{'csv.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTCSV}" title="{$MOD.LBL_EXPORTCSV}" border="0"></a>
 				</td>
 				</tr>
 			{/foreach}
@@ -97,4 +98,11 @@
 	</tr>
 	</tbody>
 </table>
+{literal}
+ <script type="text/javascript">
+ function goToURL(url) { 
+	document.location.href = url;
+ }
+ </script>
+{/literal}
 

@@ -43,6 +43,42 @@
 		}
 		
 		$entity = $handler->retrieve($id);
+		//return product lines
+		if($entityName == 'Quotes' || $entityName == 'PurchaseOrder' || $entityName == 'SalesOrder' || $entityName == 'Invoice') {
+			list($wsid,$recordid) = split('x',$id);
+			$result = $adb->query("Select * from vtiger_inventoryproductrel where id =".$recordid);
+			while ($row=$adb->getNextRow($result, false)) {
+				if($row['discount_amount'] == NULL && $row['discount_percent'] == NULL) {
+					$discount = 0;$discount_type = 0;
+				} else
+					$discount = 1;
+
+				if($row['discount_amount'] == NULL)
+					$discount_amount = 0;
+				else {
+					$discount_amount = $row['discount_amount'];
+					$discount_type = 'amount';
+				}
+				if($row['discount_percent'] == NULL)
+					$discount_percent = 0;
+				else {
+					$discount_percent = $row['discount_percent'];
+					$discount_type = 'percentage';
+				}
+
+				$onlyPrd = Array(
+					"productid"=>$row['productid'],
+					"comment"=>$row['comment'],
+					"qty"=>$row['quantity'],
+					"listprice"=>$row['listprice'],
+					'discount'=>$discount,  // 0 no discount, 1 discount
+					"discount_type"=>$discount_type,  //  amount/percentage
+					"discount_percentage"=>$discount_percent,
+					"discount_amount"=>$discount_amount,
+				);
+				$entity['pdoInformation'][] = $onlyPrd;
+			}
+		}
 		VTWS_PreserveGlobal::flush();
 		return $entity;
 	}

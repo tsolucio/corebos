@@ -3168,6 +3168,30 @@ class ReportRun extends CRMEntity
 		}
 		$workbook->close();
 	}
+    
+    function writeReportToCSVFile($fileName, $filterlist='') {
+
+		global $currentModule, $current_language;
+		$mod_strings = return_module_language($current_language, $currentModule);
+
+		$arr_val = $this->GenerateReport("PDF",$filterlist);
+
+		$fp = fopen($fileName, 'w+');
+
+		if(isset($arr_val)) {
+			$csv_values = array();
+			// Header
+			$csv_values = array_keys($arr_val[0]);
+			array_pop($csv_values);			//removed header in csv file
+			fputcsv($fp, $csv_values);
+			foreach($arr_val as $key=>$array_value) {
+				array_pop($array_value);	//removed action link
+				$csv_values = array_map('decode_html', array_values($array_value));
+				fputcsv($fp, $csv_values);
+			}
+		}
+		fclose($fp);
+    }
 
     function getGroupByTimeList($reportId){
         global $adb;

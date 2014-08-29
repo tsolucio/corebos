@@ -60,7 +60,7 @@ $mod_strings = Array(
 
 'Conference'=>'Conference',
 'Webinar'=>'Webinar',
-'Trade Show'=>'Trade Show',				    
+'Trade Show'=>'Trade Show',
 'Public Relations'=>'Public Relations',
 'Partners'=>'Partners',
 'Referral Program'=>'Referral Program',
@@ -71,17 +71,17 @@ $mod_strings = Array(
 'Telemarketing'=>'Telemarketing',
 'Others'=>'Others',
 
-'Planning'=>'Planning',						      	    
+'Planning'=>'Planning',
 'Active'=>'Active',	
 'Inactive'=>'Inactive',
 'Complete'=>'Complete',
-'Cancelled'=>'Cancelled',							      
+'Cancelled'=>'Cancelled',
 
 'Excellent'=>'Excellent',
 'Good'=>'Good',
 'Average'=>'Average',
 'Poor'=>'Poor',
-			      
+
 //Module Sequence Numbering
 'Campaign No'=>'Campaign No',
 // status fields 
