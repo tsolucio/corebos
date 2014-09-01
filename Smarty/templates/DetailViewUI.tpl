@@ -84,7 +84,7 @@
                 </div>
 				<div id="internal_mailer_{$keyfldname}" style="display: none;">{$keyfldid}####{$smarty.session.internal_mailer}</div>
                                                   </td>
-	{elseif $keyid eq '15' || $keyid eq '16' || $keyid eq '31' || $keyid eq '32'} <!--ComboBox-->
+	 {elseif ($keyid eq '15' || $keyid eq '16') && !picklistHasDependency($keyfldname,$MODULE)} <!--ComboBox-->
 						{foreach item=arr from=$keyoptions}
 							{if $arr[0] eq $APP.LBL_NOT_ACCESSIBLE && $arr[2] eq 'selected'}
 								{assign var=keyval value=$APP.LBL_NOT_ACCESSIBLE}

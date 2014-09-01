@@ -3323,4 +3323,14 @@ function getReturnPath($host, $from_email) {
 	}
 	return $returnpath;
 }
+
+function picklistHasDependency($keyfldname,$modulename) {
+	global $adb;
+	$tabid = getTabid($modulename);
+	$result = $adb->query("SELECT * FROM vtiger_picklist_dependency WHERE tabid ='".$tabid."' AND (sourcefield = '".$keyfldname."' OR targetfield = '".$keyfldname."')");
+	if($adb->num_rows($result) > 0)
+		return true;
+	else
+	return false;
+}
 ?>
