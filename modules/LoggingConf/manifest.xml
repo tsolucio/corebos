@@ -1,0 +1,19 @@
+<?xml version='1.0'?>
+<module>
+<exporttime>2014-08-15 10:12:53</exporttime>
+<name>LoggingConf</name>
+<label>LoggingConf</label>
+<parent>Tools</parent>
+<type>extension</type>
+<version>1.0</version>
+<dependencies>
+<vtiger_version>5.2.1</vtiger_version>
+</dependencies>
+<tables>
+</tables>
+<sharingaccess>
+<default>private</default>
+</sharingaccess>
+<crons>
+</crons>
+</module>

@@ -1,0 +1,23 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_entitylog</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_entitylog` (
+  `entitylogid` int(11) DEFAULT NULL,
+  `entitylogname` varchar(255) DEFAULT NULL,
+  `relatedto` varchar(100) DEFAULT NULL,
+  `user` varchar(100) DEFAULT NULL,
+  `tabid` int(11) DEFAULT NULL,
+  `finalstate` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_entitylogcf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_entitylogcf` (
+  `entitylogid` int(11) NOT NULL,
+  PRIMARY KEY (`entitylogid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>
