@@ -1,24 +1,21 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific apmt_locationuage governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
- * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  Defines the English apmt_locationuage pack
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
+/*************************************************************************************************
+ * Copyright 2014 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+* Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
+* file except in compliance with the License. You can redistribute it and/or modify it
+* under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
+* granted by the License. coreBOS distributed by JPL TSolucio S.L. is distributed in
+* the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+* warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. Unless required by
+* applicable law or agreed to in writing, software distributed under the License is
+* distributed on an "AS IS" BASIS, WITHOUT ANY WARRANTIES OR CONDITIONS OF ANY KIND,
+* either express or implied. See the License for the specific language governing
+* permissions and limitations under the License. You may obtain a copy of the License
+* at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
+ *  Module       : EntittyLog
+ *  Version      : 5.4.0
+ *  Author       : LoggingConf
+ *************************************************************************************************/
 
 $mod_strings = Array(
  'MODULE_NAME'=>'LoggingConf',

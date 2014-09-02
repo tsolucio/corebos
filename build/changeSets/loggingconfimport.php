@@ -12,7 +12,10 @@
 * either express or implied. See the License for the specific language governing
 * permissions and limitations under the License. You may obtain a copy of the License
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
-*************************************************************************************************/
+ *  Module       : LoggingConf
+ *  Version      : 5.4.0
+ *  Author       : OpenCubed
+ *************************************************************************************************/
 
 class loggingconfimport extends cbupdaterWorker {
 	
