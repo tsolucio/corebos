@@ -105,7 +105,7 @@ class ReportRun extends CRMEntity
 			{
 				$permitted_fields[$module] = $this->getaccesfield($module);
 			}
-			if(in_array($module,$inventory_modules)){
+			if(in_array($module,$inventory_modules) and is_array($permitted_fields[$module])){
 				$permitted_fields[$module] = array_merge($permitted_fields[$module],$inventory_fields);
 			}
 			$selectedfields = explode(":",$fieldcolname);
