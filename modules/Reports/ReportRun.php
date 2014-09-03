@@ -2209,11 +2209,31 @@ class ReportRun extends CRMEntity
 								$headerLabel = $moduleLabel." ". $translatedLabel;
 							}
 						}
-						// Check for role based pick list
+											// Check for role based pick list
 						$temp_val= $fld->name;
-						$fieldvalue = getReportFieldValue($this, $picklistarray, $fld,
-								$custom_field_values, $i);
-						$arraylists[$headerLabel] = $fieldvalue;
+						if($fieldType == 'currency')
+						{
+							// Some of the currency fields like Unit Price, Total, Sub-total etc of Inventory modules, do not need currency conversion
+							$cur_value = $custom_field_values[$i];
+							if($field->getUIType() == '72') {
+								$curid_value = explode("::", $cur_value);
+								$currency_id = $curid_value[0];
+								$currency_value = $curid_value[1];
+								$cur_sym_rate = getCurrencySymbolandCRate($currency_id);
+
+								$arraylists[$headerLabel] = number_format($currency_value,2,'.','');
+								$arraylists[getTranslatedString('Currency')] = $cur_sym_rate['symbol'];
+							} else {
+								$currencyField = new CurrencyField($cur_value);
+								$fieldvalue = $currencyField->getDisplayValue();
+								$arraylists[$headerLabel] = number_format($fieldvalue,2,'.','');
+							}
+						}
+						else
+						{
+							$fieldvalue = getReportFieldValue($this, $picklistarray, $fld,$custom_field_values, $i);
+							$arraylists[$headerLabel] = $fieldvalue;
+						}
 					}
 					$arr_val[] = $arraylists;
 					set_time_limit($php_max_execution_time);
