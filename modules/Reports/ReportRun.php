@@ -3128,7 +3128,7 @@ class ReportRun extends CRMEntity
 
 		if(isset($arr_val)) {
 			foreach($arr_val[0] as $key=>$value) {
-				$worksheet->write(0, $count, $key , $header);
+				$worksheet->write(0, $count, utf8_decode($key) , utf8_decode($header));
 				$count = $count + 1;
 			}
 			$rowcount=1;
@@ -3137,7 +3137,7 @@ class ReportRun extends CRMEntity
 				foreach($array_value as $hdr=>$value) {
 					//$worksheet->write($key+1, $dcount, iconv("UTF-8", "ISO-8859-1", $value));
 					$value = decode_html($value);
-					$worksheet->write($key+1, $dcount, utf8_decode($value));
+					$worksheet->write($key+1, $dcount, iconv("UTF-8", "Windows-1252",$value));
 					$dcount = $dcount + 1;
 				}
 				$rowcount++;
@@ -3149,7 +3149,7 @@ class ReportRun extends CRMEntity
 				foreach($totalxls[0] as $key=>$value) {
 					$chdr=substr($key,-3,3);
 					$translated_str = in_array($chdr ,array_keys($mod_strings))?$mod_strings[$chdr]:$key;
-					$worksheet->write($rowcount, $count, $translated_str);
+					$worksheet->write($rowcount, $count, utf8_decode($translated_str));
 					$count = $count + 1;
 				}
 			}
@@ -3161,7 +3161,7 @@ class ReportRun extends CRMEntity
 					//if ($dcount==1)
 					//		$worksheet->write($key+$rowcount, 0, utf8_decode(substr($hdr,0,strlen($hdr)-4)));
 					$value = decode_html($value);
-					$worksheet->write($key+$rowcount, $dcount, utf8_decode($value));
+					$worksheet->write($key+$rowcount, $dcount, iconv("UTF-8", "Windows-1252", $value));
 					$dcount = $dcount + 1;
 				}
 			}
