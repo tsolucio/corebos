@@ -3323,6 +3323,7 @@ function getReturnPath($host, $from_email) {
 	}
 	return $returnpath;
 }
+
 function fetch_logo($type)
 {
 global $adb;
@@ -3333,5 +3334,16 @@ global $adb;
         if($type == 2) $logoname = decode_html($adb->query_result($result,0,'frontlogo'));
         if($type == 3) $logoname = decode_html($adb->query_result($result,0,'faviconlogo'));
 	return $logodir.$logoname;
+}
+
+function picklistHasDependency($keyfldname,$modulename) {
+	global $adb;
+	$tabid = getTabid($modulename);
+	$result = $adb->query("SELECT * FROM vtiger_picklist_dependency WHERE tabid ='".$tabid."' AND (sourcefield = '".$keyfldname."' OR targetfield = '".$keyfldname."')");
+	if($adb->num_rows($result) > 0)
+		return true;
+	else
+	return false;
+
 }
 ?>

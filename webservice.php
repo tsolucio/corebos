@@ -74,7 +74,15 @@
 		echo $output;
 		
 	}
-	
+
+	// some frameworks (namely angularjs) send information in application/json format, we try to adapt to those system with the next if
+	if (empty($_REQUEST)) {
+		$data = json_decode(file_get_contents("php://input"));
+		if (is_object($data) and !empty($data->operation)) {
+			$_POST = get_object_vars($data);  // only post is affected by this
+			$_REQUEST = $_POST;
+		}
+	}
 	$operation = vtws_getParameter($_REQUEST, "operation");
 	$operation = strtolower($operation);
 	$format = vtws_getParameter($_REQUEST, "format","json");

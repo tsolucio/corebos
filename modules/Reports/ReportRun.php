@@ -105,7 +105,7 @@ class ReportRun extends CRMEntity
 			{
 				$permitted_fields[$module] = $this->getaccesfield($module);
 			}
-			if(in_array($module,$inventory_modules)){
+			if(in_array($module,$inventory_modules) and is_array($permitted_fields[$module])){
 				$permitted_fields[$module] = array_merge($permitted_fields[$module],$inventory_fields);
 			}
 			$selectedfields = explode(":",$fieldcolname);
@@ -2209,11 +2209,31 @@ class ReportRun extends CRMEntity
 								$headerLabel = $moduleLabel." ". $translatedLabel;
 							}
 						}
-						// Check for role based pick list
+											// Check for role based pick list
 						$temp_val= $fld->name;
-						$fieldvalue = getReportFieldValue($this, $picklistarray, $fld,
-								$custom_field_values, $i);
-						$arraylists[$headerLabel] = $fieldvalue;
+						if($fieldType == 'currency')
+						{
+							// Some of the currency fields like Unit Price, Total, Sub-total etc of Inventory modules, do not need currency conversion
+							$cur_value = $custom_field_values[$i];
+							if($field->getUIType() == '72') {
+								$curid_value = explode("::", $cur_value);
+								$currency_id = $curid_value[0];
+								$currency_value = $curid_value[1];
+								$cur_sym_rate = getCurrencySymbolandCRate($currency_id);
+
+								$arraylists[$headerLabel] = number_format($currency_value,2,'.','');
+								$arraylists[getTranslatedString('Currency')] = $cur_sym_rate['symbol'];
+							} else {
+								$currencyField = new CurrencyField($cur_value);
+								$fieldvalue = $currencyField->getDisplayValue();
+								$arraylists[$headerLabel] = number_format($fieldvalue,2,'.','');
+							}
+						}
+						else
+						{
+							$fieldvalue = getReportFieldValue($this, $picklistarray, $fld,$custom_field_values, $i);
+							$arraylists[$headerLabel] = $fieldvalue;
+						}
 					}
 					$arr_val[] = $arraylists;
 					set_time_limit($php_max_execution_time);
@@ -3128,7 +3148,7 @@ class ReportRun extends CRMEntity
 
 		if(isset($arr_val)) {
 			foreach($arr_val[0] as $key=>$value) {
-				$worksheet->write(0, $count, $key , $header);
+				$worksheet->write(0, $count, utf8_decode($key) , utf8_decode($header));
 				$count = $count + 1;
 			}
 			$rowcount=1;
@@ -3137,7 +3157,7 @@ class ReportRun extends CRMEntity
 				foreach($array_value as $hdr=>$value) {
 					//$worksheet->write($key+1, $dcount, iconv("UTF-8", "ISO-8859-1", $value));
 					$value = decode_html($value);
-					$worksheet->write($key+1, $dcount, utf8_decode($value));
+					$worksheet->write($key+1, $dcount, iconv("UTF-8", "Windows-1252",$value));
 					$dcount = $dcount + 1;
 				}
 				$rowcount++;
@@ -3149,7 +3169,7 @@ class ReportRun extends CRMEntity
 				foreach($totalxls[0] as $key=>$value) {
 					$chdr=substr($key,-3,3);
 					$translated_str = in_array($chdr ,array_keys($mod_strings))?$mod_strings[$chdr]:$key;
-					$worksheet->write($rowcount, $count, $translated_str);
+					$worksheet->write($rowcount, $count, utf8_decode($translated_str));
 					$count = $count + 1;
 				}
 			}
@@ -3161,7 +3181,7 @@ class ReportRun extends CRMEntity
 					//if ($dcount==1)
 					//		$worksheet->write($key+$rowcount, 0, utf8_decode(substr($hdr,0,strlen($hdr)-4)));
 					$value = decode_html($value);
-					$worksheet->write($key+$rowcount, $dcount, utf8_decode($value));
+					$worksheet->write($key+$rowcount, $dcount, iconv("UTF-8", "Windows-1252", $value));
 					$dcount = $dcount + 1;
 				}
 			}
