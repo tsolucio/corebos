@@ -9,6 +9,7 @@
  ********************************************************************************/
 
 document.write("<script type='text/javascript' src='include/js/Merge.js'></"+"script>");
+document.write("<script type='text/javascript' src='include/js/Mail.js'></script>");
 function verify_data(form) {
 	if(! form.createpotential.checked == true)
 	{

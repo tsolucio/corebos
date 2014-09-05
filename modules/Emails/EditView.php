@@ -121,7 +121,8 @@ elseif(!empty($_REQUEST['invmodid']))
 	if($mailids['mailds'] != '')
 		$to_add = trim($mailids['mailds'],",").",";
 	$smarty->assign('TO_MAIL',$to_add);
-	$smarty->assign('IDLISTS',$mailids['idlists']);	
+	$smarty->assign('IDLISTS',$mailids['idlists']);
+	setObjectValuesFromRequest($focus);
 	$focus->mode = '';
 }
 

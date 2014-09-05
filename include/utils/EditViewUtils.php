@@ -838,6 +838,22 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		{
 			$user_selected = 'selected';
 		}
+		elseif($pmodule == 'Project')
+		{
+			$project_selected = 'selected';
+		}
+		elseif($pmodule == 'ProjectTask')
+		{
+			$projecttask_selected = 'selected';
+		}
+		elseif($pmodule == 'Potentials')
+		{
+			$potentials_selected = 'selected';
+		}
+		elseif($pmodule == 'HelpDesk')
+		{
+			$helpdesk_selected = 'selected';
+		}
 		if(isset($_REQUEST['emailids']) && $_REQUEST['emailids'] != '')
 		{
 			$parent_id = $_REQUEST['emailids'];
@@ -874,6 +890,42 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 					$lname=br2nl($myfocus->column_fields['lastname']);
 					$fullname=$lname.' '.$fname;
 					$lead_selected = 'selected';
+				}
+				elseif ($pmodule=='Project'){
+					require_once('modules/Project/Project.php');
+					$myfocus = new Project();
+					$myfocus->retrieve_entity_info($entityid,"Project");
+					$fname=br2nl($myfocus->column_fields['projectname']);
+					$lname=br2nl($myfocus->column_fields['projectid']);
+					$fullname=$fname;
+					$project_selected = 'selected';
+				}
+				elseif ($pmodule=='ProjectTask'){
+					require_once('modules/ProjectTask/ProjectTask.php');
+					$myfocus = new ProjectTask();
+					$myfocus->retrieve_entity_info($entityid,"ProjectTask");
+					$fname=br2nl($myfocus->column_fields['projecttaskname']);
+					$lname=br2nl($myfocus->column_fields['projecttaskid']);
+					$fullname=$fname;
+					$projecttask_selected = 'selected';
+				}
+				elseif ($pmodule=='Potentials'){
+					require_once('modules/Potentials/Potentials.php');
+					$myfocus = new Potentials();
+					$myfocus->retrieve_entity_info($entityid,"Potentials");
+					$fname=br2nl($myfocus->column_fields['potentialname']);
+					$lname=br2nl($myfocus->column_fields['potentialid']);
+					$fullname=$fname;
+					$potentials_selected = 'selected';
+				}
+				elseif ($pmodule=='HelpDesk'){
+					require_once('modules/HelpDesk/HelpDesk.php');
+					$myfocus = new HelpDesk();
+					$myfocus->retrieve_entity_info($entityid,"HelpDesk");
+					$fname=br2nl($myfocus->column_fields['title']);
+					$lname=br2nl($myfocus->column_fields['ticketid']);
+					$fullname=$fname;
+					$helpdesk_selected = 'selected';
 				}
 				for ($j=1;$j<$nemail;$j++){
 					$querystr='select columnname from vtiger_field where fieldid=? and vtiger_field.presence in (0,2)';
