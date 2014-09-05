@@ -834,6 +834,9 @@ function isPermitted($module,$actionname,$record_id='')
 		$log->debug("Exiting isPermitted method ...");
 		return $permission;
 	}
+	if (!isset($profileActionPermission[$tabid][$actionid]) && $action == 'Export') {
+		return "no";
+	}
 	//Checking for Action Permission
 	if(strlen($profileActionPermission[$tabid][$actionid]) <  1 && $profileActionPermission[$tabid][$actionid] == '')
 	{
