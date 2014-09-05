@@ -1723,7 +1723,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 		$product_Detail[$i]['subprod_names'.$i]=$subprodname_str;
 		$discount_percent=$adb->query_result($result,$i-1,'discount_percent');
 		$discount_amount=$adb->query_result($result,$i-1,'discount_amount');
-		$discount_amount = number_format($discount_amount, 2,'.',''); //Convert to 2 decimals
+		$discount_amount = number_format((is_numeric($discount_amount) ? $discount_amount : 0), 2,'.',''); //Convert to 2 decimals
 		$discountTotal = '0.00';
 		//Based on the discount percent or amount we will show the discount details
 
