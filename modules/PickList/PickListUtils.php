@@ -183,8 +183,9 @@ function getNonEditablePicklistValues($fieldName, $lang=array(), $adb){
 function getAssignedPicklistValues($tableName, $roleid, $adb, $lang=array()){
 	static $cache = array();
 
-	if (isset($cache[$tableName.$roleid])) {
-		return $cache[$tableName.$roleid];
+	$cacheId = $tableName . '#' . $roleid;
+	if (isset($cache[$cacheId])) {
+		return $cache[$cacheId];
 	}
 
 	$arr = array();
@@ -224,7 +225,7 @@ function getAssignedPicklistValues($tableName, $roleid, $adb, $lang=array()){
 	}
 	// END
 
-	$cache[$tableName.$roleid] = $arr;
+	$cache[$cacheId] = $arr;
 	return $arr;
 }
 ?>
