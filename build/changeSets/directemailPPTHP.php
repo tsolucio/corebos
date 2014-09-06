@@ -102,29 +102,5 @@ class directemailPPTHP extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
-	function undoChange() {
-		if ($this->hasError()) $this->sendError();
-		if ($this->isApplied()) {
-			// undo your magic here
-			$moduleInstance=Vtiger_Module::getInstance('Potentials');
-			$field = Vtiger_Field::getInstance('forecast_amount',$moduleInstance);
-			if ($field) {
-				$this->ExecuteQuery('update vtiger_field set presence=1 where fieldid='.$field->id);
-			}
-			global $adb;
-			$wfrs = $adb->query("SELECT workflow_id FROM com_vtiger_workflows WHERE summary='Calculate or Update forecast amount'");
-			if ($wfrs and $adb->num_rows($wfrs)==1) {
-				$wfid = $adb->query_result($wfrs,0,0);
-				$this->deleteWorkflow($wfid);
-				$this->sendMsg('Workflow deleted!');
-			}
-			$this->sendMsg('Changeset '.get_class($this).' undone!');
-			$this->markUndone();
-		} else {
-			$this->sendMsg('Changeset '.get_class($this).' not applied!');
-		}
-		$this->finishExecution();
-	}
-	
+
 }
