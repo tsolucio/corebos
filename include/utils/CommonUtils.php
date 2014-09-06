@@ -423,6 +423,24 @@ function getFieldid($tabid, $fieldname, $onlyactive = true) {
 	return $fieldid;
 }
 
+function getFieldFromBlockArray($blocks,$fldlabel) {
+	$result = array();
+	if (is_array($blocks)) {
+		$found = false;
+		foreach ($blocks as $blklabel => $fieldarray) {
+			foreach ($fieldarray as $key => $value) {
+				$found = array_key_exists($fldlabel,$value);
+				if ($found) {
+					$result['block_label'] = $blklabel;
+					$result['field_key'] = $key;
+					break 2;
+				}
+			}
+		}
+	}
+	return $result;
+}
+
 /**
  * Function to get the CustomViewName
  * Takes the input as $cvid - customviewid
