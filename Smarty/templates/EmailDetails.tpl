@@ -13,18 +13,18 @@
 
 <table width="100%" border="0" cellpadding="0" cellspacing="0" valign="top">
 <tr>
-    <td class="hdrNameBg">
-  		<table width="100%"  border="0" cellspacing="5" cellpadding="0">
+	<td class="hdrNameBg">
+		<table width="100%"  border="0" cellspacing="5" cellpadding="0">
 		<tr>
 		{if $BLOCKS neq ''}
 			<td align="left">
-			  	<input type="button" name="forward" value=" {$MOD.LBL_FORWARD_BUTTON} " class="crmbutton small edit" onClick=OpenCompose('{$ID}','forward')>&nbsp;
+				<input type="button" name="forward" value=" {$MOD.LBL_FORWARD_BUTTON} " class="crmbutton small edit" onClick="OpenCompose('{$ID}','forward')">&nbsp;
 				{if $EMAIL_FLAG neq 'WEBMAIL'}
-			  	<input type="button" name="Send" value=" {$MOD.LBL_SEND} " class="crmbutton small save" onClick=OpenCompose('{$ID}','edit')>&nbsp;	
-				<input type="button" name="Reply" value=" {$MOD.LBL_REPLY_BUTTON} " class="crmbutton small edit" onClick=ReplyCompose('{$ID}','reply')>&nbsp;
-				<input type="button" title="{$MOD.LBL_PRINT_EMAIL}" name="{$MOD.LBL_PRINT_EMAIL}" value="{$MOD.LBL_PRINT_EMAIL}" class="crmbutton small edit" onClick=OpenCompose('{$ID}','print')> 
+				<input type="button" name="Send" value=" {$MOD.LBL_SEND} " class="crmbutton small save" onClick="OpenCompose('{$ID}','edit')">&nbsp;
+				<input type="button" name="Reply" value=" {$MOD.LBL_REPLY_BUTTON} " class="crmbutton small edit" onClick="ReplyCompose('{$ID}','reply')">&nbsp;
+				<input type="button" title="{$MOD.LBL_PRINT_EMAIL}" name="{$MOD.LBL_PRINT_EMAIL}" value="{$MOD.LBL_PRINT_EMAIL}" class="crmbutton small edit" onClick="OpenCompose('{$ID}','print')"> 
 				{else}
-			  	<input type="button" name="Send" value=" {$MOD.LBL_REPLY_BUTTON} " class="crmbutton small edit" onClick=OpenCompose('{$ID}','edit')>&nbsp;
+				<input type="button" name="Send" value=" {$MOD.LBL_REPLY_BUTTON} " class="crmbutton small edit" onClick="OpenCompose('{$ID}','edit')">&nbsp;
 				{/if}
 				{foreach item=row from=$BLOCKS}	
 				{foreach item=elements key=title from=$row}	
@@ -34,10 +34,10 @@
 				{/foreach}
 				{/foreach}
 			</td>
-						<td width="25%" align="right"><input type="button" name="Button" value=" {$APP.LBL_DELETE_BUTTON} "  class="crmbutton small delete" onClick="DeleteEmail('{$ID}')"/></td>
-						{else}
-						<td colspan="2">&nbsp;</td>
-						{/if}
+			<td width="25%" align="right"><input type="button" name="Button" value=" {$APP.LBL_DELETE_BUTTON} "  class="crmbutton small delete" onClick="DeleteEmail('{$ID}')"/></td>
+			{else}
+			<td colspan="2">&nbsp;</td>
+			{/if}
 		</tr>
 		</table>
 	</td>
@@ -45,7 +45,7 @@
 <tr>
 	<td height="250" bgcolor="#FFFFFF" valign="top" class="MatrixLayer2">
 	{foreach item=row from=$BLOCKS}	
-	{foreach item=elements from=$row}	
+	{foreach item=elements from=$row}
 		{if $elements.fldname eq 'subject'}
 		<table class="tableHeadBg" width="100%" border="0" cellpadding="0" cellspacing="0">
 	{if $EMAIL_FLAG neq 'WEBMAIL'}
@@ -73,8 +73,8 @@
 	</td>
 </tr>
 </table>
-{foreach item=row from=$BLOCKS}	
-	{foreach item=elements key=title from=$row}	
+{foreach item=row from=$BLOCKS}
+	{foreach item=elements key=title from=$row}
 	{if $elements.fldname eq 'filename'}
 	<div id="reportLay" style="width:130px;" onmouseout="fninvsh('reportLay')" onmouseover="fnvshNrm('reportLay')">
 		<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#FFFFFF">
