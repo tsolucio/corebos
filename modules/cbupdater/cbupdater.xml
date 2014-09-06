@@ -113,4 +113,11 @@
 	<classname>directemailPPTHP</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add support for Email management via REST</description>
+	<filename>build/changeSets/email_rest_support.php</filename>
+	<classname>email_rest_support</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
