@@ -430,10 +430,12 @@ function getFieldFromBlockArray($blocks,$fldlabel) {
 		foreach ($blocks as $blklabel => $fieldarray) {
 			foreach ($fieldarray as $key => $value) {
 				$found = array_key_exists($fldlabel,$value);
-				if ($found) {
+				if ($found and is_array($value[$fldlabel]) and isset($value[$fldlabel]['value']) and isset($value[$fldlabel]['fldname'])) {  // this is to avoid false positives
 					$result['block_label'] = $blklabel;
 					$result['field_key'] = $key;
 					break 2;
+				} else {
+					$found = false;
 				}
 			}
 		}
