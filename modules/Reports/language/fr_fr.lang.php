@@ -61,6 +61,7 @@ $mod_strings = array (
 	'LBL_GENERATED_REPORT' => 'Générer rapport',
 	'LBL_GRAND_TOTAL' => 'Total',
 	'LBL_EXPORTXL_BUTTON' => 'Export XLS',
+	'LBL_EXPORTCSV'=>'Export To CSV',
 	'LBL_NO_PERMISSION' => 'Votre profil ne vous autorise pas à afficher les rapports pour l\'un des modules',
 	'LBL_SELECT_COLUMNS_TO_GENERATE_REPORTS' => 'Sélectionnez les colonnes à afficher dans votre rapport',
 	'LBL_AVAILABLE_FIELDS' => 'Champs disponibles',
