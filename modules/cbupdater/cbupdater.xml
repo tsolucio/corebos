@@ -120,4 +120,11 @@
 	<classname>email_rest_support</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add support for user based tag visualization</description>
+	<filename>build/changeSets/user_showtagas.php</filename>
+	<classname>user_showtagas</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

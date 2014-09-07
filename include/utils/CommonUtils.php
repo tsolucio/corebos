@@ -2543,7 +2543,7 @@ function SaveTagCloudView($id = "") {
 	global $log;
 	global $adb;
 	$log->debug("Entering in function SaveTagCloudView($id)");
-	$tag_cloud_status = $_REQUEST['tagcloudview'];
+	$tag_cloud_status = vtlib_purify($_REQUEST['tagcloudview']);
 
 	if ($tag_cloud_status == "true") {
 		$tag_cloud_view = 0;
@@ -2558,7 +2558,35 @@ function SaveTagCloudView($id = "") {
 		$adb->pquery($query, array($tag_cloud_view, $id));
 	}
 
+	if (!empty($id) and !empty($_REQUEST['showtagas'])) {
+		$tag_cloud_showas = vtlib_purify($_REQUEST['showtagas']);
+		$query = 'update vtiger_users set showtagas = ? where id=?';
+		$log->fatal(array($tag_cloud_showas, $id));
+		$adb->pquery($query, array($tag_cloud_showas, $id));
+	}
 	$log->debug("Exiting from function SaveTagCloudView($id)");
+}
+
+/** retrieve show tag cloud as for given user
+ ** @param $id -- user id:: Type integer
+ ** @returns show tag cloud type
+ **/
+function getTagCloudShowAs($id) {
+	global $log, $adb;
+	$log->debug("Entering in function getTagCloudShowAs($id)");
+	if (empty($id)) {
+		$tag_cloud_status = 'hring';
+	} else {
+		$query = 'select showtagas from vtiger_users where id=?';
+		$rsusr = $adb->pquery($query, array($id));
+		if ($rsusr) {
+			$tag_cloud_status = $adb->query_result($rsusr,0,0);
+		} else {
+			$tag_cloud_status = 'hring';
+		}
+	}
+	$log->debug("Exiting from function getTagCloudShowAs($id)");
+	return $tag_cloud_status;
 }
 
 /**     function used to change the Type of Data for advanced filters in custom view and Reports

@@ -387,7 +387,7 @@ function loadStuff(stuffid,stufftype){
                 }
 				if(stufftype=="Tag Cloud"){
 					TagCanvas.Start('tagcloudCanvas', '', {
-						shape: "hring",
+						shape: user_tag_showas,
 						lock: "x",
 						weight: true,
 						weightMode: 'both'
@@ -448,7 +448,7 @@ function loadAllWidgets(widgetInfoList, batchSize){
 										"index&type="+$('more_'+stuffid).value;
 								} else if(widgetType=="Tag Cloud"){
 									TagCanvas.Start('tagcloudCanvas', '', {
-										shape: "hring",
+										shape: user_tag_showas,
 										lock: "x",
 										weight: true,
 										weightMode: 'both'
