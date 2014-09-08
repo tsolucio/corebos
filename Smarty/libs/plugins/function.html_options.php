@@ -56,6 +56,17 @@ function smarty_function_html_options($params, &$smarty)
 
             case 'selected':
                 $$_key = array_map('strval', array_values((array)$_val));
+                break;	
+            case 'multiple':
+            	if ($_val)
+            		$extra .= ' multiple="true" size="6"';
+            	break;
+            	
+            case 'sortoptions':
+                if ($_val=='desc')
+                	arsort($options);
+                else
+              		asort($options);
                 break;
                 
             default:
