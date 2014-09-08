@@ -44,15 +44,7 @@
 				</td>
 				<td class="small" align="left" width="30%">
 					<select name="pickmodule" id="pickmodule" class="detailedViewTextBox" onChange="changeModule();">
-					{foreach key=modulelabel item=module from=$MODULE_LISTS}
-						{*<!-- vtlib customization: Use translation only if available -->*}
-						{assign var="modulelabel" value=$module|getTranslatedString:$module}
-						{if $MODULE eq $module}
-							<option value="{$module}" selected>{$modulelabel}</option>
-						{else}
-							<option value="{$module}">{$modulelabel}</option>
-						{/if}
-					{/foreach}
+					{html_options options=$MODULE_LISTS selected=$MODULE sortoptions=asc}
 					</select>
 				</td>
 				<td class="small" align="right">&nbsp;</td>
