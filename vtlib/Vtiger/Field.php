@@ -145,6 +145,9 @@ class Vtiger_Field extends Vtiger_FieldBasic {
 		// END
 
 		global $adb;
+		$nextseq = $adb->query_result($adb->pquery('SELECT max(sequence) FROM vtiger_fieldmodulerel WHERE fieldid=? AND module=?',
+			Array($this->id, $this->getModuleName())),0,0);
+		if (empty($nextseq)) $nextseq=0;
 		foreach($moduleNames as $relmodule) {
 			$checkres = $adb->pquery('SELECT * FROM vtiger_fieldmodulerel WHERE fieldid=? AND module=? AND relmodule=?',
 				Array($this->id, $this->getModuleName(), $relmodule));
@@ -152,8 +155,8 @@ class Vtiger_Field extends Vtiger_FieldBasic {
 			// If relation already exist continue
 			if($adb->num_rows($checkres)) continue;
 
-			$adb->pquery('INSERT INTO vtiger_fieldmodulerel(fieldid, module, relmodule) VALUES(?,?,?)',
-				Array($this->id, $this->getModuleName(), $relmodule));
+			$adb->pquery('INSERT INTO vtiger_fieldmodulerel(fieldid, module, relmodule, sequence) VALUES(?,?,?,?)',
+				Array($this->id, $this->getModuleName(), $relmodule, ++$nextseq));
 
 			self::log("Setting $this->name relation with $relmodule ... DONE");
 		}

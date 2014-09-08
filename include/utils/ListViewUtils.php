@@ -4088,7 +4088,7 @@ function getFirstModule($module, $fieldname) {
 
 		if ($uitype == 10) {
 			$fieldid = $adb->query_result($result, 0, "fieldid");
-			$sql = "select * from vtiger_fieldmodulerel where fieldid=?";
+			$sql = "select * from vtiger_fieldmodulerel where fieldid=? order by sequence";
 			$result = $adb->pquery($sql, array($fieldid));
 			$count = $adb->num_rows($result);
 
