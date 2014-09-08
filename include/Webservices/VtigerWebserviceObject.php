@@ -27,6 +27,13 @@ class VtigerWebserviceObject{
 		
 	static function fromName($adb,$entityName){
 		
+		/*
+		*	Parche temporal ya que cuando se responde un email a una persona que no tiene $entityName, es decir que no está ni en Cuentas, Contactos etc..
+		*	$entityName vale NULL y la siguiente query peta.
+		*/
+		if(is_null($entityName))
+        		$entityName = 'Accounts';
+		
 		$rowData = false;
 		
 		// If the information not available in cache?
