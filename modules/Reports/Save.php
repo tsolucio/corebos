@@ -113,11 +113,15 @@ $saveas=vtlib_purify($_REQUEST['saveashidden']);
 $newreportname=vtlib_purify($_REQUEST['newreportname']);
 if($reportid == '' || ($reportid!='' && strstr($saveas,'saveas')!='' && $newreportname!='')) {
 	if($reportid!='' && $folderid=='') {
-		$reportdetails=$adb->pquery("select * from vtiger_report where reportid=?",array($reportid));
-		$folderid=$adb->query_result($reportdetails,0,'folderid') ;
-		$reporttype=$adb->query_result($reportdetails,0,'reporttype');
-		$sharetype=$adb->query_result($reportdetails,0,'sharingtype');
-		$reportdescription=$adb->query_result($reportdetails,0,'description');
+		$reportdetails=$adb->pquery("select * from vtiger_report as report join vtiger_reportmodules as repmodules on report.reportid=repmodules.reportmodulesid  join vtiger_selectcolumn as sc on sc.queryid=report.reportid where reportid=?",array($reportid));
+                $folderid=$adb->query_result($reportdetails,0,'folderid');
+                $reporttype=$adb->query_result($reportdetails,0,'reporttype');
+                $sharetype=$adb->query_result($reportdetails,0,'sharingtype');
+                $reportdescription=$adb->query_result($reportdetails,0,'description');
+                $pmodule = $adb->query_result($reportdetails,0,'primarymodule');
+                $smodule = $adb->query_result($reportdetails,0,'secondarymodules');
+                for($in=0;$in<$adb->num_rows($reportdetails);$in++)
+                $selectedcolumns[]=$adb->query_result($reportdetails,$in,'columnname');
 	}
 	$genQueryId = $adb->getUniqueID("vtiger_selectquery");
 	if($genQueryId != "")
