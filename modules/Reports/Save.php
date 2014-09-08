@@ -121,7 +121,7 @@ if($reportid == '' || ($reportid!='' && strstr($saveas,'saveas')!='' && $newrepo
                 $smodule = $adb->query_result($reportdetails,0,'secondarymodules');
                 for($in=0;$in<$adb->num_rows($reportdetails);$in++)
                 $selectedcolumns[]=$adb->query_result($reportdetails,$in,'columnname');
-	}
+}
 	$genQueryId = $adb->getUniqueID("vtiger_selectquery");
 	if($genQueryId != "")
 	{

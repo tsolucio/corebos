@@ -315,7 +315,7 @@ function selectReport() {
 function SaveAsReport(id) {
 	if(!checkAdvancedFilter()) return false;
 	var reportname = prompt(alert_arr.LBL_REPORT_NAME);
-	if (reportname != null && reportname !=='' && reportname!== undefined) {
+	if (reportname !== null && reportname !=='' && reportname!== undefined) {
 		document.getElementById("newreportname").value = reportname;
 		VtigerJS_DialogBox.block();
 		var advft_criteria = $('advft_criteria').value;
