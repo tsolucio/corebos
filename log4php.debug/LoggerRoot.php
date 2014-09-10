@@ -1,101 +1,71 @@
 <?php
 /**
- * log4php is a PHP port of the log4j java logging package.
- * 
- * <p>This framework is based on log4j (see {@link http://jakarta.apache.org/log4j log4j} for details).</p>
- * <p>Design, strategies and part of the methods documentation are developed by log4j team 
- * (Ceki Gülcü as log4j project founder and 
- * {@link http://jakarta.apache.org/log4j/docs/contributors.html contributors}).</p>
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
  *
- * <p>PHP port, extensions and modifications by VxR. All rights reserved.<br>
- * For more information, please see {@link http://www.vxr.it/log4php/}.</p>
+ *	   http://www.apache.org/licenses/LICENSE-2.0
  *
- * <p>This software is published under the terms of the LGPL License
- * a copy of which has been included with this distribution in the LICENSE file.</p>
- * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
  * @package log4php
  */
-
-/**
- * @ignore 
- */
-if (!defined('LOG4PHP_DIR')) define('LOG4PHP_DIR', dirname(__FILE__));
- 
-/**
- */
-require_once(LOG4PHP_DIR . '/Logger.php');
-require_once(LOG4PHP_DIR . '/LoggerLevel.php');
 
 /**
  * The root logger.
  *
- * @author VxR <vxr@vxr.it>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1343190 $
  * @package log4php
  * @see Logger
  */
 class LoggerRoot extends Logger {
+	/**
+	 * Constructor
+	 *
+	 * @param integer $level initial log level
+	 */
+	public function __construct(LoggerLevel $level = null) {
+		parent::__construct('root');
 
-    /**
-     * @var string name of logger 
-     */
-    var $name   = 'root';
-
-    /**
-     * @var object must be null for LoggerRoot
-     */
-    var $parent = null;
-    
-
-    /**
-     * Constructor
-     *
-     * @param integer $level initial log level
-     */
-    function LoggerRoot($level = null)
-    {
-        $this->Logger($this->name);
-        if ($level == null)
-            $level = LoggerLevel::getLevelAll();
-        $this->setLevel($level);
-    } 
-    
-    /**
-     * @return integer the level
-     */
-    function getChainedLevel()
-    {
-        return $this->level;
-    } 
-    
-    /**
-     * Setting a null value to the level of the root category may have catastrophic results.
-     * @param LoggerLevel $level
-     */
-    function setLevel($level)
-    {
-        $this->level = $level;
-    }    
- 
-    /**
-     * Please use setLevel() instead.
-     * @param LoggerLevel $level
-     * @deprecated
-     */
-    function setPriority($level)
-    {
-        $this->setLevel($level); 
-    }
-    
-    /**
-     * Always returns false.
-     * Because LoggerRoot has no parents, it returns false.
-     * @param Logger $parent
-     * @return boolean
-     */
-    function setParent($parent)
-    {
-        return false;
-    }  
+		if($level == null) {
+			$level = LoggerLevel::getLevelAll();
+		}
+		$this->setLevel($level);
+	} 
+	
+	/**
+	 * @return LoggerLevel the level
+	 */
+	public function getEffectiveLevel() {
+		return $this->getLevel();
+	}
+	
+	/**
+	 * Override level setter to prevent setting the root logger's level to 
+	 * null. Root logger must always have a level.
+	 * 
+	 * @param LoggerLevel $level
+	 */
+	public function setLevel(LoggerLevel $level = null) {
+		if (isset($level)) {
+			parent::setLevel($level);
+		} else {
+			trigger_error("log4php: Cannot set LoggerRoot level to null.", E_USER_WARNING);
+		}
+	}
+	
+	/**
+	 * Override parent setter. Root logger cannot have a parent.
+	 * @param Logger $parent
+	 */
+	public function setParent(Logger $parent) {
+		trigger_error("log4php: LoggerRoot cannot have a parent.", E_USER_WARNING);
+	}
 }
-?>

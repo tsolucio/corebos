@@ -1,85 +1,49 @@
 <?php
 /**
- * log4php is a PHP port of the log4j java logging package.
- * 
- * <p>This framework is based on log4j (see {@link http://jakarta.apache.org/log4j log4j} for details).</p>
- * <p>Design, strategies and part of the methods documentation are developed by log4j team 
- * (Ceki Gülcü as log4j project founder and 
- * {@link http://jakarta.apache.org/log4j/docs/contributors.html contributors}).</p>
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
  *
- * <p>PHP port, extensions and modifications by VxR. All rights reserved.<br>
- * For more information, please see {@link http://www.vxr.it/log4php/}.</p>
+ *	   http://www.apache.org/licenses/LICENSE-2.0
  *
- * <p>This software is published under the terms of the LGPL License
- * a copy of which has been included with this distribution in the LICENSE file.</p>
- * 
- * @package log4php
- * @subpackage appenders
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 /**
- * @ignore 
- */
-if (!defined('LOG4PHP_DIR')) define('LOG4PHP_DIR', dirname(__FILE__) . '/..');
- 
-require_once(LOG4PHP_DIR . '/LoggerAppenderSkeleton.php');
-require_once(LOG4PHP_DIR . '/LoggerLevel.php');
-require_once(LOG4PHP_DIR . '/LoggerLog.php');
-
-/**
- * Log events using php {@link PHP_MANUAL#trigger_error} function and a {@link LoggerLayoutTTCC} default layout.
+ * LoggerAppenderPhp logs events by creating a PHP user-level message using 
+ * the PHP's trigger_error()function.
  *
- * <p>Levels are mapped as follows:</p>
- * - <b>level &lt; WARN</b> mapped to E_USER_NOTICE
- * - <b>WARN &lt;= level &lt; ERROR</b> mapped to E_USER_WARNING
- * - <b>level &gt;= ERROR</b> mapped to E_USER_ERROR  
+ * This appender has no configurable parameters.
  *
- * @author VxR <vxr@vxr.it>
- * @version $Revision: 1.11 $
+ * Levels are mapped as follows:
+ * 
+ * - <b>level < WARN</b> mapped to E_USER_NOTICE
+ * - <b>WARN <= level < ERROR</b> mapped to E_USER_WARNING
+ * - <b>level >= ERROR</b> mapped to E_USER_ERROR  
+ *
+ * @version $Revision: 1337820 $
  * @package log4php
  * @subpackage appenders
+ * @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
+ * @link http://logging.apache.org/log4php/docs/appenders/php.html Appender documentation
  */ 
-class LoggerAppenderPhp extends LoggerAppenderSkeleton {
+class LoggerAppenderPhp extends LoggerAppender {
 
-    /**
-     * @access private
-     */
-    var $requiresLayout = false;
-    
-    /**
-     * Constructor
-     *
-     * @param string $name appender name
-     */
-    function LoggerAppenderPhp($name)
-    {
-        $this->LoggerAppenderSkeleton($name);
-    }
-
-    function activateOptions()
-    {
-        $this->layout = LoggerLayout::factory('LoggerLayoutTTCC');
-        $this->closed = false;
-    }
-
-    function close() 
-    {
-        $this->closed = true;
-    }
-
-    function append($event)
-    {
-        if ($this->layout !== null) {
-            LoggerLog::debug("LoggerAppenderPhp::append()");
-            $level = $event->getLevel();
-            if ($level->isGreaterOrEqual(LoggerLevel::getLevelError())) {
-                trigger_error($this->layout->format($event), E_USER_ERROR);
-            } elseif ($level->isGreaterOrEqual(LoggerLevel::getLevelWarn())) {
-                trigger_error($this->layout->format($event), E_USER_WARNING);
-            } else {
-                trigger_error($this->layout->format($event), E_USER_NOTICE);
-            }
-        }
-    }
+	public function append(LoggerLoggingEvent $event) {
+		$level = $event->getLevel();
+		if($level->isGreaterOrEqual(LoggerLevel::getLevelError())) {
+			trigger_error($this->layout->format($event), E_USER_ERROR);
+		} else if ($level->isGreaterOrEqual(LoggerLevel::getLevelWarn())) {
+			trigger_error($this->layout->format($event), E_USER_WARNING);
+		} else {
+			trigger_error($this->layout->format($event), E_USER_NOTICE);
+		}
+	}
 }
-?>
