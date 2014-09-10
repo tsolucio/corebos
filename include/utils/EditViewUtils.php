@@ -199,11 +199,14 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$roleid=$current_user->roleid;
 		$picklistValues = getAssignedPicklistValues($fieldname, $roleid, $adb);
 		$valueArr = explode("|##|", $value);
+		foreach ($valueArr as $key => $value) {
+			$valueArr[$key] = trim(html_entity_decode($value, ENT_QUOTES, $default_charset));
+		}
 		$pickcount = 0;
 
 		if(!empty($picklistValues)){
 			foreach($picklistValues as $order=>$pickListValue){
-				if(in_array(trim($pickListValue),array_map("trim", $valueArr))){
+				if(in_array(trim($pickListValue),$valueArr)){
 					$chk_val = "selected";
 					$pickcount++;
 				}else{
