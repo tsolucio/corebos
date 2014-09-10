@@ -200,7 +200,8 @@ include("modules/Migration/versions.php");
 									<td align="right">
 										<form action="install.php" method="post" name="form" id="form">
 											<input type="hidden" name="mode" value="migration">
-											<input type="hidden" name="file" value="MigrationProcess.php.php">
+											<input type="hidden" name="file" value="MigrationProcess.php">
+											<input type="hidden" name="auth_key" value="<?php echo $_SESSION['authentication_key']; ?>" />
 											<input type="submit" class="button" value="<?php echo $installationStrings['LBL_NEXT']; ?>&nbsp;&#155;&#155;" title="<?php echo $installationStrings['LBL_NEXT']; ?>" />
 										</form>
 									</td>
