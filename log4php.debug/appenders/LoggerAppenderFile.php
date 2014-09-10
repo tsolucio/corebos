@@ -1,184 +1,225 @@
 <?php
 /**
- * log4php is a PHP port of the log4j java logging package.
- * 
- * <p>This framework is based on log4j (see {@link http://jakarta.apache.org/log4j log4j} for details).</p>
- * <p>Design, strategies and part of the methods documentation are developed by log4j team 
- * (Ceki Gülcü as log4j project founder and 
- * {@link http://jakarta.apache.org/log4j/docs/contributors.html contributors}).</p>
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
  *
- * <p>PHP port, extensions and modifications by VxR. All rights reserved.<br>
- * For more information, please see {@link http://www.vxr.it/log4php/}.</p>
+ *	   http://www.apache.org/licenses/LICENSE-2.0
  *
- * <p>This software is published under the terms of the LGPL License
- * a copy of which has been included with this distribution in the LICENSE file.</p>
- * 
- * @package log4php
- * @subpackage appenders
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
  */
 
 /**
- * @ignore 
- */
-if (!defined('LOG4PHP_DIR')) define('LOG4PHP_DIR', dirname(__FILE__) . '/..');
-
-require_once(LOG4PHP_DIR . '/LoggerAppenderSkeleton.php');
-require_once(LOG4PHP_DIR . '/helpers/LoggerOptionConverter.php');
-require_once(LOG4PHP_DIR . '/LoggerLog.php');
-
-/**
- * FileAppender appends log events to a file.
+ * LoggerAppenderFile appends log events to a file.
  *
- * Parameters are ({@link $fileName} but option name is <b>file</b>), 
- * {@link $append}.
+ * This appender uses a layout.
+ * 
+ * ## Configurable parameters: ##
+ * 
+ * - **file** - Path to the target file. Relative paths are resolved based on 
+ *     the working directory.
+ * - **append** - If set to true, the appender will append to the file, 
+ *     otherwise the file contents will be overwritten.
  *
- * @author VxR <vxr@vxr.it>
- * @version $Revision: 1.15 $
+ * @version $Revision: 1382274 $
  * @package log4php
  * @subpackage appenders
+ * @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
+ * @link http://logging.apache.org/log4php/docs/appenders/file.html Appender documentation
  */
-class LoggerAppenderFile extends LoggerAppenderSkeleton {
+class LoggerAppenderFile extends LoggerAppender {
 
-    /**
-     * @var boolean if {@link $file} exists, appends events.
-     */
-    var $append = true;  
+	/**
+	 * If set to true, the file is locked before appending. This allows 
+	 * concurrent access. However, appending without locking is faster so
+	 * it should be used where appropriate.
+	 * 
+	 * TODO: make this a configurable parameter
+	 * 
+	 * @var boolean
+	 */
+	protected $locking = true;
+	
+	/**
+	 * If set to true, appends to file. Otherwise overwrites it.
+	 * @var boolean
+	 */
+	protected $append = true;
+	
+	/**
+	 * Path to the target file.
+	 * @var string 
+	 */
+	protected $file;
 
-    /**
-     * @var string the file name used to append events
-     */
-    var $fileName;
+	/**
+	 * The file resource.
+	 * @var resource
+	 */
+	protected $fp;
+	
+	/** 
+	 * Helper function which can be easily overriden by daily file appender. 
+	 */
+	protected function getTargetFile() {
+		return $this->file;
+	}
+	
+	/**
+	 * Acquires the target file resource, creates the destination folder if 
+	 * necessary. Writes layout header to file.
+	 * 
+	 * @return boolean FALSE if opening failed
+	 */
+	protected function openFile() {
+		$file = $this->getTargetFile();
 
-    /**
-     * @var mixed file resource
-     * @access private
-     */
-    var $fp = false;
-    
-    /**
-     * @access private
-     */
-    var $requiresLayout = true;
-    
-    /**
-     * Constructor.
-     *
-     * @param string $name appender name
-     */
-    function LoggerAppenderFile($name)
-    {
-        $this->LoggerAppenderSkeleton($name);
-    }
+		// Create the target folder if needed
+		if(!is_file($file)) {
+			$dir = dirname($file);
 
-    function activateOptions()
-    {
-        $fileName = $this->getFile();
-        LoggerLog::debug("LoggerAppenderFile::activateOptions() opening file '{$fileName}'");
-        $this->fp = @fopen($fileName, ($this->getAppend()? 'a':'w'));
+			if(!is_dir($dir)) {
+				$success = mkdir($dir, 0777, true);
+				if ($success === false) {
+					$this->warn("Failed creating target directory [$dir]. Closing appender.");
+					$this->closed = true;
+					return false;
+				}
+			}
+		}
+		
+		$mode = $this->append ? 'a' : 'w';
+		$this->fp = fopen($file, $mode);
+		if ($this->fp === false) {
+			$this->warn("Failed opening target file. Closing appender.");
+			$this->fp = null;
+			$this->closed = true;
+			return false;
+		}
+		
+		// Required when appending with concurrent access
+		if($this->append) {
+			fseek($this->fp, 0, SEEK_END);
+		}
+		
+		// Write the header
+		$this->write($this->layout->getHeader());
+	}
+	
+	/**
+	 * Writes a string to the target file. Opens file if not already open.
+	 * @param string $string Data to write.
+	 */
+	protected function write($string) {
+		// Lazy file open
+		if(!isset($this->fp)) {
+			if ($this->openFile() === false) {
+				return; // Do not write if file open failed.
+			}
+		}
+		
+		if ($this->locking) {
+			$this->writeWithLocking($string);
+		} else {
+			$this->writeWithoutLocking($string);
+		}
+	}
+	
+	protected function writeWithLocking($string) {
+		if(flock($this->fp, LOCK_EX)) {
+			if(fwrite($this->fp, $string) === false) {
+				$this->warn("Failed writing to file. Closing appender.");
+				$this->closed = true;				
+			}
+			flock($this->fp, LOCK_UN);
+		} else {
+			$this->warn("Failed locking file for writing. Closing appender.");
+			$this->closed = true;
+		}
+	}
+	
+	protected function writeWithoutLocking($string) {
+		if(fwrite($this->fp, $string) === false) {
+			$this->warn("Failed writing to file. Closing appender.");
+			$this->closed = true;				
+		}
+	}
+	
+	public function activateOptions() {
+		if (empty($this->file)) {
+			$this->warn("Required parameter 'file' not set. Closing appender.");
+			$this->closed = true;
+			return;
+		}
+	}
+	
+	public function close() {
+		if (is_resource($this->fp)) {
+			$this->write($this->layout->getFooter());
+			fclose($this->fp);
+		}
+		$this->fp = null;
+		$this->closed = true;
+	}
 
-	// Denying read option for log file. Added for Vulnerability fix
-	if (is_readable($fileName)) chmod ($fileName,0222);
+	public function append(LoggerLoggingEvent $event) {
+		$this->write($this->layout->format($event));
+	}
+	
+	/**
+	 * Sets the 'file' parameter.
+	 * @param string $file
+	 */
+	public function setFile($file) {
+		$this->setString('file', $file);
+	}
+	
+	/**
+	 * Returns the 'file' parameter.
+	 * @return string
+	 */
+	public function getFile() {
+		return $this->file;
+	}
+	
+	/**
+	 * Returns the 'append' parameter.
+	 * @return boolean
+	 */
+	public function getAppend() {
+		return $this->append;
+	}
 
-        if ($this->fp) {
-            if ($this->getAppend())
-                fseek($this->fp, 0, SEEK_END);
-            @fwrite($this->fp, $this->layout->getHeader());
-            $this->closed = false;
-        } else {
-            $this->closed = true;
-        }
-    }
-    
-    function close()
-    {
-        if ($this->fp and $this->layout !== null)
-            @fwrite($this->fp, $this->layout->getFooter());
-            
-        $this->closeFile();
-        $this->closed = true;
-    }
+	/**
+	 * Sets the 'append' parameter.
+	 * @param boolean $append
+	 */
+	public function setAppend($append) {
+		$this->setBoolean('append', $append);
+	}
 
-    /**
-     * Closes the previously opened file.
-     */
-    function closeFile() 
-    {
-        if ($this->fp)
-            @fclose($this->fp);
-    }
-    
-    /**
-     * @return boolean
-     */
-    function getAppend()
-    {
-        return $this->append;
-    }
-
-    /**
-     * @return string
-     */
-    function getFile()
-    {
-        return $this->getFileName();
-    }
-    
-    /**
-     * @return string
-     */
-    function getFileName()
-    {
-        return $this->fileName;
-    } 
- 
-    /**
-     * Close any previously opened file and call the parent's reset.
-     */
-    function reset()
-    {
-        $this->closeFile();
-        $this->fileName = null;
-        parent::reset();
-    }
-
-    function setAppend($flag)
-    {
-        $this->append = LoggerOptionConverter::toBoolean($flag, true);        
-    } 
-  
-    /**
-     * Sets and opens the file where the log output will go.
-     *
-     * This is an overloaded method. It can be called with:
-     * - setFile(string $fileName) to set filename.
-     * - setFile(string $fileName, boolean $append) to set filename and append.
-     */
-    function setFile()
-    {
-        $numargs = func_num_args();
-        $args    = func_get_args();
-
-        if ($numargs == 1 and is_string($args[0])) {
-            $this->setFileName($args[0]);
-        } elseif ($numargs >=2 and is_string($args[0]) and is_bool($args[1])) {
-            $this->setFile($args[0]);
-            $this->setAppend($args[1]);
-        }
-    }
-    
-    function setFileName($fileName)
-    {
-        $this->fileName = $fileName;
-    }
-
-    function append($event)
-    {
-        if ($this->fp and $this->layout !== null) {
-
-            LoggerLog::debug("LoggerAppenderFile::append()");
-        
-            @fwrite($this->fp, $this->layout->format($event));
-        } 
-    }
+	/**
+	 * Sets the 'file' parmeter. Left for legacy reasons.
+	 * @param string $fileName
+	 * @deprecated Use setFile() instead.
+	 */
+	public function setFileName($fileName) {
+		$this->setFile($fileName);
+	}
+	
+	/**
+	 * Returns the 'file' parmeter. Left for legacy reasons.
+	 * @return string
+	 * @deprecated Use getFile() instead.
+	 */
+	public function getFileName() {
+		return $this->getFile();
+	}
 }
-?>
