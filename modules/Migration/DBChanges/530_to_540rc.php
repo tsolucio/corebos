@@ -578,6 +578,7 @@ foreach ($replaceReportColumnsList as $oldName => $newName) {
 ExecutePQuery("CREATE TABLE if not exists vtiger_homereportchart (stuffid int(19) PRIMARY KEY, reportid int(19), reportcharttype varchar(100))", array());
 ExecutePQuery("CREATE TABLE vtiger_reportgroupbycolumn(reportid int(19),sortid int(19),sortcolname varchar(250),dategroupbycriteria varchar(250))", array());
 ExecutePQuery("ALTER TABLE vtiger_reportgroupbycolumn add constraint fk_1_vtiger_reportgroupbycolumn FOREIGN KEY (reportid) REFERENCES vtiger_report(reportid) ON DELETE CASCADE", array());
+ExecutePQuery("insert into vtiger_reportgroupbycolumn (reportid, sortid, sortcolname, dategroupbycriteria) select reportid, sortcolid, columnname, 'None' from vtiger_reportsortcol where columnname like '%:D'", array());
 
 ExecutePQuery("DELETE FROM vtiger_time_zone WHERE time_zone = 'Kwajalein'", array());
 ExecutePQuery("UPDATE vtiger_users SET time_zone='UTC' WHERE time_zone='Kwajalein'", array());
