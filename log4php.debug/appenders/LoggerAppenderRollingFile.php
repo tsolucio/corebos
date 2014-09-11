@@ -143,7 +143,7 @@ class LoggerAppenderRollingFile extends LoggerAppenderFile {
 			$this->compressFile($source, $target);
 		} else {
 			$target = $source . '.1';
-			rename($source, $target);
+			copy($source, $target);
 		}
 	}
 	
