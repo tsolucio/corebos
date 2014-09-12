@@ -289,6 +289,7 @@ function sendfile_email()
 																						<td>&nbsp;</td>
 																						<td>&nbsp;</td>
 																						<td align=right>
+                                                                                                                                                                                  
 																							{if $header eq $MOD.LBL_ADDRESS_INFORMATION && ($MODULE eq 'Accounts' || $MODULE eq 'Contacts' || $MODULE eq 'Leads') }
 																								{if $MODULE eq 'Leads'}
 																									<input name="mapbutton" value="{$APP.LBL_LOCATE_MAP}" class="crmbutton small create" type="button" onClick="searchMapLocation( 'Main' )" title="{$APP.LBL_LOCATE_MAP}">
@@ -300,7 +301,187 @@ function sendfile_email()
 																					</tr>
 
 																					<!-- This is added to display the existing comments -->
-																					{if $header eq $MOD.LBL_COMMENTS || $header eq $MOD.LBL_COMMENT_INFORMATION}
+																					
+{if $MODULE eq 'Adocmaster' && ($header eq 'masterlabel' ) && $isTemplate neq 'true'}
+ <tr > 
+     <td class="dvInnerHeader" colspan="4" width=90% style="padding-left:10px" >           
+            <a href="javascript:showHideStatus('att1','aidDescrizione1','themes/teknema/images/');">
+            <img title="Display" alt="Display" style="border: 0px solid #000000;" src="themes/images/inactivate.gif" id="aidDescrizione1"></a> 
+            <b>Adocdetails </b>    
+         </td>
+ </tr>
+ <tr> 
+     <td  colspan="4" width=90% style="padding-left:5px">
+        <div align=center id='att1' style="display:none;width:100%;background-color:white;">
+   {*{include file="modules/Adocmaster/ngTable.tpl}*}
+   
+{php}
+
+
+require_once('Smarty_setup.php');
+require_once("modules/Adocmaster/Adocmaster.php");
+global $adb;
+
+$id2 =$_REQUEST['record'];
+//koment
+//koment2
+require_once("modules/Adocmaster/calculateTariffPrice.php");
+$prodquery=$adb->query("select * from vtiger_products");
+$prodname=array();
+for($i=0;$i<$adb->num_rows($prodquery);$i++){
+$prodname[$i]=$adb->query_result($prodquery,$i,'productname');}
+
+//echo $prodname[3];
+
+$taxquery=$adb->pquery("Select sum(a.adocdtax) as tax,sum(a.adocdtotal) as total,
+                    sum(a.adocdtotalamount) as totalimponibile,vtiger_payamentstype.vatpercentage mastervat
+                    from vtiger_adocdetail a 
+                    join vtiger_crmentity ce on a.adocdetailid=ce.crmid 
+                    INNER JOIN vtiger_adocmaster ON a.adoctomaster=vtiger_adocmaster.adocmasterid
+                    INNER JOIN vtiger_payamentstype ON vtiger_adocmaster.linkpayment=vtiger_payamentstype.payamentstypeid
+                    where ce.deleted=0 and a.adoctomaster=?",array($id2));
+$adocquery=$adb->pquery("select vtiger_products.productid,vtiger_adocmaster.adocmasterid,vtiger_adocdetail.adocdtax,vtiger_adocdetail.adocdtotal,vtiger_adocdetail.adocdtotalamount,vtiger_adocdetail.adocdetailid,vtiger_adocdetail.adocdetailno,vtiger_adocdetail.adocdetailname,vtiger_adocdetail.adoc_product,vtiger_adocdetail.adoc_quantity,vtiger_adocdetail.adoc_price,vtiger_adocdetail.adoc_stock,vtiger_adocdetail.riferimento,vtiger_products.productname,vtiger_adocdetail.nrline,vtiger_products.unit_price from vtiger_adocdetail  join vtiger_crmentity on crmid=adocdetailid join vtiger_adocmaster on adocmasterid=adoctomaster left join vtiger_products on productid=adoc_product
+    where deleted=0 and adocmasterid=?",array($id2));
+$z=0;
+            $rowsz=$adb->num_rows($adocquery);
+            $return_arrz = array();
+$dataz=array();
+$arrz = array();
+   $arr2z = array();
+            while($rowsz=$adb->fetch_array($adocquery)){
+                 $productid1=$adb->query_result($adocquery,$z,'productid');
+
+$query = 'select productname, vtiger_attachments.path,'
+                                . ' vtiger_attachments.attachmentsid, '
+                                . ' vtiger_attachments.name,vtiger_crmentity.setype '
+                                . ' from vtiger_products '
+                                . ' left join vtiger_seattachmentsrel '
+                                . ' on vtiger_seattachmentsrel.crmid=vtiger_products.productid '
+                                . ' inner join vtiger_attachments '
+                                . ' on vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid '
+                                . ' inner join vtiger_crmentity '
+                                . ' on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid '
+                                . ' where vtiger_crmentity.setype="Products Image" and productid=?';
+			$result_image = $adb->pquery($query, array($rowsz['adoc_product']));
+                        $label_fld='';
+                        //$image_array=array();$image_orgname_array=array();$imagepath_array=array();
+			//for ($image_iter = 0; $image_iter < $adb->num_rows($result_image); $image_iter++) {
+			if($adb->num_rows($result_image)>0){	
+                        $image_id_array = $adb->query_result($result_image, '2', 'attachmentsid');
+
+				//decode_html  - added to handle UTF-8   characters in file names
+				//urlencode    - added to handle special characters like #, %, etc.,
+				$image_array = urlencode(decode_html($adb->query_result($result_image, '2', 'name')));
+				$image_orgname_array = decode_html($adb->query_result($result_image, '2', 'name'));
+
+				$imagepath_array = $adb->query_result($result_image, '2', 'path');
+			//}
+			//if (count($image_array) > 1) {
+				$label_fld =  $imagepath_array . $image_id_array . "_" . $image_array;
+
+			//} elseif (count($image_array) == 1) {
+			//	list($pro_image_width, $pro_image_height) = getimagesize($imagepath_array[0] . $image_id_array[0] . "_" . $image_orgname_array[0]);
+			//	if ($pro_image_width > 450 || $pro_image_height > 300)
+			//		$label_fld=  $imagepath_array[0] . $image_id_array[0] . "_" . $image_array[0] ;
+			//				}else {
+			//	$label_fld = '';
+			//}
+}
+
+$adocid1=$adb->query_result($adocquery,$z,'adocdetailid');
+$adocmasterid1=$adb->query_result($adocquery,$z,'adocmasterid');
+$quantity1=$adb->query_result($adocquery,$z,'adoc_quantity');
+
+$foundRes2=calculatePrice('Adocdetail', $productid1, $adocmasterid1, $quantity1);
+$foundRes3=explode("::",$foundRes2);
+//echo $foundRes3[8];
+
+$rowArrz = array(
+'name' => $rowsz['adocdetailno'],
+//'pcdetailsname'=>$rowsz['pcdescriptionname'],
+//'pcprice'=>$rowsz['price'],
+//'pcquantity'=>$rowsz['quantity'],
+//'pctotal'=>$rowsz['totalprice'],
+//'pcdetailsid'=>$rowsz['pcdetailsid'],
+'age' =>$rowsz['nrline'],
+'adoc_product_display'=>$rowsz['productname'],
+'quantity'=>$rowsz['adoc_quantity'],
+'price'=>$rowsz['adoc_price'],
+'riferimento'=>$rowsz['riferimento'],
+
+'adocdetailid'=>$rowsz['adocdetailid'],
+'productid'=>$rowsz['adoc_product'],
+'stockid'=>$rowsz['adoc_stock'],
+'adocid'=>$rowsz['adocdetailid'],
+'adocdetailname'=>$rowsz['adocdetailname'],
+'adocdtotal'=>$rowsz['adocdtotal'],
+'adocdtax'=>$rowsz['adocdtax'],
+'adocdtotalamount'=>$rowsz['adocdtotalamount'],
+'adocmasterid'=>$rowsz['adocmasterid'],
+'precio'=>$foundRes3[7],
+'total'=>$foundRes3[2]*$rowsz['adoc_quantity'],
+'newtax'=>$foundRes3[3],
+'newadoctotal'=>$foundRes3[4],
+'newadoctotalamount'=>$foundRes3[5],
+//'productid'=>$rowsz['productid'],
+'image'=>$label_fld,
+'vat'=>$foundRes3[8],
+'discount'=>$foundRes3[6],
+'adoc_product'=>$rowsz['adoc_product'],
+'codice_articolo'=>$rowsz['codice_articolo'],
+
+
+  //<img ng-if="user.image!=''" src="{{user.image}}" width="50" height="30"/>{/literal}<br/>  
+            
+                  );
+$return_arrz[] = $rowArrz;
+      
+            $z++;
+           
+            }
+            $vleraz=json_encode($return_arrz);
+
+
+$w=0;
+  $rowsw=$adb->num_rows($taxquery);
+            $return_arrw = array();
+$dataw=array();
+$arrw = array();
+   $arr2w = array();
+            while($rowsw=$adb->fetch_array($taxquery)){
+                $rowArrw = array(
+    'tax' => $rowsw['tax']
+                    
+    
+            
+                  );
+$return_arrw[] = $rowArrw;
+     
+            $w++;
+           
+            }
+            $vleraw=json_encode($return_arrw);
+
+
+
+$smarty = new vtigerCRM_Smarty;
+
+$smarty->assign("vleratest", $vleraz);
+
+$smarty->assign("vleratest2",$vleraw);
+
+
+$smarty->display("modules/Adocmaster/ngTable.tpl");
+
+{/php}
+ <br><br><br> <br><br> <br><br>
+         </div>
+     </td>
+ </tr>
+
+
+{/if}
+{if $header eq $MOD.LBL_COMMENTS || $header eq $MOD.LBL_COMMENT_INFORMATION}
 																						<tr>
 																							<td colspan=4 class="dvInnerHeader">
 																								<b>{$MOD.LBL_COMMENT_INFORMATION}</b>
