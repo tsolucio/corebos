@@ -134,4 +134,19 @@
 	<classname>installc4y</classname>
 	<systemupdate>false</systemupdate>
 </changeSet>
+<changeSet>
+    <author>eri</author>
+	<description>import adocdetail module </description>
+	<filename>build/changeSets/adocdetailimport.php</filename>
+	<classname>adocdetailimport</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>eri</author>
+	<description>import adocmaster module </description>
+	<filename>build/changeSets/adocmasterimport.php</filename>
+	<classname>adocmasterimport</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+
 </updatesChangeLog>
