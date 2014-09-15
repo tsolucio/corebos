@@ -25,7 +25,15 @@ class VTSimpleTemplate{
 			$fieldname = $match[1];
 			$data = $this->parent->getData();
 			if($this->useValue($data, $fieldname)){
-				$result = $data[$fieldname];
+				$moduleName = $this->parent->getModuleName();
+				$module_focus = Vtiger_Module::getInstance($moduleName);
+				$field_focus = Vtiger_Field::getInstance($fieldname,$module_focus);
+				
+				$uitype = $field_focus->uitype;
+				if($uitype == '15' || $uitype == '33' || ($uitype == '55' && $fieldname == 'salutationtype'))
+					$result = getTranslatedString($data[$fieldname],$moduleName);
+				else
+					$result = $data[$fieldname];
 			}else{
 				$result ='';
 			}
@@ -61,7 +69,14 @@ class VTSimpleTemplate{
 					} elseif($entity->getModuleName()===$referenceModule){
 						$data = $entity->getData();
 						if($this->useValue($data, $fieldname)){
-							$result = $data[$fieldname];
+							$module_focus = Vtiger_Module::getInstance($referenceModule);
+							$field_focus = Vtiger_Field::getInstance($fieldname,$module_focus);
+							
+							$uitype = $field_focus->uitype;
+							if($uitype == '15' || $uitype == '33' || ($uitype == '55' && $fieldname == 'salutationtype'))
+								$result = getTranslatedString($data[$fieldname],$referenceModule);
+							else
+								$result = $data[$fieldname];
 						}else{
 							$result = '';
 						}

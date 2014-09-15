@@ -1,98 +1,74 @@
 <?php
 /**
- * log4php is a PHP port of the log4j java logging package.
- * 
- * <p>This framework is based on log4j (see {@link http://jakarta.apache.org/log4j log4j} for details).</p>
- * <p>Design, strategies and part of the methods documentation are developed by log4j team 
- * (Ceki Gülcü as log4j project founder and 
- * {@link http://jakarta.apache.org/log4j/docs/contributors.html contributors}).</p>
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
  *
- * <p>PHP port, extensions and modifications by VxR. All rights reserved.<br>
- * For more information, please see {@link http://www.vxr.it/log4php/}.</p>
+ *	   http://www.apache.org/licenses/LICENSE-2.0
  *
- * <p>This software is published under the terms of the LGPL License
- * a copy of which has been included with this distribution in the LICENSE file.</p>
- * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
  * @package log4php
  */
-
-/**
- * @ignore 
- */
-if (!defined('LOG4PHP_DIR')) define('LOG4PHP_DIR', dirname(__FILE__)); 
 
 /**
  * Extend this abstract class to create your own log layout format.
- *  
- * @author VxR <vxr@vxr.it>
- * @version $Revision: 1.10 $
+ *	
+ * @version $Revision: 1213283 $
  * @package log4php
- * @abstract
  */
-class LoggerLayout {
+abstract class LoggerLayout extends LoggerConfigurable {
+	/**
+	 * Activates options for this layout.
+	 * Override this method if you have options to be activated.
+	 */
+	public function activateOptions() {
+		return true;
+	}
 
-    /**
-     * Creates LoggerLayout instances with the given class name.
-     *
-     * @param string $class
-     * @return LoggerLayout
-     */
-    function factory($class)
-    {
-        if (!empty($class)) {
-            $class = basename($class);
-            if (!class_exists($class))
-                @include_once(LOG4PHP_DIR . "/layouts/{$class}.php");
-            if (class_exists($class))
-                return new $class();
-        }
-        return null;
-    }
+	/**
+	 * Override this method to create your own layout format.
+	 *
+	 * @param LoggerLoggingEvent
+	 * @return string
+	 */
+	public function format(LoggerLoggingEvent $event) {
+		return $event->getRenderedMessage();
+	} 
+	
+	/**
+	 * Returns the content type output by this layout.
+	 * @return string
+	 */
+	public function getContentType() {
+		return "text/plain";
+	} 
+			
+	/**
+	 * Returns the footer for the layout format.
+	 * @return string
+	 */
+	public function getFooter() {
+		return null;
+	} 
 
-    /**
-     * Override this method
-     */
-    function activateOptions() 
-    {
-        // override;
-    }
-
-    /**
-     * Override this method to create your own layout format.
-     *
-     * @param LoggerLoggingEvent
-     * @return string
-     */
-    function format($event)
-    {
-        return $event->getRenderedMessage();
-    } 
-    
-    /**
-     * Returns the content type output by this layout.
-     * @return string
-     */
-    function getContentType()
-    {
-        return "text/plain";
-    } 
-            
-    /**
-     * Returns the footer for the layout format.
-     * @return string
-     */
-    function getFooter()
-    {
-        return null;
-    } 
-
-    /**
-     * Returns the header for the layout format.
-     * @return string
-     */
-    function getHeader()
-    {
-        return null;
-    }
+	/**
+	 * Returns the header for the layout format.
+	 * @return string
+	 */
+	public function getHeader() {
+		return null;
+	}
+	
+	/** Triggers a warning for this layout with the given message. */
+	protected function warn($message) {
+		trigger_error("log4php: [" . get_class($this) . "]: $message", E_USER_WARNING);
+	}
 }
-?>

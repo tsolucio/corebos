@@ -72,7 +72,7 @@
                 <td>2000</td>
             </tr>
             <tr valign="top">
-                <td>vtiger</td>
+                <td>any text</td>
             </tr>
         </table>
     </div>

@@ -70,4 +70,54 @@
 	<classname>loggingconfimport</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Workflow custom method to relate products/services with accounts/contacts/vendors on sales</description>
+	<filename>build/changeSets/ticket191_wfrelatepdosrv.php</filename>
+	<classname>ticket191</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add direct Email support on Project/ProjectTask/HelpDesk/Potentials</description>
+	<filename>build/changeSets/directemailPPTHP.php</filename>
+	<classname>directemailPPTHP</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add support for Email management via REST</description>
+	<filename>build/changeSets/email_rest_support.php</filename>
+	<classname>email_rest_support</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add support for user based tag visualization</description>
+	<filename>build/changeSets/user_showtagas.php</filename>
+	<classname>user_showtagas</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omar</author>
+	<description>Instalo Calendar4You</description>
+	<filename>build/changeSets/installc4y.php</filename>
+	<classname>installc4y</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
+<changeSet>
+    <author>eri</author>
+	<description>import adocdetail module </description>
+	<filename>build/changeSets/adocdetailimport.php</filename>
+	<classname>adocdetailimport</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>eri</author>
+	<description>import adocmaster module </description>
+	<filename>build/changeSets/adocmasterimport.php</filename>
+	<classname>adocmasterimport</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+
 </updatesChangeLog>

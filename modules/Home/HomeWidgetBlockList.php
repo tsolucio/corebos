@@ -41,6 +41,7 @@ foreach ($widgetInfoList as $widgetInfo) {
 	if($widgetType=='Tag Cloud'){
 		$freetag = new freetag();
 		$smarty->assign("ALL_TAG",$freetag->get_tag_cloud_html("",$current_user->id));
+		$smarty->assign("USER_TAG_SHOWAS",getTagCloudShowAs($current_user->id));
 		$html = $smarty->fetch("Home/TagCloud.tpl");
 	}elseif($widgetType == 'Notebook'){
 		$contents = $homeObj->getNoteBookContents($widgetId);

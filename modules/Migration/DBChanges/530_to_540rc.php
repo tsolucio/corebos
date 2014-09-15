@@ -112,6 +112,38 @@ $emm->addEntityMethod("HelpDesk", "NotifyOwnerOnTicketChange", "modules/HelpDesk
 // Register Entity Method for Email notification to Related Customer on ticket change, which is not from Customer portal
 $emm->addEntityMethod("HelpDesk", "NotifyParentOnTicketChange", "modules/HelpDesk/HelpDeskHandler.php", "HelpDesk_notifyParentOnTicketChange");
 
+ExecutePQuery("CREATE TABLE IF NOT EXISTS com_vtiger_workflow_tasktypes (
+				id int(11) NOT NULL,
+				tasktypename varchar(255) NOT NULL,
+				label varchar(255),
+				classname varchar(255),
+				classpath varchar(255),
+				templatepath varchar(255),
+				modules text(500),
+				sourcemodule varchar(255)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8", array());
+
+require_once("modules/com_vtiger_workflow/include.inc");
+require_once("modules/com_vtiger_workflow/tasks/VTEntityMethodTask.inc");
+require_once("modules/com_vtiger_workflow/VTEntityMethodManager.inc");
+
+// add default workflow types
+$taskTypes = array();
+$defaultModules = array('include' => array(), 'exclude'=>array());
+$createToDoModules = array('include' => array("Leads","Accounts","Potentials","Contacts","HelpDesk","Campaigns","Quotes","PurchaseOrder","SalesOrder","Invoice"), 'exclude'=>array("Calendar", "FAQ", "Events"));
+$createEventModules = array('include' => array("Leads","Accounts","Potentials","Contacts","HelpDesk","Campaigns"), 'exclude'=>array("Calendar", "FAQ", "Events"));
+
+$taskTypes[] = array("name"=>"VTEmailTask", "label"=>"Send Mail", "classname"=>"VTEmailTask", "classpath"=>"modules/com_vtiger_workflow/tasks/VTEmailTask.inc", "templatepath"=>"com_vtiger_workflow/taskforms/VTEmailTask.tpl", "modules"=>$defaultModules, "sourcemodule"=>'');
+$taskTypes[] = array("name"=>"VTEntityMethodTask", "label"=>"Invoke Custom Function", "classname"=>"VTEntityMethodTask", "classpath"=>"modules/com_vtiger_workflow/tasks/VTEntityMethodTask.inc", "templatepath"=>"com_vtiger_workflow/taskforms/VTEntityMethodTask.tpl", "modules"=>$defaultModules, "sourcemodule"=>'');
+$taskTypes[] = array("name"=>"VTCreateTodoTask", "label"=>"Create Todo", "classname"=>"VTCreateTodoTask", "classpath"=>"modules/com_vtiger_workflow/tasks/VTCreateTodoTask.inc", "templatepath"=>"com_vtiger_workflow/taskforms/VTCreateTodoTask.tpl", "modules"=>$createToDoModules, "sourcemodule"=>'');
+$taskTypes[] = array("name"=>"VTCreateEventTask", "label"=>"Create Event", "classname"=>"VTCreateEventTask", "classpath"=>"modules/com_vtiger_workflow/tasks/VTCreateEventTask.inc", "templatepath"=>"com_vtiger_workflow/taskforms/VTCreateEventTask.tpl", "modules"=>$createEventModules, "sourcemodule"=>'');
+$taskTypes[] = array("name"=>"VTUpdateFieldsTask", "label"=>"Update Fields", "classname"=>"VTUpdateFieldsTask", "classpath"=>"modules/com_vtiger_workflow/tasks/VTUpdateFieldsTask.inc", "templatepath"=>"com_vtiger_workflow/taskforms/VTUpdateFieldsTask.tpl", "modules"=>$defaultModules, "sourcemodule"=>'');
+$taskTypes[] = array("name"=>"VTCreateEntityTask", "label"=>"Create Entity", "classname"=>"VTCreateEntityTask", "classpath"=>"modules/com_vtiger_workflow/tasks/VTCreateEntityTask.inc", "templatepath"=>"com_vtiger_workflow/taskforms/VTCreateEntityTask.tpl", "modules"=>$defaultModules, "sourcemodule"=>'');
+$taskTypes[] = array("name"=>"VTSMSTask", "label"=>"SMS Task", "classname"=>"VTSMSTask", "classpath"=>"modules/com_vtiger_workflow/tasks/VTSMSTask.inc", "templatepath"=>"com_vtiger_workflow/taskforms/VTSMSTask.tpl", "modules"=>$defaultModules, "sourcemodule"=>'SMSNotifier');
+
+foreach ($taskTypes as $taskType) {
+	VTTaskType::registerTaskType($taskType);
+}
 // Creating Default workflows
 $workflowManager = new VTWorkflowManager($adb);
 $taskManager = new VTTaskManager($adb);
@@ -546,6 +578,7 @@ foreach ($replaceReportColumnsList as $oldName => $newName) {
 ExecutePQuery("CREATE TABLE if not exists vtiger_homereportchart (stuffid int(19) PRIMARY KEY, reportid int(19), reportcharttype varchar(100))", array());
 ExecutePQuery("CREATE TABLE vtiger_reportgroupbycolumn(reportid int(19),sortid int(19),sortcolname varchar(250),dategroupbycriteria varchar(250))", array());
 ExecutePQuery("ALTER TABLE vtiger_reportgroupbycolumn add constraint fk_1_vtiger_reportgroupbycolumn FOREIGN KEY (reportid) REFERENCES vtiger_report(reportid) ON DELETE CASCADE", array());
+ExecutePQuery("insert into vtiger_reportgroupbycolumn (reportid, sortid, sortcolname, dategroupbycriteria) select reportid, sortcolid, columnname, 'None' from vtiger_reportsortcol where columnname like '%:D'", array());
 
 ExecutePQuery("DELETE FROM vtiger_time_zone WHERE time_zone = 'Kwajalein'", array());
 ExecutePQuery("UPDATE vtiger_users SET time_zone='UTC' WHERE time_zone='Kwajalein'", array());

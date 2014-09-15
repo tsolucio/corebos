@@ -62,6 +62,7 @@ $mod_strings = array(
 	'LBL_GENERATED_REPORT' => 'Generated Report',
 	'LBL_GRAND_TOTAL' => 'Grand Total',
 	'LBL_EXPORTXL_BUTTON' => 'Export to Excel',
+	'LBL_EXPORTCSV'=>'Export To CSV',
 	'LBL_NO_PERMISSION' => 'Your profile dosen\'t allow you view the reports for one of the module(s)',
 	'LBL_SELECT_COLUMNS_TO_GENERATE_REPORTS' => 'Select columns to generate reports',
 	'LBL_AVAILABLE_FIELDS' => 'Available Fields',

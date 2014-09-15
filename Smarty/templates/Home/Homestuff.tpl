@@ -95,6 +95,7 @@ function fnAddWindow(obj,CurrObj){
 {literal}
 }
 {/literal}
+var user_tag_showas = '{$USER_TAG_SHOWAS}';
 </script>
 
 

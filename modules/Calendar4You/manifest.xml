@@ -1,0 +1,250 @@
+<?xml version='1.0'?>
+<module>
+<name>Calendar4You</name>
+<label>Calendar4You</label>
+<parent>Tools</parent>
+<type>extension</type>
+<version>540.3</version>
+<dependencies>
+<vtiger_version>5.4.0</vtiger_version>
+<vtiger_max_version>5.*</vtiger_max_version>
+</dependencies>
+<migrations>
+    <migration version='540.2.1'>
+    <tables>
+        <table>
+        <name>its4you_googlesync4you_events</name>
+        <sql><![CDATA[ALTER TABLE `its4you_googlesync4you_events` ADD `lastmodified` VARCHAR( 200 ) NULL ]]></sql>
+        </table>
+    </tables>
+    </migration>
+    <migration version='540.2.0'>
+    <tables>
+        <table>
+        <name>its4you_googlesync4you_access</name>
+        <sql><![CDATA[CREATE TABLE IF NOT EXISTS `its4you_googlesync4you_access` (
+          `userid` int(11) NOT NULL,
+          `google_login` varchar(255) NOT NULL,
+          `google_password` varchar(255) NOT NULL
+        ) ENGINE=InnoDB]]></sql>
+        </table>
+        <table>
+        <name>its4you_googlesync4you_calendar</name>
+        <sql><![CDATA[CREATE TABLE IF NOT EXISTS `its4you_googlesync4you_calendar` (
+          `userid` int(11) NOT NULL,
+          `event` varchar(200) NOT NULL,
+          `calendar` varchar(255) NOT NULL,
+          `type` int(2) NOT NULL
+        ) ENGINE=InnoDB]]></sql>
+        </table>
+        <table>
+        <name>its4you_googlesync4you_dis</name>
+        <sql><![CDATA[CREATE TABLE IF NOT EXISTS `its4you_googlesync4you_dis` (
+          `userid` int(11) NOT NULL,
+          `event` varchar(200) NOT NULL,
+          `type` int(2) NOT NULL
+        ) ENGINE=InnoDB]]></sql>
+        </table>
+        <table>
+        <name>its4you_googlesync4you_events</name>
+        <sql><![CDATA[CREATE TABLE IF NOT EXISTS `its4you_googlesync4you_events` (
+          `id` int(11) NOT NULL AUTO_INCREMENT,
+          `crmid` int(11) NOT NULL,
+          `geventid` text NOT NULL,
+          `userid` int(11) NOT NULL,
+          `eventtype` varchar(255) NOT NULL, 
+          PRIMARY KEY (`id`)
+        ) ENGINE=InnoDB]]></sql>
+        </table>
+    </tables>
+  </migration>
+  <migration version='540.1.4'>
+    <tables>
+        <table>
+            <name>its4you_calendar4you_view</name>
+            <sql>
+            <![CDATA[CREATE TABLE IF NOT EXISTS `its4you_calendar4you_view` (
+              `userid` int(11) NOT NULL,
+              `type` int(11) NOT NULL,
+              `parent` varchar(255) NOT NULL,
+              PRIMARY KEY (`userid`,`type`,`parent`)
+            ) ENGINE=InnoDB]]>
+            </sql>
+        </table>
+    </tables>
+  </migration>
+  <migration version='540.1.2'>
+    <tables>
+        <table>
+            <name>its4you_calendar4you_settings</name>
+            <sql>
+            <![CDATA[ALTER TABLE `its4you_calendar4you_settings` ADD `user_view` VARCHAR( 100 ) NULL ;]]>
+            </sql>
+        </table>
+    </tables>
+  </migration>
+</migrations>
+<license>
+<inline><![CDATA[  
+  **************************************************************************************
+ *  Module              : Calendar4You
+ *  Version             : 540.3
+ *  Vtiger              : 5.4.0
+ *  Author              : IT-Solutions4You s.r.o - www.its4you.sk 
+ *  Supported browsers  : Internet Explorer 7 or higher, Mozilla Firefox 3.0 or higher 
+ ***************************************************************************************
+ ]]></inline>
+</license>
+<tables>
+<table>
+<name>its4you_calendar4you_colors</name>
+<sql><![CDATA[CREATE TABLE IF NOT EXISTS `its4you_calendar4you_colors` (
+  `userid` int(11) NOT NULL,
+  `mode` varchar(100) NOT NULL,
+  `entity` varchar(100) NOT NULL,
+  `type` varchar(100) NOT NULL,
+  `color` varchar(100) NOT NULL
+) ENGINE=InnoDB]]></sql>
+</table>
+<table>
+<name>its4you_calendar4you_event_fields</name>
+<sql><![CDATA[CREATE TABLE IF NOT EXISTS `its4you_calendar4you_event_fields` (
+  `efid` int(11) NOT NULL AUTO_INCREMENT,
+  `userid` int(11) NOT NULL,
+  `event` varchar(200) NOT NULL,
+  `type` int(2) NOT NULL,
+  `view` varchar(50) NOT NULL,
+  `fieldname` varchar(200) NOT NULL,
+  PRIMARY KEY (`efid`)
+) ENGINE=InnoDB AUTO_INCREMENT=0]]></sql>
+</table>
+<table>
+<name>its4you_calendar4you_profilespermissions</name>
+<sql><![CDATA[CREATE TABLE IF NOT EXISTS `its4you_calendar4you_profilespermissions` (
+  `profileid` int(11) NOT NULL,
+  `operation` int(11) NOT NULL,
+  `permissions` int(1) NOT NULL,
+  PRIMARY KEY (`profileid`,`operation`)
+) ENGINE=InnoDB]]></sql>
+</table>   
+<table>
+<name>its4you_calendar4you_settings</name>
+<sql><![CDATA[CREATE TABLE IF NOT EXISTS `its4you_calendar4you_settings` (
+  `userid` int(11) NOT NULL,
+  `dayoftheweek` varchar(100) NOT NULL,
+  `show_weekends` int(2) DEFAULT NULL,
+  `user_view` varchar(100) DEFAULT NULL
+) ENGINE=InnoDB]]></sql>
+</table>   
+<table>
+<name>its4you_calendar4you_view</name>
+<sql><![CDATA[CREATE TABLE IF NOT EXISTS `its4you_calendar4you_view` (
+      `userid` int(11) NOT NULL,
+      `type` int(11) NOT NULL,
+      `parent` varchar(255) NOT NULL,
+      PRIMARY KEY (`userid`,`type`,`parent`)
+    ) ENGINE=InnoDB]]></sql>
+</table>
+<table>
+<name>its4you_googlesync4you_access</name>
+<sql><![CDATA[CREATE TABLE IF NOT EXISTS `its4you_googlesync4you_access` (
+  `userid` int(11) NOT NULL,
+  `google_login` varchar(255) NOT NULL,
+  `google_password` varchar(255) NOT NULL
+) ENGINE=InnoDB]]></sql>
+</table>
+<table>
+<name>its4you_googlesync4you_calendar</name>
+<sql><![CDATA[CREATE TABLE IF NOT EXISTS `its4you_googlesync4you_calendar` (
+  `userid` int(11) NOT NULL,
+  `event` varchar(200) NOT NULL,
+  `calendar` varchar(255) NOT NULL,
+  `type` int(2) NOT NULL
+) ENGINE=InnoDB]]></sql>
+</table>
+<table>
+<name>its4you_googlesync4you_dis</name>
+<sql><![CDATA[CREATE TABLE IF NOT EXISTS `its4you_googlesync4you_dis` (
+  `userid` int(11) NOT NULL,
+  `event` varchar(200) NOT NULL,
+  `type` int(2) NOT NULL
+) ENGINE=InnoDB]]></sql>
+</table>
+<table>
+<name>its4you_googlesync4you_events</name>
+<sql><![CDATA[CREATE TABLE IF NOT EXISTS `its4you_googlesync4you_events` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `crmid` int(11) NOT NULL,
+  `geventid` text NOT NULL,
+  `userid` int(11) NOT NULL,
+  `eventtype` varchar(255) NOT NULL,
+  `lastmodified` varchar(200) DEFAULT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB]]></sql>
+</table>
+</tables>
+<sharingaccess>
+<default>private</default>
+</sharingaccess>
+<customlinks>
+<customlink>
+<linktype>HEADERCSS</linktype>
+<linklabel>Calendar4You_HeaderStyle1</linklabel>
+<linkurl><![CDATA[modules/Calendar4You/fullcalendar/fullcalendar.css]]></linkurl>
+<linkicon><![CDATA[]]></linkicon>
+<sequence>0</sequence>
+<handler_path><![CDATA[]]></handler_path>
+<handler_class><![CDATA[]]></handler_class>
+<handler><![CDATA[]]></handler>
+</customlink>
+<customlink>
+<linktype>HEADERSCRIPT</linktype>
+<linklabel>Calendar4You_HeaderScript1</linklabel>
+<linkurl><![CDATA[modules/Calendar4You/jquery/jquery-1.9.1.min.js]]></linkurl>
+<linkicon><![CDATA[]]></linkicon>
+<sequence>0</sequence>
+<handler_path><![CDATA[]]></handler_path>
+<handler_class><![CDATA[]]></handler_class>
+<handler><![CDATA[]]></handler>
+</customlink>
+<customlink>
+<linktype>HEADERSCRIPT</linktype>
+<linklabel>Calendar4You_HeaderScript2</linklabel>
+<linkurl><![CDATA[modules/Calendar4You/jquery/jquery-ui-1.10.2.custom.min.js]]></linkurl>
+<linkicon><![CDATA[]]></linkicon>
+<sequence>0</sequence>
+<handler_path><![CDATA[]]></handler_path>
+<handler_class><![CDATA[]]></handler_class>
+<handler><![CDATA[]]></handler>
+</customlink>
+<customlink>
+<linktype>HEADERSCRIPT</linktype>
+<linklabel>Calendar4You_HeaderScript3</linklabel>
+<linkurl><![CDATA[modules/Calendar4You/fullcalendar/fullcalendar.js]]></linkurl>
+<linkicon><![CDATA[]]></linkicon>
+<sequence>0</sequence>
+<handler_path><![CDATA[]]></handler_path>
+<handler_class><![CDATA[]]></handler_class>
+<handler><![CDATA[]]></handler>
+</customlink>
+<customlink>
+<linktype>HEADERSCRIPT</linktype>
+<linklabel>Calendar4You_HeaderScript4</linklabel>
+<linkurl><![CDATA[modules/Calendar4You/Calendar4You.js]]></linkurl>
+<linkicon><![CDATA[]]></linkicon>
+<sequence>0</sequence>
+<handler_path><![CDATA[]]></handler_path>
+<handler_class><![CDATA[]]></handler_class>
+<handler><![CDATA[]]></handler>
+</customlink>
+</customlinks>
+<crons> 
+<cron> 
+<name>Calendar4You - GoogleSync</name> 
+<frequency>900</frequency>
+<status>0</status> 
+<handler>modules/Calendar4You/cron/UpdateEvents.service</handler> 
+<description></description>
+</cron>
+</crons>
+</module>

@@ -680,6 +680,11 @@ $mod_strings = array(
 	'Notes' => 'Jegyzetek',
 	'LBL_MAIL_SEND_STATUS' => 'Az emailt sikeresen elküldtük',
 	'LBL_MAIL_NOT_SENT_TO_USER' => 'Az emailt nem tudtuk elküldeni a felhasználónak',
-	'LBL_PLS_CHECK_EMAIL_N_SERVER' => 'Ellenőrizd az email szerver beállításait'
+	'LBL_PLS_CHECK_EMAIL_N_SERVER' => 'Ellenőrizd az email szerver beállításait',
+	'flat'=>'Flat',
+	'hring'=>'Horizontal Ring',
+	'vring'=>'Vertical Ring',
+	'hcylinder'=>'Horizontal Cylinder',
+	'vcylinder'=>'Vertical Cylinder',
 );
 ?>
