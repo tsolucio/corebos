@@ -88,7 +88,7 @@ function massMail(module) {
 }
 
 //added by rdhital for better emails
-function set_return_emails(entity_id,email_id,parentname,emailadd,emailadd2,perm){
+function set_return_emails(entity_id,email_id,parentname,emailadd,emailadd2,perm,emailfield){
 	if(perm == 0 || perm == 3) {
 		if(emailadd2 == '')	{			
 			alert(alert_arr.LBL_DONT_HAVE_EMAIL_PERMISSION);
@@ -101,9 +101,16 @@ function set_return_emails(entity_id,email_id,parentname,emailadd,emailadd2,perm
 			emailadd = emailadd2;
 	}	
 	if(emailadd != '') {
+		if (emailfield=='default') {
 		window.opener.document.EditView.parent_id.value = window.opener.document.EditView.parent_id.value+entity_id+'@'+email_id+'|';
 		window.opener.document.EditView.parent_name.value = window.opener.document.EditView.parent_name.value+parentname+'<'+emailadd+'>,';
 		window.opener.document.EditView.hidden_toid.value = emailadd+','+window.opener.document.EditView.hidden_toid.value;
+		} else {
+			if (emailfield=='bcc_name')
+			window.opener.document.EditView.bcc_name.value = window.opener.document.EditView.bcc_name.value+parentname+'<'+emailadd+'>,';
+			else
+			window.opener.document.EditView.cc_name.value = window.opener.document.EditView.cc_name.value+parentname+'<'+emailadd+'>,';
+		}
 		window.close();
 	} else {
 		alert('"'+parentname+alert_arr.DOESNOT_HAVE_AN_MAILID);

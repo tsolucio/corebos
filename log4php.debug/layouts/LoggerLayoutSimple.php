@@ -1,84 +1,56 @@
 <?php
 /**
- * log4php is a PHP port of the log4j java logging package.
- * 
- * <p>This framework is based on log4j (see {@link http://jakarta.apache.org/log4j log4j} for details).</p>
- * <p>Design, strategies and part of the methods documentation are developed by log4j team 
- * (Ceki Gülcü as log4j project founder and 
- * {@link http://jakarta.apache.org/log4j/docs/contributors.html contributors}).</p>
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements.  See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License.  You may obtain a copy of the License at
  *
- * <p>PHP port, extensions and modifications by VxR. All rights reserved.<br>
- * For more information, please see {@link http://www.vxr.it/log4php/}.</p>
+ *     http://www.apache.org/licenses/LICENSE-2.0
  *
- * <p>This software is published under the terms of the LGPL License
- * a copy of which has been included with this distribution in the LICENSE file.</p>
- * 
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
  * @package log4php
- * @subpackage layouts
  */
-
-/**
- * @ignore 
- */
-if (!defined('LOG4PHP_DIR')) define('LOG4PHP_DIR', dirname(__FILE__) . '/..');
-
-if (!defined('LOG4PHP_LINE_SEP')) {
-    if (substr(php_uname(), 0, 7) == "Windows") { 
-        define('LOG4PHP_LINE_SEP', "\r\n");
-    } else {
-        /**
-         * @ignore
-         */
-        define('LOG4PHP_LINE_SEP', "\n");
-    }
-}
-
- 
-/**
- */
-require_once(LOG4PHP_DIR . '/LoggerLayout.php');
 
 /**
  * A simple layout.
  *
  * Returns the log statement in a format consisting of the
  * <b>level</b>, followed by " - " and then the <b>message</b>. 
- * For example, 
- * <samp> INFO - "A message" </samp>
  *
- * @author VxR <vxr@vxr.it>
- * @version $Revision: 1.8 $
+ * For example the following php and properties files
+ * 
+ * {@example ../../examples/php/layout_simple.php 19}<br>
+ * 
+ * {@example ../../examples/resources/layout_simple.properties 18}<br>
+ *
+ * would result in:
+ * 
+ * <samp>INFO - Hello World!</samp>
+ *
+ * @version $Revision: 1213283 $
  * @package log4php
  * @subpackage layouts
  */  
 class LoggerLayoutSimple extends LoggerLayout {
-    
-    /**
-     * Constructor
-     */
-    function LoggerLayoutSimple()
-    {
-        return;
-    }
-
-    function activateOptions() 
-    {
-        return;
-    }
-
-    /**
-     * Returns the log statement in a format consisting of the
-     * <b>level</b>, followed by " - " and then the
-     * <b>message</b>. For example, 
-     * <samp> INFO - "A message" </samp>
-     *
-     * @param LoggerLoggingEvent $event
-     * @return string
-     */
-    function format($event)
-    {
-        $level = $event->getLevel();
-        return $level->toString() . ' - ' . $event->getRenderedMessage(). LOG4PHP_LINE_SEP;
-    }
+	/**
+	 * Returns the log statement in a format consisting of the
+	 * <b>level</b>, followed by " - " and then the
+	 * <b>message</b>. For example, 
+	 * <samp> INFO - "A message" </samp>
+	 *
+	 * @param LoggerLoggingEvent $event
+	 * @return string
+	 */
+	public function format(LoggerLoggingEvent $event) {
+		$level = $event->getLevel();
+		$message = $event->getRenderedMessage();
+		return "$level - $message" . PHP_EOL;
+	}
 }
-?>

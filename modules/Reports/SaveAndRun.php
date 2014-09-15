@@ -174,6 +174,7 @@ if($numOfRows > 0) {
 			$rep_name = $rep_in_fldr[$i]['reportname'];
 			$reports_array[$rep_id]=$rep_name;
 		}
+		$list_report_form->assign('CHECK', Button_Check($ogReport->primodule));
 		if($_REQUEST['mode'] != 'ajax')
 		{
 			$list_report_form->assign("REPINFOLDER", $reports_array);

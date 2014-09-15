@@ -1,0 +1,33 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_adocdetail</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_adocdetail` (
+  `adocdetailid` int(11) DEFAULT NULL,
+  `adocdetailno` varchar(100) DEFAULT NULL,
+  `adocdetailname` varchar(255) DEFAULT NULL,
+  `nrline` varchar(255) DEFAULT NULL,
+  `adoctomaster` int(11) DEFAULT NULL,
+  `adoc_product` int(11) DEFAULT NULL,
+  `adoc_quantity` varchar(255) DEFAULT NULL,
+  `adoc_price` decimal(10,2) DEFAULT NULL,
+  `inout_docnr` varchar(255) DEFAULT NULL,
+  `poteknema` varchar(255) DEFAULT NULL,
+  `posupplier` varchar(255) DEFAULT NULL,
+  `riferimento` varchar(255) DEFAULT NULL,
+  `adoc_stock` int(11) DEFAULT NULL,
+  `chiave_adocdetailid` varchar(255) DEFAULT NULL,
+  `pcdetail` varchar(225) DEFAULT NULL,
+  `adocdetail_project` int(11) DEFAULT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_adocdetailcf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_adocdetailcf` (
+  `adocdetailid` int(11) NOT NULL,
+  PRIMARY KEY (`adocdetailid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>

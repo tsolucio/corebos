@@ -1,89 +1,88 @@
 <?php
 /**
- * log4php is a PHP port of the log4j java logging package.
- * 
- * <p>This framework is based on log4j (see {@link http://jakarta.apache.org/log4j log4j} for details).</p>
- * <p>Design, strategies and part of the methods documentation are developed by log4j team 
- * (Ceki Gülcü as log4j project founder and 
- * {@link http://jakarta.apache.org/log4j/docs/contributors.html contributors}).</p>
+ * Licensed to the Apache Software Foundation (ASF) under one or more
+ * contributor license agreements. See the NOTICE file distributed with
+ * this work for additional information regarding copyright ownership.
+ * The ASF licenses this file to You under the Apache License, Version 2.0
+ * (the "License"); you may not use this file except in compliance with
+ * the License. You may obtain a copy of the License at
  *
- * <p>PHP port, extensions and modifications by VxR. All rights reserved.<br>
- * For more information, please see {@link http://www.vxr.it/log4php/}.</p>
+ *	   http://www.apache.org/licenses/LICENSE-2.0
  *
- * <p>This software is published under the terms of the LGPL License
- * a copy of which has been included with this distribution in the LICENSE file.</p>
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ */
+
+/**
+ * LoggerAppenderEcho uses the PHP echo() function to output events. 
  * 
+ * This appender uses a layout.
+ * 
+ * ## Configurable parameters: ##
+ * 
+ * - **htmlLineBreaks** - If set to true, a <br /> element will be inserted 
+ *     before each line break in the logged message. Default is false.
+ *
+ * @version $Revision: 1337820 $
  * @package log4php
  * @subpackage appenders
+ * @license http://www.apache.org/licenses/LICENSE-2.0 Apache License, Version 2.0
+ * @link http://logging.apache.org/log4php/docs/appenders/echo.html Appender documentation
  */
+class LoggerAppenderEcho extends LoggerAppender {
+	/** 
+	 * Used to mark first append. Set to false after first append.
+	 * @var boolean 
+	 */
+	protected $firstAppend = true;
+	
+	/** 
+	 * If set to true, a <br /> element will be inserted before each line
+	 * break in the logged message. Default value is false. @var boolean 
+	 */
+	protected $htmlLineBreaks = false;
+	
+	public function close() {
+		if($this->closed != true) {
+			if(!$this->firstAppend) {
+				echo $this->layout->getFooter();
+			}
+		}
+		$this->closed = true;
+	}
 
-/**
- * @ignore 
- */
-if (!defined('LOG4PHP_DIR')) define('LOG4PHP_DIR', dirname(__FILE__) . '/..');
- 
-/**
- */
-require_once(LOG4PHP_DIR . '/LoggerAppenderSkeleton.php');
-require_once(LOG4PHP_DIR . '/LoggerLog.php');
-
-/**
- * LoggerAppenderEcho uses {@link PHP_MANUAL#echo echo} function to output events. 
- * 
- * <p>This appender requires a layout.</p>  
- *
- * @author VxR <vxr@vxr.it>
- * @version $Revision: 1.5 $
- * @package log4php
- * @subpackage appenders
- */
-class LoggerAppenderEcho extends LoggerAppenderSkeleton {
-
-    /**
-     * @access private 
-     */
-    var $requiresLayout = true;
-
-    /**
-     * @var boolean used internally to mark first append 
-     * @access private 
-     */
-    var $firstAppend    = true;
-    
-    /**
-     * Constructor.
-     *
-     * @param string $name appender name
-     */
-    function LoggerAppenderEcho($name)
-    {
-        $this->LoggerAppenderSkeleton($name);
-    }
-
-    function activateOptions()
-    {
-        return;
-    }
-    
-    function close()
-    {
-        if (!$this->firstAppend)
-            echo $this->layout->getFooter();
-        $this->closed = true;    
-    }
-
-    function append($event)
-    {
-        LoggerLog::debug("LoggerAppenderEcho::append()");
-        
-        if ($this->layout !== null) {
-            if ($this->firstAppend) {
-                echo $this->layout->getHeader();
-                $this->firstAppend = false;
-            }
-            echo $this->layout->format($event);
-        } 
-    }
+	public function append(LoggerLoggingEvent $event) {
+		if($this->layout !== null) {
+			if($this->firstAppend) {
+				echo $this->layout->getHeader();
+				$this->firstAppend = false;
+			}
+			$text = $this->layout->format($event);
+			
+			if ($this->htmlLineBreaks) {
+				$text = nl2br($text);
+			}
+			echo $text;
+		} 
+	}
+	
+	/**
+	 * Sets the 'htmlLineBreaks' parameter.
+	 * @param boolean $value
+	 */
+	public function setHtmlLineBreaks($value) {
+		$this->setBoolean('htmlLineBreaks', $value);
+	}
+	
+	/**
+	 * Returns the 'htmlLineBreaks' parameter.
+	 * @returns boolean
+	 */
+	public function getHtmlLineBreaks() {
+		return $this->htmlLineBreaks;
+	}
 }
 
-?>

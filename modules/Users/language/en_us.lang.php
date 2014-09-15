@@ -792,7 +792,11 @@ $mod_strings = Array(
 'Language'=>'Language',
 'Secondary Email'=>'Secondary Email',
 'Time Zone'=>'Time Zone',
-	
+'flat'=>'Flat',
+'hring'=>'Horizontal Ring',
+'vring'=>'Vertical Ring',
+'hcylinder'=>'Horizontal Cylinder',
+'vcylinder'=>'Vertical Cylinder',
 );
 
 ?>

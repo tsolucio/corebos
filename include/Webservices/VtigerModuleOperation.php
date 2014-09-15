@@ -276,6 +276,11 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 	}
 	
 	function getModuleFields(){
+		static $purified_mfcache = array();
+		$mfkey = $this->meta->getTabName();
+		if (array_key_exists($mfkey, $purified_mfcache)) {
+			return $purified_mfcache[$mfkey];
+		}
 		
 		$fields = array();
 		$moduleFields = $this->meta->getModuleFields();
@@ -286,11 +291,16 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			array_push($fields,$this->getDescribeFieldArray($webserviceField));
 		}
 		array_push($fields,$this->getIdField($this->meta->getObectIndexColumn()));
-		
+		$purified_mfcache[$mfkey] = $fields;
 		return $fields;
 	}
 	
 	function getDescribeFieldArray($webserviceField){
+		static $purified_dfcache = array();
+		$dfkey = $webserviceField->getFieldName().$webserviceField->getTabId();
+		if (array_key_exists($dfkey, $purified_dfcache)) {
+			return $purified_dfcache[$dfkey];
+		}
 		$default_language = VTWS_PreserveGlobal::getGlobal('default_language');
 		
 		require 'modules/'.$this->meta->getTabName()."/language/$default_language.lang.php";
@@ -314,6 +324,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		if($webserviceField->hasDefault()){
 			$describeArray['default'] = $webserviceField->getDefault();
 		}
+		$purified_dfcache[$dfkey] = $describeArray;
 		return $describeArray;
 	}
 	

@@ -1,5 +1,4 @@
 <?php
-
 /*******************************************************************************
  * The contents of this file are subject to the following licences:
  * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
@@ -87,7 +86,7 @@ $mod_strings = Array(
 
 //Added for 4.2 Patch I
 'LBL_EXPORTXL_BUTTON'=>'Exporteer naar Excel',
-
+'LBL_EXPORTCSV'=>'Export To CSV',
 //Added for 5 Beta
 'LBL_NO_PERMISSION'=>'Uw profiel geeft u geen rechten om rapporten en modules te bekijken.',
 'LBL_SELECT_COLUMNS_TO_GENERATE_REPORTS'=>'Selecteer kolommen om rapporten te genereren',

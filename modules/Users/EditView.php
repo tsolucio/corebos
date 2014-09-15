@@ -115,9 +115,20 @@ if(isset($_REQUEST['record']) && $_REQUEST['isDuplicate'] != 'true')
 
 $smarty->assign("HOMEORDER",$focus->getHomeStuffOrder($focus->id));
 //Added to provide User based Tagcloud
-if($mode == 'create') $smarty->assign("TAGCLOUDVIEW","true"); // While creating user select tag cloud by default
-else $smarty->assign("TAGCLOUDVIEW",getTagCloudView($focus->id));
-
+if($mode == 'create') { // While creating user select tag cloud by default
+	$smarty->assign("TAGCLOUDVIEW","true");
+	$smarty->assign("SHOWTAGAS",'hring');
+} else {
+	$smarty->assign("TAGCLOUDVIEW",getTagCloudView($focus->id));
+	$smarty->assign("SHOWTAGAS",getTagCloudShowAs($focus->id));
+}
+$smarty->assign("tagshow_options", array(
+ "flat" => $mod_strings['flat'],
+ "hring" => $mod_strings['hring'],
+ "vring" => $mod_strings['vring'],
+ "hcylinder" => $mod_strings['hcylinder'],
+ "vcylinder" => $mod_strings['vcylinder'],
+));
 $smarty->assign("DUPLICATE",vtlib_purify($_REQUEST['isDuplicate']));
 $smarty->assign("USER_MODE",$mode);
 $smarty->assign('PARENTTAB', getParentTab());

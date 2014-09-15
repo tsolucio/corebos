@@ -23,7 +23,26 @@ function vtlib_setvalue_from_popup(recordid,value,target_fieldname) {
         if(domnode_id) domnode_id.value = recordid;
         if(domnode_display) domnode_display.value = value;
         return true;
-    } else {
+    }   else if(window.opener.document.getElementById(target_fieldname) && target_fieldname.indexOf('adoc_product')!=-1) 
+        {
+          
+                 var domnode_id = window.opener.document.getElementById(target_fieldname);
+		 var domnode_display = window.opener.document.getElementById(target_fieldname+'_display');
+                 domnode_id.value= recordid;
+		 domnode_display.value = value;
+                 window.opener.up_location();
+                 return true;
+        }
+      else if(window.opener.document.getElementById(target_fieldname) && target_fieldname.indexOf('adoc_product2')!=-1) 
+        {
+          
+                 var domnode_id = window.opener.document.getElementById(target_fieldname);
+		 var domnode_display = window.opener.document.getElementById(adoc_product2_display);
+                 domnode_id.value= recordid;
+		 domnode_display.value = value;
+                 window.opener.up_location();
+                 return true;
+        }else {
         return false;
     }
 }
