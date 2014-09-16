@@ -47,8 +47,8 @@ $HELPDESK_SUPPORT_EMAIL_REPLY_ID = $HELPDESK_SUPPORT_EMAIL_ID;
 $dbconfig['db_server'] = 'localhost';
 $dbconfig['db_port'] = ':3306';
 $dbconfig['db_username'] = 'root';
-$dbconfig['db_password'] = 'Evostorm!';
-$dbconfig['db_name'] = 'corebosgit';
+$dbconfig['db_password'] = 'lori';
+$dbconfig['db_name'] = 'evolutivocore';
 $dbconfig['db_type'] = 'mysql';
 $dbconfig['db_status'] = 'true';
 
@@ -79,10 +79,10 @@ $dbconfigoption['ssl'] = false;
 
 $host_name = $dbconfig['db_hostname'];
 
-$site_URL = 'http://hpbs.evolutivo.it/evolutivocore';
+$site_URL = 'http://localhost/evolutivocore';
 
 // root directory path
-$root_directory = '/var/www2/evolutivocore/';
+$root_directory = '/var/www/evolutivocore/';
 
 // cache direcory path
 $cache_dir = 'cache/';
@@ -182,7 +182,7 @@ $display_empty_home_blocks = false;
 $disable_stats_tracking = false;
 
 // Generating Unique Application Key
-$application_unique_key = 'b2bca6c87db35c29b210df16e309c00a';
+$application_unique_key = 'f249fb340b6806e2dc9f08b9dc2d3aca';
 
 // trim descriptions, titles in listviews to this value
 $listview_max_textlength = 40;
