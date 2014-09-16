@@ -72,7 +72,16 @@
 					{if $reportdetails.state neq 'SAVED' && $reportdetails.editable eq 'true'}
 						&nbsp;| &nbsp;<a href="javascript:;" onclick="DeleteReport('{$reportdetails.reportid}');"><img src="{'delete.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" title="{$MOD.LBL_DELETE}..." border="0"></a>
 					{/if}
-                                              &nbsp;| &nbsp;<a href="javascript:void(0);" onclick="goToURL('index.php?module=Reports&action=ReportsAjax&file=CreateCSV&record={$reportdetails.reportid}');"><img src="{'csv.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTCSV}" title="{$MOD.LBL_EXPORTCSV}" border="0"></a>
+                                        {php}  
+                                        $check_array = Button_Check($this->get_template_vars('reportdetails.primarymodule'));
+                                        $this->assign('CHECK',$check_array["Export"]);
+                                        {/php}
+                                        {if $CHECK eq 'yes'}
+                                              &nbsp;| &nbsp;<a href="javascript:void(0);" onclick="gotourl('index.php?module=Reports&action=ReportsAjax&file=CreateCSV&record={$reportdetails.reportid}');"><img src="{'csv_text.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTCSV}" title="{$MOD.LBL_EXPORTCSV}" border="0"></a>
+                                              &nbsp;| &nbsp;<a href="javascript:void(0);" onclick="gotourl('index.php?module=Reports&action=CreateXL&record={$reportdetails.reportid}');"><img src="{'excel.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTXL_BUTTON}" title="{$MOD.LBL_EXPORTXL_BUTTON}" border="0"></a>
+                                              &nbsp;| &nbsp;<a href="javascript:void(0);" onclick="gotourl('index.php?module=Reports&action=CreatePDF&record={$reportdetails.reportid}');"><img src="{'pdf.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTPDF_BUTTON}" title="{$MOD.LBL_EXPORTPDF_BUTTON}" border="0"></a>                                             
+                                        {/if}
+                                 </td>    
 				</td>
 				</tr>
 			{/foreach}
@@ -98,11 +107,4 @@
 	</tr>
 	</tbody>
 </table>
-{literal}
- <script type="text/javascript">
- function goToURL(url) { 
-	document.location.href = url;
- }
- </script>
-{/literal}
 
