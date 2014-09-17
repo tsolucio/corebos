@@ -56,6 +56,9 @@ require_once("VTWorkflowApplication.inc");
 			if ($fieldName == 'calendar_repeat_limit_date') {
 				$task->$fieldName = DateTimeField::convertToDBFormat($request[$fieldName]);
 			}
+			if ($fieldName == 'content') {
+				$task->$fieldName = $_REQUEST[$fieldName];
+			}
 		}
 		$tm->saveTask($task);
 

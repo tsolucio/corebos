@@ -140,7 +140,7 @@ $ins_dir_renamed = $renameResult['install_directory_renamed'];
 	<table border=0 cellspacing=0 cellpadding=10 width=100%>
 		<tr>
 			<td colspan=2 align="center">
-				<form action="index.php" method="post" name="form" id="form">
+				<form action="index.php" method="get" name="form" id="form">
 					<input type="hidden" name="default_user_name" value="admin">
 			 		<input type="submit" class="button" value="<?php echo $installationStrings['LBL_FINISH']; ?>" title="<?php echo $installationStrings['LBL_FINISH']; ?>" />
 				</form>
