@@ -15,6 +15,7 @@ $mod_strings = Array(
 
 	'LBL_CUSTOM_INFORMATION' => 'zusätzliche Information',
 	'LBL_MODULEBLOCK_INFORMATION' => 'ModuleBlock Information',
+	'LBL_DESCRIPTION_INFORMATION' => 'Beschreibung',
 
 	'ModuleFieldLabel' => 'ModuleFieldLabel Text',	
 );
