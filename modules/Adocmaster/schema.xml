@@ -40,7 +40,19 @@
   `serialnr` varchar(120) DEFAULT '',
   `desriparazione` varchar(220) DEFAULT '',
   `diffdichiarato` varchar(200) DEFAULT '',
-  `cfiva` varchar(200) DEFAULT ''
+  `cfiva` varchar(200) DEFAULT '',
+  `linkvatexempt` varchar(100) DEFAULT NULL,
+  `linkpayment` varchar(100) DEFAULT NULL,
+  `impiva` varchar(100) DEFAULT NULL,
+  `nonimpiva` varchar(100) DEFAULT NULL,
+  `taxamount` varchar(100) DEFAULT NULL,
+  `totalamount` varchar(100) DEFAULT NULL,
+  `amount` varchar(100) DEFAULT NULL,
+  `adoc_dataconsegna` date DEFAULT NULL,
+  `adoc_costotrasporto` varchar(10) DEFAULT '',
+  `adoc_altricosti` varchar(10) DEFAULT '',
+  `adoc_fornitore` varchar(100) DEFAULT NULL,
+  `nrtracking` varchar(20) DEFAULT ''
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
 		</table>
 		<table>
