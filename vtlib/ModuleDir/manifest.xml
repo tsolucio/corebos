@@ -19,7 +19,7 @@
   `moduleclassid` int(11) default NULL,
   `moduleclass_no` varchar(26) default NULL,
   ..rest of fields..
-  PRIMARY KEY (`moduleclassid`),
+  PRIMARY KEY (`moduleclassid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
 </table>
 <table>
