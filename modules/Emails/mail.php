@@ -70,6 +70,7 @@ function send_mail($module,$to_email,$from_name,$from_email,$subject,$contents,$
 	if(!empty($replyToEmail)) {
 		$mail->AddReplyTo($replyToEmail);
 	}
+	$mail->ConfirmReadingTo = $mail->From;  //MSL
 
 	// vtmailscanner customization: If Support Reply to is defined use it.
 	global $HELPDESK_SUPPORT_EMAIL_REPLY_ID;
