@@ -106,4 +106,11 @@
 	</tr>
 	</tbody>
 </table>
+{literal}
+ <script type="text/javascript">
+ function goToURL(url) { 
+	document.location.href = url;
+ }
+ </script>
+{/literal}
 

@@ -42,6 +42,7 @@ $app_strings = array(
 'LBL_ALT_HOT_KEY'=>'Alt+',
 'LBL_SAVE_LABEL'=>'Speichern',
 'LBL_REPLACE_LABEL' => 'Ersetzen',
+'LBL_SAVE_AS'=>" Save As",
 'LBL_APPLY_BUTTON_LABEL' => 'Anwenden',
 'LBL_SEND_MAIL_BUTTON'=>'E-Mail senden',
 'LBL_SAVE_BUTTON_TITLE'=>'Speichern [Alt+S]',
