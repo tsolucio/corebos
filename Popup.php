@@ -112,13 +112,13 @@ switch($currentModule)
 		break;
 	case 'Invoice':
 		$smarty->assign("SINGLE_MOD",'Invoice');
+		if (isset($_REQUEST['select'])) $smarty->assign("SELECT",'enable');
 		if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='')
 			$smarty->assign("RETURN_MODULE",vtlib_purify($_REQUEST['return_module']));
 		$alphabetical = AlphabeticalSearch($currentModule,'Popup','subject','true','basic',$popuptype,"","",$url);
 		break;
 	case 'Products':
 		$smarty->assign("SINGLE_MOD",getTranslatedString('SINGLE_'.$currentModule));
-                if (isset($_REQUEST['select'])) $smarty->assign("SELECT",'enable');
 		if(isset($_REQUEST['curr_row']))
 		{
 			$curr_row = vtlib_purify($_REQUEST['curr_row']);
