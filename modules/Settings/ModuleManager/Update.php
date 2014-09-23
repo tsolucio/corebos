@@ -31,9 +31,49 @@ if($module_update_step == 'Step2') {
 	$uploadfilename = "$modulemanager_uploaddir/$uploadfile";	
 	checkFileAccess($modulemanager_uploaddir);
 
-	if(!move_uploaded_file($_FILES['module_zipfile']['tmp_name'], $uploadfilename)) {
-		$smarty->assign("MODULEUPDATE_FAILED", "true");
+	if ($_REQUEST['installtype'] == 'file') {
+		if(!move_uploaded_file($_FILES['module_zipfile']['tmp_name'], $uploadfilename)) {
+			$smarty->assign("MODULEUPDATE_FAILED", "true");
+			$uploadfilename = null;
+		}
 	} else {
+		$url = $_REQUEST['module_url'];
+		if (!preg_match('%^\w+://%', $url)) {
+			$smarty->assign("MODULEUPDATE_FAILED", "true");
+			$uploadfilename = null;
+		} else {
+			if (!preg_match('/.zip$/', $url)) {
+				$url = rtrim($url, '/');
+				$url .= '/archive/master.zip';
+			}
+			$input = fopen($url, 'r');
+			if (!file_put_contents($uploadfilename, $input)) {
+				$smarty->assign("MODULEUPDATE_FAILED", "true");
+				$uploadfilename = null;
+			}
+		}
+	}
+	if ($uploadfilename) {
+
+		// Check ZIP file contents for extra directory at the top
+		$za = new ZipArchive();
+		$za->open($uploadfilename);
+		for ($i = 0; $i < $za->numFiles; $i++) {
+			$entryName = $za->getNameIndex($i);
+			$firstSlash = strpos($entryName, '/');
+			if ($entryName === 'manifest.xml' || $entryName === './manifest.xml' || $firstSlash === false) {
+				$za->unchangeAll();
+				break;
+			}
+			$newEntryName = substr($entryName, $firstSlash + 1);
+			if ($newEntryName !== false) {
+				$za->renameIndex($i, $newEntryName);
+			} else {
+				$za->deleteIndex($i);
+			}
+		}
+		$za->close();
+
 		$package = new Vtiger_Package();
 		$moduleupdate_name = $package->getModuleNameFromZip($uploadfilename);
 

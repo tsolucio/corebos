@@ -106,7 +106,7 @@ function getReportFieldValue ($report, $picklistArray, $dbField, $valueArray, $f
 		$date = new DateTimeField($value);
 		$fieldvalue = $date->getDisplayDateTimeValue();
 	} elseif( $fieldType == 'time' && !empty($value) && $field->getFieldName()
-			!= 'duration_hours') {
+			!= 'duration_hours' && $field->getFieldName() != 'totaltime') {
 		$date = new DateTimeField($value);
 		$fieldvalue = $date->getDisplayTime();
 	} elseif( $fieldType == "picklist" && !empty($value) ) {
