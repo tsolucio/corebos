@@ -1,23 +1,11 @@
 <?php
 /*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the 
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+** The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Users/Authenticate.php,v 1.10 2005/02/28 05:25:22 jack Exp $
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
  ********************************************************************************/
 
 require_once('modules/Users/Users.php');
@@ -43,23 +31,23 @@ if($focus->is_authenticated())
 	if($audit_trail == 'true')
 	{
 		if($record == '')
-			$auditrecord = '';						
+			$auditrecord = '';
 		else
 			$auditrecord = $record;	
 
 		$date_var = $adb->formatDate(date('Y-m-d H:i:s'), true);
- 	    $query = "insert into vtiger_audit_trial values(?,?,?,?,?,?)";
-		$params = array($adb->getUniqueID('vtiger_audit_trial'), $focus->id, 'Users','Authenticate','',$date_var);				
+		$query = "insert into vtiger_audit_trial values(?,?,?,?,?,?)";
+		$params = array($adb->getUniqueID('vtiger_audit_trial'), $focus->id, 'Users','Authenticate','',$date_var);
 		$adb->pquery($query, $params);
 	}
 
 	
 	// Recording the login info
-        $usip=$_SERVER['REMOTE_ADDR'];
-        $intime=date("Y/m/d H:i:s");
-        require_once('modules/Users/LoginHistory.php');
-        $loghistory=new LoginHistory();
-        $Signin = $loghistory->user_login($focus->column_fields["user_name"],$usip,$intime);
+	$usip=$_SERVER['REMOTE_ADDR'];
+	$intime=date("Y/m/d H:i:s");
+	require_once('modules/Users/LoginHistory.php');
+	$loghistory=new LoginHistory();
+	$Signin = $loghistory->user_login($focus->column_fields["user_name"],$usip,$intime);
 
 	//Security related entries start
 	require_once('include/utils/UserInfoUtil.php');
@@ -104,11 +92,9 @@ if($focus->is_authenticated())
 	$log->debug("authenticated_user_theme is $authenticated_user_theme");
 	$log->debug("authenticated_user_language is $authenticated_user_language");
 	$log->debug("authenticated_user_id is ". $focus->id);
-        $log->debug("app_unique_key is $application_unique_key");
+	$log->debug("app_unique_key is $application_unique_key");
 
-	
 // Clear all uploaded import files for this user if it exists
-
 	global $import_dir;
 
 	$tmp_file_name = $import_dir. "IMPORT_".$focus->id;
