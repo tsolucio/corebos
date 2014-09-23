@@ -75,121 +75,13 @@ function calculatePrice($selmodule,$linktoprod,$elementid,$quantity){
         $paytype_field="paymentstype";
         $price_field="unit_price";
  }
-   // $moduleQuery = $adb->pquery("Select *,ptype.vatpercentage mastervat  
-     //                   FROM  $module_table 
-       //                 LEFT JOIN vtiger_account ON vtiger_account.accountid=$module_table.$account_field
-         //               LEFT JOIN vtiger_groupcompanies ON vtiger_groupcompanies.groupcompaniesid=vtiger_account.linktogroupcompanies
-           //             LEFT JOIN vtiger_payamentstype as ptype ON ptype.payamentstypeid=$module_table.$paytype_field
-             //           WHERE $module_table_id=?", array($elementid));
-  //  $groupcompany = $adb->query_result($moduleQuery, 0, 'linktogroupcompanies');
-    //$mastervat=$adb->query_result($moduleQuery, 0,'mastervat');
-    //$paymenttype=$adb->query_result($moduleQuery, 0,$paytype_field);
+  
  
     $productQuery=$adb->pquery("SELECT $price_field FROM vtiger_products WHERE productid=?",array($linktoprod));
     $unit_price=$adb->query_result($productQuery, 0, 0);
-    $prodcategory = $adb->query_result($productQuery, 0, 1);
-    //$paymentid=$adb->query_result($productQuery, 0,2);
-  // $paymentQuery=$adb->pquery("SELECT vatpercentage as productvat,de_payament as paymentname FROM  vtiger_payamentstype WHERE payamentstypeid=?",array($paymentid));
-   // $vat=$adb->query_result($paymentQuery, 0,'productvat');
+ 
     $log->debug("cmimprodukti".$unit_price);
-    //$paymentname=$adb->query_result($paymentQuery, 0,'paymentname');
-    //$log->debug('provasot'.$paymentname);
-    //$produkti=$adb->pquery("SELECT productid,Accounts from vtiger_products where productid=?",array($linktoprod));
-    //$produkti_id=$adb->query_result($produkti,0,0);
-    //$account_id=$adb->query_result($produkti,0,1);
-    //$queryadocmaster=$adb->pquery("SELECT adoc_account from vtiger_adocmaster where adocmasterid=?",array($elementid));
-    //$account_id2=$adb->query_result($queryadocmaster,0,0);
-    // $tariffquery2 = $adb->query("SELECT * FROM vtiger_tariffs 
-                             //       INNER JOIN vtiger_crmentity ce ON ce.crmid=vtiger_tariffs.tariffsid
-
-                                  //  WHERE ce.deleted=0 AND product=$produkti_id AND account=$account_id AND initialqty<=$quantity AND finalqty>=$quantity");
-    //if($account_id2==''){
-      //  $price_tariff=$unit_price;
-    //}
-    //else if ($account_id2!=''){
-      //  $tariffquery2 = $adb->query("SELECT * FROM vtiger_tariffs 
-        //                            INNER JOIN vtiger_crmentity ce ON ce.crmid=vtiger_tariffs.tariffsid
-//
-  //                                  WHERE ce.deleted=0 AND product=$produkti_id AND account=$account_id2 ORDER BY finalqty-initialqty ASC");
-    //    $vlerat=$adb->query_result($tariffquery2,0,0);
-      //  $log->debug('vlerat'.$vlerat);
-    //$tid=$adb->query_result($tariffquery2,0,'tariffsid');
-   //$log->debug('tarifprova'.$tid);
-
-                                  
-  // $tid=$adb->query_result($tariffquery2,0,'tariffsid');
-   //$log->debug('tarifprova'.$tid);
-
-    //if ($adb->num_rows($tariffquery2) > 0) {
-      //  $percentage = $adb->query_result($tariffquery2, 0, 'percentage');
-       //$log->debug('provaperqindja'.$percentage);
-       // $price_tariff = $adb->query_result($tariffquery2, 0, 'finalpricefour');
-//$log->debug('cmimi'.$price_tariff);
-  //      if($percentage=='0.00') $price_tariff=$adb->query_result($tariffquery2, 0, 'finalpricefour');
-    //        if ($percentage!='0.00')
-      //          $price_tariff = $unit_price * $percentage;
-        //    else if(empty($price_tariff))
-          //      $price_tariff = $unit_price;
-    
-    
-        
-        
-    //}
-   // else if($prodcategory=='' || $groupcompany ==''){
-     //   $price_tariff=$unit_price;
-   // }
-  //else if($prodcategory!='' && $groupcompany!=''){ $tariffquery = $adb->query("SELECT * FROM vtiger_tariffs 
-    //                                INNER JOIN vtiger_crmentity ce ON ce.crmid=vtiger_tariffs.tariffsid
-//
-  //                                  WHERE ce.deleted=0 AND linktopcategories=$prodcategory AND linktogcompanies=$groupcompany ORDER BY finalqty-initialqty ASC");
-   // $tid=$adb->query_result($tariffquery,0,'tariffsid');
-   //$log->debug('tarifprova'.$tid);
-
-                                  
-   //$tid=$adb->query_result($tariffquery,0,'tariffsid');
-   //$log->debug('tarifprova'.$tid);
-
-    //if ($adb->num_rows($tariffquery) > 0) {
-      //  $percentage = $adb->query_result($tariffquery, 0, 'percentage');
-      // $log->debug('provaperqindja'.$percentage);
-       // $price_tariff = $adb->query_result($tariffquery, 0, 'finalpricefour');
-//$log->debug('cmimi'.$price_tariff);
-  //      if($percentage=='0.00') $percentage='';
-    //        if (!empty($percentage))
-      //          $price_tariff = $unit_price * $percentage;
-        //    else if(empty($price_tariff))
-          //      $price_tariff = $unit_price;
-    //}
-    //else
    
-    // $price_tariff = $unit_price;   
-    //    $totalval=$price_tariff*$quantity;
-      //    $vat=$vatpercent;
-        // if(!empty($paymenttype))
-          // $vat=$mastervat*$vat;
-      // if ($vat==''){
-        //   $vat='0.00';
-       //}
-        //$totaltax=$price_tariff*$vat*$quantity;
-        
-        //$adocdtotal=$price_tariff*$quantity+$totaltax;
-        //$adocdtotalamount=$price_tariff*$quantity;
-        
-        //$foundRes=$paymentid."::".$paymentname."::".$price_tariff."::".$totaltax."::".$adocdtotal."::".$adocdtotalamount."::".$percentage."::".$unit_price."::".$vat."::".$prova;
-        //return $foundRes;
-    //} else
-        
-     
-   
-     //$price_tariff = $unit_price;   
-    //    $totalval=$price_tariff*$quantity;
-      //    $vat=$vatpercent;
-        // if(!empty($paymenttype))
-          // $vat=$mastervat*$vat;
-    //koment
-   // if( $vat==''){
-   //     $vat='0.00';
-   // }
        
         $totaltax=$unit_price*$quantity;
         
