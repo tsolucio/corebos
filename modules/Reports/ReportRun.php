@@ -2412,6 +2412,7 @@ class ReportRun extends CRMEntity
 								$conv_value = CurrencyField::convertToUserFormat ($keyhdr[$arraykey]);
 							else
 								$conv_value = CurrencyField::convertToUserFormat ($keyhdr[$arraykey], null, true);
+							if (substr($arraykey, 0, 21)=='Timecontrol_TotalTime' or substr($arraykey, 0, 18)=='TCTotals_TotalTime') $conv_value=$keyhdr[$arraykey];
 							$coltotalhtml .= '<td class="rptTotal">'.$conv_value.'</td>';
 						}else
 						{
@@ -2425,6 +2426,7 @@ class ReportRun extends CRMEntity
 								$conv_value = CurrencyField::convertToUserFormat ($keyhdr[$arraykey]);
 							else
 								$conv_value = CurrencyField::convertToUserFormat ($keyhdr[$arraykey], null, true);
+							if (substr($arraykey, 0, 21)=='Timecontrol_TotalTime' or substr($arraykey, 0, 18)=='TCTotals_TotalTime') $conv_value=$keyhdr[$arraykey];
 							$coltotalhtml .= '<td class="rptTotal">'.$conv_value.'</td>';
 						}else
 						{
@@ -2438,6 +2440,7 @@ class ReportRun extends CRMEntity
 								$conv_value = CurrencyField::convertToUserFormat ($keyhdr[$arraykey]);
 							else
 								$conv_value = CurrencyField::convertToUserFormat ($keyhdr[$arraykey], null, true);
+							if (substr($arraykey, 0, 21)=='Timecontrol_TotalTime' or substr($arraykey, 0, 18)=='TCTotals_TotalTime') $conv_value=$keyhdr[$arraykey];
 							$coltotalhtml .= '<td class="rptTotal">'.$conv_value.'</td>';
 						}else
 						{
@@ -2451,6 +2454,7 @@ class ReportRun extends CRMEntity
 								$conv_value = CurrencyField::convertToUserFormat ($keyhdr[$arraykey]);
 							else
 								$conv_value = CurrencyField::convertToUserFormat ($keyhdr[$arraykey], null, true);
+							if (substr($arraykey, 0, 21)=='Timecontrol_TotalTime' or substr($arraykey, 0, 18)=='TCTotals_TotalTime') $conv_value=$keyhdr[$arraykey];
 							$coltotalhtml .= '<td class="rptTotal">'.$conv_value.'</td>';
 						}else
 						{
@@ -2824,20 +2828,32 @@ class ReportRun extends CRMEntity
 					}
 					if($fieldlist[4] == 2)
 					{
+                        if ($fieldlist[2]=='totaltime')
+                          $stdfilterlist[$fieldcolname] = "sec_to_time(sum(time_to_sec(".$field."))) '".$field_columnalias."'"; 
+                        else
 						$stdfilterlist[$fieldcolname] = "sum($field) '".$field_columnalias."'";
 					}
 					if($fieldlist[4] == 3)
 					{
 						//Fixed average calculation issue due to NULL values ie., when we use avg() function, NULL values will be ignored.to avoid this we use (sum/count) to find average.
 						//$stdfilterlist[$fieldcolname] = "avg(".$fieldlist[1].".".$fieldlist[2].") '".$fieldlist[3]."'";
+                        if ($fieldlist[2]=='totaltime')
+                          $stdfilterlist[$fieldcolname] = "sec_to_time(sum(time_to_sec(".$field."))/count(*)) '".$field_columnalias."'"; 
+                        else
 						$stdfilterlist[$fieldcolname] = "(sum($field)/count(*)) '".$field_columnalias."'";
 					}
 					if($fieldlist[4] == 4)
 					{
+                        if ($fieldlist[2]=='totaltime')
+                          $stdfilterlist[$fieldcolname] = "sec_to_time(min(time_to_sec(".$field."))) '".$field_columnalias."'"; 
+                        else
 						$stdfilterlist[$fieldcolname] = "min($field) '".$field_columnalias."'";
 					}
 					if($fieldlist[4] == 5)
 					{
+					    if ($fieldlist[2]=='totaltime')
+                          $stdfilterlist[$fieldcolname] = "sec_to_time(max(time_to_sec(".$field."))) '".$field_columnalias."'"; 
+                        else
 						$stdfilterlist[$fieldcolname] = "max($field) '".$field_columnalias."'";
 					}
 				}
@@ -3384,9 +3400,9 @@ class ReportRun extends CRMEntity
 					$referenceTableName = 'vtiger_contactdetailsPotentials';
 				} elseif ($moduleName == 'Potentials' && $referenceModule == 'Accounts') {
 					$referenceTableName = 'vtiger_accountPotentials';
-				} elseif (in_array($referenceModule, $reportSecondaryModules)) {
+				} elseif (in_array($referenceModule, $reportSecondaryModules) and $moduleName != 'Timecontrol') {
 					$referenceTableName = "{$entityTableName}Rel$referenceModule";
-				} elseif (in_array($moduleName, $reportSecondaryModules)) {
+				} elseif (in_array($moduleName, $reportSecondaryModules) and $moduleName != 'Timecontrol') {
 					$referenceTableName = "{$entityTableName}Rel$moduleName";
 				} else {
 					$referenceTableName = "{$entityTableName}Rel{$moduleName}{$fieldInstance->getFieldId()}";
