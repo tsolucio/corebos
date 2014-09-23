@@ -1,11 +1,26 @@
 {literal}
 <script type="text/javascript">
-function modulemanager_update_validate(form) {
-	if(form.module_zipfile.value == '') {
+function modulemanager_import_validate(form) {
+	if(form.module_zipfile.value == '' && form.module_url.value == '') {
 		alert("Please select the zip file before proceeding.");
 		return false;
 	}
 	return true;
+}
+function changeInstallType(obj) {
+	if (!obj.checked) {
+		return;
+	}
+	switch (obj.value) {
+		case 'file':
+			document.form.module_zipfile.disabled = '';
+			document.form.module_url.disabled = 'disabled';
+			break;
+		case 'url':
+			document.form.module_url.disabled = '';
+			document.form.module_zipfile.disabled = 'disabled';
+			break;
+	}
 }
 </script>
 {/literal}
@@ -37,7 +52,7 @@ function modulemanager_update_validate(form) {
 		<tr>
 			<td>
 				<div id="vtlib_modulemanager_update_div">
-                	<form method="POST" action="index.php" enctype="multipart/form-data">
+                	<form method="POST" action="index.php" enctype="multipart/form-data" name="form">
 						<table class='tableHeading' cellpadding=5 cellspacing=0 border=0 width=100%>
 						<tr>
 							<td class='big' colspan=2><b>{$MOD.VTLIB_LBL_SELECT_PACKAGE_FILE}</b></td>
@@ -46,13 +61,22 @@ function modulemanager_update_validate(form) {
 						<table cellpadding=5 cellspacing=0 border=0 width=100%>
 						<tr valign=top>
 							<td class='cellLabel small'>
-								<font color=red>*</font> <b>{$MOD.VTLIB_LBL_FILE_LOCATION}</b>
+								<input type="radio" name="installtype" value="file" onclick="changeInstallType(this);"> <b>{$MOD.VTLIB_LBL_FILE_LOCATION}</b>
 							</td>
 							<td class='cellText small'>
-								<input type="file" class="small" name="module_zipfile" size=50>
+								<input type="file" class="small" name="module_zipfile" size=50 disabled>
 								<p>
 									{$MOD.VTLIB_LBL_PACKAGE_FILE_HELP}
 								</p>
+							</td>
+						</tr>
+						<tr valign=top>
+							<td class='cellLabel small'>
+								<input type="radio" name="installtype" value="url" onclick="changeInstallType(this);"> <b>{$MOD.VTLIB_LBL_PACKAGE_URL}</b>
+							</td>
+							<td class='cellText small'>
+								<input class="small" name="module_url" size="50" disabled>
+								<p>{$MOD.VTLIB_LBL_PACKAGE_URL_HELP}</p>
 							</td>
 						</tr>
 						</table>

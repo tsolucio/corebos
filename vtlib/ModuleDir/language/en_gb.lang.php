@@ -9,14 +9,15 @@
  ************************************************************************************/
 
 $mod_strings = Array(
-	'ModuleName' => 'Modulname',
-	'SINGLE_ModuleName' => 'Modulname',
-	'ModuleName ID' => 'Modulname ID',
+	'ModuleName' => 'Module Name',
+	'SINGLE_ModuleName' => 'Module Name',
+	'ModuleName ID' => 'Module Name ID',
 
-	'LBL_CUSTOM_INFORMATION' => 'zusätzliche Information',
+	'LBL_CUSTOM_INFORMATION' => 'Custom Information',
 	'LBL_MODULEBLOCK_INFORMATION' => 'ModuleBlock Information',
+	'LBL_DESCRIPTION_INFORMATION' => 'Description',
 
-	'ModuleFieldLabel' => 'ModuleFieldLabel Text',	
+	'ModuleFieldLabel' => 'ModuleFieldLabel Text',
 );
 
 ?>
