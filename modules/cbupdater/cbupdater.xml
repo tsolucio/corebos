@@ -106,8 +106,6 @@
 	<systemupdate>false</systemupdate>
 </changeSet>
 <changeSet>
-<<<<<<< HEAD
-=======
 	<author>joebordes</author>
 	<description>Convert Vendor phone field to correct phone type to support calls</description>
 	<filename>build/changeSets/convertVendorPhoneToCorrectType.php</filename>
