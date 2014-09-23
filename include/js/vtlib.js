@@ -177,6 +177,8 @@ function vtlib_loadDetailViewWidget(urldata, target, indicator) {
         onComplete: function(response) {
             if(target) {
                 target.innerHTML = response.responseText;
+                if(typeof ParseAjaxResponse == 'function') 
+                ParseAjaxResponse(response.responseText);
                 if(indicator) {
                     indicator.hide();
                 }

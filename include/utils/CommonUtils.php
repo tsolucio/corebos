@@ -1869,7 +1869,7 @@ function QuickCreate($module) {
 		$fieldName_array[$fieldname] = $fldLabel_array;
 
 		// These fields should not be shown in the UI as they are already shown as part of other fields, but are required for validation.
-		if ($fieldname == 'time_start' || $fieldname == 'time_end')
+		if (($fieldname == 'time_start' || $fieldname == 'time_end') && $module!='Timecontrol')
 			continue;
 
 		$custfld = getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields, $generatedtype, $module, '', $typeofdata);
