@@ -3382,4 +3382,26 @@ function picklistHasDependency($keyfldname,$modulename) {
 	else
 	return false;
 }
+
+function fetch_logo($type) {
+	global $adb;
+	$logodir ="test/logo/";
+	$sql="select logoname,frontlogo,faviconlogo from vtiger_organizationdetails";
+	$result = $adb->pquery($sql, array());
+	switch ($type) {
+		case 1:
+			$logoname = decode_html($adb->query_result($result,0,'logoname'));
+			break;
+		case 2:
+			$logoname = decode_html($adb->query_result($result,0,'frontlogo'));
+			break;
+		case 3:
+			$logoname = decode_html($adb->query_result($result,0,'faviconlogo'));
+			break;
+		default:
+			$logoname = 'app-logo.jpg';
+	}
+	return $logodir.$logoname;
+}
+
 ?>

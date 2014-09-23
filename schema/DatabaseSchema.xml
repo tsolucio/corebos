@@ -4680,6 +4680,8 @@
 		<field name="website" type="C" size="100" />
 		<field name="logoname" type="C" size="50" />
 		<field name="logo" type="X" />
+		<field name="frontlogo" type="X" />
+		<field name="faviconlogo" type="X" />
 
 		<opt platform="mysql">Engine=InnoDB</opt>
 	</table>
