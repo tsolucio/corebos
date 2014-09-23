@@ -59,6 +59,14 @@
                             <td class="small cellLabel"><strong>{$MOD.LBL_ORGANIZATION_LOGO}</strong></td>
                             <td class="small cellText" style="background-image: url({$ORGANIZATIONLOGOPATH}/{$ORGANIZATIONLOGONAME}); background-position: left; background-repeat: no-repeat;" width="48" height="48" border="0"></td>
                           </tr>
+                           <tr valign="top">
+                            <td class="small cellLabel"><strong>{$MOD.LBL_FRONT_LOGO}</strong></td>
+                            <td class="small cellText" style="background-image: url({$FRONTLOGOPATH}/{$FRONTLOGONAME}); background-position: left; background-repeat: no-repeat;" width="48" height="48" border="0"></td>
+                         </tr>
+                        <tr valign="top">
+                            <td class="small cellLabel"><strong>{$MOD.LBL_FAVICON_LOGO}</strong></td>
+                            <td class="small cellText" style="background-image: url({$FAVICONLOGOPATH}/{$FAVICONLOGONAME}); background-position: left; background-repeat: no-repeat;" width="48" height="48" border="0"></td>
+                        </tr>
                           <tr>
                             <td class="small cellLabel"><strong>{$MOD.LBL_ORGANIZATION_ADDRESS}</strong></td>
                             <td class="small cellText">{$ORGANIZATIONADDRESS}</td>

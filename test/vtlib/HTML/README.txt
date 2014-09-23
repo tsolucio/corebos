@@ -1,1 +1,0 @@
-Cache folder for htmlpurifier library

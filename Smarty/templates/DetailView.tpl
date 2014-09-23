@@ -151,6 +151,7 @@ function sendfile_email()
 
 <div id="lstRecordLayout" class="layerPopup" style="display:none;width:325px;height:300px;"></div>
 
+
 {if $MODULE eq 'Accounts' || $MODULE eq 'Contacts' || $MODULE eq 'Leads'}
 	{if $MODULE eq 'Accounts'}
 		{assign var=address1 value='$MOD.LBL_BILLING_ADDRESS'}
@@ -323,23 +324,14 @@ require_once("modules/Adocmaster/Adocmaster.php");
 global $adb;
 
 $id2 =$_REQUEST['record'];
-//koment
-//koment2
+
 require_once("modules/Adocmaster/calculateTariffPrice.php");
 $prodquery=$adb->query("select * from vtiger_products");
 $prodname=array();
 for($i=0;$i<$adb->num_rows($prodquery);$i++){
 $prodname[$i]=$adb->query_result($prodquery,$i,'productname');}
 
-//echo $prodname[3];
 
-$taxquery=$adb->pquery("Select sum(a.adocdtax) as tax,sum(a.adocdtotal) as total,
-                    sum(a.adocdtotalamount) as totalimponibile,vtiger_payamentstype.vatpercentage mastervat
-                    from vtiger_adocdetail a 
-                    join vtiger_crmentity ce on a.adocdetailid=ce.crmid 
-                    INNER JOIN vtiger_adocmaster ON a.adoctomaster=vtiger_adocmaster.adocmasterid
-                    INNER JOIN vtiger_payamentstype ON vtiger_adocmaster.linkpayment=vtiger_payamentstype.payamentstypeid
-                    where ce.deleted=0 and a.adoctomaster=?",array($id2));
 $adocquery=$adb->pquery("select vtiger_products.productid,vtiger_adocmaster.adocmasterid,vtiger_adocdetail.adocdtax,vtiger_adocdetail.adocdtotal,vtiger_adocdetail.adocdtotalamount,vtiger_adocdetail.adocdetailid,vtiger_adocdetail.adocdetailno,vtiger_adocdetail.adocdetailname,vtiger_adocdetail.adoc_product,vtiger_adocdetail.adoc_quantity,vtiger_adocdetail.adoc_price,vtiger_adocdetail.adoc_stock,vtiger_adocdetail.riferimento,vtiger_products.productname,vtiger_adocdetail.nrline,vtiger_products.unit_price from vtiger_adocdetail  join vtiger_crmentity on crmid=adocdetailid join vtiger_adocmaster on adocmasterid=adoctomaster left join vtiger_products on productid=adoc_product
     where deleted=0 and adocmasterid=?",array($id2));
 $z=0;
@@ -394,15 +386,11 @@ $quantity1=$adb->query_result($adocquery,$z,'adoc_quantity');
 
 $foundRes2=calculatePrice('Adocdetail', $productid1, $adocmasterid1, $quantity1);
 $foundRes3=explode("::",$foundRes2);
-//echo $foundRes3[8];
+
 
 $rowArrz = array(
 'name' => $rowsz['adocdetailno'],
-//'pcdetailsname'=>$rowsz['pcdescriptionname'],
-//'pcprice'=>$rowsz['price'],
-//'pcquantity'=>$rowsz['quantity'],
-//'pctotal'=>$rowsz['totalprice'],
-//'pcdetailsid'=>$rowsz['pcdetailsid'],
+
 'age' =>$rowsz['nrline'],
 'adoc_product_display'=>$rowsz['productname'],
 'quantity'=>$rowsz['adoc_quantity'],
@@ -442,25 +430,7 @@ $return_arrz[] = $rowArrz;
             $vleraz=json_encode($return_arrz);
 
 
-$w=0;
-  $rowsw=$adb->num_rows($taxquery);
-            $return_arrw = array();
-$dataw=array();
-$arrw = array();
-   $arr2w = array();
-            while($rowsw=$adb->fetch_array($taxquery)){
-                $rowArrw = array(
-    'tax' => $rowsw['tax']
-                    
-    
-            
-                  );
-$return_arrw[] = $rowArrw;
-     
-            $w++;
-           
-            }
-            $vleraw=json_encode($return_arrw);
+
 
 
 
@@ -468,7 +438,7 @@ $smarty = new vtigerCRM_Smarty;
 
 $smarty->assign("vleratest", $vleraz);
 
-$smarty->assign("vleratest2",$vleraw);
+
 
 
 $smarty->display("modules/Adocmaster/ngTable.tpl");
@@ -511,6 +481,7 @@ $smarty->display("modules/Adocmaster/ngTable.tpl");
 																							</td>{/strip}
 																						</tr>
 																					{/if}
+
 																				</table>
 																				{if $header neq 'Comments'}
 																					{if $BLOCKINITIALSTATUS[$header] eq 1}
@@ -571,8 +542,9 @@ $smarty->display("modules/Adocmaster/ngTable.tpl");
 																			</td>
 																		</tr>
 																	{/foreach}
-																	{*-- End of Blocks--*}
-
+	
+ 
+					
 																	{* vtlib Customization: Embed DetailViewWidget block:// type if any *}
 																	{if $CUSTOM_LINKS && !empty($CUSTOM_LINKS.DETAILVIEWWIDGET)}
 																		{foreach item=CUSTOM_LINK_DETAILVIEWWIDGET from=$CUSTOM_LINKS.DETAILVIEWWIDGET}
