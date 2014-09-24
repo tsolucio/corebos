@@ -137,9 +137,9 @@ alt="Clear" title="Clear" LANGUAGE=javascript	onClick="this.form.{$fldname}.valu
 			</td>
 			<td width="30%" align=left class="dvtCellInfo">
 				{if $MODULE eq 'Calendar'}
-			   		<select name="{$fldname}" tabindex="{$vt_tab}" class="small" style="width:160px;">
+			   		<select id="{$fldname}" name="{$fldname}" tabindex="{$vt_tab}" class="small" style="width:160px;">
 				{else}
-			   		<select name="{$fldname}" tabindex="{$vt_tab}" class="small">
+			   		<select id="{$fldname}" name="{$fldname}" tabindex="{$vt_tab}" class="small">
 			   	{/if}
 				{foreach item=arr from=$fldvalue}
 					{if $arr[0] eq $APP.LBL_NOT_ACCESSIBLE}
