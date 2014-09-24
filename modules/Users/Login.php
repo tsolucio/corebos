@@ -81,7 +81,11 @@ $smarty->assign("IMAGE_PATH", $image_path);
 $smarty->assign("PRINT_URL", "phprint.php?jt=".session_id().$GLOBALS['request_string']);
 $smarty->assign("VTIGER_VERSION", $vtiger_current_version);
 
-
+// We check if we have the two new logo fields > if not we create them
+$cnorg=$adb->getColumnNames('vtiger_organizationdetails');
+if (!in_array('faviconlogo', $cnorg)) {
+	$adb->query('ALTER TABLE `vtiger_organizationdetails` ADD `frontlogo` VARCHAR(150) NOT NULL, ADD `faviconlogo` VARCHAR(150) NOT NULL');
+}
 $sql="select * from vtiger_organizationdetails";
 $result = $adb->pquery($sql, array());
 //Handle for allowed organation logo/logoname likes UTF-8 Character
