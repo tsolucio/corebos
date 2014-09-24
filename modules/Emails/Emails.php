@@ -176,6 +176,16 @@ class Emails extends CRMEntity {
 				}
 			}
 		}
+		if ($module == 'Emails' && isset($_REQUEST['doc_attachments']) && count($_REQUEST['doc_attachments']) > 0) {
+			$documentIds = $_REQUEST['doc_attachments'];
+			for ($i = 0; $i < count($documentIds); $i++) {
+				$query = "select attachmentsid from vtiger_seattachmentsrel where crmid={$documentIds[$i]}";
+				$res = $adb->query($query);
+				$attachmentId = $adb->query_result($res, 0, 0);
+				$query = "insert into vtiger_seattachmentsrel values({$id}, {$attachmentId})";
+				$adb->query($query);
+			}
+		}
 		if ($_REQUEST['att_module'] == 'Webmails') {
 			require_once("modules/Webmails/Webmails.php");
 			require_once("modules/Webmails/MailParse.php");
