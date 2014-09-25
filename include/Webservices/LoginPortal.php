@@ -12,60 +12,36 @@
 * See the License for the specific language governing permissions and limitations under the
 * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
 *************************************************************************************************/
+include_once 'include/Webservices/AuthToken.php';
 
-	function vtws_loginportal($username,$pwd){
-		
+	function vtws_loginportal($username,$password) {
+		$uname = 'portal';
 		$user = new Users();
-		$userId = $user->retrieve_user_id('portal');
+		$userId = $user->retrieve_user_id($uname);
 		
 		if (empty($userId)) {
-			throw new WebServiceException(WebServiceErrorCode::$INVALIDUSERPWD,"User portal does not exist");
-			//throw new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED,'Given user cannot be found');
+			throw new WebServiceException(WebServiceErrorCode::$INVALIDUSERPWD,"User $uname does not exist");
 		}
 		global $adb, $log;
-		$log->debug("Entering LoginPortal function with parameter username: ".$username." password:".$pwd);
+		$log->debug('Entering LoginPortal function with parameter username: '.$username);
 		
-		$ctors = $adb->pquery("select id
+		$ctors = $adb->pquery('select id
 			from vtiger_portalinfo
 			inner join vtiger_customerdetails on vtiger_portalinfo.id=vtiger_customerdetails.customerid
 			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_portalinfo.id
 			where vtiger_crmentity.deleted=0 and user_name=? and user_password=?
-			  and isactive=1 and vtiger_customerdetails.portal=1",array($username,$pwd));
+			  and isactive=1 and vtiger_customerdetails.portal=1',array($username,$password));
 		if ($ctors and $adb->num_rows($ctors)==1) {
-			$crmid = $adb->query_result($ctors,0,0);
-			$wsid = $vtyiicpng_getWSEntityId('Contacts').$crmid;
 			$user = $user->retrieveCurrentUserInfoFromFile($userId);
 			if($user->status != 'Inactive') {
-				return $user;
+				$accessinfo = vtws_getchallenge($uname);
+				$accessinfo['user'] = $user;
+				return $accessinfo;
+			} else {
+				throw new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED,'Given user is inactive');
 			}
 		}
-		throw new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED,'Given user is inactive');
+		throw new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED,"Given contact is inactive");
 	}
-	
-	function vtws_getActiveToken($userId){
-		global $adb;
-		
-		$sql = "select * from vtiger_ws_userauthtoken where userid=? and expiretime >= ?";
-		$result = $adb->pquery($sql,array($userId,time()));
-		if($result != null && isset($result)){
-			if($adb->num_rows($result)>0){
-				return $adb->query_result($result,0,"token");
-			}
-		}
-		return null;
-	}
-	
-	function vtws_getUserAccessKey($userId){
-		global $adb;
-		
-		$sql = "select * from vtiger_users where id=?";
-		$result = $adb->pquery($sql,array($userId));
-		if($result != null && isset($result)){
-			if($adb->num_rows($result)>0){
-				return $adb->query_result($result,0,"accesskey");
-			}
-		}
-		return null;
-	}
-	
+
 ?>
