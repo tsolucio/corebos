@@ -1810,6 +1810,10 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						} else {
 							$value = '<a style="cursor:pointer;" onclick=\'add_data_to_relatedlist("' . $entity_id . '","' . $focus->record_id . '","' . $module . '","' . $popupMode . '",' . $callBack . ');\'>' . textlength_check($temp_val) . '</a>';
 						}
+						if ($module === 'Documents' && $_REQUEST['return_module'] === 'Emails') {
+							$attachment = $adb->query_result($list_result, $list_result_count, 'filename');
+							$value .= "<input type='hidden' id='document_attachment_{$entity_id}' value='{$attachment}'>";
+						}
 					}
 				} elseif ($popuptype == "formname_specific") {
 					$slashes_temp_val = popup_from_html($temp_val);
