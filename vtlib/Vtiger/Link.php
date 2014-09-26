@@ -175,12 +175,7 @@ class Vtiger_Link {
 		self::__initSchema();
 
 		$multitype = false;
-<<<<<<< HEAD
-		$orderby = " order by linktype,sequence"; //MSL
-
-=======
-		$orderby = ' order by linktype,sequence'; //MSL
->>>>>>> upstream/master
+		$orderby = " order by linktype,sequence"; 
 		if($type) {
 			// Multiple link type selection?
 			if(is_array($type)) { 
