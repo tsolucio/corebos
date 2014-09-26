@@ -372,6 +372,8 @@ $mod_strings = Array(
     'PurchaseOrder'=>'Einkauf',
     'SalesOrder'=>'Verkauf',
     'Invoice'=>'Rechnung',
+	'LBL_FRONT_LOGO' => 'Front Logo',
+	'LBL_FAVICON_LOGO' => 'Favicon Logo',
 
     //For Custom Fields
     'LBL_LEAD_MAP_CUSTOM_FIELD'=>'Feldzuweisung der benutzerdefinierten Felder in Leads',
