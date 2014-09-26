@@ -39,7 +39,6 @@ $organization_logoname = decode_html($adb->query_result($result,0,'logoname'));
 $front_logoname = $adb->query_result($result,0,'frontlogo');
 $favicon_logoname = $adb->query_result($result,0,'faviconlogo');
 
-
 if (isset($organization_name))
 	$smarty->assign("ORGANIZATIONNAME",$organization_name);
 if (isset($organization_address))

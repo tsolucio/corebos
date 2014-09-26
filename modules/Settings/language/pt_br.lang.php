@@ -601,6 +601,8 @@ $mod_strings = Array(
 'PurchaseOrder'=>'Pedido Compra',
 'SalesOrder'=>'Pedido Venda',
 'Invoice'=>'Fatura',
+'LBL_FRONT_LOGO' => 'Front Logo',
+'LBL_FAVICON_LOGO' => 'Favicon Logo',
 
 //For Custom Fields
 'LBL_LEAD_MAP_CUSTOM_FIELD'=>'Mapear Campos Customizado do Lead',

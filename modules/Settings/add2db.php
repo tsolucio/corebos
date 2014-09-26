@@ -27,7 +27,6 @@ global $log;
 $image_extensions_allowed = array('jpeg', 'png', 'jpg', 'pjpeg', 'x-png');
 if (isset($_FILES) and isset($_FILES['binFile']) and !empty($_FILES['binFile']['name'])) {
 	$binFile = $_FILES['binFile']['name'];
-	//$image_extensions_allowed = array('jpeg', 'png', 'jpg', 'pjpeg', 'x-png');
 	if (isset($_REQUEST['binFile_hidden'])) {
 		$filename = sanitizeUploadFileName(vtlib_purify($_REQUEST['binFile_hidden']), $upload_badext);
 	} else {
@@ -186,6 +185,7 @@ if (!isset($front_logoname))
 				(organization_id,organizationname, address, city, state, code, country, phone, fax, website, logoname,frontlogo,faviconlogo) values (?,?,?,?,?,?,?,?,?,?,?,?,?)";			
                         $params = array($organizationId, $organization_name, $organization_address, $organization_city, $organization_state, $organization_code,
 $organization_country, $organization_phone, $organization_fax, $organization_website, $organization_logoname,$front_logoname,$favicon_logoname);		} else {
+
 			if ($savelogo == "true") {
 				$organization_logoname = $filename;
 			} elseif ($savelogo == "false" && $error_flag == "") {
@@ -227,6 +227,7 @@ $organization_country, $organization_phone, $organization_fax, $organization_web
 				phone = ?, fax = ?, website = ?, logoname = ?,frontlogo = ?,faviconlogo = ?  WHERE organizationname = ?";
 			$params = array($organization_name, $organization_address, $organization_city, $organization_state, $organization_code,
 $organization_country, $organization_phone, $organization_fax, $organization_website, decode_html($organization_logoname),decode_html($front_logoname),decode_html($favicon_logoname), $org_name);		}
+
 		$adb->pquery($sql, $params);
 
 		if ($savelogo == "true") {
