@@ -34,8 +34,21 @@ include_once 'include/Webservices/AuthToken.php';
 		if ($ctors and $adb->num_rows($ctors)==1) {
 			$user = $user->retrieveCurrentUserInfoFromFile($userId);
 			if($user->status != 'Inactive') {
+				$result = $adb->query("SELECT id FROM vtiger_ws_entity WHERE name = 'Users'");
+				$wsid = $adb->query_result($result,0,'id');
 				$accessinfo = vtws_getchallenge($uname);
-				$accessinfo['user'] = $user;
+				$sessionManager = new SessionManager();
+				$sid = $sessionManager->startSession(null,false);
+				if(!$sid){
+					throw new WebServiceException(WebServiceErrorCode::$SESSIONIDINVALID,'Could not create session');
+				}
+				$sessionManager->set("authenticatedUserId", $userId);
+				$accessinfo['sessionName'] = $sessionManager->getSessionId();
+				$accessinfo['user'] = array(
+					'id' => $wsid.'x'.$userId,
+					'user_name' => $user->column_fields['user_name'],
+					'accesskey' => $user->column_fields['accesskey'],
+				);
 				return $accessinfo;
 			} else {
 				throw new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED,'Given user is inactive');
