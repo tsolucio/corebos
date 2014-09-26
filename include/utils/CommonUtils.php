@@ -3373,17 +3373,17 @@ function getReturnPath($host, $from_email) {
 	return $returnpath;
 }
 
-function fetch_logo($type)
-{
-global $adb;
-        $logodir ="test/logo/";
-        $sql="select * from vtiger_organizationdetails";
-        $result = $adb->pquery($sql, array());
-        if($type == 1) $logoname = decode_html($adb->query_result($result,0,'logoname'));
-        if($type == 2) $logoname = decode_html($adb->query_result($result,0,'frontlogo'));
-        if($type == 3) $logoname = decode_html($adb->query_result($result,0,'faviconlogo'));
-	return $logodir.$logoname;
-}
+//function fetch_logo($type)
+//{
+//global $adb;
+//        $logodir ="test/logo/";
+//        $sql="select * from vtiger_organizationdetails";
+//        $result = $adb->pquery($sql, array());
+//        if($type == 1) $logoname = decode_html($adb->query_result($result,0,'logoname'));
+//        if($type == 2) $logoname = decode_html($adb->query_result($result,0,'frontlogo'));
+//        if($type == 3) $logoname = decode_html($adb->query_result($result,0,'faviconlogo'));
+//	return $logodir.$logoname;
+//}
 
 function picklistHasDependency($keyfldname,$modulename) {
 	global $adb;
