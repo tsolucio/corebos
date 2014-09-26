@@ -175,8 +175,12 @@ class Vtiger_Link {
 		self::__initSchema();
 
 		$multitype = false;
+<<<<<<< HEAD
 		$orderby = " order by linktype,sequence"; //MSL
 
+=======
+		$orderby = ' order by linktype,sequence'; //MSL
+>>>>>>> upstream/master
 		if($type) {
 			// Multiple link type selection?
 			if(is_array($type)) { 
@@ -196,7 +200,7 @@ class Vtiger_Link {
 					$result = $adb->pquery('SELECT * FROM vtiger_links WHERE tabid=? AND linktype IN ('.
 						Vtiger_Utils::implodestr('?', count($type), ',') .')' . $orderby,
 							Array($tabid, $adb->flatten_array($type)));
-				}			
+				}
 			} else {
 				// Single link type selection
 				if($tabid === self::IGNORE_MODULE) {
