@@ -135,5 +135,6 @@ $mod_strings = array (
 	'LBL_MAILSELECT_INFO' => 'a déjà le mail suivant associé. Veuillez sélectionner celui où le mail devra être envoyé.',
 	'LBL_NO_RECORDS' => 'Aucun enregistrement trouvé',
 	'LBL_PRINT_EMAIL'=> 'Imprimer',
+	'LBL_ATTACH_DOCUMENTS' => 'Attach documents',
 );
 ?>
