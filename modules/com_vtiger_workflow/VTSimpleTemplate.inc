@@ -31,7 +31,7 @@ class VTSimpleTemplate{
 				
 				$uitype = $field_focus->uitype;
 				if($uitype == '15' || $uitype == '33' || ($uitype == '55' && $fieldname == 'salutationtype'))
-					$result = getTranslatedString($data[$fieldname],$moduleName);
+					$result = getTranslatedString($data[$fieldname],($moduleName == 'Events') ? 'Calendar' : $moduleName);
 				else
 					$result = $data[$fieldname];
 			}else{
