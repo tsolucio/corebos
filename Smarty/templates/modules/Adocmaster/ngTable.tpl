@@ -14,7 +14,7 @@
        
         <script src="http://code.jquery.com/jquery-1.10.2.min.js"></script>
     
-        <script src="modules/test2/js/angular.min.js"></script>
+       <script src="modules/test2/js/angular.min.js"></script>
         <script src="modules/test2/ng-table.js"></script>
         
         <link rel="stylesheet" href="modules/test2/ng-table.css">
@@ -23,13 +23,25 @@
 <!--<h1>Table with pagination</h1>-->
 <!--koment-->
 <!--koment-->
-<div ng-controller="DemoCtrl" ng-app="main">
+<table class="small" border="0" cellpadding="0" cellspacing="0" width="100%">
+<tr>
+<td colspan="4" class="dvInnerHeader">
+	<div style="float: left; font-weight: bold;">
+	<div style="float: left;">
+	<a href="javascript:showHideStatus('tbl{$UIKEY}','aid{$UIKEY}','$IMAGE_PATH');"><img id="aid{$UIKEY}" src="{'activate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid rgb(0, 0, 0);" alt="Hide" title="Hide"></a>
+	</div><b>&nbsp;{$WIDGET_TITLE}</b></div>
+</td>
+</tr>
+
+</table>
+<div ng-controller="DemoCtrl" ng-app="demoApp">
      Grouping by:
     <select ng-model="groupby">
         <option value="---">---</option>
         <option value="adoc_product_display">Product</option>
         <option value="quantity">Quantity</option>
         <option value="price">Price</option>
+        
         
     </select>
     
@@ -66,13 +78,13 @@ $smarty = new vtigerCRM_Smarty;
     
     {/php}
  
-  <br> <button type="button" ng-click="addAdocdetail(user.quantity2);">Add  Adocdetail</button>
+  <br> <button type="button" ng-click="addAdocdetail2(user.quantity2);">Add  Adocdetail</button>
   
 <br><br>Choose Product :<input type="text" id="adoc_product2_display" ng-model="user.adoc_product2_display" name="adoc_product2_display">
                    <input type="hidden" value="{literal}{{user.adoc_product2}}{/literal}" id="adoc_product2" name="adoc_product2" >
                     <img src="themes/softed/images/select.gif"  alt="Select" title="Select" LANGUAGE=javascript  onclick='return window.open("index.php?module=Products&action=Popup&html=Popup_picker&form=vtlibPopupView&forfield=adoc_product2&srcmodule=","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='cursor:hand;cursor:pointer'>
        Choose Quantity : <input id="quantity2" type="text" ng-model="user.quantity2">  
-      
+      <br><br>
   <!--<p><strong>Filter:</strong> {literal}{{tableParams.filter()|json}}{/literal}-->
          
        {php}
@@ -101,6 +113,19 @@ $smarty = new vtigerCRM_Smarty;
 
     
         <table ng-table="tableParams"  class="table">
+            <tr>
+            <td style="width:5%">AdocdetailNo</td>
+            <td style="width:5%">NrLine</td>
+            <td style="width:15%">Product</td>
+            <td style="width:5%">Quantity</td>
+            <td style="width:5%">Price</td>
+            <td style="width:5%">AdocPrice</td>
+            <td style="width:10%">Adocdtotal</td>
+            <td style="width:10%">Adocdtax</td>
+            <td style="width:10%">Total</td>
+            <td style="width:10%">Actions</td>
+            
+            </tr>
           <!--  <tr ng-repeat="user in $data">
                 <td data-title="'AdocdetailNo'" sortable="'name'">
                   <a href="index.php?module=Adocdetail&action=DetailView&record={literal}{{user.adocdetailid}}{/literal}">  {literal}{{user.name}}{/literal}</a>
@@ -187,11 +212,7 @@ $smarty = new vtigerCRM_Smarty;
                  <div ng-if="user.$edit"><input class="form-control" type="text" ng-model="user.price"/></div>
                 
                 </td>
-                <td data-title="'Disocunt'" sortable="'discount'" >
-                   {literal} {{user.discount}} {/literal}
-
-                  
-                </td>
+          
               
                  <td data-title="'Adocdtotal'" sortable="'adocdtotal'">
                    {literal} {{(user.quantity*user.price)+(user.quantity*user.price*user.vat)| number:2}} {/literal}
@@ -206,12 +227,12 @@ $smarty = new vtigerCRM_Smarty;
                 </td>-->
               
                  
-               <td data-title="'Total'" sortable="'total'" width="90%">
+               <td data-title="'Total'" sortable="'total'">
                 
                  {literal} {{user.quantity*user.price |number:2}} {/literal}
                 </td>
                 
-                 <td data-title="'Actions'" width="200">
+                 <td data-title="'Actions'">
                 <a ng-if="!user.$edit" href="" class="btn btn-default btn-xs" ng-click="user.$edit = true">Edit</a>
                 <a ng-if="user.$edit" href="" class="btn btn-primary btn-xs" ng-click="user.$edit = false;setEditId(user.discount,user.price,user.pcdetailsid,user.pcquantity,user.pcprice,user.age,user.quantity,user.adocdetailid,user.adocmasterid,user.newtax,user.newadoctotal,user.newadoctotalamount,user.productid,user.adoc_product);">Save</a>
                 <a ng-if="user.$edit" href="" class="btn btn-primary btn-xs" ng-click="user.$edit = false;">Cancel</a>
@@ -228,37 +249,52 @@ $smarty = new vtigerCRM_Smarty;
         <script>
             {literal}
                 
-                var prova7={/literal}{$vleratest}{literal};
-                var kURL = "module=Adocmaster&action=AdocmasterAjax&file=prova3&shembulli=prova7";
-                var kURL2 = "module=Adocmaster&action=AdocmasterAjax&file=prova4&shembulli=prova7"
+                
+                var kURL = "module=Adocmaster&action=AdocmasterAjax&file=ngEdit";
+                var kURL2 = "module=Adocmaster&action=AdocmasterAjax&file=ngGetPrice"
                // alert(prova7);
               
          var record=document.getElementsByName('record').item(0).value;
-         var prova7={/literal}{$vleratest}{literal};
+         
          //alert(record);
-        var app = angular.module('main', ['ngTable']).
-        controller('DemoCtrl', function($scope, $filter,$http,ngTableParams,$sce) {
+        var app = angular.module('demoApp', ['ngTable']).
+       controller('DemoCtrl', function($scope, $filter,$http,ngTableParams,$sce) {
        { 
           
             
                        
-               var data = {/literal}{$vleratest}{literal};
-            var data2={/literal}{$vleratest2}{literal};
-             var names = ["john", "bill", "charlie", "robert", "alban", "oscar", "marie", "celine", "brad", "drew", "rebecca", "michel", "francis", "jean", "paul", "pierre", "nicolas", "alfred", "gerard", "louis", "albert", "edouard", "benoit", "guillaume", "nicolas", "joseph"];
-             $scope.names=names;
+               
+             //var names = ["john", "bill", "charlie", "robert", "alban", "oscar", "marie", "celine", "brad", "drew", "rebecca", "michel", "francis", "jean", "paul", "pierre", "nicolas", "alfred", "gerard", "louis", "albert", "edouard", "benoit", "guillaume", "nicolas", "joseph"];
+             //$scope.names=names;
              $scope.titles ={/literal}{$prodiri}{literal}
-                 $scope.myData = data;  
+                   
+
+             
+             //var names = ["john", "bill", "charlie", "robert", "alban", "oscar", "marie", "celine", "brad", "drew", "rebecca", "michel", "francis", "jean", "paul", "pierre", "nicolas", "alfred", "gerard", "louis", "albert", "edouard", "benoit", "guillaume", "nicolas", "joseph"];
+             //$scope.names=names;
+             $scope.titles ={/literal}{$prodiri}{literal}
+
 
        $scope.groupby='---';
-         $scope.gridOptions = { 
+                  $http.get('index.php?'+kURL+'&kaction=retrieve1&record='+record).
+                    success(function(data, status) {
+           // alert('hello');
+                     
+                        $scope.myData = data;  
+          $scope.gridOptions = { 
         data: 'myData',
        
         columnDefs: [{field: 'name'}]
         };
+                      
+                    
+         
+    })
+      
        
                     
         }
-                 
+              //koment   
 
             $scope.tableParams = new ngTableParams({
                 page: 1,            // show first page
@@ -267,29 +303,33 @@ $smarty = new vtigerCRM_Smarty;
                     name: 'asc'     // initial sorting
                 }
             }, {
-               groupBy: $scope.groupby,
-                        total: data.length, // length of data
-                        getData: function($defer, params) {
-                            
-                            var orderedData = params.sorting() ?
-                                     $filter('orderBy')(data, params.orderBy()) :
-                                data;
+               
 
-                            $defer.resolve(orderedData.slice((params.page() - 1) * params.count(), params.page() * params.count()));
-                   $http.get('index.php?'+kURL+'&kaction=retrieve&record='+record).
+                              
+                  getData: function($defer, params) {
+
+                   // $defer.resolve(data.slice((params.page() - 1) * params.count(), params.page() * params.count()));
+                $http.get('index.php?'+kURL+'&kaction=retrieve1&record='+record).
                     success(function(data, status) {
+           // alert('hello');
+                      var orderedData = data;
+                      
+                      params.total(data.length);
+                      $defer.resolve(orderedData.slice((params.page() - 1) * params.count(),params.page() * params.count()));
+                    
+            
+ 
                       var orderedData = data;
                       params.total(data.length);
                       $defer.resolve(orderedData.slice((params.page() - 1) * params.count(),params.page() * params.count()));
-                      //alert(record);
-                    
+         
     })
-                }
+       
+  
+        }
             });
-            
-  
- 
-  
+          
+     
 
             
              $scope.$watch('groupby', function(value){
@@ -335,11 +375,14 @@ $smarty = new vtigerCRM_Smarty;
                     //alert('getsuccess');
                     //alert($scope.prova2);
                     //alert($scope.prova2);
+                  
                           $scope.myData.push({name: 'Adocnew',age:-1,quantity: document.getElementById('quantity2').value,adoc_product_display:document.getElementById('adoc_product2_display').value,adoc_product:document.getElementById('adoc_product2').value,precio:$scope.prova1,price:$scope.prova1,vat:$scope.prova2});
+                      
                           $http.post('index.php?'+kURL+'&record='+record+'&kaction=adding&ageadding=-1&quantityadding=5&productadding=22063&sot='+quantity2+'&sot2='+document.getElementById('adoc_product2').value+'&sot5='+$scope.prova1
                 )
                 .success(function(data, status) {
           // alert('adding');
+          //alert('success');
                       $scope.tableParams.reload();
                      
                  });
@@ -349,6 +392,16 @@ $smarty = new vtigerCRM_Smarty;
 
 
     };
+   $scope.addAdocdetail2 = function(quantity2) {
+       
+       $http.get('index.php?'+kURL+'&kaction=adding&record='+record+'&quantity='+document.getElementById('quantity2').value+'&adocpd='+document.getElementById('adoc_product2_display').value+'&adocp='+document.getElementById('adoc_product2').value).
+                    success(function(data, status) {
+       
+           $scope.tableParams.reload();       
+                    
+         
+    })
+   };
      $scope.removeItem = function(index,adocdetailid) {
         $scope.myData.splice(index, 1);
         $scope.tableParams.reload();
