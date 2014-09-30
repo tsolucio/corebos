@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and limitations under the
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  *************************************************************************************************
- *  Module       : Adecuaciones
+ *  Module       : Adocmaster
  *  Version      : 5.4.0
  *  Author       : Opencubed
  *************************************************************************************************/
@@ -108,7 +108,7 @@ require_once('include/utils/Module_Tables.php');
                       if(strpos($columns,'smownerid')!==false)
                        {   array_push($col,'smownerid');}
                       if(strpos($columns,'createdtime')!==false)
-                       {   array_push(,'createdtime');}
+                       {   array_push($col,'createdtime');}
                        if(strpos($columns,'modifiedtime')!==false)
                        {   array_push($col,'modifiedtime');}
 

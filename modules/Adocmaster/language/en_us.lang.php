@@ -1,12 +1,5 @@
 <?php
-/*+**********************************************************************************
- * The contents of this file are subject to the vtiger CRM Public License Version 1.0
- * ("License"); You may not use this file except in compliance with the License
- * The Original Code is:  vtiger CRM Open Source
- * The Initial Developer of the Original Code is vtiger.
- * Portions created by vtiger are Copyright (C) vtiger.
- * All Rights Reserved.
- ************************************************************************************/
+
  /*************************************************************************************************
  * Copyright 2014 Opencubed -- This file is a part of TSOLUCIO coreBOS customizations.
  * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
@@ -20,7 +13,7 @@
  * See the License for the specific language governing permissions and limitations under the
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  *************************************************************************************************
- *  Module       : Adecuaciones
+ *  Module       : Adocmaster
  *  Version      : 5.4.0
  *  Author       : Opencubed
  *************************************************************************************************/
