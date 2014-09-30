@@ -67,6 +67,10 @@ function redirectWhenNoRelatedRecordsFound()
 {literal}
 function add_data_to_relatedlist(entity_id,recordid,mod, popupmode, callback) {
 	var return_module = document.getElementById('return_module').value;
+	if (mod == 'Documents' && return_module == 'Emails') {
+		var attachment = document.getElementById('document_attachment_' + entity_id).value;
+		window.opener.addOption(entity_id, attachment);
+	}
 	if(popupmode == 'ajax') {
 		VtigerJS_DialogBox.block();
 		new Ajax.Request(

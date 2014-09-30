@@ -13,7 +13,7 @@
 <html>
 <head>
 	<title>{$USER} - {$MODULE_NAME|@getTranslatedString:$MODULE_NAME} - {$APP.LBL_BROWSER_TITLE}</title>
-	<link REL="SHORTCUT ICON" HREF="themes/images/favicon.ico">
+	<link REL="SHORTCUT ICON" HREF="test/logo/{$FAVICON}">
 	<style type="text/css">@import url("themes/{$THEME}/style.css?v={$VERSION}");</style>
 	<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
 {* vtlib customization: Inclusion of custom javascript and css as registered *}
@@ -87,7 +87,7 @@
 
 <TABLE border=0 cellspacing=0 cellpadding=0 width=100% class="small">
 	<tr>
-		<td valign=top align=left><img src="test/logo/{$LOGO}" alt="{$COMPANY_DETAILS.name}" title="{$COMPANY_DETAILS.name}" border=0 style="width: 15em;height: 4.2em;"></td>
+		<td valign=top align=left><img src="test/logo/{$FRONTLOGO}" alt="{$COMPANY_DETAILS.name}" title="{$COMPANY_DETAILS.name}" border=0 style="width: 15em;height: 4.2em;"></td>
 		<td align="center" valign=bottom  >
 			<div align ="center" width ="50%" border='3' style="padding:5px;">
 				<table border=0 cellspacing=0 cellpadding=0 id="search" align="center">

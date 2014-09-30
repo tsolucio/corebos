@@ -11,17 +11,19 @@
  * Generic uitype popup selection handler
  */
 function vtlib_setvalue_from_popup(recordid,value,target_fieldname) {
+	var ret = false;
     if(window.opener.document.EditView) {
         var domnode_id = window.opener.document.EditView[target_fieldname];
         var domnode_display = window.opener.document.EditView[target_fieldname+'_display'];
         if(domnode_id) domnode_id.value = recordid;
         if(domnode_display) domnode_display.value = value;
-        return true;
+        ret = true;
     } else if(window.opener.document.QcEditView) {
         var domnode_id = window.opener.document.QcEditView[target_fieldname];
         var domnode_display = window.opener.document.QcEditView[target_fieldname+'_display'];
         if(domnode_id) domnode_id.value = recordid;
         if(domnode_display) domnode_display.value = value;
+
         return true;
     }   else if(window.opener.document.getElementById(target_fieldname) && target_fieldname.indexOf('adoc_product')!=-1) 
         {
@@ -44,7 +46,16 @@ function vtlib_setvalue_from_popup(recordid,value,target_fieldname) {
                  return true;
         }else {
         return false;
+
+        ret = true;
     }
+    var func = window.opener.gVTModule + 'setValueFromCapture';
+    if (typeof window.opener[func] == 'function') {
+    	window.opener[func](recordid,value,target_fieldname);
+    	ret = true;
+
+    }
+    return ret;
 }
 
 /**
@@ -196,6 +207,8 @@ function vtlib_loadDetailViewWidget(urldata, target, indicator) {
         onComplete: function(response) {
             if(target) {
                 target.innerHTML = response.responseText;
+                if(typeof ParseAjaxResponse == 'function') 
+                ParseAjaxResponse(response.responseText);
                 if(indicator) {
                     indicator.hide();
                 }
