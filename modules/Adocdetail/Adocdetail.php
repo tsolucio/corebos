@@ -1,5 +1,5 @@
 <?php 
- /*************************************************************************************************
+/*************************************************************************************************
  * Copyright 2014 Opencubed -- This file is a part of TSOLUCIO coreBOS customizations.
  * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
  * Vizsage Public License (the "License"). You may not use this file except in compliance with the
@@ -12,7 +12,7 @@
  * See the License for the specific language governing permissions and limitations under the
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  *************************************************************************************************
- *  Module       : Adecuaciones
+ *  Module       : Adocdetail
  *  Version      : 5.4.0
  *  Author       : Opencubed
  *************************************************************************************************/
@@ -106,7 +106,7 @@ function __construct() {
 	function save_module($module) {
                global $log;
             require_once("modules/Adocmaster/calculateTariffPrice.php");
-         //   $foundRes2=calculatePrice('Adocdetail', $productid1, $adocmasterid1, $quantity1);
+         
              $res = $this->db->pquery("Select adoctomaster,adoc_product,adoc_quantity FROM vtiger_adocdetail WHERE adocdetailid=?", array($this->id));
              $adocmasterid=$this->db->query_result($res, 0,'adoctomaster');
              $productid=$this->db->query_result($res,0,'adoc_product');
@@ -127,25 +127,10 @@ function __construct() {
        $totaltaxed=$new_price*$quantity*$new_tax;
        $newtax=$actualtax+$totaltaxed;
        $total2=$actualtotal2+$new_price*$quantity*$new_tax+$quantity*$new_price;
-    //   $queryarticolo=$this->db->pquery("Select codice_articolo from vtiger_products where productid=?",array($productid));
-     //  $codice_articolo=$this->db->query_result($queryarticolo,0,'codice_articolo');
-       // $query=$this->db->pquery($queryString,array($adocmasterid));
-        //$totalimponibile=$this->db->query_result($query,0,"totalimponibile");
-        //$total=$this->db->query_result($query,0,"total");
-        //$taxdetail=$this->db->query_result($query,0,"tax");
-        //$masteriva=$this->db->query_result($query,0,"mastervat");
-        //$queryIva=$this->db->pquery($queryString." AND a.adocdtax>0",array($adocmasterid));
-        //$totalIva=$this->db->query_result($queryIva,0,"totalimponibile");
-        //$queryNoIva=$this->db->pquery($queryString." AND a.adocdtax=0",array($adocmasterid));
-        //$totalNoIva=$this->db->query_result($queryNoIva,0,"totalimponibile");
-        //$totaliva=$masteriva*$taxdetail;
-       //$this->db->pquery("UPDATE vtiger_adocmaster set totalamount=?,taxamount=?,amount=?,impiva=?,nonimpiva=?
-       // WHERE adocmasterid=?",array($total,$taxdetail,$totalimponibile,$totalIva,$totalNoIva,$adocmasterid));
+   
        $this->db->pquery("UPDATE vtiger_adocdetail set adoc_price=?,adocdtax=?,adocdtotalamount=?,adocdtotal=? WHERE adocdetailid=?",array($new_price,$new_tax,$addthis,$totaltaxed,$this->id));
        $this->db->pquery("UPDATE vtiger_adocmaster set totalamount=?,taxamount=?,amount=? WHERE adocmasterid=?",array($newtotal,$newtax,$total2,$adocmasterid));
-      // $this->db->pquery("UPDATE vtiger_adocdetail set codice_articoloadoc=? where adocdetailid=?",array($codice_articolo,$this->id));
-        //$kthimi=$total."::".$taxdetail."::".$totalimponibile."::".$totalIva."::".$totalNoIva."::".$adocmasterid;
-        //return $kthimi;
+     
 	}
 
 	/**
