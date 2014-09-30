@@ -11,7 +11,7 @@
  * Generic uitype popup selection handler
  */
 function vtlib_setvalue_from_popup(recordid,value,target_fieldname) {
-	var ret = false;
+  	var ret = false;
     if(window.opener.document.EditView) {
         var domnode_id = window.opener.document.EditView[target_fieldname];
         var domnode_display = window.opener.document.EditView[target_fieldname+'_display'];
@@ -23,37 +23,12 @@ function vtlib_setvalue_from_popup(recordid,value,target_fieldname) {
         var domnode_display = window.opener.document.QcEditView[target_fieldname+'_display'];
         if(domnode_id) domnode_id.value = recordid;
         if(domnode_display) domnode_display.value = value;
-
-        return true;
-    }   else if(window.opener.document.getElementById(target_fieldname) && target_fieldname.indexOf('adoc_product')!=-1) 
-        {
-          
-                 var domnode_id = window.opener.document.getElementById(target_fieldname);
-		 var domnode_display = window.opener.document.getElementById(target_fieldname+'_display');
-                 domnode_id.value= recordid;
-		 domnode_display.value = value;
-                 window.opener.up_location();
-                 return true;
-        }
-      else if(window.opener.document.getElementById(target_fieldname) && target_fieldname.indexOf('adoc_product2')!=-1) 
-        {
-          
-                 var domnode_id = window.opener.document.getElementById(target_fieldname);
-		 var domnode_display = window.opener.document.getElementById(adoc_product2_display);
-                 domnode_id.value= recordid;
-		 domnode_display.value = value;
-                 window.opener.up_location();
-                 return true;
-        }else {
-        return false;
-
         ret = true;
     }
     var func = window.opener.gVTModule + 'setValueFromCapture';
     if (typeof window.opener[func] == 'function') {
     	window.opener[func](recordid,value,target_fieldname);
     	ret = true;
-
     }
     return ret;
 }
