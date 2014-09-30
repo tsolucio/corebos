@@ -155,5 +155,11 @@
 	<classname>convertVendorPhoneToCorrectType</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
-
+<changeSet>
+	<author>eri</author>
+	<description>add widget box in adocmaster </description>
+	<filename>build/changeSets/adocmasterwidget.php</filename>
+	<classname>adocmasterwidget</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
