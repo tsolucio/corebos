@@ -11,7 +11,7 @@
  * Generic uitype popup selection handler
  */
 function vtlib_setvalue_from_popup(recordid,value,target_fieldname) {
-	var ret = false;
+  	var ret = false;
     if(window.opener.document.EditView) {
         var domnode_id = window.opener.document.EditView[target_fieldname];
         var domnode_display = window.opener.document.EditView[target_fieldname+'_display'];
