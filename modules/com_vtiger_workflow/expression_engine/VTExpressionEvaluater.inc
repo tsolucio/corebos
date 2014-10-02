@@ -199,6 +199,30 @@ function __vt_uppercasewords($arr) {
 	}
 }
 
+function __vt_round($num,$decs) {
+	if (count($arr)<1 or count($arr)>2) return $arr[0];
+	$decs = (isset($arr[1]) ? $arr[1] : 0);
+	if (is_numeric($arr[0]) and is_numeric($decs)) {
+		return round($arr[0],$decs);
+	} else {
+		return $arr[0];
+	}
+}
+function __vt_ceil($num) {
+	if (is_numeric($num[0])) {
+		return ceil($num[0]);
+	} else {
+		return 0;
+	}
+}
+function __vt_floor($num) {
+	if (is_numeric($num[0])) {
+		return floor($num[0]);
+	} else {
+		return 0;
+	}
+}
+
 function __vt_add_time($arr) {
 	if(count($arr) > 1) {
 		$baseTime = $arr[0];
@@ -251,6 +275,9 @@ class VTFieldExpressionEvaluater{
 				'lowercase' => '__vt_lowercase',
 				'uppercasefirst' => '__vt_uppercasefirst',
 				'uppercasewords' => '__vt_uppercasewords',
+				'round' => '__vt_round',
+				'ceil' => '__vt_ceil',
+				'floor' => '__vt_floor'
 		);
 
 		$this->operations = array_merge($this->functions, $this->operators);
