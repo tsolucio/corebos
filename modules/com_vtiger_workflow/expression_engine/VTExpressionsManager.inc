@@ -42,7 +42,7 @@ class VTExpressionsManager{
 		return array('concat' => 'concat(a,b)', 'time_diffdays(a,b)' => 'time_diffdays(a,b)', 'time_diffdays(a)' => 'time_diffdays(a)', 'time_diff(a,b)' => 'time_diff(a,b)','time_diff(a)' => 'time_diff(a)',
 			'add_days' => 'add_days(datefield, noofdays)', 'sub_days' => 'sub_days(datefield, noofdays)', 'add_time(timefield, minutes)' => 'add_time(timefield, minutes)', 'sub_time(timefield, minutes)' => 'sub_time(timefield, minutes)',
 			'today' => "get_date('today')", 'tomorrow' => "get_date('tomorrow')",  'yesterday' => "get_date('yesterday')", 'substring' => "substring(stringfield,start,end)", 'uppercase'=>'uppercase(stringfield)',
-			'lowercase'=>'lowercase(stringfield)');
+			'lowercase'=>'lowercase(stringfield)', 'uppercase first'=>'uppercasefirst(stringfield)',);
 	}
 }
 
