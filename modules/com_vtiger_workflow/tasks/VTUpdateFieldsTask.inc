@@ -18,7 +18,7 @@ class VTUpdateFieldsTask extends VTTask {
 		return array('field_value_mapping');
 	}
 
-	public function doTask($entity) {
+	public function doTask(&$entity) {
 		global $adb, $current_user, $default_charset;
 
 		$util = new VTWorkflowUtils();

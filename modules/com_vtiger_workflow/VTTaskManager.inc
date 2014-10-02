@@ -156,7 +156,7 @@
 	}
 	
 	abstract class VTTask{
-		public abstract function doTask($data);
+		public abstract function doTask(&$data);
 		public abstract function getFieldNames();
 
 		public function getTimeFieldList() {
