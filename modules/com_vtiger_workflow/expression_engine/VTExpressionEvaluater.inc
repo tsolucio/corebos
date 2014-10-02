@@ -191,6 +191,14 @@ function __vt_uppercasefirst($arr) {
 	}
 }
 
+function __vt_uppercasewords($arr) {
+	if (count($arr)==0) {
+		return '';
+	} else {
+		return ucwords($arr[0]);
+	}
+}
+
 function __vt_add_time($arr) {
 	if(count($arr) > 1) {
 		$baseTime = $arr[0];
@@ -242,6 +250,7 @@ class VTFieldExpressionEvaluater{
 				'uppercase' => '__vt_uppercase',
 				'lowercase' => '__vt_lowercase',
 				'uppercasefirst' => '__vt_uppercasefirst',
+				'uppercasewords' => '__vt_uppercasewords',
 		);
 
 		$this->operations = array_merge($this->functions, $this->operators);
