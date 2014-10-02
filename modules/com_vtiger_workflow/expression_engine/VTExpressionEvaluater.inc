@@ -158,6 +158,15 @@ function __vt_get_date($arr) {
 	}
 }
 
+function __vt_substring($arr) {
+	if (count($arr)<2 or count($arr)>3) return $arr[0];
+	if (count($arr)==2) {
+		return substr($arr[0],$arr[1]);
+	} else {
+		return substr($arr[0],$arr[1],$arr[2]);
+	}
+}
+
 function __vt_add_time($arr) {
 	if(count($arr) > 1) {
 		$baseTime = $arr[0];
@@ -204,7 +213,8 @@ class VTFieldExpressionEvaluater{
 				'sub_days' => '__vt_sub_days',
 				'get_date' => '__vt_get_date',
 				'add_time' => '__vt_add_time',
-				'sub_time' => '__vt_sub_time'
+				'sub_time' => '__vt_sub_time',
+				'substring' => '__vt_substring'
 		);
 
 		$this->operations = array_merge($this->functions, $this->operators);
