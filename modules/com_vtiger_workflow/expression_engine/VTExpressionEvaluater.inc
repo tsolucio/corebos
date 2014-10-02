@@ -175,6 +175,14 @@ function __vt_uppercase($arr) {
 	}
 }
 
+function __vt_lowercase($arr) {
+	if (count($arr)==0) {
+		return '';
+	} else {
+		return strtolower($arr[0]);
+	}
+}
+
 function __vt_add_time($arr) {
 	if(count($arr) > 1) {
 		$baseTime = $arr[0];
@@ -224,6 +232,7 @@ class VTFieldExpressionEvaluater{
 				'sub_time' => '__vt_sub_time',
 				'substring' => '__vt_substring',
 				'uppercase' => '__vt_uppercase',
+				'lowercase' => '__vt_lowercase',
 		);
 
 		$this->operations = array_merge($this->functions, $this->operators);
