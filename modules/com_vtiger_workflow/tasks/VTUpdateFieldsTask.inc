@@ -91,6 +91,7 @@ class VTUpdateFieldsTask extends VTTask {
 				}
 
 				$focus->column_fields[$fieldName] = $fieldValue;
+				$entity->data[$fieldName] = $fieldValue;
 			}
 
 			foreach ($focus->column_fields as $fieldName => $fieldValue) {
