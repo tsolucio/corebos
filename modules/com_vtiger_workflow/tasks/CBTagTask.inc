@@ -26,7 +26,7 @@ class CBTagTask extends VTTask{
 		return array('listoftags','addrel','forallusers');
 	}
 
-	public function doTask($entity) {
+	public function doTask(&$entity) {
 		global $adb,$default_charset,$log,$current_user;
 		list($cto,$cto_id) = explode('x',$entity->getId());
 		$setype = getSalesEntityType($cto_id);

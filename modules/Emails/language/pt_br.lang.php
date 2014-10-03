@@ -177,7 +177,7 @@ por uma atualização!',
 'LBL_MAILSELECT_INFO'=>'os seguintes Emails foram associados. Por favor selecione o ID do Email para o qual deve ser enviado',
 'LBL_NO_RECORDS' => 'Nenhum Registro encontrado',
 'LBL_PRINT_EMAIL'=> 'Imprimir',
-
+'LBL_ATTACH_DOCUMENTS' => 'Attach documents',
 );
 
 ?>

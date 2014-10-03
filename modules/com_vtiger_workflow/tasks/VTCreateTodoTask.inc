@@ -34,7 +34,7 @@ class VTCreateTodoTask extends VTTask{
 		return $user;
 	}
 
-	public function doTask($entityData){
+	public function doTask(&$entityData){
 		if(!vtlib_isModuleActive('Calendar')) {
 			return;
 		}
