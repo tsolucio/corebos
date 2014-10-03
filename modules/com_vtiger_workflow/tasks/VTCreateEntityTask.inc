@@ -18,7 +18,7 @@ class VTCreateEntityTask extends VTTask {
 		return array('entity_type', 'reference_field', 'field_value_mapping');
 	}
 
-	public function doTask($entity) {
+	public function doTask(&$entity) {
 		global $adb, $current_user;
 		$util = new VTWorkflowUtils();
 

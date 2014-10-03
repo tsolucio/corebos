@@ -21,7 +21,7 @@ class VTSMSTask extends VTTask {
 		return array('content', 'sms_recepient');
 	}
 	
-	public function doTask($entity){
+	public function doTask(&$entity){
 		
 		if(SMSNotifier::checkServer()) {
 			

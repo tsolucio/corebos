@@ -2806,15 +2806,18 @@ function perform_post_migration_activities() {
 }
 
 /** Function To create Email template variables dynamically -- Pavani */
-function getEmailTemplateVariables() {
+function getEmailTemplateVariables($modules_list = null) {
 	global $adb;
-	$modules_list = array('Accounts', 'Contacts', 'Leads', 'Users');
+
+	if (is_null($modules_list)) {
+		$modules_list = array('Accounts', 'Contacts', 'Leads', 'Users');
+	}
 
 	foreach ($modules_list as $index => $module) {
 		if ($module == 'Calendar') {
 			$focus = new Activity();
 		} else {
-			$focus = new $module();
+			$focus = CRMEntity::getInstance($module);
 		}
 		$field = array();
 		$tabid = getTabid($module);
@@ -2823,6 +2826,9 @@ function getEmailTemplateVariables() {
 		$result = $adb->pquery("select fieldlabel,columnname,displaytype from vtiger_field where tabid=? and vtiger_field.presence in (0,2) and displaytype in (1,2,3) and block !=0", array($tabid));
 		$norows = $adb->num_rows($result);
 		if ($norows > 0) {
+			$table_index = $focus->table_index;
+			$option = array(getTranslatedString($module) . ': ' . getTranslatedString($module) . 'ID', "$" . strtolower($module) . "-" . $table_index . "$");
+			$allFields[] = $option;
 			for ($i = 0; $i < $norows; $i++) {
 				$field = $adb->query_result($result, $i, 'fieldlabel');
 				$columnname = $adb->query_result($result, $i, 'columnname');
@@ -2837,9 +2843,9 @@ function getEmailTemplateVariables() {
 		$allOptions[] = $allFields;
 		$allFields = "";
 	}
-	$option = array('Current Date', '$custom-currentdate$');
+	$option = array(getTranslatedString('Current Date'), '$custom-currentdate$');
 	$allFields[] = $option;
-	$option = array('Current Time', '$custom-currenttime$');
+	$option = array(getTranslatedString('Current Time'), '$custom-currenttime$');
 	$allFields[] = $option;
 	$allOptions[] = $allFields;
 	return $allOptions;

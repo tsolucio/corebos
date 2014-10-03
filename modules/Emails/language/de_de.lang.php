@@ -171,7 +171,7 @@ $mod_strings = Array(
 'LBL_MAILSELECT_INFO'=>'hat eine Referenz auf die nachfolgenden E-Mail Adressen. Bitte wählen Sie die Adresse zu der die E-Mail gesendet werden soll.',
 'LBL_NO_RECORDS' => 'Keine Daten gefunden',
 'LBL_PRINT_EMAIL'=> 'Drucken',
-
+'LBL_ATTACH_DOCUMENTS' => 'Attach documents',
 );
 
 ?>
