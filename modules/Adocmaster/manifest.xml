@@ -1243,6 +1243,16 @@
 <handler_class><![CDATA[]]></handler_class>
 <handler><![CDATA[]]></handler>
 </customlink>
+<customlink>
+<linktype>DETAILVIEWWIDGET</linktype>
+<linklabel>DetailViewAdocdetailng</linklabel>
+<linkurl><![CDATA[block://Adocdetailng:modules/Adocdetail/Adocdetailng.php]]></linkurl>
+<linkicon><![CDATA[]]></linkicon>
+<sequence>1</sequence>
+<handler_path><![CDATA[]]></handler_path>
+<handler_class><![CDATA[]]></handler_class>
+<handler><![CDATA[]]></handler>
+</customlink>
 </customlinks>
 <crons>
 </crons>

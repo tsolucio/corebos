@@ -18,7 +18,7 @@ class VTEmailTask extends VTTask{
 	public function getFieldNames(){
 		return array("subject", "content", "recepient", 'emailcc', 'emailbcc');
 	}
-	public function doTask($entity){
+	public function doTask(&$entity){
 		global $adb, $current_user;
 		$util = new VTWorkflowUtils();
 

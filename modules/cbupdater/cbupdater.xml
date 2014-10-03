@@ -106,13 +106,6 @@
 	<systemupdate>false</systemupdate>
 </changeSet>
 <changeSet>
-	<author>joebordes</author>
-	<description>Convert Vendor phone field to correct phone type to support calls</description>
-	<filename>build/changeSets/convertVendorPhoneToCorrectType.php</filename>
-	<classname>convertVendorPhoneToCorrectType</classname>
-	<systemupdate>true</systemupdate>
-</changeSet>
-<changeSet>
 	<author>eri</author>
 	<description>import adocmaster module </description>
 	<filename>build/changeSets/adocmasterimport.php</filename>
