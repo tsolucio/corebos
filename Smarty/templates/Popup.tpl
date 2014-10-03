@@ -70,6 +70,7 @@ function add_data_to_relatedlist(entity_id,recordid,mod, popupmode, callback) {
 	if (mod == 'Documents' && return_module == 'Emails') {
 		var attachment = document.getElementById('document_attachment_' + entity_id).value;
 		window.opener.addOption(entity_id, attachment);
+		return;
 	}
 	if(popupmode == 'ajax') {
 		VtigerJS_DialogBox.block();

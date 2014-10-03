@@ -212,7 +212,7 @@ function searchDocuments() {
 }
 function addOption(id, filename) {
 	var table = document.getElementById("attach_cont");
-	var attachments = document.EditView["doc_attachments[]"];
+	var attachments = document.getElementsByName("doc_attachments[]");
 	if (attachments !== undefined) {
 		for (var i = 0; i < attachments.length; i++) {
 			if (attachments[i].value == id) {
