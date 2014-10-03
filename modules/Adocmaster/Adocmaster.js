@@ -23,3 +23,15 @@
  *  Version      : 5.4.0
  *  Author       : Opencubed
  *************************************************************************************************/
+function AdocmastersetValueFromCapture(recordid,value,target_fieldname) {
+	//alert(target_fieldname);
+        if(target_fieldname=='adoc_product2'){
+            document.getElementById('adoc_product2').value = recordid;
+				document.getElementById('adoc_product2_display').value = value;}
+                            if(target_fieldname=='adoc_product'){
+                                document.getElementById('adoc_product').value = recordid;
+                                document.getElementById('adoc_product_display').value = value;
+                            }
+		
+
+}
