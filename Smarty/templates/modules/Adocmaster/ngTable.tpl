@@ -87,29 +87,9 @@ $smarty = new vtigerCRM_Smarty;
       <br><br>
   <!--<p><strong>Filter:</strong> {literal}{{tableParams.filter()|json}}{/literal}-->
          
-       {php}
-//require_once('Smarty_setup.php');
-//require_once("modules/Adocmaster/Adocmaster.php");
-//global $adb;
-//$id2 =$_REQUEST['record'];
-//$id3=$_REQUEST['adoc_product2'];
-//echo $id3;
-  // $adocquery=$adb->pquery("select vtiger_pcdetails.pcdetailsid,vtiger_pcdetails.price,vtiger_pcdetails.quantity,vtiger_pcdetails.totalprice,vtiger_pcdetails.pcdescriptionname,vtiger_products.productid,vtiger_adocmaster.adocmasterid,vtiger_adocdetail.adocdtax,vtiger_adocdetail.adocdtotal,vtiger_adocdetail.adocdtotalamount,vtiger_adocdetail.adocdetailid,vtiger_adocdetail.adocdetailno,vtiger_adocdetail.adocdetailname,vtiger_adocdetail.adoc_product,vtiger_adocdetail.adoc_quantity,vtiger_adocdetail.adoc_price,vtiger_adocdetail.adoc_stock,vtiger_adocdetail.riferimento,vtiger_products.productname,vtiger_adocdetail.nrline from vtiger_adocdetail  join vtiger_crmentity on crmid=adocdetailid join vtiger_adocmaster on adocmasterid=adoctomaster left join vtiger_products on productid=adoc_product left join vtiger_pcdetails on richiestaparte=pcdetailsid
-    //where deleted=0 and adocmasterid=? and adoc_product=?",array($id2,$id3));
-//echo $id2;
-//$cmimi=$adb->query_result($adocquery,0,'adoc_price');
-//echo $cmimi;
-//$smarty->assign('cmimi',$cmimi);
-
-   
-   {/php}       
+      
   
- <!--another comment-->
-<!--<pre>Value: = {literal}{{user.adoc_product}}{/literal}</pre>-->
-    <!--<p><strong>Page:</strong> {literal}{{tableParams.page()}}{/literal}
-    <p><strong>Count per page:</strong> {literal}{{tableParams.count()}}{/literal}-->
-<!--<button ng-click="{literal}tableParams.sorting({}){/literal}" class="btn btn-default pull-right">Clear sorting</button>-->
-    <!--<p><strong>Sorting:</strong> {literal}{{tableParams.sorting()|json}}{/literal}-->
+
 
     
         <table ng-table="tableParams"  class="table">
@@ -126,31 +106,7 @@ $smarty = new vtigerCRM_Smarty;
             <td style="width:10%">Actions</td>
             
             </tr>
-          <!--  <tr ng-repeat="user in $data">
-                <td data-title="'AdocdetailNo'" sortable="'name'">
-                  <a href="index.php?module=Adocdetail&action=DetailView&record={literal}{{user.adocdetailid}}{/literal}">  {literal}{{user.name}}{/literal}</a>
-                </td>
-                <td data-title="'Nr Line'" sortable="'age'">
-                   {literal} {{user.age}} {/literal}
-                </td>
-                <td data-title="'Product'" sortable="'accountname'">
-                  <a href ="index.php?module=Products&action=DetailView&record={literal}{{user.productid}}{/literal}"> {literal} {{user.accountname}} {/literal}</a>
-                </td>
-                <td data-title="'Quantity'" sortable="'quantity'">
-                   {literal} {{user.quantity}} {/literal}
-                </td>
-                 <td data-title="'Price'" sortable="'price'">
-                   {literal} {{user.price}} {/literal}
-                </td>
-                <td data-title="'Riferimento'" sortable="'riferimento'">
-                   {literal} {{user.riferimento}} {/literal}
-                </td>
-                <td data-title="'Stock'" sortable="'stock'">
-                 <a href="index.php?module=Stock&action=DetailView&record={literal}{{user.stockid}}{/literal}">  {literal} {{user.stock}} {/literal}</a>
-                </td>
-                
-            </tr>
-        </table>-->
+       
        <tbody ng-repeat="group in $groups">
         <tr class="ng-table-group">
             <td colspan="{literal}{{$columns.length}}{/literal}">
