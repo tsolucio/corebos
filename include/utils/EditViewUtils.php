@@ -786,7 +786,8 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			'Accounts' => $app_strings['COMBO_ACCOUNTS'],
 			'Potentials' => $app_strings['COMBO_POTENTIALS'],
 			'HelpDesk' => $app_strings['COMBO_HELPDESK'],
-			'Campaigns' => $app_strings['COMBO_CAMPAIGNS']
+			'Campaigns' => $app_strings['COMBO_CAMPAIGNS'],
+			'Vendors' => $app_strings['COMBO_VENDORS'] //MSL
 		);
 		if($act_mode == "Task") {
 			$parentModulesList['Quotes'] = $app_strings['COMBO_QUOTES'];

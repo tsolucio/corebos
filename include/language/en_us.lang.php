@@ -336,6 +336,7 @@ $app_strings = array (
 'COMBO_HELPDESK' => 'Trouble Tickets',
 'COMBO_USERS' => 'Users',
 'COMBO_CAMPAIGNS' => 'Campaigns',
+'COMBO_VENDORS' => 'Vendors', //MSL
 'LBL_SELECT' => 'Select',
 'LBL_EDIT' => 'Edit',
 'LBL_DELETE' => 'Delete',
