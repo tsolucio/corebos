@@ -790,6 +790,13 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 					$tickettitle = substr($tickettitle, 0, 25) . '...';
 				}
 				$label_fld[] = '<a href="index.php?module=' . $parent_module . '&action=DetailView&record=' . $value . '">' . $tickettitle . '</a>';
+			} elseif ($parent_module == "Vendors") { //MSL
+				$label_fld[] = $app_strings['LBL_VENDOR_NAME'];
+				$sql = "select * from  vtiger_vendor where vendorid=?";
+				$result = $adb->pquery($sql, array($value));
+				$account_name = $adb->query_result($result, 0, "vendorname");
+
+				$label_fld[] = '<a href="index.php?module=' . $parent_module . '&action=DetailView&record=' . $value . '">' . $account_name . '</a>';				
 			}
 		} else {
 			$label_fld[] = getTranslatedString($fieldlabel, $module);
