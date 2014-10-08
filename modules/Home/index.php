@@ -56,12 +56,11 @@ foreach($tabrows as $resultrow) {
 		$modName=$resultrow['name'];
 		if(isPermitted($modName,'DetailView') == 'yes' && vtlib_isModuleActive($modName)){
 			$modulenamearr[$modName]=array($resultrow['tabid'],$modName);
-		}	
+		}
 	}
 }
-ksort($modulenamearr); // We avoided ORDER BY in Query (vtlib_prefetchModuleActiveInfo)!
+uasort($modulenamearr, function($a,$b) {return (strtolower(getTranslatedString($a[1],$a[1])) < strtolower(getTranslatedString($b[1],$b[1]))) ? -1 : 1;});
 // END
-
 
 //Security Check done for RSS and Dashboards
 $allow_rss='no';
