@@ -321,6 +321,7 @@ $app_strings = array (
 	'COMBO_HELPDESK' => 'Tickets',
 	'COMBO_USERS' => 'Collaborateurs',
 	'COMBO_CAMPAIGNS' => 'Campagnes',
+	'COMBO_VENDORS' => 'Vendors', //MSL
 	'LBL_SELECT' => 'Sélectionner',
 	'LBL_EDIT' => 'Editer',
 	'LBL_SAVE_AS'=>" Save As",

@@ -141,4 +141,11 @@
 	<classname>convertVendorPhoneToCorrectType</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>mslokhat</author>
+	<description>Add Calendar Events to Vendors</description>
+	<filename>build/changeSets/addvend_activities.php</filename>
+	<classname>addVendorActivities</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
 </updatesChangeLog>

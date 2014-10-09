@@ -333,6 +333,7 @@ $app_strings = array(
 	'COMBO_HELPDESK' => 'Kérések',
 	'COMBO_USERS' => 'Felhasználók',
 	'COMBO_CAMPAIGNS' => 'Kampányok',
+	'COMBO_VENDORS' => 'Vendors', //MSL
 	'LBL_SELECT' => 'Kiválaszt',
 	'LBL_EDIT' => 'Szerkeszt',
 	'LBL_DELETE' => 'Törlés',
