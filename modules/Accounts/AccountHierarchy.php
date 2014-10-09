@@ -29,6 +29,7 @@ $smarty->assign("MODULE",$currentModule);
 $check_button = Button_Check($currentModule); 
 $check_button['Import'] = 'no'; 
 $check_button['Export'] = 'no';
+$check_button['DuplicatesHandling'] = 'no';
 $check_button['moduleSettings'] = 'no';
 $smarty->assign("CHECK", $check_button);
 
