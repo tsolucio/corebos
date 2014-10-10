@@ -197,9 +197,9 @@ function AddressSync(Addform,id)
                                                                                 {else}
 										<td colspan=4 class="detailedViewHeader">
 											<b>{$header}</b>
-										{/if}
 										</td>
-									      </tr>
+										{/if}
+										</tr>
 
 										<!-- Handle the ui types display -->
 										{include file="DisplayFields.tpl"}
