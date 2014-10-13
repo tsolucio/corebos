@@ -797,6 +797,7 @@ $mod_strings = Array(
 'vring'=>'Vertical Ring',
 'hcylinder'=>'Horizontal Cylinder',
 'vcylinder'=>'Vertical Cylinder',
+'LBL_SEND_EMAIL_TO_SENDER' => 'Send copy of email',
 );
 
 ?>
