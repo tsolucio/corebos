@@ -2011,7 +2011,7 @@ function OpenCompose(id,mode,crmid)
 //Function added for Mass select in Popup - Philip
 function SelectAll(mod,parmod)
 {
-	if (document.selectall.selected_id !== undefined && !window.opener.document.getElementById('RLreturn_module')) {
+	if (parmod === 'Emails' && document.selectall.selected_id !== undefined) {
 		var tempids = document.selectall.selected_id;
 		for(k=0; k < tempids.length; k++) {
 			var id = tempids[k].value;

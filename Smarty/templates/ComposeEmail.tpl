@@ -204,6 +204,7 @@ var cc_err_msg = '{$MOD.LBL_CC_EMAIL_ERROR}';
 var no_rcpts_err_msg = '{$MOD.LBL_NO_RCPTS_EMAIL_ERROR}';
 var bcc_err_msg = '{$MOD.LBL_BCC_EMAIL_ERROR}';
 var conf_mail_srvr_err_msg = '{$MOD.LBL_CONF_MAILSERVER_ERROR}';
+var remove_image_url = "{'no.gif'|@vtiger_imageurl:$THEME}";
 {literal}
 function searchDocuments() {
 	var emailId = 0;
@@ -211,7 +212,7 @@ function searchDocuments() {
 }
 function addOption(id, filename) {
 	var table = document.getElementById("attach_cont");
-	var attachments = document.EditView["doc_attachments[]"];
+	var attachments = document.getElementsByName("doc_attachments[]");
 	if (attachments !== undefined) {
 		for (var i = 0; i < attachments.length; i++) {
 			if (attachments[i].value == id) {
@@ -219,7 +220,10 @@ function addOption(id, filename) {
 			}
 		}
 	}
-	var newRow = "<div>" + filename + "<input type='hidden' name='doc_attachments[]' value='" + id + "'></div>";
+	var newRow = "<div>";
+	newRow += "<a href='javascript:void(0)' onclick='this.parentNode.parentNode.removeChild(this.parentNode);'><img src='" + remove_image_url + "'></a>";
+	newRow += "&nbsp" + filename + "<input type='hidden' name='doc_attachments[]' value='" + id + "'>";
+	newRow += "</div>";
 	table.innerHTML += newRow;
 }
 function email_validate(oform,mode)

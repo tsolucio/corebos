@@ -153,6 +153,9 @@ function __vt_get_date($arr) {
 			break;
 		case 'yesterday': return date('Y-m-d', strtotime('-1 day'));
 			break;
+		case 'time': global $default_timezone;
+			return date('H:i:s');
+			break;
 		default : return date('Y-m-d');
 			break;
 	}

@@ -803,6 +803,7 @@ $mod_strings = Array(
 'vring'=>'Anillo Vertical',
 'hcylinder'=>'Cilindro Horizontal',
 'vcylinder'=>'Cilindro Vertical',
+'LBL_SEND_EMAIL_TO_SENDER' => 'Envía copia de email',
 );
 
 ?>

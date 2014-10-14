@@ -218,6 +218,26 @@ function VTEmailTask($){
 					textarea.insertHtml(value);
 					});
 
+					fillSelectBox('task-emailfieldsfrmname', modules, moduleName,
+										 function(e){return (e['name'] == 'user_name');});
+					$('#task-emailfieldsfrmname-busyicon').hide();
+					$('#task-emailfieldsfrmname').show();
+					$('#task-emailfieldsfrmname').change(function(){
+						var input = $($('#save_fromname').get());
+						var value = '$'+$(this).attr('value');
+						input.attr("value", value);
+					});
+
+					fillSelectBox('task-emailfieldsfrmemail', modules, moduleName,
+										 function(e){return e['type']['name']=='email';});
+					$('#task-emailfieldsfrmemail-busyicon').hide();
+					$('#task-emailfieldsfrmemail').show();
+					$('#task-emailfieldsfrmemail').change(function(){
+						var input = $($('#save_fromemail').get());
+						var value = '$'+$(this).attr('value');
+						input.attr("value", value);
+					});
+
 					fillSelectBox('task-subjectfields', modules, moduleName,
 										 function(e){return (e['type']['name']!='file' && e['type']['name']!='text' );});
 					$('#task-subjectfields-busyicon').hide();

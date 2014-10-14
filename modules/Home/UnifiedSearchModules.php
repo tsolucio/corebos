@@ -27,7 +27,7 @@ while($modulerow = $adb->fetch_array($moduleres)) {
 		);
 	}
 }
-ksort($allowed_modules);
+uasort($allowed_modules, function($a,$b) {return (strtolower($a['label']) < strtolower($b['label'])) ? -1 : 1;});
 
 require_once('Smarty_setup.php');
 

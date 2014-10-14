@@ -6,6 +6,18 @@ var moduleName = '{$entityName}';
 
 <table border="0" cellpadding="5" cellspacing="0" width="100%" class="small">
 	<tr>
+		<td class='dvtCellLabel' align="right" width=15% nowrap="nowrap"><b>{'LBL_EMAIL_FROMNAME'|@getTranslatedString:$MODULE}</b></td>
+		<td class='dvtCellInfo'><input type="text" name="fromname" value="{$task->fromname}" id="save_fromname" class="form_input" style='width: 250px;'>
+			<span id="task-emailfieldsfrmname-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
+			<select id="task-emailfieldsfrmname" class="small" style="display: none;"><option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option></select></td>
+	</tr>
+	<tr>
+		<td class='dvtCellLabel' align="right" width=15% nowrap="nowrap"><b>{'LBL_EMAIL_FROMEMAIL'|@getTranslatedString:$MODULE}</b></td>
+		<td class='dvtCellInfo'><input type="text" name="fromemail" value="{$task->fromemail}" id="save_fromemail" class="form_input" style='width: 250px;'>
+			<span id="task-emailfieldsfrmemail-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
+			<select id="task-emailfieldsfrmemail" class="small" style="display: none;"><option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option></select></td>
+	</tr>
+	<tr>
 		<td class='dvtCellLabel' align="right" width=15% nowrap="nowrap"><b><font color=red>*</font> {'LBL_EMAIL_RECIPIENT'|@getTranslatedString:$MODULE}</b></td>
 		<td class='dvtCellInfo'><input type="text" name="recepient" value="{$task->recepient}" id="save_recepient" class="form_input" style='width: 250px;'>
 			<span id="task-emailfields-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
