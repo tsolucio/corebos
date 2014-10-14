@@ -173,21 +173,23 @@ $productid=$_REQUEST['productid2'];
 if($kaction==adding){
    
     $quantity=$_REQUEST['quantity'];
-    echo $quantity;
+  //  echo $quantity;
     $adocp=$_REQUEST['adocp'];
-    echo $adocp;
+   // echo $adocp;
     $focus=new Adocdetail();
   
 
    $adoc1=new Adocdetail();
   
+
    $adoc1->column_fields['adoc_quantity']=$quantity;
   $adoc1->column_fields['adoctomaster']=$laprueva;
-   $adoc1->column_fields['assigned_user_id']=$focus->column_fields['assigned_user_id'];
+  $adoc1->column_fields['assigned_user_id']=1;
+  
    $adoc1->column_fields['adoc_product']=$adocp;
   $adoc1->column_fields['adoc_price']=$sot5;
-    $adoc1->save("Adocdetail");
-   
+    
+ $adoc1->save("Adocdetail");   
     
 }
 
