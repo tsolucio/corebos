@@ -2306,6 +2306,14 @@ function selectContact(check,type,frmName)
 		else
 			window.open("index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView","test","width=640,height=602,resizable=0,scrollbars=0");
 	}
+	else if($("vendor_name") && gVTModule=='PurchaseOrder') {
+		record_id = frmName.vendor_id.value;
+		module_string = "&parent_module=Vendors";
+		if(record_id != '')
+			window.open("index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView"+module_string+"&relmod_id="+record_id,"test","width=640,height=602,resizable=0,scrollbars=0");
+		else
+			window.open("index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView","test","width=640,height=602,resizable=0,scrollbars=0");
+	}
 	else if(($("parentid")) && type != 'task')
 	{
 		if(getObj("parent_type")){
