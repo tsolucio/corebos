@@ -171,45 +171,26 @@ $focus->save("Emails");
 $return_id = $focus->id;
 
 require_once("modules/Emails/mail.php");
-if(isset($_REQUEST['send_mail']) && $_REQUEST['send_mail'] && $_REQUEST['parent_id'] != '') 
-{
+if($current_user->column_fields['send_email_to_sender']=='1' && isset($_REQUEST['send_mail']) && $_REQUEST['send_mail'] && $_REQUEST['parent_id'] != '') {
 	$user_mail_status = send_mail('Emails',$current_user->column_fields['email1'],$current_user->user_name,'',$_REQUEST['subject'],$_REQUEST['description'],$_REQUEST['ccmail'],$_REQUEST['bccmail'],'all',$focus->id);
-		
 	//if block added to fix the issue #3759
-	if($user_mail_status != 1){
-		$query  = "select crmid,attachmentsid from vtiger_seattachmentsrel where crmid=?";
-		$result = $adb->pquery($query, array($email_id));
-		$numOfRows = $adb->num_rows($result);
-		for($i=0; $i<$numOfRows; $i++)
-		{
-			$attachmentsid = $adb->query_result($result,0,"attachmentsid");		
-			if($attachmentsid > 0)
-			{	
-				$query1="delete from vtiger_crmentity where crmid=?";
-			 	$adb->pquery($query1, array($attachmentsid));
-			}
-
-			$crmid=$adb->query_result($result,0,"crmid");
-			$query2="delete from vtiger_crmentity where crmid=?";
-			$adb->pquery($query2, array($crmid));
-		}
-			
-		$query = "delete from vtiger_emaildetails where emailid=?";	
+	if($user_mail_status != 1) {
+		$query = "delete from vtiger_crmentity where crmid=?";
 		$adb->pquery($query, array($focus->id));
-        	
+		$query = "delete from vtiger_emaildetails where emailid=?";
+		$adb->pquery($query, array($focus->id));
 		$error_msg = "<font color=red><strong>".$mod_strings['LBL_CHECK_USER_MAILID']."</strong></font>";
-	        $ret_error = 1;
+		$ret_error = 1;
 		$ret_parentid = vtlib_purify($_REQUEST['parent_id']);
-	        $ret_toadd = vtlib_purify($_REQUEST['parent_name']);
-        	$ret_subject = vtlib_purify($_REQUEST['subject']);
-	        $ret_ccaddress = vtlib_purify($_REQUEST['ccmail']);
-        	$ret_bccaddress = vtlib_purify($_REQUEST['bccmail']);
-	        $ret_description = vtlib_purify($_REQUEST['description']);
-        	echo $error_msg;
-	        include("EditView.php");
-        	exit();
+		$ret_toadd = vtlib_purify($_REQUEST['parent_name']);
+		$ret_subject = vtlib_purify($_REQUEST['subject']);
+		$ret_ccaddress = vtlib_purify($_REQUEST['ccmail']);
+		$ret_bccaddress = vtlib_purify($_REQUEST['bccmail']);
+		$ret_description = vtlib_purify($_REQUEST['description']);
+		echo $error_msg;
+		include("EditView.php");
+		exit();
 	}
-
 }
 $focus->retrieve_entity_info($return_id,"Emails");
 

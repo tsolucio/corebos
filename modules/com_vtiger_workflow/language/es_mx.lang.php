@@ -68,6 +68,8 @@ $mod_strings = array(
 'LBL_EMAIL_CC' => 'CC',
 'LBL_EMAIL_BCC' => 'BCC',
 'LBL_EMAIL_SUBJECT' => 'Asunto',
+'LBL_EMAIL_FROMNAME' => 'Nombre De',
+'LBL_EMAIL_FROMEMAIL' => 'Email De',
 
 'LBL_WORKFLOW_NOTE_EVENT_TASK_TIMEZONE' => 'Nota: Todas las fechas, horas e información recurrente configurada para el evento,
 											estarán definidas conforme a la zona horaria por defecto, configurada en config.inc.php',

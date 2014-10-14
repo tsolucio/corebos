@@ -63,6 +63,8 @@ $mod_strings = array(
 	'LBL_EMAIL_CC' => 'CC',
 	'LBL_EMAIL_BCC' => 'BCC',
 	'LBL_EMAIL_SUBJECT' => 'Sujet',
+        'LBL_EMAIL_FROMNAME' => 'From Name',
+        'LBL_EMAIL_FROMEMAIL' => 'From Email',
 	
 	'LBL_WORKFLOW_NOTE_EVENT_TASK_TIMEZONE' => 'Note: Toutes les informations de date et temps configuré pour cet évènement seront basé sur le fuseau horaire configuré dans config.inc.php',
 	// 5.4.0

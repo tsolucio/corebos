@@ -126,4 +126,11 @@
 	<classname>convertVendorPhoneToCorrectType</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add SendEmailToSender field on Users</description>
+	<filename>build/changeSets/UserSendEmailToSender.php</filename>
+	<classname>UserSendEmailToSender</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

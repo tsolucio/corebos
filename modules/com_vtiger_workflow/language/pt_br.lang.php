@@ -66,6 +66,8 @@ $mod_strings = array(
 'LBL_EMAIL_CC' => 'CC',
 'LBL_EMAIL_BCC' => 'BCC',
 'LBL_EMAIL_SUBJECT' => 'Assunto',
+'LBL_EMAIL_FROMNAME' => 'From Name',
+'LBL_EMAIL_FROMEMAIL' => 'From Email',
 
 'LBL_WORKFLOW_NOTE_EVENT_TASK_TIMEZONE' => 'Nota: Toda a data, hora e informação recorrente configurada para o Evento,
 													estarão relacionados com o time zone padrão, configurado no config.inc.php',
