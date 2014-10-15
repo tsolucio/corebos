@@ -119,7 +119,7 @@
 			$sanitizedInput = array();
 			foreach($this->operationParams as $ind=>$columnDetails){
 				foreach ($columnDetails as $columnName => $type) {
-					$sanitizedInput[$columnName] = $this->handleType($type,vtws_getParameter($input,$columnName));
+					$sanitizedInput[$columnName] = $this->handleType($type,vtws_getParameter($input,$columnName));;
 				}
 			}
 			return $sanitizedInput;

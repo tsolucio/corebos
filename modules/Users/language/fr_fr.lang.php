@@ -575,11 +575,6 @@ $mod_strings = array (
 		//user-group fixes
 		'LBL_GROUPNAME_EXIST' => 'un groupe avec ce nom existe déjà!',
 		'LBL_PROFILENAME_EXIST' => 'Un profil avec ce nom existe déjà!',
-		'flat'=>'Flat',
-		'hring'=>'Horizontal Ring',
-		'vring'=>'Vertical Ring',
-		'hcylinder'=>'Horizontal Cylinder',
-		'vcylinder'=>'Vertical Cylinder',
-		'LBL_SEND_EMAIL_TO_SENDER' => 'Send copy of email',
+
 );
 ?>

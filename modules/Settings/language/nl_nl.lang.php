@@ -377,9 +377,6 @@ $mod_strings = Array(
 'PurchaseOrder'=>'Inkooporder',
 'SalesOrder'=>'Verkooporder',
 'Invoice'=>'Factuur',
-'LBL_FRONT_LOGO' => 'Front Logo',
-'LBL_FAVICON_LOGO' => 'Favicon Logo',
-
 //For Custom Fields
 'LBL_LEAD_MAP_CUSTOM_FIELD'=>'Koppel lead aangepaste velden',
 'leadCustomFieldDescription'=>'Koppel elk van uw organisatie lead aangepaste velden aan elk van uw aangepaste accounts

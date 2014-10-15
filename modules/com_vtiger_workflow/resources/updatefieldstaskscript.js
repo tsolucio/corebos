@@ -346,11 +346,7 @@ function VTUpdateFieldsTask($, fieldvaluemapping){
 						resetFields(getFieldType(fieldname), fieldname, mappingno);
 						$(format("#save_fieldvalues_%s_value_type", mappingno)).attr("value", fieldvaluemap['valuetype']);
 						$('#dump').html(fieldvaluemap["value"]);
-						if (fieldvaluemap['valuetype'] == 'rawtext') {
-							var text = $('#dump').html();
-						} else {
 						var text = $('#dump').text();
-						}
 						$(format("#save_fieldvalues_%s_value", mappingno)).attr("value", text);
 						mappingno+=1;
 					});

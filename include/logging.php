@@ -1,19 +1,22 @@
 <?php
-/*************************************************************************************************
- * Copyright 2014 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS.
-* Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
-* file except in compliance with the License. You can redistribute it and/or modify it
-* under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
-* granted by the License. coreBOS distributed by JPL TSolucio S.L. is distributed in
-* the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
-* warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. Unless required by
-* applicable law or agreed to in writing, software distributed under the License is
-* distributed on an "AS IS" BASIS, WITHOUT ANY WARRANTIES OR CONDITIONS OF ANY KIND,
-* either express or implied. See the License for the specific language governing
-* permissions and limitations under the License. You may obtain a copy of the License
-* at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
-*************************************************************************************************/
-
+/*********************************************************************************
+ * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
+ * ("License"); You may not use this file except in compliance with the 
+ * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
+ * Software distributed under the License is distributed on an  "AS IS"  basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
+ * the specific language governing rights and limitations under the License.
+ * The Original Code is:  SugarCRM Open Source
+ * The Initial Developer of the Original Code is SugarCRM, Inc.
+ * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+ * All Rights Reserved.
+ * Contributor(s): ______________________________________.
+ ********************************************************************************/
+/*********************************************************************************
+ * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/include/logging.php,v 1.1 2004/08/17 13:23:37 gjayakrishnan Exp $
+ * Description:  Kicks off log4php.
+ ********************************************************************************/
+ 
 require_once('config.php');
 
 // Performance Optimization: Configure the log folder
@@ -21,19 +24,16 @@ require_once('config.php');
 global $PERFORMANCE_CONFIG;
 if(isset($PERFORMANCE_CONFIG) && isset($PERFORMANCE_CONFIG['LOG4PHP_DEBUG']) && $PERFORMANCE_CONFIG['LOG4PHP_DEBUG']) {
 	define('LOG4PHP_DIR', 'log4php.debug');
-	require_once(LOG4PHP_DIR.'/Logger.php');
-	Logger::configure('log4php.properties');
-	class LoggerManager {
-		static function getlogger($name = 'ROOT') {
-			return Logger::getLogger($name);
-		}
-	}
 } else {
 	define('LOG4PHP_DIR', 'log4php');
-	require_once(LOG4PHP_DIR.'/LoggerManager.php');
-	require_once(LOG4PHP_DIR.'/LoggerPropertyConfigurator.php');
-	$config = new LoggerPropertyConfigurator();
-	$config->configure('log4php.properties');
 }
 // END
+define('LOG4PHP_DEFAULT_INIT_OVERRIDE', true);
+
+require_once(LOG4PHP_DIR.'/LoggerManager.php');
+require_once(LOG4PHP_DIR.'/LoggerPropertyConfigurator.php');
+
+$config = new LoggerPropertyConfigurator();
+$config->configure('log4php.properties');
+
 ?>

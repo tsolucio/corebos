@@ -103,7 +103,6 @@ function fieldExpressionPopup(moduleName, $){
 	$('#editpopup_save').bind('click', function(){
 		var expression = $('#editpopup_expression').attr('value');
 		expression = expression.replace(/<script(.|\s)*?\/script>/g, "");
-		expression = expression.replace(/\n/g, "<br>");  // convert \n to <br> for saving
 
 		var fieldElementId = $("#editpopup_field").attr('value');
 		$("#"+fieldElementId).attr('value', expression);
@@ -305,7 +304,7 @@ function fieldExpressionPopup(moduleName, $){
 				$("#editpopup_expression_type").attr('value', 'rawtext');
 			}
 			handleExpressionType(expressionTypeElement);
-			expression = expression.replace(/<br\s*\/?>/mg,"\n");  // convert <br> to \n for easy editing
+
 			if(expression != '') {
 				$("#editpopup_expression").attr('value', expression);
 			}

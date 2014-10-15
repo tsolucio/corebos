@@ -78,58 +78,14 @@ if($single_record && count($columnlists) > 0)
 		case 'Contacts':
 			$query = 'select concat(firstname," ",lastname) as contactname,'.implode(",",$columnlists).' from vtiger_contactdetails left join vtiger_contactscf on vtiger_contactscf.contactid = vtiger_contactdetails.contactid where vtiger_contactdetails.contactid = ?';
 			$result=$adb->pquery($query, array($idlist));
-			foreach($columnlists as $columnname)
-			{
-				$con_eval = $adb->query_result($result,0,$columnname);
-				$field_value[$count++] = $con_eval;
-				if($con_eval != "") $val_cnt++;
-			}
-			$entity_name = $adb->query_result($result,0,'contactname');
-			break;
-		case 'Project':
-			$query = 'select projectname,'.implode(",",$columnlists).' from vtiger_project left join vtiger_projectcf on vtiger_projectcf.projectid = vtiger_project.projectid where vtiger_project.projectid = ?';
-			$result=$adb->pquery($query, array($idlist));
-			foreach($columnlists as $columnname)
-			{
-				$con_eval = $adb->query_result($result,0,$columnname);
-				$field_value[$count++] = $con_eval;
-				if($con_eval != "") $val_cnt++;
-			}
-			$entity_name = $adb->query_result($result,0,'projectname');
-			break;
-		case 'ProjectTask':
-			$query = 'select projecttaskname,'.implode(",",$columnlists).' from vtiger_projecttask left join vtiger_projecttaskcf on vtiger_projecttaskcf.projecttaskid = vtiger_projecttask.projecttaskid where vtiger_projecttask.projecttaskid = ?';
-			$result=$adb->pquery($query, array($idlist));
-			foreach($columnlists as $columnname)
-			{
-				$con_eval = $adb->query_result($result,0,$columnname);
-				$field_value[$count++] = $con_eval;
-				if($con_eval != "") $val_cnt++;
-			}
-			$entity_name = $adb->query_result($result,0,'projecttaskname');
-			break;
-		case 'Potentials':
-			$query = 'select potentialname,'.implode(",",$columnlists).' from vtiger_potential left join vtiger_potentialscf on vtiger_potentialscf.potentialid = vtiger_potential.potentialid where vtiger_potential.potentialid = ?';
-			$result=$adb->pquery($query, array($idlist));
-			foreach($columnlists as $columnname)
+		        foreach($columnlists as $columnname)	
 			{
 				$con_eval = $adb->query_result($result,0,$columnname);
 				$field_value[$count++] = $con_eval;
 				if($con_eval != "") $val_cnt++;
 			}	
-			$entity_name = $adb->query_result($result,0,'potentialname');
-			break;
-		case 'HelpDesk':
-			$query = 'select title,'.implode(",",$columnlists).' from vtiger_troubletickets left join vtiger_ticketcf on vtiger_ticketcf.ticketid = vtiger_troubletickets.ticketid where vtiger_troubletickets.ticketid = ?';
-			$result=$adb->pquery($query, array($idlist));
-			foreach($columnlists as $columnname)
-			{
-				$con_eval = $adb->query_result($result,0,$columnname);
-				$field_value[$count++] = $con_eval;
-				if($con_eval != "") $val_cnt++;
-			}
-			$entity_name = $adb->query_result($result,0,'title');
-			break;
+			$entity_name = $adb->query_result($result,0,'contactname');
+			break;	
 	}	
 }
 $smarty->assign('PERMIT',$permit);

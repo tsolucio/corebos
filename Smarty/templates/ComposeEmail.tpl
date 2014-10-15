@@ -64,11 +64,7 @@
 	<td class="cellText" style="padding: 5px;">
  		<input name="{$elements.2.0}" id="{$elements.2.0}" type="hidden" value="{$IDLISTS}">
 		<input type="hidden" name="saved_toid" value="{$TO_MAIL}">
-		<input id="parent_name" name="parent_name" readonly class="txtBox" type="text" value="{$TO_MAIL}" style="width: 525px;">&nbsp;
-		<span  class="mailClientCSSButton">
-        <img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" LANGUAGE=javascript onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
-        </span><span class="mailClientCSSButton" ><img src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" LANGUAGE=javascript onClick="$('parent_id').value=''; $('hidden_toid').value='';$('parent_name').value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
-        </span>
+		<input id="parent_name" name="parent_name" readonly class="txtBox" type="text" value="{$TO_MAIL}" style="width: 550px;">&nbsp;
 	</td>
 	<td class="cellText" style="padding: 5px;" align="left" nowrap>
 		<select name="parent_type">
@@ -82,17 +78,17 @@
 			{/foreach}
 		</select>
 		&nbsp;
+		<span  class="mailClientCSSButton">
+		<img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" LANGUAGE=javascript onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
+		</span><span class="mailClientCSSButton" ><img src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" LANGUAGE=javascript onClick="$('parent_id').value=''; $('hidden_toid').value='';$('parent_name').value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
+		</span>
 	</td>
    </tr>
 	<tr>
 	{if 'ccmail'|@emails_checkFieldVisiblityPermission:'readwrite' eq '0'}   
    	<td class="mailSubHeader" style="padding: 5px;" align="right">{$MOD.LBL_CC}</td>
 	<td class="cellText" style="padding: 5px;">
-		<input name="ccmail" id ="cc_name" class="txtBox" type="text" value="{$CC_MAIL}" style="width:525px">&nbsp;
-        <span  class="mailClientCSSButton">
-        <img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" LANGUAGE=javascript onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails&email_field=cc_name","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
-        </span><span class="mailClientCSSButton" ><img src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" LANGUAGE=javascript onClick="$('cc_name').value='';return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
-        </span>
+		<input name="ccmail" id ="cc_name" class="txtBox" type="text" value="{$CC_MAIL}" style="width:99%">&nbsp;
 	</td>
 	{else}
 		<td>&nbsp;</td>
@@ -104,11 +100,7 @@
    	<tr>
 	<td class="mailSubHeader" style="padding: 5px;" align="right">{$MOD.LBL_BCC}</td>
 	<td class="cellText" style="padding: 5px;">
-		<input name="bccmail" id="bcc_name" class="txtBox" type="text" value="{$BCC_MAIL}" style="width:525px">&nbsp;
-        <span  class="mailClientCSSButton">
-        <img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" LANGUAGE=javascript onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails&email_field=bcc_name","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
-        </span><span class="mailClientCSSButton" ><img src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" LANGUAGE=javascript onClick="$('bcc_name').value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
-        </span>
+		<input name="bccmail" id="bcc_name" class="txtBox" type="text" value="{$BCC_MAIL}" style="width:99%">&nbsp;
 	</td>
    	</tr>
    	{/if}
@@ -165,7 +157,6 @@
 		 <input title="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_TITLE}" accessKey="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_KEY}" class="crmbutton small edit" onclick="window.open('index.php?module=Users&action=lookupemailtemplates','emailtemplate','top=100,left=200,height=400,width=500,resizable=yes,scrollbars=yes,menubar=no,addressbar=no,status=yes')" type="button" name="button" value=" {$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_LABEL}  ">
 		<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="return email_validate(this.form,'save');" type="button" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL} " >&nbsp;
 		<input name="{$MOD.LBL_SEND}" value=" {$APP.LBL_SEND} " class="crmbutton small save" type="button" onclick="return email_validate(this.form,'send');">&nbsp;
-		<input value="{$MOD.LBL_ATTACH_DOCUMENTS}" class="crmbutton small edit" type="button" onclick="searchDocuments()">
 		<input name="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="crmbutton small cancel" type="button" onClick="window.close()">
 	</td>
     </tr>
@@ -191,7 +182,6 @@
 		 <input title="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_TITLE}" accessKey="{$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_KEY}" class="crmbutton small edit" onclick="window.open('index.php?module=Users&action=lookupemailtemplates','emailtemplate','top=100,left=200,height=400,width=500,menubar=no,addressbar=no,status=yes')" type="button" name="button" value=" {$APP.LBL_SELECTEMAILTEMPLATE_BUTTON_LABEL}  ">
 		<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="return email_validate(this.form,'save');" type="button" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL} " >&nbsp;
 		<input name="{$MOD.LBL_SEND}" value=" {$APP.LBL_SEND} " class="crmbutton small save" type="button" onclick="return email_validate(this.form,'send');">&nbsp;
-		<input value="{$MOD.LBL_ATTACH_DOCUMENTS}" class="crmbutton small edit" type="button" onclick="searchDocuments()">
 		<input name="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="crmbutton small cancel" type="button" onClick="window.close()">
 	</td>
    </tr>
@@ -204,28 +194,7 @@ var cc_err_msg = '{$MOD.LBL_CC_EMAIL_ERROR}';
 var no_rcpts_err_msg = '{$MOD.LBL_NO_RCPTS_EMAIL_ERROR}';
 var bcc_err_msg = '{$MOD.LBL_BCC_EMAIL_ERROR}';
 var conf_mail_srvr_err_msg = '{$MOD.LBL_CONF_MAILSERVER_ERROR}';
-var remove_image_url = "{'no.gif'|@vtiger_imageurl:$THEME}";
 {literal}
-function searchDocuments() {
-	var emailId = 0;
-	window.open('index.php?module=Documents&return_module=Emails&action=Popup&popuptype=detailview&form=EditView&form_submit=false&parenttab=Marketing&srcmodule=Emails&popupmode=ajax&select=1','test','width=640,height=602,resizable=0,scrollbars=0');
-}
-function addOption(id, filename) {
-	var table = document.getElementById("attach_cont");
-	var attachments = document.getElementsByName("doc_attachments[]");
-	if (attachments !== undefined) {
-		for (var i = 0; i < attachments.length; i++) {
-			if (attachments[i].value == id) {
-				return;
-			}
-		}
-	}
-	var newRow = "<div>";
-	newRow += "<a href='javascript:void(0)' onclick='this.parentNode.parentNode.removeChild(this.parentNode);'><img src='" + remove_image_url + "'></a>";
-	newRow += "&nbsp" + filename + "<input type='hidden' name='doc_attachments[]' value='" + id + "'>";
-	newRow += "</div>";
-	table.innerHTML += newRow;
-}
 function email_validate(oform,mode)
 {
 	if(trim(mode) == '')

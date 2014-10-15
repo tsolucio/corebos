@@ -74,7 +74,6 @@ $mod_strings = array(
 	'LBL_GENERATED_REPORT' => 'Generált Jelentés',
 	'LBL_GRAND_TOTAL' => 'Összesen',
 	'LBL_EXPORTXL_BUTTON' => 'Exportálás Excel-be',
-	'LBL_EXPORTCSV'=>'Export To CSV',
 	'LBL_NO_PERMISSION' => 'A profilod nem teszi lehetővé számodra az egyik (vagy több) modul jelentéseinek megketintését',
 	'LBL_SELECT_COLUMNS_TO_GENERATE_REPORTS' => 'Válassz oszlopokat a jelentések elkészítéséhez',
 	'LBL_AVAILABLE_FIELDS' => 'Elérhető mezők',

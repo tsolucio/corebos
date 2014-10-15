@@ -1,11 +1,18 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html><head><title>TSolucio::coreBOS Customizations</title>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<style type="text/css">@import url("themes/softed/style.css");br { display: block; margin: 2px; }</style>
-</head><body class=small style="font-size: 12px; margin: 2px; padding: 2px; background-color:#f7fff3; ">
-<table width="100%" border=0><tr><td><span style='color:red;float:right;margin-right:30px;'><h2>Proud member of the <a href='http://corebos.org'>coreBOS</a> family!</h2></span></td></tr></table>
-<hr style="height: 1px">
 <?php
+$moduleTitle="TSolucio::coreBOS Customizations";
+echo '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">';
+echo "<html><head><title>vtlib $moduleTitle</title>";
+echo '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">';
+echo '<style type="text/css">@import url("themes/softed/style.css");br { display: block; margin: 2px; }</style>';
+echo '</head><body class=small style="font-size: 12px; margin: 2px; padding: 2px; background-color:#f7fff3; ">';
+echo '<table width=100% border=0><tr><td align=left>';
+echo '</td><td align=center style="background-image: url(\'vtlogowmg.png\'); background-repeat: no-repeat; background-position: center;">';
+echo "<b><H1>$moduleTitle</H1></b>";
+echo '</td><td align=right>';
+echo '<a href="corebos.org"><img src="include/install/images/app_logo.png" alt="coreBOS" title="coreBOS" border=0></a>';
+echo '</td></tr></table>';
+echo '<hr style="height: 1px">';
+
 // Turn on debugging level
 $Vtiger_Utils_Log = true;
 

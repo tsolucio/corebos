@@ -1,12 +1,25 @@
 <?php
-/*+**********************************************************************************
- * The contents of this file are subject to the vtiger CRM Public License Version 1.0
-* ("License"); You may not use this file except in compliance with the License
-* The Original Code is:  vtiger CRM Open Source
-* The Initial Developer of the Original Code is vtiger.
-* Portions created by vtiger are Copyright (C) vtiger.
-* All Rights Reserved.
-************************************************************************************/
+
+/*********************************************************************************
+ * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
+ * ("License"); You may not use this file except in compliance with the
+ * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
+ * Software distributed under the License is distributed on an  "AS IS"  basis,
+ * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
+ * the specific language governing rights and limitations under the License.
+ * The Original Code is:  SugarCRM Open Source
+ * The Initial Developer of the Original Code is SugarCRM, Inc.
+ * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+ * All Rights Reserved.
+ * Contributor(s): ______________________________________.
+ ********************************************************************************/
+
+/*********************************************************************************
+ * $Header$
+ * Description:  Contains a variety of utility functions used to display UI
+ * components such as form headers and footers.  Intended to be modified on a per
+ * theme basis.
+ ********************************************************************************/
 
 require_once('Smarty_setup.php');
 require_once("data/Tracker.php");
@@ -81,23 +94,16 @@ $smarty->assign('HEADERCSS', $COMMONHDRLINKS['HEADERCSS']);
 global $vtiger_current_version;
 $smarty->assign('VERSION', $vtiger_current_version);
 // END
-// We check if we have the two new logo fields > if not we create them
-$cnorg=$adb->getColumnNames('vtiger_organizationdetails');
-if (!in_array('faviconlogo', $cnorg)) {
-	$adb->query('ALTER TABLE `vtiger_organizationdetails` ADD `frontlogo` VARCHAR(150) NOT NULL, ADD `faviconlogo` VARCHAR(150) NOT NULL');
-}
+
 $sql="select * from vtiger_organizationdetails";
 $result = $adb->pquery($sql, array());
 //Handle for allowed organation logo/logoname likes UTF-8 Character
 $organization_logo = decode_html($adb->query_result($result,0,'logoname'));
 $smarty->assign("LOGO",$organization_logo);
-$smarty->assign("FAVICON",decode_html($adb->query_result($result,0,'faviconlogo')));
-$smarty->assign("FRONTLOGO",decode_html($adb->query_result($result,0,'frontlogo')));
 $companyDetails = array();
 $companyDetails['name'] = $adb->query_result($result,0,'organizationname');
 $companyDetails['website'] = $adb->query_result($result,0,'website');
 $companyDetails['logo'] = $organization_logo;
-
 $smarty->assign("COMPANY_DETAILS",$companyDetails);
 
 $smarty->display("Header.tpl");

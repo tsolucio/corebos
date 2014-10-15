@@ -135,6 +135,5 @@ $mod_strings = array(
 	'LBL_MAILSELECT_INFO' => 'has the following email addresses associated. Please select the email addresses to which the mail should be sent',
 	'LBL_NO_RECORDS' => 'No records found',
 	'LBL_PRINT_EMAIL' => 'Print',
-	'LBL_ATTACH_DOCUMENTS' => 'Attach documents',
 );
 ?>

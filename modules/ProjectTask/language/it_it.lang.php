@@ -48,13 +48,6 @@ $mod_strings = Array(
     'OperationName' => 'Nome Operazione',
     'projectname' => 'Nome Progetto',
     'operationnumber' => 'Codice Operazione',
-	
-    'LBL_PROJECT_TASK_INFORMATION'=> 'Informazioni Operazione',
-	'Project Task Name' => 'Nome Operazione',
-    'Project Task No' => 'Numero Operazione',
-    'Project Task Number' => 'Codice Operazione',
-	'Worked Hours'=>'Ore lavorate',
-    'Progress' => 'Progresso',
 );
 
 ?>

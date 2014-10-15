@@ -192,7 +192,7 @@ class dUnzip2{
 			$this->endOfCentral;
 	}
 	
-	Function unzip($compressedFileName, $targetFileName=false, $applyChmod=0664){
+	Function unzip($compressedFileName, $targetFileName=false, $applyChmod=0777){
 		if(!sizeof($this->compressedList)){
 			$this->debugMsg(1, "Trying to unzip before loading file list... Loading it!");
 			$this->getList(false, $compressedFileName);
@@ -222,11 +222,11 @@ class dUnzip2{
 				$targetFileName
 			);
 		if($applyChmod && $targetFileName)
-			@chmod($targetFileName, $applyChmod == 0755? 0664 : $applyChmod);
+			@chmod($targetFileName, 0777);
 		
 		return $ret;
 	}
-	Function unzipAll($targetDir=false, $baseDir="", $maintainStructure=true, $applyChmod=0775){
+	Function unzipAll($targetDir=false, $baseDir="", $maintainStructure=true, $applyChmod=0777){
 		if($targetDir === false)
 			$targetDir = dirname(__FILE__)."/";
 		

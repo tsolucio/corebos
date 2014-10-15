@@ -158,6 +158,7 @@ function verify_data(form) {
 														}
 														?>
 													</select>
+													</select>
 												</td>
 											</tr>
 											<tr>
@@ -181,7 +182,7 @@ function verify_data(form) {
 											<td>
 												<div class="helpmessagebox paddingPoint5em">
 													<span class="redColor fontBold"><?php echo $installationStrings['LBL_IMPORTANT_NOTE']; ?>:</span>
-													<hr />
+													<hr />												
 													<ul>
 														<li><?php echo $installationStrings['MSG_TAKE_DB_BACKUP']; ?>.</li>
 														<li><b><?php echo $installationStrings['QUESTION_MIGRATE_USING_NEW_DB']; ?></b>?<br>

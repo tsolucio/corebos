@@ -76,36 +76,6 @@
                                 <input type="hidden" name="binFile_hidden" value="{$ORGANIZATIONLOGONAME}" />
 			      </td>
                           </tr>
-                           <tr valign="top">
-                            <td class="small cellLabel"><strong>{$MOD.LBL_FRONT_LOGO}</strong></td>
-			    {if $FORNTLOGONAME neq ''}	
-                            <td class="small cellText" style="background-image: url(test/logo/{$FORNTLOGONAME}); background-position: left; background-repeat: no-repeat;" width="48" height="48" border="0" >
-			    {else}
-                            <td class="small cellText" style="background-image: url(include/images/noimage.gif); background-position: left; background-repeat: no-repeat;" width="48" height="48" border="0" >
-			     {/if}	
-				<br><br><br><br>
-                             {$MOD.LBL_SELECT_LOGO} 
-				<INPUT TYPE="HIDDEN" NAME="MAX_FILE_SIZE" VALUE="800000">
-		                <INPUT TYPE="HIDDEN" NAME="PREV_FRONT_FILE" VALUE="{$FORNTLOGONAME}">	 
-                                <input type="file" name="binFrontFile" class="small" value="{$FORNTLOGONAME}" onchange="validateFilename(this);">[{$FORNTLOGONAME}]
-                                <input type="hidden" name="binFrontFile_hidden" value="{$FORNTLOGONAME}" />
-			      </td>
-                          </tr>
-                          <tr valign="top">
-                            <td class="small cellLabel"><strong>{$MOD.LBL_FAVICON_LOGO}</strong></td>
-			    {if $FAVICONLOGONAME neq ''}	
-                            <td class="small cellText" style="background-image: url(test/logo/{$FAVICONLOGONAME}); background-position: left; background-repeat: no-repeat;" width="48" height="48" border="0" >
-			    {else}
-                            <td class="small cellText" style="background-image: url(include/images/noimage.gif); background-position: left; background-repeat: no-repeat;" width="48" height="48" border="0" >
-			     {/if}	
-				<br><br><br><br>
-                             {$MOD.LBL_SELECT_LOGO} 
-				<INPUT TYPE="HIDDEN" NAME="MAX_FILE_SIZE" VALUE="800000">
-		                <INPUT TYPE="HIDDEN" NAME="PREV_FAVICON_FILE" VALUE="{$FAVICONLOGONAME}">	 
-                                <input type="file" name="binFaviconFile" class="small" value="{$FAVICONLOGONAME}" onchange="validateFilename(this);">[{$FAVICONLOGONAME}]
-                                <input type="hidden" name="binFaviconFile_hidden" value="{$FAVICONLOGONAME}" />
-			      </td>
-                          </tr>
                           <tr>
                             <td class="small cellLabel"><strong>{$MOD.LBL_ORGANIZATION_ADDRESS}</strong></td>
                             <td class="small cellText"><input type="text" name="organization_address" class="detailedViewTextBox small" value="{$ORGANIZATIONADDRESS}"></td>
@@ -188,19 +158,9 @@ function verify_data(form,company_name)
                 return false;
                 {literal}
 	}
-else if (! upload_filter("binFile","png|jpg|jpeg|JPG|JPEG"))        
-{
+	else if (! upload_filter("binFile","jpg|jpeg|JPG|JPEG"))
+        {
                 form.binFile.focus();
-                return false;
-        }
-         else if (! upload_filter("binFrontFile","png|jpg|jpeg|JPG|JPEG"))
-        {
-               form.binFrontFile.focus();
-               return false;
-        }
-        else if (! upload_filter("binFaviconFile","png|jpg|jpeg|JPG|JPEG"))
-        {
-                form.binFaviconFile.focus();
                 return false;
         }
 	else

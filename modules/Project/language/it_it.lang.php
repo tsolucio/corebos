@@ -64,21 +64,6 @@ $mod_strings = Array(
     'LBL_RELATED_OPERATIONS' => 'Operazioni del Progetto',
     'LBL_RELATED_DEADLINES' => 'Scadenze del Progetto',
 
- 	'Target End Date' => 'Data di Fine Prevista',
-	'Project No' => 'Numero Progetto',
-	'Actual End Date' => 'Data di Fine Effettiva',
-	'Project Url'=>'Url del Progetto',
-	'Target Budget'=>'Budget',
-	'Progress'=>'Progresso',
-
-    'Charts' => 'Grafico',
-	'LBL_PROGRESS_CHART' => 'Progresso Grafico',
-	'Project No' => 'Nr Progetto',
-	
-	'Project Milestones' => 'Scadenze',
-	'Project Tasks' => 'Operazioni',
-	'Project Team' => 'Team di Progetto',
-
 );
 
 ?>

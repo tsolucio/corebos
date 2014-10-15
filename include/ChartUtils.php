@@ -25,7 +25,7 @@ Class ChartUtils {
 
 		$barwidth = '70';
 		if ($cachedFileName === false) {
-			$cache_file_name = 'cache/images/bar_chart_' . microtime() . '.png';
+			$cache_file_name = 'cache/images/bar_chart_' . time() . '.png';
 		} else {
 			$cache_file_name = $cachedFileName;
 		}

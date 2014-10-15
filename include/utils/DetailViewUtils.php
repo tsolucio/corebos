@@ -246,7 +246,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
                 $label_fld[] = '';
         }
 	} elseif ($uitype == 19) {
-		if ($fieldname == 'notecontent' or $module=='Timecontrol')
+		if ($fieldname == 'notecontent')
 			$col_fields[$fieldname] = decode_html($col_fields[$fieldname]);
 		else
 			$col_fields[$fieldname] = str_replace("&lt;br /&gt;", "<br>", $col_fields[$fieldname]);

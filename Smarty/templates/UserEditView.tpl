@@ -184,10 +184,10 @@ function check_duplicate()
 				<br>
 			    	<table class="tableHeading" border="0" cellpadding="5" cellspacing="0" width="100%">
 			    	<tr>
-				     <td class="big">
+				     <td class="big">	
 					<strong>{$list_numbering+1}. {$UMOD.LBL_HOME_PAGE_COMP}</strong>
 				     </td>
-				     <td class="small" align="right">&nbsp;</td>
+				     <td class="small" align="right">&nbsp;</td>	
 			        </tr>
 			    	</table>
 			    	<table border="0" cellpadding="5" cellspacing="0" width="100%">
@@ -198,61 +198,57 @@ function check_duplicate()
 					   	<input name="{$values}" value="{$values}" checked type="radio"></td><td class="dvtCellInfo" align="left" width="20%">{$UMOD.LBL_SHOW}</td> 		
 					    	<td class="dvtCellInfo" align="center" width="5%">
 					   	<input name="{$values}" value="" type="radio"></td><td class="dvtCellInfo" align="left">{$UMOD.LBL_HIDE}</td> 		
-					    {else}
+					    {else}	
 					    	<td class="dvtCellInfo" align="center" width="5%">
 					   	<input name="{$values}" value="{$values}" type="radio"></td><td class="dvtCellInfo" align="left">{$UMOD.LBL_SHOW}</td> 		
 					    	<td class="dvtCellInfo" align="center" width="5%">
 					   	<input name="{$values}" value="" checked type="radio"></td><td class="dvtCellInfo" align="left">{$UMOD.LBL_HIDE}</td> 		
-					    {/if}
-					</tr>
+					    {/if}	
+					</tr>			
 				{/foreach}
-				</table>
+			    	</table>
 				<!-- Added for User Based TagCloud -->
-				<table class="tableHeading" border="0" cellpadding="5" cellspacing="0" width="100%">
-				<tr>
-					<td class="big"><strong>{$list_numbering+2}. {$UMOD.LBL_TAGCLOUD_DISPLAY}</strong></td>
-					<td class="small" align="right">&nbsp;</td>
-				</tr>
-				</table>
+                                <table class="tableHeading" border="0" cellpadding="5" cellspacing="0" width="100%">
+                                <tr>
+                                     <td class="big">
+                                        <strong>{$list_numbering+2}. {$UMOD.LBL_TAGCLOUD_DISPLAY}</strong>
+                                     </td>
+                                     <td class="small" align="right">&nbsp;</td>
+                                </tr>
+                                </table>
 				<!-- End of Header -->
 				<table border="0" cellpadding="5" cellspacing="0" width="100%">
-					<tr><td class="dvtCellLabel" align="right" width="30%">{$UMOD.LBL_TAG_CLOUD}</td>
-				{if $TAGCLOUDVIEW eq 'true'}
-					<td class="dvtCellInfo" align="center" width="5%">
-					<input name="tagcloudview" value="true" checked type="radio"></td><td class="dvtCellInfo" align="left" >{$UMOD.LBL_SHOW}</td>
-					<td class="dvtCellInfo" align="center" width="5%">
-					<input name="tagcloudview" value="false" type="radio"></td><td class="dvtCellInfo" align="left">{$UMOD.LBL_HIDE}</td>
-				{else}
-					<td class="dvtCellInfo" align="center" width="5%">
-					<input name="tagcloudview" value="true" type="radio"></td><td class="dvtCellInfo" align="left">{$UMOD.LBL_SHOW}</td>
-					<td class="dvtCellInfo" align="center" width="5%">
-					<input name="tagcloudview" value="false" checked type="radio"></td><td class="dvtCellInfo" align="left">{$UMOD.LBL_HIDE}</td>
-				{/if}
-					</tr>
-					<tr><td class="dvtCellLabel" align="right" width="30%">{$MOD.LBL_Show}</td>
-						<td class="dvtCellInfo" align="left" colspan=4>
-							<select class="small" name="showtagas">
-							{html_options options=$tagshow_options selected=$SHOWTAGAS}
-							</select>
-						</td>
+                                        <tr><td class="dvtCellLabel" align="right" width="30%">{$UMOD.LBL_TAG_CLOUD}</td>
+                                            {if $TAGCLOUDVIEW eq 'true'}
+                                                <td class="dvtCellInfo" align="center" width="5%">
+                                                <input name="tagcloudview" value="true" checked type="radio"></td><td class="dvtCellInfo" align="left" >{$UMOD.LBL_SHOW}</td>
+                                                <td class="dvtCellInfo" align="center" width="5%">
+                                                <input name="tagcloudview" value="false" type="radio"></td><td class="dvtCellInfo" align="left">{$UMOD.LBL_HIDE}</td>
+					    {else}
+						<td class="dvtCellInfo" align="center" width="5%">
+                                                <input name="tagcloudview" value="true" type="radio"></td><td class="dvtCellInfo" align="left">{$UMOD.LBL_SHOW}</td>
+						<td class="dvtCellInfo" align="center" width="5%">
+						<input name="tagcloudview" value="false" checked type="radio"></td><td class="dvtCellInfo" align="left">{$UMOD.LBL_HIDE}</td>
+                                            {/if}
 					</tr>
 				</table>
 				<!--end of Added for User Based TagCloud -->
 				<br>
 				<tr><td colspan=4>&nbsp;</td></tr>
-						<tr>
-							<td colspan=4 align="right">
+							
+					        <tr>
+					       		<td colspan=4 align="right">
 							<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accesskey="{$APP.LBL_SAVE_BUTTON_KEY}" class="small crmbutton save"  name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  "  onclick="this.form.action.value='Save'; return verify_data(EditView)" style="width: 70px;" type="button" />
 							<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accesskey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="small crmbutton cancel" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  " onclick="window.history.back()" style="width: 70px;" type="button" />
 							</td>
 						</tr>
+					    </table>
+					 </td></tr>
 					</table>
-					</td></tr>
-					</table>
-					</td></tr>
-				</table>
-				<br>
-				</td></tr>
+			  	   </td></tr>
+				   </table>
+				 <br>
+				  </td></tr>
 				<tr><td class="small"><div align="right"><a href="#top">{$MOD.LBL_SCROLL}</a></div></td></tr>
 				</table>
 			</td>

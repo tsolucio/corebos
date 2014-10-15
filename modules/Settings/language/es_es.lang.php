@@ -315,8 +315,6 @@ $mod_strings = array (
       'PurchaseOrder' => 'Ordenes de Compra',
       'SalesOrder' => 'Ordenes de Venta',
       'Invoice' => 'Facturas',
-	'LBL_FRONT_LOGO' => 'Logo Aplicación',
-	'LBL_FAVICON_LOGO' => 'Favicon',
       'LBL_LEAD_MAP_CUSTOM_FIELD' => 'Crear correspondencia de campos personalizados',
       'leadCustomFieldDescription' => 'Crear correspondencias entre un campo personalizado de los Pre-Contactos y otro de Contacto',
       'LBL_MAPPING_INFO' => 'Información de correspondencias',
@@ -784,7 +782,7 @@ $mod_strings = array (
 
       'VTLIB_LBL_SELECT_PACKAGE_FILE'=>'Selecciona el Módulo Empaquetado',
       'VTLIB_LBL_FILE_LOCATION'=>'Ubicación fichero:',
-      'VTLIB_LBL_PACKAGE_FILE_HELP'=>'el módulo vtiger se empaqueta como un fichero zip.',
+      'VTLIB_LBL_PACKAGE_FILE_HELP'=>'un módulo se empaqueta como un fichero zip.',
       'VTLIB_LBL_IMPORT_FAILURE'=>'Error al importar',
       'VTLIB_LBL_INVALID_FILE'=>'Fichero de módulo inválido',
       'VTLIB_LBL_INVALID_IMPORT_TRY_AGAIN'=>'proporcionado para importar! Inténtalo de nuevo.',

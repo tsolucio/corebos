@@ -193,7 +193,6 @@ $smarty->assign("CURRENT_USERID", $current_user->id);
 $smarty->assign("HOMEORDER",$focus->getHomeStuffOrder($focus->id));
 //Added to provide User based Tagcloud
 $smarty->assign("TAGCLOUDVIEW",getTagCloudView($focus->id));
-$smarty->assign("SHOWTAGAS",$mod_strings[getTagCloudShowAs($focus->id)]);
 $smarty->assign("BLOCKS", getBlocks($currentModule,"detail_view",'',$focus->column_fields));
 $smarty->assign("USERNAME", getFullNameFromArray('Users', $focus->column_fields));
 $smarty->assign("HOUR_FORMAT",$focus->hour_format);

@@ -134,7 +134,6 @@ if($adb->num_rows($checkresult) > 0) {
 	elseif($fldType == 'Currency')
 	{
 		$uitype = 71;
-		if ($decimal<2) $decimal=2;
 		$dbfldlength = $fldlength + $decimal + 1;
 		$type="N(".$dbfldlength.".".$decimal.")"; //adodb type
 	$uichekdata='N~O~'.$fldlength .','.$decimal;

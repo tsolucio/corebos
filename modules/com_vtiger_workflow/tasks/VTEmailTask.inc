@@ -16,9 +16,9 @@ class VTEmailTask extends VTTask{
 	public $executeImmediately = false;
 
 	public function getFieldNames(){
-		return array("fromname", "fromemail", "subject", "content", "recepient", 'emailcc', 'emailbcc');
+		return array("subject", "content", "recepient", 'emailcc', 'emailbcc');
 	}
-	public function doTask(&$entity){
+	public function doTask($entity){
 		global $adb, $current_user;
 		$util = new VTWorkflowUtils();
 
@@ -30,15 +30,6 @@ class VTEmailTask extends VTTask{
 		$module = $entity->getModuleName();
 
 		$entityCache = new VTEntityCache($admin);
-
-		if(!empty($this->fromname)){
-			$fnt = new VTEmailRecipientsTemplate($this->fromname);
-			$from_name  = $fnt->render($entityCache,$entity->getId());
-		}
-		if(!empty($this->fromemail)){
-			$fet = new VTEmailRecipientsTemplate($this->fromemail);
-			$from_email = $fet->render($entityCache,$entity->getId());
-		}
 
 		$et = new VTEmailRecipientsTemplate($this->recepient);
 		$to_email = $et->render($entityCache, $entity->getId());

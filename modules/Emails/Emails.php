@@ -176,16 +176,6 @@ class Emails extends CRMEntity {
 				}
 			}
 		}
-		if ($module == 'Emails' && isset($_REQUEST['doc_attachments']) && count($_REQUEST['doc_attachments']) > 0) {
-			$documentIds = $_REQUEST['doc_attachments'];
-			for ($i = 0; $i < count($documentIds); $i++) {
-				$query = "select attachmentsid from vtiger_seattachmentsrel where crmid={$documentIds[$i]}";
-				$res = $adb->query($query);
-				$attachmentId = $adb->query_result($res, 0, 0);
-				$query = "insert into vtiger_seattachmentsrel values({$id}, {$attachmentId})";
-				$adb->query($query);
-			}
-		}
 		if ($_REQUEST['att_module'] == 'Webmails') {
 			require_once("modules/Webmails/Webmails.php");
 			require_once("modules/Webmails/MailParse.php");
@@ -599,30 +589,6 @@ function get_to_emailids($module) {
 				   INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_account.accountid
 				   LEFT JOIN vtiger_accountscf ON vtiger_accountscf.accountid= vtiger_account.accountid
 				   WHERE vtiger_crmentity.deleted=0 AND vtiger_account.accountid IN ('.generateQuestionMarks($idlist).') AND vtiger_account.emailoptout=0';
-	} else if ($module == 'Project'){
-		$query = 'SELECT projectname,'.implode(",", $emailFields).',vtiger_project.projectid as id
-				  FROM vtiger_project
-				  INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_project.projectid
-				  LEFT JOIN vtiger_projectcf ON vtiger_projectcf.projectid = vtiger_project.projectid
-				  WHERE vtiger_crmentity.deleted=0 AND vtiger_project.projectid IN ('.generateQuestionMarks($idlist).')';
-	} else if ($module == 'ProjectTask'){
-		$query = 'SELECT projecttaskname,'.implode(",", $emailFields).',vtiger_projecttask.projecttaskid as id
-				  FROM vtiger_projecttask
-				  INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_projecttask.projecttaskid
-				  LEFT JOIN vtiger_projecttaskcf ON vtiger_projecttaskcf.projecttaskid = vtiger_projecttask.projecttaskid
-				  WHERE vtiger_crmentity.deleted=0 AND vtiger_projecttask.projecttaskid IN ('.generateQuestionMarks($idlist).')';
-	} else if ($module == 'Potentials'){
-		$query = 'SELECT potentialname,'.implode(",", $emailFields).',vtiger_potential.potentialid as id
-				  FROM vtiger_potential
-				  INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_potential.potentialid
-				  LEFT JOIN vtiger_potentialscf ON vtiger_potentialscf.potentialid = vtiger_potential.potentialid
-				  WHERE vtiger_crmentity.deleted=0 AND vtiger_potential.potentialid IN ('.generateQuestionMarks($idlist).')';
-	} else if ($module == 'HelpDesk'){
-		$query = 'SELECT title,'.implode(",", $emailFields).',vtiger_troubletickets.ticketid as id
-				  FROM vtiger_troubletickets
-				  INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_troubletickets.ticketid
-				  LEFT JOIN vtiger_ticketcf ON vtiger_ticketcf.ticketid = vtiger_troubletickets.ticketid
-				  WHERE vtiger_crmentity.deleted=0 AND vtiger_troubletickets.ticketid IN ('.generateQuestionMarks($idlist).')';
 	} else { // vendors
 		$query = 'SELECT vtiger_vendor.vendorname, '.implode(",", $emailFields).',vtiger_vendor.vendorid as id FROM vtiger_vendor
 				   INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_vendor.vendorid
@@ -639,14 +605,6 @@ function get_to_emailids($module) {
 					$idlists .= $vtwsid . '@' . $vtwsCRMObjectMeta->getFieldIdFromFieldName($emailFieldName) . '|';
 					if ($module == 'Leads' || $module == 'Contacts') {
 						$mailids .= $entityvalue['lastname'] . " " . $entityvalue['firstname'] . "<" . $entityvalue[$emailFieldName] . ">,";
-					} else if($module == "Project"){
-						$mailids .= $entityvalue['projectname'] . "<" . $entityvalue[$emailFieldName] . ">,";
-					} else if($module == "ProjectTask"){
-						$mailids .= $entityvalue['projecttaskname'] . "<" . $entityvalue[$emailFieldName] . ">,";
-					} else if($module == "Potentials"){
-						$mailids .= $entityvalue['potentialname'] . "<" . $entityvalue[$emailFieldName] . ">,";
-					} else if($module == "HelpDesk"){
-						$mailids .= $entityvalue['title'] . "<" . $entityvalue[$emailFieldName] . ">,";
 					} else {
 						$mailids .= $entityvalue['accountname'] . "<" . $entityvalue[$emailFieldName] . ">,";
 					}

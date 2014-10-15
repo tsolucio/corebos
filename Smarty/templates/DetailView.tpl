@@ -151,7 +151,6 @@ function sendfile_email()
 
 <div id="lstRecordLayout" class="layerPopup" style="display:none;width:325px;height:300px;"></div>
 
-
 {if $MODULE eq 'Accounts' || $MODULE eq 'Contacts' || $MODULE eq 'Leads'}
 	{if $MODULE eq 'Accounts'}
 		{assign var=address1 value='$MOD.LBL_BILLING_ADDRESS'}
@@ -201,7 +200,7 @@ function sendfile_email()
 										{* Module Record numbering, used MOD_SEQ_ID instead of ID *}
 										{assign var="USE_ID_VALUE" value=$MOD_SEQ_ID}
 									{if $USE_ID_VALUE eq ''} {assign var="USE_ID_VALUE" value=$ID} {/if}
-									<span class="dvHeaderText">[ {$USE_ID_VALUE} ] {$NAME} -  {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</span>&nbsp;&nbsp;&nbsp;<span class="small">{$UPDATEINFO}</span>&nbsp;<span id="vtbusy_info" style="display:none;" valign="bottom"><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
+									<span class="dvHeaderText">[ {$USE_ID_VALUE} ] {$NAME} -  {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</span>&nbsp;&nbsp;&nbsp;<span class="small">{$UPDATEINFO}</span>&nbsp;<span id="vtbusy_info" style="display:none;" valign="bottom"><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span><span id="vtbusy_info" style="visibility:hidden;" valign="bottom"><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
 								</td></tr>
 						</table>
 						<br>
@@ -290,7 +289,6 @@ function sendfile_email()
 																						<td>&nbsp;</td>
 																						<td>&nbsp;</td>
 																						<td align=right>
-                                                                                                                                                                                  
 																							{if $header eq $MOD.LBL_ADDRESS_INFORMATION && ($MODULE eq 'Accounts' || $MODULE eq 'Contacts' || $MODULE eq 'Leads') }
 																								{if $MODULE eq 'Leads'}
 																									<input name="mapbutton" value="{$APP.LBL_LOCATE_MAP}" class="crmbutton small create" type="button" onClick="searchMapLocation( 'Main' )" title="{$APP.LBL_LOCATE_MAP}">
@@ -302,9 +300,7 @@ function sendfile_email()
 																					</tr>
 
 																					<!-- This is added to display the existing comments -->
-																					
-
-{if $header eq $MOD.LBL_COMMENTS || $header eq $MOD.LBL_COMMENT_INFORMATION}
+																					{if $header eq $MOD.LBL_COMMENTS || $header eq $MOD.LBL_COMMENT_INFORMATION}
 																						<tr>
 																							<td colspan=4 class="dvInnerHeader">
 																								<b>{$MOD.LBL_COMMENT_INFORMATION}</b>
@@ -334,7 +330,6 @@ function sendfile_email()
 																							</td>{/strip}
 																						</tr>
 																					{/if}
-
 																				</table>
 																				{if $header neq 'Comments'}
 																					{if $BLOCKINITIALSTATUS[$header] eq 1}
@@ -395,9 +390,8 @@ function sendfile_email()
 																			</td>
 																		</tr>
 																	{/foreach}
-	
- 
-					
+																	{*-- End of Blocks--*}
+
 																	{* vtlib Customization: Embed DetailViewWidget block:// type if any *}
 																	{if $CUSTOM_LINKS && !empty($CUSTOM_LINKS.DETAILVIEWWIDGET)}
 																		{foreach item=CUSTOM_LINK_DETAILVIEWWIDGET from=$CUSTOM_LINKS.DETAILVIEWWIDGET}

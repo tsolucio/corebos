@@ -187,17 +187,13 @@
 											{if $TAGCLOUDVIEW eq 'true'}
 												<td class="dvtCellInfo" align="center" width="5%">
 												<img src="{'prvPrfSelectedTick.gif'|@vtiger_imageurl:$THEME}" alt="{$UMOD.LBL_SHOWN}" title="{$UMOD.LBL_SHOWN}" height="12" width="12"></td><td class="dvtCellInfo" align="left">{$UMOD.LBL_SHOWN}</td>
-											{else}
+                                                                                                {else}
 												<td class="dvtCellInfo" align="center" width="5%">
 												<img src="{'no.gif'|@vtiger_imageurl:$THEME}" alt="{$UMOD.LBL_HIDDEN}" title="{$UMOD.LBL_HIDDEN}" height="12" width="12"></td><td class="dvtCellInfo" align="left">{$UMOD.LBL_HIDDEN}</td>
 											{/if}
 										</tr>
-										<tr><td class="dvtCellLabel" align="right" width="30%">{$MOD.LBL_Show}</td>
-											<td class="dvtCellInfo" align="left" colspan=3>{$SHOWTAGAS}</td>
-										</tr>
-									</table>
-									</div>
-									<br>
+                                                                        </table>                                                                                                                   </div>
+                                                                                                                                                                                                   <br>
 									<!-- My Groups -->
 									<table class="tableHeading" border="0" cellpadding="5" cellspacing="0" width="100%">
 									<tr>

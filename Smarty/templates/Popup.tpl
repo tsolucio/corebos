@@ -67,11 +67,6 @@ function redirectWhenNoRelatedRecordsFound()
 {literal}
 function add_data_to_relatedlist(entity_id,recordid,mod, popupmode, callback) {
 	var return_module = document.getElementById('return_module').value;
-	if (mod == 'Documents' && return_module == 'Emails') {
-		var attachment = document.getElementById('document_attachment_' + entity_id).value;
-		window.opener.addOption(entity_id, attachment);
-		return;
-	}
 	if(popupmode == 'ajax') {
 		VtigerJS_DialogBox.block();
 		new Ajax.Request(
@@ -124,7 +119,7 @@ function set_focus() {ldelim}
 			<table width="100%" cellpadding="5" cellspacing="0" border="0"  class="homePageMatrixHdr">
 				<tr>
 					<td style="padding:10px;" >
-						<form name="basicSearch" action="index.php" onsubmit="callSearch('Basic');return false;" method="post">
+						<form name="basicSearch" action="index.php" onsubmit="callSearch('Basic');return false;">
 						<table width="100%" cellpadding="5" cellspacing="0">
 						<tr>
 							<td width="20%" class="dvtCellLabel"><img src="{'basicSearchLens.gif'|@vtiger_imageurl:$THEME}"></td>

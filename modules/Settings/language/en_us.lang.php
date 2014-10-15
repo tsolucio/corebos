@@ -601,8 +601,6 @@ $mod_strings = Array(
 'PurchaseOrder'=>'Purchase Order',
 'SalesOrder'=>'SalesOrder',
 'Invoice'=>'Invoice',
-'LBL_FRONT_LOGO' => 'Front Logo',  
-'LBL_FAVICON_LOGO' => 'Favicon Logo',  
 
 //For Custom Fields
 'LBL_LEAD_MAP_CUSTOM_FIELD'=>'Mapping Lead Custom Fields',
@@ -1119,10 +1117,8 @@ $mod_strings = Array(
 //softphone integration ends
 'LBL_SELECT_FIELD_TO_MOVE' => 'Select Fields to move',
 'VTLIB_LBL_SELECT_PACKAGE_FILE'=>'Select the Package File',
-'VTLIB_LBL_FILE_LOCATION'=>'Upload file:',
+'VTLIB_LBL_FILE_LOCATION'=>'File location:',
 'VTLIB_LBL_PACKAGE_FILE_HELP'=>'application module is packaged as a zip file.',
-'VTLIB_LBL_PACKAGE_URL' => 'Install from URL:',
-'VTLIB_LBL_PACKAGE_URL_HELP' => 'URL to module packaged as a ZIP or a GitHub project.',
 'VTLIB_LBL_IMPORT_FAILURE'=>'Import Failure',
 'VTLIB_LBL_INVALID_FILE'=>'Invalid file',
 'VTLIB_LBL_INVALID_IMPORT_TRY_AGAIN'=>'provided for module import! Try Again.',

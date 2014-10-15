@@ -33,7 +33,6 @@ if(!empty($_REQUEST['blockstufftype'])){
 if($stufftype=='Tag Cloud'){
 	$freetag = new freetag();
 	$smarty->assign("ALL_TAG",$freetag->get_tag_cloud_html("",$current_user->id));
-	$smarty->assign("USER_TAG_SHOWAS",getTagCloudShowAs($current_user->id));
 	$smarty->display("Home/TagCloud.tpl");
 }elseif($stufftype == 'Notebook'){
 	$contents = $homeObj->getNoteBookContents($stuffid);

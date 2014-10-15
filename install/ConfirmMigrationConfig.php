@@ -59,11 +59,7 @@ $configFileInfo = $dbVerifyResult['config_info'];
 $dbType = $configFileInfo['db_type'];
 $dbHostName = $configFileInfo['db_hostname'];
 $newDbName = $configFileInfo['db_name'];
-$configFileUtils = new ConfigFile_Utils($_SESSION['config_file_info']);
 
-if (!$configFileUtils->createConfigFile()) {
-	die("<strong class='big'><font color='red'>{$installationStrings['ERR_CANNOT_WRITE_CONFIG_FILE']}</font></strong>");
-}
 if($next == true) {
 	$_SESSION['authentication_key'] = md5(microtime());
 	$_SESSION['config_file_info'] = $configFileInfo;
@@ -204,8 +200,7 @@ include("modules/Migration/versions.php");
 									<td align="right">
 										<form action="install.php" method="post" name="form" id="form">
 											<input type="hidden" name="mode" value="migration">
-											<input type="hidden" name="file" value="MigrationProcess.php">
-											<input type="hidden" name="auth_key" value="<?php echo $_SESSION['authentication_key']; ?>" />
+											<input type="hidden" name="file" value="MigrationProcess.php.php">
 											<input type="submit" class="button" value="<?php echo $installationStrings['LBL_NEXT']; ?>&nbsp;&#155;&#155;" title="<?php echo $installationStrings['LBL_NEXT']; ?>" />
 										</form>
 									</td>

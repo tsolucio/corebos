@@ -818,12 +818,6 @@ $mod_strings = Array(
 'Language'=>'Taal',
 'Secondary Email'=>'Tweede E-mail',
 'Time Zone'=>'Tijdzone',
-'flat'=>'Flat',
-'hring'=>'Horizontal Ring',
-'vring'=>'Vertical Ring',
-'hcylinder'=>'Horizontal Cylinder',
-'vcylinder'=>'Vertical Cylinder',
-'LBL_SEND_EMAIL_TO_SENDER' => 'Send copy of email',
 );
 
 ?>

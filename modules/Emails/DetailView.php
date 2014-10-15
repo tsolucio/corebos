@@ -43,23 +43,23 @@ if(isset($_REQUEST['record']))
 	$focus->id = $_REQUEST['record'];
 	$query = 'select email_flag,from_email,to_email,cc_email,bcc_email from vtiger_emaildetails where emailid = ?';
 	$result = $adb->pquery($query, array($focus->id));
-	$smarty->assign('FROM_MAIL',$adb->query_result($result,0,'from_email'));
+	$smarty->assign('FROM_MAIL',$adb->query_result($result,0,'from_email'));	
 	$to_email = $json->decode($adb->query_result($result,0,'to_email'));
 	$cc_email = $json->decode($adb->query_result($result,0,'cc_email'));
-	$smarty->assign('TO_MAIL',vt_suppressHTMLTags(@implode(',',$to_email)));
-	$smarty->assign('CC_MAIL',vt_suppressHTMLTags(@implode(',',$cc_email)));
-	$bcc_email = $json->decode($adb->query_result($result,0,'bcc_email'));
-	$smarty->assign('BCC_MAIL',vt_suppressHTMLTags(@implode(',',$bcc_email)));
-	$smarty->assign('EMAIL_FLAG',$adb->query_result($result,0,'email_flag'));
+	$smarty->assign('TO_MAIL',vt_suppressHTMLTags(@implode(',',$to_email)));	
+	$smarty->assign('CC_MAIL',vt_suppressHTMLTags(@implode(',',$cc_email)));	
+    $bcc_email = $json->decode($adb->query_result($result,0,'bcc_email'));	
+	$smarty->assign('BCC_MAIL',vt_suppressHTMLTags(@implode(',',$bcc_email)));	
+	$smarty->assign('EMAIL_FLAG',$adb->query_result($result,0,'email_flag'));	
 	if($focus->column_fields['name'] != '')
-		$focus->name = $focus->column_fields['name'];
+		$focus->name = $focus->column_fields['name'];		
 	else
 		$focus->name = $focus->column_fields['subject'];
 }
 if(isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') 
 {
 	$focus->id = "";
-}
+} 
 
 //needed when creating a new email with default values passed in 
 if (isset($_REQUEST['contact_name']) && is_null($focus->contact_name)) 
@@ -88,23 +88,23 @@ if (isset($_REQUEST['account_id']) && is_null($focus->parent_id))
 }
 if (isset($_REQUEST['parent_name'])) 
 {
-	$focus->parent_name = $_REQUEST['parent_name'];
+        $focus->parent_name = $_REQUEST['parent_name'];
 }
 if (isset($_REQUEST['parent_id'])) 
 {
-	$focus->parent_id = $_REQUEST['parent_id'];
+        $focus->parent_id = $_REQUEST['parent_id'];
 }
 if (isset($_REQUEST['parent_type'])) 
 {
-	$focus->parent_type = $_REQUEST['parent_type'];
+        $focus->parent_type = $_REQUEST['parent_type'];
 }
 if (isset($_REQUEST['filename']) && is_null($focus->filename)) 
 {
-	$focus->filename = $_REQUEST['filename'];
+        $focus->filename = $_REQUEST['filename'];
 }
 elseif (is_null($focus->parent_type)) 
 {
-	$focus->parent_type = $app_list_strings['record_type_default_key'];
+        $focus->parent_type = $app_list_strings['record_type_default_key'];
 }
 
 global $theme;
@@ -132,9 +132,9 @@ if (isset($focus->name)) $smarty->assign("NAME", $focus->name);
 	else $smarty->assign("NAME", "");
 
 $entries = getBlocks($currentModule,"detail_view",'',$focus->column_fields);
-//$entries[$mod_strings['LBL_EMAIL_INFORMATION']]['5'][$mod_strings['Description']]['value'] = from_html($entries[$mod_strings['LBL_EMAIL_INFORMATION']]['5'][$mod_strings['Description']]['value']);
+$entries[$mod_strings['LBL_EMAIL_INFORMATION']]['5'][$mod_strings['Description']]['value'] = from_html($entries[$mod_strings['LBL_EMAIL_INFORMATION']]['5'][$mod_strings['Description']]['value']);
 //changed this to view description in all langauge - bharath
-$smarty->assign("BLOCKS",$entries[$mod_strings['LBL_EMAIL_INFORMATION']]);
+$smarty->assign("BLOCKS",$entries[$mod_strings['LBL_EMAIL_INFORMATION']]); 
 $smarty->assign("SINGLE_MOD", 'Email');
 
 $smarty->assign("PRINT_URL", "phprint.php?jt=".session_id().$GLOBALS['request_string']);
@@ -148,7 +148,7 @@ $smarty->assign("ID",$focus->id);
 
 $check_button = Button_Check($module);
 $smarty->assign("CHECK", $check_button);
-
+	
 //Constructing the Related Lists from here
 $smarty->assign("MODULE",$currentModule);
 $smarty->assign("SENDER",$email_id);

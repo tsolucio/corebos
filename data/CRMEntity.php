@@ -1517,64 +1517,6 @@ class CRMEntity {
 		return $return_value;
 	}
 
-	/** Returns a list of the associated emails
-	 * @param  integer  $id  - entityid
-	 * returns related emails record in array format
-	 */
-	function get_emails($id, $cur_tab_id, $rel_tab_id, $actions=false) {
-		global $log, $singlepane_view,$currentModule,$current_user;
-		$log->debug("Entering get_emails(".$id.") method ...");
-		$this_module = $currentModule;
-	
-		$related_module = vtlib_getModuleNameById($rel_tab_id);
-		require_once("modules/$related_module/$related_module.php");
-		$other = new $related_module();
-		vtlib_setup_modulevars($related_module, $other);
-		$singular_modname = vtlib_toSingular($related_module);
-	
-		$parenttab = getParentTab();
-	
-		if($singlepane_view == 'true')
-			$returnset = '&return_module='.$this_module.'&return_action=DetailView&return_id='.$id;
-		else
-			$returnset = '&return_module='.$this_module.'&return_action=CallRelatedList&return_id='.$id;
-	
-		$button = '';
-	
-		$button .= '<input type="hidden" name="email_directing_module"><input type="hidden" name="record">';
-	
-		if($actions) {
-			if(is_string($actions)) $actions = explode(',', strtoupper($actions));
-			if(in_array('SELECT', $actions) && isPermitted($related_module,4, '') == 'yes') {
-				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module). "' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module) ."'>&nbsp;";
-			}
-			if(in_array('ADD', $actions) && isPermitted($related_module,1, '') == 'yes') {
-				$button .= "<input title='". getTranslatedString('LBL_ADD_NEW')." ". getTranslatedString($singular_modname)."' accessyKey='F' class='crmbutton small create' onclick='fnvshobj(this,\"sendmail_cont\");sendmail(\"$this_module\",$id);' type='button' name='button' value='". getTranslatedString('LBL_ADD_NEW')." ". getTranslatedString($singular_modname)."'></td>";
-			}
-		}
-	
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>
-				'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-		$query ="select case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,
-		 vtiger_activity.activityid, vtiger_activity.subject, vtiger_activity.semodule, vtiger_activity.activitytype,
-		 vtiger_activity.date_start, vtiger_activity.status, vtiger_activity.priority, vtiger_crmentity.crmid,
-		 vtiger_crmentity.smownerid,vtiger_crmentity.modifiedtime, vtiger_users.user_name, vtiger_seactivityrel.crmid as parent_id
-		 from vtiger_activity
-		 inner join vtiger_seactivityrel on vtiger_seactivityrel.activityid=vtiger_activity.activityid
-		 inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid
-		 left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
-		 left join vtiger_users on  vtiger_users.id=vtiger_crmentity.smownerid
-		 where vtiger_activity.activitytype='Emails' and vtiger_crmentity.deleted=0 and vtiger_seactivityrel.crmid=".$id;
-	
-		$return_value = GetRelatedList($this_module, $related_module, $other, $query, $button, $returnset);
-	
-		if($return_value == null) $return_value = Array();
-		$return_value['CUSTOM_BUTTON'] = $button;
-	
-		$log->debug("Exiting get_emails method ...");
-		return $return_value;
-	}
-
 	/**
 	 * For Record View Notification
 	 */
@@ -2522,74 +2464,6 @@ class CRMEntity {
 		$currentTime = date('Y-m-d H:i:s');
 
 		$adb->pquery('UPDATE vtiger_crmentity SET modifiedtime = ?, modifiedby = ? WHERE crmid = ?', array($currentTime, $current_user->id, $crmid));
-	}
-function get_log_history($entityid,$tabid)
-	{
-		global $log, $adb,$current_user;
-		
-		$moduleName = getTabModuleName($tabid);
-		$log->debug("Entering into get_log_history($entityid,$tabid) method ...");
-
-                $query="SELECT u.user_name, h.finalstate, c.createdtime,h.relatedto,h.entitylogid,h.entitylogname
-                FROM vtiger_entitylog h
-                JOIN vtiger_users u ON h.user = u.id 
-                JOIN vtiger_crmentity c on c.crmid=h.entitylogid
-                where h.relatedto=? and c.deleted=0";
-
-                $result=$adb->pquery($query, array($entityid));
-                $header=Array();
-                $header[0] ="".getTranslatedString('LBL_ACTION');
-                $header[1] ="".getTranslatedString('LBL_DATE');
-                $header[2] ="".getTranslatedString('LBL_USER');
-                $header[3] ="".getTranslatedString('LBL_RESTORE');
-                $n=$adb->num_rows($result);
-                $entries=Array();
-                
-                while ($row=$adb->getNextRow($result, false)) {
-                  $user = $row['user_name'];
-                  $update_log = unserialize($row['finalstate']);
-                  $update_date = $row['createdtime'];
-                  $relatedto=$row['relatedto'];
-                  $entitylogid=$row['entitylogid'];
-                  $entitylogname=$row['entitylogname'];
-                  $lines = array();
-                  foreach($update_log as $data) {
-                    $query = "select fieldlabel,uitype,columnname,fieldid from vtiger_field where tabid={$tabid} and fieldname='{$data['fieldname']}'";
-                    $res = $adb->query($query);
-                    $fieldlabel = $adb->query_result($res, 0, 0);
-                    $uitype = $adb->query_result($res, 0, 1);
-                    $columnname = $adb->query_result($res, 0, 2);
-                    $fieldid = $adb->query_result($res, 0, 3);
-                    if (in_array($uitype,array(10)))
-                    {                     
-                         $idold=$data['oldvalue'];
-                         $relatedModule=$adb->query_result($adb->pquery("Select setype from vtiger_crmentity where crmid=?",array($idold)),0,0);
-                         $data['oldvalue']=  getEntityName($relatedModule, $idold);
-                         $data['oldvalue']=$data['oldvalue'][$idold];
-
-                         $idnew= $data['newvalue'];
-                         $relatedModule=$adb->query_result($adb->pquery("Select setype from vtiger_crmentity where crmid=?",array($idnew)),0,0);
-                         $data['newvalue']=getEntityName($relatedModule, $idnew);
-                         $data['newvalue']=$data['newvalue'][$idnew]; 
-                     
-                    }
-                    $lines[] = sprintf(getTranslatedString('HISTORY_LOG_CHANGED_VALUE_MSG'), getTranslatedString($moduleName, $moduleName), getTranslatedString($fieldlabel, $moduleName), $data['oldvalue'], $data['newvalue']);
-                  }
-                  $restore_link='Restore'; 
-                  if(is_admin($current_user))
-                  {
-                   $restore_link  ='<a href="#">Restore</a>'; 
-                  }
-                  $entries[] = array(
-                      '<a href="index.php?module=Entitylog&action=DetailView&record='.$entitylogid.'">'.$entitylogname.'</a>',
-                    //implode('<br>', $lines),
-                    utf8_encode(strftime('%c', strtotime($update_date))),
-                    $user,
-                    $restore_link);
-                }
-		$return_value = Array('header'=>$header,'entries'=>$entries);
-		$log->debug("Exiting from get_log_history($entityid,$tabid method ...");
-		return $return_value;
 	}
 
 }

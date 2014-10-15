@@ -76,7 +76,7 @@ $mod_strings = Array(
 
 //Added for 4.2 Patch I
 'LBL_EXPORTXL_BUTTON'=>'Exportar para Excel',
-'LBL_EXPORTCSV'=>'Export To CSV',
+
 //Added for 5 Beta
 'LBL_NO_PERMISSION'=>'Seu perfil não permite visualizar os relatórios deste(s) modulo(s)',
 'LBL_SELECT_COLUMNS_TO_GENERATE_REPORTS'=>'Selecione as colunas para gerar relatórios',

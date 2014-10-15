@@ -121,8 +121,7 @@ elseif(!empty($_REQUEST['invmodid']))
 	if($mailids['mailds'] != '')
 		$to_add = trim($mailids['mailds'],",").",";
 	$smarty->assign('TO_MAIL',$to_add);
-	$smarty->assign('IDLISTS',$mailids['idlists']);
-	setObjectValuesFromRequest($focus);
+	$smarty->assign('IDLISTS',$mailids['idlists']);	
 	$focus->mode = '';
 }
 
@@ -142,14 +141,36 @@ if($_REQUEST["internal_mailer"] == "true") {
              $smarty->assign("IDLISTS", $id_list);
         }
 	if($rec_type == "record_id") {
-		$type = vtlib_purify($_REQUEST['par_module']);
+		$type = $_REQUEST['par_module'];
 		//check added for email link in user detail view
-		$module_focus = Vtiger_Module::getInstance($type);
-		$field_focus = Vtiger_Field::getInstance($fieldname,$module_focus);
-		$q = "select $fieldname from " . $field_focus->table . " where " . $module_focus->basetableid. "= ?";
+		$normal_tabs = Array('Users'=>'vtiger_users', 'Leads'=>'vtiger_leaddetails', 'Contacts'=>'vtiger_contactdetails', 'Accounts'=>'vtiger_account', 'Vendors'=>'vtiger_vendor');
+		$cf_tabs = Array('Accounts'=>'vtiger_accountscf', 'Campaigns'=>'vtiger_campaignscf', 'Contacts'=>'vtiger_contactscf', 'Invoice'=>'vtiger_invoicecf', 'Leads'=>'vtiger_leadscf', 'Potentials'=>'vtiger_potentialscf', 'Products'=>'vtiger_productcf',  'PurchaseOrder'=>'vtiger_purchaseordercf', 'Quotes'=>'vtiger_quotescf', 'SalesOrder'=>'vtiger_salesordercf', 'HelpDesk'=>'vtiger_ticketcf', 'Vendors'=>'vtiger_vendorcf');
+		if(substr($fieldname,0,2)=="cf")
+			$tablename = $cf_tabs[$type];
+		else
+			$tablename = $normal_tabs[$type];
+		if($type == "Users")
+			$q = "select $fieldname from $tablename where id=?";	
+		elseif($type == "Leads") 
+			$q = "select $fieldname from $tablename where leadid=?";
+		elseif ($type == "Contacts")
+			$q = "select $fieldname from $tablename where contactid=?";
+		elseif ($type == "Accounts")
+			$q = "select $fieldname from $tablename where accountid=?";
+		elseif ($type == "Vendors")
+			$q = "select $fieldname from $tablename where vendorid=?";
+		else {
+			// vtlib customization: Support for email-type custom field for other modules. 
+			$module_focus = CRMEntity::getInstance($type);
+			vtlib_setup_modulevars($type, $module_focus);
+			if(!empty($module_focus->customFieldTable)) {
+				$q = "select $fieldname from " . $module_focus->customFieldTable[0] . " where " . $module_focus->customFieldTable[1]. "= ?";
+			}
+			// END
+		}
 		$email1 = $adb->query_result($adb->pquery($q, array($rec_id)),0,$fieldname);
 	} elseif ($rec_type == "email_addy") {
-		$email1 = vtlib_purify($_REQUEST["email_addy"]);
+		$email1 = $_REQUEST["email_addy"];
 	}
 
 	$smarty->assign('TO_MAIL',trim($email1,",").",");

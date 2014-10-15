@@ -454,7 +454,7 @@ class Vtiger_PackageExport {
 
 			// Export field to module relations
 			if($uitype == '10') {
-				$relatedmodres = $adb->pquery("SELECT * FROM vtiger_fieldmodulerel WHERE fieldid=? order by sequence", Array($fieldid));
+				$relatedmodres = $adb->pquery("SELECT * FROM vtiger_fieldmodulerel WHERE fieldid=?", Array($fieldid));
 				$relatedmodcount = $adb->num_rows($relatedmodres);
 				if($relatedmodcount) {
 					$this->openNode('relatedmodules');

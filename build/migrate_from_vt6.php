@@ -140,13 +140,6 @@ for($i=0; $i<$numRows; $i++) {
 	ExecuteQuery('ALTER TABLE vtiger_'.$fieldName.' DROP sortorderid');
 }
 
-$modname = 'Users';
-$module = Vtiger_Module::getInstance($modname);
-$field = Vtiger_Field::getInstance('hour_format',$module);
-$field->delete();
-$field = Vtiger_Field::getInstance('start_hour',$module);
-$field->delete();
-
 $droptable = array(
 	'vtiger_calendarsharedtype', 'vtiger_dayoftheweek', 'vtiger_hour_format', 'vtiger_start_hour',
 	'vtiger_callduration', 'vtiger_crmsetup', 'vtiger_default_record_view', 'vtiger_module_dashboard_widgets',
@@ -376,7 +369,7 @@ $task->methodName = "NotifyParentOnTicketChange";
 $taskManager->saveTask($task);
 putMsg('Workflow "'.$helpDeskWorkflow->description.'" created!');
 
-ExecuteQuery("update vtiger_version set old_version='5.4.0', current_version='5.5.0' where id=1");
+ExecuteQuery("update vtiger_version set old_version='5.4.0', current_version='5.4.0' where id=1");
 
 // Recalculate permissions  RecalculateSharingRules
 RecalculateSharingRules();

@@ -799,12 +799,7 @@ $mod_strings = Array(
 'Language'=>'Idioma',
 'Secondary Email'=>'Email Secundário',
 'Time Zone'=>'Fuso Horário',
-'flat'=>'Flat',
-'hring'=>'Horizontal Ring',
-'vring'=>'Vertical Ring',
-'hcylinder'=>'Horizontal Cylinder',
-'vcylinder'=>'Vertical Cylinder',
-'LBL_SEND_EMAIL_TO_SENDER' => 'Send copy of email',
+
 );
 
 ?>

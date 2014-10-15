@@ -194,7 +194,9 @@ $mod_strings = Array(
 'LBL_MAILSELECT_INFO'=>'heeft de volgende e-mail IDs gekoppeld. Selecteer de e-mailadressen die gebruikt moeten worden',
 'LBL_NO_RECORDS' => 'Niets gevonden',
 'LBL_PRINT_EMAIL'=> 'Afdrukken',
-'LBL_ATTACH_DOCUMENTS' => 'Attach documents',
+
+
+
 );
 
 ?>

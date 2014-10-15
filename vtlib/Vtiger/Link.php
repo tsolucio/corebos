@@ -175,7 +175,7 @@ class Vtiger_Link {
 		self::__initSchema();
 
 		$multitype = false;
-		$orderby = ' order by linktype,sequence'; //MSL
+
 		if($type) {
 			// Multiple link type selection?
 			if(is_array($type)) { 
@@ -190,22 +190,22 @@ class Vtiger_Link {
 							Vtiger_Utils::implodestr('?', count($permittedTabIdList), ',').')';
 						$params[] = $permittedTabIdList;
 					}
-					$result = $adb->pquery($sql . $orderby, Array($adb->flatten_array($params)));
+					$result = $adb->pquery($sql, Array($adb->flatten_array($params)));
 				} else {
 					$result = $adb->pquery('SELECT * FROM vtiger_links WHERE tabid=? AND linktype IN ('.
-						Vtiger_Utils::implodestr('?', count($type), ',') .')' . $orderby,
+						Vtiger_Utils::implodestr('?', count($type), ',') .')',
 							Array($tabid, $adb->flatten_array($type)));
-				}
+				}			
 			} else {
 				// Single link type selection
 				if($tabid === self::IGNORE_MODULE) {
-					$result = $adb->pquery('SELECT * FROM vtiger_links WHERE linktype=?' . $orderby, Array($type));
+					$result = $adb->pquery('SELECT * FROM vtiger_links WHERE linktype=?', Array($type));
 				} else {
-					$result = $adb->pquery('SELECT * FROM vtiger_links WHERE tabid=? AND linktype=?' . $orderby, Array($tabid, $type));				
+					$result = $adb->pquery('SELECT * FROM vtiger_links WHERE tabid=? AND linktype=?', Array($tabid, $type));				
 				}
 			}
 		} else {
-			$result = $adb->pquery('SELECT * FROM vtiger_links WHERE tabid=?' . $orderby, Array($tabid));
+			$result = $adb->pquery('SELECT * FROM vtiger_links WHERE tabid=?', Array($tabid));
 		}
 
 		$strtemplate = new Vtiger_StringTemplate();

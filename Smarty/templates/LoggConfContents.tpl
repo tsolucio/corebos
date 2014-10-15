@@ -166,7 +166,11 @@
 </tbody>
 </table>
 <script>
-var def_field='{$DEF_MODULE}_fields';
+{if $DEF_MODULE neq 'Movement'}
+  var def_field='{$DEF_MODULE}_fields';
+{else}
+  var def_field='{$module}_fields';
+{/if}
 {literal}
 function changemodules(selectmodule)
 {

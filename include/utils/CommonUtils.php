@@ -423,26 +423,6 @@ function getFieldid($tabid, $fieldname, $onlyactive = true) {
 	return $fieldid;
 }
 
-function getFieldFromBlockArray($blocks,$fldlabel) {
-	$result = array();
-	if (is_array($blocks)) {
-		$found = false;
-		foreach ($blocks as $blklabel => $fieldarray) {
-			foreach ($fieldarray as $key => $value) {
-				$found = array_key_exists($fldlabel,$value);
-				if ($found and is_array($value[$fldlabel]) and isset($value[$fldlabel]['value']) and isset($value[$fldlabel]['fldname'])) {  // this is to avoid false positives
-					$result['block_label'] = $blklabel;
-					$result['field_key'] = $key;
-					break 2;
-				} else {
-					$found = false;
-				}
-			}
-		}
-	}
-	return $result;
-}
-
 /**
  * Function to get the CustomViewName
  * Takes the input as $cvid - customviewid
@@ -1796,8 +1776,7 @@ function getQuickCreateModules() {
 
 	// vtlib customization: Ignore disabled modules.
 	//$qc_query = "select distinct vtiger_tab.tablabel,vtiger_tab.name from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid where quickcreate=0 order by vtiger_tab.tablabel";
-	$qc_query = "select distinct vtiger_tab.tablabel,vtiger_tab.name from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid 
-			where quickcreate in (0,2) and vtiger_tab.presence != 1 order by vtiger_tab.tablabel";
+	$qc_query = "select distinct vtiger_tab.tablabel,vtiger_tab.name from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid where quickcreate=0 and vtiger_tab.presence != 1 order by vtiger_tab.tablabel";
 	// END
 
 	$result = $adb->pquery($qc_query, array());
@@ -1838,7 +1817,7 @@ function QuickCreate($module) {
 	//Adding Security Check
 	require('user_privileges/user_privileges_' . $current_user->id . '.php');
 	if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
-		$quickcreate_query = "select * from vtiger_field where (quickcreate in (0,2) or typeofdata like '%M%') and tabid = ? and vtiger_field.presence in (0,2) and displaytype != 2 order by quickcreatesequence";
+		$quickcreate_query = "select * from vtiger_field where quickcreate in (0,2) and tabid = ? and vtiger_field.presence in (0,2) and displaytype != 2 order by quickcreatesequence";
 		$params = array($tabid);
 	} else {
 		$profileList = getCurrentUserProfileList();
@@ -1869,7 +1848,7 @@ function QuickCreate($module) {
 		$fieldName_array[$fieldname] = $fldLabel_array;
 
 		// These fields should not be shown in the UI as they are already shown as part of other fields, but are required for validation.
-		if (($fieldname == 'time_start' || $fieldname == 'time_end') && $module!='Timecontrol')
+		if ($fieldname == 'time_start' || $fieldname == 'time_end')
 			continue;
 
 		$custfld = getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields, $generatedtype, $module, '', $typeofdata);
@@ -2544,7 +2523,7 @@ function SaveTagCloudView($id = "") {
 	global $log;
 	global $adb;
 	$log->debug("Entering in function SaveTagCloudView($id)");
-	$tag_cloud_status = vtlib_purify($_REQUEST['tagcloudview']);
+	$tag_cloud_status = $_REQUEST['tagcloudview'];
 
 	if ($tag_cloud_status == "true") {
 		$tag_cloud_view = 0;
@@ -2559,35 +2538,7 @@ function SaveTagCloudView($id = "") {
 		$adb->pquery($query, array($tag_cloud_view, $id));
 	}
 
-	if (!empty($id) and !empty($_REQUEST['showtagas'])) {
-		$tag_cloud_showas = vtlib_purify($_REQUEST['showtagas']);
-		$query = 'update vtiger_users set showtagas = ? where id=?';
-		$log->fatal(array($tag_cloud_showas, $id));
-		$adb->pquery($query, array($tag_cloud_showas, $id));
-	}
 	$log->debug("Exiting from function SaveTagCloudView($id)");
-}
-
-/** retrieve show tag cloud as for given user
- ** @param $id -- user id:: Type integer
- ** @returns show tag cloud type
- **/
-function getTagCloudShowAs($id) {
-	global $log, $adb;
-	$log->debug("Entering in function getTagCloudShowAs($id)");
-	if (empty($id)) {
-		$tag_cloud_status = 'hring';
-	} else {
-		$query = 'select showtagas from vtiger_users where id=?';
-		$rsusr = $adb->pquery($query, array($id));
-		if ($rsusr) {
-			$tag_cloud_status = $adb->query_result($rsusr,0,0);
-		} else {
-			$tag_cloud_status = 'hring';
-		}
-	}
-	$log->debug("Exiting from function getTagCloudShowAs($id)");
-	return $tag_cloud_status;
 }
 
 /**     function used to change the Type of Data for advanced filters in custom view and Reports
@@ -2806,18 +2757,15 @@ function perform_post_migration_activities() {
 }
 
 /** Function To create Email template variables dynamically -- Pavani */
-function getEmailTemplateVariables($modules_list = null) {
+function getEmailTemplateVariables() {
 	global $adb;
-
-	if (is_null($modules_list)) {
-		$modules_list = array('Accounts', 'Contacts', 'Leads', 'Users');
-	}
+	$modules_list = array('Accounts', 'Contacts', 'Leads', 'Users');
 
 	foreach ($modules_list as $index => $module) {
 		if ($module == 'Calendar') {
 			$focus = new Activity();
 		} else {
-			$focus = CRMEntity::getInstance($module);
+			$focus = new $module();
 		}
 		$field = array();
 		$tabid = getTabid($module);
@@ -2826,9 +2774,6 @@ function getEmailTemplateVariables($modules_list = null) {
 		$result = $adb->pquery("select fieldlabel,columnname,displaytype from vtiger_field where tabid=? and vtiger_field.presence in (0,2) and displaytype in (1,2,3) and block !=0", array($tabid));
 		$norows = $adb->num_rows($result);
 		if ($norows > 0) {
-			$table_index = $focus->table_index;
-			$option = array(getTranslatedString($module) . ': ' . getTranslatedString($module) . 'ID', "$" . strtolower($module) . "-" . $table_index . "$");
-			$allFields[] = $option;
 			for ($i = 0; $i < $norows; $i++) {
 				$field = $adb->query_result($result, $i, 'fieldlabel');
 				$columnname = $adb->query_result($result, $i, 'columnname');
@@ -2843,9 +2788,9 @@ function getEmailTemplateVariables($modules_list = null) {
 		$allOptions[] = $allFields;
 		$allFields = "";
 	}
-	$option = array(getTranslatedString('Current Date'), '$custom-currentdate$');
+	$option = array('Current Date', '$custom-currentdate$');
 	$allFields[] = $option;
-	$option = array(getTranslatedString('Current Time'), '$custom-currenttime$');
+	$option = array('Current Time', '$custom-currenttime$');
 	$allFields[] = $option;
 	$allOptions[] = $allFields;
 	return $allOptions;
@@ -3379,18 +3324,6 @@ function getReturnPath($host, $from_email) {
 	return $returnpath;
 }
 
-//function fetch_logo($type)
-//{
-//global $adb;
-//        $logodir ="test/logo/";
-//        $sql="select * from vtiger_organizationdetails";
-//        $result = $adb->pquery($sql, array());
-//        if($type == 1) $logoname = decode_html($adb->query_result($result,0,'logoname'));
-//        if($type == 2) $logoname = decode_html($adb->query_result($result,0,'frontlogo'));
-//        if($type == 3) $logoname = decode_html($adb->query_result($result,0,'faviconlogo'));
-//	return $logodir.$logoname;
-//}
-
 function picklistHasDependency($keyfldname,$modulename) {
 	global $adb;
 	$tabid = getTabid($modulename);
@@ -3399,28 +3332,5 @@ function picklistHasDependency($keyfldname,$modulename) {
 		return true;
 	else
 	return false;
-
 }
-
-function fetch_logo($type) {
-	global $adb;
-	$logodir ="test/logo/";
-	$sql="select logoname,frontlogo,faviconlogo from vtiger_organizationdetails";
-	$result = $adb->pquery($sql, array());
-	switch ($type) {
-		case 1:
-			$logoname = decode_html($adb->query_result($result,0,'logoname'));
-			break;
-		case 2:
-			$logoname = decode_html($adb->query_result($result,0,'frontlogo'));
-			break;
-		case 3:
-			$logoname = decode_html($adb->query_result($result,0,'faviconlogo'));
-			break;
-		default:
-			$logoname = 'app-logo.jpg';
-	}
-	return $logodir.$logoname;
-}
-
 ?>

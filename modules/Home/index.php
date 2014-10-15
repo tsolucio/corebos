@@ -56,11 +56,12 @@ foreach($tabrows as $resultrow) {
 		$modName=$resultrow['name'];
 		if(isPermitted($modName,'DetailView') == 'yes' && vtlib_isModuleActive($modName)){
 			$modulenamearr[$modName]=array($resultrow['tabid'],$modName);
-		}
+		}	
 	}
 }
-uasort($modulenamearr, function($a,$b) {return (strtolower(getTranslatedString($a[1],$a[1])) < strtolower(getTranslatedString($b[1],$b[1]))) ? -1 : 1;});
+ksort($modulenamearr); // We avoided ORDER BY in Query (vtlib_prefetchModuleActiveInfo)!
 // END
+
 
 //Security Check done for RSS and Dashboards
 $allow_rss='no';
@@ -93,7 +94,6 @@ $smarty->assign("MODULE",'Home');
 $smarty->assign("CATEGORY",getParenttab('Home'));
 $smarty->assign("CURRENTUSER",$user_name);
 $smarty->assign("ALL_TAG",$freetag->get_tag_cloud_html("",$current_user->id));
-$smarty->assign("USER_TAG_SHOWAS",getTagCloudShowAs($current_user->id));
 $smarty->assign("MAXLEN",$maxdiv);
 $smarty->assign("ALLOW_RSS",$allow_rss);
 $smarty->assign("ALLOW_DASH",$allow_dashbd);

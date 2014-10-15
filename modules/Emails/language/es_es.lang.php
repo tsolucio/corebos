@@ -10,6 +10,7 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
+
  ********************************************************************************
 *  Module       : Emails
 *  Language     : Español
@@ -19,6 +20,7 @@
  ********************************************************************************/
 
 $mod_strings = Array(
+// Mike Crowe Mod --------------------------------------------------------added for general search
 'LBL_GENERAL_INFORMATION'=>'Información General',
 
 'LBL_MODULE_NAME'=>'Email',
@@ -178,7 +180,6 @@ $mod_strings = Array(
 'LBL_NO_RECORDS'=>'No hay registros en esta carpeta',
 'LBL_PRINT_EMAIL'=> 'Imprimir',
 
-'LBL_ATTACH_DOCUMENTS' => 'Adjuntar documentos',
 );
 
 ?>

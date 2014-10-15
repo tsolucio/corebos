@@ -63,7 +63,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	if($uitype == '10') {
 		global $adb;
 		$fldmod_result = $adb->pquery('SELECT relmodule, status FROM vtiger_fieldmodulerel WHERE fieldid=
-			(SELECT fieldid FROM vtiger_field, vtiger_tab WHERE vtiger_field.tabid=vtiger_tab.tabid AND fieldname=? AND name=? and vtiger_field.presence in (0,2)) order by sequence',
+			(SELECT fieldid FROM vtiger_field, vtiger_tab WHERE vtiger_field.tabid=vtiger_tab.tabid AND fieldname=? AND name=? and vtiger_field.presence in (0,2))',
 			Array($fieldname, $module_name));
 
 		$entityTypes = Array();
@@ -838,22 +838,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		{
 			$user_selected = 'selected';
 		}
-		elseif($pmodule == 'Project')
-		{
-			$project_selected = 'selected';
-		}
-		elseif($pmodule == 'ProjectTask')
-		{
-			$projecttask_selected = 'selected';
-		}
-		elseif($pmodule == 'Potentials')
-		{
-			$potentials_selected = 'selected';
-		}
-		elseif($pmodule == 'HelpDesk')
-		{
-			$helpdesk_selected = 'selected';
-		}
 		if(isset($_REQUEST['emailids']) && $_REQUEST['emailids'] != '')
 		{
 			$parent_id = $_REQUEST['emailids'];
@@ -890,42 +874,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 					$lname=br2nl($myfocus->column_fields['lastname']);
 					$fullname=$lname.' '.$fname;
 					$lead_selected = 'selected';
-				}
-				elseif ($pmodule=='Project'){
-					require_once('modules/Project/Project.php');
-					$myfocus = new Project();
-					$myfocus->retrieve_entity_info($entityid,"Project");
-					$fname=br2nl($myfocus->column_fields['projectname']);
-					$lname=br2nl($myfocus->column_fields['projectid']);
-					$fullname=$fname;
-					$project_selected = 'selected';
-				}
-				elseif ($pmodule=='ProjectTask'){
-					require_once('modules/ProjectTask/ProjectTask.php');
-					$myfocus = new ProjectTask();
-					$myfocus->retrieve_entity_info($entityid,"ProjectTask");
-					$fname=br2nl($myfocus->column_fields['projecttaskname']);
-					$lname=br2nl($myfocus->column_fields['projecttaskid']);
-					$fullname=$fname;
-					$projecttask_selected = 'selected';
-				}
-				elseif ($pmodule=='Potentials'){
-					require_once('modules/Potentials/Potentials.php');
-					$myfocus = new Potentials();
-					$myfocus->retrieve_entity_info($entityid,"Potentials");
-					$fname=br2nl($myfocus->column_fields['potentialname']);
-					$lname=br2nl($myfocus->column_fields['potentialid']);
-					$fullname=$fname;
-					$potentials_selected = 'selected';
-				}
-				elseif ($pmodule=='HelpDesk'){
-					require_once('modules/HelpDesk/HelpDesk.php');
-					$myfocus = new HelpDesk();
-					$myfocus->retrieve_entity_info($entityid,"HelpDesk");
-					$fname=br2nl($myfocus->column_fields['title']);
-					$lname=br2nl($myfocus->column_fields['ticketid']);
-					$fullname=$fname;
-					$helpdesk_selected = 'selected';
 				}
 				for ($j=1;$j<$nemail;$j++){
 					$querystr='select columnname from vtiger_field where fieldid=? and vtiger_field.presence in (0,2)';
@@ -1723,7 +1671,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 		$product_Detail[$i]['subprod_names'.$i]=$subprodname_str;
 		$discount_percent=$adb->query_result($result,$i-1,'discount_percent');
 		$discount_amount=$adb->query_result($result,$i-1,'discount_amount');
-		$discount_amount = number_format((is_numeric($discount_amount) ? $discount_amount : 0), 2,'.',''); //Convert to 2 decimals
+		$discount_amount = number_format($discount_amount, 2,'.',''); //Convert to 2 decimals
 		$discountTotal = '0.00';
 		//Based on the discount percent or amount we will show the discount details
 

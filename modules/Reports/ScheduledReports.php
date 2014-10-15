@@ -129,7 +129,7 @@ class VTScheduledReport extends Reports {
 		$recipientEmails = $this->getRecipientEmails();
 		$emails_to = '';
 		foreach($recipientEmails as $name => $email) {
-			$emails_to .= $email.',';
+			$emails_to = $email.',';
 		}
 		$emails_to = trim($emails_to, ',');
 

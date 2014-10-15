@@ -100,17 +100,13 @@
 		<td align="right" valign="bottom" style="padding:5px">
 			<a href="javascript:void(0);" onclick="location.href='index.php?module=Reports&action=SaveAndRun&record={$REPORTID}&folderid={$FOLDERID}'"><img src="{'revert.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_RELOAD_REPORT}" title="{$MOD.LBL_RELOAD_REPORT}" border="0"></a>
 			&nbsp;
-			{if TRUE || $CHECK.Export eq 'yes'} {*<!-- temporarily deactivate this check: we need to add a ReportExport action on each module's preferences -->*}
 			<a href="javascript:void(0);" onclick="saveReportAs(this,'duplicateReportLayout');"><img src="{'saveas.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_SAVE_REPORT_AS}" title="{$MOD.LBL_SAVE_REPORT_AS}" border="0"></a>
 			&nbsp;
 			<a href="javascript:void(0);" onclick="goToURL(CrearEnlace('CreatePDF',{$REPORTID}));"><img src="{'pdf-file.jpg'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTPDF_BUTTON}" title="{$MOD.LBL_EXPORTPDF_BUTTON}" border="0"></a>
 			&nbsp;
 			<a href="javascript:void(0);" onclick="goToURL(CrearEnlace('CreateXL',{$REPORTID}));"><img src="{'xls-file.jpg'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTXL_BUTTON}" title="{$MOD.LBL_EXPORTXL_BUTTON}" border="0"></a>
 			&nbsp;
-			<a href="javascript:void(0);" onclick="gotourl('index.php?module=Reports&action=ReportsAjax&file=CreateCSV&record={$REPORTID}');"><img src="{'csv.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTCSV}" title="{$MOD.LBL_EXPORTCSV}" border="0"></a>
-			&nbsp;
 			<a href="javascript:void(0);" onclick="goToPrintReport({$REPORTID});"><img src="{'fileprint.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_PRINT_REPORT}" title="{$MOD.LBL_PRINT_REPORT}" border="0"></a>
-			{/if}
 		</td>
 	</tr>
 </table>
@@ -317,7 +313,7 @@ function selectReport() {
 function SaveAsReport(id) {
 	if(!checkAdvancedFilter()) return false;
 	var reportname = prompt(alert_arr.LBL_REPORT_NAME);
-	if (reportname !== null  && reportname !=='' && reportname!== undefined) {
+	if (reportname != null) {
 		document.getElementById("newreportname").value = reportname;
 		VtigerJS_DialogBox.block();
 		var advft_criteria = $('advft_criteria').value;
@@ -328,7 +324,6 @@ function SaveAsReport(id) {
 				method: 'post',
 				postBody: 'action=ReportsAjax&file=Save&mode=ajax&module=Reports&record='+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups+'&saveashidden=saveas&newreportname='+reportname,
 				onComplete: function(response) {
-                                    if(response.responseText.indexOf('Error')!=-1 ||response.responseText.indexOf('error')!=-1 )
 					getObj('Generate').innerHTML = response.responseText;
 					// Performance Optimization: To update record count of the report result 
 					var __reportrun_directoutput_recordcount_scriptnode = $('__reportrun_directoutput_recordcount_script');

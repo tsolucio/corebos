@@ -18,7 +18,7 @@ class VTUpdateFieldsTask extends VTTask {
 		return array('field_value_mapping');
 	}
 
-	public function doTask(&$entity) {
+	public function doTask($entity) {
 		global $adb, $current_user, $default_charset;
 
 		$util = new VTWorkflowUtils();
@@ -91,7 +91,6 @@ class VTUpdateFieldsTask extends VTTask {
 				}
 
 				$focus->column_fields[$fieldName] = $fieldValue;
-				$entity->data[$fieldName] = $fieldValue;
 			}
 
 			foreach ($focus->column_fields as $fieldName => $fieldValue) {

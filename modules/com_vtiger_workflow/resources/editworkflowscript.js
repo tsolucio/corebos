@@ -560,16 +560,6 @@ function editworkflowscript($, conditions){
 							var fullFieldName = $(this).attr('value');
 							resetFields(getFieldType(fullFieldName), condNo);
 						});
-
-						var condition = $('#save_condition_'+condid+'_operation');
-						condition.bind('change', function() {
-							var value = $(this).attr('value');
-							if(value == 'is empty' || value == 'is not empty') {
-								$('#save_condition_'+condid+'_value').hide();
-							} else {
-								$('#save_condition_'+condid+'_value').show();
-							}
-						});
 					}
 
 					var newTaskPopup = NewTaskPopup();
@@ -587,7 +577,6 @@ function editworkflowscript($, conditions){
 					if(conditions){
 						$.each(conditions, function(i, condition){
 							var fieldname = condition["fieldname"];
-							if(fieldname == "") return;
 							var groupid = condition["groupid"];
 							if(groupid == '') groupid = 0;
 							addCondition(groupid, condno);
@@ -596,11 +585,8 @@ function editworkflowscript($, conditions){
 							$(format("#save_condition_%s_operation", condno)).attr("value", condition["operation"]);
 							$('#dump').html(condition["value"]);
 							var text = $('#dump').text();
-							if(condition["operation"] == 'is empty' || condition["operation"] == 'is not empty')  {
-								$(format("#save_condition_%s_value", condno)).hide();
-							}
-							$(format("#save_condition_%s_value", condno)).val(text);
-							$(format("#save_condition_%s_value_type", condno)).val(condition["valuetype"]);
+							$(format("#save_condition_%s_value", condno)).attr("value", text);
+							$(format("#save_condition_%s_value_type", condno)).attr("value", condition["valuetype"]);
 							if(condition["joincondition"] != '') {
 								$(format("#save_condition_%s_joincondition", condno)).attr("value", condition["joincondition"]);
 							}

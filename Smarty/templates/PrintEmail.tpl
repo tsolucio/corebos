@@ -9,6 +9,7 @@
 *
  ********************************************************************************/
 -->*}
+
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">
 <html>
@@ -17,7 +18,7 @@
 <title>{$MOD.TITLE_VTIGERCRM_MAIL}</title>
 <link REL="SHORTCUT ICON" HREF="themes/images/favicon.ico">	
 <style type="text/css">@import url("themes/{$THEME}/style.css");</style>
-	<body  onLoad="window.print()">
+	<body  onLoad=window.print()>
 		<table>
 			<tr>
 				<td class="lvtCol" width="15%" height="10px" style="padding: 1px;" align="left"><b>{$MOD.LBL_FROM}</b></td>
@@ -32,7 +33,7 @@
 				<td class="lvtCol" width="15%" height="10px" style="padding: 1px;" align="left"><b>{$MOD.LBL_CC}</b></td>
 				<td class="dvtCellLabel" style="padding: 1px;">&nbsp;{$CC_MAIL}</td>
 			</tr>
-			<tr>
+			   <tr>
 				<td class="lvtCol" style="padding: 1px;" align="left"><b>{$MOD.LBL_BCC}</b></td>
 				<td class="dvtCellLabel" style="padding: 1px;">&nbsp;{$BCC_MAIL}</td>
 			</tr>
@@ -43,6 +44,7 @@
 			<tr>
 				<td colspan="2" class="dvtCellLabel" style="padding:1px;">&nbsp;{$DESCRIPTION}</td>
 			</tr>
+	
 		</table>
 	</body>
 </html>

@@ -141,11 +141,13 @@ class Vtiger_FieldBasic {
 			$this->sequence = $this->__getNextSequence();
 		}
 
-		// If enabled for display
-		if($this->quickcreate != 1 && !$this->quicksequence)
-                    $this->quicksequence = $this->__getNextQuickCreateSequence();
-                else
-                    $this->quicksequence = null;
+		if($this->quickcreate != 1) { // If enabled for display
+			if(!$this->quicksequence) {
+				$this->quicksequence = $this->__getNextQuickCreateSequence();
+			}
+		} else {
+			$this->quicksequence = null;
+		}
 
 		// Initialize other variables which are not done
 		if(!$this->table) $this->table = $moduleInstance->basetable;

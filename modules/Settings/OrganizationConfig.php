@@ -36,8 +36,6 @@ $organization_website = $adb->query_result($result,0,'website');
 //Handle for allowed organation logo/logoname likes UTF-8 Character
 $organization_logo = decode_html($adb->query_result($result,0,'logo'));
 $organization_logoname = decode_html($adb->query_result($result,0,'logoname'));
-$front_logoname = $adb->query_result($result,0,'frontlogo');
-$favicon_logoname = $adb->query_result($result,0,'faviconlogo');
 
 if (isset($organization_name))
 	$smarty->assign("ORGANIZATIONNAME",$organization_name);
@@ -65,26 +63,16 @@ $dir_handle = @opendir($path) or die("Unable to open directory $path");
 
 while ($file = readdir($dir_handle))
 {
-     $filetyp =str_replace(".",'',strtolower(substr($file, -4)));
-   if($organization_logoname==$file || $front_logoname==$file || $favicon_logoname==$file )
+        $filetyp =str_replace(".",'',strtolower(substr($file, -4)));
+   if($organization_logoname==$file)
    {    
         if ($filetyp == 'jpeg' OR $filetyp == 'jpg' OR $filetyp == 'png')
         {
 		if($file!="." && $file!="..")
 		{
-		     $organization_logopath= $path;
-		     if($organization_logoname==$file){
-                         $organization_logopath= $path;
-                         $logo_name=$file;
-                     }
-                     if($front_logoname==$file){
-                         $front_logopath= $path;
-                         $font_logo_name=$file;
-                     }
-                     if($favicon_logoname==$file){
-                         $favicon_logopath= $path;
-                         $favicon_logo_name=$file;
-                     }
+			
+ 		     $organization_logopath= $path;
+		     $logo_name=$file;
 		}
 			
         }
@@ -94,16 +82,8 @@ while ($file = readdir($dir_handle))
 
 if (isset($organization_logopath))
 	$smarty->assign("ORGANIZATIONLOGOPATH",$path);
-if (isset($organization_logopath))
-	$smarty->assign("FRONTLOGOPATH",$front_logopath);
-if (isset($organization_logopath))
-$smarty->assign("FAVICONLOGOPATH",$favicon_logopath);
 if (isset($organization_logoname))
 	$smarty->assign("ORGANIZATIONLOGONAME",$logo_name);
-if (isset($organization_logoname))
-	$smarty->assign("FRONTLOGONAME",$font_logo_name);
-if (isset($organization_logoname))
-$smarty->assign("FAVICONLOGONAME",$favicon_logoname);
 closedir($dir_handle);
 
 $smarty->assign("MOD", return_module_language($current_language,'Settings'));

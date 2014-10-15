@@ -53,7 +53,6 @@ $old_related_modules = Array('Accounts'=>Array('Potentials','Contacts','Products
 			 'Invoice'=>Array('Accounts','Contacts'),
 			 'SalesOrder'=>Array('Accounts','Contacts','Potentials','Quotes'),
 			 'Campaigns'=>Array('Products'),
-			 'Timecontrol'=>Array('Leads','Accounts','Contacts','Vendors','Campaigns','Potentials','Quotes','PurchaseOrder','SalesOrder','Invoice','HelpDesk', 'Project', 'ProjectMilestone', 'ProjectTask', 'Assets', 'ServiceContracts','Products','Services'),
 			);
 
 $related_modules =Array();
@@ -1541,7 +1540,7 @@ function getEscapedColumns($selectedfields)
 		{
 			$typeofdata = explode("~",$columntototalrow["typeofdata"]);
 
-			if($typeofdata[0] == "N" || $typeofdata[0] == "NN" || $typeofdata[0] == "I" || $typeofdata[0] == "T" || $columntototalrow['columnname']=='totaltime')
+			if($typeofdata[0] == "N" || $typeofdata[0] == "NN" || $typeofdata[0] == "I" || $typeofdata[0] == "T")
 			{
 				$options = Array();
 				if(isset($this->columnssummary))

@@ -789,11 +789,5 @@ $mod_strings = Array(
     'Language'=>'Sprache',
     'Secondary Email'=>'weitere Email',
     'Time Zone'=>'Zeitzone',
-	'flat'=>'Flat',
-	'hring'=>'Horizontal Ring',
-	'vring'=>'Vertical Ring',
-	'hcylinder'=>'Horizontal Cylinder',
-	'vcylinder'=>'Vertical Cylinder',
-	'LBL_SEND_EMAIL_TO_SENDER' => 'Send copy of email',
 );
 ?>

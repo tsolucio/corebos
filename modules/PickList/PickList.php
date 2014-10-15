@@ -72,11 +72,8 @@ if(!empty($picklists_entries)) {
 	$available_module_picklist = get_available_module_picklist($picklists_entries);
 	$picklist_fields = array_chunk(array_pad($picklists_entries,$value,''),3);
 }
-$mods = array();
-foreach ($modules as $lbl => $m) {
-	$mods[$m] = getTranslatedString($lbl,$m);
-}
-$smarty->assign("MODULE_LISTS",$mods);
+
+$smarty->assign("MODULE_LISTS",$modules);
 $smarty->assign("ROLE_LISTS",getrole2picklist());
 $smarty->assign("ALL_LISTS",$available_module_picklist);
 

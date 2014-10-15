@@ -177,7 +177,6 @@ or an update!',
 'LBL_NO_RECORDS' => 'No Records Found',
 'LBL_PRINT_EMAIL'=> 'Print',
 
-'LBL_ATTACH_DOCUMENTS' => 'Attach documents',
 );
 
 ?>
