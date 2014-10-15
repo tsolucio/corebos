@@ -9,6 +9,7 @@
 
 $mod_strings = Array (
 'MyExtension' => 'Mi Extensión',
+"Calendar4You"=>"Calendar4You",
 "LBL_MODULE_NAME"=>"Calendar4You",
 "LBL_CALENDAR4YOU"=>"Calendar4You",
 "LBL_ADD_EVENT"=>"Agregar evento",
