@@ -96,5 +96,18 @@ $mod_strings = array(
 'Relate Service' => 'Relacionar Servicio',
 'Relate with AccountVendor' => 'Relacionar con Cuenta/Proveedor',
 'Relate with Contact' => 'Relacionar con Contacto',
+
+'LBL_EVENTNAME' => 'Nombre de Evento',
+'LBL_DESCRIPTION' => 'Descripción',
+'LBL_STATUS' => 'Estado',
+'LBL_TYPE' => 'Tipo',
+'LBL_START_TIME' => 'Hora de inicio',
+'LBL_START_DATE' => 'Fecha de inicio',
+'LBL_END_TIME' => 'Hora de finalización',
+'LBL_END_DATE' => 'Fecha de finalización',
+
+'LBL_AFTER' => 'Después',
+'LBL_BEFORE' => 'Antes',
+'LBL_DAYS' => 'días',
 );
 ?>
