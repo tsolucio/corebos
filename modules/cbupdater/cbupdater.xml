@@ -148,4 +148,25 @@
 	<classname>UserSendEmailToSender</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>drivalda</author>
+	<description>import entitylog module </description>
+	<filename>build/changeSets/entitylogimport.php</filename>
+	<classname>entitylogimport</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>drivalda</author>
+	<description>import loggingconf module </description>
+	<filename>build/changeSets/loggingconfimport.php</filename>
+	<classname>loggingconfimport</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>drivalda</author>
+	<description>add event </description>
+	<filename>build/changeSets/addmoduletolog.php</filename>
+	<classname>addmoduletolog</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
