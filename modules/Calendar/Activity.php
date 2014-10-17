@@ -156,7 +156,7 @@ class Activity extends CRMEntity {
 	
 		//Insert into vtiger_activity_remainder table
 
-			$this->insertIntoReminderTable('vtiger_activity_reminder',$module,"");
+			$this->insertIntoReminderTable('vtiger_activity_reminder',$module,0);
 
 		//Handling for invitees
 			$selected_users_string =  $_REQUEST['inviteesid'];
@@ -196,7 +196,7 @@ class Activity extends CRMEntity {
 				$callback_query = "UPDATE vtiger_activity_reminder_popup set status = 0, date_start = ?, time_start = ? WHERE reminderid = ?"; 
 				$callback_params = array($cbdate, $cbtime, $reminderid);
 			} else {
-				$callback_query = "INSERT INTO vtiger_activity_reminder_popup (recordid, semodule, date_start, time_start) VALUES (?,?,?,?)";
+				$callback_query = "INSERT INTO vtiger_activity_reminder_popup (recordid, semodule, date_start, time_start, status) VALUES (?,?,?,?,0)";
 				$callback_params = array($cbrecord, $cbmodule, $cbdate, $cbtime);
 			}
 		
@@ -225,7 +225,7 @@ class Activity extends CRMEntity {
 			$log->debug("rem_minutes is ".$rem_min);
 			$reminder_time = $rem_days * 24 * 60 + $rem_hrs * 60 + $rem_min;
 			$log->debug("reminder_time is ".$reminder_time);
-			if ($recurid == "")
+			if ($recurid == 0)
 			{
 				if($_REQUEST['mode'] == 'edit')
 				{
