@@ -681,6 +681,7 @@ class ListViewController {
 				$typeOfData = $typeOfData[0];
 			}
 			$label = getTranslatedString($field->getFieldLabelKey(), $module);
+			$label = str_replace(array("\n","\r"),'',$label);
 			if(empty($label)) {
 				$label = $field->getFieldLabelKey();
 			}

@@ -100,6 +100,18 @@ $mod_strings = array(
 'Relate Service' => 'Relate Service',
 'Relate with AccountVendor' => 'Relate with Account/Vendor',
 'Relate with Contact' => 'Relate with Contact',
-);
 
+'LBL_EVENTNAME' => 'Event Name',
+'LBL_DESCRIPTION' => 'Description',
+'LBL_STATUS' => 'Status',
+'LBL_TYPE' => 'Type',
+'LBL_START_TIME' => 'Start Time',
+'LBL_START_DATE' => 'Start Date',
+'LBL_END_TIME' => 'End Time',
+'LBL_END_DATE' => 'End Date',
+
+'LBL_AFTER' => 'After',
+'LBL_BEFORE' => 'Before',
+'LBL_DAYS' => 'days',
+);
 ?>
