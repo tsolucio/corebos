@@ -22,10 +22,10 @@
 			<input type="hidden" name="return_action" value="Login" />
 			<table border="0">
 					<tr>
-					<td valign="middle"><img src="themes/login/images/user.png"></td><td  valign="middle"><input type="text" name="user_name" /></td>
-					<td rowspan="2" align="center" valign="middle"><input type="submit" id="submitButton" value=""></td>
+					<td valign="middle"><img src="themes/login/images/user.png"></td><td  valign="middle"><input type="text" name="user_name" tabindex="1"></td>
+					<td rowspan="2" align="center" valign="middle"><input type="submit" id="submitButton" value="" tabindex="3"></td>
 					</tr>
-					<tr><td  valign="middle"><img src="themes/login/images/password.png"></td><td  valign="middle"><input type="password" name="user_password"></td></tr>
+					<tr><td  valign="middle"><img src="themes/login/images/password.png"></td><td  valign="middle"><input type="password" name="user_password" tabindex="2"></td></tr>
 			</table>
 				{if $LOGIN_ERROR neq ''}
 				<div class="errorMessage">
