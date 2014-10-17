@@ -3395,6 +3395,14 @@ function getPopupCheckquery($current_module, $relmodule, $relmod_recordid) {
 			else
 				$condition = "and vtiger_contactdetails.contactid= 0";
 		}
+		elseif ($relmodule == "Vendors") {
+			$vcquery = "SELECT vtiger_contactdetails.contactid
+				from vtiger_contactdetails
+				inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
+				inner join vtiger_vendorcontactrel on vtiger_vendorcontactrel.contactid=vtiger_contactdetails.contactid
+				where vtiger_crmentity.deleted=0 and vtiger_vendorcontactrel.vendorid = $relmod_recordid";
+			$condition = "and vtiger_contactdetails.contactid in ($vcquery)";
+		}
 		elseif ($relmodule == "SalesOrder") {
 			$query = "select accountid,contactid from vtiger_salesorder where salesorderid=?";
 			$result = $adb->pquery($query, array($relmod_recordid));

@@ -81,12 +81,13 @@ function getPrimaryColumns_AdvFilterHTML($module,$selected="")
 					$selected = decode_html($selected);
 					$field = decode_html($field);
 					//fix ends
+					$fldlbl = str_replace(array("\n","\r"),'',$mod_strings[$fieldlabel]);
 					if($selected == $field)
 					{
-						$shtml .= "<option selected value=\"".$field."\">".$mod_strings[$fieldlabel]."</option>";
+						$shtml .= "<option selected value=\"".$field."\">$fldlbl</option>";
 					}else
 					{
-						$shtml .= "<option value=\"".$field."\">".$mod_strings[$fieldlabel]."</option>";
+						$shtml .= "<option value=\"".$field."\">$fldlbl</option>";
 					}
 				}else
 				{
@@ -136,12 +137,13 @@ function getSecondaryColumns_AdvFilterHTML($module,$selected="")
 						  {
 							if(isset($mod_strings[$fieldlabel]))
 							{
+								$fldlbl = str_replace(array("\n","\r"),'',$mod_strings[$fieldlabel]);
 								if($selected == $field)
 								{
-									$shtml .= "<option selected value=\"".$field."\">".$mod_strings[$fieldlabel]."</option>";
+									$shtml .= "<option selected value=\"".$field."\">$fldlbl</option>";
 								}else
 								{
-									$shtml .= "<option value=\"".$field."\">".$mod_strings[$fieldlabel]."</option>";
+									$shtml .= "<option value=\"".$field."\">$fldlbl</option>";
 								}
 							}else
 							{
