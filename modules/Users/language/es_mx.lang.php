@@ -796,7 +796,7 @@ $mod_strings = Array(
 
 'Theme'=>'Apariencia',
 'Language'=>'Idioma',
-'Secondary Email'=>'Email Segundario',
+'Secondary Email'=>'Email Secundario',
 'Time Zone'=>'Zona Horaria',
 'flat'=>'Plano',
 'hring'=>'Anillo Horizontal',
@@ -804,6 +804,13 @@ $mod_strings = Array(
 'hcylinder'=>'Cilindro Horizontal',
 'vcylinder'=>'Cilindro Vertical',
 'LBL_SEND_EMAIL_TO_SENDER' => 'Envía copia de email',
+'Calendar Hour Format' => 'Formato de Hora en Calendario',
+'Day ends at' => 'Día acaba a las',
+'Day starts at' => 'Día empieza a las',
+'Digit Grouping Pattern' => 'Formato de Grupo de dígitos ',
+'Decimal Separator' => 'Separador Decimal',
+'Digit Grouping Separator' => 'Separador de Grupo de dígitos',
+'Symbol Placement' => 'Posición de Símbolo',
 );
 
 ?>

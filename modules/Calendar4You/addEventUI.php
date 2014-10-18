@@ -655,7 +655,7 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 							</td>
 						</tr>
 					<?php } ?>
-					<?php if(getFieldVisibilityPermission('Events',$current_user->id,'contact_id', 'readwrite') == '0') { ?>	
+					<?php if(getFieldVisibilityPermission('Events',$current_user->id,'contact_id', 'readwrite') == '0' && vtlib_isModuleActive('Contacts')) { ?>	
 						<tr>
 						<td><b><?php echo $app_strings['Contacts'] ?></b></td>
 							<td colspan="2">
