@@ -110,6 +110,8 @@ $mod_strings = array(
 'LBL_BEFORE' => 'Antes',
 'LBL_DAYS' => 'días',
 
+'LBL_REPEAT' => 'Repetir',
+
 'UpdateInventoryProducts On Every Save' => 'UpdateInventoryProducts En Cada Guardado',
 'Send Email to user when Notifyowner is True' => 'Envíar Email al usuario cuando Notificación Propietario está activado',
 'Send Email to user when Portal User is True' => 'Envíar Email al usuario cuando Portal de Usuario está activado',
