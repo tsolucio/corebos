@@ -241,7 +241,7 @@ function editworkflowscript($, conditions){
 						alert_arr.LBL_ENDS_WITH,alert_arr.LBL_HAS_CHANGED],
 			number:[alert_arr.LBL_EQUAL_TO, alert_arr.LBL_LESS_THAN,alert_arr.LBL_GREATER_THAN,alert_arr.LBL_DOEST_NOT_EQUAL,
 						alert_arr.LBL_LESS_THAN_OR_EQUAL_TO, alert_arr.LBL_GREATER_THAN_OR_EQUAL_TO,alert_arr.LBL_HAS_CHANGED],
-			value:[alert_arr.LBL_IS,alert_arr.LBL_IS_NOT,alert_arr.LBL_GREATER_THAN]
+			value:[alert_arr.LBL_IS,alert_arr.LBL_IS_NOT,alert_arr.LBL_HAS_CHANGED]
         };
 		var mapping = [
 			['string', ['string', 'text', 'url', 'email', 'phone']],
