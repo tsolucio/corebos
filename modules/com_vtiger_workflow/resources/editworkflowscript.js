@@ -235,6 +235,33 @@ function editworkflowscript($, conditions){
 		return out;
 	}();
 
+	var transOperations = function(){
+		var op = {
+            string:[alert_arr.LBL_IS,alert_arr.LBL_CONTAINS,alert_arr.LBL_DOES_NOT_CONTAIN,alert_arr.LBL_STARTS_WITH,
+						alert_arr.LBL_ENDS_WITH,alert_arr.LBL_HAS_CHANGED],
+			number:[alert_arr.LBL_EQUAL_TO, alert_arr.LBL_LESS_THAN,alert_arr.LBL_GREATER_THAN,alert_arr.LBL_DOEST_NOT_EQUAL,
+						alert_arr.LBL_LESS_THAN_OR_EQUAL_TO, alert_arr.LBL_GREATER_THAN_OR_EQUAL_TO,alert_arr.LBL_HAS_CHANGED],
+			value:[alert_arr.LBL_IS,alert_arr.LBL_IS_NOT,alert_arr.LBL_GREATER_THAN]
+        };
+		var mapping = [
+			['string', ['string', 'text', 'url', 'email', 'phone']],
+			['number', ['integer', 'double', 'currency']],
+			['value', ['reference', 'picklist', 'multipicklist', 'datetime',
+								'time', 'date', 'boolean']]
+		];
+
+
+		var out = {};
+		$.each(mapping, function(i, v){
+			var opName = v[0];
+			var types = v[1];
+			$.each(types, function(i, v){
+				out[v] = op[opName];
+			});
+		});
+		return out;
+	}();
+
 	var format = fn.format;
 
 	function fillOptions(el,options){
@@ -247,6 +274,7 @@ function editworkflowscript($, conditions){
 	function resetFields(opType, condno){
 		var ops = $("#save_condition_"+condno+"_operation");
 		var selOperations = operations[opType.name];
+		var selTransOperations = transOperations[opType.name];
 		var selectedOperations = new Array();
 
 		// Remove 'has changed' operation for reference fields
@@ -263,7 +291,7 @@ function editworkflowscript($, conditions){
 			selectedOperations = selOperations;
 		}
 
-		var l = dict(zip(selectedOperations, selectedOperations));
+		var l = dict(zip(selectedOperations, selTransOperations));
 		fillOptions(ops, l);
 		defaultValue(opType.name)(opType, condno);
 	}
