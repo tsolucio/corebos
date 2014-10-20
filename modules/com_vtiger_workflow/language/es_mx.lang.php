@@ -101,5 +101,28 @@ $mod_strings = array(
 'Relate Service' => 'Relacionar Servicio',
 'Relate with AccountVendor' => 'Relacionar con Cuenta/Proveedor',
 'Relate with Contact' => 'Relacionar con Contacto',
+
+'LBL_EVENTNAME' => 'Nombre de Evento',
+'LBL_DESCRIPTION' => 'Descripción',
+'LBL_STATUS' => 'Estado',
+'LBL_TYPE' => 'Tipo',
+'LBL_START_TIME' => 'Hora de inicio',
+'LBL_START_DATE' => 'Fecha de inicio',
+'LBL_END_TIME' => 'Hora de finalización',
+'LBL_END_DATE' => 'Fecha de finalización',
+
+'LBL_AFTER' => 'Después',
+'LBL_BEFORE' => 'Antes',
+'LBL_DAYS' => 'días',
+
+'UpdateInventoryProducts On Every Save' => 'UpdateInventoryProducts En Cada Guardado',
+'Send Email to user when Notifyowner is True' => 'Envíar Email al usuario cuando Notificación Propietario está activado',
+'Send Email to user when Portal User is True' => 'Envíar Email al usuario cuando Portal de Usuario está activado',
+'Send Email to users on Potential creation' => 'Envíar email al usuario en la creación de la Oportunidad',
+'Workflow for Contact Creation or Modification' => 'Flujo de Trabajo para la Creación o Modificación de Contacto',
+'Workflow for Ticket Created from Portal' => 'Flujo de Trabajo para la Creación de Ticket desde el Portal',
+'Workflow for Ticket Updated from Portal' => 'Flujo de Trabajo para la Actualización de Ticket desde el Portal',
+'Workflow for Ticket Change, not from the Portal' => 'Flujo de Trabajo para la Actualización de Ticket, no desde el Portal',
+'Workflow for Events when Send Notification is True' => 'Flujo de Trabajo para Eventos cuando el Envío de Notificación está activado',
+'Workflow for Calendar Todos when Send Notification is True' => 'Flujo de Trabajo para Tareas de Calendario cuando Notificación de Envío está activado',
 );
-?>
