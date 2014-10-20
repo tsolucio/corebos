@@ -205,9 +205,12 @@
 		}
 
 		function setup($row) {
+            global $current_language;
+            $mod = return_module_language($current_language,'com_vtiger_workflow');
+                        
 			$this->id = $row['workflow_id'];
 			$this->moduleName = $row['module_name'];
-			$this->description = to_html($row['summary']);
+			$this->description = $mod[$row['summary']];
 			$this->test = $row['test'];
 			$this->executionCondition = $row['execution_condition'];
 
