@@ -204,13 +204,10 @@
 			$this->conditionStrategy = new VTJsonCondition();
 		}
 
-		function setup($row) {
-            		global $current_language;
-            		$mod = return_module_language($current_language,'com_vtiger_workflow');
-                        
+		function setup($row) {                        
 			$this->id = $row['workflow_id'];
 			$this->moduleName = $row['module_name'];
-			$this->description = $mod[$row['summary']];
+			$this->description = getTranslatedString($row['summary'],'com_vtiger_workflow');
 			$this->test = $row['test'];
 			$this->executionCondition = $row['execution_condition'];
 
