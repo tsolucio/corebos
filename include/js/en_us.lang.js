@@ -345,6 +345,20 @@ var alert_arr = {
 	'MORE_THAN_500' : 'You selected more than 500 records. For this action it may take longer time. Are you sure want to proceed?',
 	'LBL_MAPPEDALERT':'The field has been already mapped',
 	'LBL_REPORT_NAME': 'Please enter a name for the new report.',
-	'LBL_REPORT_NAME_ERROR': 'You must give a new name to the report.'
+	'LBL_REPORT_NAME_ERROR': 'You must give a new name to the report.',
 
+	//Translate Workflow Selects
+	'LBL_IS' : 'is',
+	'LBL_CONTAINS': 'contains',
+	'LBL_DOES_NOT_CONTAIN' : 'does not contain',
+	'LBL_STARTS_WITH' : 'starts with',
+	'LBL_ENDS_WITH' : 'ends with',
+	'LBL_HAS_CHANGED' : 'has changed',
+	'LBL_EQUAL_TO' : 'equal to',
+	'LBL_LESS_THAN' : 'less than',
+	'LBL_GREATER_THAN' : 'greater than',
+	'LBL_DOEST_NOT_EQUAL' : 'does not equal',
+	'LBL_LESS_THAN_OR_EQUAL_TO' : 'less than or equal to',
+	'LBL_GREATER_THAN_OR_EQUAL_TO' : 'greater than or equal to',
+	'LBL_IS_NOT' : 'is not',
 };
