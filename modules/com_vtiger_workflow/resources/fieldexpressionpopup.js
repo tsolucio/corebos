@@ -181,7 +181,7 @@ function fieldExpressionPopup(moduleName, $){
 		function forDateField(opType) {
 			var value = $("#editpopup_expression");
 			value.replaceWith('<input type="text" id="editpopup_expression" class="value"> \
-								<img border=0 src="themes/softed/images/btnL3Calendar.gif" alt="SET DATE" title="SET DATE" id="jscal_trigger_editpopup_expression">');
+								<img border=0 src="themes/images/btnL3Calendar.gif" alt="SET DATE" title="SET DATE" id="jscal_trigger_editpopup_expression">');
 			Calendar.setup (
 				{inputField : "editpopup_expression", ifFormat : "%Y-%m-%d", showsTime : false, button : "jscal_trigger_editpopup_expression", singleClick : true, step : 1}
 			);
@@ -193,7 +193,7 @@ function fieldExpressionPopup(moduleName, $){
 		function forDateTimeField(opType) {
 			var value = $("#editpopup_expression");
 			value.replaceWith('<input type="text" id="editpopup_expression" class="value" readonly> \
-								<img align="absmiddle" border=0 src="themes/softed/images/btnL3Calendar.gif" alt="SET DATE" title="SET DATE" id="jscal_trigger_editpopup_expression">');
+								<img align="absmiddle" border=0 src="themes/images/btnL3Calendar.gif" alt="SET DATE" title="SET DATE" id="jscal_trigger_editpopup_expression">');
 			Calendar.setup (
 				{inputField : "editpopup_expression", ifFormat : "%Y-%m-%d", showsTime : true, button : "jscal_trigger_editpopup_expression", singleClick : true, step : 1}
 			);
