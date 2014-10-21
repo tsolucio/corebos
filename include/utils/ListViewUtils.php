@@ -1718,7 +1718,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 	//added for asterisk integration
 	elseif ($uitype == 11) {
 		// Fix added for Trac Id: 6139
-		if (vtlib_isModuleActive('PBXManager')) {
+		if (get_use_asterisk($current_user->id)) {
 			$value = "<a href='javascript:;' onclick='startCall(&quot;$temp_val&quot;, &quot;$entity_id&quot;)'>" . textlength_check($temp_val) . "</a>";
 		} else {
 			$value = $temp_val;

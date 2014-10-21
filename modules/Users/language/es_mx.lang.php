@@ -687,7 +687,7 @@ $mod_strings = Array(
 //Fixed For Asterisk Configration
 'Asterisk Configuration' => 'Configuración Asterisk',
 'Asterisk Extension' => 'Extensión Asterisk',
-' Receive Incoming Calls' => 'Recibir Llamadas Entrantes',
+' Receive Incoming Calls' => 'Usar Asterisk',
 
 // Added for Create Custom Fields 
 'LBL_USER_CUSTOMFIELDS_DESCRIPTION' => 'Crear Campos Personalizados para Usuarios ',
