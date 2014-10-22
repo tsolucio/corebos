@@ -380,11 +380,8 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 	 */
 	function importManifest($manifestfile) {
 		global $adb,$log;
-		if (!is_file($manifestfile))
-			$manifestfile .= '/manifest.xml';  // in case they just give us the path
-		if (!is_file($manifestfile))
+		if (!$this->loadManifestFromFile($manifestfile))
 			return false;
-		$this->_modulexml = simplexml_load_file($manifestfile);
 		$module = (string) $this->_modulexml->name;
 		if($module != null) {
 			if ($this->isLanguageType()) {
@@ -399,7 +396,23 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 				}
 				$this->import_Module();
 			}
+		} else {
+			return false;
 		}
+		return true;
+	}
+
+	/**
+	 * Load manifest.xml from specified file.
+	 * @param String manifest.xml file path
+	 */
+	function loadManifestFromFile($manifestfile) {
+		global $adb,$log;
+		if (!is_file($manifestfile))
+			$manifestfile .= '/manifest.xml';  // in case they just give us the path
+		if (!is_file($manifestfile))
+			return false;
+		$this->_modulexml = simplexml_load_file($manifestfile);
 		return true;
 	}
 
