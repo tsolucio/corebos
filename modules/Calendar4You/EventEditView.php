@@ -238,8 +238,11 @@ $smarty->assign("CATEGORY",$category);
 $smarty->assign("CALENDAR_LANG", $app_strings['LBL_JSCALENDAR_LANG']);
 $smarty->assign("CALENDAR_DATEFORMAT", parse_calendardate($app_strings['NTC_DATE_FORMAT']));
 
-$isContactIdEditable = getFieldVisibilityPermission($tab_type, $current_user->id, 'contact_id', 'readwrite');
-$smarty->assign("IS_CONTACTS_EDIT_PERMITTED", (($isContactIdEditable == '0')? true : false));
+$isContactIdEditable = false;
+if(getFieldVisibilityPermission($tab_type, $current_user->id, 'contact_id', 'readwrite') == 0 && vtlib_isModuleActive('Contacts')) {
+	$isContactIdEditable = true;
+}
+$smarty->assign("IS_CONTACTS_EDIT_PERMITTED", $isContactIdEditable);
 
 if (isset($_REQUEST['return_module']))
 	$smarty->assign("RETURN_MODULE", vtlib_purify($_REQUEST['return_module']));

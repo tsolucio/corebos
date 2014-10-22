@@ -447,6 +447,16 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$displayValue = $app_strings['no'];
 		}
 		$label_fld[] = $displayValue;
+	} elseif ($uitype == 156) {
+		$label_fld[] = getTranslatedString($fieldlabel, $module);
+		$value = $col_fields[$fieldname];
+		if ($value == 'on') {
+			//Since "yes" is not been translated it is given as app strings here..
+			$displayValue = $app_strings['yes'];
+		} else {
+			$displayValue = $app_strings['no'];
+		}
+		$label_fld[] = $displayValue;
 	} elseif ($uitype == 57) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$contact_id = $col_fields[$fieldname];
