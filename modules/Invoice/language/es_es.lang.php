@@ -200,6 +200,11 @@ $mod_strings = Array(
 //Added for Documents module
 'Documents'=>'Documentos',
 'Invoice ID'=>'Id Factura',
-);
 
+'Currency' => 'Moneda',
+'Conversion Rate' => 'Tasa de Conversión',
+'Last Modified By' => 'Última modificación por',
+'List Price' => 'Precio unitario',
+'Service Name' => 'Nombre del Servicio',
+);
 ?>
