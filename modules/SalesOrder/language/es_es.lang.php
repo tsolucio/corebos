@@ -219,6 +219,11 @@ $mod_strings = Array(
 'Net 60 days' => '60 días',
 
 'SalesOrder ID' => 'Id Orden de Venta',
-);
 
+'Currency' => 'Moneda',
+'Conversion Rate' => 'Tasa de Conversión',
+'Last Modified By' => 'Última modificación por',
+'List Price' => 'Precio unitario',
+'Service Name' => 'Nombre del Servicio',
+);
 ?>

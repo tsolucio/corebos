@@ -198,6 +198,11 @@ $mod_strings = Array(
 //Added after 5.0.4 GA
 'PurchaseOrder No'=>'No Orden Compra',
 'PurchaseOrder ID'=>'Id Orden Compra',
-);
 
+'Currency' => 'Moneda',
+'Conversion Rate' => 'Tasa de Conversión',
+'Last Modified By' => 'Última modificación por',
+'List Price' => 'Precio unitario',
+'Service Name' => 'Nombre del Servicio',
+);
 ?>

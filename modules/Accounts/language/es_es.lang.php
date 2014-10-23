@@ -239,6 +239,7 @@ $mod_strings = array(
 // Account Hierarchy
 'LBL_SHOW_ACCOUNT_HIERARCHY' => 'Mostrar Jerarquía de Cuentas',
 'Accounts ID' => 'Id Cuenta',
-);
 
+'Last Modified By' => 'Última vez modificado por',
+);
 ?>
