@@ -960,7 +960,7 @@ class Common_Install_Wizard_Utils {
 			$directiveValues['max_execution_time'] = ini_get('max_execution_time');
 		if (ini_get('memory_limit') < 32)
 			$directiveValues['memory_limit'] = ini_get('memory_limit');
-		$errorReportingValue = self::$recommendedDirectives['error_reporting'];
+		eval('$errorReportingValue = '.self::$recommendedDirectives['error_reporting'].';');
 		if (ini_get('error_reporting') != $errorReportingValue)
 			$directiveValues['error_reporting'] = 'NOT RECOMMENDED';
 		if (ini_get('allow_call_time_pass_reference') == '1' || stripos(ini_get('allow_call_time_pass_reference'), 'On') > -1)
