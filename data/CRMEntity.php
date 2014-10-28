@@ -2074,10 +2074,7 @@ class CRMEntity {
 			$condvalue = $table_name . "." . $column_name;
 			$condition = "$pritablename.$secfieldname=$condvalue";
 		}
-		//$secQuery = "select $table_name.* from $table_name inner join vtiger_crmentity on " .
-		//		"vtiger_crmentity.crmid=$table_name.$column_name and vtiger_crmentity.deleted=0";
-		$secQuery2 = "inner join vtiger_crmentity as crmentity$table_name on " .
-		 "crmentity$table_name.crmid=$table_name.$column_name and crmentity$table_name.deleted=0";
+
 		$query = '';
 		if ($pritablename == 'vtiger_crmentityrel') {
 			$condition = "($table_name.$column_name={$tmpname}.{$secfieldname} " .
@@ -2097,10 +2094,10 @@ class CRMEntity {
 
 		}
 
-		//$query .= " left join ($secQuery) as $table_name on {$condition}";
+
 		//performance improvement, this should be equivalent to the subquery but masses faster
 		$query .= " left join $table_name on {$condition}";
-		$query .= " $secQuery2";
+
 
 		return $query;
 	}
