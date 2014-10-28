@@ -421,8 +421,8 @@ function sendfile_email()
 															</table>
 														</td></tr></table>
 											</td>
-											<td width=22% valign=top style="border-left:1px dashed #cccccc;padding:13px">
 
+		<td width=22% valign=top style="border-left:1px dashed #cccccc;padding:13px" class="noprint">
 												<!-- right side relevant info -->
 												<!-- Action links for Event & Todo START-by Minnie -->
 												<table width="100%" border="0" cellpadding="5" cellspacing="0">

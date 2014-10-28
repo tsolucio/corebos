@@ -42,7 +42,7 @@
 		</td>
 	</tr>
 
-	<tr style="height: 25px;">
+	<tr style="height: 25px;" class='noprint'>
 	<td class="dvtCellLabel" align="right">
 		{$MOD.LBL_ADD_COMMENT}
 	</td>
