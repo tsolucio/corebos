@@ -146,13 +146,55 @@
 																		</td>				
 																		<td width="50%">
 																			<table width="100%" border="0" cellpadding="5" cellspacing="0">
-																				<tr>
-																					<td class="dataLabel" nowrap="nowrap" align="right" width="30%"><b>{$MOD.LBL_LABEL} </b>
-																					</td>
-																					<td align="left" width="70%">
-																					<input id="fldLabel_{$entries.blockid}"  value="" type="text" class="txtBox">
-																					</td>
-																				</tr>
+												{if $user eq 'admin'}							
+                                                                                                {* 
+																			--- MP Custom Field on primary table   
+																			--- <tr>
+																			--- <td class="dataLabel" nowrap="nowrap" align="right" width="30%"><b>{$MOD.LBL_LABEL} </b>
+																			--- </td>
+																			--- <td align="left" width="70%">
+																			--- <input id="fldLabel_{$entries.blockid}"  value="" type="text" class="txtBox">
+																			--- </td>
+																			--- </tr>
+																			--- MP Custom Field on primary table   
+																			*}
+																			
+																			{* ++++ MP Custom Field on primary table   *}
+																			
+																			<tr>
+																				<td class="dataLabel" nowrap="nowrap" align="right" width="30%"><b>{$MOD.LBL_BLOCK_NAME} (ID) </b>
+																				</td>
+																				<td align="left" width="70%">
+																				<td  nowrap="nowrap" align="right" width="70%">&nbsp;&nbsp;{$entries.blockid}
+																				</td>
+																			</tr>
+																			
+																			<tr>
+																				<td class="dataLabel" nowrap="nowrap" align="right" width="30%"><b>{$MOD.LBL_VTABLE} </b>
+																				</td>
+																				<td align="left" width="70%">
+																				<input id="fldVTable_{$entries.blockid}"  value="{$MODULE_TABLE}" type="text" class="txtBox">
+																				</td>
+																			</tr>
+
+																			<tr>
+																				<td class="dataLabel" nowrap="nowrap" align="right" width="30%"><b>{$MOD.LBL_LABEL} </b>
+																				</td>
+																				<td align="left" width="70%">
+																				<input id="fldLabel_{$entries.blockid}"  value="" type="text" class="txtBox">
+																				</td>
+																			</tr>
+
+																			<tr>
+																				<td class="dataLabel" nowrap="nowrap" align="right" width="30%"><b>{$MOD.LBL_COL_NAME} </b>
+																				</td>
+																				<td align="left" width="70%">
+																				<input id="fldColName_{$entries.blockid}"  value="" type="text" class="txtBox">
+																				</td>
+																			</tr>																			
+																			
+																			{* ++++ MP Custom Field on primary table   *}
+
 																				<tr id="lengthdetails_{$entries.blockid}">
 																					<td class="dataLabel" nowrap="nowrap" align="right"><b>{$MOD.LBL_LENGTH}</b>
 																					</td>
@@ -172,6 +214,13 @@
 																					</td>
 																					<td align="left" valign="top">
 																					<textarea id="fldPickList_{$entries.blockid}" rows="10" class="txtBox" ></textarea>
+																					</td>
+																				</tr>
+																				<tr>
+																					<td class="dataLabel" nowrap="nowrap" align="right"><b>{$MOD.LBL_NUMFIELDS}</b>
+																					</td>
+																					<td align="left">
+																					<input type="text" id="fldNumField_{$entries.blockid}" value="1" class="txtBox">
 																					</td>
 																				</tr>
 																			</table>
@@ -194,7 +243,7 @@
 													</table>									
 												</div>	
 									<!-- end custom field -->
-									
+									{/if}
 									
 									{if $entries.blockid neq $COMMENTSECTIONID && $entries.blockid neq $SOLUTIONBLOCKID}
 										<img src="{'moveinto.png'|@vtiger_imageurl:$THEME}" border="0"  style="cursor:pointer; height:16px; width:16px" onClick="fnvshobj(this,'movefields_{$entries.blockid}');"  alt="Move Fields" title="Move Fields"/>&nbsp;&nbsp;
