@@ -280,7 +280,7 @@ function sendfile_email()
 																	{include_php file="include/DetailViewBlockStatus.php"}
 																	<!-- Start of File Include by SAKTI on 10th Apr, 2008 -->
 
-																	{foreach key=header item=detail from=$BLOCKS}
+																	{foreach key=header item=detail from=$BLOCKS name=BLOCKS}
 																		<tr><td style="padding:5px">
 																				<!-- Detailed View Code starts here-->
 																				<table border=0 cellspacing=0 cellpadding=0 width=100% class="small">
@@ -389,24 +389,26 @@ function sendfile_email()
 																					{/if}
 																			</td>
 																		</tr>
-																	{/foreach}
-																	{*-- End of Blocks--*}
-
 																	{* vtlib Customization: Embed DetailViewWidget block:// type if any *}
 																	{if $CUSTOM_LINKS && !empty($CUSTOM_LINKS.DETAILVIEWWIDGET)}
 																		{foreach item=CUSTOM_LINK_DETAILVIEWWIDGET from=$CUSTOM_LINKS.DETAILVIEWWIDGET}
 																			{if preg_match("/^block:\/\/.*/", $CUSTOM_LINK_DETAILVIEWWIDGET->linkurl)}
+																			 {if ($smarty.foreach.BLOCKS.first && $CUSTOM_LINK_DETAILVIEWWIDGET->sequence <= 1) 
+																			 	|| ($CUSTOM_LINK_DETAILVIEWWIDGET->sequence == $smarty.foreach.BLOCKS.iteration)
+																			 	|| ($smarty.foreach.BLOCKS.last && $CUSTOM_LINK_DETAILVIEWWIDGET->sequence >= $smarty.foreach.BLOCKS.iteration)}
 																				<tr>
 																					<td style="padding:5px;" >
-																						{php}
-					echo vtlib_process_widget($this->_tpl_vars['CUSTOM_LINK_DETAILVIEWWIDGET'], $this->_tpl_vars);
-																						{/php}
+																						{php} echo vtlib_process_widget($this->_tpl_vars['CUSTOM_LINK_DETAILVIEWWIDGET'], $this->_tpl_vars); {/php}
 																					</td>
 																				</tr>
+																			 {/if}
 																			{/if}
 																		{/foreach}
 																	{/if}
 																	{* END *}
+																	{/foreach}
+																	{*-- End of Blocks--*}
+
 																	<!-- Inventory - Product Details informations -->
 																	<tr>
 																		{$ASSOCIATED_PRODUCTS}

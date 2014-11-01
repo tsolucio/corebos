@@ -446,6 +446,24 @@
 								</td>
 							{/foreach}
 							</tr>
+						{elseif $entries.DVB != ''}
+						{if $smarty.foreach.outer.first neq true}
+						<tr><td><img src="{'blank.gif'|@vtiger_imageurl:$THEME}" style="width:16px;height:16px;" border="0" />&nbsp;&nbsp;</td></tr>
+						{/if}
+						<tr>
+							<td class="colHeader small" colspan="2">&nbsp;&nbsp;{$entries.label}</td>
+							<td class="colHeader small" id = "blockid_dvb{$entries.DVB}" colspan="2" align='right'>
+							{if $smarty.foreach.outer.first}
+								<img src="{'blank.gif'|@vtiger_imageurl:$THEME}" style="width:16px;height:16px;" border="0" />&nbsp;&nbsp;
+								<img src="{'arrow_down.png'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;" onclick="changeBlockorder('block_down','{$entries.tabid}','dvb{$entries.DVB}','{$MODULE}') " alt="{$MOD.DOWN}" title="{$MOD.DOWN}">&nbsp;&nbsp;
+							{elseif $smarty.foreach.outer.last}
+								<img src="{'arrow_up.png'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;" onclick="changeBlockorder('block_up','{$entries.tabid}','dvb{$entries.DVB}','{$MODULE}') " alt="{$MOD.UP}" title="{$MOD.UP}">&nbsp;&nbsp;
+								<img src="{'blank.gif'|@vtiger_imageurl:$THEME}" style="width:16px;height:16px;" border="0" />&nbsp;&nbsp;
+							{else}
+								<img src="{'arrow_up.png'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;" onclick="changeBlockorder('block_up','{$entries.tabid}','dvb{$entries.DVB}','{$MODULE}') " alt="{$MOD.UP}" title="{$MOD.UP}">&nbsp;&nbsp;
+								<img src="{'arrow_down.png'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;" onclick="changeBlockorder('block_down','{$entries.tabid}','dvb{$entries.DVB}','{$MODULE}') " alt="{$MOD.DOWN}" title="{$MOD.DOWN}">&nbsp;&nbsp;
+							{/if}
+						</tr>
 						{/if}
 					{/foreach}
 				</table>

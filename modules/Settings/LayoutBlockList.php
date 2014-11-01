@@ -90,10 +90,11 @@ elseif($_REQUEST['fld_module'] != '') {
 	$fld_module = 'Accounts';
 
 $block_array = getModuleBlocks($fld_module);
-
+$cfentries = getFieldListEntries($fld_module);
+$cfentries = insertDetailViewBlockWidgets($cfentries,$fld_module);
 $smarty->assign("BLOCKS",$block_array);
 $smarty->assign("MODULE",$fld_module);
-$smarty->assign("CFENTRIES",getFieldListEntries($fld_module));
+$smarty->assign("CFENTRIES",$cfentries);
 $smarty->assign("RELATEDLIST",getRelatedListInfo($fld_module));
 
 if(isset($_REQUEST["duplicate"]) && $_REQUEST["duplicate"] == "yes" || $duplicate == 'yes') {
@@ -327,6 +328,49 @@ function getFieldListEntries($module) {
 	return $cflist;
 }
 
+/* inserts Detail View Widget Blocks into the given array */
+function insertDetailViewBlockWidgets($cfentries,$fld_module) {
+	$dvb = Vtiger_Link::getAllByType(getTabid($fld_module), Array('DETAILVIEWWIDGET'));
+	if (count($dvb['DETAILVIEWWIDGET'])>0) {
+		$dvb = $dvb['DETAILVIEWWIDGET'];
+		$retarr = array();
+		$totalcnt = count($cfentries);
+		$idx = 0;
+		for ($cnt = 1;$cnt <= $totalcnt; $cnt++) {
+			$retarr[$idx++] = $cfentries[$cnt-1];
+			foreach ($dvb as $key => $CUSTOM_LINK_DETAILVIEWWIDGET) {
+				if (preg_match("/^block:\/\/.*/", $CUSTOM_LINK_DETAILVIEWWIDGET->linkurl, $matches) and
+				 (($cnt==1 and $CUSTOM_LINK_DETAILVIEWWIDGET->sequence <= 1) 
+				  or ($CUSTOM_LINK_DETAILVIEWWIDGET->sequence == $cnt)
+				  or ($cnt==$totalcnt and $CUSTOM_LINK_DETAILVIEWWIDGET->sequence >= $cnt))) {
+					list($void, $widgetControllerClass, $widgetControllerClassFile) = explode(':', $matches[0]);
+					$widgetControllerClass = substr($widgetControllerClass, 2);
+					if (!class_exists($widgetControllerClass)) {
+						checkFileAccessForInclusion($widgetControllerClassFile);
+						include_once $widgetControllerClassFile;
+					}
+					if (class_exists($widgetControllerClass)) {
+						$widgetControllerInstance = new $widgetControllerClass;
+						$widgetInstance = $widgetControllerInstance->getWidget($CUSTOM_LINK_DETAILVIEWWIDGET->linklabel);
+						if ($widgetInstance) {
+							$lbl = $widgetInstance->title();
+						} else {
+							$lbl = 'DetailViewBlock_'.$CUSTOM_LINK_DETAILVIEWWIDGET->linkid;
+						}
+					}
+					$retarr[$idx++] = array(
+						'DVB'=>$CUSTOM_LINK_DETAILVIEWWIDGET->linkid,
+						'label'=>$lbl
+					);
+				}
+			}
+		}
+	} else {
+		$retarr = $cfentries;
+	}
+	return $retarr;
+}
+
 /**
  * Function to Lead customfield Mapping entries
  * @param integer  $cfid   - Lead customfield id
@@ -392,45 +436,53 @@ function changeFieldOrder() {
 	global $adb,$log,$smarty;
 	if(!empty($_REQUEST['what_to_do'])) {
 		if($_REQUEST['what_to_do']=='block_down') {
-			$sql="select * from vtiger_blocks where blockid=?";
-			$result = $adb->pquery($sql, array(vtlib_purify($_REQUEST['blockid'])));
+			$blockid = vtlib_purify($_REQUEST['blockid']);
+			if (substr($blockid, 0, 3)=='dvb') { // detail view block
+				$sql_up_current="update vtiger_links set sequence=sequence+1 where linkid=?";
+				$result_up_current = $adb->pquery($sql_up_current, array(substr($blockid, 3)));
+			} else {  // normal block
+			$sql="select sequence from vtiger_blocks where blockid=?";
+			$result = $adb->pquery($sql, array($blockid));
 			$row= $adb->fetch_array($result);
-			$current_sequence=$row[sequence];
+			$current_sequence=$row['sequence'];
 
 			$sql_next="select * from vtiger_blocks where sequence > ? and tabid=? limit 0,1";
 			$result_next = $adb->pquery($sql_next, array($current_sequence,  vtlib_purify($_REQUEST[tabid])));
 			$row_next= $adb->fetch_array($result_next);
-			$next_sequence=$row_next[sequence];
-			$next_id=$row_next[blockid];
+			$next_sequence=$row_next['sequence'];
+			$next_id=$row_next['blockid'];
 
+			$sql_up_current="update vtiger_blocks set sequence=? where blockid=?";
+			$result_up_current = $adb->pquery($sql_up_current, array($next_sequence, $blockid));
 
-			$sql_up_current="update vtiger_blocks  set sequence=? where blockid=?";
-			$result_up_current = $adb->pquery($sql_up_current, array($next_sequence,  vtlib_purify($_REQUEST['blockid'])));
-
-
-			$sql_up_next="update vtiger_blocks  set sequence=? where blockid=?";
+			$sql_up_next="update vtiger_blocks set sequence=? where blockid=?";
 			$result_up_next = $adb->pquery($sql_up_next, array($current_sequence,$next_id));
+			}
 		}
 
 		if($_REQUEST['what_to_do']=='block_up') {
+			$blockid = vtlib_purify($_REQUEST['blockid']);
+			if (substr($blockid, 0, 3)=='dvb') { // detail view block
+				$sql_up_current="update vtiger_links set sequence=if (sequence-1<0,0,sequence-1) where linkid=?";
+				$result_up_current = $adb->pquery($sql_up_current, array(substr($blockid, 3)));
+			} else {  // normal block
 			$sql="select * from vtiger_blocks where blockid=?";
-			$result = $adb->pquery($sql, array(vtlib_purify($_REQUEST['blockid'])));
+			$result = $adb->pquery($sql, array($blockid));
 			$row= $adb->fetch_array($result);
-			$current_sequence=$row[sequence];
+			$current_sequence=$row['sequence'];
 
-			$sql_previous="select * from vtiger_blocks where sequence < ? and tabid=?  order by sequence desc limit 0,1";
-			$result_previous = $adb->pquery($sql_previous, array($current_sequence,  vtlib_purify($_REQUEST[tabid])));
+			$sql_previous="select * from vtiger_blocks where sequence < ? and tabid=? order by sequence desc limit 0,1";
+			$result_previous = $adb->pquery($sql_previous, array($current_sequence, vtlib_purify($_REQUEST[tabid])));
 			$row_previous= $adb->fetch_array($result_previous);
-			$previous_sequence=$row_previous[sequence];
-			$previous_id=$row_previous[blockid];
+			$previous_sequence=$row_previous['sequence'];
+			$previous_id=$row_previous['blockid'];
 
+			$sql_up_current="update vtiger_blocks set sequence=? where blockid=?";
+			$result_up_current = $adb->pquery($sql_up_current, array($previous_sequence,$blockid));
 
-			$sql_up_current="update vtiger_blocks  set sequence=? where blockid=?";
-			$result_up_current = $adb->pquery($sql_up_current, array($previous_sequence,$_REQUEST['blockid']));
-
-
-			$sql_up_previous="update vtiger_blocks  set sequence=? where blockid=?";
+			$sql_up_previous="update vtiger_blocks set sequence=? where blockid=?";
 			$result_up_previous = $adb->pquery($sql_up_previous, array($current_sequence,$previous_id));
+			}
 		}
 
 		if($_REQUEST['what_to_do']=='down' || $_REQUEST['what_to_do']=='Right') {
