@@ -26,11 +26,11 @@
 								<td  class="colHeader small" colspan="2">
 								<select name="display_status_{$entries.blockid}" style="border:1px solid #666666;font-family:Arial, Helvetica, sans-serif;font-size:11px; width:auto" onChange="changeShowstatus('{$entries.tabid}','{$entries.blockid}','{$MODULE}')" id='display_status_{$entries.blockid}'>
 									<option value="show" {if $entries.display_status==1}selected{/if}>{$MOD.LBL_Show}</option>
-									<option value="hide" {if $entries.display_status==0}selected{/if}>{$MOD.LBL_Hide}</option>			                
+									<option value="hide" {if $entries.display_status==0}selected{/if}>{$MOD.LBL_Hide}</option>
 								</select>
 								&nbsp;&nbsp;{$entries.blocklabel}&nbsp;&nbsp;
 								</td>
-								<td class="colHeader small"  id = "blockid"_{$entries.blockid} colspan="2" align='right'> 
+								<td class="colHeader small"  id = "blockid_{$entries.blockid}" colspan="2" align='right'> 
 									
 									{if $entries.iscustom == 1 }
 									<img style="cursor:pointer;" onClick=" deleteCustomBlock('{$MODULE}','{$entries.blockid}','{$entries.no}')" src="{'delete.gif'|@vtiger_imageurl:$THEME}" border="0"  alt="Delete" title="Delete"/>&nbsp;&nbsp;
@@ -97,7 +97,7 @@
 									{/if}
 											<!-- for adding customfield -->
 												<div id="addfield_{$entries.blockid}" style="display:none; position:absolute; width:500px;" class="layerPopup">
-												  	<input type="hidden" name="mode" id="cfedit_mode" value="add">
+													<input type="hidden" name="mode" id="cfedit_mode" value="add">
 	  												<table width="100%" border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine">
 														<tr>
 															<td width="60%" align="left" class="layerPopupHeading">{$MOD.LBL_ADD_FIELD}
@@ -252,7 +252,6 @@
 									 	<img src="{'arrow_up.png'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;" onclick="changeBlockorder('block_up','{$entries.tabid}','{$entries.blockid}','{$MODULE}') " alt="{$MOD.UP}" title="{$MOD.UP}">&nbsp;&nbsp;
 									 	<img src="{'arrow_down.png'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;" onclick="changeBlockorder('block_down','{$entries.tabid}','{$entries.blockid}','{$MODULE}') " alt="{$MOD.DOWN}" title="{$MOD.DOWN}">&nbsp;&nbsp;
 									{/if}
-									
 								</td>
 							</tr>
 							<tr>
@@ -285,7 +284,7 @@
 													</th>
 												</tr>
 											</table>
-											<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">												
+											<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">
 												<tr>
 													<td valign="top" class="dvtCellInfo" align="left" width="10px">
 														<input id="mandatory_check_{$value.fieldselect}"  type="checkbox"
