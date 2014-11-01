@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/ *}
 			<form action="index.php" method="post" name="form" onsubmit="VtigerJS_DialogBox.block();">
 				<input type="hidden" name="fld_module" value="{$MODULE}">
@@ -26,11 +25,11 @@
 							<tr>
 								<td  class="colHeader small" colspan="2">
 								<select name="display_status_{$entries.blockid}" style="border:1px solid #666666;font-family:Arial, Helvetica, sans-serif;font-size:11px; width:auto" onChange="changeShowstatus('{$entries.tabid}','{$entries.blockid}','{$MODULE}')" id='display_status_{$entries.blockid}'>
-			                		    <option value="show" {if $entries.display_status==1}selected{/if}>{$MOD.LBL_Show}</option>
-										<option value="hide" {if $entries.display_status==0}selected{/if}>{$MOD.LBL_Hide}</option>			                
+									<option value="show" {if $entries.display_status==1}selected{/if}>{$MOD.LBL_Show}</option>
+									<option value="hide" {if $entries.display_status==0}selected{/if}>{$MOD.LBL_Hide}</option>			                
 								</select>
 								&nbsp;&nbsp;{$entries.blocklabel}&nbsp;&nbsp;
-				  				</td>
+								</td>
 								<td class="colHeader small"  id = "blockid"_{$entries.blockid} colspan="2" align='right'> 
 									
 									{if $entries.iscustom == 1 }
@@ -92,8 +91,7 @@
 													</tr>
 												</table>
 											</div>
-										</div>						
-																						
+										</div>
 									{if $entries.hascustomtable && $entries.blockid neq $COMMENTSECTIONID && $entries.blockid neq $SOLUTIONBLOCKID }
 										<img src="{'plus_layout.gif'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;"  onclick="fnvshobj(this,'addfield_{$entries.blockid}'); " alt="{$MOD.LBL_ADD_CUSTOMFIELD}" title="{$MOD.LBL_ADD_CUSTOMFIELD}"/>&nbsp;&nbsp;
 									{/if}
@@ -137,13 +135,13 @@
 																								<tr><td align="left"><a id="field10_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'text.gif'|@vtiger_imageurl:$THEME});" 		onclick = "makeFieldSelected(this,10,{$entries.blockid});"> {$MOD.LBL_TEXT_AREA} </a></td></tr>
 																								<tr><td align="left"><a id="field11_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'cfpicklist.gif'|@vtiger_imageurl:$THEME});" 	onclick = "makeFieldSelected(this,11,{$entries.blockid});"> {$MOD.LBL_MULTISELECT_COMBO} </a></td></tr>
 																								<tr><td align="left"><a id="field12_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'skype.gif'|@vtiger_imageurl:$THEME});" 		onclick = "makeFieldSelected(this,12,{$entries.blockid});"> {$MOD.Skype} </a></td></tr>
-                                                                                                <tr><td align="left"><a id="field13_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'time.PNG'|@vtiger_imageurl:$THEME});" 		onclick = "makeFieldSelected(this,13,{$entries.blockid});"> {$MOD.Time} </a></td></tr>
+																								<tr><td align="left"><a id="field13_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'time.PNG'|@vtiger_imageurl:$THEME});" 		onclick = "makeFieldSelected(this,13,{$entries.blockid});"> {$MOD.Time} </a></td></tr>
 																							</table>
-																						</div>	
+																						</div>
 																					</td>
 																				</tr>
 																			</table>
-																		</td>				
+																		</td>
 																		<td width="50%">
 																			<table width="100%" border="0" cellpadding="5" cellspacing="0">
 																				<tr>
@@ -176,7 +174,7 @@
 																				</tr>
 																			</table>
 																		</td>
-																	</tr>				
+																	</tr>
 																</table>
 															</td>
 														</tr>
@@ -191,11 +189,9 @@
 														<input type="hidden" name="fieldType_{$entries.blockid}" id="fieldType_{$entries.blockid}" value="">
 														<input type="hidden" name="selectedfieldtype_{$entries.blockid}" id="selectedfieldtype_{$entries.blockid}" value="">
 														</tr>
-													</table>									
+													</table>
 												</div>	
 									<!-- end custom field -->
-									
-									
 									{if $entries.blockid neq $COMMENTSECTIONID && $entries.blockid neq $SOLUTIONBLOCKID}
 										<img src="{'moveinto.png'|@vtiger_imageurl:$THEME}" border="0"  style="cursor:pointer; height:16px; width:16px" onClick="fnvshobj(this,'movefields_{$entries.blockid}');"  alt="Move Fields" title="Move Fields"/>&nbsp;&nbsp;
 									{/if}
@@ -245,8 +241,7 @@
 													</tr>
 												</table>
 											</div>
-										</div>						
-											
+										</div>
 									{if $smarty.foreach.outer.first}
 									 	<img src="{'blank.gif'|@vtiger_imageurl:$THEME}" style="width:16px;height:16px;" border="0" />&nbsp;&nbsp;
 										<img src="{'arrow_down.png'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;" onclick="changeBlockorder('block_down','{$entries.tabid}','{$entries.blockid}','{$MODULE}') " alt="{$MOD.DOWN}" title="{$MOD.DOWN}">&nbsp;&nbsp;
@@ -261,26 +256,25 @@
 								</td>
 							</tr>
 							<tr>
-								{foreach name=inner item=value from=$entries.field}		
-							
+								{foreach name=inner item=value from=$entries.field}
 									{if $value.no % 2 == 0}
-								  		</tr>
-								  		{assign var="rightcellclass" value=""}
-								  		<tr>
-								 	{else}
-								 		{assign var="rightcellclass" value="class='rightCell'"}
-								 	{/if}
+										</tr>
+										{assign var="rightcellclass" value=""}
+										<tr>
+									{else}
+										{assign var="rightcellclass" value="class='rightCell'"}
+									{/if}
 								<td width="30%" id="colourButton" >&nbsp;
-							 	<span onmouseover="tooltip.tip(this, showProperties('{$value.label}',{$value.mandatory},{$value.presence},{$value.quickcreate},{$value.massedit}));" onmouseout="tooltip.untip(false);" >{$value.label}</span>
-							 		{if $value.fieldtype eq 'M'}
-							 			<font color='red'> *</font>
-							 		{/if}
-							 	</td>
+								<span onmouseover="tooltip.tip(this, showProperties('{$value.label}',{$value.mandatory},{$value.presence},{$value.quickcreate},{$value.massedit}));" onmouseout="tooltip.untip(false);" >{$value.label}</span>
+									{if $value.fieldtype eq 'M'}
+										<font color='red'> *</font>
+									{/if}
+								</td>
 								<td width="19%" align = "right" class="colData small" >
 									<img src="{'editfield.gif'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;" onclick="fnvshNrm('editfield_{$value.fieldselect}'); posLay(this, 'editfield_{$value.fieldselect}');" alt="Popup" title="{$MOD.LBL_EDIT_PROPERTIES}"/>&nbsp;&nbsp;
-							 		
-							 		<div id="editfield_{$value.fieldselect}" style="display:none; position: absolute; width: 225px; left: 300px; top: 300px;" >
-							 			<div class="layerPopup" style="position:relative; display:block">
+									
+									<div id="editfield_{$value.fieldselect}" style="display:none; position: absolute; width: 225px; left: 300px; top: 300px;" >
+										<div class="layerPopup" style="position:relative; display:block">
 		 									<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">
 												<tr class="detailedViewHeader">
 													<th width="95%" align="left">
@@ -347,7 +341,7 @@
 														{/if}
 														 >
 													</td>
-													<td valign="top" class="dvtCellInfo" align="left">	
+													<td valign="top" class="dvtCellInfo" align="left">
 														&nbsp;{$MOD.LBL_QUICK_CREATE} 
 													</td>
 												</tr>
@@ -379,7 +373,7 @@
 															checked
 														{/if}
 													</td>
-													<td valign="top" class="dvtCellInfo" align="left">	
+													<td valign="top" class="dvtCellInfo" align="left">
 														&nbsp;{$MOD.LBL_DEFAULT_VALUE}<br>
 														{assign var="fieldElementId" value='defaultvalue_'|cat:$value.fieldselect}
 														{if $defaultsetting.permitted eq true}
@@ -402,10 +396,8 @@
 													</td>
 												</tr>
 											</table>
-										</div>							 		
+										</div>
 							 		</div>
-									
-									
 									{if $smarty.foreach.inner.first}
 										{if $value.no % 2 != 0}
 											<img src="{'blank.gif'|@vtiger_imageurl:$THEME}" style="width:16px;height:16px;" border="0" />&nbsp;&nbsp;
@@ -453,7 +445,6 @@
 										{/if}
 									{/if}
 								</td>
-										
 							{/foreach}
 							</tr>
 						{/if}
@@ -489,7 +480,7 @@
 															{foreach key=blockid item=blockname from=$BLOCKS}
 															<option value = {$blockid}> {$blockname} </option>
 															{/foreach}
-														</select>				
+														</select>
 														</td>
 													</tr>
 												</table>
