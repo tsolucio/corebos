@@ -30,6 +30,18 @@ require_once("include/Zend/Json.php");
 class CRMEntity {
 
 	var $ownedby;
+	static protected $methods = array();
+
+	public static function registerMethod($method) {
+		self::$methods[] = $method;
+	}
+
+	private function __call($method, $args) {
+		if (in_array($method, self::$methods)) {
+			$args[] = $this;
+			return call_user_func_array($method, $args);
+		}
+	}
 
 	/**
 	 * Detect if we are in bulk save mode, where some features can be turned-off

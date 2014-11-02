@@ -30,7 +30,12 @@ if($ajaxaction == "LOADRELATEDLIST") {
 		$relationInfo = getRelatedListInfoById($relationId);
 		$relatedModule = getTabModuleName($relationInfo['relatedTabId']);
 		$function_name = $relationInfo['functionName'];
-
+		if (!method_exists($modObj,$function_name)) {
+			@include_once 'modules/'.$relatedModule.'/'.$function_name.'.php';
+			if (function_exists($function_name)) {
+				$modObj->registerMethod($function_name); 
+			}
+		}
 		$relatedListData = $modObj->$function_name($recordid, getTabid($currentModule),
 				$relationInfo['relatedTabId'], $actions);
 		require_once('Smarty_setup.php');
