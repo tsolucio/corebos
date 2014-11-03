@@ -1242,7 +1242,9 @@ function getEscapedColumns($selectedfields)
 
 		$selected_mod = explode(":",$this->secmodule);
 		array_push($selected_mod,$this->primodule);
-
+		
+		$inventory_fields = array('quantity','listprice','serviceid','productid','discount','comment');
+		$inventory_modules = array('SalesOrder','Quotes','PurchaseOrder','Invoice');
 		while($columnslistrow = $adb->fetch_array($result))
 		{
 			$fieldname ="";
@@ -1272,13 +1274,18 @@ function getEscapedColumns($selectedfields)
 				$mod_lbl = getTranslatedString($mod,$module); //module
 				$fld_lbl = getTranslatedString($fieldlabel,$module); //fieldlabel
 				$fieldlabel = $mod_lbl." ".$fld_lbl;
-				if(CheckFieldPermission($fieldname,$mod) != 'true' && $colname!="crmid")
-				{
-						$shtml .= "<option permission='no' value=\"".$fieldcolname."\" disabled = 'true'>".$fieldlabel."</option>";
-				}
+				if(in_array($fieldname, $inventory_fields) and in_array($mod, $inventory_modules))
+					$shtml .= "<option permission='yes' value=\"".$fieldcolname."\">".$fieldlabel."</option>";
 				else
 				{
-						$shtml .= "<option permission='yes' value=\"".$fieldcolname."\">".$fieldlabel."</option>";
+					if(CheckFieldPermission($fieldname,$mod) != 'true' && $colname!="crmid")
+					{
+							$shtml .= "<option permission='no' value=\"".$fieldcolname."\" disabled = 'true'>".$fieldlabel."</option>";
+					}
+					else
+					{
+							$shtml .= "<option permission='yes' value=\"".$fieldcolname."\">".$fieldlabel."</option>";
+					}
 				}
 			}
 			//end

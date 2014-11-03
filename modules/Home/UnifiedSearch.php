@@ -159,7 +159,10 @@ if(isset($query_string) && $query_string != ''){
 				//Do not display the Header if there are no entires in listview_entries
 				if(count($listview_entries) > 0){
 					$display_header = 1;
-					if(count($listview_entries) == 1){
+					if(vtlib_isModuleActive('ListViewColors') && count($listview_entries) == 2){
+						$listview_entries_for1 = $listview_entries;
+					}
+					elseif(!vtlib_isModuleActive('ListViewColors') && count($listview_entries) == 1){
 						$listview_entries_for1 = $listview_entries;
 					}
 				}else{
@@ -194,7 +197,8 @@ if(isset($query_string) && $query_string != ''){
 		$modfound = $modfound[0];
 		$recfound = array_keys($listview_entries_for1);
 		$recfound = $recfound[0];
-		echo "<script type='text/javascript'>gotourl('index.php?module=$modfound&record=$recfound&action=DetailView');</script>";
+		if($recfound != '')
+			echo "<script type='text/javascript'>gotourl('index.php?module=$modfound&record=$recfound&action=DetailView');</script>";
 	}
 	
 	//Added to display the Total record count

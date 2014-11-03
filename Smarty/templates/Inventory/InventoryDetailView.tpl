@@ -331,7 +331,7 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 		</td></tr></table>
 </td></tr></table>
 									<!-- Inventory Actions - ends -->
-									<td width=22% valign=top style="padding:10px;">
+									<td width=22% valign=top style="padding:10px;" class="noprint">
 										<!-- right side InventoryActions -->
 										{include file="Inventory/InventoryActions.tpl"}
 

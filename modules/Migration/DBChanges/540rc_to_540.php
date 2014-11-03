@@ -19,7 +19,8 @@ global $migrationlog;
 
 $migrationlog->debug("\n\nDB Changes from 5.4.0RC to 5.4.0 -------- Starts \n\n");
 
-updateVtlibModule('MailManager', "packages/vtiger/mandatory/MailManager.zip");
+require_once('install/installAddons.php');
+installAddons();
 
 $migrationlog->debug("\n\nDB Changes from 5.4.0RC to 5.4.0 -------- Ends \n\n");
 

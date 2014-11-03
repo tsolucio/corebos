@@ -1,0 +1,101 @@
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
+ * All Rights Reserved.
+ * Contributor(s): Lukas Nemec @ http://vtiger-crm.cz, ****************************/
+
+/*Print Style Sheet */
+
+/*Detail View*/
+.RelatedListContents,
+#RLContents,
+.dvtTabCache,
+.dvtTabCacheBottom,
+.dvtSelectedCell,
+.dvtSelectedCellBottom,
+.dvtUnSelectedCell,
+.hdrTabBg, .level2Bg,
+.hdrNameBg,
+.settingsSelectedUI,
+.genHeaderSmall,
+.moduleName,
+.webMnu,
+img,
+input,
+select,
+span.small,
+.noprint /* <= this class must be added to DetailView.tpl & InventoryDetailView.tpl. Then we can hide "Action links" column in detail views*/
+{
+	display: none;
+}
+.dvtContentSpace td {
+	border: none !important;
+}
+a,
+div.small,
+tr,
+.showPanelBg,
+.dvInnerHeader,
+.dvtCellLabel,
+.dvtCellInfo,
+.dvtContentSpace,
+.crmTable,
+td.crmTableRow,
+.lvtCol,
+.lvtBg {
+	background: #fff !important;
+	border: none;
+	color: #000
+}
+.dvtContentSpace td.dvInnerHeader {
+	font-family: Georgia, serif;
+	font-size: 14px;
+	border-bottom: 2px solid #000 !important;
+	padding: 0 0 5px !important;
+}
+.dvInnerHeader b, div.small {
+	padding: 0 !important;
+	margin: 0 !important;
+}
+.dvHeaderText, .lvtHeaderText {
+	font-family: Georgia, serif;
+	font-size: 18px;
+	display: block;
+	border-bottom: 1px solid #000 !important;
+	padding: 0 0 5px;
+	margin: 0 5px -30px;
+	position: relative;
+}
+.lvtHeaderText {
+	margin: 0 18px -30px;
+}
+.crmTable {
+	margin-top: 15px;
+}
+.dvtContentSpace td.dvtCellLabel,
+.dvtContentSpace td.dvtCellInfo,
+.dvtContentSpace td.crmTableRow {
+	border-bottom: 1px dotted #ddd !important;
+}
+td.crmTableRow.lineOnTop {
+	border-top: 1px solid #000 !important;
+}
+td.dvtCellLabel:nth-child(2n+1) /*IE sucks*/ {
+	border-right: 1px solid #000 !important;
+}
+
+/*List View / show us only Data Table*/
+.lvtBg {
+	background: #fff !important;
+	border: none !important;
+	color: #000
+}
+.lvtBg table.small , .lvtBg td.small {
+	display: none;
+}
+.lvtBg table.lvt.small {
+	display: inline-table;
+}

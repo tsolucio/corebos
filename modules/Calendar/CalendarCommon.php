@@ -61,7 +61,7 @@ function getOtherUserName($id)
 {
 	global $adb;
 	$user_details=Array();
-		$query="select * from vtiger_users where deleted=0 and status='Active' and id!=?";
+		$query="select * from vtiger_users where deleted=0 and status='Active' and id!=? order by concat( first_name, ' ', last_name )";
 		$result = $adb->pquery($query, array($id));
 		$num_rows=$adb->num_rows($result);
 		for($i=0;$i<$num_rows;$i++)

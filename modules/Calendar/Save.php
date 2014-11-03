@@ -191,7 +191,7 @@ if(isset($_REQUEST['return_action']) && $_REQUEST['return_action'] != "")
 else
 	$return_action = "DetailView";
 if(isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != "")
-	$return_id = vtlib_purify($_REQUEST['return_id']);
+	$returnid = vtlib_purify($_REQUEST['return_id']);
 
 $activemode = "";
 if($activity_mode != '')
@@ -346,5 +346,5 @@ if(!empty($_REQUEST['pagenumber'])){
 if($_REQUEST['maintab'] == 'Calendar')
 	header("Location: index.php?action=".$return_action."&module=".$return_module."&view=".$view."&hour=".$hour."&day=".$day."&month=".$month."&year=".$year."&record=".$return_id."&viewOption=".$viewOption."&subtab=".$subtab."&parenttab=$parenttab");
 else
-	header("Location: index.php?action=$return_action&module=$return_module&view=$view&hour=$hour&day=$day&month=$month&year=$year&record=$return_id$activemode&viewname=$return_viewname$page&parenttab=$parenttab$search");
+	header("Location: index.php?action=$return_action&module=$return_module&view=$view&hour=$hour&day=$day&month=$month&year=$year&record=$returnid$activemode&viewname=$return_viewname$page&parenttab=$parenttab$search");
 ?>

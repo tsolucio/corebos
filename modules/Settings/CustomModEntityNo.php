@@ -45,7 +45,7 @@ if(count($module_array) <= 0) {
 	echo "</td></tr></table>";
 	exit;	
 }
-
+uasort($module_array, function($a,$b) {return (strtolower(getTranslatedString($a,$a)) < strtolower(getTranslatedString($b,$b))) ? -1 : 1;});
 $modulesList = array_keys($module_array);
 
 $selectedModule = vtlib_purify($_REQUEST['selmodule']);

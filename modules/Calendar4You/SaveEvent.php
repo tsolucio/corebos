@@ -246,7 +246,7 @@ if(isset($_REQUEST['return_action']) && $_REQUEST['return_action'] != "")
 else
 	$return_action = "DetailView";
 if(isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != "")
-	$return_id = vtlib_purify($_REQUEST['return_id']);
+	$returnid = vtlib_purify($_REQUEST['return_id']);
 
 $activemode = "";
 if($activity_mode != '')

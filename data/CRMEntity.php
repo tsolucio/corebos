@@ -30,6 +30,18 @@ require_once("include/Zend/Json.php");
 class CRMEntity {
 
 	var $ownedby;
+	static protected $methods = array();
+
+	public static function registerMethod($method) {
+		self::$methods[] = $method;
+	}
+
+	private function __call($method, $args) {
+		if (in_array($method, self::$methods)) {
+			$args[] = $this;
+			return call_user_func_array($method, $args);
+		}
+	}
 
 	/**
 	 * Detect if we are in bulk save mode, where some features can be turned-off
@@ -2074,10 +2086,8 @@ class CRMEntity {
 			$condvalue = $table_name . "." . $column_name;
 			$condition = "$pritablename.$secfieldname=$condvalue";
 		}
-		//$secQuery = "select $table_name.* from $table_name inner join vtiger_crmentity on " .
-		//		"vtiger_crmentity.crmid=$table_name.$column_name and vtiger_crmentity.deleted=0";
-		$secQuery2 = "inner join vtiger_crmentity as crmentity$table_name on " .
-		 "crmentity$table_name.crmid=$table_name.$column_name and crmentity$table_name.deleted=0";
+		$secQuery = "select $table_name.* from $table_name inner join vtiger_crmentity on " .
+				"vtiger_crmentity.crmid=$table_name.$column_name and vtiger_crmentity.deleted=0";
 		$query = '';
 		if ($pritablename == 'vtiger_crmentityrel') {
 			$condition = "($table_name.$column_name={$tmpname}.{$secfieldname} " .
@@ -2097,10 +2107,7 @@ class CRMEntity {
 
 		}
 
-		//$query .= " left join ($secQuery) as $table_name on {$condition}";
-		//performance improvement, this should be equivalent to the subquery but masses faster
-		$query .= " left join $table_name on {$condition}";
-		$query .= " $secQuery2";
+		$query .= " left join ($secQuery) as $table_name on {$condition}";
 
 		return $query;
 	}

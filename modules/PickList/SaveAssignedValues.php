@@ -55,11 +55,9 @@ function assignValues($picklistid, $roleid, $values, $tableName){
 	
 	//insert the new values
 	for($i=0;$i<$count;$i++){
-		$pickVal = htmlentities($values[$i],ENT_QUOTES,$default_charset);
-		
 		$tableName = $adb->sql_escape_string($tableName);
 		$sql = "SELECT * FROM vtiger_$tableName WHERE $tableName=?";
-		$result = $adb->pquery($sql, array($pickVal));
+		$result = $adb->pquery($sql, array($values[$i]));
 		if($adb->num_rows($result) > 0){
 			$picklistvalueid = $adb->query_result($result, 0, "picklist_valueid");
 			$sortid = $i+1;
