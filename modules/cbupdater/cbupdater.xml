@@ -155,4 +155,11 @@
 	<classname>solve_dt</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Move detail view widget blocks to end of blocks to maintain current visibility and structure</description>
+	<filename>build/changeSets/moveDVBtoEnd.php</filename>
+	<classname>moveDVBtoEnd</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
