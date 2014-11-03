@@ -846,11 +846,11 @@ if ($fldColName == ''){
 //				$tableName= 'vtiger_'.strtolower($fldmodule).'cf';
 //			}
 //		}
-//		if ($fldVTable != '') {
+		if ($fldVTable != '') {
 		$tableName= 'vtiger_'.strtolower($fldVTable);
  			if ($fldColName != ''){
  				$columnName = $fldColName;
-			}
+                }}
                          else {
 			if($fldmodule != '') {
 				$focus = CRMEntity::getInstance($fldmodule);
