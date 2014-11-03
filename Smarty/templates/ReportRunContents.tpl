@@ -50,14 +50,14 @@
 		<tr>
 		<td colspan="2">
 		{* Performance Optimization: Direct result output *}
-		{if $DIRECT_OUTPUT eq true}		
+		{if $DIRECT_OUTPUT eq true}
 			{if isset($__REPORT_RUN_INSTANCE)}
 				{php}
 					$__oReportRun = $this->_tpl_vars['__REPORT_RUN_INSTANCE'];
 					$__filterSql = $this->_tpl_vars['__REPORT_RUN_FILTER_SQL'];
 					$__oReportRunReturnValue = $__oReportRun->GenerateReport("HTML", $__filterSql, true);
 				{/php}
-			{/if}		
+			{/if}
 		{elseif $ERROR_MSG eq ''}
 			{$REPORTHTML.0}
 		{else}
@@ -74,7 +74,7 @@
 			{php}
 				if(is_array($__oReportRunReturnValue)) { $__oReportRun->GenerateReport("TOTALHTML", $__filterSql, true); }
 			{/php}
-		{else}			
+		{else}
 			{$REPORTTOTHTML}
 		{/if}
 		{* END *}
@@ -97,7 +97,7 @@
 			<td style="background-repeat: repeat-y;" background="{'report_btn.gif'|@vtiger_imageurl:$THEME}" width="16"></td>
 			<td>
 				<table border=0 cellspacing=1 cellpadding=0 width="100%" class="lvtBg">
-                    <tr>
+					<tr>
 						<td> {$PIECHART} </td>
 						<td> {$BARCHART} </td>
 					</tr>

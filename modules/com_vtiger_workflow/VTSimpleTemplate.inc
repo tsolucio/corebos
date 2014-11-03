@@ -109,7 +109,17 @@ class VTSimpleTemplate{
 											$parts = explode('x', $wsId);
 											$recordId = $parts[1];
 											$moduleName = $this->parent->getModuleName();
-											return $site_URL.'/index.php?action=DetailView&module='.$moduleName.'&record='.$recordId;
+											if($moduleName == 'Events' || $moduleName == 'Calendar')
+											{
+												if(vtlib_isModuleActive('Calendar4You') && $moduleName == 'Events')
+													return $site_URL.'/index.php?action=EventDetailView&module=Calendar4You&record='.$recordId.'&activity_mode=Events';
+												elseif(vtlib_isModuleActive('Calendar4You') && $moduleName == 'Calendar')
+													return $site_URL.'/index.php?action=EventDetailView&module=Calendar4You&record='.$recordId.'&activity_mode=Task';
+												else 
+													return $site_URL.'/index.php?action=DetailView&module=Calendar&record='.$recordId;
+											}
+											else
+												return $site_URL.'/index.php?action=DetailView&module='.$moduleName.'&record='.$recordId;
 			case 'portaldetailviewurl'	: 	$wsId = $this->parent->getId();
 											$parts = explode('x', $wsId);
 											$recordId = $parts[1];

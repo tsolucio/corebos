@@ -1797,7 +1797,7 @@ function getQuickCreateModules() {
 	// vtlib customization: Ignore disabled modules.
 	//$qc_query = "select distinct vtiger_tab.tablabel,vtiger_tab.name from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid where quickcreate=0 order by vtiger_tab.tablabel";
 	$qc_query = "select distinct vtiger_tab.tablabel,vtiger_tab.name from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid 
-			where quickcreate in (0,2) and vtiger_tab.presence != 1 order by vtiger_tab.tablabel";
+			where quickcreate in (0,2) and vtiger_tab.presence != 1";
 	// END
 
 	$result = $adb->pquery($qc_query, array());

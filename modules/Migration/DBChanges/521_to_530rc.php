@@ -731,13 +731,11 @@ $sql = "INSERT INTO vtiger_ws_fieldtype(uitype,fieldtype) VALUES ('72', 'currenc
 ExecuteQuery($sql);
 
 
-installVtlibModule('ConfigEditor', "packages/vtiger/mandatory/ConfigEditor.zip");
-installVtlibModule('WSAPP', "packages/vtiger/mandatory/WSAPP.zip");
-
-updateVtlibModule('Mobile', "packages/vtiger/mandatory/Mobile.zip");
-updateVtlibModule('Services', 'packages/vtiger/mandatory/Services.zip');
-updateVtlibModule('ServiceContracts', 'packages/vtiger/mandatory/ServiceContracts.zip');
-updateVtlibModule('PBXManager','packages/vtiger/mandatory/PBXManager.zip');
+$packageImport = new Vtiger_PackageImport();
+$packageImport->importManifest('modules/ConfigEditor');
+vtlib_toggleModuleAccess('ConfigEditor', true, true);
+$packageImport->importManifest('modules/WSAPP');
+vtlib_toggleModuleAccess('WSAPP', true, true);
 
 $migrationlog->debug("\n\nDB Changes from 5.2.1 to 5.3.0RC  -------- Ends \n\n");
 

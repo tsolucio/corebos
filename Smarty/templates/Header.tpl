@@ -16,6 +16,7 @@
 	<link REL="SHORTCUT ICON" HREF="{php} $logo_login=fetch_logo(3); echo $logo_login;{/php}">
 	<style type="text/css">@import url("themes/{$THEME}/style.css?v={$VERSION}");</style>
 	<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
+        <link rel="stylesheet" href="include/print.css" type="text/css" media="print" />
 {* vtlib customization: Inclusion of custom javascript and css as registered *}
 {if $HEADERCSS}
 	<!-- Custom Header CSS -->

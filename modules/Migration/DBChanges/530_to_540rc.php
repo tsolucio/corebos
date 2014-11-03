@@ -145,6 +145,7 @@ foreach ($taskTypes as $taskType) {
 	VTTaskType::registerTaskType($taskType);
 }
 // Creating Default workflows
+$adb->pquery('ALTER TABLE com_vtiger_workflows ADD reevaluate TINYINT NULL');
 $workflowManager = new VTWorkflowManager($adb);
 $taskManager = new VTTaskManager($adb);
 

@@ -29,6 +29,7 @@ $smarty->assign("IMAGEPATH",$image_path);
 $smarty->assign("USER",$userName);
 
 $qc_modules = getQuickCreateModules();
+uasort($qc_modules, function($a,$b) {return (strtolower($a[0]) < strtolower($b[0])) ? -1 : 1;});
 $smarty->assign("QCMODULE", $qc_modules);
 $smarty->assign("APP", $app_strings);
 

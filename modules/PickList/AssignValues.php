@@ -32,12 +32,12 @@ if($moduleName == 'Events'){
 
 if(!empty($fieldName)){
 	foreach (getAllPickListValues($fieldName,$temp_module_strings) as $key => $value) {
-		$values[htmlentities($value,ENT_QUOTES,'UTF-8')] = $value;
+		$values[$key] = $value;
 	}
 }
 
 foreach (getAssignedPicklistValues($fieldName, $roleid, $adb, $temp_module_strings) as $key => $value) {
-		$assignedValues[htmlentities($value,ENT_QUOTES,'UTF-8')] = $value;
+		$assignedValues[$key] = $value;
 }
 
 $smarty->assign("THEME",$theme);
