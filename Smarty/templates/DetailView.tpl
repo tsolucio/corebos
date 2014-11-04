@@ -416,7 +416,7 @@ function sendfile_email()
 																		{/foreach}
 																	{/if}
 																	{* END *}
-																	{/foreach}
+																
 																	{*-- End of Blocks--*}
 
 																	<!-- Inventory - Product Details informations -->
