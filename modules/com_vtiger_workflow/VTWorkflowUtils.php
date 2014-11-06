@@ -145,6 +145,7 @@ class VTWorkflowUtils {
 		foreach ($it as $row) {
 			$modules[] = $row->name;
 		}
+		uasort($modules, function($a,$b) {return (strtolower(getTranslatedString($a,$a)) < strtolower(getTranslatedString($b,$b))) ? -1 : 1;});
 		return $modules;
 	}
 
