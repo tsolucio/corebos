@@ -155,7 +155,7 @@ if ($error_flag == "") {
 		move_uploaded_file($_FILES["binFaviconFile"]["tmp_name"], $uploaddir . $_FILES["binFaviconFile"]["name"]);
 	}
 		$organization_name = vtlib_purify($_REQUEST['organization_name']);
-		$org_name = vtlib_purify($_REQUEST['org_name']);
+		$org_name = $_REQUEST['org_name'];
 		$organization_address = from_html($_REQUEST['organization_address']);
 		$organization_city = from_html($_REQUEST['organization_city']);
 		$organization_state = from_html($_REQUEST['organization_state']);
