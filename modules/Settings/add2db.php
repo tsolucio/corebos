@@ -180,7 +180,7 @@ if (!isset($front_logoname))
                 if (!isset($favicon_logoname))
                 $favicon_logo = $adb->query_result($result, 0, 'faviconlogo');
 		if ($org_name == '') {
-			$organizationId = $this->db->getUniqueID('vtiger_organizationdetails');
+			$organizationId = $adb->getUniqueID('vtiger_organizationdetails');
 			$sql = "INSERT INTO vtiger_organizationdetails
 				(organization_id,organizationname, address, city, state, code, country, phone, fax, website, logoname,frontlogo,faviconlogo) values (?,?,?,?,?,?,?,?,?,?,?,?,?)";			
 				$params = array($organizationId, $organization_name, $organization_address, $organization_city, $organization_state, $organization_code,
