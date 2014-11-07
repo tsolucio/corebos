@@ -200,7 +200,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$picklistValues = getAssignedPicklistValues($fieldname, $roleid, $adb);
 		$valueArr = explode("|##|", $value);
 		foreach ($valueArr as $key => $value) {
-			$valueArr[$key] = trim(html_entity_decode($value, ENT_QUOTES, $default_charset));
+			$valueArr[$key] = trim($value);
 		}
 		$pickcount = 0;
 

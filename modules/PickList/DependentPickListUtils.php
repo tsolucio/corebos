@@ -179,7 +179,7 @@ class Vtiger_DependencyPicklist {
 			}
 			if(empty($picklistDependencyDatasource[$sourceField]['__DEFAULT__'][$targetField])) {
 				foreach(getAllPicklistValues($targetField) as $picklistValue) {
-					$pickArray[] = decode_html($picklistValue);
+					$pickArray[] = $picklistValue;
 				}
 				$picklistDependencyDatasource[$sourceField]['__DEFAULT__'][$targetField] = $pickArray;
 			}
