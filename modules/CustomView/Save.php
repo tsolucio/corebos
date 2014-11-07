@@ -138,6 +138,7 @@ if($cvmodule != "") {
 						$log->info("CustomView :: Save :: vtiger_cvstdfilter created successfully");
 					}
 
+					if (is_array($advft_criteria))
 					foreach($advft_criteria as $column_index => $column_condition) {
 
 						if(empty($column_condition)) continue;
@@ -196,6 +197,7 @@ if($cvmodule != "") {
 						$advft_criteria_groups[$adv_filter_groupid]["conditionexpression"] = $groupConditionExpression;
 					}
 
+					if (is_array($advft_criteria_groups))
 					foreach($advft_criteria_groups as $group_index => $group_condition_info) {
 
 						if(empty($group_condition_info)) continue;
