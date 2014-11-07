@@ -36,7 +36,7 @@ class CRMEntity {
 		self::$methods[] = $method;
 	}
 
-	private function __call($method, $args) {
+	function __call($method, $args) {
 		if (in_array($method, self::$methods)) {
 			$args[] = $this;
 			return call_user_func_array($method, $args);

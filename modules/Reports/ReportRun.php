@@ -3224,10 +3224,8 @@ class ReportRun extends CRMEntity
 			$csv_values = array();
 			// Header
 			$csv_values = array_keys($arr_val[0]);
-			array_pop($csv_values);			//removed header in csv file
 			fputcsv($fp, $csv_values);
 			foreach($arr_val as $key=>$array_value) {
-				array_pop($array_value);	//removed action link
 				$csv_values = array_map('decode_html', array_values($array_value));
 				fputcsv($fp, $csv_values);
 			}
