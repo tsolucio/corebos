@@ -148,7 +148,8 @@ class Faq extends CRMEntity {
 		for($i=0;$i<$noofrows;$i++)
 		{
 			$comment = $this->db->query_result($result,$i,'comments');
-			$createdtime = $this->db->query_result($result,$i,'createdtime');
+			$date = new DateTimeField($this->db->query_result($result,$i,'createdtime'));
+			$createdtime = $date->getDisplayDateTimeValue();
 			if($comment != '')
 			{
 				//this div is to display the comment
