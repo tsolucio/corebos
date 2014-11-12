@@ -1,38 +1,114 @@
 <?php
 /*+**********************************************************************************
- * The contents of this file are subject to the vtiger CRM Public License Version 1.0
- * ("License"); You may not use this file except in compliance with the License
- * The Original Code is:  vtiger CRM Open Source
- * The Initial Developer of the Original Code is vtiger.
- * Portions created by vtiger are Copyright (C) vtiger.
- * All Rights Reserved.
- ************************************************************************************/
- /*************************************************************************************************
- * Copyright 2014 Opencubed -- This file is a part of TSOLUCIO coreBOS customizations.
- * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
- * Vizsage Public License (the "License"). You may not use this file except in compliance with the
- * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit
- * and share improvements. However, for proper details please read the full License, available at
- * http://vizsage.com/license/Vizsage-License-BY-NC-SA.html and the handy reference for understanding
- * the full license at http://vizsage.com/license/Vizsage-Deed-BY-NC-SA.html. Unless required by
- * applicable law or agreed to in writing, any software distributed under the License is distributed
- * on an  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and limitations under the
- * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
- *************************************************************************************************
- *  Module       : Adecuaciones
- *  Version      : 5.4.0
- *  Author       : Opencubed
- *************************************************************************************************/
+- * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+- * ("License"); You may not use this file except in compliance with the License
+- * The Original Code is:  vtiger CRM Open Source
+- * The Initial Developer of the Original Code is vtiger.
+- * Portions created by vtiger are Copyright (C) vtiger.
+- * All Rights Reserved.
+- ************************************************************************************/
 $mod_strings = Array(
-	'ModuleName' => 'Module Name',
-	'SINGLE_ModuleName' => 'Module Name',
-	'ModuleName ID' => 'Module Name ID',
-
-	'LBL_CUSTOM_INFORMATION' => 'Custom Information',
-	'LBL_MODULEBLOCK_INFORMATION' => 'ModuleBlock Information',
-
-	'ModuleFieldLabel' => 'ModuleFieldLabel Text',
+	 //blocks
+    'Adocmaster' => 'Adocmaster',
+    'SINGLE_Adocmaster' => 'Adocmaster',
+    'Information'=>'Informazioni',
+    'LBL_CUSTOM_INFORMATION'=>'Informazioni Personalizzate',
+    'LBL_ADDRESS_INFORMATION'=>'Informazioni Indirizzo',
+    'LBL_DESCRIPTION_INFORMATION'=>'Informazioni Descrittive',
+    'Info chiamata'=>'Info chiamata',
+    'masterlabel'=>'Informazioni Descrittive',
+    'LBL_ECONOMIC_INFORMATION'=>'Informazioni Economiche',
+    'Adocdetails'=>'Adocdetails',
+    'Campi Rapporto Intervento'=>'Campi Rapporto Intervento',
+    //fields
+    'AdocmasterNo'=>'AdocmasterNo',
+    'Doc Nr'=>'Doc Nr',
+    'DocDate From'=>'DocDate Da',
+    'Tipo anagrafica'=>'Tipo anagrafica',
+    'Valore'=>'Valore',
+    'Codice Iva'=>'Codice Iva',
+    'Created Time'=>'Tempo creazione',
+    'Adocmaster Chiave Field'=>'Adocmaster Chiave Field',
+    'Causale adocmaster'=>'Causale adocmaster',
+    'Fornitore'=>'Fornitore',
+    'Adocmaster Name'=>'Adocmaster Nome',
+    'Doc Type'=>'Tipo Documento',
+    'Doc Date To'=>'DocDate a',
+    'Organization'=>'Organizzazione',
+    'Valuta'=>'Valuta',
+    'Assigned To'=>'Assegnato a',
+    'Modified Time'=>'Tempo modificazione',
+    'Chiamata'=>'Chiamata',
+    'Data di consegna'=>'Data di consegna',
+    'Numero Tracking'=>'Numero Tracking',
+    'Country Name'=>'Nome Paese',
+    'RMA'=>'RMA',
+    'Address'=>'Indirizzo',
+    'City Name'=>'Nome citta',
+    'CAP'=>'CAP',
+    'Commessa'=>'Commessa',
+    'Committente'=>'Committente',
+    'Indirizzo cliente'=>'Indirizzo cliente',
+    'Cellulare'=>'Cellulare',
+    'Azienda / Cliente'=>'Azienda / Cliente',
+    'Telefono'=>'Telefono',
+    'Indirizzo Committente'=>'Indirizzo Committente',
+    'Description'=>'Descrizione',
+    'Totale Imponibile IVA'=>'Totale Imponibile IVA',
+    'Tax'=>'Tassa',
+    'Imponibile'=>'Imponibile',
+    'Altri Costi'=>'Altri Costi',
+    'Non Imponibile'=>'Non Imponibile',
+    'Total Amount'=>'Totale quantita',
+    'Costo di trasporto'=>'Costo di trasporto',
+    'Account'=>'Organizzazione',
+    'Prodotto'=>'Prodotto',
+    'CF/IVA'=>'CF/IVA',
+    
+    //picklist values
+    'FORNITURA MAT. IN GARANZIA'=>'FORNITURA MAT. IN GARANZIA',
+    'Accettazione Prodotto'=>'Accettazione Prodotto',
+    '--Nessuno--'=>'--Nessuno--',
+    'CONTO SOSTITUZIONE'=>'CONTO SOSTITUZIONE',
+    'RESO DA RIPARAZIONE'=>'RESO DA RIPARAZIONE',
+    'CONTO VENDITA'=>'CONTO VENDITA',
+    'RESO NON RIPARATO'=>'RESO NON RIPARATO',
+    'khg'=>'khg',
+    'ODA Ordine di acquisto'=>'ODA Ordine di acquisto',
+    'Fatture passive'=>'Fatture passive',
+    'Fatture attive'=>'Fatture attive',
+    'Ndc passive'=>'Ndc passive',
+    'Ndc attive'=>'Ndc attive',
+    'Fattura passiva'=>'Fattura passiva',
+    'OUTGOING DDT'=>'DDT Uscente',
+    'ORDINE CLIENTE'=>'ORDINE CLIENTE',
+    'RAPPORTO COMMESSA'=>'RAPPORTO COMMESSA',
+    'OFFERTA'=>'OFFERTA',
+    'Ordine di Vendita'=>'Ordine di Vendita',
+    'Fattura Proforma'=>'Fattura Proforma',
+    'Fattura Commerciale'=>'Fattura Commerciale',
+    //hardcoded strings
+    'Product'=>'Prodotto',
+    'Quantity'=>'Quantita',
+    'Price'=>'Prezzo',
+    'NGGROUPBY'=>'Group By',
+    'NGPRODUCTINPUT'=>'Scegli Prodotto :',
+    'NGQUANTITYINPUT'=>'Scegli Quantita :',
+    'NGNONE'=>'---',
+    'NGPRODUCT'=>'Prodotto',
+    'NGQUANTITY'=>'Quantita',
+    'NGPRICE'=>'Prezzo',
+    'NGADDBUTTON'=>'Aggiungi Adocdetail',
+    'NGADOCDETAILNO'=>'AdocdetailNo',
+    'NGNRLINE'=>'NrLine',
+    'NGADOCPRICE'=>'AdocPrice',
+    'NGADOCDTOTAL'=>'Adocdtotal',
+    'NGADOCDTAX'=>'Adocdtax',
+    'NGTOTAL'=>'Totale',
+    'NGACTIONS'=>'Azioni',
+    'NGEDIT'=>'Modifica',
+    'NGSAVE'=>'Salva',
+    'NGCANCEL'=>'Cancella',
 );
 
 ?>
