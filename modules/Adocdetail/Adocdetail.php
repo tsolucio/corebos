@@ -37,28 +37,35 @@ var $tab_name_index = Array(
 
 var $list_fields = Array (
 'AdocdetailNo'=> Array('adocdetail', 'adocdetailno'),
-'Adoc master'=> Array('adocdetail', 'adoctomaster'),
-'Product'=> Array('adocdetail', 'adoc_product'),
+'Line Nr'=> Array('adocdetail', 'nrline'),
+'adoc_product'=> Array('adocdetail', 'adoc_product'),
+'Quantity'=> Array('adocdetail', 'adoc_quantity'),
+'Price'=> Array('adocdetail', 'adoc_price'),
 'Assigned To' => Array('crmentity','smownerid'));
 
 var $list_fields_name = Array(
 'AdocdetailNo'=>'adocdetailno',
-'Adoc master'=> 'adoctomaster',
-'Product'=> 'adoc_product',
+'Line Nr'=> 'nrline',
+'adoc_product'=> 'adoc_product',
+'Quantity'=> 'adoc_quantity',
+'Price'=> 'adoc_price',
 'Assigned To' => 'assigned_user_id');
 
 var $list_link_field = 'adocdetailno';
 var $search_fields = Array( 
 'AdocdetailNo'=> Array('adocdetail', 'adocdetailno'),
-'Adoc master'=> Array('adocdetail', 'adoctomaster'),
-'Product'=> Array('adocdetail', 'adoc_product'),
-'Assigned To' => Array('crmentity','smownerid'));
-
+'Line Nr'=> Array('adocdetail', 'nrline'),
+'adoc_product'=> Array('adocdetail', 'adoc_product'),
+'Quantity'=> Array('adocdetail', 'adoc_quantity'),
+'Price'=> Array('adocdetail', 'adoc_price'),
+ );
 var $search_fields_name = Array( 
 'AdocdetailNo'=>'adocdetailno',
-'Adoc master'=> 'adoctomaster',
-'Product'=> 'adoc_product',
-'Assigned To' => 'assigned_user_id'); 
+'Line Nr'=> 'nrline',
+'adoc_product'=> 'adoc_product',
+'Quantity'=> 'adoc_quantity',
+'Price'=> 'adoc_price',
+); 
 
 var $popup_fields = Array('adocdetailno');
 var $sortby_fields = Array();
@@ -272,7 +279,7 @@ function __construct() {
 				" INNER JOIN vtiger_fieldmodulerel ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid" .
 				" WHERE uitype='10' AND vtiger_fieldmodulerel.module=?", array($thismodule));
 		$linkedFieldsCount = $this->db->num_rows($linkedModulesQuery);
-
+                $rel_mods[$this->table_name] = 1;
 		for($i=0; $i<$linkedFieldsCount; $i++) {
 			$related_module = $this->db->query_result($linkedModulesQuery, $i, 'relmodule');
 			$fieldname = $this->db->query_result($linkedModulesQuery, $i, 'fieldname');
@@ -280,8 +287,17 @@ function __construct() {
 			
 			$other = CRMEntity::getInstance($related_module);
 			vtlib_setup_modulevars($related_module, $other);
+			if($rel_mods[$other->table_name]) {
+				$rel_mods[$other->table_name] = $rel_mods[$other->table_name] + 1;
+				$alias = $other->table_name.$rel_mods[$other->table_name];
+				$query_append = "as $alias";
+			} else {
+				$alias = $other->table_name;
+				$query_append = '';
+				$rel_mods[$other->table_name] = 1;	
+			}
 			
-			$query .= " LEFT JOIN $other->table_name ON $other->table_name.$other->table_index = $this->table_name.$columnname";
+			$query .= " LEFT JOIN $other->table_name $query_append ON $alias.$other->table_index = $this->table_name.$columnname";
 		}
 
 		$query .= $this->getNonAdminAccessControlQuery($thismodule,$current_user);
@@ -419,6 +435,7 @@ function __construct() {
 	function vtlib_handler($modulename, $event_type) {
 		if($event_type == 'module.postinstall') {
 			// TODO Handle post installation actions
+                    $this->setModuleSeqNumber('configure', $modulename, $modulename.'-', '0000001');
 		} else if($event_type == 'module.disabled') {
 			// TODO Handle actions when this module is disabled.
 		} else if($event_type == 'module.enabled') {
