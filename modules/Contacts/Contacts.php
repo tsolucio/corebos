@@ -124,7 +124,7 @@ class Contacts extends CRMEntity {
 
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
-	var $mandatory_fields = Array('assigned_user_id','lastname','createdtime' ,'modifiedtime','imagename');
+	var $mandatory_fields = Array('assigned_user_id','lastname','createdtime' ,'modifiedtime');
 
 	//Default Fields for Email Templates -- Pavani
 	var $emailTemplate_defaultFields = array('firstname','lastname','salutation','title','email','department','phone','mobile','support_start_date','support_end_date');
