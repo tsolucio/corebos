@@ -57,21 +57,16 @@ if(isset($_REQUEST["record"]) == false || $_REQUEST["record"]=='')
 	if (!$is_admin && isset($oReport->stdselectedcolumn) && strpos($BLOCK1, $selectedcolumnvalue) === false)
 		$BLOCK1 .= "<option selected value='Not Accessible'>".$app_strings['LBL_NOT_ACCESSIBLE']."</option>";
 
-		$report_std_filter->assign("BLOCK1_STD",$BLOCK1);
+	$report_std_filter->assign("BLOCK1_STD",$BLOCK1);
 
-		$BLOCKJS = $oReport->getCriteriaJS();
-		$report_std_filter->assign("BLOCKJS_STD",$BLOCKJS);
+	$BLOCKJS = $oReport->getCriteriaJS();
+	$report_std_filter->assign("BLOCKJS_STD",$BLOCKJS);
 
-		$BLOCKCRITERIA = $oReport->getSelectedStdFilterCriteria($oReport->stdselectedfilter);
-		$report_std_filter->assign("BLOCKCRITERIA_STD",$BLOCKCRITERIA);
+	$BLOCKCRITERIA = $oReport->getSelectedStdFilterCriteria($oReport->stdselectedfilter);
+	$report_std_filter->assign("BLOCKCRITERIA_STD",$BLOCKCRITERIA);
 
-	if(isset($oReport->startdate) && isset($oReport->enddate)) {
-		$report_std_filter->assign("STARTDATE_STD", DateTimeField::convertToUserFormat($oReport->startdate));
-		$report_std_filter->assign("ENDDATE_STD", DateTimeField::convertToUserFormat($oReport->enddate));
-	} else {
-		$report_std_filter->assign("STARTDATE_STD",$oReport->startdate);
-		$report_std_filter->assign("ENDDATE_STD",$oReport->enddate);
-	}
+	$report_std_filter->assign("STARTDATE_STD",$oReport->startdate);
+	$report_std_filter->assign("ENDDATE_STD",$oReport->enddate);
 }
 
 /** Function to get the HTML strings for the primarymodule standard filters
