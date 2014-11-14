@@ -21,9 +21,9 @@ if(isset($_REQUEST["record"]) == false || $_REQUEST["record"]=='')
 		}
 
 		$report_std_filter->assign("BLOCK1_STD",$BLOCK1);
-        $BLOCKJS = $oReport->getCriteriaJS();
+		$BLOCKJS = $oReport->getCriteriaJS();
 		$report_std_filter->assign("BLOCKJS_STD",$BLOCKJS);
-        $BLOCKCRITERIA = $oReport->getSelectedStdFilterCriteria();
+		$BLOCKCRITERIA = $oReport->getSelectedStdFilterCriteria();
 		$report_std_filter->assign("BLOCKCRITERIA_STD",$BLOCKCRITERIA);
 
 }elseif(isset($_REQUEST["record"]) == true)
@@ -59,10 +59,10 @@ if(isset($_REQUEST["record"]) == false || $_REQUEST["record"]=='')
 
 		$report_std_filter->assign("BLOCK1_STD",$BLOCK1);
 
-        $BLOCKJS = $oReport->getCriteriaJS();
+		$BLOCKJS = $oReport->getCriteriaJS();
 		$report_std_filter->assign("BLOCKJS_STD",$BLOCKJS);
 
-        $BLOCKCRITERIA = $oReport->getSelectedStdFilterCriteria($oReport->stdselectedfilter);
+		$BLOCKCRITERIA = $oReport->getSelectedStdFilterCriteria($oReport->stdselectedfilter);
 		$report_std_filter->assign("BLOCKCRITERIA_STD",$BLOCKCRITERIA);
 
 	if(isset($oReport->startdate) && isset($oReport->enddate)) {
@@ -71,23 +71,22 @@ if(isset($_REQUEST["record"]) == false || $_REQUEST["record"]=='')
 	} else {
 		$report_std_filter->assign("STARTDATE_STD",$oReport->startdate);
 		$report_std_filter->assign("ENDDATE_STD",$oReport->enddate);
-	}	
+	}
 }
 
-
-	/** Function to get the HTML strings for the primarymodule standard filters
-	 * @ param $module : Type String
-	 * @ param $selected : Type String(optional)
-	 *  This Returns a HTML combo srings
-	 */
+/** Function to get the HTML strings for the primarymodule standard filters
+ * @ param $module : Type String
+ * @ param $selected : Type String(optional)
+ *  This Returns a HTML combo srings
+ */
 function getPrimaryStdFilterHTML($module,$selected="")
 {
 	global $app_list_strings;
 	global $ogReport;
 	global $current_language;
 	$ogReport->oCustomView=new CustomView();
-        $result = $ogReport->oCustomView->getStdCriteriaByModule($module);
-        $mod_strings = return_module_language($current_language,$module);
+	$result = $ogReport->oCustomView->getStdCriteriaByModule($module);
+	$mod_strings = return_module_language($current_language,$module);
 
 	if(isset($result))
 	{
