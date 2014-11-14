@@ -81,7 +81,7 @@ class VTModuleExpressionsManager{
 		foreach($fields as $field){
 			//Use the field name to figure out the custom field
 			if(preg_match('/cf_\d+/', $field['name']) &&
-			in_array($field['type']['name'], array('text', 'string','integer', 'double'))){
+			in_array($field['type']['name'], array('text', 'string','integer', 'double', 'currency'))){
 				$arr[$field['name']] = getTranslatedString($field['label'], $moduleName);
 			}
 		}
