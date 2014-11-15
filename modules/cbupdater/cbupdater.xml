@@ -162,4 +162,11 @@
 	<classname>moveDVBtoEnd</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Correct Project TargetBudget Type: convert to number</description>
+	<filename>build/changeSets/correctProjectTargetBudgetType.php</filename>
+	<classname>correctProjectTargetBudgetType</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
