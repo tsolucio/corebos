@@ -186,17 +186,18 @@ function vtws_getModuleNameList(){
 }
 
 function vtws_getWebserviceEntities(){
-	global $adb;
+	global $adb,$log;
 
 	$sql = "select name,id,ismodule from vtiger_ws_entity";
 	$res = $adb->pquery($sql, array());
 	$moduleArray = Array();
 	$entityArray = Array();
-	while($row = $adb->fetchByAssoc($res)){
-		if($row['ismodule'] == '1'){
-			array_push($moduleArray,$row['name']);
+	//while($row = $adb->fetchByAssoc($res)){ 
+            for($i=0;$i<$adb->num_rows($res);$i++){
+		if($adb->query_result($res,$i,'ismodule') == '1'){
+			array_push($moduleArray,$adb->query_result($res,$i,'name'));
 		}else{
-			array_push($entityArray,$row['name']);
+			array_push($entityArray,$adb->query_result($res,$i,'name'));
 		}
 	}
 	return array('module'=>$moduleArray,'entity'=>$entityArray);
