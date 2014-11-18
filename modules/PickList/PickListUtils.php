@@ -212,8 +212,8 @@ function getAssignedPicklistValues($tableName, $roleid, $adb, $lang=array()){
 		
 		if($count) {
 			while($resultrow = $adb->fetch_array($result)) {
-				$pick_val = $resultrow[$tableName];
-				
+				$pick_val = decode_html($resultrow[$tableName]);
+				//$pick_val = decode_html($pick_val);  // we have to do it twice for it to work on listview!!
 				if($lang[$pick_val] != '') {
 					$arr[$pick_val] = $lang[$pick_val];
 				}
