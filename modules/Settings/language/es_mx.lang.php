@@ -784,7 +784,9 @@ $mod_strings = array (
       //softphone integration ends
 
       'VTLIB_LBL_SELECT_PACKAGE_FILE'=>'Selecciona el Módulo Empaquetado',
-      'VTLIB_LBL_FILE_LOCATION'=>'Ubicación archivo:',
+      'VTLIB_LBL_FILE_LOCATION'=>'Cargar archivo:',
+      'VTLIB_LBL_PACKAGE_URL' => 'Instalar desde URL:',
+      'VTLIB_LBL_PACKAGE_URL_HELP' => 'URL a un paquete ZIP de módulo o proyecto en GitHub.',
       'VTLIB_LBL_PACKAGE_FILE_HELP'=>'un módulo se empaqueta como un archivo zip.',
       'VTLIB_LBL_IMPORT_FAILURE'=>'Error al importar',
       'VTLIB_LBL_INVALID_FILE'=>'Archivo de módulo inválido',

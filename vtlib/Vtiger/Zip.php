@@ -25,14 +25,9 @@ class Vtiger_Zip extends dZip {
 		header("Content-Type: application/zip");
 		header("Content-Disposition: attachment; filename=".basename($zipfileName).";" );
 		//header("Content-Transfer-Encoding: binary");
-
-		// For details on this workaround check here the ticket
-		// http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/5298
 		$disk_file_size = filesize($zipfileName);
-		$zipfilesize = $disk_file_size + ($disk_file_size % 1024);
-		header("Content-Length: ".$zipfilesize);
-		$fileContent = fread(fopen($zipfileName, "rb"), $zipfilesize);
-		echo $fileContent;	
+		header("Content-Length: ".$disk_file_size);
+		readfile($zipfileName);
 	}
 
 	/**

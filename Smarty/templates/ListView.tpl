@@ -137,7 +137,7 @@ function callSearch(searchtype)
         else if(searchtype == 'Advanced')
         {ldelim}
         		checkAdvancedFilter();
-				var advft_criteria = $('advft_criteria').value;
+				var advft_criteria = encodeURIComponent($('advft_criteria').value);
 				var advft_criteria_groups = $('advft_criteria_groups').value;
 				urlstring += '&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups+'&';
 				urlstring += 'searchtype=advance&'

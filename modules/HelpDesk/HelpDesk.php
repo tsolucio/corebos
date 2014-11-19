@@ -465,7 +465,8 @@ class HelpDesk extends CRMEntity {
 					}
 					$list .= $contact_name;
 				}
-				$list .= ' on '.$adb->query_result($result,$i,'createdtime').' &nbsp;';
+				$date = new DateTimeField($adb->query_result($result,$i,'createdtime'));
+				$list .= ' on '.$date->getDisplayDateTimeValue().' &nbsp;';
 
 				$list .= '</font></div>';
 			}

@@ -383,7 +383,7 @@ class Import_Data_Controller {
 				foreach ($allPicklistDetails as $picklistDetails) {
 					$allPicklistValues[] = $picklistDetails['value'];
 				}
-				$encodePicklistValue = htmlentities($fieldValue,ENT_QUOTES,$default_charset);
+				$encodePicklistValue = $fieldValue;
 				if (!in_array($encodePicklistValue, $allPicklistValues)) {
 					$moduleObject = Vtiger_Module::getInstance($moduleMeta->getEntityName());
 					$fieldObject = Vtiger_Field::getInstance($fieldName, $moduleObject);

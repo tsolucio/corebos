@@ -88,9 +88,6 @@ if (isset ($_REQUEST['record']) && $_REQUEST['record'] != '') {
 		$smarty->assign("AVAILABLE_PRODUCTS", 'true');
 
 	}
-	elseif (isset ($_REQUEST['convertmode']) && $_REQUEST['convertmode'] == 'potentoinvoice') {
-		$focus->mode = '';
-	}
 	elseif (isset ($_REQUEST['convertmode']) && $_REQUEST['convertmode'] == 'update_so_val') {
 		//Updating the Selected SO Value in Edit Mode
 		foreach ($focus->column_fields as $fieldname => $val) {
@@ -161,6 +158,16 @@ if (isset ($_REQUEST['record']) && $_REQUEST['record'] != '') {
 		$smarty->assign("AVAILABLE_PRODUCTS", 'true');
 
 	}
+	elseif (isset ($_REQUEST['convertmode']) && $_REQUEST['convertmode'] == 'potentoinvoice') {
+		$focus->mode = '';
+		$relpot = $adb->query_result($adb->pquery('select related_to from vtiger_potential where potentialid=?',array($_REQUEST['return_id'])),0,0);
+		$reltype = getSalesEntityType($relpot);
+		if ($reltype=='Accounts') {
+			$_REQUEST['account_id'] = $relpot;
+		} else {
+			$_REQUEST['contact_id'] = $relpot;
+		}
+	}
 }
 if (isset ($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
 	$smarty->assign("DUPLICATE_FROM", $focus->id);
@@ -222,7 +229,23 @@ if (isset ($_REQUEST['account_id']) && $_REQUEST['account_id'] != '' && ($_REQUE
 	$focus->column_fields['ship_country'] = $acct_focus->column_fields['ship_country'];
 	$focus->column_fields['bill_pobox'] = $acct_focus->column_fields['bill_pobox'];
 	$focus->column_fields['ship_pobox'] = $acct_focus->column_fields['ship_pobox'];
-
+}
+if (isset ($_REQUEST['contact_id']) && $_REQUEST['contact_id'] != '' && ($_REQUEST['record'] == '' || $_REQUEST['convertmode'] == "potentoinvoice")) {
+	require_once ('modules/Contacts/Contacts.php');
+	$cto_focus = new Contacts();
+	$cto_focus->retrieve_entity_info($_REQUEST['contact_id'], "Contacts");
+	$focus->column_fields['bill_city'] = $cto_focus->column_fields['mailingcity'];
+	$focus->column_fields['ship_city'] = $cto_focus->column_fields['othercity'];
+	$focus->column_fields['bill_street'] = $cto_focus->column_fields['mailingstreet'];
+	$focus->column_fields['ship_street'] = $cto_focus->column_fields['otherstreet'];
+	$focus->column_fields['bill_state'] = $cto_focus->column_fields['mailingstate'];
+	$focus->column_fields['ship_state'] = $cto_focus->column_fields['otherstate'];
+	$focus->column_fields['bill_code'] = $cto_focus->column_fields['mailingcode'];
+	$focus->column_fields['ship_code'] = $cto_focus->column_fields['othercode'];
+	$focus->column_fields['bill_country'] = $cto_focus->column_fields['mailingcountry'];
+	$focus->column_fields['ship_country'] = $cto_focus->column_fields['othercountry'];
+	$focus->column_fields['bill_pobox'] = $cto_focus->column_fields['mailingpobox'];
+	$focus->column_fields['ship_pobox'] = $cto_focus->column_fields['otherpobox'];
 }
 
 global $theme;

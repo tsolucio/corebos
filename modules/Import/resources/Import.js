@@ -127,11 +127,13 @@ if (typeof(ImportJs) == 'undefined') {
 
 			var mandatoryFields = JSON.parse(jQuery('#mandatory_fields').val());
 			var missingMandatoryFields = [];
-			for(var mandatoryFieldName in mandatoryFields) {
-				if(mandatoryFieldName in mappedFields) {
-					continue;
-				} else {
-					missingMandatoryFields.push('"'+mandatoryFields[mandatoryFieldName]+'"');
+			if (mandatoryFields.length > 0) {
+				for(var mandatoryFieldName in mandatoryFields) {
+					if(mandatoryFieldName in mappedFields) {
+						continue;
+					} else {
+						missingMandatoryFields.push('"'+mandatoryFields[mandatoryFieldName]+'"');
+					}
 				}
 			}
 			if(missingMandatoryFields.length > 0) {

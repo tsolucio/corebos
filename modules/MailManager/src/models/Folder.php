@@ -75,7 +75,7 @@ class MailManager_Model_Folder {
 
 		$e = min($st + $this->mPageLimit, $this->mCount);
 		$t = $this->mCount;
-		return sprintf("%s - %s of %s", $s, $e, $t);
+		return sprintf("%s - %s ".getTranslatedString('LBL_LIST_OF')." %s", $s, $e, $t);
 	}
 	
 	function pageCurrent($offset=0) {

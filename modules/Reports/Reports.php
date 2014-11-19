@@ -691,7 +691,7 @@ class Reports extends CRMEntity{
 				$fieldlabel = 'Date Sent';
 				$fieldtypeofdata = 'D';
 			}
-			$fieldlabel1 = str_replace(" ","_",$fieldlabel);
+			$fieldlabel1 = str_replace(array(" ","&"),"_",$fieldlabel);
 			$optionvalue = $fieldtablename.":".$fieldcolname.":".$module."_".$fieldlabel1.":".$fieldname.":".$fieldtypeofdata;
 			$this->adv_rel_fields[$fieldtypeofdata][] = '$'.$module.'#'.$fieldname.'$'."::".getTranslatedString($module,$module)." ".getTranslatedString($fieldlabel,$module);
 			//added to escape attachments fields in Reports as we have multiple attachments
