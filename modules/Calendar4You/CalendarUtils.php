@@ -488,7 +488,7 @@ function getEventActivityMode($id) {
 	return $activity_mode;
 }
 
-function getITSActFieldCombo($fieldname,$tablename,$from_module = '') {
+function getITSActFieldCombo($fieldname,$tablename,$from_module = '',$follow_activitytype = false) {
 	global $adb, $mod_strings,$current_user,$default_charset;
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	$combo = '';
@@ -510,7 +510,10 @@ function getITSActFieldCombo($fieldname,$tablename,$from_module = '') {
     
     if($fieldname == 'eventstatus')
 		$js_fn = 'onChange = "getSelectedStatus();"';
-	$combo .= '<select name="'.$fieldname.'" id="'.$fieldname.'" class=small '.$js_fn.'>';
+	if($follow_activitytype)
+		$combo .= '<select name="follow_'.$fieldname.'" id="follow_'.$fieldname.'" class=small '.$js_fn.'>';
+	else
+		$combo .= '<select name="'.$fieldname.'" id="'.$fieldname.'" class=small '.$js_fn.'>';
 	if($is_admin)
 		$q = "select * from ".$tablename;
 	else {
