@@ -175,6 +175,7 @@ else
 		$focus->column_fields['time_start'] = $startDate->getDBInsertTimeValue();
 		$focus->column_fields['time_end'] = $endDate->getDBInsertTimeValue();
 		$focus->column_fields['eventstatus'] = 'Planned';
+		$focus->column_fields['activitytype'] = $_REQUEST['follow_activitytype'];
 		$focus->mode = 'create';
 		$focus->save($tab_type);
 	}

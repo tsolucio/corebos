@@ -358,6 +358,30 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
                                                                                                                 {rdelim})
                                                                                                         </script>
                                                                                                 </td></tr>
+                                                                                                							{if $LABEL.activitytype neq ''}
+																								<tr>
+																									<td><b>{$MOD.LBL_EVENTTYPE}</b></td>
+																									<td>
+																										<table>
+																											<tr>
+																											<select name="follow_activitytype" class="small">
+																												{foreach item=arr from=$ACTIVITYDATA.activitytype}
+																													{if $arr[0] eq $APP.LBL_NOT_ACCESSIBLE}
+																													<option value="{$arr[0]}" {$arr[2]}>
+																														{$arr[0]}
+																													</option>
+																													{else}
+																													<option value="{$arr[1]}" {$arr[2]}>
+																														{$arr[0]}
+																													</option>
+																													{/if}
+																												{/foreach}
+																											</select>
+																											</tr>
+																										</table>
+																									</td>
+																								</tr>
+																								{/if}
                                                                                         </table>
                                                                                 </td>
 									</tr>
