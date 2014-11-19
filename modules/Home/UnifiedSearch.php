@@ -15,7 +15,14 @@ require_once('Smarty_setup.php');
 global $mod_strings, $current_language, $default_charset;
 
 require_once('modules/Home/language/'.$current_language.'.lang.php');
-
+// we eliminate order and sort by clause to avoid QueryGenerator errors on detail view
+foreach ($_SESSION as $key => $value) {
+	if (substr($key, -9)=='_Order_By') {
+		unset($_SESSION[$key]);
+		$cmod = substr($key, 0, strlen($key)-9);
+		unset($_SESSION[$cmod.'_Sort_Order']);
+	}
+}
 $total_record_count = 0;
 
 $query_string = trim($_REQUEST['query_string']);

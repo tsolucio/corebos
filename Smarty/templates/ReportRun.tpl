@@ -178,7 +178,7 @@
 function CrearEnlace(tipo,id){
 
 	if(!checkAdvancedFilter()) return false;
-	var advft_criteria = $('advft_criteria').value;
+	var advft_criteria = encodeURIComponent($('advft_criteria').value);
 	var advft_criteria_groups = $('advft_criteria_groups').value;
 
 	return "index.php?module=Reports&action="+tipo+"&record="+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups;

@@ -92,7 +92,7 @@ if($_REQUEST['directmode'] == 'ajax') {
 				$targetFieldValues = getAllPickListValues($targetField);
 
 				foreach (getAllPickListValues($sourceField) as $key => $value) {
-					$sourceFieldValues[htmlentities($value,ENT_QUOTES,'UTF-8')] = $value;
+					$sourceFieldValues[$value] = $value;
 				}
 
 				$smarty->assign("SOURCE_VALUES", $sourceFieldValues);

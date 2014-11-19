@@ -23,7 +23,7 @@ class MailManager_Model_DraftFolder extends MailManager_Model_Folder {
 		$s = max(1, $this->mPageCurrent * $this->mPageLimit+1);
 		$e = min($s+$this->mPageLimit-1, $this->mCount);
 		$t = $this->mCount;
-		return sprintf("%s - %s of %s", $s, $e, $t);
+		return sprintf("%s - %s ".getTranslatedString('LBL_LIST_OF')." %s", $s, $e, $t);
 	}
 }
 ?>

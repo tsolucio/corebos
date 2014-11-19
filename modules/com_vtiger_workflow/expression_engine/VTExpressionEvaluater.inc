@@ -318,7 +318,30 @@ class VTFieldExpressionEvaluater{
 
 	function env($sym){
 		if($this->env) {
-		return $this->env->get($sym->value);
+			$val = $this->env->get($sym->value);
+			$module = Vtiger_Module::getInstance($this->env->moduleName);
+			$field = Vtiger_Field::getInstance($sym->value,$module);
+			if ($field) {
+				global $adb,$log;
+				$rsfld = $adb->pquery('select * from vtiger_field where fieldid=?',array($field->id));
+				$field = WebserviceField::fromQueryResult($adb, $rsfld, 0);
+				$fieldType = $field->getFieldDataType();
+				if ($fieldType=='reference') {
+					preg_match("/([0-9]+)x([0-9]+)/", $val, $results);
+					if (count($results)>0) {  // if it has the form of a webserviceid
+						$query = 'select name from vtiger_ws_entity where id = ?';
+						$rs = $adb->pquery($query, array($results[1]));
+						if ($rs and $adb->num_rows($rs)==1) {  // if the first part is a valid webservice entity id
+							$modname = $adb->query_result($rs, 0, 'name');
+							$modinfo = getEntityName($modname, array($results[2]));
+							if (is_array($modinfo) and count($modinfo)>0) {  // if the second part is recognized as a module record
+								$val = $modinfo[$results[2]];
+							}
+						}
+					}
+				}
+			}
+			return $val;
 		} else {
 			return $sym->value;
 		}
