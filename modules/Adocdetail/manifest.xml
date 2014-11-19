@@ -141,7 +141,7 @@
 <columnname>adoc_product</columnname>
 <tablename>vtiger_adocdetail</tablename>
 <generatedtype>1</generatedtype>
-<fieldlabel>Product</fieldlabel>
+<fieldlabel>adoc_product</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
 <defaultvalue></defaultvalue>
@@ -299,7 +299,7 @@
 <masseditable>1</masseditable>
 </field>
 <field>
-<fieldname>CreatedTime</fieldname>
+<fieldname>createdtime</fieldname>
 <uitype>70</uitype>
 <columnname>createdtime</columnname>
 <tablename>vtiger_crmentity</tablename>
@@ -319,7 +319,7 @@
 <masseditable>1</masseditable>
 </field>
 <field>
-<fieldname>ModifiedTime</fieldname>
+<fieldname>modifiedtime</fieldname>
 <uitype>70</uitype>
 <columnname>modifiedtime</columnname>
 <tablename>vtiger_crmentity</tablename>

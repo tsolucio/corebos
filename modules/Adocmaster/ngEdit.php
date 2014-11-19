@@ -21,7 +21,7 @@
  require_once('modules/Adocmaster/Adocmaster.php');
  require_once('modules/Adocdetail/Adocdetail.php');
 
-global $adb,$current_user;
+global $adb,$current_user,$log;
 $kaction=$_REQUEST['kaction'];
 if($kaction=='retrieve1'){
 
@@ -184,7 +184,7 @@ if($kaction==adding){
 
    $adoc1->column_fields['adoc_quantity']=$quantity;
   $adoc1->column_fields['adoctomaster']=$laprueva;
-  $adoc1->column_fields['assigned_user_id']=1;
+  $adoc1->column_fields['assigned_user_id']=$current_user->id;
   
    $adoc1->column_fields['adoc_product']=$adocp;
   $adoc1->column_fields['adoc_price']=$sot5;
@@ -194,8 +194,11 @@ if($kaction==adding){
 }
 
 if($kaction=='delete'){
-   
+     
+     $totdelete=$_REQUEST['totdelete'];
+     $adocmasterdelete=$_REQUEST['adocmasterdelete'];
      $adb->pquery("delete from vtiger_adocdetail where adocdetailid=?",array($adocdelete));
+     $adb->pquery("update vtiger_adocmaster set totalamount=?,amount=? WHERE adocmasterid=?",array($totdelete,$totdelete,$adocmasterdelete));
 }
 
 
