@@ -1808,7 +1808,7 @@ class CustomView extends CRMEntity {
 			if (trim($block_label) == '') {
 				$block_info[$pre_block_label] = $block_info[$pre_block_label] . "," . $block_result['block'];
 			} else {
-				$lan_block_label = $current_mod_strings[$block_label];
+				$lan_block_label = isset($current_mod_strings[$block_label])?$current_mod_strings[$block_label]:$block_label;
 				if (isset($block_info[$lan_block_label]) && $block_info[$lan_block_label] != '') {
 					$block_info[$lan_block_label] = $block_info[$lan_block_label] . "," . $block_result['block'];
 				} else {
