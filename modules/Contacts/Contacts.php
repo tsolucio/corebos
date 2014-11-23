@@ -1369,7 +1369,7 @@ function get_contactsforol($user_name)
 	//added to get mail info for portal user
 	//type argument included when when addin customizable tempalte for sending portal login details
 	public static function getPortalEmailContents($entityData, $password, $type='') {
-        require_once 'config.inc.php';
+		require_once 'config.inc.php';
 		global $PORTAL_URL;
 
 		$adb = PearDatabase::getInstance();
@@ -1379,9 +1379,9 @@ function get_contactsforol($user_name)
 
 		//here id is hardcoded with 5. it is for support start notification in vtiger_notificationscheduler
 		$query='SELECT vtiger_emailtemplates.subject,vtiger_emailtemplates.body
-					FROM vtiger_notificationscheduler
-						INNER JOIN vtiger_emailtemplates ON vtiger_emailtemplates.templateid=vtiger_notificationscheduler.notificationbody
-					WHERE schedulednotificationid=5';
+				FROM vtiger_notificationscheduler
+				INNER JOIN vtiger_emailtemplates ON vtiger_emailtemplates.templateid=vtiger_notificationscheduler.notificationbody
+				WHERE schedulednotificationid=5';
 
 		$result = $adb->pquery($query, array());
 		$body=$adb->query_result($result,0,'body');
@@ -1392,6 +1392,7 @@ function get_contactsforol($user_name)
 		$contents = str_replace('$URL$',$portalURL,$contents);
 		$contents = str_replace('$support_team$',getTranslatedString('Support Team', $moduleName),$contents);
 		$contents = str_replace('$logo$','<img src="cid:logo" />',$contents);
+		$contents = getMergedDescription($contents, $entityData->get('contactid'), 'Contacts');
 
 		if($type == "LoginDetails") {
 			$temp=$contents;
