@@ -40,19 +40,12 @@
 <tr>
 <td align="right" class="cellLabel small"><b>{$MOD.LBL_TEMPLATE} : </b></td>
 <td align="left"  class="cellText small">
-<input type="hidden" id="notifysubject" value="aaaa">
+<input type="hidden" id="notifysubject" value="emailtemplate">
 	<select class="small" id="notifybody">
-
 	{foreach from=$VALUES key=k item=v}
-		{if $k eq $SEL_ID}
-		<option value="{$k}" "selected">{$v}</option>
-		{else}
-		<option value="{$k}">{$v}</option>
-		{/if}
+		<option value="{$k}" {if $k eq $SEL_ID}selected{/if}>{$v}</option>
 	{/foreach}
-
 	</select>
-
 </td>
 </tr>
 </table>
