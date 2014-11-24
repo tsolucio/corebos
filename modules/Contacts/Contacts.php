@@ -1370,7 +1370,7 @@ function get_contactsforol($user_name)
 	//type argument included when when addin customizable tempalte for sending portal login details
 	public static function getPortalEmailContents($entityData, $password, $type='') {
 		require_once 'config.inc.php';
-		global $PORTAL_URL;
+		global $PORTAL_URL, $default_charset;
 
 		$adb = PearDatabase::getInstance();
 		$moduleName = $entityData->getModuleName();
@@ -1385,14 +1385,15 @@ function get_contactsforol($user_name)
 
 		$result = $adb->pquery($query, array());
 		$body=$adb->query_result($result,0,'body');
-		$contents=$body;
+		$contents = html_entity_decode($body, ENT_QUOTES, $default_charset);
 		$contents = str_replace('$contact_name$',$entityData->get('firstname')." ".$entityData->get('lastname'),$contents);
 		$contents = str_replace('$login_name$',$entityData->get('email'),$contents);
 		$contents = str_replace('$password$',$password,$contents);
 		$contents = str_replace('$URL$',$portalURL,$contents);
 		$contents = str_replace('$support_team$',getTranslatedString('Support Team', $moduleName),$contents);
 		$contents = str_replace('$logo$','<img src="cid:logo" />',$contents);
-		$contents = getMergedDescription($contents, $entityData->get('contactid'), 'Contacts');
+		list($void,$contactid) = explode('x', $entityData->id);
+		$contents = getMergedDescription($contents, $contactid, 'Contacts');
 
 		if($type == "LoginDetails") {
 			$temp=$contents;
