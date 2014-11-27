@@ -1309,17 +1309,31 @@ function getParentTabFromModule($module) {
 function getParentTab() {
 	global $log, $default_charset;
 	$log->debug("Entering getParentTab() method ...");
+	static $parenttab_cache = array();
 	if (!empty($_REQUEST['parenttab'])) {
 		$log->debug("Exiting getParentTab method ...");
+		if (array_key_exists($_REQUEST['parenttab'], $parenttab_cache)) {
+			return $parenttab_cache[$_REQUEST['parenttab']];
+		}
+		if (array_key_exists($_REQUEST['module'], $parenttab_cache)) {
+			return $parenttab_cache[$_REQUEST['module']];
+		}
 		if (checkParentTabExists($_REQUEST['parenttab'])) {
-			return vtlib_purify($_REQUEST['parenttab']);
+			$return = vtlib_purify($_REQUEST['parenttab']);
+			$parenttab_cache[$_REQUEST['parenttab']] =  $return;
 		} else {
-			return getParentTabFromModule($_REQUEST['module']);
+			$return = getParentTabFromModule($_REQUEST['module']);
+			$parenttab_cache[$_REQUEST['module']] = $return;
 		}
 	} else {
 		$log->debug("Exiting getParentTab method ...");
-		return getParentTabFromModule($_REQUEST['module']);
+		if (array_key_exists($_REQUEST['module'], $parenttab_cache)) {
+			return $parenttab_cache[$_REQUEST['module']];
+		}
+		$return = getParentTabFromModule($_REQUEST['module']);
+		$parenttab_cache[$_REQUEST['module']] = $return;
 	}
+	return $return;
 }
 
 function checkParentTabExists($parenttab) {
