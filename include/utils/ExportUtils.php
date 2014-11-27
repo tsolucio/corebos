@@ -87,6 +87,7 @@ function getFieldsListFromQuery($query)
 	{
 		$columnName = $adb->query_result($result,$i,"columnname");
 		$fieldlabel = $adb->query_result($result,$i,"fieldlabel");
+		$fieldlabel = str_replace('?', '', $fieldlabel);
 		$tablename = $adb->query_result($result,$i,"tablename");
 
 		//HANDLE HERE - Mismatch fieldname-tablename in field table, in future we have to avoid these if elses
