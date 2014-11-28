@@ -18,6 +18,7 @@ $mod_strings = Array (
 'LBL_TOOLTIP_HELP_TEXT'=>'Selecciona los campos a mostrar como ayuda',
 'LBL_FIELDS_IN'=>'Campos en',
 'LBL_FIELD'=>'Campo',
+'LBL_NOT_ASSETS'=>'No hay Recursos asignados',
 );
 
 ?>

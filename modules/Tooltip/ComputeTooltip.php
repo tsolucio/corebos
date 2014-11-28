@@ -24,34 +24,43 @@ if ($fieldname=='invoice_product') {
 	$sql = 'select assetsid,asset_no,serialnumber,dateinservice from vtiger_assets where invoiceid = ? and product = ?';
 	$rdo = $adb->pquery($sql,array($invid,$pdoid));
 	$text = array();
-	while ($ast = $adb->fetch_array($rdo)) {
-		$text[$ast['asset_no']] = '<a href="index.php?module=Assets&action=DetailView&record='.$ast['assetsid'].'">'.$ast['serialnumber'].'</a>&nbsp;'.
-				DateTimeField::convertToUserFormat($ast['dateinservice']).'<br>';
+	if($adb->num_rows($rdo) > 0)
+	{
+		while ($ast = $adb->fetch_array($rdo)) {
+			$text[$ast['asset_no']] = '<a href="index.php?module=Assets&action=DetailView&record='.$ast['assetsid'].'">'.$ast['serialnumber'].'</a>&nbsp;'.
+					DateTimeField::convertToUserFormat($ast['dateinservice']).'<br>';
+		}
+		$tip = getToolTip($text);
+		echo $tip;
+		die();
 	}
-	$tip = getToolTip($text);
-	echo $tip;
-	die();
+	else {
+		echo getTranslatedString('LBL_NOT_ASSETS','Tooltip');
+	}
 }
-if($tabid == '13' && $fieldname == 'title')
-	$fieldname = 'ticket_title';
-$result = ToolTipExists($fieldname,$tabid);
-if($result !== false){
-//get tooltip information
-	$viewid = 1;	//viewid is 1 by default
-	$descObject = vtws_describe($modname,$current_user);
-	$id = vtws_getWebserviceEntityId($modname, $id);
-	$sql = "select * from $modname where id ='$id';";
-	$result = vtws_query($sql, $current_user);
-	if(empty($result)){
-		echo getTranslatedString('LBL_RECORD_NOT_FOUND');
-		exit(0);
+else
+{
+	if($tabid == '13' && $fieldname == 'title')
+		$fieldname = 'ticket_title';
+	$result = ToolTipExists($fieldname,$tabid);
+	if($result !== false){
+	//get tooltip information
+		$viewid = 1;	//viewid is 1 by default
+		$descObject = vtws_describe($modname,$current_user);
+		$id = vtws_getWebserviceEntityId($modname, $id);
+		$sql = "select * from $modname where id ='$id';";
+		$result = vtws_query($sql, $current_user);
+		if(empty($result)){
+			echo getTranslatedString('LBL_RECORD_NOT_FOUND');
+			exit(0);
+		}
+		$result = vttooltip_processResult($result, $descObject);
+		$text = getToolTipText($viewid, $fieldname,$modname,$result);
+		$tip = getToolTip($text);
+		echo $tip;
+	}else {
+		echo false;
 	}
-	$result = vttooltip_processResult($result, $descObject);
-	$text = getToolTipText($viewid, $fieldname,$modname,$result);
-	$tip = getToolTip($text);
-	echo $tip;
-}else {
-	echo false;
 }
 
 ?>

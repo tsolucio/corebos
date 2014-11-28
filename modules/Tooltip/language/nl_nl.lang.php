@@ -38,6 +38,7 @@ $mod_strings = Array (
 'LBL_FIELDS_IN'=>'Velden in',
 'LBL_TOOLTIP_HELP_TEXT'=>'Selecteer de velden die u als tooltip wilt tonen',
 'LBL_FIELD'=>'Veld',
+'LBL_NOT_ASSETS'=>'Geen activa toegewezen.',
 
 );
 

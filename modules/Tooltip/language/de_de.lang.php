@@ -14,6 +14,7 @@ $mod_strings = Array (
     'LBL_FIELDS_IN'=>'Felder in',
     'LBL_TOOLTIP_HELP_TEXT'=>'Wählen Sie die Felder aus, welche als Kurzinfo angezeigt werden sollen',
     'LBL_FIELD'=>'Feld',
+    'LBL_NOT_ASSETS'=>'Keine Vermögenswerte zugeordnet.',
 );
 
 ?>
