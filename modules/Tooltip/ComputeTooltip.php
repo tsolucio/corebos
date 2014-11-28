@@ -32,7 +32,6 @@ if ($fieldname=='invoice_product') {
 		}
 		$tip = getToolTip($text);
 		echo $tip;
-		die();
 	}
 	else {
 		echo getTranslatedString('LBL_NOT_ASSETS','Tooltip');
