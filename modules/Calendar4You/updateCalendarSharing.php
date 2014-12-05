@@ -63,14 +63,17 @@ $update_google_account = $_REQUEST["update_google_account"];
  
 if ($update_google_account == "1") {
     $google_login = $_REQUEST["google_login"];
-    $google_password = $_REQUEST["google_password"];
-    
+   // $google_password = $_REQUEST["google_password"];
+    $google_apikey= $_REQUEST["google_apikey"];
+    $google_keyfile = $_REQUEST["google_keyfile"];
+    $google_clientid = $_REQUEST["google_clientid"];
     $sql4 = "DELETE FROM its4you_googlesync4you_access WHERE userid = ?";
     $adb->pquery($sql4,array($current_user->id));
     
-    if ($google_login != "" && $google_password != "") {
-        $sql5 = "INSERT INTO its4you_googlesync4you_access (userid, google_login, google_password) VALUES (?,?,?)";
-        $adb->pquery($sql5,array($current_user->id,$google_login, $google_password));
+    if ($google_login != "" && $google_apikey != "" && $google_keyfile != "" && $google_clientid!= "") {
+    $sql5 = "INSERT INTO its4you_googlesync4you_access (userid, google_login, google_password,google_apikey,google_keyfile,google_clientid) VALUES (?,?,?,?,?,?)";
+    $adb->pquery($sql5,array($current_user->id,$google_login, $google_password,$google_apikey,$google_keyfile,$google_clientid));
+
     }
 
 }

@@ -62,25 +62,26 @@ if ($num_rows1 > 0) {
         $GoogleSync4You->connectToGoogle();
         
         if ($GoogleSync4You->isLogged()) {
-            $sql2 = "SELECT its4you_googlesync4you_events.*, vtiger_activity.activitytype FROM its4you_googlesync4you_events 
+            $sql2 = "SELECT its4you_googlesync4you_events.*, cal.calendar,vtiger_activity.activitytype FROM its4you_googlesync4you_events 
                      INNER JOIN vtiger_activity 
                         ON vtiger_activity.activityid = its4you_googlesync4you_events.crmid
-                     WHERE ".$where." AND userid = ?";
+                        inner join its4you_googlesync4you_calendar cal on cal.userid=its4you_googlesync4you_events.userid
+                     WHERE ".$where." AND its4you_googlesync4you_events.userid = ?";
             $result2 = $adb->pquery($sql2,array($controldate,$userid));
             
             while($row2 = $adb->fetchByAssoc($result2)) {
                 $eventid = $row2["id"];
                 $lastmodified = $row2["lastmodified"];
                 $geventid = $row2["geventid"];
-                
-                $event = $GoogleSync4You->getGoogleCalEvent($geventid);
+                $cal=$row2["calendar"];
+                $event = $GoogleSync4You->getGoogleCalEventfromcron($geventid,$cal);
 
-                if (!$event) {
+                if ($event->getStatus()=='cancelled') {
                     $sql3 = "DELETE FROM its4you_googlesync4you_events WHERE id = ?";
                     $adb->pquery($sql3,array($eventid));
                 } else {
 
-                    if ($lastmodified != $event->updated->text) {
+                    if ($lastmodified != $event->getUpdated()) {
                         
                         $record = $row2["crmid"];
                         $activitytype = $row2["activitytype"];
@@ -96,28 +97,28 @@ if ($num_rows1 > 0) {
                         $focus->id = $record;
                         $focus->mode = 'edit';
                         
-                        $focus->column_fields['subject'] = $event->title->text;
-                        $focus->column_fields['description'] = $event->content->text;
-                        $focus->column_fields['location'] = $event->where->text;
+                        $focus->column_fields['subject'] = $event->getSummary();
+                        $focus->column_fields['description'] = $event->getDescription();
+                        $focus->column_fields['location'] = $event->getLocation();
                         
-                        $recurrence = $event->recurrence;
+                        $recurrence = $event->getRecurrence();
                         if ($recurrence == "") {
-                            $When = $event->getWhen();
+                            //$When = $event->getWhen();
         
-                            $start_time_lenght = strlen($When[0]->getStartTime()); 
+                            $start_time_lenght = strlen($event->getStart()->dateTime); 
                             if ($start_time_lenght == 10)
                                 $is_full_day_event = true;
                             else
                                 $is_full_day_event = false;
                                 
-                            $startdatetime = new DateTime($When[0]->getStartTime());
+                            $startdatetime = new DateTime($event->getStart()->dateTime);
                             $startdatetime->setTimeZone($c_time_zone);
                             $new_time_start_time = $startdatetime->format('U');
                             
                             $user_date_start = DateTimeField::convertToUserFormat($startdatetime->format('Y-m-d'));
                             if (!$is_full_day_event) $user_time_start = $startdatetime->format('H:i'); else $user_time_start = "00:00";
                              
-                            $enddatetime = new DateTime($When[0]->getEndTime());
+                            $enddatetime = new DateTime($event->getEnd()->dateTime);
                             $enddatetime->setTimeZone($c_time_zone);
                             $new_time_end_time = $enddatetime->format('U');
                             
@@ -141,7 +142,7 @@ if ($num_rows1 > 0) {
                         $focus->save($currentModule);
         
                         $sql3 = "UPDATE its4you_googlesync4you_events SET lastmodified = ? WHERE id = ?";
-                        $adb->pquery($sql3,array($event->updated->text,$eventid));
+                        $adb->pquery($sql3,array($event->getUpdated(),$eventid));
                     }
                 }
             }

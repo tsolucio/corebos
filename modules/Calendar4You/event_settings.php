@@ -327,6 +327,7 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
                     echo $GoogleSync4You->getStatus();
                 } else {
                     $GoogleSync4You->setEvent($id); 
+                                       
                     $selected_calendar = $GoogleSync4You->getSCalendar("1");
                     
                     echo $mod_strings["LBL_TO_GOOGLE_CALENDAR"].": ";
@@ -337,7 +338,7 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
                     echo "<option value=''></option>";
                     foreach ($listFeed as $calendar) {
                         if ($calendar->id == $selected_calendar)  $selected = "selected"; else $selected = ""; 
-                        echo "<option value='".$calendar->id."' ".$selected.">".$calendar->title."</option>";
+                        echo "<option value='".$calendar->id."' ".$selected.">".$calendar->summary."</option>";
                     }
                     echo "</select>";
                    
