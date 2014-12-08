@@ -34,6 +34,9 @@ include_once 'include/Webservices/AuthToken.php';
 		if ($ctors and $adb->num_rows($ctors)==1) {
 			$user = $user->retrieveCurrentUserInfoFromFile($userId);
 			if($user->status != 'Inactive') {
+				$result = $adb->query("SELECT id FROM vtiger_ws_entity WHERE name = 'Contacts'");
+				$ctowsid = $adb->query_result($result,0,'id');
+				$ctocmrid = $adb->query_result($ctors,0,'id');
 				$result = $adb->query("SELECT id FROM vtiger_ws_entity WHERE name = 'Users'");
 				$wsid = $adb->query_result($result,0,'id');
 				$accessinfo = vtws_getchallenge($uname);
@@ -48,6 +51,7 @@ include_once 'include/Webservices/AuthToken.php';
 					'id' => $wsid.'x'.$userId,
 					'user_name' => $user->column_fields['user_name'],
 					'accesskey' => $user->column_fields['accesskey'],
+					'contactid' => $ctowsid.'x'.$ctocmrid,
 				);
 				return $accessinfo;
 			} else {

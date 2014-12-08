@@ -18,6 +18,7 @@ $mod_strings = array(
 	'LBL_TOOLTIP_MANAGEMENT_DESCRIPTION' => 'Itt tudod beállítani a Súgó információkat',
 	'LBL_FIELDS_IN' => 'Mezők benne',
 	'LBL_TOOLTIP_HELP_TEXT' => 'Válaszd ki azokat a mezőket, amiknek a tartalmát Súgóként meg kívánod jeleníteni',
-	'LBL_FIELD' => 'Mező'
+	'LBL_FIELD' => 'Mező',
+	'LBL_NOT_ASSETS'=>'Nem rendelt eszközök.',
 );
 ?>

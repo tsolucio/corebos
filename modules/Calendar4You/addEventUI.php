@@ -163,7 +163,7 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 	<script type="text/javascript" src="jscalendar/lang/calendar-<?php echo $app_strings['LBL_JSCALENDAR_LANG'] ?>.js"></script>
 	<!--script type="text/javascript" src="jscalendar/calendar-setup.js"></script-->
 	<!--script type="text/javascript" src="include/js/ListView.js"></script-->
-	<div class="calAddITSEvent layerPopup" style="display:none;width:550px;left:200px;z-index:10000;background-color:#ffffff" id="addITSEvent" align=center>
+	<div class="calAddITSEvent layerPopup" style="display:none;width:650px;left:200px;z-index:10000;background-color:#ffffff" id="addITSEvent" align=center>
 	<form id="EditView" name="EditView" method="POST" action="index.php">
 	<input type="hidden" name="action" value="SaveEvent">
 	<input type="hidden" name="module" value="Calendar4You">
@@ -313,7 +313,7 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 					</td></tr>
 					</table>
 				</td>
-				<td width=34% valign=top style="display:none;border-left:1px solid #dddddd" id="date_table_thirdtd">
+				<td width=90% valign=top style="display:none;border-left:1px solid #dddddd" id="date_table_thirdtd">
 					<table border=0 cellspacing=0 cellpadding=2 width=100% align=center>
 					<tr><td colspan=3 align="left"><b><input type="checkbox" name="followup"><?php echo $c_mod_strings['LBL_HOLDFOLLOWUP']?></b></td></tr>
 					<tr><td colspan=3 align="left">
@@ -327,6 +327,11 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 						})
 						</script>
 					</td></tr>
+					<tr>
+						<td>
+							<b><?php echo $c_mod_strings['LBL_EVENTTYPE']." "?></b><?php echo getITSActFieldCombo('activitytype','vtiger_activitytype','',true); ?>
+						</td>
+					</tr>
 					</table>
 				</td>
 				</tr>

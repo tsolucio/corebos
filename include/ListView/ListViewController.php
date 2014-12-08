@@ -381,7 +381,7 @@ class ListViewController {
 									!(strlen(preg_replace("/(<\/?)(\w+)([^>]*>)/i","",$tmp)) >
 											$listview_max_textlength)) {
 								if (!$is_admin && $this->picklistRoleMap[$fieldName] &&
-										!in_array(trim($val), $this->picklistValueMap[$fieldName])) {
+										!in_array(trim(decode_html($val)), $this->picklistValueMap[$fieldName])) {
 									$tmpArray[] = $notaccess;
 									$tmp .= ', '.$notaccess;
 								} else {

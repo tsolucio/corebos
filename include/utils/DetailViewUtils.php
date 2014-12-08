@@ -211,7 +211,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		if (!empty($picklistValues)) {
 			foreach ($picklistValues as $order => $pickListValue) {
 				foreach ($selected_entries as $selected_entries_value) {
-					if (trim($selected_entries_value) == trim($pickListValue)) {
+					if (trim($selected_entries_value) == trim(htmlentities($pickListValue, ENT_QUOTES, $default_charset))) {
 						$chk_val = 'selected';
 						$pickcount++;
 						break;

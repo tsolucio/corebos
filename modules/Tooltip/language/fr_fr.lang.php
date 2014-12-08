@@ -15,6 +15,7 @@ $mod_strings = Array (
 	'LBL_FIELDS_IN'=>'Champs contenant',
 	'LBL_TOOLTIP_HELP_TEXT'=>'Sélectionnez les champs pour lesquels vous voulez ajouter des infobulles',
 	'LBL_FIELD'=>'Champs',
+	'LBL_NOT_ASSETS'=>'Pas de ressources allouées.',
 );
 
 ?>
