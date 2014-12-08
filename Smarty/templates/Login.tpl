@@ -34,18 +34,11 @@
 				{/if}
 		</form>
 	</div>
-                
 	<div class="importantLinks">
 	<a href='copyright.html' target='_blank'>{$APP.LNK_READ_LICENSE}</a>
 	|
 	<a href='http://corebos.org/page/privacy-policy' target='_blank'>{$APP.LNK_PRIVACY_POLICY}</a>
 	|
 	&copy; 2004- {php} echo date('Y'); {/php}
-        
 	</div>
-     
 {include file="LoginFooter.tpl}
-   <div id="loginFooter">
-		<a href="http://corebos.org/" target="_blank"><img src="themes/login/images/corebosgrindbig.png" title="corebos.org"></a>
-		<a href="http://demo.corebos.it/evolutivocore" target="_blank"><img src="themes/login/images/coreboscrm.png" title="corebos demo"></a>
-</div>

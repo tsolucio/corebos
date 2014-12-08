@@ -33,7 +33,6 @@ $app_strings = array (
 'LBL_SHOW'=>'Show :',
 'today'=>"Today's",
 'all'=>'All',
-'LBL_SAVE_AS'=>" Save As",
 'LBL_UPCOMING_EVENTS'=>'Upcoming Activities',
 'LBL_PENDING_EVENTS'=>'Pending Activities',
 'NTC_WELCOME_MESSAGE' => 'Welcome to coreBOS!',

@@ -261,16 +261,17 @@ function showHideTextBox(obj, elementName) {
 	}
 }
 
-function getCreateCustomFieldFormold(modulename,blockid,mode)
+
+function getCreateCustomFieldForm(modulename,blockid,mode)
 {
    var check = validate(blockid);
    if(check == false)
    return false;
    var type = document.getElementById("fieldType_"+blockid).value;
    var label = document.getElementById("fldLabel_"+blockid).value;
-   var fldLength = document.getElementById("fldLength_"+blockid).value;
+   var fldLength = document.getElementById("fldLength_"+blockid).value;  
    var fldDecimal = document.getElementById("fldDecimal_"+blockid).value;
-   var fldPickList = document.getElementById("fldPickList_"+blockid).value;
+   var fldPickList = encodeURIComponent(document.getElementById("fldPickList_"+blockid).value);
    VtigerJS_DialogBox.block();
    new Ajax.Request(
 		'index.php',
@@ -284,58 +285,7 @@ function getCreateCustomFieldFormold(modulename,blockid,mode)
 					alert(alert_arr.LABEL_ALREADY_EXISTS);
 					return false;
 				}else{
-					$("cfList").innerHTML=str;
-				}
-				gselected_fieldtype = '';
-			}
-		}
-	);
-
-}
-function getCreateCustomFieldForm(modulename,blockid,mode)
-{
-   var check = validate(blockid);
-   if(check == false)
-   return false;
-   var type = document.getElementById("fieldType_"+blockid).value;
-   var label = document.getElementById("fldLabel_"+blockid).value;
-   var fldLength = document.getElementById("fldLength_"+blockid).value;  
-   var fldDecimal = document.getElementById("fldDecimal_"+blockid).value;
-   var fldPickList = document.getElementById("fldPickList_"+blockid).value;
-
-/* ++++ MP Custom Field on primary table   */
-   var fldVTable = document.getElementById("fldVTable_"+blockid).value;
-   var fldColName = document.getElementById("fldColName_"+blockid).value;
-   var fldNumField = document.getElementById("fldNumField_"+blockid).value;      
-/* ++++ MP Custom Field on primary table   */
-
-   VtigerJS_DialogBox.block();
-   new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-
-/* --- MP Custom Field on primary table   
----			postBody: 'module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=addCustomField&fld_module='+modulename+'&ajax=true&blockid='+blockid+'&fieldType='+type+'&fldLabel='+label+'&fldLength='+fldLength+'&fldDecimal='+fldDecimal+'&fldPickList='+fldPickList,
-*/
-
-/* ++++ MP Custom Field on primary table   */
-			postBody: 'module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=addCustomField&fld_module='+modulename+'&ajax=true&blockid='+blockid+'&fieldType='+type+'&fldLabel='+label+'&fldLength='+fldLength+'&fldDecimal='+fldDecimal+'&fldPickList='+fldPickList+'&fldVTable='+fldVTable+'&fldColName='+fldColName+'&numfields='+fldNumField,
-/* ++++ MP Custom Field on primary table   */
-
-			onComplete: function(response) {
-				VtigerJS_DialogBox.unblock();
-				var str = response.responseText;
-				if(str == 'ERROR'){
-					alert(alert_arr.LABEL_ALREADY_EXISTS);
-					return false;
-				}
-
-                                if(str == 'NOT_RIGHT_SYNTAX'){
-					alert('Bad syntax!Reserved words or special characters used.');
-					return false;
-				}else{
-					$("cfList").innerHTML=str;
+					$("cfList").update(str);
 				}	
 				gselected_fieldtype = '';
 			}

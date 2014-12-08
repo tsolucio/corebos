@@ -69,7 +69,6 @@ a:hover {
 	background-image: url('../themes/login/images/box_login.png');
 	padding-top:50px;
 	padding-left:30px;
-	position: absolute;
 	z-index: 2;
 }
 

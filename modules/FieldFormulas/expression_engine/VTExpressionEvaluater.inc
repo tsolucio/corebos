@@ -1,6 +1,6 @@
 <?php
 /*+*******************************************************************************
- * The contents of this file are subject to the Evolutivo BPM License Version 1.0
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
  * The Original Code is:  vtiger CRM Open Source
  * The Initial Developer of the Original Code is vtiger.
@@ -141,21 +141,9 @@ class VTExpressionEvaluater{
 				}else{
 					return $this->exec($params[2]);
 				}
-			}else{ global $log;
-                        $log->debug('dioni92');
+			}else{
 				$params = array_map(array($this, 'exec'), $expr->getParams());
 				$func = $this->operations[$op->value];
-                                //$parameters=$expr->getParams();
-                               // $param1=$this->env($parameters[0]);
-                                //$param2=$this->env($parameters[1]);
-                                 $log->debug('dioni93');
-                                $fieldUIType=getFieldsUIType($expr->getParams());
-                               $log->debug('dioni94');
-                               $log->debug($fieldUIType);
-                                foreach($fieldUIType as $key=>$uitype){
-                                   if(in_array($uitype,array(10,51,57,58,59,66,68,73,75,76,78,80)))
-                                    $params[$key]=getEntityName('', $params[$key]);    
-                                   }         
 				return $func($params);
 			}
 		}else{

@@ -99,12 +99,18 @@ class Import_Index_Controller {
 		if(method_exists($focus, 'getImportableFields')) {
 			$importableFields = $focus->getImportableFields();
 		} else {
+			// if we are merging, then selected merge fields must be in selectable fields, so we fill in the mergeFields
+			$mergeFields = array();
+			if (isset($_REQUEST['merge_type']) and !empty($_REQUEST['merge_fields'])) {
+				$json = vtlib_purify($_REQUEST['merge_fields']);
+				$mergeFields = json_decode($json);
+			}
 			$moduleFields = $this->getAccessibleFields($moduleName);
 			$importableFields = array();
 			foreach($moduleFields as $fieldName => $fieldInstance) {
 				if(($this->isEditableField($fieldInstance)
 							&& ($fieldInstance->getTableName() != 'vtiger_crmentity' || $fieldInstance->getColumnName() != 'modifiedby')
-						) || ($fieldInstance->getUIType() == '70' && $fieldName != 'modifiedtime')) {
+						) || ($fieldInstance->getUIType() == '70' && $fieldName != 'modifiedtime') || in_array($fieldName, $mergeFields)) {
 					$importableFields[$fieldName] = $fieldInstance;
 				}
 			}

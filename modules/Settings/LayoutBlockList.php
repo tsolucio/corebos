@@ -14,7 +14,7 @@ require_once('include/utils/UserInfoUtil.php');
 require_once('include/utils/utils.php');
 require_once 'modules/PickList/PickListUtils.php';
 
-global $mod_strings,$app_strings,$log,$theme,$current_user;;
+global $mod_strings,$app_strings,$log,$theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 require_once('modules/Vtiger/layout_utils.php');
@@ -42,7 +42,7 @@ elseif($subMode == 'movehiddenfields' || $subMode == 'showhiddenfields')
 	show_move_hiddenfields($subMode);
 elseif($subMode == 'changeRelatedInfoOrder')
 	changeRelatedListOrder();
-$smarty->assign("user", $current_user->user_name);
+
 $module_array=getCustomFieldSupportedModules();
 
 $cfimagecombo = Array(
@@ -109,15 +109,7 @@ if($_REQUEST['mode'] !='')
 	$mode = vtlib_purify($_REQUEST['mode']);
 
 $smarty->assign("MODE", $mode);
-/***** +++++ MP Custom Field on primary table   *****/
- $focus = CRMEntity::getInstance($fld_module);
- $modtableName = '';
- if (isset($focus->table_name)) {
- 	$modtableName=substr($focus->table_name,7);
- }
- $smarty->assign("MODULE_TABLE",$modtableName);
- /***** +++++ MP Custom Field on primary table   *****/
- 
+
 if($_REQUEST['ajax'] != 'true') {
 	$smarty->display('Settings/LayoutBlockList.tpl');
 }
@@ -851,13 +843,6 @@ function addCustomField() {
 	$parenttab=vtlib_purify($_REQUEST['parenttab']);
 	$mode=vtlib_purify($_REQUEST['mode']);
 	$blockid = vtlib_purify($_REQUEST['blockid']);
-$numfields = vtlib_purify($_REQUEST['numfields']);
-if (empty($numfields)) $numfields=1;
-
-/***** +++++ MP Custom Field on primary table   *****/
-$fldColName = vtlib_purify($_REQUEST['fldColName']);
-$fldVTable = vtlib_purify($_REQUEST['fldVTable']);
-/***** +++++ MP Custom Field on primary table   *****/
 
 	$tabid = getTabid($fldmodule);
 	if ($fldmodule == 'Calendar' && isset($_REQUEST['activity_type'])) {
@@ -875,11 +860,6 @@ $fldVTable = vtlib_purify($_REQUEST['fldVTable']);
 	$checkquery="select * from vtiger_field where tabid in (". generateQuestionMarks($dup_check_tab_id) .") and fieldlabel=?";
 	$params =  array($dup_check_tab_id, $fldlabel);
 	$checkresult=$adb->pquery($checkquery,$params);
-/***** +++++ MP Custom Field on primary table   *****/
-if ($fldColName == ''){
-	$fldColName = strtolower  (strtr($fldlabel, " ", "_"));
-}
-/***** +++++ MP Custom Field on primary table   *****/
 
 	if($adb->num_rows($checkresult) > 0 ) {
 		$duplicate = 'yes';
@@ -890,29 +870,14 @@ if ($fldColName == ''){
 		$columnName = 'cf_'.$max_fieldid;
 		$custfld_fieldid = $max_fieldid;
 		//Assigning the vtiger_table Name
-//		if($fldmodule != '') {
-//			$focus = CRMEntity::getInstance($fldmodule);
-//			if (isset($focus->customFieldTable)) {
-//				$tableName=$focus->customFieldTable[0];
-//			} else {
-//				$tableName= 'vtiger_'.strtolower($fldmodule).'cf';
-//			}
-//		}
-		if ($fldVTable != '') {
-		$tableName= 'vtiger_'.strtolower($fldVTable);
- 			if ($fldColName != ''){
- 				$columnName = $fldColName;
-                }}
-                         else {
-			if($fldmodule != '') {
-				$focus = CRMEntity::getInstance($fldmodule);
-				if (isset($focus->customFieldTable)) {
-					$tableName=$focus->customFieldTable[0];
-				} else {
-					$tableName= 'vtiger_'.strtolower($fldmodule).'cf';
-				}
+		if($fldmodule != '') {
+			$focus = CRMEntity::getInstance($fldmodule);
+			if (isset($focus->customFieldTable)) {
+				$tableName=$focus->customFieldTable[0];
+			} else {
+				$tableName= 'vtiger_'.strtolower($fldmodule).'cf';
 			}
-	}
+		}
 		//Assigning the uitype
 		$fldlength = vtlib_purify($_REQUEST['fldLength']);
 		$uitype='';

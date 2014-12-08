@@ -1280,8 +1280,6 @@ $mod_strings = Array(
 'RLNotTranslated' => 'List Title Not Translated',
 'FieldsTranslated' => 'Fields Translated',
 'FieldsNotTranslated' => 'Fields Not Translated',
-'LBL_VTABLE'=>'Table:',
-'LBL_COL_NAME'=>'Field name:'
 // language translation strings
 
 );

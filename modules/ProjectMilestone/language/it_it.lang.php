@@ -45,11 +45,6 @@ $mod_strings = Array(
     'LBL_SELECT_DEADLINE_BUTTON_TITLE' => 'Seleziona Scadenza [Alt+T]',
     'LBL_CREATE_DEADLINE_BUTTON_TITLE' => 'Crea Scadenza [Alt+T]',
 
-	'LBL_PROJECT_MILESTONE_INFORMATION'=>'Informazioni Scadenze',
-	'Project Milestone Name'=>'Nome Scadenza',
-	'Project Milestone No'=>'Numero Scadenza',
-    'Milestone Date' => 'Data Scadenza',
-
 );
 
 ?>
