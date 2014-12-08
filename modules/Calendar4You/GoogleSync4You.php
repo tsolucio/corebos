@@ -9,9 +9,11 @@
  
 class GoogleSync4You {
  	
-  	private $user_id = "";
+    private $user_id = "";
     private $user_login = "";
-    private $user_password = "";
+    private $apikey;
+    private $keyfile;
+    private $clientid;
     public $root_directory = "";
     public $mod_strings = array();
     public $status = "";
@@ -31,7 +33,15 @@ class GoogleSync4You {
 	public function getLogin() {
 		return $this->user_login;
 	}
-	
+	public function getAPI() {
+		return $this->apikey;
+	}
+        public function getclientid() {
+		return $this->clientid;
+	}
+        public function getkeyfile() {
+		return $this->keyfile;
+	}
 	public function getStatus() {
 		return $this->status;
 	}
@@ -42,9 +52,10 @@ class GoogleSync4You {
     
 	public function setAccessDataForUser($userid, $only_active = false) {
 
-        $sql = "SELECT gad.google_login, gad.google_password FROM vtiger_users 
+        $sql = "SELECT gad.google_login ,gad.google_apikey, gad.google_keyfile, gad.google_clientid FROM vtiger_users  
         INNER JOIN its4you_googlesync4you_access AS gad ON gad.userid = vtiger_users.id
-        WHERE vtiger_users.id=? AND gad.google_login != '' AND gad.google_password != ''";
+        WHERE vtiger_users.id=? AND gad.google_login != '' 
+        and gad.google_apikey != '' and gad.google_keyfile != '' and gad.google_clientid != ''";
 		
         if ($only_active) $sql .= " AND vtiger_users.status = 'Active'";
         
@@ -54,24 +65,29 @@ class GoogleSync4You {
         {
             $this->user_id = $userid;
             $this->user_login = $this->db->query_result($result,0,'google_login');
-            $this->user_password = $this->db->query_result($result,0,'google_password');
-		
+          //  $this->user_password = $this->db->query_result($result,0,'google_password');
+	    $this->apikey = $this->db->query_result($result,0,'google_apikey');
+            $this->clientid = $this->db->query_result($result,0,'google_clientid');
+            $this->keyfile = $this->db->query_result($result,0,'google_keyfile');	
             return true;
         }
 		
 		return false;
 	}
     
-    public function setAccessData($userid, $login, $password) {
+   public function setAccessData($userid, $login, $apikey,$clientid,$keyfile){
 
             $this->user_id = $userid;
             $this->user_login = $login;
-            $this->user_password = $password;
+            //$this->user_password = $password;
+            $this->apikey = $apikey;
+            $this->clientid = $clientid;
+            $this->keyfile = $keyfile;
 	}
     
 	public function connectToGoogle() {
         
-        $this->connectToGoogleViaZend();    
+        $this->connectToGoogleViaAPI3();    
        
     }
     
@@ -114,7 +130,62 @@ class GoogleSync4You {
         set_include_path($this->root_directory);
        
 	}
-   
+   //new method for API v.3
+    private function connectToGoogleViaAPI3() {
+		
+        set_include_path($this->root_directory. "modules/Calendar4You/");
+        
+        require_once 'gcal/src/Google/Client.php';
+        require_once 'gcal/src/Google/Service/Calendar.php';
+        if ($this->user_login != "" && $this->apikey != "" && $this->clientid!="" && $this->keyfile!="") {
+          //  try {
+             $CLIENT_ID = $this->clientid.'.apps.googleusercontent.com';
+             $SERVICE_ACCOUNT_NAME = $this->clientid.'@developer.gserviceaccount.com';
+             $KEY_FILE = 'modules/Calendar4You/googlekeys/'.$this->keyfile.'.p12';
+             $client = new Google_Client();
+             $client->setApplicationName("corebos2");
+//             if (isset($_SESSION['token']))
+//             {
+//             $client->setAccessToken($_SESSION['token']);
+//              }
+//            else{
+            $key = file_get_contents($KEY_FILE);
+            $client->setClientId($CLIENT_ID);
+            $client->setDeveloperKey($this->apikey);
+            $cred=new Google_Auth_AssertionCredentials(
+            $SERVICE_ACCOUNT_NAME,
+            array('https://www.googleapis.com/auth/calendar'),$key);
+            $client->setAssertionCredentials($cred);
+//            if($client->getAuth()->isAccessTokenExpired()) {
+//            $client->getAuth()->refreshTokenWithAssertion();
+//            }
+            $token = $client->getAccessToken();
+            //            }
+            $this->gService =  new Google_Service_Calendar($client);
+            //if($token!=NULL)
+            $this->is_logged = true;
+           // else  $this->status='Not logged in';
+//                      } catch (Exception $cre) {
+//               $this->status = $cre->message;
+//           
+//            } 
+        } else {
+            $this->status = $this->mod_strings["LBL_MISSING_AUTH_DATA"];
+        }
+     
+        if ($this->is_logged) {
+            try {
+                 $feed=$this->gService->calendarList->listCalendarList();
+                $this->gListFeed =$feed;
+                }
+            catch (Exception $e) {
+           $this->gListFeed = array();
+            }
+        }
+        
+        set_include_path($this->root_directory);
+       
+	}    
     public function getGoogleCalendars() {
         return $this->gListFeed;
     }
@@ -159,8 +230,8 @@ class GoogleSync4You {
 		
         set_include_path($this->root_directory. "modules/Calendar4You/");
         try {
-            $eventEntry = $this->gService->getCalendarEventEntry($eventURL);
-        } catch (Zend_Gdata_App_Exception $e) {
+            $eventEntry = $this->gService->events->get($this->selected_calendar,$eventURL);
+        } catch (Exception $e) {
             $eventEntry = false;
         }
         set_include_path($this->root_directory);
@@ -173,79 +244,76 @@ class GoogleSync4You {
 
         $startDate = $Data["date_start"];
         $endDate = $Data["due_date"];
-        
+        global $default_timezone;
         $startTime = $Data["time_start"];
         $endTime = $Data["time_end"];
-        
-	 	$GCalClass = new Zend_Gdata_Calendar($this->gClient);
-		$newEntry = $GCalClass->newEventEntry();
-        
-		$newEntry->title = $GCalClass->newTitle(trim($Data["subject"]));
-		$newEntry->where  = array($GCalClass->newWhere(trim($Data["location"])));
-
-		$newEntry->content = $GCalClass->newContent($Data["description"]);
-		$newEntry->content->type = 'text';
-        
-		$when = $GCalClass->newWhen();
-		$when->startTime = $startDate.'T'.$this->removeLastColon($startTime).':00.000'.$tzOffset;
-		$when->endTime = $endDate.'T'.$this->removeLastColon($endTime).':00.000'.$tzOffset;
-		
-		$newEntry->when = array($when);
-		
-        $SendEventNotifications = new Zend_Gdata_Calendar_Extension_SendEventNotifications(); 
-        $SendEventNotifications->setValue(true); 
-        $newEntry->SendEventNotifications = $SendEventNotifications;
-		
-        $whos = $this->getInvitedUsersEmails($GCalClass, $recordid); 
-       
-		if (count($whos) > 0) {
-			$newEntry->setWho($whos);
+        $event = new Google_Service_Calendar_Event();
+        $event->setSummary(trim($Data["subject"]));
+        $event->setDescription($Data["description"]);
+        $event->setLocation(trim($Data["location"]));
+        $start = new Google_Service_Calendar_EventDateTime();
+        $start->setDateTime($startDate.'T'.$this->removeLastColon($startTime).':00.000');
+        $start->setTimeZone("$default_timezone");
+        $event->setStart($start);
+        $end = new Google_Service_Calendar_EventDateTime();
+        $end->setDateTime($endDate.'T'.$this->removeLastColon($endTime).':00.000');
+        $end->setTimeZone("$default_timezone");
+        $event->setEnd($end);
+        $SendEventNotifications = new Google_Service_Calendar_EventReminders(); 
+        //$SendEventNotifications->setValue(true); 
+        $event->setReminders($SendEventNotifications);
+	$whos = $this->getInvitedUsersEmails($event, $recordid); 
+     	if (count($whos) > 0) {
+			$event->attendees=$whos;
 		}
 
-        $appCallUri = "";
-        
-        foreach ($this->gListFeed as $calendar) { 
-            if ($calendar->id == $this->selected_calendar) $appCallUri = $calendar->content->src;
-        }  
-
-        $createdEntry = $GCalClass->insertEvent($newEntry, $appCallUri);
-
+//        $appCallUri = "";
+//        
+//        foreach ($this->gListFeed as $calendar) { 
+//            if ($calendar->id == $this->selected_calendar) $appCallUri = $calendar->content->src;
+//        } 
+try{
+$createdEvent = $this->gService->events->insert($this->selected_calendar, $event);
+ $eventid = urldecode($createdEvent->getId());
+}
+catch(Exception $e){
+    $status=null;
+}
         set_include_path($this->root_directory);
-        
-        $eventid = urldecode($createdEntry->id->text);
-        
+                      
         return $eventid;
 	}
     
     function updateEvent($recordid, $eventOld, $Data, $tzOffset = '+00:00') {
-		set_include_path($this->root_directory. "modules/Calendar4You/");
-        
+        set_include_path($this->root_directory. "modules/Calendar4You/");
         $startDate = $Data["date_start"];
         $endDate = $Data["due_date"];
-        
+         global $default_timezone;
         $startTime = $Data["time_start"];
         $endTime = $Data["time_end"];
-        
-        
-        $GCalClass = new Zend_Gdata_Calendar($this->gClient);
-		$eventOld->title = $GCalClass->newTitle(trim($Data["subject"]));
-		$eventOld->where = array($GCalClass->newWhere(trim($Data["location"])));
-		$eventOld->content = $GCalClass->newContent($Data["description"]);
-		$when = $GCalClass->newWhen();
-		$when->startTime = $startDate.'T'.$this->removeLastColon($startTime).':00.000'.$tzOffset;
-		$when->endTime = $endDate.'T'.$this->removeLastColon($endTime).':00.000'.$tzOffset;
-		$eventOld->when = array($when);
-		
-        $whos = $this->getInvitedUsersEmails($GCalClass, $recordid); 
-       
-		if (count($whos) > 0) {
-			$eventOld->setWho($whos);
+        $event = $this->gService->events->get($this->selected_calendar, $eventOld);
+        $event->setSummary(trim($Data["subject"]));
+        $event->setDescription($Data["description"]);
+        $event->setLocation(trim($Data["location"]));
+        $start = new Google_Service_Calendar_EventDateTime();
+        $start->setDateTime($startDate.'T'.$this->removeLastColon($startTime).':00.000');
+        $start->setTimeZone("$default_timezone");
+        $event->setStart($start);
+        $end = new Google_Service_Calendar_EventDateTime();
+        $end->setDateTime($endDate.'T'.$this->removeLastColon($endTime).':00.000');
+        $end->setTimeZone("$default_timezone");
+        $event->setEnd($end);
+        $SendEventNotifications = new Google_Service_Calendar_EventReminders(); 
+        //$SendEventNotifications->setValue(true); 
+        $event->setReminders($SendEventNotifications);
+	$whos = $this->getInvitedUsersEmails($event, $recordid); 
+     	if (count($whos) > 0) {
+			$event->attendees=$whos;
 		}
-			
 		try {
-			$eventOld->save();
+	    $this->gService->events->update($this->selected_calendar,$eventOld, $event);
             $status = true;
-		} catch (Zend_Gdata_App_Exception $e) {
+		} catch (Exception $e) {
 		    $status = null;
 		}
         
@@ -259,7 +327,7 @@ class GoogleSync4You {
         $gevent = $this->getEvent($eventURL);
         
         set_include_path($this->root_directory. "modules/Calendar4You/");
-        $this->gService->delete($gevent->getEditLink()->href);
+        $this->gService->events->delete($this->selected_calendar,$eventURL);
         set_include_path($this->root_directory); 
 
 	}
@@ -267,7 +335,7 @@ class GoogleSync4You {
     private function getInvitedUsersEmails($GCalClass,$recordid) {
 		
         $whos = array();
-        $sql = 'select vtiger_users.email1 from vtiger_invitees left join vtiger_users on vtiger_invitees.inviteeid=vtiger_users.id where activityid=?';
+        $sql = 'select vtiger_users.email1, inviteeid from vtiger_invitees left join vtiger_users on vtiger_invitees.inviteeid=vtiger_users.id where activityid=?';
     	$result = $this->db->pquery($sql, array($recordid));
     	$num_rows=$this->db->num_rows($result);
     	
@@ -275,8 +343,9 @@ class GoogleSync4You {
         {
         	for($i=0;$i<$num_rows;$i++)
         	{
-        		$userid=$this->db->query_result($result,$i,'inviteeid');
-        		$who = $GCalClass->newwho();
+        		//$userid=$this->db->query_result($result,$i,'inviteeid');
+                        $googleEmail=$this->db->query_result($result,$i,'email1');
+        		$who  = new Google_Service_Calendar_EventAttendee();
     			$who->setEmail($googleEmail);
     			$whos[] = $who;
         	}
@@ -291,8 +360,9 @@ class GoogleSync4You {
     
     public function saveEvent($recordid, $event, $Data) {
 		if ($this->is_logged) {
-			if($oldEvent = $this->getRecordsGEvent($recordid, $event)) 
-            {
+         $serv=$this->getRecordsGEvent($recordid, $event);
+      	if($serv->getSummary()!=NULL && $serv->getSummary()!='' && $this->getGEventId($recordid, $event)!='') 
+            {$oldEvent = $this->getGEventId($recordid, $event);
                 if (!isset($Data["time_end"])) $Data["time_end"] = $Data["time_start"];
                 $eventid = $this->updateEvent($recordid, $oldEvent,$Data,date('P'));
 			} 
@@ -320,7 +390,6 @@ class GoogleSync4You {
     public function getRecordsGEvent($recordid, $event) {
         
         $geventid = $this->getGEventId($recordid, $event);
-        
         return $this->getEvent($geventid);
         
 	}
@@ -368,9 +437,23 @@ class GoogleSync4You {
         set_include_path($this->root_directory. "modules/Calendar4You/");
        
         try {
-            $event = $this->gService->getCalendarEventEntry($event_id);
+            $event = $this->gService->events->get($this->selected_calendar,$event_id);
         } catch (Exception $e) {
-            //echo 'Caught exception: ',  $e->getMessage(), "\n";
+           // echo 'Caught exception: ',  $e->getMessage(), "\n";
+            $event = false;
+        }
+
+        set_include_path($this->root_directory);
+
+        return $event;  
+    }
+
+  function getGoogleCalEventfromcron($event_id,$cal) {
+        set_include_path($this->root_directory. "modules/Calendar4You/");
+               try {
+            $event = $this->gService->events->get($cal,$event_id);
+        } catch (Exception $e) {
+            echo 'Caught exception: ',  $e->getMessage(), "\n";
             $event = false;
         }
 
