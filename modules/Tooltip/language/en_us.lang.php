@@ -16,6 +16,7 @@ $mod_strings = Array (
 'LBL_FIELDS_IN'=>'Fields in',
 'LBL_TOOLTIP_HELP_TEXT'=>'Select the fields that you would like to be displayed as tooltip',
 'LBL_FIELD'=>'Field',
+'LBL_NOT_ASSETS'=>'No Assets assigned',
 
 );
 

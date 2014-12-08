@@ -826,4 +826,75 @@ function getSearchingListViewEntries($focus, $module,$list_result,$navigation_ar
 		return $list_block;
 }
 
+function getReferenceAutocomplete($term, $filter, $searchinmodules, $limit, $user) {
+	global $current_user,$log,$adb;
+
+	if (!empty($searchinmodules)) {
+		$searchin = explode(',', $searchinmodules);
+	} else {
+		$searchin = array('HelpDesk','Project','ProjectTask','Potentials','ProjectMilestone',
+		'Invoice','PurchaseOrder','Quotes','SalesOrder','ServiceContracts','Accounts','Contacts',);
+	}
+	if (empty($limit)) $limit = 30;  // hard coded default
+	$respuesta=array();
+
+	if (empty($term)) {
+		$term='%';
+		$op='like';
+	} else {
+		switch ($filter) {
+			case 'eq':
+				$op='=';
+				break;
+			case 'neq':
+				$op='!=';
+				break;
+			case 'startswith':
+				$term=$term.'%';
+				$op='like';
+				break;
+			case 'endswith':
+				$term='%'.$term;
+				$op='like';
+				break;
+			case 'contains':
+				$op='like';
+				$term='%'.$term.'%';
+				break;
+			default: $op='='; break;
+		}
+	}
+
+	foreach ($searchin as $srchmod) {
+		if (!(vtlib_isModuleActive($srchmod) and isPermitted($srchmod,'DetailView'))) continue;
+		$eirs = $adb->pquery('select fieldname,tablename,entityidfield from vtiger_entityname where modulename=?',array($srchmod));
+		$ei = $adb->fetch_array($eirs);
+		$fieldsname = $ei['fieldname'];
+		$wherefield = $ei['fieldname']." $op '$term' ";
+		if (!(strpos($fieldsname, ',') === false)) {
+			$fieldlists = explode(',', $fieldsname);
+			$fieldsname = "concat(";
+			$fieldsname = $fieldsname . implode(",' ',", $fieldlists);
+			$fieldsname = $fieldsname . ")";
+			$wherefield = implode(" $op '$term' or ", $fieldlists)." $op '$term' ";
+		}
+		$qry = "select crmid,$fieldsname as crmname
+				from {$ei['tablename']}
+				inner join vtiger_crmentity on crmid = {$ei['entityidfield']}
+				where deleted = 0 and ($wherefield)";
+		$rsemp=$adb->query($qry);
+		$trmod = getTranslatedString($srchmod,$srchmod);
+		$wsid = vtyiicpng_getWSEntityId($srchmod);
+		while ($emp=$adb->fetch_array($rsemp)) {
+			$respuesta[]=array(
+					'crmid'=>$wsid.$emp['crmid'],
+					'crmname'=>$emp['crmname']." :: $trmod",
+					'crmmodule'=>$srchmod,
+			);
+			if (count($respuesta)>=$limit) break;
+		}
+	}
+	return $respuesta;
+}
+
 ?>

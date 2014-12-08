@@ -146,13 +146,13 @@ if (isset($_FILES) and isset($_FILES['binFaviconFile']) and !empty($_FILES['binF
 }
 if ($error_flag == "") {
 	if ($savelogo == "true") {
-		move_uploaded_file($_FILES["binFile"]["tmp_name"], $uploaddir . $_FILES["binFile"]["name"]);
+		move_uploaded_file($_FILES["binFile"]["tmp_name"], $uploaddir . $filename);
 	}
         if ($savefrontlogo == "true") {
-		move_uploaded_file($_FILES["binFrontFile"]["tmp_name"], $uploaddir . $_FILES["binFrontFile"]["name"]);
+		move_uploaded_file($_FILES["binFrontFile"]["tmp_name"], $uploaddir . $front_filename);
 	}
         if ($savefaviconlogo == "true") {
-		move_uploaded_file($_FILES["binFaviconFile"]["tmp_name"], $uploaddir . $_FILES["binFaviconFile"]["name"]);
+		move_uploaded_file($_FILES["binFaviconFile"]["tmp_name"], $uploaddir . $favicon_filename);
 	}
 		$organization_name = vtlib_purify($_REQUEST['organization_name']);
 		$org_name = $_REQUEST['org_name'];

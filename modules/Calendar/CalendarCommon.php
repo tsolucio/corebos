@@ -231,7 +231,7 @@ function getTimeCombo($format,$bimode,$hour='',$min='',$fmt='',$todocheck=false)
  *and returns it in string format.
  */
 
-function getActFieldCombo($fieldname,$tablename)
+function getActFieldCombo($fieldname,$tablename,$follow_activitytype = false)
 {
 	global $adb, $mod_strings,$current_user;
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
@@ -239,7 +239,10 @@ function getActFieldCombo($fieldname,$tablename)
 	$js_fn = '';
 	if($fieldname == 'eventstatus')
 		$js_fn = 'onChange = "getSelectedStatus();"';
-	$combo .= '<select name="'.$fieldname.'" id="'.$fieldname.'" class=small '.$js_fn.'>';
+	if($follow_activitytype)
+		$combo .= '<select name="follow_'.$fieldname.'" id="follow_'.$fieldname.'" class=small '.$js_fn.'>';
+	else
+		$combo .= '<select name="'.$fieldname.'" id="'.$fieldname.'" class=small '.$js_fn.'>';
 	if($is_admin)
 		$q = "select * from ".$tablename;
 	else

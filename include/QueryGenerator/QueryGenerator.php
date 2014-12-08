@@ -642,6 +642,10 @@ class QueryGenerator {
 				}
 			} elseif($this->isDateType($field->getFieldDataType())) {
 				$value = getValidDBInsertDateTimeValue($value);
+				if (empty($value)) {
+					$sql[] = 'IS NULL or '.$field->getTableName().'.'.$field->getFieldName()." = ''";
+					return $sql;
+				}
 			}
 
 			if($field->getFieldName() == 'birthday' && !$this->isRelativeSearchOperators(

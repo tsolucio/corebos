@@ -28,7 +28,11 @@
 		
 		$accessCrypt = md5($token.$accessKey);
 		if(strcmp($accessCrypt,$pwd)!==0){
-			throw new WebServiceException(WebServiceErrorCode::$INVALIDUSERPWD,"Invalid username or password");
+			$userpass = vtws_getUserPasswordFromInput($token,$pwd,$username);
+			$user->column_fields["user_name"]=$username;
+			if($userpass['token']!=$token or !$user->doLogin($userpass['password'])){
+				throw new WebServiceException(WebServiceErrorCode::$INVALIDUSERPWD,"Invalid username or password");
+			}
 		}
 		$user = $user->retrieveCurrentUserInfoFromFile($userId);
 		if($user->status != 'Inactive'){
@@ -62,5 +66,10 @@
 		}
 		return null;
 	}
-	
+
+	function vtws_getUserPasswordFromInput($token,$pwd,$username) {
+		$utoken = substr($pwd, 0, strlen($token));
+		$upass = substr($pwd,strlen($token));
+		return array('token'=>$utoken,'password'=>$upass);
+	}
 ?>
