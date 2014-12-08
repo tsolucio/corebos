@@ -13,7 +13,6 @@
 	<filename>build/changeSets/coreboscp_rest.php</filename>
 	<classname>coreboscp_rest</classname>
 	<systemupdate>true</systemupdate>
-	<continuous>true</continuous>
 </changeSet>
 <changeSet>
 	<author>joebordes</author>
@@ -51,52 +50,24 @@
 	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
-	<author>joebordes</author>
-	<description>Upgrade from coreBOS5.4 to coreBOS5.5</description>
-	<filename>build/changeSets/cb54_cb55.php</filename>
-	<classname>cb54_cb55</classname>
+	<author>drivalda</author>
+	<description>add event </description>
+	<filename>build/changeSets/addmoduletolog.php</filename>
+	<classname>addmoduletolog</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
-	<author>joebordes</author>
-	<description>Move workflow tasks to database to make easier adding new ones</description>
-	<filename>build/changeSets/create_workflow_taskstype.php</filename>
-	<classname>create_workflow_taskstype</classname>
+	<author>drivalda</author>
+	<description>import entitylog module </description>
+	<filename>build/changeSets/entitylogimport.php</filename>
+	<classname>entitylogimport</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
-	<author>joebordes</author>
-	<description>Add/Delete Tags workflow task</description>
-	<filename>build/changeSets/add_workflow_tags.php</filename>
-	<classname>add_workflow_tags</classname>
-	<systemupdate>false</systemupdate>
-</changeSet>
-<changeSet>
-	<author>joebordes</author>
-	<description>Workflow custom method to update assigned to of contacts on account save</description>
-	<filename>build/changeSets/workflow_contactassignedto.php</filename>
-	<classname>workflow_contactassignedto</classname>
-	<systemupdate>false</systemupdate>
-</changeSet>
-<changeSet>
-    <author>joebordes</author>
-    <description>Custom field support on FAQ module</description>
-    <filename>build/changeSets/cffaq.php</filename>
-    <classname>cffaq</classname>
-    <systemupdate>true</systemupdate>
-</changeSet>
-<changeSet>
-    <author>joebordes</author>
-    <description>Install Payment Control module</description>
-    <filename>build/changeSets/installcyp.php</filename>
-    <classname>installcyp</classname>
-    <systemupdate>false</systemupdate>
-</changeSet>
-<changeSet>
-	<author>joebordes</author>
-	<description>Add Block, Perspective and Continuous</description>
-	<filename>build/changeSets/cbupdater_blockperspective.php</filename>
-	<classname>cbupdater_blockperspective</classname>
+	<author>drivalda</author>
+	<description>import loggingconf module </description>
+	<filename>build/changeSets/loggingconfimport.php</filename>
+	<classname>loggingconfimport</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
@@ -133,6 +104,20 @@
 	<filename>build/changeSets/installc4y.php</filename>
 	<classname>installc4y</classname>
 	<systemupdate>false</systemupdate>
+</changeSet>
+<changeSet>
+	<author>eri</author>
+	<description>import adocmaster module </description>
+	<filename>build/changeSets/adocmasterimport.php</filename>
+	<classname>adocmasterimport</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+         <author>eri</author>
+	<description>import adocdetail module </description>
+	<filename>build/changeSets/adocdetailimport.php</filename>
+	<classname>adocdetailimport</classname>
+	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
 	<author>joebordes</author>

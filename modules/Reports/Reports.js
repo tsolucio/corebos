@@ -329,7 +329,6 @@ function saveAndRunReport()
 	formSelectColumnString();
 	document.NewReport.submit();
 }
-
 function saveas() {
 	if(selectedColumnsObj.options.length == 0) {
 		alert(alert_arr.COLUMNS_CANNOT_BE_EMPTY);
@@ -344,7 +343,6 @@ function saveas() {
 	} else
 		alert(alert_arr.LBL_REPORT_NAME_ERROR);
 }
-
 function changeSteps1()
 {
 	if(getObj('step5').style.display != 'none')

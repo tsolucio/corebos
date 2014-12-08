@@ -2530,7 +2530,70 @@ class CRMEntity {
 
 		$adb->pquery('UPDATE vtiger_crmentity SET modifiedtime = ?, modifiedby = ? WHERE crmid = ?', array($currentTime, $current_user->id, $crmid));
 	}
+function get_log_history($entityid,$tabid)
+	{
+		global $log, $adb,$current_user;
+		
+		$moduleName = getTabModuleName($tabid);
+		$log->debug("Entering into get_log_history($entityid,$tabid) method ...");
 
+                $query="SELECT u.user_name, h.finalstate, c.createdtime,h.relatedto,h.entitylogid,h.entitylogname
+                FROM vtiger_entitylog h
+                JOIN vtiger_users u ON h.user = u.id 
+                JOIN vtiger_crmentity c on c.crmid=h.entitylogid
+                where h.relatedto=? and c.deleted=0";
+
+                $result=$adb->pquery($query, array($entityid));
+                $header=Array();
+                $header[0] ="".getTranslatedString('LBL_ACTION');
+                $header[1] ="".getTranslatedString('LBL_DATE');
+                $header[2] ="".getTranslatedString('LBL_USER');
+                $header[3] ="".getTranslatedString('LBL_RESTORE');
+                $entries=Array();
+                
+                while ($row=$adb->getNextRow($result, false)) {
+                  $user = $row['user_name'];
+                  $update_log = unserialize($row['finalstate']);
+                  $update_date = $row['createdtime'];
+                  $entitylogid=$row['entitylogid'];
+                  $entitylogname=$row['entitylogname'];
+                  $lines = array();
+                  foreach($update_log as $data) {
+                    $query = "select fieldlabel,uitype,columnname,fieldid from vtiger_field where tabid={$tabid} and fieldname='{$data['fieldname']}'";
+                    $res = $adb->query($query);
+                    $fieldlabel = $adb->query_result($res, 0, 0);
+                    $uitype = $adb->query_result($res, 0, 1);
+                   if (in_array($uitype,array(10)))
+                    {                     
+                         $idold=$data['oldvalue'];
+                         $relatedModule1=$adb->query_result($adb->pquery("Select setype from vtiger_crmentity where crmid=?",array($idold)),0,0);
+                         $data['oldvalue']=  getEntityName($relatedModule1, $idold);
+                         $data['oldvalue']=$data['oldvalue'][$idold];
+
+                         $idnew= $data['newvalue'];
+                         $relatedModule2=$adb->query_result($adb->pquery("Select setype from vtiger_crmentity where crmid=?",array($idnew)),0,0);
+                         $data['newvalue']=getEntityName($relatedModule2, $idnew);
+                         $data['newvalue']=$data['newvalue'][$idnew]; 
+                     
+                    }
+                    $lines[] = sprintf(getTranslatedString('HISTORY_LOG_CHANGED_VALUE_MSG'), getTranslatedString($moduleName, $moduleName), getTranslatedString($fieldlabel, $moduleName), $data['oldvalue'], $data['newvalue']);
+                  }
+                  $restore_link='Restore'; 
+                  if(is_admin($current_user))
+                  {
+                   $restore_link  ='<a href="#">Restore</a>'; 
+                  }
+                  $entries[] = array(
+                      '<a href="index.php?module=Entitylog&action=DetailView&record='.$entitylogid.'">'.$entitylogname.'</a>',
+                    //implode('<br>', $lines),
+                    utf8_encode(strftime('%c', strtotime($update_date))),
+                    $user,
+                    $restore_link);
+                }
+		$return_value = Array('header'=>$header,'entries'=>$entries);
+		$log->debug("Exiting from get_log_history($entityid,$tabid method ...");
+		return $return_value;
+	}
 }
 
 ?>

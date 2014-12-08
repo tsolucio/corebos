@@ -2020,9 +2020,39 @@ function getEntityName($module, $ids_list) {
 			}
 		}
 		return $entityDisplay;
-	}
-	$log->debug("Exiting getEntityName method ...");
-}
+	}      else{
+            $queryModule = "select setype from vtiger_crmentity where crmid = ?";
+            $module =$adb->query_result($adb->pquery($queryModule, array($ids_list)),0) ;            
+            $query = "select fieldname,tablename,entityidfield from vtiger_entityname where modulename = ?";
+		 $result = $adb->pquery($query, array($module));
+		 $fieldsname = $adb->query_result($result,0,'fieldname');
+		 $tablename = $adb->query_result($result,0,'tablename'); 
+		 $entityidfield = $adb->query_result($result,0,'entityidfield'); 
+		 if(!(strpos($fieldsname,',') === false))
+		 {
+			 $fieldlists = explode(',',$fieldsname);
+			 $fieldsname = "concat(";
+			 $fieldsname = $fieldsname.implode(",' ',",$fieldlists);
+			 $fieldsname = $fieldsname.")";
+		 }	
+		 if (count($ids_list) <= 0) {
+		 	return array();
+		 }
+		 
+		 $query1 = "select $fieldsname as entityname,$entityidfield from $tablename where ".
+			"$entityidfield = ?";
+		 $params1 = array($ids_list);
+		 $result = $adb->pquery($query1, $params1);
+		 $numrows = $adb->num_rows($result);
+	  	 $account_name = array();                       
+		
+			//$entity_id = $adb->query_result($result,$i,$entityidfield);
+			$entity_info = $adb->query_result($result,$i,'entityname');
+		 
+		 return $entity_info;
+       }
+ 	$log->debug("Exiting getEntityName method ...");
+ }
 
 /* * Function to get all permitted modules for a user with their parent
  */
@@ -3160,7 +3190,8 @@ function getEntityFieldValues($entity_field_info, $ids_list) {
 		}
 	}
 	return $entity_info;
-}
+}	
+  
 
 /**
  * this function returns the entity field name for a given module; for e.g. for Contacts module it return concat(lastname, ' ', firstname)
@@ -3393,6 +3424,18 @@ function getReturnPath($host, $from_email) {
 	return $returnpath;
 }
 
+//function fetch_logo($type)
+//{
+//global $adb;
+//        $logodir ="test/logo/";
+//        $sql="select * from vtiger_organizationdetails";
+//        $result = $adb->pquery($sql, array());
+//        if($type == 1) $logoname = decode_html($adb->query_result($result,0,'logoname'));
+//        if($type == 2) $logoname = decode_html($adb->query_result($result,0,'frontlogo'));
+//        if($type == 3) $logoname = decode_html($adb->query_result($result,0,'faviconlogo'));
+//	return $logodir.$logoname;
+//}
+
 function picklistHasDependency($keyfldname,$modulename) {
 	global $adb;
 	$tabid = getTabid($modulename);
@@ -3401,6 +3444,7 @@ function picklistHasDependency($keyfldname,$modulename) {
 		return true;
 	else
 	return false;
+
 }
 
 function fetch_logo($type) {
@@ -3424,4 +3468,19 @@ function fetch_logo($type) {
 	return $logodir.$logoname;
 }
 
+function getFieldsUIType($fieldnames){
+    global $adb,$log;
+    
+    $module=$_REQUEST['module'];
+    $tabid=  getTabid($module);
+    $results=array();
+    $i=0;
+    foreach($fieldnames as $void=>$fieldname){
+        $fldname=substr($fieldname,7,-1); 
+        $uitype=$adb->query_result($adb->pquery("Select uitype from vtiger_field where fieldname=? and tabid=?",array($fldname,$tabid)));
+        $results[$i++]=$uitype;                        
+    }
+    return $results;
+}
+ 
 ?>

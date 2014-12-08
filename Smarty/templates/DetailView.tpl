@@ -151,6 +151,7 @@ function sendfile_email()
 
 <div id="lstRecordLayout" class="layerPopup" style="display:none;width:325px;height:300px;"></div>
 
+
 {if $MODULE eq 'Accounts' || $MODULE eq 'Contacts' || $MODULE eq 'Leads'}
 	{if $MODULE eq 'Accounts'}
 		{assign var=address1 value='$MOD.LBL_BILLING_ADDRESS'}
@@ -289,6 +290,7 @@ function sendfile_email()
 																						<td>&nbsp;</td>
 																						<td>&nbsp;</td>
 																						<td align=right>
+                                                                                                                                                                                  
 																							{if $header eq $MOD.LBL_ADDRESS_INFORMATION && ($MODULE eq 'Accounts' || $MODULE eq 'Contacts' || $MODULE eq 'Leads') }
 																								{if $MODULE eq 'Leads'}
 																									<input name="mapbutton" value="{$APP.LBL_LOCATE_MAP}" class="crmbutton small create" type="button" onClick="searchMapLocation( 'Main' )" title="{$APP.LBL_LOCATE_MAP}">
@@ -300,7 +302,9 @@ function sendfile_email()
 																					</tr>
 
 																					<!-- This is added to display the existing comments -->
-																					{if $header eq $MOD.LBL_COMMENTS || $header eq $MOD.LBL_COMMENT_INFORMATION}
+																					
+
+{if $header eq $MOD.LBL_COMMENTS || $header eq $MOD.LBL_COMMENT_INFORMATION}
 																						<tr>
 																							<td colspan=4 class="dvInnerHeader">
 																								<b>{$MOD.LBL_COMMENT_INFORMATION}</b>
@@ -330,6 +334,7 @@ function sendfile_email()
 																							</td>{/strip}
 																						</tr>
 																					{/if}
+
 																				</table>
 																				{if $header neq 'Comments'}
 																					{if $BLOCKINITIALSTATUS[$header] eq 1}
@@ -389,6 +394,11 @@ function sendfile_email()
 																					{/if}
 																			</td>
 																		</tr>
+																	{/foreach}
+	
+ 
+					
+
 																	{* vtlib Customization: Embed DetailViewWidget block:// type if any *}
 																	{if $CUSTOM_LINKS && !empty($CUSTOM_LINKS.DETAILVIEWWIDGET)}
 																		{foreach item=CUSTOM_LINK_DETAILVIEWWIDGET from=$CUSTOM_LINKS.DETAILVIEWWIDGET}
@@ -406,7 +416,7 @@ function sendfile_email()
 																		{/foreach}
 																	{/if}
 																	{* END *}
-																	{/foreach}
+																
 																	{*-- End of Blocks--*}
 
 																	<!-- Inventory - Product Details informations -->

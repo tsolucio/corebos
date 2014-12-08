@@ -12,6 +12,8 @@
   `classname` varchar(183) default NULL,
   `execstate` varchar(56) default NULL,
   `systemupdate` varchar(3) default NULL,
+  `blocked` varchar(3) default NULL,
+  `perspective` varchar(3) default NULL,
   `execdate` date default NULL,
   `execorder` int(11) default NULL,
   PRIMARY KEY (`cbupdaterid`),

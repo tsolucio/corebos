@@ -3212,8 +3212,9 @@ class ReportRun extends CRMEntity
 		}
 		$workbook->close();
 	}
+    
+    function writeReportToCSVFile($fileName, $filterlist='') {
 
-	function writeReportToCSVFile($fileName, $filterlist='') {
 		global $currentModule, $current_language;
 		$mod_strings = return_module_language($current_language, $currentModule);
 
@@ -3232,7 +3233,7 @@ class ReportRun extends CRMEntity
 			}
 		}
 		fclose($fp);
-	}
+    }
 
     function getGroupByTimeList($reportId){
         global $adb;
