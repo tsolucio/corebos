@@ -36,6 +36,16 @@ $Calendar_Settings = $Calendar4You->getSettings();
 		</td>
 	</tr>
 </table>
+<?php
+//upload google file
+            echo '<br><div>';
+            echo "<form method='post' action='index.php?module=Calendar4You&action=uploadfile' enctype='multipart/form-data'>";
+            echo $mod_strings['LBL_GOOGLEFILE'];
+            echo "<input type='file' name='user_file' class='small'/>    
+            <input type='submit' name='sub' class='crmbutton edit small' value='".$mod_strings["LBL_UPLOADFILE"]."' />
+            </form>";
+            echo'</div><hr>';
+ ?>
 <form name="SharingForm" method="post" action="index.php" onsubmit="VtigerJS_DialogBox.block();">
 <input type="hidden" name="module" value="Calendar4You">
 <input type="hidden" name="action" value="updateCalendarSharing">
@@ -242,6 +252,9 @@ $Calendar_Settings = $Calendar4You->getSettings();
             }
             
             $google_login = $GoogleSync4You->getLogin();
+            $google_apikey= $GoogleSync4You->getAPI();
+            $google_keyfile = $GoogleSync4You->getkeyfile();
+            $google_clientid = $GoogleSync4You->getclientid();
             ?>
             </div><br>
             <?php 
@@ -269,10 +282,30 @@ $Calendar_Settings = $Calendar4You->getSettings();
             echo '<input type="text" name="google_login" id="google_login" value="'.$google_login.'" class="small"><br />';
             echo '</td><tr>';
             echo '<tr><td>';
+            echo getTranslatedString("LBL_GOOGLEAPIKEY","Calendar4You").": ";
+            echo '</td><td>';
+            echo '<input type="text" name="google_apikey" id="google_apikey" value="'.$google_apikey.'" class="small">';
+            echo '</td></tr>';
+            echo '<tr><td>';
+            echo '<tr><td>';
+            echo getTranslatedString("LBL_GOOGLECLIENTID","Calendar4You").": ";
+            echo '</td><td>';
+            echo '<input type="text" name="google_clientid" id="google_clientid" value="'.$google_clientid.'" class="small">';
+            echo '</td></tr>';
+            echo '<tr><td>';
+            echo '<tr><td>';
+            echo getTranslatedString("LBL_GOOGLEKEYFILE","Calendar4You").": ";
+            echo '</td><td>';
+            echo '<input type="text" name="google_keyfile" id="google_keyfile" value="'.$google_keyfile.'" class="small">';
+            echo '</td></tr>';
+            echo '<tr><td>';
+            /*
             echo getTranslatedString("LBL_PASSWORD","Users").": ";
             echo '</td><td>';
             echo '<input type="password" name="google_password" id="google_password" value="" class="small">';
-            echo '</td></tr></table>';
+            echo '</td></tr>
+           */
+            echo'</table>';
             echo "</div>";
 
             echo '<input type="hidden" name="update_google_account" id="update_google_account" value="'.$update_google_account.'">';
