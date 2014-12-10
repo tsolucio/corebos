@@ -67,5 +67,7 @@ $mod_strings = Array (
 "LBL_GOOGLEAPIKEY"=>"Api Key",
 "LBL_GOOGLECLIENTID"=>"ClientID",
 "LBL_GOOGLEKEYFILE"=>"FileKey",
+"LBL_UPLOADFILE"=>"Upload",
+"LBL_GOOGLEFILE"=>'Google File: '
 );
 ?>

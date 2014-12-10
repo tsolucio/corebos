@@ -138,7 +138,7 @@ class GoogleSync4You {
         require_once 'gcal/src/Google/Client.php';
         require_once 'gcal/src/Google/Service/Calendar.php';
         if ($this->user_login != "" && $this->apikey != "" && $this->clientid!="" && $this->keyfile!="") {
-          //  try {
+            try {
              $CLIENT_ID = $this->clientid.'.apps.googleusercontent.com';
              $SERVICE_ACCOUNT_NAME = $this->clientid.'@developer.gserviceaccount.com';
              $KEY_FILE = 'modules/Calendar4You/googlekeys/'.$this->keyfile.'.p12';
@@ -162,13 +162,12 @@ class GoogleSync4You {
             $token = $client->getAccessToken();
             //            }
             $this->gService =  new Google_Service_Calendar($client);
-            //if($token!=NULL)
-            $this->is_logged = true;
-           // else  $this->status='Not logged in';
-//                      } catch (Exception $cre) {
-//               $this->status = $cre->message;
-//           
-//            } 
+            //a fast way to check if the login parameters work
+            $colors = $this->gService->colors->get();
+            $this->is_logged = true;}
+            catch (Exception $e) {
+               $this->status = $e->getMessage();
+                       } 
         } else {
             $this->status = $this->mod_strings["LBL_MISSING_AUTH_DATA"];
         }
