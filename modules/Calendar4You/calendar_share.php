@@ -36,16 +36,6 @@ $Calendar_Settings = $Calendar4You->getSettings();
 		</td>
 	</tr>
 </table>
-<?php
-//upload google file
-            echo '<br><div>';
-            echo "<form method='post' action='index.php?module=Calendar4You&action=uploadfile' enctype='multipart/form-data'>";
-            echo $mod_strings['LBL_GOOGLEFILE'];
-            echo "<input type='file' name='user_file' class='small'/>    
-            <input type='submit' name='sub' class='crmbutton edit small' value='".$mod_strings["LBL_UPLOADFILE"]."' />
-            </form>";
-            echo'</div><hr>';
- ?>
 <form name="SharingForm" method="post" action="index.php" onsubmit="VtigerJS_DialogBox.block();">
 <input type="hidden" name="module" value="Calendar4You">
 <input type="hidden" name="action" value="updateCalendarSharing">
@@ -328,4 +318,13 @@ $Calendar_Settings = $Calendar4You->getSettings();
 	</tr>
 	</table>
 </form>
-
+<?php
+//upload google file
+        echo'</div><hr size="1" color="black">';
+            echo '<br><div>';
+            echo "<form method='post' action='index.php?module=Calendar4You&action=uploadfile' enctype='multipart/form-data'>";
+            echo $mod_strings['LBL_GOOGLEFILE'];
+            echo "<input type='file' name='user_file' class='small'/>    
+            <input type='submit' name='sub' class='crmbutton edit small' value='".$mod_strings["LBL_UPLOADFILE"]."' />
+            </form><br>";
+ ?>
