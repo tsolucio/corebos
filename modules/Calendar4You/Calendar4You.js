@@ -475,11 +475,13 @@ function showGoogleSyncAccDiv(value){
 }
 
 function controlGoogleSync(){
-    if (document.getElementById('google_password')){
-        var google_password_val = document.getElementById('google_password').value;
+    if (document.getElementById('google_apikey')){
+       // var google_password_val = document.getElementById('google_password').value;
         var google_login_val = document.getElementById('google_login').value;
-        
-        if (google_password_val != "" && google_login_val != ""){
+        var google_apikey_val = document.getElementById('google_apikey').value;
+        var google_clientid_val = document.getElementById('google_clientid').value;
+        var google_keyfile_val = document.getElementById('google_keyfile').value;
+         if (google_login_val != "" && google_apikey_val != "" && google_clientid_val != "" && google_keyfile_val != ""){
             fnShowDrop("google_sync_verifying");
             fnHideDrop("google_sync_text");
 
@@ -487,8 +489,7 @@ function controlGoogleSync(){
                     	'index.php',
                     	{queue: {position: 'end', scope: 'command'},
                             	method: 'post',
-                            	postBody: 'module=Calendar4You&action=Calendar4YouAjax&file=GoogleSync4YouControl&ajax=true&login='+google_login_val+'&pass='+google_password_val,
-                            	onComplete: function(response) {
+	                        postBody: 'module=Calendar4You&action=Calendar4YouAjax&file=GoogleSync4YouControl&ajax=true&login='+google_login_val+'&apikey='+google_apikey_val+'&keyfile='+google_keyfile_val+'&clientid='+google_keyfile_val,                            	onComplete: function(response) {
                             
                             result = JSON.parse(response.responseText);
 
