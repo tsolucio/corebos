@@ -1147,7 +1147,11 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 								$value1 = strip_tags($value);
 								$value = htmlspecialchars(addslashes(html_entity_decode(strip_tags($value), ENT_QUOTES, $default_charset)), ENT_QUOTES, $default_charset); // Remove any previous html conversion
 								$count = counterValue();
-								$value = "<a href='javascript:window.close();' onclick='return vtlib_setvalue_from_popup($entity_id, \"$value\", \"$forfield\")' id =$count >$value1</a>";
+								if (property_exists($focus,'popup_function') and !empty($focus->popup_function)) {
+									$value = "<a href='javascript:void(0);' onclick='return ".$focus->popup_function."($entity_id, \"$value\", \"$forfield\")' id =$count >$value1</a>";
+								} else {
+									$value = "<a href='javascript:window.close();' onclick='return vtlib_setvalue_from_popup($entity_id, \"$value\", \"$forfield\")' id =$count >$value1</a>";
+								}
 							}
 						}
 						// END
