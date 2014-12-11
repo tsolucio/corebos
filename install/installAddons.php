@@ -30,6 +30,7 @@ function installAddons() {
 		'Webforms' => false,
 	),
 	'lang' => array(
+		'it_it' => true,
 		'pt_br' => false,
 		'en_gb' => false,
 		'de_de' => false,
