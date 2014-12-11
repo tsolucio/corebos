@@ -56,6 +56,13 @@
 	
 	</td>
 </tr>
+	<tr>
+	<td class="mailSubHeader" align="right"><font color="red">*</font><b>{$MOD.LBL_FROM}</b></td>
+	<td class="cellText" style="padding: 5px;">
+		<input name="from_email" id="from_email" class="txtBox" type="text" value="{$EMAIL_FROM}" style="width: 525px;" placeholder="{'LeaveEmptyForUserEmail'|@getTranslatedString:'Settings'}">
+	</td>
+	<td class="cellText" style="padding: 5px;" align="left" nowrap></td>
+	</tr>
 	{foreach item=row from=$BLOCKS}
 	{foreach item=elements from=$row}
 	{if $elements.2.0 eq 'parent_id'}

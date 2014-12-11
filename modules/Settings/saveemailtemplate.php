@@ -17,12 +17,13 @@ $templateid = vtlib_purify($_REQUEST["templateid"]);
 $description = vtlib_purify($_REQUEST["description"]);
 $subject = vtlib_purify($_REQUEST["subject"]);
 $body = fck_from_html($_REQUEST["body"]);
+$emailfrom = vtlib_purify($_REQUEST["emailfrom"]);
 
 if(isset($templateid) && $templateid !='')
 {
 	$log->info("the templateid is set");  
-	$sql = "update vtiger_emailtemplates set foldername =?, templatename =?, subject =?, description =?, body =? where templateid =?";
-	$params = array($folderName, $templateName, $subject, $description, $body, $templateid);
+	$sql = "update vtiger_emailtemplates set foldername =?, templatename =?, subject =?, description =?, body =?, sendemailfrom=? where templateid =?";
+	$params = array($folderName, $templateName, $subject, $description, $body, $emailfrom, $templateid);
 	$adb->pquery($sql, $params);
  
 	$log->info("about to invoke the detailviewemailtemplate file");  
@@ -31,8 +32,8 @@ if(isset($templateid) && $templateid !='')
 else
 {
 	$templateid = $db->getUniqueID('vtiger_emailtemplates');
-	$sql = "insert into vtiger_emailtemplates values (?,?,?,?,?,?,?)";
-	$params = array($folderName, $templateName, $subject, $description, $body, 0, $templateid);
+	$sql = "insert into vtiger_emailtemplates values (?,?,?,?,?,?,?,?)";
+	$params = array($folderName, $templateName, $subject, $description, $body, 0, $templateid. $emailfrom);
 	$adb->pquery($sql, $params);
 
 	 $log->info("added to the db the emailtemplate");

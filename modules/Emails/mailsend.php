@@ -108,6 +108,13 @@ $myids=explode("|",$parentid);
 $all_to_emailids = Array();
 $from_name = $current_user->user_name;
 $from_address = $current_user->column_fields['email1'];
+if (!empty($_REQUEST['from_email'])) {
+	$from_address = $_REQUEST['from_email'];
+	if ($from_address!=$val) {
+		$query = "update vtiger_emaildetails set from_email = concat(from_email,' > ',?) where emailid=?";
+		$adb->pquery($query, array($from_address, $focus->id));
+	}
+}
 
 for ($i=0;$i<(count($myids)-1);$i++)
 {

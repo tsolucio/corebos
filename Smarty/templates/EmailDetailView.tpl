@@ -33,11 +33,15 @@
    </tr> 
    {foreach item=row from=$BLOCKS}
    {foreach item=elements key=title from=$row}
-   {if $elements.fldname eq 'subject'}	
-   	<tr>
+   {if $elements.fldname eq 'subject'}
+	<tr>
+	<td class="lvtCol" width="15%" style="padding: 5px;" align="right"><b>{$MOD.LBL_FROM}</b></td>
+	<td class="dvtCellLabel" style="padding: 5px;">&nbsp;{$FROM_MAIL}</td>
+	<td class="dvtCellLabel" width="20%" rowspan="5"><div id="attach_cont" class="addEventInnerBox" style="overflow:auto;height:140px;width:100%;position:relative;left:0px;top:0px;"></td>
+	</tr>
+	<tr>
 	<td class="lvtCol" width="15%" height="70px" style="padding: 5px;" align="right"><b>{$MOD.LBL_TO}</b></td>
 	<td class="dvtCellLabel" style="padding: 5px;">&nbsp;{$TO_MAIL}</td>
-	<td class="dvtCellLabel" width="20%" rowspan="4"><div id="attach_cont" class="addEventInnerBox" style="overflow:auto;height:140px;width:100%;position:relative;left:0px;top:0px;"></td>
 	</tr>
 	   {if 'ccmail'|@emails_checkFieldVisiblityPermission eq '0'}
 	   <tr>

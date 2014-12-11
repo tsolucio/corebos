@@ -2169,6 +2169,7 @@ function getTemplateDetails($templateid) {
 	$returndata[] = $templateid;
 	$returndata[] = $adb->query_result($result, 0, 'body');
 	$returndata[] = $adb->query_result($result, 0, 'subject');
+	$returndata[] = $adb->query_result($result, 0, 'sendemailfrom');
 	$log->debug("Exiting from getTemplateDetails($templateid) method ...");
 	return $returndata;
 }

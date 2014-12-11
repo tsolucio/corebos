@@ -944,6 +944,7 @@ $mod_strings = array (
 		'FieldsTranslated' => 'Campos Traducidas',
 		'FieldsNotTranslated' => 'Campos No Traducidas',
 		// language translation strings
-
+		'SendEmailFrom' => 'Remitente',
+		'LeaveEmptyForUserEmail' => 'Deja vacío para utilizar el email de tu usuario',
 );
 ?>

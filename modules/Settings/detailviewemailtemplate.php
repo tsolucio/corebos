@@ -49,13 +49,8 @@ $smarty->assign("TEMPLATEID", $emailtemplateResult["templateid"]);
 
 $smarty->assign("SUBJECT", $emailtemplateResult["subject"]);
 $smarty->assign("BODY", decode_html($emailtemplateResult["body"]));
+$smarty->assign("EMAILFROM", $emailtemplateResult["sendemailfrom"]);
 
 $smarty->display("DetailViewEmailTemplate.tpl");
 
 ?>
-
-
-
-
-
-

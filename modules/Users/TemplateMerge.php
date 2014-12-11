@@ -28,6 +28,7 @@ if(typeof window.opener.document.getElementById('subject') != 'undefined' &&
 	window.opener.document.getElementById('subject') != null){
 	window.opener.document.getElementById('subject').value = window.document.frmrepstr.subject.value;
 	window.opener.document.getElementById('description').value = window.document.frmrepstr.repstr.value;
+	window.opener.document.getElementById('from_email').value = '<?php echo $templatedetails[3];?>';
 	window.opener.oCKeditor.setData(window.document.frmrepstr.repstr.value);
 }
 window.close();

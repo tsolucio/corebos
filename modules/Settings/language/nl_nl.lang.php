@@ -1063,6 +1063,7 @@ $mod_strings = Array(
 'FieldsTranslated' => 'Fields Translated',
 'FieldsNotTranslated' => 'Fields Not Translated',
 // language translation strings
-
+'SendEmailFrom' => 'Send Email From',
+'LeaveEmptyForUserEmail' => 'Leave empty to use your user email',
 );
 ?>

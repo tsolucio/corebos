@@ -75,6 +75,10 @@
                                 <td colspan="2" valign="top" class="small" style="background-color:#cccccc"><strong>{$UMOD.LBL_EMAIL_TEMPLATE}</strong></td>
                                 </tr>
                               <tr>
+                                <td width="15%" valign="top" class="cellLabel small">{$UMOD.SendEmailFrom}</td>
+                                <td width="85%" class="cellText small">{$EMAILFROM}</td>
+                              </tr>
+                              <tr>
                                 <td width="15%" valign="top" class="cellLabel small">{$UMOD.LBL_SUBJECT}</td>
                                 <td width="85%" class="cellText small">{$SUBJECT}</td>
                               </tr>

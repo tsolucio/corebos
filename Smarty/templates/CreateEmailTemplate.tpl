@@ -154,48 +154,41 @@
                                                     <option value="Public" selected>{$UMOD.LBL_PUBLIC}</option>
         	                                </select>
 						{/if}
-					
 						</td>
 					  </tr>
-					
-					
 					<tr>
 					  <td colspan="2" valign=top class="cellText small"><table width="100%"  border="0" cellspacing="0" cellpadding="0" class="thickBorder">
                         <tr>
                           <td valign=top><table width="100%"  border="0" cellspacing="0" cellpadding="5" >
                               <tr>
                                 <td colspan="3" valign="top" class="small" style="background-color:#cccccc"><strong>{$UMOD.LBL_EMAIL_TEMPLATE}</strong></td>
-                                </tr>
+                              </tr>
+                              <tr>
+                                <td width="15%" valign="top" class="cellLabel small">{$UMOD.SendEmailFrom}</td>
+                                <td width="85%" colspan="2" class="cellText small"><span class="small cellText">
+                                  <input name="emailfrom" type="text" value="{$EMAILFROM}" class="detailedViewTextBox" tabindex="3">
+                                </span></td>
+                              </tr> 
                               <tr>
                                 <td width="15%" valign="top" class="cellLabel small"><font color='red'>*</font>{$UMOD.LBL_SUBJECT}</td>
                                 <td width="85%" colspan="2" class="cellText small"><span class="small cellText">
                                   <input name="subject" type="text" value="{$SUBJECT}" class="detailedViewTextBox" tabindex="4">
                                 </span></td>
                               </tr> 
-
-
-
-
                              <tr>
-                              
                                 <td width="15%"  class="cellLabel small" valign="center">{$UMOD.LBL_SELECT_FIELD_TYPE}</td>
                                 <td width="85%" colspan="2" class="cellText small">
-
 		<table>
 			<tr>
 				<td>{$UMOD.LBL_STEP}1
 				<td>
-			
 				<td style="border-left:2px dotted #cccccc;">{$UMOD.LBL_STEP}2
 				<td>
-
 				<td style="border-left:2px dotted #cccccc;">{$UMOD.LBL_STEP}3
 				<td>
 			</tr>
-			
 			<tr>
 				<td>
-
 					<select style="font-family: Arial, Helvetica, sans-serif;font-size: 11px;color: #000000;border:1px solid #bababa;padding-left:5px;background-color:#ffffff;" id="entityType" ONCHANGE="modifyMergeFieldSelect(this, document.getElementById('mergeFieldSelect'));" tabindex="6">
                                         <OPTION VALUE="0" selected>{$APP.LBL_NONE}
                                         <OPTION VALUE="1">{$UMOD.LBL_ACCOUNT_FIELDS}                           
@@ -216,17 +209,9 @@ x;color: #000000;border:1px solid #bababa;padding-left:5px;background-color:#fff
 					<input type="text"  id="mergeFieldValue" name="variable" value="variable" style="font-family: Arial, Helvetica, sans-serif;font-size: 11px;color: #000000;border:1px solid #bababa;padding-left:5px;background-color:#ffffdd;" tabindex="8"/>
 				<td>
 			</tr>
-
 		</table>
-			
-
 				</td>
                               </tr>
-
-
-
-
-
                               <tr>
                                 <td valign="top" width=10% class="cellLabel small">{$UMOD.LBL_MESSAGE}</td>
                                  <td valign="top" colspan="2" width=60% class="cellText small"><p><textarea name="body" style="width:90%;height:200px" class=small tabindex="5">{$BODY}</textarea></p>
@@ -245,10 +230,7 @@ x;color: #000000;border:1px solid #bababa;padding-left:5px;background-color:#fff
 					</table>
 				</td>
 				</tr>
-				</table>	
-			
-			
-			
+				</table>
 			</td>
 			</tr>
 			</table>
@@ -297,6 +279,11 @@ function check4null(form)
                 isError = true;
                 errorMessage += "\n subject";
                 form.subject.focus();
+        {rdelim}
+        if (trim(form.emailfrom.value) !='' && !patternValidate('emailfrom','{$UMOD.SendEmailFrom}','EMAIL')) {ldelim}
+                isError = true;
+                errorMessage += "\n email from";
+                form.emailfrom.focus();
         {rdelim}
 
         // Here we decide whether to submit the form.

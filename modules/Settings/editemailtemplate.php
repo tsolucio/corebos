@@ -51,6 +51,7 @@ $smarty->assign("TEMPLATEID", $emailtemplateResult["templateid"]);
 $smarty->assign("DESCRIPTION", $emailtemplateResult["description"]);
 $smarty->assign("SUBJECT", $emailtemplateResult["subject"]);
 $smarty->assign("BODY", $emailtemplateResult["body"]);
+$smarty->assign("EMAILFROM", $emailtemplateResult["sendemailfrom"]);
 $smarty->assign("MODULE", 'Settings');
 $smarty->assign("PARENTTAB", getParentTab());
 $smarty->assign("EMODE", $mode);

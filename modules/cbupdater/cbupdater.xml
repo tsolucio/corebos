@@ -169,4 +169,11 @@
 	<classname>correctProjectTargetBudgetType</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Send Email from support</description>
+	<filename>build/changeSets/SendEmailFromAddress.php</filename>
+	<classname>SendEmailFromAddress</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
