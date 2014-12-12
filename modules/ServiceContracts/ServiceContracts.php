@@ -513,7 +513,7 @@ class ServiceContracts extends CRMEntity {
 		array_push($updateCols, $actualDurationUpdate);
 
 		// Update the Progress based on Used Units and Total Units (in percentage)
-		if(!empty($usedUnits) && !empty($totalUnits)) {
+		if(!empty($usedUnits) && !empty($totalUnits) && $totalUnits > 0) {
 			$progressUpdate = 'progress = ?';
 			$progressUpdateParams = floatval(($usedUnits * 100) / $totalUnits);
 		} else {
