@@ -1150,7 +1150,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 								if (property_exists($focus,'popup_function') and !empty($focus->popup_function)) {
 									$value = "<a href='javascript:void(0);' onclick='return ".$focus->popup_function."($entity_id, \"$value\", \"$forfield\")' id =$count >$value1</a>";
 								} else {
-									$value = "<a href='javascript:window.close();' onclick='return vtlib_setvalue_from_popup($entity_id, \"$value\", \"$forfield\")' id =$count >$value1</a>";
+									$value = "<a href='javascript:if (document.getElementById(\"closewindow\").value==\"true\") {window.close();}' onclick='return vtlib_setvalue_from_popup($entity_id, \"$value\", \"$forfield\")' id =$count >$value1</a>";
 								}
 							}
 						}

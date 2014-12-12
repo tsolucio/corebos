@@ -92,7 +92,7 @@ function add_data_to_relatedlist(entity_id,recordid,mod, popupmode, callback) {
 	} else {
 		{/literal}
         opener.document.location.href="index.php?module={$RETURN_MODULE}&action=updateRelations&destination_module="+mod+"&entityid="+entity_id+"&parentid="+recordid+"&return_module={$RETURN_MODULE}&return_action={$RETURN_ACTION}&parenttab={$CATEGORY}";
-		window.close();
+		if (document.getElementById("closewindow").value=="true") window.close();
 		{literal}
 	}
 }
@@ -117,7 +117,8 @@ function set_focus() {ldelim}
 	                            <td class="moduleName" width="80%" style="padding-left:10px;">{$MODULE|@getTranslatedString:$MODULE}</td>
 							{/if}
                     {/if}
-					<td  width=30% nowrap class="componentName" align=right>{'APP_NAME'|@getTranslatedString}</td>
+					<td  width=24% nowrap class="componentName" align=right>{'APP_NAME'|@getTranslatedString}</td>
+					<td  width=6% nowrap class="componentName" align=right><input type="hidden" id='closewindow' value="true"/><img src="themes/images/unlocked.png" id='closewindowimage' onclick="if (document.getElementById('closewindow').value=='true') {ldelim}document.getElementById('closewindowimage').src='themes/images/locked.png';document.getElementById('closewindow').value='false';{rdelim} else {ldelim}document.getElementById('closewindowimage').src='themes/images/unlocked.png';document.getElementById('closewindow').value='true';{rdelim};"/></td>
 				</tr>
 			</table>
 			<div id="status" style="position:absolute;display:none;right:135px;top:15px;height:27px;white-space:nowrap;"><img src="{'status.gif'|@vtiger_imageurl:$THEME}"></div>
