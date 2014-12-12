@@ -9,7 +9,6 @@
  *********************************************************************************/
 require_once('Smarty_setup.php');
 require_once('include/database/PearDatabase.php');
-require_once('database/DatabaseConnection.php');
 require_once 'include/utils/CommonUtils.php';
 require_once 'modules/PickList/PickListUtils.php';
 
