@@ -64,5 +64,11 @@ $mod_strings = Array (
 "LBL_CHANGE_GOOGLE_ACCOUNT"=>"Cambiar cuenta de Google", 
 "LBL_INSERT_INTO_CRM"=>"Agregar a aplicación",
 "LBL_ALL_DAY"=>"Todo el día",
+"LBL_GOOGLEAPIKEY"=>"Api Key",
+"LBL_GOOGLECLIENTID"=>"ID Cliente",
+"LBL_GOOGLEKEYFILE"=>"FileKey",
+"LBL_UPLOADFILE"=>"Cargar",
+"LBL_GOOGLEFILE"=>'File de Google: '
+
 );
 ?>
