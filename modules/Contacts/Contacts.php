@@ -1108,6 +1108,7 @@ function get_contactsforol($user_name)
 						left join vtiger_account on vtiger_account.accountid=vtiger_contactdetails.accountid
 						left join vtiger_contactaddress on vtiger_contactaddress.contactaddressid=vtiger_contactdetails.contactid
 						left join vtiger_contactsubdetails on vtiger_contactsubdetails.contactsubscriptionid = vtiger_contactdetails.contactid
+						left join vtiger_contactscf on vtiger_contactscf.contactid = vtiger_contactdetails.contactid
                         left join vtiger_campaigncontrel on vtiger_contactdetails.contactid = vtiger_campaigncontrel.contactid
                         left join vtiger_campaignrelstatus on vtiger_campaignrelstatus.campaignrelstatusid = vtiger_campaigncontrel.campaignrelstatusid
 			      LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
