@@ -2132,7 +2132,7 @@ function SelectAll(mod,parmod)
 			{
 				opener.document.location.href="index.php?module="+module+"&parentid="+entity_id+"&action=updateRelations&destination_module="+mod+"&idlist="+idstring+"&parenttab="+parenttab;
 			}
-			self.close();
+			if (document.getElementById('closewindow').value=='true') self.close();
 		}
 		else
 		{

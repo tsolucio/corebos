@@ -8,7 +8,6 @@
  * All Rights Reserved.
 *
  ********************************************************************************/
-require_once('database/DatabaseConnection.php');
 require_once('Smarty_setup.php');
 require_once('include/utils/utils.php');
 require_once('data/Tracker.php');

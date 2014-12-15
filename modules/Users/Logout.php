@@ -18,7 +18,6 @@
  ********************************************************************************/
 
 require_once('include/logging.php');
-require_once('database/DatabaseConnection.php');
 require_once('modules/Users/LoginHistory.php');
 require_once('modules/Users/Users.php');
 require_once('config.php');
