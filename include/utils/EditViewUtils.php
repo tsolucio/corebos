@@ -1347,7 +1347,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$options = array();
 		$themeList = get_themes();
 		foreach ($themeList as $theme) {
-			if($current_user->theme == $theme) {
+			if($value == $theme) {
 				$selected = 'selected';
 			} else {
 				$selected = '';
@@ -1360,7 +1360,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$options = array();
 		$languageList = Vtiger_Language::getAll();
 		foreach ($languageList as $prefix => $label) {
-			if($current_user->language == $prefix) {
+			if($value == $prefix) {
 				$selected = 'selected';
 			} else {
 				$selected = '';
