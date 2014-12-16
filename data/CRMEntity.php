@@ -1815,11 +1815,16 @@ class CRMEntity {
 		$numOfFields = $this->db->num_rows($dependentFieldSql);
 
 		if ($numOfFields > 0) {
-			$dependentColumn = $this->db->query_result($dependentFieldSql, 0, 'columnname');
-			$dependentField = $this->db->query_result($dependentFieldSql, 0, 'fieldname');
+			$relconds = array();
+			while ($depflds = $this->db->fetch_array($dependentFieldSql)) {
 
+			$dependentColumn = $depflds['columnname'];
+			$dependentField = $depflds['fieldname'];
+			$relconds[] = "$this->table_name.$this->table_index = $other->table_name.$dependentColumn";
 			$button .= '<input type="hidden" name="' . $dependentColumn . '" id="' . $dependentColumn . '" value="' . $id . '">';
 			$button .= '<input type="hidden" name="' . $dependentColumn . '_type" id="' . $dependentColumn . '_type" value="' . $currentModule . '">';
+			}
+			$relationconditions = '('.implode(' or ', $relconds).')';
 			if ($actions) {
 				if (is_string($actions))
 					$actions = explode(',', strtoupper($actions));
@@ -1853,7 +1858,7 @@ class CRMEntity {
 
 			$query .= " FROM $other->table_name";
 			$query .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
-			$query .= " INNER  JOIN $this->table_name   ON $this->table_name.$this->table_index = $other->table_name.$dependentColumn";
+			$query .= " INNER  JOIN $this->table_name   ON $relationconditions";
 			$query .= $more_relation;
 			$query .= " LEFT  JOIN vtiger_users        ON vtiger_users.id = vtiger_crmentity.smownerid";
 			$query .= " LEFT  JOIN vtiger_groups       ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
