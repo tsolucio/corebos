@@ -530,6 +530,7 @@ class Users extends CRMEntity {
             }
             return false;
         }
+        $this->createAccessKey();
         return true;
     }
 
