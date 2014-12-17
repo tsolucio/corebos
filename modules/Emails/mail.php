@@ -37,6 +37,11 @@ function send_mail($module,$to_email,$from_name,$from_email,$subject,$contents,$
 	//Get the email id of assigned_to user -- pass the value and name, name must be "user_name" or "id"(field names of vtiger_users vtiger_table)
 	//$to_email = getUserEmailId('id',$assigned_user_id);
 
+	$femail = '';
+	if (substr($from_email, 0, 8)=='FROM:::>') {
+		$femail = substr($from_email, 8);
+		$from_email = '';
+	}
 	//if module is HelpDesk then from_email will come based on support email id
 	if($from_email == '') {
 			//if from email is not defined, then use the useremailid as the from address
@@ -57,6 +62,9 @@ function send_mail($module,$to_email,$from_name,$from_email,$subject,$contents,$
 	if(isset($from_email_field) && $from_email_field!=''){
 		//setting from _email to the defined email address in the outgoing server configuration
 		$from_email = $from_email_field;
+	}
+	if($femail!=''){
+		$from_email = $femail;
 	}
 
 	if($module != "Calendar")
