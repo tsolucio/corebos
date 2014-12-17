@@ -20,8 +20,14 @@ require_once('include/logging.php');
 global $app_strings;
 global $mod_strings;
 
-$mod_strings['ERR_ENTER_OLD_PASSWORD'];
-
+$badpassword = $mod_strings["PASSWORD REQUIREMENTS"].'\n----------------------------------------\n';
+$badpassword.= $mod_strings["REQUIRED"].':\n~ ';
+$badpassword.= $mod_strings["Min. 8 characters"].'\n\n';
+$badpassword.= $mod_strings["Contains3of4"].':\n~ ';
+$badpassword.= $mod_strings["Min. 1 uppercase"].':\n~ ';
+$badpassword.= $mod_strings["Min. 1 lowercase"].':\n~ ';
+$badpassword.= $mod_strings["Min. 1 number"].':\n~ ';
+$badpassword.= $mod_strings["Min. 1 special character"].'\n';
 insert_popup_header($theme);
 ?>
 <script type='text/javascript' src="include/js/general.js"></script>
@@ -39,21 +45,127 @@ function set_password(form) {
 		alert("<?php echo $mod_strings['ERR_ENTER_CONFIRMATION_PASSWORD']; ?>");
 		return false;
 	}
-	if (trim(form.new_password.value) == trim(form.confirm_new_password.value)) {
-		if (form.is_admin.value == 1) window.opener.document.DetailView.old_password.value = form.old_password.value;
-		window.opener.document.DetailView.new_password.value = form.new_password.value;
-		window.opener.document.DetailView.return_module.value = 'Users';
-		window.opener.document.DetailView.return_action.value = 'DetailView';
-		window.opener.document.DetailView.changepassword.value = 'true';
-		window.opener.document.DetailView.return_id.value = window.opener.document.DetailView.record.value;
-		window.opener.document.DetailView.action.value = 'Save';
-		window.opener.document.DetailView.submit();
-		return true;
+	//Check Password
+	var passwordOK = passwordChecker(form);
+	if(passwordOK) { //Complex Password is ok
+		if (trim(form.new_password.value) == trim(form.confirm_new_password.value)) {
+			if (form.is_admin.value == 1) window.opener.document.DetailView.old_password.value = form.old_password.value;
+			window.opener.document.DetailView.new_password.value = form.new_password.value;
+			window.opener.document.DetailView.return_module.value = 'Users';
+			window.opener.document.DetailView.return_action.value = 'DetailView';
+			window.opener.document.DetailView.changepassword.value = 'true';
+			window.opener.document.DetailView.return_id.value = window.opener.document.DetailView.record.value;
+			window.opener.document.DetailView.action.value = 'Save';
+			window.opener.document.DetailView.submit();
+			return true;
+		}
+		else {
+			alert("<?php echo $mod_strings['ERR_REENTER_PASSWORDS']; ?>");
+			return false;
+		}
+	} else { //Password is not ok
+		alert("<?php echo $badpassword;?>");
 	}
-	else {
-		alert("<?php echo $mod_strings['ERR_REENTER_PASSWORDS']; ?>");
+}
+function passwordChecker(form) {
+	//New Password Value
+	var passwordValue = trim(form.new_password.value);
+	//Length Password
+	var passwordLength = (passwordValue.length);
+	//alert("Length: " + passwordLength);
+	//Capital?
+	var containsCapital = checkCapital(passwordValue);
+	//alert("Capital: " + containsCapital);
+	//Lower?
+	var containsLower = checkLower(passwordValue);
+	//alert("Lower: " + containsLower);
+	//Number?
+	var containsNumber = checkNumber(passwordValue);
+	//alert("number: " + containsNumber);
+	//Special Char?
+	var containsSpecialChar = checkSpecialChar(passwordValue);
+	//alert("Special Char:" + containsSpecialChar);
+
+	//COMPLEX PASSWORD: Minimum 8 characters, and three of the four conditions needs to be ok --> Capital, Lowercase, Special Character, Number
+	if(passwordLength < 8) {
 		return false;
+	} else {
+		//Combination Match All
+		if((containsNumber == true)&&(containsCapital == true)&&(containsLower == true)&&(containsSpecialChar == true)) {
+			return true;
+		} else {
+			//Combination 1
+			if((containsNumber == true)&&(containsCapital == true)&&(containsLower == true)) {
+				return true;
+			} else {
+				//Combination 2
+				if((containsCapital == true)&&(containsLower == true)&&(containsSpecialChar == true)) {
+					return true;
+				} else {
+					//Combination 3
+					if((containsLower == true)&&(containsSpecialChar == true)&&(containsNumber == true)) {
+						return true;
+					} else {
+						//Combination 4
+						if((containsNumber == true)&&(containsCapital == true)&&(containsSpecialChar == true)) {
+							return true;
+						} else {
+							return false;
+						}
+					}
+				}
+			}
+		}
 	}
+}
+//Check for special character
+function checkSpecialChar(passwordValue) {
+	var i=0;
+	var ch='';
+	while (i <= passwordValue.length) {
+		character = passwordValue.charAt(i);
+		if ((character == ".")||(character =="!")||(character =="?")||(character ==",")||(character ==";")||(character =="-")||(character =="@")||(character =="#")){
+			return true;
+		}
+		i++;
+	}
+	return false;
+}
+//check for number
+function checkNumber(passwordValue) {
+	var i=0;
+	while (i < passwordValue.length){
+		var character = passwordValue.charAt(i);
+		if (!isNaN(character)){
+			return true;
+		}
+		i++;
+	}
+	return false;
+}
+//Check for lowercase character
+function checkLower(passwordValue) {
+	var i=0;
+	while (i < passwordValue.length) {
+		var character = passwordValue.charAt(i);
+		if (character == character.toLowerCase()){
+			return true;
+		}
+		i++;
+	}
+	return false;
+}
+//Check for capital
+function checkCapital(passwordValue) {
+	var i=0;
+	while (i < passwordValue.length) {
+		var character = passwordValue.charAt(i);
+		if (character == character.toUpperCase()) {
+			return true;
+		}
+		i++;
+	}
+	return false;
 }
 </script>
 <form name="ChangePassword" onsubmit="VtigerJS_DialogBox.block();">

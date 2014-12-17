@@ -795,5 +795,13 @@ $mod_strings = Array(
 	'hcylinder'=>'Horizontal Cylinder',
 	'vcylinder'=>'Vertical Cylinder',
 	'LBL_SEND_EMAIL_TO_SENDER' => 'Send copy of email',
+	'PASSWORD REQUIREMENTS' => 'PASSWORD REQUIREMENTS',
+	'REQUIRED' => 'REQUIRED',
+	'Min. 8 characters' => 'Min. 8 characters',
+	'Contains3of4' => 'PASSWORD CONTAINS AT LEAST THREE OF THE FOLLOWING FOUR CHARACTER GROUPS',
+	'Min. 1 uppercase' => 'Min. 1 uppercase character',
+	'Min. 1 lowercase' => 'Min. 1 lowercase character',
+	'Min. 1 number' => 'Min. 1 Number',
+	'Min. 1 special character' => 'Min. 1 special character , ! ? , ; - @ #',
 );
 ?>

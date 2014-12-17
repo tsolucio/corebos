@@ -811,6 +811,14 @@ $mod_strings = Array(
 'Decimal Separator' => 'Separador Decimal',
 'Digit Grouping Separator' => 'Separador de Grupo de dígitos',
 'Symbol Placement' => 'Posición de Símbolo',
+'PASSWORD REQUIREMENTS' => 'REQUISITOS CONTRASEÑA',
+'REQUIRED' => 'OBLIGATORIO',
+'Min. 8 characters' => 'Mínimo 8 caracteres',
+'Contains3of4' => 'CONTRASEÑA CUMPLE AL MENOS 3 DE LAS SIGUIENTES CONDICIONES',
+'Min. 1 uppercase' => 'Mínimo una mayúscula',
+'Min. 1 lowercase' => 'Mínimo una minúscula',
+'Min. 1 number' => 'Mínimo un número',
+'Min. 1 special character' => 'Mínimo un caracter especial ! ? , ; - @ #',
 );
 
 ?>
