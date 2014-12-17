@@ -114,6 +114,7 @@ if (!empty($_REQUEST['from_email'])) {
 		$query = "update vtiger_emaildetails set from_email = concat(from_email,' > ',?) where emailid=?";
 		$adb->pquery($query, array($from_address, $focus->id));
 	}
+	$from_address = 'FROM:::>'.$from_address;
 }
 
 for ($i=0;$i<(count($myids)-1);$i++)
