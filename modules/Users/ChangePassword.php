@@ -10,17 +10,7 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Users/ChangePassword.php,v 1.2 2004/10/29 09:55:10 jack Exp $
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-// This file is used for all popups on this module
-// The popup_picker.html file is used for generating a list from which to find and choose one instance.
 
 global $theme;
 require_once('modules/Users/Users.php');
@@ -36,7 +26,6 @@ insert_popup_header($theme);
 ?>
 <script type='text/javascript' src="include/js/general.js"></script>
 <script type='text/javascript' language='JavaScript'>
-
 function set_password(form) {
 	if (form.is_admin.value == 1 && trim(form.old_password.value) == "") {
 		alert("<?php echo $mod_strings['ERR_ENTER_OLD_PASSWORD']; ?>");
@@ -50,7 +39,6 @@ function set_password(form) {
 		alert("<?php echo $mod_strings['ERR_ENTER_CONFIRMATION_PASSWORD']; ?>");
 		return false;
 	}
-
 	if (trim(form.new_password.value) == trim(form.confirm_new_password.value)) {
 		if (form.is_admin.value == 1) window.opener.document.DetailView.old_password.value = form.old_password.value;
 		window.opener.document.DetailView.new_password.value = form.new_password.value;
@@ -68,10 +56,8 @@ function set_password(form) {
 	}
 }
 </script>
-
 <form name="ChangePassword" onsubmit="VtigerJS_DialogBox.block();">
 <?php echo get_form_header($mod_strings['LBL_CHANGE_PASSWORD'], "", false); ?>
-
 <table width='100%' cellspacing='0' cellpadding='5' border='0' class="small">
 <tr>
 	<td class="detailedViewHeader" colspan="2"><b><?php echo $mod_strings['LBL_CHANGE_PASSWORD']; ?></b></td>
@@ -101,11 +87,9 @@ else echo "<input name='old_password' type='hidden'><input name='is_admin' type=
 <td align='right'><input title='<?php echo $app_strings['LBL_SAVE_BUTTON_TITLE']; ?>' accessKey='<?php echo $app_strings['LBL_SAVE_BUTTON_KEY']; ?>' class='crmbutton small save' LANGUAGE=javascript onclick='if (set_password(this.form)) window.close(); else return false;' type='submit' name='button' value='  <?php echo $app_strings['LBL_SAVE_BUTTON_LABEL']; ?>  '></td>
 <td align='left'><input title='<?php echo $app_strings['LBL_CANCEL_BUTTON_TITLE']; ?>' accessyKey='<?php echo $app_strings['LBL_CANCEL_BUTTON_KEY']; ?>' class='crmbutton small cancel' LANGUAGE=javascript onclick='window.close()' type='submit' name='button' value='  <?php echo $app_strings['LBL_CANCEL_BUTTON_LABEL']; ?>  '></td>
 </tr>
-
+</table>
+</form>
 <script language="JavaScript">
 document.ChangePassword.new_password.focus();
 </script>
-</table>
-</form>
 <br>
-
