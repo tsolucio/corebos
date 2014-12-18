@@ -1904,6 +1904,8 @@ class CRMEntity {
 				$parmodule = $adb->query_result($parentRecords, $i, 'module');
 				$adb->pquery("UPDATE vtiger_crmentityrel SET relcrmid=? WHERE crmid=? AND module=? AND relcrmid=? AND relmodule=?", array($entityId, $parcrmid, $parmodule, $transferId, $module));
 			}
+			$adb->pquery("UPDATE vtiger_modcomments SET related_to = ? WHERE related_to = ?", array($entityId, $transferId));
+			$adb->pquery("UPDATE vtiger_senotesrel SET crmid = ? WHERE crmid = ?", array($entityId, $transferId));
 		}
 		$log->debug("Exiting transferRelatedRecords...");
 	}
