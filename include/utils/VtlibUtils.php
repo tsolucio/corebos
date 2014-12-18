@@ -632,4 +632,14 @@ function vtlib_purifyForSql($string, $skipEmpty=true) {
        return false;
 }
 
+function getvtlib_open_popup_window_function($popupmodule,$fldname,$basemodule) {
+	include_once 'modules/'.$popupmodule.'/'.$popupmodule.'.php';
+	$mod = new $popupmodule();
+	if (method_exists($mod, 'getvtlib_open_popup_window_function')) {
+		return $mod->getvtlib_open_popup_window_function($fldname,$basemodule);
+	} else {
+		return 'vtlib_open_popup_window';
+	}
+}
+
 ?>

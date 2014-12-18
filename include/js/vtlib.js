@@ -33,6 +33,17 @@ function vtlib_setvalue_from_popup(recordid,value,target_fieldname) {
     return ret;
 }
 
+/*
+ * Generic uitype popup open action
+ */
+function vtlib_open_popup_window(fromlink,fldname,MODULE,ID) {
+	if (fromlink == 'qcreate')
+		window.open("index.php?module="+ document.QcEditView[fldname+'_type'].value +"&action=Popup&html=Popup_picker&form=vtlibPopupView&forfield="+fldname+"&srcmodule="+MODULE+"&forrecord="+ID,"vtlibui10","width=680,height=602,resizable=0,scrollbars=0,top=150,left=200");
+	else
+		window.open("index.php?module="+ document.EditView[fldname+'_type'].value +"&action=Popup&html=Popup_picker&form=vtlibPopupView&forfield="+fldname+"&srcmodule="+MODULE+"&forrecord="+ID,"vtlibui10","width=680,height=602,resizable=0,scrollbars=0,top=150,left=200");
+	return true;
+}
+
 /**
  * Show the vtiger field help if available.
  */
