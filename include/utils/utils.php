@@ -243,7 +243,7 @@ function get_user_array($add_blank=true, $status="Active", $assigned_user="",$pr
 function get_group_array($add_blank=true, $status="Active", $assigned_user="",$private="")
 {
 	global $log;
-	$log->debug("Entering get_user_array(".$add_blank.",". $status.",".$assigned_user.",".$private.") method ...");
+	$log->debug("Entering get_group_array(".$add_blank.",". $status.",".$assigned_user.",".$private.") method ...");
 	global $current_user;
 	if(isset($current_user) && $current_user->id != '')
 	{
@@ -305,7 +305,7 @@ function get_group_array($add_blank=true, $status="Active", $assigned_user="",$p
 		$group_array = &$temp_result;
 	}
 
-	$log->debug("Exiting get_user_array method ...");
+	$log->debug("Exiting get_group_array method ...");
 	return $group_array;
 }
 /** Function skips executing arbitary commands given in a string
