@@ -394,9 +394,9 @@ function checkAdvancedFilter() {
             {
                 if(!intValidate(valueId,selectedColumnLabel+" (Integer Criteria)"+i))
                     return false
-            }else if(col[4] == 'N')
+            }else if(col[4] == 'N' || col[4] == 'NN')
             {
-                if (!numValidate(valueId,selectedColumnLabel+" (Number) ","any",true))
+                if (!numValidate(valueId,selectedColumnLabel+" (Number) ","any",(col[4] == 'NN')))
                     return false
             }else if(col[4] == 'E')
             {
