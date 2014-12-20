@@ -232,3 +232,13 @@ function vtlib_getElementsByClassName(obj,className,tagName){
     }
     return returnList;
 }
+
+function convertArrayOfJsonObjectsToString(arrayofjson) {
+	var rdo = '[';
+	var len = arrayofjson.length;
+	for (var i=0; i < len; i++) {
+		rdo = rdo + JSON.stringify(arrayofjson[i])+',';
+	}
+	rdo = rdo.substring(0,rdo.length-1)+']';
+	return rdo;
+}
