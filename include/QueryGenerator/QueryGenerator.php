@@ -620,6 +620,8 @@ class QueryGenerator {
 			}
 			return $sql;
 		}
+		$yes = strtolower(getTranslatedString('yes'));
+		$no = strtolower(getTranslatedString('no'));
 		foreach ($valueArray as $value) {
 			if(!$this->isStringType($field->getFieldDataType())) {
 				$value = trim($value);
@@ -635,9 +637,9 @@ class QueryGenerator {
 				continue;
 			} elseif($field->getFieldDataType() == 'boolean') {
 				$value = strtolower($value);
-				if ($value == 'yes') {
+				if ($value == 'yes' or $value == $yes) {
 					$value = 1;
-				} elseif($value == 'no') {
+				} elseif($value == 'no' or $value == $no) {
 					$value = 0;
 				}
 			} elseif($this->isDateType($field->getFieldDataType())) {
