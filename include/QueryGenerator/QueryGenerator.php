@@ -648,6 +648,31 @@ class QueryGenerator {
 					$sql[] = 'IS NULL or '.$field->getTableName().'.'.$field->getFieldName()." = ''";
 					return $sql;
 				}
+			} elseif($field->getFieldDataType()=='picklist') {
+				global $mod_strings;
+				$values = array();
+				$strings = explode(',' , $value);
+				foreach($strings as $string) {
+					$new_value = $string;
+					// Get all the keys for the for the Picklist value
+					$mod_keys = array_keys($mod_strings, $string);
+					if (count($mod_keys)==0) {
+						$mod_keys = array_keys($mod_strings, ucfirst($string));
+						if (count($mod_keys)==0) {
+							$mod_keys = array_keys($mod_strings, ucwords($string));
+						}
+					}
+					// Iterate on the keys, to get the first key which doesn't start with LBL_  (assuming it is not used in PickList)
+					foreach($mod_keys as $mod_idx=>$mod_key) {
+						$stridx = strpos($mod_key, 'LBL_');
+						if ($stridx !== 0) {
+							$new_value = $mod_key;
+							break;
+						}
+					}
+					$values[] = $new_value;
+				}
+				$value = implode(',', $values);
 			}
 
 			if($field->getFieldName() == 'birthday' && !$this->isRelativeSearchOperators(
