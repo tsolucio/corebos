@@ -76,7 +76,6 @@ if(isset($_REQUEST["command"]) && $_REQUEST["command"] != "") {
     	$MailBox = new MailBox($mailbox);
 		$tlist = explode(":",$mailid);
 		foreach($tlist as $id) {
-	        imap_delete($MailBox->mbox,$id);
 			$adb->println("DELETE MULTI MESSAGE $id");
 			$email = new Webmails($MailBox->mbox,$id);
 			$email->delete();
