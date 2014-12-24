@@ -170,6 +170,13 @@
 	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
+        <author>loridacito</author>
+        <description>Add fields in calendar4you</description>
+        <filename>build/changeSets/addfieldstocal.php</filename>
+        <classname>addfieldstocal</classname>
+        <systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
 	<author>joebordes</author>
 	<description>Send Email from support</description>
 	<filename>build/changeSets/SendEmailFromAddress.php</filename>

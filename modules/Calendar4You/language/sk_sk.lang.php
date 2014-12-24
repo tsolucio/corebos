@@ -64,5 +64,10 @@ $mod_strings = Array (
 "LBL_CHANGE_GOOGLE_ACCOUNT"=>"Zmeniť účet",
 "LBL_INSERT_INTO_CRM"=>"Pridať do coreBOS",
 "LBL_ALL_DAY"=>"Celý deň",
+"LBL_GOOGLEAPIKEY"=>"Api Key",
+"LBL_GOOGLECLIENTID"=>"ClientID",
+"LBL_GOOGLEKEYFILE"=>"FileKey",
+"LBL_UPLOADFILE"=>"Upload",
+"LBL_GOOGLEFILE"=>'Google File: '
 );
 ?>
