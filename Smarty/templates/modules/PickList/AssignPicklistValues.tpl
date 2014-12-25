@@ -6,7 +6,6 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 <div style="position:relative;display: block;" id="orgLay" class="layerPopup">
@@ -18,8 +17,8 @@
 
 	<table border="0" cellspacing="0" cellpadding="5" width="100%" id="assignPicklistTable">
 	<tbody>
-		<tr>	
-			<td width="auto;">	
+		<tr>
+			<td width="auto;">
 				<b>{$MOD.LBL_PICKLIST_VALUES}</b>
 				<select multiple id="availList" name="availList" class="small crmFormList" style="overflow:auto; height: 150px;width:200px;border:1px solid #666666;font-family:Arial, Helvetica, sans-serif;font-size:11px;">
 					{foreach item=pick_val key=pick_key from=$PICKVAL}
@@ -37,7 +36,7 @@
 					{foreach item=val key=key from=$ASSIGNED_VALUES}
 						<option value="{$key}">{$val}</option>
 					{/foreach}
-        	    </select>
+				</select>
 			</td>
 			<td align="center">
 				<img border="0" title="up" alt="Move Up" onclick="moveUp();" style="cursor: pointer" src="{'arrow_up.png'|@vtiger_imageurl:$THEME}"/>
@@ -53,7 +52,7 @@
 			<td colspan="3" valign="top" align="center" nowrap>
 				<input type="button" value="{$APP.LBL_SAVE_BUTTON_LABEL}" name="save" class="crmButton small edit" onclick="saveAssignedValues('{$MODULE}','{$FIELDNAME}','{$ROLEID}');">
 				<input type="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" name="cancel" class="crmButton small cancel" onclick="fnhide('actiondiv');">
-			</td>			
+			</td>
 		</tr>
 	</tbody>
 	</table>
