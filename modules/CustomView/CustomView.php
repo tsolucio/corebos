@@ -221,6 +221,9 @@ class CustomView extends CRMEntity {
 		while ($cvrow = $adb->fetch_array($result)) {
 			if ($cvrow['viewname'] == 'All') {
 				$cvrow['viewname'] = $app_strings['COMBO_ALL'];
+			} else { /** Should the filter shown?  */
+				$return = cbEventHandler::do_filter('corebos.filter.listview.filter.show', $cvrow);
+				if($return == false) continue;
 			}
 
 			$option = '';

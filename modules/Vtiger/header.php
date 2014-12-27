@@ -102,4 +102,5 @@ $companyDetails['logo'] = $organization_logo;
 $smarty->assign("COMPANY_DETAILS",$companyDetails);
 
 $smarty->display("Header.tpl");
+cbEventHandler::do_action('corebos.header');
 ?>

@@ -42,6 +42,7 @@ require_once('include/utils/SearchUtils.php');
 require_once('include/FormValidationUtil.php');
 require_once('include/DatabaseUtil.php');
 require_once('include/events/SqlResultIterator.inc');
+require_once('include/events/cbEventHandler.php');
 require_once('include/fields/DateTimeField.php');
 require_once('include/fields/CurrencyField.php');
 require_once('data/CRMEntity.php');

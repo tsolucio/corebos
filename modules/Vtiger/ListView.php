@@ -129,7 +129,10 @@ if($_REQUEST['query'] == 'true') {
 	$smarty->assign('SEARCH_URL', $url_string);
 }
 
+$queryGenerator = cbEventHandler::do_filter('corebos.filter.listview.querygenerator.before', $queryGenerator);
 $list_query = $queryGenerator->getQuery();
+$queryGenerator = cbEventHandler::do_filter('corebos.filter.listview.querygenerator.after', $queryGenerator);
+$list_query = cbEventHandler::do_filter('corebos.filter.listview.querygenerator.query', $list_query);
 $where = $queryGenerator->getConditionalWhere();
 if(isset($where) && $where != '') {
 	$_SESSION['export_where'] = $where;

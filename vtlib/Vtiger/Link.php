@@ -219,6 +219,9 @@ class Vtiger_Link {
 		}
 
 		while($row = $adb->fetch_array($result)){
+			/** Should the widget be shown */
+			$return = cbEventHandler::do_filter('corebos.filter.link.show', array($row, $type, $parameters));
+			if($return == false) continue;
 			$instance = new self();
 			$instance->initialize($row);
 			if(!empty($row['handler_path']) && isFileAccessible($row['handler_path'])) {

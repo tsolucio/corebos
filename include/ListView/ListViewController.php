@@ -502,6 +502,7 @@ class ListViewController {
 			if($actionLinkInfo != "" && !$skipActions) {
 				$row[] = $actionLinkInfo;
 			}
+			list($row, $unused, $unused2) = cbEventHandler::do_filter('corebos.filter.listview.render', array($row, $this->db->query_result_rowdata($result, $i), $recordId));
 			$data[$recordId] = $row;
 
 		}
@@ -644,6 +645,7 @@ class ListViewController {
 		if(!$skipActions && (isPermitted($module,"EditView","") == 'yes' ||
 				isPermitted($module,"Delete","") == 'yes'))
 			$header[] = getTranslatedString("LBL_ACTION", $module);
+		$header = cbEventHandler::do_filter('corebos.filter.listview.header', $header);
 		return $header;
 	}
 
