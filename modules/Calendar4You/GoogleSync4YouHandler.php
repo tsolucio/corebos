@@ -95,20 +95,26 @@ class GoogleSync4YouHandler extends VTEventHandler {
 	}
     
     function AddIntoCalendar($id, $save_user_id, $event, $Data) {
+	try {
         if ($GoogleSync4You = $this->getGoogleSyncClass($save_user_id,$event)) {
             $GoogleSync4You->saveEvent($id, $event, $Data);
-        }    
+        }
+	} catch(Exception $e) {
+	}
     }
     
     function DeleteGCalendarEvent($id, $save_user_id, $eventURL, $event) {
         global $adb;
-        
+
+	try {
         if ($GoogleSync4You = $this->getGoogleSyncClass($save_user_id,$event,'skip')) {
             $GoogleSync4You->deleteEvent($id, $eventURL);
             
             $sql1 = "DELETE FROM its4you_googlesync4you_events WHERE crmid =? AND userid = ? AND eventtype = ?";
             $adb->pquery($sql1,array($id, $save_user_id, $event));
         }
+	} catch(Exception $e) {
+	}
     }
     
     function getGoogleSyncClass($save_user_id,$event,$selected_calendar = '') {
