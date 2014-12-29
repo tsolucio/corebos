@@ -124,7 +124,7 @@ function webforms_prepareSmarty($smarty,$data,$moduleName){
 }
 
 function webforms_returnSuccess($element,$moduleName){
-	global $successURL;
+	global $successURL,$defaultSuccessAction;
 	if(strlen($successURL) > 0){
 		header("Location: $successURL");
 	}
