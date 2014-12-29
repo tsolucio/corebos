@@ -43,7 +43,7 @@ $adv_filter_options = array("e"=>"equals",
 	//	       );
 
 $old_related_modules = Array('Accounts'=>Array('Potentials','Contacts','Products','Quotes','Invoice','SalesOrder'),
-			 'Contacts'=>Array('Accounts','Potentials','Quotes','PurchaseOrder'),
+			 'Contacts'=>Array('Accounts','Potentials','Quotes','PurchaseOrder','Invoice'),
 			 'Potentials'=>Array('Accounts','Contacts','Quotes'),
 			 'Calendar'=>Array('Leads','Accounts','Contacts','Potentials'),
 			 'Products'=>Array('Accounts','Contacts'),
