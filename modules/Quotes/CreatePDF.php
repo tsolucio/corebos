@@ -12,9 +12,10 @@ include_once 'modules/Quotes/QuotePDFController.php';
 $controller = new Vtiger_QuotePDFController($currentModule);
 $controller->loadRecord(vtlib_purify($_REQUEST['record']));
 $quote_no = getModuleSequenceNumber($currentModule,vtlib_purify($_REQUEST['record']));
+$moduleName = str_replace(' ', '', getTranslatedString('SINGLE_Quotes', $currentModule));
 if(isset($_REQUEST['savemode']) && $_REQUEST['savemode'] == 'file') {
 	$quote_id = vtlib_purify($_REQUEST['record']);
-	$filepath='test/product/'.$quote_id.'_Quotes_'.$quote_no.'.pdf';
+	$filepath='test/product/'.$quote_id.'_'.$moduleName.'_'.$quote_no.'.pdf';
 	//added file name to make it work in IE, also forces the download giving the user the option to save
 	$controller->Output($filepath,'F');
 } elseif($purpose == 'webservice') {
@@ -22,7 +23,7 @@ if(isset($_REQUEST['savemode']) && $_REQUEST['savemode'] == 'file') {
    $PDFBuffer = $controller->Output('','S'); // S means send the pdf output in buffer instead of file
 } else {
 	//added file name to make it work in IE, also forces the download giving the user the option to save
-	$controller->Output('Quotes_'.$quote_no.'.pdf', 'D');
+	$controller->Output($moduleName.'_'.$quote_no.'.pdf', 'D');
 	exit();
 }
 
