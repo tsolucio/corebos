@@ -95,6 +95,38 @@ class Vtiger_Zip extends dZip {
 	}
 
 	/**
+	 * Copy the directory on the disk into zip file with no offset
+	 */
+	function copyDirectoryFromDiskNoOffset($dirname, $zipdirname=null, $excludeList=null, $basedirname=null) {
+		$dir = opendir($dirname);
+		if(strripos($dirname, '/') != strlen($dirname)-1)
+			$dirname .= '/';
+
+		if($basedirname == null) $basedirname = realpath($dirname);
+
+		while(false !== ($file = readdir($dir))) {
+			if($file != '.' && $file != '..' && 
+				$file != '.svn' && $file != 'CVS') {
+					// Exclude the file/directory 
+					if(!empty($excludeList) && in_array("$dirname$file", $excludeList))
+						continue;
+
+					if(is_dir("$dirname$file")) {
+						$this->copyDirectoryFromDisk("$dirname$file", $file, $excludeList, $dirname.$file);
+					} else {
+						$zippath = '';
+						if($zipdirname != null && $zipdirname != '') {
+							$zipdirname = $this->__fixDirSeparator($zipdirname);
+							$zippath = $zipdirname.$this->__getRelativePath($basedirname, $dirname);
+						}
+						$this->copyFileFromDisk($dirname, $zippath, $file);
+					}
+				}
+		}
+		closedir($dir);
+	}
+
+	/**
 	 * Copy the disk file into the zip.
 	 */
 	function copyFileFromDisk($path, $zippath, $file) {

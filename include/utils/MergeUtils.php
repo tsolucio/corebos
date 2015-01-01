@@ -9,9 +9,6 @@
 *
 ********************************************************************************/
 
-require_once('include/pclzip.lib.php');
-
-
 //functions for odt mailmerge
 
 function GetFileExtension($filename) 
@@ -48,13 +45,10 @@ function entpack($filename,$wordtemplatedownloadpath,$filecontent)
     $filecontent = base64_decode($filecontent);
     fwrite($handle,$filecontent);
     fclose($handle);
-    
-    $archive = new PclZip($wordtemplatedownloadpath.'/'.$filename);
+	include_once('vtlib/Vtiger/Unzip.php');
+	$archive = new Vtiger_Unzip($wordtemplatedownloadpath.'/'.$filename);
     //unzip all files 
-    if ($archive->extract(PCLZIP_OPT_PATH,$wordtemplatedownloadpath.'/'.$temp_dir) == 0)
-    {
-        die("Error s: ".$archive->errorInfo(true));
-    }
+    $archive->unzipAll($wordtemplatedownloadpath.'/'.$temp_dir);
     //delete the template
     //unlink($wordtemplatedownloadpath.'/'.$filename);
     return $temp_dir;
@@ -72,14 +66,11 @@ function packen($filename,$wordtemplatedownloadpath,$temp_dir, $concontent,$styl
     $handle2=fopen($wordtemplatedownloadpath.'/'.$temp_dir.'/styles.xml',"w");
     fwrite($handle2,$stylecontent);
     fclose($handle2);
-
-    $archive = new PclZip($wordtemplatedownloadpath.'/'.$filename);
-    //make a new archive (or .odt file)
-    $v_list = $archive->add($wordtemplatedownloadpath.'/'.$temp_dir,PCLZIP_OPT_REMOVE_PATH, $wordtemplatedownloadpath.'/'.$temp_dir);
-    if ($v_list == 0) 
-    {
-        die("Error : ".$archive->errorInfo(true));
-    }
+	include_once('vtlib/Vtiger/Zip.php');
+	$archive = new Vtiger_Zip($wordtemplatedownloadpath.'/'.$filename);
+	//make a new archive (or .odt file)
+	$archive->copyDirectoryFromDiskNoOffset($wordtemplatedownloadpath.$temp_dir);
+	$archive->save();
 }
 
 function remove_dir($dir)
