@@ -217,6 +217,7 @@ $app_strings = array(
 'NTC_MERGE_CONFIRMATION' => 'Sind Sie sicher?',
 'LBL_MERGE_BUTTON_TITLE' => 'Zusammenführen',
 'LBL_MERGE_BUTTON_KEY' => 'Zusammenführen',
+'DownloadMergeFile'=>'Download merged document',
 'LBL_SELECTEMAILTEMPLATE_BUTTON_TITLE'=>'E-Mail Vorlage wählen',
 'LBL_SELECTEMAILTEMPLATE_BUTTON_KEY'=>'E-Mail Vorlage wählen',
 'LBL_SELECTEMAILTEMPLATE_BUTTON_LABEL'=>'E-Mail Vorlage wählen',

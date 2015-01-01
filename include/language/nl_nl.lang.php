@@ -234,6 +234,7 @@ $app_strings = array (
 'NTC_MERGE_CONFIRMATION' => 'Wilt u dit echt samenvoegen?',
 'LBL_MERGE_BUTTON_TITLE' => 'Samenvoegen',
 'LBL_MERGE_BUTTON_KEY' => 'Samenvoegen',
+'DownloadMergeFile'=>'Download merged document',
 'LBL_SELECTEMAILTEMPLATE_BUTTON_TITLE' => 'Selecteer e-mail sjabloon',
 'LBL_SELECTEMAILTEMPLATE_BUTTON_KEY' => 'Selecteer e-mail sjabloon',
 'LBL_SELECTEMAILTEMPLATE_BUTTON_LABEL' => 'Selecteer e-mail sjabloon',
