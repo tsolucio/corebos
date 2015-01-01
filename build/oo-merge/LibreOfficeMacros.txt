@@ -1,0 +1,112 @@
+sub RemoveEmptyLines
+rem ----------------------------------------------------------------------
+rem define variables
+dim document   as object
+dim dispatcher as object
+rem ----------------------------------------------------------------------
+rem get access to the document
+document   = ThisComponent.CurrentController.Frame
+dispatcher = createUnoService("com.sun.star.frame.DispatchHelper")
+
+rem ----------------------------------------------------------------------
+dim args1(18) as new com.sun.star.beans.PropertyValue
+args1(0).Name = "SearchItem.StyleFamily"
+args1(0).Value = 2
+args1(1).Name = "SearchItem.CellType"
+args1(1).Value = 0
+args1(2).Name = "SearchItem.RowDirection"
+args1(2).Value = true
+args1(3).Name = "SearchItem.AllTables"
+args1(3).Value = false
+args1(4).Name = "SearchItem.Backward"
+args1(4).Value = false
+args1(5).Name = "SearchItem.Pattern"
+args1(5).Value = false
+args1(6).Name = "SearchItem.Content"
+args1(6).Value = false
+args1(7).Name = "SearchItem.AsianOptions"
+args1(7).Value = false
+args1(8).Name = "SearchItem.AlgorithmType"
+args1(8).Value = 1
+args1(9).Name = "SearchItem.SearchFlags"
+args1(9).Value = 71680
+args1(10).Name = "SearchItem.SearchString"
+args1(10).Value = "^$"
+args1(11).Name = "SearchItem.ReplaceString"
+args1(11).Value = ""
+args1(12).Name = "SearchItem.Locale"
+args1(12).Value = 255
+args1(13).Name = "SearchItem.ChangedChars"
+args1(13).Value = 2
+args1(14).Name = "SearchItem.DeletedChars"
+args1(14).Value = 2
+args1(15).Name = "SearchItem.InsertedChars"
+args1(15).Value = 2
+args1(16).Name = "SearchItem.TransliterateFlags"
+args1(16).Value = 1280
+args1(17).Name = "SearchItem.Command"
+args1(17).Value = 3
+args1(18).Name = "Quiet"
+args1(18).Value = true
+
+dispatcher.executeDispatch(document, ".uno:ExecuteSearch", "", 0, args1())
+
+
+end sub
+
+
+sub InsertNewlines
+rem ----------------------------------------------------------------------
+rem define variables
+dim document   as object
+dim dispatcher as object
+rem ----------------------------------------------------------------------
+rem get access to the document
+document   = ThisComponent.CurrentController.Frame
+dispatcher = createUnoService("com.sun.star.frame.DispatchHelper")
+
+rem ----------------------------------------------------------------------
+dim args1(18) as new com.sun.star.beans.PropertyValue
+args1(0).Name = "SearchItem.StyleFamily"
+args1(0).Value = 2
+args1(1).Name = "SearchItem.CellType"
+args1(1).Value = 0
+args1(2).Name = "SearchItem.RowDirection"
+args1(2).Value = true
+args1(3).Name = "SearchItem.AllTables"
+args1(3).Value = false
+args1(4).Name = "SearchItem.Backward"
+args1(4).Value = false
+args1(5).Name = "SearchItem.Pattern"
+args1(5).Value = false
+args1(6).Name = "SearchItem.Content"
+args1(6).Value = false
+args1(7).Name = "SearchItem.AsianOptions"
+args1(7).Value = false
+args1(8).Name = "SearchItem.AlgorithmType"
+args1(8).Value = 1
+args1(9).Name = "SearchItem.SearchFlags"
+args1(9).Value = 71680
+args1(10).Name = "SearchItem.SearchString"
+args1(10).Value = "!!"
+args1(11).Name = "SearchItem.ReplaceString"
+args1(11).Value = "\n"
+args1(12).Name = "SearchItem.Locale"
+args1(12).Value = 255
+args1(13).Name = "SearchItem.ChangedChars"
+args1(13).Value = 2
+args1(14).Name = "SearchItem.DeletedChars"
+args1(14).Value = 2
+args1(15).Name = "SearchItem.InsertedChars"
+args1(15).Value = 2
+args1(16).Name = "SearchItem.TransliterateFlags"
+args1(16).Value = 1280
+args1(17).Name = "SearchItem.Command"
+args1(17).Value = 3
+args1(18).Name = "Quiet"
+args1(18).Value = true
+
+dispatcher.executeDispatch(document, ".uno:ExecuteSearch", "", 0, args1())
+
+
+end sub
