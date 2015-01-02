@@ -119,17 +119,17 @@
 {foreach item=workflow from=$workflows}
 		<tr>
 			<td class="listTableRow small">{$workflow->moduleName|@getTranslatedString:$workflow->moduleName}</td>
-			<td class="listTableRow small">{$workflow->description|@to_html}</td>
+			<td class="listTableRow small">{$workflow->description}</td>
 			<td class="listTableRow small">
 				<a href="{$module->editWorkflowUrl($workflow->id)}">
-					<img border="0" title="Edit" alt="Edit" \
-						style="cursor: pointer;" id="expressionlist_editlink_{$workflow->id}" \
+					<img border="0" title="{'LBL_EDIT'|@getTranslatedString}" alt="{'LBL_EDIT'|@getTranslatedString}"
+						style="cursor: pointer;" id="expressionlist_editlink_{$workflow->id}"
 						src="{'editfield.gif'|@vtiger_imageurl:$THEME}"/>
 				</a>
 				{if $workflow->defaultworkflow neq '1'}
 				<a href="{$module->deleteWorkflowUrl($workflow->id)}" onclick="return confirm('{$APP.SURE_TO_DELETE}');">
-					<img border="0" title="Delete" alt="Delete"\
-			 			src="{'delete.gif'|@vtiger_imageurl:$THEME}" \
+					<img border="0" title="{'LBL_DELETE'|@getTranslatedString}" alt="{'LBL_DELETE'|@getTranslatedString}"
+			 			src="{'delete.gif'|@vtiger_imageurl:$THEME}"
 						style="cursor: pointer;" id="expressionlist_deletelink_{$workflow->id}" />
 				</a>
 				{/if}

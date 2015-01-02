@@ -42,7 +42,7 @@
 			<tr>
 				<td class="dvtCellLabel" align=right width=15% nowrap="nowrap"><b>{$MOD.LBL_PARENT_WORKFLOW}</b></td>
 				<td class="dvtCellInfo" align="left">
-					{$workflow->description|@to_html}
+					{$workflow->description}
 					<input type="hidden" name="workflow_id" value="{$workflow->id}" id="save_workflow_id">
 				</td>
 			</tr>
