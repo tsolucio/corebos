@@ -108,7 +108,7 @@ class VTEntityDelta extends VTEventHandler {
 		if(empty(self::$oldEntity[$moduleName][$recordId])) {
 			return false;
 		}
-		$fieldDelta = self::$entityDelta[$moduleName][$recordId][$fieldName];
+		@$fieldDelta = self::$entityDelta[$moduleName][$recordId][$fieldName];  // we know this will be empty sometimes, so we ignore the error
 		$result = $fieldDelta['oldValue'] != $fieldDelta['currentValue'];
 		if ($fieldValue !== NULL) {
 			$result = $result && ($fieldDelta['currentValue'] === $fieldValue);

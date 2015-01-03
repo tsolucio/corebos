@@ -53,11 +53,10 @@ class VTJsonCondition {
 		foreach ($expressionResults as $groupId => $groupExprResultSet) {
 			$groupResult = TRUE;
 			foreach ($groupExprResultSet as $exprResult) {
-				$result = $exprResult['result'];
-				$logicalOperator = $exprResult['logicaloperator'];
-				if (isset($result)) { // Condition to skip last condition
-					if (!empty($logicalOperator)) {
-						switch ($logicalOperator) {
+				if (!empty($exprResult['result'])) { // Condition to skip last condition
+					$result = $exprResult['result'];
+					if (!empty($exprResult['logicaloperator'])) {
+						switch ($exprResult['logicaloperator']) {
 							case 'and' : $groupResult = ($groupResult && $result);
 								break;
 							case 'or' : $groupResult = ($groupResult || $result);
@@ -73,11 +72,10 @@ class VTJsonCondition {
 
 		$finalResult = TRUE;
 		foreach ($groupResults as $groupId => $groupResult) {
-			$result = $groupResult['result'];
-			$logicalOperator = $groupResult['logicaloperator'];
-			if (isset($result)) { // Condition to skip last condition
-				if (!empty($logicalOperator)) {
-					switch ($logicalOperator) {
+			if (!empty($groupResult['result'])) { // Condition to skip last condition
+				$result = $groupResult['result'];
+				if (!empty($groupResult['logicaloperator'])) {
+					switch ($groupResult['logicaloperator']) {
 						case 'and' : $finalResult = ($finalResult && $result);
 							break;
 						case 'or' : $finalResult = ($finalResult || $result);

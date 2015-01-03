@@ -122,7 +122,7 @@ if($image_error=="false")
 	else $return_action = "DetailView";
 	if(isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != "") $return_id = vtlib_purify($_REQUEST['return_id']);
 
-	if(isset($_REQUEST['activity_mode']) && $_REQUEST['activity_mode'] != '') $activitymode = vtlib_purify($_REQUEST['activity_mode']);
+	$activitymode = (empty($_REQUEST['activity_mode']) ? '' : vtlib_purify($_REQUEST['activity_mode']));
 
 	$local_log->debug("Saved record with id of ".$return_id);
 	if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] == "Campaigns")

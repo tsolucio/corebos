@@ -118,7 +118,7 @@ function __vt_add_days($arr) {
 	} else {
 		$noOfDays = $arr[0];
 	}
-	if($baseDate==null || empty($baseDate)) {
+	if(empty($baseDate)) {
 		$baseDate = date('Y-m-d'); // Current date
 	}
 	preg_match('/\d\d\d\d-\d\d-\d\d/', $baseDate, $match);
@@ -135,7 +135,7 @@ function __vt_sub_days($arr) {
 	} else {
 		$noOfDays = $arr[0];
 	}
-	if($baseDate==null || empty($baseDate)) {
+	if(empty($baseDate)) {
 		$baseDate = date('Y-m-d'); // Current date
 	}
 	preg_match('/\d\d\d\d-\d\d-\d\d/', $baseDate, $match);

@@ -19,7 +19,7 @@ class VTUpdateFieldsTask extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $current_user, $default_charset;
+		global $adb, $current_user, $default_charset, $log;
 
 		$util = new VTWorkflowUtils();
 		$util->adminUser();

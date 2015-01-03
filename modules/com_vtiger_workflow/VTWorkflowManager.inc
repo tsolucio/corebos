@@ -264,7 +264,7 @@
 			$tasks = $tm->getTasksForWorkflow($this->id);
 
 			foreach($tasks as $task){
-				if($task->active) {
+				if(is_object($task) and $task->active) {
 					$trigger = $task->trigger;
 					if($trigger != null){
 						$delay = strtotime($data[$trigger['field']])+$trigger['days']*86400;
