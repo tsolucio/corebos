@@ -59,7 +59,8 @@ class VTUpdateFieldsTask extends VTTask {
 					$fieldValue = $focus->column_fields[$fieldValue];
 				} elseif ($fieldValueType == 'expression') {
 					require_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
-
+					$fieldValue = preg_replace('/<br(\s+)?\/?>/i', ' ', $fieldValue);
+					$fieldValue = str_replace("''", "' '", $fieldValue);
 					$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($fieldValue)));
 					$expression = $parser->expression();
 					$exprEvaluater = new VTFieldExpressionEvaluater($expression);
