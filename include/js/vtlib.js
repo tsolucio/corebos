@@ -193,8 +193,10 @@ function vtlib_loadDetailViewWidget(urldata, target, indicator) {
         onComplete: function(response) {
             if(target) {
                 target.innerHTML = response.responseText;
-                if(typeof ParseAjaxResponse == 'function') 
-                ParseAjaxResponse(response.responseText);
+                if(typeof ParseAjaxResponse == 'function')
+                    ParseAjaxResponse(response.responseText);
+                else
+                  vtlib_DetailViewWidgetExecuteScript(response.responseText);
                 if(indicator) {
                     indicator.hide();
                 }
@@ -202,6 +204,30 @@ function vtlib_loadDetailViewWidget(urldata, target, indicator) {
         }
     });
     return false; // To stop event propogation
+}
+
+/**
+ * execute <script> code coming from ajax call in Detail View Widget
+ *
+ */
+function vtlib_DetailViewWidgetExecuteScript(somemixedcode) {
+	var source = somemixedcode;
+	var scripts = new Array();
+	while (source.indexOf("<script") > -1 || source.indexOf("</script") > -1) {
+		var s = source.indexOf("<script");
+		var s_e = source.indexOf(">", s);
+		var e = source.indexOf("</script", s);
+		var e_e = source.indexOf(">", e);
+		scripts.push(source.substring(s_e + 1, e));
+		source = source.substring(0, s) + source.substring(e_e + 1);
+	}
+	for ( var x = 0; x < scripts.length; x++) {
+		try {
+			eval(scripts[x]);
+		} catch (ex) {
+		}
+	}
+	return source;
 }
 
 /**
