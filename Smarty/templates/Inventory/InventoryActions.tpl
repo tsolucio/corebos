@@ -1,5 +1,4 @@
 {*<!--
-
 /*********************************************************************************
 ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
@@ -7,22 +6,17 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
 -->*}
 
 <!-- Avoid this actions display for PriceBook module-->
 
-<!-- Added this file to display the Inventory Actions based on the Inventory Modules -->
+<!-- display the Inventory Actions based on the Inventory Modules -->
 <table width="100%" border="0" cellpadding="5" cellspacing="0">
 
-   <!-- This if condition is added to avoid display Tools heading because now there is no options in Tools. -->
 	<tr>
 	<td align="left" class="genHeaderSmall">{$APP.LBL_ACTIONS}</td>
-   </tr>
-
-
+	</tr>
 
 	<!-- Module based actions starts -->
 	{if $MODULE eq 'Products' || $MODULE eq 'Services'}
@@ -168,9 +162,9 @@
 
 {* vtlib customization: Custom links on the Detail view *}
 {if $CUSTOM_LINKS}
-	<br>
+<br>
 <tr><td>
-	{if !empty($CUSTOM_LINKS.DETAILVIEW)}					
+	{if !empty($CUSTOM_LINKS.DETAILVIEW)}
 		<table width="100%" border="0" cellpadding="5" cellspacing="0">
 			<tr><td align="left" class="dvtUnSelectedCell dvtCellLabel">
 				<a href="javascript:;" onmouseover="fnvshobj(this,'vtlib_customLinksLay');" onclick="fnvshobj(this,'vtlib_customLinksLay');"><b>{$APP.LBL_MORE} {$APP.LBL_ACTIONS} &#187;</b></a>
@@ -214,18 +208,18 @@
 			{/if}
 			<br/>
 			<table border=0 cellspacing=0 cellpadding=0 width=100% class="rightMailMerge">
-  				<tr>
+				<tr>
 					<td class="rightMailMergeHeader">
 						<b>{$customlink_label}</b>
 						<img id="detailview_block_{$CUSTOMLINK_NO}_indicator" style="display:none;" src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" />
 					</td>
-  				</tr>
-  				<tr style="height:25px">
+				</tr>
+				<tr style="height:25px">
 					<td class="rightMailMergeContent"><div id="detailview_block_{$CUSTOMLINK_NO}"></div></td>
-  				</tr>
-  				<script type="text/javascript">
-  					vtlib_loadDetailViewWidget("{$customlink_href}", "detailview_block_{$CUSTOMLINK_NO}", "detailview_block_{$CUSTOMLINK_NO}_indicator");
-  				</script>
+				</tr>
+				<script type="text/javascript">
+					vtlib_loadDetailViewWidget("{$customlink_href}", "detailview_block_{$CUSTOMLINK_NO}", "detailview_block_{$CUSTOMLINK_NO}_indicator");
+				</script>
 			</table>
 		{/if}
 	{/foreach}
@@ -235,9 +229,7 @@
 {* END *}
 <!-- Action links END -->
 
-
-
-<!-- Following condition is added to avoid the Tools section in Products and Vendors because we are not providing the Print and Email Now links throughout all the modules. when we provide these links we will remove this if condition -->
+<!-- Following condition is added to avoid the Tools section in Products and Vendors -->
 {if $MODULE neq 'Products' && $MODULE neq 'Services' && $MODULE neq 'Vendors' && $MODULE neq 'PriceBooks'}
 
    <tr>
@@ -245,9 +237,6 @@
 		<span class="genHeaderSmall">{$APP.Tools}</span><br /> 
 	</td>
    </tr>
-
-
-
 
 <!-- To display the Export To PDF link for PO, SO, Quotes and Invoice - starts -->
 {if $MODULE eq 'PurchaseOrder' || $MODULE eq 'SalesOrder' || $MODULE eq 'Quotes' || $MODULE eq 'Invoice'}
@@ -261,11 +250,10 @@
    <tr>
 	<td align="left" style="padding-left:10px;">
 		<a href="index.php?module={$MODULE}&action={$export_pdf_action}&return_module={$MODULE}&return_action=DetailView&record={$ID}&return_id={$ID}" class="webMnu"><img src="{'actionGeneratePDF.gif'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle" border="0"/></a>
-                <a href="index.php?module={$MODULE}&action={$export_pdf_action}&return_module={$MODULE}&return_action=DetailView&record={$ID}&return_id={$ID}" class="webMnu">{$APP.LBL_EXPORT_TO_PDF}</a>
+		<a href="index.php?module={$MODULE}&action={$export_pdf_action}&return_module={$MODULE}&return_action=DetailView&record={$ID}&return_id={$ID}" class="webMnu">{$APP.LBL_EXPORT_TO_PDF}</a>
 	</td>
    </tr>
 
-{if $MODULE eq 'PurchaseOrder' || $MODULE eq 'SalesOrder' || $MODULE eq 'Quotes' || $MODULE eq 'Invoice'}
 <!-- Added to give link to  send Invoice PDF through mail -->
  <tr>
 	<td align="left" style="padding-left:10px;">
@@ -274,12 +262,7 @@
 	</td>
    </tr>
 {/if}
-{/if}
-
-<!-- Above if condition is added to avoid the Tools section in Products and Vendors because we are not providing the Print and Email Now links throughout all the modules. when we provide these links we will remove this if condition -->
-
-
-
+<!-- Above if condition is added to avoid the Tools section in Products and Vendors -->
 
 </table>
 
@@ -290,7 +273,6 @@ function sendpdf_submit()
 	// Submit the form to get the attachment ready for submission
 	document.DetailView.submit();
 {/literal}
-
 	{if $MODULE eq 'Invoice'}
 		OpenCompose('{$INV_NO}','Invoice',{$ID});
 	{elseif $MODULE eq 'Quotes'}
