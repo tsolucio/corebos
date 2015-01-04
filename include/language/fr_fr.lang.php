@@ -1222,6 +1222,8 @@ $app_strings = array (
 	'LBL_ADD_MAPPING'=> 'ajouter Mapping',
 	'LBL_FIELD_MAPPING' => 'champ de Mapping',
 	'ERROR_GETTING_FILTER' => 'ERROR Retrieving information from filter. Please delete the filter and try again.',
+	'Upload Images' => 'Upload Images',
+	'Drag file here or click to upload' => 'Drag file here or click to upload',
 );
 
 $app_list_strings = array (

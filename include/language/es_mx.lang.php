@@ -1272,6 +1272,8 @@ $app_strings = array (
 
 	'LBL_NEXT_BUTTON_LABEL' => 'Siguiente',
 	'ERROR_GETTING_FILTER' => 'ERROR Aplicando Filtro. Por favor elimínalo y crealo de nuevo.',
+	'Upload Images' => 'Subir Imágenes',
+	'Drag file here or click to upload' => 'Arrastra la imagen aquí o haz click para cargar la imagen',
 );
 $app_list_strings = array (
       'moduleList' => array(

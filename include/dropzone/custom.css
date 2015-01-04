@@ -1,0 +1,20 @@
+.dropzone {
+  width: 200px;
+  font-family: "Roboto Condensed", sans-serif;
+  font-size: 16px;
+  text-align: center;
+  background-color: rgba(0, 0, 0, 0.06);
+  color: #888;
+}
+.dropzone:hover {
+  color: #ff9900;
+}
+.dropzone .dz-message {
+  padding: 0 20px;
+  color: inherit;
+  cursor: pointer;
+}
+.dropzone .dz-message span {
+  display: block;
+  font-size: 0.3em;
+}

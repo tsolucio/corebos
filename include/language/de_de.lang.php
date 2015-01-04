@@ -12,13 +12,6 @@
  * All Rights Reserved.
  * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/include/language/en_us.lang.php,v 1.68 2005/04/26 06:50:39 rank Exp $
- * Description:  Defines the English language pack for the base application.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
 $app_strings = array(
 'LBL_BROWSER_TITLE' => 'vtiger CRM 5 - Commercial Open Source CRM',
 'LBL_MY_ACCOUNT'=>'Mein Konto',
@@ -1317,6 +1310,8 @@ $app_strings = array(
 'LBL_ADD_MAPPING'=> 'Zuordnung hinzufügen',
 'LBL_FIELD_MAPPING' => 'Feldzuordnung',
 'ERROR_GETTING_FILTER' => 'ERROR Retrieving information from filter. Please delete the filter and try again.',
+'Upload Images' => 'Upload Images',
+'Drag file here or click to upload' => 'Drag file here or click to upload',
 );
 
 $app_list_strings = array (

@@ -183,4 +183,11 @@
 	<classname>SendEmailFromAddress</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Mass Upload Image On Product</description>
+	<filename>build/changeSets/MassUploadImageOnProduct.php</filename>
+	<classname>MassUploadImageOnProduct</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
 </updatesChangeLog>

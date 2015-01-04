@@ -1269,6 +1269,8 @@ $app_strings = array (
 'LBL_ADD_MAPPING'=> 'Aggiungi mappatura',
 'LBL_FIELD_MAPPING' => 'Mappatura Campo',
 'LBL_MANDATORY_FIELD_MISSING'=>'Manca il valore in un campo obbligatorio',
+'Upload Images' => 'Upload Images',
+'Drag file here or click to upload' => 'Drag file here or click to upload',
 );
 
 // Translation for currency names

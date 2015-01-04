@@ -1347,6 +1347,8 @@ $app_strings = array (
 'LBL_MORE'=>'Meer',
 'LBL_CRM_SETTINGS' => 'CRM instellingen',
 'ERROR_GETTING_FILTER' => 'ERROR Retrieving information from filter. Please delete the filter and try again.',
+'Upload Images' => 'Upload Images',
+'Drag file here or click to upload' => 'Drag file here or click to upload',
 );
 
 $app_list_strings = array (
