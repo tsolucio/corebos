@@ -659,6 +659,7 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 									<option value="Potentials"><?php echo $app_strings['Potentials']?></option>
 									<option value="HelpDesk"><?php echo $app_strings['HelpDesk']?></option>
 									<option value="Campaigns"><?php echo $app_strings['Campaigns']?></option>
+									<option value="Vendors"><?php echo $app_strings['Vendors']?></option> <!-- MSL -->
 								</select>
 							</td>
 							<td>

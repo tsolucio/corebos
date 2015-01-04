@@ -134,7 +134,11 @@ if(isset($_REQUEST['record']) && $_REQUEST['record']!='') {
 		
 		$account_id = vtlib_purify($_REQUEST['account_id']);
 		$account_name = getAccountName($account_id);
-	}
+	} else {  //MSL
+		$account_id = vtlib_purify($_REQUEST['vendor_id']);
+		$vndinfo = getEntityName('Vendors', $account_id);
+		$account_name = $vndinfo[$account_id];
+	}  //--- MSL
 }
 if(isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
 	$focus->id = "";

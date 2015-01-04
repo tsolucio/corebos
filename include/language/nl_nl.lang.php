@@ -1,5 +1,4 @@
 <?php
-
 /*******************************************************************************
  * The contents of this file are subject to the following licences:
  * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
@@ -354,6 +353,8 @@ $app_strings = array (
 'COMBO_HELPDESK' => 'Help-tickets',
 'COMBO_USERS' => 'Gebruikers',
 'COMBO_CAMPAIGNS' => 'Campagnes',
+'COMBO_VENDORS' => 'Vendors', //MSL
+'LBL_VENDOR_NAME' => 'Vendor Name', //MSL
 'LBL_SELECT' => 'Selecteer',
 'LBL_EDIT' => 'Bewerk',
 'LBL_DELETE' => 'Verwijder',
