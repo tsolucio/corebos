@@ -53,7 +53,7 @@ class VTJsonCondition {
 		foreach ($expressionResults as $groupId => $groupExprResultSet) {
 			$groupResult = TRUE;
 			foreach ($groupExprResultSet as $exprResult) {
-				if (!empty($exprResult['result'])) { // Condition to skip last condition
+				if (isset($exprResult['result'])) { // Condition to skip last condition
 					$result = $exprResult['result'];
 					if (!empty($exprResult['logicaloperator'])) {
 						switch ($exprResult['logicaloperator']) {
@@ -72,7 +72,7 @@ class VTJsonCondition {
 
 		$finalResult = TRUE;
 		foreach ($groupResults as $groupId => $groupResult) {
-			if (!empty($groupResult['result'])) { // Condition to skip last condition
+			if (isset($groupResult['result'])) { // Condition to skip last condition
 				$result = $groupResult['result'];
 				if (!empty($groupResult['logicaloperator'])) {
 					switch ($groupResult['logicaloperator']) {
