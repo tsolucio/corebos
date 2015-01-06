@@ -1537,6 +1537,10 @@ level2Sel{
 	width:600px;
 	top:15px;
 	left:0px;
+	right: 0;
+	margin: 0 auto;
+	overflow: scroll;
+	resize: both;
 	display: none;
 	z-index:100000;
 	background-color:#ddd;
