@@ -1648,6 +1648,17 @@ level2Sel{
 }
 
 /* Css for quick Create */
+#qcformpop {
+	position:absolute;
+	width:600px;
+	top:15px;
+	left:0px;
+	display: none;
+	z-index:100000;
+	background-color:#ddd;
+	background-image:url(images/layerPopupBg.gif) ;
+	border:2px solid #000000;
+}
 
 .qcTransport{
     /* background:transparent url(images/level2Bg.gif) repeat-x scroll center bottom;*/

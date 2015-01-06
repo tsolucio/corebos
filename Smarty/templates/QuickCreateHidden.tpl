@@ -11,7 +11,15 @@
  ********************************************************************************/
 
 -->*}
-{if $MODULE eq 'HelpDesk'}
+{if $FROM eq 'popup'}
+	{literal}
+	<form name="QcEditView" onSubmit="if(getFormValidate('qcformpop')) { VtigerJS_DialogBox.block(); return true;} else { return false; }" method="POST" action="index.php">
+	{/literal}
+	<input type="hidden" name="from"   value="{$FROM}">
+	<input type="hidden" name="return_action" value="Popup">
+	<input type="hidden" name="return_module" value="{$MODULE}">
+	<input type="hidden" name="search_url" value="{$URLPOPUP}">
+{elseif $MODULE eq 'HelpDesk'}
 	{literal}
 	<form name="QcEditView" onSubmit="if(getFormValidate('qcform')) { VtigerJS_DialogBox.block(); return true;} else { return false; }" method="POST" action="index.php"  ENCTYPE="multipart/form-data">
 	{/literal}

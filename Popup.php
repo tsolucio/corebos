@@ -38,6 +38,26 @@ $smarty->assign("APP", $app_strings);
 $smarty->assign("THEME", $theme);
 $smarty->assign("THEME_PATH",$theme_path);
 $smarty->assign("MODULE",$currentModule);
+$qc_modules = getQuickCreateModules();
+for ($i=0;$i<count($qc_modules);$i++)  $qcmod[$i]=$qc_modules[$i][1];
+$smarty->assign("QCMODULEARRAY", $qcmod);
+$suri=vtlib_purify($_SERVER["REQUEST_URI"]);
+$suri=substr($suri,strpos($suri,'?')+1);
+$smarty->assign("POPUP", str_replace('&','-a;',$suri).'-a;popqc=true');
+
+if (!empty($_REQUEST['popqc']) and $_REQUEST['popqc'] = 'true' and empty($_REQUEST['advft_criteria']) and !empty($_REQUEST['record'])) {
+	$fldrs = $adb->query("SELECT vtiger_field.fieldlabel,vtiger_field.tablename,vtiger_field.columnname,vtiger_field.fieldname,vtiger_entityname.entityidfield
+			FROM vtiger_field
+			INNER JOIN vtiger_entityname on vtiger_field.tabid=vtiger_entityname.tabid and modulename='$currentModule' WHERE uitype=4");
+	$row = $adb->fetch_array($fldrs);
+	$fieldLabelEscaped = str_replace(" ","_",$row['fieldlabel']);
+	$optionvalue = $row['tablename'].":".$row['columnname'].":".$row['fieldname'].":".$currentModule."_".$fieldLabelEscaped.":V";
+	$fldvalrs = $adb->query('select '.$row['columnname'].' from '.$row['tablename'].' inner join vtiger_crmentity on crmid = '.$row['entityidfield'].' where '.$row['entityidfield'].'='.$_REQUEST['record'].' ORDER BY createdtime DESC LIMIT 1');
+	$fldval = $adb->query_result($fldvalrs,0,0);
+	$_REQUEST['searchtype']='advance';
+	$_REQUEST['query'] = 'true';
+	$_REQUEST['advft_criteria'] = '[{"groupid":"1","columnname":"'.$optionvalue.'","comparator":"e","value":"'.$fldval.'","columncondition":""}]';
+}
 
 $form = vtlib_purify($_REQUEST['form']);
 //added to get relatedto field value for todo, while selecting from the popup list, after done the alphabet or basic search.

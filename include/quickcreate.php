@@ -33,6 +33,8 @@ $smarty->assign("MOD",$mod_strings);
 $smarty->assign("THEME",$theme);
 $smarty->assign("IMAGE_PATH",$image_path);
 $smarty->assign("ACTIVITY_MODE", vtlib_purify($_REQUEST['activity_mode']));
+$smarty->assign("FROM", vtlib_purify($_REQUEST['from']));
+$smarty->assign("URLPOPUP", str_replace('-a;', '&', $_REQUEST['pop']));
 if($module == 'Calendar')
 	$smarty->assign("QCMODULE", getTranslatedString('Todo', 'Calendar'));
 elseif($module == "HelpDesk")
