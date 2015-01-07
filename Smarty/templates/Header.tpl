@@ -105,7 +105,7 @@
                                 <a href='javascript:void(0);' ><img src="{'arrow_down_black.png'|@vtiger_imageurl:$THEME}" align='left' border=0></a>
                         </td>
 						<td style="background-color:#cccccc">
-							<input type="image" class="searchBtn"  alt="{$APP.LBL_FIND}" title="{$APP.LBL_FIND}" width = "70%;" height="70%" src="{'searchicon.PNG'|@vtiger_imageurl:$THEME}" align='left' border=1 onsubmit ="submit-form();">
+							<input type="image" class="searchBtn"  alt="{$APP.LBL_FIND}" title="{$APP.LBL_FIND}" width = "70%;" height="70%" src="{'searchicon.PNG'|@vtiger_imageurl:$THEME}" align='left' border=1>
 						</td>
 					</form>
 		   			</tr>
@@ -356,9 +356,18 @@ function UnifiedSearch_SelectModuleCancel() {
 function UnifiedSearch_SelectModuleSave() {
 	var UnifiedSearch_form = document.forms.UnifiedSearch;
 	UnifiedSearch_form.search_onlyin.value = Form.serialize($('UnifiedSearch_moduleform')).replace(/search_onlyin=/g, '').replace(/&/g,',');
+	new Ajax.Request(
+		'index.php',
+		{queue: {position: 'end', scope: 'command'},
+			method: 'post',
+			postBody: 'module=Home&action=HomeAjax&file=UnifiedSearchModulesSave&search_onlyin=' + encodeURIComponent(UnifiedSearch_form.search_onlyin.value),
+			onComplete: function(response) {
+				// continue
+			}
+		}
+	);
 	UnifiedSearch_SelectModuleCancel();
 }
-
 {/literal}
 </script>
 <!-- End -->
