@@ -20,6 +20,7 @@ class VTSimpleTemplate{
 	}
 
 	private function matchHandler($match){
+		global $current_user;
 		preg_match('/\((\w+) : \(([_\w]+)\) (\w+)\)/', $match[1], $matches);
 		if(count($matches)==0){
 			$fieldname = $match[1];
@@ -32,7 +33,13 @@ class VTSimpleTemplate{
 				$uitype = $field_focus->uitype;
 				if($uitype == '15' || $uitype == '33' || ($uitype == '55' && $fieldname == 'salutationtype'))
 					$result = getTranslatedString($data[$fieldname],($moduleName == 'Events') ? 'Calendar' : $moduleName);
-				else
+				elseif ($uitype == '5' || $uitype == '6' || $uitype == '23') {  // date
+					$date = new DateTimeField($data[$fieldname]);
+					$result = $date->getDisplayDate($current_user);
+				} elseif ($uitype == '70') {  // datetime
+					$date = new DateTimeField($data[$fieldname]);
+					$result = $date->getDisplayDateTimeValue($current_user);
+				} else
 					$result = $data[$fieldname];
 			}else{
 				$result ='';
@@ -75,7 +82,13 @@ class VTSimpleTemplate{
 							$uitype = $field_focus->uitype;
 							if($uitype == '15' || $uitype == '33' || ($uitype == '55' && $fieldname == 'salutationtype'))
 								$result = getTranslatedString($data[$fieldname],$referenceModule);
-							else
+							elseif ($uitype == '5' || $uitype == '6' || $uitype == '23') {  // date
+								$date = new DateTimeField($data[$fieldname]);
+								$result = $date->getDisplayDate($current_user);
+							} elseif ($uitype == '70') {  // datetime
+								$date = new DateTimeField($data[$fieldname]);
+								$result = $date->getDisplayDateTimeValue($current_user);
+							} else
 								$result = $data[$fieldname];
 						}else{
 							$result = '';
