@@ -50,6 +50,8 @@ $mod_strings = array(
 	'LBL_RECORD' => 'Record #',
 	'Vendor No' => 'Vendor No.',
 	'LBL_MODULE_NAME' => 'Vendors',
-	'Vendors ID' => 'Vendors ID'
+	'Vendors ID' => 'Vendors ID',
+	'SetVendorReturnAddressTitle' => 'Select Vendor Address to use',
+	'SetVendorReturnAddressDescription' => 'Select which address you wish to overwrite, if any',
 );
 ?>

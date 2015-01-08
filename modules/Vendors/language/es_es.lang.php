@@ -77,6 +77,8 @@ $mod_strings = array (
  * 5.2.0 changes 
  */
 'LBL_MODULE_NAME'=>'Proveedores',
+'SetVendorReturnAddressTitle' => 'Dirección de Proveedor a utilizar',
+'SetVendorReturnAddressDescription' => 'Selecciona que dirección quieres sobreescribir, si procede',
 
 );
 ?>
