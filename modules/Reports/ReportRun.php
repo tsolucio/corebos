@@ -3172,7 +3172,7 @@ class ReportRun extends CRMEntity
 
 		if(isset($arr_val)) {
 			foreach($arr_val[0] as $key=>$value) {
-				$worksheet->write(0, $count, utf8_decode($key) , utf8_decode($header));
+				$worksheet->write(0, $count, utf8_decode($key), $header);
 				$count = $count + 1;
 			}
 			$rowcount=1;
