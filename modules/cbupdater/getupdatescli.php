@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2014 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Copyright 2015 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
 * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
 * file except in compliance with the License. You can redistribute it and/or modify it
 * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
@@ -16,19 +16,38 @@
 *  Module       : cbupdater
 *  Version      : 5.5.0
 *  Author       : JPL TSolucio, S. L.
-*************************************************************************************************/
+*******************************************$err******************************************************/
 
 //error_reporting(E_ALL); ini_set('display_errors', 'on');
-global $adb, $log, $mod_strings, $app_strings, $currentModule, $current_user, $theme, $singlepane_view;
+include_once('vtlib/Vtiger/Module.php');
+global $adb, $log, $mod_strings, $app_strings, $currentModule, $current_user;
+$currentModule = 'cbupdater';
+set_time_limit(0);
+ini_set('memory_limit','1024M');
+
+$current_user = new Users();
+$current_user->retrieveCurrentUserInfoFromFile(1); // admin
+if(isset($_SESSION['authenticated_user_language']) && $_SESSION['authenticated_user_language'] != '') {
+	$current_language = $_SESSION['authenticated_user_language'];
+} else {
+	if(!empty($current_user->language)) {
+		$current_language = $current_user->language;
+	} else {
+		$current_language = $default_language;
+	}
+}
+$app_strings = return_application_language($current_language);
 include_once 'modules/cbupdater/cbupdater.php';
 include_once 'modules/cbupdater/cbupdaterHelper.php';
 
-$error = false;
+$error = 0;
 $errmsg = '';
 $cbupdatesfound = array();
 $cbupdate_files = array();
-if (!empty($_REQUEST['update_file'])) {
-	$cbupdate_files[] = vtlib_purify($_REQUEST['update_file']);
+$cbupdate_ids = '';
+
+if (count($argv)==2) {
+	$cbupdate_files[] = vtlib_purify($argv[1]);
 } else {
 	$cbupdate_files[] = 'modules/cbupdater/cbupdater.xml';
 	foreach (glob('modules/cbupdater/cbupdates/*.{xml}',GLOB_BRACE) as $tcode) {
@@ -70,10 +89,11 @@ if (count($cbupdate_files)>0) {
 							$focus->column_fields['execorder'] = $execorder++;
 							$focus->save('cbupdater');
 							$cbupd['cbupdaterid'] = $focus->id;
+							$cbupdate_ids = $cbupdate_ids . $focus->id . ',';
 							$adb->pquery('update vtiger_cbupdater set pathfilename=? where cbupdaterid=?',array($cbupd['filename'],$focus->id));
 							$cbupdatesfound[] = $cbupd;
 						} else {
-							$error = true;
+							$error = 1;
 							$errmsg = getTranslatedString('err_invalidchangeset',$currentModule).'<br>';
 							$errmsg .= print_r($cbupd,true);
 						}
@@ -81,7 +101,7 @@ if (count($cbupdate_files)>0) {
 				}
 			}
 		} else {
-			$error = true;
+			$error = 2;
 			$errmsg = getTranslatedString('err_invalidupdatefile',$currentModule).'<br>';
 			foreach (libxml_get_errors() as $err) {
 				$errmsg .= display_xml_error($err);
@@ -89,31 +109,22 @@ if (count($cbupdate_files)>0) {
 			libxml_clear_errors();
 		}
 	} else {
-		$error = true;
+		$error = 3;
 		$errmsg = getTranslatedString('err_invalidupdatefile',$currentModule).'<br>';
-		foreach (libxml_get_errors() as $err ) {
+		foreach (libxml_get_errors() as $err) {
 			$errmsg .= display_xml_error($err);
 		}
 		libxml_clear_errors();
 	}
 	} //foreach
 } else {
-	$error = true;
+	$error = 4;
 	$errmsg = getTranslatedString('err_noupdatefile',$currentModule);
 }
 
-$smarty = new vtigerCRM_Smarty();
-$smarty->assign('APP', $app_strings);
-$smarty->assign('MOD', $mod_strings);
-$smarty->assign('MODULE', $currentModule);
-$smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule));
-$smarty->assign('CATEGORY', $category);
-$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
-$smarty->assign('THEME', $theme);
-$smarty->assign('ERROR', $error);
-$smarty->assign('ERRORMSG', $errmsg);
-$smarty->assign('CBUPDATES', $cbupdatesfound);
-include('modules/cbupdater/forcedButtons.php');
-$smarty->assign('CHECK', $tool_buttons);
-$smarty->display('modules/cbupdater/getupdates.tpl');
+if ($error) {
+	echo $error;
+} else {
+	echo trim($cbupdate_ids,',');
+}
 ?>
