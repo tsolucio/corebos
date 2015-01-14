@@ -648,7 +648,7 @@ class QueryGenerator {
 					$sql[] = 'IS NULL or '.$field->getTableName().'.'.$field->getFieldName()." = ''";
 					return $sql;
 				}
-			} elseif($field->getFieldDataType()=='picklist') {
+			} elseif($field->getFieldDataType()=='picklist' || $field->getFieldDataType()=='multipicklist') {
 				global $mod_strings;
 				$values = array();
 				$strings = explode(',' , $value);
