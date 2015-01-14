@@ -1626,6 +1626,7 @@ function setObjectValuesFromRequest($focus) {
 			$focus->column_fields[$fieldname] = $value;
 		}
 	}
+	$focus = cbEventHandler::do_filter('corebos.filter.editview.setObjectValues', $focus);
 	$log->debug("Exiting setObjectValuesFromRequest method ...");
 }
 

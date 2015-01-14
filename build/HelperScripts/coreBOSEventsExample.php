@@ -82,6 +82,10 @@ class coreBOSEventsExample extends VTEventHandler {
 			case 'corebos.filter.listview.filter.show':
 				$parameter = ($parameter['viewname'] != 'Contacts Address');  // do not show filter named: Contacts Address
 				break;
+			case 'corebos.filter.editview.setObjectValues':
+				$parameter->column_fields['leadsource']='Cold Call';
+				$parameter->column_fields['assistant']='Value from event hook';
+				break;
 			case 'corebos.filter.link.show':
 				$parameter = !($parameter[1][1]=='DETAILVIEW');  // hide all DETAILVIEW links
 				break;

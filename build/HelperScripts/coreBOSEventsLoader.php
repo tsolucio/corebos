@@ -26,6 +26,7 @@ registerEvent('corebos.filter.listview.querygenerator.query');
 registerEvent('corebos.filter.listview.render');
 registerEvent('corebos.filter.listview.header');
 registerEvent('corebos.filter.listview.filter.show');
+registerEvent('corebos.filter.editview.setObjectValues');
 registerEvent('corebos.filter.link.show');
 
 echo '</body></html>';
