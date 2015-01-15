@@ -43,6 +43,8 @@ if(is_admin($current_user) == true && PerformancePrefs::getBoolean('LOGOUT_BACKU
 $local_log =& LoggerManager::getLogger('Logout');
 
 // clear out the autthenticating flag
+session_regenerate_id(true);
+session_unset();
 session_destroy();
 
 define("IN_LOGIN", true);
