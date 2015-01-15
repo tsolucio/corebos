@@ -902,31 +902,8 @@ class CustomView extends CRMEntity {
 				$advfilterval = html_entity_decode($relcriteriarow["value"], ENT_QUOTES, $default_charset);
 				$col = explode(":", $relcriteriarow["columnname"]);
 				$uitype_value = getUItypeByFieldName($currentModule, $col[2]);
-				if($uitype_value == '15' || $uitype_value == '16' || $uitype_value == '33')
-				{
-					$values = array();
-					$strings = explode(',' , $advfilterval);
-					foreach($strings as $string) {
-						$new_value = $string;
-						// Get all the keys for the for the Picklist value
-						$mod_keys = array_keys($mod_strings, $string);
-						if (count($mod_keys)==0) {
-							$mod_keys = array_keys($mod_strings, ucfirst($string));
-							if (count($mod_keys)==0) {
-								$mod_keys = array_keys($mod_strings, ucwords($string));
-							}
-						}
-						// Iterate on the keys, to get the first key which doesn't start with LBL_  (assuming it is not used in PickList)
-						foreach($mod_keys as $mod_idx=>$mod_key) {
-							$stridx = strpos($mod_key, 'LBL_');
-							if ($stridx !== 0) {
-								$new_value = $mod_key;
-								break;
-							}
-						}
-						$values[] = $new_value;
-					}
-					$advfilterval = implode(',', $values);
+				if($uitype_value == '15' || $uitype_value == '16' || $uitype_value == '33') {
+					$advfilterval = getTranslationKeyFromTranslatedValue($currentModule, $advfilterval);
 				}
 				$temp_val = explode(",", $relcriteriarow["value"]);
 				if ($col[4] == 'D' || ($col[4] == 'T' && $col[1] != 'time_start' && $col[1] != 'time_end') || ($col[4] == 'DT')) {

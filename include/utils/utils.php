@@ -3133,6 +3133,49 @@ function getAccessPickListValues($module)
 	return $fieldlists;
 }
 
+/** Returns a comma separated list of translation indexes in the current language of the indicated module, that
+ * correspond to the given string. In other words: given a string that has been translated, this function will
+ * try to return the key value used to obtain the translated string
+ * @param string $module - module in which to search for the keys
+ * @param string $translated - comma separated list of translated strings
+ * @return string comma separated list of keys
+**/
+function getTranslationKeyFromTranslatedValue($module, $translated) {
+	global $current_language;
+	static $purified_cache = array();
+
+	if (array_key_exists($module.$translated, $purified_cache)) {
+		return $purified_cache[$module.$translated];
+	}
+
+	$modstrs = return_module_language($current_language, $module);
+	$values = array();
+	$strings = explode(',' , $translated);
+	foreach($strings as $string) {
+		$new_value = $string;
+		// Get all the keys for the translated value
+		$mod_keys = array_keys($modstrs, $string);
+		if (count($mod_keys)==0) {
+			$mod_keys = array_keys($modstrs, ucfirst($string));
+			if (count($mod_keys)==0) {
+				$mod_keys = array_keys($modstrs, ucwords($string));
+			}
+		}
+		// Iterate on the keys, to get the first key which doesn't start with LBL_ (assuming it is not used in PickList)
+		foreach($mod_keys as $mod_idx=>$mod_key) {
+			$stridx = strpos($mod_key, 'LBL_');
+			if ($stridx !== 0) {
+				$new_value = $mod_key;
+				break;
+			}
+		}
+		$values[] = $new_value;
+	}
+	$translated = implode(',', $values);
+	$purified_cache[$module.$translated] = $translated;
+	return $translated;
+}
+
 function get_config_status() {
 	global $default_charset;
 	if($default_charset == 'UTF-8')
