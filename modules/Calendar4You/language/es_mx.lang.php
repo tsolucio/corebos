@@ -68,7 +68,7 @@ $mod_strings = Array (
 "LBL_GOOGLECLIENTID"=>"ID Cliente",
 "LBL_GOOGLEKEYFILE"=>"FileKey",
 "LBL_UPLOADFILE"=>"Cargar",
-"LBL_GOOGLEFILE"=>'File de Google: '
+"LBL_GOOGLEFILE"=>'Fichero P12 de Google: ',
 
 );
 ?>

@@ -299,16 +299,13 @@ $Calendar_Settings = $Calendar4You->getSettings();
             echo "</div>";
 
             echo '<input type="hidden" name="update_google_account" id="update_google_account" value="'.$update_google_account.'">';
-                 
              ?>
             </td>
     	</tr>
-        
-        
     	</table>
     </td>
     </tr>
-    </table>    
+    </table>
 	<table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport">
 	<tr>
 		<td align="center">
@@ -318,13 +315,14 @@ $Calendar_Settings = $Calendar4You->getSettings();
 	</tr>
 	</table>
 </form>
+</div><hr size="1" color="black">
+<br><div>';
+<form method='post' action='index.php?module=Calendar4You&action=Calendar4YouAjax&file=uploadfile' enctype='multipart/form-data'>
 <?php
 //upload google file
-        echo'</div><hr size="1" color="black">';
-            echo '<br><div>';
-            echo "<form method='post' action='index.php?module=Calendar4You&action=uploadfile' enctype='multipart/form-data'>";
-            echo $mod_strings['LBL_GOOGLEFILE'];
-            echo "<input type='file' name='user_file' class='small'/>    
-            <input type='submit' name='sub' class='crmbutton edit small' value='".$mod_strings["LBL_UPLOADFILE"]."' />
-            </form><br>";
- ?>
+echo $mod_strings['LBL_GOOGLEFILE'];
+?>
+<input type='file' name='user_file' class='small'/>
+<input type='submit' name='sub' class='crmbutton edit small' value='<?php echo $mod_strings["LBL_UPLOADFILE"]; ?>' />
+</form>
+<br>
