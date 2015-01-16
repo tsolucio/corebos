@@ -12,13 +12,6 @@
  * All Rights Reserved.
  * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  Includes generic helper functions used throughout the application.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- * ****************************************************************************** */
 
 require_once('include/utils/utils.php'); //new
 require_once('include/utils/RecurringType.php');
@@ -28,9 +21,6 @@ require_once 'include/ListView/ListViewController.php';
 
 /**
  * Check if user id belongs to a system admin.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
  */
 function is_admin($user) {
 	global $log;
@@ -2600,7 +2590,6 @@ function SaveTagCloudView($id = "") {
 	if (!empty($id) and !empty($_REQUEST['showtagas'])) {
 		$tag_cloud_showas = vtlib_purify($_REQUEST['showtagas']);
 		$query = 'update vtiger_users set showtagas = ? where id=?';
-		$log->fatal(array($tag_cloud_showas, $id));
 		$adb->pquery($query, array($tag_cloud_showas, $id));
 	}
 	$log->debug("Exiting from function SaveTagCloudView($id)");
