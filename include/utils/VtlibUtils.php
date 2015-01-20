@@ -195,6 +195,7 @@ function vtlib_getToggleModuleInfo() {
 
 		$modinfo[$module] = Array( 'customized'=>$customized, 'presence'=>$presence, 'hassettings'=>$hassettings, 'isentitytype' => $isentitytype );
 	}
+	uksort($modinfo, function($a,$b) {return (strtolower(getTranslatedString($a,$a)) < strtolower(getTranslatedString($b,$b))) ? -1 : 1;});
 	return $modinfo;
 }
 

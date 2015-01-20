@@ -54,7 +54,6 @@ function vtlib_modulemanager_toggleTab(shownode, hidenode, highlighttab, dehighl
 	{assign var="totalCustomModules" value=$totalCustomModules+1}
 
 	{assign var="modulelabel" value=$modulename|getTranslatedString:$modulename}
-	{if $APP.$modulename}{assign var="modulelabel" value=$APP.$modulename}{/if}
 	<tr>
 		<td class="cellText small" width="20px"><img src="{'uparrow.gif'|@vtiger_imageurl:$THEME}" border="0"></td>
 		<td class="cellLabel small">{$modulelabel}</td>
@@ -128,8 +127,7 @@ function vtlib_modulemanager_toggleTab(shownode, hidenode, highlighttab, dehighl
 {foreach key=modulename item=modinfo from=$TOGGLE_MODINFO}
 
 {if $modinfo.customized eq false}
-	{assign var="modulelabel" value=$modulename}
-	{if $APP.$modulename}{assign var="modulelabel" value=$APP.$modulename}{/if}
+	{assign var="modulelabel" value=$modulename|getTranslatedString:$modulename}
 	<tr>
 		<!--td class="cellLabel small" width="20px">&nbsp;</td -->
 		<td class="cellLabel small" colspan=2>{$modulelabel|@getTranslatedString:$MODULE}</td>
