@@ -230,7 +230,7 @@ class CRMEntity {
 			$result = $adb->pquery($sql2, $params2);
 
 			if ($_REQUEST['mode'] == 'edit') {
-				if ($id != '' && $_REQUEST['fileid'] != '') {
+				if ($id != '' && isset($_REQUEST['fileid']) && $_REQUEST['fileid'] != '') {
 					$delquery = 'delete from vtiger_seattachmentsrel where crmid = ? and attachmentsid = ?';
 					$delparams = array($id, vtlib_purify($_REQUEST['fileid']));
 					$adb->pquery($delquery, $delparams);
@@ -1163,7 +1163,9 @@ class CRMEntity {
 		$sql_recentviewed = 'DELETE FROM vtiger_tracker WHERE user_id = ? AND item_id = ?';
 		$this->db->pquery($sql_recentviewed, array($current_user->id, $id));
 
+		if ($em) {
 		$em->triggerEvent("vtiger.entity.afterdelete", $entityData);
+		}
 	}
 
 	/** Function to unlink all the dependent entities of the given Entity by Id */
@@ -2243,7 +2245,7 @@ class CRMEntity {
 	}
 
 	/** END * */
-	function buildSearchQueryForFieldTypes($uitypes, $value) {
+	function buildSearchQueryForFieldTypes($uitypes, $value=false) {
 		global $adb;
 
 		if (!is_array($uitypes))
@@ -2285,7 +2287,7 @@ class CRMEntity {
 			$query .= " INNER JOIN $tablename
 						on $this->table_name.$this->table_index = $tablename." . $this->tab_name_index[$tablename];
 		}
-		if (!empty($lookupcolumns)) {
+		if (!empty($lookupcolumns) && $value !== false) {
 			$query .=" WHERE ";
 			$i = 0;
 			$columnCount = count($lookupcolumns);
