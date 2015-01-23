@@ -68,6 +68,9 @@ $mod_strings = Array (
 "LBL_GOOGLECLIENTID"=>"ClientID",
 "LBL_GOOGLEKEYFILE"=>"FileKey",
 "LBL_UPLOADFILE"=>"Upload",
-"LBL_GOOGLEFILE"=>'Google File: '
+"LBL_GOOGLEFILE"=>'Google File: ',
+"LBL_GOOGLECLIENTSECRET"=>"Client Secret",
+"LBL_GOOGLEURI"=>'Redirect URI',
+"LBL_CONNECT"=>"Authorize and Connect",
 );
 ?>
