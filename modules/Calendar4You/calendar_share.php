@@ -241,10 +241,11 @@ $Calendar_Settings = $Calendar4You->getSettings();
                 echo $mod_strings["LBL_CONNECTING_WORK_CORRECT"];
             }
             
-            $google_login = $GoogleSync4You->getLogin();
+            $google_login = $GoogleSync4You->getclientsecret();
             $google_apikey= $GoogleSync4You->getAPI();
             $google_keyfile = $GoogleSync4You->getkeyfile();
             $google_clientid = $GoogleSync4You->getclientid();
+            $google_refresh = $GoogleSync4You->getrefreshtoken();
             ?>
             </div><br>
             <?php 
@@ -252,7 +253,7 @@ $Calendar_Settings = $Calendar4You->getSettings();
             if ($google_login != "") 
             { 
                 echo "<div id='google_account_info_div'>";
-                echo getTranslatedString("LBL_LOGIN","Users").":"; 
+                echo getTranslatedString("LBL_GOOGLECLIENTSECRET","Calendar4You").":"; 
                 echo $google_login; 
                 echo '&nbsp;<input title="'.$mod_strings["LBL_SET_ACCESS_DATA"].'" class="crmButton password small" language="javascript" onclick="changeGoogleAccount();" name="change_google_user" value="'.$mod_strings["LBL_CHANGE_GOOGLE_ACCOUNT"].'" type="button">';
                 echo "</div>";
@@ -267,9 +268,9 @@ $Calendar_Settings = $Calendar4You->getSettings();
                 $update_google_account = 1;
             }
             echo '<table border=0 cellspacing=0 cellpadding=2><tr><td>';
-            echo getTranslatedString("LBL_LOGIN","Users").":";
+            echo getTranslatedString("LBL_GOOGLECLIENTSECRET","Calendar4You").":";
             echo '</td><td>';
-            echo '<input type="text" name="google_login" id="google_login" value="'.$google_login.'" class="small"><br />';
+            echo '<input type="hidden" name="google_refresh" id="google_refresh" value="'.$google_refresh.'" class="small"><input type="text" name="google_login" id="google_login" value="'.$google_login.'" class="small"><br />';
             echo '</td><tr>';
             echo '<tr><td>';
             echo getTranslatedString("LBL_GOOGLEAPIKEY","Calendar4You").": ";
@@ -284,7 +285,7 @@ $Calendar_Settings = $Calendar4You->getSettings();
             echo '</td></tr>';
             echo '<tr><td>';
             echo '<tr><td>';
-            echo getTranslatedString("LBL_GOOGLEKEYFILE","Calendar4You").": ";
+            echo getTranslatedString("LBL_GOOGLEURI","Calendar4You").": ";
             echo '</td><td>';
             echo '<input type="text" name="google_keyfile" id="google_keyfile" value="'.$google_keyfile.'" class="small">';
             echo '</td></tr>';
@@ -299,13 +300,16 @@ $Calendar_Settings = $Calendar4You->getSettings();
             echo "</div>";
 
             echo '<input type="hidden" name="update_google_account" id="update_google_account" value="'.$update_google_account.'">';
+                 
              ?>
             </td>
     	</tr>
+        
+        
     	</table>
     </td>
     </tr>
-    </table>
+    </table>    
 	<table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport">
 	<tr>
 		<td align="center">
@@ -315,14 +319,14 @@ $Calendar_Settings = $Calendar4You->getSettings();
 	</tr>
 	</table>
 </form>
-</div><hr size="1" color="black">
-<br><div>';
-<form method='post' action='index.php?module=Calendar4You&action=Calendar4YouAjax&file=uploadfile' enctype='multipart/form-data'>
 <?php
 //upload google file
-echo $mod_strings['LBL_GOOGLEFILE'];
-?>
-<input type='file' name='user_file' class='small'/>
-<input type='submit' name='sub' class='crmbutton edit small' value='<?php echo $mod_strings["LBL_UPLOADFILE"]; ?>' />
-</form>
-<br>
+        echo'</div><hr size="1" color="black">';
+        /*
+            echo '<br><div>';
+            echo "<form method='post' action='index.php?module=Calendar4You&action=uploadfile' enctype='multipart/form-data'>";
+            echo $mod_strings['LBL_GOOGLEFILE'];
+            echo "<input type='file' name='user_file' class='small'/>    
+            <input type='submit' name='sub' class='crmbutton edit small' value='".$mod_strings["LBL_UPLOADFILE"]."' />
+            </form><br>";*/
+ ?>

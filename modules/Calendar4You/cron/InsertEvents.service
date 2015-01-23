@@ -21,20 +21,20 @@ $controldate = date("Y-m-d",$controltime);
 
 $c_time_zone = new DateTimeZone($default_timezone);
 
-$where = "vtiger_activity.due_date > ? AND (vtiger_activity.status != 'Held' OR vtiger_activity.status IS NULL) AND (vtiger_activity.eventstatus != 'Held' OR vtiger_activity.eventstatus IS NULL)";
-
-$sql1 = "SELECT userid FROM its4you_googlesync4you_events 
-         INNER JOIN vtiger_activity 
-            ON vtiger_activity.activityid = its4you_googlesync4you_events.crmid
-         WHERE ".$where."
-         GROUP BY userid";
-$result1 = $adb->pquery($sql1,array($controldate));
+$sql1 = "SELECT a.userid ,synctoken,cal.calendar,cal.event FROM  its4you_googlesync4you_access a
+         INNER JOIN vtiger_users ON id = a.userid join 
+         its4you_googlesync4you_calendar cal on cal.userid=a.userid
+         WHERE googleinsert=1 and deleted=0
+         GROUP BY a.userid";
+$result1 = $adb->pquery($sql1,array());
 $num_rows1 = $adb->num_rows($result1);
 
 if ($num_rows1 > 0) {
     while($row1 = $adb->fetchByAssoc($result1)) {
     	$userid = $row1["userid"];
-        
+        $synctoken = $row1["synctoken"];
+        $CALENDAR_ID=$row1["calendar"];
+        $type=$row1["event"];
         $current_user = new Users();
     	$current_user->id = $userid;
     	$current_user = $current_user->retrieve_entity_info($current_user->id, "Users");
@@ -60,47 +60,21 @@ if ($num_rows1 > 0) {
         $GoogleSync4You = new GoogleSync4You();
         $GoogleSync4You->setAccessDataForUser($userid);
         $GoogleSync4You->connectToGoogle();
-        
         if ($GoogleSync4You->isLogged()) {
-            $sql2 = "SELECT its4you_googlesync4you_events.*, cal.calendar,vtiger_activity.activitytype FROM its4you_googlesync4you_events 
-                     INNER JOIN vtiger_activity 
-                        ON vtiger_activity.activityid = its4you_googlesync4you_events.crmid
-                        inner join its4you_googlesync4you_calendar cal on cal.userid=its4you_googlesync4you_events.userid
-                     WHERE ".$where." AND its4you_googlesync4you_events.userid = ? and event=eventtype";
-            $result2 = $adb->pquery($sql2,array($controldate,$userid));
-            
-            while($row2 = $adb->fetchByAssoc($result2)) {
-                $eventid = $row2["id"];
-                $lastmodified = $row2["lastmodified"];
-                $geventid = $row2["geventid"];
-                $cal=$row2["calendar"];
-                $event = $GoogleSync4You->getGoogleCalEventfromcron($geventid,$cal);
-
-                if ($event->getStatus()=='cancelled') {
-                    $sql3 = "DELETE FROM its4you_googlesync4you_events WHERE id = ?";
-                    $adb->pquery($sql3,array($eventid));
-                } else {
-
-                    if ($lastmodified != $event->getUpdated()) {
-                        
-                        $record = $row2["crmid"];
-                        $activitytype = $row2["activitytype"];
-        
-                    	if( $activitytype == 'Task')
-                    		$tab_type = 'Calendar';	
-                    	else
-                    		$tab_type = 'Events';
+        $events = $GoogleSync4You->getGoogleCalEvents($CALENDAR_ID,$synctoken);
+ 
+        while(true) { 
+            $synctoken2=$events->getNextSyncToken();
+              foreach ($events->getItems() as $event) {
+                       	$tab_type = 'Events';
                         
                         $focus = CRMEntity::getInstance($currentModule);
-                        
-                        $focus->retrieve_entity_info($record,$tab_type);
-                        $focus->id = $record;
-                        $focus->mode = 'edit';
-                        
+                                             
                         $focus->column_fields['subject'] = $event->getSummary();
                         $focus->column_fields['description'] = $event->getDescription();
                         $focus->column_fields['location'] = $event->getLocation();
-                        
+                        $focus->column_fields['assigned_user_id'] = $userid;
+
                         $recurrence = $event->getRecurrence();
                         if ($recurrence == "") {
                             //$When = $event->getWhen();
@@ -124,7 +98,11 @@ if ($num_rows1 > 0) {
                             
                             $user_date_end = DateTimeField::convertToUserFormat($enddatetime->format('Y-m-d'));
                             if (!$is_full_day_event) $user_time_end = $enddatetime->format('H:i'); else $user_time_end = "00:00";
-                            
+                            if($type==1) $evtype='Call';
+                            else if($type==2) $evtype='Meeting';
+                            $focus->column_fields['activitytype']=$evtype;
+                            $focus->column_fields['eventstatus']="Planned";
+                             $focus->column_fields['taskpriority']='High';
                             $focus->column_fields['date_start'] = $user_date_start;
                             $focus->column_fields['due_date'] = $user_date_end;
                             $focus->column_fields['time_start'] = $user_time_start;
@@ -139,12 +117,20 @@ if ($num_rows1 > 0) {
                             $focus->column_fields['duration_minutes'] = $duration_minutes;
                         }
                         
-                        $focus->save($currentModule);
-        
-                        $sql3 = "UPDATE its4you_googlesync4you_events SET lastmodified = ? WHERE id = ?";
-                        $adb->pquery($sql3,array($event->getUpdated(),$eventid));
-                    }
-                }
+                        $focus->save("$currentModule");
+    $sql3 = "insert into its4you_googlesync4you_events (crmid,geventid,userid,eventtype,lastmodified) 
+        values (?,?,?,?,?) ";
+    $adb->pquery($sql3,array($focus->id, $event->getId(),$userid,$type,$event->getUpdated()));
+    $adb->pquery("update its4you_googlesync4you_access set synctoken='$synctoken2' where userid=$userid");
+              }
+            
+  $pageToken = $events->getNextPageToken();
+  if ($pageToken) {
+$events = $GoogleSync4You->getGoogleCalEvents($CALENDAR_ID,$synctoken,$pageToken);
+  }                                   
+    else {
+    break;
+  }            
             }
         }
     }

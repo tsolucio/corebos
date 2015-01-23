@@ -15,10 +15,11 @@ $GoogleSync4You = new GoogleSync4You();
 $apikey = $_REQUEST["apikey"];
 $keyfile = $_REQUEST["keyfile"];
 $clientid = $_REQUEST["clientid"];
+$refresh = $_REQUEST["refresh_token"];
 $login = $_REQUEST["login"];
 $pass = $_REQUEST["pass"];
 
-$GoogleSync4You->setAccessData($current_user->id,$login,$apikey,$keyfile,$clientid);   
+$GoogleSync4You->setAccessData($current_user->id,$login,$apikey,$keyfile,$clientid,$refresh);   
 
 $GoogleSync4You->connectToGoogle();
 
