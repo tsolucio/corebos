@@ -52,8 +52,6 @@ if($mode == 'mergesave') {
 		// Transfer the related lists of the records to be deleted, to the primary record's related list
 		if(method_exists($focus, 'transferRelatedRecords')){
 			$focus->transferRelatedRecords($module,$del_value,$merge_id);
-		} else {
-			transferRelatedRecords($module,$del_value,$merge_id);
 		}
 		
 		// Delete the records by id specified in the list
