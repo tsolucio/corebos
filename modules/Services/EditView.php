@@ -126,7 +126,6 @@ elseif($_REQUEST['isDuplicate'] == 'true')
 }
 else {
 	$tax_details = getAllTaxes('available');
-	$smarty->assign("PROD_MODE", "create");
 }
 
 for($i=0;$i<count($tax_details);$i++)

@@ -197,4 +197,11 @@
 	<classname>addVendorActivities</classname>
 	<systemupdate>false</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Product/Service and PB active default value: move to database instead of code</description>
+	<filename>build/changeSets/PdoSrvPBActiveDefaultValue.php</filename>
+	<classname>PdoSrvPBActiveDefaultValue</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
