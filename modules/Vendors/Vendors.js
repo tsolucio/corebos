@@ -10,7 +10,6 @@
 document.write("<script type='text/javascript' src='include/js/Mail.js'></script>");
 document.write("<script type='text/javascript' src='include/js/Merge.js'></script>");
 document.write('<div id="setaddressvendordiv" style="z-index:12;display:none;width:400px;top:30px;left:0;right:0;margin:auto;" class="layerPopup"></div>');
-document.write("<script type='text/javascript' src='include/jquery/jquery-1.6.2.min.js'></script>");
 
 function check4null(form)
 {
