@@ -179,15 +179,15 @@ function disableRelatedListBlock(urldata,target,imagesuffix){
 <br />
 {if $SELECTEDHEADERS neq '' && $header|in_array:$SELECTEDHEADERS}
 <script type='text/javascript'>
-if(typeof('Event') != 'undefined') {ldelim}
 {if $smarty.request.ajax neq 'true'}
+	if(typeof(Event) == 'function') {ldelim}
 	Event.observe(window, 'load', function(){ldelim}
 		loadRelatedListBlock('module={$MODULE}&action={$MODULE}Ajax&file=DetailViewAjax&record={$ID}&ajxaction=LOADRELATEDLIST&header={$header}&relation_id={$detail.relationId}&actions={$detail.actions}&parenttab={$CATEGORY}','tbl_{$MODULE}_{$header|replace:' ':''}','{$MODULE}_{$header|replace:' ':''}');
 	{rdelim});
+	{rdelim}
 {else}
 	loadRelatedListBlock('module={$MODULE}&action={$MODULE}Ajax&file=DetailViewAjax&record={$ID}&ajxaction=LOADRELATEDLIST&header={$header}&relation_id={$detail.relationId}&actions={$detail.actions}&parenttab={$CATEGORY}','tbl_{$MODULE}_{$header|replace:' ':''}','{$MODULE}_{$header|replace:' ':''}');
 {/if}
-{rdelim}
 </script>
 {/if}
 {/foreach}
