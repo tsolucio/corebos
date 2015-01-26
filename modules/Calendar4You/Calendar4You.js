@@ -492,7 +492,10 @@ function controlGoogleSync(){
                             	method: 'post',
 	                        postBody: 'module=Calendar4You&action=Calendar4YouAjax&file=GoogleSync4YouControl&ajax=true&login='+google_login_val+'&apikey='+google_apikey_val+'&keyfile='+google_keyfile_val+'&clientid='+google_clientid_val+"&refresh="+google_refresh,                            	
                                 onComplete: function(response) {
-                            
+                            if(google_refresh=='')
+                                {  document.getElementById('google_sync_text').style.color = '#000000';
+                                document.forms["SharingForm"].submit(); }
+                            else{
                             result = JSON.parse(response.responseText);
 
                             document.getElementById('google_sync_text').innerHTML = result["text"];
@@ -505,7 +508,7 @@ function controlGoogleSync(){
                             }else{
                                 document.getElementById('google_sync_text').style.color = '#000000';
                                 document.forms["SharingForm"].submit(); 
-                            }
+                            }}
                    }}
     		);
         }else{

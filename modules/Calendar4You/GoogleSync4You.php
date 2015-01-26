@@ -144,25 +144,19 @@ class GoogleSync4You {
         
         require_once 'gcal/src/Google/Client.php';
         require_once 'gcal/src/Google/Service/Calendar.php';
-        if ($this->user_clientsecret != "" && $this->apikey != "" && $this->clientid!="" && $this->keyfile!="") {
+        if ($this->refresh_token!='' && $this->user_clientsecret != "" && $this->apikey != "" && $this->clientid!="" && $this->keyfile!="") {
             try {
              $CLIENT_ID = $this->clientid;
-            // $SERVICE_ACCOUNT_NAME = $this->clientid.'@developer.gserviceaccount.com';
              $KEY_FILE = $this->keyfile;
              $client = new Google_Client();
              $client->setApplicationName("corebos");
-      //      $key = file_get_contents($KEY_FILE);
             $client->setClientSecret($this->user_clientsecret);
             $client->setRedirectUri($KEY_FILE);
             $client->setClientId($CLIENT_ID);
             $client->setDeveloperKey($this->apikey);
             $client->setAccessType("offline");
             $client->setScopes(array("https://www.googleapis.com/auth/calendar","https://www.googleapis.com/auth/calendar.readonly"));
- 
-//            $cred=new Google_Auth_AssertionCredentials(
-//            $SERVICE_ACCOUNT_NAME,
-//            array('https://www.googleapis.com/auth/calendar'),$key);
-//            $client->setAssertionCredentials($cred);
+
     if (isset($_SESSION['token']) && !$client->isAccessTokenExpired()) {
     $client->setAccessToken($_SESSION['token']);}
   
@@ -190,7 +184,26 @@ class GoogleSync4You {
                 $authUrl = $client->createAuthUrl();
                 echo "<a class='login' href='$authUrl'>".$this->mod_strings["LBL_CONNECT"]."</a><br>";
         } 
-        } else {
+        }
+        else if($this->refresh_token=='' && $this->user_clientsecret != "" && $this->apikey != "" && $this->clientid!="" && $this->keyfile!=""){
+             $CLIENT_ID = $this->clientid;
+            // $SERVICE_ACCOUNT_NAME = $this->clientid.'@developer.gserviceaccount.com';
+             $KEY_FILE = $this->keyfile;
+             $client = new Google_Client();
+             $client->setApplicationName("corebos");
+      //      $key = file_get_contents($KEY_FILE);
+            $client->setClientSecret($this->user_clientsecret);
+            $client->setRedirectUri($KEY_FILE);
+            $client->setClientId($CLIENT_ID);
+            $client->setDeveloperKey($this->apikey);
+            $client->setAccessType("offline");
+            $client->setScopes(array("https://www.googleapis.com/auth/calendar","https://www.googleapis.com/auth/calendar.readonly"));
+    $authUrl = $client->createAuthUrl();
+                echo "<a class='login' href='$authUrl'>".$this->mod_strings["LBL_CONNECT"]."</a><br>";
+        
+//          
+        }
+        else {
             $this->status = $this->mod_strings["LBL_MISSING_AUTH_DATA"];
         }
      
