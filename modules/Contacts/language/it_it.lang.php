@@ -229,6 +229,9 @@ $mod_strings = array (
 
 'Contact Id' => 'Nr. Contatto',
 'Secondary Email'=>'Email Secondaria',
+'SetContactReturnAddressTitle' => 'Select Contact Address to use',
+'SetContactReturnAddressDescription' => 'Select which address you wish to overwrite, if any',
+
 
 'Contacts ID'=>'ID Contatti',
 );

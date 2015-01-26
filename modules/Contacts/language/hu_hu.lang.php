@@ -218,6 +218,9 @@ $mod_strings = array(
 	'LBL_ACTION' => 'Műveletek',
 	'LBL_FIELDLISTS' => 'Mezőlista',
 	'LBL_RECORD' => 'Rekord',
-	'Phone' => 'Telefon'
+	'Phone' => 'Telefon',
+        'SetContactReturnAddressTitle' => 'Select Contact Address to use',
+        'SetContactReturnAddressDescription' => 'Select which address you wish to overwrite, if any',
+
 );
 ?>

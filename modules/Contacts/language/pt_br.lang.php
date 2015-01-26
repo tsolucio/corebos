@@ -243,6 +243,9 @@ $mod_strings = Array(
 // Module Sequence Numbering
 'Contact Id' => 'Cód. Contato',
 'Secondary Email'=>'Email Alternativo',
+'SetContactReturnAddressTitle' => 'Select Contact Address to use',
+'SetContactReturnAddressDescription' => 'Select which address you wish to overwrite, if any',
+
 // END
 
 'Contacts ID'=>'ID Contatos',

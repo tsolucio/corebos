@@ -200,6 +200,9 @@ $mod_strings = array (
 		'LBL_FIELDLISTS' => 'Liste des champs',
 		'LBL_RECORD' => 'Enregistrement #',
 		'Contact Id' => 'N° Contact',
+                'SetContactReturnAddressTitle' => 'Select Contact Address to use',
+                'SetContactReturnAddressDescription' => 'Select which address you wish to overwrite, if any',
+
 
 );
 ?>
