@@ -72,5 +72,6 @@ $mod_strings = Array (
 "LBL_GOOGLECLIENTSECRET"=>"Secreto Cliente",
 "LBL_GOOGLEURI"=>"URI de Redirecci&oacute;n",
 "LBL_CONNECT"=>"Autoriza y con&eacute;ctate",
+"LBL_GOOGLEINS"=>"Insertar desde Google?",
 );
 ?>
