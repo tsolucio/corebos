@@ -526,7 +526,8 @@ class QueryGenerator {
 								$referenceTable = $instance->table_name;
 								if(count($this->ownerFields) > 0 ||
 										$this->getModule() == 'Quotes') {
-									$referenceTable .= '2';
+									if(strpos($this->fromClause,'vtiger_users2') !==false)
+										$referenceTable .= '2';
 								}
 							} else {
 								$referenceField = $meta->getFieldByColumnName($column);
