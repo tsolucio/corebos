@@ -15,6 +15,7 @@ class GoogleSync4You {
     private $keyfile;
     private $clientid;
     private $refresh_token;
+    private $googleinsert;
     public $root_directory = "";
     public $mod_strings = array();
     public $status = "";
@@ -32,18 +33,41 @@ class GoogleSync4You {
   	}
 	
 	public function getclientsecret() {
+             global $adb;
+         $q=$adb->query("select * from its4you_googlesync4you_access where userid=1");
+         if($adb->num_rows($q)!=0 && $adb->query_result($q,0,"google_login"))
+         return $adb->query_result($q,0,"google_login");
+         else
 		return $this->user_clientsecret;
 	}
 	public function getAPI() {
+             global $adb;
+         $q=$adb->query("select * from its4you_googlesync4you_access where userid=1");
+         if($adb->num_rows($q)!=0 && $adb->query_result($q,0,"google_apikey"))
+         return $adb->query_result($q,0,"google_apikey");
+         else
 		return $this->apikey;
 	}
         public function getclientid() {
+         global $adb;
+         $q=$adb->query("select * from its4you_googlesync4you_access where userid=1");
+         if($adb->num_rows($q)!=0 && $adb->query_result($q,0,"google_clientid"))
+         return $adb->query_result($q,0,"google_clientid");
+         else
 		return $this->clientid;
 	}
         public function getrefreshtoken() {
 		return $this->refresh_token;
 	}
+         public function getgoogleinsert() {
+		return $this->googleinsert;
+	}
         public function getkeyfile() {
+             global $adb;
+         $q=$adb->query("select * from its4you_googlesync4you_access where userid=1");
+         if($adb->num_rows($q)!=0 && $adb->query_result($q,0,"google_keyfile"))
+         return $adb->query_result($q,0,"google_keyfile");
+         else
 		return $this->keyfile;
 	}
 	public function getStatus() {
@@ -56,7 +80,7 @@ class GoogleSync4You {
     
 	public function setAccessDataForUser($userid, $only_active = false) {
 
-        $sql = "SELECT gad.google_login ,gad.google_apikey, gad.google_keyfile, gad.google_clientid,gad.refresh_token FROM vtiger_users  
+        $sql = "SELECT gad.google_login ,gad.google_apikey, gad.google_keyfile, gad.google_clientid,gad.refresh_token,googleinsert FROM vtiger_users  
         INNER JOIN its4you_googlesync4you_access AS gad ON gad.userid = vtiger_users.id
         WHERE vtiger_users.id=? AND gad.google_login != '' 
         and gad.google_apikey != '' and gad.google_keyfile != '' and gad.google_clientid != ''";
@@ -73,7 +97,8 @@ class GoogleSync4You {
 	    $this->apikey = $this->db->query_result($result,0,'google_apikey');
             $this->clientid = $this->db->query_result($result,0,'google_clientid');
             $this->keyfile = $this->db->query_result($result,0,'google_keyfile');
-            $this->refresh_token = $this->db->query_result($result,0,'refresh_token');	
+            $this->refresh_token = $this->db->query_result($result,0,'refresh_token');
+            $this->googleinsert = $this->db->query_result($result,0,'googleinsert');
 
             return true;
         }
@@ -81,7 +106,7 @@ class GoogleSync4You {
 		return false;
 	}
     
-   public function setAccessData($userid, $login, $apikey,$keyfile,$clientid,$refresh){
+   public function setAccessData($userid, $login, $apikey,$keyfile,$clientid,$refresh,$googleinsert){
 
             $this->user_id = $userid;
             $this->user_clientsecret = $login;
@@ -90,6 +115,7 @@ class GoogleSync4You {
             $this->clientid = $clientid;
             $this->keyfile = $keyfile;
             $this->refresh_token = $refresh;
+            $this->googleinsert = $googleinsert;
 	}
     
 	public function connectToGoogle() {
@@ -187,21 +213,18 @@ class GoogleSync4You {
         }
         else if($this->refresh_token=='' && $this->user_clientsecret != "" && $this->apikey != "" && $this->clientid!="" && $this->keyfile!=""){
              $CLIENT_ID = $this->clientid;
-            // $SERVICE_ACCOUNT_NAME = $this->clientid.'@developer.gserviceaccount.com';
              $KEY_FILE = $this->keyfile;
              $client = new Google_Client();
              $client->setApplicationName("corebos");
-      //      $key = file_get_contents($KEY_FILE);
             $client->setClientSecret($this->user_clientsecret);
             $client->setRedirectUri($KEY_FILE);
             $client->setClientId($CLIENT_ID);
             $client->setDeveloperKey($this->apikey);
             $client->setAccessType("offline");
             $client->setScopes(array("https://www.googleapis.com/auth/calendar","https://www.googleapis.com/auth/calendar.readonly"));
-    $authUrl = $client->createAuthUrl();
-                echo "<a class='login' href='$authUrl'>".$this->mod_strings["LBL_CONNECT"]."</a><br>";
-        
-//          
+            $authUrl = $client->createAuthUrl();
+                   echo "<a class='login' href='$authUrl'>".$this->mod_strings["LBL_CONNECT"]."</a><br>";
+         
         }
         else {
             $this->status = $this->mod_strings["LBL_MISSING_AUTH_DATA"];
@@ -443,7 +466,7 @@ catch(Exception $e){
         }
 	}
     
-    function getGoogleCalEvents($CALENDAR_ID,$synctoken,$pagetoken) {
+    function getGoogleCalEvents($CALENDAR_ID,$synctoken,$pagetoken=null) {
     set_include_path($this->root_directory. "modules/Calendar4You/");
     try{
        

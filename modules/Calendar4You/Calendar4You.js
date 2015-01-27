@@ -482,6 +482,11 @@ function controlGoogleSync(){
         var google_clientid_val = document.getElementById('google_clientid').value;
         var google_keyfile_val = document.getElementById('google_keyfile').value;
         var google_refresh = document.getElementById('google_refresh').value;
+        if(document.getElementById('googleinsert').checked==true)
+        {var googleinsert =1;
+        document.getElementById('googleinsert').value=1;}
+        else {googleinsert=0;
+        document.getElementById('googleinsert').value=0;}
          if (google_login_val != "" && google_apikey_val != "" && google_clientid_val != "" && google_keyfile_val != ""){
             fnShowDrop("google_sync_verifying");
             fnHideDrop("google_sync_text");
@@ -490,7 +495,7 @@ function controlGoogleSync(){
                     	'index.php',
                     	{queue: {position: 'end', scope: 'command'},
                             	method: 'post',
-	                        postBody: 'module=Calendar4You&action=Calendar4YouAjax&file=GoogleSync4YouControl&ajax=true&login='+google_login_val+'&apikey='+google_apikey_val+'&keyfile='+google_keyfile_val+'&clientid='+google_clientid_val+"&refresh="+google_refresh,                            	
+	                        postBody: 'module=Calendar4You&action=Calendar4YouAjax&file=GoogleSync4YouControl&ajax=true&login='+google_login_val+'&apikey='+google_apikey_val+'&keyfile='+google_keyfile_val+'&clientid='+google_clientid_val+"&refresh_token="+google_refresh+"&googleinsert="+googleinsert,                            	
                                 onComplete: function(response) {
                             if(google_refresh=='')
                                 {  document.getElementById('google_sync_text').style.color = '#000000';

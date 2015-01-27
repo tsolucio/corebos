@@ -246,6 +246,8 @@ $Calendar_Settings = $Calendar4You->getSettings();
             $google_keyfile = $GoogleSync4You->getkeyfile();
             $google_clientid = $GoogleSync4You->getclientid();
             $google_refresh = $GoogleSync4You->getrefreshtoken();
+            $googleinsert = $GoogleSync4You->getgoogleinsert();
+            if($googleinsert==1) $checked='checked';
             ?>
             </div><br>
             <?php 
@@ -288,6 +290,13 @@ $Calendar_Settings = $Calendar4You->getSettings();
             echo getTranslatedString("LBL_GOOGLEURI","Calendar4You").": ";
             echo '</td><td>';
             echo '<input type="text" name="google_keyfile" id="google_keyfile" value="'.$google_keyfile.'" class="small">';
+            echo '</td></tr>';
+            echo '<tr><td>';
+            echo '<tr><td>';
+            echo '<tr><td>';
+            echo getTranslatedString("LBL_GOOGLEINS","Calendar4You").": ";
+            echo '</td><td>';
+            echo '<input type="checkbox" name="googleinsert" id="googleinsert" '.$checked.' value="'.$googleinsert.'" class="small" >';
             echo '</td></tr>';
             echo '<tr><td>';
             /*

@@ -67,6 +67,7 @@ if ($update_google_account == "1") {
     $google_apikey= $_REQUEST["google_apikey"];
     $google_keyfile = $_REQUEST["google_keyfile"];
     $google_clientid = $_REQUEST["google_clientid"];
+    $googleinsert = $_REQUEST["googleinsert"];
     $us=$adb->query("select * from vtiger_users where deleted=0");
     for($i=0;$i<$adb->num_rows($us);$i++){
     $userid=$adb->query_result($us,$i,'id');
@@ -80,6 +81,7 @@ if ($update_google_account == "1") {
     $adb->pquery($sql5,array($userid,$google_login, $google_password,$google_apikey,$google_keyfile,$google_clientid,$refresh_token));
    }
     }
+    $adb->query("Update its4you_googlesync4you_access set googleinsert='$googleinsert' where userid=$current_user->id");
 
 }
 
