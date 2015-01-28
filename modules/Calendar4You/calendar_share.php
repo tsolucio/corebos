@@ -294,7 +294,7 @@ $Calendar_Settings = $Calendar4You->getSettings();
             echo '<tr><td>';
             echo '<tr><td>';
             echo '<tr><td>';
-            echo getTranslatedString("LBL_GOOGLEINS","Calendar4You").": ";
+            echo getTranslatedString("LBL_GOOGLEINS","Calendar4You").' ';
             echo '</td><td>';
             echo '<input type="checkbox" name="googleinsert" id="googleinsert" '.$checked.' value="'.$googleinsert.'" class="small" >';
             echo '</td></tr>';
