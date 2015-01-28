@@ -194,8 +194,5 @@ $mod_strings = array(
 	'Contact Id' => 'Contact No.',
 	'Secondary Email' => 'Secondary Email',
 	'Contacts ID' => 'Contacts ID',
-        'SetContactReturnAddressTitle' => 'Select Contact Address to use',
-        'SetContactReturnAddressDescription' => 'Select which address you wish to overwrite, if any',
-
 );
 ?>

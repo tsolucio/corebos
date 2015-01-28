@@ -53,7 +53,5 @@ $mod_strings = array (
 'Vendor No' => 'Nr. Fornitore',
 'LBL_MODULE_NAME'=>'Fornitori',
 'Vendors ID'=>'ID Fornitori',
-'SetVendorReturnAddressTitle' => 'Select Vendor Address to use',
-'SetVendorReturnAddressDescription' => 'Select which address you wish to overwrite, if any',
 );
 ?>

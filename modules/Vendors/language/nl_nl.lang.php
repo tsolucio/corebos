@@ -93,7 +93,5 @@ $mod_strings = array(
  * 5.2.0 changes 
  */
 'LBL_MODULE_NAME'=>'Leveranciers',
-'SetVendorReturnAddressTitle' => 'Select Vendor Address to use',
-'SetVendorReturnAddressDescription' => 'Select which address you wish to overwrite, if any',
 );
 ?>

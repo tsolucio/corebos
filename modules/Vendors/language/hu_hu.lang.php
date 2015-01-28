@@ -57,7 +57,5 @@ $mod_strings = array(
 	'Vendor No' => 'Beszállító No.',
 	'LBL_MODULE_NAME' => 'Beszállítók',
 	'Vendors ID' => 'Beszállító AZ',
-	'SetVendorReturnAddressTitle' => 'Select Vendor Address to use',
-	'SetVendorReturnAddressDescription' => 'Select which address you wish to overwrite, if any',
 );
 ?>

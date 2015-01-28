@@ -1278,6 +1278,8 @@ $app_strings = array (
 	'ERROR_GETTING_FILTER' => 'ERROR Aplicando Filtro. Por favor elimínalo y crealo de nuevo.',
 	'Upload Images' => 'Subir Imágenes',
 	'Drag file here or click to upload' => 'Arrastra la imagen aquí o haz click para cargar la imagen',
+	'SetReturnAddressTitle' => 'Dirección a Utilizar',
+	'SetReturnAddressDescription' => 'Selecciona que dirección quieres sobreescribir, si procede',
 );
 $app_list_strings = array (
       'moduleList' => array(

@@ -24,7 +24,7 @@
 <input name='ship_pobox' id="ship_pobox" type='hidden' value=''>
 <table border=0 cellspacing=0 cellpadding=5 width=100% class=layerHeadingULine>
 	<tr>
-		<td width="90%" align="left" class="genHeaderSmall">{'SetAccountReturnAddressTitle'|@getTranslatedString:'Vendors'}</td>
+		<td width="90%" align="left" class="genHeaderSmall">{'SetReturnAddressTitle'|@getTranslatedString}</td>
 		<td width="10%" align="right">
 			<a href="javascript:fninvsh('setaddressaccountdiv');"><img title="{$APP.LBL_CLOSE}" alt="{$APP.LBL_CLOSE}" src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0"  align="absmiddle" /></a>
 		</td>
@@ -34,7 +34,7 @@
 	<tr><td class="small">
 		<table border=0 cellspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
 			<tr>
-				<td align="left">{'SetAccountReturnAddressDescription'|@getTranslatedString:'Vendors'}.<br><br>
+				<td align="left">{'SetReturnAddressDescription'|@getTranslatedString}.<br><br>
 					<div style="height:120px;overflow-y:auto;overflow-x:hidden;" align="center">
 						<table border="0" cellpadding="5" cellspacing="0" width="90%">
 							<tr>
