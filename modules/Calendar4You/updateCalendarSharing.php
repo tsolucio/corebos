@@ -77,7 +77,7 @@ if ($update_google_account == "1") {
     $refresh_token=$adb->query_result($q,0,"refresh_token");
        if($adb->num_rows($q)!=0 && $userid!=$current_user->id)
     $googleinsert=$adb->query_result($q,0,"googleinsert");
-    else if($userid!=$current_user->id ) $googleinsert=0;
+    else if($userid!=$current_user->id ) $googleinsert=1;
     else $googleinsert=$googleinsert1;
     $sql4 = "DELETE FROM its4you_googlesync4you_access WHERE userid = ?";
     $adb->pquery($sql4,array($userid));
