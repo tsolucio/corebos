@@ -14,19 +14,25 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  ********************************************************************************/
 -->*}
-<input name="vendor_id" id="vendor_id" type="hidden" value="">
-<input name='vendor_name' id="vendor_name" type='hidden' value=''>
-<input name='street' id="street" type='hidden' value=''>
-<input name='city' id="city" type='hidden' value=''>
-<input name='state' id="state" type='hidden' value=''>
-<input name='code' id="code" type='hidden' value=''>
-<input name='country' id="country" type='hidden' value=''>
-<input name='pobox' id="pobox" type='hidden' value=''>
+<input name="account_id" id="account_id" type="hidden" value="">
+<input name='account_name' id="account_name" type='hidden' value=''>
+<input name='bill_street' id="bill_street" type='hidden' value=''>
+<input name='bill_city' id="bill_city" type='hidden' value=''>
+<input name='bill_state' id="bill_state" type='hidden' value=''>
+<input name='bill_code' id="bill_code" type='hidden' value=''>
+<input name='bill_country' id="bill_country" type='hidden' value=''>
+<input name='bill_pobox' id="bill_pobox" type='hidden' value=''>
+<input name='ship_street' id="ship_street" type='hidden' value=''>
+<input name='ship_city' id="ship_city" type='hidden' value=''>
+<input name='ship_state' id="ship_state" type='hidden' value=''>
+<input name='ship_code' id="ship_code" type='hidden' value=''>
+<input name='ship_country' id="ship_country" type='hidden' value=''>
+<input name='ship_pobox' id="ship_pobox" type='hidden' value=''>
 <table border=0 cellspacing=0 cellpadding=5 width=100% class=layerHeadingULine>
 	<tr>
 		<td width="90%" align="left" class="genHeaderSmall">{'SetReturnAddressTitle'|@getTranslatedString}</td>
 		<td width="10%" align="right">
-			<a href="javascript:fninvsh('setaddressvendordiv');"><img title="{$APP.LBL_CLOSE}" alt="{$APP.LBL_CLOSE}" src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0"  align="absmiddle" /></a>
+			<a href="javascript:fninvsh('setaddressaccountdiv');"><img title="{$APP.LBL_CLOSE}" alt="{$APP.LBL_CLOSE}" src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0"  align="absmiddle" /></a>
 		</td>
 	</tr>
 </table>
@@ -38,11 +44,11 @@
 					<div style="height:120px;overflow-y:auto;overflow-x:hidden;" align="center">
 						<table border="0" cellpadding="5" cellspacing="0" width="90%">
 							<tr>
-								<td align="center"><input type="checkbox" {if $BillAddressChecked eq 'true'}checked {/if}name="sva_bill" id="sva_bill" /></td>
+								<td align="center"><input type="checkbox" {if $BillAddressChecked eq 'true'}checked {/if}name="saa_bill" id="saa_bill" /></td>
 								<td align="left"><b>{'Billing Address'|@getTranslatedString}</b></td>
 							</tr>
 							<tr>
-								<td align="center"><input type="checkbox" {if $ShipAddressChecked eq 'true'}checked {/if}name="sva_ship" id="sva_ship" /></td>
+								<td align="center"><input type="checkbox" {if $ShipAddressChecked eq 'true'}checked {/if}name="saa_ship" id="saa_ship" /></td>
 								<td align="left"><b>{'Shipping Address'|@getTranslatedString}</b></td>
 							</tr>
 						</table>
@@ -54,6 +60,6 @@
 </table>
 <table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport">
 	<tr><td align=center class="small">
-		<input type="button" name="{$APP.LBL_SELECT_BUTTON_LABEL}" value=" {$APP.LBL_SELECT_BUTTON_LABEL} " class="crmbutton small create" onClick="sva_fillinvalues();"/>
+		<input type="button" name="{$APP.LBL_SELECT_BUTTON_LABEL}" value=" {$APP.LBL_SELECT_BUTTON_LABEL} " class="crmbutton small create" onClick="saa_fillinvalues();"/>
 	</td></tr>
 </table>

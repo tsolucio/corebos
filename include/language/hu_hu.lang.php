@@ -1200,6 +1200,8 @@ $app_strings = array(
 	'ERROR_GETTING_FILTER' => 'ERROR Retrieving information from filter. Please delete the filter and try again.',
 	'Upload Images' => 'Upload Images',
 	'Drag file here or click to upload' => 'Drag file here or click to upload',
+	'SetReturnAddressTitle' => 'Select Address To Use',
+	'SetReturnAddressDescription' => 'Select which address you wish to overwrite, if any',
 );
 $app_list_strings = array(
 	'moduleList' =>

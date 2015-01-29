@@ -14,19 +14,25 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  ********************************************************************************/
 -->*}
-<input name="vendor_id" id="vendor_id" type="hidden" value="">
-<input name='vendor_name' id="vendor_name" type='hidden' value=''>
-<input name='street' id="street" type='hidden' value=''>
-<input name='city' id="city" type='hidden' value=''>
-<input name='state' id="state" type='hidden' value=''>
-<input name='code' id="code" type='hidden' value=''>
-<input name='country' id="country" type='hidden' value=''>
-<input name='pobox' id="pobox" type='hidden' value=''>
+<input name="contact_id" id="contact_id" type="hidden" value="">
+<input name='contact_name' id="contact_name" type='hidden' value=''>
+<input name='mailingstreet' id="mailingstreet" type='hidden' value=''>
+<input name='mailingcity' id="mailingcity" type='hidden' value=''>
+<input name='mailingstate' id="mailingstate" type='hidden' value=''>
+<input name='mailingzip' id="mailingzip" type='hidden' value=''>
+<input name='mailingcountry' id="mailingcountry" type='hidden' value=''>
+<input name='mailingpobox' id="mailingpobox" type='hidden' value=''>
+<input name='otherstreet' id="otherstreet" type='hidden' value=''>
+<input name='othercity' id="othercity" type='hidden' value=''>
+<input name='otherstate' id="otherstate" type='hidden' value=''>
+<input name='otherzip' id="otherzip" type='hidden' value=''>
+<input name='othercountry' id="othercountry" type='hidden' value=''>
+<input name='otherpobox' id="otherpobox" type='hidden' value=''>
 <table border=0 cellspacing=0 cellpadding=5 width=100% class=layerHeadingULine>
 	<tr>
 		<td width="90%" align="left" class="genHeaderSmall">{'SetReturnAddressTitle'|@getTranslatedString}</td>
 		<td width="10%" align="right">
-			<a href="javascript:fninvsh('setaddressvendordiv');"><img title="{$APP.LBL_CLOSE}" alt="{$APP.LBL_CLOSE}" src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0"  align="absmiddle" /></a>
+			<a href="javascript:fninvsh('setaddresscontactdiv');"><img title="{$APP.LBL_CLOSE}" alt="{$APP.LBL_CLOSE}" src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0"  align="absmiddle" /></a>
 		</td>
 	</tr>
 </table>
@@ -38,11 +44,11 @@
 					<div style="height:120px;overflow-y:auto;overflow-x:hidden;" align="center">
 						<table border="0" cellpadding="5" cellspacing="0" width="90%">
 							<tr>
-								<td align="center"><input type="checkbox" {if $BillAddressChecked eq 'true'}checked {/if}name="sva_bill" id="sva_bill" /></td>
+								<td align="center"><input type="checkbox" {if $BillAddressChecked eq 'true'}checked {/if}name="sca_bill" id="sca_bill" /></td>
 								<td align="left"><b>{'Billing Address'|@getTranslatedString}</b></td>
 							</tr>
 							<tr>
-								<td align="center"><input type="checkbox" {if $ShipAddressChecked eq 'true'}checked {/if}name="sva_ship" id="sva_ship" /></td>
+								<td align="center"><input type="checkbox" {if $ShipAddressChecked eq 'true'}checked {/if}name="sca_ship" id="sca_ship" /></td>
 								<td align="left"><b>{'Shipping Address'|@getTranslatedString}</b></td>
 							</tr>
 						</table>
@@ -54,6 +60,6 @@
 </table>
 <table border=0 cellspacing=0 cellpadding=5 width=100% class="layerPopupTransport">
 	<tr><td align=center class="small">
-		<input type="button" name="{$APP.LBL_SELECT_BUTTON_LABEL}" value=" {$APP.LBL_SELECT_BUTTON_LABEL} " class="crmbutton small create" onClick="sva_fillinvalues();"/>
+		<input type="button" name="{$APP.LBL_SELECT_BUTTON_LABEL}" value=" {$APP.LBL_SELECT_BUTTON_LABEL} " class="crmbutton small create" onClick="sca_fillinvalues();"/>
 	</td></tr>
 </table>

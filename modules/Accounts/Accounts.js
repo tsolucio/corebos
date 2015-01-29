@@ -1,5 +1,4 @@
 /*********************************************************************************
-
 ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
  * The Original Code is:  vtiger CRM Open Source
@@ -8,10 +7,10 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-
 document.write("<script type='text/javascript' src='include/js/Inventory.js'></"+"script>");
 document.write("<script type='text/javascript' src='include/js/Mail.js'></"+"script>");
 document.write("<script type='text/javascript' src='include/js/Merge.js'></"+"script>");
+document.write('<div id="setaddressaccountdiv" style="z-index:12;display:none;width:400px;top:30px;left:0;right:0;margin:auto;" class="layerPopup"></div>');
 
 function set_return(product_id, product_name) {
 	if(document.getElementById('from_link').value != '') {
@@ -38,8 +37,7 @@ function set_return_specific(product_id, product_name) {
         fldId.value = product_id;
 }
 function add_data_to_relatedlist(entity_id,recordid) {
-
-        opener.document.location.href="index.php?module=Emails&action=updateRelations&destination_module=Accounts&entityid="+entity_id+"&parentid="+recordid;
+	opener.document.location.href="index.php?module=Emails&action=updateRelations&destination_module=Accounts&entityid="+entity_id+"&parentid="+recordid;
 }
 function set_return_formname_specific(formname,product_id, product_name) {
         window.opener.document.EditView1.account_name.value = product_name;
@@ -112,6 +110,87 @@ function set_return_address(account_id, account_name, bill_street, ship_street, 
 		//end
 	}
 }
+//added to select bill or ship address
+function set_return_shipbilladdress(account_id, account_name, bill_street, ship_street, bill_city, ship_city, bill_state, ship_state, bill_code, ship_code, bill_country, ship_country,bill_pobox,ship_pobox) {
+	jQuery.ajax({
+		url: 'index.php?module=Accounts&action=AccountsAjax&file=SelectAccountAddress',
+		context: document.body,
+		success: function(response) {
+			jQuery('#setaddressaccountdiv').html(response);
+			jQuery('#setaddressaccountdiv').show();
+			jQuery("#account_id").val(account_id);
+			jQuery("#account_name").val(account_name);
+			jQuery("#bill_street").val(bill_street);
+			jQuery("#bill_city").val(bill_city);
+			jQuery("#bill_state").val(bill_state);
+			jQuery("#bill_code").val(bill_code);
+			jQuery("#bill_country").val(bill_country);
+			jQuery("#bill_pobox").val(bill_pobox);
+			jQuery("#ship_street").val(ship_street);
+			jQuery("#ship_city").val(ship_city);
+			jQuery("#ship_state").val(ship_state);
+			jQuery("#ship_code").val(ship_code);
+			jQuery("#ship_country").val(ship_country);
+			jQuery("#ship_pobox").val(ship_pobox);
+		}
+	});
+}
+
+function saa_fillinvalues() {
+	var account_id = jQuery("#account_id").val();
+	var account_name = jQuery("#account_name").val();
+	if(typeof(window.opener.document.EditView.account_name) != 'undefined')
+		window.opener.document.EditView.account_name.value = account_name;
+	if(typeof(window.opener.document.EditView.account_id) != 'undefined')
+		window.opener.document.EditView.account_id.value = account_id;
+	if (jQuery('#saa_bill').is(':checked')) setReturnAddressBill();
+	if (jQuery('#saa_ship').is(':checked')) setReturnAddressShip();
+	window.close();
+}
+
+function setReturnAddressBill() {
+	var street = jQuery("#bill_street").val();
+	var city = jQuery("#bill_city").val();
+	var state = jQuery("#bill_state").val();
+	var code = jQuery("#bill_code").val();
+	var country = jQuery("#bill_country").val();
+	var pobox = jQuery("#bill_pobox").val();
+	if(typeof(window.opener.document.EditView.bill_street) != 'undefined')
+		window.opener.document.EditView.bill_street.value = street;
+	if(typeof(window.opener.document.EditView.bill_city) != 'undefined')
+		window.opener.document.EditView.bill_city.value = city;
+	if(typeof(window.opener.document.EditView.bill_state) != 'undefined')
+		window.opener.document.EditView.bill_state.value = state;
+	if(typeof(window.opener.document.EditView.bill_code) != 'undefined')
+		window.opener.document.EditView.bill_code.value = code;
+	if(typeof(window.opener.document.EditView.bill_country) != 'undefined')
+		window.opener.document.EditView.bill_country.value = country;
+	if(typeof(window.opener.document.EditView.bill_pobox) != 'undefined')
+		window.opener.document.EditView.bill_pobox.value = pobox;
+}
+
+function setReturnAddressShip() {
+	var street = jQuery("#ship_street").val();
+	var city = jQuery("#ship_city").val();
+	var state = jQuery("#ship_state").val();
+	var code = jQuery("#ship_code").val();
+	var country = jQuery("#ship_country").val();
+	var pobox = jQuery("#ship_pobox").val();
+	if(typeof(window.opener.document.EditView.ship_street) != 'undefined')
+		window.opener.document.EditView.ship_street.value = street;
+	if(typeof(window.opener.document.EditView.ship_city) != 'undefined')
+		window.opener.document.EditView.ship_city.value = city;
+	if(typeof(window.opener.document.EditView.ship_state) != 'undefined')
+		window.opener.document.EditView.ship_state.value = state;
+	if(typeof(window.opener.document.EditView.ship_code) != 'undefined')
+		window.opener.document.EditView.ship_code.value = code;
+	if(typeof(window.opener.document.EditView.ship_country) != 'undefined')
+		window.opener.document.EditView.ship_country.value = country;
+	if(typeof(window.opener.document.EditView.ship_pobox) != 'undefined')
+		window.opener.document.EditView.ship_pobox.value = pobox;
+}
+
+//end
 //added to populate address
 function set_return_contact_address(account_id, account_name, bill_street, ship_street, bill_city, ship_city, bill_state, ship_state, bill_code, ship_code, bill_country, ship_country,bill_pobox,ship_pobox ) {
 	if(document.getElementById('from_link').value != '') {

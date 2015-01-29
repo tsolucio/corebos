@@ -10,6 +10,7 @@
 		
 document.write("<script type='text/javascript' src='include/js/Mail.js'></"+"script>");
 document.write("<script type='text/javascript' src='include/js/Merge.js'></"+"script>");
+document.write('<div id="setaddresscontactdiv" style="z-index:12;display:none;width:400px;top:30px;left:0;right:0;margin:auto;" class="layerPopup"></div>');
 
 function copyAddressRight(form) {
 
@@ -237,4 +238,83 @@ function set_return_contact_address(contact_id,contact_name, mailingstreet, othe
                         form.ship_pobox.value = otherpobox;
 		//end
 	}
+}
+
+function set_return_address(contact_id,contact_name, mailingstreet, otherstreet, mailingcity, othercity, mailingstate, otherstate, mailingzip, otherzip, mailingcountry, othercountry,mailingpobox,otherpobox) {
+jQuery.ajax({
+		url: 'index.php?module=Contacts&action=ContactsAjax&file=SelectContactAddress',
+		context: document.body,
+		success: function(response) {
+			jQuery('#setaddresscontactdiv').html(response);
+			jQuery('#setaddresscontactdiv').show();
+			jQuery("#contact_id").val(contact_id);
+			jQuery("#contact_name").val(contact_name);
+			jQuery("#mailingstreet").val(mailingstreet);
+			jQuery("#mailingcity").val(mailingcity);
+			jQuery("#mailingstate").val(mailingstate);
+			jQuery("#mailingzip").val(mailingzip);
+			jQuery("#mailingcountry").val(mailingcountry);
+			jQuery("#mailingpobox").val(mailingpobox);
+                        jQuery("#otherstreet").val(otherstreet);
+			jQuery("#othercity").val(othercity);
+			jQuery("#otherstate").val(otherstate);
+			jQuery("#otherzip").val(otherzip);
+			jQuery("#othercountry").val(othercountry);
+			jQuery("#otherpobox").val(otherpobox);
+		}
+	});    
+}
+
+function sca_fillinvalues() {
+	var contact_id = jQuery("#contact_id").val();
+	var contact_name = jQuery("#contact_name").val();
+	if(typeof(window.opener.document.EditView.contact_name) != 'undefined')
+		window.opener.document.EditView.contact_name.value = contact_name;
+	if(typeof(window.opener.document.EditView.contact_id) != 'undefined')
+		window.opener.document.EditView.contact_id.value = contact_id;
+	if (jQuery('#sca_bill').is(':checked')) setReturnAddressBill();
+	if (jQuery('#sca_ship').is(':checked')) setReturnAddressShip();
+	window.close();
+}
+
+function setReturnAddressBill() {
+	var street = jQuery("#mailingstreet").val();
+	var city = jQuery("#mailingcity").val();
+	var state = jQuery("#mailingstate").val();
+	var code = jQuery("#mailingzip").val();
+	var country = jQuery("#mailingcountry").val();
+	var pobox = jQuery("#mailingpobox").val();
+	if(typeof(window.opener.document.EditView.bill_street) != 'undefined')
+		window.opener.document.EditView.bill_street.value = street;
+	if(typeof(window.opener.document.EditView.bill_city) != 'undefined')
+		window.opener.document.EditView.bill_city.value = city;
+	if(typeof(window.opener.document.EditView.bill_state) != 'undefined')
+		window.opener.document.EditView.bill_state.value = state;
+	if(typeof(window.opener.document.EditView.bill_code) != 'undefined')
+		window.opener.document.EditView.bill_code.value = code;
+	if(typeof(window.opener.document.EditView.bill_country) != 'undefined')
+		window.opener.document.EditView.bill_country.value = country;
+	if(typeof(window.opener.document.EditView.bill_pobox) != 'undefined')
+		window.opener.document.EditView.bill_pobox.value = pobox;
+}
+
+function setReturnAddressShip() {
+	var street = jQuery("#otherstreet").val();
+	var city = jQuery("#othercity").val();
+	var state = jQuery("#otherstate").val();
+	var code = jQuery("#otherzip").val();
+	var country = jQuery("#othercountry").val();
+	var pobox = jQuery("#otherpobox").val();
+	if(typeof(window.opener.document.EditView.ship_street) != 'undefined')
+		window.opener.document.EditView.ship_street.value = street;
+	if(typeof(window.opener.document.EditView.ship_city) != 'undefined')
+		window.opener.document.EditView.ship_city.value = city;
+	if(typeof(window.opener.document.EditView.ship_state) != 'undefined')
+		window.opener.document.EditView.ship_state.value = state;
+	if(typeof(window.opener.document.EditView.ship_code) != 'undefined')
+		window.opener.document.EditView.ship_code.value = code;
+	if(typeof(window.opener.document.EditView.ship_country) != 'undefined')
+		window.opener.document.EditView.ship_country.value = country;
+	if(typeof(window.opener.document.EditView.ship_pobox) != 'undefined')
+		window.opener.document.EditView.ship_pobox.value = pobox;
 }

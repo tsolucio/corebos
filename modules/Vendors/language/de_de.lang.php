@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 
 $mod_strings = array(
@@ -69,7 +68,5 @@ $mod_strings = array(
     */
     'LBL_MODULE_NAME'=>'Lieferanten',
     'Vendors ID'=>'Lierferanten-ID',
-	'SetVendorReturnAddressTitle' => 'Select Vendor Address to use',
-	'SetVendorReturnAddressDescription' => 'Select which address you wish to overwrite, if any',
 );
 ?>
