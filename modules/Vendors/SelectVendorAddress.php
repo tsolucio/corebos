@@ -12,10 +12,11 @@ require_once('Smarty_setup.php');
 global $app_strings,$mod_strings,$current_user,$theme,$adb;
 $image_path = 'themes/'.$theme.'/images/';
 $smarty = new vtigerCRM_Smarty;
-
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH',$image_path);
+$smarty->assign('BillAddressChecked','true');
+$smarty->assign('ShipAddressChecked','false');
 $smarty->display('modules/Vendors/SetReturnAddress.tpl');
 ?>
