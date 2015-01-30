@@ -211,4 +211,11 @@
         <classname>addfieldstocaltwo</classname>
         <systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Vendor Related List on Contacts</description>
+	<filename>build/changeSets/addvendorrelatedlist2contact.php</filename>
+	<classname>addvendorrelatedlist2contact</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
 </updatesChangeLog>
