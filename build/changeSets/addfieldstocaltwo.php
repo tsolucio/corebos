@@ -24,7 +24,7 @@ class addfieldstocaltwo extends cbupdaterWorker {
 			global $adb;
 			$res_crons = $adb->pquery("SELECT name FROM vtiger_cron_task WHERE name ='Calendar4You - GoogleSync Insert'",array());
 			if($adb->num_rows($res_crons) == 0)
-				$this->ExecuteQuery("INSERT INTO  vtiger_cron_task (id ,name ,handler_file ,frequency ,laststart ,lastend ,status ,module ,sequence ,description) VALUES ('8',  'Calendar4You - GoogleSync Insert',  'modules/Calendar4You/cron/InsertEvents.service',  '60',  '1421927705',  '1421927730',  '1',  'Calendar4You',  '7', '');");
+				$this->ExecuteQuery("INSERT INTO vtiger_cron_task (name ,handler_file ,frequency ,laststart ,lastend ,status ,module ,sequence ,description) VALUES ('Calendar4You - GoogleSync Insert', 'modules/Calendar4You/cron/InsertEvents.service', '60', '1421927705', '1421927730', '1', 'Calendar4You', '7', '')");
 			
 			$res_refres_token = $adb->pquery("SHOW COLUMNS FROM its4you_googlesync4you_access WHERE Field = ?",array('refresh_token'));
 			if($adb->num_rows($res_refres_token) == 0)
