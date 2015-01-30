@@ -150,7 +150,13 @@
 <sql><![CDATA[CREATE TABLE IF NOT EXISTS `its4you_googlesync4you_access` (
   `userid` int(11) NOT NULL,
   `google_login` varchar(255) NOT NULL,
-  `google_password` varchar(255) NOT NULL
+  `google_password` varchar(255) DEFAULT NULL,
+  `google_apikey` varchar(250) NOT NULL,
+  `google_keyfile` varchar(250) NOT NULL,
+  `google_clientid` varchar(250) NOT NULL,
+  `refresh_token` varchar(250) NOT NULL,
+  `synctoken` varchar(250) NOT NULL,
+  `googleinsert` varchar(10) NOT NULL
 ) ENGINE=InnoDB]]></sql>
 </table>
 <table>
@@ -242,8 +248,17 @@
 <cron> 
 <name>Calendar4You - GoogleSync</name> 
 <frequency>900</frequency>
-<status>0</status> 
-<handler>modules/Calendar4You/cron/UpdateEvents.service</handler> 
+<status>1</status>
+<handler>modules/Calendar4You/cron/UpdateEvents.service</handler>
+<sequence>8</sequence>
+<description></description>
+</cron>
+<cron>
+<name>Calendar4You - GoogleSync Insert</name>
+<frequency>900</frequency>
+<status>1</status>
+<handler>modules/Calendar4You/cron/InsertEvents.service</handler>
+<sequence>9</sequence>
 <description></description>
 </cron>
 </crons>

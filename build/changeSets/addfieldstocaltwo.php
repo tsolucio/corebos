@@ -21,13 +21,27 @@ class addfieldstocaltwo extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-$this->ExecuteQuery("INSERT INTO  vtiger_cron_task (id ,name ,handler_file ,frequency ,laststart ,lastend ,status ,module ,sequence ,description) VALUES ('8',  'Calendar4You - GoogleSync Insert',  'modules/Calendar4You/cron/InsertEvents.service',  '60',  '1421927705',  '1421927730',  '1',  'Calendar4You',  '7', '');");
-$this->ExecuteQuery("ALTER TABLE  its4you_googlesync4you_access ADD  refresh_token VARCHAR( 250 ) NOT NULL,ADD  synctoken VARCHAR( 250 ) NOT NULL ,ADD  googleinsert VARCHAR( 10 ) NOT NULL ");
-$this->sendMsg('Changeset '.get_class($this).' applied!');
-$this->markApplied();
-		        }
+			global $adb;
+			$res_crons = $adb->pquery("SELECT name FROM vtiger_cron_task WHERE name ='Calendar4You - GoogleSync Insert'",array());
+			if($adb->num_rows($res_crons) == 0)
+				$this->ExecuteQuery("INSERT INTO  vtiger_cron_task (id ,name ,handler_file ,frequency ,laststart ,lastend ,status ,module ,sequence ,description) VALUES ('8',  'Calendar4You - GoogleSync Insert',  'modules/Calendar4You/cron/InsertEvents.service',  '60',  '1421927705',  '1421927730',  '1',  'Calendar4You',  '7', '');");
+			
+			$res_refres_token = $adb->pquery("SHOW COLUMNS FROM its4you_googlesync4you_access WHERE Field = ?",array('refresh_token'));
+			if($adb->num_rows($res_refres_token) == 0)
+				$this->ExecuteQuery("ALTER TABLE  its4you_googlesync4you_access ADD  refresh_token VARCHAR( 250 ) NOT NULL");
+			
+			$res_synctoken = $adb->pquery("SHOW COLUMNS FROM its4you_googlesync4you_access WHERE Field = ?",array('synctoken'));
+			if($adb->num_rows($res_synctoken) == 0)
+				$this->ExecuteQuery("ALTER TABLE  its4you_googlesync4you_access ADD  synctoken VARCHAR( 250 ) NOT NULL");
+	
+			$res_googleinsert = $adb->pquery("SHOW COLUMNS FROM its4you_googlesync4you_access WHERE Field = ?",array('googleinsert'));
+			if($adb->num_rows($res_googleinsert) == 0)
+				$this->ExecuteQuery("ALTER TABLE  its4you_googlesync4you_access ADD  googleinsert VARCHAR( 10 ) NOT NULL ");
+			
+			$this->sendMsg('Changeset '.get_class($this).' applied!');
+			$this->markApplied();
+		}
 		$this->finishExecution();
 	}
-        
 	
 }

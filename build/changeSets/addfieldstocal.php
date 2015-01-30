@@ -21,13 +21,23 @@ class addfieldstocal extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-$this->ExecuteQuery("ALTER TABLE `its4you_googlesync4you_access` ADD `google_apikey` VARCHAR( 250 ) NOT NULL ,
-ADD `google_keyfile` VARCHAR( 250 ) NOT NULL ,
-ADD `google_clientid` VARCHAR( 250 ) NOT NULL");
-$this->ExecuteQuery("ALTER TABLE `its4you_googlesync4you_access` CHANGE `google_password` `google_password` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL ");
-$this->sendMsg('Changeset '.get_class($this).' applied!');
-$this->markApplied();
-		        }
+			global $adb;
+			$res_google_apikey = $adb->pquery("SHOW COLUMNS FROM its4you_googlesync4you_access WHERE Field = ?",array('google_apikey'));
+			if($adb->num_rows($res_google_apikey) == 0)
+				$this->ExecuteQuery("ALTER TABLE `its4you_googlesync4you_access` ADD `google_apikey` VARCHAR( 250 ) NOT NULL ");
+			
+			$res_google_keyfile = $adb->pquery("SHOW COLUMNS FROM its4you_googlesync4you_access WHERE Field = ?",array('google_keyfile'));
+			if($adb->num_rows($res_google_keyfile) == 0)
+				$this->ExecuteQuery("ALTER TABLE `its4you_googlesync4you_access`ADD `google_keyfile` VARCHAR( 250 ) NOT NULL ");
+
+			$res_google_clientid = $adb->pquery("SHOW COLUMNS FROM its4you_googlesync4you_access WHERE Field = ?",array('google_clientid'));
+			if($adb->num_rows($res_google_clientid) == 0)
+				$this->ExecuteQuery("ALTER TABLE `its4you_googlesync4you_access`ADD `google_clientid` VARCHAR( 250 ) NOT NULL");
+				
+			$this->ExecuteQuery("ALTER TABLE `its4you_googlesync4you_access` CHANGE `google_password` `google_password` VARCHAR( 255 ) CHARACTER SET utf8 COLLATE utf8_general_ci NULL ");
+			$this->sendMsg('Changeset '.get_class($this).' applied!');
+			$this->markApplied();
+		}
 		$this->finishExecution();
 	}
 	
