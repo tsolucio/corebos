@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 require_once('include/database/PearDatabase.php');
-global $adb;
+global $adb,$current_user;
 
 if(isset($_REQUEST['hour_format']) && $_REQUEST['hour_format'] != '')
 	$hour_format = $_REQUEST['hour_format'];
@@ -67,13 +67,26 @@ if ($update_google_account == "1") {
     $google_apikey= $_REQUEST["google_apikey"];
     $google_keyfile = $_REQUEST["google_keyfile"];
     $google_clientid = $_REQUEST["google_clientid"];
+    $googleinsert1 = $_REQUEST["googleinsert"];
+   
+    $us=$adb->query("select * from vtiger_users where deleted=0");
+    for($i=0;$i<$adb->num_rows($us);$i++){
+    $userid=$adb->query_result($us,$i,'id');
+    $q=$adb->pquery("select refresh_token,googleinsert from its4you_googlesync4you_access WHERE userid = ?"
+     ,array($userid));
+    $refresh_token=$adb->query_result($q,0,"refresh_token");
+       if($adb->num_rows($q)!=0 && $userid!=$current_user->id)
+    $googleinsert=$adb->query_result($q,0,"googleinsert");
+    else if($userid!=$current_user->id ) $googleinsert=1;
+    else $googleinsert=$googleinsert1;
     $sql4 = "DELETE FROM its4you_googlesync4you_access WHERE userid = ?";
-    $adb->pquery($sql4,array($current_user->id));
-    
-    if ($google_login != "" && $google_apikey != "" && $google_keyfile != "" && $google_clientid!= "") {
-    $sql5 = "INSERT INTO its4you_googlesync4you_access (userid, google_login, google_password,google_apikey,google_keyfile,google_clientid) VALUES (?,?,?,?,?,?)";
-    $adb->pquery($sql5,array($current_user->id,$google_login, $google_password,$google_apikey,$google_keyfile,$google_clientid));
+    $adb->pquery($sql4,array($userid));
+     if ($google_login != "" && $google_apikey != "" && $google_keyfile != "" && $google_clientid!= "") {
+      $sql5 = "INSERT INTO its4you_googlesync4you_access (userid, google_login, google_password,google_apikey,google_keyfile,google_clientid,refresh_token) VALUES (?,?,?,?,?,?,?)";
+    $adb->pquery($sql5,array($userid,$google_login, $google_password,$google_apikey,$google_keyfile,$google_clientid,$refresh_token));
+      $adb->query("Update its4you_googlesync4you_access set googleinsert='$googleinsert' where userid=$userid");
 
+    }
     }
 
 }

@@ -204,4 +204,11 @@
 	<classname>PdoSrvPBActiveDefaultValue</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+        <author>loridacito</author>
+        <description>Add fields in calendar4you 2</description>
+        <filename>build/changeSets/addfieldstocaltwo.php</filename>
+        <classname>addfieldstocaltwo</classname>
+        <systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

@@ -73,6 +73,19 @@ class Calendar4You extends CRMEntity {
     public function GetProfilesActions() {
       return $this->profilesActions;
     }
+    
+public function setgoogleaccessparams($userid){
+ $conf=$this->db->query("select * from its4you_googlesync4you_access where userid=$userid ");
+ $admin=$this->db->query("select * from its4you_googlesync4you_access where userid=1");
+ if($this->db->num_rows($conf)==0 && $this->db->num_rows($admin)>0){
+ $google_login=$this->db->query_result($admin,0,"google_login");
+ $google_apikey=$this->db->query_result($admin,0,"google_apikey");
+ $google_keyfile=$this->db->query_result($admin,0,"google_keyfile");
+ $google_clientid=$this->db->query_result($admin,0,"google_clientid");
+ $sql5 = "INSERT INTO its4you_googlesync4you_access (userid, google_login, google_password,google_apikey,google_keyfile,google_clientid,googleinsert) VALUES (?,?,?,?,?,?,?)";
+ $this->db->pquery($sql5,array($userid,$google_login, $google_password,$google_apikey,$google_keyfile,$google_clientid,'1'));
+ }
+}
 
     public function GetDefPermission($userid) {
         

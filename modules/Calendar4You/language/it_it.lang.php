@@ -68,7 +68,11 @@ $mod_strings = Array (
 "LBL_GOOGLECLIENTID"=>"ID Cliente",
 "LBL_GOOGLEKEYFILE"=>"FileKey",
 "LBL_UPLOADFILE"=>"Carica",
-"LBL_GOOGLEFILE"=>'File di Google: '
+"LBL_GOOGLEFILE"=>'File di Google: ',
+"LBL_GOOGLECLIENTSECRET"=>"Segreto Cliente",
+"LBL_GOOGLEURI"=>'URI di Reindirizzamento',
+"LBL_CONNECT"=>"Autorizza e connettiti",
+"LBL_GOOGLEINS"=>"Inserire da Google?",
 
 );
 ?>
