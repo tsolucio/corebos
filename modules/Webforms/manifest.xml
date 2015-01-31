@@ -18,7 +18,7 @@
   `publicid` varchar(100) NOT NULL,
   `enabled` int(1) NOT NULL DEFAULT '1',
   `targetmodule` varchar(50) NOT NULL,
-  `description` varchar(250) DEFAULT NULL,
+  `description` text DEFAULT NULL,
   `ownerid` int(19) NOT NULL,
   `returnurl` varchar(250) DEFAULT NULL,
   PRIMARY KEY (`id`),

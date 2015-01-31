@@ -15,7 +15,7 @@
 <sql><![CDATA[CREATE TABLE `vtiger_modcomments` (
   `modcommentsid` int(11) DEFAULT NULL,
   `commentcontent` text,
-  `related_to` varchar(100) NOT NULL,
+  `related_to` int(19) NOT NULL,
   `parent_comments` varchar(100) default NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
 </table>
