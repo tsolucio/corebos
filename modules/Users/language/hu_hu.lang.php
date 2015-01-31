@@ -414,6 +414,7 @@ $mod_strings = array(
 	'LBL_USER_ADDR_INFN' => 'Cég Információ',
 	'LBL_USER_IMAGE' => 'Felhasználó Kép',
 	'LBL_USR' => 'Felhasználók',
+	'LBL_CALENDAR_SETTINGS'=>'Calendar Settings',
 	'LBL_MY' => 'Saját',
 	'LBL_MY_DEFAULTS' => 'Saját Alapértelmezett',
 	'LBL_MY_DESG' => 'Saját Kinevezés & Kapcsolat Részletei',

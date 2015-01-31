@@ -405,6 +405,7 @@ $mod_strings = array (
 		'LBL_USER_ADDR_INFN' => 'Information adresse',
 		'LBL_USER_IMAGE' => 'Photo',
 		'LBL_USR' => 'Utilisateur',
+		'LBL_CALENDAR_SETTINGS'=>'Calendar Settings',
 		'LBL_MY' => 'Mon',
 		'LBL_MY_DEFAULTS' => 'Mes affichages',
 		'LBL_MY_DESG' => 'Me définir & me contacter',

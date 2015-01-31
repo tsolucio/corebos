@@ -497,7 +497,7 @@
   'LBL_USER_ADDR_INFN' => 'Informazioni Indirizzo',
   'LBL_USER_IMAGE' => 'Immagine Utente',
   'LBL_USR' => 'Utenti',
-
+  'LBL_CALENDAR_SETTINGS'=>'Calendar Settings',
   'LBL_MY' => 'Mio',
   'LBL_MY_DEFAULTS' => 'Miei Valori di Default',
   'LBL_MY_DESG' => 'Mia designazione & Dettagli di contatto',

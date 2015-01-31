@@ -493,7 +493,7 @@ $mod_strings = Array(
     'LBL_USER_ADDR_INFN'=>'Adressinformation',
     'LBL_USER_IMAGE'=>'Benutzer Bild',
     'LBL_USR'=>'Benutzer',
-
+    'LBL_CALENDAR_SETTINGS'=>'Calendar Settings',
     'LBL_MY'=>'Meine',
     'LBL_MY_DEFAULTS'=>'Meine Standards',
     'LBL_MY_DESG'=>'Meine Kontaktdetails',

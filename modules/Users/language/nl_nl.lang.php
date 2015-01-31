@@ -1,5 +1,4 @@
 <?php
-
 /*******************************************************************************
  * The contents of this file are subject to the following licences:
  * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
@@ -512,7 +511,7 @@ $mod_strings = Array(
 'LBL_USER_ADDR_INFN'=>'Adresinformatie',
 'LBL_USER_IMAGE'=>'Gebruiker foto',
 'LBL_USR'=>'Gebruikers',
-
+'LBL_CALENDAR_SETTINGS'=>'Calendar Settings',
 'LBL_MY'=>'Mijn',
 'LBL_MY_DEFAULTS'=>'Mijn standaard',
 'LBL_MY_DESG'=>'Mijn benoeming & contact details',

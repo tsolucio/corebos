@@ -500,7 +500,7 @@ $mod_strings = Array(
 'LBL_USER_ADDR_INFN'=>'Dirección de Información',
 'LBL_USER_IMAGE'=>'Imagen de Usuario',
 'LBL_USR'=>'Usuarios',
-
+'LBL_CALENDAR_SETTINGS'=>'Configuración Calendario',
 'LBL_MY'=>'Mis',
 'LBL_MY_DEFAULTS'=>'Mis valores por defecto',
 'LBL_MY_DESG'=>'Mis detalles de Contacto y Designación',
