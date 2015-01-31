@@ -78,7 +78,7 @@ $mod_strings = Array(
 'LBL_DESCRIPTION'=>'Descripción:',
 'NTC_COPY_BILLING_ADDRESS'=>'Copiar Factura a Entvío',
 'NTC_COPY_SHIPPING_ADDRESS'=>'Copiar Entvío a Factura',
-'NTC_REMOVE_MEMBER_ORG_CONFIRMATION'=>'¿Está seguro que desea eliminar este expediente como Organización miembro?',
+'NTC_REMOVE_MEMBER_ORG_CONFIRMATION'=>'¿Está seguro que desea eliminar este registro como organización miembro?',
 'LBL_DUPLICATE'=>'Posibles Cuentas Duplicadas',
 'MSG_DUPLICATE' => 'Al dar de alta esta cuenta puede que se cree una cuenta duplicada. Puede seleccionar una cuenta del listado inferior o hacer click en Crear Nueva Cuenta para continuar creando la cuenta con los datos introducidos.',
 

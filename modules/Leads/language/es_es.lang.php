@@ -82,7 +82,7 @@ $mod_strings = Array(
 'LBL_POTENTIAL_SALES_STAGE'=>'Estado de la Oportunidad',
 
 
-'NTC_DELETE_CONFIRMATION'=>'¿Está seguro que desea eliminar este expediente?',
+'NTC_DELETE_CONFIRMATION'=>'¿Está seguro que desea eliminar este registro?',
 'NTC_REMOVE_CONFIRMATION'=>'¿Está seguro que desea eliminar el contacto de este Pre-contacto?',
 'NTC_REMOVE_DIRECT_REPORT_CONFIRMATION'=>'¿Está usted seguro usted desea quitar este expediente como un informe directo?',
 'NTC_REMOVE_OPP_CONFIRMATION'=>'¿Est&aacute seguro usted desea eliminar este contacto de esta oportunidad?',
