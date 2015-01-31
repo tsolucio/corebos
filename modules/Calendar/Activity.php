@@ -859,9 +859,6 @@ function insertIntoRecurringTable(& $recurObj)
 		$sql = 'DELETE FROM vtiger_recurringevents WHERE activityid=?';
 		$this->db->pquery($sql, array($id));
 
-		$sql = 'DELETE FROM vtiger_cntactivityrel WHERE activityid = ?';
-		$this->db->pquery($sql, array($id));
-		
 		parent::unlinkDependencies($module, $id);
 	}
 	
