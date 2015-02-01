@@ -98,6 +98,13 @@ if ($cver=='6.0.0' or $force) {
 	include 'build/migrate6/migrate_from_vt60.php';
 }
 
+ExecuteQuery("DELETE FROM vtiger_def_org_share WHERE vtiger_def_org_share.tabid not in (select tabid from vtiger_tab)");
+ExecuteQuery("update vtiger_version set old_version='5.4.0', current_version='5.5.0' where id=1");
+
+// Recalculate permissions  RecalculateSharingRules
+RecalculateSharingRules();
+
+
 ?>
 </table>
 <br /><br />

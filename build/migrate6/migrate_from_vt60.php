@@ -344,9 +344,4 @@ foreach ($insmods as $module) {
 $mod = Vtiger_Module::getInstance('ModTracker');
 $mod->addLink('HEADERSCRIPT', 'ModTrackerCommon_JS', 'modules/ModTracker/ModTrackerCommon.js');
 
-ExecuteQuery("update vtiger_version set old_version='5.4.0', current_version='5.5.0' where id=1");
-
-// Recalculate permissions  RecalculateSharingRules
-RecalculateSharingRules();
-
 ?>
