@@ -218,4 +218,11 @@
 	<classname>addvendorrelatedlist2contact</classname>
 	<systemupdate>false</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Optimize database with interesting changes from vtiger crm 6.1</description>
+	<filename>build/changeSets/cleanoptimizedatabase_610.php</filename>
+	<classname>cleandatabase_610</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
