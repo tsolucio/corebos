@@ -1,5 +1,5 @@
 <?php
-$moduleTitle="TSolucio::coreBOS Customizations: migrate from vtiger CRM 6.0";
+$moduleTitle="TSolucio::coreBOS Customizations: migrate from vtiger CRM 6.x";
 echo '<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">';
 echo "<html><head><title>vtlib $moduleTitle</title>";
 echo '<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">';
@@ -18,10 +18,12 @@ $Vtiger_Utils_Log = true;
 
 require_once 'include/utils/utils.php';
 include_once('vtlib/Vtiger/Module.php');
+include_once 'vtlib/Vtiger/Cron.php';
 require_once('modules/com_vtiger_workflow/include.inc');
 require_once('modules/com_vtiger_workflow/tasks/VTEntityMethodTask.inc');
 require_once('modules/com_vtiger_workflow/VTEntityMethodManager.inc');
 require_once('include/Webservices/Utils.php');
+@include_once('include/events/include.inc');
 global $current_user,$adb;
 set_time_limit(0);
 ini_set('memory_limit','1024M');
@@ -45,11 +47,11 @@ $failure_query_count=0;
 $success_query_array=array();
 $failure_query_array=array();
 
-function ExecuteQuery($query) {
+function ExecuteQuery($query,$params=array()) {
 	global $adb,$log;
 	global $query_count, $success_query_count, $failure_query_count, $success_query_array, $failure_query_array;
 
-	$status = $adb->query($query);
+	$status = $adb->pquery($query,$params);
 	$query_count++;
 	if(is_object($status)) {
 		echo '
@@ -82,14 +84,16 @@ function deleteWorkflow($wfid) {
 
 echo "<table width=80% align=center border=1>";
 
+$force = (isset($_REQUEST['force']) ? 1 : 0);
+
 $cver = vtws_getVtigerVersion();
-if ($cver=='6.1.0') {
+if ($cver=='6.1.0' or $force) {
 	putMsg('<h2>** Starting Migration from 6.1 **</h2>');
 	include 'build/migrate6/migrate_from_vt61.php';
 }
 
 $cver = vtws_getVtigerVersion();
-if ($cver=='6.0.0') {
+if ($cver=='6.0.0' or $force) {
 	putMsg('<h2>** Starting Migration from 6.0 **</h2>');
 	include 'build/migrate6/migrate_from_vt60.php';
 }

@@ -164,9 +164,6 @@ ExecuteQuery("CREATE TABLE `vtiger_ownernotify` (
 KEY `ownernotify_crmid_flag_idx` (`crmid`,`flag`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8");
 
-$package = new Vtiger_Package();
-$rdo = $package->importManifest("modules/PBXManager/manifest.xml");
-
 ExecuteQuery('ALTER TABLE vtiger_inventoryproductrel MODIFY comment text', array());
 
 // Meta information cleanup
@@ -311,6 +308,41 @@ $task->summary = 'Notify Related Customer on Ticket Change, which is not done fr
 $task->methodName = "NotifyParentOnTicketChange";
 $taskManager->saveTask($task);
 putMsg('Workflow "'.$helpDeskWorkflow->description.'" created!');
+
+$delmods = array(
+	'EmailTemplates','Google'
+);
+
+foreach ($delmods as $module) {
+	$mod = Vtiger_Module::getInstance($module);
+	if ($mod) {
+		$mod->deleteRelatedLists();
+		$mod->deleteLinks();
+		$mod->deinitWebservice();
+		$mod->delete();
+		echo "<b>Module $module EXTERMINATED!</b><br>";
+	}
+}
+
+$delmods = array(
+	'ar_ae', 'sv_se','tr_tr','pl_pl','ro_ro','ru_ru',
+);
+require_once('vtlib/Vtiger/Language.php');
+foreach ($delmods as $prefix) {
+	$languagePack = new Vtiger_Language();
+	@$languagePack->deregister($prefix);
+}
+
+$insmods = array(
+	'CronTasks', 'ConfigEditor','PBXManager','cbupdater'
+);
+foreach ($insmods as $module) {
+	$package = new Vtiger_Package();
+	$rdo = $package->importManifest("modules/$module/manifest.xml");
+}
+
+$mod = Vtiger_Module::getInstance('ModTracker');
+$mod->addLink('HEADERSCRIPT', 'ModTrackerCommon_JS', 'modules/ModTracker/ModTrackerCommon.js');
 
 ExecuteQuery("update vtiger_version set old_version='5.4.0', current_version='5.5.0' where id=1");
 
