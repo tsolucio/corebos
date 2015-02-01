@@ -8,6 +8,9 @@
 ********************************************************************************/
 
 $mod_strings = Array(
+	'PBX Manager' => 'PBX Manager',
+	'PBXManager' => 'PBX Manager',
+	'SINGLE_PBXManager' => 'PBX Manager',
 	'Asterisk' => 'Asterisk',
 	'LBL_ASTERISK_INFORMATION' => 'ASTERISK Information',
 	

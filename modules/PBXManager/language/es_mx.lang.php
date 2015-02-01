@@ -8,6 +8,9 @@
 *  License      : MPL 1.1
 ***********************************************************/
 $mod_strings = Array(
+	'PBX Manager' => 'Administrador PBX',
+	'PBXManager' => 'Administrador PBX',
+	'SINGLE_PBXManager' => 'Administrador PBX',
 	'Asterisk' => 'Asterisk',
 	'LBL_ASTERISK_INFORMATION' => 'Información ASTERISK',
 	'Call From'=>'Llamada de',

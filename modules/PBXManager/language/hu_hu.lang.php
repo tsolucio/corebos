@@ -12,6 +12,9 @@
  * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
  ********************************************************************************/
 $mod_strings = array(
+	'PBX Manager' => 'PBX Manager',
+	'PBXManager' => 'PBX Manager',
+	'SINGLE_PBXManager' => 'PBX Manager',
 	'Asterisk' => 'Asterisk',
 	'LBL_ASTERISK_INFORMATION' => 'ASTERISK Adatok',
 	'Call From' => 'Bejövő hívás',
