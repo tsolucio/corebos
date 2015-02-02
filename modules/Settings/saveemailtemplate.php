@@ -33,7 +33,7 @@ else
 {
 	$templateid = $db->getUniqueID('vtiger_emailtemplates');
 	$sql = "insert into vtiger_emailtemplates values (?,?,?,?,?,?,?,?)";
-	$params = array($folderName, $templateName, $subject, $description, $body, 0, $templateid. $emailfrom);
+	$params = array($folderName, $templateName, $subject, $description, $body, 0, $templateid, $emailfrom);
 	$adb->pquery($sql, $params);
 
 	 $log->info("added to the db the emailtemplate");
