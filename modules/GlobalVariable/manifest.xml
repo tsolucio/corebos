@@ -1,0 +1,422 @@
+<?xml version='1.0'?>
+<module>
+<name>GlobalVariable</name>
+<label>GlobalVariable</label>
+<parent>Tools</parent>
+<version>1.0</version>
+<short_description>coreBOS Global Variables module</short_description>
+<dependencies>
+<vtiger_version>5.4.0</vtiger_version>
+<vtiger_max_version>5.*</vtiger_max_version>
+</dependencies>
+<license>
+<inline><![CDATA[/*************************************************************************************************
+ * Copyright 2015 Opencubed -- This file is a part of TSOLUCIO coreBOS customizations.
+ * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
+ * Vizsage Public License (the "License"). You may not use this file except in compliance with the
+ * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit
+ * and share improvements. However, for proper details please read the full License, available at
+ * http://vizsage.com/license/Vizsage-License-BY-NC-SA.html and the handy reference for understanding
+ * the full license at http://vizsage.com/license/Vizsage-Deed-BY-NC-SA.html. Unless required by
+ * applicable law or agreed to in writing, any software distributed under the License is distributed
+ * on an  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and limitations under the
+ * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
+ *************************************************************************************************
+ *  Module       : Global Variable module
+ *  Version      : 5.4.0
+ *  Author       : Opencubed
+ *************************************************************************************************/
+]]></inline>
+</license>
+<tables>
+<table>
+<name>vtiger_globalvariable</name>
+<sql><![CDATA[CREATE TABLE `vtiger_globalvariable` (
+  `globalvariableid` int(11) default NULL,
+  `name` varchar(150) NOT NULL, 
+  `globalno` varchar(150),
+  `default_check` varchar(3),
+  `value` varchar(250),
+  `mandatory` varchar(3),
+  `blocked` varchar(3),
+  `module_list` text,
+  `category` varchar(150),
+  `in_module_list` varchar(3),
+  PRIMARY KEY  (`globalvariableid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]>
+</sql>
+</table>
+<table>
+<name>vtiger_globalvariablecf</name>
+<sql><![CDATA[CREATE TABLE `vtiger_globalvariablecf` (
+  `globalvariableid` int(11) NOT NULL,
+  PRIMARY KEY (`globalvariableid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+</table>
+</tables>
+<blocks>
+<block>
+<label>LBL_GLOBAL_VARIABLE_INFORMATION</label>
+<fields>
+<field>
+<fieldname>name</fieldname>
+<uitype>15</uitype>
+<columnname>name</columnname>
+<tablename>vtiger_globalvariable</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Name</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>1</sequence>
+<maximumlength>150</maximumlength>
+<typeofdata>V~M</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+<picklistvalues>
+<picklistvalue>--none--</picklistvalue>
+<picklistvalue>calendar_display</picklistvalue>
+<picklistvalue>world_clock_display</picklistvalue>
+<picklistvalue>calculator_display</picklistvalue>
+<picklistvalue>list_max_entries_per_page</picklistvalue>
+<picklistvalue>limitpage_navigation</picklistvalue>
+<picklistvalue>history_max_viewed</picklistvalue>
+<picklistvalue>default_module</picklistvalue>
+<picklistvalue>default_action</picklistvalue>
+<picklistvalue>default_theme</picklistvalue>
+<picklistvalue>currency_name</picklistvalue>
+<picklistvalue>listview_max_textlength</picklistvalue>
+<picklistvalue>helpdesk_support_email_id</picklistvalue>
+<picklistvalue>helpdesk_support_name</picklistvalue>
+<picklistvalue>helpdesk_support_email_reply_id</picklistvalue>
+<picklistvalue>upload_badext</picklistvalue>
+<picklistvalue>maxWebServiceSessionLifeSpan</picklistvalue>
+<picklistvalue>maxWebServiceSessionIdleTime</picklistvalue>
+<picklistvalue>upload_maxsize</picklistvalue>
+<picklistvalue>allow_exports</picklistvalue>
+<picklistvalue>minimum_cron_frequency</picklistvalue>
+<picklistvalue>default_timezone</picklistvalue>
+<picklistvalue>default_language</picklistvalue>
+<picklistvalue>import_dir</picklistvalue>
+<picklistvalue>upload_dir</picklistvalue>
+<picklistvalue>corebos_app_name</picklistvalue>
+<picklistvalue>corebos_app_url</picklistvalue>
+</picklistvalues>
+</field>
+<field>
+<fieldname>default_check</fieldname>
+<uitype>56</uitype>
+<columnname>default_check</columnname>
+<tablename>vtiger_globalvariable</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Default</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>2</sequence>
+<maximumlength>3</maximumlength>
+<typeofdata>C~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>value</fieldname>
+<uitype>1</uitype>
+<columnname>value</columnname>
+<tablename>vtiger_globalvariable</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Value</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>3</sequence>
+<maximumlength>250</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>mandatory</fieldname>
+<uitype>56</uitype>
+<columnname>mandatory</columnname>
+<tablename>vtiger_globalvariable</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Mandatory</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>4</sequence>
+<maximumlength>3</maximumlength>
+<typeofdata>C~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>assigned_user_id</fieldname>
+<uitype>53</uitype>
+<columnname>smownerid</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>User</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<selected>0</selected>
+<sequence>5</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~M</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>2</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>blocked</fieldname>
+<uitype>56</uitype>
+<columnname>blocked</columnname>
+<tablename>vtiger_globalvariable</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Blocked</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue>Blocked</defaultvalue>
+<sequence>6</sequence>
+<maximumlength>3</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>module_list</fieldname>
+<uitype>1</uitype>
+<columnname>module_list</columnname>
+<tablename>vtiger_globalvariable</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Comma Separated Module List</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>7</sequence>
+<maximumlength></maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>category</fieldname>
+<uitype>15</uitype>
+<columnname>category</columnname>
+<tablename>vtiger_globalvariable</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Category</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>8</sequence>
+<maximumlength>150</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+<picklistvalues>
+ <picklistvalue>System</picklistvalue>
+ <picklistvalue>User Interface</picklistvalue>
+ <picklistvalue>Performance</picklistvalue>
+ <picklistvalue>Module Functionality</picklistvalue>
+ <picklistvalue>Other</picklistvalue>
+</picklistvalues>
+</field>
+<field>
+<fieldname>in_module_list</fieldname>
+<uitype>56</uitype>
+<columnname>in_module_list</columnname>
+<tablename>vtiger_globalvariable</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>In Module List</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<defaultvalue>1</defaultvalue>
+<sequence>9</sequence>
+<maximumlength>3</maximumlength>
+<typeofdata>C~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>globalno</fieldname>
+<uitype>4</uitype>
+<columnname>globalno</columnname>
+<tablename>vtiger_globalvariable</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Globalno</fieldlabel>
+<readonly>2</readonly>
+<presence>2</presence>
+<defaultvalue></defaultvalue>
+<sequence>10</sequence>
+<maximumlength>150</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+<entityidentifier>
+<entityidfield>globalno</entityidfield>
+<entityidcolumn>globalno</entityidcolumn>
+</entityidentifier>
+</field>
+<field>
+<fieldname>createdtime</fieldname>
+<uitype>70</uitype>
+<columnname>createdtime</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Created Time</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<selected>0</selected>
+<sequence>11</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>T~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>2</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>modifiedtime</fieldname>
+<uitype>70</uitype>
+<columnname>modifiedtime</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Modified Time</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<selected>0</selected>
+<sequence>12</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>T~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>2</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+</fields>
+</block>
+<block>
+<label>LBL_DESCRIPTION_INFORMATION</label>
+<fields>
+<field>
+<fieldname>description</fieldname>
+<uitype>19</uitype>
+<columnname>description</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Description</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<selected>0</selected>
+<sequence>1</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+</fields>
+</block>
+</blocks>
+<customviews>
+<customview>
+<viewname>All</viewname>
+<setdefault>true</setdefault>
+<setmetrics>false</setmetrics>
+<fields>
+<field>
+<fieldname>globalno</fieldname>
+<columnindex>0</columnindex>
+</field>
+<field>
+<fieldname>name</fieldname>
+<columnindex>1</columnindex>
+</field>
+<field>
+<fieldname>value</fieldname>
+<columnindex>2</columnindex>
+</field>
+<field>
+<fieldname>assigned_user_id</fieldname>
+<columnindex>3</columnindex>
+</field>
+<field>
+<fieldname>default_check</fieldname>
+<columnindex>4</columnindex>
+</field>
+<field>
+<fieldname>mandatory</fieldname>
+<columnindex>5</columnindex>
+</field>
+</fields>
+</customview>
+</customviews>
+<sharingaccess>
+<default>private</default>
+</sharingaccess>
+<actions>
+<action>
+<name><![CDATA[Import]]></name>
+<status>enabled</status>
+</action>
+<action>
+<name><![CDATA[Export]]></name>
+<status>enabled</status>
+</action>
+<action>
+<name><![CDATA[Merge]]></name>
+<status>enabled</status>
+</action>
+</actions>
+<crons>
+</crons>
+</module>

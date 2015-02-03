@@ -1,0 +1,22 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_globalvariable</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_globalvariable` (
+  `globalvariableid` int(11) default NULL,
+  `name` varchar(150) NOT NULL, 
+  `globalno` varchar(150),
+  `default_check` varchar(3),
+  `value` varchar(250),
+  `mandatory` varchar(3),
+  `blocked` varchar(3),
+  `module_list` text,
+  `category` varchar(150),
+  `in_module_list` varchar(3),
+  PRIMARY KEY  (`globalvariableid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8
+]]></sql>
+		</table>
+	</tables>
+</schema>
