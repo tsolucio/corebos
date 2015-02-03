@@ -10,6 +10,7 @@
 include_once 'include/Webservices/Create.php';
 include_once 'vtlib/Vtiger/Mailer.php';
 include_once 'vtlib/Vtiger/Version.php';
+include_once 'modules/MailManager/src/controllers/RelationControllerAction.php';
 
 /**
  * Class which controls Mail operation
@@ -135,13 +136,20 @@ class MailManager_MailController extends MailManager_Controller {
 					$bcc_string= rtrim($request->get('bcc'), ',');
 					$subject   = $request->get('subject');
 					$body      = $request->get('body');
-
-					if($relateto[1]!= NULL) {
+					$description = $body;
+					if(!empty($relateto) and !empty($relateto[1])) {
 						$entityId = $relateto[1];
 						$parent_module = getSalesEntityType($entityId);
-						$description = getMergedDescription($body,$entityId,$parent_module);
-					} else {
-						$description = $body;
+						if (!empty($parent_module)) {
+							$description = getMergedDescription($body,$entityId,$parent_module);
+							$subject = getMergedDescription($subject,$entityId,$parent_module);
+						} else {
+							$n = MailManager_RelationControllerAction::ws_modulename($relateto[0]);
+							if ($n=='Users') {
+								$description = getMergedDescription($body,$entityId,'Users');
+								$subject = getMergedDescription($subject,$entityId,'Users');
+							}
+						}
 					}
 
 					$pos = strpos($description, '$logo$');
