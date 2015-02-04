@@ -29,7 +29,7 @@ foreach ($delfields as $fqfn) {
 	$fld = Vtiger_Field::getInstance($field,$mod);
 	if ($fld) {
 		$fld->delete();
-		ExecuteQuery('ALTER TABLE '.$mod->basetable.' DROP $field');
+		ExecuteQuery('ALTER TABLE '.$mod->basetable.' DROP '.$field);
 	}
 }
 
