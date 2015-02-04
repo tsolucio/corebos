@@ -1062,6 +1062,7 @@ function getColumnNames()
   }
 	$result = $this->db->pquery($sql1, $params1);
 	$numRows = $this->db->num_rows($result);
+	$custom_fields = array();
 	for($i=0; $i < $numRows;$i++)
 	{
 	$custom_fields[$i] = $this->db->query_result($result,$i,"fieldlabel");
