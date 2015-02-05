@@ -33,7 +33,7 @@ $mod_strings = Array(
 'LBL_LIST_DATE'=>'Date Sent',
 'LBL_LIST_TIME'=>'Time Sent',
 
-'ERR_DELETE_RECORD'=>"A record number must be specified to delete the vtiger_account.",
+'ERR_DELETE_RECORD'=>"A record number must be specified to delete the organization.",
 'LBL_DATE_SENT'=>'Date Sent:',
 'LBL_DATE_AND_TIME'=>'Date & Time Sent:',
 'LBL_DATE'=>'Date Sent:',

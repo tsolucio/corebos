@@ -76,7 +76,7 @@ $mod_strings = Array(
 
 'NTC_DELETE_CONFIRMATION'=>'Você tem certeza que deseja deletar este registro?',
 'NTC_REMOVE_CONFIRMATION'=>'Você tem certeza que deseja remover este Contato deste Caso?',
-'NTC_REMOVE_DIRECT_REPORT_CONFIRMATION'=>'Você tem certeza que deseja remover este registro de um subordinado vtiger_report?',
+'NTC_REMOVE_DIRECT_REPORT_CONFIRMATION'=>'Você tem certeza que deseja remover este registro de um subordinado report?',
 'NTC_REMOVE_OPP_CONFIRMATION'=>'Você tem certeza que deseja remover este Contato desta Oportunidade?',
 'ERR_DELETE_RECORD'=>'Defina um número de registro para deletar o Contato.',
 'NTC_COPY_PRIMARY_ADDRESS'=>'Copiar endereço Principal',

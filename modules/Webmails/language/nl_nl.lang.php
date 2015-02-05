@@ -46,7 +46,7 @@ $mod_strings = Array(
 'LBL_MOVE_TO'=>'Verplaats naar',
 'LBL_DELETE'=>'Verwijder',
 
-'ERR_DELETE_RECORD'=>"Een veld moet zijn weergegeven om vTiger_account te verwijderen.",
+'ERR_DELETE_RECORD'=>"Een veld moet zijn weergegeven om account te verwijderen.",
 'LBL_DATE_SENT'=>'Verzenddatum:',
 'LBL_SUBJECT'=>'Onderwerp:',
 'LBL_DATE_AND_TIME'=>'Verzenddatum & verzendtijd:',
@@ -54,7 +54,7 @@ $mod_strings = Array(
 'LBL_TIME'=>'Verzendtijd:',
 'LBL_BODY'=>'Body:',
 'LBL_CONTACT_NAME'=>' Contactpersoon: ',
-'LBL_EMAIL'=>'E-mail:',  
+'LBL_EMAIL'=>'E-mail:',
 'LBL_COLON'=>':',
 'LBL_TO'=>'Naar :',
 'LBL_CHK_MAIL'=>'Bekijk e-mail',

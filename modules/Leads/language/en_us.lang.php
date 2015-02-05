@@ -76,7 +76,7 @@ $mod_strings = Array(
 
 'NTC_DELETE_CONFIRMATION'=>'Are you sure you want to delete this record?',
 'NTC_REMOVE_CONFIRMATION'=>'Are you sure you want to remove this contact from this case?',
-'NTC_REMOVE_DIRECT_REPORT_CONFIRMATION'=>'Are you sure you want to remove this record as a direct vtiger_report?',
+'NTC_REMOVE_DIRECT_REPORT_CONFIRMATION'=>'Are you sure you want to remove this record as a direct report?',
 'NTC_REMOVE_OPP_CONFIRMATION'=>'Are you sure you want to remove this contact from this opportunity?',
 'ERR_DELETE_RECORD'=>'A record number must be specified to delete the contact.',
 'NTC_COPY_PRIMARY_ADDRESS'=>'Copy primary address to alternate address',

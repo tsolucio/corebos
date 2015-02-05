@@ -42,7 +42,7 @@ $mod_strings = Array(
 'LBL_EMAIL_ADDRESS'=>'Indirizzo Email:',
 'LBL_COLON'=>':',
 
-'ERR_DELETE_RECORD'=>"Un record deve essere specificato per cancellare la vtiger_account.",
+'ERR_DELETE_RECORD'=>"Un record deve essere specificato per cancellare la aziende.",
 'LBL_LIST_FILENAME'=>"Nome File",
 
 // Added for Note(3.2-patch 3) 

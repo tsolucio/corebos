@@ -84,7 +84,7 @@ $mod_strings = Array(
 'MSG_DUPLICATE' => 'Criando esta Organização poderá duplica-la. Você pode selecionar também uma Organização da lista abaixo ou clicar sobre Criar Nova Organização para continuar criando uma nova Organização com os dados inseridos anteriormente.',
 
 'LBL_INVITEE'=>'Contatos',
-'ERR_DELETE_RECORD'=>"Um registro deve ser especificado para deletar a vtiger_account.",
+'ERR_DELETE_RECORD'=>"Um registro deve ser especificado para deletar a Organização.",
 
 'LBL_SELECT_ACCOUNT'=>'Selecione a Organização',
 'LBL_GENERAL_INFORMATION'=>'Informação Geral',

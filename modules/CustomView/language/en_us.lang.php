@@ -229,7 +229,7 @@ following values "Call","Meeting" or "Task".',
 'Start Date & Time'=>'Start Date & Time', 
  
 //error message 
-'Missing required fields'=>'Missing required vtiger_fields', 
+'Missing required fields'=>'Missing required fields', 
 //Strings added for campaigns 
 'Campaign Name'=>'Campaign Name', 
 'Campaign Type'=>'Campaign Type', 

@@ -229,7 +229,7 @@ seguintes valores "Chamada", "Reunião" ou "Tarefa".',
 'Start Date & Time'=>'Data & Hora Início',
       
 //error message
-'Missing required fields'=>'vtiger_fields requeridos ausentes',
+'Missing required fields'=>'Campos requeridos ausentes',
 //Strings added for campaigns
 'Campaign Name'=>'Nome Campanha',
 'Campaign Type'=>'Tipo Campanha',

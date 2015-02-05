@@ -78,10 +78,10 @@ $mod_strings = Array(
 'NTC_COPY_SHIPPING_ADDRESS'=>'Copy shipping address to billing address',
 'NTC_REMOVE_MEMBER_ORG_CONFIRMATION'=>'Are you sure you want to remove this record as a member organization?',
 'LBL_DUPLICATE'=>'Opportunities Duplicate Faq',
-'MSG_DUPLICATE' => 'Creating this vtiger_account may vtiger_potentialy create a duplicate vtiger_account. You may either select an vtiger_account from the list below or you may click on Create New Faq to continue creating a new vtiger_account with the previously entered data.',
+'MSG_DUPLICATE' => 'Creating this organization may potentialy create a duplicate organization. You may either select an organization from the list below or you may click on Create New Faq to continue creating a new organization with the previously entered data.',
 
 'LBL_INVITEE'=>'Contacts',
-'ERR_DELETE_RECORD'=>"A record number must be specified to delete the vtiger_account.",
+'ERR_DELETE_RECORD'=>"A record number must be specified to delete the organization.",
 
 'LBL_SELECT_ACCOUNT'=>'Select Faq',
 'LBL_GENERAL_INFORMATION'=>'General Information',

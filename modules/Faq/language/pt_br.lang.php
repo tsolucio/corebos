@@ -78,7 +78,7 @@ $mod_strings = Array(
 'NTC_COPY_SHIPPING_ADDRESS'=>'Copiar endereço de Entrega para endereço de Faturamento',
 'NTC_REMOVE_MEMBER_ORG_CONFIRMATION'=>'Você tem certeza que deseja remover este registro como uma organização membro?',
 'LBL_DUPLICATE'=>'Possibilidade de FAQ Duplicada',
-'MSG_DUPLICATE' => 'Criando esta Organização pode ser que a vtiger_potentialy crie uma vtiger_account duplicada. Você pode seleciona uma outra Organização da lista abaixo ou clicar sobre Criar Nova FAQ para continuar criando uma nova Organização com os dados previamente inseridos.',
+'MSG_DUPLICATE' => 'Criando esta Organização pode ser que a potentialy crie uma Organização duplicada. Você pode seleciona uma outra Organização da lista abaixo ou clicar sobre Criar Nova FAQ para continuar criando uma nova Organização com os dados previamente inseridos.',
 
 'LBL_INVITEE'=>'Contatos',
 'ERR_DELETE_RECORD'=>"Defina um número de registro para deletar a Organização.",
