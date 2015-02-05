@@ -101,7 +101,6 @@ $mod_strings = array (
   'Phone' => 'Telefono',
   'Email' => 'Email',
   'Website' => 'Website',
-  'GL Account'=>'GL Account',
   'Category' => 'Categoria',
   'Street' => 'Via',
   'City' => 'Citt&agrave;',

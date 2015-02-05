@@ -219,7 +219,7 @@ following values "Call","Meeting" or "Task".',
  
 'Serial No'=>'Serial No', 
 'Product Sheet'=>'Product Sheet', 
-'GL Account'=>'GL Organization',
+'GL Account'=>'GL Account',
  
 //Strings added for Price book module fields 
 'Price Book Name'=>'Price Book Name', 

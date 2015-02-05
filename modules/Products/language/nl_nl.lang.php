@@ -142,7 +142,6 @@ $mod_strings = Array(
 'Phone'=>'Telefoon',
 'Email'=>'E-mail',
 'Website'=>'Website',
-'GL Account'=>'Grootboekrekening',
 'Category'=>'Categorie',
 'Street'=>'Straat',
 'City'=>'Plaats',

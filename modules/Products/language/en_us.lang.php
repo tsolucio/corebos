@@ -118,7 +118,6 @@ $mod_strings = Array(
 'Phone'=>'Phone',
 'Email'=>'Email',
 'Website'=>'Website',
-'GL Account'=>'GL Account',
 'Category'=>'Category',
 'Street'=>'Street',
 'City'=>'City',

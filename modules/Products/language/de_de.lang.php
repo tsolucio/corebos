@@ -118,7 +118,6 @@ $mod_strings = Array(
     'Phone'=>'Telefon',
     'Email'=>'E-Mail',
     'Website'=>'Webseite',
-    'GL Account'=>'FIBU Konto',
     'Category'=>'Kategorie',
     'Street'=>'Strasse',
     'City'=>'Ort',
