@@ -1,22 +1,18 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
- * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Users/language/en_us.lang.php,v 1.18 2005/04/19 14:45:38 ray Exp $
- * Description:  Defines the English language pack for the Users module.
- ********************************************************************************/
- 
+/*************************************************************************************************
+ * Copyright 2015 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
+ * file except in compliance with the License. You can redistribute it and/or modify it
+ * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
+ * granted by the License. coreBOS distributed by JPL TSolucio S.L. is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. Unless required by
+ * applicable law or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT ANY WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language governing
+ * permissions and limitations under the License. You may obtain a copy of the License
+ * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
+ *************************************************************************************************/
  $mod_strings = array (
   'LBL_MODULE_NAME' => 'Utenti',
   'LBL_MODULE_TITLE' => 'Utenti: Home',
@@ -800,14 +796,14 @@
 'Language'=>'Lingua',
 'Secondary Email'=>'Mail Secondaria',
 'Time Zone'=>'Fuso Orario',
-'PASSWORD REQUIREMENTS' => 'PASSWORD REQUIREMENTS',
-'REQUIRED' => 'REQUIRED',
-'Min. 8 characters' => 'Min. 8 characters',
-'Contains3of4' => 'PASSWORD CONTAINS AT LEAST THREE OF THE FOLLOWING FOUR CHARACTER GROUPS',
-'Min. 1 uppercase' => 'Min. 1 uppercase character',
-'Min. 1 lowercase' => 'Min. 1 lowercase character',
-'Min. 1 number' => 'Min. 1 Number',
-'Min. 1 special character' => 'Min. 1 special character , ! ? , ; - @ #',
+'PASSWORD REQUIREMENTS' => 'Requisiti Password',
+'REQUIRED' => 'Obbligatori',
+'Min. 8 characters' => 'Minimo 8 caratteri',
+'Contains3of4' => 'LA PASSWORD CONTIENE ALMENO UNO DI QUESTI 3 GRUPPI DI CARATTERI',
+'Min. 1 uppercase' => 'Minimo una lettera maiuscola',
+'Min. 1 lowercase' => 'Minimo una lettera minuscola',
+'Min. 1 number' => 'Minimo un numero',
+'Min. 1 special character' => 'Minimo un carattere speciale ! ? , ; - @ #',
 );
 
 ?>
