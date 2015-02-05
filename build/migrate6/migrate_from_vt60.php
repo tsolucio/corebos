@@ -29,7 +29,7 @@ foreach ($delfields as $fqfn) {
 	$fld = Vtiger_Field::getInstance($field,$mod);
 	if ($fld) {
 		$fld->delete();
-		ExecuteQuery('ALTER TABLE '.$mod->basetable.' DROP $field');
+		ExecuteQuery('ALTER TABLE '.$mod->basetable.' DROP '.$field);
 	}
 }
 
@@ -251,6 +251,14 @@ ExecuteQuery("UPDATE `vtiger_settings_field` set `linkto` = 'index.php?module=We
 ExecuteQuery("UPDATE `vtiger_settings_field` set `linkto` = 'index.php?module=CronTasks&action=ListCronJobs&parenttab=Settings', description='Allows you to Configure Cron Task' where name = 'Scheduler'");
 ExecuteQuery("UPDATE `vtiger_settings_field` set `linkto` = 'index.php?module=Tooltip&action=QuickView&parenttab=Settings' where name = 'LBL_TOOLTIP_MANAGEMENT'");
 
+//Delete new Blocks in Calendar
+ExecuteQuery("UPDATE vtiger_blocks SET blocklabel = '' WHERE blocklabel = 'LBL_DESCRIPTION_INFORMATION' AND tabid = '9'");
+ExecuteQuery("UPDATE vtiger_blocks SET blocklabel = '' WHERE blocklabel = 'LBL_DESCRIPTION_INFORMATION' AND tabid = '16'");
+ExecuteQuery("DELETE FROM vtiger_blocks WHERE blocklabel = 'LBL_REMINDER_INFORMATION' AND tabid = 16");
+ExecuteQuery("DELETE FROM vtiger_blocks WHERE blocklabel = 'LBL_RECURRENCE_INFORMATION' AND tabid = 16");
+ExecuteQuery("DELETE FROM vtiger_blocks WHERE blocklabel = 'LBL_RELATED_TO' AND tabid = 16");
+
+
 // Change HelpDesk Workflows
 global $adb;
 $workflowManager = new VTWorkflowManager($adb);
@@ -346,5 +354,7 @@ foreach ($insmods as $module) {
 
 $mod = Vtiger_Module::getInstance('ModTracker');
 $mod->addLink('HEADERSCRIPT', 'ModTrackerCommon_JS', 'modules/ModTracker/ModTrackerCommon.js');
+
+
 
 ?>
