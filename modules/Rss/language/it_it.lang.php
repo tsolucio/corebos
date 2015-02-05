@@ -10,13 +10,7 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header$
  * Description:  Defines the English language pack for the RSS module.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
  * Contributor(s): ______________________________________..
  ********************************************************************************/
 
@@ -29,7 +23,7 @@ $mod_strings = array (
   'LBL_STARRED_RSS' => 'Feed con asterisco',
   'LBL_POP_CRM_RSS' => 'Feed relativi al CRM',
   'LBL_ALL_RSS_FEEDS' => 'Tutti i Feed RSS:',
-  'LBL_VTIGER_RSS_READER' => 'vtiger RSS Reader',
+  'LBL_VTIGER_RSS_READER' => 'RSS Reader',
   'LBL_MORE' => 'Di pi&ugrave;..',
   'LBL_SUBJECT' => 'Soggetto',
   'LBL_SENDER' => 'Mittente',

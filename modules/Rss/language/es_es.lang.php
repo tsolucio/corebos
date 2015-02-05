@@ -29,7 +29,7 @@ $mod_strings = array (
 'LBL_STARRED_RSS'=>'Fuentes destacadas',
 'LBL_POP_CRM_RSS'=>'Fuentes populares sobre CRM',
 'LBL_ALL_RSS_FEEDS'=>'Todas las fuentes RSS',
-'LBL_VTIGER_RSS_READER'=>'Lector de RSS de Vtiger',
+'LBL_VTIGER_RSS_READER'=>'Lector de RSS',
 
 'LBL_MORE'=>'Más...',
 'LBL_SUBJECT'=>'Asunto',

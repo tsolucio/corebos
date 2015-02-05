@@ -652,7 +652,7 @@ $mod_strings = Array(
 
 'LBL_ENTER_PROFILE'=>'Introducir Nombre del Perfil',
 'TITLE_USER_DOCUMENT'=>'Documento sin Nombre',
-'TITLE_VTIGER_CRM_5'=>'VTIGER CRM - Open Source CRM',
+'TITLE_VTIGER_CRM_5'=>'Open Source CRM',
 'ROLE_DRAG_ERR_MSG'=>'No puedes mover un Nodo Padre bajo un Nodo Hijo',
 
 'LBL_NOTIFICATION_ACTIVITY'=>'Notificación de Actividad',

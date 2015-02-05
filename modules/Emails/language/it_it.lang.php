@@ -132,9 +132,9 @@ $mod_strings = array (
   'LBL_MAILSELECT_INFO2' => 'Seleziona i Tipi di ID Email ai quali la mail dovrebbe essere mandata',
   'LBL_MULTIPLE' => 'Multiplo',
   'LBL_COMPOSE_EMAIL' => 'Componi e-mail',
-  'LBL_VTIGER_EMAIL_CLIENT' => 'Client WebMail vtiger',
+  'LBL_VTIGER_EMAIL_CLIENT' => 'Client WebMail',
 
-  'TITLE_VTIGERCRM_MAIL' => 'vtigerCRM Mail',
+  'TITLE_VTIGERCRM_MAIL' => 'Mail',
   'TITLE_COMPOSE_MAIL' => 'Componi Mail',
 
   'MESSAGE_MAIL_COULD_NOT_BE_SEND' => 'La mail non pu&ograve; essere spedita all`utente assegnato',
@@ -146,7 +146,6 @@ $mod_strings = array (
   'LBL_BCC_EMAIL_ERROR' => 'L`indirizzo in copia nascosta CCN non &egrave; corretto',
   'LBL_NO_RCPTS_EMAIL_ERROR' => 'Nessun destinatario specificato',
   'LBL_CONF_MAILSERVER_ERROR' => 'Prego configura il server di posta in uscita da -> Impostazioni---> Server Posta in Uscita',
-  'LBL_VTIGER_EMAIL_CLIENT'=>'Vtiger Webmail Client',
   'LBL_MAILSELECT_INFO3' => 'Non hai il permesso di visualizzare le email degli elementi selezionati',
   'FEATURE_AVAILABLE_INFO' => 'Questa funzionalit&agrave; &egrave; disponibile  solo con Microsoft Internet Explorer 5.5 o superiore\\nPer il momento...',
   'DOWNLOAD_CONFIRAMATION' => 'Vuoi scaricare il file?',

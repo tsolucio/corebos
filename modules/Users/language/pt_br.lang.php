@@ -649,7 +649,7 @@ $mod_strings = Array(
 
 'LBL_ENTER_PROFILE'=>'Digite o Nome do Perfil',
 'TITLE_USER_DOCUMENT'=>'Documento sem título',
-'TITLE_VTIGER_CRM_5'=>'vtiger CRM 5 - Gratuíto, Código Aberto e Uso Comercial',
+'TITLE_VTIGER_CRM_5'=>'Gratuíto, Código Aberto e Uso Comercial',
 'ROLE_DRAG_ERR_MSG'=>'Você não pode mover um Nó Pai com um Nó Filho',
 
 'LBL_NOTIFICATION_ACTIVITY'=>'Atividade de Notificação',

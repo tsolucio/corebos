@@ -145,10 +145,10 @@ $mod_strings = Array(
 'LBL_MAILSELECT_INFO2'=>'Selecione o(s) tipo(s) de Email(s) para o qual a mensagem deve ser enviada:',
 'LBL_MULTIPLE'=>'Multiplo',
 'LBL_COMPOSE_EMAIL'=>'Novo E-Mail',
-'LBL_VTIGER_EMAIL_CLIENT'=>'Cliente Webmail vtiger',
+'LBL_VTIGER_EMAIL_CLIENT'=>'Cliente Webmail',
       
 //Added for 5.0.3
-'TITLE_VTIGERCRM_MAIL'=>'Correio vtigerCRM',
+'TITLE_VTIGERCRM_MAIL'=>'Correio',
 'TITLE_COMPOSE_MAIL'=>'Nova Mensagem',
       
 'MESSAGE_MAIL_COULD_NOT_BE_SEND'=>'A mensagem não pode ser enviada para o usuário responsável.',
@@ -160,7 +160,6 @@ $mod_strings = Array(
 'LBL_BCC_EMAIL_ERROR'=>'Seu endereço de email BCC não está correto',
 'LBL_NO_RCPTS_EMAIL_ERROR'=>'Nenhum destinatário epecificado',
 'LBL_CONF_MAILSERVER_ERROR'=>'Por favor configure seu servidor de envio de mensagens em Configurações --> link Servidor de Envio',
-'LBL_VTIGER_EMAIL_CLIENT'=>'Cliente Webmail vtiger',
 'LBL_MAILSELECT_INFO3'=>'Você não tem permissão para visualizar endereço(s) de emai(s)l nos Registro(s) selecionado(s)',
 //Added  for script alerts
 'FEATURE_AVAILABLE_INFO' => 'Este atributo está disponível atualmente somente para usuários do Microsoft Internet Explorer 5.5+  \n\nAguarde

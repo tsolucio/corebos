@@ -31,7 +31,7 @@ $mod_strings = Array(
 'LBL_STARRED_RSS'=>'RSS Principais',
 'LBL_POP_CRM_RSS'=>'Principais Alimentadores relacionados com CRM',
 'LBL_ALL_RSS_FEEDS'=>'Todas os Alimentadores RSS',
-'LBL_VTIGER_RSS_READER'=>'Leitor RSS vtiger',
+'LBL_VTIGER_RSS_READER'=>'Leitor RSS',
 
 'LBL_MORE'=>'Mais...',
 'LBL_SUBJECT'=>'Assunto',

@@ -1,5 +1,4 @@
 <?php
-
 /*******************************************************************************
  * The contents of this file are subject to the following licences:
  * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
@@ -163,10 +162,10 @@ $mod_strings = Array(
 'LBL_MAILSELECT_INFO2'=>'Selecteer het e-mailadres waar u dit bericht naar toe stuurt.',
 'LBL_MULTIPLE'=>'Verschillende',
 'LBL_COMPOSE_EMAIL'=>'Nieuwe e-mail',
-'LBL_VTIGER_EMAIL_CLIENT'=>'vTiger e-mail Client',
+'LBL_VTIGER_EMAIL_CLIENT'=>'e-mail Client',
 
 //Added for 5.0.3
-'TITLE_VTIGERCRM_MAIL'=>'vTiger CRM e-mail',
+'TITLE_VTIGERCRM_MAIL'=>'e-mail',
 'TITLE_COMPOSE_MAIL'=>'Nieuwe e-mail',
 
 'MESSAGE_MAIL_COULD_NOT_BE_SEND'=>'Kan geen e-mail versturen naar de geselecteerde gebruiker.',
@@ -178,7 +177,6 @@ $mod_strings = Array(
 'LBL_BCC_EMAIL_ERROR'=>'Uw bcc e-mailadres is niet correct',
 'LBL_NO_RCPTS_EMAIL_ERROR'=>'Geen ontvangers weergegeven',
 'LBL_CONF_MAILSERVER_ERROR'=>'Configureer uw uitgaande mailserver selecteer settings ---> uitgaande server link a.u.b. ',
-'LBL_VTIGER_EMAIL_CLIENT'=>'vTiger e-mail Client',
 'LBL_MAILSELECT_INFO3'=>'U heeft geen permissie om de e-mailadressen van de geselecteerde velden te bekijken.',
 //Added  for script alerts
 'FEATURE_AVAILABLE_INFO' => 'Dit kenmerk is momenteel alleen beschikbaar voor Microsoft Internet Explorer 5.5+!',

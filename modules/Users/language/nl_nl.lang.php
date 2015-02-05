@@ -664,7 +664,7 @@ $mod_strings = Array(
 
 'LBL_ENTER_PROFILE'=>'Geef het profiel op',
 'TITLE_USER_DOCUMENT'=>'Document zonder titel',
-'TITLE_VTIGER_CRM_5'=>'vtiger CRM 5.1 - gratis, commercieel gekwalificeerd Open Source CRM',
+'TITLE_VTIGER_CRM_5'=>'gratis, commercieel gekwalificeerd Open Source CRM',
 'ROLE_DRAG_ERR_MSG'=>'U kunt geen Ouder Node onderschikken aan een Kind Node',
 
 'LBL_NOTIFICATION_ACTIVITY'=>'Notificatie Activiteit',

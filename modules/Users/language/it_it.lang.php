@@ -656,7 +656,7 @@
 
   'LBL_ENTER_PROFILE' => 'Inserisci il nome del profilo',
   'TITLE_USER_DOCUMENT' => 'Documento senza nome',
-  'TITLE_VTIGER_CRM_5' => 'vtiger CRM 5 - il CRM Open Source',
+  'TITLE_VTIGER_CRM_5' => 'CRM Open Source',
   'ROLE_DRAG_ERR_MSG' => 'Non puoi muovere un nodo padre sotto un nodo figlio',
 
   'LBL_NOTIFICATION_ACTIVITY' => 'Attivit&agrave; di notifica',

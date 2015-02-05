@@ -42,7 +42,7 @@ $mod_strings = Array(
 'LBL_STARRED_RSS'=>'Starred Feeds',
 'LBL_POP_CRM_RSS'=>'Populaire CRM Gerelateerde Feeds',
 'LBL_ALL_RSS_FEEDS'=>'Alle RSS Feeds',
-'LBL_VTIGER_RSS_READER'=>'vTiger RSS Reader',
+'LBL_VTIGER_RSS_READER'=>'RSS Reader',
 
 'LBL_MORE'=>'Meer...',
 'LBL_SUBJECT'=>'Onderwerp',

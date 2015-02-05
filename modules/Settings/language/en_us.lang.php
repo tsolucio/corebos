@@ -631,7 +631,7 @@ $mod_strings = Array(
 
 //Added for 5 GA - Description of Settings UI
 
-'LBL_USER_DESCRIPTION'=>'Manage users who can access vtiger CRM',
+'LBL_USER_DESCRIPTION'=>'Manage users who can access the application',
 'LBL_ROLE_DESCRIPTION'=>'Set up hierarchy of roles and assign to the users',
 'LBL_PROFILE_DESCRIPTION'=>'Manage user-specific modules access to different Roles',
 'LBL_GROUP_DESCRIPTION'=>'Manage different types of teams based on roles, users, and profiles',
@@ -651,7 +651,7 @@ $mod_strings = Array(
 'LBL_BACKUP_SERVER_DESCRIPTION'=>'Specify database backup server details',
 'LBL_CURRENCY_DESCRIPTION'=>'Manage international currencies and exchange rates',
 'LBL_TAX_DESCRIPTION'=>'Manage taxes and the corresponding tax rates',
-'LBL_SYSTEM_DESCRIPTION'=>'View vtiger CRM Server details',
+'LBL_SYSTEM_DESCRIPTION'=>'View Server details',
 'LBL_PROXY_DESCRIPTION'=>'Configure proxies to access RSS feeds through Internet',
 'LBL_AUDIT_DESCRIPTION'=>'Display data opertions performed by users',
 'LBL_TAX_DESC'=>'Manage different types of tax rates for taxes, such as Sales Tax, VAT etc.,',
@@ -792,8 +792,8 @@ $mod_strings = Array(
 'LBL_VIEW_ALL'=>'View all',
 'LBL_EDIT_ALL'=>'Edit all',
 'LBL_ALLOW'=>'Allows',
-'LBL_MESG_VIEW'=>'to view all information / modules of vtiger CRM',
-'LBL_MESG_EDIT'=>'to edit all information / modules of vtiger CRM',
+'LBL_MESG_VIEW'=>'to view all information / modules of the application',
+'LBL_MESG_EDIT'=>'to edit all information / modules of the application',
 'LBL_TAB_MESG_OPTION'=>'modules to be shown',
 'LBL_CREATE_EDIT'=>'Create/Edit',
 'LBL_VIEW'=>'View',
@@ -1072,7 +1072,7 @@ $mod_strings = Array(
 
 //Added for the workflow module
 'LBL_LIST_WORKFLOWS'=>'Workflows',
-'LBL_LIST_WORKFLOWS_DESCRIPTION' => 'Create and edit workflows for vtiger',
+'LBL_LIST_WORKFLOWS_DESCRIPTION' => 'Create and edit workflows',
 'LBL_TASK_TITLE'=>'Task Title',
 'LBL_PARENT_WORKFLOW'=>'Parent Workflow',
 'MSG_EXECUTE_TASK_DELAY'=>'Execute the task after some delay',
