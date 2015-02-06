@@ -2378,10 +2378,7 @@ function getListQuery($module, $where = '') {
 		Case "Accounts":
 			//Query modified to sort by assigned to
 			$query = "SELECT vtiger_crmentity.crmid, vtiger_crmentity.smownerid,
-			vtiger_account.accountname, vtiger_account.email1,
-			vtiger_account.email2, vtiger_account.website, vtiger_account.phone,
-			vtiger_accountbillads.bill_city,
-			vtiger_accountscf.*
+			vtiger_account.*, vtiger_accountbillads.bill_city, vtiger_accountscf.*
 			FROM vtiger_account
 			INNER JOIN vtiger_crmentity
 				ON vtiger_crmentity.crmid = vtiger_account.accountid
@@ -2487,10 +2484,7 @@ function getListQuery($module, $where = '') {
 			break;
 		Case "Contacts":
 			//Query modified to sort by assigned to
-			$query = "SELECT vtiger_contactdetails.firstname, vtiger_contactdetails.lastname,
-			vtiger_contactdetails.title, vtiger_contactdetails.accountid,
-			vtiger_contactdetails.email, vtiger_contactdetails.phone,
-			vtiger_crmentity.smownerid, vtiger_crmentity.crmid
+			$query = "SELECT vtiger_contactdetails.*, vtiger_crmentity.smownerid, vtiger_crmentity.crmid
 			FROM vtiger_contactdetails
 			INNER JOIN vtiger_crmentity
 				ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid
