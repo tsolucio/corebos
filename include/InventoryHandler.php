@@ -9,8 +9,11 @@
  ************************************************************************************/
 
 function handleInventoryProductRel($entity){
-	require_once("include/utils/InventoryUtils.php");
-	updateInventoryProductRel($entity);
+	if(isset($_REQUEST) && $_REQUEST['action'] != 'InvoiceAjax' && $_REQUEST['ajxaction'] != 'DETAILVIEW'
+		&& $_REQUEST['action'] != 'MassEditSave' && $_REQUEST['action'] != 'ProcessDuplicates') {
+		require_once("include/utils/InventoryUtils.php");
+		updateInventoryProductRel($entity);
+	}
 }
 
 ?>
