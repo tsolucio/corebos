@@ -131,7 +131,7 @@ class Mobile_WS_Utils {
 		$resolveUITypes = array(10, 101, 116, 117, 26, 357, 50, 51, 52, 53, 57, 58, 59, 66, 68, 73, 75, 76, 77, 78, 80, 81);
 		
 		$result = $adb->pquery(
-			"SELECT fieldname FROM vtiger_field WHERE uitype IN(". 
+			"SELECT DISTINCT fieldname FROM vtiger_field WHERE uitype IN(". 
 			generateQuestionMarks($resolveUITypes) .") AND tabid=?", array($resolveUITypes, getTabid($module)) 
 		);
 		$fieldnames = array();
