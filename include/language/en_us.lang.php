@@ -638,7 +638,7 @@ $app_strings = array (
 //Added for values of picklist in Advanced Search filter
 //Modified for 5.0.3 GA release
 'contains'=>'contains',
-'does_not_contains'=>'does not contains',
+'does_not_contains'=>'does not contain',
 'is'=>'is',
 'is_not'=>'is not',
 'begins_with'=>'begins with',

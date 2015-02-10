@@ -102,7 +102,7 @@ var alert_arr = {
 	'NOT_EQUALS_TO':'not equal to',
 	'STARTS_WITH':'starts with',
 	'CONTAINS':'contains',
-	'DOES_NOT_CONTAINS':'does not contains',
+	'DOES_NOT_CONTAINS':'does not contain',
 	'LESS_THAN':'less than',
 	'GREATER_THAN':'greater than',
 	'LESS_OR_EQUALS':'less or equal',
