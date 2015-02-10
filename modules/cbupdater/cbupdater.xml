@@ -225,4 +225,11 @@
 	<classname>cleandatabase_610</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Update assigned_user_id field in Services to V~M, to no obtain an error in quick create </description>
+	<filename>build/changeSets/fix_assigneduserid_in_service.php</filename>
+	<classname>fix_assigneduserid_in_service</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
