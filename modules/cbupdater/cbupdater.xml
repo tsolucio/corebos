@@ -232,4 +232,11 @@
 	<classname>fix_assigneduserid_in_service</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Undo insert into vtiger_ws_referencetype which was incorrectly added</description>
+	<filename>build/changeSets/undo_wsreferencetype31insert.php</filename>
+	<classname>undo_wsreferencetype31insert</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

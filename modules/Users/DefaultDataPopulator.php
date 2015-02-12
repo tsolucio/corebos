@@ -2298,7 +2298,7 @@ Should any need arise,please do give us a call.';
 			"58" => array("Campaigns"), "73" => array("Accounts"), "75" => array("Vendors"), "76" => array("Potentials"),
 			"78" => array("Quotes"), "80" => array("SalesOrder"), "81" => array("Vendors"), "101" => array("Users"), "52" => array("Users"),
 			"357" => array("Contacts", "Accounts", "Leads", "Users", "Vendors"), "59" => array("Products"),
-			"66" => array("Leads", "Accounts", "Potentials", "HelpDesk"), "77" => array("Users"), "68" => array("Contacts", "Accounts"),
+			"66" => array("Leads", "Accounts", "Potentials", "HelpDesk", "Campaigns", "Vendors"), "77" => array("Users"), "68" => array("Contacts", "Accounts"),
 			"117" => array('Currency'), '26' => array('DocumentFolders'), '10' => array());
 
 		foreach ($referenceMapping as $uitype => $referenceArray) {

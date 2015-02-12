@@ -104,11 +104,6 @@ class cleandatabase_140 extends cbupdaterWorker {
 			$adb->getUniqueID("vtiger_modtracker_basic");
 			$this->ExecuteQuery("UPDATE vtiger_modtracker_basic_seq SET id=(select max(id) from vtiger_modtracker_basic);",array());
 
-			$wscmp = $adb->query("select * from vtiger_ws_referencetype where fieldtypeid=31 and type='Campaigns'");
-			if (!($wscmp and $adb->num_rows($wscmp)==1)) {
-				$this->ExecuteQuery('INSERT INTO vtiger_ws_referencetype VALUES (?,?)', array(31,'Campaigns'));
-			}
-			
 			/////////////////////////////////
 			//  VTIGER CRM 6.0  interesting changes
 			/////////////////////////////////
