@@ -732,7 +732,7 @@ class ConfigFile_Utils {
 		  			$buffer = str_replace( "_MASTER_CURRENCY_", $this->currencyName, $buffer);
 
 			      	/* replace the application unique key variable */
-		      		$buffer = str_replace( "_VT_APP_UNIQKEY_", md5(time() + rand(1,9999999) + md5($this->rootDirectory)) , $buffer);
+		      		$buffer = str_replace( "_VT_APP_UNIQKEY_", md5((time() + rand(1,9999999)) . $this->rootDirectory) , $buffer);
 
 					/* replace support email variable */
 					$buffer = str_replace( "_USER_SUPPORT_EMAIL_", $this->adminEmail, $buffer);
