@@ -365,7 +365,7 @@ class Vtiger_PackageExport {
 	 */
 	function export_Blocks($moduleInstance) {
 		global $adb;
-		$sqlresult = $adb->pquery("SELECT * FROM vtiger_blocks WHERE tabid = ?", Array($moduleInstance->id));
+		$sqlresult = $adb->pquery("SELECT * FROM vtiger_blocks WHERE tabid = ? ORDER BY sequence", Array($moduleInstance->id));
 		$resultrows= $adb->num_rows($sqlresult);
 
 		if(empty($resultrows)) return;
