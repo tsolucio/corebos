@@ -103,7 +103,7 @@ $mod_strings = Array(
 
 // Default home page widget's title
 'Top Accounts'=>'Cuentas Importantes',
-'Top Potentials'=>'Potenciales Importantes',
+'Top Potentials'=>'Oportunidades Importantes',
 'Top Quotes'=>'Presupuestos Importantes',
 'Top Trouble Tickets'=>'Incidencias Importantes',
 'Top Invoices'=>'Facturas Importantes',

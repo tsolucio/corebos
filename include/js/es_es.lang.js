@@ -173,7 +173,7 @@ var alert_arr = {
       'ACC_MANDATORY': 'Selecciona el campo obligatorio Nombre Cuenta',
       'PRO_MANDATORY': 'Selecciona el campo obligatorio Nombre Producto',
       'TIC_MANDATORY': 'Selecciona el campo obligatorio Título Incidencia',
-      'POTEN_MANDATORY': 'Selecciona el campo obligatorio Nombre Potencial',
+      'POTEN_MANDATORY': 'Selecciona el campo obligatorio Nombre Oportunidad',
       'VEN_MANDATORY': 'Selecciona el campo obligatorio Nombre Proveedor',
       'DEL_MANDATORY': 'No está permitido eliminar el campo obligatorio',
 
