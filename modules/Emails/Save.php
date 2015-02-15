@@ -241,5 +241,6 @@ else {
 	//Added for 4600
 	$inputs="<script>window.opener.location.href=window.opener.location.href;window.self.close();</script>";
 	echo $inputs;
+	die(); // to avoid unnecessay output to closing screen
 }
 ?>

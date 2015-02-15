@@ -79,11 +79,7 @@ class EmailTemplate {
 			}
 			$tableList = array_keys($tableList);
 			$defaultTableList = $meta->getEntityDefaultTableList();
-			foreach ($defaultTableList as $defaultTable) {
-				if(!in_array($defaultTable,$tableList)){
-					$tableList[] = $defaultTable;
-				}
-			}
+			$tableList = array_merge($tableList,$defaultTableList);
 
 			// right now this is will be limited to module type, entities.
 			// need to extend it to non-module entities when we have a reliable way of getting
@@ -103,7 +99,7 @@ class EmailTemplate {
 				$sql .= ' WHERE';
 				$deleteQuery = $meta->getEntityDeletedQuery();
 				if(!empty($deleteQuery)){
-					$sql .= ' '.$meta->getEntityDeletedQuery().' AND';
+					$sql .= " $deleteQuery AND";
 				}
 				$sql .= ' '.$tableList[0].'.'.$moduleTableIndexList[$tableList[0]].'=?';
 				$params = array($this->recordId);
@@ -156,8 +152,7 @@ class EmailTemplate {
 				}
 				foreach ($columnList as $column) {
 					$needle = '$'.strtolower($this->module)."-$column$";
-					$this->processedDescription = str_replace($needle,
-						$values[$column],$this->processedDescription);
+					$this->processedDescription = str_replace($needle,$values[$column],$this->processedDescription);
 				}
 			}
 		}
