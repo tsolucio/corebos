@@ -15,13 +15,13 @@ if (typeof(ModCommentsCommon) == 'undefined') {
 			if (textBoxField.value == '') {
 				return;
 			}
-			
+
 			var url = 'module=ModComments&action=ModCommentsAjax&file=DetailViewAjax&ajax=true&ajxaction=WIDGETADDCOMMENT&parentid='+encodeURIComponent(parentid);
 			url += '&comment=' + encodeURIComponent(textBoxField.value);
 			
 			VtigerJS_DialogBox.block();
 			$("vtbusy_info").style.display="inline"; 
-			 
+
 			new Ajax.Request('index.php',{
 				queue: {position: 'end', scope: 'command'},
 				method: 'post',
@@ -42,7 +42,7 @@ if (typeof(ModCommentsCommon) == 'undefined') {
 		},
 		reloadContentWithFiltering : function(widget, parentid, criteria, targetdomid, indicator) {
 			if($(indicator)) $(indicator).style.display="inline";
-			
+
 			var url = 'module=ModComments&action=ModCommentsAjax&file=ModCommentsWidgetHandler&ajax=true';
 			url += '&widget=' + encodeURIComponent(widget) + '&parentid='+encodeURIComponent(parentid);
 			url += '&criteria='+ encodeURIComponent(criteria);
@@ -58,6 +58,6 @@ if (typeof(ModCommentsCommon) == 'undefined') {
 				}}
 			);
 		}
-	}
+	};
 }
 
