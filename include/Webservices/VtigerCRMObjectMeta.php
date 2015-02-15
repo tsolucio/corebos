@@ -41,10 +41,13 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		$this->baseTable = $instance->table_name;
 		$this->tableList = $instance->tab_name;
 		$this->tableIndexList = $instance->tab_name_index;
+		$this->defaultTableList = array();
 		if(in_array('vtiger_crmentity',$instance->tab_name)){
-			$this->defaultTableList = array('vtiger_crmentity');
-		}else{
-			$this->defaultTableList = array();
+			$this->defaultTableList[] = 'vtiger_crmentity';
+		}
+		if(in_array('vtiger_leaddetails',$instance->tab_name)){
+			// we need this one because the where condition for Leads uses the converted column from the main table
+			$this->defaultTableList[] = 'vtiger_leaddetails';
 		}
 		$this->tabId = null;
 	}
