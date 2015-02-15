@@ -76,7 +76,7 @@ class ModComments_DetailViewBlockCommentWidget {
 				case 'Last5': $queryCriteria =  sprintf(" ORDER BY %s.%s DESC LIMIT 5", $entityInstance->table_name, $entityInstance->table_index) ;break;
 				case 'Mine': $queryCriteria = ' AND vtiger_crmentity.smownerid=' . $current_user->id.sprintf(" ORDER BY %s.%s DESC ", $entityInstance->table_name, $entityInstance->table_index); break;
 			}
-			
+			list($void,$queryCriteria) = cbEventHandler::do_filter('corebos.filter.ModComments.queryCriteria', array($parentRecordId, $queryCriteria));
 			$query = $entityInstance->getListQuery($moduleName, sprintf(" AND %s.related_to=?", $entityInstance->table_name));
 			$query .= $queryCriteria;
 			$result = $adb->pquery($query, array($parentRecordId));
@@ -105,7 +105,8 @@ class ModComments_DetailViewBlockCommentWidget {
 		$viewer = $this->getViewer();
 		$viewer->assign('ID', $sourceRecordId);
 		$viewer->assign('CRITERIA', $usecriteria);
-		
+		list($void,$canaddcomments) = cbEventHandler::do_filter('corebos.filter.ModComments.canAdd', array($sourceRecordId, true));
+		$viewer->assign('CANADDCOMMENTS', ($canaddcomments ? 'YES' : 'NO'));
 		$viewer->assign('COMMENTS', $this->getModels($sourceRecordId, $usecriteria) );
 		
 		return $viewer->fetch(vtlib_getModuleTemplate("ModComments","widgets/DetailViewBlockComment.tpl"));

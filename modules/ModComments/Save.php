@@ -14,6 +14,8 @@ require_once("modules/$currentModule/$currentModule.php");
 
 $focus = new $currentModule();
 setObjectValuesFromRequest($focus);
+list($void,$canaddcomments) = cbEventHandler::do_filter('corebos.filter.ModComments.canAdd', array(vtlib_purify($_REQUEST['related_to']), true));
+if ($canaddcomments) {
 
 $mode = $_REQUEST['mode'];
 $record=$_REQUEST['record'];
@@ -49,5 +51,14 @@ if($_REQUEST['return_id'] != '') {
 }
 
 header("Location: index.php?action=$return_action&module=$return_module&record=$return_id&parenttab=$parenttab&start=".vtlib_purify($_REQUEST['pagenumber']).$search);
-
+} else {
+	global $mod_strings, $app_strings, $theme;
+	require_once('Smarty_setup.php');
+	$smarty = new vtigerCRM_Smarty;
+	$smarty->assign("MOD",$mod_strings);
+	$smarty->assign("APP",$app_strings);
+	$smarty->assign("THEME", "$theme");
+	$smarty->assign("IMAGE_PATH", "themes/$theme/images/");
+	$smarty->display(vtlib_getModuleTemplate('Vtiger','OperationNotPermitted.tpl'));
+}
 ?>

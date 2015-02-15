@@ -14,7 +14,8 @@ $ajaxaction = $_REQUEST["ajxaction"];
 
 if($ajaxaction == 'WIDGETADDCOMMENT') {
 	global $current_user;
-	if (isPermitted($currentModule, 'EditView', '') == 'yes') {
+	list($void,$canaddcomments) = cbEventHandler::do_filter('corebos.filter.ModComments.canAdd', array(vtlib_purify($_REQUEST['parentid']), true));
+	if (isPermitted($currentModule, 'EditView', '') == 'yes' and $canaddcomments) {
 		$modObj->column_fields['commentcontent'] = vtlib_purify($_REQUEST['comment']);
 		$modObj->column_fields['related_to'] = vtlib_purify($_REQUEST['parentid']);
 		$modObj->column_fields['assigned_user_id'] = $current_user->id;

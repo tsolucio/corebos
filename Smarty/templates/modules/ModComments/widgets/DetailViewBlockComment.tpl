@@ -41,7 +41,7 @@
 		</div>
 		</td>
 	</tr>
-
+	{if $CANADDCOMMENTS eq 'YES'}
 	<tr style="height: 25px;" class='noprint'>
 	<td class="dvtCellLabel" align="right">
 		{$MOD.LBL_ADD_COMMENT}
@@ -54,6 +54,6 @@
 		</div>
 	</td>
 	</tr>
-
+	{/if}
 	</table>
 </div>
