@@ -89,6 +89,16 @@ class coreBOSEventsExample extends VTEventHandler {
 			case 'corebos.filter.link.show':
 				$parameter = !($parameter[1][1]=='DETAILVIEW');  // hide all DETAILVIEW links
 				break;
+			case 'corebos.filter.ModComments.canAdd':
+				if ($parameter[0]==2) {
+					$parameter[1]=false;  // crmid==2 cannot add comments
+				}
+				break;
+			case 'corebos.filter.ModComments.queryCriteria':
+				if ($parameter[0]==2) {
+					$parameter[1]=' AND vtiger_crmentity.smownerid!=1';  // crmid==2 cannot see comments from admin 1
+				}
+				break;
 		}
 		return $parameter;
 	}
