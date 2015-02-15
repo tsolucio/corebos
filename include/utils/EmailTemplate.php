@@ -80,6 +80,12 @@ class EmailTemplate {
 			$tableList = array_keys($tableList);
 			$defaultTableList = $meta->getEntityDefaultTableList();
 			$tableList = array_merge($tableList,$defaultTableList);
+			$leadtables = array('vtiger_leadsubdetails','vtiger_leadaddress','vtiger_leadscf');
+			$leadmerge = array_intersect($tableList,$leadtables);
+			if (count($leadmerge)>0 and !in_array('vtiger_leaddetails', $tableList)) {
+				// we need this one because the where condition for Leads uses the converted column from the main table
+				$tableList[] = 'vtiger_leaddetails';
+			}
 
 			// right now this is will be limited to module type, entities.
 			// need to extend it to non-module entities when we have a reliable way of getting
