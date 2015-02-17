@@ -608,9 +608,8 @@
 </group>
 </groups>
 </customview>
-
 <customview>
-<viewname>blocked</viewname>
+<viewname>Blocked</viewname>
 <setdefault>false</setdefault>
 <setmetrics>false</setmetrics>
 <fields>
@@ -662,7 +661,7 @@
 </groups>
 </customview>
 <customview>
-<viewname>perspective</viewname>
+<viewname>Perspective</viewname>
 <setdefault>false</setdefault>
 <setmetrics>false</setmetrics>
 <fields>

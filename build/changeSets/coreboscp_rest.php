@@ -36,15 +36,9 @@ class coreboscp_rest extends cbupdaterWorker {
 				}
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			//$this->markApplied();  // => Continuous
+			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
-	
-	function undoChange() {
-		if ($this->hasError()) $this->sendError();
-		$this->sendMsg('Changeset '.get_class($this).' is a system update, it cannot be undone!');
-		$this->finishExecution();
-	}
-	
+
 }

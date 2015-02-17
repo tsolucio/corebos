@@ -144,10 +144,14 @@ class cbupdaterWorker {
 	}
 	
 	function markApplied($stoponerror=true) {
-		if ($this->isBlocked() or $this->isContinuous()) return true;
+		if ($this->isBlocked()) return true;
 		if ($this->hasError() and $stoponerror) $this->sendError();
 		global $adb,$log;
-		$adb->pquery('update vtiger_cbupdater set execstate=?,execdate=CURDATE() where cbupdaterid=?', array('Executed',$this->cbupdid));
+		if ($this->isContinuous()) {
+			$adb->pquery('update vtiger_cbupdater set execdate=CURDATE() where cbupdaterid=?', array($this->cbupdid));
+		} else {
+			$adb->pquery('update vtiger_cbupdater set execstate=?,execdate=CURDATE() where cbupdaterid=?', array('Executed',$this->cbupdid));
+		}
 		$this->execstate = 'Executed';
 	}
 	
@@ -169,7 +173,7 @@ class cbupdaterWorker {
 		<tr width="100%">
 		<td width="10%">'.get_class($status).'</td>
 		<td width="10%"><span style="color:green"> S </span></td>
-		<td width="80%">'.$query.'</td>
+		<td width="80%">'.$query.(count($params)>0?'&nbsp;&nbsp;'.print_r($params,true):'').'</td>
 		</tr>';
 			$success_query_array[$this->success_query_count++] = $query;
 			$log->debug("Query Success ==> $query");
