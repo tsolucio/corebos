@@ -628,14 +628,12 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$image_id = $adb->query_result($image_res, 0, 'attachmentsid');
 			$image_path = $adb->query_result($image_res, 0, 'path');
 
-
 			//decode_html  - added to handle UTF-8   characters in file names
 			//urlencode    - added to handle special characters like #, %, etc.,
 			$image_name = urlencode(decode_html($adb->query_result($image_res, 0, 'name')));
-
 			$imgpath = $image_path . $image_id . "_" . $image_name;
 			if ($image_name != '')
-				$label_fld[] = '<img src="' . $imgpath . '" alt="' . $mod_strings['Contact Image'] . '" title= "' . $mod_strings['Contact Image'] . '">';
+				$label_fld[] = '<img src="' . $imgpath . '" alt="' . $mod_strings['Contact Image'] . '" title= "' . $mod_strings['Contact Image'] . '" style="max-width: 500px;">';
 			else
 				$label_fld[] = '';
 		}
