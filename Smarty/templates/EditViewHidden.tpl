@@ -28,7 +28,7 @@
 	<input type="hidden" name="opportunity_id" value="{$OPPORTUNITY_ID}">
 	<input type="hidden" name="contact_role">
 	<input type="hidden" name="case_id" value="{$CASE_ID}">
-	<INPUT TYPE="HIDDEN" NAME="MAX_FILE_SIZE" VALUE="800000">
+	<INPUT TYPE="HIDDEN" NAME="MAX_FILE_SIZE" VALUE="{$UPLOAD_MAXSIZE}">
 	<input type="hidden" name="campaignid" value="{$campaignid}">
 
 {elseif $MODULE eq 'Potentials'}
@@ -78,7 +78,7 @@
 	{$ERROR_MESSAGE}
 	<form name="EditView" method="POST" ENCTYPE="multipart/form-data" action="index.php" onsubmit="VtigerJS_DialogBox.block();">
 	<input type="hidden" name="activity_mode" value="{$ACTIVITY_MODE}">
-	<INPUT TYPE="HIDDEN" NAME="MAX_FILE_SIZE" VALUE="800000">
+	<INPUT TYPE="HIDDEN" NAME="MAX_FILE_SIZE" VALUE="{$UPLOAD_MAXSIZE}">
 {else}
 	{$ERROR_MESSAGE}
 	<form name="EditView" method="POST" action="index.php" onsubmit="VtigerJS_DialogBox.block();">

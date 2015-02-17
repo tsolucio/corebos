@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-global $app_strings, $mod_strings, $current_language, $currentModule, $theme;
+global $app_strings, $mod_strings, $current_language, $currentModule, $theme, $upload_maxsize;
 
 require_once('Smarty_setup.php');
 require_once('include/FormValidationUtil.php');
@@ -40,7 +40,8 @@ if($record) {
 } else {
 	$product_base_currency = fetchCurrency($current_user->id);
 }
-
+$smarty->assign("UPLOADSIZE", $upload_maxsize/1000000); //Convert to MB
+$smarty->assign("UPLOAD_MAXSIZE",$upload_maxsize);
 if($image_error=="true")
 {
 	$explode_decode_val=explode("&",$decode_val);

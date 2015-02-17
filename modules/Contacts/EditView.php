@@ -25,7 +25,7 @@ require_once('data/Tracker.php');
 require_once('include/CustomFieldUtil.php');
 require_once('include/utils/utils.php');
 
-global $log, $mod_strings, $app_strings, $theme, $currentModule, $current_user;
+global $log, $mod_strings, $app_strings, $theme, $currentModule, $current_user, $upload_maxsize;
 
 //added for contact image
 $encode_val = vtlib_purify($_REQUEST['encode_val']);
@@ -52,7 +52,8 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
 	$focus->firstname = $focus->column_fields['firstname'];
 	$focus->lastname = $focus->column_fields['lastname'];
 }
-
+$smarty->assign("UPLOADSIZE", $upload_maxsize/1000000); //Convert to MB
+$smarty->assign("UPLOAD_MAXSIZE",$upload_maxsize);
 if ($image_error == "true") {
 	$explode_decode_val = explode("&", $decode_val);
 	for ($i = 1; $i < count($explode_decode_val); $i++) {
