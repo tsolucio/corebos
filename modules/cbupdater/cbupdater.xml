@@ -239,4 +239,11 @@
 	<classname>undo_wsreferencetype31insert</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Put refrestoken in calendar4you google access table to null</description>
+	<filename>build/changeSets/fixRefresTokenInC4Y.php</filename>
+	<classname>fixRefresTokenInC4Y</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
