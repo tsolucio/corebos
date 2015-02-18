@@ -12,7 +12,9 @@
 <html>
 <head>
 <meta http-equiv="Content-Type" content="text/html; charset={$LBL_CHARSET}">
+<meta http-equiv="X-FRAME-OPTIONS" content="DENY" />
 <title>{$APP.LBL_BROWSER_TITLE}</title>
+<link REL="SHORTCUT ICON" HREF="themes/images/favicon.ico">
 <style type="text/css">@import url("include/style.css");</style>
 <script type="text/javascript" language="JavaScript">
 function set_focus() {ldelim}
