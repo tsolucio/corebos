@@ -1,1 +1,12 @@
 Options -Indexes
+
+<FilesMatch "\.(gif|jpe?g|png)$">
+Allow from all
+Satisfy Any
+</FilesMatch>
+
+<FilesMatch "^(sync|Pay|processSendNotification|capture|webservice)\.php$">
+Allow from all
+Satisfy Any
+</FilesMatch>
+
