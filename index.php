@@ -96,8 +96,8 @@ insert_charset_header();
 session_start();
 $_SESSION['KCFINDER'] = array();
 $_SESSION['KCFINDER']['disabled'] = false;
-$_SESSION['KCFINDER']['uploadURL'] = "test/upload";
-$_SESSION['KCFINDER']['uploadDir'] = "../test/upload";
+$_SESSION['KCFINDER']['uploadURL'] = 'storage/kcimages';
+$_SESSION['KCFINDER']['uploadDir'] = '../storage/kcimages';
 
 if (!is_file('config.inc.php')) {
 	header("Location: install.php");
