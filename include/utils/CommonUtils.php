@@ -116,7 +116,7 @@ function get_options_array_seperate_key(&$label_list, &$key_list, $selected_key,
 	foreach ($key_list as $option_key => $option_value) {
 		$selected_string = '';
 		// the system is evaluating $selected_key == 0 || '' to true.  Be very careful when changing this.  Test all cases.
-		// The vtiger_reported bug was only happening with one of the vtiger_users in the drop down.  It was being replaced by none.
+		// The reported bug was only happening with one of the users in the drop down.  It was being replaced by none.
 		if (($option_key != '' && $selected_key == $option_key) || ($selected_key == '' && $option_key == '') || (in_array($option_key, $selected_key))) {
 			$selected_string = 'selected';
 		}
