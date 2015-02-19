@@ -78,6 +78,39 @@ for($i=0; $i<$numRows; $i++) {
 	if (!in_array('sortorderid', $cninv)) continue;
 	ExecuteQuery('ALTER TABLE vtiger_'.$fieldName.' DROP sortorderid');
 }
+//Convert picklist custom fields from vtiger 6 with uitype 16 to uitype 15 for to be possible to edit.
+$result = $adb->pquery("SELECT * FROM vtiger_field WHERE uitype = '16' AND columnname LIKE 'cf_%'",array());
+
+while ($row = $adb->getNextRow($result,false)) {
+	
+	$fieldname = $row['fieldname'];
+	//Convert to uitype 15
+	$adb->pquery("UPDATE vtiger_field SET uitype = 15 WHERE fieldname = ?",array($fieldname));
+	
+	$table_name = 'vtiger_'.$fieldname;
+	$adb->query("ALTER TABLE ".$table_name." DROP sortorderid");
+	$adb->query("ALTER TABLE ".$table_name." ADD picklist_valueid INT( 19 ) NOT NULL DEFAULT '0' AFTER presence");
+	$res_picklist = $adb->pquery("SELECT * FROM ".$table_name,array());
+	
+	$new_picklistid = $adb->getUniqueID('vtiger_picklist');
+	$adb->pquery("INSERT INTO vtiger_picklist (picklistid,name) VALUES(?,?)",Array($new_picklistid, $fieldname));
+	
+	// Add value to picklist now
+	$sortid = 0;
+	while ($row_picklist = $adb->getNextRow($res_picklist,false)) {
+		
+		$value = $row_picklist[$fieldname];
+		$new_picklistvalueid = $adb->getUniqueID('vtiger_picklistvalues');
+		$adb->pquery("UPDATE ".$table_name." SET picklist_valueid = ? WHERE ".$fieldname." = ?", array($new_picklistvalueid,$value));
+		
+		++$sortid;
+
+		// Associate picklist values to all the role
+		$adb->pquery("INSERT INTO vtiger_role2picklist(roleid, picklistvalueid, picklistid, sortid) SELECT roleid,
+			$new_picklistvalueid, $new_picklistid, $sortid FROM vtiger_role", array());
+	}
+	
+}
 
 $modname = 'Users';
 $module = Vtiger_Module::getInstance($modname);
