@@ -55,7 +55,7 @@ class GlobalVariable extends CRMEntity {
 		/* Format: Field Label => Array(tablename, columnname) */
 		// tablename should not have prefix 'vtiger_'
 		'Globalno'=> Array('globalvariable', 'globalno'),
-		'Name'=> Array('globalvariable', 'name'),
+		'Name'=> Array('globalvariable', 'gvname'),
 		'Value'=>Array('globalvariable','value'),
 		'Assigned To' => Array('crmentity','smownerid'),
 		'Default'=>Array('globalvariable','default_check'),
@@ -64,7 +64,7 @@ class GlobalVariable extends CRMEntity {
 	var $list_fields_name = Array(
 		/* Format: Field Label => fieldname */
 		'Globalno'=> 'globalno',
-		'Name'=> 'name',
+		'Name'=> 'gvname',
 		'Value'=>'value',
 		'Assigned To' => 'assigned_user_id',
 		'Default'=>'default_check',
@@ -79,7 +79,7 @@ class GlobalVariable extends CRMEntity {
 		/* Format: Field Label => Array(tablename, columnname) */
 		// tablename should not have prefix 'vtiger_'
 		'Globalno'=> Array('globalvariable', 'globalno'),
-		'Name'=> Array('globalvariable', 'name'),
+		'Name'=> Array('globalvariable', 'gvname'),
 		'Value'=>Array('globalvariable','value'),
 		'Assigned To' => Array('crmentity','smownerid'),
 		'Default'=>Array('globalvariable','default_check'),
@@ -88,7 +88,7 @@ class GlobalVariable extends CRMEntity {
 	var $search_fields_name = Array(
 		/* Format: Field Label => fieldname */
 		'Globalno'=> 'globalno',
-		'Name'=> 'name',
+		'Name'=> 'gvname',
 		'Value'=>'value',
 		'Assigned To' => 'assigned_user_id',
 		'Default'=>'default_check',
@@ -117,7 +117,7 @@ class GlobalVariable extends CRMEntity {
 	var $default_sort_order='ASC';
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
-	var $mandatory_fields = Array('createdtime', 'modifiedtime', 'name');
+	var $mandatory_fields = Array('createdtime', 'modifiedtime', 'gvname');
 	
 	function __construct() {
 		global $log, $currentModule;
@@ -452,7 +452,7 @@ class GlobalVariable extends CRMEntity {
 	function vtlib_handler($modulename, $event_type) {
 		if($event_type == 'module.postinstall') {
 			// TODO Handle post installation actions
-			$this->setModuleSeqNumber('configure', $modulename, 'global-', '0000001');
+			$this->setModuleSeqNumber('configure', $modulename, 'glb-', '0000001');
 		} else if($event_type == 'module.disabled') {
 			// TODO Handle actions when this module is disabled.
 		} else if($event_type == 'module.enabled') {

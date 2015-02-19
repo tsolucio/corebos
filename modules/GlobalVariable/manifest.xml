@@ -34,7 +34,7 @@
 <name>vtiger_globalvariable</name>
 <sql><![CDATA[CREATE TABLE `vtiger_globalvariable` (
   `globalvariableid` int(11) default NULL,
-  `name` varchar(150) NOT NULL, 
+  `gvname` varchar(150) NOT NULL, 
   `globalno` varchar(150),
   `default_check` varchar(3),
   `value` varchar(250),
@@ -43,7 +43,10 @@
   `module_list` text,
   `category` varchar(150),
   `in_module_list` varchar(3),
-  PRIMARY KEY  (`globalvariableid`)
+  PRIMARY KEY  (`globalvariableid`),
+  KEY (`gvname`),
+  KEY (`gvname`,`mandatory`),
+  KEY (`gvname`,`default_check`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]>
 </sql>
 </table>
@@ -60,9 +63,9 @@
 <label>LBL_GLOBAL_VARIABLE_INFORMATION</label>
 <fields>
 <field>
-<fieldname>name</fieldname>
+<fieldname>gvname</fieldname>
 <uitype>15</uitype>
-<columnname>name</columnname>
+<columnname>gvname</columnname>
 <tablename>vtiger_globalvariable</tablename>
 <generatedtype>1</generatedtype>
 <fieldlabel>Name</fieldlabel>
@@ -378,7 +381,7 @@
 <columnindex>0</columnindex>
 </field>
 <field>
-<fieldname>name</fieldname>
+<fieldname>gvname</fieldname>
 <columnindex>1</columnindex>
 </field>
 <field>
