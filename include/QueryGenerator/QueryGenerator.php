@@ -650,8 +650,7 @@ class QueryGenerator {
 					return $sql;
 				}
 			} elseif($field->getFieldDataType()=='picklist' || $field->getFieldDataType()=='multipicklist') {
-				global $currentModule;
-				$value = getTranslationKeyFromTranslatedValue($currentModule, $value);
+				$value = getTranslationKeyFromTranslatedValue($this->module, $value);
 			}
 
 			if($field->getFieldName() == 'birthday' && !$this->isRelativeSearchOperators(

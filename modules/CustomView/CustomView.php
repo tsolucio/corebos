@@ -901,9 +901,9 @@ class CustomView extends CRMEntity {
 				$criteria['comparator'] = $relcriteriarow["comparator"];
 				$advfilterval = html_entity_decode($relcriteriarow["value"], ENT_QUOTES, $default_charset);
 				$col = explode(":", $relcriteriarow["columnname"]);
-				$uitype_value = getUItypeByFieldName($currentModule, $col[2]);
+				$uitype_value = getUItypeByFieldName($this->customviewmodule, $col[2]);
 				if($uitype_value == '15' || $uitype_value == '16' || $uitype_value == '33') {
-					$advfilterval = getTranslationKeyFromTranslatedValue($currentModule, $advfilterval);
+					$advfilterval = getTranslationKeyFromTranslatedValue($this->customviewmodule, $advfilterval);
 				}
 				$temp_val = explode(",", $relcriteriarow["value"]);
 				if ($col[4] == 'D' || ($col[4] == 'T' && $col[1] != 'time_start' && $col[1] != 'time_end') || ($col[4] == 'DT')) {
