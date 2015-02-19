@@ -129,18 +129,18 @@ elseif(!empty($_REQUEST['invmodid']))
 // INTERNAL MAILER
 if($_REQUEST["internal_mailer"] == "true") {
 	$smarty->assign('INT_MAILER',"true");
-	$rec_type = $_REQUEST["type"];
-	$rec_id = $_REQUEST["rec_id"];
-	$fieldname = $_REQUEST["fieldname"];
-	
+	$rec_type = vtlib_purify($_REQUEST['type']);
+	$rec_id = vtlib_purify($_REQUEST['rec_id']);
+	$fieldname = vtlib_purify($_REQUEST['fieldname']);
+
 	//added for getting list-ids to compose email popup from list view(Accounts,Contacts,Leads)
 	if(isset($_REQUEST['field_id']) && strlen($_REQUEST['field_id']) != 0) {
-	     if($_REQUEST['par_module'] == "Users")
-		$id_list = $_REQUEST['rec_id'].'@'.'-1|';
-	     else
-                $id_list = $_REQUEST['rec_id'].'@'.$_REQUEST['field_id'].'|';
-             $smarty->assign("IDLISTS", $id_list);
-        }
+		if($_REQUEST['par_module'] == "Users")
+			$id_list = $rec_id.'@'.'-1|';
+		else
+			$id_list = $rec_id.'@'.vtlib_purify($_REQUEST['field_id']).'|';
+			$smarty->assign("IDLISTS", $id_list);
+		}
 	if($rec_type == "record_id") {
 		$type = vtlib_purify($_REQUEST['par_module']);
 		//check added for email link in user detail view
