@@ -64,7 +64,7 @@ function gv_getGVVarNames() {
 	font-size: medium;
 }
 </style>
-<table width="100%" border="0" cellspacing="0" cellpadding="0" class="small">
+<table width="98%" align="center" border="0" cellspacing="0" cellpadding="0" class="small">
 <tbody><tr><td style="height:2px"></td></tr>
 <tr>
 	<td nowrap="" class="moduleName" style="padding-left:36px;padding-right:50px;height:32px;background: url(modules/GlobalVariable/GlobalVariable.png) left center no-repeat;"><?php echo getTranslatedString('GlobalVariable','GlobalVariable').'&nbsp;-&nbsp;'.getTranslatedString('Test','GlobalVariable');?></td>
