@@ -27,6 +27,8 @@ $mod_strings = Array(
 	'Category' => 'Category',
 	'In Module List' => 'In Module List',
 	'Globalno' => 'Global No',
+	'Test' => 'Test',
+	'Search Value' => 'Search Value',
 
 	'calendar_display'=>'Calendar display',
 	'world_clock_display'=>'World clock display',

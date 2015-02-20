@@ -466,23 +466,36 @@ class GlobalVariable extends CRMEntity {
 		}
 	}
 
-	function return_global_var_value($sql,$var){
-		global $log,$adb,$currentModule;
+	function return_global_var_value($sql,$var,$module){
+		global $log,$adb,$gvvalidationinfo;
 		$list_of_modules=array();
+		$list_of_modules['Default'] = '';
 		$query=$adb->pquery($sql,array($var));
+		$gvvalidationinfo[] = 'candidate variable records found: '.$adb->num_rows($query);
 		for ($i=0;$i<$adb->num_rows($query);$i++) {
+			$gvvalidationinfo[] = 'evaluate candidate <a href="index.php?action=DetailView&record='.$adb->query_result($query,$i,'globalvariableid').'&module=GlobalVariable">'.$adb->query_result($query,$i,'globalno').'</a>';
 			if ($adb->query_result($query,$i,'module_list')=='') {
 				$list_of_modules['Default']=$adb->query_result($query,$i,'value');
 			} else {
+				$in_module_list=$adb->query_result($query,$i,'in_module_list');
 				$modules_list=explode(',',$adb->query_result($query,$i,'module_list'));
-				for($j=0;$j<sizeof($modules_list);$j++) {
-					$list_of_modules[$modules_list[$j]]=$adb->query_result($query,$i,'value');
+				if ($in_module_list==1) {
+					for($j=0;$j<sizeof($modules_list);$j++) {
+						$list_of_modules[$modules_list[$j]]=$adb->query_result($query,$i,'value');
+					}
+				} else {
+					$all_modules=vtws_getModuleNameList();
+					$other_modules=array_diff($all_modules,$modules_list);
+					for($l=0;$l<sizeof($other_modules);$l++){
+						$list_of_modules[$other_modules[$l]]=$adb->query_result($query,$i,'value');
+					}
 				}
 			}
 		}
+		$gvvalidationinfo[] = "candidate list of modules to look for $module: ".print_r($list_of_modules,true);
 		if (sizeof($list_of_modules)>0) {
-			if (array_key_exists($currentModule,$list_of_modules)) {
-				return $list_of_modules[$currentModule];
+			if (array_key_exists($module,$list_of_modules)) {
+				return $list_of_modules[$module];
 			} else {
 				return $list_of_modules['Default'];
 			}
@@ -505,48 +518,50 @@ class GlobalVariable extends CRMEntity {
 	 *   - $var + default=true
 	 *   - return $default
 	 */
-	static function getVariable($var,$default) {
-		global $adb,$current_user;
+	public static function getVariable($var,$default, $module='', $gvuserid='') {
+		global $adb,$current_user, $gvvalidationinfo, $currentModule;
+		$gvvalidationinfo[] = "search for variable '$var' with default value of '$default'";
 		$value='';
 		$list_of_modules=array();
+		if (empty($module)) $module = $currentModule;
+		if (empty($gvuserid)) $gvuserid = $current_user->id;
 		$focus = CRMEntity::getInstance('GlobalVariable');
 		$select = 'SELECT *
 		 FROM vtiger_globalvariable
 		 INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_globalvariable.globalvariableid ';
-		$where = ' where vtiger_crmentity.deleted=0 and name=? ';
+		$where = ' where vtiger_crmentity.deleted=0 and gvname=? ';
 
 		$mandatory=" and mandatory='1'";
 		$sql=$select.$where.$mandatory;
-		$value=$focus->return_global_var_value($sql,$var);
+		$value=$focus->return_global_var_value($sql,$var,$module);
+		$gvvalidationinfo[] = "search as mandatory in module $module: $value";
 		if ($value!='')
 			return $value;
 
-		$select_user= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid ";
-		$user = " and id=".$current_user->id;
-		$sql=$select.$select_user.$where.$user;
-
-		$value=$focus->return_global_var_value($sql,$var);
+		$user = " and vtiger_crmentity.smownerid=$gvuserid";
+		$sql=$select.$where.$user;
+		$value=$focus->return_global_var_value($sql,$var,$module);
+		$gvvalidationinfo[] = "search as set per user $gvuserid in module $module: $value";
 		if ($value!='')
 			return $value;
 
 		require_once('include/utils/GetUserGroups.php');
 		$UserGroups = new GetUserGroups();
-		$UserGroups->getAllUserGroups($current_user->id);
+		$UserGroups->getAllUserGroups($gvuserid);
 		$groups=implode(',',$UserGroups->user_groups);
-
-		$select_group= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid ";
-		$group=' and groupid in ('.$groups.') ';
-		$sql=$select.$select_group.$where.$group;
-
-		$value=$focus->return_global_var_value($sql,$var);
+		$group=' and vtiger_crmentity.smownerid in ('.$groups.') ';
+		$sql=$select.$where.$group;
+		$value=$focus->return_global_var_value($sql,$var,$module);
+		$gvvalidationinfo[] = "search as set per group $groups in module $module: $value";
 		if ($value!='')
 			return $value;
 
 		$sql=$select.$where." and default_check='1'";
-		$value=$focus->return_global_var_value($sql,$var);
+		$value=$focus->return_global_var_value($sql,$var,$module);
+		$gvvalidationinfo[] = "search as default variable in module $module: $value";
 		if ($value!='')
 			return $value;
-
+		$gvvalidationinfo[] = "return default value give: $default";
 		return $default;
 	}
 
