@@ -533,6 +533,7 @@ class GlobalVariable extends CRMEntity {
 
 		$mandatory=" and mandatory='1'";
 		$sql=$select.$where.$mandatory;
+		$gvvalidationinfo[] = '---';
 		$value=$focus->return_global_var_value($sql,$var,$module);
 		$gvvalidationinfo[] = "search as mandatory in module $module: $value";
 		if ($value!='')
@@ -540,6 +541,7 @@ class GlobalVariable extends CRMEntity {
 
 		$user = " and vtiger_crmentity.smownerid=$gvuserid";
 		$sql=$select.$where.$user;
+		$gvvalidationinfo[] = '---';
 		$value=$focus->return_global_var_value($sql,$var,$module);
 		$gvvalidationinfo[] = "search as set per user $gvuserid in module $module: $value";
 		if ($value!='')
@@ -551,16 +553,19 @@ class GlobalVariable extends CRMEntity {
 		$groups=implode(',',$UserGroups->user_groups);
 		$group=' and vtiger_crmentity.smownerid in ('.$groups.') ';
 		$sql=$select.$where.$group;
+		$gvvalidationinfo[] = '---';
 		$value=$focus->return_global_var_value($sql,$var,$module);
 		$gvvalidationinfo[] = "search as set per group $groups in module $module: $value";
 		if ($value!='')
 			return $value;
 
 		$sql=$select.$where." and default_check='1'";
+		$gvvalidationinfo[] = '---';
 		$value=$focus->return_global_var_value($sql,$var,$module);
 		$gvvalidationinfo[] = "search as default variable in module $module: $value";
 		if ($value!='')
 			return $value;
+		$gvvalidationinfo[] = '---';
 		$gvvalidationinfo[] = "return default value give: $default";
 		return $default;
 	}

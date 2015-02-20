@@ -27,7 +27,7 @@ function gv_getGVVarNames() {
 			$options[$pickListValue] = getTranslatedString($pickListValue,'GlobalVariable');
 		}
 	}
-	arsort($options);
+	asort($options);
 	$options = get_select_options_with_id(&$options, '--none--');
 	return $options;
 }
