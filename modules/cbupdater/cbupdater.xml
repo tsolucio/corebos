@@ -246,4 +246,11 @@
 	<classname>fixRefresTokenInC4Y</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Install Globals Variable module</description>
+	<filename>build/changeSets/installglobalvars.php</filename>
+	<classname>installglobalvars</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
