@@ -1308,13 +1308,8 @@ function getParentTab() {
 		if (array_key_exists($_REQUEST['module'], $parenttab_cache)) {
 			return $parenttab_cache[$_REQUEST['module']];
 		}
-		if (checkParentTabExists($_REQUEST['parenttab'])) {
-			$return = vtlib_purify($_REQUEST['parenttab']);
-			$parenttab_cache[$_REQUEST['parenttab']] =  $return;
-		} else {
-			$return = getParentTabFromModule($_REQUEST['module']);
-			$parenttab_cache[$_REQUEST['module']] = $return;
-		}
+		$return = getParentTabFromModule($_REQUEST['module']);
+		$parenttab_cache[$_REQUEST['module']] = $return;
 	} else {
 		$log->debug("Exiting getParentTab method ...");
 		if (array_key_exists($_REQUEST['module'], $parenttab_cache)) {
@@ -1324,26 +1319,6 @@ function getParentTab() {
 		$parenttab_cache[$_REQUEST['module']] = $return;
 	}
 	return $return;
-}
-
-function checkParentTabExists($parenttab) {
-	global $adb;
-
-	if (file_exists('parent_tabdata.php') && (filesize('parent_tabdata.php') != 0)) {
-		include('parent_tabdata.php');
-		if (in_array($parenttab, $parent_tab_info_array))
-			return true;
-		else
-			return false;
-	} else {
-
-		$result = "select 1 from vtiger_parenttab where parenttab_label = ?";
-		$noofrows = $adb->num_rows($result);
-		if ($noofrows > 0)
-			return true;
-		else
-			return false;
-	}
 }
 
 /**
