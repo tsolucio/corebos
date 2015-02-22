@@ -21,7 +21,7 @@ require_once 'modules/GlobalVariable/GlobalVariable.php';
 $gv = CRMEntity::getInstance('GlobalVariable');
 $gvname = vtlib_purify($_REQUEST['gvname']);
 $gvuserid = vtlib_purify($_REQUEST['gvuserid']);
-$gvmod = vtlib_purify($_REQUEST['gvmod']);
+$gvmod = vtlib_purify($_REQUEST['gvmodule']);
 $retval = vtlib_purify($_REQUEST['returnvalidation']);
 global $gvvalidationinfo;
 $gvvalidationinfo = array();

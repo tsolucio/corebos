@@ -38,7 +38,7 @@ function gv_getGVVarNames() {
 		var ulist = jQuery('#ulist').val();
 		var mlist = jQuery('#mlist').val();
 		jQuery.ajax({
-			url: "index.php?action=GlobalVariableAjax&file=SearchGlobalVar&module=GlobalVariable&gvname="+vlist+"&gvuserid="+ulist+"&gvmod="+mlist+"&returnvalidation=1",
+			url: "index.php?action=GlobalVariableAjax&file=SearchGlobalVar&module=GlobalVariable&gvname="+vlist+"&gvuserid="+ulist+"&gvmodule="+mlist+"&returnvalidation=1",
 			context: document.body
 		}).done(function(response) {
 			obj = JSON.parse(response);

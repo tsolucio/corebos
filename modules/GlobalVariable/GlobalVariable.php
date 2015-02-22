@@ -453,6 +453,25 @@ class GlobalVariable extends CRMEntity {
 		if($event_type == 'module.postinstall') {
 			// TODO Handle post installation actions
 			$this->setModuleSeqNumber('configure', $modulename, 'glb-', '0000001');
+			// register webservice functionality
+			require_once('include/Webservicea/Utils.php');
+			$operationInfo = array(
+				'name'    => 'SearchGlobalVar',
+				'include' => 'modules/GlobalVariable/SearchGlobalVarws.php',
+				'handler' => 'cbws_SearchGlobalVar',
+				'prelogin'=> 0,
+				'type'    => 'GET',
+				'parameters' => array(
+					array('name' => 'gvname','type' => 'string'),
+					array('name' => 'defaultvalue','type' => 'string'),
+					array('name' => 'gvmodule','type' => 'string'),
+				)
+			);
+			$rdo = registerWSAPI($operationInfo);
+			if ($rdo)
+				echo 'Registered WS Operation: <b>'.$operationInfo['name'].'</b><br>';
+			else
+				echo 'WS Operation: <b>'.$operationInfo['name'].'</b> already registered<br>';
 		} else if($event_type == 'module.disabled') {
 			// TODO Handle actions when this module is disabled.
 		} else if($event_type == 'module.enabled') {
