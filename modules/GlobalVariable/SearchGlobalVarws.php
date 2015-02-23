@@ -42,7 +42,6 @@ function cbws_SearchGlobalVar($gvname, $defaultvalue, $gvmodule, $user){
 	}
 
 	require_once 'modules/GlobalVariable/GlobalVariable.php';
-	$gv = CRMEntity::getInstance($entityName);
 	$rdo = GlobalVariable::getVariable($gvname, $defaultvalue, $gvmodule, $user->id);
 	VTWS_PreserveGlobal::flush();
 	return $rdo;

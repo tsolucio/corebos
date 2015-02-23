@@ -18,7 +18,6 @@
  *************************************************************************************************/
 
 require_once 'modules/GlobalVariable/GlobalVariable.php';
-$gv = CRMEntity::getInstance('GlobalVariable');
 $gvname = vtlib_purify($_REQUEST['gvname']);
 $gvuserid = vtlib_purify($_REQUEST['gvuserid']);
 $gvmod = vtlib_purify($_REQUEST['gvmodule']);
