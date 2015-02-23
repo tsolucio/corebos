@@ -454,7 +454,7 @@ class GlobalVariable extends CRMEntity {
 			// TODO Handle post installation actions
 			$this->setModuleSeqNumber('configure', $modulename, 'glb-', '0000001');
 			// register webservice functionality
-			require_once('include/Webservicea/Utils.php');
+			require_once('include/Webservices/Utils.php');
 			$operationInfo = array(
 				'name'    => 'SearchGlobalVar',
 				'include' => 'modules/GlobalVariable/SearchGlobalVarws.php',
