@@ -256,7 +256,8 @@ html .fc,
 	background-color: #3a87ad; /* default BACKGROUND color */
 	color: #fff;               /* default TEXT color */
 	font-size: 10px; /*.85em*/;
-	cursor: pointer;    
+	cursor: pointer;
+	min-height: 20px;
 	}
 
 a.fc-event {

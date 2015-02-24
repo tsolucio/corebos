@@ -4067,8 +4067,10 @@ function AgendaEventRenderer() {
 				event = seg.event;
 				if (seg.contentTop !== undefined && height - seg.contentTop < 10) {
 					// not enough room for title, put it in the time (TODO: maybe make both display:inline instead)
+					var evtit = event.title.substring(0,event.title.indexOf('<br>'));  // eliminate all text after newline TSOLUCIO
+					evtit = jQuery(evtit).text(); // eliminate HTML formatting TSOLUCIO
 					eventElement.find('div.fc-event-time')
-						.text(formatDate(event.start, opt('timeFormat')) + ' - ' + event.title);
+						.text(formatDate(event.start, opt('timeFormat')) + ' - ' + evtit);
 					eventElement.find('div.fc-event-title')
 						.remove();
 				}
