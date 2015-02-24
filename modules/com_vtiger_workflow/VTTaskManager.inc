@@ -180,7 +180,11 @@
 				'CRM Detail View URL' => '(general : (__VtigerMeta__) crmdetailviewurl)',
 				'Portal Detail View URL' => '(general : (__VtigerMeta__) portaldetailviewurl)',
 				'Site Url' => '(general : (__VtigerMeta__) siteurl)',
-				'Portal Url' => '(general : (__VtigerMeta__) portalurl)'
+				'Portal Url' => '(general : (__VtigerMeta__) portalurl)',
+				'Record Id' => '(general : (__VtigerMeta__) recordId)',
+				'LBL_ORGANIZATION_LOGO' => '(general : (__VtigerMeta__) logo)',
+				'LBL_HELPDESK_SUPPORT_NAME' => '(general : (__VtigerMeta__) supportName)',
+				'LBL_HELPDESK_SUPPORT_EMAILID' => '(general : (__VtigerMeta__) supportEmailId)',
 			);
 		}
 

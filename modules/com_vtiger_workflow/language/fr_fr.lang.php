@@ -96,5 +96,8 @@ $mod_strings = array(
 	'Relate Service' => 'Relate Service',
 	'Relate with AccountVendor' => 'Relate with Account/Vendor',
 	'Relate with Contact' => 'Relate with Contact',
+	'LBL_HELPDESK_SUPPORT_EMAILID'=>'Email du support client ',
+	'LBL_HELPDESK_SUPPORT_NAME'=>'Nom du support client ',
+	'LBL_ORGANIZATION_LOGO' => 'Logo',
 );
 ?>

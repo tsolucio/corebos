@@ -109,5 +109,9 @@ $mod_strings = array(
 'LBL_AFTER' => 'Después',
 'LBL_BEFORE' => 'Antes',
 'LBL_DAYS' => 'días',
+'LBL_HELPDESK_SUPPORT_EMAILID'=>'Email de Asistencia y Soporte',
+'LBL_HELPDESK_SUPPORT_NAME'=>'Nombre de Asistencia y Soporte',
+'LBL_ORGANIZATION_LOGO' => 'Logo Empresa',
+
 );
 ?>

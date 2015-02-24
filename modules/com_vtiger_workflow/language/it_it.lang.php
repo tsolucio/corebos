@@ -84,6 +84,9 @@ $mod_strings = array(
 'LBL_ENTITY_TYPE' => 'Tipo Oggetto',
 'LBL_SELECT_ENTITY_TYPE' => '-- Seleziona Tipo Oggetto --',
 'LBL_NO_ENTITIES_FOUND' => 'Non sono stati trovati oggetti da creare',
+'LBL_HELPDESK_SUPPORT_EMAILID'=>'Helpdesk Support Email-Id',
+'LBL_HELPDESK_SUPPORT_NAME'=>'Nome per Helpdesk',
+'LBL_ORGANIZATION_LOGO' => 'Logo Aziendale',
 );
 
 ?>

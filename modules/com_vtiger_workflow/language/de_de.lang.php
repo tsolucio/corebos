@@ -101,6 +101,9 @@ $mod_strings = array(
 	'Relate Service' => 'Relate Service',
 	'Relate with AccountVendor' => 'Relate with Account/Vendor',
 	'Relate with Contact' => 'Relate with Contact',
+	'LBL_HELPDESK_SUPPORT_EMAILID'=>'Trouble Ticket E-Mail-Id',
+	'LBL_HELPDESK_SUPPORT_NAME'=>'Trouble Ticket Support Name',
+	'LBL_ORGANIZATION_LOGO'=>'Logo Name',
 );
 
 ?>

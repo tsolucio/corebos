@@ -113,5 +113,8 @@ $mod_strings = array(
 'LBL_AFTER' => 'After',
 'LBL_BEFORE' => 'Before',
 'LBL_DAYS' => 'days',
+'LBL_HELPDESK_SUPPORT_EMAILID'=>'Helpdesk Support Email-Id',
+'LBL_HELPDESK_SUPPORT_NAME'=>'Helpdesk Support Name',
+'LBL_ORGANIZATION_LOGO'=>'Company Logo',
 );
 ?>

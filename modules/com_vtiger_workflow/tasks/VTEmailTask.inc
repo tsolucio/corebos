@@ -58,7 +58,8 @@ class VTEmailTask extends VTTask{
 		$subject = $st->render($entityCache, $entity->getId());
 		$ct = new VTSimpleTemplate($this->content);
 		$content = $ct->render($entityCache, $entity->getId());
-		send_mail($module,$to_email,$from_name,$from_email,$subject,$content, $cc, $bcc);
+		$logo = (strpos($this->content, '(general : (__VtigerMeta__) logo)')===false) ? '' : '1';
+		send_mail($module,$to_email,$from_name,$from_email,$subject,$content, $cc, $bcc,'','',$logo);
 
 		$util->revertUser();
 	}

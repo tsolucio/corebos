@@ -113,7 +113,7 @@ class VTSimpleTemplate{
 
 	function getMetaValue($fieldname){
 		require_once 'config.inc.php';
-		global $site_URL, $PORTAL_URL, $current_user;
+		global $site_URL, $PORTAL_URL, $current_user, $HELPDESK_SUPPORT_NAME, $HELPDESK_SUPPORT_EMAIL_ID;
 		switch($fieldname){
 			case 'date'					:	return getNewDisplayDate();
 			case 'time'					:	return date('h:i:s');
@@ -144,6 +144,13 @@ class VTSimpleTemplate{
 											return $PORTAL_URL.'/index.php?module='.$moduleName.'&action=index&'.$recorIdName.'='.$recordId.'&fun=detail';
 			case 'siteurl'				: return $site_URL;
 			case 'portalurl'			: return $PORTAL_URL;
+			case 'logo'					: return '<img src="cid:logo" />';
+
+			case 'recordId'				: list($moduleId, $recordId) = vtws_getIdComponents($this->parent->getId());
+										  return $recordId;
+
+			case 'supportName'			: return $HELPDESK_SUPPORT_NAME;
+			case 'supportEmailId'		: return $HELPDESK_SUPPORT_EMAIL_ID;
 			default: '';
 		}
 	}
