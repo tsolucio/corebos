@@ -15,7 +15,7 @@
 		function __construct($adb){
 			$this->adb = $adb;
 		}
-		
+
 		/**
 		 * Save the task into the database.
 		 *
@@ -24,45 +24,45 @@
 		 *
 		 * @param $summary A summary of the task instance.
 		 * @param $task The task instance to save.
-		 * @return The id of the task 
+		 * @return The id of the task
 		 */
 		public function saveTask($task){
 			$adb = $this->adb;
 			if(is_numeric($task->id)){//How do I check whether a member exists in php?
 				$taskId = $task->id;
-				$adb->pquery("update com_vtiger_workflowtasks set summary=?, task=? where task_id=?", 
-							array($task->summary, serialize($task), $taskId));	
+				$adb->pquery("update com_vtiger_workflowtasks set summary=?, task=? where task_id=?",
+							array($task->summary, serialize($task), $taskId));
 				return $taskId;
 			}else{
 				$taskId = $adb->getUniqueID("com_vtiger_workflowtasks");
 				$task->id = $taskId;
-				$adb->pquery("insert into com_vtiger_workflowtasks 
-							(task_id, workflow_id, summary, task) 
-							values (?, ?, ?, ?)", 
+				$adb->pquery("insert into com_vtiger_workflowtasks
+							(task_id, workflow_id, summary, task)
+							values (?, ?, ?, ?)",
 					array($taskId, $task->workflowId, $task->summary, serialize($task)));
 				return $taskId;
 			}
 		}
-		
+
 		public function deleteTask($taskId){
 			$adb = $this->adb;
 			$adb->pquery("delete from com_vtiger_workflowtasks where task_id=?", array($taskId));
 		}
-		
+
 		/**
 		 * Create a new class instance
 		 */
-		public function createTask($taskType, $workflowId){
+		public function createTask($taskType, $workflowId) {
 			$taskTypeInstance = VTTaskType::getInstanceFromTaskType($taskType);
 			$taskClass = $taskTypeInstance->get('classname');
 			$this->requireTask($taskClass, $taskTypeInstance);
 			$task = new $taskClass();
 			$task->workflowId=$workflowId;
 			$task->summary = "";
-			$task->active=true; 
+			$task->active=true;
 			return $task;
 		}
-		
+
 		/**
 		 * Retrieve a task from the database
 		 *
@@ -81,26 +81,26 @@
 			}
 			return $task;
 		}
-		
+
 		/**
 		 *
 		 */
 		public function getTasksForWorkflow($workflowId){
 			$adb = $this->adb;
-			$result = $adb->pquery("select task from com_vtiger_workflowtasks 
-									where workflow_id=?", 
+			$result = $adb->pquery("select task from com_vtiger_workflowtasks
+									where workflow_id=?",
 				array($workflowId));
 			return $this->getTasksForResult($result);
 		}
 
 		/**
-		 * 
+		 *
 		 */
 		public function unserializeTask($str){
 			$this->requireTask(self::taskName($str));
 			return unserialize($str);
 		}
-		
+
 		/**
 		 *
 		 */
@@ -125,13 +125,13 @@
 			}
 			return $tasks;
 		}
-		
+
 		private function taskName($serializedTask){
 			$matches = array();
 			preg_match ('/"([^"]+)"/', $serializedTask, $matches);
 			return $matches[1];
 		}
-		
+
 		private function requireTask($taskType, $taskTypeInstance='') {
 			if(!empty($taskTypeInstance)) {
 				$taskClassPath = $taskTypeInstance->get('classpath');
@@ -152,9 +152,9 @@
 				return $moduleName."/taskforms/".$taskType.".tpl";
 			}
 		}
-		
+
 	}
-	
+
 	abstract class VTTask{
 		public abstract function doTask(&$data);
 		public abstract function getFieldNames();
@@ -185,7 +185,7 @@
 		}
 
 	}
-	
+
 class VTTaskType {
 	var $data;
 
