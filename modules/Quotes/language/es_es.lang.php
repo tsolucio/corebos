@@ -185,6 +185,11 @@ $mod_strings = Array(
 'Quote No'=>'No Presupuesto',
 'Add Service Contract'=>'Añadir Contrato Servicio',
 'Quotes ID'=>'Id Presupuesto',
-);
 
+'Currency' => 'Moneda',
+'Conversion Rate' => 'Tasa de Conversión',
+'Last Modified By' => 'Última modificación por',
+'List Price' => 'Precio unitario',
+'Service Name' => 'Nombre del Servicio',
+);
 ?>

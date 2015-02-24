@@ -319,7 +319,9 @@ class Reports extends CRMEntity{
 						}
 
 						if($module != $resultrow['name']) {
-							$this->related_modules[$module][] = $resultrow['name'];
+                        	if(vtlib_isModuleActive($resultrow['name']) && isPermitted($resultrow['name'],'index','')){
+								$this->related_modules[$module][] = $resultrow['name'];
+                        	}
 						}
 
 						// To achieve Backward Compatability with Report relations

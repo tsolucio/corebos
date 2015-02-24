@@ -113,5 +113,7 @@ $mod_strings = array(
 'LBL_AFTER' => 'After',
 'LBL_BEFORE' => 'Before',
 'LBL_DAYS' => 'days',
+
+'LBL_REPEAT' => 'Repeat',
 );
 ?>

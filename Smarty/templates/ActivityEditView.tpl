@@ -709,7 +709,7 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 								</td>
 							</tr>
 							{/if}
-			     			{if $IS_CONTACTS_EDIT_PERMITTED eq 'true'}
+			     			{if $IS_CONTACTS_EDIT_PERMITTED eq true}
 							<tr>
 								<td><b>{$APP.Contacts}</b></td>
 								<td colspan="2">

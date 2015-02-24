@@ -340,5 +340,20 @@ var alert_arr = {
 	'LBL_MAPPEDALERT':'Esta campo ya está vinculado',
 	'LBL_MAPPEDALERT':'The field has been already mapped',
 	'LBL_REPORT_NAME': 'Por favor introdúzca el nombre del nuevo informe.',
-	'LBL_REPORT_NAME_ERROR': 'Debes dar un nombre al informe.'
+	'LBL_REPORT_NAME_ERROR': 'Debes dar un nombre al informe.',
+
+      //Translate Workflow Selects
+      'LBL_IS' : 'es',
+      'LBL_CONTAINS': 'contiene',
+      'LBL_DOES_NOT_CONTAIN' : 'no contiene',
+      'LBL_STARTS_WITH' : 'empieza por',
+      'LBL_ENDS_WITH' : 'acaba por',
+      'LBL_HAS_CHANGED' : 'ha cambiado',
+      'LBL_EQUAL_TO' : 'igual a',
+      'LBL_LESS_THAN' : 'menor que',
+      'LBL_GREATER_THAN' : 'mayor que',
+      'LBL_DOEST_NOT_EQUAL' : 'no es igual a',
+      'LBL_LESS_THAN_OR_EQUAL_TO' : 'menor o igual que',
+      'LBL_GREATER_THAN_OR_EQUAL_TO' : 'mayor o igual que',
+      'LBL_IS_NOT' : 'no es',
 };
