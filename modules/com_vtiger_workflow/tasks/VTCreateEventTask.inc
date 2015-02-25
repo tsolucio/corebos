@@ -109,6 +109,11 @@ class VTCreateEventTask extends VTTask{
 		}
 		
 		$event = vtws_create('Events', $fields, $adminUser);
+		$eventIdDetails = vtws_getIdComponents($event['id']);
+		$entityIdDetails = vtws_getIdComponents($id);
+
+		relateEntities(CRMEntity::getInstance($moduleName), $moduleName, $entityIdDetails[1], 'Calendar', $eventIdDetails[1]);
+
 		$handler = vtws_getModuleHandlerFromName('Events', $adminUser);
 		$meta = $handler->getMeta();
 		$recordValues = DataTransform::sanitizeForInsert($event,$meta);
@@ -168,10 +173,19 @@ class VTCreateEventTask extends VTTask{
 				}
 			}
 			$resultRow['recurringinfo'] = $recurringInfo;
+	
+			// Added this to relate these events to parent module.
+			$_REQUEST['createmode'] = 'link';
+			$_REQUEST['return_module'] = $moduleName;
+			$_REQUEST['return_id'] = $entityIdDetails[1];
+
 			$recurObj = RecurringType::fromDBRequest($resultRow);
 
 			include_once 'modules/Calendar/RepeatEvents.php';
 			Calendar_RepeatEvents::repeat($event, $recurObj);
+
+			$_REQUEST['createmode'] = '';
+
 		}
 		global $current_user;
 		$current_user = $this->originalUser;

@@ -109,7 +109,12 @@ class VTCreateTodoTask extends VTTask{
 			}
 		}
 
-		vtws_create('Calendar', $fields, $adminUser);
+		$todo = vtws_create('Calendar', $fields, $adminUser);
+		$todoIdDetails = vtws_getIdComponents($todo['id']);
+		$entityIdDetails = vtws_getIdComponents($id);
+
+		relateEntities(CRMEntity::getInstance($moduleName), $moduleName, $entityIdDetails[1], 'Calendar', $todoIdDetails[1]);
+
 		global $current_user;
 		$current_user = $this->originalUser;
 	}

@@ -101,6 +101,7 @@ class VTCreateEntityTask extends VTTask {
 			}
 			$newEntity->column_fields[$this->reference_field] = $focus->id;
 			$newEntity->save($entityType);
+			relateEntities($focus, $moduleName, $recordId, $entityType, $newEntity->id);
 		}
 
 		$util->revertUser();
