@@ -1852,21 +1852,21 @@ function getRoleRelatedProfiles($roleId)
  */
 function getRoleUsers($roleId)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getRoleUsers(".$roleId.") method ...");
-	global $adb;
-	$query = "select vtiger_user2role.*,vtiger_users.* from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid where roleid=?";
-	$result = $adb->pquery($query, array($roleId));
-	$num_rows=$adb->num_rows($result);
-	$roleRelatedUsers=Array();
-	for($i=0; $i<$num_rows; $i++)
-	{
-		$roleRelatedUsers[$adb->query_result($result,$i,'userid')]=getFullNameFromQResult($result, $i, 'Users');
+	$roleRelatedUsers = VTCacheUtils::lookupRole_RelatedUsers($roleId);
+	if($roleRelatedUsers === false) {
+		$query = 'select vtiger_user2role.*,vtiger_users.* from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid where roleid=?';
+		$result = $adb->pquery($query, array($roleId));
+		$num_rows=$adb->num_rows($result);
+		$roleRelatedUsers=Array();
+		for($i=0; $i<$num_rows; $i++) {
+			$roleRelatedUsers[$adb->query_result($result,$i,'userid')]=getFullNameFromQResult($result, $i, 'Users');
+		}
+		VTCacheUtils::updateRole_RelatedUsers($roleId, $roleRelatedUsers);
 	}
 	$log->debug("Exiting getRoleUsers method ...");
 	return $roleRelatedUsers;
-
-
 }
 
 

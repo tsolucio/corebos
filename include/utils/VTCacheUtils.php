@@ -276,6 +276,18 @@ class VTCacheUtils {
 			);
 		}
 	}
+
+	/** Role Related Users information */
+	static $_role_related_users_cache = array();
+	static function lookupRole_RelatedUsers($roleid) {
+		if(isset(self::$_role_related_users_cache[$roleid])) {
+			return self::$_role_related_users_cache[$roleid];
+		}
+		return false;
+	}
+	static function updateRole_RelatedUsers($roleid, $users) {
+		self::$_role_related_users_cache[$roleid] = $users;
+	}
 }
 
 ?>
