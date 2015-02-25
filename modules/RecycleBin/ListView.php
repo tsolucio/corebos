@@ -167,6 +167,7 @@ $smarty->assign("CHECK", $check_button);
 
 $smarty->assign("ALPHABETICAL", $alphabetical);
 $smarty->assign("NUMBER_MODULES",$noofrows);
+uasort($module_name, function($a,$b) {return (strtolower(getTranslatedString($a,$a)) < strtolower(getTranslatedString($b,$b))) ? -1 : 1;});
 $smarty->assign("MODULE_NAME",$module_name);
 $smarty->assign("SELECTED_MODULE",$select_module);
 $smarty->assign("MODULE_DATA",$rb_listview_header);
