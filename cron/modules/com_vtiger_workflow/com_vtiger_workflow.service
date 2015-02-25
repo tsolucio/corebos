@@ -52,6 +52,9 @@ function vtRunTaskJob($adb){
 	foreach($readyTasks as $pair){
 		list($taskId, $entityId) = $pair;
 		$task = $tm->retrieveTask($taskId);
+		if (empty($task)) {  //If task is not there then continue
+			continue;
+		}
 		list($moduleId, $crmId) = explode('x', $entityId);
 		$query = "select deleted from vtiger_crmentity where crmid={$crmId}";
 		$res = $adb->query($query);
