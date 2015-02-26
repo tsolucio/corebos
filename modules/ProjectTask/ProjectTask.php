@@ -337,7 +337,7 @@ class ProjectTask extends CRMEntity {
     function vtlib_handler($modulename, $event_type) {
         if($event_type == 'module.postinstall') {
 			global $adb;
-
+			$this->setModuleSeqNumber('configure', $modulename, 'prjt-', '0000001');
 			$projectTaskResult = $adb->pquery('SELECT tabid FROM vtiger_tab WHERE name=?', array('ProjectTask'));
 			$projecttaskTabid = $adb->query_result($projectTaskResult, 0, 'tabid');
 

@@ -334,7 +334,7 @@ class Project extends CRMEntity {
 	function vtlib_handler($modulename, $event_type) {
 		if($event_type == 'module.postinstall') {
 			global $adb;
-
+			$this->setModuleSeqNumber('configure', $modulename, 'prj-', '0000001');
 			include_once('vtlib/Vtiger/Module.php');
 			$moduleInstance = Vtiger_Module::getInstance($modulename);
 			$projectsResult = $adb->pquery('SELECT tabid FROM vtiger_tab WHERE name=?', array('Project'));

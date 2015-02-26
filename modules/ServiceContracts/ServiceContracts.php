@@ -332,7 +332,7 @@ class ServiceContracts extends CRMEntity {
 
  		if($eventType == 'module.postinstall') {
 			require_once('vtlib/Vtiger/Module.php');
-
+			$this->setModuleSeqNumber('configure', $modulename, 'srvcto-', '0000001');
 			$moduleInstance = Vtiger_Module::getInstance($moduleName);
 
 			$accModuleInstance = Vtiger_Module::getInstance('Accounts');

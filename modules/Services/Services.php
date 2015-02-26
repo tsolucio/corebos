@@ -985,7 +985,7 @@ class Services extends CRMEntity {
 
  		if($eventType == 'module.postinstall') {
 			require_once('vtlib/Vtiger/Module.php');
-
+			$this->setModuleSeqNumber('configure', $modulename, 'srv-', '0000001');
 			$moduleInstance = Vtiger_Module::getInstance($moduleName);
 			$moduleInstance->allowSharing();
 

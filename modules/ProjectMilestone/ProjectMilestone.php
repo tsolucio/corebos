@@ -330,7 +330,7 @@ class ProjectMilestone extends CRMEntity {
 	function vtlib_handler($modulename, $event_type) {
 		if($event_type == 'module.postinstall') {
 			global $adb;
-
+			$this->setModuleSeqNumber('configure', $modulename, 'prjm-', '0000001');
 			$projectMilestoneResult = $adb->pquery('SELECT tabid FROM vtiger_tab WHERE name=?', array('ProjectMilestone'));
 			$projectmilestoneTabid = $adb->query_result($projectMilestoneResult, 0, 'tabid');
 

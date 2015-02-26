@@ -361,7 +361,7 @@ class Assets extends CRMEntity {
  		if($eventType == 'module.postinstall') {
 			//Add Assets Module to Customer Portal
 			global $adb;
-
+			$this->setModuleSeqNumber('configure', $modulename, 'ast-', '0000001');
 			$this->addModuleToCustomerPortal();
 
 			include_once('vtlib/Vtiger/Module.php');
