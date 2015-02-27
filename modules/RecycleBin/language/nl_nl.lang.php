@@ -1,5 +1,4 @@
 <?php
-
 /*******************************************************************************
  * The contents of this file are subject to the following licences:
  * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
@@ -38,6 +37,7 @@ $mod_strings = Array(
 'LBL_EMPTY_MODULE'=>'Geen regels gevonden om te herstellen voor deze module',
 'LBL_MASS_RESTORE'=>'HERSTELLEN',
 'LBL_EMPTY_RECYCLEBIN'=>'Leeg de prullenbak',
+'LBL_EMPTY_RBMODULE'=>'Empty Module',
 'LNK_RESTORE'=>'herstellen',
 'LBL_NO_PERMITTED_MODULES'=>'Er zijn geen modules beschikbaar waarvoor u toegang heeft',
 );

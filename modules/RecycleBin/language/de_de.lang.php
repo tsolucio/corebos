@@ -14,6 +14,7 @@ $mod_strings = Array(
 'LBL_EMPTY_MODULE'=>'Keine Einträge zum Wiederherstellen vorhanden. Modul: ',
 'LBL_MASS_RESTORE'=>'Wiederherstellen',
 'LBL_EMPTY_RECYCLEBIN'=>'Papierkorb leeren',
+'LBL_EMPTY_RBMODULE'=>'Empty Module',
 'LNK_RESTORE'=>'wiederherstellen',
 'LBL_NO_PERMITTED_MODULES'=>'keine berechtigte Module vorhanden',
 );

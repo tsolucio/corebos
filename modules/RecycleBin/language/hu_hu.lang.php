@@ -19,6 +19,7 @@ $mod_strings = array(
 	'LBL_EMPTY_MODULE' => 'Nem voltak helyreállítható rekordok a modulban: ',
 	'LBL_MASS_RESTORE' => 'Minden helyreállítása',
 	'LBL_EMPTY_RECYCLEBIN' => 'Szemetes kosár ürítése',
+	'LBL_EMPTY_RBMODULE'=>'Empty Module',
 	'LNK_RESTORE' => 'helyreállítás',
 	'LBL_NO_PERMITTED_MODULES' => 'Nincsenek elérhető engedélyezett modulok',
 	'Recycle Bin' => 'Szemetes kosár',

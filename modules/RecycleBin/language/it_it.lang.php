@@ -15,6 +15,7 @@ $mod_strings = Array(
 'LBL_EMPTY_MODULE'=>'Nessun record trovato da ripristinare nel modulo',
 'LBL_MASS_RESTORE'=>'Ripristina Tutto',
 'LBL_EMPTY_RECYCLEBIN'=>'Svuota Cestino',
+'LBL_EMPTY_RBMODULE'=>'Svuota Modulo',
 'LNK_RESTORE'=>'Ripristina',
 'LBL_NO_PERMITTED_MODULES'=>'Nessun modulo disponibile consentito',
 );

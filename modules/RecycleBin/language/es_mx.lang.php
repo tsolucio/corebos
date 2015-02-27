@@ -17,6 +17,7 @@ $mod_strings = Array(
 'LBL_EMPTY_MODULE'=>'No se han encontrado registros en el módulo para restaurar',
 'LBL_MASS_RESTORE'=>'Restaurar',
 'LBL_EMPTY_RECYCLEBIN'=>'Vaciar Papelera de Reciclaje',
+'LBL_EMPTY_RBMODULE'=>'Vaciar Módulo',
 'LNK_RESTORE'=>'restaurar',
 'LBL_NO_PERMITTED_MODULES'=>'No hay modulos permitidos',
 'LBL_MANUALRESTORE'=>'Recuperación manual antes de restaurar el registro',

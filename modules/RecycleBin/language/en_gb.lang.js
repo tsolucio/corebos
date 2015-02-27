@@ -9,5 +9,6 @@
 
 var mod_alert_arr = {
 	'SELECT_ATLEAST_ONE_ENTITY' : 'Please select at least one entity',
+	'MSG_EMPTY_CONFIRMATION':'Are you sure you want to empty the selected',
 	'MSG_RESTORE_CONFIRMATION' : 'Are you sure you want to restore the selected'
 };

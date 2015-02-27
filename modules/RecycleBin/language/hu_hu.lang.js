@@ -13,5 +13,6 @@
 
 var mod_alert_arr = {
 	'SELECT_ATLEAST_ONE_ENTITY' : 'Kérjük, válasszon legalább egy személy',
+	'MSG_EMPTY_CONFIRMATION':'Are you sure you want to empty the selected',
 	'MSG_RESTORE_CONFIRMATION' : 'Biztos benne, hogy vissza akarja állítani a kiválasztott'
 };

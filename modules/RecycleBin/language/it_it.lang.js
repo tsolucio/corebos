@@ -9,5 +9,6 @@
 
 var mod_alert_arr = {       
 	SELECT_ATLEAST_ONE_ENTITY:'Prego selezionare almeno un oggetto',
+	MSG_EMPTY_CONFIRMATION:'Are you sure you want to empty the selected',
 	MSG_RESTORE_CONFIRMATION:'Sei sicuro di voler ripristinare gli oggetti selezionati'
 };

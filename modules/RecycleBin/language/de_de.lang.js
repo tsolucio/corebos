@@ -6,7 +6,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  ********************************************************************************/
 
-var mod_alert_arr = {       
+var mod_alert_arr = {
 	SELECT_ATLEAST_ONE_ENTITY:'Bitte wenigstens einen Eintrag auswählen.',
+	MSG_EMPTY_CONFIRMATION:'Are you sure you want to empty the selected',
 	MSG_RESTORE_CONFIRMATION:'Sind Sie sicher, dass Sie die gelöschten Einträge wieder herstellen wollen?'
 };

@@ -15,6 +15,7 @@ $mod_strings = Array(
 'LBL_EMPTY_MODULE'=>'No records found to Restore in module',
 'LBL_MASS_RESTORE'=>'Restore',
 'LBL_EMPTY_RECYCLEBIN'=>'Empty Recycle Bin',
+'LBL_EMPTY_RBMODULE'=>'Empty Module',
 'LNK_RESTORE'=>'restore',
 'LBL_NO_PERMITTED_MODULES'=>'No permitted modules available',
 );

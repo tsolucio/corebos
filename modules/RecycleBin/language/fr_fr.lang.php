@@ -15,6 +15,7 @@ $mod_strings = Array(
 	'LBL_EMPTY_MODULE'=>'Aucun enregistrement à restaurer dans le module',
 	'LBL_MASS_RESTORE'=>'Restaurer',
 	'LBL_EMPTY_RECYCLEBIN'=>'Vider la corbeille',
+	'LBL_EMPTY_RBMODULE'=>'Empty Module',
 	'LNK_RESTORE'=>'restaurer',
 	'LBL_NO_PERMITTED_MODULES'=>'Vous n\'êtes autorisé à modifier aucun module ',
 );
