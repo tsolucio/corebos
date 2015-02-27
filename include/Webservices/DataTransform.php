@@ -285,6 +285,18 @@
 			}
 			return $row;
 		}
+
+		function sanitizeTextFieldsForInsert($row,$meta){
+			global $current_user, $default_charset;
+			$moduleFields = $meta->getModuleFields();
+			foreach($moduleFields as $fieldName=>$fieldObj){
+				$ftype = $fieldObj->getFieldDataType();
+				if(!empty($row[$fieldName]) and $ftype!='currency' and $ftype!="date"){
+					$row[$fieldName] = html_entity_decode($row[$fieldName], ENT_QUOTES, $default_charset);
+				}
+			}
+			return $row;
+		}
 	}
 	
 ?>
