@@ -22,7 +22,7 @@ function callRBSearch(searchtype)
 	{
 		urlstring = 'search_field='+search_fld_val+'&searchtype=BasicSearch&search_text='+search_txt_val+'&';
 	}
-	var selectedmodule = $('select_module').options[$('select_module').selectedIndex].value 
+	var selectedmodule = $('select_module').options[$('select_module').selectedIndex].value;
 	urlstring += 'selected_module='+selectedmodule;
         	new Ajax.Request(
 		'index.php',
@@ -80,7 +80,7 @@ function massRestore()
 		}
 	} else {
 		var x = select_options.split(";");
-		var count=x.length
+		var count=x.length;
 		if (count > 1)
 		{
 			document.getElementById('idlist').value=select_options;
@@ -155,7 +155,6 @@ function getListViewEntries_js(module,url)
 	$("status").show();
 	var selected_module = $("select_module").value;
 	var urlstring = "&selected_module=" + selected_module;
-	<!-- Ticket 6330 -->
 	if($('search_url').value!='')
 		urlstring = $('search_url').value+"&selected_module="+selected_module;
 
@@ -198,7 +197,7 @@ function alphabetic(module,url,dataid)
                 getObj(data_td_id).className = 'searchAlph';
 
         }
-	var selectedmodule = $('select_module').options[$('select_module').selectedIndex].value 
+	var selectedmodule = $('select_module').options[$('select_module').selectedIndex].value;
 	url += '&selected_module='+selectedmodule;
 	getObj(dataid).className = 'searchAlphselected';
 	$("status").style.display="inline";
