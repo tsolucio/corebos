@@ -1,5 +1,4 @@
 {*<!--
-
 /*********************************************************************************
 ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
@@ -7,12 +6,12 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
 -->*}
 <script language="JavaScript" type="text/javascript" src="include/js/search.js"></script>
 <script language="JavaScript" type="text/javascript" src="include/js/ListView.js"></script>
+<script language="JavaScript" type='text/javascript' src='include/js/Merge.js'></script>
+<script language="JavaScript" type='text/javascript' src='modules/RecycleBin/language/{php} echo $_SESSION['authenticated_user_language'];{/php}.lang.js'></script>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 {include file='Buttons_List.tpl'}
                                 <div id="searchingUI" style="display:none;">

@@ -7,9 +7,6 @@
  * All Rights Reserved.
  *********************************************************************************/
 
-document.write("<script type='text/javascript' src='include/js/Merge.js'></"+"script>");
-document.write("<script type='text/javascript' src='modules/RecycleBin/language/en_us.lang.js'></"+"script>");
-
 function callRBSearch(searchtype)
 {
 	for(i=1;i<=26;i++)
