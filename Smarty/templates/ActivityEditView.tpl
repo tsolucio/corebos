@@ -1,5 +1,4 @@
 {*<!--
-
 /*********************************************************************************
 ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
@@ -7,9 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
 -->*}
 
 {*<!-- module header -->*}
@@ -698,7 +695,7 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 									{section name=combo loop=$LABEL.parent_id}
 										<option value="{$fldlabel_combo.parent_id[combo]}" {$fldlabel_sel.parent_id[combo]}>{$LABEL.parent_id[combo]}</option>
 									{/section}
-                                             				</select>
+									</select>
 								</td>
 								<td>
 									<div id="eventrelatedto" align="left">
@@ -709,7 +706,7 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 								</td>
 							</tr>
 							{/if}
-			     			{if $IS_CONTACTS_EDIT_PERMITTED eq 'true'}
+							{if $IS_CONTACTS_EDIT_PERMITTED eq 'true'}
 							<tr>
 								<td><b>{$APP.Contacts}</b></td>
 								<td colspan="2">
@@ -717,8 +714,8 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 									<input name="deletecntlist" id="deletecntlist" type="hidden">
 									<select name="contactlist" size=5  style="height: 100px;width: 300px"  id="parentid" class="small" multiple>
 									{foreach item=contactname key=cntid from=$CONTACTSNAME}
-                                    	<option value="{$cntid}">{$contactname}</option>
-                                    {/foreach}
+										<option value="{$cntid}">{$contactname}</option>
+									{/foreach}
 									</select>
 
 									<input type="button" onclick="selectContact('true','general',document.EditView);" class="crmButton small edit" name="selectcnt" value="{$APP.LBL_SELECT_CONTACT_BUTTON_LABEL}">
