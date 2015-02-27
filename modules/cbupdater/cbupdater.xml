@@ -253,4 +253,11 @@
 	<classname>installglobalvars</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Change some uitype 23 fields to 5, to be possible to edit from DetailView</description>
+	<filename>build/changeSets/changeUitypes23To5.php</filename>
+	<classname>changeUitypes23To5</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
