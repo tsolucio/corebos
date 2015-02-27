@@ -83,6 +83,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		}
 		$cfields = $crmObject->getFields();
 		$cfields = DataTransform::sanitizeForInsert($cfields,$this->meta);
+		$cfields = DataTransform::sanitizeTextFieldsForInsert($cfields,$this->meta);
 		$element = array_merge($cfields,$element);
 		$error = $crmObject->update($element);
 		if(!$error){
