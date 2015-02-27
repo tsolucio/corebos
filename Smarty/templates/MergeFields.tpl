@@ -33,7 +33,7 @@
 <script language="JavaScript" type="text/javascript" src="include/js/menu.js"></script>
 <script src="include/scriptaculous/prototype.js" type="text/javascript"></script>
 <script src="include/js/general.js" type="text/javascript"></script>
-<script src="include/js/en_us.lang.js" type="text/javascript"></script>
+<script src="include/js/{php} echo $_SESSION['authenticated_user_language'];{/php}.lang.js" type="text/javascript"></script>
 <script src="include/scriptaculous/scriptaculous.js" type="text/javascript"></script>
 
 <form name="merge" method="POST" action="index.php" id="form" onsubmit="if(validate_merge('{$MODULENAME}')){ldelim}VtigerJS_DialogBox.block(); return true;{rdelim} else {ldelim} return false; {rdelim};">
