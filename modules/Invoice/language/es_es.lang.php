@@ -126,7 +126,6 @@ $mod_strings = Array(
 'Sub Total'=>'Total',
 'Due date'=>'Fecha de Vencimiento',
 'Due Date'=>'Fecha de Vencimiento',
-'Conversion Rate' => 'Tasa de conversión',
 'Carrier'=>'Transportista',
 'Type'=>'Tipo',
 'Sales Tax'=>'Impuesto sobre Ventas',
