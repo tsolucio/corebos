@@ -691,3 +691,55 @@ function editworkflowscript($, conditions){
 	});
 
 }
+
+// On Schedule functionality
+function onschedule_preparescreen(radiobutton) {
+	if (jQuery(radiobutton).val()=='ON_SCHEDULE') {
+		jQuery('#scheduleBox').show();
+	} else {
+		jQuery('#scheduleBox').hide();
+	}
+}
+
+function onschedule_selectschedule(selbox) {
+	switch (jQuery(selbox).val()) {
+		case '1':
+		jQuery('#scheduledWeekDay').hide();
+		jQuery('#scheduleMonthByDates').hide();
+		jQuery('#scheduleByDate').hide();
+		jQuery('#scheduledTime').hide();
+		break;
+		case '2':
+		jQuery('#scheduledWeekDay').hide();
+		jQuery('#scheduleMonthByDates').hide();
+		jQuery('#scheduleByDate').hide();
+		jQuery('#scheduledTime').show();
+		break;
+		case '3':
+		jQuery('#scheduledWeekDay').show();
+		jQuery('#scheduleMonthByDates').hide();
+		jQuery('#scheduleByDate').hide();
+		jQuery('#scheduledTime').show();
+		break;
+		case '4':
+		jQuery('#scheduledWeekDay').hide();
+		jQuery('#scheduleMonthByDates').hide();
+		jQuery('#scheduleByDate').show();
+		jQuery('#scheduledTime').show();
+		break;
+		case '5':
+		jQuery('#scheduledWeekDay').hide();
+		jQuery('#scheduleMonthByDates').show();
+		jQuery('#scheduleByDate').hide();
+		jQuery('#scheduledTime').show();
+		break;
+		case '6':  // Not Implemented yet
+		break;
+		case '7':
+		jQuery('#scheduledWeekDay').hide();
+		jQuery('#scheduleMonthByDates').hide();
+		jQuery('#scheduleByDate').show();
+		jQuery('#scheduledTime').show();
+		break;
+	}
+}

@@ -22,7 +22,7 @@ require_once "VTWorkflowUtils.php";
 
 function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_strings){
 
-	global $theme;
+	global $theme, $current_user;
 	$util = new VTWorkflowUtils();
 
 	$image_path = "themes/$theme/images/";
@@ -31,13 +31,11 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 
 	$mod = return_module_language($current_language, $module->name);
 
-
 	if(!$util->checkAdminAccess()){
 		$errorUrl = $module->errorPageUrl($mod['LBL_ERROR_NOT_ADMIN']);
 		$util->redirectTo($errorUrl, $mod['LBL_ERROR_NOT_ADMIN']);
 		return;
 	}
-
 
 	$smarty = new vtigerCRM_Smarty();
 	if($request['source']=='from_template'){
@@ -52,6 +50,18 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 			$moduleName=$request["module_name"];
 			$workflow = $wfs->newWorkflow($moduleName);
 		}
+		$smarty->assign('ScheduledWorkflowsCount', $wfs->getScheduledWorkflowsCount());
+		$smarty->assign('MaxAllowedScheduledWorkflows', $wfs->getMaxAllowedScheduledWorkflows());
+		$smarty->assign('schdtime_12h',date('h:ia', strtotime(substr($workflow->schtime,0,strrpos($workflow->schtime, ':')))));
+		$schannualdates = json_decode($workflow->schannualdates);
+		if (count($schannualdates)>0) {
+			$schannualdates = DateTimeField::convertToUserFormat($schannualdates[0]);
+		} else {
+			$schannualdates = '';
+		}
+		$smarty->assign('schdate',$schannualdates);
+		$smarty->assign('selected_days1_31',json_decode($workflow->schdayofmonth));
+		$smarty->assign('dayOfWeek',json_decode($workflow->schdayofweek));
 	}
 
 	if($workflow==null){
@@ -66,7 +76,11 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 	$taskTypes = $tm->getTaskTypes($workflow->moduleName);
 	$smarty->assign("taskTypes", $taskTypes);
 	$smarty->assign("newTaskReturnUrl", vtlib_purify($requestUrl));
-
+	$dayrange = array();
+	for ($d=1;$d<=31;$d++) $dayrange[$d] = $d;
+	$smarty->assign('days1_31', $dayrange);
+	$smarty->assign('wfnexttrigger_time',DateTimeField::convertToUserFormat($workflow->nexttrigger_time));
+	$smarty->assign("dateFormat", parse_calendardate($current_user->date_format));
 	$smarty->assign("returnUrl", vtlib_purify($request["return_url"]));
 	$smarty->assign("APP", $app_strings);
 	$smarty->assign("MOD", array_merge(
