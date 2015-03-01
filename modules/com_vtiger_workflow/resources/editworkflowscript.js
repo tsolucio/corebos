@@ -247,6 +247,7 @@ function editworkflowscript($, conditions){
 	function resetFields(opType, condno){
 		var ops = $("#save_condition_"+condno+"_operation");
 		var selOperations = operations[opType.name];
+		var selTransOperations = transOperations[opType.name];
 		var selectedOperations = new Array();
 
 		// Remove 'has changed' operation for reference fields
@@ -263,7 +264,7 @@ function editworkflowscript($, conditions){
 			selectedOperations = selOperations;
 		}
 
-		var l = dict(zip(selectedOperations, selectedOperations));
+		var l = dict(zip(selectedOperations, selTransOperations));
 		fillOptions(ops, l);
 		defaultValue(opType.name)(opType, condno);
 	}
@@ -419,7 +420,7 @@ function editworkflowscript($, conditions){
 		pageLoadingPopup.show();
 
 		Drag.init(document.getElementById('editpopup_draghandle'), document.getElementById('editpopup'));
-		editpopupobj = fieldExpressionPopup(moduleName, $)
+		editpopupobj = fieldExpressionPopup(moduleName, $);
 		editpopupobj.setModule(moduleName);
 		editpopupobj.close();
 
@@ -438,7 +439,7 @@ function editworkflowscript($, conditions){
 						return[e['name'],e['label']];
 					}, filteredFields(parent['fields']));
 					var referenceFieldTypes = filter(function(e){
-						return (e['type']['name']=='reference')
+						return (e['type']['name']=='reference');
 						}, parent['fields']);
 					var moduleFieldTypes = {};
 					$.each(modules, function(k, v){
