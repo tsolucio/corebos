@@ -65,5 +65,9 @@ function vtRunTaskJob($adb){
 		$task->doTask($entity);
 	}
 }
+$adb = PearDatabase::getInstance();
+require_once 'modules/com_vtiger_workflow/WorkFlowScheduler.php';
+$workflowScheduler = new WorkFlowScheduler($adb);
+$workflowScheduler->queueScheduledWorkflowTasks();
 vtRunTaskJob($adb);
 ?>
