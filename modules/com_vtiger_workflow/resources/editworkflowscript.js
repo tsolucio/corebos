@@ -234,7 +234,38 @@ function editworkflowscript($, conditions){
 		});
 		return out;
 	}();
+	var transOperations = function(){
+		var op = {
+			string:[alert_arr.LBL_IS, alert_arr.LBL_CONTAINS, alert_arr.LBL_DOES_NOT_CONTAIN, alert_arr.LBL_STARTS_WITH,
+					alert_arr.LBL_ENDS_WITH, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_IS_EMPTY, alert_arr.LBL_IS_NOT_EMPTY],
+			number:[alert_arr.LBL_EQUAL_TO, alert_arr.LBL_LESS_THAN, alert_arr.LBL_GREATER_THAN, alert_arr.LBL_DOEST_NOT_EQUAL,
+					alert_arr.LBL_LESS_THAN_OR_EQUAL_TO, alert_arr.LBL_GREATER_THAN_OR_EQUAL_TO, alert_arr.LBL_HAS_CHANGED],
+			value:[alert_arr.LBL_IS, alert_arr.LBL_IS_NOT, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_HAS_CHANGED_TO],
+			date:[alert_arr.LBL_IS, alert_arr.LBL_IS_NOT, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_HAS_CHANGED_TO,
+					alert_arr.LBL_BETWEEN, alert_arr.LBL_BEFORE, alert_arr.LBL_AFTER, alert_arr.LBL_IS_TODAY, alert_arr.LBL_LESS_THAN_DAYS_AGO,
+					alert_arr.LBL_MORE_THAN_DAYS_AGO, alert_arr.LBL_IN_LESS_THAN, alert_arr.LBL_IN_MORE_THAN, alert_arr.LBL_DAYS_AGO, alert_arr.LBL_DAYS_LATER],
+			datetime:[alert_arr.LBL_IS, alert_arr.LBL_IS_NOT, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_HAS_CHANGED_TO,
+					alert_arr.LBL_LESS_THAN_HOURS_BEFORE, alert_arr.LBL_LESS_THAN_HOURS_LATER, alert_arr.LBL_MORE_THAN_HOURS_BEFORE, alert_arr.LBL_MORE_THAN_HOURS_LATER]
+		};
+		var mapping = [
+			['string', ['string', 'text', 'url', 'email', 'phone']],
+			['number', ['integer', 'double', 'currency']],
+			['value', ['reference', 'picklist', 'multipicklist', 'datetime', 'time', 'date', 'boolean']],
+			['date', ['date']],
+			['datetime', ['datetime', 'time']]
+		];
 
+		var out = {};
+		$.each(mapping, function(i, v){
+			var opName = v[0];
+			var types = v[1];
+			$.each(types, function(i, v){
+				out[v] = op[opName];
+			});
+		});
+		return out;
+	}();
+	var JoinConditionOptions = {'and': alert_arr.LBL_AND, 'or': alert_arr.LBL_OR};
 	var format = fn.format;
 
 	function fillOptions(el,options){
@@ -484,11 +515,7 @@ function editworkflowscript($, conditions){
 							var group_condition_html = '';
 							if($(".condition_group_block").length > 0) {
 								group_condition_html = '<div class="condition_group_join_block" id="condition_group_'+groupid+'_joincondition" > \
-                                                        <select id="save_condition_group_'+groupid+'_joincondition" class="joincondition"> \
-                                                            <option value="and">and</option> \
-                                                            <option value="or">or</option> \
-                                                        </select> \
-                                                    </div>';
+									<select id="save_condition_group_'+groupid+'_joincondition" class="joincondition"></select></div>';
 							}
 							$("#save_conditions").append(
 								group_condition_html
@@ -505,6 +532,10 @@ function editworkflowscript($, conditions){
                                     </div> \
                                 </div>'
 								);
+							if($(".condition_group_block").length > 0) {
+								var fjgc = $("#save_condition_group_"+groupid+"_joincondition");
+								fillOptions(fjgc, JoinConditionOptions);
+							}
 							var gpcond = $("#add_group_condition_"+groupid);
 							gpcond.bind("click", function(){
 								addCondition(groupid, condno++);
@@ -532,10 +563,7 @@ function editworkflowscript($, conditions){
 								<select id="save_condition_'+condid+'_operation" class="operation"></select> \
                                 <input type="hidden" id="save_condition_'+condid+'_value_type" class="expressiontype" /> \
                                 <input type="text" id="save_condition_'+condid+'_value" class="expressionvalue" readonly /> \
-								<select id="save_condition_'+condid+'_joincondition" class="joincondition"> \
-                                    <option value="and">and</option> \
-                                    <option value="or">or</option> \
-                                </select> \
+								<select id="save_condition_'+condid+'_joincondition" class="joincondition"></select> \
 								<span id="save_condition_'+condid+'_remove" class="link remove-link"> \
 								<img src="modules/com_vtiger_workflow/resources/remove.png"></span> \
                             </div>'
@@ -545,6 +573,9 @@ function editworkflowscript($, conditions){
 						var fe = $("#save_condition_"+condid+"_fieldname");
 						var i = 1;
 						fillOptions(fe, fieldLabels);
+
+						var fjc = $("#save_condition_"+condid+"_joincondition");
+						fillOptions(fjc, JoinConditionOptions);
 
 						var fullFieldName = fe.attr("value");
 
