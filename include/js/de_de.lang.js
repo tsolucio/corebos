@@ -7,7 +7,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 	
-var alert_arr = {       
+var alert_arr = {
     DELETE:'Sind Sie sicher, dass Sie das tun wollen? ',
     RECORDS:' Datensätze',
     SELECT:'Bitte wenigstens einen Eintrag markieren.',
@@ -128,6 +128,7 @@ var alert_arr = {
     DATE_SHOULDNOT_PAST :'dem jetzigen Datum und der gegenwärtigen Zeit für geplante Aktivitäten sein.',
     TIME_SHOULDNOT_PAST :'der gegenwärtigen Zeit sein.',
     LBL_AND : 'UND',
+    LBL_OR: 'ODER',
     LBL_ENTER_VALID_PORT: 'Bitte geben Sie die Portnummer korrekt an.',
     IN_USERNAME :' im Benutzernamen ',
     LBL_ENTER_VALID_NO: 'Bitte eine richtige Zahl angeben',
@@ -139,7 +140,6 @@ var alert_arr = {
     NAME_DESC:' für Verzeichnisname & Beschreibung',
     ENDS_WITH:'endet mit',
     SHARED_EVENT_DEL_MSG:'Sie haben keine Berechtigung zum Ändern & Löschen von dieser Aktivität.',
-                                                         
     
     LBL_WRONG_IMAGE_TYPE: 'Folgende Dateitypen sind zulässig: jpeg, png, jpg, pjpeg, x-png oder gif',
     SELECT_MAIL_MOVE: 'Bitte markieren Sie zuerst eine E-Mail.',
@@ -345,5 +345,35 @@ var alert_arr = {
 	MORE_THAN_500 : 'Sie mehr als 500 Datensätze ausgewählt, wodurch die gewählte Aktion wesentlich länger dauern kann. Sind Sie sicher, dass Sie fortsetzen wollen?',
 	LBL_MAPPEDALERT:'Dieses Feld wurde bereits zugewiesen.',
 	'LBL_REPORT_NAME': 'Please enter a name for the new report.',
-	'LBL_REPORT_NAME_ERROR': 'You must give a new name to the report.'
+	'LBL_REPORT_NAME_ERROR': 'You must give a new name to the report.',
+	'LBL_IS' : 'is',
+	'LBL_CONTAINS': 'contains',
+	'LBL_DOES_NOT_CONTAIN' : 'does not contain',
+	'LBL_STARTS_WITH' : 'starts with',
+	'LBL_ENDS_WITH' : 'ends with',
+	'LBL_HAS_CHANGED' : 'has changed',
+	'LBL_HAS_CHANGED_TO' : 'has changed to',
+	'LBL_IS_EMPTY': 'is empty',
+	'LBL_IS_NOT_EMPTY' : 'is not empty',
+	'LBL_EQUAL_TO' : 'equal to',
+	'LBL_LESS_THAN' : 'less than',
+	'LBL_GREATER_THAN' : 'greater than',
+	'LBL_DOEST_NOT_EQUAL' : 'does not equal',
+	'LBL_LESS_THAN_OR_EQUAL_TO' : 'less than or equal to',
+	'LBL_GREATER_THAN_OR_EQUAL_TO' : 'greater than or equal to',
+	'LBL_IS_NOT' : 'is not',
+	'LBL_BETWEEN' : 'between',
+	'LBL_BEFORE' : 'before',
+	'LBL_AFTER' : 'after',
+	'LBL_IS_TODAY' : 'is today',
+	'LBL_LESS_THAN_DAYS_AGO' : 'less than days ago',
+	'LBL_MORE_THAN_DAYS_AGO' : 'more than days ago',
+	'LBL_IN_LESS_THAN' : 'in less than',
+	'LBL_IN_MORE_THAN' : 'in more than',
+	'LBL_DAYS_AGO' : 'days ago',
+	'LBL_DAYS_LATER' : 'days later',
+	'LBL_LESS_THAN_HOURS_BEFORE' : 'less than hours before',
+	'LBL_LESS_THAN_HOURS_LATER' : 'less than hours later',
+	'LBL_MORE_THAN_HOURS_BEFORE' : 'more than hours before',
+	'LBL_MORE_THAN_HOURS_LATER' : 'more than hours later',
 };

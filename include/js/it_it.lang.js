@@ -7,7 +7,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-var alert_arr = {       
+var alert_arr = {
 	'DELETE':'Sicuro di voler cancellare il selezionato',
 	'RECORDS':' record?',
 	'SELECT':'Prego selezionare almeno una riga',
@@ -127,6 +127,7 @@ var alert_arr = {
 	'DATE_SHOULDNOT_PAST' :"Data e orario corrente per le attivit\u00E0 pianificate",
 	'TIME_SHOULDNOT_PAST' :"Ora corrente per le attivit\u00E0 pianificate",
 	'LBL_AND':'E',
+	'LBL_OR': 'O',
 	'LBL_ENTER_VALID_PORT':'Prego inserire un numero di porta valido',
 	'IN_USERNAME':' nel Nome Utente',
 	'LBL_ENTER_VALID_NO':'Prego inseire un numero valido',
@@ -329,7 +330,37 @@ var alert_arr = {
 	'LBL_CLOSE_DATE':'Data Chiusura',
 	'LBL_EMAIL':'Email',
 	'MORE_THAN_500' :'Hai selezionato piu di 500 record. Questa operazione richiedera tempo. Sei sicuro di voler procedere?',
-	'LBL_MAPPEDALERT':'Campo gi\u00E0 mappato'
-
-
+	'LBL_MAPPEDALERT':'Campo gi\u00E0 mappato',
+	'LBL_REPORT_NAME': 'Please enter a name for the new report.',
+	'LBL_REPORT_NAME_ERROR': 'You must give a new name to the report.',
+	'LBL_IS' : 'is',
+	'LBL_CONTAINS': 'contains',
+	'LBL_DOES_NOT_CONTAIN' : 'does not contain',
+	'LBL_STARTS_WITH' : 'starts with',
+	'LBL_ENDS_WITH' : 'ends with',
+	'LBL_HAS_CHANGED' : 'has changed',
+	'LBL_HAS_CHANGED_TO' : 'has changed to',
+	'LBL_IS_EMPTY': 'is empty',
+	'LBL_IS_NOT_EMPTY' : 'is not empty',
+	'LBL_EQUAL_TO' : 'equal to',
+	'LBL_LESS_THAN' : 'less than',
+	'LBL_GREATER_THAN' : 'greater than',
+	'LBL_DOEST_NOT_EQUAL' : 'does not equal',
+	'LBL_LESS_THAN_OR_EQUAL_TO' : 'less than or equal to',
+	'LBL_GREATER_THAN_OR_EQUAL_TO' : 'greater than or equal to',
+	'LBL_IS_NOT' : 'is not',
+	'LBL_BETWEEN' : 'between',
+	'LBL_BEFORE' : 'before',
+	'LBL_AFTER' : 'after',
+	'LBL_IS_TODAY' : 'is today',
+	'LBL_LESS_THAN_DAYS_AGO' : 'less than days ago',
+	'LBL_MORE_THAN_DAYS_AGO' : 'more than days ago',
+	'LBL_IN_LESS_THAN' : 'in less than',
+	'LBL_IN_MORE_THAN' : 'in more than',
+	'LBL_DAYS_AGO' : 'days ago',
+	'LBL_DAYS_LATER' : 'days later',
+	'LBL_LESS_THAN_HOURS_BEFORE' : 'less than hours before',
+	'LBL_LESS_THAN_HOURS_LATER' : 'less than hours later',
+	'LBL_MORE_THAN_HOURS_BEFORE' : 'more than hours before',
+	'LBL_MORE_THAN_HOURS_LATER' : 'more than hours later',
 };
