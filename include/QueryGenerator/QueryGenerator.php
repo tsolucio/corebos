@@ -49,7 +49,7 @@ class QueryGenerator {
 	private $whereClause;
 	private $query;
 	private $groupInfo;
-	private $conditionInstanceCount;
+	public $conditionInstanceCount;
 	private $conditionalWhere;
 	public static $AND = 'AND';
 	public static $OR = 'OR';
@@ -121,6 +121,10 @@ class QueryGenerator {
 
 	public function getWhereFields() {
 		return $this->whereFields;
+	}
+
+	public function addWhereField($fieldName) {
+		$this->whereFields[] = $fieldName;
 	}
 
 	public function getOwnerFieldList() {
@@ -748,10 +752,10 @@ class QueryGenerator {
 		return ($type == 'date' || $type == 'datetime');
 	}
 
-	private function fixDateTimeValue($name, $value, $first = true) {
+	public function fixDateTimeValue($name, $value, $first = true) {
 		$moduleFields = $this->meta->getModuleFields();
 		$field = $moduleFields[$name];
-		$type = $field->getFieldDataType();
+		$type = $field ? $field->getFieldDataType() : false;
 		if($type == 'datetime') {
 			if(strrpos($value, ' ') === false) {
 				if($first) {
@@ -764,14 +768,12 @@ class QueryGenerator {
 		return $value;
 	}
 
-	public function addCondition($fieldname,$value,$operator,$glue= null,$newGroup = false,
-			$newGroupType = null) {
+	public function addCondition($fieldname,$value,$operator,$glue= null,$newGroup = false,$newGroupType = null) {
 		$conditionNumber = $this->conditionInstanceCount++;
 		$this->groupInfo .= "$conditionNumber ";
 		$this->whereFields[] = $fieldname;
 		$this->reset();
-		$this->conditionals[$conditionNumber] = $this->getConditionalArray($fieldname,
-				$value, $operator);
+		$this->conditionals[$conditionNumber] = $this->getConditionalArray($fieldname, $value, $operator);
 	}
 
 	public function addRelatedModuleCondition($relatedModule,$column, $value, $SQLOperator) {
