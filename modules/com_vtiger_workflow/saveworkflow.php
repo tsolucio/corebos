@@ -14,6 +14,8 @@ require_once("include/Zend/Json.php");
 require_once("VTWorkflowApplication.inc");
 require_once("VTWorkflowManager.inc");
 require_once("VTWorkflowUtils.php");
+require_once 'modules/com_vtiger_workflow/VTTaskManager.inc';
+require_once 'modules/com_vtiger_workflow/tasks/VTCreateEventTask.inc';
 
 	function vtWorkflowSave($adb, $request){
 		$util = new VTWorkflowUtils();
@@ -32,6 +34,26 @@ require_once("VTWorkflowUtils.php");
 		$taskId = $request["task_id"];
 		$saveType=$request["save_type"];
 		$executionCondition = $request['execution_condition'];
+		$schdayofweek = array();
+		if (isset($request['sun_flag']) && $_REQUEST['sun_flag'] != null)
+			$schdayofweek[] = 1;
+		if (isset($request['mon_flag']) && $_REQUEST['mon_flag'] != null)
+			$schdayofweek[] = 2;
+		if (isset($request['tue_flag']) && $_REQUEST['tue_flag'] != null)
+			$schdayofweek[] = 3;
+		if (isset($request['wed_flag']) && $_REQUEST['wed_flag'] != null)
+			$schdayofweek[] = 4;
+		if (isset($request['thu_flag']) && $_REQUEST['thu_flag'] != null)
+			$schdayofweek[] = 5;
+		if (isset($request['fri_flag']) && $_REQUEST['fri_flag'] != null)
+			$schdayofweek[] = 6;
+		if (isset($request['sat_flag']) && $_REQUEST['sat_flag'] != null)
+			$schdayofweek[] = 7;
+		// internally the code is prepared to launch the same workflow on many dates
+		// but the interface only sends one in
+		// TODO: change interface to send in many dates for annual scheduling
+		$schannualdates = DateTimeField::convertToDBFormat($request['schdate']);
+		$schannualdates = json_encode(array($schannualdates));
 		$wm = new VTWorkflowManager($adb);
 		if($saveType=='new'){
 			$wf = $wm->newWorkflow($moduleName);
@@ -39,6 +61,11 @@ require_once("VTWorkflowUtils.php");
 			$wf->test = $conditions;
 			$wf->taskId = $taskId;
 			$wf->executionConditionAsLabel($executionCondition);
+			$wf->schtypeid = $request['schtypeid'];
+			$wf->schtime = VTCreateEventTask::conv12to24hour($request['schtime']);
+			$wf->schdayofmonth = json_encode($request['schdayofmonth']);
+			$wf->schdayofweek = json_encode($schdayofweek);
+			$wf->schannualdates = $schannualdates;
 			$wm->save($wf);
 		}else if($saveType=='edit'){
 			$wf = $wm->retrieve($request["workflow_id"]);
@@ -46,6 +73,11 @@ require_once("VTWorkflowUtils.php");
 			$wf->test = $conditions;
 			$wf->taskId = $taskId;
 			$wf->executionConditionAsLabel($executionCondition);
+			$wf->schtypeid = $request['schtypeid'];
+			$wf->schtime = VTCreateEventTask::conv12to24hour($request['schtime']);
+			$wf->schdayofmonth = json_encode($request['schdayofmonth']);
+			$wf->schdayofweek = json_encode($schdayofweek);
+			$wf->schannualdates = $schannualdates;
 			$wm->save($wf);
 		}else{
 			throw new Exception();

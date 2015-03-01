@@ -27,7 +27,7 @@ require_once 'include/Webservices/VtigerWebserviceObject.php';
 require_once('VTWorkflowUtils.php');
 
 /*
- * VTEventHandler 
+ * VTEventHandler
  */
 
 class VTWorkflowEventHandler extends VTEventHandler {
@@ -80,7 +80,11 @@ class VTWorkflowEventHandler extends VTEventHandler {
 						$doEvaluate = !($isNew);
 						break;
 					}
-                case VTWorkflowManager::$MANUAL: {
+				case VTWorkflowManager::$MANUAL: {
+						$doEvaluate = false;
+						break;
+					}
+				case VTWorkflowManager::$ON_SCHEDULE:{
 						$doEvaluate = false;
 						break;
 					}
