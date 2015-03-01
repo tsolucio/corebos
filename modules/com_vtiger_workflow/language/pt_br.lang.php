@@ -119,6 +119,17 @@ $mod_strings = array(
 'LBL_EXCEEDING_MAXIMUM_LIMIT' => 'Maximum limit exceeded',
 'LBL_NEXT_TRIGGER_TIME' => 'Next trigger time on',
 'LBL_MESSAGE' => 'Message',
+'UpdateInventoryProducts On Every Save' => 'Update Product Inventory',
+'Send Email to user when Notifyowner is True' => 'Send Email to user when Notifyowner is True',
+'Send Email to user when Portal User is True' => 'Send Email to user when Portal User is True',
+'Send Email to users on Potential creation' => 'Send Email to users on Potential creation',
+'Workflow for Contact Creation or Modification' => 'Send Email to Contact with Portal Login information',
+'Workflow for Ticket Created from Portal' => 'Workflow for Ticket Created from Portal',
+'Workflow for Ticket Updated from Portal' => 'Workflow for Ticket Updated from Portal',
+'Workflow for Ticket Change, not from the Portal' => 'Workflow for Ticket Change, not from the Portal',
+'Workflow for Events when Send Notification is True' => 'Workflow for Events when Send Notification is True',
+'Workflow for Calendar Todos when Send Notification is True' => 'Workflow for Calendar Todos when Send Notification is True',
+'Calculate or Update forecast amount' => 'Calculate or Update forecast amount',
 );
 
 ?>

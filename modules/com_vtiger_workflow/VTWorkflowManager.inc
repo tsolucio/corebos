@@ -207,7 +207,7 @@
 		function setup($row) {
 			$this->id = $row['workflow_id'];
 			$this->moduleName = $row['module_name'];
-			$this->description = to_html($row['summary']);
+			$this->description = to_html(getTranslatedString($row['summary'],'com_vtiger_workflow'));
 			$this->test = $row['test'];
 			$this->executionCondition = $row['execution_condition'];
 

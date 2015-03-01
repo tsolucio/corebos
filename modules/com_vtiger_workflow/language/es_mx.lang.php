@@ -119,5 +119,16 @@ $mod_strings = array(
 'LBL_SELECTED_DATES' => 'Fechas seleccionadas',
 'LBL_NEXT_TRIGGER_TIME' => 'Próxima ejecución',
 'LBL_MESSAGE' => 'Mensaje',
+'UpdateInventoryProducts On Every Save' => 'Actualizar inventario de productos',
+'Send Email to user when Notifyowner is True' => 'Envíar Email al usuario cuando Notificación Propietario está activado',
+'Send Email to user when Portal User is True' => 'Envíar Email al usuario cuando Portal de Usuario está activado',
+'Send Email to users on Potential creation' => 'Envíar Email al usuario en la creación de la Oportunidad',
+'Workflow for Contact Creation or Modification' => 'Flujo de Trabajo para notificar datos del Portal',
+'Workflow for Ticket Created from Portal' => 'Flujo de Trabajo para la Creación de Ticket desde el Portal',
+'Workflow for Ticket Updated from Portal' => 'Flujo de Trabajo para la Actualización de Ticket desde el Portal',
+'Workflow for Ticket Change, not from the Portal' => 'Flujo de Trabajo para la Actualización de Ticket, no desde el Portal',
+'Workflow for Events when Send Notification is True' => 'Flujo de Trabajo para Eventos cuando el Envío de Notificación está activado',
+'Workflow for Calendar Todos when Send Notification is True' => 'Flujo de Trabajo para Tareas de Calendario cuando Notificación de Envío está activado',
+'Calculate or Update forecast amount' => 'Calcular cantidad objetiva en oportunidad',
 );
 ?>
