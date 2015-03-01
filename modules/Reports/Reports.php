@@ -1686,8 +1686,7 @@ function getReportRelatedModules($module,$focus)
 			}
 		}
 	}
-
-
+	uasort($optionhtml, function($a,$b) {return (strtolower(getTranslatedString($a,$a)) < strtolower(getTranslatedString($b,$b))) ? -1 : 1;});
 	return $optionhtml;
 }
 
