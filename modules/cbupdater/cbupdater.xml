@@ -260,4 +260,11 @@
 	<classname>changeUitypes23To5</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Install On Schedule Workflows</description>
+	<filename>build/changeSets/create_workflow_onschedule.php</filename>
+	<classname>create_workflow_onschedule</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
