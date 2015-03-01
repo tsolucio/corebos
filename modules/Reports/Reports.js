@@ -472,45 +472,31 @@ function changeStepsback1()
 		}
 	}
 }
-function changeSteps()
-{
-	if(getObj('step1').style.display != 'none')
-	{
-		if (trim(document.NewRep.reportname.value) == "")
-		{
+function changeSteps() {
+	if(getObj('step1').style.display != 'none') {
+		if (trim(document.NewRep.reportname.value) == "") {
 			alert(alert_arr.MISSING_REPORT_NAME);
 			return false;
-		}else
-		{
-			new Ajax.Request(
-                        'index.php',
-                        {queue: {position: 'end', scope: 'command'},
-                                method: 'post',
-                                postBody: 'action=ReportsAjax&mode=ajax&file=CheckReport&module=Reports&check=reportCheck&reportName='+encodeURIComponent(document.NewRep.reportname.value),
-                                onComplete: function(response) {
-					if(response.responseText!=0)
-					{
+		} else {
+			new Ajax.Request('index.php',
+				{queue: {position: 'end', scope: 'command'},
+				method: 'post',
+				postBody: 'action=ReportsAjax&mode=ajax&file=CheckReport&module=Reports&check=reportCheck&reportName='+encodeURIComponent(document.NewRep.reportname.value),
+				onComplete: function(response) {
+					if(response.responseText!=0) {
 						alert(alert_arr.REPORT_NAME_EXISTS);
 						return false;
-					}
-					else
-					{
+					} else {
 						hide('step1');
-			                        show('step2');
-			                        document.getElementById('back_rep').disabled = false;
-                        			getObj('step1label').className = 'settingsTabList';
-			                        getObj('step2label').className = 'settingsTabSelected';
+						show('step2');
+						document.getElementById('back_rep').disabled = false;
+						getObj('step1label').className = 'settingsTabList';
+						getObj('step2label').className = 'settingsTabSelected';
 					}
-
-                                }
-                        }
-        	        );
-
+				}}
+			);
 		}
-
-	}
-	else
-	{
+	} else {
 		document.NewRep.submit();
 	}
 }
