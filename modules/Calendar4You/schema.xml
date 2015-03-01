@@ -55,7 +55,13 @@
 			<sql><![CDATA[CREATE TABLE IF NOT EXISTS `its4you_googlesync4you_access` (
   `userid` int(11) NOT NULL,
   `google_login` varchar(255) NOT NULL,
-  `google_password` varchar(255) NOT NULL
+  `google_password` varchar(255) DEFAULT NULL,
+  `google_apikey` varchar(250) NOT NULL,
+  `google_keyfile` varchar(250) NOT NULL,
+  `google_clientid` varchar(250) NOT NULL,
+  `refresh_token` varchar(250) NOT NULL,
+  `synctoken` varchar(250) NOT NULL,
+  `googleinsert` varchar(10) NOT NULL
 ) ENGINE=InnoDB]]></sql>
 		</table>
 		<table>
