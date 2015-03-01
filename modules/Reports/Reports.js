@@ -497,7 +497,19 @@ function changeSteps() {
 			);
 		}
 	} else {
-		document.NewRep.submit();
+		// only two related modules in report due to mysql performance limitations
+		var mods = document.getElementsByTagName("input");
+		var modsselected = 0;
+		for(var i = 0; i < mods.length; i++) {
+			if (mods[i].name.indexOf('secondarymodule_') == 0 && mods[i].checked) {
+				modsselected++;
+			}
+		}
+		if (modsselected<=2) {
+			document.NewRep.submit();
+		} else {
+			alert(alert_arr.MAXIMUM_OF_TWO_MODULES_PERMITTED);
+		}
 	}
 }
 function changeStepsback()

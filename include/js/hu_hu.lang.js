@@ -1,5 +1,4 @@
 /*********************************************************************************
-
 ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
  * The Original Code is:  vtiger CRM Open Source
@@ -347,4 +346,5 @@ var alert_arr = {
 	'LBL_LESS_THAN_HOURS_LATER' : 'less than hours later',
 	'LBL_MORE_THAN_HOURS_BEFORE' : 'more than hours before',
 	'LBL_MORE_THAN_HOURS_LATER' : 'more than hours later',
+	'MAXIMUM_OF_TWO_MODULES_PERMITTED' : 'A maximum of two modules is permitted.'
 };

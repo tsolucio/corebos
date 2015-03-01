@@ -372,4 +372,5 @@ var alert_arr = {
 	'LBL_LESS_THAN_HOURS_LATER' : 'menos de x horas después',
 	'LBL_MORE_THAN_HOURS_BEFORE' : 'más de x horas antes',
 	'LBL_MORE_THAN_HOURS_LATER' : 'más de x horas después',
+	'MAXIMUM_OF_TWO_MODULES_PERMITTED' : 'Solo se permite relacionar con un máximo de dos módulos.'
 };
