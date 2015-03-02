@@ -201,9 +201,13 @@ function getTaxId($type)
 	global $adb, $log;
 	$log->debug("Entering into getTaxId($type) function.");
 
-	$res = $adb->pquery("SELECT taxid FROM vtiger_inventorytaxinfo WHERE taxname=?", array($type));
-	$taxid = $adb->query_result($res,0,'taxid');
-
+	list($void,$taxid) = cbEventHandler::do_filter('corebos.filter.TaxCalculation.getTaxId', array($type, ''));
+	if ($taxid=='') {
+		$res = $adb->pquery("SELECT taxid FROM vtiger_inventorytaxinfo WHERE taxname=?", array($type));
+		if ($res and $adb->num_rows($res)>0) {
+			$taxid = $adb->query_result($res,0,'taxid');
+		}
+	}
 	$log->debug("Exiting from getTaxId($type) function. return value=$taxid");
 	return $taxid;
 }
@@ -217,11 +221,13 @@ function getTaxPercentage($type)
 	global $adb, $log;
 	$log->debug("Entering into getTaxPercentage($type) function.");
 
-	$taxpercentage = '';
-
-	$res = $adb->pquery("SELECT percentage FROM vtiger_inventorytaxinfo WHERE taxname = ?", array($type));
-	$taxpercentage = $adb->query_result($res,0,'percentage');
-
+	list($void,$taxpercentage) = cbEventHandler::do_filter('corebos.filter.TaxCalculation.getTaxPercentage', array($type, ''));
+	if ($taxpercentage=='') {
+		$res = $adb->pquery("SELECT percentage FROM vtiger_inventorytaxinfo WHERE taxname = ?", array($type));
+		if ($res and $adb->num_rows($res)>0) {
+			$taxpercentage = $adb->query_result($res,0,'percentage');
+		}
+	}
 	$log->debug("Exiting from getTaxPercentage($type) function. return value=$taxpercentage");
 	return $taxpercentage;
 }
@@ -237,20 +243,21 @@ function getProductTaxPercentage($type,$productid,$default='')
 	global $adb, $log;
 	$log->debug("Entering into getProductTaxPercentage($type,$productid) function.");
 
-	$taxpercentage = '';
-
-	$res = $adb->pquery("SELECT taxpercentage
+	list($void1,$void2,$taxpercentage) = cbEventHandler::do_filter('corebos.filter.TaxCalculation.getProductTaxPercentage', array($type, $productid, ''));
+	if ($taxpercentage=='') {
+		$res = $adb->pquery("SELECT taxpercentage
 			FROM vtiger_inventorytaxinfo
 			INNER JOIN vtiger_producttaxrel
 				ON vtiger_inventorytaxinfo.taxid = vtiger_producttaxrel.taxid
 			WHERE vtiger_producttaxrel.productid = ?
 			AND vtiger_inventorytaxinfo.taxname = ?", array($productid, $type));
-	$taxpercentage = $adb->query_result($res,0,'taxpercentage');
-
-	//This is to retrive the default configured value if the taxpercentage related to product is empty
+		if ($res and $adb->num_rows($res)>0) {
+			$taxpercentage = $adb->query_result($res,0,'taxpercentage');
+		}
+	}
+	//This is to retrieve the default configured value if the taxpercentage related to product is empty
 	if($taxpercentage == '' && $default == 'default')
 		$taxpercentage = getTaxPercentage($type);
-
 
 	$log->debug("Exiting from getProductTaxPercentage($productid,$type) function. return value=$taxpercentage");
 	return $taxpercentage;
@@ -287,7 +294,7 @@ function addInventoryHistory($module, $id, $relatedname, $total, $history_fldval
 /**	Function used to get the list of Tax types as a array
  *	@param string $available - available or empty where as default is all, if available then the taxes which are available now will be returned otherwise all taxes will be returned
  *      @param string $sh - sh or empty, if sh passed then the shipping and handling related taxes will be returned
- *      @param string $mode - edit or empty, if mode is edit, then it will return taxes including desabled.
+ *      @param string $mode - edit or empty, if mode is edit, then it will return taxes including disabled.
  *      @param string $id - crmid or empty, getting crmid to get tax values..
  *	return array $taxtypes - return all the tax types as a array
  */
@@ -296,6 +303,15 @@ function getAllTaxes($available='all', $sh='',$mode='',$id='')
 	global $adb, $log;
 	$log->debug("Entering into the function getAllTaxes($available,$sh,$mode,$id)");
 	$taxtypes = Array();
+	if (!empty($id)) {
+		$crmtype = getSalesEntityType($id);
+	} else {
+		$crmtype = '';
+	}
+	if (empty($crmtype) or !in_array($crmtype, array('Invoice','SalesOrder','PurchaseOrder','Quotes'))) {
+		list($void1,$void2,$void3,$void4,$taxtypes) = cbEventHandler::do_filter('corebos.filter.TaxCalculation.getAllTaxes', array($available,$sh,$mode,$id, array()));
+	}
+	if (count($taxtypes)==0) {
 	if($sh != '' && $sh == 'sh')
 	{
 		$tablename = 'vtiger_shippingtaxinfo';
@@ -356,8 +372,8 @@ function getAllTaxes($available='all', $sh='',$mode='',$id='')
 		$taxtypes[$i]['percentage'] = $adb->query_result($res,$i,'percentage');
 		$taxtypes[$i]['deleted'] = $adb->query_result($res,$i,'deleted');
 	}
+	} // corebos tax calculation
 	$log->debug("Exit from the function getAllTaxes($available,$sh,$mode,$id)");
-
 	return $taxtypes;
 }
 
@@ -374,6 +390,8 @@ function getTaxDetailsForProduct($productid, $available='all')
 	$tax_details = array();
 	if($productid != '')
 	{
+		list($void1,$void2,$tax_details) = cbEventHandler::do_filter('corebos.filter.TaxCalculation.getTaxDetailsForProduct', array($productid, $available, array()));
+		if (count($tax_details)==0) {
 		//where condition added to avoid to retrieve the non available taxes
 		$where = '';
 		if($available != 'all' && $available == 'available')
@@ -403,6 +421,7 @@ function getTaxDetailsForProduct($productid, $available='all')
 			$tax_details[$i]['taxlabel'] = $adb->query_result($res,$i,'taxlabel');
 			$tax_details[$i]['percentage'] = $adb->query_result($res,$i,'taxpercentage');
 			$tax_details[$i]['deleted'] = $adb->query_result($res,$i,'deleted');
+		}
 		}
 	}
 	else
