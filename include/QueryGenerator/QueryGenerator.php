@@ -580,6 +580,9 @@ class QueryGenerator {
 			$fieldSqlList[$index] = $fieldSql;
 		}
 
+		// This is needed as there can be condition in different order and there is an assumption in makeGroupSqlReplacements API
+		// that it expects the array in an order and then replaces the sql with its the corresponding place
+		ksort($fieldSqlList);
 		$groupSql = $this->makeGroupSqlReplacements($fieldSqlList, $groupSql);
 		if($this->conditionInstanceCount > 0) {
 			$this->conditionalWhere = $groupSql;
@@ -770,6 +773,9 @@ class QueryGenerator {
 
 	public function addCondition($fieldname,$value,$operator,$glue= null,$newGroup = false,$newGroupType = null) {
 		$conditionNumber = $this->conditionInstanceCount++;
+		if($glue != null && $conditionNumber > 0)
+			$this->addConditionGlue ($glue);
+
 		$this->groupInfo .= "$conditionNumber ";
 		$this->whereFields[] = $fieldname;
 		$this->reset();
