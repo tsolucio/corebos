@@ -51,6 +51,7 @@ class WorkFlowScheduler {
 	public function getEligibleWorkflowRecords($workflow) {
 		$adb = $this->db;
 		$query = $this->getWorkflowQuery($workflow);
+		// echo $query."\n"; // for debugging > get query on screen
 		$result = $adb->query($query);
 		$noOfRecords = $adb->num_rows($result);
 		$recordsList = array();
@@ -151,6 +152,7 @@ class WorkFlowScheduler {
 		$noOfConditions = count($conditions);
 		//Algorithm :
 		//1. If the query has already where condition then start a new group with and condition, else start a group
+		//1.5 Open a global parenthesis to encapsulate the whole condition (required to get the or joins correct)
 		//2. Foreach of the condition, if its a condition in the same group just append with the existing joincondition
 		//3. If its a new group, then start the group with the group join.
 		//4. And for the first condition in the new group, dont append any joincondition.
@@ -161,6 +163,8 @@ class WorkFlowScheduler {
 			} else {
 				$queryGenerator->startGroup('');
 			}
+			$queryGenerator->startGroup('');
+			$previous_condition = array();
 			foreach ($conditions as $index => $condition) {
 				$condition = get_object_vars($condition);  // to convert object to array
 				$operation = $condition['operation'];
@@ -188,10 +192,11 @@ class WorkFlowScheduler {
 					}
 				}
 
+				if(empty($columnCondition) || $index > 0) {
+					$columnCondition = $previous_condition['joincondition'];
+				}
 				if($index > 0 && $groupId != $previous_condition['groupid']) {	//if first condition in new group, send empty condition to append
 					$columnCondition = null;
-				} else if(empty($columnCondition) && $index > 0) {
-					$columnCondition = $previous_condition['joincondition'];
 				}
 				$value = html_entity_decode($value);
 				preg_match('/(\w+) : \((\w+)\) (\w+)/', $condition['fieldname'], $matches);
@@ -206,6 +211,7 @@ class WorkFlowScheduler {
 				}
 				$previous_condition = $condition;
 			}
+			$queryGenerator->endGroup();
 			$queryGenerator->endGroup();
 		}
 	}
