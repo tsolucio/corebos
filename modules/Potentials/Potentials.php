@@ -12,13 +12,6 @@
  * All Rights Reserved.
  * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Potentials/Potentials.php,v 1.65 2005/04/28 08:08:27 rank Exp $
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
 
 include_once('config.php');
 require_once('include/logging.php');
@@ -213,13 +206,21 @@ class Potentials extends CRMEntity {
 
 		$button = '';
 
-		$search_string = '';
+		$search_string = '&fromPotential=true&acc_id=';  // leave it empty for compatibility
 		$relrs = $adb->pquery('select related_to from vtiger_potential where potentialid=?', array($id));
 		if ($relrs and $adb->num_rows($relrs)==1) {
 			$relatedid = $adb->query_result($relrs,0,0);
 			$reltype = getSalesEntityType($relatedid);
 			if ($reltype=='Accounts') {
 				$search_string = '&fromPotential=true&acc_id='.$relatedid;
+			} elseif ($reltype=='Contacts') {
+				$relrs = $adb->pquery('select accountid from vtiger_contactdetails where contactid=?', array($relatedid));
+				if ($relrs and $adb->num_rows($relrs)==1) {
+					$relatedid = $adb->query_result($relrs,0,0);
+					if (!empty($relatedid)) {
+						$search_string = '&fromPotential=true&acc_id='.$relatedid;
+					}
+				}
 			}
 		}
 
