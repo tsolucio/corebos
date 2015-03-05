@@ -7,6 +7,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ******************************************************************************/
+require_once('modules/com_vtiger_workflow/VTEntityCache.inc');
+require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
+require_once 'modules/com_vtiger_workflow/VTSimpleTemplate.inc';
+
 interface VTExpressionEnv{
 	function get($var);
 }
@@ -317,12 +321,17 @@ class VTFieldExpressionEvaluater{
 	}
 
 	function env($sym){
+		global $adb, $current_user, $log;
 		if($this->env) {
+			if (substr($sym->value, 0, 1)=='$') {
+				$entityCache = new VTEntityCache($current_user);
+				$fnt = new VTSimpleTemplate($sym->value);
+				$val = $fnt->render($entityCache,$this->env->id);
+			} else {
 			$val = $this->env->get($sym->value);
 			$module = Vtiger_Module::getInstance($this->env->moduleName);
 			$field = Vtiger_Field::getInstance($sym->value,$module);
 			if ($field) {
-				global $adb,$log;
 				$rsfld = $adb->pquery('select * from vtiger_field where fieldid=?',array($field->id));
 				$field = WebserviceField::fromQueryResult($adb, $rsfld, 0);
 				$fieldType = $field->getFieldDataType();
@@ -340,6 +349,7 @@ class VTFieldExpressionEvaluater{
 						}
 					}
 				}
+			}
 			}
 			return $val;
 		} else {
