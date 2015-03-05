@@ -194,14 +194,14 @@ class Potentials extends CRMEntity {
 	 * Contributor(s): ______________________________________..
 	 */
 	function get_contacts($id, $cur_tab_id, $rel_tab_id, $actions=false) {
-		global $log, $singlepane_view,$currentModule,$current_user;
+		global $adb,$log, $singlepane_view,$currentModule,$current_user;
 		$log->debug("Entering get_contacts(".$id.") method ...");
 		$this_module = $currentModule;
 
-        $related_module = vtlib_getModuleNameById($rel_tab_id);
+		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/$related_module.php");
 		$other = new $related_module();
-        vtlib_setup_modulevars($related_module, $other);
+		vtlib_setup_modulevars($related_module, $other);
 		$singular_modname = vtlib_toSingular($related_module);
 
 		$parenttab = getParentTab();
@@ -213,8 +213,15 @@ class Potentials extends CRMEntity {
 
 		$button = '';
 
-		$accountid = $this->column_fields['related_to'];
-		$search_string = "&fromPotential=true&acc_id=$accountid";
+		$search_string = '';
+		$relrs = $adb->pquery('select related_to from vtiger_potential where potentialid=?', array($id));
+		if ($relrs and $adb->num_rows($relrs)==1) {
+			$relatedid = $adb->query_result($relrs,0,0);
+			$reltype = getSalesEntityType($relatedid);
+			if ($reltype=='Accounts') {
+				$search_string = '&fromPotential=true&acc_id='.$relatedid;
+			}
+		}
 
 		if($actions) {
 			if(is_string($actions)) $actions = explode(',', strtoupper($actions));
