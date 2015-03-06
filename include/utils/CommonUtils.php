@@ -18,6 +18,11 @@ require_once('include/utils/RecurringType.php');
 require_once('include/utils/EmailTemplate.php');
 require_once 'include/QueryGenerator/QueryGenerator.php';
 require_once 'include/ListView/ListViewController.php';
+require_once('modules/com_vtiger_workflow/VTEntityCache.inc');
+require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
+require_once 'modules/com_vtiger_workflow/VTSimpleTemplateOnData.inc';
+require_once 'include/Webservices/Retrieve.php';
+require_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
 
 /**
  * Check if user id belongs to a system admin.
@@ -1146,6 +1151,9 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 					$sql = fixPostgresQuery($sql, $log, 0);
 			}
 		}
+		if($mode == '') {
+			$col_fields = getAdvancedDefaultValues($module, $col_fields, $tabid);
+		}
 		$result = $adb->pquery($sql, $params);
 		$getBlockInfo = getBlockInformation($module, $result, $col_fields, $tabid, $block_label, $mode);
 	}
@@ -1159,6 +1167,91 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 	}
 	$_SESSION['BLOCKINITIALSTATUS'] = $aBlockStatus;
 	return $getBlockInfo;
+}
+
+function getAdvancedDefaultValues($module, $col_fields, $tabid) {
+	global $adb,$log, $current_user;
+	$entityCache = new VTEntityCache($current_user);
+	$sql = "SELECT * FROM vtiger_field WHERE vtiger_field.tabid=? and defaultvalue is not null and defaultvalue != '' ORDER BY block,sequence";
+	$result = $adb->pquery($sql, array($tabid));
+	$fldinfo = $cleanwsid = array();
+	// we set reference fields first so we can get fields on related modules later
+	while ($finf = $adb->fetch_array($result)) {
+		$field = WebserviceField::fromArray($adb, $finf);
+		$fieldType = $field->getFieldDataType();
+		if ($fieldType=='reference') {
+			// reference fields can only be a number or another field
+			if (is_numeric($finf['defaultvalue'])) {
+				$wsid = VTSimpleTemplateOnData::cbgetWSEntityId(getSalesEntityType($finf['defaultvalue']));
+				$refval = $wsid.$finf['defaultvalue'];
+				if($col_fields[$finf['fieldname']]=='')
+					$cleanwsid[$finf['fieldname']] = $finf['defaultvalue'];
+			} elseif (substr($finf['defaultvalue'], 0, 2)=='$(') {
+				$fnt = new VTSimpleTemplateOnData($finf['defaultvalue']);
+				$refval = $fnt->render($entityCache,$module,$col_fields);
+				if($col_fields[$finf['fieldname']]=='')
+					list($void,$cleanwsid[$finf['fieldname']]) = explode('x',$refval);
+			}
+			if($col_fields[$finf['fieldname']]=='')
+				$col_fields[$finf['fieldname']] = $refval;
+		} elseif ($fieldType === 'owner' and is_numeric($finf['defaultvalue'])) {
+			$userId = getUserId_Ol($finf['defaultvalue']);
+			$groupId = getGrpId($finf['defaultvalue']);
+			if (($userId != 0 || $groupId != 0) && empty($col_fields[$finf['fieldname']])) {
+				if ($userId == 0) {
+					$col_fields[$finf['fieldname']] = $groupId;
+					$cleanwsid[$finf['fieldname']] = $groupId;
+				} else {
+					$wsid = VTSimpleTemplateOnData::cbgetWSEntityId('Users');
+					$col_fields[$finf['fieldname']] = $wsid.$userId;
+					$cleanwsid[$finf['fieldname']] = $userId;
+				}
+			}
+		} else {
+			$fldinfo[] = array('type'=>$finf['defaultvaluetype'],'field'=>$field);
+		}
+	}
+	// special support for default assigned user
+	if ($col_fields['assigned_user_id']=='') {
+		$cleanwsid['assigned_user_id']='';
+		$wsid = VTSimpleTemplateOnData::cbgetWSEntityId('Users');
+		$col_fields['assigned_user_id'] = $wsid.$current_user->id;
+	}
+	foreach ($fldinfo as $fieldinfo) {
+		$field = $fieldinfo['field'];
+		$fieldValue = $field->getDefault();
+		$fieldValueType = $fieldinfo['type'];
+		if ($fieldValueType == 'fieldname') {
+			$fnt = new VTSimpleTemplateOnData($fieldValue);
+			$fieldValue = $fnt->render($entityCache,$module,$col_fields);
+		} elseif ($fieldValueType == 'expression') {
+			$fieldValue = preg_replace('/<br(\s+)?\/?>/i', ' ', $fieldValue);
+			$fieldValue = str_replace("''", "' '", $fieldValue);
+			$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($fieldValue)));
+			$expression = $parser->expression();
+			$exprEvaluater = new VTFieldExpressionEvaluater($expression);
+			$fieldValue = $exprEvaluater->evaluate($entity);
+		} else {
+			if (preg_match('/([^:]+):boolean$/', $fieldValue, $match)) {
+				$fieldValue = $match[1];
+				if ($fieldValue == 'true') {
+					$fieldValue = '1';
+				} else {
+					$fieldValue = '0';
+				}
+			}
+			if ($field->getFieldDataType() === 'date') {
+				$date = new DateTimeField($fieldValue);
+				$fieldValue = $date->getDisplayDate();
+			}
+		}
+		if($col_fields[$field->getFieldName()]=='')
+			$col_fields[$field->getFieldName()] = $fieldValue;
+	}
+	foreach ($cleanwsid as $fld => $val) {
+		$col_fields[$fld] = $val;
+	}
+	return $col_fields;
 }
 
 /**

@@ -267,4 +267,11 @@
 	<classname>create_workflow_onschedule</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add column to fields for default value calcluation type</description>
+	<filename>build/changeSets/field_defaultvalue_calc_type.php</filename>
+	<classname>field_defaultvalue_calc_type</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
