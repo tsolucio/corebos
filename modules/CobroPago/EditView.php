@@ -30,6 +30,9 @@ if (!empty($_REQUEST['related_id']) and ($_REQUEST['return_module']=='Invoice' o
 if (!empty($_REQUEST['related_id']) and $_REQUEST['return_module']=='PurchaseOrder') {
 	$_REQUEST['parent_id']=$adb->query_result($adb->pquery('select vendorid from vtiger_purchaseorder where purchaseorderid=?',array($_REQUEST['related_id'])),0,0);
 }
+if (!empty($_REQUEST['related_id']) and $_REQUEST['return_module']=='Potentials') {
+	$_REQUEST['parent_id']=$adb->query_result($adb->pquery('select related_to from vtiger_potential where potentialid=?',array($_REQUEST['related_id'])),0,0);
+}
 if($record) {
 	$focus->id = $record;
 	$focus->mode = 'edit';
@@ -72,7 +75,7 @@ if($disp_view == 'edit_view') {
 	$smarty->assign('BLOCKS', getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields));
 } else {
 	$smarty->assign('BASBLOCKS', getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields, 'BAS'));
-	$smarty->assign('ADVBLOCKS',getBlocks($currentModule,$disp_view,$mode,$focus->column_fields,'ADV'));
+	$smarty->assign('ADVBLOCKS',getBlocks($currentModule,$disp_view,$focus->mode,$focus->column_fields,'ADV'));
 }
 
 $smarty->assign('OP_MODE',$disp_view);

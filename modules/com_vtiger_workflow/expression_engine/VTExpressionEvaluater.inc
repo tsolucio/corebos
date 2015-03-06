@@ -206,7 +206,7 @@ function __vt_uppercasewords($arr) {
 	}
 }
 
-function __vt_round($num,$decs) {
+function __vt_round($arr) {
 	if (count($arr)<1 or count($arr)>2) return $arr[0];
 	$decs = (isset($arr[1]) ? $arr[1] : 0);
 	if (is_numeric($arr[0]) and is_numeric($decs)) {
