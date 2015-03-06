@@ -96,7 +96,7 @@ if (empty($_REQUEST['record']) && $focus->mode != 'edit') {
 }
 $disp_view = getView($focus->mode);
 
-$smarty->assign("BLOCKS", getBlocks($currentModule, $disp_view, $mode, $focus->column_fields));
+$smarty->assign("BLOCKS", getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields));
 
 $smarty->assign("OP_MODE", $disp_view);
 

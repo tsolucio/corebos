@@ -106,10 +106,10 @@ $image_path=$theme_path."images/";
 
 $disp_view = getView($focus->mode);
 if($disp_view == 'edit_view')
-	$smarty->assign("BLOCKS",getBlocks($currentModule,$disp_view,$mode,$focus->column_fields));
+	$smarty->assign("BLOCKS",getBlocks($currentModule,$disp_view,$focus->mode,$focus->column_fields));
 else
 {
-	$smarty->assign("BASBLOCKS",getBlocks($currentModule,$disp_view,$mode,$focus->column_fields,'BAS'));
+	$smarty->assign("BASBLOCKS",getBlocks($currentModule,$disp_view,$focus->mode,$focus->column_fields,'BAS'));
 }
 $smarty->assign("OP_MODE",$disp_view);
 $category = getParentTab();

@@ -12,13 +12,6 @@
  * All Rights Reserved.
  * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Emails/EditView.php,v 1.25 2005/04/18 10:37:49 samk Exp $
- * Description: TODO:  To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
 
 require_once('Smarty_setup.php');
 require_once('data/Tracker.php');
@@ -264,7 +257,7 @@ $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 
 $disp_view = getView($focus->mode);
-$details = getBlocks($currentModule,$disp_view,$mode,$focus->column_fields);
+$details = getBlocks($currentModule,$disp_view,$focus->mode,$focus->column_fields);
 //changed this below line to view description in all language - bharath
 $smarty->assign("BLOCKS",$details[$mod_strings['LBL_EMAIL_INFORMATION']]); 
 $smarty->assign("MODULE",$currentModule);
