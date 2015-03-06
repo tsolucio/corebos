@@ -24,7 +24,7 @@ class field_defaultvalue_calc_type extends cbupdaterWorker {
 			global $adb;
 			$result = $adb->pquery("show columns from vtiger_field like ?", array('defaultvaluetype'));
 			if (!($adb->num_rows($result))) {
-				$this->ExecuteQuery("ALTER TABLE vtiger_field ADD defaultvaluetype VARCHAR(30) DEFAULT 'explicit'", array());
+				$this->ExecuteQuery("ALTER TABLE vtiger_field ADD defaultvaluetype VARCHAR(30) DEFAULT 'rawtext'", array());
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
