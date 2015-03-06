@@ -194,25 +194,26 @@ function VTUpdateFieldsTask($, fieldvaluemapping){
 				options+'</select>');
 			$("#save_fieldvalues_"+mappingno+"_value_type").attr("value", "rawtext");
 		}
-		var functions = {
-			string:function(opType, mappingno){
-				var value = $(format("#save_fieldvalues_%s_value", mappingno));
-				value.replaceWith(format('<input type="text" id="save_fieldvalues_%s_value" '+
-					'value="" class="expressionvalue" readonly />', mappingno));
+		function forStringField(opType, mappingno){
+			var value = $(format("#save_fieldvalues_%s_value", mappingno));
+			value.replaceWith(format('<input type="text" id="save_fieldvalues_%s_value" '+
+				'value="" class="expressionvalue" readonly />', mappingno));
 
-				var fv = $(format("#save_fieldvalues_%s_value", mappingno));
-				fv.bind("focus", function() {
-					editFieldExpression($(this), opType);
-				});
-				fv.bind("click", function() {
-					editFieldExpression($(this), opType);
-				});
-				fv.bind("keypress", function() {
-					editFieldExpression($(this), opType);
-				});
-			},
-			picklist:forPicklist,
-			multipicklist:forPicklist
+			var fv = $(format("#save_fieldvalues_%s_value", mappingno));
+			fv.bind("focus", function() {
+				editFieldExpression($(this), opType);
+			});
+			fv.bind("click", function() {
+				editFieldExpression($(this), opType);
+			});
+			fv.bind("keypress", function() {
+				editFieldExpression($(this), opType);
+			});
+		}
+		var functions = {
+			string:forStringField,
+			picklist:forStringField,
+			multipicklist:forStringField
 		};
 		var ret = functions[fieldType];
 		if(ret==null){
