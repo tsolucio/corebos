@@ -33,5 +33,6 @@
 	{/foreach}
 </select>
 {else}
-<input id="{$_FIELD_ELEMENT_ID}" name="{$_FIELD_ELEMENT_ID}" type="text" class="detailedViewTextBox" value="{$_FIELD_SELECTED_VALUE}" />
+<input id="{$_FIELD_ELEMENT_ID}_type" name="{$_FIELD_ELEMENT_ID}_type" type="hidden" value="{$_FIELD_SELECTED_VALUE_TYPE}" />
+<input id="{$_FIELD_ELEMENT_ID}" name="{$_FIELD_ELEMENT_ID}" type="text" class="detailedViewTextBox" value="{$_FIELD_SELECTED_VALUE}" onclick="le_editFieldExpression($(this), 'string');"/>
 {/if}

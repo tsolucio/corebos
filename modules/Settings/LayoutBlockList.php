@@ -612,6 +612,8 @@ function updateFieldProperties() {
 	$presence_check = vtlib_purify($_REQUEST['isPresent']);
 	$massedit_check = vtlib_purify($_REQUEST['massedit']);
 	$defaultvalue = vtlib_purify($_REQUEST['defaultvalue']);
+	$defaultvaluetype = vtlib_purify($_REQUEST['defaultvaluetype']);
+	$defaultvaluetype = empty($defaultvaluetype) ? 'rawtext' : $defaultvaluetype;
 
 	if(!empty($defaultvalue)) {
 		if($uitype == 56) {
@@ -692,8 +694,8 @@ function updateFieldProperties() {
 	$massedit_params = array($massedit,$fieldid);
 	$adb->pquery($massedit_query,$massedit_params);
 
-	$defaultvalue_query = "update vtiger_field set defaultvalue=? where fieldid = ? and fieldname not in (?) AND displaytype != 2";
-	$defaultvalue_params = array($defaultvalue,$fieldid,$fieldname_list);
+	$defaultvalue_query = "update vtiger_field set defaultvalue=?,defaultvaluetype=? where fieldid = ? and fieldname not in (?) AND displaytype != 2";
+	$defaultvalue_params = array($defaultvalue,$defaultvaluetype,$fieldid,$fieldname_list);
 	$adb->pquery($defaultvalue_query, $defaultvalue_params);
 
 }
