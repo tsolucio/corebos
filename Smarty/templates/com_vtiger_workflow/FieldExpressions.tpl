@@ -9,12 +9,12 @@
  ************************************************************************************/
 -->*}
 
-<div id='editpopup' class='layerPopup' style='display:none;' >
+<div id='editpopup' class='layerPopup' style='display:none;z-index: 10;' >
     <div id='editpopup_draghandle' style='cursor: move;'>
         <table width="100%" cellspacing="0" cellpadding="5" border="0" class="layerHeadingULine">
             <tr>
                 <td width="60%" align="left" class="layerPopupHeading">
-                {'LBL_SET_VALUE'|@getTranslatedString:$MODULE}
+                {'LBL_SET_VALUE'|@getTranslatedString:'com_vtiger_workflow'}
                 </td>
                 <td width="40%" align="right">
                     <a href="javascript:void(0);" id="editpopup_close">
@@ -31,17 +31,17 @@
                     <tr valign="top">
                         <td>
                             <select id='editpopup_expression_type' class='small'>
-                                <option value="rawtext">{$MOD.LBL_RAW_TEXT}</option>
-                                <option value="fieldname">{$MOD.LBL_FIELD}</option>
-                                <option value="expression">{$MOD.LBL_EXPRESSION}</option>
+                                <option value="rawtext">{'LBL_RAW_TEXT'|@getTranslatedString:'com_vtiger_workflow'}</option>
+                                <option value="fieldname">{'LBL_FIELD'|@getTranslatedString:'com_vtiger_workflow'}</option>
+                                <option value="expression">{'LBL_EXPRESSION'|@getTranslatedString:'com_vtiger_workflow'}</option>
                             </select>
 
                             <select id='editpopup_fieldnames' class='small'>
-                                <option value="">{$MOD.LBL_USE_FIELD_VALUE_DASHDASH}</option>
+                                <option value="">{'LBL_USE_FIELD_VALUE_DASHDASH'|@getTranslatedString:'com_vtiger_workflow'}</option>
                             </select>
 
                             <select id='editpopup_functions' class='small'>
-                                <option value="">{$MOD.LBL_USE_FUNCTION_DASHDASH}</option>
+                                <option value="">{'LBL_USE_FUNCTION_DASHDASH'|@getTranslatedString:'com_vtiger_workflow'}</option>
                             </select>
                         </td>
                     </tr>
@@ -66,7 +66,7 @@
     <div class="helpmessagebox" id="text_help" style="display:none;">
         <table width="100%" cellspacing="1" cellpadding="5" border="0">
             <tr valign="top">
-                <td><b>{$MOD.LBL_RAW_TEXT}</b></td>
+                <td><b>{'LBL_RAW_TEXT'|@getTranslatedString:'com_vtiger_workflow'}</b></td>
             </tr>
             <tr valign="top">
                 <td>2000</td>
@@ -80,7 +80,7 @@
     <div class="helpmessagebox" id="fieldname_help" style="display:none;">
         <table width="100%" cellspacing="1" cellpadding="5" border="0">
             <tr valign="top">
-                <td><b>{$MOD.LBL_FIELD}</b></td>
+                <td><b>{'LBL_FIELD'|@getTranslatedString:'com_vtiger_workflow'}</b></td>
             </tr>
             <tr valign="top">
                 <td><i>annual_revenue</i></td>
@@ -94,7 +94,7 @@
     <div class="helpmessagebox" id="expression_help" style="display:none;">
         <table width="100%" cellspacing="1" cellpadding="5" border="0">
             <tr valign="top">
-                <td><b>{$MOD.LBL_EXPRESSION}</b></td>
+                <td><b>{'LBL_EXPRESSION'|@getTranslatedString:'com_vtiger_workflow'}</b></td>
             </tr>
             <tr valign="top">
                 <td><i>annual_revenue</i> / 12</td>
