@@ -279,8 +279,8 @@ function fieldExpressionPopup(moduleName, $){
 
 	$('#editpopup_fieldnames').bind('change', function(){
 		var textarea = $('#editpopup_expression').get(0);
-		var value = '$'+$(this).attr('value');
-		if(value != '') value += ' ';
+		var value = '$'+$(this).attr('value') + ' ';
+		if(value == '$ ') return true;
 		//http://alexking.org/blog/2003/06/02/inserting-at-the-cursor-using-javascript
 		if (document.selection) {
 			textarea.focus();
