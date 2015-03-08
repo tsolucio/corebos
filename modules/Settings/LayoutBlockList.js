@@ -5,8 +5,7 @@ function le_editFieldExpression(fieldValueNode, fieldType) {
 function check(){
 	var blocklabel = document.getElementById('blocklabel');
 	var val = trim(blocklabel.value);
-	if(val == "")
-	{
+	if(val == "") {
 		alert(alert_arr.BLOCK_NAME_CANNOT_BE_BLANK);
 		return false;
 	}
@@ -16,14 +15,14 @@ function check(){
 function getCustomFieldList(customField)
 {
 	var modulename = customField.options[customField.options.selectedIndex].value;
-	$('module_info').innerHTML = '{$MOD.LBL_CUSTOM_FILED_IN} "'+modulename+'" {$APP.LBL_MODULE}';
+	$('#module_info').html('{$MOD.LBL_CUSTOM_FILED_IN} "'+modulename+'" {$APP.LBL_MODULE}');
 	new Ajax.Request(
 		'index.php',
 		{queue: {position: 'end', scope: 'command'},
 			method: 'post',
 			postBody: 'module=Settings&action=SettingsAjax&file=LayoutBlockList&fld_module='+modulename+'&parenttab=Settings&ajax=true',
 			onComplete: function(response) {
-				$("cfList").update(response.responseText);
+				$("#cfList").html(response.responseText);
 			}
 		}
 	);
@@ -31,15 +30,15 @@ function getCustomFieldList(customField)
 
 function changeFieldorder(what_to_do,fieldid,blockid,modulename)
 {
-	$('vtbusy_info').style.display = "block";
+	$('#vtbusy_info').show();
 	new Ajax.Request(
 		'index.php',
 		{queue: {position: 'end', scope: 'command'},
 			method: 'post',
 			postBody: 'module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=changeOrder&fld_module='+modulename+'&parenttab=Settings&what_to_do='+what_to_do+'&fieldid='+fieldid+'&blockid='+blockid+'&ajax=true',
 			onComplete: function(response) {
-				$("cfList").update(response.responseText);
-				$('vtbusy_info').style.display = "none";
+				$("#cfList").html(response.responseText);
+				$('#vtbusy_info').hide();
 			}
 		}
 	);
@@ -47,14 +46,14 @@ function changeFieldorder(what_to_do,fieldid,blockid,modulename)
 
 function changeShowstatus(tabid,blockid,modulename)
 {
-	var display_status = $('display_status_'+blockid).value;
+	var display_status = $('#display_status_'+blockid).val();
 	new Ajax.Request(
 		'index.php',
 		{queue: {position: 'end', scope: 'command'},
 			method: 'post',
 			postBody: 'module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=changeOrder&fld_module='+modulename+'&parenttab=Settings&what_to_do='+display_status+'&tabid='+tabid+'&blockid='+blockid+'&ajax=true',
 			onComplete: function(response) {
-				$("cfList").update(response.responseText);
+				$("#cfList").html(response.responseText);
 			}
 		}
 	);
@@ -62,15 +61,15 @@ function changeShowstatus(tabid,blockid,modulename)
 
 function changeBlockorder(what_to_do,tabid,blockid,modulename)
 {
-	$('vtbusy_info').style.display = "block";
+	$('#vtbusy_info').show();
 		new Ajax.Request(
 		'index.php',
 		{queue: {position: 'end', scope: 'command'},
 			method: 'post',
 			postBody: 'module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=changeOrder&fld_module='+modulename+'&parenttab=Settings&what_to_do='+what_to_do+'&tabid='+tabid+'&blockid='+blockid+'&ajax=true',
 			onComplete: function(response) {
-				$("cfList").update(response.responseText);
-				$('vtbusy_info').style.display = "none";
+				$("#cfList").html(response.responseText);
+				$('#vtbusy_info').hide();
 			}
 		}
 	);
@@ -79,16 +78,16 @@ function changeBlockorder(what_to_do,tabid,blockid,modulename)
 function deleteCustomField(id, fld_module, colName, uitype)
 {
 	if(confirm(alert_arr.ARE_YOU_SURE_YOU_WANT_TO_DELETE)){
-	$('vtbusy_info').style.display = "block";
+	$('#vtbusy_info').show();
 		new Ajax.Request(
 			'index.php',
 			{queue: {position: 'end', scope: 'command'},
 				method: 'post',
 				postBody: 'module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=deleteCustomField&ajax=true&fld_module='+fld_module+'&fld_id='+id+'&colName='+colName+'&uitype='+uitype,
 				onComplete: function(response) {
-					$("cfList").update(response.responseText);
+					$("#cfList").html(response.responseText);
 					gselected_fieldtype = '';
-					$('vtbusy_info').style.display = "none";
+					$('#vtbusy_info').hide();
 				}
 			}
 		);
@@ -103,15 +102,15 @@ function deleteCustomBlock(module,blockid,no){
 		return false;
 	}else{
 		if(confirm(alert_arr.ARE_YOU_SURE_YOU_WANT_TO_DELETE_BLOCK)){
-			$('vtbusy_info').style.display = "block";
+			$('#vtbusy_info').show();
 			new Ajax.Request(
 				'index.php',
 				{queue : {position : 'end', scope: 'command'},
 				method : 'post',
 				postBody: 'module=Settings&action=SettingsAjax&fld_module='+module+'&file=LayoutBlockList&sub_mode=deleteCustomBlock&ajax=true&blockid='+blockid,
 				onComplete: function(response) {
-					$("cfList").update(response.responseText);
-					$('vtbusy_info').style.display = "none";
+					$("#cfList").html(response.responseText);
+					$('#vtbusy_info').hide();
 				}
 				}
 			);
@@ -127,7 +126,7 @@ function getCreateCustomBlockForm(modulename,mode)
 	var blocklabel = document.getElementById('blocklabel');
 	var val = trim(blocklabel.value);
 	var blockid = document.getElementById('after_blockid').value;
-	$('vtbusy_info').style.display = "block";
+	$('#vtbusy_info').show();
 		new Ajax.Request(
 		'index.php',
 		{queue: {position: 'end', scope: 'command'},
@@ -135,7 +134,7 @@ function getCreateCustomBlockForm(modulename,mode)
 			postBody: 'module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=addBlock&fld_module='+modulename+'&parenttab=Settings&ajax=true&mode='+mode+'&blocklabel='+
 			encodeURIComponent(val)+'&after_blockid='+blockid,
 			onComplete: function(response) {
-				$('vtbusy_info').style.display = "none";
+				$('#vtbusy_info').hide();
 				var str = response.responseText;
 				if(str == 'ERROR'){
 					alert(alert_arr.LABEL_ALREADY_EXISTS);
@@ -144,7 +143,7 @@ function getCreateCustomBlockForm(modulename,mode)
 					alert(alert_arr.LENGTH_OUT_OF_RANGE);
 					return false;
 				}else{
-					$("cfList").update(str);
+					$("#cfList").html(str);
 				}
 				gselected_fieldtype = '';
 			}
@@ -154,33 +153,33 @@ function getCreateCustomBlockForm(modulename,mode)
 
 function saveFieldInfo(fieldid,module,sub_mode,typeofdata){
 	urlstring = '';
-	var mandatory_check = $('mandatory_check_'+fieldid);
-	var presence_check = $('presence_check_'+fieldid);
-	var quickcreate_check = $('quickcreate_check_'+fieldid);
-	var massedit_check = $('massedit_check_'+fieldid);
-	var defaultvalue_check = $('defaultvalue_check_'+fieldid);
-	
+	var mandatory_check = $('#mandatory_check_'+fieldid);
+	var presence_check = $('#presence_check_'+fieldid);
+	var quickcreate_check = $('#quickcreate_check_'+fieldid);
+	var massedit_check = $('#massedit_check_'+fieldid);
+	var defaultvalue_check = $('#defaultvalue_check_'+fieldid);
+
 	if(mandatory_check != null){
-		urlstring = urlstring+'&ismandatory=' + mandatory_check.checked;
+		urlstring = urlstring+'&ismandatory=' + mandatory_check.attr('checked');
 	}
-	if(presence_check != null){	
-		urlstring = urlstring + '&isPresent=' + presence_check.checked;
-	}	
+	if(presence_check != null){
+		urlstring = urlstring + '&isPresent=' + presence_check.attr('checked');
+	}
 	if(quickcreate_check != null){
-		urlstring = urlstring + '&quickcreate=' + quickcreate_check.checked;
-	}	
+		urlstring = urlstring + '&quickcreate=' + quickcreate_check.attr('checked');
+	}
 	if(massedit_check != null){
-		urlstring = urlstring + '&massedit=' + massedit_check.checked;
+		urlstring = urlstring + '&massedit=' + massedit_check.attr('checked');
 	}
 	if(defaultvalue_check != null) {
 		var defaultvalueelement = document.getElementById('defaultvalue_'+fieldid);
 		if(defaultvalueelement != null) {
 			var defaultvalue = defaultvalueelement.value;
-			if(defaultvalue_check.checked == true) {
+			if(defaultvalue_check.attr('checked') == true) {
 				var typeinfo = typeofdata.split('~');
 				var inputtype = typeinfo[0];
 				if(inputtype == 'C') {
-					defaultvalue = (defaultvalueelement.checked == true)?'1':'0';
+					defaultvalue = (defaultvalueelement.attr('checked') == true)?'1':'0';
 				}
 				if(validateInputData(defaultvalue, alert_arr['LBL_DEFAULT_VALUE_FOR_THIS_FIELD'], typeofdata) == false) {
 					document.getElementById('defaultvalue_'+fieldid).focus();
@@ -192,7 +191,6 @@ function saveFieldInfo(fieldid,module,sub_mode,typeofdata){
 		} else {
 			defaultvalue = '';
 		}
-
 		urlstring = urlstring + '&defaultvalue=' + encodeURIComponent(defaultvalue);
 		if (defaultvalue!='') {
 			var defaultvaluetype = document.getElementById('defaultvalue_'+fieldid+'_type');
@@ -208,8 +206,8 @@ function saveFieldInfo(fieldid,module,sub_mode,typeofdata){
 				postBody:'module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode='+sub_mode+'&parenttab=Settings'+
 					'&fieldid='+fieldid+'&fld_module='+module+'&ajax=true'+urlstring,
 				onComplete: function(response) {
-					$("cfList").update(response.responseText);
-					$('vtbusy_info').style.display = "none";
+					$("#cfList").html(response.responseText);
+					$('#vtbusy_info').hide();
 					fnvshNrm('editfield_+"fieldid"');
 				}
 			}
@@ -247,20 +245,20 @@ function getCreateCustomFieldForm(modulename,blockid,mode)
 	var fldLength = document.getElementById("fldLength_"+blockid).value;
 	var fldDecimal = document.getElementById("fldDecimal_"+blockid).value;
 	var fldPickList = encodeURIComponent(document.getElementById("fldPickList_"+blockid).value);
-	VtigerJS_DialogBox.block();
+	$('#__vtigerjs_dialogbox_olayer__').show();
 	new Ajax.Request(
 		'index.php',
 		{queue: {position: 'end', scope: 'command'},
 			method: 'post',
 			postBody: 'module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=addCustomField&fld_module='+modulename+'&ajax=true&blockid='+blockid+'&fieldType='+type+'&fldLabel='+label+'&fldLength='+fldLength+'&fldDecimal='+fldDecimal+'&fldPickList='+fldPickList,
 			onComplete: function(response) {
-				VtigerJS_DialogBox.unblock();
+				$('#__vtigerjs_dialogbox_olayer__').hide();
 				var str = response.responseText;
 				if(str == 'ERROR'){
 					alert(alert_arr.LABEL_ALREADY_EXISTS);
 					return false;
 				}else{
-					$("cfList").update(str);
+					$("#cfList").html(str);
 				}
 				gselected_fieldtype = '';
 			}
@@ -298,15 +296,15 @@ function show_move_hiddenfields(modulename,tabid,blockid,sub_mode){
 			}
 		}
 	}
-	$('vtbusy_info').style.display = "block";
+	$('#vtbusy_info').show();
 	new Ajax.Request(
 		'index.php',
 		{queue: {position: 'end', scope: 'command'},
 			method: 'post',
 			postBody: 'module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode='+sub_mode+'&fld_module='+modulename+'&parenttab=Settings&ajax=true&tabid='+tabid+'&blockid='+blockid+'&selected='+selectedids_str,
 			onComplete: function(response) {
-				$("cfList").update(response.responseText);
-				$('vtbusy_info').style.display = "none";
+				$("#cfList").html(response.responseText);
+				$('#vtbusy_info').hide();
 				}
 			}
 		);
@@ -314,31 +312,31 @@ function show_move_hiddenfields(modulename,tabid,blockid,sub_mode){
 
 function changeRelatedListorder(what_to_do,tabid,sequence,id,module)
 {
-	$('vtbusy_info').style.display = "block";
+	$('#vtbusy_info').show();
 	new Ajax.Request(
 		'index.php',
 		{queue: {position: 'end', scope: 'command'},
 			method: 'post',
 			postBody: 'module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=changeRelatedInfoOrder&sequence='+sequence+'&fld_module='+module+'&parenttab=Settings&what_to_do='+what_to_do+'&tabid='+tabid+'&id='+id+'&ajax=true',
 			onComplete: function(response) {
-			$("relatedlistdiv").innerHTML=response.responseText;
-			$('vtbusy_info').style.display = "none";
+			$("#relatedlistdiv").html(response.responseText);
+			$('#vtbusy_info').hide();
 			}
 		}
 	);
 }
 
 function callRelatedList(module){
-	$('vtbusy_info').style.display = "block";
+	$('#vtbusy_info').show();
 	new Ajax.Request(
 		'index.php',
 		{queue: {position: 'end', scope: 'command'},
 			method: 'post',
 			postBody: 'module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=getRelatedInfoOrder&parenttab=Settings&formodule='+module+'&ajax=true',
 			onComplete: function(response) {
-			$("relatedlistdiv").innerHTML=response.responseText;
+			$("#relatedlistdiv").html(response.responseText);
 			fnvshNrm('relatedlistdiv');
-			$('vtbusy_info').style.display = "none";
+			$('#vtbusy_info').hide();
 			}
 		}
 	);
