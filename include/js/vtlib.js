@@ -102,7 +102,7 @@ var vtlib_listview = {
 	 * }
 	 */
     _handlers : {},
-		
+
     /**
 	 * Register handler function for the event
 	 */
@@ -130,8 +130,7 @@ var vtlib_listview = {
             }
         }
     },
-	
-    /**
+	/**
 	 * Trigger handler function for the event
 	 */
     trigger  : function(evttype, node) {
@@ -154,12 +153,12 @@ var vtlib_listview = {
                     'module' : cellhandler.attributes['vtmodule'].nodeValue,
                     'fieldname': cellhandler.attributes['vtfieldname'].nodeValue,
                     'recordid': cellhandler.attributes['vtrecordid'].nodeValue
-                }
+                };
                 vtlib_listview.invoke_handler(evttype, event_params);
             }
         }
-    }
-}
+	}
+};
 /** END **/
 
 /** 
