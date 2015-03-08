@@ -267,4 +267,11 @@
 	<classname>create_workflow_onschedule</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Import/Export/Dedup Campaigns</description>
+	<filename>build/changeSets/importexportdedup_campaigns.php</filename>
+	<classname>importexportdedup_campaigns</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
