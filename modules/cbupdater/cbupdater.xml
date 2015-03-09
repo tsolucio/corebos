@@ -274,4 +274,11 @@
 	<classname>importexportdedup_campaigns</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Set Service or Product by default in ProductLines</description>
+	<filename>build/changeSets/gvServiceOrProduct.php</filename>
+	<classname>gvServiceOrProduct</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

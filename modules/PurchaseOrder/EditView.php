@@ -244,6 +244,8 @@ $smarty->assign("PICKIST_DEPENDENCY_DATASOURCE", Zend_Json::encode($picklistDepe
 // Gather the help information associated with fields
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
 // END
+//Get Service or Product by default when create
+$smarty->assign('PRODUCT_OR_SERVICE', GlobalVariable::getVariable('product_service_default', 'Products', $currentModule, $current_user->id));
 
 if($focus->mode == 'edit')
 	$smarty->display('Inventory/InventoryEditView.tpl');
