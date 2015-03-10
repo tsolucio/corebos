@@ -281,4 +281,11 @@
 	<classname>gvServiceOrProduct</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Add icaon to Add Payment link</description>
+	<filename>build/changeSets/addIconToAddpaymentAction.php</filename>
+	<classname>addIconToAddpaymentAction</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
