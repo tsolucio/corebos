@@ -27,6 +27,15 @@ class VTSimpleTemplateOnData extends VTSimpleTemplate {
 		return $this->parseTemplate();
 	}
 
+	/**
+	 * Get the data from the entity object as an array.
+	 *
+	 * @return An array representation of the module data.
+	 */
+	function getData(){
+		return $this->data;
+	}
+
 	function get($fieldName){
 		return $this->data[$fieldName];
 	}
