@@ -67,7 +67,7 @@ if ($fld_module == 'Calendar')
 else
 	$smarty->assign("CFENTRIES", getCFLeadMapping($fld_module));
 if (isset($_REQUEST["duplicate"]) && $_REQUEST["duplicate"] == "yes") {
-	$error = getTranslatedString('ERR_CUSTOM_FIELD_WITH_NAME', 'Settings') . vtlib_purify($_REQUEST["fldlabel"]) . getTranslatedString('ERR_ALREADY_EXISTS', 'Settings') . ' ' . getTranslatedString('ERR_SPECIFY_DIFFERENT_LABEL', 'Settings');
+	$error = getTranslatedString('ERR_CUSTOM_FIELD_WITH_NAME', 'Settings') . vtlib_purify($_REQUEST["fldlabel"]) . ' ' . getTranslatedString('ERR_ALREADY_EXISTS', 'Settings') . ' ' . getTranslatedString('ERR_SPECIFY_DIFFERENT_LABEL', 'Settings');
 	$smarty->assign("DUPLICATE_ERROR", $error);
 }
 

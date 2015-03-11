@@ -429,7 +429,7 @@ vtiger_help_controller = function() {
             fnDataMerge: this.dataMerge,
             runtimeVars: this.runtimeVars()
         });
-    }
+    };
 
     /**
      * Merge data with given context (variable map)
