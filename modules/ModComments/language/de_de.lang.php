@@ -30,6 +30,7 @@ $mod_strings = Array (
 
 'Comments Information'=> 'Kommentare',
 'ModComments ID' => 'Kommentar-ID ',
+'Related Assigned Email' => 'Related Assigned Email',
 );
 
 ?>

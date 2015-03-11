@@ -38,6 +38,7 @@ $mod_strings = Array (
 'LBL_LAST5'=> 'Ultimos 5',
 
 'ModComments ID' => 'Id Comentario',
+'Related Assigned Email' => 'Email Usuario Relacionado',
 );
 
 ?>

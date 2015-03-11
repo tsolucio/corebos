@@ -288,4 +288,11 @@
 	<classname>addIconToAddpaymentAction</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>ModComments: add related assignedto email for workflows</description>
+	<filename>build/changeSets/modcommentsassignedtoemail.php</filename>
+	<classname>modcommentsassignedtoemail</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

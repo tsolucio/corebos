@@ -30,7 +30,7 @@ $mod_strings = Array (
 'LBL_ON' => 'on',
 'LBL_MINE' => 'Miei',
 'LBL_LAST5'=> 'Ultimi 5',
-
+'Related Assigned Email' => 'Related Assigned Email',
 );
 
 ?>

@@ -32,6 +32,7 @@ $mod_strings = array(
 	'LBL_MINE' => 'Az én',
 	'LBL_LAST5' => 'Utolsó 5',
 	'ModComments ID' => 'Feljegyzés AZ',
-	'Comments Information' => 'Feljegyzés adatai'
+	'Comments Information' => 'Feljegyzés adatai',
+	'Related Assigned Email' => 'Related Assigned Email',
 );
 ?>
