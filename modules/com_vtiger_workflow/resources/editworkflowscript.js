@@ -278,7 +278,7 @@ function editworkflowscript($, conditions){
 	function resetFields(opType, condno){
 		var ops = $("#save_condition_"+condno+"_operation");
 		var selOperations = operations[opType.name];
-		var selTransOperations = transOperations[opType.name];
+		var selTransOperations = new Array();
 		var selectedOperations = new Array();
 
 		// Remove 'has changed' operation for reference fields
@@ -289,10 +289,12 @@ function editworkflowscript($, conditions){
 			for(var i=0; i<selOperations.length; ++i) {
 				if(selOperations[i] != 'has changed') {
 					selectedOperations.push(selOperations[i]);
+					selTransOperations.push(transOperations[opType.name][i]);
 				}
 			}
 		} else {
 			selectedOperations = selOperations;
+			selTransOperations = transOperations[opType.name];
 		}
 
 		var l = dict(zip(selectedOperations, selTransOperations));
