@@ -259,7 +259,8 @@ function getCalendarCustomFields($tabid,$mode='edit',$col_fields='') {
 	$log->debug("Entering getCalendarCustomFields($tabid, $mode, $col_fields)");
 	
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
-	
+	$isduplicate = vtlib_purify($_REQUEST['isDuplicate']);
+	$calmode = vtlib_purify($_REQUEST['action']);
 	$block = getBlockId($tabid,"LBL_CUSTOM_INFORMATION");
 	$custparams = array($block, $tabid);
 	
@@ -293,7 +294,7 @@ function getCalendarCustomFields($tabid,$mode='edit',$col_fields='') {
 		$generatedtype = $adb->query_result($custresult,$i,"generatedtype");
 		$typeofdata = $adb->query_result($custresult,$i,"typeofdata");
 		$defaultvalue = $adb->query_result($custresult,$i,"defaultvalue");
-		if(empty($col_fields[$fieldname])) {
+		if(empty($col_fields[$fieldname]) && $mode != 'detail_view' && !$isduplicate && $calmode != 'EventEditView' && $calmode != 'EditView') {
 			$col_fields[$fieldname] = $defaultvalue;
 		}
 

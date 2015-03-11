@@ -1987,27 +1987,21 @@ function getNoOfAssocProducts($module,$focus,$seid='')
 
 function getBlockInformation($module, $result, $col_fields,$tabid,$block_label,$mode)
 {
-	global $log;
+	global $log, $adb, $current_user, $mod_strings;
 	$log->debug("Entering getBlockInformation(".$module.",". $result.",". $col_fields.",".$tabid.",".$block_label.") method ...");
-	global $adb;
+	$isduplicate = vtlib_purify($_REQUEST['isDuplicate']);
 	$editview_arr = Array();
-
-	global $current_user,$mod_strings;
 
 	$noofrows = $adb->num_rows($result);
 	if (($module == 'Accounts' || $module == 'Contacts' || $module == 'Quotes' || $module == 'PurchaseOrder' || $module == 'SalesOrder'|| $module == 'Invoice') && $block == 2)
 	{
-		 global $log;
-                $log->info("module is ".$module);
-
-			$mvAdd_flag = true;
-			$moveAddress = "<td rowspan='6' valign='middle' align='center'><input title='Copy billing address to shipping address'  class='button' onclick='return copyAddressRight(EditView)'  type='button' name='copyright' value='&raquo;' style='padding:0px 2px 0px 2px;font-size:12px'><br><br>
-				<input title='Copy shipping address to billing address'  class='button' onclick='return copyAddressLeft(EditView)'  type='button' name='copyleft' value='&laquo;' style='padding:0px 2px 0px 2px;font-size:12px'></td>";
+		$log->info("module is ".$module);
+		$mvAdd_flag = true;
+		$moveAddress = "<td rowspan='6' valign='middle' align='center'><input title='Copy billing address to shipping address'  class='button' onclick='return copyAddressRight(EditView)'  type='button' name='copyright' value='&raquo;' style='padding:0px 2px 0px 2px;font-size:12px'><br><br>
+			<input title='Copy shipping address to billing address'  class='button' onclick='return copyAddressLeft(EditView)'  type='button' name='copyleft' value='&laquo;' style='padding:0px 2px 0px 2px;font-size:12px'></td>";
 	}
 
-
 	for($i=0; $i<$noofrows; $i++) {
-
 		$fieldtablename = $adb->query_result($result,$i,"tablename");
 		$fieldcolname = $adb->query_result($result,$i,"columnname");
 		$uitype = $adb->query_result($result,$i,"uitype");
@@ -2018,7 +2012,7 @@ function getBlockInformation($module, $result, $col_fields,$tabid,$block_label,$
 		$generatedtype = $adb->query_result($result,$i,"generatedtype");
 		$typeofdata = $adb->query_result($result,$i,"typeofdata");
 		$defaultvalue = $adb->query_result($result,$i,"defaultvalue");
-		if($mode == '' && empty($col_fields[$fieldname])) {
+		if($mode == '' && empty($col_fields[$fieldname]) && !$isduplicate) {
 			$col_fields[$fieldname] = $defaultvalue;
 		}
 
