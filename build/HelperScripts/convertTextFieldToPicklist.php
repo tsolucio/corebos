@@ -28,6 +28,7 @@ if(!empty($fieldname) && !empty($module)){
 			$uitype =$adb->query_result($data,0,'uitype');
 			if ($uitype==1) {
 				$table =$adb->query_result($data,0,'tablename');
+				$adb->query("update $table set $fieldname = '--None--' where $fieldname is null or trim($fieldname)=''");
 				$picklistvalues=$adb->query("Select distinct $fieldname from $table");
 				$list=array();
 				for($i=0;$i<$adb->num_rows($picklistvalues);$i++){
