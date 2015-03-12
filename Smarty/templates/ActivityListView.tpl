@@ -279,7 +279,6 @@ function alphabetic(module,url,dataid)
 </div>		
 {*<!-- Searching UI -->*}
 
-
 <div class="small" style="padding: 10px;">
 	<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
 		<tr>
@@ -378,9 +377,7 @@ function alphabetic(module,url,dataid)
 						     <input class="crmbutton small edit" type="button" value="{$button_label}" onclick="return change(this,'changeowner')"/>
                                                 {/if}
                                         {/if}
-
-                                 {/foreach}						
-                
+                                 {/foreach}
 		                {* vtlib customization: Custom link buttons on the List view basic buttons *}
 						{if $CUSTOM_LINKS && $CUSTOM_LINKS.LISTVIEWBASIC}
 							{foreach item=CUSTOMLINK from=$CUSTOM_LINKS.LISTVIEWBASIC}
@@ -432,6 +429,22 @@ function alphabetic(module,url,dataid)
 			 <table border=0 cellspacing=1 cellpadding=3 width=100% class="lvt small" class="small">
 			      <tr>
              			 <td class="lvtCol"><input type="checkbox"  name="selectall" id="selectCurrentPageRec" onClick=toggleSelect_ListView(this.checked,"selected_id")></td>
+					{if $SQLERROR}
+					<tr><td style="background-color:#efefef;height:340px" align="center" colspan="{$smarty.foreach.listviewforeach.iteration+1}">
+					<div style="border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 45%; position: relative; z-index: 10000000;">
+					<table border="0" cellpadding="5" cellspacing="0" width="98%">
+					<tr>
+						<td rowspan="2" width="25%"><img src="{'empty.jpg'|@vtiger_imageurl:$THEME}" height="60" width="61"></td>
+						<td style="border-bottom: 1px solid rgb(204, 204, 204);" nowrap="nowrap" width="75%">
+							<span class="genHeaderSmall">{$APP.LBL_NO} {$APP.ACTIVITIES} {$APP.LBL_FOUND} !</span>
+						</td>
+					</tr>
+					<tr>
+						<td class="small" align="left" nowrap="nowrap">{'ERROR_GETTING_FILTER'|@getTranslatedString:$MODULE}</td>
+					</tr>
+					</table>
+					</div></td></tr>
+					{else}
 				 {foreach name="listviewforeach" item=header from=$LISTHEADER}
         			 <td class="lvtCol">{$header}</td>
 			         {/foreach}
@@ -445,7 +458,7 @@ function alphabetic(module,url,dataid)
 			      {foreach item=entity key=entity_id from=$LISTENTITY}
 			      <tr bgcolor=white onMouseOver="this.className='lvtColDataHover'" onMouseOut="this.className='lvtColData'" id="row_{$entity_id}">
 				 <td width="2%"><input type="checkbox" NAME="selected_id" id="{$entity_id}" value= '{$entity_id}' onClick=check_object(this); toggleSelectAll(this.name,"selectall")></td>
-				 {foreach item=data from=$entity}	
+				 {foreach item=data from=$entity}
 				 <td>{$data}</td>
 	                         {/foreach}
 			      </tr>
@@ -481,9 +494,10 @@ function alphabetic(module,url,dataid)
 							</tr>
 							</table>
 							{/if}
-						</div>					
-				</td></tr>	
+						</div>
+				</td></tr>
 			      {/foreach}
+				{/if} {* SQL ERROR ELSE END *}
 			 </table>
 			 </div>
 			 <table border=0 cellspacing=0 cellpadding=2 width=100%>
