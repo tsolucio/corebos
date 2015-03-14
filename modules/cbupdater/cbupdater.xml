@@ -295,4 +295,11 @@
 	<classname>modcommentsassignedtoemail</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Update currency exchange rates cron.</description>
+	<filename>build/changeSets/UpdateExchangeRate.php</filename>
+	<classname>UpdateExchangeRateCron</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
 </updatesChangeLog>
