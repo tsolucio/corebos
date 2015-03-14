@@ -2233,12 +2233,16 @@ class ReportRun extends CRMEntity
 							$cur_value = $custom_field_values[$i];
 							if($field->getUIType() == '72') {
 								$curid_value = explode("::", $cur_value);
-								$currency_id = $curid_value[0];
-								$currency_value = $curid_value[1];
-								$cur_sym_rate = getCurrencySymbolandCRate($currency_id);
-
+								if (count($curid_value)==2) {
+									$currency_id = $curid_value[0];
+									$currency_value = $curid_value[1];
+									$cur_sym_rate = getCurrencySymbolandCRate($currency_id);
+								} else {
+									$currency_value = $curid_value[0];
+									$cur_sym_rate['symbol'] = '';
+								}
 								$arraylists[$headerLabel] = number_format($currency_value,2,'.','');
-								$arraylists[getTranslatedString('Currency')] = $cur_sym_rate['symbol'];
+								$arraylists[getTranslatedString('LBL_CURRENCY').' '.$headerLabel] = $cur_sym_rate['symbol'];
 							} else {
 								$currencyField = new CurrencyField($cur_value);
 								$fieldvalue = $currencyField->getDisplayValue();
