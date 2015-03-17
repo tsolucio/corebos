@@ -1265,6 +1265,7 @@ $app_strings = array (
      'Quantity' => 'Unidades',
      'Net Total' => 'Total Neto',
      'Send SMS' => 'Enviar SMS',
+     'Add Payment' => 'Añadir Cobro Pago',
 
      'LBL_MORE'=>'Más',
      'LBL_CRM_SETTINGS' => 'Configuración CRM',

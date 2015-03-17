@@ -1270,6 +1270,7 @@ $app_strings = array (
      'LBL_DESELECT_ALL' => 'Desmarcar todo',
      'LBL_RECORDS_IN' => 'registros en',
      'LBL_FOLDER' => 'carpeta',
+     'Add Payment' => 'Añadir Cobro Pago',
 
      //added for creating a custom lead map row in UI
      'LBL_ADD_MAPPING'=> 'Agregar Vinculación',

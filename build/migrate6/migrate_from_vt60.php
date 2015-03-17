@@ -287,9 +287,9 @@ ExecuteQuery("UPDATE `vtiger_settings_field` set `linkto` = 'index.php?module=To
 //Delete new Blocks in Calendar
 ExecuteQuery("UPDATE vtiger_blocks SET blocklabel = '' WHERE blocklabel = 'LBL_DESCRIPTION_INFORMATION' AND tabid = '9'");
 ExecuteQuery("UPDATE vtiger_blocks SET blocklabel = '' WHERE blocklabel = 'LBL_DESCRIPTION_INFORMATION' AND tabid = '16'");
-ExecuteQuery("DELETE FROM vtiger_blocks WHERE blocklabel = 'LBL_REMINDER_INFORMATION' AND tabid = 16");
-ExecuteQuery("DELETE FROM vtiger_blocks WHERE blocklabel = 'LBL_RECURRENCE_INFORMATION' AND tabid = 16");
-ExecuteQuery("DELETE FROM vtiger_blocks WHERE blocklabel = 'LBL_RELATED_TO' AND tabid = 16");
+ExecuteQuery("UPDATE vtiger_blocks SET blocklabel = '' WHERE blocklabel = 'LBL_REMINDER_INFORMATION' AND tabid = 16");
+ExecuteQuery("UPDATE vtiger_field SET block = '41' WHERE tabid = '16' and fieldname NOT IN('reminder_time','contact_id')");
+ExecuteQuery("UPDATE vtiger_field SET block = '19' WHERE tabid = '16' and fieldname = 'contact_id'");
 
 
 // Change HelpDesk Workflows

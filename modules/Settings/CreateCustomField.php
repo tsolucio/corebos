@@ -114,7 +114,7 @@ $smarty->assign("THEME", $theme);
 $smarty->assign("FLD_MODULE", vtlib_purify($_REQUEST['fld_module']));
 if(isset($_REQUEST["duplicate"]) && $_REQUEST["duplicate"] == "yes")
 {
-	$error=$mod_strings['ERR_CUSTOM_FIELD_WITH_NAME']. $_REQUEST["fldlabel"] .$mod_strings['ERR_ALREADY_EXISTS'] . ' ' .$mod_strings['ERR_SPECIFY_DIFFERENT_LABEL'];
+	$error=$mod_strings['ERR_CUSTOM_FIELD_WITH_NAME']. $_REQUEST["fldlabel"] . ' ' .$mod_strings['ERR_ALREADY_EXISTS'] . ' ' .$mod_strings['ERR_SPECIFY_DIFFERENT_LABEL'];
 	$smarty->assign("DUPLICATE_ERROR", $error);
 	$customfield_fieldlabel=vtlib_purify($_REQUEST["fldlabel"]);
 	$fieldlength=vtlib_purify($_REQUEST["fldlength"]);

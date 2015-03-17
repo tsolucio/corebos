@@ -5,14 +5,10 @@
  * The Original Code is:  vtiger CRM Open Source
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
- * All Rights Reserved.
- *
+ * All Rights Reserved. *
  ********************************************************************************/
-
 require_once('include/utils/utils.php');
 require_once('include/logging.php');
-require_once('include/database/PearDatabase.php');
-
 require_once('modules/Settings/MailScanner/core/MailScannerInfo.php');
 require_once('modules/Settings/MailScanner/core/MailBox.php');
 require_once('modules/Settings/MailScanner/core/MailScanner.php');
@@ -31,16 +27,14 @@ if(!function_exists('imap_open')) {
  */
 function service_MailScanner_performScanNow($scannerinfo, $debug) {
 	/** If the scanner is not enabled, stop. */
-	if($scannerinfo->isvalid) { 
+	if($scannerinfo->isvalid) {
 		echo "Scanning " . $scannerinfo->server . " in progress\n";
 
 		/** Start the scanning. */
 		$scanner = new Vtiger_MailScanner($scannerinfo);
 		$scanner->debug = $debug;
 		$scanner->performScanNow();
-		
 		echo "\nScanning " . $scannerinfo->server . " completed\n";
-		
 	} else {
 		echo "Failed! [{$scannerinfo->scannername}] is not enabled for scanning!";
 	}
@@ -57,27 +51,19 @@ $debug = true;
 
 /** Pick up the mail scanner for scanning. */
 if(isset($_REQUEST['scannername'])) {
-	
-	// Target scannername specified?	
+	// Target scannername specified?
 	$scannername = vtlib_purify($_REQUEST['scannername']);
 	$scannerinfo = new Vtiger_MailScannerInfo($scannername);
-	
 	service_MailScanner_performScanNow($scannerinfo, $debug);
-	
 } else {
-	
 	// Scan all the configured mailscanners?
-	
 	$scannerinfos = Vtiger_MailScannerInfo::listAll();
 	if(empty($scannerinfos)) {
-		
 		echo "No mailbox configured for scanning!";
-		
 	} else {
 		foreach($scannerinfos as $scannerinfo) {
 			service_MailScanner_performScanNow($scannerinfo, $debug);
 		}
-	}	
+	}
 }
-
 ?>

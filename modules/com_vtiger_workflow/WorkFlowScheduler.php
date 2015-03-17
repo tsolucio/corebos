@@ -198,14 +198,21 @@ class WorkFlowScheduler {
 				if($index > 0 && $groupId != $previous_condition['groupid']) {	//if first condition in new group, send empty condition to append
 					$columnCondition = null;
 				}
-				$value = html_entity_decode($value);
-				preg_match('/(\w+) : \((\w+)\) (\w+)/', $condition['fieldname'], $matches);
-				if (count($matches) != 0) {
-					list($full, $referenceField, $referenceModule, $fieldname) = $matches;
+				$referenceField = null;
+				if ($valueType=='expression') {
+					$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($value)));
+					$expression = $parser->expression();
+					$exprEvaluater = new VTFieldExpressionEvaluater($expression);
+					$value = $exprEvaluater->evaluate(false);
+				} else {
+					$value = html_entity_decode($value);
+					preg_match('/(\w+) : \((\w+)\) (\w+)/', $condition['fieldname'], $matches);
+					if (count($matches) != 0) {
+						list($full, $referenceField, $referenceModule, $fieldname) = $matches;
+					}
 				}
 				if($referenceField) {
 					$queryGenerator->addReferenceModuleFieldCondition($referenceModule, $referenceField, $fieldname, $value, $operator, $columnCondition);
-					$referenceField = null;
 				} else {
 					$queryGenerator->addCondition($fieldname, $value, $operator, $columnCondition);
 				}

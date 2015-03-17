@@ -364,8 +364,8 @@ function fieldExpressionPopup(moduleName, $){
 				var value = $("#editpopup_expression");
 				value.replaceWith(
 					'<select id="editpopup_expression" value="true" class="value"> \
-						<option value="true:boolean">True</option>\
-						<option value="false:boolean">False</option>\
+						<option value="true:boolean">'+alert_arr.YES+'</option>\
+						<option value="false:boolean">'+alert_arr.NO+'</option>\
 					</select>');
 			},
 			integer: forInteger,

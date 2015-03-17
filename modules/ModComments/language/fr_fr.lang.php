@@ -29,6 +29,7 @@ $mod_strings = Array (
 	'LBL_MINE' => 'Les miens',
 	'LBL_LAST5'=> 'Les 5 derniers',
 	'ModComments ID' => 'Commentaire ID ',
+	'Related Assigned Email' => 'Related Assigned Email',
 );
 
 ?>

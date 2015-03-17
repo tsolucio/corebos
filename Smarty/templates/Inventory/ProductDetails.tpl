@@ -168,8 +168,14 @@ function displayCoords(currObj,obj,mode,curr_row)
 			<td class="small">
 				<input type="text" id="productName1" name="productName1" class="small" style="width:70%" value="{$PRODUCT_NAME}" readonly />
 				<input type="hidden" id="hdnProductId1" name="hdnProductId1" value="{$PRODUCT_ID}" />
-				<input type="hidden" id="lineItemType1" name="lineItemType1" value="Products" />
-				&nbsp;<img id="searchIcon1" title="Products" src="{'products.gif'|@vtiger_imageurl:$THEME}" style="cursor: pointer;" align="absmiddle" onclick="productPickList(this,'{$MODULE}',1)" />
+				{if $PRODUCT_OR_SERVICE eq 'Services'}
+					<input type="hidden" id="lineItemType1" name="lineItemType1" value="Services" />
+					&nbsp;<img id="searchIcon1" title="Services" src="{'services.gif'|@vtiger_imageurl:$THEME}" style="cursor: pointer;" align="absmiddle" onclick="servicePickList(this,'{$MODULE}',1)" />
+				{else}
+					<input type="hidden" id="lineItemType1" name="lineItemType1" value="Products" />
+					&nbsp;<img id="searchIcon1" title="Products" src="{'products.gif'|@vtiger_imageurl:$THEME}" style="cursor: pointer;" align="absmiddle" onclick="productPickList(this,'{$MODULE}',1)" />
+				{/if}
+
 			</td>
 		</tr>
 		<tr>

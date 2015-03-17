@@ -249,7 +249,7 @@ function setMailerProperties($mail,$subject,$contents,$from_email,$from_name,$to
 	}
 
 	$mail->IsHTML(true);		// set email format to HTML
-
+	$mail->AllowEmpty = true; //allow sent empty body.
 	return;
 }
 

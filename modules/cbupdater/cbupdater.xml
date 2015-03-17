@@ -269,6 +269,41 @@
 </changeSet>
 <changeSet>
 	<author>joebordes</author>
+	<description>Import/Export/Dedup Campaigns</description>
+	<filename>build/changeSets/importexportdedup_campaigns.php</filename>
+	<classname>importexportdedup_campaigns</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Set Service or Product by default in ProductLines</description>
+	<filename>build/changeSets/gvServiceOrProduct.php</filename>
+	<classname>gvServiceOrProduct</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Add icaon to Add Payment link</description>
+	<filename>build/changeSets/addIconToAddpaymentAction.php</filename>
+	<classname>addIconToAddpaymentAction</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>ModComments: add related assignedto email for workflows</description>
+	<filename>build/changeSets/modcommentsassignedtoemail.php</filename>
+	<classname>modcommentsassignedtoemail</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Update currency exchange rates cron.</description>
+	<filename>build/changeSets/UpdateExchangeRate.php</filename>
+	<classname>UpdateExchangeRateCron</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
 	<description>Add column to fields for default value calcluation type</description>
 	<filename>build/changeSets/field_defaultvalue_calc_type.php</filename>
 	<classname>field_defaultvalue_calc_type</classname>

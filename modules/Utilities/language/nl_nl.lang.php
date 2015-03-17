@@ -1,5 +1,4 @@
 <?php
-
 /*******************************************************************************
  * The contents of this file are subject to the following licences:
  * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
@@ -31,5 +30,6 @@
  * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
 
-
+$mod_strings = array(
+);
 ?>

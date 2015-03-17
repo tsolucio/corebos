@@ -11,8 +11,8 @@
 *  Language     : Español
 *  Version      : 504
 *  Created Date : 2007-03-30 Last change : 2007-10-10
-*  Author       : Rafael Soler
  ********************************************************************************/
 
-
+$mod_strings = array(
+);
 ?>

@@ -75,7 +75,13 @@ class Campaigns extends CRMEntity {
 
 	// For Alphabetical search
 	var $def_basicsearch_col = 'campaignname';
-	
+
+	// Required Information for enabling Import feature
+	var $required_fields = Array('campaignname'=>1);
+
+	// Callback function list during Importing
+	var $special_functions = Array('set_import_assigned_user');
+
 	function Campaigns() 
 	{
 		$this->log =LoggerManager::getLogger('campaign');
@@ -646,6 +652,233 @@ class Campaigns extends CRMEntity {
 				parent::save_related_module($module, $crmid, $with_module, $with_crmid);
 			}
 		}
+	}
+
+	/**
+	 * Create query to export the records.
+	 */
+	function create_export_query($where)
+	{
+		global $current_user;
+		$thismodule = $_REQUEST['module'];
+		
+		include("include/utils/ExportUtils.php");
+
+		//To get the Permitted fields query and the permitted fields list
+		$sql = getPermittedFieldsQuery($thismodule, "detail_view");
+		
+		$fields_list = getFieldsListFromQuery($sql);
+
+		$query = "SELECT $fields_list, vtiger_users.user_name AS user_name 
+					FROM vtiger_crmentity INNER JOIN $this->table_name ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
+
+		if(!empty($this->customFieldTable)) {
+			$query .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
+				      " = $this->table_name.$this->table_index"; 
+		}
+
+		$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
+		$query .= " LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id and vtiger_users.status='Active'";
+		
+		$linkedModulesQuery = $this->db->pquery("SELECT distinct fieldname, columnname, relmodule FROM vtiger_field" .
+				" INNER JOIN vtiger_fieldmodulerel ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid" .
+				" WHERE uitype='10' AND vtiger_fieldmodulerel.module=?", array($thismodule));
+		$linkedFieldsCount = $this->db->num_rows($linkedModulesQuery);
+
+		$rel_mods[$this->table_name] = 1;
+		for($i=0; $i<$linkedFieldsCount; $i++) {
+			$related_module = $this->db->query_result($linkedModulesQuery, $i, 'relmodule');
+			$fieldname = $this->db->query_result($linkedModulesQuery, $i, 'fieldname');
+			$columnname = $this->db->query_result($linkedModulesQuery, $i, 'columnname');
+			
+			$other = CRMEntity::getInstance($related_module);
+			vtlib_setup_modulevars($related_module, $other);
+			
+			if($rel_mods[$other->table_name]) {
+				$rel_mods[$other->table_name] = $rel_mods[$other->table_name] + 1;
+				$alias = $other->table_name.$rel_mods[$other->table_name];
+				$query_append = "as $alias";
+			} else {
+				$alias = $other->table_name;
+				$query_append = '';
+				$rel_mods[$other->table_name] = 1;	
+			}
+			
+			$query .= " LEFT JOIN $other->table_name $query_append ON $alias.$other->table_index = $this->table_name.$columnname";
+		}
+
+		$query .= $this->getNonAdminAccessControlQuery($thismodule,$current_user);
+		$where_auto = " vtiger_crmentity.deleted=0";
+
+		if($where != '') $query .= " WHERE ($where) AND $where_auto";
+		else $query .= " WHERE $where_auto";
+
+		return $query;
+	}
+
+	/**
+	 * Initialize this instance for importing.
+	 */
+	function initImport($module) {
+		$this->db = PearDatabase::getInstance();
+		$this->initImportableFields($module);
+	}
+
+	/**
+	 * Create list query to be shown at the last step of the import.
+	 * Called From: modules/Import/UserLastImport.php
+	 */
+	function create_import_query($module) {
+		global $current_user;
+		$query = "SELECT vtiger_crmentity.crmid, case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name, $this->table_name.* FROM $this->table_name
+			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index
+			LEFT JOIN vtiger_users_last_import ON vtiger_users_last_import.bean_id=vtiger_crmentity.crmid
+			LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
+			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
+			WHERE vtiger_users_last_import.assigned_user_id='$current_user->id'
+			AND vtiger_users_last_import.bean_type='$module'
+			AND vtiger_users_last_import.deleted=0";
+		return $query;
+	}
+
+	/**
+	 * Delete the last imported records.
+	 */
+	function undo_import($module, $user_id) {
+		global $adb;
+		$count = 0;
+		$query1 = "select bean_id from vtiger_users_last_import where assigned_user_id=? AND bean_type='$module' AND deleted=0";
+		$result1 = $adb->pquery($query1, array($user_id)) or die("Error getting last import for undo: ".mysql_error()); 
+		while ( $row1 = $adb->fetchByAssoc($result1))
+		{
+			$query2 = "update vtiger_crmentity set deleted=1 where crmid=?";
+			$result2 = $adb->pquery($query2, array($row1['bean_id'])) or die("Error undoing last import: ".mysql_error()); 
+			$count++;			
+		}
+		return $count;
+	}
+	
+	/**
+	 * Transform the value while exporting
+	 */
+	function transform_export_value($key, $value) {
+		return parent::transform_export_value($key, $value);
+	}
+
+	/**
+	 * Function which will set the assigned user id for import record.
+	 */
+	function set_import_assigned_user()
+	{
+		global $current_user, $adb;
+		$record_user = $this->column_fields["assigned_user_id"];
+		
+		if($record_user != $current_user->id){
+			$sqlresult = $adb->pquery("select id from vtiger_users where id = ? union select groupid as id from vtiger_groups where groupid = ?", array($record_user, $record_user));
+			if($this->db->num_rows($sqlresult)!= 1) {
+				$this->column_fields["assigned_user_id"] = $current_user->id;
+			} else {			
+				$row = $adb->fetchByAssoc($sqlresult, -1, false);
+				if (isset($row['id']) && $row['id'] != -1) {
+					$this->column_fields["assigned_user_id"] = $row['id'];
+				} else {
+					$this->column_fields["assigned_user_id"] = $current_user->id;
+				}
+			}
+		}
+	}
+	
+	/** 
+	 * Function which will give the basic query to find duplicates
+	 */
+	function getDuplicatesQuery($module,$table_cols,$field_values,$ui_type_arr,$select_cols='') {
+		$select_clause = "SELECT ". $this->table_name .".".$this->table_index ." AS recordid, vtiger_users_last_import.deleted,".$table_cols;
+
+		// Select Custom Field Table Columns if present
+		if(isset($this->customFieldTable)) $query .= ", " . $this->customFieldTable[0] . ".* ";
+
+		$from_clause = " FROM $this->table_name";
+
+		$from_clause .= "	INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
+
+		// Consider custom table join as well.
+		if(isset($this->customFieldTable)) {
+			$from_clause .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
+				      " = $this->table_name.$this->table_index"; 
+		}
+		$from_clause .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
+						LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
+		
+		$where_clause = "	WHERE vtiger_crmentity.deleted = 0";
+		$where_clause .= $this->getListViewSecurityParameter($module);
+					
+		if (isset($select_cols) && trim($select_cols) != '') {
+			$sub_query = "SELECT $select_cols FROM  $this->table_name AS t " .
+				" INNER JOIN vtiger_crmentity AS crm ON crm.crmid = t.".$this->table_index;
+			// Consider custom table join as well.
+			if(isset($this->customFieldTable)) {
+				$sub_query .= " LEFT JOIN ".$this->customFieldTable[0]." tcf ON tcf.".$this->customFieldTable[1]." = t.$this->table_index";
+			}
+			$sub_query .= " WHERE crm.deleted=0 GROUP BY $select_cols HAVING COUNT(*)>1";	
+		} else {
+			$sub_query = "SELECT $table_cols $from_clause $where_clause GROUP BY $table_cols HAVING COUNT(*)>1";
+		}	
+		
+		
+		$query = $select_clause . $from_clause .
+					" LEFT JOIN vtiger_users_last_import ON vtiger_users_last_import.bean_id=" . $this->table_name .".".$this->table_index .
+					" INNER JOIN (" . $sub_query . ") AS temp ON ".get_on_clause($field_values,$ui_type_arr,$module) .
+					$where_clause .
+					" ORDER BY $table_cols,". $this->table_name .".".$this->table_index ." ASC";
+					
+		return $query;		
+	}
+
+	/**
+	 * Move the related records of the specified list of id's to the given record.
+	 * @param String This module name
+	 * @param Array List of Entity Id's from which related records need to be transfered
+	 * @param Integer Id of the the Record to which the related records are to be moved
+	 */
+	function transferRelatedRecords($module, $transferEntityIds, $entityId) {
+		global $adb,$log;
+		$log->debug("Entering function transferRelatedRecords ($module, $transferEntityIds, $entityId)");
+
+		$rel_table_arr = Array("Contacts"=>"vtiger_campaigncontrel","Potentials"=>"vtiger_potential",
+					"Leads"=>"vtiger_campaignleadrel","Activities"=>"vtiger_seactivityrel",
+					"Documents"=>"vtiger_senotesrel","Attachments"=>"vtiger_seattachmentsrel",
+					"Campaigns"=>"vtiger_campaignaccountrel","CobroPago"=>"vtiger_cobropago");
+
+		$tbl_field_arr = Array("vtiger_campaigncontrel"=>"contactid","vtiger_potential"=>"potentialid",
+					"vtiger_campaignleadrel"=>"leadid","vtiger_seactivityrel"=>"activityid",
+					"vtiger_senotesrel"=>"notesid","vtiger_seattachmentsrel"=>"attachmentsid",
+					"vtiger_campaignaccountrel"=>"accountid","vtiger_cobropago"=>"cobropagoid");
+
+		$entity_tbl_field_arr = Array("vtiger_campaigncontrel"=>"campaignid","vtiger_potential"=>"campaignid",
+					"vtiger_campaignleadrel"=>"campaignid","vtiger_seactivityrel"=>"crmid",
+					"vtiger_senotesrel"=>"crmid","vtiger_seattachmentsrel"=>"crmid",
+					"vtiger_campaignaccountrel"=>"campaignid","vtiger_cobropago"=>"related_id");
+
+		foreach($transferEntityIds as $transferId) {
+			foreach($rel_table_arr as $rel_module=>$rel_table) {
+				$id_field = $tbl_field_arr[$rel_table];
+				$entity_id_field = $entity_tbl_field_arr[$rel_table];
+				// IN clause to avoid duplicate entries
+				$sel_result =  $adb->pquery("select $id_field from $rel_table where $entity_id_field=? " .
+						" and $id_field not in (select $id_field from $rel_table where $entity_id_field=?)",
+						array($transferId,$entityId));
+				$res_cnt = $adb->num_rows($sel_result);
+				if($res_cnt > 0) {
+					for($i=0;$i<$res_cnt;$i++) {
+						$id_field_value = $adb->query_result($sel_result,$i,$id_field);
+						$adb->pquery("update $rel_table set $entity_id_field=? where $entity_id_field=? and $id_field=?",
+							array($entityId,$transferId,$id_field_value));
+					}
+				}
+			}
+		}
+		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
+		$log->debug("Exiting transferRelatedRecords...");
 	}
 
 }

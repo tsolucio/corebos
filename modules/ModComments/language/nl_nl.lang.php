@@ -1,5 +1,4 @@
 <?php
-
 /*******************************************************************************
  * The contents of this file are subject to the following licences:
  * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
@@ -51,7 +50,7 @@ $mod_strings = Array (
 'LBL_ON' => 'op',
 'LBL_MINE' => 'Mijn',
 'LBL_LAST5'=> 'Laatste 5',
-
+'Related Assigned Email' => 'Related Assigned Email',
 );
 
 ?>

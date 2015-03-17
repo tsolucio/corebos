@@ -6,11 +6,11 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- ********************************************************************************/
-
+ ************************************************************************************/
 require_once('include/database/PearDatabase.php');
-require_once('user_privileges/default_module_view.php');
-global $singlepane_view, $currentModule;
+@include_once('user_privileges/default_module_view.php');
+
+global $adb, $singlepane_view, $currentModule;
 $idlist = vtlib_purify($_REQUEST['idlist']);
 $dest_mod = vtlib_purify($_REQUEST['destination_module']);
 $parenttab = getParentTab();
