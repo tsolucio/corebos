@@ -29,7 +29,7 @@ require_once('modules/com_vtiger_workflow/VTSimpleTemplate.inc');
 require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
 require_once 'modules/com_vtiger_workflow/include.inc';
-
+require_once('modules/com_vtiger_workflow/WorkFlowScheduler.php');
 /////////////////////////////////////////////////////
 // PARAMETERS TO SET
  $workflowid_to_evaluate = $_REQUEST['workflowid'];
@@ -43,7 +43,7 @@ if (empty($workflowid_to_evaluate) or empty($crm_record_to_evaluate)) {
 	die();
 }
 
-global $currentModule;
+global $currentModule, $adb;
 list($wsmod,$crmid) = explode('x', $crm_record_to_evaluate);
 $wsrs = $adb->pquery('select name FROM vtiger_ws_entity where id=?',array($wsmod));
 if (!$wsrs or $adb->num_rows($wsrs)==0) {
@@ -52,7 +52,12 @@ if (!$wsrs or $adb->num_rows($wsrs)==0) {
 	die();
 }
 $currentModule = $adb->query_result($wsrs, 0, 0);
-
+$semod = getSalesEntityType($crmid);
+if ($semod != $currentModule) {
+	echo "<h2>Incorrect crmid:</h2>";
+	echo "<b>crmid</b> could not be evaluated as a valid record ID<br>";
+	die();
+}
 $util = new VTWorkflowUtils();
 $adminUser = $util->adminUser();
 $entityCache = new VTEntityCache($adminUser);
@@ -67,13 +72,18 @@ if (!$result or $adb->num_rows($result)==0) {
 $workflows = $wfs->getWorkflowsForResult($result);
 $workflow = $workflows[$workflowid_to_evaluate];
 $entityData = $entityCache->forId($crm_record_to_evaluate);
+
 if ($workflows[$workflowid_to_evaluate]->executionCondition==VTWorkflowManager::$ON_SCHEDULE) {
 	echo "<h2>Scheduled: SQL for affected records:</h2>";
-	
+	$workflowScheduler = new WorkFlowScheduler($adb);
+	$query = $workflowScheduler->getWorkflowQuery($workflow);
+	echo $query;
 } else {
 	echo "<h2>Launch Conditions:</h2>";
 	$eval = $workflow->evaluate($entityCache, $crm_record_to_evaluate);
 	var_dump($eval);
 }
-require 'build/cbFooter.inc';
 ?>
+</table>
+</body>
+</html>
