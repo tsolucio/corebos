@@ -9,7 +9,6 @@
  * *********************************************************************************** */
 require_once('modules/com_vtiger_workflow/WorkflowScheduler.inc');
 require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
-require_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
 require_once('modules/Users/Users.php');
 
 class WorkFlowScheduler {
