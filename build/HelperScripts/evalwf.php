@@ -29,19 +29,51 @@ require_once('modules/com_vtiger_workflow/VTSimpleTemplate.inc');
 require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
 require_once 'modules/com_vtiger_workflow/include.inc';
-global $currentModule; $currentModule = 'HelpDesk';
+
+/////////////////////////////////////////////////////
+// PARAMETERS TO SET
+ $workflowid_to_evaluate = $_REQUEST['workflowid'];
+ $crm_record_to_evaluate = $_REQUEST['crmid'];
+/////////////////////////////////////////////////////
+if (empty($workflowid_to_evaluate) or empty($crm_record_to_evaluate)) {
+	echo "<h2>Parameters required:</h2>";
+	echo "<b>workflowid</b>: ID of the workflow to evaluate. For example: 19<br>";
+	echo "<b>crmid</b>: webservice enhanced ID of the record to evaluate the workflow against. For example: 12x57<br>";
+	echo "?workflowid=19&crmid=12x57";
+	die();
+}
+
+global $currentModule;
+list($wsmod,$crmid) = explode('x', $crm_record_to_evaluate);
+$wsrs = $adb->pquery('select name FROM vtiger_ws_entity where id=?',array($wsmod));
+if (!$wsrs or $adb->num_rows($wsrs)==0) {
+	echo "<h2>Incorrect crmid:</h2>";
+	echo "<b>crmid</b> could not be evaluated as a valid webservice enhanced ID<br>";
+	die();
+}
+$currentModule = $adb->query_result($wsrs, 0, 0);
+
 $util = new VTWorkflowUtils();
 $adminUser = $util->adminUser();
 $entityCache = new VTEntityCache($adminUser);
 $wfs = new VTWorkflowManager($adb);
-$result = $adb->query("select workflow_id, module_name, summary, test, execution_condition, type
-						from com_vtiger_workflows where workflow_id=9");
+$result = $adb->pquery('select workflow_id, module_name, summary, test, execution_condition, type
+			from com_vtiger_workflows where workflow_id=?',array($workflowid_to_evaluate));
+if (!$result or $adb->num_rows($result)==0) {
+	echo "<h2>Incorrect workflowid:</h2>";
+	echo "<b>workflowid</b> could not be found as a valid workflow<br>";
+	die();
+}
 $workflows = $wfs->getWorkflowsForResult($result);
-$workflow = $workflows[9];
-$entityId = '17x111';
-$entityData = $entityCache->forId($entityId);
-$eval = $workflow->evaluate($entityCache, $entityId);
-var_dump($eval);
-
+$workflow = $workflows[$workflowid_to_evaluate];
+$entityData = $entityCache->forId($crm_record_to_evaluate);
+if ($workflows[$workflowid_to_evaluate]->executionCondition==VTWorkflowManager::$ON_SCHEDULE) {
+	echo "<h2>Scheduled: SQL for affected records:</h2>";
+	
+} else {
+	echo "<h2>Launch Conditions:</h2>";
+	$eval = $workflow->evaluate($entityCache, $crm_record_to_evaluate);
+	var_dump($eval);
+}
 require 'build/cbFooter.inc';
 ?>
