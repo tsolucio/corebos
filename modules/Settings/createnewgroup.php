@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('include/utils/utils.php');
 
 global $adb;
@@ -18,7 +17,7 @@ $smarty = new vtigerCRM_Smarty;
 $Err_msg;
 $parentGroupArray=Array();
 if(isset($_REQUEST['groupId']) && $_REQUEST['groupId'] != '')
-{	
+{
 	$mode = 'edit';
 	$groupId=vtlib_purify($_REQUEST['groupId']);
 	$groupInfo=getGroupInfo($groupId);
@@ -26,9 +25,7 @@ if(isset($_REQUEST['groupId']) && $_REQUEST['groupId'] != '')
 	$parGroups = new GetParentGroups();
 	$parGroups->parent_groups[]=$groupId;
 	$parGroups->getAllParentGroups($groupId);
-	$parentGroupArray=$parGroups->parent_groups;	
-	
-
+	$parentGroupArray=$parGroups->parent_groups;
 }
 else
 {
@@ -40,7 +37,6 @@ else
 		$groupInfo[] = vtlib_purify($_REQUEST['desc']);
 	}
 }
-			
 
 //Constructing the Role Array
 $roleDetails=getAllRoleDetails();
@@ -61,13 +57,11 @@ foreach($roleDetails as $roleId=>$roleInfo)
 			$roleIdStr .= ", ";
 			$roleNameStr .= ", ";
 		}
-
 		$roleName=$roleInfo[0];
 		$roleIdStr .= "'".$roleId."'";
 		$roleNameStr .= "'".addslashes(decode_html($roleName))."'"; 
 	}
-	
-	$i++;	
+	$i++;
 }
 
 //Constructing the User Array
@@ -75,16 +69,14 @@ $l=0;
 $userDetails=getAllUserName();
 foreach($userDetails as $userId=>$userInfo)
 {
-		if($l !=0)
-		{
-			$userIdStr .= ", ";
-			$userNameStr .= ", ";
-		}
-
-		$userIdStr .= "'".$userId."'";
-		$userNameStr .= "'".$userInfo."'";
-	
-	$l++;	
+	if($l !=0)
+	{
+		$userIdStr .= ", ";
+		$userNameStr .= ", ";
+	}
+	$userIdStr .= "'".$userId."'";
+	$userNameStr .= "'".$userInfo."'";
+	$l++;
 }
 
 //Constructing the Group Array
@@ -99,12 +91,10 @@ foreach($grpDetails as $grpId=>$grpName)
 			$grpIdStr .= ", ";
 			$grpNameStr .= ", ";
 		}
-
 		$grpIdStr .= "'".$grpId."'";
 		$grpNameStr .= "'".addslashes(decode_html($grpName))."'";
-	
-	$m++;
-	}	
+		$m++;
+	}
 }
 if($mode == 'edit')
 {
@@ -137,9 +127,9 @@ if($mode == 'edit')
 			$member[]=$memberType.'::'.$memberId;
 			$member[]=$memberDisplay.$memberName;
 		}
-	}	
+	}
 	$smarty->assign("MEMBER", array_chunk($member,2));
-}		
+}
 $smarty->assign("MOD", return_module_language($current_language,'Settings'));
 $smarty->assign("IMAGE_PATH",$image_path);
 $smarty->assign("APP", $app_strings);
@@ -153,9 +143,8 @@ $smarty->assign("GROUPNAMESTR",$grpNameStr);
 $smarty->assign("RETURN_ACTION",vtlib_purify($_REQUEST['returnaction']));
 $smarty->assign("GROUPID",$groupId);
 $smarty->assign("MODE",$mode);
-$smarty->assign("GROUPNAME",$groupInfo[0]);		
-$smarty->assign("DESCRIPTION",$groupInfo[1]);				
-		
-$smarty->display("GroupEditView.tpl");
+$smarty->assign("GROUPNAME",$groupInfo[0]);
+$smarty->assign("DESCRIPTION",$groupInfo[1]);
 
+$smarty->display("GroupEditView.tpl");
 ?>
