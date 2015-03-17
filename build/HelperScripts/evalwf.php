@@ -77,11 +77,13 @@ if ($workflows[$workflowid_to_evaluate]->executionCondition==VTWorkflowManager::
 	echo "<h2>Scheduled: SQL for affected records:</h2>";
 	$workflowScheduler = new WorkFlowScheduler($adb);
 	$query = $workflowScheduler->getWorkflowQuery($workflow);
-	echo $query;
+	echo "<span style='font-size: large;'>$query</span>";
 } else {
 	echo "<h2>Launch Conditions:</h2>";
 	$eval = $workflow->evaluate($entityCache, $crm_record_to_evaluate);
+	echo "<span style='font-size: large;'>";
 	var_dump($eval);
+	echo '</span>';
 }
 ?>
 </table>
