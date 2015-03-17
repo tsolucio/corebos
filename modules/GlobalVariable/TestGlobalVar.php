@@ -28,7 +28,7 @@ function gv_getGVVarNames() {
 		}
 	}
 	asort($options);
-	$options = get_select_options_with_id(&$options, '--none--');
+	$options = get_select_options_with_id($options, '--none--');
 	return $options;
 }
 ?>
@@ -89,7 +89,7 @@ function gv_getGVVarNames() {
 		$modlist[$mod] = getTranslatedString($mod,$mod);
 	}
 	asort($modlist);
-	echo get_select_options_with_id(&$modlist, '');?></select></td>
+	echo get_select_options_with_id($modlist, '');?></select></td>
 </tr>
 <tr><td style="height:6px"></td></tr>
 <tr>
