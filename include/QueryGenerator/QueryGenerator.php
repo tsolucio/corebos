@@ -789,6 +789,16 @@ class QueryGenerator {
 			$relatedModule,'column'=>$column,'value'=>$value,'SQLOperator'=>$SQLOperator);
 	}
 
+	public function addReferenceModuleFieldCondition($relatedModule, $referenceField, $fieldName, $value, $SQLOperator, $glue=null) {
+		$conditionNumber = $this->conditionInstanceCount++;
+		if($glue != null && $conditionNumber > 0)
+			$this->addConditionGlue($glue);
+
+		$this->groupInfo .= "$conditionNumber ";
+		$this->referenceModuleField[$conditionNumber] = array('relatedModule'=> $relatedModule,'referenceField'=> $referenceField,'fieldName'=>$fieldName,'value'=>$value,
+			'SQLOperator'=>$SQLOperator);
+	}
+
 	private function getConditionalArray($fieldname,$value,$operator) {
 		if(is_string($value)) {
 			$value = trim($value);
