@@ -97,7 +97,7 @@ function set_return_inventory(product_id,product_name,unitprice,qtyinstock,taxst
 	{
 		tax_details = tax_array[i].split('=');
 	}
-	
+	window.opener.document.EditView.elements["qty"+curr_row].value = product_default_units;
 	window.opener.document.EditView.elements["qty"+curr_row].focus();
 }
 
@@ -123,7 +123,7 @@ function set_return_inventory_po(product_id,product_name,unitprice,taxstr,curr_r
 	{
 		tax_details = tax_array[i].split('=');
 	}
-	
+	window.opener.document.EditView.elements["qty"+curr_row].value = product_default_units;
 	window.opener.document.EditView.elements["qty"+curr_row].focus();
 }
 

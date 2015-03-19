@@ -92,8 +92,8 @@ function set_return_inventory(product_id,product_name,unitprice,taxstr,curr_row,
 	{
 		tax_details = tax_array[i].split('=');
 	}
-	
-	window.opener.document.EditView.elements["qty"+curr_row].focus()
+	window.opener.document.EditView.elements["qty"+curr_row].value = service_default_units;
+	window.opener.document.EditView.elements["qty"+curr_row].focus();
 }
 
 function set_return_inventory_po(product_id,product_name,unitprice,taxstr,curr_row,desc) {
@@ -114,8 +114,8 @@ function set_return_inventory_po(product_id,product_name,unitprice,taxstr,curr_r
 	{
 		tax_details = tax_array[i].split('=');
 	}
-	
-	window.opener.document.EditView.elements["qty"+curr_row].focus()
+	window.opener.document.EditView.elements["qty"+curr_row].value = service_default_units;
+	window.opener.document.EditView.elements["qty"+curr_row].focus();
 }
 
 function InventorySelectAllServices(mod,z,image_pth)
