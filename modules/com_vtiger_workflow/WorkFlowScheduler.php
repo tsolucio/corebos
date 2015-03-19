@@ -176,7 +176,7 @@ class WorkFlowScheduler {
 				$valueType = $condition['valuetype'];
 				if(in_array($operation, $this->_specialDateTimeOperator())) {
 					$value = $this->_parseValueForDate($condition);
-					//$valueType = 'rawtext';
+					$valueType = 'rawtext';
 				}
 				$columnCondition = $condition['joincondition'];
 				$groupId = $condition['groupid'];
