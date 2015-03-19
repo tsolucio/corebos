@@ -423,10 +423,6 @@
 				$nextTime = $this->getNextTriggerTimeForWeekly($this->getWFScheduleWeek(), $this->getWFScheduleTime());
 			}
 
-			if($scheduleType == Workflow::$SCHEDULED_ON_SPECIFIC_DATE) {
-				$nextTime = date('Y-m-d H:i:s', strtotime('+10 year'));
-			}
-
 			if($scheduleType == Workflow::$SCHEDULED_MONTHLY_BY_DATE) {
 				$nextTime = $this->getNextTriggerTimeForMonthlyByDate($this->getWFScheduleDay(), $this->getWFScheduleTime());
 			}
@@ -435,7 +431,7 @@
 				$nextTime = $this->getNextTriggerTimeForMonthlyByWeekDay($this->getWFScheduleDay(), $this->getWFScheduleTime());
 			}
 
-			if($scheduleType == Workflow::$SCHEDULED_ANNUALLY) {
+			if($scheduleType == Workflow::$SCHEDULED_ON_SPECIFIC_DATE or $scheduleType == Workflow::$SCHEDULED_ANNUALLY) {
 				$nextTime = $this->getNextTriggerTimeForAnnualDates($this->getWFScheduleAnnualDates(), $this->getWFScheduleTime());
 			}
 			@date_default_timezone_set($default_timezone);
@@ -464,11 +460,12 @@
 		 * @return <time>
 		 */
 		function getNextTriggerTimeForWeekly($scheduledDaysOfWeek, $scheduledTime) {
-			$weekDays = array('1' => 'Monday', '2' => 'Tuesday', '3' => 'Wednesday', '4' => 'Thursday', '5' => 'Friday', '6' => 'Saturday', '7' => 'Sunday');
+			$weekDays = array('0' => 'Sunday', '1' => 'Monday', '2' => 'Tuesday', '3' => 'Wednesday', '4' => 'Thursday', '5' => 'Friday', '6' => 'Saturday', '7' => 'Sunday');
 			$currentTime = time();
 			$currentWeekDay = date('N', $currentTime);
+			$nextTime = null;
 			if ($scheduledDaysOfWeek) {
-				$scheduledDaysOfWeek = Zend_Json::decode($scheduledDaysOfWeek);
+				$scheduledDaysOfWeek = json_decode($scheduledDaysOfWeek,true);
 				if (is_array($scheduledDaysOfWeek)) {
 					// algorithm :
 					//1. First sort all the weekdays(stored as 0,1,2,3 etc in db) and find the closest weekday which is greater than currentWeekDay
@@ -477,41 +474,40 @@
 					$nextTriggerWeekDay = null;
 					sort($scheduledDaysOfWeek);
 					foreach ($scheduledDaysOfWeek as $index => $weekDay) {
-						if ($weekDay == $currentWeekDay) { //if today is the weekday selected
+						if ($weekDay-1 == $currentWeekDay) { //if today is the weekday selected
 							$scheduleWeekDayInTime = strtotime(date('Y-m-d', strtotime($weekDays[$currentWeekDay])) . ' ' . $scheduledTime);
-							if ($currentTime < $scheduleWeekDayInTime) { //if the scheduled time is greater than current time, selected today
-								$nextTriggerWeekDay = $weekDay;
+							if ($currentTime < $scheduleWeekDayInTime) { //if the scheduled time is greater than current time, select today
+								$nextTriggerWeekDay = $currentWeekDay;
 								break;
 							} else {
 								//current time greater than scheduled time, get the next weekday
 								if (count($scheduledDaysOfWeek) == 1) { //if only one weekday selected, then get next week
-									$nextTime = date('Y-m-d', strtotime('next ' . $weekDays[$weekDay])) . ' ' . $scheduledTime;
+									$nextTime = date('Y-m-d', strtotime('next ' . $weekDays[$weekDay-1])) . ' ' . $scheduledTime;
 								} else {
-									$nextWeekDay = $scheduledDaysOfWeek[$index + 1]; // its the last day of the week i.e. sunday
-									if (empty($nextWeekDay)) {
+									$nextWeekDay = $scheduledDaysOfWeek[$index + 1];
+									if (empty($nextWeekDay)) { // its the last day of the week i.e. sunday
 										$nextWeekDay = $scheduledDaysOfWeek[0];
 									}
-									$nextTime = date('Y-m-d', strtotime('next ' . $weekDays[$nextWeekDay])) . ' ' . $scheduledTime;
+									$nextTime = date('Y-m-d', strtotime('next ' . $weekDays[$nextWeekDay-1])) . ' ' . $scheduledTime;
 								}
 							}
-						} else if ($weekDay > $currentWeekDay) {
-							$nextTriggerWeekDay = $weekDay;
+						} else if ($weekDay-1 > $currentWeekDay) {
+							$nextTriggerWeekDay = $weekDay-1;
 							break;
 						}
 					}
-
 					if ($nextTime == null) {
 						if (!empty($nextTriggerWeekDay)) {
 							$nextTime = date("Y-m-d H:i:s", strtotime($weekDays[$nextTriggerWeekDay] . ' ' . $scheduledTime));
 						} else {
-							$nextTime = date("Y-m-d H:i:s", strtotime($weekDays[$scheduledDaysOfWeek[0]] . ' ' . $scheduledTime));
+							$nextTime = date("Y-m-d H:i:s", strtotime($weekDays[$scheduledDaysOfWeek[0]-1] . ' ' . $scheduledTime));
 						}
 					}
 				}
 			}
 			return $nextTime;
 		}
-		
+
 		/**
 		 * get next triggertime for monthly
 		 * @param type $scheduledDayOfMonth
