@@ -302,4 +302,12 @@
 	<classname>UpdateExchangeRateCron</classname>
 	<systemupdate>false</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Define new global variables</description>
+	<filename>build/changeSets/DefineGlobalVariables.php</filename>
+	<classname>DefineGlobalVariables</classname>
+	<systemupdate>true</systemupdate>
+	<continuous>true</continuous>
+</changeSet>
 </updatesChangeLog>
