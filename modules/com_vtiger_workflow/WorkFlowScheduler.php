@@ -171,17 +171,18 @@ class WorkFlowScheduler {
 
 				//Cannot handle this condition for scheduled workflows
 				if($operation == 'has changed') continue;
-
+var_dump($condition);
 				$value = $condition['value'];
+				$valueType = $condition['valuetype'];
 				if(in_array($operation, $this->_specialDateTimeOperator())) {
 					$value = $this->_parseValueForDate($condition);
+					//$valueType = 'rawtext';
 				}
 				$columnCondition = $condition['joincondition'];
 				$groupId = $condition['groupid'];
 				$groupJoin = $condition['groupjoin'];
 				$operator = $conditionMapping[$operation];
 				$fieldname = $condition['fieldname'];
-				$valueType = $condition['valuetype'];
 
 				if($index > 0 && $groupId != $previous_condition['groupid']) { // if new group, end older group and start new
 					$queryGenerator->endGroup();
@@ -214,6 +215,7 @@ class WorkFlowScheduler {
 						if ($value=='false:boolean') $value = '0';
 					}
 				}
+				var_dump($value);
 				if($referenceField) {
 					$queryGenerator->addReferenceModuleFieldCondition($referenceModule, $referenceField, $fieldname, $value, $operator, $columnCondition);
 				} else {
