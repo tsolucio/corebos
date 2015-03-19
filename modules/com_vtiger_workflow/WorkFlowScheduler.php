@@ -209,6 +209,9 @@ class WorkFlowScheduler {
 					preg_match('/(\w+) : \((\w+)\) (\w+)/', $condition['fieldname'], $matches);
 					if (count($matches) != 0) {
 						list($full, $referenceField, $referenceModule, $fieldname) = $matches;
+					} else {
+						if ($value=='true:boolean') $value = '1';
+						if ($value=='false:boolean') $value = '0';
 					}
 				}
 				if($referenceField) {
