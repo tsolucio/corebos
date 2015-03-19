@@ -25,9 +25,9 @@ function check4null(form)
   var isError = false;
   var errorMessage = "";
   if (trim(form.productname.value) =='') {
-			 isError = true;
-			 errorMessage += "\n Product Name";
-			 form.productname.focus();
+	isError = true;
+	errorMessage += "\n Product Name";
+	form.productname.focus();
   }
 
   if (isError == true) {
@@ -62,17 +62,16 @@ function set_return_specific(product_id, product_name) {
 	   var fldName = window.opener.document.EditView.product_name;
 	   var fldId = window.opener.document.EditView.product_id;
 	}
-        fldName.value = product_name;
-        fldId.value = product_id;
+	fldName.value = product_name;
+	fldId.value = product_id;
 }
 
 function set_return_formname_specific(formname,product_id, product_name) {
-        window.opener.document.EditView1.product_name.value = product_name;
-        window.opener.document.EditView1.product_id.value = product_id;
+	window.opener.document.EditView1.product_name.value = product_name;
+	window.opener.document.EditView1.product_id.value = product_id;
 }
 function add_data_to_relatedlist(entity_id,recordid) {
-
-        opener.document.location.href="index.php?module={RETURN_MODULE}&action=updateRelations&smodule={SMODULE}&destination_module=Products&entityid="+entity_id+"&parentid="+recordid;
+	opener.document.location.href="index.php?module={RETURN_MODULE}&action=updateRelations&smodule={SMODULE}&destination_module=Products&entityid="+entity_id+"&parentid="+recordid;
 }
 
 function set_return_inventory(product_id,product_name,unitprice,qtyinstock,taxstr,curr_row,desc,subprod_id) {
@@ -99,7 +98,7 @@ function set_return_inventory(product_id,product_name,unitprice,qtyinstock,taxst
 		tax_details = tax_array[i].split('=');
 	}
 	
-	window.opener.document.EditView.elements["qty"+curr_row].focus()
+	window.opener.document.EditView.elements["qty"+curr_row].focus();
 }
 
 function set_return_inventory_po(product_id,product_name,unitprice,taxstr,curr_row,desc,subprod_id) {
@@ -125,26 +124,26 @@ function set_return_inventory_po(product_id,product_name,unitprice,taxstr,curr_r
 		tax_details = tax_array[i].split('=');
 	}
 	
-	window.opener.document.EditView.elements["qty"+curr_row].focus()
+	window.opener.document.EditView.elements["qty"+curr_row].focus();
 }
 
 function set_return_product(product_id, product_name) {
 	if(document.getElementById('from_link').value != '') {
-        window.opener.document.QcEditView.parent_name.value = product_name;
-        window.opener.document.QcEditView.parent_id.value = product_id;
+		window.opener.document.QcEditView.parent_name.value = product_name;
+		window.opener.document.QcEditView.parent_id.value = product_id;
 	} else {
-    window.opener.document.EditView.product_name.value = product_name;
-    window.opener.document.EditView.product_id.value = product_id;
+	window.opener.document.EditView.product_name.value = product_name;
+	window.opener.document.EditView.product_id.value = product_id;
 	}
 }
 function getImageListBody() {
 	if (browser_ie) {
-		var ImageListBody=getObj("ImageList")
+		var ImageListBody=getObj("ImageList");
 	} else if (browser_nn4 || browser_nn6) {
 		if (getObj("ImageList").childNodes.item(0).tagName=="TABLE") {
-			var ImageListBody=getObj("ImageList")
+			var ImageListBody=getObj("ImageList");
 		} else {
-			var ImageListBody=getObj("ImageList")
+			var ImageListBody=getObj("ImageList");
 		}
 	}
 	return ImageListBody;
@@ -155,18 +154,15 @@ function roundPriceValue(val) {
    val = parseFloat(val);
    val = Math.round(val*100)/100;
    val = val.toString();
-   
    if (val.indexOf(".")<0) {
-      val+=".00"
+      val+=".00";
    } else {
-      var dec=val.substring(val.indexOf(".")+1,val.length)
+      var dec=val.substring(val.indexOf(".")+1,val.length);
       if (dec.length>2)
-         val=val.substring(0,val.indexOf("."))+"."+dec.substring(0,2)
+         val=val.substring(0,val.indexOf("."))+"."+dec.substring(0,2);
       else if (dec.length==1)
-         val=val+"0"
+         val=val+"0";
    }
-   
    return val;
-} 
-// End
+}
 
