@@ -61,12 +61,12 @@
 					$components = vtws_getIdComponents($row['parent_id']);
 					$userObj = VtigerWebserviceObject::fromName($adb,'Users');
 					$parentTypeId = $components[0];
- 		            if($components[0] == $userObj->getEntityId()){
+					if($components[0] == $userObj->getEntityId()){
 						$associatedToUser = true;
 					}
 				}
 			}
-                        // added to handle the setting reminder time
+			// added to handle the setting reminder time
 			if(strtolower($meta->getEntityName()) == "events"){
 				if(isset($row['reminder_time'])&& $row['reminder_time']!= null && $row['reminder_time'] != 0){
 					$_REQUEST['set_reminder'] = "Yes";
@@ -210,12 +210,11 @@
 			global $adb,$log;
 			$references = $meta->getReferenceFieldDetails();
 			foreach($references as $field=>$typeList){
-                            if(strtolower($meta->getEntityName()) == "emails"){
-				if(isset($row['parent_id'])){
-                                    list($row['parent_id'], $fieldId) = explode('@',
-					    $row['parent_id']);
-                                }
-                            }
+				if(strtolower($meta->getEntityName()) == "emails"){
+					if(isset($row['parent_id'])){
+						list($row['parent_id'], $fieldId) = explode('@', $row['parent_id']);
+					}
+				}
 				if($row[$field]){
 					$found = false;
 					foreach ($typeList as $entity) {
@@ -277,8 +276,10 @@
 			global $current_user;
 			$moduleFields = $meta->getModuleFields();
 			foreach($moduleFields as $fieldName=>$fieldObj){
-				if($fieldObj->getFieldDataType()=="currency"){
-					if(!empty($row[$fieldName])){
+				if($fieldObj->getFieldDataType()=="currency" && !empty($row[$fieldName])) {
+					if($fieldObj->getUIType() == '71') {
+						$row[$fieldName] = CurrencyField::convertToUserFormat($row[$fieldName],$current_user);
+					} else if($fieldObj->getUIType() == '72') {
 						$row[$fieldName] = CurrencyField::convertToUserFormat($row[$fieldName],$current_user,true);
 					}
 				}

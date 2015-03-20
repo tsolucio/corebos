@@ -93,7 +93,7 @@ class VTEntityCache{
 	}
 
 	function forId($id){
-		if($this->cache[$id]==null){
+		if(!isset($this->cache[$id]) or $this->cache[$id]==null){
 			$data  = new VTWorkflowEntity($this->user, $id);
 			$this->cache[$id] = $data;
 		}

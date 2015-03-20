@@ -1346,7 +1346,7 @@ class Users extends CRMEntity {
      * @param $input_value -- Input value for the column taken from the User
      * @return Column value of the field.
      */
-    function get_column_value($columname, $fldvalue, $fieldname, $uitype, $datatype) {
+    function get_column_value($columname, $fldvalue, $fieldname, $uitype, $datatype = '') {
         if (is_uitype($uitype, "_date_") && $fldvalue == '') {
             return null;
         }
