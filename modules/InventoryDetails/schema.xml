@@ -1,0 +1,38 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_inventorydetails</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_inventorydetails` (
+  `inventorydetailsid` int(11) NOT NULL,
+  `inventorydetails_no` varchar(50) DEFAULT NULL,
+  `productid` varchar(150) DEFAULT NULL,
+  `related_to` int(11) DEFAULT NULL,
+  `account_id` int(11) DEFAULT NULL,
+  `contact_id` int(11) DEFAULT NULL,
+  `vendor_id` int(11) DEFAULT NULL,
+  `sequence_no` int(4) DEFAULT NULL,
+  `lineitem_id` int(19) DEFAULT NULL,
+  `quantity` decimal(25,3) DEFAULT NULL,
+  `listprice` decimal(25,3) DEFAULT NULL,
+  `tax_percent` decimal(7,3) DEFAULT NULL,
+  `extgross` decimal(25,3) DEFAULT NULL,
+  `discount_percent` decimal(25,3) DEFAULT NULL,
+  `discount_amount` decimal(25,3) DEFAULT NULL,
+  `extnet` decimal(25,3) DEFAULT NULL,
+  `linetax` decimal(25,3) DEFAULT NULL,
+  `linetotal` decimal(25,3) DEFAULT NULL,
+  `units_delivered_received` decimal(25,3) DEFAULT NULL,
+  `line_completed` varchar(3) default NULL,
+  PRIMARY KEY (`inventorydetailsid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_inventorydetailscf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_inventorydetailscf` (
+  `inventorydetailsid` int(11) NOT NULL,
+  PRIMARY KEY (`inventorydetailsid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>
