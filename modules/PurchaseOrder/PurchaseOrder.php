@@ -25,6 +25,7 @@ include_once('config.php');
 require_once('include/logging.php');
 require_once('include/utils/utils.php');
 require_once('user_privileges/default_module_view.php');
+require_once('modules/InventoryDetails/InventoryDetails.php');
 
 // Account is used to store vtiger_account information.
 class PurchaseOrder extends CRMEntity {
@@ -116,6 +117,8 @@ class PurchaseOrder extends CRMEntity {
 		{
 			//Based on the total Number of rows we will save the product relationship with this entity
 			saveInventoryProductDetails($this, 'PurchaseOrder', $this->update_prod_stock);
+			if(vtlib_isModuleActive("InventoryDetails"))
+				InventoryDetails::createInventoryDetails($this,'PurchaseOrder');
 		}
 
 		//In Ajax edit, if the status changed to Received Shipment then we have to update the product stock

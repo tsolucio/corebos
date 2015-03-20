@@ -310,4 +310,12 @@
 	<systemupdate>true</systemupdate>
 	<continuous>true</continuous>
 </changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Install InventoryDetails module</description>
+	<filename>build/changeSets/installinventorydetails.php</filename>
+	<classname>installinventorydetails</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
+
 </updatesChangeLog>
