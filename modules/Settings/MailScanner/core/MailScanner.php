@@ -6,9 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
-
 require_once('modules/Settings/MailScanner/core/MailBox.php');
 require_once('modules/Settings/MailScanner/core/MailAttachmentMIME.php');
 
@@ -47,7 +45,7 @@ class Vtiger_MailScanner {
 		if(!$this->_mailbox) {
 			$this->_mailbox = new Vtiger_MailBox($this->_scannerinfo);
 			$this->_mailbox->debug = $this->debug;
-		}			
+		}
 		return $this->_mailbox;
 	}
 
@@ -108,7 +106,7 @@ class Vtiger_MailScanner {
 				// If the email is already scanned & rescanning is not set, skip it
 				if($this->isMessageScanned($mailrecord, $lookAtFolder)) {
 					$this->log("\nMessage already scanned [$mailrecord->_subject], IGNORING...\n");
-					unset($mailrecord);					
+					unset($mailrecord);
 					continue;
 				}
 
@@ -118,7 +116,7 @@ class Vtiger_MailScanner {
 					$crmid = $this->applyRule($mailscannerrule, $mailrecord, $mailbox, $messageid);
 					if($crmid) {
 						break; // Rule was successfully applied and action taken
-					}				
+					}
 				}
 				// Mark the email message as scanned
 				$this->markMessageScanned($mailrecord, $crmid);
@@ -241,7 +239,7 @@ class Vtiger_MailScanner {
 			return $this->_cachedContactIds[$email];
 		}
 		$contactid = false;
-		$contactres = $adb->pquery("SELECT contactid FROM vtiger_contactdetails inner join vtiger_crmentity on crmid=contactid WHERE deleted=0 and email=?", Array($email));
+		$contactres = $adb->pquery("SELECT contactid FROM vtiger_contactdetails inner join vtiger_crmentity on crmid=contactid WHERE deleted=0 and (email=? or secondaryemail=?)", Array($email,$email));
 		if($adb->num_rows($contactres)) {
 			$contactid = $adb->query_result($contactres, 0, 'contactid');
 			$crmres = $adb->pquery("SELECT deleted FROM vtiger_crmentity WHERE crmid=?", Array($contactid));
@@ -252,7 +250,7 @@ class Vtiger_MailScanner {
 			$this->_cachedContactIds[$email] = $contactid;
 		} else {
 			$this->log("No matching Contact found for email: $email");
-		}			
+		}
 		return $contactid;
 	}
 	/**
@@ -277,7 +275,7 @@ class Vtiger_MailScanner {
 			$this->_cachedAccountIds[$email] = $accountid;
 		} else {
 			$this->log("No matching Account found for email: $email");
-		}			
+		}
 		return $accountid;
 	}
 	/**
@@ -351,7 +349,7 @@ class Vtiger_MailScanner {
 		require_once('modules/Contacts/Contacts.php');
 		$contactid = $this->LookupContact($email);
 		$contact_focus = false;
-		if($contactid) {			
+		if($contactid) {
 			if($this->_cachedContacts[$contactid]) {
 				$contact_focus = $this->_cachedContacts[$contactid];
 				$this->log("Reusing Cached Contact [" . $contact_focus->column_fields[lastname] .
