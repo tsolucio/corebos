@@ -1,5 +1,4 @@
 <?php
-
 /*******************************************************************************
  * The contents of this file are subject to the following licences:
  * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
@@ -18,9 +17,8 @@
  * This translations is based on earlier work of: 
  * - IT-Online.nl <www.it-online.nl>
  * - Weltevree.org <www.Weltevree.org>
- ********************************************************************************/
-
-/*******************************************************************************
+ ********************************************************************************
+ *******************************************************************************
  * Vicus eBusiness Solutions Version Control
  * @package 	NL-Dutch
  * Description	Dutch language pack for vtiger CRM version 5.3.x
@@ -146,22 +144,22 @@ $mod_strings = Array(
 ),
 
 'cal_weekdays_short'=>array(
-"zon",
 "maa",
 "din",
 "woe",
 "don",
 "vrij",
 "zat",
+"zon",
 ),
 'cal_weekdays_long'=>array(
-"zondag",
 "maandag",
 "dinsdag",
 "woensdag",
 "donderdag",
 "vrijdag",
 "zaterdag",
+"zondag",
 ),
 'cal_month_short'=>array(
 "",
