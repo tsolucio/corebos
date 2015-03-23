@@ -26,6 +26,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Debug_Record_Not_Found',
 				'Product_Default_Units',
 				'Service_Default_Units',
+				'Maximum_Scheduled_Workflows',
 			);
 			
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');
