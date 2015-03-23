@@ -1213,12 +1213,6 @@ $mod_strings = Array(
 'LBL_PUBLISHED_ON' => 'Published On',
 'LBL_LICENSE'   => 'License',
 'LBL_EXTENSION_FILE_DOWNLOAD_FAILED' => 'Failed to download the extension package!',
-'LBL_DEFAULT'=>'By default, SMTP account settings for the outgoing server are configured to od1.vtiger.com mail server. To avoid outgoing emails getting filtered out by spam filters on your recipient ISP mail server, we recommend you implement one of the following.',
-'LBL_OPTIONS1'=>'Send emails from your mail server<br>
-				- Enter the SMTP account details (Server Name, User Name, Password) for the same account as entered in the FROM email address.',
-'LBL_OPTIONS2'=>"Add od1.vtiger.com server as a authorized sender for your domain.<br>
-				- If you prefer to retain the vtiger server as the outgoing server, we recommend that you configure your domain's SPF record to include the vtiger server as a valid sender for your domain.
-				  For additonal instruction on setting up SPF record, please email od-support@vtiger.com .",
 'LBL_ALREADY_EXISTS' => 'Already Exists',
 'LBL_EXTENSION_INCOMPATIBLE' => 'Extension Incompatible',
 'LBL_INSTALL' => 'Install',

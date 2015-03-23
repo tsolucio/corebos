@@ -849,12 +849,6 @@ $mod_strings = array (
 'LBL_FIELDFORMULAS_DESCRIPTION' => 'Aggiungi equazioni personalizzate ai campi personalizzati',
 'LBL_ADD_CUSTOMFIELD' => 'Aggiungi Campo Personalizzato',
 'LBL_EXTENSION_FILE_DOWNLOAD_FAILED' => 'Impossibile scaricare estensione!',
-'LBL_DEFAULT'=>'Le impostazioni predefinite per il server SMTP sono generalmente settate sul server di posta od1.vtiger.com. Per evitare che la posta in uscita venga filtrata come spam da un server esterno, si consiglia di adottare una delle seguenti soluzioni.',
-'LBL_OPTIONS1'=>'Inviare emails dal proprio server<br>
-				- Inserire i dettagli SMTP (Nome Server, Nome Utente, Password) per il medesimo account, cosi come inserito nel campo DA;.',
-'LBL_OPTIONS2'=>"Aggiungere od1.vtiger.com come server di posta autorizzato per il tuo dominio.<br>
-				- Se preferisci continuare a usare il server di vtiger server, raccomandiamo di configurare il record SPF in modo tale che riconosca il server vtiger come server valido.
-				  Per maggiori informazioni sulla configurazione di SPF, vogliate cortesemnte inviare una mail a: email od-support@vtiger.com .",
 'LBL_ALREADY_EXISTS' => 'Gia esistenti',
 'LBL_EXTENSION_INCOMPATIBLE' => 'Estensione Incompatibile',
 'LBL_INSTALL' => 'Installa',

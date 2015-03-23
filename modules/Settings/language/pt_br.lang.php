@@ -1215,12 +1215,6 @@ $mod_strings = Array(
 'LBL_PUBLISHED_ON' => 'Publicado em',
 'LBL_LICENSE'   => 'Licença',
 'LBL_EXTENSION_FILE_DOWNLOAD_FAILED' => 'Falha ao fazer o download do pacote de extensão!',
-'LBL_DEFAULT'=>'Por padrão, as configurações da Organização SMTP, para o Servidor de Envio de Mensagens, estão configuradas para o Servidor od1.vtiger.com. Para evitar problemas com os filtros de spam no Servidor de Mensagens do ISP (Provedor) do destinatário, recomendamos implementar o que se segue.',
-'LBL_OPTIONS1'=>'Enviar emails a partir do seu Servidor de Envio de Mensagens<br>
-				- Digite os detalhes da Organização SMTP (Nome Servidor, Usuário, Senha) para a mesma Organização digitada no endereço do Remetente (DE:).',
-'LBL_OPTIONS2'=>"Adicionar o Servidor od1.vtiger.com como um remetente autorizado para seu domínio.<br>
-				- Se você preferir manter o Servidor do vtiger como Servidor de Envio de Mensagem, recomendamos que configure seu registro SPF (Sender Policy Framework) do domínio, para incluir o Servidor do vtiger como um rementente válido para seu domínio.
-				  Para instruções adicionais sobre configuração do registro SPF, por gentileza, envie email para od-support@vtiger.com.",
 'LBL_ALREADY_EXISTS' => 'Já Existe',
 'LBL_EXTENSION_INCOMPATIBLE' => 'Extensão Incompatível',
 'LBL_INSTALL' => 'Instalar',

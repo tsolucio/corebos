@@ -986,12 +986,6 @@ $mod_strings = Array(
     'LBL_PUBLISHED_ON' => 'veröffentlicht am',
     'LBL_LICENSE'   => 'Lizenz',
     'LBL_EXTENSION_FILE_DOWNLOAD_FAILED' => 'Das Erweiterungs-Packet konnte nicht heruntergeladen werden!',
-    'LBL_DEFAULT'=>' Als Standard wird der Postausgangsserver mit dem Server od1.vtiger.com konfiguriert. Um zu verhindern, dass gesendete E-Mails als Spam erkannt werden, sollten Sie einen der folgenden implementieren.',
-    'LBL_OPTIONS1'=>'Senden Sie E-Mails von Ihren E-Mail-Server<br>
-                    - Geben Sie die Postausgangsserver-Einstellungen (Servername, Benutzer, Password) mit dem selben Benutzer, wie Sie als "Von"-E-Mail-Adresse eingetragen haben.',
-    'LBL_OPTIONS2'=>"Fügen Sie od1.vtiger.com als authorisierter Server für Ihre Domain hinzu.<br>
-                    - Wenn Sie den vtiger Server als Postausgangsserver behalten wollen, empfehlen wir, dass Sie Ihren Domain-SPF-Eintrag so konfigurieren, dass der vtiger Server als gültiger Absender gilt.
-                    Für weitere Informationen zum Einrichten des SPF-Eintrages senden Sie bitte eine E-Mail an od-support@vtiger.com.",
     'LBL_ALREADY_EXISTS' => 'Existiert bereits',
     'LBL_EXTENSION_INCOMPATIBLE' => 'Erweiterung nicht kompatibel',
     'LBL_INSTALL' => 'Installieren',

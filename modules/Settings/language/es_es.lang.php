@@ -877,12 +877,6 @@ $mod_strings = array (
       'LBL_PUBLISHED_ON' => 'Publicado el',
       'LBL_LICENSE'   => 'Licencia',
       'LBL_EXTENSION_FILE_DOWNLOAD_FAILED' => 'No se ha podido descargar la extensión!',
-      'LBL_DEFAULT'=>'Por defecto, el servidor de correo saliente SMTP es od1.vtiger.com. Para evitar problemas, recomendamos que utilices una de estas opciones.',
-      'LBL_OPTIONS1'=>'Enviar emails desde tu servidor de correo<br>
-      				- Introducir la configuración (Servidor, Usuario, Contraseña) de la misma cuenta de correo utilizada en la cuenta de respuesta.',
-      'LBL_OPTIONS2'=>"Añadir el servidor od1.vtiger.com como dominio autorizado desde tu dominio.<br>
-      				- Si prefieres mantener el servidor saliente de vtiger, recomendamos que configures el registro SPF de tu dominio para incluir el servidor de vtiger como servidor autorizado.
-      				  Para obtener instrucciones adicionales sobre cómo definir un registro SPF, contact con od-support@vtiger.com .",
       'LBL_ALREADY_EXISTS' => 'Ya Existe',
       'LBL_EXTENSION_INCOMPATIBLE' => 'Extensión Incompatible',
       'LBL_INSTALL' => 'Instalar',
