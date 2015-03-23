@@ -161,6 +161,13 @@ function __vt_get_date($arr) {
 	}
 }
 
+function __cb_format_date($arr) {
+	$fmt = empty($arr[1]) ? 'Y-m-d' : $arr[1];
+	list($y,$m,$d) = explode('-', $arr[0]);
+	$dt = mktime(0,0,0,$m,$d,$y);
+	return date($fmt,$dt);
+}
+
 function __vt_substring($arr) {
 	if (count($arr)<2 or count($arr)>3) return $arr[0];
 	if (count($arr)==2) {
@@ -271,6 +278,7 @@ class VTFieldExpressionEvaluater{
 				'add_days' => '__vt_add_days',
 				'sub_days' => '__vt_sub_days',
 				'get_date' => '__vt_get_date',
+				'format_date' => '__cb_format_date',
 				'add_time' => '__vt_add_time',
 				'sub_time' => '__vt_sub_time',
 				'substring' => '__vt_substring',
