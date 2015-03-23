@@ -335,7 +335,7 @@ $mod_strings = array (
       'LBL_MODULE' => 'Módulo',
       'LBL_OWNER' => 'Propietario',
       'LBL_MIGRATION' => 'Migrar desde una Versión Anterior',
-      'LBL_MIGRATION_INFO' => ' - Migrar desde una Versión Anterior de vTiger',
+      'LBL_MIGRATION_INFO' => ' - Migrar desde una versión anterior de la aplicación',
       'LBL_USER_DESCRIPTION' => 'Gestionar Usuarios que acceden al CRM',
       'LBL_ROLE_DESCRIPTION' => 'Definir Jerarquía de Roles y Asignar a Usuarios',
       'LBL_PROFILE_DESCRIPTION' => 'Definir Perfiles para asignar derechos de acceso a cada Rol',
@@ -479,8 +479,8 @@ $mod_strings = array (
       'LBL_VIEW_ALL' => 'Ver todo',
       'LBL_EDIT_ALL' => 'Usar todo',
       'LBL_ALLOW' => 'Permitir',
-      'LBL_MESG_VIEW' => 'ver toda la información / módulos de vtiger CRM',
-      'LBL_MESG_EDIT' => 'editar toda la información / módulos de vtiger CRM',
+      'LBL_MESG_VIEW' => 'ver toda la información / módulos del CRM',
+      'LBL_MESG_EDIT' => 'editar toda la información / módulos del CRM',
       'LBL_TAB_MESG_OPTION' => 'módulos para mostrar',
       'LBL_CREATE_EDIT' => 'Crear/Editar',
       'LBL_VIEW' => 'Ver',
@@ -654,7 +654,7 @@ $mod_strings = array (
 
       // vtlib customization: Language Stings
       'VTLIB_LBL_MODULE_MANAGER'=>'Administrador de Módulos',
-      'VTLIB_LBL_MODULE_MANAGER_DESCRIPTION'=>'Administrar el comportamiento del módulo dentro de vtiger CRM',
+      'VTLIB_LBL_MODULE_MANAGER_DESCRIPTION'=>'Administrar el comportamiento del módulo',
       'VTLIB_LBL_MODULE_MANAGER_CUSTOMMOD'=>'Módulos Personalizados',
       'VTLIB_LBL_MODULE_MANAGER_STANDARDMOD'=>'Módulos Estándar',
       'VTLIB_LBL_MODULE_MANAGER_NOMODULES'=>'No se han encontrado módulos personalizados! Crea o Importa uno nuevo...',
@@ -736,7 +736,7 @@ $mod_strings = array (
 
       //Added for the workflow module
       'LBL_LIST_WORKFLOWS'=>'Flujos de trabajo',
-      'LBL_LIST_WORKFLOWS_DESCRIPTION' => 'Crear/Editar flujos de trabajo en vtiger CRM',
+      'LBL_LIST_WORKFLOWS_DESCRIPTION' => 'Crear/Editar flujos de trabajo',
       'LBL_TASK_TITLE'=>'Tarea',
       'LBL_PARENT_WORKFLOW'=>'Flujo de trabajo superior',
       'MSG_EXECUTE_TASK_DELAY'=>'Ejecuta la tarea después de una espera',

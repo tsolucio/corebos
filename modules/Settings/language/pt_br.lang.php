@@ -627,11 +627,11 @@ $mod_strings = Array(
 'LBL_MODULE'=>'Módulo CRM',
 'LBL_OWNER'=>'Proprietário Responsável',
 'LBL_MIGRATION'=>'Migração Orientada',
-'LBL_MIGRATION_INFO'=>'Migrar dados da Versão anterior do vtiger CRM',
+'LBL_MIGRATION_INFO'=>'Migrar dados da Versão anterior do CRM',
 
 //Added for 5 GA - Description of Settings UI
 
-'LBL_USER_DESCRIPTION'=>'Administrar Usuários que podem acessar o vtiger CRM',
+'LBL_USER_DESCRIPTION'=>'Administrar Usuários que podem acessar o CRM',
 'LBL_ROLE_DESCRIPTION'=>'Definir hierarquia das Funções e Atribuições para Usuários',
 'LBL_PROFILE_DESCRIPTION'=>'Administrar acesso de Usuários a Módulos específicos para diferentes Funções',
 'LBL_GROUP_DESCRIPTION'=>'Administrar tipos diferentes de Equipes baseados em Funções, Usuários, Perfis etc',
@@ -651,7 +651,7 @@ $mod_strings = Array(
 'LBL_BACKUP_SERVER_DESCRIPTION'=>'Especificar detalhes do Servidor de Backup',
 'LBL_CURRENCY_DESCRIPTION'=>'Administrar Moedas Internacionais e Taxas de Câmbio',
 'LBL_TAX_DESCRIPTION'=>'Administrar Impostos e respectivas alíquotas',
-'LBL_SYSTEM_DESCRIPTION'=>'Visualizar detalhes do Servidor vtiger CRM',
+'LBL_SYSTEM_DESCRIPTION'=>'Visualizar detalhes do Servidor CRM',
 'LBL_PROXY_DESCRIPTION'=>'Configurar proxies para acesso a alimentadores RSS através da Internet',
 'LBL_AUDIT_DESCRIPTION'=>'Exibir as operações executadas por Usuários',
 'LBL_TAX_DESC'=>'Administrar diferentes tipos de alíquotas de impostos: IPI, ICMS etc.',
@@ -792,8 +792,8 @@ $mod_strings = Array(
 'LBL_VIEW_ALL'=>'Visualizar todos',
 'LBL_EDIT_ALL'=>'Editar todos',
 'LBL_ALLOW'=>'Permitidos',
-'LBL_MESG_VIEW'=>'para visualizar todas as informações / Módulos do vtiger CRM',
-'LBL_MESG_EDIT'=>'para editar todas as informações / Módulos do vtiger CRM',
+'LBL_MESG_VIEW'=>'para visualizar todas as informações / Módulos do CRM',
+'LBL_MESG_EDIT'=>'para editar todas as informações / Módulos do CRM',
 'LBL_TAB_MESG_OPTION'=>'Módulos para serem apresentados',
 'LBL_CREATE_EDIT'=>'Criar/Editar',
 'LBL_VIEW'=>'Visualizar',
@@ -992,7 +992,7 @@ $mod_strings = Array(
 
 // vtlib customization: Language Stings
 'VTLIB_LBL_MODULE_MANAGER'=>'Gerenciador Módulos',
-'VTLIB_LBL_MODULE_MANAGER_DESCRIPTION'=>'Gerenciar Comportamento Módulos no vtiger CRM',
+'VTLIB_LBL_MODULE_MANAGER_DESCRIPTION'=>'Gerenciar Comportamento Módulos no CRM',
 'VTLIB_LBL_MODULE_MANAGER_CUSTOMMOD'=>'Módulos Customizados',
 'VTLIB_LBL_MODULE_MANAGER_STANDARDMOD'=>'Módulos Padrões',
 'VTLIB_LBL_MODULE_MANAGER_NOMODULES'=>'Nenhum Módulo customizado foi encontrado! Criar ou Importar Novo...',
@@ -1074,7 +1074,7 @@ $mod_strings = Array(
 
 //Added for the workflow module
 'LBL_LIST_WORKFLOWS'=>'Workflows',
-'LBL_LIST_WORKFLOWS_DESCRIPTION' => 'Criar e Editar Workflows para o vtiger',
+'LBL_LIST_WORKFLOWS_DESCRIPTION' => 'Criar e Editar Workflows',
 'LBL_TASK_TITLE'=>'Título Tarefa',
 'LBL_PARENT_WORKFLOW'=>'Workflow Pai',
 'MSG_EXECUTE_TASK_DELAY'=>'Executar a Tarefa após certo tempo de atraso',

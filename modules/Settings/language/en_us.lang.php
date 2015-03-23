@@ -627,7 +627,7 @@ $mod_strings = Array(
 'LBL_MODULE'=>'CRM Module',
 'LBL_OWNER'=>'Assigned Owner',
 'LBL_MIGRATION'=>'Migration Wizard',
-'LBL_MIGRATION_INFO'=>'Migrate your existing vtiger CRM data to latest version',
+'LBL_MIGRATION_INFO'=>'Migrate your existing CRM data to latest version',
 
 //Added for 5 GA - Description of Settings UI
 
