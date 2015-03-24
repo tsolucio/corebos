@@ -99,6 +99,43 @@ function trim(str) {
 var genUiType = "";
 var genFldValue = "";
 
+function dtlViewAjaxDirectFieldSave(fieldValue,module,tableName,fieldName,crmId,okmsg) {
+	var data = "file=DetailViewAjax&module=" + module + "&action=" + module + "Ajax&record=" + crmId+"&recordid=" + crmId ;
+	data = data + "&fldName=" + fieldName + "&fieldValue=" + escapeAll(fieldValue) + "&ajxaction=DETAILVIEW";
+	if(module == 'Users') {
+		data += "&form_token=" + (document.getElementsByName('form_token')[0].value);
+	}
+	new Ajax.Request(
+		'index.php',
+		{queue: {position: 'end', scope: 'command'},
+		method: 'post',
+		postBody: data,
+		onComplete: function(response) {
+			if(response.responseText.indexOf(":#:FAILURE")>-1) {
+				alert(alert_arr.ERROR_WHILE_EDITING);
+			}
+			else if(response.responseText.indexOf(":#:ERR")>-1) {
+				alert_str = response.responseText.replace(":#:ERR","");
+				alert(alert_str);
+				$("vtbusy_info").style.display="none";
+			}
+			else if(response.responseText.indexOf(":#:SUCCESS")>-1) {
+				//For HD & FAQ - comments, we should empty the field value
+				if((module == "HelpDesk" || module == "Faq") && fieldName == "comments") {
+					var comments = response.responseText.replace(":#:SUCCESS","");
+					if(getObj("comments_div") != null) getObj("comments_div").innerHTML = comments;
+					if(getObj(dtlView) != null) getObj(dtlView).innerHTML = "";
+					if(getObj("comments") != null) getObj("comments").value = "";
+				} else {
+					if (okmsg != null && okmsg!= '') alert(okmsg);
+				}
+				$("vtbusy_info").style.display="none";
+			}
+		}
+		}
+	);
+}
+
 function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 {
 	var dtlView = "dtlview_"+ fieldLabel;
