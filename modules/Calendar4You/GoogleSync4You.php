@@ -309,11 +309,17 @@ class GoogleSync4You {
         $event->setDescription($Data["description"]);
         $event->setLocation(trim($Data["location"]));
         $start = new Google_Service_Calendar_EventDateTime();
+        if(strlen($startTime)>6)
         $start->setDateTime($startDate.'T'.$this->removeLastColon($startTime).':00.000');
+        else
+        $start->setDateTime($startDate.'T'.$this->removeLastColon($startTime).':00:00.000');
         $start->setTimeZone("$default_timezone");
         $event->setStart($start);
         $end = new Google_Service_Calendar_EventDateTime();
+        if(strlen($endTime)>6)
         $end->setDateTime($endDate.'T'.$this->removeLastColon($endTime).':00.000');
+        else
+        $end->setDateTime($endDate.'T'.$this->removeLastColon($endTime).':00:00.000');  
         $end->setTimeZone("$default_timezone");
         $event->setEnd($end);
         $SendEventNotifications = new Google_Service_Calendar_EventReminders(); 
@@ -334,7 +340,7 @@ $createdEvent = $this->gService->events->insert($this->selected_calendar, $event
  $eventid = urldecode($createdEvent->getId());
 }
 catch(Exception $e){
-    $status=null;
+       $status=null;
 }
         set_include_path($this->root_directory);
                       
