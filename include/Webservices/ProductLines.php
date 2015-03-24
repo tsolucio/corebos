@@ -97,4 +97,5 @@ if ($element['adjustmentType']=='add') {
 	$_REQUEST['adjustment']=$element['adjustment'];
 }
 $_REQUEST['total']=round($totaldoc,2);
+$_REQUEST['action']='Save';
 ?>
