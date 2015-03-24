@@ -40,6 +40,7 @@ $mod_strings = Array (
 	'NO'=>'No',
 	'LBL_CANNOT_DISABLE'=>'Cannot disable',
 	'LBL_CHANGED_BY'=>'Changed by',
-	'LBL_ACCESS_TO_FIELD_CHANGES_DENIED'=>'Either you are not permitted to view modified fields <br>(OR)<br> The record has been restored at this point.'
+	'LBL_ACCESS_TO_FIELD_CHANGES_DENIED'=>'Either you are not permitted to view modified fields <br>(OR)<br> The record has been restored at this point.',
+	'LBL_CONFIGURATION_DESCRIPTION' => 'Select the modules you wish to control',
 );
 ?>

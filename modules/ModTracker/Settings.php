@@ -11,7 +11,6 @@ require_once('Smarty_setup.php');
 require_once("include/utils/utils.php");
 require_once("modules/com_vtiger_workflow/VTWorkflowUtils.php");
 
-
 global $mod_strings, $app_strings, $theme, $adb;
 $smarty = new vtigerCRM_Smarty;
 $smarty->assign("MOD",$mod_strings);
@@ -25,15 +24,13 @@ if(!is_admin($current_user)) {
 	$smarty->display(vtlib_getModuleTemplate('Vtiger','OperationNotPermitted.tpl'));
 } else {
 	$module = vtlib_purify($_REQUEST['formodule']);
-
 	$menu_array = Array();
 
 	// Few more configuration
 	$menu_array['CONFIGURATION']['location'] = 'index.php?module=ModTracker&action=BasicSettings&parenttab=Settings&formodule=ModTracker';
 	$menu_array['CONFIGURATION']['image_src']= 'themes/images/audit.gif';
 	$menu_array['CONFIGURATION']['desc'] = getTranslatedString('LBL_CONFIGURATION_DESCRIPTION', $module);
-	$menu_array['CONFIGURATION']['label']= getTranslatedString('LBL_CONFIGURATION', $module);
-
+	$menu_array['CONFIGURATION']['label']= getTranslatedString('LBL_CONFIGURATION', 'Settings');
 
 	//add blanks for 3-column layout
 	$count = count($menu_array)%3;

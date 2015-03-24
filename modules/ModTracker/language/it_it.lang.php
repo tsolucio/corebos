@@ -1,6 +1,5 @@
 <?php
 /*********************************************************************************
-
 ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
  * The Original Code is:  vtiger CRM Open Source
@@ -41,6 +40,7 @@ $mod_strings = Array (
 'NO'=>'No',
 'LBL_CANNOT_DISABLE'=>'Impossibile disabilitare',
 'LBL_CHANGED_BY'=>'Cambiato da',
-'LBL_ACCESS_TO_FIELD_CHANGES_DENIED'=>'O non hai il permsso di visualizzare campi modificati, <br>(O)<br> il record e stato ricostruito.'
+'LBL_ACCESS_TO_FIELD_CHANGES_DENIED'=>'O non hai il permsso di visualizzare campi modificati, <br>(O)<br> il record e stato ricostruito.',
+'LBL_CONFIGURATION_DESCRIPTION' => 'Select the modules you wish to control',
 );
 ?>

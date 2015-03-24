@@ -6,8 +6,8 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- ************************************************************************************/
- /*********************************************************************************
+ ************************************************************************************
+ *********************************************************************************
  * $Header:  \modules\ConfigEditor\language\hu_hu.lang.php - 9:46 2011.11.11. $
  * Description:  Defines the Hungarian language pack for the ConfigEditor module vtiger 5.3.x
  * All Rights Reserved.
@@ -46,6 +46,7 @@ $mod_strings = array(
 	'NO' => 'Nem',
 	'LBL_CANNOT_DISABLE' => 'Nem lehet letiltani',
 	'LBL_CHANGED_BY' => 'Módosította: ',
-	'LBL_ACCESS_TO_FIELD_CHANGES_DENIED' => 'Vagy neked nincs hozzáférésed a módosított mező megtekintéséhez<br>(vagy)<br>A rekord vissza lett állítva eredeti állapotára ennél a pontnál.'
+	'LBL_ACCESS_TO_FIELD_CHANGES_DENIED' => 'Vagy neked nincs hozzáférésed a módosított mező megtekintéséhez<br>(vagy)<br>A rekord vissza lett állítva eredeti állapotára ennél a pontnál.',
+	'LBL_CONFIGURATION_DESCRIPTION' => 'Select the modules you wish to control',
 );
 ?>
