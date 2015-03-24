@@ -24,7 +24,7 @@
 require_once('modules/SalesOrder/SalesOrder.php');
 require_once('include/logging.php');
 require_once('include/database/PearDatabase.php');
-include("modules/Emails/mail.php");
+include_once("modules/Emails/mail.php");
 
 $local_log =& LoggerManager::getLogger('index');
 
