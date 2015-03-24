@@ -32,6 +32,15 @@ $mod_strings = Array(
 	'Units Delivered Received' => 'Unidades Entregadas/Recibidas',
 	'Line Completed' => 'Línea Completada',
 	'Description' => 'Descripción',
+	'Accounts' => 'Cuentas',
+	'Contacts' => 'Contactos',
+	'Vendors' => 'Proveedores',
+	'Quotes' => 'Cotizaciones',
+	'SalesOrders' => 'Pedidos',
+	'Invoice' => 'Facturas',
+	'PurchaseOrder' => 'Ordenes de Compra',
+	'Products' => 'Productos',
+	'Services' => 'Servicios',
 
 );
 
