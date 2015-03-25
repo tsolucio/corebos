@@ -303,14 +303,7 @@ function getAllTaxes($available='all', $sh='',$mode='',$id='')
 	global $adb, $log;
 	$log->debug("Entering into the function getAllTaxes($available,$sh,$mode,$id)");
 	$taxtypes = Array();
-	if (!empty($id)) {
-		$crmtype = getSalesEntityType($id);
-	} else {
-		$crmtype = '';
-	}
-	if (empty($crmtype) or !in_array($crmtype, array('Invoice','SalesOrder','PurchaseOrder','Quotes'))) {
-		list($void1,$void2,$void3,$void4,$taxtypes) = cbEventHandler::do_filter('corebos.filter.TaxCalculation.getAllTaxes', array($available,$sh,$mode,$id, array()));
-	}
+	list($void1,$void2,$void3,$void4,$taxtypes) = cbEventHandler::do_filter('corebos.filter.TaxCalculation.getAllTaxes', array($available,$sh,$mode,$id, array()));
 	if (count($taxtypes)==0) {
 	if($sh != '' && $sh == 'sh')
 	{
