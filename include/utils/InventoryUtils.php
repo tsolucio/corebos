@@ -807,15 +807,15 @@ function getInventoryProductTaxValue($id, $productid, $taxname)
 {
 	global $log, $adb;
 	$log->debug("Entering into function getInventoryProductTaxValue($id, $productid, $taxname).");
-
-	$res = $adb->pquery("select $taxname from vtiger_inventoryproductrel where id = ? and productid = ?", array($id, $productid));
-	$taxvalue = $adb->query_result($res,0,$taxname);
-
+	list($void1,$void2,$void3,$taxvalue) = cbEventHandler::do_filter('corebos.filter.TaxCalculation.getInventoryProductTaxValue', array($id, $productid, $taxname, ''));
+	if($taxvalue == '') {
+		$res = $adb->pquery("select $taxname from vtiger_inventoryproductrel where id = ? and productid = ?", array($id, $productid));
+		$taxvalue = $adb->query_result($res,0,$taxname);
+	}
 	if($taxvalue == '')
 		$taxvalue = '0.00';
 
 	$log->debug("Exit from function getInventoryProductTaxValue($id, $productid, $taxname).");
-
 	return $taxvalue;
 }
 
@@ -828,15 +828,15 @@ function getInventorySHTaxPercent($id, $taxname)
 {
 	global $log, $adb;
 	$log->debug("Entering into function getInventorySHTaxPercent($id, $taxname)");
-
-	$res = $adb->pquery("select $taxname from vtiger_inventoryshippingrel where id= ?", array($id));
-	$taxpercentage = $adb->query_result($res,0,$taxname);
-
+	list($void1,$void2,$taxpercentage) = cbEventHandler::do_filter('corebos.filter.TaxCalculation.getInventorySHTaxPercent', array($id, $taxname, ''));
+	if($taxpercentage == '') {
+		$res = $adb->pquery("select $taxname from vtiger_inventoryshippingrel where id= ?", array($id));
+		$taxpercentage = $adb->query_result($res,0,$taxname);
+	}
 	if($taxpercentage == '')
 		$taxpercentage = '0.00';
 
 	$log->debug("Exit from function getInventorySHTaxPercent($id, $taxname)");
-
 	return $taxpercentage;
 }
 
