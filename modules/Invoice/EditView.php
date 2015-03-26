@@ -176,7 +176,9 @@ if (isset ($_REQUEST['opportunity_id']) && $_REQUEST['opportunity_id'] != '') {
 	$potfocus = new Potentials();
 	$potfocus->column_fields['potential_id'] = $_REQUEST['opportunity_id'];
 	$associated_prod = getAssociatedProducts("Potentials", $potfocus, $potfocus->column_fields['potential_id']);
-
+	$smarty->assign("ASSOCIATEDPRODUCTS", $associated_prod);
+	$smarty->assign("AVAILABLE_PRODUCTS", count($associated_prod)>0 ? 'true' : 'false');
+	$smarty->assign("MODE", $focus->mode);
 }
 if (isset ($_REQUEST['product_id']) && $_REQUEST['product_id'] != '') {
 	$focus->column_fields['product_id'] = $_REQUEST['product_id'];
@@ -189,6 +191,7 @@ if (isset ($_REQUEST['product_id']) && $_REQUEST['product_id'] != '') {
 	}
 	$smarty->assign("ASSOCIATEDPRODUCTS", $associated_prod);
 	$smarty->assign("AVAILABLE_PRODUCTS", 'true');
+	$smarty->assign("MODE", $focus->mode);
 }
 if (!empty ($_REQUEST['parent_id']) && !empty ($_REQUEST['return_module'])) {
 	if ($_REQUEST['return_module'] == 'Services') {
@@ -289,22 +292,6 @@ elseif (isset ($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') 
 	$associated_prod = $INVOICE_associated_prod;
 	$smarty->assign("AVAILABLE_PRODUCTS", 'true');
 	$smarty->assign("MODE", $focus->mode);
-}
-elseif ((isset ($_REQUEST['product_id']) && $_REQUEST['product_id'] != '') || (isset ($_REQUEST['opportunity_id']) && $_REQUEST['opportunity_id'] != '')) {
-	$smarty->assign("ASSOCIATEDPRODUCTS", $associated_prod);
-	$smarty->assign("AVAILABLE_PRODUCTS", count($associated_prod)>0 ? 'true' : 'false');
-	$smarty->assign("MODE", $focus->mode);
-
-	//this is to display the Product Details in first row when we create new PO from Product relatedlist
-	if ($_REQUEST['return_module'] == 'Products') {
-		$smarty->assign("PRODUCT_ID", vtlib_purify($_REQUEST['product_id']));
-		$smarty->assign("PRODUCT_NAME", getProductName($_REQUEST['product_id']));
-		$smarty->assign("UNIT_PRICE", vtlib_purify($_REQUEST['product_id']));
-		$smarty->assign("QTY_IN_STOCK", getPrdQtyInStck($_REQUEST['product_id']));
-		$smarty->assign("VAT_TAX", getProductTaxPercentage("VAT", $_REQUEST['product_id']));
-		$smarty->assign("SALES_TAX", getProductTaxPercentage("Sales", $_REQUEST['product_id']));
-		$smarty->assign("SERVICE_TAX", getProductTaxPercentage("Service", $_REQUEST['product_id']));
-	}
 }
 
 if (isset ($cust_fld)) {

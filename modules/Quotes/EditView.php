@@ -66,6 +66,9 @@ if(isset($_REQUEST['potential_id']) && $_REQUEST['potential_id'] !=''){
 	}
 	$log->debug("Quotes EditView: Potential Id from the request is ".$_REQUEST['potential_id']);
 	$associated_prod = getAssociatedProducts("Potentials",$focus,$focus->column_fields['potential_id']);
+	$smarty->assign("ASSOCIATEDPRODUCTS", $associated_prod);
+	$smarty->assign("AVAILABLE_PRODUCTS", count($associated_prod)>0 ? 'true' : 'false');
+	$smarty->assign("MODE", $focus->mode);
 }
 
 if(isset($_REQUEST['product_id']) && $_REQUEST['product_id'] !=''){
@@ -79,6 +82,7 @@ if(isset($_REQUEST['product_id']) && $_REQUEST['product_id'] !=''){
 	}
 	$smarty->assign("ASSOCIATEDPRODUCTS", $associated_prod);
 	$smarty->assign("AVAILABLE_PRODUCTS", 'true');
+	$smarty->assign("MODE", $focus->mode);
 }
 
 if(!empty($_REQUEST['parent_id']) && !empty($_REQUEST['return_module'])){
@@ -140,11 +144,9 @@ else $smarty->assign("NAME", "");
 if(isset($cust_fld))
 {
 
-	 $log->debug("Custom Field is present");
-        $smarty->assign("CUSTOMFIELD", $cust_fld);
+	$log->debug("Custom Field is present");
+	$smarty->assign("CUSTOMFIELD", $cust_fld);
 }
-
-
 
 if($focus->mode == 'edit')
 {
@@ -157,23 +159,6 @@ elseif(isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
 	$smarty->assign("ASSOCIATEDPRODUCTS", $QUOTE_associated_prod);
 	$smarty->assign("AVAILABLE_PRODUCTS", 'true');
 	$smarty->assign("MODE", $focus->mode);
-}
-elseif((isset($_REQUEST['potential_id']) && $_REQUEST['potential_id'] != '') || (isset($_REQUEST['product_id']) && $_REQUEST['product_id'] != '')) {
-	$smarty->assign("ASSOCIATEDPRODUCTS", $associated_prod);
-	$smarty->assign("AVAILABLE_PRODUCTS", count($associated_prod)>0 ? 'true' : 'false');
-	$smarty->assign("MODE", $focus->mode);
-
-	//this is to display the Product Details in first row when we create new PO from Product relatedlist
-	if($_REQUEST['return_module'] == 'Products')
-	{
-		$smarty->assign("PRODUCT_ID",vtlib_purify($_REQUEST['product_id']));
-		$smarty->assign("PRODUCT_NAME",getProductName($_REQUEST['product_id']));
-		$smarty->assign("UNIT_PRICE",vtlib_purify($_REQUEST['product_id']));
-		$smarty->assign("QTY_IN_STOCK",getPrdQtyInStck($_REQUEST['product_id']));
-		$smarty->assign("VAT_TAX",getProductTaxPercentage("VAT",$_REQUEST['product_id']));
-		$smarty->assign("SALES_TAX",getProductTaxPercentage("Sales",$_REQUEST['product_id']));
-		$smarty->assign("SERVICE_TAX",getProductTaxPercentage("Service",$_REQUEST['product_id']));
-	}
 }
 else
 {
@@ -203,7 +188,7 @@ if($focus->mode != 'edit')
 else
 {
 	$tax_details = getAllTaxes('available','',$focus->mode,$focus->id);
-        $sh_tax_details = getAllTaxes('available','sh','edit',$focus->id);
+	$sh_tax_details = getAllTaxes('available','sh','edit',$focus->id);
 }
 $smarty->assign("GROUP_TAXES",$tax_details);
 $smarty->assign("SH_TAXES",$sh_tax_details);
