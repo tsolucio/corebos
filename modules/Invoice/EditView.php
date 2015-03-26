@@ -10,16 +10,7 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  TODO To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
 require_once ('Smarty_setup.php');
 require_once ('data/Tracker.php');
 require_once ('modules/Quotes/Quotes.php');
@@ -160,6 +151,7 @@ if (isset ($_REQUEST['record']) && $_REQUEST['record'] != '') {
 	}
 	elseif (isset ($_REQUEST['convertmode']) && $_REQUEST['convertmode'] == 'potentoinvoice') {
 		$focus->mode = '';
+		$_REQUEST['opportunity_id'] = $_REQUEST['return_id'];
 		$relpot = $adb->query_result($adb->pquery('select related_to from vtiger_potential where potentialid=?',array($_REQUEST['return_id'])),0,0);
 		$reltype = getSalesEntityType($relpot);
 		if ($reltype=='Accounts') {
@@ -300,6 +292,7 @@ elseif (isset ($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') 
 }
 elseif ((isset ($_REQUEST['product_id']) && $_REQUEST['product_id'] != '') || (isset ($_REQUEST['opportunity_id']) && $_REQUEST['opportunity_id'] != '')) {
 	$smarty->assign("ASSOCIATEDPRODUCTS", $associated_prod);
+	$smarty->assign("AVAILABLE_PRODUCTS", count($associated_prod)>0 ? 'true' : 'false');
 	$InvTotal = getInventoryTotal($_REQUEST['return_module'], $_REQUEST['return_id']);
 	$smarty->assign("MODE", $focus->mode);
 

@@ -10,16 +10,7 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header: /cvsroot/vtigercrm/vtiger_crm/modules/SalesOrder/EditView.php,v 1.5 2006/01/27 18:18:09 jerrydgeorge Exp $
- * Description:  TODO To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
 require_once ('Smarty_setup.php');
 require_once ('data/Tracker.php');
 require_once ('modules/Quotes/Quotes.php');
@@ -256,6 +247,7 @@ elseif (isset ($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') 
 }
 elseif ((isset ($_REQUEST['potential_id']) && $_REQUEST['potential_id'] != '') || (isset ($_REQUEST['product_id']) && $_REQUEST['product_id'] != '')) {
 	$smarty->assign("ASSOCIATEDPRODUCTS", $associated_prod);
+	$smarty->assign("AVAILABLE_PRODUCTS", count($associated_prod)>0 ? 'true' : 'false');
 	$InvTotal = getInventoryTotal($_REQUEST['return_module'], $_REQUEST['return_id']);
 	$smarty->assign("MODE", $focus->mode);
 
