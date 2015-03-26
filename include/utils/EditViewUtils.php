@@ -1594,6 +1594,15 @@ function getAssociatedProducts($module,$focus,$seid='')
  		                        WHERE id=?
  		                        ORDER BY sequence_no";
 			$params = array($focus->id);
+		if ($module != 'PurchaseOrder') {
+			if (GlobalVariable::getVariable('B2B', '1')=='1') {
+				$acvid = $focus->column_fields['accountid'];
+			} else {
+				$acvid = $focus->column_fields['contactid'];
+			}
+		} else {
+			$acvid = $focus->column_fields['vendorid'];
+		}
 	}
 	elseif($module == 'Potentials')
 	{
@@ -1779,7 +1788,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 		$product_Detail[$i]['netPrice'.$i] = $netPrice;
 
 		//First we will get all associated taxes as array
-		$tax_details = getTaxDetailsForProduct($hdnProductId,'all');
+		$tax_details = getTaxDetailsForProduct($hdnProductId,'all',$acvid);
 		//Now retrieve the tax values from the current query with the name
 		for($tax_count=0;$tax_count<count($tax_details);$tax_count++)
 		{

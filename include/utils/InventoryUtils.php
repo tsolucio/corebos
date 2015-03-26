@@ -374,16 +374,17 @@ function getAllTaxes($available='all', $sh='',$mode='',$id='')
 /**	Function used to get all the tax details which are associated to the given product
  *	@param int $productid - product id to which we want to get all the associated taxes
  *	@param string $available - available or empty or available_associated where as default is all, if available then the taxes which are available now will be returned, if all then all taxes will be returned otherwise if the value is available_associated then all the associated taxes even they are not available and all the available taxes will be retruned
+ *	@param int crmid of account,contact or vendor to restrict tax value
  *	@return array $tax_details - tax details as a array with productid, taxid, taxname, percentage and deleted
  */
-function getTaxDetailsForProduct($productid, $available='all')
+function getTaxDetailsForProduct($productid, $available='all', $acvid=0)
 {
 	global $log, $adb;
 	$log->debug("Entering into function getTaxDetailsForProduct($productid)");
 	$tax_details = array();
 	if($productid != '')
 	{
-		list($void1,$void2,$tax_details) = cbEventHandler::do_filter('corebos.filter.TaxCalculation.getTaxDetailsForProduct', array($productid, $available, array()));
+		list($void1,$void2,$void,$tax_details) = cbEventHandler::do_filter('corebos.filter.TaxCalculation.getTaxDetailsForProduct', array($productid, $available, $acvid, array()));
 		if (count($tax_details)==0) {
 		//where condition added to avoid to retrieve the non available taxes
 		$where = '';
@@ -550,6 +551,15 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 		$all_available_taxes = getAllTaxes('available','','edit',$id);
 	}
 	$tot_no_prod = $_REQUEST['totalProductCount'];
+	if ($module != 'PurchaseOrder') {
+		if (GlobalVariable::getVariable('B2B', '1')=='1') {
+			$acvid = $focus->column_fields['accountid'];
+		} else {
+			$acvid = $focus->column_fields['contactid'];
+		}
+	} else {
+		$acvid = $focus->column_fields['vendorid'];
+	}
 	//If the taxtype is group then retrieve all available taxes, else retrive associated taxes for each product inside loop
 	$prod_seq=1;
 	for($i=1; $i<=$tot_no_prod; $i++)
@@ -643,7 +653,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 		}
 		else
 		{
-			$taxes_for_product = getTaxDetailsForProduct($prod_id,'all');
+			$taxes_for_product = getTaxDetailsForProduct($prod_id,'all',$acvid);
 			for($tax_count=0;$tax_count<count($taxes_for_product);$tax_count++)
 			{
 				$tax_name = $taxes_for_product[$tax_count]['taxname'];
