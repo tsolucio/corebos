@@ -10,16 +10,7 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  TODO To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
 require_once('Smarty_setup.php');
 require_once('data/Tracker.php');
 require_once('include/CustomFieldUtil.php');
@@ -142,9 +133,8 @@ elseif(isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true')
 
 }
 elseif((isset($_REQUEST['product_id']) && $_REQUEST['product_id'] != '')) {
-        $smarty->assign("ASSOCIATEDPRODUCTS", $associated_prod);
-		$InvTotal = getInventoryTotal($_REQUEST['return_module'],$_REQUEST['return_id']);
-		$smarty->assign("MODE", $focus->mode);
+	$smarty->assign("ASSOCIATEDPRODUCTS", $associated_prod);
+	$smarty->assign("MODE", $focus->mode);
 
 	//this is to display the Product Details in first row when we create new PO from Product relatedlist
 	if($_REQUEST['return_module'] == 'Products')
@@ -162,10 +152,8 @@ elseif((isset($_REQUEST['product_id']) && $_REQUEST['product_id'] != '')) {
 
 if(isset($cust_fld))
 {
-        $smarty->assign("CUSTOMFIELD", $cust_fld);
+	$smarty->assign("CUSTOMFIELD", $cust_fld);
 }
-
-
 
 if(isset($_REQUEST['return_module'])) $smarty->assign("RETURN_MODULE", vtlib_purify($_REQUEST['return_module']));
 else $smarty->assign("RETURN_MODULE","PurchaseOrder");
@@ -191,12 +179,10 @@ if($focus->mode != 'edit')
 else
 {
 	$tax_details = getAllTaxes('available','',$focus->mode,$focus->id);
-        $sh_tax_details = getAllTaxes('available','sh','edit',$focus->id);
+	$sh_tax_details = getAllTaxes('available','sh','edit',$focus->id);
 }
 $smarty->assign("GROUP_TAXES",$tax_details);
 $smarty->assign("SH_TAXES",$sh_tax_details);
-
-
 
  $tabid = getTabid("PurchaseOrder");
  $validationData = getDBValidationData($focus->tab_name,$tabid);

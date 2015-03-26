@@ -1704,8 +1704,8 @@ function updateSubTotal($module,$tablename,$colname,$colname1,$entid_fld,$entid,
   * @param $return_module -- return module :: Type string
   * @param $id -- entity id :: Type integer
   * @returns $total -- total:: Type integer
+  * *** FUNCTION NOT USED IN THE APPLICATION > left only in case it is used by some extension
   */
-
 function getInventoryTotal($return_module,$id)
 {
 	global $log;

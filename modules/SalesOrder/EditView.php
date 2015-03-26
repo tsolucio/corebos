@@ -248,7 +248,6 @@ elseif (isset ($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') 
 elseif ((isset ($_REQUEST['potential_id']) && $_REQUEST['potential_id'] != '') || (isset ($_REQUEST['product_id']) && $_REQUEST['product_id'] != '')) {
 	$smarty->assign("ASSOCIATEDPRODUCTS", $associated_prod);
 	$smarty->assign("AVAILABLE_PRODUCTS", count($associated_prod)>0 ? 'true' : 'false');
-	$InvTotal = getInventoryTotal($_REQUEST['return_module'], $_REQUEST['return_id']);
 	$smarty->assign("MODE", $focus->mode);
 
 	//this is to display the Product Details in first row when we create new PO from Product relatedlist
