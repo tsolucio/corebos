@@ -59,6 +59,10 @@ if(isset($_REQUEST['product_id']) && $_REQUEST['product_id'] !='')
 	}
 	$smarty->assign("ASSOCIATEDPRODUCTS", $associated_prod);
 	$smarty->assign("AVAILABLE_PRODUCTS", 'true');
+	$smarty->assign("MODE", $focus->mode);
+	$result = $adb->pquery('select vendor_id from vtiger_products where productid=?', array($_REQUEST['product_id']));
+	if ($result and $adb->num_rows($result)>0)
+		$_REQUEST['vendor_id'] = $adb->query_result($result,0,'vendor_id');
 }
 if(!empty($_REQUEST['parent_id']) && !empty($_REQUEST['return_module']))
 {
@@ -130,25 +134,7 @@ elseif(isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true')
 	$smarty->assign("ASSOCIATEDPRODUCTS", $PO_associated_prod);
 	$smarty->assign("AVAILABLE_PRODUCTS", 'true');
 	$smarty->assign("MODE", $focus->mode);
-
 }
-elseif((isset($_REQUEST['product_id']) && $_REQUEST['product_id'] != '')) {
-	$smarty->assign("ASSOCIATEDPRODUCTS", $associated_prod);
-	$smarty->assign("MODE", $focus->mode);
-
-	//this is to display the Product Details in first row when we create new PO from Product relatedlist
-	if($_REQUEST['return_module'] == 'Products')
-	{
-		$smarty->assign("PRODUCT_ID",vtlib_purify($_REQUEST['product_id']));
-		$smarty->assign("PRODUCT_NAME",getProductName($_REQUEST['product_id']));
-		$smarty->assign("UNIT_PRICE",vtlib_purify($_REQUEST['product_id']));
-		$smarty->assign("QTY_IN_STOCK",getPrdQtyInStck($_REQUEST['product_id']));
-		$smarty->assign("VAT_TAX",getProductTaxPercentage("VAT",$_REQUEST['product_id']));
-		$smarty->assign("SALES_TAX",getProductTaxPercentage("Sales",$_REQUEST['product_id']));
-		$smarty->assign("SERVICE_TAX",getProductTaxPercentage("Service",$_REQUEST['product_id']));
-	}
-}
-
 
 if(isset($cust_fld))
 {
