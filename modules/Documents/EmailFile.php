@@ -10,14 +10,14 @@
 
 require_once('include/database/PearDatabase.php');
 
-global $adb;
+global $adb,$default_charset;
 
 $notesid = vtlib_purify($_REQUEST['record']);
 
 $dbQuery = "select filename,folderid,filestatus from vtiger_notes where notesid= ?";
 $result = $adb->pquery($dbQuery,array($notesid));
 $folderid = $adb->query_result($result,0,'folderid');
-$filename = $adb->query_result($result,0,'filename');
+$filename = html_entity_decode($adb->query_result($result,0,'filename'), ENT_QUOTES, $default_charset);
 $filestatus = $adb->query_result($result,0,'filestatus');
 
 $fileidQuery = "select attachmentsid from vtiger_seattachmentsrel where crmid = ?";

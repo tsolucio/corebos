@@ -172,10 +172,10 @@ if($cvmodule != "") {
 								//value will be empty
 								if(trim($temp_val[$x]) != '') {
 									$date = new DateTimeField(trim($temp_val[$x]));
-									if($fieldType == 'date') {
+									if($fieldType == 'date' && $fieldObj->getUIType() != '6') {
 										$val[$x] = DateTimeField::convertToDBFormat(
 												trim($temp_val[$x]));
-									} elseif($fieldType == 'datetime') {
+									} elseif($fieldType == 'datetime' || $fieldObj->getUIType() == '6') {
 										$val[$x] = $date->getDBInsertDateTimeValue();
 									} else {
 										$val[$x] = $date->getDBInsertTimeValue();
@@ -301,10 +301,10 @@ if($cvmodule != "") {
 								//value will be empty
 								if(trim($temp_val[$x]) != '') {
 									$date = new DateTimeField(trim($temp_val[$x]));
-									if($fieldType == 'date') {
+									if($fieldType == 'date' && $fieldObj->getUIType() != '6') {
 										$val[$x] = DateTimeField::convertToDBFormat(
 												trim($temp_val[$x]));
-									} elseif($fieldType == 'datetime') {
+									} elseif($fieldType == 'datetime' || $fieldObj->getUIType() == '6') {
 										$val[$x] = $date->getDBInsertDateTimeValue();
 									} else {
 										$val[$x] = $date->getDBInsertTimeValue();

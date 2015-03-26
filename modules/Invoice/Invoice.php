@@ -25,6 +25,7 @@ include_once('config.php');
 require_once('include/logging.php');
 require_once('include/utils/utils.php');
 require_once('user_privileges/default_module_view.php');
+require_once('modules/InventoryDetails/InventoryDetails.php');
 
 // Account is used to store vtiger_account information.
 class Invoice extends CRMEntity {
@@ -126,6 +127,8 @@ class Invoice extends CRMEntity {
 		if(isset($this->_recurring_mode) && $this->_recurring_mode == 'recurringinvoice_from_so' && isset($this->_salesorderid) && $this->_salesorderid!='') {
 			// We are getting called from the RecurringInvoice cron service!
 			$this->createRecurringInvoiceFromSO();
+			if(vtlib_isModuleActive("InventoryDetails"))
+				InventoryDetails::createInventoryDetails($this,'Invoice');
 
 		} else if(isset($_REQUEST)) {
 			if($_REQUEST['action'] != 'InvoiceAjax' && $_REQUEST['ajxaction'] != 'DETAILVIEW'
@@ -133,6 +136,8 @@ class Invoice extends CRMEntity {
 			{
 				//Based on the total Number of rows we will save the product relationship with this entity
 				saveInventoryProductDetails($this, 'Invoice');
+				if(vtlib_isModuleActive("InventoryDetails"))
+					InventoryDetails::createInventoryDetails($this,'Invoice');
 			}
 		}
 
@@ -313,7 +318,7 @@ class Invoice extends CRMEntity {
 	}
 
 	// Function to get column name - Overriding function of base class
-	function get_column_value($columname, $fldvalue, $fieldname, $uitype, $datatype) {
+	function get_column_value($columname, $fldvalue, $fieldname, $uitype, $datatype = '') {
 		if ($columname == 'salesorderid') {
 			if ($fldvalue == '') return null;
 		}

@@ -57,12 +57,12 @@ class WebserviceField{
 		$this->fieldLabel = (isset($row['fieldlabel']))? $row['fieldlabel'] : '';
 		$this->fieldSequence = (isset($row['sequence']))? $row['sequence'] : 0;
 		$this->displayType = (isset($row['displaytype']))? $row['displaytype'] : -1;
-		$this->massEditable = ($row['masseditable'] === '1')? true: false;
+		$this->massEditable = isset($row['masseditable']) ? ($row['masseditable'] === '1')? true: false: false;
 		$typeOfData = (isset($row['typeofdata']))? $row['typeofdata'] : '';
 		$this->presence = (isset($row['presence']))? $row['presence'] : -1;
 		$this->typeOfData = $typeOfData;
 		$typeOfData = explode("~",$typeOfData);
-		$this->mandatory = ($typeOfData[1] == 'M')? true: false;
+		$this->mandatory = isset($typeOfData[1]) ? ($typeOfData[1] == 'M')? true: false: false;
 		if($this->uitype == 4){
 			$this->mandatory = false;
 		}
@@ -155,7 +155,8 @@ class WebserviceField{
 				$this->blockSequence = 0;
 			} else {
 				global $adb;
-				$this->blockSequence = $adb->query_result($adb->query('select sequence from vtiger_blocks where blockid='.$this->blockId),0,0);
+				$blkseqrs = $adb->query('select sequence from vtiger_blocks where blockid='.$this->blockId);
+				$this->blockSequence = $adb->query_result($blkseqrs,0,0);
 			}
 		}
 		return $this->blockSequence;

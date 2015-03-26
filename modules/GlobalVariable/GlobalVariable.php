@@ -540,6 +540,12 @@ class GlobalVariable extends CRMEntity {
 	public static function getVariable($var,$default, $module='', $gvuserid='') {
 		global $adb,$current_user, $gvvalidationinfo, $currentModule;
 		$gvvalidationinfo[] = "search for variable '$var' with default value of '$default'";
+		$key = md5('gvcache'.$var.$module.$gvuserid);
+		list($value,$found) = VTCacheUtils::lookupCachedInformation($key);
+		if ($found) {
+			$gvvalidationinfo[] = "variable found in cache";
+			return $value;
+		}
 		$value='';
 		$list_of_modules=array();
 		if (empty($module)) $module = $currentModule;
@@ -555,16 +561,20 @@ class GlobalVariable extends CRMEntity {
 		$gvvalidationinfo[] = '---';
 		$value=$focus->return_global_var_value($sql,$var,$module);
 		$gvvalidationinfo[] = "search as mandatory in module $module: $value";
-		if ($value!='')
+		if ($value!='') {
+			VTCacheUtils::updateCachedInformation($key, $value);
 			return $value;
+		}
 
 		$user = " and vtiger_crmentity.smownerid=$gvuserid";
 		$sql=$select.$where.$user;
 		$gvvalidationinfo[] = '---';
 		$value=$focus->return_global_var_value($sql,$var,$module);
 		$gvvalidationinfo[] = "search as set per user $gvuserid in module $module: $value";
-		if ($value!='')
+		if ($value!='') {
+			VTCacheUtils::updateCachedInformation($key, $value);
 			return $value;
+		}
 
 		require_once('include/utils/GetUserGroups.php');
 		$UserGroups = new GetUserGroups();
@@ -575,15 +585,19 @@ class GlobalVariable extends CRMEntity {
 		$gvvalidationinfo[] = '---';
 		$value=$focus->return_global_var_value($sql,$var,$module);
 		$gvvalidationinfo[] = "search as set per group $groups in module $module: $value";
-		if ($value!='')
+		if ($value!='') {
+			VTCacheUtils::updateCachedInformation($key, $value);
 			return $value;
+		}
 
 		$sql=$select.$where." and default_check='1'";
 		$gvvalidationinfo[] = '---';
 		$value=$focus->return_global_var_value($sql,$var,$module);
 		$gvvalidationinfo[] = "search as default variable in module $module: $value";
-		if ($value!='')
+		if ($value!='') {
+			VTCacheUtils::updateCachedInformation($key, $value);
 			return $value;
+		}
 		$gvvalidationinfo[] = '---';
 		$gvvalidationinfo[] = "return default value give: $default";
 		return $default;

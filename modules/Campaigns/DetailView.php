@@ -1,15 +1,13 @@
 <?php
-/*+********************************************************************************
+/*+**********************************************************************************
  * The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
  * The Original Code is:  vtiger CRM Open Source
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- ********************************************************************************/
-
+ ************************************************************************************/
 require_once('Smarty_setup.php');
-require_once('include/utils/utils.php');
 require_once('user_privileges/default_module_view.php');
 
 $focus = CRMEntity::getInstance($currentModule);
@@ -81,6 +79,7 @@ if($singlepane_view == 'true')
 {
 	$related_array = getRelatedLists($currentModule,$focus);
 	$smarty->assign("RELATEDLISTS", $related_array);
+		
 	require_once('include/ListView/RelatedListViewSession.php');
 	if(!empty($_REQUEST['selected_header']) && !empty($_REQUEST['relation_id'])) {
 		RelatedListViewSession::addRelatedModuleToSession(vtlib_purify($_REQUEST['relation_id']),
@@ -103,20 +102,18 @@ if(PerformancePrefs::getBoolean('DETAILVIEW_RECORD_NAVIGATION', true) && isset($
 	VT_detailViewNavigation($smarty,$recordNavigationInfo,$focus->id);
 }
 
-// Record Change Notification
-$focus->markAsViewed($current_user->id);
-// END
-
 // Gather the custom link information to display
 include_once('vtlib/Vtiger/Link.php');
 $customlink_params = Array('MODULE'=>$currentModule, 'RECORD'=>$focus->id, 'ACTION'=>vtlib_purify($_REQUEST['action']));
 $smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), Array('DETAILVIEWBASIC','DETAILVIEW','DETAILVIEWWIDGET'), $customlink_params));
 // END
 
+// Record Change Notification
+$focus->markAsViewed($current_user->id);
+// END
+
 $smarty->assign('DETAILVIEW_AJAX_EDIT', PerformancePrefs::getBoolean('DETAILVIEW_AJAX_EDIT', true));
 
-$smarty->display("DetailView.tpl");
-
-$focus->id = $_REQUEST['record'];
+$smarty->display('DetailView.tpl');
 
 ?>

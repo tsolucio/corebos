@@ -1240,7 +1240,7 @@ function get_contactsforol($user_name)
 	function transferRelatedRecords($module, $transferEntityIds, $entityId) {
 		global $adb,$log;
 		$log->debug("Entering function transferRelatedRecords ($module, $transferEntityIds, $entityId)");
-
+		parent::transferRelatedRecords($module, $transferEntityIds, $entityId);
 		$rel_table_arr = Array("Potentials"=>"vtiger_contpotentialrel","Activities"=>"vtiger_cntactivityrel","Emails"=>"vtiger_seactivityrel",
 				"HelpDesk"=>"vtiger_troubletickets","Quotes"=>"vtiger_quotes","PurchaseOrder"=>"vtiger_purchaseorder",
 				"SalesOrder"=>"vtiger_salesorder","Products"=>"vtiger_seproductsrel","Documents"=>"vtiger_senotesrel",
@@ -1273,6 +1273,8 @@ function get_contactsforol($user_name)
 					}
 				}
 			}
+			// direct relation with potentials
+			$adb->pquery("UPDATE vtiger_potential SET related_to = ? WHERE related_to = ?", array($entityId, $transferId));
 		}
 		$log->debug("Exiting transferRelatedRecords...");
 	}

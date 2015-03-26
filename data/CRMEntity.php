@@ -10,16 +10,7 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/vtigercrm/data/CRMEntity.php,v 1.16 2005/04/29 04:21:31 mickie Exp $
- * Description:  Defines the base class for all data entities used throughout the
- * application.  The base class including its methods and variables is designed to
- * be overloaded with module-specific methods and variables particular to the
- * module's base entity class.
- ********************************************************************************/
-
 include_once('config.php');
 require_once('include/logging.php');
 require_once('data/Tracker.php');
@@ -727,9 +718,17 @@ class CRMEntity {
 		/* Prasad: Fix for ticket #4595 */
 		if (isset($this->table_name)) {
 			$mod_index_col = $this->tab_name_index[$this->table_name];
-			if ($adb->query_result($result[$this->table_name], 0, $mod_index_col) == '')
-				die("<br><br><center>" . $app_strings['LBL_RECORD_NOT_FOUND'] .
-						". <a href='javascript:window.history.back()'>" . $app_strings['LBL_GO_BACK'] . ".</a></center>");
+			if ($adb->query_result($result[$this->table_name], 0, $mod_index_col) == '') {
+				echo "<br><br><center>" . $app_strings['LBL_RECORD_NOT_FOUND'] .
+					". <a href='javascript:window.history.back()'>" . $app_strings['LBL_GO_BACK'] . ".</a></center>";
+				if (GlobalVariable::getVariable('Debug_Record_Not_Found',false)) {
+					echo "<br><br><center>Looking for " . $this->table_name . '.' . $mod_index_col . ' in <br>' . print_r($result[$this->table_name]->sql,true) . '</center>';
+					echo "<pre>";
+					debug_print_backtrace();
+					echo "</pre>";
+				}
+				die();
+			}
 		}
 
 		// Lookup in cache for information

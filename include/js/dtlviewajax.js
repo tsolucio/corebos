@@ -5,7 +5,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 var globaldtlviewspanid = "";
 var globaleditareaspanid = ""; 
@@ -25,14 +24,14 @@ function hndCancel(valuespanid,textareapanid,fieldlabel)
 
   showHide(valuespanid,textareapanid);
   if(globaluitype == '56')
-  {	  
+  {
 	  if(globaltempvalue == 1)
-	  	getObj(globaltxtboxid).checked = true; 
-	  else		
-	  	getObj(globaltxtboxid).checked = false; 
+		getObj(globaltxtboxid).checked = true;
+	  else
+		getObj(globaltxtboxid).checked = false;
   }
-  else if(globaluitype != '53' && globaluitype != '33')	  
-	  getObj(globaltxtboxid).value = globaltempvalue; 
+  else if(globaluitype != '53' && globaluitype != '33')
+	  getObj(globaltxtboxid).value = globaltempvalue;
   globaltempvalue = '';
   itsonview=false;
   return false;
@@ -40,64 +39,54 @@ function hndCancel(valuespanid,textareapanid,fieldlabel)
 
 function hndMouseOver(uitype,fieldLabel)
 {
-      var mouseArea="";
-      mouseArea="mouseArea_"+ fieldLabel;
-      if(itsonview)
-      {
-            return;
-      }
-      
-      show("crmspanid");
-	  globaluitype = uitype;
-      globaldtlviewspanid= "dtlview_"+ fieldLabel;//valuespanid;
-      globaleditareaspanid="editarea_"+ fieldLabel;//textareapanid;
-	  globalfieldlabel = fieldLabel;
-	  if(globaluitype == 53)
-	  {
-		  if(typeof(document.DetailView.assigntype[0]) != 'undefined')
-		  {
-			  var assign_type_U = document.DetailView.assigntype[0].checked;
-			  var assign_type_G = document.DetailView.assigntype[1].checked;
-			  if(assign_type_U == true)
-				  globaltxtboxid= 'txtbox_U'+fieldLabel;
-			  else if(assign_type_G == true)
-				  globaltxtboxid= 'txtbox_G'+fieldLabel;
-		  }else
-		  {
-			  globaltxtboxid= 'txtbox_U'+fieldLabel;
-		  }
-	  }else
-	  {
-      	  globaltxtboxid="txtbox_"+ fieldLabel;//textboxpanid;
-	  }
-      divObj = getObj('crmspanid'); 
-      crmy = findPosY(getObj(mouseArea));
-      crmx = findPosX(getObj(mouseArea));
-      if(document.all)
-      {
-          divObj.onclick=handleEdit;
-      }
-      else
-      {
-          divObj.setAttribute('onclick','handleEdit();');
-      }
-      divObj.style.left=(crmx+getObj(mouseArea).offsetWidth -divObj.offsetWidth)+"px";
-      divObj.style.top=crmy+"px";
+	var mouseArea="";
+	mouseArea="mouseArea_"+ fieldLabel;
+	if(itsonview) {
+		return;
+	}
+	show("crmspanid");
+	globaluitype = uitype;
+	globaldtlviewspanid= "dtlview_"+ fieldLabel;//valuespanid;
+	globaleditareaspanid="editarea_"+ fieldLabel;//textareapanid;
+	globalfieldlabel = fieldLabel;
+	if(globaluitype == 53) {
+		if(typeof(document.DetailView.assigntype[0]) != 'undefined') {
+			var assign_type_U = document.DetailView.assigntype[0].checked;
+			var assign_type_G = document.DetailView.assigntype[1].checked;
+			if(assign_type_U == true)
+				globaltxtboxid= 'txtbox_U'+fieldLabel;
+			else if(assign_type_G == true)
+				globaltxtboxid= 'txtbox_G'+fieldLabel;
+			} else {
+				globaltxtboxid= 'txtbox_U'+fieldLabel;
+			}
+	} else {
+		globaltxtboxid="txtbox_"+ fieldLabel;//textboxpanid;
+	}
+	divObj = getObj('crmspanid');
+	crmy = findPosY(getObj(mouseArea));
+	crmx = findPosX(getObj(mouseArea));
+	if(document.all) {
+		divObj.onclick=handleEdit;
+	} else {
+		divObj.setAttribute('onclick','handleEdit();');
+	}
+	divObj.style.left=(crmx+getObj(mouseArea).offsetWidth -divObj.offsetWidth)+"px";
+	divObj.style.top=crmy+"px";
 }
 
 function handleEdit()
 {
-     show(globaleditareaspanid) ;
-     fnhide(globaldtlviewspanid);
-	 if(globaluitype != 53)
-	 {
+	show(globaleditareaspanid);
+	fnhide(globaldtlviewspanid);
+	if(globaluitype != 53) {
 		globaltempvalue = getObj(globaltxtboxid).value;
 		if(getObj(globaltxtboxid).type != 'hidden')
-	     	 	getObj(globaltxtboxid).focus();
-	 }
-     fnhide('crmspanid');
-     itsonview=true;
-     return false;
+			getObj(globaltxtboxid).focus();
+	}
+	fnhide('crmspanid');
+	itsonview=true;
+	return false;
 }
 
 //Asha: Function changed to trim both leading and trailing spaces.
@@ -110,12 +99,49 @@ function trim(str) {
 var genUiType = "";
 var genFldValue = "";
 
+function dtlViewAjaxDirectFieldSave(fieldValue,module,tableName,fieldName,crmId,okmsg) {
+	var data = "file=DetailViewAjax&module=" + module + "&action=" + module + "Ajax&record=" + crmId+"&recordid=" + crmId ;
+	data = data + "&fldName=" + fieldName + "&fieldValue=" + escapeAll(fieldValue) + "&ajxaction=DETAILVIEW";
+	if(module == 'Users') {
+		data += "&form_token=" + (document.getElementsByName('form_token')[0].value);
+	}
+	new Ajax.Request(
+		'index.php',
+		{queue: {position: 'end', scope: 'command'},
+		method: 'post',
+		postBody: data,
+		onComplete: function(response) {
+			if(response.responseText.indexOf(":#:FAILURE")>-1) {
+				alert(alert_arr.ERROR_WHILE_EDITING);
+			}
+			else if(response.responseText.indexOf(":#:ERR")>-1) {
+				alert_str = response.responseText.replace(":#:ERR","");
+				alert(alert_str);
+				$("vtbusy_info").style.display="none";
+			}
+			else if(response.responseText.indexOf(":#:SUCCESS")>-1) {
+				//For HD & FAQ - comments, we should empty the field value
+				if((module == "HelpDesk" || module == "Faq") && fieldName == "comments") {
+					var comments = response.responseText.replace(":#:SUCCESS","");
+					if(getObj("comments_div") != null) getObj("comments_div").innerHTML = comments;
+					if(getObj(dtlView) != null) getObj(dtlView).innerHTML = "";
+					if(getObj("comments") != null) getObj("comments").value = "";
+				} else {
+					if (okmsg != null && okmsg!= '') alert(okmsg);
+				}
+				$("vtbusy_info").style.display="none";
+			}
+		}
+		}
+	);
+}
+
 function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 {
 	var dtlView = "dtlview_"+ fieldLabel;
 	var editArea = "editarea_"+ fieldLabel;
 	var groupurl = "";
-	
+
 	if(globaluitype == 53)
 	{
 		if(typeof(document.DetailView.assigntype[0]) != 'undefined')
@@ -133,23 +159,22 @@ function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 		else if(assign_type_G == true)
 		{
 			var txtBox= 'txtbox_G'+fieldLabel;
-			var group_id = encodeURIComponent($(txtBox).options[$(txtBox).selectedIndex].text); 
-			var groupurl = "&assigned_group_id="+group_id+"&assigntype=T"
+			var group_id = encodeURIComponent($(txtBox).options[$(txtBox).selectedIndex].text);
+			var groupurl = "&assigned_group_id="+group_id+"&assigntype=T";
 		}
 
 	}
 	else if(uitype == 15 || uitype == 16)
-	{	
+	{
 		var txtBox= "txtbox_"+ fieldLabel;
 		var not_access =document.getElementById(txtBox);
-                 pickval = not_access.options[not_access.selectedIndex].value;
-			if(pickval == alert_arr.LBL_NOT_ACCESSIBLE)
-			{
-				document.getElementById(editArea).style.display='none';
-				document.getElementById(dtlView).style.display='block';
-     				itsonview=false; //to show the edit link again after hiding the editdiv.
-				return false;
-			}
+		pickval = not_access.options[not_access.selectedIndex].value;
+		if(pickval == alert_arr.LBL_NOT_ACCESSIBLE) {
+			document.getElementById(editArea).style.display='none';
+			document.getElementById(dtlView).style.display='block';
+			itsonview=false; //to show the edit link again after hiding the editdiv.
+			return false;
+		}
 	}
 	else if(globaluitype == 33)
 	{
@@ -159,18 +184,18 @@ function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 	  var notaccess_label = new Array();
 	  for (iter=0;iter < oMulSelect.options.length ; iter++)
 	  {
-      	      if (oMulSelect.options[iter].selected)
+		if (oMulSelect.options[iter].selected)
 		{
 			r[r.length] = oMulSelect.options[iter].value;
 			notaccess_label[notaccess_label.length] = oMulSelect.options[iter].text;
 		}
-      	  }
+	  }
 	}else
 	{
 		var txtBox= "txtbox_"+ fieldLabel;
 	}
-	
-	var popupTxt= "popuptxt_"+ fieldLabel;      
+
+	var popupTxt= "popuptxt_"+ fieldLabel;
 	var hdTxt = "hdtxt_"+ fieldLabel;
 
 	if(formValidate() == false)
@@ -178,10 +203,8 @@ function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 		return false;
 	}
 
-
 	$("vtbusy_info").style.display="inline";
-	var isAdmin = document.getElementById("hdtxt_IsAdmin").value; 
-
+	var isAdmin = document.getElementById("hdtxt_IsAdmin").value;
 
 	//overriden the tagValue based on UI Type for checkbox 
 	if(uitype == '56')
@@ -199,7 +222,6 @@ function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 				}
 				else
 					tagValue = "1";
-
 			}
 			else
 				tagValue = "1";
@@ -220,24 +242,20 @@ function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 	{
 		tagValue = r.join(" |##| ");
   	}else if(uitype == '24' || uitype == '21')
-        {
-                tagValue = document.getElementById(txtBox).value.replace(/<br\s*\/>/g, " ");
-
-        }else
+	{
+		tagValue = document.getElementById(txtBox).value.replace(/<br\s*\/>/g, " ");
+	}else
 	{
 		tagValue = trim(document.getElementById(txtBox).value);
-		if(module == "Contacts")
-                {
-			if(getObj('portal'))
-                        {
-                                var port_obj = getObj('portal').checked;
-                                if(fieldName == "email" && tagValue == '' && port_obj == true)
-                                {
-                                        alert(alert_arr.PORTAL_PROVIDE_EMAILID);
-                                        return false;
-                                }
-                        }
-                }
+		if(module == "Contacts") {
+			if(getObj('portal')) {
+				var port_obj = getObj('portal').checked;
+				if(fieldName == "email" && tagValue == '' && port_obj == true) {
+					alert(alert_arr.PORTAL_PROVIDE_EMAILID);
+					return false;
+				}
+			}
+		}
 	}
 
 	var data = "file=DetailViewAjax&module=" + module + "&action=" + module + "Ajax&record=" + crmId+"&recordid=" + crmId ;
@@ -247,30 +265,30 @@ function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 	}
 	new Ajax.Request(
 		'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                        method: 'post',
-                        postBody: data,
-                        onComplete: function(response) {
-							if(response.responseText.indexOf(":#:FAILURE")>-1) {
-	          					alert(alert_arr.ERROR_WHILE_EDITING);
-	          				}
-	          				else if(response.responseText.indexOf(":#:ERR")>-1) {
-								alert_str = response.responseText.replace(":#:ERR","");
-	          					alert(alert_str);
-	           					$("vtbusy_info").style.display="none";
-	          				}
-	          				else if(response.responseText.indexOf(":#:SUCCESS")>-1) {
-								//For HD & FAQ - comments, we should empty the field value
-								if((module == "HelpDesk" || module == "Faq") && fieldName == "comments") {
-									var comments = response.responseText.replace(":#:SUCCESS","");
-									if(getObj("comments_div") != null) getObj("comments_div").innerHTML = comments;
-									if(getObj(dtlView) != null) getObj(dtlView).innerHTML = "";
-									if(getObj("comments") != null) getObj("comments").value = "";
-								}
-	           					$("vtbusy_info").style.display="none";
-							}
-						}
-                }
+		{queue: {position: 'end', scope: 'command'},
+		method: 'post',
+		postBody: data,
+		onComplete: function(response) {
+			if(response.responseText.indexOf(":#:FAILURE")>-1) {
+				alert(alert_arr.ERROR_WHILE_EDITING);
+			}
+			else if(response.responseText.indexOf(":#:ERR")>-1) {
+				alert_str = response.responseText.replace(":#:ERR","");
+				alert(alert_str);
+				$("vtbusy_info").style.display="none";
+			}
+			else if(response.responseText.indexOf(":#:SUCCESS")>-1) {
+				//For HD & FAQ - comments, we should empty the field value
+				if((module == "HelpDesk" || module == "Faq") && fieldName == "comments") {
+					var comments = response.responseText.replace(":#:SUCCESS","");
+					if(getObj("comments_div") != null) getObj("comments_div").innerHTML = comments;
+					if(getObj(dtlView) != null) getObj(dtlView).innerHTML = "";
+					if(getObj("comments") != null) getObj("comments").value = "";
+				}
+				$("vtbusy_info").style.display="none";
+			}
+		}
+		}
 	);
 	tagValue = get_converted_html(tagValue);
 	if(uitype == '13' || uitype == '104')
@@ -286,7 +304,6 @@ function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 			else
 				var email_link = "<a href=\"mailto:"+ tagValue+"\" target=\"_blank\">"+tagValue+"&nbsp;</a>";
 		}
-		
 		getObj(dtlView).innerHTML = email_link;
 		if(fieldName == "email" || fieldName == "email1"){
 			var priEmail = getObj("pri_email");
@@ -295,7 +312,7 @@ function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 		}else{
 			var secEmail = getObj("sec_email");
 			if(secEmail)
-                	        secEmail.value = tagValue;
+				secEmail.value = tagValue;
 		}
 	}else if(uitype == '11'){
 		if(typeof(use_asterisk) != 'undefined' && use_asterisk == true){
@@ -306,19 +323,19 @@ function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 	}else if(uitype == '17')
 	{
 		var matchPattern = /^[\w]+:\/\//;
-        if(tagValue.match(matchPattern)){
-            getObj(dtlView).innerHTML = "<a href=\""+ tagValue+"\" target=\"_blank\">"+tagValue+"&nbsp;</a>";
-        }else{
-            getObj(dtlView).innerHTML = "<a href=\"http://"+ tagValue+"\" target=\"_blank\">"+tagValue+"&nbsp;</a>";
-        }	
+		if(tagValue.match(matchPattern)){
+			getObj(dtlView).innerHTML = "<a href=\""+ tagValue+"\" target=\"_blank\">"+tagValue+"&nbsp;</a>";
+		}else{
+			getObj(dtlView).innerHTML = "<a href=\"http://"+ tagValue+"\" target=\"_blank\">"+tagValue+"&nbsp;</a>";
+		}
 	}else if(uitype == '85')
-        {
-                getObj(dtlView).innerHTML = "<a href=\"skype://"+ tagValue+"?call\">"+tagValue+"&nbsp;</a>";
-        }else if(uitype == '53')
+	{
+		getObj(dtlView).innerHTML = "<a href=\"skype://"+ tagValue+"?call\">"+tagValue+"&nbsp;</a>";
+	}else if(uitype == '53')
 	{
 		var hdObj = getObj(hdTxt);
 		if(typeof(document.DetailView.assigntype[0]) != 'undefined')
-        {
+		{
 			var assign_type_U = document.DetailView.assigntype[0].checked;
 			var assign_type_G = document.DetailView.assigntype[1].checked;
 		}else
@@ -355,7 +372,7 @@ function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 
 	}else if(uitype == 116 || uitype == 117)
 	{
-			getObj(dtlView).innerHTML = document.getElementById(txtBox).options[document.getElementById(txtBox).selectedIndex].text; 
+		getObj(dtlView).innerHTML = document.getElementById(txtBox).options[document.getElementById(txtBox).selectedIndex].text; 
 	}
 	else if(getObj(popupTxt))
 	{
@@ -375,7 +392,6 @@ function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 		else if(uitype == '75' || uitype == '81' )
 		{
 			getObj(dtlView).innerHTML = "<a href=\"index.php?module=Vendors&action=DetailView&record="+tagValue+"\">"+popObj.value+"&nbsp;</a>";
-
 		}
 		else if(uitype == '76')
 		{
@@ -409,7 +425,6 @@ function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 			{
 				getObj(dtlView).innerHTML = "";
 			}
-
 		}
 		else
 		{
@@ -417,36 +432,33 @@ function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 		}
 	}
 	else if(uitype == '15' || uitype == '16' || uitype == '31' || uitype == '32')
-        {
-                        var notaccess =document.getElementById(txtBox);
-                        tagValue = notaccess.options[notaccess.selectedIndex].text;
-			if(tagValue == alert_arr.LBL_NOT_ACCESSIBLE)
-				getObj(dtlView).innerHTML = "<font color='red'>"+get_converted_html(tagValue)+"</font>";
-			else
-				getObj(dtlView).innerHTML = get_converted_html(tagValue);
-        }
+	{
+		var notaccess =document.getElementById(txtBox);
+		tagValue = notaccess.options[notaccess.selectedIndex].text;
+		if(tagValue == alert_arr.LBL_NOT_ACCESSIBLE)
+			getObj(dtlView).innerHTML = "<font color='red'>"+get_converted_html(tagValue)+"</font>";
+		else
+			getObj(dtlView).innerHTML = get_converted_html(tagValue);
+	}
 	else if(uitype == '33')
-  	{
-		/* Wordwrap a long list of multi-select combo box items at the
-                 * item separator string */
-                var DETAILVIEW_WORDWRAP_WIDTH = "70"; // must match value in DetailViewUI.tpl.
+	{
+		/* Wordwrap a long list of multi-select combo box items at the item separator string */
+		var DETAILVIEW_WORDWRAP_WIDTH = "70"; // must match value in DetailViewUI.tpl.
 
-                var lineLength = 0;
-                for(var i=0; i < notaccess_label.length; i++) {
-                        lineLength += notaccess_label[i].length + 2; // + 2 for item separator string
-                        /*if(lineLength > DETAILVIEW_WORDWRAP_WIDTH && i > 0) {
-                                lineLength = notaccess_label[i].length + 2; // reset.
-                            	notaccess_label[i] = '<br/>&nbsp;' + notaccess_label[i]; // prepend newline.
-                        }*/
+		var lineLength = 0;
+		for(var i=0; i < notaccess_label.length; i++) {
+			lineLength += notaccess_label[i].length + 2; // + 2 for item separator string
+			/*if(lineLength > DETAILVIEW_WORDWRAP_WIDTH && i > 0) {
+				lineLength = notaccess_label[i].length + 2; // reset.
+				notaccess_label[i] = '<br/>&nbsp;' + notaccess_label[i]; // prepend newline.
+			}*/
 			notaccess_label[i] = get_converted_html(notaccess_label[i]);
-                        // Prevent a browser splitting multiword items:
-                        //notaccess_label[i] = notaccess_label[i].replace(/ /g, '&nbsp;');
-                        notaccess_label[i] = notaccess_label[i].replace(alert_arr.LBL_NOT_ACCESSIBLE,"<font color='red'>"+alert_arr.LBL_NOT_ACCESSIBLE+"</font>"); // for Not accessible label.
-                }
-                /* Join items with item separator string (which must match string in DetailViewUI.tpl,
-                 * EditViewUtils.php and CRMEntity.php)!!
-                 */
-       		getObj(dtlView).innerHTML = notaccess_label.join(", ");
+			// Prevent a browser splitting multiword items:
+			//notaccess_label[i] = notaccess_label[i].replace(/ /g, '&nbsp;');
+			notaccess_label[i] = notaccess_label[i].replace(alert_arr.LBL_NOT_ACCESSIBLE,"<font color='red'>"+alert_arr.LBL_NOT_ACCESSIBLE+"</font>"); // for Not accessible label.
+		}
+		/* Join items with item separator string (which must match string in DetailViewUI.tpl, EditViewUtils.php and CRMEntity.php)!! */
+		getObj(dtlView).innerHTML = notaccess_label.join(", ");
 	}else if(uitype == '19'){
 		var desc = tagValue.replace(/(^|[\n ])([\w]+?:\/\/.*?[^ \"\n\r\t<]*)/g, "$1<a href=\"$2\" target=\"_blank\">$2</a>");
 		desc = desc.replace(/(^|[\n ])((www|ftp)\.[\w\-]+\.[\w\-.\~]+(?:\/[^ \"\t\n\r<]*)?)/g, "$1<a href=\"http://$2\" target=\"_blank\">$2</a>");
@@ -470,22 +482,21 @@ function SaveTag(tagfield,crmId,module)
 	$("vtbusy_info").style.display="inline";
 	new Ajax.Request(
 		'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                        method: 'post',
-                       postBody: "file=TagCloud&module=" + module + "&action=" + module + "Ajax&recordid=" + crmId + "&ajxaction=SAVETAG&tagfields=" +tagValue,
-                       onComplete: function(response) {
-					if(response.responseText.indexOf(":#:FAILURE") > -1)
-					{
-						alert(alert_arr.VALID_DATA)
-					}else{
-				        	getObj('tagfields').innerHTML = response.responseText;
-						$(tagfield).value = '';
-					}
-					$("vtbusy_info").style.display="none";
-                        }
-                }
-        );
-    
+		{queue: {position: 'end', scope: 'command'},
+		method: 'post',
+		postBody: "file=TagCloud&module=" + module + "&action=" + module + "Ajax&recordid=" + crmId + "&ajxaction=SAVETAG&tagfields=" +tagValue,
+		onComplete: function(response) {
+			if(response.responseText.indexOf(":#:FAILURE") > -1)
+			{
+				alert(alert_arr.VALID_DATA);
+			}else{
+				getObj('tagfields').innerHTML = response.responseText;
+				$(tagfield).value = '';
+			}
+			$("vtbusy_info").style.display="none";
+		}
+		}
+	);
 }
 function setSelectValue(fieldLabel)
 {
@@ -499,18 +510,16 @@ function setSelectValue(fieldLabel)
 				var selCombo= 'txtbox_U'+fieldLabel;
 			else if(assign_type_G == true)	
 				var selCombo= 'txtbox_G'+fieldLabel;
-		}else
-		{
+		}else{
 			var selCombo= 'txtbox_U'+fieldLabel;
 		}
 	}else
 	{
-			var selCombo= 'txtbox_'+fieldLabel;
+		var selCombo= 'txtbox_'+fieldLabel;
 	}
 	var hdTxtBox = 'hdtxt_'+fieldLabel;
 	var oHdTxtBox = document.getElementById(hdTxtBox);
 	var oSelCombo = document.getElementById(selCombo);
-
 	oHdTxtBox.value = oSelCombo.options[oSelCombo.selectedIndex].text;
 }
 
@@ -530,5 +539,4 @@ function hndMouseClick(fieldLabel)
 	$(globaltxtboxid).value = $(globaldtlviewspanid).innerHTML;
 	handleEdit();
 	$(globaltxtboxid).select();
-
 }

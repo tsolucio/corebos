@@ -154,11 +154,11 @@ $smarty->assign("CURRENTUSERID",$current_user->id);
 $disp_view = getView($focus->mode);
 if($disp_view == 'edit_view')
 {
-	$act_data = getBlocks($tab_type,$disp_view,$mode,$focus->column_fields);
+	$act_data = getBlocks($tab_type,$disp_view,$focus->mode,$focus->column_fields);
 }
 else
 {
-	$act_data = getBlocks($tab_type,$disp_view,$mode,$focus->column_fields,'BAS');
+	$act_data = getBlocks($tab_type,$disp_view,$focus->mode,$focus->column_fields,'BAS');
 }
 $smarty->assign("BLOCKS",$act_data);
 foreach($act_data as $header=>$blockitem)

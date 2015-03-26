@@ -68,6 +68,7 @@ $mod_strings = Array(
 	'Performance' => 'Rendimiento',
 	'Module Functionality' => 'Funcionalidad Módulo',
 	'Other' => 'Otro',
+	'product_service_default' => 'Productos o Servicios por defecto en las líneas de productos',
 
 );
 

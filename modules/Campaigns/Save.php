@@ -10,28 +10,15 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  Saves an Account record and then redirects the browser to the 
- * defined return URL.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
+ ************************************************************************************/
+global $current_user, $currentModule;
 
-require_once('modules/Campaigns/Campaigns.php');
-require_once('include/logging.php');
-require_once('include/database/PearDatabase.php');
+checkFileAccessForInclusion("modules/$currentModule/$currentModule.php");
+require_once("modules/$currentModule/$currentModule.php");
 
-$focus = new Campaigns();
-
-global $current_user;
-
-//added to fix 4600
-$search=vtlib_purify($_REQUEST['search_url']);
+$focus = new $currentModule();
 setObjectValuesFromRequest($focus);
+
 
 if($_REQUEST['assigntype'] == 'U')  {
 	$focus->column_fields['assigned_user_id'] = $_REQUEST['assigned_user_id'];
@@ -39,8 +26,10 @@ if($_REQUEST['assigntype'] == 'U')  {
 	$focus->column_fields['assigned_user_id'] = $_REQUEST['assigned_group_id'];
 }
 
-$focus->save("Campaigns");
+$focus->save($currentModule);
 $return_id = $focus->id;
+
+$search = vtlib_purify($_REQUEST['search_url']);
 
 $parenttab = getParentTab();
 if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] != "") $return_module = vtlib_purify($_REQUEST['return_module']);

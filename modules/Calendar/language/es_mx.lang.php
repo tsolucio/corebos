@@ -130,7 +130,7 @@ $mod_strings = array (
 "Septiembre",
 "Octubre",
 "Noviembre",
-"Deciembre",
+"Diciembre",
 ),
 
 'cal_weekdays_short'=>array(

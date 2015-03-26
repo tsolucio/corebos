@@ -173,15 +173,16 @@ class WorkFlowScheduler {
 				if($operation == 'has changed') continue;
 
 				$value = $condition['value'];
+				$valueType = $condition['valuetype'];
 				if(in_array($operation, $this->_specialDateTimeOperator())) {
 					$value = $this->_parseValueForDate($condition);
+					$valueType = 'rawtext';
 				}
 				$columnCondition = $condition['joincondition'];
 				$groupId = $condition['groupid'];
 				$groupJoin = $condition['groupjoin'];
 				$operator = $conditionMapping[$operation];
 				$fieldname = $condition['fieldname'];
-				$valueType = $condition['valuetype'];
 
 				if($index > 0 && $groupId != $previous_condition['groupid']) { // if new group, end older group and start new
 					$queryGenerator->endGroup();
@@ -198,14 +199,24 @@ class WorkFlowScheduler {
 				if($index > 0 && $groupId != $previous_condition['groupid']) {	//if first condition in new group, send empty condition to append
 					$columnCondition = null;
 				}
-				$value = html_entity_decode($value);
-				preg_match('/(\w+) : \((\w+)\) (\w+)/', $condition['fieldname'], $matches);
-				if (count($matches) != 0) {
-					list($full, $referenceField, $referenceModule, $fieldname) = $matches;
+				$referenceField = null;
+				if ($valueType=='expression') {
+					$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($value)));
+					$expression = $parser->expression();
+					$exprEvaluater = new VTFieldExpressionEvaluater($expression);
+					$value = $exprEvaluater->evaluate(false);
+				} else {
+					$value = html_entity_decode($value);
+					preg_match('/(\w+) : \((\w+)\) (\w+)/', $condition['fieldname'], $matches);
+					if (count($matches) != 0) {
+						list($full, $referenceField, $referenceModule, $fieldname) = $matches;
+					} else {
+						if ($value=='true:boolean') $value = '1';
+						if ($value=='false:boolean') $value = '0';
+					}
 				}
 				if($referenceField) {
 					$queryGenerator->addReferenceModuleFieldCondition($referenceModule, $referenceField, $fieldname, $value, $operator, $columnCondition);
-					$referenceField = null;
 				} else {
 					$queryGenerator->addCondition($fieldname, $value, $operator, $columnCondition);
 				}

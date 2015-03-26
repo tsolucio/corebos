@@ -42,7 +42,7 @@ vtiger_help_jsonp.prototype = Object.extend(Ajax.Base, (function() {
                 if (self.options.onComplete) {
                     self.options.onComplete.call(self, json);
                 }
-            }
+            };
             script = document.createElement('script');
             script.type = 'text/javascript';
             script.src = url;
@@ -93,7 +93,7 @@ vtiger_help_controller = function() {
 	 */
     this.apiURL = function() {
         return 'http://help.vtiger.com/helpmenow/api.php';
-    }
+    };
 
     /**
 	 * Runtime variables
@@ -113,7 +113,7 @@ vtiger_help_controller = function() {
             MODULE:module,
             ACTION:action
         };
-    }
+    };
 
     /**
 	 * Extract keyword based on context for getting help information
@@ -122,7 +122,7 @@ vtiger_help_controller = function() {
         // Build the keyword (module-action) pair
         var runvars = this.runtimeVars(uri);
         return runvars['MODULE'] + '-' + runvars['ACTION'];
-    }
+    };
 
     /**
 	 * Initialize the DOM
@@ -132,7 +132,7 @@ vtiger_help_controller = function() {
         this.css();
         this.popup();
         return this;
-    }
+    };
     /**
      * Initialize the handler to trigger help.
      */
@@ -149,13 +149,11 @@ vtiger_help_controller = function() {
         link.onclick=function(){
             vtiger_help($('helpTipsHandlerPin'));
             return false;
-        }
+        };
         var themePath = vtlib_vtiger_imageurl(gVTTheme);
         link.setAttribute('href',"javascript:void(0);");
         link.innerHTML="<span id='helpTipsHandlerPin'>&nbsp;</span><img src='"+themePath+"/help_sidebar.png' border=0 align='absmiddle' title="+getTranslatedString("LBL_HELP_TITLE")+">";
-
-    }
-
+    };
 
     /**
 	 * Widget styling...
@@ -182,7 +180,7 @@ vtiger_help_controller = function() {
         style.appendChild(document.createTextNode(rules));
         document.head.appendChild(style);
         */
-    }
+    };
 
     /**
      * Widget popup
@@ -202,9 +200,8 @@ vtiger_help_controller = function() {
 
             document.getElementById('helpButton').appendChild(vtigerHelpPopupLay);
         }
-
         return $('vtigerHelpPopupLay');
-    }
+    };
 
     /**
      * Widget popup container
@@ -212,7 +209,7 @@ vtiger_help_controller = function() {
     this.popupContainer = function() {
         this.popup();
         return $('vtigerHelpPopupLayContainer');
-    }
+    };
 
     /**
      * Find closest parent having the given className
@@ -223,7 +220,7 @@ vtiger_help_controller = function() {
             if (node.className == className) break;
         }
         return node;
-    }
+    };
 
     /**
      * Set / Get data attribute value of the node.
@@ -233,7 +230,7 @@ vtiger_help_controller = function() {
             return node.getAttribute('data-'+key);
         }
         node.setAttribute('data-'+key, value);
-    }
+    };
 
     /**
      * Add new help page (hidding existing ones)
@@ -250,7 +247,7 @@ vtiger_help_controller = function() {
         pages.appendChild(page);
 
         return page;
-    }
+    };
 
     /**
      * Remove last help page.
@@ -269,9 +266,8 @@ vtiger_help_controller = function() {
                 lastPage.style.display = 'block';
             }
         }
-
         return lastPage;
-    }
+    };
 
     /**
      * Handle helpMeNow request
@@ -343,7 +339,7 @@ vtiger_help_controller = function() {
                 }
             }
         });
-    }
+    };
 
     /**
      * Handle helpMeNow navigation request.
@@ -368,13 +364,12 @@ vtiger_help_controller = function() {
             onComplete: function(data) {
                 if (data.success) {
                     container.innerHTML = thisInstance.recordUI(data.result.record, parentid);
-
                     // Trigger translation service
                     thisInstance.translate();
                 }
             }
         });
-    }
+    };
 
     /**
      * Handle multi-record display.
@@ -434,7 +429,7 @@ vtiger_help_controller = function() {
             fnDataMerge: this.dataMerge,
             runtimeVars: this.runtimeVars()
         });
-    }
+    };
 
     /**
      * Merge data with given context (variable map)
@@ -446,7 +441,7 @@ vtiger_help_controller = function() {
             data = data.replace(new RegExp("{\\$"+k+"}", "ig"), context[k]).replace(new RegExp("%7B\\$"+k+"%7D", "ig"), context[k]);
         }
         return data;
-    }
+    };
 
     /**
      * Handle single record display
@@ -524,7 +519,7 @@ vtiger_help_controller = function() {
         } else {
             tr();
         }
-    }
+    };
 
     /**
      * Determine the current language of user.
@@ -538,8 +533,8 @@ vtiger_help_controller = function() {
             }
         }
         return this._language.split('_');
-    }
-}
+    };
+};
 
 /**
  * Singleton for use
@@ -553,7 +548,7 @@ vtiger_help_controller_singleton =  {
         }
         return vtiger_help_controller_singleton.instance;
     }
-}
+};
 
 /**
  * Export the functions.

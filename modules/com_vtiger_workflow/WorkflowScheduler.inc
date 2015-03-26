@@ -24,3 +24,4 @@ require_once ('include/Webservices/VtigerCRMObject.php');
 require_once ('include/Webservices/VtigerCRMObjectMeta.php');
 require_once ('include/Webservices/DataTransform.php');
 require_once ('include/Webservices/Retrieve.php');
+require_once ('modules/com_vtiger_workflow/expression_engine/include.inc');

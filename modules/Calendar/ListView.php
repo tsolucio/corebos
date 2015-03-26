@@ -158,16 +158,23 @@ if ($task_title) $title_display= $task_title;
 
 //Retreive the list from Database
 //<<<<<<<<<customview>>>>>>>>>
-if($viewid != "0")
-{
-	$listquery = getListQuery("Calendar");
-	$list_query = $oCustomView->getModifiedCvListQuery($viewid,$listquery,"Calendar");
-}else
-{
-	$list_query = getListQuery("Calendar");
+$sql_error = false;
+try {
+	if($viewid != "0") {
+		$listquery = getListQuery("Calendar");
+		$list_query = $oCustomView->getModifiedCvListQuery($viewid,$listquery,"Calendar");
+	} else {
+		$list_query = getListQuery("Calendar");
+	}
+} catch (Exception $e) {
+	$sql_error = true;
 }
 //<<<<<<<<customview>>>>>>>>>
-
+$smarty->assign('SQLERROR',$sql_error);
+if ($sql_error) {
+	$smarty->assign('ERROR', getTranslatedString('ERROR_GETTING_FILTER'));
+	$smarty->assign("CUSTOMVIEW_OPTION",$customview_html);
+} else {
 if(isset($where) && $where != '')
 {
 	if(isset($_REQUEST['from_homepagedb']) && $_REQUEST['from_homepagedb'] == 'true')
@@ -202,19 +209,6 @@ if(isset($order_by) && $order_by != '') {
 			$list_query .= ' ORDER BY '.$tablename.$order_by.' '.$sorder;
 	}
 }
-
-//Constructing the list view
-$smarty->assign("CUSTOMVIEW_OPTION",$customviewcombo_html);
-$smarty->assign("VIEWID", $viewid);
-$smarty->assign("MOD", $mod_strings);
-$smarty->assign("APP", $app_strings);
-$smarty->assign("THEME", $theme);
-$smarty->assign("IMAGE_PATH",$image_path);
-$smarty->assign("MODULE",$currentModule);
-$smarty->assign("SINGLE_MOD",getTranslatedString('SINGLE_'.$currentModule, $currentModule));
-$smarty->assign("BUTTONS",$other_text);
-$smarty->assign("NEW_EVENT",$app_strings['LNK_NEW_EVENT']);
-$smarty->assign("NEW_TASK",$app_strings['LNK_NEW_TASK']);
 
 //Postgres 8 fixes
 if( $adb->dbType == "pgsql")
@@ -261,6 +255,21 @@ $listview_entries = getListViewEntries($focus,"Calendar",$list_result,$navigatio
 
 $smarty->assign("LISTENTITY", $listview_entries);
 $smarty->assign("SELECT_SCRIPT", $view_script);
+
+} // end sqlerror
+
+//Constructing the list view
+$smarty->assign("CUSTOMVIEW_OPTION",$customviewcombo_html);
+$smarty->assign("VIEWID", $viewid);
+$smarty->assign("MOD", $mod_strings);
+$smarty->assign("APP", $app_strings);
+$smarty->assign("THEME", $theme);
+$smarty->assign("IMAGE_PATH",$image_path);
+$smarty->assign("MODULE",$currentModule);
+$smarty->assign("SINGLE_MOD",getTranslatedString('SINGLE_'.$currentModule, $currentModule));
+$smarty->assign("BUTTONS",$other_text);
+$smarty->assign("NEW_EVENT",$app_strings['LNK_NEW_EVENT']);
+$smarty->assign("NEW_TASK",$app_strings['LNK_NEW_TASK']);
 
 //Added to select Multiple records in multiple pages
 $smarty->assign("SELECTEDIDS", vtlib_purify($_REQUEST['selobjs']));

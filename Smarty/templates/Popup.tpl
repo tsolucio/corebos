@@ -8,8 +8,10 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script>
+<script language="JavaScript" type="text/javascript">
 var image_pth = '{$IMAGE_PATH}';
+var product_default_units = '{$Product_Default_Units}';
+var service_default_units = '{$Service_Default_Units}';
 {literal}
 function QCreate(module,urlpop) {
 	if (module != 'none') {

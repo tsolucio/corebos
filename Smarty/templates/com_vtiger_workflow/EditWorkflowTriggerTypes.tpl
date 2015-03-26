@@ -63,7 +63,7 @@
 		{if $workflow->executionConditionAsLabel() eq 'ON_MODIFY'}checked{/if}/></td>
 		<td>{$MOD.LBL_ON_MODIFY}.</td></tr>
 	<tr><td valign="top"><input type="radio" name="execution_condition" value="ON_SCHEDULE" onclick="onschedule_preparescreen(this);"
-		{if $workflow->executionConditionAsLabel() eq 'ON_SCHEDULE'}checked{/if} {if $ScheduledWorkflowsCount>=$MaxAllowedScheduledWorkflows}disabled{/if}/></td>
+		{if $workflow->executionConditionAsLabel() eq 'ON_SCHEDULE'}checked{/if} {if $ScheduledWorkflowsCount>$MaxAllowedScheduledWorkflows}disabled{/if}/></td>
 		<td>{$MOD.LBL_ON_SCHEDULE}.
 		{if $ScheduledWorkflowsCount>$MaxAllowedScheduledWorkflows}
 		 <span class='errorMessage' style="color:red;margin-left: 10px;">{'EXCEEDS_MAX'|@getTranslatedString} : {$MaxAllowedScheduledWorkflows}</span>
@@ -113,7 +113,7 @@
 				</div>
 
 				{* show specific date *}
-				<div id='scheduleByDate' style="padding:5px 0px;clear:both;display:{if $workflow->schtypeid neq 4}none{else}block{/if};">
+				<div id='scheduleByDate' style="padding:5px 0px;clear:both;display:{if $workflow->schtypeid eq 4 || $workflow->schtypeid eq 7}block{else}none{/if};">
 					<div class="wfslabel">{'LBL_CHOOSE_DATE'|@getTranslatedString:$MODULE_NAME}</div>
 					<div style='margin-left:6px;float:left;'>
 						<input type="text" name="schdate" id="schdate" style="width:90px;vertical-align: top;" value="{$schdate}"><img border=0 src="{$IMAGE_PATH}btnL3Calendar.gif" alt="{$MOD.LBL_SET_DATE}" title="{$MOD.LBL_SET_DATE}" id="jscal_trigger_schdate">
@@ -138,7 +138,7 @@
 				</div>
 				{if $workflow->nexttrigger_time}
 					<div class='wfsclear'>
-						<div class="wfslabel" style="width: 100%;">{'LBL_NEXT_TRIGGER_TIME'|@getTranslatedString:$MODULE_NAME}:&nbsp;{if $workflow->schtypeid neq 4}{$wfnexttrigger_time}{/if}</div>
+						<div class="wfslabel" style="width: 100%;">{'LBL_NEXT_TRIGGER_TIME'|@getTranslatedString:$MODULE_NAME}:&nbsp;{$wfnexttrigger_time}</div>
 					</div>
 				{/if}
 			</div>

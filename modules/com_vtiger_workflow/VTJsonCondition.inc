@@ -199,12 +199,7 @@ class VTJsonCondition {
 			case "has changed" :
 				$entityDelta = new VTEntityDelta();
 				$idParts = vtws_getIdComponents($entityData->getId());
-				$hasChanged = $entityDelta->hasChanged($entityData->getModuleName(), $idParts[1], $cond['fieldname']);
-				if (empty($value)) {
-					return $hasChanged;
-				} else {
-					return $hasChanged && $fieldValue == $value;
-				}
+				return $entityDelta->hasChanged($entityData->getModuleName(), $idParts[1], $cond['fieldname']);
 			case 'has changed to' :
 				$entityDelta = new VTEntityDelta();
 				$idParts = vtws_getIdComponents($entityData->getId());

@@ -10,16 +10,7 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  TODO To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
 require_once ('Smarty_setup.php');
 require_once ('data/Tracker.php');
 require_once ('modules/Quotes/Quotes.php');
@@ -160,6 +151,7 @@ if (isset ($_REQUEST['record']) && $_REQUEST['record'] != '') {
 	}
 	elseif (isset ($_REQUEST['convertmode']) && $_REQUEST['convertmode'] == 'potentoinvoice') {
 		$focus->mode = '';
+		$_REQUEST['opportunity_id'] = $_REQUEST['return_id'];
 		$relpot = $adb->query_result($adb->pquery('select related_to from vtiger_potential where potentialid=?',array($_REQUEST['return_id'])),0,0);
 		$reltype = getSalesEntityType($relpot);
 		if ($reltype=='Accounts') {
@@ -184,7 +176,9 @@ if (isset ($_REQUEST['opportunity_id']) && $_REQUEST['opportunity_id'] != '') {
 	$potfocus = new Potentials();
 	$potfocus->column_fields['potential_id'] = $_REQUEST['opportunity_id'];
 	$associated_prod = getAssociatedProducts("Potentials", $potfocus, $potfocus->column_fields['potential_id']);
-
+	$smarty->assign("ASSOCIATEDPRODUCTS", $associated_prod);
+	$smarty->assign("AVAILABLE_PRODUCTS", count($associated_prod)>0 ? 'true' : 'false');
+	$smarty->assign("MODE", $focus->mode);
 }
 if (isset ($_REQUEST['product_id']) && $_REQUEST['product_id'] != '') {
 	$focus->column_fields['product_id'] = $_REQUEST['product_id'];
@@ -197,6 +191,7 @@ if (isset ($_REQUEST['product_id']) && $_REQUEST['product_id'] != '') {
 	}
 	$smarty->assign("ASSOCIATEDPRODUCTS", $associated_prod);
 	$smarty->assign("AVAILABLE_PRODUCTS", 'true');
+	$smarty->assign("MODE", $focus->mode);
 }
 if (!empty ($_REQUEST['parent_id']) && !empty ($_REQUEST['return_module'])) {
 	if ($_REQUEST['return_module'] == 'Services') {
@@ -298,22 +293,6 @@ elseif (isset ($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') 
 	$smarty->assign("AVAILABLE_PRODUCTS", 'true');
 	$smarty->assign("MODE", $focus->mode);
 }
-elseif ((isset ($_REQUEST['product_id']) && $_REQUEST['product_id'] != '') || (isset ($_REQUEST['opportunity_id']) && $_REQUEST['opportunity_id'] != '')) {
-	$smarty->assign("ASSOCIATEDPRODUCTS", $associated_prod);
-	$InvTotal = getInventoryTotal($_REQUEST['return_module'], $_REQUEST['return_id']);
-	$smarty->assign("MODE", $focus->mode);
-
-	//this is to display the Product Details in first row when we create new PO from Product relatedlist
-	if ($_REQUEST['return_module'] == 'Products') {
-		$smarty->assign("PRODUCT_ID", vtlib_purify($_REQUEST['product_id']));
-		$smarty->assign("PRODUCT_NAME", getProductName($_REQUEST['product_id']));
-		$smarty->assign("UNIT_PRICE", vtlib_purify($_REQUEST['product_id']));
-		$smarty->assign("QTY_IN_STOCK", getPrdQtyInStck($_REQUEST['product_id']));
-		$smarty->assign("VAT_TAX", getProductTaxPercentage("VAT", $_REQUEST['product_id']));
-		$smarty->assign("SALES_TAX", getProductTaxPercentage("Sales", $_REQUEST['product_id']));
-		$smarty->assign("SERVICE_TAX", getProductTaxPercentage("Service", $_REQUEST['product_id']));
-	}
-}
 
 if (isset ($cust_fld)) {
 	$smarty->assign("CUSTOMFIELD", $cust_fld);
@@ -402,6 +381,8 @@ $smarty->assign("PICKIST_DEPENDENCY_DATASOURCE", Zend_Json::encode($picklistDepe
 // Gather the help information associated with fields
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
 // END
+//Get Service or Product by default when create
+$smarty->assign('PRODUCT_OR_SERVICE', GlobalVariable::getVariable('product_service_default', 'Products', $currentModule, $current_user->id));
 
 if ($focus->mode == 'edit')
 	$smarty->display("Inventory/InventoryEditView.tpl");

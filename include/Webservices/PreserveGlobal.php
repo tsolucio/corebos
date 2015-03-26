@@ -16,7 +16,7 @@ class VTWS_PreserveGlobal{
 		//$name store the name of the global.
 		global $$name;
 		
-		if(!is_array(VTWS_PreserveGlobal::$globalData[$name])){
+		if(!isset(VTWS_PreserveGlobal::$globalData[$name]) or !is_array(VTWS_PreserveGlobal::$globalData[$name])){
 			VTWS_PreserveGlobal::$globalData[$name] = array();
 			VTWS_PreserveGlobal::$globalData[$name][] = $$name;
 		}

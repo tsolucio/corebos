@@ -335,7 +335,7 @@ $mod_strings = array (
       'LBL_MODULE' => 'Módulo',
       'LBL_OWNER' => 'Propietario',
       'LBL_MIGRATION' => 'Migrar desde una Versión Anterior',
-      'LBL_MIGRATION_INFO' => ' - Migrar desde una Versión Anterior de vTiger',
+      'LBL_MIGRATION_INFO' => ' - Migrar desde una versión anterior de la aplicación',
       'LBL_USER_DESCRIPTION' => 'Gestionar Usuarios que acceden al CRM',
       'LBL_ROLE_DESCRIPTION' => 'Definir Jerarquía de Roles y Asignar a Usuarios',
       'LBL_PROFILE_DESCRIPTION' => 'Definir Perfiles para asignar derechos de acceso a cada Rol',
@@ -479,8 +479,8 @@ $mod_strings = array (
       'LBL_VIEW_ALL' => 'Ver todo',
       'LBL_EDIT_ALL' => 'Usar todo',
       'LBL_ALLOW' => 'Permitir',
-      'LBL_MESG_VIEW' => 'ver toda la información / módulos de vtiger CRM',
-      'LBL_MESG_EDIT' => 'editar toda la información / módulos de vtiger CRM',
+      'LBL_MESG_VIEW' => 'ver toda la información / módulos del CRM',
+      'LBL_MESG_EDIT' => 'editar toda la información / módulos del CRM',
       'LBL_TAB_MESG_OPTION' => 'módulos para mostrar',
       'LBL_CREATE_EDIT' => 'Crear/Editar',
       'LBL_VIEW' => 'Ver',
@@ -654,7 +654,7 @@ $mod_strings = array (
 
       // vtlib customization: Language Stings
       'VTLIB_LBL_MODULE_MANAGER'=>'Administrador de Módulos',
-      'VTLIB_LBL_MODULE_MANAGER_DESCRIPTION'=>'Administrar el comportamiento del módulo dentro de vtiger CRM',
+      'VTLIB_LBL_MODULE_MANAGER_DESCRIPTION'=>'Administrar el comportamiento del módulo',
       'VTLIB_LBL_MODULE_MANAGER_CUSTOMMOD'=>'Módulos Personalizados',
       'VTLIB_LBL_MODULE_MANAGER_STANDARDMOD'=>'Módulos Estándar',
       'VTLIB_LBL_MODULE_MANAGER_NOMODULES'=>'No se han encontrado módulos personalizados! Crea o Importa uno nuevo...',
@@ -736,7 +736,7 @@ $mod_strings = array (
 
       //Added for the workflow module
       'LBL_LIST_WORKFLOWS'=>'Flujos de trabajo',
-      'LBL_LIST_WORKFLOWS_DESCRIPTION' => 'Crear/Editar flujos de trabajo en vtiger CRM',
+      'LBL_LIST_WORKFLOWS_DESCRIPTION' => 'Crear/Editar flujos de trabajo',
       'LBL_TASK_TITLE'=>'Tarea',
       'LBL_PARENT_WORKFLOW'=>'Flujo de trabajo superior',
       'MSG_EXECUTE_TASK_DELAY'=>'Ejecuta la tarea después de una espera',
@@ -880,12 +880,6 @@ $mod_strings = array (
       'LBL_PUBLISHED_ON' => 'Publicado el',
       'LBL_LICENSE'   => 'Licencia',
       'LBL_EXTENSION_FILE_DOWNLOAD_FAILED' => 'No se ha podido descargar la extensión!',
-      'LBL_DEFAULT'=>'Por defecto, el servidor de correo saliente SMTP es od1.vtiger.com. Para evitar problemas, recomendamos que utilices una de estas opciones.',
-      'LBL_OPTIONS1'=>'Enviar emails desde su servidor de correo<br>
-      				- Introducir la configuración (Servidor, Usuario, Contraseña) de la misma cuenta de correo utilizada en la cuenta de respuesta.',
-      'LBL_OPTIONS2'=>"Añadir el servidor od1.vtiger.com como dominio autorizado desde su dominio.<br>
-      				- Si prefiere mantener el servidor saliente de vtiger, recomendamos que configure el registro SPF de tu dominio para incluir el servidor de vtiger como servidor autorizado.
-      				  Para obtener instrucciones adicionales sobre cómo definir un registro SPF, contacte con od-support@vtiger.com .",
       'LBL_ALREADY_EXISTS' => 'Ya Existe',
       'LBL_EXTENSION_INCOMPATIBLE' => 'Extensión Incompatible',
       'LBL_INSTALL' => 'Instalar',

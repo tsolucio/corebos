@@ -30,7 +30,7 @@ if(isset($_REQUEST['record']) && $_REQUEST['record'] != '')
 if(isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true')
 {
 	$focus->id = "";
-    	$focus->mode = '';
+	$focus->mode = '';
 }
 if(empty($_REQUEST['record']) && $focus->mode != 'edit'){
 	setObjectValuesFromRequest($focus);
@@ -40,7 +40,7 @@ $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 
 $disp_view = getView($focus->mode);
-	$smarty->assign("BLOCKS",getBlocks($currentModule,$disp_view,$mode,$focus->column_fields));
+$smarty->assign("BLOCKS",getBlocks($currentModule,$disp_view,$focus->mode,$focus->column_fields));
 
 $smarty->assign("OP_MODE",$disp_view);
 

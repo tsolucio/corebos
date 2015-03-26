@@ -26,6 +26,7 @@ require_once('include/logging.php');
 require_once('include/utils/utils.php');
 require_once('include/RelatedListView.php');
 require_once('user_privileges/default_module_view.php');
+require_once('modules/InventoryDetails/InventoryDetails.php');
 
 // Account is used to store vtiger_account information.
 class Quotes extends CRMEntity {
@@ -124,6 +125,8 @@ class Quotes extends CRMEntity {
 		{
 			//Based on the total Number of rows we will save the product relationship with this entity
 			saveInventoryProductDetails($this, 'Quotes');
+			if(vtlib_isModuleActive("InventoryDetails"))
+				InventoryDetails::createInventoryDetails($this,'Quotes');
 		}
 
 		// Update the currency id and the conversion rate for the quotes

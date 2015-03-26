@@ -274,14 +274,17 @@ jQuery(document).ready(function(){
         },
 
         eventClick: function(calEvent, jsEvent, view){
-            
             if (calEvent.visibility == "public"){
                 jQuery(this).css('cursor', 'pointer');
                 var view_val = jQuery('#calendar_div').fullCalendar('getView');
-      
                 jQuery('#event_info').css('display', 'block');
                 jQuery('#event_info').css('top', jsEvent.pageY + 1);
-                jQuery('#event_info').css('left', jsEvent.pageX + 1);
+                var docwidth =jQuery(window).width();
+                if(docwidth-jsEvent.pageX>=70 && docwidth-jsEvent.pageX<=185 ){
+                	jQuery('#event_info').css('right', docwidth-jsEvent.pageX);
+                } else {
+                	jQuery('#event_info').css('left', jsEvent.pageX + 1);
+                }
                 jQuery('#event_info_content').html('<img src=\'themes/images/vtbusy.gif\'>');
 
                 if (calEvent.id.substr(0,1) == "g"){
