@@ -21,7 +21,7 @@ $smarty->assign('MOD', $mod_strings);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH',$image_path);
-$smarty->assign('BillAddressChecked','true');
-$smarty->assign('ShipAddressChecked','false');
+$smarty->assign('BillAddressChecked',GlobalVariable::getVariable('Billing_Address_Checked', 'true'));
+$smarty->assign('ShipAddressChecked',GlobalVariable::getVariable('Shipping_Address_Checked', 'false'));
 $smarty->display('modules/Accounts/SetReturnAddress.tpl');
 ?>
