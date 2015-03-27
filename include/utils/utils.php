@@ -3142,7 +3142,7 @@ function getAccessPickListValues($module)
  * @return string comma separated list of keys
 **/
 function getTranslationKeyFromTranslatedValue($module, $translated) {
-	global $current_language;
+	global $current_language, $app_strings;
 	static $purified_cache = array();
 
 	if (array_key_exists($module.$translated, $purified_cache)) {
@@ -3150,6 +3150,7 @@ function getTranslationKeyFromTranslatedValue($module, $translated) {
 	}
 
 	$modstrs = return_module_language($current_language, $module);
+	$modstrs = array_merge($app_strings,$modstrs);
 	$values = array();
 	$strings = explode(',' , $translated);
 	foreach($strings as $string) {
