@@ -70,25 +70,42 @@ function productPickList(currObj,module, row_no) {
 	}
 
 	var currencyid = document.getElementById("inventory_currency").value;
+	var contact_id = '';
+	var ship_state = '';
+	var ship_code = '';
+	var ship_country = '';
+	if(document.getElementsByName("contact_id").length != 0)
+		contact_id= document.EditView.contact_id.value;
+	if(document.getElementsByName("ship_state").length != 0)
+		ship_state= document.EditView.ship_state.value;
+	if(document.getElementsByName("ship_code").length != 0)
+		ship_code= document.EditView.ship_code.value;
+	if(document.getElementsByName("ship_country").length != 0)
+		ship_country= document.EditView.ship_country.value;
+	var additionalinfo = '&ctoid=' + contact_id;
+	additionalinfo = additionalinfo +'&ship_state=' + ship_state;
+	additionalinfo = additionalinfo +'&ship_code=' + ship_code;
+	additionalinfo = additionalinfo +'&ship_country=' + ship_country;
+	additionalinfo = trim(additionalinfo);
 	popuptype = 'inventory_prod';
 	if(module == 'PurchaseOrder') {
 		popuptype = 'inventory_prod_po';
 		module_string = "&parent_module=Vendor";
 		parent_id = document.EditView.vendor_id.value;
-		
+
 		if(parent_id != '')
-			window.open("index.php?module=Products&action=Popup&html=Popup_picker&select=enable&form=HelpDeskEditView&popuptype="+popuptype+"&curr_row="+rowId+"&return_module="+module+"&currencyid="+currencyid+"&relmod_id="+parent_id+module_string,"productWin","width=640,height=600,resizable=0,scrollbars=0,status=1,top=150,left=200");
+			window.open("index.php?module=Products&action=Popup&html=Popup_picker&select=enable&form=HelpDeskEditView&popuptype="+popuptype+"&curr_row="+rowId+"&return_module="+module+"&currencyid="+currencyid+"&relmod_id="+parent_id+module_string+additionalinfo,"productWin","width=640,height=600,resizable=0,scrollbars=0,status=1,top=150,left=200");
 		else
-			window.open("index.php?module=Products&action=Popup&html=Popup_picker&select=enable&form=HelpDeskEditView&popuptype="+popuptype+"&curr_row="+rowId+"&return_module="+module+"&currencyid="+currencyid,"productWin","width=640,height=600,resizable=0,scrollbars=0,status=1,top=150,left=200");
+			window.open("index.php?module=Products&action=Popup&html=Popup_picker&select=enable&form=HelpDeskEditView&popuptype="+popuptype+"&curr_row="+rowId+"&return_module="+module+"&currencyid="+currencyid+additionalinfo,"productWin","width=640,height=600,resizable=0,scrollbars=0,status=1,top=150,left=200");
 	}
 	else {
 		var record_id = '';
 		if(document.getElementsByName("account_id").length != 0)
 			record_id= document.EditView.account_id.value;
 		if(record_id != '')
-			window.open("index.php?module=Products&action=Popup&html=Popup_picker&select=enable&form=HelpDeskEditView&popuptype="+popuptype+"&curr_row="+rowId+"&relmod_id="+record_id+"&parent_module=Accounts&return_module="+module+"&currencyid="+currencyid,"productWin","width=640,height=600,resizable=0,scrollbars=0,status=1,top=150,left=200");
+			window.open("index.php?module=Products&action=Popup&html=Popup_picker&select=enable&form=HelpDeskEditView&popuptype="+popuptype+"&curr_row="+rowId+"&relmod_id="+record_id+"&parent_module=Accounts&return_module="+module+"&currencyid="+currencyid+additionalinfo,"productWin","width=640,height=600,resizable=0,scrollbars=0,status=1,top=150,left=200");
 		else
-			window.open("index.php?module=Products&action=Popup&html=Popup_picker&select=enable&form=HelpDeskEditView&popuptype="+popuptype+"&curr_row="+rowId+"&return_module="+module+"&currencyid="+currencyid,"productWin","width=640,height=600,resizable=0,scrollbars=0,status=1,top=150,left=200");
+			window.open("index.php?module=Products&action=Popup&html=Popup_picker&select=enable&form=HelpDeskEditView&popuptype="+popuptype+"&curr_row="+rowId+"&return_module="+module+"&currencyid="+currencyid+additionalinfo,"productWin","width=640,height=600,resizable=0,scrollbars=0,status=1,top=150,left=200");
 	}
 }
 
