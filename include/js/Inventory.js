@@ -71,11 +71,17 @@ function productPickList(currObj,module, row_no) {
 
 	var currencyid = document.getElementById("inventory_currency").value;
 	var contact_id = '';
+	var account_id = '';
+	var vendor_id = '';
 	var ship_state = '';
 	var ship_code = '';
 	var ship_country = '';
 	if(document.getElementsByName("contact_id").length != 0)
 		contact_id= document.EditView.contact_id.value;
+	if(document.getElementsByName("account_id").length != 0)
+		account_id= document.EditView.account_id.value;
+	if(document.getElementsByName("vendor_id").length != 0)
+		vendor_id= document.EditView.vendor_id.value;
 	if(document.getElementsByName("ship_state").length != 0)
 		ship_state= document.EditView.ship_state.value;
 	if(document.getElementsByName("ship_code").length != 0)
@@ -83,9 +89,11 @@ function productPickList(currObj,module, row_no) {
 	if(document.getElementsByName("ship_country").length != 0)
 		ship_country= document.EditView.ship_country.value;
 	var additionalinfo = '&ctoid=' + contact_id;
-	additionalinfo = additionalinfo +'&ship_state=' + ship_state;
-	additionalinfo = additionalinfo +'&ship_code=' + ship_code;
-	additionalinfo = additionalinfo +'&ship_country=' + ship_country;
+	additionalinfo = additionalinfo +'&accid=' + account_id;
+	additionalinfo = additionalinfo +'&vndid=' + vendor_id;
+	additionalinfo = additionalinfo +'&ship_state=' + encodeURIComponent(ship_state);
+	additionalinfo = additionalinfo +'&ship_code=' + encodeURIComponent(ship_code);
+	additionalinfo = additionalinfo +'&ship_country=' + encodeURIComponent(ship_country);
 	additionalinfo = trim(additionalinfo);
 	popuptype = 'inventory_prod';
 	if(module == 'PurchaseOrder') {
