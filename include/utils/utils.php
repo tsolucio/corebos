@@ -3177,6 +3177,18 @@ function getTranslationKeyFromTranslatedValue($module, $translated) {
 	$purified_cache[$module.$translated] = $translated;
 	return $translated;
 }
+/** Search a value in the picklist and if exists return this value
+ * @param string $value - value to search in the picklist
+ * @param string $picklist_name - picklist name where we will search
+ **/
+function isValueInPicklist($value,$picklist_name)
+{
+	$picklistvalues = vtlib_getPicklistValues($picklist_name);
+	if(in_array($value, $picklistvalues))
+		return true;
+	else
+		return false;
+}
 
 function get_config_status() {
 	global $default_charset;

@@ -586,7 +586,8 @@ class ReportRun extends CRMEntity
 				list($module,$void) = explode('_',$col[2],2);
 				$uitype_value = getUItypeByFieldName($module, $col[3]);
 				if($uitype_value == '15' || $uitype_value == '16' || $uitype_value == '33') {
-					$advfilterval = getTranslationKeyFromTranslatedValue($module, $advfilterval);
+					if(!isValueInPicklist($advfilterval,$col[3]))
+						$advfilterval = getTranslationKeyFromTranslatedValue($module, $advfilterval);
 				}
 				$criteria['value'] = $advfilterval;
 				$criteria['column_condition'] = $relcriteriarow["column_condition"];
@@ -966,7 +967,8 @@ class ReportRun extends CRMEntity
                     $adv_filter_value = implode(",",$val);
                 }
 				if($fieldType=='picklist' || $fieldType=='multipicklist') {
-					$adv_filter_value = getTranslationKeyFromTranslatedValue($module, $adv_filter_value);
+					if(!isValueInPicklist($adv_filter_value,$fieldName))
+						$adv_filter_value = getTranslationKeyFromTranslatedValue($module, $adv_filter_value);
 				}
 				$criteria = array();
 				$criteria['columnname'] = $adv_filter_column;

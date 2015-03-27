@@ -657,7 +657,8 @@ class QueryGenerator {
 					return $sql;
 				}
 			} elseif($field->getFieldDataType()=='picklist' || $field->getFieldDataType()=='multipicklist') {
-				$value = getTranslationKeyFromTranslatedValue($this->module, $value);
+				if(!isValueInPicklist($value,$field->getFieldName()))
+					$value = getTranslationKeyFromTranslatedValue($this->module, $value);
 			}
 
 			if($field->getFieldName() == 'birthday' && !$this->isRelativeSearchOperators(
@@ -911,7 +912,8 @@ class QueryGenerator {
 
 				if($type == 'picklist') {
 					global $currentModule;
-					$value = getTranslationKeyFromTranslatedValue($currentModule, $value);
+					if(!isValueInPicklist($value,$field->getFieldName()))
+						$value = getTranslationKeyFromTranslatedValue($currentModule, $value);
 				}
 				if($type == 'currency') {
 					// Some of the currency fields like Unit Price, Total, Sub-total etc of Inventory modules, do not need currency conversion
