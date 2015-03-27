@@ -323,12 +323,14 @@ function servicePickList(currObj,module, row_no) {
 	popuptype = 'inventory_service';
 	var record_id = '';
 	var contact_id = '';
+	var account_id = '';
 	var vendor_id = '';
 	var ship_state = '';
 	var ship_code = '';
 	var ship_country = '';
 	if(document.getElementsByName("account_id").length != 0)
 		record_id= document.EditView.account_id.value;
+	account_id = record_id;
 	if(document.getElementsByName("contact_id").length != 0)
 		contact_id= document.EditView.contact_id.value;
 	if(document.getElementsByName("vendor_id").length != 0)
@@ -340,10 +342,11 @@ function servicePickList(currObj,module, row_no) {
 	if(document.getElementsByName("ship_country").length != 0)
 		ship_country= document.EditView.ship_country.value;
 	var additionalinfo = '&ctoid=' + contact_id;
+	additionalinfo = additionalinfo +'&accid=' + account_id;
 	additionalinfo = additionalinfo +'&vndid=' + vendor_id;
-	additionalinfo = additionalinfo +'&ship_state=' + ship_state;
-	additionalinfo = additionalinfo +'&ship_code=' + ship_code;
-	additionalinfo = additionalinfo +'&ship_country=' + ship_country;
+	additionalinfo = additionalinfo +'&ship_state=' + encodeURIComponent(ship_state);
+	additionalinfo = additionalinfo +'&ship_code=' + encodeURIComponent(ship_code);
+	additionalinfo = additionalinfo +'&ship_country=' + encodeURIComponent(ship_country);
 	additionalinfo = trim(additionalinfo);
 	if(record_id != '')
 		window.open("index.php?module=Services&action=Popup&html=Popup_picker&select=enable&form=HelpDeskEditView&popuptype="+popuptype+"&curr_row="+rowId+"&relmod_id="+record_id+"&parent_module=Accounts&return_module="+module+"&currencyid="+currencyid+additionalinfo,"productWin","width=640,height=600,resizable=0,scrollbars=0,status=1,top=150,left=200");
