@@ -52,7 +52,7 @@ ul {ldelim}color:black;{rdelim}
 {rdelim}
 </style>
 <script>
- if(!e)
+ if(typeof(e) != 'undefined')
   window.captureEvents(Event.MOUSEMOVE);
 
 //  window.onmousemove= displayCoords;
@@ -82,7 +82,6 @@ ul {ldelim}color:black;{rdelim}
 	    		childName = "NULL";
 			{rdelim}
 	{rdelim}
-
 </script>
 
 <br>

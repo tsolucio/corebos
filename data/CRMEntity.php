@@ -2509,8 +2509,6 @@ class CRMEntity {
 		return $order_by;
 	}
 
-	// Mike Crowe Mod --------------------------------------------------------
-
 	/**
 	 * Function to Listview buttons
 	 * return array  $list_buttons - for module (eg: 'Accounts')
@@ -2520,11 +2518,9 @@ class CRMEntity {
 		$list_buttons = Array();
 
 		if (isPermitted($currentModule, 'Delete', '') == 'yes')
-			$list_buttons['del'] = $app_strings[LBL_MASS_DELETE];
+			$list_buttons['del'] = $app_strings['LBL_MASS_DELETE'];
 		if (isPermitted($currentModule, 'EditView', '') == 'yes') {
-			$list_buttons['mass_edit'] = $app_strings[LBL_MASS_EDIT];
-			// Mass Edit could be used to change the owner as well!
-			//$list_buttons['c_owner'] = $app_strings[LBL_CHANGE_OWNER];
+			$list_buttons['mass_edit'] = $app_strings['LBL_MASS_EDIT'];
 		}
 		return $list_buttons;
 	}
@@ -2541,5 +2537,4 @@ class CRMEntity {
 	}
 
 }
-
 ?>

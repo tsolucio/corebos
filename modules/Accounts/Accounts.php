@@ -1278,22 +1278,22 @@ class Accounts extends CRMEntity {
 		}
 	}
 
-	function getListButtons($app_strings,$mod_strings) {
+	function getListButtons($app_strings) {
 		$list_buttons = Array();
 
 		if(isPermitted('Accounts','Delete','') == 'yes') {
-			$list_buttons['del'] = $app_strings[LBL_MASS_DELETE];
+			$list_buttons['del'] = $app_strings['LBL_MASS_DELETE'];
 		}
 		if(isPermitted('Accounts','EditView','') == 'yes') {
-			$list_buttons['mass_edit'] = $app_strings[LBL_MASS_EDIT];
-			$list_buttons['c_owner'] = $app_strings[LBL_CHANGE_OWNER];
+			$list_buttons['mass_edit'] = $app_strings['LBL_MASS_EDIT'];
+			$list_buttons['c_owner'] = $app_strings['LBL_CHANGE_OWNER'];
 		}
 		if(isPermitted('Emails','EditView','') == 'yes') {
-			$list_buttons['s_mail'] = $app_strings[LBL_SEND_MAIL_BUTTON];
+			$list_buttons['s_mail'] = $app_strings['LBL_SEND_MAIL_BUTTON'];
 		}
 		// mailer export
 		if(isPermitted('Accounts','Export','') == 'yes') {
-			$list_buttons['mailer_exp'] = $mod_strings[LBL_MAILER_EXPORT];
+			$list_buttons['mailer_exp'] = getTranslatedString('LBL_MAILER_EXPORT','Accounts');
 		}
 		// end of mailer export
 		return $list_buttons;

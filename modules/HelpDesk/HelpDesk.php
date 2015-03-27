@@ -339,42 +339,32 @@ class HelpDesk extends CRMEntity {
 						)
 		where $i=0,1,..n & key = ticketid, title, firstname, ..etc(range_fields) & val = value of the key from db retrieved row
 	**/
-	function process_list_query($query)
-	{
+	function process_list_query($query, $row_offset, $limit = -1, $max_per_page = -1) {
 		global $log;
 		$log->debug("Entering process_list_query(".$query.") method ...");
-
-   		$result =& $this->db->query($query,true,"Error retrieving $this->object_name list: ");
+		$result =& $this->db->query($query,true,"Error retrieving $this->object_name list: ");
 		$list = Array();
-	        $rows_found =  $this->db->getRowCount($result);
-        	if($rows_found != 0)
-	        {
+		$rows_found =  $this->db->getRowCount($result);
+		if($rows_found != 0) {
 			$ticket = Array();
-			for($index = 0 , $row = $this->db->fetchByAssoc($result, $index); $row && $index <$rows_found;$index++, $row = $this->db->fetchByAssoc($result, $index))
-			{
-		                foreach($this->range_fields as $columnName)
-                		{
-		                	if (isset($row[$columnName]))
-					{
-			                	$ticket[$columnName] = $row[$columnName];
-                    			}
-		                       	else
-				        {
-		                        	$ticket[$columnName] = "";
-			                }
-	     			}
-    		                $list[] = $ticket;
-                	}
-        	}
-
+			for($index = 0 , $row = $this->db->fetchByAssoc($result, $index); $row && $index <$rows_found;$index++, $row = $this->db->fetchByAssoc($result, $index)) {
+				foreach($this->range_fields as $columnName) {
+					if (isset($row[$columnName])) {
+						$ticket[$columnName] = $row[$columnName];
+					} else {
+						$ticket[$columnName] = "";
+					}
+				}
+				$list[] = $ticket;
+			}
+		}
 		$response = Array();
-	        $response['list'] = $list;
-        	$response['row_count'] = $rows_found;
-	        $response['next_offset'] = $next_offset;
-        	$response['previous_offset'] = $previous_offset;
-
+		$response['list'] = $list;
+		$response['row_count'] = $rows_found;
+		$response['next_offset'] = $next_offset;
+		$response['previous_offset'] = $previous_offset;
 		$log->debug("Exiting process_list_query method ...");
-	        return $response;
+		return $response;
 	}
 
 	/**	Function to get the HelpDesk field labels in caps letters without space

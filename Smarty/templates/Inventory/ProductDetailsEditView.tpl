@@ -1,5 +1,4 @@
 {*<!--
-
 /*********************************************************************************
 ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
@@ -7,20 +6,17 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
 -->*}
 
 <script type="text/javascript" src="include/js/Inventory.js"></script>
 <!-- Added to display the Product Details -->
 <script type="text/javascript">
-if(!e)
+if(typeof(e) != 'undefined')
 	window.captureEvents(Event.MOUSEMOVE);
 
 //  window.onmousemove= displayCoords;
 //  window.onclick = fnRevert;
-  
 function displayCoords(currObj,obj,mode,curr_row) 
 {ldelim}
 	if(mode != 'discount_final' && mode != 'sh_tax_div_title' && mode != 'group_tax_div_title')
