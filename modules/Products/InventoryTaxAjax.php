@@ -16,12 +16,12 @@ $product_total = vtlib_purify($_REQUEST['productTotal']);
 $acvid = 0;
 if (isset($_REQUEST['invmod'])) {
 	if ($_REQUEST['invmod']=='PurchaseOrder') {
-		$acvid = $_REQUEST['vndid'];
+		if (!empty($_REQUEST['vndid'])) $acvid = $_REQUEST['vndid'];
 	} else {
 		if (GlobalVariable::getVariable('B2B', '1')=='1') {
-			$acvid = $_REQUEST['accid'];
+			if (!empty($_REQUEST['accid'])) $acvid = $_REQUEST['accid'];
 		} else {
-			$acvid = $_REQUEST['ctoid'];
+			if (!empty($_REQUEST['ctoid'])) $acvid = $_REQUEST['ctoid'];
 		}
 	}
 }
