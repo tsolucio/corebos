@@ -553,12 +553,12 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 	$tot_no_prod = $_REQUEST['totalProductCount'];
 	if ($module != 'PurchaseOrder') {
 		if (GlobalVariable::getVariable('B2B', '1')=='1') {
-			$acvid = $focus->column_fields['accountid'];
+			$acvid = $focus->column_fields['account_id'];
 		} else {
-			$acvid = $focus->column_fields['contactid'];
+			$acvid = $focus->column_fields['contact_id'];
 		}
 	} else {
-		$acvid = $focus->column_fields['vendorid'];
+		$acvid = $focus->column_fields['vendor_id'];
 	}
 	//If the taxtype is group then retrieve all available taxes, else retrive associated taxes for each product inside loop
 	$prod_seq=1;

@@ -17,12 +17,12 @@
 // Product line support
 if ($elementType != 'PurchaseOrder') {
 	if (GlobalVariable::getVariable('B2B', '1')=='1') {
-		$acvid = $element['accountid'];
+		$acvid = $element['account_id'];
 	} else {
-		$acvid = $element['contactid'];
+		$acvid = $element['contact_id'];
 	}
 } else {
-	$acvid = $element['vendorid'];
+	$acvid = $element['vendor_id'];
 }
 $taxtype=$element['taxtype'];
 if (empty($taxtype)) $taxtype = 'group'; // Individual

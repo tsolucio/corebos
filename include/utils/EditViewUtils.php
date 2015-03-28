@@ -1596,12 +1596,12 @@ function getAssociatedProducts($module,$focus,$seid='')
 			$params = array($focus->id);
 		if ($module != 'PurchaseOrder') {
 			if (GlobalVariable::getVariable('B2B', '1')=='1') {
-				$acvid = $focus->column_fields['accountid'];
+				$acvid = $focus->column_fields['account_id'];
 			} else {
-				$acvid = $focus->column_fields['contactid'];
+				$acvid = $focus->column_fields['contact_id'];
 			}
 		} else {
-			$acvid = $focus->column_fields['vendorid'];
+			$acvid = $focus->column_fields['vendor_id'];
 		}
 	}
 	elseif($module == 'Potentials')

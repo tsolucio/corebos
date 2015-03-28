@@ -1187,13 +1187,13 @@ function getDetailAssociatedProducts($module, $focus) {
 
 	if ($module != 'PurchaseOrder') {
 		if (GlobalVariable::getVariable('B2B', '1')=='1') {
-			$acvid = $focus->column_fields['accountid'];
+			$acvid = $focus->column_fields['account_id'];
 		} else {
-			$acvid = $focus->column_fields['contactid'];
+			$acvid = $focus->column_fields['contact_id'];
 		}
 		$colspan = '2';
 	} else {
-		$acvid = $focus->column_fields['vendorid'];
+		$acvid = $focus->column_fields['vendor_id'];
 		$colspan = '1';
 	}
 

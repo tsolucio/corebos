@@ -14,8 +14,19 @@ $theme_path="themes/".$theme."/";
 $productid = vtlib_purify($_REQUEST['productid']);
 $rowid = vtlib_purify($_REQUEST['curr_row']);
 $product_total = vtlib_purify($_REQUEST['productTotal']);
-
-$tax_details = getTaxDetailsForProduct($productid,'all');//we should pass available instead of all if we want to display only the available taxes.
+$acvid = 0;
+if (isset($_REQUEST['invmod'])) {
+	if ($_REQUEST['invmod']=='PurchaseOrder') {
+		$acvid = $_REQUEST['vndid'];
+	} else {
+		if (GlobalVariable::getVariable('B2B', '1')=='1') {
+			$acvid = $_REQUEST['accid'];
+		} else {
+			$acvid = $_REQUEST['ctoid'];
+		}
+	}
+}
+$tax_details = getTaxDetailsForProduct($productid,'all', $acvid);//we should pass available instead of all if we want to display only the available taxes.
 $associated_tax_count = count($tax_details);
 
 
