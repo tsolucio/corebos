@@ -1451,11 +1451,15 @@ function getDetailAssociatedProducts($module, $focus) {
 		$tax_info_message = $app_strings['LBL_TOTAL_AFTER_DISCOUNT'] . " = ". CurrencyField::convertToUserFormat($final_totalAfterDiscount, null, true)." \\n";
 		//First we should get all available taxes and then retrieve the corresponding tax values
 		$tax_details = getAllTaxes('available', '', 'edit', $focus->id);
+		$ipr_cols = $adb->getColumnNames('vtiger_inventoryproductrel');
 		//if taxtype is group then the tax should be same for all products in vtiger_inventoryproductrel table
 		for ($tax_count = 0; $tax_count < count($tax_details); $tax_count++) {
 			$tax_name = $tax_details[$tax_count]['taxname'];
 			$tax_label = $tax_details[$tax_count]['taxlabel'];
-			$tax_value = $adb->query_result($result, 0, $tax_name);
+			if (in_array($tax_name, $ipr_cols))
+				$tax_value = $adb->query_result($result, 0, $tax_name);
+			else
+				$tax_value = $tax_details[$tax_count]['percentage'];
 			if ($tax_value == '' || $tax_value == 'NULL')
 				$tax_value = '0.00';
 
