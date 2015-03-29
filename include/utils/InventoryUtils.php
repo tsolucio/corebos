@@ -529,7 +529,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 	{
 		$id=vtlib_purify($_REQUEST['duplicate_from']); 
 	}
-
+	$ipr_cols = $adb->getColumnNames('vtiger_inventoryproductrel');
 	$ext_prod_arr = Array();
 	if($focus->mode == 'edit')
 	{
@@ -641,6 +641,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 			for($tax_count=0;$tax_count<count($all_available_taxes);$tax_count++)
 			{
 				$tax_name = $all_available_taxes[$tax_count]['taxname'];
+				if (!in_array($tax_name, $ipr_cols)) continue;
 				$tax_val = $all_available_taxes[$tax_count]['percentage'];
 				$request_tax_name = $tax_name."_group_percentage";
 				if(isset($_REQUEST[$request_tax_name]))
@@ -648,27 +649,25 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 				$updatequery .= " $tax_name = ?,";
 				array_push($updateparams,$tax_val);
 			}
-				$updatequery = trim($updatequery,',')." where id=? and productid=? and lineitem_id = ?";
-				array_push($updateparams,$focus->id,$prod_id, $lineitem_id);
-		}
-		else
-		{
+			$updatequery = trim($updatequery,',')." where id=? and productid=? and lineitem_id = ?";
+			array_push($updateparams,$focus->id,$prod_id, $lineitem_id);
+		} else {
 			$taxes_for_product = getTaxDetailsForProduct($prod_id,'all',$acvid);
 			for($tax_count=0;$tax_count<count($taxes_for_product);$tax_count++)
 			{
 				$tax_name = $taxes_for_product[$tax_count]['taxname'];
+				if (!in_array($tax_name, $ipr_cols)) continue;
 				$request_tax_name = $tax_name."_percentage".$i;
-
 				$updatequery .= " $tax_name = ?,";
 				array_push($updateparams, vtlib_purify($_REQUEST[$request_tax_name]));
 			}
-				$updatequery = trim($updatequery,',')." where id=? and productid=? and lineitem_id = ?";
-				array_push($updateparams, $focus->id,$prod_id, $lineitem_id);
+			$updatequery = trim($updatequery,',')." where id=? and productid=? and lineitem_id = ?";
+			array_push($updateparams, $focus->id,$prod_id, $lineitem_id);
 		}
 		// jens 2006/08/19 - protect against empy update queries
- 		if( !preg_match( '/set\s+where/i', $updatequery)) {
- 		    $adb->pquery($updatequery,$updateparams);
- 		}
+		if( !preg_match( '/set\s+where/i', $updatequery)) {
+			$adb->pquery($updatequery,$updateparams);
+		}
 	}
 
 	//we should update the netprice (subtotal), taxtype, group discount, S&H charge, S&H taxes, adjustment and total
