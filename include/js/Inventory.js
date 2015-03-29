@@ -472,6 +472,8 @@ function loadTaxes_Ajax(curr_row)
 {
 	//Retrieve all the tax values for the currently selected product
 	var additionalinfo = getInventoryModuleTaxRelatedInformation() + '&invmod=' + gVTModule;
+	additionalinfo = additionalinfo + '&invid=' + getObj('record').value;
+	additionalinfo = additionalinfo + '&editmode=' + getObj('mode').value;
 	var lineItemType = document.getElementById("lineItemType"+curr_row).value;
 	new Ajax.Request(
 		'index.php',
@@ -484,6 +486,17 @@ function loadTaxes_Ajax(curr_row)
 					document.getElementById("taxTotal"+curr_row).innerHTML = getObj('hdnTaxTotal'+curr_row).value;
 					calcTotal();
 				}
+		}
+	);
+	new Ajax.Request(
+		'index.php',
+		{queue: {position: 'end', scope: 'command'},
+			method: 'post',
+			postBody: 'module=Products&action=ProductsAjax&file=InventoryGroupTaxAjax'+additionalinfo,
+			onComplete: function(response) {
+				$('group_tax_div').innerHTML=response.responseText;
+				calcTotal();
+			}
 		}
 	);
 }
