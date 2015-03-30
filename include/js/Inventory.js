@@ -488,6 +488,13 @@ function loadTaxes_Ajax(curr_row)
 				}
 		}
 	);
+}
+
+function loadGlobalTaxes_Ajax() {
+	//Retrieve global tax values for the current configuration
+	var additionalinfo = getInventoryModuleTaxRelatedInformation() + '&invmod=' + gVTModule;
+	additionalinfo = additionalinfo + '&invid=' + getObj('record').value;
+	additionalinfo = additionalinfo + '&editmode=' + getObj('mode').value;
 	new Ajax.Request(
 		'index.php',
 		{queue: {position: 'end', scope: 'command'},
