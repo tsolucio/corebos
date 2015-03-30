@@ -81,6 +81,15 @@ function redirectWhenNoRelatedRecordsFound()
 {rdelim}
 </script>
 <link rel="stylesheet" type="text/css" href="{$THEME_PATH}style.css">
+{* corebos customization: Inclusion of custom javascript and css as registered in popup *}
+{if $HEADERCSS}
+	<!-- Custom Header CSS -->
+	{foreach item=HDRCSS from=$HEADERCSS}
+	<link rel="stylesheet" type="text/css" href="{$HDRCSS->linkurl}" />
+	{/foreach}
+	<!-- END -->
+{/if}
+{* END *}
 <script language="JavaScript" type="text/javascript" src="include/js/ListView.js"></script>
 <script language="JavaScript" type="text/javascript" src="include/js/general.js"></script>
 <script language="JavaScript" type="text/javascript" src="include/js/QuickCreate.js"></script>
@@ -99,6 +108,17 @@ function redirectWhenNoRelatedRecordsFound()
 <script type='text/javascript'>
 	jQuery.noConflict();
 </script>
+
+{* corebos customization: Inclusion of custom javascript and css as registered in popup *}
+{if $HEADERSCRIPTS}
+	<!-- Custom Header Script -->
+	{foreach item=HEADERSCRIPT from=$HEADERSCRIPTS}
+	<script type="text/javascript" src="{$HEADERSCRIPT->linkurl}"></script>
+	{/foreach}
+	<!-- END -->
+{/if}
+{* END *}
+
 <script type="text/javascript">
 {literal}
 function add_data_to_relatedlist(entity_id,recordid,mod, popupmode, callback) {
