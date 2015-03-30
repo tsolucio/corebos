@@ -588,8 +588,7 @@ class InventoryDetails extends CRMEntity {
 			
 		$accountid = '0';
 		$contactid = '0';
-		$vendorid = '0';
-			
+		
 		switch ($module) {
 			case 'Quotes':
 					$accountid = $related_focus->column_fields['account_id'];
@@ -604,9 +603,7 @@ class InventoryDetails extends CRMEntity {
 					$contactid = $related_focus->column_fields['contact_id'];
 				break;
 			case 'PurchaseOrder':
-					$vendorid = $related_focus->column_fields['vendor_id'];
 					$contactid = $related_focus->column_fields['contact_id'];
-				
 				break;
 			default:
 				
@@ -639,12 +636,12 @@ class InventoryDetails extends CRMEntity {
 			$invdet_focus->column_fields['assigned_user_id'] = $current_user->id;
 			$invdet_focus->column_fields['account_id'] = $accountid;
 			$invdet_focus->column_fields['contact_id'] = $contactid;
+			
 			//Search if the product is related with a Vendor.
-			if($vendorid == '0')
-			{
-				$result = $adb->pquery("SELECT vendor_id FROM vtiger_products WHERE productid = ?",array($row['productid']));
+			$vendorid = '0';
+			$result = $adb->pquery("SELECT vendor_id FROM vtiger_products WHERE productid = ?",array($row['productid']));
+			if($adb->num_rows($result) > 0)
 				$vendorid = $adb->query_result($result,0,0);
-			}
 			$invdet_focus->column_fields['vendor_id'] = $vendorid;
 			
 			if($taxtype == 'group')
