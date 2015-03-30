@@ -508,6 +508,18 @@ function loadGlobalTaxes_Ajax() {
 	);
 }
 
+// Function to retrieve and update all taxes > recalculates the whole record
+function updateAllTaxes() {
+	var max_row_count = document.getElementById('proTab').rows.length;
+	max_row_count = eval(max_row_count)-2;//Because the table has two header rows. so we will reduce two from row length
+	var netprice = 0.00;
+	for(var i=1;i<=max_row_count;i++) {
+		rowId = i;
+		loadTaxes_Ajax(rowId);
+	}
+	loadGlobalTaxes_Ajax();
+}
+
 function fnAddTaxConfigRow(sh) {
 	var table_id = 'add_tax';
 	var td_id = 'td_add_tax';
