@@ -9,6 +9,7 @@
  ********************************************************************************/
 -->*}
 <script language="JavaScript" type="text/javascript">
+var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 var image_pth = '{$IMAGE_PATH}';
 var product_default_units = '{$Product_Default_Units}';
 var service_default_units = '{$Service_Default_Units}';
