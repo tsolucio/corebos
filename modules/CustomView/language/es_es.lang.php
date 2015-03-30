@@ -176,7 +176,7 @@ $mod_strings = array (
 'Amount'=>'Importe',
 'Expected Close Date'=>'Fecha Estimada de Cierre',
 'Next Step'=>'Siguiente Paso',
-'Sales Stage'=>'Etapa de Venta',
+'Sales Stage'=>'Fase de Venta',
 'Probability'=>'Probabilidad',
  
  

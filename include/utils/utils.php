@@ -3142,7 +3142,7 @@ function getAccessPickListValues($module)
  * @return string comma separated list of keys
 **/
 function getTranslationKeyFromTranslatedValue($module, $translated) {
-	global $current_language;
+	global $current_language, $app_strings;
 	static $purified_cache = array();
 
 	if (array_key_exists($module.$translated, $purified_cache)) {
@@ -3150,6 +3150,7 @@ function getTranslationKeyFromTranslatedValue($module, $translated) {
 	}
 
 	$modstrs = return_module_language($current_language, $module);
+	$modstrs = array_merge($app_strings,$modstrs);
 	$values = array();
 	$strings = explode(',' , $translated);
 	foreach($strings as $string) {
@@ -3175,6 +3176,18 @@ function getTranslationKeyFromTranslatedValue($module, $translated) {
 	$translated = implode(',', $values);
 	$purified_cache[$module.$translated] = $translated;
 	return $translated;
+}
+/** Search a value in the picklist and if exists return this value
+ * @param string $value - value to search in the picklist
+ * @param string $picklist_name - picklist name where we will search
+ **/
+function isValueInPicklist($value,$picklist_name)
+{
+	$picklistvalues = vtlib_getPicklistValues($picklist_name);
+	if(in_array($value, $picklistvalues))
+		return true;
+	else
+		return false;
 }
 
 function get_config_status() {

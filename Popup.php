@@ -38,6 +38,14 @@ $smarty->assign("APP", $app_strings);
 $smarty->assign("THEME", $theme);
 $smarty->assign("THEME_PATH",$theme_path);
 $smarty->assign("MODULE",$currentModule);
+// Gather the custom link information to display
+include_once('vtlib/Vtiger/Link.php');
+$hdrcustomlink_params = Array('MODULE'=>$currentModule);
+$COMMONHDRLINKS = Vtiger_Link::getAllByType(Vtiger_Link::IGNORE_MODULE, Array('HEADERSCRIPT_POPUP', 'HEADERCSS_POPUP'), $hdrcustomlink_params);
+$smarty->assign('HEADERSCRIPTS', $COMMONHDRLINKS['HEADERSCRIPT_POPUP']);
+$smarty->assign('HEADERCSS', $COMMONHDRLINKS['HEADERCSS_POPUP']);
+// END
+
 $qc_modules = getQuickCreateModules();
 for ($i=0;$i<count($qc_modules);$i++)  $qcmod[$i]=$qc_modules[$i][1];
 $smarty->assign("QCMODULEARRAY", $qcmod);
