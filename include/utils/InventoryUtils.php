@@ -720,15 +720,14 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 	$adb->pquery($updatequery,$updateparams);
 
 	//to save the S&H tax details in vtiger_inventoryshippingrel table
+	$isr_cols = $adb->getColumnNames('vtiger_inventoryshippingrel');
 	$sh_tax_details = getAllTaxes('all','sh');
 	$sh_query_fields = "id,";
 	$sh_query_values = "?,";
 	$sh_query_params = array($focus->id);
-	for($i=0;$i<count($sh_tax_details);$i++)
-	{
+	for($i=0;$i<count($sh_tax_details);$i++) {
 		$tax_name = $sh_tax_details[$i]['taxname']."_sh_percent";
-		if($_REQUEST[$tax_name] != '')
-		{
+		if($_REQUEST[$tax_name] != '' and in_array($sh_tax_details[$i]['taxname'], $isr_cols)) {
 			$sh_query_fields .= $sh_tax_details[$i]['taxname'].",";
 			$sh_query_values .= "?,";
 			array_push($sh_query_params, vtlib_purify($_REQUEST[$tax_name])); 
@@ -737,9 +736,10 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 	$sh_query_fields = trim($sh_query_fields,',');
 	$sh_query_values = trim($sh_query_values,',');
 
+	if ($sh_query_fields!='id') {
 	$sh_query = "insert into vtiger_inventoryshippingrel($sh_query_fields) values($sh_query_values)";
 	$adb->pquery($sh_query,$sh_query_params);
-
+	}
 	$log->debug("Exit from function saveInventoryProductDetails($module).");
 }
 
