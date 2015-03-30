@@ -43,6 +43,7 @@
 	<a name="top"></a>
 	<!-- header -->
 	<!-- header-vtiger crm name & RSS -->
+	<script language="JavaScript" type="text/javascript" src="include/js/meld.js"></script>
 	<script language="JavaScript" type="text/javascript" src="include/js/json.js"></script>
 	<script language="JavaScript" type="text/javascript" src="include/js/general.js?v={$VERSION}"></script>
 	<!-- vtlib customization: Javascript hook -->
