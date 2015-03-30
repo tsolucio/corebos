@@ -641,7 +641,8 @@ class InventoryDetails extends CRMEntity {
 			$invdet_focus->column_fields['contact_id'] = $contactid;
 			//Search if the product is related with a Vendor.
 			if($vendorid == '0')
-				$vendorid = $adb->query_result($adb->pquery("SELECT vendor_id FROM vtiger_products WHERE productid = ?",array($row['productid'])),0,0);
+				$result = $adb->pquery("SELECT vendor_id FROM vtiger_products WHERE productid = ?",array($row['productid']));
+				$vendorid = $adb->query_result($result,0,0);
 			$invdet_focus->column_fields['vendor_id'] = $vendorid;
 			
 			if($taxtype == 'group')
