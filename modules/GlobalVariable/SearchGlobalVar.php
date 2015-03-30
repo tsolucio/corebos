@@ -22,10 +22,11 @@ $gvname = vtlib_purify($_REQUEST['gvname']);
 $gvuserid = vtlib_purify($_REQUEST['gvuserid']);
 $gvmod = vtlib_purify($_REQUEST['gvmodule']);
 $retval = vtlib_purify($_REQUEST['returnvalidation']);
+$defval = vtlib_purify($_REQUEST['gvdefault']);
 global $gvvalidationinfo;
 $gvvalidationinfo = array();
 $startTime = microtime(true);
-$rdo = GlobalVariable::getVariable($gvname, 'default value', $gvmod, $gvuserid);
+$rdo = GlobalVariable::getVariable($gvname, $defval, $gvmod, $gvuserid);
 $counter = (microtime(true) - $startTime);
 $ret = array($gvname=>$rdo);
 if ($retval) {
