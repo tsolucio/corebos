@@ -215,7 +215,7 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 {include_php file="include/DetailViewBlockStatus.php"}
 
 <!-- Entity information(blocks) display - start -->
-{foreach key=header item=detail from=$BLOCKS}
+{foreach key=header item=detail from=$BLOCKS name=BLOCKS}
 	<table border=0 cellspacing=0 cellpadding=0 width=100% class="small">
 	   <tr>
 		<td>&nbsp;</td>
@@ -295,22 +295,26 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 	   {/foreach}
 	</table>
 	</div> <!-- Line added by SAKTI on 10th Apr, 2008 -->
-{/foreach}
-{*-- End of Blocks--*} 
 <!-- Entity information(blocks) display - ends -->
 
 {* vtlib Customization: Embed DetailViewWidget block:// type if any *}
 {if $CUSTOM_LINKS && !empty($CUSTOM_LINKS.DETAILVIEWWIDGET)}
 {foreach item=CUSTOM_LINK_DETAILVIEWWIDGET from=$CUSTOM_LINKS.DETAILVIEWWIDGET}
 	{if preg_match("/^block:\/\/.*/", $CUSTOM_LINK_DETAILVIEWWIDGET->linkurl)}
+		 {if ($smarty.foreach.BLOCKS.first && $CUSTOM_LINK_DETAILVIEWWIDGET->sequence <= 1) 
+		 	|| ($CUSTOM_LINK_DETAILVIEWWIDGET->sequence == $smarty.foreach.BLOCKS.iteration + 1)
+		 	|| ($smarty.foreach.BLOCKS.last && $CUSTOM_LINK_DETAILVIEWWIDGET->sequence >= $smarty.foreach.BLOCKS.iteration + 1)}
 		<br>
 		{php}
 			echo vtlib_process_widget($this->_tpl_vars['CUSTOM_LINK_DETAILVIEWWIDGET'], $this->_tpl_vars);
 		{/php}
+		{/if}
 	{/if}
 {/foreach}
 {/if}
 {* END *}
+{/foreach}
+{*-- End of Blocks--*} 
 <br>
 
 										<!-- Product Details informations -->
