@@ -18,7 +18,7 @@
 				<table class="listTable" border="0" cellpadding="3" cellspacing="0" width="100%">
 					
 					{foreach item=entries key=id from=$CFENTRIES name=outer}
-						{if $entries.blockid ne $RELPRODUCTSECTIONID || $entries.blocklabel neq '' }
+						{if $entries.blockid ne $RELPRODUCTSECTIONID && $entries.blocklabel neq '' }
 							{if $smarty.foreach.outer.first neq true}
 							<tr><td><img src="{'blank.gif'|@vtiger_imageurl:$THEME}" style="width:16px;height:16px;" border="0" />&nbsp;&nbsp;</td></tr>
 							{/if}
