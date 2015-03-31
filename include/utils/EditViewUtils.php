@@ -1594,6 +1594,15 @@ function getAssociatedProducts($module,$focus,$seid='')
  		                        WHERE id=?
  		                        ORDER BY sequence_no";
 			$params = array($focus->id);
+		if ($module != 'PurchaseOrder') {
+			if (GlobalVariable::getVariable('B2B', '1')=='1') {
+				$acvid = $focus->column_fields['account_id'];
+			} else {
+				$acvid = $focus->column_fields['contact_id'];
+			}
+		} else {
+			$acvid = $focus->column_fields['vendor_id'];
+		}
 	}
 	elseif($module == 'Potentials')
 	{
@@ -1779,7 +1788,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 		$product_Detail[$i]['netPrice'.$i] = $netPrice;
 
 		//First we will get all associated taxes as array
-		$tax_details = getTaxDetailsForProduct($hdnProductId,'all');
+		$tax_details = getTaxDetailsForProduct($hdnProductId,'all',$acvid);
 		//Now retrieve the tax values from the current query with the name
 		for($tax_count=0;$tax_count<count($tax_details);$tax_count++)
 		{
@@ -1853,6 +1862,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 	$taxtotal = '0.00';
 	//First we should get all available taxes and then retrieve the corresponding tax values
 	$tax_details = getAllTaxes('available','','edit',$focus->id);
+	$ipr_cols = $adb->getColumnNames('vtiger_inventoryproductrel');
 
 	for($tax_count=0;$tax_count<count($tax_details);$tax_count++)
 	{
@@ -1861,9 +1871,12 @@ function getAssociatedProducts($module,$focus,$seid='')
 
 		//if taxtype is individual and want to change to group during edit time then we have to show the all available taxes and their default values
 		//Also taxtype is group and want to change to individual during edit time then we have to provide the asspciated taxes and their default tax values for individual products
-		if($taxtype == 'group')
-			$tax_percent = $adb->query_result($result,0,$tax_name);
-		else
+		if($taxtype == 'group') {
+			if (in_array($tax_name, $ipr_cols))
+				$tax_percent = $adb->query_result($result,0,$tax_name);
+			else
+				$tax_percent = $tax_details[$tax_count]['percentage'];
+		} else
 			$tax_percent = $tax_details[$tax_count]['percentage'];//$adb->query_result($result,0,$tax_name);
 
 		if($tax_percent == '' || $tax_percent == 'NULL')

@@ -15,6 +15,15 @@
  *************************************************************************************************/
 
 // Product line support
+if ($elementType != 'PurchaseOrder') {
+	if (GlobalVariable::getVariable('B2B', '1')=='1') {
+		$acvid = $element['account_id'];
+	} else {
+		$acvid = $element['contact_id'];
+	}
+} else {
+	$acvid = $element['vendor_id'];
+}
 $taxtype=$element['taxtype'];
 if (empty($taxtype)) $taxtype = 'group'; // Individual
 $_REQUEST['taxtype']=$taxtype;
@@ -45,7 +54,7 @@ foreach ($pdoInformation as $pdoline) {
 	}
 	$subtotal = $subtotal + ($qty * $_REQUEST['listPrice'.$i]) - $discount;
 	if($taxtype == "individual") {
-		$taxes_for_product = getTaxDetailsForProduct($pdoline['productid'],'all');
+		$taxes_for_product = getTaxDetailsForProduct($pdoline['productid'],'all',$acvid);
 		for($tax_count=0;$tax_count<count($taxes_for_product);$tax_count++) {
 			$tax_name = $taxes_for_product[$tax_count]['taxname'];
 			$tax_val = $taxes_for_product[$tax_count]['percentage'];
