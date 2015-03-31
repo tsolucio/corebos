@@ -576,18 +576,22 @@ class GlobalVariable extends CRMEntity {
 			return $value;
 		}
 
+		$gvvalidationinfo[] = '---';
 		require_once('include/utils/GetUserGroups.php');
 		$UserGroups = new GetUserGroups();
 		$UserGroups->getAllUserGroups($gvuserid);
-		$groups=implode(',',$UserGroups->user_groups);
-		$group=' and vtiger_crmentity.smownerid in ('.$groups.') ';
-		$sql=$select.$where.$group;
-		$gvvalidationinfo[] = '---';
-		$value=$focus->return_global_var_value($sql,$var,$module);
-		$gvvalidationinfo[] = "search as set per group $groups in module $module: $value";
-		if ($value!='') {
-			VTCacheUtils::updateCachedInformation($key, $value);
-			return $value;
+		if (count($UserGroups->user_groups)>0) {
+			$groups=implode(',',$UserGroups->user_groups);
+			$group=' and vtiger_crmentity.smownerid in ('.$groups.') ';
+			$sql=$select.$where.$group;
+			$value=$focus->return_global_var_value($sql,$var,$module);
+			$gvvalidationinfo[] = "search as set per group $groups in module $module: $value";
+			if ($value!='') {
+				VTCacheUtils::updateCachedInformation($key, $value);
+				return $value;
+			}
+		} else {
+			$gvvalidationinfo[] = 'no groups to search in';
 		}
 
 		$sql=$select.$where." and default_check='1'";
