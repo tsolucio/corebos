@@ -35,7 +35,7 @@ $mod_strings = Array (
 "LBL_SUCCESSFULY_CREATED"=>"Creado Correctamente", 
 "LBL_UNINSTALL" => "Desinstalar Calendar4You",
 "LBL_UNINSTALL_DESC" => "Desinstala Calendar4You de tu aplicación.",
-"LBL_UNINSTALL_CONFIRM" => "¿Seguro que quieres desinstalar Calendar4You y desactivar tu licencia?", 
+"LBL_UNINSTALL_CONFIRM" => "¿Seguro que quieres desinstalar Calendar4You y desactivar tu licencia?",
 "MOVE_EVENT_QUESTION" => "¿Seguro que quieres realizar este cambio?",
 "RESIZE_EVENT_QUESTION" => "¿Correcto?",
 "LBL_DEFAULT_USER_VIEW" => "Vista por Defecto del Usuario",
@@ -55,13 +55,13 @@ $mod_strings = Array (
 "LBL_TOKEN_ID"=>"Token ID",
 "LBL_URL_CAPTCHA_IMAGE"=>"URL de la imagen CAPTCHA",
 "LBL_OK"=>"Ok",
-"LBL_HAVE_NOT_ACCESS_DATA"=>"no introduce los datos de acceso a Google", 
+"LBL_HAVE_NOT_ACCESS_DATA"=>"no ha introducido sus datos de acceso a Google",
 "LBL_EVENTS_TO_GOOGLE"=>"al calendario",
 "LBL_IMPORT_FROM_G_GOOGLE"=>"Importar del calendario a",
 "LBL_TO_GOOGLE_CALENDAR"=>"Sincronizar con calendario", 
 "LBL_CONNECTING_WORK_CORRECT"=>"Se ha conectado con Google",
 "LBL_GOOGLE_SYNC_CONTROL_ACCESS_DATA"=>"Verificando acceso a Google",
-"LBL_CHANGE_GOOGLE_ACCOUNT"=>"Cambiar cuenta de Google", 
+"LBL_CHANGE_GOOGLE_ACCOUNT"=>"Cambiar cuenta de Google",
 "LBL_INSERT_INTO_CRM"=>"Agregar a aplicación",
 "LBL_ALL_DAY"=>"Todo el día",
 "LBL_GOOGLEAPIKEY"=>"Api Key",
@@ -72,7 +72,7 @@ $mod_strings = Array (
 "LBL_GOOGLECLIENTSECRET"=>"Secreto Cliente",
 "LBL_GOOGLEURI"=>"URI de Redirecci&oacute;n",
 "LBL_CONNECT"=>"Autoriza y con&eacute;ctate",
-"LBL_GOOGLEINS"=>"Insertar desde Google?",
+"LBL_GOOGLEINS"=>"¿Insertar desde Google?",
 
 );
 ?>

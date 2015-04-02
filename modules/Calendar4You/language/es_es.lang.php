@@ -55,7 +55,7 @@ $mod_strings = Array (
 "LBL_TOKEN_ID"=>"Token ID",
 "LBL_URL_CAPTCHA_IMAGE"=>"URL de la imagen CAPTCHA",
 "LBL_OK"=>"Vale",
-"LBL_HAVE_NOT_ACCESS_DATA"=>"no introduce los datos de acceso a Google",
+"LBL_HAVE_NOT_ACCESS_DATA"=>"no ha introducido sus datos de acceso a Google",
 "LBL_EVENTS_TO_GOOGLE"=>"al calendario",
 "LBL_IMPORT_FROM_G_GOOGLE"=>"Importar del calendario a",
 "LBL_TO_GOOGLE_CALENDAR"=>"Sincronizar con calendario",
@@ -72,7 +72,7 @@ $mod_strings = Array (
 "LBL_GOOGLECLIENTSECRET"=>"Secreto Cliente",
 "LBL_GOOGLEURI"=>"URI de Redirecci&oacute;n",
 "LBL_CONNECT"=>"Autoriza y con&eacute;ctate",
-"LBL_GOOGLEINS"=>"Insertar desde Google?",
+"LBL_GOOGLEINS"=>"¿Insertar desde Google?",
 
 );
 ?>
