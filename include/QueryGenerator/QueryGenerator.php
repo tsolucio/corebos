@@ -6,9 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  *********************************************************************************/
-
 require_once 'data/CRMEntity.php';
 require_once 'modules/CustomView/CustomView.php';
 require_once 'include/Webservices/Utils.php';
@@ -29,12 +27,10 @@ class QueryGenerator {
 	private $groupType;
 	private $whereFields;
 	/**
-	 *
 	 * @var VtigerCRMObjectMeta
 	 */
 	private $meta;
 	/**
-	 *
 	 * @var Users
 	 */
 	private $user;
@@ -769,7 +765,6 @@ class QueryGenerator {
 	 * @param WebserviceField $field
 	 */
 	private function getConditionValue($value, $operator, $field) {
-
 		$operator = strtolower($operator);
 		$db = PearDatabase::getInstance();
 
@@ -792,8 +787,7 @@ class QueryGenerator {
 					$valueArray[0] = getValidDBInsertDateTimeValue($valueArray[0]);
 					$valueArray[1] = getValidDBInsertDateTimeValue($valueArray[1]);
 				}
-				$sql[] = "BETWEEN ".$db->quote($valueArray[0])." AND ".
-							$db->quote($valueArray[1]);
+				$sql[] = "BETWEEN ".$db->quote($valueArray[0])." AND ". $db->quote($valueArray[1]);
 			}
 			return $sql;
 		}
@@ -853,8 +847,7 @@ class QueryGenerator {
 				continue;
 			}
 
-			if(trim($value) == '' && ($operator == 'k') &&
-					$this->isStringType($field->getFieldDataType())) {
+			if(trim($value) == '' && ($operator == 'k') && $this->isStringType($field->getFieldDataType())) {
 				$sql[] = "NOT LIKE ''";
 				continue;
 			}
@@ -1164,34 +1157,25 @@ class QueryGenerator {
 
 		$conditionList = array();
 		if(!empty($dateClosedStart) && !empty($dateClosedEnd)) {
-
-			$conditionList[] = array('fieldname'=>'closingdate', 'value'=>$dateClosedStart,
-				'operator'=>'h');
-			$conditionList[] = array('fieldname'=>'closingdate', 'value'=>$dateClosedEnd,
-				'operator'=>'m');
+			$conditionList[] = array('fieldname'=>'closingdate', 'value'=>$dateClosedStart, 'operator'=>'h');
+			$conditionList[] = array('fieldname'=>'closingdate', 'value'=>$dateClosedEnd, 'operator'=>'m');
 		}
 		if(!empty($salesStage)) {
 			if($salesStage == 'Other') {
-				$conditionList[] = array('fieldname'=>'sales_stage', 'value'=>'Closed Won',
-					'operator'=>'n');
-				$conditionList[] = array('fieldname'=>'sales_stage', 'value'=>'Closed Lost',
-					'operator'=>'n');
+				$conditionList[] = array('fieldname'=>'sales_stage', 'value'=>'Closed Won', 'operator'=>'n');
+				$conditionList[] = array('fieldname'=>'sales_stage', 'value'=>'Closed Lost', 'operator'=>'n');
 			} else {
-				$conditionList[] = array('fieldname'=>'sales_stage', 'value'=> $salesStage,
-					'operator'=>'e');
+				$conditionList[] = array('fieldname'=>'sales_stage', 'value'=> $salesStage, 'operator'=>'e');
 			}
 		}
 		if(!empty($leadSource)) {
-			$conditionList[] = array('fieldname'=>'leadsource', 'value'=>$leadSource,
-					'operator'=>'e');
+			$conditionList[] = array('fieldname'=>'leadsource', 'value'=>$leadSource, 'operator'=>'e');
 		}
 		if(!empty($dateClosed)) {
-			$conditionList[] = array('fieldname'=>'closingdate', 'value'=>$dateClosed,
-					'operator'=>'h');
+			$conditionList[] = array('fieldname'=>'closingdate', 'value'=>$dateClosed, 'operator'=>'h');
 		}
 		if(!empty($owner)) {
-			$conditionList[] = array('fieldname'=>'assigned_user_id', 'value'=>$owner,
-					'operator'=>'e');
+			$conditionList[] = array('fieldname'=>'assigned_user_id', 'value'=>$owner, 'operator'=>'e');
 		}
 		$relatedConditionList = array();
 		if(!empty($campaignId)) {
@@ -1235,7 +1219,7 @@ class QueryGenerator {
 		}
 		$this->endGroup();
 		if(!in_array('id', $this->fields)) {
-				$this->fields[] = 'id';
+			$this->fields[] = 'id';
 		}
 	}
 
