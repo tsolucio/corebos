@@ -9,8 +9,7 @@
  ********************************************************************************/
 require_once('include/logging.php');
 require_once('include/utils/utils.php');
-global $adb;
-global $log, $current_user;
+global $adb, $log, $current_user;
 
 $cvid = (int) vtlib_purify($_REQUEST["record"]);
 $buttonname =  vtlib_purify($_REQUEST["newsave"]);
@@ -152,7 +151,15 @@ if($cvmodule != "") {
 						$column_info = explode(":",$adv_filter_column);
 
 						$fieldName = $column_info[2];
-						$fieldObj = $moduleFields[$fieldName];
+						if (!empty($moduleFields[$fieldName])) {
+							$fieldObj = $moduleFields[$fieldName];
+						} else {
+							$minfo = explode('_', $column_info[3]);
+							$rfhandler = vtws_getModuleHandlerFromName($minfo[0], $current_user);
+							$rfmeta = $rfhandler->getMeta();
+							$rffields = $rfmeta->getModuleFields();
+							$fieldObj = $rffields[$fieldName];
+						}
 						$fieldType = $fieldObj->getFieldDataType();
 
 						if($fieldType == 'currency') {
@@ -280,7 +287,15 @@ if($cvmodule != "") {
 						$column_info = explode(":",$adv_filter_column);
 
 						$fieldName = $column_info[2];
-						$fieldObj = $moduleFields[$fieldName];
+						if (!empty($moduleFields[$fieldName])) {
+							$fieldObj = $moduleFields[$fieldName];
+						} else {
+							$minfo = explode('_', $column_info[3]);
+							$rfhandler = vtws_getModuleHandlerFromName($minfo[0], $current_user);
+							$rfmeta = $rfhandler->getMeta();
+							$rffields = $rfmeta->getModuleFields();
+							$fieldObj = $rffields[$fieldName];
+						}
 						$fieldType = $fieldObj->getFieldDataType();
 
 						if($fieldType == 'currency') {

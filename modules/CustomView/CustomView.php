@@ -402,23 +402,35 @@ class CustomView extends CRMEntity {
 	  Array('BlockLabeln' =>
 	  Array('$fieldtablename:$fieldcolname:$fieldname:$module_$fieldlabel1:$fieldtypeofdata'=>$fieldlabel,
 	  Array('$fieldtablename1:$fieldcolname1:$fieldname1:$module_$fieldlabel11:$fieldtypeofdata1'=>$fieldlabel1,
-
-
 	 */
 	function getModuleColumnsList($module) {
-
+		global $current_user;
 		$module_info = $this->getCustomViewModuleInfo($module);
 		foreach ($this->module_list[$module] as $key => $value) {
 			$columnlist = $this->getColumnsListbyBlock($module, $value);
-
 			if (isset($columnlist)) {
 				$ret_module_list[$module][$key] = $columnlist;
+			}
+		}
+		$handler = vtws_getModuleHandlerFromName($module, $current_user);
+		$meta = $handler->getMeta();
+		$reffields = $meta->getReferenceFieldDetails();
+		foreach ($reffields as $fld => $mods) {
+			foreach ($mods as $mod) {
+				if (isset($ret_module_list[$mod])) continue;  // we already have this one
+				$module_info = $this->getCustomViewModuleInfo($mod);
+				foreach ($this->module_list[$mod] as $key => $value) {
+					$columnlist = $this->getColumnsListbyBlock($mod, $value);
+					if (isset($columnlist)) {
+						$ret_module_list[$mod][$key] = $columnlist;
+					}
+				}
 			}
 		}
 		return $ret_module_list;
 	}
 
-	/** to get the getModuleColumnsList for the given customview
+	/** to get the getColumnsListByCvid for the given customview
 	 * @param $cvid :: Type Integer
 	 * @returns  $columnlist Array in the following format
 	 * $columnlist = Array( $columnindex => $columnname,
@@ -869,7 +881,6 @@ class CustomView extends CRMEntity {
 	 * @returns  $advfilterlist Array
 	 */
 	function getAdvFilterByCvid($cvid) {
-
 		global $adb, $log, $default_charset, $current_user,$currentModule,$mod_strings;
 
 		$advft_criteria = array();
@@ -1797,7 +1808,8 @@ class CustomView extends CRMEntity {
 			getTabid('Quotes') => array('LBL_RELATED_PRODUCTS'),
 			getTabid('PurchaseOrder') => array('LBL_RELATED_PRODUCTS'),
 			getTabid('SalesOrder') => array('LBL_RELATED_PRODUCTS'),
-			getTabid('Invoice') => array('LBL_RELATED_PRODUCTS')
+			getTabid('Invoice') => array('LBL_RELATED_PRODUCTS'),
+			getTabid('Users') => array('LBL_USER_IMAGE_INFORMATION','LBL_USER_ADV_OPTIONS','Asterisk Configuration')
 		);
 
 		$Sql = "select distinct block,vtiger_field.tabid,name,blocklabel from vtiger_field inner join vtiger_blocks on vtiger_blocks.blockid=vtiger_field.block inner join vtiger_tab on vtiger_tab.tabid=vtiger_field.tabid where displaytype != 3 and vtiger_tab.name in (" . generateQuestionMarks($modules_list) . ") and vtiger_field.presence in (0,2) order by block";

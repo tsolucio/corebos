@@ -175,20 +175,21 @@ function generateSelectColumnsHTML($columnsList, $module) {
 	return $shtml;
 }
 
-function getByModule_ColumnsList($module,$columnslist,$selected="") {
+function getByModule_ColumnsList($mod,$columnslist,$selected="") {
 	global $oCustomView, $current_language, $theme, $app_list_strings;
 	$advfilter = array();
-	$mod_strings = return_specified_module_language($current_language,$module);
-
 	$check_dup = Array();
-	foreach($oCustomView->module_list[$module] as $key=>$value) {
+	foreach($oCustomView->module_list as $module=>$blks) {
+	  $mod_strings = return_specified_module_language($current_language,$module);
+	  $modname = getTranslatedString($module,$module);
+	  foreach($blks as $key=>$value) {
 		$advfilter = array();
 		$label = $key;
 		if(isset($columnslist[$module][$key]))
 		{
 			foreach($columnslist[$module][$key] as $field=>$fieldlabel)
 			{
-				if(!in_array($fieldlabel,$check_dup))
+				if(!in_array($module.$fieldlabel,$check_dup))
 				{
 					if(isset($mod_strings[$fieldlabel]))
 					{
@@ -218,14 +219,16 @@ function getByModule_ColumnsList($module,$columnslist,$selected="") {
 						}
 					}
 					$advfilter[] = $advfilter_option;
-					$check_dup [] = $fieldlabel;
+					$check_dup [] = $module.$fieldlabel;
 				}
 			}
-			$advfilter_out[$label]= $advfilter;
+			if (count($advfilter)>0)
+				$advfilter_out[$modname.' - '.$label]= $advfilter;
 		}
-	}
-	// Special case handling only for Calendar moudle - Not required for other modules.
-	if($module == 'Calendar') {
+	}}
+	// Special case handling only for Calendar module - Not required for other modules.
+	if($mod == 'Calendar') {
+		$mod_strings = return_specified_module_language($current_language,$mod);
 		$finalfield = Array();
 		$finalfield1 = Array();
 		$finalfield2 = Array();
