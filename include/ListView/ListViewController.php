@@ -6,9 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  *********************************************************************************/
-
 
 /**
  * Description of ListViewController
@@ -705,17 +703,17 @@ class ListViewController {
 			$OPTION_SET[$blockName][$label] = "<option value=\'$optionvalue\' $selected>$label</option>";
 
 		}
-	   	// sort array on block label
-	    ksort($OPTION_SET, SORT_STRING);
+		// sort array on block label
+		ksort($OPTION_SET, SORT_STRING);
 
 		foreach ($OPTION_SET as $key=>$value) {
-	  		$shtml .= "<optgroup label='$key' class='select' style='border:none'>";
-	   		// sort array on field labels
-	   		ksort($value, SORT_STRING);
-	  		$shtml .= implode('',$value);
-	  	}
+			$shtml .= "<optgroup label='$key' class='select' style='border:none'>";
+			// sort array on field labels
+			ksort($value, SORT_STRING);
+			$shtml .= implode('',$value);
+		}
 
-	    return $shtml;
+		return $shtml;
 	}
 
 }
