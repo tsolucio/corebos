@@ -228,12 +228,25 @@ class QueryGenerator {
 					$this->startGroup('');
 					foreach ($filtercolumns as $index=>$filter) {
 						$name = explode(':',$filter['columnname']);
+						$mlbl = explode('_', $name[3]);
+						$mname = $mlbl[0];
 						if(empty($name[2]) && $name[1] == 'crmid' && $name[0] == 'vtiger_crmentity') {
 							$name = $this->getSQLColumn('id');
 						} else {
 							$name = $name[2];
 						}
-						$this->addCondition($name, $filter['value'], $filter['comparator']);
+						if ($mname==$this->getModule()) {
+							$this->addCondition($name, $filter['value'], $filter['comparator']);
+						} else {
+							$reffld = '';
+							foreach ($this->referenceFieldInfoList as $rfld => $refmods) {
+								if (in_array($mname, $refmods)) {
+									$reffld = $rfld;
+									break;
+								}
+							}
+							$this->addReferenceModuleFieldCondition($mname, $rfld, $name, $filter['value'], $filter['comparator']);
+						}
 						$columncondition = $filter['column_condition'];
 						if(!empty($columncondition)) {
 							$this->addConditionGlue($columncondition);

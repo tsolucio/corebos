@@ -117,13 +117,35 @@ class ListViewController {
 	function getListViewEntries($focus, $module,$result,$navigationInfo,$skipActions=false) {
 
 		require('user_privileges/user_privileges_'.$this->user->id.'.php');
-		global $listview_max_textlength, $theme,$default_charset;
+		global $listview_max_textlength, $theme,$default_charset,$current_user;
 		$fields = $this->queryGenerator->getFields();
 		$whereFields = $this->queryGenerator->getWhereFields();
 		$meta = $this->queryGenerator->getMeta($this->queryGenerator->getModule());
 
 		$moduleFields = $meta->getModuleFields();
+		$refFields = array();
 		$accessibleFieldList = array_keys($moduleFields);
+		if($this->queryGenerator->referenceModuleField) {
+			$modsadded = array();
+			$referenceFieldNameList = array();
+			foreach ($this->queryGenerator->referenceModuleField as $index=>$conditionInfo) {
+				$rfhandler = vtws_getModuleHandlerFromName($conditionInfo['relatedModule'], $current_user);
+				$rfmeta = $rfhandler->getMeta();
+				$refmod = $rfmeta->getEntityName();
+				if (!in_array($refmod, $modsadded)) {
+					$modsadded[] = $refmod;
+					$rffields = $rfmeta->getModuleFields();
+					foreach ($rffields as $key => $value) {
+						$referenceFieldNameList[] = $key;
+						if (in_array($key,$fields)) {
+							$refFields[$key] = $rffields[$key];
+						}
+					}
+				}
+			}
+			$accessibleFieldList = array_merge($referenceFieldNameList,$accessibleFieldList);
+		}
+
 		$listViewFields = array_intersect($fields, $accessibleFieldList);
 
 		$referenceFieldList = $this->queryGenerator->getReferenceFieldList();
@@ -139,7 +161,11 @@ class ListViewController {
 		$ownerFieldList = $this->queryGenerator->getOwnerFieldList();
 		foreach ($ownerFieldList as $fieldName) {
 			if (in_array($fieldName, $listViewFields)) {
-				$field = $moduleFields[$fieldName];
+				if (!empty($moduleFields[$fieldName])) {
+					$field = $moduleFields[$fieldName];
+				} else {
+					$field = $refFields[$fieldName];
+				}
 				$idList = array();
 				for ($i = 0; $i < $rowCount; $i++) {
 					$id = $this->db->query_result($result, $i, $field->getColumnName());
@@ -163,7 +189,11 @@ class ListViewController {
 		}
 
 		foreach ($listViewFields as $fieldName) {
-			$field = $moduleFields[$fieldName];
+			if (!empty($moduleFields[$fieldName])) {
+				$field = $moduleFields[$fieldName];
+			} else {
+				$field = $refFields[$fieldName];
+			}
 			if(!$is_admin && ($field->getFieldDataType() == 'picklist' ||
 					$field->getFieldDataType() == 'multipicklist')) {
 				$this->setupAccessiblePicklistValueList($fieldName);
@@ -188,7 +218,11 @@ class ListViewController {
 			$row = array();
 
 			foreach ($listViewFields as $fieldName) {
-				$field = $moduleFields[$fieldName];
+				if (!empty($moduleFields[$fieldName])) {
+					$field = $moduleFields[$fieldName];
+				} else {
+					$field = $refFields[$fieldName];
+				}
 				$uitype = $field->getUIType();
 				$rawValue = $this->db->query_result($result, $i, $field->getColumnName());
 				if($module == 'Calendar') {
@@ -564,10 +598,8 @@ class ListViewController {
 		return $link;
 	}
 
-	public function getListViewHeader($focus, $module,$sort_qry='',$sorder='',$orderBy='',
-			$skipActions=false) {
-		global $log, $singlepane_view;
-		global $theme;
+	public function getListViewHeader($focus, $module,$sort_qry='',$sorder='',$orderBy='',$skipActions=false) {
+		global $log, $singlepane_view, $theme, $current_user;
 
 		$arrow='';
 		$qry = getURLstring($focus);
@@ -578,7 +610,6 @@ class ListViewController {
 		//Get the vtiger_tabid of the module
 		$tabid = getTabid($module);
 		$tabname = getParentTab();
-		global $current_user;
 
 		require('user_privileges/user_privileges_'.$current_user->id.'.php');
 		$fields = $this->queryGenerator->getFields();
@@ -587,13 +618,39 @@ class ListViewController {
 
 		$moduleFields = $meta->getModuleFields();
 		$accessibleFieldList = array_keys($moduleFields);
+		$refFields = array();
+		$accessibleFieldList = array_keys($moduleFields);
+		if($this->queryGenerator->referenceModuleField) {
+			$modsadded = array();
+			$referenceFieldNameList = array();
+			foreach ($this->queryGenerator->referenceModuleField as $index=>$conditionInfo) {
+				$rfhandler = vtws_getModuleHandlerFromName($conditionInfo['relatedModule'], $current_user);
+				$rfmeta = $rfhandler->getMeta();
+				$refmod = $rfmeta->getEntityName();
+				if (!in_array($refmod, $modsadded)) {
+					$modsadded[] = $refmod;
+					$rffields = $rfmeta->getModuleFields();
+					foreach ($rffields as $key => $value) {
+						$referenceFieldNameList[] = $key;
+						if (in_array($key,$fields)) {
+							$refFields[$key] = $rffields[$key];
+						}
+					}
+				}
+			}
+			$accessibleFieldList = array_merge($referenceFieldNameList,$accessibleFieldList);
+		}
 		$listViewFields = array_intersect($fields, $accessibleFieldList);
 		//Added on 14-12-2005 to avoid if and else check for every list
 		//vtiger_field for arrow image and change order
 		$change_sorder = array('ASC'=>'DESC','DESC'=>'ASC');
 		$arrow_gif = array('ASC'=>'arrow_down.gif','DESC'=>'arrow_up.gif');
 		foreach($listViewFields as $fieldName) {
-			$field = $moduleFields[$fieldName];
+			if (!empty($moduleFields[$fieldName])) {
+				$field = $moduleFields[$fieldName];
+			} else {
+				$field = $refFields[$fieldName];
+			}
 
 			if(in_array($field->getColumnName(),$focus->sortby_fields)) {
 				if($orderBy == $field->getColumnName()) {
