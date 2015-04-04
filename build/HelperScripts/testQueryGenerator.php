@@ -173,11 +173,20 @@ $query = $queryGenerator->getQuery();
 echo "$query<br>";
 testquery($query);
 
+echo "<h2>Document Module Queries</h2>";
+$queryGenerator = new QueryGenerator('Documents', $current_user);
+$queryGenerator->setFields(array('id','assigned_user_id', 'notes_title','filename'));
+$queryGenerator->addCondition('filename','app','s');
+$query = $queryGenerator->getQuery();
+echo "$query<br>";
+testquery($query);
+
 // echo "<h2>Query with custom field</h2>";
 // $queryGenerator = new QueryGenerator($moduleName, $current_user);
 // $queryGenerator->setFields(array('id','cf_681'));
 // $query = $queryGenerator->getQuery();
 // echo "$query<br>";
+// testquery($query);
 
 
 ?>
