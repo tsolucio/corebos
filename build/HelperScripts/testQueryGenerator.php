@@ -181,6 +181,20 @@ $query = $queryGenerator->getQuery();
 echo "$query<br>";
 testquery($query);
 
+echo "<h2>Query with related module overlapping fields</h2>";
+$queryGenerator = new QueryGenerator('Contacts', $current_user);
+$queryGenerator->setFields(array('id','cf_681','firstname','Accounts.phone'));
+$queryGenerator->addReferenceModuleFieldCondition('Accounts', 'account_id', 'phone', '841', 'c');
+$query = $queryGenerator->getQuery();
+echo "$query<br>";
+testquery($query);
+
+$queryGenerator = new QueryGenerator('Contacts', $current_user);
+$queryGenerator->setFields(array('id','cf_681','firstname','Accounts.phone'));
+$query = $queryGenerator->getQuery();
+echo "$query<br>";
+testquery($query);
+
 // echo "<h2>Query with custom field</h2>";
 // $queryGenerator = new QueryGenerator($moduleName, $current_user);
 // $queryGenerator->setFields(array('id','cf_681'));
