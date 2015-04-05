@@ -229,20 +229,21 @@ function getByModule_ColumnsList($mod,$columnslist,$selected="") {
 	// Special case handling only for Calendar module - Not required for other modules.
 	if($mod == 'Calendar') {
 		$mod_strings = return_specified_module_language($current_language,$mod);
+		$modname = getTranslatedString($mod,$mod);
 		$finalfield = Array();
 		$finalfield1 = Array();
 		$finalfield2 = Array();
 		$newLabel = $mod_strings['LBL_CALENDAR_INFORMATION'];
 
-		if(isset($advfilter_out[$mod_strings['LBL_TASK_INFORMATION']])) {
-			$finalfield1 = $advfilter_out[$mod_strings['LBL_TASK_INFORMATION']];
+		if(isset($advfilter_out[$modname.' - '.$mod_strings['LBL_TASK_INFORMATION']])) {
+			$finalfield1 = $advfilter_out[$modname.' - '.$mod_strings['LBL_TASK_INFORMATION']];
 		}
-		if(isset($advfilter_out[$mod_strings['LBL_EVENT_INFORMATION']])) {
-			$finalfield2 = $advfilter_out[$mod_strings['LBL_EVENT_INFORMATION']];
+		if(isset($advfilter_out[$modname.' - '.$mod_strings['LBL_EVENT_INFORMATION']])) {
+			$finalfield2 = $advfilter_out[$modname.' - '.$mod_strings['LBL_EVENT_INFORMATION']];
 		}
 		$finalfield[$newLabel] = array_merge($finalfield1,$finalfield2);
-		if (isset ($advfilter_out[$mod_strings['LBL_CUSTOM_INFORMATION']])) {
-			$finalfield[$mod_strings['LBL_CUSTOM_INFORMATION']] = $advfilter_out[$mod_strings['LBL_CUSTOM_INFORMATION']];
+		if (isset ($advfilter_out[$modname.' - '.$mod_strings['LBL_CUSTOM_INFORMATION']])) {
+			$finalfield[$mod_strings['LBL_CUSTOM_INFORMATION']] = $advfilter_out[$modname.' - '.$mod_strings['LBL_CUSTOM_INFORMATION']];
 		}
 		$advfilter_out=$finalfield;
 	}
