@@ -282,7 +282,7 @@ class QueryGenerator {
 				$this->customViewFields[] = $name;
 			} else {
 				$minfo = explode('_', $details[3]);
-				if ($minfo[0]==$this->module) {
+				if ($minfo[0]==$this->module or ($minfo[0]=='Notes' and $this->module=='Documents')) {
 					$viewfields[] = $details[2];
 				} else {
 					$viewfields[] = $minfo[0].'.'.$details[2];

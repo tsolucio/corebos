@@ -602,7 +602,6 @@ class ListViewController {
 
 		$moduleFields = $meta->getModuleFields();
 		$accessibleFieldList = array_keys($moduleFields);
-		$accessibleFieldList = array_keys($moduleFields);
 		if($this->queryGenerator->getReferenceFieldInfoList()) {
 			$accessibleFieldList = array_merge($this->queryGenerator->getReferenceFieldNameList(),$accessibleFieldList);
 		}
