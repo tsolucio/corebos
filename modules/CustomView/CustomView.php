@@ -350,6 +350,7 @@ class CustomView extends CRMEntity {
 		for ($i = 0; $i < $noofrows; $i++) {
 			$fieldtablename = $adb->query_result($result, $i, "tablename");
 			$fieldcolname = $adb->query_result($result, $i, "columnname");
+			if ($fieldtablename=='vtiger_user2role') continue;
 			$fieldname = $adb->query_result($result, $i, "fieldname");
 			$fieldtype = $adb->query_result($result, $i, "typeofdata");
 			$fieldtype = explode("~", $fieldtype);

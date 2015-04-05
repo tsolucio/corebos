@@ -123,29 +123,10 @@ class ListViewController {
 		$meta = $this->queryGenerator->getMeta($this->queryGenerator->getModule());
 
 		$moduleFields = $meta->getModuleFields();
-		$refFields = array();
 		$accessibleFieldList = array_keys($moduleFields);
-		if($this->queryGenerator->referenceModuleField) {
-			$modsadded = array();
-			$referenceFieldNameList = array();
-			foreach ($this->queryGenerator->referenceModuleField as $index=>$conditionInfo) {
-				$rfhandler = vtws_getModuleHandlerFromName($conditionInfo['relatedModule'], $current_user);
-				$rfmeta = $rfhandler->getMeta();
-				$refmod = $rfmeta->getEntityName();
-				if (!in_array($refmod, $modsadded)) {
-					$modsadded[] = $refmod;
-					$rffields = $rfmeta->getModuleFields();
-					foreach ($rffields as $key => $value) {
-						$referenceFieldNameList[] = $key;
-						if (in_array($key,$fields)) {
-							$refFields[$key] = $rffields[$key];
-						}
-					}
-				}
-			}
-			$accessibleFieldList = array_merge($referenceFieldNameList,$accessibleFieldList);
+		if($this->queryGenerator->getReferenceFieldInfoList()) {
+			$accessibleFieldList = array_merge($this->queryGenerator->getReferenceFieldNameList(),$accessibleFieldList);
 		}
-
 		$listViewFields = array_intersect($fields, $accessibleFieldList);
 
 		$referenceFieldList = $this->queryGenerator->getReferenceFieldList();
@@ -164,7 +145,8 @@ class ListViewController {
 				if (!empty($moduleFields[$fieldName])) {
 					$field = $moduleFields[$fieldName];
 				} else {
-					$field = $refFields[$fieldName];
+					$field = $this->queryGenerator->getReferenceField($fieldName,false);
+					if (is_null($field)) continue;
 				}
 				$idList = array();
 				for ($i = 0; $i < $rowCount; $i++) {
@@ -192,7 +174,8 @@ class ListViewController {
 			if (!empty($moduleFields[$fieldName])) {
 				$field = $moduleFields[$fieldName];
 			} else {
-				$field = $refFields[$fieldName];
+				$field = $this->queryGenerator->getReferenceField($fieldName,false);
+				if (is_null($field)) continue;
 			}
 			if(!$is_admin && ($field->getFieldDataType() == 'picklist' ||
 					$field->getFieldDataType() == 'multipicklist')) {
@@ -221,7 +204,8 @@ class ListViewController {
 				if (!empty($moduleFields[$fieldName])) {
 					$field = $moduleFields[$fieldName];
 				} else {
-					$field = $refFields[$fieldName];
+					$field = $this->queryGenerator->getReferenceField($fieldName,false);
+					if (is_null($field)) continue;
 				}
 				$uitype = $field->getUIType();
 				$rawValue = $this->db->query_result($result, $i, $field->getColumnName());
@@ -618,27 +602,9 @@ class ListViewController {
 
 		$moduleFields = $meta->getModuleFields();
 		$accessibleFieldList = array_keys($moduleFields);
-		$refFields = array();
 		$accessibleFieldList = array_keys($moduleFields);
-		if($this->queryGenerator->referenceModuleField) {
-			$modsadded = array();
-			$referenceFieldNameList = array();
-			foreach ($this->queryGenerator->referenceModuleField as $index=>$conditionInfo) {
-				$rfhandler = vtws_getModuleHandlerFromName($conditionInfo['relatedModule'], $current_user);
-				$rfmeta = $rfhandler->getMeta();
-				$refmod = $rfmeta->getEntityName();
-				if (!in_array($refmod, $modsadded)) {
-					$modsadded[] = $refmod;
-					$rffields = $rfmeta->getModuleFields();
-					foreach ($rffields as $key => $value) {
-						$referenceFieldNameList[] = $key;
-						if (in_array($key,$fields)) {
-							$refFields[$key] = $rffields[$key];
-						}
-					}
-				}
-			}
-			$accessibleFieldList = array_merge($referenceFieldNameList,$accessibleFieldList);
+		if($this->queryGenerator->getReferenceFieldInfoList()) {
+			$accessibleFieldList = array_merge($this->queryGenerator->getReferenceFieldNameList(),$accessibleFieldList);
 		}
 		$listViewFields = array_intersect($fields, $accessibleFieldList);
 		//Added on 14-12-2005 to avoid if and else check for every list
@@ -649,7 +615,8 @@ class ListViewController {
 			if (!empty($moduleFields[$fieldName])) {
 				$field = $moduleFields[$fieldName];
 			} else {
-				$field = $refFields[$fieldName];
+				$field = $this->queryGenerator->getReferenceField($fieldName,false);
+				if (is_null($field)) continue;
 			}
 
 			if(in_array($field->getColumnName(),$focus->sortby_fields)) {
