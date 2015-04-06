@@ -144,8 +144,35 @@ $taskTypes[] = array("name"=>"VTSMSTask", "label"=>"SMS Task", "classname"=>"VTS
 foreach ($taskTypes as $taskType) {
 	VTTaskType::registerTaskType($taskType);
 }
+// Add Scheduled Workflows fields
+$result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('schtypeid'));
+if (!($adb->num_rows($result))) {
+	ExecutePQuery("ALTER TABLE com_vtiger_workflows ADD schtypeid INT(10)", array());
+}
+$result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('schtime'));
+if (!($adb->num_rows($result))) {
+	ExecutePQuery("ALTER TABLE com_vtiger_workflows ADD schtime TIME", array());
+} else {
+	ExecutePQuery('ALTER TABLE com_vtiger_workflows CHANGE schtime schtime TIME NULL DEFAULT NULL', array());
+}
+$result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('schdayofmonth'));
+if (!($adb->num_rows($result))) {
+	ExecutePQuery("ALTER TABLE com_vtiger_workflows ADD schdayofmonth VARCHAR(200)", array());
+}
+$result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('schdayofweek'));
+if (!($adb->num_rows($result))) {
+	ExecutePQuery("ALTER TABLE com_vtiger_workflows ADD schdayofweek VARCHAR(200)", array());
+}
+$result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('schannualdates'));
+if (!($adb->num_rows($result))) {
+	ExecutePQuery("ALTER TABLE com_vtiger_workflows ADD schannualdates VARCHAR(200)", array());
+}
+$result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('nexttrigger_time'));
+if (!($adb->num_rows($result))) {
+	ExecutePQuery("ALTER TABLE com_vtiger_workflows ADD nexttrigger_time DATETIME", array());
+}
+
 // Creating Default workflows
-$adb->pquery('ALTER TABLE com_vtiger_workflows ADD reevaluate TINYINT NULL');
 $workflowManager = new VTWorkflowManager($adb);
 $taskManager = new VTTaskManager($adb);
 

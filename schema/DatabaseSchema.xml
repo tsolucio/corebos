@@ -6788,6 +6788,18 @@
 		</field>
 		<field name="type" type="C" size="255">
 		</field>
+		<field name="schtypeid" type="I" size="10">
+		</field>
+		<field name="schtime" type="T">
+		</field>
+		<field name="schdayofmonth" type="C" size="200">
+		</field>
+		<field name="schdayofweek" type="C" size="200">
+		</field>
+		<field name="schannualdates" type="C" size="200">
+		</field>
+		<field name="nexttrigger_time" type="T">
+		</field>
 		<index name="com_vtiger_workflows_idx">
 			<unique />
 			<col>workflow_id</col>

@@ -29,6 +29,8 @@ class create_workflow_onschedule extends cbupdaterWorker {
 			$result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('schtime'));
 			if (!($adb->num_rows($result))) {
 				$this->ExecuteQuery("ALTER TABLE com_vtiger_workflows ADD schtime TIME", array());
+			} else {
+				$this->ExecuteQuery('ALTER TABLE com_vtiger_workflows CHANGE schtime schtime TIME NULL DEFAULT NULL', array());
 			}
 			$result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('schdayofmonth'));
 			if (!($adb->num_rows($result))) {
