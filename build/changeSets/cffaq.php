@@ -21,6 +21,7 @@ class cffaq extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
+			$this->ExecuteQuery("ALTER TABLE vtiger_faq ENGINE=InnoDB");
 			$this->ExecuteQuery("CREATE TABLE IF NOT EXISTS vtiger_faqcf (
 						faqid int(19),
 						PRIMARY KEY (faqid),
