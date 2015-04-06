@@ -145,6 +145,18 @@ class VTJsonCondition {
 		}
 
 		switch ($condition) {
+			case "exists":
+				global $current_user,$adb;
+				$qg = new QueryGenerator($entityData->getModuleName(),$current_user);
+				$qg->addCondition($cond['fieldname'], $value, 'e');
+				$qe = 'SELECT EXISTS(SELECT 1 '.$qg->getFromClause().$qg->getWhereClause().')';
+				$rs = $adb->query($qe);
+				if ($rs) {
+					$ex = $adb->query_result($rs, 0, 0);
+					return ($ex == '1');
+				} else {
+					return false;
+				}
 			case "equal to":
 				return $fieldValue == $value;
 			case "less than":

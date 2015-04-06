@@ -3,7 +3,7 @@
 *  Language     : ES Spanish
 *  Version      : vt5.4.0
 *  Created Date : 2008-01-18 17:46:07
-*  Author       : rasomu
+*  Author       : Joe Bordes
 *  Last change  : 2012-04-04
 *  es_mx Author : Francisco Hernandez Odin Consultores www.odin.mx
 ***********************************************************/
@@ -372,5 +372,6 @@ var alert_arr = {
 	'LBL_LESS_THAN_HOURS_LATER' : 'menos de x horas después',
 	'LBL_MORE_THAN_HOURS_BEFORE' : 'más de x horas antes',
 	'LBL_MORE_THAN_HOURS_LATER' : 'más de x horas después',
+	'LBL_EXISTS' : 'existe',
 	'MAXIMUM_OF_TWO_MODULES_PERMITTED' : 'Solo se permite relacionar con un máximo de dos módulos.'
 };
