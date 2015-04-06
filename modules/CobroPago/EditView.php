@@ -22,16 +22,35 @@ $isduplicate = vtlib_purify($_REQUEST['isDuplicate']);
 $searchurl = getBasic_Advance_SearchURL();
 $smarty->assign("SEARCH", $searchurl);
 //4600 ends
-if (!empty($_REQUEST['related_id']) and ($_REQUEST['return_module']=='Invoice' or $_REQUEST['return_module']=='Quotes' or $_REQUEST['return_module']=='SalesOrder')) {
-	$lermod=strtolower($_REQUEST['return_module']);
-	$lermods=($lermod=='quotes' ? 'quote':$lermod);
-	$_REQUEST['parent_id']=$adb->query_result($adb->pquery('select accountid from vtiger_'.$lermod.' where '.$lermods.'id=?',array($_REQUEST['related_id'])),0,0);
-}
-if (!empty($_REQUEST['related_id']) and $_REQUEST['return_module']=='PurchaseOrder') {
-	$_REQUEST['parent_id']=$adb->query_result($adb->pquery('select vendorid from vtiger_purchaseorder where purchaseorderid=?',array($_REQUEST['related_id'])),0,0);
-}
-if (!empty($_REQUEST['related_id']) and $_REQUEST['return_module']=='Potentials') {
-	$_REQUEST['parent_id']=$adb->query_result($adb->pquery('select related_to from vtiger_potential where potentialid=?',array($_REQUEST['related_id'])),0,0);
+if (!empty($_REQUEST['related_id'])) {
+	switch ($_REQUEST['return_module']) {
+		case 'Invoice':
+		case 'Quotes':
+		case 'SalesOrder':
+			$lermod=strtolower($_REQUEST['return_module']);
+			$lermods=($lermod=='quotes' ? 'quote':$lermod);
+			$relq = $adb->pquery('select accountid,contactid,total from vtiger_'.$lermod.' where '.$lermods.'id=?',array($_REQUEST['related_id']));
+			$relid = $_REQUEST['parent_id']=$adb->query_result($relq,0,'accountid');
+			if (empty($relid) or GlobalVariable::getVariable('B2B', '1')=='0') {
+				$relid = $_REQUEST['parent_id']=$adb->query_result($relq,0,'contactid');
+			}
+			$_REQUEST['parent_id']=$relid;
+			$_REQUEST['amount'] = $adb->query_result($relq,0,'total');
+			break;
+		case 'PurchaseOrder':
+			$relq = $adb->pquery('select vendorid,total from vtiger_purchaseorder where purchaseorderid=?',array($_REQUEST['related_id']));
+			$_REQUEST['parent_id']=$adb->query_result($relq,0,'vendorid');
+			$_REQUEST['amount'] = $adb->query_result($relq,0,'total');
+			break;
+		case 'Potentials':
+			$relq = $adb->pquery('select related_to from vtiger_potential where potentialid=?',array($_REQUEST['related_id']));
+			$_REQUEST['parent_id']=$adb->query_result($relq,0,0);
+			break;
+		case 'HelpDesk':
+			$relq = $adb->pquery('select parent_id from vtiger_troubletickets where ticketid=?',array($_REQUEST['related_id']));
+			$_REQUEST['parent_id']=$adb->query_result($relq,0,0);
+			break;
+	}
 }
 if($record) {
 	$focus->id = $record;
