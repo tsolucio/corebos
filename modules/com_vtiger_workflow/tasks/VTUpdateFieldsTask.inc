@@ -46,7 +46,9 @@ class VTUpdateFieldsTask extends VTTask {
 			$focus->retrieve_entity_info($recordId, $moduleName);
 			$focus->clearSingletonSaveFields();
 
+			$hold_user = $current_user;
 			$util->loggedInUser();
+			if (is_null($current_user)) $current_user = $hold_user;  // make sure current_user is defined
 			foreach ($fieldValueMapping as $fieldInfo) {
 				$fieldName = $fieldInfo['fieldname'];
 				$fieldType = '';
