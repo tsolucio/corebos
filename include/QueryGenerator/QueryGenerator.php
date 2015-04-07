@@ -782,14 +782,36 @@ class QueryGenerator {
 		$fieldSqlList = array();
 		foreach ($this->conditionals as $index=>$conditionInfo) {
 			$fieldName = $conditionInfo['name'];
+			if ($fieldName=='id') {
+				switch($conditionInfo['operator']) {
+					case 'e': $sqlOperator = "=";
+						break;
+					case 'n': $sqlOperator = "<>";
+						break;
+					case 'l': $sqlOperator = "<";
+						break;
+					case 'g': $sqlOperator = ">";
+						break;
+					case 'm': $sqlOperator = "<=";
+						break;
+					case 'h': $sqlOperator = ">=";
+						break;
+					default: $sqlOperator = "=";
+				}
+				$value = $conditionInfo['value'];
+				if(empty($value)) {
+					$value = '0';
+				}
+				$fieldSqlList[$index] = "($baseTable.$baseTableIndex $sqlOperator '$value')";
+				continue;
+			}
 			$field = $moduleFieldList[$fieldName];
 			if(empty($field) || $conditionInfo['operator'] == 'None') {
 				continue;
 			}
 			$fieldSql = '(';
 			$fieldGlue = '';
-			$valueSqlList = $this->getConditionValue($conditionInfo['value'],
-				$conditionInfo['operator'], $field);
+			$valueSqlList = $this->getConditionValue($conditionInfo['value'], $conditionInfo['operator'], $field);
 			if(!is_array($valueSqlList)) {
 				$valueSqlList = array($valueSqlList);
 			}
