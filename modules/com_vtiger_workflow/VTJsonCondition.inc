@@ -149,6 +149,8 @@ class VTJsonCondition {
 				global $current_user,$adb;
 				$qg = new QueryGenerator($entityData->getModuleName(),$current_user);
 				$qg->addCondition($cond['fieldname'], $value, 'e');
+				list($mid,$crmid) = explode('x', $data['id']);
+				$qg->addCondition('id', $crmid, 'n', $qg::$AND);
 				$qe = 'SELECT EXISTS(SELECT 1 '.$qg->getFromClause().$qg->getWhereClause().')';
 				$rs = $adb->query($qe);
 				if ($rs) {
