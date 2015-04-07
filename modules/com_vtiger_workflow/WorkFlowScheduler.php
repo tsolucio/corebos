@@ -148,6 +148,7 @@ class WorkFlowScheduler {
 			'more than hours before' => 'l',
 			'more than hours later' => 'g',
 			'is today' => 'e',
+			'exists' => 'exists',
 		);
 		$noOfConditions = count($conditions);
 		//Algorithm :
