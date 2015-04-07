@@ -195,6 +195,38 @@ $query = $queryGenerator->getQuery();
 echo "$query<br>";
 testquery($query);
 
+echo "<h2>Playing with conditions</h2>";
+$queryGenerator = new QueryGenerator('Contacts', $current_user);
+$queryGenerator->setFields(array('id','firstname'));
+$queryGenerator->addCondition('firstname', 'joe', 'e');
+$queryGenerator->addCondition('lastname', '133', 'n',$queryGenerator::$AND);
+$query = $queryGenerator->getQuery();
+echo "$query<br>";
+testquery($query);
+
+$queryGenerator = new QueryGenerator('Contacts', $current_user);
+$queryGenerator->setFields(array('id','firstname'));
+$queryGenerator->addCondition('id', '133', 'n',$queryGenerator::$AND);
+$query = $queryGenerator->getQuery();
+echo "$query<br>";
+testquery($query);
+
+$queryGenerator = new QueryGenerator('Contacts', $current_user);
+$queryGenerator->setFields(array('id','firstname'));
+$queryGenerator->addCondition('firstname', 'joe', 'e');
+$queryGenerator->addCondition('id', '133', 'n',$queryGenerator::$AND);
+$query = $queryGenerator->getQuery();
+echo "$query<br>";
+testquery($query);
+
+$queryGenerator = new QueryGenerator('Accounts', $current_user);
+$queryGenerator->setFields(array('id','accountname'));
+$queryGenerator->addCondition('id', '133', 'n',$queryGenerator::$AND);
+$query = $queryGenerator->getQuery();
+echo "$query<br>";
+testquery($query);
+
+//error_reporting(E_ALL);ini_set("display_errors", "on");
 // echo "<h2>Query with custom field</h2>";
 // $queryGenerator = new QueryGenerator($moduleName, $current_user);
 // $queryGenerator->setFields(array('id','cf_681'));
