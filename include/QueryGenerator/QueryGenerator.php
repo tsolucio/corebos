@@ -812,6 +812,10 @@ class QueryGenerator {
 			$fieldSql = '(';
 			$fieldGlue = '';
 			$valueSqlList = $this->getConditionValue($conditionInfo['value'], $conditionInfo['operator'], $field);
+			if ($conditionInfo['operator']=='exists') {
+				$fieldSqlList[$index] = '('.$valueSqlList[0].')';
+				continue;
+			}
 			if(!is_array($valueSqlList)) {
 				$valueSqlList = array($valueSqlList);
 			}
@@ -894,6 +898,10 @@ class QueryGenerator {
 				$columnName = $fieldObject->getColumnName();
 				$tableName = $fieldObject->getTableName();
 				$valueSQL = $this->getConditionValue($conditionInfo['value'], $conditionInfo['SQLOperator'], $fieldObject);
+				if ($conditionInfo['SQLOperator']=='exists') {
+					$fieldSqlList[$index] = '('.$valueSQL[0].')';
+					continue;
+				}
 				if ($tableName=='vtiger_users') {
 					$fieldSql = "(".$tableName.'.'.$columnName.' '.$valueSQL[0].")";
 				} else {
@@ -933,6 +941,14 @@ class QueryGenerator {
 			$valueArray = array($value);
 		}
 		$sql = array();
+		if ($operator=='exists') {
+			global $current_user,$adb;
+			$mid = getTabModuleName($field->getTabId());
+			$qg = new QueryGenerator($mid,$current_user);
+			$qg->addCondition($field->getFieldName(), $value, 'e');
+			$sql[] = 'SELECT EXISTS(SELECT 1 '.$qg->getFromClause().$qg->getWhereClause().')';
+			return $sql;
+		}
 		if($operator == 'between' || $operator == 'bw' || $operator == 'notequal') {
 			if($field->getFieldName() == 'birthday') {
 				$valueArray[0] = getValidDBInsertDateTimeValue($valueArray[0]);
