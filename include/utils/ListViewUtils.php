@@ -1146,6 +1146,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 							if (isset($forfield) && $forfield != '' && $focus->popup_type != 'detailview') {
 								$value1 = strip_tags($value);
 								$value = htmlspecialchars(addslashes(html_entity_decode(strip_tags($value), ENT_QUOTES, $default_charset)), ENT_QUOTES, $default_charset); // Remove any previous html conversion
+								$value = str_replace(array("\r","\n"), '', $value);
 								$count = counterValue();
 								if (property_exists($focus,'popup_function') and !empty($focus->popup_function)) {
 									$value = "<a href='javascript:void(0);' onclick='return ".$focus->popup_function."($entity_id, \"$value\", \"$forfield\")' id =$count >$value1</a>";
