@@ -6,55 +6,53 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 require_once('include/database/PearDatabase.php');
 require_once('data/CRMEntity.php');
 require_once('include/utils/UserInfoUtil.php');
 require_once 'modules/Reports/ReportUtils.php';
-global $calpath;
 global $app_strings,$mod_strings;
 global $app_list_strings;
 global $modules;
 global $blocks;
 global $adv_filter_options;
 global $log;
-
 global $report_modules;
 global $related_modules;
 global $old_related_modules;
 
-$adv_filter_options = array("e"=>"equals",
-		            "n"=>"not equal to",
-			    "s"=>"starts with",
-			    "ew"=>"ends with",
-			    "c"=>"contains",
-			    "k"=>"does not contain",
-			    "l"=>"less than",
-			    "g"=>"greater than",
-			    "m"=>"less or equal",
-			    "h"=>"greater or equal",
-			    "bw"=>"between",
-			    "a"=>"after",
-			    "b"=>"before",
-			   );
+$adv_filter_options = array(
+	"e"=>"equals",
+	"n"=>"not equal to",
+	"s"=>"starts with",
+	"ew"=>"ends with",
+	"c"=>"contains",
+	"k"=>"does not contain",
+	"l"=>"less than",
+	"g"=>"greater than",
+	"m"=>"less or equal",
+	"h"=>"greater or equal",
+	"bw"=>"between",
+	"a"=>"after",
+	"b"=>"before",
+);
 
-//$report_modules = Array('Faq','Rss','Portal','Recyclebin','Emails','Reports','Dashboard','Home','Activities'
-	//	       );
+//$report_modules = Array('Faq','Rss','Portal','Recyclebin','Emails','Reports','Dashboard','Home','Activities');
 
-$old_related_modules = Array('Accounts'=>Array('Potentials','Contacts','Products','Quotes','Invoice','SalesOrder'),
-			 'Contacts'=>Array('Accounts','Potentials','Quotes','PurchaseOrder','Invoice'),
-			 'Potentials'=>Array('Accounts','Contacts','Quotes'),
-			 'Calendar'=>Array('Leads','Accounts','Contacts','Potentials'),
-			 'Products'=>Array('Accounts','Contacts'),
-			 'HelpDesk'=>Array('Products'),
-			 'Quotes'=>Array('Accounts','Contacts','Potentials'),
-			 'PurchaseOrder'=>Array('Contacts'),
-			 'Invoice'=>Array('Accounts','Contacts'),
-			 'SalesOrder'=>Array('Accounts','Contacts','Potentials','Quotes'),
-			 'Campaigns'=>Array('Products'),
-			 'Timecontrol'=>Array('Leads','Accounts','Contacts','Vendors','Campaigns','Potentials','Quotes','PurchaseOrder','SalesOrder','Invoice','HelpDesk', 'Project', 'ProjectMilestone', 'ProjectTask', 'Assets', 'ServiceContracts','Products','Services'),
-			);
+$old_related_modules = Array(
+	'Accounts'=>Array('Potentials','Contacts','Products','Quotes','Invoice','SalesOrder'),
+	'Contacts'=>Array('Accounts','Potentials','Quotes','PurchaseOrder','Invoice'),
+	'Potentials'=>Array('Accounts','Contacts','Quotes'),
+	'Calendar'=>Array('Leads','Accounts','Contacts','Potentials'),
+	'Products'=>Array('Accounts','Contacts'),
+	'HelpDesk'=>Array('Products'),
+	'Quotes'=>Array('Accounts','Contacts','Potentials'),
+	'PurchaseOrder'=>Array('Contacts'),
+	'Invoice'=>Array('Accounts','Contacts'),
+	'SalesOrder'=>Array('Accounts','Contacts','Potentials','Quotes'),
+	'Campaigns'=>Array('Products'),
+	'Timecontrol'=>Array('Leads','Accounts','Contacts','Vendors','Campaigns','Potentials','Quotes','PurchaseOrder','SalesOrder','Invoice','HelpDesk', 'Project', 'ProjectMilestone', 'ProjectTask', 'Assets', 'ServiceContracts','Products','Services'),
+);
 
 $related_modules =Array();
 

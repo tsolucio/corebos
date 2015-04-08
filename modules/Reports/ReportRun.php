@@ -7,10 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-global $calpath;
-global $app_strings,$mod_strings;
-global $theme;
-global $log;
+global $app_strings,$mod_strings, $theme, $log;
 
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
@@ -20,8 +17,7 @@ require_once("modules/Reports/Reports.php");
 require_once 'modules/Reports/ReportUtils.php';
 require_once("vtlib/Vtiger/Module.php");
 
-class ReportRun extends CRMEntity
-{
+class ReportRun extends CRMEntity {
 
 	var $primarymodule;
 	var $secondarymodule;
