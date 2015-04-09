@@ -25,10 +25,10 @@ if (count($argv)!=3) {
 } else {
 	$error = 0;
 	$errmsg = '';
-	
+
 	$ids = strtolower(vtlib_purify($argv[2]));
 	$whattodo = strtolower($argv[1]);
-	
+
 	if (!empty($ids) and ($whattodo=='undo' or $whattodo=='apply')) {
 		require_once 'modules/cbupdater/cbupdater.php';
 		require_once 'modules/cbupdater/cbupdaterWorker.php';
@@ -37,16 +37,17 @@ if (count($argv)!=3) {
 		$sql = 'select cbupdaterid,filename,pathfilename,classname, cbupd_no, description from vtiger_cbupdater
 				inner join vtiger_crmentity on crmid=cbupdaterid
 				where deleted=0 and ';
-		if ($ids=='all') {
+		if (strtolower($ids)=='all') {
 			$sql .= "execstate in ('Pending','Continuous')";
-			$cbacc=$adb->getColumnNames('vtiger_cbupdater');
-			if (in_array('blocked', $cbacc)) {
-				$sql .= " and blocked != '1' ";
-			}
 		} else {
 			$ids = str_replace(';', ',', $ids);
 			$ids = trim($ids,',');
 			$sql .= " cbupdaterid in ($ids)";
+		}
+		// we do not process blocked changesets
+		$cbacc=$adb->getColumnNames('vtiger_cbupdater');
+		if (in_array('blocked', $cbacc)) {
+			$sql .= " and blocked != '1' ";
 		}
 		$rs = $adb->query($sql);
 		$totalops = $adb->num_rows($rs);
