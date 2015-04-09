@@ -33,9 +33,8 @@ global $current_user,$adb,$app_strings;
 set_time_limit(0);
 ini_set('memory_limit','1024M');
 
-if (empty($current_user) or $current_user->id != 1) {
-	$current_user = new Users();
-	$current_user->retrieveCurrentUserInfoFromFile(1); // admin
+if (empty($current_user) or !is_admin($current_user)) {
+	$current_user = Users::getActiveAdminUser();
 }
 if (empty($current_language)) {
 	if(isset($_SESSION['authenticated_user_language']) && $_SESSION['authenticated_user_language'] != '') {

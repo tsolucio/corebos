@@ -11,8 +11,7 @@ if (count($argv)==3) {
 	require_once('vtlib/Vtiger/Package.php');
 	global $current_user,$adb;
 	$Vtiger_Utils_Log = false;  // Turn off debugging level
-	$current_user = new Users();
-	$current_user->retrieveCurrentUserInfoFromFile(1); // admin
+	$current_user = Users::getActiveAdminUser();
 	$package = new Vtiger_Package();
 	$tabrs = $adb->pquery('select count(*) from vtiger_tab where name=?',array($module));
 	if ($tabrs and $adb->query_result($tabrs, 0,0)==1) { // it exists already so we are updating

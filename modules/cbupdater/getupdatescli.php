@@ -16,7 +16,7 @@
 *  Module       : cbupdater
 *  Version      : 5.5.0
 *  Author       : JPL TSolucio, S. L.
-*******************************************$err******************************************************/
+*************************************************************************************************/
 
 //error_reporting(E_ALL); ini_set('display_errors', 'on');
 include_once('vtlib/Vtiger/Module.php');
@@ -25,8 +25,7 @@ $currentModule = 'cbupdater';
 set_time_limit(0);
 ini_set('memory_limit','1024M');
 
-$current_user = new Users();
-$current_user->retrieveCurrentUserInfoFromFile(1); // admin
+$current_user = Users::getActiveAdminUser();
 if(isset($_SESSION['authenticated_user_language']) && $_SESSION['authenticated_user_language'] != '') {
 	$current_language = $_SESSION['authenticated_user_language'];
 } else {
