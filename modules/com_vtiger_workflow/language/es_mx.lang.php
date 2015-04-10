@@ -130,5 +130,7 @@ $mod_strings = array(
 'Workflow for Events when Send Notification is True' => 'Flujo de Trabajo para Eventos cuando el Envío de Notificación está activado',
 'Workflow for Calendar Todos when Send Notification is True' => 'Flujo de Trabajo para Tareas de Calendario cuando Notificación de Envío está activado',
 'Calculate or Update forecast amount' => 'Calcular cantidad objetiva en oportunidad',
+'LBL_METHOD_NAME' => 'Nombre del Método',
+'NO_METHOD_AVAILABLE' => 'No hay ningún método disponible para este Módulo.'
 );
 ?>

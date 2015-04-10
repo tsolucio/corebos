@@ -347,5 +347,6 @@ var alert_arr = {
 	'LBL_MORE_THAN_HOURS_BEFORE' : 'more than hours before',
 	'LBL_MORE_THAN_HOURS_LATER' : 'more than hours later',
 	'LBL_EXISTS' : 'exists',
-	'MAXIMUM_OF_TWO_MODULES_PERMITTED' : 'A maximum of two modules is permitted.'
+	'MAXIMUM_OF_TWO_MODULES_PERMITTED' : 'A maximum of two modules is permitted.',
+	'LBL_NEW_CONDITION' : 'Új feltétel'
 };

@@ -54,11 +54,11 @@ entityMethodScript(jQuery);
 
 <table border="0" cellpadding="5" cellspacing="0" width="100%" class="small">
 	<tr valign="top">
-		<td class='dvtCellLabel' align="right" width=15% nowrap="nowrap"><b>Method Name: </b></td>
+		<td class='dvtCellLabel' align="right" width=15% nowrap="nowrap"><b>{$MOD.LBL_METHOD_NAME}</b></td>
 		<td class='dvtCellInfo'>
 			<span id="method_name_select_busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
 			<select name="methodName" id="method_name_select" class="small" style="display: none;"></select>
-			<span id="message_text" style="display: none;">No method is available for this module.</sspan>
+			<span id="message_text" style="display: none;">{$MOD.NO_METHOD_AVAILABLE}</span>
 		</td>
 	</tr>
 </table> 
