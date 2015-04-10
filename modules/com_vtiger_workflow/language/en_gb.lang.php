@@ -58,8 +58,8 @@ $mod_strings = array(
 	'LBL_EMAIL_CC' => 'CC',
 	'LBL_EMAIL_BCC' => 'BCC',
 	'LBL_EMAIL_SUBJECT' => 'Subject',
-        'LBL_EMAIL_FROMNAME' => 'From Name',
-        'LBL_EMAIL_FROMEMAIL' => 'From Email',
+    'LBL_EMAIL_FROMNAME' => 'From Name',
+    'LBL_EMAIL_FROMEMAIL' => 'From Email',
 	'LBL_WORKFLOW_NOTE_EVENT_TASK_TIMEZONE' => 'Note: The date, time and recurring information configured for the event will be with respect to default time zone, configured in config.inc.php',
 	'Select Meta Variables' => 'Select Meta Variables',
 	'Current Date' => 'Current Date',
@@ -117,5 +117,7 @@ $mod_strings = array(
 	'Workflow for Events when Send Notification is True' => 'Workflow for Events when Send Notification is True',
 	'Workflow for Calendar Todos when Send Notification is True' => 'Workflow for Calendar Todos when Send Notification is True',
 	'Calculate or Update forecast amount' => 'Calculate or Update forecast amount',
+	'LBL_METHOD_NAME' => 'Method Name',
+	'NO_METHOD_AVAILABLE' => 'No method is available for this module.'
 );
 ?>

@@ -131,6 +131,8 @@ $mod_strings = array(
 	'Workflow for Events when Send Notification is True' => 'Workflow for Events when Send Notification is True',
 	'Workflow for Calendar Todos when Send Notification is True' => 'Workflow for Calendar Todos when Send Notification is True',
 	'Calculate or Update forecast amount' => 'Calculate or Update forecast amount',
+	'LBL_METHOD_NAME' => 'Method Name',
+	'NO_METHOD_AVAILABLE' => 'No method is available for this module.'
 );
 
 ?>
