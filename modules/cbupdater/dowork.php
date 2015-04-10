@@ -52,14 +52,14 @@ if (!empty($ids)) {
 			where deleted=0 and ';
 	if ($ids=='all') {
 		$sql .= "execstate in ('Pending','Continuous')";
-		$cbacc=$adb->getColumnNames('vtiger_cbupdater');
-		if (in_array('blocked', $cbacc)) {
-			$sql .= " and blocked != '1' ";
-		}
 	} else {
 		$ids = str_replace(';', ',', $ids);
 		$ids = trim($ids,',');
 		$sql .= " cbupdaterid in ($ids)";
+	}
+	$cbacc=$adb->getColumnNames('vtiger_cbupdater');
+	if (in_array('blocked', $cbacc)) {
+		$sql .= " and blocked != '1' ";
 	}
 	$rs = $adb->query($sql);
 	$totalops = $adb->num_rows($rs);
