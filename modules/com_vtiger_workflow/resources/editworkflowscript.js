@@ -530,7 +530,7 @@ function editworkflowscript($, conditions){
                                     <div id="save_condition_group_'+groupid+'" class="save_condition_group"> \
                                     </div> \
                                     <div> \
-                                        <input type="button" id="add_group_condition_'+groupid+'" value="New Condition" class="small edit" /> \
+                                        <input type="button" id="add_group_condition_'+groupid+'" value="'+alert_arr.LBL_NEW_CONDITION+'" class="small edit" /> \
                                     </div> \
                                 </div>'
 								);
