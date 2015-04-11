@@ -54,8 +54,9 @@ if ($task_status != "") {
 $Calendar4You = new Calendar4You();
 $Calendar4You->GetDefPermission($current_user->id);
 
-if ($record == "" && $save != "") $Calendar4You->SaveView($Type_Ids, $Users_Ids, $all_users, $Load_Event_Status, $Load_Task_Status);
-
+if ($record == "" && $save != "") {
+	$Calendar4You->SaveView($Type_Ids, $Users_Ids, $all_users, $Load_Event_Status, $Load_Task_Status);
+}
 $detailview_permissions = $Calendar4You->CheckPermissions("DETAIL");
 
 require('user_privileges/user_privileges_'.$current_user->id.'.php');
