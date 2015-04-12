@@ -115,6 +115,13 @@ $query = $queryGenerator->getQuery();
 echo "$query<br>";
 testquery($query);
 
+$queryGenerator = new QueryGenerator('SalesOrder', $current_user);
+$queryGenerator->setFields(array('id','subject'));
+$queryGenerator->addCondition('duedate', array(0=>'2006-01-01',1=>'2016-01-01'), 'bw',$queryGenerator::$AND);
+$query = $queryGenerator->getQuery();
+echo "$query<br>";
+testquery($query);
+
 echo "<h2>Query with related module condition</h2>";
 $queryGenerator = new QueryGenerator('Contacts', $current_user);
 $queryGenerator->setFields(array('id','cf_681','firstname'));
