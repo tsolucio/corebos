@@ -7,8 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-global $current_user,$mod_strings,$app_strings;
-global $theme;
+global $current_user,$mod_strings,$app_strings,$theme;
 
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
@@ -24,12 +23,12 @@ $c_mod_strings = return_module_language($current_language,'Calendar');
 $users_mod_strings = return_module_language($current_language,'Users');
 
 $save_google_sync = "0";
- $id = $_REQUEST["id"];
- 
+$id = $_REQUEST["id"];
+
 if ($id != "task") 
-    $google_sync_id = true;
+	$google_sync_id = true;
 else
-    $google_sync_id = false;
+	$google_sync_id = false;
 
 $mode = $_REQUEST["mode"];
 
@@ -39,7 +38,7 @@ $Calendar4You = new Calendar4You();
 
 $Calendar_Settings = $Calendar4You->getSettings();
 
-$Event_Colors = $Calendar4You->getEventColor($mode,$id); 
+$Event_Colors = $Calendar4You->getEventColor($mode,$id);
 ?>
 <table border=0 cellspacing=0 cellpadding=5 width="500px" class="layerHeadingULine">
 	<tr>
@@ -76,7 +75,7 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
 <input type="hidden" name="month" value="<?php echo vtlib_purify($_REQUEST['month']); ?>">
 <input type="hidden" name="year" value="<?php echo vtlib_purify($_REQUEST['year']); ?>">
 <input type="hidden" name="user_view_type" value="<?php echo $user_view_type; ?>">
-<input type="hidden" name="save_fields" value="<? if ($mode != "user" && $id != "invite") echo "1"; else echo "0"; ?>">
+<input type="hidden" name="save_fields" value="<?php if ($mode != "user" && $id != "invite") echo "1"; else echo "0"; ?>">
 <input type="hidden" name="mode" value="<?php echo $mode; ?>">
 <input type="hidden" name="id" value="<?php echo $id; ?>">
 <input type="hidden" name="parenttab" value="<?php echo vtlib_purify($_REQUEST['parenttab']); ?>">
@@ -90,7 +89,7 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
     <td>
     <table border="0" cellpadding="3" cellspacing="0" width="100%">
     <tbody><tr>
-    <? 
+    <?php 
     if ($mode != "user" && $id != "invite") { 
     ?>        
         <td class="dvtTabCache" style="width:10px" nowrap="">&nbsp;</td>
@@ -124,7 +123,7 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
     					<?php echo $mod_strings['LBL_COLOR_IN_CALENDAR_BACKGROUND'] ?>
     				</td>
                     <td class="small">	
-    					<input style="background-color:<? echo $Event_Colors["bg"]; ?>;" value="<? echo $Event_Colors["bg"]; ?>" id="event_color_bg" name="event_color_bg" size="10" onblur="this.style.backgroundColor=this.value;" type="text">
+    					<input style="background-color:<?php echo $Event_Colors["bg"]; ?>;" value="<?php echo $Event_Colors["bg"]; ?>" id="event_color_bg" name="event_color_bg" size="10" onblur="this.style.backgroundColor=this.value;" type="text">
     					<a href="javascript:C_TCP.popup(document.SettingForm.event_color_bg, 3)"><img alt="Click Here to Pick up the color" src="modules/Calendar4You/images/color_picker.gif" border="0" height="13" width="15"></a>
     				</td>
                </tr>
@@ -133,7 +132,7 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
     					<?php echo $mod_strings['LBL_COLOR_IN_CALENDAR_TEXT'] ?>:
     				</td>
                     <td class="small">	
-    					<input style="background-color:<? echo $Event_Colors["text"]; ?>;" value="<? echo $Event_Colors["text"]; ?>" id="event_color_text" name="event_color_text" size="10" onblur="this.style.backgroundColor=this.value;" type="text">
+    					<input style="background-color:<?php echo $Event_Colors["text"]; ?>;" value="<?php echo $Event_Colors["text"]; ?>" id="event_color_text" name="event_color_text" size="10" onblur="this.style.backgroundColor=this.value;" type="text">
     					<a href="javascript:C_TCP.popup(document.SettingForm.event_color_text, 3)"><img alt="Click Here to Pick up the color" src="modules/Calendar4You/images/color_picker.gif" border="0" height="13" width="15"></a>
     				</td>
     			</tr>
@@ -142,7 +141,7 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
         
         <!-- Displayed info -->
         <div id="TabEventInfoInCalendar" style="display: none; width: 100%;">
-        <? 
+        <?php 
             if ($mode != "user" && $id != "invite") { 
             
                 $Event_Fields = array();
@@ -199,7 +198,7 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
 				<td class="small" colspan="2">
 					<b><?php echo $mod_strings['LBL_DAY_EVENT_INFO']; ?>:</b>
                     <select name="day_showed_field" id="day_showed_field" class=small>
-                    <? echo createFieldsOptions($Fields_Array, $Showed_Field["day"]); ?>
+                    <?php echo createFieldsOptions($Fields_Array, $Showed_Field["day"]); ?>
                     </select>
 				</td>
            </tr>
@@ -216,7 +215,7 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
            <tr>     
                 <td class="small">
 					<select name="day_available_fields" id="day_available_fields" class=small size=5 multiple style="height:70px;width:100%">
-                    <? echo createFieldsOptions($Fields_Array); ?>
+                    <?php echo createFieldsOptions($Fields_Array); ?>
                     </select>
 				</td>
                 <td class="small">
@@ -225,7 +224,7 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
                 </td>
                 <td class="small">
                     <select name="selected_day_fields" id="selected_day_fields" class=small size=5 multiple style="height:70px;width:100%">
-                    <? echo createFieldsOptions($Event_Fields["day"]); ?>
+                    <?php echo createFieldsOptions($Event_Fields["day"]); ?>
                     </select>
                 </td> 
 			</tr>
@@ -236,7 +235,7 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
 				<td class="small" colspan="2">
 					<b><?php echo $mod_strings['LBL_WEEK_EVENT_INFO']; ?>:</b>
                     <select name="week_showed_field" id="day_showed_field" class=small>
-                    <? echo createFieldsOptions($Fields_Array,$Showed_Field["week"]); ?>
+                    <?php echo createFieldsOptions($Fields_Array,$Showed_Field["week"]); ?>
                     </select>
 				</td>
            </tr>
@@ -253,7 +252,7 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
            <tr>     
                 <td class="small">
 					<select name="week_available_fields" id="week_available_fields" class=small size=5 multiple style="height:70px;width:100%">
-                    <? echo createFieldsOptions($Fields_Array); ?>
+                    <?php echo createFieldsOptions($Fields_Array); ?>
                     </select>
 				</td>
                 <td class="small">
@@ -262,7 +261,7 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
                 </td>
                 <td class="small">
                     <select name="selected_week_fields" id="selected_week_fields" class=small size=5 multiple style="height:70px;width:100%">
-                    <? echo createFieldsOptions($Event_Fields["week"]); ?>
+                    <?php echo createFieldsOptions($Event_Fields["week"]); ?>
                     </select>
                 </td> 
 			</tr>
@@ -273,7 +272,7 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
 				<td class="small" colspan="2">
 					<b><?php echo $mod_strings['LBL_MONTH_EVENT_INFO']; ?>:</b>
                     <select name="month_showed_field" id="day_showed_field" class=small>
-                    <? echo createFieldsOptions($Fields_Array,$Showed_Field["month"]); ?>
+                    <?php echo createFieldsOptions($Fields_Array,$Showed_Field["month"]); ?>
                     </select>
 				</td>
            </tr>
@@ -290,7 +289,7 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
            <tr>     
                 <td class="small">
 					<select name="month_available_fields" id="month_available_fields" class=small size=5 multiple style="height:70px;width:100%">
-                    <? echo createFieldsOptions($Fields_Array); ?>
+                    <?php echo createFieldsOptions($Fields_Array); ?>
                     </select>
 				</td>
                 <td class="small">
@@ -299,7 +298,7 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
                 </td>
                 <td class="small">
                     <select name="selected_month_fields" id="selected_month_fields" class=small size=5 multiple style="height:70px;width:100%">
-                    <? echo createFieldsOptions($Event_Fields["month"]); ?>
+                    <?php echo createFieldsOptions($Event_Fields["month"]); ?>
                     </select>
                 </td> 
 			</tr>
@@ -307,7 +306,7 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
             <input type="hidden" id="day_selected_fields" name="day_selected_fields">
             <input type="hidden" id="week_selected_fields" name="week_selected_fields">
             <input type="hidden" id="month_selected_fields" name="month_selected_fields"> 
-            <? } ?>   
+            <?php } ?>   
         </div>
         
         <!-- Google Cal Sync info -->
@@ -368,7 +367,7 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
             }
         }
         ?>
-        </div>   
+        </div>
     </td>
 </tr>
 </tbody>
@@ -382,9 +381,9 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
 		</td>
 	</tr>
 	</table>
-<input type="hidden" name="savegooglesync" value="<?php echo $save_google_sync; ?>">    
+<input type="hidden" name="savegooglesync" value="<?php echo $save_google_sync; ?>">
 </form>
-<?
+<?php
 function createFieldsOptions($Fields_Array,$selected_field = "") {
     $c = "";
     
