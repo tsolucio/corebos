@@ -73,5 +73,6 @@ $mod_strings = Array (
 "LBL_GOOGLEURI"=>'Redirect URI',
 "LBL_CONNECT"=>"Authorize and Connect",
 "LBL_GOOGLEINS"=>"Insert from Google?",
+'LIST_MODULES' => 'List of Modules',
 );
 ?>

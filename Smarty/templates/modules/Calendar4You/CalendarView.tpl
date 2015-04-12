@@ -436,7 +436,6 @@ function hideITSEventInfo(){
                         <tbody>
                             <tr>
                                   <td width="200px" valign="top">
-                                    
                                     <table class="dvtContentSpace" border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tbody>
                                             <tr>
@@ -446,6 +445,23 @@ function hideITSEventInfo(){
                                                 <td style="padding:5px" class="ui-widget-content">
                                                   <div id="event_type_wrapper">
                                                     {foreach name=act_types2 item=typedata key=typeid from=$ACTIVITYTYPES}
+                                                    <table width="98%" id="event_type_{$typeid}" style="font-weight:bold;font-size:12px;{if $USER_VIEW_TYPE neq "all"}color:{$typedata.textColor};background-color:{$typedata.color};border: 2px solid {$typedata.title_color}{else}background-color:#ffffff;border: 2px solid #dedede{/if};margin:0px 3px 3px 3px;padding:1px;border-top-left-radius: 3px;border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px;" onMouseOver="showEventIcon('event_type_{$typeid}_icon')" onMouseOut="hideEventIcon('event_type_{$typeid}_icon')"><tr><td><input type="checkbox" id="calendar_event_{$typeid}" name="calendar_event_{$typeid}" onClick="changeCalendarEvents(this)" value="{$typeid}" {if $typedata.checked eq 'true'}checked="checked"{/if}>{$typedata.label}<td><td align="right"><a id="event_type_{$typeid}_icon" href="javascript:;" style="display:none" onClick="loadITSEventSettings(this,'type','{$typeid}')"><img src="themes/images/activate.gif" border="0"></a></td></tr></table>
+                                                    {/foreach}
+                                                  </div>
+                                                 </td>
+                                            </tr>
+                                        </tbody>
+                                    </table>
+                                    <br>
+                                    <table class="dvtContentSpace" border="0" cellpadding="0" cellspacing="0" width="100%">
+                                        <tbody>
+                                            <tr>
+                                                <td align="left" class="ui-widget-header"><div style="font-size:13px;padding:5px" class="ui-widget" onclick="jQuery('#module_type_wrapper').toggle();">{'LIST_MODULES'|@getTranslatedString:$MODULE}</div></td>
+                                            </tr>
+                                            <tr>
+                                                <td style="padding:5px" class="ui-widget-content">
+                                                  <div id="module_type_wrapper">
+                                                    {foreach name=act_types2 item=typedata key=typeid from=$MODULETYPES}
                                                     <table width="98%" id="event_type_{$typeid}" style="font-weight:bold;font-size:12px;{if $USER_VIEW_TYPE neq "all"}color:{$typedata.textColor};background-color:{$typedata.color};border: 2px solid {$typedata.title_color}{else}background-color:#ffffff;border: 2px solid #dedede{/if};margin:0px 3px 3px 3px;padding:1px;border-top-left-radius: 3px;border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px;" onMouseOver="showEventIcon('event_type_{$typeid}_icon')" onMouseOut="hideEventIcon('event_type_{$typeid}_icon')"><tr><td><input type="checkbox" id="calendar_event_{$typeid}" name="calendar_event_{$typeid}" onClick="changeCalendarEvents(this)" value="{$typeid}" {if $typedata.checked eq 'true'}checked="checked"{/if}>{$typedata.label}<td><td align="right"><a id="event_type_{$typeid}_icon" href="javascript:;" style="display:none" onClick="loadITSEventSettings(this,'type','{$typeid}')"><img src="themes/images/activate.gif" border="0"></a></td></tr></table>
                                                     {/foreach}
                                                   </div>

@@ -114,6 +114,7 @@ $Task_Colors_Palete = $colorHarmony->Monochromatic($Task_Colors["bg"]);
 
 if (!$load_ch || $Ch_Views["1"]["task"]) $task_checked = true; else $task_checked = false;
 
+$Activity_Types = $Module_Types = array();
 $Activity_Types["task"] = array(
 	"typename"=>"Tasks",
 	"label"=>$c_mod_strings["LBL_TASK"],
@@ -144,7 +145,7 @@ foreach ($ActTypes AS $act_id => $act_name) {
 	//  add modules
 	foreach ($tasklabel as $tbid => $mname){
 		$Modules_Colors = getEColors("type",$mname);
-		$Activity_Types[$mname] = array(
+		$Module_Types[$mname] = array(
 			"typename"=>$mname,
 			"act_type"=>"task",
 			"label"=>getTranslatedString($mname,$mname),
@@ -191,7 +192,7 @@ $mysel = convertFullCalendarView($default_view);
 
 $smarty->assign('DEFAULTVIEW', $default_view);
 $smarty->assign('ACTIVITYTYPES', $Activity_Types);
-
+$smarty->assign('MODULETYPES', $Module_Types);
 if (isset($_REQUEST["user_view_type"]) && $_REQUEST["user_view_type"] != "") {
 	$user_view_type = $_REQUEST["user_view_type"];
 } else {
