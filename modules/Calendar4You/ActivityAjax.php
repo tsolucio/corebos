@@ -9,7 +9,7 @@
  ********************************************************************************/
 global $theme,$mod_strings,$current_language,$adb,$currentModule,$current_user,$app_strings;
 $theme_path = "themes/".$theme."/";
-$image_path = $theme_path."images/";      
+$image_path = $theme_path."images/";
 
 require_once("modules/Calendar/calendarLayout.php");
 require_once("modules/Calendar4You/CalendarUtils.php");
@@ -25,41 +25,40 @@ $calendar_arr['IMAGE_PATH'] = $image_path;
 $date_data = array();
 
 if ( isset($_REQUEST['day'])) {
-	$date_data['day'] = $_REQUEST['day'];
+	$date_data['day'] = vtlib_purify($_REQUEST['day']);
 }
 if ( isset($_REQUEST['month'])) {
-	$date_data['month'] = $_REQUEST['month'];
+	$date_data['month'] = vtlib_purify($_REQUEST['month']);
 }
 if ( isset($_REQUEST['week'])) {
-	$date_data['week'] = $_REQUEST['week'];
+	$date_data['week'] = vtlib_purify($_REQUEST['week']);
 }
 if ( isset($_REQUEST['year'])) {
 	if ($_REQUEST['year'] > 2037 || $_REQUEST['year'] < 1970) {
 		print("<font color='red'>".$app_strings['LBL_CAL_LIMIT_MSG']."</font>");
 		exit;
 	}
-	$date_data['year'] = $_REQUEST['year'];
-}     
+	$date_data['year'] = vtlib_purify($_REQUEST['year']);
+}
 
 if((isset($_REQUEST['type']) && $_REQUEST['type'] !='') || (isset($_REQUEST['n_type']) && $_REQUEST['n_type'] !='')) {
-	if(isset($_REQUEST['type'])) $type = $_REQUEST['type'];  else $type = "";
-	if(isset($_REQUEST['n_type'])) $n_type = $_REQUEST['n_type']; else $n_type = "";
+	$type = (isset($_REQUEST['type']) ? vtlib_purify($_REQUEST['type']) : '');
+	$n_type = (isset($_REQUEST['n_type']) ? vtlib_purify($_REQUEST['n_type']) : '');
 
 	if($type == 'minical') {
-        $temp_module = $currentModule;
-    	$mod_strings = return_module_language($current_language,'Calendar');
-        $currentModule = 'Calendar';
+		$temp_module = $currentModule;
+		$mod_strings = return_module_language($current_language,'Calendar');
+		$currentModule = 'Calendar';
 		$calendar_arr['IMAGE_PATH'] = $image_path;
-        $calendar_arr['calendar'] = new Calendar('month',$date_data);
-    	$calendar_arr['view'] = 'month';
-        $calendar_arr['size'] = 'small';
-		if($current_user->hour_format != '')
-		    $calendar_arr['calendar']->hour_format=$current_user->hour_format;
-		    
-        get_its_mini_calendar($calendar_arr);
-        
-        $mod_strings = return_module_language($current_language,$temp_module);
-    	$currentModule = vtlib_purify($_REQUEST['module']);
+		$calendar_arr['calendar'] = new Calendar('month',$date_data);
+		$calendar_arr['view'] = 'month';
+		$calendar_arr['size'] = 'small';
+		if($current_user->hour_format != '') {
+			$calendar_arr['calendar']->hour_format=$current_user->hour_format;
+		}
+		get_its_mini_calendar($calendar_arr);
+		$mod_strings = return_module_language($current_language,$temp_module);
+		$currentModule = vtlib_purify($_REQUEST['module']);
 	} elseif($type == 'settings') {
 		require_once('modules/Calendar4You/calendar_share.php');
 	} elseif($type == 'event_settings') {
@@ -92,9 +91,9 @@ if((isset($_REQUEST['type']) && $_REQUEST['type'] !='') || (isset($_REQUEST['n_t
 		}
 
 		if($type == 'change_owner' || $type == 'activity_delete' || $type == 'change_status' || $type == 'activity_postpone' || $n_type == 'nav') {
-			if($current_user->hour_format != '')
-			        $calendar_arr['calendar']->hour_format=$current_user->hour_format;
-
+			if($current_user->hour_format != '') {
+				$calendar_arr['calendar']->hour_format=$current_user->hour_format;
+			}
 			if($type == 'change_status') {
 				$return_id = vtlib_purify($_REQUEST['record']);
 				if(isset($_REQUEST['status'])) {
@@ -119,8 +118,8 @@ if((isset($_REQUEST['type']) && $_REQUEST['type'] !='') || (isset($_REQUEST['n_t
 			}
 
 			if ($_REQUEST['viewOption'] == 'hourview' && ($mysel == 'day' || $mysel == 'week' || $mysel == 'month' || $mysel == 'year')) {
-                $calendar_arr['calendar']->add_Activities($current_user);
-        	}
+				$calendar_arr['calendar']->add_Activities($current_user);
+			}
 
 			if(isset($_REQUEST['viewOption']) && $_REQUEST['viewOption'] != null && $subtab == 'event') {
 				if($_REQUEST['viewOption'] == 'hourview') {
@@ -135,7 +134,7 @@ if((isset($_REQUEST['type']) && $_REQUEST['type'] !='') || (isset($_REQUEST['n_t
 					} else {
 						die("view:".$view['view']." is not defined");
 					}
-				} elseif($_REQUEST['viewOption'] == 'listview')	{
+				} elseif($_REQUEST['viewOption'] == 'listview') {
 					//To get Events List
 					$activity_arr = getEventList($calendar_arr, $start_date, $end_date);
 					$activity_list = $activity_arr[0];
@@ -146,7 +145,7 @@ if((isset($_REQUEST['type']) && $_REQUEST['type'] !='') || (isset($_REQUEST['n_t
 				//To get Todos List
 				$todo_arr = getTodoList($calendar_arr, $start_date, $end_date);
 				$todo_list = $todo_arr[0];
-                $navigation_arr = $todo_arr[1];
+				$navigation_arr = $todo_arr[1];
 				echo constructTodoListView($todo_list,$calendar_arr,$subtab,$navigation_arr)."####".getTodoInfo($calendar_arr,'listcnt');
 			}
 		} elseif($type == 'view') {
@@ -159,5 +158,4 @@ if((isset($_REQUEST['type']) && $_REQUEST['type'] !='') || (isset($_REQUEST['n_t
 } else {
 	require_once('include/Ajax/CommonAjax.php');
 }
-
-?>    
+?>
