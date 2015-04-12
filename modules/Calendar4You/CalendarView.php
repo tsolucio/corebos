@@ -6,7 +6,6 @@
  * Portions created by IT-Solutions4You s.r.o. are Copyright(C) IT-Solutions4You s.r.o.
  * All Rights Reserved.
  ********************************************************************************/
-
 include_once("modules/Calendar4You/CalendarUtils.php"); 
 include_once("modules/Calendar4You/Calendar4You.php");
 require_once("modules/Calendar/Calendar.php");
@@ -35,7 +34,6 @@ if (count($Ch_Views) > 0) $load_ch = true; else $load_ch = false;
 $Calendar_Settings = $Calendar4You->getSettings();
 $smarty->assign('CALENDAR_SETTINGS', $Calendar_Settings);
 
-
 $c_mod_strings = return_specified_module_language($current_language, "Calendar");
 $smarty->assign('CMOD', $c_mod_strings);
 
@@ -51,17 +49,17 @@ $smarty->assign('MODE', $focus->mode);
 $viewBox = 'hourview'; 
 
 if($Calendar4You->CheckPermissions("EDIT")) {
-    $smarty->assign('EDIT', 'permitted');
-    $hour_startat = timeString(array('hour' => date('H:i', (time() + (5 * 60))), 'minute' => 0), '24');
+	$smarty->assign('EDIT', 'permitted');
+	$hour_startat = timeString(array('hour' => date('H:i', (time() + (5 * 60))), 'minute' => 0), '24');
 	$hour_endat = timeString(array('hour'=>date('H:i',(time() + (60 * 60))),'minute'=>0),'24');
 	$time_arr = getaddITSEventPopupTime($hour_startat,$hour_endat,$Calendar_Settings["hour_format"]);
-    
-    $date = new DateTimeField(null);
-	
+
+	$date = new DateTimeField(null);
+
 	//To get date in user selected format
 	$temp_date = $date->getDisplayDate();
-    
-    if($current_user->column_fields['is_admin']=='on')
+
+	if($current_user->column_fields['is_admin']=='on')
 		$Res = $adb->pquery("select * from vtiger_activitytype",array());
 	else {
 		$roleid=$current_user->roleid;
@@ -79,29 +77,28 @@ if($Calendar4You->CheckPermissions("EDIT")) {
 			$Res=$adb->pquery("select distinct activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where roleid = ? and picklistid in (select picklistid from vtiger_activitytype) order by sortid asc", array($roleid));
 		}
 	}
-	
+
 	$eventlist=''; 
-    $eventlists_array='';
+	$eventlists_array='';
 	for($i=0; $i<$adb->num_rows($Res);$i++) {
-        $actname = $adb->query_result($Res,$i,'activitytype');
-        $eventlist .= html_entity_decode($actname,ENT_QUOTES,$default_charset).";";
-        $eventlists_array .= '"'.html_entity_decode(html_entity_decode($actname,ENT_QUOTES,$default_charset),ENT_QUOTES, $default_charset).'",';
+		$actname = $adb->query_result($Res,$i,'activitytype');
+		$eventlist .= html_entity_decode($actname,ENT_QUOTES,$default_charset).";";
+		$eventlists_array .= '"'.html_entity_decode(html_entity_decode($actname,ENT_QUOTES,$default_charset),ENT_QUOTES, $default_charset).'",';
 	}
-    
-    $add_javascript = "onMouseOver='fnAddITSEvent(this,\"addEventDropDown\",\"".$temp_date."\",\"".$temp_date."\",\"".$time_arr['starthour']."\",\"".$time_arr['startmin']."\",\"".$time_arr['startfmt']."\",\"".$time_arr['endhour']."\",\"".$time_arr['endmin']."\",\"".$time_arr['endfmt']."\",\"".$viewBox."\",\"".$subtab."\",\"".$eventlist."\");'";
-    $smarty->assign('ADD_ONMOUSEOVER', $add_javascript);
-    
-    $smarty->assign('EVENTLIST', trim($eventlists_array,","));
+
+	$add_javascript = "onMouseOver='fnAddITSEvent(this,\"addEventDropDown\",\"".$temp_date."\",\"".$temp_date."\",\"".$time_arr['starthour']."\",\"".$time_arr['startmin']."\",\"".$time_arr['startfmt']."\",\"".$time_arr['endhour']."\",\"".$time_arr['endmin']."\",\"".$time_arr['endfmt']."\",\"".$viewBox."\",\"".$subtab."\",\"".$eventlist."\");'";
+	$smarty->assign('ADD_ONMOUSEOVER', $add_javascript);
+
+	$smarty->assign('EVENTLIST', trim($eventlists_array,","));
 }
 
- //Sunday=0, Monday=1, Tuesday=2, etc.
+//Sunday=0, Monday=1, Tuesday=2, etc.
 $smarty->assign('FISRTDAY', $Calendar_Settings["number_dayoftheweek"]);
 
 if ($Calendar_Settings["hour_format"] == "24")
-    $is_24 = true;
+	$is_24 = true;
 else
-    $is_24 = false;
-
+	$is_24 = false;
 
 $smarty->assign('IS_24', $is_24);
 
@@ -117,29 +114,33 @@ $Task_Colors_Palete = $colorHarmony->Monochromatic($Task_Colors["bg"]);
 
 if (!$load_ch || $Ch_Views["1"]["task"]) $task_checked = true; else $task_checked = false;
 
-$Activity_Types["task"] = array("typename"=>"Tasks",
-                                "label"=>$c_mod_strings["LBL_TASK"],
-                                "act_type"=>"task",
-                                "title_color"=>$Task_Colors_Palete[0],
-                                "color"=>$Task_Colors_Palete[1],
-                                "textColor"=>$Task_Colors["text"],
-                                "checked"=>$task_checked);
+$Activity_Types["task"] = array(
+	"typename"=>"Tasks",
+	"label"=>$c_mod_strings["LBL_TASK"],
+	"act_type"=>"task",
+	"title_color"=>$Task_Colors_Palete[0],
+	"color"=>$Task_Colors_Palete[1],
+	"textColor"=>$Task_Colors["text"],
+	"checked"=>$task_checked
+);
 
-$ActTypes = getActTypesForCalendar();   
+$ActTypes = getActTypesForCalendar();
 
 foreach ($ActTypes AS $act_id => $act_name) {
-    if (!$load_ch || $Ch_Views["1"][$act_id]) $event_checked = true; else $event_checked = false;
-    
-    $Colors = getEColors("type",$act_id);   
-    $Colors_Palete = $colorHarmony->Monochromatic($Colors["bg"]);
-    
-    $Activity_Types[$act_id] = array("typename"=>html_entity_decode($act_name,ENT_QUOTES,$default_charset),
-                                     "label"=>getTranslatedString(html_entity_decode($act_name,ENT_QUOTES,$default_charset),'Calendar'),
-                                     "act_type"=>"event",
-                                     "title_color"=>$Colors_Palete[0],
-                                     "color"=>$Colors_Palete[1],
-                                     "textColor"=>$Colors["text"],
-                                     "checked"=>$event_checked);
+	if (!$load_ch || $Ch_Views["1"][$act_id]) $event_checked = true; else $event_checked = false;
+
+	$Colors = getEColors("type",$act_id);   
+	$Colors_Palete = $colorHarmony->Monochromatic($Colors["bg"]);
+
+	$Activity_Types[$act_id] = array(
+		"typename"=>html_entity_decode($act_name,ENT_QUOTES,$default_charset),
+		"label"=>getTranslatedString(html_entity_decode($act_name,ENT_QUOTES,$default_charset),'Calendar'),
+		"act_type"=>"event",
+		"title_color"=>$Colors_Palete[0],
+		"color"=>$Colors_Palete[1],
+		"textColor"=>$Colors["text"],
+		"checked"=>$event_checked
+	);
 	//  add modules
 	foreach ($tasklabel as $tbid => $mname){
 		$Modules_Colors = getEColors("type",$mname);
@@ -162,63 +163,63 @@ $Invite_Colors_Palette = $colorHarmony->Monochromatic($Invite_Colors["bg"]);
 
 if (!$load_ch || $Ch_Views["1"]["invite"]) $invite_checked = true; else $invite_checked = false;
 
-$Activity_Types["invite"] = array("typename"=>"Invite",
-                           "act_type"=>"event",
-                           "label"=>$mod_strings["LBL_INVITE"],
-                           "title_color"=>$Invite_Colors_Palette[0],
-                           "color"=>$Invite_Colors_Palette[1],
-                           "textColor"=>$Invite_Colors["text"],
-                           "checked"=>$invite_checked);
+$Activity_Types["invite"] = array(
+	"typename"=>"Invite",
+	"act_type"=>"event",
+	"label"=>$mod_strings["LBL_INVITE"],
+	"title_color"=>$Invite_Colors_Palette[0],
+	"color"=>$Invite_Colors_Palette[1],
+	"textColor"=>$Invite_Colors["text"],
+	"checked"=>$invite_checked
+);
 
 if (isset($_REQUEST["viewOption"]) && $_REQUEST["viewOption"]!= "") {
-    $default_view = $_REQUEST["viewOption"];
+	$default_view = $_REQUEST["viewOption"];
 } else {
-    if($current_user->activity_view == "This Year"){
-    	$default_view = 'month';
-    }else if($current_user->activity_view == "This Month"){
-    	$default_view = 'month';
-    }else if($current_user->activity_view == "This Week"){
-    	$default_view = 'agendaWeek';
-    }else{
-    	$default_view = 'agendaDay';
-    }    
+	if($current_user->activity_view == "This Year"){
+		$default_view = 'month';
+	}else if($current_user->activity_view == "This Month"){
+		$default_view = 'month';
+	}else if($current_user->activity_view == "This Week"){
+		$default_view = 'agendaWeek';
+	}else{
+		$default_view = 'agendaDay';
+	}
 }
 
 $mysel = convertFullCalendarView($default_view);
 
 $smarty->assign('DEFAULTVIEW', $default_view);
-                                                 
 $smarty->assign('ACTIVITYTYPES', $Activity_Types);
 
 if (isset($_REQUEST["user_view_type"]) && $_REQUEST["user_view_type"] != "") {
-    $user_view_type = $_REQUEST["user_view_type"];
+	$user_view_type = $_REQUEST["user_view_type"];
 } else {
-    if ($Calendar_Settings["user_view"]== "all")
-        $user_view_type = "all";
-    else
-        $user_view_type = $current_user->id;
+	if ($Calendar_Settings["user_view"]== "all") {
+		$user_view_type = "all";
+	} else {
+		$user_view_type = $current_user->id;
+	}
 }
 
 if (strtolower(trim($user_view_type)) == "me") $user_view_type = $current_user->id;
 
 if ($user_view_type == $current_user->id) {
-    $smarty->assign('SHOW_ONLY_ME', 'true'); 
+	$smarty->assign('SHOW_ONLY_ME', 'true'); 
 }
 
-$smarty->assign('USER_VIEW_TYPE', $user_view_type); 
+$smarty->assign('USER_VIEW_TYPE', $user_view_type);
 
 $Users = $Calendar4You->GetCalendarUsersData();
 
 $smarty->assign('CALENDAR_USERS', $Users);
-
 $smarty->assign('CURRENT_USER_ID', $current_user->id);
-
 
 if(isset($tool_buttons)==false) {
 	$tool_buttons = Button_Check($currentModule);
 }
 
-$smarty->assign('CHECK', $tool_buttons);      
+$smarty->assign('CHECK', $tool_buttons);
 
 $calendar_arr = Array();
 $calendar_arr['IMAGE_PATH'] = $image_path;
@@ -242,7 +243,7 @@ if (isset($_REQUEST['day']) && is_numeric(vtlib_purify($_REQUEST['day']))) {
 }
 if (isset($_REQUEST['month']) && is_numeric(vtlib_purify($_REQUEST['month']))) {
 	$date_data['month'] = vtlib_purify($_REQUEST['month']);
-    $date_data['fc_month'] = vtlib_purify($_REQUEST['month']) - 1;
+	$date_data['fc_month'] = vtlib_purify($_REQUEST['month']) - 1;
 }
 if (isset($_REQUEST['week']) && is_numeric(vtlib_purify($_REQUEST['week']))) {
 	$date_data['week'] = vtlib_purify($_REQUEST['week']);
@@ -255,7 +256,6 @@ if (isset($_REQUEST['year']) && is_numeric(vtlib_purify($_REQUEST['year']))) {
 	$date_data['year'] = vtlib_purify($_REQUEST['year']);
 }
 
-
 if(empty($date_data)) {
 	$dateTimeField = new DateTimeField('');
 	$dateValue = $dateTimeField->getDisplayDate();
@@ -266,46 +266,41 @@ if(empty($date_data)) {
 	$date_data = Array(
 		'day'=>$dateValueArray[2],
 		'month'=>$dateValueArray[1],
-        'fc_month'=>$dateValueArray[1] - 1,
+		'fc_month'=>$dateValueArray[1] - 1,
 		'year'=>$dateValueArray[0],
 		'hour'=>$timeValueArray[0],
 		'min'=>$timeValueArray[1],
-	);	
+	);
 }
-$smarty->assign('DATE_DATA', $date_data);  
+$smarty->assign('DATE_DATA', $date_data);
 
 $calendar_arr['calendar'] = new Calendar($mysel,$date_data);
 
 $add_to_url = "view=".$calendar_arr['calendar']->view."".$calendar_arr['calendar']->date_time->get_date_str()."&parenttab=".$category;
 
-$smarty->assign('CALENDAR_TO_URL', $add_to_url);  
+$smarty->assign('CALENDAR_TO_URL', $add_to_url);
 
 if(getFieldVisibilityPermission('Events',$current_user->id,'eventstatus', 'readwrite') == '0') {
-    $Events_Status = $Calendar4You->getActStatusFieldValues('eventstatus','vtiger_eventstatus');
-} 
+	$Events_Status = $Calendar4You->getActStatusFieldValues('eventstatus','vtiger_eventstatus');
+}
 $smarty->assign('EVENT_STATUS', $Events_Status);
 
-if(getFieldVisibilityPermission('Calendar',$current_user->id,'taskstatus', 'readwrite') == '0') { 
-    $Task_Status = $Calendar4You->getActStatusFieldValues('taskstatus','vtiger_taskstatus'); 
-} 
+if(getFieldVisibilityPermission('Calendar',$current_user->id,'taskstatus', 'readwrite') == '0') {
+	$Task_Status = $Calendar4You->getActStatusFieldValues('taskstatus','vtiger_taskstatus'); 
+}
 $smarty->assign('TASK_STATUS', $Task_Status);
-    
-    
-if(getFieldVisibilityPermission('Calendar',$current_user->id,'taskpriority', 'readwrite') == '0') { 
-    $Task_Status = $Calendar4You->getActStatusFieldValues('taskpriority','vtiger_taskpriority'); 
-} 
-$smarty->assign('TASK_PRIORITY', $Task_Status);    
 
-    
+if(getFieldVisibilityPermission('Calendar',$current_user->id,'taskpriority', 'readwrite') == '0') {
+	$Task_Status = $Calendar4You->getActStatusFieldValues('taskpriority','vtiger_taskpriority');
+}
+$smarty->assign('TASK_PRIORITY', $Task_Status);
+
 $dat_fmt = $current_user->date_format;
 if ($dat_fmt == '') {
 	$dat_fmt = 'dd-mm-yyyy';
-}    
-$dat_fmt = str_replace("mm","MM",$dat_fmt);    
-    
-$smarty->assign('USER_DATE_FORMAT', $dat_fmt);    
+}
+$dat_fmt = str_replace("mm","MM",$dat_fmt);
+$smarty->assign('USER_DATE_FORMAT', $dat_fmt);
 
-                            
 $smarty->display('modules/Calendar4You/CalendarView.tpl');
-
 include_once 'modules/Calendar4You/addEventUI.php';
