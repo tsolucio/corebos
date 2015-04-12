@@ -31,19 +31,30 @@ Events_color['user_{$userid}_title_color'] = '{$userdata.title_color}';
 
 {foreach name=act_types item=typedata key=typeid from=$ACTIVITYTYPES}
 Events_color['{$typeid}_textColor'] = '{$typedata.textColor}';
-Events_color['{$typeid}_color'] = '{$typedata.color}'; 
+Events_color['{$typeid}_color'] = '{$typedata.color}';
 Events_color['{$typeid}_title_color'] = '{$typedata.title_color}';
-{/foreach}     
+{/foreach}
+{foreach name=act_types item=typedata key=typeid from=$MODULETYPES}
+Events_color['{$typeid}_textColor'] = '{$typedata.textColor}';
+Events_color['{$typeid}_color'] = '{$typedata.color}';
+Events_color['{$typeid}_title_color'] = '{$typedata.title_color}';
+{/foreach}
 
 Calendar_Event_Types = {literal}{
         events: function(start, end, callback){
-                 
+
                  var loggeduser = jQuery('#logged_user').val();
-                 
+
                  var user_view_type = jQuery('#user_view_type :selected').val();
                  typeids_val = '';
                  {/literal}
                  {foreach name=act_types item=typedata key=typeid from=$ACTIVITYTYPES}
+                     if(jQuery('#calendar_event_{$typeid}').is(':checked')) {ldelim}
+                          if (typeids_val != "") typeids_val += ",";
+                          typeids_val += '{$typeid}';
+                     {rdelim}
+                 {/foreach}
+                 {foreach name=act_types item=typedata key=typeid from=$MODULETYPES}
                      if(jQuery('#calendar_event_{$typeid}').is(':checked')) {ldelim}
                           if (typeids_val != "") typeids_val += ",";
                           typeids_val += '{$typeid}';
@@ -58,7 +69,7 @@ Calendar_Event_Types = {literal}{
                            usersids += '{$userid}';
                         {rdelim} 
                      {/foreach}
-                     
+
                      if (usersids == "") usersids = '0';
                  {rdelim}
                  
@@ -462,7 +473,7 @@ function hideITSEventInfo(){
                                                 <td style="padding:5px" class="ui-widget-content">
                                                   <div id="module_type_wrapper">
                                                     {foreach name=act_types2 item=typedata key=typeid from=$MODULETYPES}
-                                                    <table width="98%" id="event_type_{$typeid}" style="font-weight:bold;font-size:12px;{if $USER_VIEW_TYPE neq "all"}color:{$typedata.textColor};background-color:{$typedata.color};border: 2px solid {$typedata.title_color}{else}background-color:#ffffff;border: 2px solid #dedede{/if};margin:0px 3px 3px 3px;padding:1px;border-top-left-radius: 3px;border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px;" onMouseOver="showEventIcon('event_type_{$typeid}_icon')" onMouseOut="hideEventIcon('event_type_{$typeid}_icon')"><tr><td><input type="checkbox" id="calendar_event_{$typeid}" name="calendar_event_{$typeid}" onClick="changeCalendarEvents(this)" value="{$typeid}" {if $typedata.checked eq 'true'}checked="checked"{/if}>{$typedata.label}<td><td align="right"><a id="event_type_{$typeid}_icon" href="javascript:;" style="display:none" onClick="loadITSEventSettings(this,'type','{$typeid}')"><img src="themes/images/activate.gif" border="0"></a></td></tr></table>
+                                                    <table width="98%" id="event_type_{$typeid}" style="font-weight:bold;font-size:12px;{if $USER_VIEW_TYPE neq "all"}color:{$typedata.textColor};background-color:{$typedata.color};border: 2px solid {$typedata.title_color}{else}background-color:#ffffff;border: 2px solid #dedede{/if};margin:0px 3px 3px 3px;padding:1px;border-top-left-radius: 3px;border-bottom-left-radius: 3px; border-top-right-radius: 3px; border-bottom-right-radius: 3px;"><tr><td><input type="checkbox" id="calendar_event_{$typeid}" name="calendar_event_{$typeid}" onClick="changeCalendarEvents(this)" value="{$typeid}" {if $typedata.checked eq 'true'}checked="checked"{/if}>{$typedata.label}<td><td align="right"><a id="event_type_{$typeid}_icon" href="javascript:;" style="display:none" onClick="loadITSEventSettings(this,'type','{$typeid}')"><img src="themes/images/activate.gif" border="0"></a></td></tr></table>
                                                     {/foreach}
                                                   </div>
                                                  </td>
@@ -563,9 +574,19 @@ function changeCalendarUserView(type) {ldelim}
 			jQuery('#event_type_{$typeid}').css('background-color', '#ffffff');
 			jQuery('#event_type_{$typeid}').css('border', '2px solid #dedede');
 		{/foreach}
+		{foreach name=act_types2 item=typedata key=typeid from=$MODULETYPES}
+			jQuery('#event_type_{$typeid}').css('color', '#000000');
+			jQuery('#event_type_{$typeid}').css('background-color', '#ffffff');
+			jQuery('#event_type_{$typeid}').css('border', '2px solid #dedede');
+		{/foreach}
 		jQuery('#users_list').css('display', 'block');
 	{rdelim} else {ldelim}
 		{foreach name=act_types2 item=typedata key=typeid from=$ACTIVITYTYPES}
+			jQuery('#event_type_{$typeid}').css('color', '{$typedata.textColor}');
+			jQuery('#event_type_{$typeid}').css('background-color', '{$typedata.color}');
+			jQuery('#event_type_{$typeid}').css('border', '2px solid {$typedata.title_color}');
+		{/foreach}
+		{foreach name=act_types2 item=typedata key=typeid from=$MODULETYPES}
 			jQuery('#event_type_{$typeid}').css('color', '{$typedata.textColor}');
 			jQuery('#event_type_{$typeid}').css('background-color', '{$typedata.color}');
 			jQuery('#event_type_{$typeid}').css('border', '2px solid {$typedata.title_color}');
