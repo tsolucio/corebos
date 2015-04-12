@@ -19,7 +19,7 @@ require_once("modules/Calendar4You/Calendar4You.php");
 require_once("modules/Calendar4You/CalendarUtils.php");
 require_once('include/QueryGenerator/QueryGenerator.php');
 
-$typeids = $_REQUEST["typeids"];
+$typeids = vtlib_purify($_REQUEST["typeids"]);
 $Type_Ids = explode(",",$typeids);
 
 $user_view_type = $_REQUEST["user_view_type"];
@@ -54,7 +54,7 @@ $Calendar4You = new Calendar4You();
 $Calendar4You->GetDefPermission($current_user->id);
 
 if ($record == "" && $save != "") {
-	$Calendar4You->SaveView($Type_Ids, $Users_Ids, $all_users, $Load_Event_Status, $Load_Task_Status);
+	$Calendar4You->SaveView($Type_Ids, $Users_Ids, $all_users, $Load_Event_Status, $Load_Task_Status, array());
 }
 $detailview_permissions = $Calendar4You->CheckPermissions("DETAIL");
 
