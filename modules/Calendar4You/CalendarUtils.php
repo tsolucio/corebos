@@ -537,4 +537,116 @@ function getAssignedContactsForEvent($actid) {
 	}
 	return $contacts;
 }
+
+function getAllModulesWithDateFields() {
+	global $adb,$log;
+	$rsmwd = $adb->query('SELECT distinct cbfld.tabid,vtiger_tab.name
+		FROM vtiger_field as cbfld
+		INNER JOIN vtiger_tab on cbfld.tabid = vtiger_tab.tabid
+		WHERE vtiger_tab.presence=0 and vtiger_tab.isentitytype=1 and uitype=5 and
+			not exists (select 1 from vtiger_field where vtiger_field.tabid = cbfld.tabid and uitype=14)');
+	$modswithdates = array();
+	while ($mod = $adb->fetch_array($rsmwd)) {
+		$modswithdates[$mod['tabid']] = $mod['name'];
+	}
+	return $modswithdates;
+}
+
+function getAllModulesWithDateTimeFields() {
+	global $adb,$log;
+	$rsmwd = $adb->query('SELECT distinct cbfld.tabid,vtiger_tab.name
+		FROM vtiger_field as cbfld
+		INNER JOIN vtiger_tab on cbfld.tabid = vtiger_tab.tabid
+		WHERE vtiger_tab.presence=0 and vtiger_tab.isentitytype=1 and uitype=14 and
+			exists (select 1 from vtiger_field where vtiger_field.tabid = cbfld.tabid and uitype=5)');
+	$modswithdt = array();
+	while ($mod = $adb->fetch_array($rsmwd)) {
+		$modswithdt[$mod['tabid']] = $mod['name'];
+	}
+	return $modswithdt;
+}
+
+function getDateFieldsOfModule($tabid) {
+	global $adb,$log;
+	$rsmwd = $adb->query("SELECT distinct fieldname
+		FROM vtiger_field as cbfld
+		WHERE tabid = $tabid and uitype=5 and not exists (select 1 from vtiger_field
+			where vtiger_field.tabid = cbfld.tabid and uitype=14)");
+	$datefields = array();
+	while ($fld = $adb->fetch_array($rsmwd)) {
+		$datefields[] = $fld['fieldname'];
+	}
+	return $datefields;
+}
+
+function getDateAndTimeFieldsOfModule($tabid) {
+	global $adb,$log;
+	$rsmwd = $adb->query("SELECT distinct fieldname
+		FROM vtiger_field as cbfld
+		WHERE tabid = $tabid and (uitype=14 or uitype=5)");
+	$datefields = array();
+	while ($fld = $adb->fetch_array($rsmwd)) {
+		$datefields[] = $fld['fieldname'];
+	}
+	return $datefields;
+}
+
+function getModuleCalendarFields($module) {
+	$Module_StartEnd_Fields = array(
+		'Project' => array('start'=>'startdate','end'=>'targetenddate','subject'=>'progress,projecttype'),
+		'ProjectTask' => array('start'=>'startdate','end'=>'enddate','subject'=>'Project.projectname,projecttaskname,projecttaskprogress'),
+		'SalesOrder' => array('start'=>'duedate','end'=>'duedate'),
+	);
+	return (isset($Module_StartEnd_Fields[$module]) ? $Module_StartEnd_Fields[$module] : array());
+}
+
+function getModuleStatusFields($module) {
+	$Module_Status_Fields = array(
+		'Project' => array(
+			'Planned' => array(
+				array(
+					'field'=>'projectstatus',
+					'value'=>'completed',
+					'operator'=>'n',
+					'join'=>''
+				),
+				array(
+					'field'=>'projectstatus',
+					'value'=>'delivered',
+					'operator'=>'n',
+					'join'=>'AND'
+				),
+				array(
+					'field'=>'projectstatus',
+					'value'=>'in progress',
+					'operator'=>'n',
+					'join'=>'AND'
+				),
+			),
+			'Held' => array(
+				array(
+					'field'=>'projectstatus',
+					'value'=>'completed',
+					'operator'=>'e',
+					'join'=>''
+				),
+				array(
+					'field'=>'projectstatus',
+					'value'=>'delivered',
+					'operator'=>'e',
+					'join'=>'OR'
+				)
+			),
+			'Not Held' => array(
+				array(
+					'field'=>'projectstatus',
+					'value'=>'in progress',
+					'operator'=>'e',
+					'join'=>'AND'
+				),
+			)
+		)
+	);
+	return (isset($Module_Status_Fields[$module]) ? $Module_Status_Fields[$module] : array());
+}
 ?> 

@@ -13,6 +13,8 @@ require_once("modules/Calendar/Calendar.php");
 
 global $app_strings, $mod_strings, $current_language, $currentModule, $theme, $current_user, $default_charset;
 require_once('Smarty_setup.php');
+$tasklabel = getAllModulesWithDateFields();
+uasort($tasklabel, function($a,$b) {return (strtolower(getTranslatedString($a,$a)) < strtolower(getTranslatedString($b,$b))) ? -1 : 1;});
 
 $category = getParentTab($currentModule);
 
@@ -111,7 +113,7 @@ $colorHarmony = new colorHarmony();
 
 $Task_Colors = getEColors("type","task");
 
-$Task_Colors_Palete = $colorHarmony->Monochromatic($Task_Colors["bg"]);     
+$Task_Colors_Palete = $colorHarmony->Monochromatic($Task_Colors["bg"]);
 
 if (!$load_ch || $Ch_Views["1"]["task"]) $task_checked = true; else $task_checked = false;
 
@@ -138,10 +140,22 @@ foreach ($ActTypes AS $act_id => $act_name) {
                                      "color"=>$Colors_Palete[1],
                                      "textColor"=>$Colors["text"],
                                      "checked"=>$event_checked);
-                                       
-    unset($Colors);
-    unset($Colors_Palete);                                   
-}  
+	//  add modules
+	foreach ($tasklabel as $tbid => $mname){
+		$Modules_Colors = getEColors("type",$mname);
+		$Activity_Types[$mname] = array(
+			"typename"=>$mname,
+			"act_type"=>"task",
+			"label"=>getTranslatedString($mname,$mname),
+			"title_color"=>$Modules_Colors['text'],
+			"color"=>$Modules_Colors['bg'],
+			"textColor"=>$Modules_Colors["text"],
+			"checked"=>$invite_checked
+		);
+	}
+	unset($Colors);
+	unset($Colors_Palete);
+}
 
 $Invite_Colors = getEColors("type","invite");
 $Invite_Colors_Palette = $colorHarmony->Monochromatic($Invite_Colors["bg"]);

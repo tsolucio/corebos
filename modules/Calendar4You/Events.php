@@ -40,13 +40,13 @@ if ($_REQUEST["usersids"] != "") {
 }
 
 $Load_Event_Status = array();
-$event_status = $_REQUEST["event_status"];
+$event_status = vtlib_purify($_REQUEST["event_status"]);
 if ($event_status != "") { 
     $Load_Event_Status = explode(",",$event_status);
 }
 
 $Load_Task_Status = array();
-$task_status = $_REQUEST["task_status"];
+$task_status = vtlib_purify($_REQUEST["task_status"]);
 if ($task_status != "") {
     $Load_Task_Status = explode(",",$task_status);
 }
@@ -110,6 +110,9 @@ if (isset($_REQUEST["end"]) && $_REQUEST["end"] != "") $end_time = $_REQUEST["en
 $start_date = date("Y-m-d",$start_time);
 $end_date = date("Y-m-d",$end_time);
 
+$tasklabel = getAllModulesWithDateFields();
+uasort($tasklabel, function($a,$b) {return (strtolower(getTranslatedString($a,$a)) < strtolower(getTranslatedString($b,$b))) ? -1 : 1;});
+
 $Event_Status = array();
 if (count($Load_Event_Status) > 0) {
     foreach ($Load_Event_Status AS $sid) {
@@ -133,7 +136,7 @@ if (count($Load_Task_Status) > 0) {
         array_push($Task_Status, $taskstatus);
     }
 }
-
+$modtab = array_flip($tasklabel);
 foreach($Users_Ids AS $userid) {
     foreach($Type_Ids AS $activitytypeid) {
         $allDay = true;
@@ -152,66 +155,109 @@ foreach($Users_Ids AS $userid) {
         } else {
             $activitytype = $activitytypeid;
         }
-        $list_query = getCalendar4YouListQuery($userid, $invites);
-        
-        if ($record != "") {
-            $list_query .= " AND vtiger_crmentity.crmid = '".$record."'";
-        } else {
-            $list_query .= " AND vtiger_activity.date_start <= '".$end_date."'";
-            $list_query .= " AND vtiger_activity.due_date >= '".$start_date."'";
-        }
-        
-        if (!$invites) {
-            $list_query .= " AND vtiger_crmentity.smownerid = ?";
-            $list_query .= " AND vtiger_activity.activitytype = ?";
-            $list_array = array($userid,$activitytype);
-        }
-        
-        if (count($Event_Status) > 0) {
-            $list_query .= " AND (vtiger_activity.eventstatus NOT IN (" . generateQuestionMarks($Event_Status) . ") OR vtiger_activity.eventstatus IS NULL)";
-		    $list_array = array_merge($list_array, $Event_Status);
-        }
-        
-        if (count($Task_Status) > 0) {
-            $list_query .= " AND (vtiger_activity.status NOT IN (" . generateQuestionMarks($Task_Status) . ") OR vtiger_activity.status IS NULL)";
-		    $list_array = array_merge($list_array, $Task_Status);
-        }
-        
-        $list_result = $adb->pquery($list_query, $list_array);
-        
-        while($row = $adb->fetchByAssoc($list_result)) {
+		if (in_array($activitytypeid,$tasklabel)) {
+			require_once('modules/'.$activitytypeid.'/'.$activitytypeid.'.php');
+			require_once('include/QueryGenerator/QueryGenerator.php');
+			$Module_Status_Fields = getModuleStatusFields($activitytypeid);
+			$modact =new $activitytypeid;
+			$subject = $modact->list_link_field;
+			$tablename = $modact->table_name;
+			$queryGenerator = new QueryGenerator($activitytypeid, $current_user);
+			$stfields = getModuleCalendarFields($activitytypeid);
+			$queryFields = array('id',$subject,$stfields['start'],'assigned_user_id'); // we force the users module with assigned_user_id
+			if ($stfields['start']!=$stfields['end']) $queryFields[] = $stfields['end'];
+			if (isset($stfields['subject'])) {
+				$descflds = explode(',', $stfields['subject']);
+				foreach ($descflds as $dfld) {
+					$queryFields[] = $dfld;
+				}
+			}
+			$queryGenerator->setFields($queryFields);
+			if ($record != "") {
+				$queryGenerator->addCondition('id',$record,'e',$queryGenerator::$AND);
+			} else {
+				$dtflds = getDateFieldsOfModule($modtab[$activitytypeid]);
+				$queryGenerator->startGroup();
+				foreach ($dtflds as $field) {
+					$queryGenerator->addCondition($field,array(0=>$start_date,1=>$end_date),'bw',$queryGenerator::$OR);
+				}
+				$queryGenerator->endGroup();
+				if (count($Event_Status) > 0 and isset($Module_Status_Fields[$activitytypeid])) {
+					$evuniq = array_unique($Event_Status);
+					foreach ($evuniq AS $evstat) {
+						if (isset($Module_Status_Fields[$activitytypeid][$evstat])) {
+							$queryGenerator->startGroup('AND');
+							foreach ($Module_Status_Fields[$activitytypeid][$evstat] as $condition) {
+								$queryGenerator->addCondition($condition['field'],$condition['value'],$condition['operator'],$condition['join']);
+							}
+							$queryGenerator->endGroup();
+						}
+					}
+				}
+			}
+			$list_query = $queryGenerator->getQuery();
+			$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+			$list_query = "SELECT distinct vtiger_crmentity.crmid, vtiger_groups.groupname, $userNameSql as user_name, ".$queryGenerator->getSelectClauseColumnSQL().$queryGenerator->getFromClause().$queryGenerator->getWhereClause();
+			$list_array = array();
+		} else {
+			$list_query = getCalendar4YouListQuery($userid, $invites);
+			if ($record != "") {
+				$list_query .= " AND vtiger_crmentity.crmid = '".$record."'";
+			} else {
+				$list_query .= " AND vtiger_activity.date_start <= '".$end_date."'";
+				$list_query .= " AND vtiger_activity.due_date >= '".$start_date."'";
+			}
+			if (!$invites) {
+				$list_query .= " AND vtiger_crmentity.smownerid = ?";
+				$list_query .= " AND vtiger_activity.activitytype = ?";
+				$list_array = array($userid,$activitytype);
+			}
+			if (count($Event_Status) > 0) {
+				$list_query .= " AND (vtiger_activity.eventstatus NOT IN (" . generateQuestionMarks($Event_Status) . ") OR vtiger_activity.eventstatus IS NULL)";
+				$list_array = array_merge($list_array, $Event_Status);
+			}
+			if (count($Task_Status) > 0) {
+				$list_query .= " AND (vtiger_activity.status NOT IN (" . generateQuestionMarks($Task_Status) . ") OR vtiger_activity.status IS NULL)";
+				$list_array = array_merge($list_array, $Task_Status);
+			}
+		}
+		$list_result = $adb->pquery($list_query, $list_array);
+		while($row = $adb->fetchByAssoc($list_result)) {
             $visibility = "private";
             $editable = false;
             $for_me = false;
             $add_more_info = false;
             $event = $activitytypeid;
-            
-            $into_title = $row["subject"];
+            $into_title = isset($row["subject"]) ? $row["subject"] : (isset($row[$subject]) ? $row[$subject] : getTranslatedString('LBL_NONE'));
             if ($detailview_permissions) {
                 if (($Calendar4You->view_all && $Calendar4You->edit_all) || ($userid == $current_user->id || $row["visibility"] == "Public" || in_array($userid,$ParentUsers) || $activitytypeid == "invite")) {
                     if (isset($Showed_Field[$event]))
                         $into_title = transferForAddIntoTitle(1,$row,$Showed_Field[$event]);
-                    
                     $add_more_info = true;
                     $visibility = "public"; 
                 }
-                
                 if ($Calendar4You->edit_all || ($userid == $current_user->id || in_array($userid,$ParentUsers))) {
                     $editable = true; 
                 }
             }
-            if ($activitytypeid == "task")
-            	$activity_mode = "Task";
-            else
-           	$activity_mode = "Events";
-            
+			if ($activitytypeid == "task" or in_array($activitytypeid,$tasklabel)){
+				$activity_mode = "Task";
+			} else {
+				$activity_mode = "Events";
+			}
             if ($record != "") {
                 $Actions = array();
                 if ($visibility == "public") {
-                    $Actions[] = "<a target='_new' href='index.php?action=EventDetailView&module=Calendar4You&record=".$record."&activity_mode=$activity_mode&parenttab=Tools'>".$mod['LBL_DETAIL']."</a>";
+					if(in_array($activitytypeid,$tasklabel))
+					$Actions[] = "<a target='_new' href='index.php?action=DetailView&module=".$activitytypeid."&record=".$record."'>".$mod['LBL_DETAIL']."</a>";
+					else
+					$Actions[] = "<a target='_new' href='index.php?action=EventDetailView&module=Calendar4You&record=".$record."&activity_mode=$activity_mode&parenttab=Tools'>".$mod['LBL_DETAIL']."</a>";
                 }
 
                 if($Calendar4You->CheckPermissions("EDIT",$record)) {
+					if(in_array($activitytypeid,$tasklabel))
+					$Actions[] = "<a target='_new' href='index.php?action=EditView&module=".$activitytypeid."&record=".$record."'>".$app['LNK_EDIT']."</a>";
+					else
                     $Actions[] = "<a target='_new' href='index.php?action=EventEditView&module=Calendar4You&record=".$record."&activity_mode=$activity_mode&parenttab=Tools'>".$app['LNK_EDIT']."</a>";
                 }
                 if (vtlib_isModuleActive('Timecontrol')) {
@@ -222,7 +268,20 @@ foreach($Users_Ids AS $userid) {
                 }
 
                 $actions = implode(" | ",$Actions);
-                
+				if (isset($stfields['subject'])) {
+					$descflds = explode(',', $stfields['subject']);
+					$descvals = array();
+					$descvals[] = html_entity_decode($into_title,ENT_QUOTES,$default_charset);
+					foreach ($descflds as $dfld) {
+						if (strpos($dfld, '.')) {
+							$fld = substr($dfld, strpos($dfld, '.')+1);
+						} else {
+							$fld = $dfld;
+						}
+						$descvals[] = html_entity_decode($row[$fld],ENT_QUOTES,$default_charset);
+					}
+					$into_title = implode(' -- ', $descvals);
+				}
                 $into_title = $app['LBL_ACTION'].": ".$actions."<hr>".nl2br($into_title);
             }
             
@@ -235,26 +294,31 @@ foreach($Users_Ids AS $userid) {
                     }
                 } 
             }
-
-            $convert_date_start = DateTimeField::convertToUserTimeZone($row["date_start"]." ".$row["time_start"]);
-	        $user_date_start = $convert_date_start->format('Y-m-d H:i');
-            
-            $convert_due_date = DateTimeField::convertToUserTimeZone($row["due_date"]." ".$row["time_end"]);
-	        $user_due_date = $convert_due_date->format('Y-m-d H:i');
-                
-            $Activities[] = array('id' => $row["crmid"],
-                                  'typeid' => $activitytypeid,
-                                  'userid' => $userid,
-                                  'visibility' => $visibility,
-                                  'editable' => $editable,
-                                  'activity_mode' => $activity_mode,
-                        		  'title' => $title,
-                        		  'start' => $user_date_start,
-                                  'end' => $user_due_date,
-                                  'allDay' => $allDay,
-                        		  'url' => "");
-        }
-    }
+			if(in_array($activitytypeid,$tasklabel)){
+				$convert_date_start = DateTimeField::convertToUserTimeZone($row[$stfields['start']]);
+				$user_date_start = $convert_date_start->format('Y-m-d H:i');
+				$convert_due_date = DateTimeField::convertToUserTimeZone($row[$stfields['end']]);
+				$user_due_date = $convert_due_date->format('Y-m-d H:i');
+			} else {
+				$convert_date_start = DateTimeField::convertToUserTimeZone($row["date_start"]." ".$row["time_start"]);
+				$user_date_start = $convert_date_start->format('Y-m-d H:i');
+				$convert_due_date = DateTimeField::convertToUserTimeZone($row["due_date"]." ".$row["time_end"]);
+				$user_due_date = $convert_due_date->format('Y-m-d H:i');
+			}
+			$Activities[] = array(
+				'id' => $row['crmid'],
+				'typeid' => $activitytypeid,
+				'userid' => $userid,
+				'visibility' => $visibility,
+				'editable' => $editable,
+				'activity_mode' => $activity_mode,
+				'title' => $title,
+				'start' => $user_date_start,
+				'end' => $user_due_date,
+				'allDay' => $allDay,
+				'url' => "");
+		}
+	}
 }
 
 echo json_encode($Activities);
