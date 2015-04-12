@@ -165,6 +165,14 @@ $query = $queryGenerator->getQuery();
 echo "$query<br>";
 testquery($query);
 
+echo "<h2>Force User joins in Queries</h2>";
+echo "<b>We do that adding 'assigned_user_id' to the list of fields</b><br>";
+$queryGenerator = new QueryGenerator($moduleName, $current_user);
+$queryGenerator->setFields(array('id','accountname','Users.first_name','assigned_user_id'));
+$query = $queryGenerator->getQuery();
+echo "$query<br>";
+testquery($query);
+
 echo "<h2>Custom Module Queries</h2>";
 $queryGenerator = new QueryGenerator('CobroPago', $current_user);
 $queryGenerator->setFields(array('id','assigned_user_id', 'first_name'));
