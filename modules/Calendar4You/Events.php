@@ -239,10 +239,10 @@ foreach($Users_Ids AS $userid) {
 					if (isset($Showed_Field[$event]))
 						$into_title = transferForAddIntoTitle(1,$row,$Showed_Field[$event]);
 					$add_more_info = true;
-					$visibility = "public"; 
+					$visibility = "public";
 				}
 				if ($Calendar4You->edit_all || ($userid == $current_user->id || in_array($userid,$ParentUsers))) {
-					$editable = true; 
+					$editable = true;
 				}
 			}
 			if ($activitytypeid == "task" or in_array($activitytypeid,$tasklabel)){
@@ -281,7 +281,14 @@ foreach($Users_Ids AS $userid) {
 						} else {
 							$fld = $dfld;
 						}
-						$descvals[] = html_entity_decode($row[$fld],ENT_QUOTES,$default_charset);
+						// convert fieldname to columnname
+						$rscol = $adb->pquery('select columnname from vtiger_field where tabid=? and fieldname=?',array(getTabid($activitytypeid),$fld));
+						if ($rscol and $adb->num_rows($rscol)==1) {
+							$fname = $adb->query_result($rscol, 0, 0);
+						} else {
+							$fname = $fld;
+						}
+						$descvals[] = html_entity_decode($row[$fname],ENT_QUOTES,$default_charset);
 					}
 					$into_title = implode(' -- ', $descvals);
 				}
@@ -296,9 +303,15 @@ foreach($Users_Ids AS $userid) {
 				}
 			}
 			if(in_array($activitytypeid,$tasklabel)){
-				$convert_date_start = DateTimeField::convertToUserTimeZone($row[$stfields['start']]);
+				$stfst = $row[$stfields['start']];
+				$stfed = $row[$stfields['end']];
+				if ($stfields['start']=='birthday') {  // we bring it up to the current calendar year
+					$stfst = date('Y',$start_time).'-'.substr($stfst, 6);
+					$stfed = date('Y',$start_time).'-'.substr($stfed, 6);
+				}
+				$convert_date_start = DateTimeField::convertToUserTimeZone($stfst);
 				$user_date_start = $convert_date_start->format('Y-m-d H:i');
-				$convert_due_date = DateTimeField::convertToUserTimeZone($row[$stfields['end']]);
+				$convert_due_date = DateTimeField::convertToUserTimeZone($stfed);
 				$user_due_date = $convert_due_date->format('Y-m-d H:i');
 			} else {
 				$convert_date_start = DateTimeField::convertToUserTimeZone($row["date_start"]." ".$row["time_start"]);
