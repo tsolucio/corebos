@@ -177,16 +177,26 @@ foreach($Users_Ids AS $userid) {
 					$queryGenerator->addCondition($field,array(0=>$start_date,1=>$end_date),'bw',$queryGenerator::$OR);
 				}
 				$queryGenerator->endGroup();
-				if (count($Event_Status) > 0 and isset($Module_Status_Fields[$activitytypeid])) {
-					$evuniq = array_unique($Event_Status);
+				if (count($Event_Status) > 0) {
+					$evuniq = array_diff(array('Held','Not Held','Planned'),array_unique($Event_Status));
+					$encompas_group = false;
 					foreach ($evuniq AS $evstat) {
-						if (isset($Module_Status_Fields[$activitytypeid][$evstat])) {
-							$queryGenerator->startGroup('AND');
-							foreach ($Module_Status_Fields[$activitytypeid][$evstat] as $condition) {
+						if (isset($Module_Status_Fields[$evstat])) {
+							if (!$encompas_group) {
+								$queryGenerator->startGroup('AND');
+								$encompas_group = true;
+								$queryGenerator->startGroup();
+							} else {
+								$queryGenerator->startGroup('OR');
+							}
+							foreach ($Module_Status_Fields[$evstat] as $condition) {
 								$queryGenerator->addCondition($condition['field'],$condition['value'],$condition['operator'],$condition['join']);
 							}
 							$queryGenerator->endGroup();
 						}
+					}
+					if ($encompas_group) {
+						$queryGenerator->endGroup();
 					}
 				}
 			}
@@ -254,7 +264,7 @@ foreach($Users_Ids AS $userid) {
 					else
 						$Actions[] = "<a target='_new' href='index.php?action=EventEditView&module=Calendar4You&record=".$record."&activity_mode=$activity_mode&parenttab=Tools'>".$app['LNK_EDIT']."</a>";
 				}
-				if (vtlib_isModuleActive('Timecontrol')) {
+				if (vtlib_isModuleActive('Timecontrol') and !in_array($activitytypeid,$tasklabel)) {
 					$Actions[] = "<a target='_newtc' href='index.php?action=EditView&module=Timecontrol&calendarrecord=$record&activity_mode=$activity_mode'>".getTranslatedString('LBL_TIME_TAKEN').'</a>';
 				}
 				if($Calendar4You->CheckPermissions("DELETE",$record)) {
