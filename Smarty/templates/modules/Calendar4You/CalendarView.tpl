@@ -267,13 +267,31 @@ jQuery(document).ready(function(){
             var startdate = formated_date;  
             var enddate = formated_date;
 
-            eventlist = new Array({$EVENTLIST});
+			eventlist = new Array({$EVENTLIST});
+			var timemodulearr = new Array({$TIMEMODULEARRAY});
+			var timemoduledet = {$TIMEMODULEDETAILS};
             {literal}
         	for(var i=0;i<(eventlist.length);i++){
                 document.getElementById("add"+eventlist[i].toLowerCase()).href="javascript:gITSshow('addITSEvent','"+eventlist[i]+"','"+startdate+"','"+enddate+"','"+starthr+"','"+startmin+"','"+startfmt+"','"+endhr+"','"+endmin+"','"+endfmt+"','"+viewOption+"','"+subtab+"');fnRemoveITSEvent();";
         	}
         	document.getElementById("addtodo").href="javascript:gITSshow('createTodo','todo','"+startdate+"','"+enddate+"','"+starthr+"','"+startmin+"','"+startfmt+"','"+endhr+"','"+endmin+"','"+endfmt+"','"+viewOption+"','"+subtab+"');fnRemoveITSEvent();";
-            
+			for(var i=0;i<(timemodulearr.length);i++){
+				var tmmod = timemodulearr[i];
+				if (startfmt=='am' || startfmt=='') {
+					var tmstime = starthr + ":" + startmin;
+				} else {  // pm
+					var nt = parseInt(starthr) + 12;
+					var tmstime = nt + ":" + startmin;
+				}
+				if (endfmt=='am' || endfmt=='') {
+					var tmetime = endhr + ":" + endmin;
+				} else {  // pm
+					var nt = parseInt(starthr) + 12;
+					var tmetime = nt + ":" + endmin;
+				}
+				document.getElementById("add"+tmmod.toLowerCase()).href="javascript:gotourl('index.php?action=EditView&return_module=Calendar4You&return_action=index&module="+tmmod+"&"+timemoduledet[tmmod].start+'='+startdate+"&"+timemoduledet[tmmod].end+'='+enddate+"&"+timemoduledet[tmmod].stime+'='+tmstime+"&"+timemoduledet[tmmod].etime+'='+tmetime+"');";
+			}
+
             xOffset = 5;
             yOffset = -5;
             var left = (jsEvent.clientX + yOffset);

@@ -21,9 +21,14 @@ require_once('modules/Calendar/CalendarCommon.php');
 require_once 'modules/Calendar4You/CalendarUtils.php';
 global $adb,$theme,$mod_strings,$current_user;
 $local_log =& LoggerManager::getLogger('index');
+$_REQUEST = vtlib_purify($_REQUEST);  // clean up ALL values
+
+if ($_REQUEST['mode'] == 'event_drop' || $_REQUEST['mode'] == 'event_resize') {
+	list($void,$processed) = cbEventHandler::do_filter('corebos.filter.CalendarModule.save', array($_REQUEST, false));
+	if ($processed) exit;
+}
 
 $focus = new Activity();
-$_REQUEST = vtlib_purify($_REQUEST);  // clean up ALL values
 $activity_mode = vtlib_purify($_REQUEST['activity_mode']);
 $record = vtlib_purify($_REQUEST['record']);
 if (empty($activity_mode) and !empty($record)) {

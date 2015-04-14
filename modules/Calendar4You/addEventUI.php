@@ -759,14 +759,24 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 	for($i=0; $i<$adb->num_rows($Res);$i++)
 	{
 		$eventlist = $adb->query_result($Res,$i,'activitytype');
-        $eventlist = html_entity_decode($eventlist,ENT_QUOTES,$default_charset);
-        $actname = getTranslatedString($eventlist,'Calendar');
-?>		
+		$eventlist = html_entity_decode($eventlist,ENT_QUOTES,$default_charset);
+		$actname = getTranslatedString($eventlist,'Calendar');
+?>
 	<tr><td><a href='' id="add<?php echo strtolower($eventlist);?>" class='drop_down'><?php echo $actname; ?></a></td></tr>
 <?php
 	}
 ?>
 	<tr><td><a href='' id="addtodo" class='drop_down'><?php echo $c_mod_strings['LBL_ADDTODO']?></a></td></tr>
+<?php
+	$timeModules = getAllModulesWithDateTimeFields();
+	foreach ($timeModules as $tmid => $tmmod) {
+		$tmline = getTranslatedString($tmmod,$tmmod);
+		$tmlineid = str_replace(' ', '', $tmmod);
+?>
+	<tr><td><a href='' id="add<?php echo strtolower($tmlineid);?>" class='drop_down'><?php echo $tmline; ?></a></td></tr>
+<?php
+	}
+?>
 </table>
 </div>
 <div class="calAddITSEvent layerPopup" style="display:none;width:700px;left:200px;background-color:red;z-index:10000" id="createTodo" align=center>

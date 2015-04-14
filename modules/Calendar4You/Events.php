@@ -107,6 +107,7 @@ $start_date = date("Y-m-d",$start_time);
 $end_date = date("Y-m-d",$end_time);
 
 $tasklabel = getAllModulesWithDateFields();
+$timeModules = getAllModulesWithDateTimeFields();
 uasort($tasklabel, function($a,$b) {return (strtolower(getTranslatedString($a,$a)) < strtolower(getTranslatedString($b,$b))) ? -1 : 1;});
 
 $Event_Status = array();
@@ -161,6 +162,8 @@ foreach($Users_Ids AS $userid) {
 			$stfields = getModuleCalendarFields($activitytypeid);
 			$queryFields = array('id',$subject,$stfields['start'],'assigned_user_id'); // we force the users module with assigned_user_id
 			if ($stfields['start']!=$stfields['end']) $queryFields[] = $stfields['end'];
+			if (!empty($stfields['stime'])) $queryFields[] = $stfields['stime'];
+			if (!empty($stfields['etime'])) $queryFields[] = $stfields['etime'];
 			if (isset($stfields['subject'])) {
 				$descflds = explode(',', $stfields['subject']);
 				foreach ($descflds as $dfld) {
@@ -308,6 +311,11 @@ foreach($Users_Ids AS $userid) {
 				if ($stfields['start']=='birthday') {  // we bring it up to the current calendar year
 					$stfst = date('Y',$start_time).'-'.substr($stfst, 6);
 					$stfed = date('Y',$start_time).'-'.substr($stfed, 6);
+				}
+				if (in_array($activitytypeid,$timeModules)) {
+					$stfst = $stfst . ' ' . $row[$stfields['stime']];
+					$stfed = $stfed . ' ' . $row[$stfields['etime']];
+					$allDay = false;
 				}
 				$convert_date_start = DateTimeField::convertToUserTimeZone($stfst);
 				$user_date_start = $convert_date_start->format('Y-m-d H:i');
