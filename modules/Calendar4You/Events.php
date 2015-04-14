@@ -190,7 +190,7 @@ foreach($Users_Ids AS $userid) {
 								$queryGenerator->startGroup('OR');
 							}
 							foreach ($Module_Status_Fields[$evstat] as $condition) {
-								$queryGenerator->addCondition($condition['field'],$condition['value'],$condition['operator'],$condition['join']);
+								$queryGenerator->addCondition($condition['field'],$condition['value'],$condition['operator'],$condition['glue']);
 							}
 							$queryGenerator->endGroup();
 						}

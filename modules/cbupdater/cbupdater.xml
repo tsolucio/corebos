@@ -317,5 +317,11 @@
 	<classname>installinventorydetails</classname>
 	<systemupdate>false</systemupdate>
 </changeSet>
-
+<changeSet>
+	<author>joebordes</author>
+	<description>Create configuration tables for Modules on Calendar</description>
+	<filename>build/changeSets/ModulesOnCalendar.php</filename>
+	<classname>ModulesOnCalendar</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
