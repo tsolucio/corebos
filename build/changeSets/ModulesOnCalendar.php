@@ -120,7 +120,7 @@ $its4you_calendar_modulefields = array(
   array('module' => 'Assets','start_field' => 'dateinservice','end_field' => 'dateinservice','subject_fields' => 'serialnumber'),
 );
 $this->ExecuteQuery('CREATE TABLE IF NOT EXISTS `its4you_calendar_modulefields` (
-  `calmodfields` int(11) NOT NULL,
+  `calmodfields` int(11) NOT NULL AUTO_INCREMENT,
   `userid` int(19) NOT NULL,
   `module` varchar(50) NOT NULL,
   `start_field` varchar(30) NOT NULL,
