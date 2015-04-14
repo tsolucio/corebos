@@ -490,6 +490,20 @@ function vtlib_isCustomModule($moduleName) {
 }
 
 /**
+ * Check for custom module by its name.
+ */
+function vtlib_isEntityModule($moduleName) {
+	global $adb,$log;
+	$rsent = $adb->pquery('select isentitytype from vtiger_tab where name=?',array($moduleName));
+	if($rsent and $adb->num_rows($rsent)>0) {
+		if ($adb->query_result($rsent,0,0)=='1') {
+			return true;
+		}
+	}
+	return false;
+}
+
+/**
  * Get module specific smarty template path.
  */
 function vtlib_getModuleTemplate($module, $templateName) {
