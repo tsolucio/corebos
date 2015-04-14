@@ -415,6 +415,7 @@ class CustomView extends CRMEntity {
 		$reffields = $meta->getReferenceFieldDetails();
 		foreach ($reffields as $fld => $mods) {
 			foreach ($mods as $mod) {
+				if (!vtlib_isEntityModule($mod)) continue; // reference to a module without fields
 				if (isset($ret_module_list[$mod])) continue;  // we already have this one
 				$module_info = $this->getCustomViewModuleInfo($mod);
 				foreach ($this->module_list[$mod] as $key => $value) {
