@@ -27,6 +27,7 @@ class ListViewController {
 	private $nameList;
 	private $typeList;
 	private $ownerNameList;
+        private $ownerNameListrel;
 	private $user;
 	private $picklistValueMap;
 	private $picklistRoleMap;
@@ -181,6 +182,29 @@ class ListViewController {
 					$field->getFieldDataType() == 'multipicklist')) {
 				$this->setupAccessiblePicklistValueList($fieldName);
 			}
+                       $idList=array();
+                       if($fieldName!='assigned_user_id' && strstr($fieldName,".assigned_user_id")){
+                       $modrel=getTabModuleName($field->getTabId());
+                       $j=$rowCount*$k;
+                       $k++;
+                       for ($i = 0; $i < $rowCount; $i++) {
+                       $id = $this->db->query_result($result, $i, "smowner".strtolower($modrel));
+                       if (!isset($this->ownerNameListrel[$fieldName][$id])) {
+	               $idList[$j] = $id;
+                       $j++;
+		      }
+                      }
+                      }
+                      if(count($idList) > 0) {
+                           if(!is_array($this->ownerNameListrel[$fieldName])) {
+                           $this->ownerNameListrel[$fieldName] = getOwnerNameList($idList);
+                           } else {
+                           $newOwnerList = getOwnerNameList($idList);
+                           foreach ($newOwnerList as $id => $name) {
+                           $this->ownerNameListrel[$fieldName][$id] = $name;
+                           }
+                      }
+                      }
 		}
 
 		$useAsterisk = get_use_asterisk($this->user->id);
@@ -208,8 +232,11 @@ class ListViewController {
 					if (is_null($field)) continue;
 				}
 				$uitype = $field->getUIType();
-				$rawValue = $this->db->query_result($result, $i, $field->getColumnName());
-				if($module == 'Calendar') {
+                                if($fieldName!='assigned_user_id' && strstr($fieldName,".assigned_user_id")){
+                                $modrel=getTabModuleName($field->getTabId());
+                                $rawValue = $this->db->query_result($result, $i, "smowner".strtolower($modrel));
+                                }
+				else $rawValue = $this->db->query_result($result, $i, $field->getColumnName());				if($module == 'Calendar') {
 					$activityType = $this->db->query_result($result, $i, 'activitytype');
 				}
 
@@ -440,6 +467,9 @@ class ListViewController {
 						$value = '--';
 					}
 				} elseif($field->getFieldDataType() == 'owner') {
+                                        if($fieldName!='assigned_user_id' && strstr($fieldName,".assigned_user_id"))
+                                        $value = textlength_check($this->ownerNameListrel[$fieldName][$value]);
+                                        else
 					$value = textlength_check($this->ownerNameList[$fieldName][$value]);
 				} elseif ($field->getUIType() == 25) {
 					//TODO clean request object reference.
