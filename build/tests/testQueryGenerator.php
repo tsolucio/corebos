@@ -267,6 +267,14 @@ $query = $queryGenerator->getQuery();
 echo "$query<br>";
 testquery($query);
 
+echo "<h2>Query with smownerid of rel module</h2>";
+$queryGenerator = new QueryGenerator("Contacts", $current_user);
+$queryGenerator->setFields(array('id','accountname','Accounts.assigned_user_id'));
+$queryGenerator->addReferenceModuleFieldCondition('Accounts', 'account_id', 'accountname', 'EDFG Group Limited', 'exists');
+
+$query = $queryGenerator->getQuery();
+echo "$query<br>";
+testquery($query);
 //error_reporting(E_ALL);ini_set("display_errors", "on");
 // echo "<h2>Query with custom field</h2>";
 // $queryGenerator = new QueryGenerator($moduleName, $current_user);
