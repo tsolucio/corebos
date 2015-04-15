@@ -236,7 +236,8 @@ class ListViewController {
                                 $modrel=getTabModuleName($field->getTabId());
                                 $rawValue = $this->db->query_result($result, $i, "smowner".strtolower($modrel));
                                 }
-				else $rawValue = $this->db->query_result($result, $i, $field->getColumnName());				if($module == 'Calendar') {
+				else $rawValue = $this->db->query_result($result, $i, $field->getColumnName());				
+                                if($module == 'Calendar') {
 					$activityType = $this->db->query_result($result, $i, 'activitytype');
 				}
 
@@ -468,9 +469,9 @@ class ListViewController {
 					}
 				} elseif($field->getFieldDataType() == 'owner') {
                                         if($fieldName!='assigned_user_id' && strstr($fieldName,".assigned_user_id"))
-                                        $value = textlength_check($this->ownerNameListrel[$fieldName][$value]);
-                                        else
-					$value = textlength_check($this->ownerNameList[$fieldName][$value]);
+                                        {$value = textlength_check($this->ownerNameListrel[$fieldName][$value]);}
+                                        else{
+                                        $value = textlength_check($this->ownerNameList[$fieldName][$value]);}
 				} elseif ($field->getUIType() == 25) {
 					//TODO clean request object reference.
 					$contactId=$_REQUEST['record'];
