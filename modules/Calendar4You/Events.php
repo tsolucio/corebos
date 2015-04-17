@@ -27,15 +27,16 @@ $save = $_REQUEST["save"];
 $full_calendar_view = $_REQUEST["view"];
 if (isset($_REQUEST["record"]) && $_REQUEST["record"] != "") $record = $_REQUEST["record"];
 
-if ($_REQUEST["usersids"] != "") {
+if (!empty($_REQUEST["usersids"])) {
 	$all_users = true;
 	$Users_Ids = explode(",",$_REQUEST["usersids"]);
 } else {
 	$all_users = false;
 	if ($user_view_type != "all")
 		$Users_Ids = array($user_view_type);
-	else
-		$Users_Ids = array($current_user->id);
+	else{
+		echo "[]";die();
+	}
 }
 
 $Load_Event_Status = array();
@@ -179,7 +180,12 @@ foreach($Users_Ids AS $userid) {
 				foreach ($dtflds as $field) {
 					$queryGenerator->addCondition($field,array(0=>$start_date,1=>$end_date),'bw',$queryGenerator::$OR);
 				}
+					$queryGenerator->startGroup('OR');
+					$queryGenerator->addCondition($stfields['start'],$start_date,'b');
+					$queryGenerator->addCondition($stfields['end'],$end_date,'a',$queryGenerator::$AND);
+					$queryGenerator->endGroup();
 				$queryGenerator->endGroup();
+				$queryGenerator->addCondition('assigned_user_id',getUserFullName($userid),'e',$queryGenerator::$AND);
 				if (count($Event_Status) > 0) {
 					$evuniq = array_diff(array('Held','Not Held','Planned'),array_unique($Event_Status));
 					$encompas_group = false;
