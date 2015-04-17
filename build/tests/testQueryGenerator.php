@@ -103,6 +103,14 @@ $query = $queryGenerator->getQuery();
 echo "<b>**INCORRECT:**&nbsp;This next query is incorrect because the parenthesis is not enclosing the OR so it returns not expected results, although it is syntactically correct. The next query is the correct version.</b><br>$query<br>";
 testquery($query);
 
+$queryGenerator = new QueryGenerator('Project', $current_user);
+$queryGenerator->setFields(array('id','projectname','startdate','targetenddate'));
+$queryGenerator->addCondition('startdate','2015-04-16','b');
+$queryGenerator->addCondition('targetenddate','2015-06-16','a','OR');
+$query = $queryGenerator->getQuery();
+echo "$query<br>";
+testquery($query);
+
 $queryGenerator = new QueryGenerator($moduleName, $current_user);
 $queryGenerator->setFields(array('id','cf_681','accountname'));
 $queryGenerator->startGroup();  // parenthesis to enclose our OR condition between the two groups
@@ -183,6 +191,13 @@ $query = $queryGenerator->getQuery();
 echo "$query<br>";
 testquery($query);
 
+$queryGenerator = new QueryGenerator('Users', $current_user);
+$queryGenerator->setFields(array('id','username','first_name'));
+$queryGenerator->addCondition('id','1','e');
+$query = $queryGenerator->getQuery();
+echo "$query<br>";
+testquery($query);
+
 echo "<h2>Force User joins in Queries</h2>";
 echo "<b>We do that adding 'assigned_user_id' to the list of fields</b><br>";
 $queryGenerator = new QueryGenerator($moduleName, $current_user);
@@ -255,6 +270,13 @@ testquery($query);
 $queryGenerator = new QueryGenerator('Accounts', $current_user);
 $queryGenerator->setFields(array('id','accountname'));
 $queryGenerator->addCondition('id', '133', 'n',$queryGenerator::$AND);
+$query = $queryGenerator->getQuery();
+echo "$query<br>";
+testquery($query);
+
+$queryGenerator = new QueryGenerator('Contacts', $current_user);
+$queryGenerator->setFields(array('id','firstname'));
+$queryGenerator->addCondition('assigned_user_id','Administrator','e');
 $query = $queryGenerator->getQuery();
 echo "$query<br>";
 testquery($query);
