@@ -3416,7 +3416,8 @@ class ReportRun extends CRMEntity {
 				} elseif ($moduleName == 'Potentials' && $referenceModule == 'Accounts') {
 					$referenceTableName = 'vtiger_accountPotentials';
 				} elseif (in_array($referenceModule, $reportSecondaryModules) and $moduleName != 'Timecontrol') {
-					$referenceTableName = "{$entityTableName}Rel$referenceModule";
+                                    if($fieldInstance->getFieldId() != '') $referenceTableName = "{$entityTableName}Rel{$moduleName}{$fieldInstance->getFieldId()}";
+				    else $referenceTableName = "{$entityTableName}Rel$referenceModule";
 				} elseif (in_array($moduleName, $reportSecondaryModules) and $moduleName != 'Timecontrol') {
 					$referenceTableName = "{$entityTableName}Rel$moduleName";
 				} else {
