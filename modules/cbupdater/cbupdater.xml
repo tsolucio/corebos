@@ -324,4 +324,11 @@
 	<classname>ModulesOnCalendar</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Eliminate CustomAction Table</description>
+	<filename>build/changeSets/delCustomActionTable.php</filename>
+	<classname>delCustomActionTable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

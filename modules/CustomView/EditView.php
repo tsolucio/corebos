@@ -115,12 +115,6 @@ if($recordid == "") {
 		$smarty->assign("MANDATORYCHECK",implode(",",array_unique($oCustomView->mandatoryvalues)));
 		$smarty->assign("SHOWVALUES",implode(",",$oCustomView->showvalues));
 		$smarty->assign("EXIST","true");
-		$cactionhtml = "<input name='customaction' class='button' type='button' value='Create Custom Action' onclick=goto_CustomAction('".$cv_module."');>";
-
-		if($cv_module == "Leads" || $cv_module == "Accounts" || $cv_module == "Contacts")
-		{
-			$smarty->assign("CUSTOMACTIONBUTTON",$cactionhtml);
-		}
 		$data_type[] = $oCustomView->data_type;
 		$smarty->assign("DATATYPE",$data_type);
 	} else {

@@ -5,7 +5,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 -->
 <link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
@@ -27,14 +26,8 @@
 <input type="hidden" name="return_action" value="{$RETURN_ACTION}">
 <input type="hidden" id="user_dateformat" name="user_dateformat" value="{$DATEFORMAT}">
 <script language="javascript" type="text/javascript">
-function goto_CustomAction(module)
-{ldelim}
-        document.location.href = "index.php?module="+module+"&action=CustomAction&record={$CUSTOMVIEWID}";
-{rdelim}
-
 function mandatoryCheck()
 {ldelim}
-
         var mandatorycheck = false;
         var i,j;
         var manCheck = new Array({$MANDATORYCHECK});
