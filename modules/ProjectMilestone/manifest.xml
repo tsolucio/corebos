@@ -15,7 +15,7 @@
   `projectmilestoneid` int(11) NOT NULL,
   `projectmilestonename` varchar(255) default NULL,
   `projectmilestone_no` varchar(100) default NULL,
-  `projectmilestonedate` varchar(255) default NULL,
+  `projectmilestonedate` date default NULL,
   `projectid` varchar(100) default NULL,
   `projectmilestonetype` varchar(100) default NULL,
   PRIMARY KEY  (`projectmilestoneid`)

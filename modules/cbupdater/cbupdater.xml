@@ -331,4 +331,11 @@
 	<classname>delCustomActionTable</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Change milestonedate to date</description>
+	<filename>build/changeSets/milestonedatetodate.php</filename>
+	<classname>milestonedatetodate</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
