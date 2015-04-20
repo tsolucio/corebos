@@ -1027,8 +1027,8 @@ for($i=0;$i<count($campaign_name_array);$i++)
 
 //Populate My Sites Data
 
-$portalname = array ("Vtiger", "Vtiger Blogs", "Vtiger Forums", "VtigerForge", "Vtiger Docs");
-$portalurl = array ("http://vtiger.com", "http://blogs.vtiger.com", "http://forums.vtiger.com", "http://vtigerforge.com", "http://wiki.vtiger.com");
+$portalname = array ("coreBOS", "coreBOS Blogs", "coreBOS Forums", "coreBOS Code", "coreBOS Docs");
+$portalurl = array ("http://corebos.org", "http://corebos.org/blog", "http://discussions.corebos.org", "https://github.com/tsolucio/corebos", "http://corebos.org/documentation");
 
 for($i=0;$i<5;$i++)
 {
