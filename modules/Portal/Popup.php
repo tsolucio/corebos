@@ -40,7 +40,7 @@ $portal_inputs.='<div style="display:block;position:relative;" id="orgLay" class
 		<tr>
 
 			<td align="right" width="40%" ><b>'.$mod_strings['LBL_BOOKMARK'].' ' .$mod_strings['LBL_URL'] .' </b></td>
-			<td align="left" width="60%">http://<input name="portalurl" id="portalurl" class="txtBox" value="'.$portalurl.'" type="text" onkeyup="OnUrlChange();"></td>
+			<td align="left" width="60%"><input name="portalurl" id="portalurl" class="txtBox" value="'.$portalurl.'" type="text" onkeyup="OnUrlChange();"></td>
 		</tr>
 		<tr>
 			<td align="right" width="40%"> <b>'.$mod_strings['LBL_BOOKMARK'].' ' .$mod_strings['LBL_NAME'] .' </b></td>
