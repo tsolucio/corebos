@@ -85,7 +85,17 @@
 		} else {
 			$_REQUEST['action'] = $entityName.'Ajax';
 		}
+		if ($entityName == 'HelpDesk') {
+			//Added to construct the update log for Ticket history
+			$colflds = $element;
+			list($void,$colflds['assigned_user_id']) = explode('x', $colflds['assigned_user_id']);
+			$updlog = HelpDesk::getUpdateLogEditMessage($idList[1], $colflds);
+			$updlog = from_html($updlog,true);
+		}
 		$entity = $handler->update($element);
+		if ($entityName == 'HelpDesk') {
+			$adb->pquery('update vtiger_troubletickets set update_log=? where ticketid=?', array($updlog, $idList[1]));
+		}
 		VTWS_PreserveGlobal::flush();
 		return $entity;
 	}

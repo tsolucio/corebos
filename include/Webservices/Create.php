@@ -85,7 +85,20 @@ function vtws_create($elementType, $element, $user) {
         } else {
         	$_REQUEST['action'] = $elementType.'Ajax';
         }
+		if ($elementType == 'HelpDesk') {
+			//Added to construct the update log for Ticket history
+			$colflds = $element;
+			list($void,$colflds['assigned_user_id']) = explode('x', $colflds['assigned_user_id']);
+			$grp_name = fetchGroupName($colflds['assigned_user_id']);
+			$assigntype = ($grp_name != '') ? 'T' : 'U';
+			$updlog = HelpDesk::getUpdateLogCreateMessage($colflds, $grp_name, $assigntype);
+			$updlog = from_html($updlog,false);
+		}
         $entity = $handler->create($elementType, $element);
+		if ($elementType == 'HelpDesk') {
+			list($wsid,$newrecid) = vtws_getIdComponents($entity['id']);
+			$adb->pquery('update vtiger_troubletickets set update_log=? where ticketid=?', array($updlog, $newrecid));
+		}
         // Establish relations
         if (!empty($relations)) {
         	list($wsid,$newrecid) = vtws_getIdComponents($entity['id']);
