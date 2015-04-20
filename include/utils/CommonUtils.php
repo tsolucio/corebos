@@ -2152,8 +2152,10 @@ function getMergedDescription($description, $id, $parent_type) {
 	$log->debug("Entering getMergedDescription ...");
 	$token_data_pair = explode('$', $description);
 	global $current_user;
-	$emailTemplate = new EmailTemplate($parent_type, $description, $id, $current_user);
-	$description = $emailTemplate->getProcessedDescription();
+	if($parent_type != 'Users'){
+		$emailTemplate = new EmailTemplate($parent_type, $description, $id, $current_user);
+		$description = $emailTemplate->getProcessedDescription();
+	}
 	$templateVariablePair = explode('$', $description);
 	$tokenDataPair = explode('$', $description);
 	$fields = Array();
@@ -2165,6 +2167,17 @@ function getMergedDescription($description, $id, $parent_type) {
 	if (is_array($fields['custom']) && count($fields['custom']) > 0) {
 		//Puneeth : Added for custom date & time fields
 		$description = getMergedDescriptionCustomVars($fields, $description);
+	}
+	if($parent_type == 'Users' && is_array($fields["users"]))
+	{
+		$columnfields = implode(',',$fields["users"]);
+		$query = "select $columnfields from vtiger_users where id=?";
+		$result = $adb->pquery($query, array($id));
+		foreach($fields["users"] as $columnname)
+		{
+			$token_data = '$users-'.$columnname.'$';
+			$description = str_replace($token_data,$adb->query_result($result,0,$columnname),$description);
+		}
 	}
 	$log->debug("Exiting from getMergedDescription ...");
 	return $description;
