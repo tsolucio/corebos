@@ -5,9 +5,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
 
 function fetchAddSite(id)
 {
@@ -28,23 +26,23 @@ function fetchAddSite(id)
 function fetchContents(mode)
 {
 	// Reloading the window is better, If not reloaded ... mysitesArray variable needs to be updated
-	// using eval method on javascript. 
+	// using eval method on javascript.
 	if(mode == 'data') {
 		window.location.href = 'index.php?module=Portal&action=ListView&parenttab=Tools';
 		return;
 	}
 	$("status").style.display="inline";
 	new Ajax.Request(
-                'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                        method: 'post',
-                        postBody:'action=PortalAjax&mode=ajax&module=Portal&file=ListView&datamode='+mode,
-                        onComplete: function(response) {
-                                $("status").style.display="none";
-                                $('portalcont').innerHTML = response.responseText;
-                        }
-                }
-        );
+		'index.php',
+		{queue: {position: 'end', scope: 'command'},
+		method: 'post',
+		postBody:'action=PortalAjax&mode=ajax&module=Portal&file=ListView&datamode='+mode,
+		onComplete: function(response) {
+			$("status").style.display="none";
+			$('portalcont').innerHTML = response.responseText;
+		}
+		}
+	);
 }
 function DeleteSite(id)
 {
@@ -52,49 +50,49 @@ function DeleteSite(id)
 	{
 		$("status").style.display="inline";
 		new Ajax.Request(
-          	      'index.php',
-                	{queue: {position: 'end', scope: 'command'},
-                        	method: 'post',
-	                        postBody:'action=PortalAjax&mode=ajax&file=Delete&module=Portal&record='+id,
-        	                onComplete: function(response) {
-                	                $("status").style.display="none";
-                        	        $('portalcont').innerHTML = response.responseText;
-                        	}
-                	}
-        	);
+			'index.php',
+			{queue: {position: 'end', scope: 'command'},
+			method: 'post',
+			postBody:'action=PortalAjax&mode=ajax&file=Delete&module=Portal&record='+id,
+			onComplete: function(response) {
+				$("status").style.display="none";
+				$('portalcont').innerHTML = response.responseText;
+			}
+			}
+		);
 	}
 }
 function SaveSite(id)
 {
 	if ($('portalurl').value.replace(/^\s+/g, '').replace(/\s+$/g, '').length==0) {
-		alert(alert_arr.SITEURL_CANNOT_BE_EMPTY)
+		alert(alert_arr.SITEURL_CANNOT_BE_EMPTY);
 		return false;
 	}
 	if ($('portalname').value.replace(/^\s+/g, '').replace(/\s+$/g, '').length==0) {
-		alert(alert_arr.SITENAME_CANNOT_BE_EMPTY)
+		alert(alert_arr.SITENAME_CANNOT_BE_EMPTY);
 		return false;
 	}
-	Effect.Puff('orgLay');	
+	Effect.Puff('orgLay');
 	$("status").style.display="inline";
 	var portalurl = document.getElementById('portalurl').value;
 	var portalurl = portalurl.replace(/&/g, "#$#$#");
 	var portalname = document.getElementById('portalname').value;
-        new Ajax.Request(
-        	'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                	method: 'post',
-                        postBody:'action=PortalAjax&mode=ajax&file=Save&module=Portal&portalname='+portalname+'&portalurl='+portalurl+'&record='+id,
-                        onComplete: function(response) {
-					if(response.responseText.indexOf(":#:FAILURE") > -1)
-					{
-						alert(alert_arr.VALID_DATA)
-					}else
-					{
-						$('portalcont').innerHTML = response.responseText;
-					}
-					$("status").style.display="none";
-                        }
-                }
+	new Ajax.Request(
+		'index.php',
+		{queue: {position: 'end', scope: 'command'},
+		method: 'post',
+		postBody:'action=PortalAjax&mode=ajax&file=Save&module=Portal&portalname='+portalname+'&portalurl='+portalurl+'&record='+id,
+		onComplete: function(response) {
+			if(response.responseText.indexOf(":#:FAILURE") > -1)
+			{
+				alert(alert_arr.VALID_DATA);
+			}else
+			{
+				$('portalcont').innerHTML = response.responseText;
+			}
+			$("status").style.display="none";
+		}
+		}
 	);
 }
 function setSite(oUrllist)
@@ -108,39 +106,35 @@ function defaultMysites(oSelectlist)
 {
 	var id = $("urllist").value;
 	$("status").style.display="block";
-	 new Ajax.Request(
-        	'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                	method: 'post',
-                        postBody:'action=PortalAjax&mode=ajax&file=Save&module=Portal&check=true&passing_var='+id,
-                        onComplete: function(response) {
-					//alert(response.responseText);
-					$("status").style.display="none";
-                        }
-                }
+	new Ajax.Request(
+		'index.php',
+		{queue: {position: 'end', scope: 'command'},
+		method: 'post',
+		postBody:'action=PortalAjax&mode=ajax&file=Save&module=Portal&check=true&passing_var='+id,
+		onComplete: function(response) {
+			//alert(response.responseText);
+			$("status").style.display="none";
+		}
+		}
 	);
-	
 }
 
-var oRegex = new Object() ;
-oRegex.UriProtocol = new RegExp('') ;
-oRegex.UriProtocol.compile( '^(((ftp|news):\/\/)|mailto:)', 'gi' ) ;
+var oRegex = new Object();
+oRegex.UriProtocol = new RegExp('');
+oRegex.UriProtocol.compile( '^(((ftp|news):\/\/)|mailto:)', 'gi' );
 
-oRegex.UrlOnChangeProtocol = new RegExp('') ;
-oRegex.UrlOnChangeProtocol.compile( '^(ftp|news)://(?=.)', 'gi' ) ;
+oRegex.UrlOnChangeProtocol = new RegExp('');
+oRegex.UrlOnChangeProtocol.compile( '^(ftp|news)://(?=.)', 'gi' );
 
 function OnUrlChange()
 {
-    var sUrl;
-    var sProtocol;   
-                   
-          sUrl=document.getElementById("portalurl").value ;
-          sProtocol=oRegex.UrlOnChangeProtocol.exec( sUrl ) ;
-          if ( sProtocol )
-          {
-             sUrl = sUrl.substr( sProtocol[0].length ) ;
-             document.getElementById("portalurl").value = sUrl ;
-          }
-
-        
+	var sUrl;
+	var sProtocol;
+	sUrl=document.getElementById("portalurl").value;
+	sProtocol=oRegex.UrlOnChangeProtocol.exec( sUrl );
+	if ( sProtocol )
+	{
+		sUrl = sUrl.substr( sProtocol[0].length );
+		document.getElementById("portalurl").value = sUrl;
+	}
 }
