@@ -572,79 +572,83 @@ case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_gro
 	/** Function to get the update ticket history for the specified ticketid
 	  * @param $id -- $ticketid:: Type Integer
 	 */
-	function constructUpdateLog($focus, $mode, $assigned_group_name, $assigntype)
-	{
-		global $adb;
-		global $current_user;
+	function constructUpdateLog($focus, $mode, $assigned_group_name, $assigntype) {
+		global $adb, $current_user;
+		if($mode != 'edit') {
+			$updatelog = self::getUpdateLogCreateMessage($focus->column_fields, $assigned_group_name, $assigntype);
+		} else {
+			$updatelog = self::getUpdateLogEditMessage($focus->id,$focus->column_fields);
+		}
+		return $updatelog;
+	}
 
-		if($mode != 'edit')//this will be updated when we create new ticket
+	public static function getUpdateLogCreateMessage($column_fields, $assigned_group_name, $assigntype) {
+		global $log,$current_user;
+		$updatelog = "Ticket created. Assigned to ";
+
+		if(!empty($assigned_group_name) && $assigntype == 'T')
 		{
-			$updatelog = "Ticket created. Assigned to ";
-
-			if(!empty($assigned_group_name) && $assigntype == 'T')
-			{
-				$updatelog .= " group ".(is_array($assigned_group_name)? $assigned_group_name[0] : $assigned_group_name);
-			}
-			elseif($focus->column_fields['assigned_user_id'] != '')
-			{
-				$updatelog .= " user ".getUserFullName($focus->column_fields['assigned_user_id']);
-			}
-			else
-			{
-				$updatelog .= " user ".getUserFullName($current_user->id);
-			}
-
-			$fldvalue = date("l dS F Y h:i:s A").' by '.$current_user->user_name;
-			$updatelog .= " -- ".$fldvalue."--//--";
+			$updatelog .= " group ".(is_array($assigned_group_name)? $assigned_group_name[0] : $assigned_group_name);
+		}
+		elseif($column_fields['assigned_user_id'] != '')
+		{
+			$updatelog .= " user ".getUserFullName($column_fields['assigned_user_id']);
 		}
 		else
 		{
-			$ticketid = $focus->id;
-
-			//First retrieve the existing information
-			$tktresult = $adb->pquery("select * from vtiger_troubletickets where ticketid=?", array($ticketid));
-			$crmresult = $adb->pquery("select * from vtiger_crmentity where crmid=?", array($ticketid));
-
-			$updatelog = decode_html($adb->query_result($tktresult,0,"update_log"));
-
-			$old_owner_id = $adb->query_result($crmresult,0,"smownerid");
-			$old_status = $adb->query_result($tktresult,0,"status");
-			$old_priority = $adb->query_result($tktresult,0,"priority");
-			$old_severity = $adb->query_result($tktresult,0,"severity");
-			$old_category = $adb->query_result($tktresult,0,"category");
-
-			//Assigned to change log
-			if($focus->column_fields['assigned_user_id'] != $old_owner_id)
-			{
-				$owner_name = getOwnerName($focus->column_fields['assigned_user_id']);
-				if($assigntype == 'T')
-					$updatelog .= ' Transferred to group '.$owner_name.'\.';
-				else
-					$updatelog .= ' Transferred to user '.decode_html($owner_name).'\.'; // Need to decode UTF characters which are migrated from versions < 5.0.4.
-			}
-			//Status change log
-			if($old_status != $focus->column_fields['ticketstatus'] && $focus->column_fields['ticketstatus'] != '')
-			{
-				$updatelog .= ' Status Changed to '.$focus->column_fields['ticketstatus'].'\.';
-			}
-			//Priority change log
-			if($old_priority != $focus->column_fields['ticketpriorities'] && $focus->column_fields['ticketpriorities'] != '')
-			{
-				$updatelog .= ' Priority Changed to '.$focus->column_fields['ticketpriorities'].'\.';
-			}
-			//Severity change log
-			if($old_severity != $focus->column_fields['ticketseverities'] && $focus->column_fields['ticketseverities'] != '')
-			{
-				$updatelog .= ' Severity Changed to '.$focus->column_fields['ticketseverities'].'\.';
-			}
-			//Category change log
-			if($old_category != $focus->column_fields['ticketcategories'] && $focus->column_fields['ticketcategories'] != '')
-			{
-				$updatelog .= ' Category Changed to '.$focus->column_fields['ticketcategories'].'\.';
-			}
-
-			$updatelog .= ' -- '.date("l dS F Y h:i:s A").' by '.$current_user->user_name.'--//--';
+			$updatelog .= " user ".getUserFullName($current_user->id);
 		}
+
+		$fldvalue = date("l dS F Y h:i:s A").' by '.$current_user->user_name;
+		$updatelog .= " -- ".$fldvalue."--//--";
+		return $updatelog;
+	}
+
+	public static function getUpdateLogEditMessage($ticketid,$column_fields) {
+		global $adb,$log,$current_user;
+		//First retrieve the existing information
+		$tktresult = $adb->pquery("select * from vtiger_troubletickets where ticketid=?", array($ticketid));
+		$crmresult = $adb->pquery("select * from vtiger_crmentity where crmid=?", array($ticketid));
+
+		$updatelog = decode_html($adb->query_result($tktresult,0,"update_log"));
+
+		$old_owner_id = $adb->query_result($crmresult,0,"smownerid");
+		$old_status = $adb->query_result($tktresult,0,"status");
+		$old_priority = $adb->query_result($tktresult,0,"priority");
+		$old_severity = $adb->query_result($tktresult,0,"severity");
+		$old_category = $adb->query_result($tktresult,0,"category");
+
+		//Assigned to change log
+		if($column_fields['assigned_user_id'] != $old_owner_id)
+		{
+			$owner_name = getOwnerName($column_fields['assigned_user_id']);
+			if($assigntype == 'T')
+				$updatelog .= ' Transferred to group '.$owner_name.'\.';
+			else
+				$updatelog .= ' Transferred to user '.decode_html($owner_name).'\.'; // Need to decode UTF characters which are migrated from versions < 5.0.4.
+		}
+		//Status change log
+		if($old_status != $column_fields['ticketstatus'] && $column_fields['ticketstatus'] != '')
+		{
+			$updatelog .= ' Status Changed to '.$column_fields['ticketstatus'].'\.';
+		}
+		//Priority change log
+		if($old_priority != $column_fields['ticketpriorities'] && $column_fields['ticketpriorities'] != '')
+		{
+			$updatelog .= ' Priority Changed to '.$column_fields['ticketpriorities'].'\.';
+		}
+		//Severity change log
+		if($old_severity != $column_fields['ticketseverities'] && $column_fields['ticketseverities'] != '')
+		{
+			$updatelog .= ' Severity Changed to '.$column_fields['ticketseverities'].'\.';
+		}
+		//Category change log
+		if($old_category != $column_fields['ticketcategories'] && $column_fields['ticketcategories'] != '')
+		{
+			$updatelog .= ' Category Changed to '.$column_fields['ticketcategories'].'\.';
+		}
+
+		$updatelog .= ' -- '.date("l dS F Y h:i:s A").' by '.$current_user->user_name.'--//--';
 		return $updatelog;
 	}
 
