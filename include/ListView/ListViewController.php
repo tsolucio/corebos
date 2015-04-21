@@ -232,9 +232,14 @@ class ListViewController {
 					if (is_null($field)) continue;
 				}
 				$uitype = $field->getUIType();
+                                global $currentModule; 
                                 if($fieldName!='assigned_user_id' && strstr($fieldName,".assigned_user_id")){
                                 $modrel=getTabModuleName($field->getTabId());
                                 $rawValue = $this->db->query_result($result, $i, "smowner".strtolower($modrel));
+                                }
+                                else if(getTabid($currentModule)!=$field->getTabId()){
+                                $modrel=getTabModuleName($field->getTabId());
+                                $rawValue = $this->db->query_result($result, $i, strtolower($modrel).$field->getColumnName());
                                 }
 				else $rawValue = $this->db->query_result($result, $i, $field->getColumnName());				
                                 if($module == 'Calendar') {
