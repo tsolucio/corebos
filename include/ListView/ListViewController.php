@@ -60,14 +60,18 @@ class ListViewController {
 		}
 	}
 
-	public function fetchNameList($field, $result) {
+	public function fetchNameList($field, $result,$rel=null) {
 		$referenceFieldInfoList = $this->queryGenerator->getReferenceFieldInfoList();
 		$fieldName = $field->getFieldName();
 		$rowCount = $this->db->num_rows($result);
 
 		$idList = array();
 		for ($i = 0; $i < $rowCount; $i++) {
-			$id = $this->db->query_result($result, $i, $field->getColumnName());
+                   if($rel==1) {
+                   $modrel=getTabModuleName($field->getTabId());
+                   $colname=strtolower($modrel).$field->getColumnName();}
+                   else {$colname=$field->getColumnName();}
+		   $id = $this->db->query_result($result, $i, $colname);
 			if (!isset($this->nameList[$fieldName][$id])) {
 				$idList[$id] = $id;
 			}
@@ -183,6 +187,7 @@ class ListViewController {
 				$this->setupAccessiblePicklistValueList($fieldName);
 			}
                        $idList=array();
+                       global $currentModule;
                        if($fieldName!='assigned_user_id' && strstr($fieldName,".assigned_user_id")){
                        $modrel=getTabModuleName($field->getTabId());
                        $j=$rowCount*$k;
@@ -194,6 +199,9 @@ class ListViewController {
                        $j++;
 		      }
                       }
+                      }
+                      else if(getTabid($currentModule)!=$field->getTabId() && $field->getFieldDataType()=='reference'){
+                      $this->fetchNameList($field, $result,1);
                       }
                       if(count($idList) > 0) {
                            if(!is_array($this->ownerNameListrel[$fieldName])) {
@@ -456,7 +464,11 @@ class ListViewController {
 					}
 				} elseif($field->getFieldDataType() == 'reference') {
 					$referenceFieldInfoList = $this->queryGenerator->getReferenceFieldInfoList();
-					$moduleList = $referenceFieldInfoList[$fieldName];
+					global $currentModule;
+                                        if(getTabid($currentModule)!=$field->getTabId()){
+                                        $modrel=getTabModuleName($field->getTabId());
+                                        $fieldName=str_replace($modrel.'.',"",$fieldName); }
+                                        $moduleList = $referenceFieldInfoList[$fieldName];
 					if(count($moduleList) == 1) {
 						$parentModule = $moduleList[0];
 					} else {
