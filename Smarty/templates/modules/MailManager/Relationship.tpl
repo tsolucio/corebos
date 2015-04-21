@@ -11,7 +11,7 @@
 {if $LINKEDTO}
 <table width="100%" cellpadding="2px" cellspacing=0 border=0>
 <tr>
-	<td width="4px"><input type="radio" name="_mlinkto" value="{$LINKEDTO.record}"></td>
+	<td width="4px"><input type="radio" name="_mlinkto" value="{$LINKEDTO.record}" disabled></td>
 	<td>{$LINKEDTO.detailviewlink}</td>
 	<td>{$LINKEDTO.module|getTranslatedString:$moduleName}</td>
 </tr>
@@ -39,7 +39,7 @@
 	{assign var="LOOKRECATLEASTONE" value=true}
 	<tr>
 		<td>
-			<input type="radio" name="_mlinkto" value="{$RECORD.id}" style="align: absmiddle;">
+			<input type="radio" name="_mlinkto" value="{$RECORD.id}" {if $RECORD.linked}disabled {/if}style="align: absmiddle;">
 		</td>
 		<td align=left>
 			<a target="_blank" href="index.php?module={$MODULE}&action=DetailView&record={$RECORD.id}">{$RECORD.label|textlength_check}</a>

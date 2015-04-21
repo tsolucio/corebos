@@ -35,7 +35,7 @@ class MailManager_RelationController extends MailManager_Controller {
      * List of modules used to match the Email address
      * @var Array
      */
-	static $MODULES = array ( 'Contacts', 'Accounts', 'Leads');
+	static $MODULES = array ( 'Contacts', 'Accounts', 'Leads', 'HelpDesk', 'Project', 'Potentials', 'ProjectTask');
 
     /**
      * Process the request to perform relationship operations
@@ -54,9 +54,10 @@ class MailManager_RelationController extends MailManager_Controller {
 			$this->skipConnection = true; // No need to connect to mailbox here, improves performance
 			
 			// Check if the message is already linked.
-			$linkedto = MailManager_RelationControllerAction::associatedLink($request->get('_msguid'));
+			//$linkedto = MailManager_RelationControllerAction::associatedLink($request->get('_msguid'));
 			// If the message was not linked, lookup for matching records, using FROM address
-			if (empty($linkedto)) {
+			//if (empty($linkedto)) {
+				$msguid = $request->get('_msguid');
 				$results = array();
 				$modules = array();
 				$allowedModules = $this->getCurrentUserMailManagerAllowedModules();
@@ -66,18 +67,18 @@ class MailManager_RelationController extends MailManager_Controller {
                     $from = $request->get('_mfrom');
                     if(empty($from)) continue;
 
-                    $results[$MODULE] = $this->lookupModuleRecordsWithEmail($MODULE, $from);
+                    $results[$MODULE] = $this->lookupModuleRecordsWithEmail($MODULE, $from, $msguid);
                     $describe = $this->ws_describe($MODULE);
 					$modules[$MODULE] = array('label' => $describe['label'], 'name' => textlength_check($describe['name']), 'id' => $describe['idPrefix'] );
 					
 					// If look is found in a module, skip rest. - for performance
 					//if (!empty($results[$MODULE])) break;
-				}				
+				}
 				$viewer->assign('LOOKUPS', $results);
 				$viewer->assign('MODULES', $modules);
-			} else {
-				$viewer->assign('LINKEDTO', $linkedto);
-			}
+			//} else {
+			//	$viewer->assign('LINKEDTO', $linkedto);
+			//}
 
 			$viewer->assign('LinkToAvailableActions', $this->linkToAvailableActions());
 			$viewer->assign('AllowedModules', $allowedModules);
@@ -371,13 +372,18 @@ class MailManager_RelationController extends MailManager_Controller {
      */
 	function buildSearchQuery($module, $text, $type) {
 		$describe = $this->ws_describe($module);
+		$labelFields = $describe['labelFields'];
+		switch($module) {
+			case 'HelpDesk': $labelFields = 'ticket_title'; break;
+			case 'Documents': $labelFields = 'notes_title'; break;
+		}
 		$whereClause = '';
 		foreach($describe['fields'] as $field) {
 			if (strcasecmp($type, $field['type']['name']) === 0) {
 				$whereClause .= sprintf( " %s LIKE '%%%s%%' OR", $field['name'], $text );
 			}
 		}
-		return sprintf( "SELECT %s FROM %s WHERE %s;", $describe['labelFields'], $module, rtrim($whereClause, 'OR') );
+		return sprintf( "SELECT %s FROM %s WHERE %s;", $labelFields, $module, rtrim($whereClause, 'OR') );
 	}
 
     /**
@@ -387,13 +393,17 @@ class MailManager_RelationController extends MailManager_Controller {
      * @param Email Address $email
      * @return Array
      */
-	function lookupModuleRecordsWithEmail($module, $email) {
+	function lookupModuleRecordsWithEmail($module, $email, $msguid) {
 		global $current_user;
 		$query = $this->buildSearchQuery($module, $email, 'EMAIL');
 		$qresults = vtws_query( $query, $current_user );
 		$describe = $this->ws_describe($module);
-		$labelFields = explode(',', $describe['labelFields']);
-
+		$labelFields = $describe['labelFields'];
+		switch($module) {
+			case 'HelpDesk': $labelFields = 'ticket_title'; break;
+			case 'Documents': $labelFields = 'notes_title'; break;
+		}
+		$labelFields = explode(',', $labelFields);
 		$results = array();
 		foreach($qresults as $qresult) {
 			$labelValues = array();
@@ -401,7 +411,8 @@ class MailManager_RelationController extends MailManager_Controller {
 				if(isset($qresult[$fieldname])) $labelValues[] = $qresult[$fieldname]; 
 			}
 			$ids = vtws_getIdComponents($qresult['id']);
-			$results[] = array( 'wsid' => $qresult['id'], 'id' => $ids[1], 'label' => implode(' ', $labelValues));
+			$linkedto = MailManager::isEMailAssociatedWithCRMID($msguid, $ids[1]);
+			$results[] = array('wsid' => $qresult['id'], 'id' => $ids[1], 'label' => implode(' ', $labelValues), 'linked'=>$linkedto);
 		}	
 		return $results;
 	}

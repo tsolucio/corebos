@@ -84,6 +84,16 @@ class MailManager {
 		return false;
 	}
 
+	static function isEMailAssociatedWithCRMID($mailuid,$crmid) {
+		global $adb;
+		$result = $adb->pquery(
+			"SELECT vtiger_mailmanager_mailrel.* FROM vtiger_mailmanager_mailrel INNER JOIN
+			vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_mailmanager_mailrel.crmid AND vtiger_crmentity.deleted=0
+			AND vtiger_mailmanager_mailrel.mailuid=? and vtiger_mailmanager_mailrel.crmid=? LIMIT 1",
+			array(decode_html($mailuid),$crmid));
+		return ($adb->num_rows($result)>0);
+	}
+
 	static function checkModuleWriteAccessForCurrentUser($module) {
 		global $current_user;
 		if (isPermitted($module, 'EditView') == "yes" && vtlib_isModuleActive($module)) {
