@@ -1021,7 +1021,7 @@ if (typeof(MailManager) == 'undefined') {
                         var response = MailManager.removeHidElement(transport.responseText);
                         var responseJSON = JSON.parse(response);
                         if (responseJSON['success']) {
-                            jQuery("#emailid").val(responseJSON['result']['emailid'])
+                            jQuery("#emailid").val(responseJSON['result']['emailid']);
                             var attachments = responseJSON['result']['attachments'];
                             if(attachments != '' && attachments != null) {      //If attachments are present
                                 for(i=0; i<attachments.length; i++){
@@ -1425,7 +1425,6 @@ if (typeof(MailManager) == 'undefined') {
 
         },
 
-		
         computeDisplayableFileSize : function(size) {
             var fileSize;
             if(size <= 1024) {
@@ -1527,7 +1526,6 @@ if (typeof(MailManager) == 'undefined') {
             return true;
         },
 
-
         AjaxDuplicateValidate : function (module, fieldname, form) {
             var deferred = jQuery.Deferred();
 
@@ -1605,7 +1603,7 @@ if (typeof(MailManager) == 'undefined') {
         },
 
         resetFolderDropDown : function() {
-            jQuery('#moveFolderList').val("")
+            jQuery('#moveFolderList').val("");
         },
 
         toggleSelect : function(state, relCheckName) {
@@ -1641,5 +1639,5 @@ if (typeof(MailManager) == 'undefined') {
                 jQuery(element).addClass('mm_lvtColDataHover');
             }
         }
-    }
+    };
 }
