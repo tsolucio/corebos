@@ -154,7 +154,17 @@ $mod_strings = Array (
     'LBL_MAILMANAGER_ADD_HelpDesk' => 'Añadir Caso',
     'LBL_MAILMANAGER_ADD_Emails' => 'Adjuntar Correo',
     'LBL_MAILMANAGER_ADD_ModComments' => 'Añadir Comentario',
-    'LBL_ADD' => 'Añadir'
+    'LBL_MAILMANAGER_ADD_Potentials' => 'Añadir Oportunidad',
+    'LBL_MAILMANAGER_ADD_Project' => 'Añadir Proyecto',
+    'LBL_MAILMANAGER_ADD_ProjectTask' => 'Añadir Actividad',
+    'LBL_ADD' => 'Añadir',
+	'JSLBL_SendWith_EmptyText' => '¿Enviar sin texto en el cuerpo?',
+	'LBL_ALLMAILS' => 'Todos los Correos',
+	'LBL_TO_CONTACTS' => 'A Contactos',
+	'LBL_TO_ACCOUNTS' => 'A Cuentas',
+	'LBL_TO_LEADS' => 'A PreContactos',
+	'LBL_TO_USERS' => 'A Usuarios',
+	'LBL_SENT_MAILS' => 'Correos Enviados'
 );
 
 ?>

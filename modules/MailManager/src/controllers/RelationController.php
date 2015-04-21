@@ -211,14 +211,14 @@ class MailManager_RelationController extends MailManager_Controller {
 			try {
 				$focus->save($linkModule);
 
-                // This condition is added so that emails are not created for Tickets and Todo without Parent,
+                // This condition is added so that emails are not created for Todo without Parent,
                 // as there is no way to relate them
-				if(empty($parent) && $linkModule != 'HelpDesk' && $linkModule != 'Calendar') {
+				if(empty($parent) && $linkModule != 'Calendar') {
 					$linkedto = MailManager_RelationControllerAction::associate($mail, $focus->id);
 				}
 
                 // add attachments to the tickets as Documents
-                if($linkModule == 'HelpDesk' && !empty($attachments)) {
+                if(in_array($linkModule,array('HelpDesk','Potentials','Project','ProjectTask')) && !empty($attachments)) {
                     $relationController = new MailManager_RelationControllerAction();
                     $relationController->__SaveAttachements($mail, $linkModule, $focus);
                 }
@@ -228,7 +228,7 @@ class MailManager_RelationController extends MailManager_Controller {
 				$viewer->assign('AllowedModules', $this->getCurrentUserMailManagerAllowedModules());
 				$viewer->assign('LinkToAvailableActions', $this->linkToAvailableActions());
                 $viewer->assign('FOLDER', $foldername);
-                
+
 				$response->setResult( array( 'ui' => $viewer->fetch( $this->getModuleTpl('Relationship.tpl') ) ) );
 			} catch(Exception $e) {
 				$response->setResult( array( 'ui' => '', 'error' => $e ));
@@ -297,6 +297,9 @@ class MailManager_RelationController extends MailManager_Controller {
 				'company'		=> $companyName[0], 
 				'ticket_title'	=> $subject,
 				'subject'		=> $subject,
+				'potentialname'	=> $subject,
+				'projectname'	=> $subject,
+				'projecttaskname' => $subject,
 		);
 		$defaultFieldValueMapKeys = array_keys($defaultFieldValueMap);
 		
@@ -322,7 +325,7 @@ class MailManager_RelationController extends MailManager_Controller {
       * @return Array
       */
 	 public function getCurrentUserMailManagerAllowedModules() {
-		 $moduleListForCreateRecordFromMail = array('Contacts', 'Accounts', 'Leads', 'HelpDesk', 'Calendar');
+		 $moduleListForCreateRecordFromMail = array('Contacts', 'Accounts', 'Leads', 'HelpDesk', 'Calendar','Potentials','Project','ProjectTask');
 		 
 		 foreach($moduleListForCreateRecordFromMail as $module) {
 			if(MailManager::checkModuleWriteAccessForCurrentUser($module)) {
@@ -337,7 +340,7 @@ class MailManager_RelationController extends MailManager_Controller {
       * @return string 
       */
 	 public function linkToAvailableActions() {
-		 $moduleListForLinkTo = array('Calendar','HelpDesk','ModComments','Emails');
+		 $moduleListForLinkTo = array('Calendar','HelpDesk','ModComments','Emails','Potentials','Project','ProjectTask');
 		 
 		 foreach($moduleListForLinkTo as $module) {
 			 if(MailManager::checkModuleWriteAccessForCurrentUser($module)) {

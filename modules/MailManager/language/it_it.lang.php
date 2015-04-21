@@ -153,6 +153,9 @@ $mod_strings = Array (
     'LBL_MAILMANAGER_ADD_HelpDesk' => 'Aggiungi Ticket',
     'LBL_MAILMANAGER_ADD_Emails' => 'Allega Email',
     'LBL_MAILMANAGER_ADD_ModComments' => 'Aggiungi Commento',
+    'LBL_MAILMANAGER_ADD_Potentials' => 'Add Potential',
+    'LBL_MAILMANAGER_ADD_Project' => 'Add Project',
+    'LBL_MAILMANAGER_ADD_ProjectTask' => 'Add Project Task',
     'LBL_ADD' => 'Aggiungi',
 	
     'JSLBL_SendWith_EmptyText' => 'Inviare la mail senza testo?',

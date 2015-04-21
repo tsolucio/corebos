@@ -177,6 +177,9 @@ $mod_strings = Array (
     'LBL_MAILMANAGER_ADD_HelpDesk' => 'Ticket toevoegen',
     'LBL_MAILMANAGER_ADD_Emails' => 'E-mail toevoegen',
     'LBL_MAILMANAGER_ADD_ModComments' => 'Commentaar toevoegen',
+    'LBL_MAILMANAGER_ADD_Potentials' => 'Add Potential',
+    'LBL_MAILMANAGER_ADD_Project' => 'Add Project',
+    'LBL_MAILMANAGER_ADD_ProjectTask' => 'Add Project Task',
     'LBL_ADD' => 'Toevoegen'
 );
 
