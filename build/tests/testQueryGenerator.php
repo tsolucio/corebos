@@ -297,6 +297,16 @@ $queryGenerator->addReferenceModuleFieldCondition('Accounts', 'account_id', 'acc
 $query = $queryGenerator->getQuery();
 echo "$query<br>";
 testquery($query);
+
+echo "<h2>Query with subject of Invoice and SO and account_id of rel module</h2>";
+$queryGenerator = new QueryGenerator("Invoice", $current_user);
+$queryGenerator->setFields(array('id','subject','Accounts.assigned_user_id','SalesOrder.subject','SalesOrder.account_id'));
+//$queryGenerator->addReferenceModuleFieldCondition('Accounts', 'account_id', 'accountname', 'EDFG Group Limited', 'exists');
+
+$query = $queryGenerator->getQuery();
+echo "$query<br>";
+testquery($query);
+
 //error_reporting(E_ALL);ini_set("display_errors", "on");
 // echo "<h2>Query with custom field</h2>";
 // $queryGenerator = new QueryGenerator($moduleName, $current_user);
