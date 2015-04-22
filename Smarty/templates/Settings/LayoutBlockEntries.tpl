@@ -301,7 +301,7 @@
 														 			{if $value.quickcreate neq '0' && $value.quickcreate neq '3'} enableDisableCheckBox(this,quickcreate_check_{$value.fieldselect}); {/if}">
 													</td>
 													<td valign="top" class="dvtCellInfo" align="left">
-														&nbsp;{$MOD.LBL_MANDATORY_FIELD}
+														&nbsp;<label for="mandatory_check_{$value.fieldselect}">{$MOD.LBL_MANDATORY_FIELD}</label>
 													</td>
 												</tr>
 												<tr>
@@ -322,8 +322,8 @@
 														{/if}
 														 >
 													</td>
-													<td valign="top" class="dvtCellInfo" align="left">	
-														&nbsp;{$MOD.LBL_ACTIVE}
+													<td valign="top" class="dvtCellInfo" align="left">
+														&nbsp;<label for="presence_check_{$value.fieldselect}">{$MOD.LBL_ACTIVE}</label>
 													</td>
 												</tr>
 												<tr>
@@ -341,7 +341,7 @@
 														 >
 													</td>
 													<td valign="top" class="dvtCellInfo" align="left">
-														&nbsp;{$MOD.LBL_QUICK_CREATE} 
+														&nbsp;<label for="quickcreate_check_{$value.fieldselect}">{$MOD.LBL_QUICK_CREATE}</label>
 													</td>
 												</tr>
 												<tr>
@@ -357,8 +357,8 @@
 															disabled
 														{/if}>
 													</td>
-													<td valign="top" class="dvtCellInfo" align="left">	
-													&nbsp;{$MOD.LBL_MASS_EDIT}
+													<td valign="top" class="dvtCellInfo" align="left">
+													&nbsp;<label for="massedit_check_{$value.fieldselect}">{$MOD.LBL_MASS_EDIT}</label>
 													</td>
 												</tr>
 												<tr>
@@ -373,7 +373,7 @@
 														{/if}
 													</td>
 													<td valign="top" class="dvtCellInfo" align="left">
-														&nbsp;{$MOD.LBL_DEFAULT_VALUE}<br>
+														&nbsp;<label for="defaultvalue_check_{$value.fieldselect}">{$MOD.LBL_DEFAULT_VALUE}</label><br>
 														{assign var="fieldElementId" value='defaultvalue_'|cat:$value.fieldselect}
 														{if $defaultsetting.permitted eq true}
                 											{include file="Settings/FieldUI.tpl" 
