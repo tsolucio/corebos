@@ -383,7 +383,7 @@ class MailManager_RelationController extends MailManager_Controller {
 				$whereClause .= sprintf( " %s LIKE '%%%s%%' OR", $field['name'], $text );
 			}
 		}
-		return sprintf( "SELECT %s FROM %s WHERE %s;", $labelFields, $module, rtrim($whereClause, 'OR') );
+		return sprintf( "SELECT %s FROM %s WHERE %s order by createdtime desc limit 0,6;", $labelFields, $module, rtrim($whereClause, 'OR') );
 	}
 
     /**
