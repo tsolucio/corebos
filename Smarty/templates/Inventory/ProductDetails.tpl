@@ -121,8 +121,13 @@ function displayCoords(currObj,obj,mode,curr_row)
 	<td class="dvInnerHeader" align="center" colspan="2">
 		<b>{$APP.LBL_TAX_MODE}</b>&nbsp;&nbsp;
 		<select id="taxtype" name="taxtype" onchange="decideTaxDiv(); calcTotal();">
-			<OPTION value="individual" selected>{$APP.LBL_INDIVIDUAL}</OPTION>
-			<OPTION value="group">{$APP.LBL_GROUP}</OPTION>
+			{if $TAX_TYPE eq 'group'}
+				<OPTION value="individual">{$APP.LBL_INDIVIDUAL}</OPTION>
+				<OPTION value="group" selected>{$APP.LBL_GROUP}</OPTION>
+			{else}
+				<OPTION value="individual" selected>{$APP.LBL_INDIVIDUAL}</OPTION>
+				<OPTION value="group">{$APP.LBL_GROUP}</OPTION>
+			{/if}
 		</select>
 	</td>
    </tr>
@@ -199,7 +204,11 @@ function displayCoords(currObj,obj,mode,curr_row)
 
 	<!-- column 4 - Quantity - starts -->
 	<td class="crmTableRow small lineOnTop">
-		<input id="qty1" name="qty1" type="text" class="small " style="width:50px" onfocus="this.className='detailedViewTextBoxOn'" onBlur="settotalnoofrows();calcTotal(); loadTaxes_Ajax(1); setDiscount(this,'1'); calcTotal();{if $MODULE eq 'Invoice'}stock_alert(1);{/if}" value=""/><br><span id="stock_alert1"></span>
+		{if $TAX_TYPE eq 'group'}
+			<input id="qty1" name="qty1" type="text" class="small " style="width:50px" onfocus="this.className='detailedViewTextBoxOn'" onBlur="settotalnoofrows();calcTotal(); loadTaxes_Ajax(1); calcGroupTax(); setDiscount(this,'1'); calcTotal();{if $MODULE eq 'Invoice'}stock_alert(1);{/if}" value=""/><br><span id="stock_alert1"></span>
+		{else}
+			<input id="qty1" name="qty1" type="text" class="small " style="width:50px" onfocus="this.className='detailedViewTextBoxOn'" onBlur="settotalnoofrows();calcTotal(); loadTaxes_Ajax(1); setDiscount(this,'1'); calcTotal();{if $MODULE eq 'Invoice'}stock_alert(1);{/if}" value=""/><br><span id="stock_alert1"></span>
+		{/if}
 	</td>
 	<!-- column 4 - Quantity - ends -->
 
@@ -433,5 +442,15 @@ function displayCoords(currObj,obj,mode,curr_row)
    </tr>
 
 
+<!-- Added to calculate the tax and total values when page loads -->
+<script>
+ decideTaxDiv();
+ {if $TAX_TYPE eq 'group'}
+ 	calcGroupTax();
+ {/if}
+ calcTotal();
+ calcSHTax();
+</script>
+<!-- This above div is added to display the tax informations --> 
 
 

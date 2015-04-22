@@ -232,7 +232,12 @@ function displayCoords(currObj,obj,mode,curr_row)
 
 	<!-- column 4 - Quantity - starts -->
 	<td class="crmTableRow small lineOnTop" valign="top">
-		<input id="{$qty}" name="{$qty}" type="text" class="small " style="width:50px" onfocus="this.className='detailedViewTextBoxOn'" onBlur="settotalnoofrows(); calcTotal(); loadTaxes_Ajax('{$row_no}');{if $MODULE eq 'Invoice' && $entityType neq 'Services'} stock_alert('{$row_no}');{/if}" onChange="setDiscount(this,'{$row_no}')" value="{$data.$qty}"/><br><span id="stock_alert{$row_no}"></span>
+		{if $TAX_TYPE eq 'group'}
+			<input id="{$qty}" name="{$qty}" type="text" class="small " style="width:50px" onfocus="this.className='detailedViewTextBoxOn'" onBlur="settotalnoofrows(); calcTotal(); loadTaxes_Ajax('{$row_no}'); calcGroupTax();{if $MODULE eq 'Invoice' && $entityType neq 'Services'} stock_alert('{$row_no}');{/if}" onChange="setDiscount(this,'{$row_no}')" value="{$data.$qty}"/><br><span id="stock_alert{$row_no}"></span>
+		{else}
+			<input id="{$qty}" name="{$qty}" type="text" class="small " style="width:50px" onfocus="this.className='detailedViewTextBoxOn'" onBlur="settotalnoofrows(); calcTotal(); loadTaxes_Ajax('{$row_no}'); {if $MODULE eq 'Invoice' && $entityType neq 'Services'} stock_alert('{$row_no}');{/if}" onChange="setDiscount(this,'{$row_no}')" value="{$data.$qty}"/><br><span id="stock_alert{$row_no}"></span>
+		{/if}
+
 	</td>
 	<!-- column 4 - Quantity - ends -->
 
@@ -512,9 +517,14 @@ so we will get that array, parse that array and fill the details
 
 
 <!-- Added to calculate the tax and total values when page loads -->
-<script>decideTaxDiv();</script>
-<script>calcTotal();</script>
-<script>calcSHTax();</script>
+<script>
+ decideTaxDiv();
+ {if $TAX_TYPE eq 'group'}
+ 	calcGroupTax();
+ {/if}
+ calcTotal();
+ calcSHTax();
+</script>
 <!-- This above div is added to display the tax informations --> 
 
 
