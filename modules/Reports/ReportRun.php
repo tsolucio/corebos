@@ -1626,6 +1626,7 @@ class ReportRun extends CRMEntity {
 				left join vtiger_salesorder as vtiger_salesorderRelCalendar on vtiger_salesorderRelCalendar.salesorderid = vtiger_crmentityRelCalendar.crmid
 				left join vtiger_troubletickets as vtiger_troubleticketsRelCalendar on vtiger_troubleticketsRelCalendar.ticketid = vtiger_crmentityRelCalendar.crmid
 				left join vtiger_campaign as vtiger_campaignRelCalendar on vtiger_campaignRelCalendar.campaignid = vtiger_crmentityRelCalendar.crmid
+				left join vtiger_vendor as vtiger_vendorRelCalendar on vtiger_vendorRelCalendar.vendorid = vtiger_crmentityRelCalendar.crmid
                 left join vtiger_users as vtiger_lastModifiedByCalendar on vtiger_lastModifiedByCalendar.id = vtiger_crmentity.modifiedby
 				".$this->getRelatedModulesQuery($module,$this->secondarymodule).
 						getNonAdminAccessControlQuery($this->primarymodule,$current_user)."
@@ -3373,6 +3374,8 @@ class ReportRun extends CRMEntity {
 					$referenceTableName = 'vtiger_troubleticketsRelCalendar';
 				} elseif ($moduleName == 'Calendar' && $referenceModule == 'Campaigns') {
 					$referenceTableName = 'vtiger_campaignRelCalendar';
+				} elseif ($moduleName == 'Calendar' && $referenceModule == 'Vendors') {
+					$referenceTableName = 'vtiger_vendorRelCalendar';
 				} elseif ($moduleName == 'Contacts' && $referenceModule == 'Accounts') {
 					$referenceTableName = 'vtiger_accountContacts';
 				} elseif ($moduleName == 'Contacts' && $referenceModule == 'Contacts') {
