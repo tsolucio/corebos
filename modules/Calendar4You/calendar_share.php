@@ -125,7 +125,7 @@ $Calendar_Settings = $Calendar4You->getSettings();
             </tr>
             <tr>
                 <td align="left">   
-                 <?   echo $mod_strings["LBL_WEEK_STARTS_AT"].": ";
+                 <?php   echo $mod_strings["LBL_WEEK_STARTS_AT"].": ";
                       /*
                       $Days_Values = array("Sunday"=>$c_mod_strings["LBL_DAY0"],
                       "Monday"=>$c_mod_strings["LBL_DAY1"],
