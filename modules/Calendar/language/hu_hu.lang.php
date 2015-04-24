@@ -38,6 +38,7 @@ $mod_strings = array(
 	'LBL_CALSTART' => 'A Naptáram kezdő időpontja',
 	'LBL_TIMESETTINGS' => 'Idő Beállítások',
 	'LBL_HOLDFOLLOWUP' => 'Utánkövetés',
+	'LBL_FOLLOWUP' => 'Utánkövetés',
 	'LBL_CALL' => 'Hívás',
 	'LBL_MEET' => 'Megbeszélés',
 	'LBL_APPNT' => 'Időpont-egyeztetés',

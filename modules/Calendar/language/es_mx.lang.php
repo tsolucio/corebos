@@ -40,6 +40,7 @@ $mod_strings = array (
 'LBL_CALSTART'=>'Comenzar el día de Calendario a las',
 'LBL_TIMESETTINGS'=>'Preferencias de Hora',
 'LBL_HOLDFOLLOWUP'=>'Mantener seguimiento el dia',
+'LBL_FOLLOWUP' => 'Seguimiento',
 'LBL_CALL' => 'Llamada',
 'LBL_MEET' => 'Reunión',
 'LBL_APPNT' => 'Evento',

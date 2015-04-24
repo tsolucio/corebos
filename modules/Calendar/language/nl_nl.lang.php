@@ -48,6 +48,7 @@ $mod_strings = Array(
 'LBL_CALSTART'=>'Start mijn agenda om',
 'LBL_TIMESETTINGS'=>'Tijdinstelling',
 'LBL_HOLDFOLLOWUP'=>'Vasthouden opvolgen van',
+'LBL_FOLLOWUP' => 'Follow up',
 'LBL_CALL' => 'Telefoongesprek',
 'LBL_MEET' => 'Vergadering',
 'LBL_APPNT' => 'Afspraak',

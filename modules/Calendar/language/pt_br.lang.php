@@ -39,6 +39,7 @@ $mod_strings = Array(
 'LBL_CALSTART'=>'Iniciar horário da minha Agenda em',
 'LBL_TIMESETTINGS'=>'Configurações Data',
 'LBL_HOLDFOLLOWUP'=>'Realizar acompanhamento sobre',
+'LBL_FOLLOWUP' => 'Acompanhamento',
 'LBL_CALL' => 'Chamada',
 'LBL_MEET' => 'Reunião',
 'LBL_APPNT' => 'Compromisso',

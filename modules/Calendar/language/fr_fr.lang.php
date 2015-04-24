@@ -26,6 +26,7 @@ $mod_strings = array (
 		'LBL_CALSTART' => 'Mes journées débutent à',
 		'LBL_TIMESETTINGS' => 'Configuration heure',
 		'LBL_HOLDFOLLOWUP' => 'Suivi',
+		'LBL_FOLLOWUP' => 'Relance',
 		'LBL_CALL' => 'Appel',
 		'LBL_MEET' => 'Rendez-vous',
 		'LBL_APPNT' => 'Rendez-vous',

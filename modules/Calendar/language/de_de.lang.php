@@ -32,6 +32,7 @@ $mod_strings = Array(
     'LBL_CALSTART'=>'starte meine Kalenderzeit mit',
     'LBL_TIMESETTINGS'=>'Zeiteinstellungen',
     'LBL_HOLDFOLLOWUP'=>'Nachfassen am',
+    'LBL_FOLLOWUP' => 'Follow up',
     'LBL_CALL' => 'Anruf',
     'LBL_MEET' => 'Meeting',
     'LBL_APPNT' => 'Termin',
