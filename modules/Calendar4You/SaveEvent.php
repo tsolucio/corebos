@@ -402,7 +402,7 @@ if($_REQUEST['recurringcheck']) {
 $date = new DateTimeField($_REQUEST["date_start"]);
 echo $date->getDBInsertDateValue();
 
-echo "-".$mod_strings["LBL_SUCCESSFULY_CREATED"];
+echo "-".getTranslatedString("LBL_SUCCESSFULY_CREATED","Calendar4You");
 
 exit;
 ?> 

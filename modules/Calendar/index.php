@@ -27,6 +27,6 @@ require_once('include/logging.php');
 $cal_log =& LoggerManager::getLogger('calendar');
 global $mod_strings;
 
-include ('modules/Calendar/new_calendar.php');
+include ('modules/Calendar/ListView.php');
 
 ?>

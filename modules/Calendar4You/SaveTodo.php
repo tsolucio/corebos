@@ -91,7 +91,7 @@ function getRequestedToData() {
 $date = new DateTimeField($_REQUEST["task_date_start"]);
 echo $date->getDBInsertDateValue();
 
-echo "-".$mod_strings["LBL_SUCCESSFULY_CREATED"];
+echo "-".getTranslatedString("LBL_SUCCESSFULY_CREATED","Calendar4You");
 
 exit;
 ?>

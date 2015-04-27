@@ -286,7 +286,7 @@ function alphabetic(module,url,dataid)
 				<table class="small" border="0" cellpadding="3" cellspacing="0" width="100%">
 				<tr>
 					<td class="dvtTabCache" style="width: 10px;" nowrap="nowrap">&nbsp;</td>
-					<td class="dvtUnSelectedCell" align="center" nowrap="nowrap"><a href="index.php?action=index&module=Calendar&parenttab={$CATEGORY}">{$APP.Calendar}</a></td>
+					<td class="dvtUnSelectedCell" align="center" nowrap="nowrap"><a href="index.php?action=index&module=Calendar4You&parenttab={$CATEGORY}">{'Calendar4You'|getTranslatedString:'Calendar4You'}</a></td>
 					<td class="dvtTabCache" style="width: 10px;">&nbsp;</td>
 					<td class="dvtSelectedCell" align="center" nowrap="nowrap">{$MOD.LBL_ALL_EVENTS_TODOS}</td>
 					<td class="dvtTabCache" style="width: 100%;">&nbsp;</td>

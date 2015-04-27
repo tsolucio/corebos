@@ -2276,10 +2276,10 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$actvity_type = ($actvity_type != '') ? $actvity_type : $adb->query_result($list_result, $list_result_count, 'type');
 					if ($actvity_type == "Task") {
 						$count = counterValue();
-						$value = '<a href="index.php?action=DetailView&module=' . $module . '&record=' . $entity_id . '&activity_mode=Task&parenttab=' . $tabname . '" id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+						$value = '<a href="index.php?action=EventDetailView&module=Calendar4You&record=' . $entity_id . '&activity_mode=Task&parenttab=' . $tabname . '" id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
 					} else {
 						$count = counterValue();
-						$value = '<a href="index.php?action=DetailView&module=' . $module . '&record=' . $entity_id . '&activity_mode=Events&parenttab=' . $tabname . '" id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+						$value = '<a href="index.php?action=EventDetailView&module=Calendar4You&record=' . $entity_id . '&activity_mode=Events&parenttab=' . $tabname . '" id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
 					}
 				} elseif ($module == "Vendors") {
 					$count = counterValue();
@@ -3839,7 +3839,10 @@ function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $
 function getListViewEditLink($module, $entity_id, $relatedlist, $returnset, $result, $count) {
 	global $adb;
 	$return_action = "index";
-	$edit_link = "index.php?module=$module&action=EditView&record=$entity_id";
+	if ($module == 'Calendar')
+		$edit_link = "index.php?module=Calendar4You&action=EventEditView&record=$entity_id";
+	else
+		$edit_link = "index.php?module=$module&action=EditView&record=$entity_id";
 	$tabname = getParentTab();
 	//Added to fix 4600
 	$url = getBasic_Advance_SearchURL();

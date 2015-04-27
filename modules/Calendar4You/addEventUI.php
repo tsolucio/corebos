@@ -1174,7 +1174,7 @@ frm1.submit(function (){
                    
                     jQuery('#calendar_div').fullCalendar('gotoDate', return_data[0] * 1, go_to_month, return_data[2] * 1);
                     
-                    alert(return_data[3]);
+                    alert(return_data[4]);
                 } else {
                     alert(data);
                 }
@@ -1213,7 +1213,7 @@ frm2.submit(function (){
                     
                     jQuery('#calendar_div').fullCalendar('gotoDate', return_data[0] * 1, go_to_month, return_data[2] * 1);
                     
-                    alert(return_data[3]);
+                    alert(return_data[4]);
                 } else {
                     alert("error:"+data);
                 }

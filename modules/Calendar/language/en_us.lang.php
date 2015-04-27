@@ -21,10 +21,10 @@
  ********************************************************************************/
 
 $mod_strings = Array(
-'LBL_MODULE_NAME'=>'Calendar',
-'LBL_MODULE_TITLE'=>'Calendar: Home',
-'LBL_MODULE_APPOINTMENT'=>'Calendar: Appointment',
-'LBL_MODULE_APPOINTMENT_DETAIL'=>'Calendar: Appointment Detail',
+'LBL_MODULE_NAME'=>'Tasks',
+'LBL_MODULE_TITLE'=>'Tasks: Home',
+'LBL_MODULE_APPOINTMENT'=>'Tasks: Appointment',
+'LBL_MODULE_APPOINTMENT_DETAIL'=>'Tasks: Appointment Detail',
 'LBL_SAVE'=>'Save',
 'LBL_RESET'=>'Cancel',
 'LBL_LIST_USER_NAME'=>'User Name',
@@ -189,7 +189,7 @@ $mod_strings = Array(
 'LBL_STATUS'=>'Status',
 'LBL_ACTION'=>'Actions',
 'LBL_ADD'=>'Add',
-'LBL_OPENCAL'=>'Open Calendar',
+'LBL_OPENCAL'=>'Open Tasks',
 
 
 'LBL_ADD_EVENT'=>'Add Event',
@@ -257,7 +257,7 @@ $mod_strings = Array(
 'LBL_NEW_FORM_TITLE'=>'New Activity',
 'LBL_TASK_INFORMATION'=>'Task Information',
 'LBL_EVENT_INFORMATION'=>'Event Information',
-'LBL_CALENDAR_INFORMATION'=>'Calendar Information',
+'LBL_CALENDAR_INFORMATION'=>'Tasks Information',
 
 'LBL_NAME'=>'Subject:',
 'LBL_ACTIVITY_NOTIFICATION'=>'This is a notification that an activity is assigned to you that has been',
@@ -449,7 +449,7 @@ $mod_strings = Array(
 'LBL_FAILURE'=>'Failed!',
     
 'LBL_ARE_YOU_SURE'=>'Are you sure?',
-'Calendar ID' => 'Calendar ID',
+'Calendar ID' => 'Tasks ID',
 );
 
 ?>

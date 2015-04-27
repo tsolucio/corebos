@@ -21,10 +21,10 @@
  ********************************************************************************/
 
 $mod_strings = array (
-'LBL_MODULE_NAME'=>'Calendario',
-'LBL_MODULE_TITLE'=>'Calendario: Inicio',
-'LBL_MODULE_APPOINTMENT'=>'Calendario: Evento',
-'LBL_MODULE_APPOINTMENT_DETAIL'=>'Calendario: Detalle de Evento',
+'LBL_MODULE_NAME'=>'Tareas',
+'LBL_MODULE_TITLE'=>'Tareas: Inicio',
+'LBL_MODULE_APPOINTMENT'=>'Tareas: Evento',
+'LBL_MODULE_APPOINTMENT_DETAIL'=>'Tareas: Detalle de Evento',
 'LBL_SAVE'=>'Guardar',
 'LBL_RESET'=>'Cancelar',
 'LBL_LIST_USER_NAME'=>'Usuario',
@@ -189,7 +189,7 @@ $mod_strings = array (
 'LBL_STATUS'=>'Situación',
 'LBL_ACTION'=>'Acciones',
 'LBL_ADD'=>'Añadir',
-'LBL_OPENCAL'=>'Abrir Calendario',
+'LBL_OPENCAL'=>'Abrir Tareas',
 
 
 'LBL_ADD_EVENT'=>'Añadir Evento',
@@ -257,7 +257,7 @@ $mod_strings = array (
 'LBL_NEW_FORM_TITLE'=>'Nueva Tarea',
 'LBL_TASK_INFORMATION'=>'Información de Tarea',
 'LBL_EVENT_INFORMATION'=>'Información de Evento',
-'LBL_CALENDAR_INFORMATION'=>'Información de Calendario',
+'LBL_CALENDAR_INFORMATION'=>'Información de Tareas',
 
 'LBL_NAME'=>'Asunto:',
 'LBL_ACTIVITY_NOTIFICATION'=>'Se te ha asignado una tarea. Estado:',
@@ -449,7 +449,7 @@ $mod_strings = array (
 'LBL_FAILURE'=>'Fallido!',
 
 'LBL_ARE_YOU_SURE'=>'¿Estás seguro?',
-'Calendar ID' => 'Id Calendario',
+'Calendar ID' => 'Id Tareas',
 );
 
 ?>
