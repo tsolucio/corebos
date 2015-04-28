@@ -832,19 +832,11 @@ class QueryGenerator {
 						$meta = $this->getMeta($module);
 						$columnList = array();
 						foreach ($nameFieldList as $column) {
-							if($module == 'Users') {
-								$instance = CRMEntity::getInstance($module);
-								$referenceTable = $instance->table_name;
-								if(count($this->ownerFields) > 0 || $this->getModule() == 'Quotes') {
-									if(strpos($this->fromClause,'vtiger_users2') !==false)
-										$referenceTable .= '2';
-								}
-							} else {
+							if($module == 'Users')
+								$referenceTable = "vtiger_users".$fieldName;
+							else {
 								$referenceField = $meta->getFieldByColumnName($column);
-								$referenceTable = $referenceField->getTableName();
-							}
-							if(isset($moduleTableIndexList[$referenceTable])) {
-								$referenceTable = "$referenceTable$fieldName";
+								$referenceTable = $referenceField->getTableName().$fieldName;
 							}
 							$columnList[] = "$referenceTable.$column";
 						}
