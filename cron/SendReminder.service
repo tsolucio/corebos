@@ -90,7 +90,7 @@ if($adb->num_rows($result) >= 1)
 			$contents = nl2br($adb->query_result($result_main,0,'notificationbody')) ."\n\n ".
 							$app_strings['Subject']." : ".$activity_sub."\n ". $parent_content ." ".
 							$app_strings['Date & Time']." : ".$date_start." ".$time_start."(". DateTimeField::getDBTimeZone() .")\n\n ".
-							$app_strings['Visit_Link']." <a href='".$site_URL."/index.php?action=DetailView&module=Calendar&record=".$activity_id."&activity_mode=".$activitymode."'>".$app_strings['Click here']."</a>";
+							$app_strings['Visit_Link']." <a href='".$site_URL."/index.php?action=EventDetailView&module=Calendar4You&record=".$activity_id."&activity_mode=".$activitymode."'>".$app_strings['Click here']."</a>";
 
 			if(count($to_addr) >=1)
 			{
