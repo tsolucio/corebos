@@ -836,7 +836,10 @@ class QueryGenerator {
 								$referenceTable = "vtiger_users".$fieldName;
 							else {
 								$referenceField = $meta->getFieldByColumnName($column);
-								$referenceTable = $referenceField->getTableName().$fieldName;
+								$referenceTable = $referenceField->getTableName();
+							}
+							if(isset($moduleTableIndexList[$referenceTable])) {
+								$referenceTable = "$referenceTable$fieldName";
 							}
 							$columnList[] = "$referenceTable.$column";
 						}
