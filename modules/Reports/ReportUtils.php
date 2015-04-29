@@ -88,8 +88,14 @@ function getReportFieldValue ($report, $picklistArray, $dbField, $valueArray, $f
 			$fieldvalue = getTranslatedCurrencyString($value);
 		}
 	} elseif (in_array($dbField->name,$report->ui101_fields) && !empty($value)) {
-		$entityNames = getEntityName('Users', $value);
-		$fieldvalue = $entityNames[$value];
+		if(is_numeric($value))
+		{
+			$entityNames = getEntityName('Users', $value);
+			$fieldvalue = $entityNames[$value];
+		}
+		else {
+			$fieldvalue = $value;
+		}
 	} elseif( $fieldType == 'date' && !empty($value)) {
 		if($module == 'Calendar' && $field->getFieldName() == 'due_date') {
 			$endTime = $valueArray['calendar_end_time'];
