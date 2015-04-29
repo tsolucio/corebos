@@ -120,6 +120,7 @@ class QueryGenerator {
 		if(isset($this->referenceModuleField)) {
 			foreach ($this->referenceModuleField as $index=>$conditionInfo) {
 				$refmod = $conditionInfo['relatedModule'];
+				if (!vtlib_isEntityModule($refmod)) continue; // reference to a module without fields
 				$handler = vtws_getModuleHandlerFromName($refmod, $current_user);
 				$meta = $handler->getMeta();
 				$fields = $meta->getModuleFields();
@@ -137,6 +138,7 @@ class QueryGenerator {
 			foreach ($this->referenceFieldInfoList as $fld => $mods) {
 				if ($fld=='modifiedby') $fld = 'assigned_user_id';
 				foreach ($mods as $module) {
+					if (!vtlib_isEntityModule($module)) continue; // reference to a module without fields
 					$handler = vtws_getModuleHandlerFromName($module, $current_user);
 					$meta = $handler->getMeta();
 					$fields = $meta->getModuleFields();
