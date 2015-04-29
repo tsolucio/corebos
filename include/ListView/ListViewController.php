@@ -69,7 +69,11 @@ class ListViewController {
 		for ($i = 0; $i < $rowCount; $i++) {
                    if($rel==1) {
                    $modrel=getTabModuleName($field->getTabId());
-                   $colname=strtolower($modrel).$field->getColumnName();}
+                   $mod=getTabfromcolname($field->getColumnName());
+                   $colname=strtolower($modrel).$field->getColumnName();
+                   if($mod!=''){
+                   $referenceFieldInfoList[$fieldName]=array($mod);}
+                   }
                    else {$colname=$field->getColumnName();}
 		   $id = $this->db->query_result($result, $i, $colname);
 			if (!isset($this->nameList[$fieldName][$id])) {
