@@ -149,8 +149,8 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$parser = new Parser($this->user, $q);
 
 		if (stripos($q,'related.')>0) { // related query
-			require_once 'include/Webservices/Utils.php';
 			require_once 'include/Webservices/GetRelatedRecords.php';
+			$queryParameters = array();
 			$queryParameters['columns'] = trim(substr($q,6,stripos($q,' from ')-5));
 			$moduleRegex = "/[fF][rR][Oo][Mm]\s+([^\s;]+)/";
 			preg_match($moduleRegex, $q, $m);
@@ -227,14 +227,12 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			if (stripos($q,'count(*)')>0)
 				$mysql_query = str_ireplace(' as count ','',mkCountQuery($mysql_query));
 		} else {
-		$error = $parser->parse();
-		
-		if($error){
-			return $parser->getError();
-		}
-		
-		$mysql_query = $parser->getSql();
-		$meta = $parser->getObjectMetaData();
+			$error = $parser->parse();
+			if($error){
+				return $parser->getError();
+			}
+			$mysql_query = $parser->getSql();
+			$meta = $parser->getObjectMetaData();
 		}
 
 		$this->pearDB->startTransaction();
