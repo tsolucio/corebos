@@ -302,7 +302,18 @@ echo "<h2>Query with subject of Invoice and SO and account_id of rel module</h2>
 $queryGenerator = new QueryGenerator("Invoice", $current_user);
 $queryGenerator->setFields(array('id','subject','Accounts.assigned_user_id','SalesOrder.subject','SalesOrder.account_id'));
 //$queryGenerator->addReferenceModuleFieldCondition('Accounts', 'account_id', 'accountname', 'EDFG Group Limited', 'exists');
+$query = $queryGenerator->getQuery();
+echo "$query<br>";
+testquery($query);
 
+echo "<h2>Query for modules with relation on themselves</h2>";
+$queryGenerator = new QueryGenerator('Accounts', $current_user);
+$queryGenerator->setFields(array('id','accountname','website','Accounts.accountname','Accounts.website'));
+$query = $queryGenerator->getQuery();
+echo "$query<br>";
+testquery($query);
+$queryGenerator = new QueryGenerator('Contacts', $current_user);
+$queryGenerator->setFields(array('id','firstname','lastname','Contacts.firstname','Contacts.lastname'));
 $query = $queryGenerator->getQuery();
 echo "$query<br>";
 testquery($query);
