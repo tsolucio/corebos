@@ -326,6 +326,19 @@ $query = $queryGenerator->getQuery();
 echo "$query<br>";
 testquery($query);
 
+echo "<h2>Query for HelpDesk</h2>";
+$queryGenerator = new QueryGenerator('HelpDesk', $current_user);
+$queryGenerator->setFields(array('id','ticket_title','ticketstatus'));
+$query = $queryGenerator->getQuery();
+echo "$query<br>";
+testquery($query);
+
+$queryGenerator = new QueryGenerator('HelpDesk', $current_user);
+$queryGenerator->setFields(array('id','ticket_title','ticketstatus','Accounts.accountname','Contacts.firstname'));
+$query = $queryGenerator->getQuery();
+echo "$query<br>";
+testquery($query);
+
 //error_reporting(E_ALL);ini_set("display_errors", "on");
 // echo "<h2>Query with custom field</h2>";
 // $queryGenerator = new QueryGenerator($moduleName, $current_user);
