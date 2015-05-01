@@ -950,6 +950,11 @@ class QueryGenerator {
 			$sql[] = 'SELECT EXISTS(SELECT 1 '.$qg->getFromClause().$qg->getWhereClause().')';
 			return $sql;
 		}
+		if ($operator=='i' or $operator=='in') {
+			$vals = array_map(array( $db, 'quote'), $valueArray);
+			$sql[] = 'IN ('.implode(',', $vals).')';
+			return $sql;
+		}
 		if($operator == 'between' || $operator == 'bw' || $operator == 'notequal') {
 			if($field->getFieldName() == 'birthday') {
 				$valueArray[0] = getValidDBInsertDateTimeValue($valueArray[0]);
