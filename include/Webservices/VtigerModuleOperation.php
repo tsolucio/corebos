@@ -145,10 +145,9 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 	}
 	
 	public function query($q){
-		
-		$parser = new Parser($this->user, $q);
+		require_once 'include/Webservices/GetExtendedQuery.php';
 
-		if (stripos($q,'related.')>0) { // related query
+		if (__FQNExtendedQueryIsRelatedQuery($q)) { // related query
 			require_once 'include/Webservices/GetRelatedRecords.php';
 			$queryParameters = array();
 			$queryParameters['columns'] = trim(substr($q,6,stripos($q,' from ')-5));
@@ -203,6 +202,9 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			if (strtolower($relatedModule)=='modcomments' and (strtolower($moduleName)=='helpdesk' or strtolower($moduleName)=='faq')) {
 				$afterwhere = str_ireplace('commentcontent','comments',$afterwhere);
 			}
+			$relhandler = vtws_getModuleHandlerFromName($moduleName,$this->user);
+			$relmeta = $relhandler->getMeta();
+			$queryRelatedModules[$moduleName] = $relmeta;
 			// transform fieldnames to columnnames
 			$handler = vtws_getModuleHandlerFromName($relatedModule,$this->user);
 			$meta = $handler->getMeta();
@@ -226,7 +228,15 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			}
 			if (stripos($q,'count(*)')>0)
 				$mysql_query = str_ireplace(' as count ','',mkCountQuery($mysql_query));
+		} elseif (__FQNExtendedQueryIsFQNQuery($q)) {  // FQN extended syntax
+			list($mysql_query,$queryRelatedModules) = __FQNExtendedQueryGetQuery($q, $this->user);
+			$moduleRegex = "/[fF][rR][Oo][Mm]\s+([^\s;]+)/";
+			preg_match($moduleRegex, $q, $m);
+			$fromModule = trim($m[1]);
+			$handler = vtws_getModuleHandlerFromName($fromModule,$this->user);
+			$meta = $handler->getMeta();
 		} else {
+			$parser = new Parser($this->user, $q);
 			$error = $parser->parse();
 			if($error){
 				return $parser->getError();
@@ -242,10 +252,9 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		
 		if($error){
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR,
-					vtws_getWebserviceTranslatedString('LBL_'.
-							WebServiceErrorCode::$DATABASEQUERYERROR));
+				vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
 		}
-		
+
 		$noofrows = $this->pearDB->num_rows($result);
 		$output = array();
 		for($i=0; $i<$noofrows; $i++){
@@ -253,9 +262,29 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			if(!$meta->hasPermission(EntityMeta::$RETRIEVE,$row["crmid"])){
 				continue;
 			}
-			$output[] = DataTransform::sanitizeDataWithColumn($row,$meta);
+			$newrow = DataTransform::sanitizeDataWithColumn($row,$meta);
+			if (__FQNExtendedQueryIsFQNQuery($q)) { // related query
+				$relflds = array_diff_key($row,$newrow);
+				foreach ($queryRelatedModules as $relmod => $relmeta) {
+					$lrm = strtolower($relmod);
+					$newrflds = array();
+					foreach ($relflds as $fldname => $fldvalue) {
+						$fldmod = substr($fldname, 0, strlen($relmod));
+						if (isset($row[$fldname]) and $fldmod==$lrm) {
+							$newkey = substr($fldname, strlen($lrm));
+							$newrflds[$newkey] = $fldvalue;
+						}
+					}
+					$relrow = DataTransform::sanitizeDataWithColumn($newrflds,$relmeta);
+					$newrelrow = array();
+					foreach ($relrow as $key => $value) {
+						$newrelrow[$lrm.$key] = $value;
+					}
+					$newrow = array_merge($newrow,$newrelrow);
+				}
+			}
+			$output[] = $newrow;
 		}
-		
 		return $output;
 	}
 	
