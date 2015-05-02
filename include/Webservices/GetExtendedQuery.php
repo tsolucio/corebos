@@ -102,30 +102,55 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 	$relatedCond = "/=\s*'*\d+x(\d+)'*/";
 	$afterwhere=preg_replace($relatedCond,' = $1 ',$afterwhere);
 	// where
-	$qc = $queryConditions;
-	$posand = stripos($qc, ' and ');
-	$posor = stripos($qc, ' or ');
-	if (strlen($queryConditions)>0) $queryGenerator->startGroup();
-	$glue = '';
-	while ($posand>0 or $posor>0 or strlen($qc)) {
-		if ($posand==0 and $posor==0) {
-			__FQNExtendedQueryAddCondition($queryGenerator,$qc,$glue,$mainModule,$fieldcolumn, $user);
-			$qc = '';
-		} elseif ($posand==0 or ($posand>$posor and $posor!=0)) {
-			$qcond = substr($qc, 0, $posor);
-			__FQNExtendedQueryAddCondition($queryGenerator,$qcond,$glue,$mainModule,$fieldcolumn, $user);
-			$glue = $queryGenerator::$OR;
-			$qc = trim(substr($qc, $posor+4));
-		} else {
-			$qcond = substr($qc, 0, $posand);
-			__FQNExtendedQueryAddCondition($queryGenerator,$qcond,$glue,$mainModule,$fieldcolumn, $user);
-			$glue = $queryGenerator::$AND;
-			$qc = trim(substr($qc, $posand+5));
+	if (strlen($queryConditions)>0) {
+		$queryGenerator->startGroup();
+		$qc = trim($queryConditions);
+		if (substr($qc,0,1)=='(') {
+			$queryGenerator->startGroup();
+			$qc = substr($qc,1);
 		}
 		$posand = stripos($qc, ' and ');
 		$posor = stripos($qc, ' or ');
+		$glue = '';
+		while ($posand>0 or $posor>0 or strlen($qc)) {
+			$endgroup = false;
+			if ($posand==0 and $posor==0) {
+				if (substr($qc, -1)==')') {
+					$qc = trim($qc, ')');
+					$endgroup = true;
+				}
+				__FQNExtendedQueryAddCondition($queryGenerator,$qc,$glue,$mainModule,$fieldcolumn, $user);
+				$qc = '';
+			} elseif ($posand==0 or ($posand>$posor and $posor!=0)) {
+				$qcond = trim(substr($qc, 0, $posor));
+				if (substr($qcond, -1)==')') {
+					$qcond = trim($qcond, ')');
+					$endgroup = true;
+				}
+				__FQNExtendedQueryAddCondition($queryGenerator,$qcond,$glue,$mainModule,$fieldcolumn, $user);
+				$glue = $queryGenerator::$OR;
+				$qc = trim(substr($qc, $posor+4));
+			} else {
+				$qcond = trim(substr($qc, 0, $posand));
+				if (substr($qcond, -1)==')') {
+					$qcond = trim($qcond, ')');
+					$endgroup = true;
+				}
+				__FQNExtendedQueryAddCondition($queryGenerator,$qcond,$glue,$mainModule,$fieldcolumn, $user);
+				$glue = $queryGenerator::$AND;
+				$qc = trim(substr($qc, $posand+5));
+			}
+			if ($endgroup) $queryGenerator->endGroup();
+			if (substr($qc,0,1)=='(') {
+				$queryGenerator->startGroup($glue);
+				$glue = '';
+				$qc = substr($qc,1);
+			}
+			$posand = stripos($qc, ' and ');
+			$posor = stripos($qc, ' or ');
+		}
+		$queryGenerator->endGroup();
 	}
-	if (strlen($queryConditions)>0) $queryGenerator->endGroup();
 	$query = $queryGenerator->getQuery();
 	// limit and order
 	if (!empty($obflds)) {
