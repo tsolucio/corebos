@@ -87,11 +87,18 @@ echo "&nbsp;'y' or 'empty'&nbsp;= NULL or ''  (null or empty)<br>";
 echo "&nbsp;'ny'&nbsp;= NOT NULL nor ''  (not null nor empty)<br>";
 echo "&nbsp;'bw'&nbsp;= BETWEEN value1 and value2  (between two dates)<br>";
 echo "&nbsp;'i' or 'in'&nbsp;= IN value1,...,valuen  (in set of values)<br>";
+echo "&nbsp;'ni' or 'nin'&nbsp;= NOT IN value1,...,valuen  (not in set of values)<br>";
 echo "&nbsp;There is special support for empty fields and for the Birthday field in Contacts<br><br><br>";
 
 $queryGenerator = new QueryGenerator($moduleName, $current_user);
 $queryGenerator->setFields(array('id','website','accountname'));
 $queryGenerator->addCondition('website',array('www.edfggrouplimited.com','www.gooduivtiger.com'),'i');
+$query = $queryGenerator->getQuery();
+echo "$query<br>";
+testquery($query);
+$queryGenerator = new QueryGenerator($moduleName, $current_user);
+$queryGenerator->setFields(array('id','website','accountname'));
+$queryGenerator->addCondition('website',array('www.edfggrouplimited.com','www.gooduivtiger.com'),'ni');
 $query = $queryGenerator->getQuery();
 echo "$query<br>";
 testquery($query);

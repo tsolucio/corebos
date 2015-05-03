@@ -201,6 +201,10 @@ function __FQNExtendedQueryAddCondition($queryGenerator,$condition,$glue,$mainMo
 		$op = 'notlike';
 		$val = strtok(' ');
 	}
+	if ($op == 'not' and strtolower($val)=='in') {
+		$op = 'notin';
+		$val = strtok(' ');
+	}
 	if ($op == 'is') {
 		$secop = strtolower($val);
 		if ($secop == 'not') {
@@ -243,7 +247,8 @@ function __FQNExtendedQueryAddCondition($queryGenerator,$condition,$glue,$mainMo
 			break;
 		case 'i':
 		case 'in':
-			$op = 'i';
+		case 'notin':
+			$op = ($op=='notin' ? 'ni' : 'i');
 			$val = trim($val);
 			$val = ltrim($val,'(');
 			$val = rtrim($val,')');
@@ -326,6 +331,9 @@ function __FQNExtendedQueryField2Column($field,$mainModule,$maincolumnTable,$use
 }
 
 function __FQNExtendedQueryIsFQNQuery($q) {
+	$notinopRegex = "/\s+not\s+in\s+\(/";
+	preg_match($notinopRegex, $q, $qop);
+	if (count($qop)>0) return true;  // "not in" operator is supported by QG
 	$cq = __FQNExtendedQueryCleanQuery($q);
 	return (stripos($cq,'.')>0 or stripos($cq,'(')>0);
 }

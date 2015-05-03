@@ -950,9 +950,9 @@ class QueryGenerator {
 			$sql[] = 'SELECT EXISTS(SELECT 1 '.$qg->getFromClause().$qg->getWhereClause().')';
 			return $sql;
 		}
-		if ($operator=='i' or $operator=='in') {
+		if ($operator=='i' or $operator=='in' or $operator=='ni' or $operator=='nin') {
 			$vals = array_map(array( $db, 'quote'), $valueArray);
-			$sql[] = 'IN ('.implode(',', $vals).')';
+			$sql[] = (($operator=='ni' or $operator=='nin') ? ' NOT ':'').'IN ('.implode(',', $vals).')';
 			return $sql;
 		}
 		if($operator == 'between' || $operator == 'bw' || $operator == 'notequal') {
