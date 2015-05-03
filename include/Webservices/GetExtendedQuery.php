@@ -117,21 +117,22 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 			$endgroup = false;
 			preg_match($inopRegex, $qc, $qcop);
 			$inop = (count($qcop)>0);
+			$lasttwo = '';
 			if ($inop) {
 				$lasttwo = str_replace(' ', '', $qc);
 				$lasttwo = substr($lasttwo, -2);
 			}
 			if ($posand==0 and $posor==0) {
 				if ((!$inop and substr($qc, -1)==')') or ($inop and $lasttwo=='))')) {
-					$qc = trim($qc, ')');
+					$qc = substr($qc,0,strlen($qc)-1);
 					$endgroup = true;
 				}
 				__FQNExtendedQueryAddCondition($queryGenerator,$qc,$glue,$mainModule,$fieldcolumn, $user);
 				$qc = '';
 			} elseif ($posand==0 or ($posand>$posor and $posor!=0)) {
 				$qcond = trim(substr($qc, 0, $posor));
-				if ((!$inop and substr($qc, -1)==')') or ($inop and $lasttwo=='))')) {
-					$qcond = trim($qcond, ')');
+				if ((!$inop and substr($qcond, -1)==')') or ($inop and $lasttwo=='))')) {
+					$qcond = substr($qcond,0,strlen($qcond)-1);
 					$endgroup = true;
 				}
 				__FQNExtendedQueryAddCondition($queryGenerator,$qcond,$glue,$mainModule,$fieldcolumn, $user);
@@ -139,8 +140,8 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 				$qc = trim(substr($qc, $posor+4));
 			} else {
 				$qcond = trim(substr($qc, 0, $posand));
-				if ((!$inop and substr($qc, -1)==')') or ($inop and $lasttwo=='))')) {
-					$qcond = trim($qcond, ')');
+				if ((!$inop and substr($qcond, -1)==')') or ($inop and $lasttwo=='))')) {
+					$qcond = substr($qcond,0,strlen($qcond)-1);
 					$endgroup = true;
 				}
 				__FQNExtendedQueryAddCondition($queryGenerator,$qcond,$glue,$mainModule,$fieldcolumn, $user);
@@ -198,7 +199,7 @@ function __FQNExtendedQueryAddCondition($queryGenerator,$condition,$glue,$mainMo
 	$val = strtok(' ');
 	if ($op == 'not' and strtolower($val)=='like') {
 		$op = 'notlike';
-		$val = strtok($condition);
+		$val = strtok(' ');
 	}
 	if ($op == 'is') {
 		$secop = strtolower($val);
