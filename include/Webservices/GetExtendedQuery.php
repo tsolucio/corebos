@@ -109,13 +109,20 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 			$queryGenerator->startGroup();
 			$qc = substr($qc,1);
 		}
+		$inopRegex = "/\s+in\s+\(/";
 		$posand = stripos($qc, ' and ');
 		$posor = stripos($qc, ' or ');
 		$glue = '';
 		while ($posand>0 or $posor>0 or strlen($qc)) {
 			$endgroup = false;
+			preg_match($inopRegex, $qc, $qcop);
+			$inop = (count($qcop)>0);
+			if ($inop) {
+				$lasttwo = str_replace(' ', '', $qc);
+				$lasttwo = substr($lasttwo, -2);
+			}
 			if ($posand==0 and $posor==0) {
-				if (substr($qc, -1)==')') {
+				if ((!$inop and substr($qc, -1)==')') or ($inop and $lasttwo=='))')) {
 					$qc = trim($qc, ')');
 					$endgroup = true;
 				}
@@ -123,7 +130,7 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 				$qc = '';
 			} elseif ($posand==0 or ($posand>$posor and $posor!=0)) {
 				$qcond = trim(substr($qc, 0, $posor));
-				if (substr($qcond, -1)==')') {
+				if ((!$inop and substr($qc, -1)==')') or ($inop and $lasttwo=='))')) {
 					$qcond = trim($qcond, ')');
 					$endgroup = true;
 				}
@@ -132,7 +139,7 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 				$qc = trim(substr($qc, $posor+4));
 			} else {
 				$qcond = trim(substr($qc, 0, $posand));
-				if (substr($qcond, -1)==')') {
+				if ((!$inop and substr($qc, -1)==')') or ($inop and $lasttwo=='))')) {
 					$qcond = trim($qcond, ')');
 					$endgroup = true;
 				}
@@ -240,6 +247,7 @@ function __FQNExtendedQueryAddCondition($queryGenerator,$condition,$glue,$mainMo
 			$val = ltrim($val,'(');
 			$val = rtrim($val,')');
 			$val = str_replace("'", '', $val);
+			$val = explode(',', $val);
 			break;
 		case 'like':
 			$v = trim($val);
