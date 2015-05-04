@@ -827,7 +827,7 @@ function getSearchingListViewEntries($focus, $module,$list_result,$navigation_ar
 }
 
 function getReferenceAutocomplete($term, $filter, $searchinmodules, $limit, $user) {
-	global $current_user,$log,$adb;
+	global $current_user,$log,$adb,$default_charset;
 
 	if (!empty($searchinmodules)) {
 		$searchin = explode(',', $searchinmodules);
@@ -865,6 +865,7 @@ function getReferenceAutocomplete($term, $filter, $searchinmodules, $limit, $use
 		}
 	}
 
+	$num_search_modules = count($searchin);
 	foreach ($searchin as $srchmod) {
 		if (!(vtlib_isModuleActive($srchmod) and isPermitted($srchmod,'DetailView'))) continue;
 		$eirs = $adb->pquery('select fieldname,tablename,entityidfield from vtiger_entityname where modulename=?',array($srchmod));
@@ -888,7 +889,7 @@ function getReferenceAutocomplete($term, $filter, $searchinmodules, $limit, $use
 		while ($emp=$adb->fetch_array($rsemp)) {
 			$respuesta[]=array(
 					'crmid'=>$wsid.$emp['crmid'],
-					'crmname'=>$emp['crmname']." :: $trmod",
+					'crmname'=>html_entity_decode($emp['crmname'],ENT_QUOTES,$default_charset).($num_search_modules>1 ? " :: $trmod" : ''),
 					'crmmodule'=>$srchmod,
 			);
 			if (count($respuesta)>=$limit) break;
