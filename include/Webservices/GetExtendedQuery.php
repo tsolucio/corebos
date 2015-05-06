@@ -347,6 +347,8 @@ function __FQNExtendedQueryIsRelatedQuery($q) {
 function __FQNExtendedQueryCleanQuery($q) {
 	$moduleRegex = "/ in \(.+\)/Us";  // eliminate IN operator
 	$r = preg_replace($moduleRegex, '', $q);
+	$moduleRegex = "/ count\(.+\)/Us";  // eliminate COUNT operator
+	$r = preg_replace($moduleRegex, '', $r);
 	$moduleRegex = "/'.+'/Us";  // eliminate string literals
 	$r = preg_replace($moduleRegex, '', $r);
 	return $r;
