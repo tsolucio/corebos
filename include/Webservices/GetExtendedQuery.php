@@ -39,7 +39,7 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 	require_once $handlerPath;
 	$handler = new $handlerClass($webserviceObject,$user,$adb,$log);
 	$meta = $handler->getMeta();
-
+	$mainModule = $meta->getTabName();  // normalize module name
 	// check modules
 	if (!$meta->isModuleEntity()) {
 		throw new WebserviceException('INVALID_MODULE',"Given main module ($mainModule) cannot be found");
@@ -216,7 +216,8 @@ function __FQNExtendedQueryAddCondition($queryGenerator,$condition,$glue,$mainMo
 			$op = 'isnull';
 		}
 	}
-
+	$val = trim($val);
+	$val = trim($val,"'");
 	// TODO  add query generator operators for 'bw' = BETWEEN value1 and value2  (between two dates)
 	switch ($op) {
 		case '<':
@@ -249,23 +250,19 @@ function __FQNExtendedQueryAddCondition($queryGenerator,$condition,$glue,$mainMo
 		case 'in':
 		case 'notin':
 			$op = ($op=='notin' ? 'ni' : 'i');
-			$val = trim($val);
 			$val = ltrim($val,'(');
 			$val = rtrim($val,')');
-			$val = str_replace("'", '', $val);
 			$val = explode(',', $val);
 			break;
 		case 'like':
-			$v = trim($val);
-			$v = str_replace("'", '', $v);
-			if (substr($v,-1)=='%' and substr($v,0,1)=='%') {
+			if (substr($val,-1)=='%' and substr($val,0,1)=='%') {
 				$op = 'c';
-			} elseif (substr($v,0,1)=='%') {
+			} elseif (substr($val,0,1)=='%') {
 				$op = 'ew';
 			} else {
 				$op = 's';
 			}
-			$val = str_replace('%', '', $v);
+			$val = str_replace('%', '', $val);
 			break;
 		case 'notlike':
 			$op = 'k';
