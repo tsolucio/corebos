@@ -290,19 +290,30 @@ function __FQNExtendedQueryAddCondition($queryGenerator,$condition,$glue,$mainMo
 		require_once $handlerPath;
 		$handler = new $handlerClass($webserviceObject,$user,$adb,$log);
 		$relmeta = $handler->getMeta();
+		$fmod = $relmeta->getTabName();  // normalize module name
 		$rfs = $relmeta->getReferenceFieldDetails();
 		$found = false;
 		foreach ($rfs as $reffld => $mods) {
 			if (in_array($fmod, $mods)) {
 				$found = true;
+				if ($fname=='id') {
+					list($wsid,$val) = explode('x', $val);
+					$fname = $relmeta->getObectIndexColumn();
+				}
 				$queryGenerator->addReferenceModuleFieldCondition($fmod, $reffld, $fname, $val, $op, $glue);
 				break;
 			}
 		}
 		if (!$found and $fmod==$mainModule) { // didn't find the field on the relation so we try to find it on the main module
+			if ($fname=='id') {
+				list($wsid,$val) = explode('x', $val);
+			}
 			$queryGenerator->addCondition($fname, $val, $op, $glue);
 		}
 	} else {
+		if ($field=='id') {
+			list($wsid,$val) = explode('x', $val);
+		}
 		$queryGenerator->addCondition($field, $val, $op, $glue);
 	}
 }
