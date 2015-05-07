@@ -3144,7 +3144,7 @@ function getAccessPickListValues($module)
 function getTranslationKeyFromTranslatedValue($module, $translated) {
 	global $current_language, $app_strings;
 	static $purified_cache = array();
-
+	if ($module=='Events') $module='Calendar';
 	if (array_key_exists($module.$translated, $purified_cache)) {
 		return $purified_cache[$module.$translated];
 	}
