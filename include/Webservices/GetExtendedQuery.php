@@ -200,25 +200,25 @@ function __FQNExtendedQueryAddCondition($queryGenerator,$condition,$glue,$mainMo
 	$condition = __FQNExtendedQueryProcessCondition($condition);
 	$field = strtok($condition, ' ');
 	$op = strtolower(strtok(' '));
-	$val = strtok(' ');
-	if ($op == 'not' and strtolower($val)=='like') {
+	$secop = strtolower(strtok(' '));
+	if ($op == 'not' and strtolower($secop)=='like') {
+		$val = substr($condition,stripos('not like', $condition)+8);
 		$op = 'notlike';
-		$val = strtok(' ');
-	}
-	if ($op == 'not' and strtolower($val)=='in') {
+	} elseif ($op == 'not' and strtolower($secop)=='in') {
+		$val = substr($condition,stripos('not in', $condition)+6);
 		$op = 'notin';
-		$val = strtok(' ');
-	}
-	if ($op == 'is') {
-		$secop = strtolower($val);
+	} elseif ($op == 'is') {
 		if ($secop == 'not') {
 			$val = '';
+			strtok(' '); // consume the 'null'
 			$op = 'isnotnull';
 		}
 		if ($secop == 'null') {
 			$val = '';
 			$op = 'isnull';
 		}
+	} else {
+		$val = substr($condition,strpos($condition,$op)+strlen($op));
 	}
 	$val = trim($val);
 	$val = trim($val,"'");
