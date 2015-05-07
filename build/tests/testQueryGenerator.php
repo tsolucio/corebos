@@ -172,6 +172,13 @@ $query = $queryGenerator->getQuery();
 echo "$query<br>";
 testquery($query);
 
+$queryGenerator = new QueryGenerator('Contacts', $current_user);
+$queryGenerator->setFields(array('id','cf_681','firstname','Accounts.accountname','Accounts.id'));
+$queryGenerator->addReferenceModuleFieldCondition('Accounts', 'account_id', 'id', '1047', 'e');
+$query = $queryGenerator->getQuery();
+echo "$query<br>";
+testquery($query);
+
 echo "<h2>Calendar Queries</h2>";
 $queryGenerator = new QueryGenerator('Calendar', $current_user);
 $queryGenerator->setFields(array('id','subject','activitytype','date_start','due_date','taskstatus'));
@@ -210,6 +217,30 @@ testquery($query);
 $queryGenerator = new QueryGenerator('Users', $current_user);
 $queryGenerator->setFields(array('id','username','first_name'));
 $queryGenerator->addCondition('id','1','e');
+$query = $queryGenerator->getQuery();
+echo "$query<br>";
+testquery($query);
+
+$queryGenerator = new QueryGenerator('accounts', $current_user);
+$queryGenerator->setFields(array('id','account_no','accountname','accounts.accountname'));
+$queryGenerator->addCondition('assigned_user_id','20x21199','e');
+$queryGenerator->addCondition('cf_938','Activo','e','and');
+$query = $queryGenerator->getQuery();
+echo "$query<br>";
+testquery($query);
+
+$queryGenerator = new QueryGenerator('accounts', $current_user);
+$queryGenerator->setFields(array('id','account_no','accountname','accounts.accountname'));
+$queryGenerator->addReferenceModuleFieldCondition('Users', 'assigned_user_id', 'email1', 'myemail@mydomain.tld', 'e');
+$queryGenerator->addCondition('cf_938','Activo','e','and');
+$query = $queryGenerator->getQuery();
+echo "$query<br>";
+testquery($query);
+
+$queryGenerator = new QueryGenerator('accounts', $current_user);
+$queryGenerator->setFields(array('id','account_no','accountname','accounts.accountname'));
+$queryGenerator->addReferenceModuleFieldCondition('Users', 'assigned_user_id', 'id', '20x21199', 'e');
+$queryGenerator->addCondition('cf_938','Activo','e','and');
 $query = $queryGenerator->getQuery();
 echo "$query<br>";
 testquery($query);
