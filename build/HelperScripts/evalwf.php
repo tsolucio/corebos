@@ -53,7 +53,7 @@ if (!$wsrs or $adb->num_rows($wsrs)==0) {
 }
 $currentModule = $adb->query_result($wsrs, 0, 0);
 $semod = getSalesEntityType($crmid);
-if ($semod != $currentModule) {
+if ($semod != $currentModule and ($semod!='Calendar' and $currentModule!='Events')) {
 	echo "<h2>Incorrect crmid:</h2>";
 	echo "<b>crmid</b> could not be evaluated as a valid record ID<br>";
 	die();
