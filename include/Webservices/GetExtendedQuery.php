@@ -193,7 +193,7 @@ function __FQNExtendedQueryAddCondition($queryGenerator,$condition,$glue,$mainMo
 	// like clauses: like 'sqlregex'.
 	// value list: a comma separated list of values.
 	$condition = trim($condition);
-	$condition = str_replace('  ', ' ', $condition);
+	$condition = __FQNExtendedQueryProcessCondition($condition);
 	$field = strtok($condition, ' ');
 	$op = strtolower(strtok(' '));
 	$val = strtok(' ');
@@ -273,7 +273,6 @@ function __FQNExtendedQueryAddCondition($queryGenerator,$condition,$glue,$mainMo
 		case 'isnull':
 			$op = 'y';
 			break;
-			
 		default:
 			$op = 'e';
 			break;
@@ -325,6 +324,33 @@ function __FQNExtendedQueryField2Column($field,$mainModule,$maincolumnTable,$use
 			return $fmod.'.'.$fieldcolumn[$fname];
 		}
 	}
+}
+
+function __FQNExtendedQueryProcessCondition($condition) {
+	// add spaces in front and back of operator
+	$condlen = strlen($condition);
+	$foundop = false;
+	$chrs = 0;
+	$cond = '';
+	while (!$foundop and $chrs < $condlen) {
+		$foundop = in_array($condition[$chrs],array('<','>','=','!'));
+		if ($foundop) {
+			$cond .= ' '.$condition[$chrs];
+			if ($condition[$chrs+1]=='=') {
+				$cond .= '= ';
+				$chrs++;
+			} else {
+				$cond .= ' ';
+			}
+		} else {
+			$cond .= $condition[$chrs];
+		}
+		$chrs++;
+	}
+	$cond .= substr($condition,$chrs);
+	// eliminate duplicate spaces
+	$cond = preg_replace('/  +/', ' ', $cond);
+	return $cond;
 }
 
 function __FQNExtendedQueryIsFQNQuery($q) {
