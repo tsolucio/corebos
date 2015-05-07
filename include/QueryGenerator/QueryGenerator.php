@@ -654,9 +654,17 @@ class QueryGenerator {
 			$referenceFieldTableList = array();
 			if (isset($this->referenceModuleField) and is_array($this->referenceModuleField)) {
 			foreach ($this->referenceModuleField as $index=>$conditionInfo) {
+				if ($conditionInfo['relatedModule'] == 'Users' && $baseModule != 'Users'
+				 && !in_array('vtiger_users', $referenceFieldTableList) && !in_array('vtiger_users', $tableList)) {
+					$sql .= ' LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid ';
+					$referenceFieldTableList[] = 'vtiger_users';
+					$sql .= ' LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid ';
+					$referenceFieldTableList[] = 'vtiger_groups';
+					continue;
+				}
 				$handler = vtws_getModuleHandlerFromName($conditionInfo['relatedModule'], $current_user);
 				$meta = $handler->getMeta();
-				$tableList = $meta->getEntityTableIndexList();
+				$reltableList = $meta->getEntityTableIndexList();
 				$fieldName = $conditionInfo['fieldName'];
 				$referenceFieldObject = $moduleFields[$conditionInfo['referenceField']];
 				$fields = $meta->getModuleFields();
@@ -683,7 +691,7 @@ class QueryGenerator {
 							$sql .= " $joinclause ";
 					}
 					$sql .= " LEFT JOIN ".$tableName.' AS '.$tableName.$conditionInfo['referenceField'].' ON '.
-						$tableName.$conditionInfo['referenceField'].'.'.$tableList[$tableName].'='.
+						$tableName.$conditionInfo['referenceField'].'.'.$reltableList[$tableName].'='.
 						$referenceFieldObject->getTableName().'.'.$referenceFieldObject->getColumnName();
 					$referenceFieldTableList[] = $tableName;
 				}
@@ -706,7 +714,7 @@ class QueryGenerator {
 							if (!empty($this->referenceFields[$fld][$mname][$fldname])) {
 								$handler = vtws_getModuleHandlerFromName($mname, $current_user);
 								$meta = $handler->getMeta();
-								$tableList = $meta->getEntityTableIndexList();
+								$reltableList = $meta->getEntityTableIndexList();
 								$referenceFieldObject = $this->referenceFields[$fld][$mname][$fldname];
 								$tableName = $referenceFieldObject->getTableName();
 								if(!in_array($tableName, $referenceFieldTableList)) {
@@ -721,7 +729,7 @@ class QueryGenerator {
 											$sql .= " $joinclause ";
 									}
 									$sql .= " LEFT JOIN ".$tableName.' AS '.$tableName.$fld.' ON '.
-										$tableName.$fld.'.'.$tableList[$tableName].'='.$baseTable.'.'.$moduleFields[$fld]->getColumnName();
+										$tableName.$fld.'.'.$reltableList[$tableName].'='.$baseTable.'.'.$moduleFields[$fld]->getColumnName();
 									$referenceFieldTableList[] = $tableName;
 								}
 								break 2;
@@ -734,7 +742,7 @@ class QueryGenerator {
 						if (!empty($this->referenceFields[$fld][$fldmod][$fldname])) {
 							$handler = vtws_getModuleHandlerFromName($fldmod, $current_user);
 							$meta = $handler->getMeta();
-							$tableList = $meta->getEntityTableIndexList();
+							$reltableList = $meta->getEntityTableIndexList();
 							$referenceFieldObject = $this->referenceFields[$fld][$fldmod][$fldname];
 							$tableName = $referenceFieldObject->getTableName();
 							if(!in_array($tableName, $referenceFieldTableList)) {
@@ -749,7 +757,7 @@ class QueryGenerator {
 										$sql .= " $joinclause ";
 								}
 								$sql .= " LEFT JOIN ".$tableName.' AS '.$tableName.$fld.' ON '.
-									$tableName.$fld.'.'.$tableList[$tableName].'='.$baseTable.'.'.$moduleFields[$fld]->getColumnName();
+									$tableName.$fld.'.'.$reltableList[$tableName].'='.$baseTable.'.'.$moduleFields[$fld]->getColumnName();
 								$referenceFieldTableList[] = $tableName;
 							}
 							break;
@@ -894,6 +902,34 @@ class QueryGenerator {
 				$meta = $handler->getMeta();
 				$fieldName = $conditionInfo['fieldName'];
 				$fields = $meta->getModuleFields();
+				if ($fieldName=='id') {
+					switch($conditionInfo['SQLOperator']) {
+						case 'e': $sqlOperator = "=";
+							break;
+						case 'n': $sqlOperator = "<>";
+							break;
+						case 'l': $sqlOperator = "<";
+							break;
+						case 'g': $sqlOperator = ">";
+							break;
+						case 'm': $sqlOperator = "<=";
+							break;
+						case 'h': $sqlOperator = ">=";
+							break;
+						default: $sqlOperator = "=";
+					}
+					$value = $conditionInfo['value'];
+					if(!empty($value)) {
+						$fname = $meta->getObectIndexColumn();
+						$bTable = $meta->getEntityBaseTable();
+						if ($bTable=='vtiger_users') {
+							$fieldSqlList[$index] = "(vtiger_users.id $sqlOperator '$value' or vtiger_groups.groupid $sqlOperator '$value')";
+						} else {
+							$fieldSqlList[$index] = "($bTable".$conditionInfo['referenceField'].".$fname $sqlOperator '$value')";
+						}
+					}
+					continue;
+				}
 				if (empty($fields[$fieldName])) continue;
 				$fieldObject = $fields[$fieldName];
 				$columnName = $fieldObject->getColumnName();
