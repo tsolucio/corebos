@@ -63,13 +63,17 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 	$queryColumns = explode(',',$queryColumns);
 	$queryColumns = array_map(trim, $queryColumns);
 	$queryRelatedModules = array();
-	foreach ($queryColumns as $field) {
+	foreach ($queryColumns as $k => $field) {
 		if (strpos($field, '.')>0) {
 			list($m,$f) = explode('.', $field);
 			if (!isset($queryRelatedModules[$m])) {
 				$relhandler = vtws_getModuleHandlerFromName($m,$user);
 				$relmeta = $relhandler->getMeta();
-				$queryRelatedModules[$m] = $relmeta;
+				$mn = $relmeta->getTabName();  // normalize module name
+				$queryRelatedModules[$mn] = $relmeta;
+				if ($m!=$mn) {
+					$queryColumns[$k] = $mn.'.'.$f;
+				}
 			}
 		}
 	}
