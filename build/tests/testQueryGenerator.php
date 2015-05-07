@@ -17,8 +17,9 @@ $current_user = Users::getActiveAdminUser();
 
 function testquery($query) {
 	global $adb;
+	$invalidcondition = (stripos($query,'or 0') || stripos($query,'and 0'));
 	$rs = $adb->query($query);
-	if ($rs) {
+	if ($rs and !$invalidcondition) {
 		echo '<span style="color:green">Query OK</span><br>';
 	} else {
 		echo '<span style="color:red">Query NOK</span><br>';
