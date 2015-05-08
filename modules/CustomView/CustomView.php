@@ -278,7 +278,7 @@ class CustomView extends CRMEntity {
 	  |
 	  $fieldlabeln =>'$fieldtablenamen:$fieldcolnamen:$fieldnamen:$module_$fieldlabel1n:$fieldtypeofdatan')
 	 */
-	function getColumnsListbyBlock($module, $block) {
+	function getColumnsListbyBlock($module, $block,$markMandatory = true) {
 		global $adb, $mod_strings, $app_strings;
 		$block_ids = explode(",", $block);
 		$tabid = getTabid($module);
@@ -376,7 +376,7 @@ class CustomView extends CRMEntity {
 			$fieldlabel = getTranslatedString($fieldlabel); //added to support i18n issue
 			if ($module != 'HelpDesk' || $fieldname != 'filename')
 				$module_columnlist[$optionvalue] = $fieldlabel;
-			if ($fieldtype[1] == "M") {
+			if ($markMandatory && $fieldtype[1] == "M") {
 				$this->mandatoryvalues[] = "'" . $optionvalue . "'";
 				$this->showvalues[] = $fieldlabel;
 				$this->data_type[$fieldlabel] = $fieldtype[1];
@@ -405,7 +405,7 @@ class CustomView extends CRMEntity {
 		global $current_user;
 		$module_info = $this->getCustomViewModuleInfo($module);
 		foreach ($this->module_list[$module] as $key => $value) {
-			$columnlist = $this->getColumnsListbyBlock($module, $value);
+			$columnlist = $this->getColumnsListbyBlock($module, $value,true);
 			if (isset($columnlist)) {
 				$ret_module_list[$module][$key] = $columnlist;
 			}
@@ -419,7 +419,7 @@ class CustomView extends CRMEntity {
 				if (isset($ret_module_list[$mod])) continue;  // we already have this one
 				$module_info = $this->getCustomViewModuleInfo($mod);
 				foreach ($this->module_list[$mod] as $key => $value) {
-					$columnlist = $this->getColumnsListbyBlock($mod, $value);
+					$columnlist = $this->getColumnsListbyBlock($mod, $value,false);
 					if (isset($columnlist)) {
 						$ret_module_list[$mod][$key] = $columnlist;
 					}
