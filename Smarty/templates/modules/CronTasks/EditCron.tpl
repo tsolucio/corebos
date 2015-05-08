@@ -11,7 +11,7 @@
 -->*}
 <div id="EditInv" class="layerPopup">
 <input id="min_freq" type="hidden" value="{$MIN_CRON_FREQUENCY}">
-<input id="desc" type="hidden" value="{'LBL_MINIMUM_FREQUENCY'|@getTranslatedString:$MODULE} {$MIN_CRON_FREQUENCY} {'LBL_MINS'|@getTranslatedString:$MODULE}" size="35" maxlength="40">
+<input id="desc" type="hidden" value="{'LBL_MINIMUM_FREQUENCY'|@getTranslatedString:$MODULE} {$MIN_CRON_FREQUENCY} {'LBL_MINUTES'|@getTranslatedString:$MODULE}" size="35" maxlength="40">
 <table border=0 cellspacing=0 cellpadding=5 width=100% class=layerHeadingULine>
 <tr>
 	<td class="layerPopupHeading" align="left">{$CRON_DETAILS.label}</td>
@@ -41,10 +41,10 @@
 		<td align="left" class="cellText small" width="104px"><input class="txtBox" id="CronTime" name="CronTime" value="{$CRON_DETAILS.frequency}" style="width:25px;" type="text">
                 <select class="small" id="cron_time" name="cron_status">
                 {if $CRON_DETAILS.time eq 'min'}
-                 <option value="min" selected>{$MOD.LBL_MINS}</option>
+                 <option value="min" selected>{$MOD.LBL_MINUTES}</option>
 		<option value="hours">{$MOD.LBL_HOURS}</option>
                 {else}
-                 <option value="min" >{$MOD.LBL_MINS}</option>
+                 <option value="min" >{$MOD.LBL_MINUTES}</option>
                  <option value="hours" selected>{$MOD.LBL_HOURS}</option>
                 {/if}
         </td>

@@ -13,10 +13,10 @@
 	<tr>
 	<td class="colHeader small" width="5%">#</td>
 	<td class="colHeader small" width="20%">Cron Job</td>
-	<td class="colHeader small" width="15%">{$MOD.LBL_FREQUENCY}{$MOD.LBL_HOURMIN}</td>
-	<td class="colHeader small" width="10%">{$CMOD.LBL_STATUS}</td>
+	<td class="colHeader small" width="11%">{$MOD.LBL_FREQUENCY}{$MOD.LBL_HOURMIN}</td>
+	<td class="colHeader small" width="9%">{$CMOD.LBL_STATUS}</td>
         <td class="colHeader small" width="20%">{$MOD.LAST_START}</td>
-        <td class="colHeader small" width="15%">{$MOD.LAST_END}</td>
+        <td class="colHeader small" width="20%">{$MOD.LAST_END}</td>
         <td class="colHeader small" width='10%'>{$MOD.LBL_SEQUENCE}</td>
         <td class="colHeader small" width="5%">{$MOD.LBL_TOOLS}</td>
 	</tr>
