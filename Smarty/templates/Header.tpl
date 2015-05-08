@@ -39,6 +39,11 @@
 {/literal}
 	<!-- End -->
 </head>
+<script>
+var gVTModule = '{$smarty.request.module|@vtlib_purify}';
+var gVTTheme  = '{$THEME}';
+var gVTUserID = '{$CURRENT_USER_ID}';
+</script>
 	<body leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 class=small>
 	<a name="top"></a>
 	<!-- header -->
@@ -374,9 +379,6 @@ function UnifiedSearch_SelectModuleSave() {
 <!-- End -->
 
 <script>
-var gVTModule = '{$smarty.request.module|@vtlib_purify}';
-var gVTTheme  = '{$THEME}';
-var gVTUserID = '{$CURRENT_USER_ID}';
 function fetch_clock()
 {ldelim}
 	new Ajax.Request(
