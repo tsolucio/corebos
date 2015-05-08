@@ -383,14 +383,12 @@ function fetch_clock()
 		{ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
 			method: 'post',
 			postBody: 'module=Utilities&action=UtilitiesAjax&file=Clock',
-			onComplete: function(response)
-				    {ldelim}
-					$("clock_cont").innerHTML=response.responseText;
-					execJS($('clock_cont'));
-				    {rdelim}
+			onComplete: function(response) {ldelim}
+				$("clock_cont").innerHTML=response.responseText;
+				execJS($('clock_cont'));
+			{rdelim}
 		{rdelim}
 	);
-
 {rdelim}
 
 function fetch_calc()
