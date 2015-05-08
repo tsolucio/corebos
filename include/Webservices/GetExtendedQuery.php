@@ -62,6 +62,7 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 	$queryColumns = trim(substr($q,6,stripos($q,' from ')-5));
 	$queryColumns = explode(',',$queryColumns);
 	$queryColumns = array_map(trim, $queryColumns);
+	$countSelect = ($queryColumns == array('count(*)'));
 	$queryRelatedModules = array();
 	foreach ($queryColumns as $k => $field) {
 		if (strpos($field, '.')>0) {
@@ -163,7 +164,14 @@ function __FQNExtendedQueryGetQuery($q, $user) {
 		}
 		$queryGenerator->endGroup();
 	}
-	$query = $queryGenerator->getQuery();
+	$query = 'select ';
+	if ($countSelect) {
+		$query .= 'count(*) ';
+	} else {
+		$query .= $queryGenerator->getSelectClauseColumnSQL().' ';
+	}
+	$query .= $queryGenerator->getFromClause().' ';
+	$query .= $queryGenerator->getWhereClause().' ';
 	// limit and order
 	if (!empty($obflds)) {
 		$obflds = trim($obflds);
@@ -373,6 +381,9 @@ function __FQNExtendedQueryIsFQNQuery($q) {
 	preg_match($notinopRegex, $q, $qop);
 	if (count($qop)>0) return true;  // "not in" operator is supported by QG
 	$cq = __FQNExtendedQueryCleanQuery($q);
+	$isnotnullopRegex = "/\s+is\s+(not\s+)?null/";
+	preg_match($isnotnullopRegex, $cq, $qop);
+	if (count($qop)>0) return true;  // "is not null" operator is supported by QG
 	return (stripos($cq,'.')>0 or stripos($cq,'(')>0);
 }
 
