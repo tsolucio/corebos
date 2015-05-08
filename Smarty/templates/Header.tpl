@@ -376,6 +376,7 @@ function UnifiedSearch_SelectModuleSave() {
 <script>
 var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 var gVTTheme  = '{$THEME}';
+var gVTUserID = '{$CURRENT_USER_ID}';
 function fetch_clock()
 {ldelim}
 	new Ajax.Request(
