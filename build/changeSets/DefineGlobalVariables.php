@@ -29,7 +29,9 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Maximum_Scheduled_Workflows',
 				'Billing_Address_Checked',
 				'Shipping_Address_Checked',
-				'Tax_Type_Default'
+				'Tax_Type_Default',
+				'calendar_call_default_duration',
+				'calendar_other_default_duration',
 			);
 			
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');

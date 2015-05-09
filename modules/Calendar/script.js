@@ -7,6 +7,34 @@
  * All Rights Reserved.
  ********************************************************************************/
 
+// Get User Default calendar variables
+var calendar_call_default_duration = 5; // minutes
+new Ajax.Request('index.php', {
+	queue : {
+		position : 'end',
+		scope : 'command'
+	},
+	method : 'post',
+	postBody : 'action=GlobalVariableAjax&file=SearchGlobalVar&module=GlobalVariable&gvname=calendar_call_default_duration&gvuserid='+gVTUserID+'&gvmodule=Calendar&gvdefault=5&returnvalidation=0',
+	onComplete : function(response) {
+		var obj = JSON.parse(response.responseText);
+		calendar_call_default_duration = obj.calendar_call_default_duration;
+	}
+});
+var calendar_other_default_duration = 1; // hours
+new Ajax.Request('index.php', {
+	queue : {
+		position : 'end',
+		scope : 'command'
+	},
+	method : 'post',
+	postBody : 'action=GlobalVariableAjax&file=SearchGlobalVar&module=GlobalVariable&gvname=calendar_other_default_duration&gvuserid='+gVTUserID+'&gvmodule=Calendar&gvdefault=1&returnvalidation=0',
+	onComplete : function(response) {
+		var obj = JSON.parse(response.responseText);
+		calendar_other_default_duration = obj.calendar_other_default_duration;
+	}
+});
+
 function DisableSharing() {
 	x = document.SharedList.selected_id.length;
 	idstring = "";
@@ -1076,10 +1104,11 @@ function calDuedatetime(type) {
 	var min = parseInt(document.EditView.startmin.value, 10);
 	var fmt = document.EditView.startfmt.value;
 	if (type != 'Call') {
+		var day_change_hour = 12 - +calendar_other_default_duration;
 		if (fmt == 'pm') {
-			if (hour == 11) {
+			if (hour >= day_change_hour) {
 				date = tempdate;
-				hour = 12;
+				hour = hour - +day_change_hour;
 				min = min;
 				fmt = 'am';
 			} else if (hour == 12) {
@@ -1087,7 +1116,7 @@ function calDuedatetime(type) {
 				min = min;
 				fmt = 'pm';
 			} else
-				hour = hour + 1;
+				hour = +hour + +calendar_other_default_duration;
 			hour = _2digit(hour);
 			min = _2digit(min);
 			document.EditView.due_date.value = date;
@@ -1100,8 +1129,8 @@ function calDuedatetime(type) {
 			document.EditView.followup_startmin.value = min;
 			document.EditView.followup_startfmt.value = fmt;
 		} else if (fmt == 'am') {
-			if (hour == 11) {
-				hour = 12;
+			if (hour >= day_change_hour) {
+				hour = hour - +day_change_hour;
 				min = min;
 				fmt = 'pm';
 			} else if (hour == 12) {
@@ -1109,7 +1138,7 @@ function calDuedatetime(type) {
 				min = min;
 				fmt = 'am';
 			} else
-				hour = hour + 1;
+				hour = +hour + +calendar_other_default_duration;
 			hour = _2digit(hour);
 			min = _2digit(min);
 			document.EditView.due_date.value = date;
@@ -1121,8 +1150,8 @@ function calDuedatetime(type) {
 			document.EditView.followup_startmin.value = min;
 			document.EditView.followup_startfmt.value = fmt;
 		} else {
-			hour = hour + 1;
-			if (hour == 24) {
+			hour = +hour + +calendar_other_default_duration;
+			if (hour >= 24) {
 				hour = 0;
 				date = tempdate;
 			}
@@ -1137,22 +1166,23 @@ function calDuedatetime(type) {
 		}
 	}
 	if (type == 'Call') {
+		var hour_change_minute = 60 - +calendar_call_default_duration;
 		if (fmt == 'pm') {
-			if (hour == 11 && min == 55) {
+			if (hour == 11 && min == hour_change_minute) {
 				hour = 12;
 				min = 0;
 				fmt = 'am';
 				date = tempdate;
-			} else if (hour == 12 && min == 55) {
+			} else if (hour == 12 && min == hour_change_minute) {
 				hour = 1;
 				min = 0;
 				fmt = 'pm';
 			} else {
-				if (min == 55) {
-					min = 0;
+				if (min >= hour_change_minute) {
+					min = min - hour_change_minute;
 					hour = hour + 1;
 				} else
-					min = min + 5;
+					min = +min + +calendar_call_default_duration;
 			}
 			hour = _2digit(hour);
 			min = _2digit(min);
@@ -1166,20 +1196,20 @@ function calDuedatetime(type) {
 			document.EditView.followup_startmin.value = min;
 			document.EditView.followup_startfmt.value = fmt;
 		} else if (fmt == 'am') {
-			if (hour == 11 && min == 55) {
+			if (hour == 11 && min == hour_change_minute) {
 				hour = 12;
 				min = 0;
 				fmt = 'pm';
-			} else if (hour == 12 && min == 55) {
+			} else if (hour == 12 && min == hour_change_minute) {
 				hour = 1;
 				min = 0;
 				fmt = 'am';
 			} else {
-				if (min == 55) {
-					min = 0;
+				if (min >= hour_change_minute) {
+					min = min - hour_change_minute;
 					hour = hour + 1;
 				} else
-					min = min + 5;
+					min = +min + +calendar_call_default_duration;
 			}
 			hour = _2digit(hour);
 			min = _2digit(min);
@@ -1193,11 +1223,11 @@ function calDuedatetime(type) {
 			document.EditView.followup_startmin.value = min;
 			document.EditView.followup_startfmt.value = fmt;
 		} else {
-			if (min == 55) {
-				min = 0;
+			if (min >= hour_change_minute) {
+				min = min - hour_change_minute;
 				hour = hour + 1;
 			} else
-				min = min + 5;
+				min = +min + +calendar_call_default_duration;
 			if (hour == 24) {
 				hour = 0;
 				date = tempdate;
