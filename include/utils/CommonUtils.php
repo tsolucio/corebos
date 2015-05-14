@@ -1017,7 +1017,8 @@ function getListPrice($productid, $pbid) {
 function br2nl($str) {
 	global $log;
 	$log->debug("Entering br2nl(" . $str . ") method ...");
-	$str = preg_replace("/(\r\n)/", "\\r\\n", $str);
+	$str = preg_replace("/\r/", "\\r", $str);
+	$str = preg_replace("/\n/", "\\n", $str);
 	$str = preg_replace("/'/", " ", $str);
 	$str = preg_replace("/\"/", " ", $str);
 	$log->debug("Exiting br2nl method ...");
