@@ -57,6 +57,20 @@ foreach ($cronTasks as $cronTask) {
 		echo sprintf("[ERROR]: %s - cron task execution throwed exception.\n", $cronTask->getName());
 		echo $e->getMessage();
 		echo "\n";
+		//Sen email with error.
+		$mailto = GlobalVariable::getVariable('Debug_Send_VtigerCron_Error','');
+		if ($mailto != '') {
+			require_once('modules/Emails/mail.php');
+			require_once('modules/Emails/Emails.php');
+			global $HELPDESK_SUPPORT_EMAIL_ID,$HELPDESK_SUPPORT_NAME;
+			
+			$from_name = $HELPDESK_SUPPORT_NAME;
+			$form_mail = $HELPDESK_SUPPORT_EMAIL_ID;
+			$mailsubject = "[ERROR]: ".$cronTask->getName()." - cron task execution throwed exception.";
+			$mailcontent = $e->getMessage();
+			
+			send_mail('Emails',$mailto,$from_name,$form_mail,$mailsubject,$mailcontent);
+		}
 	}		
 }
 }
