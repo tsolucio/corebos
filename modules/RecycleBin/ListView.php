@@ -125,16 +125,15 @@ if(count($module_name) > 0)
 		$limit_start_rec = $start_rec -1;
 
 	if( $adb->dbType == "pgsql")
-     		$list_result = $adb->query($list_query. " OFFSET ".$limit_start_rec." LIMIT ".$list_max_entries_per_page);
+		$list_result = $adb->query($list_query. " OFFSET ".$limit_start_rec." LIMIT ".$list_max_entries_per_page);
  	else
-     		$list_result = $adb->query($list_query. " LIMIT ".$limit_start_rec.",".$list_max_entries_per_page);
+		$list_result = $adb->query($list_query. " LIMIT ".$limit_start_rec.",".$list_max_entries_per_page);
 
 	$record_string= $app_strings[LBL_SHOWING]." " .$start_rec." - ".$end_rec." " .$app_strings[LBL_LIST_OF] ." ".$noofrows;
 
 	$navigationOutput = getTableHeaderNavigation($navigation_array, $url_string,"Recyclebin","index","");
 
-	$lvEntries = $controller->getListViewEntries($focus,$select_module,$list_result,
-		$navigation_array, true);
+	$lvEntries = $controller->getListViewEntries($focus,$select_module,$list_result,$navigation_array, true);
 }
 
 $smarty->assign("NAVIGATION", $navigationOutput);
