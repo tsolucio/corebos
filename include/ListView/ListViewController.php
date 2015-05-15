@@ -144,6 +144,7 @@ class ListViewController {
 
 		$db = PearDatabase::getInstance();
 		$rowCount = $db->num_rows($result);
+		$listviewcolumns = $db->getFieldsArray($result);
 		$ownerFieldList = $this->queryGenerator->getOwnerFieldList();
 		foreach ($ownerFieldList as $fieldName) {
 			if (in_array($fieldName, $listViewFields)) {
@@ -240,17 +241,22 @@ class ListViewController {
 					if (is_null($field)) continue;
 				}
 				$uitype = $field->getUIType();
-                                global $currentModule; 
-                                if($fieldName!='assigned_user_id' && strstr($fieldName,".assigned_user_id")){
-                                $modrel=getTabModuleName($field->getTabId());
-                                $rawValue = $this->db->query_result($result, $i, "smowner".strtolower($modrel));
-                                }
-                                else if(getTabid($currentModule)!=$field->getTabId()){
-                                $modrel=getTabModuleName($field->getTabId());
-                                $rawValue = $this->db->query_result($result, $i, strtolower($modrel).$field->getColumnName());
-                                }
-				else $rawValue = $this->db->query_result($result, $i, $field->getColumnName());				
-                                if($module == 'Calendar') {
+				global $currentModule;
+				if($fieldName!='assigned_user_id' && strstr($fieldName,".assigned_user_id")) {
+					$modrel=getTabModuleName($field->getTabId());
+					$rawValue = $this->db->query_result($result, $i, "smowner".strtolower($modrel));
+				} else if(getTabid($currentModule)!=$field->getTabId()){
+					$modrel=getTabModuleName($field->getTabId());
+					$relfieldname = strtolower($modrel).$field->getColumnName();
+					if (in_array($relfieldname, $listviewcolumns)) {
+						$rawValue = $this->db->query_result($result, $i, $relfieldname);
+					} else {
+						$rawValue = $this->db->query_result($result, $i, $field->getColumnName());
+					}
+				} else {
+					$rawValue = $this->db->query_result($result, $i, $field->getColumnName());
+				}
+				if($module == 'Calendar') {
 					$activityType = $this->db->query_result($result, $i, 'activitytype');
 				}
 
