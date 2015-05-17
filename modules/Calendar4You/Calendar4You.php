@@ -130,25 +130,23 @@ public function setgoogleaccessparams($userid){
 	//ListView data
 	public function GetCalendarUsersData($orderby = "templateid", $dir = "asc") {
 		global $current_user, $mod_strings, $app_strings, $Event_Colors;
-    
-        include_once('modules/Calendar4You/class/color_converter.class.php');
-        include_once('modules/Calendar4You/class/color_harmony.class.php');
-        
-        
+		include_once('modules/Calendar4You/class/color_converter.class.php');
+		include_once('modules/Calendar4You/class/color_harmony.class.php');
+
         if (count($this->View) > 0) $load_ch = true; else $load_ch = false;
-         
+
         $colorHarmony = new colorHarmony();
-        
-        if ($this->view_all) {
-    		$query = "SELECT * FROM vtiger_users ORDER BY first_name, last_name";
-    		$params = array();
-            
-        } else {
+
+		if ($this->view_all) {
+			$sortusersby = GlobalVariable::getVariable('calendar_sort_users_by','first_name, last_name');
+			$query = "SELECT * FROM vtiger_users ORDER BY $sortusersby";
+			$params = array();
+		} else {
 			if (empty($this->tabid)) $this->tabid = getTabid("Calendar4You");
-            
-            require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
-		    require('user_privileges/user_privileges_'.$current_user->id.'.php');
-            
+
+			require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+			require('user_privileges/user_privileges_'.$current_user->id.'.php');
+
             $query = "select status as status, id as id,user_name as user_name,first_name,last_name from vtiger_users where id=? 
                       union 
                       select status as status, vtiger_user2role.userid as id,vtiger_users.user_name as user_name ,

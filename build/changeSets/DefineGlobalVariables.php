@@ -32,6 +32,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Tax_Type_Default',
 				'calendar_call_default_duration',
 				'calendar_other_default_duration',
+				'calendar_sort_users_by',
 				'Debug_Send_VtigerCron_Error',
 			);
 			
