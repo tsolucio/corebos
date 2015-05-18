@@ -61,18 +61,16 @@ function changeInstallType(obj) {
 						<table cellpadding=5 cellspacing=0 border=0 width=100%>
 						<tr valign=top>
 							<td class='cellLabel small'>
-								<input type="radio" name="installtype" value="file" onclick="changeInstallType(this);"> <b>{$MOD.VTLIB_LBL_FILE_LOCATION}</b>
+								<input type="radio" name="installtype" id="installtypefile" value="file" onclick="changeInstallType(this);"> <b><label for="module_zipfile" onclick="document.getElementById('installtypefile').checked=true;changeInstallType(document.getElementById('installtypefile'));">{$MOD.VTLIB_LBL_FILE_LOCATION}</label></b>
 							</td>
 							<td class='cellText small'>
-								<input type="file" class="small" name="module_zipfile" size=50 disabled>
-								<p>
-									{$MOD.VTLIB_LBL_PACKAGE_FILE_HELP}
-								</p>
+								<input type="file" class="small" name="module_zipfile" id="module_zipfile" size=50 disabled>
+								<p>{$MOD.VTLIB_LBL_PACKAGE_FILE_HELP}</p>
 							</td>
 						</tr>
 						<tr valign=top>
 							<td class='cellLabel small'>
-								<input type="radio" name="installtype" value="url" onclick="changeInstallType(this);"> <b>{$MOD.VTLIB_LBL_PACKAGE_URL}</b>
+								<input type="radio" name="installtype" id="installtypeurl" value="url" onclick="changeInstallType(this);"> <b><label for="module_zipfile" onclick="document.getElementById('installtypeurl').checked=true;changeInstallType(document.getElementById('installtypeurl'));">{$MOD.VTLIB_LBL_PACKAGE_URL}</label></b>
 							</td>
 							<td class='cellText small'>
 								<input class="small" name="module_url" size="50" disabled>
