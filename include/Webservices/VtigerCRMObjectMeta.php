@@ -476,21 +476,39 @@ class VtigerCRMObjectMeta extends EntityMeta {
 	
 	function exists($recordId){
 		global $adb;
-		
+
+		// Caching user existence value for optimizing repeated reads.
+		// 
+		// NOTE: We are not caching the record existence 
+		// to ensure only latest state from DB is sent.
+		static $user_exists_cache = array();
+
 		$exists = false;
 		$sql = '';
 		if($this->objectName == 'Users'){
-			$sql = "select * from vtiger_users where id=? and deleted=0 and status='Active'";
+			if (array_key_exists($recordId, $user_exists_cache)) {
+				$exists = true;
+			} else {
+				$sql = "select 1 from vtiger_users where id=? and deleted=0 and status='Active'";
+			}
+			
 		}else{
-			$sql = "select * from vtiger_crmentity where crmid=? and deleted=0 and setype='".
-				$this->getTabName()."'";
+			$sql = "select 1 from vtiger_crmentity where crmid=? and deleted=0 and setype='".$this->getTabName()."'";
 		}
+
+		if ($sql) {
 		$result = $adb->pquery($sql , array($recordId));
 		if($result != null && isset($result)){
 			if($adb->num_rows($result)>0){
 				$exists = true;
 			}
 		}
+			// Cache the value for further lookup.
+			if ($this->objectName == 'Users') {
+				$user_exists_cache[$recordId] = $exists;
+			}
+		}
+
 		return $exists;
 	}
 	

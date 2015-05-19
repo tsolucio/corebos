@@ -214,17 +214,33 @@ function vtws_getModuleInstance($webserviceObject){
 
 function vtws_isRecordOwnerUser($ownerId){
 	global $adb;
+	
+	static $cache = array();
+	if (!array_key_exists($ownerId, $cache)) {
 	$result = $adb->pquery("select first_name from vtiger_users where id = ?",array($ownerId));
 	$rowCount = $adb->num_rows($result);
 	$ownedByUser = ($rowCount > 0);
+		$cache[$ownerId] = $ownedByUser;
+	} else {
+		$ownedByUser = $cache[$ownerId];
+	}
+	
 	return $ownedByUser;
 }
 
 function vtws_isRecordOwnerGroup($ownerId){
 	global $adb;
+
+	static $cache = array();
+	if (!array_key_exists($ownerId, $cache)) {
 	$result = $adb->pquery("select groupname from vtiger_groups where groupid = ?",array($ownerId));
 	$rowCount = $adb->num_rows($result);
 	$ownedByGroup = ($rowCount > 0);
+		$cache[$ownerId] = $ownedByGroup;
+	} else {
+		$ownedByGroup = $cache[$ownerId];
+	}
+	
 	return $ownedByGroup;
 }
 
