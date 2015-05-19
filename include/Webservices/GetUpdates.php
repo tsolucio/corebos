@@ -175,7 +175,7 @@ require_once 'include/utils/CommonUtils.php';
 						continue;
 					}
 					try{
-						$output["updated"][] = DataTransform::sanitizeDataWithColumn($arre,$moduleMeta);;
+						$output["updated"][] = DataTransform::sanitizeDataWithColumn($arre,$moduleMeta);
 					}catch(WebServiceException $e){
 						//ignore records the user doesn't have access to.
 						continue;
