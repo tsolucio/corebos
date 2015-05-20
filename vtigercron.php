@@ -67,7 +67,7 @@ foreach ($cronTasks as $cronTask) {
 			$from_name = $HELPDESK_SUPPORT_NAME;
 			$form_mail = $HELPDESK_SUPPORT_EMAIL_ID;
 			$mailsubject = "[ERROR]: ".$cronTask->getName()." - cron task execution throwed exception.";
-			$mailcontent = $e->getMessage();
+			$mailcontent = '<pre>'.$e.'</pre>';
 			
 			send_mail('Emails',$mailto,$from_name,$form_mail,$mailsubject,$mailcontent);
 		}
