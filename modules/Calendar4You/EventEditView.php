@@ -190,7 +190,7 @@ $smarty->assign("STARTHOUR",getTimeCombo($format,'start',$time_arr['starthour'],
 $smarty->assign("ENDHOUR",getTimeCombo($format,'end',$time_arr['endhour'],$time_arr['endmin'],$time_arr['endfmt']));
 $smarty->assign("FOLLOWUP",getTimeCombo($format,'followup_start',$time_arr['endhour'],$time_arr['endmin'],$time_arr['endfmt']));
 
-if ($Calendar4You->view_all && $Calendar4You->edit_all) {
+if ($focus->column_fields["assigned_user_id"] != '' && ($Calendar4You->view_all && $Calendar4You->edit_all)) {
     $assigned_user_id = $focus->column_fields["assigned_user_id"];
     
     $value["assigned_user_id"] = get_select_options_array(get_user_array(FALSE, "Active", $assigned_user_id), $assigned_user_id);
