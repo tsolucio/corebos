@@ -194,8 +194,9 @@ class Vtiger_MailScannerAction {
 
 		/** Now Create Ticket **/
 		global $current_user;
-		if(!$current_user) $current_user = new Users();
-		$current_user->id = 1;
+		if(!$current_user) {
+			$current_user = Users::getActiveAdminUser();
+		}
 
 		// Create trouble ticket record
 		$ticket = new HelpDesk();
