@@ -78,6 +78,8 @@ $mod_strings = Array(
 	'Project Tasks' => 'Actividades Proyecto',
 	'Project Team' => 'Equipo Proyecto',
 	'Project ID' => 'Id Proyecto',
+	'Add Project Task' => 'Añadir Actividad al Proyecto',
+	'Add Note' => 'Añadir Documento',
 );
 
 ?>
