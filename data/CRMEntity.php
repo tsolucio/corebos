@@ -1688,8 +1688,13 @@ class CRMEntity {
 		global $adb;
 		if (!is_array($with_crmid))
 			$with_crmid = Array($with_crmid);
+		$data = array();
+		$data['sourceModule'] = $module;
+		$data['sourceRecordId'] = $crmid;
+		$data['destinationModule'] = $with_module;
 		foreach ($with_crmid as $relcrmid) {
-
+			$data['destinationRecordId'] = $relcrmid;
+			cbEventHandler::do_action('corebos.entity.link.delete',$data);
 			if ($with_module == 'Documents') {
 				$adb->pquery("DELETE FROM vtiger_senotesrel WHERE crmid=? AND notesid=?", Array($crmid, $relcrmid));
 			} else {
@@ -2532,7 +2537,12 @@ class CRMEntity {
 		global $current_user;
 		$adb = PearDatabase::getInstance();
 		$currentTime = date('Y-m-d H:i:s');
-
+		$data = array();
+		$data['sourceModule'] = $module;
+		$data['sourceRecordId'] = $crmid;
+		$data['destinationModule'] = $with_module;
+		$data['destinationRecordId'] = $with_crmid;
+		cbEventHandler::do_action('corebos.entity.link.delete',$data);
 		$adb->pquery('UPDATE vtiger_crmentity SET modifiedtime = ?, modifiedby = ? WHERE crmid = ?', array($currentTime, $current_user->id, $crmid));
 	}
 

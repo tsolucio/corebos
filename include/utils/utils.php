@@ -4496,11 +4496,18 @@ function DeleteEntity($module,$return_module,$focus,$record,$return_id) {
  */
 function relateEntities($focus, $sourceModule, $sourceRecordId, $destinationModule, $destinationRecordIds) {
 	if(!is_array($destinationRecordIds)) $destinationRecordIds = Array($destinationRecordIds);
+	$data = array();
+	$data['focus'] = $focus;
+	$data['sourceModule'] = $sourceModule;
+	$data['sourceRecordId'] = $sourceRecordId;
+	$data['destinationModule'] = $destinationModule;
 	foreach($destinationRecordIds as $destinationRecordId) {
+		$data['destinationRecordId'] = $destinationRecordId;
+		cbEventHandler::do_action('corebos.entity.link.before',$data);
 		$focus->save_related_module($sourceModule, $sourceRecordId, $destinationModule, $destinationRecordId);
 		$focus->trackLinkedInfo($sourceModule, $sourceRecordId, $destinationModule, $destinationRecordId);
+		cbEventHandler::do_action('corebos.entity.link.after',$data);
 	}
-
 }
 
 /* Function to install Vtlib Compliant modules
