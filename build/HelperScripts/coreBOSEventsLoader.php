@@ -30,6 +30,9 @@ registerEvent('corebos.filter.editview.setObjectValues');
 registerEvent('corebos.filter.link.show');
 registerEvent('corebos.filter.ModComments.canAdd');
 registerEvent('corebos.filter.ModComments.queryCriteria');
+registerEvent('corebos.entity.link.before');
+registerEvent('corebos.entity.link.after');
+registerEvent('corebos.entity.link.delete');
 
 echo '</body></html>';
 ?>
