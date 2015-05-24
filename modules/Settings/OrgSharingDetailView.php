@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 require_once('include/utils/utils.php');
 require_once('include/utils/UserInfoUtil.php');
@@ -44,6 +43,11 @@ foreach($defSharingPermissionData as $tab_id => $def_perr)
 	$row++;
 }
 $access_privileges=array_chunk($access_privileges,3);
+usort($access_privileges, function($a,$b) {
+	$moda=($a[0]=='Accounts & Contacts' ? 'Accounts' : $a[0]);
+	$modb=($b[0]=='Accounts & Contacts' ? 'Accounts' : $b[0]);
+	return (strtolower(getTranslatedString($moda,$moda)) < strtolower(getTranslatedString($modb,$modb))) ? -1 : 1;
+});
 $smarty->assign("DEFAULT_SHARING", $access_privileges);
 
 $custom_access = array();
@@ -90,7 +94,7 @@ if(!empty($othermodules)) {
 		}
 	}
 }
-
+uksort($custom_access, function($a,$b) {return (strtolower(getTranslatedString($a,$a)) < strtolower(getTranslatedString($b,$b))) ? -1 : 1;});
 $smarty->assign("MODSHARING", $custom_access);
 
 /** returns the list of sharing rules for the specified module

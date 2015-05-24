@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 require_once('include/utils/utils.php');
 global $mod_strings;
@@ -52,16 +51,18 @@ foreach($defSharingPermissionData as $tab_id => $def_perr)
 				$selected='selected';
 			}
 			$output .= '<option value="'.$shareActId.'" '.$selected. '>'.$mod_strings[$shareActName].'</option>';
-				
 		}
-
 
 		$output .= '</select>';
 		$entries[] = $output;
 		$row++;
 }
-
 $list_entries=array_chunk($entries,3);
+usort($list_entries, function($a,$b) {
+	$moda=($a[0]=='Accounts & Contacts' ? 'Accounts' : $a[0]);
+	$modb=($b[0]=='Accounts & Contacts' ? 'Accounts' : $b[0]);
+	return (strtolower(getTranslatedString($moda,$moda)) < strtolower(getTranslatedString($modb,$modb))) ? -1 : 1;
+});
 $smarty->assign("ORGINFO",$list_entries);
 $smarty->assign("MOD", return_module_language($current_language,'Settings'));
 $smarty->assign("THEME", $theme);
