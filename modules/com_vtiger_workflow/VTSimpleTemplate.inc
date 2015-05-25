@@ -53,47 +53,51 @@ class VTSimpleTemplate{
 				if($referenceId==null){
 					$result="";
 				}else{
-					$entity = $this->cache->forId($referenceId);
-					if($referenceModule==="Users" && $entity->getModuleName()=="Groups"){
-						list($groupEntityId, $groupId) = vtws_getIdComponents($referenceId);
-
-						require_once('include/utils/GetGroupUsers.php');
-						$ggu = new GetGroupUsers();
-						$ggu->getAllUsersInGroup($groupId);
-
-						$users = $ggu->group_users;
-						$parts = Array();
-						foreach($users as $userId){
-							$refId = vtws_getWebserviceEntityId("Users", $userId);
-							$entity = $this->cache->forId($refId);
+					try{
+						$entity = $this->cache->forId($referenceId);
+						if($referenceModule==="Users" && $entity->getModuleName()=="Groups"){
+							list($groupEntityId, $groupId) = vtws_getIdComponents($referenceId);
+	
+							require_once('include/utils/GetGroupUsers.php');
+							$ggu = new GetGroupUsers();
+							$ggu->getAllUsersInGroup($groupId);
+	
+							$users = $ggu->group_users;
+							$parts = Array();
+							foreach($users as $userId){
+								$refId = vtws_getWebserviceEntityId("Users", $userId);
+								$entity = $this->cache->forId($refId);
+								$data = $entity->getData();
+								if($this->useValue($data, $fieldname)){
+									$parts[] = $data[$fieldname];
+								}
+							}
+							$result = implode(",", $parts);
+	
+						} elseif($entity->getModuleName()===$referenceModule){
 							$data = $entity->getData();
 							if($this->useValue($data, $fieldname)){
-								$parts[] = $data[$fieldname];
+								$module_focus = Vtiger_Module::getInstance($referenceModule);
+								$field_focus = Vtiger_Field::getInstance($fieldname,$module_focus);
+								
+								$uitype = $field_focus->uitype;
+								if($uitype == '15' || $uitype == '33' || ($uitype == '55' && $fieldname == 'salutationtype'))
+									$result = getTranslatedString($data[$fieldname],$referenceModule);
+								elseif ($uitype == '5' || $uitype == '6' || $uitype == '23') {  // date
+									$date = new DateTimeField($data[$fieldname]);
+									$result = $date->getDisplayDate($current_user);
+								} elseif ($uitype == '70') {  // datetime
+									$date = new DateTimeField($data[$fieldname]);
+									$result = $date->getDisplayDateTimeValue($current_user);
+								} else
+									$result = $data[$fieldname];
+							}else{
+								$result = '';
 							}
-						}
-						$result = implode(",", $parts);
-
-					} elseif($entity->getModuleName()===$referenceModule){
-						$data = $entity->getData();
-						if($this->useValue($data, $fieldname)){
-							$module_focus = Vtiger_Module::getInstance($referenceModule);
-							$field_focus = Vtiger_Field::getInstance($fieldname,$module_focus);
-							
-							$uitype = $field_focus->uitype;
-							if($uitype == '15' || $uitype == '33' || ($uitype == '55' && $fieldname == 'salutationtype'))
-								$result = getTranslatedString($data[$fieldname],$referenceModule);
-							elseif ($uitype == '5' || $uitype == '6' || $uitype == '23') {  // date
-								$date = new DateTimeField($data[$fieldname]);
-								$result = $date->getDisplayDate($current_user);
-							} elseif ($uitype == '70') {  // datetime
-								$date = new DateTimeField($data[$fieldname]);
-								$result = $date->getDisplayDateTimeValue($current_user);
-							} else
-								$result = $data[$fieldname];
 						}else{
 							$result = '';
 						}
-					}else{
+					}catch(Exception $e){
 						$result = '';
 					}
 				}
