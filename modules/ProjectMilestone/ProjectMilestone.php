@@ -70,7 +70,7 @@ class ProjectMilestone extends CRMEntity {
 	);
 	var $search_fields_name = Array(
 		/* Format: Field Label => fieldname */
-		'Project Milestone Namee'=> 'projectmilestonename',
+		'Project Milestone Name'=> 'projectmilestonename',
 		'Milestone Date' => 'projectmilestonedate',
 		'Type' => 'projectmilestonetype',
 	);
