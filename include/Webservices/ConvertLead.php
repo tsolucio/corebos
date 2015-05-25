@@ -102,7 +102,8 @@ function vtws_convertlead($entityvalues, $user) {
 					$entityIds[$entityName] = $entityRecord['id'];
 				}
 			} catch (Exception $e) {
-				return null;
+				throw new WebServiceException(WebServiceErrorCode::$UNKNOWNOPERATION,
+						$e->getMessage().' : '.$entityvalue['name']);
 			}
 		}
 	}

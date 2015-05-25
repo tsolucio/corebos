@@ -25,7 +25,17 @@ class coreBOSEventsExample extends VTEventHandler {
 	 * @param $entityData VTEntityData
 	 */
 	public function handleEvent($handlerType, $entityData) {
+		global $log;
 		switch($handlerType) {
+			case 'corebos.entity.link.before':
+				$log->fatal($entityData['sourceModule'].' '.$entityData['sourceRecordId'].' WILL BE related with '.$entityData['destinationModule'].' '.$entityData['destinationRecordId']);
+				break;
+			case 'corebos.entity.link.after':
+				$log->fatal($entityData['sourceModule'].' '.$entityData['sourceRecordId'].' HAS BEEN related with '.$entityData['destinationModule'].' '.$entityData['destinationRecordId']);
+				break;
+			case 'corebos.entity.link.delete':
+				$log->fatal($entityData['sourceModule'].' '.$entityData['sourceRecordId'].' WILL BE UNRELATED with '.$entityData['destinationModule'].' '.$entityData['destinationRecordId']);
+				break;
 			case 'corebos.footer':
 			case 'corebos.header':
 				# Write somethink into the footer/Header

@@ -55,6 +55,8 @@ $mod_strings = Array(
     'Project Task No' => 'Nº Actividad',
     'Project Task Number' => 'Código Actividad',
 	'ProjectTask ID'=>'Id Actividad',
+	'Add Note' => 'Añadir Documento',
+	'--none--' => '--ninguno--',
 );
 
 ?>
