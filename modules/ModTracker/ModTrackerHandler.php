@@ -40,10 +40,13 @@ class ModTrackerHandler extends VTEventHandler {
                                 } else {
                                     $status = ModTracker::$CREATED;
                                 }
+								// get modified time from database in case it has been hidden in GUI
+								$crmrs = $adb->pquery('select modifiedtime from vtiger_crmentity where crmid=?',array($recordId));
+								$modtime = $adb->query_result($crmrs,0,0);
                                 $this->id = $adb->getUniqueId('vtiger_modtracker_basic');
                                 $adb->pquery('INSERT INTO vtiger_modtracker_basic(id, crmid, module, whodid, changedon, status)
                                             VALUES(?,?,?,?,?,?)', Array($this->id, $recordId, $moduleName,
-                                            $current_user->id, $newerColumnFields['modifiedtime'], $status));
+                                            $current_user->id, $modtime, $status));
                                 $inserted = true;
                             }
                             $adb->pquery('INSERT INTO vtiger_modtracker_detail(id,fieldname,prevalue,postvalue) VALUES(?,?,?,?)',
