@@ -24,7 +24,9 @@ class ModTrackerUtils
 			$infomodules[$i]['visible']  = $adb->query_result($query,$i,'visible');
 			$infomodules[$i]['name'] = $adb->query_result($query,$i,'name');
 		}
-
+		usort($infomodules, function($a,$b) {
+			return (strtolower(getTranslatedString($a['name'],$a['name'])) < strtolower(getTranslatedString($b['name'],$b['name']))) ? -1 : 1;
+		});
 		return $infomodules;
 	}
 }
