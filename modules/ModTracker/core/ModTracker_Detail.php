@@ -42,7 +42,7 @@ class ModTracker_Detail {
 	function getFieldName() {
 		return $this->name;
 	}
-	
+
 	function getDisplayLabelForPreValue() {
 		if($this->_prevalueLabel === false) {
 			$this->_prevalueLabel = $this->fieldInstance->getDisplayLabel($this->prevalue);
@@ -56,7 +56,7 @@ class ModTracker_Detail {
 		}
 		return $this->_postvalueLabel;
 	}
-	
+
 	function initialize($valuemap) {
 		$this->id = $valuemap['id'];
 		$this->name = $valuemap['fieldname'];

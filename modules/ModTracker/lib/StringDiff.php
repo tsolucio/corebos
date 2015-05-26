@@ -1,5 +1,4 @@
 <?php
-
 class StringDiff {
 
 	static function toHtml($original, $new) {
@@ -59,4 +58,3 @@ class StringDiff {
 	/* END */
 }
 ?>
-
