@@ -938,7 +938,7 @@ $app_strings = array (
 'Other Country' => 'País Alternativo',
 'Mailing Po Box' => 'Cx. Postal Correspondência',
 'Other Po Box' => 'Cx. Postal Alternativo',
-'Contact Image' => 'Imagem Contato',
+'Image' => 'Imagem',
 
 //Export Records STARTS--->
 'LBL_EXPORT_TYPE_1'=>'Exportar Tipo1:',

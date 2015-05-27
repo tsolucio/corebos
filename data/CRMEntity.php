@@ -112,49 +112,35 @@ class CRMEntity {
 		// END
 	}
 
-	function insertIntoAttachment1($id, $module, $filedata, $filename, $filesize, $filetype, $user_id) {
-		$date_var = date("Y-m-d H:i:s");
-		global $current_user;
-		global $adb;
-		//global $root_directory;
-		global $log;
-
-		$ownerid = $user_id;
-
-		if ($filesize != 0) {
-			$data = base64_encode(fread(fopen($filedata, "r"), $filesize));
-		}
-
-		$current_id = $adb->getUniqueID("vtiger_crmentity");
-
-		if ($module == 'Emails') {
-			$log->info("module is " . $module);
-			$idname = 'emailid';
-			$tablename = 'emails';
-			$descname = 'description';
+	function insertIntoAttachment($id, $module) {
+		global $log, $adb;
+		$log->debug("Entering into insertIntoAttachment($id,$module) method.");
+		$file_saved = false;
+		//This is to added to store the existing attachment id so we can delete it when given a new image
+		$old_attachmentrs = $adb->pquery('select vtiger_crmentity.crmid from vtiger_seattachmentsrel inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_seattachmentsrel.attachmentsid where vtiger_seattachmentsrel.crmid=?', array($id));
+		$old_attachmentid = $adb->query_result($old_attachmentrs,0,'crmid');
+		foreach($_FILES as $fileindex => $files) {
+			if($files['name'] != '' && $files['size'] > 0) {
+				if($_REQUEST[$fileindex.'_hidden'] != '') {
+					$files['original_name'] = vtlib_purify($_REQUEST[$fileindex.'_hidden']);
 		} else {
-			$idname = 'notesid';
-			$tablename = 'notes';
-			$descname = 'notecontent';
+					$files['original_name'] = stripslashes($files['name']);
+				}
+				$files['original_name'] = str_replace('"','',$files['original_name']);
+				$file_saved = $this->uploadAndSaveFile($id,$module,$files);
+			}
 		}
 
-		$sql = "update $tablename set filename=? where $idname=?";
-		$params = array($filename, $id);
-		$adb->pquery($sql, $params);
-
-		$sql1 = "insert into vtiger_crmentity (crmid,smcreatorid,smownerid,setype,description,createdtime,modifiedtime) values(?, ?, ?, ?, ?, ?, ?)";
-		$params1 = array($current_id, $current_user->id, $ownerid, $module . " Attachment", '', $adb->formatDate($date_var, true), $adb->formatDate($date_var, true));
-		$adb->pquery($sql1, $params1);
-
-		$sql2 = "insert into vtiger_attachments(attachmentsid, name, description, type) values(?, ?, ?, ?)";
-		$params2 = array($current_id, $filename, '', $filetype);
-		$result = $adb->pquery($sql2, $params2);
-
-		//TODO -- instead of put contents in db now we should store the file in harddisk
-
-		$sql3 = 'insert into vtiger_seattachmentsrel values(?, ?)';
-		$params3 = array($id, $current_id);
-		$adb->pquery($sql3, $params3);
+		// Remove the deleted attachments from db
+		if($file_saved && $old_attachmentid != '') {
+			$setypers = $adb->pquery('select setype from vtiger_crmentity where crmid=?', array($old_attachmentid));
+			$setype = $adb->query_result($setypers,0,'setype');
+			if($setype == 'Contacts Image' or $setype == $module.' Attachment') {
+				$del_res1 = $adb->pquery('delete from vtiger_attachments where attachmentsid=?', array($old_attachmentid));
+				$del_res2 = $adb->pquery('delete from vtiger_seattachmentsrel where attachmentsid=?', array($old_attachmentid));
+			}
+		}
+		$log->debug("Exiting from insertIntoAttachment($id,$module) method.");
 	}
 
 	/**
@@ -201,12 +187,11 @@ class CRMEntity {
 
 		$save_file = 'true';
 		//only images are allowed for these modules
-		if ($module == 'Contacts' || $module == 'Products') {
+		if ($module == 'Contacts' || $module == 'Products' || (property_exists($this,'HasDirectImageField') && $this->HasDirectImageField)) {
 			$save_file = validateImageFile($file_details);
 		}
 
 		if ($save_file == 'true' && $upload_status == 'true') {
-			//This is only to update the attached filename in the vtiger_notes vtiger_table for the Notes module
 			if ($module == 'Contacts' || $module == 'Products') {
 				$sql1 = "insert into vtiger_crmentity (crmid,smcreatorid,smownerid,setype,description,createdtime,modifiedtime) values(?, ?, ?, ?, ?, ?, ?)";
 				$params1 = array($current_id, $current_user->id, $ownerid, $module . " Image", $this->column_fields['description'], $adb->formatDate($date_var, true), $adb->formatDate($date_var, true));
@@ -232,8 +217,13 @@ class CRMEntity {
 				$qparams = array($id);
 				$adb->pquery($query, $qparams);
 			}
+			if ($module == 'Contacts' || (property_exists($this,'HasDirectImageField') && $this->HasDirectImageField)) {
 			if ($module == 'Contacts') {
-				$att_sql = "select vtiger_seattachmentsrel.attachmentsid  from vtiger_seattachmentsrel inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_seattachmentsrel.attachmentsid where vtiger_crmentity.setype='Contacts Image' and vtiger_seattachmentsrel.crmid=?";
+					$imageattachment = 'Image';
+				} else {
+					$imageattachment = 'Attachment';
+				}
+				$att_sql = "select vtiger_seattachmentsrel.attachmentsid  from vtiger_seattachmentsrel inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_seattachmentsrel.attachmentsid where vtiger_crmentity.setype='$module $imageattachment' and vtiger_seattachmentsrel.crmid=?";
 				$res = $adb->pquery($att_sql, array($id));
 				$attachmentsid = $adb->query_result($res, 0, 'attachmentsid');
 				if ($attachmentsid != '') {
@@ -251,7 +241,6 @@ class CRMEntity {
 				$sql3 = 'insert into vtiger_seattachmentsrel values(?,?)';
 				$adb->pquery($sql3, array($id, $current_id));
 			}
-
 			return true;
 		} else {
 			$log->debug("Skip the save attachment process.");

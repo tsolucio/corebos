@@ -932,7 +932,7 @@ $app_strings = array(
 'Other Country'=>'weiteres Land',
 'Mailing Po Box'=>'Postfachnr.',
 'Other Po Box'=>'weitere Postfachnr.',
-'Contact Image' => 'Bild der Person',
+'Image' => 'Bild',
 
 //Export Records STARTS--->
 'LBL_EXPORT_TYPE_1'=>'Export Typ 1:',

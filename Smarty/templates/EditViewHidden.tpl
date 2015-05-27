@@ -81,7 +81,8 @@
 	<INPUT TYPE="HIDDEN" NAME="MAX_FILE_SIZE" VALUE="{$UPLOAD_MAXSIZE}">
 {else}
 	{$ERROR_MESSAGE}
-	<form name="EditView" method="POST" action="index.php" onsubmit="VtigerJS_DialogBox.block();">
+	<form name="EditView" method="POST" ENCTYPE="multipart/form-data" action="index.php" onsubmit="VtigerJS_DialogBox.block();">
+	<INPUT TYPE="HIDDEN" NAME="MAX_FILE_SIZE" VALUE="{$UPLOAD_MAXSIZE}">
 {/if}
 
 <input type="hidden" name="pagenumber" value="{$smarty.request.start|@vtlib_purify}">

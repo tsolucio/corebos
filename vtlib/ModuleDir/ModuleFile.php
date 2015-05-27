@@ -19,7 +19,7 @@ class ModuleClass extends CRMEntity {
 
 	/** Indicator if this is a custom module or standard module */
 	var $IsCustomModule = true;
-
+	var $HasDirectImageField = false;
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
@@ -96,6 +96,12 @@ class ModuleClass extends CRMEntity {
 		$this->column_fields = getColumnFields($currentModule);
 		$this->db = PearDatabase::getInstance();
 		$this->log = $log;
+		$sql = 'SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid = ?';
+		$tabid = getTabid($currentModule);
+		$result = $this->db->pquery($sql, array($tabid));
+		if ($result and $this->db->num_rows($result)==1) {
+			$this->HasDirectImageField = true;
+		}
 	}
 
 	function getSortOrder() {
@@ -125,6 +131,9 @@ class ModuleClass extends CRMEntity {
 	}
 
 	function save_module($module) {
+		if ($this->HasDirectImageField) {
+			$this->insertIntoAttachment($this->id,$module);
+		}
 	}
 
 	/**

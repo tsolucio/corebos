@@ -620,10 +620,14 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			}else {
 				$label_fld[] = '';
 			}
-		}
-		if ($tabid == 4) {
+		} else {
+			if ($module == 'Contacts') {
+				$imageattachment = 'Image';
+			} else {
+				$imageattachment = 'Attachment';
+			}
 			//$imgpath = getModuleFileStoragePath('Contacts').$col_fields[$fieldname];
-			$sql = "select vtiger_attachments.*,vtiger_crmentity.setype from vtiger_attachments inner join vtiger_seattachmentsrel on vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid where vtiger_crmentity.setype='Contacts Image' and vtiger_seattachmentsrel.crmid=?";
+			$sql = "select vtiger_attachments.*,vtiger_crmentity.setype from vtiger_attachments inner join vtiger_seattachmentsrel on vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid where vtiger_crmentity.setype='$module $imageattachment' and vtiger_seattachmentsrel.crmid=?";
 			$image_res = $adb->pquery($sql, array($col_fields['record_id']));
 			$image_id = $adb->query_result($image_res, 0, 'attachmentsid');
 			$image_path = $adb->query_result($image_res, 0, 'path');
@@ -632,10 +636,12 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			//urlencode    - added to handle special characters like #, %, etc.,
 			$image_name = urlencode(decode_html($adb->query_result($image_res, 0, 'name')));
 			$imgpath = $image_path . $image_id . "_" . $image_name;
-			if ($image_name != '')
-				$label_fld[] = '<img src="' . $imgpath . '" alt="' . $mod_strings['Contact Image'] . '" title= "' . $mod_strings['Contact Image'] . '" style="max-width: 500px;">';
-			else
+			if ($image_name != '') {
+				$imgtxt = getTranslatedString('SINGLE_'.$module,$module).' '.getTranslatedString('Image');
+				$label_fld[] = '<img src="' . $imgpath . '" alt="' . $imgtxt . '" title= "' . $imgtxt . '" style="max-width: 500px;">';
+			} else {
 				$label_fld[] = '';
+			}
 		}
 	}
 	elseif ($uitype == 62) {
