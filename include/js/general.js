@@ -2986,7 +2986,7 @@ function delimage(id) {
 				scope: 'command'
 			},
 			method: 'post',
-			postBody: 'module=Contacts&action=ContactsAjax&file=DelImage&recordid='+id,
+			postBody: 'module=Contacts&action=ContactsAjax&file=DelImage&ImageModule='+gVTModule+'&recordid='+id,
 			onComplete: function(response) {
 				if(response.responseText.indexOf("SUCCESS")>-1)
 					$("replaceimage").innerHTML=alert_arr.LBL_IMAGE_DELETED;

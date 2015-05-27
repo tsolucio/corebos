@@ -6,15 +6,19 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
 
-
-
 function DelImage($id)
-{		
+{
 	global $adb;
-	$query= "select vtiger_seattachmentsrel.attachmentsid from vtiger_seattachmentsrel inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_seattachmentsrel.attachmentsid where vtiger_crmentity.setype='Contacts Image' and vtiger_seattachmentsrel.crmid=?";
+	$imgmod = vtlib_purify($_REQUEST['ImageModule']);
+	if (empty($imgmod)) $imgmod = 'Contacts';
+	if ($imgmod == 'Contacts') {
+		$imageattachment = 'Image';
+	} else {
+		$imageattachment = 'Attachment';
+	}
+	$query= "select vtiger_seattachmentsrel.attachmentsid from vtiger_seattachmentsrel inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_seattachmentsrel.attachmentsid where vtiger_crmentity.setype='$imgmod $imageattachment' and vtiger_seattachmentsrel.crmid=?";
 	$result = $adb->pquery($query, array($id));
 	$attachmentsid = $adb->query_result($result,$i,"attachmentsid");
 	
