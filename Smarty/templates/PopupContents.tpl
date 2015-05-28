@@ -6,7 +6,6 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 <!-- BEGIN: main -->
@@ -22,18 +21,17 @@
 		<td style="padding-left:10px;" align="left"><input class="crmbutton small save" type="button" value="{$APP.LBL_SELECT_BUTTON_LABEL} {$MODULE|@getTranslatedString:$MODULE}" onclick="if(InventorySelectAll('{$RETURN_MODULE}',image_pth) && document.getElementById('closewindow').value=='true')window.close();"/></td>
 	{elseif $SELECT eq 'enable' && $POPUPTYPE eq 'inventory_service'}
 		<td style="padding-left:10px;" align="left"><input class="crmbutton small save" type="button" value="{$APP.LBL_SELECT_BUTTON_LABEL} {$MODULE|@getTranslatedString:$MODULE}" onclick="if(InventorySelectAllServices('{$RETURN_MODULE}',image_pth) && document.getElementById('closewindow').value=='true')window.close();"/></td>
-		<td style="padding-left:10px;" align="left"><input class="crmbutton small save" type="button" value="{$APP.LBL_SELECT_BUTTON_LABEL} {$MODULE|@getTranslatedString:$MODULE}" onclick="if(InventorySelectAllServices('{$RETURN_MODULE}',image_pth) && document.getElementById('closewindow').value=='true')window.close();"/></td>
-	{else}		
-		<td>&nbsp;</td>	
+	{else}
+		<td>&nbsp;</td>
 	{/if}
 	<td style="padding-right:10px;" align="right">{$RECORD_COUNTS}</td></tr>
-   	<tr>
+	<tr>
 	    <td style="padding:10px;" colspan=3>
 
        	<input name="module" type="hidden" value="{$RETURN_MODULE}">
 		<input name="action" type="hidden" value="{$RETURN_ACTION}">
         <input name="pmodule" type="hidden" value="{$MODULE}">
-		<input type="hidden" name="curr_row" value="{$CURR_ROW}">	
+		<input type="hidden" name="curr_row" value="{$CURR_ROW}">
 		<input name="entityid" type="hidden" value="">
 		<input name="popuptype" id="popup_type" type="hidden" value="{$POPUPTYPE}">
 		<input name="idlist" type="hidden" value="">
