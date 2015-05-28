@@ -247,6 +247,7 @@ jQuery.ajax({
 		success: function(response) {
 			jQuery('#setaddresscontactdiv').html(response);
 			jQuery('#setaddresscontactdiv').show();
+			fnvshNrm('setaddresscontactdiv');
 			jQuery("#contact_id").val(contact_id);
 			jQuery("#contact_name").val(contact_name);
 			jQuery("#mailingstreet").val(mailingstreet);
@@ -255,14 +256,14 @@ jQuery.ajax({
 			jQuery("#mailingzip").val(mailingzip);
 			jQuery("#mailingcountry").val(mailingcountry);
 			jQuery("#mailingpobox").val(mailingpobox);
-                        jQuery("#otherstreet").val(otherstreet);
+			jQuery("#otherstreet").val(otherstreet);
 			jQuery("#othercity").val(othercity);
 			jQuery("#otherstate").val(otherstate);
 			jQuery("#otherzip").val(otherzip);
 			jQuery("#othercountry").val(othercountry);
 			jQuery("#otherpobox").val(otherpobox);
 		}
-	});    
+	});
 }
 
 function sca_fillinvalues() {

@@ -46,6 +46,7 @@ function set_return_address(vendor_id, vendor_name, street, city, state, code, c
 		success: function(response) {
 			jQuery('#setaddressvendordiv').html(response);
 			jQuery('#setaddressvendordiv').show();
+			fnvshNrm('setaddressvendordiv');
 			jQuery("#vendor_id").val(vendor_id);
 			jQuery("#vendor_name").val(vendor_name);
 			jQuery("#street").val(street);

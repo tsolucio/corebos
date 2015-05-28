@@ -118,6 +118,7 @@ function set_return_shipbilladdress(account_id, account_name, bill_street, ship_
 		success: function(response) {
 			jQuery('#setaddressaccountdiv').html(response);
 			jQuery('#setaddressaccountdiv').show();
+			fnvshNrm('setaddressaccountdiv');
 			jQuery("#account_id").val(account_id);
 			jQuery("#account_name").val(account_name);
 			jQuery("#bill_street").val(bill_street);
