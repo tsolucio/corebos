@@ -218,7 +218,7 @@ class CRMEntity {
 				$adb->pquery($query, $qparams);
 			}
 			if ($module == 'Contacts' || (property_exists($this,'HasDirectImageField') && $this->HasDirectImageField)) {
-			if ($module == 'Contacts') {
+				if ($module == 'Contacts') {
 					$imageattachment = 'Image';
 				} else {
 					$imageattachment = 'Attachment';
