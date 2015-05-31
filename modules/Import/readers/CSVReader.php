@@ -68,7 +68,29 @@ class Import_CSV_Reader extends Import_File_Reader {
 		$i=-1;
 		while($data = fgetcsv($fileHandler, 0, $this->userInputObject->get('delimiter'))) {
 			$i++;
-			if($this->userInputObject->get('has_header') && $i == 0) continue;
+			if($this->userInputObject->get('has_header') && $i == 0)
+			{
+				$importModule = $this->userInputObject->get('module');
+				$fullcsv = GlobalVariable::getVariable('Import_Full_CSV', 'false', $importModule);
+				if($fullcsv == 'true')
+				{
+					$rowHeader = $data;
+					
+					$columnsListQuery = '';
+					$columnIndexes = array_keys($rowHeader);
+					$RealCSVcolumnNames = array_values($rowHeader);
+					
+					foreach($columnIndexes as $index) {
+						$columnsListQuery .= ', col'.$index.' TEXT';
+						$columnNamesFullCSV .= ', col'.$index;
+					}
+					$columnsListQuery = substr($columnsListQuery, 1);
+					$columnNamesFullCSV = substr($columnNamesFullCSV, 1);
+					
+					$status_fullcsv = $this->createTablesFullCSV($columnsListQuery,$columnNamesFullCSV,$RealCSVcolumnNames);
+				}
+			 	continue;
+			}
 			$mappedData = array();
 			$allValuesEmpty = true;
 			foreach($fieldMapping as $fieldName => $index) {
@@ -83,6 +105,21 @@ class Import_CSV_Reader extends Import_File_Reader {
 			$fieldNames = array_keys($mappedData);
 			$fieldValues = array_values($mappedData);
 			$this->addRecordToDB($fieldNames, $fieldValues);
+			
+			if($fullcsv == 'true' && $status_fullcsv)
+			{
+				//Data for import full csv
+				$columnCSVvalue = array();
+				$columnCSVvalue['id'] = $this->numberOfRecordsRead;
+				foreach ($data as $index => $value) {
+					$columnCSVvalue['col'.$index] = $value;
+					if($this->userInputObject->get('file_encoding') != $default_charset)
+						$columnCSVvalue['col'.$index] = $this->convertCharacterEncoding($value, $this->userInputObject->get('file_encoding'), $default_charset);
+				}
+				$columnNames = array_keys($columnCSVvalue);
+				$fieldValues = array_values($columnCSVvalue);
+				$this->addRecordToDBFullCSV($columnNames, $fieldValues);
+			}
 		}
 		unset($fileHandler);
 	}

@@ -109,5 +109,41 @@ class Import_File_Reader {
 		$adb->pquery('INSERT INTO '.$tableName.' ('. implode(',', $columnNames).') VALUES ('. generateQuestionMarks($fieldValues) .')', $fieldValues);
 		$this->numberOfRecordsRead++;
 	}
+	
+	public function createTablesFullCSV($columnsListQuery,$columnNames,$Values) {
+		$adb = PearDatabase::getInstance();
+
+		$tableName = Import_Utils::getDbTableName($this->user)."_fullcsv_index";
+		$tableNameData = Import_Utils::getDbTableName($this->user)."_fullcsv";
+		
+		//Drop Table
+		$dropTableCSV = 'DROP TABLE '.$tableName;
+		$adb->query($dropTableCSV);
+		$dropTableCSV = 'DROP TABLE '.$tableNameData;
+		$adb->query($dropTableCSV);
+		
+		//Create Table
+		$createTableQuery = 'CREATE TABLE '. $tableName . ' ('.$columnsListQuery.')';
+		$adb->query($createTableQuery);
+		//Insert real column names for special import
+		$adb->pquery('INSERT INTO '.$tableName.' ('.$columnNames.') VALUES ('. generateQuestionMarks($Values) .')', $Values);
+		
+		//Creata table for storage CSV Data
+		$createTableQuery = 'CREATE TABLE '. $tableNameData . ' (id INT PRIMARY KEY AUTO_INCREMENT,'.$columnsListQuery.')';
+		$adb->query($createTableQuery);
+		
+		return true;
+	}
+	
+	public function addRecordToDBFullCSV($columnNames, $fieldValues) {
+		$adb = PearDatabase::getInstance();
+		
+		$fieldValues = array_values($fieldValues);
+		$tableName = Import_Utils::getDbTableName($this->user)."_fullcsv";
+		
+		$adb->pquery('INSERT INTO '.$tableName.' ('. implode(',', $columnNames).') VALUES ('. generateQuestionMarks($fieldValues) .')', $fieldValues);
+		
+	}
+
 }
 ?>
