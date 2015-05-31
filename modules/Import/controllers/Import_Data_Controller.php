@@ -240,6 +240,15 @@ class Import_Data_Controller {
 								$fieldData['id'] = $baseEntityId;
 								$entityInfo = vtws_update($fieldData, $this->user);
 								$entityInfo['status'] = self::$IMPORT_RECORD_UPDATED;
+								//Prepare data for event handler
+								$entityData= array();
+								$entityData['rowId'] = $rowId;
+								$entityData['tableName'] = $tableName;
+								$entityData['entityInfo'] = $entityInfo;
+								$entityData['fieldData'] = $fieldData;
+								$entityData['moduleName'] = $moduleName;
+								$entityData['user'] = $this->user;
+								cbEventHandler::do_action('corebos.entity.import.overwrite',$entityData);
 							}
 
 							if ($mergeType == Import_Utils::$AUTO_MERGE_MERGEFIELDS) {
@@ -262,6 +271,15 @@ class Import_Data_Controller {
 								$filteredFieldData['id'] = $baseEntityId;
 								$entityInfo = vtws_revise($filteredFieldData, $this->user);
 								$entityInfo['status'] = self::$IMPORT_RECORD_MERGED;
+								//Prepare data for event handler
+								$entityData= array();
+								$entityData['rowId'] = $rowId;
+								$entityData['tableName'] = $tableName;
+								$entityData['entityInfo'] = $entityInfo;
+								$entityData['fieldData'] = $fieldData;
+								$entityData['moduleName'] = $moduleName;
+								$entityData['user'] = $this->user;
+								cbEventHandler::do_action('corebos.entity.import.merge',$entityData);
 							}
 						} else {
 							$createRecord = true;
@@ -279,6 +297,15 @@ class Import_Data_Controller {
 					} else {
 						$entityInfo = vtws_create($moduleName, $fieldData, $this->user);
 						$entityInfo['status'] = self::$IMPORT_RECORD_CREATED;
+						//Prepare data for event handler
+						$entityData= array();
+						$entityData['rowId'] = $rowId;
+						$entityData['tableName'] = $tableName;
+						$entityData['entityInfo'] = $entityInfo;
+						$entityData['fieldData'] = $fieldData;
+						$entityData['moduleName'] = $moduleName;
+						$entityData['user'] = $this->user;
+						cbEventHandler::do_action('corebos.entity.import.create',$entityData);
 					}
 				}
 			}
