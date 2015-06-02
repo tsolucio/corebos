@@ -119,15 +119,27 @@ class CRMEntity {
 		//This is to added to store the existing attachment id so we can delete it when given a new image
 		$old_attachmentrs = $adb->pquery('select vtiger_crmentity.crmid from vtiger_seattachmentsrel inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_seattachmentsrel.attachmentsid where vtiger_seattachmentsrel.crmid=?', array($id));
 		$old_attachmentid = $adb->query_result($old_attachmentrs,0,'crmid');
+		// get the list of uitype 69 fields so we can set their value
+		$sql = 'SELECT tablename,columnname,fieldname FROM vtiger_field WHERE uitype=69 and tabid = ?';
+		$tabid = getTabid($module);
+		$result = $adb->pquery($sql, array($tabid));
+		$fnum = 0;
 		foreach($_FILES as $fileindex => $files) {
 			if($files['name'] != '' && $files['size'] > 0) {
 				if($_REQUEST[$fileindex.'_hidden'] != '') {
 					$files['original_name'] = vtlib_purify($_REQUEST[$fileindex.'_hidden']);
-		} else {
+				} else {
 					$files['original_name'] = stripslashes($files['name']);
 				}
 				$files['original_name'] = str_replace('"','',$files['original_name']);
+				$tblname = $adb->query_result($result, $fnum, 'tablename');
+				$colname = $adb->query_result($result, $fnum, 'columnname');
+				$fldname = $adb->query_result($result, $fnum, 'columnname');
+				$upd = "update $tblname set $colname=? where ".$this->tab_name_index[$tblname].'=?';
+				$adb->pquery($upd, array($files['original_name'],$this->id));
+				$this->column_fields[$fldname] = $files['original_name'];
 				$file_saved = $this->uploadAndSaveFile($id,$module,$files);
+				$fnum++;
 			}
 		}
 
