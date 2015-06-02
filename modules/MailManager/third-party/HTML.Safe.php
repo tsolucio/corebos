@@ -578,7 +578,7 @@ class HTML_Safe {
 		$doc = preg_replace("/<(?=[^a-zA-Z\/\!\?\%])/", '&lt;', $doc);
 
 		// UTF7 pack
-		$doc = $this -> repackUTF7($doc);
+		//$doc = $this -> repackUTF7($doc);
 
 		// Instantiate the parser
 		$parser = new XML_HTMLSax3;
