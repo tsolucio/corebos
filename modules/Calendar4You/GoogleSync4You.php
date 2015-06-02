@@ -223,6 +223,7 @@ class GoogleSync4You {
             $client->setAccessType("offline");
             $client->setScopes(array("https://www.googleapis.com/auth/calendar","https://www.googleapis.com/auth/calendar.readonly"));
             $authUrl = $client->createAuthUrl();
+			if(isset($_REQUEST['type']) && ($_REQUEST['type'] == 'event_settings' || $_REQUEST['type'] == 'settings'))
                    echo "<a class='login' href='$authUrl'>".$this->mod_strings["LBL_CONNECT"]."</a><br>";
          
         }
