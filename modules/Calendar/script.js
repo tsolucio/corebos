@@ -9,30 +9,18 @@
 
 // Get User Default calendar variables
 var calendar_call_default_duration = 5; // minutes
-new Ajax.Request('index.php', {
-	queue : {
-		position : 'end',
-		scope : 'command'
-	},
-	method : 'post',
-	postBody : 'action=GlobalVariableAjax&file=SearchGlobalVar&module=GlobalVariable&gvname=calendar_call_default_duration&gvuserid='+gVTUserID+'&gvmodule=Calendar&gvdefault=5&returnvalidation=0',
-	onComplete : function(response) {
-		var obj = JSON.parse(response.responseText);
-		calendar_call_default_duration = obj.calendar_call_default_duration;
-	}
+GlobalVariable_getVariable('calendar_call_default_duration', 5, 'Calendar', gVTUserID).then(function(response) {
+	var obj = JSON.parse(response);
+	calendar_call_default_duration = obj.calendar_call_default_duration;
+}, function(error) {
+	calendar_call_default_duration = 5; // minutes
 });
 var calendar_other_default_duration = 1; // hours
-new Ajax.Request('index.php', {
-	queue : {
-		position : 'end',
-		scope : 'command'
-	},
-	method : 'post',
-	postBody : 'action=GlobalVariableAjax&file=SearchGlobalVar&module=GlobalVariable&gvname=calendar_other_default_duration&gvuserid='+gVTUserID+'&gvmodule=Calendar&gvdefault=1&returnvalidation=0',
-	onComplete : function(response) {
-		var obj = JSON.parse(response.responseText);
-		calendar_other_default_duration = obj.calendar_other_default_duration;
-	}
+GlobalVariable_getVariable('calendar_other_default_duration', 1, 'Calendar', gVTUserID).then(function(response) {
+	var obj = JSON.parse(response);
+	calendar_other_default_duration = obj.calendar_other_default_duration;
+}, function(error) {
+	calendar_other_default_duration = 1; // hours
 });
 
 function DisableSharing() {
