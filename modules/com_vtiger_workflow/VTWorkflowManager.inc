@@ -289,8 +289,7 @@
 				return true;
 			}else{
 				$cs = $this->conditionStrategy;
-				return $cs->evaluate($this->test,
-									 $entityCache, $id);
+				return $cs->evaluate($this->test, $entityCache, $id);
 			}
 		}
 
@@ -323,6 +322,9 @@
 		function performTasks($entityData) {
 			global $adb;
 			$data = $entityData->getData();
+			$util = new VTWorkflowUtils();
+			$user = $util->adminUser();
+			$entityCache = new VTEntityCache($user);
 
 			require_once('modules/com_vtiger_workflow/VTTaskManager.inc');
 			require_once('modules/com_vtiger_workflow/VTTaskQueue.inc');
@@ -347,7 +349,9 @@
 						if ($delay!=0 and get_class($task) == 'VTUpdateFieldsTask') {
 							$taskQueue->queueTask($task->id,$entityData->getId(), $delay);
 						} else {
-							$task->doTask($entityData);
+							if (empty($task->test) or $task->evaluate($entityCache, $entityData->getId())) {
+								$task->doTask($entityData);
+							}
 						}
 					}else{
 						$taskQueue->queueTask($task->id,$entityData->getId(), $delay);

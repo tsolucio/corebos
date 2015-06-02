@@ -60,6 +60,7 @@ require_once("VTWorkflowApplication.inc");
 				$task->$fieldName = $_REQUEST[$fieldName];
 			}
 		}
+		$task->test = $request["conditions"];
 		$tm->saveTask($task);
 
 		if(isset($request["return_url"])){
