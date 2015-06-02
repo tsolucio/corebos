@@ -172,6 +172,15 @@
 			return str_pad(($h%12), 2, 0, STR_PAD_LEFT).':'.$mn.$AM_PM[($h/12)%2];
 		}
 
+		function evaluate($entityCache, $id){
+			if($this->test==""){
+				return true;
+			}else{
+				$cs = new VTJsonCondition();
+				return $cs->evaluate($this->test, $entityCache, $id);
+			}
+		}
+
 		public function getMetaVariables() {
 			return array(
 				'Current Date' => '(general : (__VtigerMeta__) date)',

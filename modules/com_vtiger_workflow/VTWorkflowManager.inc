@@ -289,8 +289,7 @@
 				return true;
 			}else{
 				$cs = $this->conditionStrategy;
-				return $cs->evaluate($this->test,
-									 $entityCache, $id);
+				return $cs->evaluate($this->test, $entityCache, $id);
 			}
 		}
 
@@ -323,6 +322,9 @@
 		function performTasks($entityData) {
 			global $adb;
 			$data = $entityData->getData();
+			$util = new VTWorkflowUtils();
+			$user = $util->adminUser();
+			$entityCache = new VTEntityCache($user);
 
 			require_once('modules/com_vtiger_workflow/VTTaskManager.inc');
 			require_once('modules/com_vtiger_workflow/VTTaskQueue.inc');
@@ -340,7 +342,17 @@
 						$delay = 0;
 					}
 					if($task->executeImmediately==true){
-						$task->doTask($entityData);
+						// we permit update field delayed tasks even though some may not make sense
+						// for example a mathematical operation or a decision on a value of a field that
+						// may change during the delay. This is for some certain types of updates, generally
+						// absolute updates. You MUST know what you are doing when creating workflows.
+						if ($delay!=0 and get_class($task) == 'VTUpdateFieldsTask') {
+							$taskQueue->queueTask($task->id,$entityData->getId(), $delay);
+						} else {
+							if (empty($task->test) or $task->evaluate($entityCache, $entityData->getId())) {
+								$task->doTask($entityData);
+							}
+						}
 					}else{
 						$taskQueue->queueTask($task->id,$entityData->getId(), $delay);
 					}

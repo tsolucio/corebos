@@ -47,5 +47,39 @@ function edittaskscript($){
 			$('#edittask_cancel_button').click(function(){
 				window.location=returnUrl;
 			});
+		$("#save").bind("click", function(){
+			var conditions = [];
+			i=0;
+			$("#save_conditions").children(".condition_group_block").each(function(j, conditiongroupblock){
+				$(conditiongroupblock).children(".save_condition_group").each(function(k, conditiongroup){
+					$(conditiongroup).children().each(function(l){
+						var fieldname = $(this).children(".fieldname").attr("value");
+						var operation = $(this).children(".operation").attr("value");
+						var value = $(this).children(".expressionvalue").attr("value");
+						var valuetype = $(this).children(".expressiontype").attr("value");
+						var joincondition = $(this).children(".joincondition").attr("value");
+						var groupid = $(this).children(".groupid").attr("value");
+						var groupjoin = '';
+						if(groupid != '') groupjoin = $('#save_condition_group_'+groupid+'_joincondition').attr("value");
+						var condition = {
+							fieldname:fieldname,
+							operation:operation,
+							value:value,
+							valuetype:valuetype,
+							joincondition:joincondition,
+							groupid:groupid,
+							groupjoin:groupjoin
+						};
+						conditions[i++]=condition;
+					});
+				});
+			});
+			if(conditions.length==0){
+				var out = "";
+			}else{
+				var out = JSON.stringify(conditions);
+			}
+			$("#save_conditions_json").attr("value", out);
+		});
     });
 }
