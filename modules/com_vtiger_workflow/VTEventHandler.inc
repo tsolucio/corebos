@@ -10,7 +10,6 @@
 require_once('include/events/SqlResultIterator.inc');
 require_once('VTWorkflowManager.inc');
 require_once('VTEntityCache.inc');
-
 require_once 'include/Webservices/Utils.php';
 require_once("modules/Users/Users.php");
 require_once("include/Webservices/VtigerCRMObject.php");
@@ -29,7 +28,6 @@ require_once('VTWorkflowUtils.php');
 /*
  * VTEventHandler
  */
-
 class VTWorkflowEventHandler extends VTEventHandler {
 
 	/**
@@ -43,8 +41,7 @@ class VTWorkflowEventHandler extends VTEventHandler {
 		$isNew = $entityData->isNew();
 		$entityCache = new VTEntityCache($user);
 		$wsModuleName = $util->toWSModuleName($entityData);
-		$wsId = vtws_getWebserviceEntityId($wsModuleName,
-						$entityData->getId());
+		$wsId = vtws_getWebserviceEntityId($wsModuleName,$entityData->getId());
 		$entityData = $entityCache->forId($wsId);
 
 		$wfs = new VTWorkflowManager($adb);
