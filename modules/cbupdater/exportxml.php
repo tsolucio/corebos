@@ -17,11 +17,20 @@
 *  Version      : 5.5.0
 *  Author       : JPL TSolucio, S. L.
 *************************************************************************************************/
+include_once('vtlib/Vtiger/Zip.php');
 
 global $adb;
 $ids = vtlib_purify($_REQUEST['idstring']);
 
 if (!empty($ids)) {
+	// Export as Zip
+	if ($todir == '') $todir = 'cache';
+	if ($xmlfilename == '') $xmlfilename = 'coreBOSUpdates.xml';
+	$xmlcfn = 'cache/'.$xmlfilename;
+	if ($zipfilename == '') $zipfilename = "cbupdates-" . date('YmdHis') . ".zip";
+	$zipfilename = "$todir/$zipfilename";
+	$zip = new Vtiger_Zip($zipfilename);
+
 	$sql = 'select * from vtiger_cbupdater
 			inner join vtiger_crmentity on crmid=cbupdaterid
 			where deleted=0 ';
@@ -59,14 +68,18 @@ if (!empty($ids)) {
 				$w->text($upd['systemupdate'] == '1' ? 'true' : 'false');
 				$w->endElement();
 			$w->endElement();
+			$bname = basename($upd['pathfilename']);
+			$zip->addFile($upd['pathfilename'], $bname);
 		}
 		$w->endElement();
-		header("Content-type: text/xml");
-		header("Pragma: public");
-		header("Cache-Control: private");
-		header("Content-Disposition: attachment; filename=\"coreBOSUpdates.xml\"");
-		header("Content-Description: PHP Generated Data");
-		echo $w->outputMemory(true);
+		$fd = fopen($xmlcfn, 'w');
+		$cbxml = $w->outputMemory(true);
+		fwrite($fd, $cbxml);
+		fclose($fd);
+		$zip->addFile($xmlcfn,$xmlfilename);
+		$zip->save();
+		$zip->forceDownload($zipfilename);
+		unlink($zipfilename);
 	} else {
 		echo getTranslatedString('LBL_RECORD_NOT_FOUND');
 	}
