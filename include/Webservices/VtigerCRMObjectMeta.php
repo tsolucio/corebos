@@ -120,18 +120,17 @@ class VtigerCRMObjectMeta extends EntityMeta {
 					}
 				}
 			}
-			
-			$sql = 'select * from vtiger_profile2tab where profileid in ('.generateQuestionMarks($profileList).') and tabid = ?;';
+
+			$sql = 'select 1 from vtiger_profile2tab where profileid in ('.generateQuestionMarks($profileList).') and tabid = ? and permissions=0 limit 1';
 			$result = $adb->pquery($sql,array($profileList,$this->getTabId()));
 			$standardDefined = false;
-			$permission = $adb->query_result($result,1,"permissions");
-			if($permission == 1 || $permission == "1"){
+			if($result and $adb->num_rows($result) == 1){
+				$this->hasAccess = true;
+			}else{
 				$this->hasAccess = false;
 				return;
-			}else{
-				$this->hasAccess = true;
 			}
-			
+
 			//operation=2 is delete operation.
 			//operation=0 or 1 is create/edit operation. precise 0 create and 1 edit.
 			//operation=3 index or popup. //ignored for websevices.
