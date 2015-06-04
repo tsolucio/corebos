@@ -114,13 +114,18 @@ class ListViewSession {
 			vtlib_setup_modulevars($currentModule, $instance);
 			if($currentModule=='Documents' && !empty($folderId)){
 				$list_query = preg_replace("/[\n\r\s]+/"," ",$list_query);
-				$list_query .= " AND vtiger_notes.folderid=$folderId";
-				$order_by = $instance->getOrderByForFolder($folderId);
-				$sorder = $instance->getSortOrderForFolder($folderId);
-				$tablename = getTableNameForField($currentModule,$order_by);
-				$tablename = (($tablename != '')?($tablename."."):'');
-				if(!empty($order_by)){
-				    $list_query .= ' ORDER BY '.$tablename.$order_by.' '.$sorder;
+				$hasOrderBy = stripos($list_query, 'order by');
+				if ($hasOrderBy>0) {
+					$list_query = substr($list_query, 0, $hasOrderBy-1)." AND vtiger_notes.folderid=$folderId ".substr($list_query, $hasOrderBy);
+				} else {
+					$list_query .= " AND vtiger_notes.folderid=$folderId";
+					$order_by = $instance->getOrderByForFolder($folderId);
+					$sorder = $instance->getSortOrderForFolder($folderId);
+					$tablename = getTableNameForField($currentModule,$order_by);
+					$tablename = (($tablename != '')?($tablename."."):'');
+					if(!empty($order_by)){
+						$list_query .= ' ORDER BY '.$tablename.$order_by.' '.$sorder;
+					}
 				}
 			}
 			if($start !=1){
