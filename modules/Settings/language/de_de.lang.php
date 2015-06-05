@@ -422,7 +422,6 @@ $mod_strings = Array(
     'LBL_BACKUP_SERVER_DESCRIPTION'=>'bearbeiten Sie die Einstellungen für den Backup Server',
     'LBL_CURRENCY_DESCRIPTION'=>'bearbeiten Sie die Einstellungen für Währungen und Umtauschkurs',
     'LBL_TAX_DESCRIPTION'=>'bearbeiten Sie die Einstellungen für die Mwst. und anderen Steuern',
-    'LBL_SYSTEM_DESCRIPTION'=>'Systemeinstellungen anzeigen',
     'LBL_PROXY_DESCRIPTION'=>'bearbeiten Sie die Einstellungen für den Zugang zum Internet',
     'LBL_AUDIT_DESCRIPTION'=>'Audit-Trail Informationen bearbeiten und anzeigen',
     'LBL_TAX_DESC'=>'bearbeiten Sie die Einstellungen für die Mwst. und anderen Steuern',

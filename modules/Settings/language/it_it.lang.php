@@ -384,7 +384,6 @@ $mod_strings = array (
   'LBL_BACKUP_SERVER_DESCRIPTION' => 'Specifica i dettagli per il server di backup',
   'LBL_CURRENCY_DESCRIPTION' => 'Gestisce le valute internazionali e il tasso di conversione',
   'LBL_TAX_DESCRIPTION' => 'Gestisce le tasse e le percentuali di tassazione',
-  'LBL_SYSTEM_DESCRIPTION' => 'Visualizza i Dettagli del Server CRM',
   'LBL_PROXY_DESCRIPTION' => 'Configura il proxy per accedere ai feed RSS su internet',
   'LBL_AUDIT_DESCRIPTION' => 'Mostra le operazioni effettuate dagli utenti sui dati',
   'LBL_TAX_DESC' => 'Gestisce i differenti tipi di tassazione quale IVA, commissioni di vendita, etc etc',

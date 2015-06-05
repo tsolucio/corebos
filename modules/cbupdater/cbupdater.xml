@@ -338,4 +338,11 @@
 	<classname>milestonedatetodate</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>phpsysinfo tab not in use anymore: cleanup code and database</description>
+	<filename>build/changeSets/DeleteSystemServerInfoTab.php</filename>
+	<classname>DeleteSystemServerInfoTab</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

@@ -354,7 +354,6 @@ $mod_strings = array(
 	'LBL_BACKUP_SERVER_DESCRIPTION' => 'Specify database backup server details',
 	'LBL_CURRENCY_DESCRIPTION' => 'Manage international currencies and exchange rates',
 	'LBL_TAX_DESCRIPTION' => 'Manage taxes and the corresponding tax rates',
-	'LBL_SYSTEM_DESCRIPTION' => 'View CRM server details',
 	'LBL_PROXY_DESCRIPTION' => 'Configure proxies to access RSS feeds through Internet',
 	'LBL_AUDIT_DESCRIPTION' => 'Display data opertions performed by users',
 	'LBL_TAX_DESC' => 'Manage different types of tax rates for taxes, such as Sales Tax, VAT etc.,',

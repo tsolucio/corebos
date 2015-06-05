@@ -355,7 +355,6 @@ $mod_strings = array (
       'LBL_BACKUP_SERVER_DESCRIPTION' => 'Editar Configuración del Servidor de Backup',
       'LBL_CURRENCY_DESCRIPTION' => 'Gestionar Monedas y Valores de Cambio Monetario',
       'LBL_TAX_DESCRIPTION' => 'Gestionar Impuestos',
-      'LBL_SYSTEM_DESCRIPTION' => 'Mostrar Configuración del Sistema',
       'LBL_PROXY_DESCRIPTION' => 'Editar Configuración de Proxy',
       'LBL_AUDIT_DESCRIPTION' => 'Mostrar Configuración de Auditoría',
       'LBL_TAX_DESC' => 'Gestionar IVA y Otros Impuestos',

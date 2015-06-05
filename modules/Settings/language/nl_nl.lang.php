@@ -424,7 +424,6 @@ $mod_strings = Array(
 'LBL_BACKUP_SERVER_DESCRIPTION'=>'Instellingen van de backup server',
 'LBL_CURRENCY_DESCRIPTION'=>'Instellen valuta en wissel koersen',
 'LBL_TAX_DESCRIPTION'=>'Instellen waarden voor belastingen',
-'LBL_SYSTEM_DESCRIPTION'=>'Systeem instellingen',
 'LBL_PROXY_DESCRIPTION'=>'Verander instellingen voor internet connectie',
 'LBL_AUDIT_DESCRIPTION'=>'Controle instellingen',
 'LBL_TAX_DESC'=>'Definieer de BTW en andere belasting instellingen',

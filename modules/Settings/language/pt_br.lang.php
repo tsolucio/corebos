@@ -651,7 +651,6 @@ $mod_strings = Array(
 'LBL_BACKUP_SERVER_DESCRIPTION'=>'Especificar detalhes do Servidor de Backup',
 'LBL_CURRENCY_DESCRIPTION'=>'Administrar Moedas Internacionais e Taxas de Câmbio',
 'LBL_TAX_DESCRIPTION'=>'Administrar Impostos e respectivas alíquotas',
-'LBL_SYSTEM_DESCRIPTION'=>'Visualizar detalhes do Servidor CRM',
 'LBL_PROXY_DESCRIPTION'=>'Configurar proxies para acesso a alimentadores RSS através da Internet',
 'LBL_AUDIT_DESCRIPTION'=>'Exibir as operações executadas por Usuários',
 'LBL_TAX_DESC'=>'Administrar diferentes tipos de alíquotas de impostos: IPI, ICMS etc.',

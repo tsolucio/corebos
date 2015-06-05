@@ -353,7 +353,6 @@ $mod_strings = array (
 		'LBL_BACKUP_SERVER_DESCRIPTION' => 'Configuration du seveur FTP pour les sauvegardes',
 		'LBL_CURRENCY_DESCRIPTION' => 'Gestion des devises et taux de change',
 		'LBL_TAX_DESCRIPTION' => 'Gestion des taxes (TVA...)',
-		'LBL_SYSTEM_DESCRIPTION' => 'Consultation de la configuration de votre système (phpsysinfo)',
 		'LBL_PROXY_DESCRIPTION' => 'Configuration du serveur proxy pour la connexion internet du CRM',
 		'LBL_AUDIT_DESCRIPTION' => 'Activation et consultation des journaux Audit Trail',
 		'LBL_TAX_DESC' => 'Gestion des taxes',

@@ -180,7 +180,6 @@ function newpopup(str){
 										<tr><td><a href="javascript:;" onClick=" newpopup('http://nocc.sourceforge.net')">NOCC</a></td></tr>
 										<tr><td><a href="javascript:;" onClick=" newpopup('http://www.php.net')">PHP</a></td></tr>
 										<tr><td><a href="javascript:;" onClick=" newpopup('http://phpmailer.sourceforge.net/')">PHPMailer</a></td></tr>
-										<tr><td><a href="javascript:;" onClick=" newpopup('http://phpsysinfo.sourceforge.net/')">phpSysinfo</a></td></tr>
 										<tr><td><a href="javascript:;" onClick=" newpopup('http://prototype.conio.net')">Prototype</a></td></tr>
 										<tr><td><a href="javascript:;" onClick=" newpopup('http://script.aculo.us')">script.oculo.us</a></td></tr>
 										<tr><td><a href="javascript:;" onClick=" newpopup('http://smarty.php.net/')">Smarty Template Engine</a></td></tr>

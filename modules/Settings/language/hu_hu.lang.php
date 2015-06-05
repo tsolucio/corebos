@@ -366,7 +366,6 @@ $mod_strings = array(
 	'LBL_BACKUP_SERVER_DESCRIPTION' => 'Határozd meg az adatbázis Backup Server adatait',
 	'LBL_CURRENCY_DESCRIPTION' => 'Állítsd be a nemzetközi pénznemeket és átváltási árfolyamokat',
 	'LBL_TAX_DESCRIPTION' => 'Állítsd be az adókat és a megfelelő adó árfolyamokat',
-	'LBL_SYSTEM_DESCRIPTION' => 'Ellenőrizd a vtiger CRM Szerver adatait',
 	'LBL_PROXY_DESCRIPTION' => 'Konfiguráld a Proxy Szervert, hogy hozzáférjen RSS adatokhoz az Interneten keresztül',
 	'LBL_AUDIT_DESCRIPTION' => 'A felhasználók által végrehajtott műveletek naplózása',
 	'LBL_TAX_DESC' => 'Állítsd be a különböző típusait az adóknak',
