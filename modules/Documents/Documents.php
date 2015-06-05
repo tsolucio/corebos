@@ -84,13 +84,6 @@ class Documents extends CRMEntity {
 	{
 		global $log,$adb,$upload_badext;
 		$insertion_mode = $this->mode;
-		if(isset($this->parentid) && $this->parentid != '')
-			$relid =  $this->parentid;
-		//inserting into vtiger_senotesrel
-		if(isset($relid) && $relid != '')
-		{
-			$this->insertintonotesrel($relid,$this->id);
-		}
 		$filetype_fieldname = $this->getFileTypeFieldName();
 		$filename_fieldname = $this->getFile_FieldName();
 		if($this->column_fields[$filetype_fieldname] == 'I' ){
@@ -332,13 +325,6 @@ class Documents extends CRMEntity {
             }
 		}
 
-	}
-
-	function insertintonotesrel($relid,$id)
-	{
-		global $adb;
-		$dbQuery = "insert into vtiger_senotesrel values ( ?, ? )";
-		$dbresult = $adb->pquery($dbQuery,array($relid,$id));
 	}
 
 	/*function save_related_module($module, $crmid, $with_module, $with_crmid){
