@@ -183,7 +183,8 @@ class CRMEntity {
 	 */
 	function uploadAndSaveFile($id, $module, $file_details, $attachmentname='') {
 		global $log;
-		$log->debug("Entering into uploadAndSaveFile($id,$module,$file_details) method.");
+		$fparams = print_r($file_details,true);
+		$log->debug("Entering into uploadAndSaveFile($id,$module,$fparams) method.");
 
 		global $adb, $current_user;
 		global $upload_badext;
@@ -223,17 +224,18 @@ class CRMEntity {
 		// }
 
 		if ($save_file == 'true' && $upload_status == 'true') {
+			$description_val = empty($this->column_fields['description']) ? '' : $this->column_fields['description'];
 			if ($module == 'Contacts' || $module == 'Products') {
 				$sql1 = "insert into vtiger_crmentity (crmid,smcreatorid,smownerid,setype,description,createdtime,modifiedtime) values(?, ?, ?, ?, ?, ?, ?)";
-				$params1 = array($current_id, $current_user->id, $ownerid, $module . " Image", $this->column_fields['description'], $adb->formatDate($date_var, true), $adb->formatDate($date_var, true));
+				$params1 = array($current_id, $current_user->id, $ownerid, $module . " Image", $description_val, $adb->formatDate($date_var, true), $adb->formatDate($date_var, true));
 			} else {
 				$sql1 = "insert into vtiger_crmentity (crmid,smcreatorid,smownerid,setype,description,createdtime,modifiedtime) values(?, ?, ?, ?, ?, ?, ?)";
-				$params1 = array($current_id, $current_user->id, $ownerid, $module . " Attachment", $this->column_fields['description'], $adb->formatDate($date_var, true), $adb->formatDate($date_var, true));
+				$params1 = array($current_id, $current_user->id, $ownerid, $module . " Attachment", $description_val, $adb->formatDate($date_var, true), $adb->formatDate($date_var, true));
 			}
 			$adb->pquery($sql1, $params1);
 
 			$sql2 = "insert into vtiger_attachments(attachmentsid, name, description, type, path) values(?, ?, ?, ?, ?)";
-			$params2 = array($current_id, $filename, $this->column_fields['description'], $filetype, $upload_file_path);
+			$params2 = array($current_id, $filename, $description_val, $filetype, $upload_file_path);
 			$result = $adb->pquery($sql2, $params2);
 
 			if ($_REQUEST['mode'] == 'edit') {
@@ -371,7 +373,7 @@ class CRMEntity {
 			}
 			// END
 
-			$description_val = from_html($this->column_fields['description']);
+			$description_val = empty($this->column_fields['description']) ? '' : from_html($this->column_fields['description']);
 			$sql = "insert into vtiger_crmentity (crmid,smcreatorid,smownerid,setype,description,modifiedby,createdtime,modifiedtime) values(?,?,?,?,?,?,?,?)";
 			$params = array($current_id, $current_user->id, $ownerid, $module, $description_val, $current_user->id, $created_date_var, $modified_date_var);
 			$adb->pquery($sql, $params);

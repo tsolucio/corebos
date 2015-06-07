@@ -88,6 +88,7 @@ class Documents extends CRMEntity {
 		$filename_fieldname = $this->getFile_FieldName();
 		if($this->column_fields[$filetype_fieldname] == 'I' ){
 			if($_FILES[$filename_fieldname]['name'] != ''){
+				$filedownloadcount = 0;
 				$errCode=$_FILES[$filename_fieldname]['error'];
 					if($errCode == 0){
 						foreach($_FILES as $fileindex => $files)
@@ -102,7 +103,6 @@ class Documents extends CRMEntity {
 								$filename = ltrim(basename(" ".$binFile)); //allowed filename like UTF-8 characters
 							}
 						}
-
 					}
 			}elseif($this->mode == 'edit') {
 				$fileres = $adb->pquery("select filetype, filesize,filename,filedownloadcount,filelocationtype from vtiger_notes where notesid=?", array($this->id));

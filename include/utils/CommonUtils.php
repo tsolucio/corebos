@@ -2107,7 +2107,8 @@ function getModuleFileStoragePath($module) {
  */
 function validateImageFile($file_details) {
 	global $adb, $log, $app_strings;
-	$log->debug("Entering into validateImageFile($file_details) method.");
+	$fparams = print_r($file_details,true);
+	$log->debug("Entering into validateImageFile($fparams) method.");
 
 	$savefile = 'true';
 	$file_type_details = explode("/", $file_details['type']);
@@ -2119,11 +2120,11 @@ function validateImageFile($file_details) {
 		$saveimage = 'true';
 	} else {
 		$saveimage = 'false';
-		$_SESSION['image_type_error'] .= "<br> &nbsp;&nbsp;<b>" . $file_details[name] . "</b>" . $app_strings['MSG_IS_NOT_UPLOADED'];
+		$_SESSION['image_type_error'] .= "<br> &nbsp;&nbsp;<b>" . $file_details['name'] . "</b>" . $app_strings['MSG_IS_NOT_UPLOADED'];
 		$log->debug("Invalid Image type == $filetype");
 	}
 
-	$log->debug("Exiting from validateImageFile($file_details) method. return saveimage=$saveimage");
+	$log->debug("Exiting from validateImageFile($fparams) method. return saveimage=$saveimage");
 	return $saveimage;
 }
 
