@@ -18,18 +18,37 @@ function DelImage($id)
 	} else {
 		$imageattachment = 'Attachment';
 	}
-	$query= "select vtiger_seattachmentsrel.attachmentsid from vtiger_seattachmentsrel inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_seattachmentsrel.attachmentsid where vtiger_crmentity.setype='$imgmod $imageattachment' and vtiger_seattachmentsrel.crmid=?";
-	$result = $adb->pquery($query, array($id));
-	$attachmentsid = $adb->query_result($result,$i,"attachmentsid");
-	
-	$rel_delquery='delete from vtiger_seattachmentsrel where crmid=?  and attachmentsid=?';
-	$adb->pquery($rel_delquery, array($id, $attachmentsid));
-	
-	$crm_delquery="delete from vtiger_crmentity where crmid=?";
-	$adb->pquery($crm_delquery, array($attachmentsid));
+	$aname = vtlib_purify($_REQUEST['attachmentname']);
+	$query= "select vtiger_seattachmentsrel.attachmentsid
+	 from vtiger_seattachmentsrel
+	 inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_seattachmentsrel.attachmentsid
+	 inner join vtiger_attachments on vtiger_crmentity.crmid=vtiger_attachments.attachmentsid
+	 where vtiger_crmentity.setype='$imgmod $imageattachment'
+	  and vtiger_attachments.name=?
+	  and vtiger_seattachmentsrel.crmid=?";
+	$result = $adb->pquery($query, array($aname,$id));
+	if ($result and $adb->num_rows($result)==1) {
+		$attachmentsid = $adb->query_result($result,0,"attachmentsid");
 
-	$base_query="update vtiger_contactdetails set imagename='' where contactid=?";
-	$adb->pquery($base_query, array($id));
+		$rel_delquery='delete from vtiger_seattachmentsrel where crmid=? and attachmentsid=?';
+		$adb->pquery($rel_delquery, array($id, $attachmentsid));
+		$crm_delquery="delete from vtiger_crmentity where crmid=?";
+		$adb->pquery($crm_delquery, array($attachmentsid));
+
+		$sql = 'SELECT tablename,columnname,fieldname FROM vtiger_field
+		 WHERE uitype=69 and vtiger_field.tabid = ? and fieldname = ?';
+		$tabid = getTabid($imgmod);
+		$fname = vtlib_purify($_REQUEST['fieldname']);
+		$result = $adb->pquery($sql, array($tabid,$fname));
+		if ($result and $adb->num_rows($result)==1) {
+			include_once "modules/$imgmod/$imgmod.php";
+			$crmmod = new $imgmod();
+			$tblname = $adb->query_result($result, $fnum, 'tablename');
+			$colname = $adb->query_result($result, $fnum, 'columnname');
+			$upd = "update $tblname set $colname='' where ".$crmmod->tab_name_index[$tblname].'=?';
+			$adb->pquery($upd, array($id));
+		}
+	}
 }
 
 function DelAttachment($id)
@@ -43,7 +62,7 @@ function DelAttachment($id)
 	$adb->pquery($query, array($id));
 
 }
-$id = $_REQUEST["recordid"];
+$id = vtlib_purify($_REQUEST["recordid"]);
 if(isset($_REQUEST["attachmodule"]) && $_REQUEST["attachmodule"]=='Emails')
 {
 	DelAttachment($id);

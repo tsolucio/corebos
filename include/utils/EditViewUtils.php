@@ -626,15 +626,23 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
   		{
 			if($module_name == 'Products') {
 				$query = 'select vtiger_attachments.path, vtiger_attachments.attachmentsid, vtiger_attachments.name ,vtiger_crmentity.setype from vtiger_products left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid=vtiger_products.productid inner join vtiger_attachments on vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_attachments.attachmentsid where vtiger_crmentity.setype="Products Image" and productid=?';
+				$params = array($col_fields['record_id']);
  			} else {
  				if ($module_name == 'Contacts') {
 					$imageattachment = 'Image';
 				} else {
 					$imageattachment = 'Attachment';
  				}
-				$query="select vtiger_attachments.*,vtiger_crmentity.setype from vtiger_attachments inner join vtiger_seattachmentsrel on vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_attachments.attachmentsid where vtiger_crmentity.setype='$module_name $imageattachment' and vtiger_seattachmentsrel.crmid=?";
+				$query="select vtiger_attachments.*,vtiger_crmentity.setype
+				 from vtiger_attachments
+				 inner join vtiger_seattachmentsrel on vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
+				 inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_attachments.attachmentsid
+				 where vtiger_crmentity.setype='$module_name $imageattachment'
+				  and vtiger_attachments.name = ?
+				  and vtiger_seattachmentsrel.crmid=?";
+				$params = array($col_fields[$fieldname],$col_fields['record_id']);
  		    }
- 		    $result_image = $adb->pquery($query, array($col_fields['record_id']));
+		    $result_image = $adb->pquery($query, $params);
  		    for($image_iter=0;$image_iter < $adb->num_rows($result_image);$image_iter++)
  		    {
 			    $image_id_array[] = $adb->query_result($result_image,$image_iter,'attachmentsid');

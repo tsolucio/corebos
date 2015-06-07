@@ -659,9 +659,8 @@ alt="Clear" title="Clear" LANGUAGE=javascript	onClick="this.form.{$fldname}.valu
 					{/if}
 					<input name="{$fldname}"  type="file" value="{if $imagevalueexists}{$maindata[3].0.name}{/if}" tabindex="{$vt_tab}" onchange="validateFilename(this);" />
 					<input name="{$fldname}_hidden"  type="hidden" value="{if $imagevalueexists}{$maindata[3].0.name}{/if}" />
-					<input type="hidden" name="id" value=""/>
 					{if $imagevalueexists}
-						<div id="replaceimage">[{$maindata[3].0.orgname}] <input id="contact_file_image" value="{'LBL_DELETE_BUTTON'|@getTranslatedString}" type="button" class="crmbutton small delete" onclick='delimage({$ID});'></div>
+						<div id="{$fldname}_replaceimage">[{$maindata[3].0.orgname}] <input id="{$fldname}_attach" value="{'LBL_DELETE_BUTTON'|@getTranslatedString}" type="button" class="crmbutton small delete" onclick='delimage({$ID},"{$fldname}","{$maindata[3].0.orgname}");'></div>
 					{/if}
 				{/if}
 			</td>

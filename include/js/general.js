@@ -2977,7 +2977,7 @@ function fnpriceValidation(txtObj) {
 		document.getElementById(txtObj).value = 0;
 }
 
-function delimage(id) {
+function delimage(id,fname,aname) {
 	new Ajax.Request(
 		'index.php',
 		{
@@ -2986,15 +2986,14 @@ function delimage(id) {
 				scope: 'command'
 			},
 			method: 'post',
-			postBody: 'module=Contacts&action=ContactsAjax&file=DelImage&ImageModule='+gVTModule+'&recordid='+id,
+			postBody: 'module=Contacts&action=ContactsAjax&file=DelImage&ImageModule='+gVTModule+'&recordid='+id+'&fieldname='+fname+'&attachmentname='+aname,
 			onComplete: function(response) {
 				if(response.responseText.indexOf("SUCCESS")>-1)
-					$("replaceimage").innerHTML=alert_arr.LBL_IMAGE_DELETED;
+					$(fname+'_replaceimage').innerHTML=alert_arr.LBL_IMAGE_DELETED;
 				else
 					alert(alert_arr.ERROR_WHILE_EDITING);
 			}
-		}
-		);
+		});
 }
 
 function delUserImage(id) {
