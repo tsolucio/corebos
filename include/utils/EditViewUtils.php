@@ -620,15 +620,15 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 	}
 	elseif($uitype == 69)
-  	{
-  		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
- 		if( $col_fields['record_id'] != "")
-  		{
+	{
+		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
+		if( $col_fields['record_id'] != "")
+		{
 			if($module_name == 'Products') {
 				$query = 'select vtiger_attachments.path, vtiger_attachments.attachmentsid, vtiger_attachments.name ,vtiger_crmentity.setype from vtiger_products left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid=vtiger_products.productid inner join vtiger_attachments on vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_attachments.attachmentsid where vtiger_crmentity.setype="Products Image" and productid=?';
 				$params = array($col_fields['record_id']);
- 			} else {
- 				if ($module_name == 'Contacts') {
+			} else {
+				if ($module_name == 'Contacts') {
 					$imageattachment = 'Image';
 				} else {
 					$imageattachment = 'Attachment';
@@ -641,30 +641,28 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 				  and vtiger_attachments.name = ?
 				  and vtiger_seattachmentsrel.crmid=?";
 				$params = array($col_fields[$fieldname],$col_fields['record_id']);
- 		    }
-		    $result_image = $adb->pquery($query, $params);
- 		    for($image_iter=0;$image_iter < $adb->num_rows($result_image);$image_iter++)
- 		    {
-			    $image_id_array[] = $adb->query_result($result_image,$image_iter,'attachmentsid');
+			}
+			$result_image = $adb->pquery($query, $params);
+			for($image_iter=0;$image_iter < $adb->num_rows($result_image);$image_iter++) {
+				$image_id_array[] = $adb->query_result($result_image,$image_iter,'attachmentsid');
 
-			    //decode_html  - added to handle UTF-8   characters in file names
-			    //urlencode    - added to handle special characters like #, %, etc.,
- 			    $image_array[] = urlencode(decode_html($adb->query_result($result_image,$image_iter,'name')));
-			    $image_orgname_array[] = decode_html($adb->query_result($result_image,$image_iter,'name'));
+				//decode_html  - added to handle UTF-8   characters in file names
+				//urlencode    - added to handle special characters like #, %, etc.,
+				$image_array[] = urlencode(decode_html($adb->query_result($result_image,$image_iter,'name')));
+				$image_orgname_array[] = decode_html($adb->query_result($result_image,$image_iter,'name'));
 
- 			    $image_path_array[] = $adb->query_result($result_image,$image_iter,'path');
- 		    }
- 		    if(is_array($image_array))
- 			    for($img_itr=0;$img_itr<count($image_array);$img_itr++)
- 			    {
- 				    $fieldvalue[] = array('name'=>$image_array[$img_itr],'path'=>$image_path_array[$img_itr].$image_id_array[$img_itr]."_","orgname"=>$image_orgname_array[$img_itr]);
- 			    }
- 		    else
- 			    $fieldvalue[] = '';
-  		}
-  		else
-  			$fieldvalue[] = '';
-  	}
+				$image_path_array[] = $adb->query_result($result_image,$image_iter,'path');
+			}
+			if(is_array($image_array))
+				for($img_itr=0;$img_itr<count($image_array);$img_itr++) {
+					$fieldvalue[] = array('name'=>$image_array[$img_itr],'path'=>$image_path_array[$img_itr].$image_id_array[$img_itr]."_","orgname"=>$image_orgname_array[$img_itr]);
+				}
+			else
+				$fieldvalue[] = '';
+		}
+		else
+			$fieldvalue[] = '';
+	}
 	elseif($uitype == 62)
 	{
 		if(isset($_REQUEST['parent_id']) && $_REQUEST['parent_id'] != '')
