@@ -345,4 +345,11 @@
 	<classname>DeleteSystemServerInfoTab</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Import coreBOS Updater changeset</description>
+	<filename>build/changeSets/cbupdater_importxml.php</filename>
+	<classname>cbupdater_importxml</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
 </updatesChangeLog>

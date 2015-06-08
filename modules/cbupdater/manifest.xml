@@ -787,6 +787,16 @@
 <handler_class><![CDATA[]]></handler_class>
 <handler><![CDATA[]]></handler>
 </customlink>
+<customlink>
+<linktype>LISTVIEWBASIC</linktype>
+<linklabel>ImportXML</linklabel>
+<linkurl><![CDATA[javascript:gotourl('index.php?module=cbupdater&action=importxml')]]></linkurl>
+<linkicon><![CDATA[]]></linkicon>
+<sequence>5</sequence>
+<handler_path><![CDATA[]]></handler_path>
+<handler_class><![CDATA[]]></handler_class>
+<handler><![CDATA[]]></handler>
+</customlink>
 </customlinks>
 <crons>
 </crons>
