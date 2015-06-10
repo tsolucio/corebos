@@ -1,5 +1,4 @@
 <?php
-
 /*******************************************************************************
  * The contents of this file are subject to the following licences:
  * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
@@ -66,6 +65,7 @@ $mod_strings = Array(
 'Actual ROI'=>'Actuele opbrengsten',
 'Select One'=>'Selecteer',
 'LBL_LOAD_LIST'=>'Lijst laden',
+'LBL_EMPTY_LIST'=>'Empty List',
 
 //Added for existing Picklist Entries
 

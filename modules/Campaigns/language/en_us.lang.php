@@ -10,14 +10,6 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  Defines the English language pack for Campaign Module
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -55,6 +47,7 @@ $mod_strings = Array(
 'Actual ROI'=>'Actual ROI',
 'Select One'=>'Select One',
 'LBL_LOAD_LIST'=>'Load List',
+'LBL_EMPTY_LIST'=>'Empty List',
 
 //Added for existing Picklist Entries
 

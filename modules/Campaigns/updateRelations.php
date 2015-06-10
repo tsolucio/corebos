@@ -11,29 +11,50 @@ require_once('include/database/PearDatabase.php');
 @include_once('user_privileges/default_module_view.php');
 
 global $adb, $singlepane_view, $currentModule;
-$idlist = vtlib_purify($_REQUEST['idlist']);
-$dest_mod = vtlib_purify($_REQUEST['destination_module']);
-$parenttab = getParentTab();
+$idlist            = vtlib_purify($_REQUEST['idlist']);
+$destinationModule = vtlib_purify($_REQUEST['destination_module']);
+$parenttab         = getParentTab();
 
 $forCRMRecord = vtlib_purify($_REQUEST['parentid']);
+$mode = $_REQUEST['mode'];
 
 if($singlepane_view == 'true')
 	$action = "DetailView";
 else
 	$action = "CallRelatedList";
 
-$storearray = array();
-if(!empty($_REQUEST['idlist'])) {
-	// Split the string of ids
-	$storearray = explode (";",trim($idlist,";"));
-} else if(!empty($_REQUEST['entityid'])){
-	$storearray = array($_REQUEST['entityid']);
+if($mode == 'delete') {
+	if ($idlist=='All') {
+		switch($destinationModule) {
+			case 'Accounts' : $rel_table = 'vtiger_campaignaccountrel'; $rel_field = 'accountid';
+			break;
+			case 'Contacts' : $rel_table = 'vtiger_campaigncontrel'; $rel_field = 'contactid';
+			break;
+			case 'Leads' : $rel_table = 'vtiger_campaignleadrel'; $rel_field = 'leadid';
+			break;
+		}
+		$adb->pquery("delete from $rel_table where campaignid=?", array($forCRMRecord));
+		$action = 'CampaignsAjax&file=CallRelatedList&ajax=true';
+	} else {
+		// Split the string of ids
+		$ids = explode (";",$idlist);
+		if(!empty($ids)) {
+			$focus = CRMEntity::getInstance($currentModule);
+			$focus->delete_related_module($currentModule, $forCRMRecord, $destinationModule, $ids);
+		}
+	}
+} else {
+	$storearray = array();
+	if(!empty($_REQUEST['idlist'])) {
+		// Split the string of ids
+		$storearray = explode (";",trim($idlist,";"));
+	} else if(!empty($_REQUEST['entityid'])){
+		$storearray = array($_REQUEST['entityid']);
+	}
+	$focus = CRMEntity::getInstance($currentModule);
+	if(!empty($storearray)) {
+		relateEntities($focus, $currentModule, $forCRMRecord, $destinationModule, $storearray);
+	}
 }
-$focus = CRMEntity::getInstance($currentModule);
-if(!empty($storearray)) {
-	relateEntities($focus, $currentModule, $forCRMRecord, $dest_mod, $storearray);
-}
-
 header("Location: index.php?action=$action&module=$currentModule&record=".$forCRMRecord."&parenttab=".$parenttab);
-
 ?>

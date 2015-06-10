@@ -766,9 +766,9 @@ function updateCampaignRelationStatus(relatedmodule, campaignid, crmid, campaign
 
 function loadCvList(type,id) {
 	var element = type+"_cv_list";
-	var value = document.getElementById(element).value;        
+	var value = document.getElementById(element).value;
 
-	var filter = $(element)[$(element).selectedIndex].value	;
+	var filter = $(element)[$(element).selectedIndex].value;
 	if(filter=='None')return false;
 	if(value != '') {
 		$("status").style.display="inline";
@@ -777,6 +777,23 @@ function loadCvList(type,id) {
 			{queue: {position: 'end', scope: 'command'},
 				method: 'post',
 				postBody: 'module=Campaigns&action=CampaignsAjax&file=LoadList&ajax=true&return_action=DetailView&return_id='+id+'&list_type='+type+'&cvid='+value,
+				onComplete: function(response) {
+					$("status").style.display="none";
+					$("RLContents").update(response.responseText);
+				}
+			}
+		);
+	}
+}
+
+function emptyCvList(type,id) {
+	if (confirm(alert_arr.ARE_YOU_SURE_YOU_WANT_TO_DELETE)) {
+		$("status").style.display="inline";
+		new Ajax.Request(
+			'index.php',
+			{queue: {position: 'end', scope: 'command'},
+				method: 'post',
+				postBody: 'module=Campaigns&action=CampaignsAjax&file=updateRelations&ajax=true&parentid='+id+'&destination_module='+type+'&mode=delete&idlist=All',
 				onComplete: function(response) {
 					$("status").style.display="none";
 					$("RLContents").update(response.responseText);
