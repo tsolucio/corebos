@@ -44,6 +44,45 @@ if (empty($workflowid_to_evaluate) or empty($crm_record_to_evaluate)) {
 }
 
 global $currentModule, $adb;
+
+	function evalwfEmailTask($entityid,$task){
+		global $adb, $current_user, $entityCache;
+		$result = $adb->query("select user_name, email1, email2 from vtiger_users where id=1");
+		$from_email = $adb->query_result($result,0,'email1');
+		$from_name  = $adb->query_result($result,0,'user_name');
+
+		if(!empty($task->fromname)){
+			$fnt = new VTEmailRecipientsTemplate($task->fromname);
+			$from_name  = $fnt->render($entityCache,$entityid);
+		}
+		if(!empty($task->fromemail)){
+			$fet = new VTEmailRecipientsTemplate($task->fromemail);
+			$from_email = $fet->render($entityCache,$entityid);
+		}
+
+		$et = new VTEmailRecipientsTemplate($task->recepient);
+		$to_email = $et->render($entityCache, $entityid);
+		$ecct = new VTEmailRecipientsTemplate($task->emailcc);
+		$cc = $ecct->render($entityCache, $entityid);
+		$ebcct = new VTEmailRecipientsTemplate($task->emailbcc);
+		$bcc = $ebcct->render($entityCache, $entityid);
+		$to_email = preg_replace('/,,+/', ',', $to_email);
+		$cc = preg_replace('/,,+/', ',', $cc);
+		$bcc = preg_replace('/,,+/', ',', $bcc);
+		$st = new VTSimpleTemplate($task->subject);
+		$subject = $st->render($entityCache, $entityid);
+		$ct = new VTSimpleTemplate($task->content);
+		$content = $ct->render($entityCache, $entityid);
+		return array(
+			'to_email' => $to_email,
+			'cc' => $cc,
+			'bcc' => $bcc,
+			'subject' => $subject,
+			'content' => $content,
+		);
+	}
+
+
 list($wsmod,$crmid) = explode('x', $crm_record_to_evaluate);
 $wsrs = $adb->pquery('select name FROM vtiger_ws_entity where id=?',array($wsmod));
 if (!$wsrs or $adb->num_rows($wsrs)==0) {
@@ -84,6 +123,17 @@ if ($workflows[$workflowid_to_evaluate]->executionCondition==VTWorkflowManager::
 	echo "<span style='font-size: large;'>";
 	var_dump($eval);
 	echo '</span>';
+	$tm = new VTTaskManager($adb);
+	$taskQueue = new VTTaskQueue($adb);
+	$tasks = $tm->getTasksForWorkflow($workflow->id);
+	foreach($tasks as $task){
+		if(is_object($task) and $task->active and get_class($task) == 'VTEmailTask') {
+			$email = evalwfEmailTask($crm_record_to_evaluate,$task);
+			foreach ($email as $key => $value) {
+				echo "<h2>$key</h2>$value <br><hr>";
+			}
+		}
+	}
 }
 ?>
 </table>
