@@ -4162,15 +4162,16 @@ function get_current_user_access_groups($module)
  *  @param $groupname -- Groupname
  *  @returns Group Id -- Type Integer
  */
-
-function getGrpId($groupname)
-{
-	global $log;
+function getGrpId($groupname) {
+	global $log, $adb;
 	$log->debug("Entering getGrpId(".$groupname.") method ...");
-	global $adb;
 
 	$result = $adb->pquery("select groupid from vtiger_groups where groupname=?", array($groupname));
-	$groupid = $adb->query_result($result,0,'groupid');
+	if ($result and $adb->num_rows($result)>0) {
+		$groupid = $adb->query_result($result,0,'groupid');
+	} else {
+		$groupid = 0;
+	}
 	$log->debug("Exiting getGrpId method ...");
 	return $groupid;
 }
