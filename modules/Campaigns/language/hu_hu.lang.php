@@ -50,6 +50,7 @@ $mod_strings = array(
 	'Actual ROI' => 'Jelenlegi megtérülés',
 	'Select One' => 'Válassz ki egyet',
 	'LBL_LOAD_LIST' => 'Lista betöltése',
+	'LBL_EMPTY_LIST'=>'Empty List',
 	'Conference' => 'Konferencia',
 	'Webinar' => 'Webinar',
 	'Trade Show' => 'Árubemutató',

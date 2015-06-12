@@ -55,7 +55,8 @@ $mod_strings = Array(
 'Actual ROI'=>'ROI Atual',
 'Select One'=>'Selecione Um',
 'LBL_LOAD_LIST'=>'Carregar Lista',
-      
+'LBL_EMPTY_LIST'=>'Empty List',
+
 //Added for existing Picklist Entries
       
 'Conference'=>'Conferência',

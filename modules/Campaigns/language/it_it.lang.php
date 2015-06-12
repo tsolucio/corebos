@@ -51,6 +51,7 @@ $mod_strings = array (
 'Actual ROI' => 'ROI Effettivo',
 'Select One' => 'Seleziona Uno',
 'LBL_LOAD_LIST' => 'Carica Lista',
+'LBL_EMPTY_LIST'=>'Empty List',
 'Conference' => 'Conferenza',
 'Webinar' => 'Webinar',
 'Trade Show' => 'Fiera',

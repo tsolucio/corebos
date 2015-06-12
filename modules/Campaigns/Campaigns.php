@@ -145,7 +145,9 @@ class Campaigns extends CRMEntity {
 		/* To get Accounts CustomView -END */
 
 		$button .= $ahtml."<input title='".getTranslatedString('LBL_LOAD_LIST',$this_module)."' class='crmbutton small edit' value='".getTranslatedString('LBL_LOAD_LIST',$this_module)."' type='button' name='button' onclick='loadCvList(\"$related_module\",\"$id\")'>";
-		$button .= '&nbsp;&nbsp;&nbsp;&nbsp';
+		$button .= '&nbsp;&nbsp;';
+		$button .= "<input title='".getTranslatedString('LBL_EMPTY_LIST',$this_module)."' class='crmbutton small edit' value='".getTranslatedString('LBL_EMPTY_LIST',$this_module)."' type='button' name='button' onclick='emptyCvList(\"$related_module\",\"$id\")'>";
+		$button .= '&nbsp;&nbsp;&nbsp;&nbsp;';
 
 		if($actions)
 		{
@@ -243,7 +245,9 @@ class Campaigns extends CRMEntity {
 		/* To get Leads CustomView -END */
 
 		$button .= $lhtml."<input title='".getTranslatedString('LBL_LOAD_LIST',$this_module)."' class='crmbutton small edit' value='".getTranslatedString('LBL_LOAD_LIST',$this_module)."' type='button' name='button' onclick='loadCvList(\"$related_module\",\"$id\")'>";
-		$button .= '&nbsp;&nbsp;&nbsp;&nbsp';
+		$button .= '&nbsp;&nbsp;';
+		$button .= "<input title='".getTranslatedString('LBL_EMPTY_LIST',$this_module)."' class='crmbutton small edit' value='".getTranslatedString('LBL_EMPTY_LIST',$this_module)."' type='button' name='button' onclick='emptyCvList(\"$related_module\",\"$id\")'>";
+		$button .= '&nbsp;&nbsp;&nbsp;&nbsp;';
 
 		if($actions) {
 			if(is_string($actions)) $actions = explode(',', strtoupper($actions));
@@ -339,7 +343,9 @@ class Campaigns extends CRMEntity {
 		/* To get Leads CustomView -END */
 
 		$button .= $lhtml."<input title='".getTranslatedString('LBL_LOAD_LIST',$this_module)."' class='crmbutton small edit' value='".getTranslatedString('LBL_LOAD_LIST',$this_module)."' type='button' name='button' onclick='loadCvList(\"$related_module\",\"$id\")'>";
-		$button .= '&nbsp;&nbsp;&nbsp;&nbsp';
+		$button .= '&nbsp;&nbsp;';
+		$button .= "<input title='".getTranslatedString('LBL_EMPTY_LIST',$this_module)."' class='crmbutton small edit' value='".getTranslatedString('LBL_EMPTY_LIST',$this_module)."' type='button' name='button' onclick='emptyCvList(\"$related_module\",\"$id\")'>";
+		$button .= '&nbsp;&nbsp;&nbsp;&nbsp;';
 
 		if($actions) {
 			if(is_string($actions)) $actions = explode(',', strtoupper($actions));

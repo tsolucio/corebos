@@ -53,13 +53,14 @@ $mod_strings = Array(
 'Actual Response Count'=>'Respuestas',
 'Actual ROI'=>'Retorno de Inversión',
 'Select One'=>'Elija uno',
-'LBL_LOAD_LIST'=>'Cargar Listado',
+'LBL_LOAD_LIST'=>'Cargar Lista',
+'LBL_EMPTY_LIST'=>'Vaciar Lista',
 
 //Added for existing Picklist Entries
 
 'Conference'=>'Conferencia',
 'Webinar'=>'Webinar',
-'Trade Show'=>'Feria',				    
+'Trade Show'=>'Feria',
 'Public Relations'=>'Relaciones Públicas',
 'Partners'=>'Socios',
 'Referral Program'=>'Programa de Referidos',
@@ -70,17 +71,17 @@ $mod_strings = Array(
 'Telemarketing'=>'Telemarketing',
 'Others'=>'Otros',
 
-'Planning'=>'Planeada',						      	    
-'Active'=>'Activa',	
+'Planning'=>'Planeada',
+'Active'=>'Activa',
 'Inactive'=>'Inactiva',
 'Complete'=>'Completa',
-'Cancelled'=>'Cancelada',							      
+'Cancelled'=>'Cancelada',
 
 'Excellent'=>'Excelente',
 'Good'=>'Buena',
 'Average'=>'Normal',
 'Poor'=>'Pobre',
-			      
+
 //Module Sequence Numbering
 'Campaign No'=>'Núm. Campaña',
 // END
@@ -92,5 +93,4 @@ $mod_strings = Array(
 'Contacted - Never Contact Again' => 'Respuesta - No volver a contactar',
 'Campaigns ID' => 'Id Campaña',
 );
-
 ?>

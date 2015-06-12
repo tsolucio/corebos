@@ -93,7 +93,7 @@ var Webforms ={
 			postBody:url,
 			onComplete: function(response) {
 				VtigerJS_DialogBox.unblock();
-				var str = response.responseText
+				var str = response.responseText;
 				$('webform_source').innerText = str;
 				$('webform_source').value=str;
 				$('orgLay').style.display="block";
@@ -149,5 +149,5 @@ var Webforms ={
 		});
 
 	}
-}
+};
 
