@@ -159,13 +159,13 @@ $mod_strings = Array(
 'LBL_PO'=>'Orden de Compra:',
 
  //Added for 4.2 GA
-'LBL_SO_FORM_TITLE'=>'Pedidos',
+'LBL_SO_FORM_TITLE'=>'Ordenes de Venta',
 'LBL_PO_FORM_TITLE'=>'Ordenes de Compras',
 'LBL_SUBJECT_TITLE'=>'Referencia',
 'LBL_VENDOR_NAME_TITLE'=>'Nombre del Proveedor',
 'LBL_TRACKING_NO_TITLE'=>'Nº de seguimiento:',
 'LBL_PO_SEARCH_TITLE'=>'Buscar Orden de Compra',
-'LBL_SO_SEARCH_TITLE'=>'Buscar Pedido',
+'LBL_SO_SEARCH_TITLE'=>'Buscar Orden de Venta',
 'LBL_QUOTE_NAME_TITLE'=>'Referencia del presupuesto',
 'Order No'=>'Referencia de la Orden',
 'Status'=>'Estado',

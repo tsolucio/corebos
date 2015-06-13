@@ -200,7 +200,7 @@ $mod_strings = array (
 'Excise Duty'=>'Arancel',
  
 //Strings added for Invoices module fields 
-'Sales Order'=>'Pedido',
+'Sales Order'=>'Orden de Venta',
 'Invoice Date'=>'Fecha de Factura',
  
 //Strings added for Product module fields 
