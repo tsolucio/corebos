@@ -184,8 +184,10 @@ function __getRLQuery($id, $module, $relatedModule, $queryParameters, $user) {
 	$query = '';
 	switch ($relatedModule) {
 		case 'ModComments':
-			$wsUserId = $adb->getone("select id from vtiger_ws_entity where name='Users'").'x';
-			$wsContactId = $adb->getone("select id from vtiger_ws_entity where name='Contacts'").'x';
+			$wsUserIdrs = $adb->query("select id from vtiger_ws_entity where name='Users'");
+			$wsUserId = $adb->query_result($wsUserIdrs,0,0).'x';
+			$wsContactIdrs = $adb->query("select id from vtiger_ws_entity where name='Contacts'");
+			$wsContactId = $adb->query_result($wsContactIdrs,0,0).'x';
 			switch ($module) {
 				case 'HelpDesk';
 					$query="select
