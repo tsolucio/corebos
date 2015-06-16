@@ -10,23 +10,11 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  TODO To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
-global $theme;
+global $theme,$mod_strings;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 require_once('include/logging.php');
 $cal_log =& LoggerManager::getLogger('calendar');
-global $mod_strings;
-
 include ('modules/Calendar/ListView.php');
-
 ?>
