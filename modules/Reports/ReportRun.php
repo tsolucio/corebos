@@ -1367,9 +1367,9 @@ class ReportRun extends CRMEntity {
 				$grouplist[$fieldcolname] = $sqlvalue;
 				$temp = explode("_",$selectedfields[2],2);
 				$module = $temp[0];
-				if(CheckFieldPermission($fieldname,$module) == 'true')
+				if((strpos($selectedfields[0],'vtiger_inventoryproductrel') !== false && ($selectedfields[1]=='productid' || $selectedfields[1]=='serviceid')) || CheckFieldPermission($fieldname,$module) == 'true')
 				{
-					$grouplist[$fieldcolname] = $sqlvalue;
+					$grouplist[$fieldcolname] = "'".$sqlvalue."'";
 				} else {
 					$grouplist[$fieldcolname] = $selectedfields[0].".".$selectedfields[1];
 				}
@@ -1849,7 +1849,7 @@ class ReportRun extends CRMEntity {
 		if($advfiltersql != "") {
 			if($type == 'COLUMNSTOTOTAL')
 			{
-				if (strstr($advfiltersql,'vtiger_products'.$this->primarymodule))
+				if (strstr($advfiltersql,'vtiger_products'.$this->primarymodule) || strstr($advfiltersql,'vtiger_service'.$this->primarymodule))
 					$where_condition='add';
 			}
 			$wheresql .= " and ".$advfiltersql;
