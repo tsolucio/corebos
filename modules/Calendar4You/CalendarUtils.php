@@ -540,10 +540,32 @@ function getAssignedContactsForEvent($actid) {
 
 function getAllModulesWithDateFields() {
 	global $adb,$log;
-	$rsmwd = $adb->query('SELECT distinct cbfld.tabid,vtiger_tab.name
-		FROM vtiger_field as cbfld
-		INNER JOIN vtiger_tab on cbfld.tabid = vtiger_tab.tabid
-		WHERE vtiger_tab.presence=0 and vtiger_tab.isentitytype=1 and uitype=5');
+	$sqlmods = '';
+	$profileList = getCurrentUserProfileList();
+	$sql = "select * from vtiger_profile2globalpermissions where globalactionid=1 and  profileid in (".generateQuestionMarks($profileList).");";
+	$result = $adb->pquery($sql,array($profileList));
+	if ($result and $adb->num_rows($result)>0) {
+		for($i=0; $i<$adb->num_rows($result); $i++){
+			$permission = $adb->query_result($result,$i,'globalactionpermission');
+			if($permission != 1 || $permission != '1') {  // can see everything
+				$sqlmods = 'SELECT distinct cbfld.tabid,vtiger_tab.name
+					FROM vtiger_field as cbfld
+					INNER JOIN vtiger_tab on cbfld.tabid = vtiger_tab.tabid
+					WHERE vtiger_tab.presence=0 and vtiger_tab.isentitytype=1 and uitype=5';
+				break;
+			}
+		}
+		$params = array();
+	}
+	if ($sqlmods=='') {
+		$sqlmods = 'SELECT distinct cbfld.tabid,vtiger_tab.name
+			FROM vtiger_field as cbfld
+			INNER JOIN vtiger_tab on cbfld.tabid = vtiger_tab.tabid
+			INNER JOIN vtiger_profile2tab on vtiger_profile2tab.tabid = vtiger_tab.tabid
+			WHERE vtiger_tab.presence=0 and vtiger_tab.isentitytype=1 and uitype=5 and vtiger_profile2tab.profileid in ('.generateQuestionMarks($profileList).') and vtiger_profile2tab.permissions=0';
+		$params = array($profileList);
+	}
+	$rsmwd = $adb->pquery($sqlmods,$params);
 	$modswithdates = array();
 	while ($mod = $adb->fetch_array($rsmwd)) {
 		$modswithdates[$mod['tabid']] = $mod['name'];
@@ -553,11 +575,35 @@ function getAllModulesWithDateFields() {
 
 function getAllModulesWithDateTimeFields() {
 	global $adb,$log;
-	$rsmwd = $adb->query('SELECT distinct cbfld.tabid,vtiger_tab.name
-		FROM vtiger_field as cbfld
-		INNER JOIN vtiger_tab on cbfld.tabid = vtiger_tab.tabid
-		WHERE vtiger_tab.presence=0 and vtiger_tab.isentitytype=1 and uitype=14 and
-			exists (select 1 from vtiger_field where vtiger_field.tabid = cbfld.tabid and uitype=5)');
+	$sqlmods = '';
+	$profileList = getCurrentUserProfileList();
+	$sql = "select * from vtiger_profile2globalpermissions where globalactionid=1 and  profileid in (".generateQuestionMarks($profileList).");";
+	$result = $adb->pquery($sql,array($profileList));
+	if ($result and $adb->num_rows($result)>0) {
+		for($i=0; $i<$adb->num_rows($result); $i++){
+			$permission = $adb->query_result($result,$i,'globalactionpermission');
+			if($permission != 1 || $permission != '1') {  // can see everything
+				$sqlmods = 'SELECT distinct cbfld.tabid,vtiger_tab.name
+					FROM vtiger_field as cbfld
+					INNER JOIN vtiger_tab on cbfld.tabid = vtiger_tab.tabid
+					WHERE vtiger_tab.presence=0 and vtiger_tab.isentitytype=1 and uitype=14 and
+						exists (select 1 from vtiger_field where vtiger_field.tabid = cbfld.tabid and uitype=5)';
+				break;
+			}
+		}
+		$params = array();
+	}
+	if ($sqlmods=='') {
+		$sqlmods = 'SELECT distinct cbfld.tabid,vtiger_tab.name
+			FROM vtiger_field as cbfld
+			INNER JOIN vtiger_tab on cbfld.tabid = vtiger_tab.tabid
+			INNER JOIN vtiger_profile2tab on vtiger_profile2tab.tabid = vtiger_tab.tabid
+			WHERE vtiger_tab.presence=0 and vtiger_tab.isentitytype=1 and uitype=14
+				and vtiger_profile2tab.profileid in ('.generateQuestionMarks($profileList).') and vtiger_profile2tab.permissions=0 and
+				exists (select 1 from vtiger_field where vtiger_field.tabid = cbfld.tabid and uitype=5)';
+		$params = array($profileList);
+	}
+	$rsmwd = $adb->pquery($sqlmods,$params);
 	$modswithdt = array();
 	while ($mod = $adb->fetch_array($rsmwd)) {
 		$modswithdt[$mod['tabid']] = $mod['name'];
