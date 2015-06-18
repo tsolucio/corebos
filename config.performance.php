@@ -38,7 +38,5 @@ $PERFORMANCE_CONFIG = Array(
 	// reduce number of ajax requests on home page, reduce this value if home page widget dont
 	// show value.
 	'HOME_PAGE_WIDGET_GROUP_SIZE' => 12,
-	//take backup legacy style, whenever an admin user logs out.
-	'LOGOUT_BACKUP' => true,
 );
 ?>
