@@ -14,4 +14,4 @@ export USE_PHP=php
 
 cd $VTIGERCRM_ROOTDIR
 
-$USE_PHP -f vtigercron.php service="VtigerBackup"
+$USE_PHP -f vtigercron.php VtigerBackup

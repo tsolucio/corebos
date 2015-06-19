@@ -14,4 +14,4 @@ set PHP_EXE="C:\Program Files\vtigercrm5\php\php.exe"
 
 cd /D %VTIGERCRM_ROOTDIR%
 
-%PHP_EXE% -f vtigercron.php service="VtigerBackup"
+%PHP_EXE% -f vtigercron.php VtigerBackup

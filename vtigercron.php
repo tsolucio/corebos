@@ -8,8 +8,6 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-
-
 /**
  * Start the cron services configured.
  */
@@ -19,9 +17,16 @@ require_once 'config.inc.php';
 if(PHP_SAPI === "cli" || (isset($_SESSION["authenticated_user_id"]) &&	isset($_SESSION["app_unique_key"]) && $_SESSION["app_unique_key"] == $application_unique_key)){
 
 $cronTasks = false;
-if (isset($_REQUEST['service'])) {
+if (isset($_REQUEST['service']) or ($argc==2 and !empty($argv[1]))) {
 	// Run specific service
-	$cronTasks = array(Vtiger_Cron::getInstance(vtlib_purify($_REQUEST['service'])));
+	$srv = empty($argv[1]) ? $_REQUEST['service'] : $argv[1];
+	$srvcron = Vtiger_Cron::getInstance(vtlib_purify($srv));
+	if ($srvcron !== false) {
+		$cronTasks = array($srvcron);
+	} else {
+		echo "** Service $srv not found **";
+		die();
+	}
 }
 else {
 	// Run all service
@@ -39,12 +44,12 @@ foreach ($cronTasks as $cronTask) {
 }
 
 		// Timeout could happen if intermediate cron-tasks fails
-		// and affect the next task. Which need to be handled in this cycle.				
+		// and affect the next task. Which need to be handled in this cycle.
 		if ($cronTask->hadTimedout()) {
 			echo sprintf("[INFO]: %s - cron task had timedout as it is not completed last time it run- restarting\n", $cronTask->getName());
 }
 
-		// Mark the status - running		
+		// Mark the status - running
 		$cronTask->markRunning();
 		
 		checkFileAccess($cronTask->getHandlerFile());
@@ -71,12 +76,12 @@ foreach ($cronTasks as $cronTask) {
 			
 			send_mail('Emails',$mailto,$from_name,$form_mail,$mailsubject,$mailcontent);
 		}
-	}		
+	}
 }
 }
 
 else{
-    echo("Access denied!");
+	echo("Access denied!");
 }
 
 ?>
