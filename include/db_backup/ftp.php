@@ -6,60 +6,45 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 
-function ftpBackupFile($source_file, $ftpserver, $ftpuser, $ftppassword)
-{
+function ftpBackupFile($source_file, $ftpserver, $ftpuser, $ftppassword) {
 	global $log;
-        $log->debug("Entering ftpBackupFile(".$source_file.", ".$ftpserver.", ".$ftpuser.", ".$ftppassword.") method ...");	
+	$FTPOK = 0;
+	$NOCONNECTION = 1;
+	$NOLOGIN = 2;
+	$NOUPLOAD = 3;
+	$log->debug("Entering ftpBackupFile(".$source_file.", ".$ftpserver.", ".$ftpuser.", ".$ftppassword.") method ...");
 	// set up basic connection
 	$conn_id = @ftp_connect($ftpserver);
-	if(!$conn_id)
-	{
+	if(!$conn_id) {
 		$log->debug("Exiting ftpBackupFile method ...");
-		return;
+		return $NOCONNECTION;
 	}
-	
 
 	// login with username and password
+	$login_result = @ftp_login($conn_id, $ftpuser, $ftppassword);
 
-	$login_result = @ftp_login($conn_id, $ftpuser, $ftppassword);	
-
-	if(!$login_result)
-	{
+	if(!$login_result) {
 		ftp_close($conn_id);
 		 $log->debug("Exiting ftpBackupFile method ...");
-		return;
+		return $NOLOGIN;
 	}
-
-	// check connection
-	/*if ((!$conn_id) || (!$login_result)) {
-		echo "FTP connection has failed!";
-		echo "Attempted to connect to $ftp_server for user $ftp_user_name";
-		exit;
-	} else {
-		echo "Connected to $ftp_server, for user $ftp_user_name";
-	}
-	*/
 
 	// upload the file
-	$destination_file=$source_file;
-	$upload = @ftp_put($conn_id, $destination_file, $source_file, FTP_BINARY);
+	$destination_file=basename($source_file);
+	$upload = ftp_put($conn_id, $destination_file, $source_file, FTP_BINARY);
 
 	// check upload status
 	if (!$upload) {
 		ftp_close($conn_id);
 		 $log->debug("Exiting ftpBackupFile method ...");
-		return;
+		return $NOUPLOAD;
 	}
-	/*
-	 else {
-		echo "Uploaded $source_file to $ftp_server as $destination_file";
-	}*/
 
 	// close the FTP stream
 	ftp_close($conn_id);
-	 $log->debug("Exiting ftpBackupFile method ...");
+	$log->debug("Exiting ftpBackupFile method ...");
+	return $FTPOK;
 }
 ?>
