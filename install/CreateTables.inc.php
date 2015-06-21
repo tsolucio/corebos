@@ -1238,7 +1238,7 @@ function populateDefaultWorkflows($adb) {
 					.'Status              : $taskstatus <br/>'
 					.'Priority            : $taskpriority <br/>'
 					.'Related To          : $(parent_id : (Leads) lastname) $(parent_id : (Leads) firstname) $(parent_id : (Accounts) accountname) '
-					.'$(parent_id         : (Potentials) potentialname) $(parent_id : (HelpDesk) ticket_title) <br/>'
+											.'$(parent_id : (Potentials) potentialname) $(parent_id : (HelpDesk) ticket_title) <br/>'
 					.'Contacts List       : $(contact_id : (Contacts) lastname) $(contact_id : (Contacts) firstname) <br/>'
 					.'Location            : $location <br/>'
 					.'Description         : $description';
