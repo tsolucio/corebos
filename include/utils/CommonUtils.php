@@ -916,16 +916,6 @@ function getRelatedAccountContact($entityid,$module='') {
 				$rspot = $adb->pquery("select parent_id from vtiger_cobropago where cobropagoid=?",array($crmid));
 				$acid = $adb->query_result($rspot,0,'parent_id');
 				break;
-			case 'Messages':
-				$rspot = $adb->pquery("select account_message,contact_message,lead_message from vtiger_messages where messagesid=?",array($crmid));
-				$acid = $adb->query_result($rspot,0,'contact_message');
-				if (empty($acid)) {
-					$acid = $adb->query_result($rspot,0,'lead_message');
-				}
-				if (empty($acid)) {
-					$acid = $adb->query_result($rspot,0,'account_message');
-				}
-				break;
 			case 'Calendar':
 			case 'Events':
 				if ($module=='Accounts') {
