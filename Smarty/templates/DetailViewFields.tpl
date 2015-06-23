@@ -85,7 +85,7 @@
 						{assign var=fontval value=''}
 					{/if}
 				{/foreach}
-				<font color="{$fontval}">{$keyval}</font>
+				<font color="{$fontval}">{if $APP.$keyval!=''}{$APP.$keyval}{elseif $MOD.$keyval!=''}{$MOD.$keyval}{else}{$keyval}{/if}</font>
 			</td>
 		{elseif $keyid eq '33'}
 			<td width=25% class="dvtCellInfo" align="left">&nbsp;
