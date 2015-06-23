@@ -10,9 +10,7 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-
 require_once('include/utils/utils.php'); //new
 require_once('include/utils/RecurringType.php');
 require_once('include/utils/EmailTemplate.php');
@@ -43,7 +41,6 @@ function is_admin($user) {
  * param $selected - the string which contains the default value
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): ______________________________________..
  */
 function get_select_options(&$option_list, $selected, $advsearch = 'false') {
 	global $log;
@@ -59,7 +56,6 @@ function get_select_options(&$option_list, $selected, $advsearch = 'false') {
  * param $selected - the string which contains the default value
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): ______________________________________..
  */
 function get_select_options_with_id(&$option_list, $selected_key, $advsearch = 'false') {
 	global $log;
@@ -95,7 +91,6 @@ function get_select_options_array(&$option_list, $selected_key, $advsearch = 'fa
  * param $selected - the string which contains the default value
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): ______________________________________..
  */
 function get_options_array_seperate_key(&$label_list, &$key_list, $selected_key, $advsearch = 'false') {
 	global $log;
