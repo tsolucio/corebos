@@ -810,16 +810,16 @@ function getParentName($parent_id) {
 /*
  * Return account/contact crmid of any given entityid
  * @param: crmid/webserviceid of the record we need to get the related account/contact
- * @param: Account | Contact related entity to return
+ * @param: Accounts | Contacts related entity to return
  * @returns: crmid of the account/contact related to the entityid
  */
 function getRelatedAccountContact($entityid,$module='') {
-	global $adb,$log;
-	if ($module=='' or ($module!='Account' and $module!='Contact')) {
+	global $adb,$log,$current_user;
+	if ($module=='' or ($module!='Accounts' and $module!='Contacts')) {
 		if (GlobalVariable::getVariable('B2B', '1')) {
-			$module = 'Account';
+			$module = 'Accounts';
 		} else {
-			$module = 'Contact';
+			$module = 'Contacts';
 		}
 	}
 	if (strpos($entityid,'x')>0 and !is_numeric($entityid)) {
@@ -835,7 +835,7 @@ function getRelatedAccountContact($entityid,$module='') {
 				$acid = $crmid;
 				break;
 			case 'Contacts':
-				if ($module=='Contact') {
+				if ($module=='Contacts') {
 					$acid = $crmid;
 				} else {
 					$rspot = $adb->pquery('select accountid from vtiger_contactdetails where contactid=?',array($crmid));
@@ -843,69 +843,81 @@ function getRelatedAccountContact($entityid,$module='') {
 				}
 				break;
 			case 'Potentials':
-				$rspot = $adb->query("select related_to from vtiger_potential where potentialid=?",array($crmid));
+				$rspot = $adb->pquery("select related_to from vtiger_potential where potentialid=?",array($crmid));
 				$acid = $adb->query_result($rspot,0,'related_to');
 				break;
 			case 'HelpDesk':
-				$rspot = $adb->query("select parent_id from vtiger_troubletickets where ticketid=?",array($crmid));
+				$rspot = $adb->pquery("select parent_id from vtiger_troubletickets where ticketid=?",array($crmid));
 				$acid = $adb->query_result($rspot,0,'parent_id');
 				break;
 			case 'Quotes':
-				$rspot = $adb->query("select account_id from vtiger_quotes where quoteid=?",array($crmid));
-				$acid = $adb->query_result($rspot,0,'account_id');
+				$rspot = $adb->pquery("select accountid,contactid from vtiger_quotes where quoteid=?",array($crmid));
+				if ($module=='Accounts') {
+					$acid = $adb->query_result($rspot,0,'accountid');
+				} else {
+					$acid = $adb->query_result($rspot,0,'contactid');
+				}
 				break;
 			case 'SalesOrder':
-				$rspot = $adb->query("select account_id from vtiger_salesorder where salesorderid=?",array($crmid));
-				$acid = $adb->query_result($rspot,0,'account_id');
+				$rspot = $adb->pquery("select accountid,contactid from vtiger_salesorder where salesorderid=?",array($crmid));
+				if ($module=='Accounts') {
+					$acid = $adb->query_result($rspot,0,'accountid');
+				} else {
+					$acid = $adb->query_result($rspot,0,'contactid');
+				}
 				break;
 			case 'PurchaseOrder':
-				$rspot = $adb->query("select contact_id from vtiger_purchaseorder where purchaseorderid=?",array($crmid));
-				$acid = $adb->query_result($rspot,0,'contact_id');
+				$rspot = $adb->pquery("select contactid from vtiger_purchaseorder where purchaseorderid=?",array($crmid));
+				$acid = $adb->query_result($rspot,0,'contactid');
 				break;
 			case 'Invoice':
-				$rspot = $adb->query("select account_id from vtiger_invoice where invoiceid=?",array($crmid));
-				$acid = $adb->query_result($rspot,0,'account_id');
+				$rspot = $adb->pquery("select accountid,contactid from vtiger_invoice where invoiceid=?",array($crmid));
+				if ($module=='Accounts') {
+					$acid = $adb->query_result($rspot,0,'accountid');
+				} else {
+					$acid = $adb->query_result($rspot,0,'contactid');
+				}
 				break;
 			case 'InventoryDetails':
-				$rspot = $adb->query("select account_id,contact_id from vtiger_inventorydetails where inventorydetailsid=?",array($crmid));
-				if ($module=='Account') {
+				$rspot = $adb->pquery("select account_id,contact_id from vtiger_inventorydetails where inventorydetailsid=?",array($crmid));
+				if ($module=='Accounts') {
 					$acid = $adb->query_result($rspot,0,'account_id');
 				} else {
 					$acid = $adb->query_result($rspot,0,'contact_id');
 				}
 				break;
 			case 'ServiceContracts':
-				$rspot = $adb->query("select sc_related_to from vtiger_servicecontracts where servicecontractsid=?",array($crmid));
+				$rspot = $adb->pquery("select sc_related_to from vtiger_servicecontracts where servicecontractsid=?",array($crmid));
 				$acid = $adb->query_result($rspot,0,'sc_related_to');
 				break;
 			case 'Assets':
-				$rspot = $adb->query("select account from vtiger_assets where assetsid=?",array($crmid));
+				$rspot = $adb->pquery("select account from vtiger_assets where assetsid=?",array($crmid));
 				$acid = $adb->query_result($rspot,0,'account');
 				break;
 			case 'ProjectMilestone':
-				$rspot = $adb->query("select linktoaccountscontacts
+				$rspot = $adb->pquery("select linktoaccountscontacts
 				from vtiger_project
 				inner join vtiger_projectmilestone on vtiger_project.projectid = vtiger_projectmilestone.projectid
 				where projectmilestoneid=?",array($crmid));
 				$acid = $adb->query_result($rspot,0,'linktoaccountscontacts');
 				break;
 			case 'ProjectTask':
-				$rspot = $adb->query("select linktoaccountscontacts
+				$rspot = $adb->pquery("select linktoaccountscontacts
 				from vtiger_project
 				inner join vtiger_projecttask on vtiger_project.projectid = vtiger_projecttask.projectid
 				where projecttaskid=?",array($crmid));
 				$acid = $adb->query_result($rspot,0,'linktoaccountscontacts');
 				break;
 			case 'Project':
-				$rspot = $adb->query("select linktoaccountscontacts from vtiger_project where projectid=?",array($crmid));
+				$rspot = $adb->pquery("select linktoaccountscontacts from vtiger_project where projectid=?",array($crmid));
 				$acid = $adb->query_result($rspot,0,'linktoaccountscontacts');
 				break;
 			case 'CobroPago':
-				$rspot = $adb->query("select parent_id from vtiger_cobropago where cobropagoid=?",array($crmid));
+				$rspot = $adb->pquery("select parent_id from vtiger_cobropago where cobropagoid=?",array($crmid));
 				$acid = $adb->query_result($rspot,0,'parent_id');
 				break;
 			case 'Messages':
-				$rspot = $adb->query("select account_message,contact_message,lead_message from vtiger_messages where messagesid=?",array($crmid));
+				$rspot = $adb->pquery("select account_message,contact_message,lead_message from vtiger_messages where messagesid=?",array($crmid));
 				$acid = $adb->query_result($rspot,0,'contact_message');
 				if (empty($acid)) {
 					$acid = $adb->query_result($rspot,0,'lead_message');
@@ -914,12 +926,33 @@ function getRelatedAccountContact($entityid,$module='') {
 					$acid = $adb->query_result($rspot,0,'account_message');
 				}
 				break;
-  // array('name' => 'Calendar'),
-  // array('name' => 'Events'),
-  //  array('name' => 'Task'),
-		// SELECT * from vtiger_fieldmodulerel
-// INNER JOIN vtiger_field on vtiger_field.fieldid=vtiger_fieldmodulerel.fieldid
-// WHERE vtiger_field.tabid=2
+			case 'Calendar':
+			case 'Events':
+				if ($module=='Accounts') {
+					$rspot = $adb->pquery("select crmid from vtiger_seactivityrel where activityid=?",array($crmid));
+					if ($rspot and $adb->num_rows($rspot)>0) {
+						$acid = $adb->query_result($rspot,0,'crmid');
+					}
+				} else {
+					$rspot = $adb->pquery("select contactid from vtiger_cntactivityrel where activityid=?",array($crmid));
+					if ($rspot and $adb->num_rows($rspot)>0) {
+						$acid = $adb->query_result($rspot,0,'contactid');
+					}
+				}
+				break;
+			default:  // we look for uitype 10
+				$rsfld = $adb->pquery('SELECT fieldname from vtiger_fieldmodulerel
+					INNER JOIN vtiger_field on vtiger_field.fieldid=vtiger_fieldmodulerel.fieldid
+					WHERE module=? and relmodule=',array($setype,$module));
+				if ($rsfld and $adb->num_rows($rsfld)>0) {
+					$fname = $adb->query_result($rsfld,0,'fieldname');
+					$queryGenerator = new QueryGenerator($setype, $current_user);
+					$queryGenerator->setFields(array($fname));
+					$queryGenerator->addCondition('id',$crmid,'e');
+					$query = $queryGenerator->getQuery();
+					$rspot = $adb->pquery($query,array());
+					$acid = $adb->query_result($rspot,0,'contactid');
+				}
 		}
 	}
 	if ($acid!=0) {
