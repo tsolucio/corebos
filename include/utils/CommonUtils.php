@@ -943,7 +943,7 @@ function getRelatedAccountContact($entityid,$module='') {
 			default:  // we look for uitype 10
 				$rsfld = $adb->pquery('SELECT fieldname from vtiger_fieldmodulerel
 					INNER JOIN vtiger_field on vtiger_field.fieldid=vtiger_fieldmodulerel.fieldid
-					WHERE module=? and relmodule=',array($setype,$module));
+					WHERE module=? and relmodule=?',array($setype,$module));
 				if ($rsfld and $adb->num_rows($rsfld)>0) {
 					$fname = $adb->query_result($rsfld,0,'fieldname');
 					$queryGenerator = new QueryGenerator($setype, $current_user);
@@ -951,7 +951,7 @@ function getRelatedAccountContact($entityid,$module='') {
 					$queryGenerator->addCondition('id',$crmid,'e');
 					$query = $queryGenerator->getQuery();
 					$rspot = $adb->pquery($query,array());
-					$acid = $adb->query_result($rspot,0,'contactid');
+					$acid = $adb->query_result($rspot,0,$fname);
 				}
 		}
 	}

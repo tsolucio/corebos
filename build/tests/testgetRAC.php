@@ -1,5 +1,5 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
-<html><head><title>TSolucio::coreBOS Customizations</title>
+<html><head><title>TSolucio::coreBOS Tests</title>
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <style type="text/css">@import url("themes/softed/style.css");br { display: block; margin: 2px; }</style>
 </head><body style="font-size: 14px; margin: 2px; padding: 2px; background-color:#f7fff3; ">
@@ -15,8 +15,8 @@ set_time_limit(0);
 ini_set('memory_limit','1024M');
 $current_user = Users::getActiveAdminUser();
 
-$recs = $adb->query('SELECT crmid,setype FROM `vtiger_crmentity` group by setype');
-echo "<table border=1 width=100%><tr><th>EntityID</th><th>Related Account</th><th>Related Contact</th></tr>";
+$recs = $adb->query('SELECT crmid,setype FROM `vtiger_crmentity` where deleted=0 group by setype');
+echo "<table border=1 width='80%' align='center'><tr><th>EntityID</th><th>Related Account</th><th>Related Contact</th></tr>";
 while ($rec = $adb->fetch_row($recs)) {
 	echo "<tr>";
 	echo "<td><a href='index.php?module=".$rec['setype']."&action=DetailView&record=".$rec['crmid']."'>".$rec['crmid'].' ('.$rec['setype'].') </a></td>';
