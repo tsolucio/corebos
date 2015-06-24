@@ -98,11 +98,11 @@
 	function auditenabled(ochkbox) {
 		if (ochkbox.checked == true) {
 			var status = 'enabled';
-			$('audit_info').innerHTML = 'Audit Trail Enabled';
+			$('audit_info').innerHTML = '{/literal}{$MOD.AuditTrailEnabled}{literal}';
 			$('audit_info').style.display = 'block';
 		} else {
 			var status = 'disabled';
-			$('audit_info').innerHTML = 'Audit Trail Disabled';
+			$('audit_info').innerHTML = '{/literal}{$MOD.AuditTrailDisabled}{literal}';
 			$('audit_info').style.display = 'block';
 		}
 		$("status").style.display = "block";
