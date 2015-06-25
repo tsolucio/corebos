@@ -1,5 +1,4 @@
 <?php
-
 /*********************************************************************************
 ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
@@ -7,9 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-* 
  ********************************************************************************/
-
 include_once('config.php');
 require_once('include/logging.php');
 require_once('include/logging.php');
@@ -53,16 +50,16 @@ class LoginHistory {
 		$this->db = PearDatabase::getInstance();
 	}
 	
-	var $sortby_fields = Array('user_name', 'user_ip', 'login_time', 'logout_time', 'status');	 
-       	
+	var $sortby_fields = Array('user_name', 'user_ip', 'login_time', 'logout_time', 'status');
+
 	// This is the list of vtiger_fields that are in the lists.
 	var $list_fields = Array(
-			'User Name'=>Array('vtiger_loginhistory'=>'user_name'), 
-			'User IP'=>Array('vtiger_loginhistory'=>'user_ip'), 
+			'User Name'=>Array('vtiger_loginhistory'=>'user_name'),
+			'User IP'=>Array('vtiger_loginhistory'=>'user_ip'),
 			'Signin Time'=>Array('vtiger_loginhistory'=>'login_time'),
-		        'Signout Time'=>Array('vtiger_loginhistory'=>'logout_time'), 
+			'Signout Time'=>Array('vtiger_loginhistory'=>'logout_time'),
 			'Status'=>Array('vtiger_loginhistory'=>'status'),
-		);	
+		);
 	
 	var $list_fields_name = Array(
 		'User Name'=>'user_name',
@@ -70,7 +67,7 @@ class LoginHistory {
 		'Signin Time'=>'login_time',
 		'Signout Time'=>'logout_time',
 		'Status'=>'status'
-		);	
+		);
 	var $default_order_by = "login_time";
 	var $default_sort_order = 'DESC';
 
@@ -100,18 +97,17 @@ class LoginHistory {
 **/
 	function getHistoryListViewEntries($username, $navigation_array, $sorder='', $orderby='')
 	{
-		global $log;
+		global $log, $adb, $current_user;
 		$log->debug("Entering getHistoryListViewEntries() method ...");
-		global $adb, $current_user;	
-		
+
 		if($sorder != '' && $order_by != '')
-	       		$list_query = "Select * from vtiger_loginhistory where user_name=? order by ".$order_by." ".$sorder;
+			$list_query = "Select * from vtiger_loginhistory where user_name=? order by ".$order_by." ".$sorder;
 		else
-				$list_query = "Select * from vtiger_loginhistory where user_name=? order by ".$this->default_order_by." ".$this->default_sort_order;
+			$list_query = "Select * from vtiger_loginhistory where user_name=? order by ".$this->default_order_by." ".$this->default_sort_order;
 
 		$result = $adb->pquery($list_query, array($username));
 		$entries_list = array();
-		
+
 	if($navigation_array['end_val'] != 0)
 	{
 		for($i = $navigation_array['start']; $i <= $navigation_array['end_val']; $i++)
@@ -129,10 +125,10 @@ class LoginHistory {
 		}	
 		$log->debug("Exiting getHistoryListViewEntries() method ...");
 		return $entries_list;
-	}	
+	}
 	}
 	
-	/** Function that Records the Login info of the User 
+	/** Function that Records the Login info of the User
 	 *  @param ref variable $usname :: Type varchar
 	 *  @param ref variable $usip :: Type varchar
 	 *  @param ref variable $intime :: Type timestamp
@@ -144,13 +140,11 @@ class LoginHistory {
 		//Kiran: Setting logout time to '0000-00-00 00:00:00' instead of null
 		$query = "Insert into vtiger_loginhistory (user_name, user_ip, logout_time, login_time, status) values (?,?,?,?,?)";
 		$params = array($usname,$usip,'0000-00-00 00:00:00', $this->db->formatDate($intime, true),'Signed in');
-		$result = $adb->pquery($query, $params)
-                        or die("MySQL error: ".mysql_error());
-		
+		$result = $adb->pquery($query, $params) or die("MySQL error: ".mysql_error());
 		return $result;
 	}
 	
-	/** Function that Records the Logout info of the User 
+	/** Function that Records the Logout info of the User
 	 *  @param ref variable $usname :: Type varchar
 	 *  @param ref variable $usip :: Type varchar
 	 *  @param ref variable $outime :: Type timestamp
@@ -162,10 +156,9 @@ class LoginHistory {
 		$logid_qry = "SELECT max(login_id) AS login_id from vtiger_loginhistory where user_name=? and user_ip=?";
 		$result = $adb->pquery($logid_qry, array($usname, $usip));
 		$loginid = $adb->query_result($result,0,"login_id");
-		if ($loginid == '')
-                {
-                        return;
-                }
+		if ($loginid == '') {
+			return;
+		}
 		// update the user login info.
 		$query = "Update vtiger_loginhistory set logout_time =?, status=? where login_id = ?";
 		$result = $adb->pquery($query, array($this->db->formatDate($outtime, true), 'Signed off', $loginid))
@@ -177,8 +170,7 @@ class LoginHistory {
 	* @param reference variable - where condition is passed when the query is executed
 	* Returns Query.
 	*/
-  	function create_list_query(&$order_by, &$where)
-  	{
+	function create_list_query(&$order_by, &$where) {
 		// Determine if the vtiger_account name is present in the where clause.
 		global $current_user, $adb;
 		$query = "SELECT user_name,user_ip, status,
@@ -199,7 +191,7 @@ class LoginHistory {
 		
 		if(!empty($order_by))
 			$query .= " ORDER BY ". $adb->sql_escape_string($order_by);
-        
+
 		return $query;
 	}
 
@@ -208,7 +200,7 @@ class LoginHistory {
 	 * @param accept_delay_seconds Allow the delay (in seconds) between login_time recorded and current time as first time.
 	 * This will be helpful if login is performed and client is redirected for home page where this function is invoked.
 	 */
-	static function firstTimeLoggedIn($user_name, $accept_delay_seconds=10) {		
+	static function firstTimeLoggedIn($user_name, $accept_delay_seconds=10) {
 		$firstTimeLoginStatus = false;
 		
 		global $adb;
@@ -224,16 +216,14 @@ class LoginHistory {
 			if ($recordCount == 1) { // Only first time?
 				$row = $adb->fetch_array($result);
 				$login_delay = time() - strtotime($row['login_time']);
-				// User not logged out and is within expected delay?			
+				// User not logged out and is within expected delay?
 				if (strcmp('0000-00-00 00:00:00', $row['logout_time']) === 0 && $login_delay < $accept_delay_seconds) {
 					$firstTimeLoginStatus = true;
-				}				
+				}
 			}
 		}
 		return $firstTimeLoginStatus;
 	}
 }
-
-
 
 ?>
