@@ -74,5 +74,23 @@ $mod_strings = Array (
 "LBL_CONNECT"=>"Autoriza y con&eacute;ctate",
 "LBL_GOOGLEINS"=>"¿Insertar desde Google?",
 'LIST_MODULES' => 'Listado de Módulos',
+
+'Planned'=>'Planeado',
+'Held'=>'Realizada',
+'Not Held'=>'Pendiente',
+'Completed'=>'Completado',
+'Deferred'=>'Retrasado',
+'Not Started'=>'No Iniciada',
+'In Progress'=>'En Progreso',
+'Pending Input'=>'Pendiente de datos',
+'LBL_REMAINDER_DAY'=>'días',
+'LBL_REMAINDER_HRS'=>'hrs',
+'Call'=>'Llamada',
+'Meeting'=>'Reunión',
+
+'High'=>'Alto',
+'Medium'=>'Medio',
+'Low'=>'Bajo',
+
 );
 ?>
