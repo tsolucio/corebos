@@ -41,7 +41,7 @@ class vtigerCRM_Smarty extends Smarty{
  		$this->assign('WORLD_CLOCK_DISPLAY', $WORLD_CLOCK_DISPLAY); 
  		$this->assign('CALCULATOR_DISPLAY', $CALCULATOR_DISPLAY); 
  		$this->assign('CHAT_DISPLAY', $CHAT_DISPLAY);
-		$this->assign('CURRENT_USER_ID',$current_user->id);
+		$this->assign('CURRENT_USER_ID',(isset($current_user) ? $current_user->id : 0));
  		
  		// Query For TagCloud only when required
  		if(isset($_REQUEST) && $_REQUEST['action'] == 'DetailView') {

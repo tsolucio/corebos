@@ -457,13 +457,11 @@ function return_application_language($language)
 /** This function retrieves a module's language file and returns the array of strings included.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): ______________________________________..
  * If you are in the current module, do not call this function unless you are loading it for the first time */
-function return_module_language($language, $module)
-{
-	global $log;
-	$log->debug("Entering return_module_language(".$language.",". $module.") method ...");
+function return_module_language($language, $module) {
 	global $mod_strings, $default_language, $log, $currentModule, $translation_string_prefix;
+	$log->debug("Entering return_module_language(".$language.",". $module.") method ...");
+	if ($module == 'Events') $module = 'Calendar';
 	static $cachedModuleStrings = array();
 
 	if(!empty($cachedModuleStrings[$module])) {
