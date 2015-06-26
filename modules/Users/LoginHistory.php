@@ -77,15 +77,11 @@ class LoginHistory {
 **/
 	function getHistoryListViewHeader()
 	{
-		global $log;
+		global $log,$app_strings;
 		$log->debug("Entering getHistoryListViewHeader method ...");
-		global $app_strings;
-		
 		$header_array = array($app_strings['LBL_LIST_USER_NAME'], $app_strings['LBL_LIST_USERIP'], $app_strings['LBL_LIST_SIGNIN'], $app_strings['LBL_LIST_SIGNOUT'], $app_strings['LBL_LIST_STATUS']);
-
 		$log->debug("Exiting getHistoryListViewHeader method ...");
 		return $header_array;
-		
 	}
 
 /**
@@ -110,6 +106,8 @@ class LoginHistory {
 
 	if($navigation_array['end_val'] != 0)
 	{
+		$in = getTranslatedString('Signed in');
+		$out = getTranslatedString('Signed off');
 		for($i = $navigation_array['start']; $i <= $navigation_array['end_val']; $i++)
 		{
 			$entries = array();
@@ -119,7 +117,7 @@ class LoginHistory {
 			$entries[] = $adb->query_result($result, $i-1, 'user_ip');
 			$entries[] = $adb->query_result($result, $i-1, 'login_time');
 			$entries[] = $adb->query_result($result, $i-1, 'logout_time');
-			$entries[] = $adb->query_result($result, $i-1, 'status');
+			$entries[] = ($adb->query_result($result, $i-1, 'status')=='Signed in' ? $in : $out);
 
 			$entries_list[] = $entries;
 		}	
