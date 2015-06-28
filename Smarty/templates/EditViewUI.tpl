@@ -518,6 +518,7 @@ alt="Clear" title="Clear" LANGUAGE=javascript	onClick="this.form.{$fldname}.valu
 
 		{elseif $uitype eq 68 || $uitype eq 66 || $uitype eq 62}
 			<td width="20%" class="dvtCellLabel" align=right>
+				<font color="red">{$mandatory_field}</font>
 				{if $fromlink eq 'qcreate'}
 					<select class="small" name="parent_type" onChange='document.QcEditView.parent_name.value=""; document.QcEditView.parent_id.value=""'>
 				{else}
