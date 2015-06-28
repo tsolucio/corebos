@@ -67,7 +67,11 @@ if(isset($_REQUEST['potential_id']) && $_REQUEST['potential_id'] !=''){
 	$log->debug("Quotes EditView: Potential Id from the request is ".$_REQUEST['potential_id']);
 	$associated_prod = getAssociatedProducts("Potentials",$focus,$focus->column_fields['potential_id']);
 	$smarty->assign("ASSOCIATEDPRODUCTS", $associated_prod);
-	$smarty->assign("AVAILABLE_PRODUCTS", count($associated_prod)>0 ? 'true' : 'false');
+	if (count($associated_prod)==1 and count($associated_prod[1])==1) {
+		$smarty->assign("AVAILABLE_PRODUCTS", 'false');
+	} else {
+		$smarty->assign("AVAILABLE_PRODUCTS", 'true');
+	}
 	$smarty->assign("MODE", $focus->mode);
 }
 

@@ -1614,19 +1614,32 @@ function getAssociatedProducts($module,$focus,$seid='')
 	elseif($module == 'Potentials')
 	{
 		$query="SELECT
+		                        vtiger_products.productid,
  		                        vtiger_products.productname,
  		                        vtiger_products.productcode,
  		                        vtiger_products.unit_price,
  		                        vtiger_products.qtyinstock,
- 		                        vtiger_seproductsrel.*,
- 		                        vtiger_crmentity.description AS product_description
+ 		                        vtiger_crmentity.description AS product_description,
+ 		                        'Products' AS entitytype
  		                        FROM vtiger_products
  		                        INNER JOIN vtiger_crmentity
  		                                ON vtiger_crmentity.crmid=vtiger_products.productid
  		                        INNER JOIN vtiger_seproductsrel
  		                                ON vtiger_seproductsrel.productid=vtiger_products.productid
  		                        WHERE vtiger_seproductsrel.crmid=?";
-			$params = array($seid);
+		$query.=" UNION SELECT
+			vtiger_service.serviceid AS productid,
+			vtiger_service.servicename AS productname,
+			'NA' AS productcode,
+			vtiger_service.unit_price AS unit_price,
+			'NA' AS qtyinstock,
+			vtiger_crmentity.description AS product_description,
+			'Services' AS entitytype
+			FROM vtiger_service
+			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_service.serviceid
+			INNER JOIN vtiger_crmentityrel ON vtiger_crmentityrel.relcrmid=vtiger_service.serviceid
+			WHERE vtiger_crmentityrel.crmid=?";
+			$params = array($seid,$seid);
 	}
 	elseif($module == 'Products')
 	{
