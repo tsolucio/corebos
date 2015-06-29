@@ -87,9 +87,22 @@ function vtws_getPortalUserInfo($user) {
 	$retfields = array('date_format','first_name','last_name','email1');
 	foreach ($retfields as $fld) {
 		if (isset($user->column_fields[$fld]) and !empty($user->column_fields[$fld]))
-			$usrinfo[$fld] =  $user->column_fields[$fld];
+			$usrinfo[$fld] = $user->column_fields[$fld];
 	}
 	return $usrinfo;
+}
+function vtws_getAssignedUserList($user) {
+	global $adb,$log,$current_user;
+	$hcuser = $current_user;
+	$current_user = $user;
+	$users = get_user_array(FALSE, "Active", $user->id);
+	$usrwsid = vtyiicpng_getWSEntityId('Users');
+	$usrinfo = array();
+	foreach ($users as $id => $usr) {
+		$usrinfo[] = array('userid' => $usrwsid.$id,'username'=> trim($usr));
+	}
+	$current_user = $hcuser;
+	return json_encode($usrinfo);
 }
 function vtws_AuthenticateContact($email,$password)
 {   global $adb,$log;
