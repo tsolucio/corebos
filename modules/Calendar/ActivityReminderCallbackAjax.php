@@ -65,7 +65,7 @@ if(isPermitted('Calendar','index') == 'yes'){
 				$reminderid = $adb->query_result($result, $index, "reminderid");
 				$cbrecord = $adb->query_result($result, $index, "recordid");
 				$cbmodule = $adb->query_result($result, $index, "semodule");
-
+				if($cbmodule == 'Events') {$cbmodule = 'Calendar';}
 				$focus = CRMEntity::getInstance($cbmodule);
 
 				if($cbmodule == 'Calendar') {
