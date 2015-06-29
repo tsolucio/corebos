@@ -92,14 +92,14 @@ function vtws_getPortalUserInfo($user) {
 	return $usrinfo;
 }
 function vtws_getAssignedUserList($user) {
-	global $adb,$log,$current_user;
+	global $adb,$log,$current_user,$default_charset;
 	$hcuser = $current_user;
 	$current_user = $user;
 	$users = get_user_array(FALSE, "Active", $user->id);
 	$usrwsid = vtyiicpng_getWSEntityId('Users');
 	$usrinfo = array();
 	foreach ($users as $id => $usr) {
-		$usrinfo[] = array('userid' => $usrwsid.$id,'username'=> trim($usr));
+		$usrinfo[] = array('userid' => $usrwsid.$id,'username'=> trim(html_entity_decode($usr,ENT_QUOTES,$default_charset)));
 	}
 	$current_user = $hcuser;
 	return json_encode($usrinfo);
