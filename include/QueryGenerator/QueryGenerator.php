@@ -555,6 +555,7 @@ class QueryGenerator {
 							$referenceTableIndex = $tableIndexList[$referenceTable];
 						} else {
 							$referenceField = $meta->getFieldByColumnName($column);
+							if (!$referenceField) continue;
 							$referenceTable = $referenceField->getTableName();
 							$tableIndexList = $meta->getEntityTableIndexList();
 							$referenceTableIndex = $tableIndexList[$referenceTable];
@@ -846,6 +847,7 @@ class QueryGenerator {
 								$referenceTable = "vtiger_users".$fieldName;
 							else {
 								$referenceField = $meta->getFieldByColumnName($column);
+								if (!$referenceField) continue;
 								$referenceTable = $referenceField->getTableName();
 							}
 							if(isset($moduleTableIndexList[$referenceTable])) {
