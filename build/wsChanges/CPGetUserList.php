@@ -19,5 +19,7 @@ $operationInfo = array(
 	 'handler' => 'vtws_getAssignedUserList',
 	 'prelogin'=> 0,
 	 'type'    => 'GET',
-	 'parameters' => array()
+	 'parameters' => array(
+		array('name' => 'module','type' => 'string'),
+	 )
 );
