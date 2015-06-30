@@ -6,12 +6,9 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
-
 <table width="100%" cellpadding=0 cellspacing=0 border=0>
-
 <tr valign="top">
 <td width="350px">
 	<table border=0 cellspacing=0 cellpadding=5 width="100%" align="" class="small listTable">
@@ -31,10 +28,10 @@
 						{assign var=select_mine value='checked'}
 					{/if}
 					<input type="radio" name="view_{$viewall.module}" {$select_all} value="showall"> {$MOD.YES}
-					<input type="radio" name="view_{$viewall.module}" {$select_mine} value="onlymine">{$MOD.NO}				
+					<input type="radio" name="view_{$viewall.module}" {$select_mine} value="onlymine">{$MOD.NO}
 			</td>
 			</tr>
-		{/foreach}	
+		{/foreach}
 	</table>
 </td>
 
@@ -50,8 +47,8 @@
 						{else}
 							<option value="{$user.id}">{$user.name}</option>
 						{/if}
-					{/foreach}		
-				</select>	
+					{/foreach}
+				</select>
 			</td>
 		</tr>
 		<tr>
@@ -65,8 +62,7 @@
 
 <tr>
 	<td colspan=2 align=center>
-		<input class="crmbutton small save" type="Submit" title="{$APP.LBL_SAVE_BUTTON_TITLE}" value="Save" alt="Save" onclick=VtigerJS_DialogBox.block();>
+		<input class="crmbutton small save" type="Submit" title="{$APP.LBL_SAVE_BUTTON_TITLE}" value="{$APP.LBL_SAVE_LABEL}" alt="{$APP.LBL_SAVE_LABEL}" onclick=VtigerJS_DialogBox.block();>
 	</td>
 </tr>
-
 </table>
