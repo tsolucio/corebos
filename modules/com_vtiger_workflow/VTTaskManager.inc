@@ -97,7 +97,8 @@
 		 *
 		 */
 		public function unserializeTask($str){
-			$this->requireTask(self::taskName($str));
+                        $tasktype = VTTaskType::getInstanceFromTaskType(self::taskName($str));
+                        $this->requireTask(self::taskName($str),$tasktype);
 			return unserialize($str);
 		}
 
@@ -120,7 +121,8 @@
 			$tasks = array();
 			foreach($it as $row){
 				$text = $row->task;
-				$this->requireTask(self::taskName($text));
+                                $tasktype = VTTaskType::getInstanceFromTaskType(self::taskName($text));
+				$this->requireTask(self::taskName($text),$tasktype);
 				$tasks[] = unserialize($text);
 			}
 			return $tasks;
