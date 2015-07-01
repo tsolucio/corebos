@@ -28,11 +28,10 @@ if(navigator.userAgent.toLowerCase().indexOf("msie") == -1){
 		closeMe.style.width="100%";
 		closeMe.style.textAlign="right";
 		closeMe.style.cursor="pointer";
-		closeMe.innerHTML = "<img src='"+ doc.vtigerURL + "themes/images/close.gif' title='Close Window' " +
-				"alt='Close Window' border=0>";
+		closeMe.innerHTML = "<img src='"+ doc.vtigerURL + "themes/images/close.gif' title='Close Window' " + "alt='Close Window' border=0>";
 		closeMe.onclick = function(){
 			window.removeMe();
-		}
+		};
 		bookMarkletDiv.appendChild(closeMe);
 		
 		var popUp = doc.createElement("iframe");
@@ -95,5 +94,5 @@ window.top.removeMe = function(){
 	}else{
 		vtigerGmailBookmarkletWindow.close();
 	}
-}
+};
 })();

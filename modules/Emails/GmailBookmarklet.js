@@ -19,7 +19,7 @@ function init(){
 				var request = this;
 				this.xhr.onreadystatechange=function(){
 					request.readyStateChange();
-				}
+				};
 			}
 			if(this.type.toLowerCase()=="post"){
 				this.xhr.setRequestHeader("Content-Type","application/x-www-form-urlencoded");
@@ -90,8 +90,8 @@ function init(){
 			Date.prototype.toJSON = function () {
 				return this.getUTCFullYear()   + "-" +
 					 f(this.getUTCMonth() + 1) + "-" +
-					 f(this.getUTCDate())	  + "T" +
-					 f(this.getUTCHours())	 + ":" +
+					 f(this.getUTCDate())  + "T" +
+					 f(this.getUTCHours()) + ":" +
 					 f(this.getUTCMinutes())   + ":" +
 					 f(this.getUTCSeconds())   + "Z";
 			};
@@ -168,7 +168,7 @@ function init(){
 					}
 					return "{" + a.join(",") + "}";
 				}
-							return undefined;
+				return undefined;
 			}
 			return {
 				stringify: stringify,
@@ -200,7 +200,7 @@ function init(){
 		}();
 	}
 	
-    function trim(str) {
+	function trim(str) {
 		var s = str.replace(/\s+$/, "");
 		s = s.replace(/^\s+/, "");
 		return s;
@@ -247,7 +247,7 @@ function init(){
 	}
 	
 	var elementId = "__vtigerBookMarkletDiv__";
-	var busyElementId = "__vtigerBookMarkletDivBusy__"
+	var busyElementId = "__vtigerBookMarkletDivBusy__";
 	function showBookMarkletUI(){
 		var bookMarkletDiv = document.getElementById(elementId);
 		if(bookMarkletDiv == null){ 
@@ -279,7 +279,7 @@ function init(){
 			}
 			closeElement.onload=function(){
 				eval('window.parent.parent.removeMe()');
-			}
+			};
 		}
 	}
 	
@@ -300,7 +300,6 @@ function init(){
 		}else{
 			busyElem.style.display="block";
 		}
-		
 	}
 	
 	function hideBusy(){
@@ -340,17 +339,16 @@ function init(){
 		onReady("__saveVtigerEmail__",function(){
 			document.getElementById("__saveVtigerEmail__").onclick=function(){
 				createEmail();
-			}
+			};
 		});
 		onReady("parentType",function(){
 			document.getElementById("parentName").innerHTML = "No "+document.getElementById("parentType").value+" Selected.";
 			document.getElementById("parentType").onchange=function(){
 				document.getElementById("parentName").innerHTML = "No "+this.value+" Selected.";
-			}
+			};
 		});
 		
 		function getQuery(searchValue){
-			
 			var moduleName = document.getElementById("parentType").value;
 			var moduleDetails = JSON.parse(moduleNameFields);
 			var entityNameFields = moduleDetails[moduleName];
@@ -411,7 +409,7 @@ function init(){
 						displaySearchResult(moduleName,response,accountName);
 					});
 				});
-			}
+			};
 		});
 	}
 	
@@ -458,7 +456,7 @@ function init(){
 			if(entityName.length>0){
 				entityName += " ";
 			}
-			entityName +=row[v]; 
+			entityName +=row[v];
 		});
 		return entityName;
 	}
@@ -507,11 +505,11 @@ function init(){
 					var wrap = document.getElementById("__vtigerAccountSearchList___");
 					wrap.style.display="none";
 					document.getElementById('__searchaccount__').value='';
-				}
+				};
 			});
 		}else{
 			var error = client.getError(queryResponse);
-			alert("Vtiger returned Error: \nerrorCode: "+error.code+"\nerror Message: "+error.message);
+			alert("Error: \nerrorCode: "+error.code+"\nerror Message: "+error.message);
 		}
 	}
 	
@@ -536,7 +534,7 @@ function init(){
 	function closeOnSuccess(response){
 		var createResponse = JSON.parse(response.responseText);
 		if(createResponse.success == true){
-			alert("Email added to vtigerCRM.");
+			alert("Email added to CRM.");
 		}else{
 			document.getElementById("__saveVtigerEmail__").disabled=false;
 			var error = client.getError(createResponse);
@@ -575,7 +573,7 @@ function init(){
 			"assigned_user_id":client.userId,"date_start":getTodayDate(),"activitytype":"Emails",
 			"parent_id": parent_id,'from_email': userEmail,'saved_toid':entityEmail,
 			'email_flag':'SAVED'};
-		client.create(email,"Emails",closeOnSuccess) 
+		client.create(email,"Emails",closeOnSuccess);
 	}
 	createBookMarkletUI();
 }
