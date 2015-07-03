@@ -35,6 +35,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'calendar_sort_users_by',
 				'Debug_Send_VtigerCron_Error',
 				'Import_Full_CSV',
+				'Lead_Convert_TransferToAccount',
 			);
 			
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');

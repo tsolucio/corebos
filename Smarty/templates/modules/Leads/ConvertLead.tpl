@@ -201,8 +201,8 @@
 						<tr>
 							<td align="right" class="dvtCellLabel" width="50%">{'LBL_TRANSFER_RELATED_RECORDS_TO'|@getTranslatedString:$MODULE}</td>
 							<td class="dvtCellInfo" width="50%">
-								{if $UIINFO->isModuleActive('Accounts') eq true && $row.company neq ''}<input type="radio" name="transferto" id="transfertoacc" value="Accounts" onclick="selectTransferTo('Accounts')"  {if $UIINFO->isModuleActive('Contacts') neq true}checked="checked"{/if} />{'SINGLE_Accounts'|@getTranslatedString:$MODULE}{/if}
-								{if $UIINFO->isModuleActive('Contacts') eq true}<input type="radio" name="transferto" id="transfertocon" value="Contacts" checked="checked" onclick="selectTransferTo('Contacts')"  /> {'SINGLE_Contacts'|@getTranslatedString:$MODULE}{/if}
+								{if $UIINFO->isModuleActive('Accounts') eq true && $row.company neq ''}<input type="radio" name="transferto" id="transfertoacc" value="Accounts" onclick="selectTransferTo('Accounts')" {if $UIINFO->isModuleActive('Contacts') neq true || $LeadConvertTransferToAccount eq 'true'}checked="checked"{/if} />{'SINGLE_Accounts'|@getTranslatedString:$MODULE}{/if}
+								{if $UIINFO->isModuleActive('Contacts') eq true}<input type="radio" name="transferto" id="transfertocon" value="Contacts" {if $LeadConvertTransferToAccount neq 'true'}checked="checked"{/if} onclick="selectTransferTo('Contacts')" /> {'SINGLE_Contacts'|@getTranslatedString:$MODULE}{/if}
 							</td>
 						</tr>
 					</table>
