@@ -806,18 +806,7 @@ function emptyCvList(type,id) {
 // mailer_export
 function mailer_export() {
 	var module = document.getElementById('curmodule').value;
-	document.massdelete.action.value = "MailerExport";
-	document.massdelete.step.value = "ask";
-	new Ajax.Request(
-		'index.php',
-		{
-			queue: {
-				position: 'end',
-				scope: 'command'
-			},
-			method: 'post',
-			postBody: "module="+module+"&action=MailerExport&from="+module+"&step=ask"
-		}
-		);
+	gotourl("index.php?module="+module+"&action=MailerExport&from="+module+"&step=ask");
+	return false;
 }
 // end of mailer export
