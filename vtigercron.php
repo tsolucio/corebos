@@ -14,7 +14,7 @@
 chdir(__DIR__);
 include_once 'vtlib/Vtiger/Cron.php';
 require_once 'config.inc.php';
-if(PHP_SAPI === "cli" || (isset($_SESSION["authenticated_user_id"]) &&	isset($_SESSION["app_unique_key"]) && $_SESSION["app_unique_key"] == $application_unique_key)){
+if(PHP_SAPI === "cli" || PHP_SAPI === "cgi-fcgi" || (isset($_SESSION["authenticated_user_id"]) && isset($_SESSION["app_unique_key"]) && $_SESSION["app_unique_key"] == $application_unique_key)){
 
 $cronTasks = false;
 if (isset($_REQUEST['service']) or ($argc==2 and !empty($argv[1]))) {
@@ -62,7 +62,7 @@ foreach ($cronTasks as $cronTask) {
 		echo sprintf("[ERROR]: %s - cron task execution throwed exception.\n", $cronTask->getName());
 		echo $e->getMessage();
 		echo "\n";
-		//Sen email with error.
+		//Send email with error.
 		$mailto = GlobalVariable::getVariable('Debug_Send_VtigerCron_Error','');
 		if ($mailto != '') {
 			require_once('modules/Emails/mail.php');
