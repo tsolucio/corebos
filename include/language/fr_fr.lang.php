@@ -1171,7 +1171,9 @@ $app_strings = array (
 	'LBL_SELECT_FIELDS_TO_UDPATE_WITH_NEW_VALUE'=>'Sélectionnez les champs à mettre à jour et saisissez la nouvelle valeur.',
 
 	'LBL_LOADING'=>'Chargement...',
-
+	//Added for Sub Products
+	'Parent Product' => 'Parent Product',
+	'Sub Products' => 'Sub Products',
 	//Added for Service Contracts
 	'Service Contracts' => 'Contrats de Service',
 	'ServiceContracts' => 'Contrats de Service',

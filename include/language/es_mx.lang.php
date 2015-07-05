@@ -166,6 +166,7 @@ $app_strings = array (
       'Services'=>'Servicios',
       'SINGLE_Services'=>'Servicio',
       'Parent Product' => 'Producto Padre',
+      'Sub Products' => 'Sub Productos',
       'NEW' => 'Nuevo',
       'NTC_REQUIRED' => 'Campo obligatorio',
       'LBL_REQUIRED_SYMBOL' => '*',

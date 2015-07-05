@@ -1126,6 +1126,7 @@ $app_strings = array(
 	'LBL_SELECT_FIELDS_TO_UDPATE_WITH_NEW_VALUE' => 'Selecteer de aan te passen velden en geef de nieuwe waarde(n).',
 	'LBL_LOADING' => 'Laden...',
 	'Parent Product' => 'Hoofdproduct',
+	'Sub Products' => 'Sub Products',
 	'Service Contracts' => 'Service Contracten',
 	'ServiceContracts' => 'Servicecontracten',
 	'Services' => 'Diensten',

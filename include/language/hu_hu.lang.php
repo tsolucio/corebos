@@ -1116,6 +1116,7 @@ $app_strings = array(
 	'LBL_SELECT_FIELDS_TO_UDPATE_WITH_NEW_VALUE' => 'Válaszd ki a módosítandó mezőket és add meg az új adatokat.',
 	'LBL_LOADING' => 'Betöltés...',
 	'Parent Product' => 'Szülő termék',
+	'Sub Products' => 'Sub Products',
 	'Service Contracts' => 'Szolgáltatási szerződések',
 	'ServiceContracts' => 'SzolgáltatásiSzerződések',
 	'Services' => 'Szolgáltatások',

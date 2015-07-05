@@ -10,7 +10,6 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
 $app_strings = array(
 'LBL_BROWSER_TITLE' => 'vtiger CRM 5 - Commercial Open Source CRM',
@@ -1257,7 +1256,7 @@ $app_strings = array(
 
 //Added for Sub Products
 'Parent Product' => 'Hauptprodukt',
-
+'Sub Products' => 'Sub Products',
 //Added for Service Contracts
 'Service Contracts' => 'Service Verträge',
 'ServiceContracts' => 'Serviceverträge',
