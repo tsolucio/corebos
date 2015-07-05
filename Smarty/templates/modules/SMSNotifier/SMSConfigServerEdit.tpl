@@ -41,8 +41,8 @@
 	<tr>
 		<td width="33%" nowrap="nowrap" align="right" class="cellLabel small"><b>{$APP.Active}</b></td>
 		<td align="left" class="cellText small">
-			<input type="radio" class="small" name="smsserver_isactive" value="1" {if $SMSSERVERINFO.isactive}checked=true{/if}> Yes
-			<input type="radio" class="small" name="smsserver_isactive" value="0" {if $SMSSERVERINFO.isactive neq 1}checked=true{/if}> No
+			<input type="radio" class="small" name="smsserver_isactive" value="1" {if $SMSSERVERINFO.isactive}checked=true{/if}> {'LBL_YES'|getTranslatedString}
+			<input type="radio" class="small" name="smsserver_isactive" value="0" {if $SMSSERVERINFO.isactive neq 1}checked=true{/if}> {'LBL_NO'|getTranslatedString}
 		</td>
 	</tr>
 

@@ -29,6 +29,10 @@ $mod_strings = array(
 	'LBL_RECEPIENTS' => 'Recipients',
 	'SMSCheckStatus' => 'Check Status',
 	'StatusInformation' => 'Status Information',
-	'SMSNotifier ID' => 'SMSNotifier ID'
+	'SMSNotifier ID' => 'SMSNotifier ID',
+	'NO_ACTIVE_SERVER' => 'We could not find any active server configuration.',
+	'ServerNotConfigured' => 'Server Not Configured?',
+	'ReviewModuleSettings' => 'Please review SMS Settings.',
+	'ContactAdmin' => 'Please contact your administrator.',
 );
 ?>

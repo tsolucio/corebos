@@ -33,6 +33,10 @@ $mod_strings = array(
 	'LBL_RECEPIENTS' => 'Címzettek',
 	'SMSCheckStatus' => 'Állapot ellenőrzése',
 	'StatusInformation' => 'Állapot Információ',
-	'SMSNotifier ID' => 'SMS Küldő AZ'
+	'SMSNotifier ID' => 'SMS Küldő AZ',
+	'NO_ACTIVE_SERVER' => 'We could not find any active server configuration.',
+	'ServerNotConfigured' => 'Server Not Configured?',
+	'ReviewModuleSettings' => 'Please review SMS Settings.',
+	'ContactAdmin' => 'Please contact your administrator.',
 );
 ?>

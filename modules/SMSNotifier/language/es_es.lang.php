@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * 
  * ***********************************************************
 *  Module       : SMSNotifier
 *  Language     : ES Spanish
@@ -42,6 +41,10 @@ $mod_strings = Array (
 'SMSCheckStatus'              => 'Verificar Estado',
 'StatusInformation'           => 'Información Estado',
 'SMSNotifier ID'              => 'Id SMS',
+'NO_ACTIVE_SERVER' => 'No se ha podido encontrar ningún servidor activo en la configuración.',
+'ServerNotConfigured' => 'El servicio no está configurado',
+'ReviewModuleSettings' => 'Revisa la configuración SMS.',
+'ContactAdmin' => 'Contacta con tu administrador.',
 );
 
 ?>

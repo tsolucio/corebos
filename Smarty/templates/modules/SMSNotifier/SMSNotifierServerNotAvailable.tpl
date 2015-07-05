@@ -12,7 +12,7 @@
 	<form method="POST" action="javascript:void(0);">
 		<table width="100%" cellpadding="5" cellspacing="0" border="0" class="layerHeadingULine">
 			<tr>
-				<td class="genHeaderSmall" width="90%" align="left">Server Not Configured?</td>
+				<td class="genHeaderSmall" width="90%" align="left">{'ServerNotConfigured'|getTranslatedString:$MODULE}</td>
 				<td width="10%" align="right"><a href="javascript:void(0);" onclick="SMSNotifierCommon.hideSelectWizard();"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0"/></a></td>
 		</table>
 
@@ -21,10 +21,10 @@
 				<td>
 				<table width="100%" cellpadding="5" cellspacing="0" border="0" align="center" bgcolor="white">
 					<tr>
-						<td align="left"><strong>We could not find any active server configuration.</strong>
+						<td align="left"><strong>{'NO_ACTIVE_SERVER'|getTranslatedString:$MODULE}</strong>
 						<br/>
 						<br/>
-						{if $IS_ADMIN}Please review under {$MODULE} Settings.{else}Please contact your administrator.{/if} </td>
+						{if $IS_ADMIN}{'ReviewModuleSettings'|getTranslatedString:$MODULE}{else}{'ContactAdmin'|getTranslatedString:$MODULE}{/if} </td>
 					</tr>
 				</table></td>
 			</tr>

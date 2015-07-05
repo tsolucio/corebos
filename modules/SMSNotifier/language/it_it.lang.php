@@ -33,6 +33,10 @@ $mod_strings = Array (
 'LBL_RECEPIENTS'              => 'Destinatari',
 'SMSCheckStatus'              => 'Check Status',
 'StatusInformation'           => 'Informazioni di stato',
+'NO_ACTIVE_SERVER' => 'We could not find any active server configuration.',
+'ServerNotConfigured' => 'Server Not Configured?',
+'ReviewModuleSettings' => 'Please review SMS Settings.',
+'ContactAdmin' => 'Please contact your administrator.',
 
 );
 

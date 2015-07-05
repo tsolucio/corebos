@@ -47,7 +47,7 @@ POSITION: absolute;
 			<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 				<tr>
 					<td width="50" rowspan="2" valign="top"><img src="{'proxy.gif'|@vtiger_imageurl:$THEME}" alt="{$CMOD.SERVER_CONFIGURATION}" width="48" height="48" border=0 title="{$CMOD.SERVER_CONFIGURATION}"></td>
-					<td colspan="2" class="heading2" valign=bottom align="left"><b><a href="index.php?module=Settings&action=ModuleManager&parenttab=Settings">{$MOD.VTLIB_LBL_MODULE_MANAGER}</a> &gt; {$MODULE_LBL} > {$CMOD.SERVER_CONFIGURATION} </b></td>
+					<td colspan="2" class="heading2" valign=bottom align="left"><b><a href="index.php?module=Settings&action=ModuleManager&parenttab=Settings">{$MOD.VTLIB_LBL_MODULE_MANAGER}</a> &gt; {$CMOD.SMSNotifier} > {$CMOD.SERVER_CONFIGURATION} </b></td>
 					<td rowspan=2 class="small" align=right>&nbsp;</td>
 				</tr>
 				<tr>
@@ -60,7 +60,7 @@ POSITION: absolute;
 				<tr>
 					<td style="padding-left:5px;" class="big">{$MOD.SMS_SERVER_CONFIGURATION}</td>
 					<td valign=top class="small" align="right">
-					<input id="_smsserver_add_button_" type="button" class="small create" value="Add New" onclick="_SMSConfigServerFetchEdit('');fnvshobj(this,'editdiv');">
+					<input id="_smsserver_add_button_" type="button" class="small create" value="{$CMOD.LBL_ADDNEW}" onclick="_SMSConfigServerFetchEdit('');fnvshobj(this,'editdiv');">
 					</td>
 				</tr>
 			</table>

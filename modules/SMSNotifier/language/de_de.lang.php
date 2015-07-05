@@ -34,6 +34,10 @@ $mod_strings = Array (
     'SMSCheckStatus'              => 'prüfe Status',
     'StatusInformation'           => 'Status Information',
     'SMSNotifier ID'			  => 'SMS Info ID',
+	'NO_ACTIVE_SERVER' => 'We could not find any active server configuration.',
+	'ServerNotConfigured' => 'Server Not Configured?',
+	'ReviewModuleSettings' => 'Please review SMS Settings.',
+	'ContactAdmin' => 'Please contact your administrator.',
 );
 
 ?>
