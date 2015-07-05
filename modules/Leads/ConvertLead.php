@@ -34,5 +34,6 @@ $smarty->assign('CATEGORY', $category);
 $smarty->assign('THEME', $theme_path);
 $smarty->assign('DATE_FORMAT', $current_user->date_format);
 $smarty->assign('CAL_DATE_FORMAT', parse_calendardate($app_strings['NTC_DATE_FORMAT']));
+$smarty->assign('LeadConvertTransferToAccount', GlobalVariable::getVariable('Lead_Convert_TransferToAccount', 'false'));
 $smarty->display(vtlib_getModuleTemplate($currentModule, 'ConvertLead.tpl'));
 ?>
