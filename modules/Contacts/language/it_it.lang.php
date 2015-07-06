@@ -107,8 +107,6 @@ $mod_strings = array (
   'NTC_REMOVE_CONFIRMATION' => 'Sei sicuro di voler rimuovere questo contatto da questo caso?',
   'NTC_REMOVE_DIRECT_REPORT_CONFIRMATION' => 'Sei sicuro di voler rimuovere questo record come un report diretto?',
   'ERR_DELETE_RECORD' => 'en_us Un numero di record deve essere specificato per cancellare il contatto.',
-  'NTC_COPY_PRIMARY_ADDRESS' => 'Copia l`indirizzo primario nell`indirizzo alternativo',
-  'NTC_COPY_ALTERNATE_ADDRESS' => 'Copia l`indirizzo alternativo nell`indirizzo primario',
 
   'LBL_SELECT_CONTACT' => 'Seleziona Contatto',
   'LBL_GENERAL_INFORMATION' => 'Informazioni generali',

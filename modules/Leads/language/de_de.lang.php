@@ -73,14 +73,11 @@ $mod_strings = Array(
     'LBL_POTENTIAL_AMOUNT'=>'erwarteter Umsatz für das Potential',
     'LBL_POTENTIAL_SALES_STAGE'=>'Verkaufsstufe des Potentials',
 
-
     'NTC_DELETE_CONFIRMATION'=>'Möchten Sie diesen Eintrag löschen?',
     'NTC_REMOVE_CONFIRMATION'=>'Möchten Sie diesen Eintrag wirklich löschen?',
     'NTC_REMOVE_DIRECT_REPORT_CONFIRMATION'=>'Möchten Sie den Vorgesetzten von diesem Eintrag löschen?',
     'NTC_REMOVE_OPP_CONFIRMATION'=>'Möchten Sie diesen Eintrag vom Verkaufspotential löschen?',
     'ERR_DELETE_RECORD'=>"Zum Löschen muss mindestens ein Eintrag markiert sein.",
-    'NTC_COPY_PRIMARY_ADDRESS'=>'Kopiere primäre Adresse zur alternativen Adresse',
-    'NTC_COPY_ALTERNATE_ADDRESS'=>'Kopiere alternative Adresse zur primären Adresse',
 
     // Added fields in fetchfile.php, import.php -- crm4-Beta
     'LBL_COLON'=>' : ',

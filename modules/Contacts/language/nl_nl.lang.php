@@ -119,8 +119,6 @@ $mod_strings = Array(
 'NTC_REMOVE_CONFIRMATION'=>'Weet u zeker dat u dit contact wilt verwijderen?',
 'NTC_REMOVE_DIRECT_REPORT_CONFIRMATION'=>'Weet u zeker dat u deze medewerker wilt verwijderen?',
 'ERR_DELETE_RECORD'=>"en_us Een veld moet gespecificeerd zijn om de contactpersoon te verwijderen.",
-'NTC_COPY_PRIMARY_ADDRESS'=>'Kopieer Bezoekadres naar Postadres',
-'NTC_COPY_ALTERNATE_ADDRESS'=>' Kopieer Postadres naar Bezoekadres',
 
 'LBL_SELECT_CONTACT'=>'Selecteer Contact',
 //Added for search heading

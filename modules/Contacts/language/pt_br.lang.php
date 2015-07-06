@@ -108,8 +108,6 @@ $mod_strings = Array(
 'NTC_REMOVE_CONFIRMATION'=>'Você ter certeza que deseja remover este Contato desde Case?',
 'NTC_REMOVE_DIRECT_REPORT_CONFIRMATION'=>'Você tem certeza que deseja remover este registro como um report?',
 'ERR_DELETE_RECORD'=>'Defina um número de registro para deletar o Contato.',
-'NTC_COPY_PRIMARY_ADDRESS'=>'Copiar endereço Principal para endereço Alternativo',
-'NTC_COPY_ALTERNATE_ADDRESS'=>'Copiar endereço Alternativo para endereço Principal',
 
 'LBL_SELECT_CONTACT'=>'Selecionar Contato',
 //Added for search heading

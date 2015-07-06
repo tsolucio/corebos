@@ -109,8 +109,6 @@ $mod_strings = array (
 'NTC_REMOVE_CONFIRMATION'=>'¿Está seguro que desea eliminar este contacto de este caso?',
 'NTC_REMOVE_DIRECT_REPORT_CONFIRMATION'=>'¿Está seguro que desea eliminar este registro como informe directo?',
 'ERR_DELETE_RECORD'=>'Debe especificar un registro para poder eliminar el contacto.',
-'NTC_COPY_PRIMARY_ADDRESS'=>'Copiar Principal a Alternativa',
-'NTC_COPY_ALTERNATE_ADDRESS'=>'Copiar Alternativa a Principal',
 
 'LBL_SELECT_CONTACT'=>'Seleccionar Contacto',
 //Added for search heading

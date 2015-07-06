@@ -91,14 +91,11 @@ $mod_strings = Array(
 'LBL_POTENTIAL_AMOUNT'=>'Bedrag verkoopkans',
 'LBL_POTENTIAL_SALES_STAGE'=>'Stadium verkoopkans',
 
-
 'NTC_DELETE_CONFIRMATION'=>'Wilt u dit verwijderen?',
 'NTC_REMOVE_CONFIRMATION'=>'Wilt u deze contactpersoon verwijderen?',
 'NTC_REMOVE_DIRECT_REPORT_CONFIRMATION'=>'Wilt u dit verwijderen?',
 'NTC_REMOVE_OPP_CONFIRMATION'=>'Wilt u dit verwijderen?',
 'ERR_DELETE_RECORD'=>'Een veld moet gespecificeerd zijn om een contact te verwijderen.',
-'NTC_COPY_PRIMARY_ADDRESS'=>'Kopieer Postadres naar Afleveradres',
-'NTC_COPY_ALTERNATE_ADDRESS'=>'Kopieer Afleveradres naar Postadres',
 
 // Added fields in fetchfile.php, import.php -- crm4-Beta
 'LBL_COLON'=>' : ', 

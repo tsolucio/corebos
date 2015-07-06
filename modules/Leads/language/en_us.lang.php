@@ -73,14 +73,11 @@ $mod_strings = Array(
 'LBL_POTENTIAL_AMOUNT'=>'Opportunity Amount',
 'LBL_POTENTIAL_SALES_STAGE'=>'Opportunity Sales Stage',
 
-
 'NTC_DELETE_CONFIRMATION'=>'Are you sure you want to delete this record?',
 'NTC_REMOVE_CONFIRMATION'=>'Are you sure you want to remove this contact from this case?',
 'NTC_REMOVE_DIRECT_REPORT_CONFIRMATION'=>'Are you sure you want to remove this record as a direct report?',
 'NTC_REMOVE_OPP_CONFIRMATION'=>'Are you sure you want to remove this contact from this opportunity?',
 'ERR_DELETE_RECORD'=>'A record number must be specified to delete the contact.',
-'NTC_COPY_PRIMARY_ADDRESS'=>'Copy primary address to alternate address',
-'NTC_COPY_ALTERNATE_ADDRESS'=>'Copy alternate address to primary address',
 
 // Added vtiger_fields in fetchfile.php, import.php -- crm4-Beta
 'LBL_COLON'=>' : ', 

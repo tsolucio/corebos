@@ -101,8 +101,6 @@ $mod_strings = Array(
     'NTC_REMOVE_CONFIRMATION'=>'Möchten Sie diesen Eintrag vom Vorgang löschen?',
     'NTC_REMOVE_DIRECT_REPORT_CONFIRMATION'=>'Möchten Sie den Eintrag bezüglich Vorgesetzer löschen?',
     'ERR_DELETE_RECORD'=>"Um Einträge zu löschen, muss mindestens ein Eintrag markiert sein.",
-    'NTC_COPY_PRIMARY_ADDRESS'=>'Primäre Adresse zu Alternativer Adresse kopieren',
-    'NTC_COPY_ALTERNATE_ADDRESS'=>'Alternative Adresse zu Primäre Adresse kopieren',
 
     'LBL_SELECT_CONTACT'=>'Person wählen',
     //Added for search heading
