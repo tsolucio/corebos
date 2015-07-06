@@ -27,7 +27,7 @@ $mod_strings = Array(
 'LBL_ACCOUNT_NAME' => 'Nombre de Cuenta',
 'LBL_CONTACT_NAME' => 'Nombre de Contacto',
 'LBL_SUBJECT' => 'Asunto',
-'LBL_NEW_FORM_TITLE' => 'Nuevo Parte',
+'LBL_NEW_FORM_TITLE' => 'Nueva Incidencia',
 'LBL_DESCRIPTION' => 'Descripción',
 'NTC_DELETE_CONFIRMATION' => '¿Está seguro que desea eliminar este registro?',
 'LBL_CUSTOM_FIELD_SETTINGS' => 'Configuración de campos personalizados:',
@@ -74,11 +74,11 @@ $mod_strings = Array(
 'LBL_IS_BEFORE' => 'es antes',
 'LBL_IS_AFTER' => 'es después',
 'LBL_STATISTICS' => 'Estadísticas',
-'LBL_TICKET_ID' => 'Nº de Parte',
-'LBL_MY_TICKETS' => 'Mis Partes',
+'LBL_TICKET_ID' => 'Nº de Incidencia',
+'LBL_MY_TICKETS' => 'Mis Incidencias',
 'LBL_MY_FAQ' => 'Mis Faq\'s',
 'LBL_ESTIMATED_FINISHING_TIME' => 'Tiempo estimado de resolución',
-'LBL_SELECT_TICKET' => 'Seleccionar Parte',
+'LBL_SELECT_TICKET' => 'Seleccionar Incidencia',
 'LBL_CHANGE_OWNER' => 'Modificar Propietario',
 'LBL_CHANGE_STATUS' => 'Modificar Estado',
 'LBL_TICKET_TITLE' => 'Referencia',
@@ -87,11 +87,11 @@ $mod_strings = Array(
 'LBL_TICKET_PRIORITY' => 'Prioridad',
 
 //Added vtiger_fields after 4 -- Beta
-'LBL_NEW_TICKET' => 'Nuevo Parte',
-'LBL_TICKET_INFORMATION' => 'Información del Parte',
+'LBL_NEW_TICKET' => 'Nueva Incidencia',
+'LBL_TICKET_INFORMATION' => 'Información de la Incidencia',
 
-'LBL_LIST_FORM_TITLE' => 'Lista de Partes',
-'LBL_SEARCH_FORM_TITLE' => 'Buscar Parte',
+'LBL_LIST_FORM_TITLE' => 'Lista de Incidencias',
+'LBL_SEARCH_FORM_TITLE' => 'Buscar Incidencia',
 
 //Added vtiger_fields after RC1 - Release
 'LBL_CHOOSE_A_VIEW' => 'Seleccionar una vista...',
@@ -117,7 +117,7 @@ $mod_strings = Array(
 'LBL_OPEN' => 'Abierto',
 'LBL_CLOSED' => 'Cerrado',
 'LBL_TOTAL' => 'Total',
-'LBL_TICKET_HISTORY' => 'Historia del Parte:',
+'LBL_TICKET_HISTORY' => 'Historia de la Incidencia:',
 'LBL_CATEGORIES' => 'Categorías',
 'LBL_PRIORITIES' => 'Prioridades',
 'LBL_SUPPORTERS' => 'Agentes',
@@ -129,7 +129,7 @@ $mod_strings = Array(
 'LBL_ADD_COMMENT' => 'Añadir comentario',
 
 //Added for 4.2 Release -- CustomView
-'Ticket ID' => 'Nº de Parte',
+'Ticket ID' => 'Nº de Incidencia',
 'Subject' => 'Asunto',
 
 //Added after 4.2 alpha
@@ -138,7 +138,7 @@ $mod_strings = Array(
 'Related To' => 'Relacionado con',
 'LBL_MORE' => 'Más',
 
-'LBL_TICKETS' => 'Partes',
+'LBL_TICKETS' => 'Incidencias',
 
 //Added on 09-12-2005
 'LBL_CUMULATIVE_STATISTICS' => 'Estadísticas Acumuladas',
@@ -148,7 +148,7 @@ $mod_strings = Array(
 'LBL_CONVERT_AS_FAQ_BUTTON_KEY' => 'C',
 'LBL_CONVERT_AS_FAQ_BUTTON_LABEL' => 'Convertir en FAQ',
 'Attachment' => 'Adjunto',
-'LBL_COMMENT_INFORMATION' => 'Comentarios al Parte',
+'LBL_COMMENT_INFORMATION' => 'Comentarios a la Incidencia',
 
 //Added for existing picklist entries
 
@@ -174,11 +174,11 @@ $mod_strings = Array(
 //added to support i18n in ticket mails
 'Hi' => 'Hola',
 'Dear' => 'Estimado',
-'LBL_PORTAL_BODY_MAILINFO' => 'El Parte ha sido',
+'LBL_PORTAL_BODY_MAILINFO' => 'La Incidencia ha sido',
 'LBL_DETAIL' => ', los detalles son:',
 'LBL_REGARDS' => 'Atentamente,',
 'LBL_TEAM' => 'Equipo de Soporte Técnico',
-'LBL_TICKET_DETAILS' => 'Detalles de Parte',
+'LBL_TICKET_DETAILS' => 'Detalles de la Incidencia',
 'LBL_SUBJECT' => 'Asunto : ',
 'created' => 'creado',
 'replied' => 'respondido',
@@ -194,13 +194,13 @@ $mod_strings = Array(
 
 //this label for customerportal.
 'LBL_STATUS_CLOSED' =>'Closed',//Do not convert this label. This is used to check the status. If the status 'Closed' is changed in vtigerCRM server side then you have to change in customerportal language file also.
-'LBL_STATUS_UPDATE' => 'Estado de Parte actualizado a',
-'LBL_COULDNOT_CLOSED' => 'El Parte no puede ser',
+'LBL_STATUS_UPDATE' => 'Estado de la Incidencia actualizado a',
+'LBL_COULDNOT_CLOSED' => 'La Incidencia no puede ser',
 'LBL_CUSTOMER_COMMENTS' => 'EL Cliente ha incluido la siguiente información a su respuesta:',
-'LBL_RESPOND'=> 'Por favor responde al parte lo más pronto posible.',
+'LBL_RESPOND'=> 'Por favor responde a la incidencia lo más pronto posible.',
 'LBL_REGARDS' =>'Saludos Cordiales,',
 'LBL_SUPPORT_ADMIN' => 'Atención al Cliente',
-'LBL_RESPONDTO_TICKETID' =>'Responde al Nº de Parte',
+'LBL_RESPONDTO_TICKETID' =>'Responde al Nº de Incidencia',
 'LBL_CUSTOMER_PORTAL' => 'en el Portal del Cliente - URGENTE', 
 'LBL_LOGIN_DETAILS' => 'Sus datos de conexión al Portal de Cliente son:',
 'LBL_MAIL_COULDNOT_SENT' =>'No se puede enviar el correo',

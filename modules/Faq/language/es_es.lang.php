@@ -112,7 +112,7 @@ $mod_strings = Array(
 'Modified Time'=>'Fecha de Modificación',
 
 //Added vtiger_fields after 4.2 alpha
-'LBL_TICKETS'=>'Partes',
+'LBL_TICKETS'=>'Incidencias',
 'LBL_FAQ'=>'FAQ',
 'Product Name'=>'Nombre del Producto',
 'FAQ Id'=>'Número de FAQ',
