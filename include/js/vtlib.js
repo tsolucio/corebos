@@ -280,3 +280,33 @@ function GlobalVariable_getVariable(gvname, gvdefault, gvmodule, gvuserid) {
 		req.send();
 	});
 }
+
+function ExecuteFunctions(functiontocall,checkModule) {
+	var baseurl = 'index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions';
+
+	// Return a new promise avoiding jquery and prototype
+	return new Promise(function(resolve, reject) {
+		var url = baseurl+'&functiontocall='+functiontocall+'&checkmodule='+checkModule;
+		var req = new XMLHttpRequest();
+		req.open('GET', url);
+
+		req.onload = function() {
+			// check the status
+			if (req.status == 200) {
+				// Resolve the promise with the response text
+				resolve(req.response);
+			} else {
+				// Otherwise reject with the status text which will hopefully be a meaningful error
+				reject(Error(req.statusText));
+			}
+		};
+
+		// Handle errors
+		req.onerror = function() {
+			reject(Error("Network/Script Error"));
+		};
+
+		// Make the request
+		req.send();
+	});
+}
