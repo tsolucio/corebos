@@ -1203,14 +1203,22 @@ function getDetailAssociatedProducts($module, $focus) {
 	global $app_strings, $current_user;
 	$theme_path = "themes/" . $theme . "/";
 	$image_path = $theme_path . "images/";
-
+	
+	if(vtlib_isModuleActive("Products"))
+		$hide_stock = 'no';
+	else
+		$hide_stock = 'yes';
+	
 	if ($module != 'PurchaseOrder') {
 		if (GlobalVariable::getVariable('B2B', '1')=='1') {
 			$acvid = $focus->column_fields['account_id'];
 		} else {
 			$acvid = $focus->column_fields['contact_id'];
 		}
-		$colspan = '2';
+		if($hide_stock == 'no')
+			$colspan = '2';
+		else
+			$colspan = '1';
 	} else {
 		$acvid = $focus->column_fields['vendor_id'];
 		$colspan = '1';
@@ -1240,7 +1248,7 @@ function getDetailAssociatedProducts($module, $focus) {
 		</td>';
 
 	//Add Quantity in Stock column for SO, Quotes and Invoice
-	if ($module == 'Quotes' || $module == 'SalesOrder' || $module == 'Invoice')
+	if (($module == 'Quotes' || $module == 'SalesOrder' || $module == 'Invoice') && $hide_stock == 'no')
 		$output .= '<td width=10% class="lvtCol"><b>' . $app_strings['LBL_QTY_IN_STOCK'] . '</b></td>';
 
 	$output .= '
@@ -1382,7 +1390,7 @@ function getDetailAssociatedProducts($module, $focus) {
 		//Upto this added to display the Product name and comment
 
 
-		if ($module != 'PurchaseOrder') {
+		if ($module != 'PurchaseOrder' && $hide_stock == 'no') {
 			$output .= '<td class="crmTableRow small lineOnTop">' . $qtyinstock . '</td>';
 		}
 		$output .= '<td class="crmTableRow small lineOnTop">' . $qty . '</td>';

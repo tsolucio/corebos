@@ -95,7 +95,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 
 <table width="100%"  border="0" align="center" cellpadding="5" cellspacing="0" class="crmTable" id="proTab">
    <tr>
-   	{if $MODULE neq 'PurchaseOrder'}
+   	{if $MODULE neq 'PurchaseOrder' && 'Products'|vtlib_isModuleActive}
 			<td colspan="3" class="dvInnerHeader">
 	{else}
 			<td colspan="2" class="dvInnerHeader">
@@ -137,7 +137,7 @@ function displayCoords(currObj,obj,mode,curr_row)
    <tr valign="top">
 	<td width=5% valign="top" class="lvtCol" align="right"><b>{$APP.LBL_TOOLS}</b></td>
 	<td width=40% class="lvtCol"><font color='red'>*</font><b>{$APP.LBL_ITEM_NAME}</b></td>
-	{if $MODULE neq 'PurchaseOrder'}
+	{if $MODULE neq 'PurchaseOrder' && 'Products'|vtlib_isModuleActive}
 		<td width=10% class="lvtCol"><b>{$APP.LBL_QTY_IN_STOCK}</b></td>
 	{/if}
 	<td width=10% class="lvtCol"><b>{$APP.LBL_QTY}</b></td>
@@ -196,7 +196,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 	<!-- column 2 - Product Name - ends -->
 
 	<!-- column 3 - Quantity in Stock - starts -->
-	{if $MODULE neq 'PurchaseOrder'}
+	{if $MODULE neq 'PurchaseOrder' && 'Products'|vtlib_isModuleActive}
 		<td class="crmTableRow small lineOnTop" ><span id="qtyInStock1">{$QTY_IN_STOCK}</span></td>
 	{/if}
 	<!-- column 3 - Quantity in Stock - ends -->

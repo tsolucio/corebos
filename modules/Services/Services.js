@@ -225,7 +225,9 @@ function fnAddServiceRow(module,image_path){
 	
 	var colone = row.insertCell(0);
 	var coltwo = row.insertCell(1);
-	if(module == "PurchaseOrder"){
+	
+	
+	if(module == "PurchaseOrder" || hide_stock == 'yes'){
 		var colfour = row.insertCell(2);
 		var colfive = row.insertCell(3);
 		var colsix = row.insertCell(4);
@@ -277,7 +279,7 @@ function fnAddServiceRow(module,image_path){
 						'</td></tr><tr><td class="small" id="setComment'+count+'"><textarea id="comment'+count+'" name="comment'+count+'" class=small style="width:70%;height:40px"></textarea><img src="themes/images/clear_field.gif" onClick="getObj(\'comment'+count+'\').value=\'\'"; style="cursor:pointer;" /></td></tr></tbody></table>';	
 					
 	//Quantity In Stock - only for SO, Quotes and Invoice
-	if(module != "PurchaseOrder"){
+	if(module != "PurchaseOrder"  && hide_stock == 'no'){
 	colthree.className = "crmTableRow small";
 	colthree.innerHTML='<span id="qtyInStock'+count+'">NA</span>';
 	}
