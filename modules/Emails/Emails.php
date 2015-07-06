@@ -10,14 +10,6 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Emails/Emails.php,v 1.41 2005/04/28 08:11:21 rank Exp $
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
  ********************************************************************************/
 
 include_once('config.php');
@@ -50,15 +42,15 @@ class Emails extends CRMEntity {
 		'Subject' => Array('activity' => 'subject'),
 		'Related to' => Array('seactivityrel' => 'parent_id'),
 		'Date Sent' => Array('activity' => 'date_start'),
-        'Time Sent' => Array('activity' => 'time_start'),
-		'Assigned To' => Array('crmentity', 'smownerid'),
-		'Access Count' => Array('email_track', 'access_count')
+		'Time Sent' => Array('activity' => 'time_start'),
+		'Assigned To' => Array('crmentity' => 'smownerid'),
+		'Access Count' => Array('email_track' => 'access_count')
 	);
 	var $list_fields_name = Array(
 		'Subject' => 'subject',
 		'Related to' => 'parent_id',
 		'Date Sent' => 'date_start',
-        'Time Sent' => 'time_start',
+		'Time Sent' => 'time_start',
 		'Assigned To' => 'assigned_user_id',
 		'Access Count' => 'access_count'
 	);
