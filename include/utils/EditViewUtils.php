@@ -2026,7 +2026,8 @@ function getBlockInformation($module, $result, $col_fields,$tabid,$block_label,$
 	$editview_arr = Array();
 
 	$noofrows = $adb->num_rows($result);
-	if (($module == 'Accounts' || $module == 'Contacts' || $module == 'Quotes' || $module == 'PurchaseOrder' || $module == 'SalesOrder'|| $module == 'Invoice') && $block == 2)
+	$show_copy_address = GlobalVariable::getVariable('Show_Copy_Adress_Header', 'yes', $module, $current_user->id);
+	if (($module == 'Accounts' || $module == 'Contacts' || $module == 'Quotes' || $module == 'PurchaseOrder' || $module == 'SalesOrder'|| $module == 'Invoice') && $block == 2 && $show_copy_address == 'yes')
 	{
 		$log->info("module is ".$module);
 		$mvAdd_flag = true;

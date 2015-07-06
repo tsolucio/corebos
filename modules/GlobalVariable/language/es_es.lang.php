@@ -69,6 +69,7 @@ $mod_strings = Array(
 	'Module Functionality' => 'Funcionalidad Módulo',
 	'Other' => 'Otro',
 	'product_service_default' => 'Productos o Servicios por defecto en las líneas de productos',
+	'Show_Copy_Adress_Header' => 'Mostrar Copiar Dirección',
 
 );
 
