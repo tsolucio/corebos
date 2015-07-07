@@ -2523,6 +2523,7 @@ class ReportRun extends CRMEntity {
 					else
 					{
 						$headerLabel = str_replace($modules," ",$this->getLstringforReportHeaders($fld->name));
+						$headerLabel = str_replace("_"," ",$this->getLstringforReportHeaders($fld->name));
 						$arrayHeaders[] = $headerLabel;
 					}
 					/*STRING TRANSLATION starts */
