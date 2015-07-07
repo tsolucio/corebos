@@ -38,6 +38,8 @@ class coreBOSEventsExample extends VTEventHandler {
 				break;
 			case 'corebos.footer':
 			case 'corebos.header':
+			case 'corebos.footer.prefooter':
+			case 'corebos.header.premenu':
 				# Write somethink into the footer/Header
 				echo "<div style='text-align:left;font-size:11px;padding:0 30px;color:rgb(153, 153, 153);'>Extended Header/Footer message</div>";
 			break;

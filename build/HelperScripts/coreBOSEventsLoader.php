@@ -20,6 +20,8 @@ function registerEvent($event) {
 
 registerEvent('corebos.footer');
 registerEvent('corebos.header');
+registerEvent('corebos.footer.prefooter');
+registerEvent('corebos.header.premenu');
 registerEvent('corebos.filter.listview.querygenerator.before');
 registerEvent('corebos.filter.listview.querygenerator.after');
 registerEvent('corebos.filter.listview.querygenerator.query');

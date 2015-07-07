@@ -124,9 +124,7 @@ var gVTUserID = '{$CURRENT_USER_ID}';
 				<td valign="top" class="genHeaderSmall" style="padding-left:10px;padding-top:3px;">
 					<span class="userName">{$USER}</span>
 				</td>
-				{* ondemand customization: Header links on the top panel *}
 				<td class="small" valign="bottom" nowrap style="padding-bottom: 1em;"><a href="index.php?module=Users&action=DetailView&record={$CURRENT_USER_ID}&modechk=prefview"><img src="{$IMAGEPATH}user.PNG" border=0 style="padding: 0px;padding-left:5px" title="{$APP.LBL_MY_PREFERENCES}" alt="{$APP.LBL_MY_PREFERENCES}"></a></td>
-				{* END *}
 				{* vtlib customization: Header links on the top panel *}
 				{if $HEADERLINKS}
 			<td style="padding-bottom:1em;padding-left:10px;padding-right:5px" class=small nowrap valign="bottom">
@@ -255,7 +253,7 @@ var gVTUserID = '{$CURRENT_USER_ID}';
 	</form>
 	</div>
 {/if}
-
+{php}cbEventHandler::do_action('corebos.header.premenu');{/php}
 <!-- header - master tabs -->
 <TABLE border=0 cellspacing=0 cellpadding=0 width=100% class="hdrTabBg">
 <tr>

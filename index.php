@@ -772,7 +772,7 @@ if($module == 'Events')
 	$Ajx_module = 'Calendar';
 if((!$viewAttachment) && (!$viewAttachment && $action != 'home_rss') && $action != 'Tickerdetail' && $action != $Ajx_module."Ajax" && $action != "chat" && $action != "HeadLines" && $action != 'massdelete'  &&  $action != "DashboardAjax" && $action != "ActivityAjax")
 {
-	// Under the SPL you do not have the right to remove this copyright statement.	
+	// Under the SPL you do not have the right to remove this copyright statement.
 	$copyrightstatement="<style>
 		.bggray
 		{
@@ -811,14 +811,11 @@ if((!$viewAttachment) && (!$viewAttachment && $action != 'home_rss') && $action 
 			}
 		}
 	//window.onunload=LogOut
-	</script>
-		";
+	</script>";
 
-	if((!$skipFooters) && $action != "about_us" && $action != "vtchat" && $action != "ChangePassword" && $action != "body" && $action != $module."Ajax" && $action!='Popup' && $action != 'ImportStep3' && $action != 'ActivityAjax' && $action != 'getListOfRecords')
-	
-	{
+	if((!$skipFooters) && $action != "about_us" && $action != "vtchat" && $action != "ChangePassword" && $action != "body" && $action != $module."Ajax" && $action!='Popup' && $action != 'ImportStep3' && $action != 'ActivityAjax' && $action != 'getListOfRecords') {
 		echo $copyrightstatement;
-		// END
+		cbEventHandler::do_action('corebos.footer.prefooter');
 		echo "<br><br><br><table border=0 cellspacing=0 cellpadding=5 width=100% class=settingsSelectedUI >";
 		echo "<tr><td class=small align=left><span style='color: rgb(153, 153, 153);'>Powered by ".getTranslatedString('APP_NAME')." <span id='_vtiger_product_version_'>$vtiger_current_version</span></span></td>";
 		echo "<td class=small align=right><span>&copy; 2004-".date('Y')." <a href='$coreBOS_app_url' target='_blank'>$coreBOS_app_name</a> | <a href='copyright.html' target='_blank'>".$app_strings['LNK_READ_LICENSE']."</a> | <a href='http://corebos.org/page/privacy-policy' target='_blank'>".getTranslatedString('LNK_PRIVACY_POLICY')."</a></span></td></tr></table>";
