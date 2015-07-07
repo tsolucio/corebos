@@ -417,6 +417,7 @@ function loadAllWidgets(widgetInfoList, batchSize){
 						+ JSON.stringify(batchWidgetInfoList),
 					onComplete: function(response){
 						var responseVal=JSON.parse(response.responseText);
+						var tagcloudfound = false;
 						for(var widgetId in responseVal) {
 							if(responseVal.hasOwnProperty(widgetId)) {
 								$('stuffcont_'+widgetId).innerHTML = responseVal[widgetId];
@@ -447,14 +448,17 @@ function loadAllWidgets(widgetInfoList, batchSize){
 									$('a_'+widgetId).href = "index.php?module=Dashboard&action="+
 										"index&type="+$('more_'+stuffid).value;
 								} else if(widgetType=="Tag Cloud"){
-									TagCanvas.Start('tagcloudCanvas', '', {
-										shape: user_tag_showas,
-										lock: "x",
-										weight: true,
-										weightMode: 'both'
-									});
+									tagcloudfound = true;
 								}
 							}
+						}
+						if (tagcloudfound) {
+							TagCanvas.Start('tagcloudCanvas', '', {
+								shape: user_tag_showas,
+								lock: "x",
+								weight: true,
+								weightMode: 'both'
+							});
 						}
 					}
 				}
