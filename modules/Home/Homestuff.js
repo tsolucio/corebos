@@ -5,7 +5,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  *******************************************************************************/
 
 /**
@@ -20,7 +19,7 @@ function chooseType(typeName){
 	if(alert_arr[typeName] != null && alert_arr[typeName] != "" && alert_arr[typeName] != 'undefined'){
 		typeLabel = alert_arr[typeName];
 	}
-    if(typeLabel == 'defaultwidget'){
+	if(typeLabel == 'defaultwidget'){
 		$('divHeader').innerHTML="<b>"+alert_arr.LBL_SELECT+"</b>";
 		$('vtbusy_info').style.display="inline";
 		new Ajax.Request(
@@ -143,22 +142,21 @@ function chooseType(typeName){
 		$('reportNameRow').style.display="block";
 		$('reportTypeRow').style.display="block";
 		$('vtbusy_info').style.display="none";
-        $('dashNameRow').style.display="none";
+		$('dashNameRow').style.display="none";
 		$('dashTypeRow').style.display="none";
 		$('homewidget').style.display="none";
 		new Ajax.Request(
-                    'index.php',
-                    {queue: {position: 'end', scope: 'command'},
-                            method: 'post',
-                            postBody: 'module=Home&action=HomeAjax&file=HomeReportChart&ajax=true',
-                            onComplete: function(response) {
-                                        $('selReportName').innerHTML=response.responseText;
+			'index.php',
+			{queue: {position: 'end', scope: 'command'},
+				method: 'post',
+				postBody: 'module=Home&action=HomeAjax&file=HomeReportChart&ajax=true',
+				onComplete: function(response) {
+					$('selReportName').innerHTML=response.responseText;
 					show('addWidgetsDiv');
 					placeAtCenter($('addWidgetsDiv'));
 					$('vtbusy_info').style.display="none";
-                        }
-                    }
-                 );
+				}
+			});
 	}
 	/*else if(typeName == 'URL'){
 		$('moduleNameRow').style.display="none";
@@ -246,7 +244,7 @@ function saveEntries(selMaxName){
 	sidarr=selMaxName.split("_");
 	sid=sidarr[1];
 	$('refresh_'+sid).innerHTML=$('vtbusy_homeinfo').innerHTML;
-	cancelEntries('editRowmodrss_'+sid)
+	cancelEntries('editRowmodrss_'+sid);
 	showmax=$(selMaxName).value;
 	new Ajax.Request(
 		'index.php',
@@ -312,7 +310,7 @@ function DelStuff(sid){
 						Effect.Appear('seqSettings');
 						setTimeout(hideSeqSettings,3000);
 					}else{
-						alert(alert_arr.ERROR_DELETING_TRY_AGAIN)
+						alert(alert_arr.ERROR_DELETING_TRY_AGAIN);
 					}
 				}
 			}
@@ -356,8 +354,8 @@ function loadStuff(stuffid,stufftype){
 		'index.php',
 		{queue: {position: 'end', scope: 'command'},
 			method: 'post',
-		    postBody:'module=Home&action=HomeAjax&file=HomeBlock&homestuffid='+stuffid+'&blockstufftype='+stufftype,
-		    onComplete: function(response){
+			postBody:'module=Home&action=HomeAjax&file=HomeBlock&homestuffid='+stuffid+'&blockstufftype='+stufftype,
+			onComplete: function(response){
 				var responseVal=response.responseText;
 				$('stuffcont_'+stuffid).innerHTML=response.responseText;
 				if(stufftype=="Module"){
@@ -382,9 +380,9 @@ function loadStuff(stuffid,stufftype){
 				if(stufftype=="DashBoard"){
 					$('a_'+stuffid).href = "index.php?module=Dashboard&action=index&type="+$('more_'+stuffid).value;
 				}
-                if(stufftype=="ReportCharts"){
-                	$('a_'+stuffid).href = "index.php?module=Reports&action=SaveAndRun&record="+$('more_'+stuffid).value;
-                }
+				if(stufftype=="ReportCharts"){
+					$('a_'+stuffid).href = "index.php?module=Reports&action=SaveAndRun&record="+$('more_'+stuffid).value;
+				}
 				if(stufftype=="Tag Cloud"){
 					TagCanvas.Start('tagcloudCanvas', '', {
 						shape: user_tag_showas,
@@ -394,7 +392,7 @@ function loadStuff(stuffid,stufftype){
 					});
 				}
 				$('refresh_'+stuffid).innerHTML='';
-		    }
+			}
 		}
 	);
 }
@@ -475,11 +473,11 @@ function frmValidate(){
 	if($('stufftype_id').value=="defaultwidget"){
 		var namelist = new Array();
 		$('vtbusy_info').style.display="block";
-		var elem = document.getElementsByName("names")
-        for(var i = 0; i < elem.length; i++){
-            if(elem[i].checked) {
+		var elem = document.getElementsByName("names");
+		for(var i = 0; i < elem.length; i++){
+			if(elem[i].checked) {
 				namelist[i] = elem[i].value;
-            }
+			}
 		}
 
 		var values = JSON.stringify(namelist);
@@ -545,8 +543,8 @@ function frmValidate(){
 		var seldashbd='';
 		var seldashtype='';
 		var seldeftype='';
-    	var selreport='';
-    	var selreportcharttype='';
+		var selreport='';
+		var selreportcharttype='';
 		//var txtURL = '';
 
 		if(stufftype=="Module"){
@@ -565,10 +563,10 @@ function frmValidate(){
 		}else if(stufftype=="Default"){
 			seldeftype=document.Homestuff.seldeftype[document.Homestuff.seldeftype.selectedIndex].value;
 		}
-    else if(stufftype=="ReportCharts"){
-    	selreport = $('selreportchart_id').value;
-        selreportcharttype = $('selreportcharttype_id').value;
-    }
+	else if(stufftype=="ReportCharts"){
+		selreport = $('selreportchart_id').value;
+		selreportcharttype = $('selreportcharttype_id').value;
+	}
 
 	var url="stufftype="+stufftype+"&stufftitle="+stufftitle+"&selmodule="+selmodule+"&maxentries="+maxentries+"&selFiltername="+selFiltername+"&fldname="+encodeURIComponent(fldname)+"&txtRss="+txtRss+"&seldashbd="+seldashbd+"&seldashtype="+seldashtype+"&seldeftype="+seldeftype+"&selreport="+selreport+"&selreportcharttype="+selreportcharttype;//+'&txtURL='+txtURL;
 		var stuffarr=new Array();
@@ -610,7 +608,7 @@ function HideDefault(sid){
 		{queue: {position: 'end', scope: 'command'},
 			method: 'post',
 			postBody:'module=Home&action=HomeAjax&file=HomestuffAjax&stuffid='+sid+"&act=hide",
-	        onComplete: function(response){
+			onComplete: function(response){
 				var responseVal=response.responseText;
 				if(response.responseText.indexOf('SUCCESS') > -1){
 					var delchild = $('stuff_'+sid);
@@ -624,7 +622,7 @@ function HideDefault(sid){
 				}else{
 					alert(alert_arr.ERR_HIDING + '.'+ alert_arr.MSG_TRY_AGAIN + '.');
 				}
-	        }
+			}
 		}
 	);
 }
@@ -729,7 +727,7 @@ initHomePage = function(){
 			}
 		}
 	);
-}
+};
 
 /**
  * this function is used to save the sorting order of elements when they are moved around on the home page
@@ -753,15 +751,12 @@ function BlockSorting(matrixseqarr){
 	);
 }
 
-
 /**
  * this function checks if the current browser is IE or not
  */
 function isIE(){
 	return navigator.userAgent.indexOf("MSIE") !=-1;
 }
-
-
 
 /**
  * this function adds a notebook widget to the homepage
@@ -783,7 +778,6 @@ function addNotebookWidget(){
 	);
 	loadAddedDiv(stuffid,stufftype);
 }
-
 
 /**
  * this function takes a widget id and adds scrolling property to it
