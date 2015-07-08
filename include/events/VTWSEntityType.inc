@@ -152,6 +152,9 @@ class VTWSEntityType{
 							$et->type = 'Select';
 							$et->values = array();
 							break;
+						case 'file':
+							$et->type = 'File';
+							break;
 						case 'skype':
 							$et->type = 'Skype';
 							break;
