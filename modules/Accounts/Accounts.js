@@ -6,7 +6,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 document.write("<script type='text/javascript' src='include/js/Inventory.js'></"+"script>");
 document.write("<script type='text/javascript' src='include/js/Mail.js'></"+"script>");
 document.write("<script type='text/javascript' src='include/js/Merge.js'></"+"script>");
@@ -323,7 +322,6 @@ function populateData(id1,id2)
 	document.EditView.phone.value = getObj('Phone').value;
 	document.EditView.fax.value = getObj('Fax').value;
 	document.EditView.bill_street.value = getObj('address').value;
-	
 	showhide(id1,id2);
 }
 /*
@@ -331,60 +329,19 @@ function populateData(id1,id2)
 * @param argg1 :: div tag ID
 * @param argg2 :: div tag ID
 */
-function showhide(argg1,argg2)
-{
-        var x=document.getElementById(argg1).style;
+function showhide(argg1,argg2) {
+	var x=document.getElementById(argg1).style;
 	var y=document.getElementById(argg2).style;
-        if (y.display=="none")
-        {
-                y.display="block"
-		x.display="none"
-
-        }
-}
-
-// JavaScript Document
-
-if (document.all) var browser_ie=true
-else if (document.layers) var browser_nn4=true
-else if (document.layers || (!document.all && document.getElementById)) var browser_nn6=true
-
-function getObj(n,d) {
-  var p,i,x;
-  if(!d)d=document;
-  if((p=n.indexOf("?"))>0&&parent.frames.length) {d=parent.frames[n.substring(p+1)].document; n=n.substring(0,p);}
-  if(!(x=d[n])&&d.all)x=d.all[n];
-  for(i=0;!x&&i<d.forms.length;i++) x=d.forms[i][n];
-  for(i=0;!x&&d.layers&&i<d.layers.length;i++)  x=getObj(n,d.layers[i].document);
-  if(!x && d.getElementById) x=d.getElementById(n);
-  return x;
-}
-
-
-function findPosX(obj) {
-        var curleft = 0;
-        if (document.getElementById || document.all) {
-                while (obj.offsetParent) { curleft += obj.offsetLeft; obj = obj.offsetParent;}
-        }
-        else if (document.layers) { curleft += obj.x; }
-        return curleft;
-}
-
-
-function findPosY(obj) {
-        var curtop = 0;
-        if (document.getElementById || document.all) {
-                while (obj.offsetParent) { curtop += obj.offsetTop; obj = obj.offsetParent; }
-        }
-        else if (document.layers) {curtop += obj.y;}
-        return curtop;
+	if (y.display=="none") {
+		y.display="block";
+		x.display="none";
+	}
 }
 
 ScrollEffect = function(){ };
 ScrollEffect.lengthcount=202;
 ScrollEffect.closelimit=0;
 ScrollEffect.limit=0;
-
 
 function just(){
         ig=getObj("company");
@@ -405,8 +362,7 @@ function closet(){
         else{setTimeout("closet()", 25);}
 }
 
-
-function fnDown(obj){
+function tickerFillIn(obj){
         var tagName = document.getElementById(obj);
         document.EditView.description.value = document.getElementById('summary').innerHTML;
         document.EditView.employees.value = getObj('emp').value;

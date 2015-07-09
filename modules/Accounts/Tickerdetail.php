@@ -79,7 +79,7 @@ if(is_array($data))
 		    <tr>
 		     <td colspan="2" style="padding: 5px;border-top:1px solid #eaeaea;">
 		        <div align="center">
-		             <input title="Save [Alt+S]" accesskey="S" class="small"  name="button" value="Yes" style="width: 70px;" type="button" onclick=\'fnDown("conf");\' />
+		             <input title="Save [Alt+S]" accesskey="S" class="small"  name="button" value="Yes" style="width: 70px;" type="button" onclick=\'tickerFillIn("conf");\' />
 			     <input title="Cancel [Alt+X]" accesskey="X" class="small" name="button" value="No" style="width: 70px;" type="button" onclick=\'just();\'/>
 		        </div>
 		     </td> 
