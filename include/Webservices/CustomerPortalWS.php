@@ -919,4 +919,76 @@ function getReferenceAutocomplete($term, $filter, $searchinmodules, $limit, $use
 	return $respuesta;
 }
 
+/**
+ * @param String $term: search term
+ * @param String $filter: operator to use: eq, neq, startswith, endswith, contains
+ * @param String $searchinmodule: valid module to search in
+ * @param String $fields: comma separated list of fields to search in
+ * @param String $returnfields: comma separated list of fields to return as result, if empty $fields will be returned
+ * @param Number $limit: maximum number of values to return
+ * @param Users $user
+ * @return Array values found: crmid => array($returnfields)
+ */
+function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnfields, $limit, $user) {
+	global $current_user,$log,$adb,$default_charset;
+
+	$respuesta=array();
+	if (empty($searchinmodule) or empty($fields)) return $respuesta;
+	if (!(vtlib_isModuleActive($searchinmodule) and isPermitted($searchinmodule,'DetailView'))) return $respuesta;
+	if (empty($returnfields)) $returnfields = $fields;
+	if (empty($limit)) $limit = 30;  // hard coded default
+
+	if (empty($term)) {
+		$term='%';
+		$op='like';
+	} else {
+		switch ($filter) {
+			case 'eq':
+				$op='e';
+				break;
+			case 'neq':
+				$op='n';
+				break;
+			case 'startswith':
+				$op='s';
+				break;
+			case 'endswith':
+				$op='ew';
+				break;
+			case 'contains':
+				$op='c';
+				break;
+			default: $op='e'; break;
+		}
+	}
+	$current_user = VTWS_PreserveGlobal::preserveGlobal('current_user',$user);
+	$smod = new $searchinmodule();
+	$sindex = $smod->table_index;
+	$queryGenerator = new QueryGenerator($searchinmodule, $current_user);
+	$sfields = explode(',', $fields);
+	$rfields = explode(',', $returnfields);
+	$flds = array_unique(array_merge($rfields,$sfields,array('id')));
+	$queryGenerator->setFields($flds);
+	foreach ($sfields as $sfld) {
+		$queryGenerator->addCondition($sfld,$term,$op);
+	}
+	$query = $queryGenerator->getQuery();
+	$rsemp=$adb->query($query);
+	global $log;$log->fatal($rsemp);
+	$wsid = vtyiicpng_getWSEntityId($searchinmodule);
+	while ($emp=$adb->fetch_array($rsemp)) {
+		$rsp = array();
+		foreach ($rfields as $rf) {
+			$rsp[$rf] = html_entity_decode($emp[$rf],ENT_QUOTES,$default_charset);
+		}
+		$respuesta[]=array(
+			'crmid'=>$wsid.$emp[$sindex],
+			'crmfields'=>$rsp,
+		);
+		if (count($respuesta)>=$limit) break;
+	}
+	VTWS_PreserveGlobal::flush();
+	return $respuesta;
+}
+
 ?>

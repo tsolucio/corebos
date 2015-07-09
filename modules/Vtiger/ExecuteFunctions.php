@@ -21,8 +21,27 @@ global $adb, $log, $current_user;
 
 $functiontocall = vtlib_purify($_REQUEST['functiontocall']);
 
-
 switch ($functiontocall) {
+	case 'getFieldAutocomplete':
+		include_once 'include/Webservices/CustomerPortalWS.php';
+		$searchinmodule = vtlib_purify($_REQUEST['searchinmodule']);
+		$fields = vtlib_purify($_REQUEST['fields']);
+		$returnfields = vtlib_purify($_REQUEST['returnfields']);
+		$limit = vtlib_purify($_REQUEST['limit']);
+		$filter = vtlib_purify($_REQUEST['filter']);
+		if (is_array($filter)) {
+			$term = $filter['filters'][0]['value'];
+			$op = 'startswith';
+		} else {
+			$term = vtlib_purify($_REQUEST['term']);
+			$op = 'startswith';
+		}
+		$retvals = getFieldAutocomplete($term, $op, $searchinmodule, $fields, $returnfields, $limit, $current_user);
+		$ret = array();
+		foreach ($retvals as $value) {
+			$ret[] = array('crmid'=>$value['crmid'],'crmname'=>implode(',', $value['crmfields']));
+		}
+		break;
 	case 'ismoduleactive':
 	default:
 		$mod = vtlib_purify($_REQUEST['checkmodule']);
