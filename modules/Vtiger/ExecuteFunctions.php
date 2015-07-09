@@ -42,6 +42,22 @@ switch ($functiontocall) {
 			$ret[] = array('crmid'=>$value['crmid'],'crmname'=>implode(',', $value['crmfields']));
 		}
 		break;
+	case 'getReferenceAutocomplete':
+		include_once 'include/Webservices/CustomerPortalWS.php';
+		$searchinmodule = vtlib_purify($_REQUEST['searchinmodule']);
+		$fields = vtlib_purify($_REQUEST['fields']);
+		$returnfields = vtlib_purify($_REQUEST['returnfields']);
+		$limit = vtlib_purify($_REQUEST['limit']);
+		$filter = vtlib_purify($_REQUEST['filter']);
+		if (is_array($filter)) {
+			$term = $filter['filters'][0]['value'];
+			$op = 'startswith';
+		} else {
+			$term = vtlib_purify($_REQUEST['term']);
+			$op = 'startswith';
+		}
+		$ret = getReferenceAutocomplete($term, $op, $searchinmodule, $limit, $current_user);
+		break;
 	case 'ismoduleactive':
 	default:
 		$mod = vtlib_purify($_REQUEST['checkmodule']);
