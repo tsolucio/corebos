@@ -56,24 +56,7 @@ class VTSimpleTemplate{
 					try{
 						$entity = $this->cache->forId($referenceId);
 						if($referenceModule==="Users" && $entity->getModuleName()=="Groups"){
-							list($groupEntityId, $groupId) = vtws_getIdComponents($referenceId);
-	
-							require_once('include/utils/GetGroupUsers.php');
-							$ggu = new GetGroupUsers();
-							$ggu->getAllUsersInGroup($groupId);
-	
-							$users = $ggu->group_users;
-							$parts = Array();
-							foreach($users as $userId){
-								$refId = vtws_getWebserviceEntityId("Users", $userId);
-								$entity = $this->cache->forId($refId);
-								$data = $entity->getData();
-								if($this->useValue($data, $fieldname)){
-									$parts[] = $data[$fieldname];
-								}
-							}
-							$result = implode(",", $parts);
-	
+							$result = $this->getGroupFieldList($referenceId,$fieldname);
 						} elseif($entity->getModuleName()===$referenceModule){
 							$data = $entity->getData();
 							if($this->useValue($data, $fieldname)){
@@ -107,6 +90,29 @@ class VTSimpleTemplate{
 
 	}
 
+	function getGroupFieldList($groupref,$fieldname) {
+		require_once('include/utils/GetGroupUsers.php');
+		$groupId = getGrpId($groupref);
+		if ($groupId==0) {
+			list($groupEntityId, $groupId) = vtws_getIdComponents($groupref);
+		}
+		$ggu = new GetGroupUsers();
+		$ggu->getAllUsersInGroup($groupId);
+
+		$users = $ggu->group_users;
+		$parts = Array();
+		foreach($users as $userId){
+			$refId = vtws_getWebserviceEntityId("Users", $userId);
+			$entity = $this->cache->forId($refId);
+			$data = $entity->getData();
+			if($this->useValue($data, $fieldname)){
+				$parts[] = $data[$fieldname];
+			}
+		}
+		$result = implode(",", $parts);
+		return $result;
+	}
+
 	protected function useValue($data, $fieldname) {
 		return !empty($data[$fieldname]);
 	}
@@ -118,6 +124,10 @@ class VTSimpleTemplate{
 	function getMetaValue($fieldname){
 		require_once 'config.inc.php';
 		global $site_URL, $PORTAL_URL, $current_user, $HELPDESK_SUPPORT_NAME, $HELPDESK_SUPPORT_EMAIL_ID;
+		if (substr($fieldname,0,14)=='groupEmailList') {
+			$groupname = trim(str_replace('_', ' ', substr($fieldname, 14)));
+			$fieldname = 'groupEmailList';
+		}
 		switch($fieldname){
 			case 'date'					:	return getNewDisplayDate();
 			case 'time'					:	return date('h:i:s');
@@ -153,6 +163,7 @@ class VTSimpleTemplate{
 
 			case 'supportName'			: return $HELPDESK_SUPPORT_NAME;
 			case 'supportEmailId'		: return $HELPDESK_SUPPORT_EMAIL_ID;
+			case 'groupEmailList'		: return $this->getGroupFieldList($groupname,'email1');
 			default: '';
 		}
 	}

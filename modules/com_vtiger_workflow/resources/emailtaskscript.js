@@ -11,7 +11,7 @@ function VTEmailTask($){
 	var vtinst = new VtigerWebservices("webservice.php");
 	var desc = null;
 	var accessibleModulesInfo = null;
-
+	var cbGroups = null;
 	var map = fn.map;
 	var dict = fn.dict;
 	var filter = fn.filter;
@@ -200,11 +200,21 @@ function VTEmailTask($){
 		$.each(fieldLabels, function(k, v){
 			select.append('<option class="'+optionClass+'" '+ 'value="'+k+'">' + v + '</option>');
 		});
-
+		if (cbGroups != null) {
+			$.each(cbGroups, function(k, v){
+				var plval = '(general : (__VtigerMeta__) groupEmailList_' + v.groupname.replace(' ', '_') + ')';
+				select.append('<option class="'+optionClass+'" '+ 'value="'+plval+'">' + v.groupname + '</option>');
+			});
+		}
 	}
 
 	$(document).ready(function(){
-		vtinst.extendSession(handleError(function(result){			
+		vtinst.extendSession(handleError(function(result){
+			vtinst.query('select groupname from Groups;',function(resp,rdo) {
+				if (resp) {
+					cbGroups = rdo;
+				}
+			});
 			vtinst.listTypes(handleError(function(accessibleModules) {
 				accessibleModulesInfo = accessibleModules;
 				
