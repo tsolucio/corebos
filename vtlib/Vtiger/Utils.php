@@ -71,10 +71,11 @@ class Vtiger_Utils {
 
 		if(stripos($realfilepath, $rootdirpath) !== 0 || in_array($filePathParts[0], $unsafeDirectories)) {
 			if($dieOnFail) {
-				echo "Sorry! Attempt to access restricted file.<br>";
-				echo "We are looking for this file path: $filepath<br>";
-				echo "We are looking here:<br> Real file path: $realfilepath<br>";
-				echo "Root dir path: $rootdirpath<br>";
+				global $default_charset;
+				echo 'Sorry! Attempt to access restricted file.<br>';
+				echo 'We are looking for this file path: '.htmlspecialchars($filepath, ENT_QUOTES, $default_charset).'<br>';
+				echo 'We are looking here:<br> Real file path: '.htmlspecialchars($realfilepath, ENT_QUOTES, $default_charset).'<br>';
+				echo 'Root dir path: '.htmlspecialchars($rootdirpath, ENT_QUOTES, $default_charset).'<br>';
 				die();
 			}
 			return false;
@@ -108,10 +109,11 @@ class Vtiger_Utils {
 
 		if(stripos($realfilepath, $rootdirpath) !== 0) {
 			if($dieOnFail) {
-				echo "Sorry! Attempt to access restricted file.<br>";
-				echo "We are looking for this file path: $filepath<br>";
-				echo "We are looking here:<br> Real file path: $realfilepath<br>";
-				echo "Root dir path: $rootdirpath<br>";
+				global $default_charset;
+				echo 'Sorry! Attempt to access restricted file.<br>';
+				echo 'We are looking for this file path: '.htmlspecialchars($filepath, ENT_QUOTES, $default_charset).'<br>';
+				echo 'We are looking here:<br> Real file path: '.htmlspecialchars($realfilepath, ENT_QUOTES, $default_charset).'<br>';
+				echo 'Root dir path: '.htmlspecialchars($rootdirpath, ENT_QUOTES, $default_charset).'<br>';
 				die();
 			}
 			return false;
