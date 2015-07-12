@@ -423,7 +423,9 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 								<table border=0 cellspacing=0 cellpadding=3 width=100%>
 									<tr>
 										<td class="dvtTabCache" style="width:10px" nowrap>&nbsp;</td>
-										<td id="cellTabInvite" class="dvtSelectedCell" align=center nowrap><a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','on');switchClass('cellTabAlarm','off');switchClass('cellTabRepeat','off');switchClass('cellTabRelatedto','off');ghide('addEventAlarmUI');gshow('addEventInviteUI','',document.EditView.date_start.value,document.EditView.due_date.value,document.EditView.starthr.value,document.EditView.startmin.value,document.EditView.startfmt.value,document.EditView.endhr.value,document.EditView.endmin.value,document.EditView.endfmt.value);ghide('addEventRepeatUI');ghide('addEventRelatedtoUI');">{$CMOD.LBL_INVITE}</a></td>
+										<td id="cellTabRelatedto" class="dvtSelectedCell" align=center nowrap><a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','off');switchClass('cellTabAlarm','off');switchClass('cellTabRepeat','off');switchClass('cellTabRelatedto','on');ghide('addEventAlarmUI');ghide('addEventInviteUI');gshow('addEventRelatedtoUI','',document.EditView.date_start.value,document.EditView.due_date.value,document.EditView.starthr.value,document.EditView.startmin.value,document.EditView.startfmt.value,document.EditView.endhr.value,document.EditView.endmin.value,document.EditView.endfmt.value);ghide('addEventRepeatUI');">{$CMOD.LBL_RELATEDTO}</a></td>
+										<td class="dvtTabCache" style="width:10px">&nbsp;</td>
+										<td id="cellTabInvite" class="dvtUnSelectedCell" align=center nowrap><a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','on');switchClass('cellTabAlarm','off');switchClass('cellTabRepeat','off');switchClass('cellTabRelatedto','off');ghide('addEventAlarmUI');gshow('addEventInviteUI','',document.EditView.date_start.value,document.EditView.due_date.value,document.EditView.starthr.value,document.EditView.startmin.value,document.EditView.startfmt.value,document.EditView.endhr.value,document.EditView.endmin.value,document.EditView.endfmt.value);ghide('addEventRepeatUI');ghide('addEventRelatedtoUI');">{$CMOD.LBL_INVITE}</a></td>
 										<td class="dvtTabCache" style="width:10px">&nbsp;</td>
 										{if $LABEL.reminder_time neq ''}
 										<td id="cellTabAlarm" class="dvtUnSelectedCell" align=center nowrap><a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','off');switchClass('cellTabAlarm','on');switchClass('cellTabRepeat','off');switchClass('cellTabRelatedto','off');gshow('addEventAlarmUI','',document.EditView.date_start.value,document.EditView.due_date.value,document.EditView.starthr.value,document.EditView.startmin.value,document.EditView.startfmt.value,document.EditView.endhr.value,document.EditView.endmin.value,document.EditView.endfmt.value);ghide('addEventInviteUI');ghide('addEventRepeatUI');ghide('addEventRelatedtoUI');">{$CMOD.LBL_REMINDER}</a></td>
@@ -432,16 +434,56 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 										{if $LABEL.recurringtype neq ''}
 										<td id="cellTabRepeat" class="dvtUnSelectedCell" align=center nowrap><a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','off');switchClass('cellTabAlarm','off');switchClass('cellTabRepeat','on');switchClass('cellTabRelatedto','off');ghide('addEventAlarmUI');ghide('addEventInviteUI');gshow('addEventRepeatUI','',document.EditView.date_start.value,document.EditView.due_date.value,document.EditView.starthr.value,document.EditView.startmin.value,document.EditView.startfmt.value,document.EditView.endhr.value,document.EditView.endmin.value,document.EditView.endfmt.value);ghide('addEventRelatedtoUI');">{$CMOD.LBL_REPEAT}</a></td>
 										{/if}
-										<td class="dvtTabCache" style="width:10px">&nbsp;</td>
-										<td id="cellTabRelatedto" class="dvtUnSelectedCell" align=center nowrap><a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','off');switchClass('cellTabAlarm','off');switchClass('cellTabRepeat','off');switchClass('cellTabRelatedto','on');ghide('addEventAlarmUI');ghide('addEventInviteUI');gshow('addEventRelatedtoUI','',document.EditView.date_start.value,document.EditView.due_date.value,document.EditView.starthr.value,document.EditView.startmin.value,document.EditView.startfmt.value,document.EditView.endhr.value,document.EditView.endmin.value,document.EditView.endfmt.value);ghide('addEventRepeatUI');">{$CMOD.LBL_RELATEDTO}</a></td>
 										<td class="dvtTabCache" style="width:100%">&nbsp;</td>
 									</tr>
 								</table>
 							</td></tr>
 							<tr>
 								<td width=100% valign=top align=left class="dvtContentSpace" style="padding:10px;height:120px">
+						<div id="addEventRelatedtoUI" style="display:block;width:100%">
+						<table width="100%" cellpadding="5" cellspacing="0" border="0">
+							{if $LABEL.parent_id neq ''}
+							<tr>
+								<!--td width="10%"><b>{$CMOD.LBL_RELATEDTO}</b></td-->
+								<td width="10%"><b><font color="red">{$TYPEOFDATA.relatedto}</font>{$CMOD.LBL_RELATEDTO}</b></td>
+								<td>
+									<input name="parent_id" type="hidden" value="{$secondvalue.parent_id}">
+									<input name="del_actparent_rel" type="hidden" >
+									<select name="parent_type" class="small" id="parent_type" onChange="document.EditView.parent_name.value='';document.EditView.parent_id.value=''">
+									{section name=combo loop=$LABEL.parent_id}
+										<option value="{$fldlabel_combo.parent_id[combo]}" {$fldlabel_sel.parent_id[combo]}>{$LABEL.parent_id[combo]}</option>
+									{/section}
+									</select>
+								</td>
+								<td>
+									<div id="eventrelatedto" align="left">
+										<input name="parent_name" readonly type="text" class="calTxt small" value="{$ACTIVITYDATA.parent_id}">
+										<input type="button" name="selectparent" class="crmButton small edit" value="{$APP.LBL_SELECT_BUTTON_LABEL}" onclick="return window.open('index.php?module='+document.EditView.parent_type.value+'&action=Popup','test','width=640,height=602,resizable=0,scrollbars=0,top=150,left=200');">
+										<input type='button' value='{$APP.LNK_DELETE}' class="crmButton small edit" onclick="document.EditView.del_actparent_rel.value=document.EditView.parent_id.value;document.EditView.parent_id.value='';document.EditView.parent_name.value='';">
+									</div>
+								</td>
+							</tr>
+							{/if}
+							{if $IS_CONTACTS_EDIT_PERMITTED eq 'true'}
+							<tr>
+								<td><b>{$APP.Contacts}</b></td>
+								<td colspan="2">
+									<input name="contactidlist" id="contactidlist" value="{$CONTACTSID}" type="hidden">
+									<input name="deletecntlist" id="deletecntlist" type="hidden">
+									<select name="contactlist" size=5  style="height: 100px;width: 300px"  id="parentid" class="small" multiple>
+									{foreach item=contactname key=cntid from=$CONTACTSNAME}
+									<option value="{$cntid}">{$contactname}</option>
+									{/foreach}
+									</select>
+									<input type="button" onclick="selectContact('true','general',document.EditView);" class="crmButton small edit" name="selectcnt" value="{$APP.LBL_SELECT_CONTACT_BUTTON_LABEL}">
+									<input type='button' value='{$APP.LNK_DELETE}' class="crmButton small edit" onclick='removeActContacts();'>
+								</td>
+							</tr>
+							{/if}
+						</table>
+					</div>
 								<!-- Invite UI -->
-									<DIV id="addEventInviteUI" style="display:block;width:100%">
+									<DIV id="addEventInviteUI" style="display:none;width:100%">
 									<table border=0 cellspacing=0 cellpadding=2 width=100%>
 										<tr>
 											<td valign=top>
@@ -693,50 +735,6 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 						</table>
 						{/if}
 						</div>
-						<div id="addEventRelatedtoUI" style="display:none;width:100%">
-						<table width="100%" cellpadding="5" cellspacing="0" border="0">
-							{if $LABEL.parent_id neq ''}
-							<tr>
-								<!--td width="10%"><b>{$CMOD.LBL_RELATEDTO}</b></td-->
-								<td width="10%"><b><font color="red">{$TYPEOFDATA.relatedto}</font>{$CMOD.LBL_RELATEDTO}</b></td>
-								<td>
-									<input name="parent_id" type="hidden" value="{$secondvalue.parent_id}">
-									<input name="del_actparent_rel" type="hidden" >
-									<select name="parent_type" class="small" id="parent_type" onChange="document.EditView.parent_name.value='';document.EditView.parent_id.value=''">
-									{section name=combo loop=$LABEL.parent_id}
-										<option value="{$fldlabel_combo.parent_id[combo]}" {$fldlabel_sel.parent_id[combo]}>{$LABEL.parent_id[combo]}</option>
-									{/section}
-                                             				</select>
-								</td>
-								<td>
-									<div id="eventrelatedto" align="left">
-										<input name="parent_name" readonly type="text" class="calTxt small" value="{$ACTIVITYDATA.parent_id}">
-										<input type="button" name="selectparent" class="crmButton small edit" value="{$APP.LBL_SELECT_BUTTON_LABEL}" onclick="return window.open('index.php?module='+document.EditView.parent_type.value+'&action=Popup','test','width=640,height=602,resizable=0,scrollbars=0,top=150,left=200');">
-										<input type='button' value='{$APP.LNK_DELETE}' class="crmButton small edit" onclick="document.EditView.del_actparent_rel.value=document.EditView.parent_id.value;document.EditView.parent_id.value='';document.EditView.parent_name.value='';">
-									</div>
-								</td>
-							</tr>
-							{/if}
-			     			{if $IS_CONTACTS_EDIT_PERMITTED eq 'true'}
-							<tr>
-								<td><b>{$APP.Contacts}</b></td>
-								<td colspan="2">
-									<input name="contactidlist" id="contactidlist" value="{$CONTACTSID}" type="hidden">
-									<input name="deletecntlist" id="deletecntlist" type="hidden">
-									<select name="contactlist" size=5  style="height: 100px;width: 300px"  id="parentid" class="small" multiple>
-									{foreach item=contactname key=cntid from=$CONTACTSNAME}
-                                    	<option value="{$cntid}">{$contactname}</option>
-                                    {/foreach}
-									</select>
-
-									<input type="button" onclick="selectContact('true','general',document.EditView);" class="crmButton small edit" name="selectcnt" value="{$APP.LBL_SELECT_CONTACT_BUTTON_LABEL}">
-									<input type='button' value='{$APP.LNK_DELETE}' class="crmButton small edit" onclick='removeActContacts();'>
-
-								</td>
-							</tr>
-							{/if}
-						</table>
-					</div>
 			</td>
 		</tr>
 		</table>
@@ -926,46 +924,17 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 					<table border="0" cellpadding="3" cellspacing="0" width="100%">
 						<tr>
 							<td class="dvtTabCache" style="width: 10px;" nowrap="nowrap">&nbsp;</td>
-							{if $LABEL.sendnotification neq ''}
-                                                                {assign var='class_val' value='dvtUnSelectedCell'}
-								<td id="cellTabInvite" class="dvtSelectedCell" align="center" nowrap="nowrap"><a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','on');switchClass('cellTabRelatedto','off');Taskshow('addTaskAlarmUI','todo',document.EditView.date_start.value,document.EditView.starthr.value,document.EditView.startmin.value,document.EditView.startfmt.value);ghide('addTaskRelatedtoUI');">{$CMOD.LBL_NOTIFICATION}</a></td>
-							{else}
-                                                                {assign var='class_val' value='dvtSelectedCell'}
-                                                        {/if}
+							<td id="cellTabRelatedto" class="dvtSelectedCell" align=center nowrap><a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','off');switchClass('cellTabRelatedto','on');Taskshow('addTaskRelatedtoUI','todo',document.EditView.date_start.value,document.EditView.starthr.value,document.EditView.startmin.value,document.EditView.startfmt.value);ghide('addTaskAlarmUI');">{$CMOD.LBL_RELATEDTO}</a></td>
 							<td class="dvtTabCache" style="width: 10px;" nowrap="nowrap">&nbsp;</td>
-							{if ($LABEL.parent_id neq '') || ($LABEL.contact_id neq '') }
-                                                        <td id="cellTabRelatedto" class={$class_val} align=center nowrap><a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','off');switchClass('cellTabRelatedto','on');Taskshow('addTaskRelatedtoUI','todo',document.EditView.date_start.value,document.EditView.starthr.value,document.EditView.startmin.value,document.EditView.startfmt.value);ghide('addTaskAlarmUI');">{$CMOD.LBL_RELATEDTO}</a></td>
-							{/if}
-                                                        <td class="dvtTabCache" style="width:100%">&nbsp;</td>
+							<td id="cellTabInvite" class="dvtUnSelectedCell" align="center" nowrap="nowrap"><a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','on');switchClass('cellTabRelatedto','off');Taskshow('addTaskAlarmUI','todo',document.EditView.date_start.value,document.EditView.starthr.value,document.EditView.startmin.value,document.EditView.startfmt.value);ghide('addTaskRelatedtoUI');">{$CMOD.LBL_NOTIFICATION}</a></td>
+							<td class="dvtTabCache" style="width:100%">&nbsp;</td>
 						</tr>
-
 					</table>
 				</td>
 			</tr>
 			<tr>
 				<td class="dvtContentSpace" style="padding: 10px; height: 120px;" align="left" valign="top" width="100%">
-			<!-- Reminder UI -->
-			<div id="addTaskAlarmUI" style="display: block; width: 100%;">
-			{if $LABEL.sendnotification != ''}
-				{assign var='vision' value='none'}
-                	<table>
-				<tr><td><font color="red">{$TYPEOFDATA.sendnotification}</font>{$LABEL.sendnotification}</td>
-					{if $ACTIVITYDATA.sendnotification eq 1}
-                                        <td>
-                                                <input name="sendnotification" type="checkbox" checked>
-                                        </td>
-                                	{else}
-                                        <td>
-                                                <input name="sendnotification" type="checkbox">
-                                        </td>
-                                	{/if}
-				</tr>
-			</table>
-			{else}
-                                {assign var='vision' value='block'}
-                        {/if}
-			</div>
-			<div id="addTaskRelatedtoUI" style="display:{$vision};width:100%">
+			<div id="addTaskRelatedtoUI" style="display:block;width:100%">
            		     <table width="100%" cellpadding="5" cellspacing="0" border="0">
 			     {if $LABEL.parent_id neq ''}
                 	     <tr>
@@ -1002,6 +971,14 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 		</table>
 		{/if}
               	</div>
+			<!-- Reminder UI -->
+			<div id="addTaskAlarmUI" style="display: none; width: 100%;">
+			<table>
+				<tr><td><font color="red">{$TYPEOFDATA.sendnotification}</font>{$LABEL.sendnotification}</td>
+					<td><input name="sendnotification" type="checkbox"{if $ACTIVITYDATA.sendnotification eq 1} checked{/if}></td>
+				</tr>
+			</table>
+			</div>
                 </td></tr></table>
 
 		{/if}
