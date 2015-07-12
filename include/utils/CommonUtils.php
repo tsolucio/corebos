@@ -3102,8 +3102,9 @@ function checkFileAccessForDeletion($filepath) {
 /** Function to check the file access is made within web root directory. */
 function checkFileAccess($filepath) {
 	if (!isFileAccessible($filepath)) {
+		global $default_charset;
 		echo "Sorry! Attempt to access restricted file.<br>";
-		echo "We are looking for this file path: $filepath<br>";
+		echo 'We are looking for this file path: '.htmlspecialchars($filepath, ENT_QUOTES, $default_charset).'<br>';
 		die();
 	}
 }
