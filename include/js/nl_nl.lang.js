@@ -294,6 +294,7 @@ var alert_arr = {
 	'RSS': 'RSS',
 	'Default': 'Standaard',
 	'Notebook': 'Notebook',
+	'ReportCharts': 'Report Charts',
 	'SPECIAL_CHARS':'\\ / < > + \' " ',
 	'LBL_MAPPEDALERT':'The field has been already mapped',
 	'LBL_REPORT_NAME': 'Please enter a name for the new report.',

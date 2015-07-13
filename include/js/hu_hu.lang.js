@@ -263,6 +263,7 @@ var alert_arr = {
 	'RSS' : 'RSS',
 	'Default' : 'Alapértelmezett',
 	'Notebook' : 'Jegyzetfüzet',
+	'ReportCharts': 'Jelentés Grafikonok',
 	'SPECIAL_CHARS' : '\ / < > + \' " ',
 	'BETWEEN' : 'közte',
 	'BEFORE' : 'előtt',

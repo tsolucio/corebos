@@ -288,6 +288,7 @@ var alert_arr = {
 	'RSS': 'RSS',
 	'Default': 'Defecto',
 	'Notebook': 'Bloc de Notas',
+	'ReportCharts': 'Informe Gráfico',
 	'SPECIAL_CHARS':'\\ / < > + \' " ',
 
 	'BETWEEN': 'entre',

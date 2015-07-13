@@ -276,6 +276,7 @@ var alert_arr = {
 	'RSS': 'RSS',
 	'Default': 'Défaut',
 	'Notebook': 'Bloc note',
+	'ReportCharts': 'Rapport graphique',
 	'SPECIAL_CHARS':'\\ / < > + \' " ',
 	
 	'BETWEEN': 'entre',

@@ -293,6 +293,7 @@ var alert_arr = {
 	'RSS': 'RSS',
 	'Default': 'Default',
 	'Notebook': 'Notebook',
+	'ReportCharts': 'Report Charts',
 	'SPECIAL_CHARS':'\\ / < > + \' " ',
 
 	'BETWEEN': 'between',

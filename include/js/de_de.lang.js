@@ -292,6 +292,7 @@ var alert_arr = {
     'RSS': 'RSS',
     'Default': 'Standard',
     'Notebook': 'Notizblock',
+    'ReportCharts': 'Berichtsgrafiken',
     'SPECIAL_CHARS':'\\ / < > + \' " ',
     
     'BETWEEN': 'zwischen',

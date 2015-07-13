@@ -281,6 +281,7 @@ var alert_arr = {
 	'RSS':'RSS',
 	'Default':'Default',
 	'Notebook':'Appunti',
+	'ReportCharts': 'Report Charts',
 	'SPECIAL_CHARS' :'\ / < > + \' "',
 
 	'BETWEEN':'durante',
