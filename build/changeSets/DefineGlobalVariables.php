@@ -37,6 +37,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Import_Full_CSV',
 				'Lead_Convert_TransferToAccount',
 				'Show_Copy_Adress_Header',
+				'SalesOrderStatusOnInvoiceSave',
 			);
 			
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');

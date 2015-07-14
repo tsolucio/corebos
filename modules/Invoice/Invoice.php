@@ -99,19 +99,17 @@ class Invoice extends CRMEntity {
 		$this->log->debug("Exiting Invoice method ...");
 	}
 
-
-	/** Function to handle the module specific save operations
-
-	*/
-
+	/** Function to handle the module specific save operations */
 	function save_module($module)
 	{
-		//Checking if vtiger_salesorderid is present and updating the quote status
-		if($this->column_fields["salesorder_id"] != '')
-		{
-        		$so_id = $this->column_fields["salesorder_id"];
-        		$query1 = "update vtiger_salesorder set sostatus='Approved' where salesorderid=?";
-        		$this->db->pquery($query1, array($so_id));
+		//Checking if salesorderid is present and updating the SO status
+		if(!empty($this->column_fields['salesorder_id'])) {
+			$newStatus = GlobalVariable::getVariable('SalesOrderStatusOnInvoiceSave', 'Approved');
+			if ($newStatus!='DoNotChange') {
+				$so_id = $this->column_fields['salesorder_id'];
+				$query1 = 'update vtiger_salesorder set sostatus=? where salesorderid=?';
+				$this->db->pquery($query1, array($newStatus, $so_id));
+			}
 		}
 
 		//in ajax save we should not call this function, because this will delete all the existing product values
