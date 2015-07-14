@@ -10,15 +10,6 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  Defines the Account SugarBean Account entity with the necessary
- * methods and variables.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
  ********************************************************************************/
 
 include_once('config.php');
@@ -62,13 +53,13 @@ class Invoice extends CRMEntity {
 				);
 
 	var $list_fields_name = Array(
-				        'Invoice No'=>'invoice_no',
-				        'Subject'=>'subject',
-				        'Sales Order'=>'salesorder_id',
-				        'Status'=>'invoicestatus',
-				        'Total'=>'hdnGrandTotal',
-				        'Assigned To'=>'assigned_user_id'
-				      );
+				'Invoice No'=>'invoice_no',
+				'Subject'=>'subject',
+				'Sales Order'=>'salesorder_id',
+				'Status'=>'invoicestatus',
+				'Total'=>'hdnGrandTotal',
+				'Assigned To'=>'assigned_user_id'
+				);
 	var $list_link_field= 'subject';
 
 	var $search_fields = Array(
@@ -78,9 +69,9 @@ class Invoice extends CRMEntity {
 				);
 
 	var $search_fields_name = Array(
-				        'Invoice No'=>'',
-				        'Subject'=>'subject',
-				      );
+				'Invoice No'=>'',
+				'Subject'=>'subject',
+				);
 
 	// This is the list of vtiger_fields that are required.
 	var $required_fields =  array("accountname"=>1);
@@ -141,7 +132,6 @@ class Invoice extends CRMEntity {
 			}
 		}
 
-
 		// Update the currency id and the conversion rate for the invoice
 		$update_query = "update vtiger_invoice set currency_id=?, conversion_rate=? where invoiceid=?";
 
@@ -170,10 +160,10 @@ class Invoice extends CRMEntity {
 		$log->debug("Entering get_activities(".$id.") method ...");
 		$this_module = $currentModule;
 
-        $related_module = vtlib_getModuleNameById($rel_tab_id);
+		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/Activity.php");
 		$other = new Activity();
-        vtlib_setup_modulevars($related_module, $other);
+		vtlib_setup_modulevars($related_module, $other);
 		$singular_modname = vtlib_toSingular($related_module);
 
 		$parenttab = getParentTab();
@@ -244,7 +234,7 @@ class Invoice extends CRMEntity {
 				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid
 				left join vtiger_cntactivityrel on vtiger_cntactivityrel.activityid= vtiger_activity.activityid
 				left join vtiger_contactdetails on vtiger_contactdetails.contactid = vtiger_cntactivityrel.contactid
-                left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
+				left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
 				left join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
 				where vtiger_activity.activitytype='Task'
 					and (vtiger_activity.status = 'Completed' or vtiger_activity.status = 'Deferred')
