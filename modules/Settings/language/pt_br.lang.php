@@ -1,46 +1,16 @@
 <?php
-
 /*********************************************************************************
-
  * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
-
  * ("License"); You may not use this file except in compliance with the
-
  * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
-
  * Software distributed under the License is distributed on an  "AS IS"  basis,
-
  * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
-
  * the specific language governing rights and limitations under the License.
-
  * The Original Code is:  SugarCRM Open Source
-
  * The Initial Developer of the Original Code is SugarCRM, Inc.
-
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
-
  * All Rights Reserved.
-
- * Contributor(s): ______________________________________.
-
  ********************************************************************************/
-
-/*********************************************************************************
-
- * $Header: /advent/projects/custprojects/vtigercrm/vtigersupport/vtiger_crm/modules/Settings/language/en_us.lang.php,v 1.2 2007/07/06 09:55:40 rajeshkannan Exp $
-
- * Description:  Defines the English language pack for Settings
-
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
-
- * All Rights Reserved.
-
- * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
-
- ********************************************************************************/
-
-
 
 $mod_strings = Array(
 
@@ -712,7 +682,6 @@ $mod_strings = Array(
 'LBL_ENABLE_SINGLEPANE_VIEW'=>'Habilitar Visualização Monolí­tica',
 
 'LBL_CLEAR_DATA'=>'Limpar Dados',
-'LBL_ENABLE'=>'Habilitado',
 'LBL_FAQ_FIELD_ACCESS'=>'Acesso Campo FAQ',
 'LBL_ADD_TAX_BUTTON'=>'Adicionar Imposto',
 'LBL_NO_TAXES_AVAILABLE'=>'Nenhum Imposto',
@@ -894,8 +863,6 @@ $mod_strings = Array(
 'LBL_MAILSENDERROR'=>'A mensagem não pode ser enviada para o Usuário admin. Por favor verifique o Endereço de e-mail do admin',
 'LBL_RECORD_NOEXIST'=>'Registro não disponível',
 'LBL_ENTER_PROFILE'=>'Digite o Nome do Perfil',
-'LBL_ENABLE'=>'Habilitado',
-'LBL_DISABLE'=>'Desabilitado',
 'Language' => 'Language',
 'AlwaysActive' => 'always active',
 'LBL_PROXY'=>'proxy',

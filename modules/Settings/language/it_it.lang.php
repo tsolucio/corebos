@@ -1,43 +1,15 @@
 <?php
-
 /*********************************************************************************
-
  * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
-
  * ("License"); You may not use this file except in compliance with the
-
  * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
-
  * Software distributed under the License is distributed on an  "AS IS"  basis,
-
  * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
-
  * the specific language governing rights and limitations under the License.
-
  * The Original Code is:  SugarCRM Open Source
-
  * The Initial Developer of the Original Code is SugarCRM, Inc.
-
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
-
  * All Rights Reserved.
-
- * Contributor(s): ______________________________________.
-
- ********************************************************************************/
-
-/*********************************************************************************
-
- * $Header: /advent/projects/custprojects/vtigercrm/vtigersupport/vtiger_crm/modules/Settings/language/en_us.lang.php,v 1.2 2007/07/06 09:55:40 rajeshkannan Exp $
-
- * Description:  Defines the English language pack for Settings
-
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
-
- * All Rights Reserved.
-
- * Contributor(s): ______________________________________..
-
  ********************************************************************************/
 
 $mod_strings = array (
@@ -435,7 +407,6 @@ $mod_strings = array (
   'LBL_DEFAULT_MODULE_VIEW_DESC' => 'Imposta Vista Dettaglio di Default per Tutti i Moduli',
   'LBL_ENABLE_SINGLEPANE_VIEW' => 'Abilita Vista Pannello Singolo',
   'LBL_CLEAR_DATA' => 'Pulisci i dati',
-  'LBL_ENABLE'=>'Abilita',
   'LBL_FAQ_FIELD_ACCESS' => 'Campo Accesso Faq',
   'LBL_ADD_TAX_BUTTON' => 'Aggiungi Tassazione',
   'LBL_NO_TAXES_AVAILABLE' => 'Nessuna Tassazione disponibile',
@@ -593,8 +564,6 @@ $mod_strings = array (
   'LBL_MAILSENDERROR' => 'La mail non pu&ograve; essere inviata all`amministratore. Verifica le configurazioni del mail server e la email dell`amministratore',
   'LBL_RECORD_NOEXIST' => 'Record non presente',
   'LBL_ENTER_PROFILE' => 'Inserisci il nome del profilo',
-'LBL_ENABLE'=>'Abilita',
-  'LBL_DISABLE' => 'Disabilita',
   'LBL_PROXY' => 'proxy',
   'LBL_FIELDS_TO_BE_SHOWN' => 'Campi da visualizzare',
   'SPECIFY_FILE_TO_MERGE' => 'Prego specificare il file del Merge',
