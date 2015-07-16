@@ -10,16 +10,7 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header: /cvsroot/vtigercrm/vtiger_crm/include/utils/ListViewUtils.php,v 1.32 2006/02/03 06:53:08 mangai Exp $
- * Description:  Includes generic helper functions used throughout the application.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
 require_once('include/database/PearDatabase.php');
 require_once('include/ComboUtil.php'); //new
 require_once('include/utils/CommonUtils.php'); //new
@@ -38,15 +29,9 @@ require_once 'include/CustomFieldUtil.php';
  * Param $oCv - Custom view object
  * Returns the listview header values in an array
  */
-
 function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order_by = '', $relatedlist = '', $oCv = '', $relatedmodule = '', $skipActions = false) {
-	global $log, $singlepane_view;
+	global $log, $singlepane_view, $adb, $theme, $app_strings, $mod_strings, $counter;
 	$log->debug("Entering getListViewHeader(" . $module . "," . $sort_qry . "," . $sorder . "," . $order_by . "," . $relatedlist . "," . (is_object($oCv) ? get_class($oCv) : $oCv) . ") method ...");
-	global $adb;
-	global $theme;
-	global $app_strings;
-	global $mod_strings;
-	global $counter;
 
 	$arrow = '';
 	$qry = getURLstring($focus);
@@ -158,7 +143,7 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 		}
 		if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0 || in_array($fieldname, $field) || $fieldname == '' || ($name == 'Close' && $module == 'Calendar')) {
 			if (isset($focus->sortby_fields) && $focus->sortby_fields != '') {
-				//Added on 14-12-2005 to avoid if and else check for every list vtiger_field for arrow image and change order
+				//Added on 14-12-2005 to avoid if and else check for every list field for arrow image and change order
 				$change_sorder = array('ASC' => 'DESC', 'DESC' => 'ASC');
 				$arrow_gif = array('ASC' => 'arrow_down.gif', 'DESC' => 'arrow_up.gif');
 				foreach ($focus->list_fields[$name] as $tab => $col) {
