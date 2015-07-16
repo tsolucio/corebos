@@ -6,7 +6,6 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 <script language="JAVASCRIPT" type="text/javascript" src="include/js/smoothscroll.js"></script>
@@ -15,28 +14,24 @@
 
 {literal}
 <style>
-	
 	.tax_delete{
 		text-decoration:none;
 	}
-	
 	.tax_delete td{
-			
+
 	}
-	
 </style>
 {/literal}
 <br>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tbody>
-   <tr>
-        <td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-        <td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
+	<tr>
+		<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
+		<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
 	<br>
 	<div align=center>
-
-			{include file='SetMenu.tpl'}
-				<!-- DISPLAY -->
+{include file='SetMenu.tpl'}
+<!-- DISPLAY -->
 {if $EDIT_MODE eq 'true'}
 	{assign var=formname value='EditTax'}
 	{assign var=shformname value='SHEditTax'}
@@ -45,10 +40,9 @@
 	{assign var=shformname value='SHListTax'}
 {/if}
 
-
 <!-- This table is used to display the Tax Configuration values-->
 <table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
-   <tr>
+	<tr>
 	<td width=50 rowspan=2 valign=top><img src="{'taxConfiguration.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" width="48" height="48" border=0 title="{$MOD.LBL_USERS}"></td>
 	<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{$MOD.LBL_SETTINGS}</a> > 
 		{if $EDIT_MODE eq 'true'}
@@ -58,10 +52,10 @@
 		{/if}
 		</b>
 	</td>
-   </tr>
-   <tr>
+	</tr>
+	<tr>
 	<td valign=top class="small">{$MOD.LBL_TAX_DESC}</td>
-   </tr>
+	</tr>
 </table>
 
 <br>
@@ -116,8 +110,7 @@
 				{/if}
 				
 				<!--assinging tax label name for javascript validation-->
-				{assign var=tax_label value="taxlabel_"|cat:$tax.taxname} 
-        
+				{assign var=tax_label value="taxlabel_"|cat:$tax.taxname}
 				<td width=35% class="cellLabel small" >
 					{if $EDIT_MODE eq 'true'}
 						{assign var = pstax value = $tax.taxlabel}
@@ -134,11 +127,11 @@
 					{/if}
 				</td>
 				<td width=10% class="cellText small">
-						{if $tax.deleted eq 0}
-							<a href="index.php?module=Settings&action=TaxConfig&parenttab=Settings&disable=true&taxname={$tax.taxname}"><img src="{'enabled.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$MOD.LBL_ENABLE}" title="{$MOD.LBL_ENABLE}"></a>
-						{else}
-							<a href="index.php?module=Settings&action=TaxConfig&parenttab=Settings&enable=true&taxname={$tax.taxname}"><img src="{'disabled.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$MOD.LBL_ENABLE}" title="{$MOD.LBL_DISABLE}"></a>
-						{/if}
+					{if $tax.deleted eq 0}
+						<a href="index.php?module=Settings&action=TaxConfig&parenttab=Settings&disable=true&taxname={$tax.taxname}"><img src="{'enabled.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$MOD.LBL_ENABLED}" title="{$MOD.LBL_ENABLED}"></a>
+					{else}
+						<a href="index.php?module=Settings&action=TaxConfig&parenttab=Settings&enable=true&taxname={$tax.taxname}"><img src="{'disabled.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$MOD.LBL_DISABLED}" title="{$MOD.LBL_DISABLED}"></a>
+					{/if}
 				</td>
 			   </tr>
 			{/foreach}
@@ -164,11 +157,11 @@
 		<!-- Table to display the S&H Tax Add and Edit Buttons - Starts -->
 		<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 		   <tr>
-        		<td class="big" colspan="3"><strong>{$MOD.LBL_SHIPPING_HANDLING_TAX_SETTINGS}</strong></td>
+			<td class="big" colspan="3"><strong>{$MOD.LBL_SHIPPING_HANDLING_TAX_SETTINGS}</strong></td>
 		   </tr>
 		   <tr>
 			<td>&nbsp;</td>
-        		<td id="td_sh_add_tax" class="small" colspan="2" align="right" nowrap>
+				<td id="td_sh_add_tax" class="small" colspan="2" align="right" nowrap>
 				{if $SH_EDIT_MODE neq 'true'}
 					<input title="{$MOD.LBL_ADD_TAX_BUTTON}" accessKey="{$MOD.LBL_ADD_TAX_BUTTON}" onclick="fnAddTaxConfigRow('sh');" type="button" name="button" value="  {$MOD.LBL_ADD_TAX_BUTTON}  " class="crmButton small edit">
 				{/if}
@@ -191,7 +184,7 @@
 		   {if $SH_TAX_COUNT eq 0}
 			<tr><td>{$MOD.LBL_NO_TAXES_AVAILABLE}. {$MOD.LBL_PLEASE} {$MOD.LBL_ADD_TAX_BUTTON}.</td></tr>
 		   {else}
-		   	{foreach item=tax key=count from=$SH_TAX_VALUES}
+			{foreach item=tax key=count from=$SH_TAX_VALUES}
 
 			<!-- To set the color coding for the taxes which are active and inactive-->
 			{if $tax.deleted eq 0}
@@ -200,12 +193,12 @@
 			   <tr><!-- set color to taxes which are disabled now-->
 			{/if}
 
-			{assign var=tax_label value="taxlabel_"|cat:$tax.taxname} 
+			{assign var=tax_label value="taxlabel_"|cat:$tax.taxname}
 			<td width=35% class="cellLabel small">
-			 	{if $SH_EDIT_MODE eq 'true'}
-                    {assign var = shtax value = $tax.taxlabel}
+				{if $SH_EDIT_MODE eq 'true'}
+					{assign var = shtax value = $tax.taxlabel}
 					<input name="{$shtax|bin2hex}" id="{$tax_label}" type="text" value="{$tax.taxlabel}" class="detailedViewTextBox small">
-			 	{else} 
+				{else}
 					{$tax.taxlabel}
 				{/if}
 			</td>
@@ -214,10 +207,10 @@
 					<input name="{$tax.taxname}" id="{$tax.taxname}" type="text" value="{$tax.percentage}" class="detailedViewTextBox small">
 					&nbsp;% 
 				{else} 
-					{$tax.percentage}&nbsp;% 
+					{$tax.percentage}&nbsp;%
 				{/if}
 			</td>
-			<td width=10% class="cellText small"> 
+			<td width=10% class="cellText small">
 				{if $tax.deleted eq 0}
 						<a href="index.php?module=Settings&action=TaxConfig&parenttab=Settings&sh_disable=true&sh_taxname={$tax.taxname}"><img src="{'enabled.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$MOD.LBL_ENABLE}" title="{$MOD.LBL_ENABLE}"></a>
 					{else}
@@ -232,21 +225,17 @@
 		{/if}
 		</table>
 		<!-- Table to display the List of S&H Tax Values - Ends -->
-	        </form>
+		</form>
 	</td>
 	<!-- Shipping Tax Ends Here -->
    </tr>
 </table>
 
 <table border=0 cellspacing=0 cellpadding=5 width=100% >
-		   <tr>
-			<td class="small" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td>
-		   </tr>
+<tr>
+<td class="small" nowrap align=right><a href="#top">{$MOD.LBL_SCROLL}</a></td>
+</tr>
 </table>
-
-
-			
-			
 			</td>
 			</tr>
 			</table>
@@ -254,15 +243,14 @@
 	</tr>
 	</table>
 	</div>
-
 </td>
-        <td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
+	<td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
    </tr>
 </tbody>
 </table>
 <script>
-	var tax_labelarr = {ldelim}SAVE_BUTTON:'{$APP.LBL_SAVE_BUTTON_LABEL}',
-                                CANCEL_BUTTON:'{$APP.LBL_CANCEL_BUTTON_LABEL}',
-                                TAX_NAME:'{$APP.LBL_TAX_NAME}',
-                                TAX_VALUE:'{$APP.LBL_TAX_VALUE}'{rdelim};
+var tax_labelarr = {ldelim}SAVE_BUTTON:'{$APP.LBL_SAVE_BUTTON_LABEL}',
+ CANCEL_BUTTON:'{$APP.LBL_CANCEL_BUTTON_LABEL}',
+ TAX_NAME:'{$APP.LBL_TAX_NAME}',
+ TAX_VALUE:'{$APP.LBL_TAX_VALUE}'{rdelim};
 </script>
