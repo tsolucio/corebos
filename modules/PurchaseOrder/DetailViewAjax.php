@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *********************************************************************************/
-
 require_once('include/logging.php');
 require_once('include/database/PearDatabase.php');
 global $adb;
@@ -22,7 +21,7 @@ if($ajaxaction == "DETAILVIEW")
 	$crmid = $_REQUEST["recordid"];
 	$tablename = $_REQUEST["tableName"];
 	$fieldname = $_REQUEST["fldName"];
-	$fieldvalue = utf8RawUrlDecode($_REQUEST["fieldValue"]); 
+	$fieldvalue = utf8RawUrlDecode($_REQUEST["fieldValue"]);
 	if($crmid != "")
 	{
 		$modObj->retrieve_entity_info($crmid,"PurchaseOrder");
@@ -31,7 +30,7 @@ if($ajaxaction == "DETAILVIEW")
 		$prev_postatus = $modObj->column_fields['postatus'];
 		if($fieldname == 'postatus' && $prev_postatus != $fieldvalue && $fieldvalue == 'Received Shipment')
 		{
-        	        $modObj->update_prod_stock = 'true';
+			$modObj->update_prod_stock = 'true';
 		}
 
 		$modObj->column_fields[$fieldname] = $fieldvalue;
@@ -44,7 +43,7 @@ if($ajaxaction == "DETAILVIEW")
 		}else
 		{
 			echo ":#:FAILURE";
-		}   
+		}
 	}else
 	{
 		echo ":#:FAILURE";

@@ -10,17 +10,7 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  Defines the Account SugarBean Account entity with the necessary
- * methods and variables.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
 include_once('config.php');
 require_once('include/logging.php');
 require_once('include/utils/utils.php');
@@ -65,13 +55,13 @@ class PurchaseOrder extends CRMEntity {
 				);
 
 	var $list_fields_name = Array(
-				        'Order No'=>'purchaseorder_no',
-				        'Subject'=>'subject',
-				        'Vendor Name'=>'vendor_id',
-					'Tracking Number'=>'tracking_no',
-					'Total'=>'hdnGrandTotal',
-				        'Assigned To'=>'assigned_user_id'
-				      );
+				'Order No'=>'purchaseorder_no',
+				'Subject'=>'subject',
+				'Vendor Name'=>'vendor_id',
+				'Tracking Number'=>'tracking_no',
+				'Total'=>'hdnGrandTotal',
+				'Assigned To'=>'assigned_user_id'
+				);
 	var $list_link_field= 'subject';
 
 	var $search_fields = Array(
@@ -80,9 +70,9 @@ class PurchaseOrder extends CRMEntity {
 				);
 
 	var $search_fields_name = Array(
-				        'Order No'=>'purchaseorder_no',
-				        'Subject'=>'subject',
-				      );
+				'Order No'=>'purchaseorder_no',
+				'Subject'=>'subject',
+				);
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
 	var $mandatory_fields = Array('subject', 'vendor_id','createdtime' ,'modifiedtime');
@@ -133,7 +123,6 @@ class PurchaseOrder extends CRMEntity {
 				$productid = $this->db->query_result($inventory_res,$prod_count,'productid');
 				$quantity = $this->db->query_result($inventory_res,$prod_count,'quantity');
 				$this->db->println("Stock is going to be updated for the productid - $productid with quantity - $quantity");
-
 				addToProductStock($productid,$quantity);
 			}
 		}
@@ -153,10 +142,10 @@ class PurchaseOrder extends CRMEntity {
 		$log->debug("Entering get_activities(".$id.") method ...");
 		$this_module = $currentModule;
 
-        $related_module = vtlib_getModuleNameById($rel_tab_id);
+		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/Activity.php");
 		$other = new Activity();
-        vtlib_setup_modulevars($related_module, $other);
+		vtlib_setup_modulevars($related_module, $other);
 		$singular_modname = vtlib_toSingular($related_module);
 
 		$parenttab = getParentTab();
@@ -214,12 +203,12 @@ class PurchaseOrder extends CRMEntity {
 				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid
 				left join vtiger_cntactivityrel on vtiger_cntactivityrel.activityid= vtiger_activity.activityid
 				left join vtiger_contactdetails on vtiger_contactdetails.contactid = vtiger_cntactivityrel.contactid
-                                left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
+				left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
 				left join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
 			where vtiger_activity.activitytype='Task'
 				and (vtiger_activity.status = 'Completed' or vtiger_activity.status = 'Deferred')
 				and vtiger_seactivityrel.crmid=".$id."
-                                and vtiger_crmentity.deleted = 0";
+				and vtiger_crmentity.deleted = 0";
 		//Don't add order by, because, for security, one more condition will be added with this query in include/RelatedListView.php
 
 		$log->debug("Exiting get_history method ...");
@@ -282,7 +271,7 @@ class PurchaseOrder extends CRMEntity {
 
 		$return_data = Array('header'=>$header,'entries'=>$entries_list);
 
-	 	$log->debug("Exiting get_postatushistory method ...");
+		$log->debug("Exiting get_postatushistory method ...");
 
 		return $return_data;
 	}
@@ -310,7 +299,7 @@ class PurchaseOrder extends CRMEntity {
 			left join vtiger_groups as vtiger_groupsPurchaseOrder on vtiger_groupsPurchaseOrder.groupid = vtiger_crmentityPurchaseOrder.smownerid
 			left join vtiger_vendor as vtiger_vendorRelPurchaseOrder on vtiger_vendorRelPurchaseOrder.vendorid = vtiger_purchaseorder.vendorid
 			left join vtiger_contactdetails as vtiger_contactdetailsPurchaseOrder on vtiger_contactdetailsPurchaseOrder.contactid = vtiger_purchaseorder.contactid
-            left join vtiger_users as vtiger_lastModifiedByPurchaseOrder on vtiger_lastModifiedByPurchaseOrder.id = vtiger_crmentityPurchaseOrder.modifiedby ";
+			left join vtiger_users as vtiger_lastModifiedByPurchaseOrder on vtiger_lastModifiedByPurchaseOrder.id = vtiger_crmentityPurchaseOrder.modifiedby ";
 
 		return $query;
 	}

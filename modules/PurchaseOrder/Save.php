@@ -10,17 +10,7 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  Saves an Account record and then redirects the browser to the 
- * defined return URL.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
 require_once('modules/PurchaseOrder/PurchaseOrder.php');
 require_once('include/logging.php');
 require_once('include/database/PearDatabase.php');
@@ -38,17 +28,15 @@ setObjectValuesFromRequest($focus);
 $focus->update_prod_stock='';
 if($focus->column_fields['postatus'] == 'Received Shipment')
 {
-	if($focus->mode != 'edit')
+	if($focus->mode != 'edit') {
 		$focus->update_prod_stock='true';
-	else
-	{
-        	$prev_postatus=getPoStatus($focus->id);
-        	if($focus->column_fields['postatus'] != $prev_postatus)
-        	{
-        	        $focus->update_prod_stock='true';
-        	}
+	} else {
+		$prev_postatus=getPoStatus($focus->id);
+		if($focus->column_fields['postatus'] != $prev_postatus)
+		{
+			$focus->update_prod_stock='true';
+		}
 	}
-
 }
 
 $focus->column_fields['currency_id'] = $_REQUEST['inventory_currency'];
