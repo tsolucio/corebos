@@ -36,7 +36,7 @@ class ModuleClass extends CRMEntity {
 	var $tab_name_index = Array(
 		'vtiger_crmentity' => 'crmid',
 		'vtiger_payslip'   => 'payslipid',
-	    'vtiger_payslipcf' => 'payslipid');
+		'vtiger_payslipcf' => 'payslipid');
 
 	/**
 	 * Mandatory for Listing (Related listview)
@@ -106,23 +106,21 @@ class ModuleClass extends CRMEntity {
 
 	function getSortOrder() {
 		global $currentModule;
-
 		$sortorder = $this->default_sort_order;
 		if($_REQUEST['sorder']) $sortorder = $this->db->sql_escape_string($_REQUEST['sorder']);
 		else if($_SESSION[$currentModule.'_Sort_Order']) 
 			$sortorder = $_SESSION[$currentModule.'_Sort_Order'];
-
 		return $sortorder;
 	}
 
 	function getOrderBy() {
 		global $currentModule;
 		
-		$use_default_order_by = '';		
+		$use_default_order_by = '';
 		if(PerformancePrefs::getBoolean('LISTVIEW_DEFAULT_SORTING', true)) {
 			$use_default_order_by = $this->default_order_by;
 		}
-		
+
 		$orderby = $use_default_order_by;
 		if($_REQUEST['order_by']) $orderby = $this->db->sql_escape_string($_REQUEST['order_by']);
 		else if($_SESSION[$currentModule.'_Order_By'])
@@ -252,7 +250,7 @@ class ModuleClass extends CRMEntity {
 	{
 		global $current_user;
 		$thismodule = $_REQUEST['module'];
-		
+
 		include("include/utils/ExportUtils.php");
 
 		//To get the Permitted fields query and the permitted fields list
@@ -261,11 +259,11 @@ class ModuleClass extends CRMEntity {
 		$fields_list = getFieldsListFromQuery($sql);
 
 		$query = "SELECT $fields_list, vtiger_users.user_name AS user_name 
-					FROM vtiger_crmentity INNER JOIN $this->table_name ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
+				FROM vtiger_crmentity INNER JOIN $this->table_name ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
 
 		if(!empty($this->customFieldTable)) {
 			$query .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
-				      " = $this->table_name.$this->table_index"; 
+				" = $this->table_name.$this->table_index";
 		}
 
 		$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
@@ -284,7 +282,7 @@ class ModuleClass extends CRMEntity {
 			
 			$other = CRMEntity::getInstance($related_module);
 			vtlib_setup_modulevars($related_module, $other);
-			
+
 			if($rel_mods[$other->table_name]) {
 				$rel_mods[$other->table_name] = $rel_mods[$other->table_name] + 1;
 				$alias = $other->table_name.$rel_mods[$other->table_name];
@@ -292,9 +290,9 @@ class ModuleClass extends CRMEntity {
 			} else {
 				$alias = $other->table_name;
 				$query_append = '';
-				$rel_mods[$other->table_name] = 1;	
+				$rel_mods[$other->table_name] = 1;
 			}
-			
+
 			$query .= " LEFT JOIN $other->table_name $query_append ON $alias.$other->table_index = $this->table_name.$columnname";
 		}
 
@@ -339,12 +337,12 @@ class ModuleClass extends CRMEntity {
 		global $adb;
 		$count = 0;
 		$query1 = "select bean_id from vtiger_users_last_import where assigned_user_id=? AND bean_type='$module' AND deleted=0";
-		$result1 = $adb->pquery($query1, array($user_id)) or die("Error getting last import for undo: ".mysql_error()); 
+		$result1 = $adb->pquery($query1, array($user_id)) or die("Error getting last import for undo: ".mysql_error());
 		while ( $row1 = $adb->fetchByAssoc($result1))
 		{
 			$query2 = "update vtiger_crmentity set deleted=1 where crmid=?";
-			$result2 = $adb->pquery($query2, array($row1['bean_id'])) or die("Error undoing last import: ".mysql_error()); 
-			$count++;			
+			$result2 = $adb->pquery($query2, array($row1['bean_id'])) or die("Error undoing last import: ".mysql_error());
+			$count++;
 		}
 		return $count;
 	}
@@ -363,7 +361,7 @@ class ModuleClass extends CRMEntity {
 	{
 		global $current_user, $adb;
 		$record_user = $this->column_fields["assigned_user_id"];
-		
+
 		if($record_user != $current_user->id){
 			$sqlresult = $adb->pquery("select id from vtiger_users where id = ? union select groupid as id from vtiger_groups where groupid = ?", array($record_user, $record_user));
 			if($this->db->num_rows($sqlresult)!= 1) {
@@ -390,19 +388,19 @@ class ModuleClass extends CRMEntity {
 
 		$from_clause = " FROM $this->table_name";
 
-		$from_clause .= "	INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
+		$from_clause .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
 
 		// Consider custom table join as well.
 		if(isset($this->customFieldTable)) {
 			$from_clause .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
-				      " = $this->table_name.$this->table_index"; 
+				" = $this->table_name.$this->table_index";
 		}
 		$from_clause .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
 						LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
-		
-		$where_clause = "	WHERE vtiger_crmentity.deleted = 0";
+
+		$where_clause = " WHERE vtiger_crmentity.deleted = 0";
 		$where_clause .= $this->getListViewSecurityParameter($module);
-					
+
 		if (isset($select_cols) && trim($select_cols) != '') {
 			$sub_query = "SELECT $select_cols FROM  $this->table_name AS t " .
 				" INNER JOIN vtiger_crmentity AS crm ON crm.crmid = t.".$this->table_index;
@@ -410,19 +408,18 @@ class ModuleClass extends CRMEntity {
 			if(isset($this->customFieldTable)) {
 				$sub_query .= " LEFT JOIN ".$this->customFieldTable[0]." tcf ON tcf.".$this->customFieldTable[1]." = t.$this->table_index";
 			}
-			$sub_query .= " WHERE crm.deleted=0 GROUP BY $select_cols HAVING COUNT(*)>1";	
+			$sub_query .= " WHERE crm.deleted=0 GROUP BY $select_cols HAVING COUNT(*)>1";
 		} else {
 			$sub_query = "SELECT $table_cols $from_clause $where_clause GROUP BY $table_cols HAVING COUNT(*)>1";
-		}	
-		
-		
+		}
+
 		$query = $select_clause . $from_clause .
 					" LEFT JOIN vtiger_users_last_import ON vtiger_users_last_import.bean_id=" . $this->table_name .".".$this->table_index .
 					" INNER JOIN (" . $sub_query . ") AS temp ON ".get_on_clause($field_values,$ui_type_arr,$module) .
 					$where_clause .
 					" ORDER BY $table_cols,". $this->table_name .".".$this->table_index ." ASC";
-					
-		return $query;		
+
+		return $query;
 	}
 
 	/**
