@@ -44,8 +44,8 @@ class ModuleClass extends CRMEntity {
 	var $list_fields = Array (
 		/* Format: Field Label => Array(tablename, columnname) */
 		// tablename should not have prefix 'vtiger_'
-		'Payslip Name'=> Array('payslip', 'payslipname'),
-		'Assigned To' => Array('crmentity','smownerid')
+		'Payslip Name'=> Array('payslip' => 'payslipname'),
+		'Assigned To' => Array('crmentity' => 'smownerid')
 	);
 	var $list_fields_name = Array(
 		/* Format: Field Label => fieldname */
@@ -60,7 +60,7 @@ class ModuleClass extends CRMEntity {
 	var $search_fields = Array(
 		/* Format: Field Label => Array(tablename, columnname) */
 		// tablename should not have prefix 'vtiger_'
-		'Payslip Name'=> Array('payslip', 'payslipname')
+		'Payslip Name'=> Array('payslip' => 'payslipname')
 	);
 	var $search_fields_name = Array(
 		/* Format: Field Label => fieldname */
