@@ -846,7 +846,7 @@ $mod_strings = array (
 		'Settings' => 'Réglages',
 		'LBL_ERR_TAX_LABEL_ALREADY_EXISTS' => 'Ce nom de taxe est déjà utilisé.',
 		'LBL_ERR_SOME_TAX_LABELS_ALREADY_EXISTS' => 'Certains noms de taxe sont déjà utilisés.',
-		
+		'LBL_ERR_ADDTAX' => 'There may be some problem in adding the Tax type. Please try again',
 		'Comment' => 'Commentaires',
 
 		'Configuration Editor'=>'Editeur de configuration ',

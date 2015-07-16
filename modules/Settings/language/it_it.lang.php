@@ -841,6 +841,7 @@ $mod_strings = array (
 'Settings' => 'Impostazioni',
 'LBL_ERR_TAX_LABEL_ALREADY_EXISTS' => 'TTassa gia disponibile.',
 'LBL_ERR_SOME_TAX_LABELS_ALREADY_EXISTS' => 'Alcuni nomi di tassa sono gia utilizzati, anche se non salvati.',
+'LBL_ERR_ADDTAX' => 'There may be some problem in adding the Tax type. Please try again',
 'LBL_EDIT_COMPANY_INFO' => "Per modificare i dettagli della tua azienda,fai clic su
 			   <span style='font-style:italic;color:blue;'>Icona Impostazioni > Amministrazione On Demand > Azienda </span>",
 'Configuration Editor'=>'Editor Configurazione',

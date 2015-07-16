@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('Smarty_setup.php');
 global $mod_strings;
 global $app_strings;
@@ -233,7 +232,7 @@ function addTaxType($taxlabel, $taxvalue, $sh='')
 	if($res1)
 		return '';
 	else
-		return "There may be some problem in adding the Tax type. Please try again";
+		return getTranslatedString('LBL_ERR_ADDTAX','Settings');
 }
 
 /**	Function used to Enable or Disable the tax type 

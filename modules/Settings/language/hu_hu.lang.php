@@ -847,6 +847,7 @@ $mod_strings = array(
 	'Settings' => 'Beállítások',
 	'LBL_ERR_TAX_LABEL_ALREADY_EXISTS' => 'Ez az adó már elérhető.',
 	'LBL_ERR_SOME_TAX_LABELS_ALREADY_EXISTS' => 'Néhány adó címke már elérhető volt így nincs mentve ez.',
+	'LBL_ERR_ADDTAX' => 'There may be some problem in adding the Tax type. Please try again',
 	'LBL_EDIT_COMPANY_INFO' => 'A cégadatok szerkesztéséhez kattints a <b><i>Beállítások Icon > On Demand Admin > Cég</i></b>',
 	'Configuration Editor' => 'Konfiguráció Szerkesztő',
 	'ModTracker' => 'Nyomkövető',

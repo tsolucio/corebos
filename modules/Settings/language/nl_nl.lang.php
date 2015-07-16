@@ -1021,7 +1021,7 @@ $mod_strings = Array(
 'Settings' => 'Instellingen',
 'LBL_ERR_TAX_LABEL_ALREADY_EXISTS' => 'Dit belastinglabel bestaat al.',
 'LBL_ERR_SOME_TAX_LABELS_ALREADY_EXISTS' => 'Sommige belastinglabels bestaan al, maar nog niet opgeslagen.',
-
+'LBL_ERR_ADDTAX' => 'There may be some problem in adding the Tax type. Please try again',
 'Configuration Editor' => 'Configuratie bewerker',
 'Update configuration file of the application' => 'Bewerk de configuratie van deze toepassing.',
 

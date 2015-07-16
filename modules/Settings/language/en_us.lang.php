@@ -1212,6 +1212,7 @@ $mod_strings = Array(
 'Settings' => 'Settings',
 'LBL_ERR_TAX_LABEL_ALREADY_EXISTS' => 'This tax is already available.',
 'LBL_ERR_SOME_TAX_LABELS_ALREADY_EXISTS' => 'Some tax labels are already available, hence not saved.',
+'LBL_ERR_ADDTAX' => 'There may be some problem in adding the Tax type. Please try again',
 'LBL_EDIT_COMPANY_INFO' => "To edit company details, please click on
 			   <span style='font-style:italic;color:blue;'>Settings Icon > On Demand Admin > Company </span>",
 

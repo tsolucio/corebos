@@ -907,6 +907,7 @@ $mod_strings = array (
       'Settings' => 'Configuración',
       'LBL_ERR_TAX_LABEL_ALREADY_EXISTS' => 'Este impuesto ya existe.',
       'LBL_ERR_SOME_TAX_LABELS_ALREADY_EXISTS' => 'Algunos impuestos tienen el nombre repetido y no han sido guardados.',
+      'LBL_ERR_ADDTAX' => 'Se ha producido un error añadiendo el impuesto. Por favor inténtalo de nuevo',
       'LBL_EDIT_COMPANY_INFO' => "Para editar la información de la empresa, haz click sobre
                           <span style='font-style:italic;color:blue;'>Icono Configuración > Administrador > Empresa </span>",
 
