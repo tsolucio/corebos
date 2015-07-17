@@ -120,7 +120,7 @@ class Vtiger_MailScanner {
 				}
 				// Mark the email message as scanned
 				$this->markMessageScanned($mailrecord, $crmid);
-				$mailbox->markMessage($messageid);
+				$mailbox->markMessage($messageid,$mailrecord->_flags);
 
 				/** Free the resources consumed. */
 				unset($mailrecord);

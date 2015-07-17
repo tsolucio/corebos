@@ -196,11 +196,21 @@ class Vtiger_MailBox {
 	/**
 	 * Mark the message in the mailbox.
 	 */
-	function markMessage($messageid) {
+	function markMessage($messageid,$flags = null) {
 		$markas = $this->_scannerinfo->markas;
-		if($this->_imap && $markas) {
-			if(strtoupper($markas) == 'SEEN') $markas = "\\Seen";
-			imap_setflag_full($this->_imap, $messageid, $markas);
+		if($this->_imap){
+                    if($markas) {
+                        if(strtoupper($markas) == 'SEEN'){
+                            $markas = "\\Seen";
+                            imap_setflag_full($this->_imap, $messageid, $markas);
+                        }else{
+                            if($flags['Unseen'] == 'U')
+                                imap_clearflag_full($this->_imap,$messageid,"\\Seen");
+                        }
+                    }else{
+                        if($flags['Unseen'] == 'U')
+                            imap_clearflag_full($this->_imap,$messageid,"\\Seen");
+                    }
 		}
 	}
 	

@@ -41,6 +41,8 @@ class Vtiger_MailRecord {
 	var $_attachments = false;
 	// UNIQUEID associated with the email
 	var $_uniqueid = false;
+	// Flags Array
+	var $_flags = array();
 
 	// Flag to avoid re-parsing the email body.
 	var $_bodyparsed = false;
@@ -210,6 +212,12 @@ class Vtiger_MailRecord {
 		$mailheader = imap_headerinfo($imap, $messageid);
 
 		$this->_uniqueid = $mailheader->message_id;
+                $this->_flags['Recent'] = $mailheader->Recent;
+                $this->_flags['Unseen'] = $mailheader->Unseen;
+                $this->_flags['Flagged'] = $mailheader->Flagged;
+                $this->_flags['Answered'] = $mailheader->Answered;
+                $this->_flags['Deleted'] = $mailheader->Deleted;
+                $this->_flags['Draft'] = $mailheader->Draft;
 
 		$this->_from = $this->__getEmailIdList($mailheader->from);
 		$this->_to   = $this->__getEmailIdList($mailheader->to);
