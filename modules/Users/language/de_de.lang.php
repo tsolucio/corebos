@@ -782,7 +782,7 @@ $mod_strings = Array(
     'Pacific/Fiji' => '(UTC+12:00) Fidschi',
     'Asia/Kamchatka' => '(UTC+12:00) Kamchatka',
     'Pacific/Auckland' => '(UTC+12:00) Auckland',
-    'Asia/Magadan' => '(UTC+12:00) Magadan',
+    'Asia/Magadan' => '(UTC+11:00) Magadan, New Caledonia',
     'Pacific/Tongatapu' => '(UTC+13:00) Nukualofa',
 
     'Theme'=>'Design',

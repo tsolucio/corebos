@@ -782,12 +782,12 @@ $mod_strings = Array(
 'Asia/Vladivostok' => '(UTC+10:00) Vladivostok',
 'Pacific/Guam' => '(UTC+10:00) Guam, Port Moresby',
 'Asia/Yakutsk' => '(UTC+10:00) Yakutsk',
+'Asia/Magadan' => '(UTC+11:00) Magadan, New Caledonia',
 'Pacific/Fiji' => '(UTC+12:00) Fiji',
 'Asia/Kamchatka' => '(UTC+12:00) Kamchatka',
 'Pacific/Auckland' => '(UTC+12:00) Auckland',
-'Asia/Magadan' => '(UTC+12:00) Magadan',
 'Pacific/Tongatapu' => '(UTC+13:00) Nukualofa',
-    
+
 'Theme'=>'Theme',
 'Language'=>'Language',
 'Secondary Email'=>'Secondary Email',
