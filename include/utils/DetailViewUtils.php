@@ -10,16 +10,7 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/include/utils/DetailViewUtils.php,v 1.188 2005/04/29 05:5 * 4:39 rank Exp
- * Description:  Includes generic helper functions used throughout the application.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
 require_once('include/database/PearDatabase.php');
 require_once('include/ComboUtil.php'); //new
 require_once('include/utils/CommonUtils.php'); //new
@@ -1493,8 +1484,7 @@ function getDetailAssociatedProducts($module, $focus) {
 
 			$taxamount = ($netTotal - $finalDiscount) * $tax_value / 100;
 			$taxtotal = $taxtotal + $taxamount;
-			$tax_info_message .= "$tax_label : $tax_value % = ".
-									CurrencyField::convertToUserFormat($taxtotal, null, true) ." \\n";
+			$tax_info_message .= "$tax_label : $tax_value % = ". CurrencyField::convertToUserFormat($taxamount, null, true) ." \\n";
 		}
 		$tax_info_message .= "\\n " . $app_strings['LBL_TOTAL_TAX_AMOUNT'] . " = ". CurrencyField::convertToUserFormat($taxtotal, null, true);
 
