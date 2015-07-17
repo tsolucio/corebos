@@ -926,6 +926,10 @@ function getPriceDetailsForProduct($productid, $unit_price, $available='availabl
 			$conversion_rate = $adb->query_result($res,$i,'conversion_rate');
 			$actual_conversion_rate = $product_base_conv_rate * $conversion_rate;
 
+			$is_basecurrency = false;
+			if ($currency_id == $product_currency_id) {
+				$is_basecurrency = true;
+			}
 			if ($cur_value == null || $cur_value == '') {
 				$price_details[$i]['check_value'] = false;
 				if	($unit_price != null) {
@@ -933,16 +937,11 @@ function getPriceDetailsForProduct($productid, $unit_price, $available='availabl
 				} else {
 					$cur_value = '0';
 				}
-			} else {
+			} else if($is_basecurrency){
 				$price_details[$i]['check_value'] = true;
 			}
 			$price_details[$i]['curvalue'] = CurrencyField::convertToUserFormat($cur_value, null, true);
 			$price_details[$i]['conversionrate'] = $actual_conversion_rate;
-
-			$is_basecurrency = false;
-			if ($currency_id == $product_currency_id) {
-				$is_basecurrency = true;
-			}
 			$price_details[$i]['is_basecurrency'] = $is_basecurrency;
 		}
 	}
