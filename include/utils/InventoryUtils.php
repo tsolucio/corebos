@@ -1147,7 +1147,15 @@ function addProductsToStock($recordId) {
 // Update Product stock from database
 function updateProductStockFromDatabase($recordId,$add=true) {
 	global $adb;
-	$product_info = $adb->pquery("SELECT productid,sequence_no, quantity from vtiger_inventoryproductrel WHERE id=?",array($recordId));
+	$pdosql = 'SELECT vtiger_inventoryproductrel.productid,sequence_no, quantity
+		from vtiger_inventoryproductrel
+		inner join vtiger_products on vtiger_products.productid = vtiger_inventoryproductrel.productid
+		WHERE id=?';
+	$subpdosql = 'SELECT vtiger_inventorysubproductrel.productid
+		from vtiger_inventorysubproductrel
+		inner join vtiger_products on vtiger_products.productid = vtiger_inventorysubproductrel.productid
+		WHERE id=? AND sequence_no=?';
+	$product_info = $adb->pquery($pdosql,array($recordId));
 	$numrows = $adb->num_rows($product_info);
 	for($index = 0;$index <$numrows;$index++) {
 		$productid = $adb->query_result($product_info,$index,'productid');
@@ -1160,7 +1168,7 @@ function updateProductStockFromDatabase($recordId,$add=true) {
 			$upd_qty = $qtyinstk-$qty;
 		}
 		updateProductQty($productid, $upd_qty);
-		$sub_prod_query = $adb->pquery("SELECT productid from vtiger_inventorysubproductrel WHERE id=? AND sequence_no=?",array($recordId,$sequence_no));
+		$sub_prod_query = $adb->pquery($subpdosql,array($recordId,$sequence_no));
 		if($adb->num_rows($sub_prod_query)>0) {
 			for($j=0;$j<$adb->num_rows($sub_prod_query);$j++) {
 				$sub_prod_id = $adb->query_result($sub_prod_query,$j,"productid");
