@@ -352,4 +352,11 @@
 	<classname>cbupdater_importxml</classname>
 	<systemupdate>false</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Product stock control functionality</description>
+	<filename>build/changeSets/inventoryproductstockcontrol.php</filename>
+	<classname>inventoryproductstockcontrol</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

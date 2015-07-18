@@ -10,17 +10,7 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  Defines the Account SugarBean Account entity with the necessary
- * methods and variables.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
 include_once('config.php');
 require_once('include/logging.php');
 require_once('include/database/PearDatabase.php');
@@ -118,9 +108,9 @@ class SalesOrder extends CRMEntity {
 		$this->column_fields = getColumnFields('SalesOrder');
 	}
 
-	function save_module($module)
-	{
-
+	function save_module($module) {
+		global $updateInventoryProductRel_deduct_stock;
+		$updateInventoryProductRel_deduct_stock = true;
 		//Checking if quote_id is present and updating the quote status
 		if($this->column_fields["quote_id"] != '')
 		{
@@ -137,12 +127,40 @@ class SalesOrder extends CRMEntity {
 			saveInventoryProductDetails($this, 'SalesOrder');
 			if(vtlib_isModuleActive("InventoryDetails"))
 				InventoryDetails::createInventoryDetails($this,'SalesOrder');
+		} else if($_REQUEST['action'] == 'SalesOrderAjax' || $_REQUEST['action'] == 'MassEditSave') {
+			$updateInventoryProductRel_deduct_stock = false;
 		}
 
 		// Update the currency id and the conversion rate for the sales order
 		$update_query = "update vtiger_salesorder set currency_id=?, conversion_rate=? where salesorderid=?";
 		$update_params = array($this->column_fields['currency_id'], $this->column_fields['conversion_rate'], $this->id);
 		$this->db->pquery($update_query, $update_params);
+	}
+
+	/**
+	 * Customizing the restore procedure.
+	 */
+	function restore($module, $id) {
+		global $adb, $updateInventoryProductRel_deduct_stock;
+		$result = $adb->pquery("SELECT sostatus FROM vtiger_salesorder where salesorderid=?", array($id));
+		$soStatus = $adb->query_result($result,0,'sostatus');
+		if($soStatus != 'Cancelled') {
+			$updateInventoryProductRel_deduct_stock = true;
+		}
+		parent::restore($module, $id);
+	}
+
+	/**
+	 * Customizing the Delete procedure.
+	 */
+	function trash($module, $recordId) {
+		global $adb;
+		$result = $adb->pquery("SELECT sostatus FROM vtiger_salesorder where salesorderid=?", array($recordId));
+		$soStatus = $adb->query_result($result,0,'sostatus');
+		if($soStatus != 'Cancelled') {
+			addProductsToStock($recordId);
+		}
+		parent::trash($module, $recordId);
 	}
 
 	/** Function to get activities associated with the Sales Order

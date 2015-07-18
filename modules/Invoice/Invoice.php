@@ -100,8 +100,9 @@ class Invoice extends CRMEntity {
 	}
 
 	/** Function to handle the module specific save operations */
-	function save_module($module)
-	{
+	function save_module($module) {
+		global $updateInventoryProductRel_deduct_stock;
+		$updateInventoryProductRel_deduct_stock = true;
 		//Checking if salesorderid is present and updating the SO status
 		if(!empty($this->column_fields['salesorder_id'])) {
 			$newStatus = GlobalVariable::getVariable('SalesOrderStatusOnInvoiceSave', 'Approved');
@@ -127,6 +128,8 @@ class Invoice extends CRMEntity {
 				saveInventoryProductDetails($this, 'Invoice');
 				if(vtlib_isModuleActive("InventoryDetails"))
 					InventoryDetails::createInventoryDetails($this,'Invoice');
+			} else if($_REQUEST['action'] == 'InvoiceAjax' || $_REQUEST['action'] == 'MassEditSave') {
+				$updateInventoryProductRel_deduct_stock = false;
 			}
 		}
 
@@ -135,6 +138,32 @@ class Invoice extends CRMEntity {
 
 		$update_params = array($this->column_fields['currency_id'], $this->column_fields['conversion_rate'], $this->id);
 		$this->db->pquery($update_query, $update_params);
+	}
+
+	/**
+	 * Customizing the restore procedure.
+	 */
+	function restore($module, $id) {
+		global $adb, $updateInventoryProductRel_deduct_stock;
+		$result = $adb->pquery("SELECT invoicestatus FROM vtiger_invoice where invoiceid=?", array($id));
+		$invoiceStatus = $adb->query_result($result,0,'invoicestatus');
+		if($invoiceStatus != 'Cancel') {
+			$updateInventoryProductRel_deduct_stock = true;
+		}
+		parent::restore($module, $id);
+	}
+
+	/**
+	 * Customizing the Delete procedure.
+	 */
+	function trash($module, $recordId) {
+		global $adb;
+		$result = $adb->pquery("SELECT invoicestatus FROM vtiger_invoice where invoiceid=?", array($recordId));
+		$invoiceStatus = $adb->query_result($result,0,'invoicestatus');
+		if($invoiceStatus != 'Cancel') {
+			addProductsToStock($recordId);
+		}
+		parent::trash($module, $recordId);
 	}
 
 	/**	function used to get the name of the current object

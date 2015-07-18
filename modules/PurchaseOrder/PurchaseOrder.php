@@ -111,26 +111,36 @@ class PurchaseOrder extends CRMEntity {
 				InventoryDetails::createInventoryDetails($this,'PurchaseOrder');
 		}
 
-		//In Ajax edit, if the status changed to Received Shipment then we have to update the product stock
-		if($_REQUEST['action'] == 'PurchaseOrderAjax' && $this->update_prod_stock == 'true')
-		{
-			$inventory_res = $this->db->pquery("select productid, quantity from vtiger_inventoryproductrel where id=?",array($this->id));
-			$noofproducts = $this->db->num_rows($inventory_res);
-
-			//We have to update the stock for all the products in this PO
-			for($prod_count=0;$prod_count<$noofproducts;$prod_count++)
-			{
-				$productid = $this->db->query_result($inventory_res,$prod_count,'productid');
-				$quantity = $this->db->query_result($inventory_res,$prod_count,'quantity');
-				$this->db->println("Stock is going to be updated for the productid - $productid with quantity - $quantity");
-				addToProductStock($productid,$quantity);
-			}
-		}
-
 		// Update the currency id and the conversion rate for the purchase order
 		$update_query = "update vtiger_purchaseorder set currency_id=?, conversion_rate=? where purchaseorderid=?";
 		$update_params = array($this->column_fields['currency_id'], $this->column_fields['conversion_rate'], $this->id);
 		$adb->pquery($update_query, $update_params);
+	}
+
+	/**
+	 * Customizing the restore procedure.
+	 */
+	function restore($module, $id) {
+		global $adb, $updateInventoryProductRel_deduct_stock;
+		parent::restore($module, $id);
+		$result = $adb->pquery("SELECT postatus FROM vtiger_purchaseorder where purchaseorderid=?", array($id));
+		$poStatus = $adb->query_result($result,0,'postatus');
+		if($poStatus == 'Received Shipment') {
+			addProductsToStock($id);
+		}
+	}
+
+	/**
+	 * Customizing the Delete procedure.
+	 */
+	function trash($module, $recordId) {
+		global $adb;
+		$result = $adb->pquery("SELECT postatus FROM vtiger_purchaseorder where purchaseorderid=?", array($recordId));
+		$poStatus = $adb->query_result($result,0,'postatus');
+		if($poStatus == 'Received Shipment') {
+			deductProductsFromStock($recordId);
+		}
+		parent::trash($module, $recordId);
 	}
 
 	/** Function to get activities associated with the Purchase Order
