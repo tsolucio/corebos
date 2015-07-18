@@ -10,9 +10,7 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-
 require_once('include/database/PearDatabase.php');
 require_once 'modules/GlobalVariable/GlobalVariable.php';
 require_once('include/ComboUtil.php'); //new
@@ -1736,36 +1734,29 @@ function getInventoryTotal($return_module,$id)
 }
 
 /** Function to update product quantity
-  * @param $product_id -- product id :: Type integer
-  * @param $upd_qty -- quantity :: Type integer
-  */
-
-function updateProductQty($product_id, $upd_qty)
-{
-	global $log;
+ * @param $product_id -- product id :: Type integer
+ * @param $upd_qty -- quantity :: Type integer
+ */
+function updateProductQty($product_id, $upd_qty) {
+	global $log, $adb;
 	$log->debug("Entering updateProductQty(".$product_id.",". $upd_qty.") method ...");
-	global $adb;
 	$query= "update vtiger_products set qtyinstock=? where productid=?";
-    $adb->pquery($query, array($upd_qty, $product_id));
+	$adb->pquery($query, array($upd_qty, $product_id));
 	$log->debug("Exiting updateProductQty method ...");
-
 }
 
 /** Function to get account information
-  * @param $parent_id -- parent id :: Type integer
-  * @returns $accountid -- accountid:: Type integer
-  */
-
-function get_account_info($parent_id)
-{
-	global $log;
+ * @param $parent_id -- parent id :: Type integer
+ * @returns $accountid -- accountid:: Type integer
+ */
+function get_account_info($parent_id) {
+	global $log, $adb;
 	$log->debug("Entering get_account_info(".$parent_id.") method ...");
-        global $adb;
-        $query = "select related_to from vtiger_potential where potentialid=?";
-        $result = $adb->pquery($query, array($parent_id));
-        $accountid=$adb->query_result($result,0,'related_to');
+	$query = "select related_to from vtiger_potential where potentialid=?";
+	$result = $adb->pquery($query, array($parent_id));
+	$accountid=$adb->query_result($result,0,'related_to');
 	$log->debug("Exiting get_account_info method ...");
-        return $accountid;
+	return $accountid;
 }
 
 /** Function to get quick create form fields
