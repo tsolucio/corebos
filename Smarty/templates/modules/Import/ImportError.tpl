@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
 -->*}
 <script language="JavaScript" type="text/javascript" src="modules/MailManager/resources/jquery-1.6.2.min.js"></script>
@@ -53,12 +52,10 @@
 		<td align="right">
 		{if $CUSTOM_ACTIONS neq ''}
 		{foreach key=_LABEL item=_ACTION from=$CUSTOM_ACTIONS}
-			<input type="button" name="{$_LABEL}" value="{$_LABEL|@getTranslatedString:$MODULE}"
-				   onclick="{$_ACTION}" class="crmButton small create" />
+			<input type="button" name="{$_LABEL}" value="{$_LABEL|@getTranslatedString:$MODULE}" onclick="{$_ACTION}" class="crmButton small create" />
 		{/foreach}
 		{/if}
-		<input type="button" name="goback" value="{'LBL_GO_BACK'|@getTranslatedString:$MODULE}"
-			   onclick="window.history.back()" class="crmButton small edit" />
+		<input type="button" name="goback" value="{'LBL_GO_BACK'|@getTranslatedString:$MODULE}" onclick="window.history.back()" class="crmButton small edit" />
 		</td>
 	</tr>
 </table>

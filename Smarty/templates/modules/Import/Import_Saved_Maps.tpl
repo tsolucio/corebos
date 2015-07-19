@@ -6,10 +6,8 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
 -->*}
-
 <span class="small">{'LBL_USE_SAVED_MAPPING'|@getTranslatedString:$MODULE}</span>&nbsp;&nbsp;
 <select name="saved_maps" id="saved_maps" class="small" onchange="ImportJs.loadSavedMap();">
 	<option id="-1" value="" selected>--{'LBL_SELECT'|@getTranslatedString:$MODULE}--</option>

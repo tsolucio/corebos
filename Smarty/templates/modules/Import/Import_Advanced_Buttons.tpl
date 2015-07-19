@@ -6,12 +6,8 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
 -->*}
-
-<input type="submit" name="import" value="{'LBL_IMPORT_BUTTON_LABEL'|@getTranslatedString:$MODULE}" class="crmButton big edit"
-	   onclick="return ImportJs.sanitizeAndSubmit();" />
+<input type="submit" name="import" value="{'LBL_IMPORT_BUTTON_LABEL'|@getTranslatedString:$MODULE}" class="crmButton big edit" onclick="return ImportJs.sanitizeAndSubmit();" />
 &nbsp;&nbsp;
-<input type="button" name="cancel" value="{'LBL_CANCEL_BUTTON_LABEL'|@getTranslatedString:$MODULE}" class="crmButton big cancel"
-	   onclick="window.history.back()" />
+<input type="button" name="cancel" value="{'LBL_CANCEL_BUTTON_LABEL'|@getTranslatedString:$MODULE}" class="crmButton big cancel" onclick="window.history.back()" />
