@@ -916,11 +916,11 @@ function array_csort() {
 
 /** Function to set default varibles on to the global variable
   * @param $defaults -- default values:: Type array
-       */
+*/
 function set_default_config(&$defaults)
 {
 	global $log;
-	$log->debug("Entering set_default_config(".$defaults.") method ...");
+	$log->debug('Entering set_default_config('.print_r($defaults,true).') method ...');
 
 	foreach ($defaults as $name=>$value)
 	{
@@ -929,7 +929,7 @@ function set_default_config(&$defaults)
 			$GLOBALS[$name] = $value;
 		}
 	}
-	$log->debug("Exiting set_default_config method ...");
+	$log->debug('Exiting set_default_config method ...');
 }
 
 //this is an optimisation of the to_html function, here we make the decision

@@ -6,11 +6,10 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 
 function get_calc($image_path) {
-global $log;
+global $log, $theme;
 $log->debug("Entering get_calc(".$image_path.") method ...");
 $the_calc = <<<EOQ
 <table border="0" cellspacing="0" cellpadding="0" style="margin-top:0;margin-left:0;" align="center">

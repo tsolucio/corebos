@@ -10,24 +10,16 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/index.php,v 1.93 2005/04/21 16:17:25 ray Exp $
- * Description: Main file and starting point for the application.  Calls the 
- * theme header and footer files defined for the user as well as the module as 
- * defined by the input parameters.
- ********************************************************************************/
-
 global $entityDel;
 global $display;
 global $category;
 
 if(version_compare(phpversion(), '5.2.0') < 0 or version_compare(phpversion(), '5.6.0','ge') > 0) {
-        insert_charset_header();
-		$serverPhpVersion = phpversion();
-        require_once('phpversionfail.php');
-        die();
+	insert_charset_header();
+	$serverPhpVersion = phpversion();
+	require_once('phpversionfail.php');
+	die();
 }
 
 require_once('include/utils/utils.php');
@@ -678,11 +670,9 @@ $seclog->debug('########  Module -->  '.$module.'  :: Action --> '.$action.' :: 
 
 if(!$skipSecurityCheck && $use_current_login)
 {
-
-
 	require_once('include/utils/UserInfoUtil.php');
 	if(preg_match('/Ajax/',$action)) {
-		if($_REQUEST['ajxaction'] == 'LOADRELATEDLIST'){
+		if(isset($_REQUEST['ajxaction']) and $_REQUEST['ajxaction'] == 'LOADRELATEDLIST'){
 			$now_action = 'DetailView';
 		} else {
 			$now_action=vtlib_purify($_REQUEST['file']);
@@ -690,16 +680,12 @@ if(!$skipSecurityCheck && $use_current_login)
 	} else {
 		$now_action=$action;
 	}
-        
 
-        if(isset($_REQUEST['record']) && $_REQUEST['record'] != '')
-        {
-                $display = isPermitted($module,$now_action,$_REQUEST['record']);
-        }
-        else
-        {
-                $display = isPermitted($module,$now_action);
-        }	
+	if(isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
+		$display = isPermitted($module,$now_action,$_REQUEST['record']);
+	} else {
+		$display = isPermitted($module,$now_action);
+	}
 	$seclog->debug('########### Pemitted ---> '.$display.'  ##############');
 
 }
