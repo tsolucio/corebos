@@ -54,15 +54,11 @@ if (is_admin($current_user)) $smarty->assign("ADMIN_LINK", "<a href='index.php?m
 
 $module_path="modules/".$currentModule."/";
 
-require_once('include/Menu.php');
-
 //Assign the entered global search string to a variable and display it again
-if($_REQUEST['query_string'] != '')
+if(isset($_REQUEST['query_string']) and $_REQUEST['query_string'] != '')
 	$smarty->assign("QUERY_STRING",htmlspecialchars($_REQUEST['query_string'],ENT_QUOTES,$default_charset));//BUGIX " Cross-Site-Scripting "
 else
 	$smarty->assign("QUERY_STRING","$app_strings[LBL_SEARCH_STRING]");
-
-global $module_menu;
 
 require_once('data/Tracker.php');
 $tracFocus=new Tracker();
