@@ -1,5 +1,4 @@
 <?php
-
 /*********************************************************************************
 ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
@@ -7,10 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
-
 require_once('include/database/PearDatabase.php');
 require_once('include/database/Postgres8.php');
 require_once('include/utils/utils.php');
@@ -760,7 +756,6 @@ function isPermitted($module,$actionname,$record_id='')
 		$permission = "yes";
 		$log->debug("Exiting isPermitted method ...");
 		return $permission;
-
 	}
 
 	//Checking the Access for the Settings Module
@@ -834,7 +829,7 @@ function isPermitted($module,$actionname,$record_id='')
 		$log->debug("Exiting isPermitted method ...");
 		return $permission;
 	}
-	if (!isset($profileActionPermission[$tabid][$actionid]) && $action == 'Export') {
+	if (!isset($profileActionPermission[$tabid][$actionid]) && ($action == 'Export' || $action == 'Import')) {
 		return "no";
 	}
 	//Checking for Action Permission
