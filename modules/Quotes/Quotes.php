@@ -204,7 +204,7 @@ class Quotes extends CRMEntity {
 		$query = "SELECT case when (vtiger_users.user_name not like '') then $userNameSql else
 		vtiger_groups.groupname end as user_name, vtiger_contactdetails.contactid,
 		vtiger_contactdetails.lastname, vtiger_contactdetails.firstname, vtiger_activity.*,
-		vtiger_seactivityrel.*,vtiger_crmentity.crmid, vtiger_crmentity.smownerid,
+		vtiger_seactivityrel.crmid as parent_id,vtiger_crmentity.crmid, vtiger_crmentity.smownerid,
 		vtiger_crmentity.modifiedtime,vtiger_recurringevents.recurringtype
 		from vtiger_activity
 		inner join vtiger_seactivityrel on vtiger_seactivityrel.activityid=
