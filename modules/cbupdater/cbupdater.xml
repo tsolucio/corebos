@@ -359,4 +359,11 @@
 	<classname>inventoryproductstockcontrol</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Import/Export support for inventory modules</description>
+	<filename>build/changeSets/importexport_inventorymodules.php</filename>
+	<classname>importexport_inventorymodules</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

@@ -103,7 +103,12 @@ class Import_Data_Controller {
 	}
 
 	public function importData() {
-		$this->createRecords();
+		$focus = CRMEntity::getInstance($this->module);
+		if(method_exists($focus, 'createRecords')) {
+			$focus->createRecords($this);
+		} else {
+			$this->createRecords();
+		}
 		$this->updateModuleSequenceNumber();
 	}
 
@@ -326,6 +331,7 @@ class Import_Data_Controller {
 		$defaultFieldValues = $this->getDefaultFieldValues($moduleMeta);
 		foreach ($fieldData as $fieldName => $fieldValue) {
 			$fieldInstance = $moduleFields[$fieldName];
+			if (!is_object($fieldInstance)) continue; // specially for Inventory module import which has virtual item line fields
 			if ($fieldInstance->getFieldDataType() == 'owner') {
 				$ownerId = getUserId_Ol($fieldValue);
 				if (empty($ownerId)) {
@@ -582,6 +588,19 @@ class Import_Data_Controller {
 			$scheduledImports[$importId] = new Import_Data_Controller($importInfo, $user);
 		}
 		return $scheduledImports;
+	}
+
+	public function getImportRecordStatus($value) {
+		$status = '';
+		switch ($value) {
+			case 'created': $status = self::$IMPORT_RECORD_CREATED;	break;
+			case 'skipped': $status = self::$IMPORT_RECORD_SKIPPED;	break;
+			case 'updated': $status = self::$IMPORT_RECORD_UPDATED;	break;
+			case 'merged' :	$status = self::$IMPORT_RECORD_MERGED;	break;
+			case 'failed' :	$status = self::$IMPORT_RECORD_FAILED;	break;
+			case 'none' :	$status = self::$IMPORT_RECORD_NONE;	break;
+		}
+		return $status;
 	}
 
 }

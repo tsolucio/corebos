@@ -29,6 +29,10 @@ require_once('modules/Vendors/Vendors.php');
 require_once('include/utils/UserInfoUtil.php');
 require_once('modules/CustomView/CustomView.php');
 require_once 'modules/PickList/PickListUtils.php';
+require_once('modules/Invoice/Invoice.php');
+require_once('modules/Quotes/Quotes.php');
+require_once('modules/PurchaseOrder/PurchaseOrder.php');
+require_once('modules/SalesOrder/SalesOrder.php');
 
 // Set the current language and the language strings, if not already set.
 setCurrentLanguage();
@@ -151,6 +155,18 @@ function export($type){
 		} elseif($type == 'Vendors' && count($idstring) > 0) {
 			$query .= ' and vtiger_vendor.vendorid in ('. generateQuestionMarks($idstring) .')';
 			array_push($params, $idstring);
+		} elseif($type == 'Invoice' && count($idstring) > 0) {
+			$query .= ' and vtiger_invoice.invoiceid in ('. generateQuestionMarks($idstring) .')';
+			array_push($params, $idstring);
+		} elseif($type == 'Quotes' && count($idstring) > 0) {
+			$query .= ' and vtiger_quotes.quoteid in ('. generateQuestionMarks($idstring) .')';
+			array_push($params, $idstring);
+		} elseif($type == 'SalesOrder' && count($idstring) > 0) {
+			$query .= ' and vtiger_salesorder.salesorderid in ('. generateQuestionMarks($idstring) .')';
+			array_push($params, $idstring);
+		} elseif($type == 'PurchaseOrder' && count($idstring) > 0) {
+			$query .= ' and vtiger_purchaseorder.purchaseorderid in ('. generateQuestionMarks($idstring) .')';
+			array_push($params, $idstring);
 		} else if(count($idstring) > 0) {
 			// vtlib customization: Hook to make the export feature available for custom modules.
 			$query .= " and $focus->table_name.$focus->table_index in (" . generateQuestionMarks($idstring) . ')';
@@ -271,7 +287,8 @@ class ExportUtils{
 	function sanitizeValues($arr){
 		global $current_user, $adb;
 		$roleid = fetchUserRole($current_user->id);
-
+		$decimal = $current_user->currency_decimal_separator;
+		$numsep = $current_user->currency_grouping_separator;
 		foreach($arr as $fieldlabel=>&$value){
 			$fieldInfo = $this->fieldsArr[$fieldlabel];
 
@@ -302,6 +319,10 @@ class ExportUtils{
 				} else {
 					$value = '';
 				}
+			} elseif($uitype == 71 || $uitype == 72) {
+				$value = CurrencyField::convertToUserFormat($value, null, true);
+			} elseif($uitype == 7 || $fieldInfo['typeofdata'] == 'N~O' || $uitype == 9) {
+				$value = number_format($value,2,$decimal,$numsep);
 			}
 		}
 		return $arr;
@@ -326,8 +347,14 @@ class ExportUtils{
 			$arr['columnname'] = $adb->query_result($result, $i, "columnname");
 			$arr['tablename'] = $adb->query_result($result, $i, "tablename");
 			$arr['fieldlabel'] = $adb->query_result($result, $i, "fieldlabel");
+			$arr['typeofdata'] = $adb->query_result($result, $i, "typeofdata");
 			$fieldlabel = strtolower($arr['fieldlabel']);
 			$data[$fieldlabel] = $arr;
+		}
+		if (in_array($module, getInventoryModules())) {
+			include_once 'include/fields/InventoryLineField.php';
+			$ilfields = new InventoryLineField();
+			$data = array_merge($data,$ilfields->getInventoryLineFieldsByLabel());
 		}
 		return $data;
 	}

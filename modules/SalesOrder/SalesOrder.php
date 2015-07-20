@@ -426,6 +426,77 @@ class SalesOrder extends CRMEntity {
 		}
 		return parent::getJoinClause($tableName);
 	}
+
+	/*Function to create records in current module.
+	**This function called while importing records to this module*/
+	function createRecords($obj) {
+		$createRecords = createRecords($obj);
+		return $createRecords;
+	}
+
+	/*Function returns the record information which means whether the record is imported or not
+	**This function called while importing records to this module*/
+	function importRecord($obj, $inventoryFieldData, $lineItemDetails) {
+		$entityInfo = importRecord($obj, $inventoryFieldData, $lineItemDetails);
+		return $entityInfo;
+	}
+
+	/*Function to return the status count of imported records in current module.
+	**This function called while importing records to this module*/
+	function getImportStatusCount($obj) {
+		$statusCount = getImportStatusCount($obj);
+		return $statusCount;
+	}
+
+	function undoLastImport($obj, $user) {
+		$undoLastImport = undoLastImport($obj, $user);
+	}
+
+	/** Function to export the lead records in CSV Format
+	* @param reference variable - where condition is passed when the query is executed
+	* Returns Export SalesOrder Query.
+	*/
+	function create_export_query($where) {
+		global $log, $current_user;
+		$log->debug("Entering create_export_query(".$where.") method ...");
+
+		include("include/utils/ExportUtils.php");
+
+		//To get the Permitted fields query and the permitted fields list
+		$sql = getPermittedFieldsQuery("SalesOrder", "detail_view");
+		$fields_list = getFieldsListFromQuery($sql);
+		$fields_list .= getInventoryFieldsForExport($this->table_name);
+		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+
+		$query = "SELECT $fields_list FROM ".$this->entity_table."
+			INNER JOIN vtiger_salesorder ON vtiger_salesorder.salesorderid = vtiger_crmentity.crmid
+			LEFT JOIN vtiger_salesordercf ON vtiger_salesordercf.salesorderid = vtiger_salesorder.salesorderid
+			LEFT JOIN vtiger_sobillads ON vtiger_sobillads.sobilladdressid = vtiger_salesorder.salesorderid
+			LEFT JOIN vtiger_soshipads ON vtiger_soshipads.soshipaddressid = vtiger_salesorder.salesorderid
+			LEFT JOIN vtiger_inventoryproductrel ON vtiger_inventoryproductrel.id = vtiger_salesorder.salesorderid
+			LEFT JOIN vtiger_products ON vtiger_products.productid = vtiger_inventoryproductrel.productid
+			LEFT JOIN vtiger_service ON vtiger_service.serviceid = vtiger_inventoryproductrel.productid
+			LEFT JOIN vtiger_contactdetails ON vtiger_contactdetails.contactid = vtiger_salesorder.contactid
+			LEFT JOIN vtiger_invoice_recurring_info ON vtiger_invoice_recurring_info.salesorderid = vtiger_salesorder.salesorderid
+			LEFT JOIN vtiger_potential ON vtiger_potential.potentialid = vtiger_salesorder.potentialid
+			LEFT JOIN vtiger_account ON vtiger_account.accountid = vtiger_salesorder.accountid
+			LEFT JOIN vtiger_currency_info ON vtiger_currency_info.id = vtiger_salesorder.currency_id
+			LEFT JOIN vtiger_quotes ON vtiger_quotes.quoteid = vtiger_salesorder.quoteid
+			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
+			LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
+
+		$query .= $this->getNonAdminAccessControlQuery('SalesOrder',$current_user);
+		$where_auto = " vtiger_crmentity.deleted=0";
+
+		if($where != "") {
+			$query .= " where ($where) AND ".$where_auto;
+		} else {
+			$query .= " where ".$where_auto;
 		}
 
+		$log->debug("Exiting create_export_query method ...");
+		return $query;
+	}
+
+}
 ?>

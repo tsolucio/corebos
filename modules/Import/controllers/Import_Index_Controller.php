@@ -115,6 +115,11 @@ class Import_Index_Controller {
 				}
 			}
 		}
+		if (in_array($moduleName, getInventoryModules())) {
+			include_once 'include/fields/InventoryLineField.php';
+			$ilfields = new InventoryLineField();
+			$importableFields = array_merge($importableFields,$ilfields->getInventoryLineFieldsByObject());
+		}
 		return $importableFields;
 	}
 
