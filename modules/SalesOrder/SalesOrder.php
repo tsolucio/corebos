@@ -18,7 +18,6 @@ require_once('include/utils/utils.php');
 require_once('user_privileges/default_module_view.php');
 require_once('modules/InventoryDetails/InventoryDetails.php');
 
-// Account is used to store vtiger_account information.
 class SalesOrder extends CRMEntity {
 	var $log;
 	var $db;
@@ -274,6 +273,9 @@ class SalesOrder extends CRMEntity {
 			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_invoice.invoiceid
 			left outer join vtiger_account on vtiger_account.accountid=vtiger_invoice.accountid
 			inner join vtiger_salesorder on vtiger_salesorder.salesorderid=vtiger_invoice.salesorderid
+			LEFT JOIN vtiger_invoicecf ON vtiger_invoicecf.invoiceid = vtiger_invoice.invoiceid
+			LEFT JOIN vtiger_invoicebillads ON vtiger_invoicebillads.invoicebilladdressid = vtiger_invoice.invoiceid
+			LEFT JOIN vtiger_invoiceshipads ON vtiger_invoiceshipads.invoiceshipaddressid = vtiger_invoice.invoiceid
 			left join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
 			left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
 			where vtiger_crmentity.deleted=0 and vtiger_salesorder.salesorderid=".$id;
