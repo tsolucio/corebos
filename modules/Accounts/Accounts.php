@@ -10,17 +10,7 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Accounts/Accounts.php,v 1.53 2005/04/28 08:06:45 rank Exp $
- * Description:  Defines the Account SugarBean Account entity with the necessary
- * methods and variables.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
 include_once('config.php');
 require_once('include/logging.php');
 require_once('modules/Contacts/Contacts.php');
@@ -1263,9 +1253,14 @@ class Accounts extends CRMEntity {
 
 		if(!is_array($with_crmids)) $with_crmids = Array($with_crmids);
 		foreach($with_crmids as $with_crmid) {
-			if($with_module == 'Products')
+			if($with_module == 'Products') {
+				$checkResult = $adb->pquery('SELECT 1 FROM vtiger_seproductsrel WHERE productid = ? AND crmid = ?',
+												array($with_crmid, $crmid));
+				if($checkResult && $adb->num_rows($checkResult) > 0) {
+					continue;
+				}
 				$adb->pquery("insert into vtiger_seproductsrel values(?,?,?)", array($crmid, $with_crmid, $module));
-			elseif($with_module == 'Campaigns') {
+			} elseif($with_module == 'Campaigns') {
 				$checkResult = $adb->pquery('SELECT 1 FROM vtiger_campaignaccountrel WHERE campaignid = ? AND accountid = ?',
 												array($with_crmid, $crmid));
 				if($checkResult && $adb->num_rows($checkResult) > 0) {
