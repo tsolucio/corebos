@@ -1,5 +1,4 @@
 {*<!--
-
 /*********************************************************************************
 ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
@@ -7,13 +6,8 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
 -->*}
-
-{*<!-- module header -->*}
-
 <link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
 <script type="text/javascript" src="jscalendar/calendar.js"></script>
 <script type="text/javascript" src="jscalendar/lang/calendar-{$CALENDAR_LANG}.js"></script>
@@ -257,8 +251,7 @@ function AddressSync(Addform,id)
 <input name='search_url' id="search_url" type='hidden' value='{$SEARCH}'>
 </form>
 
-
-{if ($MODULE eq 'Emails' || 'Documents') and ($USE_RTE eq 'true')}
+{if ($MODULE eq 'Emails' || $MODULE eq 'Documents' || $MODULE eq 'Timecontrol') and ($USE_RTE eq 'true')}
 	<script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
 <script type="text/javascript" defer="1">
 	var textAreaName = null;
