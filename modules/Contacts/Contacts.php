@@ -10,14 +10,6 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Contacts/Contacts.php,v 1.70 2005/04/27 11:21:49 rank Exp $
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
  ********************************************************************************/
 include_once('config.php');
 require_once('include/logging.php');
@@ -29,7 +21,6 @@ require_once('modules/Documents/Documents.php');
 require_once('modules/Emails/Emails.php');
 require_once('modules/HelpDesk/HelpDesk.php');
 require_once('user_privileges/default_module_view.php');
-
 
 // Contact is used to store customer information.
 class Contacts extends CRMEntity {
@@ -1480,14 +1471,21 @@ function get_contactsforol($user_name)
 		if(!is_array($with_crmids)) $with_crmids = Array($with_crmids);
 		foreach($with_crmids as $with_crmid) {
 			if($with_module == 'Products') {
+				$checkResult = $adb->pquery('SELECT 1 FROM vtiger_seproductsrel WHERE productid = ? AND crmid = ?',
+												array($with_crmid, $crmid));
+				if($checkResult && $adb->num_rows($checkResult) > 0) {
+					continue;
+				}
 				$adb->pquery("insert into vtiger_seproductsrel values (?,?,?)", array($crmid, $with_crmid, 'Contacts'));
-
 			} elseif($with_module == 'Campaigns') {
+				$checkResult = $adb->pquery('SELECT 1 FROM vtiger_campaigncontrel WHERE campaignid = ? AND contacrid = ?',
+												array($with_crmid, $crmid));
+				if($checkResult && $adb->num_rows($checkResult) > 0) {
+					continue;
+				}
 				$adb->pquery("insert into vtiger_campaigncontrel values(?,?,1)", array($with_crmid, $crmid));
-
 			} elseif($with_module == 'Potentials') {
 				$adb->pquery("insert into vtiger_contpotentialrel values(?,?)", array($crmid, $with_crmid));
-
 			} else {
 				parent::save_related_module($module, $crmid, $with_module, $with_crmid);
 			}

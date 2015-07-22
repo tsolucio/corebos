@@ -18,7 +18,6 @@ require_once('include/utils/utils.php');
 require_once('user_privileges/default_module_view.php');
 require_once('modules/InventoryDetails/InventoryDetails.php');
 
-// Account is used to store vtiger_account information.
 class Invoice extends CRMEntity {
 	var $log;
 	var $db;
@@ -27,6 +26,7 @@ class Invoice extends CRMEntity {
 	var $table_index= 'invoiceid';
 	var $tab_name = Array('vtiger_crmentity','vtiger_invoice','vtiger_invoicebillads','vtiger_invoiceshipads','vtiger_invoicecf');
 	var $tab_name_index = Array('vtiger_crmentity'=>'crmid','vtiger_invoice'=>'invoiceid','vtiger_invoicebillads'=>'invoicebilladdressid','vtiger_invoiceshipads'=>'invoiceshipaddressid','vtiger_invoicecf'=>'invoiceid');
+	var $entity_table = "vtiger_crmentity";
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
@@ -100,8 +100,9 @@ class Invoice extends CRMEntity {
 	}
 
 	/** Function to handle the module specific save operations */
-	function save_module($module)
-	{
+	function save_module($module) {
+		global $updateInventoryProductRel_deduct_stock;
+		$updateInventoryProductRel_deduct_stock = true;
 		//Checking if salesorderid is present and updating the SO status
 		if(!empty($this->column_fields['salesorder_id'])) {
 			$newStatus = GlobalVariable::getVariable('SalesOrderStatusOnInvoiceSave', 'Approved');
@@ -127,6 +128,8 @@ class Invoice extends CRMEntity {
 				saveInventoryProductDetails($this, 'Invoice');
 				if(vtlib_isModuleActive("InventoryDetails"))
 					InventoryDetails::createInventoryDetails($this,'Invoice');
+			} else if($_REQUEST['action'] == 'InvoiceAjax' || $_REQUEST['action'] == 'MassEditSave') {
+				$updateInventoryProductRel_deduct_stock = false;
 			}
 		}
 
@@ -135,6 +138,32 @@ class Invoice extends CRMEntity {
 
 		$update_params = array($this->column_fields['currency_id'], $this->column_fields['conversion_rate'], $this->id);
 		$this->db->pquery($update_query, $update_params);
+	}
+
+	/**
+	 * Customizing the restore procedure.
+	 */
+	function restore($module, $id) {
+		global $adb, $updateInventoryProductRel_deduct_stock;
+		$result = $adb->pquery("SELECT invoicestatus FROM vtiger_invoice where invoiceid=?", array($id));
+		$invoiceStatus = $adb->query_result($result,0,'invoicestatus');
+		if($invoiceStatus != 'Cancel') {
+			$updateInventoryProductRel_deduct_stock = true;
+		}
+		parent::restore($module, $id);
+	}
+
+	/**
+	 * Customizing the Delete procedure.
+	 */
+	function trash($module, $recordId) {
+		global $adb;
+		$result = $adb->pquery("SELECT invoicestatus FROM vtiger_invoice where invoiceid=?", array($recordId));
+		$invoiceStatus = $adb->query_result($result,0,'invoicestatus');
+		if($invoiceStatus != 'Cancel') {
+			addProductsToStock($recordId);
+		}
+		parent::trash($module, $recordId);
 	}
 
 	/**	function used to get the name of the current object
@@ -477,6 +506,75 @@ class Invoice extends CRMEntity {
 
 			$adb->pquery($updatequery, $updateparams);
 		}
+	}
+
+	/*Function to create records in current module.
+	**This function called while importing records to this module*/
+	function createRecords($obj) {
+		$createRecords = createRecords($obj);
+		return $createRecords;
+	}
+
+	/*Function returns the record information which means whether the record is imported or not
+	**This function called while importing records to this module*/
+	function importRecord($obj, $inventoryFieldData, $lineItemDetails) {
+		$entityInfo = importRecord($obj, $inventoryFieldData, $lineItemDetails);
+		return $entityInfo;
+	}
+
+	/*Function to return the status count of imported records in current module.
+	**This function called while importing records to this module*/
+	function getImportStatusCount($obj) {
+		$statusCount = getImportStatusCount($obj);
+		return $statusCount;
+	}
+
+	function undoLastImport($obj, $user) {
+		$undoLastImport = undoLastImport($obj, $user);
+	}
+
+	/** Function to export the lead records in CSV Format
+	* @param reference variable - where condition is passed when the query is executed
+	* Returns Export Invoice Query.
+	*/
+	function create_export_query($where) {
+		global $log, $current_user;
+		$log->debug("Entering create_export_query(".$where.") method ...");
+
+		include("include/utils/ExportUtils.php");
+
+		//To get the Permitted fields query and the permitted fields list
+		$sql = getPermittedFieldsQuery("Invoice", "detail_view");
+		$fields_list = getFieldsListFromQuery($sql);
+		$fields_list .= getInventoryFieldsForExport($this->table_name);
+		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+
+		$query = "SELECT $fields_list FROM ".$this->entity_table."
+				INNER JOIN vtiger_invoice ON vtiger_invoice.invoiceid = vtiger_crmentity.crmid
+				LEFT JOIN vtiger_invoicecf ON vtiger_invoicecf.invoiceid = vtiger_invoice.invoiceid
+				LEFT JOIN vtiger_salesorder ON vtiger_salesorder.salesorderid = vtiger_invoice.salesorderid
+				LEFT JOIN vtiger_invoicebillads ON vtiger_invoicebillads.invoicebilladdressid = vtiger_invoice.invoiceid
+				LEFT JOIN vtiger_invoiceshipads ON vtiger_invoiceshipads.invoiceshipaddressid = vtiger_invoice.invoiceid
+				LEFT JOIN vtiger_inventoryproductrel ON vtiger_inventoryproductrel.id = vtiger_invoice.invoiceid
+				LEFT JOIN vtiger_products ON vtiger_products.productid = vtiger_inventoryproductrel.productid
+				LEFT JOIN vtiger_service ON vtiger_service.serviceid = vtiger_inventoryproductrel.productid
+				LEFT JOIN vtiger_contactdetails ON vtiger_contactdetails.contactid = vtiger_invoice.contactid
+				LEFT JOIN vtiger_account ON vtiger_account.accountid = vtiger_invoice.accountid
+				LEFT JOIN vtiger_currency_info ON vtiger_currency_info.id = vtiger_invoice.currency_id
+				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
+				LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
+
+		$query .= $this->getNonAdminAccessControlQuery('Invoice',$current_user);
+		$where_auto = " vtiger_crmentity.deleted=0";
+
+		if($where != "") {
+			$query .= " where ($where) AND ".$where_auto;
+		} else {
+			$query .= " where ".$where_auto;
+		}
+
+		$log->debug("Exiting create_export_query method ...");
+		return $query;
 	}
 
 }

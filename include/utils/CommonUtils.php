@@ -2374,6 +2374,7 @@ function getSingleFieldValue($tablename, $fieldname, $idname, $id) {
  */
 function get_announcements() {
 	global $adb;
+	$announcement = '';
 	$sql = " select * from vtiger_announcement inner join vtiger_users on vtiger_announcement.creatorid=vtiger_users.id";
 	$sql.=" AND vtiger_users.is_admin='on' AND vtiger_users.status='Active' AND vtiger_users.deleted = 0";
 	$result = $adb->pquery($sql, array());

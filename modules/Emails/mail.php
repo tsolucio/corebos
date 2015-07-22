@@ -142,19 +142,16 @@ function getUserEmailId($name,$val)
   *	$contents -- where we want to add the signature
   *	$fromname -- which user's signature will be added to the contents
   */
-function addSignature($contents, $fromname)
-{
-	global $adb;
+function addSignature($contents, $fromname) {
+	global $adb, $default_charset;
 	$adb->println("Inside the function addSignature");
-
-	$sign = nl2br($adb->query_result($adb->pquery("select signature from vtiger_users where user_name=?", array($fromname)),0,"signature"));
-	if($sign != '')
-	{
-		$contents .= '<br><br>'.$sign;
+	$signrs = $adb->pquery('select signature from vtiger_users where user_name=?', array($fromname));
+	$sign = $adb->query_result($signrs,0,'signature');
+	if($sign != '') {
+		$sign = html_entity_decode($sign,ENT_QUOTES,$default_charset);
+		$contents .= '<br>'.$sign;
 		$adb->println("Signature is added with the body => '.".$sign."'");
-	}
-	else
-	{
+	} else {
 		$adb->println("Signature is empty for the user => '".$fromname."'");
 	}
 	return $contents;
@@ -572,9 +569,10 @@ function getDefaultAssigneeEmailIds($groupId) {
 		require_once 'include/utils/GetGroupUsers.php';
 		$userGroups = new GetGroupUsers();
 		$userGroups->getAllUsersInGroup($groupId);
+		if(count($userGroups->group_users) > 0) {
 		$result = $adb->pquery('SELECT email1,email2,secondaryemail FROM vtiger_users WHERE vtiger_users.id IN
-											('.  generateQuestionMarks($userGroups->group_users).') AND vtiger_users.status= ?',
-								array($userGroups->group_users, 'Active'));
+						('. generateQuestionMarks($userGroups->group_users).') AND vtiger_users.status= ?',
+						array($userGroups->group_users, 'Active'));
 		$rows = $adb->num_rows($result);
 		for($i = 0;$i < $rows; $i++) {
 			$email = $adb->query_result($result,$i,'email1');
@@ -588,13 +586,14 @@ function getDefaultAssigneeEmailIds($groupId) {
 			}
 			array_push($emails,$email);
 		}
-		$adb->println("Email ids are selected  => '".$emails."'");
-		return $emails;
+		$adb->println("Email ids are selected  => '".implode(',', $emails)."'");
+		} else {
+			$adb->println("No users found in Group id $groupId");
+		}
 	} else {
-		$adb->println("User id is empty. so return value is ''");
-		return '';
+		$adb->println('Group id is empty, so return value is empty');
 	}
+	return $emails;
 }
-
 
 ?>

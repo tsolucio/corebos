@@ -8,10 +8,10 @@
  ************************************************************************************/
 
 if (typeof(ImportJs) == 'undefined') {
-    /*
+	/*
 	 * Namespaced javascript class for Import
 	 */
-    ImportJs = {
+	ImportJs = {
 
 		toogleMergeConfiguration: function() {
 			var mergeChecked = jQuery('#auto_merge').is(':checked');
@@ -42,16 +42,16 @@ if (typeof(ImportJs) == 'undefined') {
 			}
 		},
 
-        uploadAndParse: function() {
+		uploadAndParse: function() {
 			if(!ImportJs.validateFilePath()) return false;
 			if(!ImportJs.validateMergeCriteria()) return false;
 			return true;
-        },
+		},
 
 		validateFilePath: function() {
 			var filePath = jQuery('#import_file').val();
 			if(jQuery.trim(filePath) == '') {
-				alert('Import File '+alert_arr.CANNOT_BE_EMPTY)
+				alert('Import File '+alert_arr.CANNOT_BE_EMPTY);
 				jQuery('#import_file').focus();
 				return false;
 			}
@@ -178,7 +178,7 @@ if (typeof(ImportJs) == 'undefined') {
 				return;
 			}
 			jQuery('#delete_map_container').show();
-			var mappingString = selectedMapElement.val()
+			var mappingString = selectedMapElement.val();
 			if(mappingString == '') return;
 			var mappingPairs = mappingString.split('&');
 			var mapping = {};
@@ -228,20 +228,20 @@ if (typeof(ImportJs) == 'undefined') {
 		loadListViewPage: function(module, pagenum, userid) {
 			jQuery('#status').show();
 			jQuery.ajax( {
-                url  : 'index.php',
-                type : 'POST',
-                data : {module: module,
+				url  : 'index.php',
+				type : 'POST',
+				data : {module: module,
 						action: module+'Ajax',
 						file: 'Import',
 						mode: 'listview',
 						start: pagenum,
 						foruser: userid,
 						ajax: true},
-                complete : function(response) {
+				complete : function(response) {
 					jQuery('#import_listview_contents').html(response.responseText);
 					jQuery('#status').hide();
-                }
-            });
+				}
+			});
 		},
 
 		loadListViewSelectedPage: function(module, userid) {
@@ -276,7 +276,7 @@ if (typeof(ImportJs) == 'undefined') {
 			});
 
 		}
-    }
+	};
 
 	jQuery(document).ready(function() {
 		ImportJs.toogleMergeConfiguration();

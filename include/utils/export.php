@@ -10,9 +10,7 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-
 require_once('config.php');
 require_once('include/logging.php');
 require_once('include/database/PearDatabase.php');
@@ -31,6 +29,10 @@ require_once('modules/Vendors/Vendors.php');
 require_once('include/utils/UserInfoUtil.php');
 require_once('modules/CustomView/CustomView.php');
 require_once 'modules/PickList/PickListUtils.php';
+require_once('modules/Invoice/Invoice.php');
+require_once('modules/Quotes/Quotes.php');
+require_once('modules/PurchaseOrder/PurchaseOrder.php');
+require_once('modules/SalesOrder/SalesOrder.php');
 
 // Set the current language and the language strings, if not already set.
 setCurrentLanguage();
@@ -61,15 +63,12 @@ if(isPermitted($_REQUEST['module'],"Export") == "no")
 
 if ($allow_exports=='none' || ( $allow_exports=='admin' && ! is_admin($current_user) ) )
 {
-
 ?>
 	<script type='text/javascript'>
 		alert("<?php echo $app_strings['NOT_PERMITTED_TO_EXPORT']?>");
 		window.location="index.php?module=<?php echo vtlib_purify($_REQUEST['module']) ?>&action=index";
 	</script>
-	
-	<?php exit; ?>
-<?php
+<?php exit;
 }
 
 /**Function convert line breaks to space in description during export
@@ -91,29 +90,28 @@ function br2nl_vt($str)
  * Return type text
  */
 function export($type){
-    global $log,$list_max_entries_per_page;
-    $log->debug("Entering export(".$type.") method ...");
-    global $adb;
+	global $log, $list_max_entries_per_page, $adb;
+	$log->debug("Entering export(".$type.") method ...");
 
-    $focus = 0;
-    $content = '';
+	$focus = 0;
+	$content = '';
 
-    if ($type != ""){
+	if ($type != ""){
 		// vtlib customization: Hook to dynamically include required module file.
 		// Refer to the logic in setting $currentModule in index.php
 		$focus = CRMEntity::getInstance($type);
-    }
-    $log = LoggerManager::getLogger('export_'.$type);
-    $db = PearDatabase::getInstance();
+	}
+	$log = LoggerManager::getLogger('export_'.$type);
+	$db = PearDatabase::getInstance();
 
 	$oCustomView = new CustomView("$type");
 	$viewid = $oCustomView->getViewId("$type");
 	$sorder = $focus->getSortOrder();
 	$order_by = $focus->getOrderBy();
 
-    $search_type = vtlib_purify($_REQUEST['search_type']);
-    $export_data = vtlib_purify($_REQUEST['export_data']);
-	
+	$search_type = vtlib_purify($_REQUEST['search_type']);
+	$export_data = vtlib_purify($_REQUEST['export_data']);
+
 	if(isset($_SESSION['export_where']) && $_SESSION['export_where']!='' && $search_type == 'includesearch'){
 		$where =$_SESSION['export_where'];
 	}
@@ -157,6 +155,18 @@ function export($type){
 		} elseif($type == 'Vendors' && count($idstring) > 0) {
 			$query .= ' and vtiger_vendor.vendorid in ('. generateQuestionMarks($idstring) .')';
 			array_push($params, $idstring);
+		} elseif($type == 'Invoice' && count($idstring) > 0) {
+			$query .= ' and vtiger_invoice.invoiceid in ('. generateQuestionMarks($idstring) .')';
+			array_push($params, $idstring);
+		} elseif($type == 'Quotes' && count($idstring) > 0) {
+			$query .= ' and vtiger_quotes.quoteid in ('. generateQuestionMarks($idstring) .')';
+			array_push($params, $idstring);
+		} elseif($type == 'SalesOrder' && count($idstring) > 0) {
+			$query .= ' and vtiger_salesorder.salesorderid in ('. generateQuestionMarks($idstring) .')';
+			array_push($params, $idstring);
+		} elseif($type == 'PurchaseOrder' && count($idstring) > 0) {
+			$query .= ' and vtiger_purchaseorder.purchaseorderid in ('. generateQuestionMarks($idstring) .')';
+			array_push($params, $idstring);
 		} else if(count($idstring) > 0) {
 			// vtlib customization: Hook to make the export feature available for custom modules.
 			$query .= " and $focus->table_name.$focus->table_index in (" . generateQuestionMarks($idstring) . ')';
@@ -181,20 +191,20 @@ function export($type){
 			$query .= ' ORDER BY '.$tablename.$order_by.' '.$sorder;
 		}
 	}
-	
+
 	if($export_data == 'currentpage'){
 		$current_page = ListViewSession::getCurrentPage($type,$viewid);
 		$limit_start_rec = ($current_page - 1) * $list_max_entries_per_page;
 		if ($limit_start_rec < 0) $limit_start_rec = 0;
 		$query .= ' LIMIT '.$limit_start_rec.','.$list_max_entries_per_page;
 	}
-	
-    $result = $adb->pquery($query, $params, true, "Error exporting $type: "."<BR>$query");
-    $fields_array = $adb->getFieldsArray($result);
-    $fields_array = array_diff($fields_array,array("user_name"));
-	
+
+	$result = $adb->pquery($query, $params, true, "Error exporting $type: "."<BR>$query");
+	$fields_array = $adb->getFieldsArray($result);
+	$fields_array = array_diff($fields_array,array("user_name"));
+
 	$__processor = new ExportUtils($type, $fields_array);
-	
+
 	// Translated the field names based on the language used.
 	$translated_fields_array = array();
 	for($i=0; $i<count($fields_array); $i++) {
@@ -203,13 +213,13 @@ function export($type){
 	$header = implode("\",\"",array_values($translated_fields_array));
 	$header = "\"" .$header;
 	$header .= "\"\r\n";
-	
+
 	/** Output header information */
 	echo $header;
 
 	$column_list = implode(",",array_values($fields_array));
 
-    while($val = $adb->fetchByAssoc($result, -1, false)){
+	while($val = $adb->fetchByAssoc($result, -1, false)){
 		$new_arr = array();
 		$val = $__processor->sanitizeValues($val);
 		foreach ($val as $key => $value){
@@ -220,14 +230,12 @@ function export($type){
 			}elseif($key != "user_name"){
 				// Let us provide the module to transform the value before we save it to CSV file
 				$value = $focus->transform_export_value($key, $value);
-				
 				array_push($new_arr, preg_replace("/\"/","\"\"",$value));
 			}
 		}
 		$line = implode("\",\"",$new_arr);
 		$line = "\"" .$line;
 		$line .= "\"\r\n";
-		
 		/** Output each row information */
 		echo $line;
 	}
@@ -256,12 +264,11 @@ exit;
 class ExportUtils{
 	var $fieldsArr = array();
 	var $picklistValues = array();
-	
+
 	function ExportUtils($module, $fields_array){
 		self::__init($module, $fields_array);
 	}
-	
-	
+
 	function __init($module, $fields_array){
 		$infoArr = self::getInformationArray($module);
 		
@@ -272,7 +279,7 @@ class ExportUtils{
 			}
 		}
 	}
-	
+
 	/**
 	 * this function takes in an array of values for an user and sanitizes it for export
 	 * @param array $arr - the array of values
@@ -280,10 +287,11 @@ class ExportUtils{
 	function sanitizeValues($arr){
 		global $current_user, $adb;
 		$roleid = fetchUserRole($current_user->id);
-		
+		$decimal = $current_user->currency_decimal_separator;
+		$numsep = $current_user->currency_grouping_separator;
 		foreach($arr as $fieldlabel=>&$value){
 			$fieldInfo = $this->fieldsArr[$fieldlabel];
-			
+
 			$uitype = $fieldInfo['uitype'];
 			$fieldname = $fieldInfo['fieldname'];
 			if($uitype == 15 || $uitype == 16 || $uitype == 33){
@@ -311,11 +319,15 @@ class ExportUtils{
 				} else {
 					$value = '';
 				}
+			} elseif($uitype == 71 || $uitype == 72) {
+				$value = CurrencyField::convertToUserFormat($value, null, true);
+			} elseif($uitype == 7 || $fieldInfo['typeofdata'] == 'N~O' || $uitype == 9) {
+				$value = number_format($value,2,$decimal,$numsep);
 			}
 		}
 		return $arr;
 	}
-	
+
 	/**
 	 * this function takes in a module name and returns the field information for it
 	 */
@@ -323,20 +335,26 @@ class ExportUtils{
 		require_once 'include/utils/utils.php';
 		global $adb;
 		$tabid = getTabid($module);
-		
+
 		$result = $adb->pquery("select * from vtiger_field where tabid=?", array($tabid));
 		$count = $adb->num_rows($result);
 		$arr = array();
 		$data = array();
-		
+
 		for($i=0;$i<$count;$i++){
 			$arr['uitype'] = $adb->query_result($result, $i, "uitype");
 			$arr['fieldname'] = $adb->query_result($result, $i, "fieldname");
 			$arr['columnname'] = $adb->query_result($result, $i, "columnname");
 			$arr['tablename'] = $adb->query_result($result, $i, "tablename");
 			$arr['fieldlabel'] = $adb->query_result($result, $i, "fieldlabel");
+			$arr['typeofdata'] = $adb->query_result($result, $i, "typeofdata");
 			$fieldlabel = strtolower($arr['fieldlabel']);
 			$data[$fieldlabel] = $arr;
+		}
+		if (in_array($module, getInventoryModules())) {
+			include_once 'include/fields/InventoryLineField.php';
+			$ilfields = new InventoryLineField();
+			$data = array_merge($data,$ilfields->getInventoryLineFieldsByLabel());
 		}
 		return $data;
 	}

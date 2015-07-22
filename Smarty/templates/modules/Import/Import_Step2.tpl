@@ -6,10 +6,8 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
 -->*}
-
 <table width="100%" cellspacing="0" cellpadding="5">
 	<tr>
 		<td class="heading2">{'LBL_IMPORT_STEP_2'|@getTranslatedString:$MODULE}:</td>

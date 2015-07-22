@@ -1,6 +1,5 @@
 <?php
 /*********************************************************************************
-
 ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
  * The Original Code is:  vtiger CRM Open Source
@@ -20,10 +19,10 @@ $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 require_once('modules/Vtiger/layout_utils.php');
 
-$idstring = getSelectedRecords($_REQUEST,$currentModule,$_REQUEST['idstring'],$_REQUEST['excludedRecords']);
+$idstring = getSelectedRecords($_REQUEST,$currentModule,(isset($_REQUEST['idstring']) ? $_REQUEST['idstring'] : ''),(isset($_REQUEST['excludedRecords']) ? $_REQUEST['excludedRecords'] : ''));
 $idstring = join(';',$idstring);
 
-$smarty->assign("SESSION_WHERE",$_SESSION['export_where']);
+$smarty->assign("SESSION_WHERE",(isset($_SESSION['export_where']) ? $_SESSION['export_where'] : ''));
 
 $smarty->assign('APP',$app_strings);
 $smarty->assign('MOD',$mod_strings);
@@ -35,11 +34,9 @@ $smarty->assign("MODULELABEL",getTranslatedString($currentModule));
 $smarty->assign("IDSTRING",$idstring);
 $smarty->assign("PERPAGE",$list_max_entries_per_page);
 
-if(!is_admin($current_user) && (isPermitted($currentModule, 'Export') != 'yes')) {	
-	$smarty->display(vtlib_getModuleTemplate('Vtiger','OperationNotPermitted.tpl'));	
+if(!is_admin($current_user) && (isPermitted($currentModule, 'Export') != 'yes')) {
+	$smarty->display(vtlib_getModuleTemplate('Vtiger','OperationNotPermitted.tpl'));
 } else {
 	$smarty->display('ExportRecords.tpl');
 }
-
-
 ?>

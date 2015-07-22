@@ -28,9 +28,9 @@ $mod_strings = Array(
 'LBL_MODULE_TITLE'=>'Factura: Inicio',
 'LBL_SEARCH_FORM_TITLE'=>'Buscar Factura',
 'LBL_LIST_FORM_TITLE'=>'Lista de Facturas',
-'LBL_LIST_SO_FORM_TITLE'=>'Listado de Pedidos',
+'LBL_LIST_SO_FORM_TITLE'=>'Listado de Ordenes de Venta',
 'LBL_NEW_FORM_TITLE'=>'Nueva Factura',
-'LBL_NEW_FORM_SO_TITLE'=>'Nuevo Pedido',
+'LBL_NEW_FORM_SO_TITLE'=>'Nueva Orden de Venta',
 'LBL_MEMBER_ORG_FORM_TITLE'=>'Organizaciones Miembro',
 
 'LBL_LIST_ACCOUNT_NAME'=>'Nombre de la Cuenta',
@@ -123,7 +123,7 @@ $mod_strings = Array(
 'Invoice Terms'=>'Condiciones Generales de Facturación',
 'Contact Name'=>'Persona de Contacto',//to include contact name field in Invoice
 'Invoice Date'=>'Fecha de Factura',
-'Sub Total'=>'Total',
+'Sub Total'=>'Sub Total',
 'Due date'=>'Fecha de Vencimiento',
 'Due Date'=>'Fecha de Vencimiento',
 'Carrier'=>'Transportista',
@@ -155,18 +155,18 @@ $mod_strings = Array(
 'Description'=>'Descripción',
 'Potential Name'=>'Nombre de la Oportunidad',
 'Customer No'=>'Código de cliente',
-'Sales Order'=>'Pedido',
+'Sales Order'=>'Orden de Venta',
 'Pending'=>'Pendientes',
 'Account Name'=>'Nombre de la cuenta',
 //Quote Info
 'LBL_INVOICE_INFORMATION'=>'Información de la Facturación',
 'LBL_INVOICE'=>'Facturación:',
-'LBL_SO_INFORMATION'=>'Información de Pedido',
-'LBL_SO'=>'Pedido:',
+'LBL_SO_INFORMATION'=>'Información de Orden de Venta',
+'LBL_SO'=>'Orden de Venta:',
 
 //Added in release 4.2
 'LBL_SUBJECT'=>'Referencia:',
-'LBL_SALES_ORDER'=>'Pedido:',
+'LBL_SALES_ORDER'=>'Orden de Venta:',
 'Invoice Id'=>'Identificador de la Factura',
 'LBL_MY_TOP_INVOICE'=>'Mis Facturas pendientes',
 'LBL_INVOICE_NAME'=>'Nombre de la Factura:',

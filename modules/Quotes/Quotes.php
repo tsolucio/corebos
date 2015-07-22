@@ -10,17 +10,7 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  Defines the Account SugarBean Account entity with the necessary
- * methods and variables.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
 include_once('config.php');
 require_once('include/logging.php');
 require_once('include/utils/utils.php');
@@ -28,7 +18,6 @@ require_once('include/RelatedListView.php');
 require_once('user_privileges/default_module_view.php');
 require_once('modules/InventoryDetails/InventoryDetails.php');
 
-// Account is used to store vtiger_account information.
 class Quotes extends CRMEntity {
 	var $log;
 	var $db;
@@ -163,6 +152,10 @@ class Quotes extends CRMEntity {
 		left outer join vtiger_quotes on vtiger_quotes.quoteid=vtiger_salesorder.quoteid
 		left outer join vtiger_account on vtiger_account.accountid=vtiger_salesorder.accountid
 		left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
+		LEFT JOIN vtiger_salesordercf ON vtiger_salesordercf.salesorderid = vtiger_salesorder.salesorderid
+		LEFT JOIN vtiger_invoice_recurring_info ON vtiger_invoice_recurring_info.start_period = vtiger_salesorder.salesorderid
+		LEFT JOIN vtiger_sobillads ON vtiger_sobillads.sobilladdressid = vtiger_salesorder.salesorderid
+		LEFT JOIN vtiger_soshipads ON vtiger_soshipads.soshipaddressid = vtiger_salesorder.salesorderid
 		left join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
 		where vtiger_crmentity.deleted=0 and vtiger_salesorder.quoteid = ".$id;
 		$log->debug("Exiting get_salesorder method ...");
@@ -211,7 +204,7 @@ class Quotes extends CRMEntity {
 		$query = "SELECT case when (vtiger_users.user_name not like '') then $userNameSql else
 		vtiger_groups.groupname end as user_name, vtiger_contactdetails.contactid,
 		vtiger_contactdetails.lastname, vtiger_contactdetails.firstname, vtiger_activity.*,
-		vtiger_seactivityrel.*,vtiger_crmentity.crmid, vtiger_crmentity.smownerid,
+		vtiger_seactivityrel.crmid as parent_id,vtiger_crmentity.crmid, vtiger_crmentity.smownerid,
 		vtiger_crmentity.modifiedtime,vtiger_recurringevents.recurringtype
 		from vtiger_activity
 		inner join vtiger_seactivityrel on vtiger_seactivityrel.activityid=
@@ -411,6 +404,75 @@ class Quotes extends CRMEntity {
 		}
 	}
 
-}
+	/*Function to create records in current module.
+	**This function called while importing records to this module*/
+	function createRecords($obj) {
+		$createRecords = createRecords($obj);
+		return $createRecords;
+	}
 
+	/*Function returns the record information which means whether the record is imported or not
+	**This function called while importing records to this module*/
+	function importRecord($obj, $inventoryFieldData, $lineItemDetails) {
+		$entityInfo = importRecord($obj, $inventoryFieldData, $lineItemDetails);
+		return $entityInfo;
+	}
+
+	/*Function to return the status count of imported records in current module.
+	**This function called while importing records to this module*/
+	function getImportStatusCount($obj) {
+		$statusCount = getImportStatusCount($obj);
+		return $statusCount;
+	}
+
+	function undoLastImport($obj, $user) {
+		$undoLastImport = undoLastImport($obj, $user);
+	}
+
+	/** Function to export the lead records in CSV Format
+	* @param reference variable - where condition is passed when the query is executed
+	* Returns Export Quotes Query.
+	*/
+	function create_export_query($where) {
+		global $log, $current_user;
+		$log->debug("Entering create_export_query(".$where.") method ...");
+
+		include("include/utils/ExportUtils.php");
+
+		//To get the Permitted fields query and the permitted fields list
+		$sql = getPermittedFieldsQuery("Quotes", "detail_view");
+		$fields_list = getFieldsListFromQuery($sql);
+		$fields_list .= getInventoryFieldsForExport($this->table_name);
+		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+
+		$query = "SELECT $fields_list FROM ".$this->entity_table."
+			INNER JOIN vtiger_quotes ON vtiger_quotes.quoteid = vtiger_crmentity.crmid
+			LEFT JOIN vtiger_quotescf ON vtiger_quotescf.quoteid = vtiger_quotes.quoteid
+			LEFT JOIN vtiger_quotesbillads ON vtiger_quotesbillads.quotebilladdressid = vtiger_quotes.quoteid
+			LEFT JOIN vtiger_quotesshipads ON vtiger_quotesshipads.quoteshipaddressid = vtiger_quotes.quoteid
+			LEFT JOIN vtiger_inventoryproductrel ON vtiger_inventoryproductrel.id = vtiger_quotes.quoteid
+			LEFT JOIN vtiger_products ON vtiger_products.productid = vtiger_inventoryproductrel.productid
+			LEFT JOIN vtiger_service ON vtiger_service.serviceid = vtiger_inventoryproductrel.productid
+			LEFT JOIN vtiger_contactdetails ON vtiger_contactdetails.contactid = vtiger_quotes.contactid
+			LEFT JOIN vtiger_potential ON vtiger_potential.potentialid = vtiger_quotes.potentialid
+			LEFT JOIN vtiger_account ON vtiger_account.accountid = vtiger_quotes.accountid
+			LEFT JOIN vtiger_currency_info ON vtiger_currency_info.id = vtiger_quotes.currency_id
+			LEFT JOIN vtiger_users AS vtiger_inventoryManager ON vtiger_inventoryManager.id = vtiger_quotes.inventorymanager
+			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
+			LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
+
+		$query .= $this->getNonAdminAccessControlQuery('Quotes',$current_user);
+		$where_auto = " vtiger_crmentity.deleted=0";
+
+		if($where != "") {
+			$query .= " where ($where) AND ".$where_auto;
+		} else {
+			$query .= " where ".$where_auto;
+		}
+
+		$log->debug("Exiting create_export_query method ...");
+		return $query;
+	}
+
+}
 ?>

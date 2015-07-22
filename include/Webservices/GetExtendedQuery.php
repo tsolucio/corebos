@@ -400,5 +400,7 @@ function __FQNExtendedQueryCleanQuery($q) {
 	$r = preg_replace($moduleRegex, '', $r);
 	$moduleRegex = "/'.+'/Us";  // eliminate string literals
 	$r = preg_replace($moduleRegex, '', $r);
+	$moduleRegex = "/\(\s*\)/Us";  // eliminate empty parenthesis
+	$r = preg_replace($moduleRegex, '', $r);
 	return $r;
 }

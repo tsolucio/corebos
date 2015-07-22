@@ -460,11 +460,8 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 		$this->import_RelatedLists($this->_modulexml, $moduleInstance);
 		$this->import_CustomLinks($this->_modulexml, $moduleInstance);
 		$this->import_CronTasks($this->_modulexml);
-
-		Vtiger_Module::fireEvent($moduleInstance->name,
-			Vtiger_Module::EVENT_MODULE_POSTINSTALL);
-
 		$moduleInstance->initWebservice();
+		Vtiger_Module::fireEvent($moduleInstance->name, Vtiger_Module::EVENT_MODULE_POSTINSTALL);
 	}
 
 	/**

@@ -10,17 +10,7 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  Defines the Account SugarBean Account entity with the necessary
- * methods and variables.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
 include_once('config.php');
 require_once('include/logging.php');
 require_once('include/database/PearDatabase.php');
@@ -28,7 +18,6 @@ require_once('include/utils/utils.php');
 require_once('user_privileges/default_module_view.php');
 require_once('modules/InventoryDetails/InventoryDetails.php');
 
-// Account is used to store vtiger_account information.
 class SalesOrder extends CRMEntity {
 	var $log;
 	var $db;
@@ -118,9 +107,9 @@ class SalesOrder extends CRMEntity {
 		$this->column_fields = getColumnFields('SalesOrder');
 	}
 
-	function save_module($module)
-	{
-
+	function save_module($module) {
+		global $updateInventoryProductRel_deduct_stock;
+		$updateInventoryProductRel_deduct_stock = true;
 		//Checking if quote_id is present and updating the quote status
 		if($this->column_fields["quote_id"] != '')
 		{
@@ -137,12 +126,40 @@ class SalesOrder extends CRMEntity {
 			saveInventoryProductDetails($this, 'SalesOrder');
 			if(vtlib_isModuleActive("InventoryDetails"))
 				InventoryDetails::createInventoryDetails($this,'SalesOrder');
+		} else if($_REQUEST['action'] == 'SalesOrderAjax' || $_REQUEST['action'] == 'MassEditSave') {
+			$updateInventoryProductRel_deduct_stock = false;
 		}
 
 		// Update the currency id and the conversion rate for the sales order
 		$update_query = "update vtiger_salesorder set currency_id=?, conversion_rate=? where salesorderid=?";
 		$update_params = array($this->column_fields['currency_id'], $this->column_fields['conversion_rate'], $this->id);
 		$this->db->pquery($update_query, $update_params);
+	}
+
+	/**
+	 * Customizing the restore procedure.
+	 */
+	function restore($module, $id) {
+		global $adb, $updateInventoryProductRel_deduct_stock;
+		$result = $adb->pquery("SELECT sostatus FROM vtiger_salesorder where salesorderid=?", array($id));
+		$soStatus = $adb->query_result($result,0,'sostatus');
+		if($soStatus != 'Cancelled') {
+			$updateInventoryProductRel_deduct_stock = true;
+		}
+		parent::restore($module, $id);
+	}
+
+	/**
+	 * Customizing the Delete procedure.
+	 */
+	function trash($module, $recordId) {
+		global $adb;
+		$result = $adb->pquery("SELECT sostatus FROM vtiger_salesorder where salesorderid=?", array($recordId));
+		$soStatus = $adb->query_result($result,0,'sostatus');
+		if($soStatus != 'Cancelled') {
+			addProductsToStock($recordId);
+		}
+		parent::trash($module, $recordId);
 	}
 
 	/** Function to get activities associated with the Sales Order
@@ -256,6 +273,9 @@ class SalesOrder extends CRMEntity {
 			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_invoice.invoiceid
 			left outer join vtiger_account on vtiger_account.accountid=vtiger_invoice.accountid
 			inner join vtiger_salesorder on vtiger_salesorder.salesorderid=vtiger_invoice.salesorderid
+			LEFT JOIN vtiger_invoicecf ON vtiger_invoicecf.invoiceid = vtiger_invoice.invoiceid
+			LEFT JOIN vtiger_invoicebillads ON vtiger_invoicebillads.invoicebilladdressid = vtiger_invoice.invoiceid
+			LEFT JOIN vtiger_invoiceshipads ON vtiger_invoiceshipads.invoiceshipaddressid = vtiger_invoice.invoiceid
 			left join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
 			left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
 			where vtiger_crmentity.deleted=0 and vtiger_salesorder.salesorderid=".$id;
@@ -406,6 +426,77 @@ class SalesOrder extends CRMEntity {
 		}
 		return parent::getJoinClause($tableName);
 	}
+
+	/*Function to create records in current module.
+	**This function called while importing records to this module*/
+	function createRecords($obj) {
+		$createRecords = createRecords($obj);
+		return $createRecords;
+	}
+
+	/*Function returns the record information which means whether the record is imported or not
+	**This function called while importing records to this module*/
+	function importRecord($obj, $inventoryFieldData, $lineItemDetails) {
+		$entityInfo = importRecord($obj, $inventoryFieldData, $lineItemDetails);
+		return $entityInfo;
+	}
+
+	/*Function to return the status count of imported records in current module.
+	**This function called while importing records to this module*/
+	function getImportStatusCount($obj) {
+		$statusCount = getImportStatusCount($obj);
+		return $statusCount;
+	}
+
+	function undoLastImport($obj, $user) {
+		$undoLastImport = undoLastImport($obj, $user);
+	}
+
+	/** Function to export the lead records in CSV Format
+	* @param reference variable - where condition is passed when the query is executed
+	* Returns Export SalesOrder Query.
+	*/
+	function create_export_query($where) {
+		global $log, $current_user;
+		$log->debug("Entering create_export_query(".$where.") method ...");
+
+		include("include/utils/ExportUtils.php");
+
+		//To get the Permitted fields query and the permitted fields list
+		$sql = getPermittedFieldsQuery("SalesOrder", "detail_view");
+		$fields_list = getFieldsListFromQuery($sql);
+		$fields_list .= getInventoryFieldsForExport($this->table_name);
+		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+
+		$query = "SELECT $fields_list FROM ".$this->entity_table."
+			INNER JOIN vtiger_salesorder ON vtiger_salesorder.salesorderid = vtiger_crmentity.crmid
+			LEFT JOIN vtiger_salesordercf ON vtiger_salesordercf.salesorderid = vtiger_salesorder.salesorderid
+			LEFT JOIN vtiger_sobillads ON vtiger_sobillads.sobilladdressid = vtiger_salesorder.salesorderid
+			LEFT JOIN vtiger_soshipads ON vtiger_soshipads.soshipaddressid = vtiger_salesorder.salesorderid
+			LEFT JOIN vtiger_inventoryproductrel ON vtiger_inventoryproductrel.id = vtiger_salesorder.salesorderid
+			LEFT JOIN vtiger_products ON vtiger_products.productid = vtiger_inventoryproductrel.productid
+			LEFT JOIN vtiger_service ON vtiger_service.serviceid = vtiger_inventoryproductrel.productid
+			LEFT JOIN vtiger_contactdetails ON vtiger_contactdetails.contactid = vtiger_salesorder.contactid
+			LEFT JOIN vtiger_invoice_recurring_info ON vtiger_invoice_recurring_info.salesorderid = vtiger_salesorder.salesorderid
+			LEFT JOIN vtiger_potential ON vtiger_potential.potentialid = vtiger_salesorder.potentialid
+			LEFT JOIN vtiger_account ON vtiger_account.accountid = vtiger_salesorder.accountid
+			LEFT JOIN vtiger_currency_info ON vtiger_currency_info.id = vtiger_salesorder.currency_id
+			LEFT JOIN vtiger_quotes ON vtiger_quotes.quoteid = vtiger_salesorder.quoteid
+			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
+			LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
+
+		$query .= $this->getNonAdminAccessControlQuery('SalesOrder',$current_user);
+		$where_auto = " vtiger_crmentity.deleted=0";
+
+		if($where != "") {
+			$query .= " where ($where) AND ".$where_auto;
+		} else {
+			$query .= " where ".$where_auto;
 		}
 
+		$log->debug("Exiting create_export_query method ...");
+		return $query;
+	}
+
+}
 ?>

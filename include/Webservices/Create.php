@@ -81,7 +81,7 @@ function vtws_create($elementType, $element, $user) {
         }
         //  Product line support
         if(($elementType == 'Quotes' || $elementType == 'PurchaseOrder' || $elementType == 'SalesOrder' || $elementType == 'Invoice') && (is_array($element['pdoInformation']))) {
-        	include_once 'include/Webservices/ProductLines.php';
+			include 'include/Webservices/ProductLines.php';
         } else {
         	$_REQUEST['action'] = $elementType.'Ajax';
         }

@@ -162,7 +162,7 @@ class DateTimeField {
 		} elseif ($format == 'yyyy-mm-dd') {
 			$date[0] = $y . '-' . $m . '-' . $d;
 		}
-		if ($date[1] != '') {
+		if (isset($date[1]) and $date[1] != '') {
 			$userDate = $date[0] . ' ' . $date[1];
 		} else {
 			$userDate = $date[0];

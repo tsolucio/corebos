@@ -48,7 +48,7 @@ class Vtiger_Link {
 		$this->linkurl  =decode_html($valuemap['linkurl']);
 		$this->linkicon =decode_html($valuemap['linkicon']);
 		$this->sequence =$valuemap['sequence'];
-		$this->status   =$valuemap['status'];
+		$this->status   =(isset($valuemap['status']) ? $valuemap['status'] : false);
 		$this->handler_path	=$valuemap['handler_path'];
 		$this->handler_class=$valuemap['handler_class'];
 		$this->handler		=$valuemap['handler'];
