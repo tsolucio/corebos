@@ -55,10 +55,10 @@ function vtws_sendRecoverPassword($username) {
 	global $adb,$log,$current_user, $PORTAL_URL, $url_code;
 	$log->debug("Entering function vtws_sendRecoverPassword");
 
-	$ctors=$adb->query("select contactid,email,user_password
+	$ctors=$adb->pquery('select contactid,email,user_password
 			from vtiger_contactdetails
 			inner join vtiger_portalinfo on id=contactid
-			where isactive=1 and user_name='$username'");
+			where isactive=1 and user_name=?',array($username));
 	if (!ctors or $adb->num_rows($ctors)==0) {
 		throw new WebServiceException(WebServiceErrorCode::$INVALIDUSERPWD,"Invalid username: username not found or not active");
 	}
