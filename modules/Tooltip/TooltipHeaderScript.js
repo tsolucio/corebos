@@ -52,7 +52,7 @@ var TOOLTIP = {
 		}
 		if(evtparams['event'] == 'cell.onmouseover' ) {
 			TOOLTIP._setStatus(module, fieldname, recordid, true);
-			_VT__TOOLTIP__TIMER = setTimeout(function(){TOOLTIP._showForField(node, module, fieldname,recordid)},TOOLTIP._mouseOverTimeOut);
+			_VT__TOOLTIP__TIMER = setTimeout(function(){TOOLTIP._showForField(node, module, fieldname,recordid);},TOOLTIP._mouseOverTimeOut);
 		} else if(evtparams['event'] == 'cell.onmouseout' ) {
 			TOOLTIP._setStatus(module, fieldname, recordid, false);
 			TOOLTIP.hide(node, recordid, fieldname);
@@ -66,10 +66,10 @@ var TOOLTIP = {
 		}
 	},
 	
-	_showForField : function(node, module, fieldname, recordid) {	
+	_showForField : function(node, module, fieldname, recordid) {
 		if(!this._relinguishStatusControl) $('status').style.display = 'block';
 		if(typeof(TOOLTIP._cache[module]) == 'undefined') {
-			TOOLTIP._cache[module] = {}
+			TOOLTIP._cache[module] = {};
 		}
 		if(TOOLTIP._cache[module][fieldname] == false) {
 			if(!this._relinguishStatusControl) $('status').style.display = 'none';
@@ -77,7 +77,7 @@ var TOOLTIP = {
 		}
 		
 		if(typeof(TOOLTIP._cache[module][fieldname]) == 'undefined') {
-			TOOLTIP._cache[module][fieldname] = {}
+			TOOLTIP._cache[module][fieldname] = {};
 		}
 		
 		if(typeof(TOOLTIP._cache[module][fieldname][recordid]) == 'undefined') {
@@ -106,7 +106,7 @@ var TOOLTIP = {
 			TOOLTIP.show(node, module, fieldname, recordid);
 		}
 	}
-}
+};
 
 vtlib_listview.register( 'cell.onmouseover', TOOLTIP.handler);
 vtlib_listview.register( 'cell.onmouseout', TOOLTIP.handler);
