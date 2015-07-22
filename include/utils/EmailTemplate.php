@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************* */
-
 require_once 'include/events/SqlResultIterator.inc';
 
 /**
@@ -56,10 +55,7 @@ class EmailTemplate {
 		$meta = $handler->getMeta();
 		$referenceFields = $meta->getReferenceFieldDetails();
 		$fieldColumnMapping = $meta->getFieldColumnMapping();
-
 		$columnTableMapping = $meta->getColumnTableMapping();
-
-		
 		$tableList = array();
 		$columnList = array();
 		$allColumnList = $meta->getUserAccessibleColumns();
@@ -71,7 +67,7 @@ class EmailTemplate {
 				
 				}
 			}
-		
+
 			foreach ($columnList as $column) {
 				if(!empty($columnTableMapping[$column])){
 					$tableList[$columnTableMapping[$column]]='';
@@ -126,31 +122,20 @@ class EmailTemplate {
 						if(strcasecmp($webserviceField->getFieldDataType(),'reference') === 0){
 							$details = $webserviceField->getReferenceList();
 							if(count($details)==1){
-								$referencedObjectHandler = vtws_getModuleHandlerFromName(
-									$details[0],$this->user);
+								$referencedObjectHandler = vtws_getModuleHandlerFromName($details[0],$this->user);
 							}else{
-								$type = getSalesEntityType(
-										$values[$fieldColumnMapping[$fieldName]]);
-								$referencedObjectHandler = vtws_getModuleHandlerFromName($type,
-										$this->user);
+								$type = getSalesEntityType($values[$fieldColumnMapping[$fieldName]]);
+								$referencedObjectHandler = vtws_getModuleHandlerFromName($type, $this->user);
 							}
 							$referencedObjectMeta = $referencedObjectHandler->getMeta();
 							$values[$fieldColumnMapping[$fieldName]] =
-								$referencedObjectMeta->getName(vtws_getId(
-									$referencedObjectMeta->getEntityId(),
-										$values[$fieldColumnMapping[$fieldName]]));
+								$referencedObjectMeta->getName(vtws_getId($referencedObjectMeta->getEntityId(),$values[$fieldColumnMapping[$fieldName]]));
 						}elseif(strcasecmp($webserviceField->getFieldDataType(),'owner') === 0){
-							$referencedObjectHandler = vtws_getModuleHandlerFromName(
-								vtws_getOwnerType($values[$fieldColumnMapping[$fieldName]]),
-									$this->user);
+							$referencedObjectHandler = vtws_getModuleHandlerFromName(vtws_getOwnerType($values[$fieldColumnMapping[$fieldName]]),$this->user);
 							$referencedObjectMeta = $referencedObjectHandler->getMeta();
-							$values[$fieldColumnMapping[$fieldName]] =
-								$referencedObjectMeta->getName(vtws_getId(
-									$referencedObjectMeta->getEntityId(),
-										$values[$fieldColumnMapping[$fieldName]]));
+							$values[$fieldColumnMapping[$fieldName]] = $referencedObjectMeta->getName(vtws_getId($referencedObjectMeta->getEntityId(),$values[$fieldColumnMapping[$fieldName]]));
 						}elseif(strcasecmp($webserviceField->getFieldDataType(),'picklist') === 0){
-							$values[$fieldColumnMapping[$fieldName]] = getTranslatedString(
-								$values[$fieldColumnMapping[$fieldName]], $this->module);
+							$values[$fieldColumnMapping[$fieldName]] = getTranslatedString($values[$fieldColumnMapping[$fieldName]], $this->module);
 						}elseif(strcasecmp($webserviceField->getFieldDataType(),'datetime') === 0){
 							$values[$fieldColumnMapping[$fieldName]] = $values[$fieldColumnMapping[$fieldName]] .' '. DateTimeField::getDBTimeZone();
 						}
