@@ -1453,8 +1453,7 @@ function get_contactsforol($user_name)
 		$contents = str_replace('$URL$',$portalURL,$contents);
 		$contents = str_replace('$support_team$',getTranslatedString('Support Team', $moduleName),$contents);
 		$contents = str_replace('$logo$','<img src="cid:logo" />',$contents);
-		list($void,$contactid) = explode('x', $entityData->id);
-		$contents = getMergedDescription($contents, $contactid, 'Contacts');
+		$contents = getMergedDescription($contents, $entityData->getId(), 'Contacts');
 
 		if($type == "LoginDetails") {
 			$temp=$contents;
