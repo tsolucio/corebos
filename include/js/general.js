@@ -3977,6 +3977,7 @@ function ToolTipManager(){
 		div.innerHTML = text;
 		document.body.appendChild(div);
 		div.style.display = "block";
+		div.style.zIndex = "10000";
 		positionTooltip(node, divName);
 	}
 
