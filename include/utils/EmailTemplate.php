@@ -134,7 +134,7 @@ class EmailTemplate {
 							$referencedObjectHandler = vtws_getModuleHandlerFromName(vtws_getOwnerType($values[$fieldColumnMapping[$fieldName]]),$this->user);
 							$referencedObjectMeta = $referencedObjectHandler->getMeta();
 							$values[$fieldColumnMapping[$fieldName]] = $referencedObjectMeta->getName(vtws_getId($referencedObjectMeta->getEntityId(),$values[$fieldColumnMapping[$fieldName]]));
-						}elseif(strcasecmp($webserviceField->getFieldDataType(),'picklist') === 0){
+						}elseif(strcasecmp($webserviceField->getFieldDataType(),'picklist') === 0 or $fieldName== 'salutationtype'){
 							$values[$fieldColumnMapping[$fieldName]] = getTranslatedString($values[$fieldColumnMapping[$fieldName]], $this->module);
 						}elseif(strcasecmp($webserviceField->getFieldDataType(),'datetime') === 0){
 							$values[$fieldColumnMapping[$fieldName]] = $values[$fieldColumnMapping[$fieldName]] .' '. DateTimeField::getDBTimeZone();
