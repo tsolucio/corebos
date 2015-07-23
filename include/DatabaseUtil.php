@@ -75,13 +75,4 @@ function mkCountQuery($query)
     return( $query);
 }
 
-//Added for PHP version less than 5
-if (!function_exists("stripos"))
-{
-	function stripos($query,$needle)
-	{
-		return strpos(strtolower($query),strtolower($needle));
-	}
-}
-
 ?>
