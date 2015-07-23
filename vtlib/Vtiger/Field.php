@@ -136,7 +136,7 @@ class Vtiger_Field extends Vtiger_FieldBasic {
 	 * @internal Creates table vtiger_fieldmodulerel if it does not exists
 	 */
 	function setRelatedModules($moduleNames) {
-
+		if (!is_array($moduleNames) and is_string($moduleNames)) $moduleNames = array($moduleNames);
 		// We need to create core table to capture the relation between the field and modules.
 		if(!Vtiger_Utils::CheckTable('vtiger_fieldmodulerel')) {
 			Vtiger_Utils::CreateTable(
@@ -172,6 +172,7 @@ class Vtiger_Field extends Vtiger_FieldBasic {
 	 */
 	function unsetRelatedModules($moduleNames) {
 		global $adb;
+		if (!is_array($moduleNames) and is_string($moduleNames)) $moduleNames = array($moduleNames);
 		foreach($moduleNames as $relmodule) {
 			$adb->pquery('DELETE FROM vtiger_fieldmodulerel WHERE fieldid=? AND module=? AND relmodule = ?',
 				Array($this->id, $this->getModuleName(), $relmodule));
