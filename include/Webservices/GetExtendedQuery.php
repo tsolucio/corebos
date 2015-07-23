@@ -210,10 +210,10 @@ function __FQNExtendedQueryAddCondition($queryGenerator,$condition,$glue,$mainMo
 	$op = strtolower(strtok(' '));
 	$secop = strtolower(strtok(' '));
 	if ($op == 'not' and strtolower($secop)=='like') {
-		$val = substr($condition,stripos('not like', $condition)+8);
+		$val = substr($condition,stripos($condition,'not like')+8);
 		$op = 'notlike';
 	} elseif ($op == 'not' and strtolower($secop)=='in') {
-		$val = substr($condition,stripos('not in', $condition)+6);
+		$val = substr($condition,stripos($condition,'not in')+6);
 		$op = 'notin';
 	} elseif ($op == 'is') {
 		if ($secop == 'not') {
@@ -389,7 +389,7 @@ function __FQNExtendedQueryIsFQNQuery($q) {
 
 function __FQNExtendedQueryIsRelatedQuery($q) {
 	$cq = __FQNExtendedQueryCleanQuery($q);
-	$cq = substr($cq,stripos(' where '));
+	$cq = substr($cq,stripos($cq,' where '));
 	return (stripos($cq,'related.')>0);
 }
 
