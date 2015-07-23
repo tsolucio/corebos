@@ -190,45 +190,56 @@ class Vendors extends CRMEntity {
 		$log->debug("Exiting get_purchase_orders method ...");
 		return $return_value;
 	}
-	//Pavani: Function to create, export query for vendors module
-        /** Function to export the vendors in CSV Format
-        * @param reference variable - where condition is passed when the query is executed
-        * Returns Export Vendors Query.
-        */
-        function create_export_query($where)
-        {
-                global $log;
-                global $current_user;
-                $log->debug("Entering create_export_query(".$where.") method ...");
 
-                include("include/utils/ExportUtils.php");
+	/** Function to export the vendors in CSV Format
+	* @param reference variable - where condition is passed when the query is executed
+	* Returns Export Vendors Query.
+	*/
+	function create_export_query($where) {
+		global $current_user;
+		$thismodule = $_REQUEST['module'];
+		include("include/utils/ExportUtils.php");
 
-                //To get the Permitted fields query and the permitted fields list
-                $sql = getPermittedFieldsQuery("Vendors", "detail_view");
-                $fields_list = getFieldsListFromQuery($sql);
+		//To get the Permitted fields query and the permitted fields list
+		$sql = getPermittedFieldsQuery($thismodule, "detail_view");
 
-                $query = "SELECT $fields_list FROM ".$this->entity_table."
-                                INNER JOIN vtiger_vendor
-                                        ON vtiger_crmentity.crmid = vtiger_vendor.vendorid
-                                LEFT JOIN vtiger_vendorcf
-                                        ON vtiger_vendorcf.vendorid=vtiger_vendor.vendorid
-                                LEFT JOIN vtiger_seattachmentsrel
-                                        ON vtiger_vendor.vendorid=vtiger_seattachmentsrel.crmid
-                                LEFT JOIN vtiger_attachments
-                                ON vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
-                                LEFT JOIN vtiger_users
-                                        ON vtiger_crmentity.smownerid = vtiger_users.id and vtiger_users.status='Active'
-                                ";
-                $where_auto = " vtiger_crmentity.deleted = 0 ";
+		$fields_list = getFieldsListFromQuery($sql);
 
-                 if($where != "")
-                   $query .= "  WHERE ($where) AND ".$where_auto;
-                else
-                   $query .= "  WHERE ".$where_auto;
+		$query = "SELECT $fields_list, vtiger_users.user_name AS user_name
+				FROM vtiger_crmentity INNER JOIN $this->table_name ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
 
-                $log->debug("Exiting create_export_query method ...");
-                return $query;
-        }
+		if(!empty($this->customFieldTable)) {
+			$query .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
+				" = $this->table_name.$this->table_index";
+		}
+
+		$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
+		$query .= " LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id and vtiger_users.status='Active'";
+
+		$linkedModulesQuery = $this->db->pquery("SELECT distinct fieldname, columnname, relmodule FROM vtiger_field" .
+				" INNER JOIN vtiger_fieldmodulerel ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid" .
+				" WHERE uitype='10' AND vtiger_fieldmodulerel.module=?", array($thismodule));
+		$linkedFieldsCount = $this->db->num_rows($linkedModulesQuery);
+
+		for($i=0; $i<$linkedFieldsCount; $i++) {
+			$related_module = $this->db->query_result($linkedModulesQuery, $i, 'relmodule');
+			$fieldname = $this->db->query_result($linkedModulesQuery, $i, 'fieldname');
+			$columnname = $this->db->query_result($linkedModulesQuery, $i, 'columnname');
+
+			$other = CRMEntity::getInstance($related_module);
+			vtlib_setup_modulevars($related_module, $other);
+
+			$query .= " LEFT JOIN $other->table_name ON $other->table_name.$other->table_index = $this->table_name.$columnname";
+		}
+
+		$query .= $this->getNonAdminAccessControlQuery($thismodule,$current_user);
+		$where_auto = " vtiger_crmentity.deleted=0";
+
+		if($where != '') $query .= " WHERE ($where) AND $where_auto";
+		else $query .= " WHERE $where_auto";
+
+		return $query;
+	}
 
 	/**	function used to get the list of contacts which are related to the vendor
 	 *	@param int $id - vendor id
@@ -376,26 +387,6 @@ class Vendors extends CRMEntity {
 
 		$log->debug("Exiting get_emails method ...");
 		return $return_value;
-	}
-
-	/*
-	 * Function to get the primary query part of a report
-	 * @param - $module Primary module name
-	 * returns the query string formed on fetching the related data for report for primary module
-	 */
-	function generateReportsQuery($module){
-	 			$moduletable = $this->table_name;
-	 			$moduleindex = $this->table_index;
-	 			$modulecftable = $this->tab_name[2];
-	 			$modulecfindex = $this->tab_name_index[$modulecftable];
-
-	 			$query = "from $moduletable
-			        inner join $modulecftable as $modulecftable on $modulecftable.$modulecfindex=$moduletable.$moduleindex
-					inner join vtiger_crmentity on vtiger_crmentity.crmid=$moduletable.$moduleindex
-					left join vtiger_users as vtiger_users".$module." on vtiger_users".$module.".id = vtiger_crmentity.smownerid
-					left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
-                    left join vtiger_users as vtiger_lastModifiedByVendors on vtiger_lastModifiedByVendors.id = vtiger_crmentity.modifiedby ";
-	            return $query;
 	}
 
 	/*

@@ -366,4 +366,11 @@
 	<classname>importexport_inventorymodules</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Make Vendors Shareable</description>
+	<filename>build/changeSets/makeVendorShareable.php</filename>
+	<classname>makeVendorShareable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

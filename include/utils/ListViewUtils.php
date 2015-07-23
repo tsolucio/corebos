@@ -2601,11 +2601,10 @@ function getListQuery($module, $where = '') {
 		Case "Vendors":
 			$query = "SELECT vtiger_crmentity.crmid, vtiger_vendor.*
 			FROM vtiger_vendor
-			INNER JOIN vtiger_crmentity
-				ON vtiger_crmentity.crmid = vtiger_vendor.vendorid
-			INNER JOIN vtiger_vendorcf
-				ON vtiger_vendor.vendorid = vtiger_vendorcf.vendorid
-			WHERE vtiger_crmentity.deleted = 0 " . $where;
+			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_vendor.vendorid
+			INNER JOIN vtiger_vendorcf ON vtiger_vendor.vendorid = vtiger_vendorcf.vendorid";
+			$query .= getNonAdminAccessControlQuery($module, $current_user);
+			$query .= "WHERE vtiger_crmentity.deleted = 0 " . $where;
 			break;
 		Case "PriceBooks":
 			$query = "SELECT vtiger_crmentity.crmid, vtiger_pricebook.*, vtiger_currency_info.currency_name
