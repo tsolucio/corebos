@@ -379,6 +379,9 @@ function __FQNExtendedQueryField2Column($field,$mainModule,$maincolumnTable,$use
 
 function __FQNExtendedQueryProcessCondition($condition) {
 	// add spaces in front and back of operator
+	$condition = preg_replace('/> +=/', '>=', $condition);
+	$condition = preg_replace('/< +=/', '<=', $condition);
+	$condition = preg_replace('/! +=/', '!=', $condition);
 	$condlen = strlen($condition);
 	$foundop = false;
 	$chrs = 0;
@@ -386,12 +389,21 @@ function __FQNExtendedQueryProcessCondition($condition) {
 	while (!$foundop and $chrs < $condlen) {
 		$foundop = in_array($condition[$chrs],array('<','>','=','!'));
 		if ($foundop) {
-			$cond .= ' '.$condition[$chrs];
+			if ($condition[$chrs-1]!=' ') {
+				$cond .= ' '.$condition[$chrs];
+			} else {
+				$cond .= $condition[$chrs];
+			}
 			if ($condition[$chrs+1]=='=') {
-				$cond .= '= ';
+				$cond .= '=';
+				if ($condition[$chrs+2]!=' ') {
+					$cond .= ' ';
+				}
 				$chrs++;
 			} else {
-				$cond .= ' ';
+				if ($condition[$chrs+1]!=' ') {
+					$cond .= ' ';
+				}
 			}
 		} else {
 			$cond .= $condition[$chrs];
@@ -399,8 +411,6 @@ function __FQNExtendedQueryProcessCondition($condition) {
 		$chrs++;
 	}
 	$cond .= substr($condition,$chrs);
-	// eliminate duplicate spaces
-	$cond = preg_replace('/  +/', ' ', $cond);
 	return $cond;
 }
 
