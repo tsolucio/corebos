@@ -268,6 +268,13 @@ $query = $queryGenerator->getQuery();
 echo "$query<br>";
 testquery($query);
 
+$queryGenerator = new QueryGenerator('CobroPago', $current_user);
+$queryGenerator->setFields(array('id','assigned_user_id', 'Contacts.firstname','Salesorder.subject','amount','paid'));
+$queryGenerator->addReferenceModuleFieldCondition('Contacts', 'parent_id', 'homephone', '902886938', 'e');
+$query = $queryGenerator->getQuery();
+echo "$query<br>";
+testquery($query);
+
 echo "<h2>Document Module Queries</h2>";
 $queryGenerator = new QueryGenerator('Documents', $current_user);
 $queryGenerator->setFields(array('id','assigned_user_id', 'notes_title','filename'));
