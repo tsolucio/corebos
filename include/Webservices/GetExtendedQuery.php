@@ -306,9 +306,8 @@ function __FQNExtendedQueryAddCondition($queryGenerator,$condition,$glue,$mainMo
 		$handler = new $handlerClass($webserviceObject,$user,$adb,$log);
 		$relmeta = $handler->getMeta();
 		$fmod = $relmeta->getTabName();  // normalize module name
-		$rfs = $relmeta->getReferenceFieldDetails();
 		$found = false;
-		foreach ($rfs as $reffld => $mods) {
+		foreach ($fromrfs as $reffld => $mods) {
 			if (in_array($fmod, $mods)) {
 				$found = true;
 				if ($fname=='id') {
@@ -352,19 +351,30 @@ function __FQNExtendedQueryField2Column($field,$mainModule,$maincolumnTable,$use
 	}
 	if (strpos($field, '.')>0) {  // FQN
 		list($fmod,$fname) = explode('.', $field);
+		$fromwebserviceObject = VtigerWebserviceObject::fromName($adb,$mainModule);
+		$fromhandlerPath = $fromwebserviceObject->getHandlerPath();
+		$fromhandlerClass = $fromwebserviceObject->getHandlerClass();
+		require_once $fromhandlerPath;
+		$fromhandler = new $fromhandlerClass($fromwebserviceObject,$user,$adb,$log);
+		$fromrelmeta = $fromhandler->getMeta();
+		$fromrfs = $fromrelmeta->getReferenceFieldDetails();
+		$webserviceObject = VtigerWebserviceObject::fromName($adb,$fmod);
+		$handlerPath = $webserviceObject->getHandlerPath();
+		$handlerClass = $webserviceObject->getHandlerClass();
+		require_once $handlerPath;
+		$handler = new $handlerClass($webserviceObject,$user,$adb,$log);
+		$relmeta = $handler->getMeta();
+		$fieldcolumn = $relmeta->getFieldColumnMapping();
+		$fieldtable = $relmeta->getColumnTableMapping();
+		$fmod = $relmeta->getTabName();  // normalize module name
 		if ($fmod==$mainModule) {
-			return $fmod.'.'.$maincolumnTable[$fname];
+			return $fieldtable[$fname].'.'.$maincolumnTable[$fname];
 		} else {
-			$webserviceObject = VtigerWebserviceObject::fromName($adb,$fmod);
-			$handlerPath = $webserviceObject->getHandlerPath();
-			$handlerClass = $webserviceObject->getHandlerClass();
-			require_once $handlerPath;
-			$handler = new $handlerClass($webserviceObject,$user,$adb,$log);
-			$relmeta = $handler->getMeta();
-			$fieldcolumn = $relmeta->getFieldColumnMapping();
-			return $fmod.'.'.$fieldcolumn[$fname];
+			$fmodreffld = __FQNExtendedQueryGetRefFieldForModule($fromrfs,$fmod,$fname);
+			return $fieldtable[$fname].$fmodreffld.'.'.$fieldcolumn[$fname];
 		}
 	}
+	return $field;
 }
 
 function __FQNExtendedQueryProcessCondition($condition) {
