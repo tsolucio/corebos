@@ -292,6 +292,13 @@ function __FQNExtendedQueryAddCondition($queryGenerator,$condition,$glue,$mainMo
 
 	if (strpos($field, '.')>0) {  // FQN
 		list($fmod,$fname) = explode('.', $field);
+		$fromwebserviceObject = VtigerWebserviceObject::fromName($adb,$mainModule);
+		$fromhandlerPath = $fromwebserviceObject->getHandlerPath();
+		$fromhandlerClass = $fromwebserviceObject->getHandlerClass();
+		require_once $fromhandlerPath;
+		$fromhandler = new $fromhandlerClass($fromwebserviceObject,$user,$adb,$log);
+		$fromrelmeta = $fromhandler->getMeta();
+		$fromrfs = $fromrelmeta->getReferenceFieldDetails();
 		$webserviceObject = VtigerWebserviceObject::fromName($adb,$fmod);
 		$handlerPath = $webserviceObject->getHandlerPath();
 		$handlerClass = $webserviceObject->getHandlerClass();
@@ -308,7 +315,8 @@ function __FQNExtendedQueryAddCondition($queryGenerator,$condition,$glue,$mainMo
 					list($wsid,$val) = explode('x', $val);
 					$fname = $relmeta->getObectIndexColumn();
 				}
-				$queryGenerator->addReferenceModuleFieldCondition($fmod, $reffld, $fname, $val, $op, $glue);
+				$fmodreffld = __FQNExtendedQueryGetRefFieldForModule($fromrfs,$fmod,$reffld);
+				$queryGenerator->addReferenceModuleFieldCondition($fmod, $fmodreffld, $fname, $val, $op, $glue);
 				break;
 			}
 		}
@@ -324,6 +332,16 @@ function __FQNExtendedQueryAddCondition($queryGenerator,$condition,$glue,$mainMo
 		}
 		$queryGenerator->addCondition($field, $val, $op, $glue);
 	}
+}
+
+function __FQNExtendedQueryGetRefFieldForModule($fromrfs,$module,$reffld) {
+	foreach ($fromrfs as $freffld => $mods) {
+		if (in_array($module, $mods)) {
+			$reffld = $freffld;
+			break;
+		}
+	}
+	return $reffld;
 }
 
 function __FQNExtendedQueryField2Column($field,$mainModule,$maincolumnTable,$user) {
