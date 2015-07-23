@@ -379,9 +379,6 @@ function __FQNExtendedQueryField2Column($field,$mainModule,$maincolumnTable,$use
 
 function __FQNExtendedQueryProcessCondition($condition) {
 	// add spaces in front and back of operator
-	$condition = preg_replace('/> +=/', '>=', $condition);
-	$condition = preg_replace('/< +=/', '<=', $condition);
-	$condition = preg_replace('/! +=/', '!=', $condition);
 	$condlen = strlen($condition);
 	$foundop = false;
 	$chrs = 0;
@@ -394,6 +391,7 @@ function __FQNExtendedQueryProcessCondition($condition) {
 			} else {
 				$cond .= $condition[$chrs];
 			}
+			while ($condition[$chrs+1]==' ') $chrs++;
 			if ($condition[$chrs+1]=='=') {
 				$cond .= '=';
 				if ($condition[$chrs+2]!=' ') {
