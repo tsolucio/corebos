@@ -10,24 +10,7 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-
-/*********************************************
- * With modifications by
- * Daniel Jabbour
- * iWebPress Incorporated, www.iwebpress.com
- * djabbour - a t - iwebpress - d o t - com
- ********************************************/
-
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Users/Users.php,v 1.10 2005/04/19 14:40:48 ray Exp $
- * Description: TODO:  To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
 require_once('include/logging.php');
 require_once('include/database/PearDatabase.php');
 require_once('include/utils/UserInfoUtil.php');
@@ -39,10 +22,7 @@ require_once 'include/utils/CommonUtils.php';
 require_once 'include/Webservices/Utils.php';
 require_once('modules/Users/UserTimeZonesArray.php');
 
-// User is used to store customer information.
-/** Main class for the user module
- *
- */
+/** Main class for the user module */
 class Users extends CRMEntity {
     var $log;
     /**
@@ -132,15 +112,12 @@ class Users extends CRMEntity {
 
     /** constructor function for the main user class
      instantiates the Logger class and PearDatabase Class
-     *
      */
-
     function Users() {
         $this->log = LoggerManager::getLogger('user');
         $this->log->debug("Entering Users() method ...");
         $this->db = PearDatabase::getInstance();
-        $this->DEFAULT_PASSWORD_CRYPT_TYPE = (version_compare(PHP_VERSION, '5.3.0') >= 0)?
-                'PHP5.3MD5': 'MD5';
+        $this->DEFAULT_PASSWORD_CRYPT_TYPE = (version_compare(PHP_VERSION, '5.3.0') >= 0)? 'PHP5.3MD5': 'MD5';
         $this->column_fields = getColumnFields('Users');
         $this->column_fields['currency_name'] = '';
         $this->column_fields['currency_code'] = '';
@@ -149,7 +126,6 @@ class Users extends CRMEntity {
         $this->log->debug("Exiting Users() method ...");
     }
 
-    // Mike Crowe Mod --------------------------------------------------------Default ordering for us
     /**
      * Function to get sort order
      * return string  $sorder    - sortorder string either 'ASC' or 'DESC'

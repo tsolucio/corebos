@@ -1032,9 +1032,8 @@ class CRMEntity {
 
 	/**
 	 * This function returns a full (ie non-paged) list of the current object type.
-	 * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc..
-	 * All Rights Reserved..
-	 * Contributor(s): ______________________________________..
+	 * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
+	 * All Rights Reserved.
 	 */
 	function get_full_list($order_by = "", $where = "") {
 		$this->log->debug("get_full_list:  order_by = '$order_by' and where = '$where'");
@@ -1043,15 +1042,13 @@ class CRMEntity {
 	}
 
 	/**
-	 * Track the viewing of a detail record.  This leverages get_summary_text() which is object specific
+	 * Track the viewing of a detail record.
 	 * params $user_id - The user that is viewing the record.
-	 * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc..
-	 * All Rights Reserved..
-	 * Contributor(s): ______________________________________..
+	 * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
+	 * All Rights Reserved.
 	 */
 	function track_view($user_id, $current_module, $id = '') {
-		$this->log->debug("About to call vtiger_tracker (user_id, module_name, item_id)($user_id, $current_module, $this->id)");
-
+		$this->log->debug("About to call tracker (user_id, module_name, item_id)($user_id, $current_module, $this->id)");
 		$tracker = new Tracker();
 		$tracker->track_view($user_id, $current_module, $id, '');
 	}
@@ -2419,8 +2416,7 @@ class CRMEntity {
 			$module = getTabModuleName($tabId);
 		}
 		$query = $this->getNonAdminAccessQuery($module, $user, $parentRole, $userGroups);
-		$query = "create temporary table IF NOT EXISTS $tableName(id int(11) primary key) ignore " .
-				$query;
+		$query = "create temporary table IF NOT EXISTS $tableName(id int(11) primary key) ignore " . $query;
 		$db = PearDatabase::getInstance();
 		$result = $db->pquery($query, array());
 		if (is_object($result)) {

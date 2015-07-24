@@ -854,7 +854,7 @@ function isPermitted($module,$actionname,$record_id='')
 		return $permission;
 	}
 
-	//If modules is Products,Vendors,Faq,PriceBook then no sharing
+	//If modules is Faq or PriceBook then no sharing
 	if($record_id != '')
 	{
 		if(getTabOwnedBy($module) == 1)
