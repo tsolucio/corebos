@@ -524,7 +524,7 @@ class Potentials extends CRMEntity {
 					left outer join vtiger_potential on vtiger_potential.potentialid=vtiger_quotes.potentialid
 					left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
 					left join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
-					inner join vtiger_account on vtiger_account.accountid=vtiger_quotes.accountid
+					left join vtiger_account on vtiger_account.accountid=vtiger_quotes.accountid
 					where vtiger_crmentity.deleted=0 and vtiger_potential.potentialid=".$id;
 
 		$return_value = GetRelatedList($this_module, $related_module, $other, $query, $button, $returnset);
