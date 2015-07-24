@@ -11,7 +11,6 @@
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
  ********************************************************************************/
-
 include_once('config.php');
 require_once('include/logging.php');
 require_once('include/utils/utils.php');
@@ -165,18 +164,6 @@ class Invoice extends CRMEntity {
 		}
 		parent::trash($module, $recordId);
 	}
-
-	/**	function used to get the name of the current object
-	 *	@return string $this->name - name of the current object
-	 */
-	function get_summary_text()
-	{
-		global $log;
-		$log->debug("Entering get_summary_text() method ...");
-		$log->debug("Exiting get_summary_text method ...");
-		return $this->name;
-	}
-
 
 	/**	function used to get the list of activities which are related to the invoice
 	 *	@param int $id - invoice id
