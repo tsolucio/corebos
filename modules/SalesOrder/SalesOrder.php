@@ -111,11 +111,13 @@ class SalesOrder extends CRMEntity {
 		global $updateInventoryProductRel_deduct_stock;
 		$updateInventoryProductRel_deduct_stock = true;
 		//Checking if quote_id is present and updating the quote status
-		if($this->column_fields["quote_id"] != '')
-		{
-        		$qt_id = $this->column_fields["quote_id"];
-        		$query1 = "update vtiger_quotes set quotestage='Accepted' where quoteid=?";
-        		$this->db->pquery($query1, array($qt_id));
+		if($this->column_fields['quote_id'] != '') {
+			$newStatus = GlobalVariable::getVariable('QuoteStatusOnSalesOrderSave', 'Accepted');
+			if ($newStatus!='DoNotChange') {
+				$qt_id = $this->column_fields['quote_id'];
+				$query1 = 'update vtiger_quotes set quotestage=? where quoteid=?';
+				$this->db->pquery($query1, array($newStatus, $qt_id));
+			}
 		}
 
 		//in ajax save we should not call this function, because this will delete all the existing product values

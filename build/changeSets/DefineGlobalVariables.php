@@ -38,6 +38,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Lead_Convert_TransferToAccount',
 				'Show_Copy_Adress_Header',
 				'SalesOrderStatusOnInvoiceSave',
+				'QuoteStatusOnSalesOrderSave',
 			);
 			
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');
