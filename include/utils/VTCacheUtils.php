@@ -222,7 +222,6 @@ class VTCacheUtils {
 	/** Report module information based on used. */
 	static $_reportmodule_infoperuser_cache = array();
 	static function lookupReport_Info($userid, $reportid) {
-		
 		if(isset(self::$_reportmodule_infoperuser_cache[$userid])) {
 			if(isset(self::$_reportmodule_infoperuser_cache[$userid][$reportid])) {
 				return self::$_reportmodule_infoperuser_cache[$userid][$reportid];
@@ -230,6 +229,21 @@ class VTCacheUtils {
 		}
 		return false;
 	}
+
+	static $_map_listofmodules_cache = false;
+	static function lookupMap_ListofModuleInfos() {
+		return self::$_map_listofmodules_cache;
+	}
+	static function updateMap_ListofModuleInfos($module_list, $related_modules,$rel_fields) {
+		if(self::$_map_listofmodules_cache === false) {
+			self::$_map_listofmodules_cache = array(
+				'module_list' => $module_list,
+				'related_modules' => $related_modules,
+				'rel_fields'=>$rel_fields
+			);
+		}
+	}
+
 	static function updateReport_Info($userid, $reportid, $primarymodule, $secondarymodules, $reporttype,
 	$reportname, $description, $folderid, $owner) {
 		if(!isset(self::$_reportmodule_infoperuser_cache[$userid])) {
