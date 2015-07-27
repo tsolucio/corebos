@@ -924,7 +924,9 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 					}
 
 					// vtlib customization: For listview javascript triggers
+					if (strpos($value, 'vtlib_metainfo')===false) {
 					$value = "$value <span type='vtlib_metainfo' vtrecordid='{$entity_id}' vtfieldname='{$fieldname}' vtmodule='$module' style='display:none;'></span>";
+					}
 					// END
 
 					if ($module == "Calendar" && $name == $app_strings['Close']) {
@@ -3186,6 +3188,9 @@ function getRelatedTo($module, $list_result, $rset) {
 		$parent_value = $parent_name;
 	} else {
 		$parent_value = $module_icon . "<a href='index.php?module=" . $parent_module . "&action=" . $action . "&record=" . $parent_id . "&parenttab=" . $tabname . "'>" . textlength_check($parent_name) . "</a>";
+		$modMetaInfo = getEntityFieldNames($parent_module);
+		$modEName = (is_array($modMetaInfo['fieldname']) ? $modMetaInfo['fieldname'][0] : $modMetaInfo['fieldname']);
+		$parent_value .= "<span type='vtlib_metainfo' vtrecordid='{$parent_id}' vtfieldname='{$modEName}' vtmodule='$parent_module' style='display:none;'></span>";
 	}
 	//code added by raju ends
 	$log->debug("Exiting getRelatedTo method ...");
