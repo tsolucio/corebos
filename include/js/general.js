@@ -107,62 +107,28 @@ function getOpenerObj(n) {
 
 
 function findPosX(obj) {
-
-	var curleft = 0;
-
-	if (document.getElementById || document.all) {
-
-		while (obj.offsetParent) {
-
-			curleft += obj.offsetLeft
-
-			obj = obj.offsetParent;
-
-		}
-
-	} else if (document.layers) {
-
-		curleft += obj.x;
-
-	}
-
-
-
-	return curleft;
-
+    var pos = getPosition(obj);
+    return pos.x;
 }
 
 
 
 function findPosY(obj) {
-
-	var curtop = 0;
-
-
-
-	if (document.getElementById || document.all) {
-
-		while (obj.offsetParent) {
-
-			curtop += obj.offsetTop
-
-			obj = obj.offsetParent;
-
-		}
-
-	}else if (document.layers) {
-
-		curtop += obj.y;
-
-	}
-
-
-
-	return curtop;
-
+    var pos = getPosition(obj);
+    return pos.y;
 }
 
-
+function getPosition(element) {
+    var xPosition = 0;
+    var yPosition = 0;
+  
+    while(element) {
+        xPosition += (element.offsetLeft - element.scrollLeft + element.clientLeft);
+        yPosition += (element.offsetTop - element.scrollTop + element.clientTop);
+        element = element.offsetParent;
+    }
+    return { x: xPosition, y: yPosition };
+}
 
 function clearTextSelection() {
 
@@ -3977,7 +3943,7 @@ function ToolTipManager(){
 		div.innerHTML = text;
 		document.body.appendChild(div);
 		div.style.display = "block";
-		div.style.zIndex = "10000";
+		div.style.zIndex = "1000000";
 		positionTooltip(node, divName);
 	}
 
@@ -4033,7 +3999,7 @@ function ToolTipManager(){
 		var tooltipDimensions = getDimension(obj);
 		var tooltipWidth = tooltipDimensions.x;
 
-		if(getVal  > document.body.clientWidth ){
+                if(getVal  > document.body.clientWidth ){
 			leftSide = eval(leftSide) - eval(widthM);
 		}else{
 			leftSide = eval(leftSide) + (eval(tooltipWidth)/2);
