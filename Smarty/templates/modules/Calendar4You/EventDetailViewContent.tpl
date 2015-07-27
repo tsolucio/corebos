@@ -178,7 +178,9 @@
 									<table border=0 cellspacing=0 cellpadding=3 width=100%>
 										<tr>
 											<td class="dvtTabCache" style="width:10px" nowrap>&nbsp;</td>
-											<td id="cellTabInvite" class="dvtSelectedCell" align=center nowrap><a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','on');switchClass('cellTabAlarm','off');switchClass('cellTabRepeat','off');switchClass('cellTabRelatedto','off');ghide('addEventAlarmUI');dispLayer('addEventInviteUI');ghide('addEventRepeatUI');ghide('addEventRelatedtoUI');">{$CMOD.LBL_INVITE}</a></td>
+											<td id="cellTabRelatedto" class="dvtSelectedCell" align=center nowrap><a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','off');switchClass('cellTabAlarm','off');switchClass('cellTabRepeat','off');switchClass('cellTabRelatedto','on');ghide('addEventAlarmUI');ghide('addEventInviteUI');dispLayer('addEventRelatedtoUI');ghide('addEventRepeatUI');">{$CMOD.LBL_LIST_RELATED_TO}</a></td>
+											<td class="dvtTabCache" style="width:10px">&nbsp;</td>
+											<td id="cellTabInvite" class="dvtUnSelectedCell" align=center nowrap><a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','on');switchClass('cellTabAlarm','off');switchClass('cellTabRepeat','off');switchClass('cellTabRelatedto','off');ghide('addEventAlarmUI');dispLayer('addEventInviteUI');ghide('addEventRepeatUI');ghide('addEventRelatedtoUI');">{$CMOD.LBL_INVITE}</a></td>
 											<td class="dvtTabCache" style="width:10px">&nbsp;</td>
 											{if $LABEL.reminder_time neq ''}
 											<td id="cellTabAlarm" class="dvtUnSelectedCell" align=center nowrap><a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','off');switchClass('cellTabAlarm','on');switchClass('cellTabRepeat','off');switchClass('cellTabRelatedto','off');dispLayer('addEventAlarmUI');ghide('addEventInviteUI');ghide('addEventRepeatUI');ghide('addEventRelatedtoUI');">{$CMOD.LBL_REMINDER}</a></td>
@@ -187,8 +189,6 @@
 											{if $LABEL.recurringtype neq ''}
 											<td id="cellTabRepeat" class="dvtUnSelectedCell" align=center nowrap><a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','off');switchClass('cellTabAlarm','off');switchClass('cellTabRepeat','on');switchClass('cellTabRelatedto','off');ghide('addEventAlarmUI');ghide('addEventInviteUI');dispLayer('addEventRepeatUI');ghide('addEventRelatedtoUI');">{$CMOD.LBL_REPEAT}</a></td>
 											{/if}
-											<td class="dvtTabCache" style="width:10px">&nbsp;</td>
-											<td id="cellTabRelatedto" class="dvtUnSelectedCell" align=center nowrap><a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','off');switchClass('cellTabAlarm','off');switchClass('cellTabRepeat','off');switchClass('cellTabRelatedto','on');ghide('addEventAlarmUI');ghide('addEventInviteUI');dispLayer('addEventRelatedtoUI');ghide('addEventRepeatUI');">{$CMOD.LBL_LIST_RELATED_TO}</a></td>
 											<td class="dvtTabCache" style="width:100%">&nbsp;</td>
 										</tr>
 									</table></td>
@@ -196,7 +196,7 @@
 
 								<tr>
 									<td width=100% valign=top align=left class="dvtContentSpace" style="padding:10px;height:120px"><!-- Invite UI -->
-									<DIV id="addEventInviteUI" style="display:block;width:100%">
+									<DIV id="addEventInviteUI" style="display:none;width:100%">
 										<table width="100%" cellpadding="5" cellspacing="0" border="0">
 											<tr>
 												<td width="30%" valign="top" align=right><b>{$CMOD.LBL_USERS}</b></td>
@@ -243,7 +243,7 @@
 										</table>
 										{/if}
 									</div><!-- Relatedto UI -->
-									<div id="addEventRelatedtoUI" style="display:none;width:100%">
+									<div id="addEventRelatedtoUI" style="display:block;width:100%">
 										<table width="100%" cellpadding="5" cellspacing="0" border="0">
 											{if $LABEL.parent_id neq ''}
 											<tr>
@@ -369,39 +369,26 @@
 								<tr>
 									<td>
 									<table border="0" cellpadding="3" cellspacing="0" width="100%">
-										<tr>
-											<td class="dvtTabCache" style="width: 10px;" nowrap="nowrap">&nbsp;</td>
-											{if $LABEL.sendnotification neq ''}
-											{assign var='class_val' value='dvtUnSelectedCell'}
-											<td id="cellTabInvite" class="dvtSelectedCell" align="center" nowrap="nowrap"><a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','on');switchClass('cellTabRelatedto','off');dispLayer('addTaskAlarmUI');ghide('addTaskRelatedtoUI');">{$CMOD.LBL_NOTIFICATION}</td></a>
-									</td>
-									{else}
-									{assign var='class_val' value='dvtSelectedCell'}
-									{/if}
-									<td class="dvtTabCache" style="width: 10px;" nowrap="nowrap">&nbsp;</td>
-									{if ($LABEL.parent_id neq '') || ($LABEL.contact_id neq '') }
-									<td id="cellTabRelatedto" class={$class_val} align=center nowrap><a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','off');switchClass('cellTabRelatedto','on');dispLayer('addTaskRelatedtoUI');ghide('addTaskAlarmUI');">{$CMOD.LBL_RELATEDTO}</a></td>
-									{/if}
-									<td class="dvtTabCache" style="width: 100%;">&nbsp;</td>
+									<tr>
+										<td class="dvtTabCache" style="width: 10px;" nowrap="nowrap">&nbsp;</td>
+										<td id="cellTabRelatedto" class='dvtSelectedCell' align=center nowrap><a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','off');switchClass('cellTabRelatedto','on');dispLayer('addTaskRelatedtoUI');ghide('addTaskAlarmUI');">{$CMOD.LBL_RELATEDTO}</a></td>
+										<td class="dvtTabCache" style="width: 10px;" nowrap="nowrap">&nbsp;</td>
+										<td id="cellTabInvite" class="dvtUnSelectedCell" align="center" nowrap="nowrap"><a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','on');switchClass('cellTabRelatedto','off');dispLayer('addTaskAlarmUI');ghide('addTaskRelatedtoUI');">{$CMOD.LBL_NOTIFICATION}</td></a></td>
+										<td class="dvtTabCache" style="width: 100%;">&nbsp;</td>
 								</tr>
 							</table></td>
 						</tr>
 						<tr>
 							<td width=100% valign=top align=left class="dvtContentSpace" style="padding:10px;height:120px"><!-- Notification UI -->
-							<DIV id="addTaskAlarmUI" style="display:block;width:100%">
-								{if $LABEL.sendnotification neq ''}
-								{assign var='vision' value='none'}
+							<DIV id="addTaskAlarmUI" style="display:none;width:100%">
 								<table width="100%" cellpadding="5" cellspacing="0" border="0">
 									<tr>
 										<td width="30%" align=right><b>{$CMOD.LBL_SENDNOTIFICATION}</b></td>
 										<td width="70%" align=left>{$ACTIVITYDATA.sendnotification}</td>
 									</tr>
 								</table>
-								{else}
-								{assign var='vision' value='block'}
-								{/if}
 							</DIV>
-							<div id="addTaskRelatedtoUI" style="display:{$vision};width:100%">
+							<div id="addTaskRelatedtoUI" style="display:block;width:100%">
 								<table width="100%" cellpadding="5" cellspacing="0" border="0">
 									<tr>
 										{if $LABEL.parent_id neq ''}
