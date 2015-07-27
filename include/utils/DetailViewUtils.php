@@ -1058,7 +1058,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		if ($col_fields[$fieldname]) {
-			$reminder_str = $rem_days . '&nbsp;' . $mod_strings['LBL_DAYS'] . '&nbsp;' . $rem_hrs . '&nbsp;' . $mod_strings['LBL_HOURS'] . '&nbsp;' . $rem_min . '&nbsp;' . $mod_strings['LBL_MINUTES'] . '&nbsp;&nbsp;' . $mod_strings['LBL_BEFORE_EVENT'];
+			$reminder_str = $rem_days . '&nbsp;' . getTranslatedString('LBL_DAYS','Calendar') . '&nbsp;' . $rem_hrs . '&nbsp;' . getTranslatedString('LBL_HOURS','Calendar') . '&nbsp;' . $rem_min . '&nbsp;' . getTranslatedString('LBL_MINUTES','Calendar') . '&nbsp;&nbsp;' . getTranslatedString('LBL_BEFORE_EVENT','Calendar');
 		}
 		$label_fld[] = '&nbsp;' . $reminder_str;
 	} elseif ($uitype == 98) {

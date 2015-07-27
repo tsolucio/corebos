@@ -10,16 +10,7 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/include/utils/EditViewUtils.php,v 1.188 2005/04/29 05:5 * 4:39 rank Exp
- * Description:  Includes generic helper functions used throughout the application.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
 require_once('include/database/PearDatabase.php');
 require_once('include/ComboUtil.php'); //new
 require_once('include/utils/CommonUtils.php'); //new
@@ -1221,7 +1212,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$day_options = getReminderSelectOption(0,31,'remdays',$rem_days);
 		$hr_options = getReminderSelectOption(0,23,'remhrs',$rem_hrs);
 		$min_options = getReminderSelectOption(1,59,'remmin',$rem_min);
-		$fieldvalue[] = array(array(0,32,'remdays',getTranslatedString('LBL_DAYS'),$rem_days),array(0,24,'remhrs',getTranslatedString('LBL_HOURS'),$rem_hrs),array(1,60,'remmin',getTranslatedString('LBL_MINUTES').'&nbsp;&nbsp;'.getTranslatedString('LBL_BEFORE_EVENT'),$rem_min));
+		$fieldvalue[] = array(array(0,32,'remdays',getTranslatedString('LBL_DAYS','Calendar'),$rem_days),array(0,24,'remhrs',getTranslatedString('LBL_HOURS','Calendar'),$rem_hrs),array(1,60,'remmin',getTranslatedString('LBL_MINUTES','Calendar').'&nbsp;&nbsp;'.getTranslatedString('LBL_BEFORE_EVENT','Calendar'),$rem_min));
 		$fieldvalue[] = array($SET_REM,getTranslatedString('LBL_YES'),getTranslatedString('LBL_NO'));
 		$SET_REM = '';
 	}
