@@ -95,7 +95,7 @@ if (isset($_REQUEST['accountid']) && is_null($focus->parent_id)) {
 }
 
 $act_data = getBlocks($tab_type,"detail_view",'',$focus->column_fields);
-
+$finaldata = array();
 foreach($act_data as $block=>$entry) {
 	foreach($entry as $key=>$value) {
 		foreach($value as $label=>$field) {
@@ -110,9 +110,11 @@ foreach($act_data as $block=>$entry) {
 				$fldvalue = $field['value'];
 				if($field['fldname'] == 'description') { $fldvalue = nl2br($fldvalue); }
 				$finaldata[$field['fldname']] = $fldvalue;
-			}	
-			
+			}
 			$finaldata[$field['fldname'].'link'] = $field['link'];
+			if (isset($field['secid'])) {
+				$finaldata[$field['fldname'].'secid'] = $field['secid'];
+			}
 		}
 	}
 }
@@ -126,6 +128,7 @@ else
 list($stdate,$sttime) = split(' ',$finaldata['date_start']);
 list($enddate,$endtime) = split(' ',$finaldata['due_date']);
 $time_arr = getaddEventPopupTime($sttime,$endtime,$format);
+$data = array();
 $data['starthr'] = $time_arr['starthour'];
 $data['startmin'] = $time_arr['startmin'];
 $data['startfmt'] = $time_arr['startfmt'];
@@ -158,6 +161,7 @@ if($activity_mode == 'Task') {
 	$data['activitytype'] = $activity_mode;
 	$data['contact_id'] = $finaldata['contact_id'];
 	$data['contact_idlink'] = $finaldata['contact_idlink'];
+	$data['contact_idid'] = $finaldata['contact_idsecid'];
 } elseif($activity_mode == 'Events') {
 	$data['visibility'] = $finaldata['visibility'];
 	if($c_mod_strings[$finaldata['eventstatus']] != '')
@@ -206,9 +210,10 @@ if($activity_mode == 'Task') {
 
 	$entityIds = array_keys($contact_info);
 	$displayValueArray = getEntityName('Contacts', $entityIds);
+	$entityname = array();
 	if (!empty($displayValueArray)) {
 		foreach ($displayValueArray as $key => $field_value) {
-			$entityname[] = '<a href="index.php?module=Contacts&action=DetailView&record=' . $key . '">' . $field_value . '</a>';
+			$entityname[$key] = '<a href="index.php?module=Contacts&action=DetailView&record=' . $key . '">' . $field_value . '</a>';
 		}
 	}
 	$smarty->assign("CONTACTS",$entityname);

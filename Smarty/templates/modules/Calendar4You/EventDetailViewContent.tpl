@@ -248,15 +248,19 @@
 											{if $LABEL.parent_id neq ''}
 											<tr>
 												<td width="30%" align=right valign="top"><b>{$LABEL.parent_id}</b></td>
-												<td width="70%" align=left valign="top">{$ACTIVITYDATA.parent_name}</td>
+												<td width="70%" align=left valign="top" onmouseover="vtlib_listview.trigger('cell.onmouseover', $(this))" onmouseout="vtlib_listview.trigger('cell.onmouseout', $(this))">{$ACTIVITYDATA.parent_name}</td>
 											</tr>
 											{/if}
 											<tr>
 												<td width="30%" valign="top" align=right><b>{$CMOD.LBL_CONTACT_NAME}</b></td>
-												<td width="70%" valign="top" align=left> {foreach item=contactname key=cntid from=$CONTACTS}
-												{$contactname}
-												<br>
-												{/foreach} </td>
+												<td width="70%" valign="top" align=left>
+													<table border=0>
+													{foreach item=contactname key=cntid from=$CONTACTS}
+														<tr><td onmouseover="vtlib_listview.trigger('cell.onmouseover', $(this))" onmouseout="vtlib_listview.trigger('cell.onmouseout', $(this))">
+															{$contactname}<span type='vtlib_metainfo' vtrecordid='{$cntid}' vtfieldname='firstname' vtmodule='Contacts' style='display:none;'></span>
+														</td></tr>
+													{/foreach}
+													</table></td>
 											</tr>
 										</table>
 									</div></td>
@@ -393,13 +397,13 @@
 									<tr>
 										{if $LABEL.parent_id neq ''}
 										<td width="30%" align=right><b>{$LABEL.parent_id}</b></td>
-										<td width="70%" align=left>{$ACTIVITYDATA.parent_name}</td>
+										<td width="70%" align=left onmouseover="vtlib_listview.trigger('cell.onmouseover', $(this))" onmouseout="vtlib_listview.trigger('cell.onmouseout', $(this))">{$ACTIVITYDATA.parent_name}</td>
 										{/if}
 									</tr>
 									<tr>
 										{if $LABEL.contact_id neq ''}
 										<td width="30%" align=right><b>{$CMOD.LBL_CONTACT_NAME}</b></td>
-										<td width="70%" align=left><a href="{$ACTIVITYDATA.contact_idlink}">{$ACTIVITYDATA.contact_id}</a></td>
+										<td width="70%" align=left onmouseover="vtlib_listview.trigger('cell.onmouseover', $(this))" onmouseout="vtlib_listview.trigger('cell.onmouseout', $(this))"><a href="{$ACTIVITYDATA.contact_idlink}">{$ACTIVITYDATA.contact_id}</a><span type='vtlib_metainfo' vtrecordid='{$ACTIVITYDATA.contact_idid}' vtfieldname='firstname' vtmodule='Contacts' style='display:none;'></span></td>
 										{/if}
 									</tr>
 								</table>
