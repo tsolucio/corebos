@@ -373,4 +373,11 @@
 	<classname>makeVendorShareable</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>fix UIType 4 Webservice Field Type</description>
+	<filename>build/changeSets/fixUIType4WebserviceFieldType.php</filename>
+	<classname>fixUIType4WebserviceFieldType</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

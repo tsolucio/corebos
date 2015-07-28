@@ -10,9 +10,7 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-
 require_once('Smarty_setup.php');
 require_once('data/Tracker.php');
 require_once('include/CustomFieldUtil.php');
@@ -34,7 +32,7 @@ $Calendar4You->GetDefPermission($current_user->id);
 $detail_permissions = $Calendar4You->CheckPermissions("DETAIL",$record);
 
 if(!$detail_permissions) {
-  	NOPermissionDiv();
+	NOPermissionDiv();
 }
 
 if( $_SESSION['mail_send_error']!="") {
@@ -54,27 +52,27 @@ $smarty =  new vtigerCRM_Smarty();
 $activity_mode = vtlib_purify($_REQUEST['activity_mode']);
 //If activity_mode == null
 if(empty($activity_mode)) {
-    $activity_mode = getEventActivityMode($record);
+	$activity_mode = getEventActivityMode($record);
 }
 
 if($activity_mode == 'Task') {
-    $tab_type = 'Calendar';
-    $rel_tab_type = 'Calendar4You';
+	$tab_type = 'Calendar';
+	$rel_tab_type = 'Calendar4You';
 	$smarty->assign("SINGLE_MOD",$c_mod_strings['LBL_TODO']);
 } elseif($activity_mode == 'Events') {
-    $rel_tab_type = $tab_type = 'Events';
+	$rel_tab_type = $tab_type = 'Events';
 	$smarty->assign("SINGLE_MOD",$c_mod_strings['LBL_EVENT']);
 }
 
 if(isset($record) && $record!="") {
-    $focus->retrieve_entity_info($record,$tab_type);
-    $focus->id = $record;
-    $focus->name=$focus->column_fields['subject'];
+	$focus->retrieve_entity_info($record,$tab_type);
+	$focus->id = $record;
+	$focus->name=$focus->column_fields['subject'];
 }
 
 if(isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
 	$focus->id = "";
-} 
+}
 
 //needed when creating a new task with default values passed in
 if (isset($_REQUEST['contactname']) && is_null($focus->contactname)) {
@@ -97,7 +95,7 @@ if (isset($_REQUEST['accountid']) && is_null($focus->parent_id)) {
 }
 
 $act_data = getBlocks($tab_type,"detail_view",'',$focus->column_fields);
-
+$finaldata = array();
 foreach($act_data as $block=>$entry) {
 	foreach($entry as $key=>$value) {
 		foreach($value as $label=>$field) {
@@ -112,9 +110,11 @@ foreach($act_data as $block=>$entry) {
 				$fldvalue = $field['value'];
 				if($field['fldname'] == 'description') { $fldvalue = nl2br($fldvalue); }
 				$finaldata[$field['fldname']] = $fldvalue;
-			}	
-			
+			}
 			$finaldata[$field['fldname'].'link'] = $field['link'];
+			if (isset($field['secid'])) {
+				$finaldata[$field['fldname'].'secid'] = $field['secid'];
+			}
 		}
 	}
 }
@@ -128,6 +128,7 @@ else
 list($stdate,$sttime) = split(' ',$finaldata['date_start']);
 list($enddate,$endtime) = split(' ',$finaldata['due_date']);
 $time_arr = getaddEventPopupTime($sttime,$endtime,$format);
+$data = array();
 $data['starthr'] = $time_arr['starthour'];
 $data['startmin'] = $time_arr['startmin'];
 $data['startfmt'] = $time_arr['startfmt'];
@@ -160,6 +161,7 @@ if($activity_mode == 'Task') {
 	$data['activitytype'] = $activity_mode;
 	$data['contact_id'] = $finaldata['contact_id'];
 	$data['contact_idlink'] = $finaldata['contact_idlink'];
+	$data['contact_idid'] = $finaldata['contact_idsecid'];
 } elseif($activity_mode == 'Events') {
 	$data['visibility'] = $finaldata['visibility'];
 	if($c_mod_strings[$finaldata['eventstatus']] != '')
@@ -188,7 +190,7 @@ if($activity_mode == 'Task') {
 		$recurringObject = RecurringType::fromDBRequest($adb->query_result_rowdata($res, 0));
 		$recurringInfoDisplayData = $recurringObject->getDisplayRecurringInfo();
 		$data = array_merge($data, $recurringInfoDisplayData);
-	} else  {
+	} else {
 		$data['recurringcheck'] = getTranslatedString('LBL_NO', $currentModule);
 		$data['repeat_str'] = '';
 	}
@@ -208,9 +210,10 @@ if($activity_mode == 'Task') {
 
 	$entityIds = array_keys($contact_info);
 	$displayValueArray = getEntityName('Contacts', $entityIds);
+	$entityname = array();
 	if (!empty($displayValueArray)) {
 		foreach ($displayValueArray as $key => $field_value) {
-			$entityname[] = '<a href="index.php?module=Contacts&action=DetailView&record=' . $key . '">' . $field_value . '</a>';
+			$entityname[$key] = '<a href="index.php?module=Contacts&action=DetailView&record=' . $key . '">' . $field_value . '</a>';
 		}
 	}
 	$smarty->assign("CONTACTS",$entityname);
@@ -232,17 +235,15 @@ $smarty->assign("CMOD", $c_mod_strings);
 $smarty->assign("APP", $app_strings);
 $smarty->assign("ACTIVITY_MODE", $activity_mode);
 
-if (isset($focus->name)) 
-$smarty->assign("NAME", $focus->name);
-else 
-$smarty->assign("NAME", "");
+if (isset($focus->name)) {
+	$smarty->assign("NAME", $focus->name);
+} else {
+	$smarty->assign("NAME", "");
+}
 $smarty->assign("UPDATEINFO",updateInfo($focus->id));
-if (isset($_REQUEST['return_module'])) 
-$smarty->assign("RETURN_MODULE", vtlib_purify($_REQUEST['return_module']));
-if (isset($_REQUEST['return_action'])) 
-$smarty->assign("RETURN_ACTION", vtlib_purify($_REQUEST['return_action']));
-if (isset($_REQUEST['return_id'])) 
-$smarty->assign("RETURN_ID", vtlib_purify($_REQUEST['return_id']));
+if (isset($_REQUEST['return_module'])) $smarty->assign("RETURN_MODULE", vtlib_purify($_REQUEST['return_module']));
+if (isset($_REQUEST['return_action'])) $smarty->assign("RETURN_ACTION", vtlib_purify($_REQUEST['return_action']));
+if (isset($_REQUEST['return_id'])) $smarty->assign("RETURN_ID", vtlib_purify($_REQUEST['return_id']));
 $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH", $image_path);
 $smarty->assign("PRINT_URL", "phprint.php?jt=".session_id().$GLOBALS['request_string'].'&activity_mode='.$activity_mode);
@@ -257,7 +258,7 @@ $smarty->assign("ID", $record);
 
 if($Calendar4You->CheckPermissions("EDIT")) {
 	$smarty->assign("EDIT","permitted");
-    $smarty->assign("EDIT_DUPLICATE","permitted");
+	$smarty->assign("EDIT_DUPLICATE","permitted");
 }
 
 if($Calendar4You->CheckPermissions("DELETE",$record))
@@ -300,8 +301,7 @@ if($singlepane_view == 'true') {
 	$smarty->assign("RELATEDLISTS", $related_array);
 	require_once('include/ListView/RelatedListViewSession.php');
 	if(!empty($_REQUEST['selected_header']) && !empty($_REQUEST['relation_id'])) {
-		RelatedListViewSession::addRelatedModuleToSession(vtlib_purify($_REQUEST['relation_id']),
-				vtlib_purify($_REQUEST['selected_header']));
+		RelatedListViewSession::addRelatedModuleToSession(vtlib_purify($_REQUEST['relation_id']),vtlib_purify($_REQUEST['selected_header']));
 	}
 	$open_related_modules = RelatedListViewSession::getRelatedModulesFromSession();
 	$smarty->assign("SELECTEDHEADERS", $open_related_modules);
@@ -311,5 +311,4 @@ $smarty->assign("SinglePane_View", $singlepane_view);
 $smarty->assign("MODE", "DetailView");
 
 $smarty->display("modules/Calendar4You/EventDetailView.tpl");
-
 ?>
