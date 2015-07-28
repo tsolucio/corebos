@@ -7,11 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('Smarty_setup.php');
-global $mod_strings;
-global $app_strings;
-global $app_list_strings;
+global $mod_strings, $app_strings, $app_list_strings, $adb, $theme;
 
 //Display the mail send status
 $smarty = new vtigerCRM_Smarty;
@@ -22,8 +19,6 @@ if($_REQUEST['mail_error'] != '') {
 	$smarty->assign("ERROR_MSG",$mod_strings['LBL_TESTMAILSTATUS'].' <b><font class="warning">'.$error_msg.'</font></b>');
 }
 
-global $adb;
-global $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 
@@ -44,20 +39,12 @@ $servername = vtlib_purify($_REQUEST['server_name']);
 $username = vtlib_purify($_REQUEST['server_user']);
 
 if(!empty($servername)) {
-    $validInput = validateServerName($servername);
-if(! $validInput) {
-    $servername = '';
- }
-    $smarty->assign("MAILSERVER",$servername);
+	$smarty->assign("MAILSERVER",$servername);
 } elseif(isset($mail_server)) {
-    $smarty->assign("MAILSERVER",$mail_server);
+	$smarty->assign("MAILSERVER",$mail_server);
 }
 
 if(!empty($username)) {
-    $validInput = validateEmailId($username);
-if(! $validInput) {
-    $username = '';
- }
 	$smarty->assign("USERNAME",$username);
 } elseif(isset($mail_server_username)) {
 	$smarty->assign("USERNAME",$mail_server_username);
