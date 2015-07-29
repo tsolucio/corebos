@@ -26,20 +26,13 @@ if($focus->is_authenticated())
 {
 	session_regenerate_id(true);
 	//Inserting entries for audit trail during login
-	
-	if($audit_trail == 'true')
-	{
-		if($record == '')
-			$auditrecord = '';
-		else
-			$auditrecord = $record;	
-
+	if ($audit_trail == 'true') {
 		$date_var = $adb->formatDate(date('Y-m-d H:i:s'), true);
 		$query = "insert into vtiger_audit_trial values(?,?,?,?,?,?)";
 		$params = array($adb->getUniqueID('vtiger_audit_trial'), $focus->id, 'Users','Authenticate','',$date_var);
 		$adb->pquery($query, $params);
-		cbEventHandler::do_action('corebos.audit.authenticate',array($focus->id, 'Users', 'Authenticate', $focus->id, $date_var));
 	}
+	cbEventHandler::do_action('corebos.audit.authenticate',array($focus->id, 'Users', 'Authenticate', $focus->id, date('Y-m-d H:i:s')));
 
 	// Recording the login info
 	$usip=$_SERVER['REMOTE_ADDR'];
@@ -133,8 +126,8 @@ else
 	$_SESSION['login_user_name'] = $focus->column_fields["user_name"];
 	$_SESSION['login_password'] = $user_password;
 	$_SESSION['login_error'] = $mod_strings['ERR_INVALID_PASSWORD'];
-	
-	// go back to the login screen.	
+	cbEventHandler::do_action('corebos.audit.login.attempt',array(0, $focus->column_fields["user_name"], 'Login Attempt', 0, date('Y-m-d H:i:s')));
+	// go back to the login screen.
 	// create an error message for the user.
 	header("Location: index.php");
 }
