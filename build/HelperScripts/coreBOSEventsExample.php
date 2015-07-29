@@ -27,6 +27,26 @@ class coreBOSEventsExample extends VTEventHandler {
 	public function handleEvent($handlerType, $entityData) {
 		global $log;
 		switch($handlerType) {
+			case 'corebos.audit.action':
+				$log->fatal('corebos.audit.action');
+				$log->fatal($entityData);
+				break;
+			case 'corebos.audit.authenticate':
+				$log->fatal('corebos.audit.authenticate');
+				$log->fatal($entityData);
+				break;
+			case 'corebos.audit.login':
+				$log->fatal('corebos.audit.login');
+				$log->fatal($entityData);
+				break;
+			case 'corebos.audit.logout':
+				$log->fatal('corebos.audit.logout');
+				$log->fatal($entityData);
+				break;
+			case 'corebos.audit.login.attempt':
+				$log->fatal('corebos.audit.login.attempt');
+				$log->fatal($entityData);
+				break;
 			case 'corebos.entity.link.before':
 				$log->fatal($entityData['sourceModule'].' '.$entityData['sourceRecordId'].' WILL BE related with '.$entityData['destinationModule'].' '.$entityData['destinationRecordId']);
 				break;
