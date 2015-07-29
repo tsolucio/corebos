@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('modules/Users/Users.php');
 require_once('modules/Users/CreateUserPrivilegeFile.php');
 require_once('include/logging.php');
@@ -39,9 +38,9 @@ if($focus->is_authenticated())
 		$query = "insert into vtiger_audit_trial values(?,?,?,?,?,?)";
 		$params = array($adb->getUniqueID('vtiger_audit_trial'), $focus->id, 'Users','Authenticate','',$date_var);
 		$adb->pquery($query, $params);
+		cbEventHandler::do_action('corebos.audit.authenticate',array($focus->id, 'Users', 'Authenticate', $focus->id, $date_var));
 	}
 
-	
 	// Recording the login info
 	$usip=$_SERVER['REMOTE_ADDR'];
 	$intime=date("Y/m/d H:i:s");
@@ -92,7 +91,7 @@ if($focus->is_authenticated())
 	}
 	if(isset($reset_language_on_default_user) && $reset_language_on_default_user && $focus->user_name == $default_user_name)
 	{
-		$authenticated_user_language = $default_language;	
+		$authenticated_user_language = $default_language;
 	}
 
 	$_SESSION['vtiger_authenticated_user_theme'] = $authenticated_user_theme;
