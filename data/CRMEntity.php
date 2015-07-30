@@ -523,7 +523,7 @@ class CRMEntity {
 					} else {
 						$fldvalue = '0';
 					}
-				} elseif ($uitype == 15 || $uitype == 16) {
+				} elseif ($uitype == 15 || $uitype == 16 || $uitype == 1613) {
 
 					if ($this->column_fields[$fieldname] == $app_strings['LBL_NOT_ACCESSIBLE']) {
 
@@ -535,7 +535,7 @@ class CRMEntity {
 					} else {
 						$fldvalue = $this->column_fields[$fieldname];
 					}
-				} elseif ($uitype == 33) {
+				} elseif ($uitype == 33 || $uitype == 3313) {
 					if (is_array($this->column_fields[$fieldname])) {
 						$field_list = implode(' |##| ', $this->column_fields[$fieldname]);
 					} else {

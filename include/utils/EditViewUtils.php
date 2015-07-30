@@ -185,6 +185,36 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		}
 		$fieldvalue [] = $options;
 	}
+	elseif($uitype == 1613) {
+		require_once 'modules/PickList/PickListUtils.php';
+		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
+		$fieldname = $adb->sql_escape_string($fieldname);
+		$pickListResult = getAllowedPicklistModules();
+
+		$options = array();
+		$options[] = "";
+		$pickcount = 0;
+		$found = false;
+		foreach ($pickListResult as $pKey=>$pValue) {
+			$value = decode_html($value);
+			$pickListValue = decode_html($pValue);
+			if($value == trim($pickListValue)) {
+				$chk_val = "selected";
+				$pickcount++;
+				$found = true;
+			}
+			else {
+				$chk_val = '';
+			}
+			$pickListValue = to_html($pickListValue);
+			if(isset($_REQUEST['file']) && $_REQUEST['file'] == 'QuickCreate')
+				$options[] = array(htmlentities(getTranslatedString($pickListValue, $module_name),ENT_QUOTES,$default_charset),$pickListValue,$chk_val);
+			else
+				$options[] = array(getTranslatedString($pickListValue, $module_name),$pickListValue,$chk_val);
+		}
+		uasort($options, function($a,$b) {return (strtolower($a[0]) < strtolower($b[0])) ? -1 : 1;});
+		$fieldvalue [] = $options;
+	}
 	elseif($uitype == 15 || $uitype == 33){
 		require_once 'modules/PickList/PickListUtils.php';
 		$roleid=$current_user->roleid;
@@ -215,6 +245,37 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			}
 		}
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
+		$fieldvalue [] = $options;
+	} elseif($uitype == 3313){
+		require_once 'modules/PickList/PickListUtils.php';
+		$picklistValues = getAllowedPicklistModules();
+		$valueArr = explode("|##|", $value);
+		foreach ($valueArr as $key => $value) {
+			$valueArr[$key] = trim(html_entity_decode($value, ENT_QUOTES, $default_charset));
+		}
+		$pickcount = 0;
+
+		if(!empty($picklistValues)){
+			foreach($picklistValues as $order=>$pickListValue){
+				if(in_array(trim($pickListValue),$valueArr)){
+					$chk_val = "selected";
+					$pickcount++;
+				}else{
+					$chk_val = '';
+				}
+				if(isset($_REQUEST['file']) && $_REQUEST['file'] == 'QuickCreate'){
+					$options[] = array(htmlentities(getTranslatedString($pickListValue, $module_name),ENT_QUOTES,$default_charset),$pickListValue,$chk_val );
+				}else{
+					$options[] = array(getTranslatedString($pickListValue, $module_name),$pickListValue,$chk_val );
+				}
+			}
+
+			if($pickcount == 0 && !empty($value)){
+				$options[] =  array($app_strings['LBL_NOT_ACCESSIBLE'],$value,'selected');
+			}
+		}
+		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
+		uasort($options, function($a,$b) {return (strtolower($a[0]) < strtolower($b[0])) ? -1 : 1;});
 		$fieldvalue [] = $options;
 	}
 	elseif($uitype == 17)

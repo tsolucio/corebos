@@ -75,7 +75,7 @@
 				{/if}
 				</span>
 			</td>
-		{elseif $keyid eq '15' || $keyid eq '16'} <!--ComboBox-->
+		{elseif $keyid eq '15' || $keyid eq '16' || $keyid eq '1613'} <!--ComboBox-->
 			<td width=25% class="dvtCellInfo" align="left">&nbsp;
 				{foreach item=arr from=$keyoptions}
 					{if $arr[0] eq $APP.LBL_NOT_ACCESSIBLE}
@@ -87,7 +87,7 @@
 				{/foreach}
 				<font color="{$fontval}">{if $APP.$keyval!=''}{$APP.$keyval}{elseif $MOD.$keyval!=''}{$MOD.$keyval}{else}{$keyval}{/if}</font>
 			</td>
-		{elseif $keyid eq '33'}
+		{elseif $keyid eq '33' || $keyid eq '3313'}
 			<td width=25% class="dvtCellInfo" align="left">&nbsp;
 				{foreach item=sel_val from=$keyoptions }
 					{if $sel_val[2] eq 'selected'}
