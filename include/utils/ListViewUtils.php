@@ -3665,6 +3665,12 @@ function getRelCheckquery($currentmodule, $returnmodule, $recordid) {
 		array_push($params, $recordid);
 		$table = "vtiger_notes";
 		$field = "notesid";
+	} elseif ($currentmodule == "Vendors" && $returnmodule == "Contacts") {
+		$reltable = 'vtiger_vendorcontactrel';
+		$condition = 'WHERE contactid = ?';
+		array_push($params, $recordid);
+		$field = $selectfield = 'vendorid';
+		$table = 'vtiger_vendor';
 	}
 	//end
 	if ($reltable != null) {
