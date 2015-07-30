@@ -228,4 +228,23 @@ function getAssignedPicklistValues($tableName, $roleid, $adb, $lang=array()){
 	$cache[$cacheId] = $arr;
 	return $arr;
 }
+/**
+ * Function to list all modules for userid
+ * It gets all the allowed entities to be shown in a picklist uitype 1613. 1633 and return an array in the following format
+ * $modules = Array($index=>$tabname,$index1=>$tabname1)
+ */
+function getAllowedPicklistModules() {
+	global $adb;
+	//get All the modules the current user is permitted to Access.
+	$allAllowedModules=getPermittedModuleNames();
+	$allEntities = array();
+	$entityQuery = "SELECT name FROM vtiger_tab
+			WHERE isentitytype=1 and name NOT IN ('Rss','Webmails','Recyclebin','Events')";
+	$result = $adb->pquery($entityQuery, array());
+	while($result && $row = $adb->fetch_array($result)){
+		$allEntities[] = $row['name'];
+	}
+	$allowedEntities=array_intersect($allAllowedModules, $allEntities);
+	return $allowedEntities;
+}
 ?>
