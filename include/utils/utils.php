@@ -972,33 +972,25 @@ function to_html($string) {
 }
 
 /** Function to get the tablabel for a given id
-  * @param $tabid -- tab id:: Type integer
-  * @returns $string -- string:: Type string
+ * @param $tabid -- tab id:: Type integer
+ * @returns $string -- string:: Type string
 */
-
-function getTabname($tabid)
-{
-	global $log;
+function getTabname($tabid) {
+	global $log, $adb;
 	$log->debug("Entering getTabname(".$tabid.") method ...");
-        $log->info("tab id is ".$tabid);
-        global $adb;
 	$sql = "select tablabel from vtiger_tab where tabid=?";
 	$result = $adb->pquery($sql, array($tabid));
 	$tabname=  $adb->query_result($result,0,"tablabel");
 	$log->debug("Exiting getTabname method ...");
 	return $tabname;
-
 }
 
 /** Function to get the tab module name for a given id
-  * @param $tabid -- tab id:: Type integer
-    * @returns $string -- string:: Type string
-      *
-       */
-
-function getTabModuleName($tabid)
-{
-	global $log;
+ * @param $tabid -- tab id:: Type integer
+ * @returns $string -- string:: Type string
+*/
+function getTabModuleName($tabid) {
+	global $log, $adb;
 	$log->debug("Entering getTabModuleName(".$tabid.") method ...");
 
 	// Lookup information in cache first
@@ -1009,7 +1001,6 @@ function getTabModuleName($tabid)
 			$tabname = array_search($tabid,$tab_info_array);
 
 			if($tabname == false) {
-				global $adb;
 				$sql = "select name from vtiger_tab where tabid=?";
 				$result = $adb->pquery($sql, array($tabid));
 				$tabname=  $adb->query_result($result,0,"name");
@@ -1020,60 +1011,54 @@ function getTabModuleName($tabid)
 
 		} else {
 			$log->info("tab id is ".$tabid);
-	        global $adb;
-	        $sql = "select name from vtiger_tab where tabid=?";
-	        $result = $adb->pquery($sql, array($tabid));
-	        $tabname=  $adb->query_result($result,0,"name");
+			$sql = "select name from vtiger_tab where tabid=?";
+			$result = $adb->pquery($sql, array($tabid));
+			$tabname=  $adb->query_result($result,0,"name");
 
-	        // Update information to cache for re-use
-	        VTCacheUtils::updateTabidInfo($tabid, $tabname);
+			// Update information to cache for re-use
+			VTCacheUtils::updateTabidInfo($tabid, $tabname);
 		}
 	}
 	$log->debug("Exiting getTabModuleName method ...");
-    return $tabname;
+	return $tabname;
 }
 
 /** Function to get column fields for a given module
-  * @param $module -- module:: Type string
-    * @returns $column_fld -- column field :: Type array
-      *
-       */
-
-function getColumnFields($module)
-{
-	global $log;
+ * @param $module -- module:: Type string
+ * @returns $column_fld -- column field :: Type array
+*/
+function getColumnFields($module) {
+	global $log, $adb;
 	$log->debug("Entering getColumnFields(".$module.") method ...");
-	$log->debug("in getColumnFields ".$module);
 
 	// Lookup in cache for information
 	$cachedModuleFields = VTCacheUtils::lookupFieldInfo_Module($module);
 
 	if($cachedModuleFields === false) {
-		global $adb;
 		$tabid = getTabid($module);
 		if ($module == 'Calendar') {
-    		$tabid = array('9','16');
-    	}
+			$tabid = array('9','16');
+		}
 
-    	// Let us pick up all the fields first so that we can cache information
+		// Let us pick up all the fields first so that we can cache information
 		$sql = "SELECT tabid, fieldname, fieldid, fieldlabel, columnname, tablename, uitype, typeofdata, presence
-		FROM vtiger_field WHERE tabid in (" . generateQuestionMarks($tabid) . ")";
+			FROM vtiger_field WHERE tabid in (" . generateQuestionMarks($tabid) . ")";
 
-        $result = $adb->pquery($sql, array($tabid));
-        $noofrows = $adb->num_rows($result);
+		$result = $adb->pquery($sql, array($tabid));
+		$noofrows = $adb->num_rows($result);
 
-        if($noofrows) {
-        	while($resultrow = $adb->fetch_array($result)) {
-        		// Update information to cache for re-use
-        		VTCacheUtils::updateFieldInfo(
-        			$resultrow['tabid'], $resultrow['fieldname'], $resultrow['fieldid'],
-        			$resultrow['fieldlabel'], $resultrow['columnname'], $resultrow['tablename'],
-        			$resultrow['uitype'], $resultrow['typeofdata'], $resultrow['presence']
-        		);
-        	}
-        }
+		if($noofrows) {
+			while($resultrow = $adb->fetch_array($result)) {
+				// Update information to cache for re-use
+				VTCacheUtils::updateFieldInfo(
+					$resultrow['tabid'], $resultrow['fieldname'], $resultrow['fieldid'],
+					$resultrow['fieldlabel'], $resultrow['columnname'], $resultrow['tablename'],
+					$resultrow['uitype'], $resultrow['typeofdata'], $resultrow['presence']
+				);
+			}
+	}
 
-        // For consistency get information from cache
+		// For consistency get information from cache
 		$cachedModuleFields = VTCacheUtils::lookupFieldInfo_Module($module);
 	}
 
@@ -1095,82 +1080,55 @@ function getColumnFields($module)
 }
 
 /** Function to get a users's mail id
-  * @param $userid -- userid :: Type integer
-    * @returns $email -- email :: Type string
-      *
-       */
-
-function getUserEmail($userid)
-{
-	global $log;
+ * @param $userid -- userid :: Type integer
+ * @returns $email -- email :: Type string
+ */
+function getUserEmail($userid) {
+	global $log, $adb;
 	$log->debug("Entering getUserEmail(".$userid.") method ...");
-	$log->info("in getUserEmail ".$userid);
-
-        global $adb;
-        if($userid != '')
-        {
-                $sql = "select email1 from vtiger_users where id=?";
-                $result = $adb->pquery($sql, array($userid));
-                $email = $adb->query_result($result,0,"email1");
-        }
+	if($userid != '') {
+		$sql = "select email1 from vtiger_users where id=?";
+		$result = $adb->pquery($sql, array($userid));
+		$email = $adb->query_result($result,0,"email1");
+	}
 	$log->debug("Exiting getUserEmail method ...");
-        return $email;
+	return $email;
 }
 
-/** Function to get a userid for outlook
-  * @param $username -- username :: Type string
-    * @returns $user_id -- user id :: Type integer
-       */
-
-//outlook security
-function getUserId_Ol($username)
-{
-	global $log;
+/** Function to get a userid for outlook  // outlook security
+ * @param $username -- username :: Type string
+ * @returns $user_id -- user id :: Type integer
+*/
+function getUserId_Ol($username) {
+	global $log, $adb;
 	$log->debug("Entering getUserId_Ol(".$username.") method ...");
-	$log->info("in getUserId_Ol ".$username);
-
-	global $adb;
 	$sql = "select id from vtiger_users where user_name=?";
 	$result = $adb->pquery($sql, array($username));
 	$num_rows = $adb->num_rows($result);
-	if($num_rows > 0)
-	{
+	if($num_rows > 0) {
 		$user_id = $adb->query_result($result,0,"id");
-    	}
-	else
-	{
+	} else {
 		$user_id = 0;
 	}
 	$log->debug("Exiting getUserId_Ol method ...");
 	return $user_id;
 }
 
-
-/** Function to get a action id for a given action name
-  * @param $action -- action name :: Type string
-    * @returns $actionid -- action id :: Type integer
-       */
-
-//outlook security
-
-function getActionid($action)
-{
-	global $log;
+/** Function to get a action id for a given action name  //outlook security
+ * @param $action -- action name :: Type string
+ * @returns $actionid -- action id :: Type integer
+*/
+function getActionid($action) {
+	global $log, $adb;
 	$log->debug("Entering getActionid(".$action.") method ...");
-	global $adb;
-	$log->info("get Actionid ".$action);
 	$actionid = '';
-	if(file_exists('tabdata.php') && (filesize('tabdata.php') != 0))
-	{
+	if(file_exists('tabdata.php') && (filesize('tabdata.php') != 0)) {
 		include('tabdata.php');
 		$actionid= $action_id_array[$action];
-	}
-	else
-	{
+	} else {
 		$query="select * from vtiger_actionmapping where actionname=?";
-        	$result =$adb->pquery($query, array($action));
-        	$actionid=$adb->query_result($result,0,'actionid');
-
+		$result =$adb->pquery($query, array($action));
+		$actionid=$adb->query_result($result,0,'actionid');
 	}
 	$log->info("action id selected is ".$actionid );
 	$log->debug("Exiting getActionid method ...");
@@ -1178,16 +1136,12 @@ function getActionid($action)
 }
 
 /** Function to get a action for a given action id
-  * @param $action id -- action id :: Type integer
-    * @returns $actionname-- action name :: Type string
-       */
-
-
-function getActionname($actionid)
-{
-	global $log;
+ * @param $action id -- action id :: Type integer
+ * @returns $actionname-- action name :: Type string
+*/
+function getActionname($actionid) {
+	global $log, $adb;
 	$log->debug("Entering getActionname(".$actionid.") method ...");
-	global $adb;
 
 	$actionname='';
 
@@ -1198,7 +1152,6 @@ function getActionname($actionid)
 	}
 	else
 	{
-
 		$query="select * from vtiger_actionmapping where actionid=? and securitycheck=0";
 		$result =$adb->pquery($query, array($actionid));
 		$actionname=$adb->query_result($result,0,"actionname");
@@ -1208,32 +1161,25 @@ function getActionname($actionid)
 }
 
 /** Function to get a assigned user id for a given entity
-  * @param $record -- entity id :: Type integer
-    * @returns $user_id -- user id :: Type integer
-       */
-
-function getUserId($record)
-{
-	global $log;
+ * @param $record -- entity id :: Type integer
+ * @returns $user_id -- user id :: Type integer
+*/
+function getUserId($record) {
+	global $log, $adb;
 	$log->debug("Entering getUserId(".$record.") method ...");
-        $log->info("in getUserId ".$record);
-
-	global $adb;
-        $user_id=$adb->query_result($adb->pquery("select * from vtiger_crmentity where crmid = ?", array($record)),0,'smownerid');
+	$userrs = $adb->pquery('select * from vtiger_crmentity where crmid = ?', array($record));
+	$user_id = $adb->query_result($userrs,0,'smownerid');
 	$log->debug("Exiting getUserId method ...");
 	return $user_id;
 }
 
 /** Function to get a user id or group id for a given entity
-  * @param $record -- entity id :: Type integer
-    * @returns $ownerArr -- owner id :: Type array
-       */
-
-function getRecordOwnerId($record)
-{
-	global $log;
+ * @param $record -- entity id :: Type integer
+ * @returns $ownerArr -- owner id :: Type array
+*/
+function getRecordOwnerId($record) {
+	global $log, $adb;
 	$log->debug("Entering getRecordOwnerId(".$record.") method ...");
-	global $adb;
 	$ownerArr=Array();
 	$query="select smownerid from vtiger_crmentity where crmid = ?";
 	$result=$adb->pquery($query, array($record));
@@ -1248,38 +1194,29 @@ function getRecordOwnerId($record)
 	}
 	$log->debug("Exiting getRecordOwnerId method ...");
 	return $ownerArr;
-
 }
 
 /** Function to insert value to profile2field table
   * @param $profileid -- profileid :: Type integer
-       */
-
-
-function insertProfile2field($profileid)
-{
-	global $log;
+*/
+function insertProfile2field($profileid) {
+	global $log, $adb;
 	$log->debug("Entering insertProfile2field(".$profileid.") method ...");
-        $log->info("in insertProfile2field ".$profileid);
 
-	global $adb;
 	$adb->database->SetFetchMode(ADODB_FETCH_ASSOC);
 	$fld_result = $adb->pquery("select * from vtiger_field where generatedtype=1 and displaytype in (1,2,3) and vtiger_field.presence in (0,2) and tabid != 29", array());
-    $num_rows = $adb->num_rows($fld_result);
-    for($i=0; $i<$num_rows; $i++) {
-         $tab_id = $adb->query_result($fld_result,$i,'tabid');
-         $field_id = $adb->query_result($fld_result,$i,'fieldid');
-		 $params = array($profileid, $tab_id, $field_id, 0, 0);
-         $adb->pquery("insert into vtiger_profile2field values (?,?,?,?,?)", $params);
+	$num_rows = $adb->num_rows($fld_result);
+	for($i=0; $i<$num_rows; $i++) {
+		$tab_id = $adb->query_result($fld_result,$i,'tabid');
+		$field_id = $adb->query_result($fld_result,$i,'fieldid');
+		$params = array($profileid, $tab_id, $field_id, 0, 0);
+		$adb->pquery("insert into vtiger_profile2field values (?,?,?,?,?)", $params);
 	}
 	$log->debug("Exiting insertProfile2field method ...");
 }
 
-/** Function to insert into default org field
-       */
-
-function insert_def_org_field()
-{
+/** Function to insert into default org field */
+function insert_def_org_field() {
 	global $log;
 	$log->debug("Entering insert_def_org_field() method ...");
 	global $adb;
