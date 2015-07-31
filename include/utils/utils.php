@@ -123,11 +123,10 @@ function get_language_display($key)
 }
 
 /** Function returns the user array
-  * @param $assigned_user_id -- assigned_user_id:: Type string
-  * @returns $user_list -- user list:: Type array
-  *
+ * @param $assigned_user_id -- assigned_user_id:: Type string
+ * @returns $user_list -- user list:: Type array
+ *
 */
-
 function get_assigned_user_name(&$assigned_user_id)
 {
 	global $log;
@@ -218,7 +217,6 @@ function get_user_array($add_blank=true, $status="Active", $assigned_user="",$pr
 	}
 
 	$log->debug("Exiting get_user_array method ...");
-
 	return $user_array;
 }
 
@@ -290,13 +288,13 @@ function get_group_array($add_blank=true, $status="Active", $assigned_user="",$p
 	$log->debug("Exiting get_group_array method ...");
 	return $group_array;
 }
+
 /** Function skips executing arbitary commands given in a string
   * @param $string -- string:: Type string
   * @param $maxlength -- maximun length:: Type integer
   * @returns $string -- escaped string:: Type string
   *
 */
-
 function clean($string, $maxLength)
 {
 	global $log;
@@ -311,7 +309,6 @@ function clean($string, $maxLength)
  * Do no copy if the member variable is already set.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): ______________________________________..
  */
 function safe_map($request_var, & $focus, $always_copy = false)
 {
@@ -326,7 +323,6 @@ function safe_map($request_var, & $focus, $always_copy = false)
  * Do no copy if the member variable is already set.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): ______________________________________..
  */
 function safe_map_named($request_var, & $focus, $member_var, $always_copy)
 {
@@ -342,7 +338,6 @@ function safe_map_named($request_var, & $focus, $member_var, $always_copy)
 /** This function retrieves an application language file and returns the array of strings included in the $app_list_strings var.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): ______________________________________..
  * If you are using the current language, do not call this function unless you are loading it for the first time */
 
 function return_app_list_strings_language($language)
@@ -367,7 +362,6 @@ function return_app_list_strings_language($language)
 		$log->debug("Exiting return_app_list_strings_language method ...");
 		return null;
 	}
-
 
 	$return_value = $app_list_strings;
 	$app_list_strings = $temp_app_list_strings;
@@ -410,7 +404,6 @@ function return_app_currency_strings_language($language) {
 /** This function retrieves an application language file and returns the array of strings included.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): ______________________________________..
  * If you are using the current language, do not call this function unless you are loading it for the first time */
 function return_application_language($language)
 {
@@ -512,13 +505,10 @@ function return_module_language($language, $module) {
 	return $return_value;
 }
 
-/*This function returns the mod_strings for the current language and the specified module
-*/
-
+/*This function returns the mod_strings for the current language and the specified module */
 function return_specified_module_language($language, $module)
 {
-	global $log;
-	global $default_language, $translation_string_prefix;
+	global $log, $default_language, $translation_string_prefix;
 
 	@include("modules/$module/language/$language.lang.php");
 	if(!isset($mod_strings))
@@ -544,7 +534,6 @@ function return_specified_module_language($language, $module)
 /** This function retrieves a theme's language file and returns the array of strings included.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): ______________________________________..
  */
 function return_theme_language($language, $theme)
 {
@@ -587,7 +576,6 @@ function return_theme_language($language, $theme)
 /** If the session variable is defined and is not equal to "" then return it.  Otherwise, return the default value.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): ______________________________________..
 */
 function return_session_value_or_default($varname, $default)
 {
@@ -611,7 +599,6 @@ function return_session_value_or_default($varname, $default)
   * @param $SQL_name - [Optional] If specified, this is the SQL column name that is used.  If not specified, the $variable_name is used as the SQL_name.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): ______________________________________..
   */
 function append_where_clause(&$where_clauses, $variable_name, $SQL_name = null)
 {
@@ -635,7 +622,6 @@ function append_where_clause(&$where_clauses, $variable_name, $SQL_name = null)
   * @returns string where_clause - The final SQL where clause to be executed.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): ______________________________________..
   */
 function generate_where_statement($where_clauses)
 {
@@ -660,13 +646,12 @@ function generate_where_statement($where_clauses)
  *
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): ______________________________________..
 */
 function create_guid()
 {
 	global $log;
 	$log->debug("Entering create_guid() method ...");
-        $microTime = microtime();
+	$microTime = microtime();
 	list($a_dec, $a_sec) = explode(" ", $microTime);
 
 	$dec_hex = sprintf("%x", $a_dec* 1000000);
@@ -690,13 +675,12 @@ function create_guid()
 
 	$log->debug("Exiting create_guid method ...");
 	return $guid;
-
 }
 
 /** Function to create guid section for a given character
-  * @param $characters -- characters:: Type string
-  * @returns $return -- integer:: Type integer``
-  */
+ * @param $characters -- characters:: Type string
+ * @returns $return -- integer:: Type integer``
+ */
 function create_guid_section($characters)
 {
 	global $log;
@@ -711,10 +695,9 @@ function create_guid_section($characters)
 }
 
 /** Function to ensure length
-  * @param $string -- string:: Type string
-  * @param $length -- length:: Type string
-  */
-
+ * @param $string -- string:: Type string
+ * @param $length -- length:: Type string
+ */
 function ensure_length(&$string, $length)
 {
 	global $log;
@@ -745,7 +728,6 @@ function microtime_diff($a, $b) {
  * Return the display name for a theme if it exists.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): ______________________________________..
  */
 function get_theme_display($theme) {
 	global $log;
@@ -772,48 +754,43 @@ function get_theme_display($theme) {
  * Return an array of directory names.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): ______________________________________..
  */
 function get_themes() {
 	global $log;
 	$log->debug("Entering get_themes() method ...");
-   if ($dir = @opendir("./themes")) {
+	if ($dir = @opendir("./themes")) {
 		while (($file = readdir($dir)) !== false) {
-           if ($file != ".." && $file != "." && $file != "CVS" && $file != "Attic" && $file != "akodarkgem" && $file != "bushtree" && $file != "coolblue" && $file != "Amazon" && $file != "busthree" && $file != "Aqua" && $file != "nature" && $file != "orange" && $file != "blue") {
-			   if(is_dir("./themes/".$file)) {
-				   if(!($file[0] == '.')) {
-				   	// set the initial theme name to the filename
-				   	$name = $file;
+			if ($file != ".." && $file != "." && $file != "CVS" && $file != "Attic" && $file != "akodarkgem" && $file != "bushtree" && $file != "coolblue" && $file != "Amazon" && $file != "busthree" && $file != "Aqua" && $file != "nature" && $file != "orange" && $file != "blue") {
+				if(is_dir("./themes/".$file)) {
+					if(!($file[0] == '.')) {
+						// set the initial theme name to the filename
+						$name = $file;
 
-				   	// if there is a configuration class, load that.
-				   	if(is_file("./themes/$file/config.php"))
-				   	{
-				   		require_once("./themes/$file/config.php");
-				   	}
+						// if there is a configuration class, load that.
+						if(is_file("./themes/$file/config.php"))
+						{
+							require_once("./themes/$file/config.php");
+						}
 
-				   	if(is_file("./themes/$file/style.css"))
-					{
-						$filelist[$file] = $name;
+						if(is_file("./themes/$file/style.css"))
+						{
+							$filelist[$file] = $name;
+						}
 					}
-				   }
-			   }
-		   }
-	   }
-	   closedir($dir);
-   }
-
-   ksort($filelist);
-   $log->debug("Exiting get_themes method ...");
-   return $filelist;
+				}
+			}
+		}
+		closedir($dir);
+	}
+	ksort($filelist);
+	$log->debug("Exiting get_themes method ...");
+	return $filelist;
 }
-
-
 
 /**
  * Create javascript to clear values of all elements in a form.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): ______________________________________..
  */
 function get_clear_form_js () {
 global $log;
@@ -842,7 +819,6 @@ return $the_script;
  * the function.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): ______________________________________..
  */
 function get_set_focus_js () {
 global $log;
@@ -858,15 +834,15 @@ function set_focus() {
 				var vtiger_field = document.forms[i].elements[j];
 				if ((vtiger_field.type == "text" || vtiger_field.type == "textarea" || vtiger_field.type == "password") &&
 						!field.disabled && (vtiger_field.name == "first_name" || vtiger_field.name == "name")) {
-				vtiger_field.focus();
-                    if (vtiger_field.type == "text") {
-                        vtiger_field.select();
-                    }
+					vtiger_field.focus();
+					if (vtiger_field.type == "text") {
+						vtiger_field.select();
+					}
 					break;
-	    		}
+				}
 			}
-      	}
-   	}
+		}
+	}
 }
 //  End -->
 </script>
@@ -886,32 +862,31 @@ return $the_script;
  * Example: $array = array_csort($array,'town','age',SORT_DESC,'name');
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): ______________________________________..
  */
 function array_csort() {
-   global $log;
-   $log->debug("Entering array_csort() method ...");
-   $args = func_get_args();
-   $marray = array_shift($args);
-   $i = 0;
+	global $log;
+	$log->debug("Entering array_csort() method ...");
+	$args = func_get_args();
+	$marray = array_shift($args);
+	$i = 0;
 
-   $msortline = "return(array_multisort(";
-   foreach ($args as $arg) {
-	   $i++;
-	   if (is_string($arg)) {
-		   foreach ($marray as $row) {
-			   $sortarr[$i][] = $row[$arg];
-		   }
-	   } else {
-		   $sortarr[$i] = $arg;
-	   }
-	   $msortline .= "\$sortarr[".$i."],";
-   }
-   $msortline .= "\$marray));";
+	$msortline = "return(array_multisort(";
+	foreach ($args as $arg) {
+		$i++;
+		if (is_string($arg)) {
+			foreach ($marray as $row) {
+				$sortarr[$i][] = $row[$arg];
+			}
+		} else {
+			$sortarr[$i] = $arg;
+		}
+		$msortline .= "\$sortarr[".$i."],";
+	}
+	$msortline .= "\$marray));";
 
-   eval($msortline);
-   $log->debug("Exiting array_csort method ...");
-   return $marray;
+	eval($msortline);
+	$log->debug("Exiting array_csort method ...");
+	return $marray;
 }
 
 /** Function to set default varibles on to the global variable
@@ -1167,7 +1142,7 @@ function getActionname($actionid) {
 function getUserId($record) {
 	global $log, $adb;
 	$log->debug("Entering getUserId(".$record.") method ...");
-	$userrs = $adb->pquery('select * from vtiger_crmentity where crmid = ?', array($record));
+	$userrs = $adb->pquery('select smownerid from vtiger_crmentity where crmid = ?', array($record));
 	$user_id = $adb->query_result($userrs,0,'smownerid');
 	$log->debug("Exiting getUserId method ...");
 	return $user_id;
@@ -1217,37 +1192,29 @@ function insertProfile2field($profileid) {
 
 /** Function to insert into default org field */
 function insert_def_org_field() {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering insert_def_org_field() method ...");
-	global $adb;
 	$adb->database->SetFetchMode(ADODB_FETCH_ASSOC);
 	$fld_result = $adb->pquery("select * from vtiger_field where generatedtype=1 and displaytype in (1,2,3) and vtiger_field.presence in (0,2) and tabid != 29", array());
-        $num_rows = $adb->num_rows($fld_result);
-        for($i=0; $i<$num_rows; $i++)
-        {
-                 $tab_id = $adb->query_result($fld_result,$i,'tabid');
-                 $field_id = $adb->query_result($fld_result,$i,'fieldid');
-				 $params = array($tab_id, $field_id, 0, 0);
-                 $adb->pquery("insert into vtiger_def_org_field values (?,?,?,?)", $params);
+	$num_rows = $adb->num_rows($fld_result);
+	for($i=0; $i<$num_rows; $i++) {
+		$tab_id = $adb->query_result($fld_result,$i,'tabid');
+		$field_id = $adb->query_result($fld_result,$i,'fieldid');
+		 $params = array($tab_id, $field_id, 0, 0);
+		$adb->pquery("insert into vtiger_def_org_field values (?,?,?,?)", $params);
 	}
 	$log->debug("Exiting insert_def_org_field() method ...");
 }
 
 /** Function to insert value to profile2field table
-  * @param $fld_module -- field module :: Type string
-  * @param $profileid -- profileid :: Type integer
-  * @returns $result -- result :: Type string
-  */
-
-function getProfile2FieldList($fld_module, $profileid)
-{
-	global $log;
+ * @param $fld_module -- field module :: Type string
+ * @param $profileid -- profileid :: Type integer
+ * @returns $result -- result :: Type string
+ */
+function getProfile2FieldList($fld_module, $profileid) {
+	global $log, $adb;
 	$log->debug("Entering getProfile2FieldList(".$fld_module.",". $profileid.") method ...");
-        $log->info("in getProfile2FieldList ".$fld_module. ' vtiger_profile id is  '.$profileid);
-
-	global $adb;
 	$tabid = getTabid($fld_module);
-
 	$query = "select vtiger_profile2field.visible,vtiger_field.* from vtiger_profile2field inner join vtiger_field on vtiger_field.fieldid=vtiger_profile2field.fieldid where vtiger_profile2field.profileid=? and vtiger_profile2field.tabid=? and vtiger_field.presence in (0,1,2)";
 	$result = $adb->pquery($query, array($profileid, $tabid));
 	$log->debug("Exiting getProfile2FieldList method ...");
@@ -1255,33 +1222,25 @@ function getProfile2FieldList($fld_module, $profileid)
 }
 
 /** Function to insert value to profile2fieldPermissions table
-  * @param $fld_module -- field module :: Type string
-  * @param $profileid -- profileid :: Type integer
-  * @returns $return_data -- return_data :: Type string
-  */
-
-//added by jeri
-
-function getProfile2FieldPermissionList($fld_module, $profileid)
-{
+ * @param $fld_module -- field module :: Type string
+ * @param $profileid -- profileid :: Type integer
+ * @returns $return_data -- return_data :: Type string
+ */
+function getProfile2FieldPermissionList($fld_module, $profileid) {
 	global $log;
 	$log->debug("Entering getProfile2FieldPermissionList(".$fld_module.",". $profileid.") method ...");
-    $log->info("in getProfile2FieldList ".$fld_module. ' vtiger_profile id is  '.$profileid);
 
-    // Cache information to re-use
-    static $_module_fieldpermission_cache = array();
+	// Cache information to re-use
+	static $_module_fieldpermission_cache = array();
 
-    if(!isset($_module_fieldpermission_cache[$fld_module])) {
-    	$_module_fieldpermission_cache[$fld_module] = array();
-    }
+	if(!isset($_module_fieldpermission_cache[$fld_module])) {
+		$_module_fieldpermission_cache[$fld_module] = array();
+	}
 
-    // Lookup cache first
-    $return_data = VTCacheUtils::lookupProfile2FieldPermissionList($fld_module, $profileid);
+	// Lookup cache first
+	$return_data = VTCacheUtils::lookupProfile2FieldPermissionList($fld_module, $profileid);
 
-    if($return_data === false) {
-
-    	$return_data = array();
-
+	if($return_data === false) {
 		global $adb;
 		$tabid = getTabid($fld_module);
 
@@ -1292,8 +1251,8 @@ function getProfile2FieldPermissionList($fld_module, $profileid)
 
 		$qparams = array($profileid, $tabid);
 		$result = $adb->pquery($query, $qparams);
-
-    	for($i=0; $i<$adb->num_rows($result); $i++) {
+		$return_data = array();
+		for($i=0; $i<$adb->num_rows($result); $i++) {
 			$return_data[]=array(
 				$adb->query_result($result,$i,"fieldlabel"),
 				$adb->query_result($result,$i,"visible"), // From vtiger_profile2field.visible
@@ -1307,31 +1266,26 @@ function getProfile2FieldPermissionList($fld_module, $profileid)
 
 		// Update information to cache for re-use
 		VTCacheUtils::updateProfile2FieldPermissionList($fld_module, $profileid, $return_data);
-    }
-
-
+	}
 	$log->debug("Exiting getProfile2FieldPermissionList method ...");
 	return $return_data;
 }
 
-
 /** Function to insert value to profile2fieldPermissions table
-  * @param $fld_module -- field module :: Type string
-  * @param $profileid -- profileid :: Type integer
-  * @returns $return_data -- return_data :: Type string
-  */
-
+ * @param $fld_module -- field module :: Type string
+ * @param $profileid -- profileid :: Type integer
+ * @returns $return_data -- return_data :: Type string
+ */
 function getProfile2ModuleFieldPermissionList($fld_module, $profileid) {
 	global $log;
 	$log->debug("Entering getProfile2ModuleFieldPermissionList(".$fld_module.",". $profileid.") method ...");
-    $log->info("in getProfile2ModuleFieldList ".$fld_module. ' vtiger_profile id is  '.$profileid);
 
-    // Cache information to re-use
-    static $_module_fieldpermission_cache = array();
+	// Cache information to re-use
+	static $_module_fieldpermission_cache = array();
 
-    if(!isset($_module_fieldpermission_cache[$fld_module])) {
-    	$_module_fieldpermission_cache[$fld_module] = array();
-    }
+	if(!isset($_module_fieldpermission_cache[$fld_module])) {
+		$_module_fieldpermission_cache[$fld_module] = array();
+	}
 
 	$return_data = array();
 
@@ -1375,21 +1329,15 @@ function getProfile2ModuleFieldPermissionList($fld_module, $profileid) {
 }
 
 /** Function to getProfile2allfieldsListinsert value to profile2fieldPermissions table
-  * @param $mod_array -- mod_array :: Type string
-  * @param $profileid -- profileid :: Type integer
-  * @returns $profilelist -- profilelist :: Type string
-  */
-
-function getProfile2AllFieldList($mod_array,$profileid)
-{
-	global $log;
-     $log->debug("Entering getProfile2AllFieldList(".$mod_array.",".$profileid.") method ...");
-     $log->info("in getProfile2AllFieldList vtiger_profile id is " .$profileid);
-
-	global $adb;
+ * @param $mod_array -- mod_array :: Type string
+ * @param $profileid -- profileid :: Type integer
+ * @returns $profilelist -- profilelist :: Type string
+ */
+function getProfile2AllFieldList($mod_array,$profileid) {
+	global $log, $adb;
+	$log->debug("Entering getProfile2AllFieldList(".$mod_array.",".$profileid.") method ...");
 	$profilelist=array();
-	for($i=0;$i<count($mod_array);$i++)
-	{
+	for($i=0;$i<count($mod_array);$i++) {
 		$profilelist[key($mod_array)]=getProfile2ModuleFieldPermissionList(key($mod_array), $profileid);
 		next($mod_array);
 	}
@@ -1398,19 +1346,14 @@ function getProfile2AllFieldList($mod_array,$profileid)
 }
 
 /** Function to getdefaultfield organisation list for a given module
-  * @param $fld_module -- module name :: Type string
-  * @returns $result -- string :: Type object
-  */
-
-//end of fn added by jeri
-
+ * @param $fld_module -- module name :: Type string
+ * @returns $result -- string :: Type object
+ */
 function getDefOrgFieldList($fld_module)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getDefOrgFieldList(".$fld_module.") method ...");
-        $log->info("in getDefOrgFieldList ".$fld_module);
 
-	global $adb;
 	$tabid = getTabid($fld_module);
 
 	$query = "select vtiger_def_org_field.visible,vtiger_field.* from vtiger_def_org_field inner join vtiger_field on vtiger_field.fieldid=vtiger_def_org_field.fieldid where vtiger_def_org_field.tabid=? and vtiger_field.presence in (0,2)";
@@ -1421,89 +1364,72 @@ function getDefOrgFieldList($fld_module)
 }
 
 /** Function to getQuickCreate for a given tabid
-  * @param $tabid -- tab id :: Type string
-  * @param $actionid -- action id :: Type integer
-  * @returns $QuickCreateForm -- QuickCreateForm :: Type boolean
-  */
-
-function getQuickCreate($tabid,$actionid)
-{
+ * @param $tabid -- tab id :: Type string
+ * @param $actionid -- action id :: Type integer
+ * @returns $QuickCreateForm -- QuickCreateForm :: Type boolean
+ */
+function getQuickCreate($tabid,$actionid) {
 	global $log;
 	$log->debug("Entering getQuickCreate(".$tabid.",".$actionid.") method ...");
 	$module=getTabModuleName($tabid);
 	$actionname=getActionname($actionid);
-        $QuickCreateForm= 'true';
+	$QuickCreateForm= 'true';
 
 	$perr=isPermitted($module,$actionname);
-	if($perr == 'no')
-	{
-                $QuickCreateForm= 'false';
+	if($perr == 'no') {
+		$QuickCreateForm= 'false';
 	}
 	$log->debug("Exiting getQuickCreate method ...");
 	return $QuickCreateForm;
-
 }
 
 /** Function to getQuickCreate for a given tabid
-  * @param $tabid -- tab id :: Type string
-  * @param $actionid -- action id :: Type integer
-  * @returns $QuickCreateForm -- QuickCreateForm :: Type boolean
-  */
-
-function ChangeStatus($status,$activityid,$activity_mode='')
- {
-	global $log;
+ * @param $tabid -- tab id :: Type string
+ * @param $actionid -- action id :: Type integer
+ * @returns $QuickCreateForm -- QuickCreateForm :: Type boolean
+ */
+function ChangeStatus($status,$activityid,$activity_mode='') {
+	global $log, $adb;
 	$log->debug("Entering ChangeStatus(".$status.",".$activityid.",".$activity_mode."='') method ...");
-        $log->info("in ChangeStatus ".$status. ' vtiger_activityid is  '.$activityid);
 
-        global $adb;
-        if ($activity_mode == 'Task')
-        {
-                $query = "Update vtiger_activity set status=? where activityid = ?";
-        }
-        elseif ($activity_mode == 'Events')
-        {
-                $query = "Update vtiger_activity set eventstatus=? where activityid = ?";
-        }
-		if($query) {
-        	$adb->pquery($query, array($status, $activityid));
-		}
+	if ($activity_mode == 'Task') {
+		$query = "Update vtiger_activity set status=? where activityid = ?";
+	} elseif ($activity_mode == 'Events') {
+		$query = "Update vtiger_activity set eventstatus=? where activityid = ?";
+	}
+	if($query) {
+		$adb->pquery($query, array($status, $activityid));
+	}
 	$log->debug("Exiting ChangeStatus method ...");
- }
+}
 
 /** Function to get unitprice for a given product id
-  * @param $productid -- product id :: Type integer
-  * @returns $up -- up :: Type string
-  */
-
-function getUnitPrice($productid, $module='Products')
-{
+ * @param $productid -- product id :: Type integer
+ * @returns $up -- up :: Type string
+ */
+function getUnitPrice($productid, $module='Products') {
 	global $log, $adb;
 	$log->debug("Entering getUnitPrice($productid,$module) method ...");
 
 	if($module == 'Services') {
-    	$query = "select unit_price from vtiger_service where serviceid=?";
+		$query = "select unit_price from vtiger_service where serviceid=?";
 	} else {
-    	$query = "select unit_price from vtiger_products where productid=?";
+		$query = "select unit_price from vtiger_products where productid=?";
 	}
-    $result = $adb->pquery($query, array($productid));
-    $unitpice = $adb->query_result($result,0,'unit_price');
+	$result = $adb->pquery($query, array($productid));
+	$unitpice = $adb->query_result($result,0,'unit_price');
 	$log->debug("Exiting getUnitPrice method ...");
 	return $unitpice;
 }
 
 /** Function to upload product image file
-  * @param $mode -- mode :: Type string
-  * @param $id -- id :: Type integer
-  * @returns $ret_array -- return array:: Type array
-  */
-
-function upload_product_image_file($mode,$id)
-{
-	global $log;
+ * @param $mode -- mode :: Type string
+ * @param $id -- id :: Type integer
+ * @returns $ret_array -- return array:: Type array
+ */
+function upload_product_image_file($mode,$id) {
+	global $log, $root_directory;
 	$log->debug("Entering upload_product_image_file(".$mode.",".$id.") method ...");
-	global $root_directory;
-        $log->debug("Inside upload_product_image_file. The id is ".$id);
 	$uploaddir = $root_directory ."/test/product/";
 
 	$file_path_name = $_FILES['imagename']['name'];
@@ -1519,131 +1445,101 @@ function upload_product_image_file($mode,$id)
 
 	$ret_array = Array();
 
-	if($filesize > 0)
-	{
-
-		if(move_uploaded_file($_FILES["imagename"]["tmp_name"],$uploaddir.$file_name))
-		{
-
+	if($filesize > 0) {
+		if(move_uploaded_file($_FILES["imagename"]["tmp_name"],$uploaddir.$file_name)) {
 			$upload_status = "yes";
 			$ret_array["status"] = $upload_status;
 			$ret_array["file_name"] = $file_name;
-
-
-		}
-		else
-		{
+		} else {
 			$errorCode =  $_FILES['imagename']['error'];
 			$upload_status = "no";
 			$ret_array["status"] = $upload_status;
 			$ret_array["errorcode"] = $errorCode;
-
-
 		}
-
-	}
-	else
-	{
+	} else {
 		$upload_status = "no";
-                $ret_array["status"] = $upload_status;
+		$ret_array["status"] = $upload_status;
 	}
 	$log->debug("Exiting upload_product_image_file method ...");
 	return $ret_array;
-
 }
 
 /** Function to upload product image file
-  * @param $id -- id :: Type integer
-  * @param $deleted_array -- images to be deleted :: Type array
-  * @returns $imagename -- imagelist:: Type array
-  */
-
-function getProductImageName($id,$deleted_array='')
-{
-	global $log;
+ * @param $id -- id :: Type integer
+ * @param $deleted_array -- images to be deleted :: Type array
+ * @returns $imagename -- imagelist:: Type array
+ */
+function getProductImageName($id,$deleted_array='') {
+	global $log, $adb;
 	$log->debug("Entering getProductImageName(".$id.",".$deleted_array."='') method ...");
-	global $adb;
 	$image_array=array();
 	$query = "select imagename from vtiger_products where productid=?";
 	$result = $adb->pquery($query, array($id));
 	$image_name = $adb->query_result($result,0,"imagename");
 	$image_array=explode("###",$image_name);
-	$log->debug("Inside getProductImageName. The image_name is ".$image_name);
-	if($deleted_array!='')
-	{
+	if($deleted_array!='') {
 		$resultant_image = array();
 		$resultant_image=array_merge(array_diff($image_array,$deleted_array));
 		$imagelists=implode('###',$resultant_image);
-		$log->debug("Exiting getProductImageName method ...");
-		return	$imagelists;
+		$retval = $imagelists;
+	} else {
+		$retval = $image_name;
 	}
-	else
-	{
-		$log->debug("Exiting getProductImageName method ...");
-		return $image_name;
-	}
+	$log->debug("Exiting getProductImageName method ...");
+	return $retval;
 }
 
 /** Function to get Contact images
-  * @param $id -- id :: Type integer
-  * @returns $imagename -- imagename:: Type string
-  */
-
-function getContactImageName($id)
-{
-	global $log;
+ * @param $id -- id :: Type integer
+ * @returns $imagename -- imagename:: Type string
+ */
+function getContactImageName($id) {
+	global $log, $adb;
 	$log->debug("Entering getContactImageName(".$id.") method ...");
-        global $adb;
-        $query = "select imagename from vtiger_contactdetails where contactid=?";
-        $result = $adb->pquery($query, array($id));
-        $image_name = $adb->query_result($result,0,"imagename");
-        $log->debug("Inside getContactImageName. The image_name is ".$image_name);
+	$query = "select imagename from vtiger_contactdetails where contactid=?";
+	$result = $adb->pquery($query, array($id));
+	$image_name = $adb->query_result($result,0,"imagename");
+	$log->debug("Inside getContactImageName. The image_name is ".$image_name);
 	$log->debug("Exiting getContactImageName method ...");
-        return $image_name;
-
+	return $image_name;
 }
 
 /** Function to update sub total in inventory
-  * @param $module -- module name :: Type string
-  * @param $tablename -- tablename :: Type string
-  * @param $colname -- colname :: Type string
-  * @param $colname1 -- coluname1 :: Type string
-  * @param $entid_fld -- entity field :: Type string
-  * @param $entid -- entid :: Type integer
-  * @param $prod_total -- totalproduct :: Type integer
-  */
-
-function updateSubTotal($module,$tablename,$colname,$colname1,$entid_fld,$entid,$prod_total)
-{
-	global $log;
+ * @param $module -- module name :: Type string
+ * @param $tablename -- tablename :: Type string
+ * @param $colname -- colname :: Type string
+ * @param $colname1 -- coluname1 :: Type string
+ * @param $entid_fld -- entity field :: Type string
+ * @param $entid -- entid :: Type integer
+ * @param $prod_total -- totalproduct :: Type integer
+ */
+function updateSubTotal($module,$tablename,$colname,$colname1,$entid_fld,$entid,$prod_total) {
+	global $log, $adb;
 	$log->debug("Entering updateSubTotal(".$module.",".$tablename.",".$colname.",".$colname1.",".$entid_fld.",".$entid.",".$prod_total.") method ...");
-        global $adb;
-        //getting the subtotal
-        $query = "select ".$colname.",".$colname1." from ".$tablename." where ".$entid_fld."=?";
-        $result1 = $adb->pquery($query, array($entid));
-        $subtot = $adb->query_result($result1,0,$colname);
-        $subtot_upd = $subtot - $prod_total;
+	//getting the subtotal
+	$query = "select ".$colname.",".$colname1." from ".$tablename." where ".$entid_fld."=?";
+	$result1 = $adb->pquery($query, array($entid));
+	$subtot = $adb->query_result($result1,0,$colname);
+	$subtot_upd = $subtot - $prod_total;
 
-        $gdtot = $adb->query_result($result1,0,$colname1);
-        $gdtot_upd = $gdtot - $prod_total;
+	$gdtot = $adb->query_result($result1,0,$colname1);
+	$gdtot_upd = $gdtot - $prod_total;
 
-        //updating the subtotal
-        $sub_query = "update $tablename set $colname=?, $colname1=? where $entid_fld=?";
-        $adb->pquery($sub_query, array($subtot_upd, $gdtot_upd, $entid));
+	//updating the subtotal
+	$sub_query = "update $tablename set $colname=?, $colname1=? where $entid_fld=?";
+	$adb->pquery($sub_query, array($subtot_upd, $gdtot_upd, $entid));
 	$log->debug("Exiting updateSubTotal method ...");
 }
 
 /** Function to get Inventory Total
-  * @param $return_module -- return module :: Type string
-  * @param $id -- entity id :: Type integer
-  * @returns $total -- total:: Type integer
-  * *** FUNCTION NOT USED IN THE APPLICATION > left only in case it is used by some extension
-  */
-function getInventoryTotal($return_module,$id)
-{
-	global $log;
+ * @param $return_module -- return module :: Type string
+ * @param $id -- entity id :: Type integer
+ * @returns $total -- total:: Type integer
+ * *** FUNCTION NOT USED IN THE APPLICATION > left only in case it is used by some extension
+ */
+function getInventoryTotal($return_module,$id) {
+	global $log, $adb;
 	$log->debug("Entering getInventoryTotal(".$return_module.",".$id.") method ...");
-	global $adb;
 	if($return_module == "Potentials")
 	{
 		$query ="select vtiger_products.productname,vtiger_products.unit_price,vtiger_products.qtyinstock,vtiger_seproductsrel.* from vtiger_products inner join vtiger_seproductsrel on vtiger_seproductsrel.productid=vtiger_products.productid where crmid=?";
@@ -1786,7 +1682,6 @@ function get_quickcreate_form($fieldlabel,$uitype,$fieldname,$tabid)
   * @param $tid -- tabid :: Type integer
   * @returns $form_field -- return field:: Type string
   */
-
 function get_textmanField($label,$name,$tid)
 {
 	global $log;
@@ -1819,15 +1714,13 @@ function get_textmanField($label,$name,$tid)
 		$log->debug("Exiting get_textmanField method ...");
 		return $form_field;
 	}
-
 }
 
 /** Function to get textfield for website field
-  * @param $label -- field label :: Type string
-  * @param $name -- field name :: Type string
-  * @returns $form_field -- return field:: Type string
-  */
-
+ * @param $label -- field label :: Type string
+ * @param $name -- field name :: Type string
+ * @returns $form_field -- return field:: Type string
+ */
 function get_textwebField($label,$name)
 {
 	global $log;
@@ -1839,15 +1732,13 @@ function get_textwebField($label,$name)
 	$form_field .='<input name="'.$name.'" id="QCK_'.$name.'" type="text" size="20" maxlength="" value=""></td>';
 	$log->debug("Exiting get_textwebField method ...");
 	return $form_field;
-
 }
 
 /** Function to get textfield
-  * @param $label -- field label :: Type string
-  * @param $name -- field name :: Type string
-  * @returns $form_field -- return field:: Type string
-  */
-
+ * @param $label -- field label :: Type string
+ * @param $name -- field name :: Type string
+ * @returns $form_field -- return field:: Type string
+ */
 function get_textField($label,$name)
 {
 	global $log;
@@ -1863,29 +1754,24 @@ function get_textField($label,$name)
 	}
 	else
 	{
-
 		$form_field .='<td>';
 		$form_field .= $label.':<br>';
 		$form_field .='<input name="'.$name.'" id="QCK_'.$name.'" type="text" size="20" maxlength="" value=""></td>';
 		$log->debug("Exiting get_textField method ...");
 		return $form_field;
 	}
-
 }
 
 /** Function to get account textfield
-  * @param $label -- field label :: Type string
-  * @param $name -- field name :: Type string
-  * @param $tid -- tabid :: Type integer
-  * @returns $form_field -- return field:: Type string
-  */
-
+ * @param $label -- field label :: Type string
+ * @param $name -- field name :: Type string
+ * @param $tid -- tabid :: Type integer
+ * @returns $form_field -- return field:: Type string
+ */
 function get_textaccField($label,$name,$tid)
 {
-	global $log;
+	global $log, $app_strings;
 	$log->debug("Entering get_textaccField(".$label.",".$name.",".$tid.") method ...");
-
-	global $app_strings;
 
 	$form_field='';
 	if($tid == 2)
@@ -1907,15 +1793,13 @@ function get_textaccField($label,$name,$tid)
 		$log->debug("Exiting get_textaccField method ...");
 		return $form_field;
 	}
-
 }
 
 /** Function to get combo field values
-  * @param $label -- field label :: Type string
-  * @param $name -- field name :: Type string
-  * @returns $form_field -- return field:: Type string
-  */
-
+ * @param $label -- field label :: Type string
+ * @param $name -- field name :: Type string
+ * @returns $form_field -- return field:: Type string
+ */
 function get_textcomboField($label,$name)
 {
 	global $log;
@@ -1923,9 +1807,11 @@ function get_textcomboField($label,$name)
 	$form_field='';
 	if($name == "sales_stage")
 	{
-		$comboFieldNames = Array('leadsource'=>'leadsource_dom'
-                      ,'opportunity_type'=>'opportunity_type_dom'
-                      ,'sales_stage'=>'sales_stage_dom');
+		$comboFieldNames = Array(
+			'leadsource'=>'leadsource_dom',
+			'opportunity_type'=>'opportunity_type_dom',
+			'sales_stage'=>'sales_stage_dom'
+		);
 		$comboFieldArray = getComboArray($comboFieldNames);
 		$form_field .='<td>';
 		$form_field .= '<font color="red">*</font>';
@@ -1935,7 +1821,6 @@ function get_textcomboField($label,$name)
 		$form_field .='</select></td>';
 		$log->debug("Exiting get_textcomboField method ...");
 		return $form_field;
-
 	}
 	if($name == "productcategory")
 	{
@@ -1948,7 +1833,6 @@ function get_textcomboField($label,$name)
 		$form_field .='</select></td>';
 		$log->debug("Exiting get_textcomboField method ...");
 		return $form_field;
-
 	}
 	if($name == "ticketpriorities")
 	{
@@ -1974,48 +1858,39 @@ function get_textcomboField($label,$name)
 		$form_field .='</select></td>';
 		$log->debug("Exiting get_textcomboField method ...");
 		return $form_field;
-
-
 	}
-        if($name == "eventstatus")
-        {
-                $comboFieldNames = Array('eventstatus'=>'eventstatus_dom');
-                $comboFieldArray = getComboArray($comboFieldNames);
-                $form_field .='<td>';
-                $form_field .= $label.'<br>';
-                $form_field .='<select name="'.$name.'">';
-                $form_field .=get_select_options_with_id($comboFieldArray['eventstatus_dom'], "");
-                $form_field .='</select></td>';
+	if($name == "eventstatus")
+	{
+		$comboFieldNames = Array('eventstatus'=>'eventstatus_dom');
+		$comboFieldArray = getComboArray($comboFieldNames);
+		$form_field .='<td>';
+		$form_field .= $label.'<br>';
+		$form_field .='<select name="'.$name.'">';
+		$form_field .=get_select_options_with_id($comboFieldArray['eventstatus_dom'], "");
+		$form_field .='</select></td>';
 		$log->debug("Exiting get_textcomboField method ...");
-                return $form_field;
-
-
-        }
-        if($name == "taskstatus")
-        {
-                $comboFieldNames = Array('taskstatus'=>'taskstatus_dom');
-                $comboFieldArray = getComboArray($comboFieldNames);
-                $form_field .='<td>';
-                $form_field .= $label.'<br>';
-                $form_field .='<select name="'.$name.'">';
-                $form_field .=get_select_options_with_id($comboFieldArray['taskstatus_dom'], "");
-                $form_field .='</select></td>';
+		return $form_field;
+	}
+	if($name == "taskstatus")
+	{
+		$comboFieldNames = Array('taskstatus'=>'taskstatus_dom');
+		$comboFieldArray = getComboArray($comboFieldNames);
+		$form_field .='<td>';
+		$form_field .= $label.'<br>';
+		$form_field .='<select name="'.$name.'">';
+		$form_field .=get_select_options_with_id($comboFieldArray['taskstatus_dom'], "");
+		$form_field .='</select></td>';
 		$log->debug("Exiting get_textcomboField method ...");
-                return $form_field;
-        }
-
-
-
+		return $form_field;
+	}
 }
 
 /** Function to get date field
-  * @param $label -- field label :: Type string
-  * @param $name -- field name :: Type string
-  * @param $tid -- tabid :: Type integer
-  * @returns $form_field -- return field:: Type string
-  */
-
-
+ * @param $label -- field label :: Type string
+ * @param $name -- field name :: Type string
+ * @param $tid -- tabid :: Type integer
+ * @returns $form_field -- return field:: Type string
+ */
 function get_textdateField($label,$name,$tid)
 {
 	global $log;
@@ -2039,10 +1914,9 @@ function get_textdateField($label,$name,$tid)
 		$form_field .= $label.':<br>';
 		$form_field .='<font size="1"><em old="ntc_date_format">('.$current_user->date_format.')</em></font><br>';
 		$form_field .='<input name="'.$name.'"  size="12" maxlength="10" id="QCK_'.$name.'" type="text" value="">&nbsp';
-	       	$form_field .='<img src="themes/'.$theme.'/images/btnL3Calendar.gif" id="jscal_trigger"></td>';
+		$form_field .='<img src="themes/'.$theme.'/images/btnL3Calendar.gif" id="jscal_trigger"></td>';
 		$log->debug("Exiting get_textdateField method ...");
 		return $form_field;
-
 	}
 	if($tid == 9)
 	{
@@ -2066,7 +1940,6 @@ function get_textdateField($label,$name,$tid)
 		$log->debug("Exiting get_textdateField method ...");
 		return $form_field;
 	}
-
 	else
 	{
 		$form_field .='<td>';
@@ -2082,12 +1955,11 @@ function get_textdateField($label,$name,$tid)
 }
 
 /** Function to get duration text field in activity
-  * @param $label -- field label :: Type string
-  * @param $name -- field name :: Type string
-  * @param $tid -- tabid :: Type integer
-  * @returns $form_field -- return field:: Type string
-  */
-
+ * @param $label -- field label :: Type string
+ * @param $name -- field name :: Type string
+ * @param $tid -- tabid :: Type integer
+ * @returns $form_field -- return field:: Type string
+ */
 function get_textdurationField($label,$name,$tid)
 {
 	global $log;
@@ -2095,7 +1967,6 @@ function get_textdurationField($label,$name,$tid)
 	$form_field='';
 	if($tid == 16)
 	{
-
 		$comboFieldNames = Array('activitytype'=>'activitytype_dom',
 			 'duration_minutes'=>'duration_minutes_dom');
 		$comboFieldArray = getComboArray($comboFieldNames);
@@ -2112,165 +1983,143 @@ function get_textdurationField($label,$name,$tid)
 }
 
 /** Function to get email text field
-  * @param $module -- module name :: Type name
-  * @param $id -- entity id :: Type integer
-  * @returns $hidden -- hidden:: Type string
-  */
-
+ * @param $module -- module name :: Type name
+ * @param $id -- entity id :: Type integer
+ * @returns $hidden -- hidden:: Type string
+ */
 //Added to get the parents list as hidden for Emails -- 09-11-2005
 function getEmailParentsList($module,$id,$focus = false)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getEmailParentsList(".$module.",".$id.") method ...");
-        global $adb;
-    // If the information is not sent then read it
-    if($focus === false) {
+	// If the information is not sent then read it
+	if($focus === false) {
 		if($module == 'Contacts')
 			$focus = new Contacts();
 		if($module == 'Leads')
 			$focus = new Leads();
-
 		$focus->retrieve_entity_info($id,$module);
-    }
+	}
 
-        $fieldid = 0;
-        $fieldname = 'email';
-        if($focus->column_fields['email'] == '' && $focus->column_fields['yahooid'] != '' )
-                $fieldname = 'yahooid';
-        elseif($focus->column_fields['email'] == '' && $focus->column_fields['secondaryemail'] != '' )
-				$fieldname='secondaryemail';
-        $res = $adb->pquery("select * from vtiger_field where tabid = ? and fieldname= ? and vtiger_field.presence in (0,2)", array(getTabid($module), $fieldname));
-        $fieldid = $adb->query_result($res,0,'fieldid');
+	$fieldid = 0;
+	$fieldname = 'email';
+	if($focus->column_fields['email'] == '' && $focus->column_fields['yahooid'] != '' )
+		$fieldname = 'yahooid';
+	elseif($focus->column_fields['email'] == '' && $focus->column_fields['secondaryemail'] != '' )
+		$fieldname='secondaryemail';
+	$res = $adb->pquery("select * from vtiger_field where tabid = ? and fieldname= ? and vtiger_field.presence in (0,2)", array(getTabid($module), $fieldname));
+	$fieldid = $adb->query_result($res,0,'fieldid');
 
-        $hidden .= '<input type="hidden" name="emailids" value="'.$id.'@'.$fieldid.'|">';
-        $hidden .= '<input type="hidden" name="pmodule" value="'.$module.'">';
+	$hidden .= '<input type="hidden" name="emailids" value="'.$id.'@'.$fieldid.'|">';
+	$hidden .= '<input type="hidden" name="pmodule" value="'.$module.'">';
 
 	$log->debug("Exiting getEmailParentsList method ...");
 	return $hidden;
 }
 
 /** This Function returns the current status of the specified Purchase Order.
-  * The following is the input parameter for the function
-  *  $po_id --> Purchase Order Id, Type:Integer
-  */
-function getPoStatus($po_id)
-{
-	global $log;
+ * The following is the input parameter for the function
+ *  $po_id --> Purchase Order Id, Type:Integer
+ */
+function getPoStatus($po_id) {
+	global $log, $adb;
 	$log->debug("Entering getPoStatus(".$po_id.") method ...");
-
-	global $log;
-        $log->info("in getPoName ".$po_id);
-
-        global $adb;
-        $sql = "select postatus from vtiger_purchaseorder where purchaseorderid=?";
-        $result = $adb->pquery($sql, array($po_id));
-        $po_status = $adb->query_result($result,0,"postatus");
+	$sql = "select postatus from vtiger_purchaseorder where purchaseorderid=?";
+	$result = $adb->pquery($sql, array($po_id));
+	$po_status = $adb->query_result($result,0,"postatus");
 	$log->debug("Exiting getPoStatus method ...");
-        return $po_status;
+	return $po_status;
 }
 
 /** This Function adds the specified product quantity to the Product Quantity in Stock in the Warehouse
-  * The following is the input parameter for the function:
-  *  $productId --> ProductId, Type:Integer
-  *  $qty --> Quantity to be added, Type:Integer
-  */
+ * The following is the input parameter for the function:
+ *  $productId --> ProductId, Type:Integer
+ *  $qty --> Quantity to be added, Type:Integer
+ */
 function addToProductStock($productId,$qty)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering addToProductStock(".$productId.",".$qty.") method ...");
-	global $adb;
 	$qtyInStck=getProductQtyInStock($productId);
 	$updQty=$qtyInStck + $qty;
 	$sql = "UPDATE vtiger_products set qtyinstock=? where productid=?";
 	$adb->pquery($sql, array($updQty, $productId));
 	$log->debug("Exiting addToProductStock method ...");
-
 }
 
-/**	This Function adds the specified product quantity to the Product Quantity in Demand in the Warehouse
-  *	@param int $productId - ProductId
-  *	@param int $qty - Quantity to be added
-  */
+/** This Function adds the specified product quantity to the Product Quantity in Demand in the Warehouse
+ * @param int $productId - ProductId
+ * @param int $qty - Quantity to be added
+ */
 function addToProductDemand($productId,$qty)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering addToProductDemand(".$productId.",".$qty.") method ...");
-	global $adb;
 	$qtyInStck=getProductQtyInDemand($productId);
 	$updQty=$qtyInStck + $qty;
 	$sql = "UPDATE vtiger_products set qtyindemand=? where productid=?";
 	$adb->pquery($sql, array($updQty, $productId));
 	$log->debug("Exiting addToProductDemand method ...");
-
 }
 
-/**	This Function subtract the specified product quantity to the Product Quantity in Stock in the Warehouse
-  *	@param int $productId - ProductId
-  *	@param int $qty - Quantity to be subtracted
-  */
+/** This Function subtract the specified product quantity to the Product Quantity in Stock in the Warehouse
+ * @param int $productId - ProductId
+ * @param int $qty - Quantity to be subtracted
+ */
 function deductFromProductStock($productId,$qty)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering deductFromProductStock(".$productId.",".$qty.") method ...");
-	global $adb;
 	$qtyInStck=getProductQtyInStock($productId);
 	$updQty=$qtyInStck - $qty;
 	$sql = "UPDATE vtiger_products set qtyinstock=? where productid=?";
 	$adb->pquery($sql, array($updQty, $productId));
 	$log->debug("Exiting deductFromProductStock method ...");
-
 }
 
 /**	This Function subtract the specified product quantity to the Product Quantity in Demand in the Warehouse
-  *	@param int $productId - ProductId
-  *	@param int $qty - Quantity to be subtract
-  */
+ *	@param int $productId - ProductId
+ *	@param int $qty - Quantity to be subtract
+ */
 function deductFromProductDemand($productId,$qty)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering deductFromProductDemand(".$productId.",".$qty.") method ...");
-	global $adb;
 	$qtyInStck=getProductQtyInDemand($productId);
 	$updQty=$qtyInStck - $qty;
 	$sql = "UPDATE vtiger_products set qtyindemand=? where productid=?";
 	$adb->pquery($sql, array($updQty, $productId));
 	$log->debug("Exiting deductFromProductDemand method ...");
-
 }
 
-
 /** This Function returns the current product quantity in stock.
-  * The following is the input parameter for the function:
-  *  $product_id --> ProductId, Type:Integer
-  */
+ * The following is the input parameter for the function:
+ *  $product_id --> ProductId, Type:Integer
+ */
 function getProductQtyInStock($product_id)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getProductQtyInStock(".$product_id.") method ...");
-        global $adb;
-        $query1 = "select qtyinstock from vtiger_products where productid=?";
-        $result=$adb->pquery($query1, array($product_id));
-        $qtyinstck= $adb->query_result($result,0,"qtyinstock");
+	$query1 = "select qtyinstock from vtiger_products where productid=?";
+	$result=$adb->pquery($query1, array($product_id));
+	$qtyinstck= $adb->query_result($result,0,"qtyinstock");
 	$log->debug("Exiting getProductQtyInStock method ...");
-        return $qtyinstck;
-
-
+	return $qtyinstck;
 }
 
 /**	This Function returns the current product quantity in demand.
-  *	@param int $product_id - ProductId
-  *	@return int $qtyInDemand - Quantity in Demand of a product
-  */
+ *	@param int $product_id - ProductId
+ *	@return int $qtyInDemand - Quantity in Demand of a product
+ */
 function getProductQtyInDemand($product_id)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getProductQtyInDemand(".$product_id.") method ...");
-        global $adb;
-        $query1 = "select qtyindemand from vtiger_products where productid=?";
-        $result = $adb->pquery($query1, array($product_id));
-        $qtyInDemand = $adb->query_result($result,0,"qtyindemand");
+	$query1 = "select qtyindemand from vtiger_products where productid=?";
+	$result = $adb->pquery($query1, array($product_id));
+	$qtyInDemand = $adb->query_result($result,0,"qtyindemand");
 	$log->debug("Exiting getProductQtyInDemand method ...");
-        return $qtyInDemand;
+	return $qtyInDemand;
 }
 
 /** Function to seperate the Date and Time
@@ -2287,12 +2136,10 @@ function getDateFromDateAndtime($date_time)
 	return $result;
 }
 
-
 /** Function to get header for block in edit/create and detailview
   * @param $header_label -- header label :: Type string
   * @returns $output -- output:: Type string
   */
-
 function getBlockTableHeader($header_label)
 {
 	global $log;
@@ -2302,10 +2149,7 @@ function getBlockTableHeader($header_label)
 	$output = $label;
 	$log->debug("Exiting getBlockTableHeader method ...");
 	return $output;
-
 }
-
-
 
 /**     Function to get the vtiger_table name from 'field' vtiger_table for the input vtiger_field based on the module
  *      @param  : string $module - current module value
@@ -2314,9 +2158,8 @@ function getBlockTableHeader($header_label)
  */
 function getTableNameForField($module,$fieldname)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getTableNameForField(".$module.",".$fieldname.") method ...");
-	global $adb;
 	$tabid = getTabid($module);
 	//Asha
 	if($module == 'Calendar') {
@@ -2341,7 +2184,6 @@ function getTableNameForField($module,$fieldname)
   * @param $record_id -- record id :: Type integer
   * @returns $parentRecOwner -- parentRecOwner:: Type integer
   */
-
 function getParentRecordOwner($tabid,$parModId,$record_id)
 {
 	global $log;
@@ -2360,15 +2202,13 @@ function getParentRecordOwner($tabid,$parModId,$record_id)
 }
 
 /** Function to get potential related accounts
-  * @param $record_id -- record id :: Type integer
-  * @returns $accountid -- accountid:: Type integer
-  */
-
+ * @param $record_id -- record id :: Type integer
+ * @returns $accountid -- accountid:: Type integer
+ */
 function getPotentialsRelatedAccounts($record_id)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getPotentialsRelatedAccounts(".$record_id.") method ...");
-	global $adb;
 	$query="select related_to from vtiger_potential where potentialid=?";
 	$result=$adb->pquery($query, array($record_id));
 	$accountid=$adb->query_result($result,0,'related_to');
@@ -2377,14 +2217,13 @@ function getPotentialsRelatedAccounts($record_id)
 }
 
 /** Function to get email related accounts
-  * @param $record_id -- record id :: Type integer
-  * @returns $accountid -- accountid:: Type integer
-  */
+ * @param $record_id -- record id :: Type integer
+ * @returns $accountid -- accountid:: Type integer
+ */
 function getEmailsRelatedAccounts($record_id)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getEmailsRelatedAccounts(".$record_id.") method ...");
-	global $adb;
 	$query = "select vtiger_seactivityrel.crmid from vtiger_seactivityrel inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_seactivityrel.crmid where vtiger_crmentity.setype='Accounts' and activityid=?";
 	$result = $adb->pquery($query, array($record_id));
 	$accountid=$adb->query_result($result,0,'crmid');
@@ -2392,15 +2231,13 @@ function getEmailsRelatedAccounts($record_id)
 	return $accountid;
 }
 /** Function to get email related Leads
-  * @param $record_id -- record id :: Type integer
-  * @returns $leadid -- leadid:: Type integer
-  */
-
+ * @param $record_id -- record id :: Type integer
+ * @returns $leadid -- leadid:: Type integer
+ */
 function getEmailsRelatedLeads($record_id)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getEmailsRelatedLeads(".$record_id.") method ...");
-	global $adb;
 	$query = "select vtiger_seactivityrel.crmid from vtiger_seactivityrel inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_seactivityrel.crmid where vtiger_crmentity.setype='Leads' and activityid=?";
 	$result = $adb->pquery($query, array($record_id));
 	$leadid=$adb->query_result($result,0,'crmid');
@@ -2409,289 +2246,244 @@ function getEmailsRelatedLeads($record_id)
 }
 
 /** Function to get HelpDesk related Accounts
-  * @param $record_id -- record id :: Type integer
-  * @returns $accountid -- accountid:: Type integer
-  */
-
+ * @param $record_id -- record id :: Type integer
+ * @returns $accountid -- accountid:: Type integer
+ */
 function getHelpDeskRelatedAccounts($record_id)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getHelpDeskRelatedAccounts(".$record_id.") method ...");
-	global $adb;
-        $query="select parent_id from vtiger_troubletickets inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_troubletickets.parent_id where ticketid=? and vtiger_crmentity.setype='Accounts'";
-        $result=$adb->pquery($query, array($record_id));
-        $accountid=$adb->query_result($result,0,'parent_id');
+	$query="select parent_id from vtiger_troubletickets inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_troubletickets.parent_id where ticketid=? and vtiger_crmentity.setype='Accounts'";
+	$result=$adb->pquery($query, array($record_id));
+	$accountid=$adb->query_result($result,0,'parent_id');
 	$log->debug("Exiting getHelpDeskRelatedAccounts method ...");
-        return $accountid;
+	return $accountid;
 }
 
 /** Function to get Quotes related Accounts
-  * @param $record_id -- record id :: Type integer
-  * @returns $accountid -- accountid:: Type integer
-  */
-
+ * @param $record_id -- record id :: Type integer
+ * @returns $accountid -- accountid:: Type integer
+ */
 function getQuotesRelatedAccounts($record_id)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getQuotesRelatedAccounts(".$record_id.") method ...");
-	global $adb;
-        $query="select accountid from vtiger_quotes where quoteid=?";
-        $result=$adb->pquery($query, array($record_id));
-        $accountid=$adb->query_result($result,0,'accountid');
+	$query="select accountid from vtiger_quotes where quoteid=?";
+	$result=$adb->pquery($query, array($record_id));
+	$accountid=$adb->query_result($result,0,'accountid');
 	$log->debug("Exiting getQuotesRelatedAccounts method ...");
-        return $accountid;
+	return $accountid;
 }
 
 /** Function to get Quotes related Potentials
-  * @param $record_id -- record id :: Type integer
-  * @returns $potid -- potid:: Type integer
-  */
-
+ * @param $record_id -- record id :: Type integer
+ * @returns $potid -- potid:: Type integer
+ */
 function getQuotesRelatedPotentials($record_id)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getQuotesRelatedPotentials(".$record_id.") method ...");
-	global $adb;
-        $query="select potentialid from vtiger_quotes where quoteid=?";
-        $result=$adb->pquery($query, array($record_id));
-        $potid=$adb->query_result($result,0,'potentialid');
+	$query="select potentialid from vtiger_quotes where quoteid=?";
+	$result=$adb->pquery($query, array($record_id));
+	$potid=$adb->query_result($result,0,'potentialid');
 	$log->debug("Exiting getQuotesRelatedPotentials method ...");
-        return $potid;
+	return $potid;
 }
 
 /** Function to get Quotes related Potentials
-  * @param $record_id -- record id :: Type integer
-  * @returns $accountid -- accountid:: Type integer
-  */
-
+ * @param $record_id -- record id :: Type integer
+ * @returns $accountid -- accountid:: Type integer
+ */
 function getSalesOrderRelatedAccounts($record_id)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getSalesOrderRelatedAccounts(".$record_id.") method ...");
-	global $adb;
-        $query="select accountid from vtiger_salesorder where salesorderid=?";
-        $result=$adb->pquery($query, array($record_id));
-        $accountid=$adb->query_result($result,0,'accountid');
+	$query="select accountid from vtiger_salesorder where salesorderid=?";
+	$result=$adb->pquery($query, array($record_id));
+	$accountid=$adb->query_result($result,0,'accountid');
 	$log->debug("Exiting getSalesOrderRelatedAccounts method ...");
-        return $accountid;
+	return $accountid;
 }
 
 /** Function to get SalesOrder related Potentials
-  * @param $record_id -- record id :: Type integer
-  * @returns $potid -- potid:: Type integer
-  */
-
+ * @param $record_id -- record id :: Type integer
+ * @returns $potid -- potid:: Type integer
+ */
 function getSalesOrderRelatedPotentials($record_id)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getSalesOrderRelatedPotentials(".$record_id.") method ...");
-	global $adb;
-        $query="select potentialid from vtiger_salesorder where salesorderid=?";
-        $result=$adb->pquery($query, array($record_id));
-        $potid=$adb->query_result($result,0,'potentialid');
+	$query="select potentialid from vtiger_salesorder where salesorderid=?";
+	$result=$adb->pquery($query, array($record_id));
+	$potid=$adb->query_result($result,0,'potentialid');
 	$log->debug("Exiting getSalesOrderRelatedPotentials method ...");
-        return $potid;
+	return $potid;
 }
-/** Function to get SalesOrder related Quotes
-  * @param $record_id -- record id :: Type integer
-  * @returns $qtid -- qtid:: Type integer
-  */
 
+/** Function to get SalesOrder related Quotes
+ * @param $record_id -- record id :: Type integer
+ * @returns $qtid -- qtid:: Type integer
+ */
 function getSalesOrderRelatedQuotes($record_id)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getSalesOrderRelatedQuotes(".$record_id.") method ...");
-	global $adb;
-        $query="select quoteid from vtiger_salesorder where salesorderid=?";
-        $result=$adb->pquery($query, array($record_id));
-        $qtid=$adb->query_result($result,0,'quoteid');
+	$query="select quoteid from vtiger_salesorder where salesorderid=?";
+	$result=$adb->pquery($query, array($record_id));
+	$qtid=$adb->query_result($result,0,'quoteid');
 	$log->debug("Exiting getSalesOrderRelatedQuotes method ...");
-        return $qtid;
+	return $qtid;
 }
 
 /** Function to get Invoice related Accounts
-  * @param $record_id -- record id :: Type integer
-  * @returns $accountid -- accountid:: Type integer
-  */
-
+ * @param $record_id -- record id :: Type integer
+ * @returns $accountid -- accountid:: Type integer
+ */
 function getInvoiceRelatedAccounts($record_id)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getInvoiceRelatedAccounts(".$record_id.") method ...");
-	global $adb;
-        $query="select accountid from vtiger_invoice where invoiceid=?";
-        $result=$adb->pquery($query, array($record_id));
-        $accountid=$adb->query_result($result,0,'accountid');
+	$query="select accountid from vtiger_invoice where invoiceid=?";
+	$result=$adb->pquery($query, array($record_id));
+	$accountid=$adb->query_result($result,0,'accountid');
 	$log->debug("Exiting getInvoiceRelatedAccounts method ...");
-        return $accountid;
+	return $accountid;
 }
-/** Function to get Invoice related SalesOrder
-  * @param $record_id -- record id :: Type integer
-  * @returns $soid -- soid:: Type integer
-  */
 
+/** Function to get Invoice related SalesOrder
+ * @param $record_id -- record id :: Type integer
+ * @returns $soid -- soid:: Type integer
+ */
 function getInvoiceRelatedSalesOrder($record_id)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getInvoiceRelatedSalesOrder(".$record_id.") method ...");
-	global $adb;
-        $query="select salesorderid from vtiger_invoice where invoiceid=?";
-        $result=$adb->pquery($query, array($record_id));
-        $soid=$adb->query_result($result,0,'salesorderid');
+	$query="select salesorderid from vtiger_invoice where invoiceid=?";
+	$result=$adb->pquery($query, array($record_id));
+	$soid=$adb->query_result($result,0,'salesorderid');
 	$log->debug("Exiting getInvoiceRelatedSalesOrder method ...");
-        return $soid;
+	return $soid;
 }
 
-
 /** Function to get Days and Dates in between the dates specified
-        * Portions created by vtiger are Copyright (C) vtiger.
-        * All Rights Reserved.
-        * Contributor(s): ______________________________________..
+ * Portions created by vtiger are Copyright (C) vtiger.
+ * All Rights Reserved.
  */
 function get_days_n_dates($st,$en)
 {
 	global $log;
 	$log->debug("Entering get_days_n_dates(".$st.",".$en.") method ...");
-        $stdate_arr=explode("-",$st);
-        $endate_arr=explode("-",$en);
+	$stdate_arr=explode("-",$st);
+	$endate_arr=explode("-",$en);
 
-        $dateDiff = mktime(0,0,0,$endate_arr[1],$endate_arr[2],$endate_arr[0]) - mktime(0,0,0,$stdate_arr[1],$stdate_arr[2],$stdate_arr[0]);//to get  dates difference
+	$dateDiff = mktime(0,0,0,$endate_arr[1],$endate_arr[2],$endate_arr[0]) - mktime(0,0,0,$stdate_arr[1],$stdate_arr[2],$stdate_arr[0]);//to get  dates difference
 
-        $days   =  floor($dateDiff/60/60/24)+1; //to calculate no of. days
-        for($i=0;$i<$days;$i++)
-        {
-                $day_date[] = date("Y-m-d",mktime(0,0,0,date("$stdate_arr[1]"),(date("$stdate_arr[2]")+($i)),date("$stdate_arr[0]")));
-        }
-        if(!isset($day_date))
-                $day_date=0;
-        $nodays_dates=array($days,$day_date);
+	$days = floor($dateDiff/60/60/24)+1; //to calculate no of. days
+	for($i=0;$i<$days;$i++) {
+		$day_date[] = date("Y-m-d",mktime(0,0,0,date("$stdate_arr[1]"),(date("$stdate_arr[2]")+($i)),date("$stdate_arr[0]")));
+	}
+	if(!isset($day_date))
+		$day_date=0;
+	$nodays_dates=array($days,$day_date);
 	$log->debug("Exiting get_days_n_dates method ...");
-        return $nodays_dates; //passing no of days , days in between the days
-}//function end
-
+	return $nodays_dates; //passing no of days , days in between the days
+}
 
 /** Function to get the start and End Dates based upon the period which we give
-        * Portions created by vtiger are Copyright (C) vtiger.
-        * All Rights Reserved.
-        * Contributor(s): ______________________________________..
+ * Portions created by vtiger are Copyright (C) vtiger.
+ * All Rights Reserved.
  */
 function start_end_dates($period)
 {
 	global $log;
 	$log->debug("Entering start_end_dates(".$period.") method ...");
-        $st_thisweek= date("Y-m-d",mktime(0,0,0,date("n"),(date("j")-date("w")),date("Y")));
-        if($period=="tweek")
-        {
-                $st_date= date("Y-m-d",mktime(0,0,0,date("n"),(date("j")-date("w")),date("Y")));
-                $end_date = date("Y-m-d",mktime(0,0,0,date("n"),(date("j")-1),date("Y")));
-                $st_week= date("w",mktime(0,0,0,date("n"),date("j"),date("Y")));
-                if($st_week==0)
-                {
-                        $start_week=explode("-",$st_thisweek);
-                        $st_date = date("Y-m-d",mktime(0,0,0,date("$start_week[1]"),(date("$start_week[2]")-7),date("$start_week[0]")));
-                        $end_date = date("Y-m-d",mktime(0,0,0,date("$start_week[1]"),(date("$start_week[2]")-1),date("$start_week[0]")));
-                }
-                $period_type="week";
-                $width="360";
-        }
-        else if($period=="lweek")
-        {
-                $start_week=explode("-",$st_thisweek);
-                $st_date = date("Y-m-d",mktime(0,0,0,date("$start_week[1]"),(date("$start_week[2]")-7),date("$start_week[0]")));
-                $end_date = date("Y-m-d",mktime(0,0,0,date("$start_week[1]"),(date("$start_week[2]")-1),date("$start_week[0]")));
-                $st_week= date("w",mktime(0,0,0,date("n"),date("j"),date("Y")));
-                if($st_week==0)
-                {
-                        $start_week=explode("-",$st_thisweek);
-                        $st_date = date("Y-m-d",mktime(0,0,0,date("$start_week[1]"),(date("$start_week[2]")-14),date("$start_week[0]")));
-                        $end_date = date("Y-m-d",mktime(0,0,0,date("$start_week[1]"),(date("$start_week[2]")-8),date("$start_week[0]")));
-                }
-                $period_type="week";
-                $width="360";
-        }
-        else if($period=="tmon")
-        {
+	$st_thisweek= date("Y-m-d",mktime(0,0,0,date("n"),(date("j")-date("w")),date("Y")));
+	if($period=="tweek") {
+		$st_date= date("Y-m-d",mktime(0,0,0,date("n"),(date("j")-date("w")),date("Y")));
+		$end_date = date("Y-m-d",mktime(0,0,0,date("n"),(date("j")-1),date("Y")));
+		$st_week= date("w",mktime(0,0,0,date("n"),date("j"),date("Y")));
+		if($st_week==0) {
+			$start_week=explode("-",$st_thisweek);
+			$st_date = date("Y-m-d",mktime(0,0,0,date("$start_week[1]"),(date("$start_week[2]")-7),date("$start_week[0]")));
+			$end_date = date("Y-m-d",mktime(0,0,0,date("$start_week[1]"),(date("$start_week[2]")-1),date("$start_week[0]")));
+		}
+		$period_type="week";
+		$width="360";
+	} else if($period=="lweek") {
+		$start_week=explode("-",$st_thisweek);
+		$st_date = date("Y-m-d",mktime(0,0,0,date("$start_week[1]"),(date("$start_week[2]")-7),date("$start_week[0]")));
+		$end_date = date("Y-m-d",mktime(0,0,0,date("$start_week[1]"),(date("$start_week[2]")-1),date("$start_week[0]")));
+		$st_week= date("w",mktime(0,0,0,date("n"),date("j"),date("Y")));
+		if($st_week==0) {
+			$start_week=explode("-",$st_thisweek);
+			$st_date = date("Y-m-d",mktime(0,0,0,date("$start_week[1]"),(date("$start_week[2]")-14),date("$start_week[0]")));
+			$end_date = date("Y-m-d",mktime(0,0,0,date("$start_week[1]"),(date("$start_week[2]")-8),date("$start_week[0]")));
+		}
+		$period_type="week";
+		$width="360";
+	} else if($period=="tmon") {
 		$period_type="month";
 		$width="840";
 		$st_date = date("Y-m-d",mktime(0, 0, 0, date("m"), "01",   date("Y")));
 		$end_date = date("Y-m-t");
-
-        }
-        else if($period=="lmon")
-        {
-                $st_date=date("Y-m-d",mktime(0,0,0,date("n")-1,date("1"),date("Y")));
-                $end_date = date("Y-m-d",mktime(0, 0, 1, date("n"), 0,date("Y")));
-                $period_type="month";
-                $start_month=date("d",mktime(0,0,0,date("n"),date("j"),date("Y")));
-                if($start_month==1)
-                {
-                        $st_date=date("Y-m-d",mktime(0,0,0,date("n")-2,date("1"),date("Y")));
-                        $end_date = date("Y-m-d",mktime(0, 0, 1, date("n")-1, 0,date("Y")));
-                }
-
-                $width="840";
-        }
-        else
-        {
-                $curr_date=date("Y-m-d",mktime(0,0,0,date("m"),date("d"),date("Y")));
-                $today_date=explode("-",$curr_date);
-                $lastday_date=date("Y-m-d",mktime(0,0,0,date("$today_date[1]"),date("$today_date[2]")-1,date("$today_date[0]")));
-                $st_date=$lastday_date;
-                $end_date=$lastday_date;
-                $period_type="yday";
-		 $width="250";
-        }
-        if($period_type=="yday")
-                $height="160";
-        else
-                $height="250";
-        $datevalues=array($st_date,$end_date,$period_type,$width,$height);
+	} else if($period=="lmon") {
+		$st_date=date("Y-m-d",mktime(0,0,0,date("n")-1,date("1"),date("Y")));
+		$end_date = date("Y-m-d",mktime(0, 0, 1, date("n"), 0,date("Y")));
+		$period_type="month";
+		$start_month=date("d",mktime(0,0,0,date("n"),date("j"),date("Y")));
+		if($start_month==1) {
+			$st_date=date("Y-m-d",mktime(0,0,0,date("n")-2,date("1"),date("Y")));
+			$end_date = date("Y-m-d",mktime(0, 0, 1, date("n")-1, 0,date("Y")));
+		}
+		$width="840";
+	} else {
+		$curr_date=date("Y-m-d",mktime(0,0,0,date("m"),date("d"),date("Y")));
+		$today_date=explode("-",$curr_date);
+		$lastday_date=date("Y-m-d",mktime(0,0,0,date("$today_date[1]"),date("$today_date[2]")-1,date("$today_date[0]")));
+		$st_date=$lastday_date;
+		$end_date=$lastday_date;
+		$period_type="yday";
+		$width="250";
+	}
+	if($period_type=="yday")
+		$height="160";
+	else
+		$height="250";
+	$datevalues=array($st_date,$end_date,$period_type,$width,$height);
 	$log->debug("Exiting start_end_dates method ...");
-        return $datevalues;
-}//function ends
+	return $datevalues;
+}
 
-
-/**   Function to get the Graph and vtiger_table format for a particular date
-        based upon the period
-        * Portions created by vtiger are Copyright (C) vtiger.
-        * All Rights Reserved.
-        * Contributor(s): ______________________________________..
+/** Function to get the Graph and vtiger_table format for a particular date based upon the period
+ * Portions created by vtiger are Copyright (C) vtiger.
+ * All Rights Reserved.
  */
-function Graph_n_table_format($period_type,$date_value)
-{
+function Graph_n_table_format($period_type,$date_value) {
 	global $log;
 	$log->debug("Entering Graph_n_table_format(".$period_type.",".$date_value.") method ...");
-        $date_val=explode("-",$date_value);
-        if($period_type=="month")   //to get the vtiger_table format dates
-        {
-                $table_format=date("j",mktime(0,0,0,date($date_val[1]),(date($date_val[2])),date($date_val[0])));
-                $graph_format=date("D",mktime(0,0,0,date($date_val[1]),(date($date_val[2])),date($date_val[0])));
-        }
-        else if($period_type=="week")
-        {
-                $table_format=date("d/m",mktime(0,0,0,date($date_val[1]),(date($date_val[2])),date($date_val[0])));
-                $graph_format=date("D",mktime(0,0,0,date($date_val[1]),(date($date_val[2])),date($date_val[0])));
-        }
-        else if($period_type=="yday")
-        {
-                $table_format=date("j",mktime(0,0,0,date($date_val[1]),(date($date_val[2])),date($date_val[0])));
-                $graph_format=$table_format;
-        }
-        $values=array($graph_format,$table_format);
+	$date_val=explode("-",$date_value);
+	if($period_type=="month") {  //to get the vtiger_table format dates
+		$table_format=date("j",mktime(0,0,0,date($date_val[1]),(date($date_val[2])),date($date_val[0])));
+		$graph_format=date("D",mktime(0,0,0,date($date_val[1]),(date($date_val[2])),date($date_val[0])));
+	} else if($period_type=="week") {
+		$table_format=date("d/m",mktime(0,0,0,date($date_val[1]),(date($date_val[2])),date($date_val[0])));
+		$graph_format=date("D",mktime(0,0,0,date($date_val[1]),(date($date_val[2])),date($date_val[0])));
+	} else if($period_type=="yday") {
+		$table_format=date("j",mktime(0,0,0,date($date_val[1]),(date($date_val[2])),date($date_val[0])));
+		$graph_format=$table_format;
+	}
+	$values=array($graph_format,$table_format);
 	$log->debug("Exiting Graph_n_table_format method ...");
-        return $values;
+	return $values;
 }
 
 /** Function to get image count for a given product
-  * @param $id -- product id :: Type integer
-  * @returns count -- count:: Type integer
-  */
-
-function getImageCount($id)
-{
-	global $log;
+ * @param $id -- product id :: Type integer
+ * @returns count -- count:: Type integer
+ */
+function getImageCount($id) {
+	global $log, $adb;
 	$log->debug("Entering getImageCount(".$id.") method ...");
-	global $adb;
 	$image_lists=array();
 	$query="select imagename from vtiger_products where productid=?";
 	$result=$adb->pquery($query, array($id));
@@ -2699,37 +2491,29 @@ function getImageCount($id)
 	$image_lists=explode("###",$imagename);
 	$log->debug("Exiting getImageCount method ...");
 	return count($image_lists);
-
 }
 
 /** Function to get user image for a given user
-  * @param $id -- user id :: Type integer
-  * @returns $image_name -- image name:: Type string
-  */
-
-function getUserImageName($id)
-{
-	global $log;
+ * @param $id -- user id :: Type integer
+ * @returns $image_name -- image name:: Type string
+ */
+function getUserImageName($id) {
+	global $log, $adb;
 	$log->debug("Entering getUserImageName(".$id.") method ...");
-	global $adb;
 	$query = "select imagename from vtiger_users where id=?";
 	$result = $adb->pquery($query, array($id));
 	$image_name = $adb->query_result($result,0,"imagename");
 	$log->debug("Inside getUserImageName. The image_name is ".$image_name);
 	$log->debug("Exiting getUserImageName method ...");
 	return $image_name;
-
 }
 
 /** Function to get all user images for displaying it in listview
-  * @returns $image_name -- image name:: Type array
-  */
-
-function getUserImageNames()
-{
-	global $log;
+ * @returns $image_name -- image name:: Type array
+ */
+function getUserImageNames() {
+	global $log, $adb;
 	$log->debug("Entering getUserImageNames() method ...");
-	global $adb;
 	$query = "select imagename from vtiger_users where deleted=0";
 	$result = $adb->pquery($query, array());
 	$image_name=array();
@@ -2749,25 +2533,22 @@ function getUserImageNames()
 /**   Function to remove the script tag in the contents
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________..
  */
-function strip_selected_tags($text, $tags = array())
-{
-    $args = func_get_args();
-    $text = array_shift($args);
-    $tags = func_num_args() > 2 ? array_diff($args,array($text))  : (array)$tags;
-    foreach ($tags as $tag){
-        if(preg_match_all('/<'.$tag.'[^>]*>(.*)<\/'.$tag.'>/iU', $text, $found)){
-            $text = str_replace($found[0],$found[1],$text);
-        }
-    }
-
-    return $text;
+function strip_selected_tags($text, $tags = array()) {
+	$args = func_get_args();
+	$text = array_shift($args);
+	$tags = func_num_args() > 2 ? array_diff($args,array($text))  : (array)$tags;
+	foreach ($tags as $tag){
+		if(preg_match_all('/<'.$tag.'[^>]*>(.*)<\/'.$tag.'>/iU', $text, $found)){
+			$text = str_replace($found[0],$found[1],$text);
+		}
+	}
+	return $text;
 }
 
 /** Function to check whether user has opted for internal mailer
-  * @returns $int_mailer -- int mailer:: Type boolean
-    */
+ * @returns $int_mailer -- int mailer:: Type boolean
+ */
 function useInternalMailer() {
 	global $current_user,$adb;
 	return $adb->query_result($adb->pquery("select int_mailer from vtiger_mail_accounts where user_id=?", array($current_user->id)),0,"int_mailer");
@@ -2948,7 +2729,6 @@ function getCurrentModule($perform_set=false) {
 	}
 	return null;
 }
-
 
 /**
  * Set the language strings.
@@ -3807,7 +3587,7 @@ function get_on_clause($field_list,$uitype_arr,$module)
 
 /** call back function to change the array values in to lower case */
 function lower_array(&$string){
-	    $string = strtolower(trim($string));
+	$string = strtolower(trim($string));
 }
 
 /** Function to get recordids for subquery where condition */
@@ -4700,13 +4480,13 @@ function getValidDBInsertDateTimeValue($value) {
  * @param $newvalue -- Required Memory Limit
  */
 function _phpset_memorylimit_MB($newvalue) {
-    $current = @ini_get('memory_limit');
-    if(preg_match("/(.*)M/", $current, $matches)) {
-        // Check if current value is less then new value
-        if($matches[1] < $newvalue) {
-            @ini_set('memory_limit', "{$newvalue}M");
-        }
-    }
+	$current = @ini_get('memory_limit');
+	if(preg_match("/(.*)M/", $current, $matches)) {
+		// Check if current value is less then new value
+		if($matches[1] < $newvalue) {
+			@ini_set('memory_limit', "{$newvalue}M");
+		}
+	}
 }
 
 /** Function to sanitize the upload file name when the file name is detected to have bad extensions
@@ -4771,27 +4551,27 @@ function getBlockName($blockid) {
 }
 
 function validateAlphaNumericInput($string){
-    preg_match('/^[\w _\-\/]+$/', $string, $matches);
-    if(count($matches) == 0) {
-        return false;
-    }
-    return true;
+	preg_match('/^[\w _\-\/]+$/', $string, $matches);
+	if(count($matches) == 0) {
+		return false;
+	}
+	return true;
 }
 
 function validateServerName($string){
-    preg_match('/^[\w\-\.\\/:]+$/', $string, $matches);
-    if(count($matches) == 0) {
-        return false;
-    }
-    return true;
+	preg_match('/^[\w\-\.\\/:]+$/', $string, $matches);
+	if(count($matches) == 0) {
+		return false;
+	}
+	return true;
 }
 
 function validateEmailId($string){
-    preg_match('/^[a-zA-Z0-9]+([\_\-\.]*[a-zA-Z0-9]+[\_\-]?)*@[a-zA-Z0-9]+([\_\-]?[a-zA-Z0-9]+)*\.+([\-\_]?[a-zA-Z0-9])+(\.?[a-zA-Z0-9]+)*$/', $string, $matches);
-    if(count($matches) == 0) {
-        return false;
-    }
-    return true;
+	preg_match('/^[a-zA-Z0-9]+([\_\-\.]*[a-zA-Z0-9]+[\_\-]?)*@[a-zA-Z0-9]+([\_\-]?[a-zA-Z0-9]+)*\.+([\-\_]?[a-zA-Z0-9])+(\.?[a-zA-Z0-9]+)*$/', $string, $matches);
+	if(count($matches) == 0) {
+		return false;
+	}
+	return true;
 }
 
 function str_rsplit($string, $splitLength) {
@@ -4950,7 +4730,6 @@ function getSelectAllQuery($input,$module) {
 		if($input['query'] == 'true') {
 			$queryGenerator->addUserSearchConditions($input);
 		}
-		
 		$queryGenerator->setFields(array('id'));
 		$query = $queryGenerator->getQuery();
 
@@ -5050,12 +4829,6 @@ function dateDiffAsString($d1, $d2) {
 }
 
 function getMinimumCronFrequency() {
-	if(file_exists('modules/Ondemand/Ondemand.config.php')) {
-		require_once('modules/Ondemand/Ondemand.config.php');
-		global $VtigerOndemandConfig;
-		if($VtigerOndemandConfig['MINIMUM_CRON_FREQUENCY'] != '')
-			return $VtigerOndemandConfig['MINIMUM_CRON_FREQUENCY'];
-	}
 	global $MINIMUM_CRON_FREQUENCY;
 
 	if(!empty($MINIMUM_CRON_FREQUENCY)) {

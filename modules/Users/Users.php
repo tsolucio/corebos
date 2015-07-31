@@ -1109,22 +1109,6 @@ class Users extends CRMEntity {
 		$sql = "insert into vtiger_homestuff values($tc, 15, 'Tag Cloud', $uid, $visibility, 'Tag Cloud')";
 		$adb->pquery($sql, array());
 
-		// Customization
-		global $VtigerOndemandConfig;
-		if (isset($VtigerOndemandConfig) && isset($VtigerOndemandConfig['DEFAULT_NOTEBOOK_WIDGET'])) {
-			$defaultNoteBookWidgetInfo = $VtigerOndemandConfig['DEFAULT_NOTEBOOK_WIDGET'];
-			$ntbkid = $adb->getUniqueID("vtiger_homestuff");
-			$visibility = 0;
-			$sql = "INSERT INTO vtiger_homestuff(stuffid, stuffsequence, stufftype, userid, visible, stufftitle) values(?, ?, ?, ?, ?, ?)";
-			$params = array($ntbkid, 16, 'Notebook', $uid, $visibility, $defaultNoteBookWidgetInfo['title']);
-			$adb->pquery($sql, $params);
-
-			$sql = "insert into vtiger_notebook_contents(userid, notebookid, contents) values(?,?,?)";
-			$params = array($uid, $ntbkid, $defaultNoteBookWidgetInfo['contents']);
-			$adb->pquery($sql, $params);
-		}
-		// END
-
 		$sql = "insert into vtiger_homedefault values(" . $s1 . ",'ALVT',5,'Accounts')";
 		$adb->pquery($sql, array());
 
