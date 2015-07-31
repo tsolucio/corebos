@@ -953,7 +953,7 @@ class Contacts extends CRMEntity {
 
 		$button = '';
 
-		if($actions && getFieldVisibilityPermission($related_module, $current_user->id, 'parent_id', 'readwrite') == '0') {
+		if($actions) {
 			if(is_string($actions)) $actions = explode(',', strtoupper($actions));
 			if(in_array('SELECT', $actions) && isPermitted($related_module,4, '') == 'yes') {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module). "' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module) ."'>&nbsp;";
@@ -1485,6 +1485,8 @@ function get_contactsforol($user_name)
 				$adb->pquery("insert into vtiger_campaigncontrel values(?,?,1)", array($with_crmid, $crmid));
 			} elseif($with_module == 'Potentials') {
 				$adb->pquery("insert into vtiger_contpotentialrel values(?,?)", array($crmid, $with_crmid));
+			} elseif($with_module == 'Vendors') {
+				$adb->pquery("insert into vtiger_vendorcontactrel values (?,?)", array($with_crmid, $crmid));
 			} else {
 				parent::save_related_module($module, $crmid, $with_module, $with_crmid);
 			}

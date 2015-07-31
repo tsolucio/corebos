@@ -1388,7 +1388,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		if ($value != "<font color='red'>" . $app_strings['LBL_NOT_ACCESSIBLE'] . "</font>") {
 			$value = textlength_check($value);
 		}
-	} elseif ($uitype == 16) {
+	} elseif ($uitype == 16 || $uitype == 1613) {
 		$value = getTranslatedString($temp_val, $currentModule);
 		$value = textlength_check($value);
 	} elseif ($uitype == 71 || $uitype == 72) {
@@ -3665,6 +3665,12 @@ function getRelCheckquery($currentmodule, $returnmodule, $recordid) {
 		array_push($params, $recordid);
 		$table = "vtiger_notes";
 		$field = "notesid";
+	} elseif ($currentmodule == "Vendors" && $returnmodule == "Contacts") {
+		$reltable = 'vtiger_vendorcontactrel';
+		$condition = 'WHERE contactid = ?';
+		array_push($params, $recordid);
+		$field = $selectfield = 'vendorid';
+		$table = 'vtiger_vendor';
 	}
 	//end
 	if ($reltable != null) {
