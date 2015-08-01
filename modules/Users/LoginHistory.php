@@ -134,7 +134,7 @@ class LoginHistory {
 	*/
 	function user_login(&$usname,&$usip,&$intime) {
 		global $adb;
-		cbEventHandler::do_action('corebos.audit.login',array($usname, 'Users', 'Login', $usname, $intime));
+		cbEventHandler::do_action('corebos.audit.login',array($usname, 'Users', 'Login', $usname, date("Y-m-d H:i:s")));
 		$query = "Insert into vtiger_loginhistory (user_name, user_ip, logout_time, login_time, status) values (?,?,?,?,?)";
 		$params = array($usname,$usip,'0000-00-00 00:00:00', $this->db->formatDate($intime, true),'Signed in');
 		$result = $adb->pquery($query, $params) or die("MySQL error: ".mysql_error());
@@ -149,7 +149,7 @@ class LoginHistory {
 	*/
 	function user_logout(&$usname,&$usip,&$outtime) {
 		global $adb;
-		cbEventHandler::do_action('corebos.audit.logout',array($usname, 'Users', 'Logout', $usname, $outtime));
+		cbEventHandler::do_action('corebos.audit.logout',array($usname, 'Users', 'Logout', $usname, date("Y-m-d H:i:s")));
 		$logid_qry = "SELECT max(login_id) AS login_id from vtiger_loginhistory where user_name=? and user_ip=?";
 		$result = $adb->pquery($logid_qry, array($usname, $usip));
 		$loginid = $adb->query_result($result,0,"login_id");
