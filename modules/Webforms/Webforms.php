@@ -17,12 +17,9 @@ class Webforms {
 	// Cache to speed up describe information store
 	protected static $moduleDescribeCache = array();
 
-
 	function vtlib_handler($moduleName, $eventType) {
-
 		require_once('include/utils/utils.php');
 		global $adb;
-		
 
 			if($eventType == 'module.postinstall') {
 				// Mark the module as Standard module
@@ -45,7 +42,7 @@ class Webforms {
 			// TODO Handle actions after this module is updated.
 				$this->updateSettings();
 			}
-        }
+	}
 
 	function updateSettings(){
 			global $adb;
@@ -62,7 +59,7 @@ class Webforms {
 			if(!$adb->num_rows($result)){
 				$adb->pquery('INSERT INTO vtiger_settings_field(fieldid, blockid, name, iconpath, description, linkto, sequence)
 					VALUES (?,?,?,?,?,?,?)', array($fieldid, $blockid, $this->LBL_WEBFORMS , 'modules/Webforms/img/Webform.png', 'Allows you to manage Webforms', 'index.php?module=Webforms&action=index&parenttab=Settings', $seq));
-			}			
+			}
 		}
 
 	static function checkAdminAccess($user) {

@@ -10,16 +10,8 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  Defines the English language pack for the Account module.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|09/11/2011|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
-
 
 $mod_strings = Array(
 'LBL_IMPORT_MODULE_NO_DIRECTORY'=>'O diretório ',
