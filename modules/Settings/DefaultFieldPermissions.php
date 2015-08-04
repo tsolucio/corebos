@@ -20,6 +20,9 @@ $image_path=$theme_path."images/";
 
 //$field_module = Array('Leads','Accounts','Contacts','Potentials','HelpDesk','Products','Notes','Calendar','Events','Vendors','PriceBooks','Quotes','PurchaseOrder','SalesOrder','Invoice','Campaigns','Faq');
 $field_module=getFieldModuleAccessArray();
+uksort($field_module, function($a,$b) {
+	return (strtolower(getTranslatedString($a,$a)) < strtolower(getTranslatedString($b,$b))) ? -1 : 1;
+});
 $allfields=Array();
 foreach($field_module as $fld_module=>$mod_name) {
 	$fieldListResult = getDefOrgFieldList($fld_module);
