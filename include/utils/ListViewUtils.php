@@ -1108,7 +1108,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 						}
 						elseif (($module == 'Faq' || $module == 'Documents') && $name == 'Related to') {
 							$value = getRelatedToEntity($module, $list_result, $i - 1);
-						} elseif ($name == 'Account Name' && ($module == 'Potentials' || $module == 'SalesOrder' || $module == 'Quotes')) {
+						} elseif ($name == 'Account Name' && ($module == 'Potentials' || $module == 'SalesOrder' || $module == 'Quotes' || $module == 'Invoice')) {
 							$account_id = $adb->query_result($list_result, $i - 1, "accountid");
 							$account_name = getAccountName($account_id);
 							$value = textlength_check($account_name);

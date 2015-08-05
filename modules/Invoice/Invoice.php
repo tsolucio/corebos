@@ -48,6 +48,7 @@ class Invoice extends CRMEntity {
 				'Sales Order'=>Array('invoice'=>'salesorderid'),
 				'Status'=>Array('invoice'=>'invoicestatus'),
 				'Total'=>Array('invoice'=>'total'),
+				'Account Name'=>Array('invoice'=>'account_id'),
 				'Assigned To'=>Array('crmentity'=>'smownerid')
 				);
 
@@ -57,6 +58,7 @@ class Invoice extends CRMEntity {
 				'Sales Order'=>'salesorder_id',
 				'Status'=>'invoicestatus',
 				'Total'=>'hdnGrandTotal',
+				'Account Name'=>'account_id',
 				'Assigned To'=>'assigned_user_id'
 				);
 	var $list_link_field= 'subject';
@@ -65,11 +67,13 @@ class Invoice extends CRMEntity {
 				//'Invoice No'=>Array('crmentity'=>'crmid'),
 				'Invoice No'=>Array('invoice'=>'invoice_no'),
 				'Subject'=>Array('purchaseorder'=>'subject'),
+				'Account Name'=>Array('invoice'=>'account_id'),
 				);
 
 	var $search_fields_name = Array(
-				'Invoice No'=>'',
+				'Invoice No'=>'invoice_no',
 				'Subject'=>'subject',
+				'Account Name'=>'account_id',
 				);
 
 	// This is the list of vtiger_fields that are required.
