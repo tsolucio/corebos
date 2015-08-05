@@ -153,6 +153,7 @@
 			checkFileAccessForInclusion($path);
 			require_once($path);
 		}
+		cbEventHandler::do_action('corebos.audit.action',array((isset($current_user) ? $current_user->id:0), 'Webservice', $operation, 0, date('Y-m-d H:i:s')));
 		$rawOutput = $operationManager->runOperation($operationInput,$current_user);
 		writeOutput($operationManager, $rawOutput);
 	}catch(WebServiceException $e){
