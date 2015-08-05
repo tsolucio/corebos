@@ -546,11 +546,14 @@ class CRMEntity {
 					$sql1="select $colj from $tabj where " . $this->tab_name_index[$tabj] . "=?";
 					$res = $adb->pquery($sql1, array($this->id));
 					$vlera=$adb->query_result($res, 0, $colj);
-					$currentvalues = array_map('trim', explode('|##|', $vlera));
+					if (empty($vlera)) {
+						$currentvalues = array();
+					} else {
+						$currentvalues = array_map('trim', explode('|##|', $vlera));
+					}
 					$selectedvalues = $this->column_fields[$fieldname];
 					$roleid=$current_user->roleid;
 					$uservalues = getAssignedPicklistValues($fieldname, $roleid, $adb);
-					$diff = array_diff($currentvalues,$uservalues);
 					$vek=array_merge(array_diff($currentvalues,$uservalues),$selectedvalues);
 					$fldvalue = implode(' |##| ', $vek);
 				} elseif ($uitype == 5 || $uitype == 6 || $uitype == 23) {
