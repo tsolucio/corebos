@@ -946,7 +946,6 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 			else
 				$varreturnset = $returnset;
 
-
 			if ($module == 'Calendar') {
 				$actvity_type = $adb->query_result($list_result, $list_result_count, 'activitytype');
 				if ($actvity_type == 'Task')
@@ -1001,7 +1000,6 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
  * Param $oCv - vtiger_customview object
  * Returns an array type
  */
-
 function getSearchListViewEntries($focus, $module, $list_result, $navigation_array, $form = '') {
 	global $log;
 	$log->debug("Entering getSearchListViewEntries(" . get_class($focus) . "," . $module . "," . $list_result . "," . $navigation_array . ") method ...");
@@ -1072,7 +1070,6 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 		$ui_col_array[$field_name] = $tempArr;
 	}
 
-	//end
 	if ($navigation_array['end_val'] > 0) {
 		for ($i = 1; $i <= $noofrows; $i++) {
 
@@ -1256,7 +1253,6 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
  * Param $viewid - custom view id
  * Returns an string value
  */
-
 function getValue($field_result, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, $mode, $popuptype, $returnset = '', $viewid = '') {
 	global $log, $listview_max_textlength, $app_strings, $current_language, $currentModule;
 	$log->debug("Entering getValue(" . $field_result . "," . $list_result . "," . $fieldname . "," . get_class($focus) . "," . $module . "," . $entity_id . "," . $list_result_count . "," . $mode . "," . $popuptype . "," . $returnset . "," . $viewid . ") method ...");
@@ -1522,7 +1518,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 			$idname = "invoiceid";
 		}
 
-
 		if ($parentid != '') {
 			$sql = "SELECT * FROM $tablename WHERE $idname = ?";
 			$fieldvalue = $adb->query_result($adb->pquery($sql, array($parentid)), 0, $fieldname);
@@ -1611,7 +1606,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 	}
 	elseif ($uitype == 78) {
 		if ($temp_val != '') {
-
 			$quote_name = getQuoteName($temp_val);
 			$value = '<a href=index.php?module=Quotes&action=DetailView&record=' . $temp_val . '&parenttab=' . urlencode($tabname) . '>' . textlength_check($quote_name) . '</a>';
 		}
@@ -2531,13 +2525,13 @@ function getListQuery($module, $where = '') {
 		LEFT OUTER JOIN vtiger_account
 			ON vtiger_account.accountid = vtiger_contactdetails.accountid
 		LEFT OUTER JOIN vtiger_leaddetails
-	       		ON vtiger_leaddetails.leadid = vtiger_seactivityrel.crmid
+			ON vtiger_leaddetails.leadid = vtiger_seactivityrel.crmid
 		LEFT OUTER JOIN vtiger_account vtiger_account2
-	        	ON vtiger_account2.accountid = vtiger_seactivityrel.crmid
+			ON vtiger_account2.accountid = vtiger_seactivityrel.crmid
 		LEFT OUTER JOIN vtiger_potential
-	       		ON vtiger_potential.potentialid = vtiger_seactivityrel.crmid
+			ON vtiger_potential.potentialid = vtiger_seactivityrel.crmid
 		LEFT OUTER JOIN vtiger_troubletickets
-	       		ON vtiger_troubletickets.ticketid = vtiger_seactivityrel.crmid
+			ON vtiger_troubletickets.ticketid = vtiger_seactivityrel.crmid
 		LEFT OUTER JOIN vtiger_salesorder
 			ON vtiger_salesorder.salesorderid = vtiger_seactivityrel.crmid
 		LEFT OUTER JOIN vtiger_purchaseorder
@@ -2545,15 +2539,14 @@ function getListQuery($module, $where = '') {
 		LEFT OUTER JOIN vtiger_quotes
 			ON vtiger_quotes.quoteid = vtiger_seactivityrel.crmid
 		LEFT OUTER JOIN vtiger_invoice
-	                ON vtiger_invoice.invoiceid = vtiger_seactivityrel.crmid
+			ON vtiger_invoice.invoiceid = vtiger_seactivityrel.crmid
 		LEFT OUTER JOIN vtiger_campaign
 		ON vtiger_campaign.campaignid = vtiger_seactivityrel.crmid";
 
 			//added to fix #5135
 			if (isset($_REQUEST['from_homepage']) && ($_REQUEST['from_homepage'] ==
 					"upcoming_activities" || $_REQUEST['from_homepage'] == "pending_activities")) {
-				$query.=" LEFT OUTER JOIN vtiger_recurringevents
-			             ON vtiger_recurringevents.activityid=vtiger_activity.activityid";
+				$query.=" LEFT OUTER JOIN vtiger_recurringevents ON vtiger_recurringevents.activityid=vtiger_activity.activityid";
 			}
 			//end
 
@@ -2764,7 +2757,7 @@ function getListQuery($module, $where = '') {
 			INNER JOIN vtiger_crmentity
 				ON vtiger_crmentity.crmid = vtiger_campaign.campaignid
 			INNER JOIN vtiger_campaignscf
-			        ON vtiger_campaign.campaignid = vtiger_campaignscf.campaignid
+				ON vtiger_campaign.campaignid = vtiger_campaignscf.campaignid
 			LEFT JOIN vtiger_groups
 				ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 			LEFT JOIN vtiger_users
@@ -2800,7 +2793,6 @@ function getListQuery($module, $where = '') {
  * Param $module - module name
  * Returns a database query - type string
  */
-
 function getReadEntityIds($module) {
 	global $log;
 	$log->debug("Entering getReadEntityIds(" . $module . ") method ...");
@@ -2812,10 +2804,8 @@ function getReadEntityIds($module) {
 	if ($module == "Leads") {
 		$query = "SELECT vtiger_crmentity.crmid
 			FROM vtiger_leaddetails
-			INNER JOIN vtiger_crmentity
-				ON vtiger_crmentity.crmid = vtiger_leaddetails.leadid
-			LEFT JOIN vtiger_groups
-                 ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
+			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_leaddetails.leadid
+			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
 		$query .= getNonAdminAccessControlQuery($module, $current_user);
 		$query .= "WHERE vtiger_crmentity.deleted = 0
 			AND vtiger_leaddetails.converted = 0 ";
@@ -2823,10 +2813,8 @@ function getReadEntityIds($module) {
 		//Query modified to sort by assigned to
 		$query = "SELECT vtiger_crmentity.crmid
 			FROM vtiger_account
-			INNER JOIN vtiger_crmentity
-				ON vtiger_crmentity.crmid = vtiger_account.accountid
-			LEFT JOIN vtiger_groups
-                ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
+			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_account.accountid
+			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
 		$query .= getNonAdminAccessControlQuery($module, $current_user);
 		$query .= "WHERE vtiger_crmentity.deleted = 0 ";
 	} elseif ($module == "Potentials") {
@@ -2877,10 +2865,8 @@ function getReadEntityIds($module) {
 		//Query modified to sort by assigned to
 		$query = "SELECT vtiger_crmentity.crmid
 			FROM vtiger_salesorder
-			INNER JOIN vtiger_crmentity
-				ON vtiger_crmentity.crmid = vtiger_salesorder.salesorderid
-			LEFT JOIN vtiger_groups
-                ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
+			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_salesorder.salesorderid
+			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
 		$query .= getNonAdminAccessControlQuery($module, $current_user);
 		$query .= "WHERE vtiger_crmentity.deleted = 0 ";
 	} elseif ($module == "Invoice") {
@@ -2964,7 +2950,6 @@ function AlphabeticalSearch($module, $action, $fieldname, $query, $type, $popupt
  * Param $rset - result set index
  * Returns an string value
  */
-
 function getRelatedToEntity($module, $list_result, $rset) {
 	global $log;
 	$log->debug("Entering getRelatedToEntity(" . $module . "," . $list_result . "," . $rset . ") method ...");
@@ -3035,7 +3020,6 @@ function getRelatedToEntity($module, $list_result, $rset) {
  * Param $rset - result set index
  * Returns an string value
  */
-
 //used in home page listTop files
 function getRelatedTo($module, $list_result, $rset) {
 	global $adb, $log, $app_strings;
@@ -3082,8 +3066,6 @@ function getRelatedTo($module, $list_result, $rset) {
 
 	$parent_module = $adb->query_result($evt_result, 0, 'setype');
 	$parent_id = $adb->query_result($evt_result, 0, 'crmid');
-
-
 
 	if ($numrows > 1) {
 		$parent_module = 'Multiple';
@@ -3146,24 +3128,21 @@ function getRelatedTo($module, $list_result, $rset) {
 		$parent_result = $adb->pquery($parent_query, array($parent_id));
 		$parent_name = $adb->query_result($parent_result, 0, "vendorname");
 	}
-	if($parent_module == 'Project' && $module == 'Emails')
-        {
-                $parent_query = "SELECT projectid,projectname FROM vtiger_project WHERE projectid=?";
-                $parent_result = $adb->pquery($parent_query, array($parent_id));
-                $parent_name = $adb->query_result($parent_result,0,"projectname");
-        }
-	if($parent_module == 'ProjectTask' && $module == 'Emails')
-        {
-                $parent_query = "SELECT projecttaskid,projecttaskname FROM vtiger_projecttask WHERE projecttaskid=?";
-                $parent_result = $adb->pquery($parent_query, array($parent_id));
-                $parent_name = $adb->query_result($parent_result,0,"projecttaskname");
-        }
-	if($parent_module == 'Potentials' && $module == 'Emails')
-        {
-                $parent_query = "SELECT potentialid,potentialname FROM vtiger_potential WHERE potentialid=?";
-                $parent_result = $adb->pquery($parent_query, array($parent_id));
-                $parent_name = $adb->query_result($parent_result,0,"potentialname");
-        }	
+	if($parent_module == 'Project' && $module == 'Emails') {
+		$parent_query = "SELECT projectid,projectname FROM vtiger_project WHERE projectid=?";
+		$parent_result = $adb->pquery($parent_query, array($parent_id));
+		$parent_name = $adb->query_result($parent_result,0,"projectname");
+	}
+	if($parent_module == 'ProjectTask' && $module == 'Emails') {
+		$parent_query = "SELECT projecttaskid,projecttaskname FROM vtiger_projecttask WHERE projecttaskid=?";
+		$parent_result = $adb->pquery($parent_query, array($parent_id));
+		$parent_name = $adb->query_result($parent_result,0,"projecttaskname");
+	}
+	if($parent_module == 'Potentials' && $module == 'Emails') {
+		$parent_query = "SELECT potentialid,potentialname FROM vtiger_potential WHERE potentialid=?";
+		$parent_result = $adb->pquery($parent_query, array($parent_id));
+		$parent_name = $adb->query_result($parent_result,0,"potentialname");
+	}
 	if ($parent_module == 'HelpDesk') {
 		$parent_query = "SELECT title FROM vtiger_troubletickets WHERE ticketid=?";
 		$parent_result = $adb->pquery($parent_query, array($parent_id));
@@ -3205,7 +3184,6 @@ function getRelatedTo($module, $list_result, $rset) {
  * Param $viewid - view id
  * Returns an string value
  */
-
 function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $action_val = 'index', $viewid = '') {
 	global $log, $app_strings;
 	$log->debug("Entering getTableHeaderNavigation(" . $navigation_array . "," . $url_qry . "," . $module . "," . $action_val . "," . $viewid . ") method ...");
@@ -3572,7 +3550,6 @@ function getPopupCheckquery($current_module, $relmodule, $relmod_recordid) {
   Param $recordid - the record id for which the entity is assigned
   Return type string.
  */
-
 function getRelCheckquery($currentmodule, $returnmodule, $recordid) {
 	global $log, $adb;
 	$log->debug("Entering getRelCheckquery(" . $currentmodule . "," . $returnmodule . "," . $recordid . ") method ...");
@@ -3757,7 +3734,6 @@ function setSessionVar($lv_array, $noofrows, $max_ent, $module = '', $related = 
  * Param $viewid - view id
  * Returns an string value
  */
-
 function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $related_module, $recordid) {
 	global $log, $app_strings, $adb;
 	$log->debug("Entering getTableHeaderNavigation(" . $navigation_array . "," . $url_qry . "," . $module . "," . $action_val . "," . $viewid . ") method ...");
@@ -3922,7 +3898,6 @@ function getListViewDeleteLink($module, $entity_id, $relatedlist, $returnset) {
 }
 
 /* Function to get the Entity Id of a given Entity Name */
-
 function getEntityId($module, $entityName, $searchonfield='') {
 	global $log, $adb;
 	$log->info("in getEntityId " . $entityName);
@@ -3967,7 +3942,7 @@ function getEntityId($module, $entityName, $searchonfield='') {
 		return 0;
 }
 
-/** 	function used to get the parent id for the given input parent name --Pavani * */
+/** function used to get the parent id for the given input parent name --Pavani * */
 function getParentId($parent_name) {
 	global $adb;
 	if ($parent_name == '' || $parent_name == NULL)
@@ -4140,7 +4115,6 @@ function VT_getSimpleNavigationValues($start, $size, $total) {
  * Param $viewid - view id
  * Returns an string value
  */
-
 function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '', $action_val = 'index', $viewid = '') {
 	global $log, $app_strings;
 	global $theme, $current_user;

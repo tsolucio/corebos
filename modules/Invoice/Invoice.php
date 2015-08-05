@@ -88,8 +88,7 @@ class Invoice extends CRMEntity {
 	// For Alphabetical search
 	var $def_basicsearch_col = 'subject';
 
-	/**	Constructor which will set the column_fields in this object
-	 */
+	/**	Constructor which will set the column_fields in this object */
 	function Invoice() {
 		$this->log =LoggerManager::getLogger('Invoice');
 		$this->log->debug("Entering Invoice() method ...");
@@ -260,8 +259,6 @@ class Invoice extends CRMEntity {
 		return getHistory('Invoice',$query,$id);
 	}
 
-
-
 	/**	Function used to get the Status history of the Invoice
 	 *	@param $id - invoice id
 	 *	@return $return_data - array with header and the entries in format Array('header'=>$header,'entries'=>$entries_list) where as $header and $entries_list are arrays which contains header values and all column values of all entries
@@ -316,7 +313,7 @@ class Invoice extends CRMEntity {
 
 		$return_data = Array('header'=>$header,'entries'=>$entries_list);
 
-	 	$log->debug("Exiting get_invoicestatushistory method ...");
+		$log->debug("Exiting get_invoicestatushistory method ...");
 
 		return $return_data;
 	}
