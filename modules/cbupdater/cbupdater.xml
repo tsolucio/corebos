@@ -387,4 +387,11 @@
 	<classname>addUIType1613and3313WebserviceFieldType</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add UIType 14 Webservice Field Type, fix duration type and fix uitype 3-4</description>
+	<filename>build/changeSets/fix_add_FieldDataTypes.php</filename>
+	<classname>fix_add_FieldDataTypes</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
