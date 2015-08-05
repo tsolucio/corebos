@@ -536,12 +536,23 @@ class CRMEntity {
 						$fldvalue = $this->column_fields[$fieldname];
 					}
 				} elseif ($uitype == 33 || $uitype == 3313) {
-					if (is_array($this->column_fields[$fieldname])) {
-						$field_list = implode(' |##| ', $this->column_fields[$fieldname]);
-					} else {
-						$field_list = $this->column_fields[$fieldname];
+					if (!is_array($this->column_fields[$fieldname])) {
+						$this->column_fields[$fieldname] = array_map('trim', explode('|##|',$this->column_fields[$fieldname]));
 					}
-					$fldvalue = $field_list;
+					$sql = "select columnname,tablename from vtiger_field where tabid=? and fieldname=?";
+					$res = $adb->pquery($sql, array($tabid,$fieldname));
+					$colj=$adb->query_result($res, 0, 0);
+					$tabj = $adb->query_result($res, 0, 1);
+					$sql1="select $colj from $tabj where " . $this->tab_name_index[$tabj] . "=?";
+					$res = $adb->pquery($sql1, array($this->id));
+					$vlera=$adb->query_result($res, 0, $colj);
+					$currentvalues = array_map('trim', explode('|##|', $vlera));
+					$selectedvalues = $this->column_fields[$fieldname];
+					$roleid=$current_user->roleid;
+					$uservalues = getAssignedPicklistValues($fieldname, $roleid, $adb);
+					$diff = array_diff($currentvalues,$uservalues);
+					$vek=array_merge(array_diff($currentvalues,$uservalues),$selectedvalues);
+					$fldvalue = implode(' |##| ', $vek);
 				} elseif ($uitype == 5 || $uitype == 6 || $uitype == 23) {
 					//Added to avoid function call getDBInsertDateValue in ajax save
 					if (isset($current_user->date_format) && !$ajaxSave) {
