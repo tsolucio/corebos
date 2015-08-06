@@ -394,4 +394,11 @@
 	<classname>fix_add_FieldDataTypes</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Cron Backup services</description>
+	<filename>build/changeSets/cronbackup.php</filename>
+	<classname>cbcronbackup</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
