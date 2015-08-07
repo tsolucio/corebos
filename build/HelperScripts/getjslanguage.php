@@ -17,13 +17,11 @@
  *  Version      : 1.0
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
-global $current_language, $currentModule;;
-
+global $current_language, $currentModule;
 if (file_exists("modules/$currentModule/language/$current_language.js")) {
 	$filename="modules/$currentModule/language/$current_language.js";
 } else {
 	$filename="modules/$currentModule/language/en_us.js";
 }
-
 readfile($filename);
 ?>
