@@ -960,6 +960,20 @@ function getTabname($tabid) {
 	return $tabname;
 }
 
+function getTabfromcolname($field)
+{
+	global $log;
+	$log->debug("Entering getTabfromcolname(".$field.") method ...");
+        $log->info("tab id is ".$tabid);
+        global $adb;
+	$sql = "select relmodule from vtiger_fieldmodulerel join vtiger_field on vtiger_fieldmodulerel.fieldid=vtiger_field.fieldid
+            where columnname=? and uitype=10";
+	$result = $adb->pquery($sql, array($field));
+	$tabname=  $adb->query_result($result,0,"relmodule");
+	$log->debug("Exiting getTabfromcolname method ...");
+	return $tabname;
+
+}
 /** Function to get the tab module name for a given id
  * @param $tabid -- tab id:: Type integer
  * @returns $string -- string:: Type string
