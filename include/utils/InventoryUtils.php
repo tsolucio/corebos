@@ -275,18 +275,17 @@ function addInventoryHistory($module, $id, $relatedname, $total, $history_fldval
 	$log->debug("Entering into function addInventoryHistory($module, $id, $relatedname, $total, $history_fieldvalue)");
 
 	$history_table_array = Array(
-					"PurchaseOrder"=>"vtiger_postatushistory",
-					"SalesOrder"=>"vtiger_sostatushistory",
-					"Quotes"=>"vtiger_quotestagehistory",
-					"Invoice"=>"vtiger_invoicestatushistory"
-				    );
+		"PurchaseOrder"=>"vtiger_postatushistory",
+		"SalesOrder"=>"vtiger_sostatushistory",
+		"Quotes"=>"vtiger_quotestagehistory",
+		"Invoice"=>"vtiger_invoicestatushistory"
+	);
 
 	$histid = $adb->getUniqueID($history_table_array[$module]);
- 	$modifiedtime = $adb->formatDate(date('Y-m-d H:i:s'), true);
- 	$query = "insert into $history_table_array[$module] values(?,?,?,?,?,?)";
+	$modifiedtime = $adb->formatDate(date('Y-m-d H:i:s'), true);
+	$query = "insert into $history_table_array[$module] values(?,?,?,?,?,?)";
 	$qparams = array($histid,$id,$relatedname,$total,$history_fldval,$modifiedtime);
 	$adb->pquery($query, $qparams);
-
 	$log->debug("Exit from function addInventoryHistory");
 }
 
@@ -353,7 +352,6 @@ function getAllTaxes($available='all', $sh='',$mode='',$id='')
 		}
 
 		$res = $adb->pquery("select * from $tablename $where order by deleted",array());
-
 	}
 
 	$noofrows = $adb->num_rows($res);
@@ -400,10 +398,6 @@ function getTaxDetailsForProduct($productid, $available='all', $acvid=0)
 			$query = "SELECT vtiger_producttaxrel.*, vtiger_inventorytaxinfo.* FROM vtiger_inventorytaxinfo INNER JOIN vtiger_producttaxrel ON vtiger_inventorytaxinfo.taxid = vtiger_producttaxrel.taxid WHERE vtiger_producttaxrel.productid = ? $where";
 		}
 		$params = array($productid);
-
-		//Postgres 8 fixes
- 		if( $adb->dbType == "pgsql")
- 		    $query = fixPostgresQuery( $query, $log, 0);
 
 		$res = $adb->pquery($query, $params);
 		for($i=0;$i<$adb->num_rows($res);$i++)
@@ -934,10 +928,6 @@ function getPriceDetailsForProduct($productid, $unit_price, $available='availabl
 					where vtiger_currency_info.currency_status = 'Active' and vtiger_currency_info.deleted=0";
 			$params = array($productid);
 		}
-
-		//Postgres 8 fixes
- 		if( $adb->dbType == "pgsql")
- 		    $query = fixPostgresQuery( $query, $log, 0);
 
 		$res = $adb->pquery($query, $params);
 		for($i=0;$i<$adb->num_rows($res);$i++)
