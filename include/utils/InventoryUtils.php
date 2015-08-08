@@ -298,7 +298,7 @@ function addInventoryHistory($module, $id, $relatedname, $total, $history_fldval
  */
 function getAllTaxes($available='all', $sh='',$mode='',$id='')
 {
-	global $adb, $log;
+	global $adb, $log, $default_charset;
 	$log->debug("Entering into the function getAllTaxes($available,$sh,$mode,$id)");
 	$taxtypes = Array();
 	list($void1,$void2,$void3,$void4,$taxtypes) = cbEventHandler::do_filter('corebos.filter.TaxCalculation.getAllTaxes', array($available,$sh,$mode,$id, array()));
@@ -358,7 +358,7 @@ function getAllTaxes($available='all', $sh='',$mode='',$id='')
 	for ($i = 0; $i < $noofrows; $i++) {
 		$taxtypes[$i]['taxid'] = $adb->query_result($res,$i,'taxid');
 		$taxtypes[$i]['taxname'] = $adb->query_result($res,$i,'taxname');
-		$taxtypes[$i]['taxlabel'] = $adb->query_result($res,$i,'taxlabel');
+		$taxtypes[$i]['taxlabel'] = html_entity_decode($adb->query_result($res,$i,'taxlabel'),ENT_QUOTES,$default_charset);
 		$taxtypes[$i]['percentage'] = $adb->query_result($res,$i,'percentage');
 		$taxtypes[$i]['deleted'] = $adb->query_result($res,$i,'deleted');
 	}
@@ -376,7 +376,7 @@ function getAllTaxes($available='all', $sh='',$mode='',$id='')
  */
 function getTaxDetailsForProduct($productid, $available='all', $acvid=0)
 {
-	global $log, $adb;
+	global $log, $adb, $default_charset;
 	$log->debug("Entering into function getTaxDetailsForProduct($productid)");
 	$tax_details = array();
 	if($productid != '')
@@ -405,7 +405,7 @@ function getTaxDetailsForProduct($productid, $available='all', $acvid=0)
 			$tax_details[$i]['productid'] = $adb->query_result($res,$i,'productid');
 			$tax_details[$i]['taxid'] = $adb->query_result($res,$i,'taxid');
 			$tax_details[$i]['taxname'] = $adb->query_result($res,$i,'taxname');
-			$tax_details[$i]['taxlabel'] = $adb->query_result($res,$i,'taxlabel');
+			$tax_details[$i]['taxlabel'] = html_entity_decode($adb->query_result($res,$i,'taxlabel'),ENT_QUOTES,$default_charset);
 			$tax_details[$i]['percentage'] = $adb->query_result($res,$i,'taxpercentage');
 			$tax_details[$i]['deleted'] = $adb->query_result($res,$i,'deleted');
 		}
