@@ -11,7 +11,7 @@ body {
 	font-family: Helvetica, Arial, san-serif;
 	margin: 0;
 	margin-top: 40px;
-	background-color: whitesmoke;
+	background-color: #f5f5f5;
 }
 
 a {
@@ -112,7 +112,7 @@ a:hover {
 }
 
 .errorMessage {
-font-size: 11px;
+	font-size: 11px;
 	color: #323232;
 }
 
@@ -124,4 +124,3 @@ font-size: 11px;
 #loginFooter img{
 	padding-right: 20px;
 }
-

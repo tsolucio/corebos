@@ -1262,12 +1262,12 @@ function getDetailAssociatedProducts($module, $focus) {
 	global $app_strings, $current_user;
 	$theme_path = "themes/" . $theme . "/";
 	$image_path = $theme_path . "images/";
-	
+
 	if(vtlib_isModuleActive("Products"))
 		$hide_stock = 'no';
 	else
 		$hide_stock = 'yes';
-	
+
 	if ($module != 'PurchaseOrder') {
 		if (GlobalVariable::getVariable('B2B', '1')=='1') {
 			$acvid = $focus->column_fields['account_id'];
@@ -1290,18 +1290,17 @@ function getDetailAssociatedProducts($module, $focus) {
 	$output = '';
 	//Header Rows
 	$output .= '
-
 	<table width="100%"  border="0" align="center" cellpadding="5" cellspacing="0" class="crmTable" id="proTab">
-	   <tr valign="top">
-	   	<td colspan="' . $colspan . '" class="dvInnerHeader"><b>' . $app_strings['LBL_ITEM_DETAILS'] . '</b></td>
+	<tr valign="top">
+		<td colspan="' . $colspan . '" class="dvInnerHeader"><b>' . $app_strings['LBL_ITEM_DETAILS'] . '</b></td>
 		<td class="dvInnerHeader" align="center" colspan="2"><b>' .
 			$app_strings['LBL_CURRENCY'] . ' : </b>' . getTranslatedCurrencyString($currencytype['currency_name']) . ' (' . $currencytype['currency_symbol'] . ')
 		</td>
 		<td class="dvInnerHeader" align="center" colspan="2"><b>' .
 			$app_strings['LBL_TAX_MODE'] . ' : </b>' . $app_strings[$taxtype] . '
 		</td>
-	   </tr>
-	   <tr valign="top">
+	</tr>
+	<tr valign="top">
 		<td width=40% class="lvtCol"><font color="red">*</font>
 			<b>' . $app_strings['LBL_ITEM_NAME'] . '</b>
 		</td>';
@@ -1311,14 +1310,11 @@ function getDetailAssociatedProducts($module, $focus) {
 		$output .= '<td width=10% class="lvtCol"><b>' . $app_strings['LBL_QTY_IN_STOCK'] . '</b></td>';
 
 	$output .= '
-
 		<td width=10% class="lvtCol"><b>' . $app_strings['LBL_QTY'] . '</b></td>
 		<td width=10% class="lvtCol" align="right"><b>' . $app_strings['LBL_LIST_PRICE'] . '</b></td>
 		<td width=12% nowrap class="lvtCol" align="right"><b>' . $app_strings['LBL_TOTAL'] . '</b></td>
 		<td width=13% valign="top" class="lvtCol" align="right"><b>' . $app_strings['LBL_NET_PRICE'] . '</b></td>
-	   </tr>
-	   	';
-
+	</tr>';
 
 	// DG 15 Aug 2006
 	// Add "ORDER BY sequence_no" to retain add order on all inventoryproductrel items
@@ -1639,18 +1635,14 @@ function getRelatedListsInformation($module, $focus) {
 		if ($rel_tab_id != 0) {
 			if ($profileTabsPermission[$rel_tab_id] == 0) {
 				if ($profileActionPermission[$rel_tab_id][3] == 0) {
-					// vtlib customization: Send more information (from module, related module)
-					// to the callee
-					$focus_list[$label] = $focus->$function_name($focus->id, $cur_tab_id,
-									$rel_tab_id, $actions);
+					// vtlib customization: Send more information (from module, related module) to the callee
+					$focus_list[$label] = $focus->$function_name($focus->id, $cur_tab_id, $rel_tab_id, $actions);
 					// END
 				}
 			}
 		} else {
-			// vtlib customization: Send more information (from module, related module)
-			// to the callee
-			$focus_list[$label] = $focus->$function_name($focus->id, $cur_tab_id, $rel_tab_id,
-							$actions);
+			// vtlib customization: Send more information (from module, related module) to the callee
+			$focus_list[$label] = $focus->$function_name($focus->id, $cur_tab_id, $rel_tab_id, $actions);
 			// END
 		}
 	}
@@ -1792,7 +1784,7 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 			$key2 = null;
 			$keys = array_keys($value_array[$i]);
 			$key1 = $keys[0];
-			if (is_array($value_array[$i + 1]) && ($value_array[$i][$key1][ui] != 19 && $value_array[$i][$key1][ui] != 20)) {
+			if (is_array($value_array[$i + 1]) && ($value_array[$i][$key1]['ui'] != 19 && $value_array[$i][$key1]['ui'] != 20)) {
 				$keys = array_keys($value_array[$i + 1]);
 				$key2 = $keys[0];
 			}
@@ -1802,7 +1794,7 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 				$use_key1 = " " . $key1;
 			}
 
-			if ($value_array[$i][$key1][ui] != 19 && $value_array[$i][$key1][ui] != 20) {
+			if ($value_array[$i][$key1]['ui'] != 19 && $value_array[$i][$key1]['ui'] != 20) {
 				$detailview_data[$j] = array($use_key1 => $value_array[$i][$key1], $key2 => $value_array[$i + 1][$key2]);
 				$i+=2;
 			} else {
