@@ -27,13 +27,8 @@ require_once('modules/PickList/PickListUtils.php');
  * Return type is an array
  */
 function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, $generatedtype, $tabid='', $module='') {
-	global $log;
-	$log->debug("Entering getDetailViewOutputHtml(" . $uitype . "," . $fieldname . "," . $fieldlabel . "," . $col_fields . "," . $generatedtype . "," . $tabid . ") method ...");
-	global $adb;
-	global $mod_strings;
-	global $app_strings;
-	global $current_user;
-	global $theme;
+	global $log, $adb, $mod_strings, $app_strings, $current_user, $theme, $default_charset;
+	$log->debug("Entering getDetailViewOutputHtml(" . $uitype . "," . $fieldname . "," . $fieldlabel . "," . print_r($col_fields,true) . "," . $generatedtype . "," . $tabid . ") method ...");
 	$theme_path = "themes/" . $theme . "/";
 	$image_path = $theme_path . "images/";
 	$fieldlabel = from_html($fieldlabel);
@@ -174,6 +169,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$count = 0;
 		$found = false;
 		if (!empty($picklistValues)) {
+			$pickcount = 0;
 			foreach ($picklistValues as $order => $pickListValue) {
 				if (in_array(trim($pickListValue), array_map("trim", $valueArr))) {
 					$chk_val = "selected";
@@ -226,6 +222,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$selected_entries = explode(' |##| ', $col_fields[$fieldname]);
 
 		if (!empty($picklistValues)) {
+			$pickcount = 0;
 			foreach ($picklistValues as $order => $pickListValue) {
 				foreach ($selected_entries as $selected_entries_value) {
 					if (trim($selected_entries_value) == trim(htmlentities($pickListValue, ENT_QUOTES, $default_charset))) {
@@ -260,6 +257,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$selected_entries = explode(' |##| ', $col_fields[$fieldname]);
 
 		if (!empty($picklistValues)) {
+			$pickcount = 0;
 			foreach ($picklistValues as $order => $pickListValue) {
 				foreach ($selected_entries as $selected_entries_value) {
 					if (trim($selected_entries_value) == trim(htmlentities($pickListValue, ENT_QUOTES, $default_charset))) {
@@ -1025,7 +1023,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 	} elseif ($uitype == 5 || $uitype == 23 || $uitype == 70) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$dateValue = $col_fields[$fieldname];
-		if ($col_fields['time_end'] != '' && ($tabid == 9 || $tabid == 16) && $uitype == 23) {
+		if (isset($col_fields['time_end']) && $col_fields['time_end'] != '' && ($tabid == 9 || $tabid == 16) && $uitype == 23) {
 			$end_time = $col_fields['time_end'];
 		}
 		if ($dateValue == '0000-00-00' || empty($dateValue)) {
@@ -1701,7 +1699,7 @@ function getRelatedLists($module, $focus) {
 /** This function returns whether related lists is present for this particular module or not
  * Param $module - module name
  * Param $activity_mode - mode of activity
- * Return type true or false
+ * Return type list of related modules or false
  */
 function isPresentRelatedLists($module, $activity_mode='') {
 	static $moduleRelatedListCache = array();
@@ -1714,8 +1712,7 @@ function isPresentRelatedLists($module, $activity_mode='') {
 	require('user_privileges/user_privileges_' . $current_user->id . '.php');
 	$tab_id = getTabid($module);
 	// We need to check if there is atleast 1 relation, no need to use count(*)
-	$query = "select relation_id,related_tabid, label from vtiger_relatedlists where tabid=? " .
-			"order by sequence";
+	$query = "select relation_id,related_tabid,label from vtiger_relatedlists where tabid=? order by sequence";
 	$result = $adb->pquery($query, array($tab_id));
 	$count = $adb->num_rows($result);
 	if ($count < 1 || ($module == 'Calendar' && $activity_mode == 'task')) {
@@ -1735,7 +1732,7 @@ function isPresentRelatedLists($module, $activity_mode='') {
 		}
 		$moduleRelatedListCache[$module] = $retval;
 	}
-	return $moduleRelatedListCache[$module];
+	return isset($moduleRelatedListCache[$module]) ? $moduleRelatedListCache[$module] : false;
 }
 
 /** This function returns the detailed block information of a record in a module.
@@ -1746,11 +1743,8 @@ function isPresentRelatedLists($module, $activity_mode='') {
  * Return type is an array
  */
 function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block_label) {
-	global $log;
-	$log->debug("Entering getDetailBlockInformation(" . $module . "," . $result . "," . $col_fields . "," . $tabid . "," . $block_label . ") method ...");
-	global $adb;
-	global $current_user;
-	global $mod_strings;
+	global $log, $adb, $current_user, $mod_strings;
+	$log->debug("Entering getDetailBlockInformation(" . $module . "," . $result . "," . print_r($col_fields,true) . "," . $tabid . "," . print_r($block_label,true) . ") method ...");
 	$label_data = Array();
 
 	$noofrows = $adb->num_rows($result);
@@ -1770,12 +1764,14 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 		$readonly = $adb->query_result($result, $i, 'readonly');
 		$custfld = getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, $generatedtype, $tabid, $module);
 		if (is_array($custfld)) {
-			$label_data[$block][] = array($custfld[0] => array("value" => $custfld[1], "ui" => $custfld[2], "options" => $custfld["options"],
-					"secid" => $custfld["secid"], "link" => $custfld["link"], "cursymb" => $custfld["cursymb"],
-					"salut" => $custfld["salut"], "notaccess" => $custfld["notaccess"],
-					"cntimage" => $custfld["cntimage"], "isadmin" => $custfld["isadmin"],
-					"tablename" => $fieldtablename, "fldname" => $fieldname, "fldid" => $fieldid,
-					"displaytype" => $displaytype, "readonly" => $readonly));
+			$label_data[$block][] = array($custfld[0] => array(
+				'value' => $custfld[1], "ui" => $custfld[2], 'options' => isset($custfld['options']) ? $custfld['options'] : '',
+				'secid' => isset($custfld['secid']) ? $custfld['secid'] : '', 'link' => isset($custfld['link']) ? $custfld['link'] : '',
+				'cursymb' => isset($custfld['cursymb']) ? $custfld['cursymb'] : '',
+				'salut' => isset($custfld['salut']) ? $custfld['salut'] : '', 'notaccess' => isset($custfld['notaccess']) ? $custfld['notaccess'] : '',
+				'cntimage' => isset($custfld['cntimage']) ? $custfld['cntimage'] : '', "isadmin" => $custfld["isadmin"],
+				'tablename' => $fieldtablename, "fldname" => $fieldname, "fldid" => $fieldid,
+				'displaytype' => $displaytype, "readonly" => $readonly));
 		}
 	}
 	foreach ($label_data as $headerid => $value_array) {
@@ -1784,7 +1780,7 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 			$key2 = null;
 			$keys = array_keys($value_array[$i]);
 			$key1 = $keys[0];
-			if (is_array($value_array[$i + 1]) && ($value_array[$i][$key1]['ui'] != 19 && $value_array[$i][$key1]['ui'] != 20)) {
+			if (isset($value_array[$i + 1]) && is_array($value_array[$i + 1]) && ($value_array[$i][$key1]['ui'] != 19 && $value_array[$i][$key1]['ui'] != 20)) {
 				$keys = array_keys($value_array[$i + 1]);
 				$key2 = $keys[0];
 			}
@@ -1804,13 +1800,19 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 		}
 		$label_data[$headerid] = $detailview_data;
 	}
+	$returndata = array();
 	foreach ($block_label as $blockid => $label) {
 		if ($label == '') {
 			$returndata[getTranslatedString($curBlock, $module)] = array_merge((array) $returndata[getTranslatedString($curBlock, $module)], (array) $label_data[$blockid]);
 		} else {
 			$curBlock = $label;
-			if (is_array($label_data[$blockid]))
-				$returndata[getTranslatedString($curBlock, $module)] = array_merge((array) $returndata[getTranslatedString($curBlock, $module)], (array) $label_data[$blockid]);
+			if (is_array($label_data[$blockid])) {
+				if (isset($returndata[getTranslatedString($curBlock, $module)])) {
+					$returndata[getTranslatedString($curBlock, $module)] = array_merge((array) $returndata[getTranslatedString($curBlock, $module)], (array) $label_data[$blockid]);
+				} else {
+					$returndata[getTranslatedString($curBlock, $module)] = (array) $label_data[$blockid];
+				}
+			}
 		}
 	}
 	$log->debug("Exiting getDetailBlockInformation method ...");

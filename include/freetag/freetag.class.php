@@ -1104,14 +1104,14 @@ class freetag {
 			GROUP BY tag
 			ORDER BY quantity DESC LIMIT 0, $max";
 		$rs = $adb->pquery($sql, $params) or die("Syntax Error: $sql");
-		$retarr = array();
+		$retarr = $retarr1 = $return_value = array();
 		while(!$rs->EOF) {
 			$retarr[$rs->fields['tag']] = $rs->fields['quantity'];
 			$retarr1[$rs->fields['tag']] = $rs->fields['tag_id'];
 			$rs->MoveNext();
 		}
-		if($retarr) ksort($retarr);
-		if($retarr1) ksort($retarr1);
+		ksort($retarr);
+		ksort($retarr1);
 		$return_value[]=$retarr;
 		$return_value[]=$retarr1;
 		return $return_value;
