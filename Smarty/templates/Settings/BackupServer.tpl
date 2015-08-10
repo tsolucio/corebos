@@ -6,7 +6,6 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 <script language="JAVASCRIPT" type="text/javascript" src="include/js/smoothscroll.js"></script>
@@ -14,10 +13,9 @@
 <strong>{if $BACKUP_RESULT neq ''} {$APP.LBL_BACKEDUPSUCCESSFULLY_TO_FILE} : {$BACKUP_RESULT}{/if}</strong>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tbody><tr>
-        <td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-        <td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
+	<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
+	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
 <br>
-														
 			{include file="SetMenu.tpl"}
 				<!-- DISPLAY -->
 				<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
@@ -35,7 +33,7 @@
 				<input type="hidden" name="module" value="Settings">
 				<input type="hidden" name="action" value="index">
 				<input type="hidden" name="local_server_mode">
-				<input type="hidden" name="parenttab" value="Settings">				
+				<input type="hidden" name="parenttab" value="Settings">
 				<table border=0 cellspacing=0 cellpadding=0 width=100% class="tableHeading">
 					<tr>
 						<td class="big" height="40px;" width="70%">&nbsp;&nbsp;<strong>{$MOD.LBL_BACKUP_SERVER_SETTINGS}</strong></td>
@@ -44,11 +42,10 @@
 						</td>
 					</tr>
 				</table>
-				
 				<table border=0 cellspacing=0 cellpadding=5 width=100% class="listRow">
 					<tr>
 						<td class="small" valign=top >
-							<table width="100%"  border="0" cellspacing="0" cellpadding="0">
+							<table width="100%" border="0" cellspacing="0" cellpadding="0">
 								<tr height='30px'>
 									<td width="20%" class="cellLabel"><strong>{$MOD.LBL_ENABLE} {$MOD.LBL_BACKUP_SERVER_SETTINGS}({$MOD.LBL_LOCAL})</strong>
 									</td>
@@ -65,8 +62,8 @@
 									{else}
 										<span id='localbackup_buttons' style="display:none;">
 									{/if}
-										<table width="100%"  border="0" cellspacing="0" cellpadding="0"><tr height='30px'>
-											{if $LOCAL_SERVER_MODE eq 'edit'}	
+										<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr height='30px'>
+											{if $LOCAL_SERVER_MODE eq 'edit'}
 												<td width="10%" align='right' class="small cellText" colspan=2> 
 													<input title="{$APP.LBL_SAVE_BUTTON_LABEL}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmButton small save" type="submit" name="button" value="{$APP.LBL_SAVE_BUTTON_LABEL}" onclick="this.form.action.value='Save'; return validate('Local')">&nbsp;&nbsp;
 												</td>
@@ -77,13 +74,13 @@
 														<input title="{$APP.LBL_SAVE_BUTTON_LABEL}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmButton small save" type="submit" name="backupnow" value="{$MOD.LBL_BACKUP} {$APP.LBL_NOW}" onclick="this.form.action.value='BackupServerConfig';" >&nbsp;&nbsp;
 													{else}
 														<input title="{$APP.LBL_SAVE_BUTTON_LABEL}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmButton small save" type="submit" name="backupnow" value="{$MOD.LBL_BACKUP} {$APP.LBL_NOW}" onclick="this.form.action.value='BackupServerConfig';" style='visibility:none;' disabled='true'>&nbsp;&nbsp;
-													{/if}												
+													{/if}
 												</td>
 											{/if}
 											</tr>
-										</table>	
+										</table>
 										</span>
-									</td>	
+									</td>
 								</tr>
 								<tr width='100%'>
 									<td colspan=3>
@@ -92,10 +89,10 @@
 									{else}
 										<div id='localbackup_fields' style="display:none;">
 									{/if}
-										<table width="100%"  border="0" cellspacing="0" cellpadding="0"><tr height='30px'>
+										<table width="100%" border="0" cellspacing="0" cellpadding="0"><tr height='30px'>
 											<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_BACKUP_LOCATION}
 											</strong></td>
-											{if $LOCAL_SERVER_MODE eq 'edit'}	
+											{if $LOCAL_SERVER_MODE eq 'edit'}
 												<td width="80%" colspan=3>
 													&nbsp;<input type="text" size=80 class="detailedViewTextBox small" value="{$SERVER_BACKUP_PATH}" name="server_path" /></strong><br>{$ERROR_STR}
 												</td>
@@ -105,19 +102,17 @@
 												</td>
 											{/if}
 											</tr>
-										</table>	
+										</table>
 										</div>
 									</td>
 								</tr>
 							</table>
 						</form>
 								<table width="100%" border="0" cellspacing="0" cellpadding="5">
-                                <tr>
-	                                <td class="small" valign="top">
-	                                        <br>{$MOD.LBL_BACKUP_DESC}
-	                                </td>
-                                </tr>
-                            </table>
+								<tr>
+									<td class="small" valign="top"><br>{$MOD.LBL_BACKUP_DESC}</td>
+								</tr>
+								</table>
 						</td>
 					</tr>
 				<form action="index.php" method="post" name="tandc">
@@ -126,9 +121,9 @@
 				<input type="hidden" name="action" value="index">
 				<input type="hidden" name="bkp_server_mode">
 				<input type="hidden" name="parenttab" value="Settings">
-				    <tr>
+				<tr>
 						<td class="small" valign=top >
-							<table width="100%"  border="0" cellspacing="0" cellpadding="5" class="tableHeading">
+							<table width="100%" border="0" cellspacing="0" cellpadding="5" class="tableHeading">
 								<tr>
 									<td nowrap class="small cellLabel"><strong>{$MOD.LBL_ENABLE} {$MOD.LBL_BACKUP_SERVER_SETTINGS} ({$MOD.LBL_FTP})<br>{$ERROR_MSG}</strong></td>
 									<td width="50%" class="small cellText">
@@ -137,20 +132,20 @@
 										{else}
 											<input type="checkbox" name="enable_ftp_backup" onclick="backupenabled(this)"></input>
 										{/if}
-									</td>	
+									</td>
 									<td class="small cellText" align="right" width="30%">&nbsp;
 										{if $FTP_BACKUP_STATUS eq 'enabled'}
 										<div id='ftp_buttons' style="display:block;">
 										{else}
 										<div id='ftp_buttons' style="display:none;">
 										{/if}
-													{if $BKP_SERVER_MODE neq 'edit'}
-														<input title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" class="crmButton small edit" onclick="this.form.action.value='BackupServerConfig';this.form.bkp_server_mode.value='edit'" type="submit" name="Edit" value="{$APP.LBL_EDIT_BUTTON_LABEL}">&nbsp;
-														<input title="{$MOD.LBL_CLEAR_DATA}" accessKey="{$MOD.LBL_CLEAR_DATA}" class="crmButton small cancel" onclick="document.tandc.enable_ftp_backup.checked=false;clearBackupServer(this);" type="button" name="Clear" value="{$MOD.LBL_CLEAR_DATA}">
-													{else}
-														<input title="{$APP.LBL_SAVE_BUTTON_LABEL}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmButton small save" type="submit" name="button" value="{$APP.LBL_SAVE_BUTTON_LABEL}" onclick="this.form.action.value='Save'; return validate('FTP')">&nbsp;&nbsp;
-													    <input title="{$APP.LBL_CANCEL_BUTTON_LABEL}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmButton small cancel" onclick="backupenable_check()" type="button" name="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}">
-													{/if}
+										{if $BKP_SERVER_MODE neq 'edit'}
+											<input title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" class="crmButton small edit" onclick="this.form.action.value='BackupServerConfig';this.form.bkp_server_mode.value='edit'" type="submit" name="Edit" value="{$APP.LBL_EDIT_BUTTON_LABEL}">&nbsp;
+											<input title="{$MOD.LBL_CLEAR_DATA}" accessKey="{$MOD.LBL_CLEAR_DATA}" class="crmButton small cancel" onclick="document.tandc.enable_ftp_backup.checked=false;clearBackupServer(this);" type="button" name="Clear" value="{$MOD.LBL_CLEAR_DATA}">
+										{else}
+											<input title="{$APP.LBL_SAVE_BUTTON_LABEL}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmButton small save" type="submit" name="button" value="{$APP.LBL_SAVE_BUTTON_LABEL}" onclick="this.form.action.value='Save'; return validate('FTP')">&nbsp;&nbsp;
+											<input title="{$APP.LBL_CANCEL_BUTTON_LABEL}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmButton small cancel" onclick="backupenable_check()" type="button" name="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}">
+										{/if}
 										</div>
 									</td>
 								</tr>
@@ -158,7 +153,7 @@
 						</td>
 					</tr>
 					<tr>
-						<td class="small" valign=top  >
+						<td class="small" valign=top>
 						{if $FTP_BACKUP_STATUS eq 'enabled'}
 							<div id='bckcontents' style="display:block;">
 						{else}
@@ -182,10 +177,10 @@
 		</form>
 		</table>
 		</td></tr>
-		</table>	
+		</table>
 	</div>
 	</td>
-        <td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
+	<td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
 </tr>
 </tbody>
 </table>
@@ -204,129 +199,108 @@ if(type == 'Local'){
 }
 }
 
-
 function clearBackupServer(Obj)
 {
 	new Ajax.Request('index.php',
-        	{queue: {position: 'end', scope: 'command'},
-                	method: 'post',
-                        postBody: 'module=Settings&action=SettingsAjax&ajax=true&file=BackupServerConfig&opmode=del',
-                        onComplete: function(response) {
-	                        $("BackupServerContents").innerHTML=response.responseText;
-                        }
-                }
-        );
-	backupenabled(Obj);	
+		{queue: {position: 'end', scope: 'command'},
+		 method: 'post',
+		 postBody: 'module=Settings&action=SettingsAjax&ajax=true&file=BackupServerConfig&opmode=del',
+		 onComplete: function(response) {
+			$("BackupServerContents").innerHTML=response.responseText;
+		 }
+	});
+	backupenabled(Obj);
 }
 
 function backupenabled(ochkbox)
 {
-	
-	if(ochkbox.checked == true)
-        {
-                $('bckcontents').style.display='block';
-                var status='enabled';
-                $('view_info').innerHTML = alert_arr.MSG_FTP_BACKUP_ENABLED+', ' + alert_arr.MSG_CONFIRM_FTP_DETAILS;
-                $('view_info').style.display = 'block';
-				$("ftp_buttons").style.display="block";
+	if(ochkbox.checked == true) {
+		$('bckcontents').style.display='block';
+		var status='enabled';
+		$('view_info').innerHTML = alert_arr.MSG_FTP_BACKUP_ENABLED+', ' + alert_arr.MSG_CONFIRM_FTP_DETAILS;
+		$('view_info').style.display = 'block';
+		$("ftp_buttons").style.display="block";
 
-                new Ajax.Request('index.php',
-                	{queue: {position: 'end', scope: 'command'},
-                 	       method: 'post',
-                        	postBody: 'module=Settings&action=SettingsAjax&file=SaveEnableBackup&ajax=true&GetBackupDetail=true&servertype=ftp_backup',
-                        	onComplete: function(response) {
-                                	if(response.responseText.indexOf('FAILURE') > -1)
-                                	{
-                                        	document.location.href = "index.php?module=Settings&parenttab=Settings&action=BackupServerConfig&bkp_server_mode=edit";
-                                        	return false;
-                                	}
-                        	}
-                	}
-                );
-
-
-        }
-	else
-	{
+		new Ajax.Request('index.php',
+			{queue: {position: 'end', scope: 'command'},
+			 method: 'post',
+			 postBody: 'module=Settings&action=SettingsAjax&file=SaveEnableBackup&ajax=true&GetBackupDetail=true&servertype=ftp_backup',
+			 onComplete: function(response) {
+				if(response.responseText.indexOf('FAILURE') > -1) {
+					document.location.href = "index.php?module=Settings&parenttab=Settings&action=BackupServerConfig&bkp_server_mode=edit";
+					return false;
+				}
+			 }
+		});
+	} else {
 		$('bckcontents').style.display='none';
-                var status = 'disabled';
-                $('view_info').innerHTML = alert_arr.MSG_FTP_BACKUP_DISABLED;
-                $('view_info').style.display = 'block';
-				$("ftp_buttons").style.display="none";
-      }
-	
+		var status = 'disabled';
+		$('view_info').innerHTML = alert_arr.MSG_FTP_BACKUP_DISABLED;
+		$('view_info').style.display = 'block';
+		$("ftp_buttons").style.display="none";
+	}
+
 	new Ajax.Request('index.php',
-        	{queue: {position: 'end', scope: 'command'},
-        		method: 'post',
-                	postBody: 'module=Settings&action=SettingsAjax&file=SaveEnableBackup&ajax=true&enable_ftp_backup='+status,
-                	onComplete: function(response) {
-                		$("status").style.display="none";
-                	}
-        	}
-        );
-			
+		{queue: {position: 'end', scope: 'command'},
+		 method: 'post',
+		 postBody: 'module=Settings&action=SettingsAjax&file=SaveEnableBackup&ajax=true&enable_ftp_backup='+status,
+		 onComplete: function(response) {
+			$("status").style.display="none";
+		 }
+	});
 	setTimeout("hide('view_info')",3000);
 }
 
 function backupenable_check()
 {
-        new Ajax.Request('index.php',
-                {queue: {position: 'end', scope: 'command'},
-                        method: 'post',
-                        postBody: 'module=Settings&action=SettingsAjax&file=SaveEnableBackup&ajax=true&GetBackupDetail=true&servertype=ftp_backup',
-                        onComplete: function(response) {
-                                if(response.responseText.indexOf('FAILURE') > -1)
-                                {
-                                        document.forms['tandc'].enable_ftp_backup.checked = false;
-                                        backupenabled(document.tandc.enable_ftp_backup);
-                                        window.history.back();
-                                }
-                        }
-                }
-	);
+	new Ajax.Request('index.php',
+		{queue: {position: 'end', scope: 'command'},
+		 method: 'post',
+		 postBody: 'module=Settings&action=SettingsAjax&file=SaveEnableBackup&ajax=true&GetBackupDetail=true&servertype=ftp_backup',
+		 onComplete: function(response) {
+			if(response.responseText.indexOf('FAILURE') > -1) {
+				document.forms['tandc'].enable_ftp_backup.checked = false;
+				backupenabled(document.tandc.enable_ftp_backup);
+				window.history.back();
+			}
+		 }
+	});
 }
 
 function localbackupenabled(ochkbox)
 {
-	
-	if(ochkbox.checked == true)
-        {
-				$('localbackup_buttons').style.display='block';
-				$('localbackup_fields').style.display='block';
-                var status='enabled';
-                $('view_info').innerHTML = alert_arr.MSG_LOCAL_BACKUP_ENABLED+', '+alert_arr.MSG_CONFIRM_PATH;
-                $('view_info').style.display = 'block';
-                new Ajax.Request('index.php',
-                	{queue: {position: 'end', scope: 'command'},
-                 	       method: 'post',
-                        	postBody: 'module=Settings&action=SettingsAjax&file=SaveEnableBackup&ajax=true&GetBackupDetail=true&servertype=local_backup',
-                        	onComplete: function(response) {
-                                	if(response.responseText.indexOf('FAILURE') > -1)
-                                	{
-                                        	document.location.href = "index.php?module=Settings&parenttab=Settings&action=BackupServerConfig&local_server_mode=edit";
-                                        	return false;
-                                	}
-                        	}
-                	}
-                );
-         }
-	else
-		{
-				$('localbackup_buttons').style.display='none';
-				$('localbackup_fields').style.display='none';
-                var status = 'disabled';
-                $('view_info').innerHTML = alert_arr.MSG_LOCAL_BACKUP_DISABLED;
-                $('view_info').style.display = 'block';
-        }
+	if(ochkbox.checked == true) {
+		$('localbackup_buttons').style.display='block';
+		$('localbackup_fields').style.display='block';
+		var status='enabled';
+		$('view_info').innerHTML = alert_arr.MSG_LOCAL_BACKUP_ENABLED+', '+alert_arr.MSG_CONFIRM_PATH;
+		$('view_info').style.display = 'block';
+		new Ajax.Request('index.php',
+			{queue: {position: 'end', scope: 'command'},
+			 method: 'post',
+			 postBody: 'module=Settings&action=SettingsAjax&file=SaveEnableBackup&ajax=true&GetBackupDetail=true&servertype=local_backup',
+			 onComplete: function(response) {
+				if(response.responseText.indexOf('FAILURE') > -1) {
+					document.location.href = "index.php?module=Settings&parenttab=Settings&action=BackupServerConfig&local_server_mode=edit";
+					return false;
+				}
+			 }
+		});
+	} else {
+		$('localbackup_buttons').style.display='none';
+		$('localbackup_fields').style.display='none';
+		var status = 'disabled';
+		$('view_info').innerHTML = alert_arr.MSG_LOCAL_BACKUP_DISABLED;
+		$('view_info').style.display = 'block';
+	}
 	new Ajax.Request('index.php',
-        	{queue: {position: 'end', scope: 'command'},
-        		method: 'post',
-                	postBody: 'module=Settings&action=SettingsAjax&file=SaveEnableBackup&ajax=true&enable_local_backup='+status,
-                	onComplete: function(response) {
-                		$("status").style.display="none";
-                	}
-        	}
-        );	
+		{queue: {position: 'end', scope: 'command'},
+		 method: 'post',
+		 postBody: 'module=Settings&action=SettingsAjax&file=SaveEnableBackup&ajax=true&enable_local_backup='+status,
+		 onComplete: function(response) {
+			$("status").style.display="none";
+		 }
+	});
 	setTimeout("hide('view_info')",3000);
 }
 </script>
