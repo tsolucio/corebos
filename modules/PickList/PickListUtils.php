@@ -22,7 +22,7 @@ function getUserFldArray($fld_module,$roleid){
 	global $adb, $log;
 	$user_fld = Array();
 	$tabid = getTabid($fld_module);
-	
+
 	$query="select vtiger_field.fieldlabel,vtiger_field.columnname,vtiger_field.fieldname, vtiger_field.uitype" .
 			" FROM vtiger_field inner join vtiger_picklist on vtiger_field.fieldname = vtiger_picklist.name" .
 			" where (displaytype=1 and vtiger_field.tabid=? and vtiger_field.uitype in ('15','55','33','16') " .
@@ -209,12 +209,12 @@ function getAssignedPicklistValues($tableName, $roleid, $adb, $lang=array()){
 				. " and roleid in (".generateQuestionMarks($roleids).") order by sortid";
 		$result = $adb->pquery($sql, $roleids);
 		$count = $adb->num_rows($result);
-		
+
 		if($count) {
 			while($resultrow = $adb->fetch_array($result)) {
 				$pick_val = decode_html($resultrow[$tableName]);
 				//$pick_val = decode_html($pick_val);  // we have to do it twice for it to work on listview!!
-				if($lang[$pick_val] != '') {
+				if(isset($lang[$pick_val]) and $lang[$pick_val] != '') {
 					$arr[$pick_val] = $lang[$pick_val];
 				}
 				else {

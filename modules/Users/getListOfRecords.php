@@ -41,9 +41,9 @@ foreach ($fieldname as $fieldName) {
 	$checkForFieldAccess = $fieldName;
 	// Handling case where fieldname in vtiger_entityname mismatches fieldname in vtiger_field
 	if($sModule == 'HelpDesk' && $checkForFieldAccess == 'title') {
-		$checkForFieldAccess = 'ticket_title';	
+		$checkForFieldAccess = 'ticket_title';
 	} else if($sModule == 'Documents' && $checkForFieldAccess == 'title') {
-		$checkForFieldAccess = 'notes_title';	
+		$checkForFieldAccess = 'notes_title';
 	}
 	// END
 	if(getFieldVisibilityPermission($sModule,$current_user->id, $checkForFieldAccess) == '0'){
@@ -72,14 +72,14 @@ if(!empty($_SESSION[$sModule.'_DetailView_Navigation'.$viewId])){
 	$recordList = array();
 }
 $output = '<table width="100%" border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine">
-			<tr><td width="60%" align="left" style="font-size:12px;font-weight:bold;">Jump to '.$app_strings[$sModule].':</td>
-			<td width="5%" align="right"><a href="javascript:fninvsh(\'lstRecordLayout\');"><img src="'. vtiger_imageurl('close.gif', $theme).'" border="0"  align="absmiddle" /></a></td>
-			</tr>
-			</table><table border=0 cellspacing=0 cellpadding=0 width=100% align=center> 
-							<tr>
-								<td class=small >
-									<table border=0 celspacing=0 cellpadding=0 width=100% align=center >
-										<tr><td>';
+	<tr><td width="60%" align="left" style="font-size:12px;font-weight:bold;">Jump to '.$app_strings[$sModule].':</td>
+	<td width="5%" align="right"><a href="javascript:fninvsh(\'lstRecordLayout\');"><img src="'. vtiger_imageurl('close.gif', $theme).'" border="0" align="absmiddle" /></a></td>
+	</tr>
+	</table><table border=0 cellspacing=0 cellpadding=0 width=100% align=center>
+		<tr>
+			<td class="small">
+				<table border=0 celspacing=0 cellpadding=0 width=100% align=center>
+					<tr><td>';
 $output .= '<div style="height:270px;overflow-y:auto;">';
 $output .= '<table cellpadding="2">';
 
@@ -92,10 +92,10 @@ if(count($recordList) > 0){
 		$idListStartIndex = 0;
 	}
 	$idsArray = array_slice($recordList,$idListStartIndex,($idListEndIndex - $idListStartIndex));
-	
+
 	$selectColString = implode(',',$permittedFieldNameList).', '.$id_array[$sModule];
 	$fieldQuery = "SELECT $selectColString from ".$tables_array[$sModule]." WHERE ".$id_array[$sModule]." IN (". generateQuestionMarks($idsArray) .")";
-	
+
 	$fieldResult = $adb->pquery($fieldQuery,$idsArray);
 	$numOfRows = $adb->num_rows($fieldResult);
 	$recordNameMapping = array();
@@ -120,6 +120,6 @@ if(count($recordList) > 0){
 }
 $output .= '</table>';
 $output .= '</div></td></tr></table></td></tr></table>';
-	
+
 echo $output;
 ?>

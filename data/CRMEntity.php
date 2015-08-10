@@ -21,6 +21,8 @@ require_once("include/Zend/Json.php");
 class CRMEntity {
 
 	var $ownedby;
+	var $mode;
+	var $id;
 	var $DirectImageFieldValues = array();
 	static protected $methods = array();
 
