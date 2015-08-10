@@ -75,7 +75,7 @@ function get_select_options_with_value(&$option_list, $selected_key, $advsearch 
  */
 function get_select_options_array(&$option_list, $selected_key, $advsearch = 'false') {
 	global $log;
-	$log->fatal("Entering and Exiting get_select_options_array (" . print_r($option_list,true) . "," . $selected_key . "," . $advsearch . ") method ...");
+	$log->debug("Entering and Exiting get_select_options_array (" . print_r($option_list,true) . "," . $selected_key . "," . $advsearch . ") method ...");
 	return get_options_array_seperate_key($option_list, $option_list, $selected_key, $advsearch);
 }
 
