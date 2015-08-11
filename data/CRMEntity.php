@@ -835,6 +835,19 @@ class CRMEntity {
 		$this->column_fields["record_module"] = $module;
 	}
 
+	/* Validate values trying to be saved.
+	 * @param array $_REQUEST input values. Note: column_fields array is already loaded
+	 * @return array
+	 *   saveerror: true if error false if not
+	 *   errormessage: message to return to user if error, empty otherwise
+	 *   error_action: action to redirect to inside the same module in case of error. if redirected to EditView (default action)
+	 *                 all values introduced by the user will be preloaded
+	 *   returnvalues: a urlencoded string of values to send to the receiving page. may be empty
+	 */
+	function preSaveCheck($request) {
+		return array(false,'','','');
+	}
+
 	/** Function to saves the values in all the tables mentioned in the class variable $tab_name for the specified module
 	 * @param $module -- module:: Type varchar
 	 */

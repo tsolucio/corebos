@@ -31,15 +31,45 @@ if($isduplicate == 'true') {
 	$focus->id = '';
 	$focus->mode = '';
 }
-if(empty($_REQUEST['record']) && $focus->mode != 'edit'){
+if (!empty($_REQUEST['save_error']) and $_REQUEST['save_error'] == "true") {
+	if (!empty($_REQUEST['encode_val'])) {
+		global $current_user;
+		$encode_val = vtlib_purify($_REQUEST['encode_val']);
+		$decode_val = base64_decode($encode_val);
+		$explode_decode_val = explode('&', trim($decode_val,'&'));
+		$tabid = getTabid($currentModule);
+		foreach ($explode_decode_val as $fieldvalue) {
+			$value = explode("=", $fieldvalue);
+			$field_name_val = $value[0];
+			$field_value =urldecode($value[1]);
+			$finfo = VTCacheUtils::lookupFieldInfo($tabid, $field_name_val);
+			if ($finfo !== false) {
+				if ($finfo['uitype']=='56') {
+					$field_value = $field_value=='on' ? '1' : '0';
+				}
+				if ($finfo['uitype']=='71' or $finfo['uitype']=='72') {
+					$currencyField = new CurrencyField($field_value);
+					$field_value = CurrencyField::convertToDBFormat($field_value,$current_user);
+				}
+				if ($finfo['uitype']=='33' or $finfo['uitype']=='3313') {
+					if (is_array($field_value)) {
+						$field_value = implode(' |##| ', $field_value);
+					}
+				}
+			}
+			$focus->column_fields[$field_name_val] = $field_value;
+		}
+	}
+	$errormessage = isset($_REQUEST['error_msg']) ? vtlib_purify($_REQUEST['error_msg']) : '';
+	$smarty->assign('ERROR_MESSAGE', $errormessage);
+} elseif(empty($_REQUEST['record']) && $focus->mode != 'edit'){
 	setObjectValuesFromRequest($focus);
 }
 
 $disp_view = getView($focus->mode);
-	$smarty->assign('BLOCKS', getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields));
-	$smarty->assign('BASBLOCKS', getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields, 'BAS'));
-	$smarty->assign('ADVBLOCKS',getBlocks($currentModule,$disp_view,$focus->mode,$focus->column_fields,'ADV'));
-
+$smarty->assign('BLOCKS', getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields));
+$smarty->assign('BASBLOCKS', getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields, 'BAS'));
+$smarty->assign('ADVBLOCKS',getBlocks($currentModule,$disp_view,$focus->mode,$focus->column_fields,'ADV'));
 $smarty->assign('OP_MODE',$disp_view);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
