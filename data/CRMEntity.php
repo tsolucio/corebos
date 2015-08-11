@@ -554,9 +554,13 @@ class CRMEntity {
 						$currentvalues = array_map('trim', explode('|##|', $vlera));
 					}
 					$selectedvalues = $this->column_fields[$fieldname];
-					$roleid=$current_user->roleid;
-					$uservalues = getAssignedPicklistValues($fieldname, $roleid, $adb);
-					$vek=array_merge(array_diff($currentvalues,$uservalues),$selectedvalues);
+					if ($uitype == 3313) {
+						$uservalues = getAllowedPicklistModules();
+					} else {
+						$roleid=$current_user->roleid;
+						$uservalues = getAssignedPicklistValues($fieldname, $roleid, $adb);
+					}
+					$vek=array_unique(array_merge(array_diff($currentvalues,$uservalues),$selectedvalues));
 					$fldvalue = implode(' |##| ', $vek);
 				} elseif ($uitype == 5 || $uitype == 6 || $uitype == 23) {
 					//Added to avoid function call getDBInsertDateValue in ajax save
