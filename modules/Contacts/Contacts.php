@@ -152,88 +152,6 @@ class Contacts extends CRMEntity {
 		return $row["count(*)"];
 	}
 
-	// This function doesn't seem to be used anywhere. Need to check and remove it.
-	/** Function to get the Contact Details assigned to a given User ID which has a valid Email Address.
-	* @param varchar $user_name - User Name (eg. Admin)
-	* @param varchar $email_address - Email Addr of each contact record.
-	* Returns the query.
-	*/
-  	function get_contacts1($user_name,$email_address)
-	{
-		global $log;
-		$log->debug("Entering get_contacts1(".$user_name.",".$email_address.") method ...");
-		$query = "select vtiger_users.user_name, vtiger_contactdetails.lastname last_name,vtiger_contactdetails.firstname first_name,vtiger_contactdetails.contactid as id, vtiger_contactdetails.salutation as salutation, vtiger_contactdetails.email as email1,vtiger_contactdetails.title as title,vtiger_contactdetails.mobile as phone_mobile,vtiger_account.accountname as account_name,vtiger_account.accountid as account_id   from vtiger_contactdetails inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_contactdetails.contactid inner join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid  left join vtiger_account on vtiger_account.accountid=vtiger_contactdetails.accountid left join vtiger_contactaddress on vtiger_contactaddress.contactaddressid=vtiger_contactdetails.contactid  where user_name='" .$user_name ."' and vtiger_crmentity.deleted=0  and vtiger_contactdetails.email like '". formatForSqlLike($email_address) ."' limit 50";
-
-		$log->debug("Exiting get_contacts1 method ...");
-		return $this->process_list_query1($query);
-	}
-
-	// This function doesn't seem to be used anywhere. Need to check and remove it.
-	/** Function to get the Contact Details assigned to a particular User based on the starting count and the number of subsequent records.
-	*  @param varchar $user_name - Assigned User
-	*  @param integer $from_index - Initial record number to be displayed
-	*  @param integer $offset - Count of the subsequent records to be displayed.
-	*  Returns Query.
-	*/
-    function get_contacts($user_name,$from_index,$offset)
-    {
-	global $log;
-	$log->debug("Entering get_contacts(".$user_name.",".$from_index.",".$offset.") method ...");
-      $query = "select vtiger_users.user_name,vtiger_groups.groupname,vtiger_contactdetails.department department, vtiger_contactdetails.phone office_phone, vtiger_contactdetails.fax fax, vtiger_contactsubdetails.assistant assistant_name, vtiger_contactsubdetails.otherphone other_phone, vtiger_contactsubdetails.homephone home_phone,vtiger_contactsubdetails.birthday birthdate, vtiger_contactdetails.lastname last_name,vtiger_contactdetails.firstname first_name,vtiger_contactdetails.contactid as id, vtiger_contactdetails.salutation as salutation, vtiger_contactdetails.email as email1,vtiger_contactdetails.title as title,vtiger_contactdetails.mobile as phone_mobile,vtiger_account.accountname as account_name,vtiger_account.accountid as account_id, vtiger_contactaddress.mailingcity as primary_address_city,vtiger_contactaddress.mailingstreet as primary_address_street, vtiger_contactaddress.mailingcountry as primary_address_country,vtiger_contactaddress.mailingstate as primary_address_state, vtiger_contactaddress.mailingzip as primary_address_postalcode,   vtiger_contactaddress.othercity as alt_address_city,vtiger_contactaddress.otherstreet as alt_address_street, vtiger_contactaddress.othercountry as alt_address_country,vtiger_contactaddress.otherstate as alt_address_state, vtiger_contactaddress.otherzip as alt_address_postalcode  from vtiger_contactdetails inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_contactdetails.contactid inner join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid left join vtiger_account on vtiger_account.accountid=vtiger_contactdetails.accountid left join vtiger_contactaddress on vtiger_contactaddress.contactaddressid=vtiger_contactdetails.contactid left join vtiger_contactsubdetails on vtiger_contactsubdetails.contactsubscriptionid = vtiger_contactdetails.contactid left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid left join vtiger_users on vtiger_crmentity.smownerid=vtiger_users.id where user_name='" .$user_name ."' and vtiger_crmentity.deleted=0 limit " .$from_index ."," .$offset;
-
-	$log->debug("Exiting get_contacts method ...");
-      return $this->process_list_query1($query);
-    }
-
-
-    /** Function to process list query for a given query
-    *  @param $query
-    *  Returns the results of query in array format
-    */
-    function process_list_query1($query)
-    {
-	global $log;
-	$log->debug("Entering process_list_query1(".$query.") method ...");
-
-        $result =& $this->db->query($query,true,"Error retrieving $this->object_name list: ");
-        $list = Array();
-        $rows_found =  $this->db->getRowCount($result);
-        if($rows_found != 0)
-        {
-		   $contact = Array();
-               for($index = 0 , $row = $this->db->fetchByAssoc($result, $index); $row && $index <$rows_found;$index++, $row = $this->db->fetchByAssoc($result, $index))
-
-             {
-                foreach($this->range_fields as $columnName)
-                {
-                    if (isset($row[$columnName])) {
-
-                        $contact[$columnName] = $row[$columnName];
-                    }
-                    else
-                    {
-                            $contact[$columnName] = "";
-                    }
-	     }
-// TODO OPTIMIZE THE QUERY ACCOUNT NAME AND ID are set separetly for every vtiger_contactdetails and hence
-// vtiger_account query goes for ecery single vtiger_account row
-
-                    $list[] = $contact;
-                }
-        }
-
-        $response = Array();
-        $response['list'] = $list;
-        $response['row_count'] = $rows_found;
-        $response['next_offset'] = $next_offset;
-        $response['previous_offset'] = $previous_offset;
-
-
-	$log->debug("Exiting process_list_query1 method ...");
-        return $response;
-    }
-
-
     /** Function to process list query for Plugin with Security Parameters for a given query
     *  @param $query
     *  Returns the results of query in array format
@@ -241,7 +159,7 @@ class Contacts extends CRMEntity {
     function plugin_process_list_query($query)
     {
           global $log,$adb,$current_user;
-          $log->debug("Entering process_list_query1(".$query.") method ...");
+          $log->debug("Entering plugin_process_list_query(".$query.") method ...");
           $permitted_field_lists = Array();
           require('user_privileges/user_privileges_'.$current_user->id.'.php');
           if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0)
@@ -297,7 +215,7 @@ class Contacts extends CRMEntity {
           $response['row_count'] = $rows_found;
           $response['next_offset'] = $next_offset;
           $response['previous_offset'] = $previous_offset;
-          $log->debug("Exiting process_list_query1 method ...");
+          $log->debug("Exiting plugin_process_list_query method ...");
           return $response;
     }
 

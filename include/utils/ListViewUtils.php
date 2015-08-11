@@ -55,7 +55,6 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 
 	//Added to reduce the no. of queries logging for non-admin user -- by Minnie-start
 	$field_list = array();
-	$j = 0;
 	require('user_privileges/user_privileges_' . $current_user->id . '.php');
 	foreach ($focus->list_fields as $name => $tableinfo) {
 		$fieldname = $focus->list_fields_name[$name];
@@ -74,7 +73,6 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 			$fieldname = 'product_id';
 		}
 		array_push($field_list, $fieldname);
-		$j++;
 	}
 	$field = Array();
 	if ($is_admin == false) {
@@ -188,30 +186,8 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 						else
 							$name = "<a href='javascript:;' onClick='getListViewEntries_js(\"" . $module . "\",\"parenttab=" . $tabname . "&order_by=" . $col . "&start=1&sorder=" . $temp_sorder . "" . $sort_qry . "\");' class='listFormHeaderLinks'>" . $lbl_name . "" . $arrow . "</a>";
 						$arrow = '';
-					}
-					else {
-						if (stripos($col, 'cf_') === 0) {
-							$tablenameArray = array_keys($tableinfo, $col);
-							$tablename = $tablenameArray[0];
-							$cf_columns = $adb->getColumnNames($tablename);
-							if (array_search($col, $cf_columns) != null) {
-								$pquery = "select fieldlabel,typeofdata from vtiger_field where tablename = ? and fieldname = ? and vtiger_field.presence in (0,2)";
-								$cf_res = $adb->pquery($pquery, array($tablename, $col));
-								if (count($cf_res) > 0) {
-									$cf_fld_label = $adb->query_result($cf_res, 0, "fieldlabel");
-									$typeofdata = explode("~", $adb->query_result($cf_res, 0, "typeofdata"));
-									$new_field_label = $tablename . ":" . $col . ":" . $col . ":" . $module . "_" . str_replace(" ", "_", $cf_fld_label) . ":" . $typeofdata[0];
-									$name = $cf_fld_label;
-
-									// Update the existing field name in the database with new field name.
-									$upd_query = "update vtiger_cvcolumnlist set columnname = ? where columnname like '" . $tablename . ":" . $col . ":" . $col . "%'";
-									$upd_params = array($new_field_label);
-									$adb->pquery($upd_query, $upd_params);
-								}
-							}
-						} else {
-							$name = getTranslatedString($name, $module);
-						}
+					} else {
+						$name = getTranslatedString($name, $module);
 					}
 				}
 			}
@@ -311,7 +287,6 @@ function getSearchListViewHeader($focus, $module, $sort_qry = '', $sorder = '', 
 				AND vtiger_def_org_field.visible=0
 				AND vtiger_profile2field.profileid IN (" . generateQuestionMarks($profileList) . ")
 				AND vtiger_field.fieldname IN (" . generateQuestionMarks($field_list) . ") and vtiger_field.presence in (0,2)";
-
 			$params = array($tabid, $profileList, $field_list);
 		}
 
@@ -320,10 +295,8 @@ function getSearchListViewHeader($focus, $module, $sort_qry = '', $sorder = '', 
 			$field[] = $adb->query_result($result, $k, "fieldname");
 		}
 	}
-	//end
 	$theme_path = "themes/" . $theme . "/";
 	$image_path = $theme_path . "images/";
-
 
 	$focus->filterInactiveFields($module);
 
@@ -493,7 +466,6 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 
 	//Added to reduce the no. of queries logging for non-admin user -- by minnie-start
 	$field_list = array();
-	$j = 0;
 	require('user_privileges/user_privileges_' . $current_user->id . '.php');
 	foreach ($focus->list_fields as $name => $tableinfo) {
 		$fieldname = $focus->list_fields_name[$name];
@@ -511,9 +483,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 		if ($fieldname == 'productname' && $module != 'Products') {
 			$fieldname = 'product_id';
 		}
-
 		array_push($field_list, $fieldname);
-		$j++;
 	}
 	$field = Array();
 	if ($is_admin == false) {
