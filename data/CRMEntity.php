@@ -845,7 +845,9 @@ class CRMEntity {
 	 *   returnvalues: a urlencoded string of values to send to the receiving page. may be empty
 	 */
 	function preSaveCheck($request) {
-		return array(false,'','','');
+		list($request,$saveerror,$errormessage,$error_action,$returnvalues) =
+			cbEventHandler::do_filter('corebos.filter.preSaveCheck', array($request,false,'','',''));
+		return array($saveerror,$errormessage,$error_action,$returnvalues);
 	}
 
 	/* Check launched when entering Edit View, called after creating object and loading variables. Will be empty on create
@@ -854,6 +856,7 @@ class CRMEntity {
 	 * @return void
 	 */
 	function preEditCheck($request,$smarty) {
+		list($request,$smarty) = cbEventHandler::do_filter('corebos.filter.preEditCheck', array($request,$smarty));
 		return '';
 	}
 
@@ -863,6 +866,7 @@ class CRMEntity {
 	 * @return void
 	 */
 	function preViewCheck($request,$smarty) {
+		list($request,$smarty) = cbEventHandler::do_filter('corebos.filter.preViewCheck', array($request,$smarty));
 		return '';
 	}
 
