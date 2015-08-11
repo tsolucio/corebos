@@ -401,4 +401,11 @@
 	<classname>cbcronbackup</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Global Variables UIType ModuleList to 3313 and Fix EntityID</description>
+	<filename>build/changeSets/GlobalVarUITypeModuleListFixEntityID.php</filename>
+	<classname>GlobalVarUITypeModuleListFixEntityID</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

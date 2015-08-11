@@ -497,7 +497,7 @@ class GlobalVariable extends CRMEntity {
 				$list_of_modules['Default']=$adb->query_result($query,$i,'value');
 			} else {
 				$in_module_list=$adb->query_result($query,$i,'in_module_list');
-				$modules_list=explode(',',$adb->query_result($query,$i,'module_list'));
+				$modules_list=array_map('trim', explode('|##|',$adb->query_result($query,$i,'module_list')));
 				if ($in_module_list==1) {
 					for($j=0;$j<sizeof($modules_list);$j++) {
 						$list_of_modules[$modules_list[$j]]=$adb->query_result($query,$i,'value');
