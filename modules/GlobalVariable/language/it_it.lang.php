@@ -27,6 +27,8 @@ $mod_strings = Array(
 	'Category' => 'Category',
 	'In Module List' => 'In Module List',
 	'Globalno' => 'Global No',
+	'LBL_MANDATORY_VALUE'=>'Only one <b>mandatory</b> value is allowed for a given module and variable',
+	'LBL_MANDATORY_VALUEJS'=>'Only one "mandatory" value is allowed for a given module and variable',
 
 	'calendar_display'=>'Calendar display',
 	'world_clock_display'=>'World clock display',

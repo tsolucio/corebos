@@ -155,6 +155,58 @@ class GlobalVariable extends CRMEntity {
 	function save_module($module) {
 	}
 
+	/* Validate values trying to be saved.
+	 * @param array $_REQUEST input values. Note: column_fields array is already loaded
+	 * @return array
+	 *   saveerror: true if error false if not
+	 *   errormessage: message to return to user if error, empty otherwise
+	 *   error_action: action to redirect to inside the same module in case of error. if redirected to EditView (default action)
+	 *                 all values introduced by the user will be preloaded
+	 */
+	function preSaveCheck($request) {
+		global $adb;
+		$found = false;
+		$errmsg = '';
+		if ($this->column_fields['mandatory'] == 'on' or $this->column_fields['mandatory'] == '1') {
+			$recordid = (empty($this->id) ? 0 : $this->id);
+			if (is_array($this->column_fields['module_list'])) {
+				$modulelist = $this->column_fields['module_list'];
+			} else {
+				$modulelist = array_map('trim',explode('|##|',$this->column_fields['module_list']));
+			}
+			$inmodule = $this->column_fields['in_module_list'];
+			$existmod = $adb->pquery('select module_list,in_module_list from vtiger_globalvariable
+				left join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_globalvariable.globalvariableid
+				where gvname=? and deleted=0 and mandatory=1 and globalvariableid!=?',array($this->column_fields['gvname'],$recordid));
+			$num = $adb->num_rows($existmod);
+			$all_modules=vtws_getModuleNameList();
+			$existmodul= array();
+			for($j=0;$j<$num;$j++){
+				$module_list = array_map('trim',explode('|##|',$adb->query_result($existmod,$j,'module_list')));
+				if ($adb->query_result($existmod,$j,'in_module_list')==0) {
+					$module_list = array_diff($all_modules, $module_list);
+				}
+				$existmodul = array_merge($existmodul,$module_list);
+			}
+			$existmodules = array_unique($existmodul);
+			$other_modules=array_diff($all_modules,$modulelist);
+			if ($inmodule == 'on' or $inmodule == '1') {
+				$intersect = array_intersect($existmodul, $modulelist);
+			} else {
+				$intersect = array_intersect($existmodul, $other_modules);
+			}
+			if(count($intersect)>0){
+				$found = true;
+				if (isset($request['file']) and $request['file']=='DetailViewAjax' and $request['action']=='GlobalVariableAjax') {
+					$errmsg = getTranslatedString('LBL_MANDATORY_VALUEJS','GlobalVariable');
+				} else {
+					$errmsg = getTranslatedString('LBL_MANDATORY_VALUE','GlobalVariable');
+				}
+			}
+		}
+		return array($found,$errmsg,'EditView','');
+	}
+
 	/**
 	 * Return query to use based on given modulename, fieldname
 	 * Useful to handle specific case handling for Popup

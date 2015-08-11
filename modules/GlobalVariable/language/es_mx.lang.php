@@ -29,6 +29,8 @@ $mod_strings = Array(
 	'Globalno' => 'Nº Variable Global',
 	'Test' => 'Validación',
 	'Search Value' => 'Buscar Valor',
+	'LBL_MANDATORY_VALUE'=>'Solo se permite un valor <b>Obligatorio</b> por módulo y variable',
+	'LBL_MANDATORY_VALUEJS'=>'Solo se permite un valor "Obligatorio" por módulo y variable',
 
 	'calendar_display'=>'Mostrar Calendario',
 	'world_clock_display'=>'Mostrar Reloj Mundial',
