@@ -848,6 +848,24 @@ class CRMEntity {
 		return array(false,'','','');
 	}
 
+	/* Check launched when entering Edit View, called after creating object and loading variables. Will be empty on create
+	 * @param array $_REQUEST input values. Note: column_fields array is already loaded
+	 * @param object smarty template object in order to load variables for output
+	 * @return void
+	 */
+	function preEditCheck($request,$smarty) {
+		return '';
+	}
+
+	/* Check launched when entering full Record View, called after creating object and loading variables.
+	 * @param array $_REQUEST input values. Note: column_fields array is already loaded
+	 * @param object smarty template object in order to load variables for output
+	 * @return void
+	 */
+	function preViewCheck($request,$smarty) {
+		return '';
+	}
+
 	/** Function to saves the values in all the tables mentioned in the class variable $tab_name for the specified module
 	 * @param $module -- module:: Type varchar
 	 */

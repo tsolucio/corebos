@@ -31,6 +31,7 @@ if($isduplicate == 'true') {
 	$focus->id = '';
 	$focus->mode = '';
 }
+$focus->preEditCheck($_REQUEST,$smarty);
 if (!empty($_REQUEST['save_error']) and $_REQUEST['save_error'] == "true") {
 	if (!empty($_REQUEST['encode_val'])) {
 		global $current_user;
@@ -60,7 +61,9 @@ if (!empty($_REQUEST['save_error']) and $_REQUEST['save_error'] == "true") {
 			$focus->column_fields[$field_name_val] = $field_value;
 		}
 	}
+	$errormessageclass = isset($_REQUEST['error_msgclass']) ? vtlib_purify($_REQUEST['error_msgclass']) : '';
 	$errormessage = isset($_REQUEST['error_msg']) ? vtlib_purify($_REQUEST['error_msg']) : '';
+	$smarty->assign('ERROR_MESSAGE_CLASS', $errormessageclass);
 	$smarty->assign('ERROR_MESSAGE', $errormessage);
 } elseif(empty($_REQUEST['record']) && $focus->mode != 'edit'){
 	setObjectValuesFromRequest($focus);
