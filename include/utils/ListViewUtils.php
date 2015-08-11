@@ -259,16 +259,8 @@ function getSearchListViewHeader($focus, $module, $sort_qry = '', $sorder = '', 
 	if ($_REQUEST['form'] == 'vtlibPopupView') {
 		$pass_url .= '&form=vtlibPopupView&forfield=' . vtlib_purify($_REQUEST['forfield']) . '&srcmodule=' . vtlib_purify($_REQUEST['srcmodule']) . '&forrecord=' . vtlib_purify($_REQUEST['forrecord']);
 	}
-	// END
-	//Added to reduce the no. of queries logging for non-admin user -- by Minnie-start
-	$field_list = array();
-	$j = 0;
+	$field_list = array_values($focus->search_fields_name);
 	require('user_privileges/user_privileges_' . $current_user->id . '.php');
-	foreach ($focus->search_fields as $name => $tableinfo) {
-		$fieldname = $focus->search_fields_name[$name];
-		array_push($field_list, $fieldname);
-		$j++;
-	}
 	$field = Array();
 	if ($is_admin == false && $module != 'Users') {
 		if ($module == 'Emails') {
@@ -987,13 +979,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 	require('user_privileges/user_privileges_' . $current_user->id . '.php');
 
 	//Added to reduce the no. of queries logging for non-admin user -- by Minnie-start
-	$field_list = array();
-	$j = 0;
-	foreach ($focus->search_fields as $name => $tableinfo) {
-		$fieldname = $focus->search_fields_name[$name];
-		array_push($field_list, $fieldname);
-		$j++;
-	}
+	$field_list = array_values($focus->search_fields_name);
 
 	$field = Array();
 	if ($is_admin == false && $module != 'Users') {
