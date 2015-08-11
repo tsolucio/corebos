@@ -8,7 +8,6 @@
  * All Rights Reserved.
  *************************************************************************************/
 require_once('Smarty_setup.php');
-
 include_once dirname(__FILE__) . '/SMSNotifier.php';
 
 global $theme, $currentModule, $mod_strings, $app_strings, $current_user;
@@ -32,5 +31,4 @@ $results = SMSNotifier::getSMSStatusInfo($record);
 
 $smarty->assign("RESULTS", $results);
 $smarty->display(vtlib_getModuleTemplate($currentModule, 'StatusWidget.tpl'));
-
 ?>

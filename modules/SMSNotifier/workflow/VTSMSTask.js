@@ -6,7 +6,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-function SMSTask($){
+function SMSTask($) {
 	var map = fn.map;
 	var dict = fn.dict;
 	var filter = fn.filter;
@@ -15,7 +15,7 @@ function SMSTask($){
 	var contains = fn.contains;
 	var concat = fn.concat;
 	var vtinst = new VtigerWebservices("webservice.php");
-	
+
 	function handleError(fn){
 		return function(status, result){
 			if(status){
@@ -25,7 +25,7 @@ function SMSTask($){
 			}
 		};
 	}
-	
+
 	//Convert user type into reference for consistency in describe objects
 	//This is done inplace
 	function referencify(desc){
@@ -50,7 +50,7 @@ function SMSTask($){
 		});
 		return out;
 	}
-	
+
 	//Insert text at the cursor
 	function insertAtCursor(element, value){
 		//http://alexking.org/blog/2003/06/02/inserting-at-the-cursor-using-javascript
@@ -76,7 +76,7 @@ function SMSTask($){
 			element.focus();
 		}
 	}
-	
+
 	function fillSelectBox(id, modules, parentModule, filterPred){
 		if(filterPred==null){
 			filterPred = function(){
@@ -101,7 +101,7 @@ function SMSTask($){
 				return (e['type']['name']=='reference');
 			},parent['fields']
 		);
-			
+
 		var moduleFieldTypes = {};
 		$.each(modules, function(k, v){
 				moduleFieldTypes[k] = dict(map(function(e){return [e['name'], e['type']];},filteredFields(v['fields'])));
@@ -126,8 +126,8 @@ function SMSTask($){
 			function forModule(moduleName){
 				// If module is not accessible return no field information
 				if(!contains(accessibleModulesInfo, moduleName)) return [];
-				
-				return map(function(field){					
+
+				return map(function(field){
 					return ['('+name+' : '+'('+moduleName+') '+field['name']+')',label+' : '+'('+moduleName+') '+field['label']];
 					},
 					filteredFields(modules[moduleName]['fields']));
@@ -144,7 +144,7 @@ function SMSTask($){
 		});
 
 	}
-	
+
 	//Get an array containing the the description of a module and all modules
 	//refered to by it. This is passed to callback.
 	function getDescribeObjects(accessibleModules, moduleName, callback){
@@ -152,8 +152,7 @@ function SMSTask($){
 			var parent = referencify(result);
 			var fields = parent['fields'];
 			var referenceFields = filter(function(e){
-				return e['type']['name']=='reference';},
-			  fields);
+				return e['type']['name']=='reference';}, fields);
 			var referenceFieldModules =
 				map(
 					function(e){
@@ -162,11 +161,11 @@ function SMSTask($){
 					referenceFields
 				);
 			function union(a, b){
-			  var newfields = filter(function(e){return !contains(a, e);}, b);
-			  return a.concat(newfields);
+				var newfields = filter(function(e){return !contains(a, e);}, b);
+				return a.concat(newfields);
 			}
 			var relatedModules = reduceR(union, referenceFieldModules, [parent['name']]);
-			
+
 			// Remove modules that is no longer accessible
 			relatedModules = diff(accessibleModules, relatedModules);
 
@@ -176,12 +175,8 @@ function SMSTask($){
 					var firstFailure = failures[0];
 					callback(false, firstFailure[1]);
 				}else{
-					var moduleDescriptions = map(function(e){
-						return referencify(e[1]);},
-					  parameters);
-					var modules = dict(map(function(e){
-						  return [e['name'], e];},
-						moduleDescriptions));
+					var moduleDescriptions = map(function(e){return referencify(e[1]);}, parameters);
+					var modules = dict(map(function(e){return [e['name'], e];},moduleDescriptions));
 					callback(true, modules);
 				}
 			}
@@ -191,13 +186,12 @@ function SMSTask($){
 			});
 		}));
 	}
-	
-	
+
 	$(document).ready(function(){
-		vtinst.extendSession(handleError(function(result){			
+		vtinst.extendSession(handleError(function(result){
 			vtinst.listTypes(handleError(function(accessibleModules) {
 				accessibleModulesInfo = accessibleModules;
-				
+
 				getDescribeObjects(accessibleModules, moduleName, handleError(function(modules){
 					fillSelectBox('sms_fieldnames', modules, moduleName);
 					$('#task-fieldnames-busyicon').hide();
@@ -217,11 +211,10 @@ function SMSTask($){
 						input.attr("value", input.attr("value")+','+value);
 					});
 				}));
-				
-				}));
 			}));
-			validator.mandatoryFields.push('sms_recepient');
-		});
-	}
-	
+		}));
+		validator.mandatoryFields.push('sms_recepient');
+	});
+}
+
 SMSTask(jQuery);

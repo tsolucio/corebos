@@ -52,5 +52,4 @@ if($_REQUEST['return_id'] != '') {
 }
 
 header("Location: index.php?action=$return_action&module=$return_module&record=$return_id&parenttab=$parenttab&start=".vtlib_purify($_REQUEST['pagenumber']).$search);
-
 ?>
