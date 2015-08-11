@@ -7,7 +7,6 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-
 /* BLUE LAGOON  - COLOR THEME*/
 /*added to change color of disabled button*/
 input:disabled {
@@ -2439,7 +2438,7 @@ a .links{
 
 /* Mail Manager starts*/
 .mm_blur {
-    color: lightgrey;
+    color: #D3D3D3;
 }
 .mm_bold {
     padding: .3em;

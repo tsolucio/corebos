@@ -2591,7 +2591,7 @@ a .links{
 }
 /* Mail Manager starts*/
 .mm_blur {
-    color: lightgrey;
+    color: #D3D3D3;
 }
 .mm_bold {
     padding: .3em;
