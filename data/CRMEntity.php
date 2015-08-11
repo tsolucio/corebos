@@ -845,8 +845,8 @@ class CRMEntity {
 	 *   returnvalues: a urlencoded string of values to send to the receiving page. may be empty
 	 */
 	function preSaveCheck($request) {
-		list($request,$saveerror,$errormessage,$error_action,$returnvalues) =
-			cbEventHandler::do_filter('corebos.filter.preSaveCheck', array($request,false,'','',''));
+		list($request,$void,$saveerror,$errormessage,$error_action,$returnvalues) =
+			cbEventHandler::do_filter('corebos.filter.preSaveCheck', array($request,$this,false,'','',''));
 		return array($saveerror,$errormessage,$error_action,$returnvalues);
 	}
 
@@ -856,7 +856,7 @@ class CRMEntity {
 	 * @return void
 	 */
 	function preEditCheck($request,$smarty) {
-		list($request,$smarty) = cbEventHandler::do_filter('corebos.filter.preEditCheck', array($request,$smarty));
+		list($request,$smarty,$void) = cbEventHandler::do_filter('corebos.filter.preEditCheck', array($request,$smarty,$this));
 		return '';
 	}
 
@@ -866,7 +866,7 @@ class CRMEntity {
 	 * @return void
 	 */
 	function preViewCheck($request,$smarty) {
-		list($request,$smarty) = cbEventHandler::do_filter('corebos.filter.preViewCheck', array($request,$smarty));
+		list($request,$smarty,$void) = cbEventHandler::do_filter('corebos.filter.preViewCheck', array($request,$smarty,$this));
 		return '';
 	}
 
