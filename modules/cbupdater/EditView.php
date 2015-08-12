@@ -7,10 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-
 global $currentModule;
 
 checkFileAccessForInclusion("modules/$currentModule/DetailView.php");
 include_once("modules/$currentModule/DetailView.php");
-
 ?>

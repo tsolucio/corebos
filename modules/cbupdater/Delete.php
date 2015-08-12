@@ -20,5 +20,4 @@ $parenttab = getParentTab();
 $url = getBasic_Advance_SearchURL();
 
 header("Location: index.php?module=$return_module&action=$return_action&record=$return_id&parenttab=$parenttab&relmodule=$module".$url);
-
 ?>

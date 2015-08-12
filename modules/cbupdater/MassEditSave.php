@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 global $currentModule, $rstart;
 
 $focus = CRMEntity::getInstance($currentModule);
@@ -32,13 +31,12 @@ if(FALSE and isset($idlist)) {
 		if(isPermitted($currentModule,'EditView',$recordid) == 'yes') {
 			// Save each module record with update value.
 			$focus->retrieve_entity_info($recordid, $currentModule);
-			$focus->mode = 'edit';		
-			$focus->id = $recordid;		
-			foreach($focus->column_fields as $fieldname => $val)
-			{    	
+			$focus->mode = 'edit';
+			$focus->id = $recordid;
+			foreach($focus->column_fields as $fieldname => $val) {
 				if(isset($_REQUEST[$fieldname."_mass_edit_check"])) {
 					if($fieldname == 'assigned_user_id'){
-						if($_REQUEST['assigntype'] == 'U')  {
+						if($_REQUEST['assigntype'] == 'U') {
 							$value = $_REQUEST['assigned_user_id'];
 						} elseif($_REQUEST['assigntype'] == 'T') {
 							$value = $_REQUEST['assigned_group_id'];
@@ -50,12 +48,11 @@ if(FALSE and isset($idlist)) {
 							$value = trim($_REQUEST[$fieldname]);
 					}
 					$focus->column_fields[$fieldname] = $value;
-				}
-				else {
+				} else {
 					$focus->column_fields[$fieldname] = decode_html($focus->column_fields[$fieldname]);
 				}
 			}
-	   		$focus->save($currentModule);
+			$focus->save($currentModule);
 		}
 	}
 }
