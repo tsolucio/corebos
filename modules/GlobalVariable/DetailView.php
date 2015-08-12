@@ -27,6 +27,7 @@ if($record != '') {
 	$focus->retrieve_entity_info($record, $currentModule);
 }
 if($isduplicate == 'true') $focus->id = '';
+$focus->preViewCheck($_REQUEST, $smarty);
 
 // Identify this module as custom module.
 $smarty->assign('CUSTOM_MODULE', true);
@@ -55,7 +56,6 @@ if ($mod_seq_field != null) {
 	$mod_seq_id = $focus->id;
 }
 $smarty->assign('MOD_SEQ_ID', $mod_seq_id);
-// END
 
 $validationArray = split_validationdataArray(getDBValidationData($focus->tab_name, $tabid));
 $smarty->assign('VALIDATION_DATA_FIELDNAME',$validationArray['fieldname']);

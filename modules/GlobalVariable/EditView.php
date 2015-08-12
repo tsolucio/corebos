@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-
 require_once 'modules/Vtiger/EditView.php';
 
 if($focus->mode == 'edit') {
@@ -15,5 +14,4 @@ if($focus->mode == 'edit') {
 } else {
 	$smarty->display('CreateView.tpl');
 }
-
 ?>
