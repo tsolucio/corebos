@@ -105,7 +105,7 @@ class PurchaseOrder extends CRMEntity {
 				&& $_REQUEST['action'] != 'MassEditSave' && $_REQUEST['action'] != 'ProcessDuplicates')
 		{
 			//Based on the total Number of rows we will save the product relationship with this entity
-			saveInventoryProductDetails($this, 'PurchaseOrder', $this->update_prod_stock);
+			saveInventoryProductDetails($this, 'PurchaseOrder');
 			if(vtlib_isModuleActive("InventoryDetails"))
 				InventoryDetails::createInventoryDetails($this,'PurchaseOrder');
 		}
