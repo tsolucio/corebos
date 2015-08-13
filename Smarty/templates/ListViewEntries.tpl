@@ -77,23 +77,24 @@
 										<!-- Filters END-->
 										{/if}
 									</td>
-									</td></tr></table>
-								</td>
-							<!-- Page Navigation -->
-							<td nowrap align="right" width="25%">
-								<table border=0 cellspacing=0 cellpadding=0 class="small">
-									<tr>{$NAVIGATION}</tr>
-								</table>
-							</td>
-						</tr>
-					</table>
-					<table border=0 cellspacing=0 cellpadding=2 width=100% class="small">
-					<tr>
-					<!-- Buttons -->
-					<td style="padding-right:20px" nowrap>{include file='ListViewButtons.tpl'}</td>
+								</tr>
+							</table>
+						</td>
+						<!-- Page Navigation -->
+						<td nowrap align="right" width="25%">
+							<table border=0 cellspacing=0 cellpadding=0 class="small">
+								<tr>{$NAVIGATION}</tr>
+							</table>
+						</td>
 					</tr>
-			</table>
-			<!-- List View's Buttons and Filters ends -->
+				</table>
+				<table border=0 cellspacing=0 cellpadding=2 width=100% class="small">
+					<tr>
+						<!-- Buttons -->
+						<td style="padding-right:20px" nowrap>{include file='ListViewButtons.tpl'}</td>
+					</tr>
+				</table>
+				<!-- List View's Buttons and Filters ends -->
 
 			<div>
 			<table border=0 cellspacing=1 cellpadding=3 width=100% class="lvt small">
@@ -112,15 +113,16 @@
 			</tr>
 			<!-- Table Contents -->
 			{foreach item=entity key=entity_id from=$LISTENTITY}
-			<tr bgcolor=white onMouseOver="this.className='lvtColDataHover'" onMouseOut="this.className='lvtColData'" id="row_{$entity_id}">
-			<td width="2%"><input type="checkbox" NAME="selected_id" id="{$entity_id}" value= '{$entity_id}' onClick="check_object(this)"></td>
-			{foreach item=data from=$entity}
-				{* vtlib customization: Trigger events on listview cell *}
-				<td onmouseover="vtlib_listview.trigger('cell.onmouseover', $(this))" onmouseout="vtlib_listview.trigger('cell.onmouseout', $(this))">{$data}</td>
-			{/foreach}
-			</tr>
+				<tr bgcolor=white onMouseOver="this.className='lvtColDataHover'" onMouseOut="this.className='lvtColData'" id="row_{$entity_id}">
+					<td width="2%"><input type="checkbox" NAME="selected_id" id="{$entity_id}" value= '{$entity_id}' onClick="check_object(this)"></td>
+					{foreach item=data from=$entity}
+						{* vtlib customization: Trigger events on listview cell *}
+						<td onmouseover="vtlib_listview.trigger('cell.onmouseover', $(this))" onmouseout="vtlib_listview.trigger('cell.onmouseout', $(this))">{$data}</td>
+					{/foreach}
+				</tr>
 			{foreachelse}
-			<tr><td style="background-color:#efefef;height:340px" align="center" colspan="{$smarty.foreach.listviewforeach.iteration+1}">
+			<tr>
+			<td style="background-color:#efefef;height:340px" align="center" colspan="{$smarty.foreach.listviewforeach.iteration+1}">
 			<div style="border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 45%; position: relative; z-index: 10000000;">
 				{assign var=vowel_conf value='LBL_A'}
 				{if $MODULE eq 'Accounts' || $MODULE eq 'Invoice'}
@@ -209,11 +211,12 @@
 							<td rowspan="2" width="25%"><img src="{'denied.gif'|@vtiger_imageurl:$THEME}"></td>
 							<td style="border-bottom: 1px solid rgb(204, 204, 204);" nowrap="nowrap" width="75%"><span class="genHeaderSmall">
 							{if $MODULE_CREATE eq 'SalesOrder' || $MODULE_CREATE eq 'PurchaseOrder' || $MODULE_CREATE eq 'Invoice' || $MODULE_CREATE eq 'Quotes'}
-								{$APP.LBL_NO} {$APP.$MODULE_CREATE} {$APP.LBL_FOUND} !</span></td>
+								{$APP.LBL_NO} {$APP.$MODULE_CREATE} {$APP.LBL_FOUND} !
 							{else}
 								{* vtlib customization: Use translation string only if available *}
-								{$APP.LBL_NO} {if $APP.$MODULE_CREATE}{$APP.$MODULE_CREATE}{else}{$MODULE_CREATE}{/if} {$APP.LBL_FOUND} !</span></td>
+								{$APP.LBL_NO} {if $APP.$MODULE_CREATE}{$APP.$MODULE_CREATE}{else}{$MODULE_CREATE}{/if} {$APP.LBL_FOUND} !
 							{/if}
+							</span></td>
 						</tr>
 						<tr>
 							<td class="small" align="left" nowrap="nowrap">{$APP.LBL_YOU_ARE_NOT_ALLOWED_TO_CREATE} {$APP.$vowel_conf}
@@ -230,7 +233,8 @@
 					{/if}
 				{/if} {* SQL ERROR ELSE END *}
 			</div>
-			</td></tr>
+			</td>
+			</tr>
 			{/foreach}
 			</table>
 			</div>
