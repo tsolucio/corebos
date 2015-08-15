@@ -17,7 +17,7 @@ $focus = CRMEntity::getInstance($currentModule);
 $tool_buttons = Button_Check($currentModule);
 $smarty = new vtigerCRM_Smarty();
 
-$record = $_REQUEST['record'];
+$record = vtlib_purify($_REQUEST['record']);
 $isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : '';
 $tabid = getTabid($currentModule);
 $category = getParentTab($currentModule);

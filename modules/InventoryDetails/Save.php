@@ -72,19 +72,19 @@ $focus->save($currentModule);
 $return_id = $focus->id;
 
 $parenttab = getParentTab();
-if($_REQUEST['return_module'] != '') {
+if(!empty($_REQUEST['return_module'])) {
 	$return_module = vtlib_purify($_REQUEST['return_module']);
 } else {
 	$return_module = $currentModule;
 }
 
-if($_REQUEST['return_action'] != '') {
+if(!empty($_REQUEST['return_action'])) {
 	$return_action = vtlib_purify($_REQUEST['return_action']);
 } else {
 	$return_action = "DetailView";
 }
 
-if($_REQUEST['return_id'] != '') {
+if(isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != '') {
 	$return_id = vtlib_purify($_REQUEST['return_id']);
 }
 
