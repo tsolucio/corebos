@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-
 require_once 'modules/Vtiger/EditView.php';
 
 if($focus->mode == 'edit') {
@@ -18,6 +17,5 @@ if(isset($_REQUEST['product_id'])) {
 	$smarty->assign("PRODUCTID", vtlib_purify($_REQUEST['product_id']));
 }
 
-	$smarty->display("salesEditView.tpl");
-
+$smarty->display("salesEditView.tpl");
 ?>

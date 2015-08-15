@@ -9,74 +9,54 @@
  ************************************************************************************/
 require_once('Smarty_setup.php');
 require_once('user_privileges/default_module_view.php');
-global $singlepane_view, $list_max_entries_per_page;
-$currentmodule = vtlib_purify($_REQUEST['module']);
-$RECORD = vtlib_purify($_REQUEST['record']);
+require_once('modules/CustomView/CustomView.php');
+global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $singlepane_view;
+
 $category = getParentTab();
-if($singlepane_view == 'true' && $_REQUEST['action'] == 'CallRelatedList') {
-	header("Location:index.php?action=DetailView&module=$currentmodule&record=$RECORD&parenttab=$category");
+$action = vtlib_purify($_REQUEST['action']);
+$record = vtlib_purify($_REQUEST['record']);
+$isduplicate = vtlib_purify($_REQUEST['isDuplicate']);
+
+if($singlepane_view == 'true' && $action == 'CallRelatedList') {
+	header("Location:index.php?action=DetailView&module=$currentModule&record=$record&parenttab=$category");
 } else {
-	$focus = CRMEntity::getInstance($currentmodule);
-	if(isset($_REQUEST['record']) && $_REQUEST['record']!='') {
-	    $focus->retrieve_entity_info($RECORD,$currentmodule);
-	    $focus->id = $RECORD;
-	    $focus->name=$focus->column_fields['campaignname'];	
-		$log->debug("id is ".$focus->id);	
-		$log->debug("name is ".$focus->name);	
+
+	$tool_buttons = Button_Check($currentModule);
+
+	$focus = CRMEntity::getInstance($currentModule);
+	if($record != '') {
+		$focus->retrieve_entity_info($record, $currentModule);
+		$focus->id = $record;
 	}
-	
-	global $mod_strings;
-	global $app_strings,$adb;
-	global $theme;
-	global $currentModule;
-	$theme_path="themes/".$theme."/";
-	$image_path=$theme_path."images/";
-	
+
 	$smarty = new vtigerCRM_Smarty;
-	
-	if(isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
-		$focus->id = "";
-	}
-	if(isset($_REQUEST['mode']) && $_REQUEST['mode'] != ' ') {
-		$smarty->assign("OP_MODE",vtlib_purify($_REQUEST['mode']));
-	}
-	if (isset($focus->name)) $smarty->assign("NAME", $focus->name);
-	$related_array=getRelatedLists($currentModule,$focus);
-	
-	// vtlib customization: Related module could be disabled, check it
-	if(isset($related_array)) {
-		foreach($related_array as $mod_key=>$mod_val) {
-	        if($mod_key == "Contacts" || $mod_key == "Leads") {
-                $rel_checked=$_REQUEST[$mod_key.'_all'];
-                $rel_check_split=explode(";",$rel_checked);
-                if (is_array($mod_val)) {
-                	$mod_val["checked"]=array();
-                    if (isset($mod_val['entries'])) {
-	                	foreach($mod_val['entries'] as $key=>$val) {
-							if(in_array($key,$rel_check_split))
-								$related_array[$mod_key]["checked"][$key] = 'checked';
-							else
-								$related_array[$mod_key]["checked"][$key] = '';
-	                	}
-                 	}
-                }
-	        }
-		}
-	}
-	// END
-	$smarty->assign("RELATEDLISTS", $related_array);
-		
-	require_once('include/ListView/RelatedListViewSession.php');
-	if(!empty($_REQUEST['selected_header']) && !empty($_REQUEST['relation_id'])) {
-		$relationId = vtlib_purify($_REQUEST['relation_id']);
-		RelatedListViewSession::addRelatedModuleToSession($relationId,
-				vtlib_purify($_REQUEST['selected_header']));
-	}
-	$open_related_modules = RelatedListViewSession::getRelatedModulesFromSession();
-	$smarty->assign("SELECTEDHEADERS", $open_related_modules);
-	
-	require_once('modules/CustomView/CustomView.php');
-	
+
+	if($isduplicate == 'true') $focus->id = '';
+	if(isset($_REQUEST['mode']) && $_REQUEST['mode'] != ' ') $smarty->assign("OP_MODE",vtlib_purify($_REQUEST['mode']));
+	if(!$_SESSION['rlvs'][$currentModule]) unset($_SESSION['rlvs']);
+
+	// Identify this module as custom module.
+	$smarty->assign('CUSTOM_MODULE', false);
+
+	$smarty->assign('APP', $app_strings);
+	$smarty->assign('MOD', $mod_strings);
+	$smarty->assign('MODULE', $currentModule);
+	// TODO: Update Single Module Instance name here.
+	$smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule, $currentModule));
+	$smarty->assign('CATEGORY', $category);
+	$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
+	$smarty->assign('THEME', $theme);
+	$smarty->assign('ID', $focus->id);
+	$smarty->assign('MODE', $focus->mode);
+	$smarty->assign('CHECK', $tool_buttons);
+	$smarty->assign('TODO_PERMISSION', CheckFieldPermission('parent_id','Calendar'));
+	$smarty->assign('EVENT_PERMISSION', CheckFieldPermission('parent_id','Events'));
+	$smarty->assign('RECORDID', $record);
+	$smarty->assign('MAX_RECORDS', $list_max_entries_per_page);
+
+	$smarty->assign('NAME', $focus->column_fields[$focus->def_detailview_recname]);
+	$smarty->assign('UPDATEINFO',updateInfo($focus->id));
+
 	// Module Sequence Numbering
 	$mod_seq_field = getModuleSequenceField($currentModule);
 	if ($mod_seq_field != null) {
@@ -85,27 +65,40 @@ if($singlepane_view == 'true' && $_REQUEST['action'] == 'CallRelatedList') {
 		$mod_seq_id = $focus->id;
 	}
 	$smarty->assign('MOD_SEQ_ID', $mod_seq_id);
-	// END
-	
-	$smarty->assign("TODO_PERMISSION",CheckFieldPermission('parent_id','Calendar'));
-	$smarty->assign("EVENT_PERMISSION",CheckFieldPermission('parent_id','Events'));
-	$smarty->assign("CATEGORY",$category);
-	$smarty->assign("UPDATEINFO",updateInfo($focus->id));
-	$smarty->assign("ID",$focus->id);
-	$smarty->assign("MODULE",$currentmodule);
-	$smarty->assign("SINGLE_MOD",$app_strings['Campaign']);
-	$smarty->assign("MOD",$mod_strings);
-	$smarty->assign("APP",$app_strings);
-	$smarty->assign("THEME", $theme);
-	$smarty->assign("IMAGE_PATH", $image_path);
-	$smarty->assign("RECORDID", $RECORD);
-	$smarty->assign('MAX_RECORDS', $list_max_entries_per_page);
-	
-	$check_button = Button_Check($module);
-	$smarty->assign("CHECK", $check_button);
-	
+
+	$related_array = getRelatedLists($currentModule, $focus);
+	// vtlib customization: Related module could be disabled, check it
+	if(isset($related_array)) {
+		foreach($related_array as $mod_key=>$mod_val) {
+			if($mod_key == "Contacts" || $mod_key == "Leads") {
+				$rel_checked=$_REQUEST[$mod_key.'_all'];
+				$rel_check_split=explode(";",$rel_checked);
+				if (is_array($mod_val)) {
+					$mod_val["checked"]=array();
+					if (isset($mod_val['entries'])) {
+						foreach($mod_val['entries'] as $key=>$val) {
+							if(in_array($key,$rel_check_split))
+								$related_array[$mod_key]["checked"][$key] = 'checked';
+							else
+								$related_array[$mod_key]["checked"][$key] = '';
+						}
+					}
+				}
+			}
+		}
+	}
+	$smarty->assign('RELATEDLISTS', $related_array);
+
+	require_once('include/ListView/RelatedListViewSession.php');
+	if(!empty($_REQUEST['selected_header']) && !empty($_REQUEST['relation_id'])) {
+		$relationId = vtlib_purify($_REQUEST['relation_id']);
+		RelatedListViewSession::addRelatedModuleToSession($relationId,vtlib_purify($_REQUEST['selected_header']));
+	}
+	$open_related_modules = RelatedListViewSession::getRelatedModulesFromSession();
+	$smarty->assign("SELECTEDHEADERS", $open_related_modules);
+
 	if(isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '')
-	        $smarty->display("RelatedListContents.tpl");
+		$smarty->display("RelatedListContents.tpl");
 	else
 		$smarty->display("RelatedLists.tpl");
 }
