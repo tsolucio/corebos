@@ -11,47 +11,49 @@ require_once('data/CRMEntity.php');
 require_once('data/Tracker.php');
 
 class Project extends CRMEntity {
-    var $db, $log; // Used in class functions of CRMEntity
+	var $db, $log; // Used in class functions of CRMEntity
 
-    var $table_name = 'vtiger_project';
-    var $table_index= 'projectid';
-    var $column_fields = Array();
+	var $table_name = 'vtiger_project';
+	var $table_index= 'projectid';
+	var $column_fields = Array();
 
-    /** Indicator if this is a custom module or standard module */
-    var $IsCustomModule = true;
+	/** Indicator if this is a custom module or standard module */
+	var $IsCustomModule = true;
+	var $HasDirectImageField = false;
+	/**
+	 * Mandatory table for supporting custom fields.
+	 */
+	var $customFieldTable = Array('vtiger_projectcf', 'projectid');
+	// Uncomment the line below to support custom field columns on related lists
+	// var $related_tables = Array('vtiger_projectcf'=>array('projectid','vtiger_project', 'projectid'));
 
-    /**
-     * Mandatory table for supporting custom fields.
-     */
-    var $customFieldTable = Array('vtiger_projectcf', 'projectid');
+	/**
+	 * Mandatory for Saving, Include tables related to this module.
+	 */
+	var $tab_name = Array('vtiger_crmentity', 'vtiger_project', 'vtiger_projectcf');
 
-    /**
-     * Mandatory for Saving, Include tables related to this module.
-     */
-    var $tab_name = Array('vtiger_crmentity', 'vtiger_project', 'vtiger_projectcf');
-
-    /**
-     * Mandatory for Saving, Include tablename and tablekey columnname here.
-     */
-    var $tab_name_index = Array(
+	/**
+	 * Mandatory for Saving, Include tablename and tablekey columnname here.
+	 */
+	var $tab_name_index = Array(
 		'vtiger_crmentity' => 'crmid',
 		'vtiger_project'   => 'projectid',
-	    'vtiger_projectcf' => 'projectid');
+		'vtiger_projectcf' => 'projectid');
 
-    /**
-     * Mandatory for Listing (Related listview)
-     */
-    var $list_fields = Array (
-    /* Format: Field Label => Array(tablename, columnname) */
-    // tablename should not have prefix 'vtiger_'
-		'Project Name'=> Array('project', 'projectname'),
-		'Start Date'=> Array('project', 'startdate'),
-		'Status'=>Array('project','projectstatus'),
-		'Type'=>Array('project','projecttype'),
-		'Assigned To' => Array('crmentity','smownerid')
-    );
-    var $list_fields_name = Array(
-    /* Format: Field Label => fieldname */
+	/**
+	 * Mandatory for Listing (Related listview)
+	 */
+	var $list_fields = Array (
+		/* Format: Field Label => Array(tablename => columnname) */
+		// tablename should not have prefix 'vtiger_'
+		'Project Name'=> Array('project' => 'projectname'),
+		'Start Date'=> Array('project' => 'startdate'),
+		'Status'=>Array('project' => 'projectstatus'),
+		'Type'=>Array('project' => 'projecttype'),
+		'Assigned To' => Array('crmentity' => 'smownerid')
+	);
+	var $list_fields_name = Array(
+		/* Format: Field Label => fieldname */
 		'Project Name'=> 'projectname',
 		'Start Date'=> 'startdate',
 		'Status'=>'projectstatus',
@@ -64,19 +66,19 @@ class Project extends CRMEntity {
 
 	// For Popup listview and UI type support
 	var $search_fields = Array(
-	/* Format: Field Label => Array(tablename, columnname) */
-	// tablename should not have prefix 'vtiger_'
-	'Project Name'=> Array('project', 'projectname'),
-	'Start Date'=> Array('project', 'startdate'),
-	'Status'=>Array('project','projectstatus'),
-	'Type'=>Array('project','projecttype'),
+		/* Format: Field Label => Array(tablename => columnname) */
+		// tablename should not have prefix 'vtiger_'
+		'Project Name'=> Array('project' => 'projectname'),
+		'Start Date'=> Array('project' => 'startdate'),
+		'Status'=>Array('project' => 'projectstatus'),
+		'Type'=>Array('project' => 'projecttype'),
 	);
 	var $search_fields_name = Array(
-	/* Format: Field Label => fieldname */
-	'Project Name'=> 'projectname',
-	'Start Date'=> 'startdate',
-	'Status'=>'projectstatus',
-	'Type'=>'projecttype',
+		/* Format: Field Label => fieldname */
+		'Project Name'=> 'projectname',
+		'Start Date'=> 'startdate',
+		'Status'=>'projectstatus',
+		'Type'=>'projecttype',
 	);
 
 	// For Popup window record selection
@@ -104,10 +106,16 @@ class Project extends CRMEntity {
 	var $mandatory_fields = Array('createdtime', 'modifiedtime', 'projectname');
 
 	function __construct() {
-	    global $log, $currentModule;
-	    $this->column_fields = getColumnFields($currentModule);
-	    $this->db = PearDatabase::getInstance();
-	    $this->log = $log;
+		global $log, $currentModule;
+		$this->column_fields = getColumnFields($currentModule);
+		$this->db = PearDatabase::getInstance();
+		$this->log = $log;
+		$sql = 'SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid = ?';
+		$tabid = getTabid($currentModule);
+		$result = $this->db->pquery($sql, array($tabid));
+		if ($result and $this->db->num_rows($result)==1) {
+			$this->HasDirectImageField = true;
+		}
 	}
 
 	function save_module($module) {
@@ -117,7 +125,7 @@ class Project extends CRMEntity {
 	 * Return query to use based on given modulename, fieldname
 	 * Useful to handle specific case handling for Popup
 	 */
-	function getQueryByModuleField($module, $fieldname, $srcrecord) {
+	function getQueryByModuleField($module, $fieldname, $srcrecord, $query='') {
 		// $srcrecord could be empty
 	}
 
@@ -143,7 +151,7 @@ class Project extends CRMEntity {
 		// Consider custom table join as well.
 		if(!empty($this->customFieldTable)) {
 			$query .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
-				      " = $this->table_name.$this->table_index";
+				" = $this->table_name.$this->table_index";
 			$joinedTables[] = $this->customFieldTable[0];
 		}
 		$query .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
@@ -162,7 +170,7 @@ class Project extends CRMEntity {
 			$fieldname = $this->db->query_result($linkedModulesQuery, $i, 'fieldname');
 			$columnname = $this->db->query_result($linkedModulesQuery, $i, 'columnname');
 
-			$other =  CRMEntity::getInstance($related_module);
+			$other = CRMEntity::getInstance($related_module);
 			vtlib_setup_modulevars($related_module, $other);
 
 			if(!in_array($other->table_name, $joinedTables)) {
@@ -191,28 +199,27 @@ class Project extends CRMEntity {
 		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1
 			&& $defaultOrgSharingPermission[$tabid] == 3) {
 
-				$sec_query .= " AND (vtiger_crmentity.smownerid in($current_user->id) OR vtiger_crmentity.smownerid IN
+				$sec_query .= " AND (vtiger_crmentity.smownerid in($current_user->id) OR vtiger_crmentity.smownerid IN 
 					(
-						SELECT vtiger_user2role.userid FROM vtiger_user2role
-						INNER JOIN vtiger_users ON vtiger_users.id=vtiger_user2role.userid
-						INNER JOIN vtiger_role ON vtiger_role.roleid=vtiger_user2role.roleid
+						SELECT vtiger_user2role.userid FROM vtiger_user2role 
+						INNER JOIN vtiger_users ON vtiger_users.id=vtiger_user2role.userid 
+						INNER JOIN vtiger_role ON vtiger_role.roleid=vtiger_user2role.roleid 
 						WHERE vtiger_role.parentrole LIKE '".$current_user_parent_role_seq."::%'
-					)
-					OR vtiger_crmentity.smownerid IN
+					) 
+					OR vtiger_crmentity.smownerid IN 
 					(
-						SELECT shareduserid FROM vtiger_tmp_read_user_sharing_per
+						SELECT shareduserid FROM vtiger_tmp_read_user_sharing_per 
 						WHERE userid=".$current_user->id." AND tabid=".$tabid."
-					)
-					OR
-						(";
+					) 
+					OR (";
 
 					// Build the query based on the group association of current user.
 					if(sizeof($current_user_groups) > 0) {
 						$sec_query .= " vtiger_groups.groupid IN (". implode(",", $current_user_groups) .") OR ";
 					}
-					$sec_query .= " vtiger_groups.groupid IN
+					$sec_query .= " vtiger_groups.groupid IN 
 						(
-							SELECT vtiger_tmp_read_group_sharing_per.sharedgroupid
+							SELECT vtiger_tmp_read_group_sharing_per.sharedgroupid 
 							FROM vtiger_tmp_read_group_sharing_per
 							WHERE userid=".$current_user->id." and tabid=".$tabid."
 						)";
@@ -237,12 +244,12 @@ class Project extends CRMEntity {
 
 		$fields_list = getFieldsListFromQuery($sql);
 
-		$query = "SELECT $fields_list, vtiger_users.user_name AS user_name
-					FROM vtiger_crmentity INNER JOIN $this->table_name ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
+		$query = "SELECT $fields_list, vtiger_users.user_name AS user_name 
+				FROM vtiger_crmentity INNER JOIN $this->table_name ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
 
 		if(!empty($this->customFieldTable)) {
 			$query .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
-				      " = $this->table_name.$this->table_index";
+				" = $this->table_name.$this->table_index";
 		}
 
 		$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
@@ -253,6 +260,7 @@ class Project extends CRMEntity {
 				" WHERE uitype='10' AND vtiger_fieldmodulerel.module=?", array($thismodule));
 		$linkedFieldsCount = $this->db->num_rows($linkedModulesQuery);
 
+		$rel_mods[$this->table_name] = 1;
 		for($i=0; $i<$linkedFieldsCount; $i++) {
 			$related_module = $this->db->query_result($linkedModulesQuery, $i, 'relmodule');
 			$fieldname = $this->db->query_result($linkedModulesQuery, $i, 'fieldname');
@@ -261,7 +269,17 @@ class Project extends CRMEntity {
 			$other = CRMEntity::getInstance($related_module);
 			vtlib_setup_modulevars($related_module, $other);
 
-			$query .= " LEFT JOIN $other->table_name ON $other->table_name.$other->table_index = $this->table_name.$columnname";
+			if($rel_mods[$other->table_name]) {
+				$rel_mods[$other->table_name] = $rel_mods[$other->table_name] + 1;
+				$alias = $other->table_name.$rel_mods[$other->table_name];
+				$query_append = "as $alias";
+			} else {
+				$alias = $other->table_name;
+				$query_append = '';
+				$rel_mods[$other->table_name] = 1;
+			}
+
+			$query .= " LEFT JOIN $other->table_name $query_append ON $alias.$other->table_index = $this->table_name.$columnname";
 		}
 
 		$query .= $this->getNonAdminAccessControlQuery($thismodule,$current_user);
@@ -291,21 +309,21 @@ class Project extends CRMEntity {
 
 		$from_clause = " FROM $this->table_name";
 
-		$from_clause .= "	INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
+		$from_clause .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
 
 		// Consider custom table join as well.
 		if(isset($this->customFieldTable)) {
 			$from_clause .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
-				      " = $this->table_name.$this->table_index";
+				" = $this->table_name.$this->table_index";
 		}
 		$from_clause .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
 						LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
 
-		$where_clause = "	WHERE vtiger_crmentity.deleted = 0";
+		$where_clause = " WHERE vtiger_crmentity.deleted = 0";
 		$where_clause .= $this->getListViewSecurityParameter($module);
 
 		if (isset($select_cols) && trim($select_cols) != '') {
-			$sub_query = "SELECT $select_cols FROM  $this->table_name AS t " .
+			$sub_query = "SELECT $select_cols FROM $this->table_name AS t " .
 				" INNER JOIN vtiger_crmentity AS crm ON crm.crmid = t.".$this->table_index;
 			// Consider custom table join as well.
 			if(isset($this->customFieldTable)) {
@@ -315,7 +333,6 @@ class Project extends CRMEntity {
 		} else {
 			$sub_query = "SELECT $table_cols $from_clause $where_clause GROUP BY $table_cols HAVING COUNT(*)>1";
 		}
-
 
 		$query = $select_clause . $from_clause .
 					" LEFT JOIN vtiger_users_last_import ON vtiger_users_last_import.bean_id=" . $this->table_name .".".$this->table_index .
@@ -414,41 +431,33 @@ class Project extends CRMEntity {
 		}
 	}
 
-	static function registerLinks() {
+	/**
+	 * Handle saving related module information.
+	 * NOTE: This function has been added to CRMEntity (base class).
+	 * You can override the behavior by re-defining it here.
+	 */
+	// function save_related_module($module, $crmid, $with_module, $with_crmid) { }
 
+	/**
+	 * Handle deleting related module information.
+	 * NOTE: This function has been added to CRMEntity (base class).
+	 * You can override the behavior by re-defining it here.
+	 */
+	function delete_related_module($module, $crmid, $with_module, $with_crmid) {
+		if (!in_array($with_module, array('ProjectMilestone', 'ProjectTask'))) {
+			parent::delete_related_module($module, $crmid, $with_module, $with_crmid);
+			return;
+		}
+		$destinationModule = vtlib_purify($_REQUEST['destination_module']);
+		if (!is_array($with_crmid)) $with_crmid = Array($with_crmid);
+		foreach($with_crmid as $relcrmid) {
+			$child = CRMEntity::getInstance($destinationModule);
+			$child->retrieve_entity_info($relcrmid, $destinationModule);
+			$child->mode='edit';
+			$child->column_fields['projectid']='';
+			$child->save($destinationModule,$relcrmid);
+		}
 	}
-
-    /**
-     * Here we override the parent's method,
-     * This is done because the related lists for this module use a custom query
-     * that queries the child module's table (column of the uitype10 field)
-     *
-     * @see data/CRMEntity#save_related_module($module, $crmid, $with_module, $with_crmid)
-     */
-    //function save_related_module($module, $crmid, $with_module, $with_crmid) {    }
-
-    /**
-     * Here we override the parent's method
-     * This is done because the related lists for this module use a custom query
-     * that queries the child module's table (column of the uitype10 field)
-     *
-     * @see data/CRMEntity#delete_related_module($module, $crmid, $with_module, $with_crmid)
-     */
-    function delete_related_module($module, $crmid, $with_module, $with_crmid) {
-         if (!in_array($with_module, array('ProjectMilestone', 'ProjectTask'))) {
-             parent::delete_related_module($module, $crmid, $with_module, $with_crmid);
-             return;
-         }
-        $destinationModule = vtlib_purify($_REQUEST['destination_module']);
-        if (!is_array($with_crmid)) $with_crmid = Array($with_crmid);
-        foreach($with_crmid as $relcrmid) {
-            $child = CRMEntity::getInstance($destinationModule);
-            $child->retrieve_entity_info($relcrmid, $destinationModule);
-            $child->mode='edit';
-            $child->column_fields['projectid']='';
-            $child->save($destinationModule,$relcrmid);
-        }
-    }
 
 	/**
 	 * Handle getting related list information.
@@ -464,7 +473,6 @@ class Project extends CRMEntity {
 	 */
 	//function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
 
-
 	function get_gantt_chart($id, $cur_tab_id, $rel_tab_id, $actions=false){
 		require_once("BURAK_Gantt.class.php");
 
@@ -473,8 +481,8 @@ class Project extends CRMEntity {
 
 		$entries = array();
 
-        global $adb,$tmp_dir,$default_charset;
-        $record = $id;
+		global $adb,$tmp_dir,$default_charset;
+		$record = $id;
 		$g = new BURAK_Gantt();
 		// set grid type
 		$g->setGrid(1);
@@ -495,7 +503,7 @@ class Project extends CRMEntity {
 				$percentage = str_replace("%","",$rec_related_projecttasks['projecttaskprogress']);
 			}
 
-            $rec_related_projecttasks['projecttaskname'] = iconv($default_charset, "ISO-8859-2//TRANSLIT",$rec_related_projecttasks['projecttaskname']);
+			$rec_related_projecttasks['projecttaskname'] = iconv($default_charset, "ISO-8859-2//TRANSLIT",$rec_related_projecttasks['projecttaskname']);
 			$g->addTask($rec_related_projecttasks['projecttaskid'],$rec_related_projecttasks['startdate'],$rec_related_projecttasks['enddate'],$percentage,$rec_related_projecttasks['projecttaskname']);
 		}
 
@@ -506,8 +514,8 @@ class Project extends CRMEntity {
 											array($record)) or die("Please install the ProjectMilestone and ProjectTasks modules first.");
 
 		while($rec_related_projectmilestones = $adb->fetchByAssoc($related_projectmilestones)){
-            $rec_related_projectmilestones['projectmilestonename'] = iconv($default_charset, "ISO-8859-2//TRANSLIT",$rec_related_projectmilestones['projectmilestonename']);
-            $g->addMilestone($rec_related_projectmilestones['projectmilestoneid'],$rec_related_projectmilestones['projectmilestonedate'],$rec_related_projectmilestones['projectmilestonename']);
+			$rec_related_projectmilestones['projectmilestonename'] = iconv($default_charset, "ISO-8859-2//TRANSLIT",$rec_related_projectmilestones['projectmilestonename']);
+			$g->addMilestone($rec_related_projectmilestones['projectmilestoneid'],$rec_related_projectmilestones['projectmilestonedate'],$rec_related_projectmilestones['projectmilestonename']);
 		}
 
 		$g->outputGantt($tmp_dir."diagram_".$record.".jpg","100");
@@ -530,7 +538,6 @@ class Project extends CRMEntity {
 			imagejpeg($id_destination,$destination);
 			imagedestroy($id_origin);
 			imagedestroy($id_destination);
-
 			$image = $destination;
 		} else {
 			$image = $origin;
@@ -542,6 +549,5 @@ class Project extends CRMEntity {
 
 		return array('header'=> $headers, 'entries'=> $entries);
 	}
-
 }
 ?>
