@@ -109,8 +109,8 @@ class ModuleClass extends CRMEntity {
 	function getSortOrder() {
 		global $currentModule;
 		$sortorder = $this->default_sort_order;
-		if($_REQUEST['sorder']) $sortorder = $this->db->sql_escape_string($_REQUEST['sorder']);
-		else if($_SESSION[$currentModule.'_Sort_Order'])
+		if(isset($_REQUEST['sorder'])) $sortorder = $this->db->sql_escape_string($_REQUEST['sorder']);
+		else if(isset($_SESSION[$currentModule.'_Sort_Order']))
 			$sortorder = $_SESSION[$currentModule.'_Sort_Order'];
 		return $sortorder;
 	}
@@ -124,8 +124,8 @@ class ModuleClass extends CRMEntity {
 		}
 
 		$orderby = $use_default_order_by;
-		if($_REQUEST['order_by']) $orderby = $this->db->sql_escape_string($_REQUEST['order_by']);
-		else if($_SESSION[$currentModule.'_Order_By'])
+		if(isset($_REQUEST['order_by'])) $orderby = $this->db->sql_escape_string($_REQUEST['order_by']);
+		else if(isset($_SESSION[$currentModule.'_Order_By']))
 			$orderby = $_SESSION[$currentModule.'_Order_By'];
 		return $orderby;
 	}
