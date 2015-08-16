@@ -155,23 +155,20 @@ class ListViewController {
 					$field = $this->queryGenerator->getReferenceField($fieldName,false);
 					if (is_null($field)) continue;
 				}
+				$fldcolname = $field->getColumnName();
 				$idList = array();
 				for ($i = 0; $i < $rowCount; $i++) {
-					$id = $this->db->query_result($result, $i, $field->getColumnName());
+					$id = $this->db->query_result($result, $i, $fldcolname);
 					if (!isset($this->ownerNameList[$fieldName][$id])) {
 						$idList[] = $id;
 					}
 				}
 				if(count($idList) > 0) {
-					if(!is_array($this->ownerNameList[$fieldName])) {
+					if(!isset($this->ownerNameList[$fieldName]) or !is_array($this->ownerNameList[$fieldName])) {
 						$this->ownerNameList[$fieldName] = getOwnerNameList($idList);
 					} else {
-						//array_merge API loses key information so need to merge the arrays
-						// manually.
 						$newOwnerList = getOwnerNameList($idList);
-						foreach ($newOwnerList as $id => $name) {
-							$this->ownerNameList[$fieldName][$id] = $name;
-						}
+						$this->ownerNameList[$fieldName] = $this->ownerNameList[$fieldName] + $newOwnerList;
 					}
 				}
 			}
@@ -191,10 +188,11 @@ class ListViewController {
 			$idList=array();
 			if ($fieldName!='assigned_user_id' && strstr($fieldName,".assigned_user_id")) {
 				$modrel=getTabModuleName($field->getTabId());
+				$fldcolname = 'smowner'.strtolower($modrel);
 				$j=$rowCount*$k;
 				$k++;
 				for ($i = 0; $i < $rowCount; $i++) {
-					$id = $this->db->query_result($result, $i, "smowner".strtolower($modrel));
+					$id = $this->db->query_result($result, $i, $fldcolname);
 					if (!isset($this->ownerNameListrel[$fieldName][$id])) {
 						$idList[$j] = $id;
 						$j++;
@@ -204,13 +202,11 @@ class ListViewController {
 				$this->fetchNameList($field, $result,1);
 			}
 			if (count($idList) > 0) {
-				if (!is_array($this->ownerNameListrel[$fieldName])) {
+				if (!isset($this->ownerNameListrel[$fieldName]) or !is_array($this->ownerNameListrel[$fieldName])) {
 					$this->ownerNameListrel[$fieldName] = getOwnerNameList($idList);
 				} else {
 					$newOwnerList = getOwnerNameList($idList);
-					foreach ($newOwnerList as $id => $name) {
-						$this->ownerNameListrel[$fieldName][$id] = $name;
-					}
+					$this->ownerNameListrel[$fieldName] = $this->ownerNameListrel[$fieldName] + $newOwnerList;
 				}
 			}
 		}
