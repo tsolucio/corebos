@@ -27,7 +27,7 @@ class ListViewController {
 	private $nameList;
 	private $typeList;
 	private $ownerNameList;
-        private $ownerNameListrel;
+	private $ownerNameListrel;
 	private $user;
 	private $picklistValueMap;
 	private $picklistRoleMap;
@@ -67,11 +67,13 @@ class ListViewController {
 
 		$idList = array();
 		for ($i = 0; $i < $rowCount; $i++) {
-                   if($rel==1) {
-                   $modrel=getTabModuleName($field->getTabId());
-                   $colname=strtolower($modrel).$field->getColumnName();}
-                   else {$colname=$field->getColumnName();}
-		   $id = $this->db->query_result($result, $i, $colname);
+			if($rel==1) {
+				$modrel=getTabModuleName($field->getTabId());
+				$colname=strtolower($modrel).$field->getColumnName();
+			} else {
+				$colname=$field->getColumnName();
+			}
+			$id = $this->db->query_result($result, $i, $colname);
 			if (!isset($this->nameList[$fieldName][$id])) {
 				$idList[$id] = $id;
 			}
@@ -120,9 +122,8 @@ class ListViewController {
 	 * Returns an array type
 	 */
 	function getListViewEntries($focus, $module,$result,$navigationInfo,$skipActions=false) {
-
 		require('user_privileges/user_privileges_'.$this->user->id.'.php');
-		global $listview_max_textlength, $theme,$default_charset,$current_user;
+		global $listview_max_textlength, $theme, $default_charset, $current_user, $currentModule;
 		$fields = $this->queryGenerator->getFields();
 		$whereFields = $this->queryGenerator->getWhereFields();
 		$meta = $this->queryGenerator->getMeta($this->queryGenerator->getModule());
@@ -187,33 +188,31 @@ class ListViewController {
 					$field->getFieldDataType() == 'multipicklist')) {
 				$this->setupAccessiblePicklistValueList($fieldName);
 			}
-                       $idList=array();
-                       global $currentModule;
-                       if($fieldName!='assigned_user_id' && strstr($fieldName,".assigned_user_id")){
-                       $modrel=getTabModuleName($field->getTabId());
-                       $j=$rowCount*$k;
-                       $k++;
-                       for ($i = 0; $i < $rowCount; $i++) {
-                       $id = $this->db->query_result($result, $i, "smowner".strtolower($modrel));
-                       if (!isset($this->ownerNameListrel[$fieldName][$id])) {
-	               $idList[$j] = $id;
-                       $j++;
-		      }
-                      }
-                      }
-                      else if(getTabid($currentModule)!=$field->getTabId() && $field->getFieldDataType()=='reference'){
-                      $this->fetchNameList($field, $result,1);
-                      }
-                      if(count($idList) > 0) {
-                           if(!is_array($this->ownerNameListrel[$fieldName])) {
-                           $this->ownerNameListrel[$fieldName] = getOwnerNameList($idList);
-                           } else {
-                           $newOwnerList = getOwnerNameList($idList);
-                           foreach ($newOwnerList as $id => $name) {
-                           $this->ownerNameListrel[$fieldName][$id] = $name;
-                           }
-                      }
-                      }
+			$idList=array();
+			if ($fieldName!='assigned_user_id' && strstr($fieldName,".assigned_user_id")) {
+				$modrel=getTabModuleName($field->getTabId());
+				$j=$rowCount*$k;
+				$k++;
+				for ($i = 0; $i < $rowCount; $i++) {
+					$id = $this->db->query_result($result, $i, "smowner".strtolower($modrel));
+					if (!isset($this->ownerNameListrel[$fieldName][$id])) {
+						$idList[$j] = $id;
+						$j++;
+					}
+				}
+			} else if (getTabid($currentModule)!=$field->getTabId() && $field->getFieldDataType()=='reference') {
+				$this->fetchNameList($field, $result,1);
+			}
+			if (count($idList) > 0) {
+				if (!is_array($this->ownerNameListrel[$fieldName])) {
+					$this->ownerNameListrel[$fieldName] = getOwnerNameList($idList);
+				} else {
+					$newOwnerList = getOwnerNameList($idList);
+					foreach ($newOwnerList as $id => $name) {
+						$this->ownerNameListrel[$fieldName][$id] = $name;
+					}
+				}
+			}
 		}
 
 		$useAsterisk = get_use_asterisk($this->user->id);
@@ -241,7 +240,6 @@ class ListViewController {
 					if (is_null($field)) continue;
 				}
 				$uitype = $field->getUIType();
-				global $currentModule;
 				if($fieldName!='assigned_user_id' && strstr($fieldName,".assigned_user_id")) {
 					$modrel=getTabModuleName($field->getTabId());
 					$rawValue = $this->db->query_result($result, $i, "smowner".strtolower($modrel));
@@ -404,13 +402,13 @@ class ListViewController {
 						}
 					}
 				} elseif($field->getFieldDataType() == 'url') {
-                    $matchPattern = "^[\w]+:\/\/^";
-                    preg_match($matchPattern, $rawValue, $matches);
-                    if(!empty ($matches[0])){
-                        $value = '<a href="'.$rawValue.'" target="_blank">'.textlength_check($value).'</a>';
-                    }else{
-                        $value = '<a href="http://'.$rawValue.'" target="_blank">'.textlength_check($value).'</a>';
-                    }
+					$matchPattern = "^[\w]+:\/\/^";
+					preg_match($matchPattern, $rawValue, $matches);
+					if(!empty ($matches[0])){
+						$value = '<a href="'.$rawValue.'" target="_blank">'.textlength_check($value).'</a>';
+					}else{
+						$value = '<a href="http://'.$rawValue.'" target="_blank">'.textlength_check($value).'</a>';
+					}
 				} elseif ($field->getFieldDataType() == 'email') {
 					if($_SESSION['internal_mailer'] == 1) {
 						//check added for email link in user detailview
@@ -470,11 +468,11 @@ class ListViewController {
 					}
 				} elseif($field->getFieldDataType() == 'reference') {
 					$referenceFieldInfoList = $this->queryGenerator->getReferenceFieldInfoList();
-					global $currentModule;
-                                        if(getTabid($currentModule)!=$field->getTabId()){
-                                        $modrel=getTabModuleName($field->getTabId());
-                                        $fieldName=str_replace($modrel.'.',"",$fieldName); }
-                                        $moduleList = $referenceFieldInfoList[$fieldName];
+					if (getTabid($currentModule)!=$field->getTabId()) {
+						$modrel=getTabModuleName($field->getTabId());
+						$fieldName=str_replace($modrel.'.',"",$fieldName);
+					}
+					$moduleList = $referenceFieldInfoList[$fieldName];
 					if(count($moduleList) == 1) {
 						$parentModule = $moduleList[0];
 					} else {
@@ -491,10 +489,11 @@ class ListViewController {
 						$value = '--';
 					}
 				} elseif($field->getFieldDataType() == 'owner') {
-                                        if($fieldName!='assigned_user_id' && strstr($fieldName,".assigned_user_id"))
-                                        {$value = textlength_check($this->ownerNameListrel[$fieldName][$value]);}
-                                        else{
-                                        $value = textlength_check($this->ownerNameList[$fieldName][$value]);}
+					if($fieldName!='assigned_user_id' && strstr($fieldName,".assigned_user_id")) {
+						$value = textlength_check($this->ownerNameListrel[$fieldName][$value]);
+					} else {
+						$value = textlength_check($this->ownerNameList[$fieldName][$value]);
+					}
 				} elseif ($field->getUIType() == 25) {
 					//TODO clean request object reference.
 					$contactId=$_REQUEST['record'];
@@ -554,7 +553,7 @@ class ListViewController {
 			if(isPermitted($module,"Delete","") == 'yes'){
 				$del_link = $this->getListViewDeleteLink($module,$recordId);
 				if($actionLinkInfo != "" && $del_link != "")
-					$actionLinkInfo .=  " | ";
+					$actionLinkInfo .= ' | ';
 				if($del_link != "")
 					$actionLinkInfo .=	"<a href='javascript:confirmdelete(\"".
 						addslashes(urlencode($del_link))."\")'>".getTranslatedString("LNK_DELETE",
@@ -581,7 +580,7 @@ class ListViewController {
 
 	public function getListViewEditLink($module,$recordId, $activityType='') {
 		if($module == 'Emails')
-	        return 'javascript:;" onclick="OpenCompose(\''.$recordId.'\',\'edit\');';
+			return 'javascript:;" onclick="OpenCompose(\''.$recordId.'\',\'edit\');';
 		if($module != 'Calendar') {
 			$return_action = "index";
 		} else {
