@@ -2875,25 +2875,29 @@ function getReadEntityIds($module) {
 function AlphabeticalSearch($module, $action, $fieldname, $query, $type, $popuptype = '', $recordid = '', $return_module = '', $append_url = '', $viewid = '', $groupid = '') {
 	global $log;
 	$log->debug("Entering AlphabeticalSearch(" . $module . "," . $action . "," . $fieldname . "," . $query . "," . $type . "," . $popuptype . "," . $recordid . "," . $return_module . "," . $append_url . "," . $viewid . "," . $groupid . ") method ...");
-	if ($type == 'advanced')
+	if ($type == 'advanced') {
 		$flag = '&advanced=true';
+	} else {
+		$flag = '';
+	}
 
-	if ($popuptype != '')
+	if ($popuptype != '') {
 		$popuptypevalue = "&popuptype=" . $popuptype;
-
+	} else {
+		$popuptypevalue = '';
+	}
+	$returnvalue = '';
 	if ($recordid != '')
 		$returnvalue = '&recordid=' . $recordid;
 	if ($return_module != '')
 		$returnvalue .= '&return_module=' . $return_module;
 
 	// vtlib Customization : For uitype 10 popup during paging
-	if ($_REQUEST['form'] == 'vtlibPopupView') {
+	if (isset($_REQUEST['form']) and $_REQUEST['form'] == 'vtlibPopupView') {
 		$returnvalue .= '&form=vtlibPopupView&forfield=' . vtlib_purify($_REQUEST['forfield']) . '&srcmodule=' . vtlib_purify($_REQUEST['srcmodule']) . '&forrecord=' . vtlib_purify($_REQUEST['forrecord']);
 	}
-	// END
-
+	$list = '';
 	for ($var = 'A', $i = 1; $i <= 26; $i++, $var++)
-	// Mike Crowe Mod --------------------------------------------------------added groupid to url
 		$list .= '<td class="searchAlph" id="alpha_' . $i . '" align="center" onClick=\'alphabetic("' . $module . '","gname=' . $groupid . '&query=' . $query . '&search_field=' . $fieldname . '&searchtype=BasicSearch&operator=s&type=alpbt&search_text=' . $var . $flag . $popuptypevalue . $returnvalue . $append_url . '","alpha_' . $i . '")\'>' . $var . '</td>';
 
 	$log->debug("Exiting AlphabeticalSearch method ...");
@@ -3994,9 +3998,10 @@ function getMergeFields($module, $str) {
 	$num_rows_org = $adb->num_rows($result_def_org);
 	$permitted_org_list = Array();
 	for ($i = 0; $i < $num_rows_org; $i++)
-		$permitted_org_list[$i] = $adb->query_result($result_def_org, $i, "fieldid");
+		$permitted_org_list[$i] = $adb->query_result($result_def_org, $i, 'fieldid');
 
 	require('user_privileges/user_privileges_' . $current_user->id . '.php');
+	$fields = '';
 	for ($i = 0; $i < $num_rows; $i++) {
 		$field_id = $adb->query_result($result, $i, "fieldid");
 		foreach ($permitted_list as $field => $data)
@@ -4072,8 +4077,7 @@ function VT_getSimpleNavigationValues($start, $size, $total) {
  * Returns an string value
  */
 function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '', $action_val = 'index', $viewid = '') {
-	global $log, $app_strings;
-	global $theme, $current_user;
+	global $log, $app_strings, $theme, $current_user;
 	$theme_path = "themes/" . $theme . "/";
 	$image_path = $theme_path . "images/";
 	if ($module == 'Documents') {
@@ -4082,14 +4086,13 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '
 		$output = '<td align="right" style="padding: 5px;">';
 	}
 	$tabname = getParentTab();
-	$search_tag = $_REQUEST['search_tag'];
+	$search_tag = isset($_REQUEST['search_tag']) ? $_REQUEST['search_tag'] : '';
 	$url_string = '';
 
 	// vtlib Customization : For uitype 10 popup during paging
-	if ($_REQUEST['form'] == 'vtlibPopupView') {
+	if (isset($_REQUEST['form']) and $_REQUEST['form'] == 'vtlibPopupView') {
 		$url_string .= '&form=vtlibPopupView&forfield=' . vtlib_purify($_REQUEST['forfield']) . '&srcmodule=' . vtlib_purify($_REQUEST['srcmodule']) . '&forrecord=' . vtlib_purify($_REQUEST['forrecord']);
 	}
-	// END
 
 	if ($module == 'Calendar' && $action_val == 'index') {
 		if ($_REQUEST['view'] == '') {

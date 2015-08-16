@@ -1827,7 +1827,11 @@ function VT_detailViewNavigation($smarty, $recordNavigationInfo, $currrentRecord
 			if ($recordId === $currrentRecordId) {
 				if ($index == 0) {
 					$smarty->assign('privrecordstart', $start - 1);
+					if (isset($recordNavigationInfo[$start - 1])) {
 					$smarty->assign('privrecord', $recordNavigationInfo[$start - 1][count($recordNavigationInfo[$start - 1]) - 1]);
+					} else {
+					$smarty->assign('privrecord', '');
+					}
 				} else {
 					$smarty->assign('privrecordstart', $start);
 					$smarty->assign('privrecord', $recordIdList[$index - 1]);

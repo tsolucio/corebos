@@ -28,13 +28,8 @@ require_once 'modules/PickList/DependentPickListUtils.php';
   */
 function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields,$generatedtype,$module_name,$mode='', $typeofdata=null)
 {
-	global $log,$app_strings;
-	$log->debug("Entering getOutputHtml(".$uitype.",". $fieldname.",". $fieldlabel.",". $maxlength.",". $col_fields.",".$generatedtype.",".$module_name.") method ...");
-	global $adb,$log,$default_charset;
-	global $theme;
-	global $mod_strings;
-	global $app_strings;
-	global $current_user;
+	global $log,$app_strings, $adb,$default_charset, $theme, $mod_strings, $current_user;
+	$log->debug("Entering getOutputHtml(".$uitype.",". $fieldname.",". $fieldlabel.",". $maxlength.",". print_r($col_fields,true).",".$generatedtype.",".$module_name.") method ...");
 
 	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
@@ -104,7 +99,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 				$disp_value = '';
 			}
 		} else {
-
 			if($uitype == 6) {
 				if ($col_fields['time_start'] != '' && ($module_name == 'Events' || $module_name
 						== 'Calendar')) {
@@ -132,7 +126,10 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 				$curr_time = DateTimeField::convertToUserTimeZone($curr_time);
 				$curr_time = $curr_time->format('H:i');
 			}
+		} else {
+			$curr_time = '';
 		}
+		if (empty($disp_value)) $disp_value = '';
 		$fieldvalue[] = array($disp_value => $curr_time) ;
 		if($uitype == 5 || $uitype == 23)
 		{
@@ -394,10 +391,10 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	}
 	elseif($uitype == 51 || $uitype == 50 || $uitype == 73)
 	{
-		if($_REQUEST['convertmode'] != 'update_quote_val' && $_REQUEST['convertmode'] != 'update_so_val')
+		if(!isset($_REQUEST['convertmode']) || ($_REQUEST['convertmode'] != 'update_quote_val' && $_REQUEST['convertmode'] != 'update_so_val'))
 		{
 			if(isset($_REQUEST['account_id']) && $_REQUEST['account_id'] != '')
-				$value = $_REQUEST['account_id'];
+				$value = vtlib_purify($_REQUEST['account_id']);
 		}
 		if($value != '') {
 			$account_name = getAccountName($value);
@@ -2041,24 +2038,13 @@ function getNoOfAssocProducts($module,$focus,$seid='')
 * Param $info_type - information type (basic/advance) default ""
 * Return type is an object array
 */
-
-function getBlockInformation($module, $result, $col_fields,$tabid,$block_label,$mode)
-{
+function getBlockInformation($module, $result, $col_fields,$tabid,$block_label,$mode) {
 	global $log, $adb, $current_user, $mod_strings;
-	$log->debug("Entering getBlockInformation(".$module.",". $result.",". $col_fields.",".$tabid.",".$block_label.") method ...");
+	$log->debug("Entering getBlockInformation(".$module.",". print_r($col_fields,true).",".$tabid.",".print_r($block_label,true).") method ...");
 	$isduplicate = vtlib_purify($_REQUEST['isDuplicate']);
 	$editview_arr = Array();
 
 	$noofrows = $adb->num_rows($result);
-	$show_copy_address = GlobalVariable::getVariable('Show_Copy_Adress_Header', 'yes', $module, $current_user->id);
-	if (($module == 'Accounts' || $module == 'Contacts' || $module == 'Quotes' || $module == 'PurchaseOrder' || $module == 'SalesOrder'|| $module == 'Invoice') && $block == 2 && $show_copy_address == 'yes')
-	{
-		$log->info("module is ".$module);
-		$mvAdd_flag = true;
-		$moveAddress = "<td rowspan='6' valign='middle' align='center'><input title='Copy billing address to shipping address'  class='button' onclick='return copyAddressRight(EditView)'  type='button' name='copyright' value='&raquo;' style='padding:0px 2px 0px 2px;font-size:12px'><br><br>
-			<input title='Copy shipping address to billing address'  class='button' onclick='return copyAddressLeft(EditView)'  type='button' name='copyleft' value='&laquo;' style='padding:0px 2px 0px 2px;font-size:12px'></td>";
-	}
-
 	for($i=0; $i<$noofrows; $i++) {
 		$fieldtablename = $adb->query_result($result,$i,"tablename");
 		$fieldcolname = $adb->query_result($result,$i,"columnname");
@@ -2073,12 +2059,8 @@ function getBlockInformation($module, $result, $col_fields,$tabid,$block_label,$
 		if($mode == '' && empty($col_fields[$fieldname]) && !$isduplicate) {
 			$col_fields[$fieldname] = $defaultvalue;
 		}
-
 		$custfld = getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields,$generatedtype,$module,$mode,$typeofdata);
 		$editview_arr[$block][]=$custfld;
-
-		if ($mvAdd_flag == true)
-			$mvAdd_flag = false;
 	}
 	foreach($editview_arr as $headerid=>$editview_value)
 	{
@@ -2105,10 +2087,9 @@ function getBlockInformation($module, $result, $col_fields,$tabid,$block_label,$
 		}
 		$editview_arr[$headerid] = $editview_data;
 	}
-
-	foreach($block_label as $blockid=>$label)
-	{
-		if($editview_arr[$blockid] != null) {
+	$returndata = array();
+	foreach($block_label as $blockid=>$label) {
+		if(isset($editview_arr[$blockid]) and $editview_arr[$blockid] != null) {
 			if($label == '') {
 				$returndata[getTranslatedString($curBlock,$module)]=array_merge((array)$returndata[getTranslatedString($curBlock,$module)],(array)$editview_arr[$blockid]);
 			}
@@ -2121,7 +2102,6 @@ function getBlockInformation($module, $result, $col_fields,$tabid,$block_label,$
 	}
 	$log->debug("Exiting getBlockInformation method ...");
 	return $returndata;
-
 }
 
 /** This function returns the data type of the vtiger_fields, with vtiger_field label, which is used for javascript validation.

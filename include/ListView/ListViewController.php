@@ -615,15 +615,14 @@ class ListViewController {
 			"&parenttab=$parenttab&return_viewname=".$viewname.$url;
 
 		// vtlib customization: override default delete link for custom modules
-		$requestModule = vtlib_purify($_REQUEST['module']);
-		$requestRecord = vtlib_purify($_REQUEST['record']);
-		$requestAction = vtlib_purify($_REQUEST['action']);
-		$requestFile = vtlib_purify($_REQUEST['file']);
+		$requestModule = isset($_REQUEST['module']) ? vtlib_purify($_REQUEST['module']) : '';
+		$requestRecord = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : '';
+		$requestAction = isset($_REQUEST['action']) ? vtlib_purify($_REQUEST['action']) : '';
+		$requestFile = isset($_REQUEST['file']) ? vtlib_purify($_REQUEST['file']) : '';
 		$isCustomModule = vtlib_isCustomModule($requestModule);
 
 		if($isCustomModule && (!in_array($requestAction, Array('index','ListView')) &&
 				($requestAction == $requestModule.'Ajax' && !in_array($requestFile, Array('index','ListView'))))) {
-
 			$link = "index.php?module=$requestModule&action=updateRelations&parentid=$requestRecord";
 			$link .= "&destination_module=$module&idlist=$entity_id&mode=delete&parenttab=$parenttab";
 		}
@@ -692,9 +691,8 @@ class ListViewController {
 					if($this->isHeaderSortingEnabled()) {
 						$name = "<a href='javascript:;' onClick='getListViewEntries_js(\"".$module.
 							"\",\"parenttab=".$tabname."&foldername=Default&order_by=".$field->getColumnName()."&start=".
-							$_SESSION["lvs"][$module]["start"]."&sorder=".$temp_sorder."".
-						$sort_qry."\");' class='listFormHeaderLinks'>".$label."".$arrow."</a>";
-
+							(isset($_SESSION['lvs'][$module]['start']) ? $_SESSION['lvs'][$module]['start'] : '').
+							"&sorder=".$temp_sorder."".$sort_qry."\");' class='listFormHeaderLinks'>".$label."".$arrow."</a>";
 					} else {
 						$name = $label;
 					}
@@ -777,14 +775,13 @@ class ListViewController {
 		}
 		// sort array on block label
 		ksort($OPTION_SET, SORT_STRING);
-
+		$shtml = '';
 		foreach ($OPTION_SET as $key=>$value) {
 			$shtml .= "<optgroup label='$key' class='select' style='border:none'>";
 			// sort array on field labels
 			ksort($value, SORT_STRING);
 			$shtml .= implode('',$value);
 		}
-
 		return $shtml;
 	}
 

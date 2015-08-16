@@ -2012,8 +2012,8 @@ function getUserslist($setdefval = true) {
 	} else {
 		$users_combo = get_select_options_array(get_user_array(FALSE, "Active", $current_user->id), $current_user->id);
 	}
+	$change_owner = '';
 	foreach ($users_combo as $userid => $value) {
-
 		foreach ($value as $username => $selected) {
 			if ($setdefval == false) {
 				$change_owner .= "<option value=$userid>" . $username . "</option>";
@@ -2022,7 +2022,6 @@ function getUserslist($setdefval = true) {
 			}
 		}
 	}
-
 	$log->debug("Exiting getUserslist method ...");
 	return $change_owner;
 }
@@ -2049,6 +2048,7 @@ function getGroupslist() {
 			$groups_combo = get_select_options_array(get_group_array(FALSE, "Active", $current_user->id), $current_user->id);
 		}
 	}
+	$change_groups_owner = '';
 	if (count($groups_combo) > 0) {
 		foreach ($groups_combo as $groupid => $value) {
 			foreach ($value as $groupname => $selected) {
@@ -2858,11 +2858,11 @@ function ChangeTypeOfData_Filter($table_name, $column_name, $type_of_data) {
 }
 
 /** Returns the URL for Basic and Advance Search
- * * Added to fix the issue 4600
- * */
+ * Added to fix the issue 4600
+ */
 function getBasic_Advance_SearchURL() {
-
 	$url = '';
+	if (!isset($_REQUEST['searchtype'])) return $url;
 	if ($_REQUEST['searchtype'] == 'BasicSearch') {
 		$url .= (isset($_REQUEST['query']) && $_REQUEST['query'] == 'true') ? '&query=true' : '';
 		$url .= (isset($_REQUEST['search_field'])) ? '&search_field=' . vtlib_purify($_REQUEST['search_field']) : '';
