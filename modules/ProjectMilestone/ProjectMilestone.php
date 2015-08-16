@@ -115,6 +115,9 @@ class ProjectMilestone extends CRMEntity {
 	}
 
 	function save_module($module) {
+		if ($this->HasDirectImageField) {
+			$this->insertIntoAttachment($this->id,$module);
+		}
 	}
 
 	/**
