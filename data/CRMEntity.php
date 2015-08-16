@@ -2469,10 +2469,11 @@ class CRMEntity {
 	function getSortOrder() {
 		global $log,$currentModule;
 		$log->debug("Entering getSortOrder() method ...");
+		$sorder = $this->default_sort_order;
 		if (isset($_REQUEST['sorder']))
 			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
-		else
-			$sorder = (($_SESSION[$currentModule . '_Sort_Order'] != '') ? ($_SESSION[$currentModule . '_Sort_Order']) : ($this->default_sort_order));
+		else if(!empty($_SESSION[$currentModule.'_Sort_Order']))
+			$sorder = $_SESSION[$currentModule.'_Sort_Order'];
 		$log->debug("Exiting getSortOrder() method ...");
 		return $sorder;
 	}
@@ -2490,10 +2491,11 @@ class CRMEntity {
 			$use_default_order_by = $this->default_order_by;
 		}
 
-		if (isset($_REQUEST['order_by']))
+		$order_by = $use_default_order_by;
+		if(isset($_REQUEST['order_by']))
 			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
-		else
-			$order_by = (($_SESSION[$currentModule.'_Order_By'] != '') ? ($_SESSION[$currentModule.'_Order_By']) : ($use_default_order_by));
+		else if(!empty($_SESSION[$currentModule.'_Order_By']))
+			$order_by = $_SESSION[$currentModule.'_Order_By'];
 		$log->debug("Exiting getOrderBy method ...");
 		return $order_by;
 	}
