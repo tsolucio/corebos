@@ -1,18 +1,14 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-
+ ************************************************************************************/
+require_once('data/CRMEntity.php');
+require_once('data/Tracker.php');
 include_once('config.php');
 require_once('include/logging.php');
 require_once('modules/Contacts/Contacts.php');
@@ -22,82 +18,109 @@ require_once('modules/Emails/Emails.php');
 require_once('include/utils/utils.php');
 require_once('user_privileges/default_module_view.php');
 
-// vtiger_potential is used to store customer information.
 class Potentials extends CRMEntity {
-	var $log;
-	var $db;
+	var $db, $log; // Used in class functions of CRMEntity
 
-	var $module_name="Potentials";
-	var $table_name = "vtiger_potential";
+	var $module_name= 'Potentials';
+	var $table_name = 'vtiger_potential';
 	var $table_index= 'potentialid';
+	var $column_fields = Array();
 
-	var $tab_name = Array('vtiger_crmentity','vtiger_potential','vtiger_potentialscf');
-	var $tab_name_index = Array('vtiger_crmentity'=>'crmid','vtiger_potential'=>'potentialid','vtiger_potentialscf'=>'potentialid');
+	/** Indicator if this is a custom module or standard module */
+	var $IsCustomModule = false;
+	var $HasDirectImageField = false;
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
 	var $customFieldTable = Array('vtiger_potentialscf', 'potentialid');
 
-	var $column_fields = Array();
+	/**
+	 * Mandatory for Saving, Include tables related to this module.
+	 */
+	var $tab_name = Array('vtiger_crmentity','vtiger_potential','vtiger_potentialscf');
 
-	var $sortby_fields = Array('potentialname','amount','closingdate','smownerid','accountname');
+	/**
+	 * Mandatory for Saving, Include tablename and tablekey columnname here.
+	 */
+	var $tab_name_index = Array('vtiger_crmentity'=>'crmid','vtiger_potential'=>'potentialid','vtiger_potentialscf'=>'potentialid');
 
-	// This is the list of vtiger_fields that are in the lists.
+	/**
+	 * Mandatory for Listing (Related listview)
+	 */
 	var $list_fields = Array(
-			'Potential'=>Array('potential'=>'potentialname'),
-			'Related to'=>Array('potential'=>'related_to'),
-			'Sales Stage'=>Array('potential'=>'sales_stage'),
-			'Amount'=>Array('potential'=>'amount'),
-			'Expected Close Date'=>Array('potential'=>'closingdate'),
-			'Assigned To'=>Array('crmentity','smownerid')
-			);
-
+		'Potential'=>Array('potential'=>'potentialname'),
+		'Related to'=>Array('potential'=>'related_to'),
+		'Sales Stage'=>Array('potential'=>'sales_stage'),
+		'Amount'=>Array('potential'=>'amount'),
+		'Expected Close Date'=>Array('potential'=>'closingdate'),
+		'Assigned To'=>Array('crmentity' =>'smownerid')
+	);
 	var $list_fields_name = Array(
-			'Potential'=>'potentialname',
-			'Related to'=>'related_to',
-			'Sales Stage'=>'sales_stage',
-			'Amount'=>'amount',
-			'Expected Close Date'=>'closingdate',
-			'Assigned To'=>'assigned_user_id');
+		'Potential'=>'potentialname',
+		'Related to'=>'related_to',
+		'Sales Stage'=>'sales_stage',
+		'Amount'=>'amount',
+		'Expected Close Date'=>'closingdate',
+		'Assigned To'=>'assigned_user_id'
+	);
 
+	// Make the field link to detail view from list view (Fieldname)
 	var $list_link_field= 'potentialname';
 
 	var $search_fields = Array(
-			'Potential'=>Array('potential'=>'potentialname'),
-			'Related To'=>Array('potential'=>'related_to'),
-			'Expected Close Date'=>Array('potential'=>'closedate')
-			);
-
+		'Potential'=>Array('potential'=>'potentialname'),
+		'Related To'=>Array('potential'=>'related_to'),
+		'Expected Close Date'=>Array('potential'=>'closedate')
+	);
 	var $search_fields_name = Array(
-			'Potential'=>'potentialname',
-			'Related To'=>'related_to',
-			'Expected Close Date'=>'closingdate'
-			);
+		'Potential'=>'potentialname',
+		'Related To'=>'related_to',
+		'Expected Close Date'=>'closingdate'
+	);
 
+	// For Popup window record selection
+	var $popup_fields = Array('payslipname');
+
+	// Placeholder for sort fields - All the fields will be initialized for Sorting through initSortFields
+	var $sortby_fields = Array('potentialname','amount','closingdate','smownerid','accountname');
+
+	// For Alphabetical search
+	var $def_basicsearch_col = 'potentialname';
+
+	// Column value to use on detail view record text display
+	var $def_detailview_recname = 'potentialname';
+
+	// Required Information for enabling Import feature
 	var $required_fields =  array();
 
+	// Callback function list during Importing
+	//var $special_functions = Array('set_import_assigned_user');
+
+	var $default_order_by = 'potentialname';
+	var $default_sort_order = 'ASC';
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
 	var $mandatory_fields = Array('assigned_user_id', 'createdtime', 'modifiedtime', 'potentialname', 'related_to');
 
-	//Added these variables which are used as default order by and sortorder in ListView
-	var $default_order_by = 'potentialname';
-	var $default_sort_order = 'ASC';
-
-	// For Alphabetical search
-	var $def_basicsearch_col = 'potentialname';
-	
-	//var $groupTable = Array('vtiger_potentialgrouprelation','potentialid');
-	function Potentials() {
-		$this->log = LoggerManager::getLogger('potential');
+	function __construct() {
+		global $log, $currentModule;
+		$this->column_fields = getColumnFields($currentModule);
 		$this->db = PearDatabase::getInstance();
-		$this->column_fields = getColumnFields('Potentials');
+		$this->log = $log;
+		$sql = 'SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid = ?';
+		$tabid = getTabid($currentModule);
+		$result = $this->db->pquery($sql, array($tabid));
+		if ($result and $this->db->num_rows($result)==1) {
+			$this->HasDirectImageField = true;
+		}
 	}
 
-	function save_module($module)
-	{
+	function save_module($module) {
+		if ($this->HasDirectImageField) {
+			$this->insertIntoAttachment($this->id,$module);
+		}
 	}
-		
+
 	/** Function to create list query
 	* @param reference variable - where condition is passed when the query is executed
 	* Returns Query.
@@ -106,15 +129,15 @@ class Potentials extends CRMEntity {
 	{
 		global $log,$current_user;
 		require('user_privileges/user_privileges_'.$current_user->id.'.php');
-	        require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
-        	$tab_id = getTabid("Potentials");
+		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+		$tab_id = getTabid("Potentials");
 		$log->debug("Entering create_list_query(".$order_by.",". $where.") method ...");
 		// Determine if the vtiger_account name is present in the where clause.
 		$account_required = preg_match("/accounts\.name/", $where);
 
 		if($account_required)
 		{
-			$query = "SELECT vtiger_potential.potentialid,  vtiger_potential.potentialname, vtiger_potential.dateclosed FROM vtiger_potential, vtiger_account ";
+			$query = "SELECT vtiger_potential.potentialid, vtiger_potential.potentialname, vtiger_potential.dateclosed FROM vtiger_potential, vtiger_account ";
 			$where_auto = "account.accountid = vtiger_potential.related_to AND vtiger_crmentity.deleted=0 ";
 		}
 		else
@@ -161,30 +184,21 @@ class Potentials extends CRMEntity {
 				LEFT JOIN vtiger_account on vtiger_potential.related_to=vtiger_account.accountid
 				LEFT JOIN vtiger_contactdetails on vtiger_potential.related_to=vtiger_contactdetails.contactid
 				LEFT JOIN vtiger_potentialscf on vtiger_potentialscf.potentialid=vtiger_potential.potentialid
-                LEFT JOIN vtiger_groups
-        	        ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-				LEFT JOIN vtiger_campaign
-					ON vtiger_campaign.campaignid = vtiger_potential.campaignid";
-
+				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
+				LEFT JOIN vtiger_campaign ON vtiger_campaign.campaignid = vtiger_potential.campaignid";
 		$query .= $this->getNonAdminAccessControlQuery('Potentials',$current_user);
-		$where_auto = "  vtiger_crmentity.deleted = 0 ";
-
-                if($where != "")
-                   $query .= "  WHERE ($where) AND ".$where_auto;
-                else
-                   $query .= "  WHERE ".$where_auto;
-
+		$where_auto = " vtiger_crmentity.deleted = 0 ";
+		if($where != "")
+			$query .= " WHERE ($where) AND ".$where_auto;
+		else
+			$query .= " WHERE ".$where_auto;
 		$log->debug("Exiting create_export_query method ...");
 		return $query;
-
 	}
-
-
 
 	/** Returns a list of the associated contacts
 	 * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc..
 	 * All Rights Reserved..
-	 * Contributor(s): ______________________________________..
 	 */
 	function get_contacts($id, $cur_tab_id, $rel_tab_id, $actions=false) {
 		global $adb,$log, $singlepane_view,$currentModule,$current_user;
@@ -263,17 +277,16 @@ class Potentials extends CRMEntity {
 	/** Returns a list of the associated calls
 	 * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc..
 	 * All Rights Reserved..
-	 * Contributor(s): ______________________________________..
 	 */
 	function get_activities($id, $cur_tab_id, $rel_tab_id, $actions=false) {
 		global $log, $singlepane_view,$currentModule,$current_user;
 		$log->debug("Entering get_activities(".$id.") method ...");
 		$this_module = $currentModule;
 
-        $related_module = vtlib_getModuleNameById($rel_tab_id);
+		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/Activity.php");
 		$other = new Activity();
-        vtlib_setup_modulevars($related_module, $other);
+		vtlib_setup_modulevars($related_module, $other);
 		$singular_modname = vtlib_toSingular($related_module);
 
 		$parenttab = getParentTab();
@@ -319,7 +332,7 @@ class Potentials extends CRMEntity {
 					left outer join vtiger_recurringevents on vtiger_recurringevents.activityid=vtiger_activity.activityid
 					where vtiger_seactivityrel.crmid=".$id." and vtiger_crmentity.deleted=0
 					and ((vtiger_activity.activitytype='Task' and vtiger_activity.status not in ('Completed','Deferred'))
-					or (vtiger_activity.activitytype NOT in ('Emails','Task') and  vtiger_activity.eventstatus not in ('','Held'))) ";
+					or (vtiger_activity.activitytype NOT in ('Emails','Task') and vtiger_activity.eventstatus not in ('','Held'))) ";
 
 		$return_value = GetRelatedList($this_module, $related_module, $other, $query, $button, $returnset);
 
@@ -340,10 +353,10 @@ class Potentials extends CRMEntity {
 		$log->debug("Entering get_products(".$id.") method ...");
 		$this_module = $currentModule;
 
-        $related_module = vtlib_getModuleNameById($rel_tab_id);
+		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/$related_module.php");
 		$other = new $related_module();
-        vtlib_setup_modulevars($related_module, $other);
+		vtlib_setup_modulevars($related_module, $other);
 		$singular_modname = vtlib_toSingular($related_module);
 
 		$parenttab = getParentTab();
@@ -471,28 +484,27 @@ class Potentials extends CRMEntity {
 				where (vtiger_activity.activitytype != 'Emails')
 				and (vtiger_activity.status = 'Completed' or vtiger_activity.status = 'Deferred' or (vtiger_activity.eventstatus = 'Held' and vtiger_activity.eventstatus != ''))
 				and vtiger_seactivityrel.crmid=".$id."
-                                and vtiger_crmentity.deleted = 0";
+				and vtiger_crmentity.deleted = 0";
 		//Don't add order by, because, for security, one more condition will be added with this query in include/RelatedListView.php
 
 		$log->debug("Exiting get_history method ...");
 		return getHistory('Potentials',$query,$id);
 	}
 
-
-	  /**
-	  * Function to get Potential related Quotes
-	  * @param  integer   $id  - potentialid
-	  * returns related Quotes record in array format
-	  */
+	/**
+	 * Function to get Potential related Quotes
+	 * @param  integer   $id  - potentialid
+	 * returns related Quotes record in array format
+	 */
 	function get_quotes($id, $cur_tab_id, $rel_tab_id, $actions=false) {
 		global $log, $singlepane_view,$currentModule,$current_user;
 		$log->debug("Entering get_quotes(".$id.") method ...");
 		$this_module = $currentModule;
 
-        $related_module = vtlib_getModuleNameById($rel_tab_id);
+		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/$related_module.php");
 		$other = new $related_module();
-        vtlib_setup_modulevars($related_module, $other);
+		vtlib_setup_modulevars($related_module, $other);
 		$singular_modname = vtlib_toSingular($related_module);
 
 		$parenttab = getParentTab();
@@ -546,10 +558,10 @@ class Potentials extends CRMEntity {
 		$log->debug("Entering get_salesorder(".$id.") method ...");
 		$this_module = $currentModule;
 
-        $related_module = vtlib_getModuleNameById($rel_tab_id);
+		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/$related_module.php");
 		$other = new $related_module();
-        vtlib_setup_modulevars($related_module, $other);
+		vtlib_setup_modulevars($related_module, $other);
 		$singular_modname = vtlib_toSingular($related_module);
 
 		$parenttab = getParentTab();
@@ -623,7 +635,7 @@ class Potentials extends CRMEntity {
 				$id_field = $tbl_field_arr[$rel_table];
 				$entity_id_field = $entity_tbl_field_arr[$rel_table];
 				// IN clause to avoid duplicate entries
-				$sel_result =  $adb->pquery("select $id_field from $rel_table where $entity_id_field=? " .
+				$sel_result = $adb->pquery("select $id_field from $rel_table where $entity_id_field=? " .
 						" and $id_field not in (select $id_field from $rel_table where $entity_id_field=?)",
 						array($transferId,$entityId));
 				$res_cnt = $adb->num_rows($sel_result);
@@ -654,7 +666,7 @@ class Potentials extends CRMEntity {
 		left join vtiger_groups vtiger_groupsPotentials on vtiger_groupsPotentials.groupid = vtiger_crmentityPotentials.smownerid
 		left join vtiger_users as vtiger_usersPotentials on vtiger_usersPotentials.id = vtiger_crmentityPotentials.smownerid
 		left join vtiger_campaign as vtiger_campaignPotentials on vtiger_potential.campaignid = vtiger_campaignPotentials.campaignid
-        left join vtiger_users as vtiger_lastModifiedByPotentials on vtiger_lastModifiedByPotentials.id = vtiger_crmentityPotentials.modifiedby ";
+		left join vtiger_users as vtiger_lastModifiedByPotentials on vtiger_lastModifiedByPotentials.id = vtiger_crmentityPotentials.modifiedby ";
 		return $query;
 	}
 
@@ -745,7 +757,7 @@ class Potentials extends CRMEntity {
 	}
 	function getListButtons($app_strings, $mod_strings) {
 		$list_buttons = Array ();
-		
+
 		if (isPermitted ( 'Potentials', 'Delete', '' ) == 'yes') {
 			$list_buttons ['del'] = $app_strings ['LBL_MASS_DELETE'];
 		}
