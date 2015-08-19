@@ -1,18 +1,17 @@
 <?php
-/*+********************************************************************************
+/*+**********************************************************************************
  * The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
  * The Original Code is:  vtiger CRM Open Source
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- ********************************************************************************/
-
+ ************************************************************************************/
 require_once('data/CRMEntity.php');
 require_once('data/Tracker.php');
 
 class PBXManager extends CRMEntity {
-	var $db, $log; // Used in class functions like CRMEntity
+	var $db, $log; // Used in class functions of CRMEntity
 
 	var $table_name = 'vtiger_pbxmanager';
 	var $table_index= 'pbxmanagerid';
@@ -34,14 +33,16 @@ class PBXManager extends CRMEntity {
 		'vtiger_pbxmanager' => 'pbxmanagerid',
 	    );
 
-	// Mandatory for Listing
+	/**
+	 * Mandatory for Listing (Related listview)
+	 */
 	var $list_fields = Array (
-		// Field Label=> Array(tablename, columnname)
-		'Call To'=> Array('pbxmanager', 'callto'),
-		'Call From'=>Array('pbxmanager', 'callfrom'),
+		/* Format: Field Label => Array(tablename => columnname) */
+		'Call To'=> Array('pbxmanager' => 'callto'),
+		'Call From'=>Array('pbxmanager' => 'callfrom'),
 	);
 	var $list_fields_name = Array(
-		// Field Label=>columnname
+		/* Format: Field Label => fieldname */
 		'Call To'=> 'callto',
 		'Call From' => 'callfrom'
 	);
@@ -64,9 +65,9 @@ class PBXManager extends CRMEntity {
 	var $default_order_by = 'timeofcall';
 	var $default_sort_order='DESC';
 
-	function PBXManager() {
-		global $log;
-		$this->column_fields = getColumnFields('PBXManager');
+	function __construct() {
+		global $log, $currentModule;
+		$this->column_fields = getColumnFields($currentModule);
 		$this->db = PearDatabase::getInstance();
 		$this->log = $log;
 	}
@@ -81,15 +82,13 @@ class PBXManager extends CRMEntity {
 		$query = "SELECT $this->table_name.*, vtiger_crmentity.*";
 		$query .= " FROM $this->table_name";
 
-		$query .= "	INNER JOIN vtiger_crmentity
-						ON vtiger_crmentity.crmid = $this->table_name.$this->table_index
-					 LEFT JOIN vtiger_groups
-						ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
+		$query .= "	INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index
+					LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
 
 		// Consider custom table join as well.
 		if(!empty($this->customFieldTable)) {
 			$query .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
-				      " = $this->table_name.$this->table_index"; 
+				" = $this->table_name.$this->table_index";
 		}
 		$query .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid ";
 
@@ -109,7 +108,7 @@ class PBXManager extends CRMEntity {
 		$sec_query = '';
 		$tabid = getTabid($module);
 
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 
+		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1
 			&& $defaultOrgSharingPermission[$tabid] == 3) {
 
 				$sec_query .= " AND (vtiger_crmentity.smownerid in($current_user->id) OR vtiger_crmentity.smownerid IN 
@@ -124,9 +123,7 @@ class PBXManager extends CRMEntity {
 						SELECT shareduserid FROM vtiger_tmp_read_user_sharing_per 
 						WHERE userid=".$current_user->id." AND tabid=".$tabid."
 					) 
-					OR 
-					(
-						vtiger_crmentity.smownerid in (0)";
+					OR ( vtiger_crmentity.smownerid in (0)";
 
 				if(!empty($this->groupTable)) {
 					$sec_query .= " AND 
@@ -144,7 +141,6 @@ class PBXManager extends CRMEntity {
 						)";
 					$sec_query .= ") ";
 				}
-
 				$sec_query .= ")
 				)";
 		}
@@ -158,12 +154,12 @@ class PBXManager extends CRMEntity {
 	{
 		global $current_user;
 		$thismodule = $_REQUEST['module'];
-		
+
 		include("include/utils/ExportUtils.php");
 
 		//To get the Permitted fields query and the permitted fields list
 		$sql = getPermittedFieldsQuery($thismodule, "detail_view");
-		
+
 		$fields_list = getFieldsListFromQuery($sql);
 
 		$query = "SELECT $fields_list, 'vtiger_groups_groupname as Assigned To Group', 
@@ -172,10 +168,10 @@ class PBXManager extends CRMEntity {
 
 		if(!empty($this->customFieldTable)) {
 			$query .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
-				      " = $this->table_name.$this->table_index"; 
+				" = $this->table_name.$this->table_index";
 		}
 
-		$query .=  
+		$query .= 
 			//"LEFT JOIN " . $this->groupTable[0] . " ON " . $this->groupTable[0].'.'.$this->groupTable[1] . " = $this->table_name.$this->table_index
 			"LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
 		$query .= " LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id and vtiger_users.status='Active'";
@@ -196,7 +192,7 @@ class PBXManager extends CRMEntity {
 		}
 		return $query;
 	}
-	
+
 	/**
 	 * Handle getting related list information.
 	 * NOTE: This function has been added to CRMEntity (base class).
@@ -204,14 +200,14 @@ class PBXManager extends CRMEntity {
 	 */
 	//function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
 
-	/** 
+	/**
 	 * Handle saving related module information.
 	 * NOTE: This function has been added to CRMEntity (base class).
 	 * You can override the behavior by re-defining it here.
 	 */
 	// function save_related_module($module, $crmid, $with_module, $with_crmid) { }
 
- 	/**
+	/**
 	* Invoked when special actions are performed on the module.
 	* @param String Module name
 	* @param String Event Type
@@ -225,20 +221,19 @@ class PBXManager extends CRMEntity {
 			$blockid = $adb->getUniqueID('vtiger_blocks');
 			$adb->query("insert into vtiger_blocks(blockid,tabid,blocklabel,sequence,show_title,visible,create_view,edit_view,detail_view,display_status)" .
 					" values ($blockid,$tabid,'Asterisk Configuration',6,0,0,0,0,0,1)");
-			
+
 			$adb->query("insert into vtiger_field(tabid,fieldid,columnname,tablename,generatedtype,uitype,fieldname,fieldlabel,readonly," .
 					" presence,defaultvalue,maximumlength,sequence,block,displaytype,typeofdata,quickcreate,quickcreatesequence,info_type) " .
 					" values ($tabid,".$adb->getUniqueID('vtiger_field').",'asterisk_extension','vtiger_asteriskextensions',1,1,'asterisk_extension'," .
 					" 'Asterisk Extension',1,0,0,30,1,$blockid,1,'V~O',1,NULL,'BAS')");
-			
+
 			$adb->query("insert into vtiger_field(tabid,fieldid,columnname,tablename,generatedtype,uitype,fieldname,fieldlabel,readonly," .
 					" presence,defaultvalue,maximumlength,sequence,block,displaytype,typeofdata,quickcreate,quickcreatesequence,info_type) " .
 					" values ($tabid,".$adb->getUniqueID('vtiger_field').",'use_asterisk','vtiger_asteriskextensions',1,56,'use_asterisk'," .
 					"' Receive Incoming Calls',1,0,0,30,2,$blockid,1,'C~O',1,NULL,'BAS')");
-			
+
 			// Mark the module as Standard module
 			$adb->pquery('UPDATE vtiger_tab SET customized=0 WHERE name=?', array($moduleName));
-			
 		} else if($eventType == 'module.disabled') {
 		// TODO Handle actions when this module is disabled.
 		} else if($eventType == 'module.enabled') {
@@ -261,5 +256,4 @@ class PBXManager extends CRMEntity {
 	}
 
 }
-
 ?>
