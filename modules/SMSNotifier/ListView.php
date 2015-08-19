@@ -11,5 +11,4 @@ $tool_buttons = array("index"=>"yes",);
 $tool_buttons["moduleSettings"] = isModuleSettingPermitted($currentModule);
 
 require_once('modules/Vtiger/ListView.php');
-
 ?>
