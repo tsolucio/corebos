@@ -7,9 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-
 require_once 'modules/Vtiger/EditView.php';
 
 	$smarty->display('salesEditView.tpl');
-
 ?>
