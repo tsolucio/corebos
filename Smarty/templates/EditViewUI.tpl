@@ -357,7 +357,7 @@ alt="Clear" title="Clear" LANGUAGE=javascript	onClick="this.form.{$fldname}.valu
 					{/if}
 					</span>
 					{if $MASS_EDIT neq 1}
-					<div id="currency_class" class="multiCurrencyEditUI" width="350">
+					<div id="currency_class" class="multiCurrencyEditUI">
 						<input type="hidden" name="base_currency" id="base_currency" value="{$BASE_CURRENCY}" />
 						<input type="hidden" name="base_conversion_rate" id="base_currency" value="{$BASE_CURRENCY}" />
 						<table width="100%" height="100%" class="small" cellpadding="5">
