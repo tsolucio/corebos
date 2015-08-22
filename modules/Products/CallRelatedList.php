@@ -20,11 +20,14 @@ $isduplicate = vtlib_purify($_REQUEST['isDuplicate']);
 if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	header("Location:index.php?action=DetailView&module=$currentModule&record=$record&parenttab=$category");
 } else {
+
+	$tool_buttons = Button_Check($currentModule);
+
 	$focus = CRMEntity::getInstance($currentModule);
 	if(isset($_REQUEST['record']) && $_REQUEST['record']!='') {
-	    $focus->retrieve_entity_info($record,$currentModule);
-	    $focus->id = $record;
-   		$focus->name=$focus->column_fields['productname'];
+		$focus->retrieve_entity_info($record,$currentModule);
+		$focus->id = $record;
+		$focus->name=$focus->column_fields['productname'];
 		$product_base_currency = getProductBaseCurrency($focus->id,$currentModule);
 	} else {
 		$product_base_currency = fetchCurrency($current_user->id);
@@ -35,12 +38,15 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	if($isduplicate == 'true') $focus->id = '';
 	if(isset($_REQUEST['mode']) && $_REQUEST['mode'] != ' ') $smarty->assign("OP_MODE",vtlib_purify($_REQUEST['mode']));
 	if(!$_SESSION['rlvs'][$currentModule]) unset($_SESSION['rlvs']);
-	
+
+	// Identify this module as custom module.
+	$smarty->assign('CUSTOM_MODULE', false);
+
 	$smarty->assign('APP', $app_strings);
 	$smarty->assign('MOD', $mod_strings);
 	$smarty->assign('MODULE', $currentModule);
 	// TODO: Update Single Module Instance name here.
-	$smarty->assign('SINGLE_MOD', getTranslatedString($currentModule)); 
+	$smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule, $currentModule));
 	$smarty->assign('CATEGORY', $category);
 	$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 	$smarty->assign('THEME', $theme);
@@ -64,20 +70,18 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 		$mod_seq_id = $focus->id;
 	}
 	$smarty->assign('MOD_SEQ_ID', $mod_seq_id);
-	// END
 
 	$related_array = getRelatedLists($currentModule, $focus);
 	$smarty->assign('RELATEDLISTS', $related_array);
-		
+
 	require_once('include/ListView/RelatedListViewSession.php');
 	if(!empty($_REQUEST['selected_header']) && !empty($_REQUEST['relation_id'])) {
 		$relationId = vtlib_purify($_REQUEST['relation_id']);
-		RelatedListViewSession::addRelatedModuleToSession($relationId,
-				vtlib_purify($_REQUEST['selected_header']));
+		RelatedListViewSession::addRelatedModuleToSession($relationId,vtlib_purify($_REQUEST['selected_header']));
 	}
 	$open_related_modules = RelatedListViewSession::getRelatedModulesFromSession();
 	$smarty->assign("SELECTEDHEADERS", $open_related_modules);
-	
+
 	$smarty->display('RelatedLists.tpl');
 }
 ?>
