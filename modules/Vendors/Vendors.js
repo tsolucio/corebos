@@ -5,7 +5,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
 document.write("<script type='text/javascript' src='include/js/Mail.js'></script>");
 document.write("<script type='text/javascript' src='include/js/Merge.js'></script>");
@@ -15,28 +14,24 @@ function check4null(form)
 {
 	var isError = false;
 	var errorMessage = "";
-	if (trim(form.productname.value) =='') 
-	{
+	if (trim(form.productname.value) =='') {
 		isError = true;
 		errorMessage += "\n Product Name";
 		form.productname.focus();
 	}
-	if (isError == true) 
-	{
+	if (isError == true) {
 		alert(alert_arr.MISSING_REQUIRED_FIELDS + errorMessage);
 		return false;
 	}
 	return true;
 }
 
-
-function set_return_specific(vendor_id, vendor_name) 
-{
-        //getOpenerObj used for DetailView 
-        var fldName = getOpenerObj("vendor_name");
-        var fldId = getOpenerObj("vendor_id");
-        fldName.value = vendor_name;
-        fldId.value = vendor_id;
+function set_return_specific(vendor_id, vendor_name) {
+	//getOpenerObj used for DetailView
+	var fldName = getOpenerObj("vendor_name");
+	var fldId = getOpenerObj("vendor_id");
+	fldName.value = vendor_name;
+	fldId.value = vendor_id;
 }
 
 function set_return_address(vendor_id, vendor_name, street, city, state, code, country,pobox ) {
@@ -116,10 +111,10 @@ function setReturnAddressShip() {
 //MSL
 function set_return(product_id, product_name) {
 	if(document.getElementById('from_link').value != '') {
-        window.opener.document.QcEditView.parent_name.value = product_name;
-        window.opener.document.QcEditView.parent_id.value = product_id;
+		window.opener.document.QcEditView.parent_name.value = product_name;
+		window.opener.document.QcEditView.parent_id.value = product_id;
 	} else {
-        window.opener.document.EditView.parent_name.value = product_name;
-        window.opener.document.EditView.parent_id.value = product_id;
+		window.opener.document.EditView.parent_name.value = product_name;
+		window.opener.document.EditView.parent_id.value = product_id;
 	}
 }
