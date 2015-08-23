@@ -10,50 +10,49 @@
 require_once('data/CRMEntity.php');
 require_once('data/Tracker.php');
 
-	global $empty_string;
 class Faq extends CRMEntity {
 	var $db, $log; // Used in class functions of CRMEntity
-	var $table_name = "vtiger_faq";
+	var $table_name = 'vtiger_faq';
 	var $table_index= 'id';
 	var $tab_name = Array('vtiger_crmentity','vtiger_faq','vtiger_faqcf');
 	var $tab_name_index = Array('vtiger_crmentity'=>'crmid','vtiger_faq'=>'id','vtiger_faqcomments'=>'faqid','vtiger_faqcf'=>'faqid');
 	var $customFieldTable = Array('vtiger_faqcf', 'faqid');
 
-	var $entity_table = "vtiger_crmentity";
+	var $entity_table = 'vtiger_crmentity';
 
 	var $column_fields = Array();
-		
-	var $sortby_fields = Array('question','category','id');		
+
+	var $sortby_fields = Array('question','category','id');
 
 	// This is the list of vtiger_fields that are in the lists.
 	var $list_fields = Array(
 				'FAQ Id'=>Array('faq'=>'id'),
 				'Question'=>Array('faq'=>'question'),
 				'Category'=>Array('faq'=>'category'),
-				'Product Name'=>Array('faq'=>'product_id'), 
-				'Created Time'=>Array('crmentity'=>'createdtime'), 
-				'Modified Time'=>Array('crmentity'=>'modifiedtime') 
+				'Product Name'=>Array('faq'=>'product_id'),
+				'Created Time'=>Array('crmentity'=>'createdtime'),
+				'Modified Time'=>Array('crmentity'=>'modifiedtime')
 				);
 
 	var $list_fields_name = Array(
-				        'FAQ Id'=>'',
-				        'Question'=>'question',
-				        'Category'=>'faqcategories',
-				        'Product Name'=>'product_id',
-						'Created Time'=>'createdtime',
-						'Modified Time'=>'modifiedtime' 
-				      );
+				'FAQ Id'=>'',
+				'Question'=>'question',
+				'Category'=>'faqcategories',
+				'Product Name'=>'product_id',
+				'Created Time'=>'createdtime',
+				'Modified Time'=>'modifiedtime'
+				);
 	var $list_link_field= 'question';
 
 	var $search_fields = Array(
 				'Account Name'=>Array('account'=>'accountname'),
-				'City'=>Array('accountbillads'=>'bill_city'), 
+				'City'=>Array('accountbillads'=>'bill_city'),
 				);
-	
+
 	var $search_fields_name = Array(
-				        'Account Name'=>'accountname',
-				        'City'=>'bill_city',
-				      );
+				'Account Name'=>'accountname',
+				'City'=>'bill_city',
+				);
 
 	//Added these variables which are used as default order by and sortorder in ListView
 	var $default_order_by = 'id';
@@ -63,7 +62,7 @@ class Faq extends CRMEntity {
 
 	// For Alphabetical search
 	var $def_basicsearch_col = 'question';
-	
+
 	function __construct() {
 		global $log, $currentModule;
 		$this->column_fields = getColumnFields($currentModule);
@@ -87,16 +86,15 @@ class Faq extends CRMEntity {
 
 
 	/** Function to insert values in vtiger_faqcomments table for the specified module,
-  	  * @param $table_name -- table name:: Type varchar
-  	  * @param $module -- module:: Type varchar
- 	 */	
+	 * @param $table_name -- table name:: Type varchar
+	 * @param $module -- module:: Type varchar
+	 */
 	function insertIntoFAQCommentTable($table_name, $module)
 	{
-		global $log;
-		$log->info("in insertIntoFAQCommentTable  ".$table_name."    module is  ".$module);
-        	global $adb;
+		global $log, $adb;
+		$log->info("in insertIntoFAQCommentTable ".$table_name." module is ".$module);
 
-        	$current_time = $adb->formatDate(date('Y-m-d H:i:s'), true);
+		$current_time = $adb->formatDate(date('Y-m-d H:i:s'), true);
 
 		if($this->column_fields['comments'] != '')
 			$comment = $this->column_fields['comments'];
@@ -106,16 +104,15 @@ class Faq extends CRMEntity {
 		if($comment != '')
 		{
 			$params = array('', $this->id, from_html($comment), $current_time);
-			$sql = "insert into vtiger_faqcomments values(?, ?, ?, ?)";	
+			$sql = "insert into vtiger_faqcomments values(?, ?, ?, ?)";
 			$adb->pquery($sql, $params);
 		}
-	}	
-	
+	}
 
-	/**     Function to get the list of comments for the given FAQ id
-         *      @param  int  $faqid - FAQ id
-	 *      @return list $list - return the list of comments and comment informations as a html output where as these comments and comments informations will be formed in div tag.
-        **/	
+	/** Function to get the list of comments for the given FAQ id
+	 * @param  int  $faqid - FAQ id
+	 * @return list $list - return the list of comments and comment informations as a html output where as these comments and comments informations will be formed in div tag.
+	 **/
 	function getFAQComments($faqid)
 	{
 		global $log, $default_charset;
@@ -144,41 +141,37 @@ class Faq extends CRMEntity {
 					$comment = htmlentities($comment, ENT_QUOTES, $default_charset);
 				}
 				$list .= '<div valign="top" style="width:99%;padding-top:10px;" class="dataField">'.make_clickable(nl2br($comment)).'</div>';
-				
 				//this div is to display the created time
 				$list .= '<div valign="top" style="width:99%;border-bottom:1px dotted #CCCCCC;padding-bottom:5px;" class="dataLabel"><font color=darkred>'.$mod_strings['Created Time'];
 				$list .= ' : '.$createdtime.'</font></div>';
 			}
 		}
-
 		$list .= $enddiv;
-		
 		$log->debug("Exiting getFAQComments method ...");
 		return $list;
 	}
 
 	/*
-	 * Function to get the primary query part of a report 
+	 * Function to get the primary query part of a report
 	 * @param - $module Primary module name
 	 * returns the query string formed on fetching the related data for report for primary module
 	 */
 	function generateReportsQuery($module){
-	 			$moduletable = $this->table_name;
-	 			$moduleindex = $this->table_index;
-	 			
-	 			$query = "from $moduletable
-					inner join vtiger_crmentity on vtiger_crmentity.crmid=$moduletable.$moduleindex
-					left join vtiger_products as vtiger_products$module on vtiger_products$module.productid = vtiger_faq.product_id 
-					left join vtiger_groups as vtiger_groups$module on vtiger_groups$module.groupid = vtiger_crmentity.smownerid 
-					left join vtiger_users as vtiger_users$module on vtiger_users$module.id = vtiger_crmentity.smownerid 
-					left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid 
-					left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
-                    left join vtiger_users as vtiger_lastModifiedBy".$module." on vtiger_lastModifiedBy".$module.".id = vtiger_crmentity.modifiedby";
-	            return $query;
+		$moduletable = $this->table_name;
+		$moduleindex = $this->table_index;
+		$query = "from $moduletable
+			inner join vtiger_crmentity on vtiger_crmentity.crmid=$moduletable.$moduleindex
+			left join vtiger_products as vtiger_products$module on vtiger_products$module.productid = vtiger_faq.product_id
+			left join vtiger_groups as vtiger_groups$module on vtiger_groups$module.groupid = vtiger_crmentity.smownerid
+			left join vtiger_users as vtiger_users$module on vtiger_users$module.id = vtiger_crmentity.smownerid
+			left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid
+			left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
+			left join vtiger_users as vtiger_lastModifiedBy".$module." on vtiger_lastModifiedBy".$module.".id = vtiger_crmentity.modifiedby";
+		return $query;
 	}
 
 	/*
-	 * Function to get the relation tables for related modules 
+	 * Function to get the relation tables for related modules
 	 * @param - $secmodule secondary module name
 	 * returns the array with table names and fieldnames storing relations between module and this module
 	 */
@@ -192,6 +185,5 @@ class Faq extends CRMEntity {
 	function clearSingletonSaveFields() {
 		$this->column_fields['comments'] = '';
 	}
-	
 }
 ?>
