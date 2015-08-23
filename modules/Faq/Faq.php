@@ -1,35 +1,18 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  Defines the Account SugarBean Account entity with the necessary
- * methods and variables.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
-include_once('config.php');
-require_once('include/logging.php');
-require_once('include/utils/utils.php');
+ ************************************************************************************/
+require_once('data/CRMEntity.php');
+require_once('data/Tracker.php');
 
 	global $empty_string;
-// Faq is used to store vtiger_faq information.
 class Faq extends CRMEntity {
-	var $log;
-	var $db;
+	var $db, $log; // Used in class functions of CRMEntity
 	var $table_name = "vtiger_faq";
 	var $table_index= 'id';
 	var $tab_name = Array('vtiger_crmentity','vtiger_faq','vtiger_faqcf');
@@ -37,7 +20,7 @@ class Faq extends CRMEntity {
 	var $customFieldTable = Array('vtiger_faqcf', 'faqid');
 
 	var $entity_table = "vtiger_crmentity";
-	
+
 	var $column_fields = Array();
 		
 	var $sortby_fields = Array('question','category','id');		
@@ -51,7 +34,7 @@ class Faq extends CRMEntity {
 				'Created Time'=>Array('crmentity'=>'createdtime'), 
 				'Modified Time'=>Array('crmentity'=>'modifiedtime') 
 				);
-	
+
 	var $list_fields_name = Array(
 				        'FAQ Id'=>'',
 				        'Question'=>'question',
@@ -81,21 +64,25 @@ class Faq extends CRMEntity {
 	// For Alphabetical search
 	var $def_basicsearch_col = 'question';
 	
-	/**	Constructor which will set the column_fields in this object
-	 */
-	function Faq() {
-		$this->log =LoggerManager::getLogger('faq');
-		$this->log->debug("Entering Faq() method ...");
+	function __construct() {
+		global $log, $currentModule;
+		$this->column_fields = getColumnFields($currentModule);
 		$this->db = PearDatabase::getInstance();
-		$this->column_fields = getColumnFields('Faq');
-		$this->log->debug("Exiting Faq method ...");
+		$this->log = $log;
+		$sql = 'SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid = ?';
+		$tabid = getTabid($currentModule);
+		$result = $this->db->pquery($sql, array($tabid));
+		if ($result and $this->db->num_rows($result)==1) {
+			$this->HasDirectImageField = true;
+		}
 	}
 
-	function save_module($module)
-	{
+	function save_module($module) {
+		if ($this->HasDirectImageField) {
+			$this->insertIntoAttachment($this->id,$module);
+		}
 		//Inserting into Faq comment table
 		$this->insertIntoFAQCommentTable('vtiger_faqcomments', $module);
-		
 	}
 
 
