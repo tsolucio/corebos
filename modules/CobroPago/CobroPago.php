@@ -20,11 +20,13 @@ class CobroPago extends CRMEntity {
 
 	/** Indicator if this is a custom module or standard module */
 	var $IsCustomModule = true;
-
+	var $HasDirectImageField = false;
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
 	var $customFieldTable = Array('vtiger_cobropagocf', 'cobropagoid');
+	// Uncomment the line below to support custom field columns on related lists
+	// var $related_tables = Array('vtiger_cobropagocf'=>array('cobropagoid','vtiger_cobropago', 'cobropagoid'));
 
 	/**
 	 * Mandatory for Saving, Include tables related to this module.
@@ -37,23 +39,23 @@ class CobroPago extends CRMEntity {
 	var $tab_name_index = Array(
 		'vtiger_crmentity' => 'crmid',
 		'vtiger_cobropago'   => 'cobropagoid',
-	    'vtiger_cobropagocf' => 'cobropagoid');
+		'vtiger_cobropagocf' => 'cobropagoid');
 
 	/**
 	 * Mandatory for Listing (Related listview)
 	 */
 	var $list_fields = Array (
-			'Reference'=>Array('cobropago'=>'reference'),
-			'PaymentMode'=>Array('cobropago'=>'paymentmode'),
-			'Amount'=>Array('cobropago'=>'amount'),
-			'DueDate'=>Array('cobropago'=>'duedate'),
-		'Assigned To' => Array('crmentity','smownerid')
+		'Reference'=>Array('cobropago'=>'reference'),
+		'PaymentMode'=>Array('cobropago'=>'paymentmode'),
+		'Amount'=>Array('cobropago'=>'amount'),
+		'DueDate'=>Array('cobropago'=>'duedate'),
+		'Assigned To' => Array('crmentity' => 'smownerid')
 	);
 	var $list_fields_name = Array(
-			'Reference'=>'reference',
-			'PaymentMode'=>'paymentmode',	  			
-			'Amount'=>'amount',
-			'DueDate'=>'duedate',
+		'Reference'=>'reference',
+		'PaymentMode'=>'paymentmode',
+		'Amount'=>'amount',
+		'DueDate'=>'duedate',
 		'Assigned To' => 'assigned_user_id'
 	);
 
@@ -62,16 +64,16 @@ class CobroPago extends CRMEntity {
 
 	// For Popup listview and UI type support
 	var $search_fields = Array(
-			'Reference'=>Array('cobropago'=>'reference'),
-            'PaymentMode'=>Array('cobropago'=>'paymentmode'),
-            'Amount'=>Array('cobropago'=>'amount'),
-            'DueDate'=>Array('cobropago'=>'duedate')
+		'Reference'=>Array('cobropago'=>'reference'),
+		'PaymentMode'=>Array('cobropago'=>'paymentmode'),
+		'Amount'=>Array('cobropago'=>'amount'),
+		'DueDate'=>Array('cobropago'=>'duedate')
 	);
 	var $search_fields_name = Array(
-            'Reference'=>'reference',
-            'PaymentMode'=>'paymentmode',               
-            'Amount'=>'amount',
-            'DueDate'=>'duedate'
+		'Reference'=>'reference',
+		'PaymentMode'=>'paymentmode',
+		'Amount'=>'amount',
+		'DueDate'=>'duedate'
 	);
 
 	// For Popup window record selection
@@ -97,42 +99,25 @@ class CobroPago extends CRMEntity {
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
 	var $mandatory_fields = Array('createdtime', 'modifiedtime', 'reference');
-	
+
 	function __construct() {
 		global $log, $currentModule;
 		$this->column_fields = getColumnFields($currentModule);
 		$this->db = PearDatabase::getInstance();
 		$this->log = $log;
-	}
-
-	function getSortOrder() {
-		global $currentModule;
-
-		$sortorder = $this->default_sort_order;
-		if($_REQUEST['sorder']) $sortorder = $this->db->sql_escape_string($_REQUEST['sorder']);
-		else if($_SESSION[$currentModule.'_Sort_Order']) 
-			$sortorder = $_SESSION[$currentModule.'_Sort_Order'];
-
-		return $sortorder;
-	}
-
-	function getOrderBy() {
-		global $currentModule;
-		
-		$use_default_order_by = '';		
-		if(PerformancePrefs::getBoolean('LISTVIEW_DEFAULT_SORTING', true)) {
-			$use_default_order_by = $this->default_order_by;
+		$sql = 'SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid = ?';
+		$tabid = getTabid($currentModule);
+		$result = $this->db->pquery($sql, array($tabid));
+		if ($result and $this->db->num_rows($result)==1) {
+			$this->HasDirectImageField = true;
 		}
-		
-		$orderby = $use_default_order_by;
-		if($_REQUEST['order_by']) $orderby = $this->db->sql_escape_string($_REQUEST['order_by']);
-		else if($_SESSION[$currentModule.'_Order_By'])
-			$orderby = $_SESSION[$currentModule.'_Order_By'];
-		return $orderby;
 	}
 
 	function save_module($module) {
 		global $current_user,$log,$adb;
+		if ($this->HasDirectImageField) {
+			$this->insertIntoAttachment($this->id,$module);
+		}
 		$cypid = $this->id;
 		$data = $this->column_fields;
 		// Entity has been saved, take next action
@@ -264,7 +249,7 @@ class CobroPago extends CRMEntity {
 	 */
 	function getListQuery($module, $usewhere='') {
 		$query = "SELECT vtiger_crmentity.*, $this->table_name.*";
-		
+
 		// Keep track of tables joined to avoid duplicates
 		$joinedTables = array();
 
@@ -277,32 +262,32 @@ class CobroPago extends CRMEntity {
 
 		$joinedTables[] = $this->table_name;
 		$joinedTables[] = 'vtiger_crmentity';
-		
+
 		// Consider custom table join as well.
 		if(!empty($this->customFieldTable)) {
 			$query .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
-				      " = $this->table_name.$this->table_index";
-			$joinedTables[] = $this->customFieldTable[0]; 
+				" = $this->table_name.$this->table_index";
+			$joinedTables[] = $this->customFieldTable[0];
 		}
 		$query .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
 		$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
 
 		$joinedTables[] = 'vtiger_users';
 		$joinedTables[] = 'vtiger_groups';
-		
+
 		$linkedModulesQuery = $this->db->pquery("SELECT distinct fieldname, columnname, relmodule FROM vtiger_field" .
 				" INNER JOIN vtiger_fieldmodulerel ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid" .
 				" WHERE uitype='10' AND vtiger_fieldmodulerel.module=?", array($module));
 		$linkedFieldsCount = $this->db->num_rows($linkedModulesQuery);
-		
+
 		for($i=0; $i<$linkedFieldsCount; $i++) {
 			$related_module = $this->db->query_result($linkedModulesQuery, $i, 'relmodule');
 			$fieldname = $this->db->query_result($linkedModulesQuery, $i, 'fieldname');
 			$columnname = $this->db->query_result($linkedModulesQuery, $i, 'columnname');
-			
-			$other =  CRMEntity::getInstance($related_module);
+
+			$other = CRMEntity::getInstance($related_module);
 			vtlib_setup_modulevars($related_module, $other);
-			
+
 			if(!in_array($other->table_name, $joinedTables)) {
 				$query .= " LEFT JOIN $other->table_name ON $other->table_name.$other->table_index = $this->table_name.$columnname";
 				$joinedTables[] = $other->table_name;
@@ -326,7 +311,7 @@ class CobroPago extends CRMEntity {
 		$sec_query = '';
 		$tabid = getTabid($module);
 
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 
+		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1
 			&& $defaultOrgSharingPermission[$tabid] == 3) {
 
 				$sec_query .= " AND (vtiger_crmentity.smownerid in($current_user->id) OR vtiger_crmentity.smownerid IN 
@@ -341,9 +326,8 @@ class CobroPago extends CRMEntity {
 						SELECT shareduserid FROM vtiger_tmp_read_user_sharing_per 
 						WHERE userid=".$current_user->id." AND tabid=".$tabid."
 					) 
-					OR 
-						(";
-		
+					OR (";
+
 					// Build the query based on the group association of current user.
 					if(sizeof($current_user_groups) > 0) {
 						$sec_query .= " vtiger_groups.groupid IN (". implode(",", $current_user_groups) .") OR ";
@@ -367,39 +351,50 @@ class CobroPago extends CRMEntity {
 	{
 		global $current_user;
 		$thismodule = $_REQUEST['module'];
-		
+
 		include("include/utils/ExportUtils.php");
 
 		//To get the Permitted fields query and the permitted fields list
 		$sql = getPermittedFieldsQuery($thismodule, "detail_view");
-		
+
 		$fields_list = getFieldsListFromQuery($sql);
 
 		$query = "SELECT $fields_list, vtiger_users.user_name AS user_name 
-					FROM vtiger_crmentity INNER JOIN $this->table_name ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
+				FROM vtiger_crmentity INNER JOIN $this->table_name ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
 
 		if(!empty($this->customFieldTable)) {
 			$query .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
-				      " = $this->table_name.$this->table_index"; 
+				" = $this->table_name.$this->table_index";
 		}
 
 		$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
 		$query .= " LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id and vtiger_users.status='Active'";
-		
+
 		$linkedModulesQuery = $this->db->pquery("SELECT distinct fieldname, columnname, relmodule FROM vtiger_field" .
 				" INNER JOIN vtiger_fieldmodulerel ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid" .
 				" WHERE uitype='10' AND vtiger_fieldmodulerel.module=?", array($thismodule));
 		$linkedFieldsCount = $this->db->num_rows($linkedModulesQuery);
 
+		$rel_mods[$this->table_name] = 1;
 		for($i=0; $i<$linkedFieldsCount; $i++) {
 			$related_module = $this->db->query_result($linkedModulesQuery, $i, 'relmodule');
 			$fieldname = $this->db->query_result($linkedModulesQuery, $i, 'fieldname');
 			$columnname = $this->db->query_result($linkedModulesQuery, $i, 'columnname');
-			
+
 			$other = CRMEntity::getInstance($related_module);
 			vtlib_setup_modulevars($related_module, $other);
-			
-			$query .= " LEFT JOIN $other->table_name ON $other->table_name.$other->table_index = $this->table_name.$columnname";
+
+			if($rel_mods[$other->table_name]) {
+				$rel_mods[$other->table_name] = $rel_mods[$other->table_name] + 1;
+				$alias = $other->table_name.$rel_mods[$other->table_name];
+				$query_append = "as $alias";
+			} else {
+				$alias = $other->table_name;
+				$query_append = '';
+				$rel_mods[$other->table_name] = 1;
+			}
+
+			$query .= " LEFT JOIN $other->table_name $query_append ON $alias.$other->table_index = $this->table_name.$columnname";
 		}
 
 		$query .= $this->getNonAdminAccessControlQuery($thismodule,$current_user);
@@ -443,16 +438,16 @@ class CobroPago extends CRMEntity {
 		global $adb;
 		$count = 0;
 		$query1 = "select bean_id from vtiger_users_last_import where assigned_user_id=? AND bean_type='$module' AND deleted=0";
-		$result1 = $adb->pquery($query1, array($user_id)) or die("Error getting last import for undo: ".mysql_error()); 
+		$result1 = $adb->pquery($query1, array($user_id)) or die("Error getting last import for undo: ".mysql_error());
 		while ( $row1 = $adb->fetchByAssoc($result1))
 		{
 			$query2 = "update vtiger_crmentity set deleted=1 where crmid=?";
-			$result2 = $adb->pquery($query2, array($row1['bean_id'])) or die("Error undoing last import: ".mysql_error()); 
-			$count++;			
+			$result2 = $adb->pquery($query2, array($row1['bean_id'])) or die("Error undoing last import: ".mysql_error());
+			$count++;
 		}
 		return $count;
 	}
-	
+
 	/**
 	 * Transform the value while exporting
 	 */
@@ -467,12 +462,12 @@ class CobroPago extends CRMEntity {
 	{
 		global $current_user, $adb;
 		$record_user = $this->column_fields["assigned_user_id"];
-		
+
 		if($record_user != $current_user->id){
 			$sqlresult = $adb->pquery("select id from vtiger_users where id = ? union select groupid as id from vtiger_groups where groupid = ?", array($record_user, $record_user));
 			if($this->db->num_rows($sqlresult)!= 1) {
 				$this->column_fields["assigned_user_id"] = $current_user->id;
-			} else {			
+			} else {
 				$row = $adb->fetchByAssoc($sqlresult, -1, false);
 				if (isset($row['id']) && $row['id'] != -1) {
 					$this->column_fields["assigned_user_id"] = $row['id'];
@@ -482,8 +477,8 @@ class CobroPago extends CRMEntity {
 			}
 		}
 	}
-	
-	/** 
+
+	/**
 	 * Function which will give the basic query to find duplicates
 	 */
 	function getDuplicatesQuery($module,$table_cols,$field_values,$ui_type_arr,$select_cols='') {
@@ -494,39 +489,38 @@ class CobroPago extends CRMEntity {
 
 		$from_clause = " FROM $this->table_name";
 
-		$from_clause .= "	INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
+		$from_clause .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
 
 		// Consider custom table join as well.
 		if(isset($this->customFieldTable)) {
 			$from_clause .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
-				      " = $this->table_name.$this->table_index"; 
+				" = $this->table_name.$this->table_index";
 		}
 		$from_clause .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
 						LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
-		
-		$where_clause = "	WHERE vtiger_crmentity.deleted = 0";
+
+		$where_clause = " WHERE vtiger_crmentity.deleted = 0";
 		$where_clause .= $this->getListViewSecurityParameter($module);
-					
+
 		if (isset($select_cols) && trim($select_cols) != '') {
-			$sub_query = "SELECT $select_cols FROM  $this->table_name AS t " .
+			$sub_query = "SELECT $select_cols FROM $this->table_name AS t " .
 				" INNER JOIN vtiger_crmentity AS crm ON crm.crmid = t.".$this->table_index;
 			// Consider custom table join as well.
 			if(isset($this->customFieldTable)) {
 				$sub_query .= " LEFT JOIN ".$this->customFieldTable[0]." tcf ON tcf.".$this->customFieldTable[1]." = t.$this->table_index";
 			}
-			$sub_query .= " WHERE crm.deleted=0 GROUP BY $select_cols HAVING COUNT(*)>1";	
+			$sub_query .= " WHERE crm.deleted=0 GROUP BY $select_cols HAVING COUNT(*)>1";
 		} else {
 			$sub_query = "SELECT $table_cols $from_clause $where_clause GROUP BY $table_cols HAVING COUNT(*)>1";
-		}	
-		
-		
+		}
+
 		$query = $select_clause . $from_clause .
 					" LEFT JOIN vtiger_users_last_import ON vtiger_users_last_import.bean_id=" . $this->table_name .".".$this->table_index .
 					" INNER JOIN (" . $sub_query . ") AS temp ON ".get_on_clause($field_values,$ui_type_arr,$module) .
 					$where_clause .
 					" ORDER BY $table_cols,". $this->table_name .".".$this->table_index ." ASC";
-					
-		return $query;		
+
+		return $query;
 	}
 
 	/**
@@ -550,7 +544,7 @@ class CobroPago extends CRMEntity {
 			$modPrj=Vtiger_Module::getInstance('Project');
 			$modPrjTask=Vtiger_Module::getInstance('ProjectTask');
 			$modCyP=Vtiger_Module::getInstance('CobroPago');
-			
+
 			if ($modAccounts) $modAccounts->setRelatedList($modCyP, 'CobroPago', Array('ADD'),'get_dependents_list');
 			if ($modContacts) $modContacts->setRelatedList($modCyP, 'CobroPago', Array('ADD'),'get_dependents_list');
 			if ($modVnd) $modVnd->setRelatedList($modCyP, 'CobroPago', Array('ADD'),'get_dependents_list');
@@ -580,13 +574,13 @@ class CobroPago extends CRMEntity {
 		}
 	}
 
-	/** 
+	/**
 	 * Handle saving related module information.
 	 * NOTE: This function has been added to CRMEntity (base class).
 	 * You can override the behavior by re-defining it here.
 	 */
 	// function save_related_module($module, $crmid, $with_module, $with_crmid) { }
-	
+
 	/**
 	 * Handle deleting related module information.
 	 * NOTE: This function has been added to CRMEntity (base class).
@@ -610,28 +604,27 @@ class CobroPago extends CRMEntity {
 
 	function get_activities($id, $cur_tab_id, $rel_tab_id, $actions)
 	{
-		global $log, $singlepane_view,$currentModule,$current_user;
+		global $log, $singlepane_view,$currentModule,$current_user, $mod_strings;
 		$log->debug("Entering get_activities(".$id.") method ...");
-		global $mod_strings;
 		$this_module = $currentModule;
 
-        $related_module = vtlib_getModuleNameById($rel_tab_id);
+		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/Activity.php");
 		$other = new Activity();
-        vtlib_setup_modulevars($related_module, $other);		
+		vtlib_setup_modulevars($related_module, $other);
 		$singular_modname = vtlib_toSingular($related_module);
-		
+
 		$parenttab = getParentTab();
-		
+
 		if($singlepane_view == 'true')
 			$returnset = '&return_module='.$this_module.'&return_action=DetailView&return_id='.$id;
 		else
 			$returnset = '&return_module='.$this_module.'&return_action=CallRelatedList&return_id='.$id;
-		
+
 		$button = '';
-				
+
 		$button .= '<input type="hidden" name="activity_mode">';
-		
+
 		if($actions) {
 			if(is_string($actions)) $actions = explode(',', strtoupper($actions));
 			if(in_array('ADD', $actions) && isPermitted($related_module,1, '') == 'yes') {
@@ -660,15 +653,15 @@ class CobroPago extends CRMEntity {
 		    left join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
 		    left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
 		    left outer join vtiger_recurringevents on vtiger_recurringevents.activityid=vtiger_activity.activityid
-		    where vtiger_seactivityrel.crmid=".$id." and vtiger_crmentity.deleted=0 
+		    where vtiger_seactivityrel.crmid=".$id." and vtiger_crmentity.deleted=0
 		    and ((vtiger_activity.activitytype='Task' and vtiger_activity.status not in ('Completed','Deferred'))
 		    or (vtiger_activity.activitytype in ('Meeting','Call') and  vtiger_activity.eventstatus not in ('','Held'))) ";
-					
-		$return_value = GetRelatedList($this_module, $related_module, $other, $query, $button, $returnset); 
-		
+
+		$return_value = GetRelatedList($this_module, $related_module, $other, $query, $button, $returnset);
+
 		if($return_value == null) $return_value = Array();
 		$return_value['CUSTOM_BUTTON'] = $button;
-		
+
 		$log->debug("Exiting get_activities method ...");
 		return $return_value;
 	}
@@ -678,7 +671,7 @@ class CobroPago extends CRMEntity {
 	 *	return $return_data - array with header and the entries in format Array('header'=>$header,'entries'=>$entries_list) where as $header and $entries_list are array which contains all the column values of an row
 	 */
 	function get_payment_history($id)
-	{	
+	{
 		global $log;
 		$log->debug("Entering get_stage_history(".$id.") method ...");
 
@@ -725,14 +718,14 @@ class CobroPago extends CRMEntity {
 
 		$return_data = Array('header'=>$header,'entries'=>$entries_list);
 
-	 	$log->debug("Exiting get_stage_history method ...");
+		$log->debug("Exiting get_stage_history method ...");
 
 		return $return_data;
 	}
-	
+
 	/**
 	* Function to get CobroPago related Task & Event which have activity type Held, Completed or Deferred.
-	* @param  integer   $id 
+	* @param  integer   $id
 	* returns related Task or Event record in array format
 	*/
 	function get_history($id, $cur_tab_id, $rel_tab_id, $actions)
@@ -740,10 +733,10 @@ class CobroPago extends CRMEntity {
 			global $log;
 			$log->debug("Entering get_history(".$id.") method ...");
 			$query = "SELECT vtiger_activity.activityid, vtiger_activity.subject, vtiger_activity.status,
-		vtiger_activity.eventstatus, vtiger_activity.activitytype,vtiger_activity.date_start, 
-		vtiger_activity.due_date, vtiger_activity.time_start,vtiger_activity.time_end,
-		vtiger_crmentity.modifiedtime, vtiger_crmentity.createdtime, 
-		vtiger_crmentity.description,case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name 
+				vtiger_activity.eventstatus, vtiger_activity.activitytype,vtiger_activity.date_start,
+				vtiger_activity.due_date, vtiger_activity.time_start,vtiger_activity.time_end,
+				vtiger_crmentity.modifiedtime, vtiger_crmentity.createdtime, 
+				vtiger_crmentity.description,case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name
 				from vtiger_activity
 				inner join vtiger_seactivityrel on vtiger_seactivityrel.activityid=vtiger_activity.activityid
 				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid
@@ -751,14 +744,13 @@ class CobroPago extends CRMEntity {
 				left join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
 				where (vtiger_activity.activitytype = 'Meeting' or vtiger_activity.activitytype='Call' or vtiger_activity.activitytype='Task')
 				and (vtiger_activity.status = 'Completed' or vtiger_activity.status = 'Deferred' or (vtiger_activity.eventstatus = 'Held' and vtiger_activity.eventstatus != ''))
-				and vtiger_seactivityrel.crmid=".$id."
-                                and vtiger_crmentity.deleted = 0";
+				and vtiger_seactivityrel.crmid=".$id." and vtiger_crmentity.deleted = 0";
 		//Don't add order by, because, for security, one more condition will be added with this query in include/RelatedListView.php
 
 		$log->debug("Exiting get_history method ...");
 		return getHistory('CobroPago',$query,$id);
 	}
-	
+
 	function get_history_cobropago($cobropagoid){
 		global $log, $adb;
 		$log->debug("Entering into get_history_cobropago($cobropagoid) method ...");
@@ -778,20 +770,19 @@ class CobroPago extends CRMEntity {
 		return $return_value;
 	}
 
-	
-	/**	
+	/**
 	 *	This function check is this payment is paid or not, to haver permission to edit
 	**/
 	function permissiontoedit()
 	{
 		global $log,$current_user,$adb;
 		$log->debug("Entering permissiontoedit() method ...");
-		
+
 		require('user_privileges/user_privileges_'.$current_user->id.'.php');
 		$Block_paid = $adb->query_result($adb->query("select block_paid from vtiger_cobropagoconfig"),0,0);
-		
+
 		if ($is_admin or $Block_paid!='on') return true;
-	
+
 		if($this->column_fields['paid'] == 1)
 			$permiso = false;
 		else
@@ -800,6 +791,5 @@ class CobroPago extends CRMEntity {
 		$log->debug("Exiting permissiontoedit method ...");
 		return $permiso;
 	}
-
 }
 ?>
