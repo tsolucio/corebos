@@ -1,37 +1,21 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the 
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Contacts/Save.php,v 1.9 2005/03/15 09:58:21 shaw Exp $
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
+ ************************************************************************************/
+global $current_user, $currentModule, $log, $adb;
 
-require_once('modules/Contacts/Contacts.php');
-require_once('include/logging.php');
-require_once('include/database/PearDatabase.php');
-require_once("modules/Emails/mail.php");
+checkFileAccessForInclusion("modules/$currentModule/$currentModule.php");
+require_once("modules/$currentModule/$currentModule.php");
+require_once('modules/Emails/mail.php');
 
-$local_log =& LoggerManager::getLogger('index');
+$search = vtlib_purify($_REQUEST['search_url']);
 
-global $log,$adb;
-$focus = new Contacts();
-//added to fix 4600
-$search=vtlib_purify($_REQUEST['search_url']);
-
+$focus = new $currentModule();
 setObjectValuesFromRequest($focus);
 
 if($_REQUEST['salutation'] == '--None--')	$_REQUEST['salutation'] = '';
@@ -45,49 +29,42 @@ $image_error="false";
 $errormessage=$image_upload_array['errormessage'];
 $saveimage=$image_upload_array['saveimage'];
 
-//code added for returning back to the current view after edit from list view
-if($_REQUEST['return_viewname'] == '') $return_viewname='0';
-if($_REQUEST['return_viewname'] != '')$return_viewname=vtlib_purify($_REQUEST['return_viewname']);
-
 if($image_error=="true") //If there is any error in the file upload then moving all the data to EditView.
 {
-        //re diverting the page and reassigning the same values as image error occurs
-        if($_REQUEST['activity_mode'] != '')$activity_mode=vtlib_purify($_REQUEST['activity_mode']);
-        if($_REQUEST['return_module'] != '')$return_module=vtlib_purify($_REQUEST['return_module']);
-        if($_REQUEST['return_action'] != '')$return_action=vtlib_purify($_REQUEST['return_action']);
-        if($_REQUEST['return_id'] != '')$return_id=vtlib_purify($_REQUEST['return_id']);
+	//re diverting the page and reassigning the same values as image error occurs
+	if($_REQUEST['activity_mode'] != '')$activity_mode=vtlib_purify($_REQUEST['activity_mode']);
+	if($_REQUEST['return_module'] != '')$return_module=vtlib_purify($_REQUEST['return_module']);
+	if($_REQUEST['return_action'] != '')$return_action=vtlib_purify($_REQUEST['return_action']);
+	if($_REQUEST['return_id'] != '')$return_id=vtlib_purify($_REQUEST['return_id']);
 
-        $log->debug("There is an error during the upload of contact image.");
-        $field_values_passed.="";
-        foreach($focus->column_fields as $fieldname => $val)
-        {
-                if(isset($_REQUEST[$fieldname]))
-                {
+	$log->debug("There is an error during the upload of contact image.");
+	$field_values_passed.="";
+	foreach($focus->column_fields as $fieldname => $val) {
+		if(isset($_REQUEST[$fieldname])) {
 			$log->debug("Assigning the previous values given for the contact to respective vtiger_fields ");
-                        $field_values_passed.="&";
-                        $value = $_REQUEST[$fieldname];
-                        $focus->column_fields[$fieldname] = $value;
-                        $field_values_passed.=$fieldname."=".$value;
+			$field_values_passed.="&";
+			$value = $_REQUEST[$fieldname];
+			$focus->column_fields[$fieldname] = $value;
+			$field_values_passed.=$fieldname."=".$value;
+		}
+	}
+	$values_pass=$field_values_passed;
+	$encode_field_values=base64_encode($values_pass);
 
-                }
-        }
-        $values_pass=$field_values_passed;
-        $encode_field_values=base64_encode($values_pass);
+	$error_module = "Contacts";
+	$error_action = "EditView";
 
-        $error_module = "Contacts";
-        $error_action = "EditView";
+	$return_action .= '&activity_mode='.vtlib_purify($_request['activity_mode']);
 
-		$return_action .= '&activity_mode='.vtlib_purify($_request['activity_mode']);
-
-        if($mode=="edit") {
-			$return_id=vtlib_purify($_REQUEST['record']);
-        }
-        header("location: index.php?action=$error_action&module=$error_module&record=$return_id&return_id=$return_id&return_action=$return_action&return_module=$return_module&activity_mode=$activity_mode&return_viewname=$return_viewname".$search."&saveimage=$saveimage&error_msg=$errormessage&image_error=$image_error&encode_val=$encode_field_values");
+	if($mode=="edit") {
+		$return_id=vtlib_purify($_REQUEST['record']);
+	}
+	header("location: index.php?action=$error_action&module=$error_module&record=$return_id&return_id=$return_id&return_action=$return_action&return_module=$return_module&activity_mode=$activity_mode&return_viewname=$return_viewname".$search."&saveimage=$saveimage&error_msg=$errormessage&image_error=$image_error&encode_val=$encode_field_values");
 }
 if($saveimage=="true")
 {
-        $focus->column_fields['imagename']=$image_name_val;
-        $log->debug("Assign the Image name to the vtiger_field name ");
+	$focus->column_fields['imagename']=$image_name_val;
+	$log->debug("Assign the Image name to the vtiger_field name ");
 }
 
 //if image added then we have to set that $_FILES['name'] in imagename field then only the image will be displayed
@@ -105,7 +82,7 @@ elseif($focus->id != '')
 	$focus->column_fields['imagename'] = $adb->query_result($result,0,'imagename');
 }
 
-if($_REQUEST['assigntype'] == 'U')  {
+if($_REQUEST['assigntype'] == 'U') {
 	$focus->column_fields['assigned_user_id'] = $_REQUEST['assigned_user_id'];
 } elseif($_REQUEST['assigntype'] == 'T') {
 	$focus->column_fields['assigned_user_id'] = $_REQUEST['assigned_group_id'];
@@ -124,7 +101,6 @@ if($image_error=="false")
 
 	$activitymode = (empty($_REQUEST['activity_mode']) ? '' : vtlib_purify($_REQUEST['activity_mode']));
 
-	$local_log->debug("Saved record with id of ".$return_id);
 	if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] == "Campaigns")
 	{
 		if(isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != "")
@@ -152,9 +128,7 @@ if($image_error=="false")
 	if($_REQUEST['return_viewname'] != '')$return_viewname=vtlib_purify($_REQUEST['return_viewname']);
 
 	$parenttab = getParentTab();
-	
 
 	header("Location: index.php?action=$return_action&module=$return_module&parenttab=$parenttab&record=$return_id&activity_mode=$activitymode&viewname=$return_viewname&start=".vtlib_purify($_REQUEST['pagenumber']).$search);
 }
-
 ?>
