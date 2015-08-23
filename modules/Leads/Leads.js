@@ -5,16 +5,13 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
-
-
 document.write("<script type='text/javascript' src='include/js/Mail.js'></"+"script>");
 document.write("<script type='text/javascript' src='include/js/Merge.js'></"+"script>");
 function verifyConvertLeadData(form) {
 	var convertForm=document.ConvertLead;
 	var no_ele=convertForm.length;
-	
+
 	if((form.select_account!=null)&&(form.select_contact!=null)){
 		if(!(form.select_account.checked || form.select_contact.checked)){
 			alert(alert_arr["ERR_SELECT_EITHER"]);
@@ -38,7 +35,7 @@ function verifyConvertLeadData(form) {
 		for(i=0;i<no_ele;i++){
 			if((convertForm[i].getAttribute('module')=='Accounts') && (convertForm[i].getAttribute('record')=='true')){
 				if(convertForm[i].value==''){
-					alert(alert_arr["ERR_MANDATORY_FIELD_VALUE"])
+					alert(alert_arr["ERR_MANDATORY_FIELD_VALUE"]);
 					return false;
 				}
 			}
@@ -48,7 +45,7 @@ function verifyConvertLeadData(form) {
 		for(i=0;i<no_ele;i++){
 			if((convertForm[i].getAttribute('module')=='Potentials') && (convertForm[i].getAttribute('record')=='true')){
 				if(convertForm[i].value==''){
-					alert(alert_arr["ERR_MANDATORY_FIELD_VALUE"])
+					alert(alert_arr["ERR_MANDATORY_FIELD_VALUE"]);
 					return false;
 				}
 			}
@@ -67,7 +64,7 @@ function verifyConvertLeadData(form) {
 		for(i=0;i<no_ele;i++){
 			if((convertForm[i].getAttribute('module')=='Contacts') && (convertForm[i].getAttribute('record')=='true')){
 				if(convertForm[i].value==''){
-					alert(alert_arr["ERR_MANDATORY_FIELD_VALUE"])
+					alert(alert_arr["ERR_MANDATORY_FIELD_VALUE"]);
 					return false;
 				}
 			}
@@ -99,7 +96,6 @@ function togglePotFields(form)
 		form.closedate.disabled = true;
 		form.potential_amount.disabled = true;
 		form.potential_sales_stage.disabled = true;
-		
 	}
 	else
 	{
@@ -108,10 +104,8 @@ function togglePotFields(form)
 		form.potential_amount.disabled = false;
 		form.potential_sales_stage.disabled = false;
 		form.potential_sales_stage.value="";
-	}	
-
+	}
 }
-
 
 function set_return(product_id, product_name) {
 	if(document.getElementById('from_link').value != '') {
@@ -141,14 +135,13 @@ function set_return_specific(product_id, product_name) {
 	fldId.value = product_id;
 }
 function add_data_to_relatedlist(entity_id,recordid) {
-	
 	opener.document.location.href="index.php?module=Emails&action=updateRelations&destination_module=leads&entityid="+entity_id+"&parentid="+recordid;
 }
 //added by rdhital/Raju for emails
 function submitform(id){
 	document.massdelete.entityid.value=id;
 	document.massdelete.submit();
-}	
+}
 
 function searchMapLocation(addressType)
 {
@@ -184,7 +177,6 @@ function searchMapLocation(addressType)
 	mapParameter = removeHTMLFormatting(mapParameter);
 	window.open('http://maps.google.com/maps?q='+mapParameter,'goolemap','height=450,width=700,resizable=no,titlebar,location,top=200,left=250');
 }
-
 
 function selectTransferTo(module){
 	if(module=='Accounts'){

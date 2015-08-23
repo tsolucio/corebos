@@ -7,13 +7,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-
 require_once 'modules/Vtiger/EditView.php';
 
 if(isset($_REQUEST['campaignid'])) {
-	$smarty->assign("campaignid",vtlib_purify($_REQUEST['campaignid']));
+	$smarty->assign('campaignid',vtlib_purify($_REQUEST['campaignid']));
 }
-
-$smarty->display("salesEditView.tpl");
-
+$smarty->display('salesEditView.tpl');
 ?>
