@@ -64,6 +64,10 @@ class Accounts extends CRMEntity {
 		'Assigned To'=>'assigned_user_id',
 	);
 
+	// For Popup window record selection
+	var $popup_fields = Array('accountname');
+
+	// Placeholder for sort fields - All the fields will be initialized for Sorting through initSortFields
 	var $sortby_fields = Array('accountname','bill_city','website','phone','smownerid');
 
 	// For Alphabetical search
