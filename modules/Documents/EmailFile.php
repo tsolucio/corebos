@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('include/database/PearDatabase.php');
 
 global $adb,$default_charset;
@@ -26,7 +25,7 @@ $fileid = $adb->query_result($fileidRes,0,'attachmentsid');
 
 $pathQuery = $adb->pquery("select path from vtiger_attachments where attachmentsid = ?",array($fileid));
 $filepath = $adb->query_result($pathQuery,0,'path');
-		
+
 $fileinattachments = $root_directory.$filepath.$fileid.'_'.$filename;
 if(!file($fileinattachments))$fileinattachments = $root_directory.$filepath.$fileid."_".$filename;
 

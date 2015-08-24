@@ -1,12 +1,12 @@
 <?php
-/*+*******************************************************************************
+/*+**********************************************************************************
  * The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
  * The Original Code is:  vtiger CRM Open Source
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- ********************************************************************************/
+ ************************************************************************************/
 
 require_once('Smarty_setup.php');
 require_once("data/Tracker.php");
@@ -15,7 +15,6 @@ require_once('include/logging.php');
 require_once('include/ListView/ListView.php');
 require_once('include/utils/utils.php');
 require_once('modules/CustomView/CustomView.php');
-require_once('include/database/Postgres8.php');
 
 global $app_strings,$mod_strings,$list_max_entries_per_page;
 
@@ -33,7 +32,7 @@ if(!$_SESSION['lvs'][$currentModule])
 }
 
 //<<<<cutomview>>>>>>>
-$oCustomView = new CustomView("Documents");
+$oCustomView = new CustomView('Documents');
 $viewid = $oCustomView->getViewId($currentModule);
 $customviewcombo_html = $oCustomView->getCustomViewCombo($viewid);
 $viewnamedesc = $oCustomView->getCustomViewByCvid($viewid);
@@ -48,13 +47,11 @@ $focus->initSortbyField('Documents');
 $smarty = new vtigerCRM_Smarty;
 $other_text = Array();
 
-if($_REQUEST['errormsg'] != '')
-{
-        $errormsg = vtlib_purify($_REQUEST['errormsg']);
-        $smarty->assign("ERROR","The User does not have permission to delete ".$errormsg." ".$currentModule);
-}else
-{
-        $smarty->assign("ERROR","");
+if($_REQUEST['errormsg'] != '') {
+	$errormsg = vtlib_purify($_REQUEST['errormsg']);
+	$smarty->assign('ERROR',"The User does not have permission to delete ".$errormsg." ".$currentModule);
+} else {
+	$smarty->assign('ERROR','');
 }
 
 if(ListViewSession::hasViewChanged($currentModule,$viewid)) {
@@ -78,12 +75,12 @@ if(isPermitted('Documents','Delete','') == 'yes')
 
 if($viewnamedesc['viewname'] == 'All')
 {
-	$smarty->assign("ALL", 'All');
+	$smarty->assign('ALL', 'All');
 }
 
 //Added to handle approving or denying status-public by the admin in CustomView
 $statusdetails = $oCustomView->isPermittedChangeStatus($viewnamedesc['status']);
-$smarty->assign("CUSTOMVIEW_PERMISSION",$statusdetails);
+$smarty->assign('CUSTOMVIEW_PERMISSION',$statusdetails);
 
 //To check if a user is able to edit/delete a customview
 $edit_permit = $oCustomView->isPermittedCustomView($viewid,'EditView',$currentModule);
@@ -93,16 +90,16 @@ $smarty->assign("CV_DELETE_PERMIT",$delete_permit);
 
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
-$smarty->assign("CUSTOMVIEW_OPTION",$customviewcombo_html);
-$smarty->assign("VIEWID", $viewid);
-$smarty->assign("MOD", $mod_strings);
-$smarty->assign("APP", $app_strings);
-$smarty->assign("THEME", $theme);
-$smarty->assign("IMAGE_PATH",$image_path);
-$smarty->assign("MODULE",$currentModule);
-$smarty->assign("SINGLE_MOD",'SINGLE_'.$currentModule);
-$smarty->assign("BUTTONS",$other_text);
-$smarty->assign("CATEGORY",$category);
+$smarty->assign('CUSTOMVIEW_OPTION',$customviewcombo_html);
+$smarty->assign('VIEWID', $viewid);
+$smarty->assign('MOD', $mod_strings);
+$smarty->assign('APP', $app_strings);
+$smarty->assign('THEME', $theme);
+$smarty->assign('IMAGE_PATH',$image_path);
+$smarty->assign('MODULE',$currentModule);
+$smarty->assign('SINGLE_MOD','SINGLE_'.$currentModule);
+$smarty->assign('BUTTONS',$other_text);
+$smarty->assign('CATEGORY',$category);
 $smarty->assign('MAX_RECORDS', $list_max_entries_per_page);
 
 //Retreive the list from Database
@@ -137,25 +134,23 @@ if(isset($where) && $where != '') {
 
 $focus->query = $query;
 
-if($viewid ==0)
-{
-	echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
-	echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
-
+if($viewid ==0) {
+	echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>
+		<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
 		<table border='0' cellpadding='5' cellspacing='0' width='98%'>
 		<tbody><tr>
-		<td rowspan='2' width='11%'><img src='". vtiger_imageurl('denied.gif', $theme)."' ></td>
+		<td rowspan='2' width='11%'><img src='". vtiger_imageurl('denied.gif', $theme) ."' ></td>
 		<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span clas
-		s='genHeaderSmall'>$app_strings[LBL_PERMISSION]</span></td>
+		s='genHeaderSmall'>".$app_strings['LBL_PERMISSION']."</span></td>
 		</tr>
 		<tr>
 		<td class='small' align='right' nowrap='nowrap'>
-		<a href='javascript:window.history.back();'>$app_strings[LBL_GO_BACK]</a><br>
+		<a href='javascript:window.history.back();'>".$app_strings['LBL_GO_BACK']."</a><br>
 		</td>
 		</tr>
 		</tbody></table>
-		</div>";
-	echo "</td></tr></table>";
+		</div>
+		</td></tr></table>";
 	exit;
 }
 
@@ -165,9 +160,9 @@ $url_string .="&viewname=".$viewid;
 
 $controller = new ListViewController($adb, $current_user, $queryGenerator);
 $listview_header_search = $controller->getBasicSearchFieldInfoList();
-$smarty->assign("SEARCHLISTHEADER",$listview_header_search);
+$smarty->assign('SEARCHLISTHEADER',$listview_header_search);
 
-$smarty->assign("SELECT_SCRIPT", $view_script);
+$smarty->assign('SELECT_SCRIPT', $view_script);
 
 $start = Array();
 $request_folderid = '';
@@ -210,22 +205,13 @@ if($foldercount > 0 )
 			$start[$folder_id] = 1;
 		}
 
-
 		if(isset($order_by) && $order_by != '')
 		{
 			$tablename = getTableNameForField('Documents',$order_by);
 			$tablename = (($tablename != '')?($tablename."."):'');
-
-			if( $adb->dbType == "pgsql")
-			{
- 	    		$query .= ' GROUP BY '.$tablename.$order_by;
- 	    		$list_query .= ' GROUP BY '.$tablename.$order_by;
- 	    		$focus->additional_query .= ' GROUP BY '.$tablename.$order_by;
-			}
-
-        	$query .= ' ORDER BY '.$tablename.$order_by.' '.$sorder;
-        	$list_query .= ' ORDER BY '.$tablename.$order_by.' '.$sorder;
-        	$focus->additional_query .= ' ORDER BY '.$tablename.$order_by.' '.$sorder;
+			$query .= ' ORDER BY '.$tablename.$order_by.' '.$sorder;
+			$list_query .= ' ORDER BY '.$tablename.$order_by.' '.$sorder;
+			$focus->additional_query .= ' ORDER BY '.$tablename.$order_by.' '.$sorder;
 		}
 		//Retreiving the no of rows
 		$count_result = $adb->query( mkCountQuery( $query));
@@ -295,24 +281,24 @@ if($foldercount > 0 )
 }
 else
 {
-	$smarty->assign("NO_FOLDERS","yes");
+	$smarty->assign('NO_FOLDERS','yes');
 }
 
-$smarty->assign("NO_OF_FOLDERS",$foldercount);
-$smarty->assign("FOLDERS", $folders);
-$smarty->assign("EMPTY_FOLDERS", $emptyfolders);
-$smarty->assign("ALL_FOLDERS", array_merge($folders, $emptyfolders));
+$smarty->assign('NO_OF_FOLDERS',$foldercount);
+$smarty->assign('FOLDERS', $folders);
+$smarty->assign('EMPTY_FOLDERS', $emptyfolders);
+$smarty->assign('ALL_FOLDERS', array_merge($folders, $emptyfolders));
 
 //Added to select Multiple records in multiple pages
-$smarty->assign("SELECTEDIDS", vtlib_purify($_REQUEST['selobjs']));
-$smarty->assign("ALLSELECTEDIDS", vtlib_purify($_REQUEST['allselobjs']));
+$smarty->assign('SELECTEDIDS', vtlib_purify($_REQUEST['selobjs']));
+$smarty->assign('ALLSELECTEDIDS', vtlib_purify($_REQUEST['allselobjs']));
 
-$alphabetical = AlphabeticalSearch($currentModule,'index','notes_title','true','basic',"","","","",$viewid);
+$alphabetical = AlphabeticalSearch($currentModule,'index','notes_title','true','basic','','','','',$viewid);
 $fieldnames = $controller->getAdvancedSearchOptionString();
 $criteria = getcriteria_options();
-$smarty->assign("CRITERIA", $criteria);
-$smarty->assign("FIELDNAMES", $fieldnames);
 $smarty->assign("ALPHABETICAL", $alphabetical);
+$smarty->assign("FIELDNAMES", $fieldnames);
+$smarty->assign("CRITERIA", $criteria);
 $smarty->assign("NAVIGATION", $navigationOutput);
 $smarty->assign("RECORD_COUNTS", $record_string);
 $adminuser = is_admin($current_user);

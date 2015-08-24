@@ -1,87 +1,90 @@
 <?php
-/*+********************************************************************************
+/*+**********************************************************************************
  * The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
  * The Original Code is:  vtiger CRM Open Source
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- ********************************************************************************/
-
-include_once('config.php');
-require_once('include/logging.php');
-require_once('include/database/PearDatabase.php');
+ ************************************************************************************/
 require_once('data/CRMEntity.php');
+require_once('data/Tracker.php');
 require_once('include/upload_file.php');
 
-// Note is used to store customer information.
 class Documents extends CRMEntity {
-
-	var $log;
-	var $db;
-	var $table_name = "vtiger_notes";
+	var $db, $log; // Used in class functions of CRMEntity
+	var $table_name = 'vtiger_notes';
 	var $table_index= 'notesid';
+	var $column_fields = Array();
+
+	/** Indicator if this is a custom module or standard module */
+	var $IsCustomModule = false;
+	var $HasDirectImageField = false;
 	var $default_note_name_dom = array('Meeting vtiger_notes', 'Reminder');
 
 	var $tab_name = Array('vtiger_crmentity','vtiger_notes','vtiger_notescf');
 	var $tab_name_index = Array('vtiger_crmentity'=>'crmid','vtiger_notes'=>'notesid','vtiger_notescf'=>'notesid','vtiger_senotesrel'=>'notesid');
 	var $customFieldTable = Array('vtiger_notescf', 'notesid');
 
-	var $column_fields = Array();
-
-    var $sortby_fields = Array('title','modifiedtime','filename','createdtime','lastname','filedownloadcount','smownerid');
+	var $sortby_fields = Array('title','modifiedtime','filename','createdtime','lastname','filedownloadcount','smownerid');
 
 	// This is used to retrieve related vtiger_fields from form posts.
 	var $additional_column_fields = Array('', '', '', '');
 
 	// This is the list of vtiger_fields that are in the lists.
 	var $list_fields = Array(
-				'Title'=>Array('notes'=>'title'),
-				'File Name'=>Array('notes'=>'filename'),
-				'Modified Time'=>Array('crmentity'=>'modifiedtime'),
-				'Assigned To' => Array('crmentity'=>'smownerid'),
-				'Folder Name' => Array('attachmentsfolder'=>'foldername')
-				);
+		'Title'=>Array('notes'=>'title'),
+		'File Name'=>Array('notes'=>'filename'),
+		'Modified Time'=>Array('crmentity'=>'modifiedtime'),
+		'Assigned To' => Array('crmentity'=>'smownerid'),
+		'Folder Name' => Array('attachmentsfolder'=>'foldername')
+	);
 	var $list_fields_name = Array(
-					'Title'=>'notes_title',
-					'File Name'=>'filename',
-					'Modified Time'=>'modifiedtime',
-					'Assigned To'=>'assigned_user_id',
-					'Folder Name' => 'folderid'
-				     );
+		'Title'=>'notes_title',
+		'File Name'=>'filename',
+		'Modified Time'=>'modifiedtime',
+		'Assigned To'=>'assigned_user_id',
+		'Folder Name' => 'folderid'
+	);
 
 	var $search_fields = Array(
-					'Title' => Array('notes'=>'notes_title'),
-					'File Name' => Array('notes'=>'filename'),
-					'Assigned To' => Array('crmentity'=>'smownerid'),
-					'Folder Name' => Array('attachmentsfolder'=>'foldername')
-		);
-
+		'Title' => Array('notes'=>'notes_title'),
+		'File Name' => Array('notes'=>'filename'),
+		'Assigned To' => Array('crmentity'=>'smownerid'),
+		'Folder Name' => Array('attachmentsfolder'=>'foldername')
+	);
 	var $search_fields_name = Array(
-					'Title' => 'notes_title',
-					'File Name' => 'filename',
-					'Assigned To' => 'assigned_user_id',
-					'Folder Name' => 'folderid'
+		'Title' => 'notes_title',
+		'File Name' => 'filename',
+		'Assigned To' => 'assigned_user_id',
+		'Folder Name' => 'folderid'
 	);
 	var $list_link_field= 'notes_title';
 	var $old_filename = '';
-	//var $groupTable = Array('vtiger_notegrouprelation','notesid');
 
 	var $mandatory_fields = Array('notes_title','createdtime' ,'modifiedtime','filename','filesize','filetype','filedownloadcount','assigned_user_id');
 
 	//Added these variables which are used as default order by and sortorder in ListView
 	var $default_order_by = 'title';
 	var $default_sort_order = 'ASC';
-	function Documents() {
-		$this->log = LoggerManager::getLogger('notes');
-		$this->log->debug("Entering Documents() method ...");
+
+	function __construct() {
+		global $log, $currentModule;
+		$this->column_fields = getColumnFields($currentModule);
 		$this->db = PearDatabase::getInstance();
-		$this->column_fields = getColumnFields('Documents');
-		$this->log->debug("Exiting Documents method ...");
+		$this->log = $log;
+		$sql = 'SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid = ?';
+		$tabid = getTabid($currentModule);
+		$result = $this->db->pquery($sql, array($tabid));
+		if ($result and $this->db->num_rows($result)==1) {
+			$this->HasDirectImageField = true;
+		}
 	}
 
-	function save_module($module)
-	{
+	function save_module($module) {
+		if ($this->HasDirectImageField) {
+			$this->insertIntoAttachment($this->id,$module);
+		}
 		global $log,$adb,$upload_badext;
 		$insertion_mode = $this->mode;
 		$filetype_fieldname = $this->getFileTypeFieldName();
@@ -149,11 +152,27 @@ class Documents extends CRMEntity {
 		}
 	}
 
+	/**
+	 * Return query to use based on given modulename, fieldname
+	 * Useful to handle specific case handling for Popup
+	 */
+	function getQueryByModuleField($module, $fieldname, $srcrecord, $query='') {
+		if($module == "MailManager") {
+			$tempQuery = explode('WHERE', $query);
+			if(!empty($tempQuery[1])) {
+				$where = " vtiger_notes.filelocationtype = 'I' AND vtiger_notes.filename != '' AND vtiger_notes.filestatus != 0 AND ";
+				$query = $tempQuery[0].' WHERE '.$where.$tempQuery[1];
+			} else{
+				$query = $tempQuery[0].' WHERE '.$tempQuery;
+			}
+			return $query;
+		}
+	}
 
 	/**
-	 *      This function is used to add the vtiger_attachments. This will call the function uploadAndSaveFile which will upload the attachment into the server and save that attachment information in the database.
-	 *      @param int $id  - entity id to which the files to be uploaded
-	 *      @param string $module  - the current module name
+	 * This function is used to add the vtiger_attachments. This will call the function uploadAndSaveFile which will upload the attachment into the server and save that attachment information in the database.
+	 * @param int $id  - entity id to which the files to be uploaded
+	 * @param string $module  - the current module name
 	*/
 	function insertIntoAttachment($id,$module)
 	{
@@ -198,9 +217,9 @@ class Documents extends CRMEntity {
 			parent::save_related_module($module, $crmid, $with_module, $with_crmid);
 		}
 	}
-	
-	/**    Function used to get the sort order for Documents listview
-	*      @return string  $sorder - first check the $_REQUEST['sorder'] if request value is empty then check in the $_SESSION['NOTES_SORT_ORDER'] if this session value is empty then default sort order will be returned.
+
+	/** Function used to get the sort order for Documents listview
+	* @return string  $sorder - first check the $_REQUEST['sorder'] if request value is empty then check in the $_SESSION['NOTES_SORT_ORDER'] if this session value is empty then default sort order will be returned.
 	*/
 	function getSortOrder()
 	{
@@ -214,8 +233,8 @@ class Documents extends CRMEntity {
 		return $sorder;
 	}
 
-	/**     Function used to get the order by value for Documents listview
-	*       @return string  $order_by  - first check the $_REQUEST['order_by'] if request value is empty then check in the $_SESSION['NOTES_ORDER_BY'] if this session value is empty then default order by will be returned.
+	/** Function used to get the order by value for Documents listview
+	* @return string  $order_by  - first check the $_REQUEST['order_by'] if request value is empty then check in the $_SESSION['NOTES_ORDER_BY'] if this session value is empty then default order by will be returned.
 	*/
 	function getOrderBy()
 	{
@@ -260,7 +279,7 @@ class Documents extends CRMEntity {
 		if(PerformancePrefs::getBoolean('LISTVIEW_DEFAULT_SORTING', true)) {
 			$use_default_order_by = $this->default_order_by;
 		}
-		if (isset($_REQUEST['order_by'])  && $_REQUEST['folderid'] == $folderId) {
+		if (isset($_REQUEST['order_by']) && $_REQUEST['folderid'] == $folderId) {
 			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
 		} elseif(is_array($_SESSION['NOTES_FOLDER_ORDER_BY']) &&
 				!empty($_SESSION['NOTES_FOLDER_ORDER_BY'][$folderId])) {
@@ -298,12 +317,12 @@ class Documents extends CRMEntity {
 		$query .= getNonAdminAccessControlQuery('Documents',$current_user);
 		$where_auto=" vtiger_crmentity.deleted=0";
 		if($where != "")
-			$query .= "  WHERE ($where) AND ".$where_auto;
+			$query .= " WHERE ($where) AND ".$where_auto;
 		else
-			$query .= "  WHERE ".$where_auto;
+			$query .= " WHERE ".$where_auto;
 
 		$log->debug("Exiting create_export_query method ...");
-		        return $query;
+		return $query;
 	}
 
 	function del_create_def_folder($query)
@@ -312,24 +331,19 @@ class Documents extends CRMEntity {
 		$dbQuery = $query." and vtiger_attachmentsfolder.folderid = 0";
 		$dbresult = $adb->pquery($dbQuery,array());
 		$noofnotes = $adb->num_rows($dbresult);
-		if($noofnotes > 0)
-		{
-            $folderQuery = "select folderid from vtiger_attachmentsfolder";
-            $folderresult = $adb->pquery($folderQuery,array());
-            $noofdeffolders = $adb->num_rows($folderresult);
-
-            if($noofdeffolders == 0)
-            {
-			    $insertQuery = "insert into vtiger_attachmentsfolder values (0,'Default','Contains all attachments for which a folder is not set',1,0)";
-			    $insertresult = $adb->pquery($insertQuery,array());
-            }
+		if($noofnotes > 0) {
+			$folderQuery = "select folderid from vtiger_attachmentsfolder";
+			$folderresult = $adb->pquery($folderQuery,array());
+			$noofdeffolders = $adb->num_rows($folderresult);
+			if($noofdeffolders == 0) {
+				$insertQuery = "insert into vtiger_attachmentsfolder values (0,'Default','Contains all attachments for which a folder is not set',1,0)";
+				$insertresult = $adb->pquery($insertQuery,array());
+			}
 		}
-
 	}
 
 	/*function save_related_module($module, $crmid, $with_module, $with_crmid){
 	}*/
-
 
 	/*
 	 * Function to get the primary query part of a report
@@ -337,18 +351,17 @@ class Documents extends CRMEntity {
 	 * returns the query string formed on fetching the related data for report for primary module
 	 */
 	function generateReportsQuery($module){
-	 			$moduletable = $this->table_name;
-	 			$moduleindex = $this->tab_name_index[$moduletable];
-	 				$query = "from $moduletable
-			        inner join vtiger_crmentity on vtiger_crmentity.crmid=$moduletable.$moduleindex
-			        inner join vtiger_attachmentsfolder on vtiger_attachmentsfolder.folderid=$moduletable.folderid
-					left join vtiger_groups as vtiger_groups".$module." on vtiger_groups".$module.".groupid = vtiger_crmentity.smownerid
-		            left join vtiger_users as vtiger_users".$module." on vtiger_users".$module.".id = vtiger_crmentity.smownerid
-					left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid
-		            left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
-                    left join vtiger_users as vtiger_lastModifiedBy".$module." on vtiger_lastModifiedBy".$module.".id = vtiger_crmentity.modifiedby ";
-		            return $query;
-
+		$moduletable = $this->table_name;
+		$moduleindex = $this->tab_name_index[$moduletable];
+		$query = "from $moduletable
+			inner join vtiger_crmentity on vtiger_crmentity.crmid=$moduletable.$moduleindex
+			inner join vtiger_attachmentsfolder on vtiger_attachmentsfolder.folderid=$moduletable.folderid
+			left join vtiger_groups as vtiger_groups".$module." on vtiger_groups".$module.".groupid = vtiger_crmentity.smownerid
+			left join vtiger_users as vtiger_users".$module." on vtiger_users".$module.".id = vtiger_crmentity.smownerid
+			left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid
+			left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
+			left join vtiger_users as vtiger_lastModifiedBy".$module." on vtiger_lastModifiedBy".$module.".id = vtiger_crmentity.modifiedby ";
+		return $query;
 	}
 
 	/*
@@ -360,11 +373,10 @@ class Documents extends CRMEntity {
 	function generateReportsSecQuery($module,$secmodule){
 		$query = $this->getRelationQuery($module,$secmodule,"vtiger_notes","notesid");
 		$query .=" left join vtiger_crmentity as vtiger_crmentityDocuments on vtiger_crmentityDocuments.crmid=vtiger_notes.notesid and vtiger_crmentityDocuments.deleted=0
-		        left join vtiger_attachmentsfolder on vtiger_attachmentsfolder.folderid=vtiger_notes.folderid
-				left join vtiger_groups as vtiger_groupsDocuments on vtiger_groupsDocuments.groupid = vtiger_crmentityDocuments.smownerid
-				left join vtiger_users as vtiger_usersDocuments on vtiger_usersDocuments.id = vtiger_crmentityDocuments.smownerid
-                left join vtiger_users as vtiger_lastModifiedByDocuments on vtiger_lastModifiedByDocuments.id = vtiger_crmentityDocuments.modifiedby ";
-
+			left join vtiger_attachmentsfolder on vtiger_attachmentsfolder.folderid=vtiger_notes.folderid
+			left join vtiger_groups as vtiger_groupsDocuments on vtiger_groupsDocuments.groupid = vtiger_crmentityDocuments.smownerid
+			left join vtiger_users as vtiger_usersDocuments on vtiger_usersDocuments.id = vtiger_crmentityDocuments.smownerid
+			left join vtiger_users as vtiger_lastModifiedByDocuments on vtiger_lastModifiedByDocuments.id = vtiger_crmentityDocuments.modifiedby ";
 		return $query;
 	}
 
@@ -431,8 +443,7 @@ class Documents extends CRMEntity {
 
 	}
 
-//	Function to get fieldname for uitype 28 assuming that doc has only one file upload type
-
+	//	Function to get fieldname for uitype 28 assuming that doc has only one file upload type
 	function getFile_FieldName(){
 		global $adb,$log;
 		$query = 'SELECT fieldname from vtiger_field where tabid = ? and uitype = ?';
@@ -476,31 +487,12 @@ class Documents extends CRMEntity {
 		}
 	}
 
-	function getQueryByModuleField($module, $fieldname, $srcrecord, $query) {
-		if($module == "MailManager") {
-			$tempQuery = explode('WHERE', $query);
-			if(!empty($tempQuery[1])) {
-				$where = " vtiger_notes.filelocationtype = 'I' AND vtiger_notes.filename != '' AND vtiger_notes.filestatus != 0 AND ";
-				$query = $tempQuery[0].' WHERE '.$where.$tempQuery[1];
-			} else{
-				$query = $tempQuery[0].' WHERE '.$tempQuery;
-			}
-			return $query;
-		}
-	}
+	function getEntities($id, $cur_tab_id, $rel_tab_id, $actions=false) {
+		global $log, $theme, $adb, $mod_strings, $app_strings;
+		$log->debug("Entering getEntities($id, $cur_tab_id, $rel_tab_id, $actions) method ...");
+		$theme_path="themes/".$theme."/";
+		$image_path=$theme_path."images/";
 
-    function getEntities($id, $cur_tab_id, $rel_tab_id, $actions=false)
-    {
-    	global $log;
-    	$log->debug("Entering getEntities($id, $cur_tab_id, $rel_tab_id, $actions) method ...");
-    	global $theme;
-    	$theme_path="themes/".$theme."/";
-    	$image_path=$theme_path."images/";
-    
-    	global $adb;
-    	global $mod_strings;
-    	global $app_strings;
-    
 		//Form the header columns
 		$header[] = $app_strings['LBL_ENTITY_NAME'];
 		$header[] = $app_strings['LBL_TYPE'];
@@ -514,14 +506,13 @@ class Documents extends CRMEntity {
 					" type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\"" .
 					" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module, $related_module) ."'>&nbsp;";
 		}
-		
-	 	$query = "select case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name,
+		$query = "select case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name,
 				crm2.crmid, crm2.setype
 				from vtiger_notes
 				inner join vtiger_senotesrel on vtiger_senotesrel.notesid= vtiger_notes.notesid
 				inner join vtiger_crmentity on vtiger_crmentity.crmid= vtiger_notes.notesid and vtiger_crmentity.deleted=0
 				inner join vtiger_crmentity crm2 on crm2.crmid=vtiger_senotesrel.crmid and crm2.deleted=0
-				left join vtiger_groups on vtiger_groups.groupid = crm2.smownerid			
+				left join vtiger_groups on vtiger_groups.groupid = crm2.smownerid
 				left join vtiger_users on vtiger_users.id = crm2.smownerid
 				where vtiger_notes.notesid=?
 				UNION
@@ -531,28 +522,26 @@ class Documents extends CRMEntity {
 				inner join vtiger_senotesrel on vtiger_senotesrel.crmid= vtiger_notes.notesid
 				inner join vtiger_crmentity on vtiger_crmentity.crmid= vtiger_notes.notesid and vtiger_crmentity.deleted=0
 				inner join vtiger_crmentity crm2 on crm2.crmid=vtiger_senotesrel.notesid and crm2.deleted=0
-				left join vtiger_groups on vtiger_groups.groupid = crm2.smownerid			
+				left join vtiger_groups on vtiger_groups.groupid = crm2.smownerid
 				left join vtiger_users on vtiger_users.id = crm2.smownerid
 				where vtiger_notes.notesid=?";
-		
+
 		$drs = $adb->pquery($query,array($id,$id));
 		$entries_list = Array();
 		while($row = $adb->fetch_array($drs))
 		{
-		    $entries = Array();
-		    $edata = getEntityName($row['setype'],array($row['crmid']));
-		    $ename = $edata[$row['crmid']];
+			$entries = Array();
+			$edata = getEntityName($row['setype'],array($row['crmid']));
+			$ename = $edata[$row['crmid']];
 			$elink = '<a href="index.php?module='.$row['setype'].'&action=DetailView&return_module=Documents&return_action=DetailView&record='.$row["crmid"] .'&return_id='.$id.'&parenttab='.vtlib_purify($_REQUEST['parenttab']).'">'.$ename.'</a>';
 			$entries[] = $elink;
 			$entries[] = getTranslatedString($row['setype']) ;
-			$entries[] = $row['user_name'];				
+			$entries[] = $row['user_name'];
 			$entries_list[] = $entries;
 		}
-    	
 		$return_data = array('header'=>$header,'entries'=>$entries_list,'CUSTOM_BUTTON' => $button);
 		$log->debug("Exiting getEntities method ...");
-		return $return_data; 
-    }
-
+		return $return_data;
+	}
 }
 ?>
