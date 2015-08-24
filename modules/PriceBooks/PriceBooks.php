@@ -1,52 +1,52 @@
 <?php
-/*********************************************************************************
-** The contents of this file are subject to the vtiger CRM Public License Version 1.0
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
  * The Original Code is:  vtiger CRM Open Source
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
- ********************************************************************************/
-
-include_once('config.php');
-require_once('include/logging.php');
-require_once('include/utils/utils.php');
+ ************************************************************************************/
+require_once('data/CRMEntity.php');
+require_once('data/Tracker.php');
 require_once('user_privileges/default_module_view.php');
 
 class PriceBooks extends CRMEntity {
-	var $log;
-	var $db;
-	var $table_name = "vtiger_pricebook";
+	var $db, $log; // Used in class functions of CRMEntity
+	var $table_name = 'vtiger_pricebook';
 	var $table_index= 'pricebookid';
+	var $column_fields = Array();
+
+	/** Indicator if this is a custom module or standard module */
+	var $IsCustomModule = false;
+	var $HasDirectImageField = false;
 	var $tab_name = Array('vtiger_crmentity','vtiger_pricebook','vtiger_pricebookcf');
 	var $tab_name_index = Array('vtiger_crmentity'=>'crmid','vtiger_pricebook'=>'pricebookid','vtiger_pricebookcf'=>'pricebookid');
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
 	var $customFieldTable = Array('vtiger_pricebookcf', 'pricebookid');
-	var $column_fields = Array();
 
 	var $sortby_fields = Array('bookname');
 
-        // This is the list of fields that are in the lists.
+	// This is the list of fields that are in the lists.
 	var $list_fields = Array(
-                                'Price Book Name'=>Array('pricebook'=>'bookname'),
-                                'Active'=>Array('pricebook'=>'active')
-                                );
+		'Price Book Name'=>Array('pricebook'=>'bookname'),
+		'Active'=>Array('pricebook'=>'active')
+	);
 
 	var $list_fields_name = Array(
-                                        'Price Book Name'=>'bookname',
-                                        'Active'=>'active'
-                                     );
+		'Price Book Name'=>'bookname',
+		'Active'=>'active'
+	);
 	var $list_link_field= 'bookname';
 
 	var $search_fields = Array(
-                                'Price Book Name'=>Array('pricebook'=>'bookname')
-                                );
+		'Price Book Name'=>Array('pricebook'=>'bookname')
+	);
 	var $search_fields_name = Array(
-                                        'Price Book Name'=>'bookname',
-                                     );
+		'Price Book Name'=>'bookname',
+	);
 
 	//Added these variables which are used as default order by and sortorder in ListView
 	var $default_order_by = 'bookname';
@@ -57,18 +57,23 @@ class PriceBooks extends CRMEntity {
 	// For Alphabetical search
 	var $def_basicsearch_col = 'bookname';
 
-	/**	Constructor which will set the column_fields in this object
-	 */
-	function PriceBooks() {
-		$this->log =LoggerManager::getLogger('pricebook');
-		$this->log->debug("Entering PriceBooks() method ...");
+	function __construct() {
+		global $log, $currentModule;
+		$this->column_fields = getColumnFields($currentModule);
 		$this->db = PearDatabase::getInstance();
-		$this->column_fields = getColumnFields('PriceBooks');
-		$this->log->debug("Exiting PriceBook method ...");
+		$this->log = $log;
+		$sql = 'SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid = ?';
+		$tabid = getTabid($currentModule);
+		$result = $this->db->pquery($sql, array($tabid));
+		if ($result and $this->db->num_rows($result)==1) {
+			$this->HasDirectImageField = true;
+		}
 	}
 
-	function save_module($module)
-	{
+	function save_module($module) {
+		if ($this->HasDirectImageField) {
+			$this->insertIntoAttachment($this->id,$module);
+		}
 		// Update the list prices in the price book with the unit price, if the Currency has been changed
 		$this->updateListPrices();
 	}
@@ -103,17 +108,17 @@ class PriceBooks extends CRMEntity {
 
 	/**	function used to get the products which are related to the pricebook
 	 *	@param int $id - pricebook id
-         *      @return array - return an array which will be returned from the function getPriceBookRelatedProducts
-        **/
+	 *	@return array - return an array which will be returned from the function getPriceBookRelatedProducts
+	 **/
 	function get_pricebook_products($id, $cur_tab_id, $rel_tab_id, $actions=false) {
 		global $log, $singlepane_view,$currentModule,$current_user;
 		$log->debug("Entering get_pricebook_products(".$id.") method ...");
 		$this_module = $currentModule;
 
-        $related_module = vtlib_getModuleNameById($rel_tab_id);
+		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/$related_module.php");
 		$other = new $related_module();
-        vtlib_setup_modulevars($related_module, $other);
+		vtlib_setup_modulevars($related_module, $other);
 		$singular_modname = vtlib_toSingular($related_module);
 
 		$parenttab = getParentTab();
@@ -156,17 +161,17 @@ class PriceBooks extends CRMEntity {
 
 	/**	function used to get the services which are related to the pricebook
 	 *	@param int $id - pricebook id
-         *      @return array - return an array which will be returned from the function getPriceBookRelatedServices
-        **/
+	 *	@return array - return an array which will be returned from the function getPriceBookRelatedServices
+	 **/
 	function get_pricebook_services($id, $cur_tab_id, $rel_tab_id, $actions=false) {
 		global $log, $singlepane_view,$currentModule,$current_user;
 		$log->debug("Entering get_pricebook_services(".$id.") method ...");
 		$this_module = $currentModule;
 
-        $related_module = vtlib_getModuleNameById($rel_tab_id);
+		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/$related_module.php");
 		$other = new $related_module();
-        vtlib_setup_modulevars($related_module, $other);
+		vtlib_setup_modulevars($related_module, $other);
 		$singular_modname = vtlib_toSingular($related_module);
 
 		$parenttab = getParentTab();
@@ -221,7 +226,7 @@ class PriceBooks extends CRMEntity {
 		$no_count = $this->db->num_rows($result);
 		if($no_count !=0)
 		{
-       	 	$pb_query = 'select vtiger_crmentity.crmid, vtiger_pricebook.pricebookid,vtiger_pricebookproductrel.productid from vtiger_pricebook inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_pricebook.pricebookid inner join vtiger_pricebookproductrel on vtiger_pricebookproductrel.pricebookid=vtiger_pricebook.pricebookid where vtiger_crmentity.deleted=0 and vtiger_pricebookproductrel.productid=?';
+			$pb_query = 'select vtiger_crmentity.crmid, vtiger_pricebook.pricebookid,vtiger_pricebookproductrel.productid from vtiger_pricebook inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_pricebook.pricebookid inner join vtiger_pricebookproductrel on vtiger_pricebookproductrel.pricebookid=vtiger_pricebook.pricebookid where vtiger_crmentity.deleted=0 and vtiger_pricebookproductrel.productid=?';
 			$result_pb = $this->db->pquery($pb_query, array($id));
 			if($no_count == $this->db->num_rows($result_pb))
 			{
@@ -252,25 +257,25 @@ class PriceBooks extends CRMEntity {
 	 * returns the query string formed on fetching the related data for report for primary module
 	 */
 	function generateReportsQuery($module){
-	 			$moduletable = $this->table_name;
-	 			$moduleindex = $this->table_index;
-				$modulecftable = $this->customFieldTable[0];
-				$modulecfindex = $this->customFieldTable[1];
+		$moduletable = $this->table_name;
+		$moduleindex = $this->table_index;
+		$modulecftable = $this->customFieldTable[0];
+		$modulecfindex = $this->customFieldTable[1];
 
-				$cfquery = '';
-				if(isset($modulecftable)){
-					$cfquery = "inner join $modulecftable as $modulecftable on $modulecftable.$modulecfindex=$moduletable.$moduleindex";
-				}
+		$cfquery = '';
+		if(isset($modulecftable)){
+			$cfquery = "inner join $modulecftable as $modulecftable on $modulecftable.$modulecfindex=$moduletable.$moduleindex";
+		}
 
-	 			$query = "from $moduletable $cfquery
-					inner join vtiger_crmentity on vtiger_crmentity.crmid=$moduletable.$moduleindex
-					left join vtiger_currency_info as vtiger_currency_info$module on vtiger_currency_info$module.id = $moduletable.currency_id
-					left join vtiger_groups as vtiger_groups$module on vtiger_groups$module.groupid = vtiger_crmentity.smownerid
-					left join vtiger_users as vtiger_users$module on vtiger_users$module.id = vtiger_crmentity.smownerid
-					left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid
-					left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
-                    left join vtiger_users as vtiger_lastModifiedByPriceBooks on vtiger_lastModifiedByPriceBooks.id = vtiger_crmentity.modifiedby ";
-	            return $query;
+		$query = "from $moduletable $cfquery
+			inner join vtiger_crmentity on vtiger_crmentity.crmid=$moduletable.$moduleindex
+			left join vtiger_currency_info as vtiger_currency_info$module on vtiger_currency_info$module.id = $moduletable.currency_id
+			left join vtiger_groups as vtiger_groups$module on vtiger_groups$module.groupid = vtiger_crmentity.smownerid
+			left join vtiger_users as vtiger_users$module on vtiger_users$module.id = vtiger_crmentity.smownerid
+			left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid
+			left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
+			left join vtiger_users as vtiger_lastModifiedByPriceBooks on vtiger_lastModifiedByPriceBooks.id = vtiger_crmentity.modifiedby ";
+		return $query;
 	}
 
 	/*
@@ -285,7 +290,6 @@ class PriceBooks extends CRMEntity {
 				left join vtiger_currency_info as vtiger_currency_infoPriceBooks on vtiger_currency_infoPriceBooks.id = vtiger_pricebook.currency_id
 				left join vtiger_users as vtiger_usersPriceBooks on vtiger_usersPriceBooks.id = vtiger_crmentityPriceBooks.smownerid
 				left join vtiger_groups as vtiger_groupsPriceBooks on vtiger_groupsPriceBooks.groupid = vtiger_crmentityPriceBooks.smownerid";
-
 		return $query;
 	}
 
