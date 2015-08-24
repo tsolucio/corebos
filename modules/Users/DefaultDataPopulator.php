@@ -19,8 +19,6 @@ class DefaultDataPopulator extends CRMEntity {
 		$this->db = PearDatabase::getInstance();
 	}
 
-	var $new_schema = true;
-
 	/** Function to populate the default required data during installation
 	 */
 	function create_tables() {

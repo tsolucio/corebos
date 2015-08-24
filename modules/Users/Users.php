@@ -1,16 +1,12 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- ********************************************************************************/
+ ************************************************************************************/
 require_once ('include/logging.php');
 require_once ('include/database/PearDatabase.php');
 require_once ('include/utils/UserInfoUtil.php');
@@ -22,13 +18,8 @@ require_once 'include/utils/CommonUtils.php';
 require_once 'include/Webservices/Utils.php';
 require_once ('modules/Users/UserTimeZonesArray.php');
 
-/** Main class for the user module */
 class Users extends CRMEntity {
-	var $log;
-	/**
-	 * @var PearDatabase
-	 */
-	var $db;
+	var $db, $log; // Used in class functions of CRMEntity
 	// Stored fields
 	var $id;
 	var $authenticated = false;
@@ -78,7 +69,6 @@ class Users extends CRMEntity {
 	var $default_sort_order = 'ASC';
 
 	var $record_id;
-	var $new_schema = true;
 
 	var $DEFAULT_PASSWORD_CRYPT_TYPE;
 	//'BLOWFISH', /* before PHP5.3*/ MD5;
@@ -86,7 +76,7 @@ class Users extends CRMEntity {
 	/** constructor function for the main user class
 	 instantiates the Logger class and PearDatabase Class
 	 */
-	function Users() {
+	function __construct() {
 		$this->log = LoggerManager::getLogger('user');
 		$this->log->debug("Entering Users() method ...");
 		$this->db = PearDatabase::getInstance();
@@ -150,7 +140,6 @@ class Users extends CRMEntity {
 			$this->log->debug("Saving To Preferences:" . $name . "=" . $value);
 			$this->user_preferences[$name] = $value;
 			$this->savePreferecesToDB();
-
 		}
 		$_SESSION[$name] = $value;
 	}
@@ -176,7 +165,6 @@ class Users extends CRMEntity {
 			$_SESSION = array_merge($this->user_preferences, $_SESSION);
 			$this->log->debug("Finished Loading");
 			$_SESSION["USER_PREFERENCES"] = $this->user_preferences;
-
 		}
 	}
 
@@ -695,7 +683,7 @@ class Users extends CRMEntity {
 				} elseif ($uitype == 15) {
 					if ($this->column_fields[$fieldname] == $app_strings['LBL_NOT_ACCESSIBLE']) {
 						//If the value in the request is Not Accessible for a picklist, the existing value will be replaced instead of Not Accessible value.
-						$sql = "select $columname from  $table_name where " . $this->tab_name_index[$table_name] . "=?";
+						$sql = "select $columname from $table_name where " . $this->tab_name_index[$table_name] . "=?";
 						$res = $adb->pquery($sql, array($this->id));
 						$pick_val = $adb->query_result($res, 0, $columname);
 						$fldvalue = $pick_val;
@@ -999,7 +987,7 @@ class Users extends CRMEntity {
 		$return_array = Array();
 		$homeorder = Array();
 		if ($id != '') {
-			$qry = " select distinct(vtiger_homedefault.hometype) from vtiger_homedefault inner join vtiger_homestuff  on vtiger_homestuff.stuffid=vtiger_homedefault.stuffid where vtiger_homestuff.visible=0 and vtiger_homestuff.userid=?";
+			$qry = " select distinct(vtiger_homedefault.hometype) from vtiger_homedefault inner join vtiger_homestuff on vtiger_homestuff.stuffid=vtiger_homedefault.stuffid where vtiger_homestuff.visible=0 and vtiger_homestuff.userid=?";
 			$res = $adb->pquery($qry, array($id));
 			for ($q = 0; $q < $adb->num_rows($res); $q++) {
 				$homeorder[] = $adb->query_result($res, $q, "hometype");
@@ -1244,7 +1232,6 @@ class Users extends CRMEntity {
 	/** Function to delete an entity with given Id */
 	function trash($module, $id) {
 		global $log, $current_user;
-
 		$this->mark_deleted($id);
 	}
 
@@ -1274,7 +1261,7 @@ class Users extends CRMEntity {
 	}
 
 	/**
-	 * This function should be overridden in each module.  It marks an item as deleted.
+	 * This function should be overridden in each module. It marks an item as deleted.
 	 * @param <type> $id
 	 */
 	function mark_deleted($id) {

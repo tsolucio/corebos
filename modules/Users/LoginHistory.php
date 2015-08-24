@@ -34,8 +34,6 @@ class LoginHistory {
 
 	var $object_name = "LoginHistory";
 	
-	var $new_schema = true;
-
 	var $column_fields = Array("id"
 		,"login_id"
 		,"user_name"
