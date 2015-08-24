@@ -6,20 +6,16 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 
-/**	Function to get the list of tickets for the currently loggedin user
-**/
-
+/**	Function to get the list of tickets for the currently loggedin user */
 function getMyTickets($maxval,$calCnt)
 {
-	global $log;
+	global $log, $current_user, $current_language, $adb;
 	$log->debug("Entering getMyTickets() method ...");
-	global $current_user, $current_language, $adb;
 	$current_module_strings = return_module_language($current_language, 'HelpDesk');
 
-	$search_query  = "SELECT vtiger_troubletickets.*, vtiger_crmentity.*
+	$search_query = "SELECT vtiger_troubletickets.*, vtiger_crmentity.*
 		FROM vtiger_troubletickets
 		INNER JOIN vtiger_crmentity on vtiger_crmentity.crmid = vtiger_troubletickets.ticketid
 		INNER JOIN vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
@@ -28,7 +24,6 @@ function getMyTickets($maxval,$calCnt)
 		"AND vtiger_crmentity.setype='HelpDesk' ORDER BY createdtime DESC";
 
 	$search_query .= " LIMIT 0," . $adb->sql_escape_string($maxval);
-
 
 	if($calCnt == 'calculateCnt') {
 		$list_result_rows = $adb->pquery(mkCountQuery($search_query), array($current_user->id));
@@ -101,14 +96,13 @@ function getMyTickets($maxval,$calCnt)
 }
 
 /**	Function to get the parent (Account or Contact) link
-  *	@param int $parent_id -- parent id of the ticket (accountid or contactid)
-  *	return string $parent_name -- return the parent name as a link
+ *	@param int $parent_id -- parent id of the ticket (accountid or contactid)
+ *	return string $parent_name -- return the parent name as a link
 **/
 function getParentLink($parent_id)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getParentLink(".$parent_id.") method ...");
-	global $adb;
 
 	// Static caching
 	static $__cache_listtickets_parentlink = Array();
@@ -125,13 +119,13 @@ function getParentLink($parent_id)
 		$res = $adb->pquery($sql, array($parent_id));
 		$parentname = $adb->query_result($res,0,'firstname');
 		$parentname .= ' '.$adb->query_result($res,0,'lastname');
-	        $parent_name = '<a href="index.php?action=DetailView&module='.$parent_module.'&record='.$parent_id.'">'.$parentname.'</a>';
+		$parent_name = '<a href="index.php?action=DetailView&module='.$parent_module.'&record='.$parent_id.'">'.$parentname.'</a>';
 	}
 	if($parent_module == 'Accounts')
 	{
 		$sql = "select accountname from vtiger_account where accountid=?";
 		$parentname = $adb->query_result($adb->pquery($sql, array($parent_id)),0,'accountname');
-	        $parent_name = '<a href="index.php?action=DetailView&module='.$parent_module.'&record='.$parent_id.'">'.$parentname.'</a>';
+		$parent_name = '<a href="index.php?action=DetailView&module='.$parent_module.'&record='.$parent_id.'">'.$parentname.'</a>';
 	}
 
 	// Add to cache

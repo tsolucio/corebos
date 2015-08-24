@@ -6,21 +6,19 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
 require_once("modules/Faq/Faq.php");
 
 $focus = new FAQ();
 //Map the vtiger_fields like ticket column => vtiger_faq column where ticket column is the troubletikcets vtiger_field name & vtiger_faq - column_fields
 $ticket_faq_mapping_fields = Array(
-			'title'=>'question',
-			'product_id'=>'product_id',
-			'description'=>'faq_answer',
-			//'ticketstatus'=>'faqstatus',
-			//'ticketcategories'=>'faqcategories'
-		   );
-$sql = " select ticketid, title, product_id,vtiger_crmentity.description, solution,vtiger_troubletickets.status, category from vtiger_troubletickets inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_troubletickets.ticketid  where ticketid=?";
+	'title'=>'question',
+	'product_id'=>'product_id',
+	'description'=>'faq_answer',
+	//'ticketstatus'=>'faqstatus',
+	//'ticketcategories'=>'faqcategories'
+);
+$sql = 'select ticketid, title, product_id,vtiger_crmentity.description, solution,vtiger_troubletickets.status, category from vtiger_troubletickets inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_troubletickets.ticketid where ticketid=?';
 $res = $adb->pquery($sql, array($_REQUEST['record']));
 
 //set all the ticket values to FAQ
@@ -64,5 +62,4 @@ if($focus->id != '')
 }
 
 header("Location:index.php?module=Faq&action=DetailView&record=$focus->id&return_module=Faq&return_action=DetailView&return_id=$focus->id");
-
 ?>

@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('include/database/PearDatabase.php');
 
 //Getting the Parameters from the Convert Form
@@ -40,6 +39,5 @@ for($i=0;$i<count($idlist);$i++)
 	$sql="update vtiger_troubletickets set $changekey = ? where id = ?";
 	$adb->pquery($sql, array($changevalue, $id));
 }
-header("Location: index.php?action=index&module=HelpDesk");
-
+header('Location: index.php?action=index&module=HelpDesk');
 ?>
