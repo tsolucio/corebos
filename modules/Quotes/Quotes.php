@@ -1,44 +1,37 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- ********************************************************************************/
-include_once('config.php');
-require_once('include/logging.php');
-require_once('include/utils/utils.php');
+ ************************************************************************************/
+require_once('data/CRMEntity.php');
+require_once('data/Tracker.php');
 require_once('include/RelatedListView.php');
 require_once('user_privileges/default_module_view.php');
 require_once('modules/InventoryDetails/InventoryDetails.php');
 
 class Quotes extends CRMEntity {
-	var $log;
-	var $db;
+	var $db, $log; // Used in class functions of CRMEntity
 
-	var $table_name = "vtiger_quotes";
+	var $table_name = 'vtiger_quotes';
 	var $table_index= 'quoteid';
+	var $column_fields = Array();
+
+	/** Indicator if this is a custom module or standard module */
+	var $IsCustomModule = false;
+	var $HasDirectImageField = false;
 	var $tab_name = Array('vtiger_crmentity','vtiger_quotes','vtiger_quotesbillads','vtiger_quotesshipads','vtiger_quotescf');
 	var $tab_name_index = Array('vtiger_crmentity'=>'crmid','vtiger_quotes'=>'quoteid','vtiger_quotesbillads'=>'quotebilladdressid','vtiger_quotesshipads'=>'quoteshipaddressid','vtiger_quotescf'=>'quoteid');
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
 	var $customFieldTable = Array('vtiger_quotescf', 'quoteid');
-	var $entity_table = "vtiger_crmentity";
+	var $entity_table = 'vtiger_crmentity';
 
-	var $billadr_table = "vtiger_quotesbillads";
-
-	var $object_name = "Quote";
-
-	var $new_schema = true;
-
-	var $column_fields = Array();
+	var $object_name = 'Quote';
 
 	var $sortby_fields = Array('subject','crmid','smownerid','accountname','lastname');
 
@@ -47,67 +40,70 @@ class Quotes extends CRMEntity {
 
 	// This is the list of vtiger_fields that are in the lists.
 	var $list_fields = Array(
-				//'Quote No'=>Array('crmentity'=>'crmid'),
-				// Module Sequence Numbering
-				'Quote No'=>Array('quotes'=>'quote_no'),
-				// END
-				'Subject'=>Array('quotes'=>'subject'),
-				'Quote Stage'=>Array('quotes'=>'quotestage'),
-				'Potential Name'=>Array('quotes'=>'potentialid'),
-				'Account Name'=>Array('account'=> 'accountid'),
-				'Total'=>Array('quotes'=> 'total'),
-				'Assigned To'=>Array('crmentity'=>'smownerid')
-				);
+		'Quote No'=>Array('quotes'=>'quote_no'),
+		'Subject'=>Array('quotes'=>'subject'),
+		'Quote Stage'=>Array('quotes'=>'quotestage'),
+		'Potential Name'=>Array('quotes'=>'potentialid'),
+		'Account Name'=>Array('account'=> 'accountid'),
+		'Total'=>Array('quotes'=> 'total'),
+		'Assigned To'=>Array('crmentity'=>'smownerid')
+	);
 
 	var $list_fields_name = Array(
-				        'Quote No'=>'quote_no',
-				        'Subject'=>'subject',
-				        'Quote Stage'=>'quotestage',
-				        'Potential Name'=>'potential_id',
-					'Account Name'=>'account_id',
-					'Total'=>'hdnGrandTotal',
-				        'Assigned To'=>'assigned_user_id'
-				      );
+		'Quote No'=>'quote_no',
+		'Subject'=>'subject',
+		'Quote Stage'=>'quotestage',
+		'Potential Name'=>'potential_id',
+		'Account Name'=>'account_id',
+		'Total'=>'hdnGrandTotal',
+		'Assigned To'=>'assigned_user_id'
+	);
 	var $list_link_field= 'subject';
 
 	var $search_fields = Array(
-				'Quote No'=>Array('quotes'=>'quote_no'),
-				'Subject'=>Array('quotes'=>'subject'),
-				'Account Name'=>Array('quotes'=>'accountid'),
-				'Quote Stage'=>Array('quotes'=>'quotestage'),
-				);
+		'Quote No'=>Array('quotes'=>'quote_no'),
+		'Subject'=>Array('quotes'=>'subject'),
+		'Account Name'=>Array('quotes'=>'accountid'),
+		'Quote Stage'=>Array('quotes'=>'quotestage'),
+	);
 
 	var $search_fields_name = Array(
-					'Quote No'=>'quote_no',
-				        'Subject'=>'subject',
-				        'Account Name'=>'account_id',
-				        'Quote Stage'=>'quotestage',
-				      );
+		'Quote No'=>'quote_no',
+		'Subject'=>'subject',
+		'Account Name'=>'account_id',
+		'Quote Stage'=>'quotestage',
+	);
 
 	// This is the list of vtiger_fields that are required.
-	var $required_fields =  array("accountname"=>1);
+	var $required_fields = array("accountname"=>1);
 
 	//Added these variables which are used as default order by and sortorder in ListView
 	var $default_order_by = 'crmid';
 	var $default_sort_order = 'ASC';
-	//var $groupTable = Array('vtiger_quotegrouprelation','quoteid');
 
 	var $mandatory_fields = Array('subject','createdtime' ,'modifiedtime');
 
 	// For Alphabetical search
 	var $def_basicsearch_col = 'subject';
 
-	/**	Constructor which will set the column_fields in this object
-	 */
-	function Quotes() {
-		$this->log =LoggerManager::getLogger('quote');
+	function __construct() {
+		global $log, $currentModule;
+		$this->column_fields = getColumnFields($currentModule);
 		$this->db = PearDatabase::getInstance();
-		$this->column_fields = getColumnFields('Quotes');
+		$this->log = $log;
+		$sql = 'SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid = ?';
+		$tabid = getTabid($currentModule);
+		$result = $this->db->pquery($sql, array($tabid));
+		if ($result and $this->db->num_rows($result)==1) {
+			$this->HasDirectImageField = true;
+		}
 	}
 
-	function save_module()
-	{
+	function save_module($module) {
 		global $adb;
+		if ($this->HasDirectImageField) {
+			$this->insertIntoAttachment($this->id,$module);
+		}
 		//in ajax save we should not call this function, because this will delete all the existing product values
 		if($_REQUEST['action'] != 'QuotesAjax' && $_REQUEST['ajxaction'] != 'DETAILVIEW'
 				&& $_REQUEST['action'] != 'MassEditSave' && $_REQUEST['action'] != 'ProcessDuplicates')
@@ -133,7 +129,7 @@ class Quotes extends CRMEntity {
 		global $log,$singlepane_view;
 		$log->debug("Entering get_salesorder(".$id.") method ...");
 		require_once('modules/SalesOrder/SalesOrder.php');
-	        $focus = new SalesOrder();
+		$focus = new SalesOrder();
 
 		$button = '';
 
@@ -171,10 +167,10 @@ class Quotes extends CRMEntity {
 		$log->debug("Entering get_activities(".$id.") method ...");
 		$this_module = $currentModule;
 
-        $related_module = vtlib_getModuleNameById($rel_tab_id);
+		$related_module = vtlib_getModuleNameById($rel_tab_id);
 		require_once("modules/$related_module/Activity.php");
 		$other = new Activity();
-        vtlib_setup_modulevars($related_module, $other);
+		vtlib_setup_modulevars($related_module, $other);
 		$singular_modname = vtlib_toSingular($related_module);
 
 		$parenttab = getParentTab();
@@ -249,25 +245,20 @@ class Quotes extends CRMEntity {
 			vtiger_contactdetails.firstname,vtiger_contactdetails.lastname, vtiger_crmentity.modifiedtime,
 			vtiger_crmentity.createdtime, vtiger_crmentity.description, case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name
 			from vtiger_activity
-				inner join vtiger_seactivityrel on vtiger_seactivityrel.activityid=vtiger_activity.activityid
-				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid
-				left join vtiger_cntactivityrel on vtiger_cntactivityrel.activityid= vtiger_activity.activityid
-				left join vtiger_contactdetails on vtiger_contactdetails.contactid= vtiger_cntactivityrel.contactid
-                                left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
-				left join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
-				where vtiger_activity.activitytype='Task'
-  				and (vtiger_activity.status = 'Completed' or vtiger_activity.status = 'Deferred')
-	 	        	and vtiger_seactivityrel.crmid=".$id."
-                                and vtiger_crmentity.deleted = 0";
+			inner join vtiger_seactivityrel on vtiger_seactivityrel.activityid=vtiger_activity.activityid
+			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid
+			left join vtiger_cntactivityrel on vtiger_cntactivityrel.activityid= vtiger_activity.activityid
+			left join vtiger_contactdetails on vtiger_contactdetails.contactid= vtiger_cntactivityrel.contactid
+			left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
+			left join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
+			where vtiger_activity.activitytype='Task'
+				and (vtiger_activity.status = 'Completed' or vtiger_activity.status = 'Deferred')
+				and vtiger_seactivityrel.crmid=".$id." and vtiger_crmentity.deleted = 0";
 		//Don't add order by, because, for security, one more condition will be added with this query in include/RelatedListView.php
 
 		$log->debug("Exiting get_history method ...");
 		return getHistory('Quotes',$query,$id);
 	}
-
-
-
-
 
 	/**	Function used to get the Quote Stage history of the Quotes
 	 *	@param $id - quote id
@@ -350,20 +341,18 @@ class Quotes extends CRMEntity {
 			left join vtiger_quotesbillads on vtiger_quotes.quoteid=vtiger_quotesbillads.quotebilladdressid
 			left join vtiger_quotesshipads on vtiger_quotes.quoteid=vtiger_quotesshipads.quoteshipaddressid
 			left join vtiger_currency_info as vtiger_currency_info$secmodule on vtiger_currency_info$secmodule.id = vtiger_quotes.currency_id ";
-		if(($type !== 'COLUMNSTOTOTAL') || ($type == 'COLUMNSTOTOTAL' && $where_condition == 'add')) 
-		{
+		if(($type !== 'COLUMNSTOTOTAL') || ($type == 'COLUMNSTOTOTAL' && $where_condition == 'add')) {
 			$query .= " left join vtiger_inventoryproductrel as vtiger_inventoryproductrelQuotes on vtiger_quotes.quoteid = vtiger_inventoryproductrelQuotes.id
 			left join vtiger_products as vtiger_productsQuotes on vtiger_productsQuotes.productid = vtiger_inventoryproductrelQuotes.productid
 			left join vtiger_service as vtiger_serviceQuotes on vtiger_serviceQuotes.serviceid = vtiger_inventoryproductrelQuotes.productid ";
 		}
-			$query .= " left join vtiger_groups as vtiger_groupsQuotes on vtiger_groupsQuotes.groupid = vtiger_crmentityQuotes.smownerid
+		$query .= " left join vtiger_groups as vtiger_groupsQuotes on vtiger_groupsQuotes.groupid = vtiger_crmentityQuotes.smownerid
 			left join vtiger_users as vtiger_usersQuotes on vtiger_usersQuotes.id = vtiger_crmentityQuotes.smownerid
 			left join vtiger_users as vtiger_usersRel1 on vtiger_usersRel1.id = vtiger_quotes.inventorymanager
 			left join vtiger_potential as vtiger_potentialRelQuotes on vtiger_potentialRelQuotes.potentialid = vtiger_quotes.potentialid
 			left join vtiger_contactdetails as vtiger_contactdetailsQuotes on vtiger_contactdetailsQuotes.contactid = vtiger_quotes.contactid
 			left join vtiger_account as vtiger_accountQuotes on vtiger_accountQuotes.accountid = vtiger_quotes.accountid
-            left join vtiger_users as vtiger_lastModifiedByQuotes on vtiger_lastModifiedByQuotes.id = vtiger_crmentityQuotes.modifiedby ";
-
+			left join vtiger_users as vtiger_lastModifiedByQuotes on vtiger_lastModifiedByQuotes.id = vtiger_crmentityQuotes.modifiedby ";
 		return $query;
 	}
 
