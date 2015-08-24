@@ -7,9 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-if ($_REQUEST['return_module']=='Project' && $_REQUEST['popuptype']=='detailview' 
-    && $_REQUEST['form']=='EditView') {
-    $where="vtiger_projectmilestone.projectid in ('',NULL)";
+if ($_REQUEST['return_module']=='Project' && $_REQUEST['popuptype']=='detailview' && $_REQUEST['form']=='EditView') {
+	$where="vtiger_projectmilestone.projectid in ('',NULL)";
 }
 require_once('Popup.php');
 ?>

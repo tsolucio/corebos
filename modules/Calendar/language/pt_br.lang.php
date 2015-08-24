@@ -12,13 +12,6 @@
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  Defines the English pack for Calendar Module
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
 
 $mod_strings = Array(
 'LBL_MODULE_NAME'=>'Agenda',

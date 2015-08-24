@@ -1,39 +1,34 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- ********************************************************************************/
-include_once('config.php');
-require_once('include/logging.php');
-require_once('include/utils/utils.php');
+ ************************************************************************************/
+require_once('data/CRMEntity.php');
+require_once('data/Tracker.php');
 require_once('user_privileges/default_module_view.php');
 require_once('modules/InventoryDetails/InventoryDetails.php');
 
 class PurchaseOrder extends CRMEntity {
-	var $log;
-	var $db;
+	var $db, $log; // Used in class functions of CRMEntity
 
-	var $table_name = "vtiger_purchaseorder";
+	var $table_name = 'vtiger_purchaseorder';
 	var $table_index= 'purchaseorderid';
+	var $column_fields = Array();
+
+	/** Indicator if this is a custom module or standard module */
+	var $IsCustomModule = false;
+	var $HasDirectImageField = false;
 	var $tab_name = Array('vtiger_crmentity','vtiger_purchaseorder','vtiger_pobillads','vtiger_poshipads','vtiger_purchaseordercf');
 	var $tab_name_index = Array('vtiger_crmentity'=>'crmid','vtiger_purchaseorder'=>'purchaseorderid','vtiger_pobillads'=>'pobilladdressid','vtiger_poshipads'=>'poshipaddressid','vtiger_purchaseordercf'=>'purchaseorderid');
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
 	var $customFieldTable = Array('vtiger_purchaseordercf', 'purchaseorderid');
-	var $entity_table = "vtiger_crmentity";
-
-	var $billadr_table = "vtiger_pobillads";
-
-	var $column_fields = Array();
+	var $entity_table = 'vtiger_crmentity';
 
 	var $sortby_fields = Array('subject','tracking_no','smownerid','lastname');
 
@@ -42,42 +37,37 @@ class PurchaseOrder extends CRMEntity {
 
 	// This is the list of vtiger_fields that are in the lists.
 	var $list_fields = Array(
-				//  Module Sequence Numbering
-				//'Order No'=>Array('crmentity'=>'crmid'),
-				'Order No'=>Array('purchaseorder'=>'purchaseorder_no'),
-				// END
-				'Subject'=>Array('purchaseorder'=>'subject'),
-				'Vendor Name'=>Array('purchaseorder'=>'vendorid'),
-				'Tracking Number'=>Array('purchaseorder'=> 'tracking_no'),
-				'Total'=>Array('purchaseorder'=>'total'),
-				'Assigned To'=>Array('crmentity'=>'smownerid')
-				);
-
+		'Order No'=>Array('purchaseorder'=>'purchaseorder_no'),
+		'Subject'=>Array('purchaseorder'=>'subject'),
+		'Vendor Name'=>Array('purchaseorder'=>'vendorid'),
+		'Tracking Number'=>Array('purchaseorder'=> 'tracking_no'),
+		'Total'=>Array('purchaseorder'=>'total'),
+		'Assigned To'=>Array('crmentity'=>'smownerid')
+	);
 	var $list_fields_name = Array(
-				'Order No'=>'purchaseorder_no',
-				'Subject'=>'subject',
-				'Vendor Name'=>'vendor_id',
-				'Tracking Number'=>'tracking_no',
-				'Total'=>'hdnGrandTotal',
-				'Assigned To'=>'assigned_user_id'
-				);
+		'Order No'=>'purchaseorder_no',
+		'Subject'=>'subject',
+		'Vendor Name'=>'vendor_id',
+		'Tracking Number'=>'tracking_no',
+		'Total'=>'hdnGrandTotal',
+		'Assigned To'=>'assigned_user_id'
+	);
 	var $list_link_field= 'subject';
 
 	var $search_fields = Array(
-				'Order No'=>Array('purchaseorder'=>'purchaseorder_no'),
-				'Subject'=>Array('purchaseorder'=>'subject'),
-				);
-
+		'Order No'=>Array('purchaseorder'=>'purchaseorder_no'),
+		'Subject'=>Array('purchaseorder'=>'subject'),
+	);
 	var $search_fields_name = Array(
-				'Order No'=>'purchaseorder_no',
-				'Subject'=>'subject',
-				);
+		'Order No'=>'purchaseorder_no',
+		'Subject'=>'subject',
+	);
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
 	var $mandatory_fields = Array('subject', 'vendor_id','createdtime' ,'modifiedtime');
 
 	// This is the list of vtiger_fields that are required.
-	var $required_fields =  array("accountname"=>1);
+	var $required_fields = array("accountname"=>1);
 
 	//Added these variables which are used as default order by and sortorder in ListView
 	var $default_order_by = 'subject';
@@ -86,26 +76,30 @@ class PurchaseOrder extends CRMEntity {
 	// For Alphabetical search
 	var $def_basicsearch_col = 'subject';
 
-	//var $groupTable = Array('vtiger_pogrouprelation','purchaseorderid');
-	/** Constructor Function for Order class
-	 *  This function creates an instance of LoggerManager class using getLogger method
-	 *  creates an instance for PearDatabase class and get values for column_fields array of Order class.
-	 */
-	function PurchaseOrder() {
-		$this->log =LoggerManager::getLogger('PurchaseOrder');
+	function __construct() {
+		global $log, $currentModule;
+		$this->column_fields = getColumnFields($currentModule);
 		$this->db = PearDatabase::getInstance();
-		$this->column_fields = getColumnFields('PurchaseOrder');
+		$this->log = $log;
+		$sql = 'SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid = ?';
+		$tabid = getTabid($currentModule);
+		$result = $this->db->pquery($sql, array($tabid));
+		if ($result and $this->db->num_rows($result)==1) {
+			$this->HasDirectImageField = true;
+		}
 	}
 
-	function save_module($module)
-	{
+	function save_module($module) {
 		global $adb;
+		if ($this->HasDirectImageField) {
+			$this->insertIntoAttachment($this->id,$module);
+		}
 		//in ajax save we should not call this function, because this will delete all the existing product values
 		if($_REQUEST['action'] != 'PurchaseOrderAjax' && $_REQUEST['ajxaction'] != 'DETAILVIEW'
 				&& $_REQUEST['action'] != 'MassEditSave' && $_REQUEST['action'] != 'ProcessDuplicates')
 		{
 			//Based on the total Number of rows we will save the product relationship with this entity
-			saveInventoryProductDetails($this, 'PurchaseOrder', $this->update_prod_stock);
+			saveInventoryProductDetails($this, 'PurchaseOrder');
 			if(vtlib_isModuleActive("InventoryDetails"))
 				InventoryDetails::createInventoryDetails($this,'PurchaseOrder');
 		}
@@ -143,8 +137,8 @@ class PurchaseOrder extends CRMEntity {
 	}
 
 	/** Function to get activities associated with the Purchase Order
-	 *  This function accepts the id as arguments and execute the MySQL query using the id
-	 *  and sends the query and the id as arguments to renderRelatedActivities() method
+	 * This function accepts the id as arguments and execute the MySQL query using the id
+	 * and sends the query and the id as arguments to renderRelatedActivities() method
 	 */
 	function get_activities($id, $cur_tab_id, $rel_tab_id, $actions=false) {
 		global $log, $singlepane_view,$currentModule,$current_user;
@@ -193,8 +187,8 @@ class PurchaseOrder extends CRMEntity {
 	}
 
 	/** Function to get the activities history associated with the Purchase Order
-	 *  This function accepts the id as arguments and execute the MySQL query using the id
-	 *  and sends the query and the id as arguments to renderRelatedHistory() method
+	 * This function accepts the id as arguments and execute the MySQL query using the id
+	 * and sends the query and the id as arguments to renderRelatedHistory() method
 	 */
 	function get_history($id)
 	{
@@ -291,25 +285,23 @@ class PurchaseOrder extends CRMEntity {
 	 * returns the query string formed on fetching the related data for report for secondary module
 	 */
 	function generateReportsSecQuery($module,$secmodule,$type = '',$where_condition = ''){
-		$qry = " left join  on vtiger_purchaseorder. = ";
+		$qry = " left join on vtiger_purchaseorder. = ";
 		$query = $this->getRelationQuery($module,$secmodule,"vtiger_purchaseorder","purchaseorderid");
 		$query .= " left join vtiger_crmentity as vtiger_crmentityPurchaseOrder on vtiger_crmentityPurchaseOrder.crmid=vtiger_purchaseorder.purchaseorderid and vtiger_crmentityPurchaseOrder.deleted=0
 			left join vtiger_purchaseordercf on vtiger_purchaseorder.purchaseorderid = vtiger_purchaseordercf.purchaseorderid
 			left join vtiger_pobillads on vtiger_purchaseorder.purchaseorderid=vtiger_pobillads.pobilladdressid
 			left join vtiger_poshipads on vtiger_purchaseorder.purchaseorderid=vtiger_poshipads.poshipaddressid
 			left join vtiger_currency_info as vtiger_currency_info$secmodule on vtiger_currency_info$secmodule.id = vtiger_purchaseorder.currency_id";
-		if(($type !== 'COLUMNSTOTOTAL') || ($type == 'COLUMNSTOTOTAL' && $where_condition == 'add')) 
-		{			
+		if(($type !== 'COLUMNSTOTOTAL') || ($type == 'COLUMNSTOTOTAL' && $where_condition == 'add')) {
 			$query .= " left join vtiger_inventoryproductrel as vtiger_inventoryproductrelPurchaseOrder on vtiger_purchaseorder.purchaseorderid = vtiger_inventoryproductrelPurchaseOrder.id
 			left join vtiger_products as vtiger_productsPurchaseOrder on vtiger_productsPurchaseOrder.productid = vtiger_inventoryproductrelPurchaseOrder.productid
 			left join vtiger_service as vtiger_servicePurchaseOrder on vtiger_servicePurchaseOrder.serviceid = vtiger_inventoryproductrelPurchaseOrder.productid ";
 		}
-			$query .= " left join vtiger_users as vtiger_usersPurchaseOrder on vtiger_usersPurchaseOrder.id = vtiger_crmentityPurchaseOrder.smownerid
+		$query .= " left join vtiger_users as vtiger_usersPurchaseOrder on vtiger_usersPurchaseOrder.id = vtiger_crmentityPurchaseOrder.smownerid
 			left join vtiger_groups as vtiger_groupsPurchaseOrder on vtiger_groupsPurchaseOrder.groupid = vtiger_crmentityPurchaseOrder.smownerid
 			left join vtiger_vendor as vtiger_vendorRelPurchaseOrder on vtiger_vendorRelPurchaseOrder.vendorid = vtiger_purchaseorder.vendorid
 			left join vtiger_contactdetails as vtiger_contactdetailsPurchaseOrder on vtiger_contactdetailsPurchaseOrder.contactid = vtiger_purchaseorder.contactid
 			left join vtiger_users as vtiger_lastModifiedByPurchaseOrder on vtiger_lastModifiedByPurchaseOrder.id = vtiger_crmentityPurchaseOrder.modifiedby ";
-
 		return $query;
 	}
 

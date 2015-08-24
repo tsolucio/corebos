@@ -58,7 +58,8 @@ if ($num_rows1 > 0) {
         $_SESSION['authenticated_user_language'] = $current_language;
         
         $GoogleSync4You = new GoogleSync4You();
-        $GoogleSync4You->setAccessDataForUser($userid);
+		$have_access_data = $GoogleSync4You->setAccessDataForUser($userid);
+		if ($have_access_data) {
         $GoogleSync4You->connectToGoogle();
         
         if ($GoogleSync4You->isLogged()) {
@@ -75,7 +76,7 @@ if ($num_rows1 > 0) {
                 $geventid = $row2["geventid"];
                 $cal=$row2["calendar"];
                 $event = $GoogleSync4You->getGoogleCalEventfromcron($geventid,$cal);
-
+				if($event == false) continue;
                 if ($event->getStatus()=='cancelled') {
                     $sql3 = "DELETE FROM its4you_googlesync4you_events WHERE id = ?";
                     $adb->pquery($sql3,array($eventid));
@@ -147,6 +148,7 @@ if ($num_rows1 > 0) {
                 }
             }
         }
+		}
     }
 }
 

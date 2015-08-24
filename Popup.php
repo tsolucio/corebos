@@ -10,16 +10,13 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
 require_once('Smarty_setup.php');
 require_once("data/Tracker.php");
 require_once('include/logging.php');
 require_once('include/ListView/ListView.php');
 require_once('include/utils/utils.php');
-global $app_strings, $default_charset;
-global $currentModule, $current_user;
-global $theme, $adb;
+global $app_strings, $default_charset, $currentModule, $current_user, $theme, $adb;
 $url_string = '';
 $smarty = new vtigerCRM_Smarty;
 if (!isset($where)) $where = "";
@@ -71,11 +68,11 @@ $form = vtlib_purify($_REQUEST['form']);
 //added to get relatedto field value for todo, while selecting from the popup list, after done the alphabet or basic search.
 if(isset($_REQUEST['maintab']) && $_REQUEST['maintab'] != '')
 {
-        $act_tab = vtlib_purify($_REQUEST['maintab']);
-        $url = "&maintab=".$act_tab;
+	$act_tab = vtlib_purify($_REQUEST['maintab']);
+	$url = "&maintab=".$act_tab;
 }
 $smarty->assign("MAINTAB",$act_tab);
-			
+
 // This is added to support the type of popup and callback
 if(isset($_REQUEST['popupmode']) && isset($_REQUEST['callback'])) {
 	$url = "&popupmode=".vtlib_purify($_REQUEST['popupmode'])."&callback=".vtlib_purify($_REQUEST['callback']);
@@ -155,7 +152,7 @@ switch($currentModule)
 		}
 		if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='')
 			$smarty->assign("RETURN_MODULE",vtlib_purify($_REQUEST['return_module']));
-		if (isset($_REQUEST['select'])) $smarty->assign("SELECT",'enable');	
+		if (isset($_REQUEST['select'])) $smarty->assign("SELECT",'enable');
 		$alphabetical = AlphabeticalSearch($currentModule,'Popup','productname','true','basic',$popuptype,"","",$url);
 		$smarty->assign('Product_Default_Units', GlobalVariable::getVariable('Product_Default_Units', ''));
 		break;
@@ -237,7 +234,6 @@ switch($currentModule)
 		if (isset($_REQUEST['select'])) $smarty->assign("SELECT",'enable');
 		break;
 	// END
-
 }
 // vtlib customization: Initialize focus to get generic popup
 if($_REQUEST['form'] == 'vtlibPopupView') {
@@ -258,7 +254,7 @@ if($currentModule == 'PriceBooks')
 					'from vtiger_pricebook inner join vtiger_pricebookproductrel on vtiger_pricebookproductrel.pricebookid = vtiger_pricebook.pricebookid ' .
 					'inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_pricebook.pricebookid ' .
 					'where vtiger_pricebookproductrel.productid='.$adb->sql_escape_string($productid).' and vtiger_crmentity.deleted=0 ' .
-							'and vtiger_pricebook.currency_id='.$adb->sql_escape_string($currency_id).' and vtiger_pricebook.active=1';
+						'and vtiger_pricebook.currency_id='.$adb->sql_escape_string($currency_id).' and vtiger_pricebook.active=1';
 }
 else
 {
@@ -266,7 +262,7 @@ else
 	{
 		$smarty->assign("RECORDID",vtlib_purify($_REQUEST['recordid']));
 		$url_string .='&recordid='.vtlib_purify($_REQUEST['recordid']);
-        	$where_relquery = getRelCheckquery($currentModule,$_REQUEST['return_module'],$_REQUEST['recordid']);
+		$where_relquery = getRelCheckquery($currentModule,$_REQUEST['return_module'],$_REQUEST['recordid']);
 	}
 	if(isset($_REQUEST['relmod_id']) || isset($_REQUEST['fromPotential']))
 	{
@@ -296,35 +292,35 @@ else
 		$where_relquery.= getPopupCheckquery($currentModule, vtlib_purify($_REQUEST['task_parent_module']),  vtlib_purify($_REQUEST['task_relmod_id']));
 	}
 	if($currentModule == 'Products' && !$_REQUEST['record_id'] && ($popuptype == 'inventory_prod' || $popuptype == 'inventory_prod_po'))
-       		$where_relquery .=" and vtiger_products.discontinued <> 0 AND (vtiger_products.productid NOT IN (SELECT crmid FROM vtiger_seproductsrel WHERE setype='Products'))";
+		$where_relquery .=" and vtiger_products.discontinued <> 0 AND (vtiger_products.productid NOT IN (SELECT crmid FROM vtiger_seproductsrel WHERE setype='Products'))";
 	elseif($currentModule == 'Products' && $_REQUEST['record_id'] && ($popuptype == 'inventory_prod' || $popuptype == 'inventory_prod_po'))
-        	$where_relquery .=" and vtiger_products.discontinued <> 0 AND (vtiger_products.productid IN (SELECT crmid FROM vtiger_seproductsrel WHERE setype='Products' AND productid=".$adb->sql_escape_string($_REQUEST['record_id'])."))";
+		$where_relquery .=" and vtiger_products.discontinued <> 0 AND (vtiger_products.productid IN (SELECT crmid FROM vtiger_seproductsrel WHERE setype='Products' AND productid=".$adb->sql_escape_string($_REQUEST['record_id'])."))";
 	elseif($currentModule == 'Products' && $_REQUEST['return_module'] != 'Products')
-       		$where_relquery .=" and vtiger_products.discontinued <> 0";
-       		
+		$where_relquery .=" and vtiger_products.discontinued <> 0";
+
 	if($_REQUEST['return_module'] == 'Products' && $currentModule == 'Products' && $_REQUEST['recordid'])
-       	$where_relquery .=" and vtiger_products.discontinued <> 0 AND (vtiger_crmentity.crmid NOT IN (".$adb->sql_escape_string($_REQUEST['recordid']).") AND vtiger_crmentity.crmid NOT IN (SELECT productid FROM vtiger_seproductsrel WHERE setype='Products') AND vtiger_crmentity.crmid NOT IN (SELECT crmid FROM vtiger_seproductsrel WHERE setype='Products' AND productid=".$adb->sql_escape_string($_REQUEST['recordid'])."))";
-	
+		$where_relquery .=" and vtiger_products.discontinued <> 0 AND (vtiger_crmentity.crmid NOT IN (".$adb->sql_escape_string($_REQUEST['recordid']).") AND vtiger_crmentity.crmid NOT IN (SELECT productid FROM vtiger_seproductsrel WHERE setype='Products') AND vtiger_crmentity.crmid NOT IN (SELECT crmid FROM vtiger_seproductsrel WHERE setype='Products' AND productid=".$adb->sql_escape_string($_REQUEST['recordid'])."))";
+
 	if($currentModule == 'Services' && $popuptype == 'inventory_service') {
 		$where_relquery .=" and vtiger_service.discontinued <> 0";
 	}
-	 
+
 	//Avoiding Current Record to show up in the popups When editing.
 	if($currentModule == 'Accounts' && $_REQUEST['recordid']!=''){
 		$where_relquery .=" and vtiger_account.accountid!=".$adb->sql_escape_string($_REQUEST['recordid']);
 		$smarty->assign("RECORDID",vtlib_purify($_REQUEST['recordid']));
 	}
-	
+
 	if($currentModule == 'Contacts' && $_REQUEST['recordid']!=''){
 		$where_relquery .=" and vtiger_contactdetails.contactid!=".$adb->sql_escape_string($_REQUEST['recordid']);
 		$smarty->assign("RECORDID",vtlib_purify($_REQUEST['recordid']));
 	}
-	
+
 	if($currentModule == 'Users' && $_REQUEST['recordid']!=''){
 		$where_relquery .=" and vtiger_users.id!=".$adb->sql_escape_string($_REQUEST['recordid']);
 		$smarty->assign("RECORDID",vtlib_purify($_REQUEST['recordid']));
 	}
-	
+
 	$query = getListQuery($currentModule,$where_relquery);
 }
 
@@ -346,16 +342,15 @@ if(isset($_REQUEST['query']) && $_REQUEST['query'] == 'true')
 
 if(isset($where) && $where != '')
 {
-        $query .= ' and '.$where;
+	$query .= ' and '.$where;
 }
-//Added to fix the issue #2307 
-
+//Added to fix the issue #2307
 $order_by = $focus->getOrderBy();
 $sorder = $focus->getSortOrder();
 
 if(isset($order_by) && $order_by != '')
 {
-        $query .= ' ORDER BY '.$order_by.' '.$sorder;
+	$query .= ' ORDER BY '.$order_by.' '.$sorder;
 }
 
 // vtlib customization: To override module specific popup query for a given field
@@ -415,8 +410,8 @@ if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] != '')
 
 if($popuptype == 'set_return_emails'){
 	$tabid = getTabid($currentModule);
-	$mail_arr = getMailFields($tabid); 
-	
+	$mail_arr = getMailFields($tabid);
+
 	if(!empty($mail_arr)){
 		$tablename = str_replace("vtiger_","",$mail_arr['tablename']);
 		$fieldname = $mail_arr['fieldname'];
@@ -430,7 +425,7 @@ $listview_header = getSearchListViewHeader($focus,"$currentModule",$url_string,$
 $smarty->assign("LISTHEADER", $listview_header);
 $smarty->assign("HEADERCOUNT",count($listview_header)+1);
 
-$listview_entries = getSearchListViewEntries($focus,"$currentModule",$list_result,$navigation_array,$form); 
+$listview_entries = getSearchListViewEntries($focus,"$currentModule",$list_result,$navigation_array,$form);
 $smarty->assign("LISTENTITY", $listview_entries);
 
 $navigationOutput = getTableHeaderSimpleNavigation($navigation_array, $url_string,$currentModule,"Popup");
@@ -438,7 +433,6 @@ $smarty->assign("NAVIGATION", $navigationOutput);
 $smarty->assign("RECORD_COUNTS", $record_string);
 $smarty->assign("POPUPTYPE", $popuptype);
 $smarty->assign("PARENT_MODULE", vtlib_purify($_REQUEST['parent_module']));
-
 
 if(isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '')
 	$smarty->display("PopupContents.tpl");

@@ -1,5 +1,4 @@
 {*<!--
-
 /*********************************************************************************
 ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
@@ -7,11 +6,9 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
 -->*}
-
+{include file='applicationmessage.tpl'}
 {if $MODULE eq 'Emails'}
 	<form name="EditView" method="POST" ENCTYPE="multipart/form-data" action="index.php" onsubmit="VtigerJS_DialogBox.block();">
         <input type="hidden" name="form">
@@ -22,8 +19,7 @@
         <input type="hidden" name="old_id" value="{$OLD_ID}">
 
 {elseif $MODULE eq 'Contacts'}
-	{$ERROR_MESSAGE}
-        <form name="EditView" method="POST" ENCTYPE="multipart/form-data" action="index.php" onsubmit="VtigerJS_DialogBox.block();">
+	<form name="EditView" method="POST" ENCTYPE="multipart/form-data" action="index.php" onsubmit="VtigerJS_DialogBox.block();">
 	<input type="hidden" name="activity_mode" value="{$ACTIVITY_MODE}">
 	<input type="hidden" name="opportunity_id" value="{$OPPORTUNITY_ID}">
 	<input type="hidden" name="contact_role">
@@ -75,12 +71,10 @@
 	<input type="hidden" name="parentid" value="{$PARENTID}">
 
 {elseif $MODULE eq 'Products'}
-	{$ERROR_MESSAGE}
 	<form name="EditView" method="POST" ENCTYPE="multipart/form-data" action="index.php" onsubmit="VtigerJS_DialogBox.block();">
 	<input type="hidden" name="activity_mode" value="{$ACTIVITY_MODE}">
 	<INPUT TYPE="HIDDEN" NAME="MAX_FILE_SIZE" VALUE="{$UPLOAD_MAXSIZE}">
 {else}
-	{$ERROR_MESSAGE}
 	<form name="EditView" method="POST" ENCTYPE="multipart/form-data" action="index.php" onsubmit="VtigerJS_DialogBox.block();">
 	<INPUT TYPE="HIDDEN" NAME="MAX_FILE_SIZE" VALUE="{$UPLOAD_MAXSIZE}">
 {/if}

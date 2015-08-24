@@ -127,7 +127,7 @@ alt="Clear" title="Clear" LANGUAGE=javascript	onClick="this.form.{$fldname}.valu
 			<td width=30% align=left class="dvtCellInfo">
 				<textarea value="{$fldvalue}" name="{$fldname}" tabindex="{$vt_tab}" class=detailedViewTextBox onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" rows=2>{$fldvalue}</textarea>
 			</td>
-		{elseif $uitype eq 15 || $uitype eq 16  || $uitype eq '31' || $uitype eq '32'}
+		{elseif $uitype eq 15 || $uitype eq 16  || $uitype eq '31' || $uitype eq '32' || $uitype eq '1613'}
 			<td width="20%" class="dvtCellLabel" align=right>
 				<font color="red">{$mandatory_field}</font>
 				{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
@@ -150,7 +150,7 @@ alt="Clear" title="Clear" LANGUAGE=javascript	onClick="this.form.{$fldname}.valu
 				{/foreach}
 				</select>
 			</td>
-		{elseif $uitype eq 33}
+		{elseif $uitype eq 33 || $uitype eq 3313}
 			<td width="20%" class="dvtCellLabel" align=right>
 				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
 			</td>
@@ -357,7 +357,7 @@ alt="Clear" title="Clear" LANGUAGE=javascript	onClick="this.form.{$fldname}.valu
 					{/if}
 					</span>
 					{if $MASS_EDIT neq 1}
-					<div id="currency_class" class="multiCurrencyEditUI" width="350">
+					<div id="currency_class" class="multiCurrencyEditUI">
 						<input type="hidden" name="base_currency" id="base_currency" value="{$BASE_CURRENCY}" />
 						<input type="hidden" name="base_conversion_rate" id="base_currency" value="{$BASE_CURRENCY}" />
 						<table width="100%" height="100%" class="small" cellpadding="5">

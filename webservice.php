@@ -7,15 +7,14 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-	
+
 	/** Workaround to enable capaturing relation query */
 	// include/RelatedListView.php checks for the existence of this
 	// function and proxies the call (if exists).
 	function GetRelatedList($module,$relatedmodule,$focus,$query,$button,$returnset,$id='',$edit_val='',$del_val='') {
 		return array( 'query' => $query );
 	}
-	/** END */
-	
+
 	require_once("config.inc.php");
 	require_once("include/HTTP_Session/Session.php");
 	require_once 'include/Webservices/Utils.php';
@@ -26,9 +25,9 @@
 	require_once('include/logging.php');
 	checkFileAccessForInclusion("include/language/$default_language.lang.php");
 	require_once "include/language/$default_language.lang.php";
-	
+
 	$API_VERSION = "0.22";
-	
+
 	// Full CORS support: preflight options call support
 	// Access-Control headers are received during OPTIONS requests
 	if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
@@ -45,16 +44,16 @@
 			header("Access-Control-Allow-Headers: {$_SERVER['HTTP_ACCESS_CONTROL_REQUEST_HEADERS']}");
 		exit(0);
 	}
-	
+
 	global $seclog,$log;
 	$seclog =& LoggerManager::getLogger('SECURITY');
 	$log =& LoggerManager::getLogger('webservice');
-	
+
 	function getRequestParamsArrayForOperation($operation){
 		global $operationInput;
 		return $operationInput[$operation];
 	}
-	
+
 	function setResponseHeaders() {
 		global $cors_enabled_domains;
 		if (isset($_SERVER['HTTP_ORIGIN']) && !empty($cors_enabled_domains)) {
@@ -69,7 +68,6 @@
 	}
 
 	function writeErrorOutput($operationManager, $error){
-		
 		setResponseHeaders();
 		$state = new State();
 		$state->success = false;
@@ -77,11 +75,9 @@
 		unset($state->result);
 		$output = $operationManager->encode($state);
 		echo $output;
-		
 	}
-	
+
 	function writeOutput($operationManager, $data){
-		
 		setResponseHeaders();
 		$state = new State();
 		$state->success = true;
@@ -89,7 +85,6 @@
 		unset($state->error);
 		$output = $operationManager->encode($state);
 		echo $output;
-		
 	}
 
 	// some frameworks (namely angularjs) send information in application/json format, we try to adapt to those system with the next if
@@ -104,15 +99,15 @@
 	$operation = strtolower($operation);
 	$format = vtws_getParameter($_REQUEST, "format","json");
 	$sessionId = vtws_getParameter($_REQUEST,"sessionName");
-	
+
 	$sessionManager = new SessionManager();
 	$operationManager = new OperationManager($adb,$operation,$format,$sessionManager);
-	
+
 	try{
 		if(!$sessionId || strcasecmp($sessionId,"null")===0){
 			$sessionId = null;
 		}
-		
+
 		$input = $operationManager->getOperationInput();
 		$adoptSession = false;
 		if(strcasecmp($operation,"extendsession")===0){
@@ -132,41 +127,38 @@
 			}
 		}
 		$sid = $sessionManager->startSession($sessionId,$adoptSession);
-		
+
 		if(!$sessionId && !$operationManager->isPreLoginOperation()){
 			writeErrorOutput($operationManager,new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED,"Authentication required"));
 			return;
 		}
-		
+
 		if(!$sid){
 			writeErrorOutput($operationManager, $sessionManager->getError());
 			return;
 		}
-		
+
 		$userid = $sessionManager->get("authenticatedUserId");
-		
 		if($userid){
-		
 			$seed_user = new Users();
 			$current_user = $seed_user->retrieveCurrentUserInfoFromFile($userid);
-			
 		}else{
 			$current_user = null;
 		}
-		
+
 		$operationInput = $operationManager->sanitizeOperation($input);
 		$includes = $operationManager->getOperationIncludes();
-		
+
 		foreach($includes as $ind=>$path){
 			checkFileAccessForInclusion($path);
 			require_once($path);
 		}
+		cbEventHandler::do_action('corebos.audit.action',array((isset($current_user) ? $current_user->id:0), 'Webservice', $operation, 0, date('Y-m-d H:i:s')));
 		$rawOutput = $operationManager->runOperation($operationInput,$current_user);
 		writeOutput($operationManager, $rawOutput);
 	}catch(WebServiceException $e){
 		writeErrorOutput($operationManager,$e);
 	}catch(Exception $e){
-		writeErrorOutput($operationManager, 
-			new WebServiceException(WebServiceErrorCode::$INTERNALERROR,"Unknown Error while processing request"));
+		writeErrorOutput($operationManager,new WebServiceException(WebServiceErrorCode::$INTERNALERROR,"Unknown Error while processing request"));
 	}
 ?>

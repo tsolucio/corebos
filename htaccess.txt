@@ -1,6 +1,6 @@
 Options -Indexes
 
-<FilesMatch "\.(gif|jpe?g|png)$">
+<FilesMatch "(?i)\.(gif|jpe?g|png)$">
 Allow from all
 Satisfy Any
 </FilesMatch>

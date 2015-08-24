@@ -55,7 +55,10 @@ abstract class Vtiger_BackupZip {
 		if(empty($time)) {
 			$time = gmmktime();
 		}
-		return self::$filePrefix.gmdate('d_M_Y-H_i_s-T',$time).'.zip';
+		global $site_URL;
+		$archive_prefix=str_replace('http://','',$site_URL);
+		$archive_prefix=str_replace('/','',$archive_prefix);
+		return $archive_prefix.gmdate('d_M_Y-H_i_s-T',$time).'.zip';
 	}
 
 	public static function getDefaultFolderPath() {

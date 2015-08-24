@@ -21,20 +21,17 @@ function showHide(showId, hideId)
 
 function hndCancel(valuespanid,textareapanid,fieldlabel)
 {
-
-  showHide(valuespanid,textareapanid);
-  if(globaluitype == '56')
-  {
-	  if(globaltempvalue == 1)
-		getObj(globaltxtboxid).checked = true;
-	  else
-		getObj(globaltxtboxid).checked = false;
-  }
-  else if(globaluitype != '53' && globaluitype != '33')
-	  getObj(globaltxtboxid).value = globaltempvalue;
-  globaltempvalue = '';
-  itsonview=false;
-  return false;
+	showHide(valuespanid,textareapanid);
+	if(globaluitype == '56') {
+		if(globaltempvalue == 1)
+			getObj(globaltxtboxid).checked = true;
+		else
+			getObj(globaltxtboxid).checked = false;
+	} else if(globaluitype != '53' && globaluitype != '33' && globaluitype != '3313')
+		getObj(globaltxtboxid).value = globaltempvalue;
+	globaltempvalue = '';
+	itsonview=false;
+	return false;
 }
 
 function hndMouseOver(uitype,fieldLabel)
@@ -162,9 +159,8 @@ function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 			var group_id = encodeURIComponent($(txtBox).options[$(txtBox).selectedIndex].text);
 			var groupurl = "&assigned_group_id="+group_id+"&assigntype=T";
 		}
-
 	}
-	else if(uitype == 15 || uitype == 16)
+	else if(uitype == 15 || uitype == 16 || uitype == 1613)
 	{
 		var txtBox= "txtbox_"+ fieldLabel;
 		var not_access =document.getElementById(txtBox);
@@ -176,20 +172,18 @@ function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 			return false;
 		}
 	}
-	else if(globaluitype == 33)
+	else if(globaluitype == 33 || globaluitype == 3313)
 	{
-	  var txtBox= "txtbox_"+ fieldLabel;
-	  var oMulSelect = $(txtBox);
-	  var r = new Array();
-	  var notaccess_label = new Array();
-	  for (iter=0;iter < oMulSelect.options.length ; iter++)
-	  {
-		if (oMulSelect.options[iter].selected)
-		{
-			r[r.length] = oMulSelect.options[iter].value;
-			notaccess_label[notaccess_label.length] = oMulSelect.options[iter].text;
+		var txtBox= "txtbox_"+ fieldLabel;
+		var oMulSelect = $(txtBox);
+		var r = new Array();
+		var notaccess_label = new Array();
+		for (iter=0;iter < oMulSelect.options.length ; iter++) {
+			if (oMulSelect.options[iter].selected) {
+				r[r.length] = oMulSelect.options[iter].value;
+				notaccess_label[notaccess_label.length] = oMulSelect.options[iter].text;
+			}
 		}
-	  }
 	}else
 	{
 		var txtBox= "txtbox_"+ fieldLabel;
@@ -238,10 +232,10 @@ function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 		{
 			tagValue = "off";
 		}
-	}else if(uitype == '33')
+	}else if(uitype == '33' || uitype == '3313')
 	{
 		tagValue = r.join(" |##| ");
-  	}else if(uitype == '24' || uitype == '21')
+	}else if(uitype == '24' || uitype == '21')
 	{
 		tagValue = document.getElementById(txtBox).value.replace(/<br\s*\/>/g, " ");
 	}else
@@ -440,7 +434,7 @@ function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 		else
 			getObj(dtlView).innerHTML = get_converted_html(tagValue);
 	}
-	else if(uitype == '33')
+	else if(uitype == '33' || uitype == '3313')
 	{
 		/* Wordwrap a long list of multi-select combo box items at the item separator string */
 		var DETAILVIEW_WORDWRAP_WIDTH = "70"; // must match value in DetailViewUI.tpl.
@@ -508,7 +502,7 @@ function setSelectValue(fieldLabel)
 			var assign_type_G = document.DetailView.assigntype[1].checked;
 			if(assign_type_U == true)
 				var selCombo= 'txtbox_U'+fieldLabel;
-			else if(assign_type_G == true)	
+			else if(assign_type_G == true)
 				var selCombo= 'txtbox_G'+fieldLabel;
 		}else{
 			var selCombo= 'txtbox_U'+fieldLabel;

@@ -1,41 +1,35 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- ********************************************************************************/
-include_once('config.php');
-require_once('include/logging.php');
-require_once('include/utils/utils.php');
-require_once('user_privileges/default_module_view.php');
+ ************************************************************************************/
+require_once('data/CRMEntity.php');
+require_once('data/Tracker.php');
 require_once('modules/InventoryDetails/InventoryDetails.php');
 
 class Invoice extends CRMEntity {
-	var $log;
-	var $db;
+	var $db, $log; // Used in class functions of CRMEntity
 
-	var $table_name = "vtiger_invoice";
+	var $table_name = 'vtiger_invoice';
 	var $table_index= 'invoiceid';
+	var $column_fields = Array();
+
+	/** Indicator if this is a custom module or standard module */
+	var $IsCustomModule = false;
+	var $HasDirectImageField = false;
 	var $tab_name = Array('vtiger_crmentity','vtiger_invoice','vtiger_invoicebillads','vtiger_invoiceshipads','vtiger_invoicecf');
 	var $tab_name_index = Array('vtiger_crmentity'=>'crmid','vtiger_invoice'=>'invoiceid','vtiger_invoicebillads'=>'invoicebilladdressid','vtiger_invoiceshipads'=>'invoiceshipaddressid','vtiger_invoicecf'=>'invoiceid');
-	var $entity_table = "vtiger_crmentity";
+	var $entity_table = 'vtiger_crmentity';
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
 	var $customFieldTable = Array('vtiger_invoicecf', 'invoiceid');
 
-	var $column_fields = Array();
-
 	var $update_product_array = Array();
-
-	var $sortby_fields = Array('subject','invoice_no','invoicestatus','smownerid','accountname','lastname');
 
 	// This is used to retrieve related vtiger_fields from form posts.
 	var $additional_column_fields = Array('assigned_user_name', 'smownerid', 'opportunity_id', 'case_id', 'contact_id', 'task_id', 'note_id', 'meeting_id', 'call_id', 'email_id', 'parent_name', 'member_id' );
@@ -48,6 +42,7 @@ class Invoice extends CRMEntity {
 				'Sales Order'=>Array('invoice'=>'salesorderid'),
 				'Status'=>Array('invoice'=>'invoicestatus'),
 				'Total'=>Array('invoice'=>'total'),
+				'Account Name'=>Array('invoice'=>'account_id'),
 				'Assigned To'=>Array('crmentity'=>'smownerid')
 				);
 
@@ -57,6 +52,7 @@ class Invoice extends CRMEntity {
 				'Sales Order'=>'salesorder_id',
 				'Status'=>'invoicestatus',
 				'Total'=>'hdnGrandTotal',
+				'Account Name'=>'account_id',
 				'Assigned To'=>'assigned_user_id'
 				);
 	var $list_link_field= 'subject';
@@ -65,40 +61,44 @@ class Invoice extends CRMEntity {
 				//'Invoice No'=>Array('crmentity'=>'crmid'),
 				'Invoice No'=>Array('invoice'=>'invoice_no'),
 				'Subject'=>Array('purchaseorder'=>'subject'),
+				'Account Name'=>Array('invoice'=>'account_id'),
 				);
 
 	var $search_fields_name = Array(
-				'Invoice No'=>'',
+				'Invoice No'=>'invoice_no',
 				'Subject'=>'subject',
+				'Account Name'=>'account_id',
 				);
 
-	// This is the list of vtiger_fields that are required.
-	var $required_fields =  array("accountname"=>1);
-
-	//Added these variables which are used as default order by and sortorder in ListView
-	var $default_order_by = 'crmid';
-	var $default_sort_order = 'ASC';
-
-	//var $groupTable = Array('vtiger_invoicegrouprelation','invoiceid');
-
-	var $mandatory_fields = Array('subject','createdtime' ,'modifiedtime');
-	var $_salesorderid;
-	var $_recurring_mode;
+	// Placeholder for sort fields - All the fields will be initialized for Sorting through initSortFields
+	var $sortby_fields = Array('subject','invoice_no','invoicestatus','smownerid','accountname','lastname');
 
 	// For Alphabetical search
 	var $def_basicsearch_col = 'subject';
 
-	/**	Constructor which will set the column_fields in this object
-	 */
-	function Invoice() {
-		$this->log =LoggerManager::getLogger('Invoice');
-		$this->log->debug("Entering Invoice() method ...");
+	// This is the list of vtiger_fields that are required.
+	var $required_fields = array("accountname"=>1);
+
+	//Added these variables which are used as default order by and sortorder in ListView
+	var $default_order_by = 'crmid';
+	var $default_sort_order = 'ASC';
+	var $mandatory_fields = Array('subject','createdtime' ,'modifiedtime');
+	var $_salesorderid;
+	var $_recurring_mode;
+
+	function __construct() {
+		global $log, $currentModule;
+		$this->column_fields = getColumnFields($currentModule);
 		$this->db = PearDatabase::getInstance();
-		$this->column_fields = getColumnFields('Invoice');
-		$this->log->debug("Exiting Invoice method ...");
+		$this->log = $log;
+		$sql = 'SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid = ?';
+		$tabid = getTabid($currentModule);
+		$result = $this->db->pquery($sql, array($tabid));
+		if ($result and $this->db->num_rows($result)==1) {
+			$this->HasDirectImageField = true;
+		}
 	}
 
-	/** Function to handle the module specific save operations */
 	function save_module($module) {
 		global $updateInventoryProductRel_deduct_stock;
 		$updateInventoryProductRel_deduct_stock = true;
@@ -260,8 +260,6 @@ class Invoice extends CRMEntity {
 		return getHistory('Invoice',$query,$id);
 	}
 
-
-
 	/**	Function used to get the Status history of the Invoice
 	 *	@param $id - invoice id
 	 *	@return $return_data - array with header and the entries in format Array('header'=>$header,'entries'=>$entries_list) where as $header and $entries_list are arrays which contains header values and all column values of all entries
@@ -316,7 +314,7 @@ class Invoice extends CRMEntity {
 
 		$return_data = Array('header'=>$header,'entries'=>$entries_list);
 
-	 	$log->debug("Exiting get_invoicestatushistory method ...");
+		$log->debug("Exiting get_invoicestatushistory method ...");
 
 		return $return_data;
 	}
@@ -343,18 +341,16 @@ class Invoice extends CRMEntity {
 			left join vtiger_salesorder as vtiger_salesorderInvoice on vtiger_salesorderInvoice.salesorderid=vtiger_invoice.salesorderid
 			left join vtiger_invoicebillads on vtiger_invoice.invoiceid=vtiger_invoicebillads.invoicebilladdressid
 			left join vtiger_invoiceshipads on vtiger_invoice.invoiceid=vtiger_invoiceshipads.invoiceshipaddressid ";
-		if(($type !== 'COLUMNSTOTOTAL') || ($type == 'COLUMNSTOTOTAL' && $where_condition == 'add')) 
-		{
+		if(($type !== 'COLUMNSTOTOTAL') || ($type == 'COLUMNSTOTOTAL' && $where_condition == 'add')) {
 			$query .= "left join vtiger_inventoryproductrel as vtiger_inventoryproductrelInvoice on vtiger_invoice.invoiceid = vtiger_inventoryproductrelInvoice.id
-			left join vtiger_products as vtiger_productsInvoice on vtiger_productsInvoice.productid = vtiger_inventoryproductrelInvoice.productid
-			left join vtiger_service as vtiger_serviceInvoice on vtiger_serviceInvoice.serviceid = vtiger_inventoryproductrelInvoice.productid ";
+				left join vtiger_products as vtiger_productsInvoice on vtiger_productsInvoice.productid = vtiger_inventoryproductrelInvoice.productid
+				left join vtiger_service as vtiger_serviceInvoice on vtiger_serviceInvoice.serviceid = vtiger_inventoryproductrelInvoice.productid ";
 		}
-			$query .= "left join vtiger_groups as vtiger_groupsInvoice on vtiger_groupsInvoice.groupid = vtiger_crmentityInvoice.smownerid
+		$query .= "left join vtiger_groups as vtiger_groupsInvoice on vtiger_groupsInvoice.groupid = vtiger_crmentityInvoice.smownerid
 			left join vtiger_users as vtiger_usersInvoice on vtiger_usersInvoice.id = vtiger_crmentityInvoice.smownerid
 			left join vtiger_contactdetails as vtiger_contactdetailsInvoice on vtiger_invoice.contactid = vtiger_contactdetailsInvoice.contactid
 			left join vtiger_account as vtiger_accountInvoice on vtiger_accountInvoice.accountid = vtiger_invoice.accountid
 			left join vtiger_users as vtiger_lastModifiedByInvoice on vtiger_lastModifiedByInvoice.id = vtiger_crmentityInvoice.modifiedby ";
-
 		return $query;
 	}
 
@@ -467,8 +463,7 @@ class Invoice extends CRMEntity {
 		}
 
 		//Update the netprice (subtotal), taxtype, discount, S&H charge, adjustment and total for the Invoice
-
-		$updatequery  = " UPDATE vtiger_invoice SET ";
+		$updatequery = " UPDATE vtiger_invoice SET ";
 		$updateparams = array();
 		// Remaining column values to be updated -> column name to field name mapping
 		$invoice_column_field = Array (
@@ -565,5 +560,4 @@ class Invoice extends CRMEntity {
 	}
 
 }
-
 ?>

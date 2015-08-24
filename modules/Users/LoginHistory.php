@@ -132,10 +132,9 @@ class LoginHistory {
 	 *  @param ref variable $intime :: Type timestamp
 	 *  Returns the query result which contains the details of User Login Info
 	*/
-	function user_login(&$usname,&$usip,&$intime)
-	{
+	function user_login(&$usname,&$usip,&$intime) {
 		global $adb;
-		//Kiran: Setting logout time to '0000-00-00 00:00:00' instead of null
+		cbEventHandler::do_action('corebos.audit.login',array($usname, 'Users', 'Login', $usname, date("Y-m-d H:i:s")));
 		$query = "Insert into vtiger_loginhistory (user_name, user_ip, logout_time, login_time, status) values (?,?,?,?,?)";
 		$params = array($usname,$usip,'0000-00-00 00:00:00', $this->db->formatDate($intime, true),'Signed in');
 		$result = $adb->pquery($query, $params) or die("MySQL error: ".mysql_error());
@@ -148,9 +147,9 @@ class LoginHistory {
 	 *  @param ref variable $outime :: Type timestamp
 	 *  Returns the query result which contains the details of User Logout Info
 	*/
-	function user_logout(&$usname,&$usip,&$outtime)
-	{
+	function user_logout(&$usname,&$usip,&$outtime) {
 		global $adb;
+		cbEventHandler::do_action('corebos.audit.logout',array($usname, 'Users', 'Logout', $usname, date("Y-m-d H:i:s")));
 		$logid_qry = "SELECT max(login_id) AS login_id from vtiger_loginhistory where user_name=? and user_ip=?";
 		$result = $adb->pquery($logid_qry, array($usname, $usip));
 		$loginid = $adb->query_result($result,0,"login_id");
@@ -160,7 +159,7 @@ class LoginHistory {
 		// update the user login info.
 		$query = "Update vtiger_loginhistory set logout_time =?, status=? where login_id = ?";
 		$result = $adb->pquery($query, array($this->db->formatDate($outtime, true), 'Signed off', $loginid))
-                        or die("MySQL error: ".mysql_error());
+			or die("MySQL error: ".mysql_error());
 	}
 
 	/** Function to create list query 

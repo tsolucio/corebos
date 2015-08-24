@@ -497,34 +497,26 @@ if($use_current_login)
         }
 
 	//auditing
-
 	require_once('user_privileges/audit_trail.php');
-	
-	if($audit_trail == 'true')
-	{
-		if($record == '')
-			$auditrecord = '';						
-		else
-			$auditrecord = $record;	
-
-		/* Skip audit trial log for special request types */
-		$skip_auditing = false;
-		if($action == 'chat') { 
-			$skip_auditing = true;		
-		} else if(($action == 'ActivityReminderCallbackAjax' || $_REQUEST['file'] == 'ActivityReminderCallbackAjax') && $module == 'Calendar') {
-			$skip_auditing = true;
-		} else if(($action == 'TraceIncomingCall' || $_REQUEST['file'] == 'TraceIncomingCall') && $module == 'PBXManager') {
-			$skip_auditing = true;
-		}
-		/* END */
-		if (!$skip_auditing) {
-			$date_var = $adb->formatDate(date('Y-m-d H:i:s'), true);
-			$query = "insert into vtiger_audit_trial values(?,?,?,?,?,?)";
-			$qparams = array($adb->getUniqueID('vtiger_audit_trial'), $current_user->id, $module, $action, $auditrecord, $date_var);
-			$adb->pquery($query, $qparams);
-		}	
-	}	
-
+	/* Skip audit trail log for special request types */
+	$skip_auditing = false;
+	if($action == 'chat') {
+		$skip_auditing = true;
+	} else if(($action == 'ActivityReminderCallbackAjax' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'ActivityReminderCallbackAjax')) && $module == 'Calendar') {
+		$skip_auditing = true;
+	} else if(($action == 'TraceIncomingCall' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'TraceIncomingCall')) && $module == 'PBXManager') {
+		$skip_auditing = true;
+	}
+	/* END */
+	if($audit_trail == 'true' and !$skip_auditing) {
+		$date_var = $adb->formatDate(date('Y-m-d H:i:s'), true);
+		$query = "insert into vtiger_audit_trial values(?,?,?,?,?,?)";
+		$qparams = array($adb->getUniqueID('vtiger_audit_trial'), $current_user->id, $module, $action, $record, $date_var);
+		$adb->pquery($query, $qparams);
+	}
+	if(!$skip_auditing) {
+		cbEventHandler::do_action('corebos.audit.action',array($current_user->id, $module, $action, $record, date('Y-m-d H:i:s')));
+	}
 	$log->debug('Current user is: '.$current_user->user_name);
 }
 
@@ -532,7 +524,7 @@ if(isset($_SESSION['vtiger_authenticated_user_theme']) && $_SESSION['vtiger_auth
 {
 	$theme = $_SESSION['vtiger_authenticated_user_theme'];
 }
-else 
+else
 {
 	if(!empty($current_user->theme)) {
 		$theme = $current_user->theme;

@@ -231,10 +231,10 @@ $smarty->assign('recordListRange',$recordListRangeMsg);
 if($viewid !='')
 $url_string .="&viewname=".$viewid;
 
-//Cambiado code to add close button in custom vtiger_field
-if (($viewid!=0)&&($viewid!="")){
-  if (!isset($oCustomView->list_fields['Close'])) $oCustomView->list_fields['Close']=array ( 'vtiger_activity' => 'eventstatus' );
-  if (!isset($oCustomView->list_fields_name['Close'])) $oCustomView->list_fields_name['Close']='eventstatus';
+// add close button in custom view
+if (!empty($viewid)){
+	if (!isset($oCustomView->list_fields['Close'])) $oCustomView->list_fields['Close']=array('vtiger_activity' => 'eventstatus');
+	if (!isset($oCustomView->list_fields_name['Close'])) $oCustomView->list_fields_name['Close']='eventstatus';
 }
 $listview_header = getListViewHeader($focus,"Calendar",$url_string,$sorder,$order_by,"",$oCustomView);
 $smarty->assign("LISTHEADER", $listview_header);

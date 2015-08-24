@@ -1,17 +1,12 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of txhe License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
+ ************************************************************************************/
 include_once('config.php');
 require_once('include/logging.php');
 require_once('include/utils/utils.php');
@@ -20,61 +15,65 @@ require_once('modules/Leads/Leads.php');
 require_once('user_privileges/default_module_view.php');
 
 class Campaigns extends CRMEntity {
-	var $log;
-	var $db;
+	var $db, $log; // Used in class functions of CRMEntity
+
 	var $table_name = "vtiger_campaign";
 	var $table_index= 'campaignid';
+	var $column_fields = Array();
 
-	var $tab_name = Array('vtiger_crmentity','vtiger_campaign','vtiger_campaignscf');
-	var $tab_name_index = Array('vtiger_crmentity'=>'crmid','vtiger_campaign'=>'campaignid','vtiger_campaignscf'=>'campaignid');
+	/** Indicator if this is a custom module or standard module */
+	var $IsCustomModule = false;
+	var $HasDirectImageField = false;
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
 	var $customFieldTable = Array('vtiger_campaignscf', 'campaignid');
-	var $column_fields = Array();
 
-	var $sortby_fields = Array('campaignname','smownerid','campaigntype','productname','expectedrevenue','closingdate','campaignstatus','expectedresponse','targetaudience','expectedcost');
+	var $tab_name = Array('vtiger_crmentity','vtiger_campaign','vtiger_campaignscf');
+	var $tab_name_index = Array('vtiger_crmentity'=>'crmid','vtiger_campaign'=>'campaignid','vtiger_campaignscf'=>'campaignid');
 
 	var $list_fields = Array(
-					'Campaign Name'=>Array('campaign'=>'campaignname'),
-					'Campaign Type'=>Array('campaign'=>'campaigntype'),
-					'Campaign Status'=>Array('campaign'=>'campaignstatus'),
-					'Expected Revenue'=>Array('campaign'=>'expectedrevenue'),
-					'Expected Close Date'=>Array('campaign'=>'closingdate'),
-					'Assigned To' => Array('crmentity'=>'smownerid')
-				);
+		'Campaign Name'=>Array('campaign'=>'campaignname'),
+		'Campaign Type'=>Array('campaign'=>'campaigntype'),
+		'Campaign Status'=>Array('campaign'=>'campaignstatus'),
+		'Expected Revenue'=>Array('campaign'=>'expectedrevenue'),
+		'Expected Close Date'=>Array('campaign'=>'closingdate'),
+		'Assigned To' => Array('crmentity'=>'smownerid')
+	);
 
 	var $list_fields_name = Array(
-					'Campaign Name'=>'campaignname',
-					'Campaign Type'=>'campaigntype',
-					'Campaign Status'=>'campaignstatus',
-					'Expected Revenue'=>'expectedrevenue',
-					'Expected Close Date'=>'closingdate',
-					'Assigned To'=>'assigned_user_id'
-				     );
+		'Campaign Name'=>'campaignname',
+		'Campaign Type'=>'campaigntype',
+		'Campaign Status'=>'campaignstatus',
+		'Expected Revenue'=>'expectedrevenue',
+		'Expected Close Date'=>'closingdate',
+		'Assigned To'=>'assigned_user_id'
+	);
 
+	// Make the field link to detail view from list view (Fieldname)
 	var $list_link_field= 'campaignname';
-	//Added these variables which are used as default order by and sortorder in ListView
-	var $default_order_by = 'crmid';
-	var $default_sort_order = 'DESC';
-
-	//var $groupTable = Array('vtiger_campaigngrouprelation','campaignid');
 
 	var $search_fields = Array(
-			'Campaign Name'=>Array('vtiger_campaign'=>'campaignname'),
-			'Campaign Type'=>Array('vtiger_campaign'=>'campaigntype'),
-			);
+		'Campaign Name'=>Array('vtiger_campaign'=>'campaignname'),
+		'Campaign Type'=>Array('vtiger_campaign'=>'campaigntype'),
+	);
 
 	var $search_fields_name = Array(
-			'Campaign Name'=>'campaignname',
-			'Campaign Type'=>'campaigntype',
-			);
-	// Used when enabling/disabling the mandatory fields for the module.
-	// Refers to vtiger_field.fieldname values.
-	var $mandatory_fields = Array('campaignname','createdtime' ,'modifiedtime','assigned_user_id');
+		'Campaign Name'=>'campaignname',
+		'Campaign Type'=>'campaigntype',
+	);
+
+	// For Popup window record selection
+	var $popup_fields = Array('campaignname');
+
+	// Placeholder for sort fields - All the fields will be initialized for Sorting through initSortFields
+	var $sortby_fields = Array('campaignname','smownerid','campaigntype','productname','expectedrevenue','closingdate','campaignstatus','expectedresponse','targetaudience','expectedcost');
 
 	// For Alphabetical search
 	var $def_basicsearch_col = 'campaignname';
+
+	// Column value to use on detail view record text display
+	var $def_detailview_recname = 'campaignname';
 
 	// Required Information for enabling Import feature
 	var $required_fields = Array('campaignname'=>1);
@@ -82,17 +81,29 @@ class Campaigns extends CRMEntity {
 	// Callback function list during Importing
 	var $special_functions = Array('set_import_assigned_user');
 
-	function Campaigns() 
-	{
-		$this->log =LoggerManager::getLogger('campaign');
+	var $default_order_by = 'crmid';
+	var $default_sort_order = 'DESC';
+	// Used when enabling/disabling the mandatory fields for the module.
+	// Refers to vtiger_field.fieldname values.
+	var $mandatory_fields = Array('campaignname','createdtime' ,'modifiedtime','assigned_user_id');
+
+	function __construct() {
+		global $log, $currentModule;
+		$this->column_fields = getColumnFields($currentModule);
 		$this->db = PearDatabase::getInstance();
-		$this->column_fields = getColumnFields('Campaigns');
+		$this->log = $log;
+		$sql = 'SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid = ?';
+		$tabid = getTabid($currentModule);
+		$result = $this->db->pquery($sql, array($tabid));
+		if ($result and $this->db->num_rows($result)==1) {
+			$this->HasDirectImageField = true;
+		}
 	}
 
-	/** Function to handle module specific operations when saving a entity
-	*/
-	function save_module($module)
-	{
+	function save_module($module) {
+		if ($this->HasDirectImageField) {
+			$this->insertIntoAttachment($this->id,$module);
+		}
 	}
 
 	// Mike Crowe Mod --------------------------------------------------------Default ordering for us
@@ -667,25 +678,25 @@ class Campaigns extends CRMEntity {
 	{
 		global $current_user;
 		$thismodule = $_REQUEST['module'];
-		
+
 		include("include/utils/ExportUtils.php");
 
 		//To get the Permitted fields query and the permitted fields list
 		$sql = getPermittedFieldsQuery($thismodule, "detail_view");
-		
+
 		$fields_list = getFieldsListFromQuery($sql);
 
 		$query = "SELECT $fields_list, vtiger_users.user_name AS user_name 
-					FROM vtiger_crmentity INNER JOIN $this->table_name ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
+				FROM vtiger_crmentity INNER JOIN $this->table_name ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
 
 		if(!empty($this->customFieldTable)) {
 			$query .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
-				      " = $this->table_name.$this->table_index"; 
+				" = $this->table_name.$this->table_index";
 		}
 
 		$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
 		$query .= " LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id and vtiger_users.status='Active'";
-		
+
 		$linkedModulesQuery = $this->db->pquery("SELECT distinct fieldname, columnname, relmodule FROM vtiger_field" .
 				" INNER JOIN vtiger_fieldmodulerel ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid" .
 				" WHERE uitype='10' AND vtiger_fieldmodulerel.module=?", array($thismodule));
@@ -696,10 +707,10 @@ class Campaigns extends CRMEntity {
 			$related_module = $this->db->query_result($linkedModulesQuery, $i, 'relmodule');
 			$fieldname = $this->db->query_result($linkedModulesQuery, $i, 'fieldname');
 			$columnname = $this->db->query_result($linkedModulesQuery, $i, 'columnname');
-			
+
 			$other = CRMEntity::getInstance($related_module);
 			vtlib_setup_modulevars($related_module, $other);
-			
+
 			if($rel_mods[$other->table_name]) {
 				$rel_mods[$other->table_name] = $rel_mods[$other->table_name] + 1;
 				$alias = $other->table_name.$rel_mods[$other->table_name];
@@ -707,9 +718,9 @@ class Campaigns extends CRMEntity {
 			} else {
 				$alias = $other->table_name;
 				$query_append = '';
-				$rel_mods[$other->table_name] = 1;	
+				$rel_mods[$other->table_name] = 1;
 			}
-			
+
 			$query .= " LEFT JOIN $other->table_name $query_append ON $alias.$other->table_index = $this->table_name.$columnname";
 		}
 
@@ -754,16 +765,16 @@ class Campaigns extends CRMEntity {
 		global $adb;
 		$count = 0;
 		$query1 = "select bean_id from vtiger_users_last_import where assigned_user_id=? AND bean_type='$module' AND deleted=0";
-		$result1 = $adb->pquery($query1, array($user_id)) or die("Error getting last import for undo: ".mysql_error()); 
+		$result1 = $adb->pquery($query1, array($user_id)) or die("Error getting last import for undo: ".mysql_error());
 		while ( $row1 = $adb->fetchByAssoc($result1))
 		{
 			$query2 = "update vtiger_crmentity set deleted=1 where crmid=?";
-			$result2 = $adb->pquery($query2, array($row1['bean_id'])) or die("Error undoing last import: ".mysql_error()); 
-			$count++;			
+			$result2 = $adb->pquery($query2, array($row1['bean_id'])) or die("Error undoing last import: ".mysql_error());
+			$count++;
 		}
 		return $count;
 	}
-	
+
 	/**
 	 * Transform the value while exporting
 	 */
@@ -778,12 +789,12 @@ class Campaigns extends CRMEntity {
 	{
 		global $current_user, $adb;
 		$record_user = $this->column_fields["assigned_user_id"];
-		
+
 		if($record_user != $current_user->id){
 			$sqlresult = $adb->pquery("select id from vtiger_users where id = ? union select groupid as id from vtiger_groups where groupid = ?", array($record_user, $record_user));
 			if($this->db->num_rows($sqlresult)!= 1) {
 				$this->column_fields["assigned_user_id"] = $current_user->id;
-			} else {			
+			} else {
 				$row = $adb->fetchByAssoc($sqlresult, -1, false);
 				if (isset($row['id']) && $row['id'] != -1) {
 					$this->column_fields["assigned_user_id"] = $row['id'];
@@ -793,8 +804,8 @@ class Campaigns extends CRMEntity {
 			}
 		}
 	}
-	
-	/** 
+
+	/**
 	 * Function which will give the basic query to find duplicates
 	 */
 	function getDuplicatesQuery($module,$table_cols,$field_values,$ui_type_arr,$select_cols='') {
@@ -805,39 +816,38 @@ class Campaigns extends CRMEntity {
 
 		$from_clause = " FROM $this->table_name";
 
-		$from_clause .= "	INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
+		$from_clause .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
 
 		// Consider custom table join as well.
 		if(isset($this->customFieldTable)) {
 			$from_clause .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
-				      " = $this->table_name.$this->table_index"; 
+				" = $this->table_name.$this->table_index";
 		}
 		$from_clause .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
 						LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
-		
-		$where_clause = "	WHERE vtiger_crmentity.deleted = 0";
+
+		$where_clause = " WHERE vtiger_crmentity.deleted = 0";
 		$where_clause .= $this->getListViewSecurityParameter($module);
-					
+
 		if (isset($select_cols) && trim($select_cols) != '') {
-			$sub_query = "SELECT $select_cols FROM  $this->table_name AS t " .
+			$sub_query = "SELECT $select_cols FROM $this->table_name AS t " .
 				" INNER JOIN vtiger_crmentity AS crm ON crm.crmid = t.".$this->table_index;
 			// Consider custom table join as well.
 			if(isset($this->customFieldTable)) {
 				$sub_query .= " LEFT JOIN ".$this->customFieldTable[0]." tcf ON tcf.".$this->customFieldTable[1]." = t.$this->table_index";
 			}
-			$sub_query .= " WHERE crm.deleted=0 GROUP BY $select_cols HAVING COUNT(*)>1";	
+			$sub_query .= " WHERE crm.deleted=0 GROUP BY $select_cols HAVING COUNT(*)>1";
 		} else {
 			$sub_query = "SELECT $table_cols $from_clause $where_clause GROUP BY $table_cols HAVING COUNT(*)>1";
-		}	
-		
-		
+		}
+
 		$query = $select_clause . $from_clause .
 					" LEFT JOIN vtiger_users_last_import ON vtiger_users_last_import.bean_id=" . $this->table_name .".".$this->table_index .
 					" INNER JOIN (" . $sub_query . ") AS temp ON ".get_on_clause($field_values,$ui_type_arr,$module) .
 					$where_clause .
 					" ORDER BY $table_cols,". $this->table_name .".".$this->table_index ." ASC";
-					
-		return $query;		
+
+		return $query;
 	}
 
 	/**

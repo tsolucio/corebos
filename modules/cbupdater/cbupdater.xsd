@@ -25,6 +25,7 @@
 							<xs:element type="xs:boolean" name="systemupdate" maxOccurs="1" minOccurs="0" />
 							<xs:element type="xs:boolean" name="perspective" maxOccurs="1" minOccurs="0" />
 							<xs:element type="xs:boolean" name="continuous" maxOccurs="1" minOccurs="0" />
+							<xs:element type="xs:boolean" name="blocked" maxOccurs="1" minOccurs="0" />
 						</xs:sequence>
 					</xs:complexType>
 				</xs:element>

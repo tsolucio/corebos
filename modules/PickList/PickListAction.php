@@ -69,11 +69,11 @@ if($mode == 'add'){
 	$num = $adb->num_rows($result);
 
 	for($i=0; $i<count($newValues);$i++){
-		$newVal = Array('encodedValue'=>htmlentities($newValues[$i], ENT_QUOTES, $default_charset),'rawValue'=>$newValues[$i]);
+		$newVal = Array('encodedValue'=>html_entity_decode($newValues[$i], ENT_QUOTES, $default_charset),'rawValue'=>$newValues[$i]);
 		$oldVal = $oldValues[$i];
 
 		if($newVal != $oldVal){
-			$oldVal = Array('encodedValue'=>htmlentities($oldVal, ENT_QUOTES, $default_charset),'rawValue'=>$oldVal);
+			$oldVal = Array('encodedValue'=>html_entity_decode($oldVal, ENT_QUOTES, $default_charset),'rawValue'=>$oldVal);
 			$sql = "UPDATE vtiger_$tableName SET $tableName=? WHERE $tableName=?";
 			$adb->pquery($sql, array($newVal['encodedValue'], $oldVal['encodedValue']));
 			
@@ -122,7 +122,7 @@ if($mode == 'add'){
 				$adb->pquery($sql, array($replacePicklistID, $origPicklistID));
 			}
 		}
-		$values[$i] = Array('encodedValue'=>htmlentities($values[$i], ENT_QUOTES, $default_charset),'rawValue'=>$values[$i]);
+		$values[$i] = Array('encodedValue'=>html_entity_decode($values[$i], ENT_QUOTES, $default_charset),'rawValue'=>$values[$i]);
 		$sql = "delete from vtiger_$tableName where $tableName=?";
 		$adb->pquery($sql, array($values[$i]['encodedValue']));
 		$sql = "delete from vtiger_role2picklist where picklistvalueid=?";

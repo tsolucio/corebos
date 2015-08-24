@@ -26,8 +26,7 @@ if(!is_admin($current_user)) {
 	$module = vtlib_purify($_REQUEST['formodule']);
 
 	$menu_array = Array();
-	
-	//if(layout editor is permitted)
+
 	$menu_array['LayoutEditor']['location'] = 'index.php?module=Settings&action=LayoutBlockList&parenttab=Settings&formodule='.$module;
 	$menu_array['LayoutEditor']['image_src'] = 'themes/images/orgshar.gif';
 	$menu_array['LayoutEditor']['desc'] = getTranslatedString('LBL_LAYOUT_EDITOR_DESCRIPTION');
@@ -58,13 +57,13 @@ if(!is_admin($current_user)) {
 	
 	if(VTWorkflowUtils::checkModuleWorkflow($module)){
 		$sql_result = $adb->pquery("SELECT * FROM vtiger_settings_field WHERE name = ? AND active=0",array('LBL_WORKFLOW_LIST'));
-			if($adb->num_rows($sql_result) > 0) {
-				$menu_array['Workflow']['location'] = $adb->query_result($sql_result, 0, 'linkto').'&list_module='.$module;
-				$menu_array['Workflow']['image_src'] = vtiger_imageurl($adb->query_result($sql_result, 0, 'iconpath'), $theme);
-				$menu_array['Workflow']['desc'] = getTranslatedString($adb->query_result($sql_result, 0, 'description'),'com_vtiger_workflow');
-				$menu_array['Workflow']['label'] = getTranslatedString($adb->query_result($sql_result, 0, 'name'),'com_vtiger_workflow');
-			}
-	}	
+		if($adb->num_rows($sql_result) > 0) {
+			$menu_array['Workflow']['location'] = $adb->query_result($sql_result, 0, 'linkto').'&list_module='.$module;
+			$menu_array['Workflow']['image_src'] = vtiger_imageurl($adb->query_result($sql_result, 0, 'iconpath'), $theme);
+			$menu_array['Workflow']['desc'] = getTranslatedString($adb->query_result($sql_result, 0, 'description'),'com_vtiger_workflow');
+			$menu_array['Workflow']['label'] = getTranslatedString($adb->query_result($sql_result, 0, 'name'),'com_vtiger_workflow');
+		}
+	}
 	//add blanks for 3-column layout
 	$count = count($menu_array)%3;
 	if($count>0) {
@@ -72,7 +71,7 @@ if(!is_admin($current_user)) {
 			$menu_array[] = array();
 		}
 	}
-	
+
 	$smarty->assign('MODULE',$module);
 	$smarty->assign('MODULE_LBL',getTranslatedString($module,$module));
 	$smarty->assign('MENU_ARRAY', $menu_array);

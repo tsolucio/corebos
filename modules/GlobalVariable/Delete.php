@@ -23,5 +23,4 @@ $url = getBasic_Advance_SearchURL();
 DeleteEntity($currentModule, $return_module, $focus, $record, $return_id);
 
 header("Location: index.php?module=$return_module&action=$return_action&record=$return_id&parenttab=$parenttab&relmodule=$module".$url);
-
 ?>

@@ -249,7 +249,7 @@ class DateTimeField {
 		$log->debug("Entering getDisplayDate(" . $this->datetime . ") method ...");
 
 		$date_value = explode(' ',$this->datetime);
-		if ($date_value[1] != '') {
+		if (isset($date_value[1]) and $date_value[1] != '') {
 			$date = self::convertToUserTimeZone($this->datetime, $user);
 			$date_value = $date->format('Y-m-d');
 		}

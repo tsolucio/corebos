@@ -1926,10 +1926,10 @@ class CustomView extends CRMEntity {
 		global $current_user, $log;
 		global $current_language;
 		$custom_strings = return_module_language($current_language, "CustomView");
-
-		$log->debug("Entering isPermittedChangeStatus($status) method..............");
+		$log->debug("Entering isPermittedChangeStatus($status) method...");
 		require('user_privileges/user_privileges_' . $current_user->id . '.php');
-		$status_details = Array();
+		$changed_status = $status_label = '';
+		$status_details = Array('Status' => CV_STATUS_DEFAULT, 'ChangedStatus' => $changed_status, 'Label' => $status_label);
 		if ($is_admin) {
 			if ($status == CV_STATUS_PENDING) {
 				$changed_status = CV_STATUS_PUBLIC;
@@ -1940,7 +1940,7 @@ class CustomView extends CRMEntity {
 			}
 			$status_details = Array('Status' => $status, 'ChangedStatus' => $changed_status, 'Label' => $status_label);
 		}
-		$log->debug("Exiting isPermittedChangeStatus($status) method..............");
+		$log->debug("Exiting isPermittedChangeStatus($status) method...");
 		return $status_details;
 	}
 

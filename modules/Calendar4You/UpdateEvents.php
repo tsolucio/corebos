@@ -37,7 +37,8 @@ if ($num_rows1 > 0) {
     	$userid = $row1["userid"];
         
         $GoogleSync4You = new GoogleSync4You();
-        $GoogleSync4You->setAccessDataForUser($userid);
+		$have_access_data = $GoogleSync4You->setAccessDataForUser($userid);
+		if ($have_access_data) {
         $GoogleSync4You->connectToGoogle();
         
         if ($GoogleSync4You->isLogged()) {
@@ -125,6 +126,7 @@ if ($num_rows1 > 0) {
                 }
             }
         }
+		}
     }
 }
 

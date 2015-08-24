@@ -20,7 +20,8 @@ $typeid = $_REQUEST["typeid"];
 error_reporting(0);
 
 $GoogleSync4You = new GoogleSync4You();
-$GoogleSync4You->setAccessDataForUser($userid);
+$have_access_data = $GoogleSync4You->setAccessDataForUser($userid);
+if ($have_access_data) {
 $GoogleSync4You->connectToGoogle();
 
 if ($GoogleSync4You->isLogged()) {
@@ -123,8 +124,8 @@ if ($GoogleSync4You->isLogged()) {
     echo $c_mod_strings["Location"].": <span id='google_info_".$eventid."_location'>" .implode(",",$event->where)."</span><br />"; //$Where[0]; 
 } else {
     echo $GoogleSync4You->getStatus();
-}       
-      
+}
+}
 function extract_recurrence($ical_string) {
             
   $vevent_rawstr = "/(?ims)BEGIN:VEVENT(.*)END:VEVENT/";

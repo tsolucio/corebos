@@ -10,7 +10,7 @@
 require_once('include/database/PearDatabase.php');
 @include_once('user_privileges/default_module_view.php');
 
-global $singlepane_view, $currentModule;
+global $adb, $singlepane_view, $currentModule;
 $idlist            = vtlib_purify($_REQUEST['idlist']);
 $destinationModule = vtlib_purify($_REQUEST['destination_module']);
 $parenttab         = getParentTab();
@@ -23,14 +23,8 @@ if($singlepane_view == 'true')
 else
 	$action = "CallRelatedList";
 
-$storearray = array();
-if(!empty($_REQUEST['idlist'])) {
-	// Split the string of ids
-	$storearray = explode (";",trim($idlist,";"));
-} else if(!empty($_REQUEST['entityid'])){
-	$storearray = array($_REQUEST['entityid']);
-}
 $focus = CRMEntity::getInstance($currentModule);
+
 if($mode == 'delete') {
 	// Split the string of ids
 	$ids = explode (";",$idlist);
@@ -48,6 +42,5 @@ if($mode == 'delete') {
 		relateEntities($focus, $currentModule, $forCRMRecord, $destinationModule, $ids);
 	}
 }
-
 header("Location: index.php?module=$currentModule&record=$forCRMRecord&action=$action&parenttab=$parenttab");
 ?>

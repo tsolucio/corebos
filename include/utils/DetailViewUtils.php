@@ -27,13 +27,8 @@ require_once('modules/PickList/PickListUtils.php');
  * Return type is an array
  */
 function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, $generatedtype, $tabid='', $module='') {
-	global $log;
-	$log->debug("Entering getDetailViewOutputHtml(" . $uitype . "," . $fieldname . "," . $fieldlabel . "," . $col_fields . "," . $generatedtype . "," . $tabid . ") method ...");
-	global $adb;
-	global $mod_strings;
-	global $app_strings;
-	global $current_user;
-	global $theme;
+	global $log, $adb, $mod_strings, $app_strings, $current_user, $theme, $default_charset;
+	$log->debug("Entering getDetailViewOutputHtml(" . $uitype . "," . $fieldname . "," . $fieldlabel . "," . print_r($col_fields,true) . "," . $generatedtype . "," . $tabid . ") method ...");
 	$theme_path = "themes/" . $theme . "/";
 	$image_path = $theme_path . "images/";
 	$fieldlabel = from_html($fieldlabel);
@@ -135,6 +130,32 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		}
 
 		$label_fld ["options"] = $options;
+	} elseif ($uitype == 1613) {
+		$label_fld[] = getTranslatedString($fieldlabel, $module);
+		$label_fld[] = getTranslatedString($col_fields[$fieldname], $module);
+		//get All the modules the current user is permitted to Access.
+		$pickListResult = getAllowedPicklistModules();
+
+		$options = array();
+		$options[] = "";
+		$count = 0;
+		$found = false;
+		foreach ($pickListResult as $pKey=>$pValue) {
+			$pickListValue = $pValue;
+			$col_fields[$fieldname] = decode_html($col_fields[$fieldname]);
+
+			if ($col_fields[$fieldname] == $pickListValue) {
+				$chk_val = "selected";
+				$count++;
+				$found = true;
+			} else {
+				$chk_val = '';
+			}
+			$pickListValue = to_html($pickListValue);
+			$options[] = array(getTranslatedString($pickListValue, $module), $pickListValue, $chk_val);
+		}
+		uasort($options, function($a,$b) {return (strtolower($a[0]) < strtolower($b[0])) ? -1 : 1;});
+		$label_fld ["options"] = $options;
 	} elseif ($uitype == 15) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$label_fld[] = $col_fields[$fieldname];
@@ -148,6 +169,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$count = 0;
 		$found = false;
 		if (!empty($picklistValues)) {
+			$pickcount = 0;
 			foreach ($picklistValues as $order => $pickListValue) {
 				if (in_array(trim($pickListValue), array_map("trim", $valueArr))) {
 					$chk_val = "selected";
@@ -200,6 +222,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$selected_entries = explode(' |##| ', $col_fields[$fieldname]);
 
 		if (!empty($picklistValues)) {
+			$pickcount = 0;
 			foreach ($picklistValues as $order => $pickListValue) {
 				foreach ($selected_entries as $selected_entries_value) {
 					if (trim($selected_entries_value) == trim(htmlentities($pickListValue, ENT_QUOTES, $default_charset))) {
@@ -221,6 +244,42 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 				$options[] = array($not_access_lbl, trim($selected_entries_value), 'selected');
 			}
 		}
+		$label_fld ["options"] = $options;
+	}elseif ($uitype == 3313) {
+		$roleid = $current_user->roleid;
+		$label_fld[] = getTranslatedString($fieldlabel, $module);
+		$label_fld[] = str_ireplace(' |##| ', ', ', $col_fields[$fieldname]);
+
+		$picklistValues = getAllowedPicklistModules();
+
+		$options = array();
+		$selected_entries = Array();
+		$selected_entries = explode(' |##| ', $col_fields[$fieldname]);
+
+		if (!empty($picklistValues)) {
+			$pickcount = 0;
+			foreach ($picklistValues as $order => $pickListValue) {
+				foreach ($selected_entries as $selected_entries_value) {
+					if (trim($selected_entries_value) == trim(htmlentities($pickListValue, ENT_QUOTES, $default_charset))) {
+						$chk_val = 'selected';
+						$pickcount++;
+						break;
+					} else {
+						$chk_val = '';
+					}
+				}
+				if (isset($_REQUEST['file']) && $_REQUEST['file'] == 'QuickCreate') {
+					$options[] = array(htmlentities(getTranslatedString($pickListValue, $module), ENT_QUOTES, $default_charset), $pickListValue, $chk_val);
+				} else {
+					$options[] = array(getTranslatedString($pickListValue, $module), $pickListValue, $chk_val);
+				}
+			}
+			if ($pickcount == 0 && !empty($value)) {
+				$not_access_lbl = "<font color='red'>" . $app_strings['LBL_NOT_ACCESSIBLE'] . "</font>";
+				$options[] = array($not_access_lbl, trim($selected_entries_value), 'selected');
+			}
+		}
+		uasort($options, function($a,$b) {return (strtolower($a[0]) < strtolower($b[0])) ? -1 : 1;});
 		$label_fld ["options"] = $options;
 	} elseif ($uitype == 17) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
@@ -964,7 +1023,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 	} elseif ($uitype == 5 || $uitype == 23 || $uitype == 70) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$dateValue = $col_fields[$fieldname];
-		if ($col_fields['time_end'] != '' && ($tabid == 9 || $tabid == 16) && $uitype == 23) {
+		if (isset($col_fields['time_end']) && $col_fields['time_end'] != '' && ($tabid == 9 || $tabid == 16) && $uitype == 23) {
 			$end_time = $col_fields['time_end'];
 		}
 		if ($dateValue == '0000-00-00' || empty($dateValue)) {
@@ -1201,12 +1260,12 @@ function getDetailAssociatedProducts($module, $focus) {
 	global $app_strings, $current_user;
 	$theme_path = "themes/" . $theme . "/";
 	$image_path = $theme_path . "images/";
-	
+
 	if(vtlib_isModuleActive("Products"))
 		$hide_stock = 'no';
 	else
 		$hide_stock = 'yes';
-	
+
 	if ($module != 'PurchaseOrder') {
 		if (GlobalVariable::getVariable('B2B', '1')=='1') {
 			$acvid = $focus->column_fields['account_id'];
@@ -1229,18 +1288,17 @@ function getDetailAssociatedProducts($module, $focus) {
 	$output = '';
 	//Header Rows
 	$output .= '
-
 	<table width="100%"  border="0" align="center" cellpadding="5" cellspacing="0" class="crmTable" id="proTab">
-	   <tr valign="top">
-	   	<td colspan="' . $colspan . '" class="dvInnerHeader"><b>' . $app_strings['LBL_ITEM_DETAILS'] . '</b></td>
+	<tr valign="top">
+		<td colspan="' . $colspan . '" class="dvInnerHeader"><b>' . $app_strings['LBL_ITEM_DETAILS'] . '</b></td>
 		<td class="dvInnerHeader" align="center" colspan="2"><b>' .
 			$app_strings['LBL_CURRENCY'] . ' : </b>' . getTranslatedCurrencyString($currencytype['currency_name']) . ' (' . $currencytype['currency_symbol'] . ')
 		</td>
 		<td class="dvInnerHeader" align="center" colspan="2"><b>' .
 			$app_strings['LBL_TAX_MODE'] . ' : </b>' . $app_strings[$taxtype] . '
 		</td>
-	   </tr>
-	   <tr valign="top">
+	</tr>
+	<tr valign="top">
 		<td width=40% class="lvtCol"><font color="red">*</font>
 			<b>' . $app_strings['LBL_ITEM_NAME'] . '</b>
 		</td>';
@@ -1250,14 +1308,11 @@ function getDetailAssociatedProducts($module, $focus) {
 		$output .= '<td width=10% class="lvtCol"><b>' . $app_strings['LBL_QTY_IN_STOCK'] . '</b></td>';
 
 	$output .= '
-
 		<td width=10% class="lvtCol"><b>' . $app_strings['LBL_QTY'] . '</b></td>
 		<td width=10% class="lvtCol" align="right"><b>' . $app_strings['LBL_LIST_PRICE'] . '</b></td>
 		<td width=12% nowrap class="lvtCol" align="right"><b>' . $app_strings['LBL_TOTAL'] . '</b></td>
 		<td width=13% valign="top" class="lvtCol" align="right"><b>' . $app_strings['LBL_NET_PRICE'] . '</b></td>
-	   </tr>
-	   	';
-
+	</tr>';
 
 	// DG 15 Aug 2006
 	// Add "ORDER BY sequence_no" to retain add order on all inventoryproductrel items
@@ -1578,18 +1633,14 @@ function getRelatedListsInformation($module, $focus) {
 		if ($rel_tab_id != 0) {
 			if ($profileTabsPermission[$rel_tab_id] == 0) {
 				if ($profileActionPermission[$rel_tab_id][3] == 0) {
-					// vtlib customization: Send more information (from module, related module)
-					// to the callee
-					$focus_list[$label] = $focus->$function_name($focus->id, $cur_tab_id,
-									$rel_tab_id, $actions);
+					// vtlib customization: Send more information (from module, related module) to the callee
+					$focus_list[$label] = $focus->$function_name($focus->id, $cur_tab_id, $rel_tab_id, $actions);
 					// END
 				}
 			}
 		} else {
-			// vtlib customization: Send more information (from module, related module)
-			// to the callee
-			$focus_list[$label] = $focus->$function_name($focus->id, $cur_tab_id, $rel_tab_id,
-							$actions);
+			// vtlib customization: Send more information (from module, related module) to the callee
+			$focus_list[$label] = $focus->$function_name($focus->id, $cur_tab_id, $rel_tab_id, $actions);
 			// END
 		}
 	}
@@ -1648,7 +1699,7 @@ function getRelatedLists($module, $focus) {
 /** This function returns whether related lists is present for this particular module or not
  * Param $module - module name
  * Param $activity_mode - mode of activity
- * Return type true or false
+ * Return type list of related modules or false
  */
 function isPresentRelatedLists($module, $activity_mode='') {
 	static $moduleRelatedListCache = array();
@@ -1661,8 +1712,7 @@ function isPresentRelatedLists($module, $activity_mode='') {
 	require('user_privileges/user_privileges_' . $current_user->id . '.php');
 	$tab_id = getTabid($module);
 	// We need to check if there is atleast 1 relation, no need to use count(*)
-	$query = "select relation_id,related_tabid, label from vtiger_relatedlists where tabid=? " .
-			"order by sequence";
+	$query = "select relation_id,related_tabid,label from vtiger_relatedlists where tabid=? order by sequence";
 	$result = $adb->pquery($query, array($tab_id));
 	$count = $adb->num_rows($result);
 	if ($count < 1 || ($module == 'Calendar' && $activity_mode == 'task')) {
@@ -1682,7 +1732,7 @@ function isPresentRelatedLists($module, $activity_mode='') {
 		}
 		$moduleRelatedListCache[$module] = $retval;
 	}
-	return $moduleRelatedListCache[$module];
+	return isset($moduleRelatedListCache[$module]) ? $moduleRelatedListCache[$module] : false;
 }
 
 /** This function returns the detailed block information of a record in a module.
@@ -1693,11 +1743,8 @@ function isPresentRelatedLists($module, $activity_mode='') {
  * Return type is an array
  */
 function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block_label) {
-	global $log;
-	$log->debug("Entering getDetailBlockInformation(" . $module . "," . $result . "," . $col_fields . "," . $tabid . "," . $block_label . ") method ...");
-	global $adb;
-	global $current_user;
-	global $mod_strings;
+	global $log, $adb, $current_user, $mod_strings;
+	$log->debug("Entering getDetailBlockInformation(" . $module . "," . $result . "," . print_r($col_fields,true) . "," . $tabid . "," . print_r($block_label,true) . ") method ...");
 	$label_data = Array();
 
 	$noofrows = $adb->num_rows($result);
@@ -1717,12 +1764,14 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 		$readonly = $adb->query_result($result, $i, 'readonly');
 		$custfld = getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, $generatedtype, $tabid, $module);
 		if (is_array($custfld)) {
-			$label_data[$block][] = array($custfld[0] => array("value" => $custfld[1], "ui" => $custfld[2], "options" => $custfld["options"],
-					"secid" => $custfld["secid"], "link" => $custfld["link"], "cursymb" => $custfld["cursymb"],
-					"salut" => $custfld["salut"], "notaccess" => $custfld["notaccess"],
-					"cntimage" => $custfld["cntimage"], "isadmin" => $custfld["isadmin"],
-					"tablename" => $fieldtablename, "fldname" => $fieldname, "fldid" => $fieldid,
-					"displaytype" => $displaytype, "readonly" => $readonly));
+			$label_data[$block][] = array($custfld[0] => array(
+				'value' => $custfld[1], "ui" => $custfld[2], 'options' => isset($custfld['options']) ? $custfld['options'] : '',
+				'secid' => isset($custfld['secid']) ? $custfld['secid'] : '', 'link' => isset($custfld['link']) ? $custfld['link'] : '',
+				'cursymb' => isset($custfld['cursymb']) ? $custfld['cursymb'] : '',
+				'salut' => isset($custfld['salut']) ? $custfld['salut'] : '', 'notaccess' => isset($custfld['notaccess']) ? $custfld['notaccess'] : '',
+				'cntimage' => isset($custfld['cntimage']) ? $custfld['cntimage'] : '', "isadmin" => $custfld["isadmin"],
+				'tablename' => $fieldtablename, "fldname" => $fieldname, "fldid" => $fieldid,
+				'displaytype' => $displaytype, "readonly" => $readonly));
 		}
 	}
 	foreach ($label_data as $headerid => $value_array) {
@@ -1731,7 +1780,7 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 			$key2 = null;
 			$keys = array_keys($value_array[$i]);
 			$key1 = $keys[0];
-			if (is_array($value_array[$i + 1]) && ($value_array[$i][$key1][ui] != 19 && $value_array[$i][$key1][ui] != 20)) {
+			if (isset($value_array[$i + 1]) && is_array($value_array[$i + 1]) && ($value_array[$i][$key1]['ui'] != 19 && $value_array[$i][$key1]['ui'] != 20)) {
 				$keys = array_keys($value_array[$i + 1]);
 				$key2 = $keys[0];
 			}
@@ -1741,7 +1790,7 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 				$use_key1 = " " . $key1;
 			}
 
-			if ($value_array[$i][$key1][ui] != 19 && $value_array[$i][$key1][ui] != 20) {
+			if ($value_array[$i][$key1]['ui'] != 19 && $value_array[$i][$key1]['ui'] != 20) {
 				$detailview_data[$j] = array($use_key1 => $value_array[$i][$key1], $key2 => $value_array[$i + 1][$key2]);
 				$i+=2;
 			} else {
@@ -1751,13 +1800,19 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 		}
 		$label_data[$headerid] = $detailview_data;
 	}
+	$returndata = array();
 	foreach ($block_label as $blockid => $label) {
 		if ($label == '') {
 			$returndata[getTranslatedString($curBlock, $module)] = array_merge((array) $returndata[getTranslatedString($curBlock, $module)], (array) $label_data[$blockid]);
 		} else {
 			$curBlock = $label;
-			if (is_array($label_data[$blockid]))
-				$returndata[getTranslatedString($curBlock, $module)] = array_merge((array) $returndata[getTranslatedString($curBlock, $module)], (array) $label_data[$blockid]);
+			if (is_array($label_data[$blockid])) {
+				if (isset($returndata[getTranslatedString($curBlock, $module)])) {
+					$returndata[getTranslatedString($curBlock, $module)] = array_merge((array) $returndata[getTranslatedString($curBlock, $module)], (array) $label_data[$blockid]);
+				} else {
+					$returndata[getTranslatedString($curBlock, $module)] = (array) $label_data[$blockid];
+				}
+			}
 		}
 	}
 	$log->debug("Exiting getDetailBlockInformation method ...");
@@ -1772,7 +1827,11 @@ function VT_detailViewNavigation($smarty, $recordNavigationInfo, $currrentRecord
 			if ($recordId === $currrentRecordId) {
 				if ($index == 0) {
 					$smarty->assign('privrecordstart', $start - 1);
+					if (isset($recordNavigationInfo[$start - 1])) {
 					$smarty->assign('privrecord', $recordNavigationInfo[$start - 1][count($recordNavigationInfo[$start - 1]) - 1]);
+					} else {
+					$smarty->assign('privrecord', '');
+					}
 				} else {
 					$smarty->assign('privrecordstart', $start);
 					$smarty->assign('privrecord', $recordIdList[$index - 1]);

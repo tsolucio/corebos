@@ -7,8 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-global $app_strings, $mod_strings, $current_language, $currentModule, $theme;
-global $list_max_entries_per_page;
+global $app_strings, $mod_strings, $current_language, $currentModule, $theme, $list_max_entries_per_page;
 
 require_once('Smarty_setup.php');
 require_once('include/ListView/ListView.php');
@@ -29,7 +28,7 @@ $focus = new $currentModule();
 $focus->initSortbyField($currentModule);
 $list_buttons=$focus->getListButtons($app_strings,$mod_strings);
 
-if(ListViewSession::hasViewChanged($currentModule,$viewid)) {
+if(ListViewSession::hasViewChanged($currentModule)) {
 	$_SESSION[$currentModule."_Order_By"] = '';
 }
 $sorder = $focus->getSortOrder();
@@ -122,7 +121,7 @@ if ($sql_error) {
 } else {
 // Enabling Module Search
 $url_string = '';
-if($_REQUEST['query'] == 'true') {
+if(isset($_REQUEST['query']) and $_REQUEST['query'] == 'true') {
 	$queryGenerator->addUserSearchConditions($_REQUEST);
 	$ustring = getSearchURL($_REQUEST);
 	$url_string .= "&query=true$ustring";
@@ -184,8 +183,8 @@ $smarty->assign("NAVIGATION", $navigationOutput);
 
 $controller = new ListViewController($adb, $current_user, $queryGenerator);
 
-if(isset($skipAction)==false){
-	$skipAction==false;
+if(!isset($skipAction)){
+	$skipAction = false;
 }
 
 $listview_header = $controller->getListViewHeader($focus,$currentModule,$url_string,$sorder,$order_by,$skipAction);
@@ -209,9 +208,9 @@ $smarty->assign("AVALABLE_FIELDS", getMergeFields($currentModule,"available_fiel
 $smarty->assign("FIELDS_TO_MERGE", getMergeFields($currentModule,"fileds_to_merge"));
 
 //Added to select Multiple records in multiple pages
-$smarty->assign("SELECTEDIDS", vtlib_purify($_REQUEST['selobjs']));
-$smarty->assign("ALLSELECTEDIDS", vtlib_purify($_REQUEST['allselobjs']));
-$smarty->assign("CURRENT_PAGE_BOXES", implode(array_keys($listview_entries),";"));
+$smarty->assign('SELECTEDIDS', isset($_REQUEST['selobjs']) ? vtlib_purify($_REQUEST['selobjs']) : '');
+$smarty->assign('ALLSELECTEDIDS', isset($_REQUEST['selobjs']) ? vtlib_purify($_REQUEST['allselobjs']) : '');
+$smarty->assign('CURRENT_PAGE_BOXES', implode(array_keys($listview_entries),';'));
 ListViewSession::setSessionQuery($currentModule,$list_query,$viewid);
 
 // Gather the custom link information to display

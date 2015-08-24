@@ -55,7 +55,6 @@ function getSearchListHeaderValues($focus, $module,$sort_qry='',$sorder='',$orde
         }
 	//Added to reduce the no. of queries logging for non-admin vtiger_users -- by Minnie-start
 	$field_list = array();
-	$j=0;
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	foreach($focus->list_fields as $name=>$tableinfo)
 	{
@@ -81,7 +80,6 @@ function getSearchListHeaderValues($focus, $module,$sort_qry='',$sorder='',$orde
 			$fieldname = 'foldername';
 		}
 		array_push($field_list, $fieldname);
-		$j++;
 	}
 	//Getting the Entries from Profile2 vtiger_field vtiger_table
 	if($is_admin == false)

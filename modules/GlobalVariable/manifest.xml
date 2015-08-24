@@ -217,11 +217,11 @@
 </field>
 <field>
 <fieldname>module_list</fieldname>
-<uitype>1</uitype>
+<uitype>3313</uitype>
 <columnname>module_list</columnname>
 <tablename>vtiger_globalvariable</tablename>
 <generatedtype>1</generatedtype>
-<fieldlabel>Comma Separated Module List</fieldlabel>
+<fieldlabel>Module List</fieldlabel>
 <readonly>1</readonly>
 <presence>2</presence>
 <defaultvalue></defaultvalue>
@@ -302,8 +302,8 @@
 <helpinfo><![CDATA[]]></helpinfo>
 <masseditable>1</masseditable>
 <entityidentifier>
-<entityidfield>globalno</entityidfield>
-<entityidcolumn>globalno</entityidcolumn>
+<entityidfield>globalvariableid</entityidfield>
+<entityidcolumn>globalvariableid</entityidcolumn>
 </entityidentifier>
 </field>
 <field>

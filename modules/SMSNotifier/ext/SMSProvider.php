@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 class SMSProvider {
-	
+
 	static function getInstance($providername) {
 		if(!empty($providername)) {
 			$providername = trim($providername);
@@ -36,9 +36,6 @@ class SMSProvider {
 			}
 		}
 		return $providers;
-
 	}
-
-
 }
 ?>

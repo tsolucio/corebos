@@ -1,46 +1,38 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- ********************************************************************************/
-include_once('config.php');
-require_once('include/logging.php');
-require_once('include/database/PearDatabase.php');
-require_once('include/utils/utils.php');
+ ************************************************************************************/
+require_once('data/CRMEntity.php');
+require_once('data/Tracker.php');
 require_once('user_privileges/default_module_view.php');
 require_once('modules/InventoryDetails/InventoryDetails.php');
 
 class SalesOrder extends CRMEntity {
-	var $log;
-	var $db;
+	var $db, $log; // Used in class functions of CRMEntity
 
-	var $table_name = "vtiger_salesorder";
+	var $table_name = 'vtiger_salesorder';
 	var $table_index= 'salesorderid';
+	var $column_fields = Array();
+
+	/** Indicator if this is a custom module or standard module */
+	var $IsCustomModule = false;
+	var $HasDirectImageField = false;
 	var $tab_name = Array('vtiger_crmentity','vtiger_salesorder','vtiger_sobillads','vtiger_soshipads','vtiger_salesordercf','vtiger_invoice_recurring_info');
 	var $tab_name_index = Array('vtiger_crmentity'=>'crmid','vtiger_salesorder'=>'salesorderid','vtiger_sobillads'=>'sobilladdressid','vtiger_soshipads'=>'soshipaddressid','vtiger_salesordercf'=>'salesorderid','vtiger_invoice_recurring_info'=>'salesorderid');
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
 	var $customFieldTable = Array('vtiger_salesordercf', 'salesorderid');
-	var $entity_table = "vtiger_crmentity";
+	var $entity_table = 'vtiger_crmentity';
 
-	var $billadr_table = "vtiger_sobillads";
-
-	var $object_name = "SalesOrder";
-
-	var $new_schema = true;
+	var $object_name = 'SalesOrder';
 
 	var $update_product_array = Array();
-
-	var $column_fields = Array();
 
 	var $sortby_fields = Array('subject','smownerid','accountname','lastname');
 
@@ -49,66 +41,66 @@ class SalesOrder extends CRMEntity {
 
 	// This is the list of vtiger_fields that are in the lists.
 	var $list_fields = Array(
-				// Module Sequence Numbering
-				//'Order No'=>Array('crmentity'=>'crmid'),
-				'Order No'=>Array('salesorder','salesorder_no'),
-				// END
-				'Subject'=>Array('salesorder'=>'subject'),
-				'Account Name'=>Array('account'=>'accountid'),
-				'Quote Name'=>Array('quotes'=>'quoteid'),
-				'Total'=>Array('salesorder'=>'total'),
-				'Assigned To'=>Array('crmentity'=>'smownerid')
-				);
-
+		'Order No'=>Array('salesorder','salesorder_no'),
+		'Subject'=>Array('salesorder'=>'subject'),
+		'Account Name'=>Array('account'=>'accountid'),
+		'Quote Name'=>Array('quotes'=>'quoteid'),
+		'Total'=>Array('salesorder'=>'total'),
+		'Assigned To'=>Array('crmentity'=>'smownerid')
+	);
 	var $list_fields_name = Array(
-				        'Order No'=>'salesorder_no',
-				        'Subject'=>'subject',
-				        'Account Name'=>'account_id',
-				        'Quote Name'=>'quote_id',
-					'Total'=>'hdnGrandTotal',
-				        'Assigned To'=>'assigned_user_id'
-				      );
-	var $list_link_field= 'subject';
+		'Order No'=>'salesorder_no',
+		'Subject'=>'subject',
+		'Account Name'=>'account_id',
+		'Quote Name'=>'quote_id',
+		'Total'=>'hdnGrandTotal',
+		'Assigned To'=>'assigned_user_id'
+	);
+	var $list_link_field = 'subject';
 
 	var $search_fields = Array(
-				'Order No'=>Array('salesorder'=>'salesorder_no'),
-				'Subject'=>Array('salesorder'=>'subject'),
-				'Account Name'=>Array('account'=>'accountid'),
-				'Quote Name'=>Array('salesorder'=>'quoteid')
-				);
-
+		'Order No'=>Array('salesorder'=>'salesorder_no'),
+		'Subject'=>Array('salesorder'=>'subject'),
+		'Account Name'=>Array('account'=>'accountid'),
+		'Quote Name'=>Array('salesorder'=>'quoteid')
+	);
 	var $search_fields_name = Array(
-					'Order No'=>'salesorder_no',
-				        'Subject'=>'subject',
-				        'Account Name'=>'account_id',
-				        'Quote Name'=>'quote_id'
-				      );
+		'Order No'=>'salesorder_no',
+		'Subject'=>'subject',
+		'Account Name'=>'account_id',
+		'Quote Name'=>'quote_id'
+	);
 
 	// This is the list of vtiger_fields that are required.
-	var $required_fields =  array("accountname"=>1);
+	var $required_fields = array("accountname"=>1);
 
 	//Added these variables which are used as default order by and sortorder in ListView
 	var $default_order_by = 'subject';
 	var $default_sort_order = 'ASC';
-	//var $groupTable = Array('vtiger_sogrouprelation','salesorderid');
 
 	var $mandatory_fields = Array('subject','createdtime' ,'modifiedtime');
 
 	// For Alphabetical search
 	var $def_basicsearch_col = 'subject';
 
-	/** Constructor Function for SalesOrder class
-	 *  This function creates an instance of LoggerManager class using getLogger method
-	 *  creates an instance for PearDatabase class and get values for column_fields array of SalesOrder class.
-	 */
-	function SalesOrder() {
-		$this->log =LoggerManager::getLogger('SalesOrder');
+	function __construct() {
+		global $log, $currentModule;
+		$this->column_fields = getColumnFields($currentModule);
 		$this->db = PearDatabase::getInstance();
-		$this->column_fields = getColumnFields('SalesOrder');
+		$this->log = $log;
+		$sql = 'SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid = ?';
+		$tabid = getTabid($currentModule);
+		$result = $this->db->pquery($sql, array($tabid));
+		if ($result and $this->db->num_rows($result)==1) {
+			$this->HasDirectImageField = true;
+		}
 	}
 
 	function save_module($module) {
 		global $updateInventoryProductRel_deduct_stock;
+		if ($this->HasDirectImageField) {
+			$this->insertIntoAttachment($this->id,$module);
+		}
 		$updateInventoryProductRel_deduct_stock = true;
 		//Checking if quote_id is present and updating the quote status
 		if($this->column_fields['quote_id'] != '') {
@@ -357,13 +349,12 @@ class SalesOrder extends CRMEntity {
 			left join vtiger_sobillads on vtiger_salesorder.salesorderid=vtiger_sobillads.sobilladdressid
 			left join vtiger_soshipads on vtiger_salesorder.salesorderid=vtiger_soshipads.soshipaddressid
 			left join vtiger_currency_info as vtiger_currency_info$secmodule on vtiger_currency_info$secmodule.id = vtiger_salesorder.currency_id ";
-		if(($type !== 'COLUMNSTOTOTAL') || ($type == 'COLUMNSTOTOTAL' && $where_condition == 'add'))
-		{		
+		if(($type !== 'COLUMNSTOTOTAL') || ($type == 'COLUMNSTOTOTAL' && $where_condition == 'add')) {
 			$query .= " left join vtiger_inventoryproductrel as vtiger_inventoryproductrelSalesOrder on vtiger_salesorder.salesorderid = vtiger_inventoryproductrelSalesOrder.id
 			left join vtiger_products as vtiger_productsSalesOrder on vtiger_productsSalesOrder.productid = vtiger_inventoryproductrelSalesOrder.productid
 			left join vtiger_service as vtiger_serviceSalesOrder on vtiger_serviceSalesOrder.serviceid = vtiger_inventoryproductrelSalesOrder.productid ";
 		}
-			$query .= " left join vtiger_groups as vtiger_groupsSalesOrder on vtiger_groupsSalesOrder.groupid = vtiger_crmentitySalesOrder.smownerid
+		$query .= " left join vtiger_groups as vtiger_groupsSalesOrder on vtiger_groupsSalesOrder.groupid = vtiger_crmentitySalesOrder.smownerid
 			left join vtiger_users as vtiger_usersSalesOrder on vtiger_usersSalesOrder.id = vtiger_crmentitySalesOrder.smownerid
 			left join vtiger_potential as vtiger_potentialRelSalesOrder on vtiger_potentialRelSalesOrder.potentialid = vtiger_salesorder.potentialid
 			left join vtiger_contactdetails as vtiger_contactdetailsSalesOrder on vtiger_salesorder.contactid = vtiger_contactdetailsSalesOrder.contactid

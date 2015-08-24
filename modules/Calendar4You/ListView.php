@@ -10,9 +10,7 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-
 require_once('Smarty_setup.php');
 require_once("data/Tracker.php");
 require_once('modules/Calendar/Activity.php');
@@ -247,9 +245,9 @@ if($viewid !='')
 $url_string .="&viewname=".$viewid;
 
 //Cambiado code to add close button in custom vtiger_field
-if (($viewid!=0)&&($viewid!="")){
-  if (!isset($oCustomView->list_fields['Close'])) $oCustomView->list_fields['Close']=array ( 'vtiger_activity' => 'eventstatus' );
-  if (!isset($oCustomView->list_fields_name['Close'])) $oCustomView->list_fields_name['Close']='eventstatus';
+if (!empty($viewid)){
+	if (!isset($oCustomView->list_fields['Close'])) $oCustomView->list_fields['Close']=array('vtiger_activity' => 'eventstatus');
+	if (!isset($oCustomView->list_fields_name['Close'])) $oCustomView->list_fields_name['Close']='eventstatus';
 }
 $listview_header = getListViewHeader($focus,"Calendar",$url_string,$sorder,$order_by,"",$oCustomView);
 $smarty->assign("LISTHEADER", $listview_header);

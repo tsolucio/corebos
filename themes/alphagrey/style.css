@@ -7,7 +7,6 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-
 /* ALPHA GRAY  - COLOR THEME*/
 /*added to change color of disabled button */
 input:disabled {
@@ -2226,7 +2225,6 @@ a.drop_down:Hover{
 
 .multiCurrencyEditUI{
     border:3px solid #CCCCCC;
-    width:500px;
     padding:5px;
     position:absolute;
     background-color:#FFFFFF;
@@ -2450,7 +2448,7 @@ a .links{
 
 /* Mail Manager starts*/
 .mm_blur {
-    color: lightgrey;
+    color: #D3D3D3;
 }
 .mm_bold {
     padding: .3em;
@@ -2677,4 +2675,37 @@ a.allMnu:Hover{
 .linkForSelectAll{
 	text-align:center;
 	background-color:white;
+}
+
+.cb-alert-warning, .cb-alert-danger, .cb-alert-info, .cb-alert-success {
+	border-style: solid;
+	border-radius: 12px;
+	margin: 6px;
+	padding: 10px;
+	min-height: 30px;
+	font-size: larger;
+}
+
+.cb-alert-warning {
+	background-color: #fcf8e3;
+	border-color: #faebcc;
+	color: #8a6d3b
+}
+
+.cb-alert-danger {
+	background-color: #f2dede;
+	border-color: #ebccd1;
+	color: #a94442
+}
+
+.cb-alert-info {
+	background-color: #d9edf7;
+	border-color: #bce8f1;
+	color: #31708f
+}
+
+.cb-alert-success {
+	background-color: #dff0d8;
+	border-color: #d6e9c6;
+	color: #3c763d
 }

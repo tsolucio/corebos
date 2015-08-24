@@ -380,4 +380,32 @@
 	<classname>fixUIType4WebserviceFieldType</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add UIType 1613 and 3313 Webservice Field Type</description>
+	<filename>build/changeSets/addUIType1613and3313WebserviceFieldType.php</filename>
+	<classname>addUIType1613and3313WebserviceFieldType</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add UIType 14 Webservice Field Type, fix duration type and fix uitype 3-4</description>
+	<filename>build/changeSets/fix_add_FieldDataTypes.php</filename>
+	<classname>fix_add_FieldDataTypes</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Cron Backup services</description>
+	<filename>build/changeSets/cronbackup.php</filename>
+	<classname>cbcronbackup</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Global Variables UIType ModuleList to 3313 and Fix EntityID</description>
+	<filename>build/changeSets/GlobalVarUITypeModuleListFixEntityID.php</filename>
+	<classname>GlobalVarUITypeModuleListFixEntityID</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

@@ -204,7 +204,7 @@ function sendfile_email()
 								</td></tr>
 						</table>
 						<br>
-
+						{include file='applicationmessage.tpl'}
 						<!-- Account details tabs -->
 						<table border=0 cellspacing=0 cellpadding=0 width=95% align=center>
 							<tr>

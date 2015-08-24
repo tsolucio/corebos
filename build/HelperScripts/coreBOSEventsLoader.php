@@ -35,6 +35,11 @@ registerEvent('corebos.filter.ModComments.queryCriteria');
 registerEvent('corebos.entity.link.before');
 registerEvent('corebos.entity.link.after');
 registerEvent('corebos.entity.link.delete');
+registerEvent('corebos.audit.action');
+registerEvent('corebos.audit.authenticate');
+registerEvent('corebos.audit.login');
+registerEvent('corebos.audit.logout');
+registerEvent('corebos.audit.login.attempt');
 
 echo '</body></html>';
 ?>

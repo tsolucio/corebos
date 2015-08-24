@@ -371,7 +371,6 @@ function getSearchingListViewEntries($focus, $module,$list_result,$navigation_ar
 
 	//Added to reduce the no. of queries logging for non-admin user -- by minnie-start
 	$field_list = array();
-	$j=0;
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	foreach($focus->list_fields as $name=>$tableinfo)
 	{
@@ -394,9 +393,7 @@ function getSearchingListViewEntries($focus, $module,$list_result,$navigation_ar
 		{
 			$fieldname = 'product_id';
 		}
-
 		array_push($field_list, $fieldname);
-		$j++;
 	}
 	$field=Array();
 	if($is_admin==false)

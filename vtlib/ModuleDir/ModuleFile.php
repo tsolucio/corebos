@@ -24,6 +24,8 @@ class ModuleClass extends CRMEntity {
 	 * Mandatory table for supporting custom fields.
 	 */
 	var $customFieldTable = Array('vtiger_payslipcf', 'payslipid');
+	// Uncomment the line below to support custom field columns on related lists
+	// var $related_tables = Array('vtiger_payslipcf'=>array('payslipid','vtiger_payslip', 'payslipid'));
 
 	/**
 	 * Mandatory for Saving, Include tables related to this module.
@@ -42,7 +44,7 @@ class ModuleClass extends CRMEntity {
 	 * Mandatory for Listing (Related listview)
 	 */
 	var $list_fields = Array (
-		/* Format: Field Label => Array(tablename, columnname) */
+		/* Format: Field Label => Array(tablename => columnname) */
 		// tablename should not have prefix 'vtiger_'
 		'Payslip Name'=> Array('payslip' => 'payslipname'),
 		'Assigned To' => Array('crmentity' => 'smownerid')
@@ -58,7 +60,7 @@ class ModuleClass extends CRMEntity {
 
 	// For Popup listview and UI type support
 	var $search_fields = Array(
-		/* Format: Field Label => Array(tablename, columnname) */
+		/* Format: Field Label => Array(tablename => columnname) */
 		// tablename should not have prefix 'vtiger_'
 		'Payslip Name'=> Array('payslip' => 'payslipname')
 	);
@@ -90,7 +92,7 @@ class ModuleClass extends CRMEntity {
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
 	var $mandatory_fields = Array('createdtime', 'modifiedtime', 'payslipname');
-	
+
 	function __construct() {
 		global $log, $currentModule;
 		$this->column_fields = getColumnFields($currentModule);
@@ -102,30 +104,6 @@ class ModuleClass extends CRMEntity {
 		if ($result and $this->db->num_rows($result)==1) {
 			$this->HasDirectImageField = true;
 		}
-	}
-
-	function getSortOrder() {
-		global $currentModule;
-		$sortorder = $this->default_sort_order;
-		if($_REQUEST['sorder']) $sortorder = $this->db->sql_escape_string($_REQUEST['sorder']);
-		else if($_SESSION[$currentModule.'_Sort_Order']) 
-			$sortorder = $_SESSION[$currentModule.'_Sort_Order'];
-		return $sortorder;
-	}
-
-	function getOrderBy() {
-		global $currentModule;
-		
-		$use_default_order_by = '';
-		if(PerformancePrefs::getBoolean('LISTVIEW_DEFAULT_SORTING', true)) {
-			$use_default_order_by = $this->default_order_by;
-		}
-
-		$orderby = $use_default_order_by;
-		if($_REQUEST['order_by']) $orderby = $this->db->sql_escape_string($_REQUEST['order_by']);
-		else if($_SESSION[$currentModule.'_Order_By'])
-			$orderby = $_SESSION[$currentModule.'_Order_By'];
-		return $orderby;
 	}
 
 	function save_module($module) {
@@ -147,7 +125,7 @@ class ModuleClass extends CRMEntity {
 	 */
 	function getListQuery($module, $usewhere='') {
 		$query = "SELECT vtiger_crmentity.*, $this->table_name.*";
-		
+
 		// Keep track of tables joined to avoid duplicates
 		$joinedTables = array();
 
@@ -160,32 +138,32 @@ class ModuleClass extends CRMEntity {
 
 		$joinedTables[] = $this->table_name;
 		$joinedTables[] = 'vtiger_crmentity';
-		
+
 		// Consider custom table join as well.
 		if(!empty($this->customFieldTable)) {
 			$query .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
-				      " = $this->table_name.$this->table_index";
-			$joinedTables[] = $this->customFieldTable[0]; 
+				" = $this->table_name.$this->table_index";
+			$joinedTables[] = $this->customFieldTable[0];
 		}
 		$query .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
 		$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
 
 		$joinedTables[] = 'vtiger_users';
 		$joinedTables[] = 'vtiger_groups';
-		
+
 		$linkedModulesQuery = $this->db->pquery("SELECT distinct fieldname, columnname, relmodule FROM vtiger_field" .
 				" INNER JOIN vtiger_fieldmodulerel ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid" .
 				" WHERE uitype='10' AND vtiger_fieldmodulerel.module=?", array($module));
 		$linkedFieldsCount = $this->db->num_rows($linkedModulesQuery);
-		
+
 		for($i=0; $i<$linkedFieldsCount; $i++) {
 			$related_module = $this->db->query_result($linkedModulesQuery, $i, 'relmodule');
 			$fieldname = $this->db->query_result($linkedModulesQuery, $i, 'fieldname');
 			$columnname = $this->db->query_result($linkedModulesQuery, $i, 'columnname');
-			
-			$other =  CRMEntity::getInstance($related_module);
+
+			$other = CRMEntity::getInstance($related_module);
 			vtlib_setup_modulevars($related_module, $other);
-			
+
 			if(!in_array($other->table_name, $joinedTables)) {
 				$query .= " LEFT JOIN $other->table_name ON $other->table_name.$other->table_index = $this->table_name.$columnname";
 				$joinedTables[] = $other->table_name;
@@ -209,7 +187,7 @@ class ModuleClass extends CRMEntity {
 		$sec_query = '';
 		$tabid = getTabid($module);
 
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 
+		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1
 			&& $defaultOrgSharingPermission[$tabid] == 3) {
 
 				$sec_query .= " AND (vtiger_crmentity.smownerid in($current_user->id) OR vtiger_crmentity.smownerid IN 
@@ -224,9 +202,8 @@ class ModuleClass extends CRMEntity {
 						SELECT shareduserid FROM vtiger_tmp_read_user_sharing_per 
 						WHERE userid=".$current_user->id." AND tabid=".$tabid."
 					) 
-					OR 
-						(";
-		
+					OR (";
+
 					// Build the query based on the group association of current user.
 					if(sizeof($current_user_groups) > 0) {
 						$sec_query .= " vtiger_groups.groupid IN (". implode(",", $current_user_groups) .") OR ";
@@ -255,7 +232,7 @@ class ModuleClass extends CRMEntity {
 
 		//To get the Permitted fields query and the permitted fields list
 		$sql = getPermittedFieldsQuery($thismodule, "detail_view");
-		
+
 		$fields_list = getFieldsListFromQuery($sql);
 
 		$query = "SELECT $fields_list, vtiger_users.user_name AS user_name 
@@ -268,7 +245,7 @@ class ModuleClass extends CRMEntity {
 
 		$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
 		$query .= " LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id and vtiger_users.status='Active'";
-		
+
 		$linkedModulesQuery = $this->db->pquery("SELECT distinct fieldname, columnname, relmodule FROM vtiger_field" .
 				" INNER JOIN vtiger_fieldmodulerel ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid" .
 				" WHERE uitype='10' AND vtiger_fieldmodulerel.module=?", array($thismodule));
@@ -279,7 +256,7 @@ class ModuleClass extends CRMEntity {
 			$related_module = $this->db->query_result($linkedModulesQuery, $i, 'relmodule');
 			$fieldname = $this->db->query_result($linkedModulesQuery, $i, 'fieldname');
 			$columnname = $this->db->query_result($linkedModulesQuery, $i, 'columnname');
-			
+
 			$other = CRMEntity::getInstance($related_module);
 			vtlib_setup_modulevars($related_module, $other);
 
@@ -346,7 +323,7 @@ class ModuleClass extends CRMEntity {
 		}
 		return $count;
 	}
-	
+
 	/**
 	 * Transform the value while exporting
 	 */
@@ -366,7 +343,7 @@ class ModuleClass extends CRMEntity {
 			$sqlresult = $adb->pquery("select id from vtiger_users where id = ? union select groupid as id from vtiger_groups where groupid = ?", array($record_user, $record_user));
 			if($this->db->num_rows($sqlresult)!= 1) {
 				$this->column_fields["assigned_user_id"] = $current_user->id;
-			} else {			
+			} else {
 				$row = $adb->fetchByAssoc($sqlresult, -1, false);
 				if (isset($row['id']) && $row['id'] != -1) {
 					$this->column_fields["assigned_user_id"] = $row['id'];
@@ -376,8 +353,8 @@ class ModuleClass extends CRMEntity {
 			}
 		}
 	}
-	
-	/** 
+
+	/**
 	 * Function which will give the basic query to find duplicates
 	 */
 	function getDuplicatesQuery($module,$table_cols,$field_values,$ui_type_arr,$select_cols='') {
@@ -402,7 +379,7 @@ class ModuleClass extends CRMEntity {
 		$where_clause .= $this->getListViewSecurityParameter($module);
 
 		if (isset($select_cols) && trim($select_cols) != '') {
-			$sub_query = "SELECT $select_cols FROM  $this->table_name AS t " .
+			$sub_query = "SELECT $select_cols FROM $this->table_name AS t " .
 				" INNER JOIN vtiger_crmentity AS crm ON crm.crmid = t.".$this->table_index;
 			// Consider custom table join as well.
 			if(isset($this->customFieldTable)) {
@@ -444,13 +421,13 @@ class ModuleClass extends CRMEntity {
 		}
 	}
 
-	/** 
+	/**
 	 * Handle saving related module information.
 	 * NOTE: This function has been added to CRMEntity (base class).
 	 * You can override the behavior by re-defining it here.
 	 */
 	// function save_related_module($module, $crmid, $with_module, $with_crmid) { }
-	
+
 	/**
 	 * Handle deleting related module information.
 	 * NOTE: This function has been added to CRMEntity (base class).

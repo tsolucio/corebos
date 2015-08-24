@@ -19,11 +19,13 @@ class ServiceContracts extends CRMEntity {
 
 	/** Indicator if this is a custom module or standard module */
 	var $IsCustomModule = true;
-
+	var $HasDirectImageField = false;
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
 	var $customFieldTable = Array('vtiger_servicecontractscf', 'servicecontractsid');
+	// Uncomment the line below to support custom field columns on related lists
+	// var $related_tables = Array('vtiger_servicecontractscf'=>array('servicecontractsid','vtiger_servicecontracts', 'servicecontractsid'));
 
 	/**
 	 * Mandatory for Saving, Include tables related to this module.
@@ -42,15 +44,15 @@ class ServiceContracts extends CRMEntity {
 	 * Mandatory for Listing (Related listview)
 	 */
 	var $list_fields = Array (
-		/* Format: Field Label => Array(tablename, columnname) */
+		/* Format: Field Label => Array(tablename => columnname) */
 		// tablename should not have prefix 'vtiger_'
-		'Subject' => Array('servicecontracts', 'subject'),
-		'Assigned To' => Array('crmentity','smownerid'),
-		'Contract No' => Array('servicecontracts','contract_no'),
-		'Used Units' => Array('servicecontracts','used_units'),
-		'Total Units' => Array('servicecontracts','total_units')
+		'Subject' => Array('servicecontracts' => 'subject'),
+		'Assigned To' => Array('crmentity' => 'smownerid'),
+		'Contract No' => Array('servicecontracts' => 'contract_no'),
+		'Used Units' => Array('servicecontracts' => 'used_units'),
+		'Total Units' => Array('servicecontracts' => 'total_units')
 	);
-	var $list_fields_name = Array (
+	var $list_fields_name = Array(
 		/* Format: Field Label => fieldname */
 		'Subject' => 'subject',
 		'Assigned To' => 'assigned_user_id',
@@ -59,20 +61,20 @@ class ServiceContracts extends CRMEntity {
 		'Total Units' => 'total_units'
 	);
 
-	// Make the field link to detail view
+	// Make the field link to detail view from list view (Fieldname)
 	var $list_link_field = 'subject';
 
 	// For Popup listview and UI type support
 	var $search_fields = Array(
-		/* Format: Field Label => Array(tablename, columnname) */
+		/* Format: Field Label => Array(tablename => columnname) */
 		// tablename should not have prefix 'vtiger_'
-		'Subject' => Array('servicecontracts', 'subject'),
-		'Contract No' => Array('servicecontracts', 'contract_no'),
-		'Assigned To' => Array('vtiger_crmentity','assigned_user_id'),
-		'Used Units' => Array('servicecontracts','used_units'),
-		'Total Units' => Array('servicecontracts','total_units')
+		'Subject' => Array('servicecontracts' => 'subject'),
+		'Contract No' => Array('servicecontracts' => 'contract_no'),
+		'Assigned To' => Array('vtiger_crmentity' => 'assigned_user_id'),
+		'Used Units' => Array('servicecontracts' => 'used_units'),
+		'Total Units' => Array('servicecontracts' => 'total_units')
 	);
-	var $search_fields_name = Array (
+	var $search_fields_name = Array(
 		/* Format: Field Label => fieldname */
 		'Subject' => 'subject',
 		'Contract No' => 'contract_no',
@@ -82,7 +84,7 @@ class ServiceContracts extends CRMEntity {
 	);
 
 	// For Popup window record selection
-	var $popup_fields = Array ('subject');
+	var $popup_fields = Array('subject');
 
 	// Placeholder for sort fields - All the fields will be initialized for Sorting through initSortFields
 	var $sortby_fields = Array();
@@ -94,26 +96,34 @@ class ServiceContracts extends CRMEntity {
 	var $def_detailview_recname = 'subject';
 
 	// Required Information for enabling Import feature
-	var $required_fields = Array ('assigned_user_id'=>1);
-
-	// Used when enabling/disabling the mandatory fields for the module.
-	// Refers to vtiger_field.fieldname values.
-	var $mandatory_fields = Array('subject','assigned_user_id');
+	var $required_fields = Array('assigned_user_id'=>1);
 
 	// Callback function list during Importing
 	var $special_functions = Array('set_import_assigned_user');
 
 	var $default_order_by = 'subject';
 	var $default_sort_order='ASC';
+	// Used when enabling/disabling the mandatory fields for the module.
+	// Refers to vtiger_field.fieldname values.
+	var $mandatory_fields = Array('subject','assigned_user_id');
 
 	function __construct() {
-		global $log;
-		$this->column_fields = getColumnFields('ServiceContracts');
-		$this->db = new PearDatabase();
+		global $log, $currentModule;
+		$this->column_fields = getColumnFields($currentModule);
+		$this->db = PearDatabase::getInstance();
 		$this->log = $log;
+		$sql = 'SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid = ?';
+		$tabid = getTabid($currentModule);
+		$result = $this->db->pquery($sql, array($tabid));
+		if ($result and $this->db->num_rows($result)==1) {
+			$this->HasDirectImageField = true;
+		}
 	}
 
 	function save_module($module) {
+		if ($this->HasDirectImageField) {
+			$this->insertIntoAttachment($this->id,$module);
+		}
 		$return_action = $_REQUEST['return_action'];
 		$for_module = $_REQUEST['return_module'];
 		$for_crmid  = $_REQUEST['return_id'];
@@ -129,15 +139,18 @@ class ServiceContracts extends CRMEntity {
 	 * Return query to use based on given modulename, fieldname
 	 * Useful to handle specific case handling for Popup
 	 */
-	function getQueryByModuleField($module, $fieldname, $srcrecord) {
+	function getQueryByModuleField($module, $fieldname, $srcrecord, $query='') {
 		// $srcrecord could be empty
 	}
 
 	/**
-	 * Get list view query.
+	 * Get list view query (send more WHERE clause condition if required)
 	 */
-	function getListQuery($module, $where='') {
+	function getListQuery($module, $usewhere='') {
 		$query = "SELECT vtiger_crmentity.*, $this->table_name.*";
+
+		// Keep track of tables joined to avoid duplicates
+		$joinedTables = array();
 
 		// Select Custom Field Table Columns if present
 		if(!empty($this->customFieldTable)) $query .= ", " . $this->customFieldTable[0] . ".* ";
@@ -146,13 +159,20 @@ class ServiceContracts extends CRMEntity {
 
 		$query .= "	INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
 
+		$joinedTables[] = $this->table_name;
+		$joinedTables[] = 'vtiger_crmentity';
+
 		// Consider custom table join as well.
 		if(!empty($this->customFieldTable)) {
 			$query .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
-				      " = $this->table_name.$this->table_index";
+				" = $this->table_name.$this->table_index";
+			$joinedTables[] = $this->customFieldTable[0];
 		}
 		$query .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
 		$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
+
+		$joinedTables[] = 'vtiger_users';
+		$joinedTables[] = 'vtiger_groups';
 
 		$linkedModulesQuery = $this->db->pquery("SELECT distinct fieldname, columnname, relmodule FROM vtiger_field" .
 				" INNER JOIN vtiger_fieldmodulerel ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid" .
@@ -167,13 +187,15 @@ class ServiceContracts extends CRMEntity {
 			$other = CRMEntity::getInstance($related_module);
 			vtlib_setup_modulevars($related_module, $other);
 
-			$query .= " LEFT JOIN $other->table_name ON $other->table_name.$other->table_index =".
-					"$this->table_name.$columnname";
+			if(!in_array($other->table_name, $joinedTables)) {
+				$query .= " LEFT JOIN $other->table_name ON $other->table_name.$other->table_index = $this->table_name.$columnname";
+				$joinedTables[] = $other->table_name;
+			}
 		}
 
 		global $current_user;
 		$query .= $this->getNonAdminAccessControlQuery($module,$current_user);
-		$query .= "WHERE vtiger_crmentity.deleted = 0 ".$where;
+		$query .= "	WHERE vtiger_crmentity.deleted = 0 ".$usewhere;
 		return $query;
 	}
 
@@ -191,28 +213,27 @@ class ServiceContracts extends CRMEntity {
 		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1
 			&& $defaultOrgSharingPermission[$tabid] == 3) {
 
-				$sec_query .= " AND (vtiger_crmentity.smownerid in($current_user->id) OR vtiger_crmentity.smownerid IN
+				$sec_query .= " AND (vtiger_crmentity.smownerid in($current_user->id) OR vtiger_crmentity.smownerid IN 
 					(
-						SELECT vtiger_user2role.userid FROM vtiger_user2role
-						INNER JOIN vtiger_users ON vtiger_users.id=vtiger_user2role.userid
-						INNER JOIN vtiger_role ON vtiger_role.roleid=vtiger_user2role.roleid
+						SELECT vtiger_user2role.userid FROM vtiger_user2role 
+						INNER JOIN vtiger_users ON vtiger_users.id=vtiger_user2role.userid 
+						INNER JOIN vtiger_role ON vtiger_role.roleid=vtiger_user2role.roleid 
 						WHERE vtiger_role.parentrole LIKE '".$current_user_parent_role_seq."::%'
-					)
-					OR vtiger_crmentity.smownerid IN
+					) 
+					OR vtiger_crmentity.smownerid IN 
 					(
-						SELECT shareduserid FROM vtiger_tmp_read_user_sharing_per
+						SELECT shareduserid FROM vtiger_tmp_read_user_sharing_per 
 						WHERE userid=".$current_user->id." AND tabid=".$tabid."
-					)
-					OR
-						(";
+					) 
+					OR (";
 
 					// Build the query based on the group association of current user.
 					if(sizeof($current_user_groups) > 0) {
 						$sec_query .= " vtiger_groups.groupid IN (". implode(",", $current_user_groups) .") OR ";
 					}
-					$sec_query .= " vtiger_groups.groupid IN
+					$sec_query .= " vtiger_groups.groupid IN 
 						(
-							SELECT vtiger_tmp_read_group_sharing_per.sharedgroupid
+							SELECT vtiger_tmp_read_group_sharing_per.sharedgroupid 
 							FROM vtiger_tmp_read_group_sharing_per
 							WHERE userid=".$current_user->id." and tabid=".$tabid."
 						)";
@@ -227,7 +248,7 @@ class ServiceContracts extends CRMEntity {
 	 */
 	function create_export_query($where)
 	{
-		global $current_user,$currentModule;
+		global $current_user;
 		$thismodule = $_REQUEST['module'];
 
 		include("include/utils/ExportUtils.php");
@@ -237,23 +258,23 @@ class ServiceContracts extends CRMEntity {
 
 		$fields_list = getFieldsListFromQuery($sql);
 
-		$query = "SELECT $fields_list, vtiger_users.user_name AS user_name
-					FROM vtiger_crmentity INNER JOIN $this->table_name ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
+		$query = "SELECT $fields_list, vtiger_users.user_name AS user_name 
+				FROM vtiger_crmentity INNER JOIN $this->table_name ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
 
 		if(!empty($this->customFieldTable)) {
 			$query .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
-				      " = $this->table_name.$this->table_index";
+				" = $this->table_name.$this->table_index";
 		}
 
 		$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
-		$query .= " LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id and ".
-		"vtiger_users.status='Active'";
+		$query .= " LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id and vtiger_users.status='Active'";
 
 		$linkedModulesQuery = $this->db->pquery("SELECT distinct fieldname, columnname, relmodule FROM vtiger_field" .
 				" INNER JOIN vtiger_fieldmodulerel ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid" .
 				" WHERE uitype='10' AND vtiger_fieldmodulerel.module=?", array($thismodule));
 		$linkedFieldsCount = $this->db->num_rows($linkedModulesQuery);
 
+		$rel_mods[$this->table_name] = 1;
 		for($i=0; $i<$linkedFieldsCount; $i++) {
 			$related_module = $this->db->query_result($linkedModulesQuery, $i, 'relmodule');
 			$fieldname = $this->db->query_result($linkedModulesQuery, $i, 'fieldname');
@@ -262,8 +283,17 @@ class ServiceContracts extends CRMEntity {
 			$other = CRMEntity::getInstance($related_module);
 			vtlib_setup_modulevars($related_module, $other);
 
-			$query .= " LEFT JOIN $other->table_name ON $other->table_name.$other->table_index = ".
-					"$this->table_name.$columnname";
+			if($rel_mods[$other->table_name]) {
+				$rel_mods[$other->table_name] = $rel_mods[$other->table_name] + 1;
+				$alias = $other->table_name.$rel_mods[$other->table_name];
+				$query_append = "as $alias";
+			} else {
+				$alias = $other->table_name;
+				$query_append = '';
+				$rel_mods[$other->table_name] = 1;
+			}
+
+			$query .= " LEFT JOIN $other->table_name $query_append ON $alias.$other->table_index = $this->table_name.$columnname";
 		}
 
 		$query .= $this->getNonAdminAccessControlQuery($thismodule,$current_user);
@@ -286,25 +316,25 @@ class ServiceContracts extends CRMEntity {
 
 		$from_clause = " FROM $this->table_name";
 
-		$from_clause .= "	INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
+		$from_clause .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
 
 		// Consider custom table join as well.
 		if(isset($this->customFieldTable)) {
 			$from_clause .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
-				      " = $this->table_name.$this->table_index";
+				" = $this->table_name.$this->table_index";
 		}
 		$from_clause .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
-				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
+						LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
 
-		$where_clause = "	WHERE vtiger_crmentity.deleted = 0";
+		$where_clause = " WHERE vtiger_crmentity.deleted = 0";
 		$where_clause .= $this->getListViewSecurityParameter($module);
 
 		if (isset($select_cols) && trim($select_cols) != '') {
-			$sub_query = "SELECT $select_cols FROM  $this->table_name AS t " .
+			$sub_query = "SELECT $select_cols FROM $this->table_name AS t " .
 				" INNER JOIN vtiger_crmentity AS crm ON crm.crmid = t.".$this->table_index;
 			// Consider custom table join as well.
 			if(isset($this->customFieldTable)) {
-				$sub_query .= " INNER JOIN ".$this->customFieldTable[0]." tcf ON tcf.".$this->customFieldTable[1]." = t.$this->table_index";
+				$sub_query .= " LEFT JOIN ".$this->customFieldTable[0]." tcf ON tcf.".$this->customFieldTable[1]." = t.$this->table_index";
 			}
 			$sub_query .= " WHERE crm.deleted=0 GROUP BY $select_cols HAVING COUNT(*)>1";
 		} else {
@@ -321,12 +351,11 @@ class ServiceContracts extends CRMEntity {
 	}
 
 	/**
-	* Invoked when special actions are performed on the module.
-	* @param String Module name
-	* @param String Event Type
-	*/
+	 * Invoked when special actions are performed on the module.
+	 * @param String Module name
+	 * @param String Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
+	 */
 	function vtlib_handler($moduleName, $eventType) {
-
 		require_once('include/utils/utils.php');
 		global $adb;
 
@@ -362,13 +391,13 @@ class ServiceContracts extends CRMEntity {
 			$em->setHandlerActive('ServiceContractsHandler');
 
 		} else if($eventType == 'module.preuninstall') {
-		// TODO Handle actions when this module is about to be deleted.
+			// TODO Handle actions when this module is about to be deleted.
 		} else if($eventType == 'module.preupdate') {
-		// TODO Handle actions before this module is updated.
+			// TODO Handle actions before this module is updated.
 		} else if($eventType == 'module.postupdate') {
-		// TODO Handle actions after this module is updated.
+			// TODO Handle actions after this module is updated.
 		}
- 	}
+	}
 
 	/**
 	 * Handle saving related module information.

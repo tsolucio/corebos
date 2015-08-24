@@ -19,11 +19,13 @@ class Assets extends CRMEntity {
 
 	/** Indicator if this is a custom module or standard module */
 	var $IsCustomModule = true;
-
+	var $HasDirectImageField = false;
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
 	var $customFieldTable = Array('vtiger_assetscf', 'assetsid');
+	// Uncomment the line below to support custom field columns on related lists
+	// var $related_tables = Array('vtiger_assetscf'=>array('assetsid','vtiger_assets', 'assetsid'));
 
 	/**
 	 * Mandatory for Saving, Include tables related to this module.
@@ -41,20 +43,20 @@ class Assets extends CRMEntity {
 	/**
 	 * Mandatory for Listing (Related listview)
 	 */
-	var $list_fields = Array(
-   		/* Format: Field Label => Array(tablename, columnname) */
+	var $list_fields = Array (
+		/* Format: Field Label => Array(tablename => columnname) */
 		// tablename should not have prefix 'vtiger_'
 		'Asset No'=>Array('assets'=>'asset_no'),
-        'Asset Name'=>Array('assets'=>'assetname'),
+		'Asset Name'=>Array('assets'=>'assetname'),
 		'Customer Name'=>Array('account'=>'account'),
-        'Product Name'=>Array('products'=>'product'),
+		'Product Name'=>Array('products'=>'product'),
 	);
 	var $list_fields_name = Array(
 		/* Format: Field Label => fieldname */
 		'Asset No'=>'asset_no',
-        'Asset Name'=>'assetname',
+		'Asset Name'=>'assetname',
 		'Customer Name'=>'account',
-        'Product Name'=>'product',
+		'Product Name'=>'product',
 	);
 
 	// Make the field link to detail view
@@ -62,17 +64,17 @@ class Assets extends CRMEntity {
 
 	// For Popup listview and UI type support
 	var $search_fields = Array(
-		/* Format: Field Label => Array(tablename, columnname) */
+		/* Format: Field Label => Array(tablename => columnname) */
 		// tablename should not have prefix 'vtiger_'
 		'Asset No'=>Array('assets'=>'asset_no'),
-        'Asset Name'=>Array('assets'=>'assetname'),
+		'Asset Name'=>Array('assets'=>'assetname'),
 		'Customer Name'=>Array('account'=>'account'),
 		'Product Name'=>Array('products'=>'product')
 	);
 	var $search_fields_name = Array(
 		/* Format: Field Label => fieldname */
 		'Asset No'=>'asset_no',
-        'Asset Name'=>'assetname',
+		'Asset Name'=>'assetname',
 		'Customer Name'=>'account',
 		'Product Name'=>'product'
 	);
@@ -86,44 +88,52 @@ class Assets extends CRMEntity {
 	// For Alphabetical search
 	var $def_basicsearch_col = 'assetname';
 
+	// Column value to use on detail view record text display
+	var $def_detailview_recname = 'assetname';
+
 	// Required Information for enabling Import feature
 	var $required_fields = Array('assetname'=>1);
-
-	// Used when enabling/disabling the mandatory fields for the module.
-	// Refers to vtiger_field.fieldname values.
-	var $mandatory_fields = Array('assetname', 'product');
 
 	// Callback function list during Importing
 	var $special_functions = Array('set_import_assigned_user');
 
 	var $default_order_by = 'assetname';
 	var $default_sort_order='ASC';
+	// Used when enabling/disabling the mandatory fields for the module.
+	// Refers to vtiger_field.fieldname values.
+	var $mandatory_fields = Array('assetname', 'product');
 
 	var $unit_price;
 
-	/**	Constructor which will set the column_fields in this object
-	 */
 	function __construct() {
-		global $log;
-		$this->column_fields = getColumnFields('Assets');
+		global $log, $currentModule;
+		$this->column_fields = getColumnFields($currentModule);
 		$this->db = PearDatabase::getInstance();
 		$this->log = $log;
+		$sql = 'SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid = ?';
+		$tabid = getTabid($currentModule);
+		$result = $this->db->pquery($sql, array($tabid));
+		if ($result and $this->db->num_rows($result)==1) {
+			$this->HasDirectImageField = true;
+		}
 	}
 
-	function save_module($module){
-		//module specific save
+	function save_module($module) {
+		if ($this->HasDirectImageField) {
+			$this->insertIntoAttachment($this->id,$module);
+		}
 	}
 
 	/**
 	 * Return query to use based on given modulename, fieldname
 	 * Useful to handle specific case handling for Popup
 	 */
-	function getQueryByModuleField($module, $fieldname, $srcrecord) {
+	function getQueryByModuleField($module, $fieldname, $srcrecord, $query='') {
 		// $srcrecord could be empty
 	}
 
 	/**
-	 * Get list view query.
+	 * Get list view query (send more WHERE clause condition if required)
 	 */
 	function getListQuery($module, $where='') {
 		$query = "SELECT vtiger_crmentity.*, $this->table_name.*";
@@ -138,7 +148,7 @@ class Assets extends CRMEntity {
 		// Consider custom table join as well.
 		if(!empty($this->customFieldTable)) {
 			$query .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
-				      " = $this->table_name.$this->table_index";
+				" = $this->table_name.$this->table_index";
 		}
 		$query .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
 		$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
@@ -179,28 +189,27 @@ class Assets extends CRMEntity {
 		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1
 			&& $defaultOrgSharingPermission[$tabid] == 3) {
 
-				$sec_query .= " AND (vtiger_crmentity.smownerid in($current_user->id) OR vtiger_crmentity.smownerid IN
+				$sec_query .= " AND (vtiger_crmentity.smownerid in($current_user->id) OR vtiger_crmentity.smownerid IN 
 					(
-						SELECT vtiger_user2role.userid FROM vtiger_user2role
-						INNER JOIN vtiger_users ON vtiger_users.id=vtiger_user2role.userid
-						INNER JOIN vtiger_role ON vtiger_role.roleid=vtiger_user2role.roleid
+						SELECT vtiger_user2role.userid FROM vtiger_user2role 
+						INNER JOIN vtiger_users ON vtiger_users.id=vtiger_user2role.userid 
+						INNER JOIN vtiger_role ON vtiger_role.roleid=vtiger_user2role.roleid 
 						WHERE vtiger_role.parentrole LIKE '".$current_user_parent_role_seq."::%'
-					)
-					OR vtiger_crmentity.smownerid IN
+					) 
+					OR vtiger_crmentity.smownerid IN 
 					(
-						SELECT shareduserid FROM vtiger_tmp_read_user_sharing_per
+						SELECT shareduserid FROM vtiger_tmp_read_user_sharing_per 
 						WHERE userid=".$current_user->id." AND tabid=".$tabid."
-					)
-					OR
-						(";
+					) 
+					OR (";
 
 					// Build the query based on the group association of current user.
 					if(sizeof($current_user_groups) > 0) {
 						$sec_query .= " vtiger_groups.groupid IN (". implode(",", $current_user_groups) .") OR ";
 					}
-					$sec_query .= " vtiger_groups.groupid IN
+					$sec_query .= " vtiger_groups.groupid IN 
 						(
-							SELECT vtiger_tmp_read_group_sharing_per.sharedgroupid
+							SELECT vtiger_tmp_read_group_sharing_per.sharedgroupid 
 							FROM vtiger_tmp_read_group_sharing_per
 							WHERE userid=".$current_user->id." and tabid=".$tabid."
 						)";
@@ -225,12 +234,12 @@ class Assets extends CRMEntity {
 
 		$fields_list = getFieldsListFromQuery($sql);
 
-		$query = "SELECT $fields_list, vtiger_users.user_name AS user_name
-					FROM vtiger_crmentity INNER JOIN $this->table_name ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
+		$query = "SELECT $fields_list, vtiger_users.user_name AS user_name 
+				FROM vtiger_crmentity INNER JOIN $this->table_name ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
 
 		if(!empty($this->customFieldTable)) {
 			$query .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
-				      " = $this->table_name.$this->table_index";
+				" = $this->table_name.$this->table_index";
 		}
 
 		$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
@@ -272,31 +281,30 @@ class Assets extends CRMEntity {
 
 		$from_clause = " FROM $this->table_name";
 
-		$from_clause .= "	INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
+		$from_clause .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
 
 		// Consider custom table join as well.
 		if(isset($this->customFieldTable)) {
 			$from_clause .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
-				      " = $this->table_name.$this->table_index";
+				" = $this->table_name.$this->table_index";
 		}
 		$from_clause .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
 						LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
 
-		$where_clause = "	WHERE vtiger_crmentity.deleted = 0";
+		$where_clause = " WHERE vtiger_crmentity.deleted = 0";
 		$where_clause .= $this->getListViewSecurityParameter($module);
 
 		if (isset($select_cols) && trim($select_cols) != '') {
-			$sub_query = "SELECT $select_cols FROM  $this->table_name AS t " .
+			$sub_query = "SELECT $select_cols FROM $this->table_name AS t " .
 				" INNER JOIN vtiger_crmentity AS crm ON crm.crmid = t.".$this->table_index;
 			// Consider custom table join as well.
 			if(isset($this->customFieldTable)) {
-				$sub_query .= " INNER JOIN ".$this->customFieldTable[0]." tcf ON tcf.".$this->customFieldTable[1]." = t.$this->table_index";
+				$sub_query .= " LEFT JOIN ".$this->customFieldTable[0]." tcf ON tcf.".$this->customFieldTable[1]." = t.$this->table_index";
 			}
 			$sub_query .= " WHERE crm.deleted=0 GROUP BY $select_cols HAVING COUNT(*)>1";
 		} else {
 			$sub_query = "SELECT $table_cols $from_clause $where_clause GROUP BY $table_cols HAVING COUNT(*)>1";
 		}
-
 
 		$query = $select_clause . $from_clause .
 					" LEFT JOIN vtiger_users_last_import ON vtiger_users_last_import.bean_id=" . $this->table_name .".".$this->table_index .
