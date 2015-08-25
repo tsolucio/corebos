@@ -78,6 +78,13 @@ class HelpDesk extends CRMEntity {
 		'Ticket No' => 'ticket_no',
 		'Title'=>'ticket_title',
 	);
+
+	// For Alphabetical search
+	var $def_basicsearch_col = 'ticket_title';
+
+	// Column value to use on detail view record text display
+	var $def_detailview_recname = 'ticket_title';
+
 	//Specify Required fields
 	var $required_fields = array();
 
@@ -88,9 +95,6 @@ class HelpDesk extends CRMEntity {
 	//Added these variables which are used as default order by and sortorder in ListView
 	var $default_order_by = 'title';
 	var $default_sort_order = 'DESC';
-
-	// For Alphabetical search
-	var $def_basicsearch_col = 'ticket_title';
 
 	function __construct() {
 		global $log, $currentModule;

@@ -76,6 +76,9 @@ class PurchaseOrder extends CRMEntity {
 	// For Alphabetical search
 	var $def_basicsearch_col = 'subject';
 
+	// Column value to use on detail view record text display
+	var $def_detailview_recname = 'subject';
+
 	function __construct() {
 		global $log, $currentModule;
 		$this->column_fields = getColumnFields($currentModule);

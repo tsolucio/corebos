@@ -57,6 +57,9 @@ class PriceBooks extends CRMEntity {
 	// For Alphabetical search
 	var $def_basicsearch_col = 'bookname';
 
+	// Column value to use on detail view record text display
+	var $def_detailview_recname = 'bookname';
+
 	function __construct() {
 		global $log, $currentModule;
 		$this->column_fields = getColumnFields($currentModule);

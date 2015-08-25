@@ -1,17 +1,12 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- ********************************************************************************/
-
+ ************************************************************************************/
 include_once('config.php');
 require_once('include/logging.php');
 require_once('include/database/PearDatabase.php');
@@ -21,14 +16,16 @@ require_once('modules/Accounts/Accounts.php');
 require_once('modules/Potentials/Potentials.php');
 require_once('modules/Users/Users.php');
 
-// Email is used to store customer information.
 class Emails extends CRMEntity {
+	var $db, $log; // Used in class functions of CRMEntity
 
-	var $log;
-	var $db;
-	var $table_name = "vtiger_activity";
+	var $table_name = 'vtiger_activity';
 	var $table_index = 'activityid';
-	// Stored vtiger_fields
+	var $column_fields = Array();
+
+	/** Indicator if this is a custom module or standard module */
+	var $IsCustomModule = false;
+
 	// added to check email save from plugin or not
 	var $plugin_save = false;
 	var $rel_users_table = "vtiger_salesmanactivityrel";
@@ -55,24 +52,22 @@ class Emails extends CRMEntity {
 		'Access Count' => 'access_count'
 	);
 	var $list_link_field = 'subject';
-	var $column_fields = Array();
 	var $sortby_fields = Array('subject', 'date_start', 'saved_toid');
-	//Added these variables which are used as default order by and sortorder in ListView
+
+	// Column value to use on detail view record text display
+	var $def_detailview_recname = 'subject';
+
 	var $default_order_by = 'date_start';
 	var $default_sort_order = 'DESC';
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
 	var $mandatory_fields = Array('subject', 'assigned_user_id');
 
-	/** This function will set the columnfields for Email module
-	 */
-	function Emails() {
-		$this->log = LoggerManager::getLogger('email');
-		$this->log->debug("Entering Emails() method ...");
-		$this->log = LoggerManager::getLogger('email');
+	function __construct() {
+		global $log, $currentModule;
+		$this->column_fields = getColumnFields($currentModule);
 		$this->db = PearDatabase::getInstance();
-		$this->column_fields = getColumnFields('Emails');
-		$this->log->debug("Exiting Email method ...");
+		$this->log = $log;
 	}
 
 	function save_module($module) {
@@ -281,11 +276,7 @@ class Emails extends CRMEntity {
 		return $rel_tables[$secmodule];
 	}
 
-	/** Returns a list of the associated contacts
-	 * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc..
-	 * All Rights Reserved..
-	 * Contributor(s): ______________________________________..
-	 */
+	/** Returns a list of the associated contacts */
 	function get_contacts($id, $cur_tab_id, $rel_tab_id, $actions=false) {
 		global $log, $singlepane_view, $currentModule, $current_user;
 		$log->debug("Entering get_contacts(" . $id . ") method ...");
@@ -370,11 +361,7 @@ class Emails extends CRMEntity {
 
 	// Mike Crowe Mod --------------------------------------------------------
 
-	/** Returns a list of the associated vtiger_users
-	 * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc..
-	 * All Rights Reserved..
-	 * Contributor(s): ______________________________________..
-	 */
+	/** Returns a list of the associated vtiger_users */
 	function get_users($id) {
 		global $log;
 		$log->debug("Entering get_users(" . $id . ") method ...");

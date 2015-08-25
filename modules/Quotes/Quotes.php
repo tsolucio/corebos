@@ -74,6 +74,12 @@ class Quotes extends CRMEntity {
 		'Quote Stage'=>'quotestage',
 	);
 
+	// For Alphabetical search
+	var $def_basicsearch_col = 'subject';
+
+	// Column value to use on detail view record text display
+	var $def_detailview_recname = 'subject';
+
 	// This is the list of vtiger_fields that are required.
 	var $required_fields = array("accountname"=>1);
 
@@ -82,9 +88,6 @@ class Quotes extends CRMEntity {
 	var $default_sort_order = 'ASC';
 
 	var $mandatory_fields = Array('subject','createdtime' ,'modifiedtime');
-
-	// For Alphabetical search
-	var $def_basicsearch_col = 'subject';
 
 	function __construct() {
 		global $log, $currentModule;
