@@ -36,45 +36,46 @@ class Invoice extends CRMEntity {
 
 	// This is the list of vtiger_fields that are in the lists.
 	var $list_fields = Array(
-				//'Invoice No'=>Array('crmentity'=>'crmid'),
-				'Invoice No'=>Array('invoice'=>'invoice_no'),
-				'Subject'=>Array('invoice'=>'subject'),
-				'Sales Order'=>Array('invoice'=>'salesorderid'),
-				'Status'=>Array('invoice'=>'invoicestatus'),
-				'Total'=>Array('invoice'=>'total'),
-				'Account Name'=>Array('invoice'=>'account_id'),
-				'Assigned To'=>Array('crmentity'=>'smownerid')
-				);
-
+		//'Invoice No'=>Array('crmentity'=>'crmid'),
+		'Invoice No'=>Array('invoice'=>'invoice_no'),
+		'Subject'=>Array('invoice'=>'subject'),
+		'Sales Order'=>Array('invoice'=>'salesorderid'),
+		'Status'=>Array('invoice'=>'invoicestatus'),
+		'Total'=>Array('invoice'=>'total'),
+		'Account Name'=>Array('invoice'=>'account_id'),
+		'Assigned To'=>Array('crmentity'=>'smownerid')
+	);
 	var $list_fields_name = Array(
-				'Invoice No'=>'invoice_no',
-				'Subject'=>'subject',
-				'Sales Order'=>'salesorder_id',
-				'Status'=>'invoicestatus',
-				'Total'=>'hdnGrandTotal',
-				'Account Name'=>'account_id',
-				'Assigned To'=>'assigned_user_id'
-				);
+		'Invoice No'=>'invoice_no',
+		'Subject'=>'subject',
+		'Sales Order'=>'salesorder_id',
+		'Status'=>'invoicestatus',
+		'Total'=>'hdnGrandTotal',
+		'Account Name'=>'account_id',
+		'Assigned To'=>'assigned_user_id'
+	);
 	var $list_link_field= 'subject';
 
 	var $search_fields = Array(
-				//'Invoice No'=>Array('crmentity'=>'crmid'),
-				'Invoice No'=>Array('invoice'=>'invoice_no'),
-				'Subject'=>Array('purchaseorder'=>'subject'),
-				'Account Name'=>Array('invoice'=>'account_id'),
-				);
-
+		//'Invoice No'=>Array('crmentity'=>'crmid'),
+		'Invoice No'=>Array('invoice'=>'invoice_no'),
+		'Subject'=>Array('purchaseorder'=>'subject'),
+		'Account Name'=>Array('invoice'=>'account_id'),
+	);
 	var $search_fields_name = Array(
-				'Invoice No'=>'invoice_no',
-				'Subject'=>'subject',
-				'Account Name'=>'account_id',
-				);
+		'Invoice No'=>'invoice_no',
+		'Subject'=>'subject',
+		'Account Name'=>'account_id',
+	);
 
 	// Placeholder for sort fields - All the fields will be initialized for Sorting through initSortFields
 	var $sortby_fields = Array('subject','invoice_no','invoicestatus','smownerid','accountname','lastname');
 
 	// For Alphabetical search
 	var $def_basicsearch_col = 'subject';
+
+	// Column value to use on detail view record text display
+	var $def_detailview_recname = 'subject';
 
 	// This is the list of vtiger_fields that are required.
 	var $required_fields = array("accountname"=>1);

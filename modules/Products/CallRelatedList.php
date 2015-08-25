@@ -24,10 +24,9 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	$tool_buttons = Button_Check($currentModule);
 
 	$focus = CRMEntity::getInstance($currentModule);
-	if(isset($_REQUEST['record']) && $_REQUEST['record']!='') {
-		$focus->retrieve_entity_info($record,$currentModule);
+	if($record != '') {
+		$focus->retrieve_entity_info($record, $currentModule);
 		$focus->id = $record;
-		$focus->name=$focus->column_fields['productname'];
 		$product_base_currency = getProductBaseCurrency($focus->id,$currentModule);
 	} else {
 		$product_base_currency = fetchCurrency($current_user->id);
@@ -40,7 +39,7 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	if(!$_SESSION['rlvs'][$currentModule]) unset($_SESSION['rlvs']);
 
 	// Identify this module as custom module.
-	$smarty->assign('CUSTOM_MODULE', false);
+	$smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
 
 	$smarty->assign('APP', $app_strings);
 	$smarty->assign('MOD', $mod_strings);
@@ -54,13 +53,13 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	$smarty->assign('MODE', $focus->mode);
 	$smarty->assign('CHECK', $tool_buttons);
 
-	$smarty->assign('NAME', $focus->name);
+	$smarty->assign('NAME', $focus->column_fields[$focus->def_detailview_recname]);
 	$smarty->assign('UPDATEINFO',updateInfo($focus->id));
-	
-	$smarty->assign("CURRENCY_ID",$product_base_currency);
-
+	$smarty->assign('TODO_PERMISSION',CheckFieldPermission('parent_id','Calendar'));
+	$smarty->assign('EVENT_PERMISSION',CheckFieldPermission('parent_id','Events'));
+	$smarty->assign('CURRENCY_ID',$product_base_currency);
 	$is_member = $focus->ismember_check();
-	$smarty->assign("IS_MEMBER",$is_member);
+	$smarty->assign('IS_MEMBER',$is_member);
 
 	// Module Sequence Numbering
 	$mod_seq_field = getModuleSequenceField($currentModule);

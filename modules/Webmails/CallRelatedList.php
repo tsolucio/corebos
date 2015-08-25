@@ -1,14 +1,12 @@
 <?php
-/*+********************************************************************************
+/*+**********************************************************************************
  * The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
- * The Initial Developer of the Original Code is FOSS Labs.
- * Portions created by FOSS Labs are Copyright (C) FOSS Labs.
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- ********************************************************************************/
-
-global $current_user;
+ ************************************************************************************/
 require_once('Smarty_setup.php');
 require_once('modules/Leads/Leads.php');
 require_once('include/utils/utils.php');
@@ -18,9 +16,7 @@ require_once('include/upload_file.php');
 require_once('modules/Webmails/Webmails.php');
 require_once('modules/Webmails/MailParse.php');
 
-global $log;
-global $app_strings;
-global $mod_strings;
+global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $singlepane_view;
 
 if($_REQUEST["record"]) {$mailid=vtlib_purify($_REQUEST["record"]);} else {$mailid=vtlib_purify($_REQUEST["mailid"]);}
 
@@ -44,8 +40,7 @@ $to=$email->to;
 $cc_list=$email->cc_list;
 $reply_to=$email->replyTo;
 
-
-$block["Leads"]= "";
+$block['Leads']= '';
 global $adb;
 if($email->relationship != 0 && $email->relationship["type"] == "Leads") {
 	$q = "SELECT vtiger_leaddetails.firstname, vtiger_leaddetails.lastname, vtiger_leaddetails.email, vtiger_leaddetails.company, vtiger_crmentity.smownerid from vtiger_leaddetails left join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_leaddetails.leadid WHERE vtiger_leaddetails.leadid=?";
@@ -68,26 +63,22 @@ if($email->relationship != 0 && $email->relationship["type"] == "Accounts") {
 	$block["Accounts"]["entries"]= array("0"=>array($adb->query_result($rs,0,'accountname'),"1"=>$adb->query_result($rs,0,'email'),2=>$adb->query_result($rs,0,'website'),3=>$adb->query_result($rs,0,'industry'),4=>$adb->query_result($rs,0,'smownerid')));
 }
 
-global $mod_strings;
-global $app_strings;
-global $theme;
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
-
 $smarty = new vtigerCRM_Smarty;
-$smarty->assign("CATEGORY","My Home Page");
-$smarty->assign("id",vtlib_purify($_REQUEST["record"]));
-$smarty->assign("NAME","From: ".$from);
-$smarty->assign("RELATEDLISTS", $block);
-$smarty->assign("SINGLE_MOD","Webmails");
-$smarty->assign("MODULE", "Webmails");
-$smarty->assign("ID",vtlib_purify($_REQUEST["record"]));
-$smarty->assign("MOD",$mod_strings);
-$smarty->assign("APP",$app_strings);
-$smarty->assign("THEME", $theme);
-$smarty->assign("IMAGE_PATH", $image_path);
+$smarty->assign('APP', $app_strings);
+$smarty->assign('MOD', $mod_strings);
+$smarty->assign('MODULE', $currentModule);
+// TODO: Update Single Module Instance name here.
+$smarty->assign('SINGLE_MOD', 'Webmails');
+$smarty->assign('CATEGORY', 'My Home Page');
+$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
+$smarty->assign('THEME', $theme);
+$smarty->assign('ID', $focus->id);
+$smarty->assign('MODE', $focus->mode);
+
+$smarty->assign('NAME','From: '.$from);
+$smarty->assign('RELATEDLISTS', $block);
 
 $check_button = Button_Check($module);
-$smarty->assign("CHECK", $check_button);
-$smarty->display("RelatedLists.tpl");
+$smarty->assign('CHECK', $check_button);
+$smarty->display('RelatedLists.tpl');
 ?>

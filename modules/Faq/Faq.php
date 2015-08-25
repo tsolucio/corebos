@@ -22,39 +22,42 @@ class Faq extends CRMEntity {
 
 	var $column_fields = Array();
 
+	/** Indicator if this is a custom module or standard module */
+	var $IsCustomModule = false;
 	var $sortby_fields = Array('question','category','id');
 
 	// This is the list of vtiger_fields that are in the lists.
 	var $list_fields = Array(
-				'FAQ Id'=>Array('faq'=>'id'),
-				'Question'=>Array('faq'=>'question'),
-				'Category'=>Array('faq'=>'category'),
-				'Product Name'=>Array('faq'=>'product_id'),
-				'Created Time'=>Array('crmentity'=>'createdtime'),
-				'Modified Time'=>Array('crmentity'=>'modifiedtime')
-				);
+		'FAQ Id'=>Array('faq'=>'id'),
+		'Question'=>Array('faq'=>'question'),
+		'Category'=>Array('faq'=>'category'),
+		'Product Name'=>Array('faq'=>'product_id'),
+		'Created Time'=>Array('crmentity'=>'createdtime'),
+		'Modified Time'=>Array('crmentity'=>'modifiedtime')
+	);
 
 	var $list_fields_name = Array(
-				'FAQ Id'=>'',
-				'Question'=>'question',
-				'Category'=>'faqcategories',
-				'Product Name'=>'product_id',
-				'Created Time'=>'createdtime',
-				'Modified Time'=>'modifiedtime'
-				);
+		'FAQ Id'=>'',
+		'Question'=>'question',
+		'Category'=>'faqcategories',
+		'Product Name'=>'product_id',
+		'Created Time'=>'createdtime',
+		'Modified Time'=>'modifiedtime'
+	);
 	var $list_link_field= 'question';
 
 	var $search_fields = Array(
-				'Account Name'=>Array('account'=>'accountname'),
-				'City'=>Array('accountbillads'=>'bill_city'),
-				);
-
+		'Account Name'=>Array('account'=>'accountname'),
+		'City'=>Array('accountbillads'=>'bill_city'),
+	);
 	var $search_fields_name = Array(
-				'Account Name'=>'accountname',
-				'City'=>'bill_city',
-				);
+		'Account Name'=>'accountname',
+		'City'=>'bill_city',
+	);
 
-	//Added these variables which are used as default order by and sortorder in ListView
+	// Column value to use on detail view record text display
+	var $def_detailview_recname = 'question';
+
 	var $default_order_by = 'id';
 	var $default_sort_order = 'DESC';
 
