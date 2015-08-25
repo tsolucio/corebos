@@ -921,12 +921,13 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 			if (!(is_array($selectedfields) && $selectedfields != '')) {
 				if (isPermitted($module, "EditView", "") == 'yes') {
 					$edit_link = getListViewEditLink($module, $entity_id, $relatedlist, $varreturnset, $list_result, $list_result_count);
-					if (isset($_REQUEST['start']) && $_REQUEST['start'] > 1 && $module != 'Emails')
+					if (is_array($navigation_array) && isset($navigation_array['start']) && $navigation_array['start'] > 1 && $module != 'Emails')
+						$links_info .= "<a href=\"$edit_link&start=" . $navigation_array['start'] . "\">" . $app_strings["LNK_EDIT"] . "</a> ";
+					elseif (isset($_REQUEST['start']) && $_REQUEST['start'] > 1 && $module != 'Emails')
 						$links_info .= "<a href=\"$edit_link&start=" . vtlib_purify($_REQUEST['start']) . "\">" . $app_strings["LNK_EDIT"] . "</a> ";
 					else
 						$links_info .= "<a href=\"$edit_link\">" . $app_strings["LNK_EDIT"] . "</a> ";
 				}
-
 
 				if (isPermitted($module, "Delete", "") == 'yes') {
 					$del_link = getListViewDeleteLink($module, $entity_id, $relatedlist, $varreturnset);
