@@ -539,6 +539,12 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 		$ui_col_array[$field_name] = $tempArr;
 	}
 	//end
+	if (is_array($navigation_array) && isset($navigation_array['start']) && $navigation_array['start'] > 1 && $module != 'Emails')
+		$linkstart = '&start=' . $navigation_array['start'];
+	elseif (isset($_REQUEST['start']) && $_REQUEST['start'] > 1 && $module != 'Emails')
+		$linkstart = '&start=' . vtlib_purify($_REQUEST['start']);
+	else
+		$linkstart = '';
 	if ($navigation_array['start'] != 0)
 		for ($i = 1; $i <= $noofrows; $i++) {
 			$list_header = Array();
@@ -917,23 +923,18 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 			}
 
 			//Added for Actions ie., edit and delete links in listview
-			$links_info = "";
+			$links_info = '';
 			if (!(is_array($selectedfields) && $selectedfields != '')) {
-				if (isPermitted($module, "EditView", "") == 'yes') {
+				if (isPermitted($module, 'EditView', '') == 'yes') {
 					$edit_link = getListViewEditLink($module, $entity_id, $relatedlist, $varreturnset, $list_result, $list_result_count);
-					if (is_array($navigation_array) && isset($navigation_array['start']) && $navigation_array['start'] > 1 && $module != 'Emails')
-						$links_info .= "<a href=\"$edit_link&start=" . $navigation_array['start'] . "\">" . $app_strings["LNK_EDIT"] . "</a> ";
-					elseif (isset($_REQUEST['start']) && $_REQUEST['start'] > 1 && $module != 'Emails')
-						$links_info .= "<a href=\"$edit_link&start=" . vtlib_purify($_REQUEST['start']) . "\">" . $app_strings["LNK_EDIT"] . "</a> ";
-					else
-						$links_info .= "<a href=\"$edit_link\">" . $app_strings["LNK_EDIT"] . "</a> ";
+					$links_info .= "<a href=\"$edit_link$linkstart\">" . $app_strings['LNK_EDIT'] . "</a> ";
 				}
 
-				if (isPermitted($module, "Delete", "") == 'yes') {
-					$del_link = getListViewDeleteLink($module, $entity_id, $relatedlist, $varreturnset);
-					if ($links_info != "" && $del_link != "")
-						$links_info .= " | ";
-					if ($del_link != "")
+				if (isPermitted($module, 'Delete', '') == 'yes') {
+					$del_link = getListViewDeleteLink($module, $entity_id, $relatedlist, $varreturnset, $linkstart);
+					if ($links_info != '' && $del_link != '')
+						$links_info .= ' | ';
+					if ($del_link != '')
 						$links_info .= "<a href='javascript:confirmdelete(\"" . addslashes(urlencode($del_link)) . "\")'>" . $app_strings["LNK_DELETE"] . "</a>";
 				}
 			}
@@ -3809,7 +3810,7 @@ function getListViewEditLink($module, $entity_id, $relatedlist, $returnset, $res
  * 	@param string 	$returnset 	- may be empty in case of ListView. For relatedlists, return_module, return_action and return_id values will be passed like &return_module=Accounts&return_action=CallRelatedList&return_id=10
  * 	return string	$del_link	- url string which cotains the editlink details (module, action, record, etc.,) like index.php?module=Accounts&action=Delete&record=10
  */
-function getListViewDeleteLink($module, $entity_id, $relatedlist, $returnset) {
+function getListViewDeleteLink($module, $entity_id, $relatedlist, $returnset, $linkstart) {
 	$tabname = getParentTab();
 	$current_module = vtlib_purify($_REQUEST['module']);
 	$viewname = $_SESSION['lvs'][$current_module]['viewname'];
@@ -3829,7 +3830,7 @@ function getListViewDeleteLink($module, $entity_id, $relatedlist, $returnset) {
 		return '';
 	}
 
-	$del_link = "index.php?module=$module&action=Delete&record=$entity_id";
+	$del_link = "index.php?module=$module&action=Delete&record=$entity_id$linkstart";
 
 	//This is added for relatedlist listview
 	if ($relatedlist == 'relatedlist') {
