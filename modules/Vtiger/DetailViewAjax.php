@@ -9,33 +9,8 @@
  ************************************************************************************/
 global $currentModule;
 $modObj = CRMEntity::getInstance($currentModule);
-
 $ajaxaction = $_REQUEST["ajxaction"];
-
-if($ajaxaction == 'WIDGETADDCOMMENT') {
-	global $current_user;
-	list($void,$canaddcomments) = cbEventHandler::do_filter('corebos.filter.ModComments.canAdd', array(vtlib_purify($_REQUEST['parentid']), true));
-	if (isPermitted($currentModule, 'EditView', '') == 'yes' and $canaddcomments) {
-		$modObj->column_fields['commentcontent'] = vtlib_purify($_REQUEST['comment']);
-		$modObj->column_fields['related_to'] = vtlib_purify($_REQUEST['parentid']);
-		$modObj->column_fields['assigned_user_id'] = $current_user->id;
-		$modObj->save($currentModule);
-	
-		if(empty($modObj->column_fields['smcreatorid'])) $modObj->column_fields['smcreatorid'] = $current_user->id;
-		if(empty($modObj->column_fields['modifiedtime'])) $modObj->column_fields['modifiedtime']= date('Y-m-d H:i:s');
-		
-		//update modifiedtime related module with modcomments modifiedtime
-		global $adb;
-		$adb->query("update vtiger_crmentity set modifiedtime ='".$modObj->column_fields['modifiedtime']."' where crmid =".$modObj->column_fields['related_to']);
-		//end update
-		$widgetInstance = $modObj->getWidget('DetailViewBlockCommentWidget');
-		echo ':#:SUCCESS'. $widgetInstance->processItem($modObj->getAsCommentModel($modObj->column_fields));
-	} else {
-		echo ':#:FAILURE';
-	}
-}
-
-else if($ajaxaction == 'DETAILVIEW') {
+if($ajaxaction == 'DETAILVIEW') {
 	$crmid = $_REQUEST['recordid'];
 	$tablename = $_REQUEST['tableName'];
 	$fieldname = $_REQUEST['fldName'];
