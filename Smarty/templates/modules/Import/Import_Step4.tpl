@@ -58,10 +58,7 @@
 							<option value="">{'LBL_NONE'|@getTranslatedString:$FOR_MODULE}</option>
 							{foreach key=_FIELD_NAME item=_FIELD_INFO from=$AVAILABLE_FIELDS}
 							{assign var="_TRANSLATED_FIELD_LABEL" value=$_FIELD_INFO->getFieldLabelKey()|@getTranslatedString:$FOR_MODULE}
-							<option value="{$_FIELD_NAME}" {if $_HEADER_NAME eq $_TRANSLATED_FIELD_LABEL} selected {/if} >
-								{$_TRANSLATED_FIELD_LABEL}
-								{if $_FIELD_INFO->isMandatory() eq 'true'}&nbsp; (*){/if}
-							</option>
+							<option value="{$_FIELD_NAME}" {if $_HEADER_NAME eq $_TRANSLATED_FIELD_LABEL} selected {/if} >{$_TRANSLATED_FIELD_LABEL}{if $_FIELD_INFO->isMandatory() eq 'true'}&nbsp; (*){/if}</option>
 							{/foreach}
 						</select>
 					</td>
