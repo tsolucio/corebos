@@ -16,19 +16,14 @@ $return_module = vtlib_purify($_REQUEST['return_module']);
 $return_action = vtlib_purify($_REQUEST['return_action']);
 $return_id = vtlib_purify($_REQUEST['return_id']);
 $parenttab = getParentTab();
-
-//Added to fix 4600
 $url = getBasic_Advance_SearchURL();
-
-//Added to delete the pricebook from Product related list
-if($_REQUEST['record'] != '' && $_REQUEST['return_id'] != '' && $_REQUEST['module'] == 'PriceBooks' 
-	&& ($_REQUEST['return_module'] == 'Products' || $_REQUEST['return_module'] == 'Services'))
-{
-	$pricebookid = vtlib_purify($_REQUEST['record']);
-	$productid = vtlib_purify($_REQUEST['return_id']);
-	$adb->pquery('delete from vtiger_pricebookproductrel where pricebookid=? and productid=?', array($pricebookid, $productid));
+if (!empty($_REQUEST['start']) and !empty($_REQUEST['return_viewname'])) {
+	$start = vtlib_purify($_REQUEST['start']);
+	$relationId = vtlib_purify($_REQUEST['return_viewname']);
+	$_SESSION['rlvs'][$return_module][$relationId]['start'] = $start;
 }
+if(isset($_REQUEST['activity_mode']))
+	$url .= '&activity_mode='.vtlib_purify($_REQUEST['activity_mode']);
 DeleteEntity($currentModule, $return_module, $focus, $record, $return_id);
-
 header("Location: index.php?module=$return_module&action=$return_action&record=$return_id&parenttab=$parenttab&relmodule=$module".$url);
 ?>
