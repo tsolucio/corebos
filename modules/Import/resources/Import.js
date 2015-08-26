@@ -125,9 +125,10 @@ if (typeof(ImportJs) == 'undefined') {
 				}
 			}
 
-			var mandatoryFields = JSON.parse(jQuery('#mandatory_fields').val());
 			var missingMandatoryFields = [];
-			if (mandatoryFields.length > 0) {
+			var mandatoryFields = jQuery('#mandatory_fields').val();
+			if (mandatoryFields!='') {
+				mandatoryFields = JSON.parse(mandatoryFields);
 				for(var mandatoryFieldName in mandatoryFields) {
 					if(mandatoryFieldName in mappedFields) {
 						continue;
