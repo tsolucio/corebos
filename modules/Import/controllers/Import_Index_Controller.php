@@ -85,7 +85,7 @@ class Import_Index_Controller {
 			$mandatoryFields = array();
 			foreach($moduleFields as $fieldName => $fieldInstance) {
 				if($fieldInstance->isMandatory()
-						&& $fieldInstance->getFieldDataType() != 'owner'
+						//&& $fieldInstance->getFieldDataType() != 'owner'
 						&& $this->isEditableField($fieldInstance)) {
 					$mandatoryFields[$fieldName] = getTranslatedString($fieldInstance->getFieldLabelKey(), $moduleName);
 				}
