@@ -17,11 +17,11 @@ $filenameid = vtlib_purify($_REQUEST['record']);
 $invoice_no = getModuleSequenceNumber($currentModule,vtlib_purify($_REQUEST['record']));
 $moduleName = str_replace(' ', '', getTranslatedString('SINGLE_Invoice', $currentModule));
 if(empty($filenameid)) $filenameid = time();
-$filepath='storage/'.$moduleName.'_'.$invoice_no.".pdf";
+$filepath='storage/'.$moduleName.'_'.$invoice_no.'.pdf';
 //added file name to make it work in IE, also forces the download giving the user the option to save
 $controller->Output($filepath,'F');
 
 // Added to fix annoying bug that includes HTML in your PDF
-echo "<script>window.history.back();</script>";
-exit()
+echo '<script>window.history.back();</script>';
+exit();
 ?>
