@@ -121,6 +121,9 @@ function findPosY(obj) {
 function getPosition(element) {
     //Get absolute position, using JQuery
     var offset = jQuery(element).offset();
+    if(offset == undefined){
+        offset = {left: 0, top: 0};
+    }
     return { x: offset.left, y: offset.top };
 }
 
