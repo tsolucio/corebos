@@ -11,15 +11,14 @@ require_once('Smarty_setup.php');
 require_once("include/utils/utils.php");
 require_once("modules/com_vtiger_workflow/VTWorkflowUtils.php");
 
-global $mod_strings, $app_strings, $theme, $adb;
+global $mod_strings, $app_strings, $theme, $adb, $current_user;
 $smarty = new vtigerCRM_Smarty;
-$smarty->assign("MOD",$mod_strings);
-$smarty->assign("APP",$app_strings);
-$smarty->assign("THEME", "$theme");
-$smarty->assign("IMAGE_PATH", "themes/$theme/images/");
+$smarty->assign('MOD',$mod_strings);
+$smarty->assign('APP',$app_strings);
+$smarty->assign('THEME', $theme);
+$smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 
 // Operation to be restricted for non-admin users.
-global $current_user;
 if(!is_admin($current_user)) {	
 	$smarty->display(vtlib_getModuleTemplate('Vtiger','OperationNotPermitted.tpl'));	
 } else {
@@ -54,7 +53,7 @@ if(!is_admin($current_user)) {
 			$menu_array['Tooltip']['label'] = getTranslatedString($adb->query_result($sql_result, 0, 'name'),'Tooltip');
 		}
 	}
-	
+
 	if(VTWorkflowUtils::checkModuleWorkflow($module)){
 		$sql_result = $adb->pquery("SELECT * FROM vtiger_settings_field WHERE name = ? AND active=0",array('LBL_WORKFLOW_LIST'));
 		if($adb->num_rows($sql_result) > 0) {
