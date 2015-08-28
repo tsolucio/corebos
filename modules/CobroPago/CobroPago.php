@@ -45,6 +45,7 @@ class CobroPago extends CRMEntity {
 	 * Mandatory for Listing (Related listview)
 	 */
 	var $list_fields = Array (
+                'CyP No'=>Array('cobropago'=>'cyp_no'),
 		'Reference'=>Array('cobropago'=>'reference'),
 		'PaymentMode'=>Array('cobropago'=>'paymentmode'),
 		'Amount'=>Array('cobropago'=>'amount'),
@@ -52,6 +53,7 @@ class CobroPago extends CRMEntity {
 		'Assigned To' => Array('crmentity' => 'smownerid')
 	);
 	var $list_fields_name = Array(
+                'CyP No'=>'cyp_no',
 		'Reference'=>'reference',
 		'PaymentMode'=>'paymentmode',
 		'Amount'=>'amount',
@@ -60,16 +62,18 @@ class CobroPago extends CRMEntity {
 	);
 
 	// Make the field link to detail view from list view (Fieldname)
-	var $list_link_field = 'reference';
+	var $list_link_field = 'cyp_no';
 
 	// For Popup listview and UI type support
 	var $search_fields = Array(
+		'CyP No'=>Array('cobropago'=>'cyp_no'),
 		'Reference'=>Array('cobropago'=>'reference'),
 		'PaymentMode'=>Array('cobropago'=>'paymentmode'),
 		'Amount'=>Array('cobropago'=>'amount'),
 		'DueDate'=>Array('cobropago'=>'duedate')
 	);
 	var $search_fields_name = Array(
+                'CyP No'=>'cyp_no',
 		'Reference'=>'reference',
 		'PaymentMode'=>'paymentmode',
 		'Amount'=>'amount',
@@ -77,7 +81,7 @@ class CobroPago extends CRMEntity {
 	);
 
 	// For Popup window record selection
-	var $popup_fields = Array('reference');
+	var $popup_fields = Array('cyp_no');
 
 	// Placeholder for sort fields - All the fields will be initialized for Sorting through initSortFields
 	var $sortby_fields = Array();
@@ -86,7 +90,7 @@ class CobroPago extends CRMEntity {
 	var $def_basicsearch_col = 'reference';
 
 	// Column value to use on detail view record text display
-	var $def_detailview_recname = 'reference';
+	var $def_detailview_recname = 'cyp_no';
 
 	// Required Information for enabling Import feature
 	var $required_fields = Array('reference'=>1);
@@ -94,11 +98,11 @@ class CobroPago extends CRMEntity {
 	// Callback function list during Importing
 	var $special_functions = Array('set_import_assigned_user');
 
-	var $default_order_by = 'reference';
+	var $default_order_by = 'cyp_no';
 	var $default_sort_order='ASC';
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
-	var $mandatory_fields = Array('createdtime', 'modifiedtime', 'reference');
+	var $mandatory_fields = Array('createdtime', 'modifiedtime','cyp_no');
 
 	function __construct() {
 		global $log, $currentModule;
@@ -561,7 +565,8 @@ class CobroPago extends CRMEntity {
 			if ($modHD) $modHD->setRelatedList($modCyP, 'CobroPago', Array('ADD'),'get_dependents_list');
 			if ($modPrj) $modPrj->setRelatedList($modCyP, 'CobroPago', Array('ADD'),'get_dependents_list');
 			if ($modPrjTask) $modPrjTask->setRelatedList($modCyP, 'CobroPago', Array('ADD'),'get_dependents_list');
-		} else if($event_type == 'module.disabled') {
+                        $this->setModuleSeqNumber('configure', $modulename, 'PAY-', '0000001');
+                } else if($event_type == 'module.disabled') {
 			// TODO Handle actions when this module is disabled.
 		} else if($event_type == 'module.enabled') {
 			// TODO Handle actions when this module is enabled.

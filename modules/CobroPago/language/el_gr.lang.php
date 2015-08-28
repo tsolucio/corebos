@@ -88,6 +88,8 @@ $mod_strings = Array(
 'Payment Paid'=>'Η πληρωμή έχει σημειωθεί ως ΕΞΟΦΛΗΜΕΝΗ από ',
 'PaidOn'=>' σε ',
 'RecieptOpen'=>'Η απόδειξη εκτυπώθηκε από ',
+'CyP No'=>'Payment No',
+'PaymentDate'=>'Payment Date',
 
 //Added for Existing Picklist Strings
 

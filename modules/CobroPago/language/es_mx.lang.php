@@ -72,13 +72,15 @@ $mod_strings = Array(
 'Created Time'=>'Fecha Creación',
 'Modified Time'=>'Fecha Modificación',
 'cobropagoid'=>'Id Cobro Pago',
-'DueDate'=>'Fecha pago',
+'DueDate'=>'Fecha Vencimiento',
 'Comercial'=>'Usuario relacionado',
 'Recibo'=>'Recibo',
 'Historico de Cobros y Pagos'=>'Histórico de Cobros y Pagos',
 'Payment Paid'=>'Pago marcado como PAGADO por ',
 'PaidOn'=>' el ',
 'RecieptOpen'=>'Se ha abierto el recibo para imprimir por ',
+'CyP No'=>'No. CobroPago',
+'PaymentDate'=>'Fecha Pago',
 
 //Added for Existing Picklist Strings
 'Cash'=>'Efectivo',

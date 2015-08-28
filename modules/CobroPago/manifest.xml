@@ -35,11 +35,13 @@
 <name>vtiger_cobropago</name>
 <sql><![CDATA[CREATE TABLE `vtiger_cobropago` (
   `cobropagoid` int(11) default NULL,
+  `cyp_no` varchar(50) default NULL,
   `reference` varchar(256) default NULL,
   `parent_id` int(11) default NULL,
   `related_id` int(11) default NULL,
   `register` date default NULL,
   `duedate` date default NULL,
+  `paymentdate` date default NULL,
   `paid` varchar(3) default NULL,
   `credit` varchar(3) default NULL,
   `paymentmode` varchar(256) default NULL,
@@ -96,12 +98,12 @@
 <masseditable>1</masseditable>
 </field>
 <field>
-<fieldname>reference</fieldname>
-<uitype>1</uitype>
-<columnname>reference</columnname>
+<fieldname>cyp_no</fieldname>
+<uitype>4</uitype>
+<columnname>cyp_no</columnname>
 <tablename>vtiger_cobropago</tablename>
 <generatedtype>1</generatedtype>
-<fieldlabel>Reference</fieldlabel>
+<fieldlabel>CyP No</fieldlabel>
 <readonly>1</readonly>
 <presence>0</presence>
 <selected>0</selected>
@@ -120,6 +122,26 @@
 </entityidentifier>
 </field>
 <field>
+<fieldname>reference</fieldname>
+<uitype>1</uitype>
+<columnname>reference</columnname>
+<tablename>vtiger_cobropago</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Reference</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>3</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>0</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
 <fieldname>parent_id</fieldname>
 <uitype>10</uitype>
 <columnname>parent_id</columnname>
@@ -129,7 +151,7 @@
 <readonly>1</readonly>
 <presence>0</presence>
 <selected>0</selected>
-<sequence>3</sequence>
+<sequence>4</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~O</typeofdata>
 <quickcreate>0</quickcreate>
@@ -155,7 +177,7 @@
 <readonly>1</readonly>
 <presence>0</presence>
 <selected>0</selected>
-<sequence>4</sequence>
+<sequence>5</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~O</typeofdata>
 <quickcreate>0</quickcreate>
@@ -191,7 +213,7 @@
 <readonly>1</readonly>
 <presence>2</presence>
 <selected>0</selected>
-<sequence>5</sequence>
+<sequence>6</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>D~O</typeofdata>
 <quickcreate>1</quickcreate>
@@ -211,7 +233,27 @@
 <readonly>1</readonly>
 <presence>2</presence>
 <selected>0</selected>
-<sequence>6</sequence>
+<sequence>7</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>D~O</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence>3</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>paymentdate</fieldname>
+<uitype>5</uitype>
+<columnname>paymentdate</columnname>
+<tablename>vtiger_cobropago</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>PaymentDate</fieldlabel>
+<readonly>1</readonly>
+<presence>2</presence>
+<selected>0</selected>
+<sequence>8</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>D~O</typeofdata>
 <quickcreate>1</quickcreate>
@@ -231,7 +273,7 @@
 <readonly>1</readonly>
 <presence>2</presence>
 <selected>0</selected>
-<sequence>7</sequence>
+<sequence>9</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>C~O</typeofdata>
 <quickcreate>1</quickcreate>
@@ -251,7 +293,7 @@
 <readonly>1</readonly>
 <presence>0</presence>
 <selected>0</selected>
-<sequence>8</sequence>
+<sequence>10</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>C~O</typeofdata>
 <quickcreate>0</quickcreate>
@@ -271,7 +313,7 @@
 <readonly>1</readonly>
 <presence>2</presence>
 <selected>0</selected>
-<sequence>9</sequence>
+<sequence>11</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~O</typeofdata>
 <quickcreate>1</quickcreate>
@@ -296,7 +338,7 @@
 <readonly>1</readonly>
 <presence>2</presence>
 <selected>0</selected>
-<sequence>10</sequence>
+<sequence>12</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~O</typeofdata>
 <quickcreate>1</quickcreate>
@@ -321,7 +363,7 @@
 <readonly>1</readonly>
 <presence>0</presence>
 <selected>0</selected>
-<sequence>11</sequence>
+<sequence>13</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>N~O</typeofdata>
 <quickcreate>0</quickcreate>
@@ -341,7 +383,7 @@
 <readonly>1</readonly>
 <presence>0</presence>
 <selected>0</selected>
-<sequence>12</sequence>
+<sequence>14</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>N~O</typeofdata>
 <quickcreate>0</quickcreate>
@@ -361,7 +403,7 @@
 <readonly>1</readonly>
 <presence>2</presence>
 <selected>0</selected>
-<sequence>13</sequence>
+<sequence>15</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>N~O</typeofdata>
 <quickcreate>1</quickcreate>
@@ -381,7 +423,7 @@
 <readonly>1</readonly>
 <presence>0</presence>
 <selected>0</selected>
-<sequence>14</sequence>
+<sequence>16</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>T~O</typeofdata>
 <quickcreate>3</quickcreate>
@@ -401,7 +443,7 @@
 <readonly>1</readonly>
 <presence>0</presence>
 <selected>0</selected>
-<sequence>15</sequence>
+<sequence>17</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>T~O</typeofdata>
 <quickcreate>3</quickcreate>
@@ -421,7 +463,7 @@
 <readonly>1</readonly>
 <presence>2</presence>
 <selected>0</selected>
-<sequence>16</sequence>
+<sequence>18</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~O</typeofdata>
 <quickcreate>1</quickcreate>
@@ -469,28 +511,32 @@
 <setmetrics>false</setmetrics>
 <fields>
 <field>
-<fieldname>reference</fieldname>
+<fieldname>cyp_no</fieldname>
 <columnindex>0</columnindex>
 </field>
 <field>
-<fieldname>duedate</fieldname>
+<fieldname>reference</fieldname>
 <columnindex>1</columnindex>
 </field>
 <field>
-<fieldname>parent_id</fieldname>
+<fieldname>duedate</fieldname>
 <columnindex>2</columnindex>
 </field>
 <field>
-<fieldname>related_id</fieldname>
+<fieldname>parent_id</fieldname>
 <columnindex>3</columnindex>
 </field>
 <field>
-<fieldname>amount</fieldname>
+<fieldname>related_id</fieldname>
 <columnindex>4</columnindex>
 </field>
 <field>
-<fieldname>assigned_user_id</fieldname>
+<fieldname>amount</fieldname>
 <columnindex>5</columnindex>
+</field>
+<field>
+<fieldname>assigned_user_id</fieldname>
+<columnindex>6</columnindex>
 </field>
 </fields>
 </customview>
@@ -500,32 +546,36 @@
 <setmetrics>true</setmetrics>
 <fields>
 <field>
-<fieldname>reference</fieldname>
+<fieldname>cyp_no</fieldname>
 <columnindex>0</columnindex>
 </field>
 <field>
-<fieldname>duedate</fieldname>
+<fieldname>reference</fieldname>
 <columnindex>1</columnindex>
 </field>
 <field>
-<fieldname>amount</fieldname>
+<fieldname>duedate</fieldname>
 <columnindex>2</columnindex>
 </field>
 <field>
-<fieldname>cost</fieldname>
+<fieldname>amount</fieldname>
 <columnindex>3</columnindex>
 </field>
 <field>
-<fieldname>benefit</fieldname>
+<fieldname>cost</fieldname>
 <columnindex>4</columnindex>
 </field>
 <field>
-<fieldname>paid</fieldname>
+<fieldname>benefit</fieldname>
 <columnindex>5</columnindex>
 </field>
 <field>
-<fieldname>assigned_user_id</fieldname>
+<fieldname>paid</fieldname>
 <columnindex>6</columnindex>
+</field>
+<field>
+<fieldname>assigned_user_id</fieldname>
+<columnindex>7</columnindex>
 </field>
 </fields>
 </customview>

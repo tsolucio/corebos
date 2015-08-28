@@ -92,6 +92,8 @@ $mod_strings = Array(
 'Payment Paid'=>'Contas Pagar/Receber marcadas como PAGO por',
 'PaidOn'=>' em ',
 'RecieptOpen'=>'Recibo aberto para impressão por',
+'CyP No'=>'Pagar/Receber No',
+'PaymentDate'=>'Data Pagamento',
 
 //Added for Existing Picklist Strings
 

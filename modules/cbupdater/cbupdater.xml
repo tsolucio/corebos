@@ -408,4 +408,11 @@
 	<classname>GlobalVarUITypeModuleListFixEntityID</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>kikojover</author>
+	<description>Add CyP No and PaymentDate de Payments (CobroPago)</description>
+	<filename>build/changeSets/addFieldsToCyP.php</filename>
+	<classname>addFieldsToCyP</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

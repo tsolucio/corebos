@@ -97,6 +97,8 @@ $mod_strings = Array(
 'Payment Paid'=>'Bezahlun als BEZAHLT markiert von ',
 'PaidOn'=>' am ',
 'RecieptOpen'=>'Beleg zum drucken geöffnet von ',
+'CyP No'=>'Zahlung No',
+'PaymentDate'=>'Payment Date',
 
 //Added for Existing Picklist Strings
 

@@ -93,6 +93,8 @@ $mod_strings = Array(
 'Payment Paid'=>'Marcato come PAGATO da',
 'PaidOn'=>' il ',
 'RecieptOpen'=>'Ricevuta aperta per la stampa da ',
+'CyP No'=>'Pagamento No',
+'PaymentDate'=>'Data di Pagamento',
 
 //Added for Existing Picklist Strings
 

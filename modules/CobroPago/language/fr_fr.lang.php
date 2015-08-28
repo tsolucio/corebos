@@ -84,13 +84,15 @@ $mod_strings = Array(
 'Created Time'=>'Heure de création',
 'Modified Time'=>'Heure de Modification',
 'cobropagoid'=>'Paiement Id',
-'DueDate'=>'Date de paiement',
+'DueDate'=>'Date d\'échéance',
 'Comercial'=>'Utilisateur relatif',
 'Recibo'=>'Reçu',
 'Historico de Cobros y Pagos'=>'Historique paiement',
 'Payment Paid'=>'Paiement marqué Payé par ',
 'PaidOn'=>' on ',
 'RecieptOpen'=>'Reçu ouvert pour impression par ',
+'CyP No'=>'Paiement No',
+'PaymentDate'=>'Date de paiement',
 
 //Added for Existing Picklist Strings
 
