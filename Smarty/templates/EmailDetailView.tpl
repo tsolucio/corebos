@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 -->*}
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
@@ -19,6 +18,10 @@
 <style type="text/css">@import url("themes/{$THEME}/style.css");</style>
 <script language="JavaScript" type="text/javascript" src="include/js/general.js"></script>
 <script language="javascript" type="text/javascript" src="include/scriptaculous/prototype.js"></script>
+<script type="text/javascript" src="include/jquery/jquery-1.6.2.min.js"></script>
+<script type="text/javascript">
+	jQuery.noConflict();
+</script>
 <body marginheight="0" marginwidth="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
 <table class="small" border="0" cellpadding="0" cellspacing="0" width="100%">
 <tbody>
@@ -62,7 +65,6 @@
 	<tr>
 	<td colspan="3" class="dvtCellLabel" style="padding: 10px;" align="center"><input type="button" name="forward" value=" {$MOD.LBL_FORWARD_BUTTON} " alt="{$MOD.LBL_FORWARD_BUTTON}" title="{$MOD.LBL_FORWARD_BUTTON}" class="crmbutton small edit" onClick="OpenCompose('{$ID}','forward')">&nbsp;
 	<input type="button" title="{$APP.LBL_EDIT}" alt="{$APP.LBL_EDIT}" name="edit" value=" {$APP.LBL_EDIT} " class="crmbutton small edit" onClick="OpenCompose('{$ID}','edit')">&nbsp;
-
 	<input name="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " title="{$APP.LBL_CANCEL_BUTTON_LABEL}" alt="{$APP.LBL_CANCEL_BUTTON_LABEL}" class="crmbutton small cancel" type="button" onClick="window.close()">
 	&nbsp;
 	<input type="button" title="{$MOD.LBL_PRINT_EMAIL}" name="{$MOD.LBL_PRINT_EMAIL}" value="{$MOD.LBL_PRINT_EMAIL}" class="crmbutton small edit" onClick="OpenCompose('{$ID}', 'print')">&nbsp;
@@ -94,7 +96,6 @@
 	<input type="button" title="{$MOD.LBL_PRINT_EMAIL}" name="{$MOD.LBL_PRINT_EMAIL}" value="{$MOD.LBL_PRINT_EMAIL}" class="crmbutton small edit" onClick="OpenCompose('{$ID}', 'print')"> &nbsp;
 	</td>
    </tr>
-
 </table>
 <script>
 $('attach_cont').innerHTML = $('attach_temp_cont').innerHTML;
