@@ -127,7 +127,6 @@ $smarty->assign('EVENT_PERMISSION', CheckFieldPermission('parent_id', 'Events'))
 $smarty->assign('USE_ASTERISK', get_use_asterisk($current_user->id));
 if (useInternalMailer() == 1)
 	$smarty->assign('INT_MAILER', 'true');
-$smarty->assign("PRINT_URL", "phprint.php?jt=" . session_id() . $GLOBALS['request_string']);
 
 if($singlepane_view == 'true') {
 	$related_array = getRelatedLists($currentModule,$focus);

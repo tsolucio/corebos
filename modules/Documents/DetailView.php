@@ -74,7 +74,6 @@ $smarty->assign('NOTESID',$focus->id);
 $smarty->assign('FOLDERID',$folderid);
 $smarty->assign('DLD_PATH',$filepath);
 $smarty->assign('FILENAME', $filename);
-$smarty->assign("PRINT_URL", "phprint.php?jt=".session_id().$GLOBALS['request_string']);
 $allblocks = getBlocks($currentModule,'detail_view','',$focus->column_fields);
 $smarty->assign('BLOCKS', $allblocks);
 $flag = 0;

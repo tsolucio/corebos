@@ -81,7 +81,6 @@ $smarty->assign('ASSOCIATED_PRODUCTS',getDetailAssociatedProducts($currentModule
 $smarty->assign('TODO_PERMISSION',CheckFieldPermission('parent_id','Calendar'));
 $smarty->assign('EVENT_PERMISSION',CheckFieldPermission('parent_id','Events'));
 $smarty->assign('CREATEPDF','permitted');
-$smarty->assign("PRINT_URL", "phprint.php?jt=".session_id().$GLOBALS['request_string']);
 $quote_no = getModuleSequenceNumber($currentModule,$record);
 $smarty->assign('QUO_NO',$quote_no);
 

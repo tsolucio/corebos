@@ -44,8 +44,6 @@ $smarty->assign('THEME', $theme);
 $smarty->assign('ID', $focus->id);
 $smarty->assign('MODE', $focus->mode);
 
-$smarty->assign("PRINT_URL", "phprint.php?jt=".session_id().$GLOBALS['request_string']);
-
 $recordName = array_values(getEntityName($currentModule, $focus->id));
 $recordName = $recordName[0];
 $smarty->assign('NAME', $recordName);

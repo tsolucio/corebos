@@ -110,7 +110,7 @@ if(useInternalMailer() == 1)
 
 $smarty->assign("GROUP_COUNT",count($oGetUserGroups->user_groups));
 $smarty->assign("THEME", $theme);
-$smarty->assign("IMAGE_PATH", $image_path);$smarty->assign("PRINT_URL", "phprint.php?jt=".session_id().$GLOBALS['request_string']);
+$smarty->assign("IMAGE_PATH", $image_path);
 $smarty->assign("ID", $focus->id);
 $smarty->assign("CATEGORY", $category);
 if(isset($focus->imagename) && $focus->imagename!='')

@@ -111,7 +111,7 @@ $other_text .='
 	   </tr>
 	</table>';
 
-$smarty->assign("PRODUCTLISTHEADER", get_form_header($current_module_strings['LBL_LIST_FORM_TITLE'], $other_text, false ));
+$smarty->assign('PRODUCTLISTHEADER', get_form_header($current_module_strings['LBL_LIST_FORM_TITLE'], $other_text));
 
 //Retreive the List View Table Header
 

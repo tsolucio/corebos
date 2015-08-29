@@ -246,7 +246,6 @@ if (isset($_REQUEST['return_action'])) $smarty->assign("RETURN_ACTION", vtlib_pu
 if (isset($_REQUEST['return_id'])) $smarty->assign("RETURN_ID", vtlib_purify($_REQUEST['return_id']));
 $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH", $image_path);
-$smarty->assign("PRINT_URL", "phprint.php?jt=".session_id().$GLOBALS['request_string'].'&activity_mode='.$activity_mode);
 $smarty->assign("ID", $focus->id);
 $smarty->assign("NAME", $focus->name);
 $smarty->assign("BLOCKS", $act_data);

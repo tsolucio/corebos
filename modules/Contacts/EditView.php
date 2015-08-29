@@ -155,7 +155,6 @@ if (isset($_REQUEST['return_viewname']))
  	$smarty->assign("RETURN_VIEWNAME", vtlib_purify($_REQUEST['return_viewname']));
 $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH", $image_path);
-$smarty->assign("PRINT_URL", "phprint.php?jt=" . session_id() . $GLOBALS['request_string']);
 
 $tabid = getTabid("Contacts");
 $validationData = getDBValidationData($focus->tab_name, $tabid);

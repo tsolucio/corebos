@@ -93,7 +93,6 @@ if($_REQUEST['mail_error'] != '') {
 //Added button for Convert the ticket to FAQ
 if(isPermitted('Faq','EditView','') == 'yes')
 	$smarty->assign('CONVERTASFAQ','permitted');
-$smarty->assign("PRINT_URL", "phprint.php?jt=".session_id().$GLOBALS['request_string']);
 
 $smarty->assign('TODO_PERMISSION',CheckFieldPermission('parent_id','Calendar'));
 $smarty->assign('EVENT_PERMISSION',CheckFieldPermission('parent_id','Events'));

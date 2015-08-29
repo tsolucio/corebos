@@ -175,7 +175,6 @@ if (isset($_REQUEST['record'])) {
 } else {
 	$smarty->assign('CANCELACTION', 'index');
 }
-$smarty->assign("PRINT_URL", "phprint.php?jt=".session_id().$GLOBALS['request_string']);
 $smarty->assign('OLD_ID', $old_id );
 if($_REQUEST['upload_error'] == true)
 {

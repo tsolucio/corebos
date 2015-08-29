@@ -274,10 +274,8 @@ if(isset($_REQUEST['subtab']) && $_REQUEST['subtab']!='')
 if(isset($_REQUEST['maintab']) && $_REQUEST['maintab']!='')
 	$smarty->assign("maintab",vtlib_purify($_REQUEST['maintab']));
 
-
 $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH", $image_path);
-$smarty->assign("PRINT_URL", "phprint.php?jt=".session_id().$GLOBALS['request_string']);
 $smarty->assign("ID", $focus->id);
 
  $tabid = getTabid($tab_type);

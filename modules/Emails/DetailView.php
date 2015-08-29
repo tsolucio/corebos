@@ -137,8 +137,6 @@ $entries = getBlocks($currentModule,"detail_view",'',$focus->column_fields);
 $smarty->assign("BLOCKS",$entries[$mod_strings['LBL_EMAIL_INFORMATION']]);
 $smarty->assign("SINGLE_MOD", 'Email');
 
-$smarty->assign("PRINT_URL", "phprint.php?jt=".session_id().$GLOBALS['request_string']);
-
 if(isPermitted("Emails","EditView",$_REQUEST['record']) == 'yes')
 	$smarty->assign("EDIT_DUPLICATE","permitted");
 

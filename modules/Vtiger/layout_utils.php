@@ -55,40 +55,13 @@ return ("</td></tr></tbody></table>\n");
  * Create HTML to display formatted form title.
  * param $form_title - the string to display as the title in the header
  * param $other_text - the string to next to the title.  Typically used for form buttons.
- * param $show_help - the boolean which determines if the print and help links are shown.
  */
-function get_form_header ($form_title, $other_text, $show_help) 
-{
-global $image_path;
-global $app_strings;
-
-$the_form = <<<EOQ
-<!--table width="100%" cellpadding="0" cellspacing="0" border="0" class="formHeaderULine"><tbody><tr>
-	  <td valign="bottom">
-       <table width="100%" cellpadding="0" cellspacing="0" border="0"><tbody><tr>
-		<td vAlign="middle" class="formHeader" align="left" noWrap height="15">$form_title&nbsp;</td>
-        </tr></tbody></table></td-->
-EOQ;
-
-if ($other_text) {
-	$the_form .= "<td width='20'><IMG height='1' src='themes/images/blank.gif'></td>\n";
-	$the_form .= "<td valign='bottom' class='formHeader' width='100%'>$other_text</td>\n";
-}
-else {
-	$the_form .= "<td><IMG height='1' src='themes/images/blank.gif'></td>\n";
-}
-
-if ($show_help==true) {
-     $the_form .= "<td class='bodySmall' align='right'>[ <A href='phprint.php?jt=".session_id().$GLOBALS['request_string']."'>".$app_strings['LNK_PRINT']."</A> ]</td>\n";
-     $the_form .= "<td class='bodySmall' align='right'>[ <A href='http://www.vtiger.com/products/crm/document.html' target='_blank'>".$app_strings['LNK_HELP']."</A> ]</td>\n";
-}
-
-$the_form .= <<<EOQ
-	  </tr>
-</tbody></table>
-EOQ;
-
-return $the_form;
+function get_form_header ($form_title, $other_text) {
+	$the_form = "<IMG height='1' src='themes/images/blank.gif'>\n";
+	if ($other_text) {
+		$the_form .= $other_text;
+	}
+	return $the_form;
 }
 
 /**

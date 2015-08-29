@@ -78,7 +78,6 @@ if(isset($app_strings['LBL_CHARSET'])) {
 }
 
 $smarty->assign("IMAGE_PATH", $image_path);
-$smarty->assign("PRINT_URL", "phprint.php?jt=".session_id().(isset($GLOBALS['request_string']) ? $GLOBALS['request_string']:''));
 $smarty->assign("VTIGER_VERSION", $vtiger_current_version);
 
 // We check if we have the two new logo fields > if not we create them

@@ -71,7 +71,6 @@ if(PerformancePrefs::getBoolean('DETAILVIEW_RECORD_NAVIGATION', true) && isset($
 	VT_detailViewNavigation($smarty,$recordNavigationInfo,$focus->id);
 }
 
-$smarty->assign("PRINT_URL", "phprint.php?jt=".session_id().$GLOBALS['request_string']);
 $smarty->assign('CURRENCY_ID',$focus->column_fields['currency_id']);
 $smarty->assign('IS_REL_LIST', isPresentRelatedLists($currentModule));
 $smarty->assign('SinglePane_View', $singlepane_view);

@@ -107,7 +107,7 @@ $other_text .='
 	   </tr>
 	</table>';
 
-$smarty->assign("PRICEBOOKLISTHEADER", get_form_header($current_module_strings['LBL_LIST_PRICEBOOK_FORM_TITLE'], $other_text, false ));
+$smarty->assign('PRICEBOOKLISTHEADER', get_form_header($current_module_strings['LBL_LIST_PRICEBOOK_FORM_TITLE'], $other_text));
 
 
 //List View Table Header

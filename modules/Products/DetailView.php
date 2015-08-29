@@ -54,8 +54,6 @@ $recordName = $recordName[0];
 $smarty->assign('NAME', $recordName);
 $smarty->assign('UPDATEINFO',updateInfo($focus->id));
 
-$smarty->assign("PRINT_URL", "phprint.php?jt=".session_id().$GLOBALS['request_string']);
-
 // Module Sequence Numbering
 $mod_seq_field = getModuleSequenceField($currentModule);
 if ($mod_seq_field != null) {
