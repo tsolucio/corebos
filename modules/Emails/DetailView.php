@@ -1,35 +1,19 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the 
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Emails/DetailView.php,v 1.22 2005/03/24 19:09:21 rank Exp $
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
+ ************************************************************************************/
 require_once('Smarty_setup.php');
 require_once('data/Tracker.php');
 require_once('include/upload_file.php');
 require_once('include/utils/utils.php');
 require_once("include/Zend/Json.php");
 
-global $log;
-global $app_strings;
-global $mod_strings;
-global $currentModule;
+global $log, $app_strings, $mod_strings, $currentModule, $theme;
 
 $focus = CRMEntity::getInstance($currentModule);
 $json = new Zend_Json();
@@ -107,12 +91,6 @@ elseif (is_null($focus->parent_type))
 	$focus->parent_type = $app_list_strings['record_type_default_key'];
 }
 
-global $theme;
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
-
-$log->info("Email detail view");
-
 $submenu = array('LBL_EMAILS_TITLE'=>'index.php?module=Emails&action=index','LBL_WEBMAILS_TITLE'=>'index.php?module=squirrelmail-1.4.4&action=redirect');
 $sec_arr = array('index.php?module=Emails&action=index'=>'Emails','index.php?module=squirrelmail-1.4.4&action=redirect'=>'Emails'); 
 
@@ -123,8 +101,8 @@ $smarty->assign("UPDATEINFO",updateInfo($focus->id));
 if (isset($_REQUEST['return_module'])) $smarty->assign("RETURN_MODULE", vtlib_purify($_REQUEST['return_module']));
 if (isset($_REQUEST['return_action'])) $smarty->assign("RETURN_ACTION", vtlib_purify($_REQUEST['return_action']));
 if (isset($_REQUEST['return_id'])) $smarty->assign("RETURN_ID", vtlib_purify($_REQUEST['return_id']));
-$smarty->assign("THEME", $theme);
-$smarty->assign("IMAGE_PATH", $image_path);
+$smarty->assign('THEME', $theme);
+$smarty->assign('IMAGE_PATH', 'themes/'.$theme.'/images/');
 $category = getParentTab();
 $smarty->assign("CATEGORY",$category);
 

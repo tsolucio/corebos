@@ -33,8 +33,6 @@ class AuditTrail{
 
 	var $object_name = "AuditTrail";
 
-	var $new_schema = true;
-
 	function AuditTrail() {
 		$this->log = LoggerManager::getLogger('audit_trial');
 		$this->db = PearDatabase::getInstance();
