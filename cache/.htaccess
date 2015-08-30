@@ -1,0 +1,5 @@
+Options -Indexes
+
+<Files "*.php">
+Deny from all
+</Files>
