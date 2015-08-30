@@ -351,7 +351,6 @@ $mod_strings = Array(
 'LBL_ORGANIZATION_LOGO'=>'Logo',
 'LBL_UPLOAD'=>'Versturen',
 'LBL_FILENAME'=>'Bestandsnaam',
-'LBL_SETTINGS'=>'Instellingen',
 'LBL_COMPANY_INFO'=>'Bedrijfsinformatie',
 'LBL_COMPANY_DETAILS'=>'Bedrijfsinformatie',
 'LBL_SEVERITY'=>'Ernstigheid',

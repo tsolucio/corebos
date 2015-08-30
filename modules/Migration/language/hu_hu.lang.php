@@ -41,7 +41,6 @@ $mod_strings = array(
 	'LBL_MIGRATE' => 'Költöztetés az aktuális verzióba',
 	'LBL_UPGRADE_VTIGER' => 'Vtiger CRM adatbázis naprakész állapotba hozása',
 	'LBL_UPGRADE_FROM_VTIGER_423' => 'Adatbázis naprakész állapotba hozása a vtiger CRM 4.2.3-ból 5.0.0-ba',
-	'LBL_SETTINGS' => 'Beállítások',
 	'LBL_STEP' => 'Lépés',
 	'LBL_SELECT_SOURCE' => 'Forrás kiválasztása',
 	'LBL_STEP1_DESC' => 'Az adatbázis költöztetéshez meg kell adnod a formátumot, amiben a régi adatok rendelkezésedre állnak',

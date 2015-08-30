@@ -542,7 +542,6 @@ $mod_strings = Array(
 'LBL_ORGANIZATION_LOGO'=>'Company Logo',
 'LBL_UPLOAD'=>'Upload',
 'LBL_FILENAME'=>'File Name',
-'LBL_SETTINGS'=>'Settings',
 'LBL_COMPANY_DETAILS'=>'Company Details',
 
 'LBL_SEVERITY'=>'Severity',

@@ -291,7 +291,6 @@ $mod_strings = array (
       'LBL_ORGANIZATION_LOGO' => 'Nombre del Logo',
       'LBL_UPLOAD' => 'Adjuntar',
       'LBL_FILENAME' => 'Nombre del Archivo',
-      'LBL_SETTINGS' => 'Configuración',
       'LBL_COMPANY_DETAILS' => 'Información de la Empresa',
       'LBL_SEVERITY' => 'Gravedad',
       'LBL_FAQ_CATEGORY' => 'Categoría de la FAQ',

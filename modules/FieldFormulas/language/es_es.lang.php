@@ -11,7 +11,6 @@ $mod_strings = Array (
 'LBL_FUNCTIONS'=>'Funciones',
 'LBL_FIELD' => 'Campo',
 'LBL_EXPRESSION'=>'Expresión',
-'LBL_SETTINGS' => 'Configuración',
 'LBL_NEW_FIELD_EXPRESSION_BUTTON' => 'Nueva Expresión de Campo',
 'LBL_EDIT_EXPRESSION' => 'Editar Expresión',
 'LBL_MODULE_INFO' => 'Fórmulas definidas para',

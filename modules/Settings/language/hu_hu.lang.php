@@ -301,7 +301,6 @@ $mod_strings = array(
 	'LBL_ORGANIZATION_LOGO' => 'Cég Logo',
 	'LBL_UPLOAD' => 'Feltöltés',
 	'LBL_FILENAME' => 'Fájlnév',
-	'LBL_SETTINGS' => 'Beállítások',
 	'LBL_COMPANY_DETAILS' => 'Cég Adatok',
 	'LBL_SEVERITY' => 'Komolyság',
 	'LBL_FAQ_CATEGORY' => 'TudásTár Kategória',

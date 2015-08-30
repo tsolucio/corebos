@@ -12,7 +12,6 @@ $mod_strings = Array (
 	'LBL_INACTIVE' => 'Inactif',
 	'LBL_STATUS' => 'Statut',
 	'LBL_SCHEDULER' => 'Planificateur',
-	'LBL_SETTINGS' => 'Réglages',
 	'LBL_FREQUENCY'=> 'Fréquence',
 	'LBL_HOURMIN' => '(H:m)',
 	'LAST_START'=>'Dernier scan commencé',

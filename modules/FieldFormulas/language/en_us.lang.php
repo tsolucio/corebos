@@ -15,7 +15,6 @@ $mod_strings = Array (
 'LBL_FUNCTIONS' => 'Functions',
 'LBL_FIELD' => 'Field',
 'LBL_EXPRESSION' => 'Expression',
-'LBL_SETTINGS' => 'Settings',
 'LBL_NEW_FIELD_EXPRESSION_BUTTON' => 'New Field Expression',
 'LBL_EDIT_EXPRESSION' => 'Edit Expression',
 'LBL_MODULE_INFO' => 'Forumlas defined for ',

@@ -288,7 +288,6 @@ $mod_strings = array (
 		'LBL_ORGANIZATION_LOGO' => 'Logo',
 		'LBL_UPLOAD' => 'Télécharger',
 		'LBL_FILENAME' => 'Nom du fichier',
-		'LBL_SETTINGS' => 'Configuration',
 		'LBL_COMPANY_DETAILS' => 'Société',
 		'LBL_SEVERITY' => 'Sévérité',
 		'LBL_FAQ_CATEGORY' => 'Catégorie de FAQ',

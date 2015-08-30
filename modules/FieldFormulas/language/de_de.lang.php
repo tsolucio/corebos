@@ -14,7 +14,6 @@ $mod_strings = Array (
 'LBL_FUNCTIONS' => 'Funktionen',
 'LBL_FIELD' => 'Feld',
 'LBL_EXPRESSION' => 'Ausdruck',
-'LBL_SETTINGS' => 'Einstellungen',
 'LBL_NEW_FIELD_EXPRESSION_BUTTON' => 'neuer Feldausdruck',
 'LBL_EDIT_EXPRESSION' => 'Ausdruck bearbeiten',
 'LBL_MODULE_INFO' => 'Formel definiert für ',

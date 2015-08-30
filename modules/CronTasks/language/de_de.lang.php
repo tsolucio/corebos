@@ -4,7 +4,6 @@ $mod_strings = Array (
         'LBL_INACTIVE' => 'Inactiv',
         'LBL_STATUS' => 'Status',
         'LBL_SCHEDULER' => 'Planer',
-        'LBL_SETTINGS' => 'Einstellungen',
         'LBL_FREQUENCY'=> 'Frequenz',
         'LBL_HOURMIN' => '(H:M)',
         'LAST_START'=>'letzte Prüfung gestartet',

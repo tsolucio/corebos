@@ -21,7 +21,6 @@ $mod_strings = array(
 	'LBL_FUNCTIONS' => 'Függvények',
 	'LBL_FIELD' => 'Mező',
 	'LBL_EXPRESSION' => 'Kifejezés',
-	'LBL_SETTINGS' => 'Beállítások',
 	'LBL_NEW_FIELD_EXPRESSION_BUTTON' => 'Új Mező Kifejezés',
 	'LBL_EDIT_EXPRESSION' => 'Kifejezés szerkesztése',
 	'LBL_MODULE_INFO' => 'Képlet meghatározások számára ',

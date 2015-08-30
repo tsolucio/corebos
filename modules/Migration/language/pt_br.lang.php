@@ -41,7 +41,6 @@ $mod_strings = Array(
 //Added after 5 Beta
 'LBL_UPGRADE_VTIGER'=>'Atualizar Banco de Dados do vtiger CRM',
 'LBL_UPGRADE_FROM_VTIGER_423'=>'Atualizar Banco de Dados do vtiger CRM 4.2.3 para 5.0.0',
-'LBL_SETTINGS'=>'Configuração',
 'LBL_STEP'=>'Passo',
 'LBL_SELECT_SOURCE'=>'Selecionar Fonte',
 'LBL_STEP1_DESC'=>'Para iniciar a migração do Banco de Dados, você deve especificar o formato no qual os dados antigos estão disponíveis',

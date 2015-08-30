@@ -1182,7 +1182,6 @@ $app_strings = array (
      'LBL_ADD_SERVICE'=>'Agregar Servicio',
      'LBL_ITEM_DETAILS'=>'Detalles Elemento',
      'LBL_ITEM_NAME'=>'Nombre Elemento',
-     'LBL_SETTINGS'=>'Configuración',
      'LAYOUT_EDITOR'=>'Editor Disposición',
      'CUSTOMFIELD_MAPPING'=>'Correspondencia Campo Personalizado',
      'ADD_PORTAL'=>'Agregar a Portal',

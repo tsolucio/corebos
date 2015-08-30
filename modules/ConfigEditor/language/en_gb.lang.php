@@ -11,7 +11,6 @@
 $mod_strings = array(
 	'ConfigEditor' => 'Config Editor',
 	'LBL_CONFIG_EDITOR' => 'Configuration Editor',
-	'LBL_SETTINGS' => 'Settings',
 	'LBL_CONFIG_EDIT' => 'Edit the configuration details',
 	'SINGLE_ConfigEditor' => 'Config Editor',
 	'LBL_TRUE' => 'true',

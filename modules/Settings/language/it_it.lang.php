@@ -293,7 +293,6 @@ $mod_strings = array (
   'LBL_ORGANIZATION_LOGO' => 'Logo Aziendale',
   'LBL_UPLOAD' => 'Carica',
   'LBL_FILENAME' => 'Nome File',
-  'LBL_SETTINGS' => 'Impostazioni',
   'LBL_COMPANY_DETAILS' => 'Dettagli Societ&agrave;',
   'LBL_SEVERITY' => 'Importanza',
   'LBL_FAQ_CATEGORY' => 'Categoria di FAQ',

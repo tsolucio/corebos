@@ -16,7 +16,6 @@
 $mod_strings = array(
 	'ConfigEditor' => 'Konfiguráció Szerkesztő',
 	'LBL_CONFIG_EDITOR' => 'Konfiguráció Szerkesztő',
-	'LBL_SETTINGS' => 'Beállítások',
 	'LBL_CONFIG_EDIT' => 'Konfigurációs beállításainak szerkesztése',
 	'SINGLE_ConfigEditor' => 'Konfiguráció Szerkesztő',
 	'LBL_TRUE' => 'igaz',

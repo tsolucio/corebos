@@ -39,7 +39,6 @@ $mod_strings = Array (
 'LBL_FUNCTIONS' => 'Functies',
 'LBL_FIELD' => 'Veld',
 'LBL_EXPRESSION' => 'Bewerking',
-'LBL_SETTINGS' => 'Instellingen',
 'LBL_NEW_FIELD_EXPRESSION_BUTTON' => 'Nieuwe Bewerking',
 'LBL_EDIT_EXPRESSION' => 'Wijzig bewerking',
 'LBL_MODULE_INFO' => 'Formule ingesteld voor ',

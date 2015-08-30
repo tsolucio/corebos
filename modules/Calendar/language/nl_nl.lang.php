@@ -42,7 +42,6 @@ $mod_strings = Array(
 'LBL_CALENDAR_SHARING'=>'Deel agenda met',
 'LBL_SHARING_OPTION'=>'Kan ik mijn agenda zien?',
 'LBL_LIST_TOOLS'=>'Gereedschap',
-'LBL_SETTINGS'=>'Instellingen',
 'LBL_CALSETTINGS'=>'Agenda instellingen',
 'LBL_USE24'=>'Gebruik een 24 uur formaat',
 'LBL_CALSTART'=>'Start mijn agenda om',

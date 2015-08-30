@@ -542,7 +542,6 @@ $mod_strings = Array(
 'LBL_ORGANIZATION_LOGO'=>'Logo da Empresa',
 'LBL_UPLOAD'=>'Upload',
 'LBL_FILENAME'=>'Nome Arquivo',
-'LBL_SETTINGS'=>'Configurações',
 'LBL_COMPANY_DETAILS'=>'Detalhes da Empresa',
 
 'LBL_SEVERITY'=>'Gravidade',

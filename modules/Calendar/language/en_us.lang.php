@@ -10,14 +10,6 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  Defines the English pack for Calendar Module
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -33,7 +25,6 @@ $mod_strings = Array(
 'LBL_CALENDAR_SHARING'=>'Share calendar with',
 'LBL_SHARING_OPTION'=>'Can see my calendar?',
 'LBL_LIST_TOOLS'=>'Tools',
-'LBL_SETTINGS'=>'Settings',
 'LBL_CALSETTINGS'=>'Calendar Settings',
 'LBL_USE24'=>'Use 24 hours format',
 'LBL_CALSTART'=>'Start my calendar time at',

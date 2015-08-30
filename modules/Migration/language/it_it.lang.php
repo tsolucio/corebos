@@ -39,7 +39,6 @@ $mod_strings = array (
   'LBL_MIGRATE' => 'Migra alla versione Attuale',
   'LBL_UPGRADE_VTIGER' => 'Aggiorna il Database di vtiger CRM ',
   'LBL_UPGRADE_FROM_VTIGER_423' => 'Aggiorna il DataBase da vtiger CRM 4.2.3 alla versione  5.0.0',
-  'LBL_SETTINGS' => 'Impostazioni',
   'LBL_STEP' => 'Passo',
   'LBL_SELECT_SOURCE' => 'Seleziona Fonte',
   'LBL_STEP1_DESC' => 'Per iniziare la migrazione del DataBase, devi specificare il formato nel quale il vecchio database e` disponibile',

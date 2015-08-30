@@ -26,7 +26,6 @@ $mod_strings = Array(
     'LBL_CALENDAR_SHARING'=>'Teile Kalender mit',
     'LBL_SHARING_OPTION'=>'darf meinen Kalender sehen?',
     'LBL_LIST_TOOLS'=>'Werkzeuge',
-    'LBL_SETTINGS'=>'Einstellungen',
     'LBL_CALSETTINGS'=>'Kalendereinstellungen',
     'LBL_USE24'=>'benutze 24 h Format',
     'LBL_CALSTART'=>'starte meine Kalenderzeit mit',

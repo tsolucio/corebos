@@ -32,7 +32,6 @@ $mod_strings = array(
 	'LBL_CALENDAR_SHARING' => 'Osztd meg a Naptárt vele',
 	'LBL_SHARING_OPTION' => 'Láthatja a Naptáramat?',
 	'LBL_LIST_TOOLS' => 'Eszközök',
-	'LBL_SETTINGS' => 'Beállítások',
 	'LBL_CALSETTINGS' => 'Naptár Beállítások',
 	'LBL_USE24' => 'Használd a 24 órás formátumot',
 	'LBL_CALSTART' => 'A Naptáram kezdő időpontja',

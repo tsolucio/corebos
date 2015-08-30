@@ -21,7 +21,6 @@ $mod_strings = array(
 	'LBL_CALENDAR_SHARING' => 'Share calendar with',
 	'LBL_SHARING_OPTION' => 'Can see my calendar?',
 	'LBL_LIST_TOOLS' => 'Tools',
-	'LBL_SETTINGS' => 'Settings',
 	'LBL_CALSETTINGS' => 'Calendar Settings',
 	'LBL_USE24' => 'Use 24 hour format',
 	'LBL_CALSTART' => 'Start my calendar time at',

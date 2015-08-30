@@ -13,7 +13,6 @@ $mod_strings = Array (
         'LBL_INACTIVE' => 'Inactivo',
         'LBL_STATUS' => 'Estado',
         'LBL_SCHEDULER' => 'Planificador Tareas',
-        'LBL_SETTINGS' => 'Configuración',
         'LBL_FREQUENCY'=> 'Frecuencia',
         'LBL_HOURMIN' => '(H:M)',
         'LAST_START'=>'Ultima ejecución empezó hace',

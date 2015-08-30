@@ -37,7 +37,6 @@ $mod_strings = array (
       'LBL_MIGRATE' => 'Migrar a la Versión Actual',
       'LBL_UPGRADE_VTIGER' => 'Actualizar BBDD  de Vtiger CRM',
       'LBL_UPGRADE_FROM_VTIGER_423' => 'Actualizar BBDD de Vtiger CRM de 4.2.3 a 5.0.0',
-      'LBL_SETTINGS' => 'Configuración',
       'LBL_STEP' => 'Paso',
       'LBL_SELECT_SOURCE' => 'Seleccione Origen',
       'LBL_STEP1_DESC' => 'Para iniciar la migración de la BBDD, debe especificar el formato de la BBDD antigua',

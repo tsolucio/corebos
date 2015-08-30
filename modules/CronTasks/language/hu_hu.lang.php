@@ -18,7 +18,6 @@ $mod_strings = array(
 	'LBL_INACTIVE' => 'Inaktív',
 	'LBL_STATUS' => 'Állapot',
 	'LBL_SCHEDULER' => 'Időzítő',
-	'LBL_SETTINGS' => 'Beállítások',
 	'LBL_FREQUENCY' => 'Gyakoriság',
 	'LBL_HOURMIN' => '(O:p)',
 	'LAST_START' => 'Utolsó átvizsgálás elkezdődött',

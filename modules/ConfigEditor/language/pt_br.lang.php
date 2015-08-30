@@ -11,7 +11,6 @@ $mod_strings = Array (
 	
 	'ConfigEditor' => 'Editor Configuração',
 	'LBL_CONFIG_EDITOR' => 'Editor Configuração',
-	'LBL_SETTINGS' => 'Configurações',
 	'LBL_CONFIG_EDIT'=>'Editar detalhes da Configuração do vtiger CRM',
 	'SINGLE_ConfigEditor' => 'Editor Configuração',
 	'LBL_TRUE'=> 'Sim',

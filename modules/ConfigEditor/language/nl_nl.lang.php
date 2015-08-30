@@ -34,7 +34,6 @@
 $mod_strings = Array (
 	'ConfigEditor' => 'ConfigEditor',
 	'LBL_CONFIG_EDITOR' => 'Configuratiebewerker',
-	'LBL_SETTINGS' => 'Instellingen',
 	'LBL_CONFIG_EDIT'=>'Bewerk de Configuratie',
 	'SINGLE_ConfigEditor' => 'ConfigEditor',
 	'LBL_TRUE'=> 'aan',

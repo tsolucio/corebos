@@ -20,7 +20,6 @@ $mod_strings = array (
 		'LBL_CALENDAR_SHARING' => 'Partager votre agenda avec',
 		'LBL_SHARING_OPTION' => 'Peut-on voir mon agenda ?',
 		'LBL_LIST_TOOLS' => 'Outils',
-		'LBL_SETTINGS' => 'Configuration',
 		'LBL_CALSETTINGS' => 'Configurer votre agenda',
 		'LBL_USE24' => 'Utiliser le format 24h',
 		'LBL_CALSTART' => 'Mes journées débutent à',

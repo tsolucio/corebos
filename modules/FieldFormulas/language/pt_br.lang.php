@@ -15,7 +15,6 @@ $mod_strings = Array (
 'LBL_FUNCTIONS'=>'Funções',
 'LBL_FIELD' => 'Campo',
 'LBL_EXPRESSION' =>'Expressão',
-'LBL_SETTINGS' => 'Configurações',
 'LBL_NEW_FIELD_EXPRESSION_BUTTON' => 'Nova Expressão Campo',
 'LBL_EDIT_EXPRESSION' => 'Editar Expressão',
 'LBL_MODULE_INFO' => 'Campos customizados em',
