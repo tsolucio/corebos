@@ -41,12 +41,36 @@ class addFieldsToCyP extends cbupdaterWorker {
                         $field1->presence = 0;
                         $block->addField($field1);
                         
-                        $focus = CRMEntity::getInstance($modname);
-                        $focus->setModuleSeqNumber('configure',$modname,'PAY-','0000001');
-                        $focus->updateMissingSeqNumber($modname);
-                        $ins = "UPDATE vtiger_entityname SET fieldname=CONCAT(fieldname,',cyp_no') WHERE tabid={$module->id}";
-                        $this->ExecuteQuery($ins);
-			$this->sendMsg($ins);
+                        $res = $adb->query("SELECT * FROM vtiger_modentity_num WHERE semodule='CobroPago'");
+                        if($adb->num_rows($res)==0){
+                            $focus = CRMEntity::getInstance($modname);
+                            $focus->setModuleSeqNumber('configure',$modname,'PAY-','0000001');
+                            $focus->updateMissingSeqNumber($modname);
+                            $ins = "UPDATE vtiger_entityname SET fieldname=CONCAT(fieldname,',cyp_no') WHERE tabid={$module->id}";
+                            $this->ExecuteQuery($ins);
+                            $this->sendMsg($ins);
+                        }else{
+                            $res_ui4 = $adb->pquery("SELECT * FROM vtiger_field WHERE tabid=? AND uitype=? AND fieldname<>?",array($module->id,'4','cyp_no'));
+                            $fld_ui4_id = $adb->query_result($res_ui4,0,'fieldid');
+                            $fld_ui4_name = $adb->query_result($res_ui4,0,'fieldname');
+                            $fld_ui4_colname = $adb->query_result($res_ui4,0,'columnname');
+                            $this->ExecuteQuery("UPDATE vtiger_field SET uitype=? WHERE fieldid=?", array(1,$fld_ui4));
+                            $this->ExecuteQuery("UPDATE vtiger_cobropago SET cyp_no=$fld_ui4_colname");
+                            //Workflow, copy CyP No to Reference
+                            $vtWorkFlow = new VTWorkflowManager($adb);
+                            $invWorkFlow = $vtWorkFlow->newWorkFlow('CobroPago');
+                            $invWorkFlow->description = "Number to Reference";
+                            $invWorkFlow->executionCondition = 3;
+                            $invWorkFlow->defaultworkflow = 1;
+                            $vtWorkFlow->save($invWorkFlow);
+
+                            $tm = new VTTaskManager($adb);
+                            $task = $tm->createTask('VTEntityMethodTask', $invWorkFlow->id);
+                            $task->active=true;
+                            $task->summary = "Number to Reference";
+                            $task->task = 'O:18:"VTUpdateFieldsTask":8:{s:18:"executeImmediately";b:1;s:10:"workflowId";s:2:"20";s:7:"summary";s:19:"Number ti Reference";s:6:"active";b:1;s:7:"trigger";N;s:19:"field_value_mapping";s:69:"[{"fieldname":"'.$fld_ui4_name.'","valuetype":"fieldname","value":"cyp_no "}]";s:4:"test";s:0:"";s:2:"id";i:21;}';
+                            $tm->saveTask($task);
+                        }
 
                         $this->ExecuteQuery("UPDATE vtiger_cobropago SET paymentdate=duedate");
 
