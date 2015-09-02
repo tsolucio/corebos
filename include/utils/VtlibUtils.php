@@ -9,22 +9,21 @@
  *************************************************************************************/
 
 /*
- * Check for image existence in themes orelse
- * use the common one.
+ * Check for image existence in themes or use the common one.
  */
 // Let us create cache to improve performance
 if(!isset($__cache_vtiger_imagepath)) {
-    $__cache_vtiger_imagepath = Array();
+	$__cache_vtiger_imagepath = Array();
 }
 function vtiger_imageurl($imagename, $themename) {
 	global $__cache_vtiger_imagepath;
 	if(isset($__cache_vtiger_imagepath[$imagename]) and $__cache_vtiger_imagepath[$imagename]) {
-        $imagepath = $__cache_vtiger_imagepath[$imagename];
-    } else {
+	$imagepath = $__cache_vtiger_imagepath[$imagename];
+	} else {
 		$imagepath = false;
 		// Check in theme specific folder
-        if(file_exists("themes/$themename/images/$imagename")) {
-            $imagepath =  "themes/$themename/images/$imagename";
+		if(file_exists("themes/$themename/images/$imagename")) {
+			$imagepath = "themes/$themename/images/$imagename";
 		} else if(file_exists("themes/images/$imagename")) {
 			// Search in common image folder
 			$imagepath = "themes/images/$imagename";
@@ -32,8 +31,8 @@ function vtiger_imageurl($imagename, $themename) {
 			// Not found anywhere? Return whatever is sent
 			$imagepath = $imagename;
 		}
-        $__cache_vtiger_imagepath[$imagename] = $imagepath;
-    }
+		$__cache_vtiger_imagepath[$imagename] = $imagepath;
+	}
 	return $imagepath;
 }
 
@@ -556,7 +555,7 @@ function vtlib_purify($input, $ignore=false) {
 	global $__htmlpurifier_instance, $root_directory, $default_charset;
 
 	static $purified_cache = array();
-	
+
 	if (!is_array($input)) {  // thank you Boris and Adam (from developers list)
 		$md5OfInput = md5($input);
 		if (array_key_exists($md5OfInput, $purified_cache)) {
@@ -577,8 +576,8 @@ function vtlib_purify($input, $ignore=false) {
 			include_once ('include/htmlpurifier/library/HTMLPurifier.auto.php');
 
 			$config = HTMLPurifier_Config::createDefault();
-	    	$config->set('Core', 'Encoding', $use_charset);
-	    	$config->set('Cache', 'SerializerPath', "$use_root_directory/test/vtlib");
+			$config->set('Core', 'Encoding', $use_charset);
+			$config->set('Cache', 'SerializerPath', "$use_root_directory/test/vtlib");
 
 			$__htmlpurifier_instance = new HTMLPurifier($config);
 		}
@@ -640,11 +639,11 @@ function vtlib_module_icon($modulename){
  * @return <String> $string/false
  */
 function vtlib_purifyForSql($string, $skipEmpty=true) {
-       $pattern = "/^[_a-zA-Z0-9.]+$/";
-       if ((empty($string) && $skipEmpty) || preg_match($pattern, $string)) {
-               return $string;
-       }
-       return false;
+	$pattern = "/^[_a-zA-Z0-9.]+$/";
+	if ((empty($string) && $skipEmpty) || preg_match($pattern, $string)) {
+		return $string;
+	}
+	return false;
 }
 
 function getvtlib_open_popup_window_function($popupmodule,$fldname,$basemodule) {
