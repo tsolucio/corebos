@@ -148,10 +148,6 @@ if(!empty($order_by)) {
 	}
 }
 
-//Postgres 8 fixes
-if( $adb->dbType == "pgsql")
-	$list_query = fixPostgresQuery( $list_query, $log, 0);
-
 if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true) {
 	$count_result = $adb->query( mkCountQuery( $list_query));
 	$noofrows = $adb->query_result($count_result,0,"count");
@@ -166,10 +162,7 @@ $navigation_array = VT_getSimpleNavigationValues($start,$list_max_entries_per_pa
 
 $limit_start_rec = ($start-1) * $list_max_entries_per_page;
 
-if( $adb->dbType == "pgsql")
-	$list_result = $adb->pquery($list_query. " OFFSET $limit_start_rec LIMIT $list_max_entries_per_page", array());
-else
-	$list_result = $adb->pquery($list_query. " LIMIT $limit_start_rec, $list_max_entries_per_page", array());
+$list_result = $adb->pquery($list_query. " LIMIT $limit_start_rec, $list_max_entries_per_page", array());
 
 $recordListRangeMsg = getRecordRangeMessage($list_result, $limit_start_rec,$noofrows);
 $smarty->assign('recordListRange',$recordListRangeMsg);

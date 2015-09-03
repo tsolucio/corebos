@@ -221,9 +221,6 @@ if($foldercount > 0 )
 		}
 		//navigation start
 		$max_entries_per_page = $list_max_entries_per_page;
-		//Postgres 8 fixes
-		if( $adb->dbType == "pgsql")
-			$list_query = fixPostgresQuery( $query, $log, 0);
 
 		if($folder_id == $request_folderid){
 			$start[$folder_id] = 1;
@@ -249,10 +246,7 @@ if($foldercount > 0 )
 		}
 		$limit_start_rec = ($start[$folder_id]-1) * $max_entries_per_page;
 
-		if( $adb->dbType == "pgsql")
-			$list_result = $adb->pquery($query. " OFFSET $limit_start_rec LIMIT $max_entries_per_page", array());
-		else
-			$list_result = $adb->pquery($query. " LIMIT $limit_start_rec, $max_entries_per_page", array());
+		$list_result = $adb->pquery($query. " LIMIT $limit_start_rec, $max_entries_per_page", array());
 		//navigation end
 
 		$folder_details=Array();
