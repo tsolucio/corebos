@@ -2908,8 +2908,7 @@ function get_config_status() {
 function getMigrationCharsetFlag() {
 	global $adb;
 
-	if(!$adb->isPostgres())
-		$db_status=check_db_utf8_support($adb);
+	$db_status=check_db_utf8_support($adb);
 	$config_status=get_config_status();
 
 	if ($db_status == $config_status) {

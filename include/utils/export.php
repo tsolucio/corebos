@@ -185,9 +185,6 @@ function export($type){
 		}else{
 			$tablename = getTableNameForField($type,$order_by);
 			$tablename = (($tablename != '')?($tablename."."):'');
-			if( $adb->dbType == "pgsql"){
-				$query .= ' GROUP BY '.$tablename.$order_by;
-			}
 			$query .= ' ORDER BY '.$tablename.$order_by.' '.$sorder;
 		}
 	}

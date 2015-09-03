@@ -185,19 +185,13 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 	}
 	global $relationId;
 	$start = RelatedListViewSession::getRequestCurrentPage($relationId, $query);
-	$navigation_array =  VT_getSimpleNavigationValues($start, $list_max_entries_per_page,
-			$noofrows);
+	$navigation_array =  VT_getSimpleNavigationValues($start, $list_max_entries_per_page,$noofrows);
 
 	$limit_start_rec = ($start-1) * $list_max_entries_per_page;
 
-	if( $adb->dbType == "pgsql")
-		$list_result = $adb->pquery($query.
-				" OFFSET $limit_start_rec LIMIT $list_max_entries_per_page", array());
-	else
-		$list_result = $adb->pquery($query.
-				" LIMIT $limit_start_rec, $list_max_entries_per_page", array());
+	$list_result = $adb->pquery($query." LIMIT $limit_start_rec, $list_max_entries_per_page", array());
 
-	/* Save the related list in session for when we click in a register 
+	/* Save the related list in session for when we click in a register
 	 * from this list we will can navigate with the arrows left and right, to move only in this related list
 	 */
 	$relcv = new CustomView();
@@ -578,17 +572,11 @@ function getPriceBookRelatedProducts($query,$focus,$returnset='')
 	}
 	global $relationId;
 	$start = RelatedListViewSession::getRequestCurrentPage($relationId, $query);
-	$navigation_array =  VT_getSimpleNavigationValues($start, $list_max_entries_per_page,
-			$noofrows);
+	$navigation_array =  VT_getSimpleNavigationValues($start, $list_max_entries_per_page,$noofrows);
 
 	$limit_start_rec = ($start-1) * $list_max_entries_per_page;
 
-	if( $adb->dbType == "pgsql")
-		$list_result = $adb->pquery($query.
-				" OFFSET $limit_start_rec LIMIT $list_max_entries_per_page", array());
-	else
-		$list_result = $adb->pquery($query.
-				" LIMIT $limit_start_rec, $list_max_entries_per_page", array());
+	$list_result = $adb->pquery($query." LIMIT $limit_start_rec, $list_max_entries_per_page", array());
 
 	$header=array();
 	$header[]=$mod_strings['LBL_LIST_PRODUCT_NAME'];

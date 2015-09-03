@@ -55,16 +55,10 @@ if(!is_string($_SESSION[$currentModule.'_listquery']) || !empty($_REQUEST['globa
 	// Sorting
 	if($order_by) {
 		if($order_by == 'smownerid'){
-			if( $adb->dbType == "pgsql"){
-				$list_query .= ' GROUP BY user_name';
-			}
 			$list_query .= ' ORDER BY user_name '.$sorder;
 		}else {
 			$tablename = getTableNameForField($currentModule, $order_by);
 			$tablename = ($tablename != '')? ($tablename . '.') : '';
-			if( $adb->dbType == "pgsql"){
-				$list_query .= ' GROUP BY '. $tablename . $order_by;
-			}
 			$list_query .= ' ORDER BY ' . $tablename . $order_by . ' ' . $sorder;
 		}
 	}

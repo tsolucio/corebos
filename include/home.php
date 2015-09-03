@@ -287,11 +287,7 @@ class Homestuff{
 					$query .= "AND vtiger_activity.activitytype NOT IN ('Emails')";
 				}
 
-				if( $adb->dbType == "pgsql"){
-					$list_result = $adb->query($query. " OFFSET 0 LIMIT ".$maxval);
-				}else{
-					$list_result = $adb->query($query. " LIMIT 0,".$maxval);
-				}
+				$list_result = $adb->query($query. " LIMIT 0,".$maxval);
 
                 if($modname == "Calendar"){
                     for($l=0;$l < $column_count;$l++){

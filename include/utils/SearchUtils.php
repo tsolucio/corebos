@@ -7,11 +7,9 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('include/database/PearDatabase.php');
-require_once('include/database/Postgres8.php');
-require_once('include/ComboUtil.php'); //new
-require_once('include/utils/CommonUtils.php'); //new
+require_once('include/ComboUtil.php');
+require_once('include/utils/CommonUtils.php');
 
 $column_array=array('accountid','contact_id','product_id','campaignid','quoteid','vendorid','potentialid','salesorderid','vendor_id','contactid');
 $table_col_array=array('vtiger_account.accountname','vtiger_contactdetails.firstname,vtiger_contactdetails.lastname','vtiger_products.productname','vtiger_campaign.campaignname','vtiger_quotes.subject','vtiger_vendor.vendorname','vtiger_potential.potentialname','vtiger_salesorder.subject','vtiger_vendor.vendorname','vtiger_contactdetails.firstname,vtiger_contactdetails.lastname');
@@ -26,7 +24,6 @@ $table_col_array=array('vtiger_account.accountname','vtiger_contactdetails.first
 *Param $oCv - Custom view object
 *Returns the listview header values in an array
 */
-
 function getSearchListHeaderValues($focus, $module,$sort_qry='',$sorder='',$order_by='',$relatedlist='',$oCv='')
 {
 	global $log;
@@ -87,8 +84,6 @@ function getSearchListHeaderValues($focus, $module,$sort_qry='',$sorder='',$orde
 		$profileList = getCurrentUserProfileList();
 		//changed to get vtiger_field.fieldname
 		$query  = "SELECT vtiger_profile2field.*,vtiger_field.fieldname FROM vtiger_field INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid WHERE vtiger_field.tabid=? AND vtiger_profile2field.visible=0 AND vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN (". generateQuestionMarks($profileList) .") AND vtiger_field.fieldname IN (". generateQuestionMarks($field_list) .") and vtiger_field.presence in (0,2) GROUP BY vtiger_field.fieldid";
- 		if( $adb->dbType == "pgsql")
- 		    $query = fixPostgresQuery( $query, $log, 0);
 		$result = $adb->pquery($query, array($tabid, $profileList, $field_list));
 		$field=Array();
 		for($k=0;$k < $adb->num_rows($result);$k++)

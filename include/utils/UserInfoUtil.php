@@ -8,11 +8,10 @@
  * All Rights Reserved.
  ********************************************************************************/
 require_once('include/database/PearDatabase.php');
-require_once('include/database/Postgres8.php');
 require_once('include/utils/utils.php');
 require_once('include/utils/GetUserGroups.php');
 include('config.php');
-require_once("include/events/include.inc");
+require_once('include/events/include.inc');
 global $log;
 
 /** To retreive the mail server info resultset for the specified user
@@ -4224,15 +4223,8 @@ function getFieldVisibilityPermission($fld_module, $userid, $fieldname, $accessm
 			}
 			$params = array($tabid, $fieldname);
 		}
- 		//Postgres 8 fixes
- 		if( $adb->dbType == "pgsql")
- 		    $query = fixPostgresQuery( $query, $log, 0);
-
-
 		$result = $adb->pquery($query, $params);
-
 		$log->debug("Exiting getFieldVisibilityPermission method ...");
-
 		if($adb->num_rows($result) == 0) return '1';
 		return ($adb->query_result($result,"0","visible")."");
 	}
