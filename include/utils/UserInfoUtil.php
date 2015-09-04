@@ -20,11 +20,10 @@ global $log;
  */
 function getMailServerInfo($user)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getMailServerInfo(".$user->user_name.") method ...");
-	global $adb;
-        $sql = "select * from vtiger_mail_accounts where status=1 and user_id=?";
-        $result = $adb->pquery($sql, array($user->id));
+	$sql = "select * from vtiger_mail_accounts where status=1 and user_id=?";
+	$result = $adb->pquery($sql, array($user->id));
 	$log->debug("Exiting getMailServerInfo method ...");
 	return $result;
 }
@@ -35,11 +34,10 @@ function getMailServerInfo($user)
  */
 function fetchUserRole($userid)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering fetchUserRole(".$userid.") method ...");
-	global $adb;
 	$sql = "select roleid from vtiger_user2role where userid=?";
-        $result = $adb->pquery($sql, array($userid));
+	$result = $adb->pquery($sql, array($userid));
 	$roleid=  $adb->query_result($result,0,"roleid");
 	$log->debug("Exiting fetchUserRole method ...");
 	return $roleid;
@@ -83,53 +81,46 @@ function fetchUserProfileId($userid)
 */
 function fetchUserGroupids($userid)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering fetchUserGroupids(".$userid.") method ...");
-	global $adb;
-        $focus = new GetUserGroups();
-        $focus->getAllUserGroups($userid);
-		//Asha: Remove implode if not required and if so, also remove explode functions used at the recieving end of this function
-        $groupidlists = implode(",",$focus->user_groups);
-	$log->debug("Exiting fetchUserGroupids method ...");
-        return $groupidlists;
 
+	$focus = new GetUserGroups();
+	$focus->getAllUserGroups($userid);
+	//Asha: Remove implode if not required and if so, also remove explode functions used at the recieving end of this function
+	$groupidlists = implode(",",$focus->user_groups);
+	$log->debug("Exiting fetchUserGroupids method ...");
+	return $groupidlists;
 }
 
 /** Function to load all the permissions
   *
  */
-function loadAllPerms()
-                {
-	global $log;
+function loadAllPerms() {
+	global $log, $adb,$MAX_TAB_PER, $persistPermArray;
 	$log->debug("Entering loadAllPerms() method ...");
-        global $adb,$MAX_TAB_PER;
-        global $persistPermArray;
 
-        $persistPermArray = Array();
-        $profiles = Array();
-        $sql = "select distinct profileid from vtiger_profile2tab";
-        $result = $adb->pquery($sql, array());
-        $num_rows = $adb->num_rows($result);
-        for ( $i=0; $i < $num_rows; $i++ )
-                $profiles[] = $adb->query_result($result,$i,'profileid');
+	$persistPermArray = Array();
+	$profiles = Array();
+	$sql = "select distinct profileid from vtiger_profile2tab";
+	$result = $adb->pquery($sql, array());
+	$num_rows = $adb->num_rows($result);
+	for ( $i=0; $i < $num_rows; $i++ )
+		$profiles[] = $adb->query_result($result,$i,'profileid');
 
-        $persistPermArray = Array();
-        foreach ( $profiles as $profileid )
-        {
-                $sql = "select * from vtiger_profile2tab where profileid=?";
-                $result = $adb->pquery($sql, array($profileid));
-                if($MAX_TAB_PER !='')
-                {
-                        $persistPermArray[$profileid] = array_fill(0,$MAX_TAB_PER,0);
-                }
-                $num_rows = $adb->num_rows($result);
-                for($i=0; $i<$num_rows; $i++)
-                {
-                        $tabid= $adb->query_result($result,$i,'tabid');
-                        $tab_per= $adb->query_result($result,$i,'permissions');
-                        $persistPermArray[$profileid][$tabid] = $tab_per;
-                }
-        }
+	$persistPermArray = Array();
+	foreach ( $profiles as $profileid ) {
+		$sql = "select * from vtiger_profile2tab where profileid=?";
+		$result = $adb->pquery($sql, array($profileid));
+		if($MAX_TAB_PER !='') {
+			$persistPermArray[$profileid] = array_fill(0,$MAX_TAB_PER,0);
+		}
+		$num_rows = $adb->num_rows($result);
+		for($i=0; $i<$num_rows; $i++) {
+			$tabid= $adb->query_result($result,$i,'tabid');
+			$tab_per= $adb->query_result($result,$i,'permissions');
+			$persistPermArray[$profileid][$tabid] = $tab_per;
+		}
+	}
 	$log->debug("Exiting loadAllPerms method ...");
 }
 
@@ -144,39 +135,29 @@ function loadAllPerms()
  */
 function getAllTabsPermission($profileid)
 {
-	global $log;
+	global $log,$adb,$MAX_TAB_PER, $persistPermArray;
 	$log->debug("Entering getAllTabsPermission(".$profileid.") method ...");
-	global $persistPermArray;
-        global $adb,$MAX_TAB_PER;
-        // Mike Crowe Mod --------------------------------------------------------
-        if ( $cache_tab_perms )
-        {
-                if ( count($persistPermArray) == 0 )
-                        loadAllPerms();
+	if ( $cache_tab_perms ) {
+		if ( count($persistPermArray) == 0 )
+			loadAllPerms();
 		$log->debug("Exiting getAllTabsPermission method ...");
-                return $persistPermArray[$profileid];
-        }
-        else
-        {
-                $sql = "select * from vtiger_profile2tab where profileid=?";
-                $result = $adb->pquery($sql, array($profileid));
-                $tab_perr_array = Array();
-                if($MAX_TAB_PER !='')
-                {
-                        $tab_perr_array = array_fill(0,$MAX_TAB_PER,0);
-                }
-                $num_rows = $adb->num_rows($result);
-                for($i=0; $i<$num_rows; $i++)
-                {
-                        $tabid= $adb->query_result($result,$i,'tabid');
-                        $tab_per= $adb->query_result($result,$i,'permissions');
-                        $tab_perr_array[$tabid] = $tab_per;
-                }
+		return $persistPermArray[$profileid];
+	} else {
+		$sql = "select * from vtiger_profile2tab where profileid=?";
+		$result = $adb->pquery($sql, array($profileid));
+		$tab_perr_array = Array();
+		if($MAX_TAB_PER !='') {
+			$tab_perr_array = array_fill(0,$MAX_TAB_PER,0);
+		}
+		$num_rows = $adb->num_rows($result);
+		for($i=0; $i<$num_rows; $i++) {
+			$tabid= $adb->query_result($result,$i,'tabid');
+			$tab_per= $adb->query_result($result,$i,'permissions');
+			$tab_perr_array[$tabid] = $tab_per;
+		}
 		$log->debug("Exiting getAllTabsPermission method ...");
-                return $tab_perr_array;
-        }
-        // Mike Crowe Mod ----------------------------------------------------------------
-
+		return $tab_perr_array;
+	}
 }
 
 /** Function to get all the vtiger_tab permission for the specified vtiger_profile other than tabid 15
@@ -190,44 +171,35 @@ function getAllTabsPermission($profileid)
  */
 function getTabsPermission($profileid)
 {
-	global $log;
+	global $log, $persistPermArray, $adb;
 	$log->debug("Entering getTabsPermission(".$profileid.") method ...");
-	global $persistPermArray;
-        global $adb;
-        // Mike Crowe Mod -------------------------------------------------------
-        if ( $cache_tab_perms )
-        {
-                if ( count($persistPermArray) == 0 )
-                        loadAllPerms();
-                $tab_perr_array = $persistPermArray;
-                foreach( array(1,3,16,15) as $tabid )
-                        $tab_perr_array[$tabid] = 0;
-		$log->debug("Exiting getTabsPermission method ...");
-                return $tab_perr_array;
-        }
-        else
-        {
-				$sql = "select vtiger_profile2tab.tabid,vtiger_profile2tab.permissions from vtiger_profile2tab
-						INNER JOIN vtiger_tab ON vtiger_tab.tabid=vtiger_profile2tab.tabid WHERE vtiger_profile2tab.profileid=? AND vtiger_tab.presence=0";
-                $result = $adb->pquery($sql, array($profileid));
-                $tab_perr_array = Array();
-                $num_rows = $adb->num_rows($result);
-                for($i=0; $i<$num_rows; $i++)
-                {
-                        $tabid= $adb->query_result($result,$i,'tabid');
-                        $tab_per= $adb->query_result($result,$i,'permissions');
-                        if($tabid != 3 && $tabid != 16)
-                        {
-                                $tab_perr_array[$tabid] = $tab_per;
-                        }
-                }
-		$log->debug("Exiting getTabsPermission method ...");
-                return $tab_perr_array;
-        }
-
+	if ($cache_tab_perms) {
+		if (count($persistPermArray) == 0)
+			loadAllPerms();
+		$tab_perr_array = $persistPermArray;
+		foreach (array(1,3,16,15) as $tabid)
+			$tab_perr_array[$tabid] = 0;
+		$log -> debug("Exiting getTabsPermission method ...");
+		return $tab_perr_array;
+	} else {
+		$sql = 'select vtiger_profile2tab.tabid,vtiger_profile2tab.permissions from vtiger_profile2tab
+			INNER JOIN vtiger_tab ON vtiger_tab.tabid=vtiger_profile2tab.tabid WHERE vtiger_profile2tab.profileid=? AND vtiger_tab.presence=0';
+		$result = $adb -> pquery($sql, array($profileid));
+		$tab_perr_array = Array();
+		$num_rows = $adb -> num_rows($result);
+		for ($i = 0; $i < $num_rows; $i++) {
+			$tabid = $adb -> query_result($result, $i, 'tabid');
+			$tab_per = $adb -> query_result($result, $i, 'permissions');
+			if ($tabid != 3 && $tabid != 16) {
+				$tab_perr_array[$tabid] = $tab_per;
+			}
+		}
+		$log -> debug("Exiting getTabsPermission method ...");
+		return $tab_perr_array;
+	}
 }
 
-/** Function to get all the vtiger_tab standard action permission for the specified vtiger_profile
+ /** Function to get all the vtiger_tab standard action permission for the specified vtiger_profile
   * @param $profileid -- Profile Id:: Type integer
   * @returns  Tab Action Permission Array in the following format:
   * $tabPermission = Array($tabid1=>Array(actionid1=>permission, actionid2=>permission,...,actionidn=>permission),
@@ -243,18 +215,15 @@ function getTabsActionPermission($profileid)
 	global $adb;
 	$check = Array();
 	$temp_tabid = Array();
-	$sql1 = "select * from vtiger_profile2standardpermissions where profileid=? and tabid not in(16) order by(tabid)";
+	$sql1 = 'select * from vtiger_profile2standardpermissions where profileid=? and tabid not in(16) order by(tabid)';
 	$result1 = $adb->pquery($sql1, array($profileid));
-        $num_rows1 = $adb->num_rows($result1);
-        for($i=0; $i<$num_rows1; $i++)
-        {
+	$num_rows1 = $adb->num_rows($result1);
+	for($i=0; $i<$num_rows1; $i++) {
 		$tab_id = $adb->query_result($result1,$i,'tabid');
-		if(! in_array($tab_id,$temp_tabid))
-		{
+		if(! in_array($tab_id,$temp_tabid)) {
 			$temp_tabid[] = $tab_id;
 			$access = Array();
 		}
-
 		$action_id = $adb->query_result($result1,$i,'operation');
 		$per_id = $adb->query_result($result1,$i,'permissions');
 		$access[$action_id] = $per_id;
@@ -273,40 +242,31 @@ function getTabsActionPermission($profileid)
   *                        $tabidn=>Array(actionid1=>permission, actionid2=>permission,...,actionidn=>permission))
   *
  */
-
 function getTabsUtilityActionPermission($profileid)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getTabsUtilityActionPermission(".$profileid.") method ...");
-
-	global $adb;
 	$check = Array();
 	$temp_tabid = Array();
-	$sql1 = "select * from vtiger_profile2utility where profileid=? order by(tabid)";
+	$sql1 = 'select * from vtiger_profile2utility where profileid=? order by(tabid)';
 	$result1 = $adb->pquery($sql1, array($profileid));
-        $num_rows1 = $adb->num_rows($result1);
-        for($i=0; $i<$num_rows1; $i++)
-        {
+	$num_rows1 = $adb->num_rows($result1);
+	for($i=0; $i<$num_rows1; $i++) {
 		$tab_id = $adb->query_result($result1,$i,'tabid');
-		if(! in_array($tab_id,$temp_tabid))
-		{
+		if(! in_array($tab_id,$temp_tabid)) {
 			$temp_tabid[] = $tab_id;
 			$access = Array();
 		}
-
 		$action_id = $adb->query_result($result1,$i,'activityid');
 		$per_id = $adb->query_result($result1,$i,'permission');
 		$access[$action_id] = $per_id;
 		$check[$tab_id] = $access;
-
-
 	}
-
 	$log->debug("Exiting getTabsUtilityActionPermission method ...");
 	return $check;
-
 }
-/**This Function returns the Default Organisation Sharing Action Array for all modules whose sharing actions are editable
+
+ /**This Function returns the Default Organisation Sharing Action Array for all modules whose sharing actions are editable
   * The result array will be in the following format:
   * Arr=(tabid1=>Sharing Action Id,
   *      tabid2=>SharingAction Id,
@@ -315,7 +275,6 @@ function getTabsUtilityActionPermission($profileid)
   *            |
   *      tabid3=>SharingAcion Id)
   */
-
 function getDefaultSharingEditAction()
 {
 	global $log;
@@ -336,8 +295,8 @@ function getDefaultSharingEditAction()
 
 	$log->debug("Exiting getDefaultSharingEditAction method ...");
 	return $copy;
-
 }
+
 /**This Function returns the Default Organisation Sharing Action Array for modules with edit status in (0,1)
   * The result array will be in the following format:
   * Arr=(tabid1=>Sharing Action Id,
@@ -349,11 +308,10 @@ function getDefaultSharingEditAction()
   */
 function getDefaultSharingAction()
 {
-	global $log;
-	$log->debug("Entering getDefaultSharingAction() method ...");
-	global $adb;
-	//retreivin the standard permissions
-	$sql= "select * from vtiger_def_org_share where editstatus in(0,1)";
+	global $log, $adb;
+	$log->debug('Entering getDefaultSharingAction() method ...');
+	//retrieve standard permissions
+	$sql= 'select * from vtiger_def_org_share where editstatus in(0,1)';
 	$result = $adb->pquery($sql, array());
 	$permissionRow=$adb->fetch_array($result);
 	do
@@ -364,11 +322,9 @@ function getDefaultSharingAction()
 		}
 
 	}while($permissionRow=$adb->fetch_array($result));
-	$log->debug("Exiting getDefaultSharingAction method ...");
+	$log->debug('Exiting getDefaultSharingAction method ...');
 	return $copy;
-
 }
-
 
 /**This Function returns the Default Organisation Sharing Action Array for all modules
   * The result array will be in the following format:
@@ -397,12 +353,9 @@ function getAllDefaultSharingAction()
 		$copy[$tabid]=$permission;
 
 	}
-
 	$log->debug("Exiting getAllDefaultSharingAction method ...");
 	return $copy;
-
 }
-
 
 /** Function to create the vtiger_role
   * @param $roleName -- Role Name:: Type varchar
@@ -411,7 +364,6 @@ function getAllDefaultSharingAction()
   * @returns  the Rold Id :: Type varchar
   *
  */
-
 function createRole($roleName,$parentRoleId,$roleProfileArray)
 {
 	global $log;
@@ -420,14 +372,14 @@ function createRole($roleName,$parentRoleId,$roleProfileArray)
 	$parentRoleDetails=getRoleInformation($parentRoleId);
 	$parentRoleInfo=$parentRoleDetails[$parentRoleId];
 	$roleid_no=$adb->getUniqueId("vtiger_role");
-        $roleId='H'.$roleid_no;
-        $parentRoleHr=$parentRoleInfo[1];
-        $parentRoleDepth=$parentRoleInfo[2];
-        $nowParentRoleHr=$parentRoleHr.'::'.$roleId;
-        $nowRoleDepth=$parentRoleDepth + 1;
+	$roleId='H'.$roleid_no;
+	$parentRoleHr=$parentRoleInfo[1];
+	$parentRoleDepth=$parentRoleInfo[2];
+	$nowParentRoleHr=$parentRoleHr.'::'.$roleId;
+	$nowRoleDepth=$parentRoleDepth + 1;
 
-    // Invalidate any cached information
-    VTCacheUtils::clearRoleSubordinates($roleId);
+	// Invalidate any cached information
+	VTCacheUtils::clearRoleSubordinates($roleId);
 
 	//Inserting vtiger_role into db
 	$query="insert into vtiger_role values(?,?,?,?)";
@@ -435,17 +387,13 @@ function createRole($roleName,$parentRoleId,$roleProfileArray)
 	$adb->pquery($query,$qparams);
 
 	//Inserting into vtiger_role2profile vtiger_table
-	foreach($roleProfileArray as $profileId)
-        {
-                if($profileId != '')
-                {
-                        insertRole2ProfileRelation($roleId,$profileId);
-                }
-        }
-
+	foreach($roleProfileArray as $profileId) {
+		if($profileId != '') {
+			insertRole2ProfileRelation($roleId,$profileId);
+		}
+	}
 	$log->debug("Exiting createRole method ...");
 	return $roleId;
-
 }
 
 /** Function to update the vtiger_role
@@ -460,24 +408,21 @@ function updateRole($roleId,$roleName,$roleProfileArray)
 	$log->debug("Entering updateRole(".$roleId.",".$roleName.",".$roleProfileArray.") method ...");
 
 	// Invalidate any cached information
-    VTCacheUtils::clearRoleSubordinates($roleId);
+	VTCacheUtils::clearRoleSubordinates($roleId);
 
 	global $adb;
 	$sql1 = "update vtiger_role set rolename=? where roleid=?";
-    $adb->pquery($sql1, array($roleName, $roleId));
+	$adb->pquery($sql1, array($roleName, $roleId));
 	//Updating the Role2Profile relation
 	$sql2 = "delete from vtiger_role2profile where roleId=?";
 	$adb->pquery($sql2, array($roleId));
 
-	foreach($roleProfileArray as $profileId)
-        {
-                if($profileId != '')
-                {
-                        insertRole2ProfileRelation($roleId,$profileId);
-                }
-        }
+	foreach($roleProfileArray as $profileId) {
+		if($profileId != '') {
+			insertRole2ProfileRelation($roleId,$profileId);
+		}
+	}
 	$log->debug("Exiting updateRole method ...");
-
 }
 
 /** Function to add the vtiger_role to vtiger_profile relation
@@ -497,23 +442,18 @@ function insertRole2ProfileRelation($roleId,$profileId)
 
 }
 
-
 /** Function to get the vtiger_roleid from vtiger_rolename
   * @param $rolename -- Role Name:: Type varchar
   * @returns Role Id:: Type varchar
-  *
  */
-function fetchRoleId($rolename)
-{
-global $log;
-$log->debug("Entering fetchRoleId(".$rolename.") method ...");
-
-  global $adb;
-  $sqlfetchroleid = "select roleid from vtiger_role where rolename=?";
-  $resultroleid = $adb->pquery($sqlfetchroleid, array($rolename));
-  $role_id = $adb->query_result($resultroleid,0,"roleid");
-$log->debug("Exiting fetchRoleId method ...");
-  return $role_id;
+function fetchRoleId($rolename) {
+	global $log, $adb;
+	$log->debug("Entering fetchRoleId(".$rolename.") method ...");
+	$sqlfetchroleid = "select roleid from vtiger_role where rolename=?";
+	$resultroleid = $adb->pquery($sqlfetchroleid, array($rolename));
+	$role_id = $adb->query_result($resultroleid,0,"roleid");
+	$log->debug("Exiting fetchRoleId method ...");
+	return $role_id;
 }
 
 /** Function to update user to vtiger_role mapping based on the userid
@@ -539,9 +479,7 @@ $log->debug("Entering updateUser2RoleMapping(".$roleid.",".$userid.") method ...
   $params = array($userid, $roleid);
   $result = $adb->pquery($sql, $params);
 	$log->debug("Exiting updateUser2RoleMapping method ...");
-
 }
-
 
 /** Function to update user to group mapping based on the userid
   * @param $groupname -- Group Name:: Type varchar
@@ -578,7 +516,6 @@ $log->debug("Entering insertUser2RoleMapping(".$roleid.",".$userid.") method ...
   $params = array($userid, $roleid);
   $adb->pquery($sql, $params);
 $log->debug("Exiting insertUser2RoleMapping method ...");
-
 }
 
 /** Function to add user to group mapping
@@ -612,8 +549,6 @@ function fetchWordTemplateList($module)
 	$log->debug("Exiting fetchWordTemplateList method ...");
   	return $result;
 }
-
-
 
 /** Function to get the email template iformation
   * @param $templateName -- Template Name:: Type varchar
@@ -4175,7 +4110,6 @@ function getGrpId($groupname) {
   * @param $userid -- User Id :: Type integer
   * @param $fieldname -- Field Name :: Type varchar
   * @returns $rolename -- Role Name :: Type varchar
-  *
  */
 function getFieldVisibilityPermission($fld_module, $userid, $fieldname, $accessmode='readonly')
 {
@@ -4257,7 +4191,6 @@ function getColumnVisibilityPermission($userid, $columnname, $module, $accessmod
 
 /** Function to get the vtiger_field access module array
   * @returns The vtiger_field Access module Array :: Type Array
-  *
  */
 function getFieldModuleAccessArray()
 {
@@ -4300,7 +4233,6 @@ function getModuleAccessArray() {
 
 /** Function to get the permitted module name Array with presence as 0
   * @returns permitted module name Array :: Type Array
-  *
  */
 function getPermittedModuleNames()
 {
@@ -4339,7 +4271,6 @@ function getPermittedModuleNames()
 	return $permittedModules;
 }
 
-
 /**
  * Function to get the permitted module id Array with presence as 0
  * @global Users $current_user
@@ -4374,7 +4305,6 @@ function getPermittedModuleIdList() {
 
 /** Function to recalculate the Sharing Rules for all the vtiger_users
   * This function will recalculate all the sharing rules for all the users in the Organization and will write them in flat files
-  *
  */
 function RecalculateSharingRules()
 {
@@ -4397,7 +4327,6 @@ function RecalculateSharingRules()
 
 /** Function to get the list of module for which the user defined sharing rules can be defined
   * @returns Array:: Type array
-  *
   */
 function getSharingModuleList($eliminateModules=false)
 {
@@ -4423,7 +4352,6 @@ function getSharingModuleList($eliminateModules=false)
 	return $sharingModuleArray;
 }
 
-
 function isCalendarPermittedBySharing($recordId)
 {
 	global $adb;
@@ -4437,9 +4365,10 @@ function isCalendarPermittedBySharing($recordId)
 	}
 	return $permission;
 }
+
 /*
- *  * Function to populate default entries for the picklist while creating a new role--vashni
- *   */
+ * Function to populate default entries for the picklist while creating a new role--vashni
+ */
 function insertRole2Picklist($roleid,$parentroleid)
 {
 	global $adb,$log;
@@ -4461,7 +4390,6 @@ function deleteGroupReportRelations($groupId)
 	$adb->pquery($query, array($groupId));
 	$log->debug("Exiting deleteGroupReportRelations method ...");
 }
-//end
 
 /** Function to check if the field is Active
  *  @params  $modulename -- Module Name :: String Type
