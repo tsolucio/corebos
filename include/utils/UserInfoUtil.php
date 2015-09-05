@@ -463,22 +463,20 @@ function fetchRoleId($rolename) {
  */
 function updateUser2RoleMapping($roleid,$userid)
 {
-global $log;
-$log->debug("Entering updateUser2RoleMapping(".$roleid.",".$userid.") method ...");
-  global $adb;
-  //Check if row already exists
-  $sqlcheck = "select * from vtiger_user2role where userid=?";
-  $resultcheck = $adb->pquery($sqlcheck, array($userid));
-  if($adb->num_rows($resultcheck) == 1)
-  {
-  	$sqldelete = "delete from vtiger_user2role where userid=?";
-	$delparams = array($userid);
-  	$result_delete = $adb->pquery($sqldelete, $delparams);
-  }
-  $sql = "insert into vtiger_user2role(userid,roleid) values(?,?)";
-  $params = array($userid, $roleid);
-  $result = $adb->pquery($sql, $params);
-	$log->debug("Exiting updateUser2RoleMapping method ...");
+	global $log, $adb;
+	$log->debug("Entering updateUser2RoleMapping(".$roleid.",".$userid.") method ...");
+	//Check if row already exists
+	$sqlcheck = "select * from vtiger_user2role where userid=?";
+	$resultcheck = $adb -> pquery($sqlcheck, array($userid));
+	if ($adb -> num_rows($resultcheck) == 1) {
+		$sqldelete = "delete from vtiger_user2role where userid=?";
+		$delparams = array($userid);
+		$result_delete = $adb -> pquery($sqldelete, $delparams);
+	}
+	$sql = "insert into vtiger_user2role(userid,roleid) values(?,?)";
+	$params = array($userid, $roleid);
+	$result = $adb -> pquery($sql, $params);
+	$log -> debug("Exiting updateUser2RoleMapping method ...");
 }
 
 /** Function to update user to group mapping based on the userid
@@ -4058,7 +4056,7 @@ function get_current_user_access_groups($module)
 {
 	global $log;
 	$log->debug("Entering get_current_user_access_groups(".$module.") method ...");
-	global $adb,$noof_group_rows;
+	global $curent_user, $adb,$noof_group_rows;
 	$current_user_group_list=getCurrentUserGroupList();
 	$sharing_write_group_list=getWriteSharingGroupsList($module);
 	$query ="select groupname,groupid from vtiger_groups";
@@ -4113,11 +4111,8 @@ function getGrpId($groupname) {
  */
 function getFieldVisibilityPermission($fld_module, $userid, $fieldname, $accessmode='readonly')
 {
-	global $log;
+	global $log,$adb, $current_user;
 	$log->debug("Entering getFieldVisibilityPermission(".$fld_module.",". $userid.",". $fieldname.") method ...");
-
-	global $adb;
-	global $current_user;
 
 	// Check if field is in-active
 	$fieldActive = isFieldActive($fld_module,$fieldname);
