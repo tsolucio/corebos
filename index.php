@@ -11,11 +11,9 @@
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
  ********************************************************************************/
-global $entityDel;
-global $display;
-global $category;
+global $entityDel, $display, $category;
 
-if(version_compare(phpversion(), '5.2.0') < 0 or version_compare(phpversion(), '5.6.0','ge') > 0) {
+if(version_compare(phpversion(), '5.2.0') < 0 or version_compare(phpversion(), '6.0.0') >= 0) {
 	insert_charset_header();
 	$serverPhpVersion = phpversion();
 	require_once('phpversionfail.php');
