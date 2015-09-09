@@ -71,7 +71,7 @@ function lang_changeEditTab(obj1, obj2, SelTab, unSelTab) {
 													<tbody>
 														<tr>
 															<td rowspan="2" valign="top" width="50"><img src="themes/images/languages.gif" alt="Language Translation" title="Language Translation" border="0" height="48" width="48"></td>
-															<td class="heading2" valign="bottom"><b>{$MOD.LBL_SETTINGS} &gt; {$UMOD.LBL_LANGUAGES_PACKS} &gt; {$LANGUAGE}</b></td>
+															<td class="heading2" valign="bottom"><b>{'LBL_SETTINGS'|@getTranslatedString} &gt; {$UMOD.LBL_LANGUAGES_PACKS} &gt; {$LANGUAGE}</b></td>
 														</tr>
 														<tr>
 															<td class="small" valign="top">{$UMOD.LBL_EDIT_LANGUAGE_FILE}</td>

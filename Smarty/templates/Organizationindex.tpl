@@ -16,7 +16,7 @@
 <table width="99%" cellpadding="2" cellspacing="5" border="0">
 
 <tr>
-<td class="detailedViewHeader" align="left" colspan=2><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{$MOD.LBL_SETTINGS} </a> > {$MOD.LBL_USER_MANAGEMENT} > {$MOD.LBL_DEFAULT_ORGANIZATION_FIELDS}</b></td></tr>
+<td class="detailedViewHeader" align="left" colspan=2><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString} </a> > {$MOD.LBL_USER_MANAGEMENT} > {$MOD.LBL_DEFAULT_ORGANIZATION_FIELDS}</b></td></tr>
 <tr>
 <td>
 <a href="index.php?module=Users&action=DefaultFieldPermissions&fld_module=Leads">{$MOD.LBL_LEAD_FIELD_ACCESS}</a></td><td>
