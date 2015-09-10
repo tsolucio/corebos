@@ -15,7 +15,6 @@
 *  Language     : Español
 *  Version      : 5.4.0
 *  Created Date : 2007-03-30 Last change : 2012-02-27
-*  Author       : Rafael Soler
 *  Author       : Joe Bordes
  ********************************************************************************/
 
@@ -140,7 +139,7 @@ $mod_strings = Array(
 'Documents' => 'Documentos',
 'SINGLE_Documents' => 'Documento',
 'Documents ID'=>'Id Documento',
-'LBL_FILEUPLOAD_FAILED'=>'File failed to upload',
+'LBL_FILEUPLOAD_FAILED'=>'No se ha podido cargar el fichero. Revisa los permisos de los directorios!',
 );
 
 ?>

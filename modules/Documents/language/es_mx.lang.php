@@ -15,7 +15,6 @@
 *  Language     : Español
 *  Version      : 5.4.0
 *  Created Date : 2007-03-30 Last change : 2012-02-27
-*  Author       : Rafael Soler
 *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
  ********************************************************************************/
 
@@ -139,7 +138,7 @@ $mod_strings = Array(
 'Folder Name'=>"Nombre de carpeta",
 'Documents' => 'Documentos',
 'Documents ID'=>'Id Documento',
-'LBL_FILEUPLOAD_FAILED'=>'File failed to upload',
+'LBL_FILEUPLOAD_FAILED'=>'No se ha podido cargar el fichero. Revisa los permisos de los directorios!',
 );
 
 ?>
