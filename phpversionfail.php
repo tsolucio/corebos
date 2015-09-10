@@ -36,7 +36,7 @@ include_once 'vtigerversion.php';
 	<table border=0 cellspacing=0 cellpadding=10 width=80% align=center>
 	<tr>
 		<td class="small" bgcolor="#FFFFFF" align=center>
-			PHP 5.2.x or PHP 5.3.x is required. Your current PHP version is
+			A PHP version from 5.3.x to 5.6.x is required. Your current PHP version is
 			<?php
 				if(isset($serverPhpVersion)) {
 					echo $serverPhpVersion;
@@ -65,11 +65,10 @@ include_once 'vtigerversion.php';
 		<td align=center><img src="include/install/images/bottomShadow.jpg"></td>
 	</tr>
 	</table>
-    	<table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
-
-      	<tr>
-        	<td class=small align=center> <a href="<?php echo $coreBOS_app_url; ?>" target="_blank"><?php echo $coreBOS_app_name; ?></a></td>
-      	</tr>
-    	</table>
+	<table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
+	<tr>
+		<td class=small align=center> <a href="<?php echo $coreBOS_app_url; ?>" target="_blank"><?php echo $coreBOS_app_name; ?></a></td>
+	</tr>
+	</table>
 </body>
 </html>

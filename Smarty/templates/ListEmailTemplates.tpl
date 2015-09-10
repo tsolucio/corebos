@@ -116,7 +116,7 @@ function massDelete()
     				<input name="action" type="hidden" value="deleteemailtemplate">
 				<tr>
 					<td width=50 rowspan=2 valign=top><img src="{'ViewTemplate.gif'|@vtiger_imageurl:$THEME}" border=0></td>
-					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{$MOD.LBL_SETTINGS}</a> > {$UMOD.LBL_EMAIL_TEMPLATES} </b></td>
+					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$UMOD.LBL_EMAIL_TEMPLATES} </b></td>
 				</tr>
 				<tr>
 					<td valign=top class="small">{$UMOD.LBL_EMAIL_TEMPLATE_DESC}</td>

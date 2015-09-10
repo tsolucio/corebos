@@ -16,7 +16,7 @@
                 <table width="99%" border="0" cellpadding="0" cellspacing="0" align="center">
                         <tr>
                                 <td class="showPanelBg" valign="top" style="padding-left:20px; "><br />
-                                <span class="lvtHeaderText">{$MOD.LBL_SETTINGS} &gt; {$MOD.LBL_STUDIO} &gt; {$MOD.LBL_CUSTOM_FIELD_SETTINGS} </span>
+                                <span class="lvtHeaderText">{'LBL_SETTINGS'|@getTranslatedString} &gt; {$MOD.LBL_STUDIO} &gt; {$MOD.LBL_CUSTOM_FIELD_SETTINGS} </span>
                                 <hr noshade="noshade" size="1" />
                                 </td>
                         </tr>

@@ -24,7 +24,7 @@
 		<table class="settingsSelUITopLine" border="0" cellpadding="5" cellspacing="0" width="100%">
 		<tr>
 			<td rowspan="2" valign="top" width="50"><img src="{'menueditor.png'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_MENU_EDITOR}" title="{$MOD.LBL_MENU_EDITOR}" border="0" height="48" width="48"></td>
-			<td class="heading2" valign="bottom"><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{$MOD.LBL_SETTINGS}</a> &gt; {$MOD.LBL_MENU_EDITOR}</b></td>
+			<td class="heading2" valign="bottom"><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> &gt; {$MOD.LBL_MENU_EDITOR}</b></td>
 		</tr>
 
 		<tr>

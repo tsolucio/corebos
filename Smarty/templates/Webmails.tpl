@@ -38,7 +38,7 @@
 							</td>
 							<td width="20%" nowrap>
 								<img src="{'webmail_settings.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" />
-								&nbsp;<a href="index.php?module=Users&action=AddMailAccount&record={$USERID}&return_module=Webmails&return_action=index" class="webMnu">{$MOD.LBL_SETTINGS}</a>
+								&nbsp;<a href="index.php?module=Users&action=AddMailAccount&record={$USERID}&return_module=Webmails&return_action=index" class="webMnu">{'LBL_SETTINGS'|@getTranslatedString}</a>
 							</td>
 							<td width="30%">
 								<!--<img src="themes/images/webmail_settings.gif" align="absmiddle" />
