@@ -110,6 +110,7 @@ $mod_strings = array(
 	'Documents ID' => 'Dokumentumok AZ',
 	'Internal' => 'Belső',
 	'External' => 'Külső',
-	'LBL_LAST_MODIFIED' => 'Utoljára módosítva'
+	'LBL_LAST_MODIFIED' => 'Utoljára módosítva',
+	'LBL_FILEUPLOAD_FAILED'=>'File failed to upload',
 );
 ?>

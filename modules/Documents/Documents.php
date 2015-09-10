@@ -168,6 +168,27 @@ class Documents extends CRMEntity {
 			return $query;
 		}
 	}
+	/* Validate values trying to be saved.
+	 * @param array $_REQUEST input values. Note: column_fields array is already loaded
+	 * @return array
+	 *   saveerror: true if error false if not
+	 *   errormessage: message to return to user if error, empty otherwise
+	 *   error_action: action to redirect to inside the same module in case of error. if redirected to EditView (default action)
+	 *                 all values introduced by the user will be preloaded
+	 */
+	function preSaveCheck($request) {
+		global $adb,$log;
+		$saveerror = false;
+		$errmsg = '';
+		$upload_file_path = decideFilePath();
+		$dirpermission = is_writable($upload_file_path);
+		$upload = is_uploaded_file($_FILES['filename']['tmp_name']);
+		if((!$dirpermission || !$upload) && $_REQUEST['action'] != "DocumentsAjax"){
+			$saveerror = true;
+			$errmsg = getTranslatedString('LBL_FILEUPLOAD_FAILED','Documents');
+		}
+		return array($saveerror,$errmsg,'EditView','');
+	}
 
 	/**
 	 * This function is used to add the vtiger_attachments. This will call the function uploadAndSaveFile which will upload the attachment into the server and save that attachment information in the database.
