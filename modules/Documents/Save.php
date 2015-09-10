@@ -7,11 +7,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-global $current_user, $currentModule, $root_directory;
+global $current_user, $currentModule;
 
 checkFileAccessForInclusion("modules/$currentModule/$currentModule.php");
 require_once("modules/$currentModule/$currentModule.php");
-require_once('include/upload_file.php');
 
 $search = vtlib_purify($_REQUEST['search_url']);
 
@@ -24,7 +23,6 @@ if($mode) $focus->mode = $mode;
 if($record)$focus->id  = $record;
 if(isset($_REQUEST['notecontent']) && $_REQUEST['notecontent'] != "")
 	$_REQUEST['notecontent'] = fck_from_html($_REQUEST['notecontent']);
-if (!isset($_REQUEST['date_due_flag'])) $focus->date_due_flag = 'off';
 if(isset($_REQUEST['parentid']) && $_REQUEST['parentid'] != '')
 	$focus->parentid = vtlib_purify($_REQUEST['parentid']);
 
@@ -76,7 +74,6 @@ if ($saveerror) { // there is an error so we go back to EditView.
 
 $focus->save($currentModule);
 $return_id = $focus->id;
-$note_id = $return_id;
 
 $parenttab = getParentTab();
 if(!empty($_REQUEST['return_module'])) {
@@ -102,10 +99,5 @@ if(isset($_REQUEST['activity_mode'])) {
 	$return_action .= '&activity_mode='.vtlib_purify($_REQUEST['activity_mode']);
 }
 
-if($file_upload_error) { // Redirect to EditView if the given file is not valid.
-	$return_module = 'Documents';
-	$return_action = 'EditView';
-	$return_id = $note_id.'&upload_error=true&return_module='.$return_module.'&return_action='.$return_action.'&return_id='.$return_id;
-}
-header("Location: index.php?action=$return_action&module=$return_module&parenttab=$parenttab&record=$return_id&viewname=$return_viewname&start=".vtlib_purify($_REQUEST['pagenumber']).$search);
+header("Location: index.php?action=$return_action&module=$return_module&record=$return_id&parenttab=$parenttab&viewname=$return_viewname&start=".vtlib_purify($_REQUEST['pagenumber']).$search);
 ?>
