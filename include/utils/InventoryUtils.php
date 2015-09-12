@@ -1255,7 +1255,7 @@ function createRecords($obj) {
 							$entityLabel = trim($fieldValueDetails[1]);
 							$entityId = getEntityId($referenceModuleName, $entityLabel);
 						} else {
-							$referencedModules = $fieldInstance->getReferenceList();
+							$referencedModules = array('Products','Services');
 							$entityLabel = $fieldValue;
 							foreach ($referencedModules as $referenceModule) {
 								$referenceModuleName = $referenceModule;
