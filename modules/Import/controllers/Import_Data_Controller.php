@@ -490,7 +490,12 @@ class Import_Data_Controller {
 				if ($fieldInstance->getFieldDataType() == 'owner') {
 					$fieldData[$mandatoryField] = $this->user->id;
 				} else {
-					$fieldData[$mandatoryField] = '????';
+					$defaultValue = $fieldInstance->getDefault();
+					if (!empty($defaultValue)) {
+						$fieldData[$mandatoryField] = $defaultValue;
+					} else {
+						$fieldData[$mandatoryField] = '????';
+					}
 				}
 			}
 		}
