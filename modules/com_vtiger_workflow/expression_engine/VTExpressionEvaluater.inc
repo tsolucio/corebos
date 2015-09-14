@@ -62,41 +62,41 @@ function __vt_gt($arr) {
 function __vt_concat($arr){
 	return implode($arr);
 }
+
 /* Date difference between (input times) or (current time and input time)
  *
  * @param Array $a $a[0] - Input time1, $a[1] - Input time2
  * (if $a[1] is not available $a[0] = Current Time, $a[1] = Input time1)
  * @return int difference timestamp
  */
-
 function __vt_time_diff($arr) {
-
-    $time_operand1 = $time_operand2 = 0;
-    if(count($arr) > 1) {
-            $time_operand1 = $time1 = $arr[0];
-            $time_operand2 = $time2 = $arr[1];
-    } else {
+	$time_operand1 = $time_operand2 = 0;
+	if(count($arr) > 1) {
+		$time_operand1 = $time1 = $arr[0];
+		$time_operand2 = $time2 = $arr[1];
+	} else {
 		// Added as we need to compare with the values based on the user date format and timezone
 		global $default_timezone;
-            $time_operand1 = date('Y-m-d H:i:s'); // Current time
-            $time_operand2 = $arr[0];
-    }
+		$time_operand1 = date('Y-m-d H:i:s'); // Current time
+		$time_operand2 = $arr[0];
+	}
 
-    if(empty($time_operand1) || empty($time_operand2)) return 0;
+	if(empty($time_operand1) || empty($time_operand2)) return 0;
 
-    $time_operand1 = getValidDBInsertDateTimeValue($time_operand1);
+	$time_operand1 = getValidDBInsertDateTimeValue($time_operand1);
 	$time_operand2 = getValidDBInsertDateTimeValue($time_operand2);
 
-    //to give the difference if it is only time field
-    if(empty($time_operand1) && empty($time_operand2)) {
-        $pattern = "/([01]?[0-9]|2[0-3]):[0-5][0-9]/";
-        if(preg_match($pattern, $time1) && preg_match($pattern, $time2)){
-            $timeDiff = strtotime($time1) - strtotime($time2);
-            return date('H:i:s', $timeDiff);
-        }
-    }
-    return (strtotime($time_operand1) - strtotime($time_operand2));
+	//to give the difference if it is only time field
+	if(empty($time_operand1) && empty($time_operand2)) {
+		$pattern = "/([01]?[0-9]|2[0-3]):[0-5][0-9]/";
+		if(preg_match($pattern, $time1) && preg_match($pattern, $time2)){
+			$timeDiff = strtotime($time1) - strtotime($time2);
+			return date('H:i:s', $timeDiff);
+		}
+	}
+	return (strtotime($time_operand1) - strtotime($time_operand2));
 }
+
 /**
  * Calculate the time difference (input times) or (current time and input time) and
  * convert it into number of days.
@@ -105,13 +105,12 @@ function __vt_time_diff($arr) {
  * @return int number of days
  */
 function __vt_time_diffdays($arr) {
-    $timediff  = __vt_time_diff($arr);
-    $days_diff = floor($timediff / (60 * 60 * 24));
-    return $days_diff;
+	$timediff  = __vt_time_diff($arr);
+	$days_diff = floor($timediff / (60 * 60 * 24));
+	return $days_diff;
 }
 
 function __vt_add_days($arr) {
-
 	if (count($arr) > 1) {
 		$baseDate = $arr[0];
 		$noOfDays = $arr[1];
@@ -128,7 +127,6 @@ function __vt_add_days($arr) {
 }
 
 function __vt_sub_days($arr) {
-
 	if (count($arr) > 1) {
 		$baseDate = $arr[0];
 		$noOfDays = $arr[1];
@@ -293,7 +291,6 @@ class VTFieldExpressionEvaluater{
 
 		$this->operations = array_merge($this->functions, $this->operators);
 		$this->expr = $expr;
-
 	}
 
 	function evaluate($env){
