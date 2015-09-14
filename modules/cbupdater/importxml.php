@@ -59,9 +59,12 @@ function cbupd_import($zipfile) {
 		echo $processing.$filename.'<br>';
 		$pinfo = pathinfo($filename);
 		if ($pinfo['extension']=='xml') {
+			echo "XML File found: $filename <br>";
 			$cbupdates= new DOMDocument();
 			if ($cbupdates->load($cspath.'/'.$filename)) {
+				echo "XML File loaded!<br>";
 				if ($cbupdates->schemaValidate('modules/cbupdater/cbupdater.xsd')) {
+					echo "XML File validated!<br>";
 					$csxmlfound = true;
 					$w=new XMLWriter();
 					$w->openMemory();
