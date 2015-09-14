@@ -6,51 +6,38 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-* 
  ********************************************************************************/
-
 require_once('config.php');
 require_once('include/database/PearDatabase.php');
 
-global $adb;
-global $fileId, $default_charset, $app_strings;
+global $adb, $fileId, $default_charset, $app_strings;
 
 $attachmentsid = vtlib_purify($_REQUEST['fileid']);
 $entityid = vtlib_purify($_REQUEST['entityid']);
-
 $returnmodule= vtlib_purify($_REQUEST['return_module']);
-
 $deletecheck = false;
-if(!empty($entityid)) $deletecheck = $adb->pquery("SELECT deleted FROM vtiger_crmentity WHERE crmid=?", array($entityid));
+if(!empty($entityid)) $deletecheck = $adb->pquery('SELECT deleted FROM vtiger_crmentity WHERE crmid=?', array($entityid));
 if(!empty($deletecheck) && $adb->query_result($deletecheck, 0, 'deleted') == 1) {
-	
 	echo $app_strings['LBL_RECORD_DELETE'];
-	
 } else {
-
-	$dbQuery = "SELECT * FROM vtiger_attachments WHERE attachmentsid = ?" ;
-	
-	$result = $adb->pquery($dbQuery, array($attachmentsid)) or die("Couldn't get file list");
-	if($adb->num_rows($result) == 1)
-	{
-		$fileType = @$adb->query_result($result, 0, "type");
-		$name = @$adb->query_result($result, 0, "name");
-		$filepath = @$adb->query_result($result, 0, "path");
+	$dbQuery = 'SELECT * FROM vtiger_attachments WHERE attachmentsid = ?' ;
+	$result = $adb->pquery($dbQuery, array($attachmentsid)) or die('Could not get file list');
+	if($adb->num_rows($result) == 1) {
+		$fileType = @$adb->query_result($result, 0, 'type');
+		$name = @$adb->query_result($result, 0, 'name');
+		$filepath = @$adb->query_result($result, 0, 'path');
 		$name = html_entity_decode($name, ENT_QUOTES, $default_charset);
 		$saved_filename = $attachmentsid."_".$name;
 		$disk_file_size = filesize($filepath.$saved_filename);
 		$filesize = $disk_file_size + ($disk_file_size % 1024);
 		$fileContent = fread(fopen($filepath.$saved_filename, "r"), $filesize);
-	
 		header("Content-type: $fileType");
 		header("Pragma: public");
 		header("Cache-Control: private");
 		header("Content-Disposition: attachment; filename=\"$name\"");
 		header("Content-Description: PHP Generated Data");
 		echo $fileContent;
-	}
-	else
-	{
+	} else {
 		echo $app_strings['LBL_RECORD_NOT_FOUND'];
 	}
 }
