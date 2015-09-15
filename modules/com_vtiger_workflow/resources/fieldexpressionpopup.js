@@ -7,8 +7,10 @@
  * All Rights Reserved.
  ********************************************************************************/
 
+var fieldExpressionPopup_LOADED = false;
 function fieldExpressionPopup(moduleName, $){
 
+	if (fieldExpressionPopup_LOADED != false) return fieldExpressionPopup_LOADED;
 	var format = fn.format;
 	var opType;
 
@@ -289,8 +291,7 @@ function fieldExpressionPopup(moduleName, $){
 	}
 	);
 
-
-	return {
+	fieldExpressionPopup_LOADED = {
 		create: show,
 		edit: function(fieldelementid, expression, fieldtype){
 			$("#editpopup_field").attr('value', fieldelementid);
@@ -337,6 +338,7 @@ function fieldExpressionPopup(moduleName, $){
 			});
 		}
 	};
+	return fieldExpressionPopup_LOADED;
 }
 
 
