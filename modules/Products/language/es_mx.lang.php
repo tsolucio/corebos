@@ -11,11 +11,10 @@
 *  Language     : Español
 *  Version      : 5.4.0
 *  Created Date : 2007-03-30
-*  Author       : Rafael Soler
 *  Last change  : 2012-02-28
 *  Author       : Joe Bordes JPL TSolucio, S.L.
- *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
- ********************************************************************************/
+*  Author       : Francisco Hernandez Odin Consultores www.odin.mx
+********************************************************************************/
 
 $mod_strings = Array(
 'LBL_MODULE_NAME'=>'Productos',
@@ -224,7 +223,7 @@ $mod_strings = Array(
 'Product No' => 'Núm. Producto',
 // END
 
-'Parent Product' => 'Product Paterno',
+'Parent Product' => 'Producto Paterno',
 
 'LBL_NO_TAXES_ASSOCIATED'=>'No hay impuestos asociados a este producto',
 'Products ID' => 'Id Producto',
