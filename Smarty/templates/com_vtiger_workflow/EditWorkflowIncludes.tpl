@@ -9,7 +9,6 @@
  ********************************************************************************/
 -->*}
 
-<script src="modules/{$module->name}/resources/jquery-1.2.6.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/functional.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/json2.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/vtigerwebservices.js" type="text/javascript" charset="utf-8"></script>

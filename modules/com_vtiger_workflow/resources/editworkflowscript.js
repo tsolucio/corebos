@@ -285,7 +285,7 @@ function editworkflowscript($, conditions){
 
 		// Remove 'has changed' operation for reference fields
 		var fe = $("#save_condition_"+condno+"_fieldname");
-		var fullFieldName = fe.attr('value');
+		var fullFieldName = fe.val();
 		var group = fullFieldName.match(/(\w+) : \((\w+)\) (\w+)/);
 		if(group != null){
 			for(var i=0; i<selOperations.length; ++i) {
@@ -316,7 +316,7 @@ function editworkflowscript($, conditions){
 				);
 			value.replaceWith('<select id="save_condition_'+condno+'_value" class="expressionvalue">'+
 				options+'</select>');
-			$("#save_condition_"+condno+"_value_type").attr("value", "rawtext");
+			$("#save_condition_"+condno+"_value_type").val("rawtext");
 		}
 		var functions = {
 			string:function(opType, condno){
@@ -446,7 +446,7 @@ function editworkflowscript($, conditions){
 	}
 
 	function editFieldExpression(fieldValueNode, fieldType) {
-		editpopupobj.edit(fieldValueNode.attr('id'), fieldValueNode.attr('value'), fieldType);
+		editpopupobj.edit(fieldValueNode.attr('id'), fieldValueNode.val(), fieldType);
 	}
 
 	$(document).ready(function(){
@@ -581,7 +581,7 @@ function editworkflowscript($, conditions){
 						var fjc = $("#save_condition_"+condid+"_joincondition");
 						fillOptions(fjc, JoinConditionOptions);
 
-						var fullFieldName = fe.attr("value");
+						var fullFieldName = fe.val();
 
 						resetFields(getFieldType(fullFieldName), condid);
 
@@ -593,13 +593,13 @@ function editworkflowscript($, conditions){
 						fe.bind("change", function(){
 							var select = $(this);
 							var condNo = select.attr("id").match(/save_condition_(\d+)_fieldname/)[1];
-							var fullFieldName = $(this).attr('value');
+							var fullFieldName = $(this).val();
 							resetFields(getFieldType(fullFieldName), condNo);
 						});
 
 						var condition = $('#save_condition_'+condid+'_operation');
 						condition.bind('change', function() {
-							var value = $(this).attr('value');
+							var value = $(this).val();
 							if(value == 'is empty' || value == 'is not empty') {
 								$('#save_condition_'+condid+'_value').hide();
 							} else {
@@ -627,9 +627,9 @@ function editworkflowscript($, conditions){
 							var groupid = condition["groupid"];
 							if(groupid == '') groupid = 0;
 							addCondition(groupid, condno);
-							$(format("#save_condition_%s_fieldname", condno)).attr("value", fieldname);
+							$(format("#save_condition_%s_fieldname", condno)).val(fieldname);
 							resetFields(getFieldType(fieldname), condno);
-							$(format("#save_condition_%s_operation", condno)).attr("value", condition["operation"]);
+							$(format("#save_condition_%s_operation", condno)).val(condition["operation"]);
 							$('#dump').html(condition["value"]);
 							var text = $('#dump').text();
 							if(condition["operation"] == 'is empty' || condition["operation"] == 'is not empty')  {
@@ -638,10 +638,10 @@ function editworkflowscript($, conditions){
 							$(format("#save_condition_%s_value", condno)).val(text);
 							$(format("#save_condition_%s_value_type", condno)).val(condition["valuetype"]);
 							if(condition["joincondition"] != '') {
-								$(format("#save_condition_%s_joincondition", condno)).attr("value", condition["joincondition"]);
+								$(format("#save_condition_%s_joincondition", condno)).val(condition["joincondition"]);
 							}
 							if(condition["groupjoin"]  != '') {
-								$(format("#save_condition_group_%s_joincondition", groupid)).attr("value", condition["groupjoin"]);
+								$(format("#save_condition_group_%s_joincondition", groupid)).val(condition["groupjoin"]);
 							}
 							condno+=1;
 						});
@@ -657,14 +657,14 @@ function editworkflowscript($, conditions){
 						$("#save_conditions").children(".condition_group_block").each(function(j, conditiongroupblock){
 							$(conditiongroupblock).children(".save_condition_group").each(function(k, conditiongroup){
 								$(conditiongroup).children().each(function(l){
-									var fieldname = $(this).children(".fieldname").attr("value");
-									var operation = $(this).children(".operation").attr("value");
-									var value = $(this).children(".expressionvalue").attr("value");
-									var valuetype = $(this).children(".expressiontype").attr("value");
-									var joincondition = $(this).children(".joincondition").attr("value");
-									var groupid = $(this).children(".groupid").attr("value");
+									var fieldname = $(this).children(".fieldname").val();
+									var operation = $(this).children(".operation").val();
+									var value = $(this).children(".expressionvalue").val();
+									var valuetype = $(this).children(".expressiontype").val();
+									var joincondition = $(this).children(".joincondition").val();
+									var groupid = $(this).children(".groupid").val();
 									var groupjoin = '';
-									if(groupid != '') groupjoin = $('#save_condition_group_'+groupid+'_joincondition').attr("value");
+									if(groupid != '') groupjoin = $('#save_condition_group_'+groupid+'_joincondition').val();
 									var condition = {
 										fieldname:fieldname,
 										operation:operation,
@@ -683,7 +683,7 @@ function editworkflowscript($, conditions){
 						}else{
 							var out = JSON.stringify(conditions);
 						}
-						$("#save_conditions_json").attr("value", out);
+						$("#save_conditions_json").val(out);
 					});
 					pageLoadingPopup.close();
 					$('#save_conditions_add').show();

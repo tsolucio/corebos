@@ -30,7 +30,7 @@ function vtws_retrievedocattachment($all_ids, $returnfile, $user) {
         $webserviceObject = VtigerWebserviceObject::fromId($adb,$id);
 	$handlerPath = $webserviceObject->getHandlerPath();
 	$handlerClass = $webserviceObject->getHandlerClass();
-	
+
 	require_once $handlerPath;
 
 	$handler = new $handlerClass($webserviceObject,$user,$adb,$log);

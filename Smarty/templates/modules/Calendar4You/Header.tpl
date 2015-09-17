@@ -60,7 +60,7 @@
 	<script type="text/javascript" src="jscalendar/calendar.js"></script>
 	<script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
 	<script type="text/javascript" src="jscalendar/lang/calendar-{$APP.LBL_JSCALENDAR_LANG}.js"></script>
-	{*<script type="text/javascript" src="include/jquery/jquery-1.6.2.min.js"></script>*}
+	{*<script type="text/javascript" src="include/jquery/jquery.js"></script>*}
    	<script type="text/javascript">
 		jQuery.noConflict();
 	</script>

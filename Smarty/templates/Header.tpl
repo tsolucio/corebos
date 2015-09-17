@@ -56,7 +56,9 @@ var gVTUserID = '{$CURRENT_USER_ID}';
 	<!-- END -->
 	<script language="JavaScript" type="text/javascript" id="_current_language_" src="include/js/{php} echo $_SESSION['authenticated_user_language'];{/php}.lang.js?{php} echo $_SESSION['vtiger_version'];{/php}"></script>
 	<script language="JavaScript" type="text/javascript" src="include/js/QuickCreate.js"></script>
+  {if $MODULE_NAME neq 'com_vtiger_workflow'}
 	<script language="javascript" type="text/javascript" src="include/scriptaculous/prototype.js"></script>
+  {/if}
 	<script language="JavaScript" type="text/javascript" src="include/js/menu.js?v={$VERSION}"></script>
 	<script language="JavaScript" type="text/javascript" src="include/calculator/calc.js"></script>
 	<script language="JavaScript" type="text/javascript" src="modules/Calendar/script.js"></script>
@@ -65,7 +67,7 @@ var gVTUserID = '{$CURRENT_USER_ID}';
 	<script type="text/javascript" src="jscalendar/calendar.js"></script>
 	<script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
 	<script type="text/javascript" src="jscalendar/lang/calendar-{$APP.LBL_JSCALENDAR_LANG}.js"></script>
-	<script type="text/javascript" src="include/jquery/jquery-1.6.2.min.js"></script>
+	<script type="text/javascript" src="include/jquery/jquery.js"></script>
    	<script type="text/javascript">
 		jQuery.noConflict();
 	</script>

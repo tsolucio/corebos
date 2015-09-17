@@ -10,7 +10,6 @@
 <script type='text/javascript' src='include/js/json.js'></script>
 <script type='text/javascript' src='include/ckeditor/ckeditor.js'></script>
 
-<script type='text/javascript' src='modules/MailManager/resources/jquery-1.6.2.min.js'></script>
 <script type='text/javascript' src='modules/MailManager/resources/jquery-ui-1.8.16.custom.min.js'></script>
 <script type='text/javascript'>
 	jQuery.noConflict();

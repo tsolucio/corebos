@@ -106,7 +106,7 @@ function redirectWhenNoRelatedRecordsFound()
 {/if}
 <script language="JavaScript" type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
 <script language="javascript" type="text/javascript" src="include/scriptaculous/prototype.js"></script>
-<script type='text/javascript' src='modules/com_vtiger_workflow/resources/jquery-1.2.6.js'></script>
+<script type='text/javascript' src='include/jquery/jquery.js'></script>
 <script type='text/javascript'>
 	jQuery.noConflict();
 </script>

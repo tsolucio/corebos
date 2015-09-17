@@ -85,7 +85,7 @@
 				{else}
 					{assign var=selectmodule value=""}
 				{/if}
-				<option value="{$labelval}" {$selectmodule}>{$APP[$labelval]}</option>
+				<option value="{$labelval}" {$selectmodule}>{$labelval|@getTranslatedString:$labelval}</option>
 			{/foreach}
 		</select>
 		&nbsp;
