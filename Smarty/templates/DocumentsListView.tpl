@@ -112,7 +112,7 @@ function callSearch(searchtype)
         	getObj(data_td_id).className = 'searchAlph';
     	{rdelim}
     	gPopupAlphaSearchUrl = '';
-	search_fld_val= $('bas_searchfield').options[$('bas_searchfield').selectedIndex].value;
+	search_fld_val= jQuery('#bas_searchfield').val();
 	search_txt_val= encodeURIComponent(document.basicSearch.search_text.value);
         var urlstring = '';
         if(searchtype == 'Basic')
@@ -124,52 +124,46 @@ function callSearch(searchtype)
         else if(searchtype == 'Advanced')
         {ldelim}
         		checkAdvancedFilter();
-				var advft_criteria = $('advft_criteria').value;
+				var advft_criteria = jQuery('#advft_criteria').val();
 				var advft_criteria_groups = $('advft_criteria_groups').value;
 				urlstring += '&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups+'&';
 				urlstring += 'searchtype=advance&'
         {rdelim}
-	$("status").style.display="inline";
-	new Ajax.Request(
-		'index.php',
-		{ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-			method: 'post',
-			postBody:urlstring +'query=true&file=index&module={$MODULE}&action={$MODULE}Ajax&ajax=true&search=true',
-			onComplete: function(response) {ldelim}
-								$("status").style.display="none";
-                                result = response.responseText.split('&#&#&#');
-                                $("ListViewContents").innerHTML= result[2];
-                                if(result[1] != '')
-									alert(result[1]);
-								$('basicsearchcolumns').innerHTML = '';
+	document.getElementById("#status").style.display="inline";
+	jQuery.ajax({ldelim}
+			method:"POST",
+			url:'index.php?'+urlstring +'query=true&file=index&module={$MODULE}&action={$MODULE}Ajax&ajax=true&search=true',
+	{rdelim}).done(function(response) {ldelim}
+				jQuery("#status").hide();
+				result = response.split('&#&#&#');
+				jQuery("#ListViewContents").html(result[2]);
+				if(result[1] != '')
+					alert(result[1]);
+				jQuery('#basicsearchcolumns').html('');
 			{rdelim}
-	       {rdelim}
-        );
+		);
 	return false
 {rdelim}
 function alphabetic(module,url,dataid)
 {ldelim}
-        for(i=1;i<=26;i++)
-        {ldelim}
-                var data_td_id = 'alpha_'+ eval(i);
-                getObj(data_td_id).className = 'searchAlph';
+		for(i=1;i<=26;i++)
+		{ldelim}
+				var data_td_id = 'alpha_'+ eval(i);
+				getObj(data_td_id).className = 'searchAlph';
 
-        {rdelim}
-        getObj(dataid).className = 'searchAlphselected';
-	$("status").style.display="inline";
-	new Ajax.Request(
-		'index.php',
-		{ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-			method: 'post',
-			postBody: 'module='+module+'&action='+module+'Ajax&file=index&ajax=true&search=true&'+url,
-			onComplete: function(response) {ldelim}
-				$("status").style.display="none";
-				result = response.responseText.split('&#&#&#');
-				$("ListViewContents").innerHTML= result[2];
+		{rdelim}
+		getObj(dataid).className = 'searchAlphselected';
+	document.getElementById("status").style.display="inline";
+	jQuery.ajax({ldelim}
+			method:"POST",
+			url:'index.php?module='+module+'&action='+module+'Ajax&file=index&ajax=true&search=true&'+url,
+	{ldelim}).done(function(response) {ldelim}
+				jQuery("#status").hide();
+				result = response.split('&#&#&#');
+				jQuery("#ListViewContents").html(result[2]);
 				if(result[1] != '')
-			                alert(result[1]);
-				$('basicsearchcolumns').innerHTML = '';
-			{rdelim}
+						alert(result[1]);
+				jQuery('#basicsearchcolumns').html('');
 		{rdelim}
 	);
 {rdelim}

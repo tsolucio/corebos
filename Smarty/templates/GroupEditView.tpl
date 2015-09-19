@@ -25,19 +25,16 @@ function dup_validation()
 	//var status = CharValidation(groupname,'namespace');
 	//if(status)
 	//{ldelim}
-	new Ajax.Request(
-		'index.php',
-		{ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-			method: 'post',
-			postBody: 'module=Users&action=UsersAjax&file=SaveGroup&ajax=true&dup_check=true'+reminstr,
-			onComplete: function(response) {ldelim}
-				if(response.responseText.indexOf('SUCCESS') >-1)
+	jQuery.ajax({ldelim}
+			method:"POST",
+			url:'index.php?module=Users&action=UsersAjax&file=SaveGroup&ajax=true&dup_check=true'+reminstr,
+	{rdelim}).done(function(response) {ldelim}
+				if(response.indexOf('SUCCESS') >-1)
 					document.newGroupForm.submit();
 				else {ldelim}
 					VtigerJS_DialogBox.unblock();
-					alert(response.responseText);
+					alert(response);
 				{rdelim}
-			{rdelim}
 		{rdelim}
 		);
 	//{rdelim}

@@ -24,15 +24,12 @@ function getImportSavedMap(impoptions)
 		document.getElementById("delete_mapping").style.visibility = "visible";
 	else
 		document.getElementById("delete_mapping").style.visibility = "hidden";
-
-	new Ajax.Request(
-		'index.php',
-		{ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-			method: 'post',
-			postBody: 'module=Import&mapping='+mapping+'&action=ImportAjax',
-			onComplete: function(response) {ldelim}
-					$("importmapform").innerHTML = response.responseText;
-				{rdelim}
+	
+	jQuery.ajax({ldelim}
+			method:"POST",
+			url:'index.php?module=Import&mapping='+mapping+'&action=ImportAjax',
+	{rdelim}).done(function(response) {ldelim}
+				document.getElementById("importmapform").innerHTML=response;
 			{rdelim}
 		);
 {rdelim}
@@ -41,14 +38,11 @@ function deleteMapping()
 	var options_collection = document.getElementById("saved_source").options;
 	var mapid = options_collection[options_collection.selectedIndex].value;
 
-	new Ajax.Request(
-		'index.php',
-		{ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-			method: 'post',
-			postBody: 'module=Import&mapping='+mapid+'&action=ImportAjax&delete_map='+mapid,
-			onComplete: function(response) {ldelim}
-					$("importmapform").innerHTML = response.responseText;
-				{rdelim}
+	jQuery.ajax({
+			method:"POST",
+			url:'index.php?module=Import&mapping='+mapid+'&action=ImportAjax&delete_map='+mapid,
+	{rdelim}).done(function(response) {ldelim}
+					document.getElementById("importmapform").innerHTML = response;
 			{rdelim}
 		);
 
@@ -58,53 +52,48 @@ function deleteMapping()
 	alert("{$APP.MAP_DELETED_INFO}");
 {rdelim}
 {literal}
-function check_submit()
-{
-    var selectedColStr = "";
-    if(document.getElementById("merge_check").checked == true)
-    {
-    	setObjects();
-    	for (i=0;i<selectedColumnsObj.options.length;i++) 
-	        selectedColStr += selectedColumnsObj.options[i].value + ",";
-	    if (selectedColStr == "")
-	    {
-	    	{/literal}
-	    	alert('{$APP.LBL_MERGE_SHOULDHAVE_INFO}');
-	    	{literal}
-	    	return false;
-	    }
-	    document.Import.selectedColumnsString.value = selectedColStr;
-	}
-	if(validate_import_map())
-	{	
-		if(document.getElementById("save_map").checked)
-	        {
-	                var name=document.getElementById("save_map_as").value
-	                $("status").style.display="block";
-	                new Ajax.Request(
-	                'index.php',
-	                {queue: {position: 'end', scope: 'command'},
-	                method: 'post',
-                        postBody: 'module=Import&name='+name+'&ajax_action=check_dup_map_name&action=ImportAjax',
-                        onComplete: function(response) {
-
-			if(response.responseText == 'true')
-        	                document.Import.submit();
-{/literal}              else
-				if(confirm("{$APP.MAP_NAME_EXISTS}"))
-{literal}					document.Import.submit();
-	                	$("status").style.display="none";
-
-                			                }
-                        }
-			                );
-
-
+function check_submit(){
+	var selectedColStr = "";
+	if(document.getElementById("merge_check").checked == true)
+	{
+		setObjects();
+		for (i=0;i<selectedColumnsObj.options.length;i++) 
+			selectedColStr += selectedColumnsObj.options[i].value + ",";
+		if (selectedColStr == "")
+		{
+{/literal}
+			alert('{$APP.LBL_MERGE_SHOULDHAVE_INFO}');
+{literal}
+			return false;
 		}
-		else
-			document.Import.submit();
+		document.Import.selectedColumnsString.value = selectedColStr;
 	}
-}
+	if(validate_import_map()){	
+		if(document.getElementById("save_map").checked)
+			{
+					var name=document.getElementById("save_map_as").value
+					document.getElementById("status").style.display="block";
+					jQuery.ajax({
+							method:"POST",
+							url:'index.php?module=Import&name='+name+'&ajax_action=check_dup_map_name&action=ImportAjax',
+					}).done(function(response) {
+								if (response == 'true')
+									document.Import.submit();
+								{/literal}	else
+								if (confirm("{$APP.MAP_NAME_EXISTS}"))
+									{literal}					document.Import.submit();
+								document.getElementById("status").style.display = "none";
+
+							}
+						}
+				);
+
+
+			}
+			else
+				document.Import.submit();
+		}
+	}
 
 //added for duplicate handling -srini
 function show_option(obj)

@@ -324,21 +324,18 @@ var gVTUserID = '{$CURRENT_USER_ID}';
 <script type='text/javascript'>
 {literal}
 function UnifiedSearch_SelectModuleForm(obj) {
-	if($('UnifiedSearch_moduleform')) {
+	if(jQuery('#UnifiedSearch_moduleform')) {
 		// If we have loaded the form already.
 		UnifiedSearch_SelectModuleFormCallback(obj);
 	} else {
-		$('status').show();
-		new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody: 'module=Home&action=HomeAjax&file=UnifiedSearchModules&ajax=true',
-			onComplete: function(response) {
-				$('status').hide();
-				$('UnifiedSearch_moduleformwrapper').innerHTML = response.responseText;
+		jQuery('#status').show();
+		jQuery.ajax({
+				method:"POST",
+				url:'index.php?module=Home&action=HomeAjax&file=UnifiedSearchModules&ajax=true',
+		}).done(function(response) {
+				jQuery('#status').hide();
+				jQuery('#UnifiedSearch_moduleformwrapper').html(response);
 				UnifiedSearch_SelectModuleFormCallback(obj);
-			}
 		});
 	}
 }
@@ -360,14 +357,11 @@ function UnifiedSearch_SelectModuleCancel() {
 function UnifiedSearch_SelectModuleSave() {
 	var UnifiedSearch_form = document.forms.UnifiedSearch;
 	UnifiedSearch_form.search_onlyin.value = Form.serialize($('UnifiedSearch_moduleform')).replace(/search_onlyin=/g, '').replace(/&/g,',');
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody: 'module=Home&action=HomeAjax&file=UnifiedSearchModulesSave&search_onlyin=' + encodeURIComponent(UnifiedSearch_form.search_onlyin.value),
-			onComplete: function(response) {
+	jQuery.ajax({
+			method:"POST",
+			url:'index.php?module=Home&action=HomeAjax&file=UnifiedSearchModulesSave&search_onlyin=' + encodeURIComponent(UnifiedSearch_form.search_onlyin.value),
+	}).done(function(response) {
 				// continue
-			}
 		}
 	);
 	UnifiedSearch_SelectModuleCancel();
@@ -379,31 +373,24 @@ function UnifiedSearch_SelectModuleSave() {
 <script>
 function fetch_clock()
 {ldelim}
-	new Ajax.Request(
-		'index.php',
-		{ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-			method: 'post',
-			postBody: 'module=Utilities&action=UtilitiesAjax&file=Clock',
-			onComplete: function(response) {ldelim}
-				$("clock_cont").innerHTML=response.responseText;
-				execJS($('clock_cont'));
-			{rdelim}
-		{rdelim}
+	jQuery.ajax({ldelim}
+			method:"POST",
+			url:'index.php?module=Utilities&action=UtilitiesAjax&file=Clock',
+	{rdelim}).done(function(response) {ldelim}
+				jQuery("#clock_cont").html(response);
+				execJS(jQuery('#clock_cont'));
+	{rdelim}
 	);
 {rdelim}
 
 function fetch_calc()
 {ldelim}
-	new Ajax.Request(
-		'index.php',
-		{ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-			method: 'post',
-			postBody: 'module=Utilities&action=UtilitiesAjax&file=Calculator',
-			onComplete: function(response)
-					{ldelim}
-						$("calculator_cont").innerHTML=response.responseText;
-						execJS($('calculator_cont'));
-					{rdelim}
+	jQuery.ajax({ldelim}
+			method:"POST",
+			url:'index.php?module=Utilities&action=UtilitiesAjax&file=Calculator',
+	{rdelim}).done(function(response) {ldelim}
+				jQuery("#calculator_cont").html(response);
+				execJS(jQuery('#calculator_cont'));
 		{rdelim}
 	);
 {rdelim}
@@ -414,7 +401,7 @@ function fetch_calc()
 function QCreate(qcoptions){
 	var module = qcoptions.options[qcoptions.options.selectedIndex].value;
 	if(module != 'none'){
-		$("status").style.display="inline";
+		document.getElementById("status").style.display="inline";
 		if(module == 'Events'){
 			module = 'Calendar';
 			var urlstr = '&activity_mode=Events';
@@ -424,24 +411,21 @@ function QCreate(qcoptions){
 		}else{
 			var urlstr = '';
 		}
-		new Ajax.Request(
-			'index.php',
-				{queue: {position: 'end', scope: 'command'},
-				method: 'post',
-				postBody: 'module='+module+'&action='+module+'Ajax&file=QuickCreate'+urlstr,
-				onComplete: function(response){
-					$("status").style.display="none";
-					$("qcform").style.display="inline";
-					$("qcform").innerHTML = response.responseText;
+		jQuery.ajax({
+				method:"POST",
+				url:'index.php?module='+module+'&action='+module+'Ajax&file=QuickCreate'+urlstr,
+		}).done(function(response) {
+					document.getElementById("status").style.display="none";
+					document.getElementById("qcform").style.display="inline";
+					document.getElementById("qcform").innerHTML = response.responseText;
 					// Evaluate all the script tags in the response text.
-					var scriptTags = $("qcform").getElementsByTagName("script");
+					var scriptTags = document.getElementById("qcform").getElementsByTagName("script");
 					for(var i = 0; i< scriptTags.length; i++){
 						var scriptTag = scriptTags[i];
 						eval(scriptTag.innerHTML);
 					}
-                    eval($("qcform"));
-                    posLay(qcoptions, "qcform");
-				}
+					eval(document.getElementById("qcform"));
+					posLay(qcoptions, "qcform");
 			}
 		);
 	}else{
@@ -525,18 +509,15 @@ function QCreate(qcoptions){
 <script type="text/javascript">
 {literal}
 function vtiger_news(obj) {
-	$('status').style.display = 'inline';
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody: 'module=Home&action=HomeAjax&file=HomeNews',
-			onComplete: function(response) {
-				$("vtigerNewsPopupLay").innerHTML=response.responseText;
+	document.getElementById('status').style.display = 'inline';
+	jQuery.ajax({
+			method:"POST",
+			url:'index.php?module=Home&action=HomeAjax&file=HomeNews',
+	}).done(function(response) {
+				jQuery("#vtigerNewsPopupLay").html(response);
 				fnvshobj(obj, 'vtigerNewsPopupLay');
-				$('status').style.display = 'none';
+				jQuery('#status').hide();
 			}
-		}
 	);
 }
 {/literal}

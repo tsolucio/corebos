@@ -339,44 +339,33 @@ function findAngleBracket(mailadd)
                 return false;
 
 }
-function server_check()
-{
+function server_check(){
 	var oform = window.document.EditView;
-        new Ajax.Request(
-        	'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                	method: 'post',
-                        postBody:"module=Emails&action=EmailsAjax&file=Save&ajax=true&server_check=true",
-			onComplete: function(response) {
-			if(response.responseText.indexOf('SUCCESS') > -1)
-			{
+		jQuery.ajax({
+			method:"POST",
+			url:"index.php?module=Emails&action=EmailsAjax&file=Save&ajax=true&server_check=true",
+		}).done(function(response) {
+			if(response.indexOf('SUCCESS') > -1){
 				oform.send_mail.value='true';
 				oform.action.value='Save';
 				oform.submit();
-			}else
-			{
+			}else{
 				//alert('Please Configure Your Mail Server');
 				alert(conf_mail_srvr_err_msg);
 				return false;
 			}
-               	    }
-                }
-        );
+				}
+		);
 }
-$('attach_cont').innerHTML = $('attach_temp_cont').innerHTML;
-function delAttachments(id)
-{
-    new Ajax.Request(
-        'index.php',
-        {queue: {position: 'end', scope: 'command'},
-            method: 'post',
-            postBody: 'module=Contacts&action=ContactsAjax&file=DelImage&attachmodule=Emails&recordid='+id,
-            onComplete: function(response)
-            {
-		Effect.Fade('row_'+id);	                
-            }
-        }
-    );
+document.getElementById('attach_cont').innerHTML = document.getElementById('attach_temp_cont').innerHTML;
+function delAttachments(id){
+	jQuery.ajax({
+		method:"POST",
+		url:'index.php?module=Contacts&action=ContactsAjax&file=DelImage&attachmodule=Emails&recordid='+id,
+	}).done(function(response) {
+		jQuery('#row_'+id).fadeIn();
+		}
+	);
 
 }
 {/literal}

@@ -85,38 +85,29 @@
 
 {literal}
 <script>
-	function deleteCurrency(currid)
-	{
-		$("status").style.display="inline";
-		new Ajax.Request(
-			'index.php',
-			{queue: {position: 'end', scope: 'command'},
-				method: 'post',
-				postBody: 'action=SettingsAjax&file=CurrencyDeleteStep1&return_action=CurrencyListView&return_module=Settings&module=Settings&parenttab=Settings&id='+currid,
-				onComplete: function(response) {
-					$("status").style.display="none";
-                                        $("currencydiv").innerHTML= response.responseText;
-                                }
-                        }
+	function deleteCurrency(currid){
+		document.getElementById("status").style.display="inline";
+		jQuery.ajax({
+			method:"POST",
+			url:'index.php?action=SettingsAjax&file=CurrencyDeleteStep1&return_action=CurrencyListView&return_module=Settings&module=Settings&parenttab=Settings&id='+currid,
+		}).done(function(response) {
+			jQuery("#status").hide();
+				jQuery("#currencydiv").html(response);
+			}
 		);
 	}
 
-	function transferCurrency(del_currencyid)
-	{
-		$("status").style.display="inline";
-		$("CurrencyDeleteLay").style.display = "none";
-		var trans_currencyid=$("transfer_currency_id").options[$("transfer_currency_id").options.selectedIndex].value;
-		new Ajax.Request(
-			'index.php',
-			{queue: {position: 'end', scope: 'command'},
-				method: 'post',
-				postBody: 'module=Settings&action=SettingsAjax&file=CurrencyDelete&ajax=true&delete_currency_id='+del_currencyid+'&transfer_currency_id='+trans_currencyid,
-				onComplete: function(response) {
-					$("status").style.display="none";
-					$("CurrencyListViewContents").innerHTML= response.responseText;
-				}
-			}
-		);
+	function transferCurrency(del_currencyid){
+		document.getElementById("status").style.display="inline";
+		jQuery("#CurrencyDeleteLay").hide();
+		var trans_currencyid=jQuery("#transfer_currency_id").val();
+		jQuery.ajax({
+				method:"POST",
+				url:'index.php?module=Settings&action=SettingsAjax&file=CurrencyDelete&ajax=true&delete_currency_id='+del_currencyid+'&transfer_currency_id='+trans_currencyid,
+		}).done(function(response) {
+			jQuery("#status").hide();
+			jQuery("#CurrencyListViewContents").html(response);
+		});
 	}
 </script>
 

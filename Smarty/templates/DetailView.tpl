@@ -25,19 +25,15 @@
 <script>
 var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 {literal}
-function callConvertLeadDiv(id)
-{
-        new Ajax.Request(
-                'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                        method: 'post',
-                        postBody: 'module=Leads&action=LeadsAjax&file=ConvertLead&record='+id,
-                        onComplete: function(response) {
-                                $("convertleaddiv").innerHTML=response.responseText;
-				eval($("conv_leadcal").innerHTML);
-                        }
-                }
-        );
+function callConvertLeadDiv(id){
+		jQuery.ajax({
+				method:"POST",
+				url:'index.php?module=Leads&action=LeadsAjax&file=ConvertLead&record='+id,
+		}).done(function(response) {
+				jQuery("#convertleaddiv").html(response);
+				eval(jQuery("#conv_leadcal").html());
+			}
+		);
 }
 function showHideStatus(sId,anchorImgId,sImagePath)
 {
@@ -79,16 +75,13 @@ function setCoOrdinate(elemId){
 	tagName.style.left= leftpos - 276 + 'px';
 }
 
-function getListOfRecords(obj, sModule, iId,sParentTab)
-{
-		new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody: 'module=Users&action=getListOfRecords&ajax=true&CurModule='+sModule+'&CurRecordId='+iId+'&CurParentTab='+sParentTab,
-			onComplete: function(response) {
-				sResponse = response.responseText;
-				$("lstRecordLayout").innerHTML = sResponse;
+function getListOfRecords(obj, sModule, iId,sParentTab) {
+		jQuery.ajax({
+				method:"POST",
+				url:'index.php?module=Users&action=getListOfRecords&ajax=true&CurModule='+sModule+'&CurRecordId='+iId+'&CurParentTab='+sParentTab,
+		}).done(function(response) {
+				sResponse = response;
+				jQuery("#lstRecordLayout").html(sResponse);
 				Lay = 'lstRecordLayout';
 				var tagName = document.getElementById(Lay);
 				var leftSide = findPosX(obj);
@@ -108,7 +101,6 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 				tagName.style.display = 'block';
 				tagName.style.visibility = "visible";
 			}
-		}
 	);
 }
 {/literal}
@@ -124,19 +116,16 @@ function tagvalidate()
 {rdelim}
 function DeleteTag(id,recordid)
 {ldelim}
-	$("vtbusy_info").style.display="inline";
-	Effect.Fade('tag_'+id);
-	new Ajax.Request(
-		'index.php',
-                {ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-                        method: 'post',
-                        postBody: "file=TagCloud&module={$MODULE}&action={$MODULE}Ajax&ajxaction=DELETETAG&recordid="+recordid+"&tagid=" +id,
-                        onComplete: function(response) {ldelim}
-						getTagCloud();
-						$("vtbusy_info").style.display="none";
-                        {rdelim}
-                {rdelim}
-        );
+	document.getElementById("vtbusy_info").style.display="inline";
+	jQuery('#tag_'+id).fadeIn();
+	jQuery.ajax({ldelim}
+			method:"POST",
+			url:"index.php?file=TagCloud&module={$MODULE}&action={$MODULE}Ajax&ajxaction=DELETETAG&recordid="+recordid+"&tagid=" +id,
+	{ldelim}).done(function(response) {ldelim}
+				getTagCloud();
+				jQuery("#vtbusy_info").hide();
+	{rdelim}
+	);
 {rdelim}
 
 //Added to send a file, in Documents module, as an attachment in an email
@@ -741,16 +730,13 @@ function getTagCloud()
 {ldelim}
 	var obj = $("tagfields");
 	if(obj != null && typeof(obj) != undefined) {ldelim}
-		new Ajax.Request(
-		    'index.php',
-			{ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-			method: 'post',
-			postBody: 'module={$MODULE}&action={$MODULE}Ajax&file=TagCloud&ajxaction=GETTAGCLOUD&recordid={$ID}',
-			onComplete: function(response) {ldelim}
-                                $("tagfields").innerHTML=response.responseText;
-                                $("txtbox_tagfields").value ='';
-                        {rdelim}
-			{rdelim}
+		jQuery.ajax({ldelim}
+				method:"POST",
+				url:'index.php?module={$MODULE}&action={$MODULE}Ajax&file=TagCloud&ajxaction=GETTAGCLOUD&recordid={$ID}',
+		{ldelim}).done(function(response) {ldelim}
+					jQuery("#tagfields").html(response);
+					jQuery("#txtbox_tagfields").val('');
+		{rdelim}
 		);
 	{rdelim}
 {rdelim}
