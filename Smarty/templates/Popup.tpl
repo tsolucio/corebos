@@ -16,7 +16,7 @@ var service_default_units = '{$Service_Default_Units}';
 {literal}
 function QCreate(module,urlpop) {
 	if (module != 'none') {
-		$("status").style.display="inline";
+		document.getElementById("status").style.display="inline";
 		if (module == 'Events') {
 			module = 'Calendar';
 			var urlstr = '&activity_mode=Events&from=popup&pop='+urlpop;
@@ -26,25 +26,22 @@ function QCreate(module,urlpop) {
 		} else {
 			var urlstr = '&from=popup&pop='+urlpop;
 		}
-		new Ajax.Request(
-			'index.php',
-				{queue: {position: 'end', scope: 'command'},
-				method: 'post',
-				postBody: 'module='+module+'&action='+module+'Ajax&file=QuickCreate'+urlstr,
-				onComplete: function(response){
-					$("status").style.display="none";
-					$("qcformpop").style.display="inline";
-					$("qcformpop").innerHTML = response.responseText;
+		jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?module='+module+'&action='+module+'Ajax&file=QuickCreate'+urlstr,
+				}).done(function(response) {
+					document.getElementById("status").style.display="none";
+					document.getElementById("qcformpop").style.display="inline";
+					document.getElementById("qcformpop").innerHTML = response;
 					// Evaluate all the script tags in the response text.
-					var scriptTags = $("qcformpop").getElementsByTagName("script");
+					var scriptTags = document.getElementById("qcformpop").getElementsByTagName("script");
 					for(var i = 0; i< scriptTags.length; i++){
 						var scriptTag = scriptTags[i];
 						eval(scriptTag.innerHTML);
 					}
-					eval($("qcformpop"));
+					eval(document.getElementById("qcformpop"));
 				}
-			}
-		);
+			);
 	} else {
 		hide('qcformpop');
 	}
@@ -132,31 +129,28 @@ function add_data_to_relatedlist(entity_id,recordid,mod, popupmode, callback) {
 	}
 	if(popupmode == 'ajax') {
 		VtigerJS_DialogBox.block();
-		new Ajax.Request(
-            'index.php',
-            {queue: {position: 'end', scope: 'command'},
-             method: 'post',
-             postBody: "module="+return_module+"&action="+return_module+"Ajax&file=updateRelations&destination_module="+mod+"&entityid="+entity_id+"&parentid="+recordid+"&mode=Ajax",
-             onComplete: function(response) {
+		jQuery.ajax({
+				method: 'POST',
+				url: "index.php?module="+return_module+"&action="+return_module+"Ajax&file=updateRelations&destination_module="+mod+"&entityid="+entity_id+"&parentid="+recordid+"&mode=Ajax",
+			}).done(function(response) {
 					VtigerJS_DialogBox.unblock();
-					var res = JSON.parse(response.responseText);
+					var res = JSON.parse(response);
 					if(typeof callback == 'function') {
 						callback(res);
 					}
-                }
 			}
 		);
 		return false;
 	} else {
 		{/literal}
-        opener.document.location.href="index.php?module={$RETURN_MODULE}&action=updateRelations&destination_module="+mod+"&entityid="+entity_id+"&parentid="+recordid+"&return_module={$RETURN_MODULE}&return_action={$RETURN_ACTION}&parenttab={$CATEGORY}";
+		opener.document.location.href="index.php?module={$RETURN_MODULE}&action=updateRelations&destination_module="+mod+"&entityid="+entity_id+"&parentid="+recordid+"&return_module={$RETURN_MODULE}&return_action={$RETURN_ACTION}&parenttab={$CATEGORY}";
 		if (document.getElementById("closewindow").value=="true") window.close();
 		{literal}
 	}
 }
 {/literal}
 function set_focus() {ldelim}
-	$('search_txt').focus();
+	document.getElementById('search_txt').focus();
 {rdelim}
 </script>
 
@@ -275,8 +269,8 @@ function callSearch(searchtype)
     {ldelim}
 	urlstring = 'search_field='+search_fld_val+'&searchtype=BasicSearch&search_text='+search_txt_val;
     {rdelim}
-	popuptype = $('popup_type').value;
-	act_tab = $('maintab').value;
+	popuptype = document.getElementById('popup_type').value;
+	act_tab = document.getElementById('maintab').value;
 	urlstring += '&popuptype='+popuptype;
 	urlstring += '&maintab='+act_tab;
 	urlstring = urlstring +'&query=true&file=Popup&module={$MODULE}&action={$MODULE}Ajax&ajax=true&search=true';
@@ -289,60 +283,54 @@ function callSearch(searchtype)
 
 	if(record_id!='')
 		urlstring += '&record_id='+record_id;
-	$("status").style.display="inline";
-	new Ajax.Request(
-		'index.php',
-		{ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-				method: 'post',
-				postBody: urlstring,
-				onComplete: function(response) {ldelim}
-					$("status").style.display="none";
-					$("ListViewContents").innerHTML= response.responseText;
-				{rdelim}
+	document.getElementById("status").style.display="inline";
+	jQuery.ajax({ldelim}
+				method: 'POST',
+				url: 'index.php?'+urlstring,
+		{rdelim}).done(function (response) {ldelim}
+					document.getElementById("status").style.display="none";
+					document.getElementById("ListViewContents").innerHTML= response;
 			{rdelim}
 		);
 {rdelim}	
 function alphabetic(module,url,dataid)
 {ldelim}
-    gstart='';
-    document.basicSearch.search_text.value = '';	
-    for(i=1;i<=26;i++)
-    {ldelim}
+	gstart='';
+	document.basicSearch.search_text.value = '';	
+	for(i=1;i<=26;i++)
+	{ldelim}
 	var data_td_id = 'alpha_'+ eval(i);
 	getObj(data_td_id).className = 'searchAlph';
-    {rdelim}
-    getObj(dataid).className = 'searchAlphselected';
-    gPopupAlphaSearchUrl = '&'+url;	
-    var urlstring ="module="+module+"&action="+module+"Ajax&file=Popup&ajax=true&search=true&"+url;
-    urlstring +=gethiddenelements();
+	{rdelim}
+	getObj(dataid).className = 'searchAlphselected';
+	gPopupAlphaSearchUrl = '&'+url;	
+	var urlstring ="module="+module+"&action="+module+"Ajax&file=Popup&ajax=true&search=true&"+url;
+	urlstring +=gethiddenelements();
 	record_id = document.basicSearch.record_id.value;
 	if(record_id!='')
 		urlstring += '&record_id='+record_id;
-    $("status").style.display="inline";
-    new Ajax.Request(
-                'index.php',
-                {ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-                                method: 'post',
-                                postBody: urlstring,
-                                onComplete: function(response) {ldelim}
-                                	$("status").style.display="none";
-									$("ListViewContents").innerHTML= response.responseText;
+	document.getElementById("status").style.display="inline";
+	jQuery.ajax({ldelim}
+				method: 'POST',
+				url: 'index.php?'+ urlstring,
+		{rdelim}).done(function (response) {ldelim}
+									document.getElementById("status").style.display="none";
+									document.getElementById("ListViewContents").innerHTML= response;
 				{rdelim}
-			{rdelim}
-		);
+			);
 {rdelim}
 function gethiddenelements()
 {ldelim}
 	gstart='';
-	var urlstring=''	
+	var urlstring='';
 	if(getObj('select_enable').value != '')
 		urlstring +='&select=enable';	
 	if(document.getElementById('curr_row').value != '')
-		urlstring +='&curr_row='+document.getElementById('curr_row').value;	
+		urlstring +='&curr_row='+document.getElementById('curr_row').value;
 	if(getObj('fldname_pb').value != '')
-		urlstring +='&fldname='+getObj('fldname_pb').value;	
+		urlstring +='&fldname='+getObj('fldname_pb').value;
 	if(getObj('productid_pb').value != '')
-		urlstring +='&productid='+getObj('productid_pb').value;	
+		urlstring +='&productid='+getObj('productid_pb').value;
 	if(getObj('recordid').value != '')
 		urlstring +='&recordid='+getObj('recordid').value;
 	if(getObj('relmod').value != '')
@@ -371,72 +359,66 @@ function gethiddenelements()
 {rdelim}
 																									
 function getListViewEntries_js(module,url)
-{ldelim}
-	gstart="&"+url;
-
-	popuptype = document.getElementById('popup_type').value;
-        var urlstring ="module="+module+"&action="+module+"Ajax&file=Popup&ajax=true&"+url;
-    	urlstring +=gethiddenelements();
-	
-	{if !$RECORD_ID}
-		search_fld_val= document.basicSearch.search_field[document.basicSearch.search_field.selectedIndex].value;
-		search_txt_val=document.basicSearch.search_text.value;
-		if(search_txt_val != '')
-			urlstring += '&query=true&search_field='+search_fld_val+'&searchtype=BasicSearch&search_text='+search_txt_val;
-	{/if}
-	if(gPopupAlphaSearchUrl != '')
-		urlstring += gPopupAlphaSearchUrl;	
-	else
-		urlstring += '&popuptype='+popuptype;	
-	
-	record_id = document.basicSearch.record_id.value;
-	if(record_id!='')
-		urlstring += '&record_id='+record_id;
-
-	urlstring += (gsorder !='') ? gsorder : '';
-	var return_module = document.getElementById('return_module').value;
-	if(module == 'Documents' && return_module == 'MailManager')
 	{ldelim}
-		urlstring += '&callback=MailManager.add_data_to_relatedlist';
-		urlstring += '&popupmode=ajax';
-		urlstring += '&srcmodule=MailManager';
+		gstart="&"+url;
+
+		popuptype = document.getElementById('popup_type').value;
+			var urlstring ="module="+module+"&action="+module+"Ajax&file=Popup&ajax=true&"+url;
+			urlstring +=gethiddenelements();
+
+	{if !$RECORD_ID}
+			search_fld_val= document.basicSearch.search_field[document.basicSearch.search_field.selectedIndex].value;
+			search_txt_val=document.basicSearch.search_text.value;
+			if(search_txt_val != '')
+				urlstring += '&query=true&search_field='+search_fld_val+'&searchtype=BasicSearch&search_text='+search_txt_val;
+	{/if}
+		if(gPopupAlphaSearchUrl != '')
+			urlstring += gPopupAlphaSearchUrl;	
+		else
+			urlstring += '&popuptype='+popuptype;	
+
+		record_id = document.basicSearch.record_id.value;
+		if(record_id!='')
+			urlstring += '&record_id='+record_id;
+
+		urlstring += (gsorder !='') ? gsorder : '';
+		var return_module = document.getElementById('return_module').value;
+		if(module == 'Documents' && return_module == 'MailManager')
+	{ldelim}
+			urlstring += '&callback=MailManager.add_data_to_relatedlist';
+			urlstring += '&popupmode=ajax';
+			urlstring += '&srcmodule=MailManager';
 	{rdelim}
 
-	$("status").style.display = "";
-	new Ajax.Request(
-                'index.php',
-                {ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-                                method: 'post',
-                                postBody: urlstring,
-                                onComplete: function(response) {ldelim}
-                                        $("ListViewContents").innerHTML= response.responseText;
-									$("status").style.display = "none";
-				{rdelim}
+		document.getElementById("status").style.display = "";
+		jQuery.ajax({ldelim}
+					method: 'POST',
+					url: 'index.php?'+ urlstring,
+			{rdelim}).done(function (response) {ldelim}
+						document.getElementById("ListViewContents").innerHTML= response;
+						document.getElementById("status").style.display = "none";
 			{rdelim}
-		);
-{rdelim}
+			);
+	{rdelim}
 
 function getListViewSorted_js(module,url)
-{ldelim}
-	gsorder=url;
-        var urlstring ="module="+module+"&action="+module+"Ajax&file=Popup&ajax=true"+url;
-	record_id = document.basicSearch.record_id.value;
-	if(record_id!='')
-		urlstring += '&record_id='+record_id;
-	urlstring += (gstart !='') ? gstart : '';
-	$("status").style.display = "";
-	new Ajax.Request(
-                'index.php',
-                {ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-                                method: 'post',
-                                postBody: urlstring,
-                                onComplete: function(response) {ldelim}
-                                        $("ListViewContents").innerHTML= response.responseText;
-									$("status").style.display = "none";
-				{rdelim}
-			{rdelim}
-		);
-{rdelim}
+	{ldelim}
+		gsorder=url;
+		var urlstring ="module="+module+"&action="+module+"Ajax&file=Popup&ajax=true"+url;
+		record_id = document.basicSearch.record_id.value;
+		if(record_id!='')
+			urlstring += '&record_id='+record_id;
+		urlstring += (gstart !='') ? gstart : '';
+		document.getElementById("status").style.display = "";
+		jQuery.ajax({ldelim}
+					method: 'POST',
+					url: 'index.php?'+ urlstring,
+		{rdelim}).done(function (response) {ldelim}
+						document.getElementById("ListViewContents").innerHTML= response;
+						document.getElementById("status").style.display = "none";
+		{rdelim}
+			);
+	{rdelim}
 
 var product_labelarr = {ldelim}
 	CLEAR_COMMENT:'{$APP.LBL_CLEAR_COMMENT}',

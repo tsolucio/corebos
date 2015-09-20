@@ -12,15 +12,15 @@
 function massedit_togglediv(curTabId,total){
 
    for(var i=0;i<total;i++){
-	tagName = $('massedit_div'+i);
-	tagName1 = $('tab'+i)
+	tagName = document.getElementById('massedit_div'+i);
+	tagName1 = document.getElementById('tab'+i)
 	tagName.style.display = 'none';
 	tagName1.className = 'dvtUnSelectedCell';
    }
 
-   tagName = $('massedit_div'+curTabId);
+   tagName = document.getElementById('massedit_div'+curTabId);
    tagName.style.display = 'block';
-   tagName1 = $('tab'+curTabId)
+   tagName1 = document.getElementById('tab'+curTabId)
    tagName1.className = 'dvtSelectedCell';
 }
 
@@ -50,7 +50,7 @@ function massedit_initOnChangeHandlers() {
 function mass_edit(obj,divid,module,parenttab) {
 	var select_options = document.getElementById('allselectedboxes').value;
 	var numOfRows = document.getElementById('numOfRows').value;
-	var excludedRecords = $('excludedRecords').value;
+	var excludedRecords = document.getElementById('excludedRecords').value;
 	if(select_options=='all') {
 		var idstring = select_options;
 		var skiprecords = excludedRecords.split(";");
@@ -104,51 +104,44 @@ function mass_edit_formload(idstring,module,parenttab) {
 	if(typeof(parenttab) == 'undefined') parenttab = '';
 	var excludedRecords=document.getElementById("excludedRecords").value;
 	var viewid =getviewId();
-	$("status").style.display="inline";
+	document.getElementById("status").style.display="inline";
     var urlstring = '';
     var searchtype = document.basicSearch.searchtype.value;
     if(document.basicSearch.searchtype.searchlaunched != undefined && document.basicSearch.searchtype.searchlaunched=='basic') {
-    	search_fld_val= $('bas_searchfield').options[$('bas_searchfield').selectedIndex].value;
+    	search_fld_val= document.getElementById('bas_searchfield').options[document.getElementById('bas_searchfield').selectedIndex].value;
     	search_txt_val= encodeURIComponent(document.basicSearch.search_text.value);
     	if (search_txt_val!='') {  // if the search fields are not empty
         urlstring = '&query=true&ajax=true&search=true&search_field='+search_fld_val+'&searchtype=BasicSearch&search_text='+search_txt_val;
     	}
     } else if(document.basicSearch.searchtype.searchlaunched != undefined && document.basicSearch.searchtype.searchlaunched=='advance' && checkAdvancedFilter()) {
-		var advft_criteria = $('advft_criteria').value;
-		var advft_criteria_groups = $('advft_criteria_groups').value;
+		var advft_criteria = document.getElementById('advft_criteria').value;
+		var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
 		urlstring = '&query=true&ajax=true&search=true&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups+'&searchtype=advance';
     }
-	new Ajax.Request(
-		'index.php',
-		{
-			queue: {
-				position: 'end',
-				scope: 'command'
-			},
-			method: 'post',
-			postBody:"module="+encodeURIComponent(module)+"&action="+encodeURIComponent(module+'Ajax')+"&parenttab="+encodeURIComponent(parenttab)+"&file=MassEdit&mode=ajax&idstring="+idstring+"&viewname="+viewid+"&excludedRecords="+excludedRecords+urlstring,
-			onComplete: function(response) {
-				$("status").style.display="none";
-				var result = response.responseText;
-				$("massedit_form_div").update(result);
-				$("massedit_form")["massedit_recordids"].value = $("massedit_form")['idstring'].value;
-				$("massedit_form")["massedit_module"].value = module;
+	jQuery.ajax({
+			method: 'POST',
+			url: "index.php?module="+encodeURIComponent(module)+"&action="+encodeURIComponent(module+'Ajax')+"&parenttab="+encodeURIComponent(parenttab)+"&file=MassEdit&mode=ajax&idstring="+idstring+"&viewname="+viewid+"&excludedRecords="+excludedRecords+urlstring,
+	}).done(function (response) {
+				document.getElementById("status").style.display="none";
+				var result = response;
+				document.getElementById("massedit_form_div").innerHTML=result;
+				document.getElementById("massedit_form")["massedit_recordids"].value = document.getElementById("massedit_form")['idstring'].value;
+				document.getElementById("massedit_form")["massedit_module"].value = module;
 			}
-		}
 		);
 }
 function mass_edit_fieldchange(selectBox) {
 	var oldSelectedIndex = selectBox.oldSelectedIndex;
 	var selectedIndex = selectBox.selectedIndex;
 
-	if($('massedit_field'+oldSelectedIndex)) $('massedit_field'+oldSelectedIndex).style.display='none';
-	if($('massedit_field'+selectedIndex)) $('massedit_field'+selectedIndex).style.display='block';
+	if(document.getElementById('massedit_field'+oldSelectedIndex)) document.getElementById('massedit_field'+oldSelectedIndex).style.display='none';
+	if(document.getElementById('massedit_field'+selectedIndex)) document.getElementById('massedit_field'+selectedIndex).style.display='block';
 
 	selectBox.oldSelectedIndex = selectedIndex;
 }
 
 function mass_edit_save(){
-	var masseditform = $("massedit_form");
+	var masseditform = document.getElementById("massedit_form");
 	var module = masseditform["massedit_module"].value;
 	var viewid = document.getElementById("viewname").options[document.getElementById("viewname").options.selectedIndex].value;
 	var searchurl = document.getElementById("search_url").value;
@@ -160,29 +153,26 @@ function mass_edit_save(){
 
 	fninvsh("massedit");
 
-	new Ajax.Request(
-		"index.php",
-		{queue:{position:"end", scope:"command"},
-			method:"post",
-			postBody:urlstring,
-			onComplete:function (response) {
-				$("status").style.display = "none";
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?'+urlstring,
+	}).done(function (response) {
+				document.getElementById("status").style.display = "none";
 				var result = response.responseText.split("&#&#&#");
-				$("ListViewContents").innerHTML = result[2];
+				document.getElementById("ListViewContents").innerHTML = result[2];
 				if (result[1] != "") {
 					alert(result[1]);
 				}
-				$("basicsearchcolumns").innerHTML = "";
+				document.getElementById("basicsearchcolumns").innerHTML = "";
 			}
-		}
 	);
 
 }
 function ajax_mass_edit() {
 	alert();
-	$("status").style.display = "inline";
+	document.getElementById("status").style.display = "inline";
 
-	var masseditform = $("massedit_form");
+	var masseditform = document.getElementById("massedit_form");
 	var module = masseditform["massedit_module"].value;
 
 	var viewid = document.getElementById("viewname").options[document.getElementById("viewname").options.selectedIndex].value;
@@ -204,21 +194,18 @@ function ajax_mass_edit() {
 
 	fninvsh("massedit");
 
-	new Ajax.Request(
-		"index.php", 
-		{queue:{position:"end", scope:"command"}, 
-			method:"post", 
-			postBody:urlstring, 
-			onComplete:function (response) {
-				$("status").style.display = "none";
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?'+urlstring, 
+	}).done(function (response) {
+				document.getElementById("status").style.display = "none";
 				var result = response.responseText.split("&#&#&#");
-				$("ListViewContents").innerHTML = result[2];
+				document.getElementById("ListViewContents").innerHTML = result[2];
 				if (result[1] != "") {
 					alert(result[1]);
 				}
-				$("basicsearchcolumns").innerHTML = "";
+				document.getElementById("basicsearchcolumns").innerHTML = "";
 			}
-		}
 	); 
 }
 	
@@ -264,13 +251,13 @@ function change(obj,divid)
 var gstart='';
 function massDelete(module)
 {
-	var searchurl = $('search_url').value;
+	var searchurl = document.getElementById('search_url').value;
 	var viewid = getviewId();
 	var idstring = "";
 	if(module != 'Documents'){
-		var select_options = $('allselectedboxes').value;
-		var excludedRecords = $('excludedRecords').value;
-		var numOfRows = $('numOfRows').value;
+		var select_options = document.getElementById('allselectedboxes').value;
+		var excludedRecords = document.getElementById('excludedRecords').value;
+		var numOfRows = document.getElementById('numOfRows').value;
 		if(select_options == 'all'){
 			document.getElementById('idlist').value = select_options;
 			idstring = select_options;
@@ -304,14 +291,14 @@ function massDelete(module)
 		if(obj){
 			for(var i=0;i<obj.length;i++){
 				var id = obj[i].value;
-				if($('selectedboxes_selectall'+id).value == 'all'){
-					var rows = $('numOfRows_selectall'+id).value;
+				if(document.getElementById('selectedboxes_selectall'+id).value == 'all'){
+					var rows = document.getElementById('numOfRows_selectall'+id).value;
 					numOfRows = numOfRows+parseInt(rows);
-					excludedRecords = excludedRecords + $('excludedRecords_selectall'+id).value;
+					excludedRecords = excludedRecords + document.getElementById('excludedRecords_selectall'+id).value;
 					folderid = id+';'+folderid;
 					activation = 'true';
 				} else {
-					 select_options = select_options + $('selectedboxes_selectall'+id).value;
+					 select_options = select_options + document.getElementById('selectedboxes_selectall'+id).value;
 				}
 			}
 		}
@@ -357,32 +344,25 @@ function massDelete(module)
 			alert_str = alert_arr.DELETE_VENDOR+count+alert_arr.RECORDS;
 
 		if(confirm(alert_str)) {
-			$("status").style.display="inline";
+			document.getElementById("status").style.display="inline";
 			var url = "&excludedRecords="+excludedRecords;
 			if(module=='Documents'){
 				var url = url+"&folderidstring="+folderid+"&selectallmode="+activation;
 			}
 
-			new Ajax.Request(
-				'index.php',
-				{
-					queue: {
-						position: 'end',
-						scope: 'command'
-					},
-					method: 'post',
-					postBody:"module=Users&action=massdelete&return_module="+module+"&"+gstart+"&viewname="+viewid+"&idlist="+idstring+searchurl+url,
-					onComplete: function(response) {
-						$("status").style.display="none";
+			jQuery.ajax({
+					method: 'POST',
+					url: "index.php?module=Users&action=massdelete&return_module="+module+"&"+gstart+"&viewname="+viewid+"&idlist="+idstring+searchurl+url,
+			}).done(function (response) {
+						document.getElementById("status").style.display="none";
 						result = response.responseText.split('&#&#&#');
-						$("ListViewContents").innerHTML= result[2];
+						document.getElementById("ListViewContents").innerHTML= result[2];
 						if(result[1] != '')
 							alert(result[1]);
-						$('basicsearchcolumns').innerHTML = '';
-						$('allselectedboxes').value='';
-						$('excludedRecords').value='';
+						document.getElementById('basicsearchcolumns').innerHTML = '';
+						document.getElementById('allselectedboxes').value='';
+						document.getElementById('excludedRecords').value='';
 					}
-				}
 				);
 		} else {
 			return false;
@@ -390,35 +370,32 @@ function massDelete(module)
 	}
 }
 
-function showDefaultCustomView(selectView,module,parenttab)
+function showDefaultCustomView(selectView, module, parenttab)
 {
-	$("status").style.display="inline";
+	document.getElementById("status").style.display = "inline";
 	var viewName = encodeURIComponent(selectView.options[selectView.options.selectedIndex].value);
-	new Ajax.Request(
-               	'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                       	method: 'post',
-                        postBody:"module="+module+"&action="+module+"Ajax&file=ListView&ajax=true&start=1&viewname="+viewName+"&parenttab="+parenttab,
-                        onComplete: function(response) {
-                        $("status").style.display="none";
-                        result = response.responseText.split('&#&#&#');
-                        $("ListViewContents").innerHTML= result[2];
-                        if(result[1] != '')
-                               	alert(result[1]);
-			$('basicsearchcolumns_real').innerHTML = $('basicsearchcolumns').innerHTML
-			$('basicsearchcolumns').innerHTML = '';
+	jQuery.ajax({
+			method: 'POST',
+			url: "index.php?module=" + module + "&action=" + module + "Ajax&file=ListView&ajax=true&start=1&viewname=" + viewName + "&parenttab=" + parenttab,
+		}).done(function (response) {
+			document.getElementById("status").style.display = "none";
+			result = response.responseText.split('&#&#&#');
+			document.getElementById("ListViewContents").innerHTML = result[2];
+			if (result[1] != '')
+				alert(result[1]);
+			document.getElementById('basicsearchcolumns_real').innerHTML = document.getElementById('basicsearchcolumns').innerHTML
+			document.getElementById('basicsearchcolumns').innerHTML = '';
 			document.basicSearch.search_text.value = '';
-                        }
-                }
-	);
+		}
+		);
 }
 
 function getListViewEntries_js(module,url)
 {
 	if(module!='Documents'){
-		var excludedRecords = $('excludedRecords').value;
-		var all_selected = $("allselectedboxes").value;
-		var count = $('numOfRows').value;
+		var excludedRecords = document.getElementById('excludedRecords').value;
+		var all_selected = document.getElementById("allselectedboxes").value;
+		var count = document.getElementById('numOfRows').value;
 	} else {
 		var obj = document.getElementsByName('folderidVal');
 		var selected = '';
@@ -427,9 +404,9 @@ function getListViewEntries_js(module,url)
 		var numOfRows = new Array();
 		for(var i=0;i<obj.length;i++){
 			var id = obj[i].value;
-			excludedRecords[i] = $('excludedRecords_selectall'+id).value;
-			selectedRecords[i] = $('selectedboxes_selectall'+id).value;
-			numOfRows[i] = $('numOfRows_selectall'+id).value;
+			excludedRecords[i] = document.getElementById('excludedRecords_selectall'+id).value;
+			selectedRecords[i] = document.getElementById('selectedboxes_selectall'+id).value;
+			numOfRows[i] = document.getElementById('numOfRows_selectall'+id).value;
 		}
 		var urlArray= url.split('&');
 		var folderid;
@@ -437,7 +414,7 @@ function getListViewEntries_js(module,url)
 			var getId = urlArray[i].split('=');
 			if(getId[0] == 'folderid'){
 				folderid = parseInt(getId[1]);
-				all_selected = $('selectedboxes_selectall'+folderid).value;
+				all_selected = document.getElementById('selectedboxes_selectall'+folderid).value;
 			}
 		}
 	}
@@ -456,50 +433,44 @@ function getListViewEntries_js(module,url)
 		}
 	}
 
-	$("status").style.display="inline";
-	if(typeof $('search_url') != 'undefined' && $('search_url').value!='')
-		var urlstring = $('search_url').value;
+	document.getElementById("status").style.display="inline";
+	if(typeof document.getElementById('search_url') != 'undefined' && document.getElementById('search_url').value!='')
+		var urlstring = document.getElementById('search_url').value;
 	else
 		urlstring = '';
 
 	gstart = url;
-	new Ajax.Request(
-		'index.php',
-		{
-			queue: {
-				position: 'end',
-				scope: 'command'
-			},
-			method: 'post',
-			postBody:"module="+module+"&action="+module+"Ajax&file=ListView&ajax=true&allselobjs="+all_selected+"&selobjs="+idstring+"&"+url+urlstring,
-			onComplete: function(response) {
-				$("status").style.display="none";
+	jQuery.ajax({
+			method: 'POST',
+			url: "index.php?module="+module+"&action="+module+"Ajax&file=ListView&ajax=true&allselobjs="+all_selected+"&selobjs="+idstring+"&"+url+urlstring,
+		}).done(function (response) {
+				document.getElementById("status").style.display="none";
 				var result = response.responseText.split('&#&#&#');
-				$("ListViewContents").innerHTML= result[2];
+				document.getElementById("ListViewContents").innerHTML= result[2];
 
 				if(module == 'Documents') {
 					obj = document.getElementsByName('folderidVal');
 					for(var i=0;i<obj.length;i++){
 						var id = obj[i].value;
-						$('excludedRecords_selectall'+id).value = $('excludedRecords_selectall'+id).value + excludedRecords[i];
-						$('selectedboxes_selectall'+id).value = $('selectedboxes_selectall'+id).value + selectedRecords[i];
-						$('numOfRows_selectall'+id).value = numOfRows[i];
-						$('count_selectall'+id).innerHTML = numOfRows[i];
+						document.getElementById('excludedRecords_selectall'+id).value = document.getElementById('excludedRecords_selectall'+id).value + excludedRecords[i];
+						document.getElementById('selectedboxes_selectall'+id).value = document.getElementById('selectedboxes_selectall'+id).value + selectedRecords[i];
+						document.getElementById('numOfRows_selectall'+id).value = numOfRows[i];
+						document.getElementById('count_selectall'+id).innerHTML = numOfRows[i];
 						if(selectedRecords[i] == 'all'){
-							$('linkForSelectAll_selectall'+id).show();
-							$('selectAllRec_selectall'+id).style.display='none';
-							$('deSelectAllRec_selectall'+id).style.display='inline';
+							document.getElementById('linkForSelectAll_selectall'+id).style.display = 'block';
+							document.getElementById('selectAllRec_selectall'+id).style.display='none';
+							document.getElementById('deSelectAllRec_selectall'+id).style.display='inline';
 							var exculdedArray = excludedRecords[i].split(';');
 							var selectedobj = document.getElementsByName('selected_id'+id);
 							var viewForSelectLink = showSelectAllLink(selectedobj,exculdedArray);
-							$('currentPageRec_selectall'+id).checked = viewForSelectLink;
+							document.getElementById('currentPageRec_selectall'+id).checked = viewForSelectLink;
 						} else {
 							if(selectedRecords[i] != ''){
 								selected = selectedRecords[i].split(';');
 								selected.splice(selected.indexOf(''),1);
 								for(var j=0;j<selected.length;j++){
-									if($(selected[j])){
-										$(selected[j]).checked = true;
+									if(document.getElementById(selected[j])){
+										document.getElementById(selected[j]).checked = true;
 									}
 								}
 							}
@@ -507,40 +478,39 @@ function getListViewEntries_js(module,url)
 						default_togglestate('selected_id'+id,'selectall'+id);
 					}
 				} else {
-					$('numOfRows').value = count;
-					$("count").innerHTML = count;
+					document.getElementById('numOfRows').value = count;
+					document.getElementById("count").innerHTML = count;
 					if(all_selected == 'all'){
-						$('linkForSelectAll').show();
-						$('selectAllRec').style.display = 'none';
-						$('deSelectAllRec').style.display = 'inline';
+						document.getElementById('linkForSelectAll').style.display = 'block';
+						document.getElementById('selectAllRec').style.display = 'none';
+						document.getElementById('deSelectAllRec').style.display = 'inline';
 						exculdedArray=excludedRecords.split(';');
 						obj = document.getElementsByName('selected_id');
 						viewForSelectLink = showSelectAllLink(obj,exculdedArray);
-						$('selectCurrentPageRec').checked = viewForSelectLink;
-						$('allselectedboxes').value = 'all';
-						$('excludedRecords').value = $('excludedRecords').value+excludedRecords;
+						document.getElementById('selectCurrentPageRec').checked = viewForSelectLink;
+						document.getElementById('allselectedboxes').value = 'all';
+						document.getElementById('excludedRecords').value = document.getElementById('excludedRecords').value+excludedRecords;
 					}else{
-						$('linkForSelectAll').hide();
+						document.getElementById('linkForSelectAll').style.display = 'none';
 						update_selected_checkbox();
 					}
 				}
 				if(result[1] != '')
 					alert(result[1]);
-				$('basicsearchcolumns').innerHTML = '';
+				document.getElementById('basicsearchcolumns').innerHTML = '';
 			}
-		}
 		);
 }
 //for multiselect check box in list view:
 
 function check_object(sel_id,groupParentElementId)
 {
-	if($('curmodule') != undefined && $('curmodule').value == 'Documents') {
-		var selected = trim($('selectedboxes_'+groupParentElementId).value);
-		var skip = $('excludedRecords_'+groupParentElementId).value;
+	if(document.getElementById('curmodule') != undefined && document.getElementById('curmodule').value == 'Documents') {
+		var selected = trim(document.getElementById('selectedboxes_'+groupParentElementId).value);
+		var skip = document.getElementById('excludedRecords_'+groupParentElementId).value;
 	} else {
-		selected = trim($("allselectedboxes").value);
-		skip = $("excludedRecords").value;
+		selected = trim(document.getElementById("allselectedboxes").value);
+		skip = document.getElementById("excludedRecords").value;
 	}
 	var select_global = new Array();
 	select_global = selected.split(";");
@@ -551,12 +521,12 @@ function check_object(sel_id,groupParentElementId)
 	var result = "";
 	if(box_value == true)
 	{
-		if($('curmodule') != undefined && $('curmodule').value == 'Documents' && $('selectedboxes_'+groupParentElementId).value == 'all'){
-			$('excludedRecords_'+groupParentElementId).value = skip.replace(skip.match(id+";"),'');
-			$('selectedboxes_'+groupParentElementId).value = 'all';
-		} else if($("allselectedboxes").value == 'all'){
-			$("excludedRecords").value = skip.replace(skip.match(id+";"),'');
-			$("allselectedboxes").value = 'all';
+		if(document.getElementById('curmodule') != undefined && document.getElementById('curmodule').value == 'Documents' && document.getElementById('selectedboxes_'+groupParentElementId).value == 'all'){
+			document.getElementById('excludedRecords_'+groupParentElementId).value = skip.replace(skip.match(id+";"),'');
+			document.getElementById('selectedboxes_'+groupParentElementId).value = 'all';
+		} else if(document.getElementById("allselectedboxes").value == 'all'){
+			document.getElementById("excludedRecords").value = skip.replace(skip.match(id+";"),'');
+			document.getElementById("allselectedboxes").value = 'all';
 		} else {
 			if(duplicate == "-1")
 				select_global[size] = id;
@@ -567,20 +537,20 @@ function check_object(sel_id,groupParentElementId)
 					result=select_global[i]+";"+result;
 			}
 			//default_togglestate(sel_id.name,groupParentElementId);
-			if($('curmodule') != undefined && $('curmodule').value == 'Documents') {
-				$('selectedboxes_'+groupParentElementId).value = result;
+			if(document.getElementById('curmodule') != undefined && document.getElementById('curmodule').value == 'Documents') {
+				document.getElementById('selectedboxes_'+groupParentElementId).value = result;
 			} else {
-				$('allselectedboxes').value = result;
+				document.getElementById('allselectedboxes').value = result;
 			}
 		}
 		default_togglestate(sel_id.name,groupParentElementId);
 	} else {
-		if($('curmodule') != undefined && $('curmodule').value == 'Documents' && $('selectedboxes_'+groupParentElementId).value == 'all'){
-			$('excludedRecords_'+groupParentElementId).value = id+";"+skip;
-			$('selectedboxes_'+groupParentElementId).value = 'all';
-		} else if($("allselectedboxes").value == 'all') {
-			$("excludedRecords").value = id+";"+skip;
-			$("allselectedboxes").value = 'all';
+		if(document.getElementById('curmodule') != undefined && document.getElementById('curmodule').value == 'Documents' && document.getElementById('selectedboxes_'+groupParentElementId).value == 'all'){
+			document.getElementById('excludedRecords_'+groupParentElementId).value = id+";"+skip;
+			document.getElementById('selectedboxes_'+groupParentElementId).value = 'all';
+		} else if(document.getElementById("allselectedboxes").value == 'all') {
+			document.getElementById("excludedRecords").value = id+";"+skip;
+			document.getElementById("allselectedboxes").value = 'all';
 		} else {
 			if(duplicate != "-1")
 				select_global.splice(duplicate,1);
@@ -592,16 +562,16 @@ function check_object(sel_id,groupParentElementId)
 					result = select_global[i]+";"+result;
 			}
 			default_togglestate(sel_id.name,groupParentElementId);
-			if($('curmodule') != undefined && $('curmodule').value == 'Documents'){
-				$('selectedboxes_'+groupParentElementId).value = result;
+			if(document.getElementById('curmodule') != undefined && document.getElementById('curmodule').value == 'Documents'){
+				document.getElementById('selectedboxes_'+groupParentElementId).value = result;
 			} else {
-				$("allselectedboxes").value = result;
+				document.getElementById("allselectedboxes").value = result;
 			}
 		}
-		if($('curmodule') != undefined && $('curmodule').value == 'Documents'){
-			$('currentPageRec_'+groupParentElementId).checked = false;
+		if(document.getElementById('curmodule') != undefined && document.getElementById('curmodule').value == 'Documents'){
+			document.getElementById('currentPageRec_'+groupParentElementId).checked = false;
 		} else {
-			$('selectCurrentPageRec').checked = false;
+			document.getElementById('selectCurrentPageRec').checked = false;
 		}
 	}
 }
@@ -632,31 +602,27 @@ function update_selected_checkbox()
 }
 
 //Function to Set the status as Approve/Deny for Public access by Admin
-function ChangeCustomViewStatus(viewid,now_status,changed_status,module,parenttab)
+function ChangeCustomViewStatus(viewid, now_status, changed_status, module, parenttab)
 {
-	$('status').style.display = 'block';
-	new Ajax.Request(
-       		'index.php',
-               	{queue: {position: 'end', scope: 'command'},
-               		method: 'post',
-                    postBody:'module=CustomView&action=CustomViewAjax&file=ChangeStatus&dmodule='+module+'&record='+viewid+'&status='+changed_status,
-					onComplete: function(response) 
-					{
-			        	var responseVal=response.responseText;
-						if(responseVal.indexOf(':#:FAILURE') > -1) {
-							alert('Failed');
-						} else if(responseVal.indexOf(':#:SUCCESS') > -1) {
-							var values = responseVal.split(':#:');
-							var module_name = values[2];
-							var customview_ele = $('viewname');
-							showDefaultCustomView(customview_ele, module_name, parenttab);
-						} else {
-							$('ListViewContents').innerHTML = responseVal;
-						}
-						$('status').style.display = 'none';
-					} 
+	document.getElementById('status').style.display = 'block';
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=CustomView&action=CustomViewAjax&file=ChangeStatus&dmodule=' + module + '&record=' + viewid + '&status=' + changed_status,
+		}).done(function (response) {
+				var responseVal = response;
+				if (responseVal.indexOf(':#:FAILURE') > -1) {
+					alert('Failed');
+				} else if (responseVal.indexOf(':#:SUCCESS') > -1) {
+					var values = responseVal.split(':#:');
+					var module_name = values[2];
+					var customview_ele = document.getElementById('viewname');
+					showDefaultCustomView(customview_ele, module_name, parenttab);
+				} else {
+					document.getElementById('ListViewContents').innerHTML = responseVal;
 				}
-	);
+				document.getElementById('status').style.display = 'none';
+			}
+		);
 }
 
 function getListViewCount(module,element,parentElement,url){
@@ -700,12 +666,10 @@ function getListViewCount(module,element,parentElement,url){
 	if(typeof gPopupAlphaSearchUrl != 'undefined' && gPopupAlphaSearchUrl != '')
 		searchURL += gPopupAlphaSearchUrl;
 
-	new Ajax.Request(
-			'index.php',
-			{queue: {position: 'end', scope: 'command'},
-				method: 'post',
-				postBody:"module="+module+"&action="+module+"Ajax&file=ListViewPagging&ajax=true"+searchURL,
-				onComplete: function(response) {
+	jQuery.ajax({
+			method: 'POST',
+			url: "index.php?module="+module+"&action="+module+"Ajax&file=ListViewPagging&ajax=true"+searchURL,
+		}).done(function (response) {
 					var elementList = document.getElementsByName(module+'_listViewCountContainerBusy');
 					for(var i=0;i<elementList.length;++i){
 						elementList[i].style.display = 'none';
@@ -714,12 +678,11 @@ function getListViewCount(module,element,parentElement,url){
 					if(module != 'Documents' && typeof parentElement != 'undefined' && elementList.length !=0){
 						for(i=0;i<=elementList.length;){
 							//No need to increment the count, as the element will be eliminated in the next step.
-							elementList[i].parentNode.innerHTML = response.responseText;
+							elementList[i].parentNode.innerHTML = response;
 						}
 					}else{
-						parentElement.innerHTML = response.responseText;
+						parentElement.innerHTML = response;
 					}
-				}
 			}
 	);
 }
@@ -741,26 +704,23 @@ function closeStatusPopup(elementid)
 
 function updateCampaignRelationStatus(relatedmodule, campaignid, crmid, campaignrelstatusid, campaignrelstatus)
 {
-	$("vtbusy_info").style.display="inline";
+	document.getElementById("vtbusy_info").style.display="inline";
 	document.getElementById('campaignstatus_popup_' + crmid).style.display = 'none';
 	var data = "action=updateRelationsAjax&module=Campaigns&relatedmodule=" + relatedmodule + "&campaignid=" + campaignid + "&crmid=" + crmid + "&campaignrelstatusid=" + campaignrelstatusid;
-	new Ajax.Request(
-		'index.php',
-			{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody: data,
-			onComplete: function(response) {
-				if(response.responseText.indexOf(":#:FAILURE")>-1)
+	jQuery.ajax({
+			method: 'POST',
+			url: "index.php?"+data,
+	}).done(function (response) {
+				if(response.indexOf(":#:FAILURE")>-1)
 				{
 					alert(alert_arr.ERROR_WHILE_EDITING);
 				}
-				else if(response.responseText.indexOf(":#:SUCCESS")>-1)
+				else if(response.indexOf(":#:SUCCESS")>-1)
 				{
 					document.getElementById('campaignstatus_' + crmid).innerHTML = campaignrelstatus;
-					$("vtbusy_info").style.display="none";
+					document.getElementById("vtbusy_info").style.display="none";
 				}
 			}
-		}
 	);
 }
 
@@ -768,37 +728,31 @@ function loadCvList(type,id) {
 	var element = type+"_cv_list";
 	var value = document.getElementById(element).value;
 
-	var filter = $(element)[$(element).selectedIndex].value;
+	var filter = document.getElementById(element)[document.getElementById(element).selectedIndex].value;
 	if(filter=='None')return false;
 	if(value != '') {
-		$("status").style.display="inline";
-		new Ajax.Request(
-			'index.php',
-			{queue: {position: 'end', scope: 'command'},
-				method: 'post',
-				postBody: 'module=Campaigns&action=CampaignsAjax&file=LoadList&ajax=true&return_action=DetailView&return_id='+id+'&list_type='+type+'&cvid='+value,
-				onComplete: function(response) {
-					$("status").style.display="none";
-					$("RLContents").update(response.responseText);
+		document.getElementById("status").style.display="inline";
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=Campaigns&action=CampaignsAjax&file=LoadList&ajax=true&return_action=DetailView&return_id='+id+'&list_type='+type+'&cvid='+value,
+		}).done(function (response) {
+					document.getElementById("status").style.display="none";
+					document.getElementById("RLContents").update(response);
 				}
-			}
 		);
 	}
 }
 
 function emptyCvList(type,id) {
 	if (confirm(alert_arr.ARE_YOU_SURE_YOU_WANT_TO_DELETE)) {
-		$("status").style.display="inline";
-		new Ajax.Request(
-			'index.php',
-			{queue: {position: 'end', scope: 'command'},
-				method: 'post',
-				postBody: 'module=Campaigns&action=CampaignsAjax&file=updateRelations&ajax=true&parentid='+id+'&destination_module='+type+'&mode=delete&idlist=All',
-				onComplete: function(response) {
-					$("status").style.display="none";
-					$("RLContents").update(response.responseText);
+		document.getElementById("status").style.display="inline";
+		jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?module=Campaigns&action=CampaignsAjax&file=updateRelations&ajax=true&parentid='+id+'&destination_module='+type+'&mode=delete&idlist=All',
+			}).done(function (response) {
+					document.getElementById("status").style.display="none";
+					document.getElementById("RLContents").update(response);
 				}
-			}
 		);
 	}
 }

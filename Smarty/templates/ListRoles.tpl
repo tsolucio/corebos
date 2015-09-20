@@ -191,42 +191,39 @@ ul {ldelim}color:black;{rdelim}
 	
 	function put_child_ID(currObj)
 	{ldelim}
-			var move_Element = $('Drag_content');
-	 		parentName  = $(currObj).innerHTML;
-			parentId = currObj;
-			move_Element.style.display = 'none';
-			hideAll = false;	
-			if(childId == "NULL")
-			{ldelim}
-//				alert("Please Select the Node");
-				parentId = parentId.replace(/user_/gi,'');
-				window.location.href="index.php?module=Settings&action=RoleDetailView&parenttab=Settings&roleid="+parentId;
+		var move_Element = document.getElementById('Drag_content');
+		parentName = document.getElementById(currObj).innerHTML;
+		parentId = currObj;
+		move_Element.style.display = 'none';
+		hideAll = false;
+		if (childId == "NULL")
+		{ldelim}
+	//				alert("Please Select the Node");
+			parentId = parentId.replace(/user_/gi, '');
+			window.location.href = "index.php?module=Settings&action=RoleDetailView&parenttab=Settings&roleid=" + parentId;
+		{rdelim}
+		else
+		{ldelim}
+			childId = childId.replace(/user_/gi, '');
+			parentId = parentId.replace(/user_/gi, '');
+			jQuery.ajax({ldelim}
+				method: 'POST',
+				url: 'index.php?module=Users&action=UsersAjax&file=RoleDragDrop&ajax=true&parentId=' + parentId + '&childId=' + childId,
+			{rdelim}).done(function (response) {ldelim}
+				if (response != alert_arr.ROLE_DRAG_ERR_MSG)
+				{ldelim}
+					document.getElementById('RoleTreeFull').innerHTML = response;
+					hideAll = false;
+					parentId = "";
+					parentName = "";
+					childId = "NULL";
+					childName = "NULL";
+				{rdelim}
+				else
+					alert(response);
 			{rdelim}
-			else
-			{ldelim}
-				childId = childId.replace(/user_/gi,'');
-				parentId = parentId.replace(/user_/gi,'');
-				new Ajax.Request(
-  					'index.php',
-				        {ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-					        method: 'post',
-					        postBody: 'module=Users&action=UsersAjax&file=RoleDragDrop&ajax=true&parentId='+parentId+'&childId='+childId,
-						onComplete: function(response) {ldelim}
-							if(response.responseText != alert_arr.ROLE_DRAG_ERR_MSG)
-							{ldelim}
-						                $('RoleTreeFull').innerHTML=response.responseText;
-						                hideAll = false;
-							        parentId = "";
-						                parentName = "";
-						                childId ="NULL";
-								childName = "NULL";
-						        {rdelim}
-						        else
-						                alert(response.responseText);
-			                        {rdelim}
-				        {rdelim}
-				);
-			{rdelim}
+			);
+		{rdelim}
 	{rdelim}
 
 	function fnVisible(Obj)

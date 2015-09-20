@@ -119,29 +119,23 @@ function fetchlogin_js(id)
 {
 	fetchLoginHistory(id);
 }
-function fetchLoginHistory(id)
-{
-	var oUser_combo = $('user_list');
+function fetchLoginHistory(id) {
+	var oUser_combo = document.getElementById('user_list');
 	var id = oUser_combo.options[oUser_combo.selectedIndex].value;
-	if ( id == 'none')
-	{
-		Effect.Fade('login_history_cont');
+	if (id == 'none') {
+		jQuery('#login_history_cont').fadeIn();
 	}
-	else
-	{
-        	$("status").style.display="inline";
-	        new Ajax.Request(
-        	        'index.php',
-                	{queue: {position: 'end', scope: 'command'},
-                        	method: 'post',
-                       		postBody: 'module=Users&action=UsersAjax&file=ShowHistory&ajax=true&record='+id,
-	                        onComplete: function(response) {
-        	                        $("status").style.display="none";
-                	                $("login_history_cont").innerHTML= response.responseText;
-					Effect.Appear('login_history_cont');
-                       		}
-               		}
-        		);
+	else {
+		document.getElementById("status").style.display = "inline";
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=Users&action=UsersAjax&file=ShowHistory&ajax=true&record=' + id,
+		}).done(function (response) {
+			document.getElementById("status").style.display = "none";
+			document.getElementById("login_history_cont").innerHTML = response;
+			jQuery('#login_history_cont').show();
+		}
+		);
 	}
 }
 </script>
@@ -149,20 +143,17 @@ function fetchLoginHistory(id)
 <script>
 function getListViewEntries_js(module,url)
 {ldelim}
-	var oUser_combo = $('user_list');
+	var oUser_combo = document.getElementById('user_list');
 	var id = oUser_combo.options[oUser_combo.selectedIndex].value;
-	$("status").style.display="inline";
-        new Ajax.Request(
-        	'index.php',
-                {ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-                	method: 'post',
-                        postBody:"module="+module+"&action="+module+"Ajax&file=ShowHistory&record="+id+"&ajax=true&"+url,
-			onComplete: function(response) {ldelim}
-                        	$("status").style.display="none";
-                                $("login_history_cont").innerHTML= response.responseText;
-                  	{rdelim}
-                {rdelim}
-        );
+	document.getElementById("status").style.display="inline";
+		jQuery.ajax({ldelim}
+				method: 'POST',
+				url:"index.php?module="+module+"&action="+module+"Ajax&file=ShowHistory&record="+id+"&ajax=true&"+url,
+		{rdelim}).done(function(response) {ldelim}
+					document.getElementById("status").style.display="none";
+					document.getElementById("login_history_cont").innerHTML= response;
+		{rdelim}
+		);
 {rdelim}
 </script>
 

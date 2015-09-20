@@ -227,27 +227,24 @@ DIV.fixedLay {
 
 <script>
 function callEditDiv(obj,modulename,mode,id)
-{ldelim}
-        $("status").style.display="inline";
-        new Ajax.Request(
-                'index.php',
-                {ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-                        method: 'post',
-                        postBody: 'module=Settings&action=SettingsAjax&orgajax=true&mode='+mode+'&sharing_module='+modulename+'&shareid='+id,
-                        onComplete: function(response) {ldelim}
-                                $("status").style.display="none";
-                                $("tempdiv").innerHTML=response.responseText;
-				fnvshobj(obj,"tempdiv");
-                                if(mode == 'edit')
-                                {ldelim}
-                                        setTimeout("",10000);
-                                        var related = $('rel_module_lists').value;
-                                        fnwriteRules(modulename,related);
-                                {rdelim}
-                        {rdelim}
-                {rdelim}
-        );
-{rdelim}
+	{ldelim}
+		document.getElementById("status").style.display="inline";
+		jQuery.ajax({ldelim}
+				method: 'POST',
+				url: 'index.php?module=Settings&action=SettingsAjax&orgajax=true&mode='+mode+'&sharing_module='+modulename+'&shareid='+id,
+	{rdelim}).done(function (response) {ldelim}
+								document.getElementById("status").style.display="none";
+								document.getElementById("tempdiv").innerHTML=response;
+								fnvshobj(obj,"tempdiv");
+								if(mode == 'edit')
+								{ldelim}
+										setTimeout("",10000);
+										var related = document.getElementById('rel_module_lists').value;
+										fnwriteRules(modulename,related);
+								{rdelim}
+				{rdelim}
+			);
+	{rdelim}
 
 function fnwriteRules(module,related)
 {ldelim}

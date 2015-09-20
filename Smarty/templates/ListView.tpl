@@ -120,70 +120,64 @@ function checkgroup()
 function callSearch(searchtype)
 {ldelim}
 	for(i=1;i<=26;i++)
-    	{ldelim}
-        	var data_td_id = 'alpha_'+ eval(i);
-        	getObj(data_td_id).className = 'searchAlph';
-    	{rdelim}
-    	gPopupAlphaSearchUrl = '';
-	search_fld_val= $('bas_searchfield').options[$('bas_searchfield').selectedIndex].value;
+{ldelim}
+			var data_td_id = 'alpha_'+ eval(i);
+			getObj(data_td_id).className = 'searchAlph';
+{rdelim}
+		gPopupAlphaSearchUrl = '';
+	search_fld_val= document.getElementById('bas_searchfield').options[document.getElementById('bas_searchfield').selectedIndex].value;
 	search_txt_val= encodeURIComponent(document.basicSearch.search_text.value);
-        var urlstring = '';
-        if(searchtype == 'Basic')
-        {ldelim}
-        		var p_tab = document.getElementsByName("parenttab");
-                urlstring = 'search_field='+search_fld_val+'&searchtype=BasicSearch&search_text='+search_txt_val+'&';
-                urlstring = urlstring + 'parenttab='+p_tab[0].value+ '&';
-        {rdelim}
-        else if(searchtype == 'Advanced')
-        {ldelim}
-        		checkAdvancedFilter();
-				var advft_criteria = encodeURIComponent($('advft_criteria').value);
-				var advft_criteria_groups = $('advft_criteria_groups').value;
+		var urlstring = '';
+		if(searchtype == 'Basic')
+{ldelim}
+				var p_tab = document.getElementsByName("parenttab");
+				urlstring = 'search_field='+search_fld_val+'&searchtype=BasicSearch&search_text='+search_txt_val+'&';
+				urlstring = urlstring + 'parenttab='+p_tab[0].value+ '&';
+{rdelim}
+		else if(searchtype == 'Advanced')
+{ldelim}
+				checkAdvancedFilter();
+				var advft_criteria = encodeURIComponent(document.getElementById('advft_criteria').value);
+				var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
 				urlstring += '&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups+'&';
 				urlstring += 'searchtype=advance&'
-        {rdelim}
-	$("status").style.display="inline";
-	new Ajax.Request(
-		'index.php',
-		{ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-			method: 'post',
-			postBody:urlstring +'query=true&file=index&module={$MODULE}&action={$MODULE}Ajax&ajax=true&search=true',
-			onComplete: function(response) {ldelim}
-								$("status").style.display="none";
-                                result = response.responseText.split('&#&#&#');
-                                $("ListViewContents").innerHTML= result[2];
-                                if(result[1] != '')
-									alert(result[1]);
-								$('basicsearchcolumns').innerHTML = '';
-			{rdelim}
-	       {rdelim}
-        );
-	return false
+{rdelim}
+	document.getElementById("status").style.display="inline";
+	jQuery.ajax({ldelim}
+				method: 'POST',
+				url:'index.php?'+urlstring +'query=true&file=index&module={$MODULE}&action={$MODULE}Ajax&ajax=true&search=true',
+{rdelim}).done(function(response) {ldelim}
+				document.getElementById("status").style.display="none";
+				result = response.split('&#&#&#');
+				document.getElementById("ListViewContents").innerHTML= result[2];
+							if (result[1] != '')
+							alert(result[1]);
+							document.getElementById('basicsearchcolumns').innerHTML = '';
+{rdelim}
+	);
+					return false
 {rdelim}
 function alphabetic(module,url,dataid)
 {ldelim}
-        for(i=1;i<=26;i++)
-        {ldelim}
-                var data_td_id = 'alpha_'+ eval(i);
-                getObj(data_td_id).className = 'searchAlph';
+		for(i=1;i<=26;i++)
+{ldelim}
+				var data_td_id = 'alpha_'+ eval(i);
+				getObj(data_td_id).className = 'searchAlph';
 
-        {rdelim}
-        getObj(dataid).className = 'searchAlphselected';
-	$("status").style.display="inline";
-	new Ajax.Request(
-		'index.php',
-		{ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-			method: 'post',
-			postBody: 'module='+module+'&action='+module+'Ajax&file=index&ajax=true&search=true&'+url,
-			onComplete: function(response) {ldelim}
-				$("status").style.display="none";
-				result = response.responseText.split('&#&#&#');
-				$("ListViewContents").innerHTML= result[2];
+{rdelim}
+		getObj(dataid).className = 'searchAlphselected';
+		document.getElementById("status").style.display="inline";
+		jQuery.ajax({ldelim}
+				method: 'POST',
+				url: 'index.php?module='+module+'&action='+module+'Ajax&file=index&ajax=true&search=true&'+url,
+{rdelim}).done(function (response) {ldelim}
+				document.getElementById("status").style.display="none";
+				result = response.split('&#&#&#');
+				document.getElementById("ListViewContents").innerHTML= result[2];
 				if(result[1] != '')
-			                alert(result[1]);
-				$('basicsearchcolumns').innerHTML = '';
-			{rdelim}
-		{rdelim}
+						salert(result[1]);
+				document.getElementById('basicsearchcolumns').innerHTML = '';
+{rdelim}
 	);
 {rdelim}
 
@@ -324,7 +318,7 @@ function alphabetic(module,url,dataid)
 
 function ajaxChangeStatus(statusname)
 {
-	$("status").style.display="inline";
+	document.getElementById("status").style.display="inline";
 	var viewid = document.getElementById('viewname').options[document.getElementById('viewname').options.selectedIndex].value;
 	var idstring = document.getElementById('idlist').value;
 	var searchurl= document.getElementById('search_url').value;
@@ -341,36 +335,33 @@ function ajaxChangeStatus(statusname)
 	}
 	else if(statusname == 'owner')
 	{
-		if($("user_checkbox").checked)
+		if(document.getElementById("user_checkbox").checked)
 		{
-		    fninvsh('changeowner');
-		    var url='&owner_id='+document.getElementById('lead_owner').options[document.getElementById('lead_owner').options.selectedIndex].value;
-		    {/literal}
-		        var urlstring ="module=Users&action=updateLeadDBStatus&return_module={$MODULE}"+tplstart+url+"&viewname="+viewid+"&idlist="+idstring+searchurl;
-		    {literal}
+			fninvsh('changeowner');
+			var url='&owner_id='+document.getElementById('lead_owner').options[document.getElementById('lead_owner').options.selectedIndex].value;
+			{/literal}
+				var urlstring ="module=Users&action=updateLeadDBStatus&return_module={$MODULE}"+tplstart+url+"&viewname="+viewid+"&idlist="+idstring+searchurl;
+			{literal}
 		} else {
 			fninvsh('changeowner');
 			var url='&owner_id='+document.getElementById('lead_group_owner').options[document.getElementById('lead_group_owner').options.selectedIndex].value;
-	      	{/literal}
-		        var urlstring ="module=Users&action=updateLeadDBStatus&return_module={$MODULE}"+tplstart+url+"&viewname="+viewid+"&idlist="+idstring+searchurl;
-        	{literal}
-    	}
+			{/literal}
+				var urlstring ="module=Users&action=updateLeadDBStatus&return_module={$MODULE}"+tplstart+url+"&viewname="+viewid+"&idlist="+idstring+searchurl;
+			{literal}
+		}
 	}
-	new Ajax.Request(
-                'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                        method: 'post',
-                        postBody: urlstring,
-                        onComplete: function(response) {
-                                $("status").style.display="none";
-                                result = response.responseText.split('&#&#&#');
-                                $("ListViewContents").innerHTML= result[2];
-                                if(result[1] != '')
-                                        alert(result[1]);
-				$('basicsearchcolumns').innerHTML = '';
-                        }
-                }
-        );
+	jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?'+ urlstring,
+				}).done(function (response) {
+						document.getElementById("status").style.display="none";
+						result = response.split('&#&#&#');
+						document.getElementById("ListViewContents").innerHTML= result[2];
+						if(result[1] != '')
+								alert(result[1]);
+				document.getElementById('basicsearchcolumns').innerHTML = '';
+				}
+		);
 	
 }
 </script>
