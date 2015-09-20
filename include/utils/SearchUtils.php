@@ -1167,7 +1167,7 @@ function getAdvancedSearchCriteriaList($advft_criteria, $advft_criteria_groups, 
 function generateAdvancedSearchSql($advfilterlist) {
 	global $log, $currentModule,$column_array,$current_user;
 
-	$advfiltersql = "";
+	$advfiltersql = $advcvsql = '';
 
 	foreach($advfilterlist as $groupindex => $groupinfo) {
 		$groupcondition = $groupinfo['condition'];
@@ -1176,8 +1176,8 @@ function generateAdvancedSearchSql($advfilterlist) {
 		if(count($groupcolumns) > 0) {
 
 			$advfiltergroupsql = "";
-			$advorsql = array();
 			foreach($groupcolumns as $columnindex => $columninfo) {
+				$advorsql = array();
 				$fieldcolname = $columninfo["columnname"];
 				$comparator = $columninfo["comparator"];
 				$value = $columninfo["value"];
@@ -1229,7 +1229,6 @@ function generateAdvancedSearchSql($advfilterlist) {
 							$advfiltersql = getAdvancedSearchValue($columns[0],$columns[1],$comparator,trim($value),$datatype);
 						}
 					}
-
 					$advfiltergroupsql .= $advfiltersql;
 					if(!empty($columncondition)) {
 						$advfiltergroupsql .= ' '.$columncondition.' ';
@@ -1242,17 +1241,14 @@ function generateAdvancedSearchSql($advfilterlist) {
 				if(!empty($groupcondition)) {
 					$advfiltergroupsql .= ' '. $groupcondition . ' ';
 				}
-
 				$advcvsql .= $advfiltergroupsql;
 			}
 		}
 	}
-	return $advfiltersql;
+	return $advcvsql;
 }
 
-
 function getAdvancedSearchComparator($comparator,$value,$datatype = '') {
-
 	global $adb, $default_charset;
 	$value=html_entity_decode(trim($value),ENT_QUOTES,$default_charset);
 	$value = $adb->sql_escape_string($value);
