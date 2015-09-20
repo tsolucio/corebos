@@ -579,6 +579,7 @@ function getAllModulesWithDateFields() {
 	while ($mod = $adb->fetch_array($rsmwd)) {
 		$modswithdates[$mod['tabid']] = $mod['name'];
 	}
+	uasort($modswithdates, function($a,$b) {return (strtolower(getTranslatedString($a,$a)) < strtolower(getTranslatedString($b,$b))) ? -1 : 1;});
 	return $modswithdates;
 }
 
@@ -625,6 +626,7 @@ function getAllModulesWithDateTimeFields() {
 	while ($mod = $adb->fetch_array($rsmwd)) {
 		$modswithdt[$mod['tabid']] = $mod['name'];
 	}
+	uasort($modswithdt, function($a,$b) {return (strtolower(getTranslatedString($a,$a)) < strtolower(getTranslatedString($b,$b))) ? -1 : 1;});
 	return $modswithdt;
 }
 

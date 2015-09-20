@@ -13,7 +13,6 @@ require_once("modules/Calendar/Calendar.php");
 global $app_strings, $mod_strings, $current_language, $currentModule, $theme, $current_user, $default_charset;
 require_once('Smarty_setup.php');
 $tasklabel = getAllModulesWithDateFields();
-uasort($tasklabel, function($a,$b) {return (strtolower(getTranslatedString($a,$a)) < strtolower(getTranslatedString($b,$b))) ? -1 : 1;});
 
 $category = getParentTab($currentModule);
 
