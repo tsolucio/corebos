@@ -640,6 +640,18 @@ function getDateFieldsOfModule($tabid) {
 	return $datefields;
 }
 
+function getTimeFieldsOfModule($tabid) {
+	global $adb,$log;
+	$rsmwd = $adb->query("SELECT distinct fieldname
+		FROM vtiger_field as cbfld
+		WHERE tabid = $tabid and uitype=14");
+	$datefields = array();
+	while ($fld = $adb->fetch_array($rsmwd)) {
+		$datefields[] = $fld['fieldname'];
+	}
+	return $datefields;
+}
+
 function getDateAndTimeFieldsOfModule($tabid) {
 	global $adb,$log;
 	$rsmwd = $adb->query("SELECT distinct fieldname
@@ -667,7 +679,22 @@ function getModuleCalendarFields($module) {
 			'color' => $calflds['color'],
 		);
 	} else {
-		$Module_StartEnd_Fields = array();
+		// it isn't registered > we look for custom fields
+		$tid = getTabid($module);
+		$dtflds = getDateFieldsOfModule($tid);
+		if (count($dtflds)>0) {
+			$tmflds = getTimeFieldsOfModule($tid);
+			$Module_StartEnd_Fields = array(
+				'start'   => $dtflds[0],
+				'end'     => isset($dtflds[1]) ? $dtflds[1] : '',
+				'stime'   => isset($tmflds[0]) ? $tmflds[0] : '',
+				'etime'   => isset($tmflds[1]) ? $tmflds[1] : '',
+				'subject' => '',
+				'color' => '',
+			);
+		} else {
+			$Module_StartEnd_Fields = array();
+		}
 	}
 	return $Module_StartEnd_Fields;
 }
