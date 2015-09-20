@@ -95,7 +95,7 @@ if($Calendar4You->CheckPermissions("EDIT")) {
 	$timeModules_array = '';
 	foreach ($timeModules as $tmid => $tmmod) {
 		$timeModluleDetails[$tmmod] = getModuleCalendarFields($tmmod);
-		$timeModules_array = '"'.html_entity_decode($tmmod,ENT_QUOTES,$default_charset).'",';
+		$timeModules_array.= '"'.html_entity_decode($tmmod,ENT_QUOTES,$default_charset).'",';
 	}
 	$smarty->assign('TIMEMODULEARRAY', trim($timeModules_array,","));
 	$smarty->assign('TIMEMODULEDETAILS', json_encode($timeModluleDetails));
