@@ -146,7 +146,7 @@ class VTExpressionParser{
 		array('*', '/'),
 		array('+', '-'),
 		array('and', 'or'),
-		array('==', '>=', '<=', '>', '<')
+		array('==', '>=', '<=', '>', '<', '!=')
 	);
 
 	function binOp(){

@@ -43,6 +43,10 @@ function __vt_equals($arr){
 	return $arr[0] == $arr[1];
 }
 
+function __cb_distinct($arr){
+	return $arr[0] != $arr[1];
+}
+
 function __vt_ltequals($arr) {
 	return $arr[0] <= $arr[1];
 }
@@ -264,6 +268,7 @@ class VTFieldExpressionEvaluater{
 				'*'  => '__vt_mul',
 				'/'  => '__vt_div',
 				'==' => '__vt_equals',
+				'!=' => '__cb_distinct',
 				'<=' => '__vt_ltequals',
 				'>=' => '__vt_gtequals',
 				'<' => '__vt_lt',
