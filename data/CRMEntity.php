@@ -537,7 +537,7 @@ class CRMEntity {
 					} else {
 						$fldvalue = $this->column_fields[$fieldname];
 					}
-				} elseif ($uitype == 33 || $uitype == 3313) {
+				} elseif ($uitype == 33 || $uitype == 3313 || $uitype == 1024) {
 					if (!is_array($this->column_fields[$fieldname])) {
 						$this->column_fields[$fieldname] = array_map('trim', explode('|##|',$this->column_fields[$fieldname]));
 					}
@@ -556,6 +556,10 @@ class CRMEntity {
 					$selectedvalues = $this->column_fields[$fieldname];
 					if ($uitype == 3313) {
 						$uservalues = getAllowedPicklistModules();
+					} elseif ($uitype == 1024){
+						$roleid = $current_user->roleid;
+						$subrole = getRoleSubordinates($roleid);
+						$uservalues = array_merge($subrole,array($roleid));
 					} else {
 						$roleid=$current_user->roleid;
 						$uservalues = getAssignedPicklistValues($fieldname, $roleid, $adb);
