@@ -11,17 +11,17 @@
 // MassEdit Feature
 function massedit_togglediv(curTabId,total){
 
-   for(var i=0;i<total;i++){
+	for(var i=0;i<total;i++){
 	tagName = document.getElementById('massedit_div'+i);
-	tagName1 = document.getElementById('tab'+i)
+	tagName1 = document.getElementById('tab'+i);
 	tagName.style.display = 'none';
 	tagName1.className = 'dvtUnSelectedCell';
-   }
+	}
 
-   tagName = document.getElementById('massedit_div'+curTabId);
-   tagName.style.display = 'block';
-   tagName1 = document.getElementById('tab'+curTabId)
-   tagName1.className = 'dvtSelectedCell';
+	tagName = document.getElementById('massedit_div'+curTabId);
+	tagName.style.display = 'block';
+	tagName1 = document.getElementById('tab'+curTabId);
+	tagName1.className = 'dvtSelectedCell';
 }
 
 function massedit_initOnChangeHandlers() {
@@ -34,7 +34,7 @@ function massedit_initOnChangeHandlers() {
 		massedit_input.onchange = function() {
 			var checkbox = document.getElementById(this.name + '_mass_edit_check');
 			if(checkbox) checkbox.checked = true;
-		}
+		};
 	}
 	// Setup change handlers for select boxes
 	var selects = form.getElementsByTagName('select');
@@ -43,7 +43,7 @@ function massedit_initOnChangeHandlers() {
 		massedit_select.onchange = function() {
 			var checkbox = document.getElementById(this.name + '_mass_edit_check');
 			if(checkbox) checkbox.checked = true;
-		}
+		};
 	}
 }
 
@@ -100,71 +100,74 @@ function mass_edit(obj,divid,module,parenttab) {
 	}
 	fnvshobj(obj, divid);
 }
-function mass_edit_formload(idstring,module,parenttab) {
-	if(typeof(parenttab) == 'undefined') parenttab = '';
-	var excludedRecords=document.getElementById("excludedRecords").value;
-	var viewid =getviewId();
-	document.getElementById("status").style.display="inline";
-    var urlstring = '';
-    var searchtype = document.basicSearch.searchtype.value;
-    if(document.basicSearch.searchtype.searchlaunched != undefined && document.basicSearch.searchtype.searchlaunched=='basic') {
-    	search_fld_val= document.getElementById('bas_searchfield').options[document.getElementById('bas_searchfield').selectedIndex].value;
-    	search_txt_val= encodeURIComponent(document.basicSearch.search_text.value);
-    	if (search_txt_val!='') {  // if the search fields are not empty
-        urlstring = '&query=true&ajax=true&search=true&search_field='+search_fld_val+'&searchtype=BasicSearch&search_text='+search_txt_val;
-    	}
-    } else if(document.basicSearch.searchtype.searchlaunched != undefined && document.basicSearch.searchtype.searchlaunched=='advance' && checkAdvancedFilter()) {
+function mass_edit_formload(idstring, module, parenttab) {
+	if (typeof (parenttab) == 'undefined')
+		parenttab = '';
+	var excludedRecords = document.getElementById("excludedRecords").value;
+	var viewid = getviewId();
+	document.getElementById("status").style.display = "inline";
+	var urlstring = '';
+	var searchtype = document.basicSearch.searchtype.value;
+	if (document.basicSearch.searchtype.searchlaunched != undefined && document.basicSearch.searchtype.searchlaunched == 'basic') {
+		search_fld_val = document.getElementById('bas_searchfield').options[document.getElementById('bas_searchfield').selectedIndex].value;
+		search_txt_val = encodeURIComponent(document.basicSearch.search_text.value);
+		if (search_txt_val != '') {// if the search fields are not empty
+			urlstring = '&query=true&ajax=true&search=true&search_field=' + search_fld_val + '&searchtype=BasicSearch&search_text=' + search_txt_val;
+		}
+	} else if (document.basicSearch.searchtype.searchlaunched != undefined && document.basicSearch.searchtype.searchlaunched == 'advance' && checkAdvancedFilter()) {
 		var advft_criteria = document.getElementById('advft_criteria').value;
 		var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
-		urlstring = '&query=true&ajax=true&search=true&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups+'&searchtype=advance';
-    }
+		urlstring = '&query=true&ajax=true&search=true&advft_criteria=' + advft_criteria + '&advft_criteria_groups=' + advft_criteria_groups + '&searchtype=advance';
+	}
 	jQuery.ajax({
-			method: 'POST',
-			url: "index.php?module="+encodeURIComponent(module)+"&action="+encodeURIComponent(module+'Ajax')+"&parenttab="+encodeURIComponent(parenttab)+"&file=MassEdit&mode=ajax&idstring="+idstring+"&viewname="+viewid+"&excludedRecords="+excludedRecords+urlstring,
+		method: 'POST',
+		url: "index.php?module=" + encodeURIComponent(module) + "&action=" + encodeURIComponent(module + 'Ajax') + "&parenttab=" + encodeURIComponent(parenttab) + "&file=MassEdit&mode=ajax&idstring=" + idstring + "&viewname=" + viewid + "&excludedRecords=" + excludedRecords + urlstring
 	}).done(function (response) {
-				document.getElementById("status").style.display="none";
-				var result = response;
-				document.getElementById("massedit_form_div").innerHTML=result;
-				document.getElementById("massedit_form")["massedit_recordids"].value = document.getElementById("massedit_form")['idstring'].value;
-				document.getElementById("massedit_form")["massedit_module"].value = module;
-			}
-		);
+		document.getElementById("status").style.display = "none";
+		var result = response;
+		document.getElementById("massedit_form_div").innerHTML = result;
+		document.getElementById("massedit_form")["massedit_recordids"].value = document.getElementById("massedit_form")['idstring'].value;
+		document.getElementById("massedit_form")["massedit_module"].value = module;
+	}
+	);
 }
 function mass_edit_fieldchange(selectBox) {
 	var oldSelectedIndex = selectBox.oldSelectedIndex;
 	var selectedIndex = selectBox.selectedIndex;
 
-	if(document.getElementById('massedit_field'+oldSelectedIndex)) document.getElementById('massedit_field'+oldSelectedIndex).style.display='none';
-	if(document.getElementById('massedit_field'+selectedIndex)) document.getElementById('massedit_field'+selectedIndex).style.display='block';
+	if (document.getElementById('massedit_field' + oldSelectedIndex))
+		document.getElementById('massedit_field' + oldSelectedIndex).style.display = 'none';
+	if (document.getElementById('massedit_field' + selectedIndex))
+		document.getElementById('massedit_field' + selectedIndex).style.display = 'block';
 
 	selectBox.oldSelectedIndex = selectedIndex;
 }
 
-function mass_edit_save(){
+function mass_edit_save() {
 	var masseditform = document.getElementById("massedit_form");
 	var module = masseditform["massedit_module"].value;
 	var viewid = document.getElementById("viewname").options[document.getElementById("viewname").options.selectedIndex].value;
 	var searchurl = document.getElementById("search_url").value;
 
 	var urlstring =
-		"module="+encodeURIComponent(module)+"&action="+encodeURIComponent(module+'Ajax')+
-		"&return_module="+encodeURIComponent(module)+"&return_action=ListView"+
-		"&mode=ajax&file=MassEditSave&viewname=" + viewid ;//+"&"+ searchurl;
+			"module=" + encodeURIComponent(module) + "&action=" + encodeURIComponent(module + 'Ajax') +
+			"&return_module=" + encodeURIComponent(module) + "&return_action=ListView" +
+			"&mode=ajax&file=MassEditSave&viewname=" + viewid;//+"&"+ searchurl;
 
 	fninvsh("massedit");
 
 	jQuery.ajax({
-			method: 'POST',
-			url: 'index.php?'+urlstring,
+		method: 'POST',
+		url: 'index.php?' + urlstring
 	}).done(function (response) {
-				document.getElementById("status").style.display = "none";
-				var result = response.responseText.split("&#&#&#");
-				document.getElementById("ListViewContents").innerHTML = result[2];
-				if (result[1] != "") {
-					alert(result[1]);
-				}
-				document.getElementById("basicsearchcolumns").innerHTML = "";
-			}
+		document.getElementById("status").style.display = "none";
+		var result = response.split("&#&#&#");
+		document.getElementById("ListViewContents").innerHTML = result[2];
+		if (result[1] != "") {
+			alert(result[1]);
+		}
+		document.getElementById("basicsearchcolumns").innerHTML = "";
+	}
 	);
 
 }
@@ -179,48 +182,49 @@ function ajax_mass_edit() {
 	var idstring = masseditform["massedit_recordids"].value;
 	var searchurl = document.getElementById("search_url").value;
 	var tplstart = "&";
-	if (gstart != "") {tplstart = tplstart + gstart;}
+	if (gstart != "") {
+		tplstart = tplstart + gstart;
+	}
 
 	var masseditfield = masseditform['massedit_field'].value;
-	var masseditvalue = masseditform['massedit_value_'+masseditfield].value;
+	var masseditvalue = masseditform['massedit_value_' + masseditfield].value;
 
-	var urlstring = 
-		"module="+encodeURIComponent(module)+"&action="+encodeURIComponent(module+'Ajax')+
-		"&return_module="+encodeURIComponent(module)+
-		"&mode=ajax&file=MassEditSave&viewname=" + viewid + 
-		"&massedit_field=" + encodeURIComponent(masseditfield) +
-		"&massedit_value=" + encodeURIComponent(masseditvalue) +
-	   	"&idlist=" + idstring + searchurl;
+	var urlstring =
+			"module=" + encodeURIComponent(module) + "&action=" + encodeURIComponent(module + 'Ajax') +
+			"&return_module=" + encodeURIComponent(module) +
+			"&mode=ajax&file=MassEditSave&viewname=" + viewid +
+			"&massedit_field=" + encodeURIComponent(masseditfield) +
+			"&massedit_value=" + encodeURIComponent(masseditvalue) +
+			"&idlist=" + idstring + searchurl;
 
 	fninvsh("massedit");
 
 	jQuery.ajax({
-			method: 'POST',
-			url: 'index.php?'+urlstring, 
+		method: 'POST',
+		url: 'index.php?' + urlstring
 	}).done(function (response) {
-				document.getElementById("status").style.display = "none";
-				var result = response.responseText.split("&#&#&#");
-				document.getElementById("ListViewContents").innerHTML = result[2];
-				if (result[1] != "") {
-					alert(result[1]);
-				}
-				document.getElementById("basicsearchcolumns").innerHTML = "";
-			}
-	); 
+		document.getElementById("status").style.display = "none";
+		var result = response.split("&#&#&#");
+		document.getElementById("ListViewContents").innerHTML = result[2];
+		if (result[1] != "") {
+			alert(result[1]);
+		}
+		document.getElementById("basicsearchcolumns").innerHTML = "";
+	}
+	);
 }
 	
 // END
 
-function change(obj,divid)
-{
+function change(obj, divid) {
 	var excludedRecords = document.getElementById("excludedRecords").value;
-	var select_options  =  document.getElementById('allselectedboxes').value;
+	var select_options = document.getElementById('allselectedboxes').value;
 	//Added to remove the semi colen ';' at the end of the string.done to avoid error.
 	var searchurl = document.getElementById('search_url').value;
 	var numOfRows = document.getElementById('numOfRows').value;
 	var viewid = getviewId();
 	var idstring = "";
-	if(select_options == 'all'){
+	if (select_options == 'all') {
 		idstring = select_options;
 		document.getElementById('idlist').value = idstring;
 		var count = numOfRows;
@@ -237,33 +241,35 @@ function change(obj,divid)
 		}
 	}
 
-	if(count > getMaxMassOperationLimit()) {
+	if (count > getMaxMassOperationLimit()) {
 		var confirm_str = alert_arr.MORE_THAN_500;
-		if(confirm(confirm_str)) var confirm_status = true;
-		else return false;
+		if (confirm(confirm_str))
+			var confirm_status = true;
+		else
+			return false;
 	}
-	else confirm_status = true;
+	else
+		confirm_status = true;
 
-	if(confirm_status){
-		fnvshobj(obj,divid);
+	if (confirm_status) {
+		fnvshobj(obj, divid);
 	}
 }
 var gstart='';
-function massDelete(module)
-{
+function massDelete(module) {
 	var searchurl = document.getElementById('search_url').value;
 	var viewid = getviewId();
 	var idstring = "";
-	if(module != 'Documents'){
+	if (module != 'Documents') {
 		var select_options = document.getElementById('allselectedboxes').value;
 		var excludedRecords = document.getElementById('excludedRecords').value;
 		var numOfRows = document.getElementById('numOfRows').value;
-		if(select_options == 'all'){
+		if (select_options == 'all') {
 			document.getElementById('idlist').value = select_options;
 			idstring = select_options;
 			var skiprecords = excludedRecords.split(";");
 			var count = skiprecords.length;
-			if(count > 1){
+			if (count > 1) {
 				count = numOfRows - count + 1;
 			} else {
 				count = numOfRows;
@@ -288,30 +294,30 @@ function massDelete(module)
 		var folderid = '0';
 		var numOfRows = 0;
 		var activation = 'false';
-		if(obj){
-			for(var i=0;i<obj.length;i++){
+		if (obj) {
+			for (var i = 0; i < obj.length; i++) {
 				var id = obj[i].value;
-				if(document.getElementById('selectedboxes_selectall'+id).value == 'all'){
-					var rows = document.getElementById('numOfRows_selectall'+id).value;
-					numOfRows = numOfRows+parseInt(rows);
-					excludedRecords = excludedRecords + document.getElementById('excludedRecords_selectall'+id).value;
-					folderid = id+';'+folderid;
+				if (document.getElementById('selectedboxes_selectall' + id).value == 'all') {
+					var rows = document.getElementById('numOfRows_selectall' + id).value;
+					numOfRows = numOfRows + parseInt(rows);
+					excludedRecords = excludedRecords + document.getElementById('excludedRecords_selectall' + id).value;
+					folderid = id + ';' + folderid;
 					activation = 'true';
 				} else {
-					 select_options = select_options + document.getElementById('selectedboxes_selectall'+id).value;
+					select_options = select_options + document.getElementById('selectedboxes_selectall' + id).value;
 				}
 			}
 		}
 		x = select_options.split(";");
 		var count = x.length;
-		numOfRows = numOfRows + count-1;
-		if(activation == 'true'){
-			document.getElementById('idlist').value=select_options;
+		numOfRows = numOfRows + count - 1;
+		if (activation == 'true') {
+			document.getElementById('idlist').value = select_options;
 			idstring = select_options;
 			skiprecords = excludedRecords.split(";");
 			var excount = skiprecords.length;
-			if(excount > 1){
-				count = numOfRows - excount+1;
+			if (excount > 1) {
+				count = numOfRows - excount + 1;
 			} else {
 				count = numOfRows;
 			}
@@ -328,42 +334,45 @@ function massDelete(module)
 		}
 	}
 
-	if(count > getMaxMassOperationLimit()) {
+	if (count > getMaxMassOperationLimit()) {
 		var confirm_str = alert_arr.MORE_THAN_500;
-		if(confirm(confirm_str)) var confirm_status = true;
-		else return false;
+		if (confirm(confirm_str))
+			var confirm_status = true;
+		else
+			return false;
 	}
-	else confirm_status = true;
+	else
+		confirm_status = true;
 
-	if(confirm_status){
-		var alert_str = alert_arr.DELETE + count +alert_arr.RECORDS;
+	if (confirm_status) {
+		var alert_str = alert_arr.DELETE + count + alert_arr.RECORDS;
 
-		if(module == "Accounts")
-			alert_str = alert_arr.DELETE_ACCOUNT +count+alert_arr.RECORDS;
-		else if(module == "Vendors")
-			alert_str = alert_arr.DELETE_VENDOR+count+alert_arr.RECORDS;
+		if (module == "Accounts")
+			alert_str = alert_arr.DELETE_ACCOUNT + count + alert_arr.RECORDS;
+		else if (module == "Vendors")
+			alert_str = alert_arr.DELETE_VENDOR + count + alert_arr.RECORDS;
 
-		if(confirm(alert_str)) {
-			document.getElementById("status").style.display="inline";
-			var url = "&excludedRecords="+excludedRecords;
-			if(module=='Documents'){
-				var url = url+"&folderidstring="+folderid+"&selectallmode="+activation;
+		if (confirm(alert_str)) {
+			document.getElementById("status").style.display = "inline";
+			var url = "&excludedRecords=" + excludedRecords;
+			if (module == 'Documents') {
+				var url = url + "&folderidstring=" + folderid + "&selectallmode=" + activation;
 			}
 
 			jQuery.ajax({
-					method: 'POST',
-					url: "index.php?module=Users&action=massdelete&return_module="+module+"&"+gstart+"&viewname="+viewid+"&idlist="+idstring+searchurl+url,
+				method: 'POST',
+				url: "index.php?module=Users&action=massdelete&return_module=" + module + "&" + gstart + "&viewname=" + viewid + "&idlist=" + idstring + searchurl + url
 			}).done(function (response) {
-						document.getElementById("status").style.display="none";
-						result = response.responseText.split('&#&#&#');
-						document.getElementById("ListViewContents").innerHTML= result[2];
-						if(result[1] != '')
-							alert(result[1]);
-						document.getElementById('basicsearchcolumns').innerHTML = '';
-						document.getElementById('allselectedboxes').value='';
-						document.getElementById('excludedRecords').value='';
-					}
-				);
+				document.getElementById("status").style.display = "none";
+				result = response.split('&#&#&#');
+				document.getElementById("ListViewContents").innerHTML = result[2];
+				if (result[1] != '')
+					alert(result[1]);
+				document.getElementById('basicsearchcolumns').innerHTML = '';
+				document.getElementById('allselectedboxes').value = '';
+				document.getElementById('excludedRecords').value = '';
+			}
+			);
 		} else {
 			return false;
 		}
@@ -376,10 +385,10 @@ function showDefaultCustomView(selectView, module, parenttab)
 	var viewName = encodeURIComponent(selectView.options[selectView.options.selectedIndex].value);
 	jQuery.ajax({
 			method: 'POST',
-			url: "index.php?module=" + module + "&action=" + module + "Ajax&file=ListView&ajax=true&start=1&viewname=" + viewName + "&parenttab=" + parenttab,
+			url: "index.php?module=" + module + "&action=" + module + "Ajax&file=ListView&ajax=true&start=1&viewname=" + viewName + "&parenttab=" + parenttab
 		}).done(function (response) {
 			document.getElementById("status").style.display = "none";
-			result = response.responseText.split('&#&#&#');
+			result = response.split('&#&#&#');
 			document.getElementById("ListViewContents").innerHTML = result[2];
 			if (result[1] != '')
 				alert(result[1]);
@@ -419,7 +428,7 @@ function getListViewEntries_js(module,url)
 		}
 	}
 
-	var select_options  =  document.getElementsByName('selected_id');
+	var select_options = document.getElementsByName('selected_id');
 	var x = select_options.length;
 	var viewid = getviewId();
 	var idstring = "";
@@ -428,8 +437,8 @@ function getListViewEntries_js(module,url)
 	for(i = 0; i < x ; i++)
 	{
 		if(select_options[i].checked){
-			idstring = select_options[i].value +";"+idstring
-			xx++
+			idstring = select_options[i].value +";"+idstring;
+			xx++;
 		}
 	}
 
@@ -442,10 +451,10 @@ function getListViewEntries_js(module,url)
 	gstart = url;
 	jQuery.ajax({
 			method: 'POST',
-			url: "index.php?module="+module+"&action="+module+"Ajax&file=ListView&ajax=true&allselobjs="+all_selected+"&selobjs="+idstring+"&"+url+urlstring,
+			url: "index.php?module="+module+"&action="+module+"Ajax&file=ListView&ajax=true&allselobjs="+all_selected+"&selobjs="+idstring+"&"+url+urlstring
 		}).done(function (response) {
 				document.getElementById("status").style.display="none";
-				var result = response.responseText.split('&#&#&#');
+				var result = response.split('&#&#&#');
 				document.getElementById("ListViewContents").innerHTML= result[2];
 
 				if(module == 'Documents') {
@@ -607,7 +616,7 @@ function ChangeCustomViewStatus(viewid, now_status, changed_status, module, pare
 	document.getElementById('status').style.display = 'block';
 		jQuery.ajax({
 			method: 'POST',
-			url: 'index.php?module=CustomView&action=CustomViewAjax&file=ChangeStatus&dmodule=' + module + '&record=' + viewid + '&status=' + changed_status,
+			url: 'index.php?module=CustomView&action=CustomViewAjax&file=ChangeStatus&dmodule=' + module + '&record=' + viewid + '&status=' + changed_status
 		}).done(function (response) {
 				var responseVal = response;
 				if (responseVal.indexOf(':#:FAILURE') > -1) {
@@ -651,12 +660,12 @@ function getListViewCount(module,element,parentElement,url){
 		}
 	}else if(document.getElementById('globalSearchText') != null &&
 			typeof document.getElementById('globalSearchText') != 'undefined'){
-            var searchText = document.getElementById('globalSearchText').value;
-            searchURL = '&query=true&globalSearch=true&globalSearchText='+encodeURIComponent(searchText);
-            if(document.getElementById('tagSearchText') != null && typeof document.getElementById('tagSearchText') != 'undefined'){
-                var tagSearch = document.getElementById('tagSearchText').value;
-                searchURL = '&query=true&globalSearch=true&globalSearchText='+encodeURIComponent(searchText)+'&tagSearchText='+encodeURIComponent(tagSearch);
-            }
+			var searchText = document.getElementById('globalSearchText').value;
+			searchURL = '&query=true&globalSearch=true&globalSearchText='+encodeURIComponent(searchText);
+			if(document.getElementById('tagSearchText') != null && typeof document.getElementById('tagSearchText') != 'undefined'){
+				var tagSearch = document.getElementById('tagSearchText').value;
+				searchURL = '&query=true&globalSearch=true&globalSearchText='+encodeURIComponent(searchText)+'&tagSearchText='+encodeURIComponent(tagSearch);
+			}
 	}
 	if(module != 'Documents'){
 		searchURL += (url);
@@ -668,7 +677,7 @@ function getListViewCount(module,element,parentElement,url){
 
 	jQuery.ajax({
 			method: 'POST',
-			url: "index.php?module="+module+"&action="+module+"Ajax&file=ListViewPagging&ajax=true"+searchURL,
+			url: "index.php?module="+module+"&action="+module+"Ajax&file=ListViewPagging&ajax=true"+searchURL
 		}).done(function (response) {
 					var elementList = document.getElementsByName(module+'_listViewCountContainerBusy');
 					for(var i=0;i<elementList.length;++i){
@@ -709,7 +718,7 @@ function updateCampaignRelationStatus(relatedmodule, campaignid, crmid, campaign
 	var data = "action=updateRelationsAjax&module=Campaigns&relatedmodule=" + relatedmodule + "&campaignid=" + campaignid + "&crmid=" + crmid + "&campaignrelstatusid=" + campaignrelstatusid;
 	jQuery.ajax({
 			method: 'POST',
-			url: "index.php?"+data,
+			url: "index.php?"+data
 	}).done(function (response) {
 				if(response.indexOf(":#:FAILURE")>-1)
 				{
@@ -724,21 +733,22 @@ function updateCampaignRelationStatus(relatedmodule, campaignid, crmid, campaign
 	);
 }
 
-function loadCvList(type,id) {
-	var element = type+"_cv_list";
+function loadCvList(type, id) {
+	var element = type + "_cv_list";
 	var value = document.getElementById(element).value;
 
 	var filter = document.getElementById(element)[document.getElementById(element).selectedIndex].value;
-	if(filter=='None')return false;
-	if(value != '') {
-		document.getElementById("status").style.display="inline";
+	if (filter == 'None')
+		return false;
+	if (value != '') {
+		document.getElementById("status").style.display = "inline";
 		jQuery.ajax({
 			method: 'POST',
-			url: 'index.php?module=Campaigns&action=CampaignsAjax&file=LoadList&ajax=true&return_action=DetailView&return_id='+id+'&list_type='+type+'&cvid='+value,
+			url: 'index.php?module=Campaigns&action=CampaignsAjax&file=LoadList&ajax=true&return_action=DetailView&return_id=' + id + '&list_type=' + type + '&cvid=' + value
 		}).done(function (response) {
-					document.getElementById("status").style.display="none";
-					document.getElementById("RLContents").update(response);
-				}
+			document.getElementById("status").style.display = "none";
+			document.getElementById("RLContents").innerHTML=response;
+		}
 		);
 	}
 }
@@ -748,10 +758,10 @@ function emptyCvList(type,id) {
 		document.getElementById("status").style.display="inline";
 		jQuery.ajax({
 				method: 'POST',
-				url: 'index.php?module=Campaigns&action=CampaignsAjax&file=updateRelations&ajax=true&parentid='+id+'&destination_module='+type+'&mode=delete&idlist=All',
+				url: 'index.php?module=Campaigns&action=CampaignsAjax&file=updateRelations&ajax=true&parentid='+id+'&destination_module='+type+'&mode=delete&idlist=All'
 			}).done(function (response) {
 					document.getElementById("status").style.display="none";
-					document.getElementById("RLContents").update(response);
+					document.getElementById("RLContents").innerHTML=response;
 				}
 		);
 	}
