@@ -101,7 +101,7 @@ function updatefOptions(sel, opSelName) {
 <script language="javascript">
 function checkgroup()
 {ldelim}
-  if($("group_checkbox").checked)
+  if(document.getElementById("group_checkbox").checked)
   {ldelim}
   document.change_ownerform_name.lead_group_owner.style.display = "block";
   document.change_ownerform_name.lead_owner.style.display = "none";
@@ -406,9 +406,9 @@ function PositionDialogToCenter(ID)
        dialogLeft = (vpx/2 - 280/2);
 
        //Position the Dialog to center
-       $(ID).style.top = dialogTop+"px";
-       $(ID).style.left = dialogLeft+"px";
-       $(ID).style.display="block";
+       document.getElementById(ID).style.top = dialogTop+"px";
+       document.getElementById(ID).style.left = dialogLeft+"px";
+       document.getElementById(ID).style.display="block";
 }
 
 function removeDiv(ID){

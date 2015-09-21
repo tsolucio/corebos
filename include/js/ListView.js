@@ -158,7 +158,7 @@ function mass_edit_save(){
 			url: 'index.php?'+urlstring,
 	}).done(function (response) {
 				document.getElementById("status").style.display = "none";
-				var result = response.responseText.split("&#&#&#");
+				var result = response.split("&#&#&#");
 				document.getElementById("ListViewContents").innerHTML = result[2];
 				if (result[1] != "") {
 					alert(result[1]);
@@ -199,7 +199,7 @@ function ajax_mass_edit() {
 			url: 'index.php?'+urlstring, 
 	}).done(function (response) {
 				document.getElementById("status").style.display = "none";
-				var result = response.responseText.split("&#&#&#");
+				var result = response.split("&#&#&#");
 				document.getElementById("ListViewContents").innerHTML = result[2];
 				if (result[1] != "") {
 					alert(result[1]);
@@ -355,7 +355,7 @@ function massDelete(module)
 					url: "index.php?module=Users&action=massdelete&return_module="+module+"&"+gstart+"&viewname="+viewid+"&idlist="+idstring+searchurl+url,
 			}).done(function (response) {
 						document.getElementById("status").style.display="none";
-						result = response.responseText.split('&#&#&#');
+						result = response.split('&#&#&#');
 						document.getElementById("ListViewContents").innerHTML= result[2];
 						if(result[1] != '')
 							alert(result[1]);
@@ -379,7 +379,7 @@ function showDefaultCustomView(selectView, module, parenttab)
 			url: "index.php?module=" + module + "&action=" + module + "Ajax&file=ListView&ajax=true&start=1&viewname=" + viewName + "&parenttab=" + parenttab,
 		}).done(function (response) {
 			document.getElementById("status").style.display = "none";
-			result = response.responseText.split('&#&#&#');
+			result = response.split('&#&#&#');
 			document.getElementById("ListViewContents").innerHTML = result[2];
 			if (result[1] != '')
 				alert(result[1]);
@@ -445,7 +445,7 @@ function getListViewEntries_js(module,url)
 			url: "index.php?module="+module+"&action="+module+"Ajax&file=ListView&ajax=true&allselobjs="+all_selected+"&selobjs="+idstring+"&"+url+urlstring,
 		}).done(function (response) {
 				document.getElementById("status").style.display="none";
-				var result = response.responseText.split('&#&#&#');
+				var result = response.split('&#&#&#');
 				document.getElementById("ListViewContents").innerHTML= result[2];
 
 				if(module == 'Documents') {
@@ -737,7 +737,7 @@ function loadCvList(type,id) {
 			url: 'index.php?module=Campaigns&action=CampaignsAjax&file=LoadList&ajax=true&return_action=DetailView&return_id='+id+'&list_type='+type+'&cvid='+value,
 		}).done(function (response) {
 					document.getElementById("status").style.display="none";
-					document.getElementById("RLContents").update(response);
+					document.getElementById("RLContents").innerHTML = response;
 				}
 		);
 	}
@@ -751,7 +751,7 @@ function emptyCvList(type,id) {
 				url: 'index.php?module=Campaigns&action=CampaignsAjax&file=updateRelations&ajax=true&parentid='+id+'&destination_module='+type+'&mode=delete&idlist=All',
 			}).done(function (response) {
 					document.getElementById("status").style.display="none";
-					document.getElementById("RLContents").update(response);
+					document.getElementById("RLContents").innerHTML = response;
 				}
 		);
 	}
