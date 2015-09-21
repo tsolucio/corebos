@@ -46,9 +46,9 @@ function VTCreateTodoTask($){
 					status.append('<option value="'+v['value']+'">'+v['label']+'</option>');
 				});
 				if(taskStatus!=''){
-					status.attr('value', taskStatus);
+					status.val(taskStatus);
 				} else {
-					status.attr('value',eventStatusValues[0]['value']);
+					status.val(eventStatusValues[0]['value']);
 				}
 				$('#task_status_busyicon').hide();
 				$('#task_status').show();
@@ -58,9 +58,9 @@ function VTCreateTodoTask($){
 					priority.append('<option value="'+v['value']+'">'+v['label']+'</option>');
 				});
 				if(taskPriority!=''){
-					priority.attr('value', taskPriority);
+					priority.val(taskPriority);
 				} else {
-					priority.attr('value',taskPriorityValues[0]['value']);
+					priority.val(taskPriorityValues[0]['value']);
 				}
 				$('#task_priority_busyicon').hide();
 				$('#task_priority').show();

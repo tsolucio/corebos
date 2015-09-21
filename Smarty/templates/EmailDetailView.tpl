@@ -18,7 +18,7 @@
 <style type="text/css">@import url("themes/{$THEME}/style.css");</style>
 <script language="JavaScript" type="text/javascript" src="include/js/general.js"></script>
 <script language="javascript" type="text/javascript" src="include/scriptaculous/prototype.js"></script>
-<script type="text/javascript" src="include/jquery/jquery-1.6.2.min.js"></script>
+<script type="text/javascript" src="include/jquery/jquery.js"></script>
 <script type="text/javascript">
 	jQuery.noConflict();
 </script>

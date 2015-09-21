@@ -11,7 +11,6 @@
 -->*}
 
 <script language="javascript" type="text/javascript" src="include/scriptaculous/effects.js"></script>
-<script type='text/javascript' src='include/jquery/jquery-1.6.2.min.js'></script>
 <script type="text/javascript">
   jQuery.noConflict();
 </script>

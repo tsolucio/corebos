@@ -32,7 +32,7 @@ $_SESSION['pre_migration'] = true;
 	<link href="include/install/install.css" rel="stylesheet" type="text/css">
 	<script type="text/javascript" src="include/js/general.js"></script>
 	<script type="text/javascript" src="include/scriptaculous/prototype.js"></script>
-	<script type="text/javascript" src="modules/com_vtiger_workflow/resources/jquery-1.2.6.js"></script>
+	<script type="text/javascript" src="include/jquery/jquery.js"></script>
 	<script type="text/javascript">
 		jQuery.noConflict();
 		function fixDBHealth(){

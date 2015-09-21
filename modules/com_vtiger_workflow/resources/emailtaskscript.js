@@ -224,7 +224,7 @@ function VTEmailTask($){
 					$('#task-fieldnames').show();
 					$('#task-fieldnames').change(function(){
 					var textarea = CKEDITOR.instances.save_content;
-					var value = '$'+jQuery(this).attr('value');
+					var value = '$'+jQuery(this).val();
 					textarea.insertHtml(value);
 					});
 
@@ -234,8 +234,8 @@ function VTEmailTask($){
 					$('#task-emailfieldsfrmname').show();
 					$('#task-emailfieldsfrmname').change(function(){
 						var input = $($('#save_fromname').get());
-						var value = '$'+$(this).attr('value');
-						input.attr("value", value);
+						var value = '$'+$(this).val();
+						input.val(value);
 					});
 
 					fillSelectBox('task-emailfieldsfrmemail', modules, moduleName,
@@ -244,8 +244,8 @@ function VTEmailTask($){
 					$('#task-emailfieldsfrmemail').show();
 					$('#task-emailfieldsfrmemail').change(function(){
 						var input = $($('#save_fromemail').get());
-						var value = '$'+$(this).attr('value');
-						input.attr("value", value);
+						var value = '$'+$(this).val();
+						input.val(value);
 					});
 
 					fillSelectBox('task-subjectfields', modules, moduleName,
@@ -254,8 +254,8 @@ function VTEmailTask($){
 					$('#task-subjectfields').show();
 					$('#task-subjectfields').change(function(){
 						var input = $($('#save_subject').get());
-						var value = '$'+$(this).attr('value');
-						input.attr("value", input.attr("value")+' '+value);
+						var value = '$'+$(this).val();
+						input.val(input.val()+' '+value);
 					});
 
 					fillSelectBox('task-emailfields', modules, moduleName,
@@ -264,8 +264,8 @@ function VTEmailTask($){
 					$('#task-emailfields').show();
 					$('#task-emailfields').change(function(){
 						var input = $($('#save_recepient').get());
-						var value = '$'+$(this).attr('value');
-						input.attr("value", input.attr("value")+','+value);
+						var value = '$'+$(this).val();
+						input.val(input.val()+','+value);
 					});
 					var selptype = document.getElementById('task-emailfields');
 			        var selecc = document.getElementById('task-emailfieldscc');
@@ -276,8 +276,8 @@ function VTEmailTask($){
 					$('#task-emailfieldscc').show();
 					$('#task-emailfieldscc').change(function(){
 						var input = $($('#save_emailcc').get());
-						var value = '$'+$(this).attr('value');
-						input.attr("value", input.attr("value")+','+value);
+						var value = '$'+$(this).val();
+						input.val(input.val()+','+value);
 					});
 			        var selebcc = document.getElementById('task-emailfieldsbcc');
 			        for (ops=0;ops<selptype.length;ops++) {
@@ -287,14 +287,14 @@ function VTEmailTask($){
 					$('#task-emailfieldsbcc').show();
 					$('#task-emailfieldsbcc').change(function(){
 						var input = $($('#save_emailbcc').get());
-						var value = '$'+$(this).attr('value');
-						input.attr("value", input.attr("value")+','+value);
+						var value = '$'+$(this).val();
+						input.val(input.val()+','+value);
 					});
 					
 					//time_changes
 					$('#task_timefields').change(function(){
 						var textarea = CKEDITOR.instances.save_content;
-						var value = '$'+$(this).attr('value');
+						var value = '$'+$(this).val();
 						textarea.insertHtml(value);
 					});
 				
@@ -304,7 +304,7 @@ function VTEmailTask($){
 					$('#task-group_usersnames').show();
 					$('#task-group_usersnames').change(function(){
 						var textarea = $('#save_receipent').get(0);
-						var value = '$'+$(this).attr('value');
+						var value = '$'+$(this).val();
 						insertAtCursor(textarea, value);
 					});
 				}));

@@ -46,9 +46,9 @@ function VTCreateTodoTask($){
 			select.append('<option value="'+v['value']+'">'+v['label']+'</option>');
 		});
 		if(defaultValue!=''){
-			select.attr('value', defaultValue);
+			select.val(defaultValue);
 		} else{
-			select.attr('value',values[0]['value']);
+			select.val(values[0]['value']);
 		}
 	}
 
