@@ -41,22 +41,22 @@ var noneLabel;
 {literal}
 function trimfValues(value)
 {
-	var string_array;
-	string_array = value.split(":");
-	return string_array[4];
+    var string_array;
+    string_array = value.split(":");
+    return string_array[4];
 }
 
 function updatefOptions(sel, opSelName) {
-	var selObj = document.getElementById(opSelName);
-	var fieldtype = null ;
+    var selObj = document.getElementById(opSelName);
+    var fieldtype = null ;
 
-	var currOption = selObj.options[selObj.selectedIndex];
-	var currField = sel.options[sel.selectedIndex];
-
-	var fld = currField.value.split(":");
-	var tod = fld[4];
-	if(currField.value != null && currField.value.length != 0)
-	{
+    var currOption = selObj.options[selObj.selectedIndex];
+    var currField = sel.options[sel.selectedIndex];
+    
+    var fld = currField.value.split(":");
+    var tod = fld[4];
+    if(currField.value != null && currField.value.length != 0)
+    {
 	fieldtype = trimfValues(currField.value);
 	fieldtype = fieldtype.replace(/\\'/g,'');
 	ops = typeofdata[fieldtype];
@@ -81,8 +81,8 @@ function updatefOptions(sel, opSelName) {
 			}
 		}
 	}
-}else
-{
+    }else
+    {
 	var nMaxVal = selObj.length;
 	for(nLoop = 0; nLoop < nMaxVal; nLoop++)
 	{
@@ -92,7 +92,7 @@ function updatefOptions(sel, opSelName) {
 	if (currField.value == '') {
 		selObj.options[0].selected = true;
 	}
-}
+    }
 
 }
 {/literal}
@@ -101,17 +101,17 @@ function updatefOptions(sel, opSelName) {
 <script language="javascript">
 function checkgroup()
 {ldelim}
-	if(document.getElementById("group_checkbox").checked)
-{ldelim}
-	document.change_ownerform_name.lead_group_owner.style.display = "block";
-	document.change_ownerform_name.lead_owner.style.display = "none";
-{rdelim}
-	else
-{ldelim}
-	document.change_ownerform_name.lead_owner.style.display = "block";
-	document.change_ownerform_name.lead_group_owner.style.display = "none";
-{rdelim}
-
+  if($("group_checkbox").checked)
+  {ldelim}
+  document.change_ownerform_name.lead_group_owner.style.display = "block";
+  document.change_ownerform_name.lead_owner.style.display = "none";
+  {rdelim}
+  else
+  {ldelim}
+  document.change_ownerform_name.lead_owner.style.display = "block";
+  document.change_ownerform_name.lead_group_owner.style.display = "none";
+  {rdelim}    
+  
 {rdelim}
 function callSearch(searchtype)
 {ldelim}
@@ -136,12 +136,12 @@ function callSearch(searchtype)
 				var advft_criteria = encodeURIComponent(document.getElementById('advft_criteria').value);
 				var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
 				urlstring += '&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups+'&';
-				urlstring += 'searchtype=advance&';
+				urlstring += 'searchtype=advance&'
 {rdelim}
 	document.getElementById("status").style.display="inline";
 	jQuery.ajax({ldelim}
 				method: 'POST',
-				url:'index.php?'+urlstring +'query=true&file=index&module={$MODULE}&action={$MODULE}Ajax&ajax=true&search=true'
+				url:'index.php?'+urlstring +'query=true&file=index&module={$MODULE}&action={$MODULE}Ajax&ajax=true&search=true',
 {rdelim}).done(function(response) {ldelim}
 				document.getElementById("status").style.display="none";
 				result = response.split('&#&#&#');
@@ -151,7 +151,7 @@ function callSearch(searchtype)
 							document.getElementById('basicsearchcolumns').innerHTML = '';
 {rdelim}
 	);
-					return false;
+					return false
 {rdelim}
 function alphabetic(module,url,dataid)
 {ldelim}
@@ -165,7 +165,7 @@ function alphabetic(module,url,dataid)
 		document.getElementById("status").style.display="inline";
 		jQuery.ajax({ldelim}
 				method: 'POST',
-				url: 'index.php?module='+module+'&action='+module+'Ajax&file=index&ajax=true&search=true&'+url
+				url: 'index.php?module='+module+'&action='+module+'Ajax&file=index&ajax=true&search=true&'+url,
 {rdelim}).done(function (response) {ldelim}
 				document.getElementById("status").style.display="none";
 				result = response.split('&#&#&#');
@@ -180,27 +180,27 @@ function alphabetic(module,url,dataid)
 </script>
 
 		{include file='Buttons_List.tpl'}
-								<div id="searchingUI" style="display:none;">
-										<table border=0 cellspacing=0 cellpadding=0 width=100%>
-										<tr>
-												<td align=center>
-												<img src="{'searching.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SEARCHING}"  title="{$APP.LBL_SEARCHING}">
-												</td>
-										</tr>
-										</table>
+                                <div id="searchingUI" style="display:none;">
+                                        <table border=0 cellspacing=0 cellpadding=0 width=100%>
+                                        <tr>
+                                                <td align=center>
+                                                <img src="{'searching.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SEARCHING}"  title="{$APP.LBL_SEARCHING}">
+                                                </td>
+                                        </tr>
+                                        </table>
 
-								</div>
-						</td>
-				</tr>
-				</table>
-		</td>
+                                </div>
+                        </td>
+                </tr>
+                </table>
+        </td>
 </tr>
 </table>
 
 {*<!-- Contents -->*}
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
-	<tr>
-		<td valign=top><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
+     <tr>
+        <td valign=top><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 
 	<td class="showPanelBg" valign="top" width=100% style="padding:10px;">
 	 <!-- SIMPLE SEARCH -->
@@ -348,7 +348,7 @@ function ajaxChangeStatus(statusname)
 	}
 	jQuery.ajax({
 				method: 'POST',
-				url: 'index.php?'+ urlstring
+				url: 'index.php?'+ urlstring,
 				}).done(function (response) {
 						document.getElementById("status").style.display="none";
 						result = response.split('&#&#&#');
@@ -369,53 +369,55 @@ function ajaxChangeStatus(statusname)
 function modifyimage(imagename)
 {
 	imgArea = getObj('dynloadarea');
-		if(!imgArea)
-		{
-				imgArea = document.createElement("div");
-				imgArea.id = 'dynloadarea';
-				imgArea.setAttribute("style","z-index:100000001;");
-				imgArea.style.position = 'absolute';
-				imgArea.innerHTML = '<img width="260" height="200" src="'+imagename+'" class="thumbnail">';
+        if(!imgArea)
+        {
+                imgArea = document.createElement("div");
+                imgArea.id = 'dynloadarea';
+                imgArea.setAttribute("style","z-index:100000001;");
+                imgArea.style.position = 'absolute';
+                imgArea.innerHTML = '<img width="260" height="200" src="'+imagename+'" class="thumbnail">';
 		document.body.appendChild(imgArea);
-		}
+        }
 	PositionDialogToCenter(imgArea.id);
 }
 
 function PositionDialogToCenter(ID)
 {
-	var vpx,vpy;
-	if (self.innerHeight) // Mozilla, FF, Safari and Opera
-	{
-			vpx = self.innerWidth;
-			vpy = self.innerHeight;
-	}
-	else if (document.documentElement && document.documentElement.clientHeight) //IE
+       var vpx,vpy;
+       if (self.innerHeight) // Mozilla, FF, Safari and Opera
+       {
+               vpx = self.innerWidth;
+               vpy = self.innerHeight;
+       }
+       else if (document.documentElement && document.documentElement.clientHeight) //IE
 
-	{
-			vpx = document.documentElement.clientWidth;
-			vpy = document.documentElement.clientHeight;
-	}
-	else if (document.body) // IE
-	{
-			vpx = document.body.clientWidth;
-			vpy = document.body.clientHeight;
-	}
+       {
+               vpx = document.documentElement.clientWidth;
+               vpy = document.documentElement.clientHeight;
+       }
+       else if (document.body) // IE
+       {
+               vpx = document.body.clientWidth;
+               vpy = document.body.clientHeight;
+       }
 
-	//Calculate the length from top, left
-	dialogTop = (vpy/2 - 280/2) + document.documentElement.scrollTop;
-	dialogLeft = (vpx/2 - 280/2);
+       //Calculate the length from top, left
+       dialogTop = (vpy/2 - 280/2) + document.documentElement.scrollTop;
+       dialogLeft = (vpx/2 - 280/2);
 
-	//Position the Dialog to center
-	document.getElementById(ID).style.top = dialogTop+"px";
-	document.getElementById(ID).style.left = dialogLeft+"px";
-	document.getElementById(ID).style.display="block";
+       //Position the Dialog to center
+       $(ID).style.top = dialogTop+"px";
+       $(ID).style.left = dialogLeft+"px";
+       $(ID).style.display="block";
 }
 
 function removeDiv(ID){
-		var node2Rmv = getObj(ID);
-		if(node2Rmv){node2Rmv.parentNode.removeChild(node2Rmv);}
+        var node2Rmv = getObj(ID);
+        if(node2Rmv){node2Rmv.parentNode.removeChild(node2Rmv);}
 }
 
 </script>
 {/literal}
 {/if}
+
+
