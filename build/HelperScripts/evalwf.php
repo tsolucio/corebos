@@ -1,4 +1,18 @@
 <?php
+/*************************************************************************************************
+ * Copyright 2015 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
+ * file except in compliance with the License. You can redistribute it and/or modify it
+ * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
+ * granted by the License. coreBOS distributed by JPL TSolucio S.L. is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. Unless required by
+ * applicable law or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT ANY WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language governing
+ * permissions and limitations under the License. You may obtain a copy of the License
+ * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
+ *************************************************************************************************/
 require 'build/cbHeader.inc';
 require_once("include/HTTP_Session/Session.php");
 require_once 'include/Webservices/Utils.php';
@@ -119,8 +133,25 @@ if ($workflows[$workflowid_to_evaluate]->executionCondition==VTWorkflowManager::
 	echo "<span style='font-size: large;'>$query</span>";
 } else {
 	echo "<h2>Launch Conditions:</h2>";
-	$eval = $workflow->evaluate($entityCache, $crm_record_to_evaluate);
 	echo "<span style='font-size: large;'>";
+	$test = json_decode($workflow->test,true);
+	$haschanged = false;
+	$newtest = array();
+	foreach($test as $tst) {
+		if (substr($tst['operation'],0,11)=='has changed') {
+			$haschanged = true;
+		} else {
+			$newtest[] = $tst;
+		}
+		echo $tst['fieldname'].' '.$tst['operation'].' '.$tst['value'].' ('.$tst['valuetype'].')<br>';
+		echo $tst['joincondition'].'<br>';
+	}
+	if ($haschanged) {
+		echo "<br><b>** has changed condition being ignored **</b><br>";
+		$workflow->test = json_encode($newtest);
+	}
+	echo '<b>** RESULT:</b><br>';
+	$eval = $workflow->evaluate($entityCache, $crm_record_to_evaluate);
 	var_dump($eval);
 	echo '</span>';
 	$tm = new VTTaskManager($adb);
@@ -128,6 +159,7 @@ if ($workflows[$workflowid_to_evaluate]->executionCondition==VTWorkflowManager::
 	$tasks = $tm->getTasksForWorkflow($workflow->id);
 	foreach($tasks as $task){
 		if(is_object($task) and $task->active and get_class($task) == 'VTEmailTask') {
+			echo "<br><br><b>** EMail TASK **</b><br><br>";
 			$email = evalwfEmailTask($crm_record_to_evaluate,$task);
 			foreach ($email as $key => $value) {
 				echo "<h2>$key</h2>$value <br><hr>";
