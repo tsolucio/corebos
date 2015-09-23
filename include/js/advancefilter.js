@@ -384,7 +384,7 @@ function checkAdvancedFilter() {
 				if (!numValidate(valueId,selectedColumnLabel+" (Number) ","any",(col[4] == 'NN')))
 					return false;
 			} else if(col[4] == 'E') {
-				if (!patternValidate(valueId,selectedColumnLabel+" (Email Id)","EMAIL"))
+				if ((comparatorValue=='e' || comparatorValue=='n') && !patternValidate(valueId,selectedColumnLabel+" (Email Id)","EMAIL"))
 					return false;
 			}
 		}
