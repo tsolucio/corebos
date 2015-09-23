@@ -1009,7 +1009,7 @@ function addCustomField() {
 					$count = count($pickArray);
 					global $default_charset;
 					for($i = 0; $i < $count; $i++) {
-						$pickArray[$i] = trim(htmlentities($pickArray[$i],ENT_QUOTES, $default_charset));
+						$pickArray[$i] = trim($pickArray[$i]);
 						if($pickArray[$i] != '') {
 							$picklistcount=0;
 							$sql ="select $columnName from vtiger_$columnName";
