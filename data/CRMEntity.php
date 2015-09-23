@@ -551,7 +551,7 @@ class CRMEntity {
 					if (empty($vlera)) {
 						$currentvalues = array();
 					} else {
-						$currentvalues = array_map('trim', explode('|##|', $vlera));
+						$currentvalues = array_map('trim', explode('|##|', decode_html($vlera)));
 					}
 					$selectedvalues = $this->column_fields[$fieldname];
 					if ($uitype == 3313) {
