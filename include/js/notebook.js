@@ -16,33 +16,29 @@
  */
 function saveContents(node, notebookid) {
 	var contents = node.value;
-	new Ajax.Request(
-		'index.php',
-		{
-			queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody:'module=Home&action=HomeAjax&file=SaveNotebookContents&contents='+encodeURIComponent(contents)+'&notebookid='+notebookid,
-			onComplete: function(response){
-				var responsedata = trim(response.responseText);
-                                var responsearray = JSON.parse(responsedata);
-                                if(responsearray['status'] == false){
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=Home&action=HomeAjax&file=SaveNotebookContents&contents='+encodeURIComponent(contents)+'&notebookid='+notebookid
+	}).done(function (response) {
+				var responsedata = trim(response);
+				var responsearray = JSON.parse(responsedata);
+				if(responsearray['status'] == false){
 					alert("Some error has occurred during save");
 				}else{
 					//success
 					node.style.display = 'none';
 					
-					temp = $('notebook_contents_'+notebookid);
+					temp = document.getElementById('notebook_contents_'+notebookid);
 					temp.style.display = 'block';
 					temp.innerHTML = '<pre>' + responsearray['contents'] + '</pre>';
-					$('notebook_'+notebookid).style.display = 'block';
+					document.getElementById('notebook_'+notebookid).style.display = 'block';
 					
-					var notebook_dbl_click_message = $('notebook_dbl_click_message');
-					var notebook_save_message = $('notebook_save_message');
+					var notebook_dbl_click_message = document.getElementById('notebook_dbl_click_message');
+					var notebook_save_message = document.getElementById('notebook_save_message');
 					notebook_dbl_click_message.style.display = 'block';
 					notebook_save_message.style.display = 'none';
 				}
 			}
-		}
 	);
 }
 /**
@@ -50,10 +46,10 @@ function saveContents(node, notebookid) {
  * @param object node - the notebook div
  */
 function editContents(node, notebookid) {
-	var notebook = $('notebook_textarea_'+notebookid);
-	var contents = $('notebook_contents_'+notebookid);
-	var notebook_dbl_click_message = $('notebook_dbl_click_message');
-	var notebook_save_message = $('notebook_save_message');
+	var notebook = document.getElementById('notebook_textarea_'+notebookid);
+	var contents = document.getElementById('notebook_contents_'+notebookid);
+	var notebook_dbl_click_message = document.getElementById('notebook_dbl_click_message');
+	var notebook_save_message = document.getElementById('notebook_save_message');
 	
 	notebook.value = contents.getElementsByTagName('pre')[0].innerHTML;
 	node.style.display = 'none';

@@ -199,7 +199,7 @@ function addRequiredElements(columnindex) {
 					defaultRequiredElements(columnindex);
 					break;
 				}
-				var dateformat = $('jscal_dateformat').value;
+				var dateformat = document.getElementById('jscal_dateformat').value;
 						var timeformat = "%H:%M:%S";
 						var showtime = true;
 						if(fieldtype == 'D' || (tableName == 'vtiger_activity' && fieldName == 'date_start')) {
@@ -209,7 +209,7 @@ function addRequiredElements(columnindex) {
 						
 						if(!document.getElementById('jscal_trigger_fval'+columnindex)) { 
 							var node = document.createElement('img');
-							node.setAttribute('src',$('image_path').value+'btnL3Calendar.gif');
+							node.setAttribute('src',document.getElementById('image_path').value+'btnL3Calendar.gif');
 							node.setAttribute('id','jscal_trigger_fval'+columnindex);
 							node.setAttribute('align','absmiddle');
 							node.setAttribute('width','20');
@@ -241,7 +241,7 @@ function addRequiredElements(columnindex) {
 							
 							if(!document.getElementById('jscal_trigger_fval_ext'+columnindex)) {
 								var node2 = document.createElement('img');
-								node2.setAttribute('src',$('image_path').value+'btnL3Calendar.gif');
+								node2.setAttribute('src',document.getElementById('image_path').value+'btnL3Calendar.gif');
 								node2.setAttribute('id','jscal_trigger_fval_ext'+columnindex);
 								node2.setAttribute('align','absmiddle');
 								node2.setAttribute('width','20');
@@ -262,7 +262,7 @@ function addRequiredElements(columnindex) {
 								node3.onclick = function() {
 													document.getElementById('fval_ext'+columnindex).value='';
 													return false;
-												}
+												};
 								
 								var parentObj = valObj.parentNode;
 							 	parentObj.appendChild(node3);
@@ -344,17 +344,17 @@ function checkAdvancedFilter() {
                 if (specifiedValue.charAt(0) != "$" && specifiedValue.charAt(specifiedValue.length-1) != "$"){
 					if(datime.length > 1) {
 						if(!re_dateValidate(datime[0],selectedColumnLabel+" (Current User Date Time Format)","OTH")) {
-							return false
+							return false;
 						}
 						if(!re_patternValidate(datime[1],selectedColumnLabel+" (Time)","TIMESECONDS")) {
-							return false
+							return false;
 						}
 					} else if((col[0] == 'vtiger_activity' && col[2] == 'date_start') || col[4] == 'DT') {
 						if(!dateValidate(valueId,selectedColumnLabel+" (Current User Date Format)","OTH"))
-							return false
+							return false;
 					} else {
 						if(!re_patternValidate(datime[0],selectedColumnLabel+" (Time)","TIMESECONDS")) {
-							return false
+							return false;
 						}
 					}
                 }
@@ -422,7 +422,7 @@ function checkAdvancedFilter() {
 										};
 	}
 
-	$('advft_criteria').value = JSON.stringify(criteriaConditions);
+	document.getElementById('advft_criteria').value = JSON.stringify(criteriaConditions);
 	
 	var conditionGroups = vt_getElementsByName('div', "conditionGroup");
 	var criteriaGroups = [];
@@ -440,7 +440,7 @@ function checkAdvancedFilter() {
 		criteriaGroups[groupIndex] = {"groupcondition":groupCondition};
 		
 	}
-	$('advft_criteria_groups').value = JSON.stringify(criteriaGroups);
+	document.getElementById('advft_criteria_groups').value = JSON.stringify(criteriaGroups);
 	
 	return true;
 }

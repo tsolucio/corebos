@@ -113,14 +113,14 @@ function set_return_emails(entity_id,email_id,parentname,emailadd,emailadd2,perm
 function validate_sendmail(idlist,module){
 	var j=0;
 	if(idlist == 'all'){
-		var viewid = $('viewid').value;
-		var excludedRecords = $("excludedRecords").value;
-		var numOfRows = $('numOfRows').value;
-		var searchurl = $('search_url').value;
+		var viewid = document.getElementById('viewid').value;
+		var excludedRecords = document.getElementById("excludedRecords").value;
+		var numOfRows = document.getElementById('numOfRows').value;
+		var searchurl = document.getElementById('search_url').value;
 		var url1 = "&viewname="+viewid+"&excludedRecords="+excludedRecords+"&searchurl="+searchurl;
 	} else if(idlist == 'relatedListSelectAll'){
-		var recordid = $('recordid').value;
-		var excludedRecords = $('excludedRecords').value;
+		var recordid = document.getElementById('recordid').value;
+		var excludedRecords = document.getElementById('excludedRecords').value;
 		url1 = "&recordid="+recordid+"&excludedRecords="+excludedRecords;
 	} else {
 		url1 = '';
@@ -147,30 +147,26 @@ function validate_sendmail(idlist,module){
 }
 
 function sendmail(module,idstrings,url) {
-	new Ajax.Request(
-		'index.php',
-		{
-			queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody: "module=Emails&return_module="+module+"&action=EmailsAjax&file=mailSelect&idlist="+idstrings+url,
-			onComplete: function(response) {
-				if(response.responseText == "Mail Ids not permitted" || response.responseText == "No Mail Ids")
+	jQuery.ajax({
+			method: 'POST',
+			url: "index.php?module=Emails&return_module="+module+"&action=EmailsAjax&file=mailSelect&idlist="+idstrings+url
+	}).done(function (response) {
+				if(response == "Mail Ids not permitted" || response == "No Mail Ids")
 				{
 					var url= 'index.php?module=Emails&action=EmailsAjax&pmodule='+module+'&file=EditView&sendmail=true';
 					openPopUp('xComposeEmail',this,url,'createemailWin',820,689,'menubar=no,toolbar=no,location=no,status=no,resizable=no');
 				}
 				else
-					getObj('sendmail_cont').innerHTML = response.responseText;
+					getObj('sendmail_cont').innerHTML = response;
 			}
-		}
 	);
 }
 
 function rel_eMail(module,oButton,relmod){
 	var allids='';
-	if($(module+'_'+relmod+'_selectallActivate').value == 'true'){
+	if(document.getElementById(module+'_'+relmod+'_selectallActivate').value == 'true'){
 		var recordid = document.getElementById('recordid').value;
-		var excludedRec = $(module+'_'+relmod+'_excludedRecords').value;
+		var excludedRec = document.getElementById(module+'_'+relmod+'_excludedRecords').value;
 		allids = 'relatedListSelectAll';
 		var url = "&parent_module=Campaigns&excludedRecords="+excludedRec+"&recordid="+recordid;
 	} else {

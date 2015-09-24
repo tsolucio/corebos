@@ -48,7 +48,7 @@ function vtlib_open_popup_window(fromlink,fldname,MODULE,ID) {
  * Show the vtiger field help if available.
  */
 function vtlib_field_help_show(basenode, fldname) {
-    var domnode = $('vtlib_fieldhelp_div');
+    var domnode = jQuery('#vtlib_fieldhelp_div');
 
     if(typeof(fieldhelpinfo) == 'undefined') return;
 
@@ -65,23 +65,23 @@ function vtlib_field_help_show(basenode, fldname) {
         domnode.style.fontWeight = 'normal';
         document.body.appendChild(domnode);
 
-        domnode = $('vtlib_fieldhelp_div');
-        Event.observe(domnode, 'mouseover', function() {
-            $('vtlib_fieldhelp_div').show();
+        domnode = jQuery('#vtlib_fieldhelp_div');
+		domnode.bind("mouseover",function() {
+            domnode.show();
         });
-        Event.observe(domnode, 'mouseout', vtlib_field_help_hide);
+		domnode.bind("mouseout",vtlib_field_help_hide);
     }
     else {
         domnode.show();
     }
-    domnode.innerHTML = helpcontent;
+    domnode.html(helpcontent);
     fnvshobj(basenode,'vtlib_fieldhelp_div');
 }
 /**
  * Hide the vtiger field help
  */
 function vtlib_field_help_hide(evt) {
-    var domnode = $('vtlib_fieldhelp_div');
+    var domnode = jQuery('#vtlib_fieldhelp_div');
     if(domnode) domnode.hide();
 }
 
@@ -169,31 +169,26 @@ function vtlib_loadDetailViewWidget(urldata, target, indicator) {
     if(typeof(target) == 'undefined') {
         target = false;
     } else {
-        target = $(target);
+        target = document.getElementById(target);
     }
     if(typeof(indicator) == 'undefined') {
         indicator = false;
     } else {
-        indicator = $(indicator);
+        indicator = document.getElementById(indicator);
     }
 	
     if(indicator) {
-        indicator.show();
+        indicator.style.display="block";
     }
 	
-    new Ajax.Request('index.php',
-    {
-        queue: {
-            position: 'end',
-            scope: 'command'
-        },
-        method: 'post',
-        postBody:urldata,
-        onComplete: function(response) {
+    jQuery.ajax({
+			method: 'POST',
+			url: "index.php?"+urldata
+    }).done(function (response) {
             if(target) {
-                target.innerHTML = response.responseText;
-                if(typeof ParseAjaxResponse == 'function')
-                    ParseAjaxResponse(response.responseText);
+                target.innerHTML = response;
+                if(typeof(ParseAjaxResponse)== 'function')
+                    ParseAjaxResponse(response);
                 else {
 					// Evaluate all the script tags in the response text.
 					var scriptTags = target.getElementsByTagName('script');
@@ -203,10 +198,9 @@ function vtlib_loadDetailViewWidget(urldata, target, indicator) {
 					}
                 }
                 if(indicator) {
-                    indicator.hide();
+                    indicator.style.display="none";
                 }
             }
-        }
     });
     return false; // To stop event propogation
 }
