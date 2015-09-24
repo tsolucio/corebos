@@ -771,3 +771,260 @@ function mailer_export() {
 	return false;
 }
 // end of mailer export
+/*** These functions are taken from ListView.tpl ***/
+
+var typeofdata = new Array();
+typeofdata['E'] = ['e', 'n', 's', 'ew', 'c', 'k'];
+typeofdata['V'] = ['e', 'n', 's', 'ew', 'c', 'k'];
+typeofdata['N'] = ['e', 'n', 'l', 'g', 'm', 'h'];
+typeofdata['NN'] = ['e', 'n', 'l', 'g', 'm', 'h'];
+typeofdata['T'] = ['e', 'n', 'l', 'g', 'm', 'h'];
+typeofdata['I'] = ['e', 'n', 'l', 'g', 'm', 'h'];
+typeofdata['C'] = ['e', 'n'];
+typeofdata['DT'] = ['e', 'n', 'l', 'g', 'm', 'h'];
+typeofdata['D'] = ['e', 'n', 'l', 'g', 'm', 'h'];
+
+var fLabels = new Array();
+fLabels['e'] = alert_arr.EQUALS;
+fLabels['n'] = alert_arr.NOT_EQUALS_TO;
+fLabels['s'] = alert_arr.STARTS_WITH;
+fLabels['ew'] = alert_arr.ENDS_WITH;
+fLabels['c'] = alert_arr.CONTAINS;
+fLabels['k'] = alert_arr.DOES_NOT_CONTAINS;
+fLabels['l'] = alert_arr.LESS_THAN;
+fLabels['g'] = alert_arr.GREATER_THAN;
+fLabels['m'] = alert_arr.LESS_OR_EQUALS;
+fLabels['h'] = alert_arr.GREATER_OR_EQUALS;
+var noneLabel;
+
+function trimfValues(value)
+{
+	var string_array;
+	string_array = value.split(":");
+	return string_array[4];
+}
+
+function updatefOptions(sel, opSelName) {
+	var selObj = document.getElementById(opSelName);
+	var fieldtype = null;
+
+	var currOption = selObj.options[selObj.selectedIndex];
+	var currField = sel.options[sel.selectedIndex];
+
+	var fld = currField.value.split(":");
+	var tod = fld[4];
+	if (currField.value != null && currField.value.length != 0)
+	{
+		fieldtype = trimfValues(currField.value);
+		fieldtype = fieldtype.replace(/\\'/g, '');
+		ops = typeofdata[fieldtype];
+		var off = 0;
+		if (ops != null)
+		{
+
+			var nMaxVal = selObj.length;
+			for (nLoop = 0; nLoop < nMaxVal; nLoop++)
+			{
+				selObj.remove(0);
+			}
+			for (var i = 0; i < ops.length; i++)
+			{
+				var label = fLabels[ops[i]];
+				if (label == null)
+					continue;
+				var option = new Option(fLabels[ops[i]], ops[i]);
+				selObj.options[i] = option;
+				if (currOption != null && currOption.value == option.value)
+				{
+					option.selected = true;
+				}
+			}
+		}
+	} else {
+		var nMaxVal = selObj.length;
+		for (nLoop = 0; nLoop < nMaxVal; nLoop++)
+		{
+			selObj.remove(0);
+		}
+		selObj.options[0] = new Option('None', '');
+		if (currField.value == '') {
+			selObj.options[0].selected = true;
+		}
+	}
+
+}
+function checkgroup()
+{
+	if (document.getElementById("group_checkbox").checked)
+	{
+		document.change_ownerform_name.lead_group_owner.style.display = "block";
+		document.change_ownerform_name.lead_owner.style.display = "none";
+	}
+	else
+	{
+		document.change_ownerform_name.lead_owner.style.display = "block";
+		document.change_ownerform_name.lead_group_owner.style.display = "none";
+	}
+}
+
+function callSearch(searchtype)
+{
+	for (i = 1; i <= 26; i++)
+	{
+		var data_td_id = 'alpha_' + eval(i);
+		getObj(data_td_id).className = 'searchAlph';
+	}
+	gPopupAlphaSearchUrl = '';
+	search_fld_val = document.getElementById('bas_searchfield').options[document.getElementById('bas_searchfield').selectedIndex].value;
+	search_txt_val = encodeURIComponent(document.basicSearch.search_text.value);
+	var urlstring = '';
+	if (searchtype == 'Basic')
+	{
+		var p_tab = document.getElementsByName("parenttab");
+		urlstring = 'search_field=' + search_fld_val + '&searchtype=BasicSearch&search_text=' + search_txt_val + '&';
+		urlstring = urlstring + 'parenttab=' + p_tab[0].value + '&';
+	}
+	else if (searchtype == 'Advanced')
+	{
+		checkAdvancedFilter();
+		var advft_criteria = encodeURIComponent(document.getElementById('advft_criteria').value);
+		var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
+		urlstring += '&advft_criteria=' + advft_criteria + '&advft_criteria_groups=' + advft_criteria_groups + '&';
+		urlstring += 'searchtype=advance&';
+	}
+	document.getElementById("status").style.display = "inline";
+	jQuery.ajax({
+		method: 'POST',
+		url: 'index.php?' + urlstring + 'query=true&file=index&module=' + gVTModule + '&action=' + gVTModule + 'Ajax&ajax=true&search=true'
+	}).done(function (response) {
+		document.getElementById("status").style.display = "none";
+		result = response.split('&#&#&#');
+		document.getElementById("ListViewContents").innerHTML = result[2];
+		if (result[1] != '')
+			alert(result[1]);
+		document.getElementById('basicsearchcolumns').innerHTML = '';
+	}
+	);
+	return false;
+}
+function alphabetic(module, url, dataid)
+{
+	for (i = 1; i <= 26; i++)
+	{
+		var data_td_id = 'alpha_' + eval(i);
+		getObj(data_td_id).className = 'searchAlph';
+
+	}
+	getObj(dataid).className = 'searchAlphselected';
+	document.getElementById("status").style.display = "inline";
+	jQuery.ajax({
+		method: 'POST',
+		url: 'index.php?module=' + module + '&action=' + module + 'Ajax&file=index&ajax=true&search=true&' + url
+	}).done(function (response) {
+		document.getElementById("status").style.display = "none";
+		result = response.split('&#&#&#');
+		document.getElementById("ListViewContents").innerHTML = result[2];
+		if (result[1] != '')
+			salert(result[1]);
+		document.getElementById('basicsearchcolumns').innerHTML = '';
+	}
+	);
+}
+function ajaxChangeStatus(statusname)
+{
+	document.getElementById("status").style.display = "inline";
+	var viewid = document.getElementById('viewname').options[document.getElementById('viewname').options.selectedIndex].value;
+	var idstring = document.getElementById('idlist').value;
+	var searchurl = document.getElementById('search_url').value;
+	var tplstart = '&';
+	if (gstart != '')
+	{
+		tplstart = tplstart + gstart;
+	}
+	if (statusname == 'status')
+	{
+		fninvsh('changestatus');
+		var url = '&leadval=' + document.getElementById('lead_status').options[document.getElementById('lead_status').options.selectedIndex].value;
+		var urlstring = "module=Users&action=updateLeadDBStatus&return_module=Leads" + tplstart + url + "&viewname=" + viewid + "&idlist=" + idstring + searchurl;
+	}
+	else if (statusname == 'owner')
+	{
+		if (document.getElementById("user_checkbox").checked)
+		{
+			fninvsh('changeowner');
+			var url = '&owner_id=' + document.getElementById('lead_owner').options[document.getElementById('lead_owner').options.selectedIndex].value;
+
+			var urlstring = "module=Users&action=updateLeadDBStatus&return_module=" + gVTModule + tplstart + url + "&viewname=" + viewid + "&idlist=" + idstring + searchurl;
+
+		} else {
+			fninvsh('changeowner');
+			var url = '&owner_id=' + document.getElementById('lead_group_owner').options[document.getElementById('lead_group_owner').options.selectedIndex].value;
+
+			var urlstring = "module=Users&action=updateLeadDBStatus&return_module=" + gVTModule + tplstart + url + "&viewname=" + viewid + "&idlist=" + idstring + searchurl;
+
+		}
+	}
+	jQuery.ajax({
+		method: 'POST',
+		url: 'index.php?' + urlstring
+	}).done(function (response) {
+		document.getElementById("status").style.display = "none";
+		result = response.split('&#&#&#');
+		document.getElementById("ListViewContents").innerHTML = result[2];
+		if (result[1] != '')
+			alert(result[1]);
+		document.getElementById('basicsearchcolumns').innerHTML = '';
+	}
+	);
+}
+function modifyimage(imagename)
+{
+	imgArea = getObj('dynloadarea');
+	if (!imgArea)
+	{
+		imgArea = document.createElement("div");
+		imgArea.id = 'dynloadarea';
+		imgArea.setAttribute("style", "z-index:100000001;");
+		imgArea.style.position = 'absolute';
+		imgArea.innerHTML = '<img width="260" height="200" src="' + imagename + '" class="thumbnail">';
+		document.body.appendChild(imgArea);
+	}
+	PositionDialogToCenter(imgArea.id);
+}
+
+function PositionDialogToCenter(ID)
+{
+	var vpx, vpy;
+	if (self.innerHeight) // Mozilla, FF, Safari and Opera
+	{
+		vpx = self.innerWidth;
+		vpy = self.innerHeight;
+	}
+	else if (document.documentElement && document.documentElement.clientHeight) //IE
+
+	{
+		vpx = document.documentElement.clientWidth;
+		vpy = document.documentElement.clientHeight;
+	}
+	else if (document.body) // IE
+	{
+		vpx = document.body.clientWidth;
+		vpy = document.body.clientHeight;
+	}
+
+	//Calculate the length from top, left
+	dialogTop = (vpy / 2 - 280 / 2) + document.documentElement.scrollTop;
+	dialogLeft = (vpx / 2 - 280 / 2);
+
+	//Position the Dialog to center
+	document.getElementById(ID).style.top = dialogTop + "px";
+	document.getElementById(ID).style.left = dialogLeft + "px";
+	document.getElementById(ID).style.display = "block";
+}
+
+function removeDiv(ID) {
+	var node2Rmv = getObj(ID);
+	if (node2Rmv) {
+		node2Rmv.parentNode.removeChild(node2Rmv);
+	}
+}
