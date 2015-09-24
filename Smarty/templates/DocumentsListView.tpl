@@ -157,7 +157,7 @@ function alphabetic(module,url,dataid)
 	jQuery.ajax({ldelim}
 			method:"POST",
 			url:'index.php?module='+module+'&action='+module+'Ajax&file=index&ajax=true&search=true&'+url,
-	{ldelim}).done(function(response) {ldelim}
+	{rdelim}).done(function(response) {ldelim}
 				jQuery("#status").hide();
 				result = response.split('&#&#&#');
 				jQuery("#ListViewContents").html(result[2]);

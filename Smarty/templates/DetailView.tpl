@@ -121,7 +121,7 @@ function DeleteTag(id,recordid)
 	jQuery.ajax({ldelim}
 			method:"POST",
 			url:"index.php?file=TagCloud&module={$MODULE}&action={$MODULE}Ajax&ajxaction=DELETETAG&recordid="+recordid+"&tagid=" +id,
-	{ldelim}).done(function(response) {ldelim}
+	{rdelim}).done(function(response) {ldelim}
 				getTagCloud();
 				jQuery("#vtbusy_info").hide();
 	{rdelim}
