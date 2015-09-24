@@ -2176,7 +2176,7 @@ class ReportRun extends CRMEntity {
 		{
 
 			$sSQL = $this->sGetSQLforReport($this->reportid,$filtersql);
-			$result = $adb->query($sSQL);
+			$result = $adb->pquery($sSQL,array());
 			if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1)
 			$picklistarray = $this->getAccessPickListValues();
 
@@ -3001,9 +3001,9 @@ class ReportRun extends CRMEntity {
 			$keyvalue = getTabModuleName($tabid)."_".$fieldlabel1;
 			$fieldvalues = Array();
 			if (count($roleids) > 1) {
-				$mulsel="select distinct $fieldname from vtiger_$fieldname inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$fieldname.picklist_valueid where roleid in (\"". implode($roleids,"\",\"") ."\") and picklistid in (select picklistid from vtiger_$fieldname) order by sortid asc";
+				$mulsel="select distinct $fieldname from vtiger_$fieldname inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$fieldname.picklist_valueid where roleid in (\"". implode($roleids,"\",\"") ."\") and picklistid in (select picklistid from vtiger_$fieldname)"; // order by sortid asc - not requried
 			} else {
-				$mulsel="select distinct $fieldname from vtiger_$fieldname inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$fieldname.picklist_valueid where roleid ='".$roleid."' and picklistid in (select picklistid from vtiger_$fieldname) order by sortid asc";
+				$mulsel="select distinct $fieldname from vtiger_$fieldname inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$fieldname.picklist_valueid where roleid ='".$roleid."' and picklistid in (select picklistid from vtiger_$fieldname)"; // order by sortid asc - not requried
 			}
 			if($fieldname != 'firstname')
 				$mulselresult = $adb->query($mulsel);
