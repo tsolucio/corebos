@@ -95,7 +95,7 @@ class ReportRun extends CRMEntity {
 			list($tablename,$colname,$module_field,$fieldname,$single) = explode(":",$fieldcolname);
 			list($module,$field) = explode("_",$module_field,2);
 			$inventory_fields = array('quantity','listprice','serviceid','productid','discount','comment');
-			$inventory_modules = array('SalesOrder','Quotes','PurchaseOrder','Invoice');
+			$inventory_modules = getInventoryModules();
 			require('user_privileges/user_privileges_'.$current_user->id.'.php');
 			if(sizeof($permitted_fields[$module]) == 0 && $is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1)
 			{

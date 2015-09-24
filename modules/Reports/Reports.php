@@ -678,11 +678,11 @@ class Reports extends CRMEntity{
 			$optionvalue = $fieldtablename.":".$fieldcolname.":".$module."_".$fieldlabel1.":".$fieldname.":".$fieldtypeofdata;
 			$this->adv_rel_fields[$fieldtypeofdata][] = '$'.$module.'#'.$fieldname.'$'."::".getTranslatedString($module,$module)." ".getTranslatedString($fieldlabel,$module);
 			//added to escape attachments fields in Reports as we have multiple attachments
-                        if($module != 'HelpDesk' || $fieldname !='filename')
+			if($module != 'HelpDesk' || $fieldname !='filename')
 				$module_columnlist[$optionvalue] = $fieldlabel;
 		}
 		$blockname = getBlockName($block);
-		if($blockname == 'LBL_RELATED_PRODUCTS' && ($module=='PurchaseOrder' || $module=='SalesOrder' || $module=='Quotes' || $module=='Invoice')){
+		if($blockname == 'LBL_RELATED_PRODUCTS' && in_array($module,getInventoryModules())) {
 			$fieldtablename = 'vtiger_inventoryproductrel';
 			$fields = array('productid'=>getTranslatedString('Product Name',$module),
 							'serviceid'=>getTranslatedString('Service Name',$module),
@@ -1214,9 +1214,9 @@ function getEscapedColumns($selectedfields) {
 
 		$selected_mod = explode(":",$this->secmodule);
 		array_push($selected_mod,$this->primodule);
-		
+
 		$inventory_fields = array('quantity','listprice','serviceid','productid','discount','comment');
-		$inventory_modules = array('SalesOrder','Quotes','PurchaseOrder','Invoice');
+		$inventory_modules = getInventoryModules();
 		while($columnslistrow = $adb->fetch_array($result))
 		{
 			$fieldname ="";
