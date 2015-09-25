@@ -285,6 +285,11 @@ function VTUpdateFieldsTask($, fieldvaluemapping){
 						var fieldModule = group[2];
 						var fieldName = group[3];
 					}
+					if (moduleFieldTypes[fieldModule]==undefined || moduleFieldTypes[fieldModule][fieldName]==undefined) {
+						alert(alert_arr.WF_UPDATE_MAP_ERROR+fieldModule+"."+fieldName);
+						alert(alert_arr.WF_UPDATE_MAP_ERROR_INFO);
+						return {name:"string"};
+					}
 					return moduleFieldTypes[fieldModule][fieldName];
 				}
 
