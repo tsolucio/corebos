@@ -83,7 +83,7 @@ function massDelete()
     				<input name="action" type="hidden">
 				<tr>
 					<td width=50 rowspan=2 valign=top><img src="{'mailmarge.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_MODULE_NAME}" width="48" height="48" border=0 title="{$MOD.LBL_MODULE_NAME}"></td>
-					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{$MOD.LBL_SETTINGS}</a> > {$UMOD.LBL_WORD_TEMPLATES} </b></td>
+					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$UMOD.LBL_WORD_TEMPLATES} </b></td>
 				</tr>
 				<tr>
 					<td valign=top class="small">{$MOD.LBL_MAIL_MERGE_DESC}</td>

@@ -97,6 +97,7 @@ function redirectWhenNoRelatedRecordsFound()
 <script language="JavaScript" type="text/javascript" src="include/js/QuickCreate.js"></script>
 <script language="JavaScript" type="text/javascript" src="include/js/Inventory.js"></script>
 <script language="JavaScript" type="text/javascript" src="include/js/json.js"></script>
+<script language="JavaScript" type="text/javascript" src="include/js/search.js"></script>
 <!-- vtlib customization: Javascript hook -->
 <script language="JavaScript" type="text/javascript" src="include/js/vtlib.js"></script>
 <!-- END -->
@@ -183,10 +184,13 @@ function set_focus() {ldelim}
 			<table width="100%" cellpadding="5" cellspacing="0" border="0"  class="homePageMatrixHdr">
 				<tr>
 					<td style="padding:10px;" >
+						<div id="searchAcc" style="display: block;position:relative;">
 						<form name="basicSearch" action="index.php" onsubmit="callSearch('Basic');return false;" method="post">
 						<table width="100%" cellpadding="5" cellspacing="0">
 						<tr>
-							<td width="20%" class="dvtCellLabel"><img src="{'basicSearchLens.gif'|@vtiger_imageurl:$THEME}"></td>
+							<td class="searchUIName small" nowrap align="left">
+								<span class="moduleName">{$APP.LBL_SEARCH}</span><br><span class="small"><a href="#" onClick="fnhide('searchAcc');show('advSearch');document.basicSearch.searchtype.value='advance';">{$APP.LBL_GO_TO} {$APP.LNK_ADVANCED_SEARCH}</a></span>
+							</td>
 							<td width="30%" class="dvtCellLabel"><input type="text" name="search_text" id="search_txt" class="txtBox"> </td>
 							<td width="30%" class="dvtCellLabel"><b>{$APP.LBL_IN}</b>&nbsp;
 								<select name ="search_field" class="txtBox">
@@ -207,7 +211,7 @@ function set_focus() {ldelim}
 								<input name="from_link" id="from_link" type="hidden" value="{$smarty.request.fromlink|@vtlib_purify}">
 								<input name="maintab" id="maintab" type="hidden" value="{$MAINTAB}">
 								<input type="hidden" id="relmod" name="{$mod_var_name}" value="{$mod_var_value}">
-                                <input type="hidden" id="relrecord_id" name="{$recid_var_name}" value="{$recid_var_value}">
+								<input type="hidden" id="relrecord_id" name="{$recid_var_name}" value="{$recid_var_value}">
 								<input name="form"  id="popupform" type="hidden" value="{$smarty.request.form|@vtlib_purify}">
 								{* vtlib customization: For uitype 10 popup during paging *}
 								{if $smarty.request.form eq 'vtlibPopupView'}
@@ -238,6 +242,7 @@ function set_focus() {ldelim}
 						</tr>
 						</table>
 						</form>
+                                              </div>
 					</td>
 				</tr>
 				{if $recid_var_value neq ''}
@@ -246,6 +251,31 @@ function set_focus() {ldelim}
                                 </tr>
                                 {/if}
 			</table>
+			<!-- ADVANCED SEARCH -->
+			<div id="advSearch" style="display:none;">
+			<form name="advSearch" method="post" action="index.php" onSubmit="return callSearch('Advanced');">
+				<table  cellspacing=0 cellpadding=5 width=100% class="searchUIAdv1 small" align="center" border=0>
+					<tr>
+						<td class="searchUIName small" nowrap align="left"><span class="moduleName">{$APP.LBL_SEARCH}</span><br><span class="small"><a href="#" onClick="show('searchAcc');fnhide('advSearch')">{$APP.LBL_GO_TO} {$APP.LNK_BASIC_SEARCH}</a></span></td>
+						<td class="small" align="right" valign="top" onMouseOver="this.style.cursor='pointer';" onclick="moveMe('searchAcc');searchshowhide('searchAcc','advSearch')">[x]</td>
+					</tr>
+				</table>
+				<table cellpadding="2" cellspacing="0" width="100%" align="center" class="searchUIAdv2 small" border=0>
+					<tr>
+						<td align="center" class="small" width=90%>
+							{include file='AdvanceFilter.tpl' SOURCE='customview' COLUMNS_BLOCK=$FIELDNAMES}
+						</td>
+					</tr>
+				</table>
+				<table border=0 cellspacing=0 cellpadding=5 width=100% class="searchUIAdv3 small" align="center">
+					<tr>
+						<td align="center" class="small"><input type="button" class="crmbutton small create" value=" {$APP.LBL_SEARCH_NOW_BUTTON} " onClick="callSearch('Advanced');">
+						</td>
+					</tr>
+				</table>
+			</form><br>
+			</div>
+			</div>
 			<div id="qcformpop"></div>
 			<div id="ListViewContents">
 				{include file="PopupContents.tpl"}
@@ -275,6 +305,14 @@ function callSearch(searchtype)
     {ldelim}
 	urlstring = 'search_field='+search_fld_val+'&searchtype=BasicSearch&search_text='+search_txt_val;
     {rdelim}
+	else if(searchtype == 'Advanced')
+	{ldelim}
+		checkAdvancedFilter();
+		var advft_criteria = $('advft_criteria').value;
+		var advft_criteria_groups = $('advft_criteria_groups').value;
+		urlstring += '&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups+'&';
+		urlstring += 'searchtype=advance&'
+	{rdelim}
 	popuptype = $('popup_type').value;
 	act_tab = $('maintab').value;
 	urlstring += '&popuptype='+popuptype;

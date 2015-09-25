@@ -104,9 +104,6 @@ if(is_null($filename) || $filename == '') {
 	$smarty->assign('FILE_EXIST','yes');
 }
 
-//setting default flag value so due date and time not required
-if (!isset($focus->id)) $focus->date_due_flag = 'on';
-
 //needed when creating a new case with default values passed in
 if (isset($_REQUEST['contact_name']) && is_null($focus->contact_name)) {
 	$focus->contact_name = vtlib_purify($_REQUEST['contact_name']);

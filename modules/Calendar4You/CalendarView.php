@@ -13,7 +13,6 @@ require_once("modules/Calendar/Calendar.php");
 global $app_strings, $mod_strings, $current_language, $currentModule, $theme, $current_user, $default_charset;
 require_once('Smarty_setup.php');
 $tasklabel = getAllModulesWithDateFields();
-uasort($tasklabel, function($a,$b) {return (strtolower(getTranslatedString($a,$a)) < strtolower(getTranslatedString($b,$b))) ? -1 : 1;});
 
 $category = getParentTab($currentModule);
 
@@ -95,7 +94,7 @@ if($Calendar4You->CheckPermissions("EDIT")) {
 	$timeModules_array = '';
 	foreach ($timeModules as $tmid => $tmmod) {
 		$timeModluleDetails[$tmmod] = getModuleCalendarFields($tmmod);
-		$timeModules_array = '"'.html_entity_decode($tmmod,ENT_QUOTES,$default_charset).'",';
+		$timeModules_array.= '"'.html_entity_decode($tmmod,ENT_QUOTES,$default_charset).'",';
 	}
 	$smarty->assign('TIMEMODULEARRAY', trim($timeModules_array,","));
 	$smarty->assign('TIMEMODULEDETAILS', json_encode($timeModluleDetails));

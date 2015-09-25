@@ -1,5 +1,4 @@
 /*********************************************************************************
-
 ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
  * The Original Code is:  vtiger CRM Open Source
@@ -7,7 +6,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-//added by raju for emails
 
 function eMail(module,oButton) {
 	var select_options = document.getElementById('allselectedboxes').value;
@@ -20,18 +18,15 @@ function eMail(module,oButton) {
 	var idstring = "";
 
 	if(select_options == 'all'){
-
-        document.getElementById('idlist').value=idstring;
-        allids = select_options;
+		document.getElementById('idlist').value=idstring;
+		allids = select_options;
 		var count=numOfRows;
-
-    } else {
+	} else {
 		var x = select_options.split(";");
 		var count=x.length;
 		select_options=select_options.slice(0,(select_options.length-1));
-   
 		if (count > 1) {
-			idstring=select_options.replace(/;/g,':')
+			idstring=select_options.replace(/;/g,':');
 			document.getElementById('idlist').value=idstring;
 		}
 		else {
@@ -58,12 +53,10 @@ function eMail(module,oButton) {
 	}
 }
 
-
 function massMail(module) {
-
-	var select_options  =  document.getElementsByName('selected_id');
+	var select_options = document.getElementsByName('selected_id');
 	x = select_options.length;
-	var viewid =getviewId();		
+	var viewid =getviewId();
 	idstring = "";
 
 	xx = 0;
@@ -71,8 +64,8 @@ function massMail(module) {
 	{
 		if(select_options[i].checked)
 		{
-			idstring = select_options[i].value +";"+idstring
-				xx++
+			idstring = select_options[i].value +";"+idstring;
+			xx++;
 		}
 	}
 	if (xx != 0)
@@ -87,10 +80,9 @@ function massMail(module) {
 	document.massdelete.action="index.php?module=CustomView&action=SendMailAction&return_module="+module+"&return_action=index&viewname="+viewid;
 }
 
-//added by rdhital for better emails
 function set_return_emails(entity_id,email_id,parentname,emailadd,emailadd2,perm,emailfield){
 	if(perm == 0 || perm == 3) {
-		if(emailadd2 == '')	{			
+		if(emailadd2 == '') {
 			alert(alert_arr.LBL_DONT_HAVE_EMAIL_PERMISSION);
 			return false;
 		}
@@ -99,7 +91,7 @@ function set_return_emails(entity_id,email_id,parentname,emailadd,emailadd2,perm
 	} else {
 		if(emailadd == '')
 			emailadd = emailadd2;
-	}	
+	}
 	if(emailadd != '') {
 		if (emailfield=='default') {
 		window.opener.document.EditView.parent_id.value = window.opener.document.EditView.parent_id.value+entity_id+'@'+email_id+'|';
@@ -116,8 +108,7 @@ function set_return_emails(entity_id,email_id,parentname,emailadd,emailadd2,perm
 		alert('"'+parentname+alert_arr.DOESNOT_HAVE_AN_MAILID);
 		return false;
 	}
-}	
-//added by raju for emails
+}
 
 function validate_sendmail(idlist,module){
 	var j=0;
@@ -135,7 +126,7 @@ function validate_sendmail(idlist,module){
 		url1 = '';
 	}
 	var chk_emails = document.SendMail.elements.length;
-	var oFsendmail = document.SendMail.elements
+	var oFsendmail = document.SendMail.elements;
 	email_type = new Array();
 	for(var i=0 ;i < chk_emails ;i++) {
 		if(oFsendmail[i].type != 'button'){
@@ -154,6 +145,7 @@ function validate_sendmail(idlist,module){
 		alert(alert_arr.SELECT_MAILID);
 	}
 }
+
 function sendmail(module,idstrings,url) {
 	new Ajax.Request(
 		'index.php',
@@ -189,12 +181,12 @@ function rel_eMail(module,oButton,relmod){
 		//Added to remove the semi colen ';' at the end of the string.done to avoid error.
 		var x = select_options.split(";");
 		var viewid = '';
-		var count = x.length
+		var count = x.length;
 		var idstring = "";
 		select_options = select_options.slice(0,(select_options.length-1));
 
 		if (count > 1){
-			idstring=select_options.replace(/;/g,':')
+			idstring=select_options.replace(/;/g,':');
 			allids=idstring;
 		} else {
 			alert(alert_arr.SELECT);

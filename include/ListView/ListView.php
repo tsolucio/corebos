@@ -10,24 +10,18 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  generic list view class.
  ********************************************************************************/
 require_once('include/logging.php');
 require_once('include/ListView/ListViewSession.php');
 
 class ListView {
-	
 	var $local_theme = null;
-	var  $local_app_strings= null;
-	var  $local_image_path = null;
-	var  $local_current_module = null;
+	var $local_app_strings= null;
+	var $local_image_path = null;
+	var $local_current_module = null;
 	var $local_mod_strings = null;
-	var  $records_per_page = 20;
-	var  $xTemplate = null;
+	var $records_per_page = 20;
+	var $xTemplate = null;
 	var $xTemplatePath = null;
 	var $seed_data = null;
 	var $query_where = null;
@@ -40,17 +34,13 @@ class ListView {
 	var $querey_where_has_changed = false;
 	var $display_header_and_footer = true;
 
-
 /**initializes ListView
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
 */
- function ListView(){
+function ListView(){
 	global $log;
 	$log->debug("Entering ListView() method ...");
- 	
- 	
 	if(!$this->initialized){
 		global $list_max_entries_per_page;
 		$this->records_per_page = $list_max_entries_per_page + 0;
@@ -66,32 +56,33 @@ class ListView {
 		}
 		$this->log = LoggerManager::getLogger('listView_'.$this->local_current_module);
 		$log->debug("Exiting ListView method ...");
-	}	
+	}
 }
+
 /**sets the header title */
- function setHeaderTitle($value){
+function setHeaderTitle($value){
 	global $log;
 	$log->debug("Entering setHeaderTitle(".$value.") method ...");
-	$this->header_title = $value;	
+	$this->header_title = $value;
 	$log->debug("Exiting setHeaderTitle method ...");
 }
+
 /**sets the header text this is text thats appended to the header vtiger_table and is usually used for the creation of buttons
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
 */
- function setHeaderText($value){
+function setHeaderText($value){
 	global $log;
 	$log->debug("Entering setHeaderText(".$value.") method ...");
-	$this->header_text = $value;	
+	$this->header_text = $value;
 	$log->debug("Exiting setHeaderText method ...");
 }
+
 /**sets the parameters dealing with the db
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
 */
- function setQuery($where, $limit, $orderBy, $varName, $allowOrderByOveride= true){
+function setQuery($where, $limit, $orderBy, $varName, $allowOrderByOveride= true){
 	global $log;
 	$log->debug("Entering setQuery(".$where.",". $limit.",". $orderBy.",". $varName.",". $allowOrderByOveride.") method ...");
 	$this->query_where = $where;
@@ -99,65 +90,58 @@ class ListView {
 		$this->querey_where_has_changed = true;
 		$this->setSessionVariable("query", "where", $where);
 	}
-	
 	$this->query_limit = $limit;
 	if(!$allowOrderByOveride){
 		$this->query_orderby = $orderBy;
 		$log->debug("Exiting setQuery method ...");
 		return;
- 	}
+	}
 	$sortBy = $this->getSessionVariable($varName, "ORDER_BY") ;
 
 	if(empty($sortBy)){
 		$this->setUserVariable($varName, "ORDER_BY", $orderBy);
 		$sortBy = $orderBy;
 	}else{
-		$this->setUserVariable($varName, "ORDER_BY", $sortBy);	
+		$this->setUserVariable($varName, "ORDER_BY", $sortBy);
 	}
 	if($sortBy == 'amount'){
-		$sortBy = 'amount*1';	
+		$sortBy = 'amount*1';
 	}
 
 	$desc = false;
 	$desc = $this->getSessionVariable($varName, $sortBy."_desc");
-	
+
 	if(empty($desc))
 		$desc = false;
-	if(isset($_REQUEST[$this->getSessionVariableName($varName,  "ORDER_BY")]))
+	if(isset($_REQUEST[$this->getSessionVariableName($varName,"ORDER_BY")]))
 		$last = $this->getSessionVariable($varName, "ORDER_BY_LAST");
 		if(!empty($last) && $last == $sortBy){
 			$desc = !$desc;
 		}else {
-			$this->setSessionVariable($varName, "ORDER_BY_LAST", $sortBy);	
-		}	
+			$this->setSessionVariable($varName, "ORDER_BY_LAST", $sortBy);
+		}
 	$this->setSessionVariable($varName, $sortBy."_desc", $desc);
 	if(!empty($sortBy)){
-	if(substr_count(strtolower($sortBy), ' desc') == 0 && substr_count(strtolower($sortBy), ' asc') == 0){
-		if($desc){
-			$this->query_orderby = $sortBy.' desc';
-		}else{ 
-			$this->query_orderby = $sortBy.' asc';
+		if(substr_count(strtolower($sortBy), ' desc') == 0 && substr_count(strtolower($sortBy), ' asc') == 0){
+			if($desc){
+				$this->query_orderby = $sortBy.' desc';
+			}else{
+				$this->query_orderby = $sortBy.' asc';
+			}
+		} else {
+			$this->query_orderby = $sortBy;
 		}
-	}
-	else{
-		$this->query_orderby = $sortBy;	
-	}
-	}else {
-		$this->query_orderby = "";	
+	} else {
+		$this->query_orderby = "";
 	}
 	$log->debug("Exiting setQuery method ...");
-	
-	
-	
-	
 }
 
 /**sets the theme used only use if it is different from the global
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
 */
- function setTheme($theme){
+function setTheme($theme){
 	global $log;
 	$log->debug("Entering setTheme(".$theme.") method ...");
 	$this->local_theme = $theme;
@@ -168,9 +152,8 @@ class ListView {
 /**sets the AppStrings used only use if it is different from the global
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
 */
- function setAppStrings(&$app_strings){
+function setAppStrings(&$app_strings){
 	global $log;
 	$log->debug("Entering setAppStrings(".$app_strings.") method ...");
 	unset($this->local_app_strings);
@@ -179,12 +162,11 @@ class ListView {
 	$log->debug("Exiting setAppStrings method ...");
 }
 
-/**sets the ModStrings used 
+/**sets the ModStrings used
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
 */
- function setModStrings(&$mod_strings){
+function setModStrings(&$mod_strings){
 	global $log;
 	$log->debug("Entering setModStrings(".$mod_strings.") method ...");
 	unset($this->local_module_strings);
@@ -196,9 +178,8 @@ class ListView {
 /**sets the ImagePath used
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
 */
- function setImagePath($image_path){
+function setImagePath($image_path){
 	global $log;
 	$log->debug("Entering setImagePath(".$image_path.") method ...");
 	$this->local_image_path = $image_path;
@@ -212,9 +193,8 @@ class ListView {
 /**sets the currentModule only use if this is different from the global
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
 */
- function setCurrentModule($currentModule){
+function setCurrentModule($currentModule){
 	global $log;
 	$log->debug("Entering setCurrentModule(".$currentModule.") method ...");
 	unset($this->local_current_module);
@@ -222,58 +202,52 @@ class ListView {
 	$this->log = LoggerManager::getLogger('listView_'.$this->local_current_module);
 	if(isset($this->xTemplate))$this->xTemplate->assign("MODULE_NAME", $this->local_current_module );
 	$log->debug("Exiting setCurrentModule method ...");
-
 }
-
 
 /**INTERNAL FUNCTION sets a session variable
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
 */
- function setSessionVariable($localVarName,$varName, $value){
-		global $log;
-		$log->debug("Entering setSessionVariable(".$localVarName.",".$varName.",". $value.") method ...");
-		$_SESSION[$this->local_current_module."_".$localVarName."_".$varName] = $value;
-		$log->debug("Exiting setSessionVariable method ...");
+function setSessionVariable($localVarName,$varName, $value){
+	global $log;
+	$log->debug("Entering setSessionVariable(".$localVarName.",".$varName.",". $value.") method ...");
+	$_SESSION[$this->local_current_module."_".$localVarName."_".$varName] = $value;
+	$log->debug("Exiting setSessionVariable method ...");
 }
 
 function setUserVariable($localVarName,$varName, $value){
-		global $log;
-		$log->debug("Entering setUserVariable(".$localVarName.",".$varName.",". $value.") method ...");
-		global $current_user;
-		$current_user->setPreference($this->local_current_module."_".$localVarName."_".$varName, $value);
-		$log->debug("Exiting setUserVariable method ...");
+	global $log;
+	$log->debug("Entering setUserVariable(".$localVarName.",".$varName.",". $value.") method ...");
+	global $current_user;
+	$current_user->setPreference($this->local_current_module."_".$localVarName."_".$varName, $value);
+	$log->debug("Exiting setUserVariable method ...");
 }
 
 /**INTERNAL FUNCTION returns a session variable first checking the querey for it then checking the session
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
 */
- function getSessionVariable($localVarName,$varName){
-		global $log;
-		$log->debug("Entering getSessionVariable(".$localVarName.",".$varName.") method ...");
-		if(isset($_REQUEST[$this->getSessionVariableName($localVarName, $varName)])){
-			$this->setSessionVariable($localVarName,$varName,vtlib_purify($_REQUEST[$this->getSessionVariableName($localVarName, $varName)])); 		
-		}
-		 if(isset($_SESSION[$this->getSessionVariableName($localVarName, $varName)])){
-			$log->debug("Exiting getSessionVariable method ...");
-		 	return $_SESSION[$this->getSessionVariableName($localVarName, $varName)];	
-		 }
-		 $log->debug("Exiting getSessionVariable method ...");
-		 return "";
+function getSessionVariable($localVarName,$varName){
+	global $log;
+	$log->debug("Entering getSessionVariable(".$localVarName.",".$varName.") method ...");
+	if(isset($_REQUEST[$this->getSessionVariableName($localVarName, $varName)])){
+		$this->setSessionVariable($localVarName,$varName,vtlib_purify($_REQUEST[$this->getSessionVariableName($localVarName, $varName)]));
+	}
+	if(isset($_SESSION[$this->getSessionVariableName($localVarName, $varName)])){
+		$log->debug("Exiting getSessionVariable method ...");
+		return $_SESSION[$this->getSessionVariableName($localVarName, $varName)];
+	}
+	$log->debug("Exiting getSessionVariable method ...");
+	return "";
 }
 
 /**
-
  * @return void
  * @param unknown $localVarName
  * @param unknown $varName
  * @desc INTERNAL FUNCTION returns the session/query variable name
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): ______________________________________..
  */
 function getSessionVariableName($localVarName,$varName){
 	global $log;
@@ -281,7 +255,6 @@ function getSessionVariableName($localVarName,$varName){
 	$log->debug("Exiting getSessionVariableName method ...");
 	return $this->local_current_module."_".$localVarName."_".$varName;
 }
-
 
 }
 

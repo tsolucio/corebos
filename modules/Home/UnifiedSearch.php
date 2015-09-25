@@ -142,23 +142,19 @@ if(isset($query_string) && $query_string != ''){
 				}else{
 					$start = 1;
 				}
-				
+
 				$navigation_array = VT_getSimpleNavigationValues($start, $list_max_entries_per_page, $noofrows);
 				$limitStartRecord = ($navigation_array['start'] - 1) * $list_max_entries_per_page;
-				
-				if( $adb->dbType == "pgsql"){
-					$listquery = $listquery. " OFFSET $limitStartRecord LIMIT $list_max_entries_per_page";
-				}else{
-				    $listquery = $listquery. " LIMIT $limitStartRecord, $list_max_entries_per_page";
-				}
+
+				$listquery = $listquery. " LIMIT $limitStartRecord, $list_max_entries_per_page";
 				$list_result = $adb->query($listquery);
-				
+
 				$moduleRecordCount[$module]['recordListRangeMessage'] = getRecordRangeMessage($list_result, $limitStartRecord, $noofrows);
 
 				$info_message='&recordcount='.$_REQUEST['recordcount'].'&noofrows='.$_REQUEST['noofrows'].'&message='.$_REQUEST['message'].'&skipped_record_count='.$_REQUEST['skipped_record_count'];
 				$url_string = '&modulename='.$_REQUEST['modulename'].'&nav_module='.$module_name.$info_message;
 				$viewid = '';
-				
+
 				$navigationOutput = getTableHeaderSimpleNavigation($navigation_array, $url_string,$module,"UnifiedSearch",$viewid);
 				$listview_header = getListViewHeader($focus,$module,"","","","global",$oCustomView);
 				$listview_entries = getListViewEntries($focus,$module,$list_result,$navigation_array,"","","","",$oCustomView);

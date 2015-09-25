@@ -109,7 +109,6 @@ $end_date = date("Y-m-d",$end_time);
 
 $tasklabel = getAllModulesWithDateFields();
 $timeModules = getAllModulesWithDateTimeFields();
-uasort($tasklabel, function($a,$b) {return (strtolower(getTranslatedString($a,$a)) < strtolower(getTranslatedString($b,$b))) ? -1 : 1;});
 
 $Event_Status = array();
 if (count($Load_Event_Status) > 0) {

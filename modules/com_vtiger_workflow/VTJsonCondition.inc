@@ -142,6 +142,9 @@ class VTJsonCondition {
 			} else {
 				$value = $exprEvaluater->evaluate($entityData);
 			}
+		} else {
+			if ($value=='true:boolean') $value = '1';
+			if ($value=='false:boolean') $value = '0';
 		}
 
 		switch ($condition) {

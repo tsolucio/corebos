@@ -16,7 +16,7 @@
 <table width="99%" cellpadding="2" cellspacing="5" border="0">
 
 <tr>
-<td class="detailedViewHeader" align="left" colspan=2><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{$MOD.LBL_SETTINGS} </a> > {$MOD.LBL_STUDIO} > {$MOD.LBL_FIELD_ORDERING} </b></td></tr>
+<td class="detailedViewHeader" align="left" colspan=2><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString} </a> > {$MOD.LBL_STUDIO} > {$MOD.LBL_FIELD_ORDERING} </b></td></tr>
 <tr><td>
 <a href="index.php?module=Settings&action=EditFieldBlock&tabid=7&fld_module=Leads&parenttab=Settings">{$MOD.LBL_LEAD_FIELD_ACCESS}</a></td><td>
 <a href="index.php?module=Settings&action=EditFieldBlock&tabid=6&fld_module=Accounts&parenttab=Settings">{$MOD.LBL_ACCOUNT_FIELD_ACCESS}</a></td></tr><tr><td>

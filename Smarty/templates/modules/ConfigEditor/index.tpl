@@ -159,7 +159,7 @@
 							<tbody>
 								<tr>
 									<td width="50" valign="top" rowspan="2"><img height="48" border="0" width="48" title="Users" alt="Users" src="themes/images/migrate.gif"></td>
-									<td valign="bottom" class="heading2"><b><a href="index.php?module=Settings&amp;action=index&amp;parenttab=Settings">{$MOD.LBL_SETTINGS}</a> &gt; {$MOD.LBL_CONFIG_EDITOR} </b></td>
+									<td valign="bottom" class="heading2"><b><a href="index.php?module=Settings&amp;action=index&amp;parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> &gt; {$MOD.LBL_CONFIG_EDITOR} </b></td>
 								</tr>
 								<tr>
 									<td valign="top"class="small">{$MOD.LBL_CONFIG_EDIT}</td>

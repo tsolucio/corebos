@@ -150,18 +150,16 @@ alt="Clear" title="Clear" LANGUAGE=javascript	onClick="this.form.{$fldname}.valu
 				{/foreach}
 				</select>
 			</td>
-		{elseif $uitype eq 33 || $uitype eq 3313}
+		{elseif $uitype eq 33 || $uitype eq 3313 || $uitype eq 1024}
 			<td width="20%" class="dvtCellLabel" align=right>
 				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
 			</td>
 			<td width="30%" align=left class="dvtCellInfo">
-			   <select MULTIPLE name="{$fldname}[]" size="4" style="width:160px;" tabindex="{$vt_tab}" class="small">
+				<select MULTIPLE name="{$fldname}[]" size="4" style="width:160px;" tabindex="{$vt_tab}" class="small">
 				{foreach item=arr from=$fldvalue}
-					<option value="{$arr[1]}" {$arr[2]}>
-                                                {$arr[0]}
-                                        </option>
+					<option value="{$arr[1]}" {$arr[2]}>{$arr[0]}</option>
 				{/foreach}
-			   </select>
+				</select>
 			</td>
 
 		{elseif $uitype eq 53}

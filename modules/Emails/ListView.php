@@ -151,11 +151,7 @@ $navigation_array = VT_getSimpleNavigationValues($start, $list_max_entries_per_p
 
 $limit_start_rec = ($start - 1) * $list_max_entries_per_page;
 
-
-if ($adb->dbType == "pgsql")
-	$list_result = $adb->pquery($list_query . " OFFSET $limit_start_rec LIMIT $list_max_entries_per_page", array());
-else
-	$list_result = $adb->pquery($list_query . " LIMIT $limit_start_rec, $list_max_entries_per_page", array());
+$list_result = $adb->pquery($list_query . " LIMIT $limit_start_rec, $list_max_entries_per_page", array());
 
 //Constructing the list view
 $smarty->assign("CUSTOMVIEW_OPTION", $customviewcombo_html);

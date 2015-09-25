@@ -5,7 +5,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
 
 var gcurrepfolderid=0;
@@ -13,58 +12,54 @@ var gcurrepfolderid=0;
 // Setting cookies
 function set_cookie ( name, value, exp_y, exp_m, exp_d, path, domain, secure )
 {
-  var cookie_string = name + "=" + escape ( value );
+	var cookie_string = name + "=" + escape ( value );
 
-  if ( exp_y )
-  {
-    var expires = new Date ( exp_y, exp_m, exp_d );
-    cookie_string += "; expires=" + expires.toGMTString();
-  }
+	if ( exp_y ) {
+		var expires = new Date ( exp_y, exp_m, exp_d );
+		cookie_string += "; expires=" + expires.toGMTString();
+	}
 
-  if ( path )
-        cookie_string += "; path=" + escape ( path );
+	if ( path )
+		cookie_string += "; path=" + escape ( path );
 
-  if ( domain )
-        cookie_string += "; domain=" + escape ( domain );
+	if ( domain )
+		cookie_string += "; domain=" + escape ( domain );
 
-  if ( secure )
-        cookie_string += "; secure";
+	if ( secure )
+		cookie_string += "; secure";
 
-  document.cookie = cookie_string;
+	document.cookie = cookie_string;
 }
 
 // Retrieving cookies
 function get_cookie ( cookie_name )
 {
-  var results = document.cookie.match ( cookie_name + '=(.*?)(;|$)' );
-
-  if ( results )
-    return ( unescape ( results[1] ) );
-  else
-    return null;
+	var results = document.cookie.match ( cookie_name + '=(.*?)(;|$)' );
+	if ( results )
+		return ( unescape ( results[1] ) );
+	else
+		return null;
 }
-
 
 // Delete cookies
 function delete_cookie ( cookie_name )
 {
-  var cookie_date = new Date ( );  // current date & time
-  cookie_date.setTime ( cookie_date.getTime() - 1 );
-  document.cookie = cookie_name += "=; expires=" + cookie_date.toGMTString();
+	var cookie_date = new Date ( );  // current date & time
+	cookie_date.setTime ( cookie_date.getTime() - 1 );
+	document.cookie = cookie_name += "=; expires=" + cookie_date.toGMTString();
 }
 function goToURL( url )
 {
-    document.location.href = url;
+	document.location.href = url;
 }
 
 function invokeAction( actionName )
 {
-    if( actionName == "newReport" )
-    {
-        goToURL( "?module=Reports&action=NewReport0&return_module=Reports&return_action=index" );
-        return;
-    }
-    goToURL( "/crm/ScheduleReport.do?step=showAllSchedules" );
+	if( actionName == "newReport" ) {
+		goToURL( "?module=Reports&action=NewReport0&return_module=Reports&return_action=index" );
+		return;
+	}
+	goToURL( "/crm/ScheduleReport.do?step=showAllSchedules" );
 }
 function verify_data(form) {
 	var isError = false;
@@ -83,20 +78,19 @@ function verify_data(form) {
 
 function setObjects()
 {
-	availListObj=getObj("availList")
-	selectedColumnsObj=getObj("selectedColumns")
-
-	moveupLinkObj=getObj("moveup_link")
-	moveupDisabledObj=getObj("moveup_disabled")
-	movedownLinkObj=getObj("movedown_link")
-	movedownDisabledObj=getObj("movedown_disabled")
+	availListObj=getObj("availList");
+	selectedColumnsObj=getObj("selectedColumns");
+	moveupLinkObj=getObj("moveup_link");
+	moveupDisabledObj=getObj("moveup_disabled");
+	movedownLinkObj=getObj("movedown_link");
+	movedownDisabledObj=getObj("movedown_disabled");
 }
 
 function addColumn()
 {
 	for (i=0;i<selectedColumnsObj.length;i++)
 	{
-		selectedColumnsObj.options[i].selected=false
+		selectedColumnsObj.options[i].selected=false;
 	}
 	addColumnStep1();
 }
@@ -125,18 +119,18 @@ function addColumnStep1()
 
 				if (rowFound!=true)
 				{
-					var newColObj=document.createElement("OPTION")
-					newColObj.value=availListObj.options[i].value
-					if (browser_ie) newColObj.innerText=availListObj.options[i].innerText
-					else if (browser_nn4 || browser_nn6) newColObj.text=availListObj.options[i].text
-					selectedColumnsObj.appendChild(newColObj)
-					newColObj.selected=true
+					var newColObj=document.createElement("OPTION");
+					newColObj.value=availListObj.options[i].value;
+					if (browser_ie) newColObj.innerText=availListObj.options[i].innerText;
+					else if (browser_nn4 || browser_nn6) newColObj.text=availListObj.options[i].text;
+					selectedColumnsObj.appendChild(newColObj);
+					newColObj.selected=true;
 				}
 				else
 				{
-					existingObj.selected=true
+					existingObj.selected=true;
 				}
-				availListObj.options[i].selected=false
+				availListObj.options[i].selected=false;
 				addColumnStep1();
 			}
 		}
@@ -148,14 +142,14 @@ function selectedColumnClick(oSel)
 	var error_msg = '';
 	var error_str = false;
 	if(oSel.selectedIndex > -1) {
-                for(var i = 0; i < oSel.options.length; ++i) {
-                        if(oSel.options[i].selected == true && oSel.options[i].disabled == true) {
-                                error_msg = error_msg + oSel.options[i].text+',';
+		for(var i = 0; i < oSel.options.length; ++i) {
+			if(oSel.options[i].selected == true && oSel.options[i].disabled == true) {
+				error_msg = error_msg + oSel.options[i].text+',';
 				error_str = true;
-                                oSel.options[i].selected = false;
-                        }
-                }
-        }
+				oSel.options[i].selected = false;
+			}
+		}
+	}
 	if(error_str)
 	{
 		error_msg = error_msg.substr(0,error_msg.length-1);
@@ -192,108 +186,99 @@ function formSelectColumnString()
 
 function moveUp()
 {
-	var currpos=selectedColumnsObj.options.selectedIndex
+	var currpos=selectedColumnsObj.options.selectedIndex;
 	var tempdisabled= false;
 	for (i=0;i<selectedColumnsObj.length;i++)
 	{
 		if(i != currpos)
-			selectedColumnsObj.options[i].selected=false
+			selectedColumnsObj.options[i].selected=false;
 	}
 	if (currpos>0)
 	{
-		var prevpos=selectedColumnsObj.options.selectedIndex-1
+		var prevpos=selectedColumnsObj.options.selectedIndex-1;
 
 		if (browser_ie)
 		{
-			temp=selectedColumnsObj.options[prevpos].innerText
+			temp=selectedColumnsObj.options[prevpos].innerText;
 			tempdisabled = selectedColumnsObj.options[prevpos].disabled;
-			selectedColumnsObj.options[prevpos].innerText=selectedColumnsObj.options[currpos].innerText
+			selectedColumnsObj.options[prevpos].innerText=selectedColumnsObj.options[currpos].innerText;
 			selectedColumnsObj.options[prevpos].disabled = false;
-			selectedColumnsObj.options[currpos].innerText=temp
+			selectedColumnsObj.options[currpos].innerText=temp;
 			selectedColumnsObj.options[currpos].disabled = tempdisabled;
 		}
 		else if (browser_nn4 || browser_nn6)
 		{
-			temp=selectedColumnsObj.options[prevpos].text
+			temp=selectedColumnsObj.options[prevpos].text;
 			tempdisabled = selectedColumnsObj.options[prevpos].disabled;
-			selectedColumnsObj.options[prevpos].text=selectedColumnsObj.options[currpos].text
+			selectedColumnsObj.options[prevpos].text=selectedColumnsObj.options[currpos].text;
 			selectedColumnsObj.options[prevpos].disabled = false;
-			selectedColumnsObj.options[currpos].text=temp
+			selectedColumnsObj.options[currpos].text=temp;
 			selectedColumnsObj.options[currpos].disabled = tempdisabled;
 		}
-		temp=selectedColumnsObj.options[prevpos].value
-		selectedColumnsObj.options[prevpos].value=selectedColumnsObj.options[currpos].value
-		selectedColumnsObj.options[currpos].value=temp
-		selectedColumnsObj.options[prevpos].selected=true
-		selectedColumnsObj.options[currpos].selected=false
+		temp=selectedColumnsObj.options[prevpos].value;
+		selectedColumnsObj.options[prevpos].value=selectedColumnsObj.options[currpos].value;
+		selectedColumnsObj.options[currpos].value=temp;
+		selectedColumnsObj.options[prevpos].selected=true;
+		selectedColumnsObj.options[currpos].selected=false;
 		}
-
 }
 
 function moveDown()
 {
-	var currpos=selectedColumnsObj.options.selectedIndex
+	var currpos=selectedColumnsObj.options.selectedIndex;
 	var tempdisabled= false;
 	for (i=0;i<selectedColumnsObj.length;i++)
 	{
 		if(i != currpos)
-			selectedColumnsObj.options[i].selected=false
+			selectedColumnsObj.options[i].selected=false;
 	}
 	if (currpos<selectedColumnsObj.options.length-1)
 	{
-		var nextpos=selectedColumnsObj.options.selectedIndex+1
+		var nextpos=selectedColumnsObj.options.selectedIndex+1;
 
 		if (browser_ie)
 		{
-			temp=selectedColumnsObj.options[nextpos].innerText
+			temp=selectedColumnsObj.options[nextpos].innerText;
 			tempdisabled = selectedColumnsObj.options[nextpos].disabled;
-			selectedColumnsObj.options[nextpos].innerText=selectedColumnsObj.options[currpos].innerText
+			selectedColumnsObj.options[nextpos].innerText=selectedColumnsObj.options[currpos].innerText;
 			selectedColumnsObj.options[nextpos].disabled = false;
 			selectedColumnsObj.options[nextpos];
-
-			selectedColumnsObj.options[currpos].innerText=temp
+			selectedColumnsObj.options[currpos].innerText=temp;
 			selectedColumnsObj.options[currpos].disabled = tempdisabled;
 		}
 		else if (browser_nn4 || browser_nn6)
 		{
-			temp=selectedColumnsObj.options[nextpos].text
+			temp=selectedColumnsObj.options[nextpos].text;
 			tempdisabled = selectedColumnsObj.options[nextpos].disabled;
-			selectedColumnsObj.options[nextpos].text=selectedColumnsObj.options[currpos].text
+			selectedColumnsObj.options[nextpos].text=selectedColumnsObj.options[currpos].text;
 			selectedColumnsObj.options[nextpos].disabled = false;
 			selectedColumnsObj.options[nextpos];
-			selectedColumnsObj.options[currpos].text=temp
+			selectedColumnsObj.options[currpos].text=temp;
 			selectedColumnsObj.options[currpos].disabled = tempdisabled;
 		}
-		temp=selectedColumnsObj.options[nextpos].value
-		selectedColumnsObj.options[nextpos].value=selectedColumnsObj.options[currpos].value
-		selectedColumnsObj.options[currpos].value=temp
-
-		selectedColumnsObj.options[nextpos].selected=true
-		selectedColumnsObj.options[currpos].selected=false
+		temp=selectedColumnsObj.options[nextpos].value;
+		selectedColumnsObj.options[nextpos].value=selectedColumnsObj.options[currpos].value;
+		selectedColumnsObj.options[currpos].value=temp;
+		selectedColumnsObj.options[nextpos].selected=true;
+		selectedColumnsObj.options[currpos].selected=false;
 	}
 }
 
 function disableMove()
 {
-	var cnt=0
-		for (i=0;i<selectedColumnsObj.options.length;i++)
-		{
-			if (selectedColumnsObj.options[i].selected==true)
-				cnt++
-		}
-
-	if (cnt>1)
-	{
-		moveupLinkObj.style.display=movedownLinkObj.style.display="none"
-			moveupDisabledObj.style.display=movedownDisabledObj.style.display="block"
+	var cnt=0;
+	for (i=0;i<selectedColumnsObj.options.length;i++) {
+		if (selectedColumnsObj.options[i].selected==true)
+			cnt++;
 	}
-	else
-	{
-		moveupLinkObj.style.display=movedownLinkObj.style.display="block"
-			moveupDisabledObj.style.display=movedownDisabledObj.style.display="none"
+	if (cnt>1) {
+		moveupLinkObj.style.display=movedownLinkObj.style.display="none";
+		moveupDisabledObj.style.display=movedownDisabledObj.style.display="block";
+	} else {
+		moveupLinkObj.style.display=movedownLinkObj.style.display="block";
+		moveupDisabledObj.style.display=movedownDisabledObj.style.display="none";
 	}
 }
-
 
 function hideTabs()
 {
@@ -315,7 +300,7 @@ function hideTabs()
 function showSaveDialog()
 {
 	url = "index.php?module=Reports&action=SaveReport";
-	window.open(url,"Save_Report","width=550,height=350,top=20,left=20;toolbar=no,status=no,menubar=no,directories=no,resizable=yes,scrollbar=no")
+	window.open(url,"Save_Report","width=550,height=350,top=20,left=20;toolbar=no,status=no,menubar=no,directories=no,resizable=yes,scrollbar=no");
 }
 
 function saveAndRunReport()
@@ -352,23 +337,20 @@ function changeSteps1()
 		if(!checkAdvancedFilter())
 			return false;
 
-		var date1=getObj("startdate")
-		var date2=getObj("enddate")
+		var date1=getObj("startdate");
+		var date2=getObj("enddate");
 
 		//# validation added for date field validation in final step of report creation
-		if ((date1.value != '') || (date2.value != ''))
-		{
+		if ((date1.value != '') || (date2.value != '')) {
+			if(!dateValidate("startdate","Start Date","D"))
+				return false;
 
-		if(!dateValidate("startdate","Start Date","D"))
-        	        return false
+			if(!dateValidate("enddate","End Date","D"))
+				return false;
 
-		if(!dateValidate("enddate","End Date","D"))
-        	        return false
-
-		if(! dateComparison("startdate",'Start Date',"enddate",'End Date','LE'))
-			return false;
+			if(! dateComparison("startdate",'Start Date',"enddate",'End Date','LE'))
+				return false;
 		}
-
 	}
 	if(getObj('step6').style.display != 'none' && document.getElementsByName('record')[0].value!='') {
 		var id = document.getElementById('save_as');
@@ -438,7 +420,6 @@ function changeSteps1()
 				document.getElementById('back_rep').disabled = false;
 				break;
 			}
-
 		}
 	}
 }
@@ -468,7 +449,6 @@ function changeStepsback1()
 				getObj(newtableid).className = 'settingsTabSelected';
 				break;
 			}
-
 		}
 	}
 }
@@ -538,27 +518,27 @@ function fnPopupWin(winName){
 function re_dateValidate(fldval,fldLabel,type) {
 	if(re_patternValidate(fldval,fldLabel,"DATE")==false)
 		return false;
-	dateval=fldval.replace(/^\s+/g, '').replace(/\s+$/g, '')
+	dateval=fldval.replace(/^\s+/g, '').replace(/\s+$/g, '');
 
-	var dateelements=splitDateVal(dateval)
+	var dateelements=splitDateVal(dateval);
 
-	dd=dateelements[0]
-	mm=dateelements[1]
-	yyyy=dateelements[2]
+	dd=dateelements[0];
+	mm=dateelements[1];
+	yyyy=dateelements[2];
 
 	if (dd<1 || dd>31 || mm<1 || mm>12 || yyyy<1 || yyyy<1000) {
-		alert(alert_arr.ENTER_VALID+fldLabel)
-		return false
+		alert(alert_arr.ENTER_VALID+fldLabel);
+		return false;
 	}
 
 	if ((mm==2) && (dd>29)) {//checking of no. of days in february month
-		alert(alert_arr.ENTER_VALID+fldLabel)
-		return false
+		alert(alert_arr.ENTER_VALID+fldLabel);
+		return false;
 	}
 
 	if ((mm==2) && (dd>28) && ((yyyy%4)!=0)) {//leap year checking
-		alert(alert_arr.ENTER_VALID+fldLabel)
-		return false
+		alert(alert_arr.ENTER_VALID+fldLabel);
+		return false;
 	}
 
 	switch (parseInt(mm)) {
@@ -567,21 +547,21 @@ function re_dateValidate(fldval,fldLabel,type) {
 		case 6 :
 		case 9 :
 		case 11 :if (dd>30) {
-						alert(alert_arr.ENTER_VALID+fldLabel)
-						return false
-					}
+			alert(alert_arr.ENTER_VALID+fldLabel);
+			return false;
+		}
 	}
 
-	var currdate=new Date()
-	var chkdate=new Date()
+	var currdate=new Date();
+	var chkdate=new Date();
 
-	chkdate.setYear(yyyy)
-	chkdate.setMonth(mm-1)
-	chkdate.setDate(dd)
+	chkdate.setYear(yyyy);
+	chkdate.setMonth(mm-1);
+	chkdate.setDate(dd);
 
 	if (type!="OTH") {
 		if (!compareDates(chkdate,fldLabel,currdate,"current date",type)) {
-			return false
+			return false;
 		} else return true;
 	} else return true;
 }
@@ -589,26 +569,23 @@ function re_dateValidate(fldval,fldLabel,type) {
 //Copied from general.js and altered some lines. becos we cant send vales to function present in general.js. it accept only field names.
 function re_patternValidate(fldval,fldLabel,type) {
 	if (type.toUpperCase()=="DATE") {//DATE validation
-
 		switch (userDateFormat) {
 			case "yyyy-mm-dd" :
-								var re = /^\d{4}(-)\d{1,2}\1\d{1,2}$/
-								break;
+				var re = /^\d{4}(-)\d{1,2}\1\d{1,2}$/;
+				break;
 			case "mm-dd-yyyy" :
 			case "dd-mm-yyyy" :
-								var re = /^\d{1,2}(-)\d{1,2}\1\d{4}$/
+				var re = /^\d{1,2}(-)\d{1,2}\1\d{4}$/;
 		}
 	}
-
-
 	if (type.toUpperCase()=="TIMESECONDS") {//TIME validation
 		var re = new RegExp("^([0-1][0-9]|[2][0-3]):([0-5][0-9]):([0-5][0-9])$|^([0-1][0-9]|[2][0-3]):([0-5][0-9])$");
 	}
 	if (!re.test(fldval)) {
-		alert(alert_arr.ENTER_VALID + fldLabel)
-		return false
+		alert(alert_arr.ENTER_VALID + fldLabel);
+		return false;
 	}
-	else return true
+	else return true;
 }
 
 //added to fix the ticket #5117
@@ -631,22 +608,39 @@ function standardFilterDisplay()
 	}
 }
 
-
 function updateRelFieldOptions(sel, opSelName) {
-    var selObj = document.getElementById(opSelName);
-    var fieldtype = null ;
+	var selObj = document.getElementById(opSelName);
+	var fieldtype = null ;
+	var currOption = selObj.options[selObj.selectedIndex];
+	var currField = sel.options[sel.selectedIndex];
 
-    var currOption = selObj.options[selObj.selectedIndex];
-    var currField = sel.options[sel.selectedIndex];
-
-    if(currField.value != null && currField.value.length != 0)
-    {
-	fieldtype = trimfValues(currField.value);
-	ops = rel_fields[fieldtype];
-
-	var off = 0;
-	if(ops != null)
-	{
+	if(currField.value != null && currField.value.length != 0) {
+		fieldtype = trimfValues(currField.value);
+		ops = rel_fields[fieldtype];
+		var off = 0;
+		if(ops != null) {
+			var nMaxVal = selObj.length;
+			for(nLoop = 0; nLoop < nMaxVal; nLoop++) {
+				selObj.remove(0);
+			}
+			selObj.options[0] = new Option ('None', '');
+			if (currField.value == '') {
+				selObj.options[0].selected = true;
+			}
+			off = 1;
+			for (var i = 0; i < ops.length; i++) {
+				var field_array = ops[i].split("::");
+				var label = field_array[1];
+				var field = field_array[0];
+				if (label == null) continue;
+				var option = new Option (label, field);
+				selObj.options[i + off] = option;
+				if (currOption != null && currOption.value == option.value) {
+					option.selected = true;
+				}
+			}
+		}
+	} else {
 		var nMaxVal = selObj.length;
 		for(nLoop = 0; nLoop < nMaxVal; nLoop++)
 		{
@@ -656,34 +650,7 @@ function updateRelFieldOptions(sel, opSelName) {
 		if (currField.value == '') {
 			selObj.options[0].selected = true;
 		}
-		off = 1;
-		for (var i = 0; i < ops.length; i++)
-		{
-			var field_array = ops[i].split("::");
-			var label = field_array[1];
-			var field = field_array[0];
-			if (label == null) continue;
-			var option = new Option (label, field);
-			selObj.options[i + off] = option;
-			if (currOption != null && currOption.value == option.value)
-			{
-				option.selected = true;
-			}
-		}
 	}
-    }else
-    {
-	var nMaxVal = selObj.length;
-	for(nLoop = 0; nLoop < nMaxVal; nLoop++)
-	{
-		selObj.remove(0);
-	}
-	selObj.options[0] = new Option ('None', '');
-	if (currField.value == '') {
-		selObj.options[0].selected = true;
-	}
-    }
-
 }
 
 function AddFieldToFilter(id, sel){
@@ -701,33 +668,33 @@ function fnLoadRepValues(tab1,tab2,block1,block2){
 }
 function addChartsToHomepage(reportid){
 	var windowtitle = $('windowtitle_id').value;
-        if(windowtitle.length == 0){
-			alert(alert_arr.LBL_ENTER_WINDOW_TITLE);
-            return false;
-        }
+	if(windowtitle.length == 0){
+		alert(alert_arr.LBL_ENTER_WINDOW_TITLE);
+		return false;
+	}
 	var charttype = $('selreportcharttype_id').value;
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody: 'module=Reports&action=ReportsAjax&file=UpdatedashbordReportRel&ajax=true&reportid='+reportid+'&windowtitle='+windowtitle+'&charttype='+charttype,
-			onComplete: function(response) {
-				if((response.responseText != '')){
-					alert(response.responseText);
-				}
-                fnhide('addcharttoHomepage');
-                $('widgetsuccess').style.display = 'block';
-                $('widgetsuccess').style.display = 'none';
-                Effect.Appear('widgetsuccess');
-                setTimeout(hidewidgetmessage,3000);
-		    }
+	new Ajax.Request('index.php', {
+		queue : {
+			position : 'end',
+			scope : 'command'
+		},
+		method : 'post',
+		postBody : 'module=Reports&action=ReportsAjax&file=UpdatedashbordReportRel&ajax=true&reportid=' + reportid + '&windowtitle=' + windowtitle + '&charttype=' + charttype,
+		onComplete : function(response) {
+			if ((response.responseText != '')) {
+				alert(response.responseText);
+			}
+			fnhide('addcharttoHomepage');
+			$('widgetsuccess').style.display = 'block';
+			$('widgetsuccess').style.display = 'none';
+			Effect.Appear('widgetsuccess');
+			setTimeout(hidewidgetmessage, 3000);
 		}
-    );
-        return true;
+	});
+	return true;
 }
 function hidewidgetmessage(){
-    Effect.Fade('widgetsuccess');
-
+	Effect.Fade('widgetsuccess');
 }
 function getDateFieldGrouping(group1){
 	var selectfield = document.getElementById(group1).value;
@@ -738,61 +705,59 @@ function getDateFieldGrouping(group1){
 		show(id_div);
 	}else{
 		var id = document.getElementById(id_div);
-	    id.style.display = 'none';
+		id.style.display = 'none';
 	}
 }
 
 /**
- * IE has a bug where document.getElementsByName doesnt include result of dynamically created
- * elements
+ * IE has a bug where document.getElementsByName doesnt include result of dynamically created elements
  */
 function vt_getElementsByName(tagName, elementName) {
 	var inputs = document.getElementsByTagName( tagName );
 	var selectedElements = [];
 	for(var i=0;i<inputs.length;i++){
-	  if(inputs.item(i).getAttribute( 'name' ) == elementName ){
-		selectedElements.push( inputs.item(i) );
-	  }
+		if(inputs.item(i).getAttribute( 'name' ) == elementName ){
+			selectedElements.push( inputs.item(i) );
+		}
 	}
 	return selectedElements;
 }
 
 function setScheduleOptions() {
-
 	var stid = document.getElementById('scheduledType').value;
 	switch( stid ) {
 		case "0": // nothing choosen
 		case "1": // hourly
-					document.getElementById('scheduledMonthSpan').style.display = 'none';
-					document.getElementById('scheduledDOMSpan').style.display = 'none';
-					document.getElementById('scheduledDOWSpan').style.display = 'none';
-					document.getElementById('scheduledTimeSpan').style.display = 'none';
-					break;
+			document.getElementById('scheduledMonthSpan').style.display = 'none';
+			document.getElementById('scheduledDOMSpan').style.display = 'none';
+			document.getElementById('scheduledDOWSpan').style.display = 'none';
+			document.getElementById('scheduledTimeSpan').style.display = 'none';
+			break;
 		case "2": // daily
-					document.getElementById('scheduledMonthSpan').style.display = 'none';
-					document.getElementById('scheduledDOMSpan').style.display = 'none';
-					document.getElementById('scheduledDOWSpan').style.display = 'none';
-					document.getElementById('scheduledTimeSpan').style.display = 'inline';
-					break;
+			document.getElementById('scheduledMonthSpan').style.display = 'none';
+			document.getElementById('scheduledDOMSpan').style.display = 'none';
+			document.getElementById('scheduledDOWSpan').style.display = 'none';
+			document.getElementById('scheduledTimeSpan').style.display = 'inline';
+			break;
 		case "3": // weekly
 		case "4": // bi-weekly
-					document.getElementById('scheduledMonthSpan').style.display = 'none';
-					document.getElementById('scheduledDOMSpan').style.display = 'none';
-					document.getElementById('scheduledDOWSpan').style.display = 'inline';
-					document.getElementById('scheduledTimeSpan').style.display = 'inline';
-					break;
+			document.getElementById('scheduledMonthSpan').style.display = 'none';
+			document.getElementById('scheduledDOMSpan').style.display = 'none';
+			document.getElementById('scheduledDOWSpan').style.display = 'inline';
+			document.getElementById('scheduledTimeSpan').style.display = 'inline';
+			break;
 		case "5": // monthly
-					document.getElementById('scheduledMonthSpan').style.display = 'none';
-					document.getElementById('scheduledDOMSpan').style.display = 'inline';
-					document.getElementById('scheduledDOWSpan').style.display = 'none';
-					document.getElementById('scheduledTimeSpan').style.display = 'inline';
-					break;
+			document.getElementById('scheduledMonthSpan').style.display = 'none';
+			document.getElementById('scheduledDOMSpan').style.display = 'inline';
+			document.getElementById('scheduledDOWSpan').style.display = 'none';
+			document.getElementById('scheduledTimeSpan').style.display = 'inline';
+			break;
 		case "6": // annually
-					document.getElementById('scheduledMonthSpan').style.display = 'inline';
-					document.getElementById('scheduledDOMSpan').style.display = 'inline';
-					document.getElementById('scheduledDOWSpan').style.display = 'none';
-					document.getElementById('scheduledTimeSpan').style.display = 'inline';
-					break;
+			document.getElementById('scheduledMonthSpan').style.display = 'inline';
+			document.getElementById('scheduledDOMSpan').style.display = 'inline';
+			document.getElementById('scheduledDOWSpan').style.display = 'none';
+			document.getElementById('scheduledTimeSpan').style.display = 'inline';
+			break;
 	}
 }
 

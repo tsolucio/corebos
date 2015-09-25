@@ -1,17 +1,16 @@
 /*********************************************************************************
-  ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
-   * ("License"); You may not use this file except in compliance with the License
-   * The Original Code is:  vtiger CRM Open Source
-   * The Initial Developer of the Original Code is vtiger.
-   * Portions created by vtiger are Copyright (C) vtiger.
-   * All Rights Reserved.
-  *
- ********************************************************************************/
+ ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
+ * All Rights Reserved.
+********************************************************************************/
 
 function moveUp(moduleObj,sequence) {
 	var oldSequence = moduleObj[sequence]['sequence'];
 	var changeSequence  = oldSequence - 1;
-	
+
 	moduleObj[sequence]['sequence'] = moduleObj[changeSequence]['sequence'];
 	moduleObj[changeSequence]['sequence']=oldSequence;
 
@@ -42,7 +41,7 @@ Object.prototype.size = function () {
 	for (var k in this)
 	len++;
 	return len;
-}
+};
 
 function visibleValueChange(sequence,tabid,moduleObj) {
 	if(moduleObj[sequence]['sequence'] == sequence && moduleObj[sequence]['tabid'] == tabid){
@@ -50,7 +49,7 @@ function visibleValueChange(sequence,tabid,moduleObj) {
 			moduleObj[sequence]['visible'] = '0';
 		else
 			moduleObj[sequence]['visible'] = '1';
-		}
+	}
 }
 
 function prefValueChange(sequence,tabid,moduleObj) {
@@ -59,5 +58,5 @@ function prefValueChange(sequence,tabid,moduleObj) {
 			moduleObj[sequence]['value'] = '0';
 		else
 			moduleObj[sequence]['value'] = '1';
-		}
+	}
 }

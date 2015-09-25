@@ -133,11 +133,7 @@ class ListViewSession {
 			}else{
 				$recordCount = ($list_max_entries_per_page+ $bufferRecordCount);
 			}
-			if( $adb->dbType == "pgsql"){
-				$list_query .= " OFFSET $startRecord LIMIT $recordCount";
-			}else{
-				$list_query .= " LIMIT $startRecord, $recordCount";
-			}
+			$list_query .= " LIMIT $startRecord, $recordCount";
 
 			$resultAllCRMIDlist_query=$adb->pquery($list_query,array());
 			$navigationRecordList = array();

@@ -8,11 +8,10 @@
  * All Rights Reserved.
  ********************************************************************************/
 require_once('include/database/PearDatabase.php');
-require_once('include/database/Postgres8.php');
 require_once('include/utils/utils.php');
 require_once('include/utils/GetUserGroups.php');
 include('config.php');
-require_once("include/events/include.inc");
+require_once('include/events/include.inc');
 global $log;
 
 /** To retreive the mail server info resultset for the specified user
@@ -21,11 +20,10 @@ global $log;
  */
 function getMailServerInfo($user)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getMailServerInfo(".$user->user_name.") method ...");
-	global $adb;
-        $sql = "select * from vtiger_mail_accounts where status=1 and user_id=?";
-        $result = $adb->pquery($sql, array($user->id));
+	$sql = "select * from vtiger_mail_accounts where status=1 and user_id=?";
+	$result = $adb->pquery($sql, array($user->id));
 	$log->debug("Exiting getMailServerInfo method ...");
 	return $result;
 }
@@ -36,19 +34,17 @@ function getMailServerInfo($user)
  */
 function fetchUserRole($userid)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering fetchUserRole(".$userid.") method ...");
-	global $adb;
 	$sql = "select roleid from vtiger_user2role where userid=?";
-        $result = $adb->pquery($sql, array($userid));
+	$result = $adb->pquery($sql, array($userid));
 	$roleid=  $adb->query_result($result,0,"roleid");
 	$log->debug("Exiting fetchUserRole method ...");
 	return $roleid;
 }
 
-/** Depricated. Function to be replaced by getUserProfile()
-  * Should be done accross the product
-  *
+/** Deprecated. Function to be replaced by getUserProfile()
+ * Should be done accross the product
  */
 function fetchUserProfileId($userid)
 {
@@ -72,7 +68,6 @@ function fetchUserProfileId($userid)
 		// Update information to cache for re-use
 		VTCacheUtils::updateUserProfileId($userid, $profileid);
 	}
-
 	$log->debug("Exiting fetchUserProfileId method ...");
 	return $profileid;
 }
@@ -84,53 +79,44 @@ function fetchUserProfileId($userid)
 */
 function fetchUserGroupids($userid)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering fetchUserGroupids(".$userid.") method ...");
-	global $adb;
-        $focus = new GetUserGroups();
-        $focus->getAllUserGroups($userid);
-		//Asha: Remove implode if not required and if so, also remove explode functions used at the recieving end of this function
-        $groupidlists = implode(",",$focus->user_groups);
-	$log->debug("Exiting fetchUserGroupids method ...");
-        return $groupidlists;
 
+	$focus = new GetUserGroups();
+	$focus->getAllUserGroups($userid);
+	//Asha: Remove implode if not required and if so, also remove explode functions used at the recieving end of this function
+	$groupidlists = implode(",",$focus->user_groups);
+	$log->debug("Exiting fetchUserGroupids method ...");
+	return $groupidlists;
 }
 
-/** Function to load all the permissions
-  *
- */
-function loadAllPerms()
-                {
-	global $log;
+/** Function to load all the permissions */
+function loadAllPerms() {
+	global $log, $adb,$MAX_TAB_PER, $persistPermArray;
 	$log->debug("Entering loadAllPerms() method ...");
-        global $adb,$MAX_TAB_PER;
-        global $persistPermArray;
 
-        $persistPermArray = Array();
-        $profiles = Array();
-        $sql = "select distinct profileid from vtiger_profile2tab";
-        $result = $adb->pquery($sql, array());
-        $num_rows = $adb->num_rows($result);
-        for ( $i=0; $i < $num_rows; $i++ )
-                $profiles[] = $adb->query_result($result,$i,'profileid');
+	$persistPermArray = Array();
+	$profiles = Array();
+	$sql = "select distinct profileid from vtiger_profile2tab";
+	$result = $adb->pquery($sql, array());
+	$num_rows = $adb->num_rows($result);
+	for ( $i=0; $i < $num_rows; $i++ )
+		$profiles[] = $adb->query_result($result,$i,'profileid');
 
-        $persistPermArray = Array();
-        foreach ( $profiles as $profileid )
-        {
-                $sql = "select * from vtiger_profile2tab where profileid=?";
-                $result = $adb->pquery($sql, array($profileid));
-                if($MAX_TAB_PER !='')
-                {
-                        $persistPermArray[$profileid] = array_fill(0,$MAX_TAB_PER,0);
-                }
-                $num_rows = $adb->num_rows($result);
-                for($i=0; $i<$num_rows; $i++)
-                {
-                        $tabid= $adb->query_result($result,$i,'tabid');
-                        $tab_per= $adb->query_result($result,$i,'permissions');
-                        $persistPermArray[$profileid][$tabid] = $tab_per;
-                }
-        }
+	$persistPermArray = Array();
+	foreach ( $profiles as $profileid ) {
+		$sql = "select * from vtiger_profile2tab where profileid=?";
+		$result = $adb->pquery($sql, array($profileid));
+		if($MAX_TAB_PER !='') {
+			$persistPermArray[$profileid] = array_fill(0,$MAX_TAB_PER,0);
+		}
+		$num_rows = $adb->num_rows($result);
+		for($i=0; $i<$num_rows; $i++) {
+			$tabid= $adb->query_result($result,$i,'tabid');
+			$tab_per= $adb->query_result($result,$i,'permissions');
+			$persistPermArray[$profileid][$tabid] = $tab_per;
+		}
+	}
 	$log->debug("Exiting loadAllPerms method ...");
 }
 
@@ -141,43 +127,32 @@ function loadAllPerms()
   *                        $tabid2=>permission,
   *                                |
   *                        $tabidn=>permission)
-  *
  */
 function getAllTabsPermission($profileid)
 {
-	global $log;
+	global $log,$adb,$MAX_TAB_PER, $persistPermArray;
 	$log->debug("Entering getAllTabsPermission(".$profileid.") method ...");
-	global $persistPermArray;
-        global $adb,$MAX_TAB_PER;
-        // Mike Crowe Mod --------------------------------------------------------
-        if ( $cache_tab_perms )
-        {
-                if ( count($persistPermArray) == 0 )
-                        loadAllPerms();
+	if ( $cache_tab_perms ) {
+		if ( count($persistPermArray) == 0 )
+			loadAllPerms();
 		$log->debug("Exiting getAllTabsPermission method ...");
-                return $persistPermArray[$profileid];
-        }
-        else
-        {
-                $sql = "select * from vtiger_profile2tab where profileid=?";
-                $result = $adb->pquery($sql, array($profileid));
-                $tab_perr_array = Array();
-                if($MAX_TAB_PER !='')
-                {
-                        $tab_perr_array = array_fill(0,$MAX_TAB_PER,0);
-                }
-                $num_rows = $adb->num_rows($result);
-                for($i=0; $i<$num_rows; $i++)
-                {
-                        $tabid= $adb->query_result($result,$i,'tabid');
-                        $tab_per= $adb->query_result($result,$i,'permissions');
-                        $tab_perr_array[$tabid] = $tab_per;
-                }
+		return $persistPermArray[$profileid];
+	} else {
+		$sql = "select * from vtiger_profile2tab where profileid=?";
+		$result = $adb->pquery($sql, array($profileid));
+		$tab_perr_array = Array();
+		if($MAX_TAB_PER !='') {
+			$tab_perr_array = array_fill(0,$MAX_TAB_PER,0);
+		}
+		$num_rows = $adb->num_rows($result);
+		for($i=0; $i<$num_rows; $i++) {
+			$tabid= $adb->query_result($result,$i,'tabid');
+			$tab_per= $adb->query_result($result,$i,'permissions');
+			$tab_perr_array[$tabid] = $tab_per;
+		}
 		$log->debug("Exiting getAllTabsPermission method ...");
-                return $tab_perr_array;
-        }
-        // Mike Crowe Mod ----------------------------------------------------------------
-
+		return $tab_perr_array;
+	}
 }
 
 /** Function to get all the vtiger_tab permission for the specified vtiger_profile other than tabid 15
@@ -187,75 +162,60 @@ function getAllTabsPermission($profileid)
   *                        $tabid2=>permission,
   *                                |
   *                        $tabidn=>permission)
-  *
  */
 function getTabsPermission($profileid)
 {
-	global $log;
+	global $log, $persistPermArray, $adb;
 	$log->debug("Entering getTabsPermission(".$profileid.") method ...");
-	global $persistPermArray;
-        global $adb;
-        // Mike Crowe Mod -------------------------------------------------------
-        if ( $cache_tab_perms )
-        {
-                if ( count($persistPermArray) == 0 )
-                        loadAllPerms();
-                $tab_perr_array = $persistPermArray;
-                foreach( array(1,3,16,15) as $tabid )
-                        $tab_perr_array[$tabid] = 0;
-		$log->debug("Exiting getTabsPermission method ...");
-                return $tab_perr_array;
-        }
-        else
-        {
-				$sql = "select vtiger_profile2tab.tabid,vtiger_profile2tab.permissions from vtiger_profile2tab
-						INNER JOIN vtiger_tab ON vtiger_tab.tabid=vtiger_profile2tab.tabid WHERE vtiger_profile2tab.profileid=? AND vtiger_tab.presence=0";
-                $result = $adb->pquery($sql, array($profileid));
-                $tab_perr_array = Array();
-                $num_rows = $adb->num_rows($result);
-                for($i=0; $i<$num_rows; $i++)
-                {
-                        $tabid= $adb->query_result($result,$i,'tabid');
-                        $tab_per= $adb->query_result($result,$i,'permissions');
-                        if($tabid != 3 && $tabid != 16)
-                        {
-                                $tab_perr_array[$tabid] = $tab_per;
-                        }
-                }
-		$log->debug("Exiting getTabsPermission method ...");
-                return $tab_perr_array;
-        }
-
+	if ($cache_tab_perms) {
+		if (count($persistPermArray) == 0)
+			loadAllPerms();
+		$tab_perr_array = $persistPermArray;
+		foreach (array(1,3,16,15) as $tabid)
+			$tab_perr_array[$tabid] = 0;
+		$log -> debug("Exiting getTabsPermission method ...");
+		return $tab_perr_array;
+	} else {
+		$sql = 'select vtiger_profile2tab.tabid,vtiger_profile2tab.permissions from vtiger_profile2tab
+			INNER JOIN vtiger_tab ON vtiger_tab.tabid=vtiger_profile2tab.tabid WHERE vtiger_profile2tab.profileid=? AND vtiger_tab.presence=0';
+		$result = $adb -> pquery($sql, array($profileid));
+		$tab_perr_array = Array();
+		$num_rows = $adb -> num_rows($result);
+		for ($i = 0; $i < $num_rows; $i++) {
+			$tabid = $adb -> query_result($result, $i, 'tabid');
+			$tab_per = $adb -> query_result($result, $i, 'permissions');
+			if ($tabid != 3 && $tabid != 16) {
+				$tab_perr_array[$tabid] = $tab_per;
+			}
+		}
+		$log -> debug("Exiting getTabsPermission method ...");
+		return $tab_perr_array;
+	}
 }
 
-/** Function to get all the vtiger_tab standard action permission for the specified vtiger_profile
+ /** Function to get all the vtiger_tab standard action permission for the specified vtiger_profile
   * @param $profileid -- Profile Id:: Type integer
   * @returns  Tab Action Permission Array in the following format:
   * $tabPermission = Array($tabid1=>Array(actionid1=>permission, actionid2=>permission,...,actionidn=>permission),
   *                        $tabid2=>Array(actionid1=>permission, actionid2=>permission,...,actionidn=>permission),
   *                                |
   *                        $tabidn=>Array(actionid1=>permission, actionid2=>permission,...,actionidn=>permission))
-  *
  */
 function getTabsActionPermission($profileid)
 {
-	global $log;
+	global $log,$adb;
 	$log->debug("Entering getTabsActionPermission(".$profileid.") method ...");
-	global $adb;
 	$check = Array();
 	$temp_tabid = Array();
-	$sql1 = "select * from vtiger_profile2standardpermissions where profileid=? and tabid not in(16) order by(tabid)";
+	$sql1 = 'select * from vtiger_profile2standardpermissions where profileid=? and tabid not in(16) order by(tabid)';
 	$result1 = $adb->pquery($sql1, array($profileid));
-        $num_rows1 = $adb->num_rows($result1);
-        for($i=0; $i<$num_rows1; $i++)
-        {
+	$num_rows1 = $adb->num_rows($result1);
+	for($i=0; $i<$num_rows1; $i++) {
 		$tab_id = $adb->query_result($result1,$i,'tabid');
-		if(! in_array($tab_id,$temp_tabid))
-		{
+		if(! in_array($tab_id,$temp_tabid)) {
 			$temp_tabid[] = $tab_id;
 			$access = Array();
 		}
-
 		$action_id = $adb->query_result($result1,$i,'operation');
 		$per_id = $adb->query_result($result1,$i,'permissions');
 		$access[$action_id] = $per_id;
@@ -272,42 +232,32 @@ function getTabsActionPermission($profileid)
   *                        $tabid2=>Array(actionid1=>permission, actionid2=>permission,...,actionidn=>permission),
   *                                |
   *                        $tabidn=>Array(actionid1=>permission, actionid2=>permission,...,actionidn=>permission))
-  *
  */
-
 function getTabsUtilityActionPermission($profileid)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getTabsUtilityActionPermission(".$profileid.") method ...");
-
-	global $adb;
 	$check = Array();
 	$temp_tabid = Array();
-	$sql1 = "select * from vtiger_profile2utility where profileid=? order by(tabid)";
+	$sql1 = 'select * from vtiger_profile2utility where profileid=? order by(tabid)';
 	$result1 = $adb->pquery($sql1, array($profileid));
-        $num_rows1 = $adb->num_rows($result1);
-        for($i=0; $i<$num_rows1; $i++)
-        {
+	$num_rows1 = $adb->num_rows($result1);
+	for($i=0; $i<$num_rows1; $i++) {
 		$tab_id = $adb->query_result($result1,$i,'tabid');
-		if(! in_array($tab_id,$temp_tabid))
-		{
+		if(! in_array($tab_id,$temp_tabid)) {
 			$temp_tabid[] = $tab_id;
 			$access = Array();
 		}
-
 		$action_id = $adb->query_result($result1,$i,'activityid');
 		$per_id = $adb->query_result($result1,$i,'permission');
 		$access[$action_id] = $per_id;
 		$check[$tab_id] = $access;
-
-
 	}
-
 	$log->debug("Exiting getTabsUtilityActionPermission method ...");
 	return $check;
-
 }
-/**This Function returns the Default Organisation Sharing Action Array for all modules whose sharing actions are editable
+
+ /**This Function returns the Default Organisation Sharing Action Array for all modules whose sharing actions are editable
   * The result array will be in the following format:
   * Arr=(tabid1=>Sharing Action Id,
   *      tabid2=>SharingAction Id,
@@ -316,29 +266,24 @@ function getTabsUtilityActionPermission($profileid)
   *            |
   *      tabid3=>SharingAcion Id)
   */
-
 function getDefaultSharingEditAction()
 {
-	global $log;
-	$log->debug("Entering getDefaultSharingEditAction() method ...");
-	global $adb;
+	global $log,$adb;
+	$log->debug('Entering getDefaultSharingEditAction() method ...');
 	//retreiving the standard permissions
-	$sql= "select * from vtiger_def_org_share where editstatus=0";
+	$sql= 'select * from vtiger_def_org_share where editstatus=0';
 	$result = $adb->pquery($sql, array());
 	$permissionRow=$adb->fetch_array($result);
-	do
-	{
-		for($j=0;$j<count($permissionRow);$j++)
-		{
+	do {
+		for($j=0;$j<count($permissionRow);$j++) {
 			$copy[$permissionRow[1]]=$permissionRow[2];
 		}
-
 	}while($permissionRow=$adb->fetch_array($result));
 
-	$log->debug("Exiting getDefaultSharingEditAction method ...");
+	$log->debug('Exiting getDefaultSharingEditAction method ...');
 	return $copy;
-
 }
+
 /**This Function returns the Default Organisation Sharing Action Array for modules with edit status in (0,1)
   * The result array will be in the following format:
   * Arr=(tabid1=>Sharing Action Id,
@@ -350,11 +295,10 @@ function getDefaultSharingEditAction()
   */
 function getDefaultSharingAction()
 {
-	global $log;
-	$log->debug("Entering getDefaultSharingAction() method ...");
-	global $adb;
-	//retreivin the standard permissions
-	$sql= "select * from vtiger_def_org_share where editstatus in(0,1)";
+	global $log, $adb;
+	$log->debug('Entering getDefaultSharingAction() method ...');
+	//retrieve standard permissions
+	$sql= 'select * from vtiger_def_org_share where editstatus in(0,1)';
 	$result = $adb->pquery($sql, array());
 	$permissionRow=$adb->fetch_array($result);
 	do
@@ -363,13 +307,10 @@ function getDefaultSharingAction()
 		{
 			$copy[$permissionRow[1]]=$permissionRow[2];
 		}
-
 	}while($permissionRow=$adb->fetch_array($result));
-	$log->debug("Exiting getDefaultSharingAction method ...");
+	$log->debug('Exiting getDefaultSharingAction method ...');
 	return $copy;
-
 }
-
 
 /**This Function returns the Default Organisation Sharing Action Array for all modules
   * The result array will be in the following format:
@@ -382,370 +323,299 @@ function getDefaultSharingAction()
   */
 function getAllDefaultSharingAction()
 {
-	global $log;
-	$log->debug("Entering getAllDefaultSharingAction() method ...");
-	global $adb;
+	global $log,$adb;
+	$log->debug('Entering getAllDefaultSharingAction() method ...');
 	$copy=Array();
 	//retreiving the standard permissions
-	$sql= "select * from vtiger_def_org_share";
+	$sql= 'select * from vtiger_def_org_share';
 	$result = $adb->pquery($sql, array());
 	$num_rows=$adb->num_rows($result);
-
 	for($i=0;$i<$num_rows;$i++)
 	{
 		$tabid=$adb->query_result($result,$i,'tabid');
 		$permission=$adb->query_result($result,$i,'permission');
 		$copy[$tabid]=$permission;
-
 	}
-
-	$log->debug("Exiting getAllDefaultSharingAction method ...");
+	$log->debug('Exiting getAllDefaultSharingAction method ...');
 	return $copy;
-
 }
 
-
-/** Function to create the vtiger_role
-  * @param $roleName -- Role Name:: Type varchar
-  * @param $parentRoleId -- Parent Role Id:: Type varchar
-  * @param $roleProfileArray -- Profile to be associated with this vtiger_role:: Type Array
-  * @returns  the Rold Id :: Type varchar
-  *
+/** Function to create the role
+ * @param $roleName -- Role Name:: Type varchar
+ * @param $parentRoleId -- Parent Role Id:: Type varchar
+ * @param $roleProfileArray -- Profile to be associated with this role:: Type Array
+ * @returns  the Rold Id :: Type varchar
  */
-
 function createRole($roleName,$parentRoleId,$roleProfileArray)
 {
-	global $log;
+	global $log,$adb;
 	$log->debug("Entering createRole(".$roleName.",".$parentRoleId.",".$roleProfileArray.") method ...");
-	global $adb;
 	$parentRoleDetails=getRoleInformation($parentRoleId);
 	$parentRoleInfo=$parentRoleDetails[$parentRoleId];
 	$roleid_no=$adb->getUniqueId("vtiger_role");
-        $roleId='H'.$roleid_no;
-        $parentRoleHr=$parentRoleInfo[1];
-        $parentRoleDepth=$parentRoleInfo[2];
-        $nowParentRoleHr=$parentRoleHr.'::'.$roleId;
-        $nowRoleDepth=$parentRoleDepth + 1;
+	$roleId='H'.$roleid_no;
+	$parentRoleHr=$parentRoleInfo[1];
+	$parentRoleDepth=$parentRoleInfo[2];
+	$nowParentRoleHr=$parentRoleHr.'::'.$roleId;
+	$nowRoleDepth=$parentRoleDepth + 1;
 
-    // Invalidate any cached information
-    VTCacheUtils::clearRoleSubordinates($roleId);
+	// Invalidate any cached information
+	VTCacheUtils::clearRoleSubordinates($roleId);
 
-	//Inserting vtiger_role into db
+	//Inserting role into db
 	$query="insert into vtiger_role values(?,?,?,?)";
 	$qparams = array($roleId,$roleName,$nowParentRoleHr,$nowRoleDepth);
 	$adb->pquery($query,$qparams);
 
 	//Inserting into vtiger_role2profile vtiger_table
-	foreach($roleProfileArray as $profileId)
-        {
-                if($profileId != '')
-                {
-                        insertRole2ProfileRelation($roleId,$profileId);
-                }
-        }
-
+	foreach($roleProfileArray as $profileId) {
+		if($profileId != '') {
+			insertRole2ProfileRelation($roleId,$profileId);
+		}
+	}
 	$log->debug("Exiting createRole method ...");
 	return $roleId;
-
 }
 
-/** Function to update the vtiger_role
-  * @param $roleName -- Role Name:: Type varchar
-  * @param $roleId -- Role Id:: Type varchar
-  * @param $roleProfileArray -- Profile to be associated with this vtiger_role:: Type Array
-  *
+/** Function to update the role
+ * @param $roleName -- Role Name:: Type varchar
+ * @param $roleId -- Role Id:: Type varchar
+ * @param $roleProfileArray -- Profile to be associated with this role:: Type Array
  */
 function updateRole($roleId,$roleName,$roleProfileArray)
 {
-	global $log;
+	global $log,$adb;
 	$log->debug("Entering updateRole(".$roleId.",".$roleName.",".$roleProfileArray.") method ...");
 
 	// Invalidate any cached information
-    VTCacheUtils::clearRoleSubordinates($roleId);
+	VTCacheUtils::clearRoleSubordinates($roleId);
 
-	global $adb;
 	$sql1 = "update vtiger_role set rolename=? where roleid=?";
-    $adb->pquery($sql1, array($roleName, $roleId));
+	$adb->pquery($sql1, array($roleName, $roleId));
 	//Updating the Role2Profile relation
 	$sql2 = "delete from vtiger_role2profile where roleId=?";
 	$adb->pquery($sql2, array($roleId));
 
-	foreach($roleProfileArray as $profileId)
-        {
-                if($profileId != '')
-                {
-                        insertRole2ProfileRelation($roleId,$profileId);
-                }
-        }
+	foreach($roleProfileArray as $profileId) {
+		if($profileId != '') {
+			insertRole2ProfileRelation($roleId,$profileId);
+		}
+	}
 	$log->debug("Exiting updateRole method ...");
-
 }
 
-/** Function to add the vtiger_role to vtiger_profile relation
-  * @param $profileId -- Profile Id:: Type integer
-  * @param $roleId -- Role Id:: Type varchar
-  *
+/** Function to add the role to profile relation
+ * @param $profileId -- Profile Id:: Type integer
+ * @param $roleId -- Role Id:: Type varchar
  */
 function insertRole2ProfileRelation($roleId,$profileId)
 {
-	global $log;
-	$log->debug("Entering insertRole2ProfileRelation(".$roleId.",".$profileId.") method ...");
-	global $adb;
-	$query="insert into vtiger_role2profile values(?,?)";
+	global $log,$adb;
+	$log->debug('Entering insertRole2ProfileRelation('.$roleId.','.$profileId.') method ...');
+	$query='insert into vtiger_role2profile values(?,?)';
 	$qparams = array($roleId,$profileId);
 	$adb->pquery($query, $qparams);
-	$log->debug("Exiting insertRole2ProfileRelation method ...");
-
+	$log->debug('Exiting insertRole2ProfileRelation method ...');
 }
-
 
 /** Function to get the vtiger_roleid from vtiger_rolename
-  * @param $rolename -- Role Name:: Type varchar
-  * @returns Role Id:: Type varchar
-  *
+ * @param $rolename -- Role Name:: Type varchar
+ * @returns Role Id:: Type varchar
  */
-function fetchRoleId($rolename)
-{
-global $log;
-$log->debug("Entering fetchRoleId(".$rolename.") method ...");
-
-  global $adb;
-  $sqlfetchroleid = "select roleid from vtiger_role where rolename=?";
-  $resultroleid = $adb->pquery($sqlfetchroleid, array($rolename));
-  $role_id = $adb->query_result($resultroleid,0,"roleid");
-$log->debug("Exiting fetchRoleId method ...");
-  return $role_id;
+function fetchRoleId($rolename) {
+	global $log, $adb;
+	$log->debug('Entering fetchRoleId('.$rolename.') method ...');
+	$sqlfetchroleid = 'select roleid from vtiger_role where rolename=?';
+	$resultroleid = $adb->pquery($sqlfetchroleid, array($rolename));
+	$role_id = $adb->query_result($resultroleid,0,'roleid');
+	$log->debug('Exiting fetchRoleId method ...');
+	return $role_id;
 }
 
-/** Function to update user to vtiger_role mapping based on the userid
-  * @param $roleid -- Role Id:: Type varchar
-  * @param $userid User Id:: Type integer
-  *
+/** Function to update user to role mapping based on the userid
+ * @param $roleid -- Role Id:: Type varchar
+ * @param $userid User Id:: Type integer
  */
 function updateUser2RoleMapping($roleid,$userid)
 {
-global $log;
-$log->debug("Entering updateUser2RoleMapping(".$roleid.",".$userid.") method ...");
-  global $adb;
-  //Check if row already exists
-  $sqlcheck = "select * from vtiger_user2role where userid=?";
-  $resultcheck = $adb->pquery($sqlcheck, array($userid));
-  if($adb->num_rows($resultcheck) == 1)
-  {
-  	$sqldelete = "delete from vtiger_user2role where userid=?";
-	$delparams = array($userid);
-  	$result_delete = $adb->pquery($sqldelete, $delparams);
-  }
-  $sql = "insert into vtiger_user2role(userid,roleid) values(?,?)";
-  $params = array($userid, $roleid);
-  $result = $adb->pquery($sql, $params);
-	$log->debug("Exiting updateUser2RoleMapping method ...");
-
+	global $log, $adb;
+	$log->debug('Entering updateUser2RoleMapping('.$roleid.','.$userid.') method ...');
+	//Check if row already exists
+	$sqlcheck = 'select * from vtiger_user2role where userid=?';
+	$resultcheck = $adb -> pquery($sqlcheck, array($userid));
+	if ($adb -> num_rows($resultcheck) == 1) {
+		$sqldelete = 'delete from vtiger_user2role where userid=?';
+		$delparams = array($userid);
+		$result_delete = $adb->pquery($sqldelete, $delparams);
+	}
+	$sql = 'insert into vtiger_user2role(userid,roleid) values(?,?)';
+	$params = array($userid, $roleid);
+	$result = $adb->pquery($sql, $params);
+	$log->debug('Exiting updateUser2RoleMapping method ...');
 }
 
-
 /** Function to update user to group mapping based on the userid
-  * @param $groupname -- Group Name:: Type varchar
-  * @param $userid User Id:: Type integer
-  *
+ * @param $groupname -- Group Name:: Type varchar
+ * @param $userid User Id:: Type integer
  */
 function updateUsers2GroupMapping($groupname,$userid)
 {
-global $log;
-$log->debug("Entering updateUsers2GroupMapping(".$groupname.",".$userid.") method ...");
-  global $adb;
-  $sqldelete = "delete from vtiger_users2group where userid = ?";
-  $delparams = array($userid);
-  $result_delete = $adb->pquery($sqldelete, $delparams);
-
-  $sql = "insert into vtiger_users2group(groupname,userid) values(?,?)";
-  $params = array($groupname,$userid);
-  $result = $adb->pquery($sql, $params);
-  $log->debug("Exiting updateUsers2GroupMapping method ...");
+	global $log,$adb;
+	$log->debug('Entering updateUsers2GroupMapping('.$groupname.','.$userid.') method ...');
+	$sqldelete = 'delete from vtiger_users2group where userid = ?';
+	$delparams = array($userid);
+	$result_delete = $adb->pquery($sqldelete, $delparams);
+	$sql = 'insert into vtiger_users2group(groupname,userid) values(?,?)';
+	$params = array($groupname,$userid);
+	$result = $adb->pquery($sql, $params);
+	$log->debug('Exiting updateUsers2GroupMapping method ...');
 }
 
-/** Function to add user to vtiger_role mapping
-  * @param $roleid -- Role Id:: Type varchar
-  * @param $userid User Id:: Type integer
-  *
+/** Function to add user to role mapping
+ * @param $roleid -- Role Id:: Type varchar
+ * @param $userid User Id:: Type integer
  */
 function insertUser2RoleMapping($roleid,$userid)
 {
-global $log;
-$log->debug("Entering insertUser2RoleMapping(".$roleid.",".$userid.") method ...");
-
-  global $adb;
-  $sql = "insert into vtiger_user2role(userid,roleid) values(?,?)";
-  $params = array($userid, $roleid);
-  $adb->pquery($sql, $params);
-$log->debug("Exiting insertUser2RoleMapping method ...");
-
+	global $log,$adb;
+	$log->debug('Entering insertUser2RoleMapping('.$roleid.','.$userid.') method ...');
+	$sql = 'insert into vtiger_user2role(userid,roleid) values(?,?)';
+	$params = array($userid, $roleid);
+	$adb->pquery($sql, $params);
+	$log->debug('Exiting insertUser2RoleMapping method ...');
 }
 
 /** Function to add user to group mapping
-  * @param $groupname -- Group Name:: Type varchar
-  * @param $userid User Id:: Type integer
-  *
+ * @param $groupname -- Group Name:: Type varchar
+ * @param $userid User Id:: Type integer
  */
 function insertUsers2GroupMapping($groupname,$userid)
 {
-global $log;
-$log->debug("Entering insertUsers2GroupMapping(".$groupname.",".$userid.") method ...");
-  global $adb;
-  $sql = "insert into vtiger_users2group(groupname,userid) values(?,?)";
-  $params = array($groupname, $userid);
-  $adb->pquery($sql, $params);
-$log->debug("Exiting insertUsers2GroupMapping method ...");
+	global $log,$adb;
+	$log->debug('Entering insertUsers2GroupMapping('.$groupname.','.$userid.') method ...');
+	$sql = 'insert into vtiger_users2group(groupname,userid) values(?,?)';
+	$params = array($groupname, $userid);
+	$adb->pquery($sql, $params);
+	$log->debug('Exiting insertUsers2GroupMapping method ...');
 }
 
 /** Function to get the word template resultset
-  * @param $module -- Module Name:: Type varchar
-  * @returns Type:: resultset
-  *
+ * @param $module -- Module Name:: Type varchar
+ * @returns Type:: resultset
  */
 function fetchWordTemplateList($module)
 {
-	global $log;
-	$log->debug("Entering fetchWordTemplateList(".$module.") method ...");
-  	global $adb;
-  	$sql_word = "select templateid, filename from vtiger_wordtemplates where module =?" ;
-  	$result=$adb->pquery($sql_word, array($module));
-	$log->debug("Exiting fetchWordTemplateList method ...");
-  	return $result;
+	global $log,$adb;
+	$log->debug('Entering fetchWordTemplateList('.$module.') method ...');
+	$sql_word = 'select templateid, filename from vtiger_wordtemplates where module =?';
+	$result=$adb->pquery($sql_word, array($module));
+	$log->debug('Exiting fetchWordTemplateList method ...');
+	return $result;
 }
 
-
-
 /** Function to get the email template iformation
-  * @param $templateName -- Template Name:: Type varchar
-  * @returns Type:: resultset
-  *
+ * @param $templateName -- Template Name:: Type varchar
+ * @returns Type:: resultset
  */
 function fetchEmailTemplateInfo($templateName)
 {
-	global $log;
-	$log->debug("Entering fetchEmailTemplateInfo(".$templateName.") method ...");
-	global $adb;
-   	$sql= "select * from vtiger_emailtemplates where templatename=?";
-    $result = $adb->pquery($sql, array($templateName));
-	$log->debug("Exiting fetchEmailTemplateInfo method ...");
-    return $result;
+	global $log,$adb;
+	$log->debug('Entering fetchEmailTemplateInfo('.$templateName.') method ...');
+	$sql= 'select * from vtiger_emailtemplates where templatename=?';
+	$result = $adb->pquery($sql, array($templateName));
+	$log->debug('Exiting fetchEmailTemplateInfo method ...');
+	return $result;
 }
 
 /** Function to substitute the tokens in the specified file
-  * @param $templateName -- Template Name:: Type varchar
-  * @param $globals
-  *
+ * @param $templateName -- Template Name:: Type varchar
+ * @param $globals
  */
 function substituteTokens($filename,$globals)
 {
-global $log;
-$log->debug("Entering substituteTokens(".$filename.",".$globals.") method ...");
-	$log->debug("in substituteTokens method  with filename ".$filename.' and content globals as '.$globals);
+	global $log,$root_directory;
+	$log->debug("Entering substituteTokens(".$filename.",".$globals.") method ...");
 
-	global $root_directory;
+	if (!$filename) {
+		$filename = $this->filename;
+	}
 
-	if (!$filename)
-	 {
+	if (!$dump = file($filename)) {
+		$log->debug("not able to create the file or get access to the file with filename ".$filename." so returning 0");
+		$log->debug("Exiting substituteTokens method ...");
+		return 0;
+	}
 
-	$log->debug("filename is not set in substituteTokens");
-		 $filename = $this->filename;
-	$log->debug("filename is not set in substituteTokens so taking default filename");
-	 }
-
-    if (!$dump = file ($filename))
-	 {
-		 $log->debug("not able to create the file or get access to the file with filename ".$filename." so returning 0");
-		 $log->debug("Exiting substituteTokens method ...");
-     		 return 0;
-    	 }
-
-	 $log->debug("about to start replacing the tokens");
-      require_once($root_directory .'/modules/Emails/templates/testemailtemplateusage.php');
-      eval ("global $globals; ");
-    while (list($key,$val) = each($dump))
-    {
-	$replacedString ;
-      if (preg_match( "/\$/g",$val))
-	{
-	$log->debug("token is ".$val);
-        eval(  "\$val = \"$val\";");
-        $val = stripslashes ($val);
-	$replacedString .= $val;
-      }
-    }
-
-	$log->debug("the replacedString  is ".$replacedString);
+	require_once($root_directory .'/modules/Emails/templates/testemailtemplateusage.php');
+	eval("global $globals;");
+	while (list($key,$val) = each($dump)) {
+		$replacedString ;
+		if (preg_match( "/\$/g",$val)) {
+			eval("\$val = \"$val\";");
+			$val = stripslashes ($val);
+			$replacedString .= $val;
+		}
+	}
+	$log->debug("the replacedString is ".$replacedString);
 	$log->debug("Exiting substituteTokens method ...");
 	return $replacedString;
 }
 
-/** Function to get the vtiger_role name from the vtiger_roleid
-  * @param $roleid -- Role Id:: Type varchar
-  * @returns $rolename -- Role Name:: Type varchar
-  *
+/** Function to get the role name from the roleid
+ * @param $roleid -- Role Id:: Type varchar
+ * @returns $rolename -- Role Name:: Type varchar
  */
 function getRoleName($roleid)
 {
-	global $log;
-	$log->debug("Entering getRoleName(".$roleid.") method ...");
-	global $adb;
-	$sql1 = "select * from vtiger_role where roleid=?";
+	global $log, $adb;
+	$log->debug('Entering getRoleName('.$roleid.') method ...');
+	$sql1 = 'select rolename from vtiger_role where roleid=?';
 	$result = $adb->pquery($sql1, array($roleid));
-	$rolename = $adb->query_result($result,0,"rolename");
-	$log->debug("Exiting getRoleName method ...");
+	$rolename = $adb->query_result($result,0,'rolename');
+	$log->debug('Exiting getRoleName method ...');
 	return $rolename;
 }
 
-/** Function to get the vtiger_profile name from the vtiger_profileid
-  * @param $profileid -- Profile Id:: Type integer
-  * @returns $rolename -- Role Name:: Type varchar
-  *
+/** Function to get the profile name from the profileid
+ * @param $profileid -- Profile Id:: Type integer
+ * @returns $rolename -- Role Name:: Type varchar
  */
 function getProfileName($profileid)
 {
-	global $log;
-	$log->debug("Entering getProfileName(".$profileid.") method ...");
-	global $adb;
-	$sql1 = "select * from vtiger_profile where profileid=?";
+	global $log, $adb;
+	$log->debug('Entering getProfileName('.$profileid.') method ...');
+	$sql1 = 'select profilename from vtiger_profile where profileid=?';
 	$result = $adb->pquery($sql1, array($profileid));
-	$profilename = $adb->query_result($result,0,"profilename");
-	$log->debug("Exiting getProfileName method ...");
+	$profilename = $adb->query_result($result,0,'profilename');
+	$log->debug('Exiting getProfileName method ...');
 	return $profilename;
 }
+
 /** Function to get the vtiger_profile Description from the vtiger_profileid
-  * @param $profileid -- Profile Id:: Type integer
-  * @returns $rolename -- Role Name:: Type varchar
-  *
+ * @param $profileid -- Profile Id:: Type integer
+ * @returns $rolename -- Role Name:: Type varchar
  */
 function getProfileDescription($profileid)
 {
-        global $log;
-        $log->debug("Entering getProfileDescription(".$profileid.") method ...");
-        global $adb;
-        $sql1 = "select  description from vtiger_profile where profileid=?";
-        $result = $adb->pquery($sql1, array($profileid));
-        $profileDescription = $adb->query_result($result,0,"description");
-        $log->debug("Exiting getProfileDescription method ...");
-        return $profileDescription;
+	global $log, $adb;
+	$log->debug('Entering getProfileDescription('.$profileid.') method ...');
+	$sql1 = 'select description from vtiger_profile where profileid=?';
+	$result = $adb->pquery($sql1, array($profileid));
+	$profileDescription = $adb->query_result($result,0,'description');
+	$log->debug('Exiting getProfileDescription method ...');
+	return $profileDescription;
 }
 
-
 /** Function to check if the currently logged in user is permitted to perform the specified action
-  * @param $module -- Module Name:: Type varchar
-  * @param $actionname -- Action Name:: Type varchar
-  * @param $recordid -- Record Id:: Type integer
-  * @returns yes or no. If Yes means this action is allowed for the currently logged in user. If no means this action is not allowed for the currently logged in user
-  *
+ * @param $module -- Module Name:: Type varchar
+ * @param $actionname -- Action Name:: Type varchar
+ * @param $recordid -- Record Id:: Type integer
+ * @returns yes or no. If Yes means this action is allowed for the currently logged in user. If no means this action is not allowed for the currently logged in user
  */
 function isPermitted($module,$actionname,$record_id='')
 {
-	global $log;
+	global $log, $adb, $current_user, $seclog;
 	$log->debug("Entering isPermitted(".$module.",".$actionname.",".$record_id.") method ...");
-
-	global $adb;
-	global $current_user;
-	global $seclog;
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 	$parenttab = empty($_REQUEST['parenttab']) ? '' : vtlib_purify($_REQUEST['parenttab']);
@@ -786,17 +656,15 @@ function isPermitted($module,$actionname,$record_id='')
 	//If no actionid, then allow action is vtiger_tab permission is available
 	if($actionid === '')
 	{
-		if($profileTabsPermission[$tabid] ==0)
-        	{
-                	$permission = "yes";
+		if($profileTabsPermission[$tabid] ==0) {
+			$permission = "yes";
 			$log->debug("Exiting isPermitted method ...");
-        	}
+		}
 		else
 		{
 			$permission ="no";
 		}
-               	return $permission;
-
+		return $permission;
 	}
 
 	$action = getActionname($actionid);
@@ -808,7 +676,6 @@ function isPermitted($module,$actionname,$record_id='')
 			$permission = "yes";
 			$log->debug("Exiting isPermitted method ...");
 			return $permission;
-
 		}
 	}
 	//Checking for edit all permission
@@ -819,7 +686,6 @@ function isPermitted($module,$actionname,$record_id='')
 			$permission = "yes";
 			$log->debug("Exiting isPermitted method ...");
 			return $permission;
-
 		}
 	}
 	//Checking for vtiger_tab permission
@@ -895,10 +761,7 @@ function isPermitted($module,$actionname,$record_id='')
 				$log->debug("Exiting isPermitted method ...");
 				return $permission;
 			}
-
 		}
-
-
 	}
 	elseif($recOwnType == 'Groups')
 	{
@@ -916,7 +779,6 @@ function isPermitted($module,$actionname,$record_id='')
 	{
 		if($actionid == 1 || $actionid == 0)
 		{
-
 			if($module == 'Calendar')
 			{
 				if($recOwnType == 'Users')
@@ -965,14 +827,12 @@ function isPermitted($module,$actionname,$record_id='')
 	}
 	elseif($others_permission_id == 2)
 	{
-
 		$permission = "yes";
 		$log->debug("Exiting isPermitted method ...");
 		return $permission;
 	}
 	elseif($others_permission_id == 3)
 	{
-
 		if($actionid == 3 || $actionid == 4)
 		{
 			if($module == 'Calendar')
@@ -1025,22 +885,19 @@ function isPermitted($module,$actionname,$record_id='')
 
 	$log->debug("Exiting isPermitted method ...");
 	return $permission;
-
 }
 
 /** Function to check if the currently logged in user has Read Access due to Sharing for the specified record
-  * @param $module -- Module Name:: Type varchar
-  * @param $actionid -- Action Id:: Type integer
-  * @param $recordid -- Record Id:: Type integer
-  * @param $tabid -- Tab Id:: Type integer
-  * @returns yes or no. If Yes means this action is allowed for the currently logged in user. If no means this action is not allowed for the currently logged in user
+ * @param $module -- Module Name:: Type varchar
+ * @param $actionid -- Action Id:: Type integer
+ * @param $recordid -- Record Id:: Type integer
+ * @param $tabid -- Tab Id:: Type integer
+ * @returns yes or no. If Yes means this action is allowed for the currently logged in user. If no means this action is not allowed for the currently logged in user
  */
 function isReadPermittedBySharing($module,$tabid,$actionid,$record_id)
 {
-	global $log;
+	global $log, $adb, $current_user;
 	$log->debug("Entering isReadPermittedBySharing(".$module.",".$tabid.",".$actionid.",".$record_id.") method ...");
-	global $adb;
-	global $current_user;
 	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 	$ownertype='';
 	$ownerid='';
@@ -1074,9 +931,7 @@ function isReadPermittedBySharing($module,$tabid,$actionid,$record_id)
 				$log->debug("Exiting isReadPermittedBySharing method ...");
 				return $sharePer;
 			}
-
 		}
-
 		//Checking the Read Sharing Permission Array in Groups Users
 		$read_grp_per=$read_per_arr['GROUP'];
 		foreach($read_grp_per as $grpid=>$userids)
@@ -1087,9 +942,7 @@ function isReadPermittedBySharing($module,$tabid,$actionid,$record_id)
 				$log->debug("Exiting isReadPermittedBySharing method ...");
 				return $sharePer;
 			}
-
 		}
-
 	}
 	elseif($ownertype == 'Groups')
 	{
@@ -1101,7 +954,6 @@ function isReadPermittedBySharing($module,$tabid,$actionid,$record_id)
 			return $sharePer;
 		}
 	}
-
 	//Checking for the Related Sharing Permission
 	$relatedModuleArray=$related_module_share[$tabid];
 	if(is_array($relatedModuleArray))
@@ -1133,7 +985,6 @@ function isReadPermittedBySharing($module,$tabid,$actionid,$record_id)
 							$log->debug("Exiting isReadPermittedBySharing method ...");
 							return $sharePer;
 						}
-
 					}
 					//Checking in Group Users
 					$read_related_grp_per=$read_related_per_arr['GROUP'];
@@ -1145,9 +996,7 @@ function isReadPermittedBySharing($module,$tabid,$actionid,$record_id)
 							$log->debug("Exiting isReadPermittedBySharing method ...");
 							return $sharePer;
 						}
-
 					}
-
 				}
 				elseif($rel_owner_type=='Groups')
 				{
@@ -1158,7 +1007,6 @@ function isReadPermittedBySharing($module,$tabid,$actionid,$record_id)
 						$log->debug("Exiting isReadPermittedBySharing method ...");
 						return $sharePer;
 					}
-
 				}
 			}
 		}
@@ -1167,32 +1015,27 @@ function isReadPermittedBySharing($module,$tabid,$actionid,$record_id)
 	return $sharePer;
 }
 
-
-
 /** Function to check if the currently logged in user has Write Access due to Sharing for the specified record
-  * @param $module -- Module Name:: Type varchar
-  * @param $actionid -- Action Id:: Type integer
-  * @param $recordid -- Record Id:: Type integer
-  * @param $tabid -- Tab Id:: Type integer
-  * @returns yes or no. If Yes means this action is allowed for the currently logged in user. If no means this action is not allowed for the currently logged in user
+ * @param $module -- Module Name:: Type varchar
+ * @param $actionid -- Action Id:: Type integer
+ * @param $recordid -- Record Id:: Type integer
+ * @param $tabid -- Tab Id:: Type integer
+ * @returns yes or no. If Yes means this action is allowed for the currently logged in user. If no means this action is not allowed for the currently logged in user
  */
 function isReadWritePermittedBySharing($module,$tabid,$actionid,$record_id)
 {
-	global $log;
+	global $log, $adb, $current_user;
 	$log->debug("Entering isReadWritePermittedBySharing(".$module.",".$tabid.",".$actionid.",".$record_id.") method ...");
-	global $adb;
-	global $current_user;
 	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 	$ownertype='';
 	$ownerid='';
 	$sharePer='no';
 
 	$sharingModuleList=getSharingModuleList();
-        if(! in_array($module,$sharingModuleList))
-        {
-                $sharePer='no';
-                return $sharePer;
-        }
+	if(! in_array($module,$sharingModuleList)) {
+		$sharePer='no';
+		return $sharePer;
+	}
 
 	$recordOwnerArr=getRecordOwnerId($record_id);
 	foreach($recordOwnerArr as $type=>$id)
@@ -1216,7 +1059,6 @@ function isReadWritePermittedBySharing($module,$tabid,$actionid,$record_id)
 				$log->debug("Exiting isReadWritePermittedBySharing method ...");
 				return $sharePer;
 			}
-
 		}
 		//Checking the Write Sharing Permission Array in Groups Users
 		$write_grp_per=$write_per_arr['GROUP'];
@@ -1228,9 +1070,7 @@ function isReadWritePermittedBySharing($module,$tabid,$actionid,$record_id)
 				$log->debug("Exiting isReadWritePermittedBySharing method ...");
 				return $sharePer;
 			}
-
 		}
-
 	}
 	elseif($ownertype == 'Groups')
 	{
@@ -1273,7 +1113,6 @@ function isReadWritePermittedBySharing($module,$tabid,$actionid,$record_id)
 							$log->debug("Exiting isReadWritePermittedBySharing method ...");
 							return $sharePer;
 						}
-
 					}
 					//Checking in Group Users
 					$write_related_grp_per=$write_related_per_arr['GROUP'];
@@ -1285,9 +1124,7 @@ function isReadWritePermittedBySharing($module,$tabid,$actionid,$record_id)
 							$log->debug("Exiting isReadWritePermittedBySharing method ...");
 							return $sharePer;
 						}
-
 					}
-
 				}
 				elseif($rel_owner_type=='Groups')
 				{
@@ -1298,7 +1135,6 @@ function isReadWritePermittedBySharing($module,$tabid,$actionid,$record_id)
 						$log->debug("Exiting isReadWritePermittedBySharing method ...");
 						return $sharePer;
 					}
-
 				}
 			}
 		}
@@ -1309,11 +1145,10 @@ function isReadWritePermittedBySharing($module,$tabid,$actionid,$record_id)
 }
 
 /** Function to check if the outlook user is permitted to perform the specified action
-  * @param $module -- Module Name:: Type varchar
-  * @param $actionname -- Action Name:: Type varchar
-  * @param $recordid -- Record Id:: Type integer
-  * @returns yes or no. If Yes means this action is allowed for the currently logged in user. If no means this action is not allowed for the currently logged in user
-  *
+ * @param $module -- Module Name:: Type varchar
+ * @param $actionname -- Action Name:: Type varchar
+ * @param $recordid -- Record Id:: Type integer
+ * @returns yes or no. If Yes means this action is allowed for the currently logged in user. If no means this action is not allowed for the currently logged in user
  */
 function isAllowed_Outlook($module,$action,$user_id,$record_id)
 {
@@ -1325,12 +1160,10 @@ function isAllowed_Outlook($module,$action,$user_id,$record_id)
 	{
 		//These modules done have security
 		$permission = "yes";
-
 	}
 	else
 	{
-		global $adb;
-		global $current_user;
+		global $adb, $current_user;
 		$tabid = getTabid($module);
 		$actionid = getActionid($action);
 		$profile_id = fetchUserProfileId($user_id);
@@ -1382,7 +1215,6 @@ function isAllowed_Outlook($module,$action,$user_id,$record_id)
 						}
 						elseif($others_permission_id == 2)
 						{
-
 							$permission = "yes";
 						}
 						elseif($others_permission_id == 3)
@@ -1396,8 +1228,6 @@ function isAllowed_Outlook($module,$action,$user_id,$record_id)
 								$permission = "yes";
 							}
 						}
-
-
 					}
 					else
 					{
@@ -1417,111 +1247,89 @@ function isAllowed_Outlook($module,$action,$user_id,$record_id)
 	}
 	$log->debug("Exiting isAllowed_Outlook method ...");
 	return $permission;
-
 }
 
-
 /** Function to get the Profile Global Information for the specified vtiger_profileid
-  * @param $profileid -- Profile Id:: Type integer
-  * @returns Profile Gloabal Permission Array in the following format:
-  * $profileGloblaPermisson=Array($viewall_actionid=>permission, $editall_actionid=>permission)
+ * @param $profileid -- Profile Id:: Type integer
+ * @returns Profile Gloabal Permission Array in the following format:
+ * $profileGloblaPermisson=Array($viewall_actionid=>permission, $editall_actionid=>permission)
  */
 function getProfileGlobalPermission($profileid)
 {
-global $log;
-$log->debug("Entering getProfileGlobalPermission(".$profileid.") method ...");
-  global $adb;
-  $sql = "select * from vtiger_profile2globalpermissions where profileid=?" ;
-  $result = $adb->pquery($sql, array($profileid));
-  $num_rows = $adb->num_rows($result);
-
-  for($i=0; $i<$num_rows; $i++)
-  {
-	$act_id = $adb->query_result($result,$i,"globalactionid");
-	$per_id = $adb->query_result($result,$i,"globalactionpermission");
-	$copy[$act_id] = $per_id;
-  }
-
-	$log->debug("Exiting getProfileGlobalPermission method ...");
-   return $copy;
-
+	global $log, $adb;
+	$log->debug('Entering getProfileGlobalPermission('.$profileid.') method ...');
+	$sql = 'select * from vtiger_profile2globalpermissions where profileid=?';
+	$result = $adb->pquery($sql, array($profileid));
+	$num_rows = $adb->num_rows($result);
+	for($i=0; $i<$num_rows; $i++) {
+		$act_id = $adb->query_result($result,$i,'globalactionid');
+		$per_id = $adb->query_result($result,$i,'globalactionpermission');
+		$copy[$act_id] = $per_id;
+	}
+	$log->debug('Exiting getProfileGlobalPermission method ...');
+	return $copy;
 }
 
 /** Function to get the Profile Tab Permissions for the specified vtiger_profileid
-  * @param $profileid -- Profile Id:: Type integer
-  * @returns Profile Tabs Permission Array in the following format:
-  * $profileTabPermisson=Array($tabid1=>permission, $tabid2=>permission,........., $tabidn=>permission)
+ * @param $profileid -- Profile Id:: Type integer
+ * @returns Profile Tabs Permission Array in the following format:
+ * $profileTabPermisson=Array($tabid1=>permission, $tabid2=>permission,........., $tabidn=>permission)
  */
 function getProfileTabsPermission($profileid)
 {
-global $log;
-$log->debug("Entering getProfileTabsPermission(".$profileid.") method ...");
-  global $adb;
-  $sql = "select * from vtiger_profile2tab where profileid=?" ;
-  $result = $adb->pquery($sql, array($profileid));
-  $num_rows = $adb->num_rows($result);
-
-  for($i=0; $i<$num_rows; $i++)
-  {
-	$tab_id = $adb->query_result($result,$i,"tabid");
-	$per_id = $adb->query_result($result,$i,"permissions");
-	$copy[$tab_id] = $per_id;
-  }
-  // TODO This is temporarily required, till we provide a hook/entry point for Emails module.
-  // Once that is done, Webmails need to be removed permanently.
-  $emailsTabId = getTabid('Emails');
-  $webmailsTabid = getTabid('Webmails');
-  if(array_key_exists($emailsTabId, $copy) and !empty($webmailsTabid)) {
-	  $copy[$webmailsTabid] = $copy[$emailsTabId];
-  }
-
-$log->debug("Exiting getProfileTabsPermission method ...");
-   return $copy;
-
+	global $log, $adb;
+	$log->debug('Entering getProfileTabsPermission('.$profileid.') method ...');
+	$sql = 'select * from vtiger_profile2tab where profileid=?';
+	$result = $adb->pquery($sql, array($profileid));
+	$num_rows = $adb->num_rows($result);
+	for($i=0; $i<$num_rows; $i++) {
+		$tab_id = $adb->query_result($result,$i,'tabid');
+		$per_id = $adb->query_result($result,$i,'permissions');
+		$copy[$tab_id] = $per_id;
+	}
+	// TODO This is temporarily required, till we provide a hook/entry point for Emails module.
+	// Once that is done, Webmails need to be removed permanently.
+	$emailsTabId = getTabid('Emails');
+	$webmailsTabid = getTabid('Webmails');
+	if(array_key_exists($emailsTabId, $copy) and !empty($webmailsTabid)) {
+		$copy[$webmailsTabid] = $copy[$emailsTabId];
+	}
+	$log->debug('Exiting getProfileTabsPermission method ...');
+	return $copy;
 }
 
-
 /** Function to get the Profile Action Permissions for the specified vtiger_profileid
-  * @param $profileid -- Profile Id:: Type integer
-  * @returns Profile Tabs Action Permission Array in the following format:
-  *    $tabActionPermission = Array($tabid1=>Array(actionid1=>permission, actionid2=>permission,...,actionidn=>permission),
-  *                        $tabid2=>Array(actionid1=>permission, actionid2=>permission,...,actionidn=>permission),
-  *                                |
-  *                        $tabidn=>Array(actionid1=>permission, actionid2=>permission,...,actionidn=>permission))
+ * @param $profileid -- Profile Id:: Type integer
+ * @returns Profile Tabs Action Permission Array in the following format:
+ *    $tabActionPermission = Array($tabid1=>Array(actionid1=>permission, actionid2=>permission,...,actionidn=>permission),
+ *                        $tabid2=>Array(actionid1=>permission, actionid2=>permission,...,actionidn=>permission),
+ *                                |
+ *                        $tabidn=>Array(actionid1=>permission, actionid2=>permission,...,actionidn=>permission))
  */
 function getProfileActionPermission($profileid)
 {
-global $log;
-$log->debug("Entering getProfileActionPermission(".$profileid.") method ...");
-	global $adb;
+	global $log, $adb;
+	$log->debug("Entering getProfileActionPermission(".$profileid.") method ...");
 	$check = Array();
 	$temp_tabid = Array();
 	$sql1 = "select * from vtiger_profile2standardpermissions where profileid=?";
 	$result1 = $adb->pquery($sql1, array($profileid));
-        $num_rows1 = $adb->num_rows($result1);
-        for($i=0; $i<$num_rows1; $i++)
-        {
+	$num_rows1 = $adb->num_rows($result1);
+	for($i=0; $i<$num_rows1; $i++) {
 		$tab_id = $adb->query_result($result1,$i,'tabid');
 		if(! in_array($tab_id,$temp_tabid))
 		{
 			$temp_tabid[] = $tab_id;
 			$access = Array();
 		}
-
 		$action_id = $adb->query_result($result1,$i,'operation');
 		$per_id = $adb->query_result($result1,$i,'permissions');
 		$access[$action_id] = $per_id;
 		$check[$tab_id] = $access;
-
-
 	}
-
-
-$log->debug("Exiting getProfileActionPermission method ...");
+	$log->debug("Exiting getProfileActionPermission method ...");
 	return $check;
 }
-
-
 
 /** Function to get the Standard and Utility Profile Action Permissions for the specified vtiger_profileid
   * @param $profileid -- Profile Id:: Type integer
@@ -1533,9 +1341,8 @@ $log->debug("Exiting getProfileActionPermission method ...");
  */
 function getProfileAllActionPermission($profileid)
 {
-global $log;
-$log->debug("Entering getProfileAllActionPermission(".$profileid.") method ...");
-	global $adb;
+	global $log, $adb;
+	$log->debug("Entering getProfileAllActionPermission(".$profileid.") method ...");
 	$actionArr=getProfileActionPermission($profileid);
 	$utilArr=getTabsUtilityActionPermission($profileid);
 	foreach($utilArr as $tabid=>$act_arr)
@@ -1547,10 +1354,9 @@ $log->debug("Entering getProfileAllActionPermission(".$profileid.") method ...")
 		}
 		$actionArr[$tabid]=$act_tab_arr;
 	}
-$log->debug("Exiting getProfileAllActionPermission method ...");
+	$log->debug("Exiting getProfileAllActionPermission method ...");
 	return $actionArr;
 }
-
 
 /** Function to create vtiger_profile
   * @param $profilename -- Profile Name:: Type varchar
@@ -1558,9 +1364,8 @@ $log->debug("Exiting getProfileAllActionPermission method ...");
  */
 function createProfile($profilename,$parentProfileId,$description)
 {
-global $log;
-$log->debug("Entering createProfile(".$profilename.",".$parentProfileId.",".$description.") method ...");
-	global $adb;
+	global $log, $adb;
+	$log->debug("Entering createProfile(".$profilename.",".$parentProfileId.",".$description.") method ...");
 	//Inserting values into Profile Table
 	$sql1 = "insert into vtiger_profile values(?,?,?)";
 	$params1 = array('', $profilename, $description);
@@ -1648,78 +1453,66 @@ $log->debug("Entering createProfile(".$profilename.",".$parentProfileId.",".$des
 }
 
 /** Function to delete vtiger_profile
-  * @param $transfer_profileid -- Profile Id to which the existing vtiger_role2profile relationships are to be transferred :: Type varchar
-  * @param $prof_id -- Profile Id to be deleted:: Type integer
+ * @param $transfer_profileid -- Profile Id to which the existing vtiger_role2profile relationships are to be transferred :: Type varchar
+ * @param $prof_id -- Profile Id to be deleted:: Type integer
  */
 function deleteProfile($prof_id,$transfer_profileid='')
 {
-	global $log;
-$log->debug("Entering deleteProfile(".$prof_id.",".$transfer_profileid.") method ...");
-	global $adb;
+	global $log, $adb;
+	$log->debug('Entering deleteProfile('.$prof_id.','.$transfer_profileid.') method ...');
 	//delete from vtiger_profile2global permissions
-	$sql4 = "delete from vtiger_profile2globalpermissions where profileid=?";
+	$sql4 = 'delete from vtiger_profile2globalpermissions where profileid=?';
 	$adb->pquery($sql4, array($prof_id));
 
 	//deleting from vtiger_profile 2 vtiger_tab;
-	$sql4 = "delete from vtiger_profile2tab where profileid=?";
+	$sql4 = 'delete from vtiger_profile2tab where profileid=?';
 	$adb->pquery($sql4, array($prof_id));
 
 	//deleting from vtiger_profile2standardpermissions vtiger_table
-	$sql5 = "delete from vtiger_profile2standardpermissions where profileid=?";
+	$sql5 = 'delete from vtiger_profile2standardpermissions where profileid=?';
 	$adb->pquery($sql5, array($prof_id));
 
 	//deleting from vtiger_profile2field
-	$sql6 ="delete from vtiger_profile2field where profileid=?";
+	$sql6 ='delete from vtiger_profile2field where profileid=?';
 	$adb->pquery($sql6, array($prof_id));
 
 	//deleting from vtiger_profile2utility
-	$sql7 ="delete from vtiger_profile2utility where profileid=?";
+	$sql7 ='delete from vtiger_profile2utility where profileid=?';
 	$adb->pquery($sql7, array($prof_id));
 
 	//updating vtiger_role2profile
-        if(isset($transfer_profileid) && $transfer_profileid != '')
-        {
-
-                $sql8 = "select roleid from vtiger_role2profile where profileid=?";
-				$result = $adb->pquery($sql8, array($prof_id));
-                $num_rows=$adb->num_rows($result);
-
-                for($i=0;$i<$num_rows;$i++)
-                {
-                        $roleid=$adb->query_result($result,$i,'roleid');
-                        $sql = "select profileid from vtiger_role2profile where roleid=?";
-                        $profresult=$adb->pquery($sql, array($roleid));
-                        $num=$adb->num_rows($profresult);
-                        if($num>1)
-                        {
-                                $sql10="delete from vtiger_role2profile where roleid=? and profileid=?";
-								$adb->pquery($sql10, array($roleid, $prof_id));
-                        }
-                        else
-                        {
-                                $sql8 = "update vtiger_role2profile set profileid=? where profileid=? and roleid=?";
-                                $adb->pquery($sql8, array($transfer_profileid, $prof_id, $roleid));
-                        }
-
-
-                }
-        }
+	if(isset($transfer_profileid) && $transfer_profileid != '') {
+		$sql8 = "select roleid from vtiger_role2profile where profileid=?";
+		$result = $adb->pquery($sql8, array($prof_id));
+		$num_rows=$adb->num_rows($result);
+		for($i=0;$i<$num_rows;$i++) {
+			$roleid=$adb->query_result($result,$i,'roleid');
+			$sql = "select profileid from vtiger_role2profile where roleid=?";
+			$profresult=$adb->pquery($sql, array($roleid));
+			$num=$adb->num_rows($profresult);
+			if($num>1) {
+				$sql10="delete from vtiger_role2profile where roleid=? and profileid=?";
+				$adb->pquery($sql10, array($roleid, $prof_id));
+			} else {
+				$sql8 = "update vtiger_role2profile set profileid=? where profileid=? and roleid=?";
+				$adb->pquery($sql8, array($transfer_profileid, $prof_id, $roleid));
+			}
+		}
+	}
 
 	//delete from vtiger_profile vtiger_table;
-	$sql9 = "delete from vtiger_profile where profileid=?";
+	$sql9 = 'delete from vtiger_profile where profileid=?';
 	$adb->pquery($sql9, array($prof_id));
-	$log->debug("Exiting deleteProfile method ...");
-
+	$log->debug('Exiting deleteProfile method ...');
 }
 
 /** Function to get all  the vtiger_role information
-  * @returns $allRoleDetailArray-- Array will contain the details of all the vtiger_roles. RoleId will be the key:: Type array
+ * @returns $allRoleDetailArray-- Array will contain the details of all the vtiger_roles. RoleId will be the key:: Type array
  */
 function getAllRoleDetails()
 {
-global $log;
-$log->debug("Entering getAllRoleDetails() method ...");
-	global $adb;
+	global $log, $adb;
+	$log->debug("Entering getAllRoleDetails() method ...");
 	$role_det = Array();
 	$query = "select * from vtiger_role";
 	$result = $adb->pquery($query, array());
@@ -1752,27 +1545,22 @@ $log->debug("Entering getAllRoleDetails() method ...");
 				}
 			}
 		}
-
-
 		$each_role_det[]=$rolename;
 		$each_role_det[]=$roledepth;
 		$each_role_det[]=$sub_role;
 		$role_det[$roleid]=$each_role_det;
-
 	}
 	$log->debug("Exiting getAllRoleDetails method ...");
 	return $role_det;
 }
 
-
 /** Function to get all  the vtiger_profile information
-  * @returns $allProfileInfoArray-- Array will contain the details of all the vtiger_profiles. Profile ID will be the key:: Type array
+ * @returns $allProfileInfoArray-- Array will contain the details of all the vtiger_profiles. Profile ID will be the key:: Type array
  */
 function getAllProfileInfo()
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getAllProfileInfo() method ...");
-	global $adb;
 	$query="select * from vtiger_profile";
 	$result = $adb->pquery($query, array());
 	$num_rows=$adb->num_rows($result);
@@ -1782,23 +1570,21 @@ function getAllProfileInfo()
 		$profileid=$adb->query_result($result,$i,'profileid');
 		$profilename=$adb->query_result($result,$i,'profilename');
 		$prof_details[$profileid]=$profilename;
-
 	}
 	$log->debug("Exiting getAllProfileInfo method ...");
 	return $prof_details;
 }
 
 /** Function to get the vtiger_role information of the specified vtiger_role
-  * @param $roleid -- RoleId :: Type varchar
-  * @returns $roleInfoArray-- RoleInfoArray in the following format:
-  *       $roleInfo=Array($roleId=>Array($rolename,$parentrole,$roledepth,$immediateParent));
+ * @param $roleid -- RoleId :: Type varchar
+ * @returns $roleInfoArray-- RoleInfoArray in the following format:
+ *       $roleInfo=Array($roleId=>Array($rolename,$parentrole,$roledepth,$immediateParent));
  */
 function getRoleInformation($roleid)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getRoleInformation(".$roleid.") method ...");
-	global $adb;
-	$query = "select * from vtiger_role where roleid=?";
+	$query = 'select * from vtiger_role where roleid=?';
 	$result = $adb->pquery($query, array($roleid));
 	$rolename=$adb->query_result($result,0,'rolename');
 	$parentrole=$adb->query_result($result,0,'parentrole');
@@ -1816,17 +1602,15 @@ function getRoleInformation($roleid)
 	return $roleInfo;
 }
 
-
 /** Function to get the vtiger_role related vtiger_profiles
-  * @param $roleid -- RoleId :: Type varchar
-  * @returns $roleProfiles-- Role Related Profile Array in the following format:
-  *       $roleProfiles=Array($profileId1=>$profileName,$profileId2=>$profileName,........,$profileIdn=>$profileName));
+ * @param $roleid -- RoleId :: Type varchar
+ * @returns $roleProfiles-- Role Related Profile Array in the following format:
+ *       $roleProfiles=Array($profileId1=>$profileName,$profileId2=>$profileName,........,$profileIdn=>$profileName));
  */
 function getRoleRelatedProfiles($roleId)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getRoleRelatedProfiles(".$roleId.") method ...");
-	global $adb;
 	$query = "select vtiger_role2profile.*,vtiger_profile.profilename from vtiger_role2profile inner join vtiger_profile on vtiger_profile.profileid=vtiger_role2profile.profileid where roleid=?";
 	$result = $adb->pquery($query, array($roleId));
 	$num_rows=$adb->num_rows($result);
@@ -1839,11 +1623,10 @@ function getRoleRelatedProfiles($roleId)
 	return $roleRelatedProfiles;
 }
 
-
 /** Function to get the vtiger_role related vtiger_users
-  * @param $roleid -- RoleId :: Type varchar
-  * @returns $roleUsers-- Role Related User Array in the following format:
-  *       $roleUsers=Array($userId1=>$userName,$userId2=>$userName,........,$userIdn=>$userName));
+ * @param $roleid -- RoleId :: Type varchar
+ * @returns $roleUsers-- Role Related User Array in the following format:
+ *       $roleUsers=Array($userId1=>$userName,$userId2=>$userName,........,$userIdn=>$userName));
  */
 function getRoleUsers($roleId)
 {
@@ -1864,18 +1647,15 @@ function getRoleUsers($roleId)
 	return $roleRelatedUsers;
 }
 
-
 /** Function to get the vtiger_role related user ids
-  * @param $roleid -- RoleId :: Type varchar
-  * @returns $roleUserIds-- Role Related User Array in the following format:
-  *       $roleUserIds=Array($userId1,$userId2,........,$userIdn);
+ * @param $roleid -- RoleId :: Type varchar
+ * @returns $roleUserIds-- Role Related User Array in the following format:
+ *       $roleUserIds=Array($userId1,$userId2,........,$userIdn);
  */
-
 function getRoleUserIds($roleId)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getRoleUserIds(".$roleId.") method ...");
-	global $adb;
 	$query = "select vtiger_user2role.*,vtiger_users.user_name from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid where roleid=?";
 	$result = $adb->pquery($query, array($roleId));
 	$num_rows=$adb->num_rows($result);
@@ -1886,20 +1666,17 @@ function getRoleUserIds($roleId)
 	}
 	$log->debug("Exiting getRoleUserIds method ...");
 	return $roleRelatedUsers;
-
-
 }
 
 /** Function to get the vtiger_role and subordinate vtiger_users
-  * @param $roleid -- RoleId :: Type varchar
-  * @returns $roleSubUsers-- Role and Subordinates Related Users Array in the following format:
-  *       $roleSubUsers=Array($userId1=>$userName,$userId2=>$userName,........,$userIdn=>$userName));
+ * @param $roleid -- RoleId :: Type varchar
+ * @returns $roleSubUsers-- Role and Subordinates Related Users Array in the following format:
+ *       $roleSubUsers=Array($userId1=>$userName,$userId2=>$userName,........,$userIdn=>$userName));
  */
 function getRoleAndSubordinateUsers($roleId)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getRoleAndSubordinateUsers(".$roleId.") method ...");
-	global $adb;
 	$roleInfoArr=getRoleInformation($roleId);
 	$parentRole=$roleInfoArr[$roleId][1];
 	$query = "select vtiger_user2role.*,vtiger_users.user_name from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like ?";
@@ -1912,21 +1689,17 @@ function getRoleAndSubordinateUsers($roleId)
 	}
 	$log->debug("Exiting getRoleAndSubordinateUsers method ...");
 	return $roleRelatedUsers;
-
-
 }
 
-
 /** Function to get the vtiger_role and subordinate user ids
-  * @param $roleid -- RoleId :: Type varchar
-  * @returns $roleSubUserIds-- Role and Subordinates Related Users Array in the following format:
-  *       $roleSubUserIds=Array($userId1,$userId2,........,$userIdn);
+ * @param $roleid -- RoleId :: Type varchar
+ * @returns $roleSubUserIds-- Role and Subordinates Related Users Array in the following format:
+ *       $roleSubUserIds=Array($userId1,$userId2,........,$userIdn);
  */
 function getRoleAndSubordinateUserIds($roleId)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getRoleAndSubordinateUserIds(".$roleId.") method ...");
-	global $adb;
 	$roleInfoArr=getRoleInformation($roleId);
 	$parentRole=$roleInfoArr[$roleId][1];
 	$query = "select vtiger_user2role.*,vtiger_users.user_name from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like ?";
@@ -1939,20 +1712,17 @@ function getRoleAndSubordinateUserIds($roleId)
 	}
 	$log->debug("Exiting getRoleAndSubordinateUserIds method ...");
 	return $roleRelatedUsers;
-
-
 }
 
 /** Function to get the vtiger_role and subordinate Information for the specified vtiger_roleId
-  * @param $roleid -- RoleId :: Type varchar
-  * @returns $roleSubInfo-- Role and Subordinates Information array in the following format:
-  *       $roleSubInfo=Array($roleId1=>Array($rolename,$parentrole,$roledepth,$immediateParent), $roleId2=>Array($rolename,$parentrole,$roledepth,$immediateParent),.....);
+ * @param $roleid -- RoleId :: Type varchar
+ * @returns $roleSubInfo-- Role and Subordinates Information array in the following format:
+ *       $roleSubInfo=Array($roleId1=>Array($rolename,$parentrole,$roledepth,$immediateParent), $roleId2=>Array($rolename,$parentrole,$roledepth,$immediateParent),.....);
  */
 function getRoleAndSubordinatesInformation($roleId)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getRoleAndSubordinatesInformation(".$roleId.") method ...");
-	global $adb;
 	static $roleInfoCache = array();
 	if(!empty($roleInfoCache[$roleId])) {
 		return $roleInfoCache[$roleId];
@@ -1960,7 +1730,6 @@ function getRoleAndSubordinatesInformation($roleId)
 	$roleDetails=getRoleInformation($roleId);
 	$roleInfo=$roleDetails[$roleId];
 	$roleParentSeq=$roleInfo[1];
-
 	$query="select * from vtiger_role where parentrole like ? order by parentrole asc";
 	$result=$adb->pquery($query, array($roleParentSeq."%"));
 	$num_rows=$adb->num_rows($result);
@@ -1968,37 +1737,32 @@ function getRoleAndSubordinatesInformation($roleId)
 	for($i=0;$i<$num_rows;$i++)
 	{
 		$roleid=$adb->query_result($result,$i,'roleid');
-                $rolename=$adb->query_result($result,$i,'rolename');
-                $roledepth=$adb->query_result($result,$i,'depth');
-                $parentrole=$adb->query_result($result,$i,'parentrole');
+		$rolename=$adb->query_result($result,$i,'rolename');
+		$roledepth=$adb->query_result($result,$i,'depth');
+		$parentrole=$adb->query_result($result,$i,'parentrole');
 		$roleDet=Array();
 		$roleDet[]=$rolename;
 		$roleDet[]=$parentrole;
 		$roleDet[]=$roledepth;
 		$roleInfo[$roleid]=$roleDet;
-
 	}
 	$roleInfoCache[$roleId] = $roleInfo;
 	$log->debug("Exiting getRoleAndSubordinatesInformation method ...");
 	return $roleInfo;
-
 }
 
-
 /** Function to get the vtiger_role and subordinate vtiger_role ids
-  * @param $roleid -- RoleId :: Type varchar
-  * @returns $roleSubRoleIds-- Role and Subordinates RoleIds in an Array in the following format:
-  *       $roleSubRoleIds=Array($roleId1,$roleId2,........,$roleIdn);
+ * @param $roleid -- RoleId :: Type varchar
+ * @returns $roleSubRoleIds-- Role and Subordinates RoleIds in an Array in the following format:
+ *       $roleSubRoleIds=Array($roleId1,$roleId2,........,$roleIdn);
  */
 function getRoleAndSubordinatesRoleIds($roleId)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getRoleAndSubordinatesRoleIds(".$roleId.") method ...");
-	global $adb;
 	$roleDetails=getRoleInformation($roleId);
 	$roleInfo=$roleDetails[$roleId];
 	$roleParentSeq=$roleInfo[1];
-
 	$query="select * from vtiger_role where parentrole like ? order by parentrole asc";
 	$result=$adb->pquery($query, array($roleParentSeq."%"));
 	$num_rows=$adb->num_rows($result);
@@ -2007,134 +1771,104 @@ function getRoleAndSubordinatesRoleIds($roleId)
 	{
 		$roleid=$adb->query_result($result,$i,'roleid');
 		$roleInfo[]=$roleid;
-
 	}
 	$log->debug("Exiting getRoleAndSubordinatesRoleIds method ...");
 	return $roleInfo;
-
 }
 
 /** Function to get delete the spcified vtiger_role
-  * @param $roleid -- RoleId :: Type varchar
-  * @param $transferRoleId -- RoleId to which vtiger_users of the vtiger_role that is being deleted are transferred:: Type varchar
+ * @param $roleid -- RoleId :: Type varchar
+ * @param $transferRoleId -- RoleId to which vtiger_users of the vtiger_role that is being deleted are transferred:: Type varchar
  */
 function deleteRole($roleId,$transferRoleId)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering deleteRole(".$roleId.",".$transferRoleId.") method ...");
-        global $adb;
-        $roleInfo=getRoleAndSubordinatesInformation($roleId);
-        foreach($roleInfo as $roleid=>$roleDetArr)
-        {
-
-                $sql1 = "update vtiger_user2role set roleid=? where roleid=?";
-                $adb->pquery($sql1, array($transferRoleId, $roleid));
-
-                //Deleteing from vtiger_role2profile vtiger_table
-                $sql2 = "delete from vtiger_role2profile where roleid=?";
-                $adb->pquery($sql2, array($roleid));
-
-                //delete handling for vtiger_groups
-                $sql10 = "delete from vtiger_group2role where roleid=?";
-                $adb->pquery($sql10, array($roleid));
-
-                $sql11 = "delete from vtiger_group2rs where roleandsubid=?";
-                $adb->pquery($sql11, array($roleid));
-
-
-                //delete handling for sharing rules
-                deleteRoleRelatedSharingRules($roleid);
-
-                //delete from vtiger_role vtiger_table;
-                $sql9 = "delete from vtiger_role where roleid=?";
-                $adb->pquery($sql9, array($roleid));
-
-
-
-        }
-	$log->debug("Exiting deleteRole method ...");
-
+	$roleInfo=getRoleAndSubordinatesInformation($roleId);
+	foreach($roleInfo as $roleid=>$roleDetArr) {
+		$sql1 = 'update vtiger_user2role set roleid=? where roleid=?';
+		$adb->pquery($sql1, array($transferRoleId, $roleid));
+		//Deleteing from vtiger_role2profile vtiger_table
+		$sql2 = 'delete from vtiger_role2profile where roleid=?';
+		$adb->pquery($sql2, array($roleid));
+		//delete handling for vtiger_groups
+		$sql10 = 'delete from vtiger_group2role where roleid=?';
+		$adb->pquery($sql10, array($roleid));
+		$sql11 = 'delete from vtiger_group2rs where roleandsubid=?';
+		$adb->pquery($sql11, array($roleid));
+		//delete handling for sharing rules
+		deleteRoleRelatedSharingRules($roleid);
+		//delete from vtiger_role vtiger_table;
+		$sql9 = 'delete from vtiger_role where roleid=?';
+		$adb->pquery($sql9, array($roleid));
+	}
+	$log->debug('Exiting deleteRole method ...');
 }
 
 /** Function to delete the vtiger_role related sharing rules
-  * @param $roleid -- RoleId :: Type varchar
+ * @param $roleid -- RoleId :: Type varchar
  */
 function deleteRoleRelatedSharingRules($roleId)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering deleteRoleRelatedSharingRules(".$roleId.") method ...");
-        global $adb;
-        $dataShareTableColArr=Array('vtiger_datashare_grp2role'=>'to_roleid',
-                                    'vtiger_datashare_grp2rs'=>'to_roleandsubid',
-                                    'vtiger_datashare_role2group'=>'share_roleid',
-                                    'vtiger_datashare_role2role'=>'share_roleid::to_roleid',
-                                    'vtiger_datashare_role2rs'=>'share_roleid::to_roleandsubid',
-                                    'vtiger_datashare_rs2grp'=>'share_roleandsubid',
-                                    'vtiger_datashare_rs2role'=>'share_roleandsubid::to_roleid',
-                                    'vtiger_datashare_rs2rs'=>'share_roleandsubid::to_roleandsubid');
-
-        foreach($dataShareTableColArr as $tablename=>$colname)
-        {
-                $colNameArr=explode('::',$colname);
-                $query="select shareid from ".$tablename." where ".$colNameArr[0]."=?";
-				$params = array($roleId);
-                if(sizeof($colNameArr) >1)
-                {
-                        $query .=" or ".$colNameArr[1]."=?";
-						array_push($params, $roleId);
-                }
-
-                $result=$adb->pquery($query, $params);
-                $num_rows=$adb->num_rows($result);
-                for($i=0;$i<$num_rows;$i++)
-                {
-                        $shareid=$adb->query_result($result,$i,'shareid');
-                        deleteSharingRule($shareid);
-                }
-
-        }
+	$dataShareTableColArr=Array(
+		'vtiger_datashare_grp2role'=>'to_roleid',
+		'vtiger_datashare_grp2rs'=>'to_roleandsubid',
+		'vtiger_datashare_role2group'=>'share_roleid',
+		'vtiger_datashare_role2role'=>'share_roleid::to_roleid',
+		'vtiger_datashare_role2rs'=>'share_roleid::to_roleandsubid',
+		'vtiger_datashare_rs2grp'=>'share_roleandsubid',
+		'vtiger_datashare_rs2role'=>'share_roleandsubid::to_roleid',
+		'vtiger_datashare_rs2rs'=>'share_roleandsubid::to_roleandsubid');
+	foreach($dataShareTableColArr as $tablename=>$colname) {
+		$colNameArr=explode('::',$colname);
+		$query="select shareid from ".$tablename." where ".$colNameArr[0]."=?";
+		$params = array($roleId);
+		if(sizeof($colNameArr) >1) {
+			$query .=" or ".$colNameArr[1]."=?";
+			array_push($params, $roleId);
+		}
+		$result=$adb->pquery($query, $params);
+		$num_rows=$adb->num_rows($result);
+		for($i=0;$i<$num_rows;$i++) {
+			$shareid=$adb->query_result($result,$i,'shareid');
+			deleteSharingRule($shareid);
+		}
+	}
 	$log->debug("Exiting deleteRoleRelatedSharingRules method ...");
 }
 
 /** Function to delete the group related sharing rules
-  * @param $roleid -- RoleId :: Type varchar
+ * @param $roleid -- RoleId :: Type varchar
  */
 function deleteGroupRelatedSharingRules($grpId)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering deleteGroupRelatedSharingRules(".$grpId.") method ...");
-
-        global $adb;
-        $dataShareTableColArr=Array('vtiger_datashare_grp2grp'=>'share_groupid::to_groupid',
-                                    'vtiger_datashare_grp2role'=>'share_groupid',
-                                    'vtiger_datashare_grp2rs'=>'share_groupid',
-                                    'vtiger_datashare_role2group'=>'to_groupid',
-                                    'vtiger_datashare_rs2grp'=>'to_groupid');
-
-
-        foreach($dataShareTableColArr as $tablename=>$colname)
-        {
-                $colNameArr=explode('::',$colname);
-                $query="select shareid from ".$tablename." where ".$colNameArr[0]."=?";
-				$params = array($grpId);
-                if(sizeof($colNameArr) >1)
-                {
-                        $query .=" or ".$colNameArr[1]."=?";
-						array_push($params, $grpId);
-                }
-
-                $result=$adb->pquery($query, $params);
-                $num_rows=$adb->num_rows($result);
-                for($i=0;$i<$num_rows;$i++)
-                {
-                        $shareid=$adb->query_result($result,$i,'shareid');
-                        deleteSharingRule($shareid);
-                }
-
-        }
+	$dataShareTableColArr=Array(
+		'vtiger_datashare_grp2grp'=>'share_groupid::to_groupid',
+		'vtiger_datashare_grp2role'=>'share_groupid',
+		'vtiger_datashare_grp2rs'=>'share_groupid',
+		'vtiger_datashare_role2group'=>'to_groupid',
+		'vtiger_datashare_rs2grp'=>'to_groupid');
+	foreach($dataShareTableColArr as $tablename=>$colname) {
+		$colNameArr=explode('::',$colname);
+		$query="select shareid from ".$tablename." where ".$colNameArr[0]."=?";
+		$params = array($grpId);
+		if(sizeof($colNameArr) >1) {
+			$query .=" or ".$colNameArr[1]."=?";
+			array_push($params, $grpId);
+		}
+		$result=$adb->pquery($query, $params);
+		$num_rows=$adb->num_rows($result);
+		for($i=0;$i<$num_rows;$i++) {
+			$shareid=$adb->query_result($result,$i,'shareid');
+			deleteSharingRule($shareid);
+		}
+	}
 	$log->debug("Exiting deleteGroupRelatedSharingRules method ...");
 }
-
 
 /** Function to get userid and username of all vtiger_users
   * @returns $userArray -- User Array in the following format:
@@ -2142,10 +1876,9 @@ function deleteGroupRelatedSharingRules($grpId)
  */
 function getAllUserName()
 {
-	global $log;
-	$log->debug("Entering getAllUserName() method ...");
-	global $adb;
-	$query="select * from vtiger_users where deleted=0";
+	global $log, $adb;
+	$log->debug('Entering getAllUserName() method ...');
+	$query='select * from vtiger_users where deleted=0';
 	$result = $adb->pquery($query, array());
 	$num_rows=$adb->num_rows($result);
 	$user_details=Array();
@@ -2154,13 +1887,10 @@ function getAllUserName()
 		$userid=$adb->query_result($result,$i,'id');
 		$username=getFullNameFromQResult($result, $i, 'Users');
 		$user_details[$userid]=$username;
-
 	}
-	$log->debug("Exiting getAllUserName method ...");
+	$log->debug('Exiting getAllUserName method ...');
 	return $user_details;
-
 }
-
 
 /** Function to get groupid and groupname of all vtiger_groups
   * @returns $grpArray -- Group Array in the following format:
@@ -2168,9 +1898,8 @@ function getAllUserName()
  */
 function getAllGroupName()
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getAllGroupName() method ...");
-	global $adb;
 	$query="select * from vtiger_groups";
 	$result = $adb->pquery($query, array());
 	$num_rows=$adb->num_rows($result);
@@ -2180,23 +1909,20 @@ function getAllGroupName()
 		$grpid=$adb->query_result($result,$i,'groupid');
 		$grpname=$adb->query_result($result,$i,'groupname');
 		$group_details[$grpid]=$grpname;
-
 	}
 	$log->debug("Exiting getAllGroupName method ...");
 	return $group_details;
-
 }
 
 /** Function to get groupid and groupname of all for the given groupid
-  * @returns $grpArray -- Group Array in the following format:
-  * $grpArray=Array($grpid1=>$grpname);
+ * @returns $grpArray -- Group Array in the following format:
+ * $grpArray=Array($grpid1=>$grpname);
  */
 function getGroupDetails($id)
 {
-	global $log;
-	$log->debug("Entering getAllGroupDetails() method ...");
-	global $adb;
-	$query="select * from vtiger_groups where groupid = ?";
+	global $log, $adb;
+	$log->debug('Entering getAllGroupDetails() method ...');
+	$query='select * from vtiger_groups where groupid = ?';
 	$result = $adb->pquery($query, array($id));
 	$num_rows=$adb->num_rows($result);
 	if($num_rows < 1)
@@ -2206,21 +1932,19 @@ function getGroupDetails($id)
 	$grpname=$adb->query_result($result,0,'groupname');
 	$grpdesc=$adb->query_result($result,0,'description');
 	$group_details=Array($grpid,$grpname,$grpdesc);
-
-	$log->debug("Exiting getAllGroupDetails method ...");
+	$log->debug('Exiting getAllGroupDetails method ...');
 	return $group_details;
-
 }
+
 /** Function to get group information of all vtiger_groups
-  * @returns $grpInfoArray -- Group Informaton array in the following format:
-  * $grpInfoArray=Array($grpid1=>Array($grpname,description) $grpid2=>Array($grpname,description),............,$grpidn=>Array($grpname,description));
+ * @returns $grpInfoArray -- Group Informaton array in the following format:
+ * $grpInfoArray=Array($grpid1=>Array($grpname,description) $grpid2=>Array($grpname,description),............,$grpidn=>Array($grpname,description));
  */
 function getAllGroupInfo()
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getAllGroupInfo() method ...");
-	global $adb;
-	$query="select * from vtiger_groups";
+	$query='select * from vtiger_groups';
 	$result = $adb->pquery($query, array());
 	$num_rows=$adb->num_rows($result);
 	$group_details=Array();
@@ -2233,27 +1957,24 @@ function getAllGroupInfo()
 		$grpInfo[0]=$grpname;
 		$grpInfo[1]=$description;
 		$group_details[$grpid]=$grpInfo;
-
 	}
-	$log->debug("Exiting getAllGroupInfo method ...");
+	$log->debug('Exiting getAllGroupInfo method ...');
 	return $group_details;
-
 }
 
 /** Function to create a group
-  * @param $groupName -- Group Name :: Type varchar
-  * @param $groupMemberArray -- Group Members (Groups,Roles,RolesAndsubordinates,Users)
-  * @param $groupName -- Group Name :: Type varchar
-  * @returns $groupId -- Group Id :: Type integer
+ * @param $groupName -- Group Name :: Type varchar
+ * @param $groupMemberArray -- Group Members (Groups,Roles,RolesAndsubordinates,Users)
+ * @param $groupName -- Group Name :: Type varchar
+ * @returns $groupId -- Group Id :: Type integer
  */
 function createGroup($groupName,$groupMemberArray,$description)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering createGroup(".$groupName.",".$groupMemberArray.",".$description.") method ...");
-	global $adb;
 	$groupId=$adb->getUniqueId("vtiger_users");
 	//Insert into group vtiger_table
-	$query = "insert into vtiger_groups values(?,?,?)";
+	$query = 'insert into vtiger_groups values(?,?,?)';
 	$adb->pquery($query, array($groupId, $groupName, $description));
 
 	//Insert Group to Group Relation
@@ -2288,76 +2009,67 @@ function createGroup($groupName,$groupMemberArray,$description)
 	return $groupId;
 }
 
-
 /** Function to insert group to group relation
-  * @param $groupId -- Group Id :: Type integer
-  * @param $containsGroupId -- Group Id :: Type integer
+ * @param $groupId -- Group Id :: Type integer
+ * @param $containsGroupId -- Group Id :: Type integer
  */
 function insertGroupToGroupRelation($groupId,$containsGroupId)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering insertGroupToGroupRelation(".$groupId.",".$containsGroupId.") method ...");
-	global $adb;
-	$query="insert into vtiger_group2grouprel values(?,?)";
+	$query='insert into vtiger_group2grouprel values(?,?)';
 	$adb->pquery($query, array($groupId, $containsGroupId));
-	$log->debug("Exiting insertGroupToGroupRelation method ...");
+	$log->debug('Exiting insertGroupToGroupRelation method ...');
 }
 
-
 /** Function to insert group to vtiger_role relation
-  * @param $groupId -- Group Id :: Type integer
-  * @param $roleId -- Role Id :: Type varchar
+ * @param $groupId -- Group Id :: Type integer
+ * @param $roleId -- Role Id :: Type varchar
  */
 function insertGroupToRoleRelation($groupId,$roleId)
 {
-	 global $log;
+	global $log, $adb;
 	$log->debug("Entering insertGroupToRoleRelation(".$groupId.",".$roleId.") method ...");
-	global $adb;
-	$query="insert into vtiger_group2role values(?,?)";
+	$query='insert into vtiger_group2role values(?,?)';
 	$adb->pquery($query, array($groupId, $roleId));
-	$log->debug("Exiting insertGroupToRoleRelation method ...");
+	$log->debug('Exiting insertGroupToRoleRelation method ...');
 }
 
-
 /** Function to insert group to vtiger_role&subordinate relation
-  * @param $groupId -- Group Id :: Type integer
-  * @param $rsId -- Role Sub Id :: Type varchar
+ * @param $groupId -- Group Id :: Type integer
+ * @param $rsId -- Role Sub Id :: Type varchar
  */
 function insertGroupToRsRelation($groupId,$rsId)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering insertGroupToRsRelation(".$groupId.",".$rsId.") method ...");
-	global $adb;
-	$query="insert into vtiger_group2rs values(?,?)";
+	$query='insert into vtiger_group2rs values(?,?)';
 	$adb->pquery($query, array($groupId, $rsId));
-	$log->debug("Exiting insertGroupToRsRelation method ...");
+	$log->debug('Exiting insertGroupToRsRelation method ...');
 }
 
 /** Function to insert group to user relation
-  * @param $groupId -- Group Id :: Type integer
-  * @param $userId -- User Id :: Type varchar
+ * @param $groupId -- Group Id :: Type integer
+ * @param $userId -- User Id :: Type varchar
  */
 function insertGroupToUserRelation($groupId,$userId)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering insertGroupToUserRelation(".$groupId.",".$userId.") method ...");
-	global $adb;
-	$query="insert into vtiger_users2group values(?,?)";
+	$query='insert into vtiger_users2group values(?,?)';
 	$adb->pquery($query, array($groupId, $userId));
-	$log->debug("Exiting insertGroupToUserRelation method ...");
+	$log->debug('Exiting insertGroupToUserRelation method ...');
 }
 
-
 /** Function to get the group Information of the specified group
-  * @param $groupId -- Group Id :: Type integer
-  * @returns Group Detail Array in the following format:
-  *   $groupDetailArray=Array($groupName,$description,$groupMembers);
+ * @param $groupId -- Group Id :: Type integer
+ * @returns Group Detail Array in the following format:
+ *   $groupDetailArray=Array($groupName,$description,$groupMembers);
  */
 function getGroupInfo($groupId)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getGroupInfo(".$groupId.") method ...");
-	global $adb;
 	$groupDetailArr=Array();
 	$groupMemberArr=Array();
 	//Retreving the group Info
@@ -2375,8 +2087,6 @@ function getGroupInfo($groupId)
 	//Returning the Group Detail Array
 	$log->debug("Exiting getGroupInfo method ...");
 	return $groupDetailArr;
-
-
 }
 
 /** Function to fetch the group name of the specified group
@@ -2385,17 +2095,14 @@ function getGroupInfo($groupId)
  */
 function fetchGroupName($groupId)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering fetchGroupName(".$groupId.") method ...");
-
-	global $adb;
 	//Retreving the group Info
-	$query="select * from vtiger_groups where groupid=?";
+	$query='select * from vtiger_groups where groupid=?';
 	$result = $adb->pquery($query, array($groupId));
 	$groupName=decode_html($adb->query_result($result,0,'groupname'));
-	$log->debug("Exiting fetchGroupName method ...");
+	$log->debug('Exiting fetchGroupName method ...');
 	return $groupName;
-
 }
 
 /** Function to fetch the group members of the specified group
@@ -2432,11 +2139,10 @@ function getGroupMembers($groupId)
  */
 function getGroupRelatedRoles($groupId)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getGroupRelatedRoles(".$groupId.") method ...");
-	global $adb;
 	$roleGroupArr=Array();
-	$query="select * from vtiger_group2role where groupid=?";
+	$query='select * from vtiger_group2role where groupid=?';
 	$result = $adb->pquery($query, array($groupId));
 	$num_rows=$adb->num_rows($result);
 	for($i=0;$i<$num_rows;$i++)
@@ -2446,9 +2152,7 @@ function getGroupRelatedRoles($groupId)
 	}
 	$log->debug("Exiting getGroupRelatedRoles method ...");
 	return $roleGroupArr;
-
 }
-
 
 /** Function to get the group related vtiger_roles and subordinates of the specified group
   * @param $groupId -- Group Id :: Type integer
@@ -2457,9 +2161,8 @@ function getGroupRelatedRoles($groupId)
  */
 function getGroupRelatedRoleSubordinates($groupId)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getGroupRelatedRoleSubordinates(".$groupId.") method ...");
-	global $adb;
 	$rsGroupArr=Array();
 	$query="select * from vtiger_group2rs where groupid=?";
 	$result = $adb->pquery($query, array($groupId));
@@ -2473,7 +2176,6 @@ function getGroupRelatedRoleSubordinates($groupId)
 	return $rsGroupArr;
 }
 
-
 /** Function to get the group related vtiger_groups
   * @param $groupId -- Group Id :: Type integer
   * @returns Group Related Groups Array in the follwing format:
@@ -2481,9 +2183,8 @@ function getGroupRelatedRoleSubordinates($groupId)
  */
 function getGroupRelatedGroups($groupId)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getGroupRelatedGroups(".$groupId.") method ...");
-	global $adb;
 	$groupGroupArr=Array();
 	$query="select * from vtiger_group2grouprel where groupid=?";
 	$result = $adb->pquery($query, array($groupId));
@@ -2495,7 +2196,6 @@ function getGroupRelatedGroups($groupId)
 	}
 	$log->debug("Exiting getGroupRelatedGroups method ...");
 	return $groupGroupArr;
-
 }
 
 /** Function to get the group related vtiger_users
@@ -2505,9 +2205,8 @@ function getGroupRelatedGroups($groupId)
  */
 function getGroupRelatedUsers($groupId)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getGroupRelatedUsers(".$groupId.") method ...");
-	global $adb;
 	$userGroupArr=Array();
 	$query="select * from vtiger_users2group where groupid=?";
 	$result = $adb->pquery($query, array($groupId));
@@ -2519,7 +2218,6 @@ function getGroupRelatedUsers($groupId)
 	}
 	$log->debug("Exiting getGroupRelatedUsers method ...");
 	return $userGroupArr;
-
 }
 
 /** Function to update the group
@@ -2530,9 +2228,8 @@ function getGroupRelatedUsers($groupId)
  */
 function updateGroup($groupId,$groupName,$groupMemberArray,$description)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering updateGroup(".$groupId.",".$groupName.",".$groupMemberArray.",".$description.") method ...");
-	global $adb;
 	$query="update vtiger_groups set groupname=?, description=? where groupid=?";
 	$adb->pquery($query, array($groupName, $description, $groupId));
 
@@ -2571,7 +2268,6 @@ function updateGroup($groupId,$groupName,$groupMemberArray,$description)
 		insertGroupToUserRelation($groupId,$userId);
 	}
 	$log->debug("Exiting updateGroup method ...");
-
 }
 
 /** Function to delete the specified group
@@ -2581,28 +2277,19 @@ function updateGroup($groupId,$groupName,$groupMemberArray,$description)
  */
 function deleteGroup($groupId,$transferId)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering deleteGroup(".$groupId.") method ...");
-	global $adb;
-
 	$em = new VTEventsManager($adb);
-
 	// Initialize Event trigger cache
 	$em->initTriggerCache();
-
 	$entityData = array();
 	$entityData['groupid'] = $groupId;
 	$entityData['transferToId'] = $transferId;
-
 	$em->triggerEvent("vtiger.entity.beforegroupdelete", $entityData);
-
-
 	tranferGroupOwnership($groupId,$transferId);
 	deleteGroupRelatedSharingRules($groupId);
-
 	$query="delete from vtiger_groups where groupid=?";
 	$adb->pquery($query, array($groupId));
-
 	deleteGroupRelatedGroups($groupId);
 	deleteGroupRelatedRoles($groupId);
 	deleteGroupReportRelations($groupId);
@@ -2611,7 +2298,6 @@ function deleteGroup($groupId,$transferId)
 	$log->debug("Exiting deleteGroup method ...");
 }
 
-
 /** Function to transfer the ownership of records owned by a particular group to the specified group
   * @param $groupId -- Group Id of the group which's record ownership has to be transferred:: Type integer
   * @param $transferId --  Id of the group/user to which record ownership is to be transferred:: Type integer
@@ -2619,77 +2305,65 @@ function deleteGroup($groupId,$transferId)
  */
 function tranferGroupOwnership($groupId,$transferId)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering tranferGroupOwnership(".$groupId.") method ...");
-	global $adb;
-
 	$query = "update vtiger_crmentity set smownerid=? where smownerid=?";
 	$params = array($transferId, $groupId);
 	$adb->pquery($query, $params);
-
 	if(Vtiger_Utils::CheckTable('vtiger_customerportal_prefs')) {
 		$query = 'UPDATE vtiger_customerportal_prefs SET prefvalue = ? WHERE prefkey = ? AND prefvalue = ?';
 		$params = array($transferId, 'defaultassignee', $groupId);
 		$adb->pquery($query, $params);
-
 		$query = 'UPDATE vtiger_customerportal_prefs SET prefvalue = ? WHERE prefkey = ? AND prefvalue = ?';
 		$params = array($transferId, 'userid', $groupId);
 		$adb->pquery($query, $params);
 	}
-
 	$log->debug("Exiting tranferGroupOwnership method ...");
 }
 
 /** Function to delete group to group relation of the  specified group
-  * @param $groupId -- Group Id :: Type integer
+ * @param $groupId -- Group Id :: Type integer
  */
 function deleteGroupRelatedGroups($groupId)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering deleteGroupRelatedGroups(".$groupId.") method ...");
-	global $adb;
-	$query="delete from vtiger_group2grouprel where groupid=?";
+	$query='delete from vtiger_group2grouprel where groupid=?';
 	$adb->pquery($query, array($groupId));
 	$log->debug("Exiting deleteGroupRelatedGroups method ...");
 }
 
-
 /** Function to delete group to vtiger_role relation of the  specified group
-  * @param $groupId -- Group Id :: Type integer
+ * @param $groupId -- Group Id :: Type integer
  */
 function deleteGroupRelatedRoles($groupId)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering deleteGroupRelatedRoles(".$groupId.") method ...");
-	global $adb;
-	$query="delete from vtiger_group2role where groupid=?";
+	$query='delete from vtiger_group2role where groupid=?';
 	$adb->pquery($query, array($groupId));
-	$log->debug("Exiting deleteGroupRelatedRoles method ...");
+	$log->debug('Exiting deleteGroupRelatedRoles method ...');
 }
 
-
 /** Function to delete group to vtiger_role and subordinates relation of the  specified group
-  * @param $groupId -- Group Id :: Type integer
+ * @param $groupId -- Group Id :: Type integer
  */
 function deleteGroupRelatedRolesAndSubordinates($groupId)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering deleteGroupRelatedRolesAndSubordinates(".$groupId.") method ...");
-	global $adb;
-	$query="delete from vtiger_group2rs where groupid=?";
+	$query='delete from vtiger_group2rs where groupid=?';
 	$adb->pquery($query, array($groupId));
-	$log->debug("Exiting deleteGroupRelatedRolesAndSubordinates method ...");
+	$log->debug('Exiting deleteGroupRelatedRolesAndSubordinates method ...');
 }
 
-
 /** Function to delete group to user relation of the  specified group
-  * @param $groupId -- Group Id :: Type integer
+ * @param $groupId -- Group Id :: Type integer
  */
 function deleteGroupRelatedUsers($groupId)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering deleteGroupRelatedUsers(".$groupId.") method ...");
-	global $adb;
 	$query="delete from vtiger_users2group where groupid=?";
 	$adb->pquery($query, array($groupId));
 	$log->debug("Exiting deleteGroupRelatedUsers method ...");
@@ -2701,17 +2375,15 @@ function deleteGroupRelatedUsers($groupId)
   */
 function getDefOrgShareActionName($share_action_id)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getDefOrgShareActionName(".$share_action_id.") method ...");
-	global $adb;
 	$query="select * from vtiger_org_share_action_mapping where share_action_id=?";
 	$result=$adb->pquery($query, array($share_action_id));
 	$share_action_name=$adb->query_result($result,0,"share_action_name");
 	$log->debug("Exiting getDefOrgShareActionName method ...");
 	return $share_action_name;
-
-
 }
+
 /** This function returns the Default Organisation Sharing Action Array for the specified Module
   * It takes the module tabid as input and constructs the array.
   * The output array consists of the 'Default Organisation Sharing Id'=>'Default Organisation Sharing Action' mapping for all the sharing actions available for the specifed module
@@ -2724,9 +2396,8 @@ function getDefOrgShareActionName($share_action_id)
   */
 function getModuleSharingActionArray($tabid)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getModuleSharingActionArray(".$tabid.") method ...");
-	global $adb;
 	$share_action_arr=Array();
 	$query = "select vtiger_org_share_action_mapping.share_action_name,vtiger_org_share_action2tab.share_action_id from vtiger_org_share_action2tab inner join vtiger_org_share_action_mapping on vtiger_org_share_action2tab.share_action_id=vtiger_org_share_action_mapping.share_action_id where vtiger_org_share_action2tab.tabid=?";
 	$result=$adb->pquery($query, array($tabid));
@@ -2739,7 +2410,6 @@ function getModuleSharingActionArray($tabid)
 	}
 	$log->debug("Exiting getModuleSharingActionArray method ...");
 	return $share_action_arr;
-
 }
 
 /** This function adds a organisation level sharing rule for the specified Module
@@ -2756,12 +2426,9 @@ function getModuleSharingActionArray($tabid)
   */
 function addSharingRule($tabid,$shareEntityType,$toEntityType,$shareEntityId,$toEntityId,$sharePermission)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering addSharingRule(".$tabid.",".$shareEntityType.",".$toEntityType.",".$shareEntityId.",".$toEntityId.",".$sharePermission.") method ...");
-
-	global $adb;
 	$shareid=$adb->getUniqueId("vtiger_datashare_module_rel");
-
 
 	if($shareEntityType == 'groups' && $toEntityType == 'groups')
 	{
@@ -2770,62 +2437,51 @@ function addSharingRule($tabid,$shareEntityType,$toEntityType,$shareEntityId,$to
 	}
 	elseif($shareEntityType == 'groups' && $toEntityType == 'roles')
 	{
-
 		$type_string='GRP::ROLE';
 		$query = "insert into vtiger_datashare_grp2role values(?,?,?,?)";
 	}
 	elseif($shareEntityType == 'groups' && $toEntityType == 'rs')
 	{
-
 		$type_string='GRP::RS';
 		$query = "insert into vtiger_datashare_grp2rs values(?,?,?,?)";
 	}
 	elseif($shareEntityType == 'roles' && $toEntityType == 'groups')
 	{
-
 		$type_string='ROLE::GRP';
 		$query = "insert into vtiger_datashare_role2group values(?,?,?,?)";
 	}
 	elseif($shareEntityType == 'roles' && $toEntityType == 'roles')
 	{
-
 		$type_string='ROLE::ROLE';
 		$query = "insert into vtiger_datashare_role2role values(?,?,?,?)";
 	}
 	elseif($shareEntityType == 'roles' && $toEntityType == 'rs')
 	{
-
 		$type_string='ROLE::RS';
 		$query = "insert into vtiger_datashare_role2rs values(?,?,?,?)";
 	}
 	elseif($shareEntityType == 'rs' && $toEntityType == 'groups')
 	{
-
 		$type_string='RS::GRP';
 		$query = "insert into vtiger_datashare_rs2grp values(?,?,?,?)";
 	}
 	elseif($shareEntityType == 'rs' && $toEntityType == 'roles')
 	{
-
 		$type_string='RS::ROLE';
 		$query = "insert into vtiger_datashare_rs2role values(?,?,?,?)";
 	}
 	elseif($shareEntityType == 'rs' && $toEntityType == 'rs')
 	{
-
 		$type_string='RS::RS';
 		$query = "insert into vtiger_datashare_rs2rs values(?,?,?,?)";
 	}
 	$query1 = "insert into vtiger_datashare_module_rel values(?,?,?)";
 	$adb->pquery($query1, array($shareid, $tabid, $type_string));
-
 	$params = array($shareid, $shareEntityId, $toEntityId, $sharePermission);
 	$adb->pquery($query, $params);
 	$log->debug("Exiting addSharingRule method ...");
 	return $shareid;
-
 }
-
 
 /** This function is to update the organisation level sharing rule
   * It takes the following input parameters:
@@ -2842,17 +2498,14 @@ function addSharingRule($tabid,$shareEntityType,$toEntityType,$shareEntityId,$to
   */
 function updateSharingRule($shareid,$tabid,$shareEntityType,$toEntityType,$shareEntityId,$toEntityId,$sharePermission)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering updateSharingRule(".$shareid.",".$tabid.",".$shareEntityType.",".$toEntityType.",".$shareEntityId.",".$toEntityId.",".$sharePermission.") method ...");
-
-	global $adb;
 	$query2="select * from vtiger_datashare_module_rel where shareid=?";
 	$res=$adb->pquery($query2, array($shareid));
 	$typestr=$adb->query_result($res,0,'relationtype');
 	$tabname=getDSTableNameForType($typestr);
 	$query3="delete from ".$tabname." where shareid=?";
 	$adb->pquery($query3, array($shareid));
-
 
 	if($shareEntityType == 'groups' && $toEntityType == 'groups')
 	{
@@ -2861,63 +2514,51 @@ function updateSharingRule($shareid,$tabid,$shareEntityType,$toEntityType,$share
 	}
 	elseif($shareEntityType == 'groups' && $toEntityType == 'roles')
 	{
-
 		$type_string='GRP::ROLE';
 		$query = "insert into vtiger_datashare_grp2role values(?,?,?,?)";
 	}
 	elseif($shareEntityType == 'groups' && $toEntityType == 'rs')
 	{
-
 		$type_string='GRP::RS';
 		$query = "insert into vtiger_datashare_grp2rs values(?,?,?,?)";
 	}
 	elseif($shareEntityType == 'roles' && $toEntityType == 'groups')
 	{
-
 		$type_string='ROLE::GRP';
 		$query = "insert into vtiger_datashare_role2group values(?,?,?,?)";
 	}
 	elseif($shareEntityType == 'roles' && $toEntityType == 'roles')
 	{
-
 		$type_string='ROLE::ROLE';
 		$query = "insert into vtiger_datashare_role2role values(?,?,?,?)";
 	}
 	elseif($shareEntityType == 'roles' && $toEntityType == 'rs')
 	{
-
 		$type_string='ROLE::RS';
 		$query = "insert into vtiger_datashare_role2rs values(?,?,?,?)";
 	}
 	elseif($shareEntityType == 'rs' && $toEntityType == 'groups')
 	{
-
 		$type_string='RS::GRP';
 		$query = "insert into vtiger_datashare_rs2grp values(?,?,?,?)";
 	}
 	elseif($shareEntityType == 'rs' && $toEntityType == 'roles')
 	{
-
 		$type_string='RS::ROLE';
 		$query = "insert into vtiger_datashare_rs2role values(?,?,?,?)";
 	}
 	elseif($shareEntityType == 'rs' && $toEntityType == 'rs')
 	{
-
 		$type_string='RS::RS';
 		$query = "insert into vtiger_datashare_rs2rs values(?,?,?,?)";
 	}
-
 	$query1 = "update vtiger_datashare_module_rel set relationtype=? where shareid=?";
 	$adb->pquery($query1, array($type_string, $shareid));
-
 	$params = array($shareid, $shareEntityId, $toEntityId, $sharePermission);
 	$adb->pquery($query, $params);
 	$log->debug("Exiting updateSharingRule method ...");
 	return $shareid;
-
 }
-
 
 /** This function is to delete the organisation level sharing rule
   * It takes the following input parameters:
@@ -2925,9 +2566,8 @@ function updateSharingRule($shareid,$tabid,$shareEntityType,$toEntityType,$share
   */
 function deleteSharingRule($shareid)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering deleteSharingRule(".$shareid.") method ...");
-	global $adb;
 	$query2="select * from vtiger_datashare_module_rel where shareid=?";
 	$res=$adb->pquery($query2, array($shareid));
 	$typestr=$adb->query_result($res,0,'relationtype');
@@ -2936,99 +2576,74 @@ function deleteSharingRule($shareid)
 	$adb->pquery($query3, array($shareid));
 	$query4="delete from vtiger_datashare_module_rel where shareid=?";
 	$adb->pquery($query4, array($shareid));
-
 	//deleting the releated module sharing permission
 	$query5="delete from vtiger_datashare_relatedmodule_permission where shareid=?";
 	$adb->pquery($query5, array($shareid));
 	$log->debug("Exiting deleteSharingRule method ...");
-
 }
 
 /** Function get the Data Share Table and their columns
   * @returns -- Data Share Table and Column Array in the following format:
-  *  $dataShareTableColArr=Array('datashare_grp2grp'=>'share_groupid::to_groupid',
-  *				    'datashare_grp2role'=>'share_groupid::to_roleid',
-  *				    'datashare_grp2rs'=>'share_groupid::to_roleandsubid',
-  * 				    'datashare_role2group'=>'share_roleid::to_groupid',
-  *				    'datashare_role2role'=>'share_roleid::to_roleid',
-  *				    'datashare_role2rs'=>'share_roleid::to_roleandsubid',
-  *				    'datashare_rs2grp'=>'share_roleandsubid::to_groupid',
-  *				    'datashare_rs2role'=>'share_roleandsubid::to_roleid',
-  *				    'datashare_rs2rs'=>'share_roleandsubid::to_roleandsubid');
+  *  $dataShareTableColArr=Array();
   */
 function getDataShareTableandColumnArray()
 {
 	global $log;
 	$log->debug("Entering getDataShareTableandColumnArray() method ...");
-	$dataShareTableColArr=Array('vtiger_datashare_grp2grp'=>'share_groupid::to_groupid',
-				    'vtiger_datashare_grp2role'=>'share_groupid::to_roleid',
-				    'vtiger_datashare_grp2rs'=>'share_groupid::to_roleandsubid',
-				    'vtiger_datashare_role2group'=>'share_roleid::to_groupid',
-				    'vtiger_datashare_role2role'=>'share_roleid::to_roleid',
-				    'vtiger_datashare_role2rs'=>'share_roleid::to_roleandsubid',
-				    'vtiger_datashare_rs2grp'=>'share_roleandsubid::to_groupid',
-				    'vtiger_datashare_rs2role'=>'share_roleandsubid::to_roleid',
-				    'vtiger_datashare_rs2rs'=>'share_roleandsubid::to_roleandsubid');
+	$dataShareTableColArr=Array(
+		'vtiger_datashare_grp2grp'=>'share_groupid::to_groupid',
+		'vtiger_datashare_grp2role'=>'share_groupid::to_roleid',
+		'vtiger_datashare_grp2rs'=>'share_groupid::to_roleandsubid',
+		'vtiger_datashare_role2group'=>'share_roleid::to_groupid',
+		'vtiger_datashare_role2role'=>'share_roleid::to_roleid',
+		'vtiger_datashare_role2rs'=>'share_roleid::to_roleandsubid',
+		'vtiger_datashare_rs2grp'=>'share_roleandsubid::to_groupid',
+		'vtiger_datashare_rs2role'=>'share_roleandsubid::to_roleid',
+		'vtiger_datashare_rs2rs'=>'share_roleandsubid::to_roleandsubid');
 	$log->debug("Exiting getDataShareTableandColumnArray method ...");
 	return $dataShareTableColArr;
-
 }
-
-
 
 /** Function get the Data Share Column Names for the specified Table Name
  *  @param $tableName -- DataShare Table Name :: Type Varchar
  *  @returns Column Name -- Type Varchar
- *
  */
 function getDSTableColumns($tableName)
 {
 	global $log;
 	$log->debug("Entering getDSTableColumns(".$tableName.") method ...");
 	$dataShareTableColArr=getDataShareTableandColumnArray();
-
 	$dsTableCols=$dataShareTableColArr[$tableName];
 	$dsTableColsArr=explode('::',$dsTableCols);
 	$log->debug("Exiting getDSTableColumns method ...");
 	return $dsTableColsArr;
-
 }
-
 
 /** Function get the Data Share Table Names
  *  @returns the following Date Share Table Name Array:
- *  $dataShareTableColArr=Array('GRP::GRP'=>'datashare_grp2grp',
- * 				    'GRP::ROLE'=>'datashare_grp2role',
- *				    'GRP::RS'=>'datashare_grp2rs',
- *				    'ROLE::GRP'=>'datashare_role2group',
- *				    'ROLE::ROLE'=>'datashare_role2role',
- *				    'ROLE::RS'=>'datashare_role2rs',
- *				    'RS::GRP'=>'datashare_rs2grp',
- *				    'RS::ROLE'=>'datashare_rs2role',
- *				    'RS::RS'=>'datashare_rs2rs');
+ *  $dataShareTableColArr=Array();
  */
 function getDataShareTableName()
 {
 	global $log;
 	$log->debug("Entering getDataShareTableName() method ...");
-	$dataShareTableColArr=Array('GRP::GRP'=>'vtiger_datashare_grp2grp',
-				    'GRP::ROLE'=>'vtiger_datashare_grp2role',
-				    'GRP::RS'=>'vtiger_datashare_grp2rs',
-				    'ROLE::GRP'=>'vtiger_datashare_role2group',
-				    'ROLE::ROLE'=>'vtiger_datashare_role2role',
-				    'ROLE::RS'=>'vtiger_datashare_role2rs',
-				    'RS::GRP'=>'vtiger_datashare_rs2grp',
-				    'RS::ROLE'=>'vtiger_datashare_rs2role',
-				    'RS::RS'=>'vtiger_datashare_rs2rs');
+	$dataShareTableColArr=Array(
+		'GRP::GRP'=>'vtiger_datashare_grp2grp',
+		'GRP::ROLE'=>'vtiger_datashare_grp2role',
+		'GRP::RS'=>'vtiger_datashare_grp2rs',
+		'ROLE::GRP'=>'vtiger_datashare_role2group',
+		'ROLE::ROLE'=>'vtiger_datashare_role2role',
+		'ROLE::RS'=>'vtiger_datashare_role2rs',
+		'RS::GRP'=>'vtiger_datashare_rs2grp',
+		'RS::ROLE'=>'vtiger_datashare_rs2role',
+		'RS::RS'=>'vtiger_datashare_rs2rs');
 	$log->debug("Exiting getDataShareTableName method ...");
 	return $dataShareTableColArr;
-
 }
 
 /** Function to get the Data Share Table Name from the speciified type string
  *  @param $typeString -- Datashare Type Sting :: Type Varchar
  *  @returns Table Name -- Type Varchar
- *
  */
 function getDSTableNameForType($typeString)
 {
@@ -3038,7 +2653,6 @@ function getDSTableNameForType($typeString)
 	$tableName=$dataShareTableColArr[$typeString];
 	$log->debug("Exiting getDSTableNameForType method ...");
 	return $tableName;
-
 }
 
 /** Function to get the Entity type from the specified DataShare Table Column Name
@@ -3049,23 +2663,20 @@ function getEntityTypeFromCol($colName)
 {
 	global $log;
 	$log->debug("Entering getEntityTypeFromCol(".$colName.") method ...");
-
-        if($colName == 'share_groupid' || $colName == 'to_groupid')
-        {
-                $entity_type='groups';
-        }
-        elseif($colName =='share_roleid' || $colName =='to_roleid')
-        {
-                $entity_type='roles';
-        }
+	if($colName == 'share_groupid' || $colName == 'to_groupid')
+	{
+		$entity_type='groups';
+	}
+	elseif($colName =='share_roleid' || $colName =='to_roleid')
+	{
+		$entity_type='roles';
+	}
 	elseif($colName == 'share_roleandsubid' || $colName == 'to_roleandsubid')
-        {
-                $entity_type='rs';
-        }
-
+	{
+		$entity_type='rs';
+	}
 	$log->debug("Exiting getEntityTypeFromCol method ...");
 	return $entity_type;
-
 }
 
 /** Function to get the Entity Display Link
@@ -3094,9 +2705,7 @@ function getEntityDisplayLink($entityType,$entityid)
 	}
 	$log->debug("Exiting getEntityDisplayLink method ...");
 	return $display_out;
-
 }
-
 
 /** Function to get the Sharing rule Info
  *  @param $shareId -- Sharing Rule Id
@@ -3146,16 +2755,12 @@ function getSharingRuleInfo($shareId)
 
 	$log->debug("Exiting getSharingRuleInfo method ...");
 	return $shareRuleInfoArr;
-
-
-
 }
 
 /** This function is to retreive the list of related sharing modules for the specifed module
   * It takes the following input parameters:
   *     $tabid -- The module tabid:: Type Integer
   */
-
 function getRelatedSharingModules($tabid)
 {
 	global $log;
@@ -3177,7 +2782,6 @@ function getRelatedSharingModules($tabid)
 
 }
 
-
 /** This function is to add the related module sharing permission for a particulare Sharing Rule
   * It takes the following input parameters:
   *     $shareid -- The Sharing Rule Id:: Type Integer
@@ -3187,7 +2791,6 @@ function getRelatedSharingModules($tabid)
   *                       0 - Read Only
   *                       1 - Read/Write
   */
-
 function addRelatedModuleSharingPermission($shareid,$tabid,$relatedtabid,$sharePermission)
 {
 	global $log;
@@ -3208,7 +2811,6 @@ function addRelatedModuleSharingPermission($shareid,$tabid,$relatedtabid,$shareP
   *                       0 - Read Only
   *                       1 - Read/Write
   */
-
 function updateRelatedModuleSharingPermission($shareid,$tabid,$relatedtabid,$sharePermission)
 {
 	global $log;
@@ -3226,18 +2828,15 @@ function updateRelatedModuleSharingPermission($shareid,$tabid,$relatedtabid,$sha
   *     $related_tabid -- The related module tabid:: Type Integer
   * This function returns the Related Module Sharing Id
   */
-
 function getRelatedModuleSharingId($tabid,$related_tabid)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getRelatedModuleSharingId(".$tabid.",".$related_tabid.") method ...");
-	global $adb;
 	$query="select datashare_relatedmodule_id from vtiger_datashare_relatedmodules where tabid=? and relatedto_tabid=?";
 	$result=$adb->pquery($query, array($tabid, $related_tabid));
 	$relatedModuleSharingId=$adb->query_result($result,0,'datashare_relatedmodule_id');
 	$log->debug("Exiting getRelatedModuleSharingId method ...");
 	return $relatedModuleSharingId;
-
 }
 
 /** This function is to retreive the Related Module Sharing Permissions for the specified Sharing Rule
@@ -3252,9 +2851,8 @@ function getRelatedModuleSharingId($tabid,$related_tabid)
   */
 function getRelatedModuleSharingPermission($shareid)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getRelatedModuleSharingPermission(".$shareid.") method ...");
-	global $adb;
 	$relatedSharingModulePermissionArray=Array();
 	$query="select vtiger_datashare_relatedmodules.*,vtiger_datashare_relatedmodule_permission.permission from vtiger_datashare_relatedmodules inner join vtiger_datashare_relatedmodule_permission on vtiger_datashare_relatedmodule_permission.datashare_relatedmodule_id=vtiger_datashare_relatedmodules.datashare_relatedmodule_id where vtiger_datashare_relatedmodule_permission.shareid=?";
 	$result=$adb->pquery($query, array($shareid));
@@ -3264,14 +2862,10 @@ function getRelatedModuleSharingPermission($shareid)
 		$relatedto_tabid=$adb->query_result($result,$i,'relatedto_tabid');
 		$permission=$adb->query_result($result,$i,'permission');
 		$relatedSharingModulePermissionArray[$relatedto_tabid]=$permission;
-
-
 	}
 	$log->debug("Exiting getRelatedModuleSharingPermission method ...");
 	return $relatedSharingModulePermissionArray;
-
 }
-
 
 /** This function is to retreive the vtiger_profiles associated with the  the specified user
   * It takes the following input parameters:
@@ -3281,47 +2875,40 @@ function getRelatedModuleSharingPermission($shareid)
   */
 function getUserProfile($userId)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getUserProfile(".$userId.") method ...");
-	global $adb;
 	$roleId=fetchUserRole($userId);
 	$profArr=Array();
 	$sql1 = "select profileid from vtiger_role2profile where roleid=?";
-    $result1 = $adb->pquery($sql1, array($roleId));
+	$result1 = $adb->pquery($sql1, array($roleId));
 	$num_rows=$adb->num_rows($result1);
-	for($i=0;$i<$num_rows;$i++)
-	{
-
-        	$profileid=  $adb->query_result($result1,$i,"profileid");
+	for($i=0;$i<$num_rows;$i++) {
+		$profileid=  $adb->query_result($result1,$i,"profileid");
 		$profArr[]=$profileid;
 	}
-		$log->debug("Exiting getUserProfile method ...");
-        return $profArr;
-
+	$log->debug("Exiting getUserProfile method ...");
+	return $profArr;
 }
 
 /** To retreive the global permission of the specifed user from the various vtiger_profiles associated with the user
   * @param $userid -- The User Id:: Type Integer
   * @returns  user global permission  array in the following format:
   *     $gloabalPerrArray=(view all action id=>permission,
-			   edit all action id=>permission)							);
+			   edit all action id=>permission)
   */
 function getCombinedUserGlobalPermissions($userId)
 {
-	global $log;
+	global $log,$adb;
 	$log->debug("Entering getCombinedUserGlobalPermissions(".$userId.") method ...");
-	global $adb;
 	$profArr=getUserProfile($userId);
 	$no_of_profiles=sizeof($profArr);
 	$userGlobalPerrArr=Array();
-
 	$userGlobalPerrArr=getProfileGlobalPermission($profArr[0]);
 	if($no_of_profiles != 1)
 	{
 			for($i=1;$i<$no_of_profiles;$i++)
 		{
 			$tempUserGlobalPerrArr=getProfileGlobalPermission($profArr[$i]);
-
 			foreach($userGlobalPerrArr as $globalActionId=>$globalActionPermission)
 			{
 				if($globalActionPermission == 1)
@@ -3331,43 +2918,33 @@ function getCombinedUserGlobalPermissions($userId)
 					{
 						$userGlobalPerrArr[$globalActionId]=$now_permission;
 					}
-
-
 				}
-
 			}
-
 		}
-
 	}
-
 	$log->debug("Exiting getCombinedUserGlobalPermissions method ...");
 	return $userGlobalPerrArr;
-
 }
 
 /** To retreive the vtiger_tab permissions of the specifed user from the various vtiger_profiles associated with the user
   * @param $userid -- The User Id:: Type Integer
   * @returns  user global permission  array in the following format:
   *     $tabPerrArray=(tabid1=>permission,
-  *			   tabid2=>permission)							);
+  *			   tabid2=>permission)
   */
 function getCombinedUserTabsPermissions($userId)
 {
-	global $log;
+	global $log,$adb;
 	$log->debug("Entering getCombinedUserTabsPermissions(".$userId.") method ...");
-	global $adb;
 	$profArr=getUserProfile($userId);
 	$no_of_profiles=sizeof($profArr);
 	$userTabPerrArr=Array();
-
 	$userTabPerrArr=getProfileTabsPermission($profArr[0]);
 	if($no_of_profiles != 1)
 	{
 		for($i=1;$i<$no_of_profiles;$i++)
 		{
 			$tempUserTabPerrArr=getProfileTabsPermission($profArr[$i]);
-
 			foreach($userTabPerrArr as $tabId=>$tabPermission)
 			{
 				if($tabPermission == 1)
@@ -3377,23 +2954,16 @@ function getCombinedUserTabsPermissions($userId)
 					{
 						$userTabPerrArr[$tabId]=$now_permission;
 					}
-
-
 				}
-
 			}
-
 		}
-
 	}
-
-    $homeTabid = getTabid('Home');
-    if(!array_key_exists($homeTabid, $userTabPerrArr)) {
-        $userTabPerrArr[$homeTabid] = 0;
-    }
+	$homeTabid = getTabid('Home');
+	if(!array_key_exists($homeTabid, $userTabPerrArr)) {
+		$userTabPerrArr[$homeTabid] = 0;
+	}
 	$log->debug("Exiting getCombinedUserTabsPermissions method ...");
 	return $userTabPerrArr;
-
 }
 
 /** To retreive the vtiger_tab acion permissions of the specifed user from the various vtiger_profiles associated with the user
@@ -3404,20 +2974,17 @@ function getCombinedUserTabsPermissions($userId)
  */
 function getCombinedUserActionPermissions($userId)
 {
-	global $log;
+	global $log,$adb;
 	$log->debug("Entering getCombinedUserActionPermissions(".$userId.") method ...");
-	global $adb;
 	$profArr=getUserProfile($userId);
 	$no_of_profiles=sizeof($profArr);
 	$actionPerrArr=Array();
-
 	$actionPerrArr=getProfileAllActionPermission($profArr[0]);
 	if($no_of_profiles != 1)
 	{
 		for($i=1;$i<$no_of_profiles;$i++)
 		{
 			$tempActionPerrArr=getProfileAllActionPermission($profArr[$i]);
-
 			foreach($actionPerrArr as $tabId=>$perArr)
 			{
 				foreach($perArr as $actionid=>$per)
@@ -3429,19 +2996,13 @@ function getCombinedUserActionPermissions($userId)
 						{
 							$actionPerrArr[$tabId][$actionid]=$now_permission;
 						}
-
-
 					}
 				}
-
 			}
-
 		}
-
 	}
 	$log->debug("Exiting getCombinedUserActionPermissions method ...");
 	return $actionPerrArr;
-
 }
 
 /** To retreive the parent vtiger_role of the specified vtiger_role
@@ -3466,7 +3027,6 @@ function getParentRole($roleId)
 	}
 	$log->debug("Exiting getParentRole method ...");
 	return $parentRoleArr;
-
 }
 
 /** To retreive the subordinate vtiger_roles of the specified parent vtiger_role
@@ -3495,9 +3055,7 @@ function getRoleSubordinates($roleId)
 		for($i=0;$i<$num_rows;$i++)
 		{
 			$roleid=$adb->query_result($result,$i,'roleid');
-
 			$roleSubordinates[]=$roleid;
-
 		}
 		// Update cache for re-use
 		VTCacheUtils::updateRoleSubordinates($roleId, $roleSubordinates);
@@ -3505,7 +3063,6 @@ function getRoleSubordinates($roleId)
 
 	$log->debug("Exiting getRoleSubordinates method ...");
 	return $roleSubordinates;
-
 }
 
 /** To retreive the subordinate vtiger_roles and vtiger_users of the specified parent vtiger_role
@@ -3519,97 +3076,80 @@ function getRoleSubordinates($roleId)
  */
 function getSubordinateRoleAndUsers($roleId, $users = true)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getSubordinateRoleAndUsers(".$roleId.") method ...");
-	global $adb;
 	$subRoleAndUsers=Array();
 	$subordinateRoles=getRoleSubordinates($roleId);
 	$userArray = array();
-	foreach($subordinateRoles as $subRoleId)
-	{
+	foreach($subordinateRoles as $subRoleId) {
 		if ($users) {
 			$userArray=getRoleUsers($subRoleId);
 		}
 		$subRoleAndUsers[$subRoleId]=$userArray;
-
 	}
 	$log->debug("Exiting getSubordinateRoleAndUsers method ...");
 	return $subRoleAndUsers;
-
 }
 
 function getCurrentUserProfileList()
 {
-	global $log;
+	global $log,$current_user;
 	$log->debug("Entering getCurrentUserProfileList() method ...");
-        global $current_user;
-        require('user_privileges/user_privileges_'.$current_user->id.'.php');
-        $profList = array();
-        $i=0;
-        foreach ($current_user_profiles as $profid)
-        {
-           array_push($profList, $profid);
-                $i++;
-        }
+	require('user_privileges/user_privileges_'.$current_user->id.'.php');
+	$profList = array();
+	$i=0;
+	foreach ($current_user_profiles as $profid) {
+		array_push($profList, $profid);
+		$i++;
+	}
 	$log->debug("Exiting getCurrentUserProfileList method ...");
-        return $profList;
-
+	return $profList;
 }
-
 
 function getCurrentUserGroupList()
 {
-	global $log;
+	global $log,$current_user;
 	$log->debug("Entering getCurrentUserGroupList() method ...");
-        global $current_user;
-        require('user_privileges/user_privileges_'.$current_user->id.'.php');
+	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	$grpList= array();
 	if(sizeof($current_user_groups) > 0)
 	{
-       	 	$i=0;
-        	foreach ($current_user_groups as $grpid)
-        	{
-                	array_push($grpList, $grpid);
-                	$i++;
-        	}
+		$i=0;
+		foreach ($current_user_groups as $grpid) {
+			array_push($grpList, $grpid);
+			$i++;
+		}
 	}
 	$log->debug("Exiting getCurrentUserGroupList method ...");
-       	 return $grpList;
+	return $grpList;
 }
 
 function getSubordinateUsersList()
 {
-	global $log;
+	global $log, $current_user;
 	$log->debug("Entering getSubordinateUsersList() method ...");
-        global $current_user;
 	$user_array=Array();
-        require('user_privileges/user_privileges_'.$current_user->id.'.php');
+	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 
 	if(sizeof($subordinate_roles_users) > 0)
 	{
-        	foreach ($subordinate_roles_users as $roleid => $userArray)
-        	{
-			foreach($userArray as $userid)
-			{
-				if(! in_array($userid,$user_array))
-				{
+		foreach ($subordinate_roles_users as $roleid => $userArray) {
+			foreach($userArray as $userid) {
+				if(! in_array($userid,$user_array)) {
 					$user_array[]=$userid;
 				}
 			}
-        	}
+		}
 	}
 	$subUserList = constructList($user_array,'INTEGER');
 	$log->debug("Exiting getSubordinateUsersList method ...");
-       	return $subUserList;
-
+	return $subUserList;
 }
 
 function getReadSharingUsersList($module)
 {
-	global $log;
+	global $log, $adb, $current_user;
 	$log->debug("Entering getReadSharingUsersList(".$module.") method ...");
-	global $adb;
-	global $current_user;
 	$user_array=Array();
 	$tabid=getTabid($module);
 	$query = "select shareduserid from vtiger_tmp_read_user_sharing_per where userid=? and tabid=?";
@@ -3627,10 +3167,8 @@ function getReadSharingUsersList($module)
 
 function getReadSharingGroupsList($module)
 {
-	global $log;
+	global $log, $adb, $current_user;
 	$log->debug("Entering getReadSharingGroupsList(".$module.") method ...");
-	global $adb;
-	global $current_user;
 	$grp_array=Array();
 	$tabid=getTabid($module);
 	$query = "select sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=? and tabid=?";
@@ -3648,10 +3186,8 @@ function getReadSharingGroupsList($module)
 
 function getWriteSharingGroupsList($module)
 {
-	global $log;
+	global $log, $adb, $current_user;
 	$log->debug("Entering getWriteSharingGroupsList(".$module.") method ...");
-	global $adb;
-	global $current_user;
 	$grp_array=Array();
 	$tabid=getTabid($module);
 	$query = "select sharedgroupid from vtiger_tmp_write_group_sharing_per where userid=? and tabid=?";
@@ -3694,91 +3230,71 @@ function constructList($array,$data_type)
 
 function getListViewSecurityParameter($module)
 {
-	global $log;
+	global $log, $adb, $current_user;
 	$log->debug("Entering getListViewSecurityParameter(".$module.") method ...");
-	global $adb;
 
 	$tabid=getTabid($module);
-	global $current_user;
 	if($current_user)
 	{
-        	require('user_privileges/user_privileges_'.$current_user->id.'.php');
-        	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+		require('user_privileges/user_privileges_'.$current_user->id.'.php');
+		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 	}
-	if($module == 'Leads')
-	{
+	if($module == 'Leads') {
 		$sec_query .= " and (
 						vtiger_crmentity.smownerid in($current_user->id)
 						or vtiger_crmentity.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%')
 						or vtiger_crmentity.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.")
 						or (";
-
-                        if(sizeof($current_user_groups) > 0)
-                        {
-                              $sec_query .= " vtiger_groups.groupid in (". implode(",", $current_user_groups) .") or ";
-                        }
-                         $sec_query .= " vtiger_groups.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid."))) ";
+		if(sizeof($current_user_groups) > 0)
+		{
+			$sec_query .= " vtiger_groups.groupid in (". implode(",", $current_user_groups) .") or ";
+		}
+		$sec_query .= " vtiger_groups.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid."))) ";
 	}
-	elseif($module == 'Accounts')
-	{
+	elseif($module == 'Accounts') {
 		$sec_query .= " and (vtiger_crmentity.smownerid in($current_user->id) " .
 				"or vtiger_crmentity.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') " .
 				"or vtiger_crmentity.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.") or (";
-
-                if(sizeof($current_user_groups) > 0)
-                {
-                	$sec_query .= " vtiger_groups.groupid in (". implode(",", $current_user_groups) .") or ";
-                }
+		if(sizeof($current_user_groups) > 0)
+		{
+			$sec_query .= " vtiger_groups.groupid in (". implode(",", $current_user_groups) .") or ";
+		}
 		$sec_query .= " vtiger_groups.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid."))) ";
-
 	}
-	elseif($module == 'Contacts')
-	{
+	elseif($module == 'Contacts') {
 		$sec_query .= " and (vtiger_crmentity.smownerid in($current_user->id) " .
 				"or vtiger_crmentity.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') " .
 				"or vtiger_crmentity.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.") or (";
-
-                if(sizeof($current_user_groups) > 0)
-                {
-                	$sec_query .= " vtiger_groups.groupid in (". implode(",", $current_user_groups) .") or ";
-                }
+		if(sizeof($current_user_groups) > 0)
+		{
+			$sec_query .= " vtiger_groups.groupid in (". implode(",", $current_user_groups) .") or ";
+		}
 		$sec_query .= " vtiger_groups.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid."))) ";
-
 	}
-	elseif($module == 'Potentials')
-	{
+	elseif($module == 'Potentials') {
 		$sec_query .= " and (vtiger_crmentity.smownerid in($current_user->id) " .
 				"or vtiger_crmentity.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') " .
 				"or vtiger_crmentity.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.")";
-
 		$sec_query .= " or (";
-
-        if(sizeof($current_user_groups) > 0)
-        {
-        	$sec_query .= " vtiger_groups.groupid in (". implode(",", $current_user_groups) .") or ";
-        }
+		if(sizeof($current_user_groups) > 0)
+		{
+			$sec_query .= " vtiger_groups.groupid in (". implode(",", $current_user_groups) .") or ";
+		}
 		$sec_query .= " vtiger_groups.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid."))) ";
-
 	}
-	elseif($module == 'HelpDesk')
-	{
+	elseif($module == 'HelpDesk') {
 		$sec_query .= " and (vtiger_crmentity.smownerid in($current_user->id) or vtiger_crmentity.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') or vtiger_crmentity.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.") ";
-
 		$sec_query .= " or (";
-                if(sizeof($current_user_groups) > 0)
-                {
-                	$sec_query .= " vtiger_groups.groupid in (". implode(",", $current_user_groups) .") or ";
-                }
+		if(sizeof($current_user_groups) > 0)
+		{
+			$sec_query .= " vtiger_groups.groupid in (". implode(",", $current_user_groups) .") or ";
+		}
 		$sec_query .= " vtiger_groups.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid."))) ";
-
 	}
-	elseif($module == 'Emails')
-	{
+	elseif($module == 'Emails') {
 		$sec_query .= " and vtiger_crmentity.smownerid=".$current_user->id." ";
-
 	}
-	elseif($module == 'Calendar')
-	{
+	elseif($module == 'Calendar') {
 		require_once('modules/Calendar/CalendarCommon.php');
 		$shared_ids = getSharedCalendarId($current_user->id);
 		if(isset($shared_ids) && $shared_ids != '')
@@ -3793,62 +3309,48 @@ function getListViewSecurityParameter($module)
 		}
 		$sec_query .= ")";
 	}
-	elseif($module == 'Quotes')
-	{
+	elseif($module == 'Quotes') {
 		$sec_query .= " and (vtiger_crmentity.smownerid in($current_user->id) or vtiger_crmentity.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') or vtiger_crmentity.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.")";
 
-		//Adding crteria for group sharing
-		 $sec_query .= " or ((";
-
-                if(sizeof($current_user_groups) > 0)
-                {
-                	$sec_query .= " vtiger_groups.groupid in (". implode(",", $current_user_groups) .") or ";
-                }
+		//Adding criteria for group sharing
+		$sec_query .= " or ((";
+		if(sizeof($current_user_groups) > 0)
+		{
+			$sec_query .= " vtiger_groups.groupid in (". implode(",", $current_user_groups) .") or ";
+		}
 		$sec_query .= " vtiger_groups.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid.")))) ";
-
 	}
-	elseif($module == 'PurchaseOrder')
-	{
+	elseif($module == 'PurchaseOrder') {
 		$sec_query .= " and (vtiger_crmentity.smownerid in($current_user->id) or vtiger_crmentity.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') or vtiger_crmentity.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.") or (";
-
-                if(sizeof($current_user_groups) > 0)
-                {
-                	$sec_query .= " vtiger_groups.groupid in (". implode(",", $current_user_groups) .") or ";
-                }
+		if(sizeof($current_user_groups) > 0)
+		{
+			$sec_query .= " vtiger_groups.groupid in (". implode(",", $current_user_groups) .") or ";
+		}
 		$sec_query .= " vtiger_groups.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid."))) ";
-
 	}
-	elseif($module == 'SalesOrder')
-	{
+	elseif($module == 'SalesOrder') {
 		$sec_query .= " and (vtiger_crmentity.smownerid in($current_user->id) or vtiger_crmentity.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') or vtiger_crmentity.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.")";
 
-		//Adding crteria for group sharing
-		 $sec_query .= " or (";
+		//Adding criteria for group sharing
+		$sec_query .= " or (";
 
-                if(sizeof($current_user_groups) > 0)
-                {
-                	$sec_query .= " vtiger_groups.groupid in (". implode(",", $current_user_groups) .") or ";
-                }
+		if(sizeof($current_user_groups) > 0)
+		{
+			$sec_query .= " vtiger_groups.groupid in (". implode(",", $current_user_groups) .") or ";
+		}
 		$sec_query .= " vtiger_groups.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid."))) ";
-
 	}
-	elseif($module == 'Invoice')
-	{
+	elseif($module == 'Invoice') {
 		$sec_query .= " and (vtiger_crmentity.smownerid in($current_user->id) or vtiger_crmentity.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') or vtiger_crmentity.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.")";
-
-		//Adding crteria for group sharing
+		//Adding criteria for group sharing
 		 $sec_query .= " or ((";
-
-                if(sizeof($current_user_groups) > 0)
-                {
-                	$sec_query .= " vtiger_groups.groupid in (". implode(",", $current_user_groups) .") or ";
-                }
+		if(sizeof($current_user_groups) > 0)
+		{
+			$sec_query .= " vtiger_groups.groupid in (". implode(",", $current_user_groups) .") or ";
+		}
 		$sec_query .= " vtiger_groups.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid.")))) ";
-
 	}
-	elseif($module == 'Campaigns')
-	{
-
+	elseif($module == 'Campaigns') {
 		$sec_query .= " and (vtiger_crmentity.smownerid in($current_user->id) or vtiger_crmentity.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') or vtiger_crmentity.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.") or ((";
 
 		if(sizeof($current_user_groups) > 0)
@@ -3856,131 +3358,100 @@ function getListViewSecurityParameter($module)
 			$sec_query .= " vtiger_groups.groupid in (". implode(",", $current_user_groups) .") or ";
 		}
 		$sec_query .= " vtiger_groups.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid.")))) ";
-
-
 	}
-
-	elseif($module == 'Documents')
-	{
+	elseif($module == 'Documents') {
 		$sec_query .= " and (vtiger_crmentity.smownerid in($current_user->id) or vtiger_crmentity.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') or vtiger_crmentity.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.") or ((";
-
-                if(sizeof($current_user_groups) > 0)
-                {
-                	$sec_query .= " vtiger_groups.groupid in (". implode(",", $current_user_groups) .") or ";
-                }
+		if(sizeof($current_user_groups) > 0)
+		{
+			$sec_query .= " vtiger_groups.groupid in (". implode(",", $current_user_groups) .") or ";
+		}
 		$sec_query .= " vtiger_groups.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid.")))) ";
-
 	}
-
-	elseif($module == 'Products')
-	{
+	elseif($module == 'Products') {
 		$sec_query .= " and (vtiger_crmentity.smownerid in($current_user->id) " .
 				"or vtiger_crmentity.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') " .
 				"or vtiger_crmentity.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.")";
-
 		$sec_query .= " or (";
-
-        if(sizeof($current_user_groups) > 0)
-        {
-        	$sec_query .= " vtiger_groups.groupid in (". implode(",", $current_user_groups) .") or ";
-        }
+		if(sizeof($current_user_groups) > 0)
+		{
+			$sec_query .= " vtiger_groups.groupid in (". implode(",", $current_user_groups) .") or ";
+		}
 		$sec_query .= " vtiger_groups.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid."))) ";
-
 	}
-
-	else
-	{
+	else {
 		$modObj = CRMEntity::getInstance($module);
 		$sec_query = $modObj->getListViewSecurityParameter($module);
-
 	}
 	$log->debug("Exiting getListViewSecurityParameter method ...");
 	return $sec_query;
 }
 
-
 function getSecListViewSecurityParameter($module)
 {
-	global $log;
+	global $log, $adb, $current_user;
 	$log->debug("Entering getListViewSecurityParameter(".$module.") method ...");
-	global $adb;
-	global $current_user;
 
 	$tabid=getTabid($module);
-	global $current_user;
-	if($current_user)
-	{
-        	require('user_privileges/user_privileges_'.$current_user->id.'.php');
-        	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
+	if($current_user) {
+		require('user_privileges/user_privileges_'.$current_user->id.'.php');
+		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 	}
 
-	if($module == 'Leads')
-	{
+	if($module == 'Leads') {
 		$sec_query .= " and (vtiger_crmentity$module.smownerid in($current_user->id) or vtiger_crmentity$module.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') or vtiger_crmentity$module.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.") or (";
 
-                        if(sizeof($current_user_groups) > 0)
-                        {
-                              $sec_query .= " vtiger_groups$module.groupid in (". implode(",", $current_user_groups) .") or ";
-                        }
-                         $sec_query .= " vtiger_groups$module.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid."))) ";
+		if(sizeof($current_user_groups) > 0)
+		{
+			$sec_query .= " vtiger_groups$module.groupid in (". implode(",", $current_user_groups) .") or ";
+		}
+		$sec_query .= " vtiger_groups$module.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid."))) ";
 	}
-	elseif($module == 'Accounts')
-	{
+	elseif($module == 'Accounts') {
 		$sec_query .= " and (vtiger_crmentity$module.smownerid in($current_user->id) or vtiger_crmentity.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') or vtiger_crmentity.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.") or (";
-
-                if(sizeof($current_user_groups) > 0)
-                {
-                	$sec_query .= " vtiger_groups$module.groupid in (". implode(",", $current_user_groups) .") or ";
-                }
+		if(sizeof($current_user_groups) > 0)
+		{
+			$sec_query .= " vtiger_groups$module.groupid in (". implode(",", $current_user_groups) .") or ";
+		}
 		$sec_query .= " vtiger_groups$module.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid."))) ";
-
 	}
-	elseif($module == 'Contacts')
-	{
+	elseif($module == 'Contacts') {
 		$sec_query .= " and (vtiger_crmentity$module.smownerid in($current_user->id) or vtiger_crmentity$module.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') or vtiger_crmentity$module.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.") or (";
-
-                if(sizeof($current_user_groups) > 0)
-                {
-                	$sec_query .= " vtiger_groups$module.groupid in (". implode(",", $current_user_groups) .") or ";
-                }
+		if(sizeof($current_user_groups) > 0)
+		{
+			$sec_query .= " vtiger_groups$module.groupid in (". implode(",", $current_user_groups) .") or ";
+		}
 		$sec_query .= " vtiger_groups$module.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid."))) ";
-
 	}
-	elseif($module == 'Potentials')
-	{
+	elseif($module == 'Potentials') {
 		$sec_query .= " and (vtiger_crmentity$module.smownerid in($current_user->id) or vtiger_crmentity$module.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') or vtiger_crmentity$module.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.") or vtiger_potential.related_to in (select crmid from vtiger_crmentity where setype in ('Accounts', 'Contacts') and vtiger_crmentity.smownerid in(select shareduserid from vtiger_tmp_read_user_rel_sharing_per where userid=".$current_user->id." and tabid in (".getTabid('Accounts').", ".getTabid('Contacts').") and relatedtabid=".$tabid.")) ";
 
 		if(vtlib_isModuleActive("Accounts")){
-				"or vtiger_potential.related_to in (select crmid from vtiger_crmentity inner join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid where setype='Accounts' and vtiger_groups.groupid in (select vtiger_tmp_read_group_rel_sharing_per.sharedgroupid from vtiger_tmp_read_group_rel_sharing_per where userid=".$current_user->id." and tabid=".getTabid('Accounts')." and relatedtabid=".$tabid.")) ";
+			"or vtiger_potential.related_to in (select crmid from vtiger_crmentity inner join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid where setype='Accounts' and vtiger_groups.groupid in (select vtiger_tmp_read_group_rel_sharing_per.sharedgroupid from vtiger_tmp_read_group_rel_sharing_per where userid=".$current_user->id." and tabid=".getTabid('Accounts')." and relatedtabid=".$tabid.")) ";
 		}
 		if(vtlib_isModuleActive("Contacts")){
-				"or vtiger_potential.related_to in (select crmid from vtiger_crmentity inner join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid where setype='Contacts' and vtiger_groups.groupid in (select vtiger_tmp_read_group_rel_sharing_per.sharedgroupid from vtiger_tmp_read_group_rel_sharing_per where userid=".$current_user->id." and tabid=".getTabid('Contacts')." and relatedtabid=".$tabid.")) ";
+			"or vtiger_potential.related_to in (select crmid from vtiger_crmentity inner join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid where setype='Contacts' and vtiger_groups.groupid in (select vtiger_tmp_read_group_rel_sharing_per.sharedgroupid from vtiger_tmp_read_group_rel_sharing_per where userid=".$current_user->id." and tabid=".getTabid('Contacts')." and relatedtabid=".$tabid.")) ";
 		}
 		$sec_query .= " or (";
-        if(sizeof($current_user_groups) > 0){
-        	$sec_query .= " vtiger_groups$module.groupid in (". implode(",", $current_user_groups) .") or ";
-        }
+		if(sizeof($current_user_groups) > 0){
+			$sec_query .= " vtiger_groups$module.groupid in (". implode(",", $current_user_groups) .") or ";
+		}
 		$sec_query .= " vtiger_groups$module.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid."))) ";
-
 	}
-	elseif($module == 'HelpDesk')
-	{
+	elseif($module == 'HelpDesk') {
 		$sec_query .= " and (vtiger_crmentity$module.smownerid in($current_user->id) or vtiger_crmentity$module.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') or vtiger_crmentity$module.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.") ";
 
 		if(vtlib_isModuleActive("Accounts")){
-				"or vtiger_troubletickets.parent_id in (select crmid from vtiger_crmentity where setype='Accounts' and vtiger_crmentity.smownerid in(select shareduserid from vtiger_tmp_read_user_rel_sharing_per where userid=".$current_user->id." and tabid=".getTabid('Accounts')." and relatedtabid=".$tabid.")) or vtiger_troubletickets.parent_id in (select crmid from vtiger_crmentity inner join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid where setype='Accounts' and vtiger_groups.groupid in(select vtiger_tmp_read_group_rel_sharing_per.sharedgroupid from vtiger_tmp_read_group_rel_sharing_per where userid=".$current_user->id." and tabid=".getTabid('Accounts')." and relatedtabid=".$tabid.")) ";
+			"or vtiger_troubletickets.parent_id in (select crmid from vtiger_crmentity where setype='Accounts' and vtiger_crmentity.smownerid in(select shareduserid from vtiger_tmp_read_user_rel_sharing_per where userid=".$current_user->id." and tabid=".getTabid('Accounts')." and relatedtabid=".$tabid.")) or vtiger_troubletickets.parent_id in (select crmid from vtiger_crmentity inner join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid where setype='Accounts' and vtiger_groups.groupid in(select vtiger_tmp_read_group_rel_sharing_per.sharedgroupid from vtiger_tmp_read_group_rel_sharing_per where userid=".$current_user->id." and tabid=".getTabid('Accounts')." and relatedtabid=".$tabid.")) ";
 		}
 
 		$sec_query .= " or (";
-                if(sizeof($current_user_groups) > 0)
-                {
-                	$sec_query .= " vtiger_groups$module.groupid in (". implode(",", $current_user_groups) .") or ";
-                }
+		if(sizeof($current_user_groups) > 0)
+		{
+			$sec_query .= " vtiger_groups$module.groupid in (". implode(",", $current_user_groups) .") or ";
+		}
 		$sec_query .= " vtiger_groups$module.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid."))) ";
-
 	}
-	elseif($module == 'Calendar')
-	{
+	elseif($module == 'Calendar') {
 		require_once('modules/Calendar/CalendarCommon.php');
 		$shared_ids = getSharedCalendarId($current_user->id);
 		if(isset($shared_ids) && $shared_ids != '')
@@ -3995,126 +3466,97 @@ function getSecListViewSecurityParameter($module)
 		}
 		$sec_query .= ")";
 	}
-	elseif($module == 'Quotes')
-	{
+	elseif($module == 'Quotes') {
 		$sec_query .= " and (vtiger_crmentity$module.smownerid in($current_user->id) or vtiger_crmentity$module.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') or vtiger_crmentity$module.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.")";
 
-		//Adding crterial for vtiger_account related vtiger_quotes sharing
+		//Adding criteria for account related quotes sharing
 		if(vtlib_isModuleActive("Accounts")){
 		 $sec_query .= " or vtiger_quotes.accountid in (select crmid from vtiger_crmentity where setype='Accounts' and vtiger_crmentity.smownerid in(select shareduserid from vtiger_tmp_read_user_rel_sharing_per where userid=".$current_user->id." and tabid=".getTabid('Accounts')." and relatedtabid=".$tabid.")) or vtiger_quotes.accountid in (select crmid from vtiger_crmentity inner join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid where setype='Accounts' and vtiger_groups.groupid in(select vtiger_tmp_read_group_rel_sharing_per.sharedgroupid from vtiger_tmp_read_group_rel_sharing_per where userid=".$current_user->id." and tabid=".getTabid('Accounts')." and relatedtabid=".$tabid."))";
 		}
-		//Adding crterial for vtiger_potential related vtiger_quotes sharing
+		//Adding criteria for potential related quotes sharing
 		if(vtlib_isModuleActive("Potentials")){
 		 $sec_query .= " or vtiger_quotes.potentialid in (select crmid from vtiger_crmentity where setype='Potentials' and vtiger_crmentity.smownerid in(select shareduserid from vtiger_tmp_read_user_rel_sharing_per where userid=".$current_user->id." and tabid=".getTabid('Potentials')." and relatedtabid=".$tabid.")) or vtiger_quotes.potentialid in (select crmid from vtiger_crmentity inner join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid where setype='Potentials' and vtiger_groups.groupid in(select vtiger_tmp_read_group_rel_sharing_per.sharedgroupid from vtiger_tmp_read_group_rel_sharing_per where userid=".$current_user->id." and tabid=".getTabid('Potentials')." and relatedtabid=".$tabid."))";
 		}
 
-		//Adding crteria for group sharing
-		 $sec_query .= " or ((";
-
-                if(sizeof($current_user_groups) > 0)
-                {
-                	$sec_query .= " vtiger_groups$module.groupid in (". implode(",", $current_user_groups) .") or ";
-                }
-		$sec_query .= " vtiger_groups$module.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid.")))) ";
-
-	}
-	elseif($module == 'PurchaseOrder')
-	{
-		$sec_query .= " and (vtiger_crmentity$module.smownerid in($current_user->id) or vtiger_crmentity$module.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') or vtiger_crmentity$module.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.") or (";
-
-                if(sizeof($current_user_groups) > 0)
-                {
-                	$sec_query .= " vtiger_groups$module.groupid in (". implode(",", $current_user_groups) .") or ";
-                }
-		$sec_query .= " vtiger_groups$module.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid."))) ";
-
-	}
-	elseif($module == 'SalesOrder')
-	{
-		$sec_query .= " and (vtiger_crmentity$module.smownerid in($current_user->id) or vtiger_crmentity$module.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') or vtiger_crmentity$module.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.")";
-
-		//Adding crterial for vtiger_account related so sharing
-		if(vtlib_isModuleActive("Accounts")){
-			$sec_query .= " or vtiger_salesorder.accountid in (select crmid from vtiger_crmentity where setype='Accounts' and vtiger_crmentity.smownerid in(select shareduserid from vtiger_tmp_read_user_rel_sharing_per where userid=".$current_user->id." and tabid=".getTabid('Accounts')." and relatedtabid=".$tabid.")) or vtiger_salesorder.accountid in (select crmid from vtiger_crmentity inner join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid where setype='Accounts' and vtiger_groups.groupid in(select vtiger_tmp_read_group_rel_sharing_per.sharedgroupid from vtiger_tmp_read_group_rel_sharing_per where userid=".$current_user->id." and tabid=".getTabid('Accounts')." and relatedtabid=".$tabid."))";
-		}
-		//Adding crterial for vtiger_potential related so sharing
-		if(vtlib_isModuleActive("Potentials")){
-			$sec_query .= " or vtiger_salesorder.potentialid in (select crmid from vtiger_crmentity where setype='Potentials' and vtiger_crmentity.smownerid in(select shareduserid from vtiger_tmp_read_user_rel_sharing_per where userid=".$current_user->id." and tabid=".getTabid('Potentials')." and relatedtabid=".$tabid.")) or vtiger_salesorder.potentialid in (select crmid from vtiger_crmentity inner join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid where setype='Potentials' and vtiger_groups.groupid in(select vtiger_tmp_read_group_rel_sharing_per.sharedgroupid from vtiger_tmp_read_group_rel_sharing_per where userid=".$current_user->id." and tabid=".getTabid('Potentials')." and relatedtabid=".$tabid."))";
-		}
-		//Adding crterial for vtiger_quotes related so sharing
-		if(vtlib_isModuleActive("Quotes")){
-			$sec_query .= " or vtiger_salesorder.quoteid in (select crmid from vtiger_crmentity where setype='Quotes' and vtiger_crmentity.smownerid in(select shareduserid from vtiger_tmp_read_user_rel_sharing_per where userid=".$current_user->id." and tabid=".getTabid('Quotes')." and relatedtabid=".$tabid.")) or vtiger_salesorder.quoteid in (select crmid from vtiger_crmentity inner join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid where setype='Quotes' and vtiger_groups.groupid in(select vtiger_tmp_read_group_rel_sharing_per.sharedgroupid from vtiger_tmp_read_group_rel_sharing_per where userid=".$current_user->id." and tabid=".getTabid('Quotes')." and relatedtabid=".$tabid."))";
-		}
-
-		//Adding crteria for group sharing
-		 $sec_query .= " or (";
-
-                if(sizeof($current_user_groups) > 0)
-                {
-                	$sec_query .= " vtiger_groups$module.groupid in (". implode(",", $current_user_groups) .") or ";
-                }
-		$sec_query .= " vtiger_groups$module.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid."))) ";
-
-	}
-	elseif($module == 'Invoice')
-	{
-		$sec_query .= " and (vtiger_crmentity$module.smownerid in($current_user->id) or vtiger_crmentity$module.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') or vtiger_crmentity$module.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.")";
-
-		//Adding crterial for vtiger_account related vtiger_invoice sharing
-		if(vtlib_isModuleActive("Accounts")){
-			$sec_query .= " or vtiger_invoice.accountid in (select crmid from vtiger_crmentity where setype='Accounts' and vtiger_crmentity.smownerid in(select shareduserid from vtiger_tmp_read_user_rel_sharing_per where userid=".$current_user->id." and tabid=".getTabid('Accounts')." and relatedtabid=".$tabid.")) or vtiger_invoice.accountid in (select crmid from vtiger_crmentity inner join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid where setype='Accounts' and vtiger_groups.groupid in(select vtiger_tmp_read_group_rel_sharing_per.sharedgroupid from vtiger_tmp_read_group_rel_sharing_per where userid=".$current_user->id." and tabid=".getTabid('Accounts')." and relatedtabid=".$tabid."))";
-		}
-		//Adding crterial for vtiger_salesorder related vtiger_invoice sharing
-		if(vtlib_isModuleActive("SalesOrder")){
-			$sec_query .= " or vtiger_invoice.salesorderid in (select crmid from vtiger_crmentity where setype='SalesOrder' and vtiger_crmentity.smownerid in(select shareduserid from vtiger_tmp_read_user_rel_sharing_per where userid=".$current_user->id." and tabid=".getTabid('SalesOrder')." and relatedtabid=".$tabid.")) or vtiger_invoice.salesorderid in(select crmid from vtiger_crmentity inner join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid where setype='SalesOrder' and vtiger_groups.groupid in(select vtiger_tmp_read_group_rel_sharing_per.sharedgroupid from vtiger_tmp_read_group_rel_sharing_per where userid=".$current_user->id." and tabid=".getTabid('SalesOrder')." and relatedtabid=".$tabid."))";
-		}
-
-		//Adding crteria for group sharing
-		 $sec_query .= " or ((";
-
-                if(sizeof($current_user_groups) > 0)
-                {
-                	$sec_query .= " vtiger_groups$module.groupid in (". implode(",", $current_user_groups) .") or ";
-                }
-		$sec_query .= " vtiger_groups$module.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid.")))) ";
-
-	}
-	elseif($module == 'Campaigns')
-	{
-
-		$sec_query .= " and (vtiger_crmentity$module.smownerid in($current_user->id) or vtiger_crmentity$module.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') or vtiger_crmentity$module.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.") or ((";
-
+		//Adding criteria for group sharing
+		$sec_query .= " or ((";
 		if(sizeof($current_user_groups) > 0)
 		{
 			$sec_query .= " vtiger_groups$module.groupid in (". implode(",", $current_user_groups) .") or ";
 		}
 		$sec_query .= " vtiger_groups$module.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid.")))) ";
-
-
 	}
-
-	elseif($module == 'Documents')
-	{
-		$sec_query .= " and (vtiger_crmentity$module.smownerid in($current_user->id) or vtiger_crmentity$module.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') or vtiger_crmentity$module.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.") or ((";
-
-                if(sizeof($current_user_groups) > 0)
-                {
-                	$sec_query .= " vtiger_groups$module.groupid in (". implode(",", $current_user_groups) .") or ";
-                }
-		$sec_query .= " vtiger_groups$module.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid.")))) ";
-
+	elseif($module == 'PurchaseOrder') {
+		$sec_query .= " and (vtiger_crmentity$module.smownerid in($current_user->id) or vtiger_crmentity$module.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') or vtiger_crmentity$module.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.") or (";
+		if(sizeof($current_user_groups) > 0)
+		{
+			$sec_query .= " vtiger_groups$module.groupid in (". implode(",", $current_user_groups) .") or ";
+		}
+		$sec_query .= " vtiger_groups$module.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid."))) ";
 	}
-
-	else
-	{
-		$sec_query .= " and (vtiger_crmentity$module.smownerid in($current_user->id) or vtiger_crmentity$module.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') or vtiger_crmentity$module.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.") or ((";
-
-                if(sizeof($current_user_groups) > 0)
-                {
-                	$sec_query .= " vtiger_groups$module.groupid in (". implode(",", $current_user_groups) .") or ";
-                }
+	elseif($module == 'SalesOrder') {
+		$sec_query .= " and (vtiger_crmentity$module.smownerid in($current_user->id) or vtiger_crmentity$module.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') or vtiger_crmentity$module.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.")";
+		//Adding criteria for account related so sharing
+		if(vtlib_isModuleActive("Accounts")){
+			$sec_query .= " or vtiger_salesorder.accountid in (select crmid from vtiger_crmentity where setype='Accounts' and vtiger_crmentity.smownerid in(select shareduserid from vtiger_tmp_read_user_rel_sharing_per where userid=".$current_user->id." and tabid=".getTabid('Accounts')." and relatedtabid=".$tabid.")) or vtiger_salesorder.accountid in (select crmid from vtiger_crmentity inner join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid where setype='Accounts' and vtiger_groups.groupid in(select vtiger_tmp_read_group_rel_sharing_per.sharedgroupid from vtiger_tmp_read_group_rel_sharing_per where userid=".$current_user->id." and tabid=".getTabid('Accounts')." and relatedtabid=".$tabid."))";
+		}
+		//Adding criteria for potential related so sharing
+		if(vtlib_isModuleActive("Potentials")){
+			$sec_query .= " or vtiger_salesorder.potentialid in (select crmid from vtiger_crmentity where setype='Potentials' and vtiger_crmentity.smownerid in(select shareduserid from vtiger_tmp_read_user_rel_sharing_per where userid=".$current_user->id." and tabid=".getTabid('Potentials')." and relatedtabid=".$tabid.")) or vtiger_salesorder.potentialid in (select crmid from vtiger_crmentity inner join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid where setype='Potentials' and vtiger_groups.groupid in(select vtiger_tmp_read_group_rel_sharing_per.sharedgroupid from vtiger_tmp_read_group_rel_sharing_per where userid=".$current_user->id." and tabid=".getTabid('Potentials')." and relatedtabid=".$tabid."))";
+		}
+		//Adding criteria for quotes related so sharing
+		if(vtlib_isModuleActive("Quotes")){
+			$sec_query .= " or vtiger_salesorder.quoteid in (select crmid from vtiger_crmentity where setype='Quotes' and vtiger_crmentity.smownerid in(select shareduserid from vtiger_tmp_read_user_rel_sharing_per where userid=".$current_user->id." and tabid=".getTabid('Quotes')." and relatedtabid=".$tabid.")) or vtiger_salesorder.quoteid in (select crmid from vtiger_crmentity inner join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid where setype='Quotes' and vtiger_groups.groupid in(select vtiger_tmp_read_group_rel_sharing_per.sharedgroupid from vtiger_tmp_read_group_rel_sharing_per where userid=".$current_user->id." and tabid=".getTabid('Quotes')." and relatedtabid=".$tabid."))";
+		}
+		//Adding crteria for group sharing
+		$sec_query .= " or (";
+		if(sizeof($current_user_groups) > 0)
+		{
+			$sec_query .= " vtiger_groups$module.groupid in (". implode(",", $current_user_groups) .") or ";
+		}
+		$sec_query .= " vtiger_groups$module.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid."))) ";
+	}
+	elseif($module == 'Invoice') {
+		$sec_query .= " and (vtiger_crmentity$module.smownerid in($current_user->id) or vtiger_crmentity$module.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') or vtiger_crmentity$module.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.")";
+		//Adding criteria for account related invoice sharing
+		if(vtlib_isModuleActive("Accounts")){
+			$sec_query .= " or vtiger_invoice.accountid in (select crmid from vtiger_crmentity where setype='Accounts' and vtiger_crmentity.smownerid in(select shareduserid from vtiger_tmp_read_user_rel_sharing_per where userid=".$current_user->id." and tabid=".getTabid('Accounts')." and relatedtabid=".$tabid.")) or vtiger_invoice.accountid in (select crmid from vtiger_crmentity inner join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid where setype='Accounts' and vtiger_groups.groupid in(select vtiger_tmp_read_group_rel_sharing_per.sharedgroupid from vtiger_tmp_read_group_rel_sharing_per where userid=".$current_user->id." and tabid=".getTabid('Accounts')." and relatedtabid=".$tabid."))";
+		}
+		//Adding criteria for salesorder related invoice sharing
+		if(vtlib_isModuleActive("SalesOrder")){
+			$sec_query .= " or vtiger_invoice.salesorderid in (select crmid from vtiger_crmentity where setype='SalesOrder' and vtiger_crmentity.smownerid in(select shareduserid from vtiger_tmp_read_user_rel_sharing_per where userid=".$current_user->id." and tabid=".getTabid('SalesOrder')." and relatedtabid=".$tabid.")) or vtiger_invoice.salesorderid in(select crmid from vtiger_crmentity inner join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid where setype='SalesOrder' and vtiger_groups.groupid in(select vtiger_tmp_read_group_rel_sharing_per.sharedgroupid from vtiger_tmp_read_group_rel_sharing_per where userid=".$current_user->id." and tabid=".getTabid('SalesOrder')." and relatedtabid=".$tabid."))";
+		}
+		// Adding criteria for group sharing
+		$sec_query .= " or ((";
+		if(sizeof($current_user_groups) > 0)
+		{
+			$sec_query .= " vtiger_groups$module.groupid in (". implode(",", $current_user_groups) .") or ";
+		}
 		$sec_query .= " vtiger_groups$module.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid.")))) ";
-
+	}
+	elseif($module == 'Campaigns') {
+		$sec_query .= " and (vtiger_crmentity$module.smownerid in($current_user->id) or vtiger_crmentity$module.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') or vtiger_crmentity$module.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.") or ((";
+		if(sizeof($current_user_groups) > 0)
+		{
+			$sec_query .= " vtiger_groups$module.groupid in (". implode(",", $current_user_groups) .") or ";
+		}
+		$sec_query .= " vtiger_groups$module.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid.")))) ";
+	}
+	elseif($module == 'Documents') {
+		$sec_query .= " and (vtiger_crmentity$module.smownerid in($current_user->id) or vtiger_crmentity$module.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') or vtiger_crmentity$module.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.") or ((";
+		if(sizeof($current_user_groups) > 0)
+		{
+			$sec_query .= " vtiger_groups$module.groupid in (". implode(",", $current_user_groups) .") or ";
+		}
+		$sec_query .= " vtiger_groups$module.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid.")))) ";
+	}
+	else {
+		$sec_query .= " and (vtiger_crmentity$module.smownerid in($current_user->id) or vtiger_crmentity$module.smownerid in(select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '".$current_user_parent_role_seq."::%') or vtiger_crmentity$module.smownerid in(select shareduserid from vtiger_tmp_read_user_sharing_per where userid=".$current_user->id." and tabid=".$tabid.") or ((";
+		if(sizeof($current_user_groups) > 0)
+		{
+			$sec_query .= " vtiger_groups$module.groupid in (". implode(",", $current_user_groups) .") or ";
+		}
+		$sec_query .= " vtiger_groups$module.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid.")))) ";
 	}
 	$log->debug("Exiting getListViewSecurityParameter method ...");
 	return $sec_query;
@@ -4122,9 +3564,8 @@ function getSecListViewSecurityParameter($module)
 
 function get_current_user_access_groups($module)
 {
-	global $log;
+	global $log,$adb,$noof_group_rows;
 	$log->debug("Entering get_current_user_access_groups(".$module.") method ...");
-	global $adb,$noof_group_rows;
 	$current_user_group_list=getCurrentUserGroupList();
 	$sharing_write_group_list=getWriteSharingGroupsList($module);
 	$query ="select groupname,groupid from vtiger_groups";
@@ -4176,15 +3617,11 @@ function getGrpId($groupname) {
   * @param $userid -- User Id :: Type integer
   * @param $fieldname -- Field Name :: Type varchar
   * @returns $rolename -- Role Name :: Type varchar
-  *
  */
 function getFieldVisibilityPermission($fld_module, $userid, $fieldname, $accessmode='readonly')
 {
-	global $log;
+	global $log,$adb, $current_user;
 	$log->debug("Entering getFieldVisibilityPermission(".$fld_module.",". $userid.",". $fieldname.") method ...");
-
-	global $adb;
-	global $current_user;
 
 	// Check if field is in-active
 	$fieldActive = isFieldActive($fld_module,$fieldname);
@@ -4224,15 +3661,8 @@ function getFieldVisibilityPermission($fld_module, $userid, $fieldname, $accessm
 			}
 			$params = array($tabid, $fieldname);
 		}
- 		//Postgres 8 fixes
- 		if( $adb->dbType == "pgsql")
- 		    $query = fixPostgresQuery( $query, $log, 0);
-
-
 		$result = $adb->pquery($query, $params);
-
 		$log->debug("Exiting getFieldVisibilityPermission method ...");
-
 		if($adb->num_rows($result) == 0) return '1';
 		return ($adb->query_result($result,"0","visible")."");
 	}
@@ -4259,18 +3689,15 @@ function getColumnVisibilityPermission($userid, $columnname, $module, $accessmod
 	} else {
 		$fieldname = $cacheFieldInfo['fieldname'];
 	}
-
 	return getFieldVisibilityPermission($module,$userid,$fieldname,$accessmode);
 }
 
 /** Function to get the vtiger_field access module array
   * @returns The vtiger_field Access module Array :: Type Array
-  *
  */
 function getFieldModuleAccessArray()
 {
-	global $log;
-	global $adb;
+	global $log, $adb;
 	$log->debug("Entering getFieldModuleAccessArray() method ...");
 
 	$fldModArr=Array();
@@ -4290,8 +3717,7 @@ function getFieldModuleAccessArray()
   * @returns The vtiger_field Access module Array :: Type Array
  */
 function getModuleAccessArray() {
-	global $log;
-	global $adb;
+	global $log, $adb;
 	$log->debug("Entering getModuleAccessArray() method ...");
 
 	$fldModArr=Array();
@@ -4308,7 +3734,6 @@ function getModuleAccessArray() {
 
 /** Function to get the permitted module name Array with presence as 0
   * @returns permitted module name Array :: Type Array
-  *
  */
 function getPermittedModuleNames()
 {
@@ -4327,10 +3752,7 @@ function getPermittedModuleNames()
 			{
 				$permittedModules[]=getTabModuleName($tabid);
 			}
-
 		}
-
-
 	}
 	else
 	{
@@ -4340,16 +3762,13 @@ function getPermittedModuleNames()
 			{
 				$permittedModules[]=getTabModuleName($tabid);
 			}
-
 		}
 	}
 	$log->debug("Exiting getPermittedModuleNames method ...");
 	return $permittedModules;
 }
 
-
-/**
- * Function to get the permitted module id Array with presence as 0
+/** Function to get the permitted module id Array with presence as 0
  * @global Users $current_user
  * @return Array Array of accessible tabids.
  */
@@ -4373,16 +3792,15 @@ function getPermittedModuleIdList() {
 			}
 		}
 	}
-    $homeTabid = getTabid('Home');
-    if(!in_array($homeTabid, $permittedModules)) {
-        $permittedModules[] = $homeTabid;
-    }
+	$homeTabid = getTabid('Home');
+	if(!in_array($homeTabid, $permittedModules)) {
+		$permittedModules[] = $homeTabid;
+	}
 	return $permittedModules;
 }
 
 /** Function to recalculate the Sharing Rules for all the vtiger_users
   * This function will recalculate all the sharing rules for all the users in the Organization and will write them in flat files
-  *
  */
 function RecalculateSharingRules()
 {
@@ -4397,7 +3815,7 @@ function RecalculateSharingRules()
 	{
 		$id=$adb->query_result($result,$i,'id');
 		createUserPrivilegesfile($id);
-	        createUserSharingPrivilegesfile($id);
+		createUserSharingPrivilegesfile($id);
 	}
 	$log->debug("Exiting RecalculateSharingRules method ...");
 
@@ -4405,7 +3823,6 @@ function RecalculateSharingRules()
 
 /** Function to get the list of module for which the user defined sharing rules can be defined
   * @returns Array:: Type array
-  *
   */
 function getSharingModuleList($eliminateModules=false)
 {
@@ -4431,11 +3848,9 @@ function getSharingModuleList($eliminateModules=false)
 	return $sharingModuleArray;
 }
 
-
 function isCalendarPermittedBySharing($recordId)
 {
-	global $adb;
-	global $current_user;
+	global $adb, $current_user;
 	$permission = 'no';
 	$query = "select * from vtiger_sharedcalendar where userid in(select smownerid from vtiger_activity inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid where activityid=? and visibility='Public' and smownerid !=0) and sharedid=?";
 	$result=$adb->pquery($query, array($recordId, $current_user->id));
@@ -4445,9 +3860,8 @@ function isCalendarPermittedBySharing($recordId)
 	}
 	return $permission;
 }
-/*
- *  * Function to populate default entries for the picklist while creating a new role--vashni
- *   */
+
+/* Function to populate default entries for the picklist while creating a new role */
 function insertRole2Picklist($roleid,$parentroleid)
 {
 	global $adb,$log;
@@ -4458,7 +3872,7 @@ function insertRole2Picklist($roleid,$parentroleid)
 }
 
 /** Function to delete group to report relation of the  specified group
-  * @param $groupId -- Group Id :: Type integer
+ * @param $groupId -- Group Id :: Type integer
  */
 function deleteGroupReportRelations($groupId)
 {
@@ -4469,7 +3883,6 @@ function deleteGroupReportRelations($groupId)
 	$adb->pquery($query, array($groupId));
 	$log->debug("Exiting deleteGroupReportRelations method ...");
 }
-//end
 
 /** Function to check if the field is Active
  *  @params  $modulename -- Module Name :: String Type
@@ -4481,7 +3894,6 @@ function isFieldActive($modulename,$fieldname){
 }
 
 /**
- *
  * @param String $module - module name for which query needs to be generated.
  * @param Users $user - user for which query needs to be generated.
  * @return String Access control Query for the user.

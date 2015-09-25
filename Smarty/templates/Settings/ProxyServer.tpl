@@ -28,7 +28,7 @@
 				<input type="hidden" name="parenttab" value="Settings">
 				<tr>
 					<td width=50 rowspan=2 valign=top><img src="{'proxy.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_PROXY}" width="48" height="48" border=0 title="{$MOD.LBL_PROXY}"></td>
-					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{$MOD.LBL_SETTINGS}</a> > {$MOD.LBL_PROXY_SERVER_SETTINGS} </b></td>
+					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_PROXY_SERVER_SETTINGS} </b></td>
 				</tr>
 				<tr>
 					<td valign=top class="small">{$MOD.LBL_PROXY_SERVER_DESC} </td>

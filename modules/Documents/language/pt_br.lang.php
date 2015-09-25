@@ -140,6 +140,7 @@ $mod_strings = Array(
 
 'Documents' => 'Documentos',
 'Documents ID' => 'ID Documentos',
+'LBL_FILEUPLOAD_FAILED'=>'File failed to upload',
 );
 
 ?>

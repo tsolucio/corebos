@@ -81,10 +81,7 @@ class Import_ListView_Controller {
 
 		$limit_start_rec = ($start-1) * $list_max_entries_per_page;
 
-		if( $adb->dbType == "pgsql")
-			$list_result = $adb->pquery($list_query. " OFFSET $limit_start_rec LIMIT $list_max_entries_per_page", array());
-		else
-			$list_result = $adb->pquery($list_query. " LIMIT $limit_start_rec, $list_max_entries_per_page", array());
+		$list_result = $adb->pquery($list_query. " LIMIT $limit_start_rec, $list_max_entries_per_page", array());
 
 		$recordListRangeMsg = getRecordRangeMessage($list_result, $limit_start_rec,$noofrows);
 		$viewer->assign('recordListRange',$recordListRangeMsg);

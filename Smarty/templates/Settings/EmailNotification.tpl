@@ -48,7 +48,7 @@ DIV.fixedLay {
 			<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 			<tr>
 				<td width="50" rowspan="2" valign="top"><img src="{'notification.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_MODULE_NAME}" width="48" height="48" border=0 title="{$MOD.LBL_MODULE_NAME}"></td>
-				<td colspan="2" class="heading2" valign=bottom align="left"><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{$MOD.LBL_SETTINGS}</a> > {$MOD.NOTIFICATIONSCHEDULERS} </b></td>
+				<td colspan="2" class="heading2" valign=bottom align="left"><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.NOTIFICATIONSCHEDULERS} </b></td>
 				<td rowspan=2 class="small" align=right>&nbsp;</td>
 			</tr>
 			<tr>

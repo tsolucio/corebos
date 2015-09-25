@@ -22,7 +22,7 @@ if(typeof(cbupdater) == 'undefined') {
 		getselected : function(record) {
 			var select_options = document.getElementById('allselectedboxes').value;
 			var numOfRows = document.getElementById('numOfRows').value;
-			var excludedRecords = $('excludedRecords').value;
+			var excludedRecords = document.getElementById('excludedRecords').value;
 			if(select_options=='all') {
 				var idstring = select_options;
 				var skiprecords = excludedRecords.split(";");

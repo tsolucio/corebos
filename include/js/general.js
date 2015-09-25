@@ -119,12 +119,17 @@ function findPosY(obj) {
 }
 
 function getPosition(element) {
-    //Get absolute position, using JQuery
-    var offset = jQuery(element).offset();
-    if(offset == undefined){
-        offset = {left: 0, top: 0};
-    }
-    return { x: offset.left, y: offset.top };
+	//Get absolute position, using JQuery
+	var screen_elem = jQuery(element);
+	if(screen_elem == undefined || screen_elem.get(0).tagName == undefined){
+		offset = {left: 0, top: 0};
+	} else {
+		var offset = screen_elem.offset();
+		if(offset == undefined){
+			offset = {left: 0, top: 0};
+		}
+	}
+	return { x: offset.left, y: offset.top };
 }
 
 function clearTextSelection() {

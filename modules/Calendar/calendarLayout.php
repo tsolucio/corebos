@@ -1481,17 +1481,11 @@ function getEventList(& $calendar,$start_date,$end_date,$info='')
 	
         $list_query = $adb->convert2Sql($query, $params);
 	$_SESSION['Calendar_listquery'] = $list_query;
-        
-        if($start_rec < 0)
+
+	if($start_rec < 0)
 		$start_rec = 0;
 	$query .= $group_cond." limit $start_rec,$list_max_entries_per_page";
 
- 	if( $adb->dbType == "pgsql"){
- 	    $query = fixPostgresQuery($query, $log, 0);
- 	}
-
-	
-        
 	$result = $adb->pquery($query, $params);
 	$rows = $adb->num_rows($result);
 	$c = 0;
@@ -1663,9 +1657,8 @@ function getTodoList(& $calendar,$start_date,$end_date,$info='')
 	$params = $info_params = array($startDate->getDBInsertDateTimeValue(), $endDate->getDBInsertDateTimeValue(),
 									$startDate->getDBInsertDateTimeValue(), $endDate->getDBInsertDateTimeValue(),
 									$startDate->getDBInsertDateTimeValue(), $endDate->getDBInsertDateTimeValue());
-	
-        if($info != '')
-		{
+
+		if($info != '') {
 			//added to fix #4816
 			$groupids = explode(",", fetchUserGroupids($current_user->id));
 			if (count($groupids) > 0 && !is_admin($current_user)) {
@@ -1673,7 +1666,7 @@ function getTodoList(& $calendar,$start_date,$end_date,$info='')
 					OR vtiger_groups.groupid in (". generateQuestionMarks($groupids) ."))";
 				array_push($info_params, $current_user->id);
 				array_push($info_params, $groupids);
-			} elseif(!is_admin($current_user)) {			
+			} elseif(!is_admin($current_user)) {
 				$com_q = " AND vtiger_crmentity.smownerid = ?";
 				array_push($info_params, $current_user->id);
 			}
@@ -1681,21 +1674,14 @@ function getTodoList(& $calendar,$start_date,$end_date,$info='')
 
 			$pending_query = $query." AND (vtiger_activity.status != 'Completed')".$com_q;
 			$total_q =  $query."".$com_q;
-			if( $adb->dbType == "pgsql")
-			{
- 		    	$pending_query = fixPostgresQuery( $pending_query, $log, 0);
-		    	$total_q = fixPostgresQuery( $total_q, $log, 0);
-			}
 			$total_res = $adb->pquery($total_q, $info_params);
 			$total = $adb->num_rows($total_res);
-                
 			$res = $adb->pquery($pending_query, $info_params);
-		        $pending_rows = $adb->num_rows($res);
-		
+			$pending_rows = $adb->num_rows($res);
 			$cal_log->debug("Exiting getTodoList() method...");
 			return Array('totaltodo'=>$total,'pendingtodo'=>$pending_rows);
-        }
-	
+		}
+
 	$group_cond = '';
 	$group_cond .= " ORDER BY vtiger_activity.date_start,vtiger_activity.time_start ASC";
 	if(isset($_REQUEST['start']) && $_REQUEST['start'] != '')
@@ -1706,7 +1692,7 @@ function getTodoList(& $calendar,$start_date,$end_date,$info='')
 //T6477 changes
 	if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true){
 		$count_res = $adb->pquery(mkCountQuery($query), $params);
-   		$total_rec_count = $adb->query_result($count_res,0,'count');
+		$total_rec_count = $adb->query_result($count_res,0,'count');
 	}else{
 		$total_rec_count = null;
 	}
@@ -1715,8 +1701,8 @@ function getTodoList(& $calendar,$start_date,$end_date,$info='')
 
 	$start_rec = ($start-1) * $list_max_entries_per_page;
 	$end_rec = $navigation_array['end_val'];
-        
-        $list_query = $adb->convert2Sql($query, $params);
+
+	$list_query = $adb->convert2Sql($query, $params);
 	$_SESSION['Calendar_listquery'] = $list_query;
 
 	if($start_rec < 0)
@@ -1725,12 +1711,8 @@ function getTodoList(& $calendar,$start_date,$end_date,$info='')
 	//ends
 	$query .= $group_cond." limit $start_rec,$list_max_entries_per_page";
 
-	if( $adb->dbType == "pgsql"){
- 	    $query = fixPostgresQuery( $query, $log, 0);
-	}
-
-    $result = $adb->pquery($query, $params);
-    $rows = $adb->num_rows($result);
+	$result = $adb->pquery($query, $params);
+	$rows = $adb->num_rows($result);
 	$c=0;
 	if($start > 1)
 		$c = ($start-1) * $list_max_entries_per_page;

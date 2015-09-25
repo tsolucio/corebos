@@ -382,7 +382,7 @@ class Import_Data_Controller {
 							}
 						}
 					}
-					if ((empty($entityId) || $entityId == 0) && !empty($referenceModuleName)) {
+					if ((empty($entityId) || $entityId == 0) && (!empty($referenceModuleName) and !in_array($referenceModuleName, getInventoryModules()))) {
 						if(isPermitted($referenceModuleName, 'EditView') == 'yes') {
 							$wsEntityIdInfo = $this->createEntityRecord($referenceModuleName, $entityLabel);
 							$wsEntityId = $wsEntityIdInfo['id'];
@@ -490,7 +490,12 @@ class Import_Data_Controller {
 				if ($fieldInstance->getFieldDataType() == 'owner') {
 					$fieldData[$mandatoryField] = $this->user->id;
 				} else {
-					$fieldData[$mandatoryField] = '????';
+					$defaultValue = $fieldInstance->getDefault();
+					if (!empty($defaultValue)) {
+						$fieldData[$mandatoryField] = $defaultValue;
+					} else {
+						$fieldData[$mandatoryField] = '????';
+					}
 				}
 			}
 		}

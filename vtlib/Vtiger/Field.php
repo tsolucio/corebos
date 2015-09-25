@@ -76,7 +76,7 @@ class Vtiger_Field extends Vtiger_FieldBasic {
 		// Add value to picklist now
 		$sortid = 0; // TODO To be set per role
 		foreach($values as $value) {
-			$existsrs = $adb->pquery("select count(*) as cnt from $picklist_table where $this->name = ?", array($value));
+			$existsrs = $adb->pquery("select count(*) as cnt from $picklist_table where $this->name = ? COLLATE utf8_bin", array($value));
 			if ($adb->query_result($existsrs, 0,0)!=0) continue;  // already exists so we ignore it
 			$new_picklistvalueid = getUniquePicklistID();
 			$presence = 1; // 0 - readonly, Refer function in include/ComboUtil.php

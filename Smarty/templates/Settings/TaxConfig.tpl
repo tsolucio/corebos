@@ -44,7 +44,7 @@
 <table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
 	<tr>
 	<td width=50 rowspan=2 valign=top><img src="{'taxConfiguration.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" width="48" height="48" border=0 title="{$MOD.LBL_USERS}"></td>
-	<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{$MOD.LBL_SETTINGS}</a> > 
+	<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > 
 		{if $EDIT_MODE eq 'true'}
 			<strong>{$MOD.LBL_EDIT} {$MOD.LBL_TAX_SETTINGS} </strong>
 		{else}

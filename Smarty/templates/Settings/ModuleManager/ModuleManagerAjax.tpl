@@ -75,7 +75,7 @@ function vtlib_modulemanager_toggleTab(shownode, hidenode, highlighttab, dehighl
 			{/if}
 		</td>
 		<td class="cellText small" width="15px" align=center>
-			{if $modinfo.presence eq 0 && $modinfo.hassettings}<a href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$modulename}&parenttab=Settings"><img src="{'Settings.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$modulelabel} {$MOD.LBL_SETTINGS}" title="{$modulelabel} {$MOD.LBL_SETTINGS}"></a>
+			{if $modinfo.presence eq 0 && $modinfo.hassettings}<a href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$modulename}&parenttab=Settings"><img src="{'Settings.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$modulelabel} {'LBL_SETTINGS'|@getTranslatedString}" title="{$modulelabel} {'LBL_SETTINGS'|@getTranslatedString}"></a>
 			{elseif $modinfo.hassettings eq false}&nbsp;
 			{/if}
 		</td>
@@ -105,7 +105,7 @@ function vtlib_modulemanager_toggleTab(shownode, hidenode, highlighttab, dehighl
 			<a href="index.php?modules=Settings&action=ModuleManagerExport&module_export={$langprefix}"><img src="themes/images/webmail_uparrow.gif" border="0" align="absmiddle" alt="{$APP.LBL_EXPORT} {$langinfo.label}" title="{$APP.LBL_EXPORT} {$langinfo.label}"></a>
 		</td>
 		<td class="cellText small" width="10px" align=left>
-			<a href="index.php?module=Settings&action=LanguageEdit&parenttab=Settings&languageid={$langinfo.id}"><img src="{'Settings.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$langinfo.label} {$MOD.LBL_SETTINGS}" title="{$langinfo.label} {$MOD.LBL_SETTINGS}"></a>
+			<a href="index.php?module=Settings&action=LanguageEdit&parenttab=Settings&languageid={$langinfo.id}"><img src="{'Settings.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$langinfo.label} {'LBL_SETTINGS'|@getTranslatedString}" title="{$langinfo.label} {'LBL_SETTINGS'|@getTranslatedString}"></a>
 		</td>
 	</tr>
 {/foreach}
@@ -147,7 +147,7 @@ function vtlib_modulemanager_toggleTab(shownode, hidenode, highlighttab, dehighl
 			{/if}
 		</td-->
 		<td class="cellText small" width="15px" align=center>
-			{if $modinfo.presence eq 0 && $modinfo.hassettings}<a href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$modulename}&parenttab=Settings"><img src="{'Settings.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$modulelabel} {$MOD.LBL_SETTINGS}" title="{$modulelabel} {$MOD.LBL_SETTINGS}"></a>
+			{if $modinfo.presence eq 0 && $modinfo.hassettings}<a href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$modulename}&parenttab=Settings"><img src="{'Settings.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$modulelabel} {'LBL_SETTINGS'|@getTranslatedString}" title="{$modulelabel} {'LBL_SETTINGS'|@getTranslatedString}"></a>
 			{elseif $modinfo.hassettings eq false}&nbsp;
 			{/if}
 		</td>

@@ -325,7 +325,7 @@
 			$util = new VTWorkflowUtils();
 			$user = $util->adminUser();
 			$entityCache = new VTEntityCache($user);
-
+			$util->revertUser();
 			require_once('modules/com_vtiger_workflow/VTTaskManager.inc');
 			require_once('modules/com_vtiger_workflow/VTTaskQueue.inc');
 

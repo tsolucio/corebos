@@ -453,6 +453,17 @@ class ListViewController {
 						$value = implode(', ', $tmpArray);
 						$value = textlength_check($value);
 					}
+				} elseif($field->getUIType() == 1024) {
+					$content=array();
+					if ($value != '') {
+						$arr_evo_actions=explode(' |##| ',$value);
+						for($fvalues=0;$fvalues<sizeof($arr_evo_actions);$fvalues++) {
+							$roleid=$arr_evo_actions[$fvalues];
+							$rolename=getRoleName($roleid);
+							$content[$fvalues]=$rolename;
+						}
+					}
+					$value = textlength_check(implode(', ',$content));
 				} elseif ($field->getFieldDataType() == 'skype') {
 					$value = ($value != "") ? "<a href='skype:$value?call'>".textlength_check($value)."</a>" : "";
 				} elseif ($field->getFieldDataType() == 'phone') {
