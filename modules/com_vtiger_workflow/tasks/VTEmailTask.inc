@@ -19,12 +19,7 @@ class VTEmailTask extends VTTask{
 		return array("fromname", "fromemail", "subject", "content", "recepient", 'emailcc', 'emailbcc');
 	}
 	public function doTask(&$entity){
-		global $adb, $current_user;
 		$util = new VTWorkflowUtils();
-
-		$result = $adb->query("select user_name, email1, email2 from vtiger_users where id=1");
-		$from_email = $adb->query_result($result,0,'email1');
-		$from_name  = $adb->query_result($result,0,'user_name');
 
 		$admin = $util->adminUser();
 		$module = $entity->getModuleName();
@@ -39,6 +34,8 @@ class VTEmailTask extends VTTask{
 			$fet = new VTEmailRecipientsTemplate($this->fromemail);
 			$from_email = $fet->render($entityCache,$entity->getId());
 		}
+		if (empty($from_name)) $from_name = $admin->column_fields['user_name'];
+		if (empty($from_email)) $from_email = $admin->column_fields['email1'];
 
 		$et = new VTEmailRecipientsTemplate($this->recepient);
 		$to_email = $et->render($entityCache, $entity->getId());
