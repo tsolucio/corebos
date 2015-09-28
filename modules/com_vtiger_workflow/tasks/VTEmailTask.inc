@@ -26,16 +26,15 @@ class VTEmailTask extends VTTask{
 
 		$entityCache = new VTEntityCache($admin);
 
+		$from_name = $from_email = '';
 		if(!empty($this->fromname)){
 			$fnt = new VTEmailRecipientsTemplate($this->fromname);
-			$from_name  = $fnt->render($entityCache,$entity->getId());
+			$from_name = $fnt->render($entityCache,$entity->getId());
 		}
 		if(!empty($this->fromemail)){
 			$fet = new VTEmailRecipientsTemplate($this->fromemail);
 			$from_email = $fet->render($entityCache,$entity->getId());
 		}
-		if (empty($from_name)) $from_name = $admin->column_fields['user_name'];
-		if (empty($from_email)) $from_email = $admin->column_fields['email1'];
 
 		$et = new VTEmailRecipientsTemplate($this->recepient);
 		$to_email = $et->render($entityCache, $entity->getId());
