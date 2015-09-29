@@ -1086,6 +1086,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 						elseif (isset($focus->popup_fields) && in_array($fieldname, $focus->popup_fields)) {
 							global $default_charset;
 							$forfield = htmlspecialchars($_REQUEST['forfield'], ENT_QUOTES, $default_charset);
+							$forform = htmlspecialchars($_REQUEST['form'], ENT_QUOTES, $default_charset);
 							$list_result_count = $i - 1;
 							$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, "search", $focus->popup_type);
 							if (isset($forfield) && $forfield != '' && $focus->popup_type != 'detailview') {
@@ -1096,7 +1097,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 								if (property_exists($focus,'popup_function') and !empty($focus->popup_function)) {
 									$value = "<a href='javascript:void(0);' onclick='return ".$focus->popup_function."($entity_id, \"$value\", \"$forfield\")' id =$count >$value1</a>";
 								} else {
-									$value = "<a href='javascript:if (document.getElementById(\"closewindow\").value==\"true\") {window.close();}' onclick='return vtlib_setvalue_from_popup($entity_id, \"$value\", \"$forfield\")' id =$count >$value1</a>";
+									$value = "<a href='javascript:if (document.getElementById(\"closewindow\").value==\"true\") {window.close();}' onclick='return vtlib_setvalue_from_popup($entity_id, \"$value\", \"$forfield\"".(empty($forform)?'':',"'.$forform.'"').")' id =$count >$value1</a>";
 								}
 							}
 						}
