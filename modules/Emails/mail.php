@@ -35,7 +35,13 @@ function send_mail($module,$to_email,$from_name,$from_email,$subject,$contents,$
 		$femail = substr($from_email, 8);
 		$from_email = '';
 	}
-
+	if(empty($from_name) and !empty($from_email)) {
+		$sql = "select user_name from vtiger_users where status='Active' and (email1=? or email2=? or secondaryemail=?)";
+		$result = $adb->pquery($sql, array($from_email,$from_email,$from_email));
+		if ($result and $adb->num_rows($result)>0) {
+			$from_name = $adb->query_result($result,0,0);
+		}
+	}
 	//if module is HelpDesk then from_email will come based on support email id
 	if($from_email == '') {
 			//if from email is not defined, then use the useremailid as the from address
