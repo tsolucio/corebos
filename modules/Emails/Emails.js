@@ -12,26 +12,23 @@ var gFolderid = 1;
 var gselectedrowid = 0;
 function gotoWebmail()
 {
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-                	method: 'post',
-			postBody: "module=Webmails&action=WebmailsAjax&config_chk=true",
-			onComplete: function(response) {
-				if(response.responseText.indexOf('SUCCESS') > -1)
+	jQuery.ajax({
+			method: 'POST',
+			url: "index.php?module=Webmails&action=WebmailsAjax&config_chk=true"
+	}).done(function (response) {
+				if(response.indexOf('SUCCESS') > -1)
 					window.location.href = "index.php?module=Webmails&action=index&parenttab=My Home Page";
 				else
-					$('mailconfchk').style.display = 'block';
+					document.getElementById('mailconfchk').style.display = 'block';
 					
 			}
-		}
 	);
 
 }
 
 function getEmailContents(id)
 {
-	$("status").style.display="inline";
+	document.getElementById("status").style.display="inline";
 	var rowid = 'row_'+id;
 	getObj(rowid).className = 'emailSelected';
 	if(gselectedrowid != 0 && gselectedrowid != id)
@@ -40,33 +37,27 @@ function getEmailContents(id)
 		getObj(prev_selected_rowid).className = 'prvPrfHoverOff';
 	}
 	gselectedrowid = id;
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody: 'module=Emails&action=EmailsAjax&file=DetailView&mode=ajax&record='+id,
-			onComplete: function(response) {
-						$("status").style.display="none";
-						$("EmailDetails").innerHTML = response.responseText;
-					}
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=Emails&action=EmailsAjax&file=DetailView&mode=ajax&record='+id
+	}).done(function (response) {
+						document.getElementById("status").style.display="none";
+						document.getElementById("EmailDetails").innerHTML = response;
 			}
 		);
 }
 
 function getListViewEntries_js(module,url)
 {
-	$("status").style.display="inline";
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-                	method: 'post',
-			postBody: "module="+module+"&action="+module+"Ajax&file=ListView&ajax=true&"+url,
-			onComplete: function(response) {
-				$("status").style.display="none";
-				$("email_con").innerHTML=response.responseText;
+	document.getElementById("status").style.display="inline";
+	jQuery.ajax({
+			method: 'POST',
+			url: "index.php?module="+module+"&action="+module+"Ajax&file=ListView&ajax=true&"+url
+	}).done(function (response) {
+				document.getElementById("status").style.display="none";
+				document.getElementById("email_con").innerHTML=response;
 				execJS(document.getElementById('email_con'));
 			}
-		}
 	);
 
 }
@@ -108,35 +99,29 @@ function massDelete()
 			show("status");
 			if(!delete_selected_row)
 			{
-				new Ajax.Request(
-						'index.php',
-						{queue: {position: 'end', scope: 'command'},
-						method: 'post',
-						postBody: "module=Users&action=massdelete&folderid="+gFolderid+"&return_module=Emails&idlist="+idstring,
-						onComplete: function(response) {
-						$("status").style.display="none";
-						$("email_con").innerHTML=response.responseText;
+				jQuery.ajax({
+						method: 'POST',
+						url: "index.php?module=Users&action=massdelete&folderid="+gFolderid+"&return_module=Emails&idlist="+idstring
+				}).done(function (response) {
+						document.getElementById("status").style.display="none";
+						document.getElementById("email_con").innerHTML=response;
 						execJS(document.getElementById('email_con'));
-						}
 						}
 						);
 			}
 			else	
 			{
-				new Ajax.Request(
-                        'index.php',
-                        {queue: {position: 'end', scope: 'command'},
-                                method: 'post',
-                                postBody: "module=Users&action=massdelete&folderid="+gFolderid+"&return_module=Emails&idlist="+idstring,
-                                onComplete: function(response) {
-                                                $("status").style.display="none";
-						$("email_con").innerHTML=response.responseText;
-                                                execJS($('email_con'));
-                                                $('EmailDetails').innerHTML = '<table valign="top" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="forwardBg"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2">&nbsp;</td></tr></tbody></table></td></tr><tr><td style="padding-top: 10px;" bgcolor="#ffffff" height="300" valign="top"></td></tr></tbody></table>';
-                                                $("subjectsetter").innerHTML='';
-                                }
-                        }
-                );
+				jQuery.ajax({
+						method: 'POST',
+						url: "index.php?module=Users&action=massdelete&folderid="+gFolderid+"&return_module=Emails&idlist="+idstring
+				}).done(function (response) {
+							document.getElementById("status").style.display="none";
+							document.getElementById("email_con").innerHTML=response;
+							execJS(document.getElementById('email_con'));
+							document.getElementById('EmailDetails').innerHTML = '<table valign="top" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="forwardBg"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2">&nbsp;</td></tr></tbody></table></td></tr><tr><td style="padding-top: 10px;" bgcolor="#ffffff" height="300" valign="top"></td></tr></tbody></table>';
+							document.getElementById("subjectsetter").innerHTML='';
+					}
+				);
 			}
 		}
 		else
@@ -151,21 +136,18 @@ function DeleteEmail(id)
 	{	
 		getObj('search_text').value = '';
 		gselectedrowid = 0;
-		$("status").style.display="inline";
-                new Ajax.Request(
-                        'index.php',
-                        {queue: {position: 'end', scope: 'command'},
-                                method: 'post',
-                                postBody: "module=Users&action=massdelete&return_module=Emails&folderid="+gFolderid+"&idlist="+id,
-                                onComplete: function(response) {
-                                                $("status").style.display="none";
-						$("email_con").innerHTML=response.responseText;
-						execJS($('email_con'));
-                                                $('EmailDetails').innerHTML = '<table valign="top" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="forwardBg"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2">&nbsp;</td></tr></tbody></table></td></tr><tr><td style="padding-top: 10px;" bgcolor="#ffffff" height="300" valign="top"></td></tr></tbody></table>';
-                                                $("subjectsetter").innerHTML='';
-                                }
-                        }
-                );
+		document.getElementById("status").style.display="inline";
+				jQuery.ajax({
+						method: 'POST',
+						url: "index.php?module=Users&action=massdelete&return_module=Emails&folderid="+gFolderid+"&idlist="+id
+				}).done(function (response) {
+						document.getElementById("status").style.display="none";
+						document.getElementById("email_con").innerHTML=response;
+						execJS(document.getElementById('email_con'));
+						document.getElementById('EmailDetails').innerHTML = '<table valign="top" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="forwardBg"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2">&nbsp;</td></tr></tbody></table></td></tr><tr><td style="padding-top: 10px;" bgcolor="#ffffff" height="300" valign="top"></td></tr></tbody></table>';
+						document.getElementById("subjectsetter").innerHTML='';
+					}
+				);
 	}
 	else
 	{
@@ -178,20 +160,17 @@ function Searchfn()
 	var osearch_field = document.getElementById('search_field');
 	var search_field = osearch_field.options[osearch_field.options.selectedIndex].value;
 	var search_text = document.getElementById('search_text').value;
-	new Ajax.Request(
-                'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                        method: 'post',
-                        postBody: "module=Emails&action=EmailsAjax&ajax=true&file=ListView&folderid="+gFolderid+"&search=true&search_field="+search_field+"&search_text="+search_text,
-                        onComplete: function(response) {
-                        		$("email_con").innerHTML=response.responseText;
-			                $("status").style.display="none";
-                                        $('EmailDetails').innerHTML = '<table valign="top" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="forwardBg"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2">&nbsp;</td></tr></tbody></table></td></tr><tr><td style="padding-top: 10px;" bgcolor="#ffffff" height="300" valign="top"></td></tr></tbody></table>';
-                                        $("subjectsetter").innerHTML='';
-                                        execJS($('email_con'));
-                        }
-                }
-        );
+	jQuery.ajax({
+		method: 'POST',
+		url: "index.php?module=Emails&action=EmailsAjax&ajax=true&file=ListView&folderid=" + gFolderid + "&search=true&search_field=" + search_field + "&search_text=" + search_text
+	}).done(function (response) {
+		document.getElementById("email_con").innerHTML = response;
+		document.getElementById("status").style.display = "none";
+		document.getElementById('EmailDetails').innerHTML = '<table valign="top" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="forwardBg"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2">&nbsp;</td></tr></tbody></table></td></tr><tr><td style="padding-top: 10px;" bgcolor="#ffffff" height="300" valign="top"></td></tr></tbody></table>';
+		document.getElementById("subjectsetter").innerHTML = '';
+		execJS(document.getElementById('email_con'));
+	}
+	);
 }
 
 function getListViewCount(module,element,parentElement,url){
@@ -235,12 +214,10 @@ function getListViewCount(module,element,parentElement,url){
 	if(typeof gPopupAlphaSearchUrl != 'undefined' && gPopupAlphaSearchUrl != '')
 		searchURL += gPopupAlphaSearchUrl;
 
-	new Ajax.Request(
-			'index.php',
-			{queue: {position: 'end', scope: 'command'},
-				method: 'post',
-				postBody:"module="+module+"&action="+module+"Ajax&file=ListViewPagging&ajax=true"+searchURL,
-				onComplete: function(response) {
+	jQuery.ajax({
+			method: 'POST',
+			url: "index.php?module="+module+"&action="+module+"Ajax&file=ListViewPagging&ajax=true"+searchURL
+	}).done(function (response) {
 					var elementList = document.getElementsByName(module+'_listViewCountContainerBusy');
 					for(var i=0;i<elementList.length;++i){
 						elementList[i].style.display = 'none';
@@ -249,12 +226,11 @@ function getListViewCount(module,element,parentElement,url){
 					if(module != 'Documents' && typeof parentElement != 'undefined' && elementList.length !=0){
 						for(i=0;i<=elementList.length;){
 							//No need to increment the count, as the element will be eliminated in the next step.
-							elementList[i].parentNode.innerHTML = response.responseText;
+							elementList[i].parentNode.innerHTML = response;
 						}
 					}else{
-						parentElement.innerHTML = response.responseText;
+						parentElement.innerHTML = response;
 					}
 				}
-			}
 	);
 }
