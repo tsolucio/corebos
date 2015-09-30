@@ -137,6 +137,7 @@ function showMandatoryFieldsAndValues($entityValues) {
 	$leadHandler = new $handlerClass($leadObject, $current_user, $adb, $log);
 	$leadInfo = vtws_retrieve($entityValues['leadId'], $current_user);
 	foreach ($availableModules as $entityName) {
+		if (!isset($entityValues['entities'][$entityName])) continue;
 		$tabid = getTabid($entityName);
 		$entityvalue = $entityValues['entities'][$entityName];
 		$entityObject = VtigerWebserviceObject::fromName($adb, $entityvalue['name']);
