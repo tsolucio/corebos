@@ -156,23 +156,20 @@ function set_return_inventory_pb(listprice, fldname) {
 
 function deletePriceBookProductRel(id,pbid)
 {
-	$("status").style.display="inline";
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody: 'module=Products&action=ProductsAjax&file=DeletePriceBookProductRel&ajax=true&return_action=CallRelatedList&return_module=PriceBooks&record='+id+'&pricebook_id='+pbid+'&return_id='+pbid,
-			onComplete: function(response) {
-					$("status").style.display="none";
-					$("RLContents").update(response.responseText);
+	document.getElementById("status").style.display="inline";
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=Products&action=ProductsAjax&file=DeletePriceBookProductRel&ajax=true&return_action=CallRelatedList&return_module=PriceBooks&record='+id+'&pricebook_id='+pbid+'&return_id='+pbid,
+	}).done(function (response) {
+					document.getElementById("status").style.display="none";
+					document.getElementById("RLContents").innerHTML=response;
 			}
-		}
 	);
 }
 function verify_data()
 {
 	var returnValue = true;
-	var list_price = $('list_price');
+	var list_price = document.getElementById('list_price');
 	if(list_price.value != '' && list_price.value != 0) {
 		intval= intValidate('list_price','EditListPrice');
 		if(!intval) {

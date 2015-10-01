@@ -10,131 +10,96 @@
 var modifiedMappingValues = new Array();
 
 function changeDependencyPicklistModule(){
-	$("status").style.display="inline";
-	var oModulePick = $('pickmodule')
+	document.getElementById("status").style.display="inline";
+	var oModulePick = document.getElementById('pickmodule')
 	var module=oModulePick.options[oModulePick.selectedIndex].value;
 	
-	new Ajax.Request(
-		'index.php',
-		{
-			queue: {
-				position: 'end',
-				scope: 'command'
-			},
-			method: 'post',
-			postBody: 'action=PickListAjax&module=PickList&directmode=ajax&file=PickListDependencySetup&moduleName='+encodeURIComponent(module),
-			onComplete: function(response) {
-				$("status").style.display="none";
-				$("picklist_datas").update(response.responseText);
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?action=PickListAjax&module=PickList&directmode=ajax&file=PickListDependencySetup&moduleName='+encodeURIComponent(module)
+	}).done(function (response) {
+				document.getElementById("status").style.display="none";
+				document.getElementById("picklist_datas").innerHTML=response;
 			}
-		}
 		);
 }
 
 function addNewDependencyPicklist() {
-	var selectedModule = $('pickmodule').value;
+	var selectedModule = document.getElementById('pickmodule').value;
 	if(selectedModule == '') {
 		alert(alert_arr.ERR_SELECT_MODULE_FOR_DEPENDENCY);
 		return false;
 	}
 
-	$("status").style.display="inline";
+	document.getElementById("status").style.display="inline";
 	
-	new Ajax.Request(
-		'index.php',
-		{
-			queue: {
-				position: 'end',
-				scope: 'command'
-			},
-			method: 'post',
-			postBody: 'action=PickListAjax&module=PickList&directmode=ajax&file=PickListDependencySetup&submode=editdependency&moduleName='+encodeURIComponent(selectedModule),
-			onComplete: function(response) {
-				$("status").style.display="none";
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?action=PickListAjax&module=PickList&directmode=ajax&file=PickListDependencySetup&submode=editdependency&moduleName='+encodeURIComponent(selectedModule)
+	}).done(function (response) {
+				document.getElementById("status").style.display="none";
 				modifiedMappingValues = new Array();
-				$("picklist_datas").update(response.responseText);
+				document.getElementById("picklist_datas").innerHTML=response;
 			}
-		}
 		);
 }
 
 function editNewDependencyPicklist(module) {
-	$("status").style.display="inline";
+	document.getElementById("status").style.display="inline";
 
-	var sourcePick = $('sourcefield');
+	var sourcePick = document.getElementById('sourcefield');
 	var sourceField = sourcePick.options[sourcePick.selectedIndex].value;
 
-	var targetPick = $('targetfield');
+	var targetPick = document.getElementById('targetfield');
 	var targetField = targetPick.options[targetPick.selectedIndex].value;
 
 	if(sourceField == targetField) {
-		$("status").style.display="none";
+		document.getElementById("status").style.display="none";
 		alert(alert_arr.ERR_SAME_SOURCE_AND_TARGET);
 		return false;
 	}
 
 	var urlstring = 'moduleName='+encodeURIComponent(module)+'&sourcefield='+sourceField+'&targetfield='+targetField;
 
-	new Ajax.Request(
-		'index.php',
-		{
-			queue: {
-				position: 'end',
-				scope: 'command'
-			},
-			method: 'post',
-			postBody: 'action=PickListAjax&module=PickList&directmode=ajax&file=PickListDependencySetup&submode=editdependency&'+urlstring,
-			onComplete: function(response) {
-				$("status").style.display="none";
-				$("picklist_datas").update(response.responseText);
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?action=PickListAjax&module=PickList&directmode=ajax&file=PickListDependencySetup&submode=editdependency&'+urlstring
+	}).done(function (response) {
+				document.getElementById("status").style.display="none";
+				document.getElementById("picklist_datas").innerHTML=response;
 			}
-		}
 		);
 }
 
 function editDependencyPicklist(module, sourceField, targetField) {
-	$("status").style.display="inline";
+	document.getElementById("status").style.display="inline";
 	
 	var urlstring = 'moduleName='+encodeURIComponent(module)+'&sourcefield='+sourceField+'&targetfield='+targetField;
 	
-	new Ajax.Request(
-		'index.php',
-		{
-			queue: {
-				position: 'end',
-				scope: 'command'
-			},
-			method: 'post',
-			postBody: 'action=PickListAjax&module=PickList&directmode=ajax&file=PickListDependencySetup&submode=editdependency&'+urlstring,
-			onComplete: function(response) {
-				$("status").style.display="none";
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?action=PickListAjax&module=PickList&directmode=ajax&file=PickListDependencySetup&submode=editdependency&'+urlstring
+	}).done(function (response) {
+				document.getElementById("status").style.display="none";
 				modifiedMappingValues = new Array();
-				$("picklist_datas").update(response.responseText);
+				document.getElementById("picklist_datas").innerHTML=response;
 			}
-		}
 		);
 }
 
 function deleteDependencyPicklist(module, sourceField, targetField, msg) {
 	if(confirm(msg)) {
-		$("status").style.display="inline";
+		document.getElementById("status").style.display="inline";
 	
 		var urlstring = 'moduleName='+encodeURIComponent(module)+'&sourcefield='+sourceField+'&targetfield='+targetField;
 	
-		new Ajax.Request(
-			'index.php',
-			{
-				queue: {
-					position: 'end',
-					scope: 'command'
-				},
-				method: 'post',
-				postBody: 'action=PickListAjax&module=PickList&directmode=ajax&file=PickListDependencySetup&submode=deletedependency&'+urlstring,
-				onComplete: function(response) {
-					$("status").style.display="none";
-					$("picklist_datas").update(response.responseText);
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?action=PickListAjax&module=PickList&directmode=ajax&file=PickListDependencySetup&submode=deletedependency&'+urlstring
+		}).done(function (response) {
+					document.getElementById("status").style.display="none";
+					document.getElementById("picklist_datas").innerHTML=response;
 				}
-			}
 		);
 	} else {
 		return false;
@@ -142,36 +107,29 @@ function deleteDependencyPicklist(module, sourceField, targetField, msg) {
 }
 
 function saveDependency(module) {
-	$("status").style.display="inline";
+	document.getElementById("status").style.display="inline";
 	
 	var dependencyMapping = serializeData();
 	if(dependencyMapping == false) {
-		$("status").style.display="none";
+		document.getElementById("status").style.display="none";
 		return false;
 	}
 	
 	var urlstring = 'moduleName='+encodeURIComponent(module)+'&dependencymapping='+encodeURIComponent(dependencyMapping);
 	
-	new Ajax.Request(
-		'index.php',
-		{
-			queue: {
-				position: 'end',
-				scope: 'command'
-			},
-			method: 'post',
-			postBody: 'action=PickListAjax&module=PickList&directmode=ajax&file=PickListDependencySetup&submode=savedependency&'+urlstring,
-			onComplete: function(response) {
-				$("status").style.display="none";
-				$("picklist_datas").update(response.responseText);
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?action=PickListAjax&module=PickList&directmode=ajax&file=PickListDependencySetup&submode=savedependency&'+urlstring
+	}).done(function (response) {
+				document.getElementById("status").style.display="none";
+				document.getElementById("picklist_datas").innerHTML=response;
 			}
-		}
 		);
 }
 
 function serializeData() {	
-	var sourceField = $('sourcefield').options[$('sourcefield').selectedIndex].value;
-	var targetField = $('targetfield').options[$('targetfield').selectedIndex].value;
+	var sourceField = document.getElementById('sourcefield').options[document.getElementById('sourcefield').selectedIndex].value;
+	var targetField = document.getElementById('targetfield').options[document.getElementById('targetfield').selectedIndex].value;
 	
 	var maxMappingCount = modifiedMappingValues.length;
 	var valueMapping = [];
@@ -180,7 +138,7 @@ function serializeData() {
 		var sourceValueId = modifiedMappingValues[i];
 		var sourceValue = document.getElementById(sourceValueId).value;
 		var mappingIndex = sourceValueId.replace(sourceField,'');
-		var node = $('valueMapping'+mappingIndex);
+		var node = document.getElementById('valueMapping'+mappingIndex);
 		if (node != null && typeof(node) != 'undefined') {
 			var targetValueNodes = document.getElementsByName('valueMapping'+mappingIndex);
 			var targetValues = [];
@@ -214,8 +172,8 @@ function serializeData() {
 
 function selectSourceValue(sourceValueIndex) {
 	if(sourceValueIndex < 0) return;
-	if($('sourceValue'+sourceValueIndex) == null) return;
-	$('sourceValue'+sourceValueIndex).checked = true;
+	if(document.getElementById('sourceValue'+sourceValueIndex) == null) return;
+	document.getElementById('sourceValue'+sourceValueIndex).checked = true;
 }
 
 function selectTargetValue(sourceIndex, targetValue) {

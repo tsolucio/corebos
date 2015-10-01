@@ -42,38 +42,25 @@ function fetchSaveCron(id)
 function fetchEditCron(id)
 {
 	document.getElementById("status").style.display="inline";
-	new Ajax.Request(
-		'index.php',
-		{
-			queue: {
-				position: 'end',
-				scope: 'command'
-			},
-			method: 'post',
-			postBody: 'action=CronTasksAjax&module=CronTasks&file=EditCron&record='+id,
-			onComplete: function(response) {
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?action=CronTasksAjax&module=CronTasks&file=EditCron&record='+id
+	}).done(function (response) {
 				document.getElementById("status").style.display="none";
 				document.getElementById("editdiv").innerHTML=response;
 			}
-		}
+		
 		);
 }
 function move_module(tabid,move){
 
 	//document.getElementById('vtbusy_info').style.display = "block";
-	new Ajax.Request(
-		'index.php',
-		{
-			queue: {
-				position: 'end',
-				scope: 'command'
-			},
-			method: 'post',
-			postBody: 'module=CronTasks&action=CronTasksAjax&file=CronSequence&parenttab=Settings&record='+tabid+'&move='+move,
-			onComplete: function(response) {
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=CronTasks&action=CronTasksAjax&file=CronSequence&parenttab=Settings&record='+tabid+'&move='+move
+	}).done(function (response) {
 				document.getElementById("notifycontents").innerHTML=response;
 
 			}
-		}
 		);
 }
