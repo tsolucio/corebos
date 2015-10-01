@@ -67,8 +67,9 @@ if(!empty($_REQUEST['entities']))
 		$result = vtws_convertlead($entityValues,$current_user);
 	}catch(Exception $e){
 		showError($entityValues);
+		die();
 	}
-	
+
 	$accountIdComponents = vtws_getIdComponents($result['Accounts']);
 	$accountId = $accountIdComponents[1];
 	$contactIdComponents = vtws_getIdComponents($result['Contacts']);
@@ -78,9 +79,9 @@ if(!empty($_REQUEST['entities']))
 }
 
 if (!empty($accountId)) {
-    header("Location: index.php?action=DetailView&module=Accounts&record=$accountId&parenttab=$category");
+	header("Location: index.php?action=DetailView&module=Accounts&record=$accountId&parenttab=$category");
 } elseif (!empty($contactId)) {
-    header("Location: index.php?action=DetailView&module=Contacts&record=$contactId&parenttab=$category");
+	header("Location: index.php?action=DetailView&module=Contacts&record=$contactId&parenttab=$category");
 } else {
 	showError($entityValues);
 }
