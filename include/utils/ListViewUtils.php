@@ -885,6 +885,9 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 									$value = '';
 								}
 							}
+                                                } elseif ($module == 'PriceBooks' && $fieldname == 'listprice') {
+                                                    $val_raw = $adb->query_result($list_result, $i - 1, $fieldname);
+                                                    $value = $val_raw;
 						} else {
 							$list_result_count = $i - 1;
 							$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, "list", "", $returnset, $oCv->setdefaultviewid);

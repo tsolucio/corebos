@@ -191,7 +191,7 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 
 	$list_result = $adb->pquery($query." LIMIT $limit_start_rec, $list_max_entries_per_page", array());
 
-	/* Save the related list in session for when we click in a register
+        /* Save the related list in session for when we click in a register
 	 * from this list we will can navigate with the arrows left and right, to move only in this related list
 	 */
 	$relcv = new CustomView();
@@ -211,7 +211,7 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 	if($module == 'PriceBook' && $relatedmodule == 'Products') {
 		$listview_entries = getListViewEntries($focus,$relatedmodule,$list_result,$navigation_array,'relatedlist',$returnset,$edit_val,$del_val,'','','','',$skipActions);
 	}
-	if($module == 'Products' && $relatedmodule == 'PriceBook') {
+	if($module == 'Products' && $relatedmodule == 'PriceBooks') {
 		$listview_entries = getListViewEntries($focus,$relatedmodule,$list_result,$navigation_array,'relatedlist',$returnset,'EditListPrice','DeletePriceBookProductRel','','','','',$skipActions);
 	} elseif($relatedmodule == 'SalesOrder') {
 		$listview_entries = getListViewEntries($focus,$relatedmodule,$list_result,$navigation_array,'relatedlist',$returnset,'SalesOrderEditView','DeleteSalesOrder','','','','',$skipActions);
