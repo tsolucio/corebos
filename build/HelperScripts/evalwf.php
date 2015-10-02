@@ -60,10 +60,9 @@ if (empty($workflowid_to_evaluate) or empty($crm_record_to_evaluate)) {
 global $currentModule, $adb;
 
 	function evalwfEmailTask($entityid,$task){
-		global $adb, $current_user, $entityCache;
-		$result = $adb->query("select user_name, email1, email2 from vtiger_users where id=1");
-		$from_email = $adb->query_result($result,0,'email1');
-		$from_name  = $adb->query_result($result,0,'user_name');
+		global $entityCache;
+		$util = new VTWorkflowUtils();
+		$admin = $util->adminUser();
 
 		if(!empty($task->fromname)){
 			$fnt = new VTEmailRecipientsTemplate($task->fromname);
@@ -73,6 +72,8 @@ global $currentModule, $adb;
 			$fet = new VTEmailRecipientsTemplate($task->fromemail);
 			$from_email = $fet->render($entityCache,$entityid);
 		}
+		if (empty($from_name)) $from_name = $admin->column_fields['user_name'];
+		if (empty($from_email)) $from_email = $admin->column_fields['email1'];
 
 		$et = new VTEmailRecipientsTemplate($task->recepient);
 		$to_email = $et->render($entityCache, $entityid);
@@ -87,7 +88,9 @@ global $currentModule, $adb;
 		$subject = $st->render($entityCache, $entityid);
 		$ct = new VTSimpleTemplate($task->content);
 		$content = $ct->render($entityCache, $entityid);
+		$util->revertUser();
 		return array(
+			'from_email' => $from_email,
 			'to_email' => $to_email,
 			'cc' => $cc,
 			'bcc' => $bcc,

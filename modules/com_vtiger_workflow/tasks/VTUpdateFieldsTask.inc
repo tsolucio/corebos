@@ -63,10 +63,14 @@ class VTUpdateFieldsTask extends VTTask {
 					require_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
 					$fieldValue = preg_replace('/<br(\s+)?\/?>/i', ' ', $fieldValue);
 					$fieldValue = str_replace("''", "' '", $fieldValue);
-					$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($fieldValue)));
-					$expression = $parser->expression();
-					$exprEvaluater = new VTFieldExpressionEvaluater($expression);
-					$fieldValue = $exprEvaluater->evaluate($entity);
+					if (trim($fieldValue)=='') {
+						$fieldValue = '';
+					} else {
+						$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($fieldValue)));
+						$expression = $parser->expression();
+						$exprEvaluater = new VTFieldExpressionEvaluater($expression);
+						$fieldValue = $exprEvaluater->evaluate($entity);
+					}
 				} else {
 					if (preg_match('/([^:]+):boolean$/', $fieldValue, $match)) {
 						$fieldValue = $match[1];

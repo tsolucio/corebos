@@ -240,7 +240,7 @@ $mod_strings = array (
 // Added after 5.0.4 GA
 
 // Module Sequence Numbering
-'Contact Id' => 'Id Contacto',
+'Contact Id' => 'Nº Contacto',
 // END
 'Secondary Email'=>'Email Segundario',
 

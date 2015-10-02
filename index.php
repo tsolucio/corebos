@@ -22,33 +22,23 @@ if(version_compare(phpversion(), '5.2.0') < 0 or version_compare(phpversion(), '
 
 require_once('include/utils/utils.php');
 
-if (version_compare(phpversion(), '5.2.0') < 0) {
-    eval('
-    function clone($object) {
-      return $object;
-    }
-    ');
-  }
-
 global $currentModule;
 
- /** Function to  return a string with backslashes stripped off
-   * @param $value -- value:: Type string
-   * @returns $value -- value:: Type string array
- */
-	  
- function stripslashes_checkstrings($value){
-        if(is_string($value)){
-                return stripslashes($value);
-        }
-        return $value;
+/** Function to  return a string with backslashes stripped off
+ * @param $value -- value:: Type string
+ * @returns $value -- value:: Type string array
+*/
+function stripslashes_checkstrings($value){
+	if(is_string($value)){
+		return stripslashes($value);
+	}
+	return $value;
+}
 
- }
- if(get_magic_quotes_gpc() == 1){
-        $_REQUEST = array_map("stripslashes_checkstrings", $_REQUEST);
-        $_POST = array_map("stripslashes_checkstrings", $_POST);
-        $_GET = array_map("stripslashes_checkstrings", $_GET);
-
+if(get_magic_quotes_gpc() == 1){
+	$_REQUEST = array_map('stripslashes_checkstrings', $_REQUEST);
+	$_POST = array_map('stripslashes_checkstrings', $_POST);
+	$_GET = array_map('stripslashes_checkstrings', $_GET);
 }
 
 // Allow for the session information to be passed via the URL for printing.
@@ -56,31 +46,26 @@ if(isset($_REQUEST['PHPSESSID']))
 {
 	session_id($_REQUEST['PHPSESSID']);
 	//Setting the same session id to Forums as in CRM
-        $sid=$_REQUEST['PHPSESSID'];
-}	
+	$sid=$_REQUEST['PHPSESSID'];
+}
 
 if(isset($_REQUEST['view'])) {
-    //setcookie("view",$_REQUEST['view']);
-    $view = $_REQUEST["view"];
-    $_SESSION['view'] = $view;
+	//setcookie("view",$_REQUEST['view']);
+	$view = $_REQUEST["view"];
+	$_SESSION['view'] = $view;
 }
-	
 
-/** Function to set, character set in the header, as given in include/language/*_lang.php
- */
-	 
+/** Function to set, character set in the header, as given in include/language/*_lang.php */
 function insert_charset_header()
 {
- 	global $app_strings, $default_charset;
- 	$charset = $default_charset;
- 	
- 	if(isset($app_strings['LBL_CHARSET']))
- 	{
- 	        $charset = $app_strings['LBL_CHARSET'];
- 	}
-		header('Content-Type: text/html; charset='. $charset);
+	global $app_strings, $default_charset;
+	$charset = $default_charset;
+	if(isset($app_strings['LBL_CHARSET'])) {
+		$charset = $app_strings['LBL_CHARSET'];
+	}
+	header('Content-Type: text/html; charset='. $charset);
 }
- 	
+
 insert_charset_header();
 // Create or reestablish the current session
 session_start();
@@ -96,8 +81,8 @@ if (!is_file('config.inc.php')) {
 
 require_once('config.inc.php');
 if (!isset($dbconfig['db_hostname']) || $dbconfig['db_status']=='_DB_STAT_') {
-		header("Location: install.php");
-		exit();
+	header("Location: install.php");
+	exit();
 }
 
 // load up the config_override.php file.  This is used to provide default user settings
@@ -114,11 +99,10 @@ require_once 'config.help.link.php';
 require_once('vtigerversion.php');
 global $adb, $vtiger_current_version;
 if(isset($_SESSION['VTIGER_DB_VERSION']) && isset($_SESSION['authenticated_user_id'])) {
-    if(version_compare($_SESSION['VTIGER_DB_VERSION'], $vtiger_current_version, '!=')) {
-        unset($_SESSION['VTIGER_DB_VERSION']);
+	if(version_compare($_SESSION['VTIGER_DB_VERSION'], $vtiger_current_version, '!=')) {
+		unset($_SESSION['VTIGER_DB_VERSION']);
 		echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
 		echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
-
 			<table border='0' cellpadding='5' cellspacing='0' width='98%'>
 			<tbody><tr>
 			<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>Migration Incompleted.</span></td>
@@ -129,17 +113,16 @@ if(isset($_SESSION['VTIGER_DB_VERSION']) && isset($_SESSION['authenticated_user_
 			</tbody></table>
 			</div>";
 		echo "</td></tr></table>";
-        exit();
-    }
+		exit();
+	}
 } else {
-    $result = $adb->query("SELECT * FROM vtiger_version");
-    $dbversion = $adb->query_result($result, 0, 'current_version');
-    if(version_compare($dbversion, $vtiger_current_version, '=')) {
-    	$_SESSION['VTIGER_DB_VERSION']= $dbversion;
-    } else {
+	$result = $adb->query("SELECT * FROM vtiger_version");
+	$dbversion = $adb->query_result($result, 0, 'current_version');
+	if(version_compare($dbversion, $vtiger_current_version, '=')) {
+		$_SESSION['VTIGER_DB_VERSION']= $dbversion;
+	} else {
 		echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
 		echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
-
 			<table border='0' cellpadding='5' cellspacing='0' width='98%'>
 			<tbody><tr>
 			<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>Migration Incompleted.</span></td>
@@ -150,8 +133,8 @@ if(isset($_SESSION['VTIGER_DB_VERSION']) && isset($_SESSION['authenticated_user_
 			</tbody></table>
 			</div>";
 		echo "</td></tr></table>";
-        exit();
-    }
+		exit();
+	}
 }
 // END
 
@@ -163,12 +146,10 @@ set_default_config($default_config_values);
 global $default_timezone;
 if(isset($default_timezone) && function_exists('date_default_timezone_set')) {
 	@date_default_timezone_set($default_timezone);
-} 
+}
 
 require_once('include/logging.php');
 require_once('modules/Users/Users.php');
-
-global $currentModule;
 
 //if($calculate_response_time) $startTime = microtime();
 
@@ -194,11 +175,11 @@ if(isset($_REQUEST['action']))
 }
 if($action == 'Export')
 {
-        include ('include/utils/export.php');
+	include ('include/utils/export.php');
 }
 if($action == 'ExportAjax')
 {
-        include ('include/utils/ExportAjax.php');
+	include ('include/utils/ExportAjax.php');
 }
 // vtlib customization: Module manager export
 if($action == 'ModuleManagerExport') {
@@ -211,11 +192,11 @@ $is_module = false;
 $is_action = false;
 if(isset($_REQUEST['module']))
 {
-	$module = $_REQUEST['module'];	
+	$module = $_REQUEST['module'];
 	$dir = @scandir($root_directory."modules");
 	$temp_arr = Array("CVS","Attic");
 	$res_arr = @array_intersect($dir,$temp_arr);
-	if(count($res_arr) == 0  && !preg_match("/[\/.]/",$module)) {
+	if(count($res_arr) == 0 && !preg_match("/[\/.]/",$module)) {
 		if(@in_array($module,$dir))
 			$is_module = true;
 	}
@@ -224,8 +205,7 @@ if(isset($_REQUEST['module']))
 	if(count($res_arr) == 0 && !preg_match("/[\/.]/",$module)) {
 		if(@in_array($action.".php",$in_dir))
 			$is_action = true;
-	}	
-	
+	}
 	if(!$is_module)
 	{
 		die("Module name is missing. Please check the module name.");
@@ -236,26 +216,23 @@ if(isset($_REQUEST['module']))
 	}
 }
 
-
 //Code added for 'Multiple SQL Injection Vulnerabilities & XSS issue' fixes - Philip
 if(isset($_REQUEST['record']) && !is_numeric($_REQUEST['record']) && $_REQUEST['record']!='')
 {
-        die("An invalid record number specified to view details.");
+	die("An invalid record number specified to view details.");
 }
 
 // Check to see if there is an authenticated user in the session.
 $use_current_login = false;
 if(isset($_SESSION["authenticated_user_id"]) && (isset($_SESSION["app_unique_key"]) && $_SESSION["app_unique_key"] == $application_unique_key))
 {
-        $use_current_login = true;
+	$use_current_login = true;
 }
 
 // Prevent loading Login again if there is an authenticated user in the session.
 if (isset($_SESSION["authenticated_user_id"]) && $module == 'Users' && $action == 'Login') {
-
-    header("Location: index.php?action=$default_action&module=$default_module");
-
-} 
+	header("Location: index.php?action=$default_action&module=$default_module");
+}
 
 if($use_current_login){
 	//getting the internal_mailer flag
@@ -267,16 +244,15 @@ if($use_current_login){
 }else if(isset($action) && isset($module) && $action=="Authenticate" && $module=="Users"){
 	$log->debug("We are authenticating user now");
 }else{
-	if($_REQUEST['action'] != 'Logout' && $_REQUEST['action'] != 'Login'){
-		$_SESSION['lastpage'] = $_SERVER['QUERY_STRING']; 
+	if(!isset($_REQUEST['action']) || ($_REQUEST['action'] != 'Logout' && $_REQUEST['action'] != 'Login')){
+		$_SESSION['lastpage'] = $_SERVER['QUERY_STRING'];
 	}
-	$log->debug("The current user does not have a session.  Going to the login page");	
-	$action = "Login";
-	$module = "Users";
+	$log->debug('The current user does not have a session. Going to the login page');
+	$action = 'Login';
+	$module = 'Users';
 	include 'modules/Users/Login.php';
 	exit;
 }
-
 
 $log->debug($_REQUEST);
 $skipHeaders=false;
@@ -289,7 +265,6 @@ $skipSecurityCheck= false;
 if(isset($action) && isset($module))
 {
 	$log->info("About to take action ".$action);
-	$log->debug("in $action");
 	if(preg_match("/^Save/", $action) ||
 		preg_match("/^Delete/", $action) ||
 		preg_match("/^Choose/", $action) ||
@@ -328,7 +303,7 @@ if(isset($action) && isset($module))
 		preg_match("/^MassDeleteUsers/",$action) ||
 		preg_match("/^UpdateFieldLevelAccess/",$action) ||
 		preg_match("/^UpdateDefaultFieldLevelAccess/",$action) ||
-		preg_match("/^UpdateProfile/",$action)  ||
+		preg_match("/^UpdateProfile/",$action) ||
 		preg_match("/^updateRelations/",$action) ||
 		preg_match("/^updateNotificationSchedulers/",$action) ||
 		preg_match("/^Star/",$action) ||
@@ -373,7 +348,7 @@ if(isset($action) && isset($module))
 		preg_match("/^download/",$action) ||
 		preg_match("/^getListOfRecords/", $action) ||
 		preg_match("/^AddBlockFieldToDB/", $action) ||
-		preg_match("/^AddBlockToDB/", $action)  ||
+		preg_match("/^AddBlockToDB/", $action) ||
 		preg_match("/^MassEditSave/", $action) ||
 		preg_match("/^iCalExport/",$action)
 		)
@@ -392,7 +367,8 @@ if(isset($action) && isset($module))
 			preg_match("/^chat/",$action) ||
 			preg_match("/^vtchat/",$action) ||
 			preg_match("/^massdelete/", $action) ||
-			preg_match("/^mailmergedownloadfile/",$action) || 	preg_match("/^get_img/",$action) ||
+			preg_match("/^mailmergedownloadfile/",$action) ||
+			preg_match("/^get_img/",$action) ||
 			preg_match("/^download/",$action) ||
 			preg_match("/^ProcessDuplicates/", $action ) ||
 			preg_match("/^lastImport/", $action ) ||
@@ -425,47 +401,37 @@ if(isset($action) && isset($module))
 			$skipHeaders=false;
 		}
 	}
-	
+
 	if($action == 'Save')
 	{
- 	         header( "Expires: Mon, 20 Dec 1998 01:00:00 GMT" );
- 	         header( "Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT" );
- 	         header( "Cache-Control: no-cache, must-revalidate" );
- 	         header( "Pragma: no-cache" );        
- 	}
+		header( "Expires: Mon, 20 Dec 1998 01:00:00 GMT" );
+		header( "Last-Modified: " . gmdate("D, d M Y H:i:s") . " GMT" );
+		header( "Cache-Control: no-cache, must-revalidate" );
+		header( "Pragma: no-cache" );
+	}
 
-        if(($module == 'Users' || $module == 'Home' || $module == 'uploads') && $_REQUEST['parenttab'] != 'Settings')
-        {
-          $skipSecurityCheck=true;
-        }
+	if(($module == 'Users' || $module == 'Home' || $module == 'uploads') && $_REQUEST['parenttab'] != 'Settings') {
+		$skipSecurityCheck=true;
+	}
 
-    if($action == 'UnifiedSearch') {
-    	$currentModuleFile = 'modules/Home/'.$action.'.php';
-    } else {
+	if($action == 'UnifiedSearch') {
+		$currentModuleFile = 'modules/Home/'.$action.'.php';
+	} else {
 		$currentModuleFile = 'modules/'.$module.'/'.$action.'.php';
 	}
 	$currentModule = $module;
-	
-      	
-}
-elseif(isset($module))
-{
-	
+} elseif(isset($module)) {
 	$currentModule = $module;
 	$currentModuleFile = $moduleDefaultFile[$currentModule];
-}
-else {
-    // use $default_module and $default_action as set in config.php
-    // Redirect to the correct module with the correct action.  We need the URI to include these fields.
-	  
-
-        header("Location: index.php?action=$default_action&module=$default_module");
-    exit();
+} else {
+	// use $default_module and $default_action as set in config.php
+	// Redirect to the correct module with the correct action.  We need the URI to include these fields.
+	header("Location: index.php?action=$default_action&module=$default_module");
+	exit();
 }
 
-$log->info("current page is $currentModuleFile");	
-$log->info("current module is $currentModule ");	
-
+$log->info("current page is $currentModuleFile");
+$log->info("current module is $currentModule ");
 
 // for printing
 $module = (isset($_REQUEST['module'])) ? vtlib_purify($_REQUEST['module']) : "";
@@ -485,14 +451,14 @@ if($use_current_login)
 	if($result == null)
 	{
 		session_destroy();
-	    header("Location: index.php?action=Login&module=Users");
+		header("Location: index.php?action=Login&module=Users");
 	}
 
 	$moduleList = getPermittedModuleNames();
 
-        foreach ($moduleList as $mod) {
-                $moduleDefaultFile[$mod] = "modules/".$currentModule."/index.php";
-        }
+	foreach ($moduleList as $mod) {
+		$moduleDefaultFile[$mod] = "modules/".$currentModule."/index.php";
+	}
 
 	//auditing
 	require_once('user_privileges/audit_trail.php');
@@ -539,9 +505,7 @@ $focus = "";
 if(isset($_SESSION['authenticated_user_language']) && $_SESSION['authenticated_user_language'] != '')
 {
 	$current_language = $_SESSION['authenticated_user_language'];
-}
-else 
-{
+} else {
 	if(!empty($current_user->language)) {
 		$current_language = $current_user->language;
 	} else {
@@ -575,28 +539,26 @@ if($action == "DetailView")
 			$focus = CRMEntity::getInstance($currentModule);
 			break;
 		}
-	
-	if(isset($_REQUEST['record']) && $_REQUEST['record']!='' && $_REQUEST["module"] != "Webmails" && $current_user->id != '')
-        {
-                // Only track a viewing if the record was retrieved.
-                $focus->track_view($current_user->id, $currentModule,$_REQUEST['record']);
-        }
 
-}	
+	if(isset($_REQUEST['record']) && $_REQUEST['record']!='' && $_REQUEST["module"] != "Webmails" && $current_user->id != '') {
+		// Only track a viewing if the record was retrieved.
+		$focus->track_view($current_user->id, $currentModule,$_REQUEST['record']);
+	}
+}
 
 // set user, theme and language cookies so that login screen defaults to last values
 $siteURLParts = parse_url($site_URL); $cookieDomain = $siteURLParts['host'];
 if (isset($_SESSION['authenticated_user_id'])) {
-        $log->debug("setting cookie ck_login_id_vtiger to ".$_SESSION['authenticated_user_id']);
-        setcookie('ck_login_id_vtiger', $_SESSION['authenticated_user_id'],0,null,$cookieDomain,false,true);
+	$log->debug("setting cookie ck_login_id_vtiger to ".$_SESSION['authenticated_user_id']);
+	setcookie('ck_login_id_vtiger', $_SESSION['authenticated_user_id'],0,null,$cookieDomain,false,true);
 }
 if (isset($_SESSION['vtiger_authenticated_user_theme'])) {
-        $log->debug("setting cookie ck_login_theme_vtiger to ".$_SESSION['vtiger_authenticated_user_theme']);
-        setcookie('ck_login_theme_vtiger', $_SESSION['vtiger_authenticated_user_theme'],0,null,$cookieDomain,false,true);
+	$log->debug("setting cookie ck_login_theme_vtiger to ".$_SESSION['vtiger_authenticated_user_theme']);
+	setcookie('ck_login_theme_vtiger', $_SESSION['vtiger_authenticated_user_theme'],0,null,$cookieDomain,false,true);
 }
 if (isset($_SESSION['authenticated_user_language'])) {
-        $log->debug("setting cookie ck_login_language_vtiger to ".$_SESSION['authenticated_user_language']);
-        setcookie('ck_login_language_vtiger', $_SESSION['authenticated_user_language'],0,null,$cookieDomain,false,true);
+	$log->debug("setting cookie ck_login_language_vtiger to ".$_SESSION['authenticated_user_language']);
+	setcookie('ck_login_language_vtiger', $_SESSION['authenticated_user_language'],0,null,$cookieDomain,false,true);
 }
 
 if($_REQUEST['module'] == 'Documents' && $action == 'DownloadFile')
@@ -621,7 +583,7 @@ if(!$skipHeaders) {
 		}
 		include('modules/Vtiger/header.php');
 	}
-	
+
 	if(isset($_SESSION['administrator_error']))
 	{
 		// only print DB errors once otherwise they will still look broken after they are fixed.
@@ -630,30 +592,24 @@ if(!$skipHeaders) {
 			echo $_SESSION['administrator_error'];
 		unset($_SESSION['administrator_error']);
 	}
-	
+
 	echo "<!-- startscrmprint -->";
 }
 else {
 		$log->debug("skipping headers");
 }
 
-
-
 //fetch the permission set from session and search it for the requisite data
-
 if(isset($_SESSION['vtiger_authenticated_user_theme']) && $_SESSION['vtiger_authenticated_user_theme'] != '')
 {
 	$theme = $_SESSION['vtiger_authenticated_user_theme'];
-}
-else 
-{
+} else {
 	if(!empty($current_user->theme)) {
 		$theme = $current_user->theme;
 	} else {
 		$theme = $default_theme;
 	}
 }
-
 
 //logging the security Information
 $seclog->debug('########  Module -->  '.$module.'  :: Action --> '.$action.' ::  UserID --> '.$current_user->id.' :: RecordID --> '.$record.' #######');
@@ -677,20 +633,15 @@ if(!$skipSecurityCheck && $use_current_login)
 		$display = isPermitted($module,$now_action);
 	}
 	$seclog->debug('########### Pemitted ---> '.$display.'  ##############');
-
-}
-else
-{
+} else {
 	$seclog->debug('########### Pemitted ---> yes  ##############');
 }
 
-
 if($display == "no")
 {
-	echo "<link rel='stylesheet' type='text/css' href='themes/$theme/style.css'>";	
+	echo "<link rel='stylesheet' type='text/css' href='themes/$theme/style.css'>";
 	echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
 	echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
-
 		<table border='0' cellpadding='5' cellspacing='0' width='98%'>
 		<tbody><tr>
 		<td rowspan='2' width='11%'><img src='". vtiger_imageurl('denied.gif', $theme) . "' ></td>
@@ -700,16 +651,15 @@ if($display == "no")
 		<td class='small' align='right' nowrap='nowrap'>
 		<a href='javascript:window.history.back();'>$app_strings[LBL_GO_BACK]</a><br></td>
 		</tr>
-		</tbody></table> 
-		</div>";
-	echo "</td></tr></table>";
+		</tbody></table>
+		</div>
+		</td></tr></table>";
 } 
 // vtlib customization: Check if module has been de-activated
 else if(!vtlib_isModuleActive($currentModule) and !($currentModule=='Tooltip' and $action==$module."Ajax" and $_REQUEST['file']=='ComputeTooltip')) {
-	echo "<link rel='stylesheet' type='text/css' href='themes/$theme/style.css'>";	
+	echo "<link rel='stylesheet' type='text/css' href='themes/$theme/style.css'>";
 	echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
 	echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
-
 		<table border='0' cellpadding='5' cellspacing='0' width='98%'>
 		<tbody><tr>
 		<td rowspan='2' width='11%'><img src='". vtiger_imageurl('denied.gif', $theme) . "' ></td>
@@ -720,8 +670,8 @@ else if(!vtlib_isModuleActive($currentModule) and !($currentModule=='Tooltip' an
 		<a href='javascript:window.history.back();'>$app_strings[LBL_GO_BACK]</a><br></td>
 		</tr>
 		</tbody></table> 
-		</div>";
-	echo "</td></tr></table>";
+		</div>
+		</td></tr></table>";
 }
 // END
 else
@@ -735,18 +685,15 @@ else
 	}
 
 //added to get the theme . This is a bad fix as we need to know where the problem lies yet
-if(isset($_SESSION['vtiger_authenticated_user_theme']) && $_SESSION['vtiger_authenticated_user_theme'] != '')
-{
-        $theme = $_SESSION['vtiger_authenticated_user_theme'];
-}
-else
-{
-        $theme = $default_theme;
+if(isset($_SESSION['vtiger_authenticated_user_theme']) && $_SESSION['vtiger_authenticated_user_theme'] != '') {
+	$theme = $_SESSION['vtiger_authenticated_user_theme'];
+} else {
+	$theme = $default_theme;
 }
 $Ajx_module= $module;
 if($module == 'Events')
 	$Ajx_module = 'Calendar';
-if((!$viewAttachment) && (!$viewAttachment && $action != 'home_rss') && $action != 'Tickerdetail' && $action != $Ajx_module."Ajax" && $action != "chat" && $action != "HeadLines" && $action != 'massdelete'  &&  $action != "DashboardAjax" && $action != "ActivityAjax")
+if((!$viewAttachment) && (!$viewAttachment && $action != 'home_rss') && $action != 'Tickerdetail' && $action != $Ajx_module."Ajax" && $action != "chat" && $action != "HeadLines" && $action != 'massdelete' && $action != "DashboardAjax" && $action != "ActivityAjax")
 {
 	// Under the SPL you do not have the right to remove this copyright statement.
 	$copyrightstatement="<style>
@@ -795,7 +742,6 @@ if((!$viewAttachment) && (!$viewAttachment && $action != 'home_rss') && $action 
 		echo "<br><br><br><table border=0 cellspacing=0 cellpadding=5 width=100% class=settingsSelectedUI >";
 		echo "<tr><td class=small align=left><span style='color: rgb(153, 153, 153);'>Powered by ".getTranslatedString('APP_NAME')." <span id='_vtiger_product_version_'>$vtiger_current_version</span></span></td>";
 		echo "<td class=small align=right><span>&copy; 2004-".date('Y')." <a href='$coreBOS_app_url' target='_blank'>$coreBOS_app_name</a> | <a href='copyright.html' target='_blank'>".$app_strings['LNK_READ_LICENSE']."</a> | <a href='http://corebos.org/page/privacy-policy' target='_blank'>".getTranslatedString('LNK_PRIVACY_POLICY')."</a></span></td></tr></table>";
-			
 	//	echo "<table align='center'><tr><td align='center'>";
 		// Under the Sugar Public License referenced above, you are required to leave in all copyright statements
 		// in both the code and end-user application.
@@ -833,26 +779,23 @@ if((!$viewAttachment) && (!$viewAttachment && $action != 'home_rss') && $action 
 	}
 	// ActivityReminder Customization for callback
 	if(!$skipFooters) {
-	
 		if($current_user->id!=NULL && isPermitted('Calendar','index') == 'yes' &&
 				vtlib_isModuleActive('Calendar')) {
-			echo "<script type='text/javascript'>if(typeof(ActivityReminderCallback) != ".
-				"'undefined') ";
+			echo "<script type='text/javascript'>if(typeof(ActivityReminderCallback) != 'undefined') ";
 			$cur_time = time();
-			$reminder_interval_reset = (($_SESSION['last_reminder_check_time'] + 
-					$_SESSION['next_reminder_interval']) - $cur_time) * 1000;
+			$reminder_interval_reset = (($_SESSION['last_reminder_check_time'] + $_SESSION['next_reminder_interval']) - $cur_time) * 1000;
 			if(isset($_SESSION['last_reminder_check_time']) && $reminder_interval_reset > 0){
 				echo "window.setTimeout(function(){
 						ActivityReminderCallback();
 					},$reminder_interval_reset);";
 			} else {
-				echo "ActivityReminderCallback();";
+				echo 'ActivityReminderCallback();';
 			}
-			echo "</script>";
+			echo '</script>';
 		}
 	}
 	// End
-	
+
 	if((!$skipFooters) && ($action != "body") && ($action != $module."Ajax") && ($action != "ActivityAjax"))
 		include('modules/Vtiger/footer.php');
 }

@@ -198,6 +198,6 @@ $mod_strings = array (
 		'LBL_FIELDLISTS' => 'Liste des champs',
 		'LBL_RECORD' => 'Enregistrement #',
 		'Contact Id' => 'N° Contact',
-
+		'Contacts ID'=>'ID Contact',
 );
 ?>
