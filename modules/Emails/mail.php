@@ -47,6 +47,9 @@ function send_mail($module,$to_email,$from_name,$from_email,$subject,$contents,$
 			//if from email is not defined, then use the useremailid as the from address
 			$from_email = getUserEmailId('user_name',$from_name);
 	}
+	if (empty($from_email)) {
+		$from_email = $HELPDESK_SUPPORT_EMAIL_ID;
+	}
 
 	//if the newly defined from email field is set, then use this email address as the from address
 	//and use the username as the reply-to address
