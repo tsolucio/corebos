@@ -13,14 +13,14 @@ if(typeof($) == 'undefined') {
 		return node;
 	}
 	$fnT = function(id1, id2) {
-		var node1 = $(id1);
-		var node2 = $(id2);
+		var node1 = document.getElementById(id1);
+		var node2 = document.getElementById(id2);
 		if(node1) node1.style.display = 'none';
 		if(node2) node2.style.display = 'block';
 	}
 	$fnFocus = function(id) {
 		try {
-			var node = $(id);
+			var node = document.getElementById(id);
 			node.focus();
 		} catch(error) {
 		}
@@ -44,16 +44,16 @@ if(typeof($) == 'undefined') {
 	$fnCheckboxOn = function(idprefix) {
 		//$fnT((idprefix+'_on'), (idprefix+'_off'));
 		
-		var nodeon = $(idprefix+'_on');
-		var nodeoff = $(idprefix+'_off');
+		var nodeon = document.getElementById(idprefix+'_on');
+		var nodeoff = document.getElementById(idprefix+'_off');
 		if(nodeon) $fnAddClass(nodeon.parentNode, 'hide');
 		if(nodeoff) $fnRemoveClass(nodeoff.parentNode, 'hide');
 	}
 	$fnCheckboxOff = function(idprefix) {
 		//$fnT((idprefix+'_off'), (idprefix+'_on'));
 		
-		var nodeon = $(idprefix+'_on');
-		var nodeoff = $(idprefix+'_off');
+		var nodeon = document.getElementById(idprefix+'_on');
+		var nodeoff = document.getElementById(idprefix+'_off');
 		if(nodeon) $fnRemoveClass(nodeon.parentNode, 'hide');
 		if(nodeoff) $fnAddClass(nodeoff.parentNode, 'hide');
 	}

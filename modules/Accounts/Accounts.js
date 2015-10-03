@@ -410,16 +410,12 @@ function checkAddress(form, id) {
 
 	url += "&record=" + id;
 
-	$("status").style.display = "inline";
-	new Ajax.Request('index.php', {
-		queue : {
-			position : 'end',
-			scope : 'command'
-		},
-		method : 'post',
-		postBody : "module=Accounts&action=AccountsAjax&ajax=true&file=AddressChange" + url,
-		onComplete : function(response) {
-			if (response.responseText == 'address_change') {
+	document.getElementById("status").style.display = "inline";
+	jQuery.ajax({
+			method: 'POST',
+			url: "index.php?module=Accounts&action=AccountsAjax&ajax=true&file=AddressChange" + url,
+	}).done(function (response) {
+			if (response == 'address_change') {
 				if (confirm(alert_arr.WANT_TO_CHANGE_CONTACT_ADDR) == true) {
 					form.address_change.value = 'yes';
 					form.submit();
@@ -430,5 +426,5 @@ function checkAddress(form, id) {
 				form.submit();
 			}
 		}
-	});
+	);
 }

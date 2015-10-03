@@ -101,11 +101,11 @@ if (typeof(MailManager) == 'undefined') {
                     MailManager.mail_reply_rteinstance = false;
                 }
                 MailManager.progress_show(MailManager.i18n('JSLBL_Loading_Please_Wait'), '...');
-                new Ajax.Request('index.php', {
-                    method: 'post',
-                    postBody: MailManager._baseurl() + "_operation=mainui",
-                    onComplete: function(transport){
-                        var response = MailManager.removeHidElement(transport.responseText);
+                jQuery.ajax({
+						method: 'POST',
+						url: 'index.php?'+MailManager._baseurl() + "_operation=mainui"
+                }).done(function (transport) {
+                        var response = MailManager.removeHidElement(transport);
                         response = JSON.parse(response);
                         MailManager._mainui_callback(response);
                         jQuery("#_folderprogress_").hide();
@@ -117,7 +117,7 @@ if (typeof(MailManager) == 'undefined') {
                         var folderName = jQuery('#mm_selected_folder').val();
                         MailManager.updateSelectedFolder(folderName);
                     }
-                });
+                );
             }, 400);
         },
 
@@ -139,11 +139,11 @@ if (typeof(MailManager) == 'undefined') {
         },
 
         updateMailFolders : function() {
-            new Ajax.Request('index.php', {
-                method: 'post',
-                postBody: MailManager._baseurl() + "_operation=mainui",
-                onComplete: function(transport){
-                    var response = MailManager.removeHidElement(transport.responseText);
+            jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?'+MailManager._baseurl() + "_operation=mainui"
+            }).done(function (transport) {
+                    var response = MailManager.removeHidElement(transport);
                     response = JSON.parse(response);
                     jQuery('#_mainfolderdiv_').html(response['result']['ui']);
                     MailManager.refreshCurrentFolder(); // this is used to refresh the mails in the folders
@@ -151,19 +151,19 @@ if (typeof(MailManager) == 'undefined') {
                     var folderName = jQuery('#mm_selected_folder').val();
                     MailManager.updateSelectedFolder(folderName);
                 }
-            });
+            );
         },
 
         quicklinks_update: function() {
-            new Ajax.Request('index.php', {
-                method: 'post',
-                postBody: MailManager._baseurl() + "_operation=mainui&_operationarg=_quicklinks",
-                onComplete: function(transport){
-                    var response = MailManager.removeHidElement(transport.responseText);
+            jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?'+ MailManager._baseurl() + "_operation=mainui&_operationarg=_quicklinks"
+             }).done(function (transport) {
+                    var response = MailManager.removeHidElement(transport);
                     response = JSON.parse(response);
                     jQuery("#_quicklinks_mainuidiv_").html(response['result']['ui']);
                 }
-            });
+            );
         },
 		
         /* Intermedidate call back to build main ui */
@@ -250,22 +250,22 @@ if (typeof(MailManager) == 'undefined') {
         /* Open settings page */
         open_settings: function(){
             MailManager.progress_show(MailManager.i18n('JSLBL_Settings')+ '...');
-            new Ajax.Request('index.php', {
-                method: 'post',
-                postBody: MailManager._baseurl() + "_operation=settings&_operationarg=edit",
-                onComplete: function(transport){
+            jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?'+MailManager._baseurl() + "_operation=settings&_operationarg=edit"
+             }).done(function (transport) {
                     MailManager.progress_hide();
 					
                     MailManager.close_all();
                     jQuery('#_settingsdiv_').show();
-                    var response = MailManager.removeHidElement(transport.responseText);
+                    var response = MailManager.removeHidElement(transport);
                     jQuery('#_settingsdiv_').html(response);
 
                     // Update the seleted folders to highlight them.
                     MailManager.updateSelectedFolder('mm_settings');
                     jQuery('#mm_selected_folder').val('mm_settings');
                 }
-            });
+            );
         },
 		
 		
@@ -334,12 +334,12 @@ if (typeof(MailManager) == 'undefined') {
                 return false;
             }
             MailManager.progress_show(MailManager.i18n('JSLBL_Saving_And_Verifying'), '...');
-            new Ajax.Request('index.php', {
-                method: 'post',
-                postBody: MailManager._baseurl() + "_operation=settings&_operationarg=save&" + Form.serialize(form),
-                onComplete: function(transport){
+            jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?'+MailManager._baseurl() + "_operation=settings&_operationarg=save&" + jQuery(form).serialize()
+             }).done(function (transport) {
                     MailManager.progress_hide();
-                    var response = MailManager.removeHidElement(transport.responseText);
+                    var response = MailManager.removeHidElement(transport);
                     var responseJSON = JSON.parse(response);
                     if (responseJSON['success']) {
                         MailManager.quicklinks_update();
@@ -349,19 +349,19 @@ if (typeof(MailManager) == 'undefined') {
                         MailManager.show_error(responseJSON['error']['message']);
                     }
                 }
-            });
+            );
         },
 		
         /* Remove the settings */
         remove_settings: function(form){
             MailManager.progress_show(MailManager.i18n('JSLBL_Removing'), '...');
-            new Ajax.Request('index.php', {
-                method: 'post',
-                postBody: MailManager._baseurl() + "_operation=settings&_operationarg=remove&" + Form.serialize(form),
-                onComplete: function(transport){
+            jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?'+MailManager._baseurl() + "_operation=settings&_operationarg=remove&" + jQuery(form).serialize()
+             }).done(function (transport) {
                     MailManager.progress_hide();
                     MailManager.close_all();
-                    var response = MailManager.removeHidElement(transport.responseText);
+                    var response = MailManager.removeHidElement(transport);
                     var responseJSON = JSON.parse(response);
                     if (responseJSON['success']) {
                         MailManager.reload_now();
@@ -369,7 +369,7 @@ if (typeof(MailManager) == 'undefined') {
                         MailManager.show_error(responseJSON['error']['message']);
                     }
                 }
-            });
+            );
         },
 		
         /* Close the settings */
@@ -398,11 +398,11 @@ if (typeof(MailManager) == 'undefined') {
             }
             MailManager.progress_show(MailManager.i18n('JSLBL_Loading'), ' ' + name + '...');
 			
-            new Ajax.Request('index.php', {
-                method: 'post',
-                postBody: MailManager._baseurl() + "_operation=folder&_operationarg=open&_folder=" + encodeURIComponent(name)  +
-                "&_page=" + encodeURIComponent(page) + query,
-                onComplete: function(transport){
+            jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?'+MailManager._baseurl() + "_operation=folder&_operationarg=open&_folder=" + encodeURIComponent(name)  +
+                "&_page=" + encodeURIComponent(page) + query
+             }).done(function (transport) {
                     MailManager.progress_hide();
 
                     // Toggle highlighting previous folder and current folder selection
@@ -415,7 +415,7 @@ if (typeof(MailManager) == 'undefined') {
                     jQuery('#mm_selected_folder').val(name);
                     
                     MailManager.mail_close();
-                    var response = MailManager.removeHidElement(transport.responseText);
+                    var response = MailManager.removeHidElement(transport);
                     jQuery('#_contentdiv_').html(response);
 					
                     // Clear last open mail
@@ -427,7 +427,7 @@ if (typeof(MailManager) == 'undefined') {
                     // Bind "Enter" key for search on the Search text box
                     MailManager.bindEnterKeyForSearch();
                 }
-            });
+            );
         },
 
         updateSelectedFolder : function(currentSelectedFolder) {
@@ -480,21 +480,21 @@ if (typeof(MailManager) == 'undefined') {
 		
         /* Basic search for folder emails */
         search_basic: function(form){
-            var frmparams = Form.serialize(form);
+            var frmparams = jQuery(form).serialize();
 			
             MailManager.progress_show(MailManager.i18n('JSLBL_Searching'), ' ...');
 			
-            new Ajax.Request('index.php', {
-                method: 'post',
-                postBody: MailManager._baseurl() + "_operation=folder&_operationarg=open&" + frmparams,
-                onComplete: function(transport){
+            jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?'+MailManager._baseurl() + "_operation=folder&_operationarg=open&" + frmparams
+             }).done(function (transport) {
                     MailManager.progress_hide();
 					
                     MailManager.mail_close();
-                    var response = MailManager.removeHidElement(transport.responseText);
+                    var response = MailManager.removeHidElement(transport);
                     jQuery('#_contentdiv_').html(response);
                 }
-            });
+            );
 			
             return false;
         },
@@ -510,12 +510,12 @@ if (typeof(MailManager) == 'undefined') {
             jQuery('#_mailrow_' + msgno).removeClass('mm_bold');
             jQuery('#_mailrow_' + msgno).addClass('mm_normal');
 			
-            new Ajax.Request('index.php', {
-                method: 'post',
-                postBody: MailManager._baseurl() + "_operation=mail&_operationarg=open&_folder=" + encodeURIComponent(folder) + "&_msgno=" + encodeURIComponent(msgno),
-                onComplete: function(transport){
+            jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?'+MailManager._baseurl() + "_operation=mail&_operationarg=open&_folder=" + encodeURIComponent(folder) + "&_msgno=" + encodeURIComponent(msgno)
+             }).done(function (transport) {
                     MailManager.progress_hide();
-                    var response = MailManager.removeHidElement(transport.responseText);
+                    var response = MailManager.removeHidElement(transport);
                     var responseJSON = JSON.parse(response);
                     var resultJSON = responseJSON['result'];
 					
@@ -536,7 +536,7 @@ if (typeof(MailManager) == 'undefined') {
 					
                     MailManager.mail_find_relationship();
                 }
-            });
+            );
         },
 
 
@@ -551,12 +551,12 @@ if (typeof(MailManager) == 'undefined') {
         mail_mark_unread: function(folder, msgno){
 		
             MailManager.progress_show(MailManager.i18n('JSLBL_Updating'), ' ...');
-            new Ajax.Request('index.php', {
-                method: 'post',
-                postBody: MailManager._baseurl() + "_operation=mail&_operationarg=mark&_markas=unread&_folder=" + encodeURIComponent(folder) + "&_msgno=" + encodeURIComponent(msgno),
-                onComplete: function(transport){
+            jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?'+MailManager._baseurl() + "_operation=mail&_operationarg=mark&_markas=unread&_folder=" + encodeURIComponent(folder) + "&_msgno=" + encodeURIComponent(msgno)
+             }).done(function (transport) {
                     MailManager.progress_hide();
-                    var response = MailManager.removeHidElement(transport.responseText);
+                    var response = MailManager.removeHidElement(transport);
                     var responseJSON = JSON.parse(response);
                     var resultJSON = responseJSON['result'];
 					
@@ -570,7 +570,7 @@ if (typeof(MailManager) == 'undefined') {
                         MailManager.folder_updateCount(resultJSON['folder'], resultJSON['unread']);
                     }
                 }
-            });
+            );
         },
 		
         /* Lookup for mail relations in CRM */
@@ -580,52 +580,52 @@ if (typeof(MailManager) == 'undefined') {
 			
             var meta = MailManager.mail_open_meta;
 			
-            new Ajax.Request('index.php', {
-                method: 'post',
-                postBody: MailManager._baseurl() + "_operation=relation&_operationarg=find&_mfrom=" + encodeURIComponent(meta['from']) +
+           jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?'+MailManager._baseurl() + "_operation=relation&_operationarg=find&_mfrom=" + encodeURIComponent(meta['from']) +
                 '&_folder=' +
                 encodeURIComponent(meta['folder']) +
                 '&_msgno=' +
                 encodeURIComponent(meta['msgno']) +
                 '&_msguid=' +
-                encodeURIComponent(meta['msguid'].replace('<', '&lt;').replace('>', '&gt;')),
+                encodeURIComponent(meta['msguid'].replace('<', '&lt;').replace('>', '&gt;'))
 				
-                onComplete: function(transport){
+             }).done(function (transport) {
 				
                     jQuery('#_mailrecord_findrel_btn_').html(MailManager.i18n('JSLBL_Find_Relation_Now'));
                     jQuery("#_mailrecord_findrel_btn_").attr('disabled', false);
                     jQuery('#_mailrecord_findrel_btn_').hide();
-                    var response = MailManager.removeHidElement(transport.responseText);
+                    var response = MailManager.removeHidElement(transport);
                     var responseJSON = JSON.parse(response);
                     var resultJSON = responseJSON['result'];
 					
                     jQuery('#_mailrecord_relationshipdiv_').html(resultJSON['ui']);
                 }
-            });
+            );
         },
 		
         /* Associate email to CRM record */
         mail_associate: function(form){
 		
-            var frmparams = Form.serialize(form);
+            var frmparams = jQuery(form).serialize();
             // No record is selected for linking?
             if (frmparams.indexOf('_mlinkto') == -1)
                 return;
 			
             MailManager.progress_show(MailManager.i18n('JSLBL_Associating'), ' ...');
-            new Ajax.Request('index.php', {
-                method: 'post',
-                postBody: MailManager._baseurl() + "_operation=relation&_operationarg=link&" + frmparams,
-                onComplete: function(transport){
+            jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?'+MailManager._baseurl() + "_operation=relation&_operationarg=link&" + frmparams
+             }).done(function (transport) {
                     MailManager.progress_hide();
-                    var response = MailManager.removeHidElement(transport.responseText);
+                    var response = MailManager.removeHidElement(transport);
                     var responseJSON = JSON.parse(response);
                     var resultJSON = responseJSON['result'];
                     if (resultJSON['ui']) {
                         jQuery('#_mailrecord_relationshipdiv_').html(resultJSON['ui']);
                     }
                 }
-            });
+            );
         },
 		
         /* Extended support for creating and linking */
@@ -634,16 +634,16 @@ if (typeof(MailManager) == 'undefined') {
                 MailManager.mail_associate_create_cancel();
                 return;
             }
-            var frmparams = Form.serialize(form);
+            var frmparams = jQuery(form).serialize();
             MailManager.progress_show(MailManager.i18n('JSLBL_Loading'), ' ...');
-            new Ajax.Request('index.php', {
-                method: 'post',
-                postBody: MailManager._baseurl() + "_operation=relation&_operationarg=create_wizard&" + frmparams,
-                onComplete: function(transport){
+            jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?'+ MailManager._baseurl() + "_operation=relation&_operationarg=create_wizard&" + frmparams
+            }).done(function (transport) {
                     MailManager.progress_hide();
-                    var response = MailManager.removeHidElement(transport.responseText);
+                    var response = MailManager.removeHidElement(transport);
                     jQuery('#_relationpopupdiv_').get(0).innerHTML = (response);
-                    var scriptTags = $("_relationpopupdiv_").getElementsByTagName("script");
+                    var scriptTags = document.getElementById("_relationpopupdiv_").getElementsByTagName("script");
                     for(var i = 0; i< scriptTags.length; i++){
                         var scriptTag = scriptTags[i];
                         eval(scriptTag.innerHTML);
@@ -655,7 +655,7 @@ if (typeof(MailManager) == 'undefined') {
                     //Make it Dragable
                     jQuery('#_relationpopupdiv_').draggable().css('cursor','move');
                 }
-            });
+            );
         },
 		
         /* This will be used to perform actions on mails with an Linked record*/
@@ -704,14 +704,14 @@ if (typeof(MailManager) == 'undefined') {
             jQuery("form[name='QcEditView']").children("input[name='module']").remove();
             jQuery("form[name='QcEditView']").children("input[name='action']").remove();
 			
-            var frmparams = Form.serialize(form);
+            var frmparams = jQuery(form).serialize();
             MailManager.progress_show(MailManager.i18n('JSLBL_Associating'), ' ...');
-            new Ajax.Request('index.php', {
-                method: 'post',
-                postBody: MailManager._baseurl() + "_operation=relation&_operationarg=create&" + frmparams,
-                onComplete: function(transport){
+            jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?'+ MailManager._baseurl() + "_operation=relation&_operationarg=create&" + frmparams
+            }).done(function (transport) {
                     MailManager.progress_hide();
-                    var response = MailManager.removeHidElement(transport.responseText);
+                    var response = MailManager.removeHidElement(transport);
                     var responseJSON = JSON.parse(response);
                     var resultJSON = responseJSON['result'];
                     if (resultJSON['ui']) {
@@ -720,19 +720,19 @@ if (typeof(MailManager) == 'undefined') {
                         return true;
                     }
                 }
-            });
+            );
         },
 		
         // function to show the comment widget
         showCommentWidget : function(form) {
-            var frmparams = Form.serialize(form);
+            var frmparams = jQuery(form).serialize();
             MailManager.progress_show();
-            new Ajax.Request('index.php', {
-                method: 'post',
-                postBody: MailManager._baseurl() + "_operation=relation&_operationarg=commentwidget&" + frmparams,
-                onComplete: function(transport){
+            jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?'+ MailManager._baseurl() + "_operation=relation&_operationarg=commentwidget&" + frmparams
+             }).done(function (transport) {
                     MailManager.progress_hide();
-                    var response = MailManager.removeHidElement(transport.responseText);
+                    var response = MailManager.removeHidElement(transport);
                     MailManager.mail_associate_create_cancel();
                     jQuery('#_relationpopupdiv_').html(response).css('visibility', '').show();
                     // Place the popup at the center
@@ -740,7 +740,7 @@ if (typeof(MailManager) == 'undefined') {
                     // Make it draggable
                     jQuery('#_relationpopupdiv_').draggable().css('cursor','move');
                 }
-            });
+            );
         },
 
         addCommentValidate : function(form) {
@@ -834,14 +834,14 @@ if (typeof(MailManager) == 'undefined') {
             MailManager.close_all();
             MailManager.progress_show(MailManager.i18n('JSLBL_Loading'), ' ...');
 
-            new Ajax.Request('index.php', {
-                method: 'post',
-                postBody: MailManager._baseurl() + "_operation=mail&_operationarg=getdraftmail&id="+ encodeURIComponent(id),
-                onComplete: function(response){
+            jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?'+ MailManager._baseurl() + "_operation=mail&_operationarg=getdraftmail&id="+ encodeURIComponent(id)
+             }).done(function (response) {
                     jQuery('.qq-upload-list').children().remove();
                     MailManager.progress_hide();
                     jQuery('#_replydiv_').show();
-                    var responseJSON = JSON.parse(response.responseText);
+                    var responseJSON = JSON.parse(response);
 
                     MailManager.mail_reply_rteinit(responseJSON['result'][0][0]['description']);
 
@@ -869,19 +869,19 @@ if (typeof(MailManager) == 'undefined') {
                     MailManager.updateSelectedFolder("mm_compose");
                     jQuery('#mm_selected_folder').val("mm_compose");
                 }
-            });
+            );
         },
 
 
         deleteAttachment : function(id, docid, ele) {
             MailManager.progress_show(MailManager.i18n('JSLBL_Loading'), ' ...');
-            new Ajax.Request('index.php', {
-                method: 'post',
-                postBody: MailManager._baseurl() + "_operation=mail&_operationarg=deleteAttachment&emailid="+ encodeURIComponent(id)
-                            +"&docid="+ encodeURIComponent(docid),
-                onComplete: function(response){
+            jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?'+ MailManager._baseurl() + "_operation=mail&_operationarg=deleteAttachment&emailid="+ encodeURIComponent(id)
+                            +"&docid="+ encodeURIComponent(docid)
+			}).done(function(response){
                     MailManager.progress_hide();
-                    var responseJSON = JSON.parse(response.responseText);
+                    var responseJSON = JSON.parse(response);
                     if(responseJSON.result.success == true) {
                         MailManager.progress_hide();
                         jQuery(ele).parent().fadeTo('slow', 0.0, function(){
@@ -893,7 +893,7 @@ if (typeof(MailManager) == 'undefined') {
                         MailManager.show_error(MailManager.i18n('JSLBL_ATTACHMENT_NOT_DELETED'));
                     }
                 }
-            });
+            );
         },
 		
         /* Reply to mail */
@@ -988,7 +988,7 @@ if (typeof(MailManager) == 'undefined') {
             MailManager.close_all();
             jQuery('#_replydiv_').show();
 			
-            var replyfrm = $('_mail_replyfrm_');
+            var replyfrm = document.getElementById('_mail_replyfrm_');
 			
             var fwdMsgMetaInfo = MailManager.i18n('JSLBL_FROM') + from + '<br/>'+MailManager.i18n('JSLBL_DATE') + date + '<br/>'+MailManager.i18n('JSLBL_SUBJECT') + subject;
             if (to != '' && to != null)
@@ -1013,12 +1013,12 @@ if (typeof(MailManager) == 'undefined') {
             var attachmentCount = jQuery("#_mail_attachmentcount_").val();
             if(attachmentCount) {
                 VtigerJS_DialogBox.block();
-                new Ajax.Request('index.php', {
-                    method: 'post',
-                    postBody: MailManager._baseurl() + "_operation=mail&_operationarg=forward&messageid=" + 
-                        encodeURIComponent(messageId) +"&folder=" + encodeURIComponent(folder) +"&subject=" + encodeURIComponent(replyfrm.subject.value),
-                    onComplete: function(transport){
-                        var response = MailManager.removeHidElement(transport.responseText);
+                jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?'+ MailManager._baseurl() + "_operation=mail&_operationarg=forward&messageid=" + 
+                        encodeURIComponent(messageId) +"&folder=" + encodeURIComponent(folder) +"&subject=" + encodeURIComponent(replyfrm.subject.value)
+				}).done(function(transport){
+                        var response = MailManager.removeHidElement(transport);
                         var responseJSON = JSON.parse(response);
                         if (responseJSON['success']) {
                             jQuery("#emailid").val(responseJSON['result']['emailid']);
@@ -1031,7 +1031,7 @@ if (typeof(MailManager) == 'undefined') {
                         }
                         VtigerJS_DialogBox.unblock();
                     }
-                });
+                );
             }
         },
 		
@@ -1055,7 +1055,7 @@ if (typeof(MailManager) == 'undefined') {
             if (form.subject.value == '' && !confirm(MailManager.i18n('JSLBL_SendWith_EmptySubject'))) {
                 return false;
             }
-			var bodyval = $('_mail_replyfrm_body_').value.trim();
+			var bodyval = document.getElementById('_mail_replyfrm_body_').value.trim();
 			if (bodyval == '<br />' && !confirm(MailManager.i18n('JSLBL_SendWith_EmptyText'))) {
 				return false;
 			}
@@ -1078,7 +1078,7 @@ if (typeof(MailManager) == 'undefined') {
             var baseurl = MailManager._baseurl();
             MailManager.Request('index.php?'+baseurl, params, function(transport) {
                 MailManager.progress_hide();
-                var response = MailManager.removeHidElement(transport.responseText);
+                var response = MailManager.removeHidElement(transport);
                 var responseJSON = JSON.parse(response);
                 if (responseJSON['success']) {
                     MailManager.mail_reply_close();
@@ -1125,7 +1125,7 @@ if (typeof(MailManager) == 'undefined') {
             var baseurl = MailManager._baseurl();
             MailManager.Request('index.php?'+baseurl, params, function(transport) {
                 MailManager.progress_hide();
-                var response = MailManager.removeHidElement(transport.responseText);
+                var response = MailManager.removeHidElement(transport);
                 var responseJSON = JSON.parse(response);
 
                 if (responseJSON['success']) {
@@ -1147,7 +1147,7 @@ if (typeof(MailManager) == 'undefined') {
             MailManager.Request('index.php?'+baseurl, params, function(transport) {
                 MailManager.progress_hide();
                 MailManager.mail_close();
-                var response = MailManager.removeHidElement(transport.responseText);
+                var response = MailManager.removeHidElement(transport);
                 jQuery('#_contentdiv_').html(response);
                 // Initialize upload
                 MailManager.createUploader();
@@ -1171,7 +1171,7 @@ if (typeof(MailManager) == 'undefined') {
             var baseurl = MailManager._baseurl();
             MailManager.Request('index.php?'+baseurl, params, function(transport) {
                 MailManager.progress_hide();
-                var response = MailManager.removeHidElement(transport.responseText);
+                var response = MailManager.removeHidElement(transport);
                 jQuery('#_popupsearch_').html(response);
                 MailManager.placeAtCenter(jQuery('#_popupsearch_'));
                 jQuery('#_popupsearch_').show().draggable();
@@ -1217,7 +1217,7 @@ if (typeof(MailManager) == 'undefined') {
             var target = form._search_popupui_target_.value;
 			
             // Based on target perform the operation
-            var targetnode = $(target);
+            var targetnode = document.getElementById(target);
             if (targetnode) {
                 if (targetnode.value.length > 0 && targetnode.value.substr(-1) != ',') {
                     inputstr = ',' + inputstr;
@@ -1319,7 +1319,7 @@ if (typeof(MailManager) == 'undefined') {
                 };
                 var baseurl = MailManager._baseurl();
                 MailManager.Request('index.php?'+baseurl, params, function(response){
-                    var responseText = JSON.parse(response.responseText);
+                    var responseText = JSON.parse(response);
                     emailId = responseText.result.emailid;
                     jQuery('#emailid').val(emailId);
                     window.open('index.php?module=Documents&return_module=MailManager&action=Popup&popuptype=detailview&form=EditView&form_submit=false&recordid='+emailId+'&forrecord='+emailId+'&parenttab=Marketing&srcmodule=MailManager&popupmode=ajax&RLreturn_module=MailManager&RLparent_id='+emailId+'&parenttab=My Home Page&callback=MailManager.add_data_to_relatedlist','test','width=640,height=602,resizable=0,scrollbars=0');
@@ -1350,7 +1350,7 @@ if (typeof(MailManager) == 'undefined') {
             MailManager.Request('index.php?'+baseurl, params, function(response){
                 MailManager.progress_hide();
                 MailManager.mail_close();
-                var responseText = MailManager.removeHidElement(response.responseText);
+                var responseText = MailManager.removeHidElement(response);
                 jQuery('#_contentdiv_').html(responseText);
             });
             
@@ -1377,7 +1377,7 @@ if (typeof(MailManager) == 'undefined') {
             MailManager.Request('index.php?'+baseurl, params, function(response){
                 MailManager.progress_hide();
                 MailManager.mail_close();
-                var responseText = MailManager.removeHidElement(response.responseText);
+                var responseText = MailManager.removeHidElement(response);
                 jQuery('#_contentdiv_').html(responseText);
                 jQuery('#_mailfolder_' + foldername).addClass('mm_folder_selected');
 
@@ -1543,7 +1543,7 @@ if (typeof(MailManager) == 'undefined') {
                 }
 				
                 function requestOnComplete(response) {
-                    var str = response.responseText;
+                    var str = response;
                     VtigerJS_DialogBox.unblock();
                     if(str.indexOf('SUCCESS') > -1) {
                         deferred.resolve(form);
