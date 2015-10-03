@@ -207,7 +207,7 @@ DIV.fixedLay {
 	</td>
 	<br>
 	<tr>
-		<td align="center"><input type="button" value="{$CMOD.LBL_YES}" onclick="return disableStyle('confId');">&nbsp;&nbsp;<input type="button" value="&nbsp;{$CMOD.LBL_NO}&nbsp;" onclick="showSelect();$('confId').style.display='none';document.body.removeChild($('freeze'));"></td>
+		<td align="center"><input type="button" value="{$CMOD.LBL_YES}" onclick="return disableStyle('confId');">&nbsp;&nbsp;<input type="button" value="&nbsp;{$CMOD.LBL_NO}&nbsp;" onclick="showSelect();document.getElementById('confId').style.display='none';document.body.removeChild(document.getElementById('freeze'));"></td>
 	</tr>
 </tr>
 </table>
@@ -290,20 +290,20 @@ function fnwriteRules(module,related)
 	
 	function disableStyle(id)
 	{ldelim}
-			$('orgSharingform').action.value = 'RecalculateSharingRules';
-			$('orgSharingform').submit();
- 			$(id).style.display = 'none';
+			document.getElementById('orgSharingform').action.value = 'RecalculateSharingRules';
+			document.getElementById('orgSharingform').submit();
+ 			document.getElementById(id).style.display = 'none';
 
 			if(browser_ie && (gBrowserAgent.indexOf("msie 7.")!=-1))//for IE 7
                         {ldelim}
-                                document.body.removeChild($('freeze'));
+                                document.body.removeChild(document.getElementById('freeze'));
                         {rdelim}else if(browser_ie)
                         {ldelim}
-                             var oDivfreeze = $('divId');
+                             var oDivfreeze = document.getElementById('divId');
                              oDivfreeze.style.height = document.documentElement['clientHeight'] + 'px';
 
                         {rdelim}
-                        $('divId').style.display = 'block';
+                        document.getElementById('divId').style.display = 'block';
 	{rdelim}
 
 	function freezeBackground()

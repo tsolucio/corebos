@@ -34,16 +34,16 @@ function loadRelatedListBlock(urldata,target,imagesuffix) {
 	var hidedata = 'hide_'+imagesuffix;
 	var hidedata_element = document.getElementById(hidedata);
 	if(isRelatedListBlockLoaded(target,urldata) == true){
-		document.getElementById(target).show();
-		showdata_element.hide();
-      	hidedata_element.show();
-		document.getElementById('delete_'+imagesuffix).show();
+		document.getElementById(target).style.display="block";
+		showdata_element.style.display="none";
+      	hidedata_element.style.display="block";
+		document.getElementById('delete_'+imagesuffix).style.display="block";
 		return;
 	}
 	var indicator = 'indicator_'+imagesuffix;
 	var indicator_element = document.getElementById(indicator);
-	indicator_element.show();
-	document.getElementById('delete_'+imagesuffix).show();
+	indicator_element.style.display="block";
+	document.getElementById('delete_'+imagesuffix).style.display="block";
 	
 	var target_element = document.getElementById(target);
 	
@@ -53,17 +53,17 @@ function loadRelatedListBlock(urldata,target,imagesuffix) {
 		}).done(function (response) {
 					var responseData = trim(response);
       				target_element.update(responseData);
-					target_element.show();
-      				showdata_element.hide();
-      				hidedata_element.show();
-      				indicator_element.hide();
+					target_element.style.display="block";
+      				showdata_element.style.display="none";
+      				hidedata_element.style.display="block";
+      				indicator_element.style.display="none";
 					if(document.getElementById('return_module').value == 'Campaigns'){
 						var obj = document.getElementsByName(imagesuffix+'_selected_id');
 						var relatedModule = imagesuffix.replace('Campaigns_',"");
 						document.getElementById(relatedModule+'_count').innerHTML = numofRows;
 						if(selectallActivation == 'true'){
 							document.getElementById(imagesuffix+'_selectallActivate').value='true';
-							document.getElementById(imagesuffix+'_linkForSelectAll').show();
+							document.getElementById(imagesuffix+'_linkForSelectAll').style.display="block";
 							document.getElementById(imagesuffix+'_selectAllRec').style.display='none';
 							document.getElementById(imagesuffix+'_deSelectAllRec').style.display='inline';
 							var exculdedArray=excludedRecords.split(';');
@@ -73,7 +73,7 @@ function loadRelatedListBlock(urldata,target,imagesuffix) {
 								document.getElementById(imagesuffix+'_excludedRecords').value = document.getElementById(imagesuffix+'_excludedRecords').value+excludedRecords;
 							}
 						}else{
-							document.getElementById(imagesuffix+'_linkForSelectAll').hide();
+							document.getElementById(imagesuffix+'_linkForSelectAll').style.display="none";
 							//rel_toggleSelect(false,imagesuffix+'_selected_id',relatedModule);
 						}
 						updateParentCheckbox(obj,imagesuffix);
@@ -92,11 +92,11 @@ function hideRelatedListBlock(target, imagesuffix) {
 	
 	var target_element = document.getElementById(target);
 	if(target_element){
-		target_element.hide();
+		target_element.style.display="none";
 	}
-	hidedata_element.hide();
-	showdata_element.show();
-	document.getElementById('delete_'+imagesuffix).hide();
+	hidedata_element.style.display="none";
+	showdata_element.style.display="block";
+	document.getElementById('delete_'+imagesuffix).style.display="none";
 }
 
 function disableRelatedListBlock(urldata,target,imagesuffix){
@@ -108,7 +108,7 @@ function disableRelatedListBlock(urldata,target,imagesuffix){
 
 	var indicator = 'indicator_'+imagesuffix;
 	var indicator_element = document.getElementById(indicator);
-	indicator_element.show();
+	indicator_element.style.display="block";
 	
 	var target_element = document.getElementById(target);
 	jQuery.ajax({
@@ -116,7 +116,7 @@ function disableRelatedListBlock(urldata,target,imagesuffix){
 			url: 'index.php?'+urldata,
 		}).done(function (response) {
 					var responseData = trim(response);
-					target_element.hide();
+					target_element.style.display="none";
 					document.getElementById('delete_'+imagesuffix).style.display="none";
 					hidedata_element.style.display="none";
 					showdata_element.style.display="block";
@@ -174,11 +174,9 @@ function disableRelatedListBlock(urldata,target,imagesuffix){
 {if $SELECTEDHEADERS neq '' && $header|in_array:$SELECTEDHEADERS}
 <script type='text/javascript'>
 {if $smarty.request.ajax neq 'true'}
-	if(typeof(Event) == 'function') {ldelim}
-	Event.observe(window, 'load', function(){ldelim}
+	jQuery( window ).load(function() {ldelim}
 		loadRelatedListBlock('module={$MODULE}&action={$MODULE}Ajax&file=DetailViewAjax&record={$ID}&ajxaction=LOADRELATEDLIST&header={$header}&relation_id={$detail.relationId}&actions={$detail.actions}&parenttab={$CATEGORY}&start={$smarty.request.start|@vtlib_purify}','tbl_{$MODULE}_{$header|replace:' ':''}','{$MODULE}_{$header|replace:' ':''}');
 	{rdelim});
-	{rdelim}
 {else}
 	loadRelatedListBlock('module={$MODULE}&action={$MODULE}Ajax&file=DetailViewAjax&record={$ID}&ajxaction=LOADRELATEDLIST&header={$header}&relation_id={$detail.relationId}&actions={$detail.actions}&parenttab={$CATEGORY}&start={$smarty.request.start|@vtlib_purify}','tbl_{$MODULE}_{$header|replace:' ':''}','{$MODULE}_{$header|replace:' ':''}');
 {/if}

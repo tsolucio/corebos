@@ -125,7 +125,7 @@ function callSearch(searchtype)
         {ldelim}
         		checkAdvancedFilter();
 				var advft_criteria = jQuery('#advft_criteria').val();
-				var advft_criteria_groups = $('advft_criteria_groups').value;
+				var advft_criteria_groups = jQuery('#advft_criteria_groups').val();
 				urlstring += '&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups+'&';
 				urlstring += 'searchtype=advance&'
         {rdelim}
@@ -156,7 +156,7 @@ function alphabetic(module,url,dataid)
 	document.getElementById("status").style.display="inline";
 	jQuery.ajax({ldelim}
 			method:"POST",
-			url:'index.php?module='+module+'&action='+module+'Ajax&file=index&ajax=true&search=true&'+url,
+			url:'index.php?module='+module+'&action='+module+'Ajax&file=index&ajax=true&search=true&'+url
 	{rdelim}).done(function(response) {ldelim}
 				jQuery("#status").hide();
 				result = response.split('&#&#&#');

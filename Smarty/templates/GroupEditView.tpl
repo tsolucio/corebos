@@ -15,7 +15,7 @@
 function dup_validation()
 {ldelim}
 	var mode = getObj('mode').value;
-	var groupname = $('groupName').value;
+	var groupname = document.getElementById('groupName').value;
 	var groupid = getObj('groupId').value;
 	if(mode == 'edit')
 		var reminstr = '&mode='+mode+'&groupName='+groupname+'&groupid='+groupid;
@@ -139,7 +139,7 @@ function validate()
 	if( !emptyCheck( "groupName", "Group Name","text" ) )
 		return false;
 	//check to restrict the & < > , characters
-	var str = $("groupName").value;
+	var str = document.getElementById("groupName").value;
 	var re1=/[&\<\>\,]/
         if (re1.test(str))
         {ldelim}

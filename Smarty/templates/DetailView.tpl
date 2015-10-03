@@ -131,7 +131,7 @@ function DeleteTag(id,recordid)
 //Added to send a file, in Documents module, as an attachment in an email
 function sendfile_email()
 {ldelim}
-	filename = $('dldfilename').value;
+	filename = document.getElementById('dldfilename').value;
 	document.DetailView.submit();
 	OpenCompose(filename,'Documents');
 {rdelim}
@@ -728,7 +728,7 @@ function sendfile_email()
 
 function getTagCloud()
 {ldelim}
-	var obj = $("tagfields");
+	var obj = document.getElementById("tagfields");
 	if(obj != null && typeof(obj) != undefined) {ldelim}
 		jQuery.ajax({ldelim}
 				method:"POST",
