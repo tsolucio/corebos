@@ -6,8 +6,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-document.write("<script type='text/javascript' src='include/js/Mail.js'></"+"script>");
-document.write("<script type='text/javascript' src='include/js/Merge.js'></"+"script>");
+document.write("<script type='text/javascript' src='include/js/Mail.js'></script>");
+document.write("<script type='text/javascript' src='include/js/Merge.js'></script>");
 function verifyConvertLeadData(form) {
 	var convertForm=document.ConvertLead;
 	var no_ele=convertForm.length;
@@ -181,13 +181,13 @@ function searchMapLocation(addressType)
 function selectTransferTo(module){
 	if(module=='Accounts'){
 		if(document.getElementById('transfertoacc').checked){
-			$('account_block').style.display="block";
+			document.getElementById('account_block').style.display="block";
 			document.getElementById('select_account').checked="checked";
 		}
 	}
 	if(module=='Contacts'){
 		if(document.getElementById('transfertocon').checked){
-			$('contact_block').style.display="block";
+			document.getElementById('contact_block').style.display="block";
 			document.getElementById('select_contact').checked="checked";
 		}
 	}

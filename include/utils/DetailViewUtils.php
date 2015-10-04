@@ -189,6 +189,23 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			}
 		}
 		$label_fld ["options"] = $options;
+	} elseif ($uitype == 1024) {
+		$content=array();
+		$j=0;
+		if ($col_fields[$fieldname]!='') {
+			$arr_evo_actions=explode(' |##| ',$col_fields[$fieldname]);
+			for($i=0;$i<sizeof($arr_evo_actions);$i++) {
+				$roleid=$arr_evo_actions[$i];
+				$rolename=getRoleName($roleid);
+				if((is_admin($current_user))) {
+					$content[$i]='<a href="index.php?module=Settings&action=RoleDetailView&parenttab=Settings&roleid='.$roleid.'">'.$rolename.'</a>';
+				} else {
+					$content[$i]=$rolename;
+				}
+			}
+		}
+		$label_fld[] = getTranslatedString($fieldlabel, $module);
+		$label_fld[] = implode(', ',$content);
 	} elseif ($uitype == 115) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$label_fld[] = getTranslatedString($col_fields[$fieldname]);

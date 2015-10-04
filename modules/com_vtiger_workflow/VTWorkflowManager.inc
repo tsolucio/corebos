@@ -273,15 +273,15 @@
 			$this->description = to_html(getTranslatedString($row['summary'],'com_vtiger_workflow'));
 			$this->test = $row['test'];
 			$this->executionCondition = $row['execution_condition'];
-			$this->schtypeid = $row['schtypeid'];
-			$this->schtime = $row['schtime'];
-			$this->schdayofmonth = $row['schdayofmonth'];
-			$this->schdayofweek = $row['schdayofweek'];
-			$this->schannualdates = $row['schannualdates'];
+			$this->schtypeid = isset($row['schtypeid']) ? $row['schtypeid'] : '';
+			$this->schtime = isset($row['schtime']) ? $row['schtime'] : '';
+			$this->schdayofmonth = isset($row['schdayofmonth']) ? $row['schdayofmonth'] : '';
+			$this->schdayofweek = isset($row['schdayofweek']) ? $row['schdayofweek'] : '';
+			$this->schannualdates = isset($row['schannualdates']) ? $row['schannualdates'] : '';
 			if($row['defaultworkflow']){
 				$this->defaultworkflow=$row['defaultworkflow'];
 			}
-			$this->nexttrigger_time = $row['nexttrigger_time'];
+			$this->nexttrigger_time = isset($row['nexttrigger_time']) ? $row['nexttrigger_time'] : '';
 		}
 
 		function evaluate($entityCache, $id){

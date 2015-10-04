@@ -927,7 +927,8 @@ class Products extends CRMEntity {
 
 		$query = "SELECT vtiger_crmentity.crmid,
 			vtiger_pricebook.*,
-			vtiger_pricebookproductrel.productid as prodid
+			vtiger_pricebookproductrel.productid as prodid,
+			vtiger_pricebookproductrel.listprice as listprice
 			FROM vtiger_pricebook
 			INNER JOIN vtiger_crmentity
 				ON vtiger_crmentity.crmid = vtiger_pricebook.pricebookid

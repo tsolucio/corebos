@@ -330,9 +330,15 @@ if($currentModule == 'Products' && $_REQUEST['record_id'] && ($popuptype == 'inv
 	$smarty->assign("PRODUCT_NAME", $product_name);
 	$smarty->assign("RECORD_ID", vtlib_purify($_REQUEST['record_id']));
 }
-$listview_header_search=getSearchListHeaderValues($focus,"$currentModule",$url_string,$sorder,$order_by);
+$listview_header_search=getSearchListHeaderValues($focus,$currentModule,$url_string,$sorder,$order_by);
 $smarty->assign("SEARCHLISTHEADER", $listview_header_search);
 $smarty->assign("ALPHABETICAL", $alphabetical);
+$queryGenerator = new QueryGenerator($currentModule, $current_user);
+$controller = new ListViewController($adb, $current_user, $queryGenerator);
+$fieldnames = $controller->getAdvancedSearchOptionString();
+$criteria = getcriteria_options();
+$smarty->assign("CRITERIA", $criteria);
+$smarty->assign("FIELDNAMES", $fieldnames);
 
 if(isset($_REQUEST['query']) && $_REQUEST['query'] == 'true')
 {

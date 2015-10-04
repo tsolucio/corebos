@@ -10,14 +10,6 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Contacts/language/en_us.lang.php,v 1.14 2005/03/24 17:47:43 rank Exp $
- * Description:  Defines the English language pack for Contacts Module
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -239,7 +231,7 @@ $mod_strings = Array(
 // Added after 5.0.4 GA
 
 // Module Sequence Numbering
-'Contact Id' => 'Contact Id',
+'Contact Id' => 'Contact No.',
 'Secondary Email'=>'Secondary Email',
 // END
 

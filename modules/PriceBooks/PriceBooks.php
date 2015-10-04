@@ -32,11 +32,15 @@ class PriceBooks extends CRMEntity {
 	// This is the list of fields that are in the lists.
 	var $list_fields = Array(
 		'Price Book Name'=>Array('pricebook'=>'bookname'),
+		'Price'=>Array('pricebookproductrel'=>'listprice'),
+		'Currency'=>Array('pricebook'=>'currency_id'),
 		'Active'=>Array('pricebook'=>'active')
 	);
 
 	var $list_fields_name = Array(
 		'Price Book Name'=>'bookname',
+		'Price'=>'listprice',
+		'Currency'=>'currency_id',
 		'Active'=>'active'
 	);
 	var $list_link_field= 'bookname';

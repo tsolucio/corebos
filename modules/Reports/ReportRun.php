@@ -32,9 +32,9 @@ class ReportRun extends CRMEntity {
 
 	var $_groupinglist  = false;
 	var $_columnslist    = false;
-	var	$_stdfilterlist = false;
-	var	$_columnstotallist = false;
-	var	$_advfiltersql = false;
+	var $_stdfilterlist = false;
+	var $_columnstotallist = false;
+	var $_advfiltersql = false;
 
 	var $append_currency_symbol_to_value = array('Products_Unit_Price','Services_Price',
 						'Invoice_Total', 'Invoice_Sub_Total', 'Invoice_S&H_Amount', 'Invoice_Discount_Amount', 'Invoice_Adjustment',
@@ -95,7 +95,7 @@ class ReportRun extends CRMEntity {
 			list($tablename,$colname,$module_field,$fieldname,$single) = explode(":",$fieldcolname);
 			list($module,$field) = explode("_",$module_field,2);
 			$inventory_fields = array('quantity','listprice','serviceid','productid','discount','comment');
-			$inventory_modules = array('SalesOrder','Quotes','PurchaseOrder','Invoice');
+			$inventory_modules = getInventoryModules();
 			require('user_privileges/user_privileges_'.$current_user->id.'.php');
 			if(sizeof($permitted_fields[$module]) == 0 && $is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1)
 			{
@@ -321,7 +321,6 @@ class ReportRun extends CRMEntity {
 			$concatSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_usersModComments.first_name',
 															'last_name' => 'vtiger_usersModComments.last_name'), 'Users');
 			$queryColumn = "trim(case when (vtiger_usersModComments.user_name not like '' and vtiger_crmentity.crmid!='') then $concatSql end) as 'ModComments_Creator'";
-
 		} elseif(($fieldInfo['uitype'] == '10' || isReferenceUIType($fieldInfo['uitype']))
 				&& $fieldInfo['uitype'] != '52' && $fieldInfo['uitype'] != '53') {
 			$fieldSqlColumns = $this->getReferenceFieldColumnList($moduleName, $fieldInfo);
@@ -2177,7 +2176,7 @@ class ReportRun extends CRMEntity {
 		{
 
 			$sSQL = $this->sGetSQLforReport($this->reportid,$filtersql);
-			$result = $adb->query($sSQL);
+			$result = $adb->pquery($sSQL,array());
 			if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1)
 			$picklistarray = $this->getAccessPickListValues();
 
@@ -2203,11 +2202,9 @@ class ReportRun extends CRMEntity {
 							$fieldType = $field->getFieldDataType();
 						}
 						if(!empty($fieldInfo)) {
-							$translatedLabel = getTranslatedString($field->getFieldLabelKey(),
-									$module);
+							$translatedLabel = getTranslatedString($field->getFieldLabelKey(), $module);
 						} else {
-							$translatedLabel = getTranslatedString(str_replace('_', " ",
-									$fieldLabel), $module);
+							$translatedLabel = getTranslatedString(str_replace('_', " ", $fieldLabel), $module);
 						}
 						/*STRING TRANSLATION starts */
 						$moduleLabel ='';
@@ -2215,8 +2212,7 @@ class ReportRun extends CRMEntity {
 							$moduleLabel = getTranslatedString($module,$module);
 
 						if(empty($translatedLabel)) {
-								$translatedLabel = getTranslatedString(str_replace('_', " ",
-									$fld->name));
+								$translatedLabel = getTranslatedString(str_replace('_', " ", $fld->name));
 						}
 						$headerLabel = $translatedLabel;
 						if(!empty($this->secondarymodule)) {
@@ -2224,7 +2220,7 @@ class ReportRun extends CRMEntity {
 								$headerLabel = $moduleLabel." ". $translatedLabel;
 							}
 						}
-											// Check for role based pick list
+						// Check for role based pick list
 						$temp_val= $fld->name;
 						if($fieldType == 'currency')
 						{
@@ -2570,7 +2566,7 @@ class ReportRun extends CRMEntity {
 					}elseif(count($groupslist) == 3)
 					{
 						$newvalue = $custom_field_values[0];
-                                                $snewvalue = $custom_field_values[1];
+						$snewvalue = $custom_field_values[1];
 						$tnewvalue = $custom_field_values[2];
 					}
 
@@ -2964,18 +2960,13 @@ class ReportRun extends CRMEntity {
 		$fieldLabel = ltrim(str_replace($rep_module, '', $rep_header), '_');
 		$fieldInfo = getFieldByReportLabel($rep_module, $fieldLabel);
 		if($fieldInfo['uitype'] == '71') {
-        	$curr_symb = " (".$app_strings['LBL_IN']." ".$current_user->currency_symbol.")";
+			$curr_symb = " (".$app_strings['LBL_IN']." ".$current_user->currency_symbol.")";
 		}
-        $rep_header .=$curr_symb;
-
+		$rep_header .=$curr_symb;
 		return $rep_header;
 	}
 
-	/** Function to get picklist value array based on profile
-	 *          *  returns permitted fields in array format
-	 **/
-
-
+	/** Function to get picklist value array based on profile returns permitted fields in array format */
 	function getAccessPickListValues()
 	{
 		global $adb;
@@ -3010,9 +3001,9 @@ class ReportRun extends CRMEntity {
 			$keyvalue = getTabModuleName($tabid)."_".$fieldlabel1;
 			$fieldvalues = Array();
 			if (count($roleids) > 1) {
-				$mulsel="select distinct $fieldname from vtiger_$fieldname inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$fieldname.picklist_valueid where roleid in (\"". implode($roleids,"\",\"") ."\") and picklistid in (select picklistid from vtiger_$fieldname) order by sortid asc";
+				$mulsel="select distinct $fieldname from vtiger_$fieldname inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$fieldname.picklist_valueid where roleid in (\"". implode($roleids,"\",\"") ."\") and picklistid in (select picklistid from vtiger_$fieldname)"; // order by sortid asc - not requried
 			} else {
-				$mulsel="select distinct $fieldname from vtiger_$fieldname inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$fieldname.picklist_valueid where roleid ='".$roleid."' and picklistid in (select picklistid from vtiger_$fieldname) order by sortid asc";
+				$mulsel="select distinct $fieldname from vtiger_$fieldname inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$fieldname.picklist_valueid where roleid ='".$roleid."' and picklistid in (select picklistid from vtiger_$fieldname)"; // order by sortid asc - not requried
 			}
 			if($fieldname != 'firstname')
 				$mulselresult = $adb->query($mulsel);

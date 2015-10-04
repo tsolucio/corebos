@@ -274,6 +274,25 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		uasort($options, function($a,$b) {return (strtolower($a[0]) < strtolower($b[0])) ? -1 : 1;});
 		$fieldvalue [] = $options;
 	}
+	elseif($uitype == 1024){
+		$options=array();
+		$arr_evo=explode(' |##| ',$value);
+		$roleid = $current_user->roleid;
+		$subrole = getRoleSubordinates($roleid);
+		$uservalues = array_merge($subrole,array($roleid));
+		for($i=0;$i<sizeof($uservalues);$i++) {
+			$currentValId=$uservalues[$i];
+			$currentValName=  getRoleName($currentValId);
+			if(in_array(trim($currentValId),$arr_evo)){
+				$chk_val = 'selected';
+			}else{
+				$chk_val = '';
+			}
+			$options[] = array($currentValName,$currentValId,$chk_val);
+		}
+		$fieldvalue [] = $options;
+		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
+	}
 	elseif($uitype == 17)
 	{
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);

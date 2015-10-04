@@ -57,16 +57,10 @@ $old_related_modules = Array(
 $related_modules =Array();
 
 class Reports extends CRMEntity{
-
-
-
 	/**
-	 * This class has the informations for Reports and inherits class CRMEntity and
-	 * has the variables required to generate,save,restore vtiger_reports
-	 * and also the required functions for the same
-	 * Contributor(s): ______________________________________..
+	 * This class has the informations for Reports. It inherits class CRMEntity and has the variables
+	 * required to generate, save, restore reports and also the required functions for the same
 	 */
-
 
 	var $srptfldridjs;
 
@@ -109,7 +103,6 @@ class Reports extends CRMEntity{
 	 *  This function accepts the vtiger_reportid as argument
 	 *  It sets primodule,secmodule,reporttype,reportname,reportdescription,folderid for the given vtiger_reportid
 	 */
-
 	function Reports($reportid="")
 	{
 		global $adb,$current_user,$theme,$mod_strings;
@@ -194,7 +187,7 @@ class Reports extends CRMEntity{
 				</tr>
 				<tr>
 				<td class='small' align='right' nowrap='nowrap'>
-				<a href='javascript:window.history.back();'>$app_strings[LBL_GO_BACK]</a><br>								   		     </td>
+				<a href='javascript:window.history.back();'>$app_strings[LBL_GO_BACK]</a><br></td>
 				</tr>
 				</tbody></table>
 				</div>";
@@ -348,13 +341,11 @@ class Reports extends CRMEntity{
 	}
 	// END
 
-
 	/** Function to get the Listview of Reports
 	 *  This function accepts no argument
 	 *  This generate the Reports view page and returns a string
 	 *  contains HTML
 	 */
-
 	function sgetRptFldr($mode='')
 	{
 
@@ -407,7 +398,6 @@ class Reports extends CRMEntity{
 	 *  This Generates the Reports under each Reports module
 	 *  This Returns a HTML sring
 	 */
-
 	function sgetRptsforFldr($rpt_fldr_id)
 	{
 		$srptdetails="";
@@ -490,7 +480,6 @@ class Reports extends CRMEntity{
 	 *  It returns the array of ids
 	 *  Array('1RptFldr','2RptFldr',........,'9RptFldr','10RptFldr')
 	 */
-
 	function sgetJsRptFldr()
 	{
 		$srptfldr_js = "var ReportListArray=new Array(".$this->srptfldridjs.")
@@ -503,7 +492,6 @@ class Reports extends CRMEntity{
 	 *  It accepts the Primary module as the argument and set the vtiger_fields of the module
 	 *  to the varialbe pri_module_columnslist and returns true if sucess
 	 */
-
 	function getPriModuleColumnsList($module)
 	{
 		//$this->updateModuleList($module);
@@ -536,7 +524,6 @@ class Reports extends CRMEntity{
 	 *  It accepts the module as the argument and set the vtiger_fields of the module
 	 *  to the varialbe sec_module_columnslist and returns true if sucess
 	 */
-
 	function getSecModuleColumnsList($module)
 	{
 		if($module != "")
@@ -602,7 +589,6 @@ class Reports extends CRMEntity{
 	 *  returns the array column lists
 	 *  Array module_columnlist[ vtiger_fieldtablename:fieldcolname:module_fieldlabel1:fieldname:fieldtypeofdata]=fieldlabel
 	 */
-
 	function getColumnsListbyBlock($module,$block)
 	{
 		global $adb;
@@ -632,9 +618,8 @@ class Reports extends CRMEntity{
 		}
 		else
 		{
-
 			$profileList = getCurrentUserProfileList();
-			$sql = "select * from vtiger_field inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid where vtiger_field.tabid in (". generateQuestionMarks($tabid) .")  and vtiger_field.block in (". generateQuestionMarks($block) .") and vtiger_field.displaytype in (1,2,3) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)";
+			$sql = "select * from vtiger_field inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid where vtiger_field.tabid in (". generateQuestionMarks($tabid) .") and vtiger_field.block in (". generateQuestionMarks($block) .") and vtiger_field.displaytype in (1,2,3) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)";
 			if (count($profileList) > 0) {
 				$sql .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
 				array_push($params, $profileList);
@@ -693,11 +678,11 @@ class Reports extends CRMEntity{
 			$optionvalue = $fieldtablename.":".$fieldcolname.":".$module."_".$fieldlabel1.":".$fieldname.":".$fieldtypeofdata;
 			$this->adv_rel_fields[$fieldtypeofdata][] = '$'.$module.'#'.$fieldname.'$'."::".getTranslatedString($module,$module)." ".getTranslatedString($fieldlabel,$module);
 			//added to escape attachments fields in Reports as we have multiple attachments
-                        if($module != 'HelpDesk' || $fieldname !='filename')
+			if($module != 'HelpDesk' || $fieldname !='filename')
 				$module_columnlist[$optionvalue] = $fieldlabel;
 		}
 		$blockname = getBlockName($block);
-		if($blockname == 'LBL_RELATED_PRODUCTS' && ($module=='PurchaseOrder' || $module=='SalesOrder' || $module=='Quotes' || $module=='Invoice')){
+		if($blockname == 'LBL_RELATED_PRODUCTS' && in_array($module,getInventoryModules())) {
 			$fieldtablename = 'vtiger_inventoryproductrel';
 			$fields = array('productid'=>getTranslatedString('Product Name',$module),
 							'serviceid'=>getTranslatedString('Service Name',$module),
@@ -716,9 +701,9 @@ class Reports extends CRMEntity{
 			foreach($fields as $fieldcolname=>$label){
 				$fieldtypeofdata = $fields_datatype[$fieldcolname];
 				if($fieldcolname != 'productid' || $fieldcolname !='serviceid')
-					$optionvalue =  $fieldtablename.$module.":".$fieldcolname.":".$module."_".$label.":".$fieldcolname.":".$fieldtypeofdata;
+					$optionvalue = $fieldtablename.$module.":".$fieldcolname.":".$module."_".$label.":".$fieldcolname.":".$fieldtypeofdata;
 				else
-				$optionvalue =  $fieldtablename.":".$fieldcolname.":".$module."_".$label.":".$fieldcolname.":".$fieldtypeofdata;
+					$optionvalue = $fieldtablename.":".$fieldcolname.":".$module."_".$label.":".$fieldcolname.":".$fieldtypeofdata;
 				$module_columnlist[$optionvalue] = $label;
 			}
 		}
@@ -731,7 +716,6 @@ class Reports extends CRMEntity{
 	 *  and set the values to the corresponding variables
 	 *  It accepts the repordid as argument
 	 */
-
 	function getSelectedStandardCriteria($reportid) {
 		global $adb;
 		$sSQL = "select vtiger_reportdatefilter.* from vtiger_reportdatefilter inner join vtiger_report on vtiger_report.reportid = vtiger_reportdatefilter.datefilterid where vtiger_report.reportid=?";
@@ -757,7 +741,6 @@ class Reports extends CRMEntity{
 	 *  This function get the combo values for the standard filter for the given vtiger_report
 	 *  and return a HTML string
 	 */
-
 	function getSelectedStdFilterCriteria($selecteddatefilter = "")
 	{
 		global $mod_strings;
@@ -793,7 +776,6 @@ class Reports extends CRMEntity{
 	 *  which is selected for vtiger_reports as an array
 	 *  Array stdcriteria_list[fieldtablename:fieldcolname:module_fieldlabel1]=fieldlabel
 	 */
-
 	function getStdCriteriaByModule($module)
 	{
 		global $adb;
@@ -817,7 +799,7 @@ class Reports extends CRMEntity{
 		else
 		{
 			$profileList = getCurrentUserProfileList();
-			$sql = "select * from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid  where vtiger_field.tabid=? and (vtiger_field.uitype =5 or vtiger_field.displaytype=2) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.block in (". generateQuestionMarks($block) .") and vtiger_field.presence in (0,2)";
+			$sql = "select * from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid where vtiger_field.tabid=? and (vtiger_field.uitype =5 or vtiger_field.displaytype=2) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.block in (". generateQuestionMarks($block) .") and vtiger_field.presence in (0,2)";
 			if (count($profileList) > 0) {
 				$sql .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
 				array_push($params, $profileList);
@@ -851,16 +833,14 @@ class Reports extends CRMEntity{
 	 *  This function is to form a javascript to determine
 	 *  the start date and End date from the value selected in the combo lists
 	 */
-
 	function getCriteriaJS()
 	{
-
 		$todayDateTime = new DateTimeField(date('Y-m-d H:i:s'));
 
-		$tomorrow  = date("Y-m-d",mktime(0, 0, 0, date("m")  , date("d")+1, date("Y")));
+		$tomorrow = date("Y-m-d",mktime(0, 0, 0, date("m")  , date("d")+1, date("Y")));
 		$tomorrowDateTime = new DateTimeField($tomorrow.' '. date('H:i:s'));
 
-		$yesterday  = date("Y-m-d",mktime(0, 0, 0, date("m")  , date("d")-1, date("Y")));
+		$yesterday = date("Y-m-d",mktime(0, 0, 0, date("m")  , date("d")-1, date("Y")));
 		$yesterdayDateTime = new DateTimeField($yesterday.' '. date('H:i:s'));
 
 		$currentmonth0 = date("Y-m-d",mktime(0, 0, 0, date("m"), "01",   date("Y")));
@@ -1127,8 +1107,8 @@ class Reports extends CRMEntity{
 
 		return $sjsStr;
 	}
-function getEscapedColumns($selectedfields)
-	{
+
+function getEscapedColumns($selectedfields) {
 		$fieldname = $selectedfields[3];
 		if($fieldname == "parent_id")
 		{
@@ -1192,13 +1172,8 @@ function getEscapedColumns($selectedfields)
 	 *  returns the array array_list which has the column responsible for the grouping
 	 *  Array array_list[0]=columnname
 	 */
-
-
-	function getSelctedSortingColumns($reportid)
-	{
-
-		global $adb;
-		global $log;
+	function getSelctedSortingColumns($reportid) {
+		global $adb, $log;
 
 		$sreportsortsql = "select vtiger_reportsortcol.* from vtiger_report";
 		$sreportsortsql .= " inner join vtiger_reportsortcol on vtiger_report.reportid = vtiger_reportsortcol.reportid";
@@ -1224,7 +1199,6 @@ function getEscapedColumns($selectedfields)
 	 *  for the given vtiger_reportid and it forms a combo lists and returns
 	 *  HTML of the combo values
 	 */
-
 	function getSelectedColumnsList($reportid)
 	{
 		global $adb;
@@ -1240,9 +1214,9 @@ function getEscapedColumns($selectedfields)
 
 		$selected_mod = explode(":",$this->secmodule);
 		array_push($selected_mod,$this->primodule);
-		
+
 		$inventory_fields = array('quantity','listprice','serviceid','productid','discount','comment');
-		$inventory_modules = array('SalesOrder','Quotes','PurchaseOrder','Invoice');
+		$inventory_modules = getInventoryModules();
 		while($columnslistrow = $adb->fetch_array($result))
 		{
 			$fieldname ="";
@@ -1266,7 +1240,7 @@ function getEscapedColumns($selectedfields)
 				$querycolumns = $this->getEscapedColumns($selectedfields);
 				$fieldlabel = trim(str_replace($module," ",$module_field));
 				$mod_arr=explode('_',$fieldlabel);
-	                        $mod = ($mod_arr[0] == '')?$module:$mod_arr[0];
+				$mod = ($mod_arr[0] == '')?$module:$mod_arr[0];
 				$fieldlabel = trim(str_replace("_"," ",$fieldlabel));
 				//modified code to support i18n issue
 				$mod_lbl = getTranslatedString($mod,$module); //module
@@ -1349,7 +1323,7 @@ function getEscapedColumns($selectedfields)
 				if($col[4] == 'D' || ($col[4] == 'T' && $col[1] != 'time_start' && $col[1] != 'time_end') || ($col[4] == 'DT')) {
 					$val = Array();
 					for($x=0;$x<count($temp_val);$x++) {
-                        if($col[4] == 'D') {
+						if($col[4] == 'D') {
 							$date = new DateTimeField(trim($temp_val[$x]));
 							$val[$x] = $date->getDisplayDate();
 						} elseif($col[4] == 'DT') {
@@ -1379,16 +1353,13 @@ function getEscapedColumns($selectedfields)
 	}
 	//<<<<<<<<advanced filter>>>>>>>>>>>>>>
 
-	/** Function to get the list of vtiger_report folders when Save and run  the vtiger_report
+	/** Function to get the list of report folders when Save and run the report
 	 *  This function gets the vtiger_report folders from database and form
-	 *  a combo values of the folders and return
-	 *  HTML of the combo values
+	 *  a combo values of the folders and return HTML of the combo values
 	 */
-
 	function sgetRptFldrSaveReport()
 	{
-		global $adb;
-		global $log;
+		global $adb, $log;
 
 		$sql = "select * from vtiger_reportfolder order by folderid";
 		$result = $adb->pquery($sql, array());
@@ -1408,7 +1379,6 @@ function getEscapedColumns($selectedfields)
 	 *  and generated the html for that vtiger_fields
 	 *  It returns the HTML of the vtiger_fields along with the check boxes
 	 */
-
 	function sgetColumntoTotal($primarymodule,$secondarymodule)
 	{
 		$options = Array();
@@ -1429,12 +1399,9 @@ function getEscapedColumns($selectedfields)
 	 *  and generated the html for that vtiger_fields
 	 *  It returns the HTML of the vtiger_fields along with the check boxes
 	 */
-
-
 	function sgetColumntoTotalSelected($primarymodule,$secondarymodule,$reportid)
 	{
-		global $adb;
-		global $log;
+		global $adb, $log;
 		$options = Array();
 		if($reportid != "")
 		{
@@ -1471,14 +1438,9 @@ function getEscapedColumns($selectedfields)
 	 *  vtiger_fields along with four checkboxes
 	 *  It returns the HTML of the vtiger_fields along with the check boxes
 	 */
-
-
 	function sgetColumnstoTotalHTML($module)
 	{
-		//retreive the vtiger_tabid
-		global $adb;
-		global $log;
-		global $current_user;
+		global $adb, $log, $current_user;
 		require('user_privileges/user_privileges_'.$current_user->id.'.php');
 		$tabid = getTabid($module);
 		$escapedchars = Array('_SUM','_AVG','_MIN','_MAX');
@@ -1490,7 +1452,7 @@ function getEscapedColumns($selectedfields)
 		else
 		{
 			$profileList = getCurrentUserProfileList();
-			$ssql = "select * from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid  where vtiger_field.uitype != 50 and vtiger_field.tabid=? and vtiger_field.displaytype in (1,2,3) and vtiger_def_org_field.visible=0 and vtiger_profile2field.visible=0 and vtiger_field.presence in (0,2)";
+			$ssql = "select * from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid where vtiger_field.uitype != 50 and vtiger_field.tabid=? and vtiger_field.displaytype in (1,2,3) and vtiger_def_org_field.visible=0 and vtiger_profile2field.visible=0 and vtiger_field.presence in (0,2)";
 			if (count($profileList) > 0) {
 				$ssql .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
 				array_push($sparams, $profileList);
@@ -1534,7 +1496,6 @@ function getEscapedColumns($selectedfields)
 			case 26://Campaigns
 				$ssql.= " and vtiger_field.fieldname not in ('product_id')";
 				break;
-
 		}
 
 		$ssql.= " order by sequence";
@@ -1578,33 +1539,33 @@ function getEscapedColumns($selectedfields)
 					$options []= getTranslatedString($columntototalrow['tablabel'],$columntototalrow['tablabel']).' - '.getTranslatedString($columntototalrow['fieldlabel'],$columntototalrow['tablabel']);
 					if($selectedcolumn1[2] == "cb:".$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel']."_SUM:2")
 					{
-						$options []=  '<input checked name="cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_SUM:2" type="checkbox" value="">';
+						$options []= '<input checked name="cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_SUM:2" type="checkbox" value="">';
 					}else
 					{
-						$options []=  '<input name="cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_SUM:2" type="checkbox" value="">';
+						$options []= '<input name="cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_SUM:2" type="checkbox" value="">';
 					}
 					if($selectedcolumn1[3] == "cb:".$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel']."_AVG:3")
 					{
-						$options []=  '<input checked name="cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_AVG:3" type="checkbox" value="">';
+						$options []= '<input checked name="cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_AVG:3" type="checkbox" value="">';
 					}else
 					{
-						$options []=  '<input name="cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_AVG:3" type="checkbox" value="">';
+						$options []= '<input name="cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_AVG:3" type="checkbox" value="">';
 					}
 
 					if($selectedcolumn1[4] == "cb:".$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel']."_MIN:4")
 					{
-						$options []=  '<input checked name="cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_MIN:4" type="checkbox" value="">';
+						$options []= '<input checked name="cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_MIN:4" type="checkbox" value="">';
 					}else
 					{
-						$options []=  '<input name="cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_MIN:4" type="checkbox" value="">';
+						$options []= '<input name="cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_MIN:4" type="checkbox" value="">';
 					}
 
 					if($selectedcolumn1[5] == "cb:".$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel']."_MAX:5")
 					{
-						$options []=  '<input checked name="cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_MAX:5" type="checkbox" value="">';
+						$options []= '<input checked name="cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_MAX:5" type="checkbox" value="">';
 					}else
 					{
-						$options []=  '<input name="cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_MAX:5" type="checkbox" value="">';
+						$options []= '<input name="cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_MAX:5" type="checkbox" value="">';
 					}
 				}else
 				{
@@ -1645,7 +1606,6 @@ function getEscapedColumns($selectedfields)
  *  This function generates the list of primary modules in vtiger_reports
  *  and returns an array of permitted modules
  */
-
 function getReportsModuleList($focus)
 {
 	global $adb;
@@ -1662,11 +1622,11 @@ function getReportsModuleList($focus)
 	asort($modules);
 	return $modules;
 }
+
 /** Function to get the Related module list in vtiger_reports
  *  This function generates the list of secondary modules in vtiger_reports
  *  and returns the related module as an Array
  */
-
 function getReportRelatedModules($module,$focus)
 {
 	global $app_list_strings;
@@ -1689,7 +1649,6 @@ function getReportRelatedModules($module,$focus)
 }
 
 function updateAdvancedCriteria($reportid, $advft_criteria, $advft_criteria_groups) {
-
 	global $adb, $log;
 
 	$idelrelcriteriasql = "delete from vtiger_relcriteria where queryid=?";

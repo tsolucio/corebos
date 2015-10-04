@@ -33,7 +33,7 @@ class VTExpressionTokenizer{
                 "STRING" => array("?:'((?:\\\\'|[^'])+)'", 'stripcslashes'),
 				"FLOAT" => array('\d+[.]\d+', 'floatval'),
 				"INTEGER" => array('\d+', 'intval'),
-				'OPERATOR' => array('[+]|[-]|[*]|>=|<=|[<]|[>]|==|\/', '_vt_processtoken_symbol'),
+				'OPERATOR' => array('[+]|[-]|[*]|>=|<=|[<]|[>]|==|!=|\/', '_vt_processtoken_symbol'),
 				// NOTE: Any new Operator added should be updated in VTParser.inc::$precedence and operation at VTExpressionEvaluater				
 				'OPEN_BRACKET' => array('[(]', '_vt_processtoken_symbol'),
 				'CLOSE_BRACKET' => array('[)]', '_vt_processtoken_symbol'),

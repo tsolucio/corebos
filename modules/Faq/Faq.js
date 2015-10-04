@@ -5,17 +5,5 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
-
-function clear_form(form) 
-{
-	for (j = 0; j < form.elements.length; j++) 
-	{
-		if (form.elements[j].type == 'text' || form.elements[j].type == 'select-one') 
-		{
-			form.elements[j].value = '';
-		}
-	}
-}
 

@@ -289,7 +289,13 @@ jQuery(document).ready(function(){
 					var nt = parseInt(starthr) + 12;
 					var tmetime = nt + ":" + endmin;
 				}
-				document.getElementById("add"+tmmod.toLowerCase()).href="javascript:gotourl('index.php?action=EditView&return_module=Calendar4You&return_action=index&module="+tmmod+"&"+timemoduledet[tmmod].start+'='+startdate+"&"+timemoduledet[tmmod].end+'='+enddate+"&"+timemoduledet[tmmod].stime+'='+tmstime+"&"+timemoduledet[tmmod].etime+'='+tmetime+"');";
+				var addmoduleurl = "javascript:gotourl('index.php?action=EditView&return_module=Calendar4You&return_action=index&module="+tmmod;
+				addmoduleurl += timemoduledet[tmmod].start ? "&"+timemoduledet[tmmod].start+'='+startdate : '';
+				addmoduleurl += timemoduledet[tmmod].end ? "&"+timemoduledet[tmmod].end+'='+enddate : '';
+				addmoduleurl += timemoduledet[tmmod].stime ? "&"+timemoduledet[tmmod].stime+'='+tmstime : '';
+				addmoduleurl += timemoduledet[tmmod].etime ? "&"+timemoduledet[tmmod].etime+'='+tmetime : '';
+				addmoduleurl += "');";
+				document.getElementById("add"+tmmod.toLowerCase()).href=addmoduleurl;
 			}
 
             xOffset = 5;
