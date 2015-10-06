@@ -204,10 +204,10 @@ function getAssignedPicklistValues($tableName, $roleid, $adb, $lang=array()){
 			$roleids[] = $role;
 		}
 
-		$sql = "SELECT distinct ".$adb->sql_escape_string($tableName)." FROM ". $adb->sql_escape_string("vtiger_$tableName")
+		$sql = "SELECT ".$adb->sql_escape_string($tableName)." FROM ". $adb->sql_escape_string("vtiger_$tableName")
 				. " inner join vtiger_role2picklist on ".$adb->sql_escape_string("vtiger_$tableName").".picklist_valueid=vtiger_role2picklist.picklistvalueid"
-				. " and roleid in (".generateQuestionMarks($roleids).") order by sortid";
-		$result = $adb->pquery($sql, $roleids);
+				. " and roleid in (".generateQuestionMarks($roleids).") order by field(roleid,".generateQuestionMarks($roleids)."), sortid";
+		$result = $adb->pquery($sql, array_merge($roleids,$roleids));
 		$count = $adb->num_rows($result);
 
 		if($count) {
