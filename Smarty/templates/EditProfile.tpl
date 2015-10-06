@@ -321,15 +321,15 @@
 {literal}
 var Imagid_array = new Array('img_2','img_4','img_6','img_7','img_8','img_9','img_10','img_13','img_14','img_18','img_19','img_20','img_21','img_22','img_23','img_26')
 function fnToggleVIew(obj){
-	if($(obj).hasClassName('hideTable')) {
-		$(obj).removeClassName('hideTable');
+	if(jQuery(obj).hasClass('hideTable')) {
+		jQuery(obj).removeClass('hideTable');
 	} else {
-		$(obj).addClassName('hideTable');
+		jQuery(obj).addClass('hideTable');
 	}
 }
 function invokeview_all()
 {
-	if($('view_all_chk').checked == true)
+	if(document.getElementById('view_all_chk').checked == true)
 	{
 		for(var i = 0;i < document.profileform.elements.length;i++)
 		{
@@ -347,15 +347,15 @@ function showAllImages()
 	for(var j=0;j < Imagid_array.length;j++)
 	{
 
-		if(typeof($(Imagid_array[j])) != 'undefined')
-			$(Imagid_array[j]).style.display = 'block';	
+		if(typeof(document.getElementById(Imagid_array[j])) != 'undefined')
+			document.getElementById(Imagid_array[j]).style.display = 'block';	
 	}
 }
 function invokeedit_all()
 {
-	if($('edit_all_chk').checked == true)
+	if(document.getElementById('edit_all_chk').checked == true)
 	{
-		$('view_all_chk').checked = true;
+		document.getElementById('view_all_chk').checked = true;
 		for(var i = 0;i < document.profileform.elements.length;i++)
 		{
 			if(document.profileform.elements[i].type == 'checkbox')
@@ -370,62 +370,62 @@ function invokeedit_all()
 }
 function unselect_edit_all()
 {
-	$('edit_all_chk').checked = false;
+	document.getElementById('edit_all_chk').checked = false;
 }
 function unselect_view_all()
 {
-	$('view_all_chk').checked = false;
+	document.getElementById('view_all_chk').checked = false;
 }
 function unSelectView(id)
 {
 	var createid = 'tab_chk_1_'+id;	
 	var deleteid = 'tab_chk_2_'+id;
 	var tab_id = 'tab_chk_com_'+id;
-	if($('tab_chk_4_'+id).checked == false)
+	if(document.getElementById('tab_chk_4_'+id).checked == false)
 	{
 		unselect_view_all();
 		unselect_edit_all();
-		$(createid).checked = false;
-		$(deleteid).checked = false;
-		$(tab_id).checked = false;
+		document.getElementById(createid).checked = false;
+		document.getElementById(deleteid).checked = false;
+		document.getElementById(tab_id).checked = false;
 	}else
 	{
 		var imageid = 'img_'+id;
 		var viewid = 'tab_chk_4_'+id;	
-		if(typeof($(imageid)) != 'undefined')
-			$(imageid).style.display = 'block';
-		$('tab_chk_com_'+id).checked = true; 
+		if(typeof(document.getElementById(imageid)) != 'undefined')
+			document.getElementById(imageid).style.display = 'block';
+		document.getElementById('tab_chk_com_'+id).checked = true; 
 	}
 }
 function unSelectCreate(id)
 {
 	var viewid = 'tab_chk_4_'+id;	
-	if($('tab_chk_1_'+id).checked == false)
+	if(document.getElementById('tab_chk_1_'+id).checked == false)
 	{
 		unselect_edit_all();
 	}else
 	{
 		var imageid = 'img_'+id;
 		var viewid = 'tab_chk_4_'+id;	
-		if(typeof($(imageid)) != 'undefined')
-			$(imageid).style.display = 'block';
-		$('tab_chk_com_'+id).checked = true;
-		$(viewid).checked = true;
+		if(typeof(document.getElementById(imageid)) != 'undefined')
+			document.getElementById(imageid).style.display = 'block';
+		document.getElementById('tab_chk_com_'+id).checked = true;
+		document.getElementById(viewid).checked = true;
 	}
 }
 function unSelectDelete(id)
 {	
 	var contid = id+'_view';
-	if($('tab_chk_2_'+id).checked == false)
+	if(document.getElementById('tab_chk_2_'+id).checked == false)
 	{
 	}else
 	{
 		var imageid = 'img_'+id;
 		var viewid = 'tab_chk_4_'+id;	
-		if(typeof($(imageid)) != 'undefined')
-			$(imageid).style.display = 'block';
-		$('tab_chk_com_'+id).checked = true;
-		$(viewid).checked = true;
+		if(typeof(document.getElementById(imageid)) != 'undefined')
+			document.getElementById(imageid).style.display = 'block';
+		document.getElementById('tab_chk_com_'+id).checked = true;
+		document.getElementById(viewid).checked = true;
 	}
 
 }
@@ -436,29 +436,29 @@ function hideTab(id)
 	var deleteid = 'tab_chk_2_'+id;
 	var imageid = 'img_'+id;
 	var contid = id+'_view';
-	if($('tab_chk_com_'+id).checked == false)
+	if(document.getElementById('tab_chk_com_'+id).checked == false)
 	{
 		unselect_view_all();
 		unselect_edit_all();
-		if(typeof($(imageid)) != 'undefined')
-			$(imageid).style.display = 'none';
-		$(contid).className = 'hideTable';
-		if(typeof($(createid)) != 'undefined')
-			$(createid).checked = false;
-		if(typeof($(deleteid)) != 'undefined')
-			$(deleteid).checked = false;
-		if(typeof($(viewid)) != 'undefined')
-			$(viewid).checked = false;
+		if(typeof(document.getElementById(imageid)) != 'undefined')
+			document.getElementById(imageid).style.display = 'none';
+		document.getElementById(contid).className = 'hideTable';
+		if(typeof(document.getElementById(createid)) != 'undefined')
+			document.getElementById(createid).checked = false;
+		if(typeof(document.getElementById(deleteid)) != 'undefined')
+			document.getElementById(deleteid).checked = false;
+		if(typeof(document.getElementById(viewid)) != 'undefined')
+			document.getElementById(viewid).checked = false;
 	}else
 	{
-		if(typeof($(imageid)) != 'undefined')
-			$(imageid).style.display = 'block';
-		if(typeof($(createid)) != 'undefined')
-			$(createid).checked = true;
-		if(typeof($(deleteid)) != 'undefined')
-			$(deleteid).checked = true;
-		if(typeof($(viewid)) != 'undefined')
-			$(viewid).checked = true;
+		if(typeof(document.getElementById(imageid)) != 'undefined')
+			document.getElementById(imageid).style.display = 'block';
+		if(typeof(document.getElementById(createid)) != 'undefined')
+			document.getElementById(createid).checked = true;
+		if(typeof(document.getElementById(deleteid)) != 'undefined')
+			document.getElementById(deleteid).checked = true;
+		if(typeof(document.getElementById(viewid)) != 'undefined')
+			document.getElementById(viewid).checked = true;
 		var fieldid = id +'_field_';
 		for(var i = 0;i < document.profileform.elements.length;i++)
                 {

@@ -56,9 +56,9 @@ var gVTUserID = '{$CURRENT_USER_ID}';
 	<!-- END -->
 	<script language="JavaScript" type="text/javascript" id="_current_language_" src="include/js/{php} echo $_SESSION['authenticated_user_language'];{/php}.lang.js?{php} echo $_SESSION['vtiger_version'];{/php}"></script>
 	<script language="JavaScript" type="text/javascript" src="include/js/QuickCreate.js"></script>
-  {if $MODULE_NAME neq 'com_vtiger_workflow'}
+ {* {if $MODULE_NAME neq 'com_vtiger_workflow'}
 	<script language="javascript" type="text/javascript" src="include/scriptaculous/prototype.js"></script>
-  {/if}
+  {/if} *}
 	<script language="JavaScript" type="text/javascript" src="include/js/menu.js?v={$VERSION}"></script>
 	<script language="JavaScript" type="text/javascript" src="include/calculator/calc.js"></script>
 	<script language="JavaScript" type="text/javascript" src="modules/Calendar/script.js"></script>
@@ -202,7 +202,7 @@ var gVTUserID = '{$CURRENT_USER_ID}';
 				<table border=0 celspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
 				<tr>
 					<td align="right" nowrap class="cellLabel small">
-						<input class="small" type='radio' name='exportCalendar' value = 'iCal' onclick="$('ics_filename').removeAttribute('disabled');" checked /> iCal Format
+						<input class="small" type='radio' name='exportCalendar' value = 'iCal' onclick="jQuery('ics_filename').removeAttr('disabled');" checked /> iCal Format
 					</td>
 					<td align="left">
 						<input class="small" type='text' name='ics_filename' id='ics_filename' size='25' value='{php}global $coreBOS_app_name; echo $coreBOS_app_name;{/php}.calendar'/>
@@ -333,7 +333,7 @@ function UnifiedSearch_SelectModuleForm(obj) {
 		jQuery('#status').show();
 		jQuery.ajax({
 				method:"POST",
-				url:'index.php?module=Home&action=HomeAjax&file=UnifiedSearchModules&ajax=true',
+				url:'index.php?module=Home&action=HomeAjax&file=UnifiedSearchModules&ajax=true'
 		}).done(function(response) {
 				jQuery('#status').hide();
 				jQuery('#UnifiedSearch_moduleformwrapper').html(response);
@@ -345,23 +345,21 @@ function UnifiedSearch_SelectModuleFormCallback(obj) {
 	fnvshobjsearch(obj, 'UnifiedSearch_moduleformwrapper');
 }
 function UnifiedSearch_SelectModuleToggle(flag) {
-	Form.getElements($('UnifiedSearch_moduleform')).each(
-		function(element) {
-			if(element.type == 'checkbox') {
-				element.checked = flag;
+	jQuery('#UnifiedSearch_moduleform input[type=checkbox]').each(function() {
+			this.checked = flag;
 			}
 		}
 	);
 }
 function UnifiedSearch_SelectModuleCancel() {
-	$('UnifiedSearch_moduleformwrapper').hide();
+	jQuery('UnifiedSearch_moduleformwrapper').hide();
 }
 function UnifiedSearch_SelectModuleSave() {
 	var UnifiedSearch_form = document.forms.UnifiedSearch;
-	UnifiedSearch_form.search_onlyin.value = Form.serialize($('UnifiedSearch_moduleform')).replace(/search_onlyin=/g, '').replace(/&/g,',');
+	UnifiedSearch_form.search_onlyin.value = jQuery('UnifiedSearch_moduleform').serialize().replace(/search_onlyin=/g, '').replace(/&/g,',');
 	jQuery.ajax({
 			method:"POST",
-			url:'index.php?module=Home&action=HomeAjax&file=UnifiedSearchModulesSave&search_onlyin=' + encodeURIComponent(UnifiedSearch_form.search_onlyin.value),
+			url:'index.php?module=Home&action=HomeAjax&file=UnifiedSearchModulesSave&search_onlyin=' + encodeURIComponent(UnifiedSearch_form.search_onlyin.value)
 	}).done(function(response) {
 				// continue
 		}
@@ -377,7 +375,7 @@ function fetch_clock()
 {ldelim}
 	jQuery.ajax({ldelim}
 			method:"POST",
-			url:'index.php?module=Utilities&action=UtilitiesAjax&file=Clock',
+			url:'index.php?module=Utilities&action=UtilitiesAjax&file=Clock'
 	{rdelim}).done(function(response) {ldelim}
 				jQuery("#clock_cont").html(response);
 				execJS(jQuery('#clock_cont'));
@@ -389,7 +387,7 @@ function fetch_calc()
 {ldelim}
 	jQuery.ajax({ldelim}
 			method:"POST",
-			url:'index.php?module=Utilities&action=UtilitiesAjax&file=Calculator',
+			url:'index.php?module=Utilities&action=UtilitiesAjax&file=Calculator'
 	{rdelim}).done(function(response) {ldelim}
 				jQuery("#calculator_cont").html(response);
 				execJS(jQuery('#calculator_cont'));
@@ -415,11 +413,11 @@ function QCreate(qcoptions){
 		}
 		jQuery.ajax({
 				method:"POST",
-				url:'index.php?module='+module+'&action='+module+'Ajax&file=QuickCreate'+urlstr,
+				url:'index.php?module='+module+'&action='+module+'Ajax&file=QuickCreate'+urlstr
 		}).done(function(response) {
 					document.getElementById("status").style.display="none";
 					document.getElementById("qcform").style.display="inline";
-					document.getElementById("qcform").innerHTML = response.responseText;
+					document.getElementById("qcform").innerHTML = response;
 					// Evaluate all the script tags in the response text.
 					var scriptTags = document.getElementById("qcform").getElementsByTagName("script");
 					for(var i = 0; i< scriptTags.length; i++){
@@ -514,7 +512,7 @@ function vtiger_news(obj) {
 	document.getElementById('status').style.display = 'inline';
 	jQuery.ajax({
 			method:"POST",
-			url:'index.php?module=Home&action=HomeAjax&file=HomeNews',
+			url:'index.php?module=Home&action=HomeAjax&file=HomeNews'
 	}).done(function(response) {
 				jQuery("#vtigerNewsPopupLay").html(response);
 				fnvshobj(obj, 'vtigerNewsPopupLay');

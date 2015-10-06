@@ -178,8 +178,8 @@
 function CrearEnlace(tipo,id){
 
 	if(!checkAdvancedFilter()) return false;
-	var advft_criteria = encodeURIComponent($('advft_criteria').value);
-	var advft_criteria_groups = $('advft_criteria_groups').value;
+	var advft_criteria = encodeURIComponent(document.getElementById('advft_criteria').value);
+	var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
 
 	return "index.php?module=Reports&action="+tipo+"&record="+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups;
 
@@ -190,8 +190,8 @@ function goToURL(url) {
 }
 
 function saveReportAs(oLoc,divid) {
-	$('newreportname').value = '';
-	$('newreportdescription').value = '';
+	document.getElementById('newreportname').value = '';
+	document.getElementById('newreportdescription').value = '';
 	fnvshobj(oLoc,divid);
 }
 
@@ -199,19 +199,17 @@ function duplicateReport(id) {
 
 	VtigerJS_DialogBox.block();
 	
-	var newreportname = $('newreportname').value;
+	var newreportname = document.getElementById('newreportname').value;
 	if (trim(newreportname) == "") {
 		VtigerJS_DialogBox.unblock();
 		alert(alert_arr.MISSING_REPORT_NAME);
 		return false;
 	} else {
-		new Ajax.Request(
-				'index.php',
-				{queue: {position: 'end', scope: 'command'},
-				method: 'post',
-				postBody: 'action=ReportsAjax&mode=ajax&file=CheckReport&module=Reports&check=reportCheck&reportName='+encodeURIComponent(newreportname),
-				onComplete: function(response) {
-					if(response.responseText != 0) {
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?action=ReportsAjax&mode=ajax&file=CheckReport&module=Reports&check=reportCheck&reportName='+encodeURIComponent(newreportname)
+		}).done(function (response) {
+					if(response != 0) {
 						VtigerJS_DialogBox.unblock();
 						alert(alert_arr.REPORT_NAME_EXISTS);
 						return false;
@@ -219,28 +217,25 @@ function duplicateReport(id) {
 						createDuplicateReport(id);
 					}
 				}
-				}
 		);
 	}
 }
 
 function createDuplicateReport(id) {
-	var newreportname = $('newreportname').value;
-	var newreportdescription = $('newreportdescription').value;
-	var newreportfolder = $('reportfolder').value;
+	var newreportname = document.getElementById('newreportname').value;
+	var newreportdescription = document.getElementById('newreportdescription').value;
+	var newreportfolder = document.getElementById('reportfolder').value;
 	
 	if(!checkAdvancedFilter()) return false;
 
-	var advft_criteria = $('advft_criteria').value;
-	var advft_criteria_groups = $('advft_criteria_groups').value;
+	var advft_criteria = document.getElementById('advft_criteria').value;
+	var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
 	
-	new Ajax.Request(
-                'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                        method: 'post',
-                        postBody: 'action=ReportsAjax&file=DuplicateReport&mode=ajax&module=Reports&record='+id+'&newreportname='+encodeURIComponent(newreportname)+'&newreportdescription='+encodeURIComponent(newreportdescription)+'&newreportfolder='+newreportfolder+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups,
-                        onComplete: function(response) {
-							var responseArray = JSON.parse(response.responseText);
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?action=ReportsAjax&file=DuplicateReport&mode=ajax&module=Reports&record='+id+'&newreportname='+encodeURIComponent(newreportname)+'&newreportdescription='+encodeURIComponent(newreportdescription)+'&newreportfolder='+newreportfolder+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups
+			 }).done(function (response) {
+							var responseArray = JSON.parse(response);
 							if(trim(responseArray['errormessage']) != '') {
 								VtigerJS_DialogBox.unblock();
 								alert(resonseArray['errormessage']);
@@ -260,24 +255,21 @@ function generateReport(id) {
 	
 	VtigerJS_DialogBox.block();
 	
-	var advft_criteria = $('advft_criteria').value;
-	var advft_criteria_groups = $('advft_criteria_groups').value;
+	var advft_criteria = document.getElementById('advft_criteria').value;
+	var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
 
-	new Ajax.Request(
-                'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                        method: 'post',
-                        postBody: 'action=ReportsAjax&file=SaveAndRun&mode=ajax&module=Reports&submode=generateReport&record='+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups,
-                        onComplete: function(response) {
-							getObj('Generate').innerHTML = response.responseText;
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?action=ReportsAjax&file=SaveAndRun&mode=ajax&module=Reports&submode=generateReport&record='+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups,
+	}).done(function (response) {
+							getObj('Generate').innerHTML = response;
 							// Performance Optimization: To update record count of the report result 
-							var __reportrun_directoutput_recordcount_scriptnode = $('__reportrun_directoutput_recordcount_script');
+							var __reportrun_directoutput_recordcount_scriptnode = document.getElementById('__reportrun_directoutput_recordcount_script');
 							if(__reportrun_directoutput_recordcount_scriptnode) { eval(__reportrun_directoutput_recordcount_scriptnode.innerHTML); }
 							// END
 							VtigerJS_DialogBox.unblock();
-                        }
-                }
-        );
+					}
+		);
 }
 
 
@@ -287,24 +279,21 @@ function saveReportAdvFilter(id) {
 	
 	VtigerJS_DialogBox.block();
 	
-	var advft_criteria = $('advft_criteria').value;
-	var advft_criteria_groups = $('advft_criteria_groups').value;
+	var advft_criteria = document.getElementById('advft_criteria').value;
+	var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
 
-	new Ajax.Request(
-                'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                        method: 'post',
-                        postBody: 'action=ReportsAjax&file=SaveAndRun&mode=ajax&module=Reports&submode=saveCriteria&record='+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups,
-                        onComplete: function(response) {
-							getObj('Generate').innerHTML = response.responseText;
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?action=ReportsAjax&file=SaveAndRun&mode=ajax&module=Reports&submode=saveCriteria&record='+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups
+	}).done(function (response) {
+							getObj('Generate').innerHTML = response;
 							// Performance Optimization: To update record count of the report result 
-							var __reportrun_directoutput_recordcount_scriptnode = $('__reportrun_directoutput_recordcount_script');
+							var __reportrun_directoutput_recordcount_scriptnode = document.getElementById('__reportrun_directoutput_recordcount_script');
 							if(__reportrun_directoutput_recordcount_scriptnode) { eval(__reportrun_directoutput_recordcount_scriptnode.innerHTML); }
 							// END
 							VtigerJS_DialogBox.unblock();
-                        }
-                }
-        );
+					}
+			);
 }
 
 function selectReport() {
@@ -320,23 +309,20 @@ function SaveAsReport(id) {
 	if (reportname !== null  && reportname !=='' && reportname!== undefined) {
 		document.getElementById("newreportname").value = reportname;
 		VtigerJS_DialogBox.block();
-		var advft_criteria = $('advft_criteria').value;
-		var advft_criteria_groups = $('advft_criteria_groups').value;
-		new Ajax.Request(
-			'index.php',
-			{queue: {position: 'end', scope: 'command'},
-				method: 'post',
-				postBody: 'action=ReportsAjax&file=Save&mode=ajax&module=Reports&record='+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups+'&saveashidden=saveas&newreportname='+reportname,
-				onComplete: function(response) {
-                                    if(response.responseText.indexOf('Error')!=-1 ||response.responseText.indexOf('error')!=-1 )
-					getObj('Generate').innerHTML = response.responseText;
+		var advft_criteria = document.getElementById('advft_criteria').value;
+		var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
+		jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?action=ReportsAjax&file=Save&mode=ajax&module=Reports&record='+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups+'&saveashidden=saveas&newreportname='+reportname
+		}).done(function (response) {
+					if(response.indexOf('Error')!=-1 ||response.indexOf('error')!=-1 )
+					getObj('Generate').innerHTML = response;
 					// Performance Optimization: To update record count of the report result 
-					var __reportrun_directoutput_recordcount_scriptnode = $('__reportrun_directoutput_recordcount_script');
+					var __reportrun_directoutput_recordcount_scriptnode = document.getElementById('__reportrun_directoutput_recordcount_script');
 					if(__reportrun_directoutput_recordcount_scriptnode) { eval(__reportrun_directoutput_recordcount_scriptnode.innerHTML); }
 					// END
 					VtigerJS_DialogBox.unblock();
 				}
-			}
 		);
 	} else
 		alert(alert_arr.LBL_REPORT_NAME_ERROR);
@@ -346,8 +332,8 @@ function SaveAsReport(id) {
 function goToPrintReport(id) {ldelim}
 
 	if(!checkAdvancedFilter()) return false;
-	var advft_criteria = $('advft_criteria').value;
-	var advft_criteria_groups = $('advft_criteria_groups').value;
+	var advft_criteria = document.getElementById('advft_criteria').value;
+	var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
 	
 	window.open("index.php?module=Reports&action=ReportsAjax&file=PrintReport&record="+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups,"{$MOD.LBL_Print_REPORT}","width=800,height=650,resizable=1,scrollbars=1,left=100");
 {rdelim}

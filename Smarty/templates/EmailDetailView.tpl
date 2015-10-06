@@ -98,5 +98,5 @@
    </tr>
 </table>
 <script>
-$('attach_cont').innerHTML = $('attach_temp_cont').innerHTML;
+document.getElementById('attach_cont').innerHTML = document.getElementById('attach_temp_cont').innerHTML;
 </script>

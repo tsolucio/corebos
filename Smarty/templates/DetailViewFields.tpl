@@ -152,7 +152,7 @@
 		{elseif $keyid eq 69}<!-- for Image Reflection -->
 			<td align="left" width=25%>&nbsp;{$keyval}</td>
 		{elseif $keyid eq 10}<!-- for vtlib reference field -->
-			<td class="dvtCellInfo" align="left" width=25% onmouseover="vtlib_listview.trigger('cell.onmouseover', $(this));" onmouseout="vtlib_listview.trigger('cell.onmouseout', $(this))">&nbsp;{$keyval}</td>
+			<td class="dvtCellInfo" align="left" width=25% onmouseover="vtlib_listview.trigger('cell.onmouseover', this);" onmouseout="vtlib_listview.trigger('cell.onmouseout',this)">&nbsp;{$keyval}</td>
 		{else}
 			<td class="dvtCellInfo" align="left" width=25%>&nbsp;{$keyval}</td>
 		{/if}
