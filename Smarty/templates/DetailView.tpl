@@ -733,7 +733,7 @@ function getTagCloud()
 		jQuery.ajax({ldelim}
 				method:"POST",
 				url:'index.php?module={$MODULE}&action={$MODULE}Ajax&file=TagCloud&ajxaction=GETTAGCLOUD&recordid={$ID}',
-		{ldelim}).done(function(response) {ldelim}
+		{rdelim}).done(function(response) {ldelim}
 					jQuery("#tagfields").html(response);
 					jQuery("#txtbox_tagfields").val('');
 		{rdelim}

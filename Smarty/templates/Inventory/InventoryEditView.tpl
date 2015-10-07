@@ -31,7 +31,7 @@ function sensex_info()
 				jQuery.ajax({ldelim}
 							method:"POST",
 							url:'index.php?module={$MODULE}&action=Tickerdetail&tickersymbol='+Ticker,
-				{ldelim}).done(function(response) {ldelim}
+				{rdelim}).done(function(response) {ldelim}
 										document.getElementById('autocom').innerHTML = response;
 										document.getElementById('autocom').style.display="block";
 										document.getElementById("vtbusy_info").style.display="none";
