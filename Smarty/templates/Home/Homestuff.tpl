@@ -78,13 +78,13 @@ function fnAddWindow(obj,CurrObj){
 	tagName.style.left= left_Side + 2 + 'px';
 	tagName.style.top= top_Side + 22 + 'px';
 	tagName.style.display = 'block';
-	document.getElementById("addmodule").href="javascript:chooseType('Module');fnRemoveWindow();setFilter($('selmodule_id'))";
-	document.getElementById("addNotebook").href="javascript:chooseType('Notebook');fnRemoveWindow();show('addWidgetsDiv');placeAtCenter($('addWidgetsDiv'));";
+	document.getElementById("addmodule").href="javascript:chooseType('Module');fnRemoveWindow();setFilter(document.getElementById('selmodule_id'))";
+	document.getElementById("addNotebook").href="javascript:chooseType('Notebook');fnRemoveWindow();show('addWidgetsDiv');placeAtCenter(document.getElementById('addWidgetsDiv'));";
     document.getElementById("defaultwidget").href="javascript:chooseType('defaultwidget');fnRemoveWindow();";
-	//document.getElementById("addURL").href="javascript:chooseType('URL');fnRemoveWindow();show('addWidgetsDiv');placeAtCenter($('addWidgetsDiv'));";
+	//document.getElementById("addURL").href="javascript:chooseType('URL');fnRemoveWindow();show('addWidgetsDiv');placeAtCenter(document.getElementById('addWidgetsDiv'));";
 {/literal}
 {if $ALLOW_RSS eq "yes"}
-	document.getElementById("addrss").href="javascript:chooseType('RSS');fnRemoveWindow();show('addWidgetsDiv');placeAtCenter($('addWidgetsDiv'));";
+	document.getElementById("addrss").href="javascript:chooseType('RSS');fnRemoveWindow();show('addWidgetsDiv');placeAtCenter(document.getElementById('addWidgetsDiv'));";
 {/if}
 {if $ALLOW_DASH eq "yes"}
 	document.getElementById("adddash").href="javascript:chooseType('DashBoard');fnRemoveWindow()";

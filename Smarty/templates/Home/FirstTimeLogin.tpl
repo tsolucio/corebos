@@ -14,7 +14,7 @@
 			Getting started
 		</td>
 		<td align="right">
-			<a href="javascript:;" onclick='$("vtigerHelpWelcomePopupLay").style.display="none";VtigerJS_DialogBox.unblock();'><img src="{'help_close_black.png'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" width="13px" heigth="13px" style="padding-right:2px;"></a>
+			<a href="javascript:;" onclick='document.getElementById("vtigerHelpWelcomePopupLay").style.display="none";VtigerJS_DialogBox.unblock();'><img src="{'help_close_black.png'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" width="13px" heigth="13px" style="padding-right:2px;"></a>
 		</td>
 	</tr>
 	</table>
@@ -31,9 +31,9 @@
 
 {literal}
 <script type="text/javascript">
-Event.observe(window, 'load', function(){
+	jQuery( window ).load(function() {
 	if (typeof vtiger_help_welcome == 'function') {
-		vtiger_help_welcome($('vtigerHelpWelcomePopupLay'), $('vtigerHelpWelcomePopupContent'));
+		vtiger_help_welcome(document.getElementById('vtigerHelpWelcomePopupLay'), document.getElementById('vtigerHelpWelcomePopupContent'));
 	}
 });
 </script>
