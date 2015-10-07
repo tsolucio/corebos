@@ -155,7 +155,9 @@ $focus->parent_id = vtlib_purify($_REQUEST['parent_id']);
 $focus->parent_type = vtlib_purify($_REQUEST['parent_type']);
 $focus->column_fields["assigned_user_id"]=$current_user->id;
 $focus->column_fields["activitytype"]="Emails";
-$focus->column_fields["date_start"]= date(getNewDisplayDate());//This will be converted to db date format in save
+$new_date = new DateTimeField(null);
+$focus->column_fields["date_start"]= $new_date->getDisplayDate($current_user);//This will be converted to db date format in save
+$focus->column_fields["time_start"]= $new_date->getDisplayTime($current_user);
 if((!empty($_REQUEST['record'])&& $_REQUEST['send_mail']==false &&
 		!empty($_REQUEST['mode']))) {
 	$focus->mode = 'edit';

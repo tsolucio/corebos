@@ -363,6 +363,7 @@ $app_strings = array (
       'Type' => 'Tipo',
       'Start Date/Due Date' => 'Fecha de Inicio / Fin',
       'Date Sent' => 'Fecha de Envío',
+      'Time Sent' => 'Hora de Envío',
       'Ticket ID' => 'Código de Incidencia',
       'Status' => 'Estado',
       'Priority' => 'Prioridad',

@@ -362,6 +362,7 @@ $app_strings = array (
       'Type' => 'Tipo',
       'Start Date/Due Date' => 'Fecha de Inicio / Fin',
       'Date Sent' => 'Fecha de Envío',
+      'Time Sent' => 'Hora de Envío',
       'Ticket ID' => 'ID de Caso',
       'Status' => 'Estado',
       'Priority' => 'Prioridad',
