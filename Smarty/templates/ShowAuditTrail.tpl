@@ -46,16 +46,13 @@
 function getListViewEntries_js(module,url)
 {
 	var userid = document.getElementById('userid').value;
-        new Ajax.Request(
-                'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                        method: 'post',
-                        postBody: 'module=Settings&action=SettingsAjax&file=ShowAuditTrail&ajax=true&'+url+'&userid='+userid,
-                        onComplete: function(response) {
-                                $("AuditTrailContents").innerHTML= response.responseText;
-                        }
-                }
-        );
+		jQuery.ajax({
+				method:"POST",
+				url:'index.php?module=Settings&action=SettingsAjax&file=ShowAuditTrail&ajax=true&'+url+'&userid='+userid,
+		}).done(function(response) {
+				document.getElementById("AuditTrailContents").innerHTML= response;
+			}
+		);
 }
 </script>
 {/literal}

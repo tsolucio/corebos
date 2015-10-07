@@ -282,59 +282,53 @@
   var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 function ShowHidefn(divid)
 {ldelim}
-	if($(divid).style.display != 'none')
-		Effect.Fade(divid);
+	if(document.getElementById(divid).style.display != 'none')
+		jQuery("#"+divid).fadeOut();
 	else
-		Effect.Appear(divid);
+		jQuery("#"+divid).fadeIn();
 {rdelim}
 {literal}
 function fetchlogin_js(id)
 {
-	if($('login_history_cont').style.display != 'none')
-		Effect.Fade('login_history_cont');
+	if(document.getElementById('login_history_cont').style.display != 'none')
+		jQuery('#login_history_cont').fadeOut();
 	else
 		fetchLoginHistory(id);
 
 }
 function fetchLoginHistory(id)
 {
-        $("status").style.display="inline";
-        new Ajax.Request(
-                'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                        method: 'post',
-                        postBody: 'module=Users&action=UsersAjax&file=ShowHistory&ajax=true&record='+id,
-                        onComplete: function(response) {
-                                $("status").style.display="none";
-                                $("login_history_cont").innerHTML= response.responseText;
-				Effect.Appear('login_history_cont');
-                        }
-                }
-        );
+		document.getElementById("status").style.display="inline";
+		jQuery.ajax({
+				method:"POST",
+				url:'index.php?module=Users&action=UsersAjax&file=ShowHistory&ajax=true&record='+id
+		}).done(function(response) {
+				document.getElementById("status").style.display="none";
+				document.getElementById("login_history_cont").innerHTML= response;
+				jQuery('#login_history_cont').fadeIn();
+		}
+	);
 
 }
 function fetchGroups_js(id)
 {
-	if($('user_group_cont').style.display != 'none')
-		Effect.Fade('user_group_cont');
+	if(document.getElementById('user_group_cont').style.display != 'none')
+		jQuery('#user_group_cont').fadeOut();
 	else
 		fetchUserGroups(id);
 }
 function fetchUserGroups(id)
 {
-        $("status").style.display="inline";
-        new Ajax.Request(
-                'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                        method: 'post',
-                        postBody: 'module=Users&action=UsersAjax&file=UserGroups&ajax=true&record='+id,
-                        onComplete: function(response) {
-                                $("status").style.display="none";
-                                $("user_group_cont").innerHTML= response.responseText;
-				Effect.Appear('user_group_cont');
-                        }
-                }
-        );
+		document.getElementById("status").style.display="inline";
+		jQuery.ajax({
+				method:"POST",
+				url:'index.php?module=Users&action=UsersAjax&file=UserGroups&ajax=true&record='+id
+		}).done(function(response) {
+					document.getElementById("status").style.display="none";
+					document.getElementById("user_group_cont").innerHTML= response;
+					jQuery('#user_group_cont').fadeIn();
+			}
+		);
 
 }
 
@@ -346,24 +340,21 @@ function showAuditTrail()
 
 function deleteUser(userid)
 {
-        $("status").style.display="inline";
-        new Ajax.Request(
-                'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                        method: 'post',
-                        postBody: 'action=UsersAjax&file=UserDeleteStep1&return_action=ListView&return_module=Users&module=Users&parenttab=Settings&record='+userid,
-                        onComplete: function(response) {
-                                $("status").style.display="none";
-                                $("tempdiv").innerHTML= response.responseText;
-                        }
-                }
-        );
+		document.getElementById("status").style.display="inline";
+		jQuery.ajax({
+				method:"POST",
+				url:'index.php?action=UsersAjax&file=UserDeleteStep1&return_action=ListView&return_module=Users&module=Users&parenttab=Settings&record='+userid
+		}).done(function(response) {
+				document.getElementById("status").style.display="none";
+				document.getElementById("tempdiv").innerHTML= response;
+			}
+		);
 }
 function transferUser(del_userid)
 {
-        $("status").style.display="inline";
-        $("DeleteLay").style.display="none";
-        var trans_userid=$('transfer_user_id').options[$('transfer_user_id').options.selectedIndex].value;
+        document.getElementById("status").style.display="inline";
+        document.getElementById("DeleteLay").style.display="none";
+        var trans_userid=document.getElementById('transfer_user_id').options[document.getElementById('transfer_user_id').options.selectedIndex].value;
 	window.document.location.href = 'index.php?module=Users&action=DeleteUser&ajax_delete=false&delete_user_id='+del_userid+'&transfer_user_id='+trans_userid;
 }
 {/literal}
@@ -371,18 +362,15 @@ function transferUser(del_userid)
 <script>
 function getListViewEntries_js(module,url)
 {ldelim}
-	$("status").style.display="inline";
-        new Ajax.Request(
-        	'index.php',
-                {ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-                	method: 'post',
-                        postBody:"module="+module+"&action="+module+"Ajax&file=ShowHistory&record={$ID}&ajax=true&"+url,
-			onComplete: function(response) {ldelim}
-                        	$("status").style.display="none";
-                                $("login_history_cont").innerHTML= response.responseText;
-                  	{rdelim}
-                {rdelim}
-        );
+	document.getElementById("status").style.display="inline";
+        jQuery.ajax({ldelim}
+				method:"POST",
+				url:"index.php?module="+module+"&action="+module+"Ajax&file=ShowHistory&record={$ID}&ajax=true&"+url
+		{rdelim}).done(function(response) {ldelim}
+					document.getElementById("status").style.display="none";
+					document.getElementById("login_history_cont").innerHTML= response;
+		{rdelim}
+		);
 {rdelim}
 </script>
 
