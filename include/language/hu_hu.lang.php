@@ -10,12 +10,6 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
-/*********************************************************************************
- * $Header:  \include\language\hu_hu.lang.php - 19:16 2011.11.11. $
- * Description:  Defines the Hungarian language pack for the include section of vtiger 5.3.x
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
  * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
  ********************************************************************************/
 $app_strings = array(
@@ -362,6 +356,7 @@ $app_strings = array(
 	'Type' => 'Típus',
 	'Start Date/Due Date' => 'Kezdés/Határidő',
 	'Date Sent' => 'Elküldés Dátuma',
+	'Time Sent' => 'Time Sent',
 	'Ticket ID' => 'Kérés AZ',
 	'Status' => 'Állapot',
 	'Priority' => 'Prioritás',

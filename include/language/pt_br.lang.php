@@ -10,12 +10,6 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/include/language/en_us.lang.php,v 1.68 2005/04/26 06:50:39 rank Exp $
- * Description:  Defines the English language pack for the base application.
- * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese | 13/04/2012 |Curitiba/Paraná/Brasil.| www.ttcasolucoes.com.br
  ********************************************************************************/
 $app_strings = array (
@@ -363,6 +357,7 @@ $app_strings = array (
 'Type' => 'Tipo',
 'Start Date/Due Date' => 'Data Início/Data Vencimento',
 'Date Sent' => 'Data Envio',
+'Time Sent' => 'Hora Envio',
 'Ticket ID' => 'No. Ticket',
 'Status' => 'Status',
 'Priority' => 'Prioridade',

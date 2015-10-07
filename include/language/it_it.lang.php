@@ -445,6 +445,7 @@ $app_strings = array (
   'Type' => 'Tipo',
   'Start Date/Due Date' => 'Data Inizio/Data Chiusura',
   'Date Sent' => 'Data di Invio',
+  'Time Sent' => 'Time Sent',
   'Ticket ID' => 'Ticket Id',
   'Status' => 'Stato',
   'Priority' => 'Priorit&agrave;',
