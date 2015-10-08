@@ -87,7 +87,10 @@ $result = $adb->pquery($sql, array());
 //Handle for allowed organation logo/logoname likes UTF-8 Character
 $organization_logo = decode_html($adb->query_result($result,0,'logoname'));
 $smarty->assign("LOGO",$organization_logo);
-$smarty->assign("FAVICON",decode_html($adb->query_result($result,0,'faviconlogo')));
+if(decode_html($adb->query_result($result,0,'faviconlogo'))=='')
+$favicon='themes/images/favicon.ico';
+else $favicon='test/logo/'.decode_html($adb->query_result($result,0,'faviconlogo'));
+$smarty->assign("FAVICON",$favicon);
 $smarty->assign("FRONTLOGO",decode_html($adb->query_result($result,0,'frontlogo')));
 $companyDetails = array();
 $companyDetails['name'] = $adb->query_result($result,0,'organizationname');
