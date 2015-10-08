@@ -249,7 +249,7 @@ class ReportRun extends CRMEntity {
 				}
 			}
 		}
-		if ($outputformat == "HTML") $columnslist['vtiger_crmentity:crmid:LBL_ACTION:crmid:I'] = 'vtiger_crmentity.crmid AS "LBL_ACTION"' ;
+		$columnslist['vtiger_crmentity:crmid:LBL_ACTION:crmid:I'] = 'vtiger_crmentity.crmid AS "LBL_ACTION"' ;
 		// Save the information
 		$this->_columnslist = $columnslist;
 
@@ -2190,7 +2190,7 @@ class ReportRun extends CRMEntity {
 				do
 				{
 					$arraylists = Array();
-					for ($i=0; $i<$y; $i++)
+					for ($i=0; $i<$y-1; $i++) //No tratamos la última columna por ser el ACTION con el CRMID.
 					{
 						$fld = $adb->field_name($result, $i);
 						$fld_type = $column_definitions[$i]->type;
