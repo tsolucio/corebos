@@ -92,6 +92,10 @@ $companyDetails = array();
 $companyDetails['name'] = $adb->query_result($result,0,'organizationname');
 $companyDetails['website'] = $adb->query_result($result,0,'website');
 $companyDetails['logo'] = decode_html($adb->query_result($result,0,'logoname'));
+if(decode_html($adb->query_result($result,0,'faviconlogo'))=='')
+$favicon='themes/images/favicon.ico';
+else $favicon='test/logo/'.decode_html($adb->query_result($result,0,'faviconlogo'));
+$companyDetails['favicon'] = $favicon;
 $smarty->assign("COMPANY_DETAILS",$companyDetails);
 
 if(isset($login_error) && $login_error != "") {
