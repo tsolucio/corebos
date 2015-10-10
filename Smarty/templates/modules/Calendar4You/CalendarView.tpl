@@ -100,7 +100,7 @@ Calendar_Event_Types = {literal}{
                  
                  var view_val = jQuery('#calendar_div').fullCalendar('getView'); 
 
-                 $("status").style.display="inline";
+                 document.getElementById("status").style.display="inline";
                  
                  jQuery.ajax({
                             url: 'index.php',
@@ -161,7 +161,7 @@ Calendar_Event_Types = {literal}{
                                 
                                 callback(events);
                                 
-                                $("status").style.display="none";
+                                document.getElementById("status").style.display="none";
                             }
                         });
                 }

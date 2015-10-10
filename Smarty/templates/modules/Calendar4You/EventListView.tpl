@@ -114,27 +114,24 @@ function callSearch(searchtype) {ldelim}
                 urlstring = 'search_field='+search_fld_val+'&searchtype=BasicSearch&search_text='+search_txt_val+'&';
         {rdelim} else if(searchtype == 'Advanced') {ldelim}
         		checkAdvancedFilter();
-				var advft_criteria = $('advft_criteria').value;
-				var advft_criteria_groups = $('advft_criteria_groups').value;
+				var advft_criteria = document.getElementById('advft_criteria').value;
+				var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
 				urlstring += '&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups+'&';
 				urlstring += 'searchtype=advance&'
         {rdelim}
-    $("status").style.display="inline";
-	new Ajax.Request(
-		'index.php',
-		{ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-			method: 'post',
-			postBody:urlstring +'query=true&file=ListView&module={$MODULE}&action={$MODULE}Ajax&ajax=true&search=true',
-			onComplete: function(response) {ldelim}
-								$("status").style.display="none";
-                                result = response.responseText.split('&#&#&#');
-                                $("ListViewContents").innerHTML= result[2];
-                                if(result[1] != '')
-                                        alert(result[1]);
-				$('basicsearchcolumns').innerHTML = '';
-			{rdelim}
-	       {rdelim}
-        );
+    document.getElementById("status").style.display="inline";
+	jQuery.ajax({ldelim}
+			method:"POST",
+			url:'index.php?'+urlstring +'query=true&file=ListView&module={$MODULE}&action={$MODULE}Ajax&ajax=true&search=true'
+	{rdelim}).done(function(response) {ldelim}
+				document.getElementById("status").style.display="none";
+				result = response.split('&#&#&#');
+				document.getElementById("ListViewContents").innerHTML= result[2];
+				if(result[1] != '')
+						alert(result[1]);
+				document.getElementById('basicsearchcolumns').innerHTML = '';
+		{rdelim}
+		);
 	return false; 
 {rdelim}
 
@@ -146,20 +143,17 @@ function alphabetic(module,url,dataid) {ldelim}
 
         {rdelim}
         getObj(dataid).className = 'searchAlphselected';
-	$("status").style.display="inline";
-	new Ajax.Request(
-		'index.php',
-		{ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-			method: 'post',
-			postBody: 'module='+module+'&action='+module+'Ajax&file=ListView&ajax=true&search=true&'+url,
-			onComplete: function(response) {ldelim}
-				$("status").style.display="none";
-				result = response.responseText.split('&#&#&#');
-				$("ListViewContents").innerHTML= result[2];
+	document.getElementById("status").style.display="inline";
+	jQuery.ajax({ldelim}
+			method:"POST",
+			url:'index.php?module='+module+'&action='+module+'Ajax&file=ListView&ajax=true&search=true&'+url
+	{rdelim}).done(function(response) {ldelim}
+				document.getElementById("status").style.display="none";
+				result = response.split('&#&#&#');
+				document.getElementById("ListViewContents").innerHTML= result[2];
 				if(result[1] != '')
-			                alert(result[1]);
-				$('basicsearchcolumns').innerHTML = '';
-			{rdelim}
+					alert(result[1]);
+				document.getElementById('basicsearchcolumns').innerHTML = '';
 		{rdelim}
 	);
 {rdelim}
@@ -612,7 +606,7 @@ function alphabetic(module,url,dataid) {ldelim}
 <script>
 {literal} 
 function ajaxChangeStatus(statusname){
-	$("status").style.display="inline";
+	document.getElementById("status").style.display="inline";
 	var viewid = document.massdelete.viewname.value;
 	var excludedRecords=document.getElementById("excludedRecords").value;
 	var idstring = document.getElementById('allselectedboxes').value;
@@ -622,7 +616,7 @@ function ajaxChangeStatus(statusname){
 		var urlstring ="module=Users&action=updateLeadDBStatus&return_module=Leads"+url+"&viewname="+viewid+"&idlist="+idstring+"&excludedRecords="+excludedRecords;
 	} else if(statusname == 'owner') {
 		
-	   if($("user_checkbox").checked) {
+	   if(document.getElementById("user_checkbox").checked) {
 		    fninvsh('changeowner');
 		    var url='&owner_id='+document.getElementById('lead_owner').options[document.getElementById('lead_owner').options.selectedIndex].value+'&owner_type=User';
 		    {/literal}
@@ -636,21 +630,17 @@ function ajaxChangeStatus(statusname){
     		    {literal}
         }   
 	}
-	new Ajax.Request(
-                'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                        method: 'post',
-                        postBody: urlstring,
-                        onComplete: function(response) {
-                                $("status").style.display="none";
-                                result = response.responseText.split('&#&#&#');
-                                $("ListViewContents").innerHTML= result[2];
-                                if(result[1] != '')
-                                        alert(result[1]);
-				$('basicsearchcolumns').innerHTML = '';
-                        }
-                }
-        );
+	jQuery.ajax({
+			method:"POST",
+			url:'index.php?'+ urlstring
+	}).done(function(response) {
+			document.getElementById("status").style.display="none";
+			result = response.split('&#&#&#');
+			document.getElementById("ListViewContents").innerHTML= result[2];
+			if(result[1] != '')
+				alert(result[1]);
+			document.getElementById('basicsearchcolumns').innerHTML = '';
+	});
 }
 </script>
 {/literal}

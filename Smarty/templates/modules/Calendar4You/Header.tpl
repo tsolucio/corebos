@@ -196,7 +196,7 @@
 				<table border=0 celspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
 				<tr>
 					<td align="right" nowrap class="cellLabel small">
-						<input class="small" type='radio' name='exportCalendar' value = 'iCal' onclick="$('ics_filename').removeAttribute('disabled');" checked /> iCal Format
+						<input class="small" type='radio' name='exportCalendar' value = 'iCal' onclick="document.getElementById('ics_filename').removeAttribute('disabled');" checked /> iCal Format
 					</td>
 					<td align="left">
 						<input class="small" type='text' name='ics_filename' id='ics_filename' size='25' value='vtiger.calendar'/>
@@ -320,21 +320,18 @@
 <script type='text/javascript'>
 {literal}
 function UnifiedSearch_SelectModuleForm(obj) {
-	if($('UnifiedSearch_moduleform')) {
+	if(document.getElementById('UnifiedSearch_moduleform')) {
 		// If we have loaded the form already.
 		UnifiedSearch_SelectModuleFormCallback(obj);
 	} else {
-		$('status').show();
-		new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody: 'module=Home&action=HomeAjax&file=UnifiedSearchModules&ajax=true',
-			onComplete: function(response) {
-				$('status').hide();
-				$('UnifiedSearch_moduleformwrapper').innerHTML = response.responseText;
+		document.getElementById('status').style.display="inline";
+		jQuery.ajax({
+				method:"POST",
+				url:'index.php?module=Home&action=HomeAjax&file=UnifiedSearchModules&ajax=true'
+		}).done(function(response) {
+				document.getElementById('status').style.display="none";
+				document.getElementById('UnifiedSearch_moduleformwrapper').innerHTML = response;
 				UnifiedSearch_SelectModuleFormCallback(obj);
-			}
 		});
 	}
 }
@@ -342,20 +339,17 @@ function UnifiedSearch_SelectModuleFormCallback(obj) {
 	fnvshobjsearch(obj, 'UnifiedSearch_moduleformwrapper');
 }
 function UnifiedSearch_SelectModuleToggle(flag) {
-	Form.getElements($('UnifiedSearch_moduleform')).each(
-		function(element) {
-			if(element.type == 'checkbox') {
-				element.checked = flag;
+	jQuery('#UnifiedSearch_moduleform input[type=checkbox]').each(function() {
+			this.checked = flag;
 			}
-		}
 	);
 }
 function UnifiedSearch_SelectModuleCancel() {
-	$('UnifiedSearch_moduleformwrapper').hide();
+	document.getElementById('UnifiedSearch_moduleformwrapper').style.display="none";
 }
 function UnifiedSearch_SelectModuleSave() {
 	var UnifiedSearch_form = document.forms.UnifiedSearch;
-	UnifiedSearch_form.search_onlyin.value = Form.serialize($('UnifiedSearch_moduleform')).replace(/search_onlyin=/g, '').replace(/&/g,',');
+	UnifiedSearch_form.search_onlyin.value = jQuery('#UnifiedSearch_moduleform').serialize().replace(/search_onlyin=/g, '').replace(/&/g,',');
 	UnifiedSearch_SelectModuleCancel();
 }
 
@@ -367,32 +361,24 @@ function UnifiedSearch_SelectModuleSave() {
 var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 var gVTTheme  = '{$THEME}';
 function fetch_clock() {ldelim}
-	new Ajax.Request(
-		'index.php',
-		{ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-			method: 'post',
-			postBody: 'module=Utilities&action=UtilitiesAjax&file=Clock',
-			onComplete: function(response)
-				    {ldelim}
-					$("clock_cont").innerHTML=response.responseText;
-					execJS($('clock_cont'));
-				    {rdelim}
+	jQuery.ajax({ldelim}
+			method:"POST",
+			url:'index.php?module=Utilities&action=UtilitiesAjax&file=Clock'
+	{rdelim}).done(function(response) {ldelim}
+				document.getElementById("clock_cont").innerHTML=response;
+				execJS(document.getElementById('clock_cont'));
 		{rdelim}
 	);
 
 {rdelim}
 
 function fetch_calc() {ldelim}
-	new Ajax.Request(
-		'index.php',
-		{ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-			method: 'post',
-			postBody: 'module=Utilities&action=UtilitiesAjax&file=Calculator',
-			onComplete: function(response)
-					{ldelim}
-						$("calculator_cont").innerHTML=response.responseText;
-						execJS($('calculator_cont'));
-					{rdelim}
+	jQuery.ajax({ldelim}
+			method:"POST",
+			url:'index.php?module=Utilities&action=UtilitiesAjax&file=Calculator'
+	{rdelim}).done(function(response) {ldelim}
+						document.getElementById("calculator_cont").innerHTML=response;
+						execJS(document.getElementById('calculator_cont'));
 		{rdelim}
 	);
 {rdelim}
@@ -403,7 +389,7 @@ function fetch_calc() {ldelim}
 function QCreate(qcoptions){
 	var module = qcoptions.options[qcoptions.options.selectedIndex].value;
 	if(module != 'none'){
-		$("status").style.display="inline";
+		document.getElementById("status").style.display="inline";
 		if(module == 'Events'){
 			module = 'Calendar';
 			var urlstr = '&activity_mode=Events';
@@ -413,26 +399,22 @@ function QCreate(qcoptions){
 		}else{
 			var urlstr = '';
 		}
-		new Ajax.Request(
-			'index.php',
-				{queue: {position: 'end', scope: 'command'},
-				method: 'post',
-				postBody: 'module='+module+'&action='+module+'Ajax&file=QuickCreate'+urlstr,
-				onComplete: function(response){
-					$("status").style.display="none";
-					$("qcform").style.display="inline";
-					$("qcform").innerHTML = response.responseText;
+		jQuery.ajax({
+				method:"POST",
+				url:'index.php?module='+module+'&action='+module+'Ajax&file=QuickCreate'+urlstr
+		}).done(function(response) {
+					document.getElementById("status").style.display="none";
+					document.getElementById("qcform").style.display="inline";
+					document.getElementById("qcform").innerHTML = response;
 					// Evaluate all the script tags in the response text.
-					var scriptTags = $("qcform").getElementsByTagName("script");
+					var scriptTags = document.getElementById("qcform").getElementsByTagName("script");
 					for(var i = 0; i< scriptTags.length; i++){
 						var scriptTag = scriptTags[i];
 						eval(scriptTag.innerHTML);
 					}
-                    eval($("qcform"));
-                    posLay(qcoptions, "qcform");
-				}
-			}
-		);
+					eval(document.getElementById("qcform"));
+					posLay(qcoptions, "qcform");
+		});
 	}else{
 		hide('qcform');
 	}
@@ -541,19 +523,15 @@ function vtiger_feedback() {
 <script type="text/javascript">
 {literal}
 function vtiger_news(obj) {
-	$('status').style.display = 'inline';
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody: 'module=Home&action=HomeAjax&file=HomeNews',
-			onComplete: function(response) {
-				$("vtigerNewsPopupLay").innerHTML=response.responseText;
+	document.getElementById('status').style.display = 'inline';
+	jQuery.ajax({
+				method:"POST",
+				url:'index.php?module=Home&action=HomeAjax&file=HomeNews'
+	}).done(function(response) {
+				document.getElementById("vtigerNewsPopupLay").innerHTML=response;
 				fnvshobj(obj, 'vtigerNewsPopupLay');
-				$('status').style.display = 'none';
-			}
-		}
-	);
+				document.getElementById('status').style.display = 'none';
+	});
 
 }
 {/literal}
