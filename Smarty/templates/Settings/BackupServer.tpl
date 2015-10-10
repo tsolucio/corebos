@@ -201,13 +201,11 @@ if(type == 'Local'){
 
 function clearBackupServer(Obj)
 {
-	new Ajax.Request('index.php',
-		{queue: {position: 'end', scope: 'command'},
-		 method: 'post',
-		 postBody: 'module=Settings&action=SettingsAjax&ajax=true&file=BackupServerConfig&opmode=del',
-		 onComplete: function(response) {
-			$("BackupServerContents").innerHTML=response.responseText;
-		 }
+	jQuery.ajax({
+			method:"POST",
+			url:'index.php?module=Settings&action=SettingsAjax&ajax=true&file=BackupServerConfig&opmode=del'
+	}).done(function(response) {
+			document.getElementById("BackupServerContents").innerHTML=response;
 	});
 	backupenabled(Obj);
 }
@@ -215,91 +213,81 @@ function clearBackupServer(Obj)
 function backupenabled(ochkbox)
 {
 	if(ochkbox.checked == true) {
-		$('bckcontents').style.display='block';
+		document.getElementById('bckcontents').style.display='block';
 		var status='enabled';
-		$('view_info').innerHTML = alert_arr.MSG_FTP_BACKUP_ENABLED+', ' + alert_arr.MSG_CONFIRM_FTP_DETAILS;
-		$('view_info').style.display = 'block';
-		$("ftp_buttons").style.display="block";
+		document.getElementById('view_info').innerHTML = alert_arr.MSG_FTP_BACKUP_ENABLED+', ' + alert_arr.MSG_CONFIRM_FTP_DETAILS;
+		document.getElementById('view_info').style.display = 'block';
+		document.getElementById("ftp_buttons").style.display="block";
 
-		new Ajax.Request('index.php',
-			{queue: {position: 'end', scope: 'command'},
-			 method: 'post',
-			 postBody: 'module=Settings&action=SettingsAjax&file=SaveEnableBackup&ajax=true&GetBackupDetail=true&servertype=ftp_backup',
-			 onComplete: function(response) {
-				if(response.responseText.indexOf('FAILURE') > -1) {
+		jQuery.ajax({
+			method:"POST",
+			url:'index.php?module=Settings&action=SettingsAjax&file=SaveEnableBackup&ajax=true&GetBackupDetail=true&servertype=ftp_backup'
+		}).done(function(response) {
+				if(response.indexOf('FAILURE') > -1) {
 					document.location.href = "index.php?module=Settings&parenttab=Settings&action=BackupServerConfig&bkp_server_mode=edit";
 					return false;
 				}
-			 }
 		});
 	} else {
-		$('bckcontents').style.display='none';
+		document.getElementById('bckcontents').style.display='none';
 		var status = 'disabled';
-		$('view_info').innerHTML = alert_arr.MSG_FTP_BACKUP_DISABLED;
-		$('view_info').style.display = 'block';
-		$("ftp_buttons").style.display="none";
+		document.getElementById('view_info').innerHTML = alert_arr.MSG_FTP_BACKUP_DISABLED;
+		document.getElementById('view_info').style.display = 'block';
+		document.getElementById("ftp_buttons").style.display="none";
 	}
 
-	new Ajax.Request('index.php',
-		{queue: {position: 'end', scope: 'command'},
-		 method: 'post',
-		 postBody: 'module=Settings&action=SettingsAjax&file=SaveEnableBackup&ajax=true&enable_ftp_backup='+status,
-		 onComplete: function(response) {
-			$("status").style.display="none";
-		 }
+	jQuery.ajax({
+			method:"POST",
+			url:'index.php?module=Settings&action=SettingsAjax&file=SaveEnableBackup&ajax=true&enable_ftp_backup='+status
+	}).done(function(response) {
+			document.getElementById("status").style.display="none";
 	});
 	setTimeout("hide('view_info')",3000);
 }
 
 function backupenable_check()
 {
-	new Ajax.Request('index.php',
-		{queue: {position: 'end', scope: 'command'},
-		 method: 'post',
-		 postBody: 'module=Settings&action=SettingsAjax&file=SaveEnableBackup&ajax=true&GetBackupDetail=true&servertype=ftp_backup',
-		 onComplete: function(response) {
-			if(response.responseText.indexOf('FAILURE') > -1) {
+	jQuery.ajax({
+			method:"POST",
+			url:'index.php?module=Settings&action=SettingsAjax&file=SaveEnableBackup&ajax=true&GetBackupDetail=true&servertype=ftp_backup'
+	}).done(function(response) {
+			if(response.indexOf('FAILURE') > -1) {
 				document.forms['tandc'].enable_ftp_backup.checked = false;
 				backupenabled(document.tandc.enable_ftp_backup);
 				window.history.back();
 			}
-		 }
 	});
 }
 
 function localbackupenabled(ochkbox)
 {
 	if(ochkbox.checked == true) {
-		$('localbackup_buttons').style.display='block';
-		$('localbackup_fields').style.display='block';
+		document.getElementById('localbackup_buttons').style.display='block';
+		document.getElementById('localbackup_fields').style.display='block';
 		var status='enabled';
-		$('view_info').innerHTML = alert_arr.MSG_LOCAL_BACKUP_ENABLED+', '+alert_arr.MSG_CONFIRM_PATH;
-		$('view_info').style.display = 'block';
-		new Ajax.Request('index.php',
-			{queue: {position: 'end', scope: 'command'},
-			 method: 'post',
-			 postBody: 'module=Settings&action=SettingsAjax&file=SaveEnableBackup&ajax=true&GetBackupDetail=true&servertype=local_backup',
-			 onComplete: function(response) {
-				if(response.responseText.indexOf('FAILURE') > -1) {
+		document.getElementById('view_info').innerHTML = alert_arr.MSG_LOCAL_BACKUP_ENABLED+', '+alert_arr.MSG_CONFIRM_PATH;
+		document.getElementById('view_info').style.display = 'block';
+		jQuery.ajax({
+			method:"POST",
+			url:'index.php?module=Settings&action=SettingsAjax&file=SaveEnableBackup&ajax=true&GetBackupDetail=true&servertype=local_backup'
+		}).done(function(response) {
+				if(response.indexOf('FAILURE') > -1) {
 					document.location.href = "index.php?module=Settings&parenttab=Settings&action=BackupServerConfig&local_server_mode=edit";
 					return false;
 				}
-			 }
 		});
 	} else {
-		$('localbackup_buttons').style.display='none';
-		$('localbackup_fields').style.display='none';
+		document.getElementById('localbackup_buttons').style.display='none';
+		document.getElementById('localbackup_fields').style.display='none';
 		var status = 'disabled';
-		$('view_info').innerHTML = alert_arr.MSG_LOCAL_BACKUP_DISABLED;
-		$('view_info').style.display = 'block';
+		document.getElementById('view_info').innerHTML = alert_arr.MSG_LOCAL_BACKUP_DISABLED;
+		document.getElementById('view_info').style.display = 'block';
 	}
-	new Ajax.Request('index.php',
-		{queue: {position: 'end', scope: 'command'},
-		 method: 'post',
-		 postBody: 'module=Settings&action=SettingsAjax&file=SaveEnableBackup&ajax=true&enable_local_backup='+status,
-		 onComplete: function(response) {
-			$("status").style.display="none";
-		 }
+	jQuery.ajax({
+			method:"POST",
+			url:'index.php?module=Settings&action=SettingsAjax&file=SaveEnableBackup&ajax=true&enable_local_backup='+status
+	}).done(function(response) {
+			document.getElementById("status").style.display="none";
 	});
 	setTimeout("hide('view_info')",3000);
 }

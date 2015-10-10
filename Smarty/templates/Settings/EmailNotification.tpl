@@ -101,44 +101,34 @@ DIV.fixedLay {
 <script>
 function fetchSaveNotify(id)
 {
-	$("editdiv").style.display="none";
-	$("status").style.display="inline";
-	var active = $("notify_status").options[$("notify_status").options.selectedIndex].value;
-	var subject = $("notifysubject").value;
-        var body = $("notifybody").value;
-	new Ajax.Request(
-                'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                        method: 'post',
-                        postBody: 'action=SettingsAjax&module=Settings&file=SaveNotification&active='+active+'&notifysubject='+subject+'&notifybody='+body+'&record='+id,
-                        onComplete: function(response) {
-					if(response.responseText.indexOf(":#:FAILURE") > -1)
-					{
-						alert(alert_arr.VALID_DATA);
-					}else
-					{
-						$("notifycontents").innerHTML=response.responseText;
-					}
-                                $("status").style.display="none";
-                        }
-                }
-        );
+	document.getElementById("editdiv").style.display="none";
+	document.getElementById("status").style.display="inline";
+	var active = document.getElementById("notify_status").options[document.getElementById("notify_status").options.selectedIndex].value;
+	var subject = document.getElementById("notifysubject").value;
+	var body = document.getElementById("notifybody").value;
+	jQuery.ajax({
+			method:"POST",
+			url:'index.php?action=SettingsAjax&module=Settings&file=SaveNotification&active='+active+'&notifysubject='+subject+'&notifybody='+body+'&record='+id
+	}).done(function(response) {
+			if(response.responseText.indexOf(":#:FAILURE") > -1) {
+				alert(alert_arr.VALID_DATA);
+			} else {
+				document.getElementById("notifycontents").innerHTML=response;
+			}
+			document.getElementById("status").style.display="none";
+	});
 }
 
 function fetchEditNotify(id)
 {
-	$("status").style.display="inline";
-	new Ajax.Request(
-                'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                        method: 'post',
-                        postBody:'action=SettingsAjax&module=Settings&file=EditNotification&record='+id,
-                        onComplete: function(response) {
-                                $("status").style.display="none";
-                                $("editdiv").innerHTML=response.responseText;
-                        }
-                }
-        );
+	document.getElementById("status").style.display="inline";
+	jQuery.ajax({
+			method:"POST",
+			url:'index.php?action=SettingsAjax&module=Settings&file=EditNotification&record='+id
+	}).done(function(response) {
+				document.getElementById("status").style.display="none";
+				document.getElementById("editdiv").innerHTML=response;
+	});
 }
 </script>
 {/literal}

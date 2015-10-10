@@ -96,38 +96,30 @@ DIV.fixedLay {
 <script>
 function fetchSaveNotify(id)
 {
-	$("editdiv").style.display="none";
-	$("status").style.display="inline";
-	var subject = $("notifysubject").value;
-        var body = $("notifybody").value;
-        var status = $("notify_status").value;
-        new Ajax.Request(
-                'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                        method: 'post',
-                        postBody: 'action=SettingsAjax&module=Settings&file=SaveInventoryNotification&notifysubject='+subject+'&notifybody='+body+'&record='+id+'&status='+status,
-                        onComplete: function(response) {
-                                $("status").style.display="none";
-                $("notifycontents").innerHTML=response.responseText;
-                        }
-                }
-        );
+	document.getElementById("editdiv").style.display="none";
+	document.getElementById("status").style.display="inline";
+	var subject = document.getElementById("notifysubject").value;
+		var body = document.getElementById("notifybody").value;
+		var status = document.getElementById("notify_status").value;
+		jQuery.ajax({
+			method:"POST",
+			url:'index.php?action=SettingsAjax&module=Settings&file=SaveInventoryNotification&notifysubject='+subject+'&notifybody='+body+'&record='+id+'&status='+status
+		}).done(function(response) {
+				document.getElementById("status").style.display="none";
+				document.getElementById("notifycontents").innerHTML=response;
+		});
 }
 
 function fetchEditNotify(id)
 {
-	$("status").style.display="inline";
-	new Ajax.Request(
-                'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                        method: 'post',
-                        postBody: 'action=SettingsAjax&module=Settings&file=EditInventoryNotification&record='+id,
-                        onComplete: function(response) {
-                                $("status").style.display="none";
-				$("editdiv").innerHTML=response.responseText;
-                        }
-                }
-        );
+	document.getElementById("status").style.display="inline";
+	jQuery.ajax({
+			method:"POST",
+			url:'index.php?action=SettingsAjax&module=Settings&file=EditInventoryNotification&record='+id
+	}).done(function(response) {
+			document.getElementById("status").style.display="none";
+			document.getElementById("editdiv").innerHTML=response;
+	});
 }
 </script>
 {/literal}
