@@ -123,7 +123,7 @@ function fetchLoginHistory(id) {
 	var oUser_combo = document.getElementById('user_list');
 	var id = oUser_combo.options[oUser_combo.selectedIndex].value;
 	if (id == 'none') {
-		jQuery('#login_history_cont').fadeIn();
+		jQuery('#login_history_cont').fadeOut();
 	}
 	else {
 		document.getElementById("status").style.display = "inline";

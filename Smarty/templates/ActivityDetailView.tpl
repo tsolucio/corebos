@@ -81,8 +81,8 @@ jQuery.ajax({
 
 function DeleteTag(id,recordid)
 {ldelim}
-		jQuery("#vtbusy_info").css({'display':"inline"});
-		jQuery('#tag_'+id).fadeIn();
+		document.getElementById("vtbusy_info").style.display="inline";
+		jQuery('#tag_'+id).fadeOut();
 		
 		jQuery.ajax({ldelim}
 		 method:"POST",

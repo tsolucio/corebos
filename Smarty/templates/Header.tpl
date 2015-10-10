@@ -202,7 +202,7 @@ var gVTUserID = '{$CURRENT_USER_ID}';
 				<table border=0 celspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
 				<tr>
 					<td align="right" nowrap class="cellLabel small">
-						<input class="small" type='radio' name='exportCalendar' value = 'iCal' onclick="jQuery('ics_filename').removeAttr('disabled');" checked /> iCal Format
+						<input class="small" type='radio' name='exportCalendar' value = 'iCal' onclick="jQuery('#ics_filename').removeAttr('disabled');" checked /> iCal Format
 					</td>
 					<td align="left">
 						<input class="small" type='text' name='ics_filename' id='ics_filename' size='25' value='{php}global $coreBOS_app_name; echo $coreBOS_app_name;{/php}.calendar'/>
@@ -348,15 +348,14 @@ function UnifiedSearch_SelectModuleToggle(flag) {
 	jQuery('#UnifiedSearch_moduleform input[type=checkbox]').each(function() {
 			this.checked = flag;
 			}
-		}
 	);
 }
 function UnifiedSearch_SelectModuleCancel() {
-	jQuery('UnifiedSearch_moduleformwrapper').hide();
+	jQuery('#UnifiedSearch_moduleformwrapper').hide();
 }
 function UnifiedSearch_SelectModuleSave() {
 	var UnifiedSearch_form = document.forms.UnifiedSearch;
-	UnifiedSearch_form.search_onlyin.value = jQuery('UnifiedSearch_moduleform').serialize().replace(/search_onlyin=/g, '').replace(/&/g,',');
+	UnifiedSearch_form.search_onlyin.value = jQuery('#UnifiedSearch_moduleform').serialize().replace(/search_onlyin=/g, '').replace(/&/g,',');
 	jQuery.ajax({
 			method:"POST",
 			url:'index.php?module=Home&action=HomeAjax&file=UnifiedSearchModulesSave&search_onlyin=' + encodeURIComponent(UnifiedSearch_form.search_onlyin.value)

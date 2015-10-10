@@ -135,7 +135,7 @@ function callSearch(searchtype)
 				urlstring += '&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups+'&';
 				urlstring += 'searchtype=advance&'
 		{rdelim}
-	jQuery("#status").css({'display':"inline"});
+	document.getElementById("status").style.display="inline";
 	jQuery.ajax({ldelim}
 		method:"POST",
 		url:'index.php?'+urlstring +'query=true&file=ListView&module={$MODULE}&action={$MODULE}Ajax&ajax=true&search=true',
@@ -160,7 +160,7 @@ function alphabetic(module,url,dataid)
 
 		{rdelim}
 		getObj(dataid).className = 'searchAlphselected';
-	jQuery("#status").css({'display':"inline"});
+	document.getElementById("status").style.display="inline";
 	jQuery.ajax({ldelim}
 				method:"POST",
 				url:'index.php?module='+module+'&action='+module+'Ajax&file=ListView&ajax=true&search=true&'+url,
@@ -172,7 +172,6 @@ function alphabetic(module,url,dataid)
 							alert(result[1]);
 				jQuery('#basicsearchcolumns').html('');
 			{rdelim}
-		{rdelim}
 	);
 {rdelim}
 
@@ -640,7 +639,7 @@ function alphabetic(module,url,dataid)
 {literal}
 
 function ajaxChangeStatus(statusname){
-	jQuery("#status").css({'display':"inline"});
+	document.getElementById("status").style.display="inline";
 	var viewid = document.massdelete.viewname.value;
 	var excludedRecords=document.getElementById("excludedRecords").value;
 	var idstring = document.getElementById('allselectedboxes').value;

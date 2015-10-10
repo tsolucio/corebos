@@ -31,7 +31,7 @@ function tagvalidate()
 function DeleteTag(id,recordid)
 {ldelim}
 	document.getElementById("vtbusy_info").style.display="inline";
-	jQuery('#tag_'+id).fadeIn();
+	jQuery('#tag_'+id).fadeOut();
 	jQuery.ajax({ldelim}
 			method:"POST",
 			url:"index.php?file=TagCloud&module={$MODULE}&action={$MODULE}Ajax&ajxaction=DELETETAG&recordid="+recordid+"&tagid=" +id,
