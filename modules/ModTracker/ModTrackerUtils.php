@@ -4,7 +4,7 @@ require_once 'vtlib/Vtiger/Module.php';
 require_once dirname(__FILE__) .'/ModTracker.php';
 class ModTrackerUtils
 {
-	function modTrac_changeModuleVisibility($tabid,$status) {
+	static function modTrac_changeModuleVisibility($tabid,$status) {
 		if($status == 'module_disable'){
 			ModTracker::disableTrackingForModule($tabid);
 		} else {
