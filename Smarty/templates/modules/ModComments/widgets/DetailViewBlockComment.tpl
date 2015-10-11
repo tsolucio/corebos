@@ -50,7 +50,7 @@
 		<div id="editarea_{$UIKEY}">
 			<textarea id="txtbox_{$UIKEY}" class="detailedViewTextBox" onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" cols="90" rows="8"></textarea>
 			<br><input type="button" class="crmbutton small save" value="{$APP.LBL_SAVE_LABEL}" onclick="ModCommentsCommon.addComment('{$UIKEY}', '{$ID}');"/> {$APP.LBL_OR}
-			<a href="javascript:;" onclick="$('txtbox_{$UIKEY}').value='';" class="link">{$APP.LBL_CLEAR_BUTTON_LABEL}</a>
+			<a href="javascript:;" onclick="document.getElementById('txtbox_{$UIKEY}').value='';" class="link">{$APP.LBL_CLEAR_BUTTON_LABEL}</a>
 		</div>
 	</td>
 	</tr>

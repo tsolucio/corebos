@@ -111,14 +111,11 @@ session_destroy();
 														
 														<script type="text/javascript"> 
 														<?php if ($db_populate == 'true') { ?>
-															new Ajax.Request(
-																'install.php',
-																{queue: {position: 'end', scope: 'command'},
-															    	method: 'post',
-																	postBody:"file=PopulateSeedData.php",
-																		onComplete: function(response) {
-														                	window.document.finishform.submit();
-																		}
+															jQuery.ajax({
+																	method:"POST",
+																	url:"install.php?file=PopulateSeedData.php"
+															}).done(function(response) {
+																window.document.finishform.submit();
 																}
 															);
 														<?php } else { ?>

@@ -75,7 +75,7 @@
                                 {/if}
 				{foreach key=header item=listfields from=$detail}
 									 {* vtlib customization: Trigger events on listview cell *}
-	                                 <td onmouseover="vtlib_listview.trigger('cell.onmouseover', $(this))" onmouseout="vtlib_listview.trigger('cell.onmouseout', $(this))">{$listfields}</td>
+	                                 <td onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">{$listfields}</td>
 	                                 {* END *}
 				{/foreach}
 				</tr>
