@@ -75,7 +75,13 @@ ins { text-decoration: none; background-color: #FDFF00; }
         {foreachelse}
         <tr>
 			<td colspan="3" align="center">
+				{if $TRACKRECORD->status eq 1}
+				<b>{'LBL_DELETED'|@getTranslatedString:$MODULE}</b>
+				{elseif $TRACKRECORD->status eq 3}
+				<b>{'LBL_RESTORED'|@getTranslatedString:$MODULE}</b>
+				{else}
 				{'LBL_ACCESS_TO_FIELD_CHANGES_DENIED'|getTranslatedString:$MODULE}
+				{/if}
 			</td>
 		</tr>
 		{/foreach}

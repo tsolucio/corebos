@@ -43,5 +43,7 @@ $mod_strings = Array (
     'LBL_CHANGED_BY'=>'geändert von',
     'LBL_ACCESS_TO_FIELD_CHANGES_DENIED'=>'Entweder sind Sie nicht berechtigt, geänderte Felder zu sehen <br>(oder)<br> der Datensatz wurde wiederhergestellt.',
     'LBL_CONFIGURATION_DESCRIPTION' => 'Wählen Sie das zu überwachende Modul',
+	'LBL_DELETED'=>'DELETED!',
+	'LBL_RESTORED'=>'RESTORED!',
 );
 ?>

@@ -42,5 +42,7 @@ $mod_strings = Array (
 'LBL_CHANGED_BY'=>'Cambiato da',
 'LBL_ACCESS_TO_FIELD_CHANGES_DENIED'=>'O non hai il permsso di visualizzare campi modificati, <br>(O)<br> il record e stato ricostruito.',
 'LBL_CONFIGURATION_DESCRIPTION' => 'Select the modules you wish to control',
+'LBL_DELETED'=>'DELETED!',
+'LBL_RESTORED'=>'RESTORED!',
 );
 ?>

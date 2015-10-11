@@ -12,13 +12,13 @@ include_once 'include/Webservices/GetUpdates.php';
 
 class ModTracker {
 
-
     /**
      * Constant variables which indicates the status of the changed record.
      */
     public static $UPDATED = '0';
     public static $DELETED = '1';
     public static $CREATED = '2';
+    public static $RESTORED = '3';
 
 	/* Entry point will invoke this function no need to act on */
 	function track_view($user_id, $current_module,$id='') {}

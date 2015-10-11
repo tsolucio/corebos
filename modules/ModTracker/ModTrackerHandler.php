@@ -63,6 +63,14 @@ class ModTrackerHandler extends VTEventHandler {
                 $adb->pquery('INSERT INTO vtiger_modtracker_basic(id, crmid, module, whodid, changedon, status)
                     VALUES(?,?,?,?,?,?)', Array($id, $recordId, $moduleName, $current_user->id, date('Y-m-d H:i:s',time()), ModTracker::$DELETED));
             }
+
+            if($eventName == 'vtiger.entity.afterrestore') {
+                $recordId = $data->getId();
+                $columnFields = $data->getData();
+                $id = $adb->getUniqueId('vtiger_modtracker_basic');
+                $adb->pquery('INSERT INTO vtiger_modtracker_basic(id, crmid, module, whodid, changedon, status)
+                    VALUES(?,?,?,?,?,?)', Array($id, $recordId, $moduleName, $current_user->id, date('Y-m-d H:i:s',time()), ModTracker::$RESTORED));
+            }
 		}
 	}
 }

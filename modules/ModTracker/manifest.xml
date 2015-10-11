@@ -48,6 +48,12 @@
 <condition><![CDATA[]]></condition>
 </event>
 <event>
+<eventname>vtiger.entity.afterrestore</eventname>
+<classname><![CDATA[ModTrackerHandler]]></classname>
+<filename><![CDATA[modules/ModTracker/ModTrackerHandler.php]]></filename>
+<condition><![CDATA[]]></condition>
+</event>
+<event>
 <eventname>vtiger.entity.beforedelete</eventname>
 <classname><![CDATA[ModTrackerHandler]]></classname>
 <filename><![CDATA[modules/ModTracker/ModTrackerHandler.php]]></filename>

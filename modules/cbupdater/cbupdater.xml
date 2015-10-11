@@ -415,4 +415,11 @@
 	<classname>addFieldsToCyP</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>ModTracker: restore record change</description>
+	<filename>build/changeSets/ModTrackerRestoreRecord.php</filename>
+	<classname>ModTrackerRestoreRecord</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
