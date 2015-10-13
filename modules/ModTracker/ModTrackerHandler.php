@@ -17,7 +17,7 @@ class ModTrackerHandler extends VTEventHandler {
 		$moduleName = $data->getModuleName();
 
 		$flag = ModTracker::isTrackingEnabledForModule($moduleName);
-        
+
 		if($flag) {
 			if($eventName == 'vtiger.entity.aftersave.final') {
                 $recordId = $data->getId();
@@ -55,7 +55,7 @@ class ModTrackerHandler extends VTEventHandler {
                     }
                 }
 			}
-            
+
             if($eventName == 'vtiger.entity.beforedelete') {
                 $recordId = $data->getId();
                 $columnFields = $data->getData();

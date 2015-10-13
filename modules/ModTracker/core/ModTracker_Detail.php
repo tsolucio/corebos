@@ -18,7 +18,7 @@ class ModTracker_Detail {
 
 	var $parent;
 	var $fieldInstance;
-	
+
 	var $_prevalueLabel = false;
 	var $_postvalueLabel = false;
 	var $_fieldLabel = false;
@@ -65,7 +65,7 @@ class ModTracker_Detail {
 		$this->fieldInstance = new ModTracker_Field($this);
 		$this->fieldInstance->initialize();
 	}
-	
+
 	function isViewPermitted() {
 		// Check if the logged in user has access to the field
 		global $current_user;
@@ -103,7 +103,6 @@ class ModTracker_Detail {
 	function getModTrackerField() {
 		$modTrackerFieldInstance = new ModTracker_Field();
 		$modTrackerFieldInstance->initialize($this);
-		
 	}
 }
 ?>

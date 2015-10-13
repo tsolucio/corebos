@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *********************************************************************************** */
-
 include_once('include/utils/utils.php');
 include_once('include/utils/VTCacheUtils.php');
 include_once('include/utils/CommonUtils.php');
@@ -89,9 +88,7 @@ class ModTracker_Field {
 			if ($isRoleBased && ($fieldName != 'activitytype' || $value != 'Task')) {
 				$accessiblePicklistValues = getAssignedPicklistValues($fieldName, $current_user->roleid, $adb);
 				if (!empty($value) && !is_admin($current_user) && !in_array($value, $accessiblePicklistValues)) {
-					
-					$value = "<font color='red'>" . getTranslatedString('LBL_NOT_ACCESSIBLE',
-									$moduleName) . "</font>";
+					$value = "<font color='red'>" . getTranslatedString('LBL_NOT_ACCESSIBLE', $moduleName) . "</font>";
 				} else {
 					$value = getTranslatedString($value, $moduleName);
 				}
