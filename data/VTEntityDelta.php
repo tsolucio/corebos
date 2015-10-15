@@ -12,6 +12,8 @@ require_once 'include/events/VTEntityData.inc';
 class VTEntityDelta extends VTEventHandler {
 	private static $oldEntity;
 	private static $newEntity;
+	private static $oldEntity_pimages;
+	private static $newEntity_pimages;
 	private static $entityDelta;
 
 	function  __construct() {
@@ -31,11 +33,31 @@ class VTEntityDelta extends VTEventHandler {
 					$entityData->set('comments', getTicketComments($recordId));
 				}
 				self::$oldEntity[$moduleName][$recordId] = $entityData;
+				if ($moduleName=='Products') {
+					self::$oldEntity_pimages = array();
+					$sql = 'SELECT vtiger_attachments.`attachmentsid`,name FROM `vtiger_seattachmentsrel`
+						inner join vtiger_attachments on vtiger_attachments.`attachmentsid` = `vtiger_seattachmentsrel`.`attachmentsid`
+						WHERE `crmid`=?';
+					$imagesrs = $adb->pquery($sql, array($recordId));
+					while ($image = $adb->fetch_array($imagesrs)) {
+						self::$oldEntity_pimages[$image['attachmentsid']] = $image['name'];
+					}
+				}
 			}
 		}
 
 		if($eventName == 'vtiger.entity.aftersave'){
 			$this->fetchEntity($moduleName, $recordId);
+			if ($moduleName=='Products') {
+				self::$newEntity_pimages = array();
+				$sql = 'SELECT vtiger_attachments.`attachmentsid`,name FROM `vtiger_seattachmentsrel`
+					inner join vtiger_attachments on vtiger_attachments.`attachmentsid` = `vtiger_seattachmentsrel`.`attachmentsid`
+					WHERE `crmid`=?';
+				$imagesrs = $adb->pquery($sql, array($recordId));
+				while ($image = $adb->fetch_array($imagesrs)) {
+					self::$newEntity_pimages[$image['attachmentsid']] = $image['name'];
+				}
+			}
 			$this->computeDelta($moduleName, $recordId);
 		}
 	}
@@ -73,6 +95,22 @@ class VTEntityDelta extends VTEventHandler {
 			if($isModified) {
 				$delta[$fieldName] = array('oldValue' => isset($oldData[$fieldName]) ? $oldData[$fieldName] : '',
 										'currentValue' => $newData[$fieldName]);
+			}
+		}
+		if ($moduleName=='Products') {
+			$new = array_diff(self::$newEntity_pimages, self::$oldEntity_pimages);
+			foreach ($new as $key => $value) {
+				$delta['deltaimage'.$key] = array(
+					'oldValue' => '',
+					'currentValue' => $value
+				);
+			}
+			$old = array_diff(self::$oldEntity_pimages,self::$newEntity_pimages);
+			foreach ($old as $key => $value) {
+				$delta['deltaimage'.$key] = array(
+					'oldValue' => $value,
+					'currentValue' => getTranslatedString('LBL_DELETED','ModTracker')
+				);
 			}
 		}
 		self::$entityDelta[$moduleName][$recordId] = $delta;

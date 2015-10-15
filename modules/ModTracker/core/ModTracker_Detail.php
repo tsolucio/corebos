@@ -60,6 +60,7 @@ class ModTracker_Detail {
 	function initialize($valuemap) {
 		$this->id = $valuemap['id'];
 		$this->name = $valuemap['fieldname'];
+		if ($this->parent->module=='Products' and substr($this->name,0,10)=='deltaimage') $this->name='imagename';
 		$this->prevalue = $valuemap['prevalue'];
 		$this->postvalue =$valuemap['postvalue'];
 		$this->fieldInstance = new ModTracker_Field($this);
@@ -69,6 +70,7 @@ class ModTracker_Detail {
 	function isViewPermitted() {
 		// Check if the logged in user has access to the field
 		global $current_user;
+		if ($this->parent->module=='Products' and substr($this->name,0,10)=='deltaimage') return true;
 		return (getFieldVisibilityPermission($this->parent->module, $current_user->id, $this->name) == '0');
 	}
 
