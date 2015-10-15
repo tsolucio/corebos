@@ -188,6 +188,7 @@
 				'Current Date' => '(general : (__VtigerMeta__) date)',
 				'Current Time' => '(general : (__VtigerMeta__) time)',
 				'System Timezone' => '(general : (__VtigerMeta__) dbtimezone)',
+				'User Timezone' => '(general : (__VtigerMeta__) usertimezone)',
 				'CRM Detail View URL' => '(general : (__VtigerMeta__) crmdetailviewurl)',
 				'Portal Detail View URL' => '(general : (__VtigerMeta__) portaldetailviewurl)',
 				'Site Url' => '(general : (__VtigerMeta__) siteurl)',

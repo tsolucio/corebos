@@ -72,6 +72,7 @@ $mod_strings = array(
 	'Current Date' => 'Date courante',
 	'Current Time' => 'Heure courante',
 	'System Timezone' => 'Fuseau horaire',
+	'User Timezone' => 'Utilisateur horaire',
 	'CRM Detail View URL' => 'URL de la vue détail du CRM',
 	'Portal Detail View URL' => 'URL de la vue détail du portail CRM',
 	'Site Url' => 'URL du CRM',
