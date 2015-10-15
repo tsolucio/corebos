@@ -145,8 +145,7 @@ class VTSimpleTemplate{
 		switch($fieldname){
 			case 'date'					:	return getNewDisplayDate();
 			case 'time'					:	return getNewDisplayTime();
-			case 'dbtimezone'			:	return DateTimeField::getDBTimeZone();
-			case 'usertimezone'			:	return $current_user->column_fields['time_zone'];
+			case 'dbtimezone'			:	return $current_user->column_fields['time_zone'];
 			case 'crmdetailviewurl'		:	$wsId = $this->parent->getId();
 											$parts = explode('x', $wsId);
 											$recordId = $parts[1];
