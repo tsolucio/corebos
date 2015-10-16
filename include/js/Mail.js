@@ -95,15 +95,27 @@ function set_return_emails(entity_id,email_id,parentname,emailadd,emailadd2,perm
 	if(emailadd != '') {
 		if (emailfield=='default') {
 		window.opener.document.EditView.parent_id.value = window.opener.document.EditView.parent_id.value+entity_id+'@'+email_id+'|';
-		window.opener.document.EditView.parent_name.value = window.opener.document.EditView.parent_name.value+parentname+'<'+emailadd+'>,';
+		var parentnamevalue = trim(window.opener.document.EditView.parent_name.value);
+		if (parentnamevalue != '' && parentnamevalue.slice(-1)!=',') {
+			parentnamevalue += ',';
+		}
+		window.opener.document.EditView.parent_name.value = parentnamevalue+parentname+'<'+emailadd+'>,';
 		window.opener.document.EditView.hidden_toid.value = emailadd+','+window.opener.document.EditView.hidden_toid.value;
 		} else {
-			if (emailfield=='bcc_name')
-			window.opener.document.EditView.bcc_name.value = window.opener.document.EditView.bcc_name.value+parentname+'<'+emailadd+'>,';
-			else
-			window.opener.document.EditView.cc_name.value = window.opener.document.EditView.cc_name.value+parentname+'<'+emailadd+'>,';
+			if (emailfield=='bcc_name') {
+				var bccnamevalue = trim(window.opener.document.EditView.bcc_name.value);
+				if (bccnamevalue != '' && bccnamevalue.slice(-1)!=',') {
+					bccnamevalue += ',';
+				}
+				window.opener.document.EditView.bcc_name.value = bccnamevalue+parentname+'<'+emailadd+'>,';
+			} else {
+				var ccnamevalue = trim(window.opener.document.EditView.cc_name.value);
+				if (ccnamevalue != '' && ccnamevalue.slice(-1)!=',') {
+					ccnamevalue += ',';
+				}
+				window.opener.document.EditView.cc_name.value = ccnamevalue+parentname+'<'+emailadd+'>,';
+			}
 		}
-		window.close();
 	} else {
 		alert('"'+parentname+alert_arr.DOESNOT_HAVE_AN_MAILID);
 		return false;

@@ -2020,7 +2020,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						$slashes_name = htmlspecialchars($slashes_name, ENT_QUOTES, $default_charset);
 						$count = counterValue();
 
-						$value = '<a href="javascript:window.close();" onclick=\'return set_return_emails(' . $entity_id . ',' . $fieldid . ',"' . decode_html($slashes_name) . '","' . $emailaddress . '","' . $emailaddress2 . '","' . $email_check . '"'.$sre_param.'); \'id = ' . $count . '>' . textlength_check($name) . '</a>';
+						$value = '<a href="javascript:if (document.getElementById(\'closewindow\').value==\'true\') {window.close();}" onclick=\'return set_return_emails(' . $entity_id . ',' . $fieldid . ',"' . decode_html($slashes_name) . '","' . $emailaddress . '","' . $emailaddress2 . '","' . $email_check . '"'.$sre_param.'); \'id = ' . $count . '>' . textlength_check($name) . '</a>';
 					}elseif ($module == 'Vendors') {
 						$name = $adb->query_result($list_result, $list_result_count, 'vendorname');
 						$venid = $adb->query_result($list_result, $list_result_count, 'vendorid');
@@ -2038,7 +2038,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						$slashes_name = popup_from_html($name);
 						$slashes_name = htmlspecialchars($slashes_name, ENT_QUOTES, $default_charset);
 						$count = counterValue();
-						$value = '<a href="javascript:window.close();" onclick=\'return set_return_emails(' . $entity_id . ',' . $fieldid . ',"' . decode_html($slashes_name) . '","' . $emailaddress . '","' . $emailaddress2 . '","' . $email_check . '"'.$sre_param.'); \'id = ' . $count . '>' . textlength_check($name) . '</a>';
+						$value = '<a href="javascript:if (document.getElementById(\'closewindow\').value==\'true\') {window.close();}" onclick=\'return set_return_emails(' . $entity_id . ',' . $fieldid . ',"' . decode_html($slashes_name) . '","' . $emailaddress . '","' . $emailaddress2 . '","' . $email_check . '"'.$sre_param.'); \'id = ' . $count . '>' . textlength_check($name) . '</a>';
 					}elseif ($module == 'Contacts' || $module == 'Leads') {
 						$name = getFullNameFromQResult($list_result, $list_result_count, $module);
 						if (CheckFieldPermission('email', $module) == "true") {
@@ -2067,7 +2067,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						$slashes_name = popup_from_html($name);
 						$slashes_name = htmlspecialchars($slashes_name, ENT_QUOTES, $default_charset);
 						$count = counterValue();
-						$value = '<a href="javascript:window.close();" onclick=\'return set_return_emails(' . $entity_id . ',' . $fieldid . ',"' . decode_html($slashes_name) . '","' . $emailaddress . '","' . $emailaddress2 . '","' . $email_check . '"'.$sre_param.'); \'id = ' . $count . '>' . $name . '</a>';
+						$value = '<a href="javascript:if (document.getElementById(\'closewindow\').value==\'true\') {window.close()};" onclick=\'return set_return_emails(' . $entity_id . ',' . $fieldid . ',"' . decode_html($slashes_name) . '","' . $emailaddress . '","' . $emailaddress2 . '","' . $email_check . '"'.$sre_param.'); \'id = ' . $count . '>' . $name . '</a>';
 					}
 					elseif ($module=='Project')
                                         {
@@ -2088,7 +2088,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
                                                 $slashes_name = popup_from_html($name);
                                                 $slashes_name = htmlspecialchars($slashes_name,ENT_QUOTES,$default_charset);
                                                 
-                                                $value = '<a href="javascript:window.close();" onclick=\'return set_return_emails('.$entity_id.','.$fieldid.',"'.decode_html($slashes_name).'","'.$emailaddress.'","'.$emailaddress2.'","'.$email_check.'"'.$sre_param.'); \'>'.textlength_check($name).'</a>';
+                                                $value = '<a href="javascript:if (document.getElementById(\'closewindow\').value==\'true\') {window.close();}" onclick=\'return set_return_emails('.$entity_id.','.$fieldid.',"'.decode_html($slashes_name).'","'.$emailaddress.'","'.$emailaddress2.'","'.$email_check.'"'.$sre_param.'); \'>'.textlength_check($name).'</a>';
                                         }
 					elseif ($module=='ProjectTask')
                                         {
@@ -2109,7 +2109,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
                                                 $slashes_name = popup_from_html($name);
                                                 $slashes_name = htmlspecialchars($slashes_name,ENT_QUOTES,$default_charset);
                                                 
-                                                $value = '<a href="javascript:window.close();" onclick=\'return set_return_emails('.$entity_id.','.$fieldid.',"'.decode_html($slashes_name).'","'.$emailaddress.'","'.$emailaddress2.'","'.$email_check.'"'.$sre_param.'); \'>'.textlength_check($name).'</a>';
+                                                $value = '<a href="javascript:if (document.getElementById(\'closewindow\').value==\'true\') {window.close();}" onclick=\'return set_return_emails('.$entity_id.','.$fieldid.',"'.decode_html($slashes_name).'","'.$emailaddress.'","'.$emailaddress2.'","'.$email_check.'"'.$sre_param.'); \'>'.textlength_check($name).'</a>';
                                         }
 					elseif ($module=='Potentials')
                                         {
@@ -2130,7 +2130,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
                                                 $slashes_name = popup_from_html($name);
                                                 $slashes_name = htmlspecialchars($slashes_name,ENT_QUOTES,$default_charset);
                                                 
-                                                $value = '<a href="javascript:window.close();" onclick=\'return set_return_emails('.$entity_id.','.$fieldid.',"'.decode_html($slashes_name).'","'.$emailaddress.'","'.$emailaddress2.'","'.$email_check.'"'.$sre_param.'); \'>'.textlength_check($name).'</a>';
+                                                $value = '<a href="javascript:if (document.getElementById(\'closewindow\').value==\'true\') {window.close();}" onclick=\'return set_return_emails('.$entity_id.','.$fieldid.',"'.decode_html($slashes_name).'","'.$emailaddress.'","'.$emailaddress2.'","'.$email_check.'"'.$sre_param.'); \'>'.textlength_check($name).'</a>';
                                         }
 					elseif ($module=='HelpDesk')
                                         {
@@ -2151,7 +2151,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
                                                 $slashes_name = popup_from_html($name);
                                                 $slashes_name = htmlspecialchars($slashes_name,ENT_QUOTES,$default_charset);
                                                 
-                                                $value = '<a href="javascript:window.close();" onclick=\'return set_return_emails('.$entity_id.','.$fieldid.',"'.decode_html($slashes_name).'","'.$emailaddress.'","'.$emailaddress2.'","'.$email_check.'"'.$sre_param.'); \'>'.textlength_check($name).'</a>';
+                                                $value = '<a href="javascript:if (document.getElementById(\'closewindow\').value==\'true\') {window.close();}" onclick=\'return set_return_emails('.$entity_id.','.$fieldid.',"'.decode_html($slashes_name).'","'.$emailaddress.'","'.$emailaddress2.'","'.$email_check.'"'.$sre_param.'); \'>'.textlength_check($name).'</a>';
                                         }					
 					else {
 						$name = getFullNameFromQResult($list_result, $list_result_count, $module);
@@ -2161,7 +2161,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						$slashes_name = htmlspecialchars($slashes_name, ENT_QUOTES, $default_charset);
 						$email_check = 1;
 						$count = counterValue();
-						$value = '<a href="javascript:window.close();" onclick=\'return set_return_emails(' . $entity_id . ',-1,"' . decode_html($slashes_name) . '","' . $emailaddress . '","' . $emailaddress2 . '","' . $email_check . '"'.$sre_param.'); \'id = ' . $count . '>' . textlength_check($name) . '</a>';
+						$value = '<a href="javascript:if (document.getElementById(\'closewindow\').value==\'true\') {window.close();}" onclick=\'return set_return_emails(' . $entity_id . ',-1,"' . decode_html($slashes_name) . '","' . $emailaddress . '","' . $emailaddress2 . '","' . $email_check . '"'.$sre_param.'); \'id = ' . $count . '>' . textlength_check($name) . '</a>';
 					}
 				} elseif ($popuptype == "specific_vendor_address") {
 					require_once('modules/Vendors/Vendors.php');
