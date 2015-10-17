@@ -16,16 +16,15 @@ class VTEntityDelta extends VTEventHandler {
 	private static $newEntity_pimages;
 	private static $entityDelta;
 
-	function  __construct() {
-		
+	function __construct() {
+
 	}
 
 	function handleEvent($eventName, $entityData) {
-
 		$adb = PearDatabase::getInstance();
 		$moduleName = $entityData->getModuleName();
 		$recordId = $entityData->getId();
-		
+
 		if($eventName == 'vtiger.entity.beforesave') {
 			if(!empty($recordId)) {
 				$entityData = VTEntityData::fromEntityId($adb, $recordId);
@@ -72,7 +71,6 @@ class VTEntityDelta extends VTEventHandler {
 	}
 
 	function computeDelta($moduleName, $recordId) {
-
 		$delta = array();
 
 		$oldData = array();
@@ -141,7 +139,7 @@ class VTEntityDelta extends VTEventHandler {
 	function getNewEntity($moduleName, $recordId) {
 		return self::$newEntity[$moduleName][$recordId];
 	}
-	
+
 	function hasChanged($moduleName, $recordId, $fieldName, $fieldValue = NULL) {
 		if(empty(self::$oldEntity[$moduleName][$recordId])) {
 			return false;
