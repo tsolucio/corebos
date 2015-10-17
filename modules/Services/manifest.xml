@@ -225,7 +225,7 @@
 <defaultvalue></defaultvalue>
 <sequence>13</sequence>
 <maximumlength>100</maximumlength>
-<typeofdata>T~O</typeofdata>
+<typeofdata>DT~O</typeofdata>
 <quickcreate>3</quickcreate>
 <quickcreatesequence></quickcreatesequence>
 <displaytype>2</displaytype>
@@ -245,7 +245,7 @@
 <defaultvalue></defaultvalue>
 <sequence>14</sequence>
 <maximumlength>100</maximumlength>
-<typeofdata>T~O</typeofdata>
+<typeofdata>DT~O</typeofdata>
 <quickcreate>3</quickcreate>
 <quickcreatesequence></quickcreatesequence>
 <displaytype>2</displaytype>
