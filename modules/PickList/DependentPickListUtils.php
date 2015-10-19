@@ -224,7 +224,9 @@ class Vtiger_DependencyPicklist {
 		while($row = $adb->fetch_array($result)) {
 			$modules[$row['tablabel']] = $row['tabname'];
 		}
-		ksort($modules);
+		uksort($modules, function($a,$b) {
+			return (strtolower(getTranslatedString($a,$a)) < strtolower(getTranslatedString($b,$b))) ? -1 : 1;
+		});
 		return $modules;
 	}
 
