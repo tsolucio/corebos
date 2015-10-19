@@ -343,6 +343,10 @@ function getActivityDetails($description,$user_id,$from='') {
 	}
 
 	$name = getUserFullName($user_id);
+	$inviteuser = new Users();
+	$inviteuser->retrieveCurrentUserInfoFromFile($user_id);
+	$stdatetime = new DateTimeField($description['st_date_time']);
+	$etdatetime = new DateTimeField($description['end_date_time']);
 
 	if($from == "invite")
 		$msg = getTranslatedString($mod_strings['LBL_ACTIVITY_INVITATION']);
@@ -354,8 +358,8 @@ function getActivityDetails($description,$user_id,$from='') {
 	$list = $name.',';
 	$list .= '<br><br>'.$msg.' '.$reply.'.<br> '.$mod_strings['LBL_DETAILS_STRING'].':<br>';
 	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["LBL_SUBJECT"].' : '.$description['subject'];
-	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["Start date and time"].' : '.$description['st_date_time'] .' '.DateTimeField::getDBTimeZone();
-	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$end_date_lable.' : '.$description['end_date_time'].' '.DateTimeField::getDBTimeZone();
+	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["Start date and time"].' : '.$stdatetime->getDisplayDateTimeValue($inviteuser) .' '.$inviteuser->column_fields['time_zone'];
+	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$end_date_lable.' : '.$etdatetime->getDisplayDateTimeValue($inviteuser).' '.$inviteuser->column_fields['time_zone'];
 	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["LBL_STATUS"].': '.$status;
 	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["Priority"].': '.getTranslatedString($description['taskpriority']);
 	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["Related To"].': '.getTranslatedString($description['relatedto']);
