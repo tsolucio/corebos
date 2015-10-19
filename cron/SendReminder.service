@@ -28,14 +28,13 @@ if(empty($from)) {
 }
 
 // Get the list of activity for which reminder needs to be sent
-global $adb, $log;
+global $adb, $log, $current_language;
 $log =& LoggerManager::getLogger('SendReminder');
 $log->debug('invoked SendReminder');
 
 // retrieve the translated strings.
 if(empty($current_language))
 	$current_language = 'en_us';
-$app_strings = return_application_language($current_language);
 
 //modified query for recurring events -Jag
 $query="select vtiger_crmentity.crmid,vtiger_seactivityrel.crmid as setype,vtiger_activity.*,vtiger_activity_reminder.reminder_time,vtiger_activity_reminder.reminder_sent,vtiger_activity_reminder.recurringid,vtiger_recurringevents.recurringdate from vtiger_activity inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid inner join vtiger_activity_reminder on vtiger_activity.activityid=vtiger_activity_reminder.activity_id left outer join vtiger_recurringevents on vtiger_activity.activityid=vtiger_recurringevents.activityid left outer join vtiger_seactivityrel on vtiger_seactivityrel.activityid = vtiger_activity.activityid where DATE_FORMAT(vtiger_activity.date_start,'%Y-%m-%d, %H:%i:%s') >= '".date('Y-m-d')."' and vtiger_crmentity.crmid != 0 and vtiger_activity.eventstatus = 'Planned' and vtiger_activity_reminder.reminder_sent = 0 group by vtiger_activity.activityid,vtiger_recurringevents.recurringid";
@@ -90,17 +89,18 @@ if($adb->num_rows($result) >= 1)
 						$user_id = $user_result_row['smid'];
 						$reminduser = new Users();
 						$reminduser->retrieveCurrentUserInfoFromFile($user_id);
-						$user_lang = $reminduser->column_fields['language'];
+						$current_language = $reminduser->column_fields['language'];
+						$app_strings = return_application_language($current_language);
 						$stdatetime = new DateTimeField($result_set['date_start'].' '.$result_set['time_start']);
-						$subject = $app_strings['Reminder'].$result_set['activitytype'].' @ '.
+						$subject = getTranslatedString('Reminder','Calendar').getTranslatedString($result_set['activitytype'],'Calendar').' @ '.
 							$stdatetime->getDisplayDateTimeValue($reminduser) .'] ('.$reminduser->column_fields['time_zone'].') '.
-							$adb->query_result($result_main,0,'notificationsubject');
+							getTranslatedString($adb->query_result($result_main,0,'notificationsubject'),'Calendar');
 
 						//Set the mail body/contents here
-						$contents = nl2br($adb->query_result($result_main,0,'notificationbody')) ."\n\n ".
-							$app_strings['Subject'].' : '.$activity_sub."\n ". $parent_content .' '.
-							$app_strings['Date & Time'].' : '.$stdatetime->getDisplayDateTimeValue($reminduser).' ('. $reminduser->column_fields['time_zone'] .")\n\n ".
-							$app_strings['Visit_Link']." <a href='".$site_URL."/index.php?action=EventDetailView&module=Calendar4You&record=".$activity_id."&activity_mode=".$activitymode."'>".$app_strings['Click here']."</a>";
+						$contents = nl2br(getTranslatedString($adb->query_result($result_main,0,'notificationbody'),'Calendar')) ."\n\n ".
+							getTranslatedString('Subject','Calendar').' : '.$activity_sub."\n ". $parent_content .' '.
+							getTranslatedString('Date & Time','Calendar').' : '.$stdatetime->getDisplayDateTimeValue($reminduser).' ('. $reminduser->column_fields['time_zone'] .")\n\n ".
+							getTranslatedString('Visit_Link','Calendar')." <a href='".$site_URL."/index.php?action=EventDetailView&module=Calendar4You&record=".$activity_id."&activity_mode=".$activitymode."'>".getTranslatedString('Click here','Calendar').'</a>';
 						$sendto = $user_result_row['email1'];
 						$rdo = send_mail('Calendar',$sendto,$HELPDESK_SUPPORT_NAME,$from,$subject,nl2br($contents));
 					}
