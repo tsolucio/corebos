@@ -56,10 +56,13 @@ if($adb->num_rows($result) >= 1)
 		$activity_sub = $result_set['subject'];
 		$to_addr='';
 
-		if($parent_type!='')
-		$parent_content = getParentInfo($parent_type)."\n";
-		else
-		$parent_content = "";
+		$parent_content = '';
+		if(!empty($parent_type)) {
+			$parent_module = getSalesEntityType($parent_type);
+			$ename = getEntityName($parent_module, $parent_type);
+			$parent_content = getTranslatedString($parent_module,$parent_module) .' : '.$ename[$parent_type]."\n";
+		}
+
 		//code included for recurring events by jaguar starts
 		$recur_id = $result_set['recurringid'];
 		$current_date=date('Y-m-d');
@@ -122,41 +125,5 @@ if($adb->num_rows($result) >= 1)
 			}
 		}
 	}
-}
-
-/**
- This function is used to get the Parent type and its Name
- It takes the input integer - crmid and returns the parent type and its name as string.
-*/
-function getParentInfo($value)
-{
-	global $adb;
-	$parent_module = getSalesEntityType($value);
-	if($parent_module == "Leads")
-	{
-		$sql = "select * from vtiger_leaddetails where leadid=?";
-		$result = $adb->pquery($sql, array($value));
-		$first_name = $adb->query_result($result,0,"firstname");
-		$last_name = $adb->query_result($result,0,"lastname");
-
-		$parent_name = $last_name.' '.$first_name;
-	}
-	elseif($parent_module == "Accounts")
-	{
-		$sql = "select * from  vtiger_account where accountid=?";
-		$result = $adb->pquery($sql, array($value));
-		$account_name = $adb->query_result($result,0,"accountname");
-
-		$parent_name =$account_name;
-	}
-	elseif($parent_module == "Potentials")
-	{
-		$sql = "select * from  vtiger_potential where potentialid=?";
-		$result = $adb->pquery($sql, array($value));
-		$potentialname = $adb->query_result($result,0,"potentialname");
-
-		$parent_name =$potentialname;
-	}
-	return $parent_module ." : ".$parent_name;
 }
 ?>
