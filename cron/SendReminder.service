@@ -1,4 +1,18 @@
 <?php
+/*************************************************************************************************
+ * Copyright 2015 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
+ * file except in compliance with the License. You can redistribute it and/or modify it
+ * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
+ * granted by the License. coreBOS distributed by JPL TSolucio S.L. is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. Unless required by
+ * applicable law or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT ANY WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language governing
+ * permissions and limitations under the License. You may obtain a copy of the License
+ * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
+ *************************************************************************************************/
 require_once('include/utils/utils.php');
 require_once("modules/Emails/mail.php");
 require_once('include/logging.php');
@@ -14,8 +28,7 @@ if(empty($from)) {
 }
 
 // Get the list of activity for which reminder needs to be sent
-global $adb;
-global $log;
+global $adb, $log;
 $log =& LoggerManager::getLogger('SendReminder');
 $log->debug(" invoked SendReminder ");
 
@@ -39,7 +52,7 @@ if($adb->num_rows($result) >= 1)
 		$curr_time = strtotime($date->getDisplayDateTimeValue())/60;
 		$activity_id = $result_set['activityid'];
 		$activitymode = ($result_set['activitytype'] == "Task")?"Task":"Events";
-		$parent_type = $result_set['setype']; 
+		$parent_type = $result_set['setype'];
 		$activity_sub = $result_set['subject'];
 		$to_addr='';
 
@@ -47,7 +60,7 @@ if($adb->num_rows($result) >= 1)
 		$parent_content = getParentInfo($parent_type)."\n";
 		else
 		$parent_content = "";
-		//code included for recurring events by jaguar starts	
+		//code included for recurring events by jaguar starts
 		$recur_id = $result_set['recurringid'];
 		$current_date=date('Y-m-d');
 		if($recur_id == 0)
@@ -65,8 +78,8 @@ if($adb->num_rows($result) >= 1)
 		if (($activity_time - $curr_time) > 0 && ($activity_time - $curr_time) <= $reminder_time)
 		{
 			$log->debug(" InSide  REMINDER");
-			$query_user="SELECT vtiger_users.email1,vtiger_salesmanactivityrel.smid FROM vtiger_salesmanactivityrel inner join vtiger_users on vtiger_users.id=vtiger_salesmanactivityrel.smid where vtiger_salesmanactivityrel.activityid =? and vtiger_users.deleted=0"; 
-			$user_result = $adb->pquery($query_user, array($activity_id));		
+			$query_user="SELECT vtiger_users.email1,vtiger_salesmanactivityrel.smid FROM vtiger_salesmanactivityrel inner join vtiger_users on vtiger_users.id=vtiger_salesmanactivityrel.smid where vtiger_salesmanactivityrel.activityid =? and vtiger_users.deleted=0";
+			$user_result = $adb->pquery($query_user, array($activity_id));
 			if($adb->num_rows($user_result)>=1)
 			{
 				while($user_result_row = $adb->fetch_array($user_result))
@@ -77,8 +90,8 @@ if($adb->num_rows($result) >= 1)
 					}
 				}
 			}
-		
-			// Retriving the Subject and message from reminder table
+
+			// Retrieving the Subject and message from reminder table
 			$sql = "select active,notificationsubject,notificationbody from vtiger_notificationscheduler where schedulednotificationid=8";
 			$result_main = $adb->pquery($sql, array());
 
@@ -113,12 +126,12 @@ if($adb->num_rows($result) >= 1)
 
 /**
  This function is used to get the Parent type and its Name
- It takes the input integer - crmid and returns the parent type and its name as string. 
+ It takes the input integer - crmid and returns the parent type and its name as string.
 */
 function getParentInfo($value)
 {
 	global $adb;
- 	$parent_module = getSalesEntityType($value);
+	$parent_module = getSalesEntityType($value);
 	if($parent_module == "Leads")
 	{
 		$sql = "select * from vtiger_leaddetails where leadid=?";
