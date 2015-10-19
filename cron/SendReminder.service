@@ -30,7 +30,7 @@ if(empty($from)) {
 // Get the list of activity for which reminder needs to be sent
 global $adb, $log;
 $log =& LoggerManager::getLogger('SendReminder');
-$log->debug(" invoked SendReminder ");
+$log->debug('invoked SendReminder');
 
 // retrieve the translated strings.
 if(empty($current_language))
@@ -51,7 +51,7 @@ if($adb->num_rows($result) >= 1)
 		$date = new DateTimeField( null );
 		$curr_time = strtotime($date->getDisplayDateTimeValue())/60;
 		$activity_id = $result_set['activityid'];
-		$activitymode = ($result_set['activitytype'] == "Task")?"Task":"Events";
+		$activitymode = ($result_set['activitytype'] == 'Task')?'Task':'Events';
 		$parent_type = $result_set['setype'];
 		$activity_sub = $result_set['subject'];
 		$to_addr='';
@@ -78,10 +78,9 @@ if($adb->num_rows($result) >= 1)
 		$date = new DateTimeField("$date_start $time_start");
 		$activity_time = strtotime($date->getDisplayDateTimeValue())/60;
 
-		if (($activity_time - $curr_time) > 0 && ($activity_time - $curr_time) <= $reminder_time)
-		{
-			$log->debug(" InSide  REMINDER");
-			$query_user="SELECT vtiger_users.email1,vtiger_salesmanactivityrel.smid FROM vtiger_salesmanactivityrel inner join vtiger_users on vtiger_users.id=vtiger_salesmanactivityrel.smid where vtiger_salesmanactivityrel.activityid =? and vtiger_users.deleted=0";
+		if (($activity_time - $curr_time) > 0 && ($activity_time - $curr_time) <= $reminder_time) {
+			$log->debug('Inside REMINDER');
+			$query_user='SELECT vtiger_users.email1,vtiger_salesmanactivityrel.smid FROM vtiger_salesmanactivityrel inner join vtiger_users on vtiger_users.id=vtiger_salesmanactivityrel.smid where vtiger_salesmanactivityrel.activityid=? and vtiger_users.deleted=0';
 			$user_result = $adb->pquery($query_user, array($activity_id));
 			if($adb->num_rows($user_result)>=1)
 			{
@@ -95,32 +94,30 @@ if($adb->num_rows($result) >= 1)
 			}
 
 			// Retrieving the Subject and message from reminder table
-			$sql = "select active,notificationsubject,notificationbody from vtiger_notificationscheduler where schedulednotificationid=8";
+			$sql = 'select active,notificationsubject,notificationbody from vtiger_notificationscheduler where schedulednotificationid=8';
 			$result_main = $adb->pquery($sql, array());
 
-			$subject = $app_strings['Reminder'].$result_set['activitytype']." @ ".
-						$result_set['date_start']." ".$result_set['time_start']."] (". DateTimeField::getDBTimeZone() .")".
-						$adb->query_result($result_main,0,'notificationsubject');
+			$subject = $app_strings['Reminder'].$result_set['activitytype'].' @ '.
+				$result_set['date_start'].' '.$result_set['time_start'].'] ('. DateTimeField::getDBTimeZone() .')'.
+				$adb->query_result($result_main,0,'notificationsubject');
 
 			//Set the mail body/contents here
 			$contents = nl2br($adb->query_result($result_main,0,'notificationbody')) ."\n\n ".
-							$app_strings['Subject']." : ".$activity_sub."\n ". $parent_content ." ".
-							$app_strings['Date & Time']." : ".$date_start." ".$time_start."(". DateTimeField::getDBTimeZone() .")\n\n ".
-							$app_strings['Visit_Link']." <a href='".$site_URL."/index.php?action=EventDetailView&module=Calendar4You&record=".$activity_id."&activity_mode=".$activitymode."'>".$app_strings['Click here']."</a>";
+				$app_strings['Subject'].' : '.$activity_sub."\n ". $parent_content .' '.
+				$app_strings['Date & Time'].' : '.$date_start.' '.$time_start.'('. DateTimeField::getDBTimeZone() .")\n\n ".
+				$app_strings['Visit_Link']." <a href='".$site_URL."/index.php?action=EventDetailView&module=Calendar4You&record=".$activity_id."&activity_mode=".$activitymode."'>".$app_strings['Click here']."</a>";
 
 			if(count($to_addr) >=1)
 			{
 				$sendto = implode(',', $to_addr);
 				$rdo = send_mail('Calendar',$sendto,$HELPDESK_SUPPORT_NAME,$from,$subject,nl2br($contents));
-				$upd_query = "UPDATE vtiger_activity_reminder SET reminder_sent=1 where activity_id=?";
+				$upd_query = 'UPDATE vtiger_activity_reminder SET reminder_sent=1 where activity_id=?';
 				$upd_params = array($activity_id);
-
 				if($recur_id!=0)
 				{
-					$upd_query.=" and recurringid =?";
+					$upd_query.=' and recurringid=?';
 					array_push($upd_params, $recur_id);
 				}
-
 				$adb->pquery($upd_query, $upd_params);
 			}
 		}
