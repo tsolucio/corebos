@@ -41,12 +41,12 @@
 		if(!$meta->exists($idComponents[1])){
 			throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND,"Record you are trying to access is not found");
 		}
-		
+
 		$entity = $handler->retrieve($id);
 		//return product lines
 		if($entityName == 'Quotes' || $entityName == 'PurchaseOrder' || $entityName == 'SalesOrder' || $entityName == 'Invoice') {
-			list($wsid,$recordid) = split('x',$id);
-			$result = $adb->query("Select * from vtiger_inventoryproductrel where id =".$recordid);
+			list($wsid,$recordid) = explode('x',$id);
+			$result = $adb->pquery('select * from vtiger_inventoryproductrel where id=?',array($recordid));
 			while ($row=$adb->getNextRow($result, false)) {
 				if($row['discount_amount'] == NULL && $row['discount_percent'] == NULL) {
 					$discount = 0;$discount_type = 0;

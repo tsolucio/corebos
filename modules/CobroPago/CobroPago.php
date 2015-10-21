@@ -764,7 +764,7 @@ class CobroPago extends CRMEntity {
 		$result=$adb->pquery($query, array($cobropagoid));
 		$update_log = $adb->query_result($result,0,"update_log");
 
-		$splitval = split('--//--',trim($update_log,'--//--'));
+		$splitval = explode('--//--',trim($update_log,'--//--'));
 
 		$header[] = $adb->query_result($result,0,"reference");
 
