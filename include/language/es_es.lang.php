@@ -101,6 +101,7 @@ $app_strings = array (
       'LBL_SELECT_USER_BUTTON_KEY' => 'U',
       'LBL_SELECT_USER_BUTTON_LABEL' => 'Seleccionar Usuario',
       'LBL_SETTINGS' => 'Configuración',
+      'LBL_NOT_CONFIGURED' => 'no configurado',
       'LBL_LIST_USERIP' => 'IP Usuario',
       'LBL_LIST_SIGNIN' => 'Hora de Entrada',
       'LBL_LIST_SIGNOUT' => 'Hora de Salida',

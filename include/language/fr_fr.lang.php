@@ -97,6 +97,7 @@ $app_strings = array (
 	'LBL_SELECT_USER_BUTTON_KEY' => 'U',
 	'LBL_SELECT_USER_BUTTON_LABEL' => 'Sélectionner collaborateur',
 	'LBL_SETTINGS' => 'Configuration',
+	'LBL_NOT_CONFIGURED' => 'not configured',
 	'LBL_LIST_USERIP' => 'Adresse IP',
 	'LBL_LIST_SIGNIN' => 'Connexion',
 	'LBL_LIST_SIGNOUT' => 'Déconnexion',

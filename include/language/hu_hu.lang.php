@@ -102,6 +102,7 @@ $app_strings = array(
 	'LBL_SELECT_USER_BUTTON_KEY' => 'U',
 	'LBL_SELECT_USER_BUTTON_LABEL' => 'Felhasználó kiválasztása',
 	'LBL_SETTINGS' => 'Beállítások',
+	'LBL_NOT_CONFIGURED' => 'not configured',
 	'LBL_LIST_USERIP' => 'Felhasználó IP címe',
 	'LBL_LIST_SIGNIN' => 'Belépés ideje',
 	'LBL_LIST_SIGNOUT' => 'Kilépés ideje',

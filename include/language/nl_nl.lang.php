@@ -110,6 +110,7 @@ $app_strings = array(
 	'LBL_SELECT_USER_BUTTON_KEY' => 'U',
 	'LBL_SELECT_USER_BUTTON_LABEL' => 'Selecteer Gebruiker',
 	'LBL_SETTINGS' => 'Instellingen',
+	'LBL_NOT_CONFIGURED' => 'not configured',
 	'LBL_LIST_USERIP' => 'Gebruiker IP',
 	'LBL_LIST_SIGNIN' => 'Inkloktijd',
 	'LBL_LIST_SIGNOUT' => 'Uitkloktijd',
