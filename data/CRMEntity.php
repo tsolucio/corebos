@@ -1352,6 +1352,8 @@ class CRMEntity {
 		global $adb;
 		//when we configure the invoice number in Settings this will be used
 		if ($mode == "configure" && $req_no != '') {
+			list($mode, $module, $req_str, $req_no, $result, $returnResult) = cbEventHandler::do_filter('corebos.filter.ModuleSeqNumber.set', array($mode, $module, $req_str, $req_no, $result, false));
+			if ($returnResult) return $result;
 			$check = $adb->pquery("select cur_id from vtiger_modentity_num where semodule=? and prefix = ?", array($module, $req_str));
 			if ($adb->num_rows($check) == 0) {
 				$numid = $adb->getUniqueId("vtiger_modentity_num");
@@ -1371,6 +1373,8 @@ class CRMEntity {
 				}
 			}
 		} else if ($mode == "increment") {
+			list($mode, $module, $req_str, $req_no, $result, $returnResult) = cbEventHandler::do_filter('corebos.filter.ModuleSeqNumber.increment', array($mode, $module, $req_str, $req_no, $result, false));
+			if ($returnResult) return $result;
 			//when we save new invoice we will increment the invoice id and write
 			$check = $adb->pquery("select cur_id,prefix from vtiger_modentity_num where semodule=? and active = 1", array($module));
 			$prefix = $adb->query_result($check, 0, 'prefix');
