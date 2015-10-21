@@ -7,17 +7,16 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
-	
+
 	function vtws_retrieve($id, $user){
-		
 		global $log,$adb;
-		
+
 		$webserviceObject = VtigerWebserviceObject::fromId($adb,$id);
 		$handlerPath = $webserviceObject->getHandlerPath();
 		$handlerClass = $webserviceObject->getHandlerClass();
-		
+
 		require_once $handlerPath;
-		
+
 		$handler = new $handlerClass($webserviceObject,$user,$adb,$log);
 		$meta = $handler->getMeta();
 		$entityName = $meta->getObjectEntityName($id);

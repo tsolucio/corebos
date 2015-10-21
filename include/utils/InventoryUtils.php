@@ -10,10 +10,12 @@
 
 /**
  * This function returns the Product detail block values in array format.
- * Input Parameter are $module - module name, $focus - module object, $num_of_products - no.of vtiger_products associated with it  * $associated_prod = associated product details
- * column vtiger_fields/
+ * Input Parameter are
+ *  $module - module name,
+ *  $focus - module object,
+ *  $num_of_products - no.of products associated with it
+ *  $associated_prod = associated product details
  */
-
 function getProductDetailsBlockInfo($mode,$module,$focus='',$num_of_products='',$associated_prod='')
 {
 	global $log;
@@ -46,7 +48,6 @@ function getProductDetailsBlockInfo($mode,$module,$focus='',$num_of_products='',
 	else
 	{
 		$productBlock[] = Array(Array());
-
 	}
 	$log->debug("Exiting getProductDetailsBlockInfo method ...");
 	return $productBlock;
@@ -57,20 +58,14 @@ function getProductDetailsBlockInfo($mode,$module,$focus='',$num_of_products='',
  * Param $productid - product id
  * Param $qty - product quantity in no's
  * Param $mode - mode type
- * Param $ext_prod_arr - existing vtiger_products
+ * Param $ext_prod_arr - existing products
  * Param $module - module name
  * return type void
  */
-
 function updateStk($product_id,$qty,$mode,$ext_prod_arr,$module)
 {
-	global $log;
-	$log->debug("Entering updateStk(".$product_id.",".$qty.",".$mode.",".$ext_prod_arr.",".$module.") method ...");
-	global $adb;
-	global $current_user;
-
-	$log->debug("Inside updateStk function, module=".$module);
-	$log->debug("Product Id = $product_id & Qty = $qty");
+	global $log, $adb, $current_user;
+	$log->debug("Entering updateStk($product_id,$qty,$mode,".print_r($ext_prod_arr,true).",$module) method ...");
 
 	$prod_name = getProductName($product_id);
 	$qtyinstk= getPrdQtyInStck($product_id);
@@ -338,16 +333,17 @@ function getAllTaxes($available='all', $sh='',$mode='',$id='')
 		}
 		//We are selecting taxes using that taxids. So It will get the tax even if the tax is disabled.
 		$where_ids='';
-			if (count($result_ids) > 0) {
+		if (count($result_ids) > 0) {
 			$insert_str = str_repeat("?,", count($result_ids)-1);
 			$insert_str .= "?";
 			$where_ids="taxid in ($insert_str) or";
 		}
 
-		$res = $adb->pquery("select * from $tablename  where $where_ids  deleted=0 order by taxid",$result_ids);
-		} else {
+		$res = $adb->pquery("select * from $tablename where $where_ids  deleted=0 order by taxid",$result_ids);
+	} else {
 		//This where condition is added to get all products or only availble products
-			if ($available != 'all' && $available == 'available') {
+		$where = '';
+		if ($available != 'all' && $available == 'available') {
 			$where = " where $tablename.deleted=0";
 		}
 
@@ -592,17 +588,15 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 		if($_REQUEST["deleted".$i] == 1)
 			continue;
 
-	    $prod_id = vtlib_purify($_REQUEST['hdnProductId'.$i]); 
-		if(isset($_REQUEST['productDescription'.$i]))
-			$description = vtlib_purify($_REQUEST['productDescription'.$i]); 
-		/*else{
-			$desc_duery = "select vtiger_crmentity.description AS product_description from vtiger_crmentity where vtiger_crmentity.crmid=?";
-			$desc_res = $adb->pquery($desc_duery,array($prod_id));
-			$description = $adb->query_result($desc_res,0,"product_description");
-		}	*/
-		$qty = vtlib_purify($_REQUEST['qty'.$i]); 
-		$listprice = vtlib_purify($_REQUEST['listPrice'.$i]); 
-		$comment = vtlib_purify($_REQUEST['comment'.$i]); 
+		$prod_id = vtlib_purify($_REQUEST['hdnProductId'.$i]);
+		if(isset($_REQUEST['productDescription'.$i])) {
+			$description = vtlib_purify($_REQUEST['productDescription'.$i]);
+		} else {
+			$description = '';
+		}
+		$qty = vtlib_purify($_REQUEST['qty'.$i]);
+		$listprice = vtlib_purify($_REQUEST['listPrice'.$i]);
+		$comment = vtlib_purify($_REQUEST['comment'.$i]);
 
 		//we have to update the Product stock for PurchaseOrder if $update_prod_stock is true
 		if($module == 'PurchaseOrder' && $update_prod_stock == 'true')
