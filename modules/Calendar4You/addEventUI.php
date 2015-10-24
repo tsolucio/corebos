@@ -750,9 +750,9 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 		}
 
 		if (count($roleids) > 1) {
-			$Res=$adb->pquery("select distinct activitytype from  vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where roleid in (". generateQuestionMarks($roleids) .") and picklistid in (select picklistid from vtiger_activitytype) order by sortid asc",array($roleids));
+			$Res=$adb->pquery("select distinct activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where roleid in (". generateQuestionMarks($roleids) .") and picklistid in (select picklistid from vtiger_picklist) order by sortid asc",array($roleids));
 		} else {
-			$Res=$adb->pquery("select distinct activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where roleid = ? and picklistid in (select picklistid from vtiger_activitytype) order by sortid asc",array($role_id));
+			$Res=$adb->pquery("select distinct activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where roleid = ? and picklistid in (select picklistid from vtiger_picklist) order by sortid asc",array($role_id));
 		}
 	}
 	$eventlist='';

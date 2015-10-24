@@ -3001,9 +3001,9 @@ class ReportRun extends CRMEntity {
 			$keyvalue = getTabModuleName($tabid)."_".$fieldlabel1;
 			$fieldvalues = Array();
 			if (count($roleids) > 1) {
-				$mulsel="select distinct $fieldname from vtiger_$fieldname inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$fieldname.picklist_valueid where roleid in (\"". implode($roleids,"\",\"") ."\") and picklistid in (select picklistid from vtiger_$fieldname)"; // order by sortid asc - not requried
+				$mulsel="select distinct $fieldname from vtiger_$fieldname inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$fieldname.picklist_valueid where roleid in (\"". implode($roleids,"\",\"") ."\") and picklistid in (select picklistid from vtiger_picklist)"; // order by sortid asc - not requried
 			} else {
-				$mulsel="select distinct $fieldname from vtiger_$fieldname inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$fieldname.picklist_valueid where roleid ='".$roleid."' and picklistid in (select picklistid from vtiger_$fieldname)"; // order by sortid asc - not requried
+				$mulsel="select distinct $fieldname from vtiger_$fieldname inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$fieldname.picklist_valueid where roleid ='".$roleid."' and picklistid in (select picklistid from vtiger_picklist)"; // order by sortid asc - not requried
 			}
 			if($fieldname != 'firstname')
 				$mulselresult = $adb->query($mulsel);

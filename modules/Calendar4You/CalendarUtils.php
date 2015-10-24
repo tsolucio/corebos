@@ -157,9 +157,9 @@ function getActTypesForCalendar() {
 		$q = "select distinct activitytypeid, activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where roleid";
 
 		if (count($roleids) > 1) {
-			$q .= " in (\"". implode($roleids,"\",\"") ."\") and picklistid in (select picklistid from vtiger_activitytype) order by sortid asc";
+			$q .= " in (\"". implode($roleids,"\",\"") ."\") and picklistid in (select picklistid from vtiger_picklist) order by sortid asc";
 		} else {
-			$q .= " ='".$roleid."' and picklistid in (select picklistid from vtiger_activitytype) order by sortid asc";
+			$q .= " ='".$roleid."' and picklistid in (select picklistid from vtiger_picklist) order by sortid asc";
 		}
 	}
 	$Res = $adb->query($q);
