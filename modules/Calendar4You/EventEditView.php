@@ -10,7 +10,6 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
 
 require_once('Smarty_setup.php');
@@ -23,7 +22,7 @@ require_once("modules/Calendar4You/Calendar4You.php");
 require_once("modules/Calendar4You/CalendarUtils.php");
 global $app_strings;
 global $mod_strings,$current_user,$current_language;
-// Unimplemented until jscalendar language vtiger_files are fixed
+// Unimplemented until jscalendar language files are fixed
 
 $Calendar4You = new Calendar4You();
 
@@ -32,7 +31,7 @@ $Calendar4You->GetDefPermission($current_user->id);
 $edit_permissions = $Calendar4You->CheckPermissions("EDIT",$_REQUEST['record']);
 
 if(!$edit_permissions) {
-  	NOPermissionDiv();
+	NOPermissionDiv();
 }
 
 $c_mod_strings = return_specified_module_language($current_language, "Calendar");
@@ -302,5 +301,4 @@ $smarty->assign("PICKIST_DEPENDENCY_DATASOURCE", Zend_Json::encode($picklistDepe
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
 
 $smarty->display("modules/Calendar4You/EventEditView.tpl");
-
 ?>
