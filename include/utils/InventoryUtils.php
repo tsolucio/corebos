@@ -7,6 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
+require_once 'modules/Emails/mail.php';
 
 /**
  * This function returns the Product detail block values in array format.
