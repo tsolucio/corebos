@@ -88,13 +88,10 @@ function updateStk($product_id,$qty,$mode,$ext_prod_arr,$module)
  * Param $module - module name
  * return type void
  */
-
 function sendPrdStckMail($product_id,$upd_qty,$prod_name,$qtyinstk,$qty,$module)
 {
-	global $log;
+	global $log, $current_user, $adb;
 	$log->debug("Entering sendPrdStckMail(".$product_id.",".$upd_qty.",".$prod_name.",".$qtyinstk.",".$qty.",".$module.") method ...");
-	global $current_user;
-	global $adb;
 	$reorderlevel = getPrdReOrderLevel($product_id);
 	$log->debug("Inside sendPrdStckMail function, module=".$module);
 	$log->debug("Prd reorder level ".$reorderlevel);
@@ -174,12 +171,10 @@ function getPrdQtyInStck($product_id)
 *Param $product_id - product id
 *Returns type numeric
 */
-
 function getPrdReOrderLevel($product_id)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getPrdReOrderLevel(".$product_id.") method ...");
-	global $adb;
 	$query1 = "SELECT reorderlevel FROM vtiger_products WHERE productid = ?";
 	$result=$adb->pquery($query1, array($product_id));
 	$reorderlevel= $adb->query_result($result,0,"reorderlevel");
@@ -544,11 +539,11 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 	//Added to get the convertid
 	if(isset($_REQUEST['convert_from']) && $_REQUEST['convert_from'] !='')
 	{
-		$id=vtlib_purify($_REQUEST['return_id']); 
+		$id=vtlib_purify($_REQUEST['return_id']);
 	}
 	else if(isset($_REQUEST['duplicate_from']) && $_REQUEST['duplicate_from'] !='')
 	{
-		$id=vtlib_purify($_REQUEST['duplicate_from']); 
+		$id=vtlib_purify($_REQUEST['duplicate_from']);
 	}
 	$ipr_cols = $adb->getColumnNames('vtiger_inventoryproductrel');
 	$ext_prod_arr = Array();
@@ -664,7 +659,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 				$tax_val = $all_available_taxes[$tax_count]['percentage'];
 				$request_tax_name = $tax_name."_group_percentage";
 				if(isset($_REQUEST[$request_tax_name]))
-					$tax_val =vtlib_purify($_REQUEST[$request_tax_name]); 
+					$tax_val =vtlib_purify($_REQUEST[$request_tax_name]);
 				$updatequery .= " $tax_name = ?,";
 				array_push($updateparams,$tax_val);
 			}
@@ -721,9 +716,9 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 	//if the user gave - sign in adjustment then add with the value
 	$adjustmentType = '';
 	if($_REQUEST['adjustmentType'] == '-')
-		$adjustmentType = vtlib_purify($_REQUEST['adjustmentType']); 
+		$adjustmentType = vtlib_purify($_REQUEST['adjustmentType']);
 
-	$adjustment = vtlib_purify($_REQUEST['adjustment']); 
+	$adjustment = vtlib_purify($_REQUEST['adjustment']);
 	$updatequery .= " adjustment=?,";
 	array_push($updateparams, $adjustmentType.$adjustment);
 
@@ -749,7 +744,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 		if($_REQUEST[$tax_name] != '' and in_array($sh_tax_details[$i]['taxname'], $isr_cols)) {
 			$sh_query_fields .= $sh_tax_details[$i]['taxname'].",";
 			$sh_query_values .= "?,";
-			array_push($sh_query_params, vtlib_purify($_REQUEST[$tax_name])); 
+			array_push($sh_query_params, vtlib_purify($_REQUEST[$tax_name]));
 		}
 	}
 	$sh_query_fields = trim($sh_query_fields,',');
