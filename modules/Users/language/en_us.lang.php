@@ -788,6 +788,9 @@ $mod_strings = Array(
 'Pacific/Auckland' => '(UTC+12:00) Auckland',
 'Pacific/Tongatapu' => '(UTC+13:00) Nukualofa',
 
+'Calendar Hour Format' => 'Calendar Hour Format',
+'Day ends at' => 'Day ends at',
+'Day starts at' => 'Day starts at',
 'Theme'=>'Theme',
 'Language'=>'Language',
 'Secondary Email'=>'Secondary Email',
