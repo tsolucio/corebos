@@ -1428,6 +1428,8 @@ class CRMEntity {
 	function updateMissingSeqNumber($module) {
 		global $log, $adb;
 		$log->debug("Entered updateMissingSeqNumber function");
+		list($module, $result, $returnResult) = cbEventHandler::do_filter('corebos.filter.ModuleSeqNumber.fillempty', array($module, $result, false));
+		if ($returnResult) return $result;
 
 		vtlib_setup_modulevars($module, $this);
 
