@@ -2154,7 +2154,7 @@ class ReportRun extends CRMEntity {
 				if($directOutput) {
 					echo "</tr></table>";
 					echo "<script type='text/javascript' id='__reportrun_directoutput_recordcount_script'>
-						if($('_reportrun_total')) $('_reportrun_total').innerHTML=$noofrows;</script>";
+						if(document.getElementById('_reportrun_total')) document.getElementById('_reportrun_total').innerHTML=$noofrows;</script>";
 				} else {
 
 					$sHTML ='<table cellpadding="5" cellspacing="0" align="center" class="rptTable">
