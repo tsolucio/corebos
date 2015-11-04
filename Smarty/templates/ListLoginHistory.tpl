@@ -11,8 +11,8 @@
 -->*}
 
 <script language="JAVASCRIPT" type="text/javascript" src="include/js/smoothscroll.js"></script>
-<script src="include/scriptaculous/prototype.js" type="text/javascript"></script>
-<script src="include/scriptaculous/scriptaculous.js" type="text/javascript"></script>
+{*<script src="include/scriptaculous/prototype.js" type="text/javascript"></script>
+<script src="include/scriptaculous/scriptaculous.js" type="text/javascript"></script>*}
 <script language="javascript" type="text/javascript" src="include/js/general.js"></script>
 <script language="JavaScript" type="text/javascript" src="include/js/dtlviewajax.js"></script>
 <script language="JavaScript" type="text/javascript" src="include/js/menu.js"></script>

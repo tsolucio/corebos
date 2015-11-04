@@ -19,8 +19,8 @@
 <title>{$MOD.TITLE_COMPOSE_MAIL}</title>
 <link REL="SHORTCUT ICON" HREF="themes/images/favicon.ico">	
 <style type="text/css">@import url("themes/{$THEME}/style.css");</style>
-<script language="javascript" type="text/javascript" src="include/scriptaculous/prototype.js"></script>
-<script src="include/scriptaculous/scriptaculous.js" type="text/javascript"></script>
+{*<script language="javascript" type="text/javascript" src="include/scriptaculous/prototype.js"></script>*}
+{*<script src="include/scriptaculous/scriptaculous.js" type="text/javascript"></script>*}
 <script src="include/js/general.js" type="text/javascript"></script>
 <script language="JavaScript" type="text/javascript" src="include/js/{php} echo $_SESSION['authenticated_user_language'];{/php}.lang.js?{php} echo $_SESSION['vtiger_version'];{/php}"></script>
 <script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>

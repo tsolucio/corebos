@@ -9,7 +9,7 @@
  ********************************************************************************/
 -->*}
 <link rel="stylesheet" type="text/css" href="themes/{$THEME}/style.css">
-<script language="javascript" type="text/javascript" src="include/scriptaculous/prototype.js"></script>
+{*<script language="javascript" type="text/javascript" src="include/scriptaculous/prototype.js"></script>*}
 <script language="JavaScript" type="text/javascript" src="include/js/ListView.js"></script>
 <script language="JavaScript" type="text/javascript" src="include/js/general.js"></script>
 <script language="JavaScript" type="text/javascript" src="include/js/vtlib.js"></script>

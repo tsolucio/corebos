@@ -10,7 +10,7 @@
  ********************************************************************************/
 -->*}
 
-<script language="javascript" type="text/javascript" src="include/scriptaculous/effects.js"></script>
+{*<script language="javascript" type="text/javascript" src="include/scriptaculous/effects.js"></script>*}
 <script type="text/javascript">
   jQuery.noConflict();
 </script>

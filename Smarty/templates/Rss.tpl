@@ -10,7 +10,7 @@
  ********************************************************************************/
 -->*}
 <script language="JavaScript" type="text/javascript" src="modules/Rss/Rss.js"></script>
-<script src="include/scriptaculous/scriptaculous.js" type="text/javascript"></script>
+{*<script src="include/scriptaculous/scriptaculous.js" type="text/javascript"></script>*}
 <script>
 {literal}
 

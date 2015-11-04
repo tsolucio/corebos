@@ -10,7 +10,7 @@
  ********************************************************************************/
 -->*}
 <link rel="stylesheet" type="text/css" href="{$THEME_PATH}style.css">
-<script language="javascript" type="text/javascript" src="include/scriptaculous/prototype.js"></script>
+{*<script language="javascript" type="text/javascript" src="include/scriptaculous/prototype.js"></script>*}
 <body class="small" marginwidth=0 marginheight=0 leftmargin=0 topmargin=0 bottommargin=0 rigthmargin=0>
 
 <form action="index.php" method="post" id="form" onsubmit="VtigerJS_DialogBox.block();">

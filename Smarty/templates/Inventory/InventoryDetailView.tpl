@@ -12,7 +12,7 @@
 
 -->*}
 <script language="JavaScript" type="text/javascript" src="include/js/dtlviewajax.js"></script>
-<script src="include/scriptaculous/scriptaculous.js" type="text/javascript"></script>
+{*<script src="include/scriptaculous/scriptaculous.js" type="text/javascript"></script>*}
 <div id="convertleaddiv" style="display:block;position:absolute;left:225px;top:150px;"></div>
 <span id="crmspanid" style="display:none;position:absolute;"  onmouseover="show('crmspanid');">
    <a class="link"  align="right" href="javascript:;">{$APP.LBL_EDIT_BUTTON}</a>
