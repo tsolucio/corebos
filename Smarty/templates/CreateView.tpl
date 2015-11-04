@@ -43,7 +43,7 @@ function sensex_info()
 		if(Ticker!='')
 		{ldelim}
 				document.getElementById("vtbusy_info").style.display="inline";
-				jQuery.ajax({
+				jQuery.ajax({ldelim}
 						method:"POST",
 						url: 'index.php?module={$MODULE}&action=Tickerdetail&tickersymbol='+Ticker,
 				{rdelim}).done(function(response) {ldelim}

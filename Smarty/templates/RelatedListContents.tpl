@@ -52,7 +52,7 @@ function loadRelatedListBlock(urldata,target,imagesuffix) {
 			url: 'index.php?'+urldata,
 		}).done(function (response) {
 					var responseData = trim(response);
-      				target_element.update(responseData);
+      				target_element.innerHTML=responseData;
 					target_element.style.display="block";
       				showdata_element.style.display="none";
       				hidedata_element.style.display="block";

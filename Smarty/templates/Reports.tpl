@@ -228,7 +228,7 @@ function AddFolder()
                                                 return false;
                                                 {literal}
 					}
-				else if(response.responseText == 999) // 999 check for special chars
+				else if(response == 999) // 999 check for special chars
 					{
                                                 {/literal}
                                                 alert("{$APP.SPECIAL_CHARS_NOT_ALLOWED}");

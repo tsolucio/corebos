@@ -110,7 +110,7 @@ function fetchSaveNotify(id)
 			method:"POST",
 			url:'index.php?action=SettingsAjax&module=Settings&file=SaveNotification&active='+active+'&notifysubject='+subject+'&notifybody='+body+'&record='+id
 	}).done(function(response) {
-			if(response.responseText.indexOf(":#:FAILURE") > -1) {
+			if(response.indexOf(":#:FAILURE") > -1) {
 				alert(alert_arr.VALID_DATA);
 			} else {
 				document.getElementById("notifycontents").innerHTML=response;

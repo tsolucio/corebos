@@ -37,7 +37,7 @@ function gotoUpdateListPrice(id,pbid,proid) {
 						url: 'index.php?module=Products&action=ProductsAjax&file=UpdateListPrice&ajax=true&return_action=CallRelatedList&return_module=PriceBooks&record='+id+'&pricebook_id='+pbid+'&product_id='+proid+'&list_price='+listprice,
 				}).done(function (response) {
 							document.getElementById("status").style.display="none";
-							document.getElementById("RLContents").update(response);
+							document.getElementById("RLContents").innerHTML=response;
 						}
 				);
 }
