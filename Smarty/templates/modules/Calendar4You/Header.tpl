@@ -51,16 +51,17 @@
 	<!-- END -->
 	<script language="JavaScript" type="text/javascript" id="_current_language_" src="include/js/{php} echo $_SESSION['authenticated_user_language'];{/php}.lang.js?{php} echo $_SESSION['vtiger_version'];{/php}"></script>
 	<script language="JavaScript" type="text/javascript" src="include/js/QuickCreate.js"></script>
-	<script language="javascript" type="text/javascript" src="include/scriptaculous/prototype.js"></script>
+	{*<script language="javascript" type="text/javascript" src="include/scriptaculous/prototype.js"></script>*}
 	<script language="JavaScript" type="text/javascript" src="include/js/menu.js?v={$VERSION}"></script>
 	<script language="JavaScript" type="text/javascript" src="include/calculator/calc.js"></script>
 	<script language="JavaScript" type="text/javascript" src="modules/Calendar/script.js"></script>
-	<script language="javascript" type="text/javascript" src="include/scriptaculous/dom-drag.js"></script>
+	{*<script language="javascript" type="text/javascript" src="include/scriptaculous/dom-drag.js"></script>*}
 	<script language="JavaScript" type="text/javascript" src="include/js/notificationPopup.js"></script>
 	<script type="text/javascript" src="jscalendar/calendar.js"></script>
 	<script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
 	<script type="text/javascript" src="jscalendar/lang/calendar-{$APP.LBL_JSCALENDAR_LANG}.js"></script>
-	{*<script type="text/javascript" src="include/jquery/jquery.js"></script>*}
+	<script type="text/javascript" src="include/jquery/jquery.js"></script>
+	<script type="text/javascript" src="include/jquery/jquery-ui.js"></script>
    	<script type="text/javascript">
 		jQuery.noConflict();
 	</script>
@@ -467,9 +468,7 @@ function openwin(){ldelim}
 </div>
 
 <script>
-	var THandle = document.getElementById("Track_Handle");
-	var TRoot   = document.getElementById("tracker");
-	Drag.init(THandle, TRoot);
+	jQuery('#tracker').draggable({ldelim} handle: "#Track_Handle" {rdelim});
 </script>
 
 <!--for admin users-->

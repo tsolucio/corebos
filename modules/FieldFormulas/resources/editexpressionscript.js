@@ -247,7 +247,7 @@ function editexpressionscript($){
 
 	jQuery(document).ready(
 	    function(){
-	    	Drag.init(document.getElementById('editpopup_draghandle'), document.getElementById('editpopup'));
+			jQuery("#editpopup").draggable({ handle: "#editpopup_draghandle" });
 			toExec();
 		}
     );

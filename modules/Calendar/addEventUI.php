@@ -1109,14 +1109,10 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 </div>
 <script>
 	//for move addEventUI
-	var theEventHandle = document.getElementById("moveEvent");
-	var theEventRoot   = document.getElementById("addEvent");
-	Drag.init(theEventHandle, theEventRoot);
+	jQuery('#addEvent').draggable({ handle: "#moveEvent" });
 
 	//for move addToDo
-	var theTodoHandle = document.getElementById("moveTodo");
-	var theTodoRoot   = document.getElementById("createTodo");
-	Drag.init(theTodoHandle, theTodoRoot);
+	jQuery("#createTodo").draggable({ handle: "#moveTodo" });
 </script>
 
 <?php

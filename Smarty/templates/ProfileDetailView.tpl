@@ -402,10 +402,8 @@ function fnToggleVIew(obj){
 }
 {/literal}
 {literal}
-        //for move RenameProfile
-        var Handle = document.getElementById("renameUI");
-        var Root   = document.getElementById("renameProfile");
-        Drag.init(Handle,Root);
+		//for move RenameProfile
+		jQuery("#renameProfile").draggable({ handle: "#renameUI" });
 {/literal}
 </script>
 

@@ -161,9 +161,7 @@
 </table>
 </div>
 <script>
-	var theHandle = document.getElementById("Handle");
-	var theRoot   = document.getElementById("wclock");
-	Drag.init(theHandle, theRoot);
+	jQuery('#wclock').draggable({ldelim} handle: "#Handle" {rdelim});
 </script>
 
 {/if}

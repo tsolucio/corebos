@@ -453,8 +453,7 @@ function editworkflowscript($, conditions){
 		fieldValidator = new VTFieldValidator($('#edit_workflow_form'));
 		fieldValidator.mandatoryFields = ["description"];
 		pageLoadingPopup.show();
-
-		Drag.init(document.getElementById('editpopup_draghandle'), document.getElementById('editpopup'));
+		jQuery("#editpopup").draggable({ handle: "#editpopup_draghandle" });
 		editpopupobj = fieldExpressionPopup(moduleName, $);
 		editpopupobj.setModule(moduleName);
 		editpopupobj.close();

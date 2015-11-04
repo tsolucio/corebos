@@ -325,7 +325,7 @@ vtiger_help_controller = function() {
                         document.getElementById('helpLink').style.display='none';
                         popUpLayBlock.style.display='block';
                         //Drag funtion for help
-                        Drag.init(document.getElementById('helpHandle'),document.getElementById('vtigerHelpPopupLay'),-1100,0,-100,1000);
+						jQuery("#vtigerHelpPopupLay").draggable({containment:[-1100,0,-100,1000], handle: "#helpHandle" });
                         // Trigger translation service
                         thisInstance.translate();
                     } else {

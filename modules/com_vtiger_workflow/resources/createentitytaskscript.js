@@ -352,7 +352,7 @@ function VTCreateEntityTask($, fieldvaluemapping){
 
 
 	$(document).ready(function(){
-        Drag.init(document.getElementById('editpopup_draghandle'), document.getElementById('editpopup'));
+		jQuery("#editpopup").draggable({ handle: "#editpopup_draghandle" });
         editpopupobj = fieldExpressionPopup(moduleName, $);
         editpopupobj.setModule(moduleName);
 		editpopupobj.close();
