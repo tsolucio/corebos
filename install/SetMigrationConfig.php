@@ -49,7 +49,7 @@ $_SESSION['pre_migration'] = false;
 
     <link rel='stylesheet' type='text/css' href='themes/softed/style.css'></link>
     <script type="text/javascript" src="include/js/en_us.lang.js"></script>
-    <script type="text/javascript" src="include/scriptaculous/prototype.js"></script>
+    <script type="text/javascript" src="include/jquery/jquery.js"></script>
     <script type="text/javascript" src="include/js/general.js"></script>
 
 	<link href="include/install/install.css" rel="stylesheet" type="text/css">
