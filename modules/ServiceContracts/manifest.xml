@@ -97,7 +97,7 @@
 <defaultvalue></defaultvalue>
 <sequence>17</sequence>
 <maximumlength>100</maximumlength>
-<typeofdata>V~O</typeofdata>
+<typeofdata>DT~O</typeofdata>
 <quickcreate>3</quickcreate>
 <quickcreatesequence></quickcreatesequence>
 <displaytype>2</displaytype>
@@ -117,7 +117,7 @@
 <defaultvalue></defaultvalue>
 <sequence>18</sequence>
 <maximumlength>100</maximumlength>
-<typeofdata>V~O</typeofdata>
+<typeofdata>DT~O</typeofdata>
 <quickcreate>3</quickcreate>
 <quickcreatesequence></quickcreatesequence>
 <displaytype>2</displaytype>

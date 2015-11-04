@@ -7,13 +7,16 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
+require_once 'modules/Emails/mail.php';
 
 /**
  * This function returns the Product detail block values in array format.
- * Input Parameter are $module - module name, $focus - module object, $num_of_products - no.of vtiger_products associated with it  * $associated_prod = associated product details
- * column vtiger_fields/
+ * Input Parameter are
+ *  $module - module name,
+ *  $focus - module object,
+ *  $num_of_products - no.of products associated with it
+ *  $associated_prod = associated product details
  */
-
 function getProductDetailsBlockInfo($mode,$module,$focus='',$num_of_products='',$associated_prod='')
 {
 	global $log;
@@ -46,7 +49,6 @@ function getProductDetailsBlockInfo($mode,$module,$focus='',$num_of_products='',
 	else
 	{
 		$productBlock[] = Array(Array());
-
 	}
 	$log->debug("Exiting getProductDetailsBlockInfo method ...");
 	return $productBlock;
@@ -57,20 +59,14 @@ function getProductDetailsBlockInfo($mode,$module,$focus='',$num_of_products='',
  * Param $productid - product id
  * Param $qty - product quantity in no's
  * Param $mode - mode type
- * Param $ext_prod_arr - existing vtiger_products
+ * Param $ext_prod_arr - existing products
  * Param $module - module name
  * return type void
  */
-
 function updateStk($product_id,$qty,$mode,$ext_prod_arr,$module)
 {
-	global $log;
-	$log->debug("Entering updateStk(".$product_id.",".$qty.",".$mode.",".$ext_prod_arr.",".$module.") method ...");
-	global $adb;
-	global $current_user;
-
-	$log->debug("Inside updateStk function, module=".$module);
-	$log->debug("Product Id = $product_id & Qty = $qty");
+	global $log, $adb, $current_user;
+	$log->debug("Entering updateStk($product_id,$qty,$mode,".print_r($ext_prod_arr,true).",$module) method ...");
 
 	$prod_name = getProductName($product_id);
 	$qtyinstk= getPrdQtyInStck($product_id);
@@ -92,13 +88,10 @@ function updateStk($product_id,$qty,$mode,$ext_prod_arr,$module)
  * Param $module - module name
  * return type void
  */
-
 function sendPrdStckMail($product_id,$upd_qty,$prod_name,$qtyinstk,$qty,$module)
 {
-	global $log;
+	global $log, $current_user, $adb;
 	$log->debug("Entering sendPrdStckMail(".$product_id.",".$upd_qty.",".$prod_name.",".$qtyinstk.",".$qty.",".$module.") method ...");
-	global $current_user;
-	global $adb;
 	$reorderlevel = getPrdReOrderLevel($product_id);
 	$log->debug("Inside sendPrdStckMail function, module=".$module);
 	$log->debug("Prd reorder level ".$reorderlevel);
@@ -178,12 +171,10 @@ function getPrdQtyInStck($product_id)
 *Param $product_id - product id
 *Returns type numeric
 */
-
 function getPrdReOrderLevel($product_id)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getPrdReOrderLevel(".$product_id.") method ...");
-	global $adb;
 	$query1 = "SELECT reorderlevel FROM vtiger_products WHERE productid = ?";
 	$result=$adb->pquery($query1, array($product_id));
 	$reorderlevel= $adb->query_result($result,0,"reorderlevel");
@@ -338,16 +329,17 @@ function getAllTaxes($available='all', $sh='',$mode='',$id='')
 		}
 		//We are selecting taxes using that taxids. So It will get the tax even if the tax is disabled.
 		$where_ids='';
-			if (count($result_ids) > 0) {
+		if (count($result_ids) > 0) {
 			$insert_str = str_repeat("?,", count($result_ids)-1);
 			$insert_str .= "?";
 			$where_ids="taxid in ($insert_str) or";
 		}
 
-		$res = $adb->pquery("select * from $tablename  where $where_ids  deleted=0 order by taxid",$result_ids);
-		} else {
+		$res = $adb->pquery("select * from $tablename where $where_ids  deleted=0 order by taxid",$result_ids);
+	} else {
 		//This where condition is added to get all products or only availble products
-			if ($available != 'all' && $available == 'available') {
+		$where = '';
+		if ($available != 'all' && $available == 'available') {
 			$where = " where $tablename.deleted=0";
 		}
 
@@ -547,11 +539,11 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 	//Added to get the convertid
 	if(isset($_REQUEST['convert_from']) && $_REQUEST['convert_from'] !='')
 	{
-		$id=vtlib_purify($_REQUEST['return_id']); 
+		$id=vtlib_purify($_REQUEST['return_id']);
 	}
 	else if(isset($_REQUEST['duplicate_from']) && $_REQUEST['duplicate_from'] !='')
 	{
-		$id=vtlib_purify($_REQUEST['duplicate_from']); 
+		$id=vtlib_purify($_REQUEST['duplicate_from']);
 	}
 	$ipr_cols = $adb->getColumnNames('vtiger_inventoryproductrel');
 	$ext_prod_arr = Array();
@@ -592,17 +584,15 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 		if($_REQUEST["deleted".$i] == 1)
 			continue;
 
-	    $prod_id = vtlib_purify($_REQUEST['hdnProductId'.$i]); 
-		if(isset($_REQUEST['productDescription'.$i]))
-			$description = vtlib_purify($_REQUEST['productDescription'.$i]); 
-		/*else{
-			$desc_duery = "select vtiger_crmentity.description AS product_description from vtiger_crmentity where vtiger_crmentity.crmid=?";
-			$desc_res = $adb->pquery($desc_duery,array($prod_id));
-			$description = $adb->query_result($desc_res,0,"product_description");
-		}	*/
-		$qty = vtlib_purify($_REQUEST['qty'.$i]); 
-		$listprice = vtlib_purify($_REQUEST['listPrice'.$i]); 
-		$comment = vtlib_purify($_REQUEST['comment'.$i]); 
+		$prod_id = vtlib_purify($_REQUEST['hdnProductId'.$i]);
+		if(isset($_REQUEST['productDescription'.$i])) {
+			$description = vtlib_purify($_REQUEST['productDescription'.$i]);
+		} else {
+			$description = '';
+		}
+		$qty = vtlib_purify($_REQUEST['qty'.$i]);
+		$listprice = vtlib_purify($_REQUEST['listPrice'.$i]);
+		$comment = vtlib_purify($_REQUEST['comment'.$i]);
 
 		//we have to update the Product stock for PurchaseOrder if $update_prod_stock is true
 		if($module == 'PurchaseOrder' && $update_prod_stock == 'true')
@@ -669,7 +659,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 				$tax_val = $all_available_taxes[$tax_count]['percentage'];
 				$request_tax_name = $tax_name."_group_percentage";
 				if(isset($_REQUEST[$request_tax_name]))
-					$tax_val =vtlib_purify($_REQUEST[$request_tax_name]); 
+					$tax_val =vtlib_purify($_REQUEST[$request_tax_name]);
 				$updatequery .= " $tax_name = ?,";
 				array_push($updateparams,$tax_val);
 			}
@@ -726,9 +716,9 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 	//if the user gave - sign in adjustment then add with the value
 	$adjustmentType = '';
 	if($_REQUEST['adjustmentType'] == '-')
-		$adjustmentType = vtlib_purify($_REQUEST['adjustmentType']); 
+		$adjustmentType = vtlib_purify($_REQUEST['adjustmentType']);
 
-	$adjustment = vtlib_purify($_REQUEST['adjustment']); 
+	$adjustment = vtlib_purify($_REQUEST['adjustment']);
 	$updatequery .= " adjustment=?,";
 	array_push($updateparams, $adjustmentType.$adjustment);
 
@@ -754,7 +744,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 		if($_REQUEST[$tax_name] != '' and in_array($sh_tax_details[$i]['taxname'], $isr_cols)) {
 			$sh_query_fields .= $sh_tax_details[$i]['taxname'].",";
 			$sh_query_values .= "?,";
-			array_push($sh_query_params, vtlib_purify($_REQUEST[$tax_name])); 
+			array_push($sh_query_params, vtlib_purify($_REQUEST[$tax_name]));
 		}
 	}
 	$sh_query_fields = trim($sh_query_fields,',');

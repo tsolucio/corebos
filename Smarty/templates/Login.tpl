@@ -11,7 +11,7 @@
 {include file="LoginHeader.tpl}
 
 <div id="loginWrapper">
-<div id="loginTop"><a href="index.php"><img src="{php} $logo_login=fetch_logo(1); echo $logo_login;{/php}"></a></div>
+<div id="loginTop"><a href="index.php"><img src="test/logo/{$COMPANY_DETAILS.logo}"></a></div>
 <div id="loginBody">
 	<div class="loginForm">
 		<div class="poweredBy">Powered by coreBOS</div>

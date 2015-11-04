@@ -112,8 +112,8 @@
 			<td width="100px" align=right>{'LBL_Attachments'|@getTranslatedString}:</td>
 			<td>
 				{foreach item=ATTACHVALUE key=ATTACHNAME from=$MAIL->attachments(false) name="attach"}
-					<img border=0 src="{'attachments.gif'|@vtiger_imageurl:$THEME}">
-					<a href="index.php?module={$MODULE}&action={$MODULE}Ajax&file=index&_operation=mail&_operationarg=attachment_dld&_muid={$MAIL->muid()}&_atname={$ATTACHNAME|@escape:'htmlall':'UTF-8'}">{$ATTACHNAME}</a>
+					<img border=0 src="{'attachments.gif'|@vtiger_imageurl:$THEME}">&nbsp;
+					<a href="index.php?module={$MODULE}&action={$MODULE}Ajax&file=index&_operation=mail&_operationarg=attachment_dld&_muid={$MAIL->muid()}&_atname={$ATTACHNAME|@urlencode}">{$ATTACHNAME}</a>
 					&nbsp;
 				{/foreach}
 					<input type="hidden" id="_mail_attachmentcount_" value="{$smarty.foreach.attach.total}" >

@@ -18,7 +18,7 @@ class ModTracker_Detail {
 
 	var $parent;
 	var $fieldInstance;
-	
+
 	var $_prevalueLabel = false;
 	var $_postvalueLabel = false;
 	var $_fieldLabel = false;
@@ -60,15 +60,17 @@ class ModTracker_Detail {
 	function initialize($valuemap) {
 		$this->id = $valuemap['id'];
 		$this->name = $valuemap['fieldname'];
+		if ($this->parent->module=='Products' and substr($this->name,0,10)=='deltaimage') $this->name='imagename';
 		$this->prevalue = $valuemap['prevalue'];
 		$this->postvalue =$valuemap['postvalue'];
 		$this->fieldInstance = new ModTracker_Field($this);
 		$this->fieldInstance->initialize();
 	}
-	
+
 	function isViewPermitted() {
 		// Check if the logged in user has access to the field
 		global $current_user;
+		if ($this->parent->module=='Products' and substr($this->name,0,10)=='deltaimage') return true;
 		return (getFieldVisibilityPermission($this->parent->module, $current_user->id, $this->name) == '0');
 	}
 
@@ -103,7 +105,6 @@ class ModTracker_Detail {
 	function getModTrackerField() {
 		$modTrackerFieldInstance = new ModTracker_Field();
 		$modTrackerFieldInstance->initialize($this);
-		
 	}
 }
 ?>

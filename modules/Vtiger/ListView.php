@@ -147,7 +147,7 @@ if(!empty($order_by)) {
 		$list_query .= ' ORDER BY ' . $tablename . $order_by . ' ' . $sorder;
 	}
 }
-
+try {
 if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true) {
 	$count_result = $adb->query( mkCountQuery( $list_query));
 	$noofrows = $adb->query_result($count_result,0,"count");
@@ -163,6 +163,14 @@ $navigation_array = VT_getSimpleNavigationValues($start,$list_max_entries_per_pa
 $limit_start_rec = ($start-1) * $list_max_entries_per_page;
 
 $list_result = $adb->pquery($list_query. " LIMIT $limit_start_rec, $list_max_entries_per_page", array());
+} catch (Exception $e) {
+	$sql_error = true;
+}
+$smarty->assign('SQLERROR',$sql_error);
+if ($sql_error) {
+	$smarty->assign('ERROR', getTranslatedString('ERROR_GETTING_FILTER'));
+	$smarty->assign("CUSTOMVIEW_OPTION",$customview_html);
+} else {
 
 $recordListRangeMsg = getRecordRangeMessage($list_result, $limit_start_rec,$noofrows);
 $smarty->assign('recordListRange',$recordListRangeMsg);
@@ -222,7 +230,7 @@ if(isPermitted($currentModule, "Merge") == 'yes' && file_exists("modules/$curren
 	}
 	$smarty->assign('WORDTEMPLATES', $wordTemplates);
 }
-}
+}} // try query
 $smarty->assign('IS_ADMIN', is_admin($current_user));
 
 if(isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '')

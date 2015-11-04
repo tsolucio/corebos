@@ -415,4 +415,18 @@
 	<classname>addFieldsToCyP</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>ModTracker: restore record change</description>
+	<filename>build/changeSets/ModTrackerRestoreRecord.php</filename>
+	<classname>ModTrackerRestoreRecord</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>User fields: add hour_format and start_hour for calendar</description>
+	<filename>build/changeSets/UserHourStartFields.php</filename>
+	<classname>UserHourStartFields</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

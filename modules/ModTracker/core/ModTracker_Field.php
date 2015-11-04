@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *********************************************************************************** */
-
 include_once('include/utils/utils.php');
 include_once('include/utils/VTCacheUtils.php');
 include_once('include/utils/CommonUtils.php');
@@ -89,9 +88,7 @@ class ModTracker_Field {
 			if ($isRoleBased && ($fieldName != 'activitytype' || $value != 'Task')) {
 				$accessiblePicklistValues = getAssignedPicklistValues($fieldName, $current_user->roleid, $adb);
 				if (!empty($value) && !is_admin($current_user) && !in_array($value, $accessiblePicklistValues)) {
-					
-					$value = "<font color='red'>" . getTranslatedString('LBL_NOT_ACCESSIBLE',
-									$moduleName) . "</font>";
+					$value = "<font color='red'>" . getTranslatedString('LBL_NOT_ACCESSIBLE', $moduleName) . "</font>";
 				} else {
 					$value = getTranslatedString($value, $moduleName);
 				}
@@ -219,8 +216,15 @@ class ModTracker_Field {
 			$moduleHandler = vtws_getModuleHandlerFromName($this->parent->getModuleName(), $current_user);
 			$this->moduleMeta = $moduleHandler->getMeta();
 		}
-		$moduleFields = $this->moduleMeta->getModuleFields();
-		$this->fieldInfo = $moduleFields[$this->parent->getFieldName()];
+		if ($this->parent->getModuleName()=='Products' and $this->parent->getFieldName()=='imagename') {
+			$sql = "select *, '0' as readonly from vtiger_field where vtiger_field.tabid=14 and fieldname='imagename'";
+			$result = $adb->pquery($sql,array());
+			$webserviceField = WebserviceField::fromQueryResult($adb,$result,0);
+			$this->fieldInfo = $webserviceField;
+		} else {
+			$moduleFields = $this->moduleMeta->getModuleFields();
+			$this->fieldInfo = $moduleFields[$this->parent->getFieldName()];
+		}
 	}
 
 }

@@ -258,7 +258,12 @@ function GlobalVariable_getVariable(gvname, gvdefault, gvmodule, gvuserid) {
 			// check the status
 			if (req.status == 200) {
 				// Resolve the promise with the response text
-				resolve(req.response);
+				try {
+					JSON.parse(req.response);
+					resolve(req.response);
+				} catch(e) {
+					resolve('{"'+gvname+'":"'+gvdefault+'"}');
+				}
 			} else {
 				// Otherwise reject with the status text which will hopefully be a meaningful error
 				reject(Error(req.statusText));

@@ -47,6 +47,7 @@ class Project extends CRMEntity {
 		/* Format: Field Label => Array(tablename => columnname) */
 		// tablename should not have prefix 'vtiger_'
 		'Project Name'=> Array('project' => 'projectname'),
+		'Related to'=> Array('project' => 'linktoaccountscontacts'),
 		'Start Date'=> Array('project' => 'startdate'),
 		'Status'=>Array('project' => 'projectstatus'),
 		'Type'=>Array('project' => 'projecttype'),
@@ -55,6 +56,7 @@ class Project extends CRMEntity {
 	var $list_fields_name = Array(
 		/* Format: Field Label => fieldname */
 		'Project Name'=> 'projectname',
+		'Related to'=> 'linktoaccountscontacts',
 		'Start Date'=> 'startdate',
 		'Status'=>'projectstatus',
 		'Type'=>'projecttype',
@@ -69,6 +71,7 @@ class Project extends CRMEntity {
 		/* Format: Field Label => Array(tablename => columnname) */
 		// tablename should not have prefix 'vtiger_'
 		'Project Name'=> Array('project' => 'projectname'),
+		'Related to'=> Array('project' => 'linktoaccountscontacts'),
 		'Start Date'=> Array('project' => 'startdate'),
 		'Status'=>Array('project' => 'projectstatus'),
 		'Type'=>Array('project' => 'projecttype'),
@@ -76,6 +79,7 @@ class Project extends CRMEntity {
 	var $search_fields_name = Array(
 		/* Format: Field Label => fieldname */
 		'Project Name'=> 'projectname',
+		'Related to'=> 'linktoaccountscontacts',
 		'Start Date'=> 'startdate',
 		'Status'=>'projectstatus',
 		'Type'=>'projecttype',

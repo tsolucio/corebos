@@ -76,6 +76,7 @@ $mod_strings = array(
 'Current Date' => 'Current Date',
 'Current Time' => 'Current Time',
 'System Timezone' => 'System Timezone',
+'User Timezone' => 'User Timezone',
 'CRM Detail View URL' => 'CRM Detail View URL',
 'Portal Detail View URL' => 'Portal Detail View URL',
 'Site Url' => 'Site Url',

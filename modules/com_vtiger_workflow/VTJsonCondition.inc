@@ -196,6 +196,18 @@ class VTJsonCondition {
 						$flvals = explode('|##|', $fieldValue);
 						$flvals = array_map('trim',$flvals);
 						return in_array($value, $flvals);
+					} elseif ($ftype=='reference') {
+						$isthesame = false;
+						$rlist = $webserviceField->getReferenceList();
+						foreach ($rlist as $modName) {
+							$wsidrs = $adb->pquery('SELECT id FROM vtiger_ws_entity WHERE name=?',array($modName));
+							if ($wsidrs and $adb->num_rows($wsidrs)>0) {
+								$wsid = $adb->query_result($wsidrs, 0,0);
+								$isthesame = ($fieldValue == $wsid.'x'.$value);
+							}
+							if ($isthesame) break;
+						}
+						return $isthesame || ($fieldValue == $value);
 					} else {
 						return $fieldValue == $value;
 					}
@@ -219,6 +231,18 @@ class VTJsonCondition {
 						$flvals = explode('|##|', $fieldValue);
 						$flvals = array_map('trim',$flvals);
 						return !in_array($value, $flvals);
+					} elseif ($ftype=='reference') {
+						$isthesame = false;
+						$rlist = $webserviceField->getReferenceList();
+						foreach ($rlist as $modName) {
+							$wsidrs = $adb->pquery('SELECT id FROM vtiger_ws_entity WHERE name=?',array($modName));
+							if ($wsidrs and $adb->num_rows($wsidrs)>0) {
+								$wsid = $adb->query_result($wsidrs, 0,0);
+								$isthesame = ($fieldValue == $wsid.'x'.$value);
+							}
+							if ($isthesame) break;
+						}
+						return !$isthesame && ($fieldValue != $value);
 					} else {
 						return $fieldValue != $value;
 					}

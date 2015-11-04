@@ -603,7 +603,7 @@ class InventoryDetails extends CRMEntity {
 			$invdet_focus->trash('InventoryDetails',$invdet_focus->id);
 			
 		}
-		
+
 		// read $res_inv_lines result to create a new InventoryDetail for each register.
 		// Remember to take the Vendor if the Product is related with this.
 		while ($row = $adb->getNextRow($res_inv_lines,false)) {
@@ -613,20 +613,20 @@ class InventoryDetails extends CRMEntity {
 			$invdet_focus->mode = '';
 
 			foreach ($invdet_focus->column_fields as $fieldname => $val) {
-				$invdet_focus->column_fields[$fieldname] = $row[$fieldname];
+				$invdet_focus->column_fields[$fieldname] = isset($row[$fieldname]) ? $row[$fieldname] : '';
 			}
 			$_REQUEST['assigntype'] == 'U';
 			$invdet_focus->column_fields['assigned_user_id'] = $current_user->id;
 			$invdet_focus->column_fields['account_id'] = $accountid;
 			$invdet_focus->column_fields['contact_id'] = $contactid;
-			
+
 			//Search if the product is related with a Vendor.
 			$vendorid = '0';
 			$result = $adb->pquery("SELECT vendor_id FROM vtiger_products WHERE productid = ?",array($row['productid']));
 			if($adb->num_rows($result) > 0)
 				$vendorid = $adb->query_result($result,0,0);
 			$invdet_focus->column_fields['vendor_id'] = $vendorid;
-			
+
 			if($taxtype == 'group')
 			{
 				$invdet_focus->column_fields['tax_percent'] = 0;
@@ -636,7 +636,6 @@ class InventoryDetails extends CRMEntity {
 			$invdet_focus->save("InventoryDetails");
 		}
 		$currentModule = $save_currentModule;
-		
 	}
 }
 ?>

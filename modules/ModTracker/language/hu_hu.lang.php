@@ -7,10 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************
- *********************************************************************************
- * $Header:  \modules\ConfigEditor\language\hu_hu.lang.php - 9:46 2011.11.11. $
- * Description:  Defines the Hungarian language pack for the ConfigEditor module vtiger 5.3.x
- * All Rights Reserved.
  * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
  ********************************************************************************/
 $mod_strings = array(
@@ -48,5 +44,7 @@ $mod_strings = array(
 	'LBL_CHANGED_BY' => 'Módosította: ',
 	'LBL_ACCESS_TO_FIELD_CHANGES_DENIED' => 'Vagy neked nincs hozzáférésed a módosított mező megtekintéséhez<br>(vagy)<br>A rekord vissza lett állítva eredeti állapotára ennél a pontnál.',
 	'LBL_CONFIGURATION_DESCRIPTION' => 'Select the modules you wish to control',
+	'LBL_DELETED'=>'DELETED!',
+	'LBL_RESTORED'=>'RESTORED!',
 );
 ?>

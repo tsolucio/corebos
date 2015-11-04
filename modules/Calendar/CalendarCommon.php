@@ -319,23 +319,20 @@ function getAssignedTo($tabid)
 	return $fieldvalue;
 }
 
-//Code Added by Minnie -Ends
 /**
  * Function to get the vtiger_activity details for mail body
  * @param   string   $description       - activity description
  * @param   string   $from              - to differenciate from notification to invitation.
  * return   string   $list              - HTML in string format
  */
-function getActivityDetails($description,$user_id,$from='')
-{
-	global $log,$current_user,$current_language;
-	global $adb;
+function getActivityDetails($description,$user_id,$from='') {
+	global $log,$current_user,$current_language,$adb;
 	require_once 'include/utils/utils.php';
 	$mod_strings = return_module_language($current_language, 'Calendar');
 	$log->debug("Entering getActivityDetails(".$description.") method ...");
 	$updated = $mod_strings['LBL_UPDATED'];
 	$created = $mod_strings['LBL_CREATED'];
-    $reply = (($description['mode'] == 'edit')?"$updated":"$created");
+	$reply = (($description['mode'] == 'edit')?"$updated":"$created");
 	if($description['activity_mode'] == "Events")
 	{
 		$end_date_lable=$mod_strings['End date and time'];
@@ -346,7 +343,11 @@ function getActivityDetails($description,$user_id,$from='')
 	}
 
 	$name = getUserFullName($user_id);
-	
+	$inviteuser = new Users();
+	$inviteuser->retrieveCurrentUserInfoFromFile($user_id);
+	$stdatetime = new DateTimeField($description['st_date_time']);
+	$etdatetime = new DateTimeField($description['end_date_time']);
+
 	if($from == "invite")
 		$msg = getTranslatedString($mod_strings['LBL_ACTIVITY_INVITATION']);
 	else
@@ -357,24 +358,22 @@ function getActivityDetails($description,$user_id,$from='')
 	$list = $name.',';
 	$list .= '<br><br>'.$msg.' '.$reply.'.<br> '.$mod_strings['LBL_DETAILS_STRING'].':<br>';
 	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["LBL_SUBJECT"].' : '.$description['subject'];
-	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["Start date and time"].' : '.$description['st_date_time'] .' '.DateTimeField::getDBTimeZone();
-	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$end_date_lable.' : '.$description['end_date_time'].' '.DateTimeField::getDBTimeZone();
+	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["Start date and time"].' : '.$stdatetime->getDisplayDateTimeValue($inviteuser) .' '.$inviteuser->column_fields['time_zone'];
+	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$end_date_lable.' : '.$etdatetime->getDisplayDateTimeValue($inviteuser).' '.$inviteuser->column_fields['time_zone'];
 	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["LBL_STATUS"].': '.$status;
 	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["Priority"].': '.getTranslatedString($description['taskpriority']);
 	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["Related To"].': '.getTranslatedString($description['relatedto']);
-	if(!empty($description['contact_name']))
-	{
-        	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["LBL_CONTACT_LIST"].' '.$description['contact_name'];
-	}
-	else
+	if(!empty($description['contact_name'])) {
+		$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["LBL_CONTACT_LIST"].' '.$description['contact_name'];
+	} else {
 		$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["Location"].' : '.$description['location'];
-			
-        $list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["LBL_APP_DESCRIPTION"].': '.$description['description'];
-        $list .= '<br><br>'.$mod_strings["LBL_REGARDS_STRING"].' ,';
-        $list .= '<br>'.$current_username.'.';
+	}
+	$list .= '<br>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;'.$mod_strings["LBL_APP_DESCRIPTION"].': '.$description['description'];
+	$list .= '<br><br>'.$mod_strings["LBL_REGARDS_STRING"].' ,';
+	$list .= '<br>'.$current_username.'.';
 
-        $log->debug("Exiting getActivityDetails method ...");
-		return $list;
+	$log->debug("Exiting getActivityDetails method ...");
+	return $list;
 }
 
 function twoDigit( $no ){

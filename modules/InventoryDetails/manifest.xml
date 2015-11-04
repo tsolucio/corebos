@@ -503,7 +503,7 @@
 <defaultvalue></defaultvalue>
 <sequence>21</sequence>
 <maximumlength>100</maximumlength>
-<typeofdata>T~O</typeofdata>
+<typeofdata>DT~O</typeofdata>
 <quickcreate>1</quickcreate>
 <quickcreatesequence></quickcreatesequence>
 <displaytype>2</displaytype>
@@ -523,7 +523,7 @@
 <defaultvalue></defaultvalue>
 <sequence>22</sequence>
 <maximumlength>100</maximumlength>
-<typeofdata>T~O</typeofdata>
+<typeofdata>DT~O</typeofdata>
 <quickcreate>1</quickcreate>
 <quickcreatesequence></quickcreatesequence>
 <displaytype>2</displaytype>

@@ -69,6 +69,7 @@ $mod_strings = array(
 	'Current Date' => 'Aktuális dátum',
 	'Current Time' => 'Aktuális idő',
 	'System Timezone' => 'Rendszer időzóna',
+	'User Timezone' => 'Felhasználói időzóna',
 	'CRM Detail View URL' => 'CRM Részletes adatok nézet URL',
 	'Portal Detail View URL' => 'Ügyfél Portál Részletes adatok nézet URL',
 	'Site Url' => 'URL (CRM)',

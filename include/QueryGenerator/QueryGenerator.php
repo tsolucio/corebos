@@ -1136,7 +1136,7 @@ class QueryGenerator {
 	}
 
 	private function isStringType($type) {
-		return ($type == 'string' || $type == 'text' || $type == 'email' || $type == 'reference');
+		return ($type == 'string' || $type == 'text' || $type == 'email' || $type == 'reference' || $type == 'phone');
 	}
 
 	private function isDateType($type) {

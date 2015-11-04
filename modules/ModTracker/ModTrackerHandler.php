@@ -17,7 +17,7 @@ class ModTrackerHandler extends VTEventHandler {
 		$moduleName = $data->getModuleName();
 
 		$flag = ModTracker::isTrackingEnabledForModule($moduleName);
-        
+
 		if($flag) {
 			if($eventName == 'vtiger.entity.aftersave.final') {
                 $recordId = $data->getId();
@@ -55,13 +55,21 @@ class ModTrackerHandler extends VTEventHandler {
                     }
                 }
 			}
-            
+
             if($eventName == 'vtiger.entity.beforedelete') {
                 $recordId = $data->getId();
                 $columnFields = $data->getData();
                 $id = $adb->getUniqueId('vtiger_modtracker_basic');
                 $adb->pquery('INSERT INTO vtiger_modtracker_basic(id, crmid, module, whodid, changedon, status)
                     VALUES(?,?,?,?,?,?)', Array($id, $recordId, $moduleName, $current_user->id, date('Y-m-d H:i:s',time()), ModTracker::$DELETED));
+            }
+
+            if($eventName == 'vtiger.entity.afterrestore') {
+                $recordId = $data->getId();
+                $columnFields = $data->getData();
+                $id = $adb->getUniqueId('vtiger_modtracker_basic');
+                $adb->pquery('INSERT INTO vtiger_modtracker_basic(id, crmid, module, whodid, changedon, status)
+                    VALUES(?,?,?,?,?,?)', Array($id, $recordId, $moduleName, $current_user->id, date('Y-m-d H:i:s',time()), ModTracker::$RESTORED));
             }
 		}
 	}

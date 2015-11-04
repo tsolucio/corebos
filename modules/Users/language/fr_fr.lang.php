@@ -564,6 +564,9 @@ $mod_strings = array (
 		'LBL_USER_CUSTOMFIELDS_DESCRIPTION' => 'Champs personnalisés pour les collaborateurs',
 		'LBL_USER_CUSTOMFIELDS' => 'Champs personnalisés des collaborateurs',
 		
+		'Calendar Hour Format' => 'Calendar Hour Format',
+		'Day ends at' => 'Day ends at',
+		'Day starts at' => 'Day starts at',
 		'LBL_CURRENCY_CONFIGURATION' => 'Configuration des devises et monnaies',
 		'Digit Grouping Pattern' => 'Patterne de groupe',
 		'Decimal Separator' => 'Séparateur de décimales',

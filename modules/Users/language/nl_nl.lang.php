@@ -813,6 +813,9 @@ $mod_strings = Array(
 'Asia/Magadan' => '(UTC+11:00) Magadan, New Caledonia',
 'Pacific/Tongatapu' => '(UTC+13:00) Nukualofa',
 
+'Calendar Hour Format' => 'Calendar Hour Format',
+'Day ends at' => 'Day ends at',
+'Day starts at' => 'Day starts at',
 'Theme'=>'Thema',
 'Language'=>'Taal',
 'Secondary Email'=>'Tweede E-mail',

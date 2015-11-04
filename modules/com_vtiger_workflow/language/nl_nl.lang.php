@@ -100,6 +100,7 @@ $mod_strings = array(
 'Current Date' => 'Huidige Datum',
 'Current Time' => 'Huidige Tijd',
 'System Timezone' => 'Systeem Tijdzone',
+'User Timezone' => 'Gebruiker Tijdzone',
 'CRM Detail View URL' => 'CRM Detailscherm URL',
 'Portal Detail View URL' => 'Portaal Detailscherm URL',
 'Site Url' => 'Site URL',

@@ -10,12 +10,6 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
-/*********************************************************************************
- * $Header:  \include\language\hu_hu.lang.php - 19:16 2011.11.11. $
- * Description:  Defines the Hungarian language pack for the include section of vtiger 5.3.x
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
  * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
  ********************************************************************************/
 $app_strings = array(
@@ -108,6 +102,7 @@ $app_strings = array(
 	'LBL_SELECT_USER_BUTTON_KEY' => 'U',
 	'LBL_SELECT_USER_BUTTON_LABEL' => 'Felhasználó kiválasztása',
 	'LBL_SETTINGS' => 'Beállítások',
+	'LBL_NOT_CONFIGURED' => 'not configured',
 	'LBL_LIST_USERIP' => 'Felhasználó IP címe',
 	'LBL_LIST_SIGNIN' => 'Belépés ideje',
 	'LBL_LIST_SIGNOUT' => 'Kilépés ideje',
@@ -362,6 +357,7 @@ $app_strings = array(
 	'Type' => 'Típus',
 	'Start Date/Due Date' => 'Kezdés/Határidő',
 	'Date Sent' => 'Elküldés Dátuma',
+	'Time Sent' => 'Time Sent',
 	'Ticket ID' => 'Kérés AZ',
 	'Status' => 'Állapot',
 	'Priority' => 'Prioritás',
@@ -663,6 +659,8 @@ $app_strings = array(
 	'Reminder' => 'Emlékeztető',
 	'Visit_Link' => 'Kérünk, hogy látogasd meg a hivatkozást a tevékenységgel kapcsolatos további részletekért',
 	'Click here' => 'Kattints ide',
+	'Activity Reminder Notification' => 'Activity Reminder Notification',
+	'This is a reminder notification for the Activity' => 'This is a reminder notification for the Activity',
 	'Support_starting' => 'Támogatás értékelése',
 	'Congratulations' => 'Gratulálunk! A támogatás részedre mától kezdődik.',
 	'Hello_Support' => 'Szia! Támogatás kezdődik számára ',

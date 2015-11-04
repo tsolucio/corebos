@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-global $current_user, $currentModule, $adb;
+global $current_user, $currentModule, $adb, $singlepane_view;
 
 checkFileAccessForInclusion("modules/$currentModule/$currentModule.php");
 require_once("modules/$currentModule/$currentModule.php");
@@ -101,7 +101,7 @@ if(isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != '') {
 	$return_id = vtlib_purify($_REQUEST['return_id']);
 }
 //code added for returning back to the current view after edit from list view
-if(empty($_REQUEST['return_viewname'])) {
+if(empty($_REQUEST['return_viewname']) or $singlepane_view == 'true') {
 	$return_viewname='0';
 } else {
 	$return_viewname=vtlib_purify($_REQUEST['return_viewname']);

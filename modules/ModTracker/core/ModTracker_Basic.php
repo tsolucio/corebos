@@ -16,6 +16,7 @@ class ModTracker_Basic {
 	var $module;
 	var $whodid;
 	var $changedon;
+	var $status;
 
 	function __construct() {
 
@@ -31,6 +32,7 @@ class ModTracker_Basic {
 		$this->module = $valuemap['module'];
 		$this->whodid = $valuemap['whodid'];
 		$this->changedon = $valuemap['changedon'];
+		$this->status = $valuemap['status'];
 	}
 
 	function getTabid() {

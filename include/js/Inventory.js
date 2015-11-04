@@ -198,7 +198,7 @@ function calcTotal() {
 	var netprice = 0.00;
 	for(var i=1;i<=max_row_count;i++) {
 		rowId = i;
-		calcProductTotal(rowId);
+		setDiscount(null,rowId);
 	}
 	calcGrandTotal();
 }
