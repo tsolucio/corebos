@@ -667,21 +667,19 @@ function fetch_homeDB(stuffid){
 /**
  * this function initializes the homepage
  */
-initHomePage = function(){
-	Sortable.create(
-		"MainMatrix",
-		{
-			constraint:false,tag:'div',overlap:'Horizontal',handle:'headerrow',
-			onUpdate:function(){
-				matrixarr = Sortable.serialize('MainMatrix').split("&");
-				matrixseqarr=new Array();
-				seqarr=new Array();
-				for(x=0;x<matrixarr.length;x++){
-					matrixseqarr[x]=matrixarr[x].split("=")[1];
-				}
-				BlockSorting(matrixseqarr);
+initHomePage = function () {
+	jQuery("#MainMatrix").sortable({
+		constraint: false, tag: 'div', overlap: 'Horizontal', handle: '.headerrow',
+		update: function () {
+			matrixarr = jQuery(this).sortable("serialize").split("&");
+			matrixseqarr = new Array();
+			seqarr = new Array();
+			for (x = 0; x < matrixarr.length; x++) {
+				matrixseqarr[x] = matrixarr[x].split("=")[1];
 			}
+			BlockSorting(matrixseqarr);
 		}
+	}
 	);
 };
 
