@@ -429,4 +429,11 @@
 	<classname>UserHourStartFields</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>User fields: add hour_format and start_hour for calendar (missing lists)</description>
+	<filename>build/changeSets/UserHourStartFieldsList.php</filename>
+	<classname>UserHourStartFieldsList</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
