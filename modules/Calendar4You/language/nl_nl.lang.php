@@ -75,5 +75,6 @@ $mod_strings = array(
 	'LBL_GOOGLEINS' => 'Invoegen vanuit Google?',
 	'LIST_MODULES' => 'Lijst van alle modules',
 	'Documents' => 'Documenten',
+	'LBL_SHOW_HIDE_SIDEBAR' => 'Verberg/Toon opties',
 );
 ?>

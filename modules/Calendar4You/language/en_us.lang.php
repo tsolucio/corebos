@@ -74,5 +74,6 @@ $mod_strings = Array (
 "LBL_CONNECT"=>"Authorize and Connect",
 "LBL_GOOGLEINS"=>"Insert from Google?",
 'LIST_MODULES' => 'List of Modules',
+'LBL_SHOW_HIDE_SIDEBAR' => 'Show/Hide Sidebar',
 );
 ?>
