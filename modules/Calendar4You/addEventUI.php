@@ -219,9 +219,9 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 			</tr>
 			<tr>
 				<td nowrap align="right"><b><font color="red">*</font><?php echo $c_mod_strings['LBL_EVENTNAME']?></b></td>
-				<td align="left"><input name="subject" type="text" class="textbox" value="" style="width:50%">&nbsp;&nbsp;&nbsp; 
+				<td align="left"><input name="subject" type="text" value="" class="textbox" style="width:50%">&nbsp;&nbsp;&nbsp; 
 			<?php if(getFieldVisibilityPermission('Events',$current_user->id,'visibility', 'readwrite') == '0') { ?>	
-			<input name="visibility" value="Public" type="checkbox"><?php echo $c_mod_strings['LBL_PUBLIC']; ?>
+			<input name="visibility" value="Public" type="checkbox" checked><?php echo $c_mod_strings['LBL_PUBLIC']; ?>
 			<?php } ?>	
 			</td>
 			</tr>
