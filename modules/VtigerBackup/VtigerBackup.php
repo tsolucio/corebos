@@ -26,7 +26,12 @@ require_once 'modules/VtigerBackup/Locations/LocalBackup.php';
  * @author MAK
  */
 class VtigerBackup {
-	private $folderList = array('storage','test','user_privileges');
+	// 'storage' folder removed from backup, the CBX one is too large and will run into memory limits
+	// private $folderList = array('storage','test','user_privileges');
+	
+	// new backup array:
+	private $folderList = array('test','user_privileges');
+	
 	private $location = null;
 	/**
 	 *
