@@ -17,7 +17,7 @@
 <style type="text/css">@import url("themes/{$THEME}/style.css");</style>
 <script type="text/javascript" src="include/jquery/jquery.js"></script>
 <script type="text/javascript" src="include/js/general.js"></script>
-<script type="text/javascript" src="include/js/{php} echo $_SESSION['authenticated_user_language'];{/php}.lang.js?{php} echo $_SESSION['vtiger_version'];{/php}"></script>
+<script type="text/javascript" src="include/js/{$LANGUAGE}.lang.js?{$VERSION}"></script>
 <script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
 <script type="text/javascript" src="modules/Products/multifile.js"></script>
 </head>

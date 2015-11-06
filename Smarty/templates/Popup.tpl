@@ -92,7 +92,7 @@ function redirectWhenNoRelatedRecordsFound()
 	<!-- END -->
 {/if}
 {* END *}
-<script type="text/javascript" src="include/js/{php} echo $_SESSION['authenticated_user_language'];{/php}.lang.js?{php} echo $_SESSION['vtiger_version'];{/php}"></script>
+<script type="text/javascript" src="include/js/{$LANGUAGE}.lang.js?{$VERSION}"></script>
 <script type="text/javascript" src="include/js/meld.js"></script>
 <script type='text/javascript' src='include/jquery/jquery.js'></script>
 <script type="text/javascript" src="include/js/ListView.js"></script>
