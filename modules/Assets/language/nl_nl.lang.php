@@ -1,4 +1,5 @@
 <?php
+
 /*******************************************************************************
  * The contents of this file are subject to the following licences:
  * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
@@ -19,38 +20,47 @@
  * - Weltevree.org <www.Weltevree.org>
  ********************************************************************************/
 
-$mod_strings = array(
-	'LBL_MODULE_NAME' => 'Activa',
-	'SINGLE_Assets' => 'Activa',
-	'LBL_ASSET_INFORMATION' => 'Activa Informatie',
-	'LBL_CUSTOM_INFORMATION' => 'Maatwerk Informatie',
-	'LBL_DESCRIPTION_INFORMATION' => 'Notities',
-	'Assets' => 'Activa',
-	'Asset Name' => 'Activa Naam',
-	'Customer Name' => 'Klant Naam',
-	'Product Name' => 'Product Naam',
-	'Serial Nummer' => 'Serienummer',
-	'Asset No' => 'Activa nummer',
-	'Date Sold' => 'Datum Verkocht',
-	'Date in Service' => 'Datum in Service',
-	'Status' => 'Status',
-	'Shipping Method' => 'Transport Methode',
-	'Shipping Tracking Nummer' => 'Transport Tracking Nummer',
-	'Tag Nummer' => 'Tag Nummer',
-	'Notes' => 'Notities',
-	'Invoice Name' => 'Factuur Naam',
-	'In Service' => 'In Service',
-	'Out-of-service' => 'Uit Service',
-	'Serial Number' => 'Serienummer',
-	'Tag Number' => 'Tag nummer',
-	'Shipping Tracking Number' => 'Tracking nummer vervoerder',
-	'Assigned To' => 'Toegewezen aan',
-	'Created Time' => 'Gemaakt op',
-	'Modified Time' => 'Gewijzigd op',
-	'Last Modified By' => 'Laatst gewijzigd door',
-	'Verloopdatum Garantie' => '',
-	'Verloopdatum Keuring' => '',
-	'HelpDesk' => 'Helpdesk',
-	'Documents' => 'Documenten',
+/*******************************************************************************
+ * Vicus eBusiness Solutions Version Control
+ * @package 	NL-Dutch
+ * Description	Dutch language pack for vtiger CRM version 5.3.x
+ * @author	$Author: luuk $
+ * @version 	$Revision: 1.2 $ $Date: 2011/11/14 17:07:26 $
+ * @source	$Source: /var/lib/cvs/vtiger530/Dutch/modules/Assets/language/nl_nl.lang.php,v $
+ * @copyright	Copyright (c)2005-2011 Vicus eBusiness Solutions bv <info@vicus.nl>
+ * @license	vtiger CRM Public License Version 1.0 (by definition)
+ ********************************************************************************/
+
+$mod_strings = Array(
+/*some general information*/
+'LBL_MODULE_NAME'=>'Activa',
+'SINGLE_Assets'=>'Activa',
+
+/*blocks for the module*/
+'LBL_ASSET_INFORMATION'=>'Activa Informatie',
+'LBL_CUSTOM_INFORMATION'=>'Maatwerk Informatie',
+'LBL_DESCRIPTION_INFORMATION'=>'Notities',
+
+/*fields for the module*/
+'Assets'=>'Activa',
+'Asset Name' => 'Activa Naam',
+'Customer Name'=>'Klant Naam',
+'Product Name'=>'Product Naam',
+'Serial Nummer'=>'Serienummer',
+'Asset No'=>'Activa nummer',
+'Date Sold'=>'Datum Verkocht',
+'Date in Service'=>'Datum in Service',
+'Status'=>'Status',
+'Shipping Method'=>'Transport Methode',
+'Shipping Tracking Nummer'=>'Transport Tracking Nummer',
+'Tag Nummer'=>'Tag Nummer',
+'Notes'=>'Notities',
+'Invoice Name'=>'Factuur Naam',	// if you want this empty include space as label is picked from include/en_us.lang.php otherwise
+
+/*picklist values*/
+'In Service'=>'In Service',
+'Out-of-service'=>'Uit Service',
+
+
 );
 ?>
