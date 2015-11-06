@@ -33,7 +33,7 @@ $mod_strings = array(
 'LBL_LIST_PRODUCT_NAME'=>'Nombre del Producto',
 'LBL_PRODUCT_CODE'=>'Código del Producto',
 'LBL_PRODUCT_UNIT_PRICE'=>'Precio Unitario',
-'LBL_PB_LIST_PRICE'=>'Lista de Precios',
+'LBL_PB_LIST_PRICE'=>'Precio Lista',
 'LBL_ACTION'=>'Acción',
 'PriceBook'=>'Lista de precios',
 
