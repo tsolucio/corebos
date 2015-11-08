@@ -36,13 +36,13 @@ class DataTransform{
 		return $newRow;
 	}
 
-	function filterAndSanitize($row,$meta){
+	static function filterAndSanitize($row,$meta){
 		$row = DataTransform::filterAllColumns($row,$meta);
 		$row = DataTransform::sanitizeData($row,$meta);
 		return $row;
 	}
 
-	function sanitizeData($newRow,$meta,$t=null){
+	static function sanitizeData($newRow,$meta,$t=null){
 		$newRow = DataTransform::sanitizeReferences($newRow,$meta);
 		$newRow = DataTransform::sanitizeOwnerFields($newRow,$meta,$t);
 		$newRow = DataTransform::sanitizeFields($newRow,$meta);
@@ -135,8 +135,8 @@ class DataTransform{
 				}
 			}
 		}
-		if($row["id"]){
-			unset($row["id"]);
+		if($row['id']){
+			unset($row['id']);
 		}
 		if(isset($row[$meta->getObectIndexColumn()])){
 			unset($row[$meta->getObectIndexColumn()]);
@@ -148,13 +148,13 @@ class DataTransform{
 		return $row;
 	}
 
-	function filterAllColumns($row,$meta){
+	static function filterAllColumns($row,$meta){
 		$recordString = DataTransform::$recordString;
 
 		$allFields = $meta->getFieldColumnMapping();
 		$newRow = array();
 		foreach($allFields as $field=>$col){
-			$newRow[$field] = $row[$field];
+			$newRow[$field] = isset($row[$field]) ? $row[$field] : '';
 		}
 		if(isset($row[$recordString])){
 			$newRow[$recordString] = $row[$recordString];
@@ -162,7 +162,7 @@ class DataTransform{
 		return $newRow;
 	}
 
-	function sanitizeFields($row,$meta){
+	static function sanitizeFields($row,$meta){
 		$default_charset = VTWS_PreserveGlobal::getGlobal('default_charset');
 		$recordString = DataTransform::$recordString;
 
@@ -188,7 +188,7 @@ class DataTransform{
 				$row['id'] = vtws_getId($meta->getEntityId(),$row[$meta->getObectIndexColumn()]);
 			}else{
 				//TODO Handle this.
-				//echo 'error id noy set' ;
+				//echo 'error id not set';
 			}
 		}else if(isset($row[$meta->getObectIndexColumn()]) && strcmp($meta->getObectIndexColumn(),"id")!==0){
 			unset($row[$meta->getObectIndexColumn()]);
@@ -200,7 +200,7 @@ class DataTransform{
 		return $row;
 	}
 
-	function sanitizeReferences($row,$meta){
+	static function sanitizeReferences($row,$meta){
 		global $adb,$log;
 		$references = $meta->getReferenceFieldDetails();
 		foreach($references as $field=>$typeList){
@@ -239,7 +239,7 @@ class DataTransform{
 		return $row;
 	}
 
-	function sanitizeOwnerFields($row,$meta,$t=null){
+	static function sanitizeOwnerFields($row,$meta,$t=null){
 		global $adb;
 		$ownerFields = $meta->getOwnerFields();
 		foreach($ownerFields as $index=>$field){
