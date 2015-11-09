@@ -42,15 +42,18 @@ class CBRelateSales extends VTTask{
 			if ($srvs and $adb->num_rows($srvs) > 0) {
 				if ($setype=='PurchaseOrder') {
 					$acc = CRMEntity::getInstance('Vendors');
-					$accid = $adb->query_result($adb->pquery('select vendorid from vtiger_purchaseorder where purchaseorderid=?',array($inv_id)));
+					$accrs = $adb->pquery('select vendorid from vtiger_purchaseorder where purchaseorderid=?',array($inv_id));
+					$accid = $adb->query_result($accrs,0,0);
 					$accmodule = 'Vendors';
 				} else {
 					$acc = CRMEntity::getInstance('Accounts');
-					$accid = $adb->query_result($adb->pquery('select accountid from vtiger_'.strtolower($setype).' where '.$invinfo[$setype]['id'].'=?',array($inv_id)),0,0);
+					$accrs = $adb->pquery('select accountid from vtiger_'.strtolower($setype).' where '.$invinfo[$setype]['id'].'=?',array($inv_id));
+					$accid = $adb->query_result($accrs,0,0);
 					$accmodule = 'Accounts';
 				}
 				$cto = CRMEntity::getInstance('Contacts');
-				$ctoid = $adb->query_result($adb->pquery('select contactid from vtiger_'.strtolower($setype).' where '.$invinfo[$setype]['id'].'=?',array($inv_id)),0,0);
+				$ctors = $adb->pquery('select contactid from vtiger_'.strtolower($setype).' where '.$invinfo[$setype]['id'].'=?',array($inv_id));
+				$ctoid = $adb->query_result($ctors,0,0);
 				while ($srv = $adb->fetch_array($srvs)) {
 					$pdosrv = getSalesEntityType($srv['productid']);
 					if (($pdosrv == 'Products' and $this->relpdo) or (($pdosrv == 'Services' and $this->relsrv))) {
