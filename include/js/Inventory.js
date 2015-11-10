@@ -819,6 +819,7 @@ function calcCurrentTax(tax_name, curr_row, tax_row)
 {
 	//we should calculate the tax amount only for the total After Discount
 	var product_total = getObj("totalAfterDiscount"+curr_row).innerHTML;
+	if (product_total.substring(0,3) == 'NaN') product_total = 0;
 	//var product_total = document.getElementById("productTotal"+curr_row).innerHTML
 	var new_tax_percent = document.getElementById(tax_name).value;
 
