@@ -13,6 +13,8 @@ class addFieldsToCyP extends cbupdaterWorker {
                         $fld_ref = Vtiger_Field::getInstance('reference', $module);
                         $this->ExecuteQuery("UPDATE vtiger_field SET typeofdata='V~O' WHERE fieldid={$fld_ref->id}");
                         $this->ExecuteQuery("UPDATE vtiger_field SET sequence=sequence+1 WHERE block={$block->id} AND sequence>1");
+                    $field = Vtiger_Field::getInstance('cyp_no',$module);
+                    if (!$field) {
                         $field1 = new Vtiger_Field();
                         $field1->name = 'cyp_no';
                         $field1->label= 'CyP No';
@@ -24,11 +26,14 @@ class addFieldsToCyP extends cbupdaterWorker {
                         $field1->displaytype = 1;
                         $field1->presence = 0;
                         $block->addField($field1);
+                    }
                         $fld_due = Vtiger_Field::getInstance('duedate', $module);
                         $qry = "SELECT sequence FROM vtiger_field WHERE fieldid={$fld_due->id}";
                         $res = $adb->query($qry);
                         $seq = $adb->query_result($res,0,'sequence');
                         $this->ExecuteQuery("UPDATE vtiger_field SET sequence=sequence+1 WHERE block={$block->id} AND sequence>$seq");
+                    $field = Vtiger_Field::getInstance('paymentdate',$module);
+                    if (!$field) {
                         $field1 = new Vtiger_Field();
                         $field1->name = 'paymentdate';
                         $field1->label= 'PaymentDate';
@@ -40,7 +45,7 @@ class addFieldsToCyP extends cbupdaterWorker {
                         $field1->displaytype = 1;
                         $field1->presence = 0;
                         $block->addField($field1);
-                        
+                    }
                         $res_ui4 = $adb->pquery("SELECT * FROM vtiger_field WHERE tabid=? AND uitype=? AND fieldname<>?",array($module->id,'4','cyp_no'));
                         if($adb->num_rows($res_ui4)!=0){
                             $fld_ui4_id = $adb->query_result($res_ui4,0,'fieldid');

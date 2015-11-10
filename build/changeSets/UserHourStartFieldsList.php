@@ -32,8 +32,8 @@ class UserHourStartFieldsList extends cbupdaterWorker {
 				$block->sequence = 2;
 				$moduleInstance->addBlock($block);
 			}
-			$this->ExecuteQuery('drop table vtiger_hour_format');
-			$this->ExecuteQuery('drop table vtiger_start_hour');
+			$this->ExecuteQuery('drop table if exists vtiger_hour_format');
+			$this->ExecuteQuery('drop table if exists vtiger_start_hour');
 			$field = Vtiger_Field::getInstance('hour_format',$moduleInstance);
 			if ($field) {
 				$this->ExecuteQuery('update vtiger_field set presence=2,uitype=16 where fieldid='.$field->id);
