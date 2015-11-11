@@ -1352,7 +1352,7 @@ class CRMEntity {
 		global $adb;
 		//when we configure the invoice number in Settings this will be used
 		if ($mode == "configure" && $req_no != '') {
-			list($mode, $module, $req_str, $req_no, $result, $returnResult) = cbEventHandler::do_filter('corebos.filter.ModuleSeqNumber.set', array($mode, $module, $req_str, $req_no, $result, false));
+			list($mode, $module, $req_str, $req_no, $result, $returnResult) = cbEventHandler::do_filter('corebos.filter.ModuleSeqNumber.set', array($mode, $module, $req_str, $req_no, '', false));
 			if ($returnResult) return $result;
 			$check = $adb->pquery("select cur_id from vtiger_modentity_num where semodule=? and prefix = ?", array($module, $req_str));
 			if ($adb->num_rows($check) == 0) {
@@ -1428,7 +1428,7 @@ class CRMEntity {
 	function updateMissingSeqNumber($module) {
 		global $log, $adb;
 		$log->debug("Entered updateMissingSeqNumber function");
-		list($module, $result, $returnResult) = cbEventHandler::do_filter('corebos.filter.ModuleSeqNumber.fillempty', array($module, $result, false));
+		list($module, $result, $returnResult) = cbEventHandler::do_filter('corebos.filter.ModuleSeqNumber.fillempty', array($module, '', false));
 		if ($returnResult) return $result;
 
 		vtlib_setup_modulevars($module, $this);
