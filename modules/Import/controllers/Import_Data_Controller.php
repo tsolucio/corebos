@@ -333,9 +333,27 @@ class Import_Data_Controller {
 			$fieldInstance = $moduleFields[$fieldName];
 			if (!is_object($fieldInstance)) continue; // specially for Inventory module import which has virtual item line fields
 			if ($fieldInstance->getFieldDataType() == 'owner') {
-				$ownerId = getUserId_Ol($fieldValue);
-				if (empty($ownerId)) {
-					$ownerId = getGrpId($fieldValue);
+				global $adb;
+				if(strpos($fieldValue, '::::') > 0) {
+					$fieldValueDetails = explode('::::', $fieldValue);
+				} else {
+					$fieldValueDetails = explode(':::', $fieldValue);
+				}
+				if (count($fieldValueDetails) == 2) {
+					$fieldValue = $fieldValueDetails[1];
+				}
+				if (count($fieldValueDetails) == 3) {
+					$user_qry='select vtiger_users.id from vtiger_users where '.$fieldValueDetails[2].' = ?';
+					$res = $adb->pquery($user_qry, array($fieldValueDetails[1]));
+					$ownerId = 0;
+					if ($res and $adb->num_rows($res)>0) {
+						$ownerId = $adb->query_result($res,0,'id');
+					}
+				} else {
+					$ownerId = getUserId_Ol($fieldValue);
+					if (empty($ownerId)) {
+						$ownerId = getGrpId($fieldValue);
+					}
 				}
 				if (empty($ownerId) && isset($defaultFieldValues[$fieldName])) {
 					$ownerId = $defaultFieldValues[$fieldName];
