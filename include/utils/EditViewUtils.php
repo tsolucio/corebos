@@ -1265,8 +1265,8 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$day_options = getReminderSelectOption(0,31,'remdays',$rem_days);
 		$hr_options = getReminderSelectOption(0,23,'remhrs',$rem_hrs);
-		$min_options = getReminderSelectOption(1,59,'remmin',$rem_min);
-		$fieldvalue[] = array(array(0,32,'remdays',getTranslatedString('LBL_DAYS','Calendar'),$rem_days),array(0,24,'remhrs',getTranslatedString('LBL_HOURS','Calendar'),$rem_hrs),array(1,60,'remmin',getTranslatedString('LBL_MINUTES','Calendar').'&nbsp;&nbsp;'.getTranslatedString('LBL_BEFORE_EVENT','Calendar'),$rem_min));
+		$min_options = getReminderSelectOption(10,59,'remmin',$rem_min);
+		$fieldvalue[] = array(array(0,32,'remdays',getTranslatedString('LBL_DAYS','Calendar'),$rem_days),array(0,24,'remhrs',getTranslatedString('LBL_HOURS','Calendar'),$rem_hrs),array(10,60,'remmin',getTranslatedString('LBL_MINUTES','Calendar').'&nbsp;&nbsp;'.getTranslatedString('LBL_BEFORE_EVENT','Calendar'),$rem_min));
 		$fieldvalue[] = array($SET_REM,getTranslatedString('LBL_YES'),getTranslatedString('LBL_NO'));
 		$SET_REM = '';
 	}

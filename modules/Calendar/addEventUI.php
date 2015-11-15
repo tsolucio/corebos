@@ -507,7 +507,7 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 							</select><?php echo $mod_strings['LBL_REMAINDER_HRS']; ?>
 							<select class=small name="remmin">
                                                         <?php
-                                                                for($min=1;$min<=59;$min++)
+                                                                for($min=10;$min<=59;$min++)
                                                                 {
                                                         ?>
                                                                         <option value="<?php echo $min ?>"><?php echo $min ?></option>
