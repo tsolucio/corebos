@@ -629,9 +629,13 @@ function CheckFieldPermission($fieldname,$module) {
 function CheckColumnPermission($tablename, $columnname, $module)
 {
 	global $adb;
-
-	$res = $adb->pquery("select fieldname from vtiger_field where tablename=? and columnname=? and vtiger_field.presence in (0,2)", array($tablename, $columnname));
-	$fieldname = $adb->query_result($res, 0, 'fieldname');
-	return CheckFieldPermission($fieldname, $module);
+	static $cache = array();
+	$cachekey = $module . ':' . $tablename . ':' . $columnname;
+	if (!array_key_exists($cachekey, $cache)) {
+		$res = $adb->pquery('select fieldname from vtiger_field where tablename=? and columnname=? and vtiger_field.presence in (0,2)', array($tablename, $columnname));
+		$fieldname = $adb->query_result($res, 0, 'fieldname');
+		$cache[$cachekey] = CheckFieldPermission($fieldname, $module);
+	}
+	return $cache[$cachekey];
 }
 ?>
