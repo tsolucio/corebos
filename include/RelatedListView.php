@@ -6,10 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
-
-
 require_once('include/utils/UserInfoUtil.php');
 require_once("include/utils/utils.php");
 require_once("include/ListView/ListViewSession.php");
@@ -36,7 +33,6 @@ if(!function_exists('GetRelatedList')) {
   * @returns $related_entries -- related entires:: Type string array
   *
   */
-
 function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$returnset,$id='',$edit_val='',$del_val='',$skipActions=false)
 {
 	$log = LoggerManager::getLogger('account_list');
@@ -46,26 +42,15 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 	require_once("data/Tracker.php");
 	require_once('include/database/PearDatabase.php');
 
-	global $adb;
-	global $app_strings;
-	global $current_language;
+	global $adb, $app_strings, $current_language;
 
 	$current_module_strings = return_module_language($current_language, $module);
 
-	global $list_max_entries_per_page;
-	global $urlPrefix;
-
-
-	global $currentModule;
-	global $theme;
-	global $theme_path;
-	global $theme_path;
-	global $mod_strings;
+	global $list_max_entries_per_page, $urlPrefix, $currentModule, $theme, $theme_path, $theme_path, $mod_strings;
 	// focus_list is the means of passing data to a ListView.
 	global $focus_list;
 	$smarty = new vtigerCRM_Smarty;
 	if (!isset($where)) $where = "";
-
 
 	$button = '<table cellspacing=0 cellpadding=2><tr><td>'.$button.'</td></tr></table>';
 
@@ -79,9 +64,9 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 	$smarty->assign("MODULE",$relatedmodule);
 
 	// We do not have RelatedListView in Detail View mode of Calendar module. So need to skip it.
- 	if ($module!= 'Calendar') {
- 		$focus->initSortByField($relatedmodule);
- 	}
+	if ($module!= 'Calendar') {
+		$focus->initSortByField($relatedmodule);
+	}
 	//Retreive the list from Database
 	//Appending the security parameter Security fix by Don
 	if($relatedmodule != 'Faq' && $relatedmodule != 'PriceBook'
@@ -95,7 +80,6 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 	if($relatedmodule == 'Leads') {
 		$query .= " AND vtiger_leaddetails.converted = 0";
 	}
-
 
 	if(isset($where) && $where != '')
 	{
@@ -185,13 +169,13 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 	}
 	global $relationId;
 	$start = RelatedListViewSession::getRequestCurrentPage($relationId, $query);
-	$navigation_array =  VT_getSimpleNavigationValues($start, $list_max_entries_per_page,$noofrows);
+	$navigation_array = VT_getSimpleNavigationValues($start, $list_max_entries_per_page,$noofrows);
 
 	$limit_start_rec = ($start-1) * $list_max_entries_per_page;
 
 	$list_result = $adb->pquery($query." LIMIT $limit_start_rec, $list_max_entries_per_page", array());
 
-        /* Save the related list in session for when we click in a register
+	/* Save the related list in session for when we click in a register
 	 * from this list we will can navigate with the arrows left and right, to move only in this related list
 	 */
 	$relcv = new CustomView();
@@ -220,7 +204,7 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 	}
 
 	$navigationOutput = Array();
-	$navigationOutput[] =  getRecordRangeMessage($list_result, $limit_start_rec,$noofrows);
+	$navigationOutput[] = getRecordRangeMessage($list_result, $limit_start_rec,$noofrows);
 	if(empty($id) && !empty($_REQUEST['record'])) $id = vtlib_purify($_REQUEST['record']);
 	$navigationOutput[] = getRelatedTableHeaderNavigation($navigation_array, $url_qry,$module,$relatedmodule,$id);
 
@@ -237,12 +221,10 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
   * @returns $entries_list -- entries list:: Type string array
   *
   */
-
 function getAttachmentsAndNotes($parentmodule,$query,$id,$sid='')
 {
-	global $log;
+	global $log, $theme;
 	$log->debug("Entering getAttachmentsAndNotes(".$parentmodule.",".$query.",".$id.",".$sid.") method ...");
-	global $theme;
 
 	$list = '<script>
 		function confirmdelete(url)
@@ -418,7 +400,6 @@ function getAttachmentsAndNotes($parentmodule,$query,$id,$sid='')
   * @returns $return_data -- return data:: Type string array
   *
   */
-
 function getHistory($parentmodule,$query,$id)
 {
 	global $log;
@@ -494,9 +475,9 @@ function getHistory($parentmodule,$query,$id)
 			$parentname = getRelatedTo('Calendar',$result,$i-1);
 			$entries[] = $parentname;
 
-			$date = new DateTimeField($row['date_start']."   ".$row['time_start']);
+			$date = new DateTimeField($row['date_start'].' '.$row['time_start']);
 			$entries[] = $date->getDisplayDateTimeValue();
-			$date = new DateTimeField($row['due_date']."   ".$row['time_end']);
+			$date = new DateTimeField($row['due_date'].' '.$row['time_end']);
 			$entries[] = $date->getDisplayDate();
 
 			$entries[] = $status;
@@ -507,7 +488,7 @@ function getHistory($parentmodule,$query,$id)
 			}
 			else
 			{
- 				$entries[] = $row['user_name'];
+				$entries[] = $row['user_name'];
 			}
 
 			$i++;
@@ -572,7 +553,7 @@ function getPriceBookRelatedProducts($query,$focus,$returnset='')
 	}
 	global $relationId;
 	$start = RelatedListViewSession::getRequestCurrentPage($relationId, $query);
-	$navigation_array =  VT_getSimpleNavigationValues($start, $list_max_entries_per_page,$noofrows);
+	$navigation_array = VT_getSimpleNavigationValues($start, $list_max_entries_per_page,$noofrows);
 
 	$limit_start_rec = ($start-1) * $list_max_entries_per_page;
 
@@ -592,7 +573,7 @@ function getPriceBookRelatedProducts($query,$focus,$returnset='')
 	$numRows = $adb->num_rows($list_result);
 	for($i=0; $i<$numRows; $i++) {
 		$entity_id = $adb->query_result($list_result,$i,"crmid");
-		$unit_price = 	$adb->query_result($list_result,$i,"unit_price");
+		$unit_price = $adb->query_result($list_result,$i,"unit_price");
 		if($currency_id != null) {
 			$prod_prices = getPricesForProducts($currency_id, array($entity_id));
 			$unit_price = $prod_prices[$entity_id];
@@ -623,7 +604,7 @@ function getPriceBookRelatedProducts($query,$focus,$returnset='')
 			$entries[] = $action;
 		$entries_list[] = $entries;
 	}
-	$navigationOutput[] =  getRecordRangeMessage($list_result, $limit_start_rec,$noofrows);
+	$navigationOutput[] = getRecordRangeMessage($list_result, $limit_start_rec,$noofrows);
 	$navigationOutput[] = getRelatedTableHeaderNavigation($navigation_array, '',$module,
 			$relatedmodule,$focus->id);
 	$return_data = array('header'=>$header,'entries'=>$entries_list,'navigation'=>$navigationOutput);
