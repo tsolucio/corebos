@@ -224,7 +224,6 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
  * Param $order_by - order by
  * Returns the listview header values in an array
  */
-
 function getSearchListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order_by = '') {
 	global $log;
 	$log->debug("Entering getSearchListViewHeader(" . get_class($focus) . "," . $module . "," . $sort_qry . "," . $sorder . "," . $order_by . ") method ...");
@@ -255,10 +254,7 @@ function getSearchListViewHeader($focus, $module, $sort_qry = '', $sorder = '', 
 		$pass_url .="&parent_module=Accounts&relmod_id=" . vtlib_purify($_REQUEST['acc_id']);
 	}
 
-	// vtlib Customization : For uitype 10 popup during paging
-	if ($_REQUEST['form'] == 'vtlibPopupView') {
-		$pass_url .= '&form=vtlibPopupView&forfield=' . vtlib_purify($_REQUEST['forfield']) . '&srcmodule=' . vtlib_purify($_REQUEST['srcmodule']) . '&forrecord=' . vtlib_purify($_REQUEST['forrecord']);
-	}
+	$pass_url .= '&form='.vtlib_purify($_REQUEST['form']).'&forfield=' . vtlib_purify($_REQUEST['forfield']) . '&srcmodule=' . vtlib_purify($_REQUEST['srcmodule']) . '&forrecord=' . vtlib_purify($_REQUEST['forrecord']);
 	$field_list = array_values($focus->search_fields_name);
 	require('user_privileges/user_privileges_' . $current_user->id . '.php');
 	$field = Array();
@@ -1085,8 +1081,10 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 						// vtlib customization: Generic popup handling
 						elseif (isset($focus->popup_fields) && in_array($fieldname, $focus->popup_fields)) {
 							global $default_charset;
-							$forfield = htmlspecialchars($_REQUEST['forfield'], ENT_QUOTES, $default_charset);
-							$forform = htmlspecialchars($_REQUEST['form'], ENT_QUOTES, $default_charset);
+							$forfield = vtlib_purify($_REQUEST['forfield']);
+							$forfield = htmlspecialchars($forfield, ENT_QUOTES, $default_charset);
+							$forform = vtlib_purify($_REQUEST['form']);
+							$forform = htmlspecialchars($forform, ENT_QUOTES, $default_charset);
 							$list_result_count = $i - 1;
 							$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, "search", $focus->popup_type);
 							if (isset($forfield) && $forfield != '' && $focus->popup_type != 'detailview') {
@@ -2898,10 +2896,8 @@ function AlphabeticalSearch($module, $action, $fieldname, $query, $type, $popupt
 	if ($return_module != '')
 		$returnvalue .= '&return_module=' . $return_module;
 
-	// vtlib Customization : For uitype 10 popup during paging
-	if (isset($_REQUEST['form']) and $_REQUEST['form'] == 'vtlibPopupView') {
-		$returnvalue .= '&form=vtlibPopupView&forfield=' . vtlib_purify($_REQUEST['forfield']) . '&srcmodule=' . vtlib_purify($_REQUEST['srcmodule']) . '&forrecord=' . vtlib_purify($_REQUEST['forrecord']);
-	}
+	$returnvalue .= '&form='.vtlib_purify($_REQUEST['form']).'&forfield=' . vtlib_purify($_REQUEST['forfield']) . '&srcmodule=' . vtlib_purify($_REQUEST['srcmodule']) . '&forrecord=' . vtlib_purify($_REQUEST['forrecord']);
+
 	$list = '';
 	for ($var = 'A', $i = 1; $i <= 26; $i++, $var++)
 		$list .= '<td class="searchAlph" id="alpha_' . $i . '" align="center" onClick=\'alphabetic("' . $module . '","gname=' . $groupid . '&query=' . $query . '&search_field=' . $fieldname . '&searchtype=BasicSearch&operator=s&type=alpbt&search_text=' . $var . $flag . $popuptypevalue . $returnvalue . $append_url . '","alpha_' . $i . '")\'>' . $var . '</td>';
@@ -3165,11 +3161,7 @@ function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $ac
 
 	$url_string = '';
 
-	// vtlib Customization : For uitype 10 popup during paging
-	if ($_REQUEST['form'] == 'vtlibPopupView') {
-		$url_string .= '&form=vtlibPopupView&forfield=' . vtlib_purify($_REQUEST['forfield']) . '&srcmodule=' . vtlib_purify($_REQUEST['srcmodule']) . '&forrecord=' . vtlib_purify($_REQUEST['forrecord']);
-	}
-	// END
+	$url_string .= '&form='.vtlib_purify($_REQUEST['form']).'&forfield=' . vtlib_purify($_REQUEST['forfield']) . '&srcmodule=' . vtlib_purify($_REQUEST['srcmodule']) . '&forrecord=' . vtlib_purify($_REQUEST['forrecord']);
 
 	if ($module == 'Calendar' && $action_val == 'index') {
 		if ($_REQUEST['view'] == '') {
@@ -4095,10 +4087,7 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '
 	$search_tag = isset($_REQUEST['search_tag']) ? $_REQUEST['search_tag'] : '';
 	$url_string = '';
 
-	// vtlib Customization : For uitype 10 popup during paging
-	if (isset($_REQUEST['form']) and $_REQUEST['form'] == 'vtlibPopupView') {
-		$url_string .= '&form=vtlibPopupView&forfield=' . vtlib_purify($_REQUEST['forfield']) . '&srcmodule=' . vtlib_purify($_REQUEST['srcmodule']) . '&forrecord=' . vtlib_purify($_REQUEST['forrecord']);
-	}
+	$url_string .= '&form='.vtlib_purify($_REQUEST['form']).'&forfield=' . vtlib_purify($_REQUEST['forfield']) . '&srcmodule=' . vtlib_purify($_REQUEST['srcmodule']) . '&forrecord=' . vtlib_purify($_REQUEST['forrecord']);
 
 	if ($module == 'Calendar' && $action_val == 'index') {
 		if ($_REQUEST['view'] == '') {
