@@ -639,12 +639,14 @@ class ReportRun extends CRMEntity {
 						}
 						$valuearray = explode(",",trim($value));
 						$datatype = (isset($selectedfields[4])) ? $selectedfields[4] : "";
+						$secondarymodules = explode(':', $this->secondarymodule);
+						array_walk($secondarymodules,function(&$val) {$val = 'vtiger_users'.$val;});
 						if(isset($valuearray) && count($valuearray) > 1 && $comparator != 'bw') {
 
 							$advcolumnsql = "";
 							for($n=0;$n<count($valuearray);$n++) {
 
-		                		if(($selectedfields[0] == "vtiger_users".$this->primarymodule || $selectedfields[0] == "vtiger_users".$this->secondarymodule) && $selectedfields[1] == 'user_name') {
+							if(($selectedfields[0] == 'vtiger_users'.$this->primarymodule || in_array($selectedfields[0],$secondarymodules)) && $selectedfields[1] == 'user_name') {
 									$module_from_tablename = str_replace("vtiger_users","",$selectedfields[0]);
 									$advcolsql[] = " trim($concatSql)".$this->getAdvComparator($comparator,trim($valuearray[$n]),$datatype)." or vtiger_groups".$module_from_tablename.".groupname ".$this->getAdvComparator($comparator,trim($valuearray[$n]),$datatype);
 								} elseif($selectedfields[1] == 'status') {//when you use comma seperated values.
@@ -669,7 +671,7 @@ class ReportRun extends CRMEntity {
 							else
 								$advcolumnsql = implode(" or ",$advcolsql);
 							$fieldvalue = " (".$advcolumnsql.") ";
-						} elseif(($selectedfields[0] == "vtiger_users".$this->primarymodule || $selectedfields[0] == "vtiger_users".$this->secondarymodule) && $selectedfields[1] == 'user_name') {
+						} elseif(($selectedfields[0] == 'vtiger_users'.$this->primarymodule || in_array($selectedfields[0],$secondarymodules)) && $selectedfields[1] == 'user_name') {
 							$module_from_tablename = str_replace("vtiger_users","",$selectedfields[0]);
 							$fieldvalue = " trim(case when (".$selectedfields[0].".last_name NOT LIKE '') then ".$concatSql." else vtiger_groups".$module_from_tablename.".groupname end) ".$this->getAdvComparator($comparator,trim($value),$datatype);
 						} elseif($comparator == 'bw' && count($valuearray) == 2) {
