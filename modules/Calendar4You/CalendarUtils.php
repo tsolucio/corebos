@@ -441,7 +441,9 @@ function transferForAddIntoTitle($type, $row, $CD) {
 		$value = getTranslatedString($Cal_Data[1],'Calendar');
 	else
 		$value = $Cal_Data[1];
-
+	if ($CD["fieldname"] == "location")  {
+		$value = "<a href='https://www.google.nl/maps/place/".$row['location']."' target='_blank'>".$row['location']."</a>";
+	}
 	if ($type == "1")
 		return $Cal_Data[1];
 	else
