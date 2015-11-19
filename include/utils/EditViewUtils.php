@@ -1529,6 +1529,7 @@ function getConvertQuoteToInvoice($focus,$quote_focus,$quoteid)
 	}
 	$focus->column_fields['subject'] = $quote_focus->column_fields['subject'];
 	$focus->column_fields['account_id'] = $quote_focus->column_fields['account_id'];
+	$focus->column_fields['contact_id'] = $quote_focus->column_fields['contact_id'];
 	$focus->column_fields['bill_street'] = $quote_focus->column_fields['bill_street'];
 	$focus->column_fields['ship_street'] = $quote_focus->column_fields['ship_street'];
 	$focus->column_fields['bill_city'] = $quote_focus->column_fields['bill_city'];
