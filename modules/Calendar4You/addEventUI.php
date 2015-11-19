@@ -183,7 +183,7 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 		// Beware: Autocomplete sets a search term as GET parameter to the URL
 		// The php file has to take this into account and use the search term
 		// in its mySQL query
-		  source: "http://crmdevelop.cbx-nederland.nl/index.php?module=Calendar4You&action=Calendar4YouAjax&searchmodule=Accounts&file=JSON",
+		  source: "index.php?module=Calendar4You&action=Calendar4YouAjax&searchmodule=Accounts&file=JSON",
 		// On open we have to set a high z-index to the UL, else it will
 		// fall behind the 'addEvent' UI box
 		  open: function(){
@@ -236,7 +236,7 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 		// Beware: Autocomplete sets a search term as GET parameter to the URL
 		// The php file has to take this into account and use the search term
 		// in its mySQL query
-		  source: "http://crmdevelop.cbx-nederland.nl/index.php?module=Calendar4You&action=Calendar4YouAjax&searchmodule=SalesOrders&file=JSON",
+		  source: "index.php?module=Calendar4You&action=Calendar4YouAjax&searchmodule=SalesOrders&file=JSON",
 		// On open we have to set a high z-index to the UL, else it will
 		// fall behind the 'addEvent' UI box
 		  open: function(){
@@ -270,7 +270,7 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 		};
 		// During typing, dynamically change the autocomplete source to check for accountID
 		jQuery("#so_autocomplete").keyup(function(){
-			jQuery( "#so_autocomplete" ).autocomplete("option","source","http://crmdevelop.cbx-nederland.nl/index.php?module=Calendar4You&action=Calendar4YouAjax&searchmodule=SalesOrders&accountid="+jQuery('input[name=parent_id]').val()+"&file=JSON");
+			jQuery( "#so_autocomplete" ).autocomplete("option","source","index.php?module=Calendar4You&action=Calendar4YouAjax&searchmodule=SalesOrders&accountid="+jQuery('input[name=parent_id]').val()+"&file=JSON");
 		});
 	});
   </script>
