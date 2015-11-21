@@ -1905,6 +1905,9 @@ class ReportRun extends CRMEntity {
             $reportquery = $this->replaceSpecialChar($report);
         }
 		$log->info("ReportRun :: Successfully returned sGetSQLforReport".$reportid);
+		if (GlobalVariable::getVariable('Debug_Report_Query', '0')=='1') {
+			echo '<br>'.$reportquery.'<br>';
+		}
 		return $reportquery;
 
 	}

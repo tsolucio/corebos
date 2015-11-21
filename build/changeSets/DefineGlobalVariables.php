@@ -24,6 +24,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 			$global_variables = array(
 				'product_service_default',
 				'Debug_Record_Not_Found',
+				'Debug_Report_Query',
 				'Product_Default_Units',
 				'Service_Default_Units',
 				'Maximum_Scheduled_Workflows',
