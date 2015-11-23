@@ -99,13 +99,13 @@ class Asterisk {
 		
 		switch($typeCalled){
 			case "SIP":
-				$context = "default";
+				$context = "from-internal";
 				break;
 			case "PSTN":
-				$context = "from-inside";//"outbound-dialing";
+				$context = "from-internal";//"outbound-dialing";
 				break;
 			default:
-				$context = "default";
+				$context = "from-internal";
 		}
 		$this->createCall($from, $to, $context);
 	}	
