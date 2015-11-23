@@ -101,7 +101,7 @@ if ($cver=='6.0.0' or $force) {
 ExecuteQuery("DELETE FROM vtiger_def_org_share WHERE vtiger_def_org_share.tabid not in (select tabid from vtiger_tab)");
 ExecuteQuery("update vtiger_users set theme='softed'");
 ExecuteQuery("update vtiger_version set old_version='5.4.0', current_version='5.5.0' where id=1");
-
+ExecuteQuery("DELETE FROM vtiger_field WHERE tablename = 'vtiger_inventoryproductrel'");
 // Recalculate permissions  RecalculateSharingRules
 RecalculateSharingRules();
 
