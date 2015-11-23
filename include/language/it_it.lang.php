@@ -1282,6 +1282,7 @@ $app_strings = array (
 'Drag file here or click to upload' => 'Drag file here or click to upload',
 'SetReturnAddressTitle' => 'Select Address To Use',
 'SetReturnAddressDescription' => 'Select which address you wish to overwrite, if any',
+'Subscribe' => 'Subscribe',
 );
 
 // Translation for currency names

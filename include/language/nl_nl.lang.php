@@ -1173,6 +1173,7 @@ $app_strings = array(
 	'Drag file here or click to upload' => 'Sleep bestanden hier naar toe of klik om te uploaden',
 	'SetReturnAddressTitle' => 'Kies adres om te gebruiken',
 	'SetReturnAddressDescription' => 'Kies welk adres overschreven moet worden. U kunt één van de adressen kiezen, allebei of geen adres.',
+	'Subscribe' => 'Subscribe',
 );
 $app_list_strings = array(
 	'moduleList' => array(

@@ -1298,6 +1298,7 @@ $app_strings = array (
 	'Drag file here or click to upload' => 'Arrastra la imagen aquí o haz click para cargar la imagen',
 	'SetReturnAddressTitle' => 'Dirección a Utilizar',
 	'SetReturnAddressDescription' => 'Selecciona que dirección quieres sobreescribir, si procede',
+	'Subscribe' => 'Suscribir',
 );
 $app_list_strings = array (
       'moduleList' => array(
