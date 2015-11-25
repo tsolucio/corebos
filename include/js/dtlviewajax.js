@@ -34,6 +34,13 @@ function hndCancel(valuespanid,textareapanid,fieldlabel)
 	return false;
 }
 
+function hndCancelOutsideClick() {
+	if (itsonview) {
+		hndCancel(globaldtlviewspanid,globaleditareaspanid,globalfieldlabel);
+	}
+	return false;
+}
+
 function hndMouseOver(uitype,fieldLabel)
 {
 	var mouseArea="";
@@ -72,7 +79,7 @@ function hndMouseOver(uitype,fieldLabel)
 	divObj.style.top=crmy+"px";
 }
 
-function handleEdit()
+function handleEdit(event)
 {
 	show(globaleditareaspanid);
 	fnhide(globaldtlviewspanid);
@@ -83,6 +90,7 @@ function handleEdit()
 	}
 	fnhide('crmspanid');
 	itsonview=true;
+	event.stopPropagation();
 	return false;
 }
 

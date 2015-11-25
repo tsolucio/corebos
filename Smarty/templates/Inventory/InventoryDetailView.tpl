@@ -129,7 +129,7 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 			<td valign=top><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 			<td class="showPanelBg" valign=top width=100%>
 			<!-- PUBLIC CONTENTS STARTS-->
-			   <div class="small" style="padding:20px" >
+			   <div class="small" style="padding:20px" onclick="hndCancelOutsideClick();";>
 		
 				<table align="center" border="0" cellpadding="0" cellspacing="0" width="95%">
 				   <tr>
