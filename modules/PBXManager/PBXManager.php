@@ -31,7 +31,7 @@ class PBXManager extends CRMEntity {
 	var $tab_name_index = Array(
 		'vtiger_crmentity' => 'crmid',
 		'vtiger_pbxmanager' => 'pbxmanagerid',
-	    );
+	);
 
 	/**
 	 * Mandatory for Listing (Related listview)
@@ -60,7 +60,7 @@ class PBXManager extends CRMEntity {
 	var $required_fields = Array();
 
 	// Callback function list during Importing
-	var $special_functions =  array();
+	var $special_functions = array();
 
 	var $default_order_by = 'timeofcall';
 	var $default_sort_order='DESC';
@@ -213,10 +213,10 @@ class PBXManager extends CRMEntity {
 	* @param String Event Type
 	*/	
 	function vtlib_handler($moduleName, $eventType) {
-		require_once('include/utils/utils.php');			
+		require_once('include/utils/utils.php');
 		global $adb;
- 		$tabid = getTabid("Users");
- 		if($eventType == 'module.postinstall') {		
+		$tabid = getTabid("Users");
+		if($eventType == 'module.postinstall') {
 			// Add a block and 2 fields for Users module
 			$blockid = $adb->getUniqueID('vtiger_blocks');
 			$adb->query("insert into vtiger_blocks(blockid,tabid,blocklabel,sequence,show_title,visible,create_view,edit_view,detail_view,display_status)" .

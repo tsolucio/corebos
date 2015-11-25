@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
- 
+
 echo TraceIncomingCall();
 
 /**
@@ -16,14 +16,12 @@ echo TraceIncomingCall();
  * only these three modules are supported for now
  */
 function TraceIncomingCall(){
-	
 	require_once('modules/PBXManager/AsteriskUtils.php');
-	global $adb, $current_user;
-	global $theme,$app_strings,$log;
-	
+	global $adb, $current_user, $theme,$app_strings,$log;
+
 	$theme_path="themes/".$theme."/";
 	$image_path=$theme_path."images/";
-	
+
 	$asterisk_extension = false;
 	if(isset($current_user->column_fields)) {
 		$asterisk_extension = $current_user->column_fields['asterisk_extension'];
@@ -32,10 +30,10 @@ function TraceIncomingCall(){
 		$result = $adb->pquery($sql, array($current_user->id));
 		$asterisk_extension = $adb->query_result($result, 0, "asterisk_extension");
 	}
-	
+
 	$query = "select * from vtiger_asteriskincomingcalls where to_number = ?";
 	$result = $adb->pquery($query, array($asterisk_extension));
-	
+
 	if($adb->num_rows($result)>0){
 		$flag = $adb->query_result($result,0,"flag");
 		$oldTime = $adb->query_result($result,0,"timer");
@@ -46,21 +44,20 @@ function TraceIncomingCall(){
 
 		if(!empty($callerNumber)){
 			$tracedCallerInfo = getTraceIncomingCallerInfo($callerNumber);
-		} 
+		}
 
 		$callerLinks = $tracedCallerInfo['callerLinks'];
 		$firstCallerInfo = false;
 		if(!empty($tracedCallerInfo['callerInfos'])) {
 			$firstCallerInfo = $tracedCallerInfo['callerInfos'];
-		}		
+		}
 
 		$newTime = time();
-		if(($newTime-$oldTime)>=3 && $flag == 1){ 
+		if(($newTime-$oldTime)>=3 && $flag == 1){
 			$adb->pquery("delete from vtiger_asteriskincomingcalls where to_number = ?", array($asterisk_extension));
 		}else{
 			if($flag==0){
 				$flag=1;
-				
 				// Trying to get the Related CRM ID for the Event (if already desired by popup click)
 				$relcrmid = false;
 				if(!empty($refuid)) {
@@ -69,15 +66,14 @@ function TraceIncomingCall(){
 				}
 				$adb->pquery("update vtiger_asteriskincomingcalls set flag = ? where to_number = ?", array($flag, $asterisk_extension));
 				$activityid = asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, $adb, $current_user->id, $relcrmid, $firstCallerInfo);
-				
 			}
 			//prepare the div for incoming calls
-			$status = "	<table  border='0' cellpadding='5' cellspacing='0'>
+			$status = "	<table border='0' cellpadding='5' cellspacing='0'>
 						<tr>
 							<td style='padding:10px;' colspan='2'><b>".$app_strings['LBL_INCOMING_CALL']."</b></td>
 						</tr>
 					</table>
-					<table  border='0' cellpadding='0' cellspacing='0' class='hdrNameBg'>
+					<table border='0' cellpadding='0' cellspacing='0' class='hdrNameBg'>
 						<tr><td style='padding:10px;' colspan='2'><b>".$app_strings['LBL_CALLER_INFORMATION']."</b>
 							<br><b>".$app_strings['LBL_CALLER_NUMBER']."</b> $callerNumber
 							<br><b>".$app_strings['LBL_CALLER_NAME']."</b> $callerName
@@ -111,7 +107,7 @@ function getTraceIncomingCallerInfo($from) {
 		$module = $callerInfos['module'];
 		$callerModule = " [$module]";
 		$callerID = $callerInfos['id'];
-		$callerLinks = $callerLinks."<a href='index.php?module=$module&action=DetailView&record=$callerID'>$callerName</a>$callerModule<br>";		
+		$callerLinks = $callerLinks."<a href='index.php?module=$module&action=DetailView&record=$callerID'>$callerName</a>$callerModule<br>";
 	}else{
 		$callerLinks = $callerLinks."<br>
 						<a target='_blank' href='index.php?module=Leads&action=EditView&extra_action=addToCallHistory&phone=$from'>".getTranslatedString('LBL_CREATE_LEAD')."</a><br>

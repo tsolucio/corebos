@@ -16,8 +16,7 @@ function getAsteriskInfo($adb){
 	global $log;
 	$sql = "select * from vtiger_asterisk";
 	$server = "";
-	$port = "";	//hard-coded for now
-	
+	$port = ""; //hard-coded for now
 	$result = $adb->pquery($sql, array());
 	if($adb->num_rows($result)>0){
 		$data = array();
@@ -29,11 +28,10 @@ function getAsteriskInfo($adb){
 		return $data;
 	}else{
 		$log->debug("Asterisk server settings not specified.\n".
-			 		"Change the configuration from vtiger-> Settings-> Softphone Settings\n");
+					"Change the configuration from vtiger-> Settings-> Softphone Settings\n");
 		return false;
 	}
 }
-
 
 /**
  * this function will authorize the first user from the database that it finds
@@ -46,7 +44,7 @@ function getAsteriskInfo($adb){
  */
 function authorizeUser($username, $password, $asterisk){
 	echo "Trying to login to asterisk\n";
-	
+
 	if(!empty($username) && !empty($password)){
 		$asterisk->setUserInfo($username, $password);
 		if( !$asterisk->authenticateUser() ) {
@@ -88,8 +86,7 @@ function loginUser($username, $password, $asterisk){
 	}
 }
 
-
-/**	
+/**
  * this function returns the channel for the current call
  * @param object $asterisk - the asterisk object
  * @return :: on success - string $value - the channel for the current call
@@ -128,7 +125,6 @@ function getUserFromExtension($extension, $adb){
 	return $userid;
 }
 
-
 /**
  * this function adds the call information to the actvity history
  * @param string $callerName - the caller name
@@ -141,9 +137,8 @@ function getUserFromExtension($extension, $adb){
  */
 function asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, $adb, $userid, $relcrmid, $callerInfo=false){
 	global $log, $current_user;
-	
+
 	// Reset date format for a while
-	
 	$date = new DateTimeField(null);
 	$currentDate = $date->getDisplayDate();
 	$currentTime = $date->getDisplayTime();
@@ -159,10 +154,10 @@ function asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, 
 	$focus->column_fields['assigned_user_id'] = $userid;
 	$focus->save('Calendar');
 	$focus->setActivityReminder('off');
-	
+
 	// Restore dateformat
 	$current_user->date_format = $old_userdate_format;
-	
+
 	if(empty($relcrmid)) {
 		if(empty($callerInfo)) {
 			$callerInfo = getCallerInfo($callerNumber);
@@ -172,14 +167,14 @@ function asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, 
 		$callerInfo['module'] = getSalesEntityType($relcrmid);
 		$callerInfo['id'] = $relcrmid;
 	}
-	
+
 	if($callerInfo != false){
 		$tablename = array('Contacts'=>'vtiger_cntactivityrel', 'Accounts'=>'vtiger_seactivityrel', 'Leads'=>'vtiger_seactivityrel');
 		$sql = "insert into ".$tablename[$callerInfo['module']]." values (?,?)";
 		$params = array($callerInfo['id'], $focus->id);
 		$adb->pquery($sql, $params);
 	}
-	
+
 	return $focus->id;
 }
 
@@ -192,11 +187,11 @@ function asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, 
 function addOutgoingcallHistory($current_user,$extension, $record ,$adb){
 	global $log;
 	require_once 'modules/Calendar/Activity.php';
-	
+
 	$date = new DateTimeField(null);
 	$currentDate = $date->getDisplayDate();
 	$currentTime = $date->getDisplayTime();
-	
+
 	$focus = new Activity();
 	$focus->column_fields['subject'] = "Outgoing call from $current_user->user_name ($extension)";
 	$focus->column_fields['activitytype'] = "Call";
