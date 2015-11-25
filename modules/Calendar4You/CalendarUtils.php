@@ -441,12 +441,14 @@ function transferForAddIntoTitle($type, $row, $CD) {
 		$value = getTranslatedString($Cal_Data[1],'Calendar');
 	else
 		$value = $Cal_Data[1];
-
+	if ($CD["fieldname"] == "location")  {
+		$value = "<a href='https://www.google.nl/maps/place/".$row['location']."' target='_blank'>".$row['location']."</a>";
+	}
 	if ($type == "1")
 		return $Cal_Data[1];
 	else
-//		return "<br><b>".$Cal_Data[0]."</b>: ".$value;
-		return '<table><tr><th>'.$Cal_Data[0].':</th><td onmouseover="vtlib_listview.trigger(\'cell.onmouseover\', $(this))" onmouseout="vtlib_listview.trigger(\'cell.onmouseout\', $(this))">'.$value.'</td></tr></table>';
+		return '<br><b>'.$Cal_Data[0].'</b>: <span onmouseover="vtlib_listview.trigger(\'cell.onmouseover\', $(this))" onmouseout="vtlib_listview.trigger(\'cell.onmouseout\', $(this))">'.$value.'</span>';
+		// return '<table><tr><th>'.$Cal_Data[0].':</th><td onmouseover="vtlib_listview.trigger(\'cell.onmouseover\', $(this))" onmouseout="vtlib_listview.trigger(\'cell.onmouseout\', $(this))">'.$value.'</td></tr></table>';
 }
 
 function getEventActivityMode($id) {

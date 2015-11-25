@@ -7,4 +7,6 @@
 /backup
 /user_privileges
 /config-dev.inc.php
+/config.inc.php
+/CBX_changelog.txt
 /modules/Calendar4You/googlekeys

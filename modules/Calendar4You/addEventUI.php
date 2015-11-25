@@ -163,6 +163,118 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 	<script type="text/javascript" src="jscalendar/lang/calendar-<?php echo $app_strings['LBL_JSCALENDAR_LANG'] ?>.js"></script>
 	<!--script type="text/javascript" src="jscalendar/calendar-setup.js"></script-->
 	<!--script type="text/javascript" src="include/js/ListView.js"></script-->
+	<!-- Dynamically add jQuery UI from a CDN -->
+	<script type="text/javascript">
+	var script = document.createElement("script");
+	script.type = "text/javascript";
+	script.src = "https://code.jquery.com/ui/1.11.4/jquery-ui.min.js";
+	var uiCSS = document.createElement("link");
+	uiCSS.type = "text/css";
+	uiCSS.rel = "stylesheet";
+	uiCSS.href = "https://code.jquery.com/ui/1.11.4/themes/cupertino/jquery-ui.css";
+	document.head.appendChild(script);
+	document.head.appendChild(uiCSS);
+	</script>
+	<!-- End include of jQuery UI -->
+	<!-- Autocomplete jQuery Accounts -->
+  <script>
+  jQuery(window).load(function(){
+		jQuery( "#account_autocomplete" ).autocomplete({
+		// Beware: Autocomplete sets a search term as GET parameter to the URL
+		// The php file has to take this into account and use the search term
+		// in its mySQL query
+		  source: "index.php?module=Calendar4You&action=Calendar4YouAjax&searchmodule=Accounts&file=JSON",
+		// On open we have to set a high z-index to the UL, else it will
+		// fall behind the 'addEvent' UI box
+		  open: function(){
+			jQuery(this).autocomplete('widget').css('z-index', 999999);
+			return false;
+		  },
+		  // Here we add the result on selection to a hidden input field
+		  // That the calendar module uses to connect a crmentity
+		  select: function( event, ui) {
+			  // Add crmentity id to hidden input
+			  jQuery('input[name=parent_id]').attr('value',ui.item.value);
+			  // Also update the activity name with the activity type and account name
+			  jQuery('input[name=subject]').val(jQuery('#activitytype option:selected').text() + " " + ui.item.label);
+			  // Overwrite the input field with the account name in stead of the crmentity
+			  jQuery('#account_autocomplete').val(ui.item.label);
+			  // Update the address automatically
+			  jQuery('input[name=location]').val(ui.item.street + " " + ui.item.city);
+			  return false;
+		  },
+		  // Also update the input field with the label during focus
+		  focus: function( event, ui ) {
+			  // Overwrite the input field with the account name in stead of the crmentity
+			  jQuery('#account_autocomplete').val(ui.item.label);
+			  return false;
+		  },
+		  minLength: 2
+		// Make sure browser 'autocomplete' is turned off for this field
+		}).attr("autocomplete","off")
+		// Add '_renderItem' to use HTML in the results, so we can use
+		// things like address fields and better readable markup
+		.autocomplete( "instance" )._renderItem = function( ul, item ) {
+		  return jQuery( "<li>" )
+			.append( "<a>" + "<b>" + item.label + "</b>" + "<br>" + item.street + "<br>" + item.code + " " + item.city + "</a>" )
+			.appendTo( ul );
+		};
+		// If we empty the account field, also empty the hidden parent_id field
+		jQuery("#account_autocomplete").focusout(function(){
+			if ( jQuery(this).val() == "" ) {
+				jQuery("input[name=parent_id]").val("");
+				jQuery('input[name=location]').val("");
+			}
+		});
+	});
+  </script>
+	<!-- End autocomplete Accounts -->
+	<!-- Autocomplete jQuery Sales Orders -->
+  <script>
+  jQuery(window).load(function(){
+		jQuery( "#so_autocomplete" ).autocomplete({
+		// Beware: Autocomplete sets a search term as GET parameter to the URL
+		// The php file has to take this into account and use the search term
+		// in its mySQL query
+		  source: "index.php?module=Calendar4You&action=Calendar4YouAjax&searchmodule=SalesOrders&file=JSON",
+		// On open we have to set a high z-index to the UL, else it will
+		// fall behind the 'addEvent' UI box
+		  open: function(){
+			jQuery(this).autocomplete('widget').css('z-index', 999999);
+			return false;
+		  },
+		  // Here we add the result on selection to a hidden input field
+		  // That the calendar module uses to connect a crmentity
+		  select: function( event, ui) {
+			  // Add crmentity id to hidden input
+			  jQuery('input[name=so_rel]').attr('value',ui.item.value);
+			  // Overwrite the input field with the salesorder name in stead of the crmentity
+			  jQuery('#so_autocomplete').val(ui.item.label);
+			  return false;
+		  },
+		  // Also update the input field with the label during focus
+		  focus: function( event, ui ) {
+			  // Overwrite the input field with the salesorder name in stead of the crmentity
+			  jQuery('#so_autocomplete').val(ui.item.label);
+			  return false;
+		  },
+		  minLength: 2
+		// Make sure browser 'autocomplete' is turned on for this field
+		}).attr("autocomplete","off")
+		// Add '_renderItem' to use HTML in the results, so we can use
+		// things like address fields and better readable markup
+		.autocomplete( "instance" )._renderItem = function( ul, item ) {
+		  return jQuery( "<li>" )
+			.append( "<a>" + "<b>" + item.label + "</b>" + "<br>" + item.subject + "<br>" + item.accountname + "</a>" )
+			.appendTo( ul );
+		};
+		// During typing, dynamically change the autocomplete source to check for accountID
+		jQuery("#so_autocomplete").keyup(function(){
+			jQuery( "#so_autocomplete" ).autocomplete("option","source","index.php?module=Calendar4You&action=Calendar4YouAjax&searchmodule=SalesOrders&accountid="+jQuery('input[name=parent_id]').val()+"&file=JSON");
+		});
+	});
+  </script>
+	<!-- End autocomplete Sales Orders -->
 	<div class="calAddITSEvent layerPopup" style="display:none;width:650px;left:200px;z-index:10000;background-color:#ffffff" id="addITSEvent" align=center>
 	<form id="EditView" name="EditView" method="POST" action="index.php">
 	<input type="hidden" name="action" value="SaveEvent">
@@ -195,6 +307,7 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
     <input type="hidden" name="geventid" value="">
     <input type="hidden" name="gevent_type" value="">
     <input type="hidden" name="gevent_userid" value="">
+	<input type="hidden" name="so_rel" value="">
     
 		<table border=0 cellspacing=0 cellpadding=5 width=100% class="layerHeadingULine">
 		<tr style="cursor:move;">
@@ -219,9 +332,9 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 			</tr>
 			<tr>
 				<td nowrap align="right"><b><font color="red">*</font><?php echo $c_mod_strings['LBL_EVENTNAME']?></b></td>
-				<td align="left"><input name="subject" type="text" class="textbox" value="" style="width:50%">&nbsp;&nbsp;&nbsp; 
+				<td align="left"><input name="subject" type="text" value="" class="textbox" style="width:50%">&nbsp;&nbsp;&nbsp; 
 			<?php if(getFieldVisibilityPermission('Events',$current_user->id,'visibility', 'readwrite') == '0') { ?>	
-			<input name="visibility" value="Public" type="checkbox"><?php echo $c_mod_strings['LBL_PUBLIC']; ?>
+			<input name="visibility" value="Public" type="checkbox" checked><?php echo $c_mod_strings['LBL_PUBLIC']; ?>
 			<?php } ?>	
 			</td>
 			</tr>
@@ -232,6 +345,14 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 			</tr>
 			<?php } ?>
 			<?php if(getFieldVisibilityPermission('Events',$current_user->id,'location', 'readwrite') == '0') { ?>
+			<tr>
+				<td nowrap align="right"><b><?php echo $app_strings['Accounts']?></b></td>
+				<td align="left"><input name="account_autocomplete" type="text" id="account_autocomplete" value="" style="width:50%;"></td>
+			</tr>
+			<tr>
+				<td nowrap align="right"><b><?php echo $app_strings['Sales Order']?></b></td>
+				<td align="left"><input name="so_autocomplete" type="text" id="so_autocomplete" value="" style="width:50%;"></td>
+			</tr>
 			<tr>
 				<td nowrap align="right"><b><?php echo $c_mod_strings['Location']?></b></td>
 				<td align="left"><input name="location" type="text" class="textbox" value="" style="width:50%"></td>

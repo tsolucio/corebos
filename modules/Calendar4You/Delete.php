@@ -34,6 +34,9 @@ if(!isset($_REQUEST['record']))
 
 DeleteEntity('Calendar',$_REQUEST['return_module'],$focus,$_REQUEST['record'],$_REQUEST['return_id']);
 
+// Added by MajorLabel: Delete relation to sales order when deleting event
+$deleteQuery = $adb->pquery('DELETE FROM vtiger_soactivityrel WHERE activity_id=?',array($_REQUEST['record']));
+
 $parenttab=getParentTab();
 header("Location: index.php?module=".vtlib_purify($_REQUEST['return_module'])."&action=".vtlib_purify($_REQUEST['return_action'])."&record=".vtlib_purify($_REQUEST['return_id'])."&parenttab=".$parenttab."&relmodule=".vtlib_purify($_REQUEST['module']).$url);
 ?>

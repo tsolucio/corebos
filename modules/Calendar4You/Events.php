@@ -1,4 +1,5 @@
 <?php
+
 /*********************************************************************************
 * The content of this file is subject to the Calendar4You Free license.
 * ("License"); You may not use this file except in compliance with the License
@@ -302,7 +303,8 @@ foreach($Users_Ids AS $userid) {
 				}
 				$into_title = $app['LBL_ACTION'].": ".$actions."<hr>".nl2br($into_title);
 			}
-			$title = "<font style='font-size:12px'>".$into_title."</font>";
+			$title = "<font style='font-size:10px; font-weight: bold; text-transform: uppercase'>".$into_title."</font>";
+			
 			if ($add_more_info) {
 				if (count($Event_Info[$event]) > 0) {
 					foreach($Event_Info[$event] AS $CD) {
@@ -310,6 +312,7 @@ foreach($Users_Ids AS $userid) {
 					}
 				}
 			}
+
 			if(in_array($activitytypeid,$tasklabel)){
 				$stfst = $row[$stfields['start']];
 				$stfed = $row[$stfields['end']];
@@ -332,6 +335,14 @@ foreach($Users_Ids AS $userid) {
 				$convert_due_date = DateTimeField::convertToUserTimeZone($row["due_date"]." ".$row["time_end"]);
 				$user_due_date = $convert_due_date->format('Y-m-d H:i');
 			}
+			// MajorLabel
+			// $soActivityRelQuery = $adb->pquery("SELECT so_id FROM vtiger_soactivityrel WHERE activity_id=?",array($record));
+			$soActivityRelQuery = $adb->pquery("SELECT vtiger_salesorder.salesorderid, vtiger_salesorder.subject, vtiger_salesorder.salesorder_no FROM vtiger_soactivityrel RIGHT JOIN vtiger_salesorder ON vtiger_soactivityrel.so_id=vtiger_salesorder.salesorderid WHERE vtiger_soactivityrel.activity_id=?",array($record));
+			if ( ($adb->num_rows($soActivityRelQuery)) > 0 ) {
+				$RelatedSo = $adb->query_result_rowdata($soActivityRelQuery);
+				$title .= "<br><b>Order: </b><a target='_blank' href='index.php?module=SalesOrder&parenttab=Sales&action=DetailView&record=".$RelatedSo['salesorderid']."'>".$RelatedSo['salesorder_no'].": ".$RelatedSo['subject']."</a>";
+			}
+			// END MajorLabel
 			$Activities[] = array(
 				'id' => $row['crmid'],
 				'typeid' => $activitytypeid,

@@ -241,7 +241,7 @@ if((isset($_REQUEST['change_status']) && $_REQUEST['change_status']) && ($_REQUE
 	}
 	/* For Followup END -- by Minnie */
 	$return_id = $focus->id;
-}     
+}  
 
 if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] != "")
 	$return_module = vtlib_purify($_REQUEST['return_module']);
@@ -358,6 +358,21 @@ if(isset($_REQUEST['del_actparent_rel']) && $_REQUEST['del_actparent_rel'] != ''
 	$sql= 'delete from vtiger_seactivityrel where crmid=? and activityid=?';
 	$adb->pquery($sql, array($parnt_id, $record));
 }
+
+// Added by MajorLabel
+// Save related sales order in table vtiger_soacivityrel
+
+// Only if something was filled out in the sales order field
+if(isset($_REQUEST['so_rel'])) {
+	$relatedSO = $_REQUEST['so_rel'];
+	// $saveSoQuery = "INSERT INTO vtiger_soactivityrel (activity_id,so_id) VALUES ('$focus->id','$relatedSO') ON DUPLICATE KEY UPDATE so_id=VALUES('$relatedSO')";
+	$saveSoQuery = "INSERT INTO vtiger_soactivityrel (activity_id,so_id) VALUES ('$focus->id','$relatedSO')";
+	$soSaveResult = $adb->query($saveSoQuery);
+	// $saveSoQuery = 'INSERT INTO vtiger_soactivityrel (activity_id,so_id) VALUES (?,?)';
+	// $soSaveResult = $adb->pquery($saveSoQuery,array($focus->id,$relatedSO));
+}
+
+// END SAVE S.O. RELATION
 
 if(isset($_REQUEST['geventid']) && $_REQUEST['geventid'] != '') {
     $q = "select activitytypeid from vtiger_activitytype where activitytype = ?";

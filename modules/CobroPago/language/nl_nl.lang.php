@@ -99,8 +99,7 @@ $mod_strings = array(
 	'Activities' => 'Activiteiten',
 	'Activity History' => 'Geschiedenis activiteiten',
 	'Documents' => 'Documenten',
-        'CyP No'=>'Payment No',
-        'PaymentDate'=>'Payment Date',
+	'CyP No' => 'Betalingsnummer',
+	'PaymentDate' => 'Betalingsdatum',
 );
-
 ?>

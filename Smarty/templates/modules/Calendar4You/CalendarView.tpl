@@ -456,6 +456,23 @@ function hideITSEventInfo(){
     jQuery('#event_info_content').html('');
 
 }
+
+function collapseSidebar(){
+
+	jQuery("#calendarSidebar").height(jQuery(window).height() * 0.8);
+
+	if (jQuery("#calendarSidebar").css("z-index") == "-1") {
+		jQuery("#calendarSidebar").css("z-index","99999").fadeTo(200,1);
+		jQuery("#sidebarArrow").css("transform","rotate(180deg)");
+	} else {
+		jQuery("#calendarSidebar").fadeTo(200,0,function(){
+			jQuery("#calendarSidebar").css("z-index","-1");
+			jQuery("#sidebarArrow").css("transform","rotate(0deg)");
+		});
+	}
+
+}
+
 {/literal}
 </script>
 {include file='modules/Calendar4You/Buttons_List.tpl'}  	
@@ -470,7 +487,8 @@ function hideITSEventInfo(){
                     <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
                         <tbody>
                             <tr>
-                                  <td width="200px" valign="top">
+								<div id="collapseCalendarSidebar" onClick="collapseSidebar()" style="height: 24px; padding: 10px 5px 0 5px; margin-bottom: 5px; background: #545454; color: white; float: left; border-radius: 5px; box-shadow: 0px 3px #3d3d3d; cursor: pointer">{$MOD.LBL_SHOW_HIDE_SIDEBAR} <span id="sidebarArrow" style="display: inline-block;transition: transform 200ms ease">&#x25BC;</span></div>
+                                  <td width="300px" valign="top" id="calendarSidebar" style="position: absolute; z-index: -1; opacity: 0; background: white;-webkit-box-shadow: 4px 4px 21px -6px rgba(0,0,0,0.6);-moz-box-shadow: 4px 4px 21px -6px rgba(0,0,0,0.6);box-shadow: 4px 4px 21px -6px rgba(0,0,0,0.6);overflow-y:scroll">
                                     <table class="dvtContentSpace" border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tbody>
                                             <tr>
