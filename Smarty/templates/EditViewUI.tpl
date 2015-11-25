@@ -633,12 +633,12 @@ alt="Clear" title="Clear" LANGUAGE=javascript	onClick="this.form.{$fldname}.valu
 						<!--input type="hidden" name="file_1_hidden" value=""/-->
 						{assign var=image_count value=0}
 						{if isset($maindata[3].0.name) && $maindata[3].0.name neq '' && $DUPLICATE neq 'true'}
-						   {foreach name=image_loop key=num item=image_details from=$maindata[3]}
+							{foreach name=image_loop key=num item=image_details from=$maindata[3]}
 							<div align="center">
 								<img src="{$image_details.path}{$image_details.name}" height="50">&nbsp;&nbsp;[{$image_details.orgname}]<input id="file_{$num}" value="{'LBL_DELETE_BUTTON'|@getTranslatedString}" type="button" class="crmbutton small delete" onclick='this.parentNode.parentNode.removeChild(this.parentNode);delRowEmt("{$image_details.orgname}")'>
 							</div>
-					   	   {assign var=image_count value=$smarty.foreach.image_loop.iteration}
-					   	   {/foreach}
+							{assign var=image_count value=$smarty.foreach.image_loop.iteration}
+							{/foreach}
 						{/if}
 					</div>
 
