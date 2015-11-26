@@ -26,6 +26,10 @@ if(!is_admin($current_user)) {
 
 	$menu_array = Array();
 
+	$menu_array['CustomFields']['location'] = 'index.php?module=Settings&action=CustomFieldList&parenttab=Settings&formodule='.$module;
+	$menu_array['CustomFields']['image_src'] = vtiger_imageurl('orgshar.gif', $theme);
+	$menu_array['CustomFields']['desc'] = getTranslatedString('LBL_CALENDER_CUSTOMFIELDS_DESCRIPTION');
+	$menu_array['CustomFields']['label'] = getTranslatedString('LBL_CALENDER_CUSTOMFIELDS');
 	$menu_array["Privilegies"]["location"] = "index.php?module=".$module."&action=ProfilesPrivilegies&parenttab=Settings";
 	$menu_array["Privilegies"]["image_src"] = "themes/images/ico-profile.gif";
 	$menu_array["Privilegies"]["desc"] = getTranslatedString("LBL_PROFILES_DESC",$module);
