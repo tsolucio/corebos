@@ -458,7 +458,7 @@ function hideITSEventInfo(){
 }
 {/literal}
 </script>
-{include file='modules/Calendar4You/Buttons_List.tpl'}  	
+{include file='Buttons_List.tpl'}
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
     <tbody>
         <tr>

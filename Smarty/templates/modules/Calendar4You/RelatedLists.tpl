@@ -48,7 +48,7 @@ function gotoUpdateListPrice(id,pbid,proid){
 }
 {/literal}
 </script>
-	{include file='modules/Calendar4You/Buttons_List.tpl'}
+{include file='Buttons_List.tpl'}
 <!-- Contents -->
 <div id="editlistprice" style="position:absolute;width:300px;"></div>
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>

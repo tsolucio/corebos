@@ -164,7 +164,7 @@ function alphabetic(module,url,dataid) {ldelim}
 	);
 {rdelim}
 </script>
-		{include file='modules/Calendar4You/Buttons_List.tpl'}
+		{include file='Buttons_List.tpl'}
                                 <div id="searchingUI" style="display:none;">
                                         <table border=0 cellspacing=0 cellpadding=0 width=100%>
                                         <tr>
