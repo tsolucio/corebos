@@ -579,11 +579,16 @@ function fnAddEvent(obj,CurrObj,start_date,end_date,start_hr,start_min,start_fmt
 function fnRemoveEvent(){
 	var tagName = document.getElementById('addEventDropDown').style.display = 'none';
 }
+function fnRemoveButton(){
+	var tagName = document.getElementById('addButtonDropDown').style.display = 'none';
+}
 
 function fnShowEvent(){
 	var tagName = document.getElementById('addEventDropDown').style.display= 'block';
 }
-
+function fnShowButton(){
+	var tagName = document.getElementById('addButtonDropDown').style.display= 'block';
+}
 function getMiniCal(url){
 	if(url == undefined)
 		url = 'module=Calendar&action=ActivityAjax&type=minical&ajax=true';

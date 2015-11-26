@@ -181,7 +181,10 @@ function alphabetic(module,url,dataid) {ldelim}
         </td>
 </tr>
 </table>
-
+<!-- Dropdown for Add Event Button -->
+<div id='addButtonDropDown' style='width:160px' onmouseover='fnShowButton()' onmouseout='fnRemoveButton()'>
+<table width="100%" cellpadding="0" cellspacing="0" border="0">{$ADD_BUTTONEVENTLIST}</table>
+</div>
 {*<!-- Contents -->*}
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
      <tr>

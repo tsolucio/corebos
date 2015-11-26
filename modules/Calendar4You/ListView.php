@@ -37,6 +37,36 @@ $focus = new Activity();
 $focus->initSortbyField('Calendar');
 // END
 $smarty = new vtigerCRM_Smarty;
+$smarty->assign('ADD_ONMOUSEOVER', "onMouseOver=\"fnvshobj(this,'addButtonDropDown');\"");
+$abelist = '';
+if($current_user->column_fields['is_admin']=='on') {
+	$Res = $adb->pquery("select * from vtiger_activitytype",array());
+} else {
+	$role_id=$current_user->roleid;
+	$subrole = getRoleSubordinates($role_id);
+	if(count($subrole)> 0)
+	{
+		$roleids = $subrole;
+		array_push($roleids, $role_id);
+	}
+	else
+	{
+		$roleids = $role_id;
+	}
+	if (count($roleids) > 1) {
+		$Res=$adb->pquery("select distinct activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where roleid in (". generateQuestionMarks($roleids) .") and picklistid in (select picklistid from vtiger_picklist) order by sortid asc",array($roleids));
+	} else {
+		$Res=$adb->pquery("select distinct activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where roleid = ? and picklistid in (select picklistid from vtiger_picklist) order by sortid asc",array($role_id));
+	}
+}
+for($i=0; $i<$adb->num_rows($Res);$i++) {
+	$eventlist = $adb->query_result($Res,$i,'activitytype');
+	$eventlist = html_entity_decode($eventlist,ENT_QUOTES,$default_charset);
+	$actname = getTranslatedString($eventlist,'Calendar');
+	$abelist.='<tr><td><a href="index.php?module=Calendar4You&action=EventEditView&return_module=Calendar&return_action=index&activity_mode=Events&activitytype='.$eventlist.'" class="drop_down">'.$actname.'</a></td></tr>';
+}
+$abelist.='<tr><td><a href="index.php?module=Calendar4You&action=EventEditView&return_module=Calendar&return_action=index&activity_mode=Task" class="drop_down">'.$mod_strings['LBL_ADDTODO'].'</a></td></tr>';
+$smarty->assign('ADD_BUTTONEVENTLIST', $abelist);
 $other_text = Array();
 
 $c_mod_strings = return_specified_module_language($current_language, "Calendar");

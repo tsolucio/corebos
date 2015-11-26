@@ -85,7 +85,7 @@ if($Calendar4You->CheckPermissions("EDIT")) {
 		$eventlists_array .= '"'.html_entity_decode(html_entity_decode($actname,ENT_QUOTES,$default_charset),ENT_QUOTES, $default_charset).'",';
 	}
 
-	$add_javascript = "onMouseOver='fnAddITSEvent(this,\"addEventDropDown\",\"".$temp_date."\",\"".$temp_date."\",\"".$time_arr['starthour']."\",\"".$time_arr['startmin']."\",\"".$time_arr['startfmt']."\",\"".$time_arr['endhour']."\",\"".$time_arr['endmin']."\",\"".$time_arr['endfmt']."\",\"".$viewBox."\",\"".$subtab."\",\"".$eventlist."\");'";
+	$add_javascript = "onMouseOver='fnAddITSEvent(this,\"addButtonDropDown\",\"".$temp_date."\",\"".$temp_date."\",\"".$time_arr['starthour']."\",\"".$time_arr['startmin']."\",\"".$time_arr['startfmt']."\",\"".$time_arr['endhour']."\",\"".$time_arr['endmin']."\",\"".$time_arr['endfmt']."\",\"".$viewBox."\",\"".$subtab."\",\"".$eventlist."\");'";
 	$smarty->assign('ADD_ONMOUSEOVER', $add_javascript);
 
 	$smarty->assign('EVENTLIST', trim($eventlists_array,","));

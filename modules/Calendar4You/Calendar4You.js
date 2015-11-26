@@ -24,9 +24,14 @@ function fnAddITSEvent(obj,CurrObj,start_date,end_date,start_hr,start_min,start_
 function fnRemoveITSEvent(){
 	var tagName = document.getElementById('addEventDropDown').style.display = 'none';
 }
-
+function fnRemoveITSButton(){
+	var tagName = document.getElementById('addButtonDropDown').style.display = 'none';
+}
 function fnShowITSEvent(){
 	var tagName = document.getElementById('addEventDropDown').style.display= 'block';
+}
+function fnShowITSButton(){
+	var tagName = document.getElementById('addButtonDropDown').style.display= 'block';
 }
 
 function gITSshow(argg1,type,startdate,enddate,starthr,startmin,startfmt,endhr,endmin,endfmt,viewOption,subtab,skipconvertendtime){

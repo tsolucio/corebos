@@ -779,6 +779,26 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 ?>
 </table>
 </div>
+<!-- Dropdown for Add Event Button -->
+<div id='addButtonDropDown' style='width:160px' onmouseover='fnShowITSButton()' onmouseout='fnRemoveITSButton()'>
+<table width="100%" cellpadding="0" cellspacing="0" border="0">
+<?php
+	$hour_startat = timeString(array('hour' => date('H:i', (time() + (5 * 60))), 'minute' => 0), '24');
+	$hour_endat = timeString(array('hour'=>date('H:i',(time() + (60 * 60))),'minute'=>0),'24');
+	$time_arr = getaddITSEventPopupTime($hour_startat,$hour_endat,$Calendar_Settings["hour_format"]);
+	$tdate = new DateTimeField(null);
+	$temp_date = $tdate->getDisplayDate();
+	for($i=0; $i<$adb->num_rows($Res);$i++)
+	{
+		$eventlist = $adb->query_result($Res,$i,'activitytype');
+		$eventlist = html_entity_decode($eventlist,ENT_QUOTES,$default_charset);
+		$actname = getTranslatedString($eventlist,'Calendar');
+		echo '<tr><td><a href="javascript:gITSshow(\'addITSEvent\',\''.$eventlist."','".$temp_date."','".$temp_date."','".$time_arr["starthour"]."','".$time_arr["startmin"]."','".$time_arr["startfmt"]."','".$time_arr["endhour"]."','".$time_arr["endmin"]."','".$time_arr["endfmt"].'\',\'hourview\',\'\');fnRemoveITSEvent();" class="drop_down">'.$actname.'</a></td></tr>';
+	}
+	echo '<tr><td><a href="javascript:gITSshow(\'createTodo\',\'todo\',\''.$temp_date."','".$temp_date."','".$time_arr["starthour"]."','".$time_arr["startmin"]."','".$time_arr["startfmt"]."','".$time_arr["endhour"]."','".$time_arr["endmin"]."','".$time_arr["endfmt"].'\',\'hourview\',\'\');fnRemoveITSEvent();" class="drop_down">'.$c_mod_strings['LBL_ADDTODO'].'</a></td></tr>';
+?>
+</table>
+</div>
 <div class="calAddITSEvent layerPopup" style="display:none;width:700px;left:200px;background-color:red;z-index:10000" id="createTodo" align=center>
 <form id="createTodoID" name="createTodo" method="POST" action="index.php">
 <input type="hidden" name="return_action" value="index">

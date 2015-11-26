@@ -1449,7 +1449,7 @@ a.calMnu:Hover{
 	background:#FFFFFF none repeat scroll 0%;
 }
 
-#addEventDropDown{
+#addEventDropDown, #addButtonDropDown{
 	position:absolute;
 	display:none;
 	width:150px;
