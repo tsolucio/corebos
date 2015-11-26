@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 -->*}
 <link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
@@ -25,29 +24,23 @@
 	<tr>
 		<td>
 			{include file='modules/Calendar4You/Buttons_List.tpl'}
-			<!-- Contents -->
 			<table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
 				<tr>
 					<td valign=top><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 					<td class="showPanelBg" valign=top width=100%>
-						<!-- PUBLIC CONTENTS STARTS-->
 						<div class="small" style="padding:10px" >
-						<!-- Account details tabs -->
 						<table border=0 cellspacing=0 cellpadding=0 width=100% align=center>
 							<tr>
 								<td valign=top align=left >
-
-                                    {include file='modules/Calendar4You/EventEditViewContent.tpl'}
-											
-									<!-- PUBLIC CONTENTS STOPS-->
+								{include file='modules/Calendar4You/EventEditViewContent.tpl'}
 								</td>
 							</tr>
 						</table>
-                        </div>
-                    </td>
-	                <td align=right valign=top><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
-                </tr>
-            </table>
+						</div>
+					</td>
+					<td align=right valign=top><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
+				</tr>
+			</table>
 </td></tr></table>
 {if $MODULE eq 'Leads' or $MODULE eq 'Contacts' or $MODULE eq 'Accounts' or $MODULE eq 'Campaigns' or $MODULE eq 'Vendors'}
 	<form name="SendMail"><div id="sendmail_cont" style="z-index:100001;position:absolute;"></div></form>

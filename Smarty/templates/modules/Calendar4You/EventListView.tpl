@@ -157,7 +157,7 @@ function alphabetic(module,url,dataid) {ldelim}
 				result = response.responseText.split('&#&#&#');
 				$("ListViewContents").innerHTML= result[2];
 				if(result[1] != '')
-			                alert(result[1]);
+				alert(result[1]);
 				$('basicsearchcolumns').innerHTML = '';
 			{rdelim}
 		{rdelim}

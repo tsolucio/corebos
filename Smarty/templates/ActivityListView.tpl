@@ -192,7 +192,6 @@ function alphabetic(module,url,dataid)
                                                 </td>
                                         </tr>
                                         </table>
-
                                 </div>
                         </td>
                 </tr>

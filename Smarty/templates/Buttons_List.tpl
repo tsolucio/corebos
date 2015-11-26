@@ -21,7 +21,6 @@
 	{assign var="MODULELABEL" value=$MODULE|@getTranslatedString:$MODULE}
 	<td style="padding-left:10px;padding-right:50px" class="moduleName" nowrap><a class="hdrLink" href="index.php?action={$action}&module={$MODULE}&parenttab={$CATEGORY}">{$MODULELABEL}</a></td>
 	<td width=100% nowrap>
-	
 		<table border="0" cellspacing="0" cellpadding="0" >
 		<tr>
 		<td class="sep1" style="width:1px;"></td>

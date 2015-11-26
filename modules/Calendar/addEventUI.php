@@ -755,7 +755,7 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 			array_push($roleids, $role_id);
 		}
 		else
-		{	
+		{
 			$roleids = $role_id;
 		}
 

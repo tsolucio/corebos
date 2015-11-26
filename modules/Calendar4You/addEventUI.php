@@ -184,7 +184,7 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 	<input type="hidden" name="followup_due_date" id="followup_due_date">
 	<input type="hidden" name="followup_time_start" id="followup_time_start">
 	<input type="hidden" name="followup_time_end" id="followup_time_end">
-	<input type="hidden" name="duration_hours" value="0">                                                                      
+	<input type="hidden" name="duration_hours" value="0">
     <input type="hidden" name="duration_minutes" value="0">
 	<input type=hidden name="inviteesid" id="inviteesid" value="">
 	<input type="hidden" name="parenttab" value="<?php echo $category ?>">
@@ -745,7 +745,7 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 			array_push($roleids, $role_id);
 		}
 		else
-		{	
+		{
 			$roleids = $role_id;
 		}
 

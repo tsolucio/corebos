@@ -22,12 +22,8 @@ require_once('modules/Calendar/CalendarCommon.php');
 require_once("modules/Calendar4You/Calendar4You.php");
 require_once("modules/Calendar4You/CalendarUtils.php");
 
-global $app_strings;
-global $list_max_entries_per_page;
-
+global $app_strings, $list_max_entries_per_page, $currentModule, $image_path, $theme, $adb, $current_user;
 $log = LoggerManager::getLogger('task_list');
-
-global $currentModule,$image_path,$theme,$adb,$current_language,$current_user;
 
 if (isset($_REQUEST['current_user_only'])) $current_user_only = vtlib_purify($_REQUEST['current_user_only']);
 
@@ -95,21 +91,20 @@ $smarty->assign("CV_DELETE_PERMIT",$delete_permit);
 if($viewid == 0 ) {
 	echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
 	echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
-
 		<table border='0' cellpadding='5' cellspacing='0' width='98%'>
 		<tbody><tr>
 		<td rowspan='2' width='11%'><img src='".vtiger_imageurl('close.gif', $theme)."'></td>
 		<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'>
-			<span class='genHeaderSmall'>".$app_strings["LBL_PERMISSION"]."</span></td>
+			<span class='genHeaderSmall'>".$app_strings['LBL_PERMISSION']."</span></td>
 		</tr>
 		<tr>
 		<td class='small' align='right' nowrap='nowrap'>
-		<a href='javascript:window.history.back();'>".$app_strings["LBL_GO_BACK"]."</a><br>
+		<a href='javascript:window.history.back();'>".$app_strings['LBL_GO_BACK']."</a><br>
 		</td>
 		</tr>
 		</tbody></table>
-		</div>";
-	echo "</td></tr></table>";
+		</div>
+		</td></tr></table>";
 	exit;
 }
 
@@ -237,7 +232,6 @@ $smarty->assign('recordListRange',$recordListRangeMsg);
 if($viewid !='')
 $url_string .="&viewname=".$viewid;
 
-//Cambiado code to add close button in custom vtiger_field
 if (!empty($viewid)){
 	if (!isset($oCustomView->list_fields['Close'])) $oCustomView->list_fields['Close']=array('vtiger_activity' => 'eventstatus');
 	if (!isset($oCustomView->list_fields_name['Close'])) $oCustomView->list_fields_name['Close']='eventstatus';
