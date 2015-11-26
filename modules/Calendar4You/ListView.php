@@ -123,13 +123,13 @@ $url_string = ''; // assigning http url string
 
 if(isset($_REQUEST['query']) && $_REQUEST['query'] == 'true') {
 
-	list($where, $ustring) = split("#@@#",getWhereCondition('Calendar'));
+	list($where, $ustring) = explode("#@@#",getWhereCondition('Calendar'));
 	// we have a query
 	$url_string .="&query=true".$ustring;
 	$log->info("Here is the where clause for the list view: $where");
 	$smarty->assign("SEARCH_URL",$url_string);
 }
-                
+
 if($viewnamedesc['viewname'] == 'All') {
 	$smarty->assign("ALL", 'All');
 }
