@@ -1,18 +1,12 @@
 <?php
 /*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+** The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-
 require_once('modules/Calendar/Activity.php');
 require_once('include/logging.php');
 require_once("config.php");
@@ -31,9 +25,8 @@ $Calendar4You->GetDefPermission($current_user->id);
 $edit_permissions = $Calendar4You->CheckPermissions("EDIT",$_REQUEST['record']);
 
 if(!$edit_permissions) {
-  	NOPermissionDiv();
+	NOPermissionDiv();
 }
-
 
 $focus = new Activity();
 $activity_mode = vtlib_purify($_REQUEST['activity_mode']);
@@ -45,7 +38,7 @@ $focus->column_fields["activitytype"] = 'Task';
 if(isset($_REQUEST['record'])) {
 	$focus->id = $_REQUEST['record'];
 	$local_log->debug("id is ".$id);
-} 
+}
 
 if(isset($_REQUEST['mode'])) {
 	$focus->mode = $_REQUEST['mode'];
@@ -62,16 +55,34 @@ if((isset($_REQUEST['change_status']) && $_REQUEST['change_status']) && ($_REQUE
 		$status = $_REQUEST['eventstatus'];
 		$activity_type = "Events";
 	}
-	
-    ChangeStatus($status,$return_id,$activity_type);
-    
+	if(isPermitted("Calendar","EditView",$_REQUEST['record']) == 'yes')
+	{
+		ChangeStatus($status,$return_id,$activity_type);
+	}
+	else
+	{
+		echo "<link rel='stylesheet' type='text/css' href='themes/$theme/style.css'>";
+		echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
+		echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
+			<table border='0' cellpadding='5' cellspacing='0' width='98%'>
+			<tbody><tr>
+			<td rowspan='2' width='11%'><img src='".vtiger_imageurl('denied.gif', $theme)."'></td>
+			<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>".$app_strings['LBL_PERMISSION']."</span></td>
+			</tr>
+			<tr>
+			<td class='small' align='right' nowrap='nowrap'>
+			<a href='javascript:window.history.back();'>".$app_strings['LBL_GO_BACK']."</a><br></td>
+			</tr>
+			</tbody></table>
+		</div>
+		</td></tr></table>";die;
+	}
 	$invitee_qry = "select * from vtiger_invitees where activityid=?";
 	$invitee_res = $adb->pquery($invitee_qry, array($return_id));
 	$count = $adb->num_rows($invitee_res);
 	if($count != 0) {
 		for($j = 0; $j < $count; $j++) {
 			$invitees_ids[]= $adb->query_result($invitee_res,$j,"inviteeid");
-
 		}
 		$invitees_ids_string = implode(';',$invitees_ids);
 		sendInvitation($invitees_ids_string,$activity_type,$mail_data['subject'],$mail_data);
@@ -138,10 +149,8 @@ if((isset($_REQUEST['change_status']) && $_REQUEST['change_status']) && ($_REQUE
 	if(isset($_REQUEST['followup']) && $_REQUEST['followup'] == 'on' && $activity_mode == 'Events' && isset($_REQUEST['followup_time_start']) &&  $_REQUEST['followup_time_start'] != '') {
 		$heldevent_id = $focus->id;
 		$focus->column_fields['subject'] = '['.getTranslatedString('LBL_FOLLOWUP','Calendar').'] '.$focus->column_fields['subject'];
-		$startDate = new DateTimeField($_REQUEST['followup_date'].' '.
-				$_REQUEST['followup_time_start']);
-		$endDate = new DateTimeField($_REQUEST['followup_due_date'].' '.
-				$_REQUEST['followup_time_end']);
+		$startDate = new DateTimeField($_REQUEST['followup_date'].' '.$_REQUEST['followup_time_start']);
+		$endDate = new DateTimeField($_REQUEST['followup_due_date'].' '.$_REQUEST['followup_time_end']);
 		$focus->column_fields['date_start'] = $startDate->getDBInsertDateValue();
 		$focus->column_fields['due_date'] = $endDate->getDBInsertDateValue();
 		$focus->column_fields['time_start'] = $startDate->getDBInsertTimeValue();
@@ -288,7 +297,7 @@ if(isset($_REQUEST['subtab']) && $_REQUEST['subtab']!='')
 	$subtab=vtlib_purify($_REQUEST['subtab']);
 
 if($_REQUEST['recurringcheck']) {
-    include_once('modules/Calendar/RepeatEvents.php');
+	include_once('modules/Calendar/RepeatEvents.php');
 	Calendar_RepeatEvents::repeatFromRequest($focus);
 }
 
@@ -306,11 +315,8 @@ if(!empty($_REQUEST['start'])) {
 if(!empty($_REQUEST['pagenumber'])){
 	$page = "&start=".vtlib_purify($_REQUEST['pagenumber']);
 }
-
 if($_REQUEST['maintab'] == 'Calendar' or (!empty($return_id) and empty($returnid)))
 	header("Location: index.php?action=".$return_action."&module=".$return_module."&view=".$view."&hour=".$hour."&day=".$day."&month=".$month."&year=".$year."&record=".$return_id."&viewOption=".$viewOption."&subtab=".$subtab."&parenttab=$parenttab");
 else
-    header("Location: index.php?action=$return_action&module=$return_module&view=$view&hour=$hour&day=$day&month=$month&year=$year&record=$returnid$activemode&viewname=$return_viewname$page&parenttab=$parenttab$search");
-
-
+	header("Location: index.php?action=$return_action&module=$return_module&view=$view&hour=$hour&day=$day&month=$month&year=$year&record=$returnid$activemode&viewname=$return_viewname$page&parenttab=$parenttab$search");
 ?> 
