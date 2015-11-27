@@ -545,7 +545,7 @@ function getAllModulesWithDateFields() {
 		$sqlmods = 'SELECT distinct cbfld.tabid,vtiger_tab.name
 			FROM vtiger_field as cbfld
 			INNER JOIN vtiger_tab on cbfld.tabid = vtiger_tab.tabid
-			WHERE vtiger_tab.presence=0 and vtiger_tab.isentitytype=1 and uitype=5';
+			WHERE vtiger_tab.presence=0 and vtiger_tab.isentitytype=1  and (uitype=5 OR uitype=6 OR uitype=23)';
 		$params = array();
 	} else {
 		$sqlmods = '';
@@ -559,7 +559,7 @@ function getAllModulesWithDateFields() {
 					$sqlmods = 'SELECT distinct cbfld.tabid,vtiger_tab.name
 						FROM vtiger_field as cbfld
 						INNER JOIN vtiger_tab on cbfld.tabid = vtiger_tab.tabid
-						WHERE vtiger_tab.presence=0 and vtiger_tab.isentitytype=1 and uitype=5';
+						WHERE vtiger_tab.presence=0 and vtiger_tab.isentitytype=1 and (uitype=5 OR uitype=6 OR uitype=23)';
 					break;
 				}
 			}
@@ -570,7 +570,7 @@ function getAllModulesWithDateFields() {
 				FROM vtiger_field as cbfld
 				INNER JOIN vtiger_tab on cbfld.tabid = vtiger_tab.tabid
 				INNER JOIN vtiger_profile2tab on vtiger_profile2tab.tabid = vtiger_tab.tabid
-				WHERE vtiger_tab.presence=0 and vtiger_tab.isentitytype=1 and uitype=5 and vtiger_profile2tab.profileid in ('.generateQuestionMarks($profileList).') and vtiger_profile2tab.permissions=0';
+				WHERE vtiger_tab.presence=0 and vtiger_tab.isentitytype=1 and (uitype=5 OR uitype=6 OR uitype=23) and vtiger_profile2tab.profileid in ('.generateQuestionMarks($profileList).') and vtiger_profile2tab.permissions=0';
 			$params = array($profileList);
 		}
 	}
@@ -589,7 +589,7 @@ function getAllModulesWithDateTimeFields() {
 		$sqlmods = 'SELECT distinct cbfld.tabid,vtiger_tab.name
 			FROM vtiger_field as cbfld
 			INNER JOIN vtiger_tab on cbfld.tabid = vtiger_tab.tabid
-			WHERE vtiger_tab.presence=0 and vtiger_tab.isentitytype=1 and uitype=5';
+			WHERE vtiger_tab.presence=0 and vtiger_tab.isentitytype=1 and (uitype=5 OR uitype=6 OR uitype=23)';
 		$params = array();
 	} else {
 		$sqlmods = '';
@@ -604,7 +604,7 @@ function getAllModulesWithDateTimeFields() {
 						FROM vtiger_field as cbfld
 						INNER JOIN vtiger_tab on cbfld.tabid = vtiger_tab.tabid
 						WHERE vtiger_tab.presence=0 and vtiger_tab.isentitytype=1 and uitype=14 and
-							exists (select 1 from vtiger_field where vtiger_field.tabid = cbfld.tabid and uitype=5)';
+							exists (select 1 from vtiger_field where vtiger_field.tabid = cbfld.tabid and (uitype=5 OR uitype=6 OR uitype=23))';
 					break;
 				}
 			}
@@ -617,7 +617,7 @@ function getAllModulesWithDateTimeFields() {
 				INNER JOIN vtiger_profile2tab on vtiger_profile2tab.tabid = vtiger_tab.tabid
 				WHERE vtiger_tab.presence=0 and vtiger_tab.isentitytype=1 and uitype=14
 					and vtiger_profile2tab.profileid in ('.generateQuestionMarks($profileList).') and vtiger_profile2tab.permissions=0 and
-					exists (select 1 from vtiger_field where vtiger_field.tabid = cbfld.tabid and uitype=5)';
+					exists (select 1 from vtiger_field where vtiger_field.tabid = cbfld.tabid and (uitype=5 OR uitype=6 OR uitype=23))';
 			$params = array($profileList);
 		}
 	}
@@ -634,7 +634,7 @@ function getDateFieldsOfModule($tabid) {
 	global $adb,$log;
 	$rsmwd = $adb->query("SELECT distinct fieldname
 		FROM vtiger_field as cbfld
-		WHERE tabid = $tabid and uitype=5");
+		WHERE tabid = $tabid and (uitype=5 OR uitype=6 OR uitype=23)");
 	$datefields = array();
 	while ($fld = $adb->fetch_array($rsmwd)) {
 		$datefields[] = $fld['fieldname'];
@@ -658,7 +658,7 @@ function getDateAndTimeFieldsOfModule($tabid) {
 	global $adb,$log;
 	$rsmwd = $adb->query("SELECT distinct fieldname
 		FROM vtiger_field as cbfld
-		WHERE tabid = $tabid and (uitype=14 or uitype=5)");
+		WHERE tabid = $tabid and (uitype=14 or uitype=5 or uitype=6 or uitype=23)");
 	$datefields = array();
 	while ($fld = $adb->fetch_array($rsmwd)) {
 		$datefields[] = $fld['fieldname'];
