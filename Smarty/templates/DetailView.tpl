@@ -327,9 +327,9 @@ function sendfile_email()
 																							{if $CUSTOMBLOCKS.$header.custom}
 																								{include file=$CUSTOMBLOCKS.$header.tpl}
 																							{else}
-																								{foreach item=detail from=$detail}
+																								{foreach item=detailInfo from=$detail}
 																									<tr style="height:25px" class="detailview_row">
-																										{foreach key=label item=data from=$detail}
+																										{foreach key=label item=data from=$detailInfo}
 																											{assign var=keyid value=$data.ui}
 																											{assign var=keyval value=$data.value}
 																											{assign var=keytblname value=$data.tablename}
