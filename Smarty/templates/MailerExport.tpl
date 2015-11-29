@@ -11,10 +11,11 @@
 *} <script type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
 <!-- header - level 2 tabs -->
 {include file='Buttons_List1.tpl'}
-<form enctype="multipart/form-data" name="SelectExports" method="POST" action="modules/Accounts/MailerExport.php">
+<form enctype="multipart/form-data" name="SelectExports" method="POST">
 	<input type="hidden" name="module" value="{$MODULE}">
 	<input type="hidden" name="step" value="export">
-	<input type="hidden" name="action" value="MailerExport">
+	<input type="hidden" name="action" value="{$MODULE}Ajax">
+	<input type="hidden" name="file" value="MailerExport">
 	<input type="hidden" name="exportwhere" value="{$EXPORTWHERE}">
 	<input type="hidden" name="from" value="{$FROM}">
 	<input type="hidden" name="fieldlist" value="{$FIELDLIST}">
