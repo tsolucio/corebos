@@ -86,14 +86,16 @@ if ($num_rows1 > 0) {
 							$focus->column_fields['description'] = $event->getDescription();
 							$focus->column_fields['location'] = $event->getLocation();
 							$recurrence = $event->getRecurrence();
-							if ($recurrence == '') {
+							if (empty($recurrence)) {
 								//$When = $event->getWhen();
-								$start_time_lenght = strlen($event->getStart()->dateTime);
-								if ($start_time_lenght == 10)
+								$evdtst = (empty($event->getStart()->dateTime) ? $event->getStart()->date : $event->getStart()->dateTime);
+								$evdted = (empty($event->getEnd()->dateTime) ? $event->getEnd()->date : $event->getEnd()->dateTime);
+								$start_time_length = strlen($evdtst);
+								if ($start_time_length == 10)
 									$is_full_day_event = true;
 								else
 									$is_full_day_event = false;
-								$startdatetime = new DateTime($event->getStart()->dateTime);
+								$startdatetime = new DateTime($evdtst);
 								$startdatetime->setTimeZone($c_time_zone);
 								$new_time_start_time = $startdatetime->format('U');
 								$user_date_start = DateTimeField::convertToUserFormat($startdatetime->format('Y-m-d'));
@@ -101,7 +103,7 @@ if ($num_rows1 > 0) {
 									$user_time_start = $startdatetime->format('H:i');
 								else
 									$user_time_start = '00:00';
-								$enddatetime = new DateTime($event->getEnd()->dateTime);
+								$enddatetime = new DateTime($evdted);
 								$enddatetime->setTimeZone($c_time_zone);
 								$new_time_end_time = $enddatetime->format('U');
 								$user_date_end = DateTimeField::convertToUserFormat($enddatetime->format('Y-m-d'));
