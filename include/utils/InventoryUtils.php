@@ -586,15 +586,15 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 		if($_REQUEST["deleted".$i] == 1)
 			continue;
 
-		$prod_id = vtlib_purify($_REQUEST['hdnProductId'.$i]);
+		$prod_id = $_REQUEST['hdnProductId'.$i];
 		if(isset($_REQUEST['productDescription'.$i])) {
-			$description = vtlib_purify($_REQUEST['productDescription'.$i]);
+			$description = $_REQUEST['productDescription'.$i];
 		} else {
 			$description = '';
 		}
-		$qty = vtlib_purify($_REQUEST['qty'.$i]);
-		$listprice = vtlib_purify($_REQUEST['listPrice'.$i]);
-		$comment = vtlib_purify($_REQUEST['comment'.$i]);
+		$qty = $_REQUEST['qty'.$i];
+		$listprice = $_REQUEST['listPrice'.$i];
+		$comment = $_REQUEST['comment'.$i];
 
 		//we have to update the Product stock for PurchaseOrder if $update_prod_stock is true
 		if($module == 'PurchaseOrder' && $update_prod_stock == 'true')
