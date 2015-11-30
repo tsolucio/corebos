@@ -90,10 +90,7 @@ if ($num_rows1 > 0) {
 								$user_time_end = $enddatetime->format('H:i');
 							else
 								$user_time_end = '00:00';
-							if ($type==1)
-								$evtype='Call';
-							elseif ($type==2)
-								$evtype='Meeting';
+							$evtype = getActTypeForCalendar($type, false);
 							$focus->column_fields['activitytype']=$evtype;
 							$focus->column_fields['eventstatus']='Planned';
 							$focus->column_fields['taskpriority']='High';
