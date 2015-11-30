@@ -57,15 +57,22 @@ if ($num_rows1 > 0) {
 			$GoogleSync4You->connectToGoogle();
 			if ($GoogleSync4You->isLogged()) {
 				$events = $GoogleSync4You->getGoogleCalEvents($CALENDAR_ID,$synctoken);
-				while(true) { 
+				$checkevent = 'SELECT 1
+							FROM its4you_googlesync4you_events
+							INNER JOIN vtiger_crmentity on its4you_googlesync4you_events.crmid=vtiger_crmentity.crmid
+							WHERE deleted=0 and geventid=?';
+				while(true) {
 					$synctoken2=$events->getNextSyncToken();
 					foreach ($events->getItems() as $event) {
+						$gers = $adb->pquery($checkevent,array($event->getId()));
+						if ($adb->num_rows($gers)>0) continue; // we already have this one > it will be updated
 						$tab_type = 'Events';
 						$focus = CRMEntity::getInstance($currentModule);
 						$focus->column_fields['subject'] = $event->getSummary();
 						$focus->column_fields['description'] = $event->getDescription();
 						$focus->column_fields['location'] = $event->getLocation();
 						$focus->column_fields['assigned_user_id'] = $userid;
+						$focus->mode='';
 						$recurrence = $event->getRecurrence();
 						if (empty($recurrence)) {
 							//$When = $event->getWhen();
