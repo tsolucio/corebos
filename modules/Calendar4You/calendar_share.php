@@ -229,6 +229,7 @@ $Calendar_Settings = $Calendar4You->getSettings();
 			?>
 			</div><br>
 			<?php
+			if(is_admin($current_user)) {
 			if ($google_login != '') {
 				echo "<div id='google_account_info_div'>";
 				echo getTranslatedString("LBL_GOOGLECLIENTSECRET","Calendar4You").":";
@@ -282,6 +283,7 @@ $Calendar_Settings = $Calendar4You->getSettings();
 			echo'</table>';
 			echo "</div>";
 			echo '<input type="hidden" name="update_google_account" id="update_google_account" value="'.$update_google_account.'">';
+			} // is admin
 			?>
 		</td>
 		</tr>
