@@ -1038,6 +1038,7 @@ $mod_strings = Array(
 'LBL_AFTER_SCAN'=>'After scan',
 'LBL_MESSAGES_FROM_LASTSCAN'=>'Messages from lastscan',
 'LBL_MARK_MESSAGE_AS'=>'Mark message as',
+'LBL_ASSIGN' => 'Assign to',
 
 //Added for the workflow module
 'LBL_LIST_WORKFLOWS'=>'Workflows',

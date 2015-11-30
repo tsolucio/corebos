@@ -43,6 +43,8 @@ class Vtiger_MailRecord {
 	var $_uniqueid = false;
 	// Flags Array
 	var $_flags = array();
+        //Force Assign to user/group
+        var $_assign_to = false;
 
 	// Flag to avoid re-parsing the email body.
 	var $_bodyparsed = false;

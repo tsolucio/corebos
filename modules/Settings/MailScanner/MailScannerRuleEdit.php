@@ -29,6 +29,18 @@ $scannerrule = new Vtiger_MailScannerRule($scannerruleid);
 $smarty->assign("SCANNERINFO", $scannerinfo->getAsMap());
 $smarty->assign("SCANNERRULE", $scannerrule);
 
+
+//Set Assigned To
+$result = get_group_options();
+if($result) $nameArray = $adb->fetch_array($result);
+
+$assigned_user_id = empty($value) ? $current_user->id : $value;
+$users_combo = get_select_options_array(get_user_array(FALSE, "Active", $assigned_user_id), $assigned_user_id);
+$groups_combo = get_select_options_array(get_group_array(FALSE, "Active", $assigned_user_id), $assigned_user_id);
+
+$smarty->assign('fldvalue',$users_combo);
+$smarty->assign('secondvalue',$groups_combo);
+
 $smarty->display('MailScanner/MailScannerRuleEdit.tpl');
 
 ?>

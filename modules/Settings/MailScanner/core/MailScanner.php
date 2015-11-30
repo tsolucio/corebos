@@ -113,6 +113,7 @@ class Vtiger_MailScanner {
 				// Apply rules configured for the mailbox
 				$crmid = false;
 				foreach($rules as $mailscannerrule) {
+                                        $mailrecord->_assign_to = $mailscannerrule->assign_to;
 					$crmid = $this->applyRule($mailscannerrule, $mailrecord, $mailbox, $messageid);
 					if($crmid) {
 						break; // Rule was successfully applied and action taken

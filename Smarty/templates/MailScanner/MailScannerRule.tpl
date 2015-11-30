@@ -121,6 +121,19 @@
 							</td>
 						</tr>
 						<tr>
+                            {if $SCANNERRULE->useaction->actiontext eq 'CREATE,HelpDesk,FROM'}
+						<tr>
+                            <td nowrap class="small cellLabel" width="20%"><strong>{$MOD.LBL_ASSIGN}</strong></td>
+                            <td nowrap class="small cellText" width="80%" colspan=2>
+								{if $SCANNERRULE->assign_to_type eq 'U'}
+                                                                    <a href="index.php?module=Users&action=DetailView&record={$SCANNERRULE->assign_to}">{$SCANNERRULE->assign_to_name}</a>
+								{else}
+                                                                    <a href="index.php?module=Settings&action=GroupDetailView&groupId={$SCANNERRULE->assign_to}">{$SCANNERRULE->assign_to_name}</a>
+                                                                {/if}
+							</td>
+						</tr>
+                            {/if}
+						<tr>
                             <td nowrap class="small cellLabel" width="20%"><strong>{$MOD.LBL_ACTION}</strong></td>
                             <td nowrap class="small cellText" width="80%" colspan=2>
 								{if $SCANNERRULE->useaction->actiontext eq 'CREATE,HelpDesk,FROM'} {$MOD.LBL_CREATE} {$MOD.LBL_TICKET}
