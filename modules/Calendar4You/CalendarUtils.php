@@ -127,9 +127,9 @@ function get_next_its_cal(& $cal) {
 
 function getActTypeForCalendar($activitytypeid, $translate = true) {
 	global $adb,$default_charset;
-	$q = "select * from vtiger_activitytype where activitytypeid = ?";
+	$q = 'select * from vtiger_activitytype where activitytypeid = ?';
 	$Res = $adb->pquery($q,array($activitytypeid));
-	$value = $adb->query_result($Res,0,"activitytype");
+	$value = $adb->query_result($Res,0,'activitytype');
 	$value = html_entity_decode($value,ENT_QUOTES,$default_charset);
 	if ($translate) 
 		return getTranslatedString($value,'Calendar');
