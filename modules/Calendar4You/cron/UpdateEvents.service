@@ -20,11 +20,12 @@ $controldate = date('Y-m-d',$controltime);
 
 $c_time_zone = new DateTimeZone($default_timezone);
 
-$where = "vtiger_activity.due_date > ? AND (vtiger_activity.status != 'Held' OR vtiger_activity.status IS NULL) AND (vtiger_activity.eventstatus != 'Held' OR vtiger_activity.eventstatus IS NULL)";
+$where = "deleted = 0 AND vtiger_activity.due_date > ? AND (vtiger_activity.status != 'Held' OR vtiger_activity.status IS NULL) AND (vtiger_activity.eventstatus != 'Held' OR vtiger_activity.eventstatus IS NULL)";
 
 $sql1 = "SELECT distinct userid
 	FROM its4you_googlesync4you_events
 	INNER JOIN vtiger_activity ON vtiger_activity.activityid = its4you_googlesync4you_events.crmid
+	INNER JOIN vtiger_crmentity on vtiger_crmentity.crmid = vtiger_activity.activityid
 	WHERE $where";
 $result1 = $adb->pquery($sql1,array($controldate));
 $num_rows1 = $adb->num_rows($result1);
@@ -57,6 +58,7 @@ if ($num_rows1 > 0) {
 					FROM its4you_googlesync4you_events
 					INNER JOIN vtiger_activity ON vtiger_activity.activityid = its4you_googlesync4you_events.crmid
 					INNER JOIN its4you_googlesync4you_calendar cal on cal.userid=its4you_googlesync4you_events.userid
+					INNER JOIN vtiger_crmentity on vtiger_crmentity.crmid = vtiger_activity.activityid
 					WHERE $where AND its4you_googlesync4you_events.userid = ? and event=eventtype";
 				$result2 = $adb->pquery($sql2,array($controldate,$userid));
 				while($row2 = $adb->fetchByAssoc($result2)) {
