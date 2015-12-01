@@ -84,6 +84,7 @@ if ($num_rows1 > 0) {
 							$focus->id = $record;
 							$focus->mode = 'edit';
 							$focus->column_fields['subject'] = $event->getSummary();
+							if (empty($focus->column_fields['subject'])) continue; // we don't update events with no subject
 							$focus->column_fields['description'] = $event->getDescription();
 							$focus->column_fields['location'] = $event->getLocation();
 							$recurrence = $event->getRecurrence();
