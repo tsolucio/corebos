@@ -22,11 +22,10 @@ $c_time_zone = new DateTimeZone($default_timezone);
 
 $where = "vtiger_activity.due_date > ? AND (vtiger_activity.status != 'Held' OR vtiger_activity.status IS NULL) AND (vtiger_activity.eventstatus != 'Held' OR vtiger_activity.eventstatus IS NULL)";
 
-$sql1 = "SELECT userid
+$sql1 = "SELECT distinct userid
 	FROM its4you_googlesync4you_events
 	INNER JOIN vtiger_activity ON vtiger_activity.activityid = its4you_googlesync4you_events.crmid
-	WHERE $where
-	GROUP BY userid";
+	WHERE $where";
 $result1 = $adb->pquery($sql1,array($controldate));
 $num_rows1 = $adb->num_rows($result1);
 

@@ -24,8 +24,7 @@ $sql1 = 'SELECT a.userid ,synctoken,cal.calendar,cal.event
 	FROM its4you_googlesync4you_access a
 	INNER JOIN vtiger_users ON id = a.userid
 	INNER JOIN its4you_googlesync4you_calendar cal on cal.userid=a.userid
-	WHERE googleinsert=1 and deleted=0
-	GROUP BY a.userid';
+	WHERE googleinsert=1 and deleted=0';
 $result1 = $adb->pquery($sql1,array());
 $num_rows1 = $adb->num_rows($result1);
 
@@ -57,10 +56,7 @@ if ($num_rows1 > 0) {
 			$GoogleSync4You->connectToGoogle();
 			if ($GoogleSync4You->isLogged()) {
 				$events = $GoogleSync4You->getGoogleCalEvents($CALENDAR_ID,$synctoken);
-				$checkevent = 'SELECT 1
-							FROM its4you_googlesync4you_events
-							INNER JOIN vtiger_crmentity on its4you_googlesync4you_events.crmid=vtiger_crmentity.crmid
-							WHERE deleted=0 and geventid=?';
+				$checkevent = 'SELECT 1 FROM its4you_googlesync4you_events WHERE geventid=?';
 				while(true) {
 					$synctoken2=$events->getNextSyncToken();
 					foreach ($events->getItems() as $event) {
