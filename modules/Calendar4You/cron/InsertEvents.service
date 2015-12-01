@@ -17,6 +17,8 @@ $currentModule = 'Calendar';
 $controlmonths = GlobalVariable::getVariable('GoogleCalendarSync_BaseCreateMonths','6');
 $controltime = strtotime('-'.$controlmonths.' month');
 $controldate = date('Y-m-d',$controltime);
+$controlheldtime = strtotime('-15 day');
+$controlhelddate = date('Y-m-d',$controlheldtime);
 
 $c_time_zone = new DateTimeZone($default_timezone);
 
@@ -100,7 +102,12 @@ if ($num_rows1 > 0) {
 								$user_time_end = '00:00';
 							$evtype = getActTypeForCalendar($type, false);
 							$focus->column_fields['activitytype']=$evtype;
-							$focus->column_fields['eventstatus']='Planned';
+							if ($startdatetime->format('Y-m-d') < $controlhelddate) { // event in the past
+								$evst = 'Held';
+							} else {
+								$evst = 'Planned';
+							}
+							$focus->column_fields['eventstatus']=$evst;
 							$focus->column_fields['taskpriority']='High';
 							$focus->column_fields['date_start'] = $user_date_start;
 							$focus->column_fields['due_date'] = $user_date_end;
