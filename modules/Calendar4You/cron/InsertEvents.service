@@ -62,6 +62,7 @@ if ($num_rows1 > 0) {
 					foreach ($events->getItems() as $event) {
 						$gers = $adb->pquery($checkevent,array($event->getId()));
 						if ($adb->num_rows($gers)>0) continue; // we already have this one > it will be updated
+						if ($event->getStatus()=='cancelled') continue;
 						$tab_type = 'Events';
 						$focus = CRMEntity::getInstance($currentModule);
 						$focus->column_fields['subject'] = $event->getSummary();
