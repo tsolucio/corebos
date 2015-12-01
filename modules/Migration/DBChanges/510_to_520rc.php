@@ -185,6 +185,32 @@ $eventPath = 'modules/com_vtiger_workflow/VTEventHandler.inc';
 $handlerClass = 'VTWorkflowEventHandler';
 $modifyevent = $adb->pquery("insert into vtiger_eventhandlers(eventhandler_id, event_name, handler_path, handler_class,cond,is_active)
 		values (?,?,?,?,?,1)",array($handlerId,$modifyevent,$eventPath,$handlerClass,''));
+//Create TaskTypes Table
+ExecutePQuery("CREATE TABLE IF NOT EXISTS com_vtiger_workflow_tasktypes (
+				id int(11) NOT NULL,
+				tasktypename varchar(255) NOT NULL,
+				label varchar(255),
+				classname varchar(255),
+				classpath varchar(255),
+				templatepath varchar(255),
+				modules text(500),
+				sourcemodule varchar(255)
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8", array());
+
+require_once("modules/com_vtiger_workflow/include.inc");
+require_once("modules/com_vtiger_workflow/tasks/VTEntityMethodTask.inc");
+require_once("modules/com_vtiger_workflow/VTEntityMethodManager.inc");
+
+// add default workflow types
+$taskTypes = array();
+$defaultModules = array('include' => array(), 'exclude'=>array());
+
+$taskTypes[] = array("name"=>"VTEmailTask", "label"=>"Send Mail", "classname"=>"VTEmailTask", "classpath"=>"modules/com_vtiger_workflow/tasks/VTEmailTask.inc", "templatepath"=>"com_vtiger_workflow/taskforms/VTEmailTask.tpl", "modules"=>$defaultModules, "sourcemodule"=>'');
+
+
+foreach ($taskTypes as $taskType) {
+	VTTaskType::registerTaskType($taskType);
+}
 
 // Populate Default Workflows
 populateDefaultWorkflows($adb);
