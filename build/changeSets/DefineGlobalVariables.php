@@ -40,6 +40,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Show_Copy_Adress_Header',
 				'SalesOrderStatusOnInvoiceSave',
 				'QuoteStatusOnSalesOrderSave',
+				'GoogleCalendarSync_BaseUpdateMonths',
+				'GoogleCalendarSync_BaseCreateMonths',
 			);
 			
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');

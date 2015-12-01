@@ -11,11 +11,11 @@ include_once("modules/Calendar4You/GoogleSync4You.php");
 require_once("modules/Calendar4You/Calendar4You.php");
 require_once("modules/Calendar4You/CalendarUtils.php");
 
-global $adb, $current_user, $default_timezone;
+global $adb, $current_user, $default_timezone, $default_theme, $default_language;
 
 $currentModule = 'Calendar';
-
-$controltime = strtotime('-6 month');
+$controlmonths = GlobalVariable::getVariable('GoogleCalendarSync_BaseCreateMonths','6');
+$controltime = strtotime('-'.$controlmonths.' month');
 $controldate = date('Y-m-d',$controltime);
 
 $c_time_zone = new DateTimeZone($default_timezone);
@@ -81,6 +81,7 @@ if ($num_rows1 > 0) {
 								$is_full_day_event = false;
 							$startdatetime = new DateTime($evdtst);
 							$startdatetime->setTimeZone($c_time_zone);
+							if ($startdatetime->format('Y-m-d') < $controldate) continue;  // it is before controldate > we ignore it
 							$new_time_start_time = $startdatetime->format('U');
 							$user_date_start = DateTimeField::convertToUserFormat($startdatetime->format('Y-m-d'));
 							if (!$is_full_day_event)

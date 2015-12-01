@@ -11,11 +11,11 @@ include_once("modules/Calendar4You/GoogleSync4You.php");
 require_once("modules/Calendar4You/Calendar4You.php");
 require_once("modules/Calendar4You/CalendarUtils.php");
 
-global $adb, $current_user, $default_timezone;
+global $adb, $current_user, $default_timezone, $default_theme, $default_language;
 
 $currentModule = 'Calendar';
-
-$controltime = strtotime('-6 month');
+$controlmonths = GlobalVariable::getVariable('GoogleCalendarSync_BaseUpdateMonths','4');
+$controltime = strtotime('-'.$controlmonths.' month');
 $controldate = date('Y-m-d',$controltime);
 
 $c_time_zone = new DateTimeZone($default_timezone);
