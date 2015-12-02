@@ -129,12 +129,12 @@ class CRMEntity {
 		$log->debug("Entering into insertIntoAttachment($id,$module) method.");
 		$file_saved = false;
 		// get the list of uitype 69 fields so we can set their value
-		$sql = 'SELECT tablename,columnname,fieldname FROM vtiger_field
+		$sql = 'SELECT tablename,columnname
+		 FROM vtiger_field
 		 INNER JOIN vtiger_blocks ON vtiger_blocks.blockid = vtiger_field.block
-		 WHERE uitype=69 and vtiger_field.tabid = ? order by vtiger_blocks.sequence,vtiger_field.sequence';
+		 WHERE uitype=69 and vtiger_field.fieldname=? and vtiger_field.tabid = ?
+		 ORDER BY vtiger_blocks.sequence,vtiger_field.sequence';
 		$tabid = getTabid($module);
-		$result = $adb->pquery($sql, array($tabid));
-		$fnum = 0;
 		foreach($_FILES as $fileindex => $files) {
 			if($files['name'] != '' && $files['size'] > 0) {
 				if($_REQUEST[$fileindex.'_hidden'] != '') {
@@ -143,9 +143,10 @@ class CRMEntity {
 					$files['original_name'] = stripslashes($files['name']);
 				}
 				$files['original_name'] = str_replace('"','',$files['original_name']);
-				$tblname = $adb->query_result($result, $fnum, 'tablename');
-				$colname = $adb->query_result($result, $fnum, 'columnname');
-				$fldname = $adb->query_result($result, $fnum, 'fieldname');
+				$result = $adb->pquery($sql, array($fileindex,$tabid));
+				$tblname = $adb->query_result($result, 0, 'tablename');
+				$colname = $adb->query_result($result, 0, 'columnname');
+				$fldname = $fileindex;
 				//This is to added to store the existing attachment id so we can delete it when given a new image
 				$attachmentname = $this->DirectImageFieldValues[$colname];
 				$old_attachmentrs = $adb->pquery('select vtiger_crmentity.crmid from vtiger_seattachmentsrel
@@ -170,7 +171,6 @@ class CRMEntity {
 						$del_res2 = $adb->pquery('delete from vtiger_seattachmentsrel where attachmentsid=?', array($old_attachmentid));
 					}
 				}
-				$fnum++;
 			}
 		}
 		$log->debug("Exiting from insertIntoAttachment($id,$module) method.");
