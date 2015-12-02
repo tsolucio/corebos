@@ -124,7 +124,7 @@ class CRMEntity {
 		// END
 	}
 
-	function insertIntoAttachment($id, $module) {
+	function insertIntoAttachment($id, $module, $direct_import=false) {
 		global $log, $adb;
 		$log->debug("Entering into insertIntoAttachment($id,$module) method.");
 		$file_saved = false;
@@ -161,7 +161,7 @@ class CRMEntity {
 				$upd = "update $tblname set $colname=? where ".$this->tab_name_index[$tblname].'=?';
 				$adb->pquery($upd, array($files['original_name'],$this->id));
 				$this->column_fields[$fldname] = $files['original_name'];
-				$file_saved = $this->uploadAndSaveFile($id,$module,$files,$attachmentname);
+				$file_saved = $this->uploadAndSaveFile($id,$module,$files,$attachmentname, $direct_import);
 				// Remove the deleted attachments from db
 				if($file_saved && !empty($old_attachmentid)) {
 					$setypers = $adb->pquery('select setype from vtiger_crmentity where crmid=?', array($old_attachmentid));
@@ -183,7 +183,7 @@ class CRMEntity {
 	 *      @param array $file_details  - array which contains the file information(name, type, size, tmp_name and error)
 	 *      return void
 	 */
-	function uploadAndSaveFile($id, $module, $file_details, $attachmentname='') {
+	function uploadAndSaveFile($id, $module, $file_details, $attachmentname='', $direct_import=false) {
 		global $log;
 		$fparams = print_r($file_details,true);
 		$log->debug("Entering into uploadAndSaveFile($id,$module,$fparams) method.");
@@ -217,15 +217,13 @@ class CRMEntity {
 		$upload_file_path = decideFilePath();
 
 		//upload the file in server
-		$upload_status = move_uploaded_file($filetmp_name, $upload_file_path . $current_id . "_" . $binFile);
+		if ($direct_import) {
+			$upload_status = copy($filetmp_name, $upload_file_path . $current_id . "_" . $binFile);
+		} else {
+			$upload_status = move_uploaded_file($filetmp_name, $upload_file_path . $current_id . "_" . $binFile);
+		}
 
-		$save_file = 'true';
-		// //only images are allowed for these modules
-		// if ($module == 'Contacts' || $module == 'Products' || (property_exists($this,'HasDirectImageField') && $this->HasDirectImageField)) {
-			// $save_file = validateImageFile($file_details);
-		// }
-
-		if ($save_file == 'true' && $upload_status == 'true') {
+		if ($upload_status) {
 			$description_val = empty($this->column_fields['description']) ? '' : $this->column_fields['description'];
 			if ($module == 'Contacts' || $module == 'Products') {
 				$sql1 = "insert into vtiger_crmentity (crmid,smcreatorid,smownerid,setype,description,createdtime,modifiedtime) values(?, ?, ?, ?, ?, ?, ?)";
