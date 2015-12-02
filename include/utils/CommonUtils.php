@@ -1711,6 +1711,9 @@ function setObjectValuesFromRequest($focus) {
 			else
 				$value = trim($_REQUEST[$fieldname]);
 			$focus->column_fields[$fieldname] = $value;
+		} elseif (isset($_REQUEST[$fieldname.'_hidden'])) {
+			$value = trim($_REQUEST[$fieldname.'_hidden']);
+			$focus->column_fields[$fieldname] = $value;
 		}
 	}
 	$focus = cbEventHandler::do_filter('corebos.filter.editview.setObjectValues', $focus);
