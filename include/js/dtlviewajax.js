@@ -90,7 +90,7 @@ function handleEdit(event)
 	}
 	fnhide('crmspanid');
 	itsonview=true;
-	event.stopPropagation();
+	if (event) event.stopPropagation();
 	return false;
 }
 
