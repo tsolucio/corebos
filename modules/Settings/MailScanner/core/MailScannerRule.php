@@ -351,7 +351,7 @@ class Vtiger_MailScannerRule {
 		} else {
 			$this->sequence = $this->__nextsequence();
 			$adb->pquery("INSERT INTO vtiger_mailscanner_rules(scannerid,fromaddress,toaddress,subjectop,subject,bodyop,body,matchusing,sequence,assign_to) 
-				VALUES(?,?,?,?,?,?,?,?,?)", 
+				VALUES(?,?,?,?,?,?,?,?,?,?)", 
 				Array($this->scannerid,$this->fromaddress,$this->toaddress,$this->subjectop,$this->subject,
 				$this->bodyop,$this->body,$this->matchusing,$this->sequence,$this->assign_to));
 			$this->ruleid = $adb->database->Insert_ID();
