@@ -258,6 +258,23 @@ function __vt_sub_time($arr) {
 	$endTime = strtotime("-$minutes minutes", strtotime($baseTime));
 	return date('H:i:s',$endTime);
 }
+
+function __cb_getGEODistance($arr){
+	$from = urlencode($arr[0]);
+	$to = urlencode($arr[1]);
+
+	$data = file_get_contents("http://maps.googleapis.com/maps/api/distancematrix/json?origins=$from&destinations=$to&language=en-EN&sensor=false");
+	$data = json_decode($data);
+
+	$distance = 0;
+
+	foreach($data->rows[0]->elements as $road) {
+		$distance += $road->distance->value;
+		$distance/=1000;
+	}
+
+	return $distance." km";
+}
 /** END * */
 class VTFieldExpressionEvaluater{
 	function __construct($expr){
@@ -291,7 +308,8 @@ class VTFieldExpressionEvaluater{
 				'uppercasewords' => '__vt_uppercasewords',
 				'round' => '__vt_round',
 				'ceil' => '__vt_ceil',
-				'floor' => '__vt_floor'
+				'floor' => '__vt_floor',
+				'getGEODistance' => '__cb_getGEODistance'
 		);
 
 		$this->operations = array_merge($this->functions, $this->operators);
