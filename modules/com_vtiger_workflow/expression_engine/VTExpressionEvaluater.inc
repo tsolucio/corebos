@@ -275,6 +275,27 @@ function __cb_getGEODistance($arr){
 
 	return $distance." km";
 }
+
+function __cb_getGEODistanceFromCompanyAddress($arr){
+	global $adb;
+	$compAdr = $adb->pquery("Select address from vtiger_organizationdetails");
+	$from = $adb->query_result($compAdr, 0);
+	$array = array($from, $arr[0]);
+	return __cb_getGEODistance($array);
+}
+
+function __cb_getGEODistanceFromCoordinates($arr){
+	if (sizeof($arr)==2) {
+		$from = $arr[0];
+		$to = $arr[1];
+	}
+	else {
+		$from = $arr[0].", ".$arr[1];
+		$to = $arr[2].", ".$arr[3];
+	}
+	$array = array($from, $to);
+	return __cb_getGEODistance($array);
+}
 /** END * */
 class VTFieldExpressionEvaluater{
 	function __construct($expr){
@@ -309,7 +330,9 @@ class VTFieldExpressionEvaluater{
 				'round' => '__vt_round',
 				'ceil' => '__vt_ceil',
 				'floor' => '__vt_floor',
-				'getGEODistance' => '__cb_getGEODistance'
+				'getGEODistance' => '__cb_getGEODistance',
+				'getGEODistanceFromCompanyAddress' => '__cb_getGEODistanceFromCompanyAddress',
+				'getGEODistanceFromCoordinates' => '__cb_getGEODistanceFromCoordinates'
 		);
 
 		$this->operations = array_merge($this->functions, $this->operators);
