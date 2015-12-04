@@ -26,7 +26,7 @@ if(!is_admin($current_user)) {
 
 	$menu_array = Array();
 
-	$menu_array['CustomFields']['location'] = 'index.php?module=Settings&action=CustomFieldList&parenttab=Settings&formodule='.$module;
+	$menu_array['CustomFields']['location'] = 'index.php?module=Settings&action=CustomFieldList&parenttab=Settings&formodule=Calendar';
 	$menu_array['CustomFields']['image_src'] = vtiger_imageurl('orgshar.gif', $theme);
 	$menu_array['CustomFields']['desc'] = getTranslatedString('LBL_CALENDER_CUSTOMFIELDS_DESCRIPTION');
 	$menu_array['CustomFields']['label'] = getTranslatedString('LBL_CALENDER_CUSTOMFIELDS');
