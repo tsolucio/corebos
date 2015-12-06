@@ -157,7 +157,7 @@ function sensex_info()
 								   </tr>
 
 								   {foreach key=header item=data from=$BASBLOCKS}
-								   <tr>
+								   <tr id="tbl{$header|replace:' ':''}Head">
 									{if $header== $MOD.LBL_ADDRESS_INFORMATION && ($MODULE == 'Accounts' || $MODULE == 'Quotes' || $MODULE == 'PurchaseOrder' || $MODULE == 'SalesOrder'|| $MODULE == 'Invoice') && $SHOW_COPY_ADDRESS eq 'yes'}
                                                                         <td colspan=2 class="detailedViewHeader">
                                                                         <b>{$header}</b></td>
