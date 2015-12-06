@@ -155,8 +155,6 @@ function AddressSync(Addform,id)
 									   <!-- included to handle the edit fields based on ui types -->
 									   {foreach key=header item=data from=$BLOCKS}
 
-
-
 							<!-- This is added to display the existing comments -->
 							{if $header eq $MOD.LBL_COMMENTS || $header eq $MOD.LBL_COMMENT_INFORMATION}
 							   <tr><td>&nbsp;</td></tr>
