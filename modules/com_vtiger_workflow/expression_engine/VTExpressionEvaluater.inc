@@ -258,6 +258,44 @@ function __vt_sub_time($arr) {
 	$endTime = strtotime("-$minutes minutes", strtotime($baseTime));
 	return date('H:i:s',$endTime);
 }
+
+function __cb_getGEODistance($arr){
+	$from = urlencode($arr[0]);
+	$to = urlencode($arr[1]);
+
+	$data = file_get_contents("http://maps.googleapis.com/maps/api/distancematrix/json?origins=$from&destinations=$to&language=en-EN&sensor=false");
+	$data = json_decode($data);
+
+	$distance = 0;
+
+	foreach($data->rows[0]->elements as $road) {
+		$distance += $road->distance->value;
+		$distance/=1000;
+	}
+
+	return $distance." km";
+}
+
+function __cb_getGEODistanceFromCompanyAddress($arr){
+	global $adb;
+	$compAdr = $adb->pquery("Select address from vtiger_organizationdetails");
+	$from = $adb->query_result($compAdr, 0);
+	$array = array($from, $arr[0]);
+	return __cb_getGEODistance($array);
+}
+
+function __cb_getGEODistanceFromCoordinates($arr){
+	if (sizeof($arr)==2) {
+		$from = $arr[0];
+		$to = $arr[1];
+	}
+	else {
+		$from = $arr[0].", ".$arr[1];
+		$to = $arr[2].", ".$arr[3];
+	}
+	$array = array($from, $to);
+	return __cb_getGEODistance($array);
+}
 /** END * */
 class VTFieldExpressionEvaluater{
 	function __construct($expr){
@@ -291,7 +329,10 @@ class VTFieldExpressionEvaluater{
 				'uppercasewords' => '__vt_uppercasewords',
 				'round' => '__vt_round',
 				'ceil' => '__vt_ceil',
-				'floor' => '__vt_floor'
+				'floor' => '__vt_floor',
+				'getGEODistance' => '__cb_getGEODistance',
+				'getGEODistanceFromCompanyAddress' => '__cb_getGEODistanceFromCompanyAddress',
+				'getGEODistanceFromCoordinates' => '__cb_getGEODistanceFromCoordinates'
 		);
 
 		$this->operations = array_merge($this->functions, $this->operators);

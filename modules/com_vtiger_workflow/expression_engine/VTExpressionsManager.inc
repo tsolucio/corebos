@@ -43,7 +43,7 @@ class VTExpressionsManager{
 			'add_days' => 'add_days(datefield, noofdays)', 'sub_days' => 'sub_days(datefield, noofdays)', 'add_time(timefield, minutes)' => 'add_time(timefield, minutes)', 'sub_time(timefield, minutes)' => 'sub_time(timefield, minutes)',
 			'today' => "get_date('today')", 'tomorrow' => "get_date('tomorrow')",  'yesterday' => "get_date('yesterday')",'time' => "get_date('time')", 'format_date' => 'format_date(date,format)', 'substring' => 'substring(stringfield,start,end)',
 			'uppercase'=>'uppercase(stringfield)', 'lowercase'=>'lowercase(stringfield)', 'uppercasefirst'=>'uppercasefirst(stringfield)', 'uppercasewords'=>'uppercasewords(stringfield)', 'round' => 'round(numericfield,decimals)',
-			'ceil' => 'ceil(numericfield)', 'floor' => 'floor(numericfield)');
+			'ceil' => 'ceil(numericfield)', 'floor' => 'floor(numericfield)', 'getGEODistance' => 'getGEODistance(stringfield)', 'getGEODistanceFromCompanyAddress' => 'getGEODistanceFromCompanyAddress(stringfield)', 'getGEODistanceFromCoordinates' => 'getGEODistanceFromCoordinates(stringfield)');
 	}
 }
 
