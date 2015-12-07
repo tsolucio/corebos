@@ -43,7 +43,14 @@ class VTExpressionsManager{
 			'add_days' => 'add_days(datefield, noofdays)', 'sub_days' => 'sub_days(datefield, noofdays)', 'add_time(timefield, minutes)' => 'add_time(timefield, minutes)', 'sub_time(timefield, minutes)' => 'sub_time(timefield, minutes)',
 			'today' => "get_date('today')", 'tomorrow' => "get_date('tomorrow')",  'yesterday' => "get_date('yesterday')",'time' => "get_date('time')", 'format_date' => 'format_date(date,format)', 'substring' => 'substring(stringfield,start,end)',
 			'uppercase'=>'uppercase(stringfield)', 'lowercase'=>'lowercase(stringfield)', 'uppercasefirst'=>'uppercasefirst(stringfield)', 'uppercasewords'=>'uppercasewords(stringfield)', 'round' => 'round(numericfield,decimals)',
-			'ceil' => 'ceil(numericfield)', 'floor' => 'floor(numericfield)', 'getGEODistance' => 'getGEODistance(address_from,address_to)', 'getGEODistanceFromCompanyAddress' => 'getGEODistanceFromCompanyAddress(address)',
+			'ceil' => 'ceil(numericfield)', 'floor' => 'floor(numericfield)',
+			'getGEODistance' => 'getGEODistance(address_from,address_to)',
+			'getGEODistanceFromCompanyAddress' => 'getGEODistanceFromCompanyAddress(address)',
+			'getGEODistanceFromUserAddress' => 'getGEODistanceFromUserAddress(address)',
+			'getGEODistanceFromUser2AccountBilling' => 'getGEODistanceFromUser2AccountBilling(account)',
+			'getGEODistanceFromUser2AccountShipping' => 'getGEODistanceFromUser2AccountShipping(account)',
+			'getGEODistanceFromUser2ContactBilling' => 'getGEODistanceFromUser2ContactBilling(contact)',
+			'getGEODistanceFromUser2ContacttShipping' => 'getGEODistanceFromUser2ContacttShipping(contact)',
 			'getGEODistanceFromCoordinates' => 'getGEODistanceFromCoordinates({lat1},{long1},{lat2},{long2})');
 	}
 }
