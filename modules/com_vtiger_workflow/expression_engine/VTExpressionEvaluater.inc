@@ -278,8 +278,16 @@ function __cb_getGEODistance($arr){
 
 function __cb_getGEODistanceFromCompanyAddress($arr){
 	global $adb;
-	$compAdr = $adb->pquery("Select address from vtiger_organizationdetails");
-	$from = $adb->query_result($compAdr, 0);
+	$compAdr = $adb->pquery('Select address,city,state,country,code from vtiger_organizationdetails');
+	$from = $adb->query_result($compAdr, 0, 'address');
+	$fld = $adb->query_result($compAdr, 0, 'city');
+	$from.= empty($fld) ? '':', '.$fld;
+	$fld = $adb->query_result($compAdr, 0, 'code');
+	$from.= empty($fld) ? '':', '.$fld;
+	$fld = $adb->query_result($compAdr, 0, 'state');
+	$from.= empty($fld) ? '':', '.$fld;
+	$fld = $adb->query_result($compAdr, 0, 'country');
+	$from.= empty($fld) ? '':', '.$fld;
 	$array = array($from, $arr[0]);
 	return __cb_getGEODistance($array);
 }
