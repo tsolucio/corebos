@@ -3074,7 +3074,7 @@ class ReportRun extends CRMEntity {
 		}
 
 		$totalpdf = $this->GenerateReport("PRINT_TOTAL",$filterlist);
-		$html = '<table border="1"><tr>'.$headerHTML.'</tr>'.$dataHTML.'<tr><td>'.$totalpdf.'</td></tr>'.'</table>';
+		$html = '<table border="1"><tr>'.$headerHTML.'</tr>'.$dataHTML.'</table>';
 		$columnlength = array_sum($col_width);
 		if($columnlength > 14400) {
 			die("<br><br><center>".$app_strings['LBL_PDF']." <a href='javascript:window.history.back()'>".$app_strings['LBL_GO_BACK'].".</a></center>");
@@ -3127,7 +3127,7 @@ class ReportRun extends CRMEntity {
 
 		$pdf->SetFont('FreeSerif','',10);
 
-		$pdf->writeHTML($html);
+		$pdf->writeHTML($html.$totalpdf);
 
 		return $pdf;
 	}
