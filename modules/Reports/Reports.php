@@ -1432,7 +1432,8 @@ function getEscapedColumns($selectedfields) {
 		$sparams = array($tabid);
 		if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] ==0)
 		{
-			$ssql = "select * from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid where vtiger_field.uitype != 50 and vtiger_field.tabid=? and vtiger_field.displaytype in (1,2,3) and vtiger_field.presence in (0,2) ";
+			$ssql = 'select * from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid where vtiger_field.uitype != 50 and vtiger_field.tabid=? and vtiger_field.displaytype in (1,2,3) and vtiger_field.presence in (0,2)';
+			$calcf = "select * from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid where vtiger_field.uitype != 50 and vtiger_field.tablename='vtiger_activitycf' and vtiger_field.displaytype in (1,2,3) and vtiger_field.presence in (0,2)";
 		}
 		else
 		{
@@ -1440,6 +1441,11 @@ function getEscapedColumns($selectedfields) {
 			$ssql = "select * from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid where vtiger_field.uitype != 50 and vtiger_field.tabid=? and vtiger_field.displaytype in (1,2,3) and vtiger_def_org_field.visible=0 and vtiger_profile2field.visible=0 and vtiger_field.presence in (0,2)";
 			if (count($profileList) > 0) {
 				$ssql .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
+				array_push($sparams, $profileList);
+			}
+			$calcf = "select * from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid where vtiger_field.uitype != 50 and vtiger_field.tablename='vtiger_activitycf' and vtiger_field.displaytype in (1,2,3) and vtiger_def_org_field.visible=0 and vtiger_profile2field.visible=0 and vtiger_field.presence in (0,2)";
+			if (count($profileList) > 0) {
+				$calcf .= ' and vtiger_profile2field.profileid in ('. generateQuestionMarks($profileList) .')';
 				array_push($sparams, $profileList);
 			}
 		}
@@ -1457,8 +1463,8 @@ function getEscapedColumns($selectedfields) {
 			case 6://Accounts
 				$ssql.= " and vtiger_field.fieldname not in ('account_id')";
 				break;
-			case 9://Calandar
-				$ssql.= " and vtiger_field.fieldname not in ('parent_id','contact_id')";
+			case 9://Calendar
+				$ssql.= " and vtiger_field.fieldname not in ('parent_id','contact_id') UNION $calcf";
 				break;
 			case 13://Trouble tickets(HelpDesk)
 				$ssql.= " and vtiger_field.fieldname not in ('parent_id','product_id')";

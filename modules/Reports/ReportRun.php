@@ -2820,8 +2820,11 @@ class ReportRun extends CRMEntity {
 					}
 				}
 
-				//$field_columnalias = $fieldlist[3];
 				$field_permitted = false;
+				if(CheckColumnPermission($field_tablename,$field_columnname,$module_name) != "false"){
+					$field_permitted = true;
+				}
+				/* one call to CheckColumnPermission with $module_name is better than the block below
 				if(CheckColumnPermission($field_tablename,$field_columnname,$premod) != "false"){
 					$field_permitted = true;
 				} else {
@@ -2832,6 +2835,7 @@ class ReportRun extends CRMEntity {
 						}
 					}
 				}
+				*/
 				if($field_permitted == true)
 				{
 					$field = $field_tablename.".".$field_columnname;
