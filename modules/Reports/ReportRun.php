@@ -2033,7 +2033,6 @@ class ReportRun extends CRMEntity {
 				if($directOutput) {
 					echo '</tr><tr>';
 				}
-				// END
 
 				$noofrows = $adb->num_rows($result);
 				$custom_field_values = $adb->fetch_array($result);
@@ -2070,19 +2069,13 @@ class ReportRun extends CRMEntity {
 						echo $valtemplate;
 						$valtemplate = '';
 					}
-					// END
 
-					for ($i=0; $i<$y; $i++)
-					{
+					for ($i=0; $i<$y; $i++) {
 						$fld = $adb->field_name($result, $i);
 						$fld_type = $column_definitions[$i]->type;
-						$fieldvalue = getReportFieldValue($this, $picklistarray, $fld,
-								$custom_field_values, $i);
+						$fieldvalue = getReportFieldValue($this, $picklistarray, $fld, $custom_field_values, $i);
 
-					//check for Roll based pick list
-						$temp_val= $fld->name;
-
-						if($fieldvalue == "" )
+						if($fieldvalue == '')
 						{
 							$fieldvalue = "-";
 						}
@@ -2136,7 +2129,6 @@ class ReportRun extends CRMEntity {
 							echo $valtemplate;
 							$valtemplate = '';
 						}
-						// END
 					}
 
 					$valtemplate .= "</tr>";
@@ -2146,7 +2138,6 @@ class ReportRun extends CRMEntity {
 						echo $valtemplate;
 						$valtemplate = '';
 					}
-					// END
 
 					$lastvalue = $newvalue;
 					$secondvalue = $snewvalue;
@@ -2201,10 +2192,8 @@ class ReportRun extends CRMEntity {
 						$fld_type = $column_definitions[$i]->type;
 						list($module, $fieldLabel) = explode('_', $fld->name, 2);
 						$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
-						$fieldType = null;
 						if(!empty($fieldInfo)) {
 							$field = WebserviceField::fromArray($adb, $fieldInfo);
-							$fieldType = $field->getFieldDataType();
 						}
 						if(!empty($fieldInfo)) {
 							$translatedLabel = getTranslatedString($field->getFieldLabelKey(), $module);
@@ -2359,7 +2348,6 @@ class ReportRun extends CRMEntity {
 						echo $coltotalhtml;
 						$coltotalhtml = '';
 					}
-					// END
 
 					foreach($this->totallist as $key=>$value)
 					{
@@ -2462,7 +2450,6 @@ class ReportRun extends CRMEntity {
 							echo $coltotalhtml;
 							$coltotalhtml = '';
 						}
-						// END
 					}
 
 					$coltotalhtml .= "</table>";
@@ -2472,7 +2459,6 @@ class ReportRun extends CRMEntity {
 						echo $coltotalhtml;
 						$coltotalhtml = '';
 					}
-					// END
 				}
 			}
 			return $coltotalhtml;
@@ -2635,7 +2621,6 @@ class ReportRun extends CRMEntity {
 						echo $coltotalhtml;
 						$coltotalhtml = '';
 					}
-					// END
 
 					foreach($this->totallist as $key=>$value)
 					{
@@ -2735,7 +2720,6 @@ class ReportRun extends CRMEntity {
 							echo $coltotalhtml;
 							$coltotalhtml = '';
 						}
-						// END
 					}
 
 					$coltotalhtml .= "</table>";
@@ -2744,14 +2728,12 @@ class ReportRun extends CRMEntity {
 						echo $coltotalhtml;
 						$coltotalhtml = '';
 					}
-					// END
 				}
 			}
 			return $coltotalhtml;
 		}
 	}
 
-	//<<<<<<<new>>>>>>>>>>
 	function getColumnsTotal($reportid)
 	{
 		// Have we initialized it already?
@@ -3137,7 +3119,7 @@ class ReportRun extends CRMEntity {
 		global $currentModule, $current_language;
 		$mod_strings = return_module_language($current_language, $currentModule);
 
-		require_once("include/PHPExcel/PHPExcel.php");
+		require_once('include/PHPExcel/PHPExcel.php');
 		$xlsrowheight = GlobalVariable::getVariable('Report.Excel.Export.RowHeight', 20);
 		$workbook = new PHPExcel();
 		$worksheet = $workbook->setActiveSheetIndex(0);
@@ -3422,8 +3404,8 @@ class ReportRun extends CRMEntity {
 				} elseif ($moduleName == 'Potentials' && $referenceModule == 'Accounts') {
 					$referenceTableName = 'vtiger_accountPotentials';
 				} elseif (in_array($referenceModule, $reportSecondaryModules) and $moduleName != 'Timecontrol') {
-                                    if($fieldInstance->getFieldId() != '') $referenceTableName = "{$entityTableName}Rel{$moduleName}{$fieldInstance->getFieldId()}";
-				    else $referenceTableName = "{$entityTableName}Rel$referenceModule";
+					if($fieldInstance->getFieldId() != '') $referenceTableName = "{$entityTableName}Rel{$moduleName}{$fieldInstance->getFieldId()}";
+					else $referenceTableName = "{$entityTableName}Rel$referenceModule";
 				} elseif (in_array($moduleName, $reportSecondaryModules) and $moduleName != 'Timecontrol') {
 					$referenceTableName = "{$entityTableName}Rel$moduleName";
 				} else {
