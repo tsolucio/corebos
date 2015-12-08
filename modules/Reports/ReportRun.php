@@ -3164,7 +3164,7 @@ class ReportRun extends CRMEntity {
 		$mod_strings = return_module_language($current_language, $currentModule);
 
 		require_once("include/PHPExcel/PHPExcel.php");
-
+		$xlsrowheight = GlobalVariable::getVariable('Report.Excel.Export.RowHeight', 20);
 		$workbook = new PHPExcel();
 		$worksheet = $workbook->setActiveSheetIndex(0);
 
@@ -3179,6 +3179,7 @@ class ReportRun extends CRMEntity {
 		if(isset($arr_val)) {
 			$count = 0;
 			$rowcount = 1;
+			$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
 			//copy the first value details
 			$arrayFirstRowValues = $arr_val[0];
 			foreach($arrayFirstRowValues as $key=>$value) {
@@ -3186,12 +3187,13 @@ class ReportRun extends CRMEntity {
 				$worksheet->getStyleByColumnAndRow($count, $rowcount)->applyFromArray($header_styles);
 
 				// NOTE Performance overhead: http://stackoverflow.com/questions/9965476/phpexcel-column-size-issues
-				//$worksheet->getColumnDimensionByColumn($count)->setAutoSize(true);
+				$worksheet->getColumnDimensionByColumn($count)->setAutoSize(true);
 
 				$count = $count + 1;
 			}
 
 			$rowcount++;
+			$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
 			foreach($arr_val as $key=>$array_value) {
 				$count = 0;
 				foreach($array_value as $hdr=>$value) {
@@ -3202,10 +3204,12 @@ class ReportRun extends CRMEntity {
 					$count = $count + 1;
 				}
 				$rowcount++;
+				$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
 			}
 
 			// Summary Total
 			$rowcount++;
+			$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
 			$count=0;
 			if(is_array($totalxls[0])) {
 				foreach($totalxls[0] as $key=>$value) {
@@ -3217,12 +3221,14 @@ class ReportRun extends CRMEntity {
 				}
 			}
 			$rowcount++;
+			$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
 			foreach($totalxls as $key=>$array_value) {
 				$count = 0;
 				foreach($array_value as $hdr=>$value) {
 					$value = decode_html($value);
 					$worksheet->setCellValueExplicitByColumnAndRow($count, $key+$rowcount, $value);
 					$count = $count + 1;
+					$workbook->getActiveSheet()->getRowDimension($rowcount+$count)->setRowHeight($xlsrowheight);
 				}
 			}
 		}
