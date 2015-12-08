@@ -1924,7 +1924,7 @@ class ReportRun extends CRMEntity {
 	 */
 
 	// Performance Optimization: Added parameter directOutput to avoid building big-string!
-	function GenerateReport($outputformat,$filtersql, $directOutput=false)
+	function GenerateReport($outputformat,$filtersql, $directOutput=false, &$returnfieldinfo=array())
 	{
 		global $adb,$current_user,$php_max_execution_time;
 		global $modules,$app_strings;
@@ -2226,6 +2226,7 @@ class ReportRun extends CRMEntity {
 							}
 						}
 						$fieldvalue = getReportFieldValue($this, $picklistarray, $fld,$custom_field_values, $i);
+						if (empty($returnfieldinfo[$headerLabel])) $returnfieldinfo[$headerLabel] = $field;
 						$arraylists[$headerLabel] = $fieldvalue;
 					}
 					$arr_val[] = $arraylists;
@@ -3140,8 +3141,8 @@ class ReportRun extends CRMEntity {
 		$xlsrowheight = GlobalVariable::getVariable('Report.Excel.Export.RowHeight', 20);
 		$workbook = new PHPExcel();
 		$worksheet = $workbook->setActiveSheetIndex(0);
-
-		$arr_val = $this->GenerateReport('PDF',$filterlist);
+		$fieldinfo = array();
+		$arr_val = $this->GenerateReport('PDF',$filterlist,false,$fieldinfo);
 		$totalxls = $this->GenerateReport('TOTALXLS',$filterlist);
 
 		$header_styles = array(
@@ -3165,15 +3166,31 @@ class ReportRun extends CRMEntity {
 				$count = $count + 1;
 			}
 
+			$FieldDataTypes = array();
+			foreach($arr_val[0] as $hdr=>$value) {
+				$FieldDataTypes[$hdr] = $fieldinfo[$hdr]->getFieldDataType();
+			}
 			$rowcount++;
 			$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
 			foreach($arr_val as $key=>$array_value) {
 				$count = 0;
 				foreach($array_value as $hdr=>$value) {
 					$value = decode_html($value);
-					// TODO Determine data-type based on field-type.
-					// String type helps having numbers prefixed with 0 intact.
-					$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $value, PHPExcel_Cell_DataType::TYPE_STRING);
+					global $log;$log->fatal($FieldDataTypes[$hdr]);
+					switch ($FieldDataTypes[$hdr]) {
+						case 'boolean':
+							$celltype = PHPExcel_Cell_DataType::TYPE_BOOL;
+							break;
+						case 'integer':
+						case 'double':
+						case 'currency':
+							$celltype = PHPExcel_Cell_DataType::TYPE_NUMERIC;
+							break;
+						default:
+							$celltype = PHPExcel_Cell_DataType::TYPE_STRING;
+							break;
+					}
+					$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $value, $celltype);
 					$count = $count + 1;
 				}
 				$rowcount++;
@@ -3188,7 +3205,7 @@ class ReportRun extends CRMEntity {
 				foreach($totalxls[0] as $key=>$value) {
 					$chdr=substr($key,-3,3);
 					$translated_str = in_array($chdr ,array_keys($mod_strings))?$mod_strings[$chdr]:$key;
-					$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $translated_str);
+					$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $translated_str, PHPExcel_Cell_DataType::TYPE_STRING);
 					$worksheet->getStyleByColumnAndRow($count, $rowcount)->applyFromArray($header_styles);
 					$count = $count + 1;
 				}
@@ -3199,7 +3216,7 @@ class ReportRun extends CRMEntity {
 				$count = 0;
 				foreach($array_value as $hdr=>$value) {
 					$value = decode_html($value);
-					$worksheet->setCellValueExplicitByColumnAndRow($count, $key+$rowcount, $value);
+					$worksheet->setCellValueExplicitByColumnAndRow($count, $key+$rowcount, $value, PHPExcel_Cell_DataType::TYPE_NUMERIC);
 					$count = $count + 1;
 					$workbook->getActiveSheet()->getRowDimension($rowcount+$count)->setRowHeight($xlsrowheight);
 				}
