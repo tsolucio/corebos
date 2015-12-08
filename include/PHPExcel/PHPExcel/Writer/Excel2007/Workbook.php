@@ -2,7 +2,7 @@
 /**
  * PHPExcel
  *
- * Copyright (c) 2006 - 2012 PHPExcel
+ * Copyright (c) 2006 - 2014 PHPExcel
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,9 +20,9 @@
  *
  * @category   PHPExcel
  * @package    PHPExcel_Writer_Excel2007
- * @copyright  Copyright (c) 2006 - 2012 PHPExcel (http://www.codeplex.com/PHPExcel)
+ * @copyright  Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
- * @version    1.7.7, 2012-05-19
+ * @version    1.8.0, 2014-03-02
  */
 
 
@@ -31,7 +31,7 @@
  *
  * @category   PHPExcel
  * @package    PHPExcel_Writer_Excel2007
- * @copyright  Copyright (c) 2006 - 2012 PHPExcel (http://www.codeplex.com/PHPExcel)
+ * @copyright  Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
  */
 class PHPExcel_Writer_Excel2007_Workbook extends PHPExcel_Writer_Excel2007_WriterPart
 {
@@ -41,7 +41,7 @@ class PHPExcel_Writer_Excel2007_Workbook extends PHPExcel_Writer_Excel2007_Write
 	 * @param 	PHPExcel	$pPHPExcel
 	 * @param	boolean		$recalcRequired	Indicate whether formulas should be recalculated before writing
 	 * @return 	string 		XML Output
-	 * @throws 	Exception
+	 * @throws 	PHPExcel_Writer_Exception
 	 */
 	public function writeWorkbook(PHPExcel $pPHPExcel = null, $recalcRequired = FALSE)
 	{
@@ -95,7 +95,7 @@ class PHPExcel_Writer_Excel2007_Workbook extends PHPExcel_Writer_Excel2007_Write
 	 * Write file version
 	 *
 	 * @param 	PHPExcel_Shared_XMLWriter $objWriter 		XML Writer
-	 * @throws 	Exception
+	 * @throws 	PHPExcel_Writer_Exception
 	 */
 	private function _writeFileVersion(PHPExcel_Shared_XMLWriter $objWriter = null)
 	{
@@ -111,7 +111,7 @@ class PHPExcel_Writer_Excel2007_Workbook extends PHPExcel_Writer_Excel2007_Write
 	 * Write WorkbookPr
 	 *
 	 * @param 	PHPExcel_Shared_XMLWriter $objWriter 		XML Writer
-	 * @throws 	Exception
+	 * @throws 	PHPExcel_Writer_Exception
 	 */
 	private function _writeWorkbookPr(PHPExcel_Shared_XMLWriter $objWriter = null)
 	{
@@ -131,7 +131,7 @@ class PHPExcel_Writer_Excel2007_Workbook extends PHPExcel_Writer_Excel2007_Write
 	 *
 	 * @param 	PHPExcel_Shared_XMLWriter 	$objWriter 		XML Writer
 	 * @param 	PHPExcel					$pPHPExcel
-	 * @throws 	Exception
+	 * @throws 	PHPExcel_Writer_Exception
 	 */
 	private function _writeBookViews(PHPExcel_Shared_XMLWriter $objWriter = null, PHPExcel $pPHPExcel = null)
 	{
@@ -161,7 +161,7 @@ class PHPExcel_Writer_Excel2007_Workbook extends PHPExcel_Writer_Excel2007_Write
 	 *
 	 * @param 	PHPExcel_Shared_XMLWriter 	$objWriter 		XML Writer
 	 * @param 	PHPExcel					$pPHPExcel
-	 * @throws 	Exception
+	 * @throws 	PHPExcel_Writer_Exception
 	 */
 	private function _writeWorkbookProtection(PHPExcel_Shared_XMLWriter $objWriter = null, PHPExcel $pPHPExcel = null)
 	{
@@ -188,16 +188,20 @@ class PHPExcel_Writer_Excel2007_Workbook extends PHPExcel_Writer_Excel2007_Write
 	 *
 	 * @param 	PHPExcel_Shared_XMLWriter	$objWriter		XML Writer
 	 * @param	boolean						$recalcRequired	Indicate whether formulas should be recalculated before writing
-	 * @throws 	Exception
+	 * @throws 	PHPExcel_Writer_Exception
 	 */
 	private function _writeCalcPr(PHPExcel_Shared_XMLWriter $objWriter = null, $recalcRequired = TRUE)
 	{
 		$objWriter->startElement('calcPr');
 
-		$objWriter->writeAttribute('calcId', 			'124519');
+		//	Set the calcid to a higher value than Excel itself will use, otherwise Excel will always recalc
+        //  If MS Excel does do a recalc, then users opening a file in MS Excel will be prompted to save on exit
+        //     because the file has changed
+		$objWriter->writeAttribute('calcId', 			'999999');
 		$objWriter->writeAttribute('calcMode', 			'auto');
 		//	fullCalcOnLoad isn't needed if we've recalculating for the save
-		$objWriter->writeAttribute('fullCalcOnLoad', 	($recalcRequired) ? '0' : '1');
+		$objWriter->writeAttribute('calcCompleted', 	($recalcRequired) ? 1 : 0);
+		$objWriter->writeAttribute('fullCalcOnLoad', 	($recalcRequired) ? 0 : 1);
 
 		$objWriter->endElement();
 	}
@@ -207,7 +211,7 @@ class PHPExcel_Writer_Excel2007_Workbook extends PHPExcel_Writer_Excel2007_Write
 	 *
 	 * @param 	PHPExcel_Shared_XMLWriter 	$objWriter 		XML Writer
 	 * @param 	PHPExcel					$pPHPExcel
-	 * @throws 	Exception
+	 * @throws 	PHPExcel_Writer_Exception
 	 */
 	private function _writeSheets(PHPExcel_Shared_XMLWriter $objWriter = null, PHPExcel $pPHPExcel = null)
 	{
@@ -236,7 +240,7 @@ class PHPExcel_Writer_Excel2007_Workbook extends PHPExcel_Writer_Excel2007_Write
 	 * @param 	int							$pSheetId	 		Sheet id
 	 * @param 	int							$pRelId				Relationship ID
 	 * @param   string                      $sheetState         Sheet state (visible, hidden, veryHidden)
-	 * @throws 	Exception
+	 * @throws 	PHPExcel_Writer_Exception
 	 */
 	private function _writeSheet(PHPExcel_Shared_XMLWriter $objWriter = null, $pSheetname = '', $pSheetId = 1, $pRelId = 1, $sheetState = 'visible')
 	{
@@ -251,7 +255,7 @@ class PHPExcel_Writer_Excel2007_Workbook extends PHPExcel_Writer_Excel2007_Write
 			$objWriter->writeAttribute('r:id', 		'rId' . $pRelId);
 			$objWriter->endElement();
 		} else {
-			throw new Exception("Invalid parameters passed.");
+			throw new PHPExcel_Writer_Exception("Invalid parameters passed.");
 		}
 	}
 
@@ -260,7 +264,7 @@ class PHPExcel_Writer_Excel2007_Workbook extends PHPExcel_Writer_Excel2007_Write
 	 *
 	 * @param 	PHPExcel_Shared_XMLWriter	$objWriter 		XML Writer
 	 * @param 	PHPExcel					$pPHPExcel
-	 * @throws 	Exception
+	 * @throws 	PHPExcel_Writer_Exception
 	 */
 	private function _writeDefinedNames(PHPExcel_Shared_XMLWriter $objWriter = null, PHPExcel $pPHPExcel = null)
 	{
@@ -294,7 +298,7 @@ class PHPExcel_Writer_Excel2007_Workbook extends PHPExcel_Writer_Excel2007_Write
 	 *
 	 * @param 	PHPExcel_Shared_XMLWriter	$objWriter 		XML Writer
 	 * @param 	PHPExcel					$pPHPExcel
-	 * @throws 	Exception
+	 * @throws 	PHPExcel_Writer_Exception
 	 */
 	private function _writeNamedRanges(PHPExcel_Shared_XMLWriter $objWriter = null, PHPExcel $pPHPExcel)
 	{
@@ -306,11 +310,11 @@ class PHPExcel_Writer_Excel2007_Workbook extends PHPExcel_Writer_Excel2007_Write
 	}
 
 	/**
-	 * Write Defined Name for autoFilter
+	 * Write Defined Name for named range
 	 *
 	 * @param 	PHPExcel_Shared_XMLWriter	$objWriter 		XML Writer
 	 * @param 	PHPExcel_NamedRange			$pNamedRange
-	 * @throws 	Exception
+	 * @throws 	PHPExcel_Writer_Exception
 	 */
 	private function _writeDefinedNameForNamedRange(PHPExcel_Shared_XMLWriter $objWriter = null, PHPExcel_NamedRange $pNamedRange)
 	{
@@ -342,19 +346,20 @@ class PHPExcel_Writer_Excel2007_Workbook extends PHPExcel_Writer_Excel2007_Write
 	 * @param 	PHPExcel_Shared_XMLWriter	$objWriter 		XML Writer
 	 * @param 	PHPExcel_Worksheet			$pSheet
 	 * @param 	int							$pSheetId
-	 * @throws 	Exception
+	 * @throws 	PHPExcel_Writer_Exception
 	 */
 	private function _writeDefinedNameForAutofilter(PHPExcel_Shared_XMLWriter $objWriter = null, PHPExcel_Worksheet $pSheet = null, $pSheetId = 0)
 	{
 		// definedName for autoFilter
-		if ($pSheet->getAutoFilter() != '') {
+		$autoFilterRange = $pSheet->getAutoFilter()->getRange();
+		if (!empty($autoFilterRange)) {
 			$objWriter->startElement('definedName');
 			$objWriter->writeAttribute('name',			'_xlnm._FilterDatabase');
 			$objWriter->writeAttribute('localSheetId',	$pSheetId);
 			$objWriter->writeAttribute('hidden',		'1');
 
 			// Create absolute coordinate and write as raw text
-			$range = PHPExcel_Cell::splitRange($pSheet->getAutoFilter());
+			$range = PHPExcel_Cell::splitRange($autoFilterRange);
 			$range = $range[0];
 			//	Strip any worksheet ref so we can make the cell ref absolute
 			if (strpos($range[0],'!') !== false) {
@@ -377,7 +382,7 @@ class PHPExcel_Writer_Excel2007_Workbook extends PHPExcel_Writer_Excel2007_Write
 	 * @param 	PHPExcel_Shared_XMLWriter	$objWriter 		XML Writer
 	 * @param 	PHPExcel_Worksheet			$pSheet
 	 * @param 	int							$pSheetId
-	 * @throws 	Exception
+	 * @throws 	PHPExcel_Writer_Exception
 	 */
 	private function _writeDefinedNameForPrintTitles(PHPExcel_Shared_XMLWriter $objWriter = null, PHPExcel_Worksheet $pSheet = null, $pSheetId = 0)
 	{
@@ -420,7 +425,7 @@ class PHPExcel_Writer_Excel2007_Workbook extends PHPExcel_Writer_Excel2007_Write
 	 * @param 	PHPExcel_Shared_XMLWriter	$objWriter 		XML Writer
 	 * @param 	PHPExcel_Worksheet			$pSheet
 	 * @param 	int							$pSheetId
-	 * @throws 	Exception
+	 * @throws 	PHPExcel_Writer_Exception
 	 */
 	private function _writeDefinedNameForPrintArea(PHPExcel_Shared_XMLWriter $objWriter = null, PHPExcel_Worksheet $pSheet = null, $pSheetId = 0)
 	{

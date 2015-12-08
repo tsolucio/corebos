@@ -2,7 +2,7 @@
 /**
  * PHPExcel
  *
- * Copyright (c) 2006 - 2012 PHPExcel
+ * Copyright (c) 2006 - 2014 PHPExcel
  *
  * This library is free software; you can redistribute it and/or
  * modify it under the terms of the GNU Lesser General Public
@@ -20,9 +20,9 @@
  *
  * @category   PHPExcel
  * @package    PHPExcel_Writer_Excel5
- * @copyright  Copyright (c) 2006 - 2012 PHPExcel (http://www.codeplex.com/PHPExcel)
+ * @copyright  Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
  * @license    http://www.gnu.org/licenses/old-licenses/lgpl-2.1.txt	LGPL
- * @version    1.7.7, 2012-05-19
+ * @version    1.8.0, 2014-03-02
  */
 
 // Original file header of PEAR::Spreadsheet_Excel_Writer_Workbook (used as the base for this class):
@@ -66,7 +66,7 @@
  *
  * @category   PHPExcel
  * @package    PHPExcel_Writer_Excel5
- * @copyright  Copyright (c) 2006 - 2012 PHPExcel (http://www.codeplex.com/PHPExcel)
+ * @copyright  Copyright (c) 2006 - 2014 PHPExcel (http://www.codeplex.com/PHPExcel)
  */
 class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 {
@@ -317,6 +317,7 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 		}
 		return $fontIndex;
 	}
+
 	/**
 	 * Alter color palette adding a custom color
 	 *
@@ -629,7 +630,7 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 					$rowmax = $repeat[1] - 1;
 				} else {
 					$rowmin = 0;
-					$rowmax = 16383;
+					$rowmax = 65535;
 				}
 
 				$this->_writeNameShort(
@@ -687,7 +688,7 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 					}
 					$chunk .= $this->writeData($this->_writeDefinedNameBiff8($namedRange->getName(), $formulaData, $scope, false));
 
-				} catch(Exception $e) {
+				} catch(PHPExcel_Exception $e) {
 					// do nothing
 				}
 			}
@@ -780,6 +781,20 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 			}
 		}
 
+		// write autofilters, if any
+		for ($i = 0; $i < $total_worksheets; ++$i) {
+			$sheetAutoFilter = $this->_phpExcel->getSheet($i)->getAutoFilter();
+			$autoFilterRange = $sheetAutoFilter->getRange();
+			if(!empty($autoFilterRange)) {
+				$rangeBounds = PHPExcel_Cell::rangeBoundaries($autoFilterRange);
+
+				//Autofilter built in name
+				$name = pack('C', 0x0D);
+
+				$chunk .= $this->writeData($this->_writeShortNameBiff8($name, $i + 1, $rangeBounds, true));
+			}
+		}
+
 		return $chunk;
 	}
 
@@ -811,6 +826,42 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 		// combine the parts
 		$data = pack('vCCvvvCCCC', $options, 0, $nlen, $sz, 0, $sheetIndex, 0, 0, 0, 0)
 			. $name . $formulaData;
+		$length = strlen($data);
+
+		$header = pack('vv', $record, $length);
+
+		return $header . $data;
+	}
+
+	/**
+	 * Write a short NAME record
+	 *
+	 * @param	string		 $name
+	 * @param	string		 $sheetIndex		1-based sheet index the defined name applies to. 0 = global
+	 * @param	integer[][]  $rangeBounds    range boundaries
+	 * @param	boolean      $isHidden
+	 * @return	string	Complete binary record data
+	 * */
+	private function _writeShortNameBiff8($name, $sheetIndex = 0, $rangeBounds, $isHidden = false){
+		$record = 0x0018;
+
+		// option flags
+		$options = ($isHidden  ? 0x21 : 0x00);
+
+		$extra  = pack('Cvvvvv',
+				0x3B,
+				$sheetIndex - 1,
+				$rangeBounds[0][1] - 1,
+				$rangeBounds[1][1] - 1,
+				$rangeBounds[0][0] - 1,
+				$rangeBounds[1][0] - 1);
+
+		// size of the formula (in bytes)
+		$sz = strlen($extra);
+
+		// combine the parts
+		$data = pack('vCCvvvCCCCC', $options, 0, 1, $sz, 0, $sheetIndex, 0, 0, 0, 0, 0)
+			. $name . $extra;
 		$length = strlen($data);
 
 		$header = pack('vv', $record, $length);
@@ -1396,5 +1447,4 @@ class PHPExcel_Writer_Excel5_Workbook extends PHPExcel_Writer_Excel5_BIFFwriter
 	{
 		$this->_escher = $pValue;
 	}
-
 }
