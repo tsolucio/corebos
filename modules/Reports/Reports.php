@@ -11,15 +11,8 @@ require_once('include/database/PearDatabase.php');
 require_once('data/CRMEntity.php');
 require_once('include/utils/UserInfoUtil.php');
 require_once 'modules/Reports/ReportUtils.php';
-global $app_strings,$mod_strings;
-global $app_list_strings;
-global $modules;
-global $blocks;
-global $adv_filter_options;
-global $log;
-global $report_modules;
-global $related_modules;
-global $old_related_modules;
+global $app_strings,$mod_strings, $app_list_strings, $modules, $blocks, $adv_filter_options;
+global $log, $report_modules, $related_modules, $old_related_modules;
 
 $adv_filter_options = array(
 	"e"=>"equals",
@@ -345,7 +338,6 @@ class Reports extends CRMEntity{
 			}
 		}
 	}
-	// END
 
 	/** Function to get the Listview of Reports
 	 *  This function accepts no argument
@@ -597,9 +589,7 @@ class Reports extends CRMEntity{
 	 */
 	function getColumnsListbyBlock($module,$block)
 	{
-		global $adb;
-		global $log;
-		global $current_user;
+		global $adb, $log, $current_user;
 
 		if(is_string($block)) $block = explode(",", $block);
 		$skipTalbes = array('vtiger_emaildetails','vtiger_attachments');
@@ -784,9 +774,7 @@ class Reports extends CRMEntity{
 	 */
 	function getStdCriteriaByModule($module)
 	{
-		global $adb;
-		global $log;
-		global $current_user;
+		global $adb, $log, $current_user;
 		require('user_privileges/user_privileges_'.$current_user->id.'.php');
 
 		$tabid = getTabid($module);
@@ -832,7 +820,6 @@ class Reports extends CRMEntity{
 
 		$log->info("Reports :: StdfilterColumns->Successfully returned Stdfilter for".$module);
 		return $stdcriteria_list;
-
 	}
 
 	/** Function to form a javascript to determine the start date and end date for a standard filter
@@ -1062,7 +1049,7 @@ class Reports extends CRMEntity{
 
 				} else if( type == "last7days" ) {
 					document.NewReport.startdate.value = "'.$last7DaysDateTime->getDisplayDate().'";
-					document.NewReport.enddate.value =  "'.$todayDateTime->getDisplayDate().'";
+					document.NewReport.enddate.value = "'.$todayDateTime->getDisplayDate().'";
 
 				} else if( type == "last30days" ) {
 					document.NewReport.startdate.value = "'.$last30DaysDateTime->getDisplayDate().'";
@@ -1110,7 +1097,6 @@ class Reports extends CRMEntity{
 				}
 			}
 		</script>';
-
 		return $sjsStr;
 	}
 
@@ -1134,10 +1120,10 @@ function getEscapedColumns($selectedfields) {
 		}
 		return $querycolumn;
 	}
+
 	function getaccesfield($module)
 	{
-		global $current_user;
-		global $adb;
+		global $current_user, $adb;
 		$access_fields = Array();
 
 		$profileList = getCurrentUserProfileList();
@@ -1207,9 +1193,7 @@ function getEscapedColumns($selectedfields) {
 	 */
 	function getSelectedColumnsList($reportid)
 	{
-		global $adb;
-		global $modules;
-		global $log,$current_user;
+		global $adb, $modules, $log,$current_user;
 
 		$ssql = "select vtiger_selectcolumn.* from vtiger_report inner join vtiger_selectquery on vtiger_selectquery.queryid = vtiger_report.queryid";
 		$ssql .= " left join vtiger_selectcolumn on vtiger_selectcolumn.queryid = vtiger_selectquery.queryid";
@@ -1258,11 +1242,11 @@ function getEscapedColumns($selectedfields) {
 				{
 					if(CheckFieldPermission($fieldname,$mod) != 'true' && $colname!="crmid")
 					{
-							$shtml .= "<option permission='no' value=\"".$fieldcolname."\" disabled = 'true'>".$fieldlabel."</option>";
+						$shtml .= "<option permission='no' value=\"".$fieldcolname."\" disabled = 'true'>".$fieldlabel."</option>";
 					}
 					else
 					{
-							$shtml .= "<option permission='yes' value=\"".$fieldcolname."\">".$fieldlabel."</option>";
+						$shtml .= "<option permission='yes' value=\"".$fieldcolname."\">".$fieldlabel."</option>";
 					}
 				}
 			}
@@ -1273,10 +1257,7 @@ function getEscapedColumns($selectedfields) {
 	}
 	function getAdvancedFilterList($reportid)
 	{
-		global $adb;
-		global $modules;
-		global $log;
-		global $current_user;
+		global $adb, $modules, $log, $current_user;
 
 		$advft_criteria = array();
 
@@ -1290,9 +1271,9 @@ function getEscapedColumns($selectedfields) {
 			$groupCondition = $relcriteriagroup["group_condition"];
 
 			$ssql = 'select vtiger_relcriteria.* from vtiger_report
-						inner join vtiger_relcriteria on vtiger_relcriteria.queryid = vtiger_report.queryid
-						left join vtiger_relcriteria_grouping on vtiger_relcriteria.queryid = vtiger_relcriteria_grouping.queryid
-								and vtiger_relcriteria.groupid = vtiger_relcriteria_grouping.groupid';
+					inner join vtiger_relcriteria on vtiger_relcriteria.queryid = vtiger_report.queryid
+					left join vtiger_relcriteria_grouping on vtiger_relcriteria.queryid = vtiger_relcriteria_grouping.queryid
+					and vtiger_relcriteria.groupid = vtiger_relcriteria_grouping.groupid';
 			$ssql.= " where vtiger_report.reportid = ? AND vtiger_relcriteria.groupid = ? order by vtiger_relcriteria.columnindex";
 
 			$result = $adb->pquery($ssql, array($reportid, $groupId));
@@ -1354,10 +1335,9 @@ function getEscapedColumns($selectedfields) {
 		// Clear the condition (and/or) for last group, if any.
 		if(!empty($advft_criteria[$i-1]['condition'])) $advft_criteria[$i-1]['condition'] = '';
 		$this->advft_criteria = $advft_criteria;
-		$log->info("Reports :: Successfully returned getAdvancedFilterList");
+		$log->info('Reports :: Successfully returned getAdvancedFilterList');
 		return true;
 	}
-	//<<<<<<<<advanced filter>>>>>>>>>>>>>>
 
 	/** Function to get the list of report folders when Save and run the report
 	 *  This function gets the vtiger_report folders from database and form
@@ -1436,7 +1416,6 @@ function getEscapedColumns($selectedfields) {
 
 		$log->info("Reports :: Successfully returned sgetColumntoTotalSelected");
 		return $options;
-
 	}
 
 	/** Function to form the HTML for columns to total
@@ -1589,7 +1568,7 @@ function getEscapedColumns($selectedfields) {
 		return $options_list;
 	}
 
-	/** Function to get the  advanced filter criteria for an option
+	/** Function to get the advanced filter criteria for an option
 	 *  This function accepts The option in the advenced filter as an argument
 	 *  This generate filter criteria for the advanced filter
 	 *  It returns a HTML string of combo values
@@ -1614,10 +1593,7 @@ function getEscapedColumns($selectedfields) {
  */
 function getReportsModuleList($focus)
 {
-	global $adb;
-	global $app_list_strings;
-	//global $report_modules;
-	global $mod_strings;
+	global $adb, $app_list_strings, $mod_strings;
 	$modules = Array();
 	foreach($focus->module_list as $key=>$value) {
 		if(isPermitted($key,'index') == "yes") {
@@ -1635,15 +1611,13 @@ function getReportsModuleList($focus)
  */
 function getReportRelatedModules($module,$focus)
 {
-	global $app_list_strings;
-	global $related_modules;
-	global $mod_strings;
+	global $app_list_strings, $related_modules, $mod_strings;
 	$optionhtml = Array();
 	if(vtlib_isModuleActive($module)){
 		if(!empty($focus->related_modules[$module])) {
 			foreach($focus->related_modules[$module] as $rel_modules)
 			{
-				if(isPermitted($rel_modules,'index') == "yes")
+				if(isPermitted($rel_modules,'index') == 'yes')
 				{
 					$optionhtml []= $rel_modules;
 				}
@@ -1695,7 +1669,7 @@ function updateAdvancedCriteria($reportid, $advft_criteria, $advft_criteria_grou
 			}
 		}
 
-		$temp_val = explode(",",$adv_filter_value);
+		$temp_val = explode(',',$adv_filter_value);
 		if(($column_info[4] == 'D' || ($column_info[4] == 'T' && $column_info[1] != 'time_start' && $column_info[1] != 'time_end') || ($column_info[4] == 'DT')) && ($column_info[4] != '' && $adv_filter_value != '' ))
 		{
 			$val = Array();
