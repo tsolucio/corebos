@@ -1839,7 +1839,11 @@ class ReportRun extends CRMEntity {
 		{
 			if($columnstotalsql != '')
 			{
-				$reportquery = "select ".$columnstotalsql." ".$reportquery." ".$wheresql;
+				if (strpos($columnstotalsql,'.')===false) {
+					$reportquery = "select ".$columnstotalsql.' from (select DISTINCT '.$selectedcolumns." ".$reportquery." ".$wheresql.') as summary_calcs';
+				} else {
+					$reportquery = "select ".$columnstotalsql." ".$reportquery." ".$wheresql;
+				}
 			}
 		}else
 		{
@@ -2735,6 +2739,7 @@ class ReportRun extends CRMEntity {
 					} else {
 						$field_columnalias = $module_name."_".$fieldlist[3];
 					}
+					$query_columnalias = substr($field_columnalias, 0, strrpos($field_columnalias, '_'));
 				}
 
 				$field_permitted = false;
@@ -2771,32 +2776,32 @@ class ReportRun extends CRMEntity {
 					if($fieldlist[4] == 2)
 					{
 						if ($fieldlist[2]=='totaltime')
-							$stdfilterlist[$fieldcolname] = "sec_to_time(sum(time_to_sec(".$field."))) '".$field_columnalias."'"; 
+							$stdfilterlist[$fieldcolname] = "sec_to_time(sum(time_to_sec(".$query_columnalias."))) '".$field_columnalias."'";
 						else
-							$stdfilterlist[$fieldcolname] = "sum($field) '".$field_columnalias."'";
+							$stdfilterlist[$fieldcolname] = "sum($query_columnalias) '".$field_columnalias."'";
 					}
 					if($fieldlist[4] == 3)
 					{
 						//Fixed average calculation issue due to NULL values ie., when we use avg() function, NULL values will be ignored.to avoid this we use (sum/count) to find average.
 						//$stdfilterlist[$fieldcolname] = "avg(".$fieldlist[1].".".$fieldlist[2].") '".$fieldlist[3]."'";
 						if ($fieldlist[2]=='totaltime')
-							$stdfilterlist[$fieldcolname] = "sec_to_time(sum(time_to_sec(".$field."))/count(*)) '".$field_columnalias."'"; 
+							$stdfilterlist[$fieldcolname] = "sec_to_time(sum(time_to_sec(".$query_columnalias."))/count(*)) '".$field_columnalias."'";
 						else
-							$stdfilterlist[$fieldcolname] = "(sum($field)/count(*)) '".$field_columnalias."'";
+							$stdfilterlist[$fieldcolname] = "(sum($query_columnalias)/count(*)) '".$field_columnalias."'";
 					}
 					if($fieldlist[4] == 4)
 					{
 						if ($fieldlist[2]=='totaltime')
-							$stdfilterlist[$fieldcolname] = "sec_to_time(min(time_to_sec(".$field."))) '".$field_columnalias."'"; 
+							$stdfilterlist[$fieldcolname] = "sec_to_time(min(time_to_sec(".$query_columnalias."))) '".$field_columnalias."'";
 						else
-							$stdfilterlist[$fieldcolname] = "min($field) '".$field_columnalias."'";
+							$stdfilterlist[$fieldcolname] = "min($query_columnalias) '".$field_columnalias."'";
 					}
 					if($fieldlist[4] == 5)
 					{
 						if ($fieldlist[2]=='totaltime')
-							$stdfilterlist[$fieldcolname] = "sec_to_time(max(time_to_sec(".$field."))) '".$field_columnalias."'"; 
+							$stdfilterlist[$fieldcolname] = "sec_to_time(max(time_to_sec(".$query_columnalias."))) '".$field_columnalias."'";
 						else
-							$stdfilterlist[$fieldcolname] = "max($field) '".$field_columnalias."'";
+							$stdfilterlist[$fieldcolname] = "max($query_columnalias) '".$field_columnalias."'";
 					}
 				}
 			}
