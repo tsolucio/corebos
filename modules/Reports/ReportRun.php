@@ -3198,6 +3198,9 @@ class ReportRun extends CRMEntity {
 			$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
 			$count=0;
 			if(is_array($totalxls[0])) {
+				$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, getTranslatedString('Totals','Reports'), PHPExcel_Cell_DataType::TYPE_STRING);
+				$worksheet->getStyleByColumnAndRow($count, $rowcount)->applyFromArray($header_styles);
+				$count = $count + 1;
 				foreach($totalxls[0] as $key=>$value) {
 					$chdr=substr($key,-3,3);
 					$translated_str = in_array($chdr ,array_keys($mod_strings))?$mod_strings[$chdr]:$key;
@@ -3211,11 +3214,22 @@ class ReportRun extends CRMEntity {
 			foreach($totalxls as $key=>$array_value) {
 				$count = 0;
 				foreach($array_value as $hdr=>$value) {
-					$value = decode_html($value);
-					$worksheet->setCellValueExplicitByColumnAndRow($count, $key+$rowcount, $value, PHPExcel_Cell_DataType::TYPE_NUMERIC);
+					if ($count==0) {
+						$lbl = substr($hdr, 0, strrpos($hdr, '_'));
+						$mname = substr($lbl, 0, strpos($lbl, '_'));
+						$lbl = substr($lbl, strpos($lbl, '_')+1);
+						$lbl = str_replace('_', ' ', $lbl);
+						$lbl = getTranslatedString($lbl,$mname);
+						$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $lbl, PHPExcel_Cell_DataType::TYPE_STRING);
+						$worksheet->getStyleByColumnAndRow($count, $rowcount)->applyFromArray($header_styles);
+						$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
+						$count = $count + 1;
+					}
+					$value = str_replace(',', '.', $value);
+					$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $value, PHPExcel_Cell_DataType::TYPE_NUMERIC);
 					$count = $count + 1;
-					$workbook->getActiveSheet()->getRowDimension($rowcount+$count)->setRowHeight($xlsrowheight);
 				}
+				$rowcount++;
 			}
 		}
 		$workbookWriter = PHPExcel_IOFactory::createWriter($workbook, 'Excel5');
