@@ -1847,9 +1847,6 @@ class ReportRun extends CRMEntity {
 				$selectedcolumns = "''"; // "''" to get blank column name
 				$allColumnsRestricted = true;
 			}
-			if(in_array($this->primarymodule, getInventoryModules())) {
-				$selectedcolumns = ' distinct '. $selectedcolumns;
-			}
 			$reportquery = "select DISTINCT ".$selectedcolumns." ".$reportquery." ".$wheresql;
 		}
 		$reportquery = listQueryNonAdminChange($reportquery, $this->primarymodule);
@@ -1878,7 +1875,6 @@ class ReportRun extends CRMEntity {
 			echo '<br>'.$reportquery.'<br>';
 		}
 		return $reportquery;
-
 	}
 
 	/** function to get the report output in HTML,PDF,TOTAL,PRINT,PRINTTOTAL formats depends on the argument $outputformat
