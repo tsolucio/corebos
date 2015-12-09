@@ -3116,7 +3116,7 @@ class ReportRun extends CRMEntity {
 	}
 
 	function writeReportToExcelFile($fileName, $filterlist='') {
-		global $currentModule, $current_language;
+		global $currentModule, $current_language, $current_user;
 		$mod_strings = return_module_language($current_language, $currentModule);
 
 		require_once('include/PHPExcel/PHPExcel.php');
@@ -3180,7 +3180,9 @@ class ReportRun extends CRMEntity {
 					if ($FieldDataTypes[$hdr]=='currency') {
 						$csym = preg_replace('/[0-9,.-]/', '', $value);
 						$value = preg_replace('/[^0-9,.-]/', '', $value);
-						$value = str_replace(',', '.', $value);
+						$value = str_replace($user->currency_grouping_separator, '', $value);
+						if ($current_user->currency_decimal_separator!='.')
+							$value = str_replace($current_user->currency_decimal_separator, '.', $value);
 					}
 					$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $value, $celltype);
 					if ($FieldDataTypes[$hdr]=='currency') {
@@ -3225,7 +3227,9 @@ class ReportRun extends CRMEntity {
 						$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
 						$count = $count + 1;
 					}
-					$value = str_replace(',', '.', $value);
+					$value = str_replace($current_user->currency_grouping_separator, '', $value);
+					if ($current_user->currency_decimal_separator!='.')
+						$value = str_replace($current_user->currency_decimal_separator, '.', $value);
 					$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $value, PHPExcel_Cell_DataType::TYPE_NUMERIC);
 					$count = $count + 1;
 				}
