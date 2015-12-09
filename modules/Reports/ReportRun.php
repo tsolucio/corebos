@@ -3133,6 +3133,10 @@ class ReportRun extends CRMEntity {
 		);
 
 		if(isset($arr_val)) {
+			$FieldDataTypes = array();
+			foreach($arr_val[0] as $hdr=>$value) {
+				$FieldDataTypes[$hdr] = $fieldinfo[$hdr]->getFieldDataType();
+			}
 			$count = 0;
 			$rowcount = 1;
 			$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
@@ -3146,19 +3150,20 @@ class ReportRun extends CRMEntity {
 				$worksheet->getColumnDimensionByColumn($count)->setAutoSize(true);
 
 				$count = $count + 1;
+				if ($FieldDataTypes[$key]=='currency') {
+					$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, getTranslatedString('LBL_CURRENCY'), true);
+					$worksheet->getStyleByColumnAndRow($count, $rowcount)->applyFromArray($header_styles);
+					$worksheet->getColumnDimensionByColumn($count)->setAutoSize(true);
+					$count = $count + 1;
+				}
 			}
 
-			$FieldDataTypes = array();
-			foreach($arr_val[0] as $hdr=>$value) {
-				$FieldDataTypes[$hdr] = $fieldinfo[$hdr]->getFieldDataType();
-			}
 			$rowcount++;
 			$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
 			foreach($arr_val as $key=>$array_value) {
 				$count = 0;
 				foreach($array_value as $hdr=>$value) {
 					$value = decode_html($value);
-					global $log;$log->fatal($FieldDataTypes[$hdr]);
 					switch ($FieldDataTypes[$hdr]) {
 						case 'boolean':
 							$celltype = PHPExcel_Cell_DataType::TYPE_BOOL;
@@ -3172,7 +3177,16 @@ class ReportRun extends CRMEntity {
 							$celltype = PHPExcel_Cell_DataType::TYPE_STRING;
 							break;
 					}
+					if ($FieldDataTypes[$hdr]=='currency') {
+						$csym = preg_replace('/[0-9,.-]/', '', $value);
+						$value = preg_replace('/[^0-9,.-]/', '', $value);
+						$value = str_replace(',', '.', $value);
+					}
 					$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $value, $celltype);
+					if ($FieldDataTypes[$hdr]=='currency') {
+						$count = $count + 1;
+						$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $csym, PHPExcel_Cell_DataType::TYPE_STRING);
+					}
 					$count = $count + 1;
 				}
 				$rowcount++;
