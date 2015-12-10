@@ -1100,29 +1100,25 @@ function getTermsandConditions() {
 }
 
 /**
- * Create select options in a dropdown list.  To be used inside
- *  a reminder select statement in a vtiger_activity form.
+ * Create select options in a dropdown list. To be used inside a reminder select statement in an activity form.
  * param $start - start value
  * param $end - end value
  * param $fldname - vtiger_field name
  * param $selvalue - selected value
  */
 function getReminderSelectOption($start, $end, $fldname, $selvalue = '') {
-	global $log;
-	$log->debug("Entering getReminderSelectOption(" . $start . "," . $end . "," . $fldname . "," . $selvalue = '' . ") method ...");
-	global $mod_strings;
-	global $app_strings;
-
-	$def_sel = "";
-	$OPTION_FLD = "<SELECT name=" . $fldname . ">";
+	global $log, $mod_strings, $app_strings;
+	$log->debug("Entering getReminderSelectOption($start,$end,$fldname,$selvalue) method ...");
+	$def_sel = '';
+	$OPTION_FLD = '<SELECT name=' . $fldname . '>';
 	for ($i = $start; $i <= $end; $i++) {
 		if ($i == $selvalue)
-			$def_sel = "SELECTED";
-		$OPTION_FLD .= "<OPTION VALUE=" . $i . " " . $def_sel . ">" . $i . "</OPTION>\n";
-		$def_sel = "";
+			$def_sel = 'SELECTED';
+		$OPTION_FLD .= '<OPTION VALUE=' . $i . ' ' . $def_sel . '>' . $i . "</OPTION>\n";
+		$def_sel = '';
 	}
-	$OPTION_FLD .="</SELECT>";
-	$log->debug("Exiting getReminderSelectOption method ...");
+	$OPTION_FLD .= '</SELECT>';
+	$log->debug('Exiting getReminderSelectOption method ...');
 	return $OPTION_FLD;
 }
 
