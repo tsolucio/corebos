@@ -1106,11 +1106,11 @@ function getTermsandConditions() {
  * param $fldname - vtiger_field name
  * param $selvalue - selected value
  */
-function getReminderSelectOption($start, $end, $fldname, $selvalue = '') {
+function getReminderSelectOption($start, $end, $fldname, $selvalue = '', $class='') {
 	global $log, $mod_strings, $app_strings;
 	$log->debug("Entering getReminderSelectOption($start,$end,$fldname,$selvalue) method ...");
 	$def_sel = '';
-	$OPTION_FLD = '<SELECT name=' . $fldname . '>';
+	$OPTION_FLD = '<SELECT name=' . $fldname . (!empty($class)?" class='$class' ":'') . '>';
 	for ($i = $start; $i <= $end; $i++) {
 		if ($i == $selvalue)
 			$def_sel = 'SELECTED';

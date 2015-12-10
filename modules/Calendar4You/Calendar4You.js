@@ -6,6 +6,14 @@
  * All Rights Reserved.
  ********************************************************************************/
 jQuery.noConflict();
+// Get User Default calendar variables
+var Calendar_Reminder_On = 0; // false
+GlobalVariable_getVariable('Calendar_Reminder_On', 0, 'Calendar', gVTUserID).then(function(response) {
+	var obj = JSON.parse(response);
+	Calendar_Reminder_On = obj.Calendar_Reminder_On;
+}, function(error) {
+	Calendar_Reminder_On = 0; // false
+});
 
 function fnAddITSEvent(obj,CurrObj,start_date,end_date,start_hr,start_min,start_fmt,end_hr,end_min,end_fmt,viewOption,subtab,eventlist){
 	var tagName = document.getElementById(CurrObj);
@@ -73,8 +81,13 @@ function gITSshow(argg1,type,startdate,enddate,starthr,startmin,startfmt,endhr,e
 		while (document.EditView.contactlist.options.length > 0){
 			document.EditView.contactlist.remove(0);
 		}
-		document.getElementById('set_reminder2').checked = true;
-		fnhide('reminderOptions');
+		if (Calendar_Reminder_On) {
+			document.getElementById('set_reminder1').checked = true;
+			show('reminderOptions');
+		} else {
+			document.getElementById('set_reminder2').checked = true;
+			fnhide('reminderOptions');
+		}
 		document.EditView.recurringcheck.checked = false;
 		document.getElementById('repeatOptions').style.display="none";
 		while (document.EditView.selectedusers.options.length > 0){

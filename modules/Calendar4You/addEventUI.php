@@ -460,27 +460,18 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 						<table border=0>
 						<tr>
 						<td colspan=2>
-							<select class=small name="remdays">
 <?php
-for($m=0;$m<=31;$m++) {
-	echo "<option value='$m'>$m</option>";
-}
+	$default_calendar_reminder = GlobalVariable::getVariable('Calendar_Reminder_On', 0);
+	$rem_days = floor($default_calendar_reminder/(24*60));
+	$rem_hrs = floor(($default_calendar_reminder-$rem_days*24*60)/60);
+	$rem_min = ($default_calendar_reminder-$rem_days*24*60)%60;
+	echo getReminderSelectOption(0,31,'remdays',$rem_days,'small');
+	echo '&nbsp;'.$c_mod_strings['LBL_REMAINDER_DAY'];
+	echo '&nbsp;'.getReminderSelectOption(0,23,'remhrs',$rem_hrs,'small');
+	echo '&nbsp;'.$c_mod_strings['LBL_REMAINDER_HRS'];
+	echo '&nbsp;'.getReminderSelectOption(10,59,'remmin',$rem_min,'small');
+	echo '&nbsp;'.$c_mod_strings['LBL_MINUTES'].'&nbsp;'.$c_mod_strings['LBL_BEFOREEVENT'];
 ?>
-							</select><?php echo $c_mod_strings['LBL_REMAINDER_DAY']; ?>
-							<select class=small name="remhrs">
-<?php
-for($h=0;$h<=23;$h++) {
-	echo "<option value='$h'>$h</option>";
-}
-?>
-							</select><?php echo $c_mod_strings['LBL_REMAINDER_HRS']; ?>
-							<select class=small name="remmin">
-<?php
-for($min=10;$min<=59;$min++) {
-	echo "<option value='$min'>$min</option>";
-}
-?>
-							</select><?php echo $c_mod_strings['LBL_MINUTES']; ?>&nbsp;<?php echo $c_mod_strings['LBL_BEFOREEVENT'] ?>
 						</td>
 						</tr>
 						</table>
