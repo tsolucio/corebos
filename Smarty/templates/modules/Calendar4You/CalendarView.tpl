@@ -488,6 +488,7 @@ function hideITSEventInfo(){
                                         </tbody>
                                     </table>
                                     <br>
+                                    {if $Calendar_Modules_Panel_Visible}
                                     <table class="dvtContentSpace" border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tbody>
                                             <tr>
@@ -505,6 +506,7 @@ function hideITSEventInfo(){
                                         </tbody>
                                     </table>
                                     <br>
+                                    {/if}
                                     <table class="dvtContentSpace" border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tbody>
                                             <tr>

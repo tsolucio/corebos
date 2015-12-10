@@ -310,6 +310,7 @@ if ($dat_fmt == '') {
 }
 $dat_fmt = str_replace("mm","MM",$dat_fmt);
 $smarty->assign('USER_DATE_FORMAT', $dat_fmt);
+$smarty->assign('Calendar_Modules_Panel_Visible', GlobalVariable::getVariable('Calendar_Modules_Panel_Visible', 1));
 
 $smarty->display('modules/Calendar4You/CalendarView.tpl');
 include_once 'modules/Calendar4You/addEventUI.php';

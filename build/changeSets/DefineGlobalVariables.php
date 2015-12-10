@@ -43,6 +43,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'GoogleCalendarSync_BaseUpdateMonths',
 				'GoogleCalendarSync_BaseCreateMonths',
 				'Report.Excel.Export.RowHeight',
+				'Calendar_Modules_Panel_Visible',
 			);
 			
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');
