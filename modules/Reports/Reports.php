@@ -1385,36 +1385,29 @@ function getEscapedColumns($selectedfields) {
 	 *  and generated the html for that vtiger_fields
 	 *  It returns the HTML of the vtiger_fields along with the check boxes
 	 */
-	function sgetColumntoTotalSelected($primarymodule,$secondarymodule,$reportid)
-	{
+	function sgetColumntoTotalSelected($primarymodule,$secondarymodule,$reportid) {
 		global $adb, $log;
 		$options = Array();
-		if($reportid != "")
-		{
-			$ssql = "select vtiger_reportsummary.* from vtiger_reportsummary inner join vtiger_report on vtiger_report.reportid = vtiger_reportsummary.reportsummaryid where vtiger_report.reportid=?";
+		if($reportid != '') {
+			$ssql = 'select vtiger_reportsummary.*
+				from vtiger_reportsummary
+				inner join vtiger_report on vtiger_report.reportid = vtiger_reportsummary.reportsummaryid
+				where vtiger_report.reportid=?';
 			$result = $adb->pquery($ssql, array($reportid));
-			if($result)
-			{
-				$reportsummaryrow = $adb->fetch_array($result);
-
-				do
-				{
-					$this->columnssummary[] = $reportsummaryrow["columnname"];
-
-				}while($reportsummaryrow = $adb->fetch_array($result));
+			if($result) {
+				while($reportsummaryrow = $adb->fetch_array($result)) {
+					$this->columnssummary[] = $reportsummaryrow['columnname'];
+				}
 			}
 		}
 		$options []= $this->sgetColumnstoTotalHTML($primarymodule,0);
-		if($secondarymodule != "")
-		{
-			$secondarymodule = explode(":",$secondarymodule);
-			for($i=0;$i < count($secondarymodule) ;$i++)
-			{
+		if($secondarymodule != '') {
+			$secondarymodule = explode(':',$secondarymodule);
+			for($i=0;$i < count($secondarymodule) ;$i++) {
 				$options []= $this->sgetColumnstoTotalHTML($secondarymodule[$i],($i+1));
 			}
 		}
-
-		$log->info("Reports :: Successfully returned sgetColumntoTotalSelected");
+		$log->info('Reports :: Successfully returned sgetColumntoTotalSelected');
 		return $options;
 	}
 
@@ -1505,7 +1498,6 @@ function getEscapedColumns($selectedfields) {
 				{
 					$selectedcolumn = "";
 					$selectedcolumn1 = "";
-
 					for($i=0;$i < count($this->columnssummary) ;$i++)
 					{
 						$selectedcolumnarray = explode(":",$this->columnssummary[$i]);
