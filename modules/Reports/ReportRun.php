@@ -34,6 +34,7 @@ class ReportRun extends CRMEntity {
 	var $_columnslist    = false;
 	var $_stdfilterlist = false;
 	var $_columnstotallist = false;
+	var $_columnstotallistaddtoselect = false;
 	var $_advfiltersql = false;
 
 	var $append_currency_symbol_to_value = array('Products_Unit_Price','Services_Price',
@@ -1777,7 +1778,7 @@ class ReportRun extends CRMEntity {
 		$groupslist = $this->getGroupingList($reportid);
 		$groupTimeList = $this->getGroupByTimeList($reportid);
 		$stdfilterlist = $this->getStdFilterList($reportid);
-		$columnstotallist = $this->getColumnsTotal($reportid);
+		$columnstotallist = $this->getColumnsTotal($reportid,$columnlist);
 		$advfiltersql = $this->getAdvFilterSql($reportid);
 
 		$this->totallist = $columnstotallist;
@@ -1840,11 +1841,28 @@ class ReportRun extends CRMEntity {
 		{
 			if($columnstotalsql != '')
 			{
-				if (strpos($columnstotalsql,'.')===false) {
-					$reportquery = "select ".$columnstotalsql.' from (select DISTINCT '.$selectedcolumns." ".$reportquery." ".$wheresql.') as summary_calcs';
+				if (isset($this->_columnstotallistaddtoselect) and is_array($this->_columnstotallistaddtoselect) and count($this->_columnstotallistaddtoselect)>0) {
+					$_columnstotallistaddtoselect = ', '.implode(', ', $this->_columnstotallistaddtoselect);
+					$totalscolalias = array();
+					foreach ($this->_columnstotallistaddtoselect as $key => $value) {
+						list($void,$calias) = explode(' AS ',$value);
+						$calias = str_replace("'", '', $calias);
+						$totalscolalias[] = $calias;
+					}
+					$totalsselectedcolumns = $columnlist;
+					foreach ($columnlist as $key => $value) {
+						foreach ($totalscolalias as $cal) {
+							if (strpos($value, $cal)) {
+								unset($totalsselectedcolumns[$key]);
+								break;
+							}
+						}
+					}
+					$totalsselectedcolumns = implode(', ',$totalsselectedcolumns);
 				} else {
-					$reportquery = "select ".$columnstotalsql." ".$reportquery." ".$wheresql;
+					$_columnstotallistaddtoselect = '';
 				}
+				$reportquery = "select ".$columnstotalsql.' from (select DISTINCT '.$totalsselectedcolumns.$_columnstotallistaddtoselect." ".$reportquery." ".$wheresql.') as summary_calcs';
 			}
 		}else
 		{
@@ -2702,7 +2720,7 @@ class ReportRun extends CRMEntity {
 		}
 	}
 
-	function getColumnsTotal($reportid)
+	function getColumnsTotal($reportid,$selectlist='')
 	{
 		// Have we initialized it already?
 		if($this->_columnstotallist !== false) {
@@ -2721,12 +2739,14 @@ class ReportRun extends CRMEntity {
 		$coltotalsql .= " where vtiger_report.reportid =?";
 
 		$result = $adb->pquery($coltotalsql, array($reportid));
-
+		$seltotalcols = array();
+		$stdfilterlist = array();
 		while($coltotalrow = $adb->fetch_array($result))
 		{
 			$fieldcolname = $coltotalrow["columnname"];
 			if($fieldcolname != "none")
 			{
+				$sckey = $scval = '';
 				$fieldlist = explode(":",$fieldcolname);
 				$field_tablename = $fieldlist[1];
 				$field_columnname = $fieldlist[2];
@@ -2740,9 +2760,13 @@ class ReportRun extends CRMEntity {
 					} else {
 						$field_columnalias = $module_name."_".$fieldlist[3];
 					}
+					$field_columnalias = decode_html($field_columnalias);
 					$query_columnalias = substr($field_columnalias, 0, strrpos($field_columnalias, '_'));
+					$query_columnalias = str_replace(array(' ','&'),'_',$query_columnalias);
 				}
-
+				$sckey = $field_tablename.':'.$field_columnname.':'.$query_columnalias.':'.$field_columnname.':N'; // vtiger_invoice:subject:Invoice_Subject:subject:V
+				$scval = $field_tablename.'.'.$field_columnname." AS '".$query_columnalias."'"; // vtiger_invoice.subject AS 'Invoice_Subject'
+				$seltotalcols[$sckey] = $scval;
 				$field_permitted = false;
 				if(CheckColumnPermission($field_tablename,$field_columnname,$module_name) != "false"){
 					$field_permitted = true;
@@ -2761,18 +2785,18 @@ class ReportRun extends CRMEntity {
 				*/
 				if($field_permitted == true)
 				{
-					$field = $field_tablename.".".$field_columnname;
 					if($field_tablename == 'vtiger_products' && $field_columnname == 'unit_price') {
 						// Query needs to be rebuild to get the value in user preferred currency. [innerProduct and actual_unit_price are table and column alias.]
-						$field = " innerProduct.actual_unit_price";
+						$query_columnalias = " innerProduct.actual_unit_price";
 					}
 					if($field_tablename == 'vtiger_service' && $field_columnname == 'unit_price') {
 						// Query needs to be rebuild to get the value in user preferred currency. [innerProduct and actual_unit_price are table and column alias.]
-						$field = " innerService.actual_unit_price";
+						$query_columnalias = " innerService.actual_unit_price";
 					}
 					if(($field_tablename == 'vtiger_invoice' || $field_tablename == 'vtiger_quotes' || $field_tablename == 'vtiger_purchaseorder' || $field_tablename == 'vtiger_salesorder')
 							&& ($field_columnname == 'total' || $field_columnname == 'subtotal' || $field_columnname == 'discount_amount' || $field_columnname == 's_h_amount')) {
-						$field = " $field_tablename.$field_columnname/$field_tablename.conversion_rate ";
+						$query_columnalias = " $query_columnalias/currency_conversion_rate ";
+						$seltotalcols[$field_tablename.':conversion_rate:'.$module_name.'_Conversion_Rate:conversion_rate:N'] = "$field_tablename.conversion_rate AS currency_conversion_rate";
 					}
 					if($fieldlist[4] == 2)
 					{
@@ -2809,7 +2833,8 @@ class ReportRun extends CRMEntity {
 		}
 		// Save the information
 		$this->_columnstotallist = $stdfilterlist;
-
+		$stc = array_diff($seltotalcols,$selectlist);
+		$this->_columnstotallistaddtoselect = $stc;
 		$log->info("ReportRun :: Successfully returned getColumnsTotal".$reportid);
 		return $stdfilterlist;
 	}
