@@ -142,7 +142,6 @@ class ReportRun extends CRMEntity {
 			}
 			else
 			{
-				$this->labelMapping[$selectedfields[2]] = str_replace(" ","_",$fieldlabel);
 				$header_label = $selectedfields[2]; // Header label to be displayed in the reports table
 				// To check if the field in the report is a custom field
 				// and if yes, get the label of this custom field freshly from the vtiger_field as it would have been changed.
@@ -1963,49 +1962,45 @@ class ReportRun extends CRMEntity {
 			}
 			// END
 
-			if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1)
+			if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1) {
 				$picklistarray = $this->getAccessPickListValues();
+			}
 			if($result)
 			{
 				$y=$adb->num_fields($result);
+				$noofrows = $adb->num_rows($result);
+				$custom_field_values = $adb->fetch_array($result);
+				$groupslist = $this->getGroupingList($this->reportid);
+				$column_definitions = $adb->getFieldsDefinition($result);
 				$arrayHeaders = Array();
+				$header = '';
 				for ($x=0; $x<$y; $x++)
 				{
 					$fld = $adb->field_name($result, $x);
-					if(in_array($this->getLstringforReportHeaders($fld->name), $arrayHeaders))
-					{
-						$headerLabel = str_replace("_"," ",$fld->name);
-						$arrayHeaders[] = $headerLabel;
+					$fld_type = $column_definitions[$x]->type;
+					list($module, $fieldLabel) = explode('_', $fld->name, 2);
+					$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
+					if(!empty($fieldInfo)) {
+						$field = WebserviceField::fromArray($adb, $fieldInfo);
 					}
-					else
-					{
-						$headerLabel = str_replace($modules," ",$this->getLstringforReportHeaders($fld->name));
-						$headerLabel = str_replace("_"," ",$this->getLstringforReportHeaders($fld->name));
-						$arrayHeaders[] = $headerLabel;
+					if(!empty($fieldInfo)) {
+						$headerLabel = getTranslatedString($field->getFieldLabelKey(), $module);
+					} else {
+						$headerLabel = getTranslatedString(str_replace('_', " ", $fieldLabel), $module);
 					}
 					/*STRING TRANSLATION starts */
-					$mod_name = explode(' ',$headerLabel,2);
-					$moduleLabel ='';
-					if(in_array($mod_name[0],$modules_selected)){
-						$moduleLabel = getTranslatedString($mod_name[0],$mod_name[0]);
-					}
+					$moduleLabel = '';
+					if(in_array($module,$modules_selected))
+						$moduleLabel = getTranslatedString($module,$module);
 
-					if(!empty($this->secondarymodule)){
-						if($moduleLabel!=''){
-							$headerLabel_tmp = $moduleLabel." ".getTranslatedString($mod_name[1],$mod_name[0]);
-						} else {
-							$headerLabel_tmp = getTranslatedString($mod_name[0]." ".$mod_name[1]);
-						}
-					} else {
-						if($moduleLabel!=''){
-							$headerLabel_tmp = getTranslatedString($mod_name[1],$mod_name[0]);
-						} else {
-							$headerLabel_tmp = getTranslatedString($mod_name[0]." ".$mod_name[1]);
+					if(empty($headerLabel)) {
+							$headerLabel = getTranslatedString(str_replace('_', " ", $fld->name));
+					}
+					if(!empty($this->secondarymodule)) {
+						if($moduleLabel != '') {
+							$headerLabel = $moduleLabel." ". $headerLabel;
 						}
 					}
-					if($headerLabel == $headerLabel_tmp) $headerLabel = getTranslatedString($headerLabel_tmp);
-					else $headerLabel = $headerLabel_tmp;
-					/*STRING TRANSLATION ends */
 					$header .= "<td class='rptCellLabel'>".$headerLabel."</td>";
 
 					// Performance Optimization: If direct output is required
@@ -2183,22 +2178,21 @@ class ReportRun extends CRMEntity {
 							$field = WebserviceField::fromArray($adb, $fieldInfo);
 						}
 						if(!empty($fieldInfo)) {
-							$translatedLabel = getTranslatedString($field->getFieldLabelKey(), $module);
+							$headerLabel = getTranslatedString($field->getFieldLabelKey(), $module);
 						} else {
-							$translatedLabel = getTranslatedString(str_replace('_', " ", $fieldLabel), $module);
+							$headerLabel = getTranslatedString(str_replace('_', " ", $fieldLabel), $module);
 						}
 						/*STRING TRANSLATION starts */
 						$moduleLabel ='';
 						if(in_array($module,$modules_selected))
 							$moduleLabel = getTranslatedString($module,$module);
 
-						if(empty($translatedLabel)) {
-								$translatedLabel = getTranslatedString(str_replace('_', " ", $fld->name));
+						if(empty($headerLabel)) {
+								$headerLabel = getTranslatedString(str_replace('_', " ", $fld->name));
 						}
-						$headerLabel = $translatedLabel;
 						if(!empty($this->secondarymodule)) {
 							if($moduleLabel != '') {
-								$headerLabel = $moduleLabel." ". $translatedLabel;
+								$headerLabel = $moduleLabel." ". $headerLabel;
 							}
 						}
 						$fieldvalue = getReportFieldValue($this, $picklistarray, $fld,$custom_field_values, $i);
@@ -2458,56 +2452,52 @@ class ReportRun extends CRMEntity {
 
 			if($result)
 			{
-				$y=$adb->num_fields($result);
-				$arrayHeaders = Array();
-				for ($x=0; $x<$y; $x++)
-				{
-					$fld = $adb->field_name($result, $x);
-					if(in_array($this->getLstringforReportHeaders($fld->name), $arrayHeaders))
-					{
-						$headerLabel = str_replace("_"," ",$fld->name);
-						$arrayHeaders[] = $headerLabel;
-					}
-					else
-					{
-						$headerLabel = str_replace($modules," ",$this->getLstringforReportHeaders($fld->name));
-						$headerLabel = str_replace("_"," ",$this->getLstringforReportHeaders($fld->name));
-						$arrayHeaders[] = $headerLabel;
-					}
-					/*STRING TRANSLATION starts */
-					$mod_name = explode(' ',$headerLabel,2);
-					$moduleLabel ='';
-					if(in_array($mod_name[0],$modules_selected)){
-						$moduleLabel = getTranslatedString($mod_name[0],$mod_name[0]);
-					}
-
-					if(!empty($this->secondarymodule)){
-						if($moduleLabel!=''){
-							$headerLabel_tmp = $moduleLabel." ".getTranslatedString($mod_name[1],$mod_name[0]);
-						} else {
-							$headerLabel_tmp = getTranslatedString($mod_name[0]." ".$mod_name[1]);
-						}
-					} else {
-						if($moduleLabel!=''){
-							$headerLabel_tmp = getTranslatedString($mod_name[1],$mod_name[0]);
-						} else {
-							$headerLabel_tmp = getTranslatedString($mod_name[0]." ".$mod_name[1]);
-						}
-					}
-					if($headerLabel == $headerLabel_tmp) $headerLabel = getTranslatedString($headerLabel_tmp);
-					else $headerLabel = $headerLabel_tmp;
-					/*STRING TRANSLATION ends */
-					$header .= "<th>".$headerLabel."</th>";
-				}
 				$noofrows = $adb->num_rows($result);
 				$custom_field_values = $adb->fetch_array($result);
 				$groupslist = $this->getGroupingList($this->reportid);
-
 				$column_definitions = $adb->getFieldsDefinition($result);
-
-				do
+				$y=$adb->num_fields($result);
+				$arrayHeaders = Array();
+				$header = '';
+				for ($x=0; $x<$y-1; $x++)
 				{
+					$fld = $adb->field_name($result, $x);
+					$fld_type = $column_definitions[$x]->type;
+					list($module, $fieldLabel) = explode('_', $fld->name, 2);
+					$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
+					if(!empty($fieldInfo)) {
+						$field = WebserviceField::fromArray($adb, $fieldInfo);
+					}
+					if(!empty($fieldInfo)) {
+						$headerLabel = getTranslatedString($field->getFieldLabelKey(), $module);
+					} else {
+						$headerLabel = getTranslatedString(str_replace('_', " ", $fieldLabel), $module);
+					}
+					/*STRING TRANSLATION starts */
+					$moduleLabel = '';
+					if(in_array($module,$modules_selected))
+						$moduleLabel = getTranslatedString($module,$module);
+
+					if(empty($headerLabel)) {
+							$headerLabel = getTranslatedString(str_replace('_', " ", $fld->name));
+					}
+					if(!empty($this->secondarymodule)) {
+						if($moduleLabel != '') {
+							$headerLabel = $moduleLabel." ". $headerLabel;
+						}
+					}
+					$header .= "<th>".$headerLabel."</th>";
+				}
+
+				$valtemplate = '';
+				$lastvalue = '';
+				$secondvalue = '';
+				$thirdvalue = '';
+				do {
 					$arraylists = Array();
+					$newvalue = '';
+					$snewvalue = '';
+					$tnewvalue = '';
 					if(count($groupslist) == 1)
 					{
 						$newvalue = $custom_field_values[0];
@@ -2887,38 +2877,6 @@ class ReportRun extends CRMEntity {
 		return $sSQL;
 	}
 
-	/** Function to convert the Report Header Names into i18n
-	 *  @param $fldname: Type Varchar
-	 *  Returns Language Converted Header Strings
-	 **/
-	function getLstringforReportHeaders($fldname)
-	{
-		global $modules,$current_language,$current_user,$app_strings;
-		$rep_header = ltrim($fldname);
-		$rep_header = decode_html($rep_header);
-		$labelInfo = explode('_', $rep_header);
-		$rep_module = $labelInfo[0];
-		if(is_array($this->labelMapping) && !empty($this->labelMapping[$rep_header])) {
-			$rep_header = $this->labelMapping[$rep_header];
-		} else {
-			if($rep_module == 'LBL') {
-				$rep_module = '';
-			}
-			array_shift($labelInfo);
-			$fieldLabel = decode_html(implode("_",$labelInfo));
-			$rep_header_temp = preg_replace("/\s+/","_",$fieldLabel);
-			$rep_header = "$rep_module $fieldLabel";
-		}
-		$curr_symb = "";
-		$fieldLabel = ltrim(str_replace($rep_module, '', $rep_header), '_');
-		$fieldInfo = getFieldByReportLabel($rep_module, $fieldLabel);
-		if($fieldInfo['uitype'] == '71') {
-			$curr_symb = " (".$app_strings['LBL_IN']." ".$current_user->currency_symbol.")";
-		}
-		$rep_header .=$curr_symb;
-		return $rep_header;
-	}
-
 	/** Function to get picklist value array based on profile returns permitted fields in array format */
 	function getAccessPickListValues()
 	{
@@ -3026,13 +2984,14 @@ class ReportRun extends CRMEntity {
 				}
 			}
 			$count = 0;
+			$headerHTML = '';
 			foreach($arr_val[0] as $key=>$value) {
-				$headerHTML .= '<td width="'.$col_width[$count].'" bgcolor="#DDDDDD"><b>'.$this->getLstringforReportHeaders($key).'</b></td>';
+				$headerHTML .= '<td width="'.$col_width[$count].'" bgcolor="#DDDDDD"><b>'.$key.'</b></td>';
 				$count = $count + 1;
 			}
-
+			$dataHTML = '';
 			foreach($arr_val as $key=>$array_value) {
-				$valueHTML = "";
+				$valueHTML = '';
 				$count = 0;
 				foreach($array_value as $hd=>$value) {
 					$valueHTML .= '<td width="'.$col_width[$count].'">'.$value.'</td>';
