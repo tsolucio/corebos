@@ -673,9 +673,7 @@ class Reports extends CRMEntity{
 			$fieldlabel1 = str_replace(array(" "),"_",$fieldlabel);
 			$optionvalue = $fieldtablename.":".$fieldcolname.":".$module."_".$fieldlabel1.":".$fieldname.":".$fieldtypeofdata;
 			$this->adv_rel_fields[$fieldtypeofdata][] = '$'.$module.'#'.$fieldname.'$'."::".getTranslatedString($module,$module)." ".getTranslatedString($fieldlabel,$module);
-			//added to escape attachments fields in Reports as we have multiple attachments
-			if($module != 'HelpDesk' || $fieldname !='filename')
-				$module_columnlist[$optionvalue] = $fieldlabel;
+			$module_columnlist[$optionvalue] = $fieldlabel;
 		}
 		$blockname = getBlockName($block);
 		if($blockname == 'LBL_RELATED_PRODUCTS' && in_array($module,getInventoryModules())) {
