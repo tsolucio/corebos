@@ -3083,6 +3083,8 @@ class ReportRun extends CRMEntity {
 			foreach($arr_val[0] as $hdr=>$value) {
 				$FieldDataTypes[$hdr] = $fieldinfo[$hdr]->getFieldDataType();
 			}
+			$BoolTrue = getTranslatedString('LBL_YES');
+			//$BoolFalse = getTranslatedString('LBL_NO');
 			$count = 0;
 			$rowcount = 1;
 			$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
@@ -3113,6 +3115,7 @@ class ReportRun extends CRMEntity {
 					switch ($FieldDataTypes[$hdr]) {
 						case 'boolean':
 							$celltype = PHPExcel_Cell_DataType::TYPE_BOOL;
+							$value = ($value==$BoolTrue ? 1:0);
 							break;
 						case 'integer':
 						case 'double':
@@ -3126,7 +3129,7 @@ class ReportRun extends CRMEntity {
 					if ($FieldDataTypes[$hdr]=='currency') {
 						$csym = preg_replace('/[0-9,.-]/', '', $value);
 						$value = preg_replace('/[^0-9,.-]/', '', $value);
-						$value = str_replace($user->currency_grouping_separator, '', $value);
+						$value = str_replace($current_user->currency_grouping_separator, '', $value);
 						if ($current_user->currency_decimal_separator!='.')
 							$value = str_replace($current_user->currency_decimal_separator, '.', $value);
 					}
@@ -3145,41 +3148,43 @@ class ReportRun extends CRMEntity {
 			$rowcount++;
 			$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
 			$count=0;
-			if(is_array($totalxls[0])) {
-				$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, getTranslatedString('Totals','Reports'), PHPExcel_Cell_DataType::TYPE_STRING);
-				$worksheet->getStyleByColumnAndRow($count, $rowcount)->applyFromArray($header_styles);
-				$count = $count + 1;
-				foreach($totalxls[0] as $key=>$value) {
-					$chdr=substr($key,-3,3);
-					$translated_str = in_array($chdr ,array_keys($mod_strings))?$mod_strings[$chdr]:$key;
-					$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $translated_str, PHPExcel_Cell_DataType::TYPE_STRING);
+			if(isset($totalxls) and is_array($totalxls) and count($totalxls)>0) {
+				if (is_array($totalxls[0])) {
+					$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, getTranslatedString('Totals','Reports'), PHPExcel_Cell_DataType::TYPE_STRING);
 					$worksheet->getStyleByColumnAndRow($count, $rowcount)->applyFromArray($header_styles);
 					$count = $count + 1;
-				}
-			}
-			$rowcount++;
-			$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
-			foreach($totalxls as $key=>$array_value) {
-				$count = 0;
-				foreach($array_value as $hdr=>$value) {
-					if ($count==0) {
-						$lbl = substr($hdr, 0, strrpos($hdr, '_'));
-						$mname = substr($lbl, 0, strpos($lbl, '_'));
-						$lbl = substr($lbl, strpos($lbl, '_')+1);
-						$lbl = str_replace('_', ' ', $lbl);
-						$lbl = getTranslatedString($lbl,$mname);
-						$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $lbl, PHPExcel_Cell_DataType::TYPE_STRING);
+					foreach($totalxls[0] as $key=>$value) {
+						$chdr=substr($key,-3,3);
+						$translated_str = in_array($chdr ,array_keys($mod_strings))?$mod_strings[$chdr]:$key;
+						$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, decode_html($translated_str), PHPExcel_Cell_DataType::TYPE_STRING);
 						$worksheet->getStyleByColumnAndRow($count, $rowcount)->applyFromArray($header_styles);
-						$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
 						$count = $count + 1;
 					}
-					$value = str_replace($current_user->currency_grouping_separator, '', $value);
-					if ($current_user->currency_decimal_separator!='.')
-						$value = str_replace($current_user->currency_decimal_separator, '.', $value);
-					$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $value, PHPExcel_Cell_DataType::TYPE_NUMERIC);
-					$count = $count + 1;
 				}
 				$rowcount++;
+				$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
+				foreach($totalxls as $key=>$array_value) {
+					$count = 0;
+					foreach($array_value as $hdr=>$value) {
+						if ($count==0) {
+							$lbl = substr($hdr, 0, strrpos($hdr, '_'));
+							$mname = substr($lbl, 0, strpos($lbl, '_'));
+							$lbl = substr($lbl, strpos($lbl, '_')+1);
+							$lbl = str_replace('_', ' ', $lbl);
+							$lbl = getTranslatedString($lbl,$mname);
+							$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, decode_html($lbl), PHPExcel_Cell_DataType::TYPE_STRING);
+							$worksheet->getStyleByColumnAndRow($count, $rowcount)->applyFromArray($header_styles);
+							$workbook->getActiveSheet()->getRowDimension($rowcount)->setRowHeight($xlsrowheight);
+							$count = $count + 1;
+						}
+						$value = str_replace($current_user->currency_grouping_separator, '', $value);
+						if ($current_user->currency_decimal_separator!='.')
+							$value = str_replace($current_user->currency_decimal_separator, '.', $value);
+						$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $value, PHPExcel_Cell_DataType::TYPE_NUMERIC);
+						$count = $count + 1;
+					}
+					$rowcount++;
+				}
 			}
 		}
 		$workbookWriter = PHPExcel_IOFactory::createWriter($workbook, 'Excel5');
