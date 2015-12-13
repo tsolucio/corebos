@@ -1837,6 +1837,7 @@ class ReportRun extends CRMEntity {
 		{
 			if($columnstotalsql != '')
 			{
+				$totalsselectedcolumns = $columnlist;
 				if (isset($this->_columnstotallistaddtoselect) and is_array($this->_columnstotallistaddtoselect) and count($this->_columnstotallistaddtoselect)>0) {
 					$_columnstotallistaddtoselect = ', '.implode(', ', $this->_columnstotallistaddtoselect);
 					$totalscolalias = array();
@@ -1845,7 +1846,6 @@ class ReportRun extends CRMEntity {
 						$calias = str_replace("'", '', $calias);
 						$totalscolalias[] = $calias;
 					}
-					$totalsselectedcolumns = $columnlist;
 					foreach ($columnlist as $key => $value) {
 						foreach ($totalscolalias as $cal) {
 							if (strpos($value, $cal)) {
@@ -1854,10 +1854,10 @@ class ReportRun extends CRMEntity {
 							}
 						}
 					}
-					$totalsselectedcolumns = implode(', ',$totalsselectedcolumns);
 				} else {
 					$_columnstotallistaddtoselect = '';
 				}
+				$totalsselectedcolumns = implode(', ',$totalsselectedcolumns);
 				$reportquery = "select ".$columnstotalsql.' from (select DISTINCT '.$totalsselectedcolumns.$_columnstotallistaddtoselect." ".$reportquery." ".$wheresql.') as summary_calcs';
 			}
 		}else
