@@ -1489,7 +1489,7 @@ function getEscapedColumns($selectedfields) {
 		{
 			$typeofdata = explode("~",$columntototalrow["typeofdata"]);
 			$columntototalrow['fieldlabel'] = decode_html($columntototalrow['fieldlabel']);
-			if($typeofdata[0] == "N" || $typeofdata[0] == "NN" || $typeofdata[0] == "I" || $typeofdata[0] == "T" || $columntototalrow['columnname']=='totaltime')
+			if(($typeofdata[0] == "N" || $typeofdata[0] == "NN" || $typeofdata[0] == "I" || $typeofdata[0] == "T" || $columntototalrow['columnname']=='totaltime') && ($columntototalrow['uitype']!=10 and $columntototalrow['uitype']!=101))
 			{
 				$options = Array();
 				if(!empty($_REQUEST['record'])) {
