@@ -7,12 +7,12 @@
  ********************************************************************************/
 jQuery.noConflict();
 // Get User Default calendar variables
-var Calendar_Reminder_On = 0; // false
-GlobalVariable_getVariable('Calendar_Reminder_On', 0, 'Calendar', gVTUserID).then(function(response) {
+var Calendar_Default_Reminder_Minutes = 0; // false
+GlobalVariable_getVariable('Calendar_Default_Reminder_Minutes', 0, 'Calendar', gVTUserID).then(function(response) {
 	var obj = JSON.parse(response);
-	Calendar_Reminder_On = obj.Calendar_Reminder_On;
+	Calendar_Default_Reminder_Minutes = obj.Calendar_Default_Reminder_Minutes;
 }, function(error) {
-	Calendar_Reminder_On = 0; // false
+	Calendar_Default_Reminder_Minutes = 0; // false
 });
 
 function fnAddITSEvent(obj,CurrObj,start_date,end_date,start_hr,start_min,start_fmt,end_hr,end_min,end_fmt,viewOption,subtab,eventlist){
@@ -81,10 +81,12 @@ function gITSshow(argg1,type,startdate,enddate,starthr,startmin,startfmt,endhr,e
 		while (document.EditView.contactlist.options.length > 0){
 			document.EditView.contactlist.remove(0);
 		}
-		if (Calendar_Reminder_On) {
+		if (Calendar_Default_Reminder_Minutes>0) {
 			document.getElementById('set_reminder1').checked = true;
+			document.getElementById('set_reminder2').checked = false;
 			show('reminderOptions');
 		} else {
+			document.getElementById('set_reminder1').checked = false;
 			document.getElementById('set_reminder2').checked = true;
 			fnhide('reminderOptions');
 		}

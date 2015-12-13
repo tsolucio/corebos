@@ -461,7 +461,7 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 						<tr>
 						<td colspan=2>
 <?php
-	$default_calendar_reminder = GlobalVariable::getVariable('Calendar_Reminder_On', 0);
+	$default_calendar_reminder = GlobalVariable::getVariable('Calendar_Default_Reminder_Minutes', 0);
 	$rem_days = floor($default_calendar_reminder/(24*60));
 	$rem_hrs = floor(($default_calendar_reminder-$rem_days*24*60)/60);
 	$rem_min = ($default_calendar_reminder-$rem_days*24*60)%60;
