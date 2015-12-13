@@ -1,13 +1,12 @@
 {*<!--
-	/*********************************************************************************
-	 ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
-	 * ("License"); You may not use this file except in compliance with the License
-	 * The Original Code is:  vtiger CRM Open Source
-	 * The Initial Developer of the Original Code is vtiger.
-	 * Portions created by vtiger are Copyright (C) vtiger.
-	 * All Rights Reserved.
-	 *
-	 ********************************************************************************/
+/*********************************************************************************
+ ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
+ * All Rights Reserved.
+ ********************************************************************************/
 -->*}
 <br>
 <script type="text/javascript">
@@ -349,6 +348,6 @@ function goToPrintReport(id) {ldelim}
 	var advft_criteria = $('advft_criteria').value;
 	var advft_criteria_groups = $('advft_criteria_groups').value;
 	
-	window.open("index.php?module=Reports&action=ReportsAjax&file=PrintReport&record="+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups,"{$MOD.LBL_Print_REPORT}","width=800,height=650,resizable=1,scrollbars=1,left=100");
+	window.open("index.php?module=Reports&action=ReportsAjax&file=PrintReport&record="+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups,"{$MOD.LBL_PRINT_REPORT}","width=800,height=650,resizable=1,scrollbars=1,left=100");
 {rdelim}
 </script>

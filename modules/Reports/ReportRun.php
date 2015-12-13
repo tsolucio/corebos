@@ -87,19 +87,20 @@ class ReportRun extends CRMEntity {
 
 		while($columnslistrow = $adb->fetch_array($result))
 		{
-			$fieldname ="";
+			$fieldname = '';
 			$fieldcolname = decode_html($columnslistrow['columnname']);
+			if (strpos($fieldcolname, ':')===false) continue;
 			list($tablename,$colname,$module_field,$fieldname,$single) = explode(":",$fieldcolname);
 			$module_field = decode_html($module_field);
 			list($module,$field) = explode("_",$module_field,2);
 			$inventory_fields = array('quantity','listprice','serviceid','productid','discount','comment');
 			$inventory_modules = getInventoryModules();
 			require('user_privileges/user_privileges_'.$current_user->id.'.php');
-			if(sizeof($permitted_fields[$module]) == 0 && $is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1)
+			if((!isset($permitted_fields[$module]) || sizeof($permitted_fields[$module]) == 0) && $is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1)
 			{
 				$permitted_fields[$module] = $this->getaccesfield($module);
 			}
-			if(in_array($module,$inventory_modules) and is_array($permitted_fields[$module])){
+			if(in_array($module,$inventory_modules) and isset($permitted_fields[$module]) and is_array($permitted_fields[$module])){
 				$permitted_fields[$module] = array_merge($permitted_fields[$module],$inventory_fields);
 			}
 			$selectedfields = explode(":",$fieldcolname);
@@ -305,14 +306,13 @@ class ReportRun extends CRMEntity {
 	 *  returns the case query for the escaped columns
 	 */
 	function getEscapedColumns($selectedfields) {
-
 		$tableName = $selectedfields[0];
 		$columnName = $selectedfields[1];
 		$moduleFieldLabel = $selectedfields[2];
 		$fieldName = $selectedfields[3];
 		list($moduleName, $fieldLabel) = explode('_', $moduleFieldLabel, 2);
 		$fieldInfo = getFieldByReportLabel($moduleName, $fieldLabel);
-
+		$queryColumn = '';
 		if($moduleName == 'ModComments' && $fieldName == 'creator') {
 			$concatSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_usersModComments.first_name',
 															'last_name' => 'vtiger_usersModComments.last_name'), 'Users');
@@ -337,10 +337,7 @@ class ReportRun extends CRMEntity {
 	 */
 	function getSelectedColumnsList($reportid)
 	{
-
-		global $adb;
-		global $modules;
-		global $log;
+		global $adb, $modules, $log;
 
 		$ssql = "select vtiger_selectcolumn.* from vtiger_report inner join vtiger_selectquery on vtiger_selectquery.queryid = vtiger_report.queryid";
 		$ssql .= " left join vtiger_selectcolumn on vtiger_selectcolumn.queryid = vtiger_selectquery.queryid where vtiger_report.reportid = ? ";
@@ -1313,21 +1310,17 @@ class ReportRun extends CRMEntity {
 
 		while($reportsortrow = $adb->fetch_array($result))
 		{
-			$fieldcolname = $reportsortrow["columnname"];
-			list($tablename,$colname,$module_field,$fieldname,$single) = explode(":",$fieldcolname);
-			$sortorder = $reportsortrow["sortorder"];
-
-			if($sortorder == "Ascending")
-			{
-				$sortorder = "ASC";
-
-			}elseif($sortorder == "Descending")
-			{
-				$sortorder = "DESC";
-			}
-
-			if($fieldcolname != "none")
-			{
+			$fieldcolname = $reportsortrow['columnname'];
+			if($fieldcolname != 'none') {
+				list($tablename,$colname,$module_field,$fieldname,$single) = explode(":",$fieldcolname);
+				$sortorder = $reportsortrow["sortorder"];
+				if($sortorder == "Ascending")
+				{
+					$sortorder = "ASC";
+				}elseif($sortorder == "Descending")
+				{
+					$sortorder = "DESC";
+				}
 				$selectedfields = explode(":",$fieldcolname);
 				if($selectedfields[0] == "vtiger_crmentity".$this->primarymodule)
 					$selectedfields[0] = "vtiger_crmentity";
@@ -1799,7 +1792,7 @@ class ReportRun extends CRMEntity {
 			$groupsquery = implode(", ",$groupslist);
 		}
 		if(isset($groupTimeList)){
-			$groupTimeQuery = implode(", ",$groupTimeList);
+			$groupTimeQuery = implode(', ',$groupTimeList);
 		}
 
 		//standard list
@@ -1810,11 +1803,15 @@ class ReportRun extends CRMEntity {
 		//columns to total list
 		if(isset($columnstotallist))
 		{
-			$columnstotalsql = implode(", ",$columnstotallist);
+			$columnstotalsql = implode(', ',$columnstotallist);
+		} else {
+			$columnstotalsql = '';
 		}
-		if($stdfiltersql != "")
+		if($stdfiltersql != '')
 		{
-			$wheresql = " and ".$stdfiltersql;
+			$wheresql = ' and '.$stdfiltersql;
+		} else {
+			$wheresql = '';
 		}
 
 		if(isset($filtersql) && $filtersql !== false) {
@@ -1916,6 +1913,7 @@ class ReportRun extends CRMEntity {
 		global $adb,$current_user,$php_max_execution_time;
 		global $modules,$app_strings, $mod_strings,$current_language;
 		require('user_privileges/user_privileges_'.$current_user->id.'.php');
+		$picklistarray = array();
 		$modules_selected = array();
 		$modules_selected[] = $this->primarymodule;
 		if(!empty($this->secondarymodule)){
@@ -2016,15 +2014,16 @@ class ReportRun extends CRMEntity {
 					echo '</tr><tr>';
 				}
 
-				$noofrows = $adb->num_rows($result);
-				$custom_field_values = $adb->fetch_array($result);
-				$groupslist = $this->getGroupingList($this->reportid);
-
-				$column_definitions = $adb->getFieldsDefinition($result);
-
-				do
-				{
+				$valtemplate = '';
+				$lastvalue = '';
+				$secondvalue = '';
+				$thirdvalue = '';
+				$sHTML = '';
+				do {
 					$arraylists = Array();
+					$newvalue = '';
+					$snewvalue = '';
+					$tnewvalue = '';
 					if(count($groupslist) == 1)
 					{
 						$newvalue = $custom_field_values[0];
@@ -2038,13 +2037,13 @@ class ReportRun extends CRMEntity {
 						$snewvalue = $custom_field_values[1];
 						$tnewvalue = $custom_field_values[2];
 					}
-					if($newvalue == "") $newvalue = "-";
+					if($newvalue == '') $newvalue = '-';
 
-					if($snewvalue == "") $snewvalue = "-";
+					if($snewvalue == '') $snewvalue = '-';
 
-					if($tnewvalue == "") $tnewvalue = "-";
+					if($tnewvalue == '') $tnewvalue = '-';
 
-					$valtemplate .= "<tr>";
+					$valtemplate .= '<tr>';
 
 					// Performance Optimization
 					if($directOutput) {
@@ -2134,7 +2133,6 @@ class ReportRun extends CRMEntity {
 					echo "<script type='text/javascript' id='__reportrun_directoutput_recordcount_script'>
 						if($('_reportrun_total')) $('_reportrun_total').innerHTML=$noofrows;</script>";
 				} else {
-
 					$sHTML ='<table cellpadding="5" cellspacing="0" align="center" class="rptTable">
 					<tr>'.
 					$header
@@ -2152,7 +2150,6 @@ class ReportRun extends CRMEntity {
 			}
 		}elseif($outputformat == "PDF")
 		{
-
 			$sSQL = $this->sGetSQLforReport($this->reportid,$filtersql);
 			$result = $adb->pquery($sSQL,array());
 			if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1)
@@ -2210,9 +2207,8 @@ class ReportRun extends CRMEntity {
 				$escapedchars = Array('_SUM','_AVG','_MIN','_MAX');
 				$totalpdf=array();
 				$sSQL = $this->sGetSQLforReport($this->reportid,$filtersql,"COLUMNSTOTOTAL");
-				if(isset($this->totallist))
-				{
-						if($sSQL != "")
+				if(isset($this->totallist) and count($this->totallist)>0) {
+						if($sSQL != '')
 						{
 								$result = $adb->query($sSQL);
 								$y=$adb->num_fields($result);
@@ -2315,14 +2311,14 @@ class ReportRun extends CRMEntity {
 		{
 			$escapedchars = Array('_SUM','_AVG','_MIN','_MAX');
 			$sSQL = $this->sGetSQLforReport($this->reportid,$filtersql,"COLUMNSTOTOTAL");
-			if(isset($this->totallist))
-			{
+			$coltotalhtml = '';
+			if(isset($this->totallist) and count($this->totallist)>0) {
 				if($sSQL != "")
 				{
 					$result = $adb->query($sSQL);
 					$y=$adb->num_fields($result);
 					$custom_field_values = $adb->fetch_array($result);
-					$coltotalhtml .= "<table align='center' width='60%' cellpadding='3' cellspacing='0' border='0' class='rptTable'><tr><td class='rptCellLabel'>".$mod_strings[Totals]."</td><td class='rptCellLabel'>".$mod_strings[SUM]."</td><td class='rptCellLabel'>".$mod_strings[AVG]."</td><td class='rptCellLabel'>".$mod_strings[MIN]."</td><td class='rptCellLabel'>".$mod_strings[MAX]."</td></tr>";
+					$coltotalhtml = "<table align='center' width='60%' cellpadding='3' cellspacing='0' border='0' class='rptTable'><tr><td class='rptCellLabel'>".$mod_strings['Totals']."</td><td class='rptCellLabel'>".$mod_strings['SUM']."</td><td class='rptCellLabel'>".$mod_strings['AVG']."</td><td class='rptCellLabel'>".$mod_strings['MIN']."</td><td class='rptCellLabel'>".$mod_strings['MAX']."</td></tr>";
 
 					// Performation Optimization: If Direct output is desired
 					if($directOutput) {
@@ -2512,15 +2508,12 @@ class ReportRun extends CRMEntity {
 						$tnewvalue = $custom_field_values[2];
 					}
 
-					if($newvalue == "") $newvalue = "-";
+					if($newvalue == '') $newvalue = '-';
+					if($snewvalue == '') $snewvalue = '-';
+					if($tnewvalue == '') $tnewvalue = '-';
+					$valtemplate .= '<tr>';
 
-					if($snewvalue == "") $snewvalue = "-";
-
-					if($tnewvalue == "") $tnewvalue = "-";
-
-					$valtemplate .= "<tr>";
-
-					for ($i=0; $i<$y; $i++)
+					for ($i=0; $i<$y-1; $i++)
 					{
 						$fld = $adb->field_name($result, $i);
 						$fld_type = $column_definitions[$i]->type;
@@ -2582,15 +2575,15 @@ class ReportRun extends CRMEntity {
 		{
 			$escapedchars = Array('_SUM','_AVG','_MIN','_MAX');
 			$sSQL = $this->sGetSQLforReport($this->reportid,$filtersql,"COLUMNSTOTOTAL");
-			if(isset($this->totallist))
-			{
+			$coltotalhtml = '';
+			if(isset($this->totallist) and count($this->totallist)>0) {
 				if($sSQL != "")
 				{
 					$result = $adb->query($sSQL);
 					$y=$adb->num_fields($result);
 					$custom_field_values = $adb->fetch_array($result);
 
-					$coltotalhtml .= "<br /><table align='center' width='60%' cellpadding='3' cellspacing='0' border='1' class='printReport'><tr><td class='rptCellLabel'>".$mod_strings['Totals']."</td><td><b>".$mod_strings['SUM']."</b></td><td><b>".$mod_strings['AVG']."</b></td><td><b>".$mod_strings['MIN']."</b></td><td><b>".$mod_strings['MAX']."</b></td></tr>";
+					$coltotalhtml = "<br /><table align='center' width='60%' cellpadding='3' cellspacing='0' border='1' class='printReport'><tr><td class='rptCellLabel'>".$mod_strings['Totals']."</td><td><b>".$mod_strings['SUM']."</b></td><td><b>".$mod_strings['AVG']."</b></td><td><b>".$mod_strings['MIN']."</b></td><td><b>".$mod_strings['MAX']."</b></td></tr>";
 
 					// Performation Optimization: If Direct output is desired
 					if($directOutput) {
@@ -2900,6 +2893,7 @@ class ReportRun extends CRMEntity {
 		}
 
 		$temp_status = Array();
+		$fieldlists = array();
 		for($i=0;$i < $adb->num_rows($result);$i++)
 		{
 			$fieldname = $adb->query_result($result,$i,"fieldname");
@@ -3043,14 +3037,14 @@ class ReportRun extends CRMEntity {
 		$pdf->SetFooterMargin(PDF_MARGIN_FOOTER);
 		$pdf->setHeaderFont(Array(PDF_FONT_NAME_MAIN, '', PDF_FONT_SIZE_MAIN));
 		$pdf->setFooterFont(Array(PDF_FONT_NAME_DATA, '', PDF_FONT_SIZE_DATA));
-		$pdf->setLanguageArray($l);
+		//$pdf->setLanguageArray($l);
 		//echo '<pre>';print_r($columnlength);echo '</pre>';
 		$pdf->AddPage();
 
 		$pdf->SetFillColor(224,235,255);
 		$pdf->SetTextColor(0);
 		$pdf->SetFont('FreeSerif','B',14);
-		$pdf->Cell(($pdf->columnlength*50),10,getTranslatedString($oReport->reportname),0,0,'C',0);
+		$pdf->Cell(($columnlength*50),10,getTranslatedString($this->reportname),0,0,'C',0);
 		//$pdf->writeHTML($oReport->reportname);
 		$pdf->Ln();
 
@@ -3217,6 +3211,7 @@ class ReportRun extends CRMEntity {
 		$groupByTimeQuery = 'SELECT * FROM vtiger_reportgroupbycolumn WHERE reportid=?';
 		$groupByTimeRes = $adb->pquery($groupByTimeQuery,array($reportId));
 		$num_rows = $adb->num_rows($groupByTimeRes);
+		$groupByCondition = array();
 		for($i=0;$i<$num_rows;$i++){
 			$sortColName = $adb->query_result($groupByTimeRes, $i,'sortcolname');
 			list($tablename,$colname,$module_field,$fieldname,$single) = explode(':',$sortColName);

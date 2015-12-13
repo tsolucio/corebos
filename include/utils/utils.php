@@ -4091,7 +4091,7 @@ function getRelationTables($module,$secmodule){
 			}
 		}
 	}else {
-		if(method_exists($primary_obj,setRelationTables)){
+		if(method_exists($primary_obj,'setRelationTables')){
 			$reltables = $primary_obj->setRelationTables($secmodule);
 		} else {
 			$reltables = '';

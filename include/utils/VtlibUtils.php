@@ -391,7 +391,12 @@ function __vtlib_get_modulevar_value($module, $varname) {
 				'popup_fields'=>Array('vendorname'),
 			)
 		);
-	return $mod_var_mapping[$module][$varname];
+	if (isset($mod_var_mapping[$module]) and isset($mod_var_mapping[$module][$varname])) {
+		$retval = $mod_var_mapping[$module][$varname];
+	} else {
+		$retval = null;
+	}
+	return $retval;
 }
 
 /**

@@ -1257,8 +1257,11 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$rem_days = 0;
 		$rem_hrs = 0;
 		$rem_min = 0;
-		if($value!='')
-			$SET_REM = "CHECKED";
+		if($value!='') {
+			$SET_REM = 'CHECKED';
+		} else {
+			$SET_REM = '';
+		}
 		$rem_days = floor($col_fields[$fieldname]/(24*60));
 		$rem_hrs = floor(($col_fields[$fieldname]-$rem_days*24*60)/60);
 		$rem_min = ($col_fields[$fieldname]-$rem_days*24*60)%60;
