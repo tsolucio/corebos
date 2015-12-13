@@ -125,6 +125,7 @@ $mod_strings = Array(
 'Contact Name'=>'Persona de Contacto',//to include contact name field in Invoice
 'Invoice Date'=>'Fecha de Factura',
 'Sub Total'=>'Sub Total',
+'S&H Amount' => 'Importe Envío y Manipulado',
 'Due date'=>'Fecha de Vencimiento',
 'Due Date'=>'Fecha de Vencimiento',
 'Carrier'=>'Transportista',

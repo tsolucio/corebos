@@ -95,6 +95,7 @@ $mod_strings = array(
 	'Contact Name' => 'Contact Name',
 	'Invoice Date' => 'Invoice Date',
 	'Sub Total' => 'Sub Total',
+	'S&H Amount' => 'S&H Amount',
 	'Due date' => 'Due Date',
 	'Carrier' => 'Carrier',
 	'Type' => 'Type',
