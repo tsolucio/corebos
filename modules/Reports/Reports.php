@@ -1492,6 +1492,9 @@ function getEscapedColumns($selectedfields) {
 			if($typeofdata[0] == "N" || $typeofdata[0] == "NN" || $typeofdata[0] == "I" || $typeofdata[0] == "T" || $columntototalrow['columnname']=='totaltime')
 			{
 				$options = Array();
+				if(!empty($_REQUEST['record'])) {
+					$options['label'][] = getTranslatedString($columntototalrow['tablabel'],$columntototalrow['tablabel']).' -'.getTranslatedString($columntototalrow['fieldlabel'],$columntototalrow['tablabel']);
+				}
 				if(isset($this->columnssummary))
 				{
 					$selectedcolumn = "";
@@ -1510,10 +1513,6 @@ function getEscapedColumns($selectedfields) {
 							$selectedcolumn1[$selectedcolumnarray[4]] = $this->columnssummary[$i];
 						}
 
-					}
-					if(isset($_REQUEST["record"]) && $_REQUEST["record"] != '')
-					{
-						$options['label'][] = getTranslatedString($columntototalrow['tablabel'],$columntototalrow['tablabel']).' -'.getTranslatedString($columntototalrow['fieldlabel'],$columntototalrow['tablabel']);
 					}
 
 					$columntototalrow['fieldlabel'] = str_replace(" ","_",$columntototalrow['fieldlabel']);
