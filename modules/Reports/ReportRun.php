@@ -87,8 +87,9 @@ class ReportRun extends CRMEntity {
 		while($columnslistrow = $adb->fetch_array($result))
 		{
 			$fieldname ="";
-			$fieldcolname = $columnslistrow["columnname"];
+			$fieldcolname = decode_html($columnslistrow['columnname']);
 			list($tablename,$colname,$module_field,$fieldname,$single) = explode(":",$fieldcolname);
+			$module_field = decode_html($module_field);
 			list($module,$field) = explode("_",$module_field,2);
 			$inventory_fields = array('quantity','listprice','serviceid','productid','discount','comment');
 			$inventory_modules = getInventoryModules();
@@ -2241,7 +2242,7 @@ class ReportRun extends CRMEntity {
 										} else{
 												$convert_price = false;
 										}
-										$value = trim($key);
+										$value = decode_html(trim($key));
 										$arraykey = $value.'_SUM';
 										if(isset($keyhdr[$arraykey]))
 										{
@@ -2354,7 +2355,7 @@ class ReportRun extends CRMEntity {
 							$convert_price = false;
 						}
 						$coltotalhtml .= '<td class="rptData">'. $col_header .'</td>';
-						$value = trim($key);
+						$value = decode_html(trim($key));
 						$arraykey = $value.'_SUM';
 						if(isset($keyhdr[$arraykey]))
 						{
@@ -2627,7 +2628,7 @@ class ReportRun extends CRMEntity {
 							$convert_price = false;
 						}
 						$coltotalhtml .= '<td class="rptData">'. $col_header .'</td>';
-						$value = trim($key);
+						$value = decode_html(trim($key));
 						$arraykey = $value.'_SUM';
 						if(isset($keyhdr[$arraykey]))
 						{

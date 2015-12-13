@@ -670,7 +670,7 @@ class Reports extends CRMEntity{
 				$fieldlabel = 'Date Sent';
 				$fieldtypeofdata = 'D';
 			}
-			$fieldlabel1 = str_replace(array(" ","&"),"_",$fieldlabel);
+			$fieldlabel1 = str_replace(array(" "),"_",$fieldlabel);
 			$optionvalue = $fieldtablename.":".$fieldcolname.":".$module."_".$fieldlabel1.":".$fieldname.":".$fieldtypeofdata;
 			$this->adv_rel_fields[$fieldtypeofdata][] = '$'.$module.'#'.$fieldname.'$'."::".getTranslatedString($module,$module)." ".getTranslatedString($fieldlabel,$module);
 			//added to escape attachments fields in Reports as we have multiple attachments
@@ -1231,7 +1231,7 @@ function getEscapedColumns($selectedfields) {
 				$fieldlabel = trim(str_replace($module," ",$module_field));
 				$mod_arr=explode('_',$fieldlabel);
 				$mod = ($mod_arr[0] == '')?$module:$mod_arr[0];
-				$fieldlabel = trim(str_replace("_"," ",$fieldlabel));
+				$fieldlabel = decode_html(trim(str_replace("_"," ",$fieldlabel)));
 				//modified code to support i18n issue
 				$mod_lbl = getTranslatedString($mod,$module); //module
 				$fld_lbl = getTranslatedString($fieldlabel,$module); //fieldlabel
@@ -1396,7 +1396,7 @@ function getEscapedColumns($selectedfields) {
 			$result = $adb->pquery($ssql, array($reportid));
 			if($result) {
 				while($reportsummaryrow = $adb->fetch_array($result)) {
-					$this->columnssummary[] = $reportsummaryrow['columnname'];
+					$this->columnssummary[] = decode_html($reportsummaryrow['columnname']);
 				}
 			}
 		}
@@ -1490,7 +1490,7 @@ function getEscapedColumns($selectedfields) {
 		do
 		{
 			$typeofdata = explode("~",$columntototalrow["typeofdata"]);
-
+			$columntototalrow['fieldlabel'] = decode_html($columntototalrow['fieldlabel']);
 			if($typeofdata[0] == "N" || $typeofdata[0] == "NN" || $typeofdata[0] == "I" || $typeofdata[0] == "T" || $columntototalrow['columnname']=='totaltime')
 			{
 				$options = Array();

@@ -962,11 +962,11 @@ function getColumnFields($module) {
 				// Update information to cache for re-use
 				VTCacheUtils::updateFieldInfo(
 					$resultrow['tabid'], $resultrow['fieldname'], $resultrow['fieldid'],
-					$resultrow['fieldlabel'], $resultrow['columnname'], $resultrow['tablename'],
+					decode_html($resultrow['fieldlabel']), $resultrow['columnname'], $resultrow['tablename'],
 					$resultrow['uitype'], $resultrow['typeofdata'], $resultrow['presence']
 				);
 			}
-	}
+		}
 
 		// For consistency get information from cache
 		$cachedModuleFields = VTCacheUtils::lookupFieldInfo_Module($module);
