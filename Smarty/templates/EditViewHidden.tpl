@@ -90,3 +90,5 @@
 <input type="hidden" name="return_action" value="{$RETURN_ACTION}">
 <input type="hidden" name="return_viewname" value="{$RETURN_VIEWNAME}">
 <input type="hidden" name="createmode" value="{$CREATEMODE}" />
+<input type="hidden" name="cbcustominfo1" value="{$smarty.request.cbcustominfo1|@urlencode}" />
+<input type="hidden" name="cbcustominfo2" value="{$smarty.request.cbcustominfo2|@urlencode}" />
