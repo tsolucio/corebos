@@ -42,7 +42,7 @@ function TraceIncomingCall(){
 		$callerLinks = '';
 		$firstCallerInfo = false;
 		if(!empty($callerNumber)){
-			$tracedCallerInfo = getTraceIncomingCallerInfo($callerNumber);
+			$tracedCallerInfo = getTraceIncomingCallerInfo($callerNumber,$callerName);
 			$callerLinks = $tracedCallerInfo['callerLinks'];
 			if(!empty($tracedCallerInfo['callerInfos'])) {
 				$firstCallerInfo = $tracedCallerInfo['callerInfos'];
@@ -85,28 +85,28 @@ function TraceIncomingCall(){
 }
 
 /**
- * this function returns the caller name based on the phone number that is passed to it
+ * this function returns a formatted link with the caller's name if found or links to create a new record if not
  * @param $from - the number which is calling
- * returns caller information in name(type) format :: for e.g. Mary Smith (Contact)
- * if no information is present in database, it returns :: Unknown Caller (Unknown)
+ * @param $fromname - the name found in the call to create the record
  */
-function getTraceIncomingCallerInfo($from) {
+function getTraceIncomingCallerInfo($from,$fromname) {
 	global $adb;
 	// Grab all possible caller informations (lookup for number as well stripped number)
 	$callerInfos = getCallerInfo($from);
-	$callerLinks = '';
 
 	if($callerInfos !== false){
 		$callerName = decode_html($callerInfos['name']);
 		$module = $callerInfos['module'];
 		$callerModule = " [$module]";
 		$callerID = $callerInfos['id'];
-		$callerLinks = $callerLinks."<a href='index.php?module=$module&action=DetailView&record=$callerID'>$callerName</a>$callerModule<br>";
+		$callerLinks = "<a href='index.php?module=$module&action=DetailView&record=$callerID'>$callerName</a>$callerModule<br>";
 	}else{
-		$callerLinks = $callerLinks."<br>
-						<a target='_blank' href='index.php?module=Leads&action=EditView&extra_action=addToCallHistory&phone=$from'>".getTranslatedString('LBL_CREATE_LEAD')."</a><br>
-						<a target='_blank' href='index.php?module=Contacts&action=EditView&extra_action=addToCallHistory&phone=$from'>".getTranslatedString('LBL_CREATE_CONTACT')."</a><br>
-						<a target='_blank' href='index.php?module=Accounts&action=EditView&extra_action=addToCallHistory&phone=$from'>".getTranslatedString('LBL_CREATE_ACCOUNT')."</a>";
+		$from = urlencode($from);
+		$fromname = urlencode($fromname);
+		$callerLinks = "<br>
+			<a target='_blank' href='index.php?module=Leads&action=EditView&lastname=".$fromname."&phone=$from'>".getTranslatedString('LBL_CREATE_LEAD')."</a><br>
+			<a target='_blank' href='index.php?module=Contacts&action=EditView&lastname=".$fromname."&phone=$from'>".getTranslatedString('LBL_CREATE_CONTACT')."</a><br>
+			<a target='_blank' href='index.php?module=Accounts&action=EditView&accountname=".$fromname."&phone=$from'>".getTranslatedString('LBL_CREATE_ACCOUNT')."</a>";
 	}
 	return array(
 		'callerInfos' => $callerInfos,

@@ -3766,20 +3766,18 @@ function getCallerInfo($number){
 	if(empty($number)){
 		return false;
 	}
-	$caller = "Unknown Number (Unknown)"; //declare caller as unknown in beginning
-
 	$params = array();
 	$name = array('Contacts', 'Accounts', 'Leads');
 	foreach ($name as $module) {
 		$focus = CRMEntity::getInstance($module);
 		$query = $focus->buildSearchQueryForFieldTypes(11, $number);
-		if(empty($query)) return;
+		if(empty($query)) return false;
 
 		$result = $adb->pquery($query, array());
 		if($adb->num_rows($result) > 0 ){
-			$callerName = $adb->query_result($result, 0, "name");
+			$callerName = $adb->query_result($result, 0, 'name');
 			$callerID = $adb->query_result($result,0,'id');
-			$data = array("name"=>$callerName, "module"=>$module, "id"=>$callerID);
+			$data = array('name'=>$callerName, 'module'=>$module, 'id'=>$callerID);
 			return $data;
 		}
 	}
