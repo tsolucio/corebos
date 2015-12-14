@@ -39,14 +39,14 @@ function TraceIncomingCall(){
 		$callerType = $adb->query_result($result,0,'callertype');
 		$refuid = $adb->query_result($result, 0, 'refuid');
 
+		$callerLinks = '';
+		$firstCallerInfo = false;
 		if(!empty($callerNumber)){
 			$tracedCallerInfo = getTraceIncomingCallerInfo($callerNumber);
-		}
-
-		$callerLinks = $tracedCallerInfo['callerLinks'];
-		$firstCallerInfo = false;
-		if(!empty($tracedCallerInfo['callerInfos'])) {
-			$firstCallerInfo = $tracedCallerInfo['callerInfos'];
+			$callerLinks = $tracedCallerInfo['callerLinks'];
+			if(!empty($tracedCallerInfo['callerInfos'])) {
+				$firstCallerInfo = $tracedCallerInfo['callerInfos'];
+			}
 		}
 
 		$newTime = time();
@@ -74,8 +74,6 @@ function TraceIncomingCall(){
 						<tr><td style='padding:10px;' colspan='2'><b>".$app_strings['LBL_CALLER_INFORMATION']."</b>
 							<br><b>".$app_strings['LBL_CALLER_NUMBER']."</b> $callerNumber
 							<br><b>".$app_strings['LBL_CALLER_NAME']."</b> $callerName
-						</td></tr>
-						<tr><td style='padding:10px;' colspan='2'><b>".$app_strings['LBL_INFORMATION_VTIGER']."</b>
 							<br> $callerLinks
 						</td></tr>
 					</table>";
