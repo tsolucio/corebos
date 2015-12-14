@@ -100,6 +100,9 @@ function getTraceIncomingCallerInfo($from,$fromname) {
 		$callerModule = " [$module]";
 		$callerID = $callerInfos['id'];
 		$callerLinks = "<a href='index.php?module=$module&action=DetailView&record=$callerID'>$callerName</a>$callerModule<br>";
+		$callerLinks.= "<br>
+			<a target='_blank' href='index.php?module=HelpDesk&action=EditView&parent_id=$callerID&ticket_title=$callerName'>".getTranslatedString('LBL_CREATE_TICKET')."</a><br>
+			<a target='_blank' href='index.php?module=Potentials&action=EditView&related_to=$callerID&potentialname=$callerName'>".getTranslatedString('LBL_CREATE').' '.getTranslatedString('SINGLE_Potentials','Potentials')."</a><br>";
 	}else{
 		$from = urlencode($from);
 		$fromname = urlencode($fromname);
