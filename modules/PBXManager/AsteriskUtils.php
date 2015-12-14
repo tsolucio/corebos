@@ -143,13 +143,13 @@ function asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, 
 	$currentTime = $date->getDisplayTime();
 	require_once 'modules/Calendar/Activity.php';
 	$focus = new Activity();
-	$focus->column_fields['subject'] = "Incoming call from $callerName ($callerNumber)";
-	$focus->column_fields['activitytype'] = "Call";
+	$focus->column_fields['subject'] = getTranslatedString('Call From','PBXManager')." $callerName ($callerNumber)";
+	$focus->column_fields['activitytype'] = 'Call';
 	$focus->column_fields['date_start'] = $currentDate;
 	$focus->column_fields['due_date'] = $currentDate;
 	$focus->column_fields['time_start'] = $currentTime;
 	$focus->column_fields['time_end'] = $currentTime;
-	$focus->column_fields['eventstatus'] = "Held";
+	$focus->column_fields['eventstatus'] = 'Held';
 	$focus->column_fields['assigned_user_id'] = $userid;
 	$focus->save('Calendar');
 	$focus->setActivityReminder('off');
@@ -169,11 +169,10 @@ function asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, 
 
 	if($callerInfo != false){
 		$tablename = array('Contacts'=>'vtiger_cntactivityrel', 'Accounts'=>'vtiger_seactivityrel', 'Leads'=>'vtiger_seactivityrel');
-		$sql = "insert into ".$tablename[$callerInfo['module']]." values (?,?)";
+		$sql = 'insert into '.$tablename[$callerInfo['module']].' values (?,?)';
 		$params = array($callerInfo['id'], $focus->id);
 		$adb->pquery($sql, $params);
 	}
-
 	return $focus->id;
 }
 

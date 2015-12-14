@@ -73,13 +73,13 @@ function asterisk_IncomingEventCleanup($adb) {
 /**
  * Grab the events from server, parse it and process it.
  */
-function asterisk_handleEvents($asterisk, $adb, $version="1.4") {
+function asterisk_handleEvents($asterisk, $adb, $version='1.4') {
 	$fnEntryTime = time();
+	$state = ($version == '1.6')? 'ChannelStateDesc' : 'State';
 	//values of flag for asteriskincomingevents(-1 for stray calls, 0 for incoming calls, 1 for outgoing call)
 	do {
 		$mainresponse = $asterisk->getAsteriskResponse();
 		if(!empty($mainresponse)) {
-			$state = ($version == '1.6')? 'ChannelStateDesc' : 'State';
 			if(asterisk_handleResponse1($mainresponse, $state, $adb)) {
 				if(asterisk_handleResponse2($mainresponse, $adb, $asterisk, $state)) {
 					if(asterisk_handleResponse3($mainresponse, $adb, $asterisk)){
@@ -126,7 +126,7 @@ function asterisk_handleResponse2($mainresponse, $adb, $asterisk, $state) {
 	$appdata = $mainresponse['AppData'];
 	$uniqueid = $channel = $callerType = $extension = null;
 	$parseSuccess = false;
-	if($mainresponse['Event'] == 'Newexten' && (strstr($appdata, "__DIALED_NUMBER") || strstr($appdata, "EXTTOCALL"))) {
+	if($mainresponse['Event'] == 'Newexten' && (strstr($appdata, '__DIALED_NUMBER') || strstr($appdata, 'EXTTOCALL'))) {
 		$uniqueid = $mainresponse['Uniqueid'];
 		$channel = $mainresponse['Channel'];
 		$splits = explode('/', $channel);
@@ -137,7 +137,7 @@ function asterisk_handleResponse2($mainresponse, $adb, $asterisk, $state) {
 	} else if($mainresponse['Event'] == 'OriginateResponse'){
 		//if the event is OriginateResponse then its an outgoing call and set the flag to 1, so that AsteriskClient does not pick up as incoming call
 		$uniqueid = $mainresponse['Uniqueid'];
-		$adb->pquery("UPDATE vtiger_asteriskincomingevents set flag = 1 WHERE uid = ?", array($uniqueid));
+		$adb->pquery('UPDATE vtiger_asteriskincomingevents set flag = 1 WHERE uid = ?', array($uniqueid));
 	}
 
 	if($parseSuccess) {
@@ -196,22 +196,22 @@ function asterisk_handleResponse3($mainresponse, $adb, $asterisk){
 			if(empty($checkresrow['from_name'])) $checkresrow['from_name'] = "Unknown";
 
 			$checkresrow = $adb->fetch_array($checkres);
-			$sql = "UPDATE vtiger_asteriskincomingevents SET from_number=?, to_number=?, timer=?, flag=? WHERE uid=?";
+			$sql = 'UPDATE vtiger_asteriskincomingevents SET from_number=?, to_number=?, timer=?, flag=? WHERE uid=?';
 			$adb->pquery($sql, array($callerNumber, $extensionCalled, time(), 0, $uid));
 
 			// Check if the user has checked Incoming Calls in My Preferences
 			if(checkExtension($extensionCalled, $adb)) {
-				$query = "INSERT INTO vtiger_asteriskincomingcalls (refuid, from_number, from_name, to_number, callertype, flag, timer) VALUES(?,?,?,?,?,?,?)";
+				$query = 'INSERT INTO vtiger_asteriskincomingcalls (refuid, from_number, from_name, to_number, callertype, flag, timer) VALUES(?,?,?,?,?,?,?)';
 				$adb->pquery($query,array($uid, $callerNumber, $checkresrow['from_name'], $extensionCalled, '', 0, time()));
 			}
 		}
-	} else if($mainresponse['Event']== 'Newexten' && $mainresponse['AppData'] == "DIALSTATUS=CONGESTION" || $mainresponse['Event'] == 'Hangup'){
-		$status = "missed";
+	} else if($mainresponse['Event']== 'Newexten' && $mainresponse['AppData'] == 'DIALSTATUS=CONGESTION' || $mainresponse['Event'] == 'Hangup'){
+		$status = 'missed';
 		$uid = $mainresponse['Uniqueid'];
 		$extensionCalled = false;
 	}
 	// TODO Need to detect the caller number using the Event Information
-		$callerNumberInfo = $adb->pquery("SELECT from_number, callertype FROM vtiger_asteriskincomingevents WHERE uid=? AND from_number is not NULL LIMIT 1", array($uid));
+		$callerNumberInfo = $adb->pquery('SELECT from_number, callertype FROM vtiger_asteriskincomingevents WHERE uid=? AND from_number is not NULL LIMIT 1', array($uid));
 		if($callerNumberInfo && $adb->num_rows($callerNumberInfo)) {
 			$callerNumber = $adb->query_result($callerNumberInfo, 0, 'from_number');
 			$receiver_callerinfo = getCallerInfo($callerNumber);
@@ -219,7 +219,7 @@ function asterisk_handleResponse3($mainresponse, $adb, $asterisk){
 
 	if($uid !== false) {
 		// Create Record if not yet done and link to the event for further use
-		$eventResult = $adb->pquery("SELECT * FROM vtiger_asteriskincomingevents WHERE uid = ? and pbxrecordid is NULL AND flag =0", array($uid));
+		$eventResult = $adb->pquery('SELECT * FROM vtiger_asteriskincomingevents WHERE uid = ? and pbxrecordid is NULL AND flag=0', array($uid));
 		if($adb->num_rows($eventResult)){
 			$eventResultRow = $adb->fetch_array($eventResult);
 			$callerNumber = $eventResultRow['from_number'];
