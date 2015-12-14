@@ -82,7 +82,7 @@ class PBXManager extends CRMEntity {
 		$query = "SELECT $this->table_name.*, vtiger_crmentity.*";
 		$query .= " FROM $this->table_name";
 
-		$query .= "	INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index
+		$query .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index
 					LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
 
 		// Consider custom table join as well.
@@ -122,13 +122,12 @@ class PBXManager extends CRMEntity {
 					(
 						SELECT shareduserid FROM vtiger_tmp_read_user_sharing_per 
 						WHERE userid=".$current_user->id." AND tabid=".$tabid."
-					) 
+					)
 					OR ( vtiger_crmentity.smownerid in (0)";
 
 				if(!empty($this->groupTable)) {
-					$sec_query .= " AND 
-						(";
-		
+					$sec_query .= ' AND (';
+
 					// Build the query based on the group association of current user.
 					if(sizeof($current_user_groups) > 0) {
 						$sec_query .= " vtiger_groups.groupid IN (". implode(",", $current_user_groups) .") OR ";
@@ -162,8 +161,8 @@ class PBXManager extends CRMEntity {
 
 		$fields_list = getFieldsListFromQuery($sql);
 
-		$query = "SELECT $fields_list, 'vtiger_groups_groupname as Assigned To Group', 
-				CASE WHEN (vtiger_users.user_name NOT LIKE '') THEN vtiger_users.user_name ELSE vtiger_groups.groupname END 
+		$query = "SELECT $fields_list, 'vtiger_groups_groupname as Assigned To Group',
+				CASE WHEN (vtiger_users.user_name NOT LIKE '') THEN vtiger_users.user_name ELSE vtiger_groups.groupname END
 				AS user_name FROM vtiger_crmentity INNER JOIN $this->table_name ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
 
 		if(!empty($this->customFieldTable)) {
@@ -171,7 +170,7 @@ class PBXManager extends CRMEntity {
 				" = $this->table_name.$this->table_index";
 		}
 
-		$query .= 
+		$query .=
 			//"LEFT JOIN " . $this->groupTable[0] . " ON " . $this->groupTable[0].'.'.$this->groupTable[1] . " = $this->table_name.$this->table_index
 			"LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
 		$query .= " LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id and vtiger_users.status='Active'";
@@ -211,7 +210,7 @@ class PBXManager extends CRMEntity {
 	* Invoked when special actions are performed on the module.
 	* @param String Module name
 	* @param String Event Type
-	*/	
+	*/
 	function vtlib_handler($moduleName, $eventType) {
 		require_once('include/utils/utils.php');
 		global $adb;
@@ -249,9 +248,7 @@ class PBXManager extends CRMEntity {
 
 	function getListButtons($app_strings) {
 		$list_buttons = Array();
-
 		if(isPermitted('PBXManager','Delete','') == 'yes') $list_buttons['del'] = $app_strings[LBL_MASS_DELETE];
-
 		return $list_buttons;
 	}
 
