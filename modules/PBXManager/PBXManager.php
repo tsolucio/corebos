@@ -235,8 +235,12 @@ class PBXManager extends CRMEntity {
 			$adb->pquery('UPDATE vtiger_tab SET customized=0 WHERE name=?', array($moduleName));
 		} else if($eventType == 'module.disabled') {
 		// TODO Handle actions when this module is disabled.
+			$em = new VTEventsManager($adb);
+			$em->setHandlerInActive('PBXManagerAfterSaveHandler');
 		} else if($eventType == 'module.enabled') {
 		// TODO Handle actions when this module is enabled.
+			$em = new VTEventsManager($adb);
+			$em->setHandlerActive('PBXManagerAfterSaveHandler');
 		} else if($eventType == 'module.preuninstall') {
 		// TODO Handle actions when this module is about to be deleted.
 		} else if($eventType == 'module.preupdate') {

@@ -165,7 +165,7 @@ function asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, 
 	}
 
 	if($callerInfo != false){
-		$tablename = array('Contacts'=>'vtiger_cntactivityrel', 'Accounts'=>'vtiger_seactivityrel', 'Leads'=>'vtiger_seactivityrel');
+		$tablename = array('Contacts'=>'vtiger_cntactivityrel', 'Accounts'=>'vtiger_seactivityrel', 'Leads'=>'vtiger_seactivityrel', 'HelpDesk'=>'vtiger_seactivityrel', 'Potentials'=>'vtiger_seactivityrel');
 		$sql = 'insert into '.$tablename[$callerInfo['module']].' values (?,?)';
 		$params = array($callerInfo['id'], $focus->id);
 		$adb->pquery($sql, $params);
