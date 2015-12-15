@@ -154,9 +154,6 @@ function asterisk_addToActivityHistory($callerName, $callerNumber, $callerType, 
 	$focus->save('Calendar');
 	$focus->setActivityReminder('off');
 
-	// Restore dateformat
-	$current_user->date_format = $old_userdate_format;
-
 	if(empty($relcrmid)) {
 		if(empty($callerInfo)) {
 			$callerInfo = getCallerInfo($callerNumber);

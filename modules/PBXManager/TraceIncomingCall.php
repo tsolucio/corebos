@@ -27,10 +27,9 @@ function TraceIncomingCall(){
 		$result = $adb->pquery($sql, array($current_user->id));
 		$asterisk_extension = $adb->query_result($result, 0, 'asterisk_extension');
 	}
-
+	$status = 'failure';
 	$query = 'select * from vtiger_asteriskincomingcalls where to_number = ?';
 	$result = $adb->pquery($query, array($asterisk_extension));
-
 	if($adb->num_rows($result)>0){
 		$flag = $adb->query_result($result,0,'flag');
 		$oldTime = $adb->query_result($result,0,'timer');
@@ -84,8 +83,6 @@ function TraceIncomingCall(){
 						</td></tr>
 					</table>";
 		}
-	}else{
-		$status = 'failure';
 	}
 	return $status;
 }
