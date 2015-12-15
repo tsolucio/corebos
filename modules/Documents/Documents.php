@@ -181,12 +181,14 @@ class Documents extends CRMEntity {
 		global $adb,$log;
 		$saveerror = false;
 		$errmsg = '';
-		$upload_file_path = decideFilePath();
-		$dirpermission = is_writable($upload_file_path);
-		$upload = is_uploaded_file($_FILES['filename']['tmp_name']);
-		if((!$dirpermission || !$upload) && $_REQUEST['action'] != "DocumentsAjax"){
-			$saveerror = true;
-			$errmsg = getTranslatedString('LBL_FILEUPLOAD_FAILED','Documents');
+		if ($_REQUEST['filelocationtype'] == 'I') {
+			$upload_file_path = decideFilePath();
+			$dirpermission = is_writable($upload_file_path);
+			$upload = is_uploaded_file($_FILES['filename']['tmp_name']);
+			if((!$dirpermission || !$upload) && $_REQUEST['action'] != "DocumentsAjax"){
+				$saveerror = true;
+				$errmsg = getTranslatedString('LBL_FILEUPLOAD_FAILED','Documents');
+			}
 		}
 		return array($saveerror,$errmsg,'EditView','');
 	}
