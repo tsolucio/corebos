@@ -218,9 +218,11 @@ class WebserviceField{
 		}else{
 			$dbMetaColumns = $this->pearDB->database->MetaColumns($this->getTableName());
 			$tableFields = array();
-			foreach ($dbMetaColumns as $key => $dbField) {
-				$tableFields[$dbField->name] = $dbField;
-			}
+                        if(is_array($dbMetaColumns)){
+                            foreach ($dbMetaColumns as $key => $dbField) {
+                                    $tableFields[$dbField->name] = $dbField;
+                            }
+                        }
 			WebserviceField::$tableMeta[$this->getTableName()] = $tableFields;
 		}
 		return $tableFields;
