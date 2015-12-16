@@ -1073,7 +1073,6 @@ $app_strings = array(
 	'LBL_CALLER_INFORMATION' => 'Hívó adatai',
 	'LBL_CALLER_NUMBER' => 'Szám :',
 	'LBL_CALLER_NAME' => 'Név :',
-	'LBL_INFORMATION_VTIGER' => 'Információ a VTiger-től',
 	'LBL_DUPLICATE' => 'Duplikáció',
 	'LBL_CLICK' => 'Kattints',
 	'LNK_PRIVACY_POLICY' => 'Adatvédelmi irányelvek',

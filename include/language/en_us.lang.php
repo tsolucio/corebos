@@ -1176,7 +1176,6 @@ $app_strings = array (
 'LBL_CALLER_INFORMATION'=>'Caller Information',
 'LBL_CALLER_NUMBER'=>'Number :',
 'LBL_CALLER_NAME'=>'Name :',
-'LBL_INFORMATION_VTIGER'=>'Information from Vtiger',
 
 //asterisk integration ends
 

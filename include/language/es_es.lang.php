@@ -1147,7 +1147,6 @@ $app_strings = array (
      'LBL_CALLER_INFORMATION'=>'Información Llamada Entrante',
      'LBL_CALLER_NUMBER'=>'Número :',
      'LBL_CALLER_NAME'=>'Nombre :',
-     'LBL_INFORMATION_VTIGER'=>'Información de Vtiger',
      //asterisk integration ends
 
      // Module Sequence Numbering

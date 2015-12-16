@@ -1089,7 +1089,6 @@ $app_strings = array(
 	'LBL_CALLER_INFORMATION' => 'Beller Informatie',
 	'LBL_CALLER_NUMBER' => 'Nummer :',
 	'LBL_CALLER_NAME' => 'Naam :',
-	'LBL_INFORMATION_VTIGER' => 'Informatie van Storingsmelding',
 	'LBL_DUPLICATE' => 'Duplicaat',
 	'LBL_CLICK' => 'Click',
 	'LNK_PRIVACY_POLICY' => 'Privacy Policy',
