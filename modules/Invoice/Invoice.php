@@ -404,7 +404,14 @@ class Invoice extends CRMEntity {
 			$row = $adb->query_result_rowdata($res, $j);
 			$col_value = array();
 			for($k=0; $k<count($fieldsList); $k++) {
-				if($fieldsList[$k]!='lineitem_id'){
+                            //Here we check if field is different form lineitem_id (original) and
+                            //field is different from discount_amount or is equal and not empty (null) and
+                            //field is different from discount_percent or is equal and not empty (null)
+                            //to prevent fails when discount percent is null (resulting invoice have discount_percent as 0 and 
+                            //don't do any discount)
+				if($fieldsList[$k]!='lineitem_id' &&
+                                    ($fieldsList[$k]!='discount_amount' || ($fieldsList[$k]=='discount_amount' && !empty($row[$fieldsList[$k]]))) &&
+                                    ($fieldsList[$k]!='discount_percent' || ($fieldsList[$k]=='discount_percent' && !empty($row[$fieldsList[$k]])))){
 					$col_value[$fieldsList[$k]] = $row[$fieldsList[$k]];
 				}
 			}
