@@ -113,6 +113,7 @@ class Activity extends CRMEntity {
 	function save_module($module)
 	{
 		global $adb;
+		$insertion_mode = $this->mode;
 		//Handling module specific save
 		//Insert into seactivity rel
 		if(isset($this->column_fields['parent_id']) && $this->column_fields['parent_id'] != '')
@@ -159,7 +160,7 @@ class Activity extends CRMEntity {
 			$this->insertIntoReminderTable('vtiger_activity_reminder',$module,0);
 
 		//Handling for invitees
-			$selected_users_string =  $_REQUEST['inviteesid'];
+			$selected_users_string = isset($_REQUEST['inviteesid']) ? $_REQUEST['inviteesid'] : '';
 			$invitees_array = explode(';',$selected_users_string);
 			$this->insertIntoInviteeTable($module,$invitees_array);
 
@@ -213,7 +214,7 @@ class Activity extends CRMEntity {
 	{
 	 	global $log;
 		$log->info("in insertIntoReminderTable  ".$table_name."    module is  ".$module);
-		if($_REQUEST['set_reminder'] == 'Yes')
+		if(isset($_REQUEST['set_reminder']) and $_REQUEST['set_reminder'] == 'Yes')
 		{
 			unset($_SESSION['next_reminder_time']);
 			$log->debug("set reminder is set");
@@ -241,7 +242,7 @@ class Activity extends CRMEntity {
 				$this->activity_reminder($this->id,$reminder_time,0,$recurid,'');
 			}
 		}
-		elseif($_REQUEST['set_reminder'] == 'No')
+		elseif(isset($_REQUEST['set_reminder']) and $_REQUEST['set_reminder'] == 'No')
 		{
 			$this->activity_reminder($this->id,'0',0,$recurid,'delete');
 		}
@@ -336,7 +337,7 @@ function insertIntoRecurringTable(& $recurObj)
 	function insertIntoInviteeTable($module,$invitees_array)
 	{
 		global $log,$adb;
-		$log->debug("Entering insertIntoInviteeTable(".$module.",".$invitees_array.") method ...");
+		$log->debug("Entering insertIntoInviteeTable($module,".print_r($invitees_array,true).") method ...");
 		if($this->mode == 'edit'){
 			$sql = "delete from vtiger_invitees where activityid=?";
 			$adb->pquery($sql, array($this->id));
