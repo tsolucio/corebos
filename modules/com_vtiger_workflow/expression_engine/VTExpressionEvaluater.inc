@@ -259,6 +259,20 @@ function __vt_sub_time($arr) {
 	return date('H:i:s',$endTime);
 }
 
+function __cb_getLatitude($address) {
+	$addr = urlencode($address);
+	$data = file_get_contents("http://nominatim.openstreetmap.org/?format=json&addressdetails=1&q=$addr&format=json&limit=1");
+	$data = json_decode($data);
+	return $data[0]->lat;
+}
+
+function __cb_getLongitude($address) {
+	$addr = urlencode($address);
+	$data = file_get_contents("http://nominatim.openstreetmap.org/?format=json&addressdetails=1&q=$addr&format=json&limit=1");
+	$data = json_decode($data);
+	return $data[0]->lon;
+}
+
 function __cb_getGEODistance($arr){
 	$from = urlencode($arr[0]);
 	$to = urlencode($arr[1]);
@@ -464,6 +478,8 @@ class VTFieldExpressionEvaluater{
 				'round' => '__vt_round',
 				'ceil' => '__vt_ceil',
 				'floor' => '__vt_floor',
+				'getLatitude' => '__cb_getLatitude',
+				'getLongitude' => '__cb_getLongitude',
 				'getGEODistance' => '__cb_getGEODistance',
 				'getGEODistanceFromCompanyAddress' => '__cb_getGEODistanceFromCompanyAddress',
 				'getGEODistanceFromUserAddress' => '__cb_getGEODistanceFromUserAddress',
