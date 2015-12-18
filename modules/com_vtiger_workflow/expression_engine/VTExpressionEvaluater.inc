@@ -274,20 +274,14 @@ function __cb_getLongitude($address) {
 }
 
 function __cb_getGEODistance($arr){
-	$from = urlencode($arr[0]);
-	$to = urlencode($arr[1]);
-
-	$data = file_get_contents("http://maps.googleapis.com/maps/api/distancematrix/json?origins=$from&destinations=$to&language=en-EN&sensor=false");
-	$data = json_decode($data);
-
-	$distance = 0;
-
-	foreach($data->rows[0]->elements as $road) {
-		$distance += $road->distance->value;
-		$distance/=1000;
-	}
-
-	return $distance." km";
+	$from = $arr[0];
+	$to = $arr[1];
+	$coo1 = __cb_getLatitude($from).",".__cb_getLongitude($from);
+	$coo2 = __cb_getLatitude($to).",".__cb_getLongitude($to);
+	$distance = file_get_contents("http://router.project-osrm.org/viaroute?loc=$coo1&loc=$coo2");
+	$dis = json_decode($distance);
+	$total_distance = $dis->route_summary->total_distance/1000;
+	return $total_distance." km";
 }
 
 function __cb_getGEODistanceFromCompanyAddress($arr){
