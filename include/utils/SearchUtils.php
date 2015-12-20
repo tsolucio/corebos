@@ -1063,7 +1063,7 @@ function getUnifiedWhere($listquery,$module,$search_val){
 	}
 	$result = $adb->pquery($query, $qparams);
 	$noofrows = $adb->num_rows($result);
-
+	$binary_search = GlobalVariable::getVariable('Application_Global_Search_Binary', 0);
 	$where = '';
 	for($i=0;$i<$noofrows;$i++){
 		$columnname = $adb->query_result($result,$i,'columnname');
@@ -1081,7 +1081,11 @@ function getUnifiedWhere($listquery,$module,$search_val){
 				if($where != ''){
 					$where .= " OR ";
 				}
-				$where .= $tablename.".".$columnname." LIKE '". formatForSqlLike($search_val) ."'";
+				if ($binary_search) {
+					$where .= 'LOWER('.$tablename.'.'.$columnname.") LIKE BINARY LOWER('". formatForSqlLike($search_val) ."')";
+				} else {
+					$where .= $tablename.'.'.$columnname." LIKE '". formatForSqlLike($search_val) ."'";
+				}
 			}
 			$columnname = "firstname";
 			$tablename = "vtiger_contactdetails";
@@ -1093,7 +1097,11 @@ function getUnifiedWhere($listquery,$module,$search_val){
 			if($where != ''){
 				$where .= " OR ";
 			}
-			$where .= $tablename.".".$columnname." LIKE '". formatForSqlLike($search_val) ."'";
+			if ($binary_search) {
+				$where .= 'LOWER('.$tablename.'.'.$columnname.") LIKE BINARY LOWER('". formatForSqlLike($search_val) ."')";
+			} else {
+				$where .= $tablename.'.'.$columnname." LIKE '". formatForSqlLike($search_val) ."'";
+			}
 		}
 	}
 	return $where;

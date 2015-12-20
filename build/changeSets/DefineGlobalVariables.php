@@ -45,6 +45,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Report.Excel.Export.RowHeight',
 				'Calendar_Modules_Panel_Visible',
 				'Calendar_Default_Reminder_Minutes',
+				'Application_Global_Search_Binary',
 			);
 			
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');
