@@ -373,7 +373,7 @@ class CustomView extends CRMEntity {
 			$optionvalue = $fieldtablename . ":" . $fieldcolname . ":" . $fieldname . ":" . $module . "_" .
 					$fieldlabel1 . ":" . $fieldtypeofdata;
 			//added to escape attachments fields in customview as we have multiple attachments
-			$fieldlabel = getTranslatedString($fieldlabel); //added to support i18n issue
+			$fieldlabel = getTranslatedString($fieldlabel,$module); //added to support i18n issue
 			if ($module != 'HelpDesk' || $fieldname != 'filename')
 				$module_columnlist[$optionvalue] = $fieldlabel;
 			if ($markMandatory && $fieldtype[1] == "M") {
