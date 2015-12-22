@@ -141,7 +141,7 @@ if (!$result or $adb->num_rows($result)==0) {
 $workflows = $wfs->getWorkflowsForResult($result);
 $workflow = $workflows[$workflowid_to_evaluate];
 $entityData = $entityCache->forId($crm_record_to_evaluate);
-
+$data = $entityData->getData();
 if ($workflows[$workflowid_to_evaluate]->executionCondition==VTWorkflowManager::$ON_SCHEDULE) {
 	echo "<h2>Scheduled: SQL for affected records:</h2>";
 	$workflowScheduler = new WorkFlowScheduler($adb);
@@ -159,7 +159,7 @@ if ($workflows[$workflowid_to_evaluate]->executionCondition==VTWorkflowManager::
 		} else {
 			$newtest[] = $tst;
 		}
-		echo $tst['fieldname'].' '.$tst['operation'].' '.$tst['value'].' ('.$tst['valuetype'].')<br>';
+		echo $tst['fieldname'].'('.$data[$tst['fieldname']].') '.$tst['operation'].' '.$tst['value'].' ('.$tst['valuetype'].')<br>';
 		echo $tst['joincondition'].'<br>';
 	}
 	if ($haschanged) {
