@@ -256,7 +256,7 @@
 <events>
 <event>
 <eventname>vtiger.entity.aftersave</eventname>
-<classname><![CDATA[PBXManagerAfterSaveHandler]]></classname>
+<classname><![CDATA[PBXManagerAfterSaveCreateActivity]]></classname>
 <filename><![CDATA[modules/PBXManager/PBXManagerHandler.php]]></filename>
 </event>
 </events>

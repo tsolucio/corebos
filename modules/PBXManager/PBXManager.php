@@ -236,11 +236,11 @@ class PBXManager extends CRMEntity {
 		} else if($eventType == 'module.disabled') {
 		// TODO Handle actions when this module is disabled.
 			$em = new VTEventsManager($adb);
-			$em->setHandlerInActive('PBXManagerAfterSaveHandler');
+			$em->setHandlerInActive('PBXManagerAfterSaveCreateActivity');
 		} else if($eventType == 'module.enabled') {
 		// TODO Handle actions when this module is enabled.
 			$em = new VTEventsManager($adb);
-			$em->setHandlerActive('PBXManagerAfterSaveHandler');
+			$em->setHandlerActive('PBXManagerAfterSaveCreateActivity');
 		} else if($eventType == 'module.preuninstall') {
 		// TODO Handle actions when this module is about to be deleted.
 		} else if($eventType == 'module.preupdate') {
