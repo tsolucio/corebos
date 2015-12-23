@@ -107,7 +107,7 @@ function editexpressionscript($){
 				el.css({position: 'absolute'});
 				el.width("650px");
 				el.height("310px");
-				placeAtCenter(el.get(0));
+				placeAtCenter(el.get(1)); // pag 2015-Dec-20
 			}
 
 			$('#editpopup_close').bind('click', close);

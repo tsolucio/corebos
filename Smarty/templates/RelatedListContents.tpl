@@ -139,6 +139,11 @@ function disableRelatedListBlock(urldata,target,imagesuffix){
 {assign var=rel_mod value=$header}
 {assign var="HEADERLABEL" value=$header|@getTranslatedString:$rel_mod}
 
+{* pag 2012-Jan-23 *}
+{if $HEADERLABEL eq '' }
+   {assign var="HEADERLABEL" value=$MYHEADERLABEL}
+{/if}
+
 <table width="100%" cellspacing="0" cellpadding="0" border="0" class="small lvt">
 	<tr>
 		<td class="dvInnerHeader">
