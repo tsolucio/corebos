@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once 'modules/Users/Users.php';
 
 global $adb;
@@ -15,11 +14,11 @@ $del_id = vtlib_purify($_REQUEST['delete_user_id']);
 $tran_id = vtlib_purify($_REQUEST['transfer_user_id']);
 
 $userObj = new Users();
-$userObj->transformOwnerShipAndDelete($del_id, $tran_id);	
+$userObj->transformOwnerShipAndDelete($del_id, $tran_id);
 
 //if check to delete user from detail view
-if(isset($_REQUEST["ajax_delete"]) && $_REQUEST["ajax_delete"] == 'false')
-	header("Location: index.php?action=ListView&module=Users");
+if(isset($_REQUEST['ajax_delete']) && $_REQUEST['ajax_delete'] == 'false')
+	header('Location: index.php?action=ListView&module=Users');
 else
-	header("Location: index.php?action=UsersAjax&module=Users&file=ListView&ajax=true");
+	header('Location: index.php?action=UsersAjax&module=Users&file=ListView&ajax=true');
 ?>
