@@ -14,7 +14,7 @@ require_once("modules/$currentModule/$currentModule.php");
 
 $search = vtlib_purify($_REQUEST['search_url']);
 
-if ($_REQUEST['filelocationtype'] == 'I' and $_FILES['filename']['error']==4 and $_FILES['filename']['size']==0) {
+if ($_REQUEST['mode']!='edit' and $_REQUEST['filelocationtype'] == 'I' and $_FILES['filename']['error']==4 and $_FILES['filename']['size']==0) {
 	$_REQUEST['filelocationtype'] = 'E';
 }
 $focus = new $currentModule();
