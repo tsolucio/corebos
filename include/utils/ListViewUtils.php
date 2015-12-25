@@ -3886,9 +3886,13 @@ function getEntityId($module, $entityName, $searchonfield='') {
 		} else {
 			$cfquery = '';
 		}
-		
-		$sql = "select $tablename.$entityidfield from $tablename INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $tablename.$entityidfield " .
+
+		if ($module=='Users') {
+			$sql = 'select vtiger_users.id from vtiger_users where deleted = 0 and '.$fieldsname.' = ?';
+		} else {
+			$sql = "select $tablename.$entityidfield from $tablename INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $tablename.$entityidfield " .
 				" $cfquery WHERE vtiger_crmentity.deleted = 0 and $fieldsname=?";
+		}
 		$result = $adb->pquery($sql, array($entityName));
 		if ($adb->num_rows($result) > 0) {
 			$entityId = $adb->query_result($result, 0, $entityidfield);
