@@ -1245,7 +1245,11 @@ function createRecords($obj) {
 						if (count($fieldValueDetails) > 1) {
 							$referenceModuleName = trim($fieldValueDetails[0]);
 							$entityLabel = trim($fieldValueDetails[1]);
-							$entityId = getEntityId($referenceModuleName, $entityLabel);
+							if (!empty($fieldValueDetails[2])) {
+								$entityId = getEntityId($referenceModuleName, $entityLabel, $fieldValueDetails[2]);
+							} else {
+								$entityId = getEntityId($referenceModuleName, $entityLabel);
+							}
 						} else {
 							$referencedModules = array('Products','Services');
 							$entityLabel = $fieldValue;
