@@ -2770,11 +2770,13 @@ class ReportRun extends CRMEntity {
 				{
 					if($field_tablename == 'vtiger_products' && $field_columnname == 'unit_price') {
 						// Query needs to be rebuild to get the value in user preferred currency. [innerProduct and actual_unit_price are table and column alias.]
-						$query_columnalias = " innerProduct.actual_unit_price";
+						$query_columnalias = ' actual_unit_price';
+						$seltotalcols['innerProduct:actual_unit_price:Products_Unit_Price:actual_unit_price:N'] = 'innerProduct.actual_unit_price AS actual_unit_price';
 					}
 					if($field_tablename == 'vtiger_service' && $field_columnname == 'unit_price') {
 						// Query needs to be rebuild to get the value in user preferred currency. [innerProduct and actual_unit_price are table and column alias.]
-						$query_columnalias = " innerService.actual_unit_price";
+						$query_columnalias = ' actual_unit_price';
+						$seltotalcols['innerService:actual_unit_price:Services_Unit_Price:actual_unit_price:N'] = 'innerService.actual_unit_price AS actual_unit_price';
 					}
 					if(($field_tablename == 'vtiger_invoice' || $field_tablename == 'vtiger_quotes' || $field_tablename == 'vtiger_purchaseorder' || $field_tablename == 'vtiger_salesorder')
 							&& ($field_columnname == 'total' || $field_columnname == 'subtotal' || $field_columnname == 'discount_amount' || $field_columnname == 's_h_amount')) {
