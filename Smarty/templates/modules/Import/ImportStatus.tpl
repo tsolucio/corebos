@@ -18,7 +18,7 @@
 jQuery(document).ready(function() {
 	setTimeout(function() {
 		jQuery("[name=importStatusForm]").get(0).submit();
-		}, 500);
+		}, 5000);
 });
 </script>
 {/literal}
