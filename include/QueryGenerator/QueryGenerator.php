@@ -546,13 +546,13 @@ class QueryGenerator {
 					$nameFields = $this->moduleNameFields[$module];
 					$nameFieldList = explode(',',$nameFields);
 					foreach ($nameFieldList as $index=>$column) {
+						$joinas = 'LEFT JOIN';
 						// for non admin user users module is inaccessible.
 						// so need hard code the tablename.
-						if($module == 'Users') {
-							$instance = CRMEntity::getInstance($module);
-							$referenceTable = $instance->table_name;
-							$tableIndexList = $instance->tab_name_index;
-							$referenceTableIndex = $tableIndexList[$referenceTable];
+						if($module == 'Users' && $baseModule != 'Users') {
+							$referenceTable = 'vtiger_users'.$fieldName;
+							$referenceTableIndex = 'id';
+							$joinas = 'LEFT JOIN vtiger_users AS';
 						} else {
 							$referenceField = $meta->getFieldByColumnName($column);
 							if (!$referenceField) continue;
@@ -569,7 +569,7 @@ class QueryGenerator {
 						//should always be left join for cases where we are checking for null
 						//reference field values.
 						if(!array_key_exists($referenceTable, $tableJoinMapping)) { // table already added in from clause
-						$tableJoinMapping[$referenceTableName] = 'LEFT JOIN';
+						$tableJoinMapping[$referenceTableName] = $joinas;
 						$tableJoinCondition[$fieldName][$referenceTableName] = $baseTable.'.'.
 							$field->getColumnName().' = '.$referenceTable.'.'.$referenceTableIndex;
 						}
@@ -942,7 +942,12 @@ class QueryGenerator {
 					continue;
 				}
 				if ($tableName=='vtiger_users') {
-					$fieldSql = "(".$tableName.'.'.$columnName.' '.$valueSQL[0].")";
+					$reffield = $moduleFieldList[$conditionInfo['referenceField']];
+					if ($reffield->getUIType() == '101') {
+						$fieldSql = "(".$tableName.$conditionInfo['referenceField'].'.'.$columnName.' '.$valueSQL[0].")";
+					} else {
+						$fieldSql = "(".$tableName.'.'.$columnName.' '.$valueSQL[0].")";
+					}
 				} else {
 					$fieldSql = "(".$tableName.$conditionInfo['referenceField'].'.'.$columnName.' '.$valueSQL[0].")";
 				}
