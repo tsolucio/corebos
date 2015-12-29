@@ -11,7 +11,7 @@
 <table width="100%" cellpadding="5" cellspacing="0" class="listTable" >
 	<tr>
 	<td class="colHeader small" width="5%">#</td>
-	<td class="colHeader small" width="20%">Cron Job</td>
+	<td class="colHeader small" width="20%">{'Cron Job'|@getTranslatedString:'CronTasks'}</td>
 	<td class="colHeader small" width="11%">{$MOD.LBL_FREQUENCY}{$MOD.LBL_HOURMIN}</td>
 	<td class="colHeader small" width="9%">{$CMOD.LBL_STATUS}</td>
 	<td class="colHeader small" width="20%">{$MOD.LAST_START}</td>
@@ -24,8 +24,10 @@
 	<td class="listTableRow small">{$smarty.foreach.cronlist.iteration}</td>
 	<td class="listTableRow small">{$elements.cronname}</td>
 	<td class="listTableRow small">{$elements.days} {$elements.hours}:{$elements.mins}</td>
-	{if $elements.status eq 'Active'}
+	{if $elements.status eq 'Active'|@getTranslatedString:'CronTasks'}
 	<td class="listTableRow small active">{$elements.status}</td>
+	{elseif $elements.status eq 'LBL_RUNNING'|@getTranslatedString:'CronTasks'}
+	<td class="listTableRow small" style="color: red">{$elements.status}</td>
 	{else}
 	<td class="listTableRow small inactive">{$elements.status}</td>
 	{/if}

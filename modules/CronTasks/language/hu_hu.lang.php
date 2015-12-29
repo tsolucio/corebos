@@ -40,5 +40,6 @@ $mod_strings = array(
 	'LBL_YEARS_AGO'=>'évvel ezelőtt',
 	'Allows you to Configure Cron Task' => 'Állítsd be az időzített feladatokat (Cron Task)',
 	'Scheduler' => 'Időzítő',
+	'Cron Job' => 'Cron Job',
 );
 ?>
