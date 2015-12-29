@@ -218,7 +218,7 @@ $Calendar_Settings = $Calendar4You->getSettings();
 			else
 			{
 				echo $mod_strings['LBL_CONNECTING_WORK_CORRECT'];
-				echo '&nbsp;&nbsp;<a href="'.$GoogleSync4You->getAuthURL(true).'">'.$mod_strings['LBL_CONNECTING_WORK_CORRECT'].'</a>';
+				echo '&nbsp;&nbsp;<a href="'.$GoogleSync4You->getAuthURL(true).'">'.$mod_strings['LBL_CONNECT'].'</a>';
 			}
 			$google_login = $GoogleSync4You->getclientsecret();
 			$google_apikey= $GoogleSync4You->getAPI();
