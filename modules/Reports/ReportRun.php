@@ -2780,8 +2780,8 @@ class ReportRun extends CRMEntity {
 					}
 					if(($field_tablename == 'vtiger_invoice' || $field_tablename == 'vtiger_quotes' || $field_tablename == 'vtiger_purchaseorder' || $field_tablename == 'vtiger_salesorder')
 							&& ($field_columnname == 'total' || $field_columnname == 'subtotal' || $field_columnname == 'discount_amount' || $field_columnname == 's_h_amount')) {
-						$query_columnalias = " $query_columnalias/currency_conversion_rate ";
-						$seltotalcols[$field_tablename.':conversion_rate:'.$module_name.'_Conversion_Rate:conversion_rate:N'] = "$field_tablename.conversion_rate AS currency_conversion_rate";
+						$query_columnalias = " $query_columnalias/$module_name"."_Conversion_Rate ";
+						$seltotalcols[$field_tablename.':conversion_rate:'.$module_name.'_Conversion_Rate:conversion_rate:N'] = "$field_tablename.conversion_rate AS $module_name"."_Conversion_Rate ";
 					}
 					if($fieldlist[4] == 2)
 					{
