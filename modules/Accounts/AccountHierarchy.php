@@ -26,8 +26,8 @@ $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH",$image_path);
 $smarty->assign("MODULE",$currentModule);
 
-$check_button = Button_Check($currentModule); 
-$check_button['Import'] = 'no'; 
+$check_button = Button_Check($currentModule);
+$check_button['Import'] = 'no';
 $check_button['Export'] = 'no';
 $check_button['DuplicatesHandling'] = 'no';
 $check_button['moduleSettings'] = 'no';
@@ -40,5 +40,4 @@ if (!empty($accountid)) {
 }
 $smarty->assign("ACCOUNT_HIERARCHY",$hierarchy);
 $smarty->display("AccountHierarchy.tpl");
-	
 ?>

@@ -22,8 +22,8 @@
 
 {*<!-- Contents -->*}
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
-     <tr>
-        <td valign=top><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
+	<tr>
+	<td valign=top><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 
 	<td class="showPanelBg" valign="top" width=100% style="padding:10px;">
 			<table width="100%" border="0" cellpadding="5" cellspacing="0">
@@ -32,8 +32,7 @@
 					<td align="right"><input type="button" class="crmbutton small cancel" onclick="window.history.back();" value="{$APP.LBL_BACK}" /></td>
 				</tr>
 			</table>
-			
-			<div id="ListViewContents">				
+			<div id="ListViewContents">
 			{foreach key=header item=detail from=$ACCOUNT_HIERARCHY}
 				{if $header eq 'header'}
 				<table border=0 cellspacing=1 cellpadding=3 width=100% style="background-color:#eaeaea;" class="small">
@@ -54,8 +53,7 @@
 				{/if}
 			{/foreach}
 			</div>
-
-     </td>
-        <td valign=top><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
-   </tr>
+	</td>
+	<td valign=top><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
+	</tr>
 </table>
