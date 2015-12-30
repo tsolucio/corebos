@@ -31,6 +31,7 @@
      <tr>
 		<td>
 	   <!-- PUBLIC CONTENTS STARTS-->
+	   {if $DISPLAYHEADER eq 1} <!-- pag 2011-Oct-28 -->
 	   <br>
 		<div class="small" style="padding:2px">
 			<table border=0 cellspacing=1 cellpadding=0 width=100% class="lvtBg">
@@ -74,7 +75,8 @@
 					</td>
 		   		</tr>
 			</table>
-	   </div>	   
+	   </div>	
+	  {/if} <!-- pag 2011-Oct-28 -->   
 	</td>
    </tr>
 </table>

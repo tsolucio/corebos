@@ -368,7 +368,31 @@ class ListViewController {
 						$field->getFieldDataType() == 'datetime') {
 					if($value != '' && $value != '0000-00-00') {
 						$date = new DateTimeField($value);
-						$value = $date->getDisplayDate();
+						// $value = $date->getDisplayDate();
+						// Coloring datefields STP 24-Jul-2013
+ 
+// Date of Today shows in GREEN
+ 
+// Past in RED and future in BLACK
+ 
+// Search for the following line in include/ListView/ListViewController.php
+ 
+//  $value = $date->getDisplayDate();
+ 
+// Approx line 314 in the file
+ 
+// Replace the line with below code
+ 
+$cdate = date("Y-m-d");
+ 
+$vdate = $value;
+ 
+if ($vdate == $cdate) $value = "<font color=green>";
+ 
+else if ($vdate < $cdate) $value = "<font color=red>"; else $value = "<font color=black>";
+ 
+$value .= $date->getDisplayDate()."</font>";
+						
 						if($field->getFieldDataType() == 'datetime') {
 							$value .= (' ' . $date->getDisplayTime());
 						}

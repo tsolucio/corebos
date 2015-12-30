@@ -30,6 +30,9 @@ $list_buttons=$focus->getListButtons($app_strings,$mod_strings);
 
 if(ListViewSession::hasViewChanged($currentModule)) {
 	$_SESSION[$currentModule."_Order_By"] = '';
+	/** CHANGE BY SWARNAT 18.04.2011 START */
+	$viewChange = true;
+	/** CHANGE BY SWARNAT 18.04.2011 ENDE */
 }
 $sorder = $focus->getSortOrder();
 $order_by = $focus->getOrderBy();
