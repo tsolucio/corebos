@@ -473,7 +473,7 @@ class Contacts extends CRMEntity {
 	}
 	/**
 	 * Function to get Contact related SalesOrder
- 	 * @param  integer   $id  - contactid
+	 * @param  integer   $id  - contactid
 	 * returns related SalesOrder record in array format
 	 */
 	function get_salesorder($id, $cur_tab_id, $rel_tab_id, $actions=false) {
