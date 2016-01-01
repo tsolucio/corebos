@@ -39,5 +39,5 @@ if (!empty($accountid)) {
 	$hierarchy = $focus->getAccountHierarchy($accountid);
 }
 $smarty->assign("ACCOUNT_HIERARCHY",$hierarchy);
-$smarty->display("AccountHierarchy.tpl");
+$smarty->display("modules/Accounts/AccountHierarchy.tpl");
 ?>
