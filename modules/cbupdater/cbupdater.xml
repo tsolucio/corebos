@@ -464,4 +464,11 @@
 	<classname>PBXManagerAfterSaveCreateActivity</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Contact Hierarchy Action Link</description>
+	<filename>build/changeSets/contacts_hierarchylink.php</filename>
+	<classname>contacts_hierarchylink</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
 </updatesChangeLog>

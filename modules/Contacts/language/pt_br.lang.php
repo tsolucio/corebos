@@ -232,6 +232,8 @@ $mod_strings = Array(
 // END
 
 'Contacts ID'=>'ID Contatos',
+'LBL_SHOW_CONTACT_HIERARCHY' => 'Show Contact Hierarchy',
+'LBL_CONTACT_HIERARCHY' => 'Contact Hierarchy',
 );
 
 ?>

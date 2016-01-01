@@ -192,5 +192,7 @@ $mod_strings = array(
 	'Contact Id' => 'Contact No.',
 	'Secondary Email' => 'Secondary Email',
 	'Contacts ID' => 'Contacts ID',
+	'LBL_SHOW_CONTACT_HIERARCHY' => 'Show Contact Hierarchy',
+	'LBL_CONTACT_HIERARCHY' => 'Contact Hierarchy',
 );
 ?>

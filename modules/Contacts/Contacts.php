@@ -1363,6 +1363,190 @@ function get_contactsforol($user_name)
 		}
 		return $list_buttons;
 	}
+
+
+//////////////////////////////////////////////////////////////////////////
+// pag 2012-Jan-18 contacts hierarchy deducted from accounts hierarchy  //
+//////////////////////////////////////////////////////////////////////////
+	/**
+	* Function to get Contact hierarchy of the given Contact
+	* @param  integer   $id      - contactid
+	* returns Contact hierarchy in array format
+	*/
+	function getContactHierarchy($id) {
+		global $log, $adb, $current_user;
+		$log->debug("Entering getContactHierarchy($id) method ...");
+		require('user_privileges/user_privileges_'.$current_user->id.'.php');
+		$tabname = getParentTab();
+		$listview_header = Array();
+		$listview_entries = array();
+
+		foreach ($this->list_fields_name as $fieldname=>$colname) {
+			if(getFieldVisibilityPermission('Contacts', $current_user->id, $colname) == '0') {
+				$listview_header[] = getTranslatedString($fieldname);
+			}
+		}
+
+		$contacts_list = Array();
+
+		// Get the contacts hierarchy from the top most contact in the hierarchy of the current contact, including the current contact
+		$encountered_contacts = array($id);
+
+		$contacts_list = $this->__getParentContacts($id, $contacts_list, $encountered_contacts);
+
+		// Get the contacts hierarchy (list of child contacts) based on the current contact
+		$contacts_list = $this->__getChildContacts($id, $contacts_list, $contacts_list[$id]['depth']);
+
+		// Create array of all the contacts in the hierarchy
+		foreach($contacts_list as $contact_id => $contact_info) {
+			$contact_info_data = array();
+			$hasRecordViewAccess = (is_admin($current_user)) || (isPermitted('Contacts', 'DetailView', $contact_id) == 'yes');
+			foreach ($this->list_fields_name as $fieldname=>$colname) {
+				// Permission to view contact is restricted, avoid showing field values (except contact name)
+				if(!$hasRecordViewAccess && $colname != 'lastname') {
+					$contact_info_data[] = '';
+				} else if(getFieldVisibilityPermission('Contacts', $current_user->id, $colname) == '0') {
+					$data = $contact_info[$colname];
+					if ($colname == 'lastname') {
+						if ($contact_id != $id) {
+							if($hasRecordViewAccess) {
+								$data = '<a href="index.php?module=Contacts&action=DetailView&record='.$contact_id.'&parenttab='.$tabname.'">'.$data.'</a>';
+							} else {
+								$data = '<i>'.$data.'</i>';
+							}
+						} else {
+							$data = '<b>'.$data.'</b>';
+						}
+						// - to show the hierarchy of the Contacts
+						$contact_depth = str_repeat(" .. ", $contact_info['depth'] * 1); // * 2
+						$data = $contact_depth . $data;
+					} else if ($colname == 'website') {
+						$data = '<a href="http://'. $data .'" target="_blank">'.$data.'</a>';
+					}
+					$contact_info_data[] = $data;
+				}
+			}
+			$listview_entries[$contact_id] = $contact_info_data;
+		}
+		$contact_hierarchy = array('header'=>$listview_header,'entries'=>$listview_entries);
+		$log->debug('Exiting getContactHierarchy method ...');
+		return $contact_hierarchy;
+	}
+
+	/**
+	* Function to Recursively get all the upper contacts of a given Contact
+	* @param  integer   $id            - contactid
+	* @param  array   $parent_contacts - Array of all the parent contacts
+	* returns All the parent contacts of the given contactid in array format
+	*/
+	function __getParentContacts($id, &$parent_contacts, &$encountered_contacts) {
+		global $log, $adb;
+		$log->debug("Entering __getParentContacts($id,".print_r($parent_contacts,true).') method ...');
+		$query = "SELECT reportsto FROM vtiger_contactdetails " .
+				" INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid" .
+				" WHERE vtiger_crmentity.deleted = 0 and vtiger_contactdetails.contactid = ?";
+		$params = array($id);
+		$res = $adb->pquery($query, $params);
+
+		if ($adb->num_rows($res) > 0 &&
+			$adb->query_result($res, 0, 'reportsto') != '' && $adb->query_result($res, 0, 'reportsto') != 0 &&
+			!in_array($adb->query_result($res, 0, 'reportsto'),$encountered_contacts)) {
+				$parentid = $adb->query_result($res, 0, 'reportsto');
+				$encountered_contacts[] = $parentid;
+				$this->__getParentContacts($parentid,$parent_contacts,$encountered_contacts);
+		}
+		$query = "SELECT vtiger_contactdetails.*, " .
+				" CASE when (vtiger_users.user_name not like '') THEN vtiger_users.user_name ELSE vtiger_groups.groupname END as user_name " .
+				" FROM vtiger_contactdetails" .
+				" INNER JOIN vtiger_crmentity " .
+				" ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid" .
+				" LEFT JOIN vtiger_groups" .
+				" ON vtiger_groups.groupid = vtiger_crmentity.smownerid" .
+				" LEFT JOIN vtiger_users" .
+				" ON vtiger_users.id = vtiger_crmentity.smownerid" .
+				" WHERE vtiger_crmentity.deleted = 0 and vtiger_contactdetails.contactid = ?";
+		$params = array($id);
+		$res = $adb->pquery($query, $params);
+		$parent_contact_info = array();
+		$depth = 0;
+		$immediate_parentid = $adb->query_result($res, 0, 'reportsto');
+		if (isset($parent_contacts[$immediate_parentid])) {
+			$depth = $parent_contacts[$immediate_parentid]['depth'] + 1;
+		}
+		$parent_contact_info['depth'] = $depth;
+		foreach($this->list_fields_name as $fieldname=>$columnname) {
+			if ($columnname == 'account_id') {
+				$accountid = $adb->query_result($res,0,'accountid');
+				$accountname = getAccountName($accountid);
+				$parent_contact_info[$columnname] = '<a href="index.php?module=Accounts&action=DetailView&record='.$accountid.'">'.$accountname.'</a>';
+			} else {
+				if ($columnname == 'assigned_user_id') {
+					$parent_contact_info[$columnname] = $adb->query_result($res, 0, 'user_name');
+				} else {
+					$parent_contact_info[$columnname] = $adb->query_result($res, 0, $columnname);
+				}
+			}
+		}
+		$parent_contacts[$id] = $parent_contact_info;
+		$log->debug('Exiting __getParentContacts method ...');
+		return $parent_contacts;
+	}
+
+	/**
+	* Function to Recursively get all the child contacts of a given Contact
+	* @param  integer   $id           - contactid
+	* @param  array   $child_contacts - Array of all the child contacts
+	* @param  integer   $depth        - Depth at which the particular contact has to be placed in the hierarchy
+	* returns All the child contacts of the given contactid in array format
+	*/
+	function __getChildContacts($id, &$child_contacts, $depth) {
+		global $log, $adb;
+		$log->debug("Entering __getChildContacts($id,".print_r($child_contacts,true).",$depth) method ...");
+		$query = "SELECT vtiger_contactdetails.*, " .
+				" CASE when (vtiger_users.user_name not like '') THEN vtiger_users.user_name ELSE vtiger_groups.groupname END as user_name " .
+				" FROM vtiger_contactdetails" .
+				" INNER JOIN vtiger_crmentity " .
+				" ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid" .
+				" LEFT JOIN vtiger_groups" .
+				" ON vtiger_groups.groupid = vtiger_crmentity.smownerid" .
+				" LEFT JOIN vtiger_users" .
+				" ON vtiger_users.id = vtiger_crmentity.smownerid" .
+				" WHERE vtiger_crmentity.deleted = 0 and reportsto = ?";
+		$params = array($id);
+		$res = $adb->pquery($query, $params);
+		$num_rows = $adb->num_rows($res);
+		if ($num_rows > 0) {
+			$depth = $depth + 1;
+			for($i=0;$i<$num_rows;$i++) {
+				$child_acc_id = $adb->query_result($res, $i, 'contactid');
+				if(array_key_exists($child_acc_id,$child_contacts)) {
+					continue;
+				}
+				$child_contact_info = array();
+				$child_contact_info['depth'] = $depth;
+				foreach($this->list_fields_name as $fieldname=>$columnname) {
+					if ($columnname == 'account_id') {
+						$accountid = $adb->query_result($res,$i,'accountid');
+						$accountname = getAccountName($accountid);
+						$child_contact_info[$columnname] = '<a href="index.php?module=Accounts&action=DetailView&record='.$accountid.'">'.$accountname.'</a>';;
+					} else {
+						if ($columnname == 'assigned_user_id') {
+							$child_contact_info[$columnname] = $adb->query_result($res, $i, 'user_name');
+						} else {
+							$child_contact_info[$columnname] = $adb->query_result($res, $i, $columnname);
+						}
+					}
+				}
+				$child_contacts[$child_acc_id] = $child_contact_info;
+				$this->__getChildContacts($child_acc_id, $child_contacts, $depth);
+			}
+		}
+		$log->debug('Exiting __getChildContacts method ...');
+		return $child_contacts;
+	}
+//////////////////////////////////////////////////////////////////////////////
+// END pag 2012-Jan-18 contacts hierarchy deducted from accounts hierarchy  //
+//////////////////////////////////////////////////////////////////////////////
 }
 
 ?>

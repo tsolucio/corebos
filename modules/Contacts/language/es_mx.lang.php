@@ -233,7 +233,8 @@ $mod_strings = array (
 'Secondary Email'=>'Email Segundario',
 
 'Contacts ID'=>'Id Contacto',
-
+'LBL_SHOW_CONTACT_HIERARCHY' => 'Mostrar Jerarquía Contactos',
+'LBL_CONTACT_HIERARCHY' => 'Jerarquía Contacto',
 );
 
 ?>

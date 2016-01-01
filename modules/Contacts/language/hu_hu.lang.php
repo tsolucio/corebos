@@ -210,6 +210,8 @@ $mod_strings = array(
 	'LBL_ACTION' => 'Műveletek',
 	'LBL_FIELDLISTS' => 'Mezőlista',
 	'LBL_RECORD' => 'Rekord',
-	'Phone' => 'Telefon'
+	'Phone' => 'Telefon',
+'LBL_SHOW_CONTACT_HIERARCHY' => 'Show Contact Hierarchy',
+'LBL_CONTACT_HIERARCHY' => 'Contact Hierarchy',
 );
 ?>
