@@ -701,6 +701,14 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			 where vtiger_crmentity.setype='$module $imageattachment'
 			  and vtiger_attachments.name = ? and vtiger_seattachmentsrel.crmid=?";
 			$image_res = $adb->pquery($sql, array(str_replace(' ', '_', $col_fields[$fieldname]),$col_fields['record_id']));
+			if ($adb->num_rows($image_res)==0) {
+				$sql = 'select vtiger_attachments.*,vtiger_crmentity.setype
+				 from vtiger_attachments
+				 inner join vtiger_seattachmentsrel on vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
+				 inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
+				 where vtiger_attachments.name = ? and vtiger_seattachmentsrel.crmid=?';
+				$image_res = $adb->pquery($sql, array(str_replace(' ', '_', $col_fields[$fieldname]),$col_fields['record_id']));
+			}
 			if ($adb->num_rows($image_res)>0) {
 				$image_id = $adb->query_result($image_res, 0, 'attachmentsid');
 				$image_path = $adb->query_result($image_res, 0, 'path');
