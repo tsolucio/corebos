@@ -1504,7 +1504,7 @@ level2Sel{
 
 .rptGrpHead {
     background: #FFF;
-    border-bottom: 1px solid #FFF;
+    /* border-bottom: 1px solid #FFF; */
     border-top: 1px solid #DDDDDD;
     font-weight: normal;
 }
