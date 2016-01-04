@@ -997,7 +997,7 @@ class Accounts extends CRMEntity {
 	*/
 	function __getParentAccounts($id, &$parent_accounts, &$encountered_accounts) {
 		global $log, $adb;
-		$log->debug("Entering __getParentAccounts(".$id.",".$parent_accounts.") method ...");
+		$log->debug("Entering __getParentAccounts($id,".print_r($parent_accounts,true).') method ...');
 
 		$query = "SELECT parentid FROM vtiger_account " .
 				" INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_account.accountid" .
@@ -1060,7 +1060,7 @@ class Accounts extends CRMEntity {
 	*/
 	function __getChildAccounts($id, &$child_accounts, $depth) {
 		global $log, $adb;
-		$log->debug("Entering __getChildAccounts(".$id.",".$child_accounts.",".$depth.") method ...");
+		$log->debug("Entering __getChildAccounts($id,".print_r($child_accounts,true).",$depth) method ...");
 
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>
 							'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
