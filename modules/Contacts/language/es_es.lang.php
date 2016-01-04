@@ -225,7 +225,7 @@ $mod_strings = array (
 // Module Sequence Numbering
 'Contact Id' => 'Nº Contacto',
 
-'Secondary Email'=>'Email Segundario',
+'Secondary Email'=>'Email Secundario',
 
 'Contacts ID'=>'Id Contacto',
 'LBL_SHOW_CONTACT_HIERARCHY' => 'Mostrar Jerarquía Contactos',
