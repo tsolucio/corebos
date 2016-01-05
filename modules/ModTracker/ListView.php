@@ -66,7 +66,7 @@ $viewinfo = $customView->getCustomViewByCvid($viewid);
 // Feature available from 5.1
 if(method_exists($customView, 'isPermittedChangeStatus')) {
 	// Approving or Denying status-public by the admin in CustomView
-	$statusdetails = $customView->isPermittedChangeStatus($viewinfo['status']);
+	$statusdetails = $customView->isPermittedChangeStatus($viewinfo['status'],$viewid);
 
 	// To check if a user is able to edit/delete a CustomView
 	$edit_permit = $customView->isPermittedCustomView($viewid,'EditView',$currentModule);

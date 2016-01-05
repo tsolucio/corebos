@@ -97,7 +97,7 @@ $customviewcombo_html = $oCustomView->getCustomViewCombo($viewid);
 $viewnamedesc = $oCustomView->getCustomViewByCvid($viewid);
 
 //Added to handle approving or denying status-public by the admin in CustomView
-$statusdetails = $oCustomView->isPermittedChangeStatus($viewnamedesc['status']);
+$statusdetails = $oCustomView->isPermittedChangeStatus($viewnamedesc['status'],$viewid);
 $smarty->assign("CUSTOMVIEW_PERMISSION",$statusdetails);
 
 //To check if a user is able to edit/delete a customview
