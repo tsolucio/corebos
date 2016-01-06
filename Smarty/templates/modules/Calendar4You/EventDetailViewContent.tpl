@@ -251,6 +251,7 @@
 												<td width="70%" align=left valign="top" onmouseover="vtlib_listview.trigger('cell.onmouseover', $(this))" onmouseout="vtlib_listview.trigger('cell.onmouseout', $(this))">{$ACTIVITYDATA.parent_name}</td>
 											</tr>
 											{/if}
+											{if $CONTACTS|@count > 0}
 											<tr>
 												<td width="30%" valign="top" align=right><b>{$CMOD.LBL_CONTACT_NAME}</b></td>
 												<td width="70%" valign="top" align=left>
@@ -262,6 +263,7 @@
 													{/foreach}
 													</table></td>
 											</tr>
+											{/if}
 										</table>
 									</div></td>
 								</tr>
@@ -401,7 +403,7 @@
 										{/if}
 									</tr>
 									<tr>
-										{if $LABEL.contact_id neq ''}
+										{if $ACTIVITYDATA.contact_id neq ''}
 										<td width="30%" align=right><b>{$CMOD.LBL_CONTACT_NAME}</b></td>
 										<td width="70%" align=left onmouseover="vtlib_listview.trigger('cell.onmouseover', $(this))" onmouseout="vtlib_listview.trigger('cell.onmouseout', $(this))"><a href="{$ACTIVITYDATA.contact_idlink}">{$ACTIVITYDATA.contact_id}</a><span type='vtlib_metainfo' vtrecordid='{$ACTIVITYDATA.contact_idid}' vtfieldname='firstname' vtmodule='Contacts' style='display:none;'></span></td>
 										{/if}

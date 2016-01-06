@@ -973,7 +973,7 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 				</td>
 			</tr>
 			<?php } ?>
-			<?php if(getFieldVisibilityPermission('Calendar',$current_user->id,'contact_id', 'readwrite') == '0') { ?>
+			<?php if(getFieldVisibilityPermission('Calendar',$current_user->id,'contact_id', 'readwrite') == '0' && vtlib_isModuleActive('Contacts')) { ?>
 			<tr>
 			<td><b><?php echo $c_mod_strings['LBL_CONTACT_NAME'] ?></b></td>
 			<td colspan="2">

@@ -75,11 +75,13 @@ function gITSshow(argg1,type,startdate,enddate,starthr,startmin,startfmt,endhr,e
 		document.EditView.subtab.value = subtab;
 		document.EditView.parent_id.value = "";
 		document.EditView.parent_name.value = "";
+		if(typeof(document.EditView.contactidlist) != 'undefined') {
 		document.EditView.contactidlist.value = "";
 		document.EditView.deletecntlist.value = "";
 
 		while (document.EditView.contactlist.options.length > 0){
 			document.EditView.contactlist.remove(0);
+		}
 		}
 		if (Calendar_Default_Reminder_Minutes>0) {
 			document.getElementById('set_reminder1').checked = true;
@@ -126,9 +128,11 @@ function gITSshow(argg1,type,startdate,enddate,starthr,startmin,startfmt,endhr,e
 		document.createTodo.task_sendnotification.checked = false;
 		document.createTodo.task_parent_id.value = "";
 		document.createTodo.task_parent_name.value = "";
+		if(typeof(document.createTodo.task_contact_id) != 'undefined') {
 		document.createTodo.task_contact_id.value = "";
 		document.createTodo.task_contact_name.value = "";
 		document.createTodo.deletecntlist.value = "";
+		}
 	}
 	if (y.display=="none"){
 		y.display="block";
