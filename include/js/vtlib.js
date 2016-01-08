@@ -264,7 +264,7 @@ function GlobalVariable_getVariable(gvname, gvdefault, gvmodule, gvuserid) {
 	return new Promise(function(resolve, reject) {
 		var url = baseurl + '&gvname='+gvname+'&gvuserid='+gvuserid+'&gvmodule='+gvmodule+'&gvdefault='+gvdefault+'&returnvalidation=0';
 		var req = new XMLHttpRequest();
-		req.open('GET', url);
+		req.open('GET', url, true);  // make call asynchronous
 
 		req.onload = function() {
 			// check the status
