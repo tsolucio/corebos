@@ -2600,7 +2600,7 @@ function is_uitype($uitype, $reqtype) {
  * @return Input string with single quotes escaped.
  */
 function escape_single_quotes($value) {
-	if (isset($value)) $value = str_replace("'", "\'", $value);
+	if (isset($value)) $value = addslashes($value);
 	return $value;
 }
 
