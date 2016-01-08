@@ -37,6 +37,7 @@ $report_std_filter->assign("JS_DATEFORMAT",parse_calendardate($app_strings['NTC_
 
 $roleid = $current_user->column_fields['roleid'];
 $user_array = getAllUserName();
+asort($user_array);
 $userIdStr = "";
 $userNameStr = "";
 $m=0;
@@ -54,6 +55,7 @@ foreach($user_array as $userid=>$username){
 }
 
 $user_groups = getAllGroupName();
+asort($user_groups);
 $groupIdStr = "";
 $groupNameStr = "";
 $l=0;

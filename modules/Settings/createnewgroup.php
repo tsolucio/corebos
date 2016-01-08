@@ -40,6 +40,7 @@ else
 
 //Constructing the Role Array
 $roleDetails=getAllRoleDetails();
+asort($roleDetails);
 $i=0;
 $roleIdStr="";
 $roleNameStr="";
@@ -67,6 +68,7 @@ foreach($roleDetails as $roleId=>$roleInfo)
 //Constructing the User Array
 $l=0;
 $userDetails=getAllUserName();
+asort($userDetails);
 foreach($userDetails as $userId=>$userInfo)
 {
 	if($l !=0)
@@ -82,6 +84,7 @@ foreach($userDetails as $userId=>$userInfo)
 //Constructing the Group Array
 $m=0;
 $grpDetails=getAllGroupName();
+asort($grpDetails);
 foreach($grpDetails as $grpId=>$grpName)
 {
 	if(! in_array($grpId,$parentGroupArray))
