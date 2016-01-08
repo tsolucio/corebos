@@ -75,7 +75,7 @@ foreach($userDetails as $userId=>$userInfo)
 		$userNameStr .= ", ";
 	}
 	$userIdStr .= "'".$userId."'";
-	$userNameStr .= "'".decode_html($userInfo)."'";
+	$userNameStr .= "'".addslashes(decode_html($userInfo))."'";
 	$l++;
 }
 
