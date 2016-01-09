@@ -15,11 +15,7 @@ global $adb, $current_user, $root_directory;
 
 if(isset($_REQUEST['act']) && $_REQUEST['act'] == 'updateDldCnt')
 {
-	$file_id=$_REQUEST['file_id'];
-	$sql = "select filedownloadcount from vtiger_notes where notesid= ?";
-	$download_count = $adb->query_result($adb->pquery($sql,array($file_id)),0,'filedownloadcount') + 1;
-	$sql="update vtiger_notes set filedownloadcount= ? where notesid= ?";
-	$res=$adb->pquery($sql,array($download_count,$file_id));
+	$res=$adb->pquery('update vtiger_notes set filedownloadcount=filedownloadcount+1 where notesid=?',array($_REQUEST['file_id']));
 }
 
 if(isset($_REQUEST['act']) && $_REQUEST['act'] == 'checkFileIntegrityDetailView')
