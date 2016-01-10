@@ -30,11 +30,25 @@ switch ($functiontocall) {
 		$limit = vtlib_purify($_REQUEST['limit']);
 		$filter = vtlib_purify($_REQUEST['filter']);
 		if (is_array($filter)) {
+			// Filter array format looks like this:
+			/**************************************
+			[filter] => Array(
+				[logic] => and
+				[filters] => Array(
+					[0] => Array(
+						[value] => {value to search}
+						[operator] => startswith
+						[field] => crmname
+						[ignoreCase] => true
+					)
+				)
+			)
+			***************************************/
 			$term = $filter['filters'][0]['value'];
-			$op = 'startswith';
+			$op = isset($filter['filters'][0]['operator']) ? $filter['filters'][0]['operator'] : 'startswith';
 		} else {
 			$term = vtlib_purify($_REQUEST['term']);
-			$op = 'startswith';
+			$op = empty($filter) ? 'startswith' : $filter;
 		}
 		$retvals = getFieldAutocomplete($term, $op, $searchinmodule, $fields, $returnfields, $limit, $current_user);
 		$ret = array();
@@ -51,10 +65,10 @@ switch ($functiontocall) {
 		$filter = vtlib_purify($_REQUEST['filter']);
 		if (is_array($filter)) {
 			$term = $filter['filters'][0]['value'];
-			$op = 'startswith';
+			$op = isset($filter['filters'][0]['operator']) ? $filter['filters'][0]['operator'] : 'startswith';
 		} else {
 			$term = vtlib_purify($_REQUEST['term']);
-			$op = 'startswith';
+			$op = empty($filter) ? 'startswith' : $filter;
 		}
 		$ret = getReferenceAutocomplete($term, $op, $searchinmodule, $limit, $current_user);
 		break;
