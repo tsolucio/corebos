@@ -313,7 +313,7 @@ foreach($Users_Ids AS $userid) {
 			}
 			if(in_array($activitytypeid,$tasklabel)){
 				$stfst = $row[$stfields['start']];
-				$stfed = $row[$stfields['end']];
+				$stfed = empty($stfields['end']) ? $stfst : $row[$stfields['end']];
 				if ($stfields['start']=='birthday') {  // we bring it up to the current calendar year
 					$stfst = date('Y',$start_time).'-'.substr($stfst, 6);
 					$stfed = date('Y',$start_time).'-'.substr($stfed, 6);
