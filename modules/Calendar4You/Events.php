@@ -179,10 +179,10 @@ foreach($Users_Ids AS $userid) {
 				foreach ($dtflds as $field) {
 					$queryGenerator->addCondition($field,array(0=>$start_date,1=>$end_date),'bw',$queryGenerator::$OR);
 				}
-					$queryGenerator->startGroup('OR');
-					$queryGenerator->addCondition($stfields['start'],$start_date,'b');
-					$queryGenerator->addCondition(empty($stfields['end']) ? $stfields['start'] : $stfields['end'],$end_date,'a',$queryGenerator::$AND);
-					$queryGenerator->endGroup();
+				$queryGenerator->startGroup('OR');
+				$queryGenerator->addCondition($stfields['start'],$start_date,'b');
+				$queryGenerator->addCondition(empty($stfields['end']) ? $stfields['start'] : $stfields['end'],$end_date,'a',$queryGenerator::$AND);
+				$queryGenerator->endGroup();
 				$queryGenerator->endGroup();
 				$queryGenerator->addCondition('assigned_user_id',getUserFullName($userid),'e',$queryGenerator::$AND);
 				if (count($Event_Status) > 0) {
