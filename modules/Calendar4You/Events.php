@@ -181,7 +181,7 @@ foreach($Users_Ids AS $userid) {
 				}
 					$queryGenerator->startGroup('OR');
 					$queryGenerator->addCondition($stfields['start'],$start_date,'b');
-					$queryGenerator->addCondition($stfields['end'],$end_date,'a',$queryGenerator::$AND);
+					$queryGenerator->addCondition(empty($stfields['end']) ? $stfields['start'] : $stfields['end'],$end_date,'a',$queryGenerator::$AND);
 					$queryGenerator->endGroup();
 				$queryGenerator->endGroup();
 				$queryGenerator->addCondition('assigned_user_id',getUserFullName($userid),'e',$queryGenerator::$AND);
