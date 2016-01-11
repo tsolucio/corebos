@@ -212,6 +212,7 @@ foreach($Users_Ids AS $userid) {
 			$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 			$list_query = "SELECT distinct vtiger_crmentity.crmid, vtiger_groups.groupname, $userNameSql as user_name, ".$queryGenerator->getSelectClauseColumnSQL().$queryGenerator->getFromClause().$queryGenerator->getWhereClause();
 			$list_array = array();
+			if ($activitytypeid=='HelpDesk' and $modact->list_link_field == 'ticket_title') $subject = 'title';
 		} else {
 			$list_query = getCalendar4YouListQuery($userid, $invites);
 			if ($record != "") {
