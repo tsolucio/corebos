@@ -471,4 +471,11 @@
 	<classname>contacts_hierarchylink</classname>
 	<systemupdate>false</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>HelpDesk Status on Calendar</description>
+	<filename>build/changeSets/HelpDeskStatusOnCalendar.php</filename>
+	<classname>HelpDeskStatusOnCalendar</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
