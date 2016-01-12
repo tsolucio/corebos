@@ -213,7 +213,11 @@ class Vtiger_MailScannerAction {
 		if($linktoid) $ticket->column_fields['parent_id'] = $linktoid;
 		$ticket->save('HelpDesk');
 
-		// Associate any attachement of the email to ticket
+                if(!$linktoid){
+                    $adb->pquery("UPDATE vtiger_troubletickets SET email=? WHERE ticketid=?",array($fromemail, $ticket->id));
+                }
+
+                // Associate any attachement of the email to ticket
 		$this->__SaveAttachements($mailrecord, 'HelpDesk', $ticket);
 		
 		return $ticket->id;
