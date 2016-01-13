@@ -9,7 +9,7 @@ global $current_user,$adb;
 set_time_limit(0);
 ini_set('memory_limit','1024M');
 $current_user = new Users();
-$current_user->retrieveCurrentUserInfoFromFile(1); // admin
+$current_user->retrieveCurrentUserInfoFromFile(Users::getActiveAdminId());
 $package = new Vtiger_Package();
 //$rdo = $package->importManifest('modules/cbupdater/manifest.xml');
 //$rdo = $package->importManifest('modules/Webforms/manifest.xml');
