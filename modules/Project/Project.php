@@ -391,11 +391,11 @@ class Project extends CRMEntity {
 
 			// Add Project module to the related list of Accounts module
 			$accountsModuleInstance = Vtiger_Module::getInstance('Accounts');
-			$accountsModuleInstance->setRelatedList($moduleInstance, 'Projects', Array('ADD','SELECT'), 'get_dependents_list');
+			$accountsModuleInstance->setRelatedList($moduleInstance, 'Projects', Array('ADD'), 'get_dependents_list');
 
 			// Add Project module to the related list of Accounts module
 			$contactsModuleInstance = Vtiger_Module::getInstance('Contacts');
-			$contactsModuleInstance->setRelatedList($moduleInstance, 'Projects', Array('ADD','SELECT'), 'get_dependents_list');
+			$contactsModuleInstance->setRelatedList($moduleInstance, 'Projects', Array('ADD'), 'get_dependents_list');
 
 			// Add Project module to the related list of HelpDesk module
 			$helpDeskModuleInstance = Vtiger_Module::getInstance('HelpDesk');

@@ -478,4 +478,11 @@
 	<classname>HelpDeskStatusOnCalendar</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Fix Project Related Lists</description>
+	<filename>build/changeSets/fixProjectRelatedLists.php</filename>
+	<classname>fixProjectRelatedLists</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
