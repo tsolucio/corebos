@@ -324,7 +324,8 @@ function check_form() {
 							followuphour = followuphour;
 					}
 				}
-
+				date3.setHours(followuphour);
+				date3.setMinutes(followupmin);
 				if ( compareDates(date3,'Followup Date',date2,'End Date','GE')) {
 					if (date3 <= date2) {
 						if((followuphour*60+followupmin) <= (endhour*60+endmin)) {
