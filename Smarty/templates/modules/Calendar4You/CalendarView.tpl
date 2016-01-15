@@ -193,7 +193,7 @@ jQuery(document).ready(function(){
         
         weekends: {/literal}{$CALENDAR_SETTINGS.show_weekends}{literal},
         firstHour: {/literal}{$CALENDAR_SETTINGS.start_hour}{literal},   
-        slotMinutes: 15,
+        slotMinutes: {/literal}{$Calendar_Slot_Minutes}{literal},
         
         header: {
 			left: 'prev,next today ',
