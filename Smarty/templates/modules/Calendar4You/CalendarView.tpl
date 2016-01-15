@@ -178,7 +178,11 @@ jQuery(document).ready(function(){
     var config = {
         
         weekMode : 'liquid',
-        
+		columnFormat: {
+			month: 'ddd',
+			week: 'ddd {/literal}{$CALENDAR_DAYMONTHFORMAT}{literal}',
+			day: 'dddd {/literal}{$CALENDAR_DAYMONTHFORMAT}{literal}'
+		},
         theme: true,
         defaultView: '{/literal}{$DEFAULTVIEW}{literal}',
         year: '{/literal}{$DATE_DATA.year}{literal}',
