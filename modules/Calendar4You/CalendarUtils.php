@@ -739,7 +739,7 @@ function getModuleStatusFields($module) {
 	return $Module_Status_Fields;
 }
 
-function Calendar_getReferenceFieldColumnsList($module) {
+function Calendar_getReferenceFieldColumnsList($module,$sort=true) {
 	global $current_user;
 	$handler = vtws_getModuleHandlerFromName($module, $current_user);
 	$meta = $handler->getMeta();
@@ -749,6 +749,7 @@ function Calendar_getReferenceFieldColumnsList($module) {
 		foreach ($mods as $mod) {
 			if (!vtlib_isEntityModule($mod)) continue; // reference to a module without fields
 			if (isset($ret_module_list[$mod])) continue;  // we already have this one
+			$Fields_Array = array();
 			$module_handler = vtws_getModuleHandlerFromName($mod, $current_user);
 			$module_meta = $module_handler->getMeta();
 			$mflds = $module_meta->getModuleFields();
@@ -763,8 +764,19 @@ function Calendar_getReferenceFieldColumnsList($module) {
 				$Fields_Array[$fieldid] = $field_data;
 				unset($field_data);
 			}
+			if ($sort) {
+				uasort($Fields_Array, function($a,$b) {
+					return (strtolower($a['fieldlabel']) < strtolower($b['fieldlabel'])) ? -1 : 1;
+				});
+			}
 			$ret_module_list[$mod] = $Fields_Array;
+			unset($Fields_Array);
 		}
+	}
+	if ($sort) {
+		uksort($ret_module_list, function($a,$b) {
+			return (strtolower(getTranslatedString($a,$a)) < strtolower(getTranslatedString($b,$b))) ? -1 : 1;
+		});
 	}
 	return $ret_module_list;
 }

@@ -40,7 +40,7 @@ $Calendar_Settings = $Calendar4You->getSettings();
 
 $Event_Colors = $Calendar4You->getEventColor($mode,$id);
 ?>
-<table border=0 cellspacing=0 cellpadding=5 width="500px" class="layerHeadingULine">
+<table border=0 cellspacing=0 cellpadding=5 width="600px" class="layerHeadingULine">
 	<tr>
 		<td class="layerPopupHeading" align="left">
 <?php
@@ -169,6 +169,9 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
                         $Fields_Label[$row_field['fieldname']] = $fieldlabel;
                    }
                 }
+				uasort($Fields_Array, function($a,$b) {
+					return (strtolower($a['fieldlabel']) < strtolower($b['fieldlabel'])) ? -1 : 1;
+				});
 				$OnlyEventFields = $Fields_Array;
 				$cl = Calendar_getReferenceFieldColumnsList($for_module);
 				if (count($cl) > 0) {
@@ -190,7 +193,9 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
                     	if ($row['type'] == "1") {
                             $Showed_Field[$row['view']] = $fname;
                         } else {
-                            $Event_Fields[$row['view']][$fname.':'.$fid] = $Fields_Label[$fname];
+							$mname = getModuleForField($fid);
+							$mname = getTranslatedString($mname,$mname);
+                            $Event_Fields[$row['view']][$fname.':'.$fid] = $Fields_Label[$fname].' ('.$mname.')';
                         }
                     }
                 } else {
@@ -210,12 +215,12 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
 				</td>
            </tr>
            <tr>
-                <td class="small">
+                <td class="small" width="38%">
 					<?php echo $mod_strings['LBL_AVAILABLE_INFO']; ?>
 				</td>
                 <td class="small">
 				</td>
-                <td class="small">
+                <td class="small" width="38%">
                 <?php echo $mod_strings['LBL_SELECTED_INFO']; ?>
 				</td>
            </tr>
@@ -247,12 +252,12 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
 				</td>
            </tr>
            <tr>
-                <td class="small">
+                <td class="small" width="38%">
 				<?php echo $mod_strings['LBL_AVAILABLE_INFO']; ?>
 				</td>
                 <td class="small">
 				</td>
-                <td class="small">
+                <td class="small" width="38%">
                 <?php echo $mod_strings['LBL_SELECTED_INFO']; ?>
 				</td>
            </tr>
@@ -284,12 +289,12 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
 				</td>
            </tr>
            <tr>
-                <td class="small">
+                <td class="small" width="38%">
 					<?php echo $mod_strings['LBL_AVAILABLE_INFO']; ?>
 				</td>
                 <td class="small">
 				</td>
-                <td class="small">
+                <td class="small" width="38%">
                 <?php echo $mod_strings['LBL_SELECTED_INFO']; ?>
 				</td>
            </tr>
