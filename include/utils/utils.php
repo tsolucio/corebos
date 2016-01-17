@@ -2114,6 +2114,28 @@ function getTableNameForField($module,$fieldname)
 	return $tablename;
 }
 
+/** Function to get the module name of a 'field'
+ * @param  : int $fieldid - fieldid
+ * @return : string modulename - module name of the fieldid
+ */
+function getModuleForField($fieldid) {
+	global $log, $adb;
+	$log->debug("Entering getModuleForField($fieldid) method ...");
+	$sql = 'SELECT vtiger_tab.name
+		FROM vtiger_field
+		INNER JOIN vtiger_tab on vtiger_tab.tabid=vtiger_field.tabid
+		WHERE fieldid = ?';
+	$res = $adb->pquery($sql, array($fieldid));
+
+	$modname = '';
+	if($adb->num_rows($res) > 0) {
+		$modname = $adb->query_result($res,0,'name');
+	}
+
+	$log->debug('Exiting getModuleForField method ...');
+	return $modname;
+}
+
 /** Function to get parent record owner
   * @param $tabid -- tabid :: Type integer
   * @param $parModId -- parent module id :: Type integer
