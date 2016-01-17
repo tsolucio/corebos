@@ -86,12 +86,18 @@ if ($detailview_permissions) {
 	$num_rows0 = $adb->num_rows($result0);
 	if ($num_rows0 > 0) {
 		while($row0 = $adb->fetchByAssoc($result0)) {
-			$sql01 = "SELECT uitype, columnname, fieldlabel FROM vtiger_field WHERE fieldname = ? AND tabid IN (?,?)";
-			$result01 = $adb->pquery($sql01, array($row0['fieldname'],$calendar_tabid,$events_tabid));
+			$sql01 = 'SELECT uitype, columnname, fieldlabel, vtiger_tab.name
+				FROM vtiger_field
+				INNER JOIN vtiger_tab on vtiger_tab.tabid=vtiger_field.tabid
+				WHERE fieldid = ?';
+			list($fname,$fid) = explode(':', $row0['fieldname']);
+			$result01 = $adb->pquery($sql01, array($fid));
+			if ($adb->num_rows($result01)==0) continue;
 			$columnname = $adb->query_result($result01,0,"columnname");
 			$fieldlabel = $adb->query_result($result01,0,"fieldlabel");
 			$uitype = $adb->query_result($result01,0,"uitype");
-			$Field_data = array("fieldname"=>$row0['fieldname'], "columnname"=>$columnname, "fieldlabel" => $fieldlabel, "uitype"=>$uitype);
+			$modname = $adb->query_result($result01,0,'name');
+			$Field_data = array('fieldid'=>$fid,'module'=>$modname,'fieldname'=>$row0['fieldname'], 'columnname'=>$columnname, 'fieldlabel' => $fieldlabel, 'uitype'=>$uitype);
 			if ($row0['type'] == "1") {
 				$Showed_Field[$row0['event']] = $Field_data;
 			} else {

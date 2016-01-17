@@ -485,4 +485,11 @@
 	<classname>fixProjectRelatedLists</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Enhance calendar field information to support related module information</description>
+	<filename>build/changeSets/CalendarEnhanceFieldInfoRelatedModules.php</filename>
+	<classname>CalendarEnhanceFieldInfoRelatedModules</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

@@ -423,6 +423,8 @@ function getCalendar4YouNonAdminModuleAccessQuery($module, $userid) {
 }
 
 function transferForAddIntoTitle($type, $row, $CD) {
+	global $log, $current_user, $adb;
+	list($CD['fieldname'],$void) = explode(':', $CD['fieldname']);
 	if ($CD["uitype"] == "66") 
 		$Col_Field = array($CD["fieldname"]=> $row["parent_id"]);
 	else
@@ -435,10 +437,23 @@ function transferForAddIntoTitle($type, $row, $CD) {
 		$Col_Field["contact_id"] = getAssignedContactsForEvent($row["crmid"]);
 		$CD["uitype"] = "1";   
 	}
-	$Cal_Data = getDetailViewOutputHtml($CD["uitype"], $CD["fieldname"], $CD["fieldlabel"], $Col_Field, "2", $calendar_tabid, "Calendar");
+	if ($CD['module']=='Calendar' or $CD['module']=='Events') {
+		$Cal_Data = getDetailViewOutputHtml($CD['uitype'], $CD['fieldname'], $CD['fieldlabel'], $Col_Field, '2', $calendar_tabid, 'Calendar');
+		$trmodule = 'Calendar';
+	} else {
+		$queryGenerator = new QueryGenerator($CD['module'], $current_user);
+		$queryGenerator->setFields(array($CD['columnname']));
+		$queryGenerator->addCondition('id',$row['parent_id'],'e',$queryGenerator::$AND);
+		$rec_query = $queryGenerator->getQuery();
+		$recinfo = $adb->pquery($rec_query,array());
+		$Cal_Data = array();
+		$Cal_Data[0] = getTranslatedString($CD['fieldlabel'],$CD['module']);
+		$Cal_Data[1] = $adb->query_result($recinfo, 0, $CD['columnname']);
+		$trmodule = $CD['module'];
+	}
 
 	if ($CD["uitype"] == "15")
-		$value = getTranslatedString($Cal_Data[1],'Calendar');
+		$value = getTranslatedString($Cal_Data[1],$trmodule);
 	else
 		$value = $Cal_Data[1];
 
@@ -722,5 +737,35 @@ function getModuleStatusFields($module) {
 		$Module_Status_Fields = array();
 	}
 	return $Module_Status_Fields;
+}
+
+function Calendar_getReferenceFieldColumnsList($module) {
+	global $current_user;
+	$handler = vtws_getModuleHandlerFromName($module, $current_user);
+	$meta = $handler->getMeta();
+	$reffields = $meta->getReferenceFieldDetails();
+	$ret_module_list = array();
+	foreach ($reffields as $fld => $mods) {
+		foreach ($mods as $mod) {
+			if (!vtlib_isEntityModule($mod)) continue; // reference to a module without fields
+			if (isset($ret_module_list[$mod])) continue;  // we already have this one
+			$module_handler = vtws_getModuleHandlerFromName($mod, $current_user);
+			$module_meta = $module_handler->getMeta();
+			$mflds = $module_meta->getModuleFields();
+			foreach ($mflds as $fname => $finfo) {
+				$fieldid = $finfo->getFieldId();
+				$fieldlabel = getTranslatedString($finfo->getFieldLabelKey(), $mod);
+				$field_data = array();
+				$field_data['fieldid'] = $fieldid;
+				$field_data['fieldname'] = $finfo->getFieldName();
+				$field_data['fieldlabel'] = $fieldlabel;
+				$field_data['module'] = $mod;
+				$Fields_Array[$fieldid] = $field_data;
+				unset($field_data);
+			}
+			$ret_module_list[$mod] = $Fields_Array;
+		}
+	}
+	return $ret_module_list;
 }
 ?> 
