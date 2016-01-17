@@ -149,7 +149,7 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
                 
                 $tabid = getTabId($for_module);
 
-                $sql_field = "SELECT fieldid, uitype, fieldname, fieldlabel FROM vtiger_field WHERE tabid=? and (displaytype != 3 OR uitype = 55) and fieldid != '195' ORDER BY sequence ASC";
+                $sql_field = "SELECT fieldid, uitype, fieldname, fieldlabel FROM vtiger_field WHERE tabid=? and (displaytype != 3 OR uitype = 55) and vtiger_field.fieldname not in ('notime') ORDER BY sequence ASC";
                 $res_field = $adb->pquery($sql_field,array($tabid));
                 $num_field = $adb->num_rows($res_field);  
                 
