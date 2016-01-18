@@ -492,4 +492,11 @@
 	<classname>CalendarEnhanceFieldInfoRelatedModules</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Notes action is missing parameter to support establishing link between records</description>
+	<filename>build/changeSets/fixAddNotesURLToEstablishLink.php</filename>
+	<classname>fixAddNotesURLToEstablishLink</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
