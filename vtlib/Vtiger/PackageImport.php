@@ -439,7 +439,11 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 		$moduleInstance = new Vtiger_Module();
 		$moduleInstance->name = $tabname;
 		$moduleInstance->label= $tablabel;
-		$moduleInstance->parent=$parenttab;
+		if ($menuInstance = Vtiger_Menu::getInstance($parenttab)){
+			$moduleInstance->parent=$parenttab;
+		} else {
+			$moduleInstance->parent="Tools";
+		}
 		$moduleInstance->isentitytype = ($isextension != true);
 		$moduleInstance->version = (!$tabversion)? 0 : $tabversion;
 		$moduleInstance->minversion = (!$vtigerMinVersion)? false : $vtigerMinVersion;
@@ -448,6 +452,10 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 
 		if(!empty($parenttab)) {
 			$menuInstance = Vtiger_Menu::getInstance($parenttab);
+			if ($menuInstance == NULL) {
+				$menuInstance = Vtiger_Menu::getInstance("Tools");
+				self::log("Module attached to Tools because $parenttab does not exist");
+			}
 			$menuInstance->addModule($moduleInstance);
 		}
 
