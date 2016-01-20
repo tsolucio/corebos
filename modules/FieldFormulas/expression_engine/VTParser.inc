@@ -146,7 +146,7 @@ class VTParser{
 		array('*', '/'),
 		array('+', '-'),
 		array('and', 'or'),
-		array('==', '>=', '<=', '>', '<')		
+		array('==', '>=', '<=', '>', '<')
 	);
 
 	function binOp(){

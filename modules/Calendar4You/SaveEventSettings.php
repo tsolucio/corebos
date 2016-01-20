@@ -51,7 +51,6 @@ if ($save_fields == "1") {
         }
         unset($Selected_Fields);    
     }
-    
     foreach ($Save_Data AS $Data) {
         $sql_i = "INSERT INTO its4you_calendar4you_event_fields (userid, event, type, view, fieldname) VALUES (?,?,?,?,?)";
         $adb->pquery($sql_i,$Data);

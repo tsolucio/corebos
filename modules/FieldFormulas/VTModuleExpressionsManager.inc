@@ -25,15 +25,13 @@ class VTModuleExpressionsManager{
 	static function clearCache() {
 		self::$cache = array();
 	}
-	/** END **/
-	
+
 	function retrieve($moduleName){
 		$adb = $this->adb;
-		
+
 		// Look at cache if we have the information
 		$cachedinfo = self::fromCache($moduleName);
 		if($cachedinfo === false) {
-			
 			$result = $adb->pquery('select * from vtiger_fieldformulas where modulename=?', array($moduleName));
 			if($adb->num_rows($result)==0){
 				self::addToCache($moduleName, array() );
@@ -45,14 +43,13 @@ class VTModuleExpressionsManager{
 			// Retrieve information from cache for consistency
 			$cachedinfo = self::fromCache($moduleName);
 		}
-		
+
 		$me = new VTModuleExpressions($moduleName, new VTExpressionEngine());
 		if(!empty($cachedinfo)) {
 			$me = new VTModuleExpressions($moduleName, $cachedinfo['expression_engine']);
 			$me->id = $cachedinfo['expressionid'];
 		}
 		return $me;
-		
 	}
 
 	function save($moduleExpressions){
@@ -62,9 +59,8 @@ class VTModuleExpressionsManager{
 			array(serialize($moduleExpressions->expressionEngine), $moduleExpressions->id));
 		}else{
 			$id = $adb->getUniqueId('vtiger_fieldformulas');
-			$adb->pquery('insert into vtiger_fieldformulas
-					(expressionid, modulename, expression_engine) values(?,?,?)', 
-			array($id, $moduleExpressions->moduleName,
+			$adb->pquery('insert into vtiger_fieldformulas (expressionid, modulename, expression_engine) values(?,?,?)',
+				array($id, $moduleExpressions->moduleName,
 			serialize($moduleExpressions->expressionEngine)));
 			$moduleExpressions->id = $id;
 		}

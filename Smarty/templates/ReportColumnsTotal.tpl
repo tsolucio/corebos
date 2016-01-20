@@ -6,7 +6,6 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 <table class="small" bgcolor="#ffffff" border="0" cellpadding="5" cellspacing="0" height="532" width="100%" valign="top">
@@ -21,7 +20,7 @@
 	<div style="overflow:auto;height:448px">
 	<table style="background-color: rgb(204, 204, 204);" class="small" border="0" cellpadding="5" cellspacing="1" width="100%" valign="top">
 		<tbody>
-		<tr>	
+		<tr>
 		<td class="lvtCol" nowrap width="40%">{$MOD.LBL_COLUMNS}</td>
 		<td class="lvtCol" nowrap width="15%">{$MOD.LBL_COLUMNS_SUM}</td>
 		<td class="lvtCol" nowrap width="15%">{$MOD.LBL_COLUMNS_AVERAGE}</td>
@@ -32,10 +31,10 @@
 		{foreach item=row from=$modules}
 		<tr class="lvtColData" onmouseover="this.className='lvtColDataHover'" onmouseout="this.className='lvtColData'" bgcolor="white">
 		{if $RECORDID neq ''}
-                        <td><b>{$row.label.0}</b></td>
-                {else}
-                        <td><b>{$row.0}</b></td>
-                {/if}
+			<td><b>{$row.label.0}</b></td>
+		{else}
+			<td><b>{$row.0}</b></td>
+		{/if}
 		<td>{$row.1}</td>
 		<td>{$row.2}</td>
 		<td>{$row.3}</td>
@@ -44,9 +43,9 @@
 		{/foreach}
 		{/foreach}
 
-	{if $ROWS_COUNT eq 0}
+		{if $ROWS_COUNT eq 0}
 		<tr class="lvtColData" bgcolor="white"><td colspan="5"><b>{$MOD.NO_COLUMN}</b></td></tr>
-	{/if}
+		{/if}
 
 		</tbody>
 	</table>

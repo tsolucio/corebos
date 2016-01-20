@@ -22,7 +22,7 @@ function _processtoken_symbol($token){
 }
 
 class VTTokenizer{
-	function __construct($expr){		
+	function __construct($expr){
 		$tokenTypes = array(
 				"SPACE" => array('\s+', '_processtoken_id'),
 				"SYMBOL" => array('[a-zA-Z][\w]*', '_processtoken_symbol'),
@@ -86,6 +86,5 @@ class SpaceFilter{
 		return $token;
 	}
 }
-
 
 ?>
