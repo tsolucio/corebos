@@ -1176,7 +1176,6 @@ $app_strings = array (
 'LBL_CALLER_INFORMATION'=>'Caller Information',
 'LBL_CALLER_NUMBER'=>'Number :',
 'LBL_CALLER_NAME'=>'Name :',
-'LBL_INFORMATION_VTIGER'=>'Information from Vtiger',
 
 //asterisk integration ends
 
@@ -1314,6 +1313,7 @@ $app_strings = array (
 'Drag file here or click to upload' => 'Drag file here or click to upload',
 'SetReturnAddressTitle' => 'Select Address To Use',
 'SetReturnAddressDescription' => 'Select which address you wish to overwrite, if any',
+'Subscribe' => 'Subscribe',
 );
 
 $app_list_strings = array (

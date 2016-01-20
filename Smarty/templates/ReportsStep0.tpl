@@ -6,7 +6,6 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 <html>
@@ -14,13 +13,34 @@
 	<meta http-equiv="Content-Type" content="text/html; charset={$APP.LBL_CHARSET}">
 	<title>{$MOD.TITLE_VTIGERCRM_CREATE_REPORT}</title>
 	<link href="{$THEME_PATH}style.css" rel="stylesheet" type="text/css">
+	<style>
+	.relmodscolumns {ldelim}
+		margin-left: 10px;
+		margin-right: 10px;
+		width: 100%;
+		-moz-column-count: 2;
+		-moz-column-gap: 10px;
+		-moz-column-rule: none;
+		-webkit-column-count: 2;
+		-webkit-column-gap: 10px;
+		-webkit-column-rule: none;
+		column-count: 2;
+		column-gap: 10px;
+		column-rule: none;
+	{rdelim}
+	.reportButtonFooter {ldelim}
+		position: fixed;
+		bottom: 0;
+		width: 100%;
+	{rdelim}
+	</style>
 	<script language="JavaScript" type="text/javascript" src="include/js/general.js"></script>
 	<script language="JavaScript" type="text/javascript" src="include/js/{php} echo $_SESSION['authenticated_user_language'];{/php}.lang.js?{php} echo $_SESSION['vtiger_version'];{/php}"></script>
 	{*<script language="javascript" type="text/javascript" src="include/scriptaculous/prototype.js"></script>*}
 	<script language="JavaScript" type="text/javascript" src="modules/Reports/Reports.js"></script>
 </head>
 <body topmargin="0" leftmargin="0" marginheight="0" marginwidth="0">
-<table width="100%"  border="0" cellspacing="0" cellpadding="0" class="mailClient mailClientBg">
+<table width="100%" border="0" cellspacing="0" cellpadding="0" class="mailClient mailClientBg">
 <tr>
 	<td>
 		<form name="NewRep" method="POST" ENCTYPE="multipart/form-data" action="index.php" style="margin:0px" onSubmit="return changeSteps();">
@@ -32,11 +52,10 @@
 
 		<table width="100%" border="0" cellspacing="0" cellpadding="5" >
 			<tr>
-				<td  class="moduleName" width="80%">{$MOD.LBL_CREATE_REPORT} </td>
-				<td  width=30% nowrap class="componentName" align=right>{$MOD.LBL_CUSTOM_REPORTS}</td>
+				<td class="moduleName" width="80%">{$MOD.LBL_CREATE_REPORT} </td>
+				<td width=30% nowrap class="componentName" align=right>{$MOD.LBL_CUSTOM_REPORTS}</td>
 			</tr>
 		</table>
-
 
 		<table width="100%" border="0" cellspacing="0" cellpadding="5" class="homePageMatrixHdr">
 		<tr>
@@ -57,7 +76,7 @@
 									<tr><td class="settingsTabList" style="padding-left:10px;">9. {$MOD.LBL_SCHEDULE_EMAIL} </td></tr>
 								</table>
 							</td>
-							<td width="75%" valign="top"  bgcolor=white >
+							<td width="75%" valign="top" bgcolor=white >
 								<!-- STEP 1 -->
 								<div id="step1" style="display:block;">
 									<table width="100%" border="0" cellpadding="10" cellspacing="0" bgcolor="#FFFFFF" height="500" class="small">
@@ -90,42 +109,32 @@
 											<td align="left" style="padding-left:5px;"><textarea name="reportdes" class="txtBox" rows="5">{$REPORTDESC}</textarea></td>
 										</tr>
 										<tr>
-							 	                        <td colspan="2" height="310">&nbsp;</td>
+											<td colspan="2" height="310">&nbsp;</td>
 										</tr>
-
 									</table>
 								</div>
 								<!-- STEP 2 -->
 								<div id="step2" style="display:none;">
-									<table class="small" bgcolor="#ffffff" border="0" cellpadding="5" cellspacing="0" height="500" width="100%">
+									<table class="small" bgcolor="#ffffff" border="0" cellpadding="5" cellspacing="0" width="100%">
 										<tr height='10%'>
 										<td colspan="2">
 											<span class="genHeaderGray">{$MOD.LBL_RELATIVE_MODULE}</span><br>
 											{$MOD.LBL_SELECT_RELATIVE_MODULE_FOR_REPORT}<hr>
 										</td>
 										</tr>
-										<tr class='small' height='5%'><td colspan="2">{if $RESTRICTEDMODULES neq ''} <div class='dvtCellInfo' style='margin-left: 10px;'>{$MOD.LBL_NOT_ACTIVE}<font color="red"><b> {$RESTRICTEDMODULES} </b></font> </div>{/if}</td>
+										{if $RESTRICTEDMODULES neq ''}
+										<tr class='small' height='5%'>
+											<td colspan="2"><div class='dvtCellInfo' style='margin-left: 10px;'>{$MOD.LBL_NOT_ACTIVE}<font color="red"><b> {$RESTRICTEDMODULES} </b></font></div></td>
 										</tr>
-										<tr valign=top  height="70%">
+										{/if}
+										<tr valign=top height="70%">
 											{if $RELATEDMODULES|@count > 0}
-												<td style="padding-right: 5px;" align="right" nowrap width="25%"><b>{$MOD.LBL_NEW_REP0_HDR2}</b></td>
-												<td style="padding-left: 5px; " align="left" width="75%">
-													<!--select name="secondarymodule" class="txtBox">
-													<option value="">--None--</option -->
-													<table class="small">
+												<td style="padding-left: 5px; " align="left" width="100%">
+													<div class="small relmodscolumns">
 													{foreach item=relmod from=$RELATEDMODULES}
-														{if $SEC_MODULE.$relmod eq 1}
-															<tr valign='top'><td><input type='checkbox' name="secondarymodule_{$relmod}" checked value="{$relmod}" />
-																{$relmod|@getTranslatedString:$relmod}
-															</td></tr>
-														{else}
-															<tr valign='top'><td><input type='checkbox' name="secondarymodule_{$relmod}" value="{$relmod}" />
-																{$relmod|@getTranslatedString:$relmod}
-															</td></tr>
-														{/if}
+														<input type='checkbox' name="secondarymodule_{$relmod}" {if $SEC_MODULE.$relmod eq 1}checked {/if}value="{$relmod}" />&nbsp;{$relmod|@getTranslatedString:$relmod}<br>
 													{/foreach}
-													</table>
-													<!--/select-->
+													</div>
 												</td>
 											{else}
 												<td style="padding-right: 5px;" align="left" nowrap width="25%"><b>{$MOD.NO_REL_MODULES}</b></td>
@@ -137,13 +146,11 @@
 						</td>
 					</tr>
 				</table>
-
-
 			</td>
 		</tr>
 		</table>
 
-	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="reportCreateBottom">
+	<table width="100%" border="0" cellpadding="0" cellspacing="0" class="reportCreateBottom reportButtonFooter">
 		<tr>
 			<td align="right" style="padding:10px;">
 			<input type="button" name="back_rep" id="back_rep" value=" &nbsp;&lt;&nbsp;{$APP.LBL_BACK}&nbsp; " disabled="disabled" class="crmbutton small cancel" onClick="changeStepsback();">

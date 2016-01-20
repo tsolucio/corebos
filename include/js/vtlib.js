@@ -10,9 +10,15 @@
 /**
  * Generic uitype popup selection handler
  */
-function vtlib_setvalue_from_popup(recordid,value,target_fieldname) {
+function vtlib_setvalue_from_popup(recordid,value,target_fieldname,formname) {
 	var ret = false;
-    if(window.opener.document.EditView) {
+	if(window.opener.document.forms[formname]) {
+	    var domnode_id = window.opener.document.forms[formname][target_fieldname];
+	    var domnode_display = window.opener.document.forms[formname][target_fieldname+'_display'];
+	    if(domnode_id) domnode_id.value = recordid;
+	    if(domnode_display) domnode_display.value = value;
+	    ret = true;
+	} else if(window.opener.document.EditView) {
         var domnode_id = window.opener.document.EditView[target_fieldname];
         var domnode_display = window.opener.document.EditView[target_fieldname+'_display'];
         if(domnode_id) domnode_id.value = recordid;
@@ -252,7 +258,7 @@ function GlobalVariable_getVariable(gvname, gvdefault, gvmodule, gvuserid) {
 	return new Promise(function(resolve, reject) {
 		var url = baseurl + '&gvname='+gvname+'&gvuserid='+gvuserid+'&gvmodule='+gvmodule+'&gvdefault='+gvdefault+'&returnvalidation=0';
 		var req = new XMLHttpRequest();
-		req.open('GET', url);
+		req.open('GET', url, true);  // make call asynchronous
 
 		req.onload = function() {
 			// check the status

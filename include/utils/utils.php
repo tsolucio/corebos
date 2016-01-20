@@ -962,11 +962,11 @@ function getColumnFields($module) {
 				// Update information to cache for re-use
 				VTCacheUtils::updateFieldInfo(
 					$resultrow['tabid'], $resultrow['fieldname'], $resultrow['fieldid'],
-					$resultrow['fieldlabel'], $resultrow['columnname'], $resultrow['tablename'],
+					decode_html($resultrow['fieldlabel']), $resultrow['columnname'], $resultrow['tablename'],
 					$resultrow['uitype'], $resultrow['typeofdata'], $resultrow['presence']
 				);
 			}
-	}
+		}
 
 		// For consistency get information from cache
 		$cachedModuleFields = VTCacheUtils::lookupFieldInfo_Module($module);
@@ -995,13 +995,14 @@ function getColumnFields($module) {
  */
 function getUserEmail($userid) {
 	global $log, $adb;
-	$log->debug("Entering getUserEmail(".$userid.") method ...");
+	$log->debug('Entering getUserEmail('.print_r($userid,true).') method ...');
 	if($userid != '') {
-		$sql = "select email1 from vtiger_users where id=?";
-		$result = $adb->pquery($sql, array($userid));
-		$email = $adb->query_result($result,0,"email1");
+		$sql = 'select email1 from vtiger_users where id=?';
+		if (!is_array($userid)) $userid = array($userid);
+		$result = $adb->pquery($sql, $userid);
+		$email = $adb->query_result($result,0,'email1');
 	}
-	$log->debug("Exiting getUserEmail method ...");
+	$log->debug('Exiting getUserEmail method ...');
 	return $email;
 }
 
@@ -2113,6 +2114,28 @@ function getTableNameForField($module,$fieldname)
 	return $tablename;
 }
 
+/** Function to get the module name of a 'field'
+ * @param  : int $fieldid - fieldid
+ * @return : string modulename - module name of the fieldid
+ */
+function getModuleForField($fieldid) {
+	global $log, $adb;
+	$log->debug("Entering getModuleForField($fieldid) method ...");
+	$sql = 'SELECT vtiger_tab.name
+		FROM vtiger_field
+		INNER JOIN vtiger_tab on vtiger_tab.tabid=vtiger_field.tabid
+		WHERE fieldid = ?';
+	$res = $adb->pquery($sql, array($fieldid));
+
+	$modname = '';
+	if($adb->num_rows($res) > 0) {
+		$modname = $adb->query_result($res,0,'name');
+	}
+
+	$log->debug('Exiting getModuleForField method ...');
+	return $modname;
+}
+
 /** Function to get parent record owner
   * @param $tabid -- tabid :: Type integer
   * @param $parModId -- parent module id :: Type integer
@@ -2599,7 +2622,7 @@ function is_uitype($uitype, $reqtype) {
  * @return Input string with single quotes escaped.
  */
 function escape_single_quotes($value) {
-	if (isset($value)) $value = str_replace("'", "\'", $value);
+	if (isset($value)) $value = addslashes($value);
 	return $value;
 }
 
@@ -3765,20 +3788,18 @@ function getCallerInfo($number){
 	if(empty($number)){
 		return false;
 	}
-	$caller = "Unknown Number (Unknown)"; //declare caller as unknown in beginning
-
 	$params = array();
 	$name = array('Contacts', 'Accounts', 'Leads');
 	foreach ($name as $module) {
 		$focus = CRMEntity::getInstance($module);
 		$query = $focus->buildSearchQueryForFieldTypes(11, $number);
-		if(empty($query)) return;
+		if(empty($query)) return false;
 
 		$result = $adb->pquery($query, array());
 		if($adb->num_rows($result) > 0 ){
-			$callerName = $adb->query_result($result, 0, "name");
+			$callerName = $adb->query_result($result, 0, 'name');
 			$callerID = $adb->query_result($result,0,'id');
-			$data = array("name"=>$callerName, "module"=>$module, "id"=>$callerID);
+			$data = array('name'=>$callerName, 'module'=>$module, 'id'=>$callerID);
 			return $data;
 		}
 	}
@@ -4090,7 +4111,7 @@ function getRelationTables($module,$secmodule){
 			}
 		}
 	}else {
-		if(method_exists($primary_obj,setRelationTables)){
+		if(method_exists($primary_obj,'setRelationTables')){
 			$reltables = $primary_obj->setRelationTables($secmodule);
 		} else {
 			$reltables = '';

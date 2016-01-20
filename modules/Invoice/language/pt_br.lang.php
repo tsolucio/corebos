@@ -123,6 +123,7 @@ $mod_strings = Array(
 'Contact Name'=>'Nome Contato', //to include contact name vtiger_field in Invoice
 'Invoice Date'=>'Data Fatura',
 'Sub Total'=>'Sub-Total',
+'S&H Amount' => 'Total Frete',
 'Due Date'=>'Data Vencimento',
 'Carrier'=>'Transportador',
 'Type'=>'Tipo',

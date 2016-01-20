@@ -391,7 +391,12 @@ function __vtlib_get_modulevar_value($module, $varname) {
 				'popup_fields'=>Array('vendorname'),
 			)
 		);
-	return $mod_var_mapping[$module][$varname];
+	if (isset($mod_var_mapping[$module]) and isset($mod_var_mapping[$module][$varname])) {
+		$retval = $mod_var_mapping[$module][$varname];
+	} else {
+		$retval = null;
+	}
+	return $retval;
 }
 
 /**
@@ -647,13 +652,13 @@ function vtlib_purifyForSql($string, $skipEmpty=true) {
 }
 
 function getvtlib_open_popup_window_function($popupmodule,$fldname,$basemodule) {
-	include_once 'modules/'.$popupmodule.'/'.$popupmodule.'.php';
-	$mod = new $popupmodule();
-	if (method_exists($mod, 'getvtlib_open_popup_window_function')) {
-		return $mod->getvtlib_open_popup_window_function($fldname,$basemodule);
-	} else {
-		return 'vtlib_open_popup_window';
+	if(file_exists('modules/'.$popupmodule.'/'.$popupmodule.'.php')){
+		include_once 'modules/'.$popupmodule.'/'.$popupmodule.'.php';
+		$mod = new $popupmodule();
+		if (method_exists($mod, 'getvtlib_open_popup_window_function')) {
+			return $mod->getvtlib_open_popup_window_function($fldname,$basemodule);
+		}
 	}
+	return 'vtlib_open_popup_window';
 }
-
 ?>

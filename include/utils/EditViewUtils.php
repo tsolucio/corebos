@@ -1257,16 +1257,19 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$rem_days = 0;
 		$rem_hrs = 0;
 		$rem_min = 0;
-		if($value!='')
-			$SET_REM = "CHECKED";
+		if($value!='') {
+			$SET_REM = 'CHECKED';
+		} else {
+			$SET_REM = '';
+		}
 		$rem_days = floor($col_fields[$fieldname]/(24*60));
 		$rem_hrs = floor(($col_fields[$fieldname]-$rem_days*24*60)/60);
 		$rem_min = ($col_fields[$fieldname]-$rem_days*24*60)%60;
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$day_options = getReminderSelectOption(0,31,'remdays',$rem_days);
 		$hr_options = getReminderSelectOption(0,23,'remhrs',$rem_hrs);
-		$min_options = getReminderSelectOption(1,59,'remmin',$rem_min);
-		$fieldvalue[] = array(array(0,32,'remdays',getTranslatedString('LBL_DAYS','Calendar'),$rem_days),array(0,24,'remhrs',getTranslatedString('LBL_HOURS','Calendar'),$rem_hrs),array(1,60,'remmin',getTranslatedString('LBL_MINUTES','Calendar').'&nbsp;&nbsp;'.getTranslatedString('LBL_BEFORE_EVENT','Calendar'),$rem_min));
+		$min_options = getReminderSelectOption(10,59,'remmin',$rem_min);
+		$fieldvalue[] = array(array(0,32,'remdays',getTranslatedString('LBL_DAYS','Calendar'),$rem_days),array(0,24,'remhrs',getTranslatedString('LBL_HOURS','Calendar'),$rem_hrs),array(10,60,'remmin',getTranslatedString('LBL_MINUTES','Calendar').'&nbsp;&nbsp;'.getTranslatedString('LBL_BEFORE_EVENT','Calendar'),$rem_min));
 		$fieldvalue[] = array($SET_REM,getTranslatedString('LBL_YES'),getTranslatedString('LBL_NO'));
 		$SET_REM = '';
 	}
@@ -1529,6 +1532,7 @@ function getConvertQuoteToInvoice($focus,$quote_focus,$quoteid)
 	}
 	$focus->column_fields['subject'] = $quote_focus->column_fields['subject'];
 	$focus->column_fields['account_id'] = $quote_focus->column_fields['account_id'];
+	$focus->column_fields['contact_id'] = $quote_focus->column_fields['contact_id'];
 	$focus->column_fields['bill_street'] = $quote_focus->column_fields['bill_street'];
 	$focus->column_fields['ship_street'] = $quote_focus->column_fields['ship_street'];
 	$focus->column_fields['bill_city'] = $quote_focus->column_fields['bill_city'];

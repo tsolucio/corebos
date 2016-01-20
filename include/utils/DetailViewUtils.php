@@ -313,7 +313,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
                 $label_fld[] = '';
         }
 	} elseif ($uitype == 19) {
-		if ($fieldname == 'notecontent' or $module=='Timecontrol')
+		if ($fieldname == 'notecontent' or $module=='Timecontrol' or $module=='Emails')
 			$col_fields[$fieldname] = decode_html($col_fields[$fieldname]);
 		else
 			$col_fields[$fieldname] = str_replace("&lt;br /&gt;", "<br>", $col_fields[$fieldname]);
@@ -699,25 +699,35 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			 inner join vtiger_seattachmentsrel on vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
 			 inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
 			 where vtiger_crmentity.setype='$module $imageattachment'
-			  and vtiger_attachments.name = ?
-			  and vtiger_seattachmentsrel.crmid=?";
+			  and vtiger_attachments.name = ? and vtiger_seattachmentsrel.crmid=?";
 			$image_res = $adb->pquery($sql, array(str_replace(' ', '_', $col_fields[$fieldname]),$col_fields['record_id']));
-			$image_id = $adb->query_result($image_res, 0, 'attachmentsid');
-			$image_path = $adb->query_result($image_res, 0, 'path');
-
-			//decode_html  - added to handle UTF-8   characters in file names
-			//urlencode    - added to handle special characters like #, %, etc.,
-			$image_name = urlencode(decode_html($adb->query_result($image_res, 0, 'name')));
-			$imgpath = $image_path . $image_id . "_" . $image_name;
-			if ($image_name != '') {
-				$ftype = $adb->query_result($image_res, 0, 'type');
-				$isimage = stripos($ftype, 'image') !== false;
-				if ($isimage) {
-					$imgtxt = getTranslatedString('SINGLE_'.$module,$module).' '.getTranslatedString('Image');
-					$label_fld[] = '<img src="' . $imgpath . '" alt="' . $imgtxt . '" title= "' . $imgtxt . '" style="max-width: 500px;">';
+			if ($adb->num_rows($image_res)==0) {
+				$sql = 'select vtiger_attachments.*,vtiger_crmentity.setype
+				 from vtiger_attachments
+				 inner join vtiger_seattachmentsrel on vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
+				 inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
+				 where vtiger_attachments.name = ? and vtiger_seattachmentsrel.crmid=?';
+				$image_res = $adb->pquery($sql, array(str_replace(' ', '_', $col_fields[$fieldname]),$col_fields['record_id']));
+			}
+			if ($adb->num_rows($image_res)>0) {
+				$image_id = $adb->query_result($image_res, 0, 'attachmentsid');
+				$image_path = $adb->query_result($image_res, 0, 'path');
+				//decode_html  - added to handle UTF-8   characters in file names
+				//urlencode    - added to handle special characters like #, %, etc.,
+				$image_name = urlencode(decode_html($adb->query_result($image_res, 0, 'name')));
+				$imgpath = $image_path . $image_id . "_" . $image_name;
+				if ($image_name != '') {
+					$ftype = $adb->query_result($image_res, 0, 'type');
+					$isimage = stripos($ftype, 'image') !== false;
+					if ($isimage) {
+						$imgtxt = getTranslatedString('SINGLE_'.$module,$module).' '.getTranslatedString('Image');
+						$label_fld[] = '<img src="' . $imgpath . '" alt="' . $imgtxt . '" title= "' . $imgtxt . '" style="max-width: 500px;">';
+					} else {
+						$imgtxt = getTranslatedString('SINGLE_'.$module,$module).' '.getTranslatedString('SINGLE_Documents');
+						$label_fld[] = '<a href="' . $imgpath . '" alt="' . $imgtxt . '" title= "' . $imgtxt . '">'.$image_name.'</a>';
+					}
 				} else {
-					$imgtxt = getTranslatedString('SINGLE_'.$module,$module).' '.getTranslatedString('SINGLE_Documents');
-					$label_fld[] = '<a href="' . $imgpath . '" alt="' . $imgtxt . '" title= "' . $imgtxt . '">'.$image_name.'</a>';
+					$label_fld[] = '';
 				}
 			} else {
 				$label_fld[] = '';

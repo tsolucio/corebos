@@ -956,7 +956,7 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
                                      </td>
 			     </tr>
 			     {/if}
-			     {if $LABEL.contact_id neq ''}
+			     {if $IS_CONTACTS_EDIT_PERMITTED eq 'true'}
 			     <tr>
                                      <td><b><font color="red">{$TYPEOFDATA.contact_id}</font>{$LABEL.contact_id}</b></td>
 				     <td colspan="2">

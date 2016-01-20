@@ -425,6 +425,55 @@ class ListViewController {
 				} elseif($field->getUIType() == 98) {
 					$value = '<a href="index.php?action=RoleDetailView&module=Settings&parenttab='.
 						'Settings&roleid='.$value.'">'.textlength_check(getRoleName($value)).'</a>';
+				} elseif($field->getUIType() == 69) {
+					if ($module == 'Products') {
+						$queryPrdt = 'SELECT vtiger_attachments.path,vtiger_attachments.attachmentsid,vtiger_attachments.`name`
+							FROM vtiger_attachments
+							INNER JOIN vtiger_seattachmentsrel ON vtiger_attachments.attachmentsid = vtiger_seattachmentsrel.attachmentsid
+							INNER JOIN vtiger_products ON vtiger_seattachmentsrel.crmid = vtiger_products.productid
+							where vtiger_seattachmentsrel.crmid=?';
+						$resultprdt = $this->db->pquery($queryPrdt,array($recordId));
+						if ($resultprdt and $this->db->num_rows($resultprdt)>0) {
+							$imgpath = $this->db->query_result($resultprdt,0,'path');
+							$attid = $this->db->query_result($resultprdt,0,'attachmentsid');
+							$imgfilename = $this->db->query_result($resultprdt,0,'name');
+							$value = "<div style='text-align:center;width:100%;'><img src='./".$imgpath.$attid.'_'.$imgfilename."' height='50'></div>";
+						} else {
+							$value = '';
+						}
+					} else {
+						if ($module == 'Contacts') {
+							$imageattachment = 'Image';
+						} else {
+							$imageattachment = 'Attachment';
+						}
+						//$imgpath = getModuleFileStoragePath('Contacts').$col_fields[$fieldname];
+						$sql = "select vtiger_attachments.*,vtiger_crmentity.setype
+						 from vtiger_attachments
+						 inner join vtiger_seattachmentsrel on vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
+						 inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
+						 where vtiger_crmentity.setype='$module $imageattachment'
+						  and vtiger_attachments.name = ?
+						  and vtiger_seattachmentsrel.crmid=?";
+						$image_res = $this->db->pquery($sql, array(str_replace(' ', '_', $value),$recordId));
+						$image_id = $this->db->query_result($image_res, 0, 'attachmentsid');
+						$image_path = $this->db->query_result($image_res, 0, 'path');
+						$image_name = urlencode(decode_html($this->db->query_result($image_res, 0, 'name')));
+						$imgpath = $image_path . $image_id . "_" . $image_name;
+						if ($image_name != '') {
+							$ftype = $this->db->query_result($image_res, 0, 'type');
+							$isimage = stripos($ftype, 'image') !== false;
+							if ($isimage) {
+								$imgtxt = getTranslatedString('SINGLE_'.$module,$module).' '.getTranslatedString('Image');
+								$value = '<div style="width:100%;text-align:center;"><img src="' . $imgpath . '" alt="' . $imgtxt . '" title= "' . $imgtxt . '" style="max-width: 50px;"></div>';
+							} else {
+								$imgtxt = getTranslatedString('SINGLE_'.$module,$module).' '.getTranslatedString('SINGLE_Documents');
+								$value = '<a href="' . $imgpath . '" alt="' . $imgtxt . '" title= "' . $imgtxt . '">'.$image_name.'</a>';
+							}
+						} else {
+							$value = '';
+						}
+					}
 				} elseif($field->getFieldDataType() == 'multipicklist') {
 					$value = ($value != "") ? str_replace(' |##| ',', ',$value) : "";
 					if(!$is_admin && $value != '') {

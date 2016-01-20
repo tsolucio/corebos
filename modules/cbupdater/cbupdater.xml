@@ -79,18 +79,18 @@
 	<systemupdate>false</systemupdate>
 </changeSet>
 <changeSet>
-    <author>joebordes</author>
-    <description>Custom field support on FAQ module</description>
-    <filename>build/changeSets/cffaq.php</filename>
-    <classname>cffaq</classname>
-    <systemupdate>true</systemupdate>
+	<author>joebordes</author>
+	<description>Custom field support on FAQ module</description>
+	<filename>build/changeSets/cffaq.php</filename>
+	<classname>cffaq</classname>
+	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
-    <author>joebordes</author>
-    <description>Install Payment Control module</description>
-    <filename>build/changeSets/installcyp.php</filename>
-    <classname>installcyp</classname>
-    <systemupdate>false</systemupdate>
+	<author>joebordes</author>
+	<description>Install Payment Control module</description>
+	<filename>build/changeSets/installcyp.php</filename>
+	<classname>installcyp</classname>
+	<systemupdate>false</systemupdate>
 </changeSet>
 <changeSet>
 	<author>joebordes</author>
@@ -170,11 +170,11 @@
 	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
-        <author>loridacito</author>
-        <description>Add fields in calendar4you</description>
-        <filename>build/changeSets/addfieldstocal.php</filename>
-        <classname>addfieldstocal</classname>
-        <systemupdate>true</systemupdate>
+	<author>loridacito</author>
+	<description>Add fields in calendar4you</description>
+	<filename>build/changeSets/addfieldstocal.php</filename>
+	<classname>addfieldstocal</classname>
+	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
 	<author>joebordes</author>
@@ -205,11 +205,11 @@
 	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
-        <author>loridacito</author>
-        <description>Add fields in calendar4you 2</description>
-        <filename>build/changeSets/addfieldstocaltwo.php</filename>
-        <classname>addfieldstocaltwo</classname>
-        <systemupdate>true</systemupdate>
+	<author>loridacito</author>
+	<description>Add fields in calendar4you 2</description>
+	<filename>build/changeSets/addfieldstocaltwo.php</filename>
+	<classname>addfieldstocaltwo</classname>
+	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
 	<author>joebordes</author>
@@ -427,6 +427,76 @@
 	<description>User fields: add hour_format and start_hour for calendar</description>
 	<filename>build/changeSets/UserHourStartFields.php</filename>
 	<classname>UserHourStartFields</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>User fields: add hour_format and start_hour for calendar (missing lists)</description>
+	<filename>build/changeSets/UserHourStartFieldsList.php</filename>
+	<classname>UserHourStartFieldsList</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>User fields: add hour_format and start_hour for calendar (correct uityp16)</description>
+	<filename>build/changeSets/UserHourStartFieldsPL16.php</filename>
+	<classname>UserHourStartFieldsPL16</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete ModTracker and Proxy from Settings</description>
+	<filename>build/changeSets/delSettingsModTrackerProxy.php</filename>
+	<classname>delSettingsModTrackerProxy</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
+<changeSet>
+	<author>kikojover</author>
+	<description>Add from_mailscanner field to HelpDesk and assign_to field to mailscanner rules</description>
+	<filename>build/changeSets/assignto_mailscanner.php</filename>
+	<classname>assignto_mailscanner</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Create and relate call activity when creating new record from call</description>
+	<filename>build/changeSets/PBXManagerAfterSaveCreateActivity.php</filename>
+	<classname>PBXManagerAfterSaveCreateActivity</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Contact Hierarchy Action Link</description>
+	<filename>build/changeSets/contacts_hierarchylink.php</filename>
+	<classname>contacts_hierarchylink</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>HelpDesk Status on Calendar</description>
+	<filename>build/changeSets/HelpDeskStatusOnCalendar.php</filename>
+	<classname>HelpDeskStatusOnCalendar</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Fix Project Related Lists</description>
+	<filename>build/changeSets/fixProjectRelatedLists.php</filename>
+	<classname>fixProjectRelatedLists</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Enhance calendar field information to support related module information</description>
+	<filename>build/changeSets/CalendarEnhanceFieldInfoRelatedModules.php</filename>
+	<classname>CalendarEnhanceFieldInfoRelatedModules</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Notes action is missing parameter to support establishing link between records</description>
+	<filename>build/changeSets/fixAddNotesURLToEstablishLink.php</filename>
+	<classname>fixAddNotesURLToEstablishLink</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
 </updatesChangeLog>

@@ -24,7 +24,7 @@ class VTJsonCondition {
 		$expressionResults = array();
 		$i = 0;
 		foreach ($expr as $cond) {
-			$conditionGroup = $cond['groupid'];
+			$conditionGroup = isset($cond['groupid']) ? $cond['groupid'] : '';
 			if (empty($conditionGroup))
 				$conditionGroup = 0;
 			preg_match('/(\w+) : \((\w+)\) (\w+)/', $cond['fieldname'], $matches);
@@ -116,7 +116,7 @@ class VTJsonCondition {
 		if(empty($condition)) return false;
 		$fieldValue = $data[$cond['fieldname']];
 		$value = trim(html_entity_decode($cond['value']));
-		$expressionType = $cond['valuetype'];
+		$expressionType = isset($cond['valuetype']) ? $cond['valuetype'] : '';
 
 		if ($expressionType == 'fieldname') {
 			if ($referredEntityData != null) {

@@ -542,13 +542,14 @@ class BURAK_Gantt {
 		// milestones should be placed first if they start on the same date as a task or group
 		$type = array();
 		foreach($this->data_gantt as $k=>$v){
-			$type[$k] = $this->data_gantt[$k]["type"];
+			$type[$k] = $this->data_gantt[$k]['type'].$this->data_gantt[$k]['label'];
 		}
 		asort($type,SORT_STRING);
 		foreach($type as $k=>$v){
-			$this->data_start[$k] = $this->data_gantt[$k]["start"];
+			$num2str = substr('000000'.$this->data_gantt[$k]['start'],-14);
+			$this->data_start[$k] = $num2str.$this->data_gantt[$k]['label'];
 		}
-		asort($this->data_start,SORT_NUMERIC);
+		asort($this->data_start,SORT_STRING);
 	}
 	
 	/**

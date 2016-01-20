@@ -88,12 +88,13 @@ class Invoice extends CRMEntity {
 	var $_recurring_mode;
 
 	function __construct() {
-		global $log, $currentModule;
-		$this->column_fields = getColumnFields($currentModule);
+		global $log;
+		$this_module = get_class($this);
+		$this->column_fields = getColumnFields($this_module);
 		$this->db = PearDatabase::getInstance();
 		$this->log = $log;
-		$sql = 'SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid = ?';
-		$tabid = getTabid($currentModule);
+		$sql = 'SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid = ? limit 1';
+		$tabid = getTabid($this_module);
 		$result = $this->db->pquery($sql, array($tabid));
 		if ($result and $this->db->num_rows($result)==1) {
 			$this->HasDirectImageField = true;
@@ -403,7 +404,14 @@ class Invoice extends CRMEntity {
 			$row = $adb->query_result_rowdata($res, $j);
 			$col_value = array();
 			for($k=0; $k<count($fieldsList); $k++) {
-				if($fieldsList[$k]!='lineitem_id'){
+                            //Here we check if field is different form lineitem_id (original) and
+                            //field is different from discount_amount or is equal and not empty (null) and
+                            //field is different from discount_percent or is equal and not empty (null)
+                            //to prevent fails when discount percent is null (resulting invoice have discount_percent as 0 and 
+                            //don't do any discount)
+				if($fieldsList[$k]!='lineitem_id' &&
+                                    ($fieldsList[$k]!='discount_amount' || ($fieldsList[$k]=='discount_amount' && !empty($row[$fieldsList[$k]]))) &&
+                                    ($fieldsList[$k]!='discount_percent' || ($fieldsList[$k]=='discount_percent' && !empty($row[$fieldsList[$k]])))){
 					$col_value[$fieldsList[$k]] = $row[$fieldsList[$k]];
 				}
 			}

@@ -117,7 +117,28 @@ class GoogleSync4You {
             $this->refresh_token = $refresh;
             $this->googleinsert = $googleinsert;
 	}
-    
+
+	public function getAuthURL($force=false) {
+		set_include_path($this->root_directory.'modules/Calendar4You/');
+		require_once 'gcal/src/Google/Client.php';
+		require_once 'gcal/src/Google/Service/Calendar.php';
+		$CLIENT_ID = $this->clientid;
+		$KEY_FILE = $this->keyfile;
+		$client = new Google_Client();
+		$client->setApplicationName('corebos');
+		$client->setClientSecret($this->user_clientsecret);
+		$client->setRedirectUri($KEY_FILE);
+		$client->setClientId($CLIENT_ID);
+		$client->setDeveloperKey($this->apikey);
+		$client->setAccessType('offline');
+		$client->setScopes(array("https://www.googleapis.com/auth/calendar","https://www.googleapis.com/auth/calendar.readonly"));
+		$authUrl = $client->createAuthUrl();
+		if ($force) {
+			$authUrl = str_replace('approval_prompt=auto','approval_prompt=force',$authUrl);
+		}
+		return $authUrl;
+	}
+
 	public function connectToGoogle() {
         
         $this->connectToGoogleViaAPI3();    

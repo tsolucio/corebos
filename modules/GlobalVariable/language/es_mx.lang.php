@@ -71,6 +71,7 @@ $mod_strings = Array(
 	'Module Functionality' => 'Funcionalidad Módulo',
 	'Other' => 'Otro',
 	'product_service_default' => 'Productos o Servicios por defecto en las líneas de productos',
+        'Users_ReplyTo_SecondEmail' => 'Responder al Email Secundario del usuario',
 
 );
 

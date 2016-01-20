@@ -70,12 +70,13 @@ class Documents extends CRMEntity {
 	var $default_sort_order = 'ASC';
 
 	function __construct() {
-		global $log, $currentModule;
-		$this->column_fields = getColumnFields($currentModule);
+		global $log;
+		$this_module = get_class($this);
+		$this->column_fields = getColumnFields($this_module);
 		$this->db = PearDatabase::getInstance();
 		$this->log = $log;
-		$sql = 'SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid = ?';
-		$tabid = getTabid($currentModule);
+		$sql = 'SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid = ? limit 1';
+		$tabid = getTabid($this_module);
 		$result = $this->db->pquery($sql, array($tabid));
 		if ($result and $this->db->num_rows($result)==1) {
 			$this->HasDirectImageField = true;
@@ -181,12 +182,14 @@ class Documents extends CRMEntity {
 		global $adb,$log;
 		$saveerror = false;
 		$errmsg = '';
-		$upload_file_path = decideFilePath();
-		$dirpermission = is_writable($upload_file_path);
-		$upload = is_uploaded_file($_FILES['filename']['tmp_name']);
-		if((!$dirpermission || !$upload) && $_REQUEST['action'] != "DocumentsAjax"){
-			$saveerror = true;
-			$errmsg = getTranslatedString('LBL_FILEUPLOAD_FAILED','Documents');
+		if ($this->mode=='' && $_REQUEST['filelocationtype'] == 'I' && $_REQUEST['action'] != 'DocumentsAjax') {
+			$upload_file_path = decideFilePath();
+			$dirpermission = is_writable($upload_file_path);
+			$upload = is_uploaded_file($_FILES['filename']['tmp_name']);
+			if (!$dirpermission || ($_FILES['error']!=0 and $_FILES['error']!=4) || (!$upload and $_FILES['error']!=4)){
+				$saveerror = true;
+				$errmsg = getTranslatedString('LBL_FILEUPLOAD_FAILED','Documents');
+			}
 		}
 		return array($saveerror,$errmsg,'EditView','');
 	}

@@ -11,30 +11,30 @@ require_once('include/database/PearDatabase.php');
 require_once('include/logging.php');
 
 class Asterisk {
-    var $address;
-    var $port;
-    var $userName;
-    var $password;
-    var $sock;
+	var $address;
+	var $port;
+	var $userName;
+	var $password;
+	var $sock;
 	var $db;
 	var $log;
 	var $queue;
-	
+
 	/**
 	 * this is the constructor of the class, it initializes the parameters of the class
 	 * @param resource $sock - a socket type
 	 * @param string $server - the asterisk server address
 	 * @param integer $port - the port number where to connect to the asterisk server
 	 */
-    function Asterisk ( $sock, $server, $port){
+	function Asterisk ( $sock, $server, $port){
 		$this->sock = $sock;
 		$this->address = $server;
 		$this->port = $port;
 		$this->db = PearDatabase::getInstance();
 		$this->log = LoggerManager::getLogger('asterisk');
 		$this->queue = array();
-    }
-	
+	}
+
 	/**
 	 * this function sets the username and password for the asterisk object
 	 * @param string $userName - asterisk username
@@ -44,7 +44,7 @@ class Asterisk {
 		$this->userName = $userName;
 		$this->password = $password;
 	}
-	
+
 	/**
 	 * this function authenticates the user
 	 * @return - true on success else false
@@ -70,7 +70,7 @@ class Asterisk {
 			return true;
 		}
 	}
-	
+
 	/**
 	 * create a call between from and to
 	 * @param string $from - the from number
@@ -84,7 +84,7 @@ class Asterisk {
 			$this->log->debug("Not sufficient parameters to create the call");
 			return false;
 		}
-		
+
 		//the caller would always be a SIP phone in our case
 		if(!strstr($from,"SIP")){
 			$from = "SIP/$from";
@@ -96,20 +96,20 @@ class Asterisk {
 				$to = trim($arr[1]);
 			}
 		}
-		
+
 		switch($typeCalled){
 			case "SIP":
-				$context = "default";
+				$context = "from-internal";
 				break;
 			case "PSTN":
-				$context = "from-inside";//"outbound-dialing";
+				$context = "from-internal";//"outbound-dialing";
 				break;
 			default:
-				$context = "default";
+				$context = "from-internal";
 		}
 		$this->createCall($from, $to, $context);
-	}	
-	
+	}
+
 	/**
 	 * creates a call between $from and $to
 	 * @param string $from -the number from which to call
@@ -138,11 +138,10 @@ class Asterisk {
 	function __destruct(){
 		fclose($this->sock);
 	}
-	
+
 	/**
 	 * this function reads the socket for asterisk events and
 	 * creates a queue with the response arrays
-	 * 
 	 * @param boolean $echoFlag - if set no echos are performed (added since some ajax requests might use the function)
 	 * @return 	the event array present in the queue
 	 * 			if no array is present it returns a null
@@ -150,11 +149,11 @@ class Asterisk {
 	function getAsteriskResponse($echoFlag = true){
 		if(sizeof($this->queue)==0){
 			$this->strData.=fread($this->sock, 4096);
-			
+
 			if($echoFlag){
 				echo $this->strData;
 			}
-			
+
 			$this->log->debug($this->strData);
 			$arr = explode("\r\n\r\n", $this->strData);
 

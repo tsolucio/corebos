@@ -7,20 +7,18 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
- 
+
 /**
  * this function starts the call, it writes the caller and called information to database where it is picked up from
  */
- echo startCall();
- 
- 
- 
-function startCall(){	
+echo startCall();
+
+function startCall(){
 	global $current_user, $adb,$log;
 	require_once 'include/utils/utils.php';
 	require_once 'modules/PBXManager/utils/AsteriskClass.php';
 	require_once('modules/PBXManager/AsteriskUtils.php');
-	
+
 	$id = $current_user->id;
 	$number = $_REQUEST['number'];
 	$record = $_REQUEST['recordid'];
@@ -57,6 +55,6 @@ function startCall(){
 
 		// add to the records activity history
 		addOutgoingcallHistory($current_user ,$extension,$record ,$adb);
-	}		
+	}
 }
 ?>

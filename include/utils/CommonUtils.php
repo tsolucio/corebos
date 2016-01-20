@@ -1100,29 +1100,25 @@ function getTermsandConditions() {
 }
 
 /**
- * Create select options in a dropdown list.  To be used inside
- *  a reminder select statement in a vtiger_activity form.
+ * Create select options in a dropdown list. To be used inside a reminder select statement in an activity form.
  * param $start - start value
  * param $end - end value
  * param $fldname - vtiger_field name
  * param $selvalue - selected value
  */
-function getReminderSelectOption($start, $end, $fldname, $selvalue = '') {
-	global $log;
-	$log->debug("Entering getReminderSelectOption(" . $start . "," . $end . "," . $fldname . "," . $selvalue = '' . ") method ...");
-	global $mod_strings;
-	global $app_strings;
-
-	$def_sel = "";
-	$OPTION_FLD = "<SELECT name=" . $fldname . ">";
+function getReminderSelectOption($start, $end, $fldname, $selvalue = '', $class='') {
+	global $log, $mod_strings, $app_strings;
+	$log->debug("Entering getReminderSelectOption($start,$end,$fldname,$selvalue) method ...");
+	$def_sel = '';
+	$OPTION_FLD = '<SELECT name=' . $fldname . (!empty($class)?" class='$class' ":'') . '>';
 	for ($i = $start; $i <= $end; $i++) {
 		if ($i == $selvalue)
-			$def_sel = "SELECTED";
-		$OPTION_FLD .= "<OPTION VALUE=" . $i . " " . $def_sel . ">" . $i . "</OPTION>\n";
-		$def_sel = "";
+			$def_sel = 'SELECTED';
+		$OPTION_FLD .= '<OPTION VALUE=' . $i . ' ' . $def_sel . '>' . $i . "</OPTION>\n";
+		$def_sel = '';
 	}
-	$OPTION_FLD .="</SELECT>";
-	$log->debug("Exiting getReminderSelectOption method ...");
+	$OPTION_FLD .= '</SELECT>';
+	$log->debug('Exiting getReminderSelectOption method ...');
 	return $OPTION_FLD;
 }
 
@@ -1710,6 +1706,9 @@ function setObjectValuesFromRequest($focus) {
 				$value = $_REQUEST[$fieldname];
 			else
 				$value = trim($_REQUEST[$fieldname]);
+			$focus->column_fields[$fieldname] = $value;
+		} elseif (isset($_REQUEST[$fieldname.'_hidden'])) {
+			$value = trim($_REQUEST[$fieldname.'_hidden']);
 			$focus->column_fields[$fieldname] = $value;
 		}
 	}
@@ -2345,17 +2344,17 @@ function getSingleFieldValue($tablename, $fieldname, $idname, $id) {
  * 	return string $announcement  - List of announments for the CRM users
  */
 function get_announcements() {
-	global $adb;
+	global $adb, $default_charset;
 	$announcement = '';
-	$sql = " select * from vtiger_announcement inner join vtiger_users on vtiger_announcement.creatorid=vtiger_users.id";
+	$sql = 'select * from vtiger_announcement inner join vtiger_users on vtiger_announcement.creatorid=vtiger_users.id';
 	$sql.=" AND vtiger_users.is_admin='on' AND vtiger_users.status='Active' AND vtiger_users.deleted = 0";
 	$result = $adb->pquery($sql, array());
 	for ($i = 0; $i < $adb->num_rows($result); $i++) {
-		$announce = getUserFullName($adb->query_result($result, $i, 'creatorid')) . ' :  ' . $adb->query_result($result, $i, 'announcement') . '   ';
+		$announce = getUserFullName($adb->query_result($result, $i, 'creatorid')) . '&nbsp;:&nbsp;' . $adb->query_result($result, $i, 'announcement') . '&nbsp;&nbsp;';
 		if ($adb->query_result($result, $i, 'announcement') != '')
 			$announcement.=$announce;
 	}
-	return $announcement;
+	return html_entity_decode($announcement, ENT_QUOTES, $default_charset);
 }
 
 /**

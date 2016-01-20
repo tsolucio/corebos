@@ -214,6 +214,7 @@ class CustomView extends CRMEntity {
 			array_push($sparams, $current_user->id);
 		}
 		$ssql .= " ORDER BY viewname";
+		$cuserroles = getRoleAndSubordinateUserIds($current_user->column_fields['roleid']);
 		$result = $adb->pquery($ssql, $sparams);
 		while ($cvrow = $adb->fetch_array($result)) {
 			if ($cvrow['viewname'] == 'All') {
@@ -231,7 +232,6 @@ class CustomView extends CRMEntity {
 				$userName = getFullNameFromArray('Users', $cvrow);
 				$disp_viewname = $viewname . " [" . $userName . "] ";
 			}
-
 
 			if ($cvrow['setdefault'] == 1 && $viewid == '') {
 				$option = "<option $selected value=\"" . $cvrow['cvid'] . "\">" . $disp_viewname . "</option>";
@@ -252,9 +252,11 @@ class CustomView extends CRMEntity {
 						$shtml_public = "<option disabled>--- " . $app_strings['LBL_PUBLIC'] . " ---</option>";
 					$shtml_public .= $option;
 				} elseif ($cvrow['status'] == CV_STATUS_PENDING) {
+					if (in_array($cvrow['userid'], $cuserroles)) {
 					if ($shtml_pending == '')
 						$shtml_pending = "<option disabled>--- " . $app_strings['LBL_PENDING'] . " ---</option>";
 					$shtml_pending .= $option;
+					}
 				} else {
 					if ($shtml_others == '')
 						$shtml_others = "<option disabled>--- " . $app_strings['LBL_OTHERS'] . " ---</option>";
@@ -263,8 +265,7 @@ class CustomView extends CRMEntity {
 			}
 		}
 		$shtml = $shtml_user;
-		if ($is_admin == true)
-			$shtml .= $shtml_pending;
+		$shtml .= $shtml_pending;
 		$shtml = $shtml . $shtml_public . $shtml_others;
 		return $shtml;
 	}
@@ -373,7 +374,7 @@ class CustomView extends CRMEntity {
 			$optionvalue = $fieldtablename . ":" . $fieldcolname . ":" . $fieldname . ":" . $module . "_" .
 					$fieldlabel1 . ":" . $fieldtypeofdata;
 			//added to escape attachments fields in customview as we have multiple attachments
-			$fieldlabel = getTranslatedString($fieldlabel); //added to support i18n issue
+			$fieldlabel = getTranslatedString($fieldlabel,$module); //added to support i18n issue
 			if ($module != 'HelpDesk' || $fieldname != 'filename')
 				$module_columnlist[$optionvalue] = $fieldlabel;
 			if ($markMandatory && $fieldtype[1] == "M") {
@@ -1774,9 +1775,7 @@ class CustomView extends CRMEntity {
 
 		// Tabid mapped to the list of block labels to be skipped for that tab.
 		$skipBlocksList = array(
-			getTabid('Contacts') => array('LBL_IMAGE_INFORMATION'),
 			getTabid('HelpDesk') => array('LBL_COMMENTS'),
-			getTabid('Products') => array('LBL_IMAGE_INFORMATION'),
 			getTabid('Faq') => array('LBL_COMMENT_INFORMATION'),
 			getTabid('Quotes') => array('LBL_RELATED_PRODUCTS'),
 			getTabid('PurchaseOrder') => array('LBL_RELATED_PRODUCTS'),
@@ -1871,38 +1870,30 @@ class CustomView extends CRMEntity {
 						if ($action == 'ListView' || $action == $module . "Ajax" || $action == 'index' || $action == 'DetailView') {
 							$permission = "yes";
 						}
-						else
-							$permission = "no";
+						else {
+							$user_array = getRoleAndSubordinateUserIds($current_user->column_fields['roleid']);
+							if (in_array($userid, $user_array)) {
+								$permission = "yes";
+							} else {
+								$permission = "no";
+							}
+						}
 					}
 					elseif ($status == CV_STATUS_PRIVATE || $status == CV_STATUS_PENDING) {
 						$log->debug("Entering when status=1 or 2");
 						if ($userid == $current_user->id)
 							$permission = "yes";
 						else {
-							/* if($action == 'ListView' || $action == $module."Ajax" || $action == 'index')
-							  { */
 							$log->debug("Entering when status=1 or status=2 & action = ListView or $module.Ajax or index");
-							$sql = "select vtiger_users.id from vtiger_customview inner join vtiger_users where vtiger_customview.cvid = ? and vtiger_customview.userid in (select vtiger_user2role.userid from vtiger_user2role inner join vtiger_users on vtiger_users.id=vtiger_user2role.userid inner join vtiger_role on vtiger_role.roleid=vtiger_user2role.roleid where vtiger_role.parentrole like '%" . $current_user_parent_role_seq . "::%')";
-							$result = $adb->pquery($sql, array($record_id));
-
-							while ($row = $adb->fetchByAssoc($result)) {
-								$temp_result[] = $row['id'];
-							}
-							$user_array = $temp_result;
-							if (sizeof($user_array) > 0) {
-								if (!in_array($current_user->id, $user_array))
-									$permission = "no";
+							$user_array = getRoleAndSubordinateUserIds($current_user->column_fields['roleid']);
+							if (count($user_array) > 0) {
+								if (in_array($current_user->id, $user_array))
+									$permission = 'yes';
 								else
-									$permission = "yes";
+									$permission = 'no';
+							} else {
+								$permission = 'no';
 							}
-							else
-								$permission = "no";
-							/* }
-							  else
-							  {
-							  $log->debug("Entering when status=1 or 2 & action = Editview or Customview");
-							  $permission = "no";
-							  } */
 						}
 					}
 					else
@@ -1922,15 +1913,18 @@ class CustomView extends CRMEntity {
 		return $permission;
 	}
 
-	function isPermittedChangeStatus($status) {
-		global $current_user, $log;
-		global $current_language;
+	function isPermittedChangeStatus($status,$viewid=0) {
+		global $current_user, $log, $current_language;
 		$custom_strings = return_module_language($current_language, "CustomView");
 		$log->debug("Entering isPermittedChangeStatus($status) method...");
 		require('user_privileges/user_privileges_' . $current_user->id . '.php');
 		$changed_status = $status_label = '';
 		$status_details = Array('Status' => CV_STATUS_DEFAULT, 'ChangedStatus' => $changed_status, 'Label' => $status_label);
-		if ($is_admin) {
+		if ($viewid>0) {
+			$cuserroles = getSubordinateUsersList($current_user->column_fields['roleid']);
+			$status_userid_info = $this->getStatusAndUserid($viewid);
+		}
+		if ($is_admin or ($viewid>0 and in_array($status_userid_info['userid'], $cuserroles))) {
 			if ($status == CV_STATUS_PENDING) {
 				$changed_status = CV_STATUS_PUBLIC;
 				$status_label = $custom_strings['LBL_STATUS_PUBLIC_APPROVE'];

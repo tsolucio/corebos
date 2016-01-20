@@ -62,22 +62,16 @@ $viewid = $customView->getViewId($currentModule);
 $customview_html = $customView->getCustomViewCombo($viewid);
 $viewinfo = $customView->getCustomViewByCvid($viewid);
 
-// Feature available from 5.1
-if(method_exists($customView, 'isPermittedChangeStatus')) {
-	// Approving or Denying status-public by the admin in CustomView
-	$statusdetails = $customView->isPermittedChangeStatus($viewinfo['status']);
+// Approving or Denying status-public by the admin in CustomView
+$statusdetails = $customView->isPermittedChangeStatus($viewinfo['status'],$viewid);
 
-	// To check if a user is able to edit/delete a CustomView
-	$edit_permit = $customView->isPermittedCustomView($viewid,'EditView',$currentModule);
-	$delete_permit = $customView->isPermittedCustomView($viewid,'Delete',$currentModule);
-
-	$smarty->assign("CUSTOMVIEW_PERMISSION",$statusdetails);
-	$smarty->assign("CV_EDIT_PERMIT",$edit_permit);
-	$smarty->assign("CV_DELETE_PERMIT",$delete_permit);
-}
-// END
-
-$smarty->assign("VIEWID", $viewid);
+// To check if a user is able to edit/delete a CustomView
+$edit_permit = $customView->isPermittedCustomView($viewid,'EditView',$currentModule);
+$delete_permit = $customView->isPermittedCustomView($viewid,'Delete',$currentModule);
+$smarty->assign('CUSTOMVIEW_PERMISSION',$statusdetails);
+$smarty->assign('CV_EDIT_PERMIT',$edit_permit);
+$smarty->assign('CV_DELETE_PERMIT',$delete_permit);
+$smarty->assign('VIEWID', $viewid);
 
 if($viewinfo['viewname'] == 'All') $smarty->assign('ALL', 'All');
 

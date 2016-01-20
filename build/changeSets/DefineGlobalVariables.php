@@ -24,6 +24,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 			$global_variables = array(
 				'product_service_default',
 				'Debug_Record_Not_Found',
+				'Debug_Report_Query',
 				'Product_Default_Units',
 				'Service_Default_Units',
 				'Maximum_Scheduled_Workflows',
@@ -39,6 +40,14 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Show_Copy_Adress_Header',
 				'SalesOrderStatusOnInvoiceSave',
 				'QuoteStatusOnSalesOrderSave',
+				'GoogleCalendarSync_BaseUpdateMonths',
+				'GoogleCalendarSync_BaseCreateMonths',
+				'Report.Excel.Export.RowHeight',
+				'Calendar_Modules_Panel_Visible',
+				'Calendar_Default_Reminder_Minutes',
+				'Application_Global_Search_Binary',
+				'Calendar_Slot_Minutes',
+                                'Users_ReplyTo_SecondEmail',
 			);
 			
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');

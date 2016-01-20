@@ -1,20 +1,12 @@
 <?php
-
-/*******************************************************************************
- * The contents of this file are subject to the following licences:
- * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
- * - vtiger CRM Public License Version 1.0 
- * You may not use this file except in compliance with the License
- * Software distributed under the License is distributed on an  "AS IS" basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is: SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
- * Portions created by vtiger are Copyright (C) vtiger.
- * Portions created by Vicus are Copyright (C) Vicus.
+/***********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.1
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is: coreBOS Open Source
+ * The Initial Developer of the Original Code is vtiger
+ * Portions created by JPL TSolucio, S.L are Copyright (C) JPL TSolucio, S.L.
  * All Rights Reserved.
- * Feel free to use / redistribute these languagefiles under the VPL 1.0.
+ ************************************************************************************
  * This translations is based on earlier work of: 
  * - IT-Online.nl <www.it-online.nl>
  * - Weltevree.org <www.Weltevree.org>
@@ -32,7 +24,6 @@
  ********************************************************************************/
 
 $mod_strings = Array(
-// Mike Crowe Mod --------------------------------------------------------Added for general search
 'LBL_MODULE_NAME'=>'Contacten',
 'LBL_INVITEE'=>'Medewerker',
 'LBL_MODULE_TITLE'=>'Contacten: Home',
@@ -253,8 +244,10 @@ $mod_strings = Array(
 // Module Sequence Numbering
 'Contact Id' => 'Contact Nr',
 'Secondary Email'=>'Tweede E-mail',
-// END
+
 'Contacts ID'=>'ID Contact ID',
+'LBL_SHOW_CONTACT_HIERARCHY' => 'Show Contact Hierarchy',
+'LBL_CONTACT_HIERARCHY' => 'Contact Hierarchy',
 );
 
 ?>

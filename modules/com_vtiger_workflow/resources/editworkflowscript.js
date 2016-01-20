@@ -212,7 +212,7 @@ function editworkflowscript($, conditions){
 		var op = {
 			string:["is", "contains", "does not contain", "starts with", "ends with", "has changed", 'is empty', 'is not empty','exists'],
 			number:["equal to", "less than", "greater than", "does not equal", "less than or equal to", "greater than or equal to", "has changed",'exists'],
-			value:['is', 'is not', "has changed", 'has changed to','exists'],
+			value:['is', 'is not', "has changed", 'has changed to', 'is empty', 'is not empty', 'exists'],
 			multipicklist:['is', 'is not'],
 			date:['is', 'is not', "has changed", 'has changed to','between', 'before', 'after', 'is today', 'less than days ago', 'more than days ago', 'in less than', 'in more than', 'days ago', 'days later','exists'],
 			datetime:['is', 'is not', "has changed", 'has changed to', 'less than hours before', 'less than hours later', 'more than hours before', 'more than hours later','exists']
@@ -242,7 +242,7 @@ function editworkflowscript($, conditions){
 					alert_arr.LBL_ENDS_WITH, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_IS_EMPTY, alert_arr.LBL_IS_NOT_EMPTY, alert_arr.LBL_EXISTS],
 			number:[alert_arr.LBL_EQUAL_TO, alert_arr.LBL_LESS_THAN, alert_arr.LBL_GREATER_THAN, alert_arr.LBL_DOEST_NOT_EQUAL,
 					alert_arr.LBL_LESS_THAN_OR_EQUAL_TO, alert_arr.LBL_GREATER_THAN_OR_EQUAL_TO, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_EXISTS],
-			value:[alert_arr.LBL_IS, alert_arr.LBL_IS_NOT, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_HAS_CHANGED_TO, alert_arr.LBL_EXISTS],
+			value:[alert_arr.LBL_IS, alert_arr.LBL_IS_NOT, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_HAS_CHANGED_TO, alert_arr.LBL_IS_EMPTY, alert_arr.LBL_IS_NOT_EMPTY, alert_arr.LBL_EXISTS],
 			reference:[alert_arr.LBL_IS, alert_arr.LBL_IS_NOT, alert_arr.LBL_HAS_CHANGED],
 			date:[alert_arr.LBL_IS, alert_arr.LBL_IS_NOT, alert_arr.LBL_HAS_CHANGED, alert_arr.LBL_HAS_CHANGED_TO,
 					alert_arr.LBL_BETWEEN, alert_arr.LBL_BEFORE, alert_arr.LBL_AFTER, alert_arr.LBL_IS_TODAY, alert_arr.LBL_LESS_THAN_DAYS_AGO,

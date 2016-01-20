@@ -122,8 +122,10 @@ class VTUpdateFieldsTask extends VTTask {
 					}
 				}
 			}
-
+			$hold_ajxaction = $_REQUEST['ajxaction'];
+			$_REQUEST['ajxaction'] = 'Workflow';
 			$focus->saveentity($moduleName);
+			$_REQUEST['ajxaction'] = $hold_ajxaction;
 			$util->revertUser();
 		}
 		$util->revertUser();

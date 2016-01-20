@@ -26,7 +26,7 @@
 	</tr>
 
 	<tr>
-		<td colspan='3' align='left'><b>{$cbsubject}</b><a style='padding: 2px;' href='index.php?action=DetailView&module={$cbmodule}&record={$cbrecord}'>[{$APP.LBL_MORE}...]</a></td>
+		<td colspan='3' align='left'><b>{$cbsubject}</b><a style='padding: 2px;' href='index.php?action=EventDetailView&module=Calendar4You&record={$cbrecord}'>[{$APP.LBL_MORE}...]</a></td>
 	</tr>
 
 	<tr>

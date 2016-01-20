@@ -124,17 +124,17 @@ class CRMEntity {
 		// END
 	}
 
-	function insertIntoAttachment($id, $module) {
+	function insertIntoAttachment($id, $module, $direct_import=false) {
 		global $log, $adb;
 		$log->debug("Entering into insertIntoAttachment($id,$module) method.");
 		$file_saved = false;
 		// get the list of uitype 69 fields so we can set their value
-		$sql = 'SELECT tablename,columnname,fieldname FROM vtiger_field
+		$sql = 'SELECT tablename,columnname
+		 FROM vtiger_field
 		 INNER JOIN vtiger_blocks ON vtiger_blocks.blockid = vtiger_field.block
-		 WHERE uitype=69 and vtiger_field.tabid = ? order by vtiger_blocks.sequence,vtiger_field.sequence';
+		 WHERE uitype=69 and vtiger_field.fieldname=? and vtiger_field.tabid = ?
+		 ORDER BY vtiger_blocks.sequence,vtiger_field.sequence';
 		$tabid = getTabid($module);
-		$result = $adb->pquery($sql, array($tabid));
-		$fnum = 0;
 		foreach($_FILES as $fileindex => $files) {
 			if($files['name'] != '' && $files['size'] > 0) {
 				if($_REQUEST[$fileindex.'_hidden'] != '') {
@@ -143,9 +143,10 @@ class CRMEntity {
 					$files['original_name'] = stripslashes($files['name']);
 				}
 				$files['original_name'] = str_replace('"','',$files['original_name']);
-				$tblname = $adb->query_result($result, $fnum, 'tablename');
-				$colname = $adb->query_result($result, $fnum, 'columnname');
-				$fldname = $adb->query_result($result, $fnum, 'fieldname');
+				$result = $adb->pquery($sql, array($fileindex,$tabid));
+				$tblname = $adb->query_result($result, 0, 'tablename');
+				$colname = $adb->query_result($result, 0, 'columnname');
+				$fldname = $fileindex;
 				//This is to added to store the existing attachment id so we can delete it when given a new image
 				$attachmentname = $this->DirectImageFieldValues[$colname];
 				$old_attachmentrs = $adb->pquery('select vtiger_crmentity.crmid from vtiger_seattachmentsrel
@@ -160,7 +161,7 @@ class CRMEntity {
 				$upd = "update $tblname set $colname=? where ".$this->tab_name_index[$tblname].'=?';
 				$adb->pquery($upd, array($files['original_name'],$this->id));
 				$this->column_fields[$fldname] = $files['original_name'];
-				$file_saved = $this->uploadAndSaveFile($id,$module,$files,$attachmentname);
+				$file_saved = $this->uploadAndSaveFile($id,$module,$files,$attachmentname, $direct_import);
 				// Remove the deleted attachments from db
 				if($file_saved && !empty($old_attachmentid)) {
 					$setypers = $adb->pquery('select setype from vtiger_crmentity where crmid=?', array($old_attachmentid));
@@ -170,7 +171,6 @@ class CRMEntity {
 						$del_res2 = $adb->pquery('delete from vtiger_seattachmentsrel where attachmentsid=?', array($old_attachmentid));
 					}
 				}
-				$fnum++;
 			}
 		}
 		$log->debug("Exiting from insertIntoAttachment($id,$module) method.");
@@ -183,7 +183,7 @@ class CRMEntity {
 	 *      @param array $file_details  - array which contains the file information(name, type, size, tmp_name and error)
 	 *      return void
 	 */
-	function uploadAndSaveFile($id, $module, $file_details, $attachmentname='') {
+	function uploadAndSaveFile($id, $module, $file_details, $attachmentname='', $direct_import=false) {
 		global $log;
 		$fparams = print_r($file_details,true);
 		$log->debug("Entering into uploadAndSaveFile($id,$module,$fparams) method.");
@@ -217,15 +217,13 @@ class CRMEntity {
 		$upload_file_path = decideFilePath();
 
 		//upload the file in server
-		$upload_status = move_uploaded_file($filetmp_name, $upload_file_path . $current_id . "_" . $binFile);
+		if ($direct_import) {
+			$upload_status = copy($filetmp_name, $upload_file_path . $current_id . "_" . $binFile);
+		} else {
+			$upload_status = move_uploaded_file($filetmp_name, $upload_file_path . $current_id . "_" . $binFile);
+		}
 
-		$save_file = 'true';
-		// //only images are allowed for these modules
-		// if ($module == 'Contacts' || $module == 'Products' || (property_exists($this,'HasDirectImageField') && $this->HasDirectImageField)) {
-			// $save_file = validateImageFile($file_details);
-		// }
-
-		if ($save_file == 'true' && $upload_status == 'true') {
+		if ($upload_status) {
 			$description_val = empty($this->column_fields['description']) ? '' : $this->column_fields['description'];
 			if ($module == 'Contacts' || $module == 'Products') {
 				$sql1 = "insert into vtiger_crmentity (crmid,smcreatorid,smownerid,setype,description,createdtime,modifiedtime) values(?, ?, ?, ?, ?, ?, ?)";
@@ -1352,7 +1350,7 @@ class CRMEntity {
 		global $adb;
 		//when we configure the invoice number in Settings this will be used
 		if ($mode == "configure" && $req_no != '') {
-			list($mode, $module, $req_str, $req_no, $result, $returnResult) = cbEventHandler::do_filter('corebos.filter.ModuleSeqNumber.set', array($mode, $module, $req_str, $req_no, $result, false));
+			list($mode, $module, $req_str, $req_no, $result, $returnResult) = cbEventHandler::do_filter('corebos.filter.ModuleSeqNumber.set', array($mode, $module, $req_str, $req_no, '', false));
 			if ($returnResult) return $result;
 			$check = $adb->pquery("select cur_id from vtiger_modentity_num where semodule=? and prefix = ?", array($module, $req_str));
 			if ($adb->num_rows($check) == 0) {
@@ -1373,7 +1371,7 @@ class CRMEntity {
 				}
 			}
 		} else if ($mode == "increment") {
-			list($mode, $module, $req_str, $req_no, $result, $returnResult) = cbEventHandler::do_filter('corebos.filter.ModuleSeqNumber.increment', array($mode, $module, $req_str, $req_no, $result, false));
+			list($mode, $module, $req_str, $req_no, $result, $returnResult) = cbEventHandler::do_filter('corebos.filter.ModuleSeqNumber.increment', array($mode, $module, $req_str, $req_no, '', false));
 			if ($returnResult) return $result;
 			//when we save new invoice we will increment the invoice id and write
 			$check = $adb->pquery("select cur_id,prefix from vtiger_modentity_num where semodule=? and active = 1", array($module));
@@ -1428,7 +1426,7 @@ class CRMEntity {
 	function updateMissingSeqNumber($module) {
 		global $log, $adb;
 		$log->debug("Entered updateMissingSeqNumber function");
-		list($module, $result, $returnResult) = cbEventHandler::do_filter('corebos.filter.ModuleSeqNumber.fillempty', array($module, $result, false));
+		list($module, $result, $returnResult) = cbEventHandler::do_filter('corebos.filter.ModuleSeqNumber.fillempty', array($module, '', false));
 		if ($returnResult) return $result;
 
 		vtlib_setup_modulevars($module, $this);
@@ -1952,7 +1950,6 @@ class CRMEntity {
 			left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid";
 
 		$fields_query = $adb->pquery("SELECT vtiger_field.fieldname,vtiger_field.tablename,vtiger_field.fieldid from vtiger_field INNER JOIN vtiger_tab on vtiger_tab.name = ? WHERE vtiger_tab.tabid=vtiger_field.tabid AND vtiger_field.uitype IN (10) and vtiger_field.presence in (0,2)", array($module));
-
 		if ($adb->num_rows($fields_query) > 0) {
 			for ($i = 0; $i < $adb->num_rows($fields_query); $i++) {
 				$field_name = $adb->query_result($fields_query, $i, 'fieldname');
@@ -1972,6 +1969,15 @@ class CRMEntity {
 						$query.= " left join $rel_tab_name as " . $rel_tab_name . "Rel$module$field_id on " . $rel_tab_name . "Rel$module$field_id.$rel_tab_index = vtiger_crmentityRel$module$field_id.crmid";
 					}
 				}
+			}
+		}
+		$fields_query = $adb->pquery('SELECT vtiger_field.columnname,vtiger_field.tablename,vtiger_field.fieldid from vtiger_field INNER JOIN vtiger_tab on vtiger_tab.name = ? WHERE vtiger_tab.tabid=vtiger_field.tabid AND vtiger_field.uitype = 101 and vtiger_field.presence in (0,2)', array($module));
+		if ($adb->num_rows($fields_query) > 0) {
+			for ($i = 0; $i < $adb->num_rows($fields_query); $i++) {
+				$col_name = $adb->query_result($fields_query, $i, 'columnname');
+				$field_id = $adb->query_result($fields_query, $i, 'fieldid');
+				$tab_name = $adb->query_result($fields_query, $i, 'tablename');
+				$query.= " left join vtiger_users as vtiger_usersRel$module$field_id on vtiger_usersRel$module$field_id.id = $tab_name.$col_name";
 			}
 		}
 		return $query;
@@ -2090,7 +2096,7 @@ class CRMEntity {
 			$fields[] = $value;
 		}
 		$pritablename = $tables[0];
-		$sectablename = $tables[1];
+		$sectablename = isset($tables[1])?$tables[1]:'';
 		$prifieldname = $fields[0][0];
 		$secfieldname = $fields[0][1];
 		$tmpname = $pritablename . 'tmp' . $secmodule;
@@ -2434,7 +2440,7 @@ class CRMEntity {
 		//as mysql query optimizer puts crmentity on the left side and considerably slow down
 		$query = preg_replace('/\s+/', ' ', $query);
 		if (strripos($query, ' WHERE ') !== false) {
-			vtlib_setup_modulevars($module, $this);
+			vtlib_setup_modulevars(get_class($this), $this);
 			$query = str_ireplace(' where ', " WHERE $this->table_name.$this->table_index > 0  AND ", $query);
 		}
 		return $query;

@@ -84,6 +84,7 @@ if($numOfRows > 0) {
 		$filtersql = $oReportRun->RunTimeAdvFilter($advft_criteria,$advft_criteria_groups);
 
 		$list_report_form = new vtigerCRM_Smarty;
+		$list_report_form->assign('THEME', $theme);
 		//Monolithic phase 6 changes
 		if($showCharts == true){
 			$list_report_form->assign("SHOWCHARTS",$showCharts);

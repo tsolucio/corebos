@@ -116,6 +116,7 @@ $mod_strings = array (
   'Contact Name' => 'Nome Contatto',
   'Invoice Date' => 'Data Fattura',
   'Sub Total' => 'Sub Totale',
+  'S&H Amount' => 'Ammontare S&H',
   'Due date' => 'Data chiusura',
   'Carrier' => 'Trasportatore',
   'Type' => 'Tipo',

@@ -5,6 +5,15 @@
  * Portions created by IT-Solutions4You s.r.o. are Copyright(C) IT-Solutions4You s.r.o.
  * All Rights Reserved.
  ********************************************************************************/
+jQuery.noConflict();
+// Get User Default calendar variables
+var Calendar_Default_Reminder_Minutes = 0; // false
+GlobalVariable_getVariable('Calendar_Default_Reminder_Minutes', 0, 'Calendar', gVTUserID).then(function(response) {
+	var obj = JSON.parse(response);
+	Calendar_Default_Reminder_Minutes = obj.Calendar_Default_Reminder_Minutes;
+}, function(error) {
+	Calendar_Default_Reminder_Minutes = 0; // false
+});
 
 function fnAddITSEvent(obj,CurrObj,start_date,end_date,start_hr,start_min,start_fmt,end_hr,end_min,end_fmt,viewOption,subtab,eventlist){
 	var tagName = document.getElementById(CurrObj);
@@ -23,9 +32,14 @@ function fnAddITSEvent(obj,CurrObj,start_date,end_date,start_hr,start_min,start_
 function fnRemoveITSEvent(){
 	var tagName = document.getElementById('addEventDropDown').style.display = 'none';
 }
-
+function fnRemoveITSButton(){
+	var tagName = document.getElementById('addButtonDropDown').style.display = 'none';
+}
 function fnShowITSEvent(){
 	var tagName = document.getElementById('addEventDropDown').style.display= 'block';
+}
+function fnShowITSButton(){
+	var tagName = document.getElementById('addButtonDropDown').style.display= 'block';
 }
 
 function gITSshow(argg1,type,startdate,enddate,starthr,startmin,startfmt,endhr,endmin,endfmt,viewOption,subtab,skipconvertendtime){
@@ -61,14 +75,23 @@ function gITSshow(argg1,type,startdate,enddate,starthr,startmin,startfmt,endhr,e
 		document.EditView.subtab.value = subtab;
 		document.EditView.parent_id.value = "";
 		document.EditView.parent_name.value = "";
+		if(typeof(document.EditView.contactidlist) != 'undefined') {
 		document.EditView.contactidlist.value = "";
 		document.EditView.deletecntlist.value = "";
 
 		while (document.EditView.contactlist.options.length > 0){
 			document.EditView.contactlist.remove(0);
 		}
-		document.getElementById('set_reminder2').checked = true;
-		fnhide('reminderOptions');
+		}
+		if (Calendar_Default_Reminder_Minutes>0) {
+			document.getElementById('set_reminder1').checked = true;
+			document.getElementById('set_reminder2').checked = false;
+			show('reminderOptions');
+		} else {
+			document.getElementById('set_reminder1').checked = false;
+			document.getElementById('set_reminder2').checked = true;
+			fnhide('reminderOptions');
+		}
 		document.EditView.recurringcheck.checked = false;
 		document.getElementById('repeatOptions').style.display="none";
 		while (document.EditView.selectedusers.options.length > 0){
@@ -105,9 +128,11 @@ function gITSshow(argg1,type,startdate,enddate,starthr,startmin,startfmt,endhr,e
 		document.createTodo.task_sendnotification.checked = false;
 		document.createTodo.task_parent_id.value = "";
 		document.createTodo.task_parent_name.value = "";
+		if(typeof(document.createTodo.task_contact_id) != 'undefined') {
 		document.createTodo.task_contact_id.value = "";
 		document.createTodo.task_contact_name.value = "";
 		document.createTodo.deletecntlist.value = "";
+		}
 	}
 	if (y.display=="none"){
 		y.display="block";

@@ -142,6 +142,9 @@ if(isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
 if(empty($_REQUEST['record']) && $focus->mode != 'edit'){
 	$_REQUEST['assigned_user_id'] = empty($_REQUEST['assigned_user_id']) ? $current_user->id : $_REQUEST['assigned_user_id'];
 	setObjectValuesFromRequest($focus);
+	if (empty($focus->column_fields['reminder_time'])) {
+		$focus->column_fields['reminder_time'] = GlobalVariable::getVariable('Calendar_Default_Reminder_Minutes', 0);
+	}
 }
 $userDetails=getOtherUserName($current_user->id);
 $to_email = getUserEmailId('id',$current_user->id);

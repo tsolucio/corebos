@@ -1184,7 +1184,6 @@ $app_strings = array (
 'LBL_CALLER_INFORMATION' => 'Informazioni Chiamante',
 'LBL_CALLER_NUMBER' => 'Numero :',
 'LBL_CALLER_NAME' => 'Nome :',
-'LBL_INFORMATION_VTIGER' => 'Informazioni da coreBOS',
 'LBL_DUPLICATE' => 'Duplicato',
 'LBL_CLICK' => 'Click',
 'LBL_TO_CONFIGURE' => 'per configurare la',
@@ -1282,6 +1281,7 @@ $app_strings = array (
 'Drag file here or click to upload' => 'Drag file here or click to upload',
 'SetReturnAddressTitle' => 'Select Address To Use',
 'SetReturnAddressDescription' => 'Select which address you wish to overwrite, if any',
+'Subscribe' => 'Subscribe',
 );
 
 // Translation for currency names

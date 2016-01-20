@@ -1176,9 +1176,6 @@ $app_strings = array (
 'LBL_CALLER_INFORMATION'=>'Informação de quem liga',
 'LBL_CALLER_NUMBER'=>'Número :',
 'LBL_CALLER_NAME'=>'Nome :',
-'LBL_INFORMATION_VTIGER'=>'Informação do Vtiger',
-
-//asterisk integration ends
 
 // Module Sequence Numbering
 'LBL_DUPLICATE' => 'Duplicar',
@@ -1329,7 +1326,7 @@ $app_strings = array (
 'Drag file here or click to upload' => 'Drag file here or click to upload',
 'SetReturnAddressTitle' => 'Select Address To Use',
 'SetReturnAddressDescription' => 'Select which address you wish to overwrite, if any',
-
+'Subscribe' => 'Subscribe',
 );
 
 $app_list_strings = array (

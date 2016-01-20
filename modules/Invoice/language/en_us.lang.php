@@ -123,6 +123,7 @@ $mod_strings = Array(
 'Contact Name'=>'Contact Name',//to include contact name field in Invoice
 'Invoice Date'=>'Invoice Date',
 'Sub Total'=>'Sub Total',
+'S&H Amount' => 'S&H Amount',
 'Due date'=>'Due Date',
 'Carrier'=>'Carrier',
 'Type'=>'Type',

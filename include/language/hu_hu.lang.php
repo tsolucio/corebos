@@ -1073,7 +1073,6 @@ $app_strings = array(
 	'LBL_CALLER_INFORMATION' => 'Hívó adatai',
 	'LBL_CALLER_NUMBER' => 'Szám :',
 	'LBL_CALLER_NAME' => 'Név :',
-	'LBL_INFORMATION_VTIGER' => 'Információ a VTiger-től',
 	'LBL_DUPLICATE' => 'Duplikáció',
 	'LBL_CLICK' => 'Kattints',
 	'LNK_PRIVACY_POLICY' => 'Adatvédelmi irányelvek',
@@ -1206,6 +1205,7 @@ $app_strings = array(
 	'Drag file here or click to upload' => 'Drag file here or click to upload',
 	'SetReturnAddressTitle' => 'Select Address To Use',
 	'SetReturnAddressDescription' => 'Select which address you wish to overwrite, if any',
+	'Subscribe' => 'Subscribe',
 );
 $app_list_strings = array(
 	'moduleList' =>

@@ -199,5 +199,7 @@ $mod_strings = array (
 		'LBL_RECORD' => 'Enregistrement #',
 		'Contact Id' => 'N° Contact',
 		'Contacts ID'=>'ID Contact',
+		'LBL_SHOW_CONTACT_HIERARCHY' => 'Show Contact Hierarchy',
+		'LBL_CONTACT_HIERARCHY' => 'Contact Hierarchy',
 );
 ?>

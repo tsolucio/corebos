@@ -6,7 +6,6 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 <div id="EditInv" class="layerPopup">
@@ -23,8 +22,8 @@
 	<td class="small">
 	<table border=0 celspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
 	<tr>
-		<td align="right"  class="cellLabel small" width="40%"><b>{$MOD.LBL_STATUS} :</b></td>
-	<td align="left"  class="cellText small" width="60%">
+		<td align="right" class="cellLabel small" width="40%"><b>{$MOD.LBL_STATUS} :</b></td>
+	<td align="left" class="cellText small" width="60%">
 		<select class="small" id="cron_status" name="cron_status">
 	{if $CRON_DETAILS.status eq 1}
 		<option value="1" selected>{$MOD.LBL_ACTIVE}</option>
@@ -36,24 +35,24 @@
 	</select>
 	</td>
 	</tr>
-        <tr>
+	<tr>
 		<td align="right" class="cellLabel small"><b>{$MOD.LBL_FREQUENCY}</b></td>
 		<td align="left" class="cellText small" width="104px"><input class="txtBox" id="CronTime" name="CronTime" value="{$CRON_DETAILS.frequency}" style="width:25px;" type="text">
-                <select class="small" id="cron_time" name="cron_status">
-                {if $CRON_DETAILS.time eq 'min'}
-                 <option value="min" selected>{$MOD.LBL_MINUTES}</option>
+		<select class="small" id="cron_time" name="cron_status">
+		{if $CRON_DETAILS.time eq 'min'}
+		<option value="min" selected>{$MOD.LBL_MINUTES}</option>
 		<option value="hours">{$MOD.LBL_HOURS}</option>
-                {else}
-                 <option value="min" >{$MOD.LBL_MINUTES}</option>
-                 <option value="hours" selected>{$MOD.LBL_HOURS}</option>
-                {/if}
-        </td>
-        </tr>
-        <tr>
-        <td colspan=2>
-        {$CRON_DETAILS.description}
-        </td>
-        <tr>
+		{else}
+		<option value="min" >{$MOD.LBL_MINUTES}</option>
+		<option value="hours" selected>{$MOD.LBL_HOURS}</option>
+		{/if}
+		</td>
+	</tr>
+	<tr>
+		<td colspan=2>
+		{$CRON_DETAILS.description}
+		</td>
+	<tr>
 	</table>
 	</td>
 </tr>

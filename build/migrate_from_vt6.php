@@ -29,7 +29,7 @@ set_time_limit(0);
 ini_set('memory_limit','1024M');
 
 $current_user = new Users();
-$current_user->retrieveCurrentUserInfoFromFile(1); // admin
+$current_user->retrieveCurrentUserInfoFromFile(Users::getActiveAdminId());
 if(isset($_SESSION['authenticated_user_language']) && $_SESSION['authenticated_user_language'] != '') {
 	$current_language = $_SESSION['authenticated_user_language'];
 } else {
@@ -101,7 +101,7 @@ if ($cver=='6.0.0' or $force) {
 ExecuteQuery("DELETE FROM vtiger_def_org_share WHERE vtiger_def_org_share.tabid not in (select tabid from vtiger_tab)");
 ExecuteQuery("update vtiger_users set theme='softed'");
 ExecuteQuery("update vtiger_version set old_version='5.4.0', current_version='5.5.0' where id=1");
-
+ExecuteQuery("DELETE FROM vtiger_field WHERE tablename = 'vtiger_inventoryproductrel'");
 // Recalculate permissions  RecalculateSharingRules
 RecalculateSharingRules();
 

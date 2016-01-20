@@ -6,10 +6,9 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
-<link rel="stylesheet" type="text/css" href="{$THEME_PATH}style.css">
+<link rel="stylesheet" type="text/css" href="themes/{$THEME}/style.css">
 <script language="JavaScript" type="text/javascript" src="include/js/general.js"></script>
 <script language="JavaScript" type="text/javascript" src="include/js/{php} echo $_SESSION['authenticated_user_language'];{/php}.lang.js?{php} echo $_SESSION['vtiger_version'];{/php}"></script>
 <script language="JavaScript" type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
@@ -22,19 +21,18 @@
 
 {*<!-- Contents -->*}
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
-     <tr>
-        <td valign=top><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
+	<tr>
+	<td valign=top><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 
 	<td class="showPanelBg" valign="top" width=100% style="padding:10px;">
 			<table width="100%" border="0" cellpadding="5" cellspacing="0">
 				<tr>
-					<td class="moduleName" style="padding-left:10px;">{$APP.LBL_ACCOUNT_HIERARCHY}</td>
+					<td class="moduleName" style="padding-left:10px;">{$MOD.LBL_CONTACT_HIERARCHY}</td>
 					<td align="right"><input type="button" class="crmbutton small cancel" onclick="window.history.back();" value="{$APP.LBL_BACK}" /></td>
 				</tr>
 			</table>
-			
-			<div id="ListViewContents">				
-			{foreach key=header item=detail from=$ACCOUNT_HIERARCHY}
+			<div id="ListViewContents">
+			{foreach key=header item=detail from=$CONTACT_HIERARCHY}
 				{if $header eq 'header'}
 				<table border=0 cellspacing=1 cellpadding=3 width=100% style="background-color:#eaeaea;" class="small">
 					<tr style="height:25px" bgcolor=white>
@@ -54,8 +52,7 @@
 				{/if}
 			{/foreach}
 			</div>
-
-     </td>
-        <td valign=top><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
-   </tr>
+	</td>
+	<td valign=top><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
+	</tr>
 </table>

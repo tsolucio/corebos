@@ -220,7 +220,7 @@ var gVTUserID = '{$CURRENT_USER_ID}';
 		</tr>
 		</table>
 	</div>
-	<div id='CalImport' style='width:300px; position:absolute; display:none; left:500px; top:100px; z-index:100000' class="layerPopup">
+	<div id='CalImport' style='position:absolute; display:none; left:500px; top:100px; z-index:100000' class="layerPopup">
 		{assign var='label_filename' value='LBL_FILENAME'}
 		<form name='ical_import' id='ical_import' onsubmit="VtigerJS_DialogBox.block();" enctype="multipart/form-data" action="index.php" method="POST">
 		<input type='hidden' name='module' value=''>

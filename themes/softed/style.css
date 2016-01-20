@@ -1449,7 +1449,7 @@ a.calMnu:Hover{
 	background:#FFFFFF none repeat scroll 0%;
 }
 
-#addEventDropDown{
+#addEventDropDown, #addButtonDropDown{
 	position:absolute;
 	display:none;
 	width:150px;
@@ -1538,7 +1538,6 @@ level2Sel{
 	font-family:Arial, Helvetica, sans-serif;
 	font-size:11px;
 	text-align:left;
-	width:300px;
 	border:3px solid #CCCCCC;
 	background-color:#FFFFFF;
 	padding:5px;
@@ -1593,7 +1592,7 @@ level2Sel{
 }
 .rptGrpHead {
 	background: #FFF;
-	border-bottom: 1px solid #FFF;
+	/* border-bottom: 1px solid #FFF; */
 	border-top: 1px solid #DDDDDD;
 	font-weight: normal;
 }

@@ -86,12 +86,18 @@ if ($detailview_permissions) {
 	$num_rows0 = $adb->num_rows($result0);
 	if ($num_rows0 > 0) {
 		while($row0 = $adb->fetchByAssoc($result0)) {
-			$sql01 = "SELECT uitype, columnname, fieldlabel FROM vtiger_field WHERE fieldname = ? AND tabid IN (?,?)";
-			$result01 = $adb->pquery($sql01, array($row0['fieldname'],$calendar_tabid,$events_tabid));
+			$sql01 = 'SELECT uitype, columnname, fieldlabel, vtiger_tab.name
+				FROM vtiger_field
+				INNER JOIN vtiger_tab on vtiger_tab.tabid=vtiger_field.tabid
+				WHERE fieldid = ?';
+			list($fname,$fid) = explode(':', $row0['fieldname']);
+			$result01 = $adb->pquery($sql01, array($fid));
+			if ($adb->num_rows($result01)==0) continue;
 			$columnname = $adb->query_result($result01,0,"columnname");
 			$fieldlabel = $adb->query_result($result01,0,"fieldlabel");
 			$uitype = $adb->query_result($result01,0,"uitype");
-			$Field_data = array("fieldname"=>$row0['fieldname'], "columnname"=>$columnname, "fieldlabel" => $fieldlabel, "uitype"=>$uitype);
+			$modname = $adb->query_result($result01,0,'name');
+			$Field_data = array('fieldid'=>$fid,'module'=>$modname,'fieldname'=>$row0['fieldname'], 'columnname'=>$columnname, 'fieldlabel' => $fieldlabel, 'uitype'=>$uitype);
 			if ($row0['type'] == "1") {
 				$Showed_Field[$row0['event']] = $Field_data;
 			} else {
@@ -179,10 +185,10 @@ foreach($Users_Ids AS $userid) {
 				foreach ($dtflds as $field) {
 					$queryGenerator->addCondition($field,array(0=>$start_date,1=>$end_date),'bw',$queryGenerator::$OR);
 				}
-					$queryGenerator->startGroup('OR');
-					$queryGenerator->addCondition($stfields['start'],$start_date,'b');
-					$queryGenerator->addCondition($stfields['end'],$end_date,'a',$queryGenerator::$AND);
-					$queryGenerator->endGroup();
+				$queryGenerator->startGroup('OR');
+				$queryGenerator->addCondition($stfields['start'],$start_date,'b');
+				$queryGenerator->addCondition(empty($stfields['end']) ? $stfields['start'] : $stfields['end'],$end_date,'a',$queryGenerator::$AND);
+				$queryGenerator->endGroup();
 				$queryGenerator->endGroup();
 				$queryGenerator->addCondition('assigned_user_id',getUserFullName($userid),'e',$queryGenerator::$AND);
 				if (count($Event_Status) > 0) {
@@ -212,6 +218,7 @@ foreach($Users_Ids AS $userid) {
 			$userNameSql = getSqlForNameInDisplayFormat(array('first_name' => 'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 			$list_query = "SELECT distinct vtiger_crmentity.crmid, vtiger_groups.groupname, $userNameSql as user_name, ".$queryGenerator->getSelectClauseColumnSQL().$queryGenerator->getFromClause().$queryGenerator->getWhereClause();
 			$list_array = array();
+			if ($activitytypeid=='HelpDesk' and $modact->list_link_field == 'ticket_title') $subject = 'title';
 		} else {
 			$list_query = getCalendar4YouListQuery($userid, $invites);
 			if ($record != "") {
@@ -312,7 +319,7 @@ foreach($Users_Ids AS $userid) {
 			}
 			if(in_array($activitytypeid,$tasklabel)){
 				$stfst = $row[$stfields['start']];
-				$stfed = $row[$stfields['end']];
+				$stfed = empty($stfields['end']) ? $stfst : $row[$stfields['end']];
 				if ($stfields['start']=='birthday') {  // we bring it up to the current calendar year
 					$stfst = date('Y',$start_time).'-'.substr($stfst, 6);
 					$stfed = date('Y',$start_time).'-'.substr($stfed, 6);

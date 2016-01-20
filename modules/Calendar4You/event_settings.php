@@ -40,7 +40,7 @@ $Calendar_Settings = $Calendar4You->getSettings();
 
 $Event_Colors = $Calendar4You->getEventColor($mode,$id);
 ?>
-<table border=0 cellspacing=0 cellpadding=5 width="500px" class="layerHeadingULine">
+<table border=0 cellspacing=0 cellpadding=5 width="600px" class="layerHeadingULine">
 	<tr>
 		<td class="layerPopupHeading" align="left">
 <?php
@@ -149,7 +149,7 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
                 
                 $tabid = getTabId($for_module);
 
-                $sql_field = "SELECT fieldid, uitype, fieldname, fieldlabel FROM vtiger_field WHERE tabid=? and (displaytype != 3 OR uitype = 55) and fieldid != '195' ORDER BY sequence ASC";
+                $sql_field = "SELECT fieldid, uitype, fieldname, fieldlabel FROM vtiger_field WHERE tabid=? and (displaytype != 3 OR uitype = 55) and vtiger_field.fieldname not in ('notime') ORDER BY sequence ASC";
                 $res_field = $adb->pquery($sql_field,array($tabid));
                 $num_field = $adb->num_rows($res_field);  
                 
@@ -162,23 +162,40 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
                         $field_data["fieldid"] = $fieldid;
                         $field_data["fieldname"] = $row_field['fieldname'];
                         $field_data["fieldlabel"] = $fieldlabel;
+						$field_data['module'] = $for_module;
                         $Fields_Array[$fieldid] = $field_data;
                         unset($field_data);
                         
                         $Fields_Label[$row_field['fieldname']] = $fieldlabel;
                    }
                 }
-                
+				uasort($Fields_Array, function($a,$b) {
+					return (strtolower($a['fieldlabel']) < strtolower($b['fieldlabel'])) ? -1 : 1;
+				});
+				$OnlyEventFields = $Fields_Array;
+				$cl = Calendar_getReferenceFieldColumnsList($for_module);
+				if (count($cl) > 0) {
+					foreach ($cl as $mod => $field_info) {
+						foreach ($field_info as $fieldid => $field_data) {
+							$Fields_Array[$fieldid] = $field_data;
+							$Fields_Label[$field_data['fieldname']] = $field_data['fieldlabel'];
+						}
+					}
+				}
+
                 $sql = "SELECT * FROM its4you_calendar4you_event_fields WHERE userid = ? AND event = ?";
                 $result = $adb->pquery($sql,array($current_user->id,$id));
                 $num_rows = $adb->num_rows($result);
                 
                 if ($num_rows > 0) {
                     while($row = $adb->fetchByAssoc($result)) {
+						list($fname,$fid) = explode(':', $row['fieldname']);
                     	if ($row['type'] == "1") {
-                            $Showed_Field[$row['view']] = $row['fieldname'];
+                            $Showed_Field[$row['view']] = $fname;
                         } else {
-                            $Event_Fields[$row['view']][$row['fieldname']] = $Fields_Label[$row['fieldname']];
+							$mname = getModuleForField($fid);
+							$mname = getTranslatedString($mname,$mname);
+                            $Event_Fields[$row['view']][$fname.':'.$fid] = $Fields_Label[$fname].' ('.$mname.')';
                         }
                     }
                 } else {
@@ -193,17 +210,17 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
 				<td class="small" colspan="2">
 					<b><?php echo $mod_strings['LBL_DAY_EVENT_INFO']; ?>:</b>
                     <select name="day_showed_field" id="day_showed_field" class=small>
-                    <?php echo createFieldsOptions($Fields_Array, $Showed_Field["day"]); ?>
+                    <?php echo createFieldsOptions($OnlyEventFields, $Showed_Field['day']); ?>
                     </select>
 				</td>
            </tr>
            <tr>
-                <td class="small">
+                <td class="small" width="38%">
 					<?php echo $mod_strings['LBL_AVAILABLE_INFO']; ?>
 				</td>
                 <td class="small">
 				</td>
-                <td class="small">
+                <td class="small" width="38%">
                 <?php echo $mod_strings['LBL_SELECTED_INFO']; ?>
 				</td>
            </tr>
@@ -230,17 +247,17 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
 				<td class="small" colspan="2">
 					<b><?php echo $mod_strings['LBL_WEEK_EVENT_INFO']; ?>:</b>
                     <select name="week_showed_field" id="day_showed_field" class=small>
-                    <?php echo createFieldsOptions($Fields_Array,$Showed_Field["week"]); ?>
+                    <?php echo createFieldsOptions($OnlyEventFields,$Showed_Field['week']); ?>
                     </select>
 				</td>
            </tr>
            <tr>
-                <td class="small">
+                <td class="small" width="38%">
 				<?php echo $mod_strings['LBL_AVAILABLE_INFO']; ?>
 				</td>
                 <td class="small">
 				</td>
-                <td class="small">
+                <td class="small" width="38%">
                 <?php echo $mod_strings['LBL_SELECTED_INFO']; ?>
 				</td>
            </tr>
@@ -267,17 +284,17 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
 				<td class="small" colspan="2">
 					<b><?php echo $mod_strings['LBL_MONTH_EVENT_INFO']; ?>:</b>
                     <select name="month_showed_field" id="day_showed_field" class=small>
-                    <?php echo createFieldsOptions($Fields_Array,$Showed_Field["month"]); ?>
+                    <?php echo createFieldsOptions($OnlyEventFields,$Showed_Field['month']); ?>
                     </select>
 				</td>
            </tr>
            <tr>
-                <td class="small">
+                <td class="small" width="38%">
 					<?php echo $mod_strings['LBL_AVAILABLE_INFO']; ?>
 				</td>
                 <td class="small">
 				</td>
-                <td class="small">
+                <td class="small" width="38%">
                 <?php echo $mod_strings['LBL_SELECTED_INFO']; ?>
 				</td>
            </tr>
@@ -380,10 +397,18 @@ $Event_Colors = $Calendar4You->getEventColor($mode,$id);
 <?php
 function createFieldsOptions($Fields_Array,$selected_field = "") {
 	$c = "";
+	$mod = '';
+	$closetag = false;
 	foreach ($Fields_Array AS $fieldid => $fielddata) {
 		if (is_array($fielddata)) {
+			if ($mod!=$fielddata['module']) {
+				$mod = $fielddata['module'];
+				if ($closetag) $c .= '</optgroup>';
+				$c .= '<optgroup label="'.getTranslatedString($mod,$mod).'">';
+				$closetag = true;
+			}
 			if ($selected_field == $fielddata["fieldname"]) $sel = "selected"; else $sel = "";
-			$c .= "<option value='".$fielddata["fieldname"]."' ".$sel.">".$fielddata["fieldlabel"]."</option>";
+			$c .= "<option value='".$fielddata["fieldname"].':'.$fieldid."' ".$sel.">".$fielddata["fieldlabel"]."</option>";
 		} else {
 			$c .= "<option value='".$fieldid."' ".$sel.">".$fielddata."</option>";
 		}

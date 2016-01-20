@@ -178,7 +178,11 @@ jQuery(document).ready(function(){
     var config = {
         
         weekMode : 'liquid',
-        
+		columnFormat: {
+			month: 'ddd',
+			week: 'ddd {/literal}{$CALENDAR_DAYMONTHFORMAT}{literal}',
+			day: 'dddd {/literal}{$CALENDAR_DAYMONTHFORMAT}{literal}'
+		},
         theme: true,
         defaultView: '{/literal}{$DEFAULTVIEW}{literal}',
         year: '{/literal}{$DATE_DATA.year}{literal}',
@@ -189,7 +193,7 @@ jQuery(document).ready(function(){
         
         weekends: {/literal}{$CALENDAR_SETTINGS.show_weekends}{literal},
         firstHour: {/literal}{$CALENDAR_SETTINGS.start_hour}{literal},   
-        slotMinutes: 15,
+        slotMinutes: {/literal}{$Calendar_Slot_Minutes}{literal},
         
         header: {
 			left: 'prev,next today ',
@@ -458,7 +462,7 @@ function hideITSEventInfo(){
 }
 {/literal}
 </script>
-{include file='modules/Calendar4You/Buttons_List.tpl'}  	
+{include file='Buttons_List.tpl'}
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
     <tbody>
         <tr>
@@ -488,6 +492,7 @@ function hideITSEventInfo(){
                                         </tbody>
                                     </table>
                                     <br>
+                                    {if $Calendar_Modules_Panel_Visible}
                                     <table class="dvtContentSpace" border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tbody>
                                             <tr>
@@ -505,6 +510,7 @@ function hideITSEventInfo(){
                                         </tbody>
                                     </table>
                                     <br>
+                                    {/if}
                                     <table class="dvtContentSpace" border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tbody>
                                             <tr>

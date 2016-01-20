@@ -17,7 +17,7 @@ set_time_limit(0);
 ini_set('memory_limit','1024M');
 
 $current_user = new Users();
-$current_user->retrieveCurrentUserInfoFromFile(1); // admin
+$current_user->retrieveCurrentUserInfoFromFile(Users::getActiveAdminId());
 if(isset($_SESSION['authenticated_user_language']) && $_SESSION['authenticated_user_language'] != '') {
 	$current_language = $_SESSION['authenticated_user_language'];
 } else {

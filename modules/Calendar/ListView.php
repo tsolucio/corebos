@@ -20,12 +20,8 @@ require_once('include/utils/utils.php');
 require_once('modules/CustomView/CustomView.php');
 require_once('modules/Calendar/CalendarCommon.php');
 
-global $app_strings;
-global $list_max_entries_per_page;
-
+global $app_strings, $list_max_entries_per_page, $currentModule, $image_path, $theme, $adb, $current_user;
 $log = LoggerManager::getLogger('task_list');
-
-global $currentModule,$image_path,$theme,$adb;
 
 if (isset($_REQUEST['current_user_only'])) $current_user_only = vtlib_purify($_REQUEST['current_user_only']);
 
@@ -34,10 +30,39 @@ $focus = new Activity();
 $focus->initSortbyField('Calendar');
 // END
 $smarty = new vtigerCRM_Smarty;
+$smarty->assign('ADD_ONMOUSEOVER', "onMouseOver=\"fnvshobj(this,'addButtonDropDown');\"");
+$abelist = '';
+if($current_user->column_fields['is_admin']=='on') {
+	$Res = $adb->pquery("select * from vtiger_activitytype",array());
+} else {
+	$role_id=$current_user->roleid;
+	$subrole = getRoleSubordinates($role_id);
+	if(count($subrole)> 0)
+	{
+		$roleids = $subrole;
+		array_push($roleids, $role_id);
+	}
+	else
+	{
+		$roleids = $role_id;
+	}
+	if (count($roleids) > 1) {
+		$Res=$adb->pquery("select distinct activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where roleid in (". generateQuestionMarks($roleids) .") and picklistid in (select picklistid from vtiger_picklist) order by sortid asc",array($roleids));
+	} else {
+		$Res=$adb->pquery("select distinct activitytype from vtiger_activitytype inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_activitytype.picklist_valueid where roleid = ? and picklistid in (select picklistid from vtiger_picklist) order by sortid asc",array($role_id));
+	}
+}
+for($i=0; $i<$adb->num_rows($Res);$i++) {
+	$eventlist = $adb->query_result($Res,$i,'activitytype');
+	$eventlist = html_entity_decode($eventlist,ENT_QUOTES,$default_charset);
+	$actname = getTranslatedString($eventlist,'Calendar');
+	$abelist.='<tr><td><a href="index.php?module=Calendar4You&action=EventEditView&return_module=Calendar&return_action=index&activity_mode=Events&activitytype='.$eventlist.'" class="drop_down">'.$actname.'</a></td></tr>';
+}
+$abelist.='<tr><td><a href="index.php?module=Calendar4You&action=EventEditView&return_module=Calendar&return_action=index&activity_mode=Task" class="drop_down">'.$mod_strings['LBL_ADDTODO'].'</a></td></tr>';
+$smarty->assign('ADD_BUTTONEVENTLIST', $abelist);
 $other_text = Array();
 
-if(!$_SESSION['lvs'][$currentModule])
-{
+if(!$_SESSION['lvs'][$currentModule]) {
 	unset($_SESSION['lvs']);
 	$modObj = new ListViewSession();
 	$modObj->sorder = $sorder;
@@ -45,13 +70,11 @@ if(!$_SESSION['lvs'][$currentModule])
 	$_SESSION['lvs'][$currentModule] = get_object_vars($modObj);
 }
 
-if($_REQUEST['errormsg'] != '')
-{
-        $errormsg = vtlib_purify($_REQUEST['errormsg']);
-        $smarty->assign("ERROR",$mod_strings["SHARED_EVENT_DEL_MSG"]);
-}else
-{
-        $smarty->assign("ERROR","");
+if($_REQUEST['errormsg'] != '') {
+	$errormsg = vtlib_purify($_REQUEST['errormsg']);
+	$smarty->assign("ERROR",$mod_strings["SHARED_EVENT_DEL_MSG"]);
+} else {
+	$smarty->assign("ERROR","");
 }
 
 if(ListViewSession::hasViewChanged($currentModule,$viewid)) {
@@ -74,7 +97,7 @@ $customviewcombo_html = $oCustomView->getCustomViewCombo($viewid);
 $viewnamedesc = $oCustomView->getCustomViewByCvid($viewid);
 
 //Added to handle approving or denying status-public by the admin in CustomView
-$statusdetails = $oCustomView->isPermittedChangeStatus($viewnamedesc['status']);
+$statusdetails = $oCustomView->isPermittedChangeStatus($viewnamedesc['status'],$viewid);
 $smarty->assign("CUSTOMVIEW_PERMISSION",$statusdetails);
 
 //To check if a user is able to edit/delete a customview
@@ -84,25 +107,23 @@ $smarty->assign("CV_EDIT_PERMIT",$edit_permit);
 $smarty->assign("CV_DELETE_PERMIT",$delete_permit);
 
 //<<<<<customview>>>>>
-if($viewid == 0 )
-{
+if($viewid == 0 ) {
 	echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
 	echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
-
 		<table border='0' cellpadding='5' cellspacing='0' width='98%'>
 		<tbody><tr>
-		<td rowspan='2' width='11%'><img src='<?php echo vtiger_imageurl('close.gif', $theme) ?>'></td>
+		<td rowspan='2' width='11%'><img src='".vtiger_imageurl('close.gif', $theme)."'></td>
 		<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'>
-			<span class='genHeaderSmall'>$app_strings[LBL_PERMISSION]</span></td>
+			<span class='genHeaderSmall'>".$app_strings['LBL_PERMISSION']."</span></td>
 		</tr>
 		<tr>
 		<td class='small' align='right' nowrap='nowrap'>
-		<a href='javascript:window.history.back();'>$app_strings[LBL_GO_BACK]</a><br>
+		<a href='javascript:window.history.back();'>".$app_strings['LBL_GO_BACK']."</a><br>
 		</td>
 		</tr>
 		</tbody></table>
-		</div>";
-	echo "</td></tr></table>";
+		</div>
+		</td></tr></table>";
 	exit;
 }
 
@@ -119,8 +140,7 @@ $where = "";
 
 $url_string = ''; // assigning http url string
 
-if(isset($_REQUEST['query']) && $_REQUEST['query'] == 'true')
-{
+if(isset($_REQUEST['query']) && $_REQUEST['query'] == 'true') {
 
 	list($where, $ustring) = explode("#@@#",getWhereCondition($currentModule));
 	// we have a query
@@ -129,19 +149,15 @@ if(isset($_REQUEST['query']) && $_REQUEST['query'] == 'true')
 	$smarty->assign("SEARCH_URL",$url_string);
 }
 
-
-if($viewnamedesc['viewname'] == 'All')
-{
+if($viewnamedesc['viewname'] == 'All') {
 	$smarty->assign("ALL", 'All');
 }
 
-if(isPermitted("Calendar","Delete",$_REQUEST['record']) == 'yes')
-{
+if(isPermitted("Calendar","Delete",$_REQUEST['record']) == 'yes') {
 	$other_text['del'] = $app_strings[LBL_MASS_DELETE];
 }
-if(isPermitted('Calendar','EditView','') == 'yes')
-{
-        $other_text['c_owner'] = $app_strings[LBL_CHANGE_OWNER];
+if(isPermitted('Calendar','EditView','') == 'yes') {
+	$other_text['c_owner'] = $app_strings[LBL_CHANGE_OWNER];
 }
 global  $task_title;
 $title_display = $current_module_strings['LBL_LIST_FORM_TITLE'];
@@ -166,8 +182,7 @@ if ($sql_error) {
 	$smarty->assign('ERROR', getTranslatedString('ERROR_GETTING_FILTER'));
 	$smarty->assign("CUSTOMVIEW_OPTION",$customview_html);
 } else {
-if(isset($where) && $where != '')
-{
+if(isset($where) && $where != '') {
 	if(isset($_REQUEST['from_homepagedb']) && $_REQUEST['from_homepagedb'] == 'true')
 		$list_query .= " and ((vtiger_activity.status!='Completed' and vtiger_activity.status!='Deferred') or vtiger_activity.status is null) and ((vtiger_activity.eventstatus!='Held' and vtiger_activity.eventstatus!='Not Held') or vtiger_activity.eventstatus is null) AND ".$where;
 	else
@@ -195,7 +210,7 @@ if(isset($order_by) && $order_by != '') {
 		$tablename = getTableNameForField('Calendar',$order_by);
 		$tablename = (($tablename != '')?($tablename."."):'');
 		if($order_by == 'lastname')
-         	$list_query .= ' ORDER BY vtiger_contactdetails.lastname '.$sorder;
+		$list_query .= ' ORDER BY vtiger_contactdetails.lastname '.$sorder;
 		else
 			$list_query .= ' ORDER BY '.$tablename.$order_by.' '.$sorder;
 	}
@@ -224,7 +239,6 @@ $smarty->assign('recordListRange',$recordListRangeMsg);
 if($viewid !='')
 $url_string .="&viewname=".$viewid;
 
-// add close button in custom view
 if (!empty($viewid)){
 	if (!isset($oCustomView->list_fields['Close'])) $oCustomView->list_fields['Close']=array('vtiger_activity' => 'eventstatus');
 	if (!isset($oCustomView->list_fields_name['Close'])) $oCustomView->list_fields_name['Close']='eventstatus';

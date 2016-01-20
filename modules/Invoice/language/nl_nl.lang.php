@@ -134,6 +134,7 @@ $mod_strings = Array(
 'Contact Name'=>'Contactnaam',//to include contact name field in Invoice
 'Invoice Date'=>'Factuurdatum',
 'Sub Total'=>'Subtotaal',
+'S&H Amount' => 'Handling en Verzendtoeslag',
 'Due Date'=>'Vervaldatum',
 'Carrier'=>'Vervoerder',
 'Type'=>'Type',

@@ -148,8 +148,6 @@ function AddressSync(Addform,id)
 									   <!-- included to handle the edit fields based on ui types -->
 									   {foreach key=header item=data from=$BLOCKS}
 
-
-
 							<!-- This is added to display the existing comments -->
 							{if $header eq $MOD.LBL_COMMENTS || $header eq $MOD.LBL_COMMENT_INFORMATION}
 							   <tr><td>&nbsp;</td></tr>
@@ -164,9 +162,7 @@ function AddressSync(Addform,id)
 							   <tr><td>&nbsp;</td></tr>
 							{/if}
 
-
-
-									      <tr>
+										<tr id="tbl{$header|replace:' ':''}Head">
 										{if $header== $MOD.LBL_ADDRESS_INFORMATION && ($MODULE == 'Accounts' || $MODULE == 'Quotes' || $MODULE == 'PurchaseOrder' || $MODULE == 'SalesOrder'|| $MODULE == 'Invoice') && $SHOW_COPY_ADDRESS eq 'yes'}
                                                                                 <td colspan=2 class="detailedViewHeader">
                                                                                 <b>{$header}</b></td>

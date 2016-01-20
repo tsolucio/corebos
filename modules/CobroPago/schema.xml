@@ -5,11 +5,13 @@
 			<name>vtiger_cobropago</name>
 			<sql><![CDATA[CREATE TABLE `vtiger_cobropago` (
   `cobropagoid` int(11) default NULL,
+  `cyp_no` varchar(50) default NULL,
   `reference` varchar(256) default NULL,
   `parent_id` int(11) default NULL,
   `related_id` int(11) default NULL,
   `register` date default NULL,
   `duedate` date default NULL,
+  `paymentdate` date default NULL,
   `paid` varchar(3) default NULL,
   `credit` varchar(3) default NULL,
   `paymentmode` varchar(256) default NULL,

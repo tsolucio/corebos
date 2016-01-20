@@ -1138,7 +1138,6 @@ $app_strings = array (
      'LBL_CALLER_INFORMATION'=>'Información Llamada Entrante',
      'LBL_CALLER_NUMBER'=>'Número :',
      'LBL_CALLER_NAME'=>'Nombre :',
-     'LBL_INFORMATION_VTIGER'=>'Información de Vtiger',
      //asterisk integration ends
 
      // Module Sequence Numbering
@@ -1288,6 +1287,7 @@ $app_strings = array (
 	'Drag file here or click to upload' => 'Arrastra la imagen aquí o haz click para cargar la imagen',
 	'SetReturnAddressTitle' => 'Dirección a Utilizar',
 	'SetReturnAddressDescription' => 'Selecciona que dirección quieres sobreescribir, si procede',
+	'Subscribe' => 'Suscribir',
 );
 $app_list_strings = array (
       'moduleList' => array(

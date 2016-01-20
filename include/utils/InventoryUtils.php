@@ -99,7 +99,9 @@ function sendPrdStckMail($product_id,$upd_qty,$prod_name,$qtyinstk,$qty,$module)
 	{
 		//send mail to the handler
 		$handler = getRecordOwnerId($product_id);
-		$handler_name = getOwnerName(array_shift(array_values($handler)));
+		$handlervals = array_values($handler);
+		$handlerid = array_shift($handlervals);
+		$handler_name = getOwnerName($handlerid);
 		if(vtws_isRecordOwnerUser($handler)) {
 			$to_address = getUserEmail($handler);
 		} else {
@@ -584,15 +586,15 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 		if($_REQUEST["deleted".$i] == 1)
 			continue;
 
-		$prod_id = vtlib_purify($_REQUEST['hdnProductId'.$i]);
+		$prod_id = $_REQUEST['hdnProductId'.$i];
 		if(isset($_REQUEST['productDescription'.$i])) {
-			$description = vtlib_purify($_REQUEST['productDescription'.$i]);
+			$description = $_REQUEST['productDescription'.$i];
 		} else {
 			$description = '';
 		}
-		$qty = vtlib_purify($_REQUEST['qty'.$i]);
-		$listprice = vtlib_purify($_REQUEST['listPrice'.$i]);
-		$comment = vtlib_purify($_REQUEST['comment'.$i]);
+		$qty = $_REQUEST['qty'.$i];
+		$listprice = $_REQUEST['listPrice'.$i];
+		$comment = $_REQUEST['comment'.$i];
 
 		//we have to update the Product stock for PurchaseOrder if $update_prod_stock is true
 		if($module == 'PurchaseOrder' && $update_prod_stock == 'true')
@@ -1243,7 +1245,11 @@ function createRecords($obj) {
 						if (count($fieldValueDetails) > 1) {
 							$referenceModuleName = trim($fieldValueDetails[0]);
 							$entityLabel = trim($fieldValueDetails[1]);
-							$entityId = getEntityId($referenceModuleName, $entityLabel);
+							if (!empty($fieldValueDetails[2])) {
+								$entityId = getEntityId($referenceModuleName, $entityLabel, $fieldValueDetails[2]);
+							} else {
+								$entityId = getEntityId($referenceModuleName, $entityLabel);
+							}
 						} else {
 							$referencedModules = array('Products','Services');
 							$entityLabel = $fieldValue;

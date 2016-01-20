@@ -262,6 +262,20 @@ echo "$query<br>";
 testquery($query);
 
 $queryGenerator = new QueryGenerator('CobroPago', $current_user);
+$queryGenerator->setFields(array('id','assigned_user_id', 'Contacts.firstname','amount','paid'));
+$queryGenerator->addReferenceModuleFieldCondition('Users', 'reports_to_id', 'first_name', '', 'n');
+$query = $queryGenerator->getQuery();
+echo "$query<br>";
+testquery($query);
+
+$queryGenerator = new QueryGenerator('CobroPago', $current_user);
+$queryGenerator->setFields(array('id','assigned_user_id', 'Contacts.firstname','amount','paid'));
+$queryGenerator->addCondition('reports_to_id','','n','and');
+$query = $queryGenerator->getQuery();
+echo "$query<br>";
+testquery($query);
+
+$queryGenerator = new QueryGenerator('CobroPago', $current_user);
 $queryGenerator->setFields(array('id','assigned_user_id', 'accountname'));
 $queryGenerator->addReferenceModuleFieldCondition('Accounts', 'parent_id', 'account_no', '', 'n');
 $query = $queryGenerator->getQuery();
@@ -392,6 +406,5 @@ testquery($query);
 // $query = $queryGenerator->getQuery();
 // echo "$query<br>";
 // testquery($query);
-
 
 ?>

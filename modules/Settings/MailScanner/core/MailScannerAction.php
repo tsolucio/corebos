@@ -197,17 +197,27 @@ class Vtiger_MailScannerAction {
 		if(!$current_user) {
 			$current_user = Users::getActiveAdminUser();
 		}
+                if(!empty($mailrecord->_assign_to)){
+                    $usr = $mailrecord->_assign_to;
+                }else{
+                    $usr = $current_user->id;
+                }
 
 		// Create trouble ticket record
 		$ticket = new HelpDesk();
 		$ticket->column_fields['ticket_title'] = $usetitle;
 		$ticket->column_fields['description'] = $description;
 		$ticket->column_fields['ticketstatus'] = 'Open';
-		$ticket->column_fields['assigned_user_id'] = $current_user->id;
+		$ticket->column_fields['assigned_user_id'] = $usr;
+		$ticket->column_fields['from_mailscanner'] = 1;
 		if($linktoid) $ticket->column_fields['parent_id'] = $linktoid;
 		$ticket->save('HelpDesk');
 
-		// Associate any attachement of the email to ticket
+                if(!$linktoid){
+                    $adb->pquery("UPDATE vtiger_troubletickets SET email=? WHERE ticketid=?",array($fromemail, $ticket->id));
+                }
+
+                // Associate any attachement of the email to ticket
 		$this->__SaveAttachements($mailrecord, 'HelpDesk', $ticket);
 		
 		return $ticket->id;

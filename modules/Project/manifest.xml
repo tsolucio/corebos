@@ -506,7 +506,6 @@
 <presence>0</presence>
 <actions>
 <action>ADD</action>
-<action>SELECT</action>
 </actions>
 <relatedmodule>ProjectTask</relatedmodule>
 </relatedlist>
@@ -517,20 +516,8 @@
 <presence>0</presence>
 <actions>
 <action>ADD</action>
-<action>SELECT</action>
 </actions>
 <relatedmodule>ProjectMilestone</relatedmodule>
-</relatedlist>
-<relatedlist>
-<function>get_dependents_list</function>
-<label>Project Team</label>
-<sequence>3</sequence>
-<presence>0</presence>
-<actions>
-<action>ADD</action>
-<action>SELECT</action>
-</actions>
-<relatedmodule>ProjectTeam</relatedmodule>
 </relatedlist>
 <relatedlist>
 <function>get_attachments</function>

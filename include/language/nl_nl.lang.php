@@ -1089,7 +1089,6 @@ $app_strings = array(
 	'LBL_CALLER_INFORMATION' => 'Beller Informatie',
 	'LBL_CALLER_NUMBER' => 'Nummer :',
 	'LBL_CALLER_NAME' => 'Naam :',
-	'LBL_INFORMATION_VTIGER' => 'Informatie van Storingsmelding',
 	'LBL_DUPLICATE' => 'Duplicaat',
 	'LBL_CLICK' => 'Click',
 	'LNK_PRIVACY_POLICY' => 'Privacy Policy',
@@ -1173,6 +1172,7 @@ $app_strings = array(
 	'Drag file here or click to upload' => 'Sleep bestanden hier naar toe of klik om te uploaden',
 	'SetReturnAddressTitle' => 'Kies adres om te gebruiken',
 	'SetReturnAddressDescription' => 'Kies welk adres overschreven moet worden. U kunt één van de adressen kiezen, allebei of geen adres.',
+	'Subscribe' => 'Subscribe',
 );
 $app_list_strings = array(
 	'moduleList' => array(

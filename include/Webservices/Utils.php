@@ -214,17 +214,16 @@ function vtws_getModuleInstance($webserviceObject){
 
 function vtws_isRecordOwnerUser($ownerId){
 	global $adb;
-	
 	static $cache = array();
+	if (is_array($ownerId) and isset($ownerId['Users'])) $ownerId = $ownerId['Users'];
 	if (!array_key_exists($ownerId, $cache)) {
-	$result = $adb->pquery("select first_name from vtiger_users where id = ?",array($ownerId));
-	$rowCount = $adb->num_rows($result);
-	$ownedByUser = ($rowCount > 0);
+		$result = $adb->pquery('select first_name from vtiger_users where id = ?',array($ownerId));
+		$rowCount = $adb->num_rows($result);
+		$ownedByUser = ($rowCount > 0);
 		$cache[$ownerId] = $ownedByUser;
 	} else {
 		$ownedByUser = $cache[$ownerId];
 	}
-	
 	return $ownedByUser;
 }
 

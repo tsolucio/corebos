@@ -1,27 +1,14 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/***********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.1
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is: coreBOS Open Source
+ * The Initial Developer of the Original Code is vtiger
+ * Portions created by JPL TSolucio, S.L are Copyright (C) JPL TSolucio, S.L.
  * All Rights Reserved.
- ********************************************************************************
-*  Module       : Contacts
-*  Language     : Español
-*  Version      : 5.4.0
-*  Created Date : 2007-03-30
-*  Author       : Rafael Soler
-*  Last change  : 2012-02-28
-*  Author       : Joe Bordes JPL TSolucio, S.L.
- ********************************************************************************/
+ ************************************************************************************/
 
 $mod_strings = array (
-// Mike Crowe Mod --------------------------------------------------------Added for general search
 'LBL_MODULE_NAME'=>'Contactos',
 'LBL_INVITEE'=>'Informes',
 'LBL_MODULE_TITLE'=>'Contactos: Inicio',
@@ -221,7 +208,6 @@ $mod_strings = array (
 'Other'=>'Otro',
 'User List'=>'Lista de Usuarios',
 
-//Added for 5.0.3
 'Customer Portal Login Details'=>'Detalles de Identificación para Portal de Cliente',
 'Dear'=>'Estimado',
 'Your Customer Portal Login details are given below:'=>'Los datos de Identificación par el Portal de Cliente son:',
@@ -238,11 +224,12 @@ $mod_strings = array (
 
 // Module Sequence Numbering
 'Contact Id' => 'Nº Contacto',
-// END
-'Secondary Email'=>'Email Segundario',
+
+'Secondary Email'=>'Email Secundario',
 
 'Contacts ID'=>'Id Contacto',
-
+'LBL_SHOW_CONTACT_HIERARCHY' => 'Mostrar Jerarquía Contactos',
+'LBL_CONTACT_HIERARCHY' => 'Jerarquía Contacto',
 );
 
 ?>

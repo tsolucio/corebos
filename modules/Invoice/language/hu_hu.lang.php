@@ -107,6 +107,7 @@ $mod_strings = array(
 	'Contact Name' => 'Kapcsolat neve',
 	'Invoice Date' => 'Díjbekérő kiállítási dátuma',
 	'Sub Total' => 'Részösszeg',
+	'S&H Amount' => 'Szállítási és kezelési ktg.',
 	'Due date' => 'Határidő',
 	'Carrier' => 'Futár',
 	'Type' => 'Típus',

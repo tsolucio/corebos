@@ -7,7 +7,7 @@
  */
 function _defAsteriskTimer(){
 	var asteriskTimer = null;
-	var ASTERISK_POLLTIME = 5000;	//vtigercrm polls the asterisk server for incoming calls after every 3 seconds for now
+	var ASTERISK_POLLTIME = 2500;	//vtigercrm polls the asterisk server for incoming calls after every 3 seconds for now
 	var ASTERISK_INCOMING_DIV_TIMEOUT = 15;	//the incoming call div is present for this number of seconds
 	function AsteriskCallback() {
 		var url = "module=PBXManager&action=PBXManagerAjax&file=TraceIncomingCall&mode=ajax&ajax=true";

@@ -89,12 +89,13 @@ class Accounts extends CRMEntity {
 	var $mandatory_fields = Array('assigned_user_id', 'createdtime', 'modifiedtime', 'accountname');
 
 	function __construct() {
-		global $log, $currentModule;
-		$this->column_fields = getColumnFields($currentModule);
+		global $log;
+		$this_module = get_class($this);
+		$this->column_fields = getColumnFields($this_module);
 		$this->db = PearDatabase::getInstance();
 		$this->log = $log;
-		$sql = 'SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid = ?';
-		$tabid = getTabid($currentModule);
+		$sql = 'SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid = ? limit 1';
+		$tabid = getTabid($this_module);
 		$result = $this->db->pquery($sql, array($tabid));
 		if ($result and $this->db->num_rows($result)==1) {
 			$this->HasDirectImageField = true;
@@ -996,7 +997,7 @@ class Accounts extends CRMEntity {
 	*/
 	function __getParentAccounts($id, &$parent_accounts, &$encountered_accounts) {
 		global $log, $adb;
-		$log->debug("Entering __getParentAccounts(".$id.",".$parent_accounts.") method ...");
+		$log->debug("Entering __getParentAccounts($id,".print_r($parent_accounts,true).') method ...');
 
 		$query = "SELECT parentid FROM vtiger_account " .
 				" INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_account.accountid" .
@@ -1059,7 +1060,7 @@ class Accounts extends CRMEntity {
 	*/
 	function __getChildAccounts($id, &$child_accounts, $depth) {
 		global $log, $adb;
-		$log->debug("Entering __getChildAccounts(".$id.",".$child_accounts.",".$depth.") method ...");
+		$log->debug("Entering __getChildAccounts($id,".print_r($child_accounts,true).",$depth) method ...");
 
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>
 							'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');

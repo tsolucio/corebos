@@ -94,6 +94,7 @@ $mod_strings = array (
 	'Contact Name' => 'Nom contact',
 	'Invoice Date' => 'Date facturation',
 	'Sub Total' => 'Sous-total',
+	'S&H Amount' => 'Frais de transport',
 	'Due Date' => 'Echéance',
 	'Carrier' => 'Transporteur',
 	'Type' => 'Type',

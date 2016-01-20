@@ -34,5 +34,6 @@ $mod_strings = Array (
 	'LBL_YEARS_AGO'=>'année(s) auparavant',
 	'Allows you to Configure Cron Task' => 'Configurer les crons',
 	'Scheduler' => 'Planificateur',
+	'Cron Job' => 'Cron Job',
 );
 ?>

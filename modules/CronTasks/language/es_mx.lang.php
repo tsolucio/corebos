@@ -35,5 +35,6 @@ $mod_strings = Array (
 	'LBL_YEARS_AGO'=>'años',
 	'Allows you to Configure Cron Task' => 'Permite configurar las Tareas Programadas',
 	'Scheduler' => 'Planificador Tareas',
+	'Cron Job' => 'Tarea Programada',
 );
 ?>

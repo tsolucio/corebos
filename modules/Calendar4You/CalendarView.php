@@ -85,7 +85,7 @@ if($Calendar4You->CheckPermissions("EDIT")) {
 		$eventlists_array .= '"'.html_entity_decode(html_entity_decode($actname,ENT_QUOTES,$default_charset),ENT_QUOTES, $default_charset).'",';
 	}
 
-	$add_javascript = "onMouseOver='fnAddITSEvent(this,\"addEventDropDown\",\"".$temp_date."\",\"".$temp_date."\",\"".$time_arr['starthour']."\",\"".$time_arr['startmin']."\",\"".$time_arr['startfmt']."\",\"".$time_arr['endhour']."\",\"".$time_arr['endmin']."\",\"".$time_arr['endfmt']."\",\"".$viewBox."\",\"".$subtab."\",\"".$eventlist."\");'";
+	$add_javascript = "onMouseOver='fnAddITSEvent(this,\"addButtonDropDown\",\"".$temp_date."\",\"".$temp_date."\",\"".$time_arr['starthour']."\",\"".$time_arr['startmin']."\",\"".$time_arr['startfmt']."\",\"".$time_arr['endhour']."\",\"".$time_arr['endmin']."\",\"".$time_arr['endfmt']."\",\"".$viewBox."\",\"".$subtab."\",\"".$eventlist."\");'";
 	$smarty->assign('ADD_ONMOUSEOVER', $add_javascript);
 
 	$smarty->assign('EVENTLIST', trim($eventlists_array,","));
@@ -308,8 +308,21 @@ $dat_fmt = $current_user->date_format;
 if ($dat_fmt == '') {
 	$dat_fmt = 'dd-mm-yyyy';
 }
+switch ($dat_fmt) {
+	case 'mm-dd-yyyy':
+	case 'yyyy-mm-dd':
+		$CALENDAR_DAYMONTHFORMAT = 'M/d';
+		break;
+	case 'dd-mm-yyyy':
+	default:
+		$CALENDAR_DAYMONTHFORMAT = 'd/M';
+		break;
+}
+$smarty->assign('CALENDAR_DAYMONTHFORMAT', $CALENDAR_DAYMONTHFORMAT);
 $dat_fmt = str_replace("mm","MM",$dat_fmt);
 $smarty->assign('USER_DATE_FORMAT', $dat_fmt);
+$smarty->assign('Calendar_Slot_Minutes', GlobalVariable::getVariable('Calendar_Slot_Minutes', 15));
+$smarty->assign('Calendar_Modules_Panel_Visible', GlobalVariable::getVariable('Calendar_Modules_Panel_Visible', 1));
 
 $smarty->display('modules/Calendar4You/CalendarView.tpl');
 include_once 'modules/Calendar4You/addEventUI.php';

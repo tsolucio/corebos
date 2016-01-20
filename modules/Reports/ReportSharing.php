@@ -37,6 +37,7 @@ $report_std_filter->assign("JS_DATEFORMAT",parse_calendardate($app_strings['NTC_
 
 $roleid = $current_user->column_fields['roleid'];
 $user_array = getAllUserName();
+asort($user_array);
 $userIdStr = "";
 $userNameStr = "";
 $m=0;
@@ -48,12 +49,13 @@ foreach($user_array as $userid=>$username){
 			$userNameStr .= ",";
 		}
 		$userIdStr .="'".$userid."'"; 
-		$userNameStr .="'".escape_single_quotes(decode_html($username))."'";
+		$userNameStr .="'".addslashes(decode_html($username))."'";
 		$m++;
 	}
 }
 
 $user_groups = getAllGroupName();
+asort($user_groups);
 $groupIdStr = "";
 $groupNameStr = "";
 $l=0;
@@ -63,7 +65,7 @@ foreach($user_groups as $grpid=>$groupname){
 		$groupNameStr .= ",";
 	}
 	$groupIdStr .= "'".$grpid."'";
-	$groupNameStr .= "'".escape_single_quotes(decode_html($groupname))."'";
+	$groupNameStr .= "'".addslashes(decode_html($groupname))."'";
 	$l++;
 }
 if(isset($_REQUEST["record"]) && $_REQUEST['record']!='')

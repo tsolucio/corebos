@@ -14,7 +14,7 @@
 
 <!-- This file is used to display the fields based on the ui type in detailview -->
 		{if $keyid eq '1' || $keyid eq 2 || $keyid eq '11' || $keyid eq '7' || $keyid eq '9' || $keyid eq '55' || $keyid eq '71' || $keyid eq '72' || $keyid eq '255'} <!--TextBox-->
-			<td width=25% class="dvtCellInfo" align="left">&nbsp;
+			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;
 				{if $keyid eq '55' || $keyid eq '255'}<!--SalutationSymbol-->
 					{if $keyaccess eq $APP.LBL_NOT_ACCESSIBLE}
 						<font color='red'>{$APP.LBL_NOT_ACCESSIBLE}</font>
@@ -67,7 +67,7 @@
                 {/if}
 			</td>
 		{elseif $keyid eq '13'} <!--Email-->
-			<td width=25% class="dvtCellInfo" align="left">
+			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">
 				{if $smarty.session.internal_mailer eq 1}
 					<a href="javascript:InternalMailer({$ID},{$keyfldid},'{$keyfldname}','{$MODULE}','record_id');">{$keyval}</a>
 				{else}
@@ -76,7 +76,7 @@
 				</span>
 			</td>
 		{elseif $keyid eq '15' || $keyid eq '16' || $keyid eq '1613'} <!--ComboBox-->
-			<td width=25% class="dvtCellInfo" align="left">&nbsp;
+			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;
 				{foreach item=arr from=$keyoptions}
 					{if $arr[0] eq $APP.LBL_NOT_ACCESSIBLE}
 						{assign var=keyval value=$APP.LBL_NOT_ACCESSIBLE}
@@ -88,7 +88,7 @@
 				<font color="{$fontval}">{if $APP.$keyval!=''}{$APP.$keyval}{elseif $MOD.$keyval!=''}{$MOD.$keyval}{else}{$keyval}{/if}</font>
 			</td>
 		{elseif $keyid eq '33' || $keyid eq '3313'}
-			<td width=25% class="dvtCellInfo" align="left">&nbsp;
+			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;
 				{foreach item=sel_val from=$keyoptions }
 					{if $sel_val[2] eq 'selected'}
 						{if $selected_val neq ''}
@@ -100,11 +100,9 @@
 				{$selected_val|replace:"\n":"<br>&nbsp;&nbsp;"}
 			</td>
 		{elseif $keyid eq '14'}<!--Time-->
-			<td width=25% class="dvtCellInfo" align="left">&nbsp;{$keyval}
-			</td>
+			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;{$keyval}</td>
 		{elseif $keyid eq '17'} <!--WebSite-->
-			<td width=25% class="dvtCellInfo" align="left">&nbsp;<a href="{$keyval}" target="_blank">{$keyval}</a>
-			</td>
+			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<a href="{$keyval}" target="_blank">{$keyval}</a></td>
 		{elseif $keyid eq '85'}<!--Skype-->
 			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$label}">
 				&nbsp;<img src="{'skype.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SKYPE}" title="{$APP.LBL_SKYPE}" LANGUAGE=javascript align="absmiddle"></img>
@@ -114,21 +112,18 @@
 			{if $label eq $MOD.LBL_ADD_COMMENT}
 				{assign var=keyval value=''}
 			{/if}
-			<td width=100% class="dvtCellInfo" align="left">&nbsp;
+			<td width=100% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;
 				<!--To give hyperlink to URL-->
 				{$keyval|regex_replace:"/(^|[\n ])([\w]+?:\/\/.*?[^ \"\n\r\t<]*)/":"\\1<a href=\"\\2\" target=\"_blank\">\\2</a>"|regex_replace:"/(^|[\n ])((www|ftp)\.[\w\-]+\.[\w\-.\~]+(?:\/[^ \"\t\n\r<]*)?)/":"\\1<a href=\"http://\\2\" target=\"_blank\">\\2</a>"|regex_replace:"/(^|[\n ])([a-z0-9&\-_.]+?)@([\w\-]+\.([\w\-\.]+\.)*[\w]+)/i":"\\1<a href=\"mailto:\\2@\\3\">\\2@\\3</a>"|regex_replace:"/,\"|\.\"|\)\"|\)\.\"|\.\)\"/":"\""|replace:"\n":"<br>&nbsp;"}
 			</td>
 		{elseif $keyid eq '21' || $keyid eq '24' || $keyid eq '22'} <!--TextArea/Street-->
-			<td width=25% class="dvtCellInfo" align="left">&nbsp;<span id ="dtlview_{$label}">{$keyval}</span>
-			</td>
+			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<span id ="dtlview_{$label}">{$keyval}</span></td>
 		{elseif $keyid eq '50' || $keyid eq '73' || $keyid eq '51' || $keyid eq '57' || $keyid eq '59' || $keyid eq '75' || $keyid eq '81' || $keyid eq '76' || $keyid eq '78' || $keyid eq '80'} <!--AccountPopup-->
-			<td width=25% class="dvtCellInfo" align="left">&nbsp;<a href="{$keyseclink}">{$keyval}</a>
-			</td>
+			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<a href="{$keyseclink}">{$keyval}</a></td>
 		{elseif $keyid eq 82} <!--Email Body-->
-			<td colspan="3" width=100% class="dvtCellInfo" align="left">&nbsp;{$keyval}
-			</td>
+			<td colspan="3" width=100% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;{$keyval}</td>
 		{elseif $keyid eq '53'} <!--Assigned To-->
-            <td width=25% class="dvtCellInfo" align="left">&nbsp;
+            <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;
 	            {if $keyseclink eq ''}
 	                {$keyval}
 	            {else}
@@ -137,8 +132,7 @@
 				&nbsp;
             </td>
 		{elseif $keyid eq '56'} <!--CheckBox-->
-			<td width=25% class="dvtCellInfo" align="left">{$keyval}&nbsp;
-			</td>
+			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">{$keyval}&nbsp;</td>
 		{elseif $keyid eq 83}<!-- Handle the Tax in Inventory -->
 			<td class="dvtCellInfo" colspan=3>&nbsp;</td></tr>
 			{foreach item=tax key=count from=$TAX_DETAILS}
@@ -152,7 +146,7 @@
 		{elseif $keyid eq 69}<!-- for Image Reflection -->
 			<td align="left" width=25%>&nbsp;{$keyval}</td>
 		{elseif $keyid eq 10}<!-- for vtlib reference field -->
-			<td class="dvtCellInfo" align="left" width=25% onmouseover="vtlib_listview.trigger('cell.onmouseover', this);" onmouseout="vtlib_listview.trigger('cell.onmouseout',this)">&nbsp;{$keyval}</td>
+			<td class="dvtCellInfo" align="left" width=25% id="mouseArea_{$keyfldname}" onmouseover="vtlib_listview.trigger('cell.onmouseover', $(this));" onmouseout="vtlib_listview.trigger('cell.onmouseout', $(this))">&nbsp;{$keyval}</td>
 		{else}
-			<td class="dvtCellInfo" align="left" width=25%>&nbsp;{$keyval}</td>
+			<td class="dvtCellInfo" align="left" width=25% id="mouseArea_{$keyfldname}">&nbsp;{$keyval}</td>
 		{/if}

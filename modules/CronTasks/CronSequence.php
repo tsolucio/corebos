@@ -25,7 +25,7 @@ if($move == 'Down'){
 }elseif ($move == 'Up') {
 	$sequence = $adb->pquery("SELECT sequence FROM vtiger_cron_task WHERE id = ?", array($id));
 	$oldsequence = $adb->query_result($sequence,0,'sequence');
-          
+
 	$nexttab = $adb->pquery("SELECT sequence,id FROM vtiger_cron_task WHERE sequence < ? ORDER BY SEQUENCE DESC LIMIT 0,1", array($oldsequence));
 	$newsequence = $adb->query_result($nexttab,0,'sequence');
 	$leftid = $adb->query_result($nexttab,0,'id');
