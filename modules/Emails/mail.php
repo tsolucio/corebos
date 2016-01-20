@@ -58,7 +58,21 @@ function send_mail($module,$to_email,$from_name,$from_email,$subject,$contents,$
 	$result = $adb->pquery($query,$params);
 	$from_email_field = $adb->query_result($result,0,'from_email_field');
 	if(isUserInitiated()) {
-		$replyToEmail = $from_email;
+                global $current_user;
+                $reply_to_secondary = GlobalVariable::getVariable('Users_ReplyTo_SecondEmail', 0, $module, $current_user->id);
+                if($reply_to_secondary == 1){
+                    $sql = "select secondaryemail from vtiger_users where id=?";
+                    $result = $adb->pquery($sql, array($current_user->id));
+                    $second_email = '';
+                    if ($result and $adb->num_rows($result)>0) {
+                            $second_email = $adb->query_result($result,0,'secondaryemail');
+                    }
+                }
+                if(!empty($second_email)){
+                    $replyToEmail = $second_email;
+                }else{
+                    $replyToEmail = $from_email;
+                }
 	} else {
 		$replyToEmail = $from_email_field;
 	}
