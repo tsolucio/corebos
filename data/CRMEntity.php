@@ -217,7 +217,7 @@ class CRMEntity {
 		$upload_file_path = decideFilePath();
 
 		//upload the file in server
-		if ($direct_import) {
+		if ($direct_import or !is_uploaded_file($filetmp_name)) {
 			$upload_status = copy($filetmp_name, $upload_file_path . $current_id . "_" . $binFile);
 		} else {
 			$upload_status = move_uploaded_file($filetmp_name, $upload_file_path . $current_id . "_" . $binFile);
