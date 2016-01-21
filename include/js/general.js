@@ -4000,31 +4000,35 @@ function ToolTipManager(){
 		var getVal = eval(leftSide) + eval(widthM);
 		var tooltipDimensions = getDimension(obj);
 		var tooltipWidth = tooltipDimensions.x;
-
-                if(getVal  > document.body.clientWidth ){
-			leftSide = eval(leftSide) - eval(widthM);
-		}else{
-			leftSide = eval(leftSide) + (eval(tooltipWidth)/2);
-		}
-		if(leftSide < 0) {
-			leftSide = findPosX(obj) + tooltipWidth;
-		}
-		tooltip.style.left = leftSide + 'px';
-
-		var heightTooltip = dimensions.y;
-		var bottomSide = eval(topSide) + eval(heightTooltip);
-		if(bottomSide > document.body.clientHeight){
-			topSide = topSide - (bottomSide - document.body.clientHeight) - 10;
-			if(topSide < 0 ){
-				topSide = 10;
+		if(leftSide == 0 && topSide == 0)
+			tooltip.style.display = 'none';
+		else
+		{
+			if(getVal  > document.body.clientWidth ){
+				leftSide = eval(leftSide) - eval(widthM);
+			}else{
+				leftSide = eval(leftSide) + (eval(tooltipWidth)/2);
 			}
-		}else{
-			topSide = eval(topSide) - eval(heightTooltip)/2;
-			if(topSide<0){
-				topSide = 10;
+			if(leftSide < 0) {
+				leftSide = findPosX(obj) + tooltipWidth;
 			}
+			tooltip.style.left = leftSide + 'px';
+	
+			var heightTooltip = dimensions.y;
+			var bottomSide = eval(topSide) + eval(heightTooltip);
+			if(bottomSide > document.body.clientHeight){
+				topSide = topSide - (bottomSide - document.body.clientHeight) - 10;
+				if(topSide < 0 ){
+					topSide = 10;
+				}
+			}else{
+				topSide = eval(topSide) - eval(heightTooltip)/2;
+				if(topSide<0){
+					topSide = 10;
+				}
+			}
+			tooltip.style.top= topSide + 'px';
 		}
-		tooltip.style.top= topSide + 'px';
 	}
 
 	return {
