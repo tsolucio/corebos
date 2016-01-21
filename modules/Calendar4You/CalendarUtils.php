@@ -461,7 +461,7 @@ function transferForAddIntoTitle($type, $row, $CD) {
 		return $Cal_Data[1];
 	else
 //		return "<br><b>".$Cal_Data[0]."</b>: ".$value;
-		return '<table><tr><td><b>'.$Cal_Data[0].':</b></td><td onmouseover="vtlib_listview.trigger(\'cell.onmouseover\', $(this))" onmouseout="vtlib_listview.trigger(\'cell.onmouseout\', $(this))">'.$value.'</td></tr></table>';
+		return '<table><tr><td><b>'.$Cal_Data[0].':</b></td><td onmouseover="vtlib_listview.trigger(\'cell.onmouseover\', this)" onmouseout="vtlib_listview.trigger(\'cell.onmouseout\', this)">'.$value.'</td></tr></table>';
 }
 
 function getEventActivityMode($id) {
