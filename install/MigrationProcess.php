@@ -125,7 +125,7 @@ if($_REQUEST['migration_start'] != 'true') {
 	    <script type='text/javascript'>
 	    var auth_key = '<?php echo $auth_key; ?>';
 	    if(typeof('Event') != 'undefined') {
-	    	Event.observe(window, 'load', function() {
+	    	jQuery( window ).load( function() {
 	    		VtigerJS_DialogBox.progress();
 	    		document.getElementById('triggermigration_iframe').src = 'install.php?file=MigrationProcess.php&migration_start=true&auth_key='+auth_key;
 	    	});

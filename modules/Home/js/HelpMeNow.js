@@ -626,7 +626,7 @@ function vtiger_help_welcome(obj, container) {
 /**
  * Trigger init of help controller on page load.
  */
-Event.observe(window, 'load', function(){
+jQuery( window ).load( function(){
     vtiger_help_controller_singleton.get();
 });
 
