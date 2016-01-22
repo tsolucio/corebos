@@ -15,6 +15,7 @@
 <title>{$MOD.TITLE_COMPOSE_MAIL}</title>
 <link REL="SHORTCUT ICON" HREF="themes/images/favicon.ico">
 <style type="text/css">@import url("themes/{$THEME}/style.css");</style>
+<script type="text/javascript" src="include/jquery/jquery.js"></script>
 {*<script language="javascript" type="text/javascript" src="include/scriptaculous/prototype.js"></script>*}
 {*<script src="include/scriptaculous/scriptaculous.js" type="text/javascript"></script>*}
 <script src="include/js/general.js" type="text/javascript"></script>
