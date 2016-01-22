@@ -28,6 +28,7 @@
 <tr>
 	<td width="100%" align="center" valign="top" height="350">
 		<div id="MainMatrix" class="show_tab topMarginHomepage" style="padding:0px;width:100%">
+			<script type="text/javascript" src="include/jquery/jquery-ui.js"></script>
 			{foreach item=tablestuff from=$HOMEFRAME name="homeframe"}
 				{*<!-- create divs for each widget - the contents will be loaded dynamically from javascript -->*}
 				{include file="Home/MainHomeBlock.tpl"}
