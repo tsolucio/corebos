@@ -1,12 +1,12 @@
 <?php
-/*+********************************************************************************
+/*+***********************************************************************************
  * The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
  * The Original Code is:  vtiger CRM Open Source
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- ********************************************************************************/
+ *************************************************************************************/
 
 $mod_strings = array(
 	'Import' => 'Import',
@@ -225,6 +225,11 @@ $mod_strings = array(
 	'LBL_FORMAT' => 'Format:',
 	'LBL_MAX_FILE_SIZE' => 'is the max allowed filesize',
 	'LBL_MERGE_FIELDS_DUPLICATE' => 'Merge fields For duplicate import records',
-	'Customer Portal Login Details' => 'Customer Portal login details'
+	'Customer Portal Login Details' => 'Customer Portal login details',
+	'LBL_FILE_UPLOAD_FAILED' => 'File upload failed',
+	'LBL_IMPORT_ERROR_LARGE_FILE' => 'File is to big to upload. The maximum upload size (',
+	'LBL_IMPORT_CHANGE_UPLOAD_SIZE' => ') may be incremented in your PHP configuration',
+	'LBL_IMPORT_DIRECTORY_NOT_WRITABLE' => 'Import Directory is not writable',
+	'LBL_IMPORT_FILE_COPY_FAILED' => 'Error copying file to import. Check file system permissions',
 );
 ?>
