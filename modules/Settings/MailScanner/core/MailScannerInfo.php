@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
 require_once('modules/Settings/MailScanner/core/MailScannerRule.php');
 
@@ -53,7 +52,7 @@ class Vtiger_MailScannerInfo {
 	 * Constructor
 	 */
 	function __construct($scannername, $initialize=true) {
-		if($initialize && $scannername) $this->initialize($scannername);		
+		if($initialize && $scannername) $this->initialize($scannername);
 	}
 
 	/**
@@ -131,7 +130,7 @@ class Vtiger_MailScannerInfo {
 	function updateAllFolderRescan($rescanFlag=false) {
 		global $adb;
 		$useRescanFlag = $rescanFlag? 1 : 0;
-		$adb->pquery("UPDATE vtiger_mailscanner_folders set rescan=? WHERE scannerid=?", 
+		$adb->pquery("UPDATE vtiger_mailscanner_folders set rescan=? WHERE scannerid=?",
 			Array($rescanFlag, $this->scannerid));
 		if($this->rescan) {
 			foreach($this->rescan as $folderName=>$oldRescanFlag) {
@@ -154,7 +153,7 @@ class Vtiger_MailScannerInfo {
 			Array($this->scannerid, $folderName));
 		if($adb->num_rows($folderInfo)) {
 			$folderid = $adb->query_result($folderInfo, 0, 'folderid');
-			$adb->pquery("UPDATE vtiger_mailscanner_folders SET lastscan=?, rescan=? WHERE folderid=?", 
+			$adb->pquery("UPDATE vtiger_mailscanner_folders SET lastscan=?, rescan=? WHERE folderid=?",
 				Array($scannedOn, $needRescan, $folderid));
 		} else {
 			$enabledForScan = 1; // Enable folder for scan by default
@@ -194,7 +193,7 @@ class Vtiger_MailScannerInfo {
 		$rescanRequired = false;
 		if($this->rescan) {
 			foreach($this->rescan as $folderName=>$rescan) {
-				if($rescan) { 
+				if($rescan) {
 					$rescanRequired = $folderName;
 					break;
 				}
@@ -278,17 +277,17 @@ class Vtiger_MailScannerInfo {
 				}
 			}
 		}
-	}	
+	}
 
 	/**
 	 * Get scanner information as map
 	 */
 	function getAsMap() {
 		$infomap = Array();
-		$keys = Array('scannerid', 'scannername', 'server', 'protocol', 'username', 'password', 'ssltype', 
+		$keys = Array('scannerid', 'scannername', 'server', 'protocol', 'username', 'password', 'ssltype',
 			'sslmethod', 'connecturl', 'searchfor', 'markas', 'isvalid', 'rules');
 		foreach($keys as $key) {
-			$infomap[$key] = $this->$key; 
+			$infomap[$key] = $this->$key;
 		}
 		$infomap['requireRescan'] = $this->checkRescan();
 		return $infomap;
@@ -299,7 +298,7 @@ class Vtiger_MailScannerInfo {
 	 */
 	function compare($otherInstance) {
 		$checkkeys = Array('server', 'scannername', 'protocol', 'username', 'password', 'ssltype', 'sslmethod', 'searchfor', 'markas');
-		foreach($checkkeys as $key) { 
+		foreach($checkkeys as $key) {
 			if($this->$key != $otherInstance->$key) return false;
 		}
 		return true;
@@ -333,21 +332,20 @@ class Vtiger_MailScannerInfo {
 		$useisvalid = ($this->isvalid)? 1 : 0;
 
 		$usepassword = $this->__crypt($this->password);
-        
+
 		global $adb;
 		if($this->scannerid == false) {
-            $adb->pquery("INSERT INTO vtiger_mailscanner(scannername,server,protocol,username,password,ssltype,
+			$adb->pquery("INSERT INTO vtiger_mailscanner(scannername,server,protocol,username,password,ssltype,
 				sslmethod,connecturl,searchfor,markas,isvalid) VALUES(?,?,?,?,?,?,?,?,?,?,?)",
 				Array($this->scannername,$this->server, $this->protocol, $this->username, $usepassword,
 				$this->ssltype, $this->sslmethod, $this->connecturl, $this->searchfor, $this->markas, $useisvalid));
 			$this->scannerid = $adb->database->Insert_ID();
-        } else { //this record is exist in the data
+		} else { //this record is exist in the data
 			$adb->pquery("UPDATE vtiger_mailscanner SET scannername=?,server=?,protocol=?,username=?,password=?,ssltype=?,
 				sslmethod=?,connecturl=?,searchfor=?,markas=?,isvalid=? WHERE scannerid=?",
 				Array($this->scannername,$this->server,$this->protocol, $this->username, $usepassword, $this->ssltype,
 				$this->sslmethod, $this->connecturl,$this->searchfor, $this->markas,$useisvalid, $this->scannerid));
-        }
-		
+		}
 		return $mailServerChanged;
 	}
 
@@ -356,18 +354,18 @@ class Vtiger_MailScannerInfo {
 	 */
 	function delete() {
 		global $adb;
-		
+
 		// Delete dependencies
 		if(!empty($this->rules)) {
 			foreach($this->rules as $rule) {
 				$rule->delete();
 			}
 		}
-		
+
 		if($this->scannerid) {
 			$tables = Array(
 				'vtiger_mailscanner',
-				'vtiger_mailscanner_ids', 
+				'vtiger_mailscanner_ids',
 				'vtiger_mailscanner_folders'
 			);
 			foreach($tables as $table) {
@@ -378,13 +376,12 @@ class Vtiger_MailScannerInfo {
 			$adb->pquery("DELETE FROM vtiger_mailscanner_actions WHERE scannerid=?", Array($this->scannerid));
 		}
 	}
-	
+
 	/**
 	 * List all the mail-scanners configured.
 	 */
 	static function listAll() {
 		$scanners = array();
-		
 		global $adb;
 		$result = $adb->pquery("SELECT scannername FROM vtiger_mailscanner", array());
 		if($result && $adb->num_rows($result)) {

@@ -6,9 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
-
 require_once('modules/Emails/Emails.php');
 require_once('modules/HelpDesk/HelpDesk.php');
 require_once('modules/Users/Users.php');
@@ -19,7 +17,7 @@ require_once('modules/Documents/Documents.php');
  */
 class Vtiger_MailScannerAction {
 	// actionid for this instance
-	var $actionid  = false;	
+	var $actionid  = false;
 	// scanner to which this action is associated
 	var $scannerid = false;
 	// type of mailscanner action
@@ -46,7 +44,7 @@ class Vtiger_MailScannerAction {
 	 * Constructor.
 	 */
 	function __construct($foractionid) {
-		$this->initialize($foractionid);		
+		$this->initialize($foractionid);
 	}
 
 	/**
@@ -88,10 +86,10 @@ class Vtiger_MailScannerAction {
 				Array($this->scannerid, $this->actiontype, $this->module, $this->lookup, $this->sequence));
 			$this->actionid = $adb->database->Insert_ID();
 		}
-		$checkmapping = $adb->pquery("SELECT COUNT(*) AS ruleaction_count FROM vtiger_mailscanner_ruleactions 
+		$checkmapping = $adb->pquery("SELECT COUNT(*) AS ruleaction_count FROM vtiger_mailscanner_ruleactions
 			WHERE ruleid=? AND actionid=?", Array($ruleid, $this->actionid));
 		if($adb->num_rows($checkmapping) && !$adb->query_result($checkmapping, 0, 'ruleaction_count')) {
-			$adb->pquery("INSERT INTO vtiger_mailscanner_ruleactions(ruleid, actionid) VALUES(?,?)", 
+			$adb->pquery("INSERT INTO vtiger_mailscanner_ruleactions(ruleid, actionid) VALUES(?,?)",
 				Array($ruleid, $this->actionid));
 		}
 	}
@@ -128,13 +126,13 @@ class Vtiger_MailScannerAction {
 		$returnid = false;
 		if($this->actiontype == 'CREATE') {
 			if($this->module == 'HelpDesk') {
-				$returnid = $this->__CreateTicket($mailscanner, $mailrecord); 
+				$returnid = $this->__CreateTicket($mailscanner, $mailrecord);
 			}
 		} else if($this->actiontype == 'LINK') {
 			$returnid = $this->__LinkToRecord($mailscanner, $mailrecord);
 		} else if($this->actiontype == 'UPDATE') {
 			if($this->module == 'HelpDesk') {
-				$returnid = $this->__UpdateTicket($mailscanner, $mailrecord, 
+				$returnid = $this->__UpdateTicket($mailscanner, $mailrecord,
 					$mailscannerrule->hasRegexMatch($matchresult));
 			}
 		}
@@ -160,7 +158,7 @@ class Vtiger_MailScannerAction {
 
 			$linkfocus = $mailscanner->GetTicketRecord($usesubject, $fromemail);
 			$relatedid = $linkfocus->column_fields[parent_id];
- 
+
 			// If matching ticket is found, update comment, attach email
 			if($linkfocus) {
 				$timestamp = $adb->formatDate(date('YmdHis'), true);
@@ -188,7 +186,7 @@ class Vtiger_MailScannerAction {
 		$description = $mailrecord->getBodyText();
 
 		// There will be only on FROM address to email, so pick the first one
-		$fromemail = $mailrecord->_from[0];	
+		$fromemail = $mailrecord->_from[0];
 		$linktoid = $mailscanner->LookupContact($fromemail);
 		if(!$linktoid) $linktoid = $mailscanner->LookupAccount($fromemail);
 
@@ -197,11 +195,11 @@ class Vtiger_MailScannerAction {
 		if(!$current_user) {
 			$current_user = Users::getActiveAdminUser();
 		}
-                if(!empty($mailrecord->_assign_to)){
-                    $usr = $mailrecord->_assign_to;
-                }else{
-                    $usr = $current_user->id;
-                }
+		if(!empty($mailrecord->_assign_to)){
+			$usr = $mailrecord->_assign_to;
+		}else{
+			$usr = $current_user->id;
+		}
 
 		// Create trouble ticket record
 		$ticket = new HelpDesk();
@@ -213,13 +211,13 @@ class Vtiger_MailScannerAction {
 		if($linktoid) $ticket->column_fields['parent_id'] = $linktoid;
 		$ticket->save('HelpDesk');
 
-                if(!$linktoid){
-                    $adb->pquery("UPDATE vtiger_troubletickets SET email=? WHERE ticketid=?",array($fromemail, $ticket->id));
-                }
+		if(!$linktoid){
+			$adb->pquery("UPDATE vtiger_troubletickets SET email=? WHERE ticketid=?",array($fromemail, $ticket->id));
+		}
 
-                // Associate any attachement of the email to ticket
+		// Associate any attachement of the email to ticket
 		$this->__SaveAttachements($mailrecord, 'HelpDesk', $ticket);
-		
+
 		return $ticket->id;
 	}
 
@@ -229,7 +227,7 @@ class Vtiger_MailScannerAction {
 	function __LinkToRecord($mailscanner, $mailrecord) {
 		$linkfocus = false;
 
-		$useemail  = false;
+		$useemail = false;
 		if($this->lookup == 'FROM') $useemail = $mailrecord->_from;
 		else if($this->lookup == 'TO') $useemail = $mailrecord->_to;
 
@@ -239,7 +237,7 @@ class Vtiger_MailScannerAction {
 				if($linkfocus) break;
 			}
 		} else if($this->module == 'Accounts') {
-			foreach($useemail as $email) {			
+			foreach($useemail as $email) {
 				$linkfocus = $mailscanner->GetAccountRecord($email);
 				if($linkfocus) break;
 			}
@@ -255,7 +253,7 @@ class Vtiger_MailScannerAction {
 	/**
 	 * Create new Email record (and link to given record) including attachements
 	 */
-	function __CreateNewEmail($mailrecord, $module, $linkfocus) {	
+	function __CreateNewEmail($mailrecord, $module, $linkfocus) {
 		global $current_user, $adb;
 		if(!$current_user) {
 			$current_user = Users::getActiveAdminUser();
@@ -271,7 +269,7 @@ class Vtiger_MailScannerAction {
 		$focus->column_fields['assigned_user_id'] = $linkfocus->column_fields['assigned_user_id'];
 		$focus->column_fields["date_start"]= date('Y-m-d', $mailrecord->_date);
 		$focus->column_fields["email_flag"] = 'MAILSCANNER';
-		
+
 		$from=$mailrecord->_from[0];
 		$to = $mailrecord->_to[0];
 		$cc = (!empty($mailrecord->_cc))? implode(',', $mailrecord->_cc) : '';
@@ -281,7 +279,7 @@ class Vtiger_MailScannerAction {
 		$focus->column_fields['from_email'] = $from;
 		$focus->column_fields['saved_toid'] = $to;
 		$focus->column_fields['ccmail'] = $cc;
-		$focus->column_fields['bccmail'] = $bcc;  
+		$focus->column_fields['bccmail'] = $bcc;
 		$focus->save('Emails');
 
 		$emailid = $focus->id;
@@ -312,9 +310,9 @@ class Vtiger_MailScannerAction {
 			$description = $filename;
 			$usetime = $adb->formatDate($date_var, true);
 
-			$adb->pquery("INSERT INTO vtiger_crmentity(crmid, smcreatorid, smownerid, 
+			$adb->pquery("INSERT INTO vtiger_crmentity(crmid, smcreatorid, smownerid,
 				modifiedby, setype, description, createdtime, modifiedtime, presence, deleted)
-				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)", 
+				VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)",
 				Array($attachid, $userid, $userid, $userid, $setype, $description, $usetime, $usetime, 1, 0));
 
 			$issaved = $this->__SaveAttachmentFile($attachid, $filename, $filecontent);
@@ -325,16 +323,16 @@ class Vtiger_MailScannerAction {
 				$document->column_fields['filename']         = $filename;
 				$document->column_fields['filestatus']       = 1;
 				$document->column_fields['filelocationtype'] = 'I';
-				$document->column_fields['folderid']         = 1; // Default Folder 
+				$document->column_fields['folderid']         = 1; // Default Folder
 				$document->column_fields['assigned_user_id'] = $userid;
 				$document->save('Documents');
-				
+
 				// Link file attached to document
-				$adb->pquery("INSERT INTO vtiger_seattachmentsrel(crmid, attachmentsid) VALUES(?,?)", 
+				$adb->pquery("INSERT INTO vtiger_seattachmentsrel(crmid, attachmentsid) VALUES(?,?)",
 					Array($document->id, $attachid));
-				
+
 				// Link document to base record
-				$adb->pquery("INSERT INTO vtiger_senotesrel(crmid, notesid) VALUES(?,?)", 
+				$adb->pquery("INSERT INTO vtiger_senotesrel(crmid, notesid) VALUES(?,?)",
 					Array($basefocus->id, $document->id));
 
 				// Link document to Parent entity - Account/Contact/...
@@ -346,7 +344,7 @@ class Vtiger_MailScannerAction {
 				$adb->pquery("INSERT INTO vtiger_seattachmentsrel(crmid, attachmentsid) VALUES(?,?)",
 					Array($basefocus->id, $attachid));
 			}
-		}	
+		}
 	}
 
 	/**
@@ -362,9 +360,7 @@ class Vtiger_MailScannerAction {
 		$filename = str_replace(' ', '-', $filename);
 		$saveasfile = "$dirname$attachid" . "_$filename";
 		if(!file_exists($saveasfile)) {
-			
 			$this->log("Saved attachement as $saveasfile\n");
-
 			$fh = fopen($saveasfile, 'wb');
 			fwrite($fh, $filecontent);
 			fclose($fh);

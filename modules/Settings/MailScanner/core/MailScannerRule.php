@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
 
 require_once('modules/Settings/MailScanner/core/MailScannerAction.php');
@@ -16,7 +15,7 @@ require_once('modules/Settings/MailScanner/core/MailScannerAction.php');
  */
 class Vtiger_MailScannerRule {
 	// id of this instance
-	var $ruleid    = false;	
+	var $ruleid    = false;
 	// scanner to which this rule is linked
 	var $scannerid = false;
 	// from address criteria
@@ -31,7 +30,7 @@ class Vtiger_MailScannerRule {
 	var $bodyop    = false;
 	// body criteria
 	var $body      = false;
-	// order of this rule 
+	// order of this rule
 	var $sequence  = false;
 	// is this action valid
 	var $isvalid   = false;
@@ -60,7 +59,7 @@ class Vtiger_MailScannerRule {
 	 * Constructor
 	 */
 	function __construct($forruleid) {
-		$this->initialize($forruleid);		
+		$this->initialize($forruleid);
 	}
 
 	/**
@@ -69,7 +68,7 @@ class Vtiger_MailScannerRule {
 	function __toString() {
 		$tostring = '';
 		$tostring .= "FROM $this->fromaddress, TO $this->toaddress";
-	    $tostring .= ",SUBJECT $this->subjectop $this->subject, BODY $this->bodyop $this->body, MATCH USING, $this->matchusing";
+		$tostring .= ",SUBJECT $this->subjectop $this->subject, BODY $this->bodyop $this->body, MATCH USING, $this->matchusing";
 		return $tostring;
 	}
 
@@ -92,19 +91,19 @@ class Vtiger_MailScannerRule {
 			$this->sequence   = $adb->query_result($result, 0, 'sequence');
 			$this->matchusing = $adb->query_result($result, 0, 'matchusing');
 			$this->isvalid    = true;
-                        //User | Group to assign
-			$this->assign_to    = $adb->query_result($result, 0, 'assign_to');
-                        $result = $adb->pquery("SELECT * from vtiger_users where id = ?", array($this->assign_to));
-                        if ($adb->num_rows($result) > 0) {
-                            $this->assign_to_type = 'U';
-                            $this->assign_to_name = $adb->query_result($result,0,'first_name').' '.$adb->query_result($result,0,'last_name');
-                        }else{
-                            $this->assign_to_type = 'G';
-                            $result = $adb->pquery("SELECT * from vtiger_groups where groupid = ?", array($this->assign_to));
-                            $this->assign_to_name = $adb->query_result($result,0,'groupname');
-                        }
+			//User | Group to assign
+			$this->assign_to  = $adb->query_result($result, 0, 'assign_to');
+			$result = $adb->pquery("SELECT * from vtiger_users where id = ?", array($this->assign_to));
+			if ($adb->num_rows($result) > 0) {
+				$this->assign_to_type = 'U';
+				$this->assign_to_name = $adb->query_result($result,0,'first_name').' '.$adb->query_result($result,0,'last_name');
+			}else{
+				$this->assign_to_type = 'G';
+				$result = $adb->pquery("SELECT * from vtiger_groups where groupid = ?", array($this->assign_to));
+				$this->assign_to_name = $adb->query_result($result,0,'groupname');
+			}
 
-                        $this->initializeActions();
+			$this->initializeActions();
 			// At present we support only one action for a rule
 			if(!empty($this->actions)) $this->useaction = $this->actions[0];
 		}
@@ -158,10 +157,9 @@ class Vtiger_MailScannerRule {
 		$matchresults = Array();
 		$matchfound = null;
 
-		if($this->hasACondition()) {			
+		if($this->hasACondition()) {
 			$subrules = Array('FROM', 'TO', 'SUBJECT', 'BODY');
-			
-			foreach($subrules as $subrule) { 
+			foreach($subrules as $subrule) {
 				// Body rule could be defered later to improve performance
 				// in that case skip it.
 				if($subrule == 'BODY' && !$includingBody) continue;
@@ -256,13 +254,13 @@ class Vtiger_MailScannerRule {
 			$matchfound = ($matchfound === FALSE);
 			$matches = $searchfor;
 			break;
-		case 'Equals': 
+		case 'Equals':
 			$matchfound = strcasecmp($input, $searchfor);
 			$matchfound = ($matchfound === 0);
 			$matches = $searchfor;
 			break;
 		case 'Not Equals':
-			$matchfound = strcasecmp($input, $searchfor);			
+			$matchfound = strcasecmp($input, $searchfor);
 			$matchfound = ($matchfound !== 0);
 			$matches = $searchfor;
 			break;
@@ -337,7 +335,7 @@ class Vtiger_MailScannerRule {
 			$adb->pquery("UPDATE vtiger_mailscanner_rules SET sequence = ? WHERE ruleid = ?", Array($rule_partinfo[$ruleid2], $ruleid1));
 			$adb->pquery("UPDATE vtiger_mailscanner_rules SET sequence = ? WHERE ruleid = ?", Array($rule_partinfo[$ruleid1], $ruleid2));
 		}
-	}			
+	}
 
 	/**
 	 * Update rule information in database.
@@ -346,11 +344,11 @@ class Vtiger_MailScannerRule {
 		global $adb;
 		if($this->ruleid) {
 			$adb->pquery("UPDATE vtiger_mailscanner_rules SET scannerid=?,fromaddress=?,toaddress=?,subjectop=?,subject=?,bodyop=?,body=?,matchusing=?,assign_to=?
-				WHERE ruleid=?", Array($this->scannerid, $this->fromaddress, $this->toaddress, $this->subjectop, $this->subject, 
+				WHERE ruleid=?", Array($this->scannerid, $this->fromaddress, $this->toaddress, $this->subjectop, $this->subject,
 				$this->bodyop, $this->body,$this->matchusing,$this->assign_to,$this->ruleid));
 		} else {
 			$this->sequence = $this->__nextsequence();
-			$adb->pquery("INSERT INTO vtiger_mailscanner_rules(scannerid,fromaddress,toaddress,subjectop,subject,bodyop,body,matchusing,sequence,assign_to) 
+			$adb->pquery("INSERT INTO vtiger_mailscanner_rules(scannerid,fromaddress,toaddress,subjectop,subject,bodyop,body,matchusing,sequence,assign_to)
 				VALUES(?,?,?,?,?,?,?,?,?,?)", 
 				Array($this->scannerid,$this->fromaddress,$this->toaddress,$this->subjectop,$this->subject,
 				$this->bodyop,$this->body,$this->matchusing,$this->sequence,$this->assign_to));
@@ -377,7 +375,6 @@ class Vtiger_MailScannerRule {
 	 */
 	function delete() {
 		global $adb;
-		
 		// Delete dependencies
 		if(!empty($this->actions)) {
 			foreach($this->actions as $action) {
@@ -402,7 +399,7 @@ class Vtiger_MailScannerRule {
 			if($actionid == '') {
 				$action = new Vtiger_MailScannerAction($actionid);
 			}
-			$action->scannerid = $this->scannerid;			
+			$action->scannerid = $this->scannerid;
 			$action->update($this->ruleid, $actiontext);
 		}
 	}
