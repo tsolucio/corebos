@@ -284,7 +284,7 @@ var gVTUserID = '{$CURRENT_USER_ID}';
 				{/foreach}
 				{foreach key=maintabs item=detail from=$MENUSTRUCTURE}
 					{if $maintabs eq 'more' && $detail != null}
-						<td class="tabUnSelected"  align="center" onmouseout="fnHide_Event('allMenu');" onmouseover="fnvshobjMore(this,'allMenu',{if $ANNOUNCEMENT}true{else}false{/if});"nowrap><a href="javascript:;" >{$APP.LBL_MORE}<img src="{'menuDnArrow.gif'|@vtiger_imageurl:$THEME}" border=0 style="padding-left:5px" /></a></td>
+						<td class="tabUnSelected"  align="center" onmouseout="fnHide_Event('allMenu');" onmouseover="fnvshobjMore(this,'allMenu');"nowrap><a href="javascript:;" >{$APP.LBL_MORE}<img src="{'menuDnArrow.gif'|@vtiger_imageurl:$THEME}" border=0 style="padding-left:5px" /></a></td>
 						<td class="tabSeperator"><img src="{'spacer.gif'|@vtiger_imageurl:$THEME}"></td>
 					{/if}
 				{/foreach}

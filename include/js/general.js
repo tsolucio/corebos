@@ -4459,7 +4459,7 @@ function convertOptionsToJSONArray(objName,targetObjName) {
 	return arr;
 }
 
-function fnvshobjMore(obj,Lay,announcement){
+function fnvshobjMore(obj,Lay){
 	var tagName = document.getElementById(Lay);
 	var leftSide = findPosX(obj);
 	var topSide = findPosY(obj);
@@ -4501,14 +4501,10 @@ function fnvshobjMore(obj,Lay,announcement){
 	} else {
 		tagName.style.left= leftSide  + 5 +'px';
 	}
-	if(announcement){
-		tagName.style.top = 104+'px';
-	}else{
-		tagName.style.top = 70+'px';
-	}
+	menuBar = document.getElementsByClassName('hdrTabBg')[0];
+	tagName.style.top = (menuBar.offsetTop + menuBar.clientHeight)+'px';
 	tagName.style.display = 'block';
 	tagName.style.visibility = "visible";
-
 }
 
 function fnvshobjsearch(obj,Lay){
