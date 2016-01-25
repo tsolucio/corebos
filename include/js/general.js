@@ -4538,7 +4538,7 @@ function fnvshobjsearch(obj,Lay){
 	} else {
 		tagName.style.left= leftSide - 324 + 'px';
 	}
-	tagName.style.top= topSide + 33 + 'px';
+	tagName.style.top= topSide + obj.clientHeight + 'px';
 	tagName.style.display = 'block';
 	tagName.style.visibility = "visible";
 }
