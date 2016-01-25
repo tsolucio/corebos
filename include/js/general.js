@@ -2182,7 +2182,7 @@ function fnDropDown(obj,Lay){
 	}
 	else
 		tagName.style.left= leftSide + 'px';
-		tagName.style.top= topSide + 22 +'px';
+		tagName.style.top= topSide + obj.clientHeight +'px';
 		tagName.style.display = 'block';
 }
 
