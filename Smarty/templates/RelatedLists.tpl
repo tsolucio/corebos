@@ -100,7 +100,7 @@ function gotoUpdateListPrice(id,pbid,proid)
 							<!-- content cache -->
 								<table border=0 cellspacing=0 cellpadding=0 width=100%>
 									<tr>
-										<td style="padding:10px">
+										<td style="padding:10px" class="contains_rel_modules">
 										   <!-- General details -->
 												{include file='RelatedListsHidden.tpl'}
 												<div id="RLContents">
