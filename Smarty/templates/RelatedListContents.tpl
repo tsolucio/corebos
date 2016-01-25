@@ -139,11 +139,11 @@ function disableRelatedListBlock(urldata,target,imagesuffix){
 {assign var=rel_mod value=$header}
 {assign var="HEADERLABEL" value=$header|@getTranslatedString:$rel_mod}
 
-<table width="100%" cellspacing="0" cellpadding="0" border="0" class="small lvt">
+<table width="100%" cellspacing="0" cellpadding="0" border="0" class="small lvt rel_mod_table">
 	<tr>
-		<td class="dvInnerHeader">
-			<div style="font-weight: bold;height: 1.75em;">
-				<span>
+		<td class="dvInnerHeader" class="rel_mod_header_wrapper">
+			<div style="font-weight: bold;height: 1.75em;" class="rel_mod_header">
+				<span class="toggle_rel_mod_table">
 					<a href="javascript:loadRelatedListBlock(
 						'module={$MODULE}&action={$MODULE}Ajax&file=DetailViewAjax&record={$ID}&ajxaction=LOADRELATEDLIST&header={$header}&relation_id={$detail.relationId}&actions={$detail.actions}&parenttab={$CATEGORY}',
 						'tbl_{$MODULE}_{$header|replace:' ':''}','{$MODULE}_{$header|replace:' ':''}');">
@@ -155,7 +155,7 @@ function disableRelatedListBlock(urldata,target,imagesuffix){
 				</span>
 				&nbsp;{$HEADERLABEL}&nbsp;
 				<img id="indicator_{$MODULE}_{$header|replace:' ':''}" style="display:none;" src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" />
-				<div style="float: right;width: 2em;">
+				<div style="float: right;width: 2em;" class="disable_rel_mod_table">
 					<a href="javascript:disableRelatedListBlock(
 						'module={$MODULE}&action={$MODULE}Ajax&file=DetailViewAjax&ajxaction=DISABLEMODULE&relation_id={$detail.relationId}&header={$header}',
 						'tbl_{$MODULE}_{$header|replace:' ':''}','{$MODULE}_{$header|replace:' ':''}');">
@@ -171,8 +171,8 @@ function disableRelatedListBlock(urldata,target,imagesuffix){
 		</td>
 	</tr>
 	<tr>
-		<td>
-			<div id="tbl_{$MODULE}_{$header|replace:' ':''}"></div>
+		<td class="rel_mod_content_wrapper">
+			<div id="tbl_{$MODULE}_{$header|replace:' ':''}" class="rel_mod_content"></div>
 		</td>
 	</tr>
 </table>
