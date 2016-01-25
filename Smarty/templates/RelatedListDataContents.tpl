@@ -8,7 +8,7 @@
   * All Rights Reserved.
   *********************************************************************************/
 -->*}
-<table border=0 cellspacing=0 cellpadding=0 width=100% class="small" 
+<table border=0 cellspacing=0 cellpadding=0 width=100% class="small rel_mod_data_paging" 
 	style="border-bottom:1px solid #999999;padding:5px; background-color: #eeeeff;">
 	<tr>
 		<td align="left">
@@ -35,8 +35,8 @@
 	</tr>
 </table>
 
-<table border=0 cellspacing=1 cellpadding=3 width=100% style="background-color:#eaeaea;" class="small">
-	<tr style="height:25px" bgcolor=white>
+<table border=0 cellspacing=1 cellpadding=3 width=100% style="background-color:#eaeaea;" class="small rel_mod_data">
+	<tr style="height:25px" bgcolor=white class="rel_mod_data_header">
         {if $MODULE eq 'Campaigns' && ($RELATED_MODULE eq 'Contacts' || $RELATED_MODULE eq 'Leads' || $RELATED_MODULE eq 'Accounts')
 			&& $RELATEDLISTDATA.entries|@count > 0}
 		<td class="lvtCol">
@@ -48,7 +48,7 @@
 		{/foreach}
 	</tr>
 	{if $MODULE eq 'Campaigns'}
-	<tr>
+	<tr class="rel_mod_data_campaigns">
 		<td id="{$MODULE}_{$RELATED_MODULE}_linkForSelectAll" class="linkForSelectAll" style="display:none;" colspan=10>
 			<span id="{$MODULE}_{$RELATED_MODULE}_selectAllRec" class="selectall" style="display:inline;" onClick="rel_toggleSelectAll_Records('{$MODULE}','{$RELATED_MODULE}',true,'{$MODULE}_{$RELATED_MODULE}_selected_id')">{$APP.LBL_SELECT_ALL} <span id={$RELATED_MODULE}_count class="folder"> </span> {$APP.LBL_RECORDS_IN} {$RELATED_MODULE|@getTranslatedString:$RELATED_MODULE} {$APP.LBL_RELATED_TO_THIS} {$APP.SINGLE_Campaigns}</span>
 			<span id="{$MODULE}_{$RELATED_MODULE}_deSelectAllRec" class="selectall" style="display:none;" onClick="rel_toggleSelectAll_Records('{$MODULE}','{$RELATED_MODULE}',false,'{$MODULE}_{$RELATED_MODULE}_selected_id')">{$APP.LBL_DESELECT_ALL} {$RELATED_MODULE|@getTranslatedString:$RELATED_MODULE} {$APP.LBL_RELATED_TO_THIS} {$APP.SINGLE_Campaigns}</span>
@@ -56,7 +56,7 @@
 	</tr>
 	{/if}
 	{foreach key=_RECORD_ID item=_RECORD from=$RELATEDLISTDATA.entries}
-		<tr bgcolor=white>
+		<tr bgcolor=white class="rel_mod_data_row">
         	{if $MODULE eq 'Campaigns' && ($RELATED_MODULE eq 'Contacts' || $RELATED_MODULE eq 'Leads' || $RELATED_MODULE eq 'Accounts')}
 			<td><input name="{$MODULE}_{$RELATED_MODULE}_selected_id" id="{$_RECORD_ID}" value="{$_RECORD_ID}" onclick="rel_check_object(this,'{$RELATED_MODULE}');" type="checkbox"  {$RELATEDLISTDATA.checked.$_RECORD_ID}></td>
         	{/if}
@@ -67,7 +67,7 @@
 			{/foreach}
 		</tr>
 	{foreachelse}
-		<tr style="height: 25px;" bgcolor="white"><td><i>{$APP.LBL_NONE_INCLUDED}</i></td></tr>
+		<tr style="height: 25px;" bgcolor="white" class="rel_mod_data_emptyrow"><td><i>{$APP.LBL_NONE_INCLUDED}</i></td></tr>
 	{/foreach}
 </table>
 {if $MODULE eq 'Campaigns' && ($RELATED_MODULE eq 'Contacts' || $RELATED_MODULE eq 'Leads' || $RELATED_MODULE eq 'Accounts')
