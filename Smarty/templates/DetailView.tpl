@@ -339,7 +339,7 @@ function sendfile_email()
 																						{/if}
 																							<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small detailview_table">
 																								{foreach item=detail from=$detail}
-																									<tr style="height:25px">
+																									<tr style="height:25px" class="detailview_row">
 																										{foreach key=label item=data from=$detail}
 																											{assign var=keyid value=$data.ui}
 																											{assign var=keyval value=$data.value}
