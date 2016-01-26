@@ -51,16 +51,22 @@ function showHideStatus(sId,anchorImgId,sImagePath)
 	if(oObj.style.display == 'block')
 	{
 		oObj.style.display = 'none';
-		eval(document.getElementById(anchorImgId)).src =  'themes/images/inactivate.gif';
-		eval(document.getElementById(anchorImgId)).alt = 'Display';
-		eval(document.getElementById(anchorImgId)).title = 'Display';
+		if(anchorImgId !=null){
+			eval(document.getElementById(anchorImgId)).src =  'themes/images/inactivate.gif';
+			eval(document.getElementById(anchorImgId)).alt = 'Display';
+			eval(document.getElementById(anchorImgId)).title = 'Display';
+			eval(document.getElementById(anchorImgId)).parentElement.className = 'exp_coll_block activate';
+		}
 	}
 	else
 	{
 		oObj.style.display = 'block';
-		eval(document.getElementById(anchorImgId)).src =  'themes/images/activate.gif';
-		eval(document.getElementById(anchorImgId)).alt = 'Hide';
-		eval(document.getElementById(anchorImgId)).title = 'Hide';
+		if(anchorImgId !=null){
+			eval(document.getElementById(anchorImgId)).src = 'themes/images/activate.gif';
+			eval(document.getElementById(anchorImgId)).alt = 'Hide';
+			eval(document.getElementById(anchorImgId)).title = 'Hide';
+			eval(document.getElementById(anchorImgId)).parentElement.className = 'exp_coll_block inactivate';
+		}
 	}
 }
 function setCoOrdinate(elemId)
@@ -216,7 +222,7 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 
 <!-- Entity information(blocks) display - start -->
 {foreach key=header item=detail from=$BLOCKS name=BLOCKS}
-	<table border=0 cellspacing=0 cellpadding=0 width=100% class="small">
+	<table border=0 cellspacing=0 cellpadding=0 width=100% class="small detailview_header_table">
 	   <tr>
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
@@ -224,15 +230,15 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 		<td align=right>
 		</td>
 	   </tr>
-	   <tr>
+	   <tr class="detailview_block_header">
 		{strip}
 		<td colspan=4 class="dvInnerHeader" >
 							
 							<div style="float:left;font-weight:bold;"><div style="float:left;"><a href="javascript:showHideStatus('tbl{$header|replace:' ':''}','aid{$header|replace:' ':''}','{$IMAGE_PATH}');">
 							{if $BLOCKINITIALSTATUS[$header] eq 1}
-								<img id="aid{$header|replace:' ':''}" src="{'activate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;" alt="Hide" title="Hide"/>
+								<span class="exp_coll_block inactivate"><img id="aid{$header|replace:' ':''}" src="{'activate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;" alt="Hide" title="Hide"/></span>
 							{else}
-								<img id="aid{$header|replace:' ':''}" src="{'inactivate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;" alt="Display" title="Display"/>
+								<span class="exp_coll_block activate"><img id="aid{$header|replace:' ':''}" src="{'inactivate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;" alt="Display" title="Display"/></span>
 							{/if}
 								</a></div><b>&nbsp;
 						        	{$header}
@@ -246,10 +252,10 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 							{else}
 							<div style="width:auto;display:none;" id="tbl{$header|replace:' ':''}" >
 							{/if}
-							<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small">
+							<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small detailview_table">
 
 	   {foreach item=detail from=$detail}
-	   <tr style="height:25px">
+	   <tr style="height:25px" class="detailview_row">
 		{foreach key=label item=data from=$detail}
 			{assign var=keyid value=$data.ui}
 			{assign var=keyval value=$data.value}
