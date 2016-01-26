@@ -433,12 +433,12 @@ function sendfile_email()
 		<td width=22% valign=top style="border-left:1px dashed #cccccc;padding:13px" class="noprint">
 												<!-- right side relevant info -->
 												<!-- Action links for Event & Todo START-by Minnie -->
-												<table width="100%" border="0" cellpadding="5" cellspacing="0">
+												<table width="100%" border="0" cellpadding="5" cellspacing="0" class="detailview_actionlinks actionlinks_events_todo">
 													<tr><td align="left" class="genHeaderSmall">{$APP.LBL_ACTIONS}</td></tr>
 
 													{if $MODULE eq 'HelpDesk'}
 														{if $CONVERTASFAQ eq 'permitted'}
-															<tr>
+															<tr class="actionlink actionlink_converttofaq">
 																<td align="left" style="padding-left:10px;">
 																	<a class="webMnu" href="index.php?return_module={$MODULE}&return_action=DetailView&record={$ID}&return_id={$ID}&module={$MODULE}&action=ConvertAsFAQ"><img src="{'convert.gif'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle"  border="0"/></a>
 																	<a class="webMnu" href="index.php?return_module={$MODULE}&return_action=DetailView&record={$ID}&return_id={$ID}&module={$MODULE}&action=ConvertAsFAQ">{$MOD.LBL_CONVERT_AS_FAQ_BUTTON_LABEL}</a>
@@ -447,7 +447,7 @@ function sendfile_email()
 														{/if}
 													{elseif $MODULE eq 'Potentials'}
 														{if $CONVERTINVOICE eq 'permitted'}
-															<tr>
+															<tr class="actionlink actionlink_converttoinvoice">
 																<td align="left" style="padding-left:10px;">
 																	<a class="webMnu" href="index.php?return_module={$MODULE}&return_action=DetailView&return_id={$ID}&convertmode={$CONVERTMODE}&module=Invoice&action=EditView&account_id={$ACCOUNTID}"><img src="{'actionGenerateInvoice.gif'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle"  border="0"/></a>
 																	<a class="webMnu" href="index.php?return_module={$MODULE}&return_action=DetailView&return_id={$ID}&convertmode={$CONVERTMODE}&module=Invoice&action=EditView&account_id={$ACCOUNTID}">{$APP.LBL_CREATE} {$APP.Invoice}</a>
@@ -466,7 +466,7 @@ function sendfile_email()
 
 														{if $MODULE eq 'Leads' || $MODULE eq 'Contacts' || $MODULE eq 'Accounts'}
 															{if $SENDMAILBUTTON eq 'permitted'}
-																<tr>
+																<tr class="actionlink actionlink_sendemail">
 																	<td align="left" style="padding-left:10px;">
 																		{foreach key=index item=email from=$EMAILS}
 																			<input type="hidden" name="email_{$index}" value="{$email}"/>
@@ -479,7 +479,7 @@ function sendfile_email()
 														{/if}
 
 														{if $MODULE eq 'Contacts' || $EVENT_PERMISSION eq 'true'}
-															<tr>
+															<tr class="actionlink actionlink_addevent">
 																<td align="left" style="padding-left:10px;">
 																	<a href="index.php?module=Calendar4You&action=EventEditView&return_module={$MODULE}&return_action=DetailView&activity_mode=Events&return_id={$ID}&{$subst}={$ID}{$acc}&parenttab={$CATEGORY}" class="webMnu"><img src="{'AddEvent.gif'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle"  border="0"/></a>
 																	<a href="index.php?module=Calendar4You&action=EventEditView&return_module={$MODULE}&return_action=DetailView&activity_mode=Events&return_id={$ID}&{$subst}={$ID}{$acc}&parenttab={$CATEGORY}" class="webMnu">{$APP.LBL_ADD_NEW} {$APP.Event}</a>
@@ -488,7 +488,7 @@ function sendfile_email()
 														{/if}
 
 														{if $TODO_PERMISSION eq 'true' && ($MODULE eq 'Accounts' || $MODULE eq 'Leads')}
-															<tr>
+															<tr class="actionlink actionlink_addtodo">
 																<td align="left" style="padding-left:10px;">
 																	<a href="index.php?module=Calendar4You&action=EventEditView&return_module={$MODULE}&return_action=DetailView&activity_mode=Task&return_id={$ID}&{$subst}={$ID}{$acc}&parenttab={$CATEGORY}" class="webMnu"><img src="{'AddToDo.gif'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle" border="0"/></a>
 																	<a href="index.php?module=Calendar4You&action=EventEditView&return_module={$MODULE}&return_action=DetailView&activity_mode=Task&return_id={$ID}&{$subst}={$ID}{$acc}&parenttab={$CATEGORY}" class="webMnu">{$APP.LBL_ADD_NEW} {$APP.Todo}</a>
@@ -497,7 +497,7 @@ function sendfile_email()
 														{/if}
 
 														{if $MODULE eq 'Contacts' && $CONTACT_PERMISSION eq 'true'}
-															<tr>
+															<tr class="actionlink actionlink_addtodo">
 																<td align="left" style="padding-left:10px;">
 																	<a href="index.php?module=Calendar4You&action=EventEditView&return_module={$MODULE}&return_action=DetailView&activity_mode=Task&return_id={$ID}&{$subst}={$ID}{$acc}&parenttab={$CATEGORY}" class="webMnu"><img src="{'AddToDo.gif'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle" border="0"/></a>
 																	<a href="index.php?module=Calendar4You&action=EventEditView&return_module={$MODULE}&return_action=DetailView&activity_mode=Task&return_id={$ID}&{$subst}={$ID}{$acc}&parenttab={$CATEGORY}" class="webMnu">{$APP.LBL_ADD_NEW} {$APP.Todo}</a>
@@ -507,7 +507,7 @@ function sendfile_email()
 
 														{if $MODULE eq 'Leads'}
 															{if $CONVERTLEAD eq 'permitted'}
-																<tr>
+																<tr class="actionlink actionlink_convertlead">
 																	<td align="left" style="padding-left:10px;">
 																		<a href="javascript:void(0);" class="webMnu" onclick="callConvertLeadDiv('{$ID}');"><img src="{'Leads.gif'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle"  border="0"/></a>
 																		<a href="javascript:void(0);" class="webMnu" onclick="callConvertLeadDiv('{$ID}');">{$APP.LBL_CONVERT_BUTTON_LABEL}</a>
@@ -518,7 +518,7 @@ function sendfile_email()
 
 														<!-- Start: Actions for Documents Module -->
 														{if $MODULE eq 'Documents'}
-															<tr><td align="left" style="padding-left:10px;">
+															<tr class="actionlink actionlink_downloaddocument"><td align="left" style="padding-left:10px;">
 																	{if $DLD_TYPE eq 'I' && $FILE_STATUS eq '1' && $FILE_EXIST eq 'yes'}
 																		<br><a href="index.php?module=uploads&action=downloadfile&fileid={$FILEID}&entityid={$NOTESID}"  onclick="javascript:dldCntIncrease({$NOTESID});" class="webMnu"><img src="{'fbDownload.gif'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle" title="{$APP.LNK_DOWNLOAD}" border="0"/></a>
 																		<a href="index.php?module=uploads&action=downloadfile&fileid={$FILEID}&entityid={$NOTESID}" onclick="javascript:dldCntIncrease({$NOTESID});">{$MOD.LBL_DOWNLOAD_FILE}</a>
@@ -528,7 +528,7 @@ function sendfile_email()
 																	{/if}
 																</td></tr>
 																{if $CHECK_INTEGRITY_PERMISSION eq 'yes'}
-																<tr><td align="left" style="padding-left:10px;">
+																<tr class="actionlink actionlink_checkdocinteg"><td align="left" style="padding-left:10px;">
 																		<br><a href="javascript:;" onClick="checkFileIntegrityDetailView({$NOTESID});"><img id="CheckIntegrity_img_id" src="{'yes.gif'|@vtiger_imageurl:$THEME}" alt="Check integrity of this file" title="Check integrity of this file" hspace="5" align="absmiddle" border="0"/></a>
 																		<a href="javascript:;" onClick="checkFileIntegrityDetailView({$NOTESID});">{$MOD.LBL_CHECK_INTEGRITY}</a>&nbsp;
 																		<input type="hidden" id="dldfilename" name="dldfilename" value="{$FILEID}-{$FILENAME}">
@@ -537,7 +537,7 @@ function sendfile_email()
 																		<span id="integrity_result" style="display:none"></span>
 																	</td></tr>
 																{/if}
-															<tr><td align="left" style="padding-left:10px;">
+															<tr class="actionlink actionlink_emaildocument"><td align="left" style="padding-left:10px;">
 																	{if $DLD_TYPE eq 'I' &&  $FILE_STATUS eq '1' && $FILE_EXIST eq 'yes'}
 																		<input type="hidden" id="dldfilename" name="dldfilename" value="{$FILEID}-{$FILENAME}">
 																		<br><a href="javascript: document.DetailView.return_module.value='Documents'; document.DetailView.return_action.value='DetailView'; document.DetailView.module.value='Documents'; document.DetailView.action.value='EmailFile'; document.DetailView.record.value={$NOTESID}; document.DetailView.return_id.value={$NOTESID}; sendfile_email();" class="webMnu"><img src="{'attachment.gif'|@vtiger_imageurl:$THEME}" hspace="5" align="absmiddle" border="0"/></a>
