@@ -454,19 +454,19 @@ function get_combo_values($input_array)
 	if($RowCount > 0){
 		$admin_role = $adb->query_result($roleres,0,'roleid');
 	}
-	$result1 = $adb->pquery("select vtiger_ticketpriorities.ticketpriorities from vtiger_ticketpriorities inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_ticketpriorities.picklist_valueid and vtiger_role2picklist.roleid='$admin_role' order by sortorderid", array());
+	$result1 = $adb->pquery("select vtiger_ticketpriorities.ticketpriorities from vtiger_ticketpriorities inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_ticketpriorities.picklist_valueid and vtiger_role2picklist.roleid='$admin_role' order by sortid", array());
 	for($i=0;$i<$adb->num_rows($result1);$i++)
 	{
 		$output['ticketpriorities']['ticketpriorities'][$i] = $adb->query_result($result1,$i,"ticketpriorities");
 	}
 
-	$result2 = $adb->pquery("select vtiger_ticketseverities.ticketseverities from vtiger_ticketseverities inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_ticketseverities.picklist_valueid and vtiger_role2picklist.roleid='$admin_role' order by sortorderid", array());
+	$result2 = $adb->pquery("select vtiger_ticketseverities.ticketseverities from vtiger_ticketseverities inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_ticketseverities.picklist_valueid and vtiger_role2picklist.roleid='$admin_role' order by sortid", array());
 	for($i=0;$i<$adb->num_rows($result2);$i++)
 	{
 		$output['ticketseverities']['ticketseverities'][$i] = $adb->query_result($result2,$i,"ticketseverities");
 	}
 
-	$result3 = $adb->pquery("select vtiger_ticketcategories.ticketcategories from vtiger_ticketcategories inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_ticketcategories.picklist_valueid and vtiger_role2picklist.roleid='$admin_role' order by sortorderid", array());
+	$result3 = $adb->pquery("select vtiger_ticketcategories.ticketcategories from vtiger_ticketcategories inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_ticketcategories.picklist_valueid and vtiger_role2picklist.roleid='$admin_role' order by sortid", array());
 	for($i=0;$i<$adb->num_rows($result3);$i++)
 	{
 		$output['ticketcategories']['ticketcategories'][$i] = $adb->query_result($result3,$i,"ticketcategories");
@@ -501,9 +501,7 @@ function get_combo_values($input_array)
 			$output['servicename']['servicename'][$i] = $adb->query_result($serviceResult,$i,'subject');
 		}
 	}
-
 	return $output;
-
 }
 
 /**	function to get the Knowledge base details
