@@ -290,6 +290,12 @@ $server->register(
 	$NAMESPACE);
 
 $server->register(
+	'get_inventory_products',
+	array('id'=>'xsd:string','sessionid'=>'xsd:string'),
+	array('return'=>'tns:field_details_array'),
+	$NAMESPACE);
+
+$server->register(
 	'get_modules',
 	array(),
 	array('return'=>'tns:field_details_array'),
@@ -2059,6 +2065,26 @@ function get_invoice_detail($id,$module,$customerid,$sessionid)
 		$output[0][$module][$i]['blockname'] = getTranslatedString($blocklabel,$module);
 	}
 	$log->debug("Entering customer portal function get_invoice_detail ..");
+	return $output;
+}
+
+function get_inventory_products($id,$module,$customerid,$sessionid)
+{
+	require_once('include/utils/UserInfoUtil.php');
+	require_once('include/utils/utils.php');
+	global $adb,$site_URL,$log;
+	$user = new Users();
+	$userid = getPortalUserid();
+	$current_user = $user->retrieveCurrentUserInfoFromFile($userid);
+	$isPermitted = check_permission($customerid,$module,$id);
+	if($isPermitted == false) {
+		return array("#NOT AUTHORIZED#");
+	}
+	include_once("modules/$module/$module.php");
+	$focus = CRMEntity::getInstance($module);
+	$focus->id = $id;
+	$associated_prod = getAssociatedProducts($module, $focus);
+	$output[0] = $associated_prod;
 	return $output;
 }
 
