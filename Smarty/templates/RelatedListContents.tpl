@@ -36,7 +36,9 @@ function loadRelatedListBlock(urldata,target,imagesuffix) {
 	if(isRelatedListBlockLoaded(target,urldata) == true){
 		$(target).show();
 		showdata_element.hide();
+		showdata_element.parentElement.style.display = "none";
       	hidedata_element.show();
+		hidedata_element.parentElement.style.display = "inline-block";
 		$('delete_'+imagesuffix).show();
 		return;
 	}
@@ -57,7 +59,9 @@ function loadRelatedListBlock(urldata,target,imagesuffix) {
       				target_element.update(responseData);
 					target_element.show();
       				showdata_element.hide();
+					showdata_element.parentElement.style.display = "none";
       				hidedata_element.show();
+					hidedata_element.parentElement.style.display = "inline-block";
       				indicator_element.hide();
 					if($('return_module').value == 'Campaigns'){
 						var obj = document.getElementsByName(imagesuffix+'_selected_id');
@@ -98,7 +102,9 @@ function hideRelatedListBlock(target, imagesuffix) {
 		target_element.hide();
 	}
 	hidedata_element.hide();
+	hidedata_element.parentElement.style.display = 'none';
 	showdata_element.show();
+	showdata_element.parentElement.style.display = 'inline-block';
 	$('delete_'+imagesuffix).hide();
 }
 
@@ -147,10 +153,10 @@ function disableRelatedListBlock(urldata,target,imagesuffix){
 					<a href="javascript:loadRelatedListBlock(
 						'module={$MODULE}&action={$MODULE}Ajax&file=DetailViewAjax&record={$ID}&ajxaction=LOADRELATEDLIST&header={$header}&relation_id={$detail.relationId}&actions={$detail.actions}&parenttab={$CATEGORY}',
 						'tbl_{$MODULE}_{$header|replace:' ':''}','{$MODULE}_{$header|replace:' ':''}');">
-						<img id="show_{$MODULE}_{$header|replace:' ':''}" src="{'inactivate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;" alt="Display" title="Display"/>
+						<span class="exp_coll_block activate"><img id="show_{$MODULE}_{$header|replace:' ':''}" src="{'inactivate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;" alt="Display" title="Display"/></span>
 					</a>
 					<a href="javascript:hideRelatedListBlock('tbl_{$MODULE}_{$header|replace:' ':''}','{$MODULE}_{$header|replace:' ':''}');">
-						<img id="hide_{$MODULE}_{$header|replace:' ':''}" src="{'activate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;display:none;" alt="Display" title="Display"/>
+						<span class="exp_coll_block inactivate" style="display: none"><img id="hide_{$MODULE}_{$header|replace:' ':''}" src="{'activate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;display:none;" alt="Display" title="Display"/></span>
 					</a>					
 				</span>
 				&nbsp;{$HEADERLABEL}&nbsp;
