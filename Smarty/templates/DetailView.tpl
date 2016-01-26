@@ -283,7 +283,7 @@ function sendfile_email()
 																	{foreach key=header item=detail from=$BLOCKS name=BLOCKS}
 																		<tr><td style="padding:5px">
 																				<!-- Detailed View Code starts here-->
-																				<table border=0 cellspacing=0 cellpadding=0 width=100% class="small">
+																				<table border=0 cellspacing=0 cellpadding=0 width=100% class="small detailview_header_table">
 																					<tr>
 																						<td>&nbsp;</td>
 																						<td>&nbsp;</td>
@@ -315,7 +315,7 @@ function sendfile_email()
 
 																					{if $header neq 'Comments'}
 
-																						<tr>{strip}
+																						<tr class="detailview_block_header">{strip}
 																							<td colspan=4 class="dvInnerHeader">
 
 																								<div style="float:left;font-weight:bold;"><div style="float:left;"><a href="javascript:showHideStatus('tbl{$header|replace:' ':''}','aid{$header|replace:' ':''}','{$IMAGE_PATH}');">
