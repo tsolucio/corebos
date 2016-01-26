@@ -1315,8 +1315,8 @@ function getDetailAssociatedProducts($module, $focus) {
 	$output = '';
 	//Header Rows
 	$output .= '
-	<table width="100%"  border="0" align="center" cellpadding="5" cellspacing="0" class="crmTable" id="proTab">
-	<tr valign="top">
+	<table width="100%"  border="0" align="center" cellpadding="5" cellspacing="0" class="crmTable detailview_inventory_table" id="proTab">
+	<tr valign="top" class="detailview_inventory_header">
 		<td colspan="' . $colspan . '" class="dvInnerHeader"><b>' . $app_strings['LBL_ITEM_DETAILS'] . '</b></td>
 		<td class="dvInnerHeader" align="center" colspan="2"><b>' .
 			$app_strings['LBL_CURRENCY'] . ' : </b>' . getTranslatedCurrencyString($currencytype['currency_name']) . ' (' . $currencytype['currency_symbol'] . ')
@@ -1325,7 +1325,7 @@ function getDetailAssociatedProducts($module, $focus) {
 			$app_strings['LBL_TAX_MODE'] . ' : </b>' . $app_strings[$taxtype] . '
 		</td>
 	</tr>
-	<tr valign="top">
+	<tr valign="top" class="detailview_inventory_subheader">
 		<td width=40% class="lvtCol"><font color="red">*</font>
 			<b>' . $app_strings['LBL_ITEM_NAME'] . '</b>
 		</td>';
@@ -1462,8 +1462,8 @@ function getDetailAssociatedProducts($module, $focus) {
 
 		//For Product Name
 		$output .= '
-			   <tr valign="top">
-				<td class="crmTableRow small lineOnTop">
+			   <tr valign="top" class="detailview_inventory_row">
+				<td class="crmTableRow small lineOnTop detailview_inventory_namecell">
 					' . $productname . '&nbsp;' . $sc_image_tag . '
 					<br>' . $comment . '
 				</td>';
@@ -1471,11 +1471,11 @@ function getDetailAssociatedProducts($module, $focus) {
 
 
 		if ($module != 'PurchaseOrder' && $hide_stock == 'no') {
-			$output .= '<td class="crmTableRow small lineOnTop">' . $qtyinstock . '</td>';
+			$output .= '<td class="crmTableRow small lineOnTop detailview_inventory_stockcell">' . $qtyinstock . '</td>';
 		}
-		$output .= '<td class="crmTableRow small lineOnTop">' . $qty . '</td>';
+		$output .= '<td class="crmTableRow small lineOnTop detailview_inventory_qtycell">' . $qty . '</td>';
 		$output .= '
-			<td class="crmTableRow small lineOnTop" align="right">
+			<td class="crmTableRow small lineOnTop detailview_inventory_lpricecell" align="right">
 				<table width="100%" border="0" cellpadding="5" cellspacing="0">
 				   <tr>
 				   	<td align="right">' . CurrencyField::convertToUserFormat($listprice, null, true) . '</td>
@@ -1497,7 +1497,7 @@ function getDetailAssociatedProducts($module, $focus) {
 			</td>';
 
 		$output .= '
-			<td class="crmTableRow small lineOnTop" align="right">
+			<td class="crmTableRow small lineOnTop detailview_inventory_totalscell" align="right">
 				<table width="100%" border="0" cellpadding="5" cellspacing="0">
 				   <tr><td align="right">' . CurrencyField::convertToUserFormat($total, null, true) . '</td></tr>
 				   <tr><td align="right">' . CurrencyField::convertToUserFormat($productDiscount, null, true) . '</td></tr>
@@ -1510,7 +1510,7 @@ function getDetailAssociatedProducts($module, $focus) {
 		$output .= '
 				</table>
 			</td>';
-		$output .= '<td class="crmTableRow small lineOnTop" valign="bottom" align="right">' . CurrencyField::convertToUserFormat($netprice, null, true) . '</td>';
+		$output .= '<td class="crmTableRow small lineOnTop detailview_inventory_npricecell" valign="bottom" align="right">' . CurrencyField::convertToUserFormat($netprice, null, true) . '</td>';
 		$output .= '</tr>';
 
 		$netTotal = $netTotal + $netprice;
@@ -1523,8 +1523,8 @@ function getDetailAssociatedProducts($module, $focus) {
 	$netTotal = number_format($netTotal, 2,'.',''); //Convert to 2 decimals
 
 	//Display the total, adjustment, S&H details
-	$output .= '<table width="100%" border="0" cellspacing="0" cellpadding="5" class="crmTable">';
-	$output .= '<tr>';
+	$output .= '<table width="100%" border="0" cellspacing="0" cellpadding="5" class="crmTable detailview_inventory_totals">';
+	$output .= '<tr id="detailview_inventory_subtotalrow">';
 	$output .= '<td width="88%" class="crmTableRow small" align="right"><b>' . $app_strings['LBL_NET_TOTAL'] . '</td>';
 	$output .= '<td width="12%" class="crmTableRow small" align="right"><b>' . CurrencyField::convertToUserFormat($netTotal, null, true) . '</b></td>';
 	$output .= '</tr>';
@@ -1548,7 +1548,7 @@ function getDetailAssociatedProducts($module, $focus) {
 	$final_discount_info = $app_strings['LBL_FINAL_DISCOUNT_AMOUNT'] . " = $final_discount_info";
 	$final_discount_info = 'onclick="alert(\'' . $final_discount_info . '\');"';
 
-	$output .= '<tr>';
+	$output .= '<tr id="detailview_inventory_totaldiscrow">';
 	$output .= '<td align="right" class="crmTableRow small lineOnTop">(-)&nbsp;<b><a href="javascript:;" ' . $final_discount_info . '>' . $app_strings['LBL_DISCOUNT'] . '</a></b></td>';
 	$output .= '<td align="right" class="crmTableRow small lineOnTop">' . CurrencyField::convertToUserFormat($finalDiscount, null, true) . '</td>';
 	$output .= '</tr>';
@@ -1577,7 +1577,7 @@ function getDetailAssociatedProducts($module, $focus) {
 		}
 		$tax_info_message .= "\\n " . $app_strings['LBL_TOTAL_TAX_AMOUNT'] . " = ". CurrencyField::convertToUserFormat($taxtotal, null, true);
 
-		$output .= '<tr>';
+		$output .= '<tr id="detailview_inventory_taxtotalrow">';
 		$output .= '<td align="right" class="crmTableRow small">(+)&nbsp;<b><a href="javascript:;" onclick="alert(\'' . $tax_info_message . '\');">' . $app_strings['LBL_TAX'] . '</a></b></td>';
 		$output .= '<td align="right" class="crmTableRow small">' . CurrencyField::convertToUserFormat($taxtotal, null, true) . '</td>';
 		$output .= '</tr>';
@@ -1585,7 +1585,7 @@ function getDetailAssociatedProducts($module, $focus) {
 
 	$shAmount = ($focus->column_fields['hdnS_H_Amount'] != '') ? $focus->column_fields['hdnS_H_Amount'] : '0.00';
 	$shAmount = number_format($shAmount, 2,'.',''); //Convert to 2 decimals
-	$output .= '<tr>';
+	$output .= '<tr id="detailview_inventory_shippingrow">';
 	$output .= '<td align="right" class="crmTableRow small">(+)&nbsp;<b>' . $app_strings['LBL_SHIPPING_AND_HANDLING_CHARGES'] . '</b></td>';
 	$output .= '<td align="right" class="crmTableRow small">' . CurrencyField::convertToUserFormat($shAmount, null, true) . '</td>';
 	$output .= '</tr>';
@@ -1607,21 +1607,21 @@ function getDetailAssociatedProducts($module, $focus) {
 	}
 	$shtax_info_message .= "\\n " . $app_strings['LBL_TOTAL_TAX_AMOUNT'] . " = ". CurrencyField::convertToUserFormat($shtaxtotal, null, true);
 
-	$output .= '<tr>';
+	$output .= '<tr id="detailview_inventory_shiptaxrow">';
 	$output .= '<td align="right" class="crmTableRow small">(+)&nbsp;<b><a href="javascript:;" onclick="alert(\'' . $shtax_info_message . '\')">' . $app_strings['LBL_TAX_FOR_SHIPPING_AND_HANDLING'] . '</a></b></td>';
 	$output .= '<td align="right" class="crmTableRow small">' . CurrencyField::convertToUserFormat($shtaxtotal, null, true) . '</td>';
 	$output .= '</tr>';
 
 	$adjustment = ($focus->column_fields['txtAdjustment'] != '') ? $focus->column_fields['txtAdjustment'] : '0.00';
 	$adjustment = number_format($adjustment, 2,'.',''); //Convert to 2 decimals
-	$output .= '<tr>';
+	$output .= '<tr id="detailview_inventory_adjustrow">';
 	$output .= '<td align="right" class="crmTableRow small">&nbsp;<b>' . $app_strings['LBL_ADJUSTMENT'] . '</b></td>';
 	$output .= '<td align="right" class="crmTableRow small">' . CurrencyField::convertToUserFormat($adjustment, null, true) . '</td>';
 	$output .= '</tr>';
 
 	$grandTotal = ($focus->column_fields['hdnGrandTotal'] != '') ? $focus->column_fields['hdnGrandTotal'] : '0.00';
 	$grandTotal = number_format($grandTotal, 2,'.',''); //Convert to 2 decimals
-	$output .= '<tr>';
+	$output .= '<tr id="detailview_inventory_grandtotrow">';
 	$output .= '<td align="right" class="crmTableRow small lineOnTop"><b>' . $app_strings['LBL_GRAND_TOTAL'] . '</b></td>';
 	$output .= '<td align="right" class="crmTableRow small lineOnTop">' . CurrencyField::convertToUserFormat($grandTotal, null, true) . '</td>';
 	$output .= '</tr>';
