@@ -95,9 +95,9 @@
                     							   <select id="txtbox_{$keyfldname}" name="{$keyfldname}" class="small" style="width:280px;">
                     								{foreach item=arr from=$keyoptions}
 											{if $arr[0] eq $APP.LBL_NOT_ACCESSIBLE}
-                    									<option value="{$arr[0]}" {$arr[2]}>{$arr[0]}</option>
+                    									<option label="{$arr[0]}" value="{$arr[0]}" {$arr[2]}>{$arr[0]}</option>
 											{else}
-        							                                <option value="{$arr[1]}" {$arr[2]}>
+        							                                <option label="{$arr[0]}" value="{$arr[1]}" {$arr[2]}>
 							                                                {$arr[0]}
 								                                </option>
 							                                {/if}
@@ -129,7 +129,7 @@
                                           <div id="editarea_{$keyfldname}" style="display:none;">
                                           <select MULTIPLE id="txtbox_{$keyfldname}" name="{$keyfldname}" size="4" style="width:160px;" class="small">
 				                                    {foreach item=arr from=$keyoptions}
-										<option value="{$arr[1]}" {$arr[2]}>{$arr[0]}</option>
+										<option label="{$arr[0]}" value="{$arr[1]}" {$arr[2]}>{$arr[0]}</option>
 				                                    {/foreach}
 			                                   </select>
 			                                   <br><input name="button_{$keyfldname}" type="button" class="crmbutton small save" value="{$APP.LBL_SAVE_LABEL}" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();"/> {$APP.LBL_OR}
@@ -145,7 +145,7 @@
                     							   <select id="txtbox_{$keyfldname}" name="{$keyfldname}" class="small">
 									{foreach item=arr key=uivalueid from=$keyoptions}
 									{foreach key=sel_value item=value from=$arr}
-										<option value="{$uivalueid}" {$value}>{$sel_value|@getTranslatedCurrencyString}</option>
+										<option label="{$sel_value|@getTranslatedCurrencyString}" value="{$uivalueid}" {$value}>{$sel_value|@getTranslatedCurrencyString}</option>
 									{/foreach}
 									{/foreach}
                     							   </select>
@@ -239,7 +239,7 @@
                                                                            <select id="txtbox_{$keyfldname}" name="{$keyfldname}" class="small">
                                                                                 {foreach item=arr key=uid from=$keyoptions}
                                                                                         {foreach key=sel_value item=value from=$arr}
-                                                                                                <option value="{$uid}" {$value}>{if $APP.$sel_value}{$APP.$sel_value}{else}{$sel_value}{/if}</option>
+                                                                                                <option label="{if $APP.$sel_value}{$APP.$sel_value}{else}{$sel_value}{/if}" value="{$uid}" {$value}>{if $APP.$sel_value}{$APP.$sel_value}{else}{$sel_value}{/if}</option>
 
                                                                                         {/foreach}
                                                                                 {/foreach}
@@ -272,7 +272,7 @@
                    				<select id="txtbox_U{$keyfldname}" onchange="setSelectValue('{$keyfldname}')" name="{$keyfldname}" class="small">
 				                    {foreach item=arr key=id from=$keyoptions.1}
 				                    	{foreach key=sel_value item=value from=$arr}
-                       						 <option value="{$id}" {$value}>{$sel_value}</option>
+                       						 <option label="{$sel_value}" value="{$id}" {$value}>{$sel_value}</option>
 				                        {/foreach}
 				                    {/foreach}
 			                    	</select>
@@ -285,7 +285,7 @@
                    	<select id="txtbox_G{$keyfldname}" onchange="setSelectValue('{$keyfldname}')" name="assigned_group_id" class="groupname small">
                     {foreach item=arr key=id from=$keyoptions.2}
                     	{foreach key=sel_value item=value from=$arr}
-                       		 <option value="{$id}" {$value}>{$sel_value}</option>
+                       		 <option label="{$sel_value}" value="{$id}" {$value}>{$sel_value}</option>
                         {/foreach}
                     {/foreach}
                     </select>
