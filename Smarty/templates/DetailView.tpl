@@ -49,6 +49,7 @@ function showHideStatus(sId,anchorImgId,sImagePath)
 			eval(document.getElementById(anchorImgId)).src =  'themes/images/inactivate.gif';
 			eval(document.getElementById(anchorImgId)).alt = 'Display';
 			eval(document.getElementById(anchorImgId)).title = 'Display';
+			eval(document.getElementById(anchorImgId)).parentElement.className = 'exp_coll_block activate';
 		}
 	}
 	else
@@ -58,6 +59,7 @@ function showHideStatus(sId,anchorImgId,sImagePath)
 			eval(document.getElementById(anchorImgId)).src = 'themes/images/activate.gif';
 			eval(document.getElementById(anchorImgId)).alt = 'Hide';
 			eval(document.getElementById(anchorImgId)).title = 'Hide';
+			eval(document.getElementById(anchorImgId)).parentElement.className = 'exp_coll_block inactivate';
 		}
 	}
 }
@@ -320,9 +322,13 @@ function sendfile_email()
 
 																								<div style="float:left;font-weight:bold;"><div style="float:left;"><a href="javascript:showHideStatus('tbl{$header|replace:' ':''}','aid{$header|replace:' ':''}','{$IMAGE_PATH}');">
 																											{if $BLOCKINITIALSTATUS[$header] eq 1}
+																												<span class="exp_coll_block inactivate">
 																												<img id="aid{$header|replace:' ':''}" src="{'activate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;" alt="Hide" title="Hide"/>
+																												</span>
 																											{else}
+																												<span class="exp_coll_block activate">
 																												<img id="aid{$header|replace:' ':''}" src="{'inactivate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;" alt="Display" title="Display"/>
+																												</span>
 																											{/if}
 																										</a></div><b>&nbsp;
 																										{$header}
