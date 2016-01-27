@@ -430,7 +430,7 @@ function sendfile_email()
 														</td></tr></table>
 											</td>
 
-		<td width=22% valign=top style="border-left:1px dashed #cccccc;padding:13px" class="noprint">
+		<td width=22% valign=top style="border-left:1px dashed #cccccc;padding:13px" class="noprint" id="detailview_right_sidebar">
 												<!-- right side relevant info -->
 												<!-- Action links for Event & Todo START-by Minnie -->
 												<table width="100%" border="0" cellpadding="5" cellspacing="0" class="detailview_actionlinks actionlinks_events_todo">
