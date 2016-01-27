@@ -18,6 +18,37 @@
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
 
+$uitypes = array(
+	'1'=>'string',
+	'2'=>'string',
+	'4'=>'autonumber',
+	'5'=>'date',
+	'6'=>'datetime (internal)',
+	'70'=>'datetime',
+	'7'=>'number',
+	'9'=>'percentage',
+	'10'=>'relation',
+	'12'=>'email',
+	'13'=>'email',
+	'15'=>'picklist',
+	'16'=>'picklist',
+	'17'=>'url',
+	'19'=>'text',
+	'20'=>'text',
+	'21'=>'text',
+	'22'=>'text',
+	'23'=>'date',
+	'24'=>'text',
+	'26'=>'documents folder',
+	'33'=>'multipicklist',
+	'51'=>'relation (account)',
+	'53'=>'assigned to',
+	'56'=>'checkbox',
+	'57'=>'relation(contact)',
+	'66'=>'picklist(calendar)',
+	'255'=>'picklist(salutation)',
+);
+
 if ($argc==2 and !empty($argv[1])) {
 	$cjson = file_get_contents($argv[1].'/composer.json');
 	if ($cjson===false) {
@@ -126,7 +157,9 @@ if ($argc==2 and !empty($argv[1])) {
 			foreach($blocknode->fields->field as $field) {
 				$flabel = (string)$field->fieldlabel;
 				$flabel = (isset($mod_strings[$flabel]) ? $mod_strings[$flabel] : $flabel);
-				echo "|".$flabel."|".$field->uitype."|";
+				$uitype = (string)$field->uitype;
+				$uitype = (isset($uitypes[$uitype]) ? $uitypes[$uitype] : $uitype);
+				echo "|".$flabel."|".$uitype."|";
 				if (in_array($field->uitype, array(10,15,16,33))) {
 					$values = array();
 					if ($field->uitype==10) {
