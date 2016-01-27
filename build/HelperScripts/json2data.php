@@ -59,9 +59,9 @@ if ($argc==2 and !empty($argv[1])) {
 					if (!empty($def['properties']['extra']['price']))
 						echo "price : ".$def['properties']['extra']['price']."\n";
 					if (!empty($def['properties']['extra']['buyemail']))
-						echo "buyemail : ".$def['properties']['extra']['buyemail']."\n";
+						echo "buyemail_mail : ".$def['properties']['extra']['buyemail']."\n";
 					if (!empty($def['properties']['extra']['buyurl']))
-						echo "buyurl : ".$def['properties']['extra']['buyurl']."\n";
+						echo "buyurl_url : ".$def['properties']['extra']['buyurl']."\n";
 					if (!empty($def['properties']['extra']['distribution']))
 						echo "distribution : ".$def['properties']['extra']['distribution']."\n";
 				}
