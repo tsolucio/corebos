@@ -529,8 +529,6 @@ class Vendors extends CRMEntity {
 				$adb->pquery('DELETE FROM vtiger_vendorcontactrel WHERE vendorid=? AND contactid=?',
 					array($crmid, $relcrmid));
 			}
-			$sql = 'DELETE FROM vtiger_vendorcontactrel WHERE vendorid=? AND contactid=?';
-			$this->db->pquery($sql, array($id,$return_id));
 		} else {
 			parent::delete_related_module($module, $crmid, $with_module, $with_crmid);
 		}
