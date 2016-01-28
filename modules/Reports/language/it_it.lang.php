@@ -217,6 +217,7 @@ $mod_strings = array (
 'LBL_SHARING_TYPE'=>'Tipo di Condivisione',
 'LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS'=>'Seleziona il tipo di Condivisione per l\'accesso al Report', 
 'LBL_ACTION' => 'Azione',
+'ACTION' => 'Azione',
 'LBL_VIEW_DETAILS' => 'Vedi Dettagli',
 'LBL_SHOW_STANDARD_FILTERS' => 'Mostra Filtri Standard',
 'LBL_YEAR' => 'Anno',

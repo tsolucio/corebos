@@ -218,6 +218,7 @@ $mod_strings = array(
 	'LBL_SHARING_TYPE' => 'Megosztás típusa',
 	'LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS' => 'Válaszd ki a Megosztás Típusát, hogy szabályozd a Jelentéshez való hozzáférést',
 	'LBL_ACTION' => 'Művelet',
+	'ACTION' => 'Művelet',
 	'LBL_VIEW_DETAILS' => 'Adatok megtekintése',
 	'LBL_SHOW_STANDARD_FILTERS' => 'Standard szűrők mutatása',
 	'LBL_YEAR' => 'Év',

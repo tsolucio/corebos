@@ -231,6 +231,7 @@ $mod_strings = Array(
 'LBL_SHARING_TYPE'=>'Compartilhar Tipo',
 'LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS'=>'Selecionar Compartilhar Tipo para Controlar Acesso ao Relatório', 
 'LBL_ACTION' => 'Ação',
+'ACTION' => 'Ação',
 'LBL_VIEW_DETAILS' => 'Detalhes Visualização',
 'LBL_SHOW_STANDARD_FILTERS' => 'Mostrar Filtros Padrão',
 'LBL_YEAR' => 'Ano',
