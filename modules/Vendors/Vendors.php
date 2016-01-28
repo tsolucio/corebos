@@ -501,6 +501,20 @@ class Vendors extends CRMEntity {
 		parent::unlinkDependencies($module, $id);
 	}
 
+	// Function to unlink an entity with given Id from another entity
+	function unlinkRelationship($id, $return_module, $return_id) {
+		global $log;
+		if(empty($return_module) || empty($return_id)) return;
+
+		if($return_module == 'Contacts') {
+			$sql = 'DELETE FROM vtiger_vendorcontactrel WHERE vendorid=? AND contactid=?';
+			$this->db->pquery($sql, array($id,$return_id));
+		} else {
+			parent::unlinkRelationship($id, $return_module, $return_id);
+		}
+	}
+
+
 	function save_related_module($module, $crmid, $with_module, $with_crmids) {
 		$adb = PearDatabase::getInstance();
 
