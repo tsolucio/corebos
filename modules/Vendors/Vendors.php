@@ -514,6 +514,27 @@ class Vendors extends CRMEntity {
 		}
 	}
 
+	function delete_related_module($module, $crmid, $with_module, $with_crmid) {
+		global $log, $adb;
+		if($with_module == 'Contacts') {
+			if (!is_array($with_crmid))
+				$with_crmid = Array($with_crmid);
+			$data = array();
+			$data['sourceModule'] = $module;
+			$data['sourceRecordId'] = $crmid;
+			$data['destinationModule'] = $with_module;
+			foreach ($with_crmid as $relcrmid) {
+				$data['destinationRecordId'] = $relcrmid;
+				cbEventHandler::do_action('corebos.entity.link.delete',$data);
+				$adb->pquery('DELETE FROM vtiger_vendorcontactrel WHERE vendorid=? AND contactid=?',
+					array($crmid, $relcrmid));
+			}
+			$sql = 'DELETE FROM vtiger_vendorcontactrel WHERE vendorid=? AND contactid=?';
+			$this->db->pquery($sql, array($id,$return_id));
+		} else {
+			parent::delete_related_module($module, $crmid, $with_module, $with_crmid);
+		}
+	}
 
 	function save_related_module($module, $crmid, $with_module, $with_crmids) {
 		$adb = PearDatabase::getInstance();
