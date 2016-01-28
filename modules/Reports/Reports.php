@@ -99,6 +99,7 @@ class Reports extends CRMEntity{
 	function Reports($reportid="")
 	{
 		global $adb,$current_user,$theme,$mod_strings;
+		require('user_privileges/user_privileges_'.$current_user->id.'.php');
 		$this->initListOfModules();
 		if($reportid != "")
 		{
@@ -112,7 +113,6 @@ class Reports extends CRMEntity{
 				$params = array($reportid);
 
 				require_once('include/utils/GetUserGroups.php');
-				require('user_privileges/user_privileges_'.$current_user->id.'.php');
 				$userGroups = new GetUserGroups();
 				$userGroups->getAllUserGroups($current_user->id);
 				$user_groups = $userGroups->user_groups;
@@ -302,7 +302,7 @@ class Reports extends CRMEntity{
 				);
 				if($adb->num_rows($relatedmodules)) {
 					while($resultrow = $adb->fetch_array($relatedmodules)) {
-						$module = $this->module_id[$resultrow['tabid']];
+						$module = isset($this->module_id[$resultrow['tabid']]) ? $this->module_id[$resultrow['tabid']] : '';
 
 						if(!isset($this->related_modules[$module])) {
 							$this->related_modules[$module] = array();
@@ -314,7 +314,6 @@ class Reports extends CRMEntity{
 
 						// To achieve Backward Compatability with Report relations
 						if(isset($old_related_modules[$module])){
-
 							$rel_mod = array();
 							foreach($old_related_modules[$module] as $key=>$name){
 								if(vtlib_isModuleActive($name) && isPermitted($name,'index','')){
@@ -379,7 +378,7 @@ class Reports extends CRMEntity{
 				$details = Array();
 				$details['state'] = $reportfldrow["state"];
 				$details['id'] = $reportfldrow["folderid"];
-				$details['name'] = ($mod_strings[$reportfldrow["foldername"]] == '' ) ? $reportfldrow["foldername"]:$mod_strings[$reportfldrow["foldername"]];
+				$details['name'] = empty($mod_strings[$reportfldrow["foldername"]]) ? $reportfldrow["foldername"]:$mod_strings[$reportfldrow["foldername"]];
 				$details['description'] = $reportfldrow["description"];
 				$details['fname'] = popup_decode_html($details['name']);
 				$details['fdescription'] = popup_decode_html($reportfldrow["description"]);
@@ -574,9 +573,14 @@ class Reports extends CRMEntity{
 	}
 
 	public function getModuleFieldList($module) {
+		$ret_module_list = array();
 		foreach($this->module_list[$module] as $key=>$value) {
-			$ret_module_list[$module][$value] = $this->getBlockFieldList(
-					$module, $key, $ret_module_list[$module][$value]);
+			if (isset($ret_module_list[$module]) and isset($ret_module_list[$module][$value])) {
+				$currentFieldList = $ret_module_list[$module][$value];
+			} else {
+				$currentFieldList = array();
+			}
+			$ret_module_list[$module][$value] = $this->getBlockFieldList($module, $key, $currentFieldList);
 		}
 		return $ret_module_list[$module];
 	}
@@ -629,7 +633,7 @@ class Reports extends CRMEntity{
 				$sql.=" group by vtiger_field.fieldid order by sequence";
 		}
 		array_push($params, $skipTalbes);
-
+		$module_columnlist = array();
 		$result = $adb->pquery($sql, $params);
 		$noofrows = $adb->num_rows($result);
 		for($i=0; $i<$noofrows; $i++)
@@ -1435,7 +1439,7 @@ function getEscapedColumns($selectedfields) {
 				array_push($sparams, $profileList);
 			}
 			$calcf = "select * from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid where vtiger_field.uitype != 50 and vtiger_field.tablename='vtiger_activitycf' and vtiger_field.displaytype in (1,2,3) and vtiger_def_org_field.visible=0 and vtiger_profile2field.visible=0 and vtiger_field.presence in (0,2)";
-			if (count($profileList) > 0) {
+			if ($tabid==9 and count($profileList) > 0) {
 				$calcf .= ' and vtiger_profile2field.profileid in ('. generateQuestionMarks($profileList) .')';
 				array_push($sparams, $profileList);
 			}
