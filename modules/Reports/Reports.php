@@ -1435,7 +1435,7 @@ function getEscapedColumns($selectedfields) {
 				array_push($sparams, $profileList);
 			}
 			$calcf = "select * from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid where vtiger_field.uitype != 50 and vtiger_field.tablename='vtiger_activitycf' and vtiger_field.displaytype in (1,2,3) and vtiger_def_org_field.visible=0 and vtiger_profile2field.visible=0 and vtiger_field.presence in (0,2)";
-			if (count($profileList) > 0) {
+			if ($tabid==9 and count($profileList) > 0) {
 				$calcf .= ' and vtiger_profile2field.profileid in ('. generateQuestionMarks($profileList) .')';
 				array_push($sparams, $profileList);
 			}
