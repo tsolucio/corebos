@@ -248,6 +248,16 @@ function VTEmailTask($){
 						input.attr("value", value);
 					});
 
+					fillSelectBox('task-emailfieldsreplyto', modules, moduleName,
+										 function(e){return e['type']['name']=='email';});
+					$('#task-emailfieldsreplyto-busyicon').hide();
+					$('#task-emailfieldsreplyto').show();
+					$('#task-emailfieldsreplyto').change(function(){
+						var input = $($('#save_replyto').get());
+						var value = '$'+$(this).attr('value');
+						input.attr("value", value);
+					});
+
 					fillSelectBox('task-subjectfields', modules, moduleName,
 										 function(e){return (e['type']['name']!='file' && e['type']['name']!='text' );});
 					$('#task-subjectfields-busyicon').hide();

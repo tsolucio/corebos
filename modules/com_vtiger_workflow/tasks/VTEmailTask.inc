@@ -16,7 +16,7 @@ class VTEmailTask extends VTTask{
 	public $executeImmediately = false;
 
 	public function getFieldNames(){
-		return array("fromname", "fromemail", "subject", "content", "recepient", 'emailcc', 'emailbcc');
+		return array("fromname", "fromemail", "replyto", "subject", "content", "recepient", 'emailcc', 'emailbcc');
 	}
 	public function doTask(&$entity){
 		$util = new VTWorkflowUtils();
@@ -34,6 +34,10 @@ class VTEmailTask extends VTTask{
 		if(!empty($this->fromemail)){
 			$fet = new VTEmailRecipientsTemplate($this->fromemail);
 			$from_email = $fet->render($entityCache,$entity->getId());
+		}
+		if(!empty($this->replyto)){
+			$rt = new VTEmailRecipientsTemplate($this->replyto);
+			$replyto = $rt->render($entityCache,$entity->getId());
 		}
 
 		$et = new VTEmailRecipientsTemplate($this->recepient);
@@ -55,7 +59,7 @@ class VTEmailTask extends VTTask{
 		$ct = new VTSimpleTemplate($this->content);
 		$content = $ct->render($entityCache, $entity->getId());
 		$logo = (strpos($this->content, '(general : (__VtigerMeta__) logo)')===false) ? '' : '1';
-		send_mail($module,$to_email,$from_name,$from_email,$subject,$content, $cc, $bcc,'','',$logo);
+		send_mail($module,$to_email,$from_name,$from_email,$subject,$content, $cc, $bcc,'','',$logo,$replyto);
 
 		$util->revertUser();
 	}
