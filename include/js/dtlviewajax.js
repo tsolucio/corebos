@@ -332,7 +332,7 @@ function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 		}
 	}else if(uitype == '85')
 	{
-		getObj(dtlView).innerHTML = "<a href=\"skype://"+ tagValue+"?call\">"+tagValue+"&nbsp;</a>";
+		getObj(dtlView).innerHTML = "<a href=\"skype:"+ tagValue+"?call\" onclick='event.stopPropagation();'><img src='themes/images/skype.gif' align='absmiddle'></img>&nbsp;"+tagValue+"&nbsp;</a>";
 	}else if(uitype == '53')
 	{
 		var hdObj = getObj(hdTxt);
