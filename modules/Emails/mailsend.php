@@ -73,32 +73,13 @@ if($to_email == '' && $cc == '' && $bcc == '')
 }
 else
 {
-	$query1 = "select email1 from vtiger_users where id =?";
+	$query1 = 'select email1 from vtiger_users where id =?';
 	$res1 = $adb->pquery($query1, array($current_user->id));
-	$val = $adb->query_result($res1,0,"email1");
-//	$mail_status = send_mail('Emails',$to_email,$current_user->user_name,'',$_REQUEST['subject'],$_REQUEST['description'],$cc,$bcc,'all',$focus->id);
-
+	$val = $adb->query_result($res1,0,'email1');
 	$query = 'update vtiger_emaildetails set email_flag ="SENT",from_email =? where emailid=?';
 	$adb->pquery($query, array($val, $focus->id));
-	//set the errorheader1 to 1 if the mail has not been sent to the assigned to user
-	if($mail_status != 1)//when mail send fails
-	{
-		$errorheader1 = 1;
-		$mail_status_str = $to_email."=".$mail_status."&&&";
-	}
-	elseif($mail_status == 1 && $to_email == '')//Mail send success only for CC and BCC but the 'to' email is empty
-	{
-		$adb->pquery($query, array($val, $focus->id));
-		$errorheader1 = 1;
-		$mail_status_str = "cc_success=0&&&";
-	}
-	else
-	{
-		$mail_status_str = $to_email."=".$mail_status."&&&";
-	}
 }
 
-//Added code from mysendmail.php which is contributed by Raju(rdhital)
 $parentid= vtlib_purify($_REQUEST['parent_id']);
 $myids=explode("|",$parentid);
 $all_to_emailids = Array();
