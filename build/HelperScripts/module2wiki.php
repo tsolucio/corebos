@@ -26,10 +26,13 @@ $uitypes = array(
 	'6'=>'datetime (internal)',
 	'70'=>'datetime',
 	'7'=>'number',
+	'71'=>'currency',
+	'72'=>'currency',
 	'9'=>'percentage',
 	'10'=>'relation',
 	'12'=>'email',
 	'13'=>'email',
+	'14'=>'time',
 	'15'=>'picklist',
 	'16'=>'picklist',
 	'17'=>'url',
@@ -80,11 +83,11 @@ if ($argc==2 and !empty($argv[1])) {
 	}
 	echo "~~NOTOC~~\n====== ".$def['properties']['name']." ======\n\n";
 	if (!empty($def['properties']['description'])) {
-		$desc = str_replace('\\', '\\\\', $def['properties']['description'])."\n\\\\\n";
+		$desc = str_replace('\\', '\\\\', $def['properties']['description']);
 	} else {
 		$desc = '';
 	}
-	echo $desc;
+	echo $desc.($desc!=''?"\n\\\\\n":'');
 	echo "---- dataentry ----\n";
 	echo "name : ".$def['name']."\n";
 	echo "type : ".$def['type']."\n";
