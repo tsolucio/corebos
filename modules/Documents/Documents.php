@@ -397,7 +397,8 @@ class Documents extends CRMEntity {
 	 */
 	function generateReportsSecQuery($module,$secmodule){
 		$query = $this->getRelationQuery($module,$secmodule,"vtiger_notes","notesid");
-		$query .=" left join vtiger_crmentity as vtiger_crmentityDocuments on vtiger_crmentityDocuments.crmid=vtiger_notes.notesid and vtiger_crmentityDocuments.deleted=0
+		$query .=" left join vtiger_crmentity as vtiger_crmentityDocuments on vtiger_crmentityDocuments.crmid=vtiger_notes.notesid and vtiger_crmentityDocuments.deleted=0 
+			left join vtiger_notescf on vtiger_notescf.notesid = vtiger_notes.notesid 
 			left join vtiger_attachmentsfolder on vtiger_attachmentsfolder.folderid=vtiger_notes.folderid
 			left join vtiger_groups as vtiger_groupsDocuments on vtiger_groupsDocuments.groupid = vtiger_crmentityDocuments.smownerid
 			left join vtiger_users as vtiger_usersDocuments on vtiger_usersDocuments.id = vtiger_crmentityDocuments.smownerid
