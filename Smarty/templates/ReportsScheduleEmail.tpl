@@ -23,7 +23,7 @@
 		<td>
 			<div style="height:448px">
 				<table class="small" border="0" cellpadding="5" cellspacing="1" width="100%" valign="top">
-					<tr class="small" valign="top">						
+					<tr class="small" valign="top">
 						<td width="5%" class="detailedViewHeader" align="center">
 							<input type="checkbox" name="isReportScheduled" id="isReportScheduled"
 							{if $IS_SCHEDULED eq 'true'} checked {/if}
@@ -147,7 +147,7 @@
 										</table>
 									</td>
 								</tr>
-						   </table>
+							</table>
 						</td>
 					</tr>
 				</table>
@@ -184,10 +184,9 @@ function showRecipientsOptions()
 {rdelim}
 
 function addOption() {ldelim}
-
 	var availableRecipientsObj=getObj("availableRecipients");
 	var selectedRecipientsObj=getObj("selectedRecipients");
-	
+
 	for (i=0;i<selectedRecipientsObj.length;i++) {ldelim}
 		selectedRecipientsObj.options[i].selected=false
 	{rdelim}
