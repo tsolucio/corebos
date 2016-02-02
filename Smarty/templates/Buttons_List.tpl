@@ -9,7 +9,7 @@
 ********************************************************************************/
 -->*}
 <script type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
-<TABLE id="LB_buttonlist" border=0 cellspacing=0 cellpadding=0 width=100% class=small>
+<TABLE id="LB_Buttonlist" border=0 cellspacing=0 cellpadding=0 width=100% class=small>
 <tr><td style="height:2px"></td></tr>
 <tr>
 	{if $CATEGORY eq 'Settings' || $MODULE eq 'Calendar4You'}
@@ -48,7 +48,7 @@
 			</tr>
 			</table>
 		</td>
-		<td style="width:20px;">&nbsp;</td>
+		<td style="width:20px;" class="LB_Divider">&nbsp;</td>
 		<td class="small">
 			<!-- Calendar Clock Calculator and Chat -->
 				<table border=0 cellspacing=0 cellpadding=5>
@@ -74,11 +74,11 @@
 					{if $CHAT_DISPLAY eq 'true'}
 						<td id="LB_ChatButton" class="LB_Button" style="padding-right:10px"><a href="javascript:;" onClick='return window.open("index.php?module=Home&action=vtchat","Chat","width=600,height=450,resizable=1,scrollbars=1");'><img src="{$IMAGE_PATH}tbarChat.gif" alt="{$APP.LBL_CHAT_ALT}" title="{$APP.LBL_CHAT_TITLE}" border=0></a></td>
 					{/if}
-					<td id="LB_TrackButton" class="LB_Button" style="padding-right:10px"><img src="{$IMAGE_PATH}btnL3Tracker.gif" alt="{$APP.LBL_LAST_VIEWED}" title="{$APP.LBL_LAST_VIEWED}" border=0 onClick="fnvshobj(this,'tracker');"></td>
+					<td id="LB_TrackButton" class="LB_Button" style="padding-right:10px"><span id="LB_TrackImageWrapper" onClick="fnvshobj(this,'tracker');"><img src="{$IMAGE_PATH}btnL3Tracker.gif" alt="{$APP.LBL_LAST_VIEWED}" title="{$APP.LBL_LAST_VIEWED}" border=0 onClick="fnvshobj(this,'tracker');"></span></td>
 				</tr>
 				</table>
 		</td>
-		<td style="width:20px;">&nbsp;</td>
+		<td style="width:20px;" class="LB_Divider">&nbsp;</td>
 		<td class="small">
 			<!-- Import / Export -->
 			<table border=0 cellspacing=0 cellpadding=5>
@@ -108,7 +108,7 @@
 			{/if}
 			</tr>
 			</table>
-		<td style="width:20px;">&nbsp;</td>
+		<td style="width:20px;" class="LB_Divider">&nbsp;</td>
 		<td class="small">
 				<table border=0 cellspacing=0 cellpadding=5>
 				<tr>
