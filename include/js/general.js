@@ -1779,8 +1779,8 @@ function fnvshobj(obj,Lay){
 		tagName.style.left = leftSide + 34 + 'px';
 	}
 	else
-		tagName.style.left= leftSide + 'px';
-	tagName.style.top= topSide + 'px';
+	tagName.style.left= leftSide + 'px';
+	tagName.style.top= topSide + obj.clientHeight + 'px';
 	tagName.style.display = 'block';
 	tagName.style.visibility = "visible";
 }
