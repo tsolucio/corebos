@@ -7,14 +7,14 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once("include/Zend/Json.php");
+require_once('include/Zend/Json.php');
 
-//check for mail server configuration thro ajax
+//check for mail server configuration through ajax
 if(isset($_REQUEST['server_check']) && $_REQUEST['server_check'] == 'true')
 {
-	$sql="select * from vtiger_systems where server_type = ?";
-	$records=$adb->num_rows($adb->pquery($sql, array('email')),0,"id");
-	if($records != '')
+	$sql='select * from vtiger_systems where server_type = ?';
+	$emailcfg = $adb->pquery($sql, array('email'));
+	if($adb->num_rows($emailcfg)>0)
 		echo 'SUCCESS';
 	else
 		echo 'FAILURE';
