@@ -37,7 +37,7 @@ if(version_compare(phpversion(), '5.0') < 0) {
 require_once('include/install/language/en_us.lang.php');
 require_once('include/install/resources/utils.php');
 require_once('vtigerversion.php');	
-global $installationStrings, $vtiger_current_version;
+global $installationStrings, $vtiger_current_version, $coreBOS_app_version;
 	
 @include_once('config.db.php');
 global $dbconfig, $vtconfig;
