@@ -83,12 +83,12 @@ function getCreateCustomFieldForm(customField,id,tabid,ui)
 }
 function makeFieldSelected(oField,fieldid,blockid)
 {
-    if(gselected_fieldtype != '')
+	if(gselected_fieldtype != '')
 	{
 		$(gselected_fieldtype).className = 'customMnu';
 	}
-	oField.className = 'customMnuSelected';	
-	gselected_fieldtype = oField.id;	
+	oField.className = 'customMnuSelected';
+	gselected_fieldtype = oField.id;
 	selFieldType(fieldid,'','',blockid)
 	document.getElementById('selectedfieldtype_'+blockid).value = fieldid;
 }
