@@ -35,7 +35,7 @@ class Installation_Utils {
 	}
 
 	static function checkDbConnection($db_type, $db_hostname, $db_username, $db_password, $db_name, $create_db=false, $create_utf8_db=true, $root_user='', $root_password='') {
-		global $installationStrings, $vtiger_current_version;
+		global $installationStrings;
 
 		$dbCheckResult = array();
 		require_once('include/DatabaseUtil.php');
@@ -130,7 +130,7 @@ class Installation_Utils {
 class Migration_Utils {
 
 	static function verifyMigrationInfo($migrationInfo) {
-		global $installationStrings, $vtiger_current_version;
+		global $installationStrings;
 
 		$dbVerifyResult = array();
 		$dbVerifyResult['flag'] = false;
@@ -256,7 +256,7 @@ class Migration_Utils {
 		if(!$db_type_status || !$db_server_status) {
 			$error_msg = $installationStrings['ERR_DATABASE_CONNECTION_FAILED'].'. '.$installationStrings['ERR_INVALID_MYSQL_PARAMETERS'];
 			$error_msg_info = $installationStrings['MSG_LIST_REASONS'].':<br>
-					-  '.$installationStrings['MSG_DB_PARAMETERS_INVALID'].'. <a href="http://www.vtiger.com/products/crm/help/'.$vtiger_current_version.'/vtiger_CRM_Database_Hostname.pdf" target="_blank">'.$installationStrings['LBL_MORE_INFORMATION'].'</a><BR>
+					-  '.$installationStrings['MSG_DB_PARAMETERS_INVALID'].'.<BR>
 					-  '.$installationStrings['MSG_DB_USER_NOT_AUTHORIZED'];
 		} elseif(Common_Install_Wizard_Utils::isMySQL($db_type) && $mysql_server_version < '4.1') {
 			$error_msg = $mysql_server_version.' -> '.$installationStrings['ERR_INVALID_MYSQL_VERSION'];

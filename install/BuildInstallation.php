@@ -6,15 +6,10 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  *********************************************************************************/
 
-/**
- * @author MAK
- */
-
 @include_once('config.db.php');
-global $dbconfig, $vtiger_current_version, $vtconfig;
+global $dbconfig, $vtiger_current_version, $vtconfig, $coreBOS_app_version;
 
 $hostname = $_SERVER['SERVER_NAME'];
 $web_root = ($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"]:$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'];
@@ -101,5 +96,4 @@ if(isset($currencyName)){
 }
 
 require "install/CreateTables.php";
-
 ?>
