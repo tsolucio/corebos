@@ -795,24 +795,20 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 							$product_id = textlength_check($adb->query_result($list_result, $i - 1, "productname"));
 							$value = $product_id;
 						} elseif ($name == 'Account Name') {
-							//modified for vtiger_customview 27/5
 							if ($module == 'Accounts') {
 								$account_id = $adb->query_result($list_result, $i - 1, "crmid");
-								//$account_name = getAccountName($account_id);
-								$account_name = textlength_check($adb->query_result($list_result, $i - 1, "accountname"));
-								$value = '<a href="index.php?module=Accounts&action=DetailView&record=' . $account_id . '&parenttab=' . $tabname . '">' . $account_name . '</a>';
+								$account_name = $adb->query_result($list_result, $i - 1, 'accountname');
 							} elseif ($module == 'Potentials' || $module == 'Contacts' || $module == 'Invoice' || $module == 'SalesOrder' || $module == 'Quotes') { //Potential,Contacts,Invoice,SalesOrder & Quotes  records   sort by Account Name
-								$accountname = textlength_check($adb->query_result($list_result, $i - 1, "accountname"));
-								$accountid = $adb->query_result($list_result, $i - 1, "accountid");
-								if (empty($accountname))
-									$accountname = getAccountName($accountid);
-								$value = '<a href="index.php?module=Accounts&action=DetailView&record=' . $accountid . '&parenttab=' . $tabname . '">' . $accountname . '</a>';
+								$account_name = $adb->query_result($list_result, $i - 1, 'accountname');
+								$account_id = $adb->query_result($list_result, $i - 1, "accountid");
 							} else {
 								$account_id = $adb->query_result($list_result, $i - 1, "accountid");
 								$account_name = getAccountName($account_id);
-								$acc_name = textlength_check($account_name);
-								$value = '<a href="index.php?module=Accounts&action=DetailView&record=' . $account_id . '&parenttab=' . $tabname . '">' . $acc_name . '</a>';
 							}
+							if (empty($account_name))
+								$account_name = getAccountName($account_id);
+							$acc_name = textlength_check($account_name);
+							$value = '<a href="index.php?module=Accounts&action=DetailView&record=' . $account_id . '&parenttab=' . $tabname . '">' . htmlspecialchars($acc_name,ENT_QUOTES,$default_charset) . '</a>';
 						} elseif (( $module == 'HelpDesk' || $module == 'PriceBook' || $module == 'Quotes' || $module == 'PurchaseOrder' || $module == 'Faq') && $name == 'Product Name') {
 							if ($module == 'HelpDesk' || $module == 'Faq')
 								$product_id = $adb->query_result($list_result, $i - 1, "product_id");
