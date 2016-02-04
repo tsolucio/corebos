@@ -540,6 +540,11 @@ class ListViewController {
 						if ($parentMeta->isModuleEntity() && $parentModule != "Users") {
 							$value = "<a href='index.php?module=$parentModule&action=DetailView&".
 								"record=$rawValue' title='".getTranslatedString($parentModule, $parentModule)."'>$value</a>";
+							$modMetaInfo=getEntityFieldNames($parentModule);
+							$fieldName=(is_array($modMetaInfo['fieldname']) ? $modMetaInfo['fieldname'][0] : $modMetaInfo['fieldname']);
+							// vtlib customization: For listview javascript triggers
+							$value = "$value <span type='vtlib_metainfo' vtrecordid='{$rawValue}' vtfieldname=".
+							"'{$fieldName}' vtmodule='$parentModule' style='display:none;'></span>";
 						}
 					} else {
 						$value = '--';
@@ -573,22 +578,23 @@ class ListViewController {
 				} else {
 					$value = textlength_check($value);
 				}
-
-				$parenttab = getParentTab();
-				$nameFields = $this->queryGenerator->getModuleNameFields($module);
-				$nameFieldList = explode(',',$nameFields);
-				if(in_array($fieldName, $nameFieldList) && $module != 'Emails' ) {
-					$value = "<a href='index.php?module=$module&parenttab=$parenttab&action=DetailView&record=".
-					"$recordId' title='".getTranslatedString($module, $module)."'>$value</a>";
-				} elseif($fieldName == $focus->list_link_field && $module != 'Emails') {
-					$value = "<a href='index.php?module=$module&parenttab=$parenttab&action=DetailView&record=".
-					"$recordId' title='".getTranslatedString($module, $module)."'>$value</a>";
+				if($field->getFieldDataType() != 'reference') {
+					$parenttab = getParentTab();
+					$nameFields = $this->queryGenerator->getModuleNameFields($module);
+					$nameFieldList = explode(',',$nameFields);
+					if(in_array($fieldName, $nameFieldList) && $module != 'Emails' ) {
+						$value = "<a href='index.php?module=$module&parenttab=$parenttab&action=DetailView&record=".
+						"$recordId' title='".getTranslatedString($module, $module)."'>$value</a>";
+					} elseif($fieldName == $focus->list_link_field && $module != 'Emails') {
+						$value = "<a href='index.php?module=$module&parenttab=$parenttab&action=DetailView&record=".
+						"$recordId' title='".getTranslatedString($module, $module)."'>$value</a>";
+					}
+	
+					// vtlib customization: For listview javascript triggers
+					$value = "$value <span type='vtlib_metainfo' vtrecordid='{$recordId}' vtfieldname=".
+						"'{$fieldName}' vtmodule='$module' style='display:none;'></span>";
+					// END
 				}
-
-				// vtlib customization: For listview javascript triggers
-				$value = "$value <span type='vtlib_metainfo' vtrecordid='{$recordId}' vtfieldname=".
-					"'{$fieldName}' vtmodule='$module' style='display:none;'></span>";
-				// END
 				$row[] = $value;
 			}
 
