@@ -136,6 +136,7 @@
 																								<tr><td align="left"><a id="field11_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'cfpicklist.gif'|@vtiger_imageurl:$THEME});" 	onclick = "makeFieldSelected(this,11,{$entries.blockid});"> {$MOD.LBL_MULTISELECT_COMBO} </a></td></tr>
 																								<tr><td align="left"><a id="field12_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'skype.gif'|@vtiger_imageurl:$THEME});" 		onclick = "makeFieldSelected(this,12,{$entries.blockid});"> {$MOD.Skype} </a></td></tr>
 																								<tr><td align="left"><a id="field13_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'time.PNG'|@vtiger_imageurl:$THEME});" 		onclick = "makeFieldSelected(this,13,{$entries.blockid});"> {$MOD.Time} </a></td></tr>
+																								<tr><td align="left"><a id="field14_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'createrelation.png'|@vtiger_imageurl:$THEME});" onclick = "makeFieldSelected(this,14,{$entries.blockid});"> {$MOD.Relation} </a></td></tr>
 																							</table>
 																						</div>
 																					</td>
@@ -145,31 +146,30 @@
 																		<td width="50%">
 																			<table width="100%" border="0" cellpadding="5" cellspacing="0">
 																				<tr>
-																					<td class="dataLabel" nowrap="nowrap" align="right" width="30%"><b>{$MOD.LBL_LABEL} </b>
-																					</td>
-																					<td align="left" width="70%">
+																					<td align="left" width="70%"><b>{$MOD.LBL_LABEL} </b><br>
 																					<input id="fldLabel_{$entries.blockid}"  value="" type="text" class="txtBox">
 																					</td>
 																				</tr>
 																				<tr id="lengthdetails_{$entries.blockid}">
-																					<td class="dataLabel" nowrap="nowrap" align="right"><b>{$MOD.LBL_LENGTH}</b>
-																					</td>
-																					<td align="left">
+																					<td align="left"><b>{$MOD.LBL_LENGTH}</b><br>
 																					<input type="text" id="fldLength_{$entries.blockid}" value="" class="txtBox">
 																					</td>
 																				</tr>
-																				<tr id="decimaldetails_{$entries.blockid}" style="visibility:hidden;">
-																					<td class="dataLabel_{$entries.blockid}" nowrap="nowrap" align="right"><b>{$MOD.LBL_DECIMAL_PLACES}</b>
-																					</td>
-																					<td align="left">
+																				<tr id="decimaldetails_{$entries.blockid}" style="display:none;">
+																					<td align="left"><b>{$MOD.LBL_DECIMAL_PLACES}</b><br>
 																					<input type="text" id="fldDecimal_{$entries.blockid}" value=""  class="txtBox">
 																					</td>
 																				</tr>
-																				<tr id="picklistdetails_{$entries.blockid}" style="visibility:hidden;">
-																					<td class="dataLabel" nowrap="nowrap" align="right" valign="top"><b>{$MOD.LBL_PICK_LIST_VALUES}</b>
-																					</td>
-																					<td align="left" valign="top">
+																				<tr id="picklistdetails_{$entries.blockid}" style="display:none;">
+																					<td align="left" valign="top"><b>{$MOD.LBL_PICK_LIST_VALUES}</b><br>
 																					<textarea id="fldPickList_{$entries.blockid}" rows="10" class="txtBox" ></textarea>
+																					</td>
+																				</tr>
+																				<tr id="relationmodules_{$entries.blockid}" style="display:none;">
+																					<td align="left" valign="top"><b>{$MOD.LBL_SELECT_MODULE}</b><br>
+																					<select id="fldRelMods_{$entries.blockid}" rows="10" class="txtBox" multiple="multiple">
+																						 {html_options options=$entityrelmods}
+																					</select>
 																					</td>
 																				</tr>
 																			</table>

@@ -131,8 +131,8 @@ function validate(blockid) {
 	}
 	return true;
 }
-var fieldValueArr=new Array('Text','Number','Percent','Currency','Date','Email','Phone','Picklist','URL','Checkbox','TextArea','MultiSelectCombo','Skype','Time');
-var fieldTypeArr=new Array('text','number','percent','currency','date','email','phone','picklist','url','checkbox','textarea','multiselectcombo','skype','time');
+var fieldValueArr=new Array('Text','Number','Percent','Currency','Date','Email','Phone','Picklist','URL','Checkbox','TextArea','MultiSelectCombo','Skype','Time','Relation');
+var fieldTypeArr=new Array('text','number','percent','currency','date','email','phone','picklist','url','checkbox','textarea','multiselectcombo','skype','time','relation');
 var currFieldIdx=0,totFieldType;
 var focusFieldType;
 
@@ -181,22 +181,32 @@ function selFieldType(id,scrollLayer,bool,blockid) {
 	var lengthLayer=document.getElementById("lengthdetails_"+blockid);
 	var decimalLayer=document.getElementById("decimaldetails_"+blockid);
 	var pickListLayer=document.getElementById("picklistdetails_"+blockid);
+	var relationmodules=document.getElementById("relationmodules_"+blockid);
 	if (type=='text') {
-		lengthLayer.style.visibility="visible";
-		decimalLayer.style.visibility="hidden";
-		pickListLayer.style.visibility="hidden";
+		lengthLayer.style.display="table-row";
+		decimalLayer.style.display="none";
+		pickListLayer.style.display="none";
+		relationmodules.style.display="none";
 	} else if (type=='date' || type=='percent' || type=='email' || type=='phone' || type=='url' || type=='checkbox' || type=='textarea' || type=='skype' || type=='time') {
-		document.getElementById("lengthdetails_"+blockid).style.visibility="hidden";
-		decimalLayer.style.visibility="hidden";
-		pickListLayer.style.visibility="hidden";
+		lengthLayer.style.display="none";
+		decimalLayer.style.display="none";
+		pickListLayer.style.display="none";
+		relationmodules.style.display="none";
 	} else if (type=='number' || type=='currency') {
-		lengthLayer.style.visibility="visible";
-		decimalLayer.style.visibility="visible";
-		pickListLayer.style.visibility="hidden";
+		lengthLayer.style.display="table-row";
+		decimalLayer.style.display="table-row";
+		pickListLayer.style.display="none";
+		relationmodules.style.display="none";
 	} else if (type=='picklist' || type=='multiselectcombo') {
-		lengthLayer.style.visibility="hidden";
-		decimalLayer.style.visibility="hidden";
-		pickListLayer.style.visibility="visible";
+		lengthLayer.style.display="none";
+		decimalLayer.style.display="none";
+		pickListLayer.style.display="table-row";
+		relationmodules.style.display="none";
+	} else if (type=='relation') {
+		lengthLayer.style.display="none";
+		decimalLayer.style.display="none";
+		pickListLayer.style.display="none";
+		relationmodules.style.display="table-row";
 	}
 	document.getElementById("fieldType_"+blockid).value = fieldValueArr[id];
 }

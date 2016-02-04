@@ -128,7 +128,7 @@ $mod_strings = Array(
     'Skype'=>'Skype',
     'Time'=>'Time',
 
-    //added for patch2
+    'Relation'=>'Relation',
     'USERGROUPLIST'=>'Gruppen',
     'EMAILTEMPLATES'=>'E-Mail Vorlagen',
     'WORDINTEGRATION'=>'Textvorlagen',
