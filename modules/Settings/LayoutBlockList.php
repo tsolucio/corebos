@@ -359,11 +359,18 @@ function insertDetailViewBlockWidgets($cfentries,$fld_module) {
 					}
 					if (class_exists($widgetControllerClass)) {
 						$widgetControllerInstance = new $widgetControllerClass;
-						$widgetInstance = $widgetControllerInstance->getWidget($CUSTOM_LINK_DETAILVIEWWIDGET->linklabel);
-						if ($widgetInstance) {
-							$lbl = $widgetInstance->title();
-						} else {
-							$lbl = 'DetailViewBlock_'.$CUSTOM_LINK_DETAILVIEWWIDGET->linkid;
+						if(property_exists($widgetControllerClass,'isSortable'))
+							$isSortable = $widgetControllerInstance->isSortable;
+						else
+							$isSortable = true;
+						if($isSortable)
+						{
+							$widgetInstance = $widgetControllerInstance->getWidget($CUSTOM_LINK_DETAILVIEWWIDGET->linklabel);
+							if ($widgetInstance) {
+								$lbl = $widgetInstance->title();
+							} else {
+								$lbl = 'DetailViewBlock_'.$CUSTOM_LINK_DETAILVIEWWIDGET->linkid;
+							}
 						}
 					}
 					$retarr[$idx++] = array(
