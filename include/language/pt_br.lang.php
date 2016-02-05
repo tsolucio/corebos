@@ -1142,7 +1142,7 @@ $app_strings = array (
 'LNK_LIST_NEXT' => 'Próximo',
 'LNK_LIST_PREVIOUS' => 'Anterior',
 'LBL_JUMP_BTN'=> 'PULAR',
-
+'LBL_JUMP_To'=> 'Jump to',
 'LBL_ASSIGN_BUTTON_LABEL'=>'Definir Campos',
 
 // Mass Edit Feature

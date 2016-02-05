@@ -1163,6 +1163,7 @@ $app_strings = array (
 'LNK_LIST_NEXT' => 'Avanti',
 'LNK_LIST_PREVIOUS' => 'Indietro',
 'LBL_JUMP_BTN' => 'SALTA',
+'LBL_JUMP_To'=> 'Jump to',
 'LBL_ASSIGN_BUTTON_LABEL' => 'Assegna Campi',
 'LBL_MASS_EDIT' => 'Mass Edit',
 'LBL_MASSEDIT_FORM_HEADER' => 'Mass Edit - Modifica Campi',

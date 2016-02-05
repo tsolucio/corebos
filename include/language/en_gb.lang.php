@@ -1050,6 +1050,7 @@ $app_strings = array(
 	'Attachments' => 'Documents',
 	'LBL_HIDE' => 'Hide',
 	'LBL_JUMP_BTN' => 'Jump',
+	'LBL_JUMP_To'=> 'Jump to',
 	'LBL_ASSIGN_BUTTON_LABEL' => 'Assign Fields',
 	'LBL_MASS_EDIT' => 'Mass Edit',
 	'LBL_MASSEDIT_FORM_HEADER' => 'Mass Edit - Records Fields',
