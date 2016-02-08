@@ -13,7 +13,6 @@
 * permissions and limitations under the License. You may obtain a copy of the License
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
-
 require_once('config.php');
 
 // Performance Optimization: Configure the log folder
@@ -35,5 +34,7 @@ if(isset($PERFORMANCE_CONFIG) && isset($PERFORMANCE_CONFIG['LOG4PHP_DEBUG']) && 
 	$config = new LoggerPropertyConfigurator();
 	$config->configure('log4php.properties');
 }
-// END
+global $logbg;
+if (empty($logbg))
+	$logbg=& LoggerManager::getLogger('BACKGROUND');
 ?>
