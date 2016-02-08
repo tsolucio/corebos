@@ -124,9 +124,9 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 
 <div id="lstRecordLayout" class="layerPopup" style="display:none;width:325px;height:300px;"></div> <!-- Code added by SAKTI on 16th Jun, 2008 -->
 
-<table width="100%" cellpadding="2" cellspacing="0" border="0">
+<table width="100%" cellpadding="2" cellspacing="0" border="0" class="detailview_wrapper_table">
    <tr>
-	<td>
+	<td class="detailview_wrapper_cell">
 		{include file='Buttons_List1.tpl'}
 
 		<!-- Contents -->
