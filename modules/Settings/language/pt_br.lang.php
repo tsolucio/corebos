@@ -221,7 +221,7 @@ $mod_strings = Array(
 
 'Time'=>'Hora',
 
-//added for patch2
+'Relation'=>'Relation',
 
 'USERGROUPLIST'=>'Grupos',
 

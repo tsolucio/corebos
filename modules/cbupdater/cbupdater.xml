@@ -499,4 +499,11 @@
 	<classname>fixAddNotesURLToEstablishLink</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Change product active checkbox type</description>
+	<filename>build/changeSets/PdoDiscontinuedToCheckbox.php</filename>
+	<classname>PdoDiscontinuedToCheckbox</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

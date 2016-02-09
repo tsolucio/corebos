@@ -1822,17 +1822,21 @@ class CRMEntity {
 			$returnset = "&return_module=$currentModule&return_action=CallRelatedList&return_id=$id";
 
 		$return_value = null;
-		$dependentFieldSql = $this->db->pquery("SELECT tabid, fieldname, columnname FROM vtiger_field WHERE uitype='10' AND" .
+		$dependentFieldSql = $this->db->pquery("SELECT tabid, tablename, fieldname, columnname FROM vtiger_field WHERE uitype='10' AND" .
 				" fieldid IN (SELECT fieldid FROM vtiger_fieldmodulerel WHERE relmodule=? AND module=?)", array($currentModule, $related_module));
 		$numOfFields = $this->db->num_rows($dependentFieldSql);
 
 		if ($numOfFields > 0) {
 			$relconds = array();
 			while ($depflds = $this->db->fetch_array($dependentFieldSql)) {
-
+			$dependentTable = $depflds['tablename'];
+			if ($dependentTable!=$other->table_name and !in_array($dependentTable, $other->related_tables)) {
+				$relidx = isset($other->tab_name_index[$dependentTable]) ? $other->tab_name_index[$dependentTable] : $other->table_index;
+				$other->related_tables[$dependentTable] = array($relidx,$other->table_name,$other->table_index);
+			}
 			$dependentColumn = $depflds['columnname'];
 			$dependentField = $depflds['fieldname'];
-			$relconds[] = "$this->table_name.$this->table_index = $other->table_name.$dependentColumn";
+			$relconds[] = "$this->table_name.$this->table_index = $dependentTable.$dependentColumn";
 			$button .= '<input type="hidden" name="' . $dependentColumn . '" id="' . $dependentColumn . '" value="' . $id . '">';
 			$button .= '<input type="hidden" name="' . $dependentColumn . '_type" id="' . $dependentColumn . '_type" value="' . $currentModule . '">';
 			}
@@ -1869,8 +1873,8 @@ class CRMEntity {
 
 			$query .= " FROM $other->table_name";
 			$query .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
-			$query .= " INNER  JOIN $this->table_name   ON $relationconditions";
 			$query .= $more_relation;
+			$query .= " INNER  JOIN $this->table_name   ON $relationconditions";
 			$query .= " LEFT  JOIN vtiger_users        ON vtiger_users.id = vtiger_crmentity.smownerid";
 			$query .= " LEFT  JOIN vtiger_groups       ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
 

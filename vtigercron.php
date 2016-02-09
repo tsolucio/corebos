@@ -39,29 +39,36 @@ foreach ($cronTasks as $cronTask) {
 
 		// Not ready to run yet?
 		if (!$cronTask->isRunnable()) {
-			echo sprintf("[INFO]: %s - not ready to run as the time to run again is not completed\n", $cronTask->getName());
+			$msg = sprintf("[INFO]: %s - not ready to run as the time to run again is not completed\n", $cronTask->getName());
+			echo $msg;
+			$logbg->info($msg);
 			continue;
-}
+		}
 
 		// Timeout could happen if intermediate cron-tasks fails
 		// and affect the next task. Which need to be handled in this cycle.
 		if ($cronTask->hadTimedout()) {
-			echo sprintf("[INFO]: %s - cron task had timedout as it is not completed last time it run- restarting\n", $cronTask->getName());
-}
+			$msg = sprintf("[INFO]: %s - cron task had timedout as it is not completed last time it run- restarting\n", $cronTask->getName());
+			echo $msg;
+			$logbg->info($msg);
+		}
 
 		// Mark the status - running
 		$cronTask->markRunning();
 		
 		checkFileAccess($cronTask->getHandlerFile());
+		$logbg->info('Execute: '.$cronTask->getHandlerFile());
 		require_once $cronTask->getHandlerFile();
 		
 		// Mark the status - finished
 		$cronTask->markFinished();
 		
 	} catch (Exception $e) {
-		echo sprintf("[ERROR]: %s - cron task execution throwed exception.\n", $cronTask->getName());
-		echo $e->getMessage();
-		echo "\n";
+		$msg = sprintf("[ERROR]: %s - cron task execution throwed exception.\n", $cronTask->getName());
+		$msg .= $e->getMessage();
+		$msg .= "\n";
+		echo $msg;
+		$logbg->info($msg);
 		//Send email with error.
 		$mailto = GlobalVariable::getVariable('Debug_Send_VtigerCron_Error','');
 		if ($mailto != '') {

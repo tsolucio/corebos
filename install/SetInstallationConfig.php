@@ -9,7 +9,7 @@
  ************************************************************************************/
 
 @include_once('config.db.php');
-global $dbconfig, $vtiger_current_version;
+global $dbconfig, $coreBOS_app_version;
 $hostname = $_SERVER['SERVER_NAME'];
 $web_root = ($_SERVER["HTTP_HOST"]) ? $_SERVER["HTTP_HOST"]:$_SERVER['SERVER_NAME'].':'.$_SERVER['SERVER_PORT'];
 $web_root .= $_SERVER["REQUEST_URI"];
@@ -20,7 +20,7 @@ $current_dir = pathinfo(dirname(__FILE__));
 $current_dir = $current_dir['dirname']."/";
 $cache_dir = "cache/";
 
-$newdbname = 'corebos'.str_replace(array('.',' '),array(''),strtolower($vtiger_current_version));
+$newdbname = 'corebos'.str_replace(array('.',' '),array(''),strtolower($coreBOS_app_version));
 
 require_once('modules/Utilities/Currencies.php');
 

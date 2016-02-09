@@ -1104,7 +1104,7 @@ $app_strings = array (
       'LNK_LIST_NEXT' => 'Siguiente',
       'LNK_LIST_PREVIOUS' => 'Anterior',
       'LBL_JUMP_BTN'=> 'IR A',
-    
+	'LBL_JUMP_To'=> 'Ir a',
       'LBL_ASSIGN_BUTTON_LABEL'=>'Asignar Campos',
 
       // Mass Edit Feature

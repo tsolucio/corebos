@@ -1101,6 +1101,7 @@ $app_strings = array (
 	'LBL_PLATFORM_INDEPENDENT' => 'Indépendant de la platforme',
 	'Attachments' => 'Pièces jointes',
 	'LBL_JUMP_BTN' => 'Aller à',
+	'LBL_JUMP_To'=> 'Jump to',
 	'LBL_ASSIGN_BUTTON_LABEL' => 'Assigner les champs',
 	'LBL_MASS_EDIT' => 'Edition en masse',
 	'LBL_MASSEDIT_FORM_HEADER' => 'Edition en masse - Champs des enregistrements',

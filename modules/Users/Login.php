@@ -63,7 +63,7 @@ require_once("data/Tracker.php");
 require_once("include/utils/utils.php");
 require_once 'vtigerversion.php';
 
-global $currentModule, $moduleList, $adb, $vtiger_current_version;
+global $currentModule, $moduleList, $adb, $coreBOS_app_version;
 $image_path="include/images/";
 
 $app_strings = return_application_language('en_us');
@@ -78,7 +78,7 @@ if(isset($app_strings['LBL_CHARSET'])) {
 }
 
 $smarty->assign("IMAGE_PATH", $image_path);
-$smarty->assign("VTIGER_VERSION", $vtiger_current_version);
+$smarty->assign("VTIGER_VERSION", $coreBOS_app_version);
 
 // We check if we have the two new logo fields > if not we create them
 $cnorg=$adb->getColumnNames('vtiger_organizationdetails');

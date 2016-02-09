@@ -7,12 +7,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once("include/utils/GetGroupUsers.php");
 require_once("include/utils/UserInfoUtil.php");
 
-global $adb;
-global $current_user;
+global $adb, $current_user;
 
 //set the return module and return action and set the return id based on return module and record
 $returnmodule = vtlib_purify($_REQUEST['return_module']);
@@ -26,7 +24,6 @@ else
 	$returnid = $focus->id;//$_REQUEST['record'];
 }
 
-
 $adb->println("\n\nMail Sending Process has been started.");
 //This function call is used to send mail to the assigned to user. In this mail CC and BCC addresses will be added.
 if($_REQUEST['assigntype' == 'T'] && $_REQUEST['assigned_group_id']!='')
@@ -35,10 +32,10 @@ if($_REQUEST['assigntype' == 'T'] && $_REQUEST['assigned_group_id']!='')
 	$grp_obj->getAllUsersInGroup($_REQUEST['assigned_group_id']);
 	$users_list = constructList($grp_obj->group_users,'INTEGER');
 	if (count($users_list) > 0) {
-		$sql = "select first_name, last_name, email1, email2, secondaryemail  from vtiger_users where id in (". generateQuestionMarks($users_list) .")";
+		$sql = "select first_name, last_name, email1, email2, secondaryemail from vtiger_users where id in (". generateQuestionMarks($users_list) .")";
 		$params = array($users_list);
 	} else {
-		$sql = "select first_name, last_name, email1, email2, secondaryemail  from vtiger_users";
+		$sql = "select first_name, last_name, email1, email2, secondaryemail from vtiger_users";
 		$params = array();
 	}
 	$res = $adb->pquery($sql, $params);
@@ -53,7 +50,7 @@ if($_REQUEST['assigntype' == 'T'] && $_REQUEST['assigned_group_id']!='')
 			{
 				$email = $user_info['secondaryemail '];
 			}
-		}	
+		}
 		if($user_email=='')
 		$user_email .= $user_info['first_name']." ".$user_info['last_name']."<".$email.">";
 		else
@@ -76,33 +73,13 @@ if($to_email == '' && $cc == '' && $bcc == '')
 }
 else
 {
-	$query1 = "select email1 from vtiger_users where id =?";
+	$query1 = 'select email1 from vtiger_users where id =?';
 	$res1 = $adb->pquery($query1, array($current_user->id));
-	$val = $adb->query_result($res1,0,"email1");
-//	$mail_status = send_mail('Emails',$to_email,$current_user->user_name,'',$_REQUEST['subject'],$_REQUEST['description'],$cc,$bcc,'all',$focus->id);
-	
+	$val = $adb->query_result($res1,0,'email1');
 	$query = 'update vtiger_emaildetails set email_flag ="SENT",from_email =? where emailid=?';
 	$adb->pquery($query, array($val, $focus->id));
-	//set the errorheader1 to 1 if the mail has not been sent to the assigned to user
-	if($mail_status != 1)//when mail send fails
-	{
-		$errorheader1 = 1;
-		$mail_status_str = $to_email."=".$mail_status."&&&";
-	}
-	elseif($mail_status == 1 && $to_email == '')//Mail send success only for CC and BCC but the 'to' email is empty 
-	{
-		$adb->pquery($query, array($val, $focus->id));
-		$errorheader1 = 1;
-		$mail_status_str = "cc_success=0&&&";
-	}
-	else
-	{
-		$mail_status_str = $to_email."=".$mail_status."&&&";
-	}
 }
 
-
-//Added code from mysendmail.php which is contributed by Raju(rdhital)
 $parentid= vtlib_purify($_REQUEST['parent_id']);
 $myids=explode("|",$parentid);
 $all_to_emailids = Array();
@@ -122,22 +99,18 @@ for ($i=0;$i<(count($myids)-1);$i++)
 	$realid=explode("@",$myids[$i]);
 	$nemail=count($realid);
 	$mycrmid=$realid[0];
-	if($realid[1] == -1)
-        {
-                //handle the mail send to vtiger_users
-                $emailadd = $adb->query_result($adb->pquery("select email1 from vtiger_users where id=?", array($mycrmid)),0,'email1');
-                $pmodule = 'Users';
+	if($realid[1] == -1) {
+		//handle the mail send to vtiger_users
+		$emailadd = $adb->query_result($adb->pquery("select email1 from vtiger_users where id=?", array($mycrmid)),0,'email1');
+		$pmodule = 'Users';
 		$description = getMergedDescription($_REQUEST['description'],$mycrmid,$pmodule);
-                $mail_status = send_mail('Emails',$emailadd,$from_name,$from_address,$_REQUEST['subject'],$description,'','','all',$focus->id);
-                $all_to_emailids []= $emailadd;
-                $mail_status_str .= $emailadd."=".$mail_status."&&&";
-        }
-        else
-        {
+		$mail_status = send_mail('Emails',$emailadd,$from_name,$from_address,$_REQUEST['subject'],$description,'','','all',$focus->id);
+		$all_to_emailids []= $emailadd;
+		$mail_status_str .= $emailadd."=".$mail_status."&&&";
+	} else {
 		//Send mail to vtiger_account or lead or contact based on their ids
 		$pmodule=getSalesEntityType($mycrmid);
-		for ($j=1;$j<$nemail;$j++)
-		{
+		for ($j=1;$j<$nemail;$j++) {
 			$temp=$realid[$j];
 			$myquery='Select columnname from vtiger_field where fieldid = ? and vtiger_field.presence in (0,2)';
 			$fresult=$adb->pquery($myquery, array($temp));
@@ -152,7 +125,7 @@ for ($i=0;$i<(count($myids)-1);$i++)
 				require_once('modules/Accounts/Accounts.php');
 				$myfocus = new Accounts();
 				$myfocus->retrieve_entity_info($mycrmid,"Accounts");
-			} 
+			}
 			elseif ($pmodule=='Leads')
 			{
 				require_once('modules/Leads/Leads.php');
@@ -160,22 +133,22 @@ for ($i=0;$i<(count($myids)-1);$i++)
 				$myfocus->retrieve_entity_info($mycrmid,"Leads");
 			}
 			elseif ($pmodule=='Vendors')
-                        {
-                                require_once('modules/Vendors/Vendors.php');
-                                $myfocus = new Vendors();
-                                $myfocus->retrieve_entity_info($mycrmid,"Vendors");
-                        }
-            else {
-            	// vtlib customization: Enabling mail send from other modules
-            	$myfocus = CRMEntity::getInstance($pmodule);
-            	$myfocus->retrieve_entity_info($mycrmid, $pmodule);
-            	// END
-            }
+			{
+				require_once('modules/Vendors/Vendors.php');
+				$myfocus = new Vendors();
+				$myfocus->retrieve_entity_info($mycrmid,"Vendors");
+			}
+			else
+			{
+				// vtlib customization: Enabling mail send from other modules
+				$myfocus = CRMEntity::getInstance($pmodule);
+				$myfocus->retrieve_entity_info($mycrmid, $pmodule);
+			}
 			$fldname=$adb->query_result($fresult,0,"columnname");
 			$emailadd=br2nl($myfocus->column_fields[$fldname]);
 
-//This is to convert the html encoded string to original html entities so that in mail description contents will be displayed correctly
-	//$focus->column_fields['description'] = from_html($focus->column_fields['description']);
+			//This is to convert the html encoded string to original html entities so that in mail description contents will be displayed correctly
+			//$focus->column_fields['description'] = from_html($focus->column_fields['description']);
 
 			if($emailadd != '')
 			{
@@ -183,23 +156,21 @@ for ($i=0;$i<(count($myids)-1);$i++)
 				//Email Open Tracking
 				global $site_URL, $application_unique_key, $disable_stats_tracking;
 				if (!$disable_stats_tracking) {
-				$emailid = $focus->id;
-				$track_URL = "$site_URL/modules/Emails/TrackAccess.php?record=$mycrmid&mailid=$emailid&app_key=$application_unique_key";
-				$description = "$description<img src='$track_URL' alt='' width='1' height='1'>";
+					$emailid = $focus->id;
+					$track_URL = "$site_URL/modules/Emails/TrackAccess.php?record=$mycrmid&mailid=$emailid&app_key=$application_unique_key";
+					$description = "$description<img src='$track_URL' alt='' width='1' height='1'>";
 				}
-				// END
 
 				$pos = strpos($description, '$logo$');
 				if ($pos !== false)
 				{
-
 					$description =str_replace('$logo$','<img src="cid:logo" />',$description);
 					$logo=1;
 				}
 				if(isPermitted($pmodule,'DetailView',$mycrmid) == 'yes')
 				{
 					$mail_status = send_mail('Emails',$emailadd,$from_name,$from_address,$_REQUEST['subject'],$description,'','','all',$focus->id,$logo);
-				}	
+				}
 
 				$all_to_emailids []= $emailadd;
 				$mail_status_str .= $emailadd."=".$mail_status."&&&";
@@ -210,8 +181,7 @@ for ($i=0;$i<(count($myids)-1);$i++)
 				}
 			}
 		}
-	}	
-
+	}
 }
 //Added to redirect the page to Emails/EditView if there is an error in mail sending
 if($errorheader1 == 1 || $errorheader2 == 1)

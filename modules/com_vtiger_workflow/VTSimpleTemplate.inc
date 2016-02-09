@@ -109,7 +109,11 @@ class VTSimpleTemplate{
 		$parts = Array();
 		foreach($users as $userId){
 			$refId = vtws_getWebserviceEntityId("Users", $userId);
-			$entity = $this->cache->forId($refId);
+			try {
+				$entity = $this->cache->forId($refId);
+			} catch(WebServiceException $ex) {
+				continue; // inactive or deleted user
+			}
 			$data = $entity->getData();
 			if($this->useValue($data, $fieldname)){
 				$parts[] = $data[$fieldname];

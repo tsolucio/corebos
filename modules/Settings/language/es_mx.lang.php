@@ -105,6 +105,7 @@ $mod_strings = array (
       'LBL_MULTISELECT_COMBO' => 'Lista de Multi-Selección',
       'Skype' => 'Skype',
       'Time'=>'Tiempo',
+      'Relation'=>'Relación',
       'USERGROUPLIST' => 'Grupos',
       'EMAILTEMPLATES' => 'Plantillas de Email',
       'WORDINTEGRATION' => 'Plantillas de Mailing',

@@ -101,7 +101,12 @@
 	$sessionId = vtws_getParameter($_REQUEST,"sessionName");
 
 	$sessionManager = new SessionManager();
+	try{
 	$operationManager = new OperationManager($adb,$operation,$format,$sessionManager);
+	}catch(WebServiceException $e){
+		echo $e->message;
+		die();
+	}
 
 	try{
 		if(!$sessionId || strcasecmp($sessionId,"null")===0){

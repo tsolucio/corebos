@@ -898,6 +898,7 @@ function update_ticket_comment($input_array)
 		$ticket->retrieve_entity_info($ticketid, 'HelpDesk');
 		$ticket->id = $ticketid;
 		$ticket->mode = 'edit';
+		$ticket->column_fields = array_map(decode_html, $ticket->column_fields);
 		$ticket->column_fields['comments'] = $comments;
 		$ticket->column_fields['from_portal'] = 1;
 		$ticket->save('HelpDesk');
