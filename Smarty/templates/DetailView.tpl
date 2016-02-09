@@ -213,10 +213,10 @@ function sendfile_email()
 								<td>
 									<table border=0 cellspacing=0 cellpadding=3 width=100% class="small detailview_utils_table_top">
 										<tr>
-											<td class="dvtTabCache" style="width:10px" nowrap>&nbsp;</td>
+											<td class="dvtTabCache" id="detailview_utils_firstfiller" style="width:10px" nowrap>&nbsp;</td>
 
 											<td class="dvtSelectedCell" align=center nowrap>{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</td>
-											<td class="dvtTabCache" style="width:10px">&nbsp;</td>
+											<td class="dvtTabCache" id="detailview_utils_secondfiller" style="width:10px">&nbsp;</td>
 											{if $SinglePane_View eq 'false' && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
 												<td class="dvtUnSelectedCell" onmouseout="fnHideDrop('More_Information_Modules_List');" onmouseover="fnDropDown(this,'More_Information_Modules_List');" align="center" nowrap>
 													<a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</a>
@@ -230,7 +230,7 @@ function sendfile_email()
 													</div>
 												</td>
 											{/if}
-											<td class="dvtTabCache" align="right" style="width:100%">
+											<td class="dvtTabCache" id="detailview_utils_thirdfiller" align="right" style="width:100%">
 												{if $EDIT_DUPLICATE eq 'permitted'}
 													<input title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" class="crmbutton small edit" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.return_id.value='{$ID}';DetailView.module.value='{$MODULE}';submitFormForAction('DetailView','EditView');" type="button" name="Edit" value="&nbsp;{$APP.LBL_EDIT_BUTTON_LABEL}&nbsp;">&nbsp;
 												{/if}
