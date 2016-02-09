@@ -205,6 +205,8 @@ $MINIMUM_CRON_FREQUENCY = 15;
 $cors_enabled_domains = '';
 
 // Override with developer settings
-@include('config-dev.inc.php');
+if(file_exists('config-dev.inc.php)){
+	include('config-dev.inc.php');
+}
 
 ?>
