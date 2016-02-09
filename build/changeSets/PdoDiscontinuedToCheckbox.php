@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2014 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS.
+ * Copyright 2015 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
 * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
 * file except in compliance with the License. You can redistribute it and/or modify it
 * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
@@ -13,28 +13,24 @@
 * permissions and limitations under the License. You may obtain a copy of the License
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
-require_once('config.php');
 
-// Performance Optimization: Configure the log folder
-@include_once('config.performance.php');
-global $PERFORMANCE_CONFIG;
-if(isset($PERFORMANCE_CONFIG) && isset($PERFORMANCE_CONFIG['LOG4PHP_DEBUG']) && $PERFORMANCE_CONFIG['LOG4PHP_DEBUG']) {
-	define('LOG4PHP_DIR', 'log4php.debug');
-	require_once(LOG4PHP_DIR.'/Logger.php');
-	Logger::configure('log4php.properties');
-	class LoggerManager {
-		static function getlogger($name = 'ROOT') {
-			return Logger::getLogger($name);
+class PdoDiscontinuedToCheckbox extends cbupdaterWorker {
+	
+	function applyChange() {
+		global $adb;
+		if ($this->hasError()) $this->sendError();
+		if ($this->isApplied()) {
+			$this->sendMsg('Changeset '.get_class($this).' already applied!');
+		} else {
+			$moduleInstance = Vtiger_Module::getInstance('Products');
+			$field = Vtiger_Field::getInstance('discontinued',$moduleInstance);
+			if ($field) {
+				$this->ExecuteQuery("update vtiger_field set typeofdata='C~O' where typeofdata='V~O' and fieldid=".$field->id);
+				$this->ExecuteQuery("update vtiger_field set typeofdata='C~M' where typeofdata='V~M' and fieldid=".$field->id);
+			}
+			$this->sendMsg('Changeset '.get_class($this).' applied!');
+			$this->markApplied();
 		}
+		$this->finishExecution();
 	}
-} else {
-	define('LOG4PHP_DIR', 'log4php');
-	require_once(LOG4PHP_DIR.'/LoggerManager.php');
-	require_once(LOG4PHP_DIR.'/LoggerPropertyConfigurator.php');
-	$config = new LoggerPropertyConfigurator();
-	$config->configure('log4php.properties');
 }
-global $logbg;
-if (empty($logbg))
-	$logbg=& LoggerManager::getLogger('BACKGROUND');
-?>
