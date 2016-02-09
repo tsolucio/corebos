@@ -129,7 +129,10 @@ class VTSimpleTemplate{
 		$backCurrentUser = $current_user;
 		list($wsId,$assigned_user_id) = explode('x',$data['assigned_user_id']);
                 if(vtws_getOwnerType($assigned_user_id) == 'Groups'){
-                    $users = getGroupRelatedUsers($assigned_user_id);
+                    require_once('include/utils/GetGroupUsers.php');
+                    $ggu = new GetGroupUsers();
+                    $ggu->getAllUsersInGroup($assigned_user_id);
+                    $users = $ggu->group_users;
                     $assigned_user_id = $users[0];
                 }
 		$current_user = new Users();
