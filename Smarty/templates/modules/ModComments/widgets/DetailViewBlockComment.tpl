@@ -33,7 +33,7 @@
 	<table class="small" border="0" cellpadding="0" cellspacing="0" width="100%">
 
 	<tr style="height: 25px;">
-		<td colspan="4" align="left" class="dvtCellInfo" >
+		<td colspan="4" align="left" class="dvtCellInfo commentCell" >
 		<div id="contentwrap_{$UIKEY}" style="overflow: auto; height: 250px; width: 100%;word-break: break-all;">
 			{foreach item=COMMENTMODEL from=$COMMENTS}
 				{include file="modules/ModComments/widgets/DetailViewBlockCommentItem.tpl" COMMENTMODEL=$COMMENTMODEL}
