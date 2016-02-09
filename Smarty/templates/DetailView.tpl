@@ -211,7 +211,7 @@ function sendfile_email()
 						<table border=0 cellspacing=0 cellpadding=0 width=95% align=center>
 							<tr>
 								<td>
-									<table border=0 cellspacing=0 cellpadding=3 width=100% class="small">
+									<table border=0 cellspacing=0 cellpadding=3 width=100% class="small detailview_utils_table_top">
 										<tr>
 											<td class="dvtTabCache" style="width:10px" nowrap>&nbsp;</td>
 
