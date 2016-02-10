@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/ *}
 <script language="JavaScript" type="text/javascript" src="include/js/customview.js"></script>
 <script language="JavaScript" type="text/javascript" src="include/js/general.js"></script>
@@ -38,7 +37,7 @@ function getCustomFieldList(customField)
 				$("cfList").update(response.responseText);
 			{rdelim}
 		{rdelim}
-	);	
+	);
 {rdelim}
 
 function changeFieldorder(what_to_do,fieldid,blockid,modulename)
@@ -54,11 +53,10 @@ function changeFieldorder(what_to_do,fieldid,blockid,modulename)
 				$('vtbusy_info').style.display = "none";
 			{rdelim}
 		{rdelim}
-	);	
+	);
 {rdelim}
 
-
-function changeShowstatus(tabid,blockid,modulename)	
+function changeShowstatus(tabid,blockid,modulename)
 {ldelim}
 	var display_status = $('display_status_'+blockid).value;
 	new Ajax.Request(
@@ -70,14 +68,10 @@ function changeShowstatus(tabid,blockid,modulename)
 				$("cfList").update(response.responseText);
 			{rdelim}
 		{rdelim}
-		
-	);	
+	);
 {rdelim}
 
-
-
-
-function changeBlockorder(what_to_do,tabid,blockid,modulename)	
+function changeBlockorder(what_to_do,tabid,blockid,modulename)
 {ldelim}
 	$('vtbusy_info').style.display = "block";
 		new Ajax.Request(
@@ -90,18 +84,14 @@ function changeBlockorder(what_to_do,tabid,blockid,modulename)
 				$('vtbusy_info').style.display = "none";
 			{rdelim}
 		{rdelim}
-		
-	);	
+	);
 {rdelim}
-
-<!-- end of tanmoy on 6/09/2007-->
-
 
 {literal}
 function deleteCustomField(id, fld_module, colName, uitype)
 {
-       if(confirm(alert_arr.ARE_YOU_SURE_YOU_WANT_TO_DELETE)){
-        $('vtbusy_info').style.display = "block";
+	if(confirm(alert_arr.ARE_YOU_SURE_YOU_WANT_TO_DELETE)){
+		$('vtbusy_info').style.display = "block";
 			new Ajax.Request(
 				'index.php',
 				{queue: {position: 'end', scope: 'command'},
@@ -113,14 +103,13 @@ function deleteCustomField(id, fld_module, colName, uitype)
 						$('vtbusy_info').style.display = "none";
 					}
 				}
-			);		
-		}else{
+			);
+	}else{
 		fninvsh('editfield_'+id);
-		}
+	}
 }
 
 function deleteCustomBlock(module,blockid,no){
-
 	if(no > 0){
 		alert(alert_arr.PLEASE_MOVE_THE_FIELDS_TO_ANOTHER_BLOCK);
 		return false;
@@ -136,12 +125,11 @@ function deleteCustomBlock(module,blockid,no){
 					$("cfList").update(response.responseText);
 					$('vtbusy_info').style.display = "none";
 				}
-				}	
-			);	
+				}
+			);
 		}
 	}
 }
-
 
 function getCreateCustomBlockForm(modulename,mode)
 {
@@ -169,13 +157,11 @@ function getCreateCustomBlockForm(modulename,mode)
 					return false;
 				}else{
 					$("cfList").update(str);
-				}		
+				}
 				gselected_fieldtype = '';
 			}
 		}
 	);
-
-
 }
 
 function saveFieldInfo(fieldid,module,sub_mode,typeofdata){
@@ -185,16 +171,16 @@ function saveFieldInfo(fieldid,module,sub_mode,typeofdata){
 	var quickcreate_check = $('quickcreate_check_'+fieldid);
 	var massedit_check = $('massedit_check_'+fieldid);
 	var defaultvalue_check = $('defaultvalue_check_'+fieldid);
-	
+
 	if(mandatory_check != null){
 		urlstring = urlstring+'&ismandatory=' + mandatory_check.checked;
 	}
-	if(presence_check != null){	
+	if(presence_check != null){
 		urlstring = urlstring + '&isPresent=' + presence_check.checked;
-	}	
+	}
 	if(quickcreate_check != null){
 		urlstring = urlstring + '&quickcreate=' + quickcreate_check.checked;
-	}	
+	}
 	if(massedit_check != null){
 		urlstring = urlstring + '&massedit=' + massedit_check.checked;
 	}
@@ -218,10 +204,9 @@ function saveFieldInfo(fieldid,module,sub_mode,typeofdata){
 		} else {
 			defaultvalue = '';
 		}
-		
 		urlstring = urlstring + '&defaultvalue=' + encodeURIComponent(defaultvalue);
 	}
-	
+
 	$('vtbusy_info').style.display = "block";
 	new Ajax.Request(
 			'index.php',
@@ -238,9 +223,7 @@ function saveFieldInfo(fieldid,module,sub_mode,typeofdata){
 	);
 }
 
-
 function enableDisableCheckBox(obj, elementName) {
-	
 	var ele = $(elementName);
 	if (obj == null || ele == null) return;
 	if (obj.checked == true) {
@@ -248,7 +231,7 @@ function enableDisableCheckBox(obj, elementName) {
 		ele.disabled = true;
 	} else {
 		ele.disabled = false;
-	}	
+	}
 }
 
 function showHideTextBox(obj, elementName) {
@@ -261,25 +244,23 @@ function showHideTextBox(obj, elementName) {
 	}
 }
 
-
-function getCreateCustomFieldForm(modulename,blockid,mode)
-{
-   var check = validate(blockid);
-   if(check == false)
-   return false;
-   var type = document.getElementById("fieldType_"+blockid).value;
-   var label = document.getElementById("fldLabel_"+blockid).value;
-   var fldLength = document.getElementById("fldLength_"+blockid).value;
-   var fldDecimal = document.getElementById("fldDecimal_"+blockid).value;
-   var fldPickList = encodeURIComponent(document.getElementById("fldPickList_"+blockid).value);
-   var selrelationmodules=document.getElementById("fldRelMods_"+blockid).selectedOptions;
-   var relationmodules='';
-   for (var mods=0, mod;mod=selrelationmodules[mods];mods++) {
-     relationmodules=relationmodules+mod.value+';'
-   }
-   var relationmodules=encodeURIComponent(relationmodules);
-   VtigerJS_DialogBox.block();
-   new Ajax.Request(
+function getCreateCustomFieldForm(modulename,blockid,mode) {
+	var check = validate(blockid);
+	if(check == false)
+		return false;
+	var type = document.getElementById("fieldType_"+blockid).value;
+	var label = document.getElementById("fldLabel_"+blockid).value;
+	var fldLength = document.getElementById("fldLength_"+blockid).value;
+	var fldDecimal = document.getElementById("fldDecimal_"+blockid).value;
+	var fldPickList = encodeURIComponent(document.getElementById("fldPickList_"+blockid).value);
+	var selrelationmodules=document.getElementById("fldRelMods_"+blockid).selectedOptions;
+	var relationmodules='';
+	for (var mods=0, mod;mod=selrelationmodules[mods];mods++) {
+		relationmodules=relationmodules+mod.value+';'
+	}
+	var relationmodules=encodeURIComponent(relationmodules);
+	VtigerJS_DialogBox.block();
+	new Ajax.Request(
 		'index.php',
 		{queue: {position: 'end', scope: 'command'},
 			method: 'post',
@@ -292,7 +273,7 @@ function getCreateCustomFieldForm(modulename,blockid,mode)
 					return false;
 				}else{
 					$("cfList").update(str);
-				}	
+				}
 				gselected_fieldtype = '';
 			}
 		}
@@ -306,14 +287,13 @@ function makeFieldSelected(oField,fieldid,blockid)
 	{
 		$(gselected_fieldtype).className = 'customMnu';
 	}
-	oField.className = 'customMnuSelected';	
-	gselected_fieldtype = oField.id;	
+	oField.className = 'customMnuSelected';
+	gselected_fieldtype = oField.id;
 	selFieldType(fieldid,'','',blockid);
 	document.getElementById('selectedfieldtype_'+blockid).value = fieldid;
 }
 
 function show_move_hiddenfields(modulename,tabid,blockid,sub_mode){
-	
 	if(sub_mode == 'showhiddenfields'){
 	var selectedfields = document.getElementById('hiddenfield_assignid_'+blockid);
 	var selectedids_str = '';
@@ -344,8 +324,8 @@ function show_move_hiddenfields(modulename,tabid,blockid,sub_mode){
 			}
 		);
 }
-	
-function changeRelatedListorder(what_to_do,tabid,sequence,id,module)	
+
+function changeRelatedListorder(what_to_do,tabid,sequence,id,module)
 {
 	$('vtbusy_info').style.display = "block";
 	new Ajax.Request(
@@ -358,9 +338,8 @@ function changeRelatedListorder(what_to_do,tabid,sequence,id,module)
 			$('vtbusy_info').style.display = "none";
 			}
 		}
-		
-	);	
-}	
+	);
+}
 
 function callRelatedList(module){
 	$('vtbusy_info').style.display = "block";
@@ -375,16 +354,15 @@ function callRelatedList(module){
 			$('vtbusy_info').style.display = "none";
 			}
 		}
-		
 	);
 }
 
 function showProperties(field,man,pres,quickc,massed){
 	var str='<table class="small" cellpadding="2" cellspacing="0" border="0"><tr><th>'+field+'</th></tr>';
 	if (man == 0 || man == 2)
- 		str = str+'<tr><td>'+alert_arr.FIELD_IS_MANDATORY+'</td></tr>';
+		str = str+'<tr><td>'+alert_arr.FIELD_IS_MANDATORY+'</td></tr>';
 	if (pres == 0 || pres == 2)
- 		str = str+'<tr><td>'+alert_arr.FIELD_IS_ACTIVE+'</td></tr>';
+		str = str+'<tr><td>'+alert_arr.FIELD_IS_ACTIVE+'</td></tr>';
 	if (quickc == 0 || quickc == 2)
 		str = str+'<tr><td>'+alert_arr.FIELD_IN_QCREATE+'</td></tr>';
 	if(massed == 0 || massed == 1)
@@ -401,7 +379,7 @@ var gselected_fieldtype = '';
 <br>
 
 {assign var=entries value=$CFENTRIES}
-			{if $CFENTRIES.0.tabpresence eq '0' }
+{if $CFENTRIES.0.tabpresence eq '0' }
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 	<tr>
 		<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
@@ -411,8 +389,8 @@ var gselected_fieldtype = '';
 				<tr>
 					<td rowspan="2" valign="top" width="50"><img src="{'orgshar.gif'|@vtiger_imageurl:$THEME}" alt="Users" title="Users" border="0" height="48" width="48"></td>
 					<td class="heading2" valign="bottom">
-						<b><a href="index.php?module=Settings&action=ModuleManager&parenttab=Settings">{$MOD.VTLIB_LBL_MODULE_MANAGER}</a> 
-						&gt;<a href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$MODULE}&parenttab=Settings">{$MODULE|@getTranslatedString:$MODULE}</a> &gt; 
+						<b><a href="index.php?module=Settings&action=ModuleManager&parenttab=Settings">{$MOD.VTLIB_LBL_MODULE_MANAGER}</a>
+						&gt;&nbsp;<a href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$MODULE}&parenttab=Settings">{$MODULE|@getTranslatedString:$MODULE}</a> &gt;
 						{$MOD.LBL_LAYOUT_EDITOR}</b>
 					</td>
 				</tr>
@@ -451,7 +429,7 @@ var gselected_fieldtype = '';
 		<td class='small' align='right' nowrap='nowrap'>
 		<a href='javascript:window.history.back();'>{$MOD.LBL_GO_BACK}</a><br></td>
 		</tr>
-		</tbody></table> 
+		</tbody></table>
 		</div>
 		</td></tr></table>
 {/if}

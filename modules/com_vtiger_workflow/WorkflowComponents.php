@@ -29,14 +29,12 @@ function vtJsonFunctions($adb) {
 
 function vtJsonDependentModules($adb, $request) {
 	$moduleName = $request['modulename'];
-    
 	$result = $adb->pquery("SELECT fieldname, tabid, typeofdata, vtiger_ws_referencetype.type as reference_module FROM vtiger_field
 									INNER JOIN vtiger_ws_fieldtype ON vtiger_field.uitype = vtiger_ws_fieldtype.uitype
 									INNER JOIN vtiger_ws_referencetype ON vtiger_ws_fieldtype.fieldtypeid = vtiger_ws_referencetype.fieldtypeid
 							UNION
 							SELECT fieldname, tabid, typeofdata, relmodule as reference_module FROM vtiger_field
 									INNER JOIN vtiger_fieldmodulerel ON vtiger_field.fieldid = vtiger_fieldmodulerel.fieldid", array());
-    
 	$noOfFields = $adb->num_rows($result);
 	$dependentFields = array();
 	// List of modules which will not be supported by 'Create Entity' workflow task
@@ -51,8 +49,8 @@ function vtJsonDependentModules($adb, $request) {
 		if (in_array($tabModuleName, $filterModules))
 			continue;
 		if ($referenceModule == $moduleName && $tabModuleName != $moduleName) {
-            if(!vtlib_isModuleActive($tabModuleName))continue;
-			$dependentFields[$tabModuleName] = array('fieldname' => $fieldName, 'modulelabel' => getTranslatedString($tabModuleName, $tabModuleName));            
+			if(!vtlib_isModuleActive($tabModuleName))continue;
+			$dependentFields[$tabModuleName] = array('fieldname' => $fieldName, 'modulelabel' => getTranslatedString($tabModuleName, $tabModuleName));
 		} else {
 			$dataTypeInfo = explode('~', $typeOfData);
 			if ($dataTypeInfo[1] == 'M') { // If the current reference field is mandatory
@@ -66,9 +64,7 @@ function vtJsonDependentModules($adb, $request) {
 			unset($dependentFields[$tabModuleName]);
 		}
 	}
-    
 	$returnValue = array('count' => count($dependentFields), 'entities' => $dependentFields);
-    
 	echo Zend_Json::encode($returnValue);
 }
 

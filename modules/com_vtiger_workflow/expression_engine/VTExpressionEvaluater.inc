@@ -457,7 +457,7 @@ class VTFieldExpressionEvaluater{
 		$this->functions = array(
 				'concat'=>'__vt_concat',
 				'time_diff' => '__vt_time_diff',
- 	            'time_diffdays' => '__vt_time_diffdays',
+				'time_diffdays' => '__vt_time_diffdays',
 				'add_days' => '__vt_add_days',
 				'sub_days' => '__vt_sub_days',
 				'get_date' => '__vt_get_date',

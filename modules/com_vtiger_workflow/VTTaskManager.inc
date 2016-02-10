@@ -97,20 +97,17 @@
 		 *
 		 */
 		public function unserializeTask($str){
-                        $tasktype = VTTaskType::getInstanceFromTaskType(self::taskName($str));
-                        $this->requireTask(self::taskName($str),$tasktype);
+			$tasktype = VTTaskType::getInstanceFromTaskType(self::taskName($str));
+			$this->requireTask(self::taskName($str),$tasktype);
 			return unserialize($str);
 		}
 
-		/**
-		 *
-		 */
 		function getTasks(){
 			$adb = $this->adb;
 			$result = $adb->query("select task from com_vtiger_workflowtasks");
 			return $this->getTasksForResult($result);
 		}
-		
+
 		function getTaskTypes($moduleName=''){
 			return VTTaskType::getAll($moduleName);
 		}
@@ -121,7 +118,7 @@
 			$tasks = array();
 			foreach($it as $row){
 				$text = $row->task;
-                                $tasktype = VTTaskType::getInstanceFromTaskType(self::taskName($text));
+				$tasktype = VTTaskType::getInstanceFromTaskType(self::taskName($text));
 				$this->requireTask(self::taskName($text),$tasktype);
 				$tasks[] = unserialize($text);
 			}
@@ -230,7 +227,7 @@ class VTTaskType {
 		$exists = $adb->pquery('select count(*) from com_vtiger_workflow_tasktypes
 				where tasktypename=? and label=? and classname=? and classpath=? and
 				 templatepath=? and modules=? and sourcemodule=?',
-				array($taskType['name'], $taskType['label'], $taskType['classname'],  $taskType['classpath'], $taskType['templatepath'], $modules, $taskType['sourcemodule']));
+				array($taskType['name'], $taskType['label'], $taskType['classname'], $taskType['classpath'], $taskType['templatepath'], $modules, $taskType['sourcemodule']));
 		if ($exists and $adb->query_result($exists,0,0)==0) {
 		$taskTypeId = $adb->getUniqueID("com_vtiger_workflow_tasktypes");
 		$taskType['id'] = $taskTypeId;
@@ -238,7 +235,7 @@ class VTTaskType {
 		$adb->pquery("INSERT INTO com_vtiger_workflow_tasktypes
 						(id, tasktypename, label, classname, classpath, templatepath, modules, sourcemodule)
 						values (?,?,?,?,?,?,?,?)",
-				array($taskTypeId, $taskType['name'], $taskType['label'], $taskType['classname'],  $taskType['classpath'], $taskType['templatepath'], $modules, $taskType['sourcemodule']));
+				array($taskTypeId, $taskType['name'], $taskType['label'], $taskType['classname'], $taskType['classpath'], $taskType['templatepath'], $modules, $taskType['sourcemodule']));
 		}
 	}
 
