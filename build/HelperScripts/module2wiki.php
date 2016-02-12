@@ -44,6 +44,7 @@ $uitypes = array(
 	'24'=>'text',
 	'26'=>'documents folder',
 	'33'=>'multipicklist',
+	'3313'=>'module multi-list',
 	'51'=>'relation (account)',
 	'53'=>'assigned to',
 	'56'=>'checkbox',
