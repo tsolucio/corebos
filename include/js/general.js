@@ -1955,6 +1955,9 @@ function OpenCompose(id,mode,crmid)
 		case 'forward':
 			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&record='+id+'&forward=true';
 			break;
+		case 'reply':
+			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&record='+id+'&reply=true';
+			break;
 		case 'Invoice':
 			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+mode+'_'+id+'.pdf&invmodid='+crmid;
 			break;

@@ -162,6 +162,16 @@ if($_REQUEST['reply'] == "true")
 		$smarty->assign('BCC_MAIL',$bcc_add);
 		$smarty->assign('IDLISTS',preg_replace('/###/',',',$adb->query_result($result,0,'idlists')));
 }
+if(!empty($_REQUEST['reply'])) {
+	$repstr = getTranslatedString('Re','Emails');
+	if(!preg_match("/$repstr:/i", $focus->column_fields['subject']))
+		$focus->column_fields['subject'] = "$repstr: ".$focus->column_fields['subject'];
+}
+if(!empty($_REQUEST['forward'])) {
+	$fwdstr = getTranslatedString('Fwd','Emails');
+	if(!preg_match("/$fwdstr:/i", $focus->column_fields['subject']))
+		$focus->column_fields['subject'] = "$fwdstr: ".$focus->column_fields['subject'];
+}
 
 // Webmails
 if(isset($_REQUEST["mailid"]) && $_REQUEST["mailid"] != "") {
