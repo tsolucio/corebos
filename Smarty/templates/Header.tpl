@@ -159,7 +159,7 @@ var gVTUserID = '{$CURRENT_USER_ID}';
 				{if $ADMIN_LINK neq ''}
 					{foreach key=maintabs item=detail from=$HEADERS}
 						{if $maintabs eq "Settings"}
-							<td  valign="bottom" nowrap style="padding-bottom: 1em;" class="small" onmouseout="fnHideDrop('mainsettings');" onmouseover="fnDropDown(this,'mainsettings');" nowrap><a href="index.php?module=Settings&action=index&parenttab="><img src="{$IMAGEPATH}mainSettings.PNG"  border=0 style="padding: 0px;padding-left:5px "></a></td>
+							<td  valign="bottom" nowrap style="padding-bottom: 1em;" class="small" onmouseout="fnHideDrop('mainsettings');" onmouseover="fnDropDown(this,'mainsettings');" nowrap><a href="index.php?module=Settings&action=index&parenttab=" id="settingslink"><img src="{$IMAGEPATH}mainSettings.PNG" border=0 style="padding: 0px;padding-left:5px"></a></td>
 						{/if}
 					{/foreach}
 				{/if}
