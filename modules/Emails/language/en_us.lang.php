@@ -1,24 +1,14 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Emails/language/en_us.lang.php,v 1.17 2005/03/28 06:31:38 rank Exp $
- * Description:  Defines the English language pack for the Emails module.
- ********************************************************************************/
- 
+
 $mod_strings = Array(
-// Mike Crowe Mod --------------------------------------------------------added for general search
 'LBL_GENERAL_INFORMATION'=>'General Information',
 
 'LBL_MODULE_NAME'=>'Email',
@@ -46,7 +36,6 @@ $mod_strings = Array(
 'LBL_COLON'=>':',
 'LBL_CHK_MAIL'=>'Check Mail',
 'LBL_COMPOSE'=>'Compose',
-//Single change for 5.0.3
 'LBL_SETTINGS'=>'Incoming Mail Server Settings',
 'LBL_EMAIL_FOLDERS'=>'Email Folders',
 'LBL_INBOX'=>'Inbox',
@@ -70,8 +59,6 @@ $mod_strings = Array(
 'NTC_REMOVE_INVITEE'=>'Are you sure you want to remove this recipient from the email?',
 'LBL_INVITEE'=>'Recipients',
 
-// Added Fields
-// Contacts-SubPanelViewContactsAndUsers.php
 'LBL_BULK_MAILS'=>'Bulk Mails',
 'LBL_ATTACHMENT'=>'Attachment',
 'LBL_UPLOAD'=>'Upload',
@@ -84,10 +71,6 @@ $mod_strings = Array(
 'LBL_EMAIL_TEMPLATES_LIST'=>'Email Templates  List',
 'LBL_EMAIL_INFORMATION'=>'Email Information',
 
-
-
-
-//for v4 release added
 'LBL_NEW_LEAD'=>'New Lead',
 'LBL_LEAD_TITLE'=>'Leads',
 
@@ -98,13 +81,10 @@ $mod_strings = Array(
 'LBL_NEW_ACCOUNT'=>'New Organization',
 'LBL_ACCOUNT_TITLE'=>'Organizations',
 
-// Added vtiger_fields after vtiger4 - Beta
 'LBL_USER_TITLE'=>'Users',
 'LBL_NEW_USER'=>'New User',
 
-// Added for 4 GA
 'LBL_TOOL_FORM_TITLE'=>'Email Tools',
-//Added for 4GA
 'Date & Time Sent'=>'Date & Time Sent',
 'Sales Enity Module'=>'Sales Enity Module',
 'Related To'=>'Related To',
@@ -124,9 +104,7 @@ $mod_strings = Array(
 'MESSAGE_ADD_USER_OR_CONTACT'=>'Please Add any User(s) or Contact(s)...',
 'MESSAGE_MAIL_SENT_SUCCESSFULLY'=>' Mail(s) sent successfully!',
 
-// Added for web mail post 4.0.1 release
 'LBL_FETCH_WEBMAIL'=>'Fetch Web Mail',
-//Added for 4.2 Release -- CustomView
 'LBL_ALL'=>'All',
 'MESSAGE_CONTACT_NOT_WANT_MAIL'=>'This Contact does not want to receive mails.',
 'LBL_WEBMAILS_TITLE'=>'WebMails',
@@ -147,7 +125,6 @@ $mod_strings = Array(
 'LBL_COMPOSE_EMAIL'=>'Compose E-Mail',
 'LBL_VTIGER_EMAIL_CLIENT'=>'Webmail Client',
 
-//Added for 5.0.3
 'TITLE_VTIGERCRM_MAIL'=>'Mail',
 'TITLE_COMPOSE_MAIL'=>'Compose Mail',
 
@@ -161,7 +138,6 @@ $mod_strings = Array(
 'LBL_NO_RCPTS_EMAIL_ERROR'=>'No recepients specified',
 'LBL_CONF_MAILSERVER_ERROR'=>'Please configure your outgoing mailserver under Settings ---> Outgoing Server link',
 'LBL_MAILSELECT_INFO3'=>'You don\'t have permission to view email id(s) of the selected Record(s).',
-//Added  for script alerts
 'FEATURE_AVAILABLE_INFO' => 'This feature is currently only available for Microsoft Internet Explorer 5.5+ users\n\nWait f
 or an update!',
 'DOWNLOAD_CONFIRAMATION' => 'Do you want to download the file ?',
@@ -171,7 +147,6 @@ or an update!',
 'LBL_BYTES' => ' bytes',
 'LBL_CHECK_USER_MAILID' => 'Please check the current user mailid.It should be a valid mailid to send Emails',
 
-// Added/Updated for vtiger CRM 5.0.4
 'Activity Type'=>'Activity Type',
 'LBL_MAILSELECT_INFO'=>'has the following Email IDs associated.Please Select the Email IDs to which,the mail should be sent',
 'LBL_NO_RECORDS' => 'No Records Found',

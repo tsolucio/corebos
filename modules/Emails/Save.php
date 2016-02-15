@@ -65,7 +65,7 @@ if(isset($_REQUEST['filename_hidden'])) {
 } else {
 	$file_name = $_FILES['filename']['name'];
 }
-$errorCode = $_FILES['filename']['error'];
+$errorCode = isset($_FILES['filename']) ? $_FILES['filename']['error'] : 0;
 $errormessage = '';
 if($file_name != '' && $_FILES['filename']['size'] == 0)
 {
@@ -102,7 +102,7 @@ if($file_name != '' && $_FILES['filename']['size'] == 0)
 }
 
 
-if($_FILES["filename"]["size"] == 0 && $_FILES["filename"]["name"] != '') {
+if(isset($_FILES['filename']) && $_FILES["filename"]["size"] == 0 && $_FILES["filename"]["name"] != '') {
 	$file_upload_error = true;
 	$_FILES = '';
 }
@@ -135,7 +135,7 @@ function checkIfContactExists($mailid)
 	}
 }
 //assign the focus values
-$focus->filename = $_REQUEST['file_name'];
+$focus->filename = isset($_REQUEST['file_name']) ? $_REQUEST['file_name'] : '';
 $focus->parent_id = vtlib_purify($_REQUEST['parent_id']);
 $focus->parent_type = vtlib_purify($_REQUEST['parent_type']);
 $focus->column_fields["assigned_user_id"]=$current_user->id;
@@ -181,16 +181,7 @@ if($current_user->column_fields['send_email_to_sender']=='1' && isset($_REQUEST[
 }
 $focus->retrieve_entity_info($return_id,"Emails");
 
-//this is to receive the data from the Select Users button
-if($_REQUEST['source_module'] == null)
-{
-	$module = 'users';
-}
-//this will be the case if the Select Contact button is chosen
-else
-{
-	$module = $_REQUEST['source_module'];
-}
+$module = empty($_REQUEST['source_module']) ? 'users' : $_REQUEST['source_module'];
 
 if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] != "")
 	$return_module = vtlib_purify($_REQUEST['return_module']);

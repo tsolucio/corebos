@@ -174,7 +174,7 @@ class Emails extends CRMEntity {
 				$adb->query($query);
 			}
 		}
-		if ($_REQUEST['att_module'] == 'Webmails') {
+		if (isset($_REQUEST['att_module']) and $_REQUEST['att_module'] == 'Webmails') {
 			require_once("modules/Webmails/Webmails.php");
 			require_once("modules/Webmails/MailParse.php");
 			require_once('modules/Webmails/MailBox.php');
