@@ -442,6 +442,7 @@ function __cb_getGEODistanceFromCoordinates($arr){
 class VTFieldExpressionEvaluater{
 	function __construct($expr){
 
+		$this->debug = array();
 		$this->operators = array(
 				'+'  => '__vt_add',
 				'-'  => '__vt_sub',
@@ -494,13 +495,22 @@ class VTFieldExpressionEvaluater{
 	}
 
 	function exec($expr){
+		global $logbg;
 		if($expr instanceof VTExpressionSymbol){
+			$loginfo = print_r($expr,true);
+			$logbg->debug("VTExpressionSymbol: $loginfo");
+			$this->debug[] = $loginfo;
 			return $this->env($expr);
 		}else if($expr instanceof VTExpressionTreeNode){
 			$op = $expr->getName();
 			if($op->value=='if'){
 				$params = $expr->getParams();
 				$cond = $this->exec($params[0]);
+				$loginfo = print_r($params,true);
+				$logbg->debug("VTExpressionTreeNode: if $loginfo");
+				$logbg->debug('VTExpressionTreeNode: condition => '.($cond?'true':'false'));
+				$this->debug[] = $loginfo;
+				$this->debug[] = $cond;
 				if($cond){
 					return $this->exec($params[1]);
 				}else{
@@ -515,9 +525,15 @@ class VTFieldExpressionEvaluater{
 				} else {
 					$params = array_map(array($this, 'exec'), $expr->getParams());
 				}
+				$loginfo = print_r($params,true);
+				$logbg->debug("VTExpressionTreeNode: function $func $loginfo");
+				$this->debug[] = $loginfo;
 				return $func($params);
 			}
 		}else{
+			$loginfo = print_r($expr,true);
+			$logbg->debug("VTExpression: $loginfo");
+			$this->debug[] = $loginfo;
 			return $expr;
 		}
 	}
