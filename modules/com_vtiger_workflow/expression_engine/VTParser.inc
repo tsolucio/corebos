@@ -136,6 +136,12 @@ class VTExpressionParser{
 			}else{
 				$this->consume('CLOSE_BRACKET', new Symbol(')'));
 			}
+			$nsym = $this->la(1);
+			if ($nsym->label == 'OPERATOR') {
+				$operator = $this->nextToken()->value;
+				$rhs = $this->expression();
+				return new VTExpressionTreeNode(array($operator, new VTExpressionTreeNode($arr), $rhs));
+			}
 			return new VTExpressionTreeNode($arr);
 		}else{
 			return $this->binOp();
@@ -159,7 +165,7 @@ class VTExpressionParser{
 			$la = $this->la();
 			if($la->label == 'OPERATOR' && in_array($la->value->value, $this->precedence[$prec])){
 				$operator = $this->nextToken()->value;
-				$rhs = $this->binOpPrec($prec);
+				$rhs = $this->expression();
 				return new VTExpressionTreeNode(array($operator, $lhs, $rhs));
 			}else{
 				return $lhs;
