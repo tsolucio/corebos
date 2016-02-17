@@ -36,7 +36,6 @@ require_once 'include/Webservices/WebserviceEntityOperation.php';
 require_once "include/language/$default_language.lang.php";
 require_once 'include/Webservices/Retrieve.php';
 require_once('modules/Emails/mail.php');
-require_once 'modules/Users/Users.php';
 require_once('modules/com_vtiger_workflow/VTSimpleTemplate.inc');
 require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
