@@ -518,11 +518,11 @@ class QueryGenerator {
 			if(empty($fieldName)) {
 				continue;
 			}
-			$field = $moduleFields[$fieldName];
-			if(empty($field)) {
+			if(empty($moduleFields[$fieldName])) {
 				// not accessible field.
 				continue;
 			}
+			$field = $moduleFields[$fieldName];
 			$baseTable = $field->getTableName();
 			// When a field is included in Where Clause, but not in Select Clause, and the field table is not base table,
 			// The table will not be present in tablesList and hence needs to be added to the list.
