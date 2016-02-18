@@ -111,7 +111,7 @@ class VTJsonCondition {
 
 	function checkCondition($entityData, $cond, $referredEntityData=null) {
 		$data = $entityData->getData();
-
+var_dump($cond);
 		$condition = $cond['operation'];
 		if(empty($condition)) return false;
 		$fieldValue = $data[$cond['fieldname']];
@@ -315,7 +315,7 @@ class VTJsonCondition {
 				}
 				return false;
 			case 'less than days ago':
-				if(empty($fieldValue) || empty($value)) {
+				if(empty($fieldValue) || !isset($value)) {
 					return false;
 				}
 				$today = date('Y-m-d');
@@ -325,7 +325,7 @@ class VTJsonCondition {
 				}
 				return false;
 			case 'more than days ago':
-				if(empty($fieldValue) || empty($value)) {
+				if(empty($fieldValue) || !isset($value)) {
 					return false;
 				}
 				$olderDate = date('Y-m-d', strtotime('-'.$value.' days'));
@@ -334,7 +334,7 @@ class VTJsonCondition {
 				}
 				return false;
 			case 'in less than':
-				if(empty($fieldValue) || empty($value)) {
+				if(empty($fieldValue) || !isset($value)) {
 					return false;
 				}
 				$today = date('Y-m-d');
@@ -344,7 +344,7 @@ class VTJsonCondition {
 				}
 				return false;
 			case 'in more than':
-				if(empty($fieldValue) || empty($value)) {
+				if(empty($fieldValue) || !isset($value)) {
 					return false;
 				}
 				$futureDate = date('Y-m-d', strtotime('+'.$value.' days'));
@@ -353,7 +353,7 @@ class VTJsonCondition {
 				}
 				return false;
 			case 'days ago':
-				if(empty($fieldValue) || empty($value)) {
+				if(empty($fieldValue) || !isset($value)) {
 					return false;
 				}
 				$olderDate = date('Y-m-d', strtotime('-'.$value.' days'));
@@ -362,7 +362,7 @@ class VTJsonCondition {
 				}
 				return false;
 			case 'days later':
-				if(empty($fieldValue) || empty($value)) {
+				if(empty($fieldValue) || !isset($value)) {
 					return false;
 				}
 				$futureDate = date('Y-m-d', strtotime('+'.$value.' days'));
@@ -372,7 +372,7 @@ class VTJsonCondition {
 				return false;
 
 			case 'less than hours before':
-				if(empty($fieldValue) || empty($value)) {
+				if(empty($fieldValue) || !isset($value)) {
 					return false;
 				}
 				$currentTime = date('Y-m-d H:i:s');
@@ -383,7 +383,7 @@ class VTJsonCondition {
 				return false;
 
 			case 'less than hours later':
-				if(empty($fieldValue) || empty($value)) {
+				if(empty($fieldValue) || !isset($value)) {
 					return false;
 				}
 				$currentTime = date('Y-m-d H:i:s');
@@ -394,7 +394,7 @@ class VTJsonCondition {
 				return false;
 
 			case 'more than hours before':
-				if(empty($fieldValue) || empty($value)) {
+				if(empty($fieldValue) || !isset($value)) {
 					return false;
 				}
 				$olderDateTime = date('Y-m-d H:i:s', strtotime('-'.$value.' hours'));
@@ -403,7 +403,7 @@ class VTJsonCondition {
 				}
 				return false;
 			case 'more than hours later':
-				if(empty($fieldValue) || empty($value)) {
+				if(empty($fieldValue) || !isset($value)) {
 					return false;
 				}
 				$futureDateTime = date('Y-m-d H:i:s', strtotime('+'.$value.' hours'));
