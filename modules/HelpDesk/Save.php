@@ -21,14 +21,6 @@ $mode = vtlib_purify($_REQUEST['mode']);
 $record=vtlib_purify($_REQUEST['record']);
 if($mode) $focus->mode = $mode;
 if($record)$focus->id  = $record;
-//Added to update the ticket history
-//Before save we have to construct the update log. 
-if($mode == 'edit')
-{
-	$usr_qry = $adb->pquery('select * from vtiger_crmentity where crmid=?', array($focus->id));
-	$old_user_id = $adb->query_result($usr_qry,0,"smownerid");
-}
-$grp_name = getGroupName($_REQUEST['assigned_group_id']);
 
 if($_REQUEST['assigntype'] == 'U') {
 	$focus->column_fields['assigned_user_id'] = $_REQUEST['assigned_user_id'];
@@ -75,7 +67,7 @@ if ($saveerror) { // there is an error so we go back to EditView.
 	header("location: index.php?action=$error_action&module=$error_module&record=$record&return_viewname=$return_viewname".$search.$return_action.$returnvalues."&error_msg=$errormessage&save_error=true&encode_val=$encode_field_values");
 	die();
 }
-
+$grp_name = getGroupName($_REQUEST['assigned_group_id']);
 $fldvalue = $focus->constructUpdateLog($focus, $mode, $grp_name, $_REQUEST['assigntype']);
 $fldvalue = from_html($fldvalue,($mode == 'edit')?true:false);
 

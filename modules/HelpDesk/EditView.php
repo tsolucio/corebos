@@ -9,10 +9,6 @@
  ************************************************************************************/
 require_once 'modules/Vtiger/EditView.php';
 
-if($focus->mode == 'edit') {
-	$smarty->assign('OLDSMOWNERID', $focus->column_fields['assigned_user_id']);
-}
-
 if(isset($_REQUEST['product_id'])) {
 	$smarty->assign('PRODUCTID', vtlib_purify($_REQUEST['product_id']));
 }
