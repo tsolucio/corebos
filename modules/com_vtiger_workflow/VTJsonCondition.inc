@@ -111,7 +111,7 @@ class VTJsonCondition {
 
 	function checkCondition($entityData, $cond, $referredEntityData=null) {
 		$data = $entityData->getData();
-var_dump($cond);
+
 		$condition = $cond['operation'];
 		if(empty($condition)) return false;
 		$fieldValue = $data[$cond['fieldname']];
