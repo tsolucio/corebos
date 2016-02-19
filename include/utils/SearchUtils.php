@@ -1132,21 +1132,23 @@ function getAdvancedSearchCriteriaList($advft_criteria, $advft_criteria_groups, 
 
 		$fieldName = $column_info[2];
 		$fieldObj = $moduleFields[$fieldName];
-		$fieldType = $fieldObj->getFieldDataType();
-
-		if($fieldType == 'currency') {
-			// Some of the currency fields like Unit Price, Total, Sub-total etc of Inventory modules, do not need currency conversion
-			if($fieldObj->getUIType() == '72') {
-				$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value, null, true);
-			} else {
-				$currencyField = new CurrencyField($adv_filter_value);
-				if($module == 'Potentials' && $fieldName == 'amount') {
-					$currencyField->setNumberofDecimals(2);
+		if (is_object($fieldObj))
+		{
+			$fieldType = $fieldObj->getFieldDataType();
+	
+			if($fieldType == 'currency') {
+				// Some of the currency fields like Unit Price, Total, Sub-total etc of Inventory modules, do not need currency conversion
+				if($fieldObj->getUIType() == '72') {
+					$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value, null, true);
+				} else {
+					$currencyField = new CurrencyField($adv_filter_value);
+					if($module == 'Potentials' && $fieldName == 'amount') {
+						$currencyField->setNumberofDecimals(2);
+					}
+					$adv_filter_value = $currencyField->getDBInsertedValue();
 				}
-				$adv_filter_value = $currencyField->getDBInsertedValue();
 			}
 		}
-
 		$criteria = array();
 		$criteria['columnname'] = $adv_filter_column;
 		$criteria['comparator'] = $adv_filter_comparator;
