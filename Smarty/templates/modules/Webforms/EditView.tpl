@@ -61,7 +61,7 @@
 											{if $WEBFORM->hasId()}
 											<input type="hidden" name="id" value={$WEBFORM->getId()}></input>
 											{/if}
-											<table   class="small" border="0" cellpadding="0" cellspacing="0" width="100%">
+											<table class="small" border="0" cellpadding="0" cellspacing="0" width="100%">
 												<tr>
 													<td colspan="4" style="padding:5px">
 														<div align="center" >
@@ -76,7 +76,7 @@
 														<b>{'LBL_MODULE_INFORMATION'|@getTranslatedString:$MODULE}</b>
 													</td>
 													{if $WEBFORM->hasId()}
-													<td  colspan="1" class="detailedViewHeader" align="right">
+													<td colspan="1" class="detailedViewHeader" align="right">
 														{'LBL_ENABLE'|@getTranslatedString:$MODULE}
 														{if $WEBFORM->getEnabled() eq 1}
 															<input type="checkbox" name="enabled" id="enabled" checked="checked"></input>
@@ -86,13 +86,13 @@
 													</td>
 													{/if}
 												</tr>
-												<!-- Cell information  -->
+												<!-- Cell information -->
 												<tr style="height:25px">
 													<td class="dvtCellLabel" align="right" width="10%" nowrap="nowrap">
 														<font color="red">*</font>{'LBL_WEBFORM_NAME'|@getTranslatedString:$MODULE}
 													</td>
 													<td class="dvtCellInfo" align="left" width="40%">
-														<input type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="name"  name="name" value="{$WEBFORM->getName()}" {if $WEBFORM->hasId()}readonly="readonly"{/if}>
+														<input type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="name" name="name" value="{$WEBFORM->getName()}" {if $WEBFORM->hasId()}readonly="readonly"{/if}>
 													</td>
 													<td class="dvtCellLabel" align="right" width="10%" nowrap="nowrap">
 														<font color="red">*</font>{'LBL_MODULE'|@getTranslatedString:$MODULE} :
@@ -130,7 +130,7 @@
 														{'LBL_RETURNURL'|@getTranslatedString:$MODULE}
 													</td>
 													<td class="dvtCellInfo" align="left" >
-														http:// <input type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="returnurl"  name="returnurl" value="{$WEBFORM->getReturnUrl()}">
+														http:// <input type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="returnurl" name="returnurl" value="{$WEBFORM->getReturnUrl()}">
 													</td>
 												</tr>
 												{if $WEBFORM->hasId()}
@@ -153,8 +153,8 @@
 													<td class="dvtCellLabel" align="right" colspan="1">
 														{'LBL_DESCRIPTION'|@getTranslatedString:$MODULE}
 													</td>
-													<td  colspan="3">
-														<textarea  onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" rows="8" cols="90" onblur="this.className='detailedViewTextBox'" name="description" id="description" onfocus="this.className='detailedViewTextBoxOn'" tabindex="" class="detailedViewTextBox" >{if $WEBFORM->hasId()}{$WEBFORM->getDescription()}{/if}</textarea>
+													<td colspan="3">
+														<textarea onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" rows="8" cols="90" onblur="this.className='detailedViewTextBox'" name="description" id="description" onfocus="this.className='detailedViewTextBoxOn'" tabindex="" class="detailedViewTextBox" >{if $WEBFORM->hasId()}{$WEBFORM->getDescription()}{/if}</textarea>
 													</td>
 												</tr>
 												<!--Cell Information end-->
@@ -166,12 +166,12 @@
 													<td colspan="3" class="detailedViewHeader">
 														<b>{'LBL_FIELD_INFORMATION'|@getTranslatedString:$MODULE}</b>
 													</td>
-													<td  colspan="1" class="detailedViewHeader" align="right">
+													<td colspan="1" class="detailedViewHeader" align="right">
 													</td>
 												</tr>
 	<!-- Cell information for fields -->
 												<tr >
-													<td colspan="4"  >
+													<td colspan="4">
 														<div id="Webforms_FieldsView"></div>
 														{if $WEBFORM->hasId()}{include file="modules/Webforms/FieldsView.tpl"}{/if}
 													</td>

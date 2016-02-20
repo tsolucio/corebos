@@ -25,7 +25,7 @@
 		{/foreach}
 </select>
 {elseif $fieldinfo.type.name eq boolean}
-<input type="checkbox"  name="{$field->getNeutralizedField()}" >
+<input type="checkbox" name="{$field->getNeutralizedField()}" >
 	{else}{if $field->getNeutralizedField() eq salutationtype}
 <select name="{$field->getNeutralizedField()}" {if $field->getRequired() eq 1}required="true"{/if} >
 			<option value="">--None--</option>
@@ -34,7 +34,7 @@
 			<option value="Mrs.">Mrs.</option>
 			<option value="Dr.">Dr.</option>
 			<option value="Prof.">Prof</option>
-		</select>{else}<input type="text" value="" name="{$field->getNeutralizedField()}"  {if $field->getRequired() eq 1}required="true"{/if}></input>{/if}{/if}
+		</select>{else}<input type="text" value="" name="{$field->getNeutralizedField()}" {if $field->getRequired() eq 1}required="true"{/if}></input>{/if}{/if}
 
 	</p>{/foreach}
 

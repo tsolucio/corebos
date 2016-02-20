@@ -31,7 +31,7 @@
 				<table cellspacing="0" cellpadding="0" border="0" align="center" width="95%" >
 						<tr>
 							<td class="small">
-								<table cellpadding="5" border="0" bgcolor="white" align="center" width="100%"  celspacing="0">
+								<table cellpadding="5" border="0" bgcolor="white" align="center" width="100%" celspacing="0">
 									<tr>
 										<td id="webform_source_description"></td>
 									</tr>
@@ -42,7 +42,7 @@
 									</tr>
 									<tr>
 										<td rowspan="5">
-											<textarea  readonly="readonly" rows="25" cols="25" style="height:auto;" id="webform_source" name="webform_source" value=""></textarea>
+											<textarea readonly="readonly" rows="25" cols="25" style="height:auto;" id="webform_source" name="webform_source" value=""></textarea>
 										</td>
 									</tr>
 								</table>
@@ -78,7 +78,7 @@
 								</td>
 							</tr>
 						</table>
-					</td>					
+					</td>
 				</tr>
 				<tr>
 					<td align="left" valign="top">
@@ -96,13 +96,13 @@
 									<tr>
 										<td style="padding:10px">
 										<!-- General details -->
-											<table   class="small" border="0" cellpadding="0" cellspacing="0" width="100%">
+											<table class="small" border="0" cellpadding="0" cellspacing="0" width="100%">
 												<!--Block Head-->
 												<tr>
 													<td colspan={if $WEBFORMMODEL->hasId()}"3"{else}"4"{/if} class="detailedViewHeader">
 														<b>{'LBL_MODULE_INFORMATION'|@getTranslatedString:$MODULE}</b>
 													</td>
-													<td  colspan="1" class="detailedViewHeader" align="right">
+													<td colspan="1" class="detailedViewHeader" align="right">
 														{'LBL_ENABLED'|@getTranslatedString:$MODULE}
 														{if $WEBFORMMODEL->getEnabled() eq 1}
 															<img src="themes/images/prvPrfSelectedTick.gif">
@@ -112,7 +112,7 @@
 													</td>
 
 												</tr>
-												<!-- Cell information  -->
+												<!-- Cell information -->
 												<tr style="height:25px">
 													<td class="dvtCellLabel" align="right" width="10%">
 														<font color="red">*</font>{'LBL_WEBFORM_NAME'|@getTranslatedString:$MODULE}
@@ -182,7 +182,7 @@
 													</td>
 												</tr>
 												<tr >
-													<td colspan="4"  >
+													<td colspan="4">
 														<div id="Webforms_FieldsView"></div>
 <!--Fields View-->
 														<table id="field_table" class="small" border="0" cellpadding="5" cellspacing="1" width="100%">
@@ -216,7 +216,7 @@
 																		{/if}
 																	</td>
 																	<td class="dvtCellInfo" align="center" colspan="1">
-																		{if  $WEBFORMMODEL->isRequired($WEBFORMMODEL->getId(),$fieldinfo.name) eq true}
+																		{if $WEBFORMMODEL->isRequired($WEBFORMMODEL->getId(),$fieldinfo.name) eq true}
 																			<img src="themes/images/prvPrfSelectedTick.gif">
 																		{else}
 																			<img src="themes/images/no.gif">
@@ -239,7 +239,7 @@
 	<!--Cell Information end-->
 												<tr style="height:25px">
 													<td>&nbsp;</td>
-												</tr>												
+												</tr>
 											</table>
 										</form>
 									</td>

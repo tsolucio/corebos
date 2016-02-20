@@ -6,7 +6,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************}
-
 <div id="orgLay" class="layerPopup">
 
 <table class="layerHeadingULine" border="0" cellpadding="5" cellspacing="0" width="100%">
