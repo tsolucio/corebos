@@ -98,6 +98,7 @@ $mod_strings = array(
 'Relate Service' => 'Relacionar Servicio',
 'Relate with AccountVendor' => 'Relacionar con Cuenta/Proveedor',
 'Relate with Contact' => 'Relacionar con Contacto',
+'CBDeleteRelatedTask' => 'Eliminar Registros Relacionados',
 
 'LBL_EVENTNAME' => 'Nombre de Evento',
 'LBL_DESCRIPTION' => 'Descripción',

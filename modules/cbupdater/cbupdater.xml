@@ -506,4 +506,11 @@
 	<classname>PdoDiscontinuedToCheckbox</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete Related records task</description>
+	<filename>build/changeSets/add_workflow_delrelated.php</filename>
+	<classname>add_workflow_delrelated</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

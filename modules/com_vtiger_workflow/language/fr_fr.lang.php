@@ -63,9 +63,9 @@ $mod_strings = array(
 	'LBL_EMAIL_CC' => 'CC',
 	'LBL_EMAIL_BCC' => 'BCC',
 	'LBL_EMAIL_SUBJECT' => 'Sujet',
-        'LBL_EMAIL_FROMNAME' => 'From Name',
-        'LBL_EMAIL_FROMEMAIL' => 'From Email',
-        'LBL_EMAIL_REPLYTO' => 'Répond à',
+	'LBL_EMAIL_FROMNAME' => 'From Name',
+	'LBL_EMAIL_FROMEMAIL' => 'From Email',
+	'LBL_EMAIL_REPLYTO' => 'Répond à',
 	
 	'LBL_WORKFLOW_NOTE_EVENT_TASK_TIMEZONE' => 'Note: Toutes les informations de date et temps configuré pour cet évènement seront basé sur le fuseau horaire configuré dans config.inc.php',
 	// 5.4.0
@@ -98,6 +98,7 @@ $mod_strings = array(
 	'Relate Service' => 'Relate Service',
 	'Relate with AccountVendor' => 'Relate with Account/Vendor',
 	'Relate with Contact' => 'Relate with Contact',
+	'CBDeleteRelatedTask' => 'Delete Related Records',
 	'LBL_HELPDESK_SUPPORT_EMAILID'=>'Email du support client ',
 	'LBL_HELPDESK_SUPPORT_NAME'=>'Nom du support client ',
 	'LBL_ORGANIZATION_LOGO' => 'Logo',

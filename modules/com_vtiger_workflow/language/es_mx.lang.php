@@ -103,6 +103,7 @@ $mod_strings = array(
 'Relate Service' => 'Relacionar Servicio',
 'Relate with AccountVendor' => 'Relacionar con Cuenta/Proveedor',
 'Relate with Contact' => 'Relacionar con Contacto',
+'CBDeleteRelatedTask' => 'Eliminar Registros Relacionados',
 'LBL_HELPDESK_SUPPORT_EMAILID'=>'Email de Asistencia y Soporte',
 'LBL_HELPDESK_SUPPORT_NAME'=>'Nombre de Asistencia y Soporte',
 'LBL_ORGANIZATION_LOGO' => 'Logo Empresa',
