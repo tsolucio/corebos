@@ -669,12 +669,14 @@ class QueryGenerator {
 				$fieldName = $conditionInfo['fieldName'];
 				$referenceFieldObject = $moduleFields[$conditionInfo['referenceField']];
 				$fields = $meta->getModuleFields();
-				if (empty($fields[$fieldName])) continue;
-				$fieldObject = $fields[$fieldName];
+				if ($fieldName=='id') {
+					$tableName = $meta->getEntityBaseTable();
+				} else {
+					if (empty($fields[$fieldName])) continue;
+					$fieldObject = $fields[$fieldName];
+					$tableName = $fieldObject->getTableName();
+				}
 
-				if(empty($fieldObject)) continue;
-
-				$tableName = $fieldObject->getTableName();
 				if(!in_array($tableName, $referenceFieldTableList)) {
 					if($referenceFieldObject->getFieldName() == 'parent_id' && ($this->getModule() == 'Calendar' || $this->getModule() == 'Events')) {
 						$joinclause = 'LEFT JOIN vtiger_seactivityrel ON vtiger_seactivityrel.activityid = vtiger_activity.activityid';
