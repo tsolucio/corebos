@@ -27,6 +27,18 @@ function vtJsonFunctions($adb) {
 	echo Zend_Json::encode($functions);
 }
 
+function vtJsonRelatedModules($adb, $request) {
+	$relrs = $adb->pquery('SELECT * FROM vtiger_relatedlists WHERE tabid=?',array(getTabid($request['modulename'])));
+	$relmods = array();
+	while ($rel = $adb->fetch_array($relrs)) {
+		$mname = getTabModuleName($rel['related_tabid']);
+		if (empty($mname)) continue;
+		$relmods[$mname] = getTranslatedString($mname,$mname);
+	}
+	asort($relmods);
+	echo json_encode($relmods);
+}
+
 function vtJsonDependentModules($adb, $request) {
 	$moduleName = $request['modulename'];
 	$result = $adb->pquery("SELECT fieldname, tabid, typeofdata, vtiger_ws_referencetype.type as reference_module FROM vtiger_field
@@ -91,6 +103,8 @@ if ($mode == 'getfieldsjson') {
 	vtJsonFunctions($adb);
 } elseif ($mode == 'getdependentfields') {
 	vtJsonDependentModules($adb, $_REQUEST);
+} elseif ($mode == 'getrelatedmodules') {
+	vtJsonRelatedModules($adb, $_REQUEST);
 } elseif ($mode == 'getownerslist') {
 	vtJsonOwnersList($adb);
 }
