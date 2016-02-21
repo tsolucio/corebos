@@ -719,18 +719,18 @@ class QueryGenerator {
 								$referenceFieldObject = $this->referenceFields[$fld][$mname][$fldname];
 								$tableName = $referenceFieldObject->getTableName();
 								if(!in_array($tableName, $referenceFieldTableList)) {
-									if($referenceFieldObject->getFieldName() == 'parent_id' && ($this->getModule() == 'Calendar' || $this->getModule() == 'Events')) {
+									if(($referenceFieldObject->getFieldName() == 'parent_id' || $fld == 'parent_id') && ($this->getModule() == 'Calendar' || $this->getModule() == 'Events')) {
 										$joinclause = 'LEFT JOIN vtiger_seactivityrel ON vtiger_seactivityrel.activityid = vtiger_activity.activityid';
 										if (strpos($sql, $joinclause)===false)
 											$sql .= " $joinclause ";
 									}
-									if($referenceFieldObject->getFieldName() == 'contact_id' && ($this->getModule() == 'Calendar' || $this->getModule() == 'Events')) {
+									if(($referenceFieldObject->getFieldName() == 'contact_id' || $fld == 'contact_id') && ($this->getModule() == 'Calendar' || $this->getModule() == 'Events')) {
 										$joinclause = 'LEFT JOIN vtiger_cntactivityrel ON vtiger_cntactivityrel.activityid = vtiger_activity.activityid';
 										if (strpos($sql, $joinclause)===false)
 											$sql .= " $joinclause ";
 									}
 									$sql .= " LEFT JOIN ".$tableName.' AS '.$tableName.$fld.' ON '.
-										$tableName.$fld.'.'.$reltableList[$tableName].'='.$baseTable.'.'.$moduleFields[$fld]->getColumnName();
+										$tableName.$fld.'.'.$reltableList[$tableName].'='.$moduleFields[$fld]->getTableName().'.'.$moduleFields[$fld]->getColumnName();
 									$referenceFieldTableList[] = $tableName;
 								}
 								break 2;
@@ -747,18 +747,18 @@ class QueryGenerator {
 							$referenceFieldObject = $this->referenceFields[$fld][$fldmod][$fldname];
 							$tableName = $referenceFieldObject->getTableName();
 							if(!in_array($tableName, $referenceFieldTableList)) {
-								if($referenceFieldObject->getFieldName() == 'parent_id' && ($this->getModule() == 'Calendar' || $this->getModule() == 'Events')) {
+								if(($referenceFieldObject->getFieldName() == 'parent_id' || $fld == 'parent_id') && ($this->getModule() == 'Calendar' || $this->getModule() == 'Events')) {
 									$joinclause = 'LEFT JOIN vtiger_seactivityrel ON vtiger_seactivityrel.activityid = vtiger_activity.activityid';
 									if (strpos($sql, $joinclause)===false)
 										$sql .= " $joinclause ";
 								}
-								if($referenceFieldObject->getFieldName() == 'contact_id' && ($this->getModule() == 'Calendar' || $this->getModule() == 'Events')) {
+								if(($referenceFieldObject->getFieldName() == 'contact_id' || $fld == 'contact_id') && ($this->getModule() == 'Calendar' || $this->getModule() == 'Events')) {
 									$joinclause = 'LEFT JOIN vtiger_cntactivityrel ON vtiger_cntactivityrel.activityid = vtiger_activity.activityid';
 									if (strpos($sql, $joinclause)===false)
 										$sql .= " $joinclause ";
 								}
 								$sql .= " LEFT JOIN ".$tableName.' AS '.$tableName.$fld.' ON '.
-									$tableName.$fld.'.'.$reltableList[$tableName].'='.$baseTable.'.'.$moduleFields[$fld]->getColumnName();
+									$tableName.$fld.'.'.$reltableList[$tableName].'='.$moduleFields[$fld]->getTableName().'.'.$moduleFields[$fld]->getColumnName();
 								$referenceFieldTableList[] = $tableName;
 							}
 							break;
