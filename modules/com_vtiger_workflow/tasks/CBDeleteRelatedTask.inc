@@ -43,9 +43,8 @@ class CBDeleteRelatedTask extends VTTask{
 					break;
 				}
 			}
-			$bmod = CRMEntity::getInstance($module);
 			$queryGenerator = new QueryGenerator($this->relmodule, $current_user);
-			$queryGenerator->setFields(array('id',$bmod->list_link_field));  // include link field to force join
+			$queryGenerator->setFields(array('id'));
 			$queryGenerator->addReferenceModuleFieldCondition($module, $reffield, 'id', $cto_id, 'e');
 			$query = $queryGenerator->getQuery();
 			$updquery = 'UPDATE vtiger_crmentity set deleted=1 where crmid=?';
