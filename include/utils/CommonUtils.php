@@ -3547,4 +3547,38 @@ function fetch_logo($type) {
 	return $logodir.$logoname;
 }
 
+//added to get mail info for portal user
+//type argument included when addin customizable tempalte for sending portal login details
+function getmail_contents_portalUser($request_array,$password,$type='')
+{
+	global $mod_strings ,$adb;
+
+	$subject = $mod_strings['Customer Portal Login Details'];
+
+	//here id is hardcoded with 5. it is for support start notification in vtiger_notificationscheduler
+
+	$query='select vtiger_emailtemplates.subject,vtiger_emailtemplates.body from vtiger_notificationscheduler inner join vtiger_emailtemplates on vtiger_emailtemplates.templateid=vtiger_notificationscheduler.notificationbody where schedulednotificationid=5';
+
+	$result = $adb->pquery($query, array());
+	$body=$adb->query_result($result,0,'body');
+	$contents=$body;
+	$contents = str_replace('$contact_name$',$request_array['first_name']." ".$request_array['last_name'],$contents);
+	$contents = str_replace('$login_name$',$request_array['username'],$contents);
+	$contents = str_replace('$password$',$password,$contents);
+	$contents = str_replace('$URL$',$request_array['portal_url'],$contents);
+	$contents = str_replace('$support_team$',$mod_strings['Support Team'],$contents);
+	$contents = str_replace('$logo$','<img src="cid:logo" />',$contents);
+
+	if($type == "LoginDetails")
+	{
+		$temp=$contents;
+		$value["subject"]=$adb->query_result($result,0,'subject');
+		$value["body"]=$temp;
+		return $value;
+	}
+
+	return $contents;
+
+}
+
 ?>
