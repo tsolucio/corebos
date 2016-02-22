@@ -25,8 +25,8 @@ class sortworkflowtasks extends cbupdaterWorker {
 			$result = $adb->pquery('show columns from com_vtiger_workflowtasks like ?', array('executionorder'));
 			if (!($adb->num_rows($result))) {
 				$this->ExecuteQuery('ALTER TABLE com_vtiger_workflowtasks ADD executionorder INT(10)', array());
+				$this->ExecuteQuery('ALTER TABLE `com_vtiger_workflowtasks` ADD INDEX(`executionorder`)');
 			}
-			$this->ExecuteQuery('ALTER TABLE `com_vtiger_workflowtasks` ADD INDEX(`executionorder`)');
 			$result = $adb->pquery('select task_id,workflow_id from com_vtiger_workflowtasks order by workflow_id', array());
 			$upd = 'update com_vtiger_workflowtasks set executionorder=? where task_id=?';
 			$wfid = null;
