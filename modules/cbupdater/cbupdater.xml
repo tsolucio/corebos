@@ -513,4 +513,11 @@
 	<classname>add_workflow_delrelated</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add sort column to sort workflow tasks</description>
+	<filename>build/changeSets/sortworkflowtasks.php</filename>
+	<classname>sortworkflowtasks</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

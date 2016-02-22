@@ -698,6 +698,18 @@ function editworkflowscript($, conditions){
 
 }
 
+function moveWorkflowTaskUpDown(direction,task_id) {
+	jQuery.get('index.php', {
+			module:'com_vtiger_workflow',
+			action:'com_vtiger_workflowAjax',
+			file:'WorkflowComponents', ajax:'true',
+			wftaskid:task_id, mode:'moveWorkflowTaskUpDown', movedirection:direction},
+		function(result){
+			location.reload();
+		}
+	);
+}
+
 // On Schedule functionality
 function onschedule_preparescreen(radiobutton) {
 	if (jQuery(radiobutton).val()=='ON_SCHEDULE') {

@@ -94,6 +94,26 @@ function vtJsonOwnersList($adb) {
 	echo Zend_Json::encode($ownersList);
 }
 
+function moveWorkflowTaskUpDown($adb, $request) {
+	$direction = $request['movedirection'];
+	$task_id = $request['wftaskid'];
+	$wfrs = $adb->pquery('select workflow_id,executionorder from com_vtiger_workflowtasks where task_id=?',array($task_id));
+	$wfid = $adb->query_result($wfrs, 0, 'workflow_id');
+	$order = $adb->query_result($wfrs, 0, 'executionorder');
+	$chgtsk = 'update com_vtiger_workflowtasks set executionorder=? where executionorder=? and workflow_id=?';
+	$movtsk = 'update com_vtiger_workflowtasks set executionorder=? where task_id=?';
+	if ($direction=='UP') {
+		$chgtskparams = array($order,$order-1,$wfid);
+		$adb->pquery($chgtsk,$chgtskparams);
+		$adb->pquery($movtsk,array($order-1,$task_id));
+	} else {
+		$chgtskparams = array($order,$order+1,$wfid);
+		$adb->pquery($chgtsk,$chgtskparams);
+		$adb->pquery($movtsk,array($order+1,$task_id));
+	}
+	echo 'ok';
+}
+
 global $adb;
 $mode = vtlib_purify($_REQUEST['mode']);
 
@@ -105,6 +125,8 @@ if ($mode == 'getfieldsjson') {
 	vtJsonDependentModules($adb, $_REQUEST);
 } elseif ($mode == 'getrelatedmodules') {
 	vtJsonRelatedModules($adb, $_REQUEST);
+} elseif ($mode == 'moveWorkflowTaskUpDown') {
+	moveWorkflowTaskUpDown($adb, $_REQUEST);
 } elseif ($mode == 'getownerslist') {
 	vtJsonOwnersList($adb);
 }

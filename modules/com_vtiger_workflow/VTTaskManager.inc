@@ -87,8 +87,7 @@
 		 */
 		public function getTasksForWorkflow($workflowId){
 			$adb = $this->adb;
-			$result = $adb->pquery("select task from com_vtiger_workflowtasks
-									where workflow_id=?",
+			$result = $adb->pquery('select task,executionorder from com_vtiger_workflowtasks where workflow_id=? order by executionorder',
 				array($workflowId));
 			return $this->getTasksForResult($result);
 		}
@@ -120,7 +119,9 @@
 				$text = $row->task;
 				$tasktype = VTTaskType::getInstanceFromTaskType(self::taskName($text));
 				$this->requireTask(self::taskName($text),$tasktype);
-				$tasks[] = unserialize($text);
+				$wftask = unserialize($text);
+				$wftask->executionorder = $row->executionorder;
+				$tasks[] = $wftask;
 			}
 			return $tasks;
 		}
