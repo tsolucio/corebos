@@ -36,16 +36,23 @@
 			}else{
 				$taskId = $adb->getUniqueID("com_vtiger_workflowtasks");
 				$task->id = $taskId;
+				$orderrs = $adb->pquery('select max(executionorder) from com_vtiger_workflowtasks where workflow_id=?',array($task->workflowId));
+				$order = $adb->query_result($orderrs, 0, 0)+1;
 				$adb->pquery("insert into com_vtiger_workflowtasks
-							(task_id, workflow_id, summary, task)
-							values (?, ?, ?, ?)",
-					array($taskId, $task->workflowId, $task->summary, serialize($task)));
+						(task_id, workflow_id, summary, task, executionorder)
+						values (?, ?, ?, ?, ?)",
+					array($taskId, $task->workflowId, $task->summary, serialize($task), $order));
 				return $taskId;
 			}
 		}
 
 		public function deleteTask($taskId){
 			$adb = $this->adb;
+			$orderrs = $adb->pquery('select executionorder,workflow_id from com_vtiger_workflowtasks where task_id=?',array($taskId));
+			$order = $adb->query_result($orderrs, 0, 0);
+			$wfid = $adb->query_result($orderrs, 0, 1);
+			$orderrs = $adb->pquery('update com_vtiger_workflowtasks set executionorder=executionorder-1
+				where workflow_id=? and executionorder>?',array($wfid,$order));
 			$adb->pquery("delete from com_vtiger_workflowtasks where task_id=?", array($taskId));
 		}
 
