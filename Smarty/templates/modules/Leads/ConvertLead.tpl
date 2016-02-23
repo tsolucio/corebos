@@ -53,7 +53,7 @@
 													{assign var=industry_map_value value=$UIINFO->getMappedFieldValue('Accounts','industry',1)}
 													<select name="industry" class="small" module="Accounts" {if $UIINFO->isMandatory('Accounts','industry') eq true}record="true"{/if}>
 														{foreach item=industry from=$UIINFO->getIndustryList() name=industryloop}
-															<option value="{$industry.value}" {if $industry.value eq $UIINFO->getMappedFieldValue('Accounts','industry',1)}selected="selected"{/if}>{$industry.value|@getTranslatedString:$MODULE}</option>
+															<option value="{$industry.value}" {if $industry.value eq $industry_map_value}selected="selected"{/if}>{$industry.value|@getTranslatedString:$MODULE}</option>
 														{/foreach}
 													</select>
 											</td>
