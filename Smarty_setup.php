@@ -45,6 +45,7 @@ class vtigerCRM_Smarty extends Smarty{
 			//Added to provide User based Tagcloud
 			$this->assign('TAG_CLOUD_DISPLAY', self::lookupTagCloudView($current_user->id) );
 		}
+		$this->load_filter('output', 'trimwhitespace');
 	}
 }
 
