@@ -994,6 +994,12 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$value = $col_fields[$fieldname];
 		if ($value != '') {
 			$parent_module = getSalesEntityType($value);
+			// vtlib customization: For listview javascript triggers
+			$modMetaInfo=getEntityFieldNames($parent_module);
+			$modEName=(is_array($modMetaInfo['fieldname']) ? $modMetaInfo['fieldname'][0] : $modMetaInfo['fieldname']);
+			$vtlib_metainfo = "<span type='vtlib_metainfo' vtrecordid='$value' vtfieldname=".
+					"'$modEName' vtmodule='$parent_module' style='display:none;'></span>";
+			// END
 			if ($parent_module == "Contacts") {
 				$label_fld[] = $app_strings['LBL_CONTACT_NAME'];
 				$displayValueArray = getEntityName($parent_module, $value);
@@ -1004,14 +1010,14 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 				} else {
 					$contact_name='';
 				}
-				$label_fld[] = '<a href="index.php?module=' . $parent_module . '&action=DetailView&record=' . $value . '">' . $contact_name . '</a>';
+				$label_fld[] = '<a href="index.php?module=' . $parent_module . '&action=DetailView&record=' . $value . '">' . $contact_name . '</a>'.$vtlib_metainfo;
 			} elseif ($parent_module == "Accounts") {
 				$label_fld[] = $app_strings['LBL_ACCOUNT_NAME'];
 				$sql = "select * from vtiger_account where accountid=?";
 				$result = $adb->pquery($sql, array($value));
 				$account_name = $adb->query_result($result, 0, "accountname");
 
-				$label_fld[] = '<a href="index.php?module=' . $parent_module . '&action=DetailView&record=' . $value . '">' . $account_name . '</a>';
+				$label_fld[] = '<a href="index.php?module=' . $parent_module . '&action=DetailView&record=' . $value . '">' . $account_name . '</a>'.$vtlib_metainfo;
 			} else {
 				$value = '';
 				$label_fld[] = getTranslatedString($fieldlabel, $module);
