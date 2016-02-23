@@ -878,6 +878,14 @@ class CRMEntity {
 	function save($module_name, $fileid = '') {
 		global $log;
 		$log->debug("module name is " . $module_name);
+		
+		//Check if assigned_user_id is empty for assign the current user.
+		if (empty($this->column_fields['assigned_user_id'])) {
+			global $current_user;
+			$_REQUEST['assigned_user_id'] = $current_user->id;
+			$this->column_fields['assigned_user_id'] = $current_user->id;
+			$_REQUEST['assigntype'] = 'U';
+		}
 
 		//Event triggering code
 		require_once("include/events/include.inc");
