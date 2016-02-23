@@ -124,7 +124,7 @@
 														<font color="red">*</font>{'LBL_MODULE'|@getTranslatedString:$MODULE} :
 													</td>
 													<td class="dvtCellInfo" align="left" width="40%">
-														{$WEBFORMMODEL->getTargetModule()}
+														{$WEBFORMMODEL->getTargetModule()|@getTranslatedString:$WEBFORMMODEL->getTargetModule()}
 													</td>
 												</tr>
 												<tr style="height:25px">

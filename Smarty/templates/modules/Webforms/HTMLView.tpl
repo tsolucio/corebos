@@ -11,8 +11,9 @@
 {* NOTE: PLEASE MAKE SURE THE SPACES BESIDE TAGS ARE STRIPPED TO PRESEVE FORMATTING OF THE OUTPUT *}
 <form name="{$WEBFORMMODEL->getName()}" action="{$ACTIONPATH}/modules/Webforms/capture.php" method="post" accept-charset="utf-8">
 	<p>
-		<input type="hidden" name="publicid" value="{$WEBFORMMODEL->getpublicId()}"></input>
-		<input type="hidden" name="name" value="{$WEBFORMMODEL->getName()}"></input>
+		<input type="hidden" name="publicid" value="{$WEBFORMMODEL->getpublicId()}"/>
+		<input type="hidden" name="name" value="{$WEBFORMMODEL->getName()}"/>
+		<input type="hidden" name="moduleName" value="{$WEBFORMMODEL->getTargetModule()}"/>
 	</p>
 	{foreach item=field from=$WEBFORMFIELDS name=fieldloop}{assign var=fieldinfo value=$WEBFORM->getFieldInfo($WEBFORMMODEL->getTargetModule(), $field->getFieldName())}
 
@@ -39,6 +40,6 @@
 	</p>{/foreach}
 
 	<p>
-		<input type="submit" value="Submit" ></input>
+		<input type="submit" value="Submit"/>
 	</p>
 </form>
