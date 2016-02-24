@@ -116,15 +116,32 @@
 														<font color="red">*</font>{'LBL_ASSIGNED_TO'|@getTranslatedString:$MODULE}
 													</td>
 													<td class="dvtCellInfo" align="left" >
-														<select id="ownerid" name="ownerid" class="small">
-															<option value="">--{'LBL_SELECT_USER'|@getTranslatedString:$MODULE}--</option>
-																{foreach key=userid item=username name=assigned_user from=$USERS}
-																<option value="{$userid}"
-																	{if $WEBFORMID && $userid eq $WEBFORM->getOwnerId()} selected {/if}>
-																	{$username}
-																</option>
+														{if $usr_selected eq 1}
+															{assign var=select_user value='checked'}
+															{assign var=style_user value='display:block'}
+															{assign var=style_group value='display:none'}
+														{else}
+															{assign var=select_group value='checked'}
+															{assign var=style_user value='display:none'}
+															{assign var=style_group value='display:block'}
+														{/if}
+														<input type="radio" tabindex="{$vt_tab}" name="assigntype" {$select_user} value="U" onclick="toggleAssignType(this.value);jQuery('#ownerid').val(jQuery('#assigned_user_id').val());" >&nbsp;{$APP.LBL_USER}
+														<input type="radio" name="assigntype" {$select_group} value="T" onclick="toggleAssignType(this.value);jQuery('#ownerid').val(jQuery('#assigned_group_id').val());">&nbsp;{$APP.LBL_GROUP}
+														<input type="hidden" name="ownerid" id="ownerid" value="{$WEBFORM->getOwnerId()}">
+														<span id="assign_user" style="{$style_user}">
+															<select name="assigned_user_id" id="assigned_user_id" class="small" onchange="jQuery('#ownerid').val(jQuery('#assigned_user_id').val());">
+															{foreach key=userid item=username name=assigned_user from=$USERS}
+																<option value="{$userid}" {if $WEBFORMID && $userid eq $WEBFORM->getOwnerId()} selected {/if}>{$username}</option>
 															{/foreach}
-														</select>
+															</select>
+														</span>
+														<span id="assign_team" style="{$style_group}">
+															<select name="assigned_group_id" id="assigned_group_id" class="small" onchange="jQuery('#ownerid').val(jQuery('#assigned_group_id').val());">
+															{foreach key=userid item=username name=assigned_user from=$GROUPS}
+																<option value="{$userid}" {if $WEBFORMID && $userid eq $WEBFORM->getOwnerId()} selected {/if}>{$username}</option>
+															{/foreach}
+															</select>
+														</span>
 													</td>
 													<td class="dvtCellLabel" align="right" >
 														{'LBL_RETURNURL'|@getTranslatedString:$MODULE}
