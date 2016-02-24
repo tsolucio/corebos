@@ -84,6 +84,12 @@ function deleteWorkflow($wfid) {
 
 echo "<table width=80% align=center border=1>";
 
+$result = $adb->pquery('show columns from com_vtiger_workflowtasks like ?', array('executionorder'));
+if (!($adb->num_rows($result))) {
+	ExecuteQuery('ALTER TABLE com_vtiger_workflowtasks ADD executionorder INT(10)', array());
+	ExecuteQuery('ALTER TABLE `com_vtiger_workflowtasks` ADD INDEX(`executionorder`)');
+}
+
 $force = (isset($_REQUEST['force']) ? 1 : 0);
 
 $cver = vtws_getVtigerVersion();
