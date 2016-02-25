@@ -119,7 +119,7 @@ if ($num_rows1 > 0) {
 							$focus->column_fields['duration_hours'] = $duration_hour;
 							$focus->column_fields['duration_minutes'] = $duration_minutes;
 						}
-						$focus->save($currentModule);
+						$focus->saveentity($currentModule);
 						$sql3 = 'insert into its4you_googlesync4you_events (crmid,geventid,userid,eventtype,lastmodified) values (?,?,?,?,?)';
 						$adb->pquery($sql3,array($focus->id, $event->getId(),$userid,$type,$event->getUpdated()));
 						$adb->pquery("update its4you_googlesync4you_access set synctoken='$synctoken2' where userid=$userid",array());
