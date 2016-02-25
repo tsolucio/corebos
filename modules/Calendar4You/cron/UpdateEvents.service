@@ -67,7 +67,7 @@ if ($num_rows1 > 0) {
 					$geventid = $row2['geventid'];
 					$cal=$row2['calendar'];
 					$event = $GoogleSync4You->getGoogleCalEventfromcron($geventid,$cal);
-					if($event == false) continue;
+					if($event != false){
 					if ($event->getStatus()=='cancelled') {
 						$sql3 = 'DELETE FROM its4you_googlesync4you_events WHERE id = ?';
 						$adb->pquery($sql3,array($eventid));
@@ -128,7 +128,7 @@ if ($num_rows1 > 0) {
 							$adb->pquery($sql3,array($event->getUpdated(),$eventid));
 						}
 					}
-				}
+                                }}
 			}
 		}
 	}
