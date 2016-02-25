@@ -85,7 +85,15 @@ $othermodules = getSharingModuleList(Array('Contacts'));
 if(!empty($othermodules)) {
 	foreach($othermodules as $moduleresname) {
 		if(!isset($custom_access[$moduleresname])) {
-			$custom_access[$moduleresname] = getSharingRuleList($moduleresname);
+			$sr4module = getSharingRuleList($moduleresname);
+			if (isset($_REQUEST['sortrulesby'])) {
+				usort($sr4module, function($a,$b) {
+					$sba = substr($a[$_REQUEST['sortrulesby']],strpos($a[$_REQUEST['sortrulesby']], '>'));
+					$sbb = substr($b[$_REQUEST['sortrulesby']],strpos($b[$_REQUEST['sortrulesby']], '>'));
+					return $sba < $sbb ? -1 : 1;
+				});
+			}
+			$custom_access[$moduleresname] = $sr4module;
 		}
 	}
 }

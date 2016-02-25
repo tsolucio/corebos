@@ -123,8 +123,8 @@ DIV.fixedLay {
 				<table width="100%" cellpadding="5" cellspacing="0" class="listTable" >
                     		<tr>
                     		<td width="7%" class="colHeader small" nowrap>{$CMOD.LBL_RULE_NO}</td>
-                          	<td width="20%" class="colHeader small" nowrap>{$mod_display} {$CMOD.LBL_OF}</td>
-                          	<td width="25%" class="colHeader small" nowrap>{$CMOD.LBL_CAN_BE_ACCESSED}</td>
+                          	<td width="20%" class="colHeader small" nowrap><a href="index.php?action=OrgSharingDetailView&module=Settings&sortrulesby=1">{$mod_display} {$CMOD.LBL_OF}</a></td>
+                          	<td width="25%" class="colHeader small" nowrap><a href="index.php?action=OrgSharingDetailView&module=Settings&sortrulesby=2">{$CMOD.LBL_CAN_BE_ACCESSED}</a></td>
                           	<td width="40%" class="colHeader small" nowrap>{$CMOD.LBL_PRIVILEGES}</td>
                           	<td width="8%" class="colHeader small" nowrap>{$APP.Tools}</td>
                         	</tr>
