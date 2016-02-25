@@ -79,7 +79,7 @@ class ConfigEditor_Controller {
 		$viewer = $this->getViewer();
 
 		if (is_null($configReader)) {
-			$viewer->assign('WARNING', 'Configuration file is not writeable!');
+			$viewer->assign('WARNING', 'Configuration file is not writable!');
 		} else if ($configReader === false) {
 			$viewer->assign('WARNING', 'Configuration file not found!');
 		} else {

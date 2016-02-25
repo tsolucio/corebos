@@ -1109,7 +1109,7 @@ $mod_strings = Array(
 'VTLIB_LBL_PROCEED_WITH_IMPORT'=>'Do you want to proceed with the import?',
 'VTLIB_LBL_IMPORTING_MODULE_START'=>'Importing Module ...',
 'VTLIB_LBL_WARNING'=>'Warning',
-'VTLIB_LBL_NOT_WRITEABLE'=>'not writeable',
+'VTLIB_LBL_NOT_WRITEABLE'=>'not writable',
 'VTLIB_LBL_PACKAGE_VERSION'=>'Version',
 
 'LBL_UPGRADE'=>'Upgrade',
