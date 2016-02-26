@@ -60,6 +60,7 @@ if ($num_rows1 > 0) {
 				$events = $GoogleSync4You->getGoogleCalEvents($CALENDAR_ID,$synctoken);
 				$checkevent = 'SELECT 1 FROM its4you_googlesync4you_events WHERE geventid=?';
 				while(true) {
+                                        if ($events==null) break;
 					$synctoken2=$events->getNextSyncToken();
 					foreach ($events->getItems() as $event) {
 						$gers = $adb->pquery($checkevent,array($event->getId()));
