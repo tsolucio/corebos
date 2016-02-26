@@ -35,6 +35,9 @@ class VTCreateTodoTask extends VTTask{
 	}
 
 	public function doTask(&$entityData){
+                global $from_wf;
+                $from_wf = true;
+                
 		if(!vtlib_isModuleActive('Calendar')) {
 			return;
 		}
@@ -115,6 +118,7 @@ class VTCreateTodoTask extends VTTask{
 
 		relateEntities(CRMEntity::getInstance($moduleName), $moduleName, $entityIdDetails[1], 'Calendar', $todoIdDetails[1]);
 
+                $from_wf = true;
 		global $current_user;
 		$current_user = $this->originalUser;
 	}

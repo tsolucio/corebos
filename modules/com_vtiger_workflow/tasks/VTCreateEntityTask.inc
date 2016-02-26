@@ -19,7 +19,8 @@ class VTCreateEntityTask extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $current_user;
+		global $adb, $current_user,$from_wf;
+                $from_wf = true;
 		$util = new VTWorkflowUtils();
 
 		$admin = $util->adminUser();
@@ -104,6 +105,7 @@ class VTCreateEntityTask extends VTTask {
 			relateEntities($focus, $moduleName, $recordId, $entityType, $newEntity->id);
 		}
 
+                $from_wf = false;
 		$util->revertUser();
 	}
 

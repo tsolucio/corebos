@@ -19,7 +19,8 @@ class VTUpdateFieldsTask extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $current_user, $default_charset, $log, $logbg;
+		global $adb, $current_user, $default_charset, $log, $logbg,$from_wf;
+                $from_wf = true;
 		$logbg->info('Entering workflow task VTUpdateFieldsTask');
 		$util = new VTWorkflowUtils();
 		$util->adminUser();
@@ -131,6 +132,7 @@ class VTUpdateFieldsTask extends VTTask {
 			$logbg->debug('field values post: '.print_r($focus->column_fields,true));
 		}
 		$util->revertUser();
+                $from_wf = false;
 		$logbg->info('Exiting workflow task VTUpdateFieldsTask');
 	}
 

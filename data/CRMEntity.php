@@ -396,7 +396,7 @@ class CRMEntity {
 	 */
 	function insertIntoEntityTable($table_name, $module, $fileid = '') {
 		global $log;
-		global $current_user, $app_strings;
+		global $current_user, $app_strings,$from_wf;
 		$log->info("function insertIntoEntityTable " . $module . ' vtiger_table name ' . $table_name);
 		global $adb;
 		$insertion_mode = $this->mode;
@@ -424,7 +424,10 @@ class CRMEntity {
 			$update_params = array();
 			checkFileAccessForInclusion('user_privileges/user_privileges_' . $current_user->id . '.php');
 			require('user_privileges/user_privileges_' . $current_user->id . '.php');
-			if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
+			if (isset($from_wf) && $from_wf) {
+				$sql = "select * from vtiger_field where tabid in (" . generateQuestionMarks($tabid) . ") and tablename=? and displaytype in (1,3,4) and presence in (0,2) group by columnname";
+				$params = array($tabid, $table_name);
+                        }elseif ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
 				$sql = "select * from vtiger_field where tabid in (" . generateQuestionMarks($tabid) . ") and tablename=? and displaytype in (1,3) and presence in (0,2) group by columnname";
 				$params = array($tabid, $table_name);
 			} else {
