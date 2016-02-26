@@ -42,11 +42,6 @@
 		<td class="big" nowrap="nowrap">
 			<strong>{$MOD.LBL_WHEN_TO_RUN_WORKFLOW}</strong>
 		</td>
-		<td width="5%" align="right">
-			<a href="{$WORKFLOW_TRIGGER_TYPES_HELP_LINK}" target="_blank" style="cursor:pointer;">
-				<img border="0" title="" alt="" src="{'help_icon.gif'|@vtiger_imageURL:$THEME}" />
-			</a>
-		</td>
 	</tr>
 </table>
 <table border="0" >

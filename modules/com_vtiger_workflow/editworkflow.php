@@ -96,8 +96,6 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 	$smarty->assign("saveType", isset($workflow->id)?"edit":"new");
 	$smarty->assign("module", $module);
 
-	$smarty->assign("WORKFLOW_TRIGGER_TYPES_HELP_LINK", WORKFLOW_TRIGGER_TYPES);
-
 	$smarty->display("{$module->name}/EditWorkflow.tpl");
 }
 $returl = 'index.php?'.$_SERVER['QUERY_STRING'];
