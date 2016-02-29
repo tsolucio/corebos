@@ -35,7 +35,7 @@ class evcbrcHandler extends VTEventHandler {
 						$adb->pquery("UPDATE vtiger_troubletickets SET email = ? WHERE ticketid = ?",array($email,$crmId));
 					}
 				case 'Potentials':
-					$adb->pquery('select related_to from vtiger_potential WHERE potentialid = ?',array($crmId));
+					$rs = $adb->pquery('select related_to from vtiger_potential WHERE potentialid = ?',array($crmId));
 					$relid = $adb->query_result($rs,0,0);
 					$email = $this->getEmail($relid);
 					if (!empty($email)) {
@@ -50,8 +50,10 @@ class evcbrcHandler extends VTEventHandler {
 					}
 				break;
 				case 'ProjectTask':
-					$prjid = $adb->query_result($adb->pquery('select projectid from vtiger_projecttask WHERE projecttaskid = ?',array($crmId)),0,0);
-					$relid = $adb->query_result($adb->pquery('select linktoaccountscontacts from vtiger_project WHERE projectid = ?',array($prjid)),0,0);
+					$rs = $adb->pquery('select projectid from vtiger_projecttask WHERE projecttaskid = ?',array($crmId));
+					$prjid = $adb->query_result($rs,0,0);
+					$rs = $adb->pquery('select linktoaccountscontacts from vtiger_project WHERE projectid = ?',array($prjid));
+					$relid = $adb->query_result($rs,0,0);
 					$email = $this->getEmail($relid);
 					if (!empty($email)) {
 						$adb->pquery("UPDATE vtiger_projecttask SET email = ? WHERE projecttaskid = ?",array($email,$crmId));
