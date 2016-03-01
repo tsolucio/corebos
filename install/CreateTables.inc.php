@@ -944,6 +944,7 @@ function populateDefaultWorkflows($adb) {
 	$task = $tm->createTask('VTEntityMethodTask', $invWorkFlow->id);
 	$task->active=true;
 	$task->methodName = "UpdateInventory";
+	$task->summary="Update Inventory Stock for Invoice ";
 	$tm->saveTask($task);
 
 
