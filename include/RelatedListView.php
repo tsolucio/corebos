@@ -31,7 +31,6 @@ if(!function_exists('GetRelatedList')) {
   * @param $edit_val -- edit value:: Type string
   * @param $del_val -- delete value:: Type string
   * @returns $related_entries -- related entires:: Type string array
-  *
   */
 function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$returnset,$id='',$edit_val='',$del_val='',$skipActions=false)
 {
@@ -134,10 +133,9 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 		$mod_listquery = strtolower($relatedmodule)."_listquery";
 	$_SESSION[$mod_listquery] = $query;
 
-	$url_qry .="&order_by=".$order_by."&sorder=".$sorder;
-	$computeCount = $_REQUEST['withCount'];
-	if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true ||
-			(boolean) $computeCount == true){
+	$url_qry ="&order_by=".$order_by."&sorder=".$sorder;
+	$computeCount = isset($_REQUEST['withCount']) ? $_REQUEST['withCount'] : '';
+	if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true || (boolean) $computeCount == true){
 		//Retreiving the no of rows
 		if($relatedmodule == "Calendar") {
 			//for calendar related list, count will increase when we have multiple contacts
@@ -219,7 +217,6 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
   * @param $query -- query:: Type string
   * @param $id -- id:: Type string
   * @returns $entries_list -- entries list:: Type string array
-  *
   */
 function getAttachmentsAndNotes($parentmodule,$query,$id,$sid='')
 {
@@ -398,7 +395,6 @@ function getAttachmentsAndNotes($parentmodule,$query,$id,$sid='')
   * @param $query -- query:: Type string
   * @param $id -- id:: Type string
   * @returns $return_data -- return data:: Type string array
-  *
   */
 function getHistory($parentmodule,$query,$id)
 {
