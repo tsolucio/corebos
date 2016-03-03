@@ -141,7 +141,7 @@ class DataTransform{
 			unset($row[$meta->getObectIndexColumn()]);
 		}
 
-		$row = DataTransform::sanitizeDateFieldsForInsert($row,$meta);
+		//$row = DataTransform::sanitizeDateFieldsForInsert($row,$meta);
 		$row = DataTransform::sanitizeCurrencyFieldsForInsert($row,$meta);
 
 		return $row;
