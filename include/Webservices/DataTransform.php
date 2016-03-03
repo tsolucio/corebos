@@ -75,9 +75,9 @@ class DataTransform{
 				$hours = (int)($reminder/(60*60))%24;
 				$days = (int)($reminder/(60*60*24));
 
-				//at vtiger there cant be 0 minutes reminder so we are setting to 1
+				// there cannot be 0 minutes reminder so we are setting to 1
 				if($minutes == 0){
-						$minutes = 1;
+					$minutes = 1;
 				}
 
 				$_REQUEST['remmin'] = $minutes;
@@ -127,8 +127,7 @@ class DataTransform{
 					$row['parent_id'] = $row['parent_id']."@-1|";
 					$_REQUEST['parent_id'] = $row['parent_id'];
 				}else{
-					$referenceHandler = vtws_getModuleHandlerFromId($parentTypeId,
-							$meta->getUser());
+					$referenceHandler = vtws_getModuleHandlerFromId($parentTypeId, $meta->getUser());
 					$referenceMeta = $referenceHandler->getMeta();
 					$fieldId = getEmailFieldId($referenceMeta, $row['parent_id']);
 					$row['parent_id'] .= "@$fieldId|";
