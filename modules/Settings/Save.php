@@ -64,7 +64,12 @@ if($server_type == 'ftp_backup')
 		$db_update = false;
 	}else
 	{
-		$conn_id = @ftp_connect($server);
+		list($host,$port) = explode(':', $server);
+
+		if(empty($port))
+			$conn_id = @ftp_connect($server);
+		else
+			$conn_id = @ftp_connect($host,$port);
 		if(!$conn_id)
 		{
 			$error_str = 'error=Unable to connect "'.$server.'"';
