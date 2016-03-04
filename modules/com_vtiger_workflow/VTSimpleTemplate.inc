@@ -29,7 +29,6 @@ class VTSimpleTemplate{
 				$moduleName = $this->parent->getModuleName();
 				$module_focus = Vtiger_Module::getInstance($moduleName);
 				$field_focus = Vtiger_Field::getInstance($fieldname,$module_focus);
-				
 				$uitype = $field_focus->uitype;
 				if($uitype == '15' || $uitype == '33' || ($uitype == '55' && $fieldname == 'salutationtype'))
 					$result = getTranslatedString($data[$fieldname],($moduleName == 'Events') ? 'Calendar' : $moduleName);
@@ -39,7 +38,7 @@ class VTSimpleTemplate{
 				} elseif ($uitype == '70') {  // datetime
 					$date = new DateTimeField($data[$fieldname]);
 					$result = $date->getDisplayDateTimeValue($current_user);
-				} elseif ($uitype == '2' && ($fieldname == "time_start" || $fieldname == "time_end")) {  // time
+				} elseif ($uitype == '14' || ($uitype == '2' && ($fieldname == "time_start" || $fieldname == "time_end"))) {  // time
 					$date = new DateTimeField($data[$fieldname]);
 					$result = $date->getDisplayTime($current_user);
 				} else
@@ -65,7 +64,6 @@ class VTSimpleTemplate{
 							if($this->useValue($data, $fieldname)){
 								$module_focus = Vtiger_Module::getInstance($referenceModule);
 								$field_focus = Vtiger_Field::getInstance($fieldname,$module_focus);
-								
 								$uitype = $field_focus->uitype;
 								if($uitype == '15' || $uitype == '33' || ($uitype == '55' && $fieldname == 'salutationtype'))
 									$result = getTranslatedString($data[$fieldname],$referenceModule);
@@ -75,7 +73,7 @@ class VTSimpleTemplate{
 								} elseif ($uitype == '70') {  // datetime
 									$date = new DateTimeField($data[$fieldname]);
 									$result = $date->getDisplayDateTimeValue($current_user);
-								} elseif ($uitype == '2' && ($fieldname == "time_start" || $fieldname == "time_end")) {  // time
+								} elseif ($uitype == '14' || ($uitype == '2' && ($fieldname == "time_start" || $fieldname == "time_end"))) {  // time
 									$date = new DateTimeField($data[$fieldname]);
 									$result = $date->getDisplayTime($current_user);
 								} else
