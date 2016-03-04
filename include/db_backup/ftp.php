@@ -16,7 +16,11 @@ function ftpBackupFile($source_file, $ftpserver, $ftpuser, $ftppassword) {
 	$NOUPLOAD = 3;
 	$log->debug("Entering ftpBackupFile(".$source_file.", ".$ftpserver.", ".$ftpuser.", ".$ftppassword.") method ...");
 	// set up basic connection
-	$conn_id = @ftp_connect($ftpserver);
+	list($host,$port) = explode(':', $ftpserver);
+	if(empty($port))
+		$conn_id = @ftp_connect($ftpserver);
+	else
+		$conn_id = @ftp_connect($host,$port);
 	if(!$conn_id) {
 		$log->debug("Exiting ftpBackupFile method ...");
 		return $NOCONNECTION;
