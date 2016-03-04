@@ -159,6 +159,9 @@ function validate_sendmail(idlist,module){
 }
 
 function sendmail(module,idstrings,url) {
+        if(url == undefined){
+            url = '';
+        }
 	new Ajax.Request(
 		'index.php',
 		{
