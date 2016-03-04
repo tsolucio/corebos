@@ -20,7 +20,7 @@ class VTUpdateFieldsTask extends VTTask {
 
 	public function doTask(&$entity) {
 		global $adb, $current_user, $default_charset, $log, $logbg,$from_wf;
-                $from_wf = true;
+		$from_wf = true;
 		$logbg->info('Entering workflow task VTUpdateFieldsTask');
 		$util = new VTWorkflowUtils();
 		$util->adminUser();
@@ -126,13 +126,14 @@ class VTUpdateFieldsTask extends VTTask {
 			}
 			$hold_ajxaction = $_REQUEST['ajxaction'];
 			$_REQUEST['ajxaction'] = 'Workflow';
+			$logbg->debug('field values presave: '.print_r($focus->column_fields,true));
 			$focus->saveentity($moduleName);
 			$_REQUEST['ajxaction'] = $hold_ajxaction;
 			$util->revertUser();
 			$logbg->debug('field values post: '.print_r($focus->column_fields,true));
 		}
 		$util->revertUser();
-                $from_wf = false;
+		$from_wf = false;
 		$logbg->info('Exiting workflow task VTUpdateFieldsTask');
 	}
 
