@@ -539,6 +539,9 @@ class CRMEntity {
 						$fldvalue = $this->column_fields[$fieldname];
 					}
 				} elseif ($uitype == 33 || $uitype == 3313 || $uitype == 1024) {
+					if (empty($this->column_fields[$fieldname])) {
+						$fldvalue = '';
+					} else {
 					if (!is_array($this->column_fields[$fieldname])) {
 						$this->column_fields[$fieldname] = array_map('trim', explode('|##|',$this->column_fields[$fieldname]));
 					}
@@ -567,6 +570,7 @@ class CRMEntity {
 					}
 					$vek=array_unique(array_merge(array_diff($currentvalues,$uservalues),$selectedvalues));
 					$fldvalue = implode(' |##| ', $vek);
+					}
 				} elseif ($uitype == 5 || $uitype == 6 || $uitype == 23) {
 					//Added to avoid function call getDBInsertDateValue in ajax save
 					if (isset($current_user->date_format) && !$ajaxSave) {
