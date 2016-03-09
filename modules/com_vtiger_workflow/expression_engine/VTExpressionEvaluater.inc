@@ -274,8 +274,8 @@ function __cb_getLongitude($address) {
 }
 
 function __cb_getGEODistance($arr){
-	$from = $arr[0];
-	$to = $arr[1];
+	$from = decode_html($arr[0]);
+	$to = decode_html($arr[1]);
 	$coo1 = __cb_getLatitude($from).",".__cb_getLongitude($from);
 	$coo2 = __cb_getLatitude($to).",".__cb_getLongitude($to);
 	$distance = file_get_contents("http://router.project-osrm.org/viaroute?loc=$coo1&loc=$coo2");
