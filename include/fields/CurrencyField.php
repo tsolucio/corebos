@@ -15,29 +15,29 @@ class CurrencyField {
 	private $CURRENCY_PATTERN_THOUSAND_GROUPING = '123,456,789';
 	private $CURRENCY_PATTERN_MIXED_GROUPING = '12,34,56,789';
 
-    /**
-     * Currency Format(3,3,3) or (2,2,3)
-     * @var String
-     */
-    var $currencyFormat = '123,456,789';
+	/**
+	 * Currency Format(3,3,3) or (2,2,3)
+	 * @var String
+	 */
+	var $currencyFormat = '123,456,789';
 
-    /**
-     * Currency Separator for example (comma, dot, hash)
-     * @var String
-     */
-    var $currencySeparator = ',';
+	/**
+	 * Currency Separator for example (comma, dot, hash)
+	 * @var String
+	 */
+	var $currencySeparator = ',';
 
-    /**
-     * Decimal Separator for example (dot, comma, space)
-     * @var <type>
-     */
-    var $decimalSeparator = '.';
+	/**
+	 * Decimal Separator for example (dot, comma, space)
+	 * @var <type>
+	 */
+	var $decimalSeparator = '.';
 
-    /**
-     * Number of Decimal Numbers
-     * @var Integer
-     */
-    var $numberOfDecimal = 3;
+	/**
+	 * Number of Decimal Numbers
+	 * @var Integer
+	 */
+	var $numberOfDecimal = 3;
 
 	/**
 	 * Currency Id
@@ -62,30 +62,30 @@ class CurrencyField {
 	 */
 	var $conversionRate = 1;
 
-    /**
-     * Value to be converted
-     * @param Number $value 
-     */
-    var $value = null;
-	
-    /**
-     * Constructor
-     * @param Number $value
-     */
-    public function  __construct($value) {
-        $this->value = $value;
-    }
+	/**
+	 * Value to be converted
+	 * @param Number $value
+	 */
+	var $value = null;
 
-    /**
-     * Initializes the User's Currency Details
-     * @global Users $current_user
-     * @param Users $user
-     */
-    public function initialize($user=null) {
-        global $current_user,$default_charset;
-        if(empty($user)) {
-            $user = $current_user;
-        }
+	/**
+	 * Constructor
+	 * @param Number $value
+	 */
+	public function __construct($value) {
+		$this->value = $value;
+	}
+
+	/**
+	 * Initializes the User's Currency Details
+	 * @global Users $current_user
+	 * @param Users $user
+	 */
+	public function initialize($user=null) {
+		global $current_user,$default_charset;
+		if(empty($user)) {
+			$user = $current_user;
+		}
 
 		if(!empty($user->currency_grouping_pattern)) {
 			$this->currencyFormat = html_entity_decode($user->currency_grouping_pattern, ENT_QUOTES, $default_charset);
@@ -102,7 +102,7 @@ class CurrencyField {
 		$this->currencySymbol = $currencyRateAndSymbol['symbol'];
 		$this->conversionRate = $currencyRateAndSymbol['rate'];
 		$this->currencySymbolPlacement = $user->currency_symbol_placement;
-    }
+	}
 
 	public function getCurrencySymbol() {
 		return $this->currencySymbol;
@@ -111,27 +111,27 @@ class CurrencyField {
 	public function setNumberofDecimals($numberOfDecimals) {
 		$this->numberOfDecimal = $numberOfDecimals;
 	}
-    
-    /**
-     * Returns the Formatted Currency value for the User
-     * @global Users $current_user
-     * @param Users $user
-	 * @param Boolean $skipConversion
-     * @return String - Formatted Currency
-     */
-    public static function convertToUserFormat($value, $user=null, $skipConversion=false) {
-        $self = new self($value);
-		return $self->getDisplayValue($user,$skipConversion);
-    }
 
-    /**
-     * Function that converts the Number into Users Currency 
-     * @param Users $user
+	/**
+	 * Returns the Formatted Currency value for the User
+	 * @global Users $current_user
+	 * @param Users $user
 	 * @param Boolean $skipConversion
-     * @return Formatted Currency
-     */
-    public function getDisplayValue($user=null, $skipConversion=false) {
-        global $current_user;
+	 * @return String - Formatted Currency
+	 */
+	public static function convertToUserFormat($value, $user=null, $skipConversion=false) {
+		$self = new self($value);
+		return $self->getDisplayValue($user,$skipConversion);
+	}
+
+	/**
+	 * Function that converts the Number into Users Currency
+	 * @param Users $user
+	 * @param Boolean $skipConversion
+	 * @return Formatted Currency
+	 */
+	public function getDisplayValue($user=null, $skipConversion=false) {
+		global $current_user;
 		if(empty($user)) {
 			$user = $current_user;
 		}
@@ -144,26 +144,26 @@ class CurrencyField {
 
 		$number = $this->_formatCurrencyValue($value);
 		return $number;
-    }
+	}
 
 	/**
-     * Function that converts the Number into Users Currency along with currency symbol
-     * @param Users $user
+	 * Function that converts the Number into Users Currency along with currency symbol
+	 * @param Users $user
 	 * @param Boolean $skipConversion
-     * @return Formatted Currency
-     */
-    public function getDisplayValueWithSymbol($user=null, $skipConversion=false) {
-        $formattedValue = $this->getDisplayValue($user, $skipConversion);
+	 * @return Formatted Currency
+	 */
+	public function getDisplayValueWithSymbol($user=null, $skipConversion=false) {
+		$formattedValue = $this->getDisplayValue($user, $skipConversion);
 		return self::appendCurrencySymbol($formattedValue, $this->currencySymbol, $this->currencySymbolPlacement);
-    }
+	}
 
 	/**
-     * Static Function that appends the currency symbol to a given currency value, based on the preferred symbol placement
+	 * Static Function that appends the currency symbol to a given currency value, based on the preferred symbol placement
 	 * @param Number $currencyValue
 	 * @param String $currencySymbol
 	 * @param String $currencySymbolPlacement
-     * @return Currency value appended with the currency symbol
-     */
+	 * @return Currency value appended with the currency symbol
+	 */
 	public static function appendCurrencySymbol($currencyValue, $currencySymbol, $currencySymbolPlacement='') {
 		global $current_user;
 		if(empty($currencySymbolPlacement)) {
@@ -179,20 +179,20 @@ class CurrencyField {
 		return $returnValue;
 	}
 
-    /**
-     * Function that formats the Number based on the User configured Pattern, Currency separator and Decimal separator
-     * @param Number $value
-     * @return Formatted Currency
-     */
+	/**
+	 * Function that formats the Number based on the User configured Pattern, Currency separator and Decimal separator
+	 * @param Number $value
+	 * @return Formatted Currency
+	 */
 	private function _formatCurrencyValue($value) {
 
-        $currencyPattern = $this->currencyFormat;
-        $currencySeparator = $this->currencySeparator;
-        $decimalSeparator  = $this->decimalSeparator;
+		$currencyPattern = $this->currencyFormat;
+		$currencySeparator = $this->currencySeparator;
+		$decimalSeparator = $this->decimalSeparator;
 		if(empty($currencySeparator)) $currencySeparator = ' ';
 		if(empty($decimalSeparator)) $decimalSeparator = ' ';
 
-        if($currencyPattern == $this->CURRENCY_PATTERN_PLAIN) {
+		if($currencyPattern == $this->CURRENCY_PATTERN_PLAIN) {
 			// Replace '.' with Decimal Separator
 			$number = str_replace('.', $decimalSeparator, $value);
 			return $number;
@@ -219,7 +219,7 @@ class CurrencyField {
 			$number = implode($decimalSeparator, $numericParts);
 			if ($negativeNumber) $number='-'.$number;
 			return $number;
-        }
+		}
 		if($currencyPattern == $this->CURRENCY_PATTERN_THOUSAND_GROUPING) {
 			// Separate the numeric and decimal parts
 			$numericParts = explode('.', $value);
@@ -285,49 +285,49 @@ class CurrencyField {
 		return $number;
 	}
 
-    /**
-     * Returns the Currency value without formatting for DB Operations
-     * @global Users $current_user
-     * @param Users $user
+	/**
+	 * Returns the Currency value without formatting for DB Operations
+	 * @global Users $current_user
+	 * @param Users $user
 	 * @param Boolean $skipConversion
-     * @return Number
-     */
-    public function getDBInsertedValue($user=null, $skipConversion=false) {
-        global $current_user;
-        if(empty($user)) {
-            $user = $current_user;
-        }
+	 * @return Number
+	 */
+	public function getDBInsertedValue($user=null, $skipConversion=false) {
+		global $current_user;
+		if(empty($user)) {
+			$user = $current_user;
+		}
 
-        $this->initialize($user);
+		$this->initialize($user);
 
 		$value = $this->value;
-		
-        $currencySeparator = $this->currencySeparator;
-        $decimalSeparator  = $this->decimalSeparator;
+
+		$currencySeparator = $this->currencySeparator;
+		$decimalSeparator  = $this->decimalSeparator;
 		if(empty($currencySeparator)) $currencySeparator = ' ';
 		if(empty($decimalSeparator)) $decimalSeparator = ' ';
-        $value = str_replace("$currencySeparator", "", $value);
-        $value = str_replace("$decimalSeparator", ".", $value);
+		$value = str_replace("$currencySeparator", "", $value);
+		$value = str_replace("$decimalSeparator", ".", $value);
 
 		if($skipConversion == false) {
 			$value = convertToDollar($value,$this->conversionRate);
 		}
 		$value = round($value, $this->numberOfDecimal);
-		
-        return $value;
-    }
 
-    /**
-     * Returns the Currency value without formatting for DB Operations
-     * @param Number $value
-     * @param Users $user
+		return $value;
+	}
+
+	/**
+	 * Returns the Currency value without formatting for DB Operations
+	 * @param Number $value
+	 * @param Users $user
 	 * @param Boolean $skipConversion
-     * @return Number
-     */
+	 * @return Number
+	 */
 	public static function convertToDBFormat($value, $user=null, $skipConversion=false) {
-        $self = new self($value);
-        return $self->getDBInsertedValue($user, $skipConversion);
-    }
+		$self = new self($value);
+		return $self->getDBInsertedValue($user, $skipConversion);
+	}
 
 	/**
 	 * Function to get the default CRM currency
