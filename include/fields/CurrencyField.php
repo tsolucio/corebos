@@ -116,7 +116,7 @@ class CurrencyField {
 	 * Returns the Formatted Currency value for the User
 	 * @global Users $current_user
 	 * @param Users $user
-	 * @param Boolean $skipConversion
+	 * @param Boolean $skipConversion for multicurrency support
 	 * @return String - Formatted Currency
 	 */
 	public static function convertToUserFormat($value, $user=null, $skipConversion=false) {
@@ -127,7 +127,7 @@ class CurrencyField {
 	/**
 	 * Function that converts the Number into Users Currency
 	 * @param Users $user
-	 * @param Boolean $skipConversion
+	 * @param Boolean $skipConversion for multicurrency support
 	 * @return Formatted Currency
 	 */
 	public function getDisplayValue($user=null, $skipConversion=false) {

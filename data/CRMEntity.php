@@ -177,11 +177,11 @@ class CRMEntity {
 	}
 
 	/**
-	 *      This function is used to upload the attachment in the server and save that attachment information in db.
-	 *      @param int $id  - entity id to which the file to be uploaded
-	 *      @param string $module  - the current module name
-	 *      @param array $file_details  - array which contains the file information(name, type, size, tmp_name and error)
-	 *      return void
+	 * This function is used to upload the attachment in the server and save that attachment information in db.
+	 * @param int $id  - entity id to which the file to be uploaded
+	 * @param string $module  - the current module name
+	 * @param array $file_details  - array which contains the file information(name, type, size, tmp_name and error)
+	 * return void
 	 */
 	function uploadAndSaveFile($id, $module, $file_details, $attachmentname='', $direct_import=false) {
 		global $log;
@@ -427,7 +427,7 @@ class CRMEntity {
 			if (isset($from_wf) && $from_wf) {
 				$sql = "select * from vtiger_field where tabid in (" . generateQuestionMarks($tabid) . ") and tablename=? and displaytype in (1,3,4) and presence in (0,2) group by columnname";
 				$params = array($tabid, $table_name);
-                        }elseif ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
+		} elseif ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
 				$sql = "select * from vtiger_field where tabid in (" . generateQuestionMarks($tabid) . ") and tablename=? and displaytype in (1,3) and presence in (0,2) group by columnname";
 				$params = array($tabid, $table_name);
 			} else {
@@ -531,7 +531,7 @@ class CRMEntity {
 					if ($this->column_fields[$fieldname] == $app_strings['LBL_NOT_ACCESSIBLE']) {
 
 						//If the value in the request is Not Accessible for a picklist, the existing value will be replaced instead of Not Accessible value.
-						$sql = "select $columname from  $table_name where " . $this->tab_name_index[$table_name] . "=?";
+						$sql = "select $columname from $table_name where " . $this->tab_name_index[$table_name] . "=?";
 						$res = $adb->pquery($sql, array($this->id));
 						$pick_val = $adb->query_result($res, 0, $columname);
 						$fldvalue = $pick_val;
@@ -606,10 +606,8 @@ class CRMEntity {
 					$json = new Zend_Json();
 					$fldvalue = $json->encode($ids);
 				} elseif ($uitype == 12) {
-
-					// Bulk Sae Mode: Consider the FROM email address as specified, if not lookup
+					// Bulk Save Mode: Consider the FROM email address as specified, if not lookup
 					$fldvalue = $this->column_fields[$fieldname];
-
 					if (empty($fldvalue)) {
 						$query = "SELECT email1 FROM vtiger_users WHERE id = ?";
 						$res = $adb->pquery($query, array($current_user->id));
@@ -618,9 +616,8 @@ class CRMEntity {
 							$fldvalue = $adb->query_result($res, 0, 'email1');
 						}
 					}
-					// END
 				} elseif ($uitype == 72 && !$ajaxSave) {
-					// Some of the currency fields like Unit Price, Totoal , Sub-total - doesn't need currency conversion during save
+					// Some of the currency fields like Unit Price, Total, Sub-total - do not need currency conversion during save
 					$fldvalue = CurrencyField::convertToDBFormat($this->column_fields[$fieldname], null, true);
 				} elseif ($uitype == 71 && !$ajaxSave) {
 					$fldvalue = CurrencyField::convertToDBFormat($this->column_fields[$fieldname]);
@@ -692,7 +689,7 @@ class CRMEntity {
 
 					//If the value in the request is Not Accessible for a picklist, the existing value will be replaced instead of Not Accessible value.
 					$his_col = $history_field_array[$inventory_module];
-					$his_sql = "select $his_col from  $this->table_name where " . $this->table_index . "=?";
+					$his_sql = "select $his_col from $this->table_name where " . $this->table_index . "=?";
 					$his_res = $adb->pquery($his_sql, array($this->id));
 					$status_value = $adb->query_result($his_res, 0, $his_col);
 					$stat_value = $status_value;
@@ -739,7 +736,7 @@ class CRMEntity {
 	 */
 	function getOldFileName($notesid) {
 		global $log;
-		$log->info("in getOldFileName  " . $notesid);
+		$log->info("in getOldFileName " . $notesid);
 		global $adb;
 		$query1 = "select * from vtiger_seattachmentsrel where crmid=?";
 		$result = $adb->pquery($query1, array($notesid));
@@ -885,7 +882,7 @@ class CRMEntity {
 	function save($module_name, $fileid = '') {
 		global $log;
 		$log->debug("module name is " . $module_name);
-		
+
 		//Check if assigned_user_id is empty for assign the current user.
 		if (empty($this->column_fields['assigned_user_id'])) {
 			global $current_user;
@@ -945,7 +942,7 @@ class CRMEntity {
 			return null;
 	}
 
-	/** This function should be overridden in each module.  It marks an item as deleted.
+	/** This function should be overridden in each module. It marks an item as deleted.
 	 * If it is not overridden, then marking this type of item is not allowed
 	 * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc..
 	 * All Rights Reserved..
@@ -1040,7 +1037,7 @@ class CRMEntity {
 	 * All Rights Reserved.
 	 */
 	function get_full_list($order_by = "", $where = "") {
-		$this->log->debug("get_full_list:  order_by = '$order_by' and where = '$where'");
+		$this->log->debug("get_full_list: order_by = '$order_by' and where = '$where'");
 		$query = $this->create_list_query($order_by, $where);
 		return $this->process_full_list_query($query);
 	}
@@ -1533,7 +1530,7 @@ class CRMEntity {
 
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 		$query = "select case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name," .
-				"'Documents' ActivityType,vtiger_attachments.type  FileType,crm2.modifiedtime lastmodified,vtiger_crmentity.modifiedtime,
+				"'Documents' ActivityType,vtiger_attachments.type FileType,crm2.modifiedtime lastmodified,vtiger_crmentity.modifiedtime,
 				vtiger_seattachmentsrel.attachmentsid attachmentsid, vtiger_crmentity.smownerid smownerid, vtiger_notes.notesid crmid,
 				vtiger_notes.notecontent description,vtiger_notes.*
 				from vtiger_notes
@@ -1543,7 +1540,7 @@ class CRMEntity {
 				inner join vtiger_crmentity crm2 on crm2.crmid=vtiger_senotesrel.crmid
 				LEFT JOIN vtiger_groups
 				ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-				left join vtiger_seattachmentsrel  on vtiger_seattachmentsrel.crmid =vtiger_notes.notesid
+				left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid =vtiger_notes.notesid
 				left join vtiger_attachments on vtiger_seattachmentsrel.attachmentsid = vtiger_attachments.attachmentsid
 				left join vtiger_users on vtiger_crmentity.smownerid= vtiger_users.id
 				where crm2.crmid=" . $id;
@@ -1600,7 +1597,7 @@ class CRMEntity {
 		inner join vtiger_seactivityrel on vtiger_seactivityrel.activityid=vtiger_activity.activityid
 		inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid
 		left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
-		left join vtiger_users on  vtiger_users.id=vtiger_crmentity.smownerid
+		left join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
 		where vtiger_activity.activitytype='Emails' and vtiger_crmentity.deleted=0 and vtiger_seactivityrel.crmid=".$id;
 
 		$return_value = GetRelatedList($this_module, $related_module, $other, $query, $button, $returnset);
@@ -1794,8 +1791,8 @@ class CRMEntity {
 		$query .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
 		$query .= " INNER JOIN vtiger_crmentityrel ON (vtiger_crmentityrel.relcrmid = vtiger_crmentity.crmid OR vtiger_crmentityrel.crmid = vtiger_crmentity.crmid)";
 		$query .= $more_relation;
-		$query .= " LEFT  JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
-		$query .= " LEFT  JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
+		$query .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
+		$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
 		$query .= " WHERE vtiger_crmentity.deleted = 0 AND (vtiger_crmentityrel.crmid = $id OR vtiger_crmentityrel.relcrmid = $id)";
 		$return_value = GetRelatedList($currentModule, $related_module, $other, $query, $button, $returnset);
 
@@ -1889,9 +1886,9 @@ class CRMEntity {
 			$query .= " FROM $other->table_name";
 			$query .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $other->table_name.$other->table_index";
 			$query .= $more_relation;
-			$query .= " INNER  JOIN $this->table_name   ON $relationconditions";
-			$query .= " LEFT  JOIN vtiger_users        ON vtiger_users.id = vtiger_crmentity.smownerid";
-			$query .= " LEFT  JOIN vtiger_groups       ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
+			$query .= " INNER JOIN $this->table_name ON $relationconditions";
+			$query .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
+			$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
 
 			$query .= " WHERE vtiger_crmentity.deleted = 0 AND $this->table_name.$this->table_index = $id";
 
@@ -2460,7 +2457,7 @@ class CRMEntity {
 		$query = preg_replace('/\s+/', ' ', $query);
 		if (strripos($query, ' WHERE ') !== false) {
 			vtlib_setup_modulevars(get_class($this), $this);
-			$query = str_ireplace(' where ', " WHERE $this->table_name.$this->table_index > 0  AND ", $query);
+			$query = str_ireplace(' where ', " WHERE $this->table_name.$this->table_index > 0 AND ", $query);
 		}
 		return $query;
 	}

@@ -1060,8 +1060,8 @@ function convertFromDollar($amount, $crate) {
  */
 function convertFromMasterCurrency($amount, $crate) {
 	global $log;
-	$log->debug("Entering convertFromDollar(" . $amount . "," . $crate . ") method ...");
-	$log->debug("Exiting convertFromDollar method ...");
+	$log->debug("Entering convertFromMasterCurrency(" . $amount . "," . $crate . ") method ...");
+	$log->debug("Exiting convertFromMasterCurrency method ...");
 	return $amount * $crate;
 }
 
