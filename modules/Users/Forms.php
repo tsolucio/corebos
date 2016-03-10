@@ -191,7 +191,11 @@ function verify_data(form) {
 		return false;
 	}
 
-
+	if(form.currency_decimal_separator.value == form.currency_grouping_separator.value) {
+		alert("Decimal Separator and Digit Grouping Separator cannot be the same.");
+		form.currency_decimal_separator.focus();
+		return false;
+	}
 
 	if(! upload_filter("imagename", "jpg|gif|bmp|png|JPG|GIF|BMP|PNG") )
 	{
