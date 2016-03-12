@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2015 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Copyright 2016 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
  * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
  * file except in compliance with the License. You can redistribute it and/or modify it
  * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
@@ -13,15 +13,18 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************
- *  Module       : Template script to import a CSV file into a module
+ *  Module       : Template script to import a Calendar CSV file
  *  Version      : 1.0
- *  Author       : Alan Bell, from Libertus. Shared on the vtiger CRM developer's list
- *    This script reads in a csv file with the separator a semi-colon.
+ *    This script reads in a csv file with the separator a colon.
+ *    The first row must be a header with the columns of task/event, even custom fields:
+ *      "assigned_user_id","sendnotification","subject","date_start","time_start","due_date","time_end",
+ *      "taskstatus","eventstatus","taskpriority","activitytype","location","description",
+ *      "contact_id=>'12x22;12x23'","parent_id=>9x45"
  *    For large imports break the csv file into multiple files of say 50,000 each and then call
  *    this script from a bash shell script wrapper which does something like this:
  *   for FILE in ${FILES}
  *   do
- *     php -f importcsv.php ${FILEPATH}${FILE}
+ *     php -f importcalendarcsv.php ${FILEPATH}${FILE}
  *   done
  *************************************************************************************************/
 
@@ -38,7 +41,7 @@ if(!file_exists($file) || !is_readable($file)) {
 	die;
 }
 
-function csv_to_array($file='', $length = 0, $delimiter=';') {
+function csv_to_array($file='', $length = 0, $delimiter=',') {
 	$header = NULL;
 	$data = array();
 	if (($handle = fopen($file, 'r')) !== FALSE) {
@@ -59,8 +62,14 @@ $i=0;
 foreach (csv_to_array($file) as $row) {
 	//print_r($row);
 	try {
-		$row = vtws_create('Accounts', $row, $current_user);
-		echo "Organisation: " . $row['id'] . PHP_EOL;
+		if ($row['activitytype'] == 'Task') {
+			$mod = 'Calendar';
+		} else {
+			$mod = 'Events';
+		}
+		$row['recurringtype'] = '--None--';
+		$row = vtws_create($mod, $row, $current_user);
+		echo $mod.": " . $row['id'] . PHP_EOL;
 	} catch (WebServiceException $ex) {
 		$msg = $ex->getMessage();
 		$msg .= print_r($row,true) . "\n";
