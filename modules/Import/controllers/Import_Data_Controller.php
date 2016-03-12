@@ -440,6 +440,12 @@ class Import_Data_Controller {
 					$fieldObject = Vtiger_Field::getInstance($fieldName, $moduleObject);
 					$fieldObject->setPicklistValues(array($fieldValue));
 				}
+			} elseif ($fieldInstance->getFieldDataType() == 'boolean') {
+				if (empty($fieldValue) or strtolower($fieldValue)==strtolower('LBL_NO')) {
+					$fieldValue = 0;
+				} else {
+					$fieldValue = 1;
+				}
 			} else {
 				if ($fieldInstance->getFieldDataType() == 'datetime' && !empty($fieldValue)) {
 					if($fieldValue == null || $fieldValue == '0000-00-00 00:00:00') {
