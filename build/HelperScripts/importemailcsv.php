@@ -70,6 +70,6 @@ foreach (csv_to_array($file) as $row) {
 		error_log($msg, 3, $file . "-error.log");
 		echo $msg;
 	}
-	if ($i++>=1) break;  // for testing before full launch
+	//if ($i++>=1) break;  // for testing before full launch
 }
 ?>
