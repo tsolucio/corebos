@@ -978,12 +978,25 @@ class QueryGenerator {
 	private function getConditionValue($value, $operator, $field) {
 		$operator = strtolower($operator);
 		$db = PearDatabase::getInstance();
+		$noncommaSeparatedFieldTypes = array('currency','percentage','double','integer','number');
 
-		if(is_string($value)) {
+		if(in_array($field->getFieldDataType(), $noncommaSeparatedFieldTypes)) {
+			if(is_array($value)) {
+				$valueArray = $value;
+			} else {
+				$valueArray = array($value);
+			}
+			// if ($field->getFieldDataType() == 'multipicklist' && in_array($operator, array('e', 'n'))) {
+				// $valueArray = getCombinations($valueArray);
+				// foreach ($valueArray as $key => $value) {
+					// $valueArray[$key] = ltrim($value, ' |##| ');
+				// }
+			// }
+		} elseif(is_string($value)) {
 			$valueArray = explode(',' , $value);
 		} elseif(is_array($value)) {
 			$valueArray = $value;
-		} else{
+		} else {
 			$valueArray = array($value);
 		}
 		$sql = array();
@@ -1054,6 +1067,13 @@ class QueryGenerator {
 			} elseif($field->getFieldDataType()=='picklist' || $field->getFieldDataType()=='multipicklist') {
 				if(!isValueInPicklist($value,$field->getFieldName()))
 					$value = getTranslationKeyFromTranslatedValue($this->module, $value);
+			} else if ($field->getFieldDataType() === 'currency') {
+				$uiType = $field->getUIType();
+				if ($uiType == 72) {
+					$value = CurrencyField::convertToDBFormat($value, null, true);
+				} elseif ($uiType == 71) {
+					$value = CurrencyField::convertToDBFormat($value);
+				}
 			}
 
 			if($field->getFieldName() == 'birthday' && !$this->isRelativeSearchOperators(
