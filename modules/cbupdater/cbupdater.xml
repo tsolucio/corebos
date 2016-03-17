@@ -520,4 +520,11 @@
 	<classname>sortworkflowtasks</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Add cost price to Products and Services</description>
+	<filename>build/changeSets/addCostPrice.php</filename>
+	<classname>addCostPrice</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
