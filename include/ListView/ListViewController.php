@@ -390,8 +390,7 @@ class ListViewController {
 							$currencyValue = CurrencyField::convertToUserFormat($value, null, true);
 							$value = CurrencyField::appendCurrencySymbol($currencyValue, $currencySymbol);
 						} else {
-							//changes made to remove vtiger_currency symbol infront of each
-							//vtiger_potential amount
+							//changes made to remove vtiger_currency symbol in front of each potential amount
 							if ($value != 0) {
 								$value = CurrencyField::convertToUserFormat($value);
 							}
