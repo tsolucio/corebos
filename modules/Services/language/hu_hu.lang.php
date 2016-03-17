@@ -39,6 +39,7 @@ $mod_strings = array(
 	'No of Units' => 'Egységek száma',
 	'Commission Rate' => 'Jutalék arány (%)',
 	'Unit Price' => 'Egységár',
+	'Cost Price' => 'Cost Price',
 	'Price' => 'Ár',
 	'Support Start Date' => 'Támogatás Kezdő Dátum',
 	'Support Expiry Date' => 'Támogatás Lejárat Dátum',

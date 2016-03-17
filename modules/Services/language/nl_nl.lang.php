@@ -60,6 +60,7 @@ $mod_strings = Array(
 'No of Units'=>'Aantal eenheden',
 'Commission Rate'=>'Commissie (%)',
 'Unit Price'=>'Prijs per eenheid',
+'Cost Price' => 'Cost Price',
 'Price'=>'Prijs',
 'Support Start Date'=>'Ondersteuning Startdatum',
 'Support Expiry Date'=>'Ondersteuning Einddatum',

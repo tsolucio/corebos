@@ -16,7 +16,7 @@ class addCostPrice extends cbupdaterWorker {
 				$field1->name = 'cost_price';
 				$field1->label= 'Cost Price';
 				$field1->column = 'cost_price';
-				$field1->columntype = 'DECIMAL(10,6)';
+				$field1->columntype = 'DECIMAL(28,6)';
 				$field1->uitype = 71;
 				$field1->typeofdata = 'N~O';
 				$field1->displaytype = 1;
@@ -32,7 +32,7 @@ class addCostPrice extends cbupdaterWorker {
 				$field1->name = 'cost_price';
 				$field1->label= 'Cost Price';
 				$field1->column = 'cost_price';
-				$field1->columntype = 'DECIMAL(10,6)';
+				$field1->columntype = 'DECIMAL(28,6)';
 				$field1->uitype = 71;
 				$field1->typeofdata = 'N~O';
 				$field1->displaytype = 1;
