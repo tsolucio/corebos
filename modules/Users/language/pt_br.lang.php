@@ -695,6 +695,7 @@ $mod_strings = Array(
 'Decimal Separator'=>'Separador Decimal',
 'Symbol Placement'=>'Localização Símbolo',
 'Digit Grouping Separator'=>'Separador Agrupamento Dígitos',
+'Number Of Currency Decimals'  =>  'Number Of Currency Decimals',
 
 //Time zones-Dont change any value
 'Kwajalein' => '(UTC-12:00) Data Internacional Linha Oeste',

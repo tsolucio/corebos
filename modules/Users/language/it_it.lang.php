@@ -502,9 +502,6 @@
   'LBL_CHANGE_PHOTO' => 'Cambia foto ...',
   'LBL_CHANGE' => 'Cambia',
 
-
-
-
   'LBL_GLOBAL_FIELDS_MANAGER' => 'Gestore Campi Globali',
   'LBL_GLOBAL_ACCESS_PRIVILEGES' => 'Privilegi di Condivisione a livello di Organizzazione',
   'LBL_CUSTOM_ACCESS_PRIVILEGES' => 'Regole di Condivisione Personalizzati',
@@ -561,7 +558,7 @@
   'Symbol Placement' => 'Posizione Simbolo Valuta',
   'Digit Grouping Separator' => 'Separatore delle Migliaia',
   'Digit Grouping Pattern' => 'Modello Raggruppamento delle Migliaia',
-  
+  'Number Of Currency Decimals'  =>  'Number Of Currency Decimals',
   'LBL_SHOWN' => 'Mostrato',
   'LBL_HIDDEN' => 'Nascosto',
   'LBL_SHOW' => 'Mostra',
@@ -578,18 +575,12 @@
   'LBL_TRANSFER_ROLES_TO_PROFILE' => 'Trasferisci Ruoli al Profilo',
   'LBL_PROFILE_TO_BE_DELETED' => 'Profilo da Eliminare',
 
-	
-	
-
-
   'LBL_RECALC_MSG' => 'Sei sicuro di voler Ricalcolare le Regole di Accesso Condiviso?',
   'LBL_YES' => 'Si',
   'LBL_NO' => 'No',
 
   'LBL_MANDATORY_MSG' => 'Campi Obbligatori',
   'LBL_DISABLE_FIELD_MSG' => 'Campi Disabilitati da Impostazioni di Accesso Globale',
-
-
 
   'LBL_CONTACT_US' => 'Contattaci',
   'LBL_READ_LICENSE' => 'Leggi la Licenza',
@@ -600,8 +591,6 @@
   'LBL_COMMUNITY' => 'E la comunit&agrave; di vtiger',
 
   'LBL_ASSIGN_ROLE' => 'Assegna Ruolo',
-
-
 
   'LBL_ADD_MAIL_ACCOUNT' => 'Aggiungi Mail Account',
   'LBL_NEW_MAIL_ACCOUNT_TITLE' => 'Nuovo Mail Account [Alt+M]',

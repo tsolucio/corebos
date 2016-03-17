@@ -446,6 +446,9 @@ class Import_Data_Controller {
 				} else {
 					$fieldValue = 1;
 				}
+			} else if($fieldInstance->getFieldDataType() == 'currency'){
+				// While exporting we are exporting as user format, we should import as db format while importing
+				$fieldData[$fieldName] = CurrencyField::convertToDBFormat($fieldValue, $current_user,false);
 			} else {
 				if ($fieldInstance->getFieldDataType() == 'datetime' && !empty($fieldValue)) {
 					if($fieldValue == null || $fieldValue == '0000-00-00 00:00:00') {

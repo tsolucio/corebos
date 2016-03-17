@@ -685,7 +685,7 @@ $mod_strings = Array(
     'LBL_USER_CUSTOMFIELDS_DESCRIPTION' => 'Erstellen Sie benutzerdefinierte Felder für Users ',
     'LBL_USER_CUSTOMFIELDS' => 'Benutzerdefinierte Felder für das Users-Modul',
     'LBL_CURRENCY_CONFIGURATION'=> 'Währungseinstellungen',
-
+	'Number Of Currency Decimals'  => 'Number Of Currency Decimals',
     //Time zones-Dont change any value
     'Kwajalein' => '(UTC-12:00) Internationale Datumsgrenze (Western)',
     'Pacific/Midway' => '(UTC-11:00) Koordinierte Weltzeit-11',

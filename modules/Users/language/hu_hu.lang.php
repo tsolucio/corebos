@@ -678,6 +678,7 @@ $mod_strings = array(
 	'Symbol Placement' => 'Szimbólum elhelyezés',
 	'Digit Grouping Pattern' => 'Számjegy csoportosítási minta',
 	'Digit Grouping Separator' => 'Ezres elválasztó',
+	'Number Of Currency Decimals'  =>  'Tizedesek száma a Pénznemben',
 	'LBL_GROUP_NMAE' => 'Csoportnév',
 	'LBL_USER_ASTERISK_OPTIONS' => 'Asterisk beállítási lehetőségek',
 	'Use Asterisk' => 'Asterisk használata',

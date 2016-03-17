@@ -527,4 +527,11 @@
 	<classname>addCostPrice</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Maximum 6 decimal precision on currency</description>
+	<filename>build/changeSets/addNumberDecimalPlaces.php</filename>
+	<classname>addNumberDecimalPlaces</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

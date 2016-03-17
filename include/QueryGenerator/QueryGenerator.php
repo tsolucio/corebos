@@ -1072,12 +1072,11 @@ class QueryGenerator {
 				if ($uiType == 72) {
 					$value = CurrencyField::convertToDBFormat($value, null, true);
 				} elseif ($uiType == 71) {
-					$value = CurrencyField::convertToDBFormat($value);
+					$value = CurrencyField::convertToDBFormat($value,$this->user);
 				}
 			}
 
-			if($field->getFieldName() == 'birthday' && !$this->isRelativeSearchOperators(
-					$operator)) {
+			if($field->getFieldName() == 'birthday' && !$this->isRelativeSearchOperators($operator)) {
 				$value = "DATE_FORMAT(".$db->quote($value).", '%m%d')";
 			} else {
 				$value = $db->sql_escape_string($value);

@@ -811,6 +811,7 @@ $mod_strings = Array(
 'Decimal Separator' => 'Separador Decimal',
 'Digit Grouping Separator' => 'Separador de Grupo de dígitos',
 'Symbol Placement' => 'Posición de Símbolo',
+'Number Of Currency Decimals'  =>  'Number de Decimales',
 'PASSWORD REQUIREMENTS' => 'REQUISITOS CONTRASEÑA',
 'REQUIRED' => 'OBLIGATORIO',
 'Min. 8 characters' => 'Mínimo 8 caracteres',

@@ -945,7 +945,7 @@ function getPriceDetailsForProduct($productid, $unit_price, $available='availabl
 			if ($cur_value == null || $cur_value == '') {
 				$price_details[$i]['check_value'] = false;
 				if	($unit_price != null) {
-					$cur_value = convertFromMasterCurrency($unit_price, $actual_conversion_rate);
+					$cur_value = CurrencyField::convertFromMasterCurrency($unit_price, $actual_conversion_rate);
 				} else {
 					$cur_value = '0';
 				}

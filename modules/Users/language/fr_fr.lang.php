@@ -572,6 +572,7 @@ $mod_strings = array (
 		'Decimal Separator' => 'Séparateur de décimales',
 		'Digit Grouping Separator' => 'Séparateur de groupe',
 		'Symbol Placement' => 'Position du symbole monétaire',
+		'Number Of Currency Decimals'  =>  'Number Of Currency Decimals',
 		'Secondary Email' => 'Email secondaire',
 		'Time Zone' => 'Fuseau horaire',
 		'Theme' => 'Thème graphique',

@@ -713,7 +713,7 @@ $mod_strings = Array(
 'LBL_USER_CUSTOMFIELDS' => 'Gebruikers Eigen velden',
 
 'LBL_CURRENCY_CONFIGURATION'=> 'Currency Configuration',
-
+'Number Of Currency Decimals'  =>  'Number Of Currency Decimals',
 //Time zones-Dont change any value
 'Kwajalein' => '(UTC-12:00) International Date Line West',
 'Pacific/Midway' => '(UTC-11:00) Coordinated Universal Time-11',
