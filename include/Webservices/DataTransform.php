@@ -142,7 +142,7 @@ class DataTransform{
 		}
 
 		//$row = DataTransform::sanitizeDateFieldsForInsert($row,$meta);
-		$row = DataTransform::sanitizeCurrencyFieldsForInsert($row,$meta);
+		//$row = DataTransform::sanitizeCurrencyFieldsForInsert($row,$meta);
 
 		return $row;
 	}
