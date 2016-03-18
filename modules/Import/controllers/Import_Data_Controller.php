@@ -391,6 +391,8 @@ class Import_Data_Controller {
 										!Import_Utils::hasAssignPrivilege($moduleMeta->getEntityName(), $referenceEntityId)) {
 									$referenceEntityId = $this->user->id;
 								}
+							} elseif ($referenceModule == 'Currency') {
+								$referenceEntityId = getCurrencyId($entityLabel);
 							} else {
 								$referenceEntityId = getEntityId($referenceModule, $entityLabel);
 							}
