@@ -156,38 +156,6 @@ class PriceBooks extends CRMEntity {
 		$this->initImportableFields($module);
 	}
 
-	function importRecord($obj, $pbFieldData) {
-		global $adb, $log;
-		$moduleName = $obj->module;
-		$pbHandler = vtws_getModuleHandlerFromName($moduleName, $obj->user);
-		$pbMeta = $pbHandler->getMeta();
-		$currency = '';
-		if (isset($pbFieldData['currency_id'])) {
-			$currency = $pbFieldData['currency_id'];
-			unset($pbFieldData['currency_id']);
-		}
-		$fieldData = $obj->transformForImport($pbFieldData, $pbMeta);
-		$wsrs=$adb->pquery('select id from vtiger_ws_entity where name=?',array('Currency'));
-		if ($wsrs and $adb->num_rows($wsrs)==1) {
-			$wsid = $adb->query_result($wsrs,0,0);
-		} else {
-			$wsid = 0;
-		}
-		if ($currency == ' ' or empty($currency)) {
-			$fieldData['currency_id'] = $wsid.'x1';
-		} else {
-			$crrs = $adb->pquery('select id from vtiger_currency_info where currency_name=?', array($currency));
-			if ($crrs and $adb->num_rows($crrs)>0) {
-				$fieldData['currency_id'] = $wsid.'x'.$adb->query_result($crrs, 0, 0);
-			} else {
-				$fieldData['currency_id'] = $wsid.'x1';
-			}
-		}
-		$entityInfo = vtws_create($moduleName, $fieldData, $obj->user);
-		$entityInfo['status'] = $obj->getImportRecordStatus('created');
-		return $entityInfo;
-	}
-
 	/**
 	 * Create list query to be shown at the last step of the import.
 	 * Called From: modules/Import/UserLastImport.php
