@@ -215,6 +215,7 @@ if(isset($order_by) && $order_by != '') {
 			$list_query .= ' ORDER BY '.$tablename.$order_by.' '.$sorder;
 	}
 }
+$list_query .= ' GROUP BY vtiger_activity.activityid'; // only one row per event no matter how many contacts are related
 
 if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true){
 	$count_result = $adb->query( mkCountQuery( $list_query));
