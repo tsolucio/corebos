@@ -60,6 +60,9 @@ class VTUpdateFieldsTask extends VTTask {
 
 				$fieldInstance = $moduleFields[$fieldName];
 				if ($fieldValueType == 'fieldname') {
+					if ($fieldInstance->getFieldDataType() === 'currency') {
+						$focus->column_fields[$fieldValue] = $focus->adjustCurrencyField($fieldValue,$focus->column_fields[$fieldValue]);
+					}
 					$fieldValue = $focus->column_fields[$fieldValue];
 				} elseif ($fieldValueType == 'expression') {
 					require_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
@@ -74,6 +77,9 @@ class VTUpdateFieldsTask extends VTTask {
 						$fieldValue = $exprEvaluater->evaluate($entity);
 					}
 				} else {
+					if ($fieldInstance->getFieldDataType() === 'currency') {
+						$focus->column_fields[$fieldValue] = $focus->adjustCurrencyField($fieldValue,$focus->column_fields[$fieldValue]);
+					}
 					if (preg_match('/([^:]+):boolean$/', $fieldValue, $match)) {
 						$fieldValue = $match[1];
 						if ($fieldValue == 'true') {

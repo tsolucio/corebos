@@ -25,6 +25,7 @@ class CRMEntity {
 	var $id;
 	var $DirectImageFieldValues = array();
 	static protected $methods = array();
+	static protected $dbvalues = array();
 
 	public static function registerMethod($method) {
 		self::$methods[] = $method;
@@ -619,8 +620,14 @@ class CRMEntity {
 				} elseif ($uitype == 72 && !$ajaxSave) {
 					// Some of the currency fields like Unit Price, Total, Sub-total - do not need currency conversion during save
 					$fldvalue = CurrencyField::convertToDBFormat($this->column_fields[$fieldname], null, true);
+					if ($insertion_mode == 'edit') {
+						$fldvalue = $this->adjustCurrencyField($fieldname,$fldvalue);
+					}
 				} elseif ($uitype == 71 && !$ajaxSave) {
 					$fldvalue = CurrencyField::convertToDBFormat($this->column_fields[$fieldname]);
+					if ($insertion_mode == 'edit') {
+						$fldvalue = $this->adjustCurrencyField($fieldname,$fldvalue);
+					}
 				} else {
 					$fldvalue = $this->column_fields[$fieldname];
 				}
@@ -711,6 +718,33 @@ class CRMEntity {
 			$sql1 = "insert into $table_name(" . implode(",", $column) . ") values(" . generateQuestionMarks($value) . ")";
 			$adb->pquery($sql1, $value);
 		}
+	}
+
+	/** Function to retrieve maximum decimal values of currency field on save
+	 * @param $fieldname currency field name
+	 * @param $fldvalue currency value they want to save
+	 * @returns field value from database with maximum decimals if it is the same as value being saved
+	 */
+	function adjustCurrencyField($fieldname,$fldvalue) {
+		global $adb, $log, $current_user;
+		$log->debug("Entering adjustCurrencyField($fieldname,$fldvalue)");
+		if (isset(self::$dbvalues[$fieldname])) {
+			$dbvalue = self::$dbvalues[$fieldname];
+		} else {
+			$dbvals = $result = array();
+			foreach ($this->tab_name_index as $table_name => $index) {
+				$result = $adb->pquery("select * from $table_name where $index=?", array($this->id));
+				$flds = $adb->fetch_array($result);
+				$dbvals = array_merge($dbvals,$flds);
+			}
+			self::$dbvalues = $dbvals;
+			$dbvalue = self::$dbvalues[$fieldname];
+		}
+		if (round($dbvalue,$current_user->no_of_currency_decimals)==$fldvalue) {
+			$fldvalue = $dbvalue;
+		}
+		$log->debug("Exiting adjustCurrencyField ($fldvalue)");
+		return $fldvalue;
 	}
 
 	/** Function to delete a record in the specifed table
