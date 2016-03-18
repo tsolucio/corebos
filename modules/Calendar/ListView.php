@@ -89,7 +89,6 @@ $_SESSION['ACTIVITIES_ORDER_BY'] = $order_by;
 $_SESSION['ACTIVITIES_SORT_ORDER'] = $sorder;
 //<<<<<<< sort ordering >>>>>>>>>>>>>
 
-
 //<<<<cutomview>>>>>>>
 $oCustomView = new CustomView($currentModule);
 $viewid = $oCustomView->getViewId($currentModule);
@@ -159,9 +158,7 @@ if(isPermitted("Calendar","Delete",$_REQUEST['record']) == 'yes') {
 if(isPermitted('Calendar','EditView','') == 'yes') {
 	$other_text['c_owner'] = $app_strings[LBL_CHANGE_OWNER];
 }
-global  $task_title;
 $title_display = $current_module_strings['LBL_LIST_FORM_TITLE'];
-if ($task_title) $title_display= $task_title;
 
 //Retreive the list from Database
 //<<<<<<<<<customview>>>>>>>>>
@@ -198,9 +195,9 @@ if (isset($_REQUEST['from_homepage'])) {
 	$endDateTime = $userEndDateTime->getDBInsertDateTimeValue();
 
 	if ($_REQUEST['from_homepage'] == 'upcoming_activities')
-		$list_query .= " AND (vtiger_activity.status is NULL OR vtiger_activity.status not in ('Completed','Deferred')) and (vtiger_activity.eventstatus is NULL OR  vtiger_activity.eventstatus not in ('Held','Not Held')) AND (CAST((CONCAT(date_start,' ',time_start)) AS DATETIME) >= '$startDateTime' OR CAST((CONCAT(vtiger_recurringevents.recurringdate,' ',time_start)) AS DATETIME) >= '$startDateTime')";
+		$list_query .= " AND (vtiger_activity.status is NULL OR vtiger_activity.status not in ('Completed','Deferred')) and (vtiger_activity.eventstatus is NULL OR vtiger_activity.eventstatus not in ('Held','Not Held')) AND (CAST((CONCAT(date_start,' ',time_start)) AS DATETIME) >= '$startDateTime' OR CAST((CONCAT(vtiger_recurringevents.recurringdate,' ',time_start)) AS DATETIME) >= '$startDateTime')";
 	elseif ($_REQUEST['from_homepage'] == 'pending_activities')
-		$list_query .= " AND (vtiger_activity.status is NULL OR vtiger_activity.status not in ('Completed','Deferred')) and (vtiger_activity.eventstatus is NULL OR  vtiger_activity.eventstatus not in ('Held','Not Held')) AND (CAST((CONCAT(due_date,' ',time_end)) AS DATETIME) <= '$endDateTime' OR CAST((CONCAT(vtiger_recurringevents.recurringdate,' ',time_start)) AS DATETIME) <= '$endDateTime')";
+		$list_query .= " AND (vtiger_activity.status is NULL OR vtiger_activity.status not in ('Completed','Deferred')) and (vtiger_activity.eventstatus is NULL OR vtiger_activity.eventstatus not in ('Held','Not Held')) AND (CAST((CONCAT(due_date,' ',time_end)) AS DATETIME) <= '$endDateTime' OR CAST((CONCAT(vtiger_recurringevents.recurringdate,' ',time_start)) AS DATETIME) <= '$endDateTime')";
 }
 
 if(isset($order_by) && $order_by != '') {
