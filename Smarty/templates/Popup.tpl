@@ -181,7 +181,7 @@ function set_focus() {ldelim}
 				</tr>
 			</table>
 			<div id="status" style="position:absolute;display:none;right:135px;top:15px;height:27px;white-space:nowrap;"><img src="{'status.gif'|@vtiger_imageurl:$THEME}"></div>
-			<table width="100%" cellpadding="5" cellspacing="0" border="0"  class="homePageMatrixHdr">
+			<table width="100%" cellpadding="5" cellspacing="0" border="0" class="homePageMatrixHdr">
 				<tr>
 					<td style="padding:10px;" >
 						<div id="searchAcc" style="display: block;position:relative;">
@@ -194,7 +194,7 @@ function set_focus() {ldelim}
 							<td width="30%" class="dvtCellLabel"><input type="text" name="search_text" id="search_txt" class="txtBox"> </td>
 							<td width="30%" class="dvtCellLabel"><b>{$APP.LBL_IN}</b>&nbsp;
 								<select name ="search_field" class="txtBox">
-											 {html_options  options=$SEARCHLISTHEADER }
+									{html_options options=$SEARCHLISTHEADER }
 								</select>
 								<input type="hidden" name="searchtype" value="BasicSearch">
 								<input type="hidden" name="module" id="module" value="{$MODULE}">
@@ -249,7 +249,7 @@ function set_focus() {ldelim}
 					<tr>
 						<td align="right"><input id="all_contacts" alt="{$APP.LBL_SELECT_BUTTON_LABEL} {$APP.$MODULE}" title="{$APP.LBL_SELECT_BUTTON_LABEL} {$APP.$MODULE}" accessKey="" class="crmbutton small edit" value="{$APP.SHOW_ALL}&nbsp;{$APP.$MODULE}" LANGUAGE=javascript onclick="window.location.href=showAllRecords();" type="button"  name="button"></td>
 					</tr>
-					{/if}
+				{/if}
 			</table>
 			<!-- ADVANCED SEARCH -->
 			<div id="advSearch" style="display:none;">

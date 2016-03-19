@@ -27,7 +27,7 @@ $table_col_array=array('vtiger_account.accountname','vtiger_contactdetails.first
 function getSearchListHeaderValues($focus, $module,$sort_qry='',$sorder='',$order_by='',$relatedlist='',$oCv='')
 {
 	global $log;
-	$log->debug("Entering getSearchListHeaderValues(".(is_object($focus)? get_class($focus):'').",". $module.",".$sort_qry.",".$sorder.",".$order_by.",".$relatedlist.",".(is_object($oCV)? get_class($oCV):'').") method ...");
+	$log->debug("Entering getSearchListHeaderValues(".(is_object($focus)? get_class($focus):'').",". $module.",".$sort_qry.",".$sorder.",".$order_by.",".$relatedlist.",".(is_object($oCv)? get_class($oCv):'').") method ...");
         global $adb;
         global $theme;
         global $app_strings;

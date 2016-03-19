@@ -225,15 +225,12 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
  * Returns the listview header values in an array
  */
 function getSearchListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order_by = '') {
-	global $log;
+	global $log, $adb, $theme, $app_strings, $mod_strings, $current_user;
 	$log->debug("Entering getSearchListViewHeader(" . get_class($focus) . "," . $module . "," . $sort_qry . "," . $sorder . "," . $order_by . ") method ...");
-	global $adb;
-	global $theme;
-	global $app_strings;
-	global $mod_strings, $current_user;
 	$arrow = '';
 	$list_header = Array();
 	$tabid = getTabid($module);
+	$pass_url = '';
 	if (isset($_REQUEST['task_relmod_id'])) {
 		$task_relmod_id = vtlib_purify($_REQUEST['task_relmod_id']);
 		$pass_url .="&task_relmod_id=" . $task_relmod_id;
@@ -254,7 +251,11 @@ function getSearchListViewHeader($focus, $module, $sort_qry = '', $sorder = '', 
 		$pass_url .="&parent_module=Accounts&relmod_id=" . vtlib_purify($_REQUEST['acc_id']);
 	}
 
-	$pass_url .= '&form='.vtlib_purify($_REQUEST['form']).'&forfield=' . vtlib_purify($_REQUEST['forfield']) . '&srcmodule=' . vtlib_purify($_REQUEST['srcmodule']) . '&forrecord=' . vtlib_purify($_REQUEST['forrecord']);
+	$pass_url .= '&form=' . (isset($_REQUEST['form']) ? vtlib_purify($_REQUEST['form']) : '').
+		'&forfield=' . (isset($_REQUEST['forfield']) ? vtlib_purify($_REQUEST['forfield']) : '').
+		'&srcmodule=' . (isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : '').
+		'&forrecord=' . (isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : '');
+
 	$field_list = array_values($focus->search_fields_name);
 	require('user_privileges/user_privileges_' . $current_user->id . '.php');
 	$field = Array();
@@ -374,6 +375,7 @@ function getNavigationValues($display, $noofrows, $limit) {
 	} else {
 		$previous = 0;
 	}
+	$last = $paging;
 	if ($noofrows < $limit) {
 		$first = '';
 	} elseif ($noofrows != $limit) {
@@ -933,10 +935,9 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
  * Returns an array type
  */
 function getSearchListViewEntries($focus, $module, $list_result, $navigation_array, $form = '') {
-	global $log;
-	$log->debug("Entering getSearchListViewEntries(" . get_class($focus) . "," . $module . "," . $list_result . "," . $navigation_array . ") method ...");
+	global $log, $adb, $app_strings, $theme, $current_user, $list_max_entries_per_page;
+	$log->debug("Entering getSearchListViewEntries(" . get_class($focus) . "," . $module . "," . $list_result . ") method ...");
 
-	global $adb, $app_strings, $theme, $current_user, $list_max_entries_per_page;
 	$noofrows = $adb->num_rows($list_result);
 
 	$list_header = '';
@@ -1050,9 +1051,9 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 						// vtlib customization: Generic popup handling
 						elseif (isset($focus->popup_fields) && in_array($fieldname, $focus->popup_fields)) {
 							global $default_charset;
-							$forfield = vtlib_purify($_REQUEST['forfield']);
+							$forfield = isset($_REQUEST['forfield']) ? vtlib_purify($_REQUEST['forfield']) : '';
 							$forfield = htmlspecialchars($forfield, ENT_QUOTES, $default_charset);
-							$forform = vtlib_purify($_REQUEST['form']);
+							$forform = isset($_REQUEST['form']) ? vtlib_purify($_REQUEST['form']) : '';
 							$forform = htmlspecialchars($forform, ENT_QUOTES, $default_charset);
 							$list_result_count = $i - 1;
 							$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, "search", $focus->popup_type);
@@ -1184,7 +1185,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
  */
 function getValue($field_result, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, $mode, $popuptype, $returnset = '', $viewid = '') {
 	global $log, $listview_max_textlength, $app_strings, $current_language, $currentModule;
-	$log->debug("Entering getValue(" . $field_result . "," . $list_result . "," . $fieldname . "," . get_class($focus) . "," . $module . "," . $entity_id . "," . $list_result_count . "," . $mode . "," . $popuptype . "," . $returnset . "," . $viewid . ") method ...");
+	$log->debug("Entering getValue(" . print_r($field_result,true) . "," . $list_result . "," . $fieldname . "," . get_class($focus) . "," . $module . "," . $entity_id . "," . $list_result_count . "," . $mode . "," . $popuptype . "," . $returnset . "," . $viewid . ") method ...");
 	global $adb, $current_user, $default_charset;
 
 	require('user_privileges/user_privileges_' . $current_user->id . '.php');
@@ -2865,7 +2866,10 @@ function AlphabeticalSearch($module, $action, $fieldname, $query, $type, $popupt
 	if ($return_module != '')
 		$returnvalue .= '&return_module=' . $return_module;
 
-	$returnvalue .= '&form='.vtlib_purify($_REQUEST['form']).'&forfield=' . vtlib_purify($_REQUEST['forfield']) . '&srcmodule=' . vtlib_purify($_REQUEST['srcmodule']) . '&forrecord=' . vtlib_purify($_REQUEST['forrecord']);
+	$returnvalue .= '&form=' . (isset($_REQUEST['form']) ? vtlib_purify($_REQUEST['form']) : '').
+		'&forfield=' . (isset($_REQUEST['forfield']) ? vtlib_purify($_REQUEST['forfield']) : '').
+		'&srcmodule=' . (isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : '').
+		'&forrecord=' . (isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : '');
 
 	$list = '';
 	for ($var = 'A', $i = 1; $i <= 26; $i++, $var++)
@@ -4058,7 +4062,10 @@ function getTableHeaderSimpleNavigation($navigation_array, $url_qry, $module = '
 	$search_tag = isset($_REQUEST['search_tag']) ? $_REQUEST['search_tag'] : '';
 	$url_string = '';
 
-	$url_string .= '&form='.vtlib_purify($_REQUEST['form']).'&forfield=' . vtlib_purify($_REQUEST['forfield']) . '&srcmodule=' . vtlib_purify($_REQUEST['srcmodule']) . '&forrecord=' . vtlib_purify($_REQUEST['forrecord']);
+	$url_string .= '&form=' . (isset($_REQUEST['form']) ? vtlib_purify($_REQUEST['form']) : '').
+		'&forfield=' . (isset($_REQUEST['forfield']) ? vtlib_purify($_REQUEST['forfield']) : '').
+		'&srcmodule=' . (isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : '').
+		'&forrecord=' . (isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : '');
 
 	if ($module == 'Calendar' && $action_val == 'index') {
 		if ($_REQUEST['view'] == '') {
