@@ -9,10 +9,10 @@
  ************************************************************************************/
 require_once('data/CRMEntity.php');
 require_once('data/Tracker.php');
-require_once('user_privileges/default_module_view.php');
 
 class PriceBooks extends CRMEntity {
 	var $db, $log; // Used in class functions of CRMEntity
+
 	var $table_name = 'vtiger_pricebook';
 	var $table_index= 'pricebookid';
 	var $column_fields = Array();
@@ -27,8 +27,6 @@ class PriceBooks extends CRMEntity {
 	 */
 	var $customFieldTable = Array('vtiger_pricebookcf', 'pricebookid');
 
-	var $sortby_fields = Array('bookname');
-
 	// This is the list of fields that are in the lists.
 	var $list_fields = Array(
 		'Price Book Name'=>Array('pricebook'=>'bookname'),
@@ -36,7 +34,6 @@ class PriceBooks extends CRMEntity {
 		'Currency'=>Array('pricebook'=>'currency_id'),
 		'Active'=>Array('pricebook'=>'active')
 	);
-
 	var $list_fields_name = Array(
 		'Price Book Name'=>'bookname',
 		'Price'=>'listprice',
@@ -46,23 +43,32 @@ class PriceBooks extends CRMEntity {
 	var $list_link_field= 'bookname';
 
 	var $search_fields = Array(
-		'Price Book Name'=>Array('pricebook'=>'bookname')
+		'Price Book Name'=>Array('pricebook'=>'bookname'),
+		'Currency'=>Array('pricebook'=>'currency_id'),
+		'Active'=>Array('pricebook'=>'active')
 	);
 	var $search_fields_name = Array(
 		'Price Book Name'=>'bookname',
+		'Currency'=>'currency_id',
+		'Active'=>'active'
 	);
 
-	//Added these variables which are used as default order by and sortorder in ListView
-	var $default_order_by = 'bookname';
-	var $default_sort_order = 'ASC';
+	// For Popup window record selection
+	var $popup_fields = Array('bookname');
 
-	var $mandatory_fields = Array('bookname','currency_id','pricebook_no','createdtime' ,'modifiedtime');
+	// Placeholder for sort fields - All the fields will be initialized for Sorting through initSortFields
+	var $sortby_fields = Array('bookname');
 
 	// For Alphabetical search
 	var $def_basicsearch_col = 'bookname';
 
 	// Column value to use on detail view record text display
 	var $def_detailview_recname = 'bookname';
+
+	var $default_order_by = 'bookname';
+	var $default_sort_order = 'ASC';
+
+	var $mandatory_fields = Array('bookname','currency_id','pricebook_no','createdtime' ,'modifiedtime');
 
 	function __construct() {
 		global $log;
