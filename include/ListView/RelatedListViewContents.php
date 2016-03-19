@@ -6,18 +6,13 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  *********************************************************************************/
-
-/**
- * @author MAK
- */
 
 if($ajaxaction == "LOADRELATEDLIST") {
 	global $relationId;
-	$relationId =  vtlib_purify($_REQUEST['relation_id']);
+	$relationId = vtlib_purify($_REQUEST['relation_id']);
 	if(!empty($relationId) && ((int)$relationId) > 0) {
-		$recordid =  vtlib_purify($_REQUEST['record']);
+		$recordid = vtlib_purify($_REQUEST['record']);
 		if($_SESSION['rlvs'][$currentModule][$relationId]['currentRecord'] != $recordid) {
 			$resetCookie = true;
 		} else {
@@ -33,11 +28,10 @@ if($ajaxaction == "LOADRELATEDLIST") {
 		if (!method_exists($modObj,$function_name)) {
 			@include_once 'modules/'.$relatedModule.'/'.$function_name.'.php';
 			if (function_exists($function_name)) {
-				$modObj->registerMethod($function_name); 
+				$modObj->registerMethod($function_name);
 			}
 		}
-		$relatedListData = $modObj->$function_name($recordid, getTabid($currentModule),
-				$relationInfo['relatedTabId'], $actions);
+		$relatedListData = $modObj->$function_name($recordid, getTabid($currentModule),$relationInfo['relatedTabId'], $actions);
 		require_once('Smarty_setup.php');
 		global $theme, $mod_strings, $app_strings;
 		$theme_path="themes/".$theme."/";
@@ -94,5 +88,4 @@ if($ajaxaction == "LOADRELATEDLIST") {
 	}
 	echo "SUCCESS";
 }
-
 ?>
