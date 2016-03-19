@@ -24,7 +24,7 @@
 	{else}
 		<td>&nbsp;</td>
 	{/if}
-	<td style="padding-right:10px;" align="right">{$RECORD_COUNTS}</td></tr>
+	<td></td></tr>
 	<tr>
 	    <td style="padding:10px;" colspan=3>
 
@@ -86,7 +86,8 @@
 </table>
 <table width="100%" align="center" class="reportCreateBottom">
 <tr>
-	{$NAVIGATION}	
+	<td style="padding-right:10px;" class="small" align="right">{$RECORD_STRING}</td>
+	{$NAVIGATION}
 <td width="35%">&nbsp;</td>
 </tr>
 </table>

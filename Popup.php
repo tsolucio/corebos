@@ -373,19 +373,15 @@ if(method_exists($focus, 'getQueryByModuleField')) {
 }
 // END
 
-if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true){
-	$count_result = $adb->pquery( mkCountQuery( $query), array());
-	$noofrows = $adb->query_result($count_result,0,"count");
-}else{
-	$noofrows = null;
-}
+$count_result = $adb->pquery(mkCountQuery( $query), array());
+$noofrows = $adb->query_result($count_result,0,'count');
 
 //Retreiving the start value from request
 if(isset($_REQUEST['start']) && $_REQUEST['start'] != '') {
 	$start = vtlib_purify($_REQUEST['start']);
 	if($start == 'last'){
-		$count_result = $adb->pquery( mkCountQuery($query), array());
-		$noofrows = $adb->query_result($count_result,0,"count");
+		//$count_result = $adb->pquery( mkCountQuery($query), array());
+		//$noofrows = $adb->query_result($count_result,0,'count');
 		if($noofrows > 0){
 			$start = ceil($noofrows/$list_max_entries_per_page);
 		}
@@ -404,7 +400,7 @@ $query.=" LIMIT $limstart,$list_max_entries_per_page";
 $list_result = $adb->pquery($query, array());
 
 //Retreive the Navigation array
-$navigation_array = VT_getSimpleNavigationValues($start, $list_max_entries_per_page,$noofrows);
+$navigation_array = getNavigationValues($start, $noofrows, $list_max_entries_per_page);
 
 //Retreive the List View Table Header
 $focus->initSortbyField($currentModule);
@@ -435,12 +431,18 @@ $smarty->assign("HEADERCOUNT",count($listview_header)+1);
 
 $listview_entries = getSearchListViewEntries($focus,"$currentModule",$list_result,$navigation_array,$form);
 $smarty->assign("LISTENTITY", $listview_entries);
+if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true){
+	$record_string = getRecordRangeMessage($list_result, $start_rec, $noofrows);
+} else {
+	$record_string = '';
+}
 
 $navigationOutput = getTableHeaderSimpleNavigation($navigation_array, $url_string,$currentModule,"Popup");
 $smarty->assign("NAVIGATION", $navigationOutput);
-$smarty->assign("RECORD_COUNTS", $record_string);
+$smarty->assign("RECORD_STRING", $record_string);
+$smarty->assign("RECORD_COUNTS", $noofrows);
 $smarty->assign("POPUPTYPE", $popuptype);
-$smarty->assign("PARENT_MODULE", vtlib_purify($_REQUEST['parent_module']));
+$smarty->assign("PARENT_MODULE", isset($_REQUEST['parent_module']) ? vtlib_purify($_REQUEST['parent_module']) : '');
 
 if(isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '')
 	$smarty->display("PopupContents.tpl");
