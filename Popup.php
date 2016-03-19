@@ -379,7 +379,7 @@ if(method_exists($focus, 'getQueryByModuleField')) {
 }
 // END
 
-$count_result = $adb->pquery(mkCountQuery( $query), array());
+$count_result = $adb->pquery(mkCountQuery($query), array());
 $noofrows = $adb->query_result($count_result,0,'count');
 
 //Retreiving the start value from request

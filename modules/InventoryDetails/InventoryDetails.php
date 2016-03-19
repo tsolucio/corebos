@@ -533,18 +533,13 @@ class InventoryDetails extends CRMEntity {
 	 * You can override the behavior by re-defining it here.
 	 */
 	//function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
-	
-	function createInventoryDetails($related_focus, $module){
-		require_once('modules/InventoryDetails/InventoryDetails.php');
+
+	public static function createInventoryDetails($related_focus, $module){
 		global $adb,$log,$current_user,$currentModule;
 		$save_currentModule = $currentModule;
 		$currentModule = 'InventoryDetails';
 		$related_to = $related_focus->id;
-		
-		//var_dump($related_focus->column_fields);exit;
-		
 		$taxtype = getInventoryTaxType($module, $related_to);
-		
 		if($taxtype == 'group'){
 			$query = "SELECT id as related_to , productid , sequence_no ,lineitem_id,quantity , listprice , comment as description , 
 			quantity * listprice AS extgross, 
@@ -569,10 +564,10 @@ class InventoryDetails extends CRMEntity {
 			WHERE id = ?";
 		}
 		$res_inv_lines = $adb->pquery($query,array($related_to));
-			
+
 		$accountid = '0';
 		$contactid = '0';
-		
+
 		switch ($module) {
 			case 'Quotes':
 					$accountid = $related_focus->column_fields['account_id'];
