@@ -286,7 +286,6 @@ function calcGrandTotal() {
 	document.getElementById("total").value = roundValue(grandTotal.toString());
 }
 
-//Method changed as per advice by jon http://forums.vtiger.com/viewtopic.php?t=4162
 function roundValue(val) {
 	val = parseFloat(val);
 	val = Math.round(val*100)/100;

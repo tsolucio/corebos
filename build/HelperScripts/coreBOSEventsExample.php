@@ -60,7 +60,7 @@ class coreBOSEventsExample extends VTEventHandler {
 			case 'corebos.header':
 			case 'corebos.footer.prefooter':
 			case 'corebos.header.premenu':
-				# Write somethink into the footer/Header
+				// Write something into the footer/header
 				echo "<div style='text-align:left;font-size:11px;padding:0 30px;color:rgb(153, 153, 153);'>Extended Header/Footer message</div>";
 			break;
 		}
@@ -70,16 +70,16 @@ class coreBOSEventsExample extends VTEventHandler {
 		global $currentModule;
 		switch($handlerType) {
 			case 'corebos.filter.listview.querygenerator.before':
-				# $parameter is the QueryGenerator Object
+				// $parameter is the QueryGenerator Object
 				$fields = $parameter->getFields();
-				# Add homephone field to load from database
+				// Add homephone field to load from database
 				$fields[] = 'homephone';
 				$parameter->setFields($fields);
 				break;
 			case 'corebos.filter.listview.querygenerator.after':
 				$fields = $parameter->getFields();
 				$newFields = array();
-				# remove homephone, because we don't want to have this column in the visible area
+				// remove homephone, because we don't want to have this column in the visible area
 				foreach($fields as $value) {
 					if($value != 'homephone') {
 						$newFields[] = $value;
