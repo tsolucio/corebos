@@ -130,6 +130,7 @@ $mod_strings = array(
 	'LBL_BCC_EMAIL_ERROR' => 'A megadott Rejtett másolat email cím nem megfelelő',
 	'LBL_NO_RCPTS_EMAIL_ERROR' => 'Nincs Címzett megadva',
 	'LBL_CONF_MAILSERVER_ERROR' => 'Kérjük, hogy állítsd be a Kimenő levelek mailszerverét a Beállítások -> Kimenő levelek MailSzerver linken',
+	'LBL_CONF_SERVERSTORAGE_ERROR'=>'The permissions on your storage directory are insufficient, you will not be able to send attachments!',
 	'LBL_MAILSELECT_INFO3' => 'Neked nincs jogosultságod arra, hogy a kiválasztott rekord(ok) email címeit megtekintsd.',
 	'FEATURE_AVAILABLE_INFO' => 'Ez a funkció jelenleg csak a Microsoft Internet Explorer 5.5+ felhasználóknak érhető el.Várja meg a következő verziót!',
 	'DOWNLOAD_CONFIRAMATION' => 'Le szeretnéd tölteni a fájlt?',

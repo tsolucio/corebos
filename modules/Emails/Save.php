@@ -14,10 +14,16 @@ if(isset($_REQUEST['server_check']) && $_REQUEST['server_check'] == 'true')
 {
 	$sql='select * from vtiger_systems where server_type = ?';
 	$emailcfg = $adb->pquery($sql, array('email'));
-	if($adb->num_rows($emailcfg)>0)
-		echo 'SUCCESS';
-	else
-		echo 'FAILURE';
+	if($adb->num_rows($emailcfg)>0) {
+		$upload_file_path = decideFilePath();
+		if (!is_writable($upload_file_path)) {
+			echo 'FAILURESTORAGE';
+		} else {
+			echo 'SUCCESS';
+		}
+	} else {
+		echo 'FAILUREEMAIL';
+	}
 	die;
 }
 

@@ -212,6 +212,7 @@ var cc_err_msg = '{$MOD.LBL_CC_EMAIL_ERROR}';
 var no_rcpts_err_msg = '{$MOD.LBL_NO_RCPTS_EMAIL_ERROR}';
 var bcc_err_msg = '{$MOD.LBL_BCC_EMAIL_ERROR}';
 var conf_mail_srvr_err_msg = '{$MOD.LBL_CONF_MAILSERVER_ERROR}';
+var conf_srvr_storage_err_msg = '{$MOD.LBL_CONF_SERVERSTORAGE_ERROR}';
 var remove_image_url = "{'no.gif'|@vtiger_imageurl:$THEME}";
 {literal}
 function searchDocuments() {
@@ -343,26 +344,29 @@ function findAngleBracket(mailadd)
 function server_check()
 {
 	var oform = window.document.EditView;
-        new Ajax.Request(
-        	'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                	method: 'post',
-                        postBody:"module=Emails&action=EmailsAjax&file=Save&ajax=true&server_check=true",
-			onComplete: function(response) {
-			if(response.responseText.indexOf('SUCCESS') > -1)
-			{
+	new Ajax.Request('index.php',
+	{	queue: {position: 'end', scope: 'command'},
+		method: 'post',
+		postBody:"module=Emails&action=EmailsAjax&file=Save&ajax=true&server_check=true",
+		onComplete: function(response) {
+			if(response.responseText.indexOf('SUCCESS') > -1) {
 				oform.send_mail.value='true';
 				oform.action.value='Save';
 				oform.submit();
-			}else
-			{
-				//alert('Please Configure Your Mail Server');
-				alert(conf_mail_srvr_err_msg);
+			} else {
+				if (response.responseText.indexOf('FAILURESTORAGE') > -1) {
+					if (confirm(conf_srvr_storage_err_msg)) {
+						oform.send_mail.value='true';
+						oform.action.value='Save';
+						oform.submit();
+					}
+				} else {
+					alert(conf_mail_srvr_err_msg);
+				}
 				return false;
 			}
-               	    }
-                }
-        );
+		}
+	});
 }
 $('attach_cont').innerHTML = $('attach_temp_cont').innerHTML;
 function delAttachments(id)

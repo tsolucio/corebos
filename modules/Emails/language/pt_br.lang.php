@@ -153,6 +153,7 @@ $mod_strings = Array(
 'LBL_BCC_EMAIL_ERROR'=>'Seu endereço de email BCC não está correto',
 'LBL_NO_RCPTS_EMAIL_ERROR'=>'Nenhum destinatário epecificado',
 'LBL_CONF_MAILSERVER_ERROR'=>'Por favor configure seu servidor de envio de mensagens em Configurações --> link Servidor de Envio',
+'LBL_CONF_SERVERSTORAGE_ERROR'=>'The permissions on your storage directory are insufficient, you will not be able to send attachments!',
 'LBL_MAILSELECT_INFO3'=>'Você não tem permissão para visualizar endereço(s) de emai(s)l nos Registro(s) selecionado(s)',
 //Added  for script alerts
 'FEATURE_AVAILABLE_INFO' => 'Este atributo está disponível atualmente somente para usuários do Microsoft Internet Explorer 5.5+  \n\nAguarde

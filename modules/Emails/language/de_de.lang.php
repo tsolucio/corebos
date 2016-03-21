@@ -151,6 +151,7 @@ $mod_strings = Array(
 'LBL_BCC_EMAIL_ERROR'=>'Ihre BCC E-Mail Adresse ist fehlerhaft.',
 'LBL_NO_RCPTS_EMAIL_ERROR'=>'Es wurde kein Adressat eingetragen.',
 'LBL_CONF_MAILSERVER_ERROR'=>'Bitte konfigurieren Sie den Server für rausgehende E-Mails ---> Server Link',
+'LBL_CONF_SERVERSTORAGE_ERROR'=>'The permissions on your storage directory are insufficient, you will not be able to send attachments!',
 'LBL_VTIGER_EMAIL_CLIENT'=>'E-Mail Client',
 'LBL_MAILSELECT_INFO3'=>'Sie haben nicht die Berechtigung, auf die E-Mail Adresse zuzugreifen.',
 //Added  for script alerts

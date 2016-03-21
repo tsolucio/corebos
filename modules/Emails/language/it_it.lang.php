@@ -138,6 +138,7 @@ $mod_strings = array (
   'LBL_BCC_EMAIL_ERROR' => 'L`indirizzo in copia nascosta CCN non &egrave; corretto',
   'LBL_NO_RCPTS_EMAIL_ERROR' => 'Nessun destinatario specificato',
   'LBL_CONF_MAILSERVER_ERROR' => 'Prego configura il server di posta in uscita da -> Impostazioni---> Server Posta in Uscita',
+  'LBL_CONF_SERVERSTORAGE_ERROR'=>'The permissions on your storage directory are insufficient, you will not be able to send attachments!',
   'LBL_MAILSELECT_INFO3' => 'Non hai il permesso di visualizzare le email degli elementi selezionati',
   'FEATURE_AVAILABLE_INFO' => 'Questa funzionalit&agrave; &egrave; disponibile  solo con Microsoft Internet Explorer 5.5 o superiore\\nPer il momento...',
   'DOWNLOAD_CONFIRAMATION' => 'Vuoi scaricare il file?',

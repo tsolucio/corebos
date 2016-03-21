@@ -171,6 +171,7 @@ $mod_strings = Array(
 'LBL_BCC_EMAIL_ERROR'=>'Uw bcc e-mailadres is niet correct',
 'LBL_NO_RCPTS_EMAIL_ERROR'=>'Geen ontvangers weergegeven',
 'LBL_CONF_MAILSERVER_ERROR'=>'Configureer uw uitgaande mailserver selecteer settings ---> uitgaande server link a.u.b. ',
+'LBL_CONF_SERVERSTORAGE_ERROR'=>'The permissions on your storage directory are insufficient, you will not be able to send attachments!',
 'LBL_MAILSELECT_INFO3'=>'U heeft geen permissie om de e-mailadressen van de geselecteerde velden te bekijken.',
 //Added  for script alerts
 'FEATURE_AVAILABLE_INFO' => 'Dit kenmerk is momenteel alleen beschikbaar voor Microsoft Internet Explorer 5.5+!',

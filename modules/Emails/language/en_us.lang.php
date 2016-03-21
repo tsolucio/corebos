@@ -139,6 +139,7 @@ $mod_strings = Array(
 'LBL_BCC_EMAIL_ERROR'=>'Your bcc mailid is not proper',
 'LBL_NO_RCPTS_EMAIL_ERROR'=>'No recepients specified',
 'LBL_CONF_MAILSERVER_ERROR'=>'Please configure your outgoing mailserver under Settings ---> Outgoing Server link',
+'LBL_CONF_SERVERSTORAGE_ERROR'=>'The permissions on your storage directory are insufficient, you will not be able to send attachments!',
 'LBL_MAILSELECT_INFO3'=>'You don\'t have permission to view email id(s) of the selected Record(s).',
 'FEATURE_AVAILABLE_INFO' => 'This feature is currently only available for Microsoft Internet Explorer 5.5+ users\n\nWait f
 or an update!',
