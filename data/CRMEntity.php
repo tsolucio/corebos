@@ -185,14 +185,11 @@ class CRMEntity {
 	 * return void
 	 */
 	function uploadAndSaveFile($id, $module, $file_details, $attachmentname='', $direct_import=false) {
-		global $log;
+		global $log, $adb, $current_user, $upload_badext;
 		$fparams = print_r($file_details,true);
 		$log->debug("Entering into uploadAndSaveFile($id,$module,$fparams) method.");
 
-		global $adb, $current_user;
-		global $upload_badext;
-
-		$date_var = date("Y-m-d H:i:s");
+		$date_var = date('Y-m-d H:i:s');
 
 		//to get the owner id
 		$ownerid = $this->column_fields['assigned_user_id'];
@@ -223,7 +220,6 @@ class CRMEntity {
 		} else {
 			$upload_status = move_uploaded_file($filetmp_name, $upload_file_path . $current_id . "_" . $binFile);
 		}
-
 		if ($upload_status) {
 			$description_val = empty($this->column_fields['description']) ? '' : $this->column_fields['description'];
 			if ($module == 'Contacts' || $module == 'Products') {

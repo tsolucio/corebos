@@ -74,7 +74,6 @@ class Emails extends CRMEntity {
 	function save_module($module) {
 		global $adb;
 		//Inserting into seactivityrel
-		//modified by Richie as raju's implementation broke the feature for addition of webmail to vtiger_crmentity.need to be more careful in future while integrating code
 		if ($_REQUEST['module'] == "Emails" && $_REQUEST['smodule'] != 'webmails' && (!$this->plugin_save)) {
 			if ($_REQUEST['currentid'] != '') {
 				$actid = $_REQUEST['currentid'];
@@ -122,7 +121,6 @@ class Emails extends CRMEntity {
 
 
 		//Insert into cntactivity rel
-
 		if (isset($this->column_fields['contact_id']) && $this->column_fields['contact_id'] != '') {
 			$this->insertIntoEntityTable('vtiger_cntactivityrel', $module);
 		} elseif ($this->column_fields['contact_id'] == '' && $insertion_mode == "edit") {
@@ -130,7 +128,6 @@ class Emails extends CRMEntity {
 		}
 
 		//Inserting into attachment
-
 		$this->insertIntoAttachment($this->id, $module);
 	}
 
@@ -360,9 +357,7 @@ class Emails extends CRMEntity {
 		return $order_by;
 	}
 
-	// Mike Crowe Mod --------------------------------------------------------
-
-	/** Returns a list of the associated vtiger_users */
+	/** Returns a list of the associated users */
 	function get_users($id) {
 		global $log;
 		$log->debug("Entering get_users(" . $id . ") method ...");
@@ -641,11 +636,9 @@ function get_to_emailids($module) {
 
 //added for attach the generated pdf with email
 function pdfAttach($obj, $module, $file_name, $id) {
-	global $log;
+	global $log, $adb, $current_user, $upload_badext;
 	$log->debug("Entering into pdfAttach() method.");
 
-	global $adb, $current_user;
-	global $upload_badext;
 	$date_var = date('Y-m-d H:i:s');
 
 	$ownerid = $obj->column_fields['assigned_user_id'];
