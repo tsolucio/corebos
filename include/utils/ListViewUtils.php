@@ -826,7 +826,14 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 						} elseif ($module == 'Emails' && $relatedlist != '' && ($name == 'Subject' || $name == 'Date Sent' || $name == 'To')) {
 							$list_result_count = $i - 1;
 							$tmp_value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, "list", "", $returnset, $oCv->setdefaultviewid);
-							$value = '<a href="javascript:;" onClick="ShowEmail(\'' . $entity_id . '\');">' . textlength_check($tmp_value) . '</a>';
+							$attrs = $adb->pquery('select count(*) from vtiger_seattachmentsrel where crmid=?', array($entity_id));
+							$atts = $adb->query_result($attrs,0,0);
+							if ($atts>0) {
+								$value = '<img src="themes/images/attachments.gif">&nbsp;';
+							} else {
+								$value = '';
+							}
+							$value.= '<a href="javascript:;" onClick="ShowEmail(\'' . $entity_id . '\');">' . textlength_check($tmp_value) . '</a>';
 							if ($name == 'Date Sent') {
 								$sql = "select email_flag from vtiger_emaildetails where emailid=?";
 								$result = $adb->pquery($sql, array($entity_id));
