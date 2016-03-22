@@ -1944,6 +1944,12 @@ function ReplyCompose(id,mode)
 }
 function OpenCompose(id,mode,crmid)
 {
+	var modeparts = mode.split(':');
+	var i18n = '';
+	if (modeparts.length>1) {
+		mode = modeparts[0];
+		i18n = modeparts[1];
+	}
 	switch(mode)
 	{
 		case 'edit':
@@ -1959,16 +1965,16 @@ function OpenCompose(id,mode,crmid)
 			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&record='+id+'&reply=true';
 			break;
 		case 'Invoice':
-			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+mode+'_'+id+'.pdf&invmodid='+crmid;
+			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+i18n+'_'+id+'.pdf&invmodid='+crmid;
 			break;
 		case 'PurchaseOrder':
-			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+mode+'_'+id+'.pdf&invmodid='+crmid;
+			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+i18n+'_'+id+'.pdf&invmodid='+crmid;
 			break;
 		case 'SalesOrder':
-			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+mode+'_'+id+'.pdf&invmodid='+crmid;
+			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+i18n+'_'+id+'.pdf&invmodid='+crmid;
 			break;
 		case 'Quote':
-			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+mode+'_'+id+'.pdf&invmodid='+crmid;
+			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+i18n+'_'+id+'.pdf&invmodid='+crmid;
 			break;
 		case 'Documents':
 			url = 'index.php?module=Emails&action=EmailsAjax&file=EditView&attachment='+id+'';
