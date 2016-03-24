@@ -468,14 +468,12 @@ function getTabOwnedBy($module) {
  * returns the tabid, integer type
  */
 function getSalesEntityType($crmid) {
-	global $log;
-	$log->debug("Entering getSalesEntityType(" . $crmid . ") method ...");
-	$log->info("in getSalesEntityType " . $crmid);
-	global $adb;
-	$sql = "select setype from vtiger_crmentity where crmid=?";
+	global $log, $adb;
+	$log->debug("Entering getSalesEntityType($crmid) method ...");
+	$sql = 'select setype from vtiger_crmentity where crmid=?';
 	$result = $adb->pquery($sql, array($crmid));
-	$parent_module = $adb->query_result($result, 0, "setype");
-	$log->debug("Exiting getSalesEntityType method ...");
+	$parent_module = $adb->query_result($result, 0, 'setype');
+	$log->debug('Exiting getSalesEntityType method ...');
 	return $parent_module;
 }
 
@@ -485,17 +483,14 @@ function getSalesEntityType($crmid) {
  * returns the vtiger_account name in string format.
  */
 function getAccountName($account_id) {
-	global $log;
-	$log->debug("Entering getAccountName(" . $account_id . ") method ...");
-	$log->info("in getAccountName " . $account_id);
-
-	global $adb;
+	global $log, $adb;
+	$log->debug("Entering getAccountName($account_id) method ...");
 	if ($account_id != '') {
-		$sql = "select accountname from vtiger_account where accountid=?";
+		$sql = 'select accountname from vtiger_account where accountid=?';
 		$result = $adb->pquery($sql, array($account_id));
-		$accountname = $adb->query_result($result, 0, "accountname");
+		$accountname = $adb->query_result($result, 0, 'accountname');
 	}
-	$log->debug("Exiting getAccountName method ...");
+	$log->debug('Exiting getAccountName method ...');
 	return $accountname;
 }
 
@@ -505,16 +500,12 @@ function getAccountName($account_id) {
  * returns the product name in string format.
  */
 function getProductName($product_id) {
-	global $log;
-	$log->debug("Entering getProductName(" . $product_id . ") method ...");
-
-	$log->info("in getproductname " . $product_id);
-
-	global $adb;
-	$sql = "select productname from vtiger_products where productid=?";
+	global $log, $adb;
+	$log->debug("Entering getProductName($product_id) method ...");
+	$sql = 'select productname from vtiger_products where productid=?';
 	$result = $adb->pquery($sql, array($product_id));
-	$productname = $adb->query_result($result, 0, "productname");
-	$log->debug("Exiting getProductName method ...");
+	$productname = $adb->query_result($result, 0, 'productname');
+	$log->debug('Exiting getProductName method ...');
 	return $productname;
 }
 
@@ -524,18 +515,15 @@ function getProductName($product_id) {
  * returns the vtiger_potential name in string format.
  */
 function getPotentialName($potential_id) {
-	global $log;
-	$log->debug("Entering getPotentialName(" . $potential_id . ") method ...");
-	$log->info("in getPotentialName " . $potential_id);
-
-	global $adb;
+	global $log, $adb;
+	$log->debug("Entering getPotentialName($potential_id) method ...");
 	$potentialname = '';
 	if ($potential_id != '') {
-		$sql = "select potentialname from vtiger_potential where potentialid=?";
+		$sql = 'select potentialname from vtiger_potential where potentialid=?';
 		$result = $adb->pquery($sql, array($potential_id));
-		$potentialname = $adb->query_result($result, 0, "potentialname");
+		$potentialname = $adb->query_result($result, 0, 'potentialname');
 	}
-	$log->debug("Exiting getPotentialName method ...");
+	$log->debug('Exiting getPotentialName method ...');
 	return $potentialname;
 }
 
@@ -545,24 +533,20 @@ function getPotentialName($potential_id) {
  * returns the Contact Name in string format.
  */
 function getContactName($contact_id) {
-	global $log;
-	$log->debug("Entering getContactName(" . $contact_id . ") method ...");
-	$log->info("in getContactName " . $contact_id);
-
-	global $adb, $current_user;
+	global $log, $adb, $current_user;
+	$log->debug("Entering getContactName($contact_id) method ...");
 	$contact_name = '';
 	if ($contact_id != '') {
-		$sql = "select * from vtiger_contactdetails where contactid=?";
+		$sql = 'select * from vtiger_contactdetails where contactid=?';
 		$result = $adb->pquery($sql, array($contact_id));
-		$firstname = $adb->query_result($result, 0, "firstname");
-		$lastname = $adb->query_result($result, 0, "lastname");
+		$firstname = $adb->query_result($result, 0, 'firstname');
+		$lastname = $adb->query_result($result, 0, 'lastname');
 		$contact_name = $lastname;
-		// Asha: Check added for ticket 4788
-		if (getFieldVisibilityPermission("Contacts", $current_user->id, 'firstname') == '0') {
+		if (getFieldVisibilityPermission('Contacts', $current_user->id, 'firstname') == '0') {
 			$contact_name .= ' ' . $firstname;
 		}
 	}
-	$log->debug("Exiting getContactName method ...");
+	$log->debug('Exiting getContactName method ...');
 	return $contact_name;
 }
 
@@ -572,24 +556,20 @@ function getContactName($contact_id) {
  * returns the Contact Name in string format.
  */
 function getLeadName($lead_id) {
-	global $log;
-	$log->debug("Entering getLeadName(" . $lead_id . ") method ...");
-	$log->info("in getLeadName " . $lead_id);
-
-	global $adb, $current_user;
+	global $log, $adb, $current_user;
+	$log->debug("Entering getLeadName($lead_id) method ...");
 	$lead_name = '';
 	if ($lead_id != '') {
-		$sql = "select * from vtiger_leaddetails where leadid=?";
+		$sql = 'select * from vtiger_leaddetails where leadid=?';
 		$result = $adb->pquery($sql, array($lead_id));
-		$firstname = $adb->query_result($result, 0, "firstname");
-		$lastname = $adb->query_result($result, 0, "lastname");
+		$firstname = $adb->query_result($result, 0, 'firstname');
+		$lastname = $adb->query_result($result, 0, 'lastname');
 		$lead_name = $lastname;
-		// Asha: Check added for ticket 4788
-		if (getFieldVisibilityPermission("Leads", $current_user->id, 'firstname') == '0') {
+		if (getFieldVisibilityPermission('Leads', $current_user->id, 'firstname') == '0') {
 			$lead_name .= ' ' . $firstname;
 		}
 	}
-	$log->debug("Exiting getLeadName method ...");
+	$log->debug('Exiting getLeadName method ...');
 	return $lead_name;
 }
 
