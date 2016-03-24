@@ -4091,28 +4091,29 @@ function getRelationTables($module,$secmodule){
 	$primary_obj = CRMEntity::getInstance($module);
 	$secondary_obj = CRMEntity::getInstance($secmodule);
 
-	$ui10_query = $adb->pquery("SELECT vtiger_field.tabid AS tabid,vtiger_field.tablename AS tablename, vtiger_field.columnname AS columnname FROM vtiger_field INNER JOIN vtiger_fieldmodulerel ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid WHERE (vtiger_fieldmodulerel.module=? AND vtiger_fieldmodulerel.relmodule=?) OR (vtiger_fieldmodulerel.module=? AND vtiger_fieldmodulerel.relmodule=?)",array($module,$secmodule,$secmodule,$module));
-	if($adb->num_rows($ui10_query)>0){
-		$ui10_tablename = $adb->query_result($ui10_query,0,'tablename');
-		$ui10_columnname = $adb->query_result($ui10_query,0,'columnname');
-		$ui10_tabid = $adb->query_result($ui10_query,0,'tabid');
-
-		if($primary_obj->table_name == $ui10_tablename){
-			$reltables = array($ui10_tablename=>array("".$primary_obj->table_index."","$ui10_columnname"));
-		} else if($secondary_obj->table_name == $ui10_tablename){
-			$reltables = array($ui10_tablename=>array("$ui10_columnname","".$secondary_obj->table_index.""),"".$primary_obj->table_name."" => "".$primary_obj->table_index."");
-		} else {
-			if(isset($secondary_obj->tab_name_index[$ui10_tablename])){
-				$rel_field = $secondary_obj->tab_name_index[$ui10_tablename];
-				$reltables = array($ui10_tablename=>array("$ui10_columnname","$rel_field"),"".$primary_obj->table_name."" => "".$primary_obj->table_index."");
+	if(method_exists($primary_obj,'setRelationTables')){
+		$reltables = $primary_obj->setRelationTables($secmodule);
+	}
+	if (empty($reltables)) { // not predefined so we try uitype10
+		$ui10_query = $adb->pquery("SELECT vtiger_field.tabid AS tabid,vtiger_field.tablename AS tablename, vtiger_field.columnname AS columnname FROM vtiger_field INNER JOIN vtiger_fieldmodulerel ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid WHERE (vtiger_fieldmodulerel.module=? AND vtiger_fieldmodulerel.relmodule=?) OR (vtiger_fieldmodulerel.module=? AND vtiger_fieldmodulerel.relmodule=?)",array($module,$secmodule,$secmodule,$module));
+		if($adb->num_rows($ui10_query)>0){
+			$ui10_tablename = $adb->query_result($ui10_query,0,'tablename');
+			$ui10_columnname = $adb->query_result($ui10_query,0,'columnname');
+			$ui10_tabid = $adb->query_result($ui10_query,0,'tabid');
+			if($primary_obj->table_name == $ui10_tablename){
+				$reltables = array($ui10_tablename=>array("".$primary_obj->table_index."","$ui10_columnname"));
+			} else if($secondary_obj->table_name == $ui10_tablename){
+				$reltables = array($ui10_tablename=>array("$ui10_columnname","".$secondary_obj->table_index.""),"".$primary_obj->table_name."" => "".$primary_obj->table_index."");
 			} else {
-				$rel_field = $primary_obj->tab_name_index[$ui10_tablename];
-				$reltables = array($ui10_tablename=>array("$rel_field","$ui10_columnname"),"".$primary_obj->table_name."" => "".$primary_obj->table_index."");
+				if(isset($secondary_obj->tab_name_index[$ui10_tablename])){
+					$rel_field = $secondary_obj->tab_name_index[$ui10_tablename];
+					$reltables = array($ui10_tablename=>array("$ui10_columnname","$rel_field"),"".$primary_obj->table_name."" => "".$primary_obj->table_index."");
+				} else {
+					$rel_field = $primary_obj->tab_name_index[$ui10_tablename];
+					//$reltables = array($ui10_tablename=>array("$rel_field","$ui10_columnname"),"".$primary_obj->table_name."" => "".$primary_obj->table_index."");
+					$reltables = array($ui10_tablename=>array("$rel_field","$ui10_columnname"));
+				}
 			}
-		}
-	}else {
-		if(method_exists($primary_obj,'setRelationTables')){
-			$reltables = $primary_obj->setRelationTables($secmodule);
 		} else {
 			$reltables = '';
 		}
