@@ -534,4 +534,11 @@
 	<classname>addNumberDecimalPlaces</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add and fix Currencies</description>
+	<filename>build/changeSets/addfixCurrencies01.php</filename>
+	<classname>addfixCurrencies01</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
