@@ -43,12 +43,20 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 	// vtlib customization: New uitype to handle relation between modules
 	if ($uitype == '10') {
 		$fieldlabel = getTranslatedString($fieldlabel, $module);
-
 		$parent_id = $col_fields[$fieldname];
 		if (!empty($parent_id)) {
-			$parent_module = getSalesEntityType($parent_id);
+			$parent_module = '';
+			$fldrs = $adb->pquery('select relmodule
+				from vtiger_fieldmodulerel
+				inner join vtiger_field on vtiger_field.fieldid=vtiger_fieldmodulerel.fieldid
+				where vtiger_field.fieldname=? and vtiger_field.tabid=?', array($fieldname, $tabid));
+			if ($adb->num_rows($fldrs)==1) {
+				$parent_module = $adb->query_result($fldrs, 0, 0);
+			}
+			if ($parent_module=='') {
+				$parent_module = getSalesEntityType($parent_id);
+			}
 			$valueTitle = getTranslatedString($parent_module,$parent_module);
-
 			$displayValueArray = getEntityName($parent_module, $parent_id);
 			if (!empty($displayValueArray)) {
 				foreach ($displayValueArray as $key => $value) {
