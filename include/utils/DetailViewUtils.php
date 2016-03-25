@@ -1082,9 +1082,29 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		}
 		$label_fld[] = $displayValue;
 	}
+	elseif ($uitype == 9 || $uitype == 7) {
+		$label_fld[] = getTranslatedString($fieldlabel, $module);
+		$fldrs = $adb->pquery('select typeofdata from vtiger_field
+			where vtiger_field.fieldname=? and vtiger_field.tabid=?', array($fieldname, $tabid));
+		$typeofdata = $adb->query_result($fldrs, 0, 0);
+		$typeinfo = explode('~', $typeofdata);
+		if ($typeinfo[0]=='I') {
+			$label_fld[] = $col_fields[$fieldname];
+		} else {
+			$currencyField = new CurrencyField($col_fields[$fieldname]);
+			$decimals = CurrencyField::getDecimalsFromTypeOfData($typeofdata);
+			$currencyField->initialize($current_user);
+			$currencyField->setNumberofDecimals(min($decimals,$currencyField->getCurrencyDecimalPlaces()));
+			$label_fld[] = $currencyField->getDisplayValue(null,false,true);
+		}
+	}
 	elseif ($uitype == 71 || $uitype == 72) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$currencyField = new CurrencyField($col_fields[$fieldname]);
+		$fldrs = $adb->pquery('select typeofdata from vtiger_field
+			where vtiger_field.fieldname=? and vtiger_field.tabid=?', array($fieldname, $tabid));
+		$typeofdata = $adb->query_result($fldrs, 0, 0);
+		$typeinfo = explode('~', $typeofdata);
 		if($uitype == 72) {
 			// Some of the currency fields like Unit Price, Total, Sub-total etc of Inventory modules, do not need currency conversion
 			if ($fieldname == 'unit_price') {
@@ -1097,7 +1117,10 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 				$label_fld["cursymb"] = $currency_info['currency_symbol'];
 			}
 		} else {
-			$label_fld[] = $currencyField->getDisplayValue();
+			$decimals = CurrencyField::getDecimalsFromTypeOfData($typeofdata);
+			$currencyField->initialize($current_user);
+			$currencyField->setNumberofDecimals(min($decimals,$currencyField->getCurrencyDecimalPlaces()));
+			$label_fld[] = $currencyField->getDisplayValue(null,false,true);
 			$label_fld["cursymb"] = $currencyField->getCurrencySymbol();
 		}
 	} elseif ($uitype == 75 || $uitype == 81) {

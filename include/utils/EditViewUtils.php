@@ -1155,7 +1155,22 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$fieldvalue[] = $parent_name;
 		$fieldvalue[] = $value;
 	}
-
+	elseif ($uitype == 9 || $uitype == 7) {
+		$editview_label[] = getTranslatedString($fieldlabel, $module_name);
+		$fldrs = $adb->pquery('select typeofdata from vtiger_field
+			where vtiger_field.fieldname=? and vtiger_field.tabid=?', array($fieldname, getTabid($module_name)));
+		$typeofdata = $adb->query_result($fldrs, 0, 0);
+		$typeinfo = explode('~', $typeofdata);
+		if ($typeinfo[0]=='I') {
+			$fieldvalue[] = $value;
+		} else {
+			$currencyField = new CurrencyField($value);
+			$decimals = CurrencyField::getDecimalsFromTypeOfData($typeofdata);
+			$currencyField->initialize($current_user);
+			$currencyField->setNumberofDecimals(min($decimals,$currencyField->getCurrencyDecimalPlaces()));
+			$fieldvalue[] = $currencyField->getDisplayValue(null,false,true);
+		}
+	}
 	elseif($uitype == 71 || $uitype == 72) {
 		$currencyField = new CurrencyField($value);
 		// Some of the currency fields like Unit Price, Total, Sub-total etc of Inventory modules, do not need currency conversion
@@ -1169,7 +1184,10 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			}
 			$fieldvalue[] = $currencyField->getDisplayValue(null, true);
 		} else {
-			$fieldvalue[] = $currencyField->getDisplayValue();
+			$decimals = CurrencyField::getDecimalsFromTypeOfData($typeofdata);
+			$currencyField->initialize($current_user);
+			$currencyField->setNumberofDecimals(min($decimals,$currencyField->getCurrencyDecimalPlaces()));
+			$fieldvalue[] = $currencyField->getDisplayValue(null,false,true);
 			$currencySymbol = $currencyField->getCurrencySymbol();
 		}
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name).': ('.$currencySymbol.')';

@@ -150,13 +150,14 @@ class CurrencyField {
 	 * @param Boolean $skipConversion for multicurrency support
 	 * @return Formatted Currency
 	 */
-	public function getDisplayValue($user=null, $skipConversion=false) {
+	public function getDisplayValue($user=null, $skipConversion=false, $noInit=false) {
 		global $current_user;
 		if(empty($user)) {
 			$user = $current_user;
 		}
-		$this->initialize($user);
-
+		if (!$noInit) {
+			$this->initialize($user);
+		}
 		$value = $this->value;
 		if($skipConversion == false) {
 			$value = self::convertFromDollar($value,$this->conversionRate);
@@ -382,5 +383,21 @@ class CurrencyField {
 		return $amount * $conversionRate;
 	}
 
+	public static function getDecimalsFromTypeOfData($typeofdata) {
+		global $current_user;
+		$typeinfo = explode('~', $typeofdata);
+		if (isset($typeinfo[2])) {
+			if (strpos($typeinfo[2], ',')) {
+				$delim = ',';
+			} else {
+				$delim = '~';
+			}
+			$decimals = explode($delim, $typeinfo[2]);
+			$decimals = (isset($decimals[1]) ? $decimals[1] : 0);
+		} else {
+			$decimals = self::getCurrencyDecimalPlaces($current_user);
+		}
+		return $decimals;
+	}
 }
 ?>

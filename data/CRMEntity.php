@@ -26,6 +26,7 @@ class CRMEntity {
 	var $DirectImageFieldValues = array();
 	static protected $methods = array();
 	static protected $dbvalues = array();
+	static protected $todvalues = array();
 
 	public static function registerMethod($method) {
 		self::$methods[] = $method;
@@ -575,9 +576,9 @@ class CRMEntity {
 					} else {
 						$fldvalue = $this->column_fields[$fieldname];
 					}
-				} elseif ($uitype == 7) {
+				//} elseif ($uitype == 7) {
 					//strip out the spaces and commas in numbers if given ie., in amounts there may be ,
-					$fldvalue = str_replace(",", "", $this->column_fields[$fieldname]); //trim($this->column_fields[$fieldname],",");
+					//$fldvalue = str_replace(",", "", $this->column_fields[$fieldname]); //trim($this->column_fields[$fieldname],",");
 				} elseif ($uitype == 26) {
 					if (empty($this->column_fields[$fieldname])) {
 						$fldvalue = 1; //the documents will stored in default folder
@@ -617,12 +618,12 @@ class CRMEntity {
 					// Some of the currency fields like Unit Price, Total, Sub-total - do not need currency conversion during save
 					$fldvalue = CurrencyField::convertToDBFormat($this->column_fields[$fieldname], null, true);
 					if ($insertion_mode == 'edit') {
-						$fldvalue = $this->adjustCurrencyField($fieldname,$fldvalue);
+						$fldvalue = $this->adjustCurrencyField($fieldname,$fldvalue,$tabid);
 					}
-				} elseif ($uitype == 71 && !$ajaxSave) {
+				} elseif (($uitype == 71 || $uitype == 7 || $uitype == 9) && !$ajaxSave) {
 					$fldvalue = CurrencyField::convertToDBFormat($this->column_fields[$fieldname]);
 					if ($insertion_mode == 'edit') {
-						$fldvalue = $this->adjustCurrencyField($fieldname,$fldvalue);
+						$fldvalue = $this->adjustCurrencyField($fieldname,$fldvalue,$tabid);
 					}
 				} else {
 					$fldvalue = $this->column_fields[$fieldname];
@@ -721,7 +722,7 @@ class CRMEntity {
 	 * @param $fldvalue currency value they want to save
 	 * @returns field value from database with maximum decimals if it is the same as value being saved
 	 */
-	function adjustCurrencyField($fieldname,$fldvalue) {
+	function adjustCurrencyField($fieldname,$fldvalue,$tabid) {
 		global $adb, $log, $current_user;
 		$log->debug("Entering adjustCurrencyField($fieldname,$fldvalue)");
 		if (isset(self::$dbvalues[$fieldname])) {
@@ -735,8 +736,15 @@ class CRMEntity {
 			}
 			self::$dbvalues = $dbvals;
 			$dbvalue = self::$dbvalues[$fieldname];
+			$fldrs = $adb->pquery('select fieldname,typeofdata from vtiger_field
+				where vtiger_field.uitype in (7,9,71,72) and vtiger_field.tabid=?', array($tabid));
+			while ($fldinf = $adb->fetch_array($fldrs)) {
+				self::$todvalues[$fldinf['fieldname']] = $fldinf['typeofdata'];
+			}
 		}
-		if (round($dbvalue,$current_user->no_of_currency_decimals)==$fldvalue) {
+		$typeofdata = self::$todvalues[$fieldname];
+		$decimals = CurrencyField::getDecimalsFromTypeOfData($typeofdata);
+		if (round($dbvalue,min($decimals,$current_user->no_of_currency_decimals))==$fldvalue) {
 			$fldvalue = $dbvalue;
 		}
 		$log->debug("Exiting adjustCurrencyField ($fldvalue)");
