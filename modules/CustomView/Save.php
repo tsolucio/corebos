@@ -161,8 +161,9 @@ if($cvmodule != "") {
 						}
 						$fieldType = $fieldObj->getFieldDataType();
 
-						if($fieldType == 'currency') {
-							if($fieldObj->getUIType() == '71') {
+						if($fieldType == 'currency' or $fieldType == 'double') {
+							$flduitype = $fieldObj->getUIType();
+							if($flduitype == '72' or $flduitype == 9 or $flduitype ==7) {
 								$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value, null, true);
 							} else {
 								$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value);
@@ -296,9 +297,10 @@ if($cvmodule != "") {
 						}
 						$fieldType = $fieldObj->getFieldDataType();
 
-						if($fieldType == 'currency') {
-							// Some of the currency fields like Unit Price, Total, Sub-total etc of Inventory modules, do not need currency conversion
-							if($fieldObj->getUIType() == '72') {
+						if($fieldType == 'currency' or $fieldType == 'double') {
+							// Some of the currency fields like Unit Price, Total, Sub-total etc of Inventory modules and normal numbers do not need currency conversion
+							$flduitype = $fieldObj->getUIType();
+							if($flduitype == '72' or $flduitype == 9 or $flduitype ==7) {
 								$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value, null, true);
 							} else {
 								$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value);

@@ -45,17 +45,24 @@ if (!empty($_REQUEST['save_error']) and $_REQUEST['save_error'] == "true") {
 			$field_value =urldecode($value[1]);
 			$finfo = VTCacheUtils::lookupFieldInfo($tabid, $field_name_val);
 			if ($finfo !== false) {
-				if ($finfo['uitype']=='56') {
-					$field_value = $field_value=='on' ? '1' : '0';
-				}
-				if ($finfo['uitype']=='71' or $finfo['uitype']=='72') {
-					$currencyField = new CurrencyField($field_value);
-					$field_value = CurrencyField::convertToDBFormat($field_value,$current_user);
-				}
-				if ($finfo['uitype']=='33' or $finfo['uitype']=='3313') {
-					if (is_array($field_value)) {
-						$field_value = implode(' |##| ', $field_value);
-					}
+				switch ($finfo['uitype']) {
+					case '56':
+						$field_value = $field_value=='on' ? '1' : '0';
+						break;
+					case '7':
+					case '9':
+					case '72':
+						$field_value = CurrencyField::convertToDBFormat($field_value, null, true);
+						break;
+					case '71':
+						$field_value = CurrencyField::convertToDBFormat($field_value);
+						break;
+					case '33':
+					case '3313':
+						if (is_array($field_value)) {
+							$field_value = implode(' |##| ', $field_value);
+						}
+						break;
 				}
 			}
 			$focus->column_fields[$field_name_val] = $field_value;
