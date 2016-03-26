@@ -612,13 +612,13 @@ class CRMEntity {
 							$fldvalue = $adb->query_result($res, 0, 'email1');
 						}
 					}
-				} elseif ($uitype == 72 && !$ajaxSave) {
-					// Some of the currency fields like Unit Price, Total, Sub-total - do not need currency conversion during save
+				} elseif (($uitype == 72 || $uitype == 7 || $uitype == 9) && !$ajaxSave) {
+					// Some of the currency fields like Unit Price, Total, Sub-total and normal numbers do not need currency conversion during save
 					$fldvalue = CurrencyField::convertToDBFormat($this->column_fields[$fieldname], null, true);
 					if ($insertion_mode == 'edit') {
 						$fldvalue = $this->adjustCurrencyField($fieldname,$fldvalue,$tabid);
 					}
-				} elseif (($uitype == 71 || $uitype == 7 || $uitype == 9) && !$ajaxSave) {
+				} elseif ($uitype == 71 && !$ajaxSave) {
 					$fldvalue = CurrencyField::convertToDBFormat($this->column_fields[$fieldname]);
 					if ($insertion_mode == 'edit') {
 						$fldvalue = $this->adjustCurrencyField($fieldname,$fldvalue,$tabid);
