@@ -886,14 +886,12 @@ class ReportRun extends CRMEntity {
 
 		}
 		return $stdfilterlist;
-
 	}
 
 	/** Function to get the RunTime Advanced filter conditions
 	 *  @ param $advft_criteria : Type Array
 	 *  @ param $advft_criteria_groups : Type Array
 	 *  This function returns  $advfiltersql
-	 *
 	 */
 	function RunTimeAdvFilter($advft_criteria,$advft_criteria_groups) {
 		$adb = PearDatabase::getInstance();

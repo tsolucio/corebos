@@ -14,8 +14,7 @@ require_once("include/Zend/Json.php");
 require_once 'modules/Reports/ReportUtils.php';
 require_once('modules/Reports/CustomReportUtils.php');
 
-global $adb;
-global $log,$current_user;
+global $adb, $log,$current_user;
 $reportid = vtlib_purify($_REQUEST["record"]);
 
 //<<<<<<<selectcolumn>>>>>>>>>
@@ -82,13 +81,11 @@ $shared_entities = vtlib_purify($_REQUEST["selectedColumnsStr"]);
 
 //<<<<<<<columnstototal>>>>>>>>>>
 $allKeys = array_keys($_REQUEST);
-for ($i=0;$i<count($allKeys);$i++)
-{
-   $string = substr($allKeys[$i], 0, 3);
-   if($string == "cb:")
-   {
-	   $columnstototal[] = $allKeys[$i];
-   }
+for ($i=0;$i<count($allKeys);$i++) {
+	$string = substr($allKeys[$i], 0, 3);
+	if($string == 'cb:') {
+		$columnstototal[] = $allKeys[$i];
+	}
 }
 //<<<<<<<columnstototal>>>>>>>>>
 
@@ -113,15 +110,15 @@ $saveas=vtlib_purify($_REQUEST['saveashidden']);
 $newreportname=vtlib_purify($_REQUEST['newreportname']);
 if($reportid == '' || ($reportid!='' && strstr($saveas,'saveas')!='' && $newreportname!='')) {
 	if($reportid!='' && $folderid=='') {
-		$reportdetails=$adb->pquery("select * from vtiger_report as report join vtiger_reportmodules as repmodules on report.reportid=repmodules.reportmodulesid  join vtiger_selectcolumn as sc on sc.queryid=report.reportid where reportid=?",array($reportid));
-                $folderid=$adb->query_result($reportdetails,0,'folderid');
-                $reporttype=$adb->query_result($reportdetails,0,'reporttype');
-                $sharetype=$adb->query_result($reportdetails,0,'sharingtype');
-                $reportdescription=$adb->query_result($reportdetails,0,'description');
-                $pmodule = $adb->query_result($reportdetails,0,'primarymodule');
-                $smodule = $adb->query_result($reportdetails,0,'secondarymodules');
-                for($in=0;$in<$adb->num_rows($reportdetails);$in++)
-                $selectedcolumns[]=$adb->query_result($reportdetails,$in,'columnname');
+		$reportdetails=$adb->pquery("select * from vtiger_report as report join vtiger_reportmodules as repmodules on report.reportid=repmodules.reportmodulesid join vtiger_selectcolumn as sc on sc.queryid=report.reportid where reportid=?",array($reportid));
+		$folderid=$adb->query_result($reportdetails,0,'folderid');
+		$reporttype=$adb->query_result($reportdetails,0,'reporttype');
+		$sharetype=$adb->query_result($reportdetails,0,'sharingtype');
+		$reportdescription=$adb->query_result($reportdetails,0,'description');
+		$pmodule = $adb->query_result($reportdetails,0,'primarymodule');
+		$smodule = $adb->query_result($reportdetails,0,'secondarymodules');
+		for($in=0;$in<$adb->num_rows($reportdetails);$in++)
+		$selectedcolumns[]=$adb->query_result($reportdetails,$in,'columnname');
 	}
 	$genQueryId = $adb->getUniqueID("vtiger_selectquery");
 	if($genQueryId != "")
@@ -189,18 +186,18 @@ if($reportid == '' || ($reportid!='' && strstr($saveas,'saveas')!='' && $newrepo
 						$sort_by2sql = "insert into vtiger_reportsortcol (SORTCOLID,REPORTID,COLUMNNAME,SORTORDER) values (?,?,?,?)";
 						$sort_by2result = $adb->pquery($sort_by2sql, array(2,$genQueryId,$sort_by2,$sort_order2));
 						if(CustomReportUtils::IsDateField($sort_by2)){
-                            $groupByTime2Sql = "INSERT INTO vtiger_reportgroupbycolumn(REPORTID,SORTID,SORTCOLNAME,DATEGROUPBYCRITERIA) values(?,?,?,?)";
-                            $groupByTime2Res = $adb->pquery($groupByTime2Sql,array($genQueryId,2,$sort_by2,$groupTime2));
-                        }
+							$groupByTime2Sql = 'INSERT INTO vtiger_reportgroupbycolumn(REPORTID,SORTID,SORTCOLNAME,DATEGROUPBYCRITERIA) values(?,?,?,?)';
+							$groupByTime2Res = $adb->pquery($groupByTime2Sql,array($genQueryId,2,$sort_by2,$groupTime2));
+						}
 					}
 					if($sort_by3 != "")
 					{
 						$sort_by3sql = "insert into vtiger_reportsortcol (SORTCOLID,REPORTID,COLUMNNAME,SORTORDER) values (?,?,?,?)";
 						$sort_by3result = $adb->pquery($sort_by3sql, array(3,$genQueryId,$sort_by3,$sort_order3));
 						if(CustomReportUtils::IsDateField($sort_by3)){
-                            $groupByTime3Sql = "INSERT INTO vtiger_reportgroupbycolumn(REPORTID,SORTID,SORTCOLNAME,DATEGROUPBYCRITERIA) values(?,?,?,?)";
-                            $groupByTime3Res = $adb->pquery($groupByTime3Sql,array($genQueryId,3,$sort_by3,$groupTime3));
-                        }
+							$groupByTime3Sql = 'INSERT INTO vtiger_reportgroupbycolumn(REPORTID,SORTID,SORTCOLNAME,DATEGROUPBYCRITERIA) values(?,?,?,?)';
+							$groupByTime3Res = $adb->pquery($groupByTime3Sql,array($genQueryId,3,$sort_by3,$groupTime3));
+						}
 					}
 					$log->info("Reports :: Save->Successfully saved vtiger_reportsortcol");
 					//<<<<step3 vtiger_reportsortcol>>>>>>>
@@ -340,7 +337,7 @@ if($reportid == '' || ($reportid!='' && strstr($saveas,'saveas')!='' && $newrepo
 			}
 		}
 		$delsharesqlresult = $adb->pquery("DELETE FROM vtiger_reportsharing WHERE reportid=?", array($reportid));
-		if($delsharesqlresult != false  && $sharetype=="Shared" && $shared_entities!='')
+		if($delsharesqlresult != false && $sharetype=="Shared" && $shared_entities!='')
 		{
 			$selectedcolumn = explode(";",$shared_entities);
 			for($i=0 ;$i< count($selectedcolumn) -1 ;$i++)
@@ -365,8 +362,8 @@ if($reportid == '' || ($reportid!='' && strstr($saveas,'saveas')!='' && $newrepo
 		$idelreportsortcolsql = "delete from vtiger_reportsortcol where reportid=?";
 		$idelreportsortcolsqlresult = $adb->pquery($idelreportsortcolsql, array($reportid));
 		$delReportGroupTimeSQL = "DELETE FROM vtiger_reportgroupbycolumn WHERE reportid=?";
-        $delReportGroupTimeRES = $adb->pquery($delReportGroupTimeSQL,array($reportid));
-		
+		$delReportGroupTimeRES = $adb->pquery($delReportGroupTimeSQL,array($reportid));
+
 		$log->info("Reports :: Save->Successfully deleted vtiger_reportsortcol");
 
 		if($idelreportsortcolsqlresult!=false)
@@ -377,27 +374,27 @@ if($reportid == '' || ($reportid!='' && strstr($saveas,'saveas')!='' && $newrepo
 				$sort_by1sql = "insert into vtiger_reportsortcol (SORTCOLID,REPORTID,COLUMNNAME,SORTORDER) values (?,?,?,?)";
 				$sort_by1result = $adb->pquery($sort_by1sql, array(1, $reportid, $sort_by1, $sort_order1));
 				if(CustomReportUtils::IsDateField($sort_by1)){
-                    $groupByTime1Sql = "INSERT INTO vtiger_reportgroupbycolumn(REPORTID,SORTID,SORTCOLNAME,DATEGROUPBYCRITERIA) values(?,?,?,?)";
-                    $groupByTime1Res = $adb->pquery($groupByTime1Sql,array($reportid,1,$sort_by1,$groupTime1));
-                }
+					$groupByTime1Sql = 'INSERT INTO vtiger_reportgroupbycolumn(REPORTID,SORTID,SORTCOLNAME,DATEGROUPBYCRITERIA) values(?,?,?,?)';
+					$groupByTime1Res = $adb->pquery($groupByTime1Sql,array($reportid,1,$sort_by1,$groupTime1));
+				}
 			}
 			if($sort_by2 != "")
 			{
 				$sort_by2sql = "insert into vtiger_reportsortcol (SORTCOLID,REPORTID,COLUMNNAME,SORTORDER) values (?,?,?,?)";
 				$sort_by2result = $adb->pquery($sort_by2sql, array(2, $reportid, $sort_by2, $sort_order2));
 				if(CustomReportUtils::IsDateField($sort_by2)){
-		            $groupByTime2Sql = "INSERT INTO vtiger_reportgroupbycolumn(REPORTID,SORTID,SORTCOLNAME,DATEGROUPBYCRITERIA) values(?,?,?,?)";
-		            $groupByTime2Res = $adb->pquery($groupByTime2Sql,array($reportid,2,$sort_by2,$groupTime2));
-		        }
+					$groupByTime2Sql = 'INSERT INTO vtiger_reportgroupbycolumn(REPORTID,SORTID,SORTCOLNAME,DATEGROUPBYCRITERIA) values(?,?,?,?)';
+					$groupByTime2Res = $adb->pquery($groupByTime2Sql,array($reportid,2,$sort_by2,$groupTime2));
+				}
 			}
 			if($sort_by3 != "")
 			{
 				$sort_by3sql = "insert into vtiger_reportsortcol (SORTCOLID,REPORTID,COLUMNNAME,SORTORDER) values (?,?,?,?)";
 				$sort_by3result = $adb->pquery($sort_by3sql, array(3, $reportid, $sort_by3, $sort_order3));
 				if(CustomReportUtils::IsDateField($sort_by3)){
-                    $groupByTime3Sql = "INSERT INTO vtiger_reportgroupbycolumn(REPORTID,SORTID,SORTCOLNAME,DATEGROUPBYCRITERIA) values(?,?,?,?)";
-                    $groupByTime3Res = $adb->pquery($groupByTime3Sql,array($reportid,3,$sort_by3,$groupTime3));
-                }
+					$groupByTime3Sql = 'INSERT INTO vtiger_reportgroupbycolumn(REPORTID,SORTID,SORTCOLNAME,DATEGROUPBYCRITERIA) values(?,?,?,?)';
+					$groupByTime3Res = $adb->pquery($groupByTime3Sql,array($reportid,3,$sort_by3,$groupTime3));
+				}
 			}
 			$log->info("Reports :: Save->Successfully saved vtiger_reportsortcol");
 			//<<<<step3 vtiger_reportsortcol>>>>>>>
