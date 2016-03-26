@@ -59,9 +59,10 @@ class VTUpdateFieldsTask extends VTTask {
 				$fieldValue = trim($fieldInfo['value']);
 
 				$fieldInstance = $moduleFields[$fieldName];
+				$fieldtype = $fieldInstance->getFieldDataType();
 				if ($fieldValueType == 'fieldname') {
-					if ($fieldInstance->getFieldDataType() === 'currency') {
-						$focus->column_fields[$fieldValue] = $focus->adjustCurrencyField($fieldValue,$focus->column_fields[$fieldValue]);
+					if ($fieldtype === 'currency' or $fieldtype === 'double') {
+						$focus->column_fields[$fieldValue] = $focus->adjustCurrencyField($fieldValue,$focus->column_fields[$fieldValue],$handlerMeta->getTabId());
 					}
 					$fieldValue = $focus->column_fields[$fieldValue];
 				} elseif ($fieldValueType == 'expression') {
@@ -77,8 +78,8 @@ class VTUpdateFieldsTask extends VTTask {
 						$fieldValue = $exprEvaluater->evaluate($entity);
 					}
 				} else {
-					if ($fieldInstance->getFieldDataType() === 'currency') {
-						$focus->column_fields[$fieldValue] = $focus->adjustCurrencyField($fieldValue,$focus->column_fields[$fieldValue]);
+					if ($fieldtype === 'currency' or $fieldtype === 'double') {
+						$focus->column_fields[$fieldValue] = $focus->adjustCurrencyField($fieldValue,$focus->column_fields[$fieldValue],$handlerMeta->getTabId());
 					}
 					if (preg_match('/([^:]+):boolean$/', $fieldValue, $match)) {
 						$fieldValue = $match[1];
@@ -124,7 +125,8 @@ class VTUpdateFieldsTask extends VTTask {
 				if (in_array($moduleName, array('SalesOrder', 'PurchaseOrder', 'Invoice', 'Quotes')) && ($fieldName == 'hdnSubTotal' || $fieldName == 'hdnGrandTotal')) {
 					continue;
 				}
-				if($fieldObj->getFieldDataType()=="currency"){
+				$fieldtype = $fieldObj->getFieldDataType();
+				if($fieldtype=="currency" or $fieldtype === 'double'){
 					if(!empty($focus->column_fields[$fieldName])){
 						$focus->column_fields[$fieldName] = CurrencyField::convertToUserFormat($focus->column_fields[$fieldName],$current_user);
 					}
