@@ -386,14 +386,16 @@ class CurrencyField {
 	public static function getDecimalsFromTypeOfData($typeofdata) {
 		global $current_user;
 		$typeinfo = explode('~', $typeofdata);
+		if ($typeinfo[0]!='N' and $typeinfo[0]!='NN') return 0;
 		if (isset($typeinfo[2])) {
 			if (strpos($typeinfo[2], ',')) {
-				$delim = ',';
+				$decimals = explode(',', $typeinfo[2]);
+				$decimals = ((isset($decimals[1]) and is_numeric($decimals[1])) ? $decimals[1] : self::getCurrencyDecimalPlaces($current_user));
+			} elseif (isset($typeinfo[3]) and is_numeric($typeinfo[3])) {
+				$decimals = $typeinfo[3];
 			} else {
-				$delim = '~';
+				$decimals = self::getCurrencyDecimalPlaces($current_user);
 			}
-			$decimals = explode($delim, $typeinfo[2]);
-			$decimals = (isset($decimals[1]) ? $decimals[1] : 0);
 		} else {
 			$decimals = self::getCurrencyDecimalPlaces($current_user);
 		}
