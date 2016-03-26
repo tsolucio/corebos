@@ -136,7 +136,7 @@ class VTUpdateFieldsTask extends VTTask {
 			$focus->saveentity($moduleName);
 			$_REQUEST['ajxaction'] = $hold_ajxaction;
 			$util->revertUser();
-			$logbg->debug('field values post: '.print_r($focus->column_fields,true));
+			$logbg->debug('field values postsave: '.print_r($focus->column_fields,true));
 		}
 		$util->revertUser();
 		$from_wf = false;

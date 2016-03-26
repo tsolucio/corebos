@@ -393,10 +393,8 @@ class CRMEntity {
 	 * @param $module -- module:: Type varchar
 	 */
 	function insertIntoEntityTable($table_name, $module, $fileid = '') {
-		global $log;
-		global $current_user, $app_strings,$from_wf;
-		$log->info("function insertIntoEntityTable " . $module . ' vtiger_table name ' . $table_name);
-		global $adb;
+		global $log, $current_user, $app_strings, $from_wf, $adb;
+		$log->debug("function insertIntoEntityTable $module $table_name");
 		$insertion_mode = $this->mode;
 
 		//Checkin whether an entry is already is present in the vtiger_table to update
