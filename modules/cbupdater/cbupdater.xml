@@ -541,4 +541,11 @@
 	<classname>addfixCurrencies01</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Install Business Mapping and Conditions</description>
+	<filename>build/changeSets/installcbmap.php</filename>
+	<classname>installcbmap</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

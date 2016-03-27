@@ -1,0 +1,31 @@
+<?xml version='1.0'?>
+<schema>
+	<tables>
+		<table>
+			<name>vtiger_cbmap</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_cbmap` (
+  `cbmapid` int(11) NOT NULL DEFAULT '0',
+  `mapname` varchar(255) DEFAULT NULL,
+  `mapnumber` varchar(100) DEFAULT NULL,
+  `maptype` varchar(100) DEFAULT NULL,
+  `content` text,
+  `origin` int(19) NOT NULL,
+  `originname` varchar(255) NOT NULL,
+  `target` int(19) NOT NULL,
+  `targetname` varchar(255) NOT NULL,
+  `field1` text NOT NULL,
+  `field2` text NOT NULL,
+  `delimiter` varchar(500) NOT NULL,
+  `blocks` varchar(100) DEFAULT NULL,
+  PRIMARY KEY (`cbmapid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>vtiger_cbmapcf</name>
+			<sql><![CDATA[CREATE TABLE `vtiger_cbmapcf` (
+  `cbmapid` int(11) NOT NULL,
+  PRIMARY KEY (`cbmapid`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+	</tables>
+</schema>
