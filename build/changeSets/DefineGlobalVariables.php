@@ -49,6 +49,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Calendar_Slot_Minutes',
 				'Users_ReplyTo_SecondEmail',
 				'Workflow_Send_Email_ToCCBCC',
+				'BusinessMapping_SalesOrder2Invoice',
 			);
 			
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');

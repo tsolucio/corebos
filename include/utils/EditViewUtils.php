@@ -1484,10 +1484,14 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 * Param $soid - sales order id
 * Return type is an object array
 */
-function getConvertSoToInvoice($focus,$so_focus,$soid)
-{
+function getConvertSoToInvoice($focus,$so_focus,$soid) {
 	global $log,$current_user;
 	$log->debug("Entering getConvertSoToInvoice(".get_class($focus).",".get_class($so_focus).",".$soid.") method ...");
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_SalesOrder2Invoice', cbMap::getMapIdByName('SalesOrder2Invoice'));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$focus->column_fields = $cbMap->Mapping($so_focus->column_fields,$focus->column_fields);
+	} else {
 	$xyz=array('bill_street','bill_city','bill_code','bill_pobox','bill_country','bill_state','ship_street','ship_city','ship_code','ship_pobox','ship_country','ship_state');
 	for($i=0;$i<count($xyz);$i++){
 		if (getFieldVisibilityPermission('SalesOrder', $current_user->id,$xyz[$i]) == '0') {
@@ -1521,7 +1525,7 @@ function getConvertSoToInvoice($focus,$so_focus,$soid)
 	$focus->column_fields['terms_conditions'] = $so_focus->column_fields['terms_conditions'];
 	$focus->column_fields['currency_id'] = $so_focus->column_fields['currency_id'];
 	$focus->column_fields['conversion_rate'] = $so_focus->column_fields['conversion_rate'];
-
+	}
 	$log->debug("Exiting getConvertSoToInvoice method ...");
 	return $focus;
 }
