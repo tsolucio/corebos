@@ -10,7 +10,6 @@
 function VTUpdateFieldsTask($, fieldvaluemapping){
 	var vtinst = new VtigerWebservices("webservice.php");
 	var desc = null;
-
 	var format = fn.format;
 
 	function errorDialog(message){
@@ -168,9 +167,8 @@ function VTUpdateFieldsTask($, fieldvaluemapping){
 		editpopupobj.edit(fieldValueNode.attr('id'), fieldValueNode.attr('value'), fieldType);
 	}
 
-	function resetFields(opType, fieldName, mappingno) {		
+	function resetFields(opType, fieldName, mappingno) {
 		defaultValue(opType.name)(opType, mappingno);
-		
 		var fv = $("#save_fieldvalues_"+mappingno+"_value");
 		fv.attr("name", fieldName);
 		var fieldLabel = jQuery("#save_fieldvalues_"+mappingno+"_fieldname option:selected").html();
@@ -241,16 +239,15 @@ function VTUpdateFieldsTask($, fieldvaluemapping){
 			return result;
 		}
 	};
-	
+
 	$(document).ready(function(){
 
 		Drag.init(document.getElementById('editpopup_draghandle'), document.getElementById('editpopup'));
 		editpopupobj = fieldExpressionPopup(moduleName, $);
 		editpopupobj.setModule(moduleName);
 		editpopupobj.close();
-		
 		validator.addValidator('validateDuplicateFields', validateDuplicateFields);
-        
+
 		vtinst.extendSession(handleError(function(result){
 			vtinst.describeObject(moduleName, handleError(function(result){
 				var parent = result;
