@@ -206,14 +206,13 @@ else
 	$query = 'update vtiger_activity set date_start =? where activityid = ?';
 	$adb->pquery($query, array($date_var, $returnid));
 }
+
 //The following function call is used to parse and form a encoded error message and then pass to result page
 $mail_error_str = getMailErrorString($mail_status_str);
 $adb->println("Mail Sending Process has been finished.\n\n");
 if(isset($_REQUEST['popupaction']) && $_REQUEST['popupaction'] != '')
 {
-	/*this will fix #1211*/
-	$inputs="<script>window.opener.location.href=window.opener.location.href;window.self.close();</script>";
-	//$inputs="<script>window.self.close();</script>";
-	echo $inputs;
+	echo '<script>window.opener.location.href=window.opener.location.href;window.self.close();</script>';
+	die(); // to avoid unnecessay output to closing screen
 }
 ?>
