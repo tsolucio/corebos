@@ -522,24 +522,28 @@ class GlobalVariable extends CRMEntity {
 		global $log,$adb,$gvvalidationinfo;
 		$list_of_modules=array();
 		$list_of_modules['Default'] = '';
+		$isBusinessMapping = (substr($var, 0, 16) == 'BusinessMapping_');
 		$query=$adb->pquery($sql,array($var));
 		$gvvalidationinfo[] = 'candidate variable records found: '.$adb->num_rows($query);
 		for ($i=0;$i<$adb->num_rows($query);$i++) {
 			$gvvalidationinfo[] = 'evaluate candidate <a href="index.php?action=DetailView&record='.$adb->query_result($query,$i,'globalvariableid').'&module=GlobalVariable">'.$adb->query_result($query,$i,'globalno').'</a>';
 			if ($adb->query_result($query,$i,'module_list')=='') {
-				$list_of_modules['Default']=$adb->query_result($query,$i,'value');
+				$value = ($isBusinessMapping ? $adb->query_result($query,$i,'bmapid') : $adb->query_result($query,$i,'value'));
+				$list_of_modules['Default']=$value;
 			} else {
 				$in_module_list=$adb->query_result($query,$i,'in_module_list');
 				$modules_list=array_map('trim', explode('|##|',$adb->query_result($query,$i,'module_list')));
 				if ($in_module_list==1) {
 					for($j=0;$j<sizeof($modules_list);$j++) {
-						$list_of_modules[$modules_list[$j]]=$adb->query_result($query,$i,'value');
+						$value = ($isBusinessMapping ? $adb->query_result($query,$i,'bmapid') : $adb->query_result($query,$i,'value'));
+						$list_of_modules[$modules_list[$j]]=$value;
 					}
 				} else {
 					$all_modules=vtws_getModuleNameList();
 					$other_modules=array_diff($all_modules,$modules_list);
 					for($l=0;$l<sizeof($other_modules);$l++){
-						$list_of_modules[$other_modules[$l]]=$adb->query_result($query,$i,'value');
+						$value = ($isBusinessMapping ? $adb->query_result($query,$i,'bmapid') : $adb->query_result($query,$i,'value'));
+						$list_of_modules[$other_modules[$l]]=$value;
 					}
 				}
 			}
