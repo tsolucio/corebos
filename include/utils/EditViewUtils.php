@@ -1504,7 +1504,7 @@ function getConvertSoToInvoice($focus,$so_focus,$soid)
 	$focus->column_fields['account_id'] = $so_focus->column_fields['account_id'];
 	$focus->column_fields['exciseduty'] = $so_focus->column_fields['exciseduty'];
 	$focus->column_fields['salescommission'] = $so_focus->column_fields['salescommission'];
-	$focus->column_fields['purchaseorder'] = $so_focus->column_fields['purchaseorder'];
+	$focus->column_fields['purchaseorder'] = $so_focus->column_fields['vtiger_purchaseorder'];
 	$focus->column_fields['bill_street'] = $so_focus->column_fields['bill_street'];
 	$focus->column_fields['ship_street'] = $so_focus->column_fields['ship_street'];
 	$focus->column_fields['bill_city'] = $so_focus->column_fields['bill_city'];
