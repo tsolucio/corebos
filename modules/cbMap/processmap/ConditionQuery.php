@@ -54,7 +54,7 @@ require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
 require_once 'modules/com_vtiger_workflow/include.inc';
 require_once('modules/com_vtiger_workflow/WorkFlowScheduler.php');
 
-class ConditionQuery extends processMap {
+class ConditionQuery extends processcbMap {
 
 	function processMap($arguments) {
 		$xml = $this->getXMLContent();

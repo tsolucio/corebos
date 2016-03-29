@@ -18,13 +18,49 @@
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
 
-require_once('modules/cbMap/cbMapcore.php');
+require_once('modules/cbMap/libs/crXml.php');
 
-class processcbMap extends cbMapcore {
+class cbMapcore {
+	private $Map;
 
-	function processMap($arguments) {
-		// you have to override this one with the specific functionality of your mapping
-		return true;
+	function __construct($map) {
+		$this->Map = $map;
+	}
+
+	public static function isXML($xml){
+		libxml_use_internal_errors(true);
+		$doc = new DOMDocument('1.0', 'utf-8');
+		$doc->loadXML($xml);
+		$errors = libxml_get_errors();
+		if(empty($errors)){
+			return true;
+		}
+
+		$error = $errors[0];
+		if($error->level < 3){
+			return true;
+		}
+
+		$explodedxml = explode('r', $xml);
+		$badxml = $explodedxml[($error->line)-1];
+
+		$message = $error->message . ' at line ' . $error->line . '. Bad XML: ' . htmlentities($badxml);
+		return $message;
+	}
+
+	public function getMap() {
+		return $this->Map;
+	}
+
+	public function getXMLContent() {
+		global $log;
+		$xmlcontent=html_entity_decode($this->Map->column_fields['content']);
+		if(self::isXML($xmlcontent)){
+			$xml=simplexml_load_string($xmlcontent);
+			return $xml;
+		} else {
+			return null;
+		}
 	}
 
 }

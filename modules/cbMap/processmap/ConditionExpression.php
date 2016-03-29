@@ -45,7 +45,7 @@ require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
 require_once('modules/com_vtiger_workflow/expression_engine/include.inc');
 require_once 'include/Webservices/Retrieve.php';
 
-class ConditionExpression extends processMap {
+class ConditionExpression extends processcbMap {
 
 	function processMap($arguments) {
 		global $adb, $current_user;

@@ -53,7 +53,7 @@
   </fields>
  *************************************************************************************************/
 
-class Mapping extends processMap {
+class Mapping extends processcbMap {
 
 	/**
 	 * $arguments[0] origin column_fields array

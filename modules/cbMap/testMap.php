@@ -46,7 +46,7 @@ $focus->id = $mapid;
 $focus->mode = '';
 $focus->retrieve_entity_info($mapid, $currentModule);
 
-$contentok = processMap::isXML(htmlspecialchars_decode($focus->column_fields['content']));
+$contentok = processcbMap::isXML(htmlspecialchars_decode($focus->column_fields['content']));
 
 if ($contentok !== true) {
 	$smarty->assign('ERROR_MESSAGE', '<b>Incorrect Content</b><br>'.$contentok);
