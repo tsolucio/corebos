@@ -79,7 +79,7 @@ class Potentials extends CRMEntity {
 	);
 
 	// For Popup window record selection
-	var $popup_fields = Array('payslipname');
+	var $popup_fields = Array('potentialname');
 
 	// Placeholder for sort fields - All the fields will be initialized for Sorting through initSortFields
 	var $sortby_fields = Array('potentialname','amount','closingdate','smownerid','accountname');
