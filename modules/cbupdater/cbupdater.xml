@@ -548,4 +548,11 @@
 	<classname>installcbmap</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Business Mapping and Conditions Target Module field</description>
+	<filename>build/changeSets/cbMapTargetModuleField.php</filename>
+	<classname>cbMapTargetModuleField</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

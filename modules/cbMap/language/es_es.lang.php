@@ -20,6 +20,7 @@ $mod_strings = Array(
 	'Map Name' => 'Nombre Mapa',
 	'Map Number' => 'Nº Mapa',
 	'Map Type' => 'Tipo Mapa',
+	'Target Module' => 'Módulo Principal',
 	'Content' => 'Contenido',
 	'Generate Map' => 'Generar Mapa',
 	'Condition Expression' => 'Condición Expresión',

@@ -50,6 +50,7 @@ class cbMap extends CRMEntity {
 		'Map Number'=> Array('cbmap'=> 'mapnumber'),
 		'Map Name'=> Array('cbmap'=> 'mapname'),
 		'Map Type'=> Array('cbmap'=> 'maptype'),
+		'Target Module'=> Array('cbmap'=> 'targetname'),
 		'Assigned To' => Array('crmentity'=>'smownerid')
 	);
 	var $list_fields_name = Array(
@@ -57,6 +58,7 @@ class cbMap extends CRMEntity {
 		'Map Number'=> 'mapnumber',
 		'Map Name'=> 'mapname',
 		'Map Type'=> 'maptype',
+		'Target Module'=> 'targetname',
 		'Assigned To' => 'assigned_user_id'
 	);
 
@@ -70,12 +72,14 @@ class cbMap extends CRMEntity {
 		'Map Number'=> Array('cbmap'=> 'mapnumber'),
 		'Map Name'=> Array('cbmap'=> 'mapname'),
 		'Map Type'=> Array('cbmap'=> 'maptype'),
+		'Target Module'=> Array('cbmap'=> 'targetname'),
 	);
 	var $search_fields_name = Array(
 		/* Format: Field Label => fieldname */
 		'Map Number'=> 'mapnumber',
 		'Map Name'=> 'mapname',
 		'Map Type'=> 'maptype',
+		'Target Module'=> 'targetname',
 	);
 
 	// For Popup window record selection

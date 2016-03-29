@@ -22,7 +22,7 @@
  * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
  *************************************************************************************************
  *  Module       : cbMap
- *  Version      : 1.0
+ *  Version      : 1.1
  *  Author       : OpenCubed
  *************************************************************************************************
 ]]></inline>
@@ -35,6 +35,7 @@
   `mapname` varchar(255) DEFAULT NULL,
   `mapnumber` varchar(100) DEFAULT NULL,
   `maptype` varchar(100) DEFAULT NULL,
+  `targetname` varchar(255) NOT NULL,
   `content` text,
   PRIMARY KEY (`cbmapid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
@@ -121,18 +122,18 @@
 </picklistvalues>
 </field>
 <field>
-<fieldname>assigned_user_id</fieldname>
-<uitype>53</uitype>
-<columnname>smownerid</columnname>
-<tablename>vtiger_crmentity</tablename>
+<fieldname>targetname</fieldname>
+<uitype>1613</uitype>
+<columnname>targetname</columnname>
+<tablename>vtiger_cbmap</tablename>
 <generatedtype>1</generatedtype>
-<fieldlabel>Assigned To</fieldlabel>
+<fieldlabel>Target Module</fieldlabel>
 <readonly>1</readonly>
-<presence>0</presence>
+<presence>2</presence>
 <defaultvalue></defaultvalue>
 <sequence>4</sequence>
-<maximumlength>100</maximumlength>
-<typeofdata>V~M</typeofdata>
+<maximumlength></maximumlength>
+<typeofdata>V~O</typeofdata>
 <quickcreate>1</quickcreate>
 <quickcreatesequence></quickcreatesequence>
 <displaytype>1</displaytype>
@@ -161,6 +162,26 @@
 <masseditable>1</masseditable>
 </field>
 <field>
+<fieldname>assigned_user_id</fieldname>
+<uitype>53</uitype>
+<columnname>smownerid</columnname>
+<tablename>vtiger_crmentity</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Assigned To</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>6</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>V~M</typeofdata>
+<quickcreate>1</quickcreate>
+<quickcreatesequence></quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
 <fieldname>createdtime</fieldname>
 <uitype>70</uitype>
 <columnname>createdtime</columnname>
@@ -170,7 +191,7 @@
 <readonly>1</readonly>
 <presence>0</presence>
 <defaultvalue></defaultvalue>
-<sequence>6</sequence>
+<sequence>7</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>DT~O</typeofdata>
 <quickcreate>1</quickcreate>
@@ -246,12 +267,16 @@
 <columnindex>1</columnindex>
 </field>
 <field>
-<fieldname>mapnumber</fieldname>
+<fieldname>targetname</fieldname>
 <columnindex>2</columnindex>
 </field>
 <field>
-<fieldname>assigned_user_id</fieldname>
+<fieldname>mapnumber</fieldname>
 <columnindex>3</columnindex>
+</field>
+<field>
+<fieldname>assigned_user_id</fieldname>
+<columnindex>4</columnindex>
 </field>
 </fields>
 </customview>
