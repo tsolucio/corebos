@@ -691,23 +691,15 @@ class ReportRun extends CRMEntity {
 							$fieldvalue = "(".$selectedfields[0].".".$selectedfields[1]." IS NULL OR ".$selectedfields[0].".".$selectedfields[1]." = '')";
 						} elseif($comparator == 'e' && $datatype == 'D' && (trim($value) == "--$" || trim($value) == '$')) {
 							$fieldvalue = "(".$selectedfields[0].".".$selectedfields[1]." IS NULL OR ".$selectedfields[0].".".$selectedfields[1]." = '')";
-						} elseif($selectedfields[0] == 'vtiger_inventoryproductrel' && ($selectedfields[1] == 'productid' || $selectedfields[1] == 'serviceid')) {
+						} elseif(substr($selectedfields[0],0,26) == 'vtiger_inventoryproductrel' && ($selectedfields[1] == 'productid' || $selectedfields[1] == 'serviceid' || $selectedfields[1] == 'discount')) {
+							$invmod = (in_array($this->primarymodule, getInventoryModules()) ? $this->primarymodule : $this->secondarymodule);
 							if($selectedfields[1] == 'productid'){
-								$fieldvalue = "vtiger_products{$this->primarymodule}.productname ".$this->getAdvComparator($comparator,trim($value),$datatype);
+								$fieldvalue = "vtiger_products{$invmod}.productname ".$this->getAdvComparator($comparator,trim($value),$datatype);
 							} else if($selectedfields[1] == 'serviceid'){
-								$fieldvalue = "vtiger_service{$this->primarymodule}.servicename ".$this->getAdvComparator($comparator,trim($value),$datatype);
+								$fieldvalue = "vtiger_service{$invmod}.servicename ".$this->getAdvComparator($comparator,trim($value),$datatype);
 							} else if($selectedfields[1] == 'discount'){
-								$fieldvalue = "(vtiger_inventoryproductrel{$this->primarymodule}.discount_amount ".$this->getAdvComparator($comparator,trim($value),$datatype)."
-										OR ROUND((vtiger_inventoryproductrel{$this->primarymodule}.listprice * vtiger_inventoryproductrel{$this->primarymodule}.quantity * (vtiger_inventoryproductrel{$this->primarymodule}.discount_percent/100)),3)) ".$this->getAdvComparator($comparator,trim($value),$datatype).") ";
-							}
-						} elseif($selectedfields[0] == 'vtiger_inventoryproductrel'.$this->primarymodule && ($selectedfields[1] == 'productid' || $selectedfields[1] == 'serviceid' || $selectedfields[1] == 'discount')) {
-							if($selectedfields[1] == 'productid'){
-								$fieldvalue = "vtiger_products{$this->primarymodule}.productname ".$this->getAdvComparator($comparator,trim($value),$datatype);
-							} else if($selectedfields[1] == 'serviceid'){
-								$fieldvalue = "vtiger_service{$this->primarymodule}.servicename ".$this->getAdvComparator($comparator,trim($value),$datatype);
-							} else if($selectedfields[1] == 'discount'){
-								$fieldvalue = "(vtiger_inventoryproductrel{$this->primarymodule}.discount_amount ".$this->getAdvComparator($comparator,trim($value),$datatype)."
-										OR ROUND((vtiger_inventoryproductrel{$this->primarymodule}.listprice * vtiger_inventoryproductrel{$this->primarymodule}.quantity * (vtiger_inventoryproductrel{$this->primarymodule}.discount_percent/100)),3) ".$this->getAdvComparator($comparator,trim($value),$datatype).") ";
+								$fieldvalue = "(vtiger_inventoryproductrel{$invmod}.discount_amount ".$this->getAdvComparator($comparator,trim($value),$datatype)."
+									OR ROUND((vtiger_inventoryproductrel{$invmod}.listprice * vtiger_inventoryproductrel{$invmod}.quantity * (vtiger_inventoryproductrel{$invmod}.discount_percent/100)),3) ".$this->getAdvComparator($comparator,trim($value),$datatype).") ";
 							}
 						} elseif($fieldInfo['uitype'] == '10' || isReferenceUIType($fieldInfo['uitype'])) {
 
