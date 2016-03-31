@@ -79,7 +79,6 @@ class RelatedListViewSession {
 
 	public static function getRequestCurrentPage($relationId, $query) {
 		global $list_max_entries_per_page, $adb,$log;
-		$log->fatal($_REQUEST);$log->fatal($_SESSION['rlvs']);
 		$relstart = 1;
 		if(!empty($_REQUEST['relstart'])){
 			$relstart = $_REQUEST['relstart'];
