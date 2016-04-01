@@ -706,7 +706,6 @@ function numValidate(fldName,fldLabel,format,neg) {
 		// changes made -- to fix the ticket#3272
 		if(fldName == "probability" || fldName == "commissionrate")
 		{
-			var val=getObj(fldName).value.replace(/^\s+/g, '').replace(/\s+$/g, '');
 			var splitval=val.split(".")
 			var arr_len = splitval.length;
 			var len = 0;
