@@ -184,7 +184,7 @@ class WorkFlowScheduler {
 				}
 				$columnCondition = $condition['joincondition'];
 				$groupId = $condition['groupid'];
-				$groupJoin = $condition['groupjoin'];
+				$groupJoin = (isset($condition['groupjoin']) ? $condition['groupjoin'] : '');
 				$operator = $conditionMapping[$operation];
 				$fieldname = $condition['fieldname'];
 
