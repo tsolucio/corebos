@@ -518,54 +518,6 @@ function insertIntoRecurringTable(& $recurObj)
 		return $return_data;
 	}
 
-	/**
-         * Function to get activities for given criteria
-	 * @param   string   $criteria     - query string
-	 * returns  activity records in array format($list) or null value
-         */	 
-  	function get_full_list($criteria) {
-	 	global $log;
-		$log->debug("Entering get_full_list(".$criteria.") method ...");
-	    $query = "select vtiger_crmentity.crmid,vtiger_crmentity.smownerid,vtiger_crmentity.setype, vtiger_activity.*, 
-	    		vtiger_contactdetails.lastname, vtiger_contactdetails.firstname, vtiger_contactdetails.contactid 
-	    		from vtiger_activity 
-	    		inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid 
-	    		left join vtiger_cntactivityrel on vtiger_cntactivityrel.activityid= vtiger_activity.activityid 
-	    		left join vtiger_contactdetails on vtiger_contactdetails.contactid= vtiger_cntactivityrel.contactid 
-	    		left join vtiger_seactivityrel on vtiger_seactivityrel.activityid = vtiger_activity.activityid 
-	    		WHERE vtiger_crmentity.deleted=0 ".$criteria;
-    	$result =& $this->db->query($query);
-        
-    if($this->db->getRowCount($result) > 0){
-		
-      // We have some data.
-      while ($row = $this->db->fetchByAssoc($result)) {
-        foreach($this->list_fields_name as $field)
-        {
-          if (isset($row[$field])) {
-            $this->$field = $row[$field];
-          }
-          else {
-            $this->$field = '';   
-          }
-        }
-        $list[] = $this;
-      }
-    }
-    if (isset($list))
-    	{
-		$log->debug("Exiting get_full_list method ...");
-	    return $list;
-	}
-	else
-	{
-		$log->debug("Exiting get_full_list method ...");
-	    return null;
-	}
-
-  }
-
-	
 //calendarsync
     /**
      * Function to get meeting count
