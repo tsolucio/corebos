@@ -138,8 +138,14 @@ public function setgoogleaccessparams($userid){
         $colorHarmony = new colorHarmony();
 
 		if ($this->view_all) {
+			$calshowinactiveusers = GlobalVariable::getVariable('Calendar_Show_Inactive_Users',1);
+			if ($calshowinactiveusers) {
+				$sqllshowinactiveusers = '';
+			} else {
+				$sqllshowinactiveusers = "and status='Active'";
+			}
 			$sortusersby = GlobalVariable::getVariable('calendar_sort_users_by','first_name, last_name');
-			$query = "SELECT * FROM vtiger_users ORDER BY $sortusersby";
+			$query = "SELECT * FROM vtiger_users WHERE deleted=0 $sqllshowinactiveusers ORDER BY $sortusersby";
 			$params = array();
 		} else {
 			if (empty($this->tabid)) $this->tabid = getTabid("Calendar4You");
