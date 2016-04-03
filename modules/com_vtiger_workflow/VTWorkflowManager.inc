@@ -486,7 +486,7 @@
 					$nextTriggerWeekDay = null;
 					sort($scheduledDaysOfWeek);
 					foreach ($scheduledDaysOfWeek as $index => $weekDay) {
-						if ($weekDay-1 == $currentWeekDay) { //if today is the weekday selected
+						if ($weekDays[$weekDay-1] == $weekDays[$currentWeekDay]) { //if today is the weekday selected
 							$scheduleWeekDayInTime = strtotime(date('Y-m-d', strtotime($weekDays[$currentWeekDay])) . ' ' . $scheduledTime);
 							if ($currentTime < $scheduleWeekDayInTime) { //if the scheduled time is greater than current time, select today
 								$nextTriggerWeekDay = $currentWeekDay;
