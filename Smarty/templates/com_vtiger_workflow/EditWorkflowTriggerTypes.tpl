@@ -139,6 +139,9 @@
 			</div>
 		{/if}
 		</td></tr>
+	<tr><td><input type="radio" name="execution_condition" value="RECORD_ACCESS_CONTROL" onclick="onschedule_preparescreen(this);"
+		{if $workflow->executionConditionAsLabel() eq 'RECORD_ACCESS_CONTROL'}checked{/if} /></td>
+		<td>{$MOD.LBL_RECORD_ACCESS_CONTROL}.</td></tr>
 	<tr><td><input type="radio" name="execution_condition" value="MANUAL"
 		{if $workflow->executionConditionAsLabel() eq 'MANUAL'}checked{/if} disabled /></td>
 		<td>{$MOD.LBL_MANUAL}.</td></tr>

@@ -49,6 +49,7 @@ $mod_strings = array(
 	'LBL_EXPRESSION'=>'Expression',
 	'LBL_SET_EXPRESSION'=>'Définir une expression',
 	'LBL_MANUAL'=>'Système',
+	'LBL_RECORD_ACCESS_CONTROL' => 'Record Access Control',
 	'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL'=>'Nouveau groupe de condition',
 	'VTUpdateFieldsTask' => 'Mise à jour d\'un champ',
 	

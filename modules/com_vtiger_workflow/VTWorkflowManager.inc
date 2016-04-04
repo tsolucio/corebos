@@ -19,6 +19,7 @@
 		static $ON_DELETE = 5; // Not supported yet
 		static $ON_SCHEDULE=6;
 		static $MANUAL = 7;
+		static $RECORD_ACCESS_CONTROL = 8;
 
 		function __construct($adb){
 			$this->adb = $adb;
@@ -362,7 +363,7 @@
 
 		function executionConditionAsLabel($label=null){
 			if($label==null){
-				$arr = array('ON_FIRST_SAVE', 'ONCE', 'ON_EVERY_SAVE', 'ON_MODIFY', 'ON_DELETE', 'ON_SCHEDULE', 'MANUAL');
+				$arr = array('ON_FIRST_SAVE', 'ONCE', 'ON_EVERY_SAVE', 'ON_MODIFY', 'ON_DELETE', 'ON_SCHEDULE', 'MANUAL', 'RECORD_ACCESS_CONTROL');
 				return $arr[$this->executionCondition-1];
 			}else{
 				$arr = array(
@@ -372,7 +373,8 @@
 					'ON_MODIFY'=>VTWorkflowManager::$ON_MODIFY,
 					'ON_DELETE'=>VTWorkflowManager::$ON_DELETE,
 					'ON_SCHEDULE'=>VTWorkflowManager::$ON_SCHEDULE,
-					'MANUAL'=>VTWorkflowManager::$MANUAL
+					'MANUAL'=>VTWorkflowManager::$MANUAL,
+					'RECORD_ACCESS_CONTROL'=>VTWorkflowManager::$RECORD_ACCESS_CONTROL,
 				);
 				$this->executionCondition = $arr[$label];
 			}

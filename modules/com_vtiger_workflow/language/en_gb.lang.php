@@ -48,6 +48,7 @@ $mod_strings = array(
 	'LBL_EXPRESSION' => 'Expression',
 	'LBL_SET_EXPRESSION' => 'Set expression',
 	'LBL_MANUAL' => 'System',
+	'LBL_RECORD_ACCESS_CONTROL' => 'Record Access Control',
 	'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL' => 'New Condition Group',
 	'VTUpdateFieldsTask' => 'Update fields',
 	'LBL_VALIDATION_DUPLICATE_FIELDNAMES' => 'Same field selected more than once.',

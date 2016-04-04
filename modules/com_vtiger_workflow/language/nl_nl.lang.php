@@ -76,7 +76,7 @@ $mod_strings = array(
 'LBL_SET_EXPRESSION'=>'Stel Formule in',
 
 'LBL_MANUAL'=>'Systeem',
-
+'LBL_RECORD_ACCESS_CONTROL' => 'Record Access Control',
 'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL'=>'Nieuwe Conditiegroep',
 
 'VTUpdateFieldsTask' => 'Bijwerken velden',

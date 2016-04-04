@@ -52,6 +52,7 @@ $mod_strings = array(
 	'LBL_EXPRESSION' => 'Kifejezés',
 	'LBL_SET_EXPRESSION' => 'Kifejezést megad',
 	'LBL_MANUAL' => 'Rendszer',
+	'LBL_RECORD_ACCESS_CONTROL' => 'Record Access Control',
 	'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL' => 'Új Feltétel csoport',
 	'VTUpdateFieldsTask' => 'Mezők frissítése',
 	'LBL_VALIDATION_DUPLICATE_FIELDNAMES' => 'Ugyanazt a mezőt egynél többször választottad.',

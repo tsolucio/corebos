@@ -51,7 +51,7 @@ $mod_strings = array(
     'LBL_SET_EXPRESSION'=>'setze Ausdruck',
 
     'LBL_MANUAL'=>'System',
-
+	'LBL_RECORD_ACCESS_CONTROL' => 'Record Access Control',
     'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL'=>'neue Bedinungsgruppe',
 
     'VTUpdateFieldsTask' => 'aktualisiere Felder',
