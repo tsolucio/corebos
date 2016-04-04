@@ -32,5 +32,6 @@ $mod_strings = Array(
 	'IOMap' => 'Mapa E/S',
 	'Search and Update' => 'Buscar y Actualizar',
 	'Field Dependency' => 'Dependencia de Campos',
+	'Record Access Control' => 'Control de Acceso a Registro',
 );
 ?>

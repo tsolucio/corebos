@@ -75,6 +75,17 @@ switch ($focus->column_fields['maptype']) {
 		$sofocus->retrieve_entity_info(10569, 'SalesOrder');
 		$mapinfo = $focus->Mapping($sofocus->column_fields,array('sentin'=>'notmodified'));
 		break;
+	case 'Record Access Control':
+		$rac = $focus->RecordAccessControl();
+		foreach (array('create','retrieve','update','delete') as $op) {
+			echo 'Listview '.$op.' = '.$rac->hasListViewPermissionTo($op)."<br>";
+			echo 'DetailView '.$op.' = '.$rac->hasDetailViewPermissionTo($op)."<br>";
+		}
+		foreach (array('create','retrieve','update','delete','select') as $op) {
+			echo 'RelatedList Invoice '.$op.' = '.$rac->hasRelatedListPermissionTo($op,'Invoice')."<br>";
+			echo 'RelatedList Potentials '.$op.' = '.$rac->hasRelatedListPermissionTo($op,'Potentials')."<br>";
+		}
+		break;
 	case 'Import':
 		$mapinfo = $focus->readImportType();
 		$mapinfo['TargetModule'] = $focus->getMapTargetModule();

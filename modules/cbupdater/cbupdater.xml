@@ -555,4 +555,12 @@
 	<classname>cbMapTargetModuleField</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Define new Business Map types</description>
+	<filename>build/changeSets/cbMapAddMapTypes.php</filename>
+	<classname>cbMapAddMapTypes</classname>
+	<systemupdate>true</systemupdate>
+	<continuous>true</continuous>
+</changeSet>
 </updatesChangeLog>
