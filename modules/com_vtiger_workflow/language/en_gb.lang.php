@@ -91,6 +91,7 @@ $mod_strings = array(
 	'Relate with AccountVendor' => 'Relate with Account/Vendor',
 	'Relate with Contact' => 'Relate with Contact',
 	'CBDeleteRelatedTask' => 'Delete Related Records',
+	'CBSelectcbMap' => 'Select Business Rule',
 	'LBL_HELPDESK_SUPPORT_EMAILID'=>'Helpdesk Support Email-Id',
 	'LBL_HELPDESK_SUPPORT_NAME'=>'Helpdesk Support Name',
 	'LBL_ORGANIZATION_LOGO'=>'Company Logo',

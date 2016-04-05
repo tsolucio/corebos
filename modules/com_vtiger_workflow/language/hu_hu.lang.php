@@ -102,6 +102,7 @@ $mod_strings = array(
 	'Relate with AccountVendor' => 'Relate with Account/Vendor',
 	'Relate with Contact' => 'Relate with Contact',
 	'CBDeleteRelatedTask' => 'Delete Related Records',
+	'CBSelectcbMap' => 'Select Business Rule',
 	'LBL_HELPDESK_SUPPORT_EMAILID' => 'Ügyfélszolgálat E-mail címe',
 	'LBL_HELPDESK_SUPPORT_NAME' => 'Ügyfélszolgálat E-mail feladó neve',
 	'LBL_ORGANIZATION_LOGO' => 'Cég Logo',

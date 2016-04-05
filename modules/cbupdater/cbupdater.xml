@@ -563,4 +563,11 @@
 	<systemupdate>true</systemupdate>
 	<continuous>true</continuous>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Select Business Rules workflow task</description>
+	<filename>build/changeSets/add_workflow_selectcbmap.php</filename>
+	<classname>add_workflow_selectcbmap</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

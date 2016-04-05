@@ -56,7 +56,6 @@ $mod_strings = array(
 
     'VTUpdateFieldsTask' => 'aktualisiere Felder',
 
-
     'LBL_VALIDATION_DUPLICATE_FIELDNAMES' => 'Ein Feld wurde mehrmals gewählt.',
     'LBL_VALIDATION_INVALID_FIELD_VALUES' => 'Ungültee Feldwerte',
     'LBL_CREATE_ENTITY_NOTE_ORDER_MATTERS' => 'Hinweis: Ausdrücke werden in der Reihenfolde der Feldwerte ausgewerte.
@@ -104,6 +103,7 @@ $mod_strings = array(
 	'Relate with AccountVendor' => 'Relate with Account/Vendor',
 	'Relate with Contact' => 'Relate with Contact',
 	'CBDeleteRelatedTask' => 'Delete Related Records',
+	'CBSelectcbMap' => 'Select Business Rule',
 	'LBL_HELPDESK_SUPPORT_EMAILID'=>'Trouble Ticket E-Mail-Id',
 	'LBL_HELPDESK_SUPPORT_NAME'=>'Trouble Ticket Support Name',
 	'LBL_ORGANIZATION_LOGO'=>'Logo Name',

@@ -99,6 +99,7 @@ $mod_strings = array(
 'Relate with AccountVendor' => 'Relacionar con Cuenta/Proveedor',
 'Relate with Contact' => 'Relacionar con Contacto',
 'CBDeleteRelatedTask' => 'Eliminar Registros Relacionados',
+'CBSelectcbMap' => 'Selecciona Regla de Negocio',
 
 'LBL_EVENTNAME' => 'Nombre de Evento',
 'LBL_DESCRIPTION' => 'Descripción',
