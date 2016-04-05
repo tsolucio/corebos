@@ -443,11 +443,12 @@ class Import_Data_Controller {
 					$fieldObject->setPicklistValues(array($fieldValue));
 				}
 			} elseif ($fieldInstance->getFieldDataType() == 'boolean') {
-				if (empty($fieldValue) or strtolower($fieldValue)==strtolower('LBL_NO')) {
+				if (empty($fieldValue) or strtolower($fieldValue)==strtolower(getTranslatedString('LBL_NO'))) {
 					$fieldValue = 0;
 				} else {
 					$fieldValue = 1;
 				}
+				$fieldData[$fieldName] = $fieldValue;
 			//} else if($fieldInstance->getFieldDataType() == 'currency'){
 				// While exporting we are exporting as user format, we should import as db format while importing
 				//$fieldData[$fieldName] = CurrencyField::convertToDBFormat($fieldValue, $current_user,false);
