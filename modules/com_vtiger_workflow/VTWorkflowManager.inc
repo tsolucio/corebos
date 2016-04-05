@@ -9,6 +9,10 @@
  ************************************************************************************/
 	require_once("VTJsonCondition.inc");
 	require_once 'include/utils/ConfigReader.php';
+	require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
+	require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
+	require_once 'modules/com_vtiger_workflow/include.inc';
+	require_once 'include/Webservices/Retrieve.php';
 
 	class VTWorkflowManager{
 
@@ -123,6 +127,59 @@
 									from com_vtiger_workflows where module_name=?",array($moduleName));
 			}
 			return $this->getWorkflowsForResult($result);
+		}
+
+		function getRACRuleForRecord($moduleName,$recordid) {
+			$adb=$this->adb;
+			if (strpos($recordid,'x')===false) {
+				$result = $adb->pquery('select id from vtiger_ws_entity where name=?',array($moduleName));
+				$recordid = $adb->query_result($result, 0, 0).'x'.$recordid;
+			}
+			$wf = $this->getoneRACWorkflowForRecord($moduleName,$recordid);
+			if ($wf) {
+				return $this->executeRACWorkflow($wf);
+			}
+			return false;
+		}
+
+		function getRACWorkflowsForModule($moduleName) {
+			$adb=$this->adb;
+			$result = $adb->pquery('select * from com_vtiger_workflows where execution_condition = ? and module_name=?',
+				array(VTWorkflowManager::$RECORD_ACCESS_CONTROL,$moduleName));
+			return $this->getWorkflowsForResult($result);
+		}
+
+		function getoneRACWorkflowForRecord($moduleName,$recordid) {
+			$util = new VTWorkflowUtils();
+			$adminUser = $util->adminUser();
+			$entityCache = new VTEntityCache($adminUser);
+			$entityData = $entityCache->forId($recordid);
+			$wfs = $this->getRACWorkflowsForModule($moduleName);
+			$found = false;
+			foreach ($wfs as $wf) {
+				$found = $wf->evaluate($entityCache, $recordid);
+				if ($found) break;
+			}
+			$util->revertUser();
+			if ($found) {
+				return $wf;
+			} else {
+				return false;
+			}
+		}
+
+		function executeRACWorkflow($workflow) {
+			$adb=$this->adb;
+			$tm = new VTTaskManager($adb);
+			$taskQueue = new VTTaskQueue($adb);
+			$tasks = $tm->getTasksForWorkflow($workflow->id);
+			foreach($tasks as $task){
+				if(is_object($task) and $task->active and get_class($task) == 'CBSelectcbMap') {
+					$void = array();
+					return $task->doTask($void);
+				}
+			}
+			return false;
 		}
 
 		function getWorkflowsForResult($result){
