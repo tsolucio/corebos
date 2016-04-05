@@ -17,6 +17,7 @@ require_once('data/Tracker.php');
 require_once('include/utils/utils.php');
 require_once('include/utils/UserInfoUtil.php');
 require_once("include/Zend/Json.php");
+require_once('modules/com_vtiger_workflow/VTWorkflowManager.inc');
 
 class CRMEntity {
 
@@ -1766,7 +1767,7 @@ class CRMEntity {
 	 * if function name is not explicitly specified.
 	 */
 	function get_related_list($id, $cur_tab_id, $rel_tab_id, $actions = false) {
-		global $currentModule, $app_strings, $singlepane_view;
+		global $currentModule, $app_strings, $singlepane_view, $adb;
 
 		$parenttab = getParentTab();
 
@@ -1784,16 +1785,27 @@ class CRMEntity {
 		if ($actions) {
 			if (is_string($actions))
 				$actions = explode(',', strtoupper($actions));
+			$wfs = '';
 			if (in_array('SELECT', $actions) && isPermitted($related_module, 4, '') == 'yes') {
-				$button .= "<input title='" . getTranslatedString('LBL_SELECT') . " " . getTranslatedString($related_module) . "' class='crmbutton small edit' " .
+				$wfs = new VTWorkflowManager($adb);
+				$racbr = $wfs->getRACRuleForRecord($currentModule, $id);
+				if (!$racbr or $racbr->hasRelatedListPermissionTo('select',$related_module)) {
+					$button .= "<input title='" . getTranslatedString('LBL_SELECT') . " " . getTranslatedString($related_module) . "' class='crmbutton small edit' " .
 						" type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\"" .
 						" value='" . getTranslatedString('LBL_SELECT') . " " . getTranslatedString($related_module, $related_module) . "'>&nbsp;";
+				}
 			}
 			if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes') {
-				$button .= "<input type='hidden' name='createmode' id='createmode' value='link' />" .
+				if ($wfs == '') {
+					$wfs = new VTWorkflowManager($adb);
+					$racbr = $wfs->getRACRuleForRecord($currentModule, $id);
+				}
+				if (!$racbr or $racbr->hasRelatedListPermissionTo('create',$related_module)) {
+					$button .= "<input type='hidden' name='createmode' id='createmode' value='link' />" .
 						"<input title='" . getTranslatedString('LBL_ADD_NEW') . " " . getTranslatedString($singular_modname) . "' class='crmbutton small create'" .
 						" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
 						" value='" . getTranslatedString('LBL_ADD_NEW') . " " . getTranslatedString($singular_modname, $related_module) . "'>&nbsp;";
+				}
 			}
 		}
 
@@ -1847,7 +1859,7 @@ class CRMEntity {
 	 * From a given Contact/Account if we need to fetch all such dependent trouble tickets, get_dependents_list function can be used.
 	 */
 	function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions = false) {
-		global $currentModule, $app_strings, $singlepane_view, $current_user;
+		global $currentModule, $app_strings, $singlepane_view, $current_user, $adb;
 
 		$parenttab = getParentTab();
 
@@ -1892,11 +1904,16 @@ class CRMEntity {
 			if ($actions) {
 				if (is_string($actions))
 					$actions = explode(',', strtoupper($actions));
+				$wfs = '';
 				if (in_array('ADD', $actions) && isPermitted($related_module, 1, '') == 'yes'
 						&& getFieldVisibilityPermission($related_module, $current_user->id, $dependentField, 'readwrite') == '0') {
-					$button .= "<input title='" . getTranslatedString('LBL_ADD_NEW') . " " . getTranslatedString($singular_modname, $related_module) . "' class='crmbutton small create'" .
+					$wfs = new VTWorkflowManager($adb);
+					$racbr = $wfs->getRACRuleForRecord($currentModule, $id);
+					if (!$racbr or $racbr->hasRelatedListPermissionTo('create',$related_module)) {
+						$button .= "<input title='" . getTranslatedString('LBL_ADD_NEW') . " " . getTranslatedString($singular_modname, $related_module) . "' class='crmbutton small create'" .
 							" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
 							" value='" . getTranslatedString('LBL_ADD_NEW') . " " . getTranslatedString($singular_modname, $related_module) . "'>&nbsp;";
+					}
 				}
 			}
 
