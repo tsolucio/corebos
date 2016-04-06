@@ -827,9 +827,13 @@ function isPermitted($module,$actionname,$record_id='')
 	}
 	elseif($others_permission_id == 2)
 	{
-		$permission = "yes";
-		$log->debug("Exiting isPermitted method ...");
-		return $permission;
+		$wfs = new VTWorkflowManager($adb);
+		$racbr = $wfs->getRACRuleForRecord($module, $record_id);
+		if (($actionname!='EditView' and $actionname!='Delete') or (!$racbr or $racbr->hasDetailViewPermissionTo($actionname))) {
+			$permission = "yes";
+			$log->debug("Exiting isPermitted method ...");
+			return $permission;
+		}
 	}
 	elseif($others_permission_id == 3)
 	{
