@@ -123,7 +123,7 @@ class ListViewController {
 	 */
 	function getListViewEntries($focus, $module,$result,$navigationInfo,$skipActions=false) {
 		require('user_privileges/user_privileges_'.$this->user->id.'.php');
-		global $listview_max_textlength, $theme, $default_charset, $current_user, $currentModule;
+		global $listview_max_textlength, $theme, $default_charset, $current_user, $currentModule, $adb;
 		$fields = $this->queryGenerator->getFields();
 		$whereFields = $this->queryGenerator->getWhereFields();
 		$meta = $this->queryGenerator->getMeta($this->queryGenerator->getModule());
@@ -212,7 +212,7 @@ class ListViewController {
 		}
 
 		$useAsterisk = get_use_asterisk($this->user->id);
-
+		$wfs = new VTWorkflowManager($adb);
 		$data = array();
 		for ($i = 0; $i < $rowCount; ++$i) {
 			//Getting the recordId
@@ -600,6 +600,8 @@ class ListViewController {
 			//Added for Actions ie., edit and delete links in listview
 			$actionLinkInfo = "";
 			if(isPermitted($module,"EditView","") == 'yes'){
+				$racbr = $wfs->getRACRuleForRecord($currentModule, $recordId);
+				if (!$racbr or $racbr->hasListViewPermissionTo('edit')) {
 				$edit_link = $this->getListViewEditLink($module,$recordId);
 				if(isset($navigationInfo['start']) && $navigationInfo['start'] > 1 && $module != 'Emails') {
 					$actionLinkInfo .= "<a href=\"$edit_link&start=".
@@ -609,16 +611,19 @@ class ListViewController {
 					$actionLinkInfo .= "<a href=\"$edit_link\">".getTranslatedString("LNK_EDIT",
 								$module)."</a> ";
 				}
+				}
 			}
 
 			if(isPermitted($module,"Delete","") == 'yes'){
+				$racbr = $wfs->getRACRuleForRecord($currentModule, $recordId);
+				if (!$racbr or $racbr->hasListViewPermissionTo('delete')) {
 				$del_link = $this->getListViewDeleteLink($module,$recordId);
 				if($actionLinkInfo != "" && $del_link != "")
 					$actionLinkInfo .= ' | ';
 				if($del_link != "")
 					$actionLinkInfo .=	"<a href='javascript:confirmdelete(\"".
-						addslashes(urlencode($del_link))."\")'>".getTranslatedString("LNK_DELETE",
-								$module)."</a>";
+						addslashes(urlencode($del_link))."\")'>".getTranslatedString('LNK_DELETE',$module).'</a>';
+				}
 			}
 			// Record Change Notification
 			if(method_exists($focus, 'isViewed') &&

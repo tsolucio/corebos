@@ -539,6 +539,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 		$linkstart = '&start=' . vtlib_purify($_REQUEST['start']);
 	else
 		$linkstart = '';
+	$wfs = new VTWorkflowManager($adb);
 	if ($navigation_array['start'] != 0)
 		for ($i = 1; $i <= $noofrows; $i++) {
 			$list_header = Array();
@@ -903,16 +904,22 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 			$links_info = '';
 			if (!(is_array($selectedfields) && $selectedfields != '')) {
 				if (isPermitted($module, 'EditView', '') == 'yes') {
+					$racbr = $wfs->getRACRuleForRecord($module, $entity_id);
+					if (!$racbr or $racbr->hasListViewPermissionTo('edit')) {
 					$edit_link = getListViewEditLink($module, $entity_id, $relatedlist, $varreturnset, $list_result, $list_result_count);
 					$links_info .= "<a href=\"$edit_link$linkstart\">" . $app_strings['LNK_EDIT'] . "</a> ";
+					}
 				}
 
 				if (isPermitted($module, 'Delete', '') == 'yes') {
+					$racbr = $wfs->getRACRuleForRecord($module, $entity_id);
+					if (!$racbr or $racbr->hasListViewPermissionTo('delete')) {
 					$del_link = getListViewDeleteLink($module, $entity_id, $relatedlist, $varreturnset, $linkstart);
 					if ($links_info != '' && $del_link != '')
 						$links_info .= ' | ';
 					if ($del_link != '')
 						$links_info .= "<a href='javascript:confirmdelete(\"" . addslashes(urlencode($del_link)) . "\")'>" . $app_strings["LNK_DELETE"] . "</a>";
+					}
 				}
 			}
 			// Record Change Notification
