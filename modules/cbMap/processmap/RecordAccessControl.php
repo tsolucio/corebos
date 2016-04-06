@@ -72,13 +72,15 @@ class RecordAccessControl extends processcbMap {
 		$this->mapping['detailview']['r'] = (isset($xml->detailview->r) ? (Integer)$xml->detailview->r : 1);
 		$this->mapping['detailview']['u'] = (isset($xml->detailview->u) ? (Integer)$xml->detailview->u : 1);
 		$this->mapping['detailview']['d'] = (isset($xml->detailview->d) ? (Integer)$xml->detailview->d : 1);
-		foreach($xml->relatedlists->relatedlist as $k=>$v) {
-			$modulename = (String)$v->modulename;
-			$this->mapping['relatedlist'][$modulename]['c'] = (isset($v->c) ? (Integer)$v->c : 1);
-			$this->mapping['relatedlist'][$modulename]['r'] = (isset($v->r) ? (Integer)$v->r : 1);
-			$this->mapping['relatedlist'][$modulename]['u'] = (isset($v->u) ? (Integer)$v->u : 1);
-			$this->mapping['relatedlist'][$modulename]['d'] = (isset($v->d) ? (Integer)$v->d : 1);
-			$this->mapping['relatedlist'][$modulename]['s'] = (isset($v->s) ? (Integer)$v->s : 1);
+		if (isset($xml->relatedlists)) {
+			foreach($xml->relatedlists->relatedlist as $k=>$v) {
+				$modulename = (String)$v->modulename;
+				$this->mapping['relatedlist'][$modulename]['c'] = (isset($v->c) ? (Integer)$v->c : 1);
+				$this->mapping['relatedlist'][$modulename]['r'] = (isset($v->r) ? (Integer)$v->r : 1);
+				$this->mapping['relatedlist'][$modulename]['u'] = (isset($v->u) ? (Integer)$v->u : 1);
+				$this->mapping['relatedlist'][$modulename]['d'] = (isset($v->d) ? (Integer)$v->d : 1);
+				$this->mapping['relatedlist'][$modulename]['s'] = (isset($v->s) ? (Integer)$v->s : 1);
+			}
 		}
 	}
 
@@ -96,6 +98,8 @@ class RecordAccessControl extends processcbMap {
 				return (isset($this->mapping['listview']['r']) ? $this->mapping['listview']['r'] : true);
 				break;
 			case 'update':
+			case 'edit':
+			case 'editview':
 				return (isset($this->mapping['listview']['u']) ? $this->mapping['listview']['u'] : true);
 				break;
 			case 'delete':
@@ -121,6 +125,8 @@ class RecordAccessControl extends processcbMap {
 				return (isset($this->mapping['detailview']['r']) ? $this->mapping['detailview']['r'] : true);
 				break;
 			case 'update':
+			case 'edit':
+			case 'editview':
 				return (isset($this->mapping['detailview']['u']) ? $this->mapping['detailview']['u'] : true);
 				break;
 			case 'delete':
@@ -138,7 +144,7 @@ class RecordAccessControl extends processcbMap {
 	public function hasRelatedListPermissionTo($operation,$onmodule) {
 		if (empty($onmodule)) return true;
 		if (count($this->mapping)==0) $this->convertMap2Array();
-		if (!isset($this->mapping['relatedlist'][$onmodule])) return true;
+		if (!isset($this->mapping['relatedlist']) or !isset($this->mapping['relatedlist'][$onmodule])) return true;
 		switch (strtolower($operation)) {
 			case 'create':
 				return (isset($this->mapping['relatedlist'][$onmodule]['c']) ? $this->mapping['relatedlist'][$onmodule]['c'] : true);
