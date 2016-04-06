@@ -482,7 +482,7 @@ class cbMap extends CRMEntity {
 	//function get_dependents_list($id, $cur_tab_id, $rel_tab_id, $actions=false) { }
 
 	public function __call($name, $arguments) {
-		include 'modules/cbMap/processmap/'.$name.'.php';
+		require_once 'modules/cbMap/processmap/'.$name.'.php';
 		$processmap = new $name($this);
 		$ret = $processmap->processMap($arguments);
 		return $ret;
