@@ -991,6 +991,16 @@ function getNewDisplayDate() {
 	return $date->getDisplayDate($current_user);
 }
 
+function getNewDisplayTime() {
+	global $log, $current_user;
+	$log->debug("Entering getNewDisplayTime() method ...");
+	$log->info("in getNewDisplayTime ");
+
+	$date = new DateTimeField(null);
+	$log->debug("Exiting getNewDisplayTime method ...");
+	return $date->getDisplayTime($current_user);
+}
+
 /** This function returns the default vtiger_currency information.
  * Takes no param, return type array.
  */
