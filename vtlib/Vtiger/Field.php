@@ -101,8 +101,13 @@ class Vtiger_Field extends Vtiger_FieldBasic {
 	function setNoRolePicklistValues($values) {
 		global $adb;
 
-		$picklist_table = 'vtiger_'.$this->name;
-		$picklist_idcol = $this->name.'id';
+		$special_pl = array('recurring_frequency');
+                $picklist_table = 'vtiger_'.$this->name;
+                if(in_array($this->name, $special_pl)){
+                    $picklist_idcol = $this->name.'_id';
+                }else{
+                    $picklist_idcol = $this->name.'id';
+                }
 
 		if(!Vtiger_Utils::CheckTable($picklist_table)) {
 			Vtiger_Utils::CreateTable(
