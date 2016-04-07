@@ -222,6 +222,8 @@ $mod_strings = Array(
     'Monthly'=>'monatlich',
     'Quarterly'=>'quartalsweise',
     'Yearly'=>'jährlich',
+    'half-year'=>'Half Year',
+
 );
 
 ?>

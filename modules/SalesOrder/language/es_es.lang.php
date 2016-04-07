@@ -210,6 +210,7 @@ $mod_strings = Array(
 'Monthly'=>'Mensual',
 'Quarterly'=>'Trimestral',
 'Yearly'=>'Anual',
+'half-year'=>'Semestral',
 'Start Period' => 'Inicio Periodo',
 'End Period' => 'Final Periodo',
 'Payment Duration' => 'Duración',

@@ -188,6 +188,7 @@ $mod_strings = array (
 'Monthly' => 'Mensile',
 'Quarterly' => 'Trimestrale',
 'Yearly' => 'Annuale',
+'half-year'=>'Half Year',
 );
 
 ?>

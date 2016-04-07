@@ -189,6 +189,7 @@ $mod_strings = array(
 	'Monthly' => 'Havonta',
 	'Quarterly' => 'Negyedéves',
 	'Yearly' => 'Évente',
-	'Order Id' => 'Megrendelés AZ'
+	'Order Id' => 'Megrendelés AZ',
+        'half-year'=>'Half Year',
 );
 ?>

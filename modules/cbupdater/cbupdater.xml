@@ -570,4 +570,11 @@
 	<classname>add_workflow_selectcbmap</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>kikojover</author>
+	<description>add half-year recurring frequency to recurring Invoices from Salesorder</description>
+	<filename>build/changeSets/add_halfyear_recurring_invoice.php</filename>
+	<classname>add_halfyear_recurring_invoice</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

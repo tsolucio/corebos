@@ -214,6 +214,7 @@ $mod_strings = Array(
 'Net 60 days' => '60 DD',
 'SalesOrder ID' => 'ID Pedido Venda',
 
+'half-year'=>'Half Year',
 );
 
 ?>
