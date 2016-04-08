@@ -6,7 +6,6 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="99%"  class="showPanelBg">
@@ -96,7 +95,7 @@
 	</td>
 	<td style="padding:10px;" valign="top" align="center" width="50%">
 	<div id="customizedrep">
-		{include file="ReportsCustomize.tpl"}	
+		{include file="ReportsCustomize.tpl"}
 	</div>
 	</td>
 	<td valign=top><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>

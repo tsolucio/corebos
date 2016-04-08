@@ -397,10 +397,8 @@ class Reports extends CRMEntity{
 	 */
 	function sgetRptsforFldr($rpt_fldr_id)
 	{
-		$srptdetails="";
-		global $adb;
-		global $log;
-		global $mod_strings,$current_user;
+		$srptdetails='';
+		global $adb, $log, $mod_strings,$current_user;
 		$returndata = Array();
 
 		require_once('include/utils/UserInfoUtil.php');

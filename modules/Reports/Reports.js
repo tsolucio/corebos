@@ -357,7 +357,6 @@ function changeSteps1()
 		id.style.display = 'inline';
 	}
 	if (getObj('step7').style.display != 'none') {
-	//if (getObj('step6').style.display != 'none') {
 
 		var isScheduledObj = getObj("isReportScheduled");
 		if(isScheduledObj.checked == true) {
@@ -408,7 +407,7 @@ function changeSteps1()
 					alert(alert_arr.COLUMNS_CANNOT_BE_EMPTY);
 					return false;
 				}
-				if (divarray[i + 1] == /*'step6') { //*/ 'step7') {
+				if (divarray[i + 1] == 'step7') {
 					document.getElementById("next").value = finish_text;
 				}
 				hide(divarray[i]);

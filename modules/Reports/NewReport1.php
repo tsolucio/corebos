@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 require_once("data/Tracker.php");
 require_once('include/logging.php');
@@ -39,7 +38,6 @@ if(isset($_REQUEST["record"]) && $_REQUEST["record"]!='')
 	$list_report_form->assign('REPORT_ID',$reportid);
 	$oReport = new Reports($reportid);
 	$primarymodule = $oReport->primodule;
-	
 	$secondarymodule = '';
 	$secondarymodules =Array();
 	if(!empty($oReport->related_modules[$primarymodule])) {

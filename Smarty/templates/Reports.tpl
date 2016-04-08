@@ -1,5 +1,4 @@
 {*<!--
-
 /*********************************************************************************
 ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
@@ -7,9 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
 -->*}
 
 {*<!-- module header -->*}
@@ -23,7 +20,7 @@
 
 	<table border=0 cellspacing=0 cellpadding=0>
 	<tr>
-	<td>{include file="Buttons_List1.tpl"}</td>		
+	<td>{include file="Buttons_List1.tpl"}</td>
 	<td style="width:20px">&nbsp;</td>
 	<td>
 		<table border=0 cellspacing=0 cellpadding=0>
@@ -45,7 +42,6 @@
 	</tr>
 	<tr><td style="height:2px"></td></tr>
 </TABLE>
-
 
 <div id="reportContents">
 	{include file="ReportContents.tpl"}
@@ -128,9 +124,6 @@
 </div>
 <!-- Add new folder UI ends -->
 
-
-
-
 {*<!-- Contents -->*}
 {literal}
 <script>
@@ -139,7 +132,7 @@ function createrepFolder(oLoc,divid)
 	{/literal}
 	$('editfolder_info').innerHTML=' {$MOD.LBL_ADD_NEW_GROUP} ';
 	{literal}
-	getObj('fldrsave_mode').value = 'save';	
+	getObj('fldrsave_mode').value = 'save';
 	$('folder_id').value = '';
 	$('folder_name').value = '';
 	$('folder_desc').value='';

@@ -6,9 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
 require_once('include/logging.php');
 require_once('include/database/PearDatabase.php');
 $check=$_REQUEST['check'];

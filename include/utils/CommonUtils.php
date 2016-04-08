@@ -11,7 +11,7 @@
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
  ********************************************************************************/
-require_once('include/utils/utils.php'); //new
+require_once('include/utils/utils.php');
 require_once('include/utils/RecurringType.php');
 require_once('include/utils/EmailTemplate.php');
 require_once 'include/QueryGenerator/QueryGenerator.php';
