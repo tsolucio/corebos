@@ -892,19 +892,22 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 			else
 				$varreturnset = $returnset;
 
+			$WSmodule = $module;
 			if ($module == 'Calendar') {
 				$actvity_type = $adb->query_result($list_result, $list_result_count, 'activitytype');
 				if ($actvity_type == 'Task')
 					$varreturnset .= '&activity_mode=Task';
-				else
+				else{
 					$varreturnset .= '&activity_mode=Events';
+					$WSmodule = 'Events';
+				}
 			}
 
 			//Added for Actions ie., edit and delete links in listview
 			$links_info = '';
 			if (!(is_array($selectedfields) && $selectedfields != '')) {
 				if (isPermitted($module, 'EditView', '') == 'yes') {
-					$racbr = $wfs->getRACRuleForRecord($module, $entity_id);
+					$racbr = $wfs->getRACRuleForRecord($WSmodule, $entity_id);
 					if (!$racbr or $racbr->hasListViewPermissionTo('edit')) {
 					$edit_link = getListViewEditLink($module, $entity_id, $relatedlist, $varreturnset, $list_result, $list_result_count);
 					$links_info .= "<a href=\"$edit_link$linkstart\">" . $app_strings['LNK_EDIT'] . "</a> ";
@@ -912,7 +915,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 				}
 
 				if (isPermitted($module, 'Delete', '') == 'yes') {
-					$racbr = $wfs->getRACRuleForRecord($module, $entity_id);
+					$racbr = $wfs->getRACRuleForRecord($WSmodule, $entity_id);
 					if (!$racbr or $racbr->hasListViewPermissionTo('delete')) {
 					$del_link = getListViewDeleteLink($module, $entity_id, $relatedlist, $varreturnset, $linkstart);
 					if ($links_info != '' && $del_link != '')
