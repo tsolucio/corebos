@@ -305,7 +305,6 @@ function check_form() {
 			event_endmin = _2digit(endmin);
 			document.EditView.time_start.value = event_starthour+':'+event_startmin;
 			document.EditView.time_end.value = event_endhour+':'+event_endmin;
-			// Added for Aydin Kurt-Elli requirement START -by Minnie
 			if (document.EditView.followup.checked == true &&
 				document.getElementById('date_table_thirdtd').style.display == 'block') {
 				if(!dateValidate('followup_date','Followup Date','OTH')) {
@@ -354,9 +353,7 @@ function check_form() {
 				document.EditView.followup_due_date.value = tempdate;
 				document.EditView.followup_time_start.value = followuphour+':'+followupmin;
 				document.EditView.followup_time_end.value = followupendhour+':'+followupendmin;
-			//end
 			}
-			// Added for Aydin Kurt-Elli requirement END -by Minnie -->
 
 			//added to avoid db error while giving characters in the repeat "every n no of day in month" text box
 			if((getObj("recurringcheck")) && (document.EditView.recurringcheck.checked == true) &&

@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 global $theme;
 $theme_path="themes/".$theme."/";
@@ -105,7 +104,7 @@ if($numOfRows > 0) {
 				$queryReports = CustomReportUtils::getCustomReportsQuery($Report_ID,$filtersql);
 				$queryResult = $adb->pquery($queryReports,array());
 				//ChartUtils::generateChartDataFromReports($queryResult, strtolower($groupByNew[1]));
-                if($adb->num_rows($queryResult)){
+				if($adb->num_rows($queryResult)){
 					$pieChart = ChartUtils::getReportPieChart($queryResult, strtolower($module_field),$fieldDetails,$reportid);
 					$barChart = ChartUtils::getReportBarChart($queryResult, strtolower($module_field),$fieldDetails,$reportid);
 					$list_report_form->assign("PIECHART",$pieChart);
@@ -122,16 +121,15 @@ if($numOfRows > 0) {
 		}
 		//Monolithic Changes Ends
 
-        // Performance Optimization: Direct output of the report result
-        if($_REQUEST['submode'] == 'generateReport' && empty($advft_criteria)) {
+		// Performance Optimization: Direct output of the report result
+		if($_REQUEST['submode'] == 'generateReport' && empty($advft_criteria)) {
 			$filtersql = '';
 		}
-        $sshtml = array();
+		$sshtml = array();
 		$totalhtml = '';
 		$list_report_form->assign("DIRECT_OUTPUT", true);
 		$list_report_form->assign_by_ref("__REPORT_RUN_INSTANCE", $oReportRun);
 		$list_report_form->assign_by_ref("__REPORT_RUN_FILTER_SQL", $filtersql);
-        //Ends
 
 		$ogReport->getPriModuleColumnsList($ogReport->primodule);
 		$ogReport->getSecModuleColumnsList($ogReport->secmodule);
@@ -193,7 +191,6 @@ if($numOfRows > 0) {
 		}
 		echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
 		echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 80%; position: relative; z-index: 10000000;'>
-
 		<table border='0' cellpadding='5' cellspacing='0' width='98%'>
 		<tbody><tr>
 		<td rowspan='2' width='11%'><img src='". vtiger_imageurl('denied.gif', $theme) ."' ></td>
@@ -234,10 +231,7 @@ if($numOfRows > 0) {
  */
 function getPrimaryStdFilterHTML($module,$selected="")
 {
-
-	global $app_list_strings;
-	global $ogReport;
-	global $current_language;
+	global $app_list_strings, $ogReport, $current_language;
 	$ogReport->oCustomView=new CustomView();
 	$result = $ogReport->oCustomView->getStdCriteriaByModule($module);
 	$mod_strings = return_module_language($current_language,$module);
@@ -266,69 +260,51 @@ function getPrimaryStdFilterHTML($module,$selected="")
 			}
 		}
 	}
-
 	return $shtml;
 }
 
-	/** Function to get the StdfilterHTML strings for the given secondary module
-	 *  @ param $module : Type String
-	 *  @ param $selected : Type String(optional)
-	 *  This Generates the HTML Combo strings for the standard filter for the given reports module
-	 *  This Returns a HTML sring
-	 */
-function getSecondaryStdFilterHTML($module,$selected="")
-{
-	global $app_list_strings;
-	global $ogReport;
-	global $current_language;
+/** Function to get the StdfilterHTML strings for the given secondary module
+ *  @ param $module : Type String
+ *  @ param $selected : Type String(optional)
+ *  This Generates the HTML Combo strings for the standard filter for the given reports module
+ *  This Returns a HTML sring
+ */
+function getSecondaryStdFilterHTML($module,$selected='') {
+	global $app_list_strings, $ogReport, $current_language;
 	$ogReport->oCustomView=new CustomView();
-
-	if($module != "")
-        {
-        	$secmodule = explode(":",$module);
-        	for($i=0;$i < count($secmodule) ;$i++)
-        	{
+	if($module != '') {
+		$secmodule = explode(":",$module);
+		for($i=0;$i < count($secmodule) ;$i++) {
 			$result =  $ogReport->oCustomView->getStdCriteriaByModule($secmodule[$i]);
 			$mod_strings = return_module_language($current_language,$secmodule[$i]);
-        		if(isset($result))
-        		{
-                		foreach($result as $key=>$value)
-                		{
-                        		if(isset($mod_strings[$value]))
-                                        {
-						if($key == $selected)
-						{
+			if(isset($result)) {
+				foreach($result as $key=>$value) {
+					if(isset($mod_strings[$value])) {
+						if($key == $selected) {
 							$shtml .= "<option selected value=\"".$key."\">".getTranslatedString($secmodule[$i],$secmodule[$i])." - ".$mod_strings[$value]."</option>";
-						}else
-						{
+						} else {
 							$shtml .= "<option value=\"".$key."\">".getTranslatedString($secmodule[$i],$secmodule[$i])." - ".$mod_strings[$value]."</option>";
 						}
-					}else
-					{
-						if($key == $selected)
-						{
+					} else {
+						if($key == $selected) {
 							$shtml .= "<option selected value=\"".$key."\">".getTranslatedString($secmodule[$i],$secmodule[$i])." - ".$value."</option>";
-						}else
-						{
+						} else {
 							$shtml .= "<option value=\"".$key."\">".getTranslatedString($secmodule[$i],$secmodule[$i])." - ".$value."</option>";
 						}
 					}
-                		}
-        		}
-
+				}
+			}
 		}
 	}
 	return $shtml;
 }
 
 function getPrimaryColumns_AdvFilter_HTML($module, $ogReport, $selected='') {
-    global $app_list_strings, $current_language;
+	global $app_list_strings, $current_language;
 	$mod_strings = return_module_language($current_language,$module);
 	$block_listed = array();
-    foreach($ogReport->module_list[$module] as $key=>$value)
-    {
-    	if(isset($ogReport->pri_module_columnslist[$module][$value]) && !$block_listed[$value])
-    	{
+	foreach($ogReport->module_list[$module] as $key=>$value) {
+		if(isset($ogReport->pri_module_columnslist[$module][$value]) && !$block_listed[$value]) {
 			$block_listed[$value] = true;
 			$shtml .= "<optgroup label=\"".$app_list_strings['moduleList'][$module]." ".getTranslatedString($value)."\" class=\"select\" style=\"border:none\">";
 			foreach($ogReport->pri_module_columnslist[$module][$value] as $field=>$fieldlabel)
@@ -357,32 +333,24 @@ function getPrimaryColumns_AdvFilter_HTML($module, $ogReport, $selected='') {
 					}
 				}
 			}
-       }
-    }
-    return $shtml;
+		}
+	}
+	return $shtml;
 }
 
-
 function getSecondaryColumns_AdvFilter_HTML($module, $ogReport, $selected="") {
-	global $app_list_strings;
-    global $current_language;
-
-    if($module != "")
-    {
-    	$secmodule = explode(":",$module);
-    	for($i=0;$i < count($secmodule) ;$i++)
-    	{
-            $mod_strings = return_module_language($current_language,$secmodule[$i]);
-            if(vtlib_isModuleActive($secmodule[$i])){
+	global $app_list_strings, $current_language;
+	if($module != '') {
+		$secmodule = explode(":",$module);
+		for($i=0;$i < count($secmodule) ;$i++) {
+			$mod_strings = return_module_language($current_language,$secmodule[$i]);
+			if(vtlib_isModuleActive($secmodule[$i])){
 				$block_listed = array();
-				foreach($ogReport->module_list[$secmodule[$i]] as $key=>$value)
-                {
-					if(isset($ogReport->sec_module_columnslist[$secmodule[$i]][$value]) && !$block_listed[$value])
-					{
+				foreach($ogReport->module_list[$secmodule[$i]] as $key=>$value) {
+					if(isset($ogReport->sec_module_columnslist[$secmodule[$i]][$value]) && !$block_listed[$value]) {
 						$block_listed[$value] = true;
-                		  $shtml .= "<optgroup label=\"".$app_list_strings['moduleList'][$secmodule[$i]]." ".getTranslatedString($value)."\" class=\"select\" style=\"border:none\">";
-						  foreach($ogReport->sec_module_columnslist[$secmodule[$i]][$value] as $field=>$fieldlabel)
-						  {
+						$shtml .= "<optgroup label=\"".$app_list_strings['moduleList'][$secmodule[$i]]." ".getTranslatedString($value)."\" class=\"select\" style=\"border:none\">";
+						foreach($ogReport->sec_module_columnslist[$secmodule[$i]][$value] as $field=>$fieldlabel) {
 							if(isset($mod_strings[$fieldlabel]))
 							{
 								if($selected == $field)
@@ -402,25 +370,23 @@ function getSecondaryColumns_AdvFilter_HTML($module, $ogReport, $selected="") {
 									$shtml .= "<option value=\"".$field."\">".$fieldlabel."</option>";
 								}
 							}
-						  }
+						}
 					}
-                }
-            }
-    	}
-    }
-    return $shtml;
+				}
+			}
+		}
+	}
+	return $shtml;
 }
 
 function getAdvCriteria_HTML($adv_filter_options, $selected="") {
-
-	 foreach($adv_filter_options as $key=>$value) {
+	foreach($adv_filter_options as $key=>$value) {
 		if($selected == $key) {
 			$shtml .= "<option selected value=\"".$key."\">".$value."</option>";
 		} else {
 			$shtml .= "<option value=\"".$key."\">".$value."</option>";
 		}
-	 }
-
-    return $shtml;
+	}
+	return $shtml;
 }
 ?>

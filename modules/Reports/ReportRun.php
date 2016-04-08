@@ -594,7 +594,6 @@ class ReportRun extends CRMEntity {
 	}
 
 	function generateAdvFilterSql($advfilterlist) {
-
 		global $adb;
 
 		$advfiltersql = "";
@@ -970,19 +969,15 @@ class ReportRun extends CRMEntity {
 			$advfiltersql = $this->generateAdvFilterSql($advfilterlist);
 		}
 		return $advfiltersql;
-
 	}
 
 	/** Function to get standardfilter for the given reportid
 	 *  @ param $reportid : Type Integer
 	 *  returns the query of columnlist for the selected columns
 	 */
-
 	function getStandardCriterialSql($reportid)
 	{
-		global $adb;
-		global $modules;
-		global $log;
+		global $adb, $modules, $log;
 
 		$sreportstdfiltersql = "select vtiger_reportdatefilter.* from vtiger_report";
 		$sreportstdfiltersql .= " inner join vtiger_reportdatefilter on vtiger_report.reportid = vtiger_reportdatefilter.datefilterid";

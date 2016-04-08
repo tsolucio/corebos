@@ -903,7 +903,7 @@ function getTabname($tabid) {
 */
 function getTabModuleName($tabid) {
 	global $log, $adb;
-	$log->debug("Entering getTabModuleName(".$tabid.") method ...");
+	$log->debug("Entering getTabModuleName($tabid) ...");
 
 	// Lookup information in cache first
 	$tabname = VTCacheUtils::lookupModulename($tabid);
@@ -922,7 +922,6 @@ function getTabModuleName($tabid) {
 			VTCacheUtils::updateTabidInfo($tabid, $tabname);
 
 		} else {
-			$log->info("tab id is ".$tabid);
 			$sql = "select name from vtiger_tab where tabid=?";
 			$result = $adb->pquery($sql, array($tabid));
 			$tabname=  $adb->query_result($result,0,"name");
@@ -931,7 +930,7 @@ function getTabModuleName($tabid) {
 			VTCacheUtils::updateTabidInfo($tabid, $tabname);
 		}
 	}
-	$log->debug("Exiting getTabModuleName method ...");
+	$log->debug("Exiting getTabModuleName ($tabname) ...");
 	return $tabname;
 }
 
