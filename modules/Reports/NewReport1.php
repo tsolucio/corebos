@@ -46,9 +46,9 @@ if(isset($_REQUEST["record"]) && $_REQUEST["record"]!='')
 	$secondarymodule = implode(":",$secondarymodules);
 	$oReport->secmodule = $secondarymodule;
 	$reporttype = $oReport->reporttype;
-	$reportname  = $oReport->reportname;
+	$reportname  = vtlib_purify($_REQUEST['reportname']); // $oReport->reportname;
 	$reportdescription  = $oReport->reportdescription;
-	$folderid  = $oReport->folderid;	
+	$folderid  = vtlib_purify($_REQUEST['reportfolder']); // $oReport->folderid;
 	$ogReport = new Reports();
     $ogReport->getPriModuleColumnsList($oReport->primodule);
     $ogReport->getSecModuleColumnsList($oReport->secmodule);

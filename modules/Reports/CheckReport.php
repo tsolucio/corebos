@@ -14,12 +14,16 @@ global $default_charset;
 $id='';
 if($_REQUEST['check']== 'reportCheck')
 {
-	$reportName = $_REQUEST['reportName'];
-	$sSQL="select * from vtiger_report where reportname=?";
-	
-	$sqlresult = $adb->pquery($sSQL, array(trim($reportName)));
+	$reportName = vtlib_purify($_REQUEST['reportName']);
+	$reportID = vtlib_purify($_REQUEST['reportid']);
+	$sSQL='select 1 from vtiger_report where reportname=?';
+	$params = array(trim($reportName));
+	if(!empty($reportID)) {
+		$sSQL .= ' and reportid != ?';
+		array_push($params, $reportID);
+	}
+	$sqlresult = $adb->pquery($sSQL,$params);
 	echo $adb->num_rows($sqlresult);
-
 }
 else if($_REQUEST['check']== 'folderCheck')
 {

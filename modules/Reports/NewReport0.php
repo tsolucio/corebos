@@ -72,7 +72,7 @@ if($recordid!=''){
 		$restrictedmod = '';
 	}
 	$list_report_form->assign("RESTRICTEDMODULES",$restrictedmod);
-	$list_report_form->assign("BACK",'false');
+	$list_report_form->assign("BACK",'true');
 }
 if(!empty($_REQUEST['reportmodule'])) {
 	if(vtlib_isModuleActive($_REQUEST['reportmodule'])==false || isPermitted($_REQUEST['reportmodule'],'index')!= "yes"){

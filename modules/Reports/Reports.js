@@ -460,7 +460,7 @@ function changeSteps() {
 			new Ajax.Request('index.php',
 				{queue: {position: 'end', scope: 'command'},
 				method: 'post',
-				postBody: 'action=ReportsAjax&mode=ajax&file=CheckReport&module=Reports&check=reportCheck&reportName='+encodeURIComponent(document.NewRep.reportname.value),
+				postBody: 'action=ReportsAjax&mode=ajax&file=CheckReport&module=Reports&check=reportCheck&reportName='+encodeURIComponent(document.NewRep.reportname.value)+'&reportid='+document.NewRep.record.value,
 				onComplete: function(response) {
 					if(response.responseText!=0) {
 						alert(alert_arr.REPORT_NAME_EXISTS);

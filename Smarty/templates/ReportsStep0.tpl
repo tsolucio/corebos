@@ -46,7 +46,7 @@
 		<form name="NewRep" method="POST" ENCTYPE="multipart/form-data" action="index.php" style="margin:0px" onSubmit="return changeSteps();">
 		<input type="hidden" name="module" value="Reports">
 		<input type="hidden" name="primarymodule" value="{$REP_MODULE}">
-		<input type="hidden" name="record" value="{$RECORDID}">
+		<input type="hidden" name="record" id="record" value="{$RECORDID}">
 		<input type="hidden" name="file" value="NewReport1">
 		<input type="hidden" name="action" value="ReportsAjax">
 

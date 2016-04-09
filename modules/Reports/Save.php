@@ -355,8 +355,8 @@ if($reportid == '' || ($reportid!='' && strstr($saveas,'saveas')!='' && $newrepo
 		$log->info("Reports :: Save->Successfully saved vtiger_reportmodules");
 		//<<<<reportmodules>>>>>>>
 
-		$ireportsql = "update vtiger_report set REPORTNAME=?, DESCRIPTION=?, REPORTTYPE=?, SHARINGTYPE=? where REPORTID=?";
-		$ireportparams = array($reportname, $reportdescription, $reporttype, $sharetype, $reportid);
+		$ireportsql = "update vtiger_report set REPORTNAME=?, DESCRIPTION=?, REPORTTYPE=?, SHARINGTYPE=?, folderid=? where REPORTID=?";
+		$ireportparams = array($reportname, $reportdescription, $reporttype, $sharetype, $folderid, $reportid);
 		$ireportresult = $adb->pquery($ireportsql, $ireportparams);
 		$log->info("Reports :: Save->Successfully saved vtiger_report");
 
