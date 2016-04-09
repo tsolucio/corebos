@@ -3048,7 +3048,7 @@ function is_related($relation_table,$crm_field,$related_module_id,$crmid)
 		return false;
 }
 
-/** Function to get a to find duplicates in a particular module*/
+/** Get SQL to find duplicates in a particular module*/
 function getDuplicateQuery($module,$field_values,$ui_type_arr)
 {
 	global $current_user;
@@ -3266,7 +3266,6 @@ function getDuplicateRecordsArr($module)
 	else
 		$limit_start_rec = $start_rec -1;
 	$dup_query .= " LIMIT $limit_start_rec, $list_max_entries_per_page";
-	//ends
 
 	$nresult=$adb->query($dup_query);
 	$no_rows=$adb->num_rows($nresult);
@@ -3275,24 +3274,21 @@ function getDuplicateRecordsArr($module)
 	{
 		if ($_REQUEST['action'] == 'FindDuplicateRecords')
 		{
-			//echo "<br><br><center>".$app_strings['LBL_NO_DUPLICATE']." <a href='javascript:window.history.back()'>".$app_strings['LBL_GO_BACK'].".</a></center>";
-			//die;
 			echo "<link rel='stylesheet' type='text/css' href='themes/$theme/style.css'>";
 			echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
 			echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
-
 				<table border='0' cellpadding='5' cellspacing='0' width='98%'>
 				<tbody><tr>
 				<td rowspan='2' width='11%'><img src='" . vtiger_imageurl('empty.jpg', $theme) . "' ></td>
-				<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>$app_strings[LBL_NO_DUPLICATE]</span></td>
+				<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>".$app_strings['LBL_NO_DUPLICATE']."</span></td>
 				</tr>
 				<tr>
 				<td class='small' align='right' nowrap='nowrap'>
-				<a href='javascript:window.history.back();'>$app_strings[LBL_GO_BACK]</a><br>     </td>
+				<a href='javascript:window.history.back();'>".$app_strings['LBL_GO_BACK']."</a><br></td>
 				</tr>
 				</tbody></table>
-				</div>";
-			echo "</td></tr></table>";
+				</div>
+				</td></tr></table>";
 			exit();
 		}
 		else
