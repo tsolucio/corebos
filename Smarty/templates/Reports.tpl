@@ -86,7 +86,7 @@
 <!-- END OF POPUP LAYER -->
 
 <!-- Add new Folder UI starts -->
-<div id="orgLay" style="display:none;width:350px;" class="layerPopup">
+<div id="orgLay" style="display:none;" class="layerPopup">
 	<table border=0 cellspacing=0 cellpadding=5 width=100% class=layerHeadingULine>
 	<tr>
 		<td class="genHeaderSmall" nowrap align="left" width="30%" id="editfolder_info">{$MOD.LBL_ADD_NEW_GROUP}</td>
