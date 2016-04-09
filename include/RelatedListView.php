@@ -46,8 +46,6 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 	$current_module_strings = return_module_language($current_language, $module);
 
 	global $list_max_entries_per_page, $urlPrefix, $currentModule, $theme, $theme_path, $theme_path, $mod_strings;
-	// focus_list is the means of passing data to a ListView.
-	global $focus_list;
 	$smarty = new vtigerCRM_Smarty;
 	if (!isset($where)) $where = "";
 
