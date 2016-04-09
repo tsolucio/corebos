@@ -52,11 +52,12 @@ $list_report_form->assign("REPT_MODULES",getReportsModuleList($repObj));
 $list_report_form->assign("REPT_FOLDERS",$repObj->sgetRptFldr());
 $list_report_form->assign("DEL_DENIED",vtlib_purify($_REQUEST['del_denied']));
 
+$list_report_form->assign('ISADMIN',is_admin($current_user));
+
 if($_REQUEST['mode'] == 'ajax')
 	$list_report_form->display("ReportsCustomize.tpl");
 elseif($_REQUEST['mode'] == 'ajaxdelete')
 	$list_report_form->display("ReportContents.tpl");
 else
 	$list_report_form->display("Reports.tpl");
-
 ?>

@@ -68,7 +68,7 @@
 					{if $reportdetails.customizable eq '1' && $reportdetails.editable eq 'true'}
 						<a href="javascript:;" onClick="editReport('{$reportdetails.reportid}');"><img src="{'editfield.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" title="{$MOD.LBL_CUSTOMIZE_BUTTON}..." border="0"></a>
 					{/if}
-					{if $reportdetails.state neq 'SAVED' && $reportdetails.editable eq 'true'}
+					{if $ISADMIN || ($reportdetails.state neq 'SAVED' && $reportdetails.editable eq 'true')}
 						&nbsp;|&nbsp;<a href="javascript:;" onclick="DeleteReport('{$reportdetails.reportid}');"><img src="{'delete.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" title="{$MOD.LBL_DELETE}..." border="0"></a>
 					{/if}
 					&nbsp;|&nbsp;<a href="javascript:void(0);" onclick="gotourl('index.php?module=Reports&action=ReportsAjax&file=CreateCSV&record={$reportdetails.reportid}');"><img src="{'csv_text.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_EXPORTCSV}" title="{$MOD.LBL_EXPORTCSV}" border="0"></a>
