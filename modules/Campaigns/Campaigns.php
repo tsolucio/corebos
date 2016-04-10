@@ -107,7 +107,6 @@ class Campaigns extends CRMEntity {
 		}
 	}
 
-	// Mike Crowe Mod --------------------------------------------------------Default ordering for us
 	/**
 	 * Function to get Campaign related Accouts
 	 * @param  integer   $id      - campaignid
@@ -656,7 +655,9 @@ class Campaigns extends CRMEntity {
 				}
 				$sql = 'INSERT INTO vtiger_campaigncontrel VALUES(?,?,1)';
 				$adb->pquery($sql, array($crmid, $with_crmid));
-
+				if (GlobalVariable::getVariable('Campaign_CreatePotentialOnContactRelation', '0')=='1') {
+					self::createPotentialRelatedTo($with_crmid, $crmid);
+				}
 			} elseif($with_module == 'Accounts') {
 				$checkResult = $adb->pquery('SELECT 1 FROM vtiger_campaignaccountrel WHERE campaignid = ? AND accountid = ?',
 												array($crmid, $with_crmid));
@@ -665,10 +666,40 @@ class Campaigns extends CRMEntity {
 				}
 				$sql = 'INSERT INTO vtiger_campaignaccountrel VALUES(?,?,1)';
 				$adb->pquery($sql, array($crmid, $with_crmid));
-
+				if (GlobalVariable::getVariable('Campaign_CreatePotentialOnAccountRelation', '0')=='1') {
+					self::createPotentialRelatedTo($with_crmid, $crmid);
+				}
 			} else {
 				parent::save_related_module($module, $crmid, $with_module, $with_crmid);
 			}
+		}
+	}
+
+	/* Create potential */
+	public static function createPotentialRelatedTo($relatedto,$campaignid) {
+		global $adb, $current_user;
+		$checkrs = $adb->pquery('select 1
+			from vtiger_potentials
+			inner join vtiger_crmentity on crmid=potentialid
+			where deleted=0 and related_to=? and campaignid=?',array($relatedto,$campaignid));
+		if ($adb->num_rows($checkrs)==0) {
+			require_once('modules/Potentials/Potentials.php');
+			$entity = new Potentials();
+			$entity->mode = '';
+			$_REQUEST['assigntype'] = 'U';
+			$_REQUEST['assigned_user_id'] = $current_user->id;
+			$entity->column_fields['assigned_user_id'] = $current_user->id;
+			$entity->column_fields['related_to'] = $relatedto;
+			$entity->column_fields['campaignid'] = $campaignid;
+			$dt = new DateTimeField();
+			$entity->column_fields['closingdate'] = $dt->getDisplayDate();
+			$cname = getEntityName('Campaigns', $campaignid);
+			$pname = $cname[$campaignid].' - ';
+			$rname = getEntityName(getSalesEntityType($relatedto), $relatedto);
+			$pname = $pname.$rname[$relatedto];
+			$entity->column_fields['potentialname'] = $pname;
+			$entity->column_fields['sales_stage'] = 'Prospecting';
+			$entity->save('Potentials');
 		}
 	}
 
