@@ -44,6 +44,10 @@
           <OrgfieldName>_FromSO</OrgfieldName>  {this is a constant string}
           <OrgfieldID>CONST</OrgfieldID>
         </Orgfield>
+        <Orgfield>
+          <OrgfieldName>add_days(get_date('today'), 30)</OrgfieldName>  {this is a workflow expression}
+          <OrgfieldID>EXPRESSION</OrgfieldID>
+        </Orgfield>
         <delimiter>;</delimiter>
       </Orgfields>
     </field>
@@ -52,6 +56,15 @@
     </field>
   </fields>
  *************************************************************************************************/
+
+require_once('modules/com_vtiger_workflow/include.inc');
+require_once('modules/com_vtiger_workflow/tasks/VTEntityMethodTask.inc');
+require_once('modules/com_vtiger_workflow/VTEntityMethodManager.inc');
+require_once('modules/com_vtiger_workflow/VTSimpleTemplate.inc');
+require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
+require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
+require_once('modules/com_vtiger_workflow/expression_engine/include.inc');
+require_once 'include/Webservices/Retrieve.php';
 
 class Mapping extends processcbMap {
 
@@ -63,6 +76,11 @@ class Mapping extends processcbMap {
 		global $adb, $current_user;
 		$mapping=$this->convertMap2Array();
 		$ofields = $arguments[0];
+		if (!empty($ofields['record_id'])) {
+			$setype = getSalesEntityType($ofields['record_id']);
+			$wsidrs = $adb->pquery('SELECT id FROM vtiger_ws_entity WHERE name=?',array($setype));
+			$entityId = $adb->query_result($wsidrs, 0, 0).'x'.$ofields['record_id'];
+		}
 		$tfields = $arguments[1];
 		foreach ($mapping['fields'] as $targetfield => $sourcefields) {
 			$value = '';
@@ -72,6 +90,14 @@ class Mapping extends processcbMap {
 				if (strtoupper($idx[0])=='CONST') {
 					$const = array_pop($fieldinfo);
 					$value.= $const.$delim;
+				} elseif (strtoupper($idx[0])=='EXPRESSION' and !empty($ofields['record_id'])) {
+					$entity = new VTWorkflowEntity($current_user, $entityId);
+					$testexpression = array_pop($fieldinfo);
+					$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($testexpression)));
+					$expression = $parser->expression();
+					$exprEvaluater = new VTFieldExpressionEvaluater($expression);
+					$exprEvaluation = $exprEvaluater->evaluate($entity);
+					$value.= $exprEvaluation.$delim;
 				} else {
 					$fieldname = array_pop($fieldinfo);
 					$value.= $ofields[$fieldname].$delim;
