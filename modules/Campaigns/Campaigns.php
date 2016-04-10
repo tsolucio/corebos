@@ -686,19 +686,43 @@ class Campaigns extends CRMEntity {
 			require_once('modules/Potentials/Potentials.php');
 			$entity = new Potentials();
 			$entity->mode = '';
-			$_REQUEST['assigntype'] = 'U';
-			$_REQUEST['assigned_user_id'] = $current_user->id;
-			$entity->column_fields['assigned_user_id'] = $current_user->id;
+			$cname = getEntityName('Campaigns', $campaignid);
+			$cname = $cname[$campaignid].' - ';
+			$setype = getSalesEntityType($relatedto);
+			$rname = getEntityName($setype, $relatedto);
+			$rname = $rname[$relatedto];
+			$cbMapid = GlobalVariable::getVariable('BusinessMapping_PotentialOnCampaignRelation', cbMap::getMapIdByName('PotentialOnCampaignRelation'));
+			if ($cbMapid) {
+				$cmp = CRMEntity::getInstance('Campaigns');
+				$cmp->retrieve_entity_info($campaignid, 'Campaigns');
+				if ($setype=='Accounts') {
+					$cmp->column_fields['AccountName'] = $rname;
+					$cmp->column_fields['ContactName'] = '';
+				} else {
+					$cmp->column_fields['AccountName'] = '';
+					$cmp->column_fields['ContactName'] = $rname;
+				}
+				$cbMap = cbMap::getMapByID($cbMapid);
+				$entity->column_fields = $cbMap->Mapping($cmp->column_fields,array());
+			}
+			if (empty($entity->column_fields['assigned_user_id'])) {
+				$entity->column_fields['assigned_user_id'] = $current_user->id;
+			}
 			$entity->column_fields['related_to'] = $relatedto;
 			$entity->column_fields['campaignid'] = $campaignid;
-			$dt = new DateTimeField();
-			$entity->column_fields['closingdate'] = $dt->getDisplayDate();
-			$cname = getEntityName('Campaigns', $campaignid);
-			$pname = $cname[$campaignid].' - ';
-			$rname = getEntityName(getSalesEntityType($relatedto), $relatedto);
-			$pname = $pname.$rname[$relatedto];
-			$entity->column_fields['potentialname'] = $pname;
-			$entity->column_fields['sales_stage'] = 'Prospecting';
+			if (empty($entity->column_fields['closingdate'])) {
+				$dt = new DateTimeField();
+				$entity->column_fields['closingdate'] = $dt->getDisplayDate();
+			}
+			if (empty($entity->column_fields['closingdate'])) {
+				$pname = $cname[$campaignid].' - '.$rname;
+				$entity->column_fields['potentialname'] = $pname;
+			}
+			if (empty($entity->column_fields['sales_stage'])) {
+				$entity->column_fields['sales_stage'] = 'Prospecting';
+			}
+			$_REQUEST['assigntype'] = 'U';
+			$_REQUEST['assigned_user_id'] = $entity->column_fields['assigned_user_id'];
 			$entity->save('Potentials');
 		}
 	}
