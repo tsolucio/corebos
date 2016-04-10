@@ -3237,7 +3237,7 @@ function getDuplicateQuery($module,$field_values,$ui_type_arr)
 /** Function to return the duplicate records data as a formatted array */
 function getDuplicateRecordsArr($module)
 {
-	global $adb,$app_strings,$list_max_entries_per_page,$theme;
+	global $adb,$app_strings,$list_max_entries_per_page,$theme,$default_charset;
 	$field_values_array=getFieldValues($module);
 	$field_values=$field_values_array['fieldnames_list'];
 	$fld_arr=$field_values_array['fieldnames_array'];
@@ -3311,8 +3311,8 @@ function getDuplicateRecordsArr($module)
 		if($rec_cnt != 0)
 		{
 			$sl_arr = array_slice($result,2);
-			array_walk($temp,'lower_array');
-			array_walk($sl_arr,'lower_array');
+			array_walk($temp,'setFormatForDuplicateCompare');
+			array_walk($sl_arr,'setFormatForDuplicateCompare');
 			$arr_diff = array_diff($temp,$sl_arr);
 			if(count($arr_diff) > 0)
 			{
@@ -3327,7 +3327,7 @@ function getDuplicateRecordsArr($module)
 		{
 			if($rec_cnt == 0)
 			{
-				$temp[$fld_labl_arr[$k]] = $result[$col_arr[$k]];
+				$temp[$fld_labl_arr[$k]] = html_entity_decode($result[$col_arr[$k]], ENT_QUOTES, $default_charset);
 			}
 			if($ui_type[$fld_arr[$k]] == 56)
 			{
@@ -3539,9 +3539,17 @@ function get_on_clause($field_list,$uitype_arr,$module)
 	return $ret_str;
 }
 
+function elimina_acentos($cadena){
+	$tofind = utf8_decode("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊẼËèéêẽëÌÍĨÎÏìíîĩïÙÚÛŨÜúùûũüÿçÇñÑ");
+	$replac = "AAAAAAaaaaaaOOOOOOooooooEEEEEeeeeeIIIIIiiiiiUUUUUuuuuuycCnN";
+	return utf8_encode(strtr(utf8_decode($cadena),$tofind,$replac));
+}
+
 /** call back function to change the array values in to lower case */
-function lower_array(&$string){
-	$string = strtolower(trim($string));
+function setFormatForDuplicateCompare(&$string){
+	global $default_charset;
+	$string = elimina_acentos(trim($string));
+	$string = strtolower(html_entity_decode($string, ENT_QUOTES, $default_charset));
 }
 
 /** Function to get recordids for subquery where condition */
