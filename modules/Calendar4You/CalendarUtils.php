@@ -262,7 +262,9 @@ function getCalendar4YouListQuery($userid, $invites, $where = '', $type='1') {
 	LEFT JOIN vtiger_cntactivityrel
 		ON vtiger_cntactivityrel.activityid = vtiger_activity.activityid
 	LEFT JOIN vtiger_contactdetails
-		ON vtiger_contactdetails.contactid = vtiger_cntactivityrel.contactid
+		ON vtiger_contactdetails.contactid = (select vtiger_cntactivityrel.contactid
+		from vtiger_cntactivityrel
+		where vtiger_cntactivityrel.activityid = vtiger_activity.activityid limit 1)
 	LEFT JOIN vtiger_seactivityrel
 		ON vtiger_seactivityrel.activityid = vtiger_activity.activityid
 	LEFT OUTER JOIN vtiger_activity_reminder
