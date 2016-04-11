@@ -19,9 +19,9 @@ class DateTimeField {
 	 *
 	 * @param type $value
 	 */
-	public function __construct($value) {
+	public function __construct($value='') {
 		if(empty($value)) {
-			$value = date("Y-m-d H:i:s");
+			$value = date('Y-m-d H:i:s');
 		}
 		$this->date = null;
 		$this->time = null;
