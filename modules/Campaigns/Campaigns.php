@@ -714,9 +714,8 @@ class Campaigns extends CRMEntity {
 				$dt = new DateTimeField();
 				$entity->column_fields['closingdate'] = $dt->getDisplayDate();
 			}
-			if (empty($entity->column_fields['closingdate'])) {
-				$pname = $cname[$campaignid].' - '.$rname;
-				$entity->column_fields['potentialname'] = $pname;
+			if (empty($entity->column_fields['potentialname'])) {
+				$entity->column_fields['potentialname'] = $cname.$rname;
 			}
 			if (empty($entity->column_fields['sales_stage'])) {
 				$entity->column_fields['sales_stage'] = 'Prospecting';
