@@ -335,14 +335,13 @@ function check_form() {
 					}
 				}
 				else return false;
-				//modified to set followup end date depends on the event or todo. If it is Event, the difference between followup start date and end date is 1hr. If it is todo then difference is 5mins.
+				// set followup end datetime depending on user's default preferences
 				date3.setMinutes(followupmin);
 				date3.setHours(followuphour);
-				if(document.EditView.activitytype[0].checked == true) {
-					date3.setMinutes(parseInt(date3.getMinutes(),10)+5);
-				}
-				if(document.EditView.activitytype[1].checked == true) {
-					date3.setMinutes(parseInt(date3.getMinutes(),10)+60);
+				if(document.EditView.activitytype.options[document.EditView.activitytype.selectedIndex].value == 'Call') {
+					date3.setMinutes(parseInt(date3.getMinutes(),10)+calendar_call_default_duration);
+				} else {
+					date3.setMinutes(parseInt(date3.getMinutes(),10)+(60*calendar_other_default_duration));
 				}
 				var tempdate = getdispDate(date3);
 
