@@ -66,13 +66,6 @@ function ExecuteQuery($query) {
 function putMsg($msg) {
 	echo '<tr width="100%"><td colspan=3>'.$msg.'</td></tr>';
 }
-if(!function_exists('elimina_acentos')) {
-  function elimina_acentos($cadena){
-	$tofind = utf8_decode("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊẼËèéêẽëÌÍĨÎÏìíîĩïÙÚÛŨÜúùûũüÿçÇñÑ");
-	$replac = "AAAAAAaaaaaaOOOOOOooooooEEEEEeeeeeIIIIIiiiiiUUUUUuuuuuycCnN";
-	return utf8_encode(strtr(utf8_decode($cadena),$tofind,$replac));
-  }
-}
 
 function deletePicklistValues($values,$tableName,$moduleName) {
 	global $adb, $default_charset;
