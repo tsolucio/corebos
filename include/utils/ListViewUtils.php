@@ -907,6 +907,8 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 			$links_info = '';
 			if (!(is_array($selectedfields) && $selectedfields != '')) {
 				if (isPermitted($module, 'EditView', '') == 'yes') {
+                                        if($WSmodule=='Users') $racbr=false;
+                                        else
 					$racbr = $wfs->getRACRuleForRecord($WSmodule, $entity_id);
 					if (!$racbr or $racbr->hasListViewPermissionTo('edit')) {
 					$edit_link = getListViewEditLink($module, $entity_id, $relatedlist, $varreturnset, $list_result, $list_result_count);
@@ -915,6 +917,8 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 				}
 
 				if (isPermitted($module, 'Delete', '') == 'yes') {
+                                        if($WSmodule=='Users') $racbr=false;
+                                        else
 					$racbr = $wfs->getRACRuleForRecord($WSmodule, $entity_id);
 					if (!$racbr or $racbr->hasListViewPermissionTo('delete')) {
 					$del_link = getListViewDeleteLink($module, $entity_id, $relatedlist, $varreturnset, $linkstart);
