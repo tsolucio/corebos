@@ -6,9 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
 global $combo_strings;
 
 $combo_strings = Array(
@@ -177,7 +175,6 @@ $combo_strings = Array(
 				,'Obsolete'=>'Obsolete'
 				),
 
-
 'currency_dom' => Array('Rupees'=>'Rupees',
                         'Dollar'=>'Dollar',
                         'Euro'=>'Euro'
@@ -186,7 +183,7 @@ $combo_strings = Array(
 'visibility_dom' => Array('Private'=>'Private',
                           'Public'=>'Public'
 			 ),
-				     
+
 'usageunit_dom' => Array('Box'=>'Box',
                         'Carton'=>'Carton',
                         'Dozen'=>'Dozen',
@@ -267,13 +264,15 @@ $combo_strings = Array(
 				'Active'=>'Active',
 				'Inactive'=>'Inactive',
 				'Completed'=>'Completed',
-				'Cancelled'=>'Cancelled',							      ),
-			
+				'Cancelled'=>'Cancelled',
+),
 
 'campaigntype_dom' => Array(''=>'',
 			    'Conference'=>'Conference',
 			    'Webinar'=>'Webinar',
-			    'Trade Show'=>'Trade Show',				    			    'Public Relations'=>'Public Relations',					    'Partners'=>'Partners',
+			    'Trade Show'=>'Trade Show',
+			    'Public Relations'=>'Public Relations',
+			    'Partners'=>'Partners',
 			    'Referral Program'=>'Referral Program',
 			    'Advertisement'=>'Advertisement',
 			    'Banner Ads'=>'Banner Ads',
@@ -287,8 +286,8 @@ $combo_strings = Array(
 			      'Excellent'=>'Excellent',
 			      'Good'=>'Good',
 			      'Average'=>'Average',
-                              'Poor'=>'Poor'
-			      ),			      
+                  'Poor'=>'Poor'
+			      ),
 'status_dom' => Array('Active'=>'Active',
 			      'Inactive'=>'Inactive'
 			      ),
@@ -321,7 +320,7 @@ $combo_strings = Array(
 								'Monthly' => 'Monthly',
 								'Quarterly' => 'Quarterly',
 								'Yearly' => 'Yearly'
-							),		
+							),
 'payment_duration_dom' => Array('Net 30 days'=>'Net 30 days',
 								'Net 45 days'=>'Net 45 days',
 								'Net 60 days'=>'Net 60 days'
@@ -351,14 +350,10 @@ $combo_strings = Array(
 'currency_symbol_placement_dom' => Array("$1.0" => "$1.0",
 										"1.0$" => "1.0$"
 							),
-		
 );
 
 require_once('modules/Users/UserTimeZonesArray.php');
 $usertimezonesClass = new UserTimeZones();
 $arrayOfSupportedTimeZones = $usertimezonesClass->userTimeZones();
 $combo_strings['time_zone_dom'] = array_combine($arrayOfSupportedTimeZones,$arrayOfSupportedTimeZones);
-
 ?>
-
-

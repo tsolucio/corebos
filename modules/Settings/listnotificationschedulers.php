@@ -6,9 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
 require_once('include/database/PearDatabase.php');
 require_once('Smarty_setup.php');
 global $theme;
@@ -27,18 +25,18 @@ if($adb->num_rows($result) >=1)
 		$result_data['active'] = $result_row['active'];
 		$result_data['schedulename'] = $mod_strings[$result_row['schedulednotificationname']];
 		$result_data['id'] = $result_row['schedulednotificationid'];
-	
-		if($result_data['active'] != 1)	
+
+		if($result_data['active'] != 1)
 			$result_data['active'] = $mod_strings['LBL_INACTIVE'];
 		else
 			$result_data['active'] = $mod_strings['LBL_ACTIVE'];
-			
+
 		$result_data['label'] = $mod_strings[$result_row['label']];
 		$notifiy_array []= $result_data;
 	}
 	$smarty->assign("NOTIFICATION",$notifiy_array);
-}	
-		
+}
+
 $smarty->assign("MOD", return_module_language($current_language,'Settings'));
 $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH",$image_path);
@@ -48,5 +46,4 @@ if(vtlib_purify($_REQUEST['directmode']) != '')
 	$smarty->display("Settings/EmailNotificationContents.tpl");
 else
 	$smarty->display("Settings/EmailNotification.tpl");
-	
-?>		
+?>

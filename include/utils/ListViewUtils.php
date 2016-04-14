@@ -12,9 +12,9 @@
  * All Rights Reserved.
  ********************************************************************************/
 require_once('include/database/PearDatabase.php');
-require_once('include/ComboUtil.php'); //new
-require_once('include/utils/CommonUtils.php'); //new
-require_once('user_privileges/default_module_view.php'); //new
+require_once('include/ComboUtil.php');
+require_once('include/utils/CommonUtils.php');
+require_once('user_privileges/default_module_view.php');
 require_once('include/utils/UserInfoUtil.php');
 require_once('include/Zend/Json.php');
 require_once 'include/CustomFieldUtil.php';

@@ -6,26 +6,20 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 require_once('Smarty_setup.php');
 require_once("data/Tracker.php");
 require_once('include/logging.php');
 require_once('include/utils/utils.php');
 require_once('modules/Reports/Reports.php');
-global $app_strings;
-global $app_list_strings;
-global $mod_strings;
+global $app_strings, $app_list_strings, $mod_strings;
 $current_module_strings = return_module_language($current_language, 'Reports');
 
-global $list_max_entries_per_page;
-global $urlPrefix;
+global $list_max_entries_per_page, $urlPrefix;
 
 $log = LoggerManager::getLogger('report_type');
 
-global $currentModule;
-global $image_path;
-global $theme;
+global $currentModule, $image_path, $theme;
 $theme_path="themes/".$theme."/";
 $report_column=new vtigerCRM_Smarty;
 $report_column->assign("MOD", $mod_strings);
@@ -37,7 +31,7 @@ if(isset($_REQUEST["record"]) && $_REQUEST['record']!='')
 	$recordid = vtlib_purify($_REQUEST["record"]);
 	$oReport = new Reports($recordid);
 	$BLOCK1 = getPrimaryColumnsHTML($oReport->primodule);
-	
+
 	$oRep = new Reports();
 	$secondarymodule = '';
 	$secondarymodules =Array();
@@ -47,9 +41,9 @@ if(isset($_REQUEST["record"]) && $_REQUEST['record']!='')
 		}
 	}
 	$secondarymodule = implode(":",$secondarymodules);
-	
+
 	$oReport->secmodule = $secondarymodule;
-	$BLOCK1 .= getSecondaryColumnsHTML($oReport->secmodule);	
+	$BLOCK1 .= getSecondaryColumnsHTML($oReport->secmodule);
 	$BLOCK2 = $oReport->getSelectedColumnsList($recordid);
 	$report_column->assign("BLOCK1",$BLOCK1);
 	$report_column->assign("BLOCK2",$BLOCK2);
@@ -63,23 +57,16 @@ if(isset($_REQUEST["record"]) && $_REQUEST['record']!='')
 			$BLOCK1 .= getSecondaryColumnsHTML($_REQUEST["secondarymodule_".$value]);
 		}
 	}
-		
 	$report_column->assign("BLOCK1",$BLOCK1);
-
 }
 
-/** Function to formulate the vtiger_fields for the primary modules 
- *  This function accepts the module name 
- *  as arguments and generates the vtiger_fields for the primary module as
- *  a HTML Combo values
+/** Function to formulate the fields for the primary modules
+ *  This function accepts the module name as an argument and generates
+ *  the fields for the primary module as an HTML Combo values
  */
-
 function getPrimaryColumnsHTML($module)
 {
-	global $ogReport;
-	global $app_list_strings;
-	global $app_strings;
-	global $current_language;
+	global $ogReport, $app_list_strings, $app_strings, $current_language;
 	$id_added=false;
 	$mod_strings = return_module_language($current_language,$module);
 	$block_listed = array();
@@ -113,13 +100,9 @@ function getPrimaryColumnsHTML($module)
  *  as arguments and generates the vtiger_fields for the secondary module as
  *  a HTML Combo values
  */
-
-
 function getSecondaryColumnsHTML($module)
 {
-	global $ogReport;
-	global $app_list_strings,$app_strings;
-	global $current_language;
+	global $ogReport, $app_list_strings, $app_strings, $current_language;
 
 	if($module != "")
 	{
@@ -155,4 +138,3 @@ function getSecondaryColumnsHTML($module)
 
 $report_column->display("ReportColumns.tpl");
 ?>
-

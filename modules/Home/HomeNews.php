@@ -29,4 +29,3 @@ $smarty->assign("IMAGE_PATH", "themes/$theme/images/");
 $smarty->assign('NEWSLIST', $NEWSLIST);
 $smarty->display("HomeNews.tpl");
 ?>
-
