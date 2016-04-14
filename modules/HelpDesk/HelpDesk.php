@@ -114,6 +114,8 @@ class HelpDesk extends CRMEntity {
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id,$module);
 		}
+		if(isset($_REQUEST['mode']) && $_REQUEST['mode'] =='Import')
+			$this->column_fields['comments'] = '';
 		//Inserting into Ticket Comment Table
 		$this->insertIntoTicketCommentTable("vtiger_ticketcomments",$module);
 
