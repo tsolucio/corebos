@@ -563,6 +563,7 @@ $mod_strings = array (
       'LBL_CHECK_ASSIGNEDTO_MAILID' => 'Compruebe el emailid asignado',
       'LBL_MAILSENDERROR' => 'El correo no se puede enviar al administrador. Compruebe su Id',
       'LBL_RECORD_NOEXIST' => 'Registro no encontrado',
+      'Could not get file list' => 'No se ha podido encontrar ficheros',
       'LBL_ENTER_PROFILE' => 'Introduzca el nombre del Perfil',
       'Language' => 'Idioma',
       'AlwaysActive' => 'siempre activo',

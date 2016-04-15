@@ -662,6 +662,7 @@ $mod_strings = Array(
     'LBL_CHECK_ASSIGNEDTO_MAILID'=>'Bitte prüfen Sie die zugewiesene E-Mail Adresse.',
     'LBL_MAILSENDERROR'=>'Es wurde erfolglos versucht, eine E-Mail zu der Adresse Ihres CRM Administrators zu senden. Bitte prüfen Sie die zugewiesene E-Mail Adresse und Ihre Servereinstellungen.',
     'LBL_RECORD_NOEXIST'=>'Daten nicht vorhanden',
+    'Could not get file list' => 'Could not get file list',
     'LBL_ENTER_PROFILE'=>'Profilenamen eingeben',
     'Language' => 'Language',
     'AlwaysActive' => 'always active',

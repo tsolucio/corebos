@@ -563,6 +563,7 @@ $mod_strings = array (
   'LBL_CHECK_ASSIGNEDTO_MAILID' => 'Prego verificare l`identificativo email di Assegnato A',
   'LBL_MAILSENDERROR' => 'La mail non pu&ograve; essere inviata all`amministratore. Verifica le configurazioni del mail server e la email dell`amministratore',
   'LBL_RECORD_NOEXIST' => 'Record non presente',
+  'Could not get file list' => 'Could not get file list',
   'LBL_ENTER_PROFILE' => 'Inserisci il nome del profilo',
   'LBL_PROXY' => 'proxy',
   'LBL_FIELDS_TO_BE_SHOWN' => 'Campi da visualizzare',

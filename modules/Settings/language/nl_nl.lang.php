@@ -662,6 +662,7 @@ $mod_strings = Array(
 'LBL_CHECK_ASSIGNEDTO_MAILID'=>'aub Controleer het toegekende e-mailid',
 'LBL_MAILSENDERROR'=>'E-mail kon niet verstuurd worden aan de admin gebruiker. aub Controleer het admin e-mailid',
 'LBL_RECORD_NOEXIST'=>'Veld niet aanwezig',
+'Could not get file list' => 'Could not get file list',
 'LBL_ENTER_PROFILE'=>'Geef profielnaam',
 'Language' => 'Language',
 'AlwaysActive' => 'always active',

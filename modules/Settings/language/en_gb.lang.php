@@ -562,6 +562,7 @@ $mod_strings = array(
 	'LBL_CHECK_ASSIGNEDTO_MAILID' => 'Please check the assigned-to email address',
 	'LBL_MAILSENDERROR' => 'Email could not be sent to the admin user. Please check the admin email address and/or server settings',
 	'LBL_RECORD_NOEXIST' => 'Record not present',
+	'Could not get file list' => 'Could not get file list',
 	'LBL_ENTER_PROFILE' => 'Enter Profile Name',
 	'LBL_DISABLE' => 'Disable',
 	'Language' => 'Language',
