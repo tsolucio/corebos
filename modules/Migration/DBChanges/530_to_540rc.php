@@ -171,7 +171,22 @@ $result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('n
 if (!($adb->num_rows($result))) {
 	ExecutePQuery("ALTER TABLE com_vtiger_workflows ADD nexttrigger_time DATETIME", array());
 }
-
+$result = $adb->pquery('show columns from com_vtiger_workflowtasks like ?', array('executionorder'));
+if (!($adb->num_rows($result))) {
+	ExecutePQuery('ALTER TABLE com_vtiger_workflowtasks ADD executionorder INT(10)', array());
+	ExecutePQuery('ALTER TABLE `com_vtiger_workflowtasks` ADD INDEX(`executionorder`)');
+	$result = $adb->pquery('select task_id,workflow_id from com_vtiger_workflowtasks order by workflow_id', array());
+	$upd = 'update com_vtiger_workflowtasks set executionorder=? where task_id=?';
+	$wfid = null;
+	while ($task = $adb->fetch_array($result)) {
+		if ($task['workflow_id']!=$wfid) {
+			$order = 1;
+			$wfid = $task['workflow_id'];
+		}
+		$adb->pquery($upd, array($order,$task['task_id']));
+		$order++;
+	}
+}
 // Creating Default workflows
 $workflowManager = new VTWorkflowManager($adb);
 $taskManager = new VTTaskManager($adb);
