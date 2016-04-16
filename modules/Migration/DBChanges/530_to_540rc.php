@@ -15,7 +15,7 @@ require_once 'modules/com_vtiger_workflow/VTEntityMethodManager.inc';
 require_once 'include/events/include.inc';
 include_once 'vtlib/Vtiger/Cron.php';
 
-//5.2.1 to 5.3.0RC database changes
+// 5.3.0 to 5.4.0 database changes
 
 $adb = $_SESSION['adodb_current_object'];
 $conn = $_SESSION['adodb_current_object'];

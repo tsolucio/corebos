@@ -10,7 +10,7 @@
 
 require_once 'include/utils/utils.php';
 
-//5.2.1 to 5.3.0RC database changes
+// 5.3.0RC to 5.3.0 database changes
 
 $adb = $_SESSION['adodb_current_object'];
 $conn = $_SESSION['adodb_current_object'];
