@@ -61,7 +61,6 @@ class RecordAccessControl extends processcbMap {
 
 	private function convertMap2Array() {
 		$xml = $this->getXMLContent();
-		$mapping = array();
 		$this->modulename = (String)$xml->originmodule->originname;
 		$this->moduleid = (isset($xml->originmodule->originid) ? (String)$xml->originmodule->originid : 0);
 		$this->mapping['listview']['c'] = (isset($xml->listview->c) ? (Integer)$xml->listview->c : 1);
