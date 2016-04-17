@@ -33,5 +33,6 @@ $mod_strings = Array(
 	'Search and Update' => 'Buscar y Actualizar',
 	'Field Dependency' => 'Dependencia de Campos',
 	'Record Access Control' => 'Control de Acceso a Registro',
+	'Record Set Mapping' => 'Conjunto de Registros',
 );
 ?>

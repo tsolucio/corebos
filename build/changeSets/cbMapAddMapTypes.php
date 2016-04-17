@@ -24,6 +24,7 @@ class cbMapAddMapTypes extends cbupdaterWorker {
 		} else {
 			$cbmaptypes = array(
 				'Record Access Control',
+				'Record Set Mapping'
 			);
 			$moduleInstance = Vtiger_Module::getInstance('cbMap');
 			$field = Vtiger_Field::getInstance('maptype',$moduleInstance);

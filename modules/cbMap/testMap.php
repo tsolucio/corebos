@@ -86,6 +86,10 @@ switch ($focus->column_fields['maptype']) {
 			echo 'RelatedList Potentials '.$op.' = '.$rac->hasRelatedListPermissionTo($op,'Potentials')."<br>";
 		}
 		break;
+		case 'Record Set Mapping':
+			$rsm = $focus->RecordSetMapping();
+			$mapinfo = $rsm->getFullRecordSet();
+			break;
 	case 'Import':
 		$mapinfo = $focus->readImportType();
 		$mapinfo['TargetModule'] = $focus->getMapTargetModule();
@@ -115,7 +119,7 @@ switch ($focus->column_fields['maptype']) {
 		$mapinfo['OriginModule'] = $focus->getMapOriginModule();
 		break;
 	default:
-		
+
 		break;
 }
 $smarty->assign('MAPINFO', $mapinfo);
