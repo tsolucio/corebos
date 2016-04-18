@@ -660,6 +660,7 @@ $mod_strings = array (
 
       // vtmailscanner START
       'LBL_MAIL_SCANNER'=>'Clasificar Correos',
+      'MailScanner' =>'Clasificar Correos',
       'LBL_MAIL_SCANNER_DESCRIPTION'=>'Configura el buzón para clasificación',
       'LBL_SCAN_NOW'=>'Clasifica Ahora',
       'LBL_RULE'=>'Regla',

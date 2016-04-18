@@ -213,6 +213,7 @@ $mod_strings = Array(
 'SalesOrder No'=>'Verkooporder Nr',
 
 'Recurring Invoice Information' => 'Periodiek factureren',
+'RecurringInvoice' => 'Periodiek Factureren',
 'Enable Recurring' => 'Activeer periodiek factureren',
 'Frequency' => 'Frequentie',
 'Start Period' => 'Start Periode',

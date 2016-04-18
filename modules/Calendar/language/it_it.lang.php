@@ -336,6 +336,7 @@ $mod_strings = array (
   'No Time' => 'Nessun orario',
   
 'Send Reminder' => 'Manda Avviso (minuti)',
+'SendReminder' => 'Manda Avviso',
   'LBL_YES' => 'Si',
   'LBL_NO' => 'No',
   'LBL_DAYS' => 'giorno(i)',

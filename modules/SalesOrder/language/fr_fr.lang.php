@@ -5,7 +5,6 @@
 *  Version      : 5.3.0 
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
-
 ***********************************************************/
 
 $mod_strings = array (
@@ -160,6 +159,7 @@ $mod_strings = array (
 		'S&H Amount' => 'Frais de transport',
 		'SalesOrder No' => 'Bon de commande N°',
 		'Recurring Invoice Information' => 'Information de facturation récurrente',
+		'RecurringInvoice' => 'Facturation Récurrente',
 		'Enable Recurring' => 'Activer la récurrence',
 		'Frequency' => 'Fréquence',
 		'Start Period' => 'Début',

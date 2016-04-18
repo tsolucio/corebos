@@ -243,6 +243,7 @@ $mod_strings = array(
 	'Location' => 'Helyszín',
 	'No Time' => 'Nincs idő',
 	'Send Reminder' => 'Emlékeztetőt küld',
+	'SendReminder' => 'Emlékeztetőt küld',
 	'LBL_YES' => 'Igen',
 	'LBL_NO' => 'Nem',
 	'LBL_DAYS' => 'napok',

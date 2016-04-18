@@ -642,6 +642,7 @@ $mod_strings = array(
 	'VTLIB_LBL_MODULE_MANAGER_STANDARDMOD' => 'Standard Modules',
 	'VTLIB_LBL_MODULE_MANAGER_NOMODULES' => 'No custom modules found! Create one or Import New ...',
 	'LBL_MAIL_SCANNER' => 'Mail Converter',
+	'MailScanner' => 'Mail Converter',
 	'LBL_MAIL_SCANNER_DESCRIPTION' => 'Configure mailbox for scanning',
 	'LBL_SCAN_NOW' => 'Scan Now',
 	'LBL_RULE' => 'Rule',

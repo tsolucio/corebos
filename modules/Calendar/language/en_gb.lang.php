@@ -232,6 +232,7 @@ $mod_strings = array(
 	'Location' => 'Location',
 	'No Time' => 'No Time',
 	'Send Reminder' => 'Send Reminder',
+	'SendReminder' => 'Send Reminder',
 	'LBL_YES' => 'Yes',
 	'LBL_NO' => 'No',
 	'LBL_DAYS' => 'day(s)',

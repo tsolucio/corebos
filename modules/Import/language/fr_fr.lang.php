@@ -208,6 +208,7 @@ $mod_strings = array (
 	'ERR_UNIMPORTED_RECORDS_IN_QUEUE' => 'Il existe des données non traités dans le processus d\'import',
 	'ERR_FILE_READ_FAILED' => 'Echec de lecture du fichier',
 	'LBL_IMPORT_SCHEDULED' => 'Import programmé',
+	'Scheduled Import' => 'Import programmé',
 	'LBL_SCHEDULED_IMPORT_DETAILS' => 'Votre import a été programmé, vous recevrez un email une fois l\'import terminé. <br>
 									   Vérifier vos paramètres SMTP afin de recevoir correctement vos emails',
 	'ERR_DETAILS_BELOW' => 'Détails ci-dessous',

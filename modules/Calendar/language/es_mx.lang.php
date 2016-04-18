@@ -336,6 +336,7 @@ $mod_strings = array (
 'No Time'=>'Sin Hora',
 //Added for Send Reminder 4.2 release
 'Send Reminder'=>'Enviar Recordatorio',
+'SendReminder'=>'Enviar Recordatorio',
 'LBL_YES'=>'Si',
 'LBL_NO'=>'No',
 'LBL_DAYS'=>'días',

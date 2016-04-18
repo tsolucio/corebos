@@ -196,6 +196,7 @@ $mod_strings = array (
 	'ERR_UNIMPORTED_RECORDS_IN_QUEUE' => 'L&lsquo;utente ha ancora dei record da importare in coda',
 	'ERR_FILE_READ_FAILED' => 'Errore di lettura del file',
 	'LBL_IMPORT_SCHEDULED' => 'Importazione Schedulata',
+	'Scheduled Import' => 'Importazione Schedulata',
 	'LBL_SCHEDULED_IMPORT_DETAILS' => 'La tua importazione &egrave; stata schedulata e riceverai una email quando sar&agrave; completata. <br>
 										Assicurati che il server in uscita e il tuo indirizzo email siano configurati per ricevere la notifica',
 	'ERR_DETAILS_BELOW' => 'Dettagli elencati sotto',

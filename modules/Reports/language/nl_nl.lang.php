@@ -264,6 +264,7 @@ $mod_strings = Array(
 'Monthly'=>'Maandelijks',
 'Annually'=>'Jaarlijks',
 'LBL_SCHEDULE_REPORT'=>'Plan Report',
+'ScheduleReports'=>'Plan Report',
 'LBL_SCHEDULE_FREQUENCY'=>'Frequentie',
 'OPTION_SCHEDULE_EMAIL_CHOOSE'=>'Kies ..... ',
 'LBL_SCHEDULE_EMAIL_TIME'=>'Tijd',

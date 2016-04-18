@@ -57,6 +57,7 @@ $mod_strings = array(
 	'ERR_UNIMPORTED_RECORDS_IN_QUEUE' => 'Még fel nem dolgozott rekordok vannak a várósorban',
 	'ERR_FILE_READ_FAILED' => 'A fájl olvasás nem sikerült',
 	'LBL_IMPORT_SCHEDULED' => 'Időzített importálás',
+	'Scheduled Import' => 'Időzített importálás',
 	'LBL_SCHEDULED_IMPORT_DETAILS' => 'Az importálást időzítettük neked, és kapsz majd egy e-mailt, ha befejeződött. <br>Ellenőrizd, hogy a kimenő SMTP szerver és az e-mail címed be van-e helyesen állítva a levélküldéshez.',
 	'ERR_DETAILS_BELOW' => 'Részletek listázása',
 	'LBL_ERROR' => 'Hiba:',

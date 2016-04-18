@@ -6,18 +6,14 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  *********************************************************************************/
-
-/**
- * @author MAK
- */
 
 $mod_strings = array(
 	'LBL_CREATE_ZIP_FAILURE' => 'Impossibile creare il file zip',
 	'LBL_ZIP_FILE_ADD_FAILURE' => 'Impossibile aggiungere file',
 	'LBL_FTP_CONNECT_FAILED' => 'Connessione FTP non riuscita',
 	'LBL_FTP_LOGIN_FAILED' => 'Login FTP non riuscito',
+	'Native Backup' => 'Native Backup',
+	'External Backup' => 'External Backup',
 );
-
 ?>

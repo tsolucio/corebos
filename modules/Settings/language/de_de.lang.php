@@ -768,6 +768,7 @@ $mod_strings = Array(
 
     // vtmailscanner START
     'LBL_MAIL_SCANNER'=>'E-Mail Konverter',
+    'MailScanner' =>'E-Mail Konverter',
     'LBL_MAIL_SCANNER_DESCRIPTION'=>'Konfigurieren Sie die Scan Parameter für die Mailbox',
     'LBL_SCAN_NOW'=>'jetzt scannen',
     'LBL_RULE'=>'Regel',

@@ -56,6 +56,7 @@ $mod_strings = array(
 	'ERR_UNIMPORTED_RECORDS_IN_QUEUE' => 'User still has unimported records in queue.',
 	'ERR_FILE_READ_FAILED' => 'File read failed',
 	'LBL_IMPORT_SCHEDULED' => 'Import Scheduled',
+	'Scheduled Import' => 'Scheduled Import',
 	'LBL_SCHEDULED_IMPORT_DETAILS' => 'Your import has been scheduled and you will receive an email, once the import is completed. Please make sure that the Outgoing server and your email address is configured to receive email notification',
 	'ERR_DETAILS_BELOW' => 'Details listed below',
 	'LBL_ERROR' => 'Error:',

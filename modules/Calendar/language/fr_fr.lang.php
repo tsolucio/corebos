@@ -283,6 +283,7 @@ $mod_strings = array (
 		'Location' => 'Localisation',
 		'No Time' => 'Sans heure',
 		'Send Reminder' => 'Envoyer rappel',
+		'SendReminder' => 'Envoyer rappel',
 		'LBL_YES' => 'Oui',
 		'LBL_NO' => 'Non',
 		'LBL_DAYS' => 'jour(s)',

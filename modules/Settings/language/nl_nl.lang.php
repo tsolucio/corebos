@@ -769,7 +769,8 @@ $mod_strings = Array(
 'VTLIB_LBL_MODULE_MANAGER_NOMODULES'=>'Geen Maatwerk modules gevonden! Creeer module of importeer module ...',
 
 // vtmailscanner START
-'LBL_MAIL_SCANNER'=>'Mail Scanner',
+'LBL_MAIL_SCANNER'=>'Mail Converter',
+'MailScanner' =>'Mail Converter',
 'LBL_MAIL_SCANNER_DESCRIPTION'=>'Configureer mailbox voor scanning',
 'LBL_SCAN_NOW'=>'Scan Nu',
 'LBL_RULE'=>'Regel',

@@ -230,6 +230,7 @@ $mod_strings = array(
 	'Monthly' => 'Monthly',
 	'Annually' => 'Annually',
 	'LBL_SCHEDULE_REPORT' => 'Schedule report',
+	'ScheduleReports'=>'Schedule Report',
 	'LBL_SCHEDULE_FREQUENCY' => 'Frequency',
 	'OPTION_SCHEDULE_EMAIL_CHOOSE' => 'Choose ..... ',
 	'LBL_SCHEDULE_EMAIL_TIME' => 'Time',

@@ -967,6 +967,7 @@ $mod_strings = Array(
 
 // vtmailscanner START
 'LBL_MAIL_SCANNER'=>'Scanner de Mensagem',
+'MailScanner' =>'Scanner de Mensagem',
 'LBL_MAIL_SCANNER_DESCRIPTION'=>'Configure Caixa Correio para Scanear',
 'LBL_SCAN_NOW'=>'Escanear Agora',
 'LBL_RULE'=>'Regra',

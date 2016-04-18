@@ -56,6 +56,7 @@ $mod_strings = array (
 	'ERR_UNIMPORTED_RECORDS_IN_QUEUE' => 'Todavía hay registros en la cola pendientes de importar',
 	'ERR_FILE_READ_FAILED' => 'Error en la lectura del fichero',
 	'LBL_IMPORT_SCHEDULED' => 'Importación Planificada',
+	'Scheduled Import' => 'Importación Planificada',
 	'LBL_SCHEDULED_IMPORT_DETAILS' => 'La importación ha sido programada y recibirás un correo cuando termine el proceso. <br>
 										Asegúrate de que puedes recibir correos de notificación de la aplicación',
 	'ERR_DETAILS_BELOW' => 'Detalles a continuación',
