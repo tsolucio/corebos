@@ -3546,8 +3546,8 @@ function get_on_clause($field_list,$uitype_arr,$module)
 }
 
 function elimina_acentos($cadena){
-	$tofind = utf8_decode("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊẼËèéêẽëÌÍĨÎÏìíîĩïÙÚÛŨÜúùûũüÿçÇñÑ");
-	$replac = "AAAAAAaaaaaaOOOOOOooooooEEEEEeeeeeIIIIIiiiiiUUUUUuuuuuycCnN";
+	$tofind = utf8_decode("ÀÁÂÃÄÅàáâãäåÒÓÔÕÖØòóôõöøÈÉÊẼËèéêẽëÌÍĨÎÏìíîĩïÙÚÛŨÜúùûũüÿçÇºªñÑ");
+	$replac = "AAAAAAaaaaaaOOOOOOooooooEEEEEeeeeeIIIIIiiiiiUUUUUuuuuuycCoanN";
 	return utf8_encode(strtr(utf8_decode($cadena),$tofind,$replac));
 }
 
