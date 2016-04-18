@@ -75,7 +75,7 @@ if ($num_rows1 > 0) {
 						$focus->column_fields['assigned_user_id'] = $userid;
 						$focus->mode='';
 						$recurrence = $event->getRecurrence();
-						if (empty($recurrence)) {
+						//if (empty($recurrence)) {
 							//$When = $event->getWhen();
 							$evdtst = (empty($event->getStart()->dateTime) ? $event->getStart()->date : $event->getStart()->dateTime);
 							$evdted = (empty($event->getEnd()->dateTime) ? $event->getEnd()->date : $event->getEnd()->dateTime);
@@ -119,7 +119,7 @@ if ($num_rows1 > 0) {
 							$duration_minutes = ($duration_time - ($duration_hour * 3600 )) / 60;
 							$focus->column_fields['duration_hours'] = $duration_hour;
 							$focus->column_fields['duration_minutes'] = $duration_minutes;
-						}
+						//}
 						$focus->saveentity($currentModule);
 						$sql3 = 'insert into its4you_googlesync4you_events (crmid,geventid,userid,eventtype,lastmodified) values (?,?,?,?,?)';
 						$adb->pquery($sql3,array($focus->id, $event->getId(),$userid,$type,$event->getUpdated()));

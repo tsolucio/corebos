@@ -500,24 +500,26 @@ catch(Exception $e){
        
     if($synctoken!=''){ 
          if($pagetoken=='' && $pagetoken==null)
-     $optParams1 = array('syncToken' => "$synctoken");
+     $optParams1 = array('syncToken' => "$synctoken","singleEvents"=>true);
          else 
-     $optParams1 = array('pageToken' => $pagetoken,'syncToken' => "$synctoken");
+     $optParams1 = array('pageToken' => $pagetoken,'syncToken' => "$synctoken","singleEvents"=>true);
      $events = $this->gService->events->listEvents($CALENDAR_ID,$optParams1);
     }
       else {
         if($pagetoken=='' && $pagetoken==null)
-      $events = $this->gService->events->listEvents($CALENDAR_ID);
+        {   $optParams1 = array("singleEvents"=>true);
+            $events = $this->gService->events->listEvents($CALENDAR_ID,$optParams1);}
       else {
-          $optParams1 = array('pageToken' => $pagetoken);
+          $optParams1 = array('pageToken' => $pagetoken,"singleEvents"=>true);
            $events = $this->gService->events->listEvents($CALENDAR_ID,$optParams1);
       }
       }
     
     }
     catch(Exception $e){
-      if(strstr($e,"Sync token is no longer valid, a full sync is required"))
-      $events = $this->gService->events->listEvents($CALENDAR_ID);
+      if(strstr($e,"Sync token is no longer valid, a full sync is required")){
+      $optParams1 = array("singleEvents"=>true);
+      $events = $this->gService->events->listEvents($CALENDAR_ID,$optParams1);}
     }
 //        $user = str_replace("http://www.google.com/calendar/feeds/default/", '', $calendar_feed);
 //        
