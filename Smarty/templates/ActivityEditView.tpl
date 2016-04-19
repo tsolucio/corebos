@@ -712,7 +712,7 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 								<td colspan="2">
 									<input name="contactidlist" id="contactidlist" value="{$CONTACTSID}" type="hidden">
 									<input name="deletecntlist" id="deletecntlist" type="hidden">
-									<select name="contactlist" size=5  style="height: 100px;width: 300px"  id="parentid" class="small" multiple>
+									<select name="contactlist" size=5  style="height: 100px;width: 300px" id="parentid" class="small" multiple>
 									{foreach item=contactname key=cntid from=$CONTACTSNAME}
 										<option value="{$cntid}">{$contactname}</option>
 									{/foreach}

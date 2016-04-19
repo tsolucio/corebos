@@ -11,7 +11,6 @@
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('Smarty_setup.php');
 require_once('data/Tracker.php');
 require_once('include/CustomFieldUtil.php');
