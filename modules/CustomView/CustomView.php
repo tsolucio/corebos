@@ -290,7 +290,7 @@ class CustomView extends CRMEntity {
 		}
 		if ($tabid == 9)
 			$tabid = "9,16";
-		$display_type = " vtiger_field.displaytype in (1,2,3)";
+		$display_type = " vtiger_field.displaytype in (1,2,3,4)";
 
 		if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
 			$tab_ids = explode(",", $tabid);
