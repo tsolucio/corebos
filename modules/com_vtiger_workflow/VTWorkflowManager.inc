@@ -131,6 +131,9 @@
 
 		function getRACRuleForRecord($moduleName,$recordid) {
 			$adb=$this->adb;
+			if ($moduleName=='Home') {
+				$moduleName=getSalesEntityType($recordid);
+			}
 			if ($moduleName=='Calendar') {
 				$actrs = $adb->pquery('select activitytype from vtiger_activity where activityid=?',array($recordid));
 				$actvity_type = $adb->query_result($actrs, 0, 'activitytype');
