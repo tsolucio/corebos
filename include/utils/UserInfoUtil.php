@@ -744,10 +744,16 @@ function isPermitted($module,$actionname,$record_id='')
 
 	if($recOwnType == 'Users')
 	{
+		$wfs = new VTWorkflowManager($adb);
+		$racbr = $wfs->getRACRuleForRecord($module, $record_id);
 		//Checking if the Record Owner is the current User
 		if($current_user->id == $recOwnId)
 		{
-			$permission = "yes";
+			if (($actionname!='EditView' and $actionname!='Delete' and $actionname!='DetailView') or (!$racbr or $racbr->hasDetailViewPermissionTo($actionname))) {
+				$permission = 'yes';
+			} else {
+				$permission = 'no';
+			}
 			$log->debug("Exiting isPermitted method ...");
 			return $permission;
 		}
@@ -756,7 +762,11 @@ function isPermitted($module,$actionname,$record_id='')
 		{
 			if(in_array($recOwnId,$userids))
 			{
-				$permission='yes';
+				if (($actionname!='EditView' and $actionname!='Delete' and $actionname!='DetailView') or (!$racbr or $racbr->hasDetailViewPermissionTo($actionname))) {
+					$permission = 'yes';
+				} else {
+					$permission = 'no';
+				}
 				$log->debug("Exiting isPermitted method ...");
 				return $permission;
 			}
@@ -767,7 +777,13 @@ function isPermitted($module,$actionname,$record_id='')
 		//Checking if the record owner is the current user's group
 		if(in_array($recOwnId,$current_user_groups))
 		{
-			$permission='yes';
+			$wfs = new VTWorkflowManager($adb);
+			$racbr = $wfs->getRACRuleForRecord($module, $record_id);
+			if (($actionname!='EditView' and $actionname!='Delete' and $actionname!='DetailView') or (!$racbr or $racbr->hasDetailViewPermissionTo($actionname))) {
+				$permission = 'yes';
+			} else {
+				$permission = 'no';
+			}
 			$log->debug("Exiting isPermitted method ...");
 			return $permission;
 		}
@@ -828,7 +844,7 @@ function isPermitted($module,$actionname,$record_id='')
 	{
 		$wfs = new VTWorkflowManager($adb);
 		$racbr = $wfs->getRACRuleForRecord($module, $record_id);
-		if (($actionname!='EditView' and $actionname!='Delete') or (!$racbr or $racbr->hasDetailViewPermissionTo($actionname))) {
+		if (($actionname!='EditView' and $actionname!='Delete' and $actionname!='DetailView') or (!$racbr or $racbr->hasDetailViewPermissionTo($actionname))) {
 			$permission = "yes";
 			$log->debug("Exiting isPermitted method ...");
 			return $permission;
@@ -851,6 +867,15 @@ function isPermitted($module,$actionname,$record_id='')
 			}
 			else
 			{
+				$wfs = new VTWorkflowManager($adb);
+				$racbr = $wfs->getRACRuleForRecord($module, $record_id);
+				if ($racbr) {
+					if ($actionid == 3 and !$racbr->hasListViewPermissionTo('retrieve')) {
+						return 'no';
+					} elseif ($actionid == 4 and !$racbr->hasDetailViewPermissionTo('retrieve')) {
+						return 'no';
+					}
+				}
 				$permission = isReadPermittedBySharing($module,$tabid,$actionid,$record_id);
 			}
 			$log->debug("Exiting isPermitted method ...");
@@ -864,6 +889,15 @@ function isPermitted($module,$actionname,$record_id='')
 			}
 			else
 			{
+				$wfs = new VTWorkflowManager($adb);
+				$racbr = $wfs->getRACRuleForRecord($module, $record_id);
+				if ($racbr) {
+					if ($actionid == 0 and !$racbr->hasDetailViewPermissionTo('create')) {
+						return 'no';
+					} elseif ($actionid == 1 and !$racbr->hasDetailViewPermissionTo('update')) {
+						return 'no';
+					}
+				}
 				$permission = isReadWritePermittedBySharing($module,$tabid,$actionid,$record_id);
 			}
 			$log->debug("Exiting isPermitted method ...");

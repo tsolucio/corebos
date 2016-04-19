@@ -94,6 +94,7 @@ class RecordAccessControl extends processcbMap {
 				return (isset($this->mapping['listview']['c']) ? $this->mapping['listview']['c'] : true);
 				break;
 			case 'retrieve':
+			case 'detailview':
 				return (isset($this->mapping['listview']['r']) ? $this->mapping['listview']['r'] : true);
 				break;
 			case 'update':
@@ -121,6 +122,7 @@ class RecordAccessControl extends processcbMap {
 				return (isset($this->mapping['detailview']['c']) ? $this->mapping['detailview']['c'] : true);
 				break;
 			case 'retrieve':
+			case 'detailview':
 				return (isset($this->mapping['detailview']['r']) ? $this->mapping['detailview']['r'] : true);
 				break;
 			case 'update':
