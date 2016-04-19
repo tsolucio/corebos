@@ -131,6 +131,21 @@
 
 		function getRACRuleForRecord($moduleName,$recordid) {
 			$adb=$this->adb;
+			if ($moduleName=='Calendar') {
+				$actrs = $adb->pquery('select activitytype from vtiger_activity where activityid=?',array($recordid));
+				$actvity_type = $adb->query_result($actrs, 0, 'activitytype');
+				switch ($actvity_type) {
+					case 'Emails':
+						$moduleName = 'Emails';
+						break;
+					case 'Task':
+						$moduleName = 'Calendar';
+						break;
+					default:
+						$moduleName = 'Events';
+						break;
+				}
+			}
 			if (strpos($recordid,'x')===false) {
 				$result = $adb->pquery('select id from vtiger_ws_entity where name=?',array($moduleName));
 				$recordid = $adb->query_result($result, 0, 0).'x'.$recordid;
