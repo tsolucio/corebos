@@ -54,6 +54,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Campaign_CreatePotentialOnAccountRelation',
 				'Campaign_CreatePotentialOnContactRelation',
 				'BusinessMapping_PotentialOnCampaignRelation',
+				'Application_Global_Search_SelectedModules',
 			);
 			
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');
@@ -61,7 +62,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 			if ($field) {
 				$field->setPicklistValues($global_variables);
 			}
-			
+			$this->ExecuteQuery("ALTER TABLE `vtiger_globalvariable` CHANGE `value` `value` VARCHAR(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;");
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}

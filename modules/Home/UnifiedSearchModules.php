@@ -13,6 +13,12 @@ global $app_strings, $mod_strings, $current_language, $currentModule, $current_u
 $selected_modules = array();
 if(!empty($_SESSION['__UnifiedSearch_SelectedModules__']) && is_array($_SESSION['__UnifiedSearch_SelectedModules__'])) {
 	$selected_modules = $_SESSION['__UnifiedSearch_SelectedModules__'];
+} else {
+	$appSearchModules = GlobalVariable::getVariable('Application_Global_Search_SelectedModules', '');
+	if (!empty($appSearchModules)) {
+		$selected_modules = explode(',',$appSearchModules);
+		$_SESSION['__UnifiedSearch_SelectedModules__'] = $selected_modules;
+	}
 }
 
 $allowed_modules = array();
