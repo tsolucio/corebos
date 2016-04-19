@@ -194,10 +194,8 @@ $smarty->assign("ENDHOUR",getTimeCombo($format,'end',$time_arr['endhour'],$time_
 $smarty->assign("FOLLOWUP",getTimeCombo($format,'followup_start',$time_arr['endhour'],$time_arr['endmin'],$time_arr['endfmt']));
 
 if ($Calendar4You->view_all && $Calendar4You->edit_all) {
-    $assigned_user_id = $focus->column_fields["assigned_user_id"];
-    
-    $value["assigned_user_id"] = get_select_options_array(get_user_array(FALSE, "Active", $assigned_user_id), $assigned_user_id);
-
+	$assigned_user_id = $focus->column_fields["assigned_user_id"];
+	$value["assigned_user_id"] = get_select_options_array(get_user_array(FALSE, "Active", $assigned_user_id), $assigned_user_id);
 }
 
 $smarty->assign("ACTIVITYDATA",$value);
@@ -230,7 +228,7 @@ else
 $smarty->assign("NAME", "");
 
 if($focus->mode == 'edit') {
-        $smarty->assign("MODE", $focus->mode);
+	$smarty->assign("MODE", $focus->mode);
 }
 $smarty->assign('CREATEMODE', vtlib_purify($_REQUEST['createmode']));
 
