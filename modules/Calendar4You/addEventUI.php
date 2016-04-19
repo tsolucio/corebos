@@ -212,8 +212,15 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 			<tr>
 				<td nowrap align="right"><b><font color="red">*</font><?php echo $c_mod_strings['LBL_EVENTNAME']?></b></td>
 				<td align="left"><input name="subject" type="text" class="textbox" value="" style="width:50%">&nbsp;&nbsp;&nbsp;
-			<?php if(getFieldVisibilityPermission('Events',$current_user->id,'visibility', 'readwrite') == '0') { ?>
-			<input name="visibility" value="Public" type="checkbox"><?php echo $c_mod_strings['LBL_PUBLIC']; ?>
+			<?php if(getFieldVisibilityPermission('Events',$current_user->id,'visibility', 'readwrite') == '0') {
+				$visrs = $adb->pquery("select defaultvalue from vtiger_field where tabid=16 and columnname='visibility'");
+				$vis = $adb->query_result($visrs, 0, 0);
+				$visiblecheck = '';
+				if ($vis == 'Public') {
+					$visiblecheck = ' checked';
+				}
+			?>
+			<input name="visibility" value="Public" type="checkbox"<?php echo $visiblecheck; ?>><?php echo $c_mod_strings['LBL_PUBLIC']; ?>
 			<?php } ?>
 			</td>
 			</tr>
