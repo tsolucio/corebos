@@ -186,27 +186,27 @@ function selFieldType(id,scrollLayer,bool,blockid) {
 		lengthLayer.style.display="table-row";
 		decimalLayer.style.display="none";
 		pickListLayer.style.display="none";
-		relationmodules.style.display="none";
+		if (relationmodules!=undefined) relationmodules.style.display="none";
 	} else if (type=='date' || type=='percent' || type=='email' || type=='phone' || type=='url' || type=='checkbox' || type=='textarea' || type=='skype' || type=='time' || type=='image') {
 		lengthLayer.style.display="none";
 		decimalLayer.style.display="none";
 		pickListLayer.style.display="none";
-		relationmodules.style.display="none";
+		if (relationmodules!=undefined) relationmodules.style.display="none";
 	} else if (type=='number' || type=='currency') {
 		lengthLayer.style.display="table-row";
 		decimalLayer.style.display="table-row";
 		pickListLayer.style.display="none";
-		relationmodules.style.display="none";
+		if (relationmodules!=undefined) relationmodules.style.display="none";
 	} else if (type=='picklist' || type=='multiselectcombo') {
 		lengthLayer.style.display="none";
 		decimalLayer.style.display="none";
 		pickListLayer.style.display="table-row";
-		relationmodules.style.display="none";
+		if (relationmodules!=undefined) relationmodules.style.display="none";
 	} else if (type=='relation') {
 		lengthLayer.style.display="none";
 		decimalLayer.style.display="none";
 		pickListLayer.style.display="none";
-		relationmodules.style.display="table-row";
+		if (relationmodules!=undefined) relationmodules.style.display="table-row";
 	}
 	document.getElementById("fieldType_"+blockid).value = fieldValueArr[id];
 }

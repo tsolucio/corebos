@@ -186,16 +186,16 @@ $output .= '<div id="customfield" style="display:block;" class="layerPopup"><scr
 							<td class="dataLabel" nowrap="nowrap" align="right"><b>'.$mod_strings['LBL_LENGTH'].'</b></td>
 							<td align="left"><input type="text" name="fldLength_'.$blockid.'" id= ="fldLength_'.$blockid.'" value="'.$fieldlength.'" '.$readonly.' class="txtBox"></td>
 						</tr>
-						<tr id="decimaldetails_'.$blockid.'" style="visibility:hidden;">
+						<tr id="decimaldetails_'.$blockid.'" style="display:none;">
 							<td class="dataLabel" nowrap="nowrap" align="right"><b>'.$mod_strings['LBL_DECIMAL_PLACES'].'</b></td>
 							<td align="left"><input type="text" name="fldDecimal_'.$blockid.'" id= "fldDecimal_'.$blockid.'" value="'.$decimalvalue.'" '.$readonly.' class="txtBox"></td>
 						</tr>
-						<tr id="picklistdetails_'.$blockid.'" style="visibility:hidden;">
+						<tr id="picklistdetails_'.$blockid.'" style="display:none;">
 							<td class="dataLabel" nowrap="nowrap" align="right" valign="top"><b>'.$mod_strings['LBL_PICK_LIST_VALUES'].'</b></td>
 							<td align="left" valign="top"><textarea name="fldPickList_'.$blockid.'"  id = ="fldPickList_'.$blockid.'" rows="10" class="txtBox" '.$readonly.'>'.$fldVal.'</textarea></td>
 						</tr>';
 					}
-				$output .= '	
+				$output .= '
 					</table>
 				</td>
 			</tr>
