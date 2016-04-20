@@ -131,7 +131,10 @@
 
 		function getRACRuleForRecord($moduleName,$recordid) {
 			$adb=$this->adb;
-			if ($moduleName=='Home' or $moduleName=='RecycleBin') {
+			if ($moduleName=='RecycleBin') {
+				return false;
+			}
+			if ($moduleName=='Home') {
 				$moduleName=getSalesEntityType($recordid);
 			}
 			if ($moduleName=='Calendar') {
