@@ -26,7 +26,7 @@ $list_report_form = new vtigerCRM_Smarty;
 $list_report_form->assign("MOD", $mod_strings);
 $list_report_form->assign("APP", $app_strings);
 $repObj = new Reports ();
-
+$folderid = 0;
 if($recordid!=''){
 	$oRep = new Reports($recordid);
 	if($oRep->secmodule!=''){
@@ -63,6 +63,7 @@ if($recordid!=''){
 	$list_report_form->assign("REPORTNAME",$oRep->reportname);
 	$list_report_form->assign("REPORTDESC",$oRep->reportdescription);
 	$list_report_form->assign("REP_MODULE",$oRep->primodule);
+	$folderid = $oRep->folderid;
 	if(!isset($_REQUEST['secondarymodule'])){
 		$list_report_form->assign("SEC_MODULE",$sec_module);
 	}
@@ -108,7 +109,7 @@ if(!empty($_REQUEST['reportName'])) {
 	$list_report_form->assign("SEC_MODULE",$sec_module);
 	$list_report_form->assign("BACK_WALK",'true');
 }
-$list_report_form->assign('FOLDERID',isset($_REQUEST['folder'])?vtlib_purify($_REQUEST['folder']):0);
+$list_report_form->assign('FOLDERID',isset($_REQUEST['folder'])?vtlib_purify($_REQUEST['folder']):$folderid);
 $list_report_form->assign("REP_FOLDERS",$repObj->sgetRptFldr());
 $list_report_form->assign("IMAGE_PATH", $image_path);
 $list_report_form->assign("THEME_PATH", $theme_path);
