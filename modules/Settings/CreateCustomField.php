@@ -7,10 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
- 
 require_once('include/CustomFieldUtil.php');
 require_once('Smarty_setup.php');
-
 
 global $mod_strings,$app_strings,$app_list_strings,$theme,$adb,$log;
 
@@ -30,7 +28,7 @@ if ($fieldid == '' && $fieldModule == 'Calendar' && isset($_REQUEST['activity_ty
 	if ($activitytype == 'T') $tabid = '9';
 }
 
- $blockid = getBlockId($tabid,'LBL_CUSTOM_INFORMATION');
+$blockid = getBlockId($tabid,'LBL_CUSTOM_INFORMATION');
 
 if(isset($_REQUEST['uitype']) && $_REQUEST['uitype'] != '')
 	$uitype=vtlib_purify($_REQUEST['uitype']);
@@ -40,36 +38,35 @@ else
 $readonly = '';
 $smarty = new vtigerCRM_Smarty;
 $cfimagecombo = Array($image_path."text.gif",
-                        $image_path."number.gif",
-                        $image_path."percent.gif",
-                        $image_path."cfcurrency.gif",
-                        $image_path."date.gif",
-                        $image_path."email.gif",
-                        $image_path."phone.gif",
-                        $image_path."cfpicklist.gif",
-                        $image_path."url.gif",
-                        $image_path."checkbox.gif",
-                        $image_path."text.gif",
-                        $image_path."cfpicklist.gif",
-						$image_path."skype.gif",
-						$image_path."time.PNG");
+					$image_path."number.gif",
+					$image_path."percent.gif",
+					$image_path."cfcurrency.gif",
+					$image_path."date.gif",
+					$image_path."email.gif",
+					$image_path."phone.gif",
+					$image_path."cfpicklist.gif",
+					$image_path."url.gif",
+					$image_path."checkbox.gif",
+					$image_path."text.gif",
+					$image_path."cfpicklist.gif",
+					$image_path."skype.gif",
+					$image_path."time.PNG");
 
 $cftextcombo = Array($mod_strings['Text'],
-                        $mod_strings['Number'],
-                        $mod_strings['Percent'],
-                        $mod_strings['Currency'],
-                        $mod_strings['Date'],
-                        $mod_strings['Email'],
-                        $mod_strings['Phone'],
-                        $mod_strings['PickList'],
-                        $mod_strings['LBL_URL'],
-                        $mod_strings['LBL_CHECK_BOX'],
-                        $mod_strings['LBL_TEXT_AREA'],
-                        $mod_strings['LBL_MULTISELECT_COMBO'],
-						$mod_strings['Skype'],
-						$mod_strings['Time']
-				);	
-				
+				$mod_strings['Number'],
+				$mod_strings['Percent'],
+				$mod_strings['Currency'],
+				$mod_strings['Date'],
+				$mod_strings['Email'],
+				$mod_strings['Phone'],
+				$mod_strings['PickList'],
+				$mod_strings['LBL_URL'],
+				$mod_strings['LBL_CHECK_BOX'],
+				$mod_strings['LBL_TEXT_AREA'],
+				$mod_strings['LBL_MULTISELECT_COMBO'],
+				$mod_strings['Skype'],
+				$mod_strings['Time']);
+
 $typeVal = Array(
 	'0'=>'Text',
 	'1'=>'Number',
@@ -137,34 +134,31 @@ $output = '';
 $combo_output = '';
 for($i=0;$i<count($cftextcombo);$i++)
 {
-        if($selectedvalue == $i && $fieldid != '')
-                $sel_val = 'selected';
-        else
-                $sel_val = '';
+	if($selectedvalue == $i && $fieldid != '')
+		$sel_val = 'selected';
+	else
+		$sel_val = '';
 	$combo_output.= '<a href="javascript:void(0);" onClick="makeFieldSelected(this,'.$i.','.$blockid.');" id="field'.$i.'" style="text-decoration:none;background-image:url('.$cfimagecombo[$i].');" class="customMnu" '.$disable_str.'>'.$cftextcombo[$i].'</a>';
-
 }
 $output .= '<div id="customfield" style="display:block;" class="layerPopup"><script language="JavaScript" type="text/javascript" src="include/js/customview.js"></script>
 			<form action="index.php" method="post" name="addtodb" onSubmit="if(validate('.$blockid.')) {VtigerJS_DialogBox.block();}else{return false;}">
-	  		<input type="hidden" name="module" value="Settings">
-	  		<input type="hidden" name="fld_module" value="'.vtlib_purify($_REQUEST['fld_module']).'">
-	  		<input type="hidden" name="activity_type" value="'.$activitytype.'">
-	  		<input type="hidden" name="parenttab" value="Settings">
-      		<input type="hidden" name="action" value="AddCustomFieldToDB">
-		  	<input type="hidden" name="fieldid" value="'.$fieldid.'">
-	  		<input type="hidden" name="column" value="'.$customfield_columnname.'">
-	  		<input type="hidden" name="mode" id="cfedit_mode" value="'.$mode.'">
-	  		<input type="hidden" name="cfcombo" id="selectedfieldtype" value="">
+			<input type="hidden" name="module" value="Settings">
+			<input type="hidden" name="fld_module" value="'.vtlib_purify($_REQUEST['fld_module']).'">
+			<input type="hidden" name="activity_type" value="'.$activitytype.'">
+			<input type="hidden" name="parenttab" value="Settings">
+			<input type="hidden" name="action" value="AddCustomFieldToDB">
+			<input type="hidden" name="fieldid" value="'.$fieldid.'">
+			<input type="hidden" name="column" value="'.$customfield_columnname.'">
+			<input type="hidden" name="mode" id="cfedit_mode" value="'.$mode.'">
+			<input type="hidden" name="cfcombo" id="selectedfieldtype" value="">
 			<input type="hidden" name="blockid" value="'.$blockid.'">
-		
-	  
 		<table width="100%" border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine">
 			<tr>';
 			if($mode == 'edit')
 				$output .= '<td width="60%" align="left" class="layerPopupHeading">'.$mod_strings['LBL_EDIT_FIELD_TYPE'].' - '.$customfield_typename.'</td>';
 			else
 				$output .= '<td width="60%" align="left" class="layerPopupHeading">'.$mod_strings['LBL_ADD_FIELD'].'</td>';
-				
+
 			$output .= '<td width="40%" align="right"><a href="javascript:fninvsh(\'customfield\');"><img src="'. vtiger_imageurl('close.gif', $theme).'" border="0"  align="absmiddle" /></a></td>
 			</tr>';
 			$output .='</table><table border=0 cellspacing=0 cellpadding=5 width=95% align=center> 
@@ -173,7 +167,7 @@ $output .= '<div id="customfield" style="display:block;" class="layerPopup"><scr
 									<table border=0 celspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
 										<tr>';
 			if($mode != 'edit')
-			{	
+			{
 				$output .= '<td><table>
 						<tr><td>'.$mod_strings['LBL_SELECT_FIELD_TYPE'].'</td></tr>
 						<tr><td>
