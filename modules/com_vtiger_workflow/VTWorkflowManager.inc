@@ -132,6 +132,12 @@
 		function getRACRuleForRecord($moduleName,$recordid) {
 			$adb=$this->adb;
 			$not_supported = array('RecycleBin','Users');
+			if (in_array($moduleName, $not_supported)) {
+				return false;
+			}
+			if (strpos($recordid,'x')>0) {
+				list($void,$recordid) = explode('x', $recordid);
+			}
 			$rrs = $adb->pquery('select setype,deleted from vtiger_crmentity where crmid=?', array($recordid));
 			if (!$rrs) return false;
 			$rec = $adb->fetch_array($rrs);
@@ -155,10 +161,8 @@
 						break;
 				}
 			}
-			if (strpos($recordid,'x')===false) {
-				$result = $adb->pquery('select id from vtiger_ws_entity where name=?',array($moduleName));
-				$recordid = $adb->query_result($result, 0, 0).'x'.$recordid;
-			}
+			$result = $adb->pquery('select id from vtiger_ws_entity where name=?',array($moduleName));
+			$recordid = $adb->query_result($result, 0, 0).'x'.$recordid;
 			$wf = $this->getoneRACWorkflowForRecord($moduleName,$recordid);
 			if ($wf) {
 				return $this->executeRACWorkflow($wf);
