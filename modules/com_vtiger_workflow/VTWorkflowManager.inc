@@ -131,11 +131,14 @@
 
 		function getRACRuleForRecord($moduleName,$recordid) {
 			$adb=$this->adb;
-			if ($moduleName=='RecycleBin') {
+			$not_supported = array('RecycleBin','Users');
+			$rrs = $adb->pquery('select setype,deleted from vtiger_crmentity where crmid=?', array($recordid));
+			if (!$rrs) return false;
+			$rec = $adb->fetch_array($rrs);
+			$moduleName = $adb->query_result($rrs, 0, 'setype');
+			$deleted = $adb->query_result($rrs, 0, 'deleted');
+			if ($deleted!=0 or in_array($moduleName, $not_supported)) {
 				return false;
-			}
-			if ($moduleName=='Home') {
-				$moduleName=getSalesEntityType($recordid);
 			}
 			if ($moduleName=='Calendar') {
 				$actrs = $adb->pquery('select activitytype from vtiger_activity where activityid=?',array($recordid));
