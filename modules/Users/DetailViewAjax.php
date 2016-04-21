@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('include/logging.php');
 require_once('modules/Users/Users.php');
 require_once('include/database/PearDatabase.php');
@@ -34,10 +33,9 @@ if($ajaxaction == "DETAILVIEW")
 
 		if($fieldname=='asterisk_extension' and trim($fieldvalue)!=''){
 			$query = "select 1 from vtiger_asteriskextensions
-                     inner join vtiger_users on vtiger_users.id=vtiger_asteriskextensions.userid
-                     where status='Active' and asterisk_extension =? and vtiger_users.id!=?";
+				inner join vtiger_users on vtiger_users.id=vtiger_asteriskextensions.userid
+				where status='Active' and asterisk_extension =? and vtiger_users.id!=?";
 			$params = array(trim($fieldvalue),$userid);
-			
 			$result = $adb->pquery($query, $params);
 			if($adb->num_rows($result) > 0)
 			{
@@ -65,7 +63,7 @@ if($ajaxaction == "DETAILVIEW")
 		}else
 		{
 			echo ":#:FAILURE";
-		}   
+		}
 	}else
 	{
 		echo ":#:FAILURE";

@@ -6,24 +6,16 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  *********************************************************************************/
-
 require_once 'modules/VtigerBackup/Locations/Location.php';
 
-/**
- * Description of LocalBackup
- *
- * @author MAK
- */
 class Vtiger_LocalBackup extends Vtiger_Location{
 	protected $path;
 	public function __construct($limit) {
 		parent::__construct($limit);
 		$db = PearDatabase::getInstance();
-		$result = $db->pquery("SELECT * FROM vtiger_systems WHERE server_type = ?",
-				array('local_backup'));
-        $this->path = $db->query_result($result,0,'server_path');
+		$result = $db->pquery('SELECT * FROM vtiger_systems WHERE server_type = ?',array('local_backup'));
+		$this->path = $db->query_result($result,0,'server_path');
 		$this->path = $this->addTrailingSlash($this->path);
 	}
 
@@ -93,7 +85,7 @@ class Vtiger_LocalBackup extends Vtiger_Location{
 		}
 		return $fileList;
 	}
-	
+
 	public function getBackupFileInfoList() {
 		$fileInfoList = array();
 		$directoryPath = $this->getPath();
