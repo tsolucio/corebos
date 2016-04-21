@@ -1768,6 +1768,7 @@ class CRMEntity {
 				$adb->pquery("DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND module=? AND relcrmid=? AND relmodule=?) OR (relcrmid=? AND relmodule=? AND crmid=? AND module=?)",
 					Array($crmid, $module, $relcrmid, $with_module,$crmid, $module, $relcrmid, $with_module));
 			}
+			cbEventHandler::do_action('corebos.entity.link.delete.final',$data);
 		}
 	}
 
@@ -2623,7 +2624,7 @@ class CRMEntity {
 		$data['sourceRecordId'] = $crmid;
 		$data['destinationModule'] = $with_module;
 		$data['destinationRecordId'] = $with_crmid;
-		cbEventHandler::do_action('corebos.entity.link.delete',$data);
+		cbEventHandler::do_action('corebos.entity.link.delete.final',$data);
 		$adb->pquery('UPDATE vtiger_crmentity SET modifiedtime = ?, modifiedby = ? WHERE crmid = ?', array($currentTime, $current_user->id, $crmid));
 	}
 
