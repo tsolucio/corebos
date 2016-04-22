@@ -68,7 +68,7 @@ function insert_charset_header()
 
 insert_charset_header();
 // Create or reestablish the current session
-session_start();
+coreBOS_Session::init();
 $_SESSION['KCFINDER'] = array();
 $_SESSION['KCFINDER']['disabled'] = false;
 $_SESSION['KCFINDER']['uploadURL'] = 'storage/kcimages';
@@ -450,7 +450,7 @@ if($use_current_login)
 
 	if($result == null)
 	{
-		session_destroy();
+		coreBOS_Session::destroy();
 		header("Location: index.php?action=Login&module=Users");
 	}
 

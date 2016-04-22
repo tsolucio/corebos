@@ -7,7 +7,8 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-session_start();
+require_once('include/utils/Session.php');
+coreBOS_Session::init();
 require_once('include/CustomFieldUtil.php');
 require_once('Smarty_setup.php');
 require_once('include/database/PearDatabase.php');

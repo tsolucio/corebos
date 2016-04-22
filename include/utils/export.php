@@ -33,13 +33,13 @@ require_once('modules/Invoice/Invoice.php');
 require_once('modules/Quotes/Quotes.php');
 require_once('modules/PurchaseOrder/PurchaseOrder.php');
 require_once('modules/SalesOrder/SalesOrder.php');
+require_once('include/utils/Session.php');
+coreBOS_Session::init();
 
 // Set the current language and the language strings, if not already set.
 setCurrentLanguage();
 
 global $allow_exports,$app_strings;
-
-session_start();
 
 $current_user = new Users();
 
@@ -48,7 +48,7 @@ if(isset($_SESSION['authenticated_user_id']))
 	$result = $current_user->retrieveCurrentUserInfoFromFile($_SESSION['authenticated_user_id'],"Users");
 	if($result == null)
 	{
-		session_destroy();
+		coreBOS_Session::destroy();
 		header("Location: index.php?action=Login&module=Users");
 		exit;
 	}

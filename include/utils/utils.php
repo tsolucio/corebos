@@ -11,6 +11,7 @@
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
  ********************************************************************************/
+require_once('include/utils/Session.php');
 require_once('include/database/PearDatabase.php');
 require_once('include/events/include.inc');
 require_once 'modules/GlobalVariable/GlobalVariable.php';

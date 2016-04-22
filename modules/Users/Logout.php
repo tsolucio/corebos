@@ -16,7 +16,7 @@ require_once('modules/Users/LoginHistory.php');
 require_once('modules/Users/Users.php');
 require_once('config.php');
 require_once('include/database/PearDatabase.php');
-
+require_once('include/utils/Session.php');
 global $adb,$current_user;
 
 // Recording Logout Info
@@ -28,9 +28,7 @@ $loghistory->user_logout($current_user->user_name,$usip,$outtime);
 $local_log =& LoggerManager::getLogger('Logout');
 
 // clear out the autthenticating flag
-session_regenerate_id(true);
-session_unset();
-session_destroy();
+coreBOS_Session::destroy();
 
 define("IN_LOGIN", true);
 

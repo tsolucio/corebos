@@ -12,11 +12,58 @@
  * either express or implied. See the License for the specific language governing
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
- *************************************************************************************************
- *  This file is included within "DetailView.tpl" to provide SESSION value to smarty template
  *************************************************************************************************/
-require_once('include/utils/Session.php');
-coreBOS_Session::init();
-$aAllBlockStatus = $_SESSION['BLOCKINITIALSTATUS'];
-$this->assign("BLOCKINITIALSTATUS",$aAllBlockStatus);
-?>
+/**
+ * Session class
+ */
+class coreBOS_Session {
+
+	/**
+	 * Constructor
+	 * Avoid creation of instances.
+	 */
+	private function __construct() {
+	}
+
+	/**
+	 * Destroy session
+	 */
+	static function destroy() {
+		session_regenerate_id(true);
+		session_unset();
+		session_destroy();
+	}
+
+	/**
+	 * Initialize session
+	 */
+	static function init() {
+		global $site_URL;
+		$purl = parse_url($site_URL);
+		$pth = str_replace('/','',$purl['host'].$purl['path']);
+		session_name($pth);
+		session_start();
+	}
+
+	/**
+	 * Is key defined in session?
+	 */
+	static function has($key) {
+		return isset($_SESSION[$key]);
+	}
+
+	/**
+	 * Get value for the key.
+	 */
+	static function get($key, $defvalue = '') {
+		return (isset($_SESSION[$key]) ? $_SESSION[$key] : $defvalue);
+	}
+
+	/**
+	 * Set value for the key.
+	 */
+	static function set($key, $value) {
+		$_SESSION[$key] = $value;
+	}
+
+}
