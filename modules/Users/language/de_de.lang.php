@@ -204,6 +204,7 @@ $mod_strings = Array(
 
     //added to fix the issue #6630
     'LBL_ASTERISKEXTENSIONS_EXIST' => 'Die Asterisk Erweiterung gibt es bereits!',
+    'LBL_CURRENCY_SEPARATORS_INCORRECT' => 'Decimal Separator and Digit Grouping Separator cannot be the same.',
 
     // Added fields in createnewgroup.php
     'LBL_CREATE_NEW_GROUP'=>'Erstelle neue Gruppe',

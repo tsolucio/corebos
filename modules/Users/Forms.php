@@ -74,6 +74,7 @@ $email_field_is = $app_strings['EMAIL_FILED_IS'].$err_invalid_email_address;
 $other_email_field_is = $app_strings['OTHER_EMAIL_FILED_IS'].$err_invalid_email_address;
 $secondary_email_field_is = $app_strings['SECONDARY_EMAIL_FILED_IS'].$err_invalid_secondary_email_address; 
 $lbl_asterisk_details_not_set = $app_strings['LBL_ASTERISK_SET_ERROR'];
+$lbl_currency_separators_incorrect = getTranslatedString('LBL_CURRENCY_SEPARATORS_INCORRECT','Users');
 
 //check asteriskdetails start
 $checkAsteriskDetails = checkAsteriskDetails();
@@ -176,7 +177,7 @@ function verify_data(form) {
 	}
 
 	if(form.currency_decimal_separator.value == form.currency_grouping_separator.value) {
-		alert("Decimal Separator and Digit Grouping Separator cannot be the same.");
+		alert("$lbl_currency_separators_incorrect");
 		form.currency_decimal_separator.focus();
 		return false;
 	}

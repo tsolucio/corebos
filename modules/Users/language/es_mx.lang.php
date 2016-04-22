@@ -212,6 +212,7 @@ $mod_strings = Array(
 
 //added to fix the issue #6630
 'LBL_ASTERISKEXTENSIONS_EXIST' => 'Extensión Asterisk ya Existe!',
+'LBL_CURRENCY_SEPARATORS_INCORRECT' => 'El Separador Decimal y de Agrupamiento de Dígitos no puede ser el mismo.',
 
 // Added fields in createnewgroup.php
 'LBL_CREATE_NEW_GROUP'=>'Crear nuevo grupo',

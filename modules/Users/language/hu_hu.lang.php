@@ -10,7 +10,6 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  *********************************************************************************
  * $Header:  \modules\Users\language\hu_hu.lang.php - 12:14 2011.02.27. $
  * Description:  Defines the Hungarian language pack for the Users module vtiger 5.2.x
@@ -188,6 +187,7 @@ $mod_strings = array(
 	'LBL_VIEWING' => 'Megnézés',
 	'LBL_PROPERTIES' => 'Tulajdonsága',
 	'LBL_ASTERISKEXTENSIONS_EXIST' => 'Az Asterisk bővítmény már létezik!',
+	'LBL_CURRENCY_SEPARATORS_INCORRECT' => 'Decimal Separator and Digit Grouping Separator cannot be the same.',
 	'LBL_CREATE_NEW_GROUP' => 'Új Csoport',
 	'LBL_NEW_GROUP' => 'Új Csoport',
 	'LBL_EDIT_GROUP' => 'Csoport Szerkesztése',

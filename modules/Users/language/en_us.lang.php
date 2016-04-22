@@ -1,22 +1,18 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
- * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Users/language/en_us.lang.php,v 1.18 2005/04/19 14:45:38 ray Exp $
- * Description:  Defines the English language pack for the Users module.
- ********************************************************************************/
- 
+/*************************************************************************************************
+ * Copyright 2016 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
+ * file except in compliance with the License. You can redistribute it and/or modify it
+ * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
+ * granted by the License. coreBOS distributed by JPL TSolucio S.L. is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. Unless required by
+ * applicable law or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT ANY WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language governing
+ * permissions and limitations under the License. You may obtain a copy of the License
+ * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
+ *************************************************************************************************/
 $mod_strings = Array(
 'LBL_MODULE_NAME'=>'Users',
 'LBL_MODULE_TITLE'=>'Users: Home',
@@ -46,8 +42,6 @@ $mod_strings = Array(
 'Name'=>'Name',
 'Tools'=>'Tools',
 
-
-//added for patch2
 'LBL_GROUP'=>'Group',
 'LBL_CURRENCY_NAME'=>'Currency',
 
@@ -156,7 +150,6 @@ $mod_strings = Array(
 'LBL_IMPORT_OPPURTUNITIES'=>'Import Opportunities',
 
 'LBL_ROLE_DETAILS'=>'Role Details',
-//added for vtigercrm4 rc
 'LBL_FILE'=> 'File Name',
 'LBL_FILE_TYPE'=>'File Type',
 'LBL_UPLOAD'=>'Upload File',
@@ -208,6 +201,7 @@ $mod_strings = Array(
 
 //added to fix the issue #6630
 'LBL_ASTERISKEXTENSIONS_EXIST' => 'Asterisk Extension Already Exists!',
+'LBL_CURRENCY_SEPARATORS_INCORRECT' => 'Decimal Separator and Digit Grouping Separator cannot be the same.',
 
 // Added fields in createnewgroup.php
 'LBL_CREATE_NEW_GROUP'=>'Create New Group',
@@ -221,7 +215,6 @@ $mod_strings = Array(
 'LBL_GROUP_MESG1'=>'Groups are a flexible way to assign access rights, when complex access rights has to be defined. You can combine multiple entities like Roles, Users, profiles etc into a single group.',
 'LBL_GROUP_MESG2'=>'To add, select the Entity members from left and click the ">>" button.',
 'LBL_GROUP_MESG3'=>'To remove, select the group members from the right and click the "<<" button.',
-
 
 // Added fields in detailViewmailtemplate.html,listgroupmembers.php,listgroups.php
 'LBL_DETAIL_VIEW_OF_EMAIL_TEMPLATE'=>'Detail View of Email Template',
@@ -324,7 +317,6 @@ $mod_strings = Array(
 'LBL_ASSOCIATED_PROFILES'=>'Associated Profiles :',
 'LBL_ASSOCIATED_USERS'=>'Associated Users :',
 
-
 //Added fields in OrgSharingDetailsView.php
 'LBL_ORG_SHARING_PRIVILEGES'=>'Organisation Sharing  Privileges',
 'LBL_EDIT_PERMISSIONS'=>'Edit Permissions',
@@ -395,8 +387,6 @@ $mod_strings = Array(
 'LBL_CAN_BE_ACCESSED'=>'can be accessed by',
 'LBL_PRIVILEGES'=>'Privileges',
 'LBL_OF'=>'of',
-
-
 
 //Added for 4.2GA support for mail server integration
 'LBL_ADD_MAILSERVER_BUTTON_TITLE'=>'Add Mail Server',

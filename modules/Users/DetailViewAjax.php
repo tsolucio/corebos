@@ -43,8 +43,14 @@ if($ajaxaction == "DETAILVIEW")
 				return false;
 			}
 		}
+		if($fieldname=='currency_grouping_separator' or $fieldname=='currency_decimal_separator'){
+			if($userObj->column_fields['currency_grouping_separator']==$userObj->column_fields['currency_decimal_separator'])
+			{
+				echo ":#:ERR".$mod_strings['LBL_CURRENCY_SEPARATORS_INCORRECT'];
+				return false;
+			}
+		}
 		if($fieldname == 'internal_mailer'){
-			
 			if(isset($_SESSION['internal_mailer']) && $_SESSION['internal_mailer'] != $userObj->column_fields['internal_mailer'])
 				$_SESSION['internal_mailer'] = $userObj->column_fields['internal_mailer'];
 		}
