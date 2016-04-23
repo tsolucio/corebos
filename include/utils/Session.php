@@ -73,4 +73,11 @@ class coreBOS_Session {
 		$_SESSION[$key] = $value;
 	}
 
+	/**
+	 * Delete value for the key.
+	 */
+	static function delete($key) {
+		unset($_SESSION[$key]);
+	}
+
 }
