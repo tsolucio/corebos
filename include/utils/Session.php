@@ -38,11 +38,18 @@ class coreBOS_Session {
 	 * Initialize session
 	 */
 	static function init() {
-		global $site_URL;
-		$purl = parse_url($site_URL);
-		$pth = str_replace('/','',$purl['host'].$purl['path']);
-		session_name($pth);
+		session_name(self::getSessionName());
 		session_start();
+	}
+
+	/**
+	 * create session name from given URL or $site_URL
+	 */
+	static function getSessionName($URL='') {
+		global $site_URL;
+		if (empty($URL)) $URL = $site_URL;
+		$purl = parse_url($URL);
+		return preg_replace('/[^A-Za-z0-9\-]/', '', $purl['host'].$purl['path']);
 	}
 
 	/**
