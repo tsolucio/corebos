@@ -6,7 +6,6 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 {literal}
@@ -36,17 +35,14 @@ function UpdateProfile()
 	}
 	if(prof_name == '')
 	{
-		
 		$('profile_name').focus();
-		{/literal}
-                alert("{$APP.PROFILENAME_CANNOT_BE_EMPTY}");
-                {literal}
+{/literal}
+		alert("{$APP.PROFILENAME_CANNOT_BE_EMPTY}");
+{literal}
 	}
 	else
 	{
-		
 {/literal}
-		
 		var urlstring ="module=Users&action=UsersAjax&file=RenameProfile&profileid="+{$PROFILEID}+"&profilename="+prof_name+"&description="+prof_desc;
 {literal}
 	new Ajax.Request(
@@ -65,8 +61,6 @@ function UpdateProfile()
                 }
 		);
 	}
-		
-	
 }
 </script>
 {/literal}
@@ -74,12 +68,11 @@ function UpdateProfile()
 <br>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tbody><tr>
-        <td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-        <td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
-        <br>
+	<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
+	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
+	<br>
 	<div align=center>
 			{include file='SetMenu.tpl'}
-			
 				<form  method="post" name="new" id="form" onsubmit="VtigerJS_DialogBox.block();">
 			        <input type="hidden" name="module" value="Settings">
 			        <input type="hidden" name="action" value="profilePrivileges">
@@ -87,7 +80,6 @@ function UpdateProfile()
 			        <input type="hidden" name="return_action" value="profilePrivileges">
 			        <input type="hidden" name="mode" value="edit">
 			        <input type="hidden" name="profileid" value="{$PROFILEID}">
-				
 				<!-- DISPLAY -->
 				<table class="settingsSelUITopLine" border="0" cellpadding="5" cellspacing="0" width="100%">
 				<tbody><tr>
@@ -98,8 +90,6 @@ function UpdateProfile()
 					<td class="small" valign="top">{$CMOD.LBL_PROFILE_MESG} &quot;{$PROFILE_NAME}&quot; </td>
 				</tr>
 				</tbody></table>
-				
-				
 				<table border="0" cellpadding="10" cellspacing="0" width="100%">
 				<tbody><tr>
 				<td valign="top">
@@ -115,7 +105,6 @@ function UpdateProfile()
                             <table class="prvPrfOutline" border="0" cellpadding="0" cellspacing="0" width="100%">
                               <tbody><tr>
                                 <td><!-- tabs -->
-                                    
                                     <!-- Headers -->
                                     <table border="0" cellpadding="5" cellspacing="0" width="100%">
                                       <tbody><tr>
@@ -133,9 +122,8 @@ function UpdateProfile()
                                                 </tbody></table></td>
 					      <td align="right" valign="bottom">&nbsp;<input type="button" value="{$APP.LBL_RENAMEPROFILE_BUTTON_LABEL}" title="{$APP.LBL_RENAMEPROFILE_BUTTON_LABEL}" class="crmButton small edit" name="rename_profile"  onClick = "show('renameProfile');">&nbsp;<input type="submit" value="{$APP.LBL_EDIT_BUTTON_LABEL}" title="{$APP.LBL_EDIT_BUTTON_LABEL}" class="crmButton small edit" name="edit" >
                               		     </td>
-					    	
                                             </tr></tbody></table>
-					    <!-- RenameProfile Div start -->	 
+					    <!-- RenameProfile Div start -->
 					    <div class="layerPopup"  style="left:350px;width:500px;top:300px;display:none;" id="renameProfile">
 						<table class="layerHeadingULine" border="0" cellpadding="3" cellspacing="0" width="100%">
 						<tr style="cursor:move;">
@@ -153,9 +141,9 @@ function UpdateProfile()
 								<td align="left" width="75%" style="padding-right:10px;"><input id = "profile_name" name="profile_name" class="txtBox" value="{$PROFILE_NAME}" type="text"></td>
 								</tr>
 								<tr>
-                                                                <td align="right" width="25%" style="padding-right:10px;" nowrap><b>{$APP.LBL_DESCRIPTION} :</b></td>
-                                                                <td align="left" width="75%" style="padding-right:10px;"><textarea name="description" id = "description" class="txtBox">{$PROFILE_DESCRIPTION} </textarea></td>
-                                                                </tr>
+								<td align="right" width="25%" style="padding-right:10px;" nowrap><b>{$APP.LBL_DESCRIPTION} :</b></td>
+								<td align="left" width="75%" style="padding-right:10px;"><textarea name="description" id = "description" class="txtBox">{$PROFILE_DESCRIPTION} </textarea></td>
+								</tr>
 							</table>
 						</td>
 						</tr>
@@ -166,12 +154,11 @@ function UpdateProfile()
 							<input name="save" value="{$APP.LBL_UPDATE}" class="crmbutton small save" onclick="UpdateProfile();" type="button" title="{$APP.LBL_UPDATE}">&nbsp;&nbsp;
 							<input name="cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" class="crmbutton small save" onclick="fnhide('renameProfile');" type="button" title="{$APP.LBL_CANCEL_BUTTON_LABEL}">&nbsp;&nbsp;
 						</td>
-					    </tr>		
-					    </table>		
-					    </div>		
-				             <!-- RenameProfile Div end -->		
+					    </tr>
+					    </table>
+					    </div>
+				             <!-- RenameProfile Div end -->
 
-                                         
                                             <!-- privilege lists -->
                                             <table border="0" cellpadding="0" cellspacing="0" width="100%">
                                               <tbody><tr>
@@ -182,10 +169,10 @@ function UpdateProfile()
                                               <tbody><tr>
                                                 <td>
 						<table border="0" cellpadding="5" cellspacing="0" width="100%">
-  						<tbody>
+						<tbody>
 							<tr>
-    							<td class="cellLabel big"> {$CMOD.LBL_SUPER_USER_PRIV} </td>
-						       </tr>
+								<td class="cellLabel big"> {$CMOD.LBL_SUPER_USER_PRIV} </td>
+							</tr>
 						</tbody>
 						</table>
 						<table class="small" align="center" border="0" cellpadding="5" cellspacing="0" width="90%">
@@ -231,19 +218,18 @@ function UpdateProfile()
 				<table class="small listTable" border="0" cellpadding="5" cellspacing="0" width="100%">
 			        <tbody>
 				<tr id="gva">
-			          <td colspan="2" rowspan="2" class="small colHeader"><strong> {$CMOD.LBL_TAB_MESG_OPTION} </strong><strong></strong></td>
-			          <td colspan="3" class="small colHeader"><div align="center"><strong> {$CMOD.LBL_EDIT_PERMISSIONS} </strong></div></td>
-			          <td rowspan="2" class="small colHeader" nowrap="nowrap"> {$CMOD.LBL_FIELDS_AND_TOOLS_SETTINGS} </td>
+			          <td colspan="6" class="small colHeader"><div align="center"><strong> {$CMOD.LBL_EDIT_PERMISSIONS} </strong></div></td>
 			        </tr>
 			        <tr id="gva">
-			          <td class="small colHeader"><div align="center"><strong>{$CMOD.LBL_CREATE_EDIT}
-			          </strong></div></td>
+			          <td colspan="2" class="small colHeader"><strong> {$CMOD.LBL_TAB_MESG_OPTION} </strong><strong></strong></td>
+			          <td class="small colHeader"><div align="center"><strong>{$CMOD.LBL_CREATE_EDIT}</strong></div></td>
 			          <td class="small colHeader"> <div align="center"><strong>{$CMOD.LBL_VIEW} </strong></div></td>
 			          <td class="small colHeader"> <div align="center"><strong>{$CMOD.LBL_DELETE}</strong></div></td>
+			          <td class="small colHeader" nowrap="nowrap"> {$CMOD.LBL_FIELDS_AND_TOOLS_SETTINGS} </td>
 			        </tr>
-					
+
 				<!-- module loops-->
-			        {foreach key=tabid item=elements from=$TAB_PRIV}	
+			        {foreach key=tabid item=elements from=$TAB_PRIV}
 			        <tr>
 					{assign var=modulename value=$TAB_PRIV[$tabid][0]}
 					{assign var="MODULELABEL" value=$modulename|@getTranslatedString:$modulename}
@@ -317,15 +303,15 @@ function UpdateProfile()
 						</table>
 					</td>
 			          </tr>
-				  {/foreach}	
+				  {/foreach}
 			    	  </tbody>
 				  </table>
 			  </td>
 			  </tr>
-                          </tbody>
+			</tbody>
 			</table>
 		</td>
-                </tr>
+		</tr>
 		<table border="0" cellpadding="2" cellspacing="0">
 			<tr>
 				<td align="left"><font color="red" size=5>*</font>&nbsp;{$CMOD.LBL_MANDATORY_MSG}</td>
@@ -349,13 +335,12 @@ function UpdateProfile()
 				<td><input type="submit" value="{$APP.LBL_EDIT_BUTTON_LABEL}" title="{$APP.LBL_EDIT_BUTTON_LABEL}" class="crmButton small edit" name="edit"></td>
 				<td>&nbsp;</td>
 			</tr>
-			
 		</tbody>
 		</table>
 		</td>
 		</tr>
-          </tbody>
-	  </table>
+	</tbody>
+	</table>
 	</td>
         </tr>
         </tbody>
@@ -377,11 +362,10 @@ function UpdateProfile()
 	<table border="0" cellpadding="5" cellspacing="0" width="100%">
 	<tbody><tr><td class="small" align="right" nowrap="nowrap"><a href="#top">{$MOD.LBL_SCROLL}</a></td></tr>
 	</tbody></table>
-					
 	</td>
 	</tr>
 	</tbody></table>
-	</form>	
+	</form>
 	<!-- End of Display -->
 	</td>
 	</tr>
@@ -407,10 +391,10 @@ function fnToggleVIew(obj){
 }
 {/literal}
 {literal}
-        //for move RenameProfile
-        var Handle = document.getElementById("renameUI");
-        var Root   = document.getElementById("renameProfile");
-        Drag.init(Handle,Root);
+	//for move RenameProfile
+	var Handle = document.getElementById("renameUI");
+	var Root   = document.getElementById("renameProfile");
+	Drag.init(Handle,Root);
 {/literal}
 </script>
 

@@ -10,9 +10,7 @@
 require_once('include/utils/UserInfoUtil.php');
 require_once('include/utils/utils.php');
 
-global $app_strings, $mod_strings;
-global $current_user, $currentModule;
-global $adb, $theme;
+global $app_strings, $mod_strings, $current_user, $currentModule, $adb, $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 $profileId=vtlib_purify($_REQUEST['profileid']);
@@ -66,7 +64,6 @@ else
 {
 	$profileName=getProfileName($profileId);
 	$smarty->assign("PROFILE_NAME", $profileName);
-
 }
 
 //$smarty->assign("PROFILE_NAME", to_html($profileName));
@@ -705,7 +702,6 @@ else
  */
 function getGlobalDisplayValue($id,$actionid)
 {
-	global $image_path;
 	if($id == '')
 	{
 		$value = '&nbsp;';
@@ -737,7 +733,6 @@ function getGlobalDisplayOutput($id,$actionid)
 	}
 	elseif($actionid == '2')
 	{
-
 		$name = 'edit_all';
 	}
 
@@ -762,8 +757,6 @@ function getGlobalDisplayOutput($id,$actionid)
  */
 function getDisplayValue($id)
 {
-	global $image_path;
-
 	if($id == '')
 	{
 		$value = '&nbsp;';
