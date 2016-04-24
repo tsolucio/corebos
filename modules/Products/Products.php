@@ -243,7 +243,7 @@ class Products extends CRMEntity {
 		$this->db->pquery($query, $params);
 	}
 
-	function insertIntoAttachment($id,$module)
+	function insertIntoAttachment($id,$module, $direct_import=false)
 	{
 		global $log, $adb;
 		$log->debug("Entering into insertIntoAttachment($id,$module) method.");

@@ -1985,10 +1985,11 @@ function getUserslist($setdefval = true) {
 	require('user_privileges/sharing_privileges_' . $current_user->id . '.php');
 
 	if ($is_admin == false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid($module)] == 3 or $defaultOrgSharingPermission[getTabid($module)] == 0)) {
-		$users_combo = get_select_options_array(get_user_array(FALSE, "Active", $current_user->id, 'private'), $current_user->id);
+		$user_array = get_user_array(FALSE, "Active", $current_user->id, 'private');
 	} else {
-		$users_combo = get_select_options_array(get_user_array(FALSE, "Active", $current_user->id), $current_user->id);
+		$user_array = get_user_array(FALSE, "Active", $current_user->id);
 	}
+	$users_combo = get_select_options_array($user_array, $current_user->id);
 	$change_owner = '';
 	foreach ($users_combo as $userid => $value) {
 		foreach ($value as $username => $selected) {
@@ -2020,10 +2021,11 @@ function getGroupslist() {
 		$nameArray = $adb->fetch_array($result);
 	if (!empty($nameArray)) {
 		if ($is_admin == false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid($module)] == 3 or $defaultOrgSharingPermission[getTabid($module)] == 0)) {
-			$groups_combo = get_select_options_array(get_group_array(FALSE, "Active", $current_user->id, 'private'), $current_user->id);
+			$group_array = get_group_array(FALSE, "Active", $current_user->id, 'private');
 		} else {
-			$groups_combo = get_select_options_array(get_group_array(FALSE, "Active", $current_user->id), $current_user->id);
+			$group_array = get_group_array(FALSE, "Active", $current_user->id);
 		}
+		$groups_combo = get_select_options_array($group_array, $current_user->id);
 	}
 	$change_groups_owner = '';
 	if (count($groups_combo) > 0) {
@@ -2642,14 +2644,14 @@ function getCvIdOfAll($module) {
  * * Added to provide User based Tagcloud
  * */
 function getTagCloudView($id = "") {
-	global $log;
-	global $adb;
+	global $log, $adb;
 	$log->debug("Entering in function getTagCloudView($id)");
 	if ($id == '') {
 		$tag_cloud_status = 1;
 	} else {
 		$query = "select visible from vtiger_homestuff where userid=? and stufftype='Tag Cloud'";
-		$tag_cloud_status = $adb->query_result($adb->pquery($query, array($id)), 0, 'visible');
+		$tagcloudstatusrs = $adb->pquery($query, array($id));
+		$tag_cloud_status = $adb->query_result($tagcloudstatusrs, 0, 'visible');
 	}
 
 	if ($tag_cloud_status == 0) {

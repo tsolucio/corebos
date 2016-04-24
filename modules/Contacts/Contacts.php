@@ -1044,7 +1044,7 @@ function get_contactsforol($user_name)
 	 * @param int $id  - entity id to which the files to be uploaded
 	 * @param string $module  - the current module name
 	*/
-	function insertIntoAttachment($id,$module)
+	function insertIntoAttachment($id,$module, $direct_import=false)
 	{
 		global $log, $adb;
 		$log->debug("Entering into insertIntoAttachment($id,$module) method.");

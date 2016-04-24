@@ -434,17 +434,19 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 
 
 		if ($fieldname == 'assigned_user_id' && $is_admin == false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid($module)] == 3 or $defaultOrgSharingPermission[getTabid($module)] == 0)) {
-			$users_combo = get_select_options_array(get_user_array(FALSE, "Active", $current_user->id, 'private'), $assigned_user_id);
+			$user_array = get_user_array(FALSE, "Active", $current_user->id, 'private');
 		} else {
-			$users_combo = get_select_options_array(get_user_array(FALSE, "Active", $current_user->id), $assigned_user_id);
+			$user_array = get_user_array(FALSE, "Active", $current_user->id);
 		}
+		$users_combo = get_select_options_array($user_array, $assigned_user_id);
 
 		if ($noof_group_rows != 0) {
 			if ($fieldname == 'assigned_user_id' && $is_admin == false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid($module)] == 3 or $defaultOrgSharingPermission[getTabid($module)] == 0)) {
-				$groups_combo = get_select_options_array(get_group_array(FALSE, "Active", $current_user->id, 'private'), $current_user->id);
+				$group_array = get_group_array(FALSE, "Active", $current_user->id, 'private');
 			} else {
-				$groups_combo = get_select_options_array(get_group_array(FALSE, "Active", $current_user->id), $current_user->id);
+				$group_array = get_group_array(FALSE, "Active", $current_user->id);
 			}
+			$groups_combo = get_select_options_array($group_array, $current_user->id);
 		}
 
 		$label_fld ["options"][] = $users_combo;

@@ -876,7 +876,7 @@ decide_to_html();//call the function once when loading
 function to_html($string) {
 	global $doconvert,$default_charset;
 	if ($doconvert == true) {
-        list($cachedresult,$found) = VTCacheUtils::lookupCachedInformation('to_html::'.$string);
+		list($cachedresult,$found) = VTCacheUtils::lookupCachedInformation('to_html::'.$string);
 		if ($found) {
 			return $cachedresult;
 		}
@@ -885,8 +885,8 @@ function to_html($string) {
 			$string = htmlentities($string, ENT_QUOTES, $default_charset);
 		else
 			$string = preg_replace(array('/</', '/>/', '/"/'), array('&lt;', '&gt;', '&quot;'), $string);
+		VTCacheUtils::updateCachedInformation('to_html::'.$key, $string);
 	}
-        VTCacheUtils::updateCachedInformation('to_html::'.$key, $string);
 	return $string;
 }
 

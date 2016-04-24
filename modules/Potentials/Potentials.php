@@ -756,7 +756,7 @@ class Potentials extends CRMEntity {
 			}
 		}
 	}
-	function getListButtons($app_strings, $mod_strings) {
+	function getListButtons($app_strings) {
 		$list_buttons = Array ();
 
 		if (isPermitted ( 'Potentials', 'Delete', '' ) == 'yes') {
@@ -769,7 +769,6 @@ class Potentials extends CRMEntity {
 		if (isPermitted ( 'Emails', 'EditView', '' ) == 'yes') {
 			$list_buttons ['s_mail'] = $app_strings ['LBL_SEND_MAIL_BUTTON'];
 		}
-		// end of mailer export
 		return $list_buttons;
 	}
 

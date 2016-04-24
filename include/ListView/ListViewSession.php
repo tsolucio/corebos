@@ -55,7 +55,7 @@ class ListViewSession {
 		return $start;
 	}
 
-	function getListViewNavigation($currentRecordId){
+	public static function getListViewNavigation($currentRecordId){
 		global $currentModule,$current_user,$adb,$log,$list_max_entries_per_page;
 		Zend_Json::$useBuiltinEncoderDecoder = true;
 		$reUseData = false;
@@ -170,7 +170,7 @@ class ListViewSession {
 		return $recordNavigationInfo;
 	}
 
-	function getRequestCurrentPage($currentModule, $query, $viewid, $queryMode = false) {
+	public static function getRequestCurrentPage($currentModule, $query, $viewid, $queryMode = false) {
 		global $list_max_entries_per_page, $adb;
 		$start = 1;
 		if(isset($_REQUEST['query']) && $_REQUEST['query'] == 'true'&& $_REQUEST['start']!="last"){
@@ -179,7 +179,7 @@ class ListViewSession {
 		if(!empty($_REQUEST['start'])){
 			$start = $_REQUEST['start'];
 			if($start == 'last'){
-				$count_result = $adb->query( mkCountQuery( $query));
+				$count_result = $adb->query(mkCountQuery( $query));
 				$noofrows = $adb->query_result($count_result,0,"count");
 				if($noofrows > 0){
 					$start = ceil($noofrows/$list_max_entries_per_page);
@@ -208,8 +208,8 @@ class ListViewSession {
 		}
 		$_SESSION[$currentModule.'_listquery'] = $query;
 	}
-	
-	function hasViewChanged($currentModule) {
+
+	public static function hasViewChanged($currentModule) {
 		if(empty($_SESSION['lvs'][$currentModule]['viewname'])) return true;
 		if(empty($_REQUEST['viewname'])) return false;
 		if($_REQUEST['viewname'] != $_SESSION['lvs'][$currentModule]['viewname']) return true;

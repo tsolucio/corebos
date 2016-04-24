@@ -153,10 +153,10 @@ require_once('modules/Users/Users.php');
 
 //if($calculate_response_time) $startTime = microtime();
 
-$log =& LoggerManager::getLogger('index');
+$log = LoggerManager::getLogger('index');
 
 global $seclog;
-$seclog =& LoggerManager::getLogger('SECURITY');
+$seclog = LoggerManager::getLogger('SECURITY');
 
 if (isset($_REQUEST['PHPSESSID'])) $log->debug("****Starting for session ".$_REQUEST['PHPSESSID']);
 else $log->debug("****Starting for new session");

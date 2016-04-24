@@ -573,7 +573,7 @@ class Users extends CRMEntity {
 	/** Function to save the user information into the database
 	 * @param $module -- module name:: Type varchar
 	 */
-	function saveentity($module) {
+	function saveentity($module, $fileid = '') {
 		global $current_user;
 		//$adb added by raju for mass mailing
 		$insertion_mode = $this->mode;
@@ -593,9 +593,9 @@ class Users extends CRMEntity {
 		$this->db->startTransaction();
 		foreach ($this->tab_name as $table_name) {
 			if ($table_name == 'vtiger_attachments') {
-				$this->insertIntoAttachment($this->id, $module);
+				$this->insertIntoAttachment($this->id, $module, $fileid);
 			} else {
-				$this->insertIntoEntityTable($table_name, $module);
+				$this->insertIntoEntityTable($table_name, $module, $fileid);
 			}
 		}
 		require_once ('modules/Users/CreateUserPrivilegeFile.php');
@@ -621,7 +621,7 @@ class Users extends CRMEntity {
 	 * @param $table_name -- table name:: Type varchar
 	 * @param $module -- module:: Type varchar
 	 */
-	function insertIntoEntityTable($table_name, $module) {
+	function insertIntoEntityTable($table_name, $module, $fileid = '') {
 		global $log;
 		$log->info("function insertIntoEntityTable " . $module . ' vtiger_table name ' . $table_name);
 		global $adb, $current_user;
@@ -789,7 +789,7 @@ class Users extends CRMEntity {
 	 * @param $id -- entity id:: Type integer
 	 * @param $module -- module:: Type varchar
 	 */
-	function insertIntoAttachment($id, $module) {
+	function insertIntoAttachment($id, $module, $direct_import=false) {
 		global $log;
 		$log->debug("Entering into insertIntoAttachment($id,$module) method.");
 
@@ -881,7 +881,7 @@ class Users extends CRMEntity {
 	 * @param $module -- module name:: Type varchar
 	 * @param $file_details -- file details array:: Type array
 	 */
-	function uploadAndSaveFile($id, $module, $file_details) {
+	function uploadAndSaveFile($id, $module, $file_details, $attachmentname='', $direct_import=false) {
 		global $log;
 		$log->debug("Entering into uploadAndSaveFile($id,$module,$file_details) method.");
 
@@ -946,7 +946,7 @@ class Users extends CRMEntity {
 	/** Function to save the user information into the database
 	 * @param $module -- module name:: Type varchar
 	 */
-	function save($module_name) {
+	function save($module_name, $fileid = '') {
 		global $log, $adb, $current_user;
 		if (!is_admin($current_user) and $current_user->id != $this->id) {// only admin users can change other users profile
 			return false;
