@@ -3749,7 +3749,7 @@ function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $
  * 	@param int 	$entity_id 	- record id
  * 	@param string 	$relatedlist 	- string "relatedlist" or may be empty. if empty means ListView else relatedlist
  * 	@param string 	$returnset 	- may be empty in case of ListView. For relatedlists, return_module, return_action and return_id values will be passed like &return_module=Accounts&return_action=CallRelatedList&return_id=10
- * 	return string	$edit_link	- url string which cotains the editlink details (module, action, record, etc.,) like index.php?module=Accounts&action=EditView&record=10
+ * 	return string	$edit_link	- url string which contains the editlink details (module, action, record, etc.,) like index.php?module=Accounts&action=EditView&record=10
  */
 function getListViewEditLink($module, $entity_id, $relatedlist, $returnset, $result, $count) {
 	global $adb;
@@ -3759,7 +3759,6 @@ function getListViewEditLink($module, $entity_id, $relatedlist, $returnset, $res
 	else
 		$edit_link = "index.php?module=$module&action=EditView&record=$entity_id";
 	$tabname = getParentTab();
-	//Added to fix 4600
 	$url = getBasic_Advance_SearchURL();
 
 	//This is relatedlist listview

@@ -109,7 +109,7 @@ function DeleteTag(id,recordid)
 <tr><td>&nbsp;</td>
 	<td>
                 <table cellpadding="0" cellspacing="5" border="0">
-		</table>	
+		</table>
 
 <!-- Contents -->
 <table  border="0" cellpadding="5" cellspacing="0" width="100%" >
@@ -139,7 +139,7 @@ function DeleteTag(id,recordid)
 					{else}
 					<img align="absmiddle" title="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev_disabled.gif'|@vtiger_imageurl:$THEME}">
 					{/if}
-					
+
 					{if $privrecord neq '' || $nextrecord neq ''}
 					<img align="absmiddle" title="{$APP.LBL_JUMP_BTN}" accessKey="{$APP.LBL_JUMP_BTN}" onclick="var obj = this;var lhref = getListOfRecords(obj, '{$MODULE}',{$ID},'{$CATEGORY}');" name="jumpBtnIdTop" id="jumpBtnIdTop" src="{'rec_jump.gif'|@vtiger_imageurl:$THEME}">
 					{/if}

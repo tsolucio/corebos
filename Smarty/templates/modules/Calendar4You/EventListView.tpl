@@ -451,7 +451,7 @@ function alphabetic(module,url,dataid) {ldelim}
 									&nbsp;&nbsp;-<a href="index.php?module={$MODULE}&amp;action=EditView&amp;return_module=Calendar&amp;activity_mode=Task&amp;return_action=DetailView&amp;parenttab={$CATEGORY}">{$APP.LBL_CREATE} {$APP.LBL_A} {$APP.Todo}</a>
 								</td>
 							</tr>
-							</table> 
+							</table>
 							{else}
 							<table border="0" cellpadding="5" cellspacing="0" width="98%">
 							<tr>
@@ -464,8 +464,8 @@ function alphabetic(module,url,dataid) {ldelim}
 							</tr>
 							</table>
 							{/if}
-						</div>					
-				</td></tr>	
+						</div>
+				</td></tr>
 			      {/foreach}
 			 </table>
 			 </div>

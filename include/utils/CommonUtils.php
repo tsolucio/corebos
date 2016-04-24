@@ -1880,10 +1880,8 @@ function create_parenttab_data_file() {
  * Returns Tab Name and Tablabel.
  */
 function getQuickCreateModules() {
-	global $log;
-	$log->debug("Entering getQuickCreateModules() method ...");
-	global $adb;
-	global $mod_strings;
+	global $log, $adb, $mod_strings;
+	$log->debug('Entering getQuickCreateModules() method ...');
 
 	// vtlib customization: Ignore disabled modules.
 	//$qc_query = "select distinct vtiger_tab.tablabel,vtiger_tab.name from vtiger_field inner join vtiger_tab on vtiger_tab.tabid = vtiger_field.tabid where quickcreate=0 order by vtiger_tab.tablabel";
@@ -1908,7 +1906,7 @@ function getQuickCreateModules() {
 		$return_qcmodule = array_chunk($return_qcmodule, 2);
 	}
 
-	$log->debug("Exiting getQuickCreateModules method ...");
+	$log->debug('Exiting getQuickCreateModules method ...');
 	return $return_qcmodule;
 }
 

@@ -319,7 +319,7 @@ function get_cal_header_data(& $cal_arr,$viewBox,$subtab)
 				$headerdata .="<tr><td>&nbsp;</td>";
 			}
 	$headerdata .="<td align='center' width='43%'><span id='total_activities'>";//USER SELECT CUSTOMIZATION
-	$headerdata .= getEventInfo($cal_arr,'listcnt'); 
+	$headerdata .= getEventInfo($cal_arr,'listcnt');
 	$headerdata .= "</span></td>
 				<td align='center' width='40%'><table border=0 cellspacing=0 cellpadding=2><tr><td class=small><b>".$mod_strings['LBL_VIEW']." : </b></td><td>";//USER SELECT CUSTOMIZATION
 	$view_options = getEventViewOption($cal_arr,$viewBox);
@@ -854,7 +854,6 @@ function getWeekViewLayout(& $cal)
 	$weekview_layout .= '</table>';
 	return $weekview_layout;
 	$cal_log->debug("Exiting getWeekViewLayout() method...");
-		
 }
 
 /**
@@ -1113,7 +1112,7 @@ function getdayEventLayer(& $cal,$slice,$rows)
 				$recurring = '&nbsp;';
 			$height = $rowspan * 75;
 			$javacript_str = '';
-			$idShared = "normal"; if($act[$i]->shared) $idShared = "shared";	
+			$idShared = "normal"; if($act[$i]->shared) $idShared = "shared";
 			/*if($eventstatus != 'Held')
 			{*/
 			if($idShared == "normal")
@@ -1960,9 +1959,9 @@ function constructEventListView(& $cal,$entry_list,$navigation_array='')
 				$list_view .="<td class='small' align='left' nowrap='nowrap'>".$app_strings['LBL_YOU_ARE_NOT_ALLOWED_TO_CREATE']."&nbsp;".$app_strings['LBL_AN']."&nbsp;".$app_strings['Event']."<br></td>";
 			}
 			$list_view .="</tr>
-                                        </table>
+				</table>
 				</div>";
-			$list_view .="</td></tr>";			
+			$list_view .="</td></tr>";
 	}
 	$list_view .="</table>";
 	$cal_log->debug("Exiting constructEventListView() method...");
@@ -2060,7 +2059,7 @@ function constructTodoListView($todo_list,$cal,$subtab,$navigation_array='')
 			array_push($roleids, $roleid);
 		}
 		else
-		{	
+		{
 			$roleids = $roleid;
 		}
 
@@ -2094,9 +2093,7 @@ function constructTodoListView($todo_list,$cal,$subtab,$navigation_array='')
 				<td align='right' width='28%'>&nbsp;</td>
 			</tr>
 		</table>
-
-			<br><table style='background-color: rgb(204, 204, 204);' class='small' align='center' border='0' cellpadding='5' cellspacing='1' width='98%'>
-                        ";
+		<br><table style='background-color: rgb(204, 204, 204);' class='small' align='center' border='0' cellpadding='5' cellspacing='1' width='98%'>";
 	$header_rows = count($header);
 	$navigationOutput = getTableHeaderSimpleNavigation($navigation_array, $url_string,"Calendar","index");
 
@@ -2146,15 +2143,14 @@ function constructTodoListView($todo_list,$cal,$subtab,$navigation_array='')
 		{
 			$list_view .="<td class='small' align='left' nowrap='nowrap'>".$app_strings['LBL_YOU_ARE_NOT_ALLOWED_TO_CREATE']."&nbsp;".$app_strings['LBL_A']."&nbsp;".$app_strings['Todo']."<br></td>";
 		}
-										 
-                $list_view .="</tr>
+		$list_view .="</tr>
 			</table>
 			</div>";
 		$list_view .="</td></tr>";
-        }
+		}
 	$list_view .="</table><br>";
 	$cal_log->debug("Exiting constructTodoListView() method...");
-        return $list_view;
+	return $list_view;
 }
 
 /**
@@ -2165,8 +2161,7 @@ function getCalendarViewSecurityParameter()
 {
 		global $current_user;
 		require('user_privileges/user_privileges_'.$current_user->id.'.php');
-        require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
-        
+		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 		require_once('modules/Calendar/CalendarCommon.php');
 		$shared_ids = getSharedCalendarId($current_user->id);
 		if(isset($shared_ids) && $shared_ids != '')
@@ -2179,7 +2174,7 @@ function getCalendarViewSecurityParameter()
 		{
 			$sec_query .= " or (vtiger_groups.groupid in (". implode(",", $current_user_groups) ."))";
 		}
-		$sec_query .= ")";	
+		$sec_query .= ")";
 		return $sec_query;
 }
 ?>
