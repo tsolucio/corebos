@@ -30,7 +30,6 @@
 	<table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
 		<tr>
 			<td background="include/install/images/topInnerShadow.gif" colspan=2 align=left><img height="10" src="include/install/images/topInnerShadow.gif" ></td>
-	
 		</tr>
 	</table>
 	<table border=0 cellspacing=0 cellpadding=10 width=80% align=center>
@@ -45,7 +44,7 @@
 					<tr>
 						<td width=80% valign=top class="cwContentDisplay" align=center colspan=2>
 						<!-- Right side tabs -->
-						    <table cellspacing=0 cellpadding=10 width=90% align=center class='level3'>
+							<table cellspacing=0 cellpadding=10 width=90% align=center class='level3'>
 								<tr>
 									<td align=center>
 										<iframe class='licence' frameborder=0 src='licenceAgreement.html' marginwidth=20 scrolling='auto'>
@@ -58,17 +57,17 @@
 					<tr>
 						<td width=80% valign=top class="cwContentDisplay" align=center colspan=2>
 						<!-- Right side tabs -->
-						    <table cellspacing=0 cellpadding=10 width=90% align=center class='cwContentDisplay'>
+							<table cellspacing=0 cellpadding=10 width=90% align=center class='cwContentDisplay'>
 								<tr>
 									<td align=left width=50% valign=top ><br>
 										<input type="button" class="button" value="&#139;&#139;&nbsp;<?php echo $installationStrings['LBL_BACK']; ?>" title="<?php echo $installationStrings['LBL_BACK']; ?>" onClick="window.history.back();">
 									</td>
 									<td width=50% valign=top align=right>
-													<br>
+										<br>
 										<form action="install.php" method="post" name="form" id="form">
 										<input type="hidden" name="filename" value="SetInstallationConfig.php" />
-										<input type="hidden" name="file" value="CheckSystem.php" />	
-								        <input type="button" class="button" value='<?php echo $installationStrings['LBL_AGREE']; ?>' title="<?php echo $installationStrings['LBL_AGREE']; ?>" onClick="window.document.form.submit();">
+										<input type="hidden" name="file" value="CheckSystem.php" />
+										<input type="button" class="button" value='<?php echo $installationStrings['LBL_AGREE']; ?>' title="<?php echo $installationStrings['LBL_AGREE']; ?>" onClick="window.document.form.submit();">
 										</form>
 									</td>
 								</tr>
@@ -88,11 +87,11 @@
 		<tr>
 			<td align=center><img src="include/install/images/bottomShadow.jpg"></td>
 		</tr>
-	</table>	
+	</table>
 	<table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
-      	<tr>
-        	<td class=small align=center> <a href="<?php echo $coreBOS_app_url; ?>" target="_blank"><?php echo $coreBOS_app_name; ?></a></td>
-      	</tr>
+		<tr>
+			<td class=small align=center> <a href="<?php echo $coreBOS_app_url; ?>" target="_blank"><?php echo $coreBOS_app_name; ?></a></td>
+		</tr>
 	</table>
 </body>
 </html>
