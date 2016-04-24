@@ -1,20 +1,11 @@
-/*********************************************************************************
- * The contents of this file are subject to the Mozilla Public License Version 1.1
- * ("License"); You may not use this file except in compliance with the 
- * License. You may obtain a copy of the License at http://www.mozilla.org/MPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is: SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/***********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/install/install.css,v 1.5 2004/08/26 11:44:30 saraj Exp $
- * Description:  Defines the stylesheet used for the application installation.
- ********************************************************************************/
+ ************************************************************************************/
 /* Install - Configuration Wizard */
 .cwPageBg {
 	background-color:#cccccc;
@@ -289,7 +280,7 @@ table
 }
 
 .refreshButton {
-	background-image:url(images/checkAgain.png);
+	background-image:url('images/checkagain.png');
 	width:130px;
 	height:25px;
 	font-weight:bold;
