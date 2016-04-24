@@ -55,6 +55,9 @@ $db_options = Installation_Utils::getDbOptions();
 	<title><?php echo $installationStrings['APP_NAME']. ' - ' . $installationStrings['LBL_CONFIG_WIZARD']. ' - ' . $installationStrings['LBL_SYSTEM_CONFIGURATION']?></title>
 	<link href="include/install/install.css" rel="stylesheet" type="text/css">
 	<link href="themes/softed/style.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="include/js/general.js"></script>
+	<script type="text/javascript" src="include/scriptaculous/prototype.js"></script>
+	<script type="text/javascript" src="modules/com_vtiger_workflow/resources/jquery-1.2.6.js"></script>
 </head>
 
 <body class="small cwPageBg" topmargin="0" leftmargin="0" marginheight="0" marginwidth="0">
@@ -64,7 +67,7 @@ $db_options = Installation_Utils::getDbOptions();
 </style>
 
 <script type="text/javascript" language="Javascript">
-
+jQuery.noConflict();
 function fnShow_Hide(){
 	var sourceTag = document.getElementById('check_createdb').checked;
 	if(sourceTag){
@@ -155,14 +158,16 @@ function verify_data(form) {
 	var SiteUrl = form.site_URL.value;
     if(SiteUrl.indexOf("localhost") > -1 && SiteUrl.indexOf("localhost") < 10) {
         if(confirm("<?php echo $installationStrings['WARNING_LOCALHOST_IN_SITE_URL']; ?>")) {
+			VtigerJS_DialogBox.progress();
 			form.submit();
         } else {
             form.site_URL.select();
             return false;
         }
     } else {
+		VtigerJS_DialogBox.progress();
 		form.submit();
-    }	
+    }
 }
 </script>
 
@@ -321,8 +326,8 @@ function verify_data(form) {
 												<td nowrap><?php echo $installationStrings['LBL_EMAIL']; ?> <sup><font color=red>*</font></sup></td>
 												<td align="left"><input class="small" size=25 type="text" name="admin_email" value="<?php if (isset($admin_email)) echo "$admin_email"; ?>"></td>
 											</tr>
-										</table>		
-										<!-- System Configuration -->										
+										</table>
+										<!-- System Configuration -->
 									</td>
 									</form>
 								</tr>

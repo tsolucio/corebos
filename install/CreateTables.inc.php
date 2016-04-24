@@ -8,6 +8,10 @@
  * All Rights Reserved.
  ************************************************************************************/
 
+///////////////////////////
+// NOTE: this file is no longer used, it has been substituted by the InitSchema class
+///////////////////////////
+
 $new_tables = 0;
 
 require_once('config.php');
