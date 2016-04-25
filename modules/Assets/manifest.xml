@@ -260,7 +260,7 @@
 <generatedtype>1</generatedtype>
 <fieldlabel>Assigned To</fieldlabel>
 <readonly>1</readonly>
-<presence>2</presence>
+<presence>0</presence>
 <defaultvalue></defaultvalue>
 <sequence>4</sequence>
 <maximumlength>100</maximumlength>
