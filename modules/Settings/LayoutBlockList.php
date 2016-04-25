@@ -169,7 +169,7 @@ function getFieldListEntries($module) {
 
 	$focus = CRMEntity::getInstance($module);
 
-	$nonEditableUiTypes = array('4','70','69');
+	$nonEditableUiTypes = array('4','70','69','53');
 
 	// To get reference field names
 	require_once('include/Webservices/Utils.php');
