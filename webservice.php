@@ -17,6 +17,7 @@
 
 	require_once("config.inc.php");
 	require_once("include/HTTP_Session/Session.php");
+	require_once("include/utils/Session.php");
 	require_once 'include/Webservices/Utils.php';
 	require_once("include/Webservices/State.php");
 	require_once("include/Webservices/OperationManager.php");
@@ -115,10 +116,16 @@
 
 		$input = $operationManager->getOperationInput();
 		$adoptSession = false;
+		$sessionName = null;
 		if(strcasecmp($operation,"extendsession")===0){
 			if(isset($input['operation'])){
 				// Workaround fix for PHP 5.3.x: $_REQUEST doesn't have PHPSESSID
-				if(isset($_REQUEST['PHPSESSID'])) {
+				$sessionName = coreBOS_Session::getSessionName();
+				if(isset($_REQUEST[$sessionName])) {
+					$sessionId = vtws_getParameter($_REQUEST,$sessionName);
+				} elseif(isset($_COOKIE[$sessionName])) {
+					$sessionId = vtws_getParameter($_COOKIE,$sessionName);
+				} elseif(isset($_REQUEST['PHPSESSID'])) {
 					$sessionId = vtws_getParameter($_REQUEST,"PHPSESSID");
 				} else {
 					// NOTE: Need to evaluate for possible security issues
@@ -131,7 +138,7 @@
 				return;
 			}
 		}
-		$sid = $sessionManager->startSession($sessionId,$adoptSession);
+		$sid = $sessionManager->startSession($sessionId,$adoptSession,$sessionName);
 
 		if(!$sessionId && !$operationManager->isPreLoginOperation()){
 			writeErrorOutput($operationManager,new WebServiceException(WebServiceErrorCode::$AUTHREQUIRED,"Authentication required"));

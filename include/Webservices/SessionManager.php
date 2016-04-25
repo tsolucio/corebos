@@ -71,7 +71,7 @@
 			return $valid;
 		}
 		
-		function startSession($sid = null,$adoptSession=false){
+		function startSession($sid = null,$adoptSession=false,$sname=null){
 			
 //			if($sid){
 //				HTTP_Session::id($sid);
@@ -82,7 +82,7 @@
 			}
 			
 			//session name is used for guessing the session id by http_session so pass null.
-			HTTP_Session::start(null, $sid);
+			HTTP_Session::start($sname, $sid);
 			
 			$newSID = HTTP_Session::id();
 			
