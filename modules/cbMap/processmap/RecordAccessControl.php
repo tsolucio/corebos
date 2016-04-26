@@ -24,13 +24,13 @@
     <originname>SalesOrder</originname>
   </originmodule>
   <listview>
-  <c>1</c>  Add button
+  <c>1</c>  Does not apply. Not used
   <r>1</r>  View record
   <u>1</u>  Edit action
   <d>1</d>  Delete action
   </listview>
   <detailview>
-  <c>1</c>  Duplicate button
+  <c>1</c>  Does not apply. Not used
   <r>1</r>  View record
   <u>1</u>  Edit action
   <d>1</d>  Delete action
