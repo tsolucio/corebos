@@ -918,28 +918,18 @@ class Services extends CRMEntity {
 	 */
 	function generateReportsQuery($module){
 		global $current_user;
-			$query = "from vtiger_service
-				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_service.serviceid
-				left join vtiger_servicecf on vtiger_service.serviceid = vtiger_servicecf.serviceid
-				left join vtiger_users as vtiger_usersServices on vtiger_usersServices.id = vtiger_crmentity.smownerid
-				left join vtiger_groups as vtiger_groupsServices on vtiger_groupsServices.groupid = vtiger_crmentity.smownerid
-				left join vtiger_seproductsrel on vtiger_seproductsrel.productid= vtiger_service.serviceid
-				left join vtiger_crmentity as vtiger_crmentityRelServices on vtiger_crmentityRelServices.crmid = vtiger_seproductsrel.crmid and vtiger_crmentityRelServices.deleted = 0
-				left join vtiger_account as vtiger_accountRelServices on vtiger_accountRelServices.accountid=vtiger_seproductsrel.crmid
-				left join vtiger_leaddetails as vtiger_leaddetailsRelServices on vtiger_leaddetailsRelServices.leadid = vtiger_seproductsrel.crmid
-				left join vtiger_potential as vtiger_potentialRelServices on vtiger_potentialRelServices.potentialid = vtiger_seproductsrel.crmid
-				left join vtiger_users as vtiger_lastModifiedByServices on vtiger_lastModifiedByServices.id = vtiger_crmentity.modifiedby
-				LEFT JOIN (
-					SELECT vtiger_service.serviceid,
-							(CASE WHEN (vtiger_service.currency_id = 1 ) THEN vtiger_service.unit_price
-								ELSE (vtiger_service.unit_price / vtiger_currency_info.conversion_rate) END
-							) AS actual_unit_price
-					FROM vtiger_service
-					LEFT JOIN vtiger_currency_info ON vtiger_service.currency_id = vtiger_currency_info.id
-					LEFT JOIN vtiger_productcurrencyrel ON vtiger_service.serviceid = vtiger_productcurrencyrel.productid
-					AND vtiger_productcurrencyrel.currencyid = ". $current_user->currency_id . "
-				) AS innerService ON innerService.serviceid = vtiger_service.serviceid";
-			return $query;
+		$query = parent::generateReportsQuery($module);
+		$query.= " LEFT JOIN (
+				SELECT vtiger_service.serviceid,
+						(CASE WHEN (vtiger_service.currency_id = 1 ) THEN vtiger_service.unit_price
+							ELSE (vtiger_service.unit_price / vtiger_currency_info.conversion_rate) END
+						) AS actual_unit_price
+				FROM vtiger_service
+				LEFT JOIN vtiger_currency_info ON vtiger_service.currency_id = vtiger_currency_info.id
+				LEFT JOIN vtiger_productcurrencyrel ON vtiger_service.serviceid = vtiger_productcurrencyrel.productid
+				AND vtiger_productcurrencyrel.currencyid = ". $current_user->currency_id . "
+			) AS innerService ON innerService.serviceid = vtiger_service.serviceid";
+		return $query;
 	}
 
 	/*
@@ -983,6 +973,7 @@ class Services extends CRMEntity {
 			"Invoice" => array("vtiger_inventoryproductrel"=>array("productid","id"),"vtiger_service"=>"serviceid"),
 			"PriceBooks" => array("vtiger_pricebookproductrel"=>array("productid","pricebookid"),"vtiger_service"=>"serviceid"),
 			"Documents" => array("vtiger_senotesrel"=>array("crmid","notesid"),"vtiger_service"=>"serviceid"),
+			"Contacts" => array("vtiger_crmentityrel"=>array("crmid","relcrmid"),"vtiger_service"=>"serviceid"),
 		);
 		return $rel_tables[$secmodule];
 	}
