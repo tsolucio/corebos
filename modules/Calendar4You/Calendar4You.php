@@ -53,11 +53,8 @@ class Calendar4You extends CRMEntity {
     private function dropModuleTables() {
         $this->db->query("DROP TABLE IF EXISTS its4you_calendar4you_colors");
         $this->db->query("DROP TABLE IF EXISTS its4you_calendar4you_event_fields");
-        $this->db->query("DROP TABLE IF EXISTS its4you_calendar4you_profilespermissions");
         $this->db->query("DROP TABLE IF EXISTS its4you_calendar4you_settings");
         $this->db->query("DROP TABLE IF EXISTS its4you_calendar4you_view");
-        
-        
         $this->db->query("DROP TABLE IF EXISTS its4you_googlesync4you_access");
         $this->db->query("DROP TABLE IF EXISTS its4you_googlesync4you_calendar");
         $this->db->query("DROP TABLE IF EXISTS its4you_googlesync4you_dis");
@@ -433,34 +430,6 @@ public function setgoogleaccessparams($userid){
         }
     
         return $dn;
-    }
-    
-    //Method for getting the array of profiles permissions to PDFMaker actions.
-    public function GetProfilesPermissions() {
-        if(count($this->profilesPermissions) == 0) {
-            $profiles = getAllProfileInfo();
-            $sql = "SELECT * FROM its4you_calendar4you_profilespermissions";
-            $res = $this->db->query($sql);
-            $permissions = array();
-            while($row = $this->db->fetchByAssoc($res)) {
-            //      in case that profile has been deleted we need to set permission only for active profiles
-                if(isset($profiles[$row["profileid"]]))
-                    $permissions[$row["profileid"]][$row["operation"]] = $row["permissions"];
-            }
-
-            foreach($profiles as $profileid=>$profilename) {
-                foreach($this->profilesActions as $actionName) {
-                    $actionId = getActionid($actionName);
-                    if(!isset($permissions[$profileid][$actionId])) {
-                        $permissions[$profileid][$actionId] = "0";
-                    }
-                }
-            }
-            ksort($permissions);
-            $this->profilesPermissions = $permissions;
-        }
-
-        return $this->profilesPermissions;
     }
 
     //Method for checking the permissions, whether the user has privilegies to perform specific action on PDF Maker.
