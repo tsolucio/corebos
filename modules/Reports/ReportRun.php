@@ -1516,13 +1516,9 @@ class ReportRun extends CRMEntity {
 		//For this Product - we can related Accounts, Contacts (Also Leads, Potentials)
 		else if($module == "Products")
 		{
-			$query = "from vtiger_products
-				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_products.productid
-				left join vtiger_productcf on vtiger_products.productid = vtiger_productcf.productid
-				left join vtiger_users as vtiger_lastModifiedByProducts on vtiger_lastModifiedByProducts.id = vtiger_crmentity.modifiedby
-				left join vtiger_users as vtiger_usersProducts on vtiger_usersProducts.id = vtiger_crmentity.smownerid
-				left join vtiger_groups as vtiger_groupsProducts on vtiger_groupsProducts.groupid = vtiger_crmentity.smownerid
-				left join vtiger_vendor as vtiger_vendorRelProducts on vtiger_vendorRelProducts.vendorid = vtiger_products.vendor_id
+			$focus = CRMEntity::getInstance($module);
+			$query = $focus->generateReportsQuery($module);
+			$query.= " left join vtiger_vendor as vtiger_vendorRelProducts on vtiger_vendorRelProducts.vendorid = vtiger_products.vendor_id
 				LEFT JOIN (
 						SELECT vtiger_products.productid,
 								(CASE WHEN (vtiger_products.currency_id = 1 ) THEN vtiger_products.unit_price
