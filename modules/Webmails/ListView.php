@@ -252,8 +252,8 @@ if($numPages > 1) {
 	}
 }
 
-if(isPermitted('Contacts','EditView','') == 'yes')
-        $show_qualify = "yes";
+if(isPermitted('Contacts','CreateView','') == 'yes')
+	$show_qualify = "yes";
 else
 	$show_qualify = "no";
 $overview=$elist["overview"];

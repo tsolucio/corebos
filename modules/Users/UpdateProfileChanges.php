@@ -75,7 +75,7 @@ $num_act_util_per = $adb->num_rows($act_utility_result);
 		{
 			$action_id = $adb->query_result($act_perr_result,$i,"operation");
 			$action_name = getActionname($action_id);
-			if($action_name == 'EditView' || $action_name == 'Delete' || $action_name == 'DetailView')
+			if($action_name == 'EditView' || $action_name == 'Delete' || $action_name == 'DetailView' || $action_name == 'CreateView')
 			{
 				$request_var = $tab_id.'_'.$action_name;
 			}

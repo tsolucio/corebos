@@ -257,9 +257,11 @@ $smarty->assign("ID", $record);
 
 if($Calendar4You->CheckPermissions("EDIT")) {
 	$smarty->assign("EDIT","permitted");
-	$smarty->assign("EDIT_DUPLICATE","permitted");
 }
-
+if($Calendar4You->CheckPermissions("CREATE")) {
+	$smarty->assign("CREATE_PERMISSION","permitted");
+	$smarty->assign('ADD_ONMOUSEOVER', "onMouseOver=\"fnvshobj(this,'addButtonDropDown');\"");
+}
 if($Calendar4You->CheckPermissions("DELETE",$record))
 	$smarty->assign("DELETE","permitted");
 

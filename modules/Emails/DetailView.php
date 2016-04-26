@@ -115,8 +115,8 @@ $entries = getBlocks($currentModule,"detail_view",'',$focus->column_fields);
 $smarty->assign("BLOCKS",$entries[$mod_strings['LBL_EMAIL_INFORMATION']]);
 $smarty->assign("SINGLE_MOD", 'Email');
 
-if(isPermitted("Emails","EditView",$_REQUEST['record']) == 'yes')
-	$smarty->assign("EDIT_DUPLICATE","permitted");
+if(isPermitted($currentModule, 'CreateView', $record) == 'yes')
+	$smarty->assign('CREATE_PERMISSION', 'permitted');
 
 if(isPermitted("Emails","Delete",$_REQUEST['record']) == 'yes')
 	$smarty->assign("DELETE","permitted");

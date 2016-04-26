@@ -84,7 +84,7 @@ if(PerformancePrefs::getBoolean('DETAILVIEW_RECORD_NAVIGATION', true) && isset($
 if(useInternalMailer() == 1) 
 	$smarty->assign('INT_MAILER','true');
 
-if(isPermitted('Emails','EditView','') == 'yes') {
+if(isPermitted('Emails','CreateView','') == 'yes') {
 	//Added to pass the parents list as hidden for Emails -- 09-11-2005
 	$parent_email = getEmailParentsList('Contacts',$_REQUEST['record'], $focus);
 	$smarty->assign("HIDDEN_PARENTS_LIST",$parent_email);
@@ -152,8 +152,8 @@ if($singlepane_view == 'true') {
 	$smarty->assign("SELECTEDHEADERS", $open_related_modules);
 }
 
-if(isPermitted($currentModule, 'EditView', $record) == 'yes')
-	$smarty->assign('EDIT_DUPLICATE', 'permitted');
+if(isPermitted($currentModule, 'CreateView', $record) == 'yes')
+	$smarty->assign('CREATE_PERMISSION', 'permitted');
 if(isPermitted($currentModule, 'Delete', $record) == 'yes')
 	$smarty->assign('DELETE', 'permitted');
 

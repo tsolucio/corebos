@@ -245,7 +245,7 @@ jQuery(document).ready(function(){
                 type = '0';
             }
             {/literal}
-            
+            if ('{$CREATE_PERMISSION}'!='permitted') return false;
             var formated_date = jQuery.fullCalendar.formatDate(date, '{$USER_DATE_FORMAT}');
             
             {if $IS_24 eq "true"}

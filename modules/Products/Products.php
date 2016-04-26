@@ -913,7 +913,7 @@ class Products extends CRMEntity {
 		$button = '';
 		if($actions) {
 			if(is_string($actions)) $actions = explode(',', strtoupper($actions));
-			if(in_array('ADD', $actions) && isPermitted($related_module,1, '') == 'yes' && isPermitted($currentModule,'EditView',$id) == 'yes') {
+			if(in_array('ADD', $actions) && isPermitted($related_module,'CreateView', '') == 'yes' && isPermitted($currentModule,'EditView',$id) == 'yes') {
 				$button .= "<input title='".getTranslatedString('LBL_ADD_TO'). " ". getTranslatedString($related_module) ."' class='crmbutton small create'" .
 					" onclick='this.form.action.value=\"AddProductToPriceBooks\";this.form.module.value=\"$currentModule\"' type='submit' name='button'" .
 					" value='". getTranslatedString('LBL_ADD_TO'). " " . getTranslatedString($related_module) ."'>&nbsp;";

@@ -584,4 +584,11 @@
 	<classname>fixCalendarStartEndDateOnReports</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Separate Create and Edit Permissions</description>
+	<filename>build/changeSets/separateCreateAndEditPermissions.php</filename>
+	<classname>separateCreateAndEditPermissions</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

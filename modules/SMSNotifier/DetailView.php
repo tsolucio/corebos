@@ -86,8 +86,8 @@ if($singlepane_view == 'true') {
 	$smarty->assign("SELECTEDHEADERS", $open_related_modules);
 }
 
-if(isPermitted($currentModule, 'EditView', $record) == 'yes')
-	$smarty->assign('EDIT_DUPLICATE', 'permitted');
+if(isPermitted($currentModule, 'CreateView', $record) == 'yes')
+	$smarty->assign('CREATE_PERMISSION', 'permitted');
 if(isPermitted($currentModule, 'Delete', $record) == 'yes')
 	$smarty->assign('DELETE', 'permitted');
 
@@ -112,7 +112,7 @@ $focus->markAsViewed($current_user->id);
 
 /** Removing Edit permissions */
 $smarty->assign('DETAILVIEW_AJAX_EDIT', false);
-$smarty->assign('EDIT_DUPLICATE', 'notpermitted');
+$smarty->assign('CREATE_PERMISSION', 'notpermitted');
 
 $smarty->display(vtlib_getModuleTemplate($currentModule, 'DetailView.tpl'));
 

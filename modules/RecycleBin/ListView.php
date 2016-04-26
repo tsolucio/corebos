@@ -159,6 +159,7 @@ $category = getParentTab();;
 
 $check_button = Button_Check($_REQUEST['module']);
 $check_button['EditView'] = 'no';
+$check_button['CreateView'] = 'no';
 $smarty->assign("CHECK", $check_button);
 
 $smarty->assign("ALPHABETICAL", $alphabetical);

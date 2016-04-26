@@ -86,11 +86,11 @@ if($singlepane_view == 'true') {
 	$smarty->assign("SELECTEDHEADERS", $open_related_modules);
 }
 
-if(isPermitted($currentModule, 'EditView', $record) == 'yes')
-	$smarty->assign('EDIT_DUPLICATE', 'permitted');
+if(isPermitted($currentModule, 'CreateView', $record) == 'yes')
+	$smarty->assign('CREATE_PERMISSION', 'permitted');
 if(isPermitted($currentModule, 'Delete', $record) == 'yes')
 	$smarty->assign('DELETE', 'permitted');
-if(isPermitted('Invoice','EditView',$_REQUEST['record']) == 'yes')
+if(isPermitted('Invoice','CreateView',$_REQUEST['record']) == 'yes')
 	$smarty->assign('CONVERTINVOICE','permitted');
 $smarty->assign('CONVERTMODE','potentoinvoice');
 

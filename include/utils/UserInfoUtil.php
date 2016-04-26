@@ -749,7 +749,7 @@ function isPermitted($module,$actionname,$record_id='')
 		//Checking if the Record Owner is the current User
 		if($current_user->id == $recOwnId)
 		{
-			if (($actionname!='EditView' and $actionname!='Delete' and $actionname!='DetailView') or (!$racbr or $racbr->hasDetailViewPermissionTo($actionname))) {
+			if (($actionname!='EditView' and $actionname!='Delete' and $actionname!='DetailView' and $actionname!='CreateView') or (!$racbr or $racbr->hasDetailViewPermissionTo($actionname))) {
 				$permission = 'yes';
 			} else {
 				$permission = 'no';
@@ -762,7 +762,7 @@ function isPermitted($module,$actionname,$record_id='')
 		{
 			if(in_array($recOwnId,$userids))
 			{
-				if (($actionname!='EditView' and $actionname!='Delete' and $actionname!='DetailView') or (!$racbr or $racbr->hasDetailViewPermissionTo($actionname))) {
+				if (($actionname!='EditView' and $actionname!='Delete' and $actionname!='DetailView' and $actionname!='CreateView') or (!$racbr or $racbr->hasDetailViewPermissionTo($actionname))) {
 					$permission = 'yes';
 				} else {
 					$permission = 'no';
@@ -779,7 +779,7 @@ function isPermitted($module,$actionname,$record_id='')
 		{
 			$wfs = new VTWorkflowManager($adb);
 			$racbr = $wfs->getRACRuleForRecord($module, $record_id);
-			if (($actionname!='EditView' and $actionname!='Delete' and $actionname!='DetailView') or (!$racbr or $racbr->hasDetailViewPermissionTo($actionname))) {
+			if (($actionname!='EditView' and $actionname!='Delete' and $actionname!='DetailView' and $actionname!='CreateView') or (!$racbr or $racbr->hasDetailViewPermissionTo($actionname))) {
 				$permission = 'yes';
 			} else {
 				$permission = 'no';
@@ -844,7 +844,7 @@ function isPermitted($module,$actionname,$record_id='')
 	{
 		$wfs = new VTWorkflowManager($adb);
 		$racbr = $wfs->getRACRuleForRecord($module, $record_id);
-		if (($actionname!='EditView' and $actionname!='Delete' and $actionname!='DetailView') or (!$racbr or $racbr->hasDetailViewPermissionTo($actionname))) {
+		if (($actionname!='EditView' and $actionname!='Delete' and $actionname!='DetailView' and $actionname!='CreateView') or (!$racbr or $racbr->hasDetailViewPermissionTo($actionname))) {
 			$permission = "yes";
 			$log->debug("Exiting isPermitted method ...");
 			return $permission;
@@ -1230,7 +1230,7 @@ function isAllowed_Outlook($module,$action,$user_id,$record_id)
 					{
 						if($others_permission_id == 0)
 						{
-							if($action == 'EditView' || $action == 'Delete')
+							if($action == 'EditView' || $action == 'CreateView' || $action == 'Delete')
 							{
 								$permission = "no";
 							}
@@ -1256,7 +1256,7 @@ function isAllowed_Outlook($module,$action,$user_id,$record_id)
 						}
 						elseif($others_permission_id == 3)
 						{
-							if($action == 'DetailView' || $action == 'EditView' || $action == 'Delete')
+							if($action == 'DetailView' || $action == 'EditView' || $action == 'CreateView' || $action == 'Delete')
 							{
 								$permission = "no";
 							}

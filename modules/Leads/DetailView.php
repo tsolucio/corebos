@@ -76,7 +76,7 @@ if(PerformancePrefs::getBoolean('DETAILVIEW_RECORD_NAVIGATION', true) && isset($
 
 $smarty->assign('IS_REL_LIST', isPresentRelatedLists($currentModule));
 $smarty->assign('SinglePane_View', $singlepane_view);
-if (isPermitted('Emails', 'EditView', '') == 'yes') {
+if (isPermitted('Emails', 'CreateView', '') == 'yes') {
 	//Added to pass the parents list as hidden for Emails -- 09-11-2005
 	$parent_email = getEmailParentsList('Leads', $_REQUEST['record'], $focus);
 	$smarty->assign('HIDDEN_PARENTS_LIST', $parent_email);
@@ -140,12 +140,12 @@ if($singlepane_view == 'true') {
 	$open_related_modules = RelatedListViewSession::getRelatedModulesFromSession();
 	$smarty->assign("SELECTEDHEADERS", $open_related_modules);
 }
-if(isPermitted($currentModule, 'EditView', $record) == 'yes') {
-	$smarty->assign('EDIT_DUPLICATE', 'permitted');
+if(isPermitted($currentModule, 'CreateView', $record) == 'yes') {
+	$smarty->assign('CREATE_PERMISSION', 'permitted');
 	require_once 'modules/Leads/ConvertLeadUI.php';
 	$uiinfo = new ConvertLeadUI($record, $current_user);
 	if (isPermitted('Leads', 'ConvertLead') == 'yes'
-		&& (isPermitted('Accounts', 'EditView') == 'yes' || isPermitted('Contacts', 'EditView') == 'yes')
+		&& (isPermitted('Accounts', 'CreateView') == 'yes' || isPermitted('Contacts', 'CreateView') == 'yes')
 		&& (vtlib_isModuleActive('Contacts') || vtlib_isModuleActive('Accounts'))
 		&& !isLeadConverted($focus->id)
 		&& (($uiinfo->getCompany() != null) || ($uiinfo->isModuleActive('Contacts') == true))

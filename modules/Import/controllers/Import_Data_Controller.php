@@ -403,7 +403,7 @@ class Import_Data_Controller {
 						}
 					}
 					if ((empty($entityId) || $entityId == 0) && (!empty($referenceModuleName) and !in_array($referenceModuleName, getInventoryModules()) and $referenceModuleName!='Users')) {
-						if(isPermitted($referenceModuleName, 'EditView') == 'yes') {
+						if(isPermitted($referenceModuleName, 'CreateView') == 'yes') {
 							$wsEntityIdInfo = $this->createEntityRecord($referenceModuleName, $entityLabel);
 							$wsEntityId = $wsEntityIdInfo['id'];
 							$entityIdComponents = vtws_getIdComponents($wsEntityId);

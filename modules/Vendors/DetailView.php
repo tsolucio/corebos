@@ -87,9 +87,9 @@ if($singlepane_view == 'true') {
 	$smarty->assign("SELECTEDHEADERS", $open_related_modules);
 }
 
-if(isPermitted('Vendors','VendorEditView', $record) == 'yes')
-	$smarty->assign('EDIT_DUPLICATE', 'permitted');
-if(isPermitted('Vendors','DeleteVendor', $record) == 'yes')
+if(isPermitted($currentModule, 'CreateView', $record) == 'yes')
+	$smarty->assign('CREATE_PERMISSION', 'permitted');
+if(isPermitted('Vendors','Delete', $record) == 'yes')
 	$smarty->assign('DELETE', 'permitted');
 
 $smarty->assign('BLOCKS', getBlocks($currentModule,'detail_view','',$focus->column_fields));

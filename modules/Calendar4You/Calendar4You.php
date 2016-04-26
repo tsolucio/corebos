@@ -39,7 +39,8 @@ class Calendar4You extends CRMEntity {
         // array of modules that are allowed for basic version type
         $this->basicModules = array("20", "21", "22", "23");
         // array of action names used in profiles permissions
-        $this->profilesActions = array("EDIT"=>"EditView",        // Create/Edit
+        $this->profilesActions = array("EDIT"=>"EditView",        // Edit
+                                       "CREATE"=>"CreateView",        // Create
                                        "DETAIL"=>"DetailView",    // View
                                        "DELETE"=>"Delete",        // Delete
                                        );
@@ -472,7 +473,7 @@ public function setgoogleaccessparams($userid){
             
         if ($this->profile_Global_Permission[1] == "0" && $actionKey == "DETAIL") {
             return true;
-        } elseif ($this->profile_Global_Permission[2] == "0" && $actionKey == "EDIT") {
+        } elseif ($this->profile_Global_Permission[2] == "0" && ($actionKey == "EDIT" || $actionKey == "CREATE")) {
             return true;
         } else {
 
@@ -480,10 +481,10 @@ public function setgoogleaccessparams($userid){
     
             if(isset($this->profilesActions[$actionKey])) {
                 $actionid = getActionid($this->profilesActions[$actionKey]);
-                $permissions = $this->GetProfilesPermissions();
+                $permissions = isPermitted('Calendar', $this->profilesActions[$actionKey]);
     
-                if(isset($permissions[$profileid][$actionid]) && $permissions[$profileid][$actionid] == "0") {
-                    if (($this->edit_all && ($actionKey == "DETAIL" || $actionKey == "EDIT")) || ($this->delete_all && $actionKey == "DELETE")) {
+                if($permissions == 'yes') {
+                    if (($this->edit_all && ($actionKey == "DETAIL" || $actionKey == "EDIT" || $actionKey == "CREATE")) || ($this->delete_all && $actionKey == "DELETE")) {
                         return true;
                     } elseif ($record_id != "") {
                         $recOwnType='';

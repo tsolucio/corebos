@@ -2249,7 +2249,7 @@ class CRMEntity {
 		$result = $adb->pquery($query, array($value));
 
 		if (!isset($this->checkFlagArr[$module])) {
-			$this->checkFlagArr[$module] = (isPermitted($module, 'EditView', '') == 'yes');
+			$this->checkFlagArr[$module] = (isPermitted($module, 'CreateView', '') == 'yes');
 		}
 
 		if ($adb->num_rows($result) > 0) {

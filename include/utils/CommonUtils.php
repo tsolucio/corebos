@@ -1897,7 +1897,7 @@ function getQuickCreateModules() {
 
 		$tabname = $adb->query_result($result, $i, 'name');
 		$tablabel = getTranslatedString("SINGLE_$tabname", $tabname);
-		if (isPermitted($tabname, 'EditView', '') == 'yes') {
+		if (isPermitted($tabname, 'CreateView', '') == 'yes') {
 			$return_qcmodule[] = $tablabel;
 			$return_qcmodule[] = $tabname;
 		}
@@ -2045,7 +2045,9 @@ function getGroupslist() {
 function Button_Check($module) {
 	global $log;
 	$log->debug("Entering Button_Check(" . $module . ") method ...");
-	$permit_arr = array('EditView' => '',
+	$permit_arr = array(
+		'EditView' => '',
+		'CreateView' => '',
 		'index' => '',
 		'Import' => '',
 		'Export' => '',

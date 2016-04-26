@@ -140,9 +140,12 @@ if($mode == 'view')
 	{
 		$stand = array();
 		$entity_name = getTabModuleName($tabid);
-		//Create/Edit Permission
-		$tab_create_per_id = $action_array['1'];
-		$tab_create_per = getDisplayValue($tab_create_per_id,$tabid,'1');
+		//Create Permission
+		$tab_create_per_id = $action_array['7'];
+		$tab_create_per = getDisplayValue($tab_create_per_id,$tabid,'7');
+		//Edit Permission
+		$tab_edit_per_id = $action_array['1'];
+		$tab_edit_per_id = getDisplayValue($tab_edit_per_id,$tabid,'1');
 		//Delete Permission
 		$tab_delete_per_id = $action_array['2'];
 		$tab_delete_per = getDisplayValue($tab_delete_per_id,$tabid,'2');
@@ -151,9 +154,10 @@ if($mode == 'view')
 		$tab_view_per = getDisplayValue($tab_view_per_id,$tabid,'4');
 
 		$stand[]=$entity_name;
-		$stand[]=$tab_create_per;
+		$stand[]=$tab_edit_per_id;
 		$stand[]=$tab_delete_per;
 		$stand[]=$tab_view_per;
+		$stand[]=$tab_create_per;
 		$privileges_stand[$tabid]=$stand;
 	}
 }
@@ -164,9 +168,12 @@ if($mode == 'edit')
 	{
 		$stand = array();
 		$entity_name = getTabModuleName($tabid);
-		//Create/Edit Permission
-		$tab_create_per_id = $action_array['1'];
-		$tab_create_per = getDisplayOutput($tab_create_per_id,$tabid,'1');
+		//Create Permission
+		$tab_create_per_id = $action_array['7'];
+		$tab_create_per = getDisplayOutput($tab_create_per_id,$tabid,'7');
+		//Edit Permission
+		$tab_edit_per_id = $action_array['1'];
+		$tab_edit_per_id = getDisplayOutput($tab_edit_per_id,$tabid,'1');
 		//Delete Permission
 		$tab_delete_per_id = $action_array['2'];
 		$tab_delete_per = getDisplayOutput($tab_delete_per_id,$tabid,'2');
@@ -175,9 +182,10 @@ if($mode == 'edit')
 		$tab_view_per = getDisplayOutput($tab_view_per_id,$tabid,'4');
 
 		$stand[]=$entity_name;
-		$stand[]=$tab_create_per;
+		$stand[]=$tab_edit_per_id;
 		$stand[]=$tab_delete_per;
 		$stand[]=$tab_view_per;
+		$stand[]=$tab_create_per;
 		$privileges_stand[$tabid]=$stand;
 	}
 }
@@ -190,9 +198,12 @@ if($mode == 'create')
 		{
 			$stand = array();
 			$entity_name = getTabModuleName($tabid);
-			//Create/Edit Permission
-			$tab_create_per_id = $action_array['1'];
-			$tab_create_per = getDisplayOutput($tab_create_per_id,$tabid,'1');
+			//Create Permission
+			$tab_create_per_id = $action_array['7'];
+			$tab_create_per = getDisplayOutput($tab_create_per_id,$tabid,'7');
+			//Edit Permission
+			$tab_edit_per_id = $action_array['1'];
+			$tab_edit_per_id = getDisplayOutput($tab_edit_per_id,$tabid,'1');
 			//Delete Permission
 			$tab_delete_per_id = $action_array['2'];
 			$tab_delete_per = getDisplayOutput($tab_delete_per_id,$tabid,'2');
@@ -201,9 +212,10 @@ if($mode == 'create')
 			$tab_view_per = getDisplayOutput($tab_view_per_id,$tabid,'4');
 
 			$stand[]=$entity_name;
-			$stand[]=$tab_create_per;
+			$stand[]=$tab_edit_per_id;
 			$stand[]=$tab_delete_per;
 			$stand[]=$tab_view_per;
+			$stand[]=$tab_create_per;
 			$privileges_stand[$tabid]=$stand;
 		}
 	}
@@ -214,9 +226,12 @@ if($mode == 'create')
 		{
 			$stand = array();
 			$entity_name = getTabModuleName($tabid);
-			//Create/Edit Permission
-			$tab_create_per_id = $action_array['1'];
-			$tab_create_per = getDisplayOutput(0,$tabid,'1');
+			//Create Permission
+			$tab_create_per_id = $action_array['7'];
+			$tab_create_per = getDisplayOutput(0,$tabid,'7');
+			//Edit Permission
+			$tab_edit_per_id = $action_array['1'];
+			$tab_edit_per_id = getDisplayOutput(0,$tabid,'1');
 			//Delete Permission
 			$tab_delete_per_id = $action_array['2'];
 			$tab_delete_per = getDisplayOutput(0,$tabid,'2');
@@ -225,9 +240,10 @@ if($mode == 'create')
 			$tab_view_per = getDisplayOutput(0,$tabid,'4');
 
 			$stand[]=$entity_name;
-			$stand[]=$tab_create_per;
+			$stand[]=$tab_edit_per_id;
 			$stand[]=$tab_delete_per;
 			$stand[]=$tab_view_per;
+			$stand[]=$tab_create_per;
 			$privileges_stand[$tabid]=$stand;
 		}
 	}
