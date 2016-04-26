@@ -1350,14 +1350,14 @@ class ReportRun extends CRMEntity {
 	 *  @ param $selectedfield : type string
 	 *  this returns the string for grouplist
 	 */
-	function replaceSpecialChar($selectedfield){
+	public static function replaceSpecialChar($selectedfield){
 		$selectedfield = decode_html(decode_html($selectedfield));
 		preg_match('/&/', $selectedfield, $matches);
 		if(!empty($matches)){
 			$selectedfield = str_replace('&', 'and',($selectedfield));
 		}
 		return $selectedfield;
-		}
+	}
 
 	/** function to get the selectedorderbylist for the given reportid
 	 *  @ param $reportid : type integer
@@ -1854,7 +1854,7 @@ class ReportRun extends CRMEntity {
 		if(trim($groupsquery) != "" && $type !== 'COLUMNSTOTOTAL')
 		{
 			if($chartReport == true){
-				$reportquery .= "group by ".$this->GetFirstSortByField($reportid);
+				$reportquery .= " group by ".$this->GetFirstSortByField($reportid);
 			}else{
 				$reportquery .= " order by ".$groupsquery;
 			}
