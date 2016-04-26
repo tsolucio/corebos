@@ -11,6 +11,7 @@ require_once('include/database/PearDatabase.php');
 require_once('data/CRMEntity.php');
 require_once('include/utils/UserInfoUtil.php');
 require_once 'modules/Reports/ReportUtils.php';
+require_once 'modules/Reports/ReportRun.php';
 global $app_strings,$mod_strings, $app_list_strings, $modules, $blocks, $adv_filter_options;
 global $log, $report_modules, $related_modules, $old_related_modules;
 
@@ -643,7 +644,8 @@ class Reports extends CRMEntity{
 				$fieldlabel = 'Date Sent';
 				$fieldtypeofdata = 'D';
 			}
-			$fieldlabel1 = str_replace(array(" ","&"),"_",$fieldlabel);
+			$fieldlabel1 = str_replace(' ','_',$fieldlabel);
+			$fieldlabel1 = ReportRun::replaceSpecialChar($fieldlabel1);
 			$optionvalue = $fieldtablename.":".$fieldcolname.":".$module."_".$fieldlabel1.":".$fieldname.":".$fieldtypeofdata;
 			$this->adv_rel_fields[$fieldtypeofdata][] = '$'.$module.'#'.$fieldname.'$'."::".getTranslatedString($module,$module)." ".getTranslatedString($fieldlabel,$module);
 			$module_columnlist[$optionvalue] = $fieldlabel;
