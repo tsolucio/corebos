@@ -214,7 +214,7 @@ if (isset($_REQUEST["user_view_type"]) && $_REQUEST["user_view_type"] != "") {
 if (strtolower(trim($user_view_type)) == "me") $user_view_type = $current_user->id;
 
 if ($user_view_type == $current_user->id) {
-	$smarty->assign('SHOW_ONLY_ME', 'true'); 
+	$smarty->assign('SHOW_ONLY_ME', 'true');
 }
 
 $smarty->assign('USER_VIEW_TYPE', $user_view_type);

@@ -12,30 +12,30 @@ $app = $app_strings;
 $mod = $mod_strings;
 
 $Activities = array();
-$record = "";
+$record = '';
 
 require_once('include/fields/DateTimeField.php');
-require_once("modules/Calendar4You/Calendar4You.php");
-require_once("modules/Calendar4You/CalendarUtils.php");
+require_once('modules/Calendar4You/Calendar4You.php');
+require_once('modules/Calendar4You/CalendarUtils.php');
 require_once('include/QueryGenerator/QueryGenerator.php');
 
-$typeids = vtlib_purify($_REQUEST["typeids"]);
-$Type_Ids = explode(",",$typeids);
+$typeids = vtlib_purify($_REQUEST['typeids']);
+$Type_Ids = explode(',',$typeids);
 
-$user_view_type = $_REQUEST["user_view_type"];
-$save = $_REQUEST["save"];
-$full_calendar_view = $_REQUEST["view"];
-if (isset($_REQUEST["record"]) && $_REQUEST["record"] != "") $record = $_REQUEST["record"];
+$user_view_type = vtlib_purify($_REQUEST['user_view_type']);
+$save = vtlib_purify($_REQUEST['save']);
+$full_calendar_view = vtlib_purify($_REQUEST['view']);
+if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') $record = $_REQUEST['record'];
 
-if (!empty($_REQUEST["usersids"])) {
+if (!empty($_REQUEST['usersids'])) {
 	$all_users = true;
-	$Users_Ids = explode(",",$_REQUEST["usersids"]);
+	$Users_Ids = explode(',',$_REQUEST['usersids']);
 } else {
 	$all_users = false;
-	if ($user_view_type != "all")
+	if ($user_view_type != 'all')
 		$Users_Ids = array($user_view_type);
 	else{
-		echo "[]";die();
+		echo '[]';die();
 	}
 }
 

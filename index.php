@@ -1,7 +1,7 @@
 <?php
 /*********************************************************************************
  * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the 
+ * ("License"); You may not use this file except in compliance with the
  * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
  * Software distributed under the License is distributed on an  "AS IS"  basis,
  * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
@@ -86,8 +86,7 @@ if (!isset($dbconfig['db_hostname']) || $dbconfig['db_status']=='_DB_STAT_') {
 }
 
 // load up the config_override.php file.  This is used to provide default user settings
-if (is_file('config_override.php')) 
-{
+if (is_file('config_override.php')) {
 	require_once('config_override.php');
 }
 // load global help links
@@ -588,7 +587,7 @@ if(!$skipHeaders) {
 	{
 		// only print DB errors once otherwise they will still look broken after they are fixed.
 		// Only print the errors for admin users.
-		if(is_admin($current_user)) 
+		if(is_admin($current_user))
 			echo $_SESSION['administrator_error'];
 		unset($_SESSION['administrator_error']);
 	}
@@ -645,16 +644,16 @@ if($display == "no")
 		<table border='0' cellpadding='5' cellspacing='0' width='98%'>
 		<tbody><tr>
 		<td rowspan='2' width='11%'><img src='". vtiger_imageurl('denied.gif', $theme) . "' ></td>
-		<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>$app_strings[LBL_PERMISSION]</span></td>
+		<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>".$app_strings['LBL_PERMISSION']."</span></td>
 		</tr>
 		<tr>
 		<td class='small' align='right' nowrap='nowrap'>
-		<a href='javascript:window.history.back();'>$app_strings[LBL_GO_BACK]</a><br></td>
+		<a href='javascript:window.history.back();'>".$app_strings['LBL_GO_BACK']."</a><br></td>
 		</tr>
 		</tbody></table>
 		</div>
 		</td></tr></table>";
-} 
+}
 // vtlib customization: Check if module has been de-activated
 else if(!vtlib_isModuleActive($currentModule) and !($currentModule=='Tooltip' and $action==$module."Ajax" and $_REQUEST['file']=='ComputeTooltip')) {
 	echo "<link rel='stylesheet' type='text/css' href='themes/$theme/style.css'>";
@@ -663,13 +662,13 @@ else if(!vtlib_isModuleActive($currentModule) and !($currentModule=='Tooltip' an
 		<table border='0' cellpadding='5' cellspacing='0' width='98%'>
 		<tbody><tr>
 		<td rowspan='2' width='11%'><img src='". vtiger_imageurl('denied.gif', $theme) . "' ></td>
-		<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>$currentModule $app_strings[VTLIB_MOD_NOT_ACTIVE]</span></td>
+		<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>$currentModule ".$app_strings['VTLIB_MOD_NOT_ACTIVE']."</span></td>
 		</tr>
 		<tr>
 		<td class='small' align='right' nowrap='nowrap'>
-		<a href='javascript:window.history.back();'>$app_strings[LBL_GO_BACK]</a><br></td>
+		<a href='javascript:window.history.back();'>".$app_strings['LBL_GO_BACK']."</a><br></td>
 		</tr>
-		</tbody></table> 
+		</tbody></table>
 		</div>
 		</td></tr></table>";
 }

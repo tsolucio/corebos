@@ -111,19 +111,19 @@ public function setgoogleaccessparams($userid){
             
             //0 - Public: Read Only
             //1 - Public: Read, Create/Edit
-            //2 - Public: Read, Create/Edit, Delete 
-            //3 - privat 
+            //2 - Public: Read, Create/Edit, Delete
+            //3 - private
             if ($dosp == "0" || $dosp == "1" || $dosp == "2") $this->view_all = true;
             
-            if ($dosp == "1" || $dosp == "2") $this->edit_all = true;  
+            if ($dosp == "1" || $dosp == "2") $this->edit_all = true;
             
-            if ($dosp == "2") $this->delete_all = true;      
+            if ($dosp == "2") $this->delete_all = true;
             
         } else {
             $this->view_all = true;
             $this->edit_all = true;
             $this->delete_all = true;
-        }    
+        }
     }
 
 	//PUBLIC METHODS SECTION
