@@ -21,27 +21,11 @@ class separateCreateAndEditPermissions extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			global $adb;
 			$this->ExecuteQuery("INSERT INTO vtiger_actionmapping values(7,'CreateView',0)");
-			$tabid = Array(); 
-			$tab_res = $adb->query('SELECT distinct tabid,isentitytype FROM vtiger_tab');
-			$noOfTabs = $adb->num_rows($tab_res);
-			for($i=0;$i<$noOfTabs;$i++) {
-				$tabid[] = array(
-					'tabid'=>$adb->query_result($tab_res,$i,'tabid'),
-					'entity'=>$adb->query_result($tab_res,$i,'isentitytype'),
-					);
-			}
-			$profile_sql = $adb->query("select profileid from vtiger_profile");
-			$num_profile = $adb->num_rows($profile_sql);
-			for($i=0;$i<$num_profile;$i++) {
-				$profile_id = $adb->query_result($profile_sql,$i,'profileid');
-				for($j=0;$j<$noOfTabs;$j++) {
-					if ($tabid[$j]['entity']) {
-						$this->ExecuteQuery('insert into vtiger_profile2standardpermissions values(?,?,?,?)', array($profile_id, $tabid[$j]['tabid'], 7, 0));
-					}
-				}
-			}
+			$this->ExecuteQuery("insert into vtiger_profile2standardpermissions SELECT `profileid`,`tabid`,7,`permissions`
+				FROM `vtiger_profile2standardpermissions`
+				INNER join vtiger_actionmapping on actionid=operation
+				WHERE actionname = 'EditView'");
 			create_tab_data_file();
 			$this->ExecuteQuery("DROP TABLE IF EXISTS its4you_calendar4you_profilespermissions");
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
