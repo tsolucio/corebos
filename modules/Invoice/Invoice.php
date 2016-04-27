@@ -122,9 +122,7 @@ class Invoice extends CRMEntity {
 				InventoryDetails::createInventoryDetails($this,'Invoice');
 
 		} else if(isset($_REQUEST)) {
-			if($_REQUEST['action'] != 'InvoiceAjax' && $_REQUEST['ajxaction'] != 'DETAILVIEW'
-					&& $_REQUEST['action'] != 'MassEditSave' && $_REQUEST['action'] != 'ProcessDuplicates')
-			{
+			if(inventoryCanSaveProductLines($_REQUEST)) {
 				//Based on the total Number of rows we will save the product relationship with this entity
 				saveInventoryProductDetails($this, 'Invoice');
 				if(vtlib_isModuleActive("InventoryDetails"))
