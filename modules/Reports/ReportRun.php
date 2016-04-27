@@ -3059,6 +3059,8 @@ class ReportRun extends CRMEntity {
 			$FieldDataTypes = array();
 			foreach($arr_val[0] as $hdr=>$value) {
 				$FieldDataTypes[$hdr] = $fieldinfo[$hdr]->getFieldDataType();
+				if ($fieldinfo[$hdr]->getColumnName()=='totaltime') $FieldDataTypes[$hdr] = 'time';
+				if ($fieldinfo[$hdr]->getColumnName()=='totaldaytime') $FieldDataTypes[$hdr] = 'time';
 			}
 			$BoolTrue = getTranslatedString('LBL_YES');
 			//$BoolFalse = getTranslatedString('LBL_NO');
@@ -3099,6 +3101,17 @@ class ReportRun extends CRMEntity {
 						case 'currency':
 							$celltype = PHPExcel_Cell_DataType::TYPE_NUMERIC;
 							break;
+						case 'date':
+							$value = DateTimeField::__convertToDBFormat($value, $current_user->date_format);
+							$dt = new DateTime($value);
+							$value = PHPExcel_Shared_Date::PHPToExcel($dt);
+							$celltype = PHPExcel_Cell_DataType::TYPE_NUMERIC;
+							break;
+						case 'time':
+							$dt = new DateTime("1970/01/01 $value");
+							$value = PHPExcel_Shared_Date::PHPToExcel($dt);
+							$celltype = PHPExcel_Cell_DataType::TYPE_NUMERIC;
+							break;
 						default:
 							$celltype = PHPExcel_Cell_DataType::TYPE_STRING;
 							break;
@@ -3111,6 +3124,11 @@ class ReportRun extends CRMEntity {
 							$value = str_replace($current_user->currency_decimal_separator, '.', $value);
 					}
 					$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $value, $celltype);
+					if ($FieldDataTypes[$hdr]=='date') {
+						$worksheet->getStyleByColumnAndRow($count, $rowcount)->getNumberFormat()->setFormatCode($current_user->date_format);
+					} elseif ($FieldDataTypes[$hdr]=='time') {
+						$worksheet->getStyleByColumnAndRow($count, $rowcount)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME4);
+					}
 					if ($FieldDataTypes[$hdr]=='currency') {
 						$count = $count + 1;
 						$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $csym, PHPExcel_Cell_DataType::TYPE_STRING);
