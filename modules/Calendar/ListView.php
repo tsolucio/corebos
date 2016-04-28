@@ -214,7 +214,7 @@ if(isset($order_by) && $order_by != '') {
 }
 
 if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true){
-	$count_result = $adb->query( mkCountQuery( $list_query));
+	$count_result = $adb->query("SELECT count(*) AS count FROM ($list_query) as calcount");
 	$noofrows = $adb->query_result($count_result,0,"count");
 }else{
 	$noofrows = null;
