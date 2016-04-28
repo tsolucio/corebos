@@ -1821,6 +1821,35 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 		$readonly = $adb->query_result($result, $i, 'readonly');
 		$custfld = getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, $generatedtype, $tabid, $module);
 		if (is_array($custfld)) {
+			$extendedfieldinfo = '';
+			if ($custfld[2]==10) {
+				$fldmod_result = $adb->pquery('SELECT relmodule, status FROM vtiger_fieldmodulerel WHERE fieldid=
+					(SELECT fieldid FROM vtiger_field, vtiger_tab WHERE vtiger_field.tabid=vtiger_tab.tabid AND fieldname=? AND name=? and vtiger_field.presence in (0,2)) order by sequence',
+					Array($fieldname, $module));
+				$entityTypes = Array();
+				$parent_id = $col_fields[$fieldname];
+				for($index = 0; $index < $adb->num_rows($fldmod_result); ++$index) {
+					$entityTypes[] = $adb->query_result($fldmod_result, $index, 'relmodule');
+				}
+				if(!empty($parent_id)) {
+					if ($adb->num_rows($fldmod_result)==1) {
+						$valueType = $adb->query_result($fldmod_result, 0, 0);
+					} else {
+						$valueType = getSalesEntityType($parent_id);
+					}
+					$displayValueArray = getEntityName($valueType, $parent_id);
+					if(!empty($displayValueArray)){
+						foreach($displayValueArray as $key=>$val){
+							$displayValue = $val;
+						}
+					}
+				} else {
+					$displayValue='';
+					$valueType='';
+					$parent_id='';
+				}
+				$extendedfieldinfo = Array('options'=>$entityTypes, 'selected'=>$valueType, 'displayvalue'=>$displayValue, 'entityid'=>$parent_id);
+			}
 			$label_data[$block][] = array($custfld[0] => array(
 				'value' => $custfld[1], "ui" => $custfld[2], 'options' => isset($custfld['options']) ? $custfld['options'] : '',
 				'secid' => isset($custfld['secid']) ? $custfld['secid'] : '', 'link' => isset($custfld['link']) ? $custfld['link'] : '',
@@ -1828,7 +1857,7 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 				'salut' => isset($custfld['salut']) ? $custfld['salut'] : '', 'notaccess' => isset($custfld['notaccess']) ? $custfld['notaccess'] : '',
 				'cntimage' => isset($custfld['cntimage']) ? $custfld['cntimage'] : '', "isadmin" => $custfld["isadmin"],
 				'tablename' => $fieldtablename, "fldname" => $fieldname, "fldid" => $fieldid,
-				'displaytype' => $displaytype, "readonly" => $readonly));
+				'displaytype' => $displaytype, "readonly" => $readonly, 'extendedfieldinfo'=>$extendedfieldinfo));
 		}
 	}
 	foreach ($label_data as $headerid => $value_array) {

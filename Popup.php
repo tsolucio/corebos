@@ -238,7 +238,7 @@ switch($currentModule)
 	// END
 }
 // vtlib customization: Initialize focus to get generic popup
-if($_REQUEST['form'] == 'vtlibPopupView') {
+if($_REQUEST['form'] == 'vtlibPopupView' or $_REQUEST['form'] == 'DetailView') {
 	vtlib_setup_modulevars($currentModule, $focus);
 }
 // END

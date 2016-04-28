@@ -376,6 +376,9 @@ function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 	{
 		getObj(dtlView).innerHTML = document.getElementById(txtBox).options[document.getElementById(txtBox).selectedIndex].text; 
 	}
+	else if(uitype == '10') {
+		getObj(dtlView).innerHTML = "<a href=\"index.php?module="+document.getElementById(fieldName+'_type').value+"&action=DetailView&record="+tagValue+"\">"+document.getElementById(fieldName+'_display').value+"&nbsp;</a>";
+	}
 	else if(getObj(popupTxt))
 	{
 		var popObj = getObj(popupTxt);
