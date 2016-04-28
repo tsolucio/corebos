@@ -1459,17 +1459,11 @@ class ReportRun extends CRMEntity {
 		}
 		else if($module == "Accounts")
 		{
-			$query = "from vtiger_account
-				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_account.accountid
-				inner join vtiger_accountbillads on vtiger_account.accountid=vtiger_accountbillads.accountaddressid
+			$focus = CRMEntity::getInstance($module);
+			$query = $focus->generateReportsQuery($module);
+			$query.= " inner join vtiger_accountbillads on vtiger_account.accountid=vtiger_accountbillads.accountaddressid
 				inner join vtiger_accountshipads on vtiger_account.accountid=vtiger_accountshipads.accountaddressid
-				inner join vtiger_accountscf on vtiger_account.accountid = vtiger_accountscf.accountid
-				left join vtiger_groups as vtiger_groupsAccounts on vtiger_groupsAccounts.groupid = vtiger_crmentity.smownerid
 				left join vtiger_account as vtiger_accountAccounts on vtiger_accountAccounts.accountid = vtiger_account.parentid
-				left join vtiger_users as vtiger_usersAccounts on vtiger_usersAccounts.id = vtiger_crmentity.smownerid
-				left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid
-				left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
-				left join vtiger_users as vtiger_lastModifiedByAccounts on vtiger_lastModifiedByAccounts.id = vtiger_crmentity.modifiedby
 				".$this->getRelatedModulesQuery($module,$this->secondarymodule,$type,$where_condition).
 						getNonAdminAccessControlQuery($this->primarymodule,$current_user)."
 				where vtiger_crmentity.deleted=0 ";
