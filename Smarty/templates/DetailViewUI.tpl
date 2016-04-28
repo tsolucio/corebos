@@ -109,7 +109,6 @@
                     							</div>
                							</td>
                                           {elseif $keyid eq '33' || $keyid eq '3313'}<!--Multi Select Combo box-->
-						<!--code given by Neil start Ref:http://forums.vtiger.com/viewtopic.php?p=31096#31096-->
 						<!--{assign var="MULTISELECT_COMBO_BOX_ITEM_SEPARATOR_STRING" value=", "}  {* Separates Multi-Select Combo Box items *}
 						{assign var="DETAILVIEW_WORDWRAP_WIDTH" value="70"} {* No. of chars for word wrapping long lines of Multi-Select Combo Box items *}-->
                                           <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'>&nbsp;<span id="dtlview_{$keyfldname}">
@@ -355,7 +354,7 @@
 							{$keyval}
 						</span>
 						<div id="editarea_{$keyfldname}" style="display:none;">
-							<input style="border:1px solid #bababa;" size="11" maxlength="10" type="text" id="txtbox_{$keyfldname}" name="{$keyfldname}" maxlength='100' value="{$keyval|regex_replace:'/[^-]*(--)[^-]*$/':''}"></input>
+							<input style="border:1px solid #bababa;" size="10" maxlength="10" type="text" id="txtbox_{$keyfldname}" name="{$keyfldname}" value="{$keyval|regex_replace:'/[^-]*(--)[^-]*$/':''}"></input>
 							<img src="{'btnL3Calendar.gif'|@vtiger_imageurl:$THEME}" id="jscal_trigger_{$keyfldname}">
 							<br><input name="button_{$keyfldname}" type="button" class="crmbutton small save" value="{$APP.LBL_SAVE_LABEL}" onclick="dtlViewAjaxSave('{$keyfldname}','{$MODULE}',{$keyid},'{$keytblname}','{$keyfldname}','{$ID}');fnhide('crmspanid');event.stopPropagation();"/> {$APP.LBL_OR}
 							<a href="javascript:;" onclick="hndCancel('dtlview_{$keyfldname}','editarea_{$keyfldname}','{$keyfldname}');event.stopPropagation();" class="link">{$APP.LBL_CANCEL_BUTTON_LABEL}</a>

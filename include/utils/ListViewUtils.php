@@ -2410,7 +2410,6 @@ function getListQuery($module, $where = '') {
 			$query .= "WHERE vtiger_crmentity.deleted = 0 " . $where;
 			break;
 		Case "Contacts":
-			//Query modified to sort by assigned to
 			$query = "SELECT vtiger_contactdetails.*, vtiger_crmentity.smownerid, vtiger_crmentity.crmid
 			FROM vtiger_contactdetails
 			INNER JOIN vtiger_crmentity
@@ -2433,8 +2432,7 @@ function getListQuery($module, $where = '') {
 				ON vtiger_customerdetails.customerid = vtiger_contactdetails.contactid";
 			if ((isset($_REQUEST["from_dashboard"]) && $_REQUEST["from_dashboard"] == true) &&
 					(isset($_REQUEST["type"]) && $_REQUEST["type"] == "dbrd")) {
-				$query .= " INNER JOIN vtiger_campaigncontrel on vtiger_campaigncontrel.contactid = " .
-						"vtiger_contactdetails.contactid";
+				$query .= ' INNER JOIN vtiger_campaigncontrel on vtiger_campaigncontrel.contactid = vtiger_contactdetails.contactid';
 			}
 			$query .= getNonAdminAccessControlQuery($module, $current_user);
 			$query .= "WHERE vtiger_crmentity.deleted = 0 " . $where;
