@@ -376,7 +376,7 @@
 						<div id="editarea_{$keyfldname}" style="display:none;">
 							{if count($data.extendedfieldinfo.options) eq 1}
 								{assign var="use_parentmodule" value=$data.extendedfieldinfo.options.0}
-								<input type='hidden' class='small' name="{$keyfldname}_type" value="{$use_parentmodule}">
+								<input type='hidden' class='small' id="{$keyfldname}_type" name="{$keyfldname}_type" value="{$use_parentmodule}">
 								{assign var=vtui10func value=$use_parentmodule|getvtlib_open_popup_window_function:$keyfldname:$MODULE}
 							{else}
 								{assign var=vtui10func value="vtlib_open_popup_window"}
