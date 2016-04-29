@@ -26,6 +26,16 @@ function updateContactAssignedTo($entity) {
     	$params = array($usr_id, $acc_id);
     	$adb->pquery($query, $params);
     }
+	if (getSalesEntityType($acc_id)=='Contacts') {
+		list($void,$accountid) = explode('x', $entity->data['account_id']);
+		if (!empty($accountid)) {
+			$accassigrs = $adb->pquery('select smownerid from vtiger_crmentity where crmid=?',array($accountid));
+			$usr_id = $adb->query_result($accassigrs, 0, 0);
+			$query = 'update vtiger_crmentity set smownerid=? where crmid=?';
+			$params = array($usr_id, $acc_id);
+			$adb->pquery($query, $params);
+		}
+	}
 }
 
 ?>

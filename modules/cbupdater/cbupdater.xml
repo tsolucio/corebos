@@ -591,4 +591,11 @@
 	<classname>separateCreateAndEditPermissions</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Workflow custom method to update assigned to of contact on contact save</description>
+	<filename>build/changeSets/workflow_contactassignedtoaccount.php</filename>
+	<classname>workflow_contactassignedtoaccount</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
 </updatesChangeLog>
