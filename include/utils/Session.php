@@ -49,7 +49,9 @@ class coreBOS_Session {
 		global $site_URL;
 		if (empty($URL)) $URL = $site_URL;
 		$purl = parse_url($URL);
-		return preg_replace('/[^A-Za-z0-9]/', '', $purl['host'].$purl['path']);
+		$sn = preg_replace('/[^A-Za-z0-9]/', '', $purl['host'].$purl['path'].(isset($purl['port'])?$purl['port']:''));
+		if (is_numeric($sn)) $sn = 'cb'.$sn;
+		return $sn;
 	}
 
 	/**
