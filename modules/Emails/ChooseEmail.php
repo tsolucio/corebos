@@ -13,7 +13,7 @@ $entityid=vtlib_purify($_REQUEST['entityid']);
 
 if ($pmodule=='Accounts')
 {
-	$querystr="select fieldid,fieldlabel,columnname,tablename from vtiger_field where tabid=6 and uitype='13' and vtiger_field.presence in (0,2)"; 
+	$querystr="select fieldid,fieldlabel,columnname,tablename from vtiger_field where tabid=6 and uitype='13' and vtiger_field.presence in (0,2)";
 }
 elseif ($pmodule=='Contacts')
 {
@@ -47,10 +47,10 @@ elseif ($pmodule=='Leads')
 ?>
 <script language="javascript">
 function passemail()
-{		
+{
 	y=window.opener.document.EditView.parent_id.value+"<?php echo $entityid;?>";
 	z=window.opener.document.EditView.parent_name.value;
-	<?php 
+	<?php
 	for ($x=0;$x<$numrows;$x++)
 	{
 		$temp=$adb->query_result($result,$x,'columnname');
@@ -77,10 +77,9 @@ function passemail()
 				y=y+"@<?php echo $adb->query_result($result,$x,'fieldid');?>";
 				z=z+"<?php echo $fullname.'<'.$temp1.'> ;';?>";
 		}
-<?php 
-	} 
+<?php
+	}
 ?>
-	
 	window.opener.document.EditView.parent_id.value=y+"|";
 	window.opener.document.EditView.parent_name.value=z;
 	window.close();
@@ -90,8 +89,8 @@ function passemail()
 <form name="choosemails" method="post" onsubmit="VtigerJS_DialogBox.block();">
 <h4>The following emails are available for the selected record. Please choose the ones you would like to use.</h4>
 <div align="center">
-   <table cellpadding="0" cellspacing="0" border="0">
-	<?php 
+<table cellpadding="0" cellspacing="0" border="0">
+	<?php
 	for ($i=0;$i<$numrows;$i++)
 	{
 		$temp=$adb->query_result($result,$i,'columnname');
@@ -99,8 +98,7 @@ function passemail()
 		echo '<tr><td>'.$adb->query_result($result,$i,'fieldlabel').' </td><td>&nbsp;&nbsp;&nbsp;<input name="emails'.$i.'" type="checkbox" title="Raju"></td><td>'.$temp1.'</tr>';
 	}
 	?>
-   </table>
-
+</table>
 <input type="button" name="OK" onClick="passemail()" value="OK">
 </div>
 </form>

@@ -19,8 +19,7 @@ $focus = CRMEntity::getInstance($currentModule);
 $json = new Zend_Json();
 
 $smarty = new vtigerCRM_Smarty;
-if(isset($_REQUEST['record'])) 
-{
+if(isset($_REQUEST['record'])) {
 	global $adb,$default_charset;
 	$focus->retrieve_entity_info($_REQUEST['record'],"Emails");
 	$log->info("Entity info successfully retrieved for DetailView.");
@@ -40,59 +39,47 @@ if(isset($_REQUEST['record']))
 	else
 		$focus->name = $focus->column_fields['subject'];
 }
-if(isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') 
-{
+if(isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
 	$focus->id = "";
 }
 
-//needed when creating a new email with default values passed in 
-if (isset($_REQUEST['contact_name']) && is_null($focus->contact_name)) 
-{
+//needed when creating a new email with default values passed in
+if (isset($_REQUEST['contact_name']) && is_null($focus->contact_name)) {
 	$focus->contact_name = $_REQUEST['contact_name'];
 }
-if (isset($_REQUEST['contact_id']) && is_null($focus->contact_id)) 
-{
+if (isset($_REQUEST['contact_id']) && is_null($focus->contact_id)) {
 	$focus->contact_id = $_REQUEST['contact_id'];
 }
-if (isset($_REQUEST['opportunity_name']) && is_null($focus->parent_name)) 
-{
+if (isset($_REQUEST['opportunity_name']) && is_null($focus->parent_name)) {
 	$focus->parent_name = $_REQUEST['opportunity_name'];
 }
-if (isset($_REQUEST['opportunity_id']) && is_null($focus->parent_id)) 
-{
+if (isset($_REQUEST['opportunity_id']) && is_null($focus->parent_id)) {
 	$focus->parent_id = $_REQUEST['opportunity_id'];
 }
-if (isset($_REQUEST['account_name']) && is_null($focus->parent_name)) 
-{
+if (isset($_REQUEST['account_name']) && is_null($focus->parent_name)) {
 	$focus->parent_name = $_REQUEST['account_name'];
 }
-if (isset($_REQUEST['account_id']) && is_null($focus->parent_id)) 
-{
+if (isset($_REQUEST['account_id']) && is_null($focus->parent_id)) {
 	$focus->parent_id = $_REQUEST['account_id'];
 }
-if (isset($_REQUEST['parent_name'])) 
-{
+if (isset($_REQUEST['parent_name'])) {
 	$focus->parent_name = $_REQUEST['parent_name'];
 }
-if (isset($_REQUEST['parent_id'])) 
-{
+if (isset($_REQUEST['parent_id'])) {
 	$focus->parent_id = $_REQUEST['parent_id'];
 }
-if (isset($_REQUEST['parent_type'])) 
-{
+if (isset($_REQUEST['parent_type'])) {
 	$focus->parent_type = $_REQUEST['parent_type'];
 }
-if (isset($_REQUEST['filename']) && is_null($focus->filename)) 
-{
+if (isset($_REQUEST['filename']) && is_null($focus->filename)) {
 	$focus->filename = $_REQUEST['filename'];
 }
-elseif (is_null($focus->parent_type)) 
-{
+elseif (is_null($focus->parent_type)) {
 	$focus->parent_type = $app_list_strings['record_type_default_key'];
 }
 
 $submenu = array('LBL_EMAILS_TITLE'=>'index.php?module=Emails&action=index','LBL_WEBMAILS_TITLE'=>'index.php?module=squirrelmail-1.4.4&action=redirect');
-$sec_arr = array('index.php?module=Emails&action=index'=>'Emails','index.php?module=squirrelmail-1.4.4&action=redirect'=>'Emails'); 
+$sec_arr = array('index.php?module=Emails&action=index'=>'Emails','index.php?module=squirrelmail-1.4.4&action=redirect'=>'Emails');
 
 $smarty->assign("MOD", $mod_strings);
 $smarty->assign("APP", $app_strings);

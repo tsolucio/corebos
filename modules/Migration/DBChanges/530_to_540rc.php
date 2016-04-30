@@ -174,7 +174,7 @@ if (!($adb->num_rows($result))) {
 $result = $adb->pquery('show columns from com_vtiger_workflowtasks like ?', array('executionorder'));
 if (!($adb->num_rows($result))) {
 	ExecutePQuery('ALTER TABLE com_vtiger_workflowtasks ADD executionorder INT(10)', array());
-	ExecutePQuery('ALTER TABLE `com_vtiger_workflowtasks` ADD INDEX(`executionorder`)');
+	ExecutePQuery('ALTER TABLE `com_vtiger_workflowtasks` ADD INDEX(`executionorder`)', array());
 	$result = $adb->pquery('select task_id,workflow_id from com_vtiger_workflowtasks order by workflow_id', array());
 	$upd = 'update com_vtiger_workflowtasks set executionorder=? where task_id=?';
 	$wfid = null;

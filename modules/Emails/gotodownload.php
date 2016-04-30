@@ -17,8 +17,7 @@ $UserName = "user";
 $PassWord = "password";
 $mbox = imap_open($ServerName, $UserName,$PassWord) or die("Could not open Mailbox - try again later!");
 
-if ($download == "1") 
-{
+if ($download == "1") {
 	echo "attribute=";
 	print_r($att);
 	$strFileName = $att[$file]->parameters[0]->value;
@@ -26,16 +25,15 @@ if ($download == "1")
 	$fileContent = imap_fetchbody($mbox,$msgno,$file+2);
 }
 
-/**     Function to download the File
+/** Function to download the File
  *	@param string $strFileType - File Type
  *	@param string $strFileName - File Name
  *	@param string $fileContents- File contents
 **/
-function downloadFile($strFileType,$strFileName,$fileContent) 
-{
+function downloadFile($strFileType,$strFileName,$fileContent) {
 	$ContentType = "application/octet-stream";
 
-	if ($strFileType == ".asf") 
+	if ($strFileType == ".asf")
 	$ContentType = "video/x-ms-asf";
 	if ($strFileType == ".avi")
 	$ContentType = "video/avi";
@@ -59,23 +57,23 @@ function downloadFile($strFileType,$strFileName,$fileContent)
 	$ContentType = "application/rtf";
 	if ($strFileType == ".htm" || $strFileType == "html")
 	$ContentType = "text/html";
-	if ($strFileType == ".xml") 
+	if ($strFileType == ".xml")
 	$ContentType = "text/xml";
-	if ($strFileType == ".xsl") 
+	if ($strFileType == ".xsl")
 	$ContentType = "text/xsl";
-	if ($strFileType == ".css") 
+	if ($strFileType == ".css")
 	$ContentType = "text/css";
-	if ($strFileType == ".php") 
+	if ($strFileType == ".php")
 	$ContentType = "text/php";
-	if ($strFileType == ".asp") 
+	if ($strFileType == ".asp")
 	$ContentType = "text/asp";
 	if ($strFileType == ".pdf")
 	$ContentType = "application/pdf";
 
-	header ("Content-Type: $ContentType"); 
+	header ("Content-Type: $ContentType");
 	header("Cache-Control: private");
 	header("Content-Description: PHP Generated Data");
-	header ("Content-Disposition: attachment; filename=$strFileName");    
+	header ("Content-Disposition: attachment; filename=$strFileName");
 	echo imap_base64($fileContent);
 	#echo base64_decode($fileContent);
 }

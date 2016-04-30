@@ -22,7 +22,7 @@ if(!empty($_REQUEST['idlist'])) {
 foreach($storearray as $id)
 {
 	if($id != '')
-	{			
+	{
 		$sql = "insert into vtiger_seactivityrel values (?,?)";
 		$adb->pquery($sql, array($id, $record));
 	}
@@ -31,7 +31,7 @@ if(isset($_REQUEST['user_id']) && $_REQUEST['user_id'] != '')
 {
 	$record = $_REQUEST['record'];
 	$sql = "insert into vtiger_salesmanactivityrel values (?,?)";
-	$adb->pquery($sql, array($_REQUEST["user_id"], $record));	
+	$adb->pquery($sql, array($_REQUEST["user_id"], $record));
 }
 
 header("Location: index.php?action=CallRelatedList&module=Emails&record=".vtlib_purify($record));
