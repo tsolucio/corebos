@@ -14,6 +14,7 @@
 require_once('include/utils/Session.php');
 require_once('include/database/PearDatabase.php');
 require_once('include/events/include.inc');
+require_once('modules/com_vtiger_workflow/VTWorkflowManager.inc');
 require_once 'modules/GlobalVariable/GlobalVariable.php';
 require_once 'modules/cbMap/cbMap.php';
 require_once('include/ComboUtil.php'); //new
