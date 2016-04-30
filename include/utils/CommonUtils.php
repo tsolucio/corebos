@@ -1683,7 +1683,8 @@ function mkdirs($dir, $mode = 0777, $recursive = true) {
  */
 function setObjectValuesFromRequest($focus) {
 	global $log;
-	$log->debug("Entering setObjectValuesFromRequest(" . get_class($focus) . ") method ...");
+	$moduleName = get_class($focus);
+	$log->debug("Entering setObjectValuesFromRequest($moduleName) method ...");
 	if (isset($_REQUEST['record'])) {
 		$focus->id = $_REQUEST['record'];
 	}
@@ -1700,6 +1701,18 @@ function setObjectValuesFromRequest($focus) {
 		} elseif (isset($_REQUEST[$fieldname.'_hidden'])) {
 			$value = trim($_REQUEST[$fieldname.'_hidden']);
 			$focus->column_fields[$fieldname] = $value;
+		}
+	}
+	if (!empty($_REQUEST['cbfromid'])) {
+		$cbfromid = vtlib_purify($_REQUEST['cbfromid']);
+		$cbfrommodule = getSalesEntityType($cbfromid);
+		$bmapname = $cbfrommodule.'2'.$moduleName;
+		$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+		if ($cbMapid) {
+			$cbMap = cbMap::getMapByID($cbMapid);
+			$cbfrom = CRMEntity::getInstance($cbfrommodule);
+			$cbfrom->retrieve_entity_info($cbfromid, $cbfrommodule);
+			$focus->column_fields = $cbMap->Mapping($cbfrom->column_fields,$focus->column_fields);
 		}
 	}
 	$focus = cbEventHandler::do_filter('corebos.filter.editview.setObjectValues', $focus);
