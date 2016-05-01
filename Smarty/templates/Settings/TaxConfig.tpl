@@ -1,11 +1,11 @@
 {*<!--
 /*********************************************************************************
-  ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
-   * ("License"); You may not use this file except in compliance with the License
-   * The Original Code is:  vtiger CRM Open Source
-   * The Initial Developer of the Original Code is vtiger.
-   * Portions created by vtiger are Copyright (C) vtiger.
-   * All Rights Reserved.
+ ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
+ * All Rights Reserved.
  ********************************************************************************/
 -->*}
 <script language="JAVASCRIPT" type="text/javascript" src="include/js/smoothscroll.js"></script>
@@ -60,7 +60,7 @@
 
 <br>
 <table border=0 cellspacing=0 cellpadding=10 width=100%>
-   <tr>
+	<tr>
 	<td style="border-right:1px dotted #CCCCCC;" valign="top">
 		<!-- if EDIT_MODE is true then Textbox will be displayed else the value will be displayed-->
 		<form name="{$formname}" method="POST" action="index.php" onsubmit="VtigerJS_DialogBox.block();">
@@ -73,10 +73,10 @@
 
 		<!-- Table to display the Product Tax Add and Edit Buttons - Starts -->
 		<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
-		   <tr>
+			<tr>
 			<td class="big" colspan="3"><strong>{$MOD.LBL_PRODUCT_TAX_SETTINGS} </strong></td>
-		   </tr>
-		   <tr>
+			</tr>
+			<tr>
 			<td>&nbsp;</td>
 			<td id="td_add_tax" class="small" colspan="2" align="right" nowrap>
 				{if $EDIT_MODE neq 'true'}
@@ -84,31 +84,31 @@
 				{/if}
 			</td>
 			<td class="small" align=right nowrap>
-			{if $EDIT_MODE eq 'true'}	
+			{if $EDIT_MODE eq 'true'}
 				<input class="crmButton small save" title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}"  onclick="this.form.action.value='TaxConfig'; this.form.save_tax.value='true'; this.form.parenttab.value='Settings'; return validateTaxes('tax_count');" type="submit" name="button2" value=" {$APP.LBL_SAVE_BUTTON_LABEL}  ">&nbsp;
 				<input class="crmButton small cancel" title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.module.value='Settings'; this.form.save_tax.value='false'; this.form.parenttab.value='Settings';" type="submit" name="button22" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
 			{elseif $TAX_COUNT > 0}
 				<input title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.add_tax_type.value=''; this.form.edit_tax.value='true'; this.form.parenttab.value='Settings';" type="submit" name="button" value="  {$APP.LBL_EDIT_BUTTON_LABEL}  " class="crmButton small edit">
 			{/if}
 			</td>
-		   </tr>
+			</tr>
 		</table>
 		<!-- Table to display the Product Tax Add and Edit Buttons - Ends -->
 
 		<!-- Table to display the List of Product Tax values - Starts -->
 		<table id="add_tax" border=0 cellspacing=0 cellpadding=5 width=100% class="listRow">
-		   {if $TAX_COUNT eq 0}
+		{if $TAX_COUNT eq 0}
 			<tr><td>{$MOD.LBL_NO_TAXES_AVAILABLE}. {$MOD.LBL_PLEASE} {$MOD.LBL_ADD_TAX_BUTTON}.</td></tr>
-		   {else}
+		{else}
 			{foreach item=tax key=count from=$TAX_VALUES}
 
 				<!-- To set the color coding for the taxes which are active and inactive-->
 				{if $tax.deleted eq 0}
-				   <tr><!-- set color to taxes which are active now-->
+					<tr><!-- set color to taxes which are active now-->
 				{else}
-				   <tr><!-- set color to taxes which are disabled now-->
+					<tr><!-- set color to taxes which are disabled now-->
 				{/if}
-				
+
 				<!--assinging tax label name for javascript validation-->
 				{assign var=tax_label value="taxlabel_"|cat:$tax.taxname}
 				<td width=35% class="cellLabel small" >
@@ -133,12 +133,12 @@
 						<a href="index.php?module=Settings&action=TaxConfig&parenttab=Settings&enable=true&taxname={$tax.taxname}"><img src="{'disabled.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$MOD.LBL_DISABLED}" title="{$MOD.LBL_DISABLED}"></a>
 					{/if}
 				</td>
-			   </tr>
+				</tr>
 			{/foreach}
 			{if $EDIT_MODE eq 'true'}
 				<input type="hidden" id="tax_count" value="{$count}">
 			{/if}
-		   {/if}
+		{/if}
 		</table>
 		<!-- Table to display the List of Product Tax values - Ends -->
 		</form>
@@ -156,10 +156,10 @@
 
 		<!-- Table to display the S&H Tax Add and Edit Buttons - Starts -->
 		<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
-		   <tr>
+			<tr>
 			<td class="big" colspan="3"><strong>{$MOD.LBL_SHIPPING_HANDLING_TAX_SETTINGS}</strong></td>
-		   </tr>
-		   <tr>
+			</tr>
+			<tr>
 			<td>&nbsp;</td>
 				<td id="td_sh_add_tax" class="small" colspan="2" align="right" nowrap>
 				{if $SH_EDIT_MODE neq 'true'}
@@ -175,22 +175,22 @@
 					<input title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" onclick="this.form.action.value='TaxConfig'; this.form.sh_add_tax_type.value=''; this.form.sh_edit_tax.value='true'; this.form.parenttab.value='Settings';" type="submit" name="button" value="  {$APP.LBL_EDIT_BUTTON_LABEL}  " class="crmButton small edit">
 				{/if}
 			</td>
-		   </tr>
+			</tr>
 		</table>
 		<!-- Table to display the S&H Tax Add and Edit Buttons - Ends -->
 
 		<!-- Table to display the List of S&H Tax Values - Starts -->
 		<table id="sh_add_tax" border=0 cellspacing=0 cellpadding=5 width=100% class="listRow">
-		   {if $SH_TAX_COUNT eq 0}
+		{if $SH_TAX_COUNT eq 0}
 			<tr><td>{$MOD.LBL_NO_TAXES_AVAILABLE}. {$MOD.LBL_PLEASE} {$MOD.LBL_ADD_TAX_BUTTON}.</td></tr>
-		   {else}
+		{else}
 			{foreach item=tax key=count from=$SH_TAX_VALUES}
 
 			<!-- To set the color coding for the taxes which are active and inactive-->
 			{if $tax.deleted eq 0}
-			   <tr><!-- set color to taxes which are active now-->
+				<tr><!-- set color to taxes which are active now-->
 			{else}
-			   <tr><!-- set color to taxes which are disabled now-->
+				<tr><!-- set color to taxes which are disabled now-->
 			{/if}
 
 			{assign var=tax_label value="taxlabel_"|cat:$tax.taxname}
@@ -205,8 +205,8 @@
 			<td width=55% class="cellText small">
 				{if $SH_EDIT_MODE eq 'true'}
 					<input name="{$tax.taxname}" id="{$tax.taxname}" type="text" value="{$tax.percentage}" class="detailedViewTextBox small">
-					&nbsp;% 
-				{else} 
+					&nbsp;%
+				{else}
 					{$tax.percentage}&nbsp;%
 				{/if}
 			</td>
@@ -217,18 +217,18 @@
 						<a href="index.php?module=Settings&action=TaxConfig&parenttab=Settings&sh_enable=true&sh_taxname={$tax.taxname}"><img src="{'disabled.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" alt="{$MOD.LBL_DISABLE}" title="{$MOD.LBL_DISABLE}"></a>
 					{/if}
 			</td>
-		   </tr>
-		   {/foreach}
-		   {if $SH_EDIT_MODE eq 'true'}
+			</tr>
+			{/foreach}
+			{if $SH_EDIT_MODE eq 'true'}
 			<input type="hidden" id="sh_tax_count" value="{$count}">
-		   {/if}
+			{/if}
 		{/if}
 		</table>
 		<!-- Table to display the List of S&H Tax Values - Ends -->
 		</form>
 	</td>
 	<!-- Shipping Tax Ends Here -->
-   </tr>
+</tr>
 </table>
 
 <table border=0 cellspacing=0 cellpadding=5 width=100% >
@@ -245,7 +245,7 @@
 	</div>
 </td>
 	<td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
-   </tr>
+</tr>
 </tbody>
 </table>
 <script>

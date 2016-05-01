@@ -9,89 +9,47 @@
  ********************************************************************************/
 
 $mod_strings = Array(
-
 'LBL_MODULE_NAME'=>'Settings',
-
 'LBL_MODULE_TITLE'=>'Settings: Home',
-
 'LBL_LIST_CONTACT_ROLE'=>'Role',
-
-
-
 'LBL_LIST_LAST_NAME'=>'Last Name',
-
 'LBL_FIRST_NAME'=>'First Name:',
-
 'LBL_LAST_NAME'=>'Last Name:',
-
 'LBL_PHONE'=>'Phone:',
-
 'LBL_EMAIL_ADDRESS'=>'Email',
-
 'LBL_TRANSCURR'=>'Transfer currency to',
-
 'LBL_CURRDEL'=>'Currency to be Deleted',
-
 'LBL_NEW_FORM_TITLE'=>'New Contact',
-
 'LBL_NEW_CURRENCY'=>'New Currency',
-
 'LBL_VIEWING'=>'Viewing',
-
 'LBL_CURRENCY_NAME'=>'Currency Name',
-
 'LBL_CURRENCY_CODE'=>'Currency Code',
-
 'LBL_CURRENCY_SYMBOL'=>'Symbol',
-
 'LBL_CURRENCY_CRATE'=>'Conversion Rate',
-
 'LBL_CURRENCY_STATUS'=>'Status',
-
 'LBL_CURRENCY_TOOL'=>'Tools',
-
 'LBL_CURRENCY_LIST'=>'Currencies List',
-
-
 'NTC_DELETE_CONFIRMATION'=>'Are you sure you want to delete this record?',
-
 'LEADCUSTOMFIELDS'=>'Lead Custom Fields',
-
 'ACCOUNTCUSTOMFIELDS'=>'Organization Custom Fields',
-
 'CONTACTCUSTOMFIELDS'=>'Contact Custom Fields',
-
 'OPPORTUNITYCUSTOMFIELDS'=>'Opportunity Custom Fields',
-
 'HELPDESKCUSTOMFIELDS'=>'Helpdesk Custom Fields',
-
 'PRODUCTCUSTOMFIELDS'=>'Product Custom Fields',
-
 'VENDORCUSTOMFIELDS'=>'Vendor Custom Fields',
-
 'PRICEBOOKCUSTOMFIELDS'=>'PriceBook Custom Fields',
-
 'POCUSTOMFIELDS'=>'Purchase Order Custom Fields',
 'SOCUSTOMFIELDS'=>'Sales Order Custom Fields',
 'QUOTESCUSTOMFIELDS'=>'Quotes Custom Fields',
 'INVOICECUSTOMFIELDS'=>'Invoice Custom Fields',
-
 'EDITLEADPICKLISTVALUES'=>'Edit Lead Picklist ',
-
 'EDITACCOUNTPICKLISTVALUES'=>'Edit Organization Picklist ',
-
 'EDITCONTACTPICKLISTVALUES'=>'Edit Contact Picklist ',
-
 'EDITOPPORTUNITYPICKLISTVALUES'=>'Edit Opportunity Picklist ',
-
 'EDITHELPDESKPICKLISTVALUES'=>'Edit HelpDesk Picklist ',
-
 'EDITPRODUCTPICKLISTVALUES'=>'Edit Product Picklist ',
-
 'EDITEVENTPICKLISTVALUES'=>'Edit Event Picklist ',
-
 'EDITTASKPICKLISTVALUES'=>'Edit Task Picklist ',
-
 'EDITRSSPICKLISTVALUES'=>'Edit Rss Picklist',
 'EDITVENDORPICKLISTVALUES'=>'Edit Vendor Picklist',
 'EDITPBPICKLISTVALUES'=>'Edit PriceBook Picklist',
@@ -100,186 +58,88 @@ $mod_strings = Array(
 'EDITQUOTEPICKLISTVALUES'=>'Edit Quote Picklist',
 'EDITINVOICEPICKLISTVALUES'=>'Edit Invoice Picklist',
 
-
-// Added for Release vtigerCRM 3.2 PATCH 1.0
-
-//Settings/index.php
-
-
 'LBL_PICKLIST_FIELD_SETTINGS'=>'Picklist Field Settings:',
 
-
-
-//SETTINGS/CustomFieldList.php,ComboFieldList.php,CreateCustomField.php
-
 'Leads'=>'Lead',
-
 'Accounts'=>'Organization',
-
 'Contacts'=>'Contact',
-
 'Potentials'=>'Opportunity',
-
 'HelpDesk'=>'HelpDesk',
-
 'Products'=>'Product',
-
 'Events'=>'Event',
-
 'Activities'=>'Task',
-
 'CustomFields'=>' Custom Fields',
-
 'NewCustomField'=>'New Custom Field',
-
 'NewCustomFieldAltC'=>'New Custom Field [Alt+c]:',
-
 'FieldName'=>'Field Name',
-
 'FieldType'=>'Field Type',
-
 'FieldLabel'=>'Field Label',
-
 'Delete'=>'Del',
-
 'NEW'=>'New',
-
 'CUSTOMFIELD'=>'Custom Field',
-
 'LBL_CUSTOM_FIELDS'=>'Custom Fields',
-
 'LBL_ADD_FIELD'=>'Create Custom Field',
-
 'LBL_CUSTM_MSG'=>'allows you to ....',
-
 'PicklistFields'=>' Picklist Fields',
-
-
 'Edit'=>'Edit',
-
 'LBL_EDIT_FIELD_TYPE'=>'Edit Field Type',
 
-//Settings/CustomField.html
-
 'LBL_PROVIDE_FIELD_INFORMATION'=>'Provide Field Information: ',
-
 'LBL_SELECT_FIELD_TYPE'=>'Select Field Type: ',
-
 'LBL_PROVIDE_FIELD_DETAILS'=>'Provide Field Details: ',
-
 'LBL_LABEL'=>'Label: ',
-
 'LBL_LENGTH'=>'Length: ',
-
 'LBL_DECIMAL_PLACES'=>'Decimal Places: ',
-
 'LBL_PICK_LIST_VALUES'=>'Pick list Values: ',
-
-
-
-//Settings/EditComboField.php
 
 'EditPickListValues'=>'Picklist Edit ',
 
-
-
-//Settings/EditField.html
-
 'LBL_FIELD_INFORMATION'=>'Field Information:',
-
 'Values'=>'Values',
-
 'EnterListOfValues'=>'Please enter the list of values below. Each value should be in its own line.',
 
-
-
-//Settings/fieldtypes.php
-
 'Text'=>'Text',
-
 'Number'=>'Number',
-
 'Percent'=>'Percent',
-
 'Currency'=>'Currency',
-
 'Date'=>'Date',
-
 'Email'=>'Email',
-
 'Phone'=>'Phone',
-
 'PickList'=>'Pick List',
-
 'LBL_MULTISELECT_COMBO'=>'Multi-Select Combo Box',
-
 'Skype'=>'Skype',
-
 'Time'=>'Time',
-
 'Relation'=>'Relation',
-
 'USERGROUPLIST'=>'Groups',
-
 'EMAILTEMPLATES'=>'E-mail Templates',
-
 'WORDINTEGRATION'=>'Mail Merge Templates',
-
 'LBL_MAIL_MERGE'=>'Mail Merge',
-
 'NOTIFICATIONSCHEDULERS'=>'Notification Schedulers',
 //currency status
 'LBL_ACTIVE'=>'Active',
-
 'LBL_INACTIVE'=>'Inactive',
-
 'LBL_NOTIFICATION'=>'Notification',
 'LBL_DESCRIPTION'=>'Description',
 'LBL_TOOL'=>'Tool',
 
-
-//Added fields for Title Informations -- after 4 Beta
-
 'LBL_EMAIL_CONFIG'=>'Outgoing Mail Server Configuration',
-
 'LBL_WORD_INTEGRATION'=>'Word Integration:',
-
 'LBL_GROUP_SETTINGS'=>'Group Settings:',
-
 'LBL_TEMPLATE_SETTINGS'=>'Template Settings:',
-
 'LBL_NOTIFICATION_SETTINGS'=>'Notification Settings:',
-
 'LBL_EMAIL_SETTINGS'=>'Email Settings:',
-
 'LBL_SECURITY_SETTINGS'=>'Security Settings:',
-
-
-
-//Added fields after RC1 - Release
-
 'LBL_MAIL_SERVER_INFO'=>'Outgoing Mail Server Information',
-
 'LBL_OUTGOING_MAIL_SERVER'=>'Server Name',
-
 'LBL_OUTGOING_MAIL_SERVER_LOGIN_USER_NAME'=>'Outgoing Mail Server Login User Name',
-
 'LBL_OUTGOING_MAIL_SERVER_PASSWORD'=>'Outgoing Mail Server Password',
-
 'LBL_MAIL_SERVER_SMTP'=>'Mail Server Settings (SMTP)',
-
 'LBL_BACKUP_SERVER_CONFIG'=>'Backup Server Configuration',
-
 'LBL_SERVER_ADDRESS'=>'Server Address',
-
 'LBL_FTP_SERVER_NAME'=>'FTP Server Name',
-
 'LBL_FTP_USER_NAME'=>'FTP User Name',
-
 'LBL_FTP_PASSWORD'=>'FTP Password',
-
 'LBL_FTP'=>'FTP',
-
 'LBL_SYSTEM_CONFIG'=>'System Configuration',
 'LBL_SYSTEM_INFO'=>'System Details',
 'LBL_PROXY_SETTINGS'=>'Proxy Server',
@@ -293,15 +153,10 @@ $mod_strings = Array(
 'LBL_NO_DATA'=>'No Data',
 
 'LBL_CURRENCY_CONFIGURATION'=>'- Currency Information',
-
 'LBL_CURRENCY_CONFIG'=>'Currency Configuration',
-
 'LBL_CURRENCY_INFO'=>'Currency Information',
-
 'LBL_CURRENCY_TITLE'=>'Currency',
-
 'LBL_CURRENCY_SETTINGS'=>'Currencies',
-
 
 'LBL_USERNAME'=>'User Name',
 'LBL_PASWRD'=>'Password',
@@ -309,169 +164,86 @@ $mod_strings = Array(
 'LBL_FROM_EMAIL_FIELD'=>'From Email',
 
 //Fields for Settings
-
 'LBL_USER_MANAGEMENT'=>'Users & Access Management',
-
 'LBL_USERS'=>'Users',
-
 'LBL_USERS_LIST'=>'Users List',
 'LBL_GROUP_LIST'=>'Groups List',
-
 'LBL_CREATE_AND_MANAGE_USERS'=>'- Create and Manage Users (e.g., admin)',
-
-
 'LBL_CREATE_AND_MANAGE_USER_ROLES'=>'- Create and Manage user roles (e.g., Administrator, Standard User, etc.)',
-
 'LBL_PROFILES'=>'Profiles',
-
 'LBL_PROFILES_LIST'=>'Profiles List',
-
 'LBL_CREATE_AND_MANAGE_USER_PROFILES'=>'- Create and Manage user profiles (e.g., CEO, Sales Manager, etc.)',
-
 'LBL_CREATE_AND_MANAGE_USER_GROUPS'=>'- Create and Manage user groups',
-
 'LBL_SHARING_ACCESS'=>'Sharing Access',
-
 'LBL_FIELDS_ACCESS'=>'Fields Access',
-
 'LBL_DEFAULT_ORGANIZATION_FIELDS'=>'Default Organization Fields Access',
-
 'LBL_SETTING_DEFAULT_ORGANIZATION_FIELDS'=>' - Setting Default Field Access within the Organization',
-
 'LBL_SETTING_DEFAULT_SHARING_ACCESS'=>'- Setting Default Sharing Access within the Organization',
-
 'LBL_FIELD_ACCESSIBILITY'=>'Field Accessibility',
-
 'LBL_SETTING_FIELD_ACCESSIBILITY'=>' - Setting Field Accessibility for each profiles',
-//<<<<<<<<for edit ordering blocks>>>>>>
 'LBL_FIELD_ORDERING_DESC'=>' - Edit Field Order',
-
 'LBL_FIELD_ORDERING'=>'Edit Field Blocks',
-//<<<<<<<<<<end>>>>>>>>>>>>>
 'LBL_LEAD_FIELD_ACCESS'=>'Lead Field Access',
-
 'LBL_ACCOUNT_FIELD_ACCESS'=>'Organization Field Access',
-
 'LBL_CONTACT_FIELD_ACCESS'=>'Contact Field Access',
-
 'LBL_OPPORTUNITY_FIELD_ACCESS'=>'Opportunity Field Access',
-
 'LBL_HELPDESK_FIELD_ACCESS'=>'HelpDesk Field Access',
-
 'LBL_PRODUCT_FIELD_ACCESS'=>'Product Field Access',
-
 'LBL_NOTE_FIELD_ACCESS'=>'Document Field Access',
-
 'LBL_EMAIL_FIELD_ACCESS'=>'Email Field Access',
-
 'LBL_TASK_FIELD_ACCESS'=>'Task Field Access',
-
 'LBL_EVENT_FIELD_ACCESS'=>'Event Field Access',
-
 'LBL_DELETE_DEMO_DATA'=>'Delete Demo Data',
-
 'LBL_DELETE_DEMO_DATA_INFO'=>'- Delete the Demo Data which is created at the time of installation',
-
-
-
 'LBL_STUDIO'=>'Studio',
-
 'LBL_CUSTOM_FIELD_SETTINGS'=>'Custom Field Settings',
-
 'LBL_CREATE_AND_MANAGE_USER_DEFINED_FIELDS'=>'Manage your company-wide custom fields.',
-
 'LBL_SELECT_MODULE'=>'Select Module',
-
 'LBL_SELECT_CF_TEXT'=>'<b>Select Module:</b>',
-
-
-
 'LBL_PICKLIST_SETTINGS'=>'Picklist Settings',
-
 'LBL_EDIT_PICKLIST_VALUES'=>' - Edit values of Picklist fields',
-
 'LBL_EDIT'=>'Editing',
-
 'LBL_COMMUNICATION_TEMPLATES'=>'Communication Templates',
-
 'LBL_CREATE_EMAIL_TEMPLATES'=>'New Email Template',
-
 'LBL_UPLOAD_MSWORD_TEMPLATES'=>' - Upload MS Word Templates for Mail Merge',
-
 'LBL_SCHEDULE_EMAIL_NOTIFICATION'=>' - Schedule Email Notifications',
-
 'LBL_EXPAND_CLOSE_MENU'=>'Expand/Close Menu',
-
 'LBL_CONFIGURATION'=>'Configuration',
-
 'LBL_CONFIGURE_MAIL_SERVER'=>' - Configure Outgoing Mail Server',
-
 'LBL_BACKUP_SERVER_CONFIGURATION'=>'Backup Server Configuration',
-
 'LBL_BACKUP_SERVER_INFO'=>'Backup Server Information',
-
 'LBL_BACKUP_SERVER_SETTINGS'=>'Backup Server',
-
 'LBL_CONFIGURE_BACKUP_SERVER'=>' - Configure Backup Server',
-
 'LBL_SYSTEM_CONFIGURATION'=>' - System Configuration',
-
 'LBL_PROXY_SERVER_CONFIGURATION'=>'Proxy Server Configuration',
-
 'LBL_PROXY_SERVER_INFO'=>'Proxy Server Information',
-
 'LBL_PROXY_SERVER_SETTINGS'=>'Proxy Server',
-
 'LBL_CONFIGURE_PROXY_SERVER'=>' - Configure Proxy Server',
-
 'LBL_PROXY_PORT'=>'Port Number',
 
-
-
 //Field Types for custom fields
-
 'LBL_URL'=>'URL',
-
 'LBL_CHECK_BOX'=>'Checkbox',
 
-
-
 //PickList Settings
-
 'LBL_STANDARD_FIELDS'=>'Standard Fields',
-
 'LBL_LEAD_SOURCE'=>'Lead Source',
-
 'LBL_SALUTATION'=>'Salutation',
-
 'LBL_LEAD_STATUS'=>'Lead Status',
-
 'LBL_INDUSTRY'=>'Industry',
-
 'LBL_RATING'=>'Rating',
-
 'LBL_ACCOUNT_TYPE'=>'Organization Type',
-
 'LBL_BUSINESS_TYPE'=>'Business Type',
-
 'LBL_CURRENCY_TYPE'=>'Currency Type',
-
 'LBL_SALES_STAGE'=>'Sales Stage',
-
 'LBL_PRIORITY'=>'Priority',
-
 'LBL_STATUS'=>'Status',
-
 'LBL_CATEGORY'=>'Ticket Category',
-
 'LBL_MANUFACTURER'=>'Manufacturer',
-
 'LBL_PRODUCT_CATEGORY'=>'Product Category',
-
 'LBL_RSS_CATEGORY'=>'Rss Category',
 
 //Added for Web based Email client integration (post 4.0.1 release)
-
 'LBL_ADD_MAIL_ACCOUNT'=>'Add Mail Account',
 'LBL_NEW_MAIL_ACCOUNT_TITLE'=>'New Mail Account [Alt+M]',
 'LBL_NEW_MAIL_ACCOUNT_KEY'=>'M',
@@ -550,8 +322,8 @@ $mod_strings = Array(
 'LBL_INVOICE_FIELD_ACCESS'=>'Invoice Field Access',
 'INVENTORYNOTIFICATION'=>'Inventory Notifications',
 'LBL_INVENTORY_NOTIFICATIONS'=>' - Edit Inventory Email Notifications',
-'INVENTORYTERMSANDCONDITIONS'=>'Inventory : Terms & Conditions',//newly added for Inventory terms and conditions
-'LBL_INVENTORY_TERMSANDCONDITIONS'=>' - Edit Terms & Conditions',//newly added
+'INVENTORYTERMSANDCONDITIONS'=>'Inventory : Terms & Conditions',
+'LBL_INVENTORY_TERMSANDCONDITIONS'=>' - Edit Terms & Conditions',
 'LBL_TANDC_TEXT'=>'Terms & Conditions Text',
 'LBL_INVENTORY_TANDC'=>'Inventory Terms & Conditions',
 
@@ -630,7 +402,6 @@ $mod_strings = Array(
 'LBL_GROUP_DESC'=>'Manage different types of user groups within your organization',
 'LBL_MAIL_MERGE_DESC'=>'Manage Mail Merge templates used in CRM modules',
 
-
 //Added fields after 5.0 Alpha
 'LBL_REQUIRE_SMTP_AUTHENTICATION'=>'Require SMTP Authentication?',
 'LBL_ANNOUNCEMENT'=>'Announcements',
@@ -675,7 +446,6 @@ $mod_strings = Array(
 'LBL_DEFAULT_MODULE_VIEW'=>'Default Module View',
 'LBL_DEFAULT_MODULE_VIEW_DESC'=>'Set Default Detail View for All Modules',
 'LBL_ENABLE_SINGLEPANE_VIEW'=>'Enable Singlepane View',
-
 'LBL_CLEAR_DATA'=>'Clear Data',
 'LBL_FAQ_FIELD_ACCESS'=>'Faq Field Access',
 'LBL_ADD_TAX_BUTTON'=>'Add Tax',
@@ -812,13 +582,9 @@ $mod_strings = Array(
 'LBL_EDIT_CREATE_ONLY'=>'Public: Read, Create/Edit',
 'LBL_READ_CREATE_EDIT_DEL'=>'Public: Read, Create/Edit, Delete',
 'LBL_PRIVATE'=>'Private',
-
 'Public: Read Only'=>'Public: Read Only',
-
 'Public: Read, Create/Edit'=>'Public: Read, Create/Edit',
-
 'Public: Read, Create/Edit, Delete'=>'Public: Read, Create/Edit, Delete',
-
 'Private'=>'Private',
 'Hide Details'=>'Hide Details',
 'Hide Details and Add Events'=>'Hide Details and Add Events',
@@ -914,11 +680,7 @@ $mod_strings = Array(
 'LBL_SELECT_ROLES'=> 'Select the Roles to which entries have to be added',
 'LBL_EXISTING_PICKLIST_VALUES'=>'Existing Picklist Values',
 'LBL_SELECT_PICKLIST'=>'Select picklist',
-
-// Added after 5.0.4 GA
-
 'LBL_GENERAL_FIELDS'=>'General Fields',
-
 'LBL_CANCEL_BUTTON'=>'Cancel',
 
 //Added fields for Inventory Number labels
@@ -939,8 +701,6 @@ $mod_strings = Array(
 'LBL_CUSTOMPO_NUMBER'=>'Custom PurchaseOrder Number',
 'LBL_PO_NUMBER_PREVIEW'=>'Preview',
 'LBL_PO_NUMBER_BUTTON'=>'Update PurchaseOrder Number',
-
-// Added after 5.0.4 GA
 
 // Added for Multi-Currency Support
 'LBL_TRANSFER_CURRENCY'=>'Transfer Currency',
@@ -989,10 +749,8 @@ $mod_strings = Array(
 'LBL_DISABLED'=>'Disabled',
 'LBL_RULES'=>'Rules',
 'LBL_FOR'=>'For',
-
 'LBL_FROM'=>'From',
 'LBL_TO'=>'To',
-
 'LBL_ACTION'=>'Action',
 'LBL_CREATE'=>'Create',
 'LBL_TICKET'=>'Ticket',
@@ -1062,14 +820,12 @@ $mod_strings = Array(
 'LBL_TASKS'=>'Tasks',
 'LBL_NEW_TASK_BUTTON_LABEL'=>'New Task',
 'LBL_TASK'=>'Task',
-// END
-//Added for vantage customization (Mandatory fields) -- Pavani
+
 'LBL_MANDATORY_FIELDS'=>'Mandatory Fields',
 'LBL_MANDATORY_FIELDS_DESCRIPTION'=>'Manage mandatory fields of all modules',
 // Module Sequence Numbering
 'LBL_CUSTOMIZE_MODENT_NUMBER'=>'Customize Record Numbering',
 'LBL_CUSTOMIZE_MODENT_NUMBER_DESCRIPTION'=>'Module Entity Number customization',
-// END
 
 //added for softphone integration
 'LBL_SOFTPHONE_SERVER_SETTINGS'=>'SoftPhone Server Settings',
@@ -1086,7 +842,7 @@ $mod_strings = Array(
 'ASTERISK_VERSION' => 'Asterisk Version',
 'ASTERISK_VERSION_TITLE'=>'Select your Asterisk version here; leave it as 1.4 if not sure',
 'ASTERISK_CONFIGURATION'=>'Asterisk Configuration',
-//softphone integration ends
+
 'LBL_SELECT_FIELD_TO_MOVE' => 'Select Fields to move',
 'VTLIB_LBL_SELECT_PACKAGE_FILE'=>'Select the Package File',
 'VTLIB_LBL_FILE_LOCATION'=>'Upload file:',
@@ -1122,7 +878,6 @@ $mod_strings = Array(
 'VTLIB_LBL_INST_VERSION'=>'Installed Version',
 'VTLIB_LBL_MATCHES_PACKAGE_VERSION'=>'matches Package Version',
 'VTLIB_LBL_CANNOT_UPGRADE'=>'Cannot upgrade!',
-// END
 
 //User group fixes
 'LBL_USERNAME_EXIST' => 'A User in the specified name Already Exists!',
@@ -1190,9 +945,7 @@ $mod_strings = Array(
 'LBL_NOTE' => 'Note:',
 'LBL_HIDE' => 'Hide Details',
 'LBL_SHOW' => 'Show Details',
-// END
-'LBL_USER_ADDITION_INFO'=>"To add a new user, please click on
-			   <span style='font-style:italic;color:blue;'>Settings Icon -> On Demand Admin -> Add User </span>",
+'LBL_USER_ADDITION_INFO'=>"To add a new user, please click on <span style='font-style:italic;color:blue;'>Settings Icon -> On Demand Admin -> Add User </span>",
 
 'LBL_READ_ONLY_ACCESS_MSG' => 'Read-Only Access',
 'LBL_READ_WRITE_ACCESS_MSG' => 'Read-Write Access',
