@@ -22,6 +22,7 @@
 	<input type="hidden" name="return_action" value="CallRelatedList">
 {/if}
 <input type="hidden" name="return_id" value="{$ID}">
+<input type="hidden" name="cbfromid" id="cbfromid" value="{$ID}">
 <input type="hidden" name="parent_id" id="parent_id" value="{$ID}">
 <input type="hidden" name="RLparent_id" id="RLparent_id" value="{$ID}">
 <input type="hidden" name="parenttab" id="parenttab" value="{$CATEGORY}">
