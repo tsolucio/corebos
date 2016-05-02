@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('Smarty_setup.php');
 require_once('include/CustomFieldUtil.php');
 require_once('include/utils/UserInfoUtil.php');
@@ -42,6 +41,10 @@ elseif($subMode == 'movehiddenfields' || $subMode == 'showhiddenfields')
 	show_move_hiddenfields($subMode);
 elseif($subMode == 'changeRelatedInfoOrder')
 	changeRelatedListOrder();
+elseif($subMode == 'deleteRelatedList')
+	deleteRelatedList();
+elseif($subMode == 'createRelatedList')
+	createRelatedList();
 
 $module_array=getCustomFieldSupportedModules();
 
@@ -95,9 +98,10 @@ $cfentries = insertDetailViewBlockWidgets($cfentries,$fld_module);
 $smarty->assign("BLOCKS",$block_array);
 $smarty->assign("MODULE",$fld_module);
 $smarty->assign("CFENTRIES",$cfentries);
-$smarty->assign("RELATEDLIST",getRelatedListInfo($fld_module));
+$rellistinfo = getRelatedListInfo($fld_module);
+$smarty->assign('RELATEDLIST',$rellistinfo);
 $pickListResult=getAllowedPicklistModules();
-$nonRelatableModules = array('PBXManager','SMSNotifier','cbupdater','Calendar','Emails','ModComments');
+$nonRelatableModules = array('PBXManager','SMSNotifier','cbupdater','GlobalVariable','Calendar','Emails','ModComments');
 $entityrelmods=array();
 foreach ($pickListResult as $pValue) {
 	if (!in_array($pValue, $nonRelatableModules))
@@ -105,6 +109,12 @@ foreach ($pickListResult as $pValue) {
 }
 uasort($entityrelmods, function($a,$b) {return (strtolower($a[0]) < strtolower($b[0])) ? -1 : 1;});
 $smarty->assign('entityrelmods',$entityrelmods);
+$relmods = array();
+foreach ($rellistinfo as $relmod) {
+	$relmods[$relmod['name']]=$relmod['label'];
+}
+$notRelatedModules = array_diff_key($entityrelmods, $relmods);
+$smarty->assign('NotRelatedModules',$notRelatedModules);
 if(isset($_REQUEST["duplicate"]) && $_REQUEST["duplicate"] == "yes" || $duplicate == 'yes') {
 	echo "ERROR";
 	exit;
@@ -121,7 +131,7 @@ $smarty->assign("MODE", $mode);
 if($_REQUEST['ajax'] != 'true') {
 	$smarty->display('Settings/LayoutBlockList.tpl');
 }
-elseif(($subMode == 'getRelatedInfoOrder' || $subMode == 'changeRelatedInfoOrder') &&  $_REQUEST['ajax'] == 'true') {
+elseif(($subMode == 'getRelatedInfoOrder' || $subMode == 'changeRelatedInfoOrder' || $subMode == 'createRelatedList' || $subMode == 'deleteRelatedList') &&  $_REQUEST['ajax'] == 'true') {
 	$smarty->display('Settings/OrderRelatedList.tpl');
 }
 else {
@@ -1119,6 +1129,36 @@ function getRelatedListInfo($module) {
 		$res[$i]['id'] = $adb->query_result($relinfo,$i,'relation_id');
 	}
 	return $res;
+}
+
+function deleteRelatedList() {
+	global $adb,$log;
+	$tabid = vtlib_purify($_REQUEST['tabid']);
+	$sequence = vtlib_purify($_REQUEST['sequence']);
+	$relationid = vtlib_purify($_REQUEST['id']);
+	$adb->pquery('delete from vtiger_relatedlists where relation_id=?',array($relationid));
+	$adb->pquery('update vtiger_relatedlists set sequence=sequence-1 where sequence>? and tabid=?',array($sequence,$tabid));
+}
+
+function createRelatedList() {
+	global $adb,$log;
+	$module = vtlib_purify($_REQUEST['fld_module']);
+	$tabmod = Vtiger_Module::getInstance($module);
+	$rmodule = vtlib_purify($_REQUEST['relwithmod']);
+	$relmod = Vtiger_Module::getInstance($rmodule);
+	switch ($rmodule) {
+		case 'Documents':
+			$funcname = 'get_attachments';
+			break;
+		case 'Calendar':
+		case 'Events':
+			$funcname = 'get_activities';
+			break;
+		default:
+			$funcname = 'get_related_list';
+			break;
+	}
+	$tabmod->setRelatedList($relmod,$rmodule,array('ADD','SELECT'),$funcname);
 }
 
 function changeRelatedListOrder() {
