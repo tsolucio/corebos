@@ -932,7 +932,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 			// END
 			if ($links_info != "" && !$skipActions)
 				$list_header[] = $links_info;
-			list($list_header, $unused, $unused2) = cbEventHandler::do_filter('corebos.filter.listview.render', array($list_header, $adb->query_result_rowdata($list_result, $i), $entity_id));
+			list($list_header, $unused, $unused2) = cbEventHandler::do_filter('corebos.filter.listview.render', array($list_header, $adb->query_result_rowdata($list_result, $i - 1), $entity_id));
 			$list_block[$entity_id] = $list_header;
 		}
 	$log->debug("Exiting getListViewEntries method ...");
