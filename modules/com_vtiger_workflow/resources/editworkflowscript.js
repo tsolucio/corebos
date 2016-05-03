@@ -565,7 +565,7 @@ function editworkflowscript($, conditions){
 						$("#save_condition_group_"+groupid).append(
 							'<div id="save_condition_'+condid+'" style=\'margin-bottom: 5px\'> \
 								<input type="hidden" id="save_condition_'+condid+'_groupid" class="groupid" value="'+groupid+'" /> \
-                                <select id="save_condition_'+condid+'_fieldname" class="fieldname"></select> \
+                                <select id="save_condition_'+condid+'_fieldname" class="fieldname" style="width:300px;"></select> \
 								<select id="save_condition_'+condid+'_operation" class="operation"></select> \
                                 <input type="hidden" id="save_condition_'+condid+'_value_type" class="expressiontype" /> \
                                 <input type="text" id="save_condition_'+condid+'_value" class="expressionvalue" readonly /> \
