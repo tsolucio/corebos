@@ -1,5 +1,4 @@
 <?php
-
 /* * *******************************************************************************
  * * The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
@@ -7,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  * ****************************************************************************** */
 require_once('include/utils/utils.php');
 require_once('modules/Calendar/Date.php');
@@ -64,7 +62,6 @@ class RecurringType {
 		if (isset($repeat_arr['repeatmonth_date']))
 			$this->rptmonth_datevalue = $repeat_arr['repeatmonth_date'];
 		$this->rptmonth_daytype = $repeat_arr['repeatmonth_daytype'];
-		
 		$this->recurringdates = $this->_getRecurringDates();
 	}
 
@@ -152,7 +149,6 @@ class RecurringType {
 
 	public static function fromDBRequest($resultRow) {
 		// All the information from the database is received in DB Time zone
-		
 		$repeatInfo = array();
 
 		$repeatInfo['startdate'] = $startDate = $resultRow['date_start'];
@@ -326,7 +322,7 @@ class RecurringType {
 		$tempdateObj = $startdateObj;
 		$tempdate = $startdate;
 		$enddate = $this->enddate->get_DB_formatted_date();
-		
+
 		while ($tempdate <= $enddate) {
 			$date = $tempdateObj->get_Date();
 			$month = $tempdateObj->getMonth();
