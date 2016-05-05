@@ -165,7 +165,7 @@
 			$recordid = $adb->query_result($result, 0, 0).'x'.$recordid;
 			$wf = $this->getoneRACWorkflowForRecord($moduleName,$recordid);
 			if ($wf) {
-				return $this->executeRACWorkflow($wf);
+				return $this->executeRACWorkflow($wf,$recordid);
 			}
 			return false;
 		}
@@ -196,7 +196,7 @@
 			}
 		}
 
-		function executeRACWorkflow($workflow) {
+		function executeRACWorkflow($workflow,$recordid) {
 			$adb=$this->adb;
 			$tm = new VTTaskManager($adb);
 			$taskQueue = new VTTaskQueue($adb);
@@ -204,7 +204,7 @@
 			foreach($tasks as $task){
 				if(is_object($task) and $task->active and get_class($task) == 'CBSelectcbMap') {
 					$void = array();
-					return $task->doTask($void);
+					return $task->doTask($recordid);
 				}
 			}
 			return false;

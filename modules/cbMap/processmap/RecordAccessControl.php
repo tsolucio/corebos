@@ -53,10 +53,19 @@ class RecordAccessControl extends processcbMap {
 	private $mapping = array();
 	private $modulename = '';
 	private $moduleid = 0;
+	private $relatedid = 0;
 
 	function processMap($arguments) {
 		$this->convertMap2Array();
 		return $this;
+	}
+
+	public function setRelatedRecordID($id) {
+		$this->relatedid = $id;
+	}
+
+	public function getRelatedRecordID($id) {
+		return $this->relatedid;
 	}
 
 	private function convertMap2Array() {
