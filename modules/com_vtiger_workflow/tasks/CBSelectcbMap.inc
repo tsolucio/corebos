@@ -44,7 +44,8 @@ class CBSelectcbMap extends VTTask{
 				return false;
 			}
 			$return = $focus->RecordAccessControl();
-			$return->setRelatedRecordID($recordid);
+			list($mod,$rec) = explode('x', $recordid);
+			$return->setRelatedRecordID($rec);
 			return $return;
 		} else {
 			return false;

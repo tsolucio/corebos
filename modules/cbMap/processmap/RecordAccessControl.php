@@ -28,12 +28,14 @@
   <r>1</r>  View record
   <u>1</u>  Edit action
   <d>1</d>  Delete action
+  {conditiongroup}  Optional
   </listview>
   <detailview>
   <c>1</c>  Does not apply. Not used
   <r>1</r>  View record
   <u>1</u>  Edit action
   <d>1</d>  Delete action
+  {conditiongroup}  Optional
   </detailview>
   <relatedlists>
     <relatedlist>
@@ -43,11 +45,29 @@
       <u>1</u>  Edit action
       <d>1</d>  Delete action
       <s>1</s>  Select button
+      {conditiongroup}  Optional
     </relatedlist>
     .....
   </relatedlists>
   </map>
+
+ where {conditiongroup} is
+
+ <condition>
+   <businessrule>{cbMapID}</businessrule>
+   <c>1</c>  Add button
+   <r>1</r>  View list
+   <u>1</u>  Edit action
+   <d>1</d>  Delete action
+   <s>1</s>  Select button
+  </condition>
+
+ the business rule must be of type ConditionQuery and return a 1 or 0
+ the SQL will be executed with only one parameter which is the CRMID of the Record launching the RAC and the
+ CRUDS settings contained inside the <condition> will override the default settings if the condition is true
  *************************************************************************************************/
+require_once('modules/cbMap/cbMap.php');
+require_once('modules/cbMap/processmap/processMap.php');
 
 class RecordAccessControl extends processcbMap {
 	private $mapping = array();
@@ -76,10 +96,20 @@ class RecordAccessControl extends processcbMap {
 		$this->mapping['listview']['r'] = (isset($xml->listview->r) ? (Integer)$xml->listview->r : 1);
 		$this->mapping['listview']['u'] = (isset($xml->listview->u) ? (Integer)$xml->listview->u : 1);
 		$this->mapping['listview']['d'] = (isset($xml->listview->d) ? (Integer)$xml->listview->d : 1);
+		if (isset($xml->listview->condition)) {
+			$this->mapping['listview']['condition'] = $this->convertConditionMap2Array($xml->listview->condition);
+		} else {
+			$this->mapping['listview']['condition'] = array();
+		}
 		$this->mapping['detailview']['c'] = (isset($xml->detailview->c) ? (Integer)$xml->detailview->c : 1);
 		$this->mapping['detailview']['r'] = (isset($xml->detailview->r) ? (Integer)$xml->detailview->r : 1);
 		$this->mapping['detailview']['u'] = (isset($xml->detailview->u) ? (Integer)$xml->detailview->u : 1);
 		$this->mapping['detailview']['d'] = (isset($xml->detailview->d) ? (Integer)$xml->detailview->d : 1);
+		if (isset($xml->detailview->condition)) {
+			$this->mapping['detailview']['condition'] = $this->convertConditionMap2Array($xml->detailview->condition);
+		} else {
+			$this->mapping['detailview']['condition'] = array();
+		}
 		if (isset($xml->relatedlists)) {
 			foreach($xml->relatedlists->relatedlist as $k=>$v) {
 				$modulename = (String)$v->modulename;
@@ -88,7 +118,47 @@ class RecordAccessControl extends processcbMap {
 				$this->mapping['relatedlist'][$modulename]['u'] = (isset($v->u) ? (Integer)$v->u : 1);
 				$this->mapping['relatedlist'][$modulename]['d'] = (isset($v->d) ? (Integer)$v->d : 1);
 				$this->mapping['relatedlist'][$modulename]['s'] = (isset($v->s) ? (Integer)$v->s : 1);
+				if (isset($v->condition)) {
+					$this->mapping['relatedlist'][$modulename]['condition'] = $this->convertConditionMap2Array($v->condition);
+				} else {
+					$this->mapping['relatedlist'][$modulename]['condition'] = array();
+				}
 			}
+		}
+	}
+
+	private function convertConditionMap2Array($condition) {
+		$cmap = array();
+		if (!empty($condition->businessrule)) {
+			$cmap['c'] = (isset($condition->c) ? (Integer)$condition->c : 1);
+			$cmap['r'] = (isset($condition->r) ? (Integer)$condition->r : 1);
+			$cmap['u'] = (isset($condition->u) ? (Integer)$condition->u : 1);
+			$cmap['d'] = (isset($condition->d) ? (Integer)$condition->d : 1);
+			$cmap['s'] = (isset($condition->s) ? (Integer)$condition->s : 1);
+			$cmap['cmapid'] = $condition->businessrule;
+		}
+		return $cmap;
+	}
+
+	function getMap2Use($map2use) {
+		if (!empty($map2use['condition']['cmapid'])) {
+			$focus = new cbMap();
+			$focus->id = $map2use['condition']['cmapid'];
+			$focus->mode = '';
+			$focus->retrieve_entity_info($focus->id, 'cbMap');
+			$contentok = processcbMap::isXML(htmlspecialchars_decode($focus->column_fields['content']));
+			if ($contentok) {
+				$condition = $focus->ConditionQuery($this->relatedid);
+				if ($condition) {
+					return $map2use['condition'];
+				} else {
+					return $map2use;
+				}
+			} else {
+				return $map2use;
+			}
+		} else {
+			return $map2use;
 		}
 	}
 
@@ -98,21 +168,25 @@ class RecordAccessControl extends processcbMap {
 	public function hasListViewPermissionTo($operation) {
 		if (count($this->mapping)==0) $this->convertMap2Array();
 		if (!isset($this->mapping['listview'])) return true;
+		$map2use = $this->mapping['listview'];
+		if (count($map2use['condition']>0)) {
+			$map2use = $this->getMap2Use($map2use);
+		}
 		switch (strtolower($operation)) {
 			case 'create':
-				return (isset($this->mapping['listview']['c']) ? $this->mapping['listview']['c'] : true);
+				return (isset($map2use['c']) ? $map2use['c'] : true);
 				break;
 			case 'retrieve':
 			case 'detailview':
-				return (isset($this->mapping['listview']['r']) ? $this->mapping['listview']['r'] : true);
+				return (isset($map2use['r']) ? $map2use['r'] : true);
 				break;
 			case 'update':
 			case 'edit':
 			case 'editview':
-				return (isset($this->mapping['listview']['u']) ? $this->mapping['listview']['u'] : true);
+				return (isset($map2use['u']) ? $map2use['u'] : true);
 				break;
 			case 'delete':
-				return (isset($this->mapping['listview']['d']) ? $this->mapping['listview']['d'] : true);
+				return (isset($map2use['d']) ? $map2use['d'] : true);
 				break;
 			default:
 				return true;
@@ -126,21 +200,25 @@ class RecordAccessControl extends processcbMap {
 	public function hasDetailViewPermissionTo($operation) {
 		if (count($this->mapping)==0) $this->convertMap2Array();
 		if (!isset($this->mapping['detailview'])) return true;
+		$map2use = $this->mapping['detailview'];
+		if (count($map2use['condition']>0)) {
+			$map2use = $this->getMap2Use($map2use);
+		}
 		switch (strtolower($operation)) {
 			case 'create':
-				return (isset($this->mapping['detailview']['c']) ? $this->mapping['detailview']['c'] : true);
+				return (isset($map2use['c']) ? $map2use['c'] : true);
 				break;
 			case 'retrieve':
 			case 'detailview':
-				return (isset($this->mapping['detailview']['r']) ? $this->mapping['detailview']['r'] : true);
+				return (isset($map2use['r']) ? $map2use['r'] : true);
 				break;
 			case 'update':
 			case 'edit':
 			case 'editview':
-				return (isset($this->mapping['detailview']['u']) ? $this->mapping['detailview']['u'] : true);
+				return (isset($map2use['u']) ? $map2use['u'] : true);
 				break;
 			case 'delete':
-				return (isset($this->mapping['detailview']['d']) ? $this->mapping['detailview']['d'] : true);
+				return (isset($map2use['d']) ? $map2use['d'] : true);
 				break;
 			default:
 				return true;
@@ -155,21 +233,25 @@ class RecordAccessControl extends processcbMap {
 		if (empty($onmodule)) return true;
 		if (count($this->mapping)==0) $this->convertMap2Array();
 		if (!isset($this->mapping['relatedlist']) or !isset($this->mapping['relatedlist'][$onmodule])) return true;
+		$map2use = $this->mapping['relatedlist'][$onmodule];
+		if (count($map2use['condition']>0)) {
+			$map2use = $this->getMap2Use($map2use);
+		}
 		switch (strtolower($operation)) {
 			case 'create':
-				return (isset($this->mapping['relatedlist'][$onmodule]['c']) ? $this->mapping['relatedlist'][$onmodule]['c'] : true);
+				return (isset($map2use['c']) ? $map2use['c'] : true);
 				break;
 			case 'retrieve':
-				return (isset($this->mapping['relatedlist'][$onmodule]['r']) ? $this->mapping['relatedlist'][$onmodule]['r'] : true);
+				return (isset($map2use['r']) ? $map2use['r'] : true);
 				break;
 			case 'update':
-				return (isset($this->mapping['relatedlist'][$onmodule]['u']) ? $this->mapping['relatedlist'][$onmodule]['u'] : true);
+				return (isset($map2use['u']) ? $map2use['u'] : true);
 				break;
 			case 'delete':
-				return (isset($this->mapping['relatedlist'][$onmodule]['d']) ? $this->mapping['relatedlist'][$onmodule]['d'] : true);
+				return (isset($map2use['d']) ? $map2use['d'] : true);
 				break;
 			case 'select':
-				return (isset($this->mapping['relatedlist'][$onmodule]['s']) ? $this->mapping['relatedlist'][$onmodule]['s'] : true);
+				return (isset($map2use['s']) ? $map2use['s'] : true);
 				break;
 			default:
 				return true;
