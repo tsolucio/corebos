@@ -89,6 +89,7 @@ if ($num_rows1 > 0) {
 							$startdatetime = new DateTime($evdtst);
 							$startdatetime->setTimeZone($c_time_zone);
 							if ($startdatetime->format('Y-m-d') < $controldate) {$repeatedid[]=$event->getId();continue;}  // it is before controldate > we ignore it
+                                                        if($startdatetime->format('Y')>2030) continue;
 							$new_time_start_time = $startdatetime->format('U');
 							$user_date_start = DateTimeField::convertToUserFormat($startdatetime->format('Y-m-d'));
 							if (!$is_full_day_event)
