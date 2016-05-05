@@ -1734,7 +1734,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$callBack = $_REQUEST['callback'];
 					if ($_REQUEST['return_module'] == "Calendar") {
 						$count = counterValue();
-						$value = '<a href="javascript:window.close();" id="calendarCont' . $entity_id . '" LANGUAGE=javascript onclick=\'add_data_to_relatedlist_incal("' . $entity_id . '","' . decode_html($slashes_temp_val) . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+						$value = '<a href="javascript:if (document.getElementById(\'closewindow\').value==\'true\') {window.close();}" id="calendarCont' . $entity_id . '" onclick=\'add_data_to_relatedlist_incal("' . $entity_id . '","' . decode_html($slashes_temp_val) . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
 					} else {
 						$count = counterValue();
 						if (empty($callBack)) {

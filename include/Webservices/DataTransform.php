@@ -276,10 +276,11 @@ class DataTransform{
 		global $current_user;
 		$moduleFields = $meta->getModuleFields();
 		foreach($moduleFields as $fieldName=>$fieldObj){
-			if($fieldObj->getFieldDataType()=="currency" && !empty($row[$fieldName])) {
-				if($fieldObj->getUIType() == '71') {
+			if(($fieldObj->getFieldDataType()=="currency" || $fieldObj->getFieldDataType()=="double") && !empty($row[$fieldName])) {
+				$uitype = $fieldObj->getUIType();
+				if($uitype == '71') {
 					$row[$fieldName] = CurrencyField::convertToUserFormat($row[$fieldName],$current_user);
-				} else if($fieldObj->getUIType() == '72') {
+				} else if($uitype == '72' || $uitype == '7' || $uitype == '9') {
 					$row[$fieldName] = CurrencyField::convertToUserFormat($row[$fieldName],$current_user,true);
 				}
 			}
