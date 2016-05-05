@@ -367,12 +367,12 @@
 					</td>
 
 				{elseif $keyid eq 69}<!-- for Image Reflection -->
-     				<td align="left" width=25%>&nbsp;{$keyval}</td>
+					<td align="left" width=25%>&nbsp;{$keyval}</td>
 				{elseif $keyid eq 68}
-     				<td class="dvtCellInfo" id="mouseArea_{$keyfldname}" align="left" width=25% onmouseover="vtlib_listview.trigger('cell.onmouseover', $(this));" onmouseout="vtlib_listview.trigger('cell.onmouseout', $(this))">&nbsp;{$keyval}</td>
+					<td class="dvtCellInfo" id="mouseArea_{$keyfldname}" align="left" width=25% onmouseover="vtlib_listview.trigger('cell.onmouseover', $(this));" onmouseout="vtlib_listview.trigger('cell.onmouseout', $(this))">&nbsp;{$keyval}</td>
 				{elseif $keyid eq 10}<!-- for vtlib reference field -->
 					<td class="dvtCellInfo" id="mouseArea_{$keyfldname}" align="left" width=25% onmouseover="hndMouseOver({$keyid},'{$keyfldname}');vtlib_listview.trigger('cell.onmouseover', $(this));" onmouseout="fnhide('crmspanid');vtlib_listview.trigger('cell.onmouseout', $(this))" onclick='handleEdit(event);'>
-						&nbsp;<span id="dtlview_{$keyfldname}">{$keyval}</span>
+						&nbsp;<span id="dtlview_{$keyfldname}" onclick='event.stopPropagation();'>{$keyval}</span>
 						<div id="editarea_{$keyfldname}" style="display:none;">
 							{if count($data.extendedfieldinfo.options) eq 1}
 								{assign var="use_parentmodule" value=$data.extendedfieldinfo.options.0}
