@@ -45,7 +45,7 @@ if($focus->is_authenticated())
 	require_once('include/utils/UserInfoUtil.php');
 
 	createUserPrivilegesfile($focus->id);
-	
+
 	//Security related entries end
 	unset($_SESSION['login_password']);
 	unset($_SESSION['login_error']);
@@ -62,14 +62,14 @@ if($focus->is_authenticated())
 	$_SESSION['KCFINDER']['uploadDir'] = '../storage/kcimages';
 	$deniedExts = implode(" ", $upload_badext);
 	$_SESSION['KCFINDER']['deniedExts'] = $deniedExts;
-	
+
 	// store the user's theme in the session
 	if(!empty($focus->column_fields["theme"])) {
 		$authenticated_user_theme = $focus->column_fields["theme"];
 	} else {
 		$authenticated_user_theme = $default_theme;
 	}
-	
+
 	// store the user's language in the session
 	if(!empty($focus->column_fields["language"])) {
 		$authenticated_user_language = $focus->column_fields["language"];
@@ -77,19 +77,9 @@ if($focus->is_authenticated())
 		$authenticated_user_language = $default_language;
 	}
 
-	// If this is the default user and the default user theme is set to reset, reset it to the default theme value on each login
-	if($reset_theme_on_default_user && $focus->user_name == $default_user_name)
-	{
-		$authenticated_user_theme = $default_theme;
-	}
-	if(isset($reset_language_on_default_user) && $reset_language_on_default_user && $focus->user_name == $default_user_name)
-	{
-		$authenticated_user_language = $default_language;
-	}
-
 	$_SESSION['vtiger_authenticated_user_theme'] = $authenticated_user_theme;
 	$_SESSION['authenticated_user_language'] = $authenticated_user_language;
-	
+
 	$log->debug("authenticated_user_theme is $authenticated_user_theme");
 	$log->debug("authenticated_user_language is $authenticated_user_language");
 	$log->debug("authenticated_user_id is ". $focus->id);

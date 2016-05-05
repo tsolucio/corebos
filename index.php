@@ -409,7 +409,7 @@ if(isset($action) && isset($module))
 		header( "Pragma: no-cache" );
 	}
 
-	if(($module == 'Users' || $module == 'Home' || $module == 'uploads') && $_REQUEST['parenttab'] != 'Settings') {
+	if(($module == 'Users' || $module == 'Home' || $module == 'uploads') && (empty($_REQUEST['parenttab']) || $_REQUEST['parenttab'] != 'Settings')) {
 		$skipSecurityCheck=true;
 	}
 
