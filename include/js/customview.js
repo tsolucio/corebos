@@ -56,7 +56,7 @@ function validate(blockid) {
 		return false;
 	}
 	var fieldlength = document.getElementById('fldLength_'+blockid);
-	if (lengthLayer != null && lengthLayer.style.visibility=="visible") {
+	if (lengthLayer != null && lengthLayer.style.display=="table-row") {
 		if (!emptyCheck('fldLength_'+blockid,"Length"))
 			return false;
 
@@ -67,7 +67,7 @@ function validate(blockid) {
 			return false;
 	}
 
-	if (decimalLayer != null && decimalLayer.style.visibility=="visible") {
+	if (decimalLayer != null && decimalLayer.style.display=="table-row") {
 		if (document.getElementById("fldDecimal_"+blockid).value.replace(/^\s+/g, '').replace(/\s+$/g, '').length>0)
 			if (!intValidate("fldDecimal_"+blockid,"Decimal"))
 				return false;
@@ -78,7 +78,7 @@ function validate(blockid) {
 			return false;
 	}
 	var decimallength = '';
-	if (decimalLayer != null && decimalLayer.style.visibility=="visible" && document.getElementById('fldDecimal_'+blockid) != null)
+	if (decimalLayer != null && decimalLayer.style.display=="table-row" && document.getElementById('fldDecimal_'+blockid) != null)
 		decimallength = document.getElementById("fldDecimal_"+blockid).value;
 
 	if(fieldValueArr[fieldtype] == 'Percent' || fieldValueArr[fieldtype] == 'Currency' || fieldValueArr[fieldtype] == 'Number')
@@ -88,10 +88,10 @@ function validate(blockid) {
 		nummaxlength = 65 - (eval(decimallength) + 1);
 	}
 	var lengthObj = document.getElementById("lengthdetails_"+blockid);
-	if ( lengthObj != null && lengthObj.style.visibility == "visible" && !numConstComp('fldLength_'+blockid,"Length","LE",nummaxlength))
+	if ( lengthObj != null && lengthObj.style.display == "table-row" && !numConstComp('fldLength_'+blockid,"Length","LE",nummaxlength))
 		return false;
 	var picklistObj=document.getElementById("fldPickList_"+blockid);
-	if (pickListLayer != null && getObj("picklistdetails_"+blockid).style.visibility=="visible") {
+	if (pickListLayer != null && getObj("picklistdetails_"+blockid).style.display=="table-row") {
 		var pickListAry=new Array();
 		pickListAry=splitValues(pickListLayer);
 		if (emptyCheck("fldPickList_"+blockid,"Picklist values")) {
@@ -128,6 +128,12 @@ function validate(blockid) {
 
 			return true;
 		} else return false;
+	}
+	var selrelationmodules=document.getElementById("fldRelMods_"+blockid);
+	if (selrelationmodules != null && getObj("relationmodules_"+blockid).style.display=="table-row") {
+		if (!emptyCheck("fldRelMods_"+blockid,"Relation values")) {
+			return false;
+		}
 	}
 	return true;
 }
