@@ -757,9 +757,10 @@ class Common_Install_Wizard_Utils {
 		'output_buffering' => 'On',
 		'max_execution_time' => '600',
 		'memory_limit' => '32',
-		'error_reporting' => 'E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT',
+		'error_reporting' => 'E_ERROR',
 		'allow_call_time_pass_reference' => 'Off',
-		'short_open_tag' => 'On'
+		'short_open_tag' => 'On',
+		'max_input_vars' => '9000',
 	);
 
 	public static $writableFilesAndFolders = array (
@@ -955,6 +956,8 @@ class Common_Install_Wizard_Utils {
 			$directiveValues['max_execution_time'] = ini_get('max_execution_time');
 		if (ini_get('memory_limit') < 32)
 			$directiveValues['memory_limit'] = ini_get('memory_limit');
+		if (ini_get('max_input_vars') < 9000)
+			$directiveValues['max_input_vars'] = ini_get('max_input_vars');
 		eval('$errorReportingValue = '.self::$recommendedDirectives['error_reporting'].';');
 		if (ini_get('error_reporting') != $errorReportingValue)
 			$directiveValues['error_reporting'] = 'NOT RECOMMENDED';
