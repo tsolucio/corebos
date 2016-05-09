@@ -13,23 +13,23 @@
 function vtlib_setvalue_from_popup(recordid,value,target_fieldname,formname) {
 	var ret = false;
 	if(window.opener.document.forms[formname]) {
-	    var domnode_id = window.opener.document.forms[formname][target_fieldname];
-	    var domnode_display = window.opener.document.forms[formname][target_fieldname+'_display'];
-	    if(domnode_id) domnode_id.value = recordid;
-	    if(domnode_display) domnode_display.value = value;
-	    ret = true;
+		var wodform = window.opener.document.forms[formname];
+		ret = true;
 	} else if(window.opener.document.EditView) {
-        var domnode_id = window.opener.document.EditView[target_fieldname];
-        var domnode_display = window.opener.document.EditView[target_fieldname+'_display'];
-        if(domnode_id) domnode_id.value = recordid;
-        if(domnode_display) domnode_display.value = value;
+        var wodform = window.opener.document.EditView;
+        ret = true;
+	} else if(window.opener.document.DetailView) {
+        var wodform = window.opener.document.DetailView;
         ret = true;
     } else if(window.opener.document.QcEditView) {
-        var domnode_id = window.opener.document.QcEditView[target_fieldname];
-        var domnode_display = window.opener.document.QcEditView[target_fieldname+'_display'];
+        var wodform = window.opener.document.QcEditView;
+        ret = true;
+    }
+    if (ret) {
+        var domnode_id = wodform[target_fieldname];
+        var domnode_display = wodform[target_fieldname+'_display'];
         if(domnode_id) domnode_id.value = recordid;
         if(domnode_display) domnode_display.value = value;
-        ret = true;
     }
     var func = window.opener.gVTModule + 'setValueFromCapture';
     if (typeof window.opener[func] == 'function') {
