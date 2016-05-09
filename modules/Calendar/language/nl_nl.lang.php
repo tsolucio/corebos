@@ -242,10 +242,6 @@ $mod_strings = Array(
 'LBL_TODONAME'=>'Actie',
 'LBL_TODODATETIME'=>'Start tijd en datum',
 
-
-
-
-
 //DON'T CONVERT THESE THEY ARE MAPPINGS - STARTS
 'db_last_name' => 'LBL_LIST_LAST_NAME',
 'db_first_name' => 'LBL_LIST_FIRST_NAME',
@@ -390,6 +386,8 @@ $mod_strings = Array(
 'createdtime'=>'Gemaakt',
 'modifiedtime'=>'Gewijzigd',
 'first'=>'Eerst',
+'second'=>'Second',
+'third'=>'Third',
 'last'=>'Laatst',
 'High'=>'Hoog',
 'Medium'=>'Medium',

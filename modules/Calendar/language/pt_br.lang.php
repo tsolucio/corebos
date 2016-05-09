@@ -224,10 +224,6 @@ $mod_strings = Array(
 'LBL_TODONAME'=>'Compromisso',
 'LBL_TODODATETIME'=>'Data & Hora',
 
-
-
-
-
 //DON'T CONVERT THESE THEY ARE MAPPINGS - STARTS
 'db_last_name' => 'LBL_LIST_LAST_NAME',
 'db_first_name' => 'LBL_LIST_FIRST_NAME',
@@ -371,6 +367,8 @@ $mod_strings = Array(
 'createdtime'=>'Hora Criação',
 'modifiedtime'=>'Hora Modificação',
 'first'=>'Primeiro',
+'second'=>'Second',
+'third'=>'Third',
 'last'=>'Último',
 'High'=>'Alta',
 'Medium'=>'Média',

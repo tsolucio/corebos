@@ -233,7 +233,7 @@
 											{if $ACTIVITYDATA.repeat_str neq ''}
 											<tr>
 												<td width="30%" align=right>&nbsp;</td>
-												<td>{$CMOD.LBL_REPEATEVENT}&nbsp;{$ACTIVITYDATA.repeat_frequency}&nbsp;{$MOD[$ACTIVITYDATA.recurringtype]}</td>
+												<td>{$CMOD.LBL_REPEATEVENT}&nbsp;{$ACTIVITYDATA.repeat_frequency}&nbsp;{$CMOD[$ACTIVITYDATA.recurringtype]}</td>
 											</tr>
 											<tr>
 												<td width="30%" align=right>&nbsp;</td>

@@ -300,13 +300,13 @@ class RecurringType {
 	}
 
 	function getDisplayRecurringInfo() {
-		global $currentModule;
+		$i18nModule = 'Calendar';
 
 		$displayRecurringData = array();
 
 		$recurringInfo = $this->getUserRecurringInfo();
 
-		$displayRecurringData['recurringcheck'] = getTranslatedString('LBL_YES', $currentModule);
+		$displayRecurringData['recurringcheck'] = getTranslatedString('LBL_YES', $i18nModule);
 		$displayRecurringData['repeat_frequency'] = $this->getRecurringFrequency();
 		$displayRecurringData['recurringtype'] = $this->getRecurringType();
 
@@ -314,29 +314,27 @@ class RecurringType {
 			$noOfDays = count($recurringInfo['dayofweek_to_repeat']);
 			$translatedRepeatDays = array();
 			for ($i = 0; $i < $noOfDays; ++$i) {
-				$translatedRepeatDays[] = getTranslatedString('LBL_DAY' . $recurringInfo['dayofweek_to_repeat'][$i], $currentModule);
+				$translatedRepeatDays[] = getTranslatedString('LBL_DAY' . $recurringInfo['dayofweek_to_repeat'][$i], $i18nModule);
 			}
 			$displayRecurringData['repeat_str'] = implode(',', $translatedRepeatDays);
 		} elseif ($this->getRecurringType() == 'Monthly') {
-
 			$translatedRepeatDays = array();
 			$displayRecurringData['repeatMonth'] = $recurringInfo['repeatmonth_type'];
 			if ($recurringInfo['repeatmonth_type'] == 'date') {
 				$displayRecurringData['repeatMonth_date'] = $recurringInfo['repeatmonth_date'];
-				$displayRecurringData['repeat_str'] = getTranslatedString('on', $currentModule)
+				$displayRecurringData['repeat_str'] = getTranslatedString('on', $i18nModule)
 						. ' ' . $recurringInfo['repeatmonth_date']
-						. ' ' . getTranslatedString('day of the month', $currentModule);
+						. ' ' . getTranslatedString('day of the month', $i18nModule);
 			} else {
 				$displayRecurringData['repeatMonth_daytype'] = $recurringInfo['repeatmonth_daytype'];
 				$displayRecurringData['repeatMonth_day'] = $recurringInfo['dayofweek_to_repeat'][0];
-				$translatedRepeatDay = getTranslatedString('LBL_DAY' . $recurringInfo['dayofweek_to_repeat'][0], $currentModule);
+				$translatedRepeatDay = getTranslatedString('LBL_DAY' . $recurringInfo['dayofweek_to_repeat'][0], $i18nModule);
 
-				$displayRecurringData['repeat_str'] = getTranslatedString('on', $currentModule)
-						. ' ' . getTranslatedString($recurringInfo['repeatmonth_daytype'], $currentModule)
+				$displayRecurringData['repeat_str'] = getTranslatedString('on', $i18nModule)
+						. ' ' . getTranslatedString($recurringInfo['repeatmonth_daytype'], $i18nModule)
 						. ' ' . $translatedRepeatDay;
 			}
 		}
-
 		return $displayRecurringData;
 	}
 
