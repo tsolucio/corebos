@@ -705,8 +705,10 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 														<td>on</td>
 														<td>
 														<select name="repeatMonth_daytype">
-															<option value="first" {if $ACTIVITYDATA.repeatMonth_daytype eq 'first'} selected {/if}>First</option>
-															<option value="last" {if $ACTIVITYDATA.repeatMonth_daytype eq 'last'} selected {/if}>Last</option>
+															<option value="first" {if $ACTIVITYDATA.repeatMonth_daytype eq 'first'} selected {/if}>{$CMOD.First}</option>
+															<option value="second" {if $ACTIVITYDATA.repeatMonth_daytype eq 'second'} selected {/if}>{$CMOD.Second}</option>
+															<option value="third" {if $ACTIVITYDATA.repeatMonth_daytype eq 'third'} selected {/if}>{$CMOD.Third}</option>
+															<option value="last" {if $ACTIVITYDATA.repeatMonth_daytype eq 'last'} selected {/if}>{$CMOD.Last}</option>
 														</select>
 														</td>
 														<td>

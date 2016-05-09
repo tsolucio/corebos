@@ -23,12 +23,35 @@ class RecurringType {
 	var $rptmonth_daytype;
 	var $recurringdates = array();
 	var $reminder;
+	var $cal_month_long = array(
+		1=>'January',
+		2=>'February',
+		3=>'March',
+		4=>'April',
+		5=>'May',
+		6=>'June',
+		7=>'July',
+		8=>'August',
+		9=>'September',
+		10=>'October',
+		11=>'November',
+		12=>'December',
+	);
+	var $cal_weekdays_short = array(
+		1=>'Mon',
+		2=>'Tue',
+		3=>'Wed',
+		4=>'Thu',
+		5=>'Fri',
+		6=>'Sat',
+		7=>'Sun',
+	);
 
 	/**
 	 * Constructor for class RecurringType
-	 * @param array  $repeat_arr     - array contains recurring info
+	 * @param array  $repeat_arr - array contains recurring info
 	 */
-	function RecurringType($repeat_arr) {
+	function __construct($repeat_arr) {
 
 		$st_date = explode("-", $repeat_arr["startdate"]);
 		$st_time = explode(":", $repeat_arr["starttime"]);
@@ -120,7 +143,10 @@ class RecurringType {
 				$requestArray['repeatmonth_date'] = $userStartDateTime->format('d');
 			} else {
 				$dayOfWeek = $requestArray['dayofweek_to_repeat'][0];
-				if ($requestArray['repeatmonth_daytype'] == 'first') {
+				if ($requestArray['repeatmonth_daytype'] == 'first' or
+					$requestArray['repeatmonth_daytype'] == 'second' or
+					$requestArray['repeatmonth_daytype'] == 'third'
+				) {
 					$userStartDateTime->setDate($userStartDateTime->format('Y'), $userStartDateTime->format('m'), 1);
 					$dayOfWeekForFirstDay = $userStartDateTime->format('N');
 					if ($dayOfWeekForFirstDay < $dayOfWeek) {
@@ -128,6 +154,8 @@ class RecurringType {
 					} else {
 						$date = (7 - $dayOfWeekForFirstDay) + $dayOfWeek + 1;
 					}
+					if ($requestArray['repeatmonth_daytype'] == 'second') $date+=7;
+					if ($requestArray['repeatmonth_daytype'] == 'third') $date+=14;
 				} elseif ($requestArray['repeatmonth_daytype'] == 'last') {
 					$daysInMonth = $userStartDateTime->format('t');
 					$userStartDateTime->setDate($userStartDateTime->format('Y'), $userStartDateTime->format('m'), $daysInMonth);
@@ -243,7 +271,7 @@ class RecurringType {
 			} else {
 				$dayOfWeek = $this->dayofweek_to_rpt[0];
 				$recurringInfo['repeatmonth_daytype'] = $this->rptmonth_daytype;
-				if ($this->rptmonth_daytype == 'first') {
+				if ($this->rptmonth_daytype == 'first' or $this->rptmonth_daytype == 'second' or $this->rptmonth_daytype == 'third') {
 					$dbStartDateTime->setDate($dbStartDateTime->format('Y'), $dbStartDateTime->format('m'), 1);
 					$dayOfWeekForFirstDay = $dbStartDateTime->format('N');
 					if ($dayOfWeekForFirstDay < $dayOfWeek) {
@@ -251,6 +279,8 @@ class RecurringType {
 					} else {
 						$date = (7 - $dayOfWeekForFirstDay) + $dayOfWeek + 1;
 					}
+					if ($this->rptmonth_daytype == 'second') $date+=7;
+					if ($this->rptmonth_daytype == 'third') $date+=14;
 				} elseif ($this->rptmonth_daytype == 'last') {
 					$daysInMonth = $dbStartDateTime->format('t');
 					$dbStartDateTime->setDate($dbStartDateTime->format('Y'), $dbStartDateTime->format('m'), $daysInMonth);
@@ -400,6 +430,27 @@ class RecurringType {
 						} else {
 							$tempdateObj = $firstdayofmonthObj;
 						}
+					} elseif ($this->rptmonth_daytype == 'second' or $this->rptmonth_daytype == 'third') {
+						$position = ($this->rptmonth_daytype == 'second' ? 2 : 3);
+						$date_arr = Array(
+							'day' => $this->getDayOfWeekPerWeekPositionInMonth($this->dayofweek_to_rpt[0], $year, $month, $position),
+							'month' => $month,
+							'year' => $year
+						);
+						$nextdayofmonthObj = new vt_DateTime($date_arr, true);
+						if ($nextdayofmonthObj->get_DB_formatted_date() <= $tempdate) {
+							if (isset($this->recur_freq))
+								$month = $nextdayofmonthObj->getMonth() + $this->recur_freq;
+							else
+								$month = $nextdayofmonthObj->getMonth() + 1;
+							$date_arr = Array(
+								'day' => $this->getDayOfWeekPerWeekPositionInMonth($this->dayofweek_to_rpt[0], $year, $month, $position),
+								'month' => $month,
+								'year' => $year
+							);
+							$nextdayofmonthObj = new vt_DateTime($date_arr, true);
+						}
+						$tempdateObj = $nextdayofmonthObj;
 					} elseif ($this->rptmonth_daytype == 'last') {
 						$date_arr = Array(
 							'day' => $tempdateObj->getDaysInMonth(),
@@ -503,6 +554,11 @@ class RecurringType {
 			$dateObj = $dateObj->getThismonthDaysbyIndex($index, $day, $month, $year);
 			return $dateObj;
 		}
+	}
+
+	function getDayOfWeekPerWeekPositionInMonth($dow, $year, $month, $position) {
+		$list = array(1=>'first',2=>'second',3=>'third',4=>'last');
+		return date('j', strtotime($list[$position] .' '.$this->cal_weekdays_short[$dow] . ' of ' . $this->cal_month_long[$month] . ' ' . $year));
 	}
 
 }

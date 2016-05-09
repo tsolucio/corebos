@@ -620,6 +620,8 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 													<td>
 														<select name="repeatMonth_daytype">
 															<option value="first"><?php echo $c_mod_strings['First'];?></option>
+															<option value="second"><?php echo $c_mod_strings['Second'];?></option>
+															<option value="third"><?php echo $c_mod_strings['Third'];?></option>
 															<option value="last"><?php echo $c_mod_strings['Last'];?></option>
 														</select>
 													</td>
