@@ -329,6 +329,7 @@ function sendfile_email()
 																						</tr>
 																					{/if}
 																				</table>
+                                                                                                                                                                
 																				{if $header neq 'Comments'}
 																					{if $BLOCKINITIALSTATUS[$header] eq 1}
 																						<div style="width:auto;display:block;" id="tbl{$header|replace:' ':''}" >
@@ -336,6 +337,9 @@ function sendfile_email()
 																						<div style="width:auto;display:none;" id="tbl{$header|replace:' ':''}" >
 																						{/if}
 																							<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small detailview_table">
+                                                                                                                                                                                            {if $CUSTOMBLOCKS.$header.custom}
+                                                                                                                                                                                                {include file=$CUSTOMBLOCKS.$header.tpl}
+                                                                                                                                                                                            {else}
 																								{foreach item=detail from=$detail}
 																									<tr style="height:25px" class="detailview_row">
 																										{foreach key=label item=data from=$detail}
@@ -382,6 +386,7 @@ function sendfile_email()
 																											{/foreach}
 																									</tr>
 																								{/foreach}
+                                                                                                                                                                                            {/if}
 																							</table>
 																						</div>
 																					{/if}

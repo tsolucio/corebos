@@ -191,8 +191,12 @@ function AddressSync(Addform,id)
 										{/if}
 										</tr>
 
-										<!-- Handle the ui types display -->
-										{include file="DisplayFields.tpl"}
+                                                                                {if $CUSTOMBLOCKS.$header.custom}
+                                                                                    {include file=$CUSTOMBLOCKS.$header.tpl}
+                                                                                {else}
+                                                                                    <!-- Handle the ui types display -->
+                                                                                    {include file="DisplayFields.tpl"}
+                                                                                {/if}
 
 									   {/foreach}
 
