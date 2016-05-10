@@ -47,6 +47,16 @@ class coreBOS_Session {
 	 */
 	static function getSessionName($URL='') {
 		global $site_URL;
+		if (empty($site_URL)) {
+			if (file_exists('config.inc.php')) {
+				include 'config.inc.php';
+				@include 'config-dev.inc.php';
+			}
+			if (file_exists('../config.inc.php')) {
+				include '../config.inc.php';
+				@include '../config-dev.inc.php';
+			}
+		}
 		if (empty($URL)) $URL = $site_URL;
 		$purl = parse_url($URL);
 		$sn = preg_replace('/[^A-Za-z0-9]/', '', $purl['host'].$purl['path'].(isset($purl['port'])?$purl['port']:''));
