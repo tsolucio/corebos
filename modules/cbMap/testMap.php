@@ -93,6 +93,10 @@ switch ($focus->column_fields['maptype']) {
 			$rsm = $focus->RecordSetMapping();
 			$mapinfo = $rsm->getFullRecordSet();
 			break;
+	case 'ListColumns':
+			$rsm = $focus->ListColumns();
+			$mapinfo = $rsm->getCompleteMapping();
+			break;
 	case 'Import':
 		$mapinfo = $focus->readImportType();
 		$mapinfo['TargetModule'] = $focus->getMapTargetModule();
