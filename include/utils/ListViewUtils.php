@@ -39,11 +39,18 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 	$image_path = $theme_path . "images/";
 	$list_header = Array();
 
-	//Get the vtiger_tabid of the module
+	//Get the tabid of the module
 	$tabid = getTabid($module);
 	$tabname = getParentTab();
 	global $current_user;
-	//added for vtiger_customview 27/5
+	$bmapname = $module.'_ListColumns';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$parentmodule = vtlib_purify($_REQUEST['module']);
+		$focus->list_fields = $cbMap->ListColumns()->getListFieldsFor($parentmodule);
+		$focus->list_fields_name = $cbMap->ListColumns()->getListFieldsNameFor($parentmodule);
+	}
 	if ($oCv) {
 		if (isset($oCv->list_fields)) {
 			$focus->list_fields = $oCv->list_fields;
@@ -256,6 +263,13 @@ function getSearchListViewHeader($focus, $module, $sort_qry = '', $sorder = '', 
 		'&srcmodule=' . (isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : '').
 		'&forrecord=' . (isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : '');
 
+	$bmapname = $module.'_ListColumns';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$focus->search_fields = $cbMap->ListColumns()->getSearchFields();
+		$focus->search_fields_name = $cbMap->ListColumns()->getSearchFieldsName();
+	}
 	$field_list = array_values($focus->search_fields_name);
 	require('user_privileges/user_privileges_' . $current_user->id . '.php');
 	$field = Array();
@@ -434,10 +448,15 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 	$evt_status = '';
 	$theme_path = "themes/" . $theme . "/";
 	$image_path = $theme_path . "images/";
-	//getting the vtiger_fieldtable entries from database
 	$tabid = getTabid($module);
-
-	//added for vtiger_customview 27/5
+	$bmapname = $module.'_ListColumns';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$parentmodule = vtlib_purify($_REQUEST['module']);
+		$focus->list_fields = $cbMap->ListColumns()->getListFieldsFor($parentmodule);
+		$focus->list_fields_name = $cbMap->ListColumns()->getListFieldsNameFor($parentmodule);
+	}
 	if ($oCv) {
 		if (isset($oCv->list_fields)) {
 			$focus->list_fields = $oCv->list_fields;
@@ -965,6 +984,13 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 	$tabid = getTabid($module);
 	require('user_privileges/user_privileges_' . $current_user->id . '.php');
 
+	$bmapname = $module.'_ListColumns';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$focus->search_fields = $cbMap->ListColumns()->getSearchFields();
+		$focus->search_fields_name = $cbMap->ListColumns()->getSearchFieldsName();
+	}
 	//Added to reduce the no. of queries logging for non-admin user -- by Minnie-start
 	$field_list = array_values($focus->search_fields_name);
 
