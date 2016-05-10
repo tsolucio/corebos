@@ -15,7 +15,8 @@
 // IMPORTANT!!! Do not remove uncommented settings in this file even if
 // you are using session configuration.
 // See http://kcfinder.sunhater.com/install for setting descriptions
-
+include_once '../include/utils/Session.php';
+coreBOS_Session::init();
 $_CONFIG = array(
 
     'disabled' => true,
