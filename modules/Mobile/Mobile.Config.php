@@ -9,7 +9,7 @@
  ************************************************************************************/
 
 $Module_Mobile_Configuration = array(
-
+	'crm_version' => '5.3.0',
 	'Default.Skin'     => 'default.css', // Available in resources/skins
 	'Navigation.Limit' => 25,
 

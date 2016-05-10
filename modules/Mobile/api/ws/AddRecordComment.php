@@ -57,3 +57,4 @@ class Mobile_WS_AddRecordComment extends Mobile_WS_SaveRecord {
 		return $response;
 	}
 }
+?>

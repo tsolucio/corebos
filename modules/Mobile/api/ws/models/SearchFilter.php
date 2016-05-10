@@ -9,7 +9,7 @@
  ************************************************************************************/
 include_once 'include/Webservices/Query.php';
 include_once dirname(__FILE__) . '/Filter.php';
-
+	
 class Mobile_WS_SearchFilterModel extends Mobile_WS_FilterModel {
 	
 	protected $criterias;
@@ -31,9 +31,10 @@ class Mobile_WS_SearchFilterModel extends Mobile_WS_FilterModel {
 	}
 	
 	function execute($fieldnames, $pagingModel = false) {
-		
+	      
 		$selectClause = sprintf("SELECT %s", implode(',', $fieldnames));
 		$fromClause = sprintf("FROM %s", $this->moduleName);
+		
 		$whereClause = "";
 		$orderClause = "";
 		$groupClause = "";
@@ -45,8 +46,9 @@ class Mobile_WS_SearchFilterModel extends Mobile_WS_FilterModel {
 				$orderClause = $_sortCriteria;
 			}
 		}
-		
+		 
 		$query = sprintf("%s %s %s %s %s %s;", $selectClause, $fromClause, $whereClause, $orderClause, $groupClause, $limitClause);
+		
 		return vtws_query($query, $this->getUser()); 
 	}
 	

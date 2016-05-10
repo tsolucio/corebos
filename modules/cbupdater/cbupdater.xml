@@ -598,4 +598,11 @@
 	<classname>workflow_contactassignedtoaccount</classname>
 	<systemupdate>false</systemupdate>
 </changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Update Mobile Module</description>
+	<filename>build/changeSets/updateMobileModuleToCrmNow.php</filename>
+	<classname>updateMobileModuleToCrmNow</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

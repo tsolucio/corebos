@@ -6,8 +6,13 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
+ * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
 include_once dirname(__FILE__) . '/Mobile.Config.php';
+include_once dirname(__FILE__) . '/MobileSettings.config.php';
+//settings information
+global $displayed_modules; 
+global $config_settings; 
 
 class Mobile {
 

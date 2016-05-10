@@ -32,6 +32,10 @@ class Mobile_WS_Controller {
 			if(!empty($userid)) {
 				$this->activeUser = CRMEntity::getInstance('Users');
 				$this->activeUser->retrieveCurrentUserInfoFromFile($userid);
+				if ($this->activeUser->is_admin == 'on') {
+					$this->activeUser->is_admin = true;
+					$this->activeUser->column_fields['is_admin'] = true;
+				}
 			}
 		}
 		return $this->activeUser;

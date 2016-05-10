@@ -38,5 +38,21 @@ class Mobile_UI_BlockModel {
 		}
 		return $instances;
 	}
+	function initCreateData($blockData) {
+		$this->_label = $blockData['label'];
+		if (isset($blockData['fields'])) {
+			$this->_fields = Mobile_UI_FieldModel::buildModelsFromResponse($blockData['fields']);
+		}
+	}
+
+	static function buildCreateModel($blocks) {
+		$instances = array();
+		foreach($blocks as $blockData) {
+			$instance = new self();
+			$instance->initCreateData($blockData);
+			$instances[] = $instance;
+		}
+		return $instances;
+	}
 	
 }

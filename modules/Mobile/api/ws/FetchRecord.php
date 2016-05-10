@@ -6,6 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
+ * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
 include_once 'include/Webservices/Retrieve.php';
 
@@ -24,28 +25,66 @@ class Mobile_WS_FetchRecord extends Mobile_WS_Controller {
 	
 	protected function processRetrieve(Mobile_API_Request $request) {
 		$current_user = $this->getActiveUser();
-
 		$recordid = $request->get('record');
 		$record = vtws_retrieve($recordid, $current_user);
-		
 		return $record;
 	}
 	
 	function process(Mobile_API_Request $request) {
 		$current_user = $this->getActiveUser();
+		//$module = $request->get('module');
+		$module = $this->detectModuleName($request->get('record'));
 		$record = $this->processRetrieve($request);
-		
 		$this->resolveRecordValues($record, $current_user);
-		
 		$response = new Mobile_API_Response();
-		$response->setResult(array('record' => $record));
-		
+		$ret_arr = array('record' => $record);
+		if ($request->get('module')) {
+			$module = $request->get('module');
+			$moduleWSFieldNames =  Mobile_WS_Utils::getEntityFieldnames($module);
+			foreach ($moduleWSFieldNames as $key=>$value) {
+				$relatedlistcontent[$key]=$record[$value];
+			}
+			$relatedlistcontent['id']=$record['id'];
+			$ret_arr['relatedlistcontent'] = $relatedlistcontent;
+		}
+		//crm-now: fetch ModComments if active, but not for trouble tickets
+		elseif (vtlib_isModuleActive('ModComments') AND $module!='HelpDesk') {
+			include_once 'include/Webservices/Query.php';
+			$comments = vtws_query("SELECT * FROM ModComments WHERE related_to = '".$record['id']."' ORDER BY createdtime DESC LIMIT 5;", $current_user);
+			if (count($comments) > 0) {
+				foreach ($comments AS &$comment) {
+					$comment['assigned_user_id'] = vtws_getName($comment['assigned_user_id'], $current_user);
+					$comment['createdtime'] = DateTimeField::convertToUserFormat($comment['createdtime']);
+				}
+				$ret_arr['comments'] = $comments;
+			} 
+			else {
+				$ret_arr['comments'] = array();
+			}
+		}
+		//crm-now: fetch Comments for trouble tickets
+		elseif ($module =='HelpDesk') {
+			//there is currently no vtws service for ticket comments
+			$comments = Mobile_WS_Utils::getTicketComments($record);
+			if (!empty($comments)) {
+				foreach ($comments AS &$comment) {
+					$comment['assigned_user_id'] = vtws_getName($comment['assigned_user_id'], $current_user);
+					$comment['createdtime'] = DateTimeField::convertToUserFormat($comment['createdtime']);
+				}
+				$ret_arr['comments'] = $comments;
+			} 
+			else {
+				$ret_arr['comments'] = array();
+			}
+		}
+		$response->setResult($ret_arr);
 		return $response;
 	}
 	
 	function resolveRecordValues(&$record, $user, $ignoreUnsetFields=false) {
-		if(empty($record)) return $record;
-		
+		if(empty($record)) {
+			return $record;
+		}
 		$fieldnamesToResolve = Mobile_WS_Utils::detectFieldnamesToResolve(
 			$this->detectModuleName($record['id']) );
 		
