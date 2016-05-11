@@ -118,6 +118,11 @@ class SMSNotifier extends SMSNotifierBase {
 		}
 	}
 
+	function save_module($module) {
+		$this->smsAssignedTo();
+		parent::save_module($module);
+	}
+
 	protected function smsAssignedTo() {
 		global $adb;
 
