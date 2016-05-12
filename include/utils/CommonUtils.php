@@ -1300,8 +1300,8 @@ function getCustomBlocks($module, $disp_view) {
 //                echo '<pre>';var_dump($disp_view,$disp_view == 'detail_view',file_exists("Smarty/templates/modules/$module/{$block_label[$blockid]}_display.tpl"),"Smarty/templates/modules/$module/{$block_label[$blockid]}_display.tpl");echo '</pre>';
                 if (($disp_view == 'edit_view' || $disp_view == 'create' || $disp_view == 'create_view') && file_exists("Smarty/templates/modules/$module/{$block_label[$blockid]}_edit.tpl")) {
                     $block_list[$sLabelVal] = array('custom' => true, 'tpl' => "modules/$module/{$block_label[$blockid]}_edit.tpl");
-                } elseif ($disp_view == 'detail_view' && file_exists("Smarty/templates/modules/$module/{$block_label[$blockid]}_display.tpl")) {
-                    $block_list[$sLabelVal] = array('custom' => true, 'tpl' => "modules/$module/{$block_label[$blockid]}_display.tpl");
+                } elseif ($disp_view == 'detail_view' && file_exists("Smarty/templates/modules/$module/{$block_label[$blockid]}_detail.tpl")) {
+                    $block_list[$sLabelVal] = array('custom' => true, 'tpl' => "modules/$module/{$block_label[$blockid]}_detail.tpl");
                 } else {
                     $block_list[$sLabelVal] = array('custom' => false, 'tpl' => '');
                 }

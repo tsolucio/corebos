@@ -244,51 +244,55 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 							{/if}
 							<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small">
 
-	   {foreach item=detail from=$detail}
-	   <tr style="height:25px">
-		{foreach key=label item=data from=$detail}
-			{assign var=keyid value=$data.ui}
-			{assign var=keyval value=$data.value}
-			{assign var=keytblname value=$data.tablename}
-			{assign var=keyfldname value=$data.fldname}
-			{assign var=keyfldid value=$data.fldid}
-			{assign var=keyoptions value=$data.options}
-			{assign var=keysecid value=$data.secid}
-			{assign var=keyseclink value=$data.link}
-			{assign var=keycursymb value=$data.cursymb}
-			{assign var=keysalut value=$data.salut}
-			{assign var=keycntimage value=$data.cntimage}
-			{assign var=keyadmin value=$data.isadmin}
-			{assign var=display_type value=$data.displaytype}
-			{assign var=_readonly value=$data.readonly}
+            {if $CUSTOMBLOCKS.$header.custom}
+                {include file=$CUSTOMBLOCKS.$header.tpl}
+            {else}
+               {foreach item=detail from=$detail}
+               <tr style="height:25px">
+                    {foreach key=label item=data from=$detail}
+                            {assign var=keyid value=$data.ui}
+                            {assign var=keyval value=$data.value}
+                            {assign var=keytblname value=$data.tablename}
+                            {assign var=keyfldname value=$data.fldname}
+                            {assign var=keyfldid value=$data.fldid}
+                            {assign var=keyoptions value=$data.options}
+                            {assign var=keysecid value=$data.secid}
+                            {assign var=keyseclink value=$data.link}
+                            {assign var=keycursymb value=$data.cursymb}
+                            {assign var=keysalut value=$data.salut}
+                            {assign var=keycntimage value=$data.cntimage}
+                            {assign var=keyadmin value=$data.isadmin}
+                            {assign var=display_type value=$data.displaytype}
+                            {assign var=_readonly value=$data.readonly}
 
-				{if $label ne ''}
-					{if $keycntimage ne ''}
-						<td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$keycntimage}</td>
-					{elseif $label neq 'Tax Class'}<!-- Avoid to display the label Tax Class -->
-						{if $keyid eq '71' || $keyid eq '72'}  <!--CurrencySymbol-->
-							<td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$label} ({$keycursymb})</td>
-						{elseif $keyid eq '9'}
-							<td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$label} {$APP.COVERED_PERCENTAGE}</td>
-						{else}
-							<td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$label}</td>
-						{/if}
-					{/if}  
-					{if $EDIT_PERMISSION eq 'yes' && $display_type neq '2' && $_readonly eq '0'}
-						{* Performance Optimization Control *}
-						{if !empty($DETAILVIEW_AJAX_EDIT) }
-							{include file="DetailViewUI.tpl"}
-						{else}
-							{include file="DetailViewFields.tpl"}
-						{/if}
-						{* END *}
-					{else}
-						{include file="DetailViewFields.tpl"}
-					{/if}
-				{/if}
-		{/foreach}
-	   </tr>
-	   {/foreach}
+                                    {if $label ne ''}
+                                            {if $keycntimage ne ''}
+                                                    <td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$keycntimage}</td>
+                                            {elseif $label neq 'Tax Class'}<!-- Avoid to display the label Tax Class -->
+                                                    {if $keyid eq '71' || $keyid eq '72'}  <!--CurrencySymbol-->
+                                                            <td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$label} ({$keycursymb})</td>
+                                                    {elseif $keyid eq '9'}
+                                                            <td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$label} {$APP.COVERED_PERCENTAGE}</td>
+                                                    {else}
+                                                            <td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$label}</td>
+                                                    {/if}
+                                            {/if}  
+                                            {if $EDIT_PERMISSION eq 'yes' && $display_type neq '2' && $_readonly eq '0'}
+                                                    {* Performance Optimization Control *}
+                                                    {if !empty($DETAILVIEW_AJAX_EDIT) }
+                                                            {include file="DetailViewUI.tpl"}
+                                                    {else}
+                                                            {include file="DetailViewFields.tpl"}
+                                                    {/if}
+                                                    {* END *}
+                                            {else}
+                                                    {include file="DetailViewFields.tpl"}
+                                            {/if}
+                                    {/if}
+                    {/foreach}
+               </tr>
+               {/foreach}
+           {/if}
 	</table>
 	</div> <!-- Line added by SAKTI on 10th Apr, 2008 -->
 <!-- Entity information(blocks) display - ends -->

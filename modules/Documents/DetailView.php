@@ -75,7 +75,10 @@ $smarty->assign('FOLDERID',$folderid);
 $smarty->assign('DLD_PATH',$filepath);
 $smarty->assign('FILENAME', $filename);
 $allblocks = getBlocks($currentModule,'detail_view','',$focus->column_fields);
+$custom_blocks = getCustomBlocks($currentModule,'detail_view');
 $smarty->assign('BLOCKS', $allblocks);
+$smarty->assign('CUSTOMBLOCKS', $custom_blocks);
+$smarty->assign('FIELDS',$focus->column_fields);
 $flag = 0;
 foreach($allblocks as $blocks)
 {
