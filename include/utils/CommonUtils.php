@@ -2192,7 +2192,8 @@ function decideFilePath() {
 	global $log, $adb;
 	$log->debug("Entering into decideFilePath() method ...");
 
-	$filepath = 'storage/';
+	$filepath = GlobalVariable::getVariable('Application_Storage_Directory', 'storage/');
+	if (substr($filepath, -1)!='/') $filepath.='/';
 
 	$year = date('Y');
 	$month = date('F');
