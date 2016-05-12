@@ -138,6 +138,29 @@ var vtlib_listview = {
             }
         }
     },
+	getFieldInfo : function(fieldid){
+ 		var node = document.getElementById(fieldid);
+		var innerNodes = node.getElementsByTagName('span');
+		var event_params = {};
+		if(typeof(innerNodes) != 'undefined') {
+			var cellhandler = false;
+			for(var index = 0; index < innerNodes.length; ++index) {
+				var innerNodeAttrs = innerNodes[index].attributes;
+				if(typeof(innerNodeAttrs) != 'undefined' && typeof(innerNodeAttrs.type) != 'undefined' && innerNodeAttrs['type'].nodeValue == 'vtlib_metainfo') {
+					cellhandler = innerNodes[index];
+					break;
+				}
+			}
+			if(cellhandler == false) return;
+			var event_params = {
+				'domnode': node,
+				'module' : cellhandler.attributes['vtmodule'].nodeValue,
+				'fieldname': cellhandler.attributes['vtfieldname'].nodeValue,
+				'recordid': cellhandler.attributes['vtrecordid'].nodeValue
+			};
+		}
+		return event_params;
+	},
 	/**
 	 * Trigger handler function for the event
 	 */
