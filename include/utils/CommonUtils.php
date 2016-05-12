@@ -2195,6 +2195,22 @@ function decideFilePath() {
 	$filepath = GlobalVariable::getVariable('Application_Storage_Directory', 'storage/');
 	if (substr($filepath, -1)!='/') $filepath.='/';
 
+	$saveStrategy = GlobalVariable::getVariable('Application_Storage_SaveStrategy', 'dates');
+	switch (strtolower($saveStrategy)) {
+		case 'crmid':
+			// CRMID in folder
+			if (isset($_REQUEST['return_id']) and $_REQUEST['return_id']>0 and $_REQUEST['return_id']<100000000000) {
+				$filepath .= $_REQUEST['return_id'] . '/';
+			}
+
+			if(!is_dir($filepath)) {
+				//create new folder
+				mkdir($filepath);
+			}
+			$log->debug("Strategy CRMID filepath=\"$filepath\"");
+			break;
+		case 'dates':
+		default:
 	$year = date('Y');
 	$month = date('F');
 	$day = date('j');
@@ -2227,8 +2243,10 @@ function decideFilePath() {
 	}
 
 	$filepath = $filepath . $year . "/" . $month . "/" . $week . "/";
-
 	$log->debug("Year=$year & Month=$month & week=$week && filepath=\"$filepath\"");
+			break;
+	}
+
 	$log->debug("Exiting from decideFilePath() method ...");
 
 	return $filepath;
