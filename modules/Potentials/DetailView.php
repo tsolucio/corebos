@@ -94,7 +94,11 @@ if(isPermitted('Invoice','CreateView',$_REQUEST['record']) == 'yes')
 	$smarty->assign('CONVERTINVOICE','permitted');
 $smarty->assign('CONVERTMODE','potentoinvoice');
 
-$smarty->assign('BLOCKS', getBlocks($currentModule,'detail_view','',$focus->column_fields));
+$blocks = getBlocks($currentModule,'detail_view','',$focus->column_fields);
+$custom_blocks = getCustomBlocks($currentModule,'detail_view');
+$smarty->assign('BLOCKS', $blocks);
+$smarty->assign('CUSTOMBLOCKS', $custom_blocks);
+$smarty->assign('FIELDS',$focus->column_fields);
 
 // Gather the custom link information to display
 include_once('vtlib/Vtiger/Link.php');
