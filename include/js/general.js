@@ -212,14 +212,59 @@ function emptyCheck(fldName,fldLabel, fldType) {
 	}
 }
 
+function patternValidateObject(fldObject,fldLabel,type) {
+	if (type.toUpperCase()=="EMAIL") //Email ID validation
+	{
+		var re=new RegExp(/^[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i);
+	}
 
+	if (type.toUpperCase()=="DATE") {//DATE validation
+		//YMD
+		//var reg1 = /^\d{2}(\-|\/|\.)\d{1,2}\1\d{1,2}$/ //2 digit year
+		//var re = /^\d{4}(\-|\/|\.)\d{1,2}\1\d{1,2}$/ //4 digit year
+
+		//MYD
+		//var reg1 = /^\d{1,2}(\-|\/|\.)\d{2}\1\d{1,2}$/
+		//var reg2 = /^\d{1,2}(\-|\/|\.)\d{4}\1\d{1,2}$/
+
+		//DMY
+		//var reg1 = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{2}$/
+		//var reg2 = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{4}$/
+
+		switch (userDateFormat) {
+			case "yyyy-mm-dd" :
+				var re = /^\d{4}(\-|\/|\.)\d{1,2}\1\d{1,2}$/
+				break;
+			case "mm-dd-yyyy" :
+			case "dd-mm-yyyy" :
+				var re = /^\d{1,2}(\-|\/|\.)\d{1,2}\1\d{4}$/
+		}
+	}
+
+	if (type.toUpperCase()=="TIME") {//TIME validation
+		var re = /^\d{1,2}\:\d{2}:\d{2}$|^\d{1,2}\:\d{2}$/
+	}
+	//Asha: Remove spaces on either side of a Email id before validating
+	if (type.toUpperCase()=="EMAIL" || type.toUpperCase() == "DATE") fldObject.value = trim(fldObject.value);
+	if (!re.test(fldObject.value)) {
+		alert(alert_arr.ENTER_VALID + fldLabel  + " ("+type+")");
+		try {
+			fldObject.focus()
+		} catch(error) {
+		// Fix for IE: If element or its wrapper around it is hidden, setting focus will fail
+		// So using the try { } catch(error) { }
+		}
+		return false
+	}
+	else return true
+}
 
 function patternValidate(fldName,fldLabel,type) {
 	var currObj=getObj(fldName);
 
 	if (type.toUpperCase()=="EMAIL") //Email ID validation
 	{
- 	    var re=new RegExp(/^[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i);
+		var re=new RegExp(/^[a-z0-9!#$%&'*+/=?^_`{|}~.-]+@[a-z0-9]([a-z0-9-]*[a-z0-9])?(\.[a-z0-9]([a-z0-9-]*[a-z0-9])?)*$/i);
 	}
 
 	if (type.toUpperCase()=="DATE") {//DATE validation
@@ -596,6 +641,40 @@ function timeValidate(fldName,fldLabel,type) {
 		if (!compareDates(chktime,fldLabel,currtime,"current time",type)) {
 			try {
 				getObj(fldName).focus()
+			} catch(error) { }
+			return false
+		} else return true;
+	} else return true
+}
+
+function timeValidateObject(fldObject,fldLabel,type) {
+	if (patternValidateObject(fldObject,fldLabel,"TIME")==false)
+		return false
+
+	var timeval=fldObject.value.replace(/^\s+/g, '').replace(/\s+$/g, '');
+	var hourval=parseInt(timeval.substring(0,timeval.indexOf(":")));
+	var minval=parseInt(timeval.substring(timeval.indexOf(":")+1,timeval.length));
+	var secval=parseInt(timeval.substring(timeval.indexOf(":")+4,timeval.length));
+
+	if (hourval>23 || minval>59 || secval>59) {
+		alert(alert_arr.ENTER_VALID+fldLabel);
+		try {
+			fldObject.focus();
+		} catch(error) { }
+		return false
+	}
+
+	var currtime=new Date();
+	var chktime=new Date();
+
+	chktime.setHours(hourval);
+	chktime.setMinutes(minval);
+	chktime.setSeconds(secval);
+
+	if (type!="OTH") {
+		if (!compareDates(chktime,fldLabel,currtime,"current time",type)) {
+			try {
+				fldObject.focus();
 			} catch(error) { }
 			return false
 		} else return true;
@@ -4774,7 +4853,7 @@ function getFormValidate(divValidate) {
 							var currtimechk="OTH";
 						else
 							var currtimechk=type[2];
-						if (!timeValidate(curr_fieldname,qcfieldlabel[i],currtimechk))
+						if (!timeValidateObject(window.document.QcEditView[curr_fieldname],qcfieldlabel[i],currtimechk))
 							return false;
 						if (type[3]) {
 							if (!timeComparison(curr_fieldname,qcfieldlabel[i],type[4],type[5],type[3]))
