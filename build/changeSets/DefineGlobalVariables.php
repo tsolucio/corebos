@@ -55,6 +55,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Campaign_CreatePotentialOnContactRelation',
 				'BusinessMapping_PotentialOnCampaignRelation',
 				'Application_Global_Search_SelectedModules',
+				'Application_Storage_Directory',
+				'Application_Storage_SaveStrategy',
 			);
 			
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');
