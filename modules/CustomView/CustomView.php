@@ -1027,7 +1027,7 @@ class CustomView extends CRMEntity {
 					}
 				}
 			}
-			$returnsql = implode(",", $sqllist);
+			$returnsql = implode(",", array_unique($sqllist));
 		}
 		return $returnsql;
 	}
