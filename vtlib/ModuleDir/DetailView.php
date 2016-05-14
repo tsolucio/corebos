@@ -92,6 +92,9 @@ if(isPermitted($currentModule, 'Delete', $record) == 'yes')
 	$smarty->assign('DELETE', 'permitted');
 
 $smarty->assign('BLOCKS', getBlocks($currentModule,'detail_view','',$focus->column_fields));
+$custom_blocks = getCustomBlocks($currentModule,'detail_view');
+$smarty->assign('CUSTOMBLOCKS', $custom_blocks);
+$smarty->assign('FIELDS',$focus->column_fields);
 
 // Gather the custom link information to display
 include_once('vtlib/Vtiger/Link.php');

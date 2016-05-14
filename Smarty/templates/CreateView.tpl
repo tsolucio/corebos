@@ -180,8 +180,12 @@ function sensex_info()
 							 		</td>
 		                                        	   </tr>
 
-								   <!-- Here we should include the uitype handlings-->
-								   {include file="DisplayFields.tpl"}
+                                                                   {if $CUSTOMBLOCKS.$header.custom}
+                                                                       {include file=$CUSTOMBLOCKS.$header.tpl}
+                                                                   {else}
+                                                                       <!-- Here we should include the uitype handlings-->
+                                                                       {include file="DisplayFields.tpl"}
+                                                                   {/if}
 								   <tr style="height:25px"><td>&nbsp;</td></tr>
 								   {/foreach}
 
@@ -247,9 +251,12 @@ function sensex_info()
                                                          		</td>
                                                          	   </tr>
 
-								   <!-- Here we should include the uitype handlings-->
-                                                        	   {include file="DisplayFields.tpl"}
-
+                                                                   {if $CUSTOMBLOCKS.$header.custom}
+                                                                       {include file=$CUSTOMBLOCKS.$header.tpl}
+                                                                   {else}
+                                                                       <!-- Here we should include the uitype handlings-->
+                                                                       {include file="DisplayFields.tpl"}
+                                                                   {/if} 
 							 	   <tr style="height:25px"><td>&nbsp;</td></tr>
 								   {/foreach}
 
