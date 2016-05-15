@@ -7,12 +7,14 @@
   *   @version 2.2
   *    @author Hamid Kamalpour <djhamidfatal@gmail.com><http://www.ssfmusic.com>
   * @copyright 2010 KCFinder Project
-  *   @license http://www.opensource.org/licenses/gpl-2.0.php GPLv2
-  *   @license http://www.opensource.org/licenses/lgpl-2.1.php LGPLv2
+  *   @license http://opensource.org/licenses/GPL-3.0 GPLv3
+  *   @license http://opensource.org/licenses/LGPL-3.0 LGPLv3
   *      @link http://kcfinder.sunhater.com
   */
 
 $lang = array(
+    '_lang' => "Persian",
+    '_native' => "فارسى",
     '_locale' => "fa_IR.UTF-8",
     '_charset' => "utf-8",
 
@@ -243,6 +245,23 @@ $lang = array(
     "selected files" => "فایل های انتخاب شده",
     "Select Thumbnails" => "انتخاب عکس های کوچک",
     "Download files" => "دریافت فایل ها",
-);
 
-?>
+    // SINCE 2.4
+
+    "Checking for new version..." => "...وجود نسخه جدید را بررسی کن",
+    "Unable to connect!" => "!مشکل در برقراری ارتباط",
+    "Download version {version} now!" => "!را دانلود کن {version} همسین حالا نسخه ",
+    "KCFinder is up to date!" => "!بروز است KCFinder",
+    "Licenses:" => "مجوز",
+    "Attention" => "توجه",
+    "Question" => "پرسش",
+    "Yes" => "بله",
+    "No" => "خیر",
+
+    // SINCE 2.41
+
+    "You cannot rename the extension of files!" => "!شما نمی توانید پسوند فایلها را تغییر دهید",
+    "Uploading file {number} of {count}... {progress}" => "{progress} ...ارسال شد {count} فایل از {number}",
+    "Failed to upload {filename}!"  => "! {filename} خطا در ارسال"
+
+);

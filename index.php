@@ -71,8 +71,8 @@ insert_charset_header();
 coreBOS_Session::init();
 $_SESSION['KCFINDER'] = array();
 $_SESSION['KCFINDER']['disabled'] = false;
-$_SESSION['KCFINDER']['uploadURL'] = 'storage/kcimages';
-$_SESSION['KCFINDER']['uploadDir'] = '../storage/kcimages';
+$_SESSION['KCFINDER']['uploadURL'] = $site_URL.'/storage/kcimages';
+$_SESSION['KCFINDER']['uploadDir'] = $root_directory.'storage/kcimages';
 
 if (!is_file('config.inc.php')) {
 	header("Location: install.php");

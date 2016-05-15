@@ -20,7 +20,7 @@ CKEDITOR.editorConfig = function( config ) {
 		'/',
 		['Cut','Copy','Paste','PasteText','PasteFromWord','-','Print', 'SpellChecker'],
 		['Undo','Redo','-','Find','Replace','-','SelectAll','RemoveFormat'],
-		['Image','Table','HorizontalRule','SpecialChar','PageBreak','TextColor','BGColor'], //,'Smiley','UniversalKey'],
+		['Image','Table','HorizontalRule','SpecialChar','Smiley','TextColor','BGColor'], //,'PageBreak','Smiley','UniversalKey'],
 		'/',
 		['Styles','Format','Font','FontSize']
 	];

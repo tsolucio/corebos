@@ -1,4 +1,5 @@
 <?php
+
 /** Portuguese localization file for KCFinder
   * author: Hugo Branquinho
   * country: Portugal
@@ -7,6 +8,8 @@
 
 $lang = array(
 
+    '_lang' => "Portuguese",
+    '_native' => "Português",
     '_locale' => "pt_PT.UTF-8",  // UNIX localization code
     '_charset' => "utf-8",       // Browser charset
 
@@ -58,7 +61,7 @@ $lang = array(
     "Não foi possível guardar o ficheiro.",
 
     "Cannot read .htaccess" =>
-    "Não foi possível ler o ficheiro '.htaccess'.",
+    "Não foi possível ler o ficheiro .htaccess",
 
     "Incorrect .htaccess file. Cannot rewrite it!" =>
     "Ficheiro '.htaccess' incorrecto. Não foi possível altera-lo.",
@@ -79,7 +82,7 @@ $lang = array(
     "Caracteres não autorizados no nome da pasta.",
 
     "Folder name shouldn't begins with '.'" =>
-    "O nome da pasta não deve começar por '.'.",
+    "O nome da pasta não deve começar por '.'",
 
     "Please enter new file name." =>
     "Por favor defina o nome do ficheiro.",
@@ -88,7 +91,7 @@ $lang = array(
     "Caracteres não autorizados no nome do ficheiro.",
 
     "File name shouldn't begins with '.'" =>
-    "O nome do ficheiro não deve começar por '.'.",
+    "O nome do ficheiro não deve começar por '.'",
 
     "Are you sure you want to delete this file?" =>
     "Tem a certeza que deseja apagar este ficheiro?",
@@ -238,5 +241,3 @@ $lang = array(
     "Select Thumbnails" => "Seleccionar miniaturas",
     "Download files" => "Sacar ficheiros",
 );
-
-?>
