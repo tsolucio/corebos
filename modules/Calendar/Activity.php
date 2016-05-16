@@ -129,12 +129,12 @@ class Activity extends CRMEntity {
 		{
 			$this->deleteRelation('vtiger_cntactivityrel');
 		}
-		$recur_type='';	
+		$recur_type='';
 		if(($recur_type == "--None--" || $recur_type == '') && $this->mode == "edit")
 		{
-			$sql = 'delete  from vtiger_recurringevents where activityid=?';
-			$adb->pquery($sql, array($this->id));		
-		}	
+			$sql = 'delete from vtiger_recurringevents where activityid=?';
+			$adb->pquery($sql, array($this->id));
+		}
 		//Handling for recurring type
 		//Insert into vtiger_recurring event table
 		if(isset($this->column_fields['recurringtype']) && $this->column_fields['recurringtype']!='' && $this->column_fields['recurringtype']!='--None--')
@@ -142,12 +142,11 @@ class Activity extends CRMEntity {
 			$recur_type = trim($this->column_fields['recurringtype']);
 			$recur_data = getrecurringObjValue();
 			if(is_object($recur_data))
-	      			$this->insertIntoRecurringTable($recur_data);
-		}	
-	
-		//Insert into vtiger_activity_remainder table
+				$this->insertIntoRecurringTable($recur_data);
+		}
 
-			$this->insertIntoReminderTable('vtiger_activity_reminder',$module,0);
+		//Insert into vtiger_activity_remainder table
+		$this->insertIntoReminderTable('vtiger_activity_reminder',$module,0);
 
 		//Handling for invitees
 			$selected_users_string = isset($_REQUEST['inviteesid']) ? $_REQUEST['inviteesid'] : '';
