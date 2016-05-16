@@ -769,7 +769,7 @@ class ListViewController {
 				}
 				$arrow = '';
 			} else {
-				$name = getTranslatedString($field->getFieldLabelKey(), $module);
+				$name = getTranslatedString($field->getFieldLabelKey(), getTabModuleName($field->getTabId()));
 			}
 			//added to display vtiger_currency symbol in related listview header
 			if($name =='Amount') {
