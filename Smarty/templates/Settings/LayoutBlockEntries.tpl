@@ -194,7 +194,7 @@
 												</div>	
 									<!-- end custom field -->
 									{if $entries.blockid neq $COMMENTSECTIONID && $entries.blockid neq $SOLUTIONBLOCKID}
-										<img src="{'moveinto.png'|@vtiger_imageurl:$THEME}" border="0"  style="cursor:pointer; height:16px; width:16px" onClick="fnvshobj(this,'movefields_{$entries.blockid}');"  alt="Move Fields" title="Move Fields"/>&nbsp;&nbsp;
+										<img src="{'moveinto.png'|@vtiger_imageurl:$THEME}" border="0"  style="cursor:pointer; height:16px; width:16px" onClick="fnvshobj(this,'movefields_{$entries.blockid}');" alt="{$MOD.LBL_MOVE_FIELDS}" title="{$MOD.LBL_MOVE_FIELDS}"/>&nbsp;&nbsp;
 									{/if}
 									<div id = "movefields_{$entries.blockid}" style="display:none; position:absolute; width:300px;" class="layerPopup">
 											<div style="position:relative; display:block">
@@ -204,7 +204,7 @@
 															{$MOD.LBL_MOVE_FIELDS}
 														</td>
 														<td width="5%" align="right">
-															<a href="javascript:fninvsh('movefields_{$entries.blockid}');"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0"  align="absmiddle" /></a>
+															<a href="javascript:fninvsh('movefields_{$entries.blockid}');"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" /></a>
 														</td>
 													</tr>
 												</table>
