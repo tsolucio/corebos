@@ -310,22 +310,22 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$purified_mfcache[$mfkey] = $fields;
 		return $fields;
 	}
-	
+
 	function getDescribeFieldArray($webserviceField){
 		static $purified_dfcache = array();
 		$dfkey = $webserviceField->getFieldName().$webserviceField->getTabId();
 		if (array_key_exists($dfkey, $purified_dfcache)) {
 			return $purified_dfcache[$dfkey];
 		}
-		$default_language = VTWS_PreserveGlobal::getGlobal('default_language');
-		
+		$default_language = isset($this->user->language) ? $this->user->language : VTWS_PreserveGlobal::getGlobal('default_language');
+
 		require 'modules/'.$this->meta->getTabName()."/language/$default_language.lang.php";
 		$fieldLabel = $webserviceField->getFieldLabelKey();
 		if(isset($mod_strings[$fieldLabel])){
 			$fieldLabel = $mod_strings[$fieldLabel];
 		}
 		$typeDetails = $this->getFieldTypeDetails($webserviceField);
-		
+
 		//set type name, in the type details array.
 		$typeDetails['name'] = $webserviceField->getFieldDataType();
 		$editable = $this->isEditable($webserviceField);
