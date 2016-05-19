@@ -339,3 +339,25 @@ function servicePickList(currObj,module, row_no) {
     else
 		window.open("index.php?module=Services&action=Popup&html=Popup_picker&select=enable&form=HelpDeskEditView&popuptype="+popuptype+"&curr_row="+rowId+"&return_module="+module+"&currencyid="+currencyid,"productWin","width=640,height=600,resizable=0,scrollbars=0,status=1,top=150,left=200");
 }
+
+function AssetssetValueFromCapture(recordid,value,target_fieldname) {
+	if(target_fieldname=="invoiceid") {
+		var url = "module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getFieldValuesFromRecord&getTheseFields=account_id,Accounts.accountname&getFieldValuesFrom="+recordid;
+		new Ajax.Request(
+			'index.php',
+			{
+				queue: {
+					position: 'end',
+					scope: 'command'
+				},
+				method: 'post',
+				postBody:url,
+				onComplete: function(response) {
+					var str = JSON.parse(response.responseText);
+					document.EditView.account.value = str["accountid"];
+					document.EditView.account_display.value = str["Accounts.accountname"];
+				}
+			}
+			);
+	}
+}
