@@ -89,6 +89,16 @@ switch ($functiontocall) {
 			}
 		}
 		break;
+	case 'getEmailTemplateDetails':
+		$emltplid = vtlib_purify($_REQUEST['templateid']);
+		$emltpl = getTemplateDetails($emltplid);
+		$ret = array();
+		if (count($emltpl)>0) {
+			$ret['subject'] = $emltpl[2];
+			$ret['body'] = $emltpl[1];
+			$ret['from_email'] = $emltpl[3];
+		}
+		break;
 	case 'ismoduleactive':
 	default:
 		$mod = vtlib_purify($_REQUEST['checkmodule']);
