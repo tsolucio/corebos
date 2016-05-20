@@ -67,6 +67,16 @@ elseif(isset($_REQUEST['sendmail']) && $_REQUEST['sendmail'] !='')
 		$to_add = trim($mailids['mailds'],",").",";
 	$smarty->assign('TO_MAIL',$to_add);
 	$smarty->assign('IDLISTS',$mailids['idlists']);
+	$Users_Default_Send_Email_Template = GlobalVariable::getVariable('Users_Default_Send_Email_Template', 0);
+	if (!empty($Users_Default_Send_Email_Template)) {
+		$emltpl = getTemplateDetails($Users_Default_Send_Email_Template);
+		if (count($emltpl)>0) {
+			$focus->column_fields['subject'] = $emltpl[2];
+			$focus->column_fields['description'] = $emltpl[1];
+			$focus->column_fields['from_email'] = $emltpl[3];
+		}
+	}
+	setObjectValuesFromRequest($focus);
 	$focus->mode = '';
 }
 elseif(!empty($_REQUEST['invmodid'])) {

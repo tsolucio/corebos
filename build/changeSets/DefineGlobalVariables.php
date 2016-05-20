@@ -57,6 +57,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_Global_Search_SelectedModules',
 				'Application_Storage_Directory',
 				'Application_Storage_SaveStrategy',
+				'Users_Default_Send_Email_Template',
 			);
 			
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');
