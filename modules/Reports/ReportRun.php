@@ -1813,6 +1813,13 @@ class ReportRun extends CRMEntity {
 			if($columnstotalsql != '')
 			{
 				$totalsselectedcolumns = $columnlist;
+				// eliminate product/service columns for inventory modules
+				foreach ($columnlist as $key => $value) {
+					$finfo = explode(':',$key);
+					if ($finfo[0]=='vtiger_inventoryproductrel'.$this->primarymodule) {
+						unset($totalsselectedcolumns[$key]);
+					}
+				}
 				if (isset($this->_columnstotallistaddtoselect) and is_array($this->_columnstotallistaddtoselect) and count($this->_columnstotallistaddtoselect)>0) {
 					$_columnstotallistaddtoselect = ', '.implode(', ', $this->_columnstotallistaddtoselect);
 					$totalscolalias = array();
