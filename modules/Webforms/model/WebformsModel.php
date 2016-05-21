@@ -137,7 +137,9 @@ class Webforms_Model {
 	}
 
 	function getOwnerId() {
-		return vtlib_purify($this->data["ownerid"]);
+		require_once 'modules/Users/Users.php';
+		$return = vtlib_purify($this->data['ownerid']);
+		return (empty($return) ? Users::getActiveAdminId() : $return);
 	}
 
 	function getFields() {
