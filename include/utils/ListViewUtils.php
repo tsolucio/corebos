@@ -147,7 +147,7 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 			}
 		}
 		if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0 || in_array($fieldname, $field) || $fieldname == '' || ($name == 'Close' && $module == 'Calendar')) {
-			if (isset($focus->sortby_fields) && $focus->sortby_fields != '') {
+			if (isset($focus->sortby_fields) && $focus->sortby_fields != '' && $name != 'Close') {
 				//Added on 14-12-2005 to avoid if and else check for every list field for arrow image and change order
 				$change_sorder = array('ASC' => 'DESC', 'DESC' => 'ASC');
 				$arrow_gif = array('ASC' => 'arrow_down.gif', 'DESC' => 'arrow_up.gif');
@@ -203,10 +203,10 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 				$name .=' (' . $app_strings['LBL_IN'] . ' ' . $user_info['currency_symbol'] . ')';
 			}
 
-			if ($module == "Calendar" && $name == $app_strings['Close']) {
+			if ($module == "Calendar" && $name == 'Close') {
 				if (isPermitted("Calendar", "EditView") == 'yes') {
 					if ((getFieldVisibilityPermission('Events', $current_user->id, 'eventstatus') == '0') || (getFieldVisibilityPermission('Calendar', $current_user->id, 'taskstatus') == '0')) {
-						array_push($list_header, $name);
+						array_push($list_header, $app_strings[$name]);
 					}
 				}
 			} else {
@@ -894,7 +894,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 					}
 					// END
 
-					if ($module == "Calendar" && $name == $app_strings['Close']) {
+					if ($module == "Calendar" && $name == 'Close') {
 						if (isPermitted("Calendar", "EditView") == 'yes') {
 							if ((getFieldVisibilityPermission('Events', $current_user->id, 'eventstatus') == '0') || (getFieldVisibilityPermission('Calendar', $current_user->id, 'taskstatus') == '0')) {
 								array_push($list_header, $value);
