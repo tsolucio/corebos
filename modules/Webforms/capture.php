@@ -19,7 +19,7 @@ include_once 'modules/Webforms/model/WebformsFieldModel.php';
 include_once 'include/QueryGenerator/QueryGenerator.php';
 
 class Webform_Capture {
-	
+
 	function captureNow($request) {
 		$returnURL = false;
 		try {
