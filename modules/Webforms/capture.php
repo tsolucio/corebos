@@ -40,17 +40,15 @@ class Webform_Capture {
 			$parameters = array();
 			$webformFields = $webform->getFields();
 			foreach ($webformFields as $webformField) {
-				if($webformField->getDefaultValue()!=null){
+				if(is_array(vtlib_purify($request[$webformField->getNeutralizedField()]))){
+					$fieldData=implode(" |##| ",vtlib_purify($request[$webformField->getNeutralizedField()]));
+				}
+				else{
+					$fieldData=vtlib_purify($request[$webformField->getNeutralizedField()]);
+				}
+				$parameters[$webformField->getFieldName()] = stripslashes($fieldData);
+				if(empty($parameters[$webformField->getFieldName()]) and $webformField->getDefaultValue()!=null){
 					$parameters[$webformField->getFieldName()] = decode_html($webformField->getDefaultValue());
-				}else{
-					if(is_array(vtlib_purify($request[$webformField->getNeutralizedField()]))){
-						$fieldData=implode(" |##| ",vtlib_purify($request[$webformField->getNeutralizedField()]));
-					}
-					else{
-						$fieldData=vtlib_purify($request[$webformField->getNeutralizedField()]);
-					}
-				
-					$parameters[$webformField->getFieldName()] = stripslashes($fieldData);
 				}
 				if($webformField->getRequired()){
 					if(empty($parameters[$webformField->getFieldName()]))  throw new Exception("Required fields not filled");
