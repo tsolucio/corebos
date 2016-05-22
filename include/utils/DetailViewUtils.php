@@ -1897,6 +1897,8 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 				} else {
 					$returndata[getTranslatedString($curBlock, $module)] = (array) $label_data[$blockid];
 				}
+			} elseif (file_exists("Smarty/templates/modules/$module/{$label}_detail.tpl")) {
+				$returndata[getTranslatedString($curBlock,$module)]=array_merge((array)$returndata[getTranslatedString($curBlock,$module)],array($label=>array()));
 			}
 		}
 	}

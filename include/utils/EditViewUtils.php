@@ -2097,6 +2097,8 @@ function getBlockInformation($module, $result, $col_fields,$tabid,$block_label,$
 				if(is_array($editview_arr[$blockid]))
 					$returndata[getTranslatedString($curBlock,$module)]=array_merge((array)$returndata[getTranslatedString($curBlock,$module)],(array)$editview_arr[$blockid]);
 			}
+		} elseif (file_exists("Smarty/templates/modules/$module/{$label}_edit.tpl")) {
+			$returndata[getTranslatedString($label,$module)]=array_merge((array)$returndata[getTranslatedString($label,$module)],array($label=>array()));
 		}
 	}
 	$log->debug("Exiting getBlockInformation method ...");
