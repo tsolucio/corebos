@@ -14,9 +14,7 @@
 				<input type="hidden" name="mode">
 				<script language="JavaScript" type="text/javascript" src="include/js/customview.js"></script>
 				<script language="JavaScript" type="text/javascript" src="include/js/general.js"></script>
-						
 				<table class="listTable" border="0" cellpadding="3" cellspacing="0" width="100%">
-					
 					{foreach item=entries key=id from=$CFENTRIES name=outer}
 						{if $entries.blockid ne $RELPRODUCTSECTIONID && $entries.blocklabel neq '' }
 							{if $smarty.foreach.outer.first neq true}
@@ -55,18 +53,18 @@
 														<td class=small >
 															<table border="0" celspacing="0" cellpadding="0" width="100%" align="center" bgcolor="white">
 																<tr>
-																	<td align="center">	
+																	<td align="center">
 																		<table border="0" cellspacing="0" cellpadding="0" width="100%">
 																			<tr>
 																				<td>{if $entries.hidden_count neq '0' || $entries.hidden_count neq null}
 																					{$APP.LBL_SELECT_FIELD_TO_MOVE}
-																					{/if} 
+																					{/if}
 																				</td>
 																			</tr>
 																			<tr align="left">
 																				<td>{if $entries.hidden_count neq '0'}
 																					<select class="small" id="hiddenfield_assignid_{$entries.blockid}" style="width:225px" size="10" multiple>
-																					{foreach name=inner item=value from=$entries.hiddenfield}	
+																					{foreach name=inner item=value from=$entries.hiddenfield}
 																						<option value="{$value.fieldselect}">{$value.fieldlabel|@getTranslatedString:$MODULE}</option>
 																					{/foreach}
 																						</select>
@@ -107,7 +105,7 @@
 															</td>
 														</tr>
 													</table>
-													<table border="0" cellspacing="0" cellpadding="5" width="95%" align="center"> 
+													<table border="0" cellspacing="0" cellpadding="5" width="95%" align="center">
 														<tr>
 															<td class="small" >
 																<table border="0" celspacing="0" cellpadding="5" width="100%" align="center" bgcolor="white">
@@ -180,7 +178,6 @@
 															</td>
 														</tr>
 													</table>
-													
 													<table border="0" cellspacing="0" cellpadding="5" width="100%" class="layerPopupTransport">
 														<tr>
 															<td align="center">
@@ -191,7 +188,7 @@
 														<input type="hidden" name="selectedfieldtype_{$entries.blockid}" id="selectedfieldtype_{$entries.blockid}" value="">
 														</tr>
 													</table>
-												</div>	
+												</div>
 									<!-- end custom field -->
 									{if $entries.blockid neq $COMMENTSECTIONID && $entries.blockid neq $SOLUTIONBLOCKID}
 										<img src="{'moveinto.png'|@vtiger_imageurl:$THEME}" border="0"  style="cursor:pointer; height:16px; width:16px" onClick="fnvshobj(this,'movefields_{$entries.blockid}');" alt="{$MOD.LBL_MOVE_FIELDS}" title="{$MOD.LBL_MOVE_FIELDS}"/>&nbsp;&nbsp;
@@ -213,14 +210,14 @@
 														<td class=small align="left" >
 															<table border="0" cellspacing="0" cellpadding="0" width="100%" bgcolor="white">
 																<tr>
-																	<td>	
+																	<td>
 																		<table border="0" cellspacing="5" cellpadding="0" width="100%" align="left" class=small>
 																			<tr>
 																				<td>{$MOD.LBL_SELECT_FIELD_TO_MOVE}</td>
 																			</tr>
 																			<tr>
 																				<td><select class="small" id="movefield_assignid_{$entries.blockid}" style="width:225px" size="10" multiple>
-																					{foreach name=inner item=value from=$entries.movefield}	
+																					{foreach name=inner item=value from=$entries.movefield}
 																						<option value="{$value.fieldid}">{$value.fieldlabel}</option>
 																					{/foreach}
 																					</select>
@@ -272,7 +269,6 @@
 								</td>
 								<td width="19%" align = "right" class="colData small" >
 									<img src="{'editfield.gif'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;" onclick="fnvshNrm('editfield_{$value.fieldselect}'); posLay(this, 'editfield_{$value.fieldselect}');" alt="Popup" title="{$MOD.LBL_EDIT_PROPERTIES}"/>&nbsp;&nbsp;
-									
 									<div id="editfield_{$value.fieldselect}" style="display:none; position: absolute; width: 225px; left: 300px; top: 300px;" >
 										<div class="layerPopup" style="position:relative; display:block">
 		 									<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">
@@ -288,18 +284,18 @@
 											<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">
 												<tr>
 													<td valign="top" class="dvtCellInfo" align="left" width="10px">
-														<input id="mandatory_check_{$value.fieldselect}"  type="checkbox"
+														<input id="mandatory_check_{$value.fieldselect}" type="checkbox"
 														{if $value.fieldtype neq 'M' && $value.mandatory eq '0'}
 															 disabled
-														{elseif $value.mandatory eq '0' && $value.fieldtype eq 'M'} 
-															checked  disabled 
-														{elseif $value.mandatory eq '3' } 
-															disabled 
+														{elseif $value.mandatory eq '0' && $value.fieldtype eq 'M'}
+															 checked disabled
+														{elseif $value.mandatory eq '3' }
+															 disabled
 														{elseif $value.mandatory eq '2'}
-														 	checked 
+															 checked
 														{/if}
-														 onclick = "{if $value.presence neq '0'} enableDisableCheckBox(this,presence_check_{$value.fieldselect}); {/if}
-														 			{if $value.quickcreate neq '0' && $value.quickcreate neq '3'} enableDisableCheckBox(this,quickcreate_check_{$value.fieldselect}); {/if}">
+														onclick = "{if $value.presence neq '0'} enableDisableCheckBox(this,presence_check_{$value.fieldselect}); {/if}
+																	{if $value.quickcreate neq '0' && $value.quickcreate neq '3'} enableDisableCheckBox(this,quickcreate_check_{$value.fieldselect}); {/if}">
 													</td>
 													<td valign="top" class="dvtCellInfo" align="left">
 														&nbsp;<label for="mandatory_check_{$value.fieldselect}">{$MOD.LBL_MANDATORY_FIELD}</label>
@@ -307,18 +303,18 @@
 												</tr>
 												<tr>
 													<td valign="top" class="dvtCellInfo" align="left" width="10px">
-														<input id="presence_check_{$value.fieldselect}"  type="checkbox"
+														<input id="presence_check_{$value.fieldselect}" type="checkbox"
 														{if $value.displaytype eq '2'}
 															checked disabled
-														{else}  
-															{if $value.presence eq '0' || $value.mandatory eq '0' || $value.quickcreate eq '0' || $value.mandatory eq '2'} 
-																checked  disabled   
+														{else}
+															{if $value.presence eq '0' || $value.mandatory eq '0' || $value.quickcreate eq '0' || $value.mandatory eq '2'}
+																 checked disabled
 															{/if}
-															{if $value.presence eq '2'} 
-														 		checked
-														 	{/if}
-														  	{if $value.presence eq '3'}
-																disabled
+															{if $value.presence eq '2'}
+																 checked
+															{/if}
+															{if $value.presence eq '3'}
+																 disabled
 															{/if}
 														{/if}
 														 >
@@ -329,15 +325,15 @@
 												</tr>
 												<tr>
 													<td valign="top" class="dvtCellInfo" align="left" width="10px">
-														<input id="quickcreate_check_{$value.fieldselect}"  type="checkbox" 
-														{if $value.quickcreate eq '0'|| $value.quickcreate eq '2' && ($value.mandatory eq '0' || $value.mandatory eq '2')} 
-															checked  disabled   
+														<input id="quickcreate_check_{$value.fieldselect}" type="checkbox"
+														{if $value.quickcreate eq '0'|| $value.quickcreate eq '2' && ($value.mandatory eq '0' || $value.mandatory eq '2')}
+															 checked disabled
 														{/if}
 														{if $value.quickcreate eq '2'}
-															checked
+															 checked
 														{/if}
 														{if $value.quickcreate eq '3'}
-															disabled
+															 disabled
 														{/if}
 														 >
 													</td>
@@ -347,15 +343,15 @@
 												</tr>
 												<tr>
 													<td valign="top" class="dvtCellInfo" align="left" width="10px">
-														<input id="massedit_check_{$value.fieldselect}"  type="checkbox" 
+														<input id="massedit_check_{$value.fieldselect}" type="checkbox"
 														{if $value.massedit eq '0'}
-															disabled 
+															 disabled
 														{/if}
-														{if $value.massedit eq '1'} 
-															checked
+														{if $value.massedit eq '1'}
+															 checked
 														{/if}
 														{if $value.displaytype neq '1' || $value.massedit eq '3'}
-															disabled
+															 disabled
 														{/if}>
 													</td>
 													<td valign="top" class="dvtCellInfo" align="left">
@@ -365,24 +361,24 @@
 												<tr>
 													<td valign="top" class="dvtCellInfo" align="left" width="10px">
 														{assign var="defaultsetting" value=$value.defaultvalue}
-														<input id="defaultvalue_check_{$value.fieldselect}"  type="checkbox" 
+														<input id="defaultvalue_check_{$value.fieldselect}" type="checkbox"
 														{if $defaultsetting.permitted eq false}
-															disabled 
+															 disabled
 														{/if}
 														{if $defaultsetting.value neq ''}
-															checked
+															 checked
 														{/if}
 													</td>
 													<td valign="top" class="dvtCellInfo" align="left">
 														&nbsp;<label for="defaultvalue_check_{$value.fieldselect}">{$MOD.LBL_DEFAULT_VALUE}</label><br>
 														{assign var="fieldElementId" value='defaultvalue_'|cat:$value.fieldselect}
 														{if $defaultsetting.permitted eq true}
-                											{include file="Settings/FieldUI.tpl" 
-                												_FIELD_UI_TYPE=$value.uitype
-                												_FIELD_SELECTED_VALUE=$defaultsetting.value
-                												_FIELD_ELEMENT_ID=$fieldElementId
-                												_ALL_AVAILABLE_VALUES=$defaultsetting._allvalues
-                											}
+															{include file="Settings/FieldUI.tpl"
+																_FIELD_UI_TYPE=$value.uitype
+																_FIELD_SELECTED_VALUE=$defaultsetting.value
+																_FIELD_ELEMENT_ID=$fieldElementId
+																_ALL_AVAILABLE_VALUES=$defaultsetting._allvalues
+															}
 														{/if}
 													</td>
 												</tr>
@@ -468,7 +464,6 @@
 						{/if}
 					{/foreach}
 				</table>
-				
 					<div id="addblock" style="display:none; position:absolute; width:500px;" class="layerPopup">
 						<table width="100%" border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine">
 							<tr>
@@ -478,7 +473,7 @@
 								</td>
 							</tr>
 						</table>
-						<table border="0" cellspacing="0" cellpadding="0" width="95%" align="center"> 
+						<table border="0" cellspacing="0" cellpadding="0" width="95%" align="center">
 							<tr>
 								<td class="small" >
 									<table border="0" celspacing="0" cellpadding="0" width="100%" align="center" bgcolor="white">

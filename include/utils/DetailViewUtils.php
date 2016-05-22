@@ -1806,7 +1806,6 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 
 	$noofrows = $adb->num_rows($result);
 	for ($i = 0; $i < $noofrows; $i++) {
-
 		$fieldtablename = $adb->query_result($result, $i, "tablename");
 		$fieldcolname = $adb->query_result($result, $i, "columnname");
 		$uitype = $adb->query_result($result, $i, "uitype");
