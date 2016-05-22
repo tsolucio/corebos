@@ -149,7 +149,7 @@ class RecordAccessControl extends processcbMap {
 			$contentok = processcbMap::isXML(htmlspecialchars_decode($focus->column_fields['content']));
 			if ($contentok) {
 				$condition = $focus->ConditionQuery($this->relatedid);
-				if ($condition) {
+				if ($condition==true or strtolower($condition)=='true' or strtolower($condition)=='yes' or (is_numeric($condition) and $condition>0)) {
 					return $map2use['condition'];
 				} else {
 					return $map2use;
