@@ -2234,17 +2234,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						$count = counterValue();
 						$value = '<a href="index.php?action=EventDetailView&module=Calendar4You&record=' . $entity_id . '&activity_mode=Events&parenttab=' . $tabname . '" id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
 					}
-				} elseif ($module == "Vendors") {
-					$count = counterValue();
-
-					$value = '<a href="index.php?action=DetailView&module=Vendors&record=' . $entity_id . '&parenttab=' . $tabname . '" id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
-				} elseif ($module == "PriceBooks") {
-					$count = counterValue();
-					$value = '<a href="index.php?action=DetailView&module=PriceBooks&record=' . $entity_id . '&parenttab=' . $tabname . '" id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
-				} elseif ($module == "SalesOrder") {
-
-					$count = counterValue();
-					$value = '<a href="index.php?action=DetailView&module=SalesOrder&record=' . $entity_id . '&parenttab=' . $tabname . '" id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
 				} elseif ($module == 'Emails') {
 					$value = $temp_val;
 				} elseif (($module == "Users" && $colname == "last_name")) {
