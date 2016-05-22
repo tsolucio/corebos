@@ -581,18 +581,13 @@ class ListViewController {
 					$parenttab = getParentTab();
 					$nameFields = $this->queryGenerator->getModuleNameFields($module);
 					$nameFieldList = explode(',',$nameFields);
-					if(in_array($fieldName, $nameFieldList) && $module != 'Emails' ) {
-						$value = "<a href='index.php?module=$module&parenttab=$parenttab&action=DetailView&record=".
-						"$recordId' title='".getTranslatedString($module, $module)."'>$value</a>";
-					} elseif($fieldName == $focus->list_link_field && $module != 'Emails') {
+					if(($fieldName == $focus->list_link_field or in_array($fieldName, $nameFieldList)) && $module != 'Emails' ) {
 						$value = "<a href='index.php?module=$module&parenttab=$parenttab&action=DetailView&record=".
 						"$recordId' title='".getTranslatedString($module, $module)."'>$value</a>";
 					}
-	
 					// vtlib customization: For listview javascript triggers
 					$value = "$value <span type='vtlib_metainfo' vtrecordid='{$recordId}' vtfieldname=".
 						"'{$fieldName}' vtmodule='$module' style='display:none;'></span>";
-					// END
 				}
 				$row[] = $value;
 			}
@@ -605,11 +600,9 @@ class ListViewController {
 				$edit_link = $this->getListViewEditLink($module,$recordId);
 				if(isset($navigationInfo['start']) && $navigationInfo['start'] > 1 && $module != 'Emails') {
 					$actionLinkInfo .= "<a href=\"$edit_link&start=".
-						$navigationInfo['start']."\">".getTranslatedString("LNK_EDIT",
-								$module)."</a> ";
+						$navigationInfo['start']."\">".getTranslatedString("LNK_EDIT",$module)."</a> ";
 				} else {
-					$actionLinkInfo .= "<a href=\"$edit_link\">".getTranslatedString("LNK_EDIT",
-								$module)."</a> ";
+					$actionLinkInfo .= "<a href=\"$edit_link\">".getTranslatedString("LNK_EDIT",$module)."</a> ";
 				}
 				}
 			}
