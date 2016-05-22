@@ -198,6 +198,7 @@ $app_strings = array(
 	'LBL_EXPORT' => 'Export',
 	'LBL_EXPORT_ALL' => 'Export All',
 	'LBL_QUICK_CREATE' => 'Quick Create',
+	'QuickRelatedList' => 'Related Modules',
 	'Export' => 'Export',
 	'Import' => 'Import',
 	'Merge' => 'Merge',

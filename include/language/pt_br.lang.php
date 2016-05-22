@@ -201,6 +201,7 @@ $app_strings = array (
 'LBL_EXPORT' => 'Exportar',
 'LBL_EXPORT_ALL' => 'Exportar tudo',
 'LBL_QUICK_CREATE' => 'Criar Rápido',
+'QuickRelatedList' => 'Related Modules',
 'Export' => 'Exportar',
 'Import' => 'Importar',
 'Merge' => 'Mesclar',

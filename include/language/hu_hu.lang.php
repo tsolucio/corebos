@@ -201,6 +201,7 @@ $app_strings = array(
 	'LBL_EXPORT' => 'Exportálás',
 	'LBL_EXPORT_ALL' => 'Midndet Exportál',
 	'LBL_QUICK_CREATE' => 'Gyors Létrehozás',
+	'QuickRelatedList' => 'Related Modules',
 	'Export' => 'Exportál',
 	'Import' => 'Importál',
 	'Merge' => 'Összefűz',
