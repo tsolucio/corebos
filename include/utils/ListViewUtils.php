@@ -2241,7 +2241,14 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$value = '<a href="index.php?action=DetailView&module=' . $module . '&record=' . $entity_id . '&parenttab=' . $tabname . '">' . textlength_check($temp_val) . '</a>';
 				} else {
 					$count = counterValue();
-					$value = '<a href="index.php?action=DetailView&module=' . $module . '&record=' . $entity_id . '&parenttab=' . $tabname . '" id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+					$opennewtab = GlobalVariable::getVariable('Application_OpenRecordInNewXOnRelatedList', '', $module);
+					if ($opennewtab=='') {
+						$value = '<a href="index.php?action=DetailView&module=' . $module . '&record=' . $entity_id . '&parenttab=' . $tabname . '" id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+					} elseif ($opennewtab=='window') {
+						$value = '<a href="#" onclick="window.open(\'index.php?action=DetailView&module=' . $module . '&record=' . $entity_id . '&parenttab=' . $tabname . "', '$module-$entity_id', 'width=1300, height=900, scrollbars=yes'); return false;" . '" id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+					} else {
+						$value = '<a href="index.php?action=DetailView&module=' . $module . '&record=' . $entity_id . '&parenttab=' . $tabname . '" id = ' . $count . ' target="_blank" >' . textlength_check($temp_val) . '</a>';
+					}
 				}
 			}
 		} elseif ($module == 'Calendar' && ($fieldname == 'time_start' ||

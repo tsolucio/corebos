@@ -582,8 +582,17 @@ class ListViewController {
 					$nameFields = $this->queryGenerator->getModuleNameFields($module);
 					$nameFieldList = explode(',',$nameFields);
 					if(($fieldName == $focus->list_link_field or in_array($fieldName, $nameFieldList)) && $module != 'Emails' ) {
-						$value = "<a href='index.php?module=$module&parenttab=$parenttab&action=DetailView&record=".
-						"$recordId' title='".getTranslatedString($module, $module)."'>$value</a>";
+						$opennewtab = GlobalVariable::getVariable('Application_OpenRecordInNewXOnListView', '', $module);
+						if ($opennewtab=='') {
+							$value = "<a href='index.php?module=$module&parenttab=$parenttab&action=DetailView&record=".
+								"$recordId' title='".getTranslatedString($module, $module)."'>$value</a>";
+						} elseif ($opennewtab=='window') {
+							$value = "<a href='#' onclick='window.open(\"index.php?module=$module&parenttab=$parenttab&action=DetailView&record=".
+								"$recordId\", \"$module-$entity_id\", \"width=1300, height=900, scrollbars=yes\"); return false;' title='".getTranslatedString($module, $module)."'>$value</a>";
+						} else {
+							$value = "<a href='index.php?module=$module&parenttab=$parenttab&action=DetailView&record=".
+								"$recordId' title='".getTranslatedString($module, $module)."' target='_blank'>$value</a>";
+						}
 					}
 					// vtlib customization: For listview javascript triggers
 					$value = "$value <span type='vtlib_metainfo' vtrecordid='{$recordId}' vtfieldname=".

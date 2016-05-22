@@ -30,6 +30,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_Storage_Directory',
 				'Application_Storage_SaveStrategy',
 				'Application_Global_Search_Binary',
+				'Application_OpenRecordInNewXOnRelatedList',
+				'Application_OpenRecordInNewXOnListView',
 
 				'Calendar_Modules_Panel_Visible',
 				'Calendar_Default_Reminder_Minutes',
