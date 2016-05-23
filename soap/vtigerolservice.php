@@ -282,6 +282,8 @@ function SearchContactsByEmail($username,$session,$emailaddress)
 	if(!validateSession($username,$session))
 	return null;
 	require_once('modules/Contacts/Contacts.php');
+	require_once('modules/Leads/Leads.php');
+	require_once('modules/Accounts/Accounts.php');
 
 	$seed_contact = new Contacts();
 	$output_list = Array();
@@ -301,11 +303,49 @@ function SearchContactsByEmail($username,$session,$emailaddress)
                "lastname" => decode_html($contact[lastname]),
                "accountname" => decode_html($contact[accountname]),
                "emailaddress" => decode_html($contact[email]),
+		"category" => "Contact",
           );
      }
-
+	 // crm-now added Lead functionality
+	 $seed_lead = new Leads();
+	 
+	 $response2 = $seed_lead->get_searchbyemailid($username,$emailaddress);
+	 $leadList = $response2['list'];
+	 
+	 foreach($leadList as $lead)
+     {
+          $output_list[] = Array(
+               "id" => $lead[leadid],
+               "firstname" => decode_html($lead[firstname]),
+               "lastname" => decode_html($lead[lastname]),
+               "accountname" => decode_html($lead[company]),
+               "emailaddress" => decode_html($lead[email]),
+			   "category" => "Lead",
+          );
+     }
+	 // crm-now added Accounts functionality
+	 $acc_lead = new Accounts();
+	 
+	 $response3 = $acc_lead->get_searchbyemailid($username,$emailaddress);
+	 $accList = $response3['list'];
+	 
+	 foreach($accList as $acc)
+     {
+          $output_list[] = Array(
+               "id" => $acc['accountid'],
+               "firstname" => decode_html($acc['account_no']),
+               "lastname" => decode_html($acc['accountname']),
+               "accountname" => '',
+               "emailaddress" => decode_html($acc['email1']),
+			   "category" => "Account",
+          );
+     }
+     // end crm-now
      //to remove an erroneous compiler warning
      $seed_contact = $seed_contact;
+	 $seed_lead = $seed_lead;
+	 $acc_lead = $acc_lead;
+
      return $output_list;
 }
 
@@ -332,7 +372,8 @@ function AddMessageToContact($username,$session,$contactid,$msgdtls)
 			$email_body = str_replace("'", "''", $msgdtl['body']);
 			$email_body = str_replace('<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">'," ", $email_body);
 	        $email_subject = str_replace("'", "''",$msgdtl['subject']);
-	        $date_sent = DateTimeField::convertToUserFormat($msgdtl['datesent']);
+	        $date_sent = DateTimeField::convertToDBTimeZone($msgdtl['datesent']);
+		$date_sent = $sent_date->format("Y-m-d");
 	        $email->column_fields['subject'] = $email_subject;
 	        $email->column_fields['assigned_user_id'] = $user_id;
 	        $email->column_fields['date_start'] = $date_sent;
@@ -344,9 +385,11 @@ function AddMessageToContact($username,$session,$contactid,$msgdtls)
 			$query = "select fieldid from vtiger_field where fieldname = 'email' and tabid = 4 and vtiger_field.presence in (0,2)";
 			$result = $adb->pquery($query, array());
 			$field_id = $adb->query_result($result,0,"fieldid");
-	        $email->set_emails_contact_invitee_relationship($email->id,$contactid);
-	        $email->set_emails_se_invitee_relationship($email->id,$contactid);
-			$email->set_emails_user_invitee_relationship($email->id,$user_id);
+			$email->set_emails_se_invitee_relationship($email->id,$contactid);
+			// crm-now, doesn't seem to be needed for this case at all
+	        // $email->set_emails_contact_invitee_relationship($email->id,$contactid);
+			// $email->set_emails_user_invitee_relationship($email->id,$user_id);
+	        
 	        return $email->id;
 		}else{
 			return "";
@@ -513,8 +556,8 @@ function GetContacts($username,$session)
 
 	$outputcount = 0;
 	$outputxml = '';
-    /** we are directly returning XML */
-    $returnAsXML = true;
+	/** we are directly returning XML */
+	$returnAsXML = true;
 	while($contact = $adb->fetch_array($result))
 	{
 		if($contact["birthdate"] == "0000-00-00")
@@ -565,7 +608,7 @@ function __GetContactSOAPNode($contact) {
 <middlename xsi:type='xsd:string'>" . __GetSOAPEncode(trim($contact[middlename])) . "</middlename>
 <lastname xsi:type='xsd:string'>"   . __GetSOAPEncode(trim($contact[lastname]))  ."</lastname>
 <birthdate xsi:nil='true' xsi:type='xsd:string'>" .$contact[birthday]. "</birthdate>
-<emailaddress xsi:type='xsd:string'>" .trim($contact[email]) . "</emailaddress>
+<emailaddress xsi:type='xsd:string'>" .__GetSOAPEncode(trim($contact[email])) . "</emailaddress>
 <jobtitle xsi:type='xsd:string'>"     .__GetSOAPEncode($contact[title]) ."</jobtitle>
 <department xsi:type='xsd:string'>"   .__GetSOAPEncode($contact[department]) ."</department>
 <accountname xsi:type='xsd:string'>"  .__GetSOAPEncode($contact[accountname]) ."</accountname>
@@ -885,8 +928,11 @@ function GetTasks($username,$session)
         	}else if($task["priority"] == "Medium")
         	{
         		$task["priority"] = "1";
-        	}
-
+        	}else
+			{
+				$task["priority"] = "2";
+			}
+        
 		$output_list[] = Array(
 						"id" => $task["taskid"],
 						"subject" => decode_html($task["subject"]),
@@ -1031,6 +1077,8 @@ function UpdateTasks($username,$session,$taskdtls)
 	{
 		if(isset($taskrow))
 		{
+			// crm-now retrieve old task to keep assigned_to of record
+			$task->retrieve_entity_info($taskrow["id"],"Calendar");
 			if($taskrow["status"] == "0")
 			{
 				$taskrow["status"] = "Not Started";
@@ -1070,8 +1118,8 @@ function UpdateTasks($username,$session,$taskdtls)
 			$task->column_fields[taskpriority] = in_array('taskpriority',$permitted_lists) ? $taskrow["priority"] : "";
 			$task->column_fields[description] = in_array('description',$permitted_lists) ? $taskrow["description"] : "";
 			$task->column_fields[activitytype] = "Task";
-			//$task->column_fields[contact_id]= retrievereportsto($contact_name,$user_id,null);
-			$task->column_fields[assigned_user_id] = in_array('assigned_user_id',$permitted_lists) ? $user_id : "";
+			//$task->column_fields[contact_id]= retrievereportsto($contact_name,$user_id,null); 
+			//$task->column_fields[assigned_user_id] = in_array('assigned_user_id',$permitted_lists) ? $user_id : "";
 
 			$task->id = $taskrow["id"];
 			$task->mode="edit";
@@ -1419,4 +1467,19 @@ if (!isset($HTTP_RAW_POST_DATA)){
 }
 $server->service($HTTP_RAW_POST_DATA);
 exit();
+
+function SOAP_Encode($text)
+{	
+	$text = decode_html($text);
+	$seek[0]='/&/';
+	$seek[1]='/</';
+	$seek[2]='/>/';
+	
+	$replace[0]='&amp;';
+	$replace[1]='&lt;';
+	$replace[2]='&gt;';
+	
+	return preg_replace($seek, $replace, $text);
+}
+
 ?>

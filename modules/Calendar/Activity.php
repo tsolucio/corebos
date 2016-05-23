@@ -633,7 +633,14 @@ function insertIntoRecurringTable(& $recurObj)
 		$current_user->retrieve_entity_info($user_id, 'Users');
 		require('user_privileges/user_privileges_'.$current_user->id.'.php');
 		require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
-
+		//get users group ID's
+		$gquery = 'SELECT groupid FROM vtiger_users2group WHERE userid=?';
+		$gresult = $adb->pquery($gquery, array($user_id));
+		for($j=0;$j < $adb->num_rows($gresult);$j++) 
+		{
+			$groupidlist.=",".$adb->query_result($gresult,$j,'groupid');
+		}
+	
 		if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0)
 		{
 			$sql1 = "select tablename,columnname from vtiger_field where tabid=9 and tablename <> 'vtiger_recurringevents' and tablename <> 'vtiger_activity_reminder' and vtiger_field.presence in (0,2)";
@@ -667,17 +674,25 @@ function insertIntoRecurringTable(& $recurObj)
 		$column_table_lists = array();
 		for($i=0;$i < count($permitted_lists);$i++)
 		{
-			$column_table_lists[] = implode(".",$permitted_lists[$i]);
+			if ($permitted_lists[$i][0] !='vtiger_activitycf') $column_table_lists[] = implode(".",$permitted_lists[$i]);
 		}
 
-		$query = "select vtiger_activity.activityid as clndrid, ".implode(',',$column_table_lists)." from vtiger_activity
-			inner join vtiger_salesmanactivityrel on vtiger_salesmanactivityrel.activityid=vtiger_activity.activityid
-			inner join vtiger_users on vtiger_users.id=vtiger_salesmanactivityrel.smid
-			left join vtiger_cntactivityrel on vtiger_cntactivityrel.activityid=vtiger_activity.activityid
-			left join vtiger_contactdetails on vtiger_contactdetails.contactid=vtiger_cntactivityrel.contactid
-			left join vtiger_seactivityrel on vtiger_seactivityrel.activityid = vtiger_activity.activityid
-			inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid
-			where vtiger_users.user_name='".$user_name."' and vtiger_crmentity.deleted=0 and vtiger_activity.activitytype='Meeting'";
+		$query = "SELECT vtiger_activity.activityid AS clndrid, ".implode(',',$column_table_lists)." FROM vtiger_activity 
+				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_activity.activityid 
+				LEFT JOIN vtiger_salesmanactivityrel ON vtiger_salesmanactivityrel.activityid=vtiger_activity.activityid 
+				LEFT JOIN vtiger_users ON vtiger_users.id=vtiger_salesmanactivityrel.smid 
+				LEFT JOIN vtiger_cntactivityrel ON vtiger_cntactivityrel.activityid=vtiger_activity.activityid 
+				LEFT JOIN vtiger_contactdetails ON vtiger_contactdetails.contactid=vtiger_cntactivityrel.contactid 
+				LEFT JOIN vtiger_seactivityrel ON vtiger_seactivityrel.activityid = vtiger_activity.activityid 
+				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid 
+				WHERE vtiger_crmentity.deleted=0 AND vtiger_activity.activitytype='Meeting' ";
+				if (isset($groupidlist))
+					$query .= " AND (vtiger_users.user_name='".$user_name."' OR vtiger_crmentity.smownerid IN (".substr($groupidlist,1)."))";
+				else
+					$query .= " AND vtiger_users.user_name='".$user_name."'";
+				//crm-now added GROUP BY to prevent the same entry to appear multiple times if assigned to multiple contacts during synchronization with Outlook
+				$query .= " GROUP BY clndrid";
+				
 		$log->debug("Exiting get_calendarsforol method ...");
 		return $query;
 	}
