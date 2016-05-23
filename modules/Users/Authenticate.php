@@ -54,14 +54,8 @@ if($focus->is_authenticated())
 	$_SESSION['authenticated_user_id'] = $focus->id;
 	$_SESSION['app_unique_key'] = $application_unique_key;
 
-	global $upload_badext;
 	//Enabled session variable for KCFINDER
-	$_SESSION['KCFINDER'] = array();
-	$_SESSION['KCFINDER']['disabled'] = false;
-	$_SESSION['KCFINDER']['uploadURL'] = $site_URL.'/storage/kcimages';
-	$_SESSION['KCFINDER']['uploadDir'] = $root_directory.'storage/kcimages';
-	$deniedExts = implode(" ", $upload_badext);
-	$_SESSION['KCFINDER']['deniedExts'] = $deniedExts;
+	coreBOS_Session::setKCFinderVariables();
 
 	// store the user's theme in the session
 	if(!empty($focus->column_fields["theme"])) {

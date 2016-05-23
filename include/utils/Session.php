@@ -37,9 +37,10 @@ class coreBOS_Session {
 	/**
 	 * Initialize session
 	 */
-	static function init() {
+	static function init($setKCFinder=false) {
 		session_name(self::getSessionName());
 		session_start();
+		if ($setKCFinder) self::setKCFinderVariables();
 	}
 
 	/**
@@ -50,7 +51,6 @@ class coreBOS_Session {
 		if (empty($site_URL)) {
 			if (file_exists('config.inc.php')) {
 				include 'config.inc.php';
-				@include 'config-dev.inc.php';
 			}
 			if (file_exists('../config.inc.php')) {
 				include '../config.inc.php';
@@ -62,6 +62,25 @@ class coreBOS_Session {
 		$sn = preg_replace('/[^A-Za-z0-9]/', '', $purl['host'].$purl['path'].(isset($purl['port'])?$purl['port']:''));
 		if (is_numeric($sn)) $sn = 'cb'.$sn;
 		return $sn;
+	}
+
+	/**
+	 * set KCFinder session variables
+	 */
+	static function setKCFinderVariables() {
+		global $upload_badext, $site_URL, $root_directory;
+		$_SESSION['KCFINDER'] = array();
+		$_SESSION['KCFINDER']['disabled'] = false;
+		$_SESSION['KCFINDER']['uploadURL'] = $site_URL.'/storage/kcimages';
+		$_SESSION['KCFINDER']['uploadDir'] = $root_directory.'storage/kcimages';
+		$deniedExts = implode(' ', $upload_badext);
+		$_SESSION['KCFINDER']['deniedExts'] = $deniedExts;
+
+		list($http,$urldomain) = explode('://', $site_URL);
+		if(strpos($urldomain,':') !== false){
+			list($domain,$port) = explode(':', $urldomain);
+			$_SESSION['KCFINDER']['cookieDomain'] = $domain;
+		}
 	}
 
 	/**

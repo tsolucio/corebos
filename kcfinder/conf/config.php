@@ -15,15 +15,6 @@
 /* IMPORTANT!!! Do not comment or remove uncommented settings in this file
    even if you are using session configuration.
    See http://kcfinder.sunhater.com/install for setting descriptions */
-global $site_URL;
-$cookieDomain = '';
-
-list($http,$urldomain) = explode('://', $site_URL);
-if(strpos($urldomain,':') !== false){
-	list($domain,$port) = explode(':', $urldomain);
-	$cookieDomain = $domain;
-}
-
 
 return array(
 
@@ -109,7 +100,7 @@ return array(
 
     'mime_magic' => "",
 
-    'cookieDomain' => $cookieDomain,
+    'cookieDomain' => "",
     'cookiePath' => "",
     'cookiePrefix' => 'KCFINDER_',
 
