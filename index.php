@@ -68,11 +68,7 @@ function insert_charset_header()
 
 insert_charset_header();
 // Create or reestablish the current session
-coreBOS_Session::init();
-$_SESSION['KCFINDER'] = array();
-$_SESSION['KCFINDER']['disabled'] = false;
-$_SESSION['KCFINDER']['uploadURL'] = $site_URL.'/storage/kcimages';
-$_SESSION['KCFINDER']['uploadDir'] = $root_directory.'storage/kcimages';
+coreBOS_Session::init(true);
 
 if (!is_file('config.inc.php')) {
 	header("Location: install.php");
