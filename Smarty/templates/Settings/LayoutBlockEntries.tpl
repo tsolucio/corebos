@@ -28,14 +28,13 @@
 								</select>
 								&nbsp;&nbsp;{$entries.blocklabel}&nbsp;&nbsp;
 								</td>
-								<td class="colHeader small"  id = "blockid_{$entries.blockid}" colspan="2" align='right'> 
-									
+								<td class="colHeader small" id = "blockid_{$entries.blockid}" colspan="2" align='right'>
 									{if $entries.iscustom == 1 }
-									<img style="cursor:pointer;" onClick=" deleteCustomBlock('{$MODULE}','{$entries.blockid}','{$entries.no}')" src="{'delete.gif'|@vtiger_imageurl:$THEME}" border="0"  alt="Delete" title="Delete"/>&nbsp;&nbsp;
+									<img style="cursor:pointer;" onClick=" deleteCustomBlock('{$MODULE}','{$entries.blockid}','{$entries.no}')" src="{'delete.gif'|@vtiger_imageurl:$THEME}" border="0" alt="{$APP.LBL_DELETE}" title="{$APP.LBL_DELETE}"/>&nbsp;&nbsp;
 									{/if}
 									{if $entries.blockid neq $COMMENTSECTIONID && $entries.blockid neq $SOLUTIONBLOCKID}
 									<img src="{'hidden_fields.png'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;"  onclick="fnvshobj(this,'hiddenfields_{$entries.blockid}');" alt="{$MOD.HIDDEN_FIELDS}" title="{$MOD.HIDDEN_FIELDS}"/>&nbsp;&nbsp;
-									{/if}	
+									{/if}
 										<div id = "hiddenfields_{$entries.blockid}" style="display:none; position:absolute; width:300px;" class="layerPopup">
 											<div style="position:relative; display:block">
 		 										<table width="100%" border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine">
