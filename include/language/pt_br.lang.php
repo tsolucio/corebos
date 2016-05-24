@@ -1189,7 +1189,6 @@ $app_strings = array (
 
 //added for find duplicate
 'LBL_DUPLICATE_DATA_IN'=>'Duplicar',
-'LBL_DELETE'=>'Apagar',
 'LBL_MERGE_SELECT'=>'Selecionar Mesclagem',
 'LBL_MERGE_DATA_IN'=>'Mesclar Registros em',
 'LBL_MERGE'=>'Mesclar',

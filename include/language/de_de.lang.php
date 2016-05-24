@@ -335,7 +335,7 @@ $app_strings = array(
 'LBL_VENDOR_NAME' => 'Vendor Name', //MSL
 'LBL_SELECT'=>'wähle',
 'LBL_EDIT'=>'Bearbeiten',
-'LBL_DELETE'=>'Lö',
+'LBL_DELETE'=>'Löschen',
 'Name'=>'Name',
 'Company'=>'Organisation',
 'Phone'=>'Telefon',
@@ -1190,7 +1190,6 @@ $app_strings = array(
  
 //added for find duplicate
 'LBL_DUPLICATE_DATA_IN'=>'Duplikate ',
-'LBL_DELETE'=>'Löschen',
 'LBL_MERGE_SELECT'=>'ausgewählte Zusammenführen',
 'LBL_MERGE_DATA_IN'=>'Zusammenführen von',
 'LBL_MERGE'=>'Zusammenführen',

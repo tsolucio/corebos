@@ -10,7 +10,6 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
 $app_strings = array (
 'LBL_BROWSER_TITLE' => 'coreBOS',
@@ -1191,7 +1190,6 @@ $app_strings = array (
  
 //added for find duplicate
 'LBL_DUPLICATE_DATA_IN'=>'Duplicate ',
-'LBL_DELETE'=>'Delete',
 'LBL_MERGE_SELECT'=>'Merge Select',
 'LBL_MERGE_DATA_IN'=>'Merge Records In',
 'LBL_MERGE'=>'Merge',

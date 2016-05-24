@@ -1192,7 +1192,6 @@ $app_strings = array (
 'LNK_PRIVACY_POLICY' => 'Tutela della privacy ',
 'LBL_MOVE_BLOCK_FIELD' => 'Sposta Campi',
 'LBL_DUPLICATE_DATA_IN' => 'Duplica ',
-'LBL_DELETE'=>'Elimina',
 'LBL_MERGE_SELECT'=>'UnisciSelezionati',
 'LBL_MERGE_DATA_IN' => 'Unisci Record',
 'LBL_MERGE'=>'Unisci',
