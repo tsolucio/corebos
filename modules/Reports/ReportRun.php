@@ -3119,15 +3119,19 @@ class ReportRun extends CRMEntity {
 							break;
 						case 'date':
 						case 'time':
-							if (strpos($value,':')>0 and (strpos($value,'-')===false)) {
-								// only time, no date
-								$dt = new DateTime("1970-01-01 $value");
+							if ($value!='-') {
+								if (strpos($value,':')>0 and (strpos($value,'-')===false)) {
+									// only time, no date
+									$dt = new DateTime("1970-01-01 $value");
+								} else {
+									$value = DateTimeField::__convertToDBFormat($value, $current_user->date_format);
+									$dt = new DateTime($value);
+								}
+								$value = PHPExcel_Shared_Date::PHPToExcel($dt);
+								$celltype = PHPExcel_Cell_DataType::TYPE_NUMERIC;
 							} else {
-								$value = DateTimeField::__convertToDBFormat($value, $current_user->date_format);
-								$dt = new DateTime($value);
+								$celltype = PHPExcel_Cell_DataType::TYPE_STRING;
 							}
-							$value = PHPExcel_Shared_Date::PHPToExcel($dt);
-							$celltype = PHPExcel_Cell_DataType::TYPE_NUMERIC;
 							break;
 						default:
 							$celltype = PHPExcel_Cell_DataType::TYPE_STRING;
