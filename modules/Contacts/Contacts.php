@@ -408,10 +408,12 @@ class Contacts extends CRMEntity {
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>
 							'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 		$query = "select case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,
-				vtiger_crmentity.crmid, vtiger_troubletickets.title, vtiger_contactdetails.contactid, vtiger_troubletickets.parent_id,
-				vtiger_contactdetails.firstname, vtiger_contactdetails.lastname, vtiger_troubletickets.status, vtiger_troubletickets.priority,
+				vtiger_crmentity.crmid, vtiger_troubletickets.*, vtiger_ticketcf.*, vtiger_contactdetails.contactid,
+				vtiger_contactdetails.firstname, vtiger_contactdetails.lastname,
 				vtiger_crmentity.smownerid, vtiger_troubletickets.ticket_no
-				from vtiger_troubletickets inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_troubletickets.ticketid
+				from vtiger_troubletickets
+				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_troubletickets.ticketid
+				INNER JOIN vtiger_ticketcf ON vtiger_ticketcf.ticketid = vtiger_troubletickets.ticketid
 				left join vtiger_contactdetails on vtiger_contactdetails.contactid=vtiger_troubletickets.parent_id
 				left join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid
 				left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
