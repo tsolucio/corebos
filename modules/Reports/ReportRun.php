@@ -1831,7 +1831,7 @@ class ReportRun extends CRMEntity {
 					}
 					foreach ($columnlist as $key => $value) {
 						foreach ($totalscolalias as $cal) {
-							if (preg_match("/\b$cal\b/i", $value)) {
+							if (preg_match("/\b".trim($cal)."\b/i", $value)) {
 								unset($totalsselectedcolumns[$key]);
 								break;
 							}
