@@ -16,6 +16,7 @@ require_once('data/CRMEntity.php');
 require_once("modules/Reports/Reports.php");
 require_once 'modules/Reports/ReportUtils.php';
 require_once("vtlib/Vtiger/Module.php");
+include_once("include/fields/InventoryLineField.php");
 
 class ReportRun extends CRMEntity {
 
@@ -2143,7 +2144,8 @@ class ReportRun extends CRMEntity {
 				$noofrows = $adb->num_rows($result);
 				$custom_field_values = $adb->fetch_array($result);
 				$column_definitions = $adb->getFieldsDefinition($result);
-
+				$ILF = new InventoryLineField();
+				$invMods = getInventoryModules();
 				do
 				{
 					$arraylists = Array();
@@ -2155,6 +2157,19 @@ class ReportRun extends CRMEntity {
 						$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
 						if(!empty($fieldInfo)) {
 							$field = WebserviceField::fromArray($adb, $fieldInfo);
+						} else {
+							if(in_array($module, $invMods) and substr($fld->table,0,26) == 'vtiger_inventoryproductrel') {
+								foreach ($ILF->getInventoryLineFieldsByName() as $ilfname => $ilfinfo) {
+									$ilflabel = getTranslatedString($ilfinfo['fieldlabel'], $module);
+									if ($ilflabel==$fieldLabel) {
+										$fieldInfo = $ilfinfo;
+										$fieldInfo['tabid'] = getTabid($module);
+										$fieldInfo['presence'] = 1;
+										$field = WebserviceField::fromArray($adb, $fieldInfo);
+										break;
+									}
+								}
+							}
 						}
 						if(!empty($fieldInfo)) {
 							$headerLabel = getTranslatedString($field->getFieldLabelKey(), $module);
