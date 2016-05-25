@@ -25,7 +25,7 @@ class ServiceContracts extends CRMEntity {
 	 */
 	var $customFieldTable = Array('vtiger_servicecontractscf', 'servicecontractsid');
 	// Uncomment the line below to support custom field columns on related lists
-	// var $related_tables = Array('vtiger_servicecontractscf'=>array('servicecontractsid','vtiger_servicecontracts', 'servicecontractsid'));
+	var $related_tables = Array('vtiger_servicecontractscf'=>array('servicecontractsid','vtiger_servicecontracts', 'servicecontractsid'));
 
 	/**
 	 * Mandatory for Saving, Include tables related to this module.

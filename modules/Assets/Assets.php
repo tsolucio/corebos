@@ -25,7 +25,7 @@ class Assets extends CRMEntity {
 	 */
 	var $customFieldTable = Array('vtiger_assetscf', 'assetsid');
 	// Uncomment the line below to support custom field columns on related lists
-	// var $related_tables = Array('vtiger_assetscf'=>array('assetsid','vtiger_assets', 'assetsid'));
+	var $related_tables = Array('vtiger_assetscf'=>array('assetsid','vtiger_assets', 'assetsid'));
 
 	/**
 	 * Mandatory for Saving, Include tables related to this module.
