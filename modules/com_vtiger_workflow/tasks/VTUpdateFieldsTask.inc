@@ -109,29 +109,7 @@ class VTUpdateFieldsTask extends VTTask {
 				$focus->column_fields[$fieldName] = $fieldValue;
 				$entity->data[$fieldName] = $fieldValue;
 			}
-
-			foreach ($focus->column_fields as $fieldName => $fieldValue) {
-				$focus->column_fields[$fieldName] = html_entity_decode($fieldValue, ENT_QUOTES, $default_charset);
-			}
-
-			// Convert currency fields to User format before save
-			$webserviceObject = VtigerWebserviceObject::fromName($adb, $moduleName);
-			$handlerPath = $webserviceObject->getHandlerPath();
-			$handlerClass = $webserviceObject->getHandlerClass();
-			$handler = new $handlerClass($webserviceObject,$current_user,$adb,$log);
-			$meta = $handler->getMeta();
-			$moduleFields = $meta->getModuleFields();
-			foreach($moduleFields as $fieldName=>$fieldObj){
-				if (in_array($moduleName, array('SalesOrder', 'PurchaseOrder', 'Invoice', 'Quotes')) && ($fieldName == 'hdnSubTotal' || $fieldName == 'hdnGrandTotal')) {
-					continue;
-				}
-				$fieldtype = $fieldObj->getFieldDataType();
-				if($fieldtype=="currency" or $fieldtype === 'double'){
-					if(!empty($focus->column_fields[$fieldName])){
-						$focus->column_fields[$fieldName] = CurrencyField::convertToUserFormat($focus->column_fields[$fieldName],$current_user);
-					}
-				}
-			}
+			$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields,$handlerMeta);
 			$hold_ajxaction = $_REQUEST['ajxaction'];
 			$_REQUEST['ajxaction'] = 'Workflow';
 			$logbg->debug('field values presave: '.print_r($focus->column_fields,true));
