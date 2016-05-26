@@ -292,8 +292,14 @@ class Users extends CRMEntity {
 				$crypt_type = $this->db->query_result($result, 0, 'crypt_type');
 				$encrypted_password = $this->encrypt_password($user_password, $crypt_type);
 				$maxFailedLoginAttempts = GlobalVariable::getVariable('Application_MaxFailedLoginAttempts', 5);
-				$query = "SELECT * from $this->table_name where user_name=? AND user_password=? AND COALESCE(failed_login_attempts,0)<?";
-				$result = $this->db->requirePsSingleResult($query, array($usr_name, $encrypted_password, $maxFailedLoginAttempts), false);
+				$query = "SELECT * from $this->table_name where user_name=? AND user_password=?";
+				$params = array($usr_name, $encrypted_password);
+				$cnuser=$this->db->getColumnNames($this->table_name);
+				if (in_array('failed_login_attempts', $cnuser)) {
+					$query.= ' AND COALESCE(failed_login_attempts,0)<?';
+					$params[] = $maxFailedLoginAttempts;
+				}
+				$result = $this->db->requirePsSingleResult($query, $params, false);
 				if (empty($result)) {
 					return false;
 				} else {
