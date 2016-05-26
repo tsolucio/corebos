@@ -125,7 +125,8 @@ $mod_strings = Array(
 'ERR_USER_NAME_EXISTS_2'=>' ya existe. Los nombres de usuario duplicados no estan permitidos.<br>Cambie el nombre de usuario para que sea único.',
 'ERR_LAST_ADMIN_1'=>'El nombre de usuario ',
 'ERR_LAST_ADMIN_2'=>' es el último usuario administrador.Al menos un usuario debe permanecer como administrador.<br>Verifique la configuracón del usuario Admin.',
-
+'ERR_MAXLOGINATTEMPTS' => 'Se ha alcanzado el número máximo de intentos. Contacta con el administrador para desbloquear tu cuenta.',
+'LBL_FAILED_LOGIN_ATTEMPTS' => 'Intentos Fallidos de Acceso',
 'ERR_DELETE_RECORD'=>'Debe especificar un registro para eliminar la Cuenta.',
 
 // Additional Fields for i18n --- Release vtigerCRM 3.2 Patch 2

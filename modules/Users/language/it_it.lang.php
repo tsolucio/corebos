@@ -116,11 +116,9 @@
   'ERR_USER_NAME_EXISTS_2' => 'esiste gi&agrave; . Utenti duplicati non sono consentiti. Cambia il nome utente per essere unico',
   'ERR_LAST_ADMIN_1' => 'Il Nome Utente',
   'ERR_LAST_ADMIN_2' => '&Egrave; l`ultimo Utente amministratore. Almeno uno deve essere un Utente Amministratore. Controlla l`impostazione dell`Utente Amministratore',
-
+  'ERR_MAXLOGINATTEMPTS' => 'Maximum number of login attempts reached. Contact your administrator to unblock your account',
+  'LBL_FAILED_LOGIN_ATTEMPTS' => 'Failed Login Attempts',
   'ERR_DELETE_RECORD' => 'Un numero di record deve essere specificato per cancellare l`account.',
-
-
-
 
   'LBL_ROLES' => 'Ruoli',
   'LBL_ROLES_SUBORDINATES' => 'Ruoli e Subordinati',

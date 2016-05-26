@@ -605,4 +605,11 @@
 	<classname>updateMobileModuleToCrmNow</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>User Failed Login Attempts</description>
+	<filename>build/changeSets/UserFailedLoginAttempts.php</filename>
+	<classname>UserFailedLoginAttempts</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

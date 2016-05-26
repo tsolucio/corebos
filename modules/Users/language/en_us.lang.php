@@ -114,7 +114,8 @@ $mod_strings = Array(
 'ERR_USER_NAME_EXISTS_2'=>' already exists.  Duplicate user names are not allowed.<br>Change the user name to be unique.',
 'ERR_LAST_ADMIN_1'=>'The user name ',
 'ERR_LAST_ADMIN_2'=>' is the last Admin user.  At least one user must be an Admin user.<br>Check the Admin user setting.',
-
+'ERR_MAXLOGINATTEMPTS' => 'Maximum number of login attempts reached. Contact your administrator to unblock your account',
+'LBL_FAILED_LOGIN_ATTEMPTS' => 'Failed Login Attempts',
 'ERR_DELETE_RECORD'=>"A record number must be specified to delete the account.",
 
 // Additional Fields for i18n --- Release vtigerCRM 3.2 Patch 2

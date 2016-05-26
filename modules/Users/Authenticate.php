@@ -12,7 +12,7 @@ require_once('modules/Users/CreateUserPrivilegeFile.php');
 require_once('include/logging.php');
 require_once('user_privileges/audit_trail.php');
 
-global $mod_strings, $default_charset;
+global $mod_strings, $default_charset, $adb;
 
 $focus = new Users();
 
@@ -79,6 +79,10 @@ if($focus->is_authenticated())
 	$log->debug("authenticated_user_id is ". $focus->id);
 	$log->debug("app_unique_key is $application_unique_key");
 
+	// Reset number of failed login attempts
+	$query = 'UPDATE vtiger_users SET failed_login_attempts=0 where user_name=?';
+	$adb->pquery($query, array($focus->column_fields['user_name']));
+
 // Clear all uploaded import files for this user if it exists
 	global $import_dir;
 
@@ -96,20 +100,19 @@ if($focus->is_authenticated())
 }
 else
 {
-	$sql = 'select user_name, id, crypt_type from vtiger_users where user_name=?';
+	$sql = 'select failed_login_attempts from vtiger_users where user_name=?';
 	$result = $adb->pquery($sql, array($focus->column_fields["user_name"]));
-	$rowList = $result->GetRows();
-	foreach ($rowList as $row) {
-		$cryptType = $row['crypt_type'];
-		/* PHP 5.3 WIN implementation of crypt API not compatible with earlier version */
-		if(strtolower($cryptType) == 'md5' && version_compare(PHP_VERSION, '5.3.0') >= 0 && strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' ) {
-			header("Location: modules/Migration/PHP5.3_PasswordHelp.php");
-			die;
-		}
+	$failed_login_attempts = 0;
+	if ($result and $adb->num_rows($result)>0) {
+		$failed_login_attempts = $adb->query_result($result, 0, 0);
 	}
+	$maxFailedLoginAttempts = GlobalVariable::getVariable('Application_MaxFailedLoginAttempts', 5);
+	// Increment number of failed login attempts
+	$query = 'UPDATE vtiger_users SET failed_login_attempts=COALESCE(failed_login_attempts,0)+1 where user_name=?';
+	$adb->pquery($query, array($focus->column_fields['user_name']));
 	$_SESSION['login_user_name'] = $focus->column_fields["user_name"];
 	$_SESSION['login_password'] = $user_password;
-	$_SESSION['login_error'] = $mod_strings['ERR_INVALID_PASSWORD'];
+	$_SESSION['login_error'] = ($failed_login_attempts>=$maxFailedLoginAttempts ? $mod_strings['ERR_MAXLOGINATTEMPTS'] : $mod_strings['ERR_INVALID_PASSWORD']);
 	cbEventHandler::do_action('corebos.audit.login.attempt',array(0, $focus->column_fields["user_name"], 'Login Attempt', 0, date('Y-m-d H:i:s')));
 	// go back to the login screen.
 	// create an error message for the user.

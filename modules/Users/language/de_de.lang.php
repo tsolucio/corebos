@@ -10,7 +10,6 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -116,7 +115,8 @@ $mod_strings = Array(
     'ERR_USER_NAME_EXISTS_2'=>' existiert bereits.  Doppelte Benutzernamen sind nicht möglich.<br>Wechseln Sie den Benutzernamen.',
     'ERR_LAST_ADMIN_1'=>'Benutzername ',
     'ERR_LAST_ADMIN_2'=>' ist der einzigste Administrator.  Mindestens ein Benutzer muss Adminstratorenrechte besitzen.<br>Prüfen Sie die Einstellungen.',
-
+    'ERR_MAXLOGINATTEMPTS' => 'Maximum number of login attempts reached. Contact your administrator to unblock your account',
+    'LBL_FAILED_LOGIN_ATTEMPTS' => 'Failed Login Attempts',
     'ERR_DELETE_RECORD'=>"Zum Löschen muss ein Eintrag markiert werden.",
 
     // Additional Fields for i18n --- Release vtigerCRM 3.2 Patch 2

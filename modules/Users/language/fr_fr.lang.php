@@ -103,6 +103,8 @@ $mod_strings = array (
 		'ERR_LAST_ADMIN_1' => 'Le nom d\'utilisateur ',
 		'ERR_LAST_ADMIN_2' => ' est le dernier utilisateur Admin. Au moins un utilisateur doit rester en Admin.
 		Vérifiez les paramètres utilisateur Admin.',
+		'ERR_MAXLOGINATTEMPTS' => 'Maximum number of login attempts reached. Contact your administrator to unblock your account',
+		'LBL_FAILED_LOGIN_ATTEMPTS' => 'Failed Login Attempts',
 		'ERR_DELETE_RECORD' => 'Un numéro d\'enregistrement doit être spécifié pour supprimer ce compte.',
 		'LBL_ROLES' => 'Rôles',
 		'LBL_ROLES_SUBORDINATES' => 'Rôles et subordonnés',

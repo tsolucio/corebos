@@ -291,8 +291,9 @@ class Users extends CRMEntity {
 				}
 				$crypt_type = $this->db->query_result($result, 0, 'crypt_type');
 				$encrypted_password = $this->encrypt_password($user_password, $crypt_type);
-				$query = "SELECT * from $this->table_name where user_name=? AND user_password=?";
-				$result = $this->db->requirePsSingleResult($query, array($usr_name, $encrypted_password), false);
+				$maxFailedLoginAttempts = GlobalVariable::getVariable('Application_MaxFailedLoginAttempts', 5);
+				$query = "SELECT * from $this->table_name where user_name=? AND user_password=? AND COALESCE(failed_login_attempts,0)<?";
+				$result = $this->db->requirePsSingleResult($query, array($usr_name, $encrypted_password, $maxFailedLoginAttempts), false);
 				if (empty($result)) {
 					return false;
 				} else {
@@ -311,12 +312,13 @@ class Users extends CRMEntity {
 	 */
 	function load_user($user_password) {
 		$usr_name = $this->column_fields["user_name"];
+		$maxFailedLoginAttempts = GlobalVariable::getVariable('Application_MaxFailedLoginAttempts', 5);
 		if (isset($_SESSION['loginattempts'])) {
 			$_SESSION['loginattempts'] += 1;
 		} else {
 			$_SESSION['loginattempts'] = 1;
 		}
-		if ($_SESSION['loginattempts'] > 5) {
+		if ($_SESSION['loginattempts'] > $maxFailedLoginAttempts) {
 			$this->log->warn("SECURITY: " . $usr_name . " has attempted to login " . $_SESSION['loginattempts'] . " times.");
 		}
 		$this->log->debug("Starting user load for $usr_name");

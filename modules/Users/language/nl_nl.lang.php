@@ -133,7 +133,8 @@ $mod_strings = Array(
 'ERR_USER_NAME_EXISTS_2'=>' bestaat al. Dubbele gebruikersnamen zijn niet toegestaan.<br>Verander de naam, deze moet uniek zijn.',
 'ERR_LAST_ADMIN_1'=>'Gebruikersnaam ',
 'ERR_LAST_ADMIN_2'=>' Dit is de laatste admin gebruiker.  Er moet tenminste 1 admin gebruiker zijn.<br>Check de admin instellingen.',
-
+'ERR_MAXLOGINATTEMPTS' => 'Maximum number of login attempts reached. Contact your administrator to unblock your account',
+'LBL_FAILED_LOGIN_ATTEMPTS' => 'Failed Login Attempts',
 'ERR_DELETE_RECORD'=>"U moet een account selecteren om deze te kunnen verwijderen.",
 
 // Additional Fields for i18n --- Release vtigerCRM 3.2 Patch 2
