@@ -685,9 +685,8 @@ class Accounts extends CRMEntity {
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>
 						'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 		$query = "SELECT case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name, vtiger_users.id,
-			vtiger_troubletickets.*, vtiger_troubletickets.ticketid AS crmid,
-			vtiger_ticketcf.*,
-			vtiger_crmentity.smownerid, vtiger_crmentity.modifiedtime
+			vtiger_troubletickets.*, vtiger_troubletickets.ticketid AS crmid, vtiger_ticketcf.*,
+			vtiger_crmentity.smownerid, vtiger_crmentity.modifiedtime, vtiger_crmentity.createdtime, vtiger_crmentity.description
 			FROM vtiger_troubletickets
 			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_troubletickets.ticketid
 			INNER JOIN vtiger_ticketcf ON vtiger_ticketcf.ticketid = vtiger_troubletickets.ticketid
