@@ -195,7 +195,7 @@ class QueryGenerator {
 		return $this->referenceFields;
 	}
 
-	public function getReferenceField($fieldName,$returnName=true) {
+	public function getReferenceField($fieldName,$returnName=true,$alias=true) {
 		if (strpos($fieldName, '.')) {
 			list($fldmod,$fldname) = explode('.',$fieldName);
 		} else {
@@ -216,7 +216,11 @@ class QueryGenerator {
 								if($fldname=='assigned_user_id' && strstr($field->getTableName(),"vtiger_crmentity")) {
 									$fldname='smownerid as smowner'.strtolower(getTabModuleName($field->getTabId()));
 								} else {
-									$fldname=$field->getColumnName().' as '.strtolower(getTabModuleName($field->getTabId())).$field->getColumnName();
+									if ($alias) {
+										$fldname=$field->getColumnName().' as '.strtolower(getTabModuleName($field->getTabId())).$field->getColumnName();
+									} else {
+										$fldname=$field->getColumnName();
+									}
 								}
 								return $field->getTableName().$fld.'.'.$fldname;
 							}
@@ -238,7 +242,11 @@ class QueryGenerator {
 							if($fldname=='assigned_user_id' && strstr($field->getTableName(),"vtiger_crmentity")) {
 								$fldname='smownerid as smowner'.strtolower(getTabModuleName($field->getTabId()));
 							} else {
-								$fldname=$field->getColumnName().' as '.strtolower(getTabModuleName($field->getTabId())).$field->getColumnName();
+								if ($alias) {
+									$fldname=$field->getColumnName().' as '.strtolower(getTabModuleName($field->getTabId())).$field->getColumnName();
+								} else {
+									$fldname=$field->getColumnName();
+								}
 							}
 							return $field->getTableName().$fld.'.'.$fldname;
 						}
@@ -416,7 +424,7 @@ class QueryGenerator {
 		}
 	}
 
-	public function getSQLColumn($name) {
+	public function getSQLColumn($name,$alias=true) {
 		if ($name == 'id') {
 			$baseTable = $this->meta->getEntityBaseTable();
 			$moduleTableIndexList = $this->meta->getEntityTableIndexList();
@@ -428,7 +436,7 @@ class QueryGenerator {
 		if (!empty($moduleFields[$name])) {
 			$field = $moduleFields[$name];
 		} elseif($this->referenceFieldInfoList) { // Adding support for reference module fields
-			return $this->getReferenceField($name,true);
+			return $this->getReferenceField($name,true,$alias);
 		}
 		if(empty($field)) return '';
 		//TODO optimization to eliminate one more lookup of name, in case the field refers to only
@@ -1041,11 +1049,11 @@ class QueryGenerator {
 				$value = trim($value);
 			}
 			if ($operator == 'empty' || $operator == 'y') {
-				$sql[] = sprintf("IS NULL OR %s = ''", $this->getSQLColumn($field->getFieldName()));
+				$sql[] = sprintf("IS NULL OR %s = ''", $this->getSQLColumn($field->getFieldName(),false));
 				continue;
 			}
 			if($operator == 'ny'){
-				$sql[] = sprintf("IS NOT NULL AND %s != ''", $this->getSQLColumn($field->getFieldName()));
+				$sql[] = sprintf("IS NOT NULL AND %s != ''", $this->getSQLColumn($field->getFieldName(),false));
 				continue;
 			}
 			if((strtolower(trim($value)) == 'null') ||
