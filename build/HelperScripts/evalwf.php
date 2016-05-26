@@ -176,19 +176,20 @@ if ($workflows[$workflowid_to_evaluate]->executionCondition==VTWorkflowManager::
 	$eval = $workflow->evaluate($entityCache, $crm_record_to_evaluate);
 	var_dump($eval);
 	echo '</span>';
-	$tm = new VTTaskManager($adb);
-	$taskQueue = new VTTaskQueue($adb);
-	$tasks = $tm->getTasksForWorkflow($workflow->id);
-	foreach($tasks as $task){
-		if(is_object($task) and $task->active and get_class($task) == 'VTEmailTask') {
-			echo "<br><br><b>** EMail TASK **</b><br><br>";
-			$email = evalwfEmailTask($crm_record_to_evaluate,$task);
-			foreach ($email as $key => $value) {
-				echo "<h2>$key</h2>$value <br><hr>";
-			}
+}
+$tm = new VTTaskManager($adb);
+$taskQueue = new VTTaskQueue($adb);
+$tasks = $tm->getTasksForWorkflow($workflow->id);
+foreach($tasks as $task){
+	if(is_object($task) and $task->active and get_class($task) == 'VTEmailTask') {
+		echo "<br><br><b>** EMail TASK **</b><br><br>";
+		$email = evalwfEmailTask($crm_record_to_evaluate,$task);
+		foreach ($email as $key => $value) {
+			echo "<h2>$key</h2>$value <br><hr>";
 		}
 	}
 }
+
 ?>
 </table>
 </body>
