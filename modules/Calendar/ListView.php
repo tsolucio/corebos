@@ -214,8 +214,12 @@ if(isset($order_by) && $order_by != '') {
 }
 
 if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true){
-	$count_result = $adb->query("SELECT count(*) AS count FROM ($list_query) as calcount");
-	$noofrows = $adb->query_result($count_result,0,"count");
+	$count_query = preg_replace("/[\n\r\s]+/", " ", $list_query);
+	$count_query = 'SELECT 1 ' . substr($count_query, stripos($count_query, ' FROM '), strlen($count_query));
+	if (stripos($count_query, 'ORDER BY') > 0)
+		$count_query = substr($count_query, 0, stripos($count_query, 'ORDER BY'));
+	$count_result = $adb->query("SELECT count(*) AS count FROM ($count_query) as calcount");
+	$noofrows = $adb->query_result($count_result,0,'count');
 }else{
 	$noofrows = null;
 }
