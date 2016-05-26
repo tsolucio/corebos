@@ -54,6 +54,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'GoogleCalendarSync_BaseCreateMonths',
 				'Import_Full_CSV',
 				'Lead_Convert_TransferToAccount',
+				'Product_Copy_Bundle_OnDuplicate',
 				'Workflow_Send_Email_ToCCBCC',
 
 				'Maximum_Scheduled_Workflows', // rename to Workflow_Maximum_Scheduled_Workflows

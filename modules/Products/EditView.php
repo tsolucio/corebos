@@ -55,6 +55,8 @@ if($image_error=="true")
 if($isduplicate == 'true') {
 	$focus->id = '';
 	$focus->mode = '';
+	$_REQUEST['cbcustominfo1'] = 'duplicatingproduct';
+	$_REQUEST['cbcustominfo2'] = $record;
 }
 $focus->preEditCheck($_REQUEST,$smarty);
 if (!empty($_REQUEST['save_error']) and $_REQUEST['save_error'] == "true") {

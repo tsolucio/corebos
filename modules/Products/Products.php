@@ -118,6 +118,13 @@ class Products extends CRMEntity {
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id,$module);
 		}
+		$copyBundle = GlobalVariable::getVariable('Product_Copy_Bundle_OnDuplicate', 'false');
+		if ($copyBundle != 'false' and $_REQUEST['cbcustominfo1'] == 'duplicatingproduct' and !empty($_REQUEST['cbcustominfo2'])) {
+			global $adb;
+			$adb->pquery('insert into vtiger_seproductsrel
+				select crmid,?,setype from vtiger_seproductsrel
+				where productid = ?',array($this->id,$_REQUEST['cbcustominfo2']));
+		}
 	}
 
 	/**	function to save the product tax information in vtiger_producttaxrel table
