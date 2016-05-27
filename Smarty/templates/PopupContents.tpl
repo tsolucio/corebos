@@ -46,7 +46,7 @@
 		        <td class="lvtCol">{$header}</td>
 		    {/foreach}
 			{if $SELECT eq 'enable' && ($POPUPTYPE eq 'inventory_prod' || $POPUPTYPE eq 'inventory_prod_po')}
-				{if !$RECORD_ID || $SHOW_SUBPRODUCTS eq 'yes'}
+				{if !$RECORD_ID || $SUBPRODUCT_BE_PARENT eq 'yes'}
 					<td class="lvtCol">{$APP.LBL_ACTION}</td>
 				{/if}
 			{/if}
