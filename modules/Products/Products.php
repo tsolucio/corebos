@@ -1117,8 +1117,12 @@ class Products extends CRMEntity {
 	*/
 	function ismember_check(){
 		global $adb;
-		$ismember_query = $adb->pquery(getListQuery("Products")." AND (vtiger_products.productid IN (SELECT crmid from vtiger_seproductsrel WHERE vtiger_seproductsrel.crmid = ? AND vtiger_seproductsrel.setype='Products'))",array($this->id));
-		$ismember = $adb->num_rows($ismember_query);
+		$SubProductBeParent = GlobalVariable::getVariable('Product_Permit_Subproduct_Be_Parent', 'no');
+		$ismember = 0;
+		if($SubProductBeParent == 'no'){
+			$ismember_query = $adb->pquery(getListQuery("Products")." AND (vtiger_products.productid IN (SELECT crmid from vtiger_seproductsrel WHERE vtiger_seproductsrel.crmid = ? AND vtiger_seproductsrel.setype='Products'))",array($this->id));
+			$ismember = $adb->num_rows($ismember_query);
+		}
 		return $ismember;
 	}
 

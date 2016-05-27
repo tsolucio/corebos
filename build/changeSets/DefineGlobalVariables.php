@@ -57,6 +57,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Product_Copy_Bundle_OnDuplicate',
 				'Product_Show_Subproducts_Popup',
 				'Product_Permit_Relate_Bundle_Parent',
+				'Product_Permit_Subproduct_Be_Parent',
 				'Workflow_Send_Email_ToCCBCC',
 
 				'Maximum_Scheduled_Workflows', // rename to Workflow_Maximum_Scheduled_Workflows
