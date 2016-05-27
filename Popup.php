@@ -307,9 +307,14 @@ else
 	elseif($currentModule == 'Products' && $_REQUEST['return_module'] != 'Products')
 		$where_relquery .=" and vtiger_products.discontinued <> 0";
 
-	if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] == 'Products' && $currentModule == 'Products' && $_REQUEST['recordid'])
-		$where_relquery .=" and vtiger_products.discontinued <> 0 AND (vtiger_crmentity.crmid NOT IN (".$adb->sql_escape_string($_REQUEST['recordid']).") AND vtiger_crmentity.crmid NOT IN (SELECT productid FROM vtiger_seproductsrel WHERE setype='Products') AND vtiger_crmentity.crmid NOT IN (SELECT crmid FROM vtiger_seproductsrel WHERE setype='Products' AND productid=".$adb->sql_escape_string($_REQUEST['recordid'])."))";
-
+	if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] == 'Products' && $currentModule == 'Products' && $_REQUEST['recordid']){
+		$parentLikeSubProduct = GlobalVariable::getVariable('Product_Permit_Relate_Bundle_Parent', 'no');
+		if($parentLikeSubProduct == 'yes'){
+			$where_relquery .=" and vtiger_products.discontinued <> 0 AND vtiger_crmentity.crmid NOT IN (".$adb->sql_escape_string($_REQUEST['recordid']).")";
+		}else{
+			$where_relquery .=" and vtiger_products.discontinued <> 0 AND (vtiger_crmentity.crmid NOT IN (".$adb->sql_escape_string($_REQUEST['recordid']).") AND vtiger_crmentity.crmid NOT IN (SELECT productid FROM vtiger_seproductsrel WHERE setype='Products') AND vtiger_crmentity.crmid NOT IN (SELECT crmid FROM vtiger_seproductsrel WHERE setype='Products' AND productid=".$adb->sql_escape_string($_REQUEST['recordid'])."))";
+		}
+	}
 	if($currentModule == 'Services' && $popuptype == 'inventory_service') {
 		$where_relquery .=" and vtiger_service.discontinued <> 0";
 	}
