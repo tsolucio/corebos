@@ -161,9 +161,12 @@ class VTScheduledReport extends Reports {
 			$_REQUEST['filename_hidden_xls'] = $filePath;
 			$oReportRun->writeReportToExcelFile($filePath, NULL);
 		}
-		$mail_status = send_mail('Emails',$emails_to,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$subject,$contents,'','','attReports');
-		foreach($attachments as $attachmentName => $path) {
-			unlink($path);
+		$sendifempty = GlobalVariable::getVariable('Report_Send_Scheduled_ifEmpty', 1);
+		if ($sendifempty or $oReportRun->number_of_rows>0) {
+			$mail_status = send_mail('Emails',$emails_to,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$subject,$contents,'','','attReports');
+			foreach($attachments as $attachmentName => $path) {
+				unlink($path);
+			}
 		}
 	}
 

@@ -60,6 +60,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Product_Permit_Subproduct_Be_Parent',
 				'Workflow_Send_Email_ToCCBCC',
 
+				'Report_Send_Scheduled_ifEmpty',
+
 				'Maximum_Scheduled_Workflows', // rename to Workflow_Maximum_Scheduled_Workflows
 				'Billing_Address_Checked', // rename to Application_Billing_Address_Checked
 				'Shipping_Address_Checked', // rename to Application_Shipping_Address_Checked

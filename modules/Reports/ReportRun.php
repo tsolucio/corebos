@@ -30,6 +30,7 @@ class ReportRun extends CRMEntity {
 	var $reporttype;
 	var $reportname;
 	var $totallist;
+	var $number_of_rows;
 
 	var $_groupinglist  = false;
 	var $_columnslist    = false;
@@ -1950,6 +1951,7 @@ class ReportRun extends CRMEntity {
 			{
 				$y=$adb->num_fields($result);
 				$noofrows = $adb->num_rows($result);
+				$this->number_of_rows = $noofrows;
 				$custom_field_values = $adb->fetch_array($result);
 				$groupslist = $this->getGroupingList($this->reportid);
 				$column_definitions = $adb->getFieldsDefinition($result);
@@ -2142,6 +2144,7 @@ class ReportRun extends CRMEntity {
 			{
 				$y=$adb->num_fields($result);
 				$noofrows = $adb->num_rows($result);
+				$this->number_of_rows = $noofrows;
 				$custom_field_values = $adb->fetch_array($result);
 				$column_definitions = $adb->getFieldsDefinition($result);
 				$ILF = new InventoryLineField();
@@ -2446,6 +2449,7 @@ class ReportRun extends CRMEntity {
 			if($result)
 			{
 				$noofrows = $adb->num_rows($result);
+				$this->number_of_rows = $noofrows;
 				$custom_field_values = $adb->fetch_array($result);
 				$groupslist = $this->getGroupingList($this->reportid);
 				$column_definitions = $adb->getFieldsDefinition($result);
