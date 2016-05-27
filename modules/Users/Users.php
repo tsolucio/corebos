@@ -978,8 +978,10 @@ class Users extends CRMEntity {
 			updateUser2RoleMapping($this->column_fields['roleid'], $this->id);
 		}
 		require_once ('modules/Users/CreateUserPrivilegeFile.php');
-		createUserPrivilegesfile($this->id);
-		createUserSharingPrivilegesfile($this->id);
+		//createUserPrivilegesfile($this->id); // done in saveentity above
+		if ($this->mode!='edit') {
+			createUserSharingPrivilegesfile($this->id);
+		}
 	}
 
 	/**
