@@ -628,7 +628,9 @@ class InventoryDetails extends CRMEntity {
 				$invdet_focus->column_fields['tax_percent'] = 0;
 				$invdet_focus->column_fields['linetax'] = 0;
 			}
-
+			$handler = vtws_getModuleHandlerFromName('InventoryDetails', $current_user);
+			$meta = $handler->getMeta();
+			$invdet_focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($invdet_focus->column_fields,$meta);
 			$invdet_focus->save("InventoryDetails");
 		}
 		$currentModule = $save_currentModule;
