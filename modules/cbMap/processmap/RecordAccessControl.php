@@ -62,9 +62,15 @@
    <s>1</s>  Select button
   </condition>
 
- the business rule must be of type ConditionQuery and return a 1 or 0
- the SQL will be executed with only one parameter which is the CRMID of the Record launching the RAC and the
- CRUDS settings contained inside the <condition> will override the default settings if the condition is true
+ the business rule must be of type ConditionQuery or ConditionExpression and return
+  - a number bigger than zero
+  - a boolean true
+  - the string 'true'
+  - the string 'yes'
+  * Any other value will be false.
+ the SQL will be executed with only one parameter which is the CRMID of the record launching the RAC,
+ the Expression will be executed against the record  launching the RAC,
+ and the CRUDS settings contained inside the <condition> will override the default settings if the condition is accepted
  *************************************************************************************************/
 require_once('modules/cbMap/cbMap.php');
 require_once('modules/cbMap/processmap/processMap.php');
@@ -148,7 +154,21 @@ class RecordAccessControl extends processcbMap {
 			$focus->retrieve_entity_info($focus->id, 'cbMap');
 			$contentok = processcbMap::isXML(htmlspecialchars_decode($focus->column_fields['content']));
 			if ($contentok) {
-				$condition = $focus->ConditionQuery($this->relatedid);
+				if ($focus->column_fields['maptype']=='Condition Query') {
+					$condition = $focus->ConditionQuery($this->relatedid);
+				} elseif ($focus->column_fields['maptype']=='Condition Expression') {
+					global $adb;
+					$setype = getSalesEntityType($this->relatedid);
+					$wsrs=$adb->pquery('select id from vtiger_ws_entity where name=?',array($setype));
+					if ($wsrs and $adb->num_rows($wsrs)==1) {
+						$eid = $adb->query_result($wsrs,0,0).'x'.$this->relatedid;
+					} else {
+						return $map2use;
+					}
+					$condition = $focus->ConditionExpression($eid);
+				} else {
+					$condition = false;
+				}
 				if ($condition==true or strtolower($condition)=='true' or strtolower($condition)=='yes' or (is_numeric($condition) and $condition>0)) {
 					return $map2use['condition'];
 				} else {
