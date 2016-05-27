@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
-
 require_once 'modules/Reports/Reports.php';
 require_once 'modules/Reports/ReportRun.php';
 require_once 'include/Zend/Json.php';
@@ -122,9 +121,8 @@ class VTScheduledReport extends Reports {
 	public function sendEmail() {
 		require_once('modules/Emails/mail.php');
 		require_once('modules/Emails/Emails.php');
-		
-		global $HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID;		
-		global $currentModule;
+
+		global $HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID, $currentModule;
 
 		$recipientEmails = $this->getRecipientEmails();
 		$emails_to = '';

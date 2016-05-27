@@ -1146,7 +1146,6 @@ class Users extends CRMEntity {
 
 		$sql = "insert into vtiger_homedefault values(" . $s14 . ",'LTFAQ',5,'Faq')";
 		$adb->pquery($sql, array());
-
 	}
 
 	/** function to save the order in which the modules have to be displayed in the home page for the specified user id
@@ -1173,7 +1172,6 @@ class Users extends CRMEntity {
 				$homeorder = implode(',', $save_array);
 		} else {
 			$this->insertUserdetails('postinstall');
-
 		}
 		$log->debug("Exiting from function saveHomeOrder($id)");
 	}
