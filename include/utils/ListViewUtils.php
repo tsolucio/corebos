@@ -1165,8 +1165,8 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 				$slashes_desc = htmlspecialchars($description, ENT_QUOTES, $default_charset);
 
 				$sub_products_link = '<a href="index.php?module=Products&action=Popup&html=Popup_picker&return_module=' . vtlib_purify($_REQUEST['return_module']) . '&record_id=' . vtlib_purify($entity_id) . '&form=HelpDeskEditView&select=enable&popuptype=' . $focus->popup_type . '&curr_row=' . vtlib_purify($row_id) . '&currencyid=' . vtlib_purify($_REQUEST['currencyid']) . '" > '.getTranslatedString('Sub Products').'</a>';
-
-				if (!isset($_REQUEST['record_id'])) {
+				$showSubproducts = GlobalVariable::getVariable('Product_Show_Subproducts_Popup', 'no');
+				if (!isset($_REQUEST['record_id']) || $showSubproducts == 'yes') {
 					$sub_products_query = $adb->pquery("SELECT * from vtiger_seproductsrel WHERE productid=? AND setype='Products'", array($entity_id));
 					if ($adb->num_rows($sub_products_query) > 0)
 						$list_header[] = $sub_products_link;

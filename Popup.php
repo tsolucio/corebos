@@ -318,6 +318,9 @@ else
 			$where_relquery .=" and vtiger_products.discontinued <> 0 AND (vtiger_crmentity.crmid NOT IN (".$adb->sql_escape_string($_REQUEST['recordid']).") AND vtiger_crmentity.crmid NOT IN (SELECT productid FROM vtiger_seproductsrel WHERE setype='Products') AND vtiger_crmentity.crmid NOT IN (SELECT crmid FROM vtiger_seproductsrel WHERE setype='Products' AND productid=".$adb->sql_escape_string($_REQUEST['recordid'])."))";
 		}
 	}
+		$smarty->assign("SHOW_SUBPRODUCTS", GlobalVariable::getVariable('Product_Show_Subproducts_Popup', 'no'));
+		$smarty->assign("PRODUCT_PARENT_LIKE_SUBPRODUCT", GlobalVariable::getVariable('Product_Permit_Relate_Bundle_Parent', 'no'));
+		$smarty->assign("SUBPRODUCT_BE_PARENT", GlobalVariable::getVariable('Product_Permit_Subproduct_Be_Parent', 'no'));
 	if($currentModule == 'Services' && $popuptype == 'inventory_service') {
 		$where_relquery .=" and vtiger_service.discontinued <> 0";
 	}
