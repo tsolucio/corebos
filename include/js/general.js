@@ -1004,9 +1004,13 @@ function massEditFormValidate(){
 	return doModuleValidation('mass_edit');
 }
 
-function doModuleValidation(edit_type) {
-	if(doformValidation(edit_type)) { //base function which validates form data
-		var formName = "EditView";
+function doModuleValidation(edit_type,editForm) {
+	if (editForm == undefined) {
+		var formName = 'EditView';
+	} else {
+		var formName = editForm;
+	}
+	if((formName == 'EditView' && doformValidation(edit_type)) || (formName == 'QcEditView' && QCformValidate())) { //base function which validates form data
 		var action = 'Save';
 		//Testing if a Validation file exists
 		jQuery.ajax({
@@ -1018,7 +1022,7 @@ function doModuleValidation(edit_type) {
 			success: function(data) { //Validation file exists
 				if (data == 'yes') {
 					// Create object which gets the values of all input, textarea, select and button elements from the form
-					var myFields = document.forms['EditView'].elements;
+					var myFields = document.forms[formName].elements;
 					var sentForm = new Object();
 					for (f=0; f<myFields.length; f++){
 						sentForm[myFields[f].name] = myFields[f].value;
@@ -4856,7 +4860,11 @@ function getviewId()
 	return viewid;
 }
 
-function getFormValidate(divValidate) {
+function getFormValidate() {
+	return doModuleValidation('','QcEditView');
+}
+
+function QCformValidate(){
 	var st = document.getElementById('qcvalidate');
 	eval(st.innerHTML);
 	for (var i=0; i<qcfieldname.length; i++) {

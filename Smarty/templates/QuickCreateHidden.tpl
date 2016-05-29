@@ -8,18 +8,14 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
+
+<form name="QcEditView" onSubmit="return getFormValidate();" method="POST" action="index.php" ENCTYPE="multipart/form-data">
+
 {if $FROM eq 'popup'}
-	{literal}
-	<form name="QcEditView" onSubmit="if(getFormValidate('qcformpop')) { VtigerJS_DialogBox.block(); return true;} else { return false; }" method="POST" action="index.php">
-	{/literal}
 	<input type="hidden" name="from"   value="{$FROM}">
 	<input type="hidden" name="return_action" value="Popup">
 	<input type="hidden" name="return_module" value="{$MODULE}">
 	<input type="hidden" name="search_url" value="{$URLPOPUP}">
-{else}
-	{literal}
-	<form name="QcEditView" onSubmit="if(getFormValidate('qcform')) { VtigerJS_DialogBox.block(); return true;} else { return false; }" method="POST" action="index.php" ENCTYPE="multipart/form-data">
-	{/literal}
 {/if}
 
 {if $MODULE eq 'Calendar' || $MODULE eq 'Events'}
