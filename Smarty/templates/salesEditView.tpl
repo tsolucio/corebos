@@ -55,11 +55,6 @@ function sensex_info()
                 );
         {rdelim}
 {rdelim}
-function AddressSync(Addform,id)
-{ldelim}
-	checkAddress(Addform,id);
-{rdelim}
-
 </script>
 
 		{include file='Buttons_List1.tpl'}	
