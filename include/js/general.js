@@ -997,11 +997,64 @@ function displayFileSize(form_ele) {
 }
 
 function formValidate(){
-	return doformValidation('');
+	return doModuleValidation('');
 }
 
 function massEditFormValidate(){
-	return doformValidation('mass_edit');
+	return doModuleValidation('mass_edit');
+}
+
+function doModuleValidation(edit_type) {
+	if(doformValidation(edit_type)) { //base function which validates form data
+		var formName = "EditView";
+		var action = 'Save';
+		//Testing if a Validation file exists
+		jQuery.ajax({
+			url: "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationExists&valmodule="+gVTModule,
+			type:'get',
+			error: function() { //Validation file does not exist
+				submitFormForAction(formName, action);
+			},
+			success: function(data) { //Validation file exists
+				if (data == 'yes') {
+					// Create object which gets the values of all input, textarea, select and button elements from the form
+					var myFields = document.forms['EditView'].elements;
+					var sentForm = new Object();
+					for (f=0; f<myFields.length; f++){
+						sentForm[myFields[f].name] = myFields[f].value;
+					}
+					//JSONize form data
+					sentForm = JSON.stringify(sentForm);
+					jQuery.ajax({
+						type : 'post',
+						data : {structure: sentForm},
+						url : "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule="+gVTModule,
+						success : function(msg) {  //Validation file answers
+							VtigerJS_DialogBox.unblock();
+							if (msg.search("%%%CONFIRM%%%") > -1) { //Allow to use confirm alert
+								//message to display
+								var display = msg.split("%%%CONFIRM%%%");
+								if(confirm(display[1])) { //If you click on OK
+									submitFormForAction(formName, action);
+								}
+							} else if (msg.search("%%%OK%%%") > -1) { //No error
+								submitFormForAction(formName, action);
+							} else { //Error
+								alert(msg);
+							}
+						},
+						error : function() {  //Error while asking file
+							VtigerJS_DialogBox.unblock();
+							alert('Error with AJAX');
+						}
+					});
+				} else { // no validation we send form
+					submitFormForAction(formName, action);
+				}
+			}
+		});
+	}
+	return false;
 }
 
 function doformValidation(edit_type) {

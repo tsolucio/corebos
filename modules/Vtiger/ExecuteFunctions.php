@@ -99,6 +99,24 @@ switch ($functiontocall) {
 			$ret['from_email'] = $emltpl[3];
 		}
 		break;
+	case 'ValidationExists':
+		$valmod = vtlib_purify($_REQUEST['valmodule']);
+		if (file_exists("modules/{$valmod}/{$valmod}Validation.php")) {
+			echo 'yes';
+		} else {
+			echo 'no';
+		}
+		die();
+		break;
+	case 'ValidationLoad':
+		$valmod = vtlib_purify($_REQUEST['valmodule']);
+		if (file_exists("modules/{$valmod}/{$valmod}Validation.php")) {
+			include "modules/{$valmod}/{$valmod}Validation.php";
+		} else {
+			echo '%%%OK%%%';
+		}
+		die();
+		break;
 	case 'ismoduleactive':
 	default:
 		$mod = vtlib_purify($_REQUEST['checkmodule']);
