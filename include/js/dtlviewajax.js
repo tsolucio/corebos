@@ -143,6 +143,10 @@ function dtlViewAjaxDirectFieldSave(fieldValue,module,tableName,fieldName,crmId,
 
 function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 {
+	dtlviewModuleValidation(fieldLabel,module,uitype,tableName,fieldName,crmId);
+}
+
+function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmId) {
 	var dtlView = "dtlview_"+ fieldLabel;
 	var editArea = "editarea_"+ fieldLabel;
 	var groupurl = "";
@@ -199,11 +203,6 @@ function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 
 	var popupTxt= "popuptxt_"+ fieldLabel;
 	var hdTxt = "hdtxt_"+ fieldLabel;
-
-	if(formValidate() == false)
-	{
-		return false;
-	}
 
 	$("vtbusy_info").style.display="inline";
 	var isAdmin = document.getElementById("hdtxt_IsAdmin").value;
@@ -478,6 +477,58 @@ function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 	}
 	showHide(dtlView,editArea);  //show,hide
 	itsonview=false;
+}
+
+function dtlviewModuleValidation(fieldLabel,module,uitype,tableName,fieldName,crmId) {
+	var formName = 'DetailView';
+	if(doformValidation('')) { //base function which validates form data
+		//Testing if a Validation file exists
+		jQuery.ajax({
+			url: "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationExists&valmodule="+gVTModule,
+			type:'get',
+			error: function() { //Validation file does not exist
+				dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmId);
+			},
+			success: function(data) { //Validation file exists
+				if (data == 'yes') {
+					// Create object which gets the values of all input, textarea, select and button elements from the form
+					var myFields = document.forms[formName].elements;
+					var sentForm = new Object();
+					for (f=0; f<myFields.length; f++){
+						sentForm[myFields[f].name] = myFields[f].value;
+					}
+					//JSONize form data
+					sentForm = JSON.stringify(sentForm);
+					jQuery.ajax({
+						type : 'post',
+						data : {structure: sentForm},
+						url : "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule="+gVTModule,
+						success : function(msg) {  //Validation file answers
+							VtigerJS_DialogBox.unblock();
+							if (msg.search("%%%CONFIRM%%%") > -1) { //Allow to use confirm alert
+								//message to display
+								var display = msg.split("%%%CONFIRM%%%");
+								if(confirm(display[1])) { //If you click on OK
+									dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
+								}
+							} else if (msg.search("%%%OK%%%") > -1) { //No error
+								dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
+							} else { //Error
+								alert(msg);
+							}
+						},
+						error : function() {  //Error while asking file
+							VtigerJS_DialogBox.unblock();
+							alert('Error with AJAX');
+						}
+					});
+				} else { // no validation we send form
+					dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
+				}
+			}
+		});
+	}
+	return false;
 }
 
 function SaveTag(tagfield,crmId,module)
