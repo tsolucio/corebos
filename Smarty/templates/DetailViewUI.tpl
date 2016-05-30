@@ -126,7 +126,7 @@
 						</span>
 						<!--code given by Neil End-->
                                           <div id="editarea_{$keyfldname}" style="display:none;">
-                                          <select MULTIPLE id="txtbox_{$keyfldname}" name="{$keyfldname}" size="4" style="width:160px;" class="small">
+                                          <select MULTIPLE id="txtbox_{$keyfldname}" name="{$keyfldname}" size="4" style="width:280px;" class="small">
 				                                    {foreach item=arr from=$keyoptions}
 										<option value="{$arr[1]}" {$arr[2]}>{$arr[0]}</option>
 				                                    {/foreach}
