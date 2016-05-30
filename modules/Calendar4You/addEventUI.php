@@ -1133,31 +1133,31 @@ frm1.submit(function (){
 });
 
 var frm2 = jQuery('#createTodoID');
+function c4y_todosave(val_result) {
+	var frm2r = jQuery('#createTodoID');
+	VtigerJS_DialogBox.block();
+	jQuery.ajax({
+		type: frm2.attr('method'),
+		url: "index.php?module=Calendar4You&action=Calendar4YouAjax&file=SaveTodo",
+		data: frm2r.serialize(),
+		success: function (data) {
+			jQuery('#createTodoID')[0].reset();
+			var return_data = data.split("-");
+			jQuery('#calendar_div').fullCalendar( 'refetchEvents' );
+			ghide('createTodo');
+			VtigerJS_DialogBox.unblock();
+			if (return_data[0] != "undefined" && return_data[1] != "undefined" && return_data[2] != "undefined"){
+				go_to_month = (return_data[1] * 1) - 1;
+				jQuery('#calendar_div').fullCalendar('gotoDate', return_data[0] * 1, go_to_month, return_data[2] * 1);
+				alert(return_data[3]);
+			} else {
+				alert("error:"+data);
+			}
+		}
+	});
+}
 frm2.submit(function (){
 	task_check_form();
-	if(formValidate()){
-		var frm2r = jQuery('#createTodoID');
-		VtigerJS_DialogBox.block();
-		jQuery.ajax({
-			type: frm2.attr('method'),
-			url: "index.php?module=Calendar4You&action=Calendar4YouAjax&file=SaveTodo",
-			data: frm2r.serialize(),
-			success: function (data) {
-				jQuery('#createTodoID')[0].reset();
-				var return_data = data.split("-");
-				jQuery('#calendar_div').fullCalendar( 'refetchEvents' );
-				ghide('createTodo');
-				VtigerJS_DialogBox.unblock();
-				if (return_data[0] != "undefined" && return_data[1] != "undefined" && return_data[2] != "undefined"){
-					go_to_month = (return_data[1] * 1) - 1;
-					jQuery('#calendar_div').fullCalendar('gotoDate', return_data[0] * 1, go_to_month, return_data[2] * 1);
-					alert(return_data[3]);
-				} else {
-					alert("error:"+data);
-				}
-			}
-		});
-	}
-	return false;
+	return doModuleValidation('','createTodo',c4y_todosave);
 });
 </script>

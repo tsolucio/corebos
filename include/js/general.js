@@ -1004,13 +1004,13 @@ function massEditFormValidate(){
 	return doModuleValidation('mass_edit');
 }
 
-function doModuleValidation(edit_type,editForm) {
+function doModuleValidation(edit_type,editForm,callback) {
 	if (editForm == undefined) {
 		var formName = 'EditView';
 	} else {
 		var formName = editForm;
 	}
-	if((formName == 'EditView' && doformValidation(edit_type)) || (formName == 'QcEditView' && QCformValidate())) { //base function which validates form data
+	if((formName == 'QcEditView' && QCformValidate()) || (doformValidation(edit_type))) { //base function which validates form data
 		if (edit_type=='mass_edit') {
 			var action = 'MassEditSave';
 		} else {
@@ -1021,7 +1021,11 @@ function doModuleValidation(edit_type,editForm) {
 			url: "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationExists&valmodule="+gVTModule,
 			type:'get',
 			error: function() { //Validation file does not exist
-				submitFormForAction(formName, action);
+				if (typeof callback == 'function') {
+					callback('submit');
+				} else {
+					submitFormForAction(formName, action);
+				}
 			},
 			success: function(data) { //Validation file exists
 				if (data == 'yes') {
@@ -1043,10 +1047,18 @@ function doModuleValidation(edit_type,editForm) {
 								//message to display
 								var display = msg.split("%%%CONFIRM%%%");
 								if(confirm(display[1])) { //If you click on OK
-									submitFormForAction(formName, action);
+									if (typeof callback == 'function') {
+										callback('submit');
+									} else {
+										submitFormForAction(formName, action);
+									}
 								}
 							} else if (msg.search("%%%OK%%%") > -1) { //No error
-								submitFormForAction(formName, action);
+								if (typeof callback == 'function') {
+									callback('submit');
+								} else {
+									submitFormForAction(formName, action);
+								}
 							} else { //Error
 								alert(msg);
 							}
@@ -1057,7 +1069,11 @@ function doModuleValidation(edit_type,editForm) {
 						}
 					});
 				} else { // no validation we send form
-					submitFormForAction(formName, action);
+					if (typeof callback == 'function') {
+						callback('submit');
+					} else {
+						submitFormForAction(formName, action);
+					}
 				}
 			}
 		});

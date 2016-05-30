@@ -777,7 +777,7 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 </table>
 </div>
 <div class="calAddEvent layerPopup" style="display:none;width:700px;left:200px;" id="createTodo" align=center>
-<form name="createTodo" onSubmit="task_check_form();if(formValidate()) { VtigerJS_DialogBox.block(); } else { return false; }" method="POST" action="index.php">
+<form name="createTodo" onSubmit="task_check_form();return formValidate();" method="POST" action="index.php">
 <input type="hidden" name="return_action" value="index">
 <input type="hidden" name="return_module" value="Calendar">
   <input type="hidden" name="module" value="Calendar">
