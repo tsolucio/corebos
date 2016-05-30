@@ -1011,7 +1011,11 @@ function doModuleValidation(edit_type,editForm) {
 		var formName = editForm;
 	}
 	if((formName == 'EditView' && doformValidation(edit_type)) || (formName == 'QcEditView' && QCformValidate())) { //base function which validates form data
-		var action = 'Save';
+		if (edit_type=='mass_edit') {
+			var action = 'MassEditSave';
+		} else {
+			var action = 'Save';
+		}
 		//Testing if a Validation file exists
 		jQuery.ajax({
 			url: "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationExists&valmodule="+gVTModule,
