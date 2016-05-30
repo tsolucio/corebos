@@ -303,11 +303,18 @@ function roundValue(val) {
 	return val;
 }
 
-//This function is used to validate the Inventory modules 
+//This function is used to validate the Inventory modules
 function validateInventory(module) {
-	if(!formValidate())
-		return false;
+	return doModuleValidation('','EditView',finishValidateInventory);
+}
 
+function finishValidateInventory() {
+	if (validateInventoryLines(gVTModule)) {
+		submitFormForAction('EditView', 'Save');
+	}
+}
+
+function validateInventoryLines(module) {
 	//for products, vendors and pricebook modules we won't validate the product details. here return the control
 	if(module == 'Products' || module == 'Vendors' || module == 'PriceBooks' || module == 'Services')
 	{
