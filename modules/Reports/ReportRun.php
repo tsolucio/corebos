@@ -2161,7 +2161,8 @@ class ReportRun extends CRMEntity {
 						if(!empty($fieldInfo)) {
 							$field = WebserviceField::fromArray($adb, $fieldInfo);
 						} else {
-							if(in_array($module, $invMods) and substr($fld->table,0,26) == 'vtiger_inventoryproductrel') {
+							if(in_array($module, $invMods)) {
+							  if(substr($fld->table,0,26) == 'vtiger_inventoryproductrel') {
 								foreach ($ILF->getInventoryLineFieldsByName() as $ilfname => $ilfinfo) {
 									$ilflabel = getTranslatedString($ilfinfo['fieldlabel'], $module);
 									if ($ilflabel==$fieldLabel) {
@@ -2172,6 +2173,18 @@ class ReportRun extends CRMEntity {
 										break;
 									}
 								}
+							  } else if(substr($fld->table,0,15) == 'vtiger_products' or substr($fld->table,0,14) == 'vtiger_service') {
+								foreach ($ILF->getInventoryLineProductServiceNameFields() as $ilfname => $ilfinfo) {
+									$ilflabel = getTranslatedString($ilfinfo['fieldlabel'], $module);
+									if ($ilflabel==$fieldLabel) {
+										$fieldInfo = $ilfinfo;
+										$fieldInfo['tabid'] = getTabid($ilfinfo['module']);
+										$fieldInfo['presence'] = 1;
+										$field = WebserviceField::fromArray($adb, $fieldInfo);
+										break;
+									}
+								}
+							  }
 							}
 						}
 						if(!empty($fieldInfo)) {
