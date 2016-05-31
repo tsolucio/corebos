@@ -8,6 +8,11 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<title>{$MODULE|@getTranslatedString:$MODULE} - {$APP.LBL_BROWSER_TITLE}</title>
+	<link REL="SHORTCUT ICON" HREF="themes/images/blank.gif">
 <script language="JavaScript" type="text/javascript">
 var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 var image_pth = '{$IMAGE_PATH}';
@@ -87,6 +92,7 @@ function redirectWhenNoRelatedRecordsFound()
 	<!-- END -->
 {/if}
 {* END *}
+<script language="JavaScript" type="text/javascript" src="include/js/{php} echo $_SESSION['authenticated_user_language'];{/php}.lang.js?{php} echo $_SESSION['vtiger_version'];{/php}"></script>
 <script language="JavaScript" type="text/javascript" src="include/js/meld.js"></script>
 <script language="JavaScript" type="text/javascript" src="include/js/ListView.js"></script>
 <script language="JavaScript" type="text/javascript" src="include/js/general.js"></script>
@@ -97,7 +103,6 @@ function redirectWhenNoRelatedRecordsFound()
 <!-- vtlib customization: Javascript hook -->
 <script language="JavaScript" type="text/javascript" src="include/js/vtlib.js"></script>
 <!-- END -->
-<script language="JavaScript" type="text/javascript" src="include/js/{php} echo $_SESSION['authenticated_user_language'];{/php}.lang.js?{php} echo $_SESSION['vtiger_version'];{/php}"></script>
 {if $RETURN_MODULE != ''}
 <script language="JavaScript" type="text/javascript" src="modules/{$RETURN_MODULE}/{$RETURN_MODULE}.js"></script>
 {/if}
@@ -153,8 +158,8 @@ function set_focus() {ldelim}
 	document.getElementById('search_txt').focus();
 {rdelim}
 </script>
-
-<body  onload=set_focus() class="small" marginwidth=0 marginheight=0 leftmargin=0 topmargin=0 bottommargin=0 rightmargin=0>
+</head>
+<body onload=set_focus() class="small" marginwidth=0 marginheight=0 leftmargin=0 topmargin=0 bottommargin=0 rightmargin=0>
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="mailClient mailClientBg">
 	<tr>
 		<td>
@@ -205,12 +210,12 @@ function set_focus() {ldelim}
 								<input name="maintab" id="maintab" type="hidden" value="{$MAINTAB}">
 								<input type="hidden" id="relmod" name="{$mod_var_name}" value="{$mod_var_value}">
 								<input type="hidden" id="relrecord_id" name="{$recid_var_name}" value="{$recid_var_value}">
-								<input name="form"  id="popupform" type="hidden" value="{$smarty.request.form|@vtlib_purify}">
+								<input name="form" id="popupform" type="hidden" value="{$smarty.request.form|@vtlib_purify}">
 								{* vtlib customization: For uitype 10 popup during paging *}
 								{if $smarty.request.form eq 'vtlibPopupView'}
-									<input name="forfield"  id="forfield" type="hidden" value="{$smarty.request.forfield|@vtlib_purify}">
-									<input name="srcmodule"  id="srcmodule" type="hidden" value="{$smarty.request.srcmodule|@vtlib_purify}">
-									<input name="forrecord"  id="forrecord" type="hidden" value="{$smarty.request.forrecord|@vtlib_purify}">
+									<input name="forfield" id="forfield" type="hidden" value="{$smarty.request.forfield|@vtlib_purify}">
+									<input name="srcmodule" id="srcmodule" type="hidden" value="{$smarty.request.srcmodule|@vtlib_purify}">
+									<input name="forrecord" id="forrecord" type="hidden" value="{$smarty.request.forrecord|@vtlib_purify}">
 								{/if}
 								{if $smarty.request.currencyid neq ''}
 									<input type="hidden" name="currencyid" id="currencyid" value="{$smarty.request.currencyid|@vtlib_purify}">
@@ -240,14 +245,14 @@ function set_focus() {ldelim}
 				</tr>
 				{if $recid_var_value neq ''}
 					<tr>
-						<td align="right"><input id="all_contacts" alt="{$APP.LBL_SELECT_BUTTON_LABEL} {$APP.$MODULE}" title="{$APP.LBL_SELECT_BUTTON_LABEL} {$APP.$MODULE}" accessKey="" class="crmbutton small edit" value="{$APP.SHOW_ALL}&nbsp;{$APP.$MODULE}" LANGUAGE=javascript onclick="window.location.href=showAllRecords();" type="button"  name="button"></td>
+						<td align="right"><input id="all_contacts" alt="{$APP.LBL_SELECT_BUTTON_LABEL} {$APP.$MODULE}" title="{$APP.LBL_SELECT_BUTTON_LABEL} {$APP.$MODULE}" accessKey="" class="crmbutton small edit" value="{$APP.SHOW_ALL}&nbsp;{$APP.$MODULE}" LANGUAGE=javascript onclick="window.location.href=showAllRecords();" type="button" name="button"></td>
 					</tr>
 				{/if}
 			</table>
 			<!-- ADVANCED SEARCH -->
 			<div id="advSearch" style="display:none;">
 			<form name="advSearch" method="post" action="index.php" onSubmit="return callSearch('Advanced');">
-				<table  cellspacing=0 cellpadding=5 width=100% class="searchUIAdv1 small" align="center" border=0>
+				<table cellspacing=0 cellpadding=5 width=100% class="searchUIAdv1 small" align="center" border=0>
 					<tr>
 						<td class="searchUIName small" nowrap align="left"><span class="moduleName">{$APP.LBL_SEARCH}</span><br><span class="small"><a href="#" onClick="show('searchAcc');fnhide('advSearch')">{$APP.LBL_GO_TO} {$APP.LNK_BASIC_SEARCH}</a></span></td>
 						<td class="small" align="right" valign="top">&nbsp;</td>
@@ -466,3 +471,4 @@ var product_labelarr = {ldelim}
 {rdelim};
 
 </script>
+</html>
