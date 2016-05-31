@@ -107,7 +107,6 @@ function redirectWhenNoRelatedRecordsFound()
 <script language="JavaScript" type="text/javascript" src="modules/{$RETURN_MODULE}/{$RETURN_MODULE}.js"></script>
 {/if}
 <script language="JavaScript" type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
-{*<script language="javascript" type="text/javascript" src="include/scriptaculous/prototype.js"></script>*}
 <script type='text/javascript' src='include/jquery/jquery.js'></script>
 <script type='text/javascript'>
 	jQuery.noConflict();
