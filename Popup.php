@@ -466,6 +466,15 @@ $smarty->assign("RECORD_COUNTS", $noofrows);
 $smarty->assign("POPUPTYPE", $popuptype);
 $smarty->assign("PARENT_MODULE", isset($_REQUEST['parent_module']) ? vtlib_purify($_REQUEST['parent_module']) : '');
 
+// Field Validation Information
+$tabid = getTabid($currentModule);
+$validationData = getDBValidationData($focus->tab_name,$tabid);
+$validationArray = split_validationdataArray($validationData);
+
+$smarty->assign("VALIDATION_DATA_FIELDNAME",$validationArray['fieldname']);
+$smarty->assign("VALIDATION_DATA_FIELDDATATYPE",$validationArray['datatype']);
+$smarty->assign("VALIDATION_DATA_FIELDLABEL",$validationArray['fieldlabel']);
+
 if(isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '')
 	$smarty->display("PopupContents.tpl");
 else
