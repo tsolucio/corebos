@@ -270,13 +270,10 @@ function sensex_info()
 	ScrollEffect.closelimit= 200;
 </script>
 {/if}
-<script>	
-
-        var fieldname = new Array({$VALIDATION_DATA_FIELDNAME})
-
-        var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL})
-
-        var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE})
+<script>
+	var fieldname = new Array({$VALIDATION_DATA_FIELDNAME});
+	var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
+	var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 
 	var ProductImages=new Array();
 	var count=0;
@@ -297,7 +294,6 @@ function sensex_info()
 		if(imagelists != '')
 			document.EditView.imagelist.value=imagelists
 	{rdelim}
-
 </script>
 
 <!-- vtlib customization: Help information assocaited with the fields -->

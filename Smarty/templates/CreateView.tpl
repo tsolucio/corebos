@@ -317,9 +317,9 @@ function sensex_info()
 </script>
 {/if}
 <script>
-        var fieldname = new Array({$VALIDATION_DATA_FIELDNAME})
-        var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL})
-        var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE})
+	var fieldname = new Array({$VALIDATION_DATA_FIELDNAME});
+	var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
+	var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 </script>
 
 <!-- vtlib customization: Help information assocaited with the fields -->
