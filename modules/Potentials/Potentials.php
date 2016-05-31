@@ -79,7 +79,7 @@ class Potentials extends CRMEntity {
 	);
 
 	// For Popup window record selection
-	var $popup_fields = Array('payslipname');
+	var $popup_fields = Array('potentialname');
 
 	// Placeholder for sort fields - All the fields will be initialized for Sorting through initSortFields
 	var $sortby_fields = Array('potentialname','amount','closingdate','smownerid','accountname');
@@ -245,21 +245,25 @@ class Potentials extends CRMEntity {
 				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module). "' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab$search_string','test','width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module) ."'>&nbsp;";
 			}
 			if(in_array('ADD', $actions) && isPermitted($related_module,1, '') == 'yes') {
-				$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). " ". getTranslatedString($singular_modname) ."' class='crmbutton small create'" .
-					" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
-					" value='". getTranslatedString('LBL_ADD_NEW'). " " . getTranslatedString($singular_modname) ."'>&nbsp;";
+				$wfs = new VTWorkflowManager($adb);
+				$racbr = $wfs->getRACRuleForRecord($currentModule, $id);
+				if (!$racbr or $racbr->hasRelatedListPermissionTo('create',$related_module)) {
+					$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). " ". getTranslatedString($singular_modname) ."' class='crmbutton small create'" .
+						" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
+						" value='". getTranslatedString('LBL_ADD_NEW'). " " . getTranslatedString($singular_modname) ."'>&nbsp;";
+				}
 			}
 		}
 
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>
 							'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 		$query = 'select case when (vtiger_users.user_name not like "") then '.$userNameSql.' else vtiger_groups.groupname end as user_name,
-					vtiger_contactdetails.accountid,vtiger_potential.potentialid, vtiger_potential.potentialname, vtiger_contactdetails.contactid,
-					vtiger_contactdetails.lastname, vtiger_contactdetails.firstname, vtiger_contactdetails.title, vtiger_contactdetails.department,
-					vtiger_contactdetails.email, vtiger_contactdetails.phone, vtiger_crmentity.crmid, vtiger_crmentity.smownerid,
+					vtiger_contactdetails.*,vtiger_potential.potentialid, vtiger_potential.potentialname,
+					vtiger_contactscf.*, vtiger_crmentity.crmid, vtiger_crmentity.smownerid,
 					vtiger_crmentity.modifiedtime , vtiger_account.accountname from vtiger_potential
 					inner join vtiger_contpotentialrel on vtiger_contpotentialrel.potentialid = vtiger_potential.potentialid
 					inner join vtiger_contactdetails on vtiger_contpotentialrel.contactid = vtiger_contactdetails.contactid
+					inner join vtiger_contactscf on vtiger_contactscf.contactid = vtiger_contactdetails.contactid
 					inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
 					left join vtiger_account on vtiger_account.accountid = vtiger_contactdetails.accountid
 					left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid
@@ -310,7 +314,7 @@ class Potentials extends CRMEntity {
 						" value='". getTranslatedString('LBL_ADD_NEW'). " " . getTranslatedString('LBL_TODO', $related_module) ."'>&nbsp;";
 				}
 				if(getFieldVisibilityPermission('Events',$current_user->id,'parent_id', 'readwrite') == '0') {
-					$button .= "<input title='".getTranslatedString('LBL_NEW'). " ". getTranslatedString('LBL_TODO', $related_module) ."' class='crmbutton small create'" .
+					$button .= "<input title='".getTranslatedString('LBL_NEW'). " ". getTranslatedString('LBL_EVENT', $related_module) ."' class='crmbutton small create'" .
 						" onclick='this.form.action.value=\"EventEditView\";this.form.module.value=\"Calendar4You\";this.form.return_module.value=\"$this_module\";this.form.activity_mode.value=\"Events\";' type='submit' name='button'" .
 						" value='". getTranslatedString('LBL_ADD_NEW'). " " . getTranslatedString('LBL_EVENT', $related_module) ."'>";
 				}
@@ -381,12 +385,12 @@ class Potentials extends CRMEntity {
 			}
 		}
 
-		$query = "SELECT vtiger_products.productid, vtiger_products.productname, vtiger_products.productcode,
-				vtiger_products.commissionrate, vtiger_products.qty_per_unit, vtiger_products.unit_price,
+		$query = "SELECT vtiger_products.*,vtiger_productcf.*,
 				vtiger_crmentity.crmid, vtiger_crmentity.smownerid
 				FROM vtiger_products
 				INNER JOIN vtiger_seproductsrel ON vtiger_products.productid = vtiger_seproductsrel.productid and vtiger_seproductsrel.setype = 'Potentials'
 				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_products.productid
+				INNER JOIN vtiger_productcf ON vtiger_productcf.productid = vtiger_products.productid
 				INNER JOIN vtiger_potential ON vtiger_potential.potentialid = vtiger_seproductsrel.crmid
 				LEFT JOIN vtiger_users
 					ON vtiger_users.id=vtiger_crmentity.smownerid
@@ -756,7 +760,7 @@ class Potentials extends CRMEntity {
 			}
 		}
 	}
-	function getListButtons($app_strings, $mod_strings) {
+	function getListButtons($app_strings) {
 		$list_buttons = Array ();
 
 		if (isPermitted ( 'Potentials', 'Delete', '' ) == 'yes') {
@@ -766,10 +770,9 @@ class Potentials extends CRMEntity {
 			$list_buttons ['mass_edit'] = $app_strings ['LBL_MASS_EDIT'];
 			$list_buttons ['c_owner'] = $app_strings ['LBL_CHANGE_OWNER'];
 		}
-		if (isPermitted ( 'Emails', 'EditView', '' ) == 'yes') {
+		if (isPermitted ( 'Emails', 'CreateView', '' ) == 'yes') {
 			$list_buttons ['s_mail'] = $app_strings ['LBL_SEND_MAIL_BUTTON'];
 		}
-		// end of mailer export
 		return $list_buttons;
 	}
 

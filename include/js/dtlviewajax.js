@@ -140,6 +140,10 @@ function dtlViewAjaxDirectFieldSave(fieldValue,module,tableName,fieldName,crmId,
 
 function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 {
+	dtlviewModuleValidation(fieldLabel,module,uitype,tableName,fieldName,crmId);
+}
+
+function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmId) {
 	var dtlView = "dtlview_"+ fieldLabel;
 	var editArea = "editarea_"+ fieldLabel;
 	var groupurl = "";
@@ -196,11 +200,6 @@ function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 
 	var popupTxt= "popuptxt_"+ fieldLabel;
 	var hdTxt = "hdtxt_"+ fieldLabel;
-
-	if(formValidate() == false)
-	{
-		return false;
-	}
 
 	document.getElementById("vtbusy_info").style.display="inline";
 	var isAdmin = document.getElementById("hdtxt_IsAdmin").value;
@@ -296,9 +295,9 @@ function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 			var fieldId = mail_chk_arr[0];
 			var internal_mailer_flag = mail_chk_arr[1];
 			if(internal_mailer_flag == 1)
-				var email_link = "<a href=\"javascript:InternalMailer("+crmId+","+fieldId+",'"+fieldName+"','"+module+"','record_id');\">"+tagValue+"&nbsp;</a>";
+				var email_link = "<a href=\"javascript:InternalMailer("+crmId+","+fieldId+",'"+fieldName+"','"+module+"','record_id');\" onclick='event.stopPropagation();'>"+tagValue+"&nbsp;</a>";
 			else
-				var email_link = "<a href=\"mailto:"+ tagValue+"\" target=\"_blank\">"+tagValue+"&nbsp;</a>";
+				var email_link = "<a href=\"mailto:"+ tagValue+"\" target=\"_blank\" onclick='event.stopPropagation();'>"+tagValue+"&nbsp;</a>";
 		}
 		getObj(dtlView).innerHTML = email_link;
 		if(fieldName == "email" || fieldName == "email1"){
@@ -312,7 +311,7 @@ function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 		}
 	}else if(uitype == '11'){
 		if(typeof(use_asterisk) != 'undefined' && use_asterisk == true){
-			getObj(dtlView).innerHTML = "<a href=\"javascript:;\" onclick=\"startCall('"+tagValue+"','"+crmId+"')\">"+tagValue+"</a>";
+			getObj(dtlView).innerHTML = "<a href=\"javascript:;\" onclick=\"startCall('"+tagValue+"','"+crmId+"')\" onclick='event.stopPropagation();'>"+tagValue+"</a>";
 		}else{
 			getObj(dtlView).innerHTML = tagValue;
 		}
@@ -320,13 +319,13 @@ function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 	{
 		var matchPattern = /^[\w]+:\/\//;
 		if(tagValue.match(matchPattern)){
-			getObj(dtlView).innerHTML = "<a href=\""+ tagValue+"\" target=\"_blank\">"+tagValue+"&nbsp;</a>";
+			getObj(dtlView).innerHTML = "<a href=\""+ tagValue+"\" target=\"_blank\" onclick='event.stopPropagation();'>"+tagValue+"&nbsp;</a>";
 		}else{
-			getObj(dtlView).innerHTML = "<a href=\"http://"+ tagValue+"\" target=\"_blank\">"+tagValue+"&nbsp;</a>";
+			getObj(dtlView).innerHTML = "<a href=\"http://"+ tagValue+"\" target=\"_blank\" onclick='event.stopPropagation();'>"+tagValue+"&nbsp;</a>";
 		}
 	}else if(uitype == '85')
 	{
-		getObj(dtlView).innerHTML = "<a href=\"skype://"+ tagValue+"?call\">"+tagValue+"&nbsp;</a>";
+		getObj(dtlView).innerHTML = "<a href=\"skype:"+ tagValue+"?call\" onclick='event.stopPropagation();'><img src='themes/images/skype.gif' align='absmiddle'></img>&nbsp;"+tagValue+"&nbsp;</a>";
 	}else if(uitype == '53')
 	{
 		var hdObj = getObj(hdTxt);
@@ -343,10 +342,10 @@ function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 			getObj(dtlView).innerHTML = hdObj.value;
 		}else if(isAdmin == "1" && assign_type_U == true)
 		{
-			getObj(dtlView).innerHTML = "<a href=\"index.php?module=Users&action=DetailView&record="+tagValue+"\">"+hdObj.value+"&nbsp;</a>";
+			getObj(dtlView).innerHTML = "<a href=\"index.php?module=Users&action=DetailView&record="+tagValue+"\" onclick='event.stopPropagation();'>"+hdObj.value+"&nbsp;</a>";
 		}else if(isAdmin == "1" && assign_type_G == true)
 		{
-			getObj(dtlView).innerHTML = "<a href=\"index.php?module=Settings&action=GroupDetailView&groupId="+tagValue+"\">"+hdObj.value+"&nbsp;</a>";
+			getObj(dtlView).innerHTML = "<a href=\"index.php?module=Settings&action=GroupDetailView&groupId="+tagValue+"\" onclick='event.stopPropagation();'>"+hdObj.value+"&nbsp;</a>";
 		}
 	}
 	else if(uitype == '52' || uitype == '77')
@@ -370,6 +369,9 @@ function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 	{
 		getObj(dtlView).innerHTML = document.getElementById(txtBox).options[document.getElementById(txtBox).selectedIndex].text; 
 	}
+	else if(uitype == '10') {
+		getObj(dtlView).innerHTML = "<a href=\"index.php?module="+document.getElementById(fieldName+'_type').value+"&action=DetailView&record="+tagValue+"\">"+document.getElementById(fieldName+'_display').value+"&nbsp;</a>";
+	}
 	else if(getObj(popupTxt))
 	{
 		var popObj = getObj(popupTxt);
@@ -383,7 +385,7 @@ function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 		}
 		else if(uitype == '59')
 		{
-			getObj(dtlView).innerHTML = "<a href=\"index.php?module=Products&action=DetailView&record="+tagValue+"\">"+popObj.value+"&nbsp;</a>";
+			getObj(dtlView).innerHTML = "<a href=\"index.php?module=Products&action=DetailView&record="+tagValue+"\" onclick='event.stopPropagation();'>"+popObj.value+"&nbsp;</a>";
 		}
 		else if(uitype == '75' || uitype == '81' )
 		{
@@ -469,6 +471,58 @@ function dtlViewAjaxSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 	}
 	showHide(dtlView,editArea);  //show,hide
 	itsonview=false;
+}
+
+function dtlviewModuleValidation(fieldLabel,module,uitype,tableName,fieldName,crmId) {
+	var formName = 'DetailView';
+	if(doformValidation('')) { //base function which validates form data
+		//Testing if a Validation file exists
+		jQuery.ajax({
+			url: "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationExists&valmodule="+gVTModule,
+			type:'get',
+			error: function() { //Validation file does not exist
+				dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmId);
+			},
+			success: function(data) { //Validation file exists
+				if (data == 'yes') {
+					// Create object which gets the values of all input, textarea, select and button elements from the form
+					var myFields = document.forms[formName].elements;
+					var sentForm = new Object();
+					for (f=0; f<myFields.length; f++){
+						sentForm[myFields[f].name] = myFields[f].value;
+					}
+					//JSONize form data
+					sentForm = JSON.stringify(sentForm);
+					jQuery.ajax({
+						type : 'post',
+						data : {structure: sentForm},
+						url : "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule="+gVTModule,
+						success : function(msg) {  //Validation file answers
+							VtigerJS_DialogBox.unblock();
+							if (msg.search("%%%CONFIRM%%%") > -1) { //Allow to use confirm alert
+								//message to display
+								var display = msg.split("%%%CONFIRM%%%");
+								if(confirm(display[1])) { //If you click on OK
+									dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
+								}
+							} else if (msg.search("%%%OK%%%") > -1) { //No error
+								dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
+							} else { //Error
+								alert(msg);
+							}
+						},
+						error : function() {  //Error while asking file
+							VtigerJS_DialogBox.unblock();
+							alert('Error with AJAX');
+						}
+					});
+				} else { // no validation we send form
+					dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
+				}
+			}
+		});
+	}
+	return false;
 }
 
 function SaveTag(tagfield,crmId,module)

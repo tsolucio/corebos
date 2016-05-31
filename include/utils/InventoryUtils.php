@@ -945,7 +945,7 @@ function getPriceDetailsForProduct($productid, $unit_price, $available='availabl
 			if ($cur_value == null || $cur_value == '') {
 				$price_details[$i]['check_value'] = false;
 				if	($unit_price != null) {
-					$cur_value = convertFromMasterCurrency($unit_price, $actual_conversion_rate);
+					$cur_value = CurrencyField::convertFromMasterCurrency($unit_price, $actual_conversion_rate);
 				} else {
 					$cur_value = '0';
 				}
@@ -1359,15 +1359,13 @@ function importRecord($obj, $inventoryFieldData, $lineItems) {
 		$wsid = 0;
 	}
 	if ($currency == ' ' or empty($currency)) {
-		$fieldData['currency_id'] = $wsid.'x1';
+		$currid = 1;
 	} else {
-		$crrs = $adb->pquery('select id from vtiger_currency_info where currency_name=?', array($currency));
-		if ($crrs and $adb->num_rows($crrs)>0) {
-			$fieldData['currency_id'] = $wsid.'x'.$adb->query_result($crrs, 0, 0);
-		} else {
-			$fieldData['currency_id'] = $wsid.'x1';
-		}
+		$currid = getCurrencyId($currency);
 	}
+	$cur_sym_rate = getCurrencySymbolandCRate($currid);
+	$fieldData['currency_id'] = $wsid.'x'.$currid;
+	$fieldData['conversion_rate'] = $cur_sym_rate['rate'];
 	$entityInfo = vtws_create($moduleName, $fieldData, $obj->user);
 	$entityInfo['status'] = $obj->getImportRecordStatus('created');
 	return $entityInfo;
@@ -1458,4 +1456,22 @@ function getInventoryFieldsForExport($tableName) {
 	return $sql;
 }
 
+function getCurrencyId($fieldValue) {
+	global $adb;
+	$sql = 'SELECT id FROM vtiger_currency_info WHERE currency_name = ? AND deleted = 0';
+	$result = $adb->pquery($sql, array($fieldValue));
+	$currencyId = 1;
+	if ($adb->num_rows($result) > 0) {
+		$currencyId = $adb->query_result($result, 0, 'id');
+	}
+	return $currencyId;
+}
+
+function inventoryCanSaveProductLines($request) {
+	global $log;
+	$return = ($request['action'] != 'SalesOrderAjax' && $request['ajxaction'] != 'DETAILVIEW' && $request['ajxaction'] != 'Workflow'
+		&& $request['action'] != 'MassEditSave' && $request['action'] != 'ProcessDuplicates');
+	$log->debug('inventoryCanSaveProductLines: '.($return ? 'true':'false'));
+	return $return;
+}
 ?>

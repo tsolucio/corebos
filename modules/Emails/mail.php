@@ -22,7 +22,7 @@ require_once 'include/utils/CommonUtils.php';
   *   $attachment	-- whether we want to attach the currently selected file or all files.[values = current,all] - optional
   *   $emailid		-- id of the email object which will be used to get the vtiger_attachments
   */
-function send_mail($module,$to_email,$from_name,$from_email,$subject,$contents,$cc='',$bcc='',$attachment='',$emailid='',$logo='')
+function send_mail($module,$to_email,$from_name,$from_email,$subject,$contents,$cc='',$bcc='',$attachment='',$emailid='',$logo='',$replyto='')
 {
 	global $adb, $log, $root_directory, $HELPDESK_SUPPORT_EMAIL_ID, $HELPDESK_SUPPORT_NAME;
 
@@ -57,25 +57,29 @@ function send_mail($module,$to_email,$from_name,$from_email,$subject,$contents,$
 	$params = array('email');
 	$result = $adb->pquery($query,$params);
 	$from_email_field = $adb->query_result($result,0,'from_email_field');
-	if(isUserInitiated()) {
-                global $current_user;
-                $reply_to_secondary = GlobalVariable::getVariable('Users_ReplyTo_SecondEmail', 0, $module, $current_user->id);
-                if($reply_to_secondary == 1){
-                    $sql = "select secondaryemail from vtiger_users where id=?";
-                    $result = $adb->pquery($sql, array($current_user->id));
-                    $second_email = '';
-                    if ($result and $adb->num_rows($result)>0) {
-                            $second_email = $adb->query_result($result,0,'secondaryemail');
+        if(empty($replyto)){
+            if(isUserInitiated()) {
+                    global $current_user;
+                    $reply_to_secondary = GlobalVariable::getVariable('Users_ReplyTo_SecondEmail', 0, $module, $current_user->id);
+                    if($reply_to_secondary == 1){
+                        $sql = "select secondaryemail from vtiger_users where id=?";
+                        $result = $adb->pquery($sql, array($current_user->id));
+                        $second_email = '';
+                        if ($result and $adb->num_rows($result)>0) {
+                                $second_email = $adb->query_result($result,0,'secondaryemail');
+                        }
                     }
-                }
-                if(!empty($second_email)){
-                    $replyToEmail = $second_email;
-                }else{
-                    $replyToEmail = $from_email;
-                }
-	} else {
-		$replyToEmail = $from_email_field;
-	}
+                    if(!empty($second_email)){
+                        $replyToEmail = $second_email;
+                    }else{
+                        $replyToEmail = $from_email;
+                    }
+            } else {
+                    $replyToEmail = $from_email_field;
+            }
+        }else{
+            $replyToEmail = $replyto;
+        }
 	if(isset($from_email_field) && $from_email_field!=''){
 		//setting from _email to the defined email address in the outgoing server configuration
 		$from_email = $from_email_field;

@@ -35,7 +35,7 @@ class Installation_Utils {
 	}
 
 	static function checkDbConnection($db_type, $db_hostname, $db_username, $db_password, $db_name, $create_db=false, $create_utf8_db=true, $root_user='', $root_password='') {
-		global $installationStrings, $vtiger_current_version;
+		global $installationStrings;
 
 		$dbCheckResult = array();
 		require_once('include/DatabaseUtil.php');
@@ -130,7 +130,7 @@ class Installation_Utils {
 class Migration_Utils {
 
 	static function verifyMigrationInfo($migrationInfo) {
-		global $installationStrings, $vtiger_current_version;
+		global $installationStrings;
 
 		$dbVerifyResult = array();
 		$dbVerifyResult['flag'] = false;
@@ -256,7 +256,7 @@ class Migration_Utils {
 		if(!$db_type_status || !$db_server_status) {
 			$error_msg = $installationStrings['ERR_DATABASE_CONNECTION_FAILED'].'. '.$installationStrings['ERR_INVALID_MYSQL_PARAMETERS'];
 			$error_msg_info = $installationStrings['MSG_LIST_REASONS'].':<br>
-					-  '.$installationStrings['MSG_DB_PARAMETERS_INVALID'].'. <a href="http://www.vtiger.com/products/crm/help/'.$vtiger_current_version.'/vtiger_CRM_Database_Hostname.pdf" target="_blank">'.$installationStrings['LBL_MORE_INFORMATION'].'</a><BR>
+					-  '.$installationStrings['MSG_DB_PARAMETERS_INVALID'].'.<BR>
 					-  '.$installationStrings['MSG_DB_USER_NOT_AUTHORIZED'];
 		} elseif(Common_Install_Wizard_Utils::isMySQL($db_type) && $mysql_server_version < '4.1') {
 			$error_msg = $mysql_server_version.' -> '.$installationStrings['ERR_INVALID_MYSQL_VERSION'];
@@ -289,11 +289,10 @@ class Migration_Utils {
 			$userInfo = $userResult->GetRowAssoc(0);
 			$cryptType = $userInfo['crypt_type'];
 			$userEncryptedPassword = $userInfo['user_password'];
-			$userStatus =  $userInfo['status'];
-			$isAdmin =  $userInfo['is_admin'];
+			$userStatus = $userInfo['status'];
+			$isAdmin = $userInfo['is_admin'];
 
-			$computedEncryptedPassword = self::getEncryptedPassword($userName, $cryptType,
-					$userPassword);
+			$computedEncryptedPassword = self::getEncryptedPassword($userName, $cryptType, $userPassword);
 
 			if($userEncryptedPassword == $computedEncryptedPassword && $userStatus == 'Active' && $isAdmin == 'on'){
 				return true;
@@ -689,7 +688,7 @@ class ConfigFile_Utils {
 
 	function createConfigFile() {
 		if (is_file('config.inc.php'))
-		    $is_writable = is_writable('config.inc.php');
+			$is_writable = is_writable('config.inc.php');
 		else
 			$is_writable = is_writable('.');
 
@@ -699,51 +698,51 @@ class ConfigFile_Utils {
 		if($templateHandle) {
 			/* open include configuration file write only */
 			$includeFilename = 'config.inc.php';
-	      	$includeHandle = fopen($includeFilename, "w");
+			$includeHandle = fopen($includeFilename, "w");
 			if($includeHandle) {
-			   	while (!feof($templateHandle)) {
-	  				$buffer = fgets($templateHandle);
+				while (!feof($templateHandle)) {
+					$buffer = fgets($templateHandle);
 
-		 			/* replace _DBC_ variable */
-		  			$buffer = str_replace( "_DBC_SERVER_", $this->dbHostname, $buffer);
-		  			$buffer = str_replace( "_DBC_PORT_", $this->dbPort, $buffer);
-		  			$buffer = str_replace( "_DBC_USER_", $this->dbUsername, $buffer);
-		  			$buffer = str_replace( "_DBC_PASS_", $this->dbPassword, $buffer);
-		  			$buffer = str_replace( "_DBC_NAME_", $this->dbName, $buffer);
-		  			$buffer = str_replace( "_DBC_TYPE_", $this->dbType, $buffer);
+					/* replace _DBC_ variable */
+					$buffer = str_replace( "_DBC_SERVER_", $this->dbHostname, $buffer);
+					$buffer = str_replace( "_DBC_PORT_", $this->dbPort, $buffer);
+					$buffer = str_replace( "_DBC_USER_", $this->dbUsername, $buffer);
+					$buffer = str_replace( "_DBC_PASS_", $this->dbPassword, $buffer);
+					$buffer = str_replace( "_DBC_NAME_", $this->dbName, $buffer);
+					$buffer = str_replace( "_DBC_TYPE_", $this->dbType, $buffer);
 
-		  			$buffer = str_replace( "_SITE_URL_", $this->siteUrl, $buffer);
+					$buffer = str_replace( "_SITE_URL_", $this->siteUrl, $buffer);
 
-		  			/* replace dir variable */
-		  			$buffer = str_replace( "_VT_ROOTDIR_", $this->rootDirectory, $buffer);
-		  			$buffer = str_replace( "_VT_CACHEDIR_", $this->cacheDir, $buffer);
-		  			$buffer = str_replace( "_VT_TMPDIR_", $this->cacheDir."images/", $buffer);
-		  			$buffer = str_replace( "_VT_UPLOADDIR_", $this->cacheDir."upload/", $buffer);
-			      	$buffer = str_replace( "_DB_STAT_", "true", $buffer);
+					/* replace dir variable */
+					$buffer = str_replace( "_VT_ROOTDIR_", $this->rootDirectory, $buffer);
+					$buffer = str_replace( "_VT_CACHEDIR_", $this->cacheDir, $buffer);
+					$buffer = str_replace( "_VT_TMPDIR_", $this->cacheDir."images/", $buffer);
+					$buffer = str_replace( "_VT_UPLOADDIR_", $this->cacheDir."upload/", $buffer);
+					$buffer = str_replace( "_DB_STAT_", "true", $buffer);
 
 					/* replace charset variable */
 					$buffer = str_replace( "_VT_CHARSET_", $this->vtCharset, $buffer);
 
-			      	/* replace master currency variable */
-		  			$buffer = str_replace( "_MASTER_CURRENCY_", $this->currencyName, $buffer);
+					/* replace master currency variable */
+					$buffer = str_replace( "_MASTER_CURRENCY_", $this->currencyName, $buffer);
 
-			      	/* replace the application unique key variable */
-		      		$buffer = str_replace( "_VT_APP_UNIQKEY_", md5((time() + rand(1,9999999)) . $this->rootDirectory) , $buffer);
+					/* replace the application unique key variable */
+					$buffer = str_replace( "_VT_APP_UNIQKEY_", md5((time() + rand(1,9999999)) . $this->rootDirectory) , $buffer);
 
 					/* replace support email variable */
 					$buffer = str_replace( "_USER_SUPPORT_EMAIL_", $this->adminEmail, $buffer);
 
-		      		fwrite($includeHandle, $buffer);
-	      		}
-	  			fclose($includeHandle);
-	  		}
-	  		fclose($templateHandle);
-	  	}
+					fwrite($includeHandle, $buffer);
+				}
+				fclose($includeHandle);
+			}
+			fclose($templateHandle);
+		}
 
-	  	if ($templateHandle && $includeHandle) {
-	  		return true;
-	  	}
-	  	return false;
+		if ($templateHandle && $includeHandle) {
+			return true;
+		}
+		return false;
 	}
 
 }
@@ -758,9 +757,10 @@ class Common_Install_Wizard_Utils {
 		'output_buffering' => 'On',
 		'max_execution_time' => '600',
 		'memory_limit' => '32',
-		'error_reporting' => 'E_ALL & ~E_NOTICE & ~E_DEPRECATED & ~E_STRICT',
+		'error_reporting' => 'E_ERROR',
 		'allow_call_time_pass_reference' => 'Off',
-		'short_open_tag' => 'On'
+		'short_open_tag' => 'On',
+		'max_input_vars' => '9000',
 	);
 
 	public static $writableFilesAndFolders = array (
@@ -956,6 +956,8 @@ class Common_Install_Wizard_Utils {
 			$directiveValues['max_execution_time'] = ini_get('max_execution_time');
 		if (ini_get('memory_limit') < 32)
 			$directiveValues['memory_limit'] = ini_get('memory_limit');
+		if (ini_get('max_input_vars') < 9000)
+			$directiveValues['max_input_vars'] = ini_get('max_input_vars');
 		eval('$errorReportingValue = '.self::$recommendedDirectives['error_reporting'].';');
 		if (ini_get('error_reporting') != $errorReportingValue)
 			$directiveValues['error_reporting'] = 'NOT RECOMMENDED';
@@ -1007,8 +1009,8 @@ class Common_Install_Wizard_Utils {
 			}
 			array_pop($packageNameParts);
 			$packageName = implode("",$packageNameParts);
-		    if (!empty($packageName)) {
-		    	$packagepath = "$packageDir/$file";
+			if (!empty($packageName)) {
+				$packagepath = "$packageDir/$file";
 				$package = new Vtiger_Package();
 				$moduleName = $package->getModuleNameFromZip($packagepath);
 				$desc = $package->getShortDescriptionFromZip($packagepath);
@@ -1042,7 +1044,7 @@ class Common_Install_Wizard_Utils {
 					}
 					$optionalModules = self::getOptionalModuleDetails($package, $optionalModules);
 				}
-		    }
+			}
 		}
 		if(is_array($optionalModules['install']['language']) &&
 				is_array($optionalModules['install']['module'])) {
@@ -1133,28 +1135,28 @@ class Common_Install_Wizard_Utils {
 		require_once('include/utils/utils.php');
 
 		if ($handle = opendir(cbPackageDirectory.'mandatory')) {
-		    while (false !== ($file = readdir($handle))) {
+			while (false !== ($file = readdir($handle))) {
 				$packageNameParts = explode(".",$file);
 				if($packageNameParts[count($packageNameParts)-1] != 'zip'){
 					continue;
 				}
 				array_pop($packageNameParts);
 				$packageName = implode("",$packageNameParts);
-		        if (!empty($packageName)) {
-		        	$packagepath = cbPackageDirectory."mandatory/$file";
+				if (!empty($packageName)) {
+					$packagepath = cbPackageDirectory."mandatory/$file";
 					$package = new Vtiger_Package();
-	        		$module = $package->getModuleNameFromZip($packagepath);
-	        		if($module != null) {
-	        			$moduleInstance = Vtiger_Module::getInstance($module);
-				        if($moduleInstance) {
-		        			updateVtlibModule($module, $packagepath);
-		        		} else {
-		        			installVtlibModule($module, $packagepath);
-		        		}
-	        		}
-		        }
-		    }
-		    closedir($handle);
+					$module = $package->getModuleNameFromZip($packagepath);
+					if($module != null) {
+						$moduleInstance = Vtiger_Module::getInstance($module);
+						if($moduleInstance) {
+							updateVtlibModule($module, $packagepath);
+						} else {
+							installVtlibModule($module, $packagepath);
+						}
+					}
+				}
+			}
+			closedir($handle);
 		}
 	}
 
@@ -1165,20 +1167,20 @@ class Common_Install_Wizard_Utils {
 
 		$moduleList = array();
 		if ($handle = opendir(cbPackageDirectory.'mandatory')) {
-		    while (false !== ($file = readdir($handle))) {
+			while (false !== ($file = readdir($handle))) {
 				$packageNameParts = explode(".",$file);
 				if($packageNameParts[count($packageNameParts)-1] != 'zip'){
 					continue;
 				}
 				array_pop($packageNameParts);
 				$packageName = implode("",$packageNameParts);
-		        if (!empty($packageName)) {
-		        	$packagepath = cbPackageDirectory."mandatory/$file";
+				if (!empty($packageName)) {
+					$packagepath = cbPackageDirectory."mandatory/$file";
 					$package = new Vtiger_Package();
-	        		$moduleList[] = $package->getModuleNameFromZip($packagepath);
-		        }
-		    }
-		    closedir($handle);
+					$moduleList[] = $package->getModuleNameFromZip($packagepath);
+				}
+			}
+			closedir($handle);
 		}
 		return $moduleList;
 	}
@@ -1192,8 +1194,8 @@ class Common_Install_Wizard_Utils {
 
 		$languagePacks = array();
 		if ($handle = opendir(cbPackageDirectory.'optional')) {
-		    while (false !== ($file = readdir($handle))) {
-		        $filename_arr = explode(".", $file);
+			while (false !== ($file = readdir($handle))) {
+				$filename_arr = explode(".", $file);
 				if($filename_arr[count($filename_arr)-1] != 'zip'){
 					continue;
 				}
@@ -1202,13 +1204,13 @@ class Common_Install_Wizard_Utils {
 				$package = new Vtiger_Package();
 				$module = $package->getModuleNameFromZip($packagepath);
 
-		        if (!empty($packagename) && in_array($module,$selected_modules)) {
+				if (!empty($packagename) && in_array($module,$selected_modules)) {
 					if($package->isLanguageType($packagepath)) {
 						$languagePacks[$module] = $packagepath;
 						continue;
 					}
 
-	        		if($module != null) {
+					if($module != null) {
 						if($package->isModuleBundle()) {
 							$unzip = new Vtiger_Unzip($packagepath);
 							$unzip->unzipAllEx($package->getTemporaryFilePath());
@@ -1233,10 +1235,10 @@ class Common_Install_Wizard_Utils {
 								installVtlibModule($module, $packagepath);
 							}
 						}
-		        	}
-		        }
-		    }
-		    closedir($handle);
+					}
+				}
+			}
+			closedir($handle);
 		}
 
 		foreach($languagePacks as $module => $packagepath) {

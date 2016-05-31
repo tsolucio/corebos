@@ -6,21 +6,78 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
+ * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
 include_once 'include/Webservices/DescribeObject.php';
+include_once dirname(__FILE__) . '/Utils.php';
 
 class Mobile_WS_Describe extends Mobile_WS_Controller {
+	protected function cacheDescribeInfo($describeInfo) {
+		$this->_cachedDescribeInfo = $describeInfo;
+		$this->_cachedDescribeFieldInfo = array();
+		if(!empty($describeInfo['fields'])) {
+			foreach($describeInfo['fields'] as $describeFieldInfo) {
+				$this->_cachedDescribeFieldInfo[$describeFieldInfo['name']] = $describeFieldInfo;
+			}
+		}
+	}
 	
 	function process(Mobile_API_Request $request) {
 		$current_user = $this->getActiveUser();
 		
 		$module = $request->get('module');
-		$describeInfo = vtws_describe($module, $current_user);
-		Mobile_WS_Utils::fixDescribeFieldInfo($module, $describeInfo);
-		
+		$newrecord = self::transformToBlocks($module);
 		$response = new Mobile_API_Response();
-		$response->setResult(array('describe' => $describeInfo));
-		
+		$response->setResult(array('record' => $newrecord));
 		return $response;
 	}
+	
+	
+	protected function transformToBlocks($module) {
+		$current_user = $this->getActiveUser();
+		$moduleFieldGroups = Mobile_WS_Utils::gatherModuleFieldGroupInfo($module);
+		$describeInfo = vtws_describe($module, $current_user);
+		Mobile_WS_Utils::fixDescribeFieldInfo($module, $describeInfo,$current_user);
+		$modifiedResult = array();
+		$blocks = array(); 
+		$labelFields = false;
+		foreach($moduleFieldGroups as $blocklabel => $fieldgroups) {
+			$fields = array();
+			foreach($fieldgroups as $fieldname => $fieldinfo) {
+				$field['name'] = $fieldname;	
+				$field['value'] = '';	
+				$field['label'] = $fieldinfo['label'];	
+				$field['uitype'] = $fieldinfo['uitype'];	
+				$field['typeofdata'] = $fieldinfo['typeofdata'];	
+				foreach($describeInfo['fields'] as $describeField) {
+					if ($describeField['name']== $fieldname) {
+						$field['type'] = '';
+						if (isset($describeField['type']) && $describeField['type']!='') {
+							$picklistValues = $describeField['type']['picklistValues'];
+							$field['type']['value'] = array ('value' =>$picklistValues,'name' => $fieldname);
+						}
+					}
+				}
+				if($field['uitype'] == '51' || $field['uitype'] == '59' || $field['uitype'] == '10'){
+						$field['relatedmodule'] = Mobile_WS_Utils::getEntityName($field['name'], $module);
+				}
+				$fields[] = $field;
+			}
+			$blocks[] = array( 'label' => $blocklabel, 'fields' => $fields );
+		}
+		$sections = array();
+		$moduleFieldGroupKeys = array_keys($moduleFieldGroups);
+		foreach($moduleFieldGroupKeys as $blocklabel) {
+			// eliminate empty blocks
+			if(isset($groups[$blocklabel]) && !empty($groups[$blocklabel])) {
+				$sections[] = array( 'label' => $blocklabel, 'count' => count($groups[$blocklabel]) );
+			}
+		}
+		$modifiedResult = array('blocks' => $blocks, 'id' => $resultRecord['id']);
+		if($labelFields) {
+			$modifiedResult['labelFields'] = $labelFields;
+		} 
+		return $modifiedResult;
+	}
+
 }

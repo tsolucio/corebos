@@ -72,7 +72,7 @@ $ins_dir_renamed = $renameResult['install_directory_renamed'];
 	<table border=0 cellspacing=0 cellpadding=5 align="center" width="80%" class="contentDisplay">
 		<tr>
 			<td align=center class=small>
-				<b><?php echo $installationStrings['APP_NAME'].' - '.$vtiger_current_version. ' ' .$installationStrings['LBL_ALL_SET_TO_GO']; ?></b>
+				<b><?php echo $installationStrings['APP_NAME'].' - '.$coreBOS_app_version. ' ' .$installationStrings['LBL_ALL_SET_TO_GO']; ?></b>
 				<hr noshade size=1>
 				<div style="width:100%;padding:10px;" align=left>
 					<strong><?php echo $installationStrings['LBL_GETTING_STARTED']; ?>&nbsp;</strong>

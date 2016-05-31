@@ -38,12 +38,12 @@ foreach ($cronTasks as $cronTask) {
 	} else {
 		$cron_end = '';
 	}
-	$out ['cronname'] = getTranslatedString($cron_mod,$cronTask->getModule());
+	$out['cronname'] = getTranslatedString($cron_mod,$cronTask->getModule());
 
 	$out['hours'] = str_pad((int)(($cron_freq/(60*60))),2,0,STR_PAD_LEFT);
 	$out['mins'] =str_pad((int)(($cron_freq%(60*60))/60),2,0,STR_PAD_LEFT);
-	$out ['id'] = $cron_id;
-	$out ['status'] = $cron_st;
+	$out['id'] = $cron_id;
+	$out['status'] = $cron_st;
 	$out['laststart']= $cron_started;
 	$out['lastend'] =$cron_end;
 	if($out['status'] == Vtiger_Cron::$STATUS_DISABLED )
@@ -52,7 +52,7 @@ foreach ($cronTasks as $cronTask) {
 		$out['status'] = $mod_strings['LBL_ACTIVE'];
 	else
 		$out['status'] = $mod_strings['LBL_RUNNING'];
-	$output [] = $out;
+	$output[] = $out;
 }
 
 $smarty->assign('CRON',$output);

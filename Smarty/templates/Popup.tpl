@@ -49,33 +49,32 @@ function QCreate(module,urlpop) {
 {/literal}
 function showAllRecords()
 {ldelim}
-        modname = document.getElementById("relmod").name;
-        idname= document.getElementById("relrecord_id").name;
-        var locate = location.href;
-        url_arr = locate.split("?");
-        emp_url = url_arr[1].split("&");
-        for(i=0;i< emp_url.length;i++)
-        {ldelim}
-                if(emp_url[i] != '')
-                {ldelim}
-                        split_value = emp_url[i].split("=");
-                        if(split_value[0] == modname || split_value[0] == idname )
-                                emp_url[i]='';
-                        else if(split_value[0] == "fromPotential" || split_value[0] == "acc_id")
-                                emp_url[i]='';
-
-                {rdelim}
-        {rdelim}
-        correctUrl =emp_url.join("&");
-        Url = "index.php?"+correctUrl;
-        return Url;
+	modname = document.getElementById("relmod").name;
+	idname= document.getElementById("relrecord_id").name;
+	var locate = location.href;
+	url_arr = locate.split("?");
+	emp_url = url_arr[1].split("&");
+	for(i=0;i< emp_url.length;i++)
+	{ldelim}
+		if(emp_url[i] != '')
+		{ldelim}
+			split_value = emp_url[i].split("=");
+			if(split_value[0] == modname || split_value[0] == idname )
+				emp_url[i]='';
+			else if(split_value[0] == "fromPotential" || split_value[0] == "acc_id")
+				emp_url[i]='';
+			{rdelim}
+		{rdelim}
+		correctUrl =emp_url.join("&");
+		Url = "index.php?"+correctUrl;
+		return Url;
 {rdelim}
 
 //function added to get all the records when parent record doesn't relate with the selection module records while opening/loading popup.
 function redirectWhenNoRelatedRecordsFound()
 {ldelim}
-        var loadUrl = showAllRecords();
-        window.location.href = loadUrl;
+	var loadUrl = showAllRecords();
+	window.location.href = loadUrl;
 {rdelim}
 </script>
 <link rel="stylesheet" type="text/css" href="{$THEME_PATH}style.css">
@@ -162,20 +161,20 @@ function set_focus() {ldelim}
 			<table width="100%" border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					{if $recid_var_value neq ''}
-                            <td class="moduleName" width="80%" style="padding-left:10px;">{$MODULE|@getTranslatedString:$MODULE}&nbsp;{$APP.LBL_RELATED_TO}&nbsp;{$PARENT_MODULE|@getTranslatedString:$PARENT_MODULE}</td>
-                    {else}
-                            {if $RECORD_ID}
-	                            <td class="moduleName" width="80%" style="padding-left:10px;"><a href="javascript:;" onclick="window.history.back();">{$MODULE|@getTranslatedString:$MODULE}</a> > {$PRODUCT_NAME}</td>
-							{else}
-	                            <td class="moduleName" width="80%" style="padding-left:10px;">{$MODULE|@getTranslatedString:$MODULE}</td>
-							{/if}
-                    {/if}
-					<td  width=24% nowrap class="componentName" align=right>{'APP_NAME'|@getTranslatedString}</td>
-					<td  width=6% nowrap class="componentName" align=right><input type="hidden" id='closewindow' value="true"/><img src="themes/images/unlocked.png" id='closewindowimage' onclick="if (document.getElementById('closewindow').value=='true') {ldelim}document.getElementById('closewindowimage').src='themes/images/locked.png';document.getElementById('closewindow').value='false';{rdelim} else {ldelim}document.getElementById('closewindowimage').src='themes/images/unlocked.png';document.getElementById('closewindow').value='true';{rdelim};"/></td>
+						<td class="moduleName" width="80%" style="padding-left:10px;">{$MODULE|@getTranslatedString:$MODULE}&nbsp;{$APP.LBL_RELATED_TO}&nbsp;{$PARENT_MODULE|@getTranslatedString:$PARENT_MODULE}</td>
+					{else}
+						{if $RECORD_ID}
+							<td class="moduleName" width="80%" style="padding-left:10px;"><a href="javascript:;" onclick="window.history.back();">{$MODULE|@getTranslatedString:$MODULE}</a> > {$PRODUCT_NAME}</td>
+						{else}
+							<td class="moduleName" width="80%" style="padding-left:10px;">{$MODULE|@getTranslatedString:$MODULE}</td>
+						{/if}
+					{/if}
+					<td width=24% nowrap class="componentName" align=right>{'APP_NAME'|@getTranslatedString}</td>
+					<td width=6% nowrap class="componentName" align=right><input type="hidden" id='closewindow' value="true"/><img src="themes/images/unlocked.png" id='closewindowimage' onclick="if (document.getElementById('closewindow').value=='true') {ldelim}document.getElementById('closewindowimage').src='themes/images/locked.png';document.getElementById('closewindow').value='false';{rdelim} else {ldelim}document.getElementById('closewindowimage').src='themes/images/unlocked.png';document.getElementById('closewindow').value='true';{rdelim};"/></td>
 				</tr>
 			</table>
 			<div id="status" style="position:absolute;display:none;right:135px;top:15px;height:27px;white-space:nowrap;"><img src="{'status.gif'|@vtiger_imageurl:$THEME}"></div>
-			<table width="100%" cellpadding="5" cellspacing="0" border="0"  class="homePageMatrixHdr">
+			<table width="100%" cellpadding="5" cellspacing="0" border="0" class="homePageMatrixHdr">
 				<tr>
 					<td style="padding:10px;" >
 						<div id="searchAcc" style="display: block;position:relative;">
@@ -188,10 +187,10 @@ function set_focus() {ldelim}
 							<td width="30%" class="dvtCellLabel"><input type="text" name="search_text" id="search_txt" class="txtBox"> </td>
 							<td width="30%" class="dvtCellLabel"><b>{$APP.LBL_IN}</b>&nbsp;
 								<select name ="search_field" class="txtBox">
-											 {html_options  options=$SEARCHLISTHEADER }
+									{html_options options=$SEARCHLISTHEADER }
 								</select>
 								<input type="hidden" name="searchtype" value="BasicSearch">
-								<input type="hidden" name="module" value="{$MODULE}">
+								<input type="hidden" name="module" id="module" value="{$MODULE}">
 								<input type="hidden" name="action" value="Popup">
 								<input type="hidden" name="query" value="true">
 								<input type="hidden" name="select_enable" id="select_enable" value="{$SELECT}">
@@ -214,7 +213,7 @@ function set_focus() {ldelim}
 									<input name="forrecord"  id="forrecord" type="hidden" value="{$smarty.request.forrecord|@vtlib_purify}">
 								{/if}
 								{if $smarty.request.currencyid neq ''}
-									<input type="hidden" name="curr_row" id="currencyid" value="{$smarty.request.currencyid|@vtlib_purify}">
+									<input type="hidden" name="currencyid" id="currencyid" value="{$smarty.request.currencyid|@vtlib_purify}">
 								{/if}
 								{* END *}
 							</td>
@@ -228,7 +227,7 @@ function set_focus() {ldelim}
 						 <tr>
 							<td colspan="5" align="center">
 								<table width="100%" class="small">
-								<tr>	
+								<tr>
 									{$ALPHABETICAL}
 								</tr>
 								</table>
@@ -236,14 +235,14 @@ function set_focus() {ldelim}
 						</tr>
 						</table>
 						</form>
-                                              </div>
+						</div>
 					</td>
 				</tr>
 				{if $recid_var_value neq ''}
-                                <tr>
-                                        <td align="right"><input id="all_contacts" alt="{$APP.LBL_SELECT_BUTTON_LABEL} {$APP.$MODULE}" title="{$APP.LBL_SELECT_BUTTON_LABEL} {$APP.$MODULE}" accessKey="" class="crmbutton small edit" value="{$APP.SHOW_ALL}&nbsp;{$APP.$MODULE}" LANGUAGE=javascript onclick="window.location.href=showAllRecords();" type="button"  name="button"></td>
-                                </tr>
-                                {/if}
+					<tr>
+						<td align="right"><input id="all_contacts" alt="{$APP.LBL_SELECT_BUTTON_LABEL} {$APP.$MODULE}" title="{$APP.LBL_SELECT_BUTTON_LABEL} {$APP.$MODULE}" accessKey="" class="crmbutton small edit" value="{$APP.SHOW_ALL}&nbsp;{$APP.$MODULE}" LANGUAGE=javascript onclick="window.location.href=showAllRecords();" type="button"  name="button"></td>
+					</tr>
+				{/if}
 			</table>
 			<!-- ADVANCED SEARCH -->
 			<div id="advSearch" style="display:none;">
@@ -276,7 +275,6 @@ function set_focus() {ldelim}
 			</div>
 		</td>
 	</tr>
-	
 </table>
 </body>
 <script>
@@ -285,20 +283,20 @@ var gsorder ='';
 var gstart ='';
 function callSearch(searchtype)
 {ldelim}
-    gstart='';
-    for(i=1;i<=26;i++)
-    {ldelim}
-        var data_td_id = 'alpha_'+ eval(i);
-        getObj(data_td_id).className = 'searchAlph';
-    {rdelim}
-    gPopupAlphaSearchUrl = '';
-    search_fld_val= document.basicSearch.search_field[document.basicSearch.search_field.selectedIndex].value;
-    search_txt_val= encodeURIComponent(document.basicSearch.search_text.value.replace(/\'/,"\\'"));
-    var urlstring = '';
-    if(searchtype == 'Basic')
-    {ldelim}
+	gstart='';
+	for(i=1;i<=26;i++)
+	{ldelim}
+		var data_td_id = 'alpha_'+ eval(i);
+		getObj(data_td_id).className = 'searchAlph';
+	{rdelim}
+	gPopupAlphaSearchUrl = '';
+	search_fld_val= document.basicSearch.search_field[document.basicSearch.search_field.selectedIndex].value;
+	search_txt_val= encodeURIComponent(document.basicSearch.search_text.value.replace(/\'/,"\\'"));
+	var urlstring = '';
+	if(searchtype == 'Basic')
+	{ldelim}
 	urlstring = 'search_field='+search_fld_val+'&searchtype=BasicSearch&search_text='+search_txt_val;
-    {rdelim}
+	{rdelim}
 	else if(searchtype == 'Advanced')
 	{ldelim}
 		checkAdvancedFilter();
@@ -330,18 +328,18 @@ function callSearch(searchtype)
 					document.getElementById("ListViewContents").innerHTML= response;
 			{rdelim}
 		);
-{rdelim}	
+{rdelim}
 function alphabetic(module,url,dataid)
 {ldelim}
 	gstart='';
-	document.basicSearch.search_text.value = '';	
+	document.basicSearch.search_text.value = '';
 	for(i=1;i<=26;i++)
 	{ldelim}
 	var data_td_id = 'alpha_'+ eval(i);
 	getObj(data_td_id).className = 'searchAlph';
 	{rdelim}
 	getObj(dataid).className = 'searchAlphselected';
-	gPopupAlphaSearchUrl = '&'+url;	
+	gPopupAlphaSearchUrl = '&'+url;
 	var urlstring ="module="+module+"&action="+module+"Ajax&file=Popup&ajax=true&search=true&"+url;
 	urlstring +=gethiddenelements();
 	record_id = document.basicSearch.record_id.value;
@@ -352,8 +350,8 @@ function alphabetic(module,url,dataid)
 				method: 'POST',
 				url: 'index.php?'+ urlstring,
 		{rdelim}).done(function (response) {ldelim}
-									document.getElementById("status").style.display="none";
-									document.getElementById("ListViewContents").innerHTML= response;
+					document.getElementById("status").style.display="none";
+					document.getElementById("ListViewContents").innerHTML= response;
 				{rdelim}
 			);
 {rdelim}
@@ -362,7 +360,7 @@ function gethiddenelements()
 	gstart='';
 	var urlstring='';
 	if(getObj('select_enable').value != '')
-		urlstring +='&select=enable';	
+		urlstring +='&select=enable';
 	if(document.getElementById('curr_row').value != '')
 		urlstring +='&curr_row='+document.getElementById('curr_row').value;
 	if(getObj('fldname_pb').value != '')
@@ -372,10 +370,9 @@ function gethiddenelements()
 	if(getObj('recordid').value != '')
 		urlstring +='&recordid='+getObj('recordid').value;
 	if(getObj('relmod').value != '')
-                urlstring +='&'+getObj('relmod').name+'='+getObj('relmod').value;
-    if(getObj('relrecord_id').value != '')
-            urlstring +='&'+getObj('relrecord_id').name+'='+getObj('relrecord_id').value;
-	
+		urlstring +='&'+getObj('relmod').name+'='+getObj('relmod').value;
+	if(getObj('relrecord_id').value != '')
+		urlstring +='&'+getObj('relrecord_id').name+'='+getObj('relrecord_id').value;
 	// vtlib customization: For uitype 10 popup during paging
 	if(document.getElementById('popupform'))
 		urlstring +='&form='+encodeURIComponent(getObj('popupform').value);
@@ -386,7 +383,6 @@ function gethiddenelements()
 	if(document.getElementById('forrecord'))
 		urlstring +='&forrecord='+encodeURIComponent(getObj('forrecord').value);
 	// END
-		
 	if(document.getElementById('currencyid') != null && document.getElementById('currencyid').value != '')
 		urlstring +='&currencyid='+document.getElementById('currencyid').value;
 
@@ -395,25 +391,26 @@ function gethiddenelements()
 		urlstring += '&return_module='+return_module;
 	return urlstring;
 {rdelim}
-																									
 function getListViewEntries_js(module,url)
-	{ldelim}
-		gstart="&"+url;
+{ldelim}
+	gstart="&"+url;
 
-		popuptype = document.getElementById('popup_type').value;
-			var urlstring ="module="+module+"&action="+module+"Ajax&file=Popup&ajax=true&"+url;
-			urlstring +=gethiddenelements();
-
+	popuptype = document.getElementById('popup_type').value;
+	var urlstring ="module="+module+"&action="+module+"Ajax&file=Popup&ajax=true&"+url;
+	urlstring +=gethiddenelements();
 	{if !$RECORD_ID}
-			search_fld_val= document.basicSearch.search_field[document.basicSearch.search_field.selectedIndex].value;
-			search_txt_val=document.basicSearch.search_text.value;
-			if(search_txt_val != '')
-				urlstring += '&query=true&search_field='+search_fld_val+'&searchtype=BasicSearch&search_text='+search_txt_val;
+		search_fld_val= document.basicSearch.search_field[document.basicSearch.search_field.selectedIndex].value;
+		search_txt_val=document.basicSearch.search_text.value;
+		if(search_txt_val != '')
+			urlstring += '&query=true&search_field='+search_fld_val+'&searchtype=BasicSearch&search_text='+search_txt_val;
 	{/if}
-		if(gPopupAlphaSearchUrl != '')
-			urlstring += gPopupAlphaSearchUrl;	
-		else
-			urlstring += '&popuptype='+popuptype;	
+	if(gPopupAlphaSearchUrl != '')
+		urlstring += gPopupAlphaSearchUrl;
+	else
+		urlstring += '&popuptype='+popuptype;
+	record_id = document.basicSearch.record_id.value;
+	if(record_id!='')
+		urlstring += '&record_id='+record_id;
 
 		record_id = document.basicSearch.record_id.value;
 		if(record_id!='')
@@ -436,27 +433,27 @@ function getListViewEntries_js(module,url)
 						document.getElementById("ListViewContents").innerHTML= response;
 						document.getElementById("status").style.display = "none";
 			{rdelim}
-			);
-	{rdelim}
+		);
+{rdelim}
 
 function getListViewSorted_js(module,url)
-	{ldelim}
-		gsorder=url;
-		var urlstring ="module="+module+"&action="+module+"Ajax&file=Popup&ajax=true"+url;
-		record_id = document.basicSearch.record_id.value;
-		if(record_id!='')
-			urlstring += '&record_id='+record_id;
-		urlstring += (gstart !='') ? gstart : '';
-		document.getElementById("status").style.display = "";
-		jQuery.ajax({ldelim}
-					method: 'POST',
-					url: 'index.php?'+ urlstring,
-		{rdelim}).done(function (response) {ldelim}
-						document.getElementById("ListViewContents").innerHTML= response;
-						document.getElementById("status").style.display = "none";
-		{rdelim}
-			);
+{ldelim}
+	gsorder=url;
+	var urlstring ="module="+module+"&action="+module+"Ajax&file=Popup&ajax=true"+url;
+	record_id = document.basicSearch.record_id.value;
+	if(record_id!='')
+		urlstring += '&record_id='+record_id;
+	urlstring += (gstart !='') ? gstart : '';
+	document.getElementById("status").style.display = "";
+	jQuery.ajax({ldelim}
+			method: 'POST',
+			url: 'index.php?'+ urlstring,
+	{rdelim}).done(function (response) {ldelim}
+			document.getElementById("ListViewContents").innerHTML= response;
+			document.getElementById("status").style.display = "none";
 	{rdelim}
+		);
+{rdelim}
 
 var product_labelarr = {ldelim}
 	CLEAR_COMMENT:'{$APP.LBL_CLEAR_COMMENT}',

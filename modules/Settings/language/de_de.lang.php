@@ -128,7 +128,7 @@ $mod_strings = Array(
     'Skype'=>'Skype',
     'Time'=>'Time',
 
-    //added for patch2
+    'Relation'=>'Relation',
     'USERGROUPLIST'=>'Gruppen',
     'EMAILTEMPLATES'=>'E-Mail Vorlagen',
     'WORDINTEGRATION'=>'Textvorlagen',
@@ -662,6 +662,7 @@ $mod_strings = Array(
     'LBL_CHECK_ASSIGNEDTO_MAILID'=>'Bitte prüfen Sie die zugewiesene E-Mail Adresse.',
     'LBL_MAILSENDERROR'=>'Es wurde erfolglos versucht, eine E-Mail zu der Adresse Ihres CRM Administrators zu senden. Bitte prüfen Sie die zugewiesene E-Mail Adresse und Ihre Servereinstellungen.',
     'LBL_RECORD_NOEXIST'=>'Daten nicht vorhanden',
+    'Could not get file list' => 'Could not get file list',
     'LBL_ENTER_PROFILE'=>'Profilenamen eingeben',
     'Language' => 'Language',
     'AlwaysActive' => 'always active',
@@ -767,6 +768,7 @@ $mod_strings = Array(
 
     // vtmailscanner START
     'LBL_MAIL_SCANNER'=>'E-Mail Konverter',
+    'MailScanner' =>'E-Mail Konverter',
     'LBL_MAIL_SCANNER_DESCRIPTION'=>'Konfigurieren Sie die Scan Parameter für die Mailbox',
     'LBL_SCAN_NOW'=>'jetzt scannen',
     'LBL_RULE'=>'Regel',

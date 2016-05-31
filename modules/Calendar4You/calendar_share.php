@@ -282,7 +282,7 @@ $Calendar_Settings = $Calendar4You->getSettings();
 			echo '</td></tr>
 			*/
 			echo'</table>';
-			echo "</div>";
+			echo '</div>';
 			echo '<input type="hidden" name="update_google_account" id="update_google_account" value="'.$update_google_account.'">';
 			} // is admin
 			?>
@@ -302,4 +302,4 @@ $Calendar_Settings = $Calendar4You->getSettings();
 	</table>
 </form>
 </div>
-<hr size="1" color="black">';
+<hr size="1" color="black">

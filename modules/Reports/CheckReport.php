@@ -6,9 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
 require_once('include/logging.php');
 require_once('include/database/PearDatabase.php');
 $check=$_REQUEST['check'];
@@ -16,12 +14,16 @@ global $default_charset;
 $id='';
 if($_REQUEST['check']== 'reportCheck')
 {
-	$reportName = $_REQUEST['reportName'];
-	$sSQL="select * from vtiger_report where reportname=?";
-	
-	$sqlresult = $adb->pquery($sSQL, array(trim($reportName)));
+	$reportName = vtlib_purify($_REQUEST['reportName']);
+	$reportID = vtlib_purify($_REQUEST['reportid']);
+	$sSQL='select 1 from vtiger_report where reportname=?';
+	$params = array(trim($reportName));
+	if(!empty($reportID)) {
+		$sSQL .= ' and reportid != ?';
+		array_push($params, $reportID);
+	}
+	$sqlresult = $adb->pquery($sSQL,$params);
 	echo $adb->num_rows($sqlresult);
-
 }
 else if($_REQUEST['check']== 'folderCheck')
 {

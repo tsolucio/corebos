@@ -9,6 +9,14 @@
  ************************************************************************************/
 
 require_once('install/installAddons.php');
+require_once('config.php');
+require_once('include/logging.php');
+require_once('modules/Users/Users.php');
+require_once('modules/Users/LoginHistory.php');
+require_once('data/Tracker.php');
+require_once('include/utils/utils.php');
+require_once('modules/Users/DefaultDataPopulator.php');
+require_once('modules/Users/CreateUserPrivilegeFile.php');
 
 global $php_max_execution_time;
 set_time_limit($php_max_execution_time);
@@ -34,7 +42,12 @@ if (isset($_SESSION['installation_info']['selected_optional_modules'])) $selecte
 if (isset($_SESSION['installation_info']['db_populate'])) 
 	$db_populate = $_SESSION['installation_info']['db_populate'];
 
-require_once('install/CreateTables.inc.php');
+//require_once('install/CreateTables.inc.php');
+include 'install/InitSchema.php';
+global $adb;
+$adb = PearDatabase::getInstance();
+$initSchema = new Install_InitSchema($adb);
+$initSchema->initialize();
 
 installAddons();
 
@@ -106,7 +119,7 @@ session_destroy();
 												</form>
 												<div class="fixedSmallHeight textCenter fontBold">
 													<div style="padding-top:50px;width:100%;">
-														<?php echo $installationStrings['APP_NAME'].' - '.$vtiger_current_version. ' - ' . $installationStrings['LBL_SUCCESSFULLY_INSTALLED']; ?></b><br /><br />
+														<?php echo $installationStrings['APP_NAME'].' - '.$coreBOS_app_version. ' - ' . $installationStrings['LBL_SUCCESSFULLY_INSTALLED']; ?></b><br /><br />
 														<?php if ($db_populate == 'true') { echo $installationStrings['LBL_DEMO_DATA_IN_PROGRESS'] . '...'; } ?><br /><br />
 														
 														<script type="text/javascript"> 
@@ -128,7 +141,7 @@ session_destroy();
 											</td>
 										</tr>
 									</table>
-									<br>		
+									<br>
 								</td>
 							</tr>
 						</table>

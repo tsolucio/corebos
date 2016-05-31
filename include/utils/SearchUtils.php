@@ -27,7 +27,7 @@ $table_col_array=array('vtiger_account.accountname','vtiger_contactdetails.first
 function getSearchListHeaderValues($focus, $module,$sort_qry='',$sorder='',$order_by='',$relatedlist='',$oCv='')
 {
 	global $log;
-	$log->debug("Entering getSearchListHeaderValues(".(is_object($focus)? get_class($focus):'').",". $module.",".$sort_qry.",".$sorder.",".$order_by.",".$relatedlist.",".(is_object($oCV)? get_class($oCV):'').") method ...");
+	$log->debug("Entering getSearchListHeaderValues(".(is_object($focus)? get_class($focus):'').",". $module.",".$sort_qry.",".$sorder.",".$order_by.",".$relatedlist.",".(is_object($oCv)? get_class($oCv):'').") method ...");
         global $adb;
         global $theme;
         global $app_strings;
@@ -1132,21 +1132,23 @@ function getAdvancedSearchCriteriaList($advft_criteria, $advft_criteria_groups, 
 
 		$fieldName = $column_info[2];
 		$fieldObj = $moduleFields[$fieldName];
-		$fieldType = $fieldObj->getFieldDataType();
-
-		if($fieldType == 'currency') {
-			// Some of the currency fields like Unit Price, Total, Sub-total etc of Inventory modules, do not need currency conversion
-			if($fieldObj->getUIType() == '72') {
-				$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value, null, true);
-			} else {
-				$currencyField = new CurrencyField($adv_filter_value);
-				if($module == 'Potentials' && $fieldName == 'amount') {
-					$currencyField->setNumberofDecimals(2);
+		if (is_object($fieldObj))
+		{
+			$fieldType = $fieldObj->getFieldDataType();
+	
+			if($fieldType == 'currency') {
+				// Some of the currency fields like Unit Price, Total, Sub-total etc of Inventory modules, do not need currency conversion
+				if($fieldObj->getUIType() == '72') {
+					$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value, null, true);
+				} else {
+					$currencyField = new CurrencyField($adv_filter_value);
+					if($module == 'Potentials' && $fieldName == 'amount') {
+						$currencyField->setNumberofDecimals(2);
+					}
+					$adv_filter_value = $currencyField->getDBInsertedValue();
 				}
-				$adv_filter_value = $currencyField->getDBInsertedValue();
 			}
 		}
-
 		$criteria = array();
 		$criteria['columnname'] = $adv_filter_column;
 		$criteria['comparator'] = $adv_filter_comparator;

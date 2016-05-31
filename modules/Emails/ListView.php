@@ -66,8 +66,6 @@ else
 $_SESSION['EMAILS_ORDER_BY'] = $order_by;
 $_SESSION['EMAILS_SORT_ORDER'] = $sorder;
 //<<<<<<<<<<<<<<<<<<< sorting - stored in session >>>>>>>>>>>>>>>>>>>>
-// focus_list is the means of passing data to a ListView.
-global $focus_list;
 
 //<<<<cutomview>>>>>>>
 $oCustomView = new CustomView("Emails");

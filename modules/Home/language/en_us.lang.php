@@ -128,6 +128,7 @@ $mod_strings = Array(
 //added for Default Widgets
 'LBL_DEFAULT_WIDGET'=>'Default Widgets',
 'LBL_NO_WIDGETS_HIDDEN'=>'No default widgets are hidden',
+'UpdateExchangeRate' => 'Update Exchange Rate',
 );
 
 ?>

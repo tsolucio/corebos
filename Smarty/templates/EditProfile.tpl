@@ -6,7 +6,6 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 {literal}
@@ -24,23 +23,23 @@
 <br>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tbody><tr>
-        <td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-        <td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
-        <br>
+	<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
+	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
+	<br>
 	<div align=center>
 			{include file='SetMenu.tpl'}
 				<!-- DISPLAY -->
 				<form action="index.php" method="post" name="profileform" id="form" onsubmit="VtigerJS_DialogBox.block();">
-				<input type="hidden" name="module" value="Users">		
+				<input type="hidden" name="module" value="Users">
 				<input type="hidden" name="parenttab" value="Settings">
-				<input type="hidden" name="action" value="{$ACTION}">		
-				<input type="hidden" name="mode" value="{$MODE}">	
+				<input type="hidden" name="action" value="{$ACTION}">
+				<input type="hidden" name="mode" value="{$MODE}">
 				<input type="hidden" name="profileid" value="{$PROFILEID}">
 				<input type="hidden" name="profile_name" value="{$PROFILE_NAME}">
 				<input type="hidden" name="profile_description" value="{$PROFILE_DESCRIPTION}">
 				<input type="hidden" name="parent_profile" value="{$PARENTPROFILEID}">
-				<input type="hidden" name="radio_button" value="{$RADIOBUTTON}">	
-				<input type="hidden" name="return_action" value="{$RETURN_ACTION}">	
+				<input type="hidden" name="radio_button" value="{$RADIOBUTTON}">
+				<input type="hidden" name="return_action" value="{$RETURN_ACTION}">
 
 				<table class="settingsSelUITopLine" border="0" cellpadding="5" cellspacing="0" width="100%">
 				<tbody><tr>
@@ -51,8 +50,6 @@
 					<td class="small" valign="top">{$CMOD.LBL_PROFILE_MESG} &quot;{$PROFILE_NAME}&quot; </td>
 				</tr>
 				</tbody></table>
-				
-				
 				<table border="0" cellpadding="10" cellspacing="0" width="100%">
 				<tbody><tr>
 				<td valign="top">
@@ -68,7 +65,6 @@
                             <table class="prvPrfOutline" border="0" cellpadding="0" cellspacing="0" width="100%">
                               <tbody><tr>
                                 <td><!-- tabs -->
-                                    
                                     <!-- Headers -->
                                     <table border="0" cellpadding="5" cellspacing="0" width="100%">
                                       <tbody><tr>
@@ -83,12 +79,13 @@
                                                       <td class="small" style="padding-left: 10px;" align="right"></td>
                                                     </tr>
                                                 </tbody></table></td>
-                                              <td align="right" valign="bottom">&nbsp;											 	{if $ACTION eq 'SaveProfile'}
+                                              <td align="right" valign="bottom">&nbsp;
+												{if $ACTION eq 'SaveProfile'}
                                                 <input type="submit" value=" {$CMOD.LBL_FINISH_BUTTON} " name="save" class="crmButton create small" title="{$CMOD.LBL_FINISH_BUTTON}"/>&nbsp;&nbsp;
                                                 {else}
                                                         <input type="submit" value=" {$APP.LBL_SAVE_BUTTON_LABEL} " name="save" class="crmButton small save" title="{$APP.LBL_SAVE_BUTTON_LABEL}"/>&nbsp;&nbsp;
                                                 {/if}
-                                                <input type="button" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " name="Cancel" class="crmButton cancel small" title="{$APP.LBL_CANCEL_BUTTON_LABEL}" onClick="window.history.back();" /> 
+                                                <input type="button" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " name="Cancel" class="crmButton cancel small" title="{$APP.LBL_CANCEL_BUTTON_LABEL}" onClick="window.history.back();" />
 						</td>
                                             </tr>
                                           </tbody></table>
@@ -102,10 +99,10 @@
                                               <tbody><tr>
                                                 <td>
 						<table border="0" cellpadding="5" cellspacing="0" width="100%">
-  						<tbody>
+						<tbody>
 							<tr>
-    							<td class="cellLabel big"> {$CMOD.LBL_SUPER_USER_PRIV} </td>
-						       </tr>
+								<td class="cellLabel big"> {$CMOD.LBL_SUPER_USER_PRIV} </td>
+							</tr>
 						</tbody>
 						</table>
 						<table class="small" align="center" border="0" cellpadding="5" cellspacing="0" width="90%">
@@ -151,20 +148,19 @@
 				<table class="small listTable" border="0" cellpadding="5" cellspacing="0" width="100%">
 			        <tbody>
 				<tr id="gva">
-			          <td colspan="2" rowspan="2" class="small colHeader"><strong> {$CMOD.LBL_TAB_MESG_OPTION} </strong><strong></strong></td>
-			          <td colspan="3" class="small colHeader"><div align="center"><strong>{$CMOD.LBL_EDIT_PERMISSIONS}</strong></div></td>
-			          <td rowspan="2" class="small colHeader" nowrap="nowrap">{$CMOD.LBL_FIELDS_AND_TOOLS_SETTINGS}</td>
+			          <td colspan="7" class="small colHeader"><div align="center"><strong>{$CMOD.LBL_EDIT_PERMISSIONS}</strong></div></td>
 			        </tr>
 			        <tr id="gva">
-			          <td class="small colHeader"><div align="center"><strong>
-		                {$CMOD.LBL_CREATE_EDIT}
-			          </strong></div></td>
+			          <td colspan="2" class="small colHeader"><strong> {$CMOD.LBL_TAB_MESG_OPTION} </strong><strong></strong></td>
+			          <td class="small colHeader"><div align="center"><strong>{$CMOD.LBL_CREATE}</strong></div></td>
+			          <td class="small colHeader"><div align="center"><strong>{$CMOD.Edit}</strong></div></td>
 			          <td class="small colHeader"> <div align="center"><strong>{$CMOD.LBL_VIEW}</strong></div></td>
 			          <td class="small colHeader"> <div align="center"><strong>{$CMOD.LBL_DELETE}</strong></div></td>
+			          <td class="small colHeader" nowrap="nowrap">{$CMOD.LBL_FIELDS_AND_TOOLS_SETTINGS}</td>
 			        </tr>
-					
+
 				<!-- module loops-->
-			        {foreach key=tabid item=elements from=$TAB_PRIV}	
+			        {foreach key=tabid item=elements from=$TAB_PRIV}
 			        <tr>
 					{assign var=modulename value=$TAB_PRIV[$tabid][0]}
 					{assign var="MODULELABEL" value=$modulename|@getTranslatedString:$modulename}
@@ -172,31 +168,34 @@
 					{$TAB_PRIV[$tabid][1]}
 			          </div></td>
 			          <td class="small cellLabel" width="40%"><p>{$MODULELABEL}</p></td>
-			          <td class="small cellText" width="15%">&nbsp;<div align="center">
+			          <td class="small cellText" width="10%">&nbsp;<div align="center">
+					{$STANDARD_PRIV[$tabid][4]}
+			          </div></td>
+			          <td class="small cellText" width="10%">&nbsp;<div align="center">
 					{$STANDARD_PRIV[$tabid][1]}
 			          </div></td>
-			          <td class="small cellText" width="15%">&nbsp;<div align="center">
+			          <td class="small cellText" width="10%">&nbsp;<div align="center">
 					{$STANDARD_PRIV[$tabid][3]}
 			          </div></td>
-			          <td class="small cellText" width="15%">&nbsp;<div align="center">
+			          <td class="small cellText" width="10%">&nbsp;<div align="center">
 					{$STANDARD_PRIV[$tabid][2]}
         			  </div></td>
-			          <td class="small cellText" width="22%">&nbsp;<div align="center">
+			          <td class="small cellText" width="17%">&nbsp;<div align="center">
 				{if $FIELD_PRIVILEGES[$tabid] neq NULL}
 				<img src="{'showDown.gif'|@vtiger_imageurl:$THEME}" id="img_{$tabid}" alt="{$APP.LBL_EXPAND_COLLAPSE}" title="{$APP.LBL_EXPAND_COLLAPSE}" onclick="fnToggleVIew('{$tabid}_view')" border="0" height="16" width="40" style="display:block;">
 				{/if}
 				</div></td>
 				  </tr>
 		                  <tr class="hideTable" id="{$tabid}_view" className="hideTable">
-				          <td colspan="6" class="small settingsSelectedUI">
+				          <td colspan="7" class="small settingsSelectedUI">
 						<table class="small" border="0" cellpadding="2" cellspacing="0" width="100%">
 			        	    	<tbody>
 						{if $FIELD_PRIVILEGES[$tabid] neq ''}
 						<tr>
 							{if $modulename eq 'Calendar'}
-				                	<td class="small colHeader" colspan="6" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN} ({$APP.Tasks})</td>
+								<td class="small colHeader" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN} ({$APP.Tasks})</td>
 							{else}
-				                	<td class="small colHeader" colspan="6" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN}</td>
+								<td class="small colHeader" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN}</td>
 							{/if}
 					        </tr>
 						{/if}
@@ -210,8 +209,8 @@
 						{/foreach}
 						{if $modulename eq 'Calendar'}
 						<tr>
-				                	<td class="small colHeader" colspan="6" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN} ({$APP.Events})</td>
-					        </tr>
+							<td class="small colHeader" colspan="7" valign="top">{$CMOD.LBL_FIELDS_TO_BE_SHOWN} ({$APP.Events})</td>
+						</tr>
 						{foreach item=row_values from=$FIELD_PRIVILEGES[16]}
 				            	<tr>
 						      {foreach item=element from=$row_values}
@@ -223,7 +222,7 @@
 						{/if}
 						{if $UTILITIES_PRIV[$tabid] neq ''}
 					        <tr>
-					              <td colspan="6" class="small colHeader" valign="top">{$CMOD.LBL_TOOLS_TO_BE_SHOWN}</td>
+					              <td colspan="7" class="small colHeader" valign="top">{$CMOD.LBL_TOOLS_TO_BE_SHOWN}</td>
 						</tr>
 						{/if}
 						{foreach item=util_value from=$UTILITIES_PRIV[$tabid]}
@@ -238,15 +237,15 @@
 						</table>
 					</td>
 			          </tr>
-				  {/foreach}	
+				  {/foreach}
 			    	  </tbody>
 				  </table>
 			  </td>
 			  </tr>
-                          </tbody>
+			</tbody>
 			</table>
 		</td>
-                </tr>
+		</tr>
 		<table border="0" cellpadding="2" cellspacing="0">
 			<tr>
 				<td align="left"><font color="red" size=5>*</font>{$CMOD.LBL_MANDATORY_MSG}</td>
@@ -298,11 +297,10 @@
 	<table border="0" cellpadding="5" cellspacing="0" width="100%">
 	<tbody><tr><td class="small" align="right" nowrap="nowrap"><a href="#top">{$MOD.LBL_SCROLL}</a></td></tr>
 	</tbody></table>
-					
 	</td>
 	</tr>
 	</tbody></table>
-	</form>	
+	</form>
 	<!-- End of Display -->
 	</td>
 	</tr>
@@ -336,9 +334,9 @@ function invokeview_all()
 			if(document.profileform.elements[i].type == 'checkbox')
 			{
 				if(document.profileform.elements[i].id.indexOf('tab_chk_com_') != -1 || document.profileform.elements[i].id.indexOf('tab_chk_4') != -1 || document.profileform.elements[i].id.indexOf('_field_') != -1)
-					document.profileform.elements[i].checked = true; 
+					document.profileform.elements[i].checked = true;
 			}
-		}	
+		}
 		showAllImages();
 	}
 }
@@ -361,12 +359,11 @@ function invokeedit_all()
 			if(document.profileform.elements[i].type == 'checkbox')
 			{
 				if(document.profileform.elements[i].id.indexOf('tab_chk_com_') != -1 || document.profileform.elements[i].id.indexOf('tab_chk_4') != -1 || document.profileform.elements[i].id.indexOf('tab_chk_1') != -1 || document.profileform.elements[i].id.indexOf('_field_') != -1)
-					document.profileform.elements[i].checked = true; 
+					document.profileform.elements[i].checked = true;
 			}
-		}	
+		}
 		showAllImages();
 	}
-
 }
 function unselect_edit_all()
 {
@@ -378,7 +375,7 @@ function unselect_view_all()
 }
 function unSelectView(id)
 {
-	var createid = 'tab_chk_1_'+id;	
+	var createid = 'tab_chk_1_'+id;
 	var deleteid = 'tab_chk_2_'+id;
 	var tab_id = 'tab_chk_com_'+id;
 	if(document.getElementById('tab_chk_4_'+id).checked == false)
@@ -414,7 +411,7 @@ function unSelectCreate(id)
 	}
 }
 function unSelectDelete(id)
-{	
+{
 	var contid = id+'_view';
 	if(document.getElementById('tab_chk_2_'+id).checked == false)
 	{
@@ -431,8 +428,8 @@ function unSelectDelete(id)
 }
 function hideTab(id)
 {
-	var createid = 'tab_chk_1_'+id;	
-	var viewid = 'tab_chk_4_'+id;	
+	var createid = 'tab_chk_1_'+id;
+	var viewid = 'tab_chk_4_'+id;
 	var deleteid = 'tab_chk_2_'+id;
 	var imageid = 'img_'+id;
 	var contid = id+'_view';
@@ -483,20 +480,20 @@ function initialiseprofile()
 	for (var i=0;i < module_array.length;i++)
 	{
 		hideTab(module_array[i]);
-	}	
+	}
 }
 //initialiseprofile();
 
 function toogleAccess(elementId) {
 	var element = document.getElementById(elementId);
 	if(element == null || typeof(element) == 'undefined') return;
-	
+
 	if(element.value == 0) {
 		element.value = 1;
 	} else {
 		element.value = 0;
 	}
-	
+
 	var lockedImage = document.getElementById(elementId+'_locked');
 	if(lockedImage != null && typeof(lockedImage) != 'undefined') {
 		if(lockedImage.style.display == 'none')
@@ -504,7 +501,7 @@ function toogleAccess(elementId) {
 		else
 			lockedImage.style.display = 'none';
 	}
-	
+
 	var unlockedImage = document.getElementById(elementId+'_unlocked');
 	if(unlockedImage != null && typeof(unlockedImage) != 'undefined') {
 		if(unlockedImage.style.display == 'none')

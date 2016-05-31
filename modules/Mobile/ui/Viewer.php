@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-
 include_once 'Smarty_setup.php';
 
 class Mobile_UI_Viewer {
@@ -37,3 +36,4 @@ class Mobile_UI_Viewer {
 	}
 	
 }
+?>

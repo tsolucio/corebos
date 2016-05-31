@@ -305,7 +305,6 @@ function check_form() {
 			event_endmin = _2digit(endmin);
 			document.EditView.time_start.value = event_starthour+':'+event_startmin;
 			document.EditView.time_end.value = event_endhour+':'+event_endmin;
-			// Added for Aydin Kurt-Elli requirement START -by Minnie
 			if (document.EditView.followup.checked == true &&
 				document.getElementById('date_table_thirdtd').style.display == 'block') {
 				if(!dateValidate('followup_date','Followup Date','OTH')) {
@@ -336,14 +335,13 @@ function check_form() {
 					}
 				}
 				else return false;
-				//modified to set followup end date depends on the event or todo. If it is Event, the difference between followup start date and end date is 1hr. If it is todo then difference is 5mins.
+				// set followup end datetime depending on user's default preferences
 				date3.setMinutes(followupmin);
 				date3.setHours(followuphour);
-				if(document.EditView.activitytype[0].checked == true) {
-					date3.setMinutes(parseInt(date3.getMinutes(),10)+5);
-				}
-				if(document.EditView.activitytype[1].checked == true) {
-					date3.setMinutes(parseInt(date3.getMinutes(),10)+60);
+				if(document.EditView.activitytype.options[document.EditView.activitytype.selectedIndex].value == 'Call') {
+					date3.setMinutes(parseInt(date3.getMinutes(),10)+calendar_call_default_duration);
+				} else {
+					date3.setMinutes(parseInt(date3.getMinutes(),10)+(60*calendar_other_default_duration));
 				}
 				var tempdate = getdispDate(date3);
 
@@ -354,9 +352,7 @@ function check_form() {
 				document.EditView.followup_due_date.value = tempdate;
 				document.EditView.followup_time_start.value = followuphour+':'+followupmin;
 				document.EditView.followup_time_end.value = followupendhour+':'+followupendmin;
-			//end
 			}
-			// Added for Aydin Kurt-Elli requirement END -by Minnie -->
 
 			//added to avoid db error while giving characters in the repeat "every n no of day in month" text box
 			if((getObj("recurringcheck")) && (document.EditView.recurringcheck.checked == true) &&

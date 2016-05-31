@@ -24,7 +24,7 @@
 	{else}
 		<td>&nbsp;</td>
 	{/if}
-	<td style="padding-right:10px;" align="right">{$RECORD_COUNTS}</td></tr>
+	<td></td></tr>
 	<tr>
 	    <td style="padding:10px;" colspan=3>
 
@@ -46,7 +46,7 @@
 		        <td class="lvtCol">{$header}</td>
 		    {/foreach}
 			{if $SELECT eq 'enable' && ($POPUPTYPE eq 'inventory_prod' || $POPUPTYPE eq 'inventory_prod_po')}
-				{if !$RECORD_ID}
+				{if !$RECORD_ID || $SUBPRODUCT_BE_PARENT eq 'yes'}
 					<td class="lvtCol">{$APP.LBL_ACTION}</td>
 				{/if}
 			{/if}
@@ -86,7 +86,8 @@
 </table>
 <table width="100%" align="center" class="reportCreateBottom">
 <tr>
-	{$NAVIGATION}	
+	<td style="padding-right:10px;" class="small" align="right">{$RECORD_STRING}</td>
+	{$NAVIGATION}
 <td width="35%">&nbsp;</td>
 </tr>
 </table>

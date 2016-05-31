@@ -86,8 +86,8 @@ if($singlepane_view == 'true') {
 	$smarty->assign("SELECTEDHEADERS", $open_related_modules);
 }
 
-if(isPermitted($currentModule, 'EditView', $record) == 'yes')
-	$smarty->assign('EDIT_DUPLICATE', 'permitted');
+if(isPermitted($currentModule, 'CreateView', $record) == 'yes')
+	$smarty->assign('CREATE_PERMISSION', 'permitted');
 if(isPermitted($currentModule, 'Delete', $record) == 'yes')
 	$smarty->assign('DELETE', 'permitted');
 
@@ -97,8 +97,10 @@ $blocks = getBlocks($currentModule,'detail_view','',$focus->column_fields);
 if(empty($blocks[getTranslatedString('StatusInformation', $currentModule)])) {
 	$blocks[getTranslatedString('StatusInformation', $currentModule)] = array();
 }
-
+$custom_blocks = getCustomBlocks($currentModule,'detail_view');
 $smarty->assign('BLOCKS', $blocks);
+$smarty->assign('CUSTOMBLOCKS', $custom_blocks);
+$smarty->assign('FIELDS',$focus->column_fields);
 
 // Gather the custom link information to display
 include_once('vtlib/Vtiger/Link.php');
@@ -112,7 +114,7 @@ $focus->markAsViewed($current_user->id);
 
 /** Removing Edit permissions */
 $smarty->assign('DETAILVIEW_AJAX_EDIT', false);
-$smarty->assign('EDIT_DUPLICATE', 'notpermitted');
+$smarty->assign('CREATE_PERMISSION', 'notpermitted');
 
 $smarty->display(vtlib_getModuleTemplate($currentModule, 'DetailView.tpl'));
 

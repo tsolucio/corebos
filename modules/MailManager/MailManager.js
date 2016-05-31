@@ -784,6 +784,24 @@ if (typeof(MailManager) == 'undefined') {
             // Update the seleted folders to highlight them.
             MailManager.updateSelectedFolder('mm_compose');
             jQuery('#mm_selected_folder').val('mm_compose');
+			// Get User Default template
+			GlobalVariable_getVariable('Users_Default_Send_Email_Template', '', 'Emails', gVTUserID).then(function(response) {
+				var emltpl = JSON.parse(response);
+				if (emltpl.Users_Default_Send_Email_Template!='') {
+					var baseurl = 'module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getEmailTemplateDetails&templateid=';
+					new Ajax.Request('index.php', {
+						method: 'post',
+						postBody: baseurl + encodeURIComponent(emltpl.Users_Default_Send_Email_Template),
+						onComplete: function(response){
+							emltpl = JSON.parse(response.responseText);
+							console.log(emltpl.subject);
+							document.getElementById('_mail_replyfrm_subject_').value = emltpl.subject;
+							document.getElementById('_mail_replyfrm_body_').value = emltpl.body;
+							MailManager.mail_reply_rteinit(emltpl.body);
+						}
+					});
+				}
+			});
         },
 
         createUploader : function (){

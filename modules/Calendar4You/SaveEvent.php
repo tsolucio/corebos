@@ -10,9 +10,7 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-
 require_once('modules/Calendar/Activity.php');
 require_once('include/logging.php');
 require_once("config.php");
@@ -395,7 +393,7 @@ if(isset($_REQUEST['subtab']) && $_REQUEST['subtab']!='')
 	$subtab=vtlib_purify($_REQUEST['subtab']);
 
 if($_REQUEST['recurringcheck']) {
-    include_once('modules/Calendar/RepeatEvents.php');
+	include_once('modules/Calendar/RepeatEvents.php');
 	Calendar_RepeatEvents::repeatFromRequest($focus);
 }
 
@@ -403,6 +401,5 @@ $date = new DateTimeField($_REQUEST["date_start"]);
 echo $date->getDBInsertDateValue();
 
 echo "-".getTranslatedString("LBL_SUCCESSFULY_CREATED","Calendar4You");
-
 exit;
 ?> 

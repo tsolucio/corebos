@@ -1,4 +1,3 @@
-
 <script type="text/javascript" src="modules/Emails/Emails.js"></script>
 
 <script language="javascript">
@@ -44,7 +43,7 @@ function ShowFolders(folderid)
 				method:"POST",
 				url:'index.php?module=Emails&ajax=true&action=EmailsAjax&file=ListView&folderid='+folderid
 	{rdelim}).done(function(response) {ldelim}
-										document.getElementById("status").style.display="none";	
+										document.getElementById("status").style.display="none";
 										if(document.getElementById('mail_fldrname')!=null){ldelim}
 											if(document.getElementById('_mailfolder_'+mail_folder)!=null && document.getElementById('_mailfolder_'+mail_folder).className!='mm_folder'){ldelim}
 												document.getElementById('_mailfolder_'+mail_folder).className='mm_folder';
@@ -94,29 +93,27 @@ function ShowFolders(folderid)
 												document.getElementById('_mailfolder_mm_drafts').parentNode.className='';
 												document.getElementById('mm_folder mm_folder_selected').className='';
 											{rdelim}
-										{rdelim}	
+										{rdelim}
                                 {rdelim}
 	);
-
 {rdelim}
 </script>
 
-
 <!-- Sent mail -->
-								<img src="{'sentmail.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" />&nbsp;<b class="txtGreen">{'LBL_SENT_MAILS'|@getTranslatedString:$MODULE}</b>
-								<ul style="list-style-type:none;margin-left:10px;margin-top:5px;padding:2px">
-									<li><img src="{'folder1.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" />&nbsp;&nbsp;
-									<a href="javascript:;" onClick="ShowFolders(1)" class="webMnu">{'LBL_ALLMAILS'|@getTranslatedString:$MODULE}</a>&nbsp;<b></b>
-									<li><img src="{'folder1.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" />&nbsp;&nbsp;
-									<a href="javascript:;" onClick="ShowFolders(2)" class="webMnu">{'LBL_TO_CONTACTS'|@getTranslatedString:$MODULE}</a>&nbsp;<b></b>
-									</li>
-									<li><img src="{'folder1.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" />&nbsp;&nbsp;
-									<a href="javascript:;" onClick="ShowFolders(3)" class="webMnu">{'LBL_TO_ACCOUNTS'|@getTranslatedString:$MODULE}</a>&nbsp;<b></b>
-									</li>
-									<li><img src="{'folder1.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" />&nbsp;&nbsp;
-									<a href="javascript:;" onClick="ShowFolders(4)" class="webMnu">{'LBL_TO_LEADS'|@getTranslatedString:$MODULE}</a>&nbsp;
-									</li>
-									<li><img src="{'folder1.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" />&nbsp;&nbsp;
-									<a href="javascript:;" onClick="ShowFolders(5)" class="webMnu">{'LBL_TO_USERS'|@getTranslatedString:$MODULE}</a>&nbsp;
-									</li>
-								</ul>
+<img src="{'sentmail.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" />&nbsp;<b class="txtGreen">{'LBL_SENT_MAILS'|@getTranslatedString:$MODULE}</b>
+<ul style="list-style-type:none;margin-left:10px;margin-top:5px;padding:2px">
+	<li><img src="{'folder1.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" />&nbsp;&nbsp;
+	<a href="javascript:;" onClick="ShowFolders(1)" class="webMnu">{'LBL_ALLMAILS'|@getTranslatedString:$MODULE}</a>&nbsp;<b></b>
+	<li><img src="{'folder1.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" />&nbsp;&nbsp;
+	<a href="javascript:;" onClick="ShowFolders(2)" class="webMnu">{'LBL_TO_CONTACTS'|@getTranslatedString:$MODULE}</a>&nbsp;<b></b>
+	</li>
+	<li><img src="{'folder1.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" />&nbsp;&nbsp;
+	<a href="javascript:;" onClick="ShowFolders(3)" class="webMnu">{'LBL_TO_ACCOUNTS'|@getTranslatedString:$MODULE}</a>&nbsp;<b></b>
+	</li>
+	<li><img src="{'folder1.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" />&nbsp;&nbsp;
+	<a href="javascript:;" onClick="ShowFolders(4)" class="webMnu">{'LBL_TO_LEADS'|@getTranslatedString:$MODULE}</a>&nbsp;
+	</li>
+	<li><img src="{'folder1.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" />&nbsp;&nbsp;
+	<a href="javascript:;" onClick="ShowFolders(5)" class="webMnu">{'LBL_TO_USERS'|@getTranslatedString:$MODULE}</a>&nbsp;
+	</li>
+</ul>

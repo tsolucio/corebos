@@ -243,47 +243,46 @@ function searchMapLocation(addressType) {
 	var mapParameter = '';
 	if (addressType == 'Main') {
 		if (fieldname.indexOf('bill_street') > -1) {
-			if (document.getElementById("dtlview_" + fieldlabel[fieldname.indexOf('bill_street')]))
-				mapParameter = document.getElementById("dtlview_" + fieldlabel[fieldname.indexOf('bill_street')]).innerHTML + ' ';
+			if (document.getElementById("dtlview_bill_street"))
+				mapParameter = document.getElementById("dtlview_bill_street").innerHTML + ' ';
 		}
 		if (fieldname.indexOf('bill_city') > -1) {
-			if (document.getElementById("dtlview_" + fieldlabel[fieldname.indexOf('bill_city')]))
-				mapParameter = mapParameter + document.getElementById("dtlview_" + fieldlabel[fieldname.indexOf('bill_city')]).innerHTML + ' ';
+			if (document.getElementById("dtlview_bill_city"))
+				mapParameter = mapParameter + document.getElementById("dtlview_bill_city").innerHTML + ' ';
 		}
 		if (fieldname.indexOf('bill_state') > -1) {
-			if (document.getElementById("dtlview_" + fieldlabel[fieldname.indexOf('bill_state')]))
-				mapParameter = mapParameter + document.getElementById("dtlview_" + fieldlabel[fieldname.indexOf('bill_state')]).innerHTML + ' ';
+			if (document.getElementById("dtlview_bill_state"))
+				mapParameter = mapParameter + document.getElementById("dtlview_bill_state").innerHTML + ' ';
 		}
 		if (fieldname.indexOf('bill_country') > -1) {
-			if (document.getElementById("dtlview_" + fieldlabel[fieldname.indexOf('bill_country')]))
-				mapParameter = mapParameter + document.getElementById("dtlview_" + fieldlabel[fieldname.indexOf('bill_country')]).innerHTML + ' ';
+			if (document.getElementById("dtlview_bill_country"))
+				mapParameter = mapParameter + document.getElementById("dtlview_bill_country").innerHTML + ' ';
 		}
 		if (fieldname.indexOf('bill_code') > -1) {
-			if (document.getElementById("dtlview_" + fieldlabel[fieldname.indexOf('bill_code')]))
-				mapParameter = mapParameter + document.getElementById("dtlview_" + fieldlabel[fieldname.indexOf('bill_code')]).innerHTML + ' ';
+			if (document.getElementById("dtlview_bill_code"))
+				mapParameter = mapParameter + document.getElementById("dtlview_bill_code").innerHTML + ' ';
 		}
 	} else if (addressType == 'Other') {
 		if (fieldname.indexOf('ship_street') > -1) {
-			if (document.getElementById("dtlview_" + fieldlabel[fieldname.indexOf('ship_street')]))
-				mapParameter = document.getElementById("dtlview_" + fieldlabel[fieldname.indexOf('ship_street')]).innerHTML + ' ';
+			if (document.getElementById("dtlview_ship_street"))
+				mapParameter = document.getElementById("dtlview_ship_street").innerHTML + ' ';
 		}
 		if (fieldname.indexOf('ship_city') > -1) {
-			if (document.getElementById("dtlview_" + fieldlabel[fieldname.indexOf('ship_city')]))
-				mapParameter = mapParameter + document.getElementById("dtlview_" + fieldlabel[fieldname.indexOf('ship_city')]).innerHTML + ' ';
+			if (document.getElementById("dtlview_ship_city"))
+				mapParameter = mapParameter + document.getElementById("dtlview_ship_city").innerHTML + ' ';
 		}
 		if (fieldname.indexOf('ship_state') > -1) {
-			if (document.getElementById("dtlview_" + fieldlabel[fieldname.indexOf('ship_state')]))
-				mapParameter = mapParameter + document.getElementById("dtlview_" + fieldlabel[fieldname.indexOf('ship_state')]).innerHTML + ' ';
+			if (document.getElementById("dtlview_ship_state"))
+				mapParameter = mapParameter + document.getElementById("dtlview_ship_state").innerHTML + ' ';
 		}
 		if (fieldname.indexOf('ship_country') > -1) {
-			if (document.getElementById("dtlview_" + fieldlabel[fieldname.indexOf('ship_country')]))
-				mapParameter = mapParameter + document.getElementById("dtlview_" + fieldlabel[fieldname.indexOf('ship_country')]).innerHTML + ' ';
+			if (document.getElementById("dtlview_ship_country"))
+				mapParameter = mapParameter + document.getElementById("dtlview_ship_country").innerHTML + ' ';
 		}
 		if (fieldname.indexOf('ship_code') > -1) {
-			if (document.getElementById("dtlview_" + fieldlabel[fieldname.indexOf('ship_code')]))
-				mapParameter = mapParameter + document.getElementById("dtlview_" + fieldlabel[fieldname.indexOf('ship_code')]).innerHTML + ' ';
+			if (document.getElementById("dtlview_ship_code"))
+				mapParameter = mapParameter + document.getElementById("dtlview_ship_code").innerHTML + ' ';
 		}
-
 	}
 	mapParameter = removeHTMLFormatting(mapParameter);
 	window.open('http://maps.google.com/maps?q=' + mapParameter, 'goolemap', 'height=450,width=700,resizable=no,titlebar,location,top=200,left=250');
@@ -378,53 +377,4 @@ function tickerFillIn(obj) {
 function set_return_todo(product_id, product_name) {
 	window.opener.document.createTodo.task_parent_name.value = product_name;
 	window.opener.document.createTodo.task_parent_id.value = product_id;
-}
-
-//When changing the Account Address Information  it should also change the related contact address.
-function checkAddress(form, id) {
-	var url = '';
-	if (typeof (form.bill_street) != 'undefined')
-		url += "&bill_street=" + form.bill_street.value;
-	if (typeof (form.ship_street) != 'undefined')
-		url += "&ship_street=" + form.ship_street.value;
-	if (typeof (form.bill_city) != 'undefined')
-		url += "&bill_city=" + form.bill_city.value;
-	if (typeof (form.ship_city) != 'undefined')
-		url += "&ship_city=" + form.ship_city.value;
-	if (typeof (form.bill_state) != 'undefined')
-		url += "&bill_state=" + form.bill_state.value;
-	if (typeof (form.ship_state) != 'undefined')
-		url += "&ship_state=" + form.ship_state.value;
-	if (typeof (form.bill_code) != 'undefined')
-		url += "&bill_code=" + form.bill_code.value;
-	if (typeof (form.ship_code) != 'undefined')
-		url += "&ship_code=" + form.ship_code.value;
-	if (typeof (form.bill_country) != 'undefined')
-		url += "&bill_country=" + form.bill_country.value;
-	if (typeof (form.ship_country) != 'undefined')
-		url += "&ship_country=" + form.ship_country.value;
-	if (typeof (form.bill_pobox) != 'undefined')
-		url += "&bill_pobox=" + form.bill_pobox.value;
-	if (typeof (form.ship_pobox) != 'undefined')
-		url += "&ship_pobox=" + form.ship_pobox.value;
-
-	url += "&record=" + id;
-
-	document.getElementById("status").style.display = "inline";
-	jQuery.ajax({
-			method: 'POST',
-			url: "index.php?module=Accounts&action=AccountsAjax&ajax=true&file=AddressChange" + url,
-	}).done(function (response) {
-			if (response == 'address_change') {
-				if (confirm(alert_arr.WANT_TO_CHANGE_CONTACT_ADDR) == true) {
-					form.address_change.value = 'yes';
-					form.submit();
-				} else {
-					form.submit();
-				}
-			} else {
-				form.submit();
-			}
-		}
-	);
 }

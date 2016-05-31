@@ -146,7 +146,7 @@ $mod_strings = Array(
 
 'Time'=>'Tijd',
 
-//added for patch2
+'Relation'=>'Relation',
 'USERGROUPLIST'=>'Groepen',
 'EMAILTEMPLATES'=>'E-mail sjablonen',
 'WORDINTEGRATION'=>'Samenvoegen met sjablonen',
@@ -662,6 +662,7 @@ $mod_strings = Array(
 'LBL_CHECK_ASSIGNEDTO_MAILID'=>'aub Controleer het toegekende e-mailid',
 'LBL_MAILSENDERROR'=>'E-mail kon niet verstuurd worden aan de admin gebruiker. aub Controleer het admin e-mailid',
 'LBL_RECORD_NOEXIST'=>'Veld niet aanwezig',
+'Could not get file list' => 'Could not get file list',
 'LBL_ENTER_PROFILE'=>'Geef profielnaam',
 'Language' => 'Language',
 'AlwaysActive' => 'always active',
@@ -768,7 +769,8 @@ $mod_strings = Array(
 'VTLIB_LBL_MODULE_MANAGER_NOMODULES'=>'Geen Maatwerk modules gevonden! Creeer module of importeer module ...',
 
 // vtmailscanner START
-'LBL_MAIL_SCANNER'=>'Mail Scanner',
+'LBL_MAIL_SCANNER'=>'Mail Converter',
+'MailScanner' =>'Mail Converter',
 'LBL_MAIL_SCANNER_DESCRIPTION'=>'Configureer mailbox voor scanning',
 'LBL_SCAN_NOW'=>'Scan Nu',
 'LBL_RULE'=>'Regel',

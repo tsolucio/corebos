@@ -10,7 +10,6 @@
 function VTUpdateFieldsTask($, fieldvaluemapping){
 	var vtinst = new VtigerWebservices("webservice.php");
 	var desc = null;
-
 	var format = fn.format;
 
 	function errorDialog(message){
@@ -168,9 +167,8 @@ function VTUpdateFieldsTask($, fieldvaluemapping){
 		editpopupobj.edit(fieldValueNode.attr('id'), fieldValueNode.val(), fieldType);
 	}
 
-	function resetFields(opType, fieldName, mappingno) {		
+	function resetFields(opType, fieldName, mappingno) {
 		defaultValue(opType.name)(opType, mappingno);
-		
 		var fv = $("#save_fieldvalues_"+mappingno+"_value");
 		fv.attr("name", fieldName);
 		var fieldLabel = jQuery("#save_fieldvalues_"+mappingno+"_fieldname option:selected").html();
@@ -194,23 +192,24 @@ function VTUpdateFieldsTask($, fieldvaluemapping){
 				options+'</select>');
 			$("#save_fieldvalues_"+mappingno+"_value_type").val("rawtext");
 		}
-		var functions = {
-			string:function(opType, mappingno){
-				var value = $(format("#save_fieldvalues_%s_value", mappingno));
-				value.replaceWith(format('<input type="text" id="save_fieldvalues_%s_value" '+
-					'value="" class="expressionvalue" readonly />', mappingno));
+		function forStringField(opType, mappingno){
+			var value = $(format("#save_fieldvalues_%s_value", mappingno));
+			value.replaceWith(format('<input type="text" id="save_fieldvalues_%s_value" '+
+				'value="" class="expressionvalue" readonly />', mappingno));
 
-				var fv = $(format("#save_fieldvalues_%s_value", mappingno));
-				fv.bind("focus", function() {
-					editFieldExpression($(this), opType);
-				});
-				fv.bind("click", function() {
-					editFieldExpression($(this), opType);
-				});
-				fv.bind("keypress", function() {
-					editFieldExpression($(this), opType);
-				});
-			},
+			var fv = $(format("#save_fieldvalues_%s_value", mappingno));
+			fv.bind("focus", function() {
+				editFieldExpression($(this), opType);
+			});
+			fv.bind("click", function() {
+				editFieldExpression($(this), opType);
+			});
+			fv.bind("keypress", function() {
+				editFieldExpression($(this), opType);
+			});
+		}
+		var functions = {
+			string:forStringField,
 			picklist:forPicklist,
 			multipicklist:forPicklist
 		};
@@ -241,16 +240,15 @@ function VTUpdateFieldsTask($, fieldvaluemapping){
 			return result;
 		}
 	};
-	
+
 	$(document).ready(function(){
 
 		jQuery("#editpopup").draggable({ handle: "#editpopup_draghandle" });
 		editpopupobj = fieldExpressionPopup(moduleName, $);
 		editpopupobj.setModule(moduleName);
 		editpopupobj.close();
-		
 		validator.addValidator('validateDuplicateFields', validateDuplicateFields);
-        
+
 		vtinst.extendSession(handleError(function(result){
 			vtinst.describeObject(moduleName, handleError(function(result){
 				var parent = result;

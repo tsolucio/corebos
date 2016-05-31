@@ -6,14 +6,13 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
 
 require_once('modules/Settings/MailScanner/core/MailScannerInfo.php');
 require_once('modules/Settings/MailScanner/core/MailRecord.php');
 
 /**
- * Class to work with server mailbox. 
+ * Class to work with server mailbox.
  */
 class Vtiger_MailBox {
 	// Mailbox credential information
@@ -50,9 +49,8 @@ class Vtiger_MailBox {
 
 		if($this->_mailboxsettings[protocol] == 'pop3') { $port = '110'; }
 		else {
-			if($this->_mailboxsettings[ssltype] == 'tls' || 
-				$this->_mailboxsettings[ssltype] == 'ssl') {
-					$port = '993';
+			if($this->_mailboxsettings[ssltype] == 'tls' || $this->_mailboxsettings[ssltype] == 'ssl') {
+				$port = '993';
 			}
 			else $port = '143';
 		}
@@ -64,7 +62,7 @@ class Vtiger_MailBox {
 	 */
 	function connect($folder='INBOX') {
 		$imap = false;
-		$mailboxsettings = $this->_mailboxsettings;	
+		$mailboxsettings = $this->_mailboxsettings;
 
 		$isconnected = false;
 
@@ -80,8 +78,8 @@ class Vtiger_MailBox {
 
 				$this->log("Successfully connected", true);
 			}
-		} 
-		
+		}
+
 		if(!$imap) {
 			$connectString = '{'. "$mailboxsettings[server]:$mailboxsettings[port]/$mailboxsettings[protocol]/$mailboxsettings[ssltype]/$mailboxsettings[sslmethod]" ."}";
 			$connectStringShort = '{'. "$mailboxsettings[server]/$mailboxsettings[protocol]:$mailboxsettings[port]" ."}";
@@ -118,7 +116,7 @@ class Vtiger_MailBox {
 	 */
 	function open($folder, $reopen=false) {
 		/** Avoid re-opening of the box if not requested. */
-		if(!$reopen && ($folder == $this->_imapfolder)) return true; 
+		if(!$reopen && ($folder == $this->_imapfolder)) return true;
 
 		if(!$this->_imap) return $this->connect($folder);
 
@@ -131,7 +129,7 @@ class Vtiger_MailBox {
 		if($imap) {
 
 			// Perform cleanup task before re-initializing the connection
-			$this->close(); 
+			$this->close();
 
 			$this->_imapfolder = $folder;
 			$this->_imap = $imap;
@@ -151,7 +149,7 @@ class Vtiger_MailBox {
 			$lastscanOn = $this->_scannerinfo->getLastscan($folder);
 			$searchfor = $this->_scannerinfo->searchfor;
 
-			if($searchfor && $lastscanOn) {				
+			if($searchfor && $lastscanOn) {
 				if($searchfor == 'ALL') {
 					$searchQuery = "SINCE $lastscanOn";
 				} else {
@@ -173,8 +171,8 @@ class Vtiger_MailBox {
 	 */
 	function getFolders() {
 		$folders = false;
-		if($this->_imap) { 
-			$imapfolders = imap_list($this->_imap, $this->_imapurl, '*'); 
+		if($this->_imap) {
+			$imapfolders = imap_list($this->_imap, $this->_imapurl, '*');
 			if($imapfolders) {
 				foreach($imapfolders as $imapfolder) {
 					$folders[] = substr($imapfolder, strlen($this->_imapurl));
@@ -199,21 +197,21 @@ class Vtiger_MailBox {
 	function markMessage($messageid,$flags = null) {
 		$markas = $this->_scannerinfo->markas;
 		if($this->_imap){
-                    if($markas) {
-                        if(strtoupper($markas) == 'SEEN'){
-                            $markas = "\\Seen";
-                            imap_setflag_full($this->_imap, $messageid, $markas);
-                        }else{
-                            if($flags['Unseen'] == 'U')
-                                imap_clearflag_full($this->_imap,$messageid,"\\Seen");
-                        }
-                    }else{
-                        if($flags['Unseen'] == 'U')
-                            imap_clearflag_full($this->_imap,$messageid,"\\Seen");
-                    }
+			if($markas) {
+				if(strtoupper($markas) == 'SEEN'){
+					$markas = "\\Seen";
+					imap_setflag_full($this->_imap, $messageid, $markas);
+				}else{
+					if($flags['Unseen'] == 'U')
+					imap_clearflag_full($this->_imap,$messageid,"\\Seen");
+				}
+			}else{
+				if($flags['Unseen'] == 'U')
+					imap_clearflag_full($this->_imap,$messageid,"\\Seen");
+			}
 		}
 	}
-	
+
 	/**
 	 * Close the open IMAP connection.
 	 */
@@ -222,8 +220,8 @@ class Vtiger_MailBox {
 			imap_expunge($this->_imap);
 		}
 		$this->_needExpunge = false;
-		if($this->_imap) { 
-			imap_close($this->_imap); 
+		if($this->_imap) {
+			imap_close($this->_imap);
 			$this->_imap = false; 
 		}
 	}

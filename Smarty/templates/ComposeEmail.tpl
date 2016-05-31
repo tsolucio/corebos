@@ -213,6 +213,7 @@ var cc_err_msg = '{$MOD.LBL_CC_EMAIL_ERROR}';
 var no_rcpts_err_msg = '{$MOD.LBL_NO_RCPTS_EMAIL_ERROR}';
 var bcc_err_msg = '{$MOD.LBL_BCC_EMAIL_ERROR}';
 var conf_mail_srvr_err_msg = '{$MOD.LBL_CONF_MAILSERVER_ERROR}';
+var conf_srvr_storage_err_msg = '{$MOD.LBL_CONF_SERVERSTORAGE_ERROR}';
 var remove_image_url = "{'no.gif'|@vtiger_imageurl:$THEME}";
 {literal}
 function searchDocuments() {
@@ -352,8 +353,15 @@ function server_check(){
 				oform.action.value='Save';
 				oform.submit();
 			}else{
-				//alert('Please Configure Your Mail Server');
-				alert(conf_mail_srvr_err_msg);
+				if (response.indexOf('FAILURESTORAGE') > -1) {
+					if (confirm(conf_srvr_storage_err_msg)) {
+						oform.send_mail.value='true';
+						oform.action.value='Save';
+						oform.submit();
+					}
+				} else {
+					alert(conf_mail_srvr_err_msg);
+				}
 				return false;
 			}
 				}

@@ -31,7 +31,6 @@ $Calendar4You = new Calendar4You();
 
 $Calendar4You->GetDefPermission($current_user->id);
 
-
 $focus = new Activity();
 // Initialize sort by fields
 $focus->initSortbyField('Calendar');
@@ -80,10 +79,10 @@ if(!$_SESSION['lvs'][$currentModule]) {
 }
 
 if($_REQUEST['errormsg'] != '') {
-        $errormsg = vtlib_purify($_REQUEST['errormsg']);
-        $smarty->assign("ERROR",$mod_strings["SHARED_EVENT_DEL_MSG"]);
-}else{
-        $smarty->assign("ERROR","");
+	$errormsg = vtlib_purify($_REQUEST['errormsg']);
+	$smarty->assign("ERROR",$mod_strings["SHARED_EVENT_DEL_MSG"]);
+} else {
+	$smarty->assign("ERROR","");
 }
 
 if(ListViewSession::hasViewChanged($currentModule,$viewid)) {
@@ -98,7 +97,6 @@ $_SESSION['ACTIVITIES_ORDER_BY'] = $order_by;
 $_SESSION['ACTIVITIES_SORT_ORDER'] = $sorder;
 //<<<<<<< sort ordering >>>>>>>>>>>>>
 
-
 //<<<<cutomview>>>>>>>
 $oCustomView = new CustomView("Calendar");
 $viewid = $oCustomView->getViewId("Calendar");
@@ -112,8 +110,6 @@ $smarty->assign("CUSTOMVIEW_PERMISSION",$statusdetails);
 //To check if a user is able to edit/delete a customview
 $edit_permit = $oCustomView->isPermittedCustomView($viewid,'EditView','Calendar');
 $delete_permit = $oCustomView->isPermittedCustomView($viewid,'Delete','Calendar');
-
-
 $smarty->assign("CV_EDIT_PERMIT",$edit_permit);
 $smarty->assign("CV_DELETE_PERMIT",$delete_permit);
 
@@ -168,21 +164,19 @@ if(isPermitted("Calendar","Delete",$_REQUEST['record']) == 'yes') {
 	$other_text['del'] = $app_strings[LBL_MASS_DELETE];
 }
 if(isPermitted('Calendar','EditView','') == 'yes') {
-        $other_text['c_owner'] = $app_strings[LBL_CHANGE_OWNER];
+	$other_text['c_owner'] = $app_strings[LBL_CHANGE_OWNER];
 }
-global  $task_title;
 $title_display = $current_module_strings['LBL_LIST_FORM_TITLE'];
-if ($task_title) $title_display= $task_title;
 
 //Retreive the list from Database
 //<<<<<<<<<customview>>>>>>>>>
 
 if (!$Calendar4You->view_all) {
-    $userid = $current_user->id;
-    $invites = true; 
+	$userid = $current_user->id;
+	$invites = true;
 } else {
-    $userid = ''; 
-    $invites = true;   
+	$userid = '';
+	$invites = true;
 }
 
 $list_query = getCalendar4YouListQuery($userid, $invites);
@@ -207,9 +201,9 @@ if (isset($_REQUEST['from_homepage'])) {
 	$endDateTime = $userEndDateTime->getDBInsertDateTimeValue();
 
 	if ($_REQUEST['from_homepage'] == 'upcoming_activities')
-		$list_query .= " AND (vtiger_activity.status is NULL OR vtiger_activity.status not in ('Completed','Deferred')) and (vtiger_activity.eventstatus is NULL OR  vtiger_activity.eventstatus not in ('Held','Not Held')) AND (CAST((CONCAT(date_start,' ',time_start)) AS DATETIME) >= '$startDateTime' OR CAST((CONCAT(vtiger_recurringevents.recurringdate,' ',time_start)) AS DATETIME) >= '$startDateTime')";
+		$list_query .= " AND (vtiger_activity.status is NULL OR vtiger_activity.status not in ('Completed','Deferred')) and (vtiger_activity.eventstatus is NULL OR vtiger_activity.eventstatus not in ('Held','Not Held')) AND (CAST((CONCAT(date_start,' ',time_start)) AS DATETIME) >= '$startDateTime' OR CAST((CONCAT(vtiger_recurringevents.recurringdate,' ',time_start)) AS DATETIME) >= '$startDateTime')";
 	elseif ($_REQUEST['from_homepage'] == 'pending_activities')
-		$list_query .= " AND (vtiger_activity.status is NULL OR vtiger_activity.status not in ('Completed','Deferred')) and (vtiger_activity.eventstatus is NULL OR  vtiger_activity.eventstatus not in ('Held','Not Held')) AND (CAST((CONCAT(due_date,' ',time_end)) AS DATETIME) <= '$endDateTime' OR CAST((CONCAT(vtiger_recurringevents.recurringdate,' ',time_start)) AS DATETIME) <= '$endDateTime')";
+		$list_query .= " AND (vtiger_activity.status is NULL OR vtiger_activity.status not in ('Completed','Deferred')) and (vtiger_activity.eventstatus is NULL OR vtiger_activity.eventstatus not in ('Held','Not Held')) AND (CAST((CONCAT(due_date,' ',time_end)) AS DATETIME) <= '$endDateTime' OR CAST((CONCAT(vtiger_recurringevents.recurringdate,' ',time_start)) AS DATETIME) <= '$endDateTime')";
 }
 
 if(isset($order_by) && $order_by != '') {
@@ -219,7 +213,7 @@ if(isset($order_by) && $order_by != '') {
 		$tablename = getTableNameForField('Calendar',$order_by);
 		$tablename = (($tablename != '')?($tablename."."):'');
 		if($order_by == 'lastname')
-         	$list_query .= ' ORDER BY vtiger_contactdetails.lastname '.$sorder;
+			$list_query .= ' ORDER BY vtiger_contactdetails.lastname '.$sorder;
 		else
 			$list_query .= ' ORDER BY '.$tablename.$order_by.' '.$sorder;
 	}
@@ -275,17 +269,16 @@ $smarty->assign("SEARCHLISTHEADER", $listview_header_search);
 $edit_permissions = $Calendar4You->CheckPermissions("EDIT");
 
 if(!$edit_permissions)
-  	$editlistview = "EditView";
+	$editlistview = 'EditView';
 else
-    $editlistview = "";
+	$editlistview = '';
 
 $delete_permissions = $Calendar4You->CheckPermissions("DELETE");
 
 if(!$delete_permissions)
-  	$deletelistview = "Delete";
+	$deletelistview = 'Delete';
 else
-    $deletelistview = "";
-
+	$deletelistview = '';
 
 $listview_entries = getListViewEntries($focus,"Calendar",$list_result,$navigation_array,"","","","",$oCustomView);
 

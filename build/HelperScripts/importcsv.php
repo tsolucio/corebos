@@ -16,17 +16,15 @@
  *  Module       : Template script to import a CSV file into a module
  *  Version      : 1.0
  *  Author       : Alan Bell, from Libertus. Shared on the vtiger CRM developer's list
- * Notes from author:
- *    Note this script reads in a csv file with the separator a semi-colon.
- *    For large imports I break the csv file into multiple files of say 50,000 each and then call
+ *    This script reads in a csv file with the separator a semi-colon.
+ *    For large imports break the csv file into multiple files of say 50,000 each and then call
  *    this script from a bash shell script wrapper which does something like this:
  *   for FILE in ${FILES}
  *   do
- *     php -f write-csv.php ${FILEPATH}${FILE}
+ *     php -f importcsv.php ${FILEPATH}${FILE}
  *   done
  *************************************************************************************************/
 
-// Turn on debugging level
 $Vtiger_Utils_Log = true;
 
 include_once('vtlib/Vtiger/Module.php');
@@ -57,7 +55,7 @@ function csv_to_array($file='', $length = 0, $delimiter=';') {
 }
 
 include_once 'include/Webservices/Create.php';
-
+$i=0;
 foreach (csv_to_array($file) as $row) {
 	//print_r($row);
 	try {
@@ -69,5 +67,6 @@ foreach (csv_to_array($file) as $row) {
 		error_log($msg, 3, $file . "-error.log");
 		echo $msg;
 	}
+	//if ($i++==10) break;  // for testing before full launch
 }
 ?>

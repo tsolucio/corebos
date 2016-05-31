@@ -291,8 +291,15 @@ class Users extends CRMEntity {
 				}
 				$crypt_type = $this->db->query_result($result, 0, 'crypt_type');
 				$encrypted_password = $this->encrypt_password($user_password, $crypt_type);
+				$maxFailedLoginAttempts = GlobalVariable::getVariable('Application_MaxFailedLoginAttempts', 5);
 				$query = "SELECT * from $this->table_name where user_name=? AND user_password=?";
-				$result = $this->db->requirePsSingleResult($query, array($usr_name, $encrypted_password), false);
+				$params = array($usr_name, $encrypted_password);
+				$cnuser=$this->db->getColumnNames($this->table_name);
+				if (in_array('failed_login_attempts', $cnuser)) {
+					$query.= ' AND COALESCE(failed_login_attempts,0)<?';
+					$params[] = $maxFailedLoginAttempts;
+				}
+				$result = $this->db->requirePsSingleResult($query, $params, false);
 				if (empty($result)) {
 					return false;
 				} else {
@@ -311,12 +318,13 @@ class Users extends CRMEntity {
 	 */
 	function load_user($user_password) {
 		$usr_name = $this->column_fields["user_name"];
+		$maxFailedLoginAttempts = GlobalVariable::getVariable('Application_MaxFailedLoginAttempts', 5);
 		if (isset($_SESSION['loginattempts'])) {
 			$_SESSION['loginattempts'] += 1;
 		} else {
 			$_SESSION['loginattempts'] = 1;
 		}
-		if ($_SESSION['loginattempts'] > 5) {
+		if ($_SESSION['loginattempts'] > $maxFailedLoginAttempts) {
 			$this->log->warn("SECURITY: " . $usr_name . " has attempted to login " . $_SESSION['loginattempts'] . " times.");
 		}
 		$this->log->debug("Starting user load for $usr_name");
@@ -573,7 +581,7 @@ class Users extends CRMEntity {
 	/** Function to save the user information into the database
 	 * @param $module -- module name:: Type varchar
 	 */
-	function saveentity($module) {
+	function saveentity($module, $fileid = '') {
 		global $current_user;
 		//$adb added by raju for mass mailing
 		$insertion_mode = $this->mode;
@@ -593,9 +601,9 @@ class Users extends CRMEntity {
 		$this->db->startTransaction();
 		foreach ($this->tab_name as $table_name) {
 			if ($table_name == 'vtiger_attachments') {
-				$this->insertIntoAttachment($this->id, $module);
+				$this->insertIntoAttachment($this->id, $module, $fileid);
 			} else {
-				$this->insertIntoEntityTable($table_name, $module);
+				$this->insertIntoEntityTable($table_name, $module, $fileid);
 			}
 		}
 		require_once ('modules/Users/CreateUserPrivilegeFile.php');
@@ -621,7 +629,7 @@ class Users extends CRMEntity {
 	 * @param $table_name -- table name:: Type varchar
 	 * @param $module -- module:: Type varchar
 	 */
-	function insertIntoEntityTable($table_name, $module) {
+	function insertIntoEntityTable($table_name, $module, $fileid = '') {
 		global $log;
 		$log->info("function insertIntoEntityTable " . $module . ' vtiger_table name ' . $table_name);
 		global $adb, $current_user;
@@ -789,7 +797,7 @@ class Users extends CRMEntity {
 	 * @param $id -- entity id:: Type integer
 	 * @param $module -- module:: Type varchar
 	 */
-	function insertIntoAttachment($id, $module) {
+	function insertIntoAttachment($id, $module, $direct_import=false) {
 		global $log;
 		$log->debug("Entering into insertIntoAttachment($id,$module) method.");
 
@@ -881,7 +889,7 @@ class Users extends CRMEntity {
 	 * @param $module -- module name:: Type varchar
 	 * @param $file_details -- file details array:: Type array
 	 */
-	function uploadAndSaveFile($id, $module, $file_details) {
+	function uploadAndSaveFile($id, $module, $file_details, $attachmentname='', $direct_import=false) {
 		global $log;
 		$log->debug("Entering into uploadAndSaveFile($id,$module,$file_details) method.");
 
@@ -946,7 +954,7 @@ class Users extends CRMEntity {
 	/** Function to save the user information into the database
 	 * @param $module -- module name:: Type varchar
 	 */
-	function save($module_name) {
+	function save($module_name, $fileid = '') {
 		global $log, $adb, $current_user;
 		if (!is_admin($current_user) and $current_user->id != $this->id) {// only admin users can change other users profile
 			return false;
@@ -970,8 +978,10 @@ class Users extends CRMEntity {
 			updateUser2RoleMapping($this->column_fields['roleid'], $this->id);
 		}
 		require_once ('modules/Users/CreateUserPrivilegeFile.php');
-		createUserPrivilegesfile($this->id);
-		createUserSharingPrivilegesfile($this->id);
+		//createUserPrivilegesfile($this->id); // done in saveentity above
+		if ($this->mode!='edit') {
+			createUserSharingPrivilegesfile($this->id);
+		}
 	}
 
 	/**
@@ -1138,7 +1148,6 @@ class Users extends CRMEntity {
 
 		$sql = "insert into vtiger_homedefault values(" . $s14 . ",'LTFAQ',5,'Faq')";
 		$adb->pquery($sql, array());
-
 	}
 
 	/** function to save the order in which the modules have to be displayed in the home page for the specified user id
@@ -1165,7 +1174,6 @@ class Users extends CRMEntity {
 				$homeorder = implode(',', $save_array);
 		} else {
 			$this->insertUserdetails('postinstall');
-
 		}
 		$log->debug("Exiting from function saveHomeOrder($id)");
 	}

@@ -48,11 +48,6 @@
        		 <input type="hidden" name="convertmode">
 	{/if}
 
-{elseif $MODULE eq 'HelpDesk'}
-	<form name="EditView" method="POST" action="index.php" ENCTYPE="multipart/form-data" onsubmit="VtigerJS_DialogBox.block();">
-	<input type="hidden" name="old_smownerid" value="{$OLDSMOWNERID}">
-	<input type="hidden" name="old_id" value="{$OLD_ID}">
-
 {elseif $MODULE eq 'Leads'}
         <form name="EditView" method="POST" action="index.php" onsubmit="VtigerJS_DialogBox.block();">
         <input type="hidden" name="campaignid" value="{$campaignid}">

@@ -223,10 +223,6 @@ $mod_strings = Array(
 'LBL_TODONAME'=>'To Do',
 'LBL_TODODATETIME'=>'Time & Date',
 
-
-
-
-
 //DON'T CONVERT THESE THEY ARE MAPPINGS - STARTS
 'db_last_name' => 'LBL_LIST_LAST_NAME',
 'db_first_name' => 'LBL_LIST_FIRST_NAME',
@@ -327,6 +323,7 @@ $mod_strings = Array(
 'No Time'=>'No Time',
 //Added for Send Reminder 4.2 release
 'Send Reminder'=>'Send Reminder',
+'SendReminder'=>'Send Reminder',
 'LBL_YES'=>'Yes',
 'LBL_NO'=>'No',
 'LBL_DAYS'=>'day(s)',
@@ -342,7 +339,6 @@ $mod_strings = Array(
 'Recurring Type'=> 'Recurring Type',
 //Activities - Notification Error
 'LBL_NOTIFICATION_ERROR'=>'Mail Error : Please check your outgoing mail server configuration in Settings->Outgoing Mail Server Configuration OR MailId for the present user is not Configured',
-// Mike Crowe Mod --------------------------------------------------------added for generic search
 'LBL_GENERAL_INFORMATION'=>'General Information',
 
 'LBL_EVENTTYPE'=>'Event Type',
@@ -368,13 +364,17 @@ $mod_strings = Array(
 'createdtime'=>'Created Time',
 'modifiedtime'=>'Modified Time',
 'first'=>'First',
+'second'=>'Second',
+'third'=>'Third',
 'last'=>'Last',
 'High'=>'High',
 'Medium'=>'Medium',
 'Low'=>'Low',
 'LBL_SELECT'=>'Select',
 'LBL_ALL_EVENTS_TODOS'=>'All Events & Todos',
-'First'=>'First', 
+'First'=>'First',
+'Second'=>'Second',
+'Third'=>'Third',
 'Last'=>'Last', 
 'on'=>'on', 
 'day of the month'=>'day of the month',

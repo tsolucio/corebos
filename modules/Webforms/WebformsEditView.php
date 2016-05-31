@@ -18,22 +18,31 @@ Webforms::checkAdminAccess($current_user);
 
 $isCreate = !isset($_REQUEST['id']);
 
+$smarty = new vtigerCRM_Smarty();
+
 $webform = false;
 if ($isCreate) {
 	$webform = new Webforms_Model();
+	$smarty->assign('usr_selected',1);
 } else {
 	$webform = Webforms_Model::retrieveWithId(vtlib_purify($_REQUEST['id']));
+	getUserFullName($userid);
+	$rscnt = $adb->pquery('select count(*) as cnt from vtiger_users where id =?',array($webform->getOwnerId()));
+	$cnt = $adb->query_result($rscnt,0,0);
+	$smarty->assign('usr_selected',$cnt);
 }
 
-$smarty = new vtigerCRM_Smarty();
+
 
 $category = getParentTab();
 $targetModules = array('Leads');
 
 $usersList = get_user_array(false);
+$groupsList = get_group_array(false);
 
 $smarty->assign('WEBFORM',$webform);
 $smarty->assign('USERS',$usersList);
+$smarty->assign('GROUPS',$groupsList);
 $smarty->assign('WEBFORMMODULES', $targetModules);
 $smarty->assign('THEME', $theme);
 $smarty->assign('MOD', $mod_strings);

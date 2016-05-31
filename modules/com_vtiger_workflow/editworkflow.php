@@ -10,10 +10,8 @@
 require_once("Smarty_setup.php");
 require_once("include/utils/CommonUtils.php");
 require_once("include/Zend/Json.php");
-
 require_once("include/events/SqlResultIterator.inc");
 require_once("include/events/VTWSEntityType.inc");
-
 require_once("VTWorkflowManager.inc");
 require_once("VTTaskManager.inc");
 require_once("VTWorkflowApplication.inc");
@@ -95,8 +93,6 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 	$smarty->assign("workflow", $workflow);
 	$smarty->assign("saveType", isset($workflow->id)?"edit":"new");
 	$smarty->assign("module", $module);
-
-	$smarty->assign("WORKFLOW_TRIGGER_TYPES_HELP_LINK", WORKFLOW_TRIGGER_TYPES);
 
 	$smarty->display("{$module->name}/EditWorkflow.tpl");
 }

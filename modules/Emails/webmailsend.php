@@ -19,23 +19,21 @@ require_once("modules/Emails/mail.php");
 		$from_add = $_REQUEST['from_add'];
 	}
 $mail_status = send_mail('Emails',$_REQUEST["parent_name"],$from_name,$from_add,$_REQUEST['subject'],$_REQUEST['description'],$_REQUEST["ccmail"],$_REQUEST["bccmail"],'all',$focus->id);
-	
+
 $query = "update vtiger_emaildetails set email_flag ='SENT' where emailid=?";
 $adb->pquery($query, array($focus->id));
 
 //set the errorheader1 to 1 if the mail has not been sent to the assigned to user
-if($mail_status != 1) { //when mail send fails 
+if($mail_status != 1) { //when mail send fails
 		$errorheader1 = 1;
 		$mail_status_str = $to_email."=".$mail_status."&&&";
 
-} elseif($mail_status == 1 && $to_email == '') { //Mail send success only for CC and BCC but the 'to' email is empty 
+} elseif($mail_status == 1 && $to_email == '') { //Mail send success only for CC and BCC but the 'to' email is empty
 		$adb->pquery($query, array($focus->id));
 		$errorheader1 = 1;
 		$mail_status_str = "cc_success=0&&&";
 } else
 	$mail_status_str = $to_email."=".$mail_status."&&&";
-
-
 
 //Added to redirect the page to Emails/EditView if there is an error in mail sending
 if($errorheader1 == 1 || $errorheader2 == 1)

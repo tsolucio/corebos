@@ -111,6 +111,7 @@ $mod_strings = Array(
 'Commission Rate'=>'Commissie (%)',
 'Qty/Unit'=>'Hoeveelheid / Eenheid',
 'Unit Price'=>'Prijs per Eenheid',
+'Cost Price' => 'Cost Price',
 'Manufacturer'=>'Producent',
 'Product Category'=>'Product categorie',
 'Support Start Date'=>'Ondersteuning startdatum',

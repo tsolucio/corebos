@@ -1,22 +1,12 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Emails/language/en_us.lang.php,v 1.17 2005/03/28 06:31:38 rank Exp $
- * Description:  Defines the English language pack for the Emails module.
- ********************************************************************************/
- 
 $mod_strings = array (
   'LBL_GENERAL_INFORMATION' => 'Informazioni Generali',
   'LBL_MODULE_NAME' => 'Email',
@@ -59,6 +49,8 @@ $mod_strings = array (
   'LBL_QUALIFY_BUTTON' => 'Qualifica',
   'LBL_REPLY_BUTTON' => 'Rispondi',
   'LBL_FORWARD_BUTTON' => 'Inoltra',
+  'Re' => 'Re',
+  'Fwd' => 'Fwd',
   'LBL_DOWNLOAD_ATTCH_BUTTON' => 'Scarica Allegati',
   'LBL_FROM' => 'Da:',
   'LBL_CC' => 'CC :',
@@ -146,6 +138,7 @@ $mod_strings = array (
   'LBL_BCC_EMAIL_ERROR' => 'L`indirizzo in copia nascosta CCN non &egrave; corretto',
   'LBL_NO_RCPTS_EMAIL_ERROR' => 'Nessun destinatario specificato',
   'LBL_CONF_MAILSERVER_ERROR' => 'Prego configura il server di posta in uscita da -> Impostazioni---> Server Posta in Uscita',
+  'LBL_CONF_SERVERSTORAGE_ERROR'=>'The permissions on your storage directory are insufficient, you will not be able to send attachments!',
   'LBL_MAILSELECT_INFO3' => 'Non hai il permesso di visualizzare le email degli elementi selezionati',
   'FEATURE_AVAILABLE_INFO' => 'Questa funzionalit&agrave; &egrave; disponibile  solo con Microsoft Internet Explorer 5.5 o superiore\\nPer il momento...',
   'DOWNLOAD_CONFIRAMATION' => 'Vuoi scaricare il file?',

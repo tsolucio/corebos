@@ -18,15 +18,9 @@ require_once("include/Webservices/WebServiceError.php");
 require_once 'include/Webservices/ModuleTypes.php';
 require_once("include/Webservices/DescribeObject.php");
 
-global $app_strings;
-
-global $currentModule;
-global $theme;
+global $app_strings, $currentModule, $theme, $log, $adb;
 
 require_once('Smarty_setup.php');
-
-// focus_list is the means of passing data to a ListView.
-global $focus_list;
 
 if (!isset($where)) $where = "";
 
@@ -41,7 +35,6 @@ $json = new Zend_Json();
 
 $elementType = $_REQUEST['module'];
 
-global $log,$adb;
 $webserviceObject = VtigerWebserviceObject::fromName($adb,$elementType);
 $handlerPath = $webserviceObject->getHandlerPath();
 $handlerClass = $webserviceObject->getHandlerClass();

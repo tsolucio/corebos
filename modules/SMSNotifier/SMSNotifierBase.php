@@ -95,8 +95,9 @@ class SMSNotifierBase extends CRMEntity {
 	var $mandatory_fields = Array('createdtime', 'modifiedtime', 'message');
 
 	function __construct() {
-		global $log, $currentModule;
-		$this->column_fields = getColumnFields($currentModule);
+		global $log;
+		$this_module = get_class($this);
+		$this->column_fields = getColumnFields($this_module);
 		$this->db = PearDatabase::getInstance();
 		$this->log = $log;
 	}

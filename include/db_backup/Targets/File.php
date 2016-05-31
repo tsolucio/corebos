@@ -6,16 +6,9 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  *********************************************************************************/
-
 require_once 'include/db_backup/Targets/Response.php';
 
-/**
- * Description of File
- *
- * @author MAK
- */
 class File extends Response {
 	private $defaultPath;
 	private $filePath = null;

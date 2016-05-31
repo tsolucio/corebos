@@ -124,7 +124,8 @@ $mod_strings = Array(
 'ERR_USER_NAME_EXISTS_2'=>' ya existe. Los nombres de usuario duplicados no estan permitidos.<br>Cambie el nombre de usuario para que sea único.',
 'ERR_LAST_ADMIN_1'=>'El nombre de usuario ',
 'ERR_LAST_ADMIN_2'=>' es el último usuario administrador.Al menos un usuario debe permanecer como administrador.<br>Verifique la configuracón del usuario Admin.',
-
+'ERR_MAXLOGINATTEMPTS' => 'Se ha alcanzado el número máximo de intentos. Contacta con el administrador para desbloquear tu cuenta.',
+'LBL_FAILED_LOGIN_ATTEMPTS' => 'Intentos Fallidos de Acceso',
 'ERR_DELETE_RECORD'=>'Debe especificar un registro para eliminar la Cuenta.',
 
 // Additional Fields for i18n --- Release vtigerCRM 3.2 Patch 2
@@ -211,6 +212,7 @@ $mod_strings = Array(
 
 //added to fix the issue #6630
 'LBL_ASTERISKEXTENSIONS_EXIST' => 'Extensión Asterisk ya Existe!',
+'LBL_CURRENCY_SEPARATORS_INCORRECT' => 'El Separador Decimal y de Agrupamiento de Dígitos no puede ser el mismo.',
 
 // Added fields in createnewgroup.php
 'LBL_CREATE_NEW_GROUP'=>'Crear nuevo grupo',
@@ -811,6 +813,7 @@ $mod_strings = Array(
 'Decimal Separator' => 'Separador Decimal',
 'Digit Grouping Separator' => 'Separador de Grupo de dígitos',
 'Symbol Placement' => 'Posición de Símbolo',
+'Number Of Currency Decimals'  =>  'Number de Decimales',
 'PASSWORD REQUIREMENTS' => 'REQUISITOS CONTRASEÑA',
 'REQUIRED' => 'OBLIGATORIO',
 'Min. 8 characters' => 'Mínimo 8 caracteres',

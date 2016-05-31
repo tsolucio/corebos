@@ -12,7 +12,7 @@ require_once('include/utils/utils.php');
 global $adb, $log, $current_user;
 
 $cvid = (int) vtlib_purify($_REQUEST["record"]);
-$buttonname =  vtlib_purify($_REQUEST["newsave"]);
+$buttonname = vtlib_purify($_REQUEST["newsave"]);
 if ($buttonname) unset($cvid);
 $cvmodule = vtlib_purify($_REQUEST["cvmodule"]);
 $parenttab = getParentTab();
@@ -36,9 +36,9 @@ if($cvmodule != "") {
 	$userid = $current_user->id;
 
 	if(isset($_REQUEST["setDefault"])) {
-	  $setdefault = 1;
+		$setdefault = 1;
 	} else {
-	  $setdefault = 0;
+		$setdefault = 0;
 	}
 
 	if(isset($_REQUEST["setMetrics"])) {
@@ -47,18 +47,17 @@ if($cvmodule != "") {
 		$setmetrics = 0;
 	}
 
- 	//$allKeys = array_keys($HTTP_POST_VARS);
-	//this is  will cause only the chosen fields to be added to the vtiger_cvcolumnlist table
+	//this will cause only the chosen fields to be added to the vtiger_cvcolumnlist table
 	$allKeys = array_keys($_REQUEST);
 
 	//<<<<<<<columns>>>>>>>>>>
 	for ($i=0;$i<count($allKeys);$i++) {
-	   $string = substr($allKeys[$i], 0, 6);
-	   if($string == "column") {
-		   //the contusion, will cause only the chosen fields to be added to the vtiger_cvcolumnlist table
-		   if($_REQUEST[$allKeys[$i]] != "")
-        	   $columnslist[] = $_REQUEST[$allKeys[$i]];
-   	   }
+		$string = substr($allKeys[$i], 0, 6);
+		if($string == 'column') {
+			// will cause only the chosen fields to be added to the vtiger_cvcolumnlist table
+			if($_REQUEST[$allKeys[$i]] != '')
+				$columnslist[] = $_REQUEST[$allKeys[$i]];
+		}
 	}
 	//<<<<<<<columns>>>>>>>>>
 
@@ -162,8 +161,9 @@ if($cvmodule != "") {
 						}
 						$fieldType = $fieldObj->getFieldDataType();
 
-						if($fieldType == 'currency') {
-							if($fieldObj->getUIType() == '71') {
+						if($fieldType == 'currency' or $fieldType == 'double') {
+							$flduitype = $fieldObj->getUIType();
+							if($flduitype == '72' or $flduitype == 9 or $flduitype ==7) {
 								$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value, null, true);
 							} else {
 								$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value);
@@ -174,9 +174,8 @@ if($cvmodule != "") {
 						if(($fieldType == 'date' || ($fieldType == 'time' && $fieldName != 'time_start' && $fieldName != 'time_end') || ($fieldType == 'datetime')) && ($fieldType != '' && $adv_filter_value != '' )) {
 							$val = Array();
 							for($x=0;$x<count($temp_val);$x++) {
-								//if date and time given then we have to convert the date and
-								//leave the time as it is, if date only given then temp_time
-								//value will be empty
+								// if date and time given then we have to convert the date and leave the time as it is
+								// if date only given then time value will be empty
 								if(trim($temp_val[$x]) != '') {
 									$date = new DateTimeField(trim($temp_val[$x]));
 									if($fieldType == 'date' && $fieldObj->getUIType() != '6') {
@@ -298,9 +297,10 @@ if($cvmodule != "") {
 						}
 						$fieldType = $fieldObj->getFieldDataType();
 
-						if($fieldType == 'currency') {
-							// Some of the currency fields like Unit Price, Total, Sub-total etc of Inventory modules, do not need currency conversion
-							if($fieldObj->getUIType() == '72') {
+						if($fieldType == 'currency' or $fieldType == 'double') {
+							// Some of the currency fields like Unit Price, Total, Sub-total etc of Inventory modules and normal numbers do not need currency conversion
+							$flduitype = $fieldObj->getUIType();
+							if($flduitype == '72' or $flduitype == 9 or $flduitype ==7) {
 								$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value, null, true);
 							} else {
 								$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value);

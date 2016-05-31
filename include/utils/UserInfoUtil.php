@@ -11,7 +11,6 @@ require_once('include/database/PearDatabase.php');
 require_once('include/utils/utils.php');
 require_once('include/utils/GetUserGroups.php');
 include('config.php');
-require_once('include/events/include.inc');
 global $log;
 
 /** To retreive the mail server info resultset for the specified user
@@ -745,10 +744,16 @@ function isPermitted($module,$actionname,$record_id='')
 
 	if($recOwnType == 'Users')
 	{
+		$wfs = new VTWorkflowManager($adb);
+		$racbr = $wfs->getRACRuleForRecord($module, $record_id);
 		//Checking if the Record Owner is the current User
 		if($current_user->id == $recOwnId)
 		{
-			$permission = "yes";
+			if (($actionname!='EditView' and $actionname!='Delete' and $actionname!='DetailView' and $actionname!='CreateView') or (!$racbr or $racbr->hasDetailViewPermissionTo($actionname))) {
+				$permission = 'yes';
+			} else {
+				$permission = 'no';
+			}
 			$log->debug("Exiting isPermitted method ...");
 			return $permission;
 		}
@@ -757,7 +762,11 @@ function isPermitted($module,$actionname,$record_id='')
 		{
 			if(in_array($recOwnId,$userids))
 			{
-				$permission='yes';
+				if (($actionname!='EditView' and $actionname!='Delete' and $actionname!='DetailView' and $actionname!='CreateView') or (!$racbr or $racbr->hasDetailViewPermissionTo($actionname))) {
+					$permission = 'yes';
+				} else {
+					$permission = 'no';
+				}
 				$log->debug("Exiting isPermitted method ...");
 				return $permission;
 			}
@@ -768,7 +777,13 @@ function isPermitted($module,$actionname,$record_id='')
 		//Checking if the record owner is the current user's group
 		if(in_array($recOwnId,$current_user_groups))
 		{
-			$permission='yes';
+			$wfs = new VTWorkflowManager($adb);
+			$racbr = $wfs->getRACRuleForRecord($module, $record_id);
+			if (($actionname!='EditView' and $actionname!='Delete' and $actionname!='DetailView' and $actionname!='CreateView') or (!$racbr or $racbr->hasDetailViewPermissionTo($actionname))) {
+				$permission = 'yes';
+			} else {
+				$permission = 'no';
+			}
 			$log->debug("Exiting isPermitted method ...");
 			return $permission;
 		}
@@ -827,9 +842,13 @@ function isPermitted($module,$actionname,$record_id='')
 	}
 	elseif($others_permission_id == 2)
 	{
-		$permission = "yes";
-		$log->debug("Exiting isPermitted method ...");
-		return $permission;
+		$wfs = new VTWorkflowManager($adb);
+		$racbr = $wfs->getRACRuleForRecord($module, $record_id);
+		if (($actionname!='EditView' and $actionname!='Delete' and $actionname!='DetailView' and $actionname!='CreateView') or (!$racbr or $racbr->hasDetailViewPermissionTo($actionname))) {
+			$permission = "yes";
+			$log->debug("Exiting isPermitted method ...");
+			return $permission;
+		}
 	}
 	elseif($others_permission_id == 3)
 	{
@@ -848,6 +867,15 @@ function isPermitted($module,$actionname,$record_id='')
 			}
 			else
 			{
+				$wfs = new VTWorkflowManager($adb);
+				$racbr = $wfs->getRACRuleForRecord($module, $record_id);
+				if ($racbr) {
+					if ($actionid == 3 and !$racbr->hasListViewPermissionTo('retrieve')) {
+						return 'no';
+					} elseif ($actionid == 4 and !$racbr->hasDetailViewPermissionTo('retrieve')) {
+						return 'no';
+					}
+				}
 				$permission = isReadPermittedBySharing($module,$tabid,$actionid,$record_id);
 			}
 			$log->debug("Exiting isPermitted method ...");
@@ -861,6 +889,15 @@ function isPermitted($module,$actionname,$record_id='')
 			}
 			else
 			{
+				$wfs = new VTWorkflowManager($adb);
+				$racbr = $wfs->getRACRuleForRecord($module, $record_id);
+				if ($racbr) {
+					if ($actionid == 0 and !$racbr->hasDetailViewPermissionTo('create')) {
+						return 'no';
+					} elseif ($actionid == 1 and !$racbr->hasDetailViewPermissionTo('update')) {
+						return 'no';
+					}
+				}
 				$permission = isReadWritePermittedBySharing($module,$tabid,$actionid,$record_id);
 			}
 			$log->debug("Exiting isPermitted method ...");
@@ -1193,7 +1230,7 @@ function isAllowed_Outlook($module,$action,$user_id,$record_id)
 					{
 						if($others_permission_id == 0)
 						{
-							if($action == 'EditView' || $action == 'Delete')
+							if($action == 'EditView' || $action == 'CreateView' || $action == 'Delete')
 							{
 								$permission = "no";
 							}
@@ -1219,7 +1256,7 @@ function isAllowed_Outlook($module,$action,$user_id,$record_id)
 						}
 						elseif($others_permission_id == 3)
 						{
-							if($action == 'DetailView' || $action == 'EditView' || $action == 'Delete')
+							if($action == 'DetailView' || $action == 'EditView' || $action == 'CreateView' || $action == 'Delete')
 							{
 								$permission = "no";
 							}

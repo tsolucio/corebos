@@ -41,7 +41,14 @@ class Vtiger_FTPBackup extends Vtiger_Location{
 	}
 
 	public function init() {
-		$this->connection = @ftp_connect($this->server);
+
+		list($host,$port) = explode(':', $this->server);
+
+		if(empty($port))
+			$this->connection = @ftp_connect($this->server);
+		else
+			$this->connection = @ftp_connect($host,$port);
+
 		if(empty($this->connection)) {
 			throw new VtigerBackupException(VtigerBackupErrorCode::$FTP_CONNECT_FAILED,
 					getTranslatedString('LBL_FTP_CONNECT_FAILED', 'VtigerBackup'));

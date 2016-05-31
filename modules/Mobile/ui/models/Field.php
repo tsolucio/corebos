@@ -6,23 +6,51 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
+ * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
 
 class Mobile_UI_FieldModel {
-	private $data;
+	private $data; 
 	
 	function initData($fieldData) {
 		$this->data = $fieldData;
 	}
 	
+	function uitype() {
+		return $this->data['uitype'];
+	}
+	
+	
 	function name() {
 		return $this->data['name'];
 	}
 	
+	
 	function value() {
-		$rawValue = $this->data['value'];
-		if (is_array($rawValue)) return $rawValue['value'];
-		return $rawValue;
+		if ($this->data['uitype'] == '15' || $this->data['uitype'] == '33' || ($this->data['uitype'] == '16' and $this->data['name'] !='recurringtype' and $this->data['name'] !='duration_minutes' and $this->data['name'] !='visibility' ))
+		{  
+			$rawValue = $this->data['type']['value'];
+			
+			if (is_array($rawValue)) {           
+				return $rawValue['value'];
+			}
+		    return $rawValue;
+		}
+		else if($this->data['uitype'] == '53') {
+			$rawValue = $this->data['type']['value'];
+
+			if (is_array($rawValue)){
+				return $rawValue['value'];
+			}
+		}
+		
+		else
+		{ 
+     		$rawValue = $this->data['value'];
+			if (is_array($rawValue)) return $rawValue['value'];
+			return $rawValue;
+		}	
+		
 	}
 	
 	function valueLabel() {
@@ -31,12 +59,13 @@ class Mobile_UI_FieldModel {
 		return $rawValue;
 	}
 	
+	
 	function label() {
 		return $this->data['label'];
 	}
 	
 	function isReferenceType() {
-		static $options = array('101', '116', '117', '26', '357',
+		static $options = array('101', '116', '26', '357',
 			'50', '51', '52', '53', '57', '58', '59', '66',
 			'73', '75', '76', '77', '78', '80', '81'
 		);
@@ -74,6 +103,15 @@ class Mobile_UI_FieldModel {
 			$instances[] = $instance;
 		}
 		return $instances;
+	}
+
+	function typeofdata() {
+		return $this->data['typeofdata'];
+	}
+	
+	// added for Mobile_WS_Utils::getEntityName
+	function relatedmodule() {
+		return $this->data['relatedmodule'];
 	}
 	
 }

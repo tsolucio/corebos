@@ -1,5 +1,4 @@
 <?php
-
 /*******************************************************************************
  * The contents of this file are subject to the following licences:
  * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
@@ -36,6 +35,7 @@ $mod_strings = array(
 	'LBL_ZIP_FILE_ADD_FAILURE' => 'Toevoegen bestand Mislukt',
 	'LBL_FTP_CONNECT_FAILED' => 'FTP connectie Mislukt',
 	'LBL_FTP_LOGIN_FAILED' => 'FTP login Mislukt',
+	'Native Backup' => 'Native Backup',
+	'External Backup' => 'External Backup',
 );
-
 ?>

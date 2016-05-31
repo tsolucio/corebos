@@ -160,6 +160,7 @@ $mod_strings = array(
 	'S&H Amount' => 'S&H Amount',
 	'SalesOrder No' => 'Sales Order No.',
 	'Recurring Invoice Information' => 'Recurring Invoice Information',
+	'RecurringInvoice' => 'Recurring Invoice',
 	'Enable Recurring' => 'Enable Recurring',
 	'Frequency' => 'Frequency',
 	'Start Period' => 'Start Period',
@@ -171,5 +172,7 @@ $mod_strings = array(
 	'Net 45 days' => 'Net 45 days',
 	'Net 60 days' => 'Net 60 days',
 	'SalesOrder ID' => 'Sales Order ID',
+	'half-year'=>'Half Year',
+
 );
 ?>

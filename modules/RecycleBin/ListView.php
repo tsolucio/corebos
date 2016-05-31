@@ -126,7 +126,7 @@ if(count($module_name) > 0)
 
 	$list_result = $adb->query($list_query. " LIMIT ".$limit_start_rec.",".$list_max_entries_per_page);
 
-	$record_string= $app_strings[LBL_SHOWING]." " .$start_rec." - ".$end_rec." " .$app_strings[LBL_LIST_OF] ." ".$noofrows;
+	$record_string= $app_strings['LBL_SHOWING']." " .$start_rec." - ".$end_rec." " .$app_strings['LBL_LIST_OF'] ." ".$noofrows;
 
 	$navigationOutput = getTableHeaderNavigation($navigation_array, $url_string,"Recyclebin","index","");
 
@@ -159,6 +159,7 @@ $category = getParentTab();;
 
 $check_button = Button_Check($_REQUEST['module']);
 $check_button['EditView'] = 'no';
+$check_button['CreateView'] = 'no';
 $smarty->assign("CHECK", $check_button);
 
 $smarty->assign("ALPHABETICAL", $alphabetical);

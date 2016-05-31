@@ -1,5 +1,4 @@
 {*<!--
-
 /*********************************************************************************
 ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
@@ -7,9 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
 -->*}
 
 {*<!-- module header -->*}
@@ -23,7 +20,7 @@
 
 	<table border=0 cellspacing=0 cellpadding=0>
 	<tr>
-	<td>{include file="Buttons_List1.tpl"}</td>		
+	<td>{include file="Buttons_List1.tpl"}</td>
 	<td style="width:20px">&nbsp;</td>
 	<td>
 		<table border=0 cellspacing=0 cellpadding=0>
@@ -45,7 +42,6 @@
 	</tr>
 	<tr><td style="height:2px"></td></tr>
 </TABLE>
-
 
 <div id="reportContents">
 	{include file="ReportContents.tpl"}
@@ -90,7 +86,7 @@
 <!-- END OF POPUP LAYER -->
 
 <!-- Add new Folder UI starts -->
-<div id="orgLay" style="display:none;width:350px;" class="layerPopup">
+<div id="orgLay" style="display:none;" class="layerPopup">
 	<table border=0 cellspacing=0 cellpadding=5 width=100% class=layerHeadingULine>
 	<tr>
 		<td class="genHeaderSmall" nowrap align="left" width="30%" id="editfolder_info">{$MOD.LBL_ADD_NEW_GROUP}</td>
@@ -127,9 +123,6 @@
 	</table>
 </div>
 <!-- Add new folder UI ends -->
-
-
-
 
 {*<!-- Contents -->*}
 {literal}

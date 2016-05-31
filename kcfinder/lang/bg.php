@@ -1,11 +1,13 @@
 <?php
 
 /** Bulgarian localization file for KCFinder
-  * author: Pavel Tzonkov <pavelc@users.sourceforge.net>
+  * author: Pavel Tzonkov <sunhater@sunhater.com>
   */
 
 $lang = array(
 
+    '_lang' => "Bulgarian",
+    '_native' => "Български",
     '_locale' => "bg_BG.UTF-8",  // UNIX localization code
     '_charset' => "utf-8",       // Browser charset
 
@@ -95,8 +97,9 @@ $lang = array(
     "Are you sure you want to delete this file?" =>
     "Наистина ли искате да изтриете този файл?",
 
+
     "Are you sure you want to delete this folder and all its content?" =>
-    "Наистина ли искате да изтриете тази папка и цялото й съдържание?",
+    "Наистина ли искате да изтриете тази папка и цялото ѝ съдържание?",
 
     "Non-existing directory type." =>
     "Несъществуващ специален тип на папка.",
@@ -233,6 +236,43 @@ $lang = array(
     "Download" => "Свали",
     "Download files" => "Свали файловете",
     "Clipboard" => "Клипборд",
-);
 
-?>
+    // SINCE 2.4
+
+    "Checking for new version..." => "Проверка за нова версия...",
+    "Unable to connect!" => "Не може да се свърже!",
+    "Download version {version} now!" => "Свалете версия {version} сега!",
+    "KCFinder is up to date!" => "KCFinder е актуален!",
+    "Licenses:" => "Лицензи:",
+    "Attention" => "Внимание",
+    "Question" => "Въпрос",
+    "Yes" => "Да",
+    "No" => "Не",
+
+    // SINCE 2.41
+
+    "You cannot rename the extension of files!" =>
+    "Не можете да преименувате разширенията на файловете!",
+
+    // SINCE 2.5
+
+    "Uploading file {number} of {count}... {progress}" =>
+    "Качване на файл {number} от {count}... {progress}",
+
+    "Failed to upload {filename}!" => "Несполучливо качване на {filename}!",
+
+    // SINCE 3.0
+
+    "Close" => "Затвори",
+    "Previous" => "Предишно",
+    "Next" => "Следващо",
+    "Confirmation" => "Потвърждение",
+    "Warning" => "Внимание",
+
+    // SINCE 3.20
+
+    "Uploading files" => "Качване на файлове",
+    "Uploading file {current} of {count}" => "Качване на файл {current} от общо {count}",
+    "Uploaded {uploaded} of {total}" => "Качено {uploaded} от общо {total}",
+    "Errors:" => "Грешки:"
+);

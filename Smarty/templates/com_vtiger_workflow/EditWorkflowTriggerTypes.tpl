@@ -42,11 +42,6 @@
 		<td class="big" nowrap="nowrap">
 			<strong>{$MOD.LBL_WHEN_TO_RUN_WORKFLOW}</strong>
 		</td>
-		<td width="5%" align="right">
-			<a href="{$WORKFLOW_TRIGGER_TYPES_HELP_LINK}" target="_blank" style="cursor:pointer;">
-				<img border="0" title="" alt="" src="{'help_icon.gif'|@vtiger_imageURL:$THEME}" />
-			</a>
-		</td>
 	</tr>
 </table>
 <table border="0" >
@@ -144,6 +139,9 @@
 			</div>
 		{/if}
 		</td></tr>
+	<tr><td><input type="radio" name="execution_condition" value="RECORD_ACCESS_CONTROL" onclick="onschedule_preparescreen(this);"
+		{if $workflow->executionConditionAsLabel() eq 'RECORD_ACCESS_CONTROL'}checked{/if} /></td>
+		<td>{$MOD.LBL_RECORD_ACCESS_CONTROL}.</td></tr>
 	<tr><td><input type="radio" name="execution_condition" value="MANUAL"
 		{if $workflow->executionConditionAsLabel() eq 'MANUAL'}checked{/if} disabled /></td>
 		<td>{$MOD.LBL_MANUAL}.</td></tr>

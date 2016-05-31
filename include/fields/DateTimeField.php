@@ -19,9 +19,9 @@ class DateTimeField {
 	 *
 	 * @param type $value
 	 */
-	public function __construct($value) {
+	public function __construct($value='') {
 		if(empty($value)) {
-			$value = date("Y-m-d H:i:s");
+			$value = date('Y-m-d H:i:s');
 		}
 		$this->date = null;
 		$this->time = null;
@@ -45,7 +45,7 @@ class DateTimeField {
 			$date = self::convertToDBTimeZone($this->datetime, $user);
 			$insert_date = $date->format('Y-m-d');
 		} else {
-			$insert_date = self::convertToDBFormat($value[0]);
+			$insert_date = self::convertToDBFormat($value[0], $user);
 		}
 		$log->debug("Exiting getDBInsertDateValue method ...");
 		return $insert_date;
@@ -57,8 +57,7 @@ class DateTimeField {
 	 * @return String
 	 */
 	public function getDBInsertDateTimeValue($user = null) {
-		return $this->getDBInsertDateValue($user) . ' ' .
-				$this->getDBInsertTimeValue($user);
+		return $this->getDBInsertDateValue($user) . ' ' . $this->getDBInsertTimeValue($user);
 	}
 
 	public function getDisplayDateTimeValue ($user = null) {
@@ -78,7 +77,7 @@ class DateTimeField {
 			$user = $current_user;
 		}
 
-		$format = $current_user->date_format;
+		$format = $user->date_format;
 		if(empty($format)) {
 			$format = 'dd-mm-yyyy';
 		}
@@ -93,7 +92,7 @@ class DateTimeField {
 	 * @return string
 	 */
 	public static function __convertToDBFormat($date, $format) {
-
+		if(empty($date)) return $date;
 		if ($format == '') {
 			$format = 'dd-mm-yyyy';
 		}
@@ -129,7 +128,7 @@ class DateTimeField {
 	/**
 	 *
 	 * @global Users $current_user
-	 * @param type $date
+	 * @param type $date in ISO Y-m-d format
 	 * @param Users $user
 	 * @return type
 	 */
@@ -147,11 +146,12 @@ class DateTimeField {
 
 	/**
 	 *
-	 * @param type $date
+	 * @param type $date in ISO Y-m-d format
 	 * @param type $format
 	 * @return type
 	 */
 	public static function __convertToUserFormat($date, $format) {
+		if (empty($date)) return $date;
 		$date = self::convertToInternalFormat($date);
 		list($y, $m, $d) = explode('-', $date[0]);
 
@@ -188,7 +188,7 @@ class DateTimeField {
 	/**
 	 *
 	 * @global Users $current_user
-	 * @param type $value
+	 * @param type date/time $value
 	 * @param Users $user
 	 */
 	public static function convertToDBTimeZone( $value, $user = null ) {
@@ -293,6 +293,7 @@ class DateTimeField {
 			$user = $current_user;
 		}
 
+		// No need to modify dd-mm-yyyy nor yyyy-mm-dd because PHP knows how to resolve those correctly.
 		if($user->date_format == 'mm-dd-yyyy') {
 			list($date, $time) = explode(' ', $value);
 			if(!empty($date)) {

@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
 -->*}
 <table id="field_table" class="small" border="0" cellpadding="5" cellspacing="1" width="100%">
@@ -24,17 +23,17 @@
 	<tr style="height:25px" id="field_row">
 		<td class="dvtCellInfo" align="right" colspan="1">
 		{if $field.mandatory eq 1}
-			<input type="checkbox" name="fields[]"  checked="checked"  value="{$field.name}" record="true" disabled="true">
-			<input type="hidden" name="fields[]"  value="{$field.name}" record="true" >
+			<input type="checkbox" name="fields[]" checked="checked" value="{$field.name}" record="true" disabled="true">
+			<input type="hidden" name="fields[]" value="{$field.name}" record="true" >
 		{else}
 			{if $WEBFORMID}
 				{if $WEBFORM->isWebformField($WEBFORMID,$field.name) eq true}
-					<input type="checkbox" name="fields[]"  record="false" checked="checked" value="{$field.name}" onClick=Webforms.showHideElement('value[{$field.name}]','required[{$field.name}]','jscal_trigger_{$field.name}','mincal_{$field.name}')>
+					<input type="checkbox" name="fields[]" record="false" checked="checked" value="{$field.name}" onClick=Webforms.showHideElement('value[{$field.name}]','required[{$field.name}]','jscal_trigger_{$field.name}','mincal_{$field.name}')>
 				{else}
-					<input type="checkbox" name="fields[]"   record="false" value="{$field.name}" onClick=Webforms.showHideElement('value[{$field.name}]','required[{$field.name}]','jscal_trigger_{$field.name}','mincal_{$field.name}')>
+					<input type="checkbox" name="fields[]" record="false" value="{$field.name}" onClick=Webforms.showHideElement('value[{$field.name}]','required[{$field.name}]','jscal_trigger_{$field.name}','mincal_{$field.name}')>
 				{/if}
 			{else}
-					<input type="checkbox" name="fields[]"  record="false" value="{$field.name}" onClick=Webforms.showHideElement('value[{$field.name}]','required[{$field.name}]','jscal_trigger_{$field.name}','mincal_{$field.name}')>
+					<input type="checkbox" name="fields[]" record="false" value="{$field.name}" onClick=Webforms.showHideElement('value[{$field.name}]','required[{$field.name}]','jscal_trigger_{$field.name}','mincal_{$field.name}')>
 			{/if}
 		{/if}
 		</td>
@@ -55,17 +54,16 @@
 					{/foreach}
 				</select>
 			{elseif $field.type.name eq date}
-			<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="value[{$field.name}]"  name="value[{$field.name}]" value="{$defaultvalue[0]}" >
-												<img src="{'miniCalendar.gif'|@vtiger_imageurl:$THEME}" id="jscal_trigger_{$field.name}">
-												<font size=1 id="mincal_{$field.name}"><em old="(yyyy-mm-dd)">({$DATE_FORMAT})</em></font>
-												<script id="date_{$CNT}">
-													getCalendarPopup('jscal_trigger_{$field.name}','value[{$field.name}]','{$CAL_DATE_FORMAT}')
-												</script>
+				<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="value[{$field.name}]" name="value[{$field.name}]" value="{$defaultvalue[0]}">
+				<img src="{'miniCalendar.gif'|@vtiger_imageurl:$THEME}" id="jscal_trigger_{$field.name}">
+				<font size=1 id="mincal_{$field.name}"><em old="(yyyy-mm-dd)">({$DATE_FORMAT})</em></font>
+				<script id="date_{$CNT}">
+					getCalendarPopup('jscal_trigger_{$field.name}','value[{$field.name}]','{$CAL_DATE_FORMAT}')
+				</script>
 			{elseif $field.type.name eq text}
-					<textarea fieldtype="{$field.type.name}" fieldlabel="{$field.label}" rows="2" onblur="this.className='detailedViewTextBox'" onfocus="this.className='detailedViewTextBoxOn'" class="detailedViewTextBox"  id="value[{$field.name}]" name="value[{$field.name}]"  value="{$defaultvalue[0]}">{$defaultvalue[0]}</textarea>
-			
+				<textarea fieldtype="{$field.type.name}" fieldlabel="{$field.label}" rows="2" onblur="this.className='detailedViewTextBox'" onfocus="this.className='detailedViewTextBoxOn'" class="detailedViewTextBox" id="value[{$field.name}]" name="value[{$field.name}]" value="{$defaultvalue[0]}">{$defaultvalue[0]}</textarea>
 			{elseif $field.type.name eq boolean}
-					<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="checkbox"  id="value[{$field.name}]" name="value[{$field.name}]" {if $defaultvalue[0] eq 'on'}checked="checked"{/if}" >
+				<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="checkbox" id="value[{$field.name}]" name="value[{$field.name}]" {if $defaultvalue[0] eq 'on'}checked="checked"{/if}" >
 			{else}
 					{if $field.name eq salutationtype}
 							<select fieldtype="{$field.type.name}" fieldlabel="{$field.label}" class="small" id="value[{$field.name}]" name="value[{$field.name}]">
@@ -77,7 +75,7 @@
 								<option value="Prof." {if $WEBFORM->retrieveDefaultValue($WEBFORMID,$field.name) eq "Prof."}selected="selected"{/if}>Prof</option>
 							</select>
 					{else}
-						<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="value[{$field.name}]"  name="value[{$field.name}]" value="{$defaultvalue[0]}" style="display:inline;"></input>
+						<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="value[{$field.name}]" name="value[{$field.name}]" value="{$defaultvalue[0]}" style="display:inline;"></input>
 					{/if}
 			{/if}
 		{else}
@@ -90,16 +88,16 @@
 						{/foreach}
 					</select>
 				{elseif $field.type.name eq date}
-				<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="value[{$field.name}]"  name="value[{$field.name}]" value="{$field.default}" >
-												<img src="{'miniCalendar.gif'|@vtiger_imageurl:$THEME}" id="jscal_trigger_{$field.name}" >
-												<font size=1 id="mincal_{$field.name}"><em old="(yyyy-mm-dd)">({$DATE_FORMAT})</em></font>
-												<script id="date_{$CNT}">
-													getCalendarPopup('jscal_trigger_{$field.name}','value[{$field.name}]','{$CAL_DATE_FORMAT}')
-												</script>
+					<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="value[{$field.name}]" name="value[{$field.name}]" value="{$field.default}">
+					<img src="{'miniCalendar.gif'|@vtiger_imageurl:$THEME}" id="jscal_trigger_{$field.name}" >
+					<font size=1 id="mincal_{$field.name}"><em old="(yyyy-mm-dd)">({$DATE_FORMAT})</em></font>
+					<script id="date_{$CNT}">
+						getCalendarPopup('jscal_trigger_{$field.name}','value[{$field.name}]','{$CAL_DATE_FORMAT}')
+					</script>
 				{elseif $field.type.name eq text}
-						<textarea fieldtype="{$field.type.name}" fieldlabel="{$field.label}" rows="2" onblur="this.className='detailedViewTextBox'" onfocus="this.className='detailedViewTextBoxOn'" class="detailedViewTextBox"  id="value[{$field.name}]" name="value[{$field.name}]"  value="$field.default" style="display:inline;">{$field.default}</textarea>
+					<textarea fieldtype="{$field.type.name}" fieldlabel="{$field.label}" rows="2" onblur="this.className='detailedViewTextBox'" onfocus="this.className='detailedViewTextBoxOn'" class="detailedViewTextBox" id="value[{$field.name}]" name="value[{$field.name}]" value="$field.default" style="display:inline;">{$field.default}</textarea>
 				{elseif $field.type.name eq boolean}
-					<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="checkbox"  id="value[{$field.name}]" name="value[{$field.name}]" style="display:inline;" {if $field.default}checked="checked"{/if} >
+					<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="checkbox" id="value[{$field.name}]" name="value[{$field.name}]" style="display:inline;" {if $field.default}checked="checked"{/if} >
 				{else}
 						{if $field.name eq salutationtype}
 							<select fieldtype="{$field.type.name}" fieldlabel="{$field.label}" class="small" id="value[{$field.name}]" name="value[{$field.name}]">
@@ -111,7 +109,7 @@
 								<option value="Prof." {if $field.default eq "Prof."}selected="selected"{/if}>Prof</option>
 							</select>
 						{else}
-							<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="value[{$field.name}]"  name="value[{$field.name}]" value="{$field.default}" style="display:inline;"></input>
+							<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="value[{$field.name}]" name="value[{$field.name}]" value="{$field.default}" style="display:inline;"></input>
 						{/if}
 				{/if}
 			{else}
@@ -123,16 +121,16 @@
 						{/foreach}
 					</select>
 				{elseif $field.type.name eq date}
-				<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="value[{$field.name}]"  name="value[{$field.name}]" value="{$field.default}" style="display:none;">
-												<img src="{'miniCalendar.gif'|@vtiger_imageurl:$THEME}" id="jscal_trigger_{$field.name}" style="display:none;">
-												<font size=1 id="mincal_{$field.name}" style="display:none;"><em old="(yyyy-mm-dd)">({$DATE_FORMAT})</em></font>
-												<script id="date_{$CNT}">
-													getCalendarPopup('jscal_trigger_{$field.name}','value[{$field.name}]','{$CAL_DATE_FORMAT}')
-												</script>
+					<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="value[{$field.name}]" name="value[{$field.name}]" value="{$field.default}" style="display:none;">
+					<img src="{'miniCalendar.gif'|@vtiger_imageurl:$THEME}" id="jscal_trigger_{$field.name}" style="display:none;">
+					<font size=1 id="mincal_{$field.name}" style="display:none;"><em old="(yyyy-mm-dd)">({$DATE_FORMAT})</em></font>
+					<script id="date_{$CNT}">
+						getCalendarPopup('jscal_trigger_{$field.name}','value[{$field.name}]','{$CAL_DATE_FORMAT}')
+					</script>
 				{elseif $field.type.name eq text}
-						<textarea fieldtype="{$field.type.name}" fieldlabel="{$field.label}" rows="2" onblur="this.className='detailedViewTextBox'" onfocus="this.className='detailedViewTextBoxOn'" class="detailedViewTextBox"  id="value[{$field.name}]" name="value[{$field.name}]"  value="{$field.default}" style="display:none;">{$field.default}</textarea>
+					<textarea fieldtype="{$field.type.name}" fieldlabel="{$field.label}" rows="2" onblur="this.className='detailedViewTextBox'" onfocus="this.className='detailedViewTextBoxOn'" class="detailedViewTextBox" id="value[{$field.name}]" name="value[{$field.name}]" value="{$field.default}" style="display:none;">{$field.default}</textarea>
 				{elseif $field.type.name eq boolean}
-					<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="checkbox"  id="value[{$field.name}]" name="value[{$field.name}]" style="display:none;" {if $field.default}checked="checked"{/if}>
+					<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="checkbox" id="value[{$field.name}]" name="value[{$field.name}]" style="display:none;" {if $field.default}checked="checked"{/if}>
 				{else}
 						{if $field.name eq salutationtype}
 							<select fieldtype="{$field.type.name}" fieldlabel="{$field.label}" class="small" id="value[{$field.name}]" name="value[{$field.name}]" style="display:none;">
@@ -144,7 +142,7 @@
 								<option value="Prof." {if $field.default eq "Prof."}selected="selected"{/if}>Prof</option>
 							</select>
 						{else}
-							<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="value[{$field.name}]"  name="value[{$field.name}]" value="{$field.default}" style="display:none;"></input>
+							<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="value[{$field.name}]" name="value[{$field.name}]" value="{$field.default}" style="display:none;"></input>
 						{/if}
 				{/if}
 			{/if}
@@ -152,15 +150,15 @@
 		</td>
 		<td class="dvtCellInfo" align="center" colspan="1">
 			{if $field.mandatory eq 1}
-				<input  type="checkbox" checked="checked" disabled="disabled" value="{$field.name}" style="display:inline;" >
+				<input type="checkbox" checked="checked" disabled="disabled" value="{$field.name}" style="display:inline;" >
 				<input type="hidden" id="required[{$field.name}]" name="required[]" value="{$field.name}"></input>
 			{else}
 				{if $WEBFORMID}
 					{if $WEBFORM->isWebformField($WEBFORMID,$field.name) eq true && $WEBFORM->isRequired($WEBFORMID,$field.name) eq true}
-						<input  type="checkbox" id="required[{$field.name}]" name="required[]" value="{$field.name}" checked="checked" style="display:inline;" >
+						<input type="checkbox" id="required[{$field.name}]" name="required[]" value="{$field.name}" checked="checked" style="display:inline;" >
 					{else}
 						{if $WEBFORM->isWebformField($WEBFORMID,$field.name)}
-							<input  type="checkbox" id="required[{$field.name}]" name="required[]" value="{$field.name}" style="display:inline;">
+							<input type="checkbox" id="required[{$field.name}]" name="required[]" value="{$field.name}" style="display:inline;">
 						{else}
 							<input type="checkbox" id="required[{$field.name}]" name="required[]" value="{$field.name}" style="display:none;">
 						{/if}

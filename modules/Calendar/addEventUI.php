@@ -677,7 +677,7 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 							<td colspan="2">
 								<input name="contactidlist" id="contactidlist" value="" type="hidden">
 								<input name="deletecntlist" id="deletecntlist" type="hidden">
-								<select name="contactlist" size="5" style="height: 85px;width:150px;"  id="parentid" class="small" multiple>
+								<select name="contactlist" size="5" style="height: 85px;width:150px;" id="parentid" class="small" multiple>
 								</select>
 								<input type="button" onclick="selectContact('true','general',document.EditView);" class="crmButton small edit" name="selectcnt" value="<?php echo $mod_strings['LBL_SELECT_CONTACT'] ; ?>">
 								<input type='button' value='<?php echo $app_strings['LNK_DELETE']; ?>' class="crmButton small edit" onclick='removeActContacts();'>
@@ -706,8 +706,7 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 	</table>
   </form>
   </div>
-							 
-	<!-- Add Activity DIV stops-->
+<!-- Add Activity DIV stops-->
 
 <div id="eventcalAction" class="calAction" style="width:125px;" onMouseout="fninvsh('eventcalAction')" onMouseover="fnvshNrm('eventcalAction')">
 	<table width="100%" cellpadding="0" cellspacing="0" border="0" bgcolor="#FFFFFF">
@@ -778,7 +777,7 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 </table>
 </div>
 <div class="calAddEvent layerPopup" style="display:none;width:700px;left:200px;" id="createTodo" align=center>
-<form name="createTodo" onSubmit="task_check_form();if(formValidate()) { VtigerJS_DialogBox.block(); } else { return false; }" method="POST" action="index.php">
+<form name="createTodo" onSubmit="task_check_form();return formValidate();" method="POST" action="index.php">
 <input type="hidden" name="return_action" value="index">
 <input type="hidden" name="return_module" value="Calendar">
   <input type="hidden" name="module" value="Calendar">

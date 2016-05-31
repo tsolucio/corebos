@@ -131,8 +131,7 @@ $util = new VTWorkflowUtils();
 $adminUser = $util->adminUser();
 $entityCache = new VTEntityCache($adminUser);
 $wfs = new VTWorkflowManager($adb);
-$result = $adb->pquery('select workflow_id, module_name, summary, test, execution_condition, type
-			from com_vtiger_workflows where workflow_id=?',array($workflowid_to_evaluate));
+$result = $adb->pquery('select * from com_vtiger_workflows where workflow_id=?',array($workflowid_to_evaluate));
 if (!$result or $adb->num_rows($result)==0) {
 	echo "<h2>Incorrect workflowid:</h2>";
 	echo "<b>workflowid</b> could not be found as a valid workflow<br>";
@@ -147,6 +146,13 @@ if ($workflows[$workflowid_to_evaluate]->executionCondition==VTWorkflowManager::
 	$workflowScheduler = new WorkFlowScheduler($adb);
 	$query = $workflowScheduler->getWorkflowQuery($workflow);
 	echo "<span style='font-size: large;'>$query</span>";
+	$wfcandidatesrs = $adb->pquery('SELECT * FROM com_vtiger_workflows WHERE workflow_id = ?',array($workflowid_to_evaluate));
+	echo '<br><br><table border=1><tr><th>workflow</th><th>module</th><th>next trigger</th></tr>';
+	while ($cwf=$adb->fetch_array($wfcandidatesrs)) {
+		echo '<tr><td><a href="'.$site_url.'index.php?module=com_vtiger_workflow&action=editworkflow&return_url=index.php&workflow_id='.$cwf['workflow_id'].'">'.$cwf['summary'].'</a></td><td>'.$cwf['module_name'].'</td><td>'.$cwf['nexttrigger_time'].'</td></tr>';
+	}
+	$ntt = $workflow->getNextTriggerTime();
+	echo '</table><br><br>&nbsp;Next trigger time if launched now: '.$ntt;
 } else {
 	echo "<h2>Launch Conditions:</h2>";
 	echo "<span style='font-size: large;'>";
@@ -170,19 +176,20 @@ if ($workflows[$workflowid_to_evaluate]->executionCondition==VTWorkflowManager::
 	$eval = $workflow->evaluate($entityCache, $crm_record_to_evaluate);
 	var_dump($eval);
 	echo '</span>';
-	$tm = new VTTaskManager($adb);
-	$taskQueue = new VTTaskQueue($adb);
-	$tasks = $tm->getTasksForWorkflow($workflow->id);
-	foreach($tasks as $task){
-		if(is_object($task) and $task->active and get_class($task) == 'VTEmailTask') {
-			echo "<br><br><b>** EMail TASK **</b><br><br>";
-			$email = evalwfEmailTask($crm_record_to_evaluate,$task);
-			foreach ($email as $key => $value) {
-				echo "<h2>$key</h2>$value <br><hr>";
-			}
+}
+$tm = new VTTaskManager($adb);
+$taskQueue = new VTTaskQueue($adb);
+$tasks = $tm->getTasksForWorkflow($workflow->id);
+foreach($tasks as $task){
+	if(is_object($task) and $task->active and get_class($task) == 'VTEmailTask') {
+		echo "<br><br><b>** EMail TASK **</b><br><br>";
+		$email = evalwfEmailTask($crm_record_to_evaluate,$task);
+		foreach ($email as $key => $value) {
+			echo "<h2>$key</h2>$value <br><hr>";
 		}
 	}
 }
+
 ?>
 </table>
 </body>

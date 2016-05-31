@@ -64,6 +64,12 @@ if($no_of_salesorder > 0) {
 				continue;
 			}
 		}
+		if (strtolower($recurring_frequency) == 'half-year') {
+			$next_recurring_date = date('Y-m-d', strtotime("+6 month", mktime(0, 0, 0, $m, $d, $y)));
+			if(strtotime($next_recurring_date) > strtotime($end_period) || strtotime($next_recurring_date) > strtotime(date('Y-m-d'))) {
+				continue;
+			}
+		}
 		if (strtolower($recurring_frequency) == 'yearly') {
 			$next_recurring_date = date('Y-m-d', strtotime("+1 year", mktime(0, 0, 0, $m, $d, $y)));
 			if(strtotime($next_recurring_date) > strtotime($end_period) || strtotime($next_recurring_date) > strtotime(date('Y-m-d'))) {

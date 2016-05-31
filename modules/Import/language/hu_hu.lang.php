@@ -6,11 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- ************************************************************************************/
- /*********************************************************************************
- * $Header:  \modules\ConfigEditor\language\hu_hu.lang.php - 9:46 2011.11.11. $
- * Description:  Defines the Hungarian language pack for the ConfigEditor module vtiger 5.3.x
- * All Rights Reserved.
  * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
  ********************************************************************************/
 
@@ -62,6 +57,7 @@ $mod_strings = array(
 	'ERR_UNIMPORTED_RECORDS_IN_QUEUE' => 'Még fel nem dolgozott rekordok vannak a várósorban',
 	'ERR_FILE_READ_FAILED' => 'A fájl olvasás nem sikerült',
 	'LBL_IMPORT_SCHEDULED' => 'Időzített importálás',
+	'Scheduled Import' => 'Időzített importálás',
 	'LBL_SCHEDULED_IMPORT_DETAILS' => 'Az importálást időzítettük neked, és kapsz majd egy e-mailt, ha befejeződött. <br>Ellenőrizd, hogy a kimenő SMTP szerver és az e-mail címed be van-e helyesen állítva a levélküldéshez.',
 	'ERR_DETAILS_BELOW' => 'Részletek listázása',
 	'LBL_ERROR' => 'Hiba:',
@@ -231,6 +227,11 @@ $mod_strings = array(
 	'LBL_FORMAT' => 'Formátum:',
 	'LBL_MAX_FILE_SIZE' => ' a maximális megengedett fájlméret',
 	'LBL_MERGE_FIELDS_DUPLICATE' => 'Mezők összefűzése a beolvasott rekordok duplikálása végett',
-	'Customer Portal Login Details' => 'Ügyfélszolgálati portál belépési adatok'
+	'Customer Portal Login Details' => 'Ügyfélszolgálati portál belépési adatok',
+	'LBL_FILE_UPLOAD_FAILED' => 'File upload failed',
+	'LBL_IMPORT_ERROR_LARGE_FILE' => 'File is to big to upload. The maximum upload size (',
+	'LBL_IMPORT_CHANGE_UPLOAD_SIZE' => ') may be incremented in your PHP configuration',
+	'LBL_IMPORT_DIRECTORY_NOT_WRITABLE' => 'Import Directory is not writable',
+	'LBL_IMPORT_FILE_COPY_FAILED' => 'Error copying file to import. Check file system permissions',
 );
 ?>

@@ -15,7 +15,7 @@
 	var validator;
 	edittaskscript(jQuery);
 {if $task->test}
-	var conditions = JSON.parse('{$task->test}');
+	var conditions = JSON.parse('{$task->test|@addslashes}');
 {else}
 	var conditions = null;
 {/if}

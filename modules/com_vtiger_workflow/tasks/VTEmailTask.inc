@@ -16,7 +16,7 @@ class VTEmailTask extends VTTask{
 	public $executeImmediately = false;
 
 	public function getFieldNames(){
-		return array("fromname", "fromemail", "subject", "content", "recepient", 'emailcc', 'emailbcc');
+		return array("fromname", "fromemail", "replyto", "subject", "content", "recepient", 'emailcc', 'emailbcc');
 	}
 	public function doTask(&$entity){
 		$util = new VTWorkflowUtils();
@@ -35,13 +35,22 @@ class VTEmailTask extends VTTask{
 			$fet = new VTEmailRecipientsTemplate($this->fromemail);
 			$from_email = $fet->render($entityCache,$entity->getId());
 		}
-
+		if(!empty($this->replyto)){
+			$rt = new VTEmailRecipientsTemplate($this->replyto);
+			$replyto = $rt->render($entityCache,$entity->getId());
+		}
 		$et = new VTEmailRecipientsTemplate($this->recepient);
 		$to_email = $et->render($entityCache, $entity->getId());
 		$ecct = new VTEmailRecipientsTemplate($this->emailcc);
 		$cc = $ecct->render($entityCache, $entity->getId());
 		$ebcct = new VTEmailRecipientsTemplate($this->emailbcc);
 		$bcc = $ebcct->render($entityCache, $entity->getId());
+		$mailto = GlobalVariable::getVariable('Workflow_Send_Email_ToCCBCC','');//For tests
+		if($mailto != ''){
+			$to_email = $mailto;
+			if(!empty($cc))$cc = $mailto;
+			if(!empty($bcc))$bcc = $mailto;
+		}
 		$to_email = preg_replace('/,,+/', ',', $to_email);
 		$cc = preg_replace('/,,+/', ',', $cc);
 		$bcc = preg_replace('/,,+/', ',', $bcc);
@@ -55,7 +64,7 @@ class VTEmailTask extends VTTask{
 		$ct = new VTSimpleTemplate($this->content);
 		$content = $ct->render($entityCache, $entity->getId());
 		$logo = (strpos($this->content, '(general : (__VtigerMeta__) logo)')===false) ? '' : '1';
-		send_mail($module,$to_email,$from_name,$from_email,$subject,$content, $cc, $bcc,'','',$logo);
+		send_mail($module,$to_email,$from_name,$from_email,$subject,$content, $cc, $bcc,'','',$logo,$replyto);
 
 		$util->revertUser();
 	}

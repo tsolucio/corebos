@@ -49,7 +49,7 @@ $mod_strings = array(
 'LBL_SET_EXPRESSION'=>'Imposta Espressione',
 
 'LBL_MANUAL'=>'Sistema',
-
+'LBL_RECORD_ACCESS_CONTROL' => 'Record Access Control',
 'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL'=>'Nuovo Gruppo di Condizioni',
 
 'VTUpdateFieldsTask' => 'Aggiorna Campi',
@@ -65,6 +65,7 @@ $mod_strings = array(
 'LBL_EMAIL_CC' => 'CC',
 'LBL_EMAIL_BCC' => 'BCC',
 'LBL_EMAIL_SUBJECT' => 'Oggetto',
+'LBL_EMAIL_REPLYTO' => 'Rispondere a',
 
 'LBL_WORKFLOW_NOTE_EVENT_TASK_TIMEZONE' => 'Nota: tutte le date, gli orari e le informazioni ricorrenti per gli eventi,
 													saranno relativi alla Timezone di default, specificata nel file config.inc.php',
@@ -85,6 +86,21 @@ $mod_strings = array(
 'LBL_ENTITY_TYPE' => 'Tipo Oggetto',
 'LBL_SELECT_ENTITY_TYPE' => '-- Seleziona Tipo Oggetto --',
 'LBL_NO_ENTITIES_FOUND' => 'Non sono stati trovati oggetti da creare',
+'LBL_PARENT_OWNER' => 'Parent Record Owner',
+'LBL_SPECIAL_OPTIONS' => 'Special Options',
+'CBTagTask' => 'Add/Delete Tag',
+'Add Tag' => 'Add Tag',
+'Delete Tag' => 'Delete Tag',
+'Tags' => 'Tags',
+'ForAllUsers' => 'For All Users',
+'ForCurrentUser' => 'Only For Current User',
+'CBRelateSales' => 'Relate Product/Service',
+'Relate Product' => 'Relate Product',
+'Relate Service' => 'Relate Service',
+'Relate with AccountVendor' => 'Relate with Account/Vendor',
+'Relate with Contact' => 'Relate with Contact',
+'CBDeleteRelatedTask' => 'Delete Related Records',
+'CBSelectcbMap' => 'Select Business Rule',
 'LBL_HELPDESK_SUPPORT_EMAILID'=>'Helpdesk Support Email-Id',
 'LBL_HELPDESK_SUPPORT_NAME'=>'Nome per Helpdesk',
 'LBL_ORGANIZATION_LOGO' => 'Logo Aziendale',

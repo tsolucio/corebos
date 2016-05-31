@@ -1,27 +1,18 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
- * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Users/Forms.php,v 1.3 2004/11/08 13:48:29 jack Exp $
- * Description:  Contains a variety of utility functions used to display UI
- * components such as form headers and footers.  Intended to be modified on a per
- * theme basis.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
+/*************************************************************************************************
+ * Copyright 2016 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
+ * file except in compliance with the License. You can redistribute it and/or modify it
+ * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
+ * granted by the License. coreBOS distributed by JPL TSolucio S.L. is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. Unless required by
+ * applicable law or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT ANY WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language governing
+ * permissions and limitations under the License. You may obtain a copy of the License
+ * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
+ *************************************************************************************************/
 require_once('include/Zend/Json.php');
 /**
  * this function checks if the asterisk server details are set in the database or not
@@ -32,7 +23,6 @@ function checkAsteriskDetails(){
 	$sql = "select * from vtiger_asterisk";
 	$result = $adb->pquery($sql, array());
 	$count = $adb->num_rows($result);
-	
 	if($count > 0){
 		return "true";
 	}else{
@@ -41,18 +31,16 @@ function checkAsteriskDetails(){
 }
 
 /**
- * this function gets the asterisk extensions assigned in vtiger
+ * this function gets the asterisk extensions assigned
  */
 function getAsteriskExtensions(){
 	global $adb, $current_user;
-	
 	$sql = "SELECT * FROM vtiger_asteriskextensions
-            INNER JOIN vtiger_users ON vtiger_users.id = vtiger_asteriskextensions.userid
-            AND vtiger_users.deleted=0 AND status = 'Active'";
+		INNER JOIN vtiger_users ON vtiger_users.id = vtiger_asteriskextensions.userid
+		AND vtiger_users.deleted=0 AND status = 'Active'";
 	$result = $adb->pquery($sql, array());
 	$count = $adb->num_rows($result);
 	$data = array();
-	
 	for($i=0;$i<$count;$i++){
 		$user = $adb->query_result($result, $i, "userid");
 		$extension = $adb->query_result($result, $i, "asterisk_extension");
@@ -67,11 +55,9 @@ function getAsteriskExtensions(){
  * Create javascript to validate the data entered into a record.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
- * Contributor(s): ______________________________________..
  */
 function get_validate_record_js () {
-global $mod_strings;
-global $app_strings, $current_user;
+global $mod_strings, $app_strings, $current_user;
 
 $lbl_last_name = $mod_strings['LBL_LIST_LAST_NAME'];
 $lbl_user_name = $mod_strings['LBL_LIST_USER_NAME'];
@@ -88,6 +74,7 @@ $email_field_is = $app_strings['EMAIL_FILED_IS'].$err_invalid_email_address;
 $other_email_field_is = $app_strings['OTHER_EMAIL_FILED_IS'].$err_invalid_email_address;
 $secondary_email_field_is = $app_strings['SECONDARY_EMAIL_FILED_IS'].$err_invalid_secondary_email_address; 
 $lbl_asterisk_details_not_set = $app_strings['LBL_ASTERISK_SET_ERROR'];
+$lbl_currency_separators_incorrect = getTranslatedString('LBL_CURRENCY_SEPARATORS_INCORRECT','Users');
 
 //check asteriskdetails start
 $checkAsteriskDetails = checkAsteriskDetails();
@@ -99,17 +86,16 @@ $extensions_list = Zend_Json::encode($extensions);
 //check asteriskdetails end
 
 $the_script  = <<<EOQ
-
 <script language="JavaScript" type="text/javascript" src="include/js/json.js"></script>
 <script type="text/javascript" language="Javascript">
 <!--  to hide script contents from old browsers
 function set_fieldfocus(errorMessage,oMiss_field){
-		alert("$err_missing_required_fields" + errorMessage);
-		oMiss_field.focus();	
+	alert("$err_missing_required_fields" + errorMessage);
+	oMiss_field.focus();
 }
 
 function verify_data(form) {
-        var isError = false;
+	var isError = false;
 	var errorMessage = "";
 	
 	//check if asterisk server details are set or not
@@ -161,7 +147,6 @@ function verify_data(form) {
 		}
 	}
 
-
 	if (trim(form.user_name.value) == "") {
 		isError = true;
 		errorMessage += "\\n$lbl_user_name";
@@ -191,14 +176,17 @@ function verify_data(form) {
 		return false;
 	}
 
-
+	if(form.currency_decimal_separator.value == form.currency_grouping_separator.value) {
+		alert("$lbl_currency_separators_incorrect");
+		form.currency_decimal_separator.focus();
+		return false;
+	}
 
 	if(! upload_filter("imagename", "jpg|gif|bmp|png|JPG|GIF|BMP|PNG") )
 	{
 		form.imagename.focus();
 		return false;
 	}
-
 
 	if(form.mode.value != 'edit')
 	{

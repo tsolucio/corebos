@@ -119,15 +119,6 @@
 ) ENGINE=InnoDB AUTO_INCREMENT=0]]></sql>
 </table>
 <table>
-<name>its4you_calendar4you_profilespermissions</name>
-<sql><![CDATA[CREATE TABLE IF NOT EXISTS `its4you_calendar4you_profilespermissions` (
-  `profileid` int(11) NOT NULL,
-  `operation` int(11) NOT NULL,
-  `permissions` int(1) NOT NULL,
-  PRIMARY KEY (`profileid`,`operation`)
-) ENGINE=InnoDB]]></sql>
-</table>   
-<table>
 <name>its4you_calendar4you_settings</name>
 <sql><![CDATA[CREATE TABLE IF NOT EXISTS `its4you_calendar4you_settings` (
   `userid` int(11) NOT NULL,

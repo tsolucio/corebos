@@ -11,7 +11,6 @@
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('Smarty_setup.php');
 require_once('data/Tracker.php');
 require_once('include/CustomFieldUtil.php');
@@ -28,7 +27,11 @@ $Calendar4You = new Calendar4You();
 
 $Calendar4You->GetDefPermission($current_user->id);
 
-$edit_permissions = $Calendar4You->CheckPermissions("EDIT",$_REQUEST['record']);
+if(isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
+	$edit_permissions = $Calendar4You->CheckPermissions('EDIT',$_REQUEST['record']);
+} else {
+	$edit_permissions = $Calendar4You->CheckPermissions('CREATE',$_REQUEST['record']);
+}
 
 if(!$edit_permissions) {
 	NOPermissionDiv();
@@ -194,10 +197,8 @@ $smarty->assign("ENDHOUR",getTimeCombo($format,'end',$time_arr['endhour'],$time_
 $smarty->assign("FOLLOWUP",getTimeCombo($format,'followup_start',$time_arr['endhour'],$time_arr['endmin'],$time_arr['endfmt']));
 
 if ($Calendar4You->view_all && $Calendar4You->edit_all) {
-    $assigned_user_id = $focus->column_fields["assigned_user_id"];
-    
-    $value["assigned_user_id"] = get_select_options_array(get_user_array(FALSE, "Active", $assigned_user_id), $assigned_user_id);
-
+	$assigned_user_id = $focus->column_fields["assigned_user_id"];
+	$value["assigned_user_id"] = get_select_options_array(get_user_array(FALSE, "Active", $assigned_user_id), $assigned_user_id);
 }
 
 $smarty->assign("ACTIVITYDATA",$value);
@@ -230,7 +231,7 @@ else
 $smarty->assign("NAME", "");
 
 if($focus->mode == 'edit') {
-        $smarty->assign("MODE", $focus->mode);
+	$smarty->assign("MODE", $focus->mode);
 }
 $smarty->assign('CREATEMODE', vtlib_purify($_REQUEST['createmode']));
 

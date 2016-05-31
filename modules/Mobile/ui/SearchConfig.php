@@ -65,3 +65,4 @@ class Mobile_UI_SearchConfig extends Mobile_WS_FetchRecordWithGrouping {
 		return $response;
 	}
 }
+?>

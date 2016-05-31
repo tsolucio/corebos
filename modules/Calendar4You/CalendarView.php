@@ -46,9 +46,10 @@ $smarty->assign('ID', $focus->id);
 $smarty->assign('MODE', $focus->mode);
 
 $viewBox = 'hourview'; 
+$smarty->assign("CREATE_PERMISSION",($Calendar4You->CheckPermissions("CREATE") ? "permitted" : ''));
 
-if($Calendar4You->CheckPermissions("EDIT")) {
-	$smarty->assign('EDIT', 'permitted');
+//if($Calendar4You->CheckPermissions("EDIT")) {
+	$smarty->assign('EDIT', ($Calendar4You->CheckPermissions("EDIT") ? 'permitted' : ''));
 	$hour_startat = timeString(array('hour' => date('H:i', (time() + (5 * 60))), 'minute' => 0), '24');
 	$hour_endat = timeString(array('hour'=>date('H:i',(time() + (60 * 60))),'minute'=>0),'24');
 	$time_arr = getaddITSEventPopupTime($hour_startat,$hour_endat,$Calendar_Settings["hour_format"]);
@@ -98,7 +99,7 @@ if($Calendar4You->CheckPermissions("EDIT")) {
 	}
 	$smarty->assign('TIMEMODULEARRAY', trim($timeModules_array,","));
 	$smarty->assign('TIMEMODULEDETAILS', json_encode($timeModluleDetails));
-}
+//}
 
 //Sunday=0, Monday=1, Tuesday=2, etc.
 $smarty->assign('FISRTDAY', $Calendar_Settings["number_dayoftheweek"]);
@@ -214,7 +215,7 @@ if (isset($_REQUEST["user_view_type"]) && $_REQUEST["user_view_type"] != "") {
 if (strtolower(trim($user_view_type)) == "me") $user_view_type = $current_user->id;
 
 if ($user_view_type == $current_user->id) {
-	$smarty->assign('SHOW_ONLY_ME', 'true'); 
+	$smarty->assign('SHOW_ONLY_ME', 'true');
 }
 
 $smarty->assign('USER_VIEW_TYPE', $user_view_type);
@@ -225,7 +226,7 @@ $smarty->assign('CALENDAR_USERS', $Users);
 $smarty->assign('CURRENT_USER_ID', $current_user->id);
 
 if(isset($tool_buttons)==false) {
-	$tool_buttons = Button_Check($currentModule);
+	$tool_buttons = Button_Check('Calendar');
 }
 
 $smarty->assign('CHECK', $tool_buttons);

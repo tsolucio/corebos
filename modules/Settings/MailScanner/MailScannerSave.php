@@ -6,12 +6,9 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
-
 require_once('modules/Settings/MailScanner/core/MailScannerInfo.php');
 require_once('modules/Settings/MailScanner/core/MailBox.php');
-
 
 $scannername = vtlib_purify(trim($_REQUEST['mailboxinfo_scannername']));
 if(!empty($scannername) && !validateAlphanumericInput($scannername)) {
@@ -50,7 +47,6 @@ if(!$scannerinfo->compare($newscannerinfo)) {
 
 	$isconnected = $mailbox->connect();
 	if($isconnected) $newscannerinfo->connecturl = $mailbox->_imapurl;
-
 } else {
 	$isconnected = true;
 	$scannerinfo->isvalid = $newscannerinfo->isvalid; // Copy new value
@@ -67,14 +63,11 @@ if(!$isconnected) {
 	$smarty->assign("APP", $app_strings);
 	$smarty->assign("THEME", $theme);
 	$smarty->assign("IMAGE_PATH","themes/$theme/images/");
-
 	$smarty->assign("SCANNERINFO", $newscannerinfo->getAsMap());
 	$smarty->assign("CONNECTFAIL", "Connecting to mailbox failed!");
-	$smarty->display('MailScanner/MailScannerEdit.tpl');	
+	$smarty->display('MailScanner/MailScannerEdit.tpl');
 } else {
-
 	$mailServerChanged = $scannerinfo->update($newscannerinfo);
-	
 	$scannerinfo->updateAllFolderRescan($rescanfolder);
 
 	// Update lastscan on all the available folders.

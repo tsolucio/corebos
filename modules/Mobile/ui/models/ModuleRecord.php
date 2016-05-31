@@ -6,6 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
+ * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
 
 include_once dirname(__FILE__) . '/Block.php';
@@ -55,5 +56,23 @@ class Mobile_UI_ModuleRecordModel {
 		}
 		return $instances;
 	}
+
+
+	function initCreateData($recordData) {
+		$this->data = $recordData;
+		if (isset($recordData['blocks'])) {
+			$blocks = Mobile_UI_BlockModel::buildCreateModel($recordData['blocks']);
+			foreach($blocks as $block) {
+				$this->_blocks[$block->label()] = $block;
+			}
+		}
+	}
 	
+	static function buildModel($recordData) {
+
+		$instance = new self();
+		$instance->initCreateData($recordData);
+		return $instance;
+	}
 }
+?>

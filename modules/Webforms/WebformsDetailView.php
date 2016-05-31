@@ -25,6 +25,9 @@ if(isset($_REQUEST['id'])){
 
 	$category = getParentTab();
 	$username = getUserFullName($webformModel->getOwnerId());
+	if (empty($username)) {
+		list($username) = getGroupName($webformModel->getOwnerId());
+	}
 
 
 	$smarty->assign('WEBFORMMODEL',$webformModel);

@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-
 include_once dirname(__FILE__) . '/ModuleRecord.php';
 
 class Mobile_UI_ModuleModel {
@@ -38,5 +37,5 @@ class Mobile_UI_ModuleModel {
 		}
 		return $instances;
 	}
-	
 }
+?>

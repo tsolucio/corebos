@@ -36,16 +36,23 @@
 			}else{
 				$taskId = $adb->getUniqueID("com_vtiger_workflowtasks");
 				$task->id = $taskId;
+				$orderrs = $adb->pquery('select max(executionorder) from com_vtiger_workflowtasks where workflow_id=?',array($task->workflowId));
+				$order = $adb->query_result($orderrs, 0, 0)+1;
 				$adb->pquery("insert into com_vtiger_workflowtasks
-							(task_id, workflow_id, summary, task)
-							values (?, ?, ?, ?)",
-					array($taskId, $task->workflowId, $task->summary, serialize($task)));
+						(task_id, workflow_id, summary, task, executionorder)
+						values (?, ?, ?, ?, ?)",
+					array($taskId, $task->workflowId, $task->summary, serialize($task), $order));
 				return $taskId;
 			}
 		}
 
 		public function deleteTask($taskId){
 			$adb = $this->adb;
+			$orderrs = $adb->pquery('select executionorder,workflow_id from com_vtiger_workflowtasks where task_id=?',array($taskId));
+			$order = $adb->query_result($orderrs, 0, 0);
+			$wfid = $adb->query_result($orderrs, 0, 1);
+			$orderrs = $adb->pquery('update com_vtiger_workflowtasks set executionorder=executionorder-1
+				where workflow_id=? and executionorder>?',array($wfid,$order));
 			$adb->pquery("delete from com_vtiger_workflowtasks where task_id=?", array($taskId));
 		}
 
@@ -87,8 +94,7 @@
 		 */
 		public function getTasksForWorkflow($workflowId){
 			$adb = $this->adb;
-			$result = $adb->pquery("select task from com_vtiger_workflowtasks
-									where workflow_id=?",
+			$result = $adb->pquery('select task,executionorder from com_vtiger_workflowtasks where workflow_id=? order by executionorder',
 				array($workflowId));
 			return $this->getTasksForResult($result);
 		}
@@ -97,20 +103,17 @@
 		 *
 		 */
 		public function unserializeTask($str){
-                        $tasktype = VTTaskType::getInstanceFromTaskType(self::taskName($str));
-                        $this->requireTask(self::taskName($str),$tasktype);
+			$tasktype = VTTaskType::getInstanceFromTaskType(self::taskName($str));
+			$this->requireTask(self::taskName($str),$tasktype);
 			return unserialize($str);
 		}
 
-		/**
-		 *
-		 */
 		function getTasks(){
 			$adb = $this->adb;
 			$result = $adb->query("select task from com_vtiger_workflowtasks");
 			return $this->getTasksForResult($result);
 		}
-		
+
 		function getTaskTypes($moduleName=''){
 			return VTTaskType::getAll($moduleName);
 		}
@@ -121,9 +124,11 @@
 			$tasks = array();
 			foreach($it as $row){
 				$text = $row->task;
-                                $tasktype = VTTaskType::getInstanceFromTaskType(self::taskName($text));
+				$tasktype = VTTaskType::getInstanceFromTaskType(self::taskName($text));
 				$this->requireTask(self::taskName($text),$tasktype);
-				$tasks[] = unserialize($text);
+				$wftask = unserialize($text);
+				$wftask->executionorder = $row->executionorder;
+				$tasks[] = $wftask;
 			}
 			return $tasks;
 		}
@@ -230,7 +235,7 @@ class VTTaskType {
 		$exists = $adb->pquery('select count(*) from com_vtiger_workflow_tasktypes
 				where tasktypename=? and label=? and classname=? and classpath=? and
 				 templatepath=? and modules=? and sourcemodule=?',
-				array($taskType['name'], $taskType['label'], $taskType['classname'],  $taskType['classpath'], $taskType['templatepath'], $modules, $taskType['sourcemodule']));
+				array($taskType['name'], $taskType['label'], $taskType['classname'], $taskType['classpath'], $taskType['templatepath'], $modules, $taskType['sourcemodule']));
 		if ($exists and $adb->query_result($exists,0,0)==0) {
 		$taskTypeId = $adb->getUniqueID("com_vtiger_workflow_tasktypes");
 		$taskType['id'] = $taskTypeId;
@@ -238,7 +243,7 @@ class VTTaskType {
 		$adb->pquery("INSERT INTO com_vtiger_workflow_tasktypes
 						(id, tasktypename, label, classname, classpath, templatepath, modules, sourcemodule)
 						values (?,?,?,?,?,?,?,?)",
-				array($taskTypeId, $taskType['name'], $taskType['label'], $taskType['classname'],  $taskType['classpath'], $taskType['templatepath'], $modules, $taskType['sourcemodule']));
+				array($taskTypeId, $taskType['name'], $taskType['label'], $taskType['classname'], $taskType['classpath'], $taskType['templatepath'], $modules, $taskType['sourcemodule']));
 		}
 	}
 

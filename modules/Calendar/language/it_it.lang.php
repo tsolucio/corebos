@@ -10,14 +10,6 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  Defines the English pack for Calendar Module
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
  ********************************************************************************/
 
 $mod_strings = array (
@@ -231,11 +223,6 @@ $mod_strings = array (
   'LBL_TODONAME' => 'Compito ',
   'LBL_TODODATETIME' => 'Orario e data',
 
-
-
-
-
-
   'db_last_name' => 'LBL_LIST_LAST_NAME',
   'db_first_name' => 'LBL_LIST_FIRST_NAME',
   'db_title' => 'LBL_LIST_TITLE',
@@ -336,6 +323,7 @@ $mod_strings = array (
   'No Time' => 'Nessun orario',
   
 'Send Reminder' => 'Manda Avviso (minuti)',
+'SendReminder' => 'Manda Avviso',
   'LBL_YES' => 'Si',
   'LBL_NO' => 'No',
   'LBL_DAYS' => 'giorno(i)',
@@ -377,6 +365,8 @@ $mod_strings = array (
   'createdtime' => 'Orario creazione',
   'modifiedtime' => 'Orario modifica',
   'first' => 'Primo',
+  'second'=>'Second',
+  'third'=>'Third',
   'last' => 'Ultimo',
   'High' => 'Alto',
   'Medium' => 'Medio',
@@ -384,6 +374,8 @@ $mod_strings = array (
   'LBL_SELECT' => 'Seleziona',
   'LBL_ALL_EVENTS_TODOS' => 'Tutti gli Eventi & Compiti',
   'First' => 'Primo',
+  'Second'=>'Second',
+  'Third'=>'Third',
   'Last' => 'Ultimo',
   'on' => 'su',
   'day of the month' => 'giorno del mese',

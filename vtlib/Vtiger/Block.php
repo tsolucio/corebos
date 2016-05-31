@@ -78,21 +78,27 @@ class Vtiger_Block {
 	 */
 	function __create($moduleInstance) {
 		global $adb;
-
+		$error = false;
 		$this->module = $moduleInstance;
+		$checkres = $adb->pquery('SELECT 1 FROM vtiger_blocks WHERE tabid=? AND blocklabel=?',array($this->module->id, $this->label));
+		// If relation already exist continue
+		if($adb->num_rows($checkres)) $error = true;
+		if (!$error) {
+			$this->id = $this->__getUniqueId();
+			if(!$this->sequence) $this->sequence = $this->__getNextSequence();
 
-		$this->id = $this->__getUniqueId();
-		if(!$this->sequence) $this->sequence = $this->__getNextSequence();
-
-		$result = $adb->pquery("INSERT INTO vtiger_blocks(blockid,tabid,blocklabel,sequence,show_title,visible,create_view,edit_view,detail_view) 
-			VALUES(?,?,?,?,?,?,?,?,?)", Array($this->id, $this->module->id, $this->label,$this->sequence, 
-			$this->showtitle, $this->visible,$this->increateview, $this->ineditview, $this->indetailview));
-		if($result) {
-		self::log("Creating Block $this->label ... DONE");
-		self::log("Module language entry for $this->label ... CHECK");
-		} else {
-			self::log("Creating Block $this->label ... <span style='color:red'>**ERROR**</span>");
-			self::log("Module language entry for $this->label ... <span style='color:red'>**ERROR**</span>");
+			$result = $adb->pquery("INSERT INTO vtiger_blocks(blockid,tabid,blocklabel,sequence,show_title,visible,create_view,edit_view,detail_view) 
+				VALUES(?,?,?,?,?,?,?,?,?)", Array($this->id, $this->module->id, $this->label,$this->sequence,
+				$this->showtitle, $this->visible,$this->increateview, $this->ineditview, $this->indetailview));
+			if($result) {
+				self::log("Creating Block $this->label ... DONE");
+				self::log("Module language entry for $this->label ... CHECK");
+			} else {
+				$error = true;
+			}
+		}
+		if ($error) {
+			self::log("Creating Block $this->label ... <span style='color:red'>**ERROR**</span>, probably already exists");
 		}
 	}
 

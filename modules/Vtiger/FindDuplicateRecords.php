@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
-
 require_once('Smarty_setup.php');
 require_once('include/utils/utils.php');
 
@@ -32,38 +31,36 @@ if(isset($_REQUEST['del_rec'])) {
 	foreach ($delete_id_array as $id) {
 		if(isPermitted($req_module,'Delete',$id) == 'yes') {
 			DeleteEntity($req_module,$return_module,$focus,$id,"");
-		}
-		else {
-        	$ids_list[] = $id;
+		} else {
+			$ids_list[] = $id;
 		}
 	}
 	if(count($ids_list) > 0) {
 		$ret = getEntityName($req_module,$ids_list);
 		if(count($ret) > 0) {
-	       	$errormsg = implode(',',$ret);
+			$errormsg = implode(',',$ret);
 		}
 		echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
 		echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
-
 			<table border='0' cellpadding='5' cellspacing='0' width='98%'>
 			<tbody><tr>
-			<td rowspan='2' width='11%'><img src='themes/$theme/images/denied.gif' ></td>
+			<td rowspan='2' width='11%'><img src='themes/$theme/images/denied.gif'></td>
 			<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'>
-				<span class='genHeaderSmall'>$app_strings[LBL_DUP_PERMISSION] $req_module $errormsg</span></td>
+				<span class='genHeaderSmall'>".$app_strings['LBL_DUP_PERMISSION']." $req_module $errormsg</span></td>
 			</tr>
 			<tr>
 			<td class='small' align='right' nowrap='nowrap'>
-			<a href='javascript:window.location.reload();'>$app_strings[LBL_GO_BACK]</a><br>
+			<a href='javascript:window.location.reload();'>".$app_strings['LBL_GO_BACK']."</a><br>
 			</td>
 			</tr>
 			</tbody></table>
-			</div>";
-		echo "</td></tr></table>";
+			</div>
+			</td></tr></table>";
 		exit;
 	}
 }
 
-include("include/saveMergeCriteria.php");
+include('include/saveMergeCriteria.php');
 $ret_arr=getDuplicateRecordsArr($req_module);
 
 $fld_values=$ret_arr[0];
@@ -92,5 +89,4 @@ if(isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '')
 	$smarty->display("FindDuplicateAjax.tpl");
 else
 	$smarty->display('FindDuplicateDisplay.tpl');
-
 ?>

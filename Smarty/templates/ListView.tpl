@@ -142,7 +142,7 @@
 
 </div>
 <!-- END -->
-{if $MODULE eq 'Leads' or $MODULE eq 'Contacts' or $MODULE eq 'Accounts' or $MODULE eq 'Vendors'}
+{if $MODULE eq 'Leads' or $MODULE eq 'Contacts' or $MODULE eq 'Accounts' or $MODULE eq 'Vendors' or $MODULE eq 'Potentials' or $MODULE eq 'HelpDesk' or $MODULE eq 'Project'}
 <form name="SendMail"><div id="sendmail_cont" style="z-index:100001;position:absolute;"></div></form>
 {/if}
 

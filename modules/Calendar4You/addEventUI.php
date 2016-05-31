@@ -212,8 +212,15 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 			<tr>
 				<td nowrap align="right"><b><font color="red">*</font><?php echo $c_mod_strings['LBL_EVENTNAME']?></b></td>
 				<td align="left"><input name="subject" type="text" class="textbox" value="" style="width:50%">&nbsp;&nbsp;&nbsp;
-			<?php if(getFieldVisibilityPermission('Events',$current_user->id,'visibility', 'readwrite') == '0') { ?>
-			<input name="visibility" value="Public" type="checkbox"><?php echo $c_mod_strings['LBL_PUBLIC']; ?>
+			<?php if(getFieldVisibilityPermission('Events',$current_user->id,'visibility', 'readwrite') == '0') {
+				$visrs = $adb->pquery("select defaultvalue from vtiger_field where tabid=16 and columnname='visibility'");
+				$vis = $adb->query_result($visrs, 0, 0);
+				$visiblecheck = '';
+				if ($vis == 'Public') {
+					$visiblecheck = ' checked';
+				}
+			?>
+			<input name="visibility" value="Public" type="checkbox"<?php echo $visiblecheck; ?>><?php echo $c_mod_strings['LBL_PUBLIC']; ?>
 			<?php } ?>
 			</td>
 			</tr>
@@ -376,7 +383,9 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 				<table border=0 cellspacing=0 cellpadding=3 width=100%>
 				<tr>
 					<td class="dvtTabCache" style="width:10px" nowrap>&nbsp;</td>
-					<td id="cellTabInvite" class="dvtSelectedCell" align=center nowrap><a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','on');switchClass('cellTabAlarm','off');switchClass('cellTabRepeat','off');switchClass('cellTabRelatedto','off');ghide('addITSEventAlarmUI');gshow('addITSEventInviteUI','',document.EditView.date_start.value,document.EditView.due_date.value,document.EditView.starthr.value,document.EditView.startmin.value,document.EditView.startfmt.value,document.EditView.endhr.value,document.EditView.endmin.value,document.EditView.endfmt.value);ghide('addITSEventRepeatUI');ghide('addITSEventRelatedtoUI');"><?php echo $c_mod_strings['LBL_INVITE']?></a></td>
+					<td id="cellTabRelatedto" class="dvtSelectedCell" align=center nowrap><a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','off');switchClass('cellTabAlarm','off');switchClass('cellTabRepeat','off');switchClass('cellTabRelatedto','on');ghide('addITSEventAlarmUI');ghide('addITSEventInviteUI');gshow('addITSEventRelatedtoUI','',document.EditView.date_start.value,document.EditView.due_date.value,document.EditView.starthr.value,document.EditView.startmin.value,document.EditView.startfmt.value,document.EditView.endhr.value,document.EditView.endmin.value,document.EditView.endfmt.value);ghide('addITSEventRepeatUI');"><?php echo $c_mod_strings['LBL_RELATEDTO']?></a></td>
+					<td class="dvtTabCache" style="width:10px">&nbsp;</td>
+					<td id="cellTabInvite" class="dvtUnSelectedCell" align=center nowrap><a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','on');switchClass('cellTabAlarm','off');switchClass('cellTabRepeat','off');switchClass('cellTabRelatedto','off');ghide('addITSEventAlarmUI');gshow('addITSEventInviteUI','',document.EditView.date_start.value,document.EditView.due_date.value,document.EditView.starthr.value,document.EditView.startmin.value,document.EditView.startfmt.value,document.EditView.endhr.value,document.EditView.endmin.value,document.EditView.endfmt.value);ghide('addITSEventRepeatUI');ghide('addITSEventRelatedtoUI');"><?php echo $c_mod_strings['LBL_INVITE']?></a></td>
 					<td class="dvtTabCache" style="width:10px">&nbsp;</td>
 					<?php if(getFieldVisibilityPermission('Events',$current_user->id,'reminder_time', 'readwrite') == '0') { ?>
 					<td id="cellTabAlarm" class="dvtUnSelectedCell" align=center nowrap><a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','off');switchClass('cellTabAlarm','on');switchClass('cellTabRepeat','off');switchClass('cellTabRelatedto','off');gshow('addITSEventAlarmUI','',document.EditView.date_start.value,document.EditView.due_date.value,document.EditView.starthr.value,document.EditView.startmin.value,document.EditView.startfmt.value,document.EditView.endhr.value,document.EditView.endmin.value,document.EditView.endfmt.value);ghide('addITSEventInviteUI');ghide('addITSEventRepeatUI');ghide('addITSEventRelatedtoUI');"><?php echo $c_mod_strings['LBL_REMINDER']?></a></td>
@@ -384,8 +393,6 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 					<?php } if(getFieldVisibilityPermission('Events',$current_user->id,'recurringtype', 'readwrite') == '0') { ?>
 					<td id="cellTabRepeat" class="dvtUnSelectedCell" align=center nowrap><a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','off');switchClass('cellTabAlarm','off');switchClass('cellTabRepeat','on');switchClass('cellTabRelatedto','off');ghide('addITSEventAlarmUI');ghide('addITSEventInviteUI');gshow('addITSEventRepeatUI','',document.EditView.date_start.value,document.EditView.due_date.value,document.EditView.starthr.value,document.EditView.startmin.value,document.EditView.startfmt.value,document.EditView.endhr.value,document.EditView.endmin.value,document.EditView.endfmt.value);ghide('addITSEventRelatedtoUI');"><?php echo $c_mod_strings['LBL_REPEAT']?></a></td>
 					<?php } ?>
-					<td class="dvtTabCache" style="width:10px">&nbsp;</td>
-					<td id="cellTabRelatedto" class="dvtUnSelectedCell" align=center nowrap><a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','off');switchClass('cellTabAlarm','off');switchClass('cellTabRepeat','off');switchClass('cellTabRelatedto','on');ghide('addITSEventAlarmUI');ghide('addITSEventInviteUI');gshow('addITSEventRelatedtoUI','',document.EditView.date_start.value,document.EditView.due_date.value,document.EditView.starthr.value,document.EditView.startmin.value,document.EditView.startfmt.value,document.EditView.endhr.value,document.EditView.endmin.value,document.EditView.endfmt.value);ghide('addITSEventRepeatUI');"><?php echo $c_mod_strings['LBL_RELATEDTO']?></a></td>
 					<td class="dvtTabCache" style="width:100%">&nbsp;</td>
 				</tr>
 				</table>
@@ -393,8 +400,50 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 			</tr>
 			<tr>
 			<td width=100% valign=top align=left class="dvtContentSpace" style="padding:10px;height:120px">
+				<!-- Related to UI -->
+				<div id="addITSEventRelatedtoUI" style="display:block;width:100%">
+					<table width="100%" cellpadding="5" cellspacing="0" border="0" bgcolor="#FFFFFF">
+				<?php if(getFieldVisibilityPermission('Events',$current_user->id,'parent_id', 'readwrite') == '0') { ?>
+						<tr>
+							<td width="15%"><b><?php echo $c_mod_strings['LBL_RELATEDTO']?></b></td>
+							<td>
+								<input name="parent_id" value="" type="hidden">
+								<input name="del_actparent_rel" type="hidden" >
+								<select name="parent_type" class="small" id="parent_type" onChange="document.EditView.parent_name.value='';document.EditView.parent_id.value=''">
+									<option value="Leads"><?php echo $app_strings['Leads']?></option>
+									<option value="Accounts"><?php echo $app_strings['Accounts']?></option>
+									<option value="Potentials"><?php echo $app_strings['Potentials']?></option>
+									<option value="HelpDesk"><?php echo $app_strings['HelpDesk']?></option>
+									<option value="Campaigns"><?php echo $app_strings['Campaigns']?></option>
+									<option value="Vendors"><?php echo $app_strings['Vendors']?></option> <!-- MSL -->
+								</select>
+							</td>
+							<td>
+								<div id="eventrelatedto" align="left">
+								<input type="text" readonly="readonly" class="calTxt small" value="" name="parent_name">&nbsp;
+							<input type="button" name="selectparent" class="crmButton small edit" value="<?php echo $c_mod_strings['LBL_SELECT']; ?>" onclick="return window.open('index.php?module='+document.EditView.parent_type.value+'&action=Popup','test','width=640,height=602,resizable=0,scrollbars=0,top=150,left=200');">
+							<input type='button' value='<?php echo $app_strings['LNK_DELETE']; ?>' class="crmButton small edit" onclick="document.EditView.del_actparent_rel.value=document.EditView.parent_id.value;document.EditView.parent_id.value='';document.EditView.parent_name.value='';">
+								</div>
+							</td>
+						</tr>
+					<?php } ?>
+					<?php if(getFieldVisibilityPermission('Events',$current_user->id,'contact_id', 'readwrite') == '0' && vtlib_isModuleActive('Contacts')) { ?>
+						<tr>
+						<td><b><?php echo $app_strings['Contacts'] ?></b></td>
+							<td colspan="2">
+								<input name="contactidlist" id="contactidlist" value="" type="hidden">
+								<input name="deletecntlist" id="deletecntlist" type="hidden">
+								<select name="contactlist" size="5" style="height: 85px;width:150px;" id="parentid" class="small" multiple>
+								</select>
+								<input type="button" onclick="selectContact('true','general',document.EditView);" class="crmButton small edit" name="selectcnt" value="<?php echo $c_mod_strings['LBL_SELECT_CONTACT'] ; ?>">
+								<input type='button' value='<?php echo $app_strings['LNK_DELETE']; ?>' class="crmButton small edit" onclick='removeActContacts();'>
+							</td>
+						</tr>
+					<?php } ?>
+					</table>
+				</div>
 			<!-- Invite UI -->
-				<DIV id="addITSEventInviteUI" style="display:block;width:100%">
+				<DIV id="addITSEventInviteUI" style="display:none;width:100%">
 				<table border=0 cellspacing=0 cellpadding=2 width=100% bgcolor="#FFFFFF">
 				<tr>
 					<td valign=top>
@@ -571,6 +620,8 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 													<td>
 														<select name="repeatMonth_daytype">
 															<option value="first"><?php echo $c_mod_strings['First'];?></option>
+															<option value="second"><?php echo $c_mod_strings['Second'];?></option>
+															<option value="third"><?php echo $c_mod_strings['Third'];?></option>
 															<option value="last"><?php echo $c_mod_strings['Last'];?></option>
 														</select>
 													</td>
@@ -598,47 +649,6 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 				</tr>
 				</table>
 				<?php } ?>
-				</div>
-				<div id="addITSEventRelatedtoUI" style="display:none;width:100%">
-					<table width="100%" cellpadding="5" cellspacing="0" border="0" bgcolor="#FFFFFF">
-				<?php if(getFieldVisibilityPermission('Events',$current_user->id,'parent_id', 'readwrite') == '0') { ?>
-						<tr>
-							<td width="15%"><b><?php echo $c_mod_strings['LBL_RELATEDTO']?></b></td>
-							<td>
-								<input name="parent_id" value="" type="hidden">
-								<input name="del_actparent_rel" type="hidden" >
-								<select name="parent_type" class="small" id="parent_type" onChange="document.EditView.parent_name.value='';document.EditView.parent_id.value=''">
-									<option value="Leads"><?php echo $app_strings['Leads']?></option>
-									<option value="Accounts"><?php echo $app_strings['Accounts']?></option>
-									<option value="Potentials"><?php echo $app_strings['Potentials']?></option>
-									<option value="HelpDesk"><?php echo $app_strings['HelpDesk']?></option>
-									<option value="Campaigns"><?php echo $app_strings['Campaigns']?></option>
-									<option value="Vendors"><?php echo $app_strings['Vendors']?></option> <!-- MSL -->
-								</select>
-							</td>
-							<td>
-								<div id="eventrelatedto" align="left">
-								<input type="text" readonly="readonly" class="calTxt small" value="" name="parent_name">&nbsp;
-							<input type="button" name="selectparent" class="crmButton small edit" value="<?php echo $c_mod_strings['LBL_SELECT']; ?>" onclick="return window.open('index.php?module='+document.EditView.parent_type.value+'&action=Popup','test','width=640,height=602,resizable=0,scrollbars=0,top=150,left=200');">
-							<input type='button' value='<?php echo $app_strings['LNK_DELETE']; ?>' class="crmButton small edit" onclick="document.EditView.del_actparent_rel.value=document.EditView.parent_id.value;document.EditView.parent_id.value='';document.EditView.parent_name.value='';">
-								</div>
-							</td>
-						</tr>
-					<?php } ?>
-					<?php if(getFieldVisibilityPermission('Events',$current_user->id,'contact_id', 'readwrite') == '0' && vtlib_isModuleActive('Contacts')) { ?>
-						<tr>
-						<td><b><?php echo $app_strings['Contacts'] ?></b></td>
-							<td colspan="2">
-								<input name="contactidlist" id="contactidlist" value="" type="hidden">
-								<input name="deletecntlist" id="deletecntlist" type="hidden">
-								<select name="contactlist" size="5" style="height: 85px;width:150px;" id="parentid" class="small" multiple>
-								</select>
-								<input type="button" onclick="selectContact('true','general',document.EditView);" class="crmButton small edit" name="selectcnt" value="<?php echo $c_mod_strings['LBL_SELECT_CONTACT'] ; ?>">
-								<input type='button' value='<?php echo $app_strings['LNK_DELETE']; ?>' class="crmButton small edit" onclick='removeActContacts();'>
-							</td>
-						</tr>
-					<?php } ?>
-					</table>
 				</div>
 			</td>
 			</tr>
@@ -806,37 +816,28 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 					<tr>
 						<td align="left">
 							<?php if(getFieldVisibilityPermission('Calendar',$current_user->id,'taskstatus', 'readwrite') == '0') { ?>
-							<b><?php echo $c_mod_strings['Status']; ?></b>
-							<?php } ?>
-						</td>
-						<td align="left">
-							<?php if(getFieldVisibilityPermission('Calendar',$current_user->id,'taskpriority', 'readwrite') == '0') { ?>
-							<b><?php echo $c_mod_strings['Priority']; ?></b>
+							<b><?php echo $c_mod_strings['Status']; ?></b><br>
+							<?php echo getITSActFieldCombo('taskstatus','vtiger_taskstatus','Calendar'); ?>
 							<?php } ?>
 						</td>
 						<td align="left">
 							<?php if(getFieldVisibilityPermission('Calendar',$current_user->id,'assigned_user_id', 'readwrite') == '0') { ?>
-							<b><?php echo $c_mod_strings['Assigned To']; ?></b>
+							<b><?php echo $c_mod_strings['Assigned To']; ?></b><br>
+							<?php echo getAssignedToHTML($taskassignedto,'task'); ?>
+							<?php } else { ?>
+							<input name="task_assigned_user_id" value="<?php echo $current_user->id ?>" type="hidden">
 							<?php } ?>
 						</td>
 					</tr>
 					<tr>
-						<td align="left" valign="top">
-							<?php if(getFieldVisibilityPermission('Calendar',$current_user->id,'taskstatus', 'readwrite') == '0') { ?>
-							<?php echo getITSActFieldCombo('taskstatus','vtiger_taskstatus','Calendar'); ?>
-							<?php } ?>
-						</td>
-						<td align="left" valign="top">
+						<td align="left">
 							<?php if(getFieldVisibilityPermission('Calendar',$current_user->id,'taskpriority', 'readwrite') == '0') { ?>
+							<b><?php echo $c_mod_strings['Priority']; ?></b><br>
 							<?php echo getITSActFieldCombo('taskpriority','vtiger_taskpriority','Calendar'); ?>
 							<?php } ?>
 						</td>
 						<td align="left" valign="top">
-							<?php if(getFieldVisibilityPermission('Calendar',$current_user->id,'assigned_user_id', 'readwrite') == '0') {
-								echo getAssignedToHTML($taskassignedto,'task');
-							}else{ ?>
-								<input name="task_assigned_user_id" value="<?php echo $current_user->id ?>" type="hidden">
-							<?php } ?>
+							<input name="task_sendnotification" type="checkbox">&nbsp;<?php echo $c_mod_strings['LBL_SENDNOTIFICATION'] ?>
 						</td>
 					</tr>
 				</table>
@@ -919,13 +920,9 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 			<td>
 				<table border=0 cellspacing=0 cellpadding=3 width=100%>
 					<tr>
-						<td class="dvtTabCache" style="width:10px" nowrap="nowrap">&nbsp;</td>
-						<?php if(getFieldVisibilityPermission('Calendar',$current_user->id,'sendnotification', 'readwrite') == '0') { $classval = "dvtUnSelectedCell"; ?>
-						<td id="cellTabNotification" class="dvtSelectedCell" align=center nowrap><a href="javascript:doNothing()" onClick="switchClass('cellTabNotification','on');switchClass('cellTabtodoRelatedto','off');gshow('addITSTaskAlarmUI','todo',document.createTodo.task_date_start.value,document.createTodo.task_due_date.value,document.createTodo.starthr.value,document.createTodo.startmin.value,document.createTodo.startfmt.value,'','','',document.createTodo.viewOption.value,document.createTodo.subtab.value);ghide('addITSTaskRelatedtoUI');"><?php echo $c_mod_strings['LBL_NOTIFICATION']?></a></td>
-						<?php } else { $classval = "dvtSelectedCell"; } ?>
 						<td class="dvtTabCache" style="width: 10px;" nowrap="nowrap">&nbsp;</td>
 						<?php if((getFieldVisibilityPermission('Calendar',$current_user->id,'parent_id', 'readwrite') == '0') || (getFieldVisibilityPermission('Calendar',$current_user->id,'contact_id', 'readwrite') == '0')) { ?>
-						<td id="cellTabtodoRelatedto" class="<?php echo $classval ; ?>" align=center nowrap><a href="javascript:doNothing()" onClick="switchClass('cellTabtodoRelatedto','on'); switchClass('cellTabNotification','off');gshow('addITSTaskRelatedtoUI','todo',document.createTodo.task_date_start.value,document.createTodo.task_due_date.value,document.createTodo.starthr.value,document.createTodo.startmin.value,document.createTodo.startfmt.value,'','','',document.createTodo.viewOption.value,document.createTodo.subtab.value);ghide('addITSTaskAlarmUI');"><?php echo $c_mod_strings['LBL_RELATEDTO']?></a></td>
+						<td id="cellTabtodoRelatedto" class="dvtSelectedCell" align=center nowrap><a href="javascript:doNothing()" onClick="gshow('addITSTaskRelatedtoUI','todo',document.createTodo.task_date_start.value,document.createTodo.task_due_date.value,document.createTodo.starthr.value,document.createTodo.startmin.value,document.createTodo.startfmt.value,'','','',document.createTodo.viewOption.value,document.createTodo.subtab.value);ghide('addITSTaskAlarmUI');"><?php echo $c_mod_strings['LBL_RELATEDTO']?></a></td>
 						<?php } ?>
 						<td class="dvtTabCache" style="width: 100%;">&nbsp;</td>
 					</tr>
@@ -934,17 +931,7 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 		</tr>
 		<tr>
 			<td width=100% valign=top align=left class="dvtContentSpace" style="padding:10px;height:120px">
-		<!-- Reminder UI -->
-		<DIV id="addITSTaskAlarmUI" style="display:block;width:100%">
-		<?php if(getFieldVisibilityPermission('Calendar',$current_user->id,'sendnotification', 'readwrite') == '0') { ?>
-		<table>
-			<tr><td><?php echo $c_mod_strings['LBL_SENDNOTIFICATION'] ?></td><td>
-				<input name="task_sendnotification" type="checkbox">
-			</td></tr>
-		</table>
-		<?php $vision = "none" ; } else {$vision = "block" ;} ?>
-		</DIV>
-		<div id="addITSTaskRelatedtoUI" style="display:<?php echo $vision; ?>;width:100%">
+		<div id="addITSTaskRelatedtoUI" style="display:block;width:100%">
 			<table width="100%" cellpadding="5" cellspacing="0" border="0">
 			<?php if(getFieldVisibilityPermission('Calendar',$current_user->id,'parent_id', 'readwrite') == '0') { ?>
 			<tr>
@@ -1142,31 +1129,31 @@ frm1.submit(function (){
 });
 
 var frm2 = jQuery('#createTodoID');
+function c4y_todosave(val_result) {
+	var frm2r = jQuery('#createTodoID');
+	VtigerJS_DialogBox.block();
+	jQuery.ajax({
+		type: frm2.attr('method'),
+		url: "index.php?module=Calendar4You&action=Calendar4YouAjax&file=SaveTodo",
+		data: frm2r.serialize(),
+		success: function (data) {
+			jQuery('#createTodoID')[0].reset();
+			var return_data = data.split("-");
+			jQuery('#calendar_div').fullCalendar( 'refetchEvents' );
+			ghide('createTodo');
+			VtigerJS_DialogBox.unblock();
+			if (return_data[0] != "undefined" && return_data[1] != "undefined" && return_data[2] != "undefined"){
+				go_to_month = (return_data[1] * 1) - 1;
+				jQuery('#calendar_div').fullCalendar('gotoDate', return_data[0] * 1, go_to_month, return_data[2] * 1);
+				alert(return_data[3]);
+			} else {
+				alert("error:"+data);
+			}
+		}
+	});
+}
 frm2.submit(function (){
 	task_check_form();
-	if(formValidate()){
-		var frm2r = jQuery('#createTodoID');
-		VtigerJS_DialogBox.block();
-		jQuery.ajax({
-			type: frm2.attr('method'),
-			url: "index.php?module=Calendar4You&action=Calendar4YouAjax&file=SaveTodo",
-			data: frm2r.serialize(),
-			success: function (data) {
-				jQuery('#createTodoID')[0].reset();
-				var return_data = data.split("-");
-				jQuery('#calendar_div').fullCalendar( 'refetchEvents' );
-				ghide('createTodo');
-				VtigerJS_DialogBox.unblock();
-				if (return_data[0] != "undefined" && return_data[1] != "undefined" && return_data[2] != "undefined"){
-					go_to_month = (return_data[1] * 1) - 1;
-					jQuery('#calendar_div').fullCalendar('gotoDate', return_data[0] * 1, go_to_month, return_data[2] * 1);
-					alert(return_data[3]);
-				} else {
-					alert("error:"+data);
-				}
-			}
-		});
-	}
-	return false;
+	return doModuleValidation('','createTodo',c4y_todosave);
 });
 </script>

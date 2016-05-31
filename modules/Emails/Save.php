@@ -1,37 +1,30 @@
 <?php
 /*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the 
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+** The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Emails/Save.php,v 1.27 2005/04/29 08:54:38 rank Exp $
- * Description:  Saves an Account record and then redirects the browser to the 
- * defined return URL.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
- require_once("include/Zend/Json.php");
- 
- //check for mail server configuration thro ajax
+require_once('include/Zend/Json.php');
+
+//check for mail server configuration through ajax
 if(isset($_REQUEST['server_check']) && $_REQUEST['server_check'] == 'true')
 {
-	$sql="select * from vtiger_systems where server_type = ?";
-	$records=$adb->num_rows($adb->pquery($sql, array('email')),0,"id");
-	if($records != '')
-		echo 'SUCCESS';
-	else
-		echo 'FAILURE';	
-	die;	
+	$sql='select * from vtiger_systems where server_type = ?';
+	$emailcfg = $adb->pquery($sql, array('email'));
+	if($adb->num_rows($emailcfg)>0) {
+		$upload_file_path = decideFilePath();
+		if (!is_writable($upload_file_path)) {
+			echo 'FAILURESTORAGE';
+		} else {
+			echo 'SUCCESS';
+		}
+	} else {
+		echo 'FAILUREEMAIL';
+	}
+	die;
 }
 
 //Added on 09-11-2005 to avoid loading the webmail files in Email process
@@ -47,9 +40,9 @@ if($_REQUEST['smodule'] != '')
 	require_once(SM_PATH .'include/load_prefs.php');
 	//require_once(SM_PATH . 'class/mime/Message.class.php');
 	require_once(SM_PATH . 'class/mime.class.php');
-	sqgetGlobalVar('key',       $key,           SQ_COOKIE);
-	sqgetGlobalVar('username',  $username,      SQ_SESSION);
-	sqgetGlobalVar('onetimepad',$onetimepad,    SQ_SESSION);
+	sqgetGlobalVar('key',       $key,        SQ_COOKIE);
+	sqgetGlobalVar('username',  $username,   SQ_SESSION);
+	sqgetGlobalVar('onetimepad',$onetimepad, SQ_SESSION);
 	$mailbox = 'INBOX';
 }
 
@@ -78,30 +71,29 @@ if(isset($_REQUEST['filename_hidden'])) {
 } else {
 	$file_name = $_FILES['filename']['name'];
 }
-$errorCode =  $_FILES['filename']['error'];
-$errormessage = "";
+$errorCode = isset($_FILES['filename']) ? $_FILES['filename']['error'] : 0;
+$errormessage = '';
 if($file_name != '' && $_FILES['filename']['size'] == 0)
 {
 	if($errorCode == 4 || $errorCode == 0)
 	{
-		 if($_FILES['filename']['size'] == 0)
-			 $errormessage = "<B><font color='red'>".$mod_strings['LBL_PLEASE_ATTACH']."</font></B> <br>";
+		if($_FILES['filename']['size'] == 0)
+			$errormessage = "<B><font color='red'>".$mod_strings['LBL_PLEASE_ATTACH']."</font></B> <br>";
 	}
 	else if($errorCode == 2)
 	{
-		  $errormessage = "<B><font color='red'>".$mod_strings['LBL_EXCEED_MAX'].$upload_maxsize.$mod_strings['LBL_BYTES']." </font></B> <br>";
+		$errormessage = "<B><font color='red'>".$mod_strings['LBL_EXCEED_MAX'].$upload_maxsize.$mod_strings['LBL_BYTES']." </font></B> <br>";
 	}
 	else if($errorCode == 6)
 	{
-	     $errormessage = "<B>".$mod_strings['LBL_KINDLY_UPLOAD']."</B> <br>" ;
+		$errormessage = "<B>".$mod_strings['LBL_KINDLY_UPLOAD']."</B> <br>";
 	}
 	else if($errorCode == 3 )
 	{
-	     if($_FILES['filename']['size'] == 0)
-		     $errormessage = "<b><font color='red'>".$mod_strings['LBL_PLEASE_ATTACH']."</font></b><br>";
+		if($_FILES['filename']['size'] == 0)
+			$errormessage = "<b><font color='red'>".$mod_strings['LBL_PLEASE_ATTACH']."</font></b><br>";
 	}
-	else{}
-	if($errormessage != ""){
+	if($errormessage != ''){
 		$ret_error = 1;
 		$ret_parentid = vtlib_purify($_REQUEST['parent_id']);
 		$ret_toadd = vtlib_purify($_REQUEST['parent_name']);
@@ -110,16 +102,15 @@ if($file_name != '' && $_FILES['filename']['size'] == 0)
 		$ret_bccaddress = vtlib_purify($_REQUEST['bccmail']);
 		$ret_description = vtlib_purify($_REQUEST['description']);
 		echo $errormessage;
-        	include("EditView.php");	
+		include('EditView.php');
 		exit();
 	}
 }
 
 
-if($_FILES["filename"]["size"] == 0 && $_FILES["filename"]["name"] != '')
-{
-        $file_upload_error = true;
-        $_FILES = '';
+if(isset($_FILES['filename']) && $_FILES["filename"]["size"] == 0 && $_FILES["filename"]["name"] != '') {
+	$file_upload_error = true;
+	$_FILES = '';
 }
 
 if((isset($_REQUEST['deletebox']) && $_REQUEST['deletebox'] != null) && $_REQUEST['addbox'] == null)
@@ -150,7 +141,7 @@ function checkIfContactExists($mailid)
 	}
 }
 //assign the focus values
-$focus->filename = $_REQUEST['file_name'];
+$focus->filename = isset($_REQUEST['file_name']) ? $_REQUEST['file_name'] : '';
 $focus->parent_id = vtlib_purify($_REQUEST['parent_id']);
 $focus->parent_type = vtlib_purify($_REQUEST['parent_type']);
 $focus->column_fields["assigned_user_id"]=$current_user->id;
@@ -196,31 +187,22 @@ if($current_user->column_fields['send_email_to_sender']=='1' && isset($_REQUEST[
 }
 $focus->retrieve_entity_info($return_id,"Emails");
 
-//this is to receive the data from the Select Users button
-if($_REQUEST['source_module'] == null)
-{
-	$module = 'users';
-}
-//this will be the case if the Select Contact button is chosen
-else
-{
-	$module = $_REQUEST['source_module'];
-}
+$module = empty($_REQUEST['source_module']) ? 'users' : $_REQUEST['source_module'];
 
-if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] != "") 
+if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] != "")
 	$return_module = vtlib_purify($_REQUEST['return_module']);
-else 
+else
 	$return_module = "Emails";
 
-if(isset($_REQUEST['return_action']) && $_REQUEST['return_action'] != "") 
+if(isset($_REQUEST['return_action']) && $_REQUEST['return_action'] != "")
 	$return_action = vtlib_purify($_REQUEST['return_action']);
-else 
+else
 	$return_action = "DetailView";
 
-if(isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != "") 
+if(isset($_REQUEST['return_id']) && $_REQUEST['return_id'] != "")
 	$return_id = vtlib_purify($_REQUEST['return_id']);
 
-if(isset($_REQUEST['filename']) && $_REQUEST['filename'] != "") 
+if(isset($_REQUEST['filename']) && $_REQUEST['filename'] != "")
 	$filename = vtlib_purify($_REQUEST['filename']);
 
 $local_log->debug("Saved record with id of ".$return_id);
@@ -232,8 +214,6 @@ if(isset($_REQUEST['send_mail']) && $_REQUEST['send_mail'] && $_REQUEST['parent_
 
 } elseif( isset($_REQUEST['send_mail']) && $_REQUEST['send_mail'])
 	include("modules/Emails/mailsend.php");
-
-
 
 if(isset($_REQUEST['return_action']) && $_REQUEST['return_action'] == 'mailbox')
 	header("Location: index.php?module=$return_module&action=index");

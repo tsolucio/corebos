@@ -783,18 +783,20 @@ class PearDatabase{
     }
     ## Code-Contribution given by weigelt@metux.de - Ends
 
-    /* ADODB newly added. replacement for mysql_result() */
-    function query_result(&$result, $row, $col=0) {
+	/* ADODB newly added. replacement for mysql_result() */
+	function query_result(&$result, $row, $col=0) {
 		if (!is_object($result))
-	                throw new Exception("result is not an object");
+			throw new Exception("result is not an object");
 		$result->Move($row);
 		$rowdata = $this->change_key_case($result->FetchRow());
 		//$this->println($rowdata);
 		//Commented strip_selected_tags and added to_html function for HTML tags vulnerability
-		if($col == 'fieldlabel') $coldata = $rowdata[$col];
-		else $coldata = to_html($rowdata[$col]);
+		if ($col == 'fieldlabel')
+			$coldata = $rowdata[$col];
+		else
+			$coldata = (isset($rowdata[$col]) ? to_html($rowdata[$col]) : '');
 		return $coldata;
-    }
+	}
 
 	// Function to get particular row from the query result
 	function query_result_rowdata(&$result, $row=0) {

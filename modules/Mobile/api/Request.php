@@ -53,4 +53,8 @@ class Mobile_API_Request {
 	function getSession() {
 		return $this->get('_session');
 	}
+	
+	function getvaluemap($request) {
+		return $request->valuemap;
+	}
 }

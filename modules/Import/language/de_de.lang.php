@@ -56,6 +56,7 @@ $mod_strings = array (
 	'ERR_UNIMPORTED_RECORDS_IN_QUEUE' => 'Der Benutzer hat noch nicht importierte Datensätze in der Warteschlange',
 	'ERR_FILE_READ_FAILED' => 'Fehler beim lesen der Datei',
 	'LBL_IMPORT_SCHEDULED' => 'Import geplant',
+	'Scheduled Import' => 'Import geplant',
 	'LBL_SCHEDULED_IMPORT_DETAILS' => 'Ihr Import wurde geplant und Sie werden via E-Mail informiert werden, wenn der Import abgeschlossen ist. <br>
                                        Bitte stellen Sie sicher, dass der Postausgangsserver in den Einstellungen für ausgehende E-Mails konfiguriert ist.',
 	'ERR_DETAILS_BELOW' => 'Details werden unten angezeigt',
@@ -84,5 +85,10 @@ $mod_strings = array (
 	'LBL_FILE_TYPE' => 'Dateityp',
 	'csv' => 'CSV',
 	'vcf' => 'VCard',
+	'LBL_FILE_UPLOAD_FAILED' => 'File upload failed',
+	'LBL_IMPORT_ERROR_LARGE_FILE' => 'File is to big to upload. The maximum upload size (',
+	'LBL_IMPORT_CHANGE_UPLOAD_SIZE' => ') may be incremented in your PHP configuration',
+	'LBL_IMPORT_DIRECTORY_NOT_WRITABLE' => 'Import Directory is not writable',
+	'LBL_IMPORT_FILE_COPY_FAILED' => 'Error copying file to import. Check file system permissions',
 );
 ?>

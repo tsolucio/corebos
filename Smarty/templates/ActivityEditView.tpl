@@ -29,7 +29,7 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 {*<!-- Contents -->*}
 <form name="EditView" method="POST" action="index.php"
 	{if $ACTIVITY_MODE neq 'Task'} onsubmit="if(check_form()){ldelim} VtigerJS_DialogBox.block(); {rdelim} else {ldelim} return false; {rdelim}"
-	{else} onsubmit="maintask_check_form();if(formValidate()) {ldelim} VtigerJS_DialogBox.block(); {rdelim} else {ldelim} return false; {rdelim}" {/if} >
+	{else} onsubmit="maintask_check_form();return formValidate();" {/if} >
 <input type="hidden" name="time_start" id="time_start">
 <input type="hidden" name="view" value="{$view}">
 <input type="hidden" name="hour" value="{$hour}">
@@ -648,8 +648,10 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 														<td>on</td>
 														<td>
 														<select name="repeatMonth_daytype">
-															<option value="first" {if $ACTIVITYDATA.repeatMonth_daytype eq 'first'} selected {/if}>First</option>
-															<option value="last" {if $ACTIVITYDATA.repeatMonth_daytype eq 'last'} selected {/if}>Last</option>
+															<option value="first" {if $ACTIVITYDATA.repeatMonth_daytype eq 'first'} selected {/if}>{$MOD.First}</option>
+															<option value="second" {if $ACTIVITYDATA.repeatMonth_daytype eq 'second'} selected {/if}>{$MOD.Second}</option>
+															<option value="third" {if $ACTIVITYDATA.repeatMonth_daytype eq 'third'} selected {/if}>{$MOD.Third}</option>
+															<option value="last" {if $ACTIVITYDATA.repeatMonth_daytype eq 'last'} selected {/if}>{$MOD.Last}</option>
 														</select>
 														</td>
 														<td>
@@ -708,7 +710,7 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 								<td colspan="2">
 									<input name="contactidlist" id="contactidlist" value="{$CONTACTSID}" type="hidden">
 									<input name="deletecntlist" id="deletecntlist" type="hidden">
-									<select name="contactlist" size=5  style="height: 100px;width: 300px"  id="parentid" class="small" multiple>
+									<select name="contactlist" size=5  style="height: 100px;width: 300px" id="parentid" class="small" multiple>
 									{foreach item=contactname key=cntid from=$CONTACTSNAME}
 										<option value="{$cntid}">{$contactname}</option>
 									{/foreach}

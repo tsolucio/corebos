@@ -290,6 +290,12 @@ $server->register(
 	$NAMESPACE);
 
 $server->register(
+	'get_inventory_products',
+	array('id'=>'xsd:string','sessionid'=>'xsd:string'),
+	array('return'=>'tns:field_details_array'),
+	$NAMESPACE);
+
+$server->register(
 	'get_modules',
 	array(),
 	array('return'=>'tns:field_details_array'),
@@ -448,19 +454,19 @@ function get_combo_values($input_array)
 	if($RowCount > 0){
 		$admin_role = $adb->query_result($roleres,0,'roleid');
 	}
-	$result1 = $adb->pquery("select vtiger_ticketpriorities.ticketpriorities from vtiger_ticketpriorities inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_ticketpriorities.picklist_valueid and vtiger_role2picklist.roleid='$admin_role' order by sortorderid", array());
+	$result1 = $adb->pquery("select vtiger_ticketpriorities.ticketpriorities from vtiger_ticketpriorities inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_ticketpriorities.picklist_valueid and vtiger_role2picklist.roleid='$admin_role' order by sortid", array());
 	for($i=0;$i<$adb->num_rows($result1);$i++)
 	{
 		$output['ticketpriorities']['ticketpriorities'][$i] = $adb->query_result($result1,$i,"ticketpriorities");
 	}
 
-	$result2 = $adb->pquery("select vtiger_ticketseverities.ticketseverities from vtiger_ticketseverities inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_ticketseverities.picklist_valueid and vtiger_role2picklist.roleid='$admin_role' order by sortorderid", array());
+	$result2 = $adb->pquery("select vtiger_ticketseverities.ticketseverities from vtiger_ticketseverities inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_ticketseverities.picklist_valueid and vtiger_role2picklist.roleid='$admin_role' order by sortid", array());
 	for($i=0;$i<$adb->num_rows($result2);$i++)
 	{
 		$output['ticketseverities']['ticketseverities'][$i] = $adb->query_result($result2,$i,"ticketseverities");
 	}
 
-	$result3 = $adb->pquery("select vtiger_ticketcategories.ticketcategories from vtiger_ticketcategories inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_ticketcategories.picklist_valueid and vtiger_role2picklist.roleid='$admin_role' order by sortorderid", array());
+	$result3 = $adb->pquery("select vtiger_ticketcategories.ticketcategories from vtiger_ticketcategories inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_ticketcategories.picklist_valueid and vtiger_role2picklist.roleid='$admin_role' order by sortid", array());
 	for($i=0;$i<$adb->num_rows($result3);$i++)
 	{
 		$output['ticketcategories']['ticketcategories'][$i] = $adb->query_result($result3,$i,"ticketcategories");
@@ -495,9 +501,7 @@ function get_combo_values($input_array)
 			$output['servicename']['servicename'][$i] = $adb->query_result($serviceResult,$i,'subject');
 		}
 	}
-
 	return $output;
-
 }
 
 /**	function to get the Knowledge base details
@@ -649,17 +653,6 @@ function get_tickets_list($input_array) {
 	if(!validateSession($id,$sessionid))
 		return null;
 
-	//To avoid SQL injection we are type casting as well as bound the id variable.
-	$id = (int) vtlib_purify($input_array['id']);
-	
-	$only_mine = $input_array['onlymine'];
-	$where = vtlib_purifyForSql($input_array['where']); //addslashes is already added with where condition fields in portal itself
-	$match = $input_array['match'];
-	$sessionid = $input_array['sessionid'];
-
-	if(!validateSession($id,$sessionid))
-		return null;
-	
 	require_once('modules/HelpDesk/HelpDesk.php');
 	require_once('include/utils/UserInfoUtil.php');
 
@@ -894,6 +887,7 @@ function update_ticket_comment($input_array)
 		$ticket->retrieve_entity_info($ticketid, 'HelpDesk');
 		$ticket->id = $ticketid;
 		$ticket->mode = 'edit';
+		$ticket->column_fields = array_map(decode_html, $ticket->column_fields);
 		$ticket->column_fields['comments'] = $comments;
 		$ticket->column_fields['from_portal'] = 1;
 		$ticket->save('HelpDesk');
@@ -1941,13 +1935,12 @@ function get_pdf($id,$block,$customerid,$sessionid)
 	$_REQUEST['record']= $id;
 	$_REQUEST['savemode']= 'file';
 	$sequenceNo = getModuleSequenceNumber($block, $id);
-	$filenamewithpath='test/product/'.$id.'_'.$block.'_'.$sequenceNo.'.pdf';
+	$filenamewithpath='test/product/'.$id.'_'.getTranslatedString('SINGLE_'.$block,$block).'_'.$sequenceNo.'.pdf';
 	if (file_exists($filenamewithpath) && (filesize($filenamewithpath) != 0))
 	unlink($filenamewithpath);
 
 	checkFileAccessForInclusion("modules/$block/CreatePDF.php");
 	include("modules/$block/CreatePDF.php");
-
 	if (file_exists($filenamewithpath) && (filesize($filenamewithpath) != 0))
 	{
 		//we have to pass the file content
@@ -2059,6 +2052,26 @@ function get_invoice_detail($id,$module,$customerid,$sessionid)
 		$output[0][$module][$i]['blockname'] = getTranslatedString($blocklabel,$module);
 	}
 	$log->debug("Entering customer portal function get_invoice_detail ..");
+	return $output;
+}
+
+function get_inventory_products($id,$module,$customerid,$sessionid)
+{
+	require_once('include/utils/UserInfoUtil.php');
+	require_once('include/utils/utils.php');
+	global $adb,$site_URL,$log;
+	$user = new Users();
+	$userid = getPortalUserid();
+	$current_user = $user->retrieveCurrentUserInfoFromFile($userid);
+	$isPermitted = check_permission($customerid,$module,$id);
+	if($isPermitted == false) {
+		return array("#NOT AUTHORIZED#");
+	}
+	include_once("modules/$module/$module.php");
+	$focus = CRMEntity::getInstance($module);
+	$focus->id = $id;
+	$associated_prod = getAssociatedProducts($module, $focus);
+	$output[0] = $associated_prod;
 	return $output;
 }
 

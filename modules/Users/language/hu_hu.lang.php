@@ -10,7 +10,6 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  *********************************************************************************
  * $Header:  \modules\Users\language\hu_hu.lang.php - 12:14 2011.02.27. $
  * Description:  Defines the Hungarian language pack for the Users module vtiger 5.2.x
@@ -112,6 +111,8 @@ $mod_strings = array(
 	'ERR_USER_NAME_EXISTS_2' => ' már foglalt. Duplikált felhasználónevek nem engedélyezettek.<br>Válassz egyedi felhasználó nevet.',
 	'ERR_LAST_ADMIN_1' => 'A felhasználó név ',
 	'ERR_LAST_ADMIN_2' => ' az utolsó Admin felhasználó. Legalább egy felhasználónak Admin felhasználónak kell lennie.<br>Ellenőrizd az Admin felhasználó beállításait.',
+	'ERR_MAXLOGINATTEMPTS' => 'Maximum number of login attempts reached. Contact your administrator to unblock your account',
+	'LBL_FAILED_LOGIN_ATTEMPTS' => 'Failed Login Attempts',
 	'ERR_DELETE_RECORD' => 'Adj meg egy rekord azonosítót a Cég törléséhez',
 	'LBL_ROLES' => 'Munkakörök',
 	'LBL_ROLES_SUBORDINATES' => 'Munkakörök és alárendeltségek',
@@ -188,6 +189,7 @@ $mod_strings = array(
 	'LBL_VIEWING' => 'Megnézés',
 	'LBL_PROPERTIES' => 'Tulajdonsága',
 	'LBL_ASTERISKEXTENSIONS_EXIST' => 'Az Asterisk bővítmény már létezik!',
+	'LBL_CURRENCY_SEPARATORS_INCORRECT' => 'Decimal Separator and Digit Grouping Separator cannot be the same.',
 	'LBL_CREATE_NEW_GROUP' => 'Új Csoport',
 	'LBL_NEW_GROUP' => 'Új Csoport',
 	'LBL_EDIT_GROUP' => 'Csoport Szerkesztése',
@@ -678,6 +680,7 @@ $mod_strings = array(
 	'Symbol Placement' => 'Szimbólum elhelyezés',
 	'Digit Grouping Pattern' => 'Számjegy csoportosítási minta',
 	'Digit Grouping Separator' => 'Ezres elválasztó',
+	'Number Of Currency Decimals'  =>  'Tizedesek száma a Pénznemben',
 	'LBL_GROUP_NMAE' => 'Csoportnév',
 	'LBL_USER_ASTERISK_OPTIONS' => 'Asterisk beállítási lehetőségek',
 	'Use Asterisk' => 'Asterisk használata',

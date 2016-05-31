@@ -159,19 +159,19 @@ function validate_sendmail(idlist,module){
 }
 
 function sendmail(module,idstrings,url) {
+	if(url == undefined){
+		url = '';
+	}
 	jQuery.ajax({
 			method: 'POST',
 			url: "index.php?module=Emails&return_module="+module+"&action=EmailsAjax&file=mailSelect&idlist="+idstrings+url
 	}).done(function (response) {
-				if(response == "Mail Ids not permitted" || response == "No Mail Ids")
-				{
-					var url= 'index.php?module=Emails&action=EmailsAjax&pmodule='+module+'&file=EditView&sendmail=true';
-					openPopUp('xComposeEmail',this,url,'createemailWin',820,689,'menubar=no,toolbar=no,location=no,status=no,resizable=no');
-				}
-				else
-					getObj('sendmail_cont').innerHTML = response;
-			}
-	);
+		if(response == "Mail Ids not permitted" || response == "No Mail Ids") {
+			var url= 'index.php?module=Emails&action=EmailsAjax&pmodule='+module+'&file=EditView&sendmail=true';
+			openPopUp('xComposeEmail',this,url,'createemailWin',820,689,'menubar=no,toolbar=no,location=no,status=no,resizable=no');
+		} else
+			getObj('sendmail_cont').innerHTML = response;
+	});
 }
 
 function rel_eMail(module,oButton,relmod){

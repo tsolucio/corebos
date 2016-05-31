@@ -221,7 +221,7 @@ $mod_strings = Array(
 
 'Time'=>'Hora',
 
-//added for patch2
+'Relation'=>'Relation',
 
 'USERGROUPLIST'=>'Grupos',
 
@@ -861,6 +861,7 @@ $mod_strings = Array(
 'LBL_CHECK_ASSIGNEDTO_MAILID'=>'Por favor, verifique o Endereço de e-mail determinado',
 'LBL_MAILSENDERROR'=>'A mensagem não pode ser enviada para o Usuário admin. Por favor verifique o Endereço de e-mail do admin',
 'LBL_RECORD_NOEXIST'=>'Registro não disponível',
+'Could not get file list' => 'Could not get file list',
 'LBL_ENTER_PROFILE'=>'Digite o Nome do Perfil',
 'Language' => 'Language',
 'AlwaysActive' => 'always active',
@@ -966,6 +967,7 @@ $mod_strings = Array(
 
 // vtmailscanner START
 'LBL_MAIL_SCANNER'=>'Scanner de Mensagem',
+'MailScanner' =>'Scanner de Mensagem',
 'LBL_MAIL_SCANNER_DESCRIPTION'=>'Configure Caixa Correio para Scanear',
 'LBL_SCAN_NOW'=>'Escanear Agora',
 'LBL_RULE'=>'Regra',

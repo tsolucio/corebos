@@ -1,5 +1,4 @@
 <?php
-
 /*********************************************************************************
 ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
@@ -8,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('Smarty_setup.php');
 require_once('data/Tracker.php');
 require_once('modules/Users/LoginHistory.php');
@@ -16,19 +14,12 @@ require_once('modules/Users/Users.php');
 require_once('include/logging.php');
 require_once('include/utils/utils.php');
 
-
-global $app_strings;
-global $mod_strings;
-global $app_list_strings;
-global $current_language, $current_user, $adb;
+global $app_strings, $mod_strings, $app_list_strings, $current_language, $current_user, $adb;
 $current_module_strings = return_module_language($current_language, 'Settings');
 
-global $list_max_entries_per_page;
-global $urlPrefix;
+global $list_max_entries_per_page, $urlPrefix, $currentModule;
 
 $log = LoggerManager::getLogger('login_list');
-
-global $currentModule;
 
 global $theme;
 $theme_path="themes/".$theme."/";
@@ -42,7 +33,6 @@ $category = getParenttab();
 
 $oUser = new Users($id);
 
-
 $user_list = getUserslist(false);
 
 $smarty->assign("CMOD", $mod_strings);
@@ -55,4 +45,3 @@ $smarty->assign("CATEGORY",$category);
 
 $smarty->display("ListLoginHistory.tpl");
 ?>
-

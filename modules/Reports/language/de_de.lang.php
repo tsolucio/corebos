@@ -224,6 +224,7 @@ $mod_strings = Array(
     'LBL_SHARING_TYPE'=>'Berichtstyp',
     'LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS'=>'Wählen Sie einen Berichtstyp um die Zugangsrechte zum Bericht zu setzen.', 
     'LBL_ACTION' => 'Aktion',
+    'ACTION' => 'Aktion',
     'LBL_VIEW_DETAILS' => 'Details ansehen',
     'LBL_SHOW_STANDARD_FILTERS' => 'zeige Standardfilter',
 
@@ -250,6 +251,7 @@ $mod_strings = Array(
     'Monthly'=>'Monatlich',
     'Annually'=>'Jährlich',
     'LBL_SCHEDULE_REPORT'=>'Zeitplanung',
+    'ScheduleReports'=>'Zeitplanung',
     'LBL_SCHEDULE_FREQUENCY'=>'Frequenz',
     'OPTION_SCHEDULE_EMAIL_CHOOSE'=>'Wählen ..... ',
     'LBL_SCHEDULE_EMAIL_TIME'=>'Uhrzeit',

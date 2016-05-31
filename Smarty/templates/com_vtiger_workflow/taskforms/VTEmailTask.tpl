@@ -18,6 +18,12 @@ var moduleName = '{$entityName}';
 			<select id="task-emailfieldsfrmemail" class="small" style="display: none;"><option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option></select></td>
 	</tr>
 	<tr>
+		<td class='dvtCellLabel' align="right" width=15% nowrap="nowrap"><b>{'LBL_EMAIL_REPLYTO'|@getTranslatedString:$MODULE}</b></td>
+		<td class='dvtCellInfo'><input type="text" name="replyto" value="{$task->replyto}" id="save_replyto" class="form_input" style='width: 250px;'>
+			<span id="task-emailfieldsreplyto-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
+			<select id="task-emailfieldsreplyto" class="small" style="display: none;"><option value=''>{$MOD.LBL_SELECT_OPTION_DOTDOTDOT}</option></select></td>
+	</tr>
+	<tr>
 		<td class='dvtCellLabel' align="right" width=15% nowrap="nowrap"><b><font color=red>*</font> {'LBL_EMAIL_RECIPIENT'|@getTranslatedString:$MODULE}</b></td>
 		<td class='dvtCellInfo'><input type="text" name="recepient" value="{$task->recepient}" id="save_recepient" class="form_input" style='width: 250px;'>
 			<span id="task-emailfields-busyicon"><b>{$MOD.LBL_LOADING}</b><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>

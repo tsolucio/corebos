@@ -242,10 +242,6 @@ $mod_strings = Array(
 'LBL_TODONAME'=>'Actie',
 'LBL_TODODATETIME'=>'Start tijd en datum',
 
-
-
-
-
 //DON'T CONVERT THESE THEY ARE MAPPINGS - STARTS
 'db_last_name' => 'LBL_LIST_LAST_NAME',
 'db_first_name' => 'LBL_LIST_FIRST_NAME',
@@ -346,6 +342,7 @@ $mod_strings = Array(
 'No Time'=>'Geen tijd',
 //Added for Send Reminder 4.2 release
 'Send Reminder'=>'Stuur herinnering',
+'SendReminder'=>'Stuur herinnering',
 'LBL_YES'=>'Ja',
 'LBL_NO'=>'Nee',
 'LBL_DAYS'=>'Dagen(s)',
@@ -389,6 +386,8 @@ $mod_strings = Array(
 'createdtime'=>'Gemaakt',
 'modifiedtime'=>'Gewijzigd',
 'first'=>'Eerst',
+'second'=>'Second',
+'third'=>'Third',
 'last'=>'Laatst',
 'High'=>'Hoog',
 'Medium'=>'Medium',
@@ -397,6 +396,8 @@ $mod_strings = Array(
 'LBL_SELECT_CONTACT'=>'Selecteer contact',
 'LBL_ALL_EVENTS_TODOS'=>'Alle Afspraken en Acties',
 'First'=>'Eerste', 
+'Second'=>'Second',
+'Third'=>'Third',
 'Last'=>'Laaste', 
 'on'=>'op', 
 'day of the month'=>'Dag van de maand',

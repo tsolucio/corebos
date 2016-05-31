@@ -47,7 +47,7 @@ $mod_strings = array(
 'LBL_SET_EXPRESSION'=>'Expresión Asignación',
 
 'LBL_MANUAL'=>'Sistema',
-
+'LBL_RECORD_ACCESS_CONTROL' => 'Control de Acceso a Registro',
 'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL'=>'Añadir Condición de Grupo',
 
 'VTUpdateFieldsTask' => 'Actualizar Campos',
@@ -64,6 +64,7 @@ $mod_strings = array(
 'LBL_EMAIL_SUBJECT' => 'Asunto',
 'LBL_EMAIL_FROMNAME' => 'Nombre De',
 'LBL_EMAIL_FROMEMAIL' => 'Email De',
+'LBL_EMAIL_REPLYTO' => 'Responder a',
 
 'LBL_WORKFLOW_NOTE_EVENT_TASK_TIMEZONE' => 'Nota: Todas las fechas, horas e información recurrente configurada para el evento,
 											serán respecto a la zona horaria por defecto, configurada en config.inc.php',
@@ -97,6 +98,8 @@ $mod_strings = array(
 'Relate Service' => 'Relacionar Servicio',
 'Relate with AccountVendor' => 'Relacionar con Cuenta/Proveedor',
 'Relate with Contact' => 'Relacionar con Contacto',
+'CBDeleteRelatedTask' => 'Eliminar Registros Relacionados',
+'CBSelectcbMap' => 'Selecciona Regla de Negocio',
 
 'LBL_EVENTNAME' => 'Nombre de Evento',
 'LBL_DESCRIPTION' => 'Descripción',

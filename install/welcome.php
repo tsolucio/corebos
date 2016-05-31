@@ -83,7 +83,7 @@ foreach($pieces as $val)
 		
 								<tr class='level3'>
 									<td valign=top align=left class="small contentDisplay fixedSmallHeight" style="padding-left:20px;" colspan=2>
-										<p style='text-align:center;font-weight:bold;'><?php echo $installationStrings['LBL_ABOUT_CONFIG_WIZARD'] . $vtiger_current_version; ?>.</p>
+										<p style='text-align:center;font-weight:bold;'><?php echo $installationStrings['LBL_ABOUT_CONFIG_WIZARD'] . $coreBOS_app_version; ?>.</p>
 										<p><br><?php echo $installationStrings['LBL_ABOUT_VTIGER']; ?></p>
 							  		</td>
 								</tr>

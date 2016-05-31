@@ -123,7 +123,7 @@ class ListViewController {
 	 */
 	function getListViewEntries($focus, $module,$result,$navigationInfo,$skipActions=false) {
 		require('user_privileges/user_privileges_'.$this->user->id.'.php');
-		global $listview_max_textlength, $theme, $default_charset, $current_user, $currentModule;
+		global $listview_max_textlength, $theme, $default_charset, $current_user, $currentModule, $adb;
 		$fields = $this->queryGenerator->getFields();
 		$whereFields = $this->queryGenerator->getWhereFields();
 		$meta = $this->queryGenerator->getMeta($this->queryGenerator->getModule());
@@ -212,7 +212,7 @@ class ListViewController {
 		}
 
 		$useAsterisk = get_use_asterisk($this->user->id);
-
+		$wfs = new VTWorkflowManager($adb);
 		$data = array();
 		for ($i = 0; $i < $rowCount; ++$i) {
 			//Getting the recordId
@@ -390,8 +390,7 @@ class ListViewController {
 							$currencyValue = CurrencyField::convertToUserFormat($value, null, true);
 							$value = CurrencyField::appendCurrencySymbol($currencyValue, $currencySymbol);
 						} else {
-							//changes made to remove vtiger_currency symbol infront of each
-							//vtiger_potential amount
+							//changes made to remove vtiger_currency symbol in front of each potential amount
 							if ($value != 0) {
 								$value = CurrencyField::convertToUserFormat($value);
 							}
@@ -540,6 +539,11 @@ class ListViewController {
 						if ($parentMeta->isModuleEntity() && $parentModule != "Users") {
 							$value = "<a href='index.php?module=$parentModule&action=DetailView&".
 								"record=$rawValue' title='".getTranslatedString($parentModule, $parentModule)."'>$value</a>";
+							$modMetaInfo=getEntityFieldNames($parentModule);
+							$fieldName=(is_array($modMetaInfo['fieldname']) ? $modMetaInfo['fieldname'][0] : $modMetaInfo['fieldname']);
+							// vtlib customization: For listview javascript triggers
+							$value = "$value <span type='vtlib_metainfo' vtrecordid='{$rawValue}' vtfieldname=".
+							"'{$fieldName}' vtmodule='$parentModule' style='display:none;'></span>";
 						}
 					} else {
 						$value = '--';
@@ -573,47 +577,55 @@ class ListViewController {
 				} else {
 					$value = textlength_check($value);
 				}
-
-				$parenttab = getParentTab();
-				$nameFields = $this->queryGenerator->getModuleNameFields($module);
-				$nameFieldList = explode(',',$nameFields);
-				if(in_array($fieldName, $nameFieldList) && $module != 'Emails' ) {
-					$value = "<a href='index.php?module=$module&parenttab=$parenttab&action=DetailView&record=".
-					"$recordId' title='".getTranslatedString($module, $module)."'>$value</a>";
-				} elseif($fieldName == $focus->list_link_field && $module != 'Emails') {
-					$value = "<a href='index.php?module=$module&parenttab=$parenttab&action=DetailView&record=".
-					"$recordId' title='".getTranslatedString($module, $module)."'>$value</a>";
+				if($field->getFieldDataType() != 'reference') {
+					$parenttab = getParentTab();
+					$nameFields = $this->queryGenerator->getModuleNameFields($module);
+					$nameFieldList = explode(',',$nameFields);
+					if(($fieldName == $focus->list_link_field or in_array($fieldName, $nameFieldList)) && $module != 'Emails' ) {
+						$opennewtab = GlobalVariable::getVariable('Application_OpenRecordInNewXOnListView', '', $module);
+						if ($opennewtab=='') {
+							$value = "<a href='index.php?module=$module&parenttab=$parenttab&action=DetailView&record=".
+								"$recordId' title='".getTranslatedString($module, $module)."'>$value</a>";
+						} elseif ($opennewtab=='window') {
+							$value = "<a href='#' onclick='window.open(\"index.php?module=$module&parenttab=$parenttab&action=DetailView&record=".
+								"$recordId\", \"$module-$entity_id\", \"width=1300, height=900, scrollbars=yes\"); return false;' title='".getTranslatedString($module, $module)."'>$value</a>";
+						} else {
+							$value = "<a href='index.php?module=$module&parenttab=$parenttab&action=DetailView&record=".
+								"$recordId' title='".getTranslatedString($module, $module)."' target='_blank'>$value</a>";
+						}
+					}
+					// vtlib customization: For listview javascript triggers
+					$value = "$value <span type='vtlib_metainfo' vtrecordid='{$recordId}' vtfieldname=".
+						"'{$fieldName}' vtmodule='$module' style='display:none;'></span>";
 				}
-
-				// vtlib customization: For listview javascript triggers
-				$value = "$value <span type='vtlib_metainfo' vtrecordid='{$recordId}' vtfieldname=".
-					"'{$fieldName}' vtmodule='$module' style='display:none;'></span>";
-				// END
 				$row[] = $value;
 			}
 
 			//Added for Actions ie., edit and delete links in listview
 			$actionLinkInfo = "";
 			if(isPermitted($module,"EditView","") == 'yes'){
+				$racbr = $wfs->getRACRuleForRecord($currentModule, $recordId);
+				if (!$racbr or $racbr->hasListViewPermissionTo('edit')) {
 				$edit_link = $this->getListViewEditLink($module,$recordId);
 				if(isset($navigationInfo['start']) && $navigationInfo['start'] > 1 && $module != 'Emails') {
 					$actionLinkInfo .= "<a href=\"$edit_link&start=".
-						$navigationInfo['start']."\">".getTranslatedString("LNK_EDIT",
-								$module)."</a> ";
+						$navigationInfo['start']."\">".getTranslatedString("LNK_EDIT",$module)."</a> ";
 				} else {
-					$actionLinkInfo .= "<a href=\"$edit_link\">".getTranslatedString("LNK_EDIT",
-								$module)."</a> ";
+					$actionLinkInfo .= "<a href=\"$edit_link\">".getTranslatedString("LNK_EDIT",$module)."</a> ";
+				}
 				}
 			}
 
 			if(isPermitted($module,"Delete","") == 'yes'){
+				$racbr = $wfs->getRACRuleForRecord($currentModule, $recordId);
+				if (!$racbr or $racbr->hasListViewPermissionTo('delete')) {
 				$del_link = $this->getListViewDeleteLink($module,$recordId);
 				if($actionLinkInfo != "" && $del_link != "")
 					$actionLinkInfo .= ' | ';
 				if($del_link != "")
 					$actionLinkInfo .=	"<a href='javascript:confirmdelete(\"".
-						addslashes(urlencode($del_link))."\")'>".getTranslatedString("LNK_DELETE",
-								$module)."</a>";
+						addslashes(urlencode($del_link))."\")'>".getTranslatedString('LNK_DELETE',$module).'</a>';
+				}
 			}
 			// Record Change Notification
 			if(method_exists($focus, 'isViewed') &&
@@ -759,7 +771,7 @@ class ListViewController {
 				}
 				$arrow = '';
 			} else {
-				$name = getTranslatedString($field->getFieldLabelKey(), $module);
+				$name = getTranslatedString($field->getFieldLabelKey(), getTabModuleName($field->getTabId()));
 			}
 			//added to display vtiger_currency symbol in related listview header
 			if($name =='Amount') {

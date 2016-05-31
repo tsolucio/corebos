@@ -201,6 +201,7 @@ $app_strings = array (
 'LBL_EXPORT' => 'Exportar',
 'LBL_EXPORT_ALL' => 'Exportar tudo',
 'LBL_QUICK_CREATE' => 'Criar Rápido',
+'QuickRelatedList' => 'Related Modules',
 'Export' => 'Exportar',
 'Import' => 'Importar',
 'Merge' => 'Mesclar',
@@ -1142,7 +1143,7 @@ $app_strings = array (
 'LNK_LIST_NEXT' => 'Próximo',
 'LNK_LIST_PREVIOUS' => 'Anterior',
 'LBL_JUMP_BTN'=> 'PULAR',
-
+'LBL_JUMP_To'=> 'Jump to',
 'LBL_ASSIGN_BUTTON_LABEL'=>'Definir Campos',
 
 // Mass Edit Feature
@@ -1188,7 +1189,6 @@ $app_strings = array (
 
 //added for find duplicate
 'LBL_DUPLICATE_DATA_IN'=>'Duplicar',
-'LBL_DELETE'=>'Apagar',
 'LBL_MERGE_SELECT'=>'Selecionar Mesclagem',
 'LBL_MERGE_DATA_IN'=>'Mesclar Registros em',
 'LBL_MERGE'=>'Mesclar',

@@ -10,16 +10,7 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Users/Save.php,v 1.14 2005/03/17 06:37:39 rank Exp $
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
 require_once('modules/Users/Users.php');
 require_once('include/logging.php');
 require_once('include/utils/UserInfoUtil.php');
@@ -34,25 +25,24 @@ else
 
 if(isset($_REQUEST['dup_check']) && $_REQUEST['dup_check'] != '')
 {
-        $user_query = "SELECT user_name FROM vtiger_users WHERE user_name =?";
-        $user_result = $adb->pquery($user_query, array($user_name));
-        $group_query = "SELECT groupname FROM vtiger_groups WHERE groupname =?";
-        $group_result = $adb->pquery($group_query, array($user_name));
-        
-        if($adb->num_rows($user_result) > 0) {
+	$user_query = "SELECT user_name FROM vtiger_users WHERE user_name =?";
+	$user_result = $adb->pquery($user_query, array($user_name));
+	$group_query = "SELECT groupname FROM vtiger_groups WHERE groupname =?";
+	$group_result = $adb->pquery($group_query, array($user_name));
+	if($adb->num_rows($user_result) > 0) {
 		echo $mod_strings['LBL_USERNAME_EXIST'];
 		die;
-		} elseif($adb->num_rows($group_result) > 0) {
-			echo $mod_strings['LBL_GROUPNAME_EXIST'];
-			die;
-		} else {
-	        echo 'SUCCESS';
-	        die;
+	} elseif($adb->num_rows($group_result) > 0) {
+		echo $mod_strings['LBL_GROUPNAME_EXIST'];
+		die;
+	} else {
+		echo 'SUCCESS';
+		die;
 	}
 }
-if($_REQUEST['user_role'] != '' && !is_admin($current_user) && $_REQUEST['user_role'] != $current_user->roleid){ 
+if($_REQUEST['user_role'] != '' && !is_admin($current_user) && $_REQUEST['user_role'] != $current_user->roleid){
 	$log->fatal("SECURITY:Non-Admin user:". $current_user->id . " attempted to change user role");
-	echo "<link rel='stylesheet' type='text/css' href='themes/$theme/style.css'>";	
+	echo "<link rel='stylesheet' type='text/css' href='themes/$theme/style.css'>";
 	echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
 	echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
 		<table border='0' cellpadding='5' cellspacing='0' width='98%'>
@@ -61,20 +51,19 @@ if($_REQUEST['user_role'] != '' && !is_admin($current_user) && $_REQUEST['user_r
 		<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>SECURITY: Non-Admin user attempted to change user role</span></td>
 		</tr>
 		<tr>
-		<td class='small' align='right' nowrap='nowrap'>			   	
-		<a href='index.php?module=Users&action=Logout'> $app_strings[LBL_GO_BACK]</a><br></td>
+		<td class='small' align='right' nowrap='nowrap'>
+		<a href='index.php?module=Users&action=Logout'> ".$app_strings['LBL_GO_BACK']."</a><br></td>
 		</tr>
-		</tbody></table> 
-		</div>";
-	echo "</td></tr></table>";
+		</tbody></table>
+		</div>
+		</td></tr></table>";
 	exit;
 }
 
 if((empty($_SESSION['Users_FORM_TOKEN']) || $_SESSION['Users_FORM_TOKEN']
 		!== (int)$_REQUEST['form_token']) && $_REQUEST['deleteImage'] != 'true' &&
 		$_REQUEST['changepassword'] != 'true') {
-	header("Location: index.php?action=Error&module=Users&error_string=".
-			urlencode($app_strings['LBL_PERMISSION']));
+	header("Location: index.php?action=Error&module=Users&error_string=".urlencode($app_strings['LBL_PERMISSION']));
 	die;
 }
 
@@ -84,12 +73,12 @@ elseif (!isset($_POST['record']) && !is_admin($current_user)) echo ("Unauthorize
 $focus = new Users();
 if(isset($_REQUEST["record"]) && $_REQUEST["record"] != '')
 {
-    $focus->mode='edit';
+	$focus->mode='edit';
 	$focus->id = vtlib_purify($_REQUEST["record"]);
 }
 else
 {
-    $focus->mode='';
+	$focus->mode='';
 }
 
 if($_REQUEST['deleteImage'] == 'true') {
@@ -108,24 +97,24 @@ if($_REQUEST['changepassword'] == 'true') {
 			exit;
 		}
 	}
-}	
+}
 
 //save user Image
 if(! $_REQUEST['changepassword'] == 'true')
 {
-	if(strtolower($current_user->is_admin) == 'off'  && $current_user->id != $focus->id)
+	if(strtolower($current_user->is_admin) == 'off' && $current_user->id != $focus->id)
 	{
 		$log->fatal("SECURITY:Non-Admin ". $current_user->id . " attempted to change settings for user:". $focus->id);
 		header("Location: index.php?module=Users&action=Logout");
 		exit;
 	}
-	if(strtolower($current_user->is_admin) == 'off'  && isset($_POST['is_admin']) && strtolower($_POST['is_admin']) == 'on')
+	if(strtolower($current_user->is_admin) == 'off' && isset($_POST['is_admin']) && strtolower($_POST['is_admin']) == 'on')
 	{
 		$log->fatal("SECURITY:Non-Admin ". $current_user->id . " attempted to change is_admin settings for user:". $focus->id);
 		header("Location: index.php?module=Users&action=Logout");
 		exit;
 	}
-	
+
 	if (!isset($_POST['is_admin'])) $_REQUEST["is_admin"] = 'off';
 	//Code contributed by mike crowe for rearrange the home page and tab
 	if (!isset($_POST['deleted'])) $_REQUEST["deleted"] = '0';
@@ -145,25 +134,23 @@ if(! $_REQUEST['changepassword'] == 'true')
 
 	$return_id = $focus->id;
 
-if (isset($_POST['user_name']) && isset($_POST['new_password'])) {
+	if (isset($_POST['user_name']) && isset($_POST['new_password'])) {
 		$new_pass = $_POST['new_password'];
 		$new_passwd = $_POST['new_password'];
 		$new_pass = md5($new_pass);
 		$uname = $_POST['user_name'];
 		if (!$focus->change_password($_POST['confirm_new_password'], $_POST['new_password'])) {
-		
 			header("Location: index.php?action=Error&module=Users&error_string=".urlencode($focus->error_string));
-		exit;
-}
-}
+			exit;
+		}
+	}
 
-if(isset($focus->id) && $focus->id != '')
-{
-  if(isset($_POST['group_name']) && $_POST['group_name'] != '')
-  {
-    updateUsers2GroupMapping($_POST['group_name'],$focus->id);
-  }
-}
+	if(isset($focus->id) && $focus->id != '')
+	{
+		if(isset($_POST['group_name']) && $_POST['group_name'] != '') {
+			updateUsers2GroupMapping($_POST['group_name'],$focus->id);
+		}
+	}
 }
 if(isset($_POST['return_module']) && $_POST['return_module'] != "") $return_module = vtlib_purify($_REQUEST['return_module']);
 else $return_module = "Users";
@@ -204,11 +191,10 @@ if($_REQUEST['modechk'] != 'prefview') {
 	$location .= "&parenttab=".vtlib_purify($parenttab);
 }
 
-if ($error_str != '') {	
-    $user = $focus->column_fields['user_name'];
+if ($error_str != '') {
+	$user = $focus->column_fields['user_name'];
 	$location .= "&user=$user&$error_str";
 }
 
 header($location);
-
 ?>

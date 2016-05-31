@@ -6,10 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
-
-
 global $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
@@ -18,15 +15,13 @@ require_once('include/utils/UserInfoUtil.php');
 require_once('vtigerversion.php');
 if($patch_version !='')
 {
-	    $patch_string = $vtiger_current_version . " Patch " . $patch_version;
+	$patch_string = $vtiger_current_version . " Patch " . $patch_version;
 }
 else
 {
-	    $patch_string = $vtiger_current_version;
+	$patch_string = $vtiger_current_version;
 }
-global $app_strings;
-global $app_list_strings;
-global $mod_strings;
+global $app_strings, $app_list_strings, $mod_strings;
 ?>
 <!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN"
 "http://www.w3.org/TR/html4/loose.dtd">

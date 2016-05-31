@@ -183,17 +183,24 @@ if (!empty($_REQUEST['save_error']) and $_REQUEST['save_error'] == "true") {
 			$field_value =urldecode($value[1]);
 			$finfo = VTCacheUtils::lookupFieldInfo($tabid, $field_name_val);
 			if ($finfo !== false) {
-				if ($finfo['uitype']=='56') {
-					$field_value = $field_value=='on' ? '1' : '0';
-				}
-				if ($finfo['uitype']=='71' or $finfo['uitype']=='72') {
-					$currencyField = new CurrencyField($field_value);
-					$field_value = CurrencyField::convertToDBFormat($field_value,$current_user);
-				}
-				if ($finfo['uitype']=='33' or $finfo['uitype']=='3313') {
-					if (is_array($field_value)) {
-						$field_value = implode(' |##| ', $field_value);
-					}
+				switch ($finfo['uitype']) {
+					case '56':
+						$field_value = $field_value=='on' ? '1' : '0';
+						break;
+					case '7':
+					case '9':
+					case '72':
+						$field_value = CurrencyField::convertToDBFormat($field_value, null, true);
+						break;
+					case '71':
+						$field_value = CurrencyField::convertToDBFormat($field_value);
+						break;
+					case '33':
+					case '3313':
+						if (is_array($field_value)) {
+							$field_value = implode(' |##| ', $field_value);
+						}
+						break;
 				}
 			}
 			$focus->column_fields[$field_name_val] = $field_value;
@@ -365,13 +372,17 @@ $smarty->assign("CALENDAR_DATEFORMAT", parse_calendardate($app_strings['NTC_DATE
 $mod_seq_field = getModuleSequenceField($currentModule);
 if($focus->mode != 'edit' && $mod_seq_field != null) {
 	$autostr = getTranslatedString('MSG_AUTO_GEN_ON_SAVE');
-	$mod_seq_string = $adb->pquery("SELECT prefix, cur_id from vtiger_modentity_num where semodule = ? and active=1",array($currentModule));
-	$mod_seq_prefix = $adb->query_result($mod_seq_string,0,'prefix');
-	$mod_seq_no = $adb->query_result($mod_seq_string,0,'cur_id');
+	list($mod_seq_string, $mod_seq_prefix, $mod_seq_no, $doNative) = cbEventHandler::do_filter('corebos.filter.ModuleSeqNumber.get', array('', '', '', true));
+	if ($doNative) {
+		$mod_seq_string = $adb->pquery("SELECT prefix, cur_id from vtiger_modentity_num where semodule = ? and active=1",array($currentModule));
+		$mod_seq_prefix = $adb->query_result($mod_seq_string,0,'prefix');
+		$mod_seq_no = $adb->query_result($mod_seq_string,0,'cur_id');
+	}
 	if ($adb->num_rows($mod_seq_string) == 0 || $focus->checkModuleSeqNumber($focus->table_name, $mod_seq_field['column'], $mod_seq_prefix.$mod_seq_no)) {
-		echo '<br><font color="#FF0000"><b>'. getTranslatedString('LBL_DUPLICATE'). ' '. getTranslatedString($mod_seq_field['label'])
-			.' - '. getTranslatedString('LBL_CLICK') .' <a href="index.php?module=Settings&action=CustomModEntityNo&parenttab=Settings&selmodule='.$currentModule.'">'.getTranslatedString('LBL_HERE').'</a> '
-			. getTranslatedString('LBL_TO_CONFIGURE'). ' '. getTranslatedString($mod_seq_field['label']) .'</b></font>';
+		$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-warning');
+		$smarty->assign('ERROR_MESSAGE', '<b>'. getTranslatedString($mod_seq_field['label']). ' '. getTranslatedString('LBL_NOT_CONFIGURED')
+			.' - '. getTranslatedString('LBL_PLEASE_CLICK') .' <a href="index.php?module=Settings&action=CustomModEntityNo&parenttab=Settings&selmodule='.$currentModule.'">'.getTranslatedString('LBL_HERE').'</a> '
+			. getTranslatedString('LBL_TO_CONFIGURE'). ' '. getTranslatedString($mod_seq_field['label']) .'</b>');
 	} else {
 		$smarty->assign("MOD_SEQ_ID",$autostr);
 	}

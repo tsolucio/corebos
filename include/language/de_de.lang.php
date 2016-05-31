@@ -200,6 +200,7 @@ $app_strings = array(
 'LBL_EXPORT'=>'exportiere',
 'LBL_EXPORT_ALL'=>'exportiere alle',
 'LBL_QUICK_CREATE'=>'Schnellmenü',
+'QuickRelatedList' => 'Related Modules',
 'Export'=>'Export',
 'Import'=>'Import',
 'Merge'=>'Zusammenführen',
@@ -334,7 +335,7 @@ $app_strings = array(
 'LBL_VENDOR_NAME' => 'Vendor Name', //MSL
 'LBL_SELECT'=>'wähle',
 'LBL_EDIT'=>'Bearbeiten',
-'LBL_DELETE'=>'Lö',
+'LBL_DELETE'=>'Löschen',
 'Name'=>'Name',
 'Company'=>'Organisation',
 'Phone'=>'Telefon',
@@ -1141,7 +1142,7 @@ $app_strings = array(
 'LNK_LIST_NEXT' => 'weiter',
 'LNK_LIST_PREVIOUS' => 'zurück',
 'LBL_JUMP_BTN'=> 'SPRINGE',
-
+'LBL_JUMP_To'=> 'Jump to',
 'LBL_ASSIGN_BUTTON_LABEL'=>'Felder zuordnen',
 
 // Mass Edit Feature
@@ -1189,7 +1190,6 @@ $app_strings = array(
  
 //added for find duplicate
 'LBL_DUPLICATE_DATA_IN'=>'Duplikate ',
-'LBL_DELETE'=>'Löschen',
 'LBL_MERGE_SELECT'=>'ausgewählte Zusammenführen',
 'LBL_MERGE_DATA_IN'=>'Zusammenführen von',
 'LBL_MERGE'=>'Zusammenführen',

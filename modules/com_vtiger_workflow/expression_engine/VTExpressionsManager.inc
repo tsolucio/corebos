@@ -16,7 +16,7 @@ class VTExpressionsManager{
 	/** Caching logic **/
 	private static $cache = array();
 	static function addToCache($key, $value) {
-		 self::$cache[$key] = $value;
+		self::$cache[$key] = $value;
 	}
 	static function fromCache($key) {
 		if(isset(self::$cache[$key])) return self::$cache[$key];
@@ -25,7 +25,6 @@ class VTExpressionsManager{
 	static function clearCache() {
 		self::$cache = array();
 	}
-	/** END **/
 
 	function fields($moduleName){
 		global $current_user;
@@ -41,7 +40,7 @@ class VTExpressionsManager{
 	function expressionFunctions() {
 		return array('concat' => 'concat(a,b)', 'time_diffdays(a,b)' => 'time_diffdays(a,b)', 'time_diffdays(a)' => 'time_diffdays(a)', 'time_diff(a,b)' => 'time_diff(a,b)','time_diff(a)' => 'time_diff(a)',
 			'add_days' => 'add_days(datefield, noofdays)', 'sub_days' => 'sub_days(datefield, noofdays)', 'add_time(timefield, minutes)' => 'add_time(timefield, minutes)', 'sub_time(timefield, minutes)' => 'sub_time(timefield, minutes)',
-			'today' => "get_date('today')", 'tomorrow' => "get_date('tomorrow')",  'yesterday' => "get_date('yesterday')",'time' => "get_date('time')", 'format_date' => 'format_date(date,format)', 'substring' => 'substring(stringfield,start,end)',
+			'today' => "get_date('today')", 'tomorrow' => "get_date('tomorrow')", 'yesterday' => "get_date('yesterday')",'time' => "get_date('time')", 'format_date' => 'format_date(date,format)', 'substring' => 'substring(stringfield,start,end)',
 			'uppercase'=>'uppercase(stringfield)', 'lowercase'=>'lowercase(stringfield)', 'uppercasefirst'=>'uppercasefirst(stringfield)', 'uppercasewords'=>'uppercasewords(stringfield)', 'round' => 'round(numericfield,decimals)',
 			'ceil' => 'ceil(numericfield)', 'floor' => 'floor(numericfield)',
 			'getLatitude' => 'getLatitude(address)', 'getLongitude' => 'getLongitude(address)',
@@ -49,9 +48,13 @@ class VTExpressionsManager{
 			'getGEODistanceFromCompanyAddress' => 'getGEODistanceFromCompanyAddress(address)',
 			'getGEODistanceFromUserAddress' => 'getGEODistanceFromUserAddress(address)',
 			'getGEODistanceFromUser2AccountBilling' => 'getGEODistanceFromUser2AccountBilling(account)',
+			'getGEODistanceFromAssignUser2AccountBilling' => 'getGEODistanceFromAssignUser2AccountBilling(account,assigned_user)',
 			'getGEODistanceFromUser2AccountShipping' => 'getGEODistanceFromUser2AccountShipping(account)',
+			'getGEODistanceFromAssignUser2AccountShipping' => 'getGEODistanceFromAssignUser2AccountShipping(account,assigned_user)',
 			'getGEODistanceFromUser2ContactBilling' => 'getGEODistanceFromUser2ContactBilling(contact)',
+			'getGEODistanceFromAssignUser2ContactBilling' => 'getGEODistanceFromAssignUser2ContactBilling(contact,assigned_user)',
 			'getGEODistanceFromUser2ContacttShipping' => 'getGEODistanceFromUser2ContacttShipping(contact)',
+			'getGEODistanceFromAssignUser2ContacttShipping' => 'getGEODistanceFromAssignUser2ContacttShipping(contact,assigned_user)',
 			'getGEODistanceFromCoordinates' => 'getGEODistanceFromCoordinates({lat1},{long1},{lat2},{long2})');
 	}
 }

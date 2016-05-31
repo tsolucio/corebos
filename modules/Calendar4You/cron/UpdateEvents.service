@@ -67,7 +67,7 @@ if ($num_rows1 > 0) {
 					$geventid = $row2['geventid'];
 					$cal=$row2['calendar'];
 					$event = $GoogleSync4You->getGoogleCalEventfromcron($geventid,$cal);
-					if($event == false) continue;
+					if($event != false){
 					if ($event->getStatus()=='cancelled') {
 						$sql3 = 'DELETE FROM its4you_googlesync4you_events WHERE id = ?';
 						$adb->pquery($sql3,array($eventid));
@@ -88,7 +88,7 @@ if ($num_rows1 > 0) {
 							$focus->column_fields['description'] = $event->getDescription();
 							$focus->column_fields['location'] = $event->getLocation();
 							$recurrence = $event->getRecurrence();
-							if (empty($recurrence)) {
+							//if (empty($recurrence)) {
 								//$When = $event->getWhen();
 								$evdtst = (empty($event->getStart()->dateTime) ? $event->getStart()->date : $event->getStart()->dateTime);
 								$evdted = (empty($event->getEnd()->dateTime) ? $event->getEnd()->date : $event->getEnd()->dateTime);
@@ -122,13 +122,13 @@ if ($num_rows1 > 0) {
 								$duration_minutes = ($duration_time - ($duration_hour * 3600 )) / 60;
 								$focus->column_fields['duration_hours'] = $duration_hour;
 								$focus->column_fields['duration_minutes'] = $duration_minutes;
-							}
+							//}
 							$focus->save($currentModule);
 							$sql3 = 'UPDATE its4you_googlesync4you_events SET lastmodified = ? WHERE id = ?';
 							$adb->pquery($sql3,array($event->getUpdated(),$eventid));
 						}
 					}
-				}
+                                }}
 			}
 		}
 	}

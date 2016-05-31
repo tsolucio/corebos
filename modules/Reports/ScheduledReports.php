@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
-
 require_once 'modules/Reports/Reports.php';
 require_once 'modules/Reports/ReportRun.php';
 require_once 'include/Zend/Json.php';
@@ -122,9 +121,8 @@ class VTScheduledReport extends Reports {
 	public function sendEmail() {
 		require_once('modules/Emails/mail.php');
 		require_once('modules/Emails/Emails.php');
-		
-		global $HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID;		
-		global $currentModule;
+
+		global $HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID, $currentModule;
 
 		$recipientEmails = $this->getRecipientEmails();
 		$emails_to = '';
@@ -161,9 +159,12 @@ class VTScheduledReport extends Reports {
 			$_REQUEST['filename_hidden_xls'] = $filePath;
 			$oReportRun->writeReportToExcelFile($filePath, NULL);
 		}
-		$mail_status = send_mail('Emails',$emails_to,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$subject,$contents,'','','attReports');
-		foreach($attachments as $attachmentName => $path) {
-			unlink($path);
+		$sendifempty = GlobalVariable::getVariable('Report_Send_Scheduled_ifEmpty', 1);
+		if ($sendifempty or $oReportRun->number_of_rows>0) {
+			$mail_status = send_mail('Emails',$emails_to,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$subject,$contents,'','','attReports');
+			foreach($attachments as $attachmentName => $path) {
+				unlink($path);
+			}
 		}
 	}
 

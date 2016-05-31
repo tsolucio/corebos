@@ -89,12 +89,17 @@ if($singlepane_view == 'true') {
 	$smarty->assign("SELECTEDHEADERS", $open_related_modules);
 }
 
-if(isPermitted($currentModule, 'EditView', $record) == 'yes')
-	$smarty->assign('EDIT_DUPLICATE', 'permitted');
+if(isPermitted($currentModule, 'CreateView', $record) == 'yes')
+	$smarty->assign('CREATE_PERMISSION', 'permitted');
 if(isPermitted($currentModule, 'Delete', $record) == 'yes')
 	$smarty->assign('DELETE', 'permitted');
 
-$smarty->assign('BLOCKS', getBlocks($currentModule,'detail_view','',$focus->column_fields));
+$blocks = getBlocks($currentModule,'detail_view','',$focus->column_fields);
+$custom_blocks = getCustomBlocks($currentModule,'detail_view');
+//echo '<pre>';var_dump($focus->column_fields,$blocks,$custom_blocks);echo '</pre>';
+$smarty->assign('BLOCKS', $blocks);
+$smarty->assign('CUSTOMBLOCKS', $custom_blocks);
+$smarty->assign('FIELDS',$focus->column_fields);
 
 // Gather the custom link information to display
 include_once('vtlib/Vtiger/Link.php');

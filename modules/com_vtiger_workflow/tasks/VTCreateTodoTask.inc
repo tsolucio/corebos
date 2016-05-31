@@ -38,13 +38,16 @@ class VTCreateTodoTask extends VTTask{
 		if(!vtlib_isModuleActive('Calendar')) {
 			return;
 		}
-		global $adb, $current_user;
+		global $adb, $current_user, $logbg, $from_wf;
+		$from_wf = true;
+		$logbg->info('Entering workflow task VTCreateTodoTask');
 		$userId = $entityData->get('assigned_user_id');
 		if($userId===null){
 			$userId = vtws_getWebserviceEntityId('Users', 1);
 		}
 
 		$baseDate = $entityData->get($this->datefield);
+		$logbg->debug('baseDate: '.$this->datefield.' > '.$baseDate);
 		if($baseDate == '') {
 			$baseDate = date('Y-m-d');
 		}
@@ -55,6 +58,8 @@ class VTCreateTodoTask extends VTTask{
 		preg_match('/\d\d\d\d-\d\d-\d\d/', $baseDate, $match);
 		$baseDate = strtotime($match[0]);
 		$date = strftime('%Y-%m-%d', $baseDate+$this->days*24*60*60*(strtolower($this->direction)=='before'?-1:1));
+		$startDate = new DateTimeField($date.' '.$time[1]);
+		$date = $startDate->getDisplayDate();
 		// Added to check if the user/group is active
 		if(!empty($this->assigned_user_id)) {
 			$userExists = $adb->pquery('SELECT 1 FROM vtiger_users WHERE id = ? AND status = ?', array($this->assigned_user_id, 'Active'));
@@ -73,8 +78,6 @@ class VTCreateTodoTask extends VTTask{
 				}
 			}
 		}
-		$startDate = new DateTimeField($date.' '.$time[1]);
-		$date = $startDate->getDisplayDate();
 		$fields = array(
 			'activitytype'=>'Task',
 			'description'=>$this->description,
@@ -91,6 +94,7 @@ class VTCreateTodoTask extends VTTask{
 		);
 		$moduleName = $entityData->getModuleName();
 		$adminUser = $this->getAdmin();
+		$logbg->debug('User: '.$adminUser->id);
 		$id = $entityData->getId();
 		if($moduleName=='Contacts'){
 			$fields['contact_id'] = $id;
@@ -108,15 +112,18 @@ class VTCreateTodoTask extends VTTask{
 				$fields['parent_id'] = $id;
 			}
 		}
-
+		$logbg->debug('Create TODO: '.print_r($fields,true));
 		$todo = vtws_create('Calendar', $fields, $adminUser);
+		$logbg->debug('Created TODO: '.$todo['id']);
 		$todoIdDetails = vtws_getIdComponents($todo['id']);
 		$entityIdDetails = vtws_getIdComponents($id);
 
 		relateEntities(CRMEntity::getInstance($moduleName), $moduleName, $entityIdDetails[1], 'Calendar', $todoIdDetails[1]);
 
+		$from_wf = true;
 		global $current_user;
 		$current_user = $this->originalUser;
+		$logbg->info('Exiting workflow task VTCreateTodoTask');
 	}
 
 	static function conv12to24hour($timeStr){

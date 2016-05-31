@@ -50,7 +50,7 @@ $mod_strings = array(
 'LBL_SET_EXPRESSION'=>'Set Expression',
 
 'LBL_MANUAL'=>'System',
-
+'LBL_RECORD_ACCESS_CONTROL' => 'Record Access Control',
 'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL'=>'New Condition Group',
 
 'VTUpdateFieldsTask' => 'Update Fields',
@@ -68,6 +68,7 @@ $mod_strings = array(
 'LBL_EMAIL_SUBJECT' => 'Subject',
 'LBL_EMAIL_FROMNAME' => 'From Name',
 'LBL_EMAIL_FROMEMAIL' => 'From Email',
+'LBL_EMAIL_REPLYTO' => 'Reply To',
 
 'LBL_WORKFLOW_NOTE_EVENT_TASK_TIMEZONE' => 'Note: All the date, time and recurring information configured for the event,
 													will be with respect to default time zone, configured in config.inc.php',
@@ -101,6 +102,8 @@ $mod_strings = array(
 'Relate Service' => 'Relate Service',
 'Relate with AccountVendor' => 'Relate with Account/Vendor',
 'Relate with Contact' => 'Relate with Contact',
+'CBDeleteRelatedTask' => 'Delete Related Records',
+'CBSelectcbMap' => 'Select Business Rule',
 
 'LBL_EVENTNAME' => 'Event Name',
 'LBL_DESCRIPTION' => 'Description',
