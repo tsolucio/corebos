@@ -326,7 +326,7 @@ var gVTUserID = '{$CURRENT_USER_ID}';
 <script type='text/javascript'>
 {literal}
 function UnifiedSearch_SelectModuleForm(obj) {
-	if(jQuery('#UnifiedSearch_moduleform')) {
+	if(jQuery('#UnifiedSearch_moduleform').length) {
 		// If we have loaded the form already.
 		UnifiedSearch_SelectModuleFormCallback(obj);
 	} else {

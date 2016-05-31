@@ -63,7 +63,7 @@ function vtlib_field_help_show(basenode, fldname) {
     var helpcontent = fieldhelpinfo[fldname];
     if(typeof(helpcontent) == 'undefined') return;
 
-    if(!domnode) {
+    if(domnode.length==0) {
         domnode = document.createElement('div');
         domnode.id = 'vtlib_fieldhelp_div';
         domnode.className = 'dvtSelectedCell';
@@ -74,10 +74,10 @@ function vtlib_field_help_show(basenode, fldname) {
         document.body.appendChild(domnode);
 
         domnode = jQuery('#vtlib_fieldhelp_div');
-		domnode.bind("mouseover",function() {
-            domnode.show();
+		domnode.on("mouseenter",function() {
+            jQuery(this).show();
         });
-		domnode.bind("mouseout",vtlib_field_help_hide);
+		domnode.on("mouseleave",vtlib_field_help_hide);
     }
     else {
         domnode.show();

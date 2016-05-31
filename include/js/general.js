@@ -3233,7 +3233,6 @@ function ActivityReminderSetupCallbackSaveProcess(message) {
 
 function ActivityReminderPostponeCallback(cbmodule, cbrecord, cbreminderid) {
 	if(cbmodule && cbrecord) {
-
 		ActivityReminderProgressIndicator(true);
 		jQuery.ajax({
 			method: 'POST',
@@ -3243,15 +3242,14 @@ function ActivityReminderPostponeCallback(cbmodule, cbrecord, cbreminderid) {
 				ActivityReminderPostponeCallbackProcess(response);
 			}
 		);
-}
+	}
 }
 function ActivityReminderPostponeCallbackProcess(message) {
 	ActivityReminderProgressIndicator(false);
 }
 function ActivityReminderRemovePopupDOM(id) {
-	if(jQuery("#"+id)) jQuery("#"+id).remove();
+	if (jQuery("#"+id).length) jQuery("#"+id).remove();
 }
-/* END */
 
 /* ActivityReminder Customization: Pool Callback */
 var ActivityReminder_regcallback_timer;
@@ -4186,7 +4184,7 @@ VtigerJS_DialogBox = {
 		return olayer;
 	},
 	_removebyid : function(id) {
-		if(jQuery("#"+id)) jQuery("#"+id).remove();
+		if (jQuery("#"+id).length) jQuery("#"+id).remove();
 	},
 	unblock : function() {
 		VtigerJS_DialogBox._olayer(false);
@@ -4269,7 +4267,7 @@ VtigerJS_DialogBox = {
 			}
 		}
 	}
-}
+};
 
 function validateInputData(value, fieldLabel, typeofdata) {
 

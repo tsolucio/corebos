@@ -122,7 +122,7 @@ if (typeof(MailManager) == 'undefined') {
         },
 
         openCurrentFolder : function() {
-            if(jQuery("#mailbox_folder")) {
+            if(jQuery("#mailbox_folder").length) {
                 var currentFolder = jQuery("#mailbox_folder").val();
                 // This is added as we will be settings mailbox_folder with the current selected folder.
                 // By this time we would have lost the last mailbox folder also
@@ -449,10 +449,9 @@ if (typeof(MailManager) == 'undefined') {
         },
 		
         updateMoveFolderList : function() {
-            if(jQuery('#mailbox_folder') && jQuery('#moveFolderList')) {
+            if(jQuery('#mailbox_folder').length && jQuery('#moveFolderList').length) {
                 var currentFolder = jQuery('#mailbox_folder').val();
                 jQuery('#moveFolderList').find("option[value='"+currentFolder+"']").remove();
-
             }
         },
 		
