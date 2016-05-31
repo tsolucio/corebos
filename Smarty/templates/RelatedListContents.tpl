@@ -30,13 +30,12 @@ function loadRelatedListBlock(urldata,target,imagesuffix) {
 	}
 	var showdata = 'show_'+imagesuffix;
 	var showdata_element = $(showdata);
-
 	var hidedata = 'hide_'+imagesuffix;
 	var hidedata_element = $(hidedata);
 	if(isRelatedListBlockLoaded(target,urldata) == true){
 		$(target).show();
 		showdata_element.hide();
-      	hidedata_element.show();
+		hidedata_element.show();
 		$('delete_'+imagesuffix).show();
 		return;
 	}
@@ -147,11 +146,11 @@ function disableRelatedListBlock(urldata,target,imagesuffix){
 					<a href="javascript:loadRelatedListBlock(
 						'module={$MODULE}&action={$MODULE}Ajax&file=DetailViewAjax&record={$ID}&ajxaction=LOADRELATEDLIST&header={$header}&relation_id={$detail.relationId}&actions={$detail.actions}&parenttab={$CATEGORY}',
 						'tbl_{$MODULE}_{$header|replace:' ':''}','{$MODULE}_{$header|replace:' ':''}');">
-						<img id="show_{$MODULE}_{$header|replace:' ':''}" src="{'inactivate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;" alt="Display" title="Display"/>
+						<img id="show_{$MODULE}_{$header|replace:' ':''}" src="{'inactivate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;" alt="{'LBL_Show'|@getTranslatedString:'Settings'}" title="{'LBL_Show'|@getTranslatedString:'Settings'}"/>
 					</a>
 					<a href="javascript:hideRelatedListBlock('tbl_{$MODULE}_{$header|replace:' ':''}','{$MODULE}_{$header|replace:' ':''}');">
-						<img id="hide_{$MODULE}_{$header|replace:' ':''}" src="{'activate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;display:none;" alt="Display" title="Display"/>
-					</a>					
+						<img id="hide_{$MODULE}_{$header|replace:' ':''}" src="{'activate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;display:none;" alt="{'LBL_Show'|@getTranslatedString:'Settings'}" title="{'LBL_Show'|@getTranslatedString:'Settings'}"/>
+					</a>
 				</span>
 				&nbsp;{$HEADERLABEL}&nbsp;
 				<img id="indicator_{$MODULE}_{$header|replace:' ':''}" style="display:none;" src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" />
