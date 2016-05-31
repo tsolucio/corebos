@@ -485,5 +485,7 @@ var product_labelarr = {ldelim}
 	DIRECT_PRICE_REDUCTION:'{$APP.LBL_DIRECT_PRICE_REDUCTION}'
 {rdelim};
 
+var fieldname = new Array({$VALIDATION_DATA_FIELDNAME});
+var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
+var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 </script>
-</html>
