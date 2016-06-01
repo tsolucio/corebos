@@ -13,7 +13,7 @@
  */
 function changeModule(){
 	document.getElementById("status").style.display="inline";
-	var oModulePick = document.getElementById('pickmodule')
+	var oModulePick = document.getElementById('pickmodule');
 	var module=oModulePick.options[oModulePick.selectedIndex].value;
 	var oRolePick = document.getElementById('pickid');
 	var role=oRolePick.options[oRolePick.selectedIndex].value;
@@ -199,7 +199,7 @@ function validateAdd(fieldname, module){
 	for(i=0;i<new_vals.length;i++){
 		if (trim(new_vals[i]).search(/(\<|\>|\\|\/)/gi)!=-1) {
 			alert(alert_arr.SPECIAL_CHARACTERS+'"<" ">" "\\" "/"'+alert_arr.NOT_ALLOWED);
-			return false
+			return false;
 		}
 	}
 	
@@ -305,7 +305,7 @@ function validateEdit(fieldname, module){
 		}
 		if (trim(newVal[i]).search(/(\<|\>|\\|\/)/gi)!=-1) {
 			alert(alert_arr.SPECIAL_CHARACTERS+'"<" ">" "\\" "/"'+alert_arr.NOT_ALLOWED);
-			return false
+			return false;
 		}
 		oldVal[i] = node[i].value;
 	}
@@ -409,7 +409,7 @@ function pickDelete(module, fieldname, arr, replaceVal){
 					fnhide('actiondiv');
 				}else{
 					alert(str);
-				}						
+				}
 				document.getElementById("status").style.display="none";
 			}
 	);

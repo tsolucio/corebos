@@ -150,8 +150,8 @@ function DeleteFolder(id)
 	var title = 'folder'+id;
 	var fldr_name = getObj(title).innerHTML;
 	{/literal}
-        if(confirm("{$APP.DELETE_FOLDER_CONFIRMATION}"+fldr_name +"' ?"))
-        {literal}
+	if(confirm("{$APP.DELETE_FOLDER_CONFIRMATION}"+fldr_name +"' ?"))
+	{literal}
 	{
 		jQuery.ajax({
 			method: 'POST',
@@ -162,7 +162,7 @@ function DeleteFolder(id)
 						getObj('customizedrep').innerHTML = item;
 					else
 						alert(item);
-					}
+				}
 			);
 	}
 	else
@@ -258,12 +258,9 @@ function AddFolder()
 						);
 					}
 				}
-			}
 			);
-		
 	}
 }
-
 
 function EditFolder(id,name,desc)
 {

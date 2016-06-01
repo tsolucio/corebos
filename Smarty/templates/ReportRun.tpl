@@ -224,16 +224,16 @@ function createDuplicateReport(id) {
 	var newreportname = document.getElementById('newreportname').value;
 	var newreportdescription = document.getElementById('newreportdescription').value;
 	var newreportfolder = document.getElementById('reportfolder').value;
-	
+
 	if(!checkAdvancedFilter()) return false;
 
 	var advft_criteria = document.getElementById('advft_criteria').value;
 	var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
-	
+
 	jQuery.ajax({
 			method: 'POST',
 			url: 'index.php?action=ReportsAjax&file=DuplicateReport&mode=ajax&module=Reports&record='+id+'&newreportname='+encodeURIComponent(newreportname)+'&newreportdescription='+encodeURIComponent(newreportdescription)+'&newreportfolder='+newreportfolder+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups
-			 }).done(function (response) {
+			}).done(function (response) {
 							var responseArray = JSON.parse(response);
 							if(trim(responseArray['errormessage']) != '') {
 								VtigerJS_DialogBox.unblock();
@@ -243,9 +243,8 @@ function createDuplicateReport(id) {
 							var folderid = responseArray['folderid'];
 							var url ='index.php?action=SaveAndRun&module=Reports&record='+reportid+'&folderid='+folderid;
 							goToURL(url);
-                        }
-                }
-        );
+					}
+			);
 }
 
 function generateReport(id) {
