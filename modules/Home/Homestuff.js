@@ -395,8 +395,8 @@ function loadAllWidgets(widgetInfoList, batchSize){
 									document.getElementById('a_'+widgetId).href = "index.php?module="+
 									document.getElementById('more_'+widgetId).value+"&action=ListView&viewname="+
 									document.getElementById('cvid_'+widgetId).value;
-								} else if(widgetType == "Default" && typeof(document.getElementById('a_'+widgetId)) !=
-										'undefined'){
+								} else if(widgetType == "Default" && typeof(document.getElementById('a_'+widgetId)) != 'undefined'
+									&& document.getElementById('a_'+widgetId) != null){
 									if(typeof document.getElementById('more_'+widgetId) != 'undefined' &&
 											document.getElementById('more_'+widgetId).value != ''){
 										document.getElementById('a_'+widgetId).style.display = 'block';

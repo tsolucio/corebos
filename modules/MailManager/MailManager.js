@@ -305,17 +305,16 @@ if (typeof(MailManager) == 'undefined') {
             jQuery('#_mbox_pwd').val('');
 
             if (useProtocol != '') {
-                form._mbox_server.value = useServer;
-				
-                $A(form._mbox_protocol).each(function(node){
-                    node.checked = (node.value == useProtocol);
-                });
-                $A(form._mbox_ssltype).each(function(node){
-                    node.checked = (node.value == useSSLType);
-                });
-                $A(form._mbox_certvalidate).each(function(node){
-                    node.checked = (node.value == useCert);
-                });
+				form._mbox_server.value = useServer;
+				jQuery('input[name="_mbox_protocol"]').each(function(){
+					this.checked = (this.value == useProtocol);
+				});
+				jQuery('input[name="_mbox_ssltype"]').each(function(){
+					this.checked = (this.value == useSSLType);
+				});
+				jQuery('input[name="_mbox_certvalidate"]').each(function(){
+					this.checked = (this.value == useCert);
+				});
             }
         },
 		
@@ -1257,7 +1256,12 @@ if (typeof(MailManager) == 'undefined') {
         removeHidElement: function(jsonresponse){
             // PHPSESSID is General value
             // Session Name should be picked from php.ini
-            var replaceJsonTxt = jsonresponse.replace('/<input type="hidden" name="PHPSESSID" value=["]{1}[a-z0-9]+["]{1}\s{0,1}[/]?[>]?/', '');
+			var replaceJsonTxt = '';
+			if (typeof(jsonresponse)=='string') {
+				replaceJsonTxt = jsonresponse.replace('/<input type="hidden" name="PHPSESSID" value=["]{1}[a-z0-9]+["]{1}\s{0,1}[/]?[>]?/', '');
+			} else if (typeof(jsonresponse)=='object') {
+				replaceJsonTxt = jsonresponse.responseText.replace('/<input type="hidden" name="PHPSESSID" value=["]{1}[a-z0-9]+["]{1}\s{0,1}[/]?[>]?/', '');
+			}
             return replaceJsonTxt;
         },
 
@@ -1336,7 +1340,11 @@ if (typeof(MailManager) == 'undefined') {
                 };
                 var baseurl = MailManager._baseurl();
                 MailManager.Request('index.php?'+baseurl, params, function(response){
-                    var responseText = JSON.parse(response);
+                    if (typeof(response)=='string') {
+                         var responseText = JSON.parse(response);
+                    } else if (typeof(response)=='object') {
+                         var responseText = JSON.parse(response.responseText);
+                    }
                     emailId = responseText.result.emailid;
                     jQuery('#emailid').val(emailId);
                     window.open('index.php?module=Documents&return_module=MailManager&action=Popup&popuptype=detailview&form=EditView&form_submit=false&recordid='+emailId+'&forrecord='+emailId+'&parenttab=Marketing&srcmodule=MailManager&popupmode=ajax&RLreturn_module=MailManager&RLparent_id='+emailId+'&parenttab=My Home Page&callback=MailManager.add_data_to_relatedlist','test','width=640,height=602,resizable=0,scrollbars=0');

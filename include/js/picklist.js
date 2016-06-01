@@ -379,7 +379,7 @@ function validateDelete(fieldname, module){
 	
 	var nonEditableLength = 0;
 	var nonEditable = document.getElementById('nonEditablePicklistVal');
-	if(typeof nonEditable != 'undefined'){
+	if(typeof nonEditable != 'undefined' && nonEditable != null){
 		nonEditableLength = nonEditable.options.length;
 	}
 	
