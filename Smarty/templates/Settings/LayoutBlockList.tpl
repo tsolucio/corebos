@@ -190,9 +190,9 @@ function saveFieldInfo(fieldid,module,sub_mode,typeofdata){
 			url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode='+sub_mode+'&parenttab=Settings'+
 				'&fieldid='+fieldid+'&fld_module='+module+'&ajax=true'+urlstring
 	}).done(function(response) {
-					document.getElementById("cfList").innerHTML=response;
-					document.getElementById('vtbusy_info').style.display = "none";
-					fnvshNrm('editfield_+"fieldid"');
+			fninvsh('editfield_'+fieldid);
+			document.getElementById("cfList").innerHTML=response;
+			document.getElementById('vtbusy_info').style.display = "none";
 	});
 }
 
