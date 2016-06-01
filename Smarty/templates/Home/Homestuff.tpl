@@ -10,9 +10,6 @@
  ********************************************************************************/
 -->*}
 <script language="javascript" type="text/javascript" src="modules/Home/Homestuff.js"></script>
-{*<script language="javascript" type="text/javascript" src="include/scriptaculous/prototype.js"></script>
-<script language="javascript" type="text/javascript" src="include/scriptaculous/scriptaculous.js"></script>
-<script language="javascript" type="text/javascript" src="include/scriptaculous/unittest.js"></script>*}
 <script language="javascript" type="text/javascript" src="include/js/notebook.js"></script>
 <script language="javascript" type="text/javascript" src="include/freetag/tagcanvas.min.js"></script>
 <input id="homeLayout" type="hidden" value="{$LAYOUT}">

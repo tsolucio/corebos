@@ -9,10 +9,8 @@
   *
  ********************************************************************************/
 -->*}
-
 <script language="JAVASCRIPT" type="text/javascript" src="include/js/smoothscroll.js"></script>
 <script language="JavaScript" type="text/javascript" src="include/js/menu.js"></script>
-{*<script language="JAVASCRIPT" type="text/javascript" src="include/scriptaculous/scriptaculous.js"></script>*}
 <script language="JAVASCRIPT" type="text/javascript" src="include/js/json.js"></script>
 <script language="JAVASCRIPT" type="text/javascript" src="modules/PickList/DependencyPicklist.js"></script>
 <br>

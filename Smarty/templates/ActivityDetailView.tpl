@@ -6,13 +6,10 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
 -->*}
 <script type="text/javascript" src="modules/{$MODULE}/Calendar.js"></script>
 <script type="text/javascript" src="include/js/reflection.js"></script>
-{*<script src="include/scriptaculous/scriptaculous.js" type="text/javascript"></script>*}
 <script language="JavaScript" type="text/javascript" src="include/js/dtlviewajax.js"></script>
 <span id="crmspanid" style="display:none;position:absolute;"  onmouseover="show('crmspanid');">
    <a class="link"  align="right" href="javascript:;">{$APP.LBL_EDIT_BUTTON}</a>

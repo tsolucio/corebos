@@ -56,8 +56,7 @@ $db_options = Installation_Utils::getDbOptions();
 	<link href="include/install/install.css" rel="stylesheet" type="text/css">
 	<link href="themes/softed/style.css" rel="stylesheet" type="text/css">
 	<script type="text/javascript" src="include/js/general.js"></script>
-	<script type="text/javascript" src="include/scriptaculous/prototype.js"></script>
-	<script type="text/javascript" src="modules/com_vtiger_workflow/resources/jquery-1.2.6.js"></script>
+	<script type="text/javascript" src="include/jquery/jquery.js"></script>
 </head>
 
 <body class="small cwPageBg" topmargin="0" leftmargin="0" marginheight="0" marginwidth="0">

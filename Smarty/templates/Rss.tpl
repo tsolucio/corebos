@@ -6,11 +6,9 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 <script language="JavaScript" type="text/javascript" src="modules/Rss/Rss.js"></script>
-{*<script src="include/scriptaculous/scriptaculous.js" type="text/javascript"></script>*}
 <script>
 {literal}
 
