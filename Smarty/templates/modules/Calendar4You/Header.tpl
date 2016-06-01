@@ -36,9 +36,6 @@
 	<style type="text/css">div.drop_mnu_user { position:absolute; }</style>
 	<![endif]-->
 {/literal}
-	<!-- End -->
-  
-    
 </head>
 	<body leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 class=small>
 	<a name="top"></a>

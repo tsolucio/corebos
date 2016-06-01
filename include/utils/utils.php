@@ -3878,7 +3878,7 @@ function addToCallHistory($userExtension, $callfrom, $callto, $status, $adb, $us
 	$result = $adb->pquery($sql,array($userExtension));
 	$userID = $adb->query_result($result, 0, "userid");
 	if(empty($userID)) {
-		// we have observed call to extension not configured in Vtiger will returns NULL
+		// call to extension not configured in application > return NULL
 		return;
 	}
 	$crmID = $adb->getUniqueID('vtiger_crmentity');
