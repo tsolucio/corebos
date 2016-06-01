@@ -34,17 +34,17 @@ function loadRelatedListBlock(urldata,target,imagesuffix) {
 	var hidedata = 'hide_'+imagesuffix;
 	var hidedata_element = document.getElementById(hidedata);
 	if(isRelatedListBlockLoaded(target,urldata) == true){
-		document.getElementById(target).style.display="block";
-		showdata_element.style.display="none";
-		hidedata_element.style.display="block";
-		document.getElementById('delete_'+imagesuffix).style.display="block";
+		jQuery('#'+target).show();
+		jQuery(showdata_element).hide();
+		jQuery(hidedata_element).show();
+		jQuery('#delete_'+imagesuffix).show();
 		return;
 	}
 	var indicator = 'indicator_'+imagesuffix;
 	var indicator_element = document.getElementById(indicator);
-	indicator_element.style.display="block";
-	document.getElementById('delete_'+imagesuffix).style.display="block";
-	
+	jQuery(indicator_element).show();
+	jQuery('#delete_'+imagesuffix).show();
+
 	var target_element = document.getElementById(target);
 	
 	jQuery.ajax({
@@ -52,18 +52,18 @@ function loadRelatedListBlock(urldata,target,imagesuffix) {
 			url: 'index.php?'+urldata,
 		}).done(function (response) {
 					var responseData = trim(response);
-      				target_element.innerHTML=responseData;
-					target_element.style.display="block";
-      				showdata_element.style.display="none";
-      				hidedata_element.style.display="block";
-      				indicator_element.style.display="none";
+					target_element.innerHTML=responseData;
+					jQuery(target_element).show();
+					jQuery(showdata_element).hide();
+					jQuery(hidedata_element).show();
+					jQuery(indicator_element).hide();
 					if(document.getElementById('return_module').value == 'Campaigns'){
 						var obj = document.getElementsByName(imagesuffix+'_selected_id');
 						var relatedModule = imagesuffix.replace('Campaigns_',"");
 						document.getElementById(relatedModule+'_count').innerHTML = numofRows;
 						if(selectallActivation == 'true'){
 							document.getElementById(imagesuffix+'_selectallActivate').value='true';
-							document.getElementById(imagesuffix+'_linkForSelectAll').style.display="block";
+							jQuery('#'+imagesuffix+'_linkForSelectAll').show();
 							document.getElementById(imagesuffix+'_selectAllRec').style.display='none';
 							document.getElementById(imagesuffix+'_deSelectAllRec').style.display='inline';
 							var exculdedArray=excludedRecords.split(';');
@@ -73,7 +73,7 @@ function loadRelatedListBlock(urldata,target,imagesuffix) {
 								document.getElementById(imagesuffix+'_excludedRecords').value = document.getElementById(imagesuffix+'_excludedRecords').value+excludedRecords;
 							}
 						}else{
-							document.getElementById(imagesuffix+'_linkForSelectAll').style.display="none";
+							jQuery('#'+imagesuffix+'_linkForSelectAll').hide();
 							//rel_toggleSelect(false,imagesuffix+'_selected_id',relatedModule);
 						}
 						updateParentCheckbox(obj,imagesuffix);
@@ -83,45 +83,25 @@ function loadRelatedListBlock(urldata,target,imagesuffix) {
 }
 
 function hideRelatedListBlock(target, imagesuffix) {
-	
-	var showdata = 'show_'+imagesuffix;
-	var showdata_element = document.getElementById(showdata);
-	
-	var hidedata = 'hide_'+imagesuffix;
-	var hidedata_element = document.getElementById(hidedata);
-	
-	var target_element = document.getElementById(target);
-	if(target_element){
-		target_element.style.display="none";
-	}
-	hidedata_element.style.display="none";
-	showdata_element.style.display="block";
-	document.getElementById('delete_'+imagesuffix).style.display="none";
+	jQuery('#'+target).hide();
+	jQuery('#hide_'+imagesuffix).hide();
+	jQuery('#show_'+imagesuffix).show();
+	jQuery('#delete_'+imagesuffix).hide();
 }
 
 function disableRelatedListBlock(urldata,target,imagesuffix){
-	var showdata = 'show_'+imagesuffix;
-	var showdata_element = document.getElementById(showdata);
-
-	var hidedata = 'hide_'+imagesuffix;
-	var hidedata_element = document.getElementById(hidedata);
-
-	var indicator = 'indicator_'+imagesuffix;
-	var indicator_element = document.getElementById(indicator);
-	indicator_element.style.display="block";
-	
-	var target_element = document.getElementById(target);
+	jQuery('#indicator_'+imagesuffix).show();
 	jQuery.ajax({
 			method: 'POST',
 			url: 'index.php?'+urldata,
 		}).done(function (response) {
-					var responseData = trim(response);
-					target_element.style.display="none";
-					document.getElementById('delete_'+imagesuffix).style.display="none";
-					hidedata_element.style.display="none";
-					showdata_element.style.display="block";
-					indicator_element.style.display="none";
-			}
+			var responseData = trim(response);
+			jQuery('#'+target).hide();
+			jQuery('#delete_'+imagesuffix).hide();
+			jQuery('#hide_'+imagesuffix).hide();
+			jQuery('#show_'+imagesuffix).show();
+			jQuery('#indicator_'+imagesuffix).hide();
+		}
 	);
 }
 

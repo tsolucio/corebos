@@ -4747,8 +4747,9 @@ function updateParentCheckbox(obj,id){
 			}
 		}
 	}
-	if(parentCheck){
-		document.getElementById(id+'_selectCurrentPageRec').checked=parentCheck;
+	var selelem = document.getElementById(id+'_selectCurrentPageRec');
+	if(selelem && parentCheck){
+		selelem.checked=parentCheck;
 	}
 }
 
