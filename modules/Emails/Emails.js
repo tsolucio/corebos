@@ -119,7 +119,7 @@ function massDelete()
 							document.getElementById("email_con").innerHTML=response;
 							execJS(document.getElementById('email_con'));
 							document.getElementById('EmailDetails').innerHTML = '<table valign="top" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="forwardBg"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2">&nbsp;</td></tr></tbody></table></td></tr><tr><td style="padding-top: 10px;" bgcolor="#ffffff" height="300" valign="top"></td></tr></tbody></table>';
-							document.getElementById("subjectsetter").innerHTML='';
+							//document.getElementById("subjectsetter").innerHTML='';
 					}
 				);
 			}
@@ -145,7 +145,7 @@ function DeleteEmail(id)
 						document.getElementById("email_con").innerHTML=response;
 						execJS(document.getElementById('email_con'));
 						document.getElementById('EmailDetails').innerHTML = '<table valign="top" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="forwardBg"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2">&nbsp;</td></tr></tbody></table></td></tr><tr><td style="padding-top: 10px;" bgcolor="#ffffff" height="300" valign="top"></td></tr></tbody></table>';
-						document.getElementById("subjectsetter").innerHTML='';
+						//document.getElementById("subjectsetter").innerHTML='';
 					}
 				);
 	}
@@ -167,7 +167,7 @@ function Searchfn()
 		document.getElementById("email_con").innerHTML = response;
 		document.getElementById("status").style.display = "none";
 		document.getElementById('EmailDetails').innerHTML = '<table valign="top" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="forwardBg"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2">&nbsp;</td></tr></tbody></table></td></tr><tr><td style="padding-top: 10px;" bgcolor="#ffffff" height="300" valign="top"></td></tr></tbody></table>';
-		document.getElementById("subjectsetter").innerHTML = '';
+		//document.getElementById("subjectsetter").innerHTML = '';
 		execJS(document.getElementById('email_con'));
 	}
 	);
