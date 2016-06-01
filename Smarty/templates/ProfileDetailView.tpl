@@ -383,10 +383,11 @@ function UpdateProfile()
 <script language="javascript" type="text/javascript">
 {literal}
 function fnToggleVIew(obj){
-	if(jQuery("#"+obj).hasClass('hideTable')) {
-		jQuery("#"+obj).removeClass('hideTable');
+	obj = "#"+obj;
+	if(jQuery(obj).hasClass('hideTable')) {
+		jQuery(obj).removeClass('hideTable');
 	} else {
-		jQuery("#"+obj).addClass('hideTable');
+		jQuery(obj).addClass('hideTable');
 	}
 }
 {/literal}
