@@ -308,10 +308,8 @@ function deleteRelatedList(tabid,sequence,id,module) {
 			method:"POST",
 			url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=deleteRelatedList&sequence='+sequence+'&fld_module='+module+'&parenttab=Settings&tabid='+tabid+'&id='+id+'&ajax=true'
 	}).done(function(response) {
-			onComplete: function(response) {
 			document.getElementById("relatedlistdiv").innerHTML=response;
 			document.getElementById('vtbusy_info').style.display = "none";
-			}
 		}
 	);
 }
@@ -324,10 +322,8 @@ function createRelatedList(module) {
 			method:"POST",
 			url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=createRelatedList&fld_module='+module+'&relwithmod='+relmod+'&parenttab=Settings&ajax=true',
 	}).done(function(response) {
-			onComplete: function(response) {
 			document.getElementById("relatedlistdiv").innerHTML=response;
 			document.getElementById('vtbusy_info').style.display = "none";
-			}
 		}
 	);
 }
