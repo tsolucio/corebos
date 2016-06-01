@@ -109,9 +109,7 @@
 			}
 			return true;
 		}
-
-
-	</script>
+</script>
 {/literal}
 <script language="JavaScript" type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
 <body onload="replaceUploadSize();">
@@ -243,9 +241,9 @@
 																			{else}
 																				<b><span class="warning" id="msg_{$CONFIGLINE->variableName()}"></span></b>
 																				{if $CONFIGLINE->variableName() == 'upload_maxsize'}
-																				<input size="2" type="text" name="key_{$CONFIGLINE->variableName()}" id="key_{$CONFIGLINE->variableName()}" value="{$CONFIGLINE->variableValue()}"  onblur="class='detailedViewTextBoxThis'" onfocus="class='detailedViewTextBoxThisOn'" class="detailedViewTextBoxThis" >     {$MOD.LBL_MB}
+																					<input size="2" type="text" name="key_{$CONFIGLINE->variableName()}" id="key_{$CONFIGLINE->variableName()}" value="{$CONFIGLINE->variableValue()}" onblur="this.className='detailedViewTextBoxThis'" onfocus="this.className='detailedViewTextBoxThisOn'" class="detailedViewTextBoxThis" > {$MOD.LBL_MB}
 																				{else}
-																						<input type="text" name="key_{$CONFIGLINE->variableName()}" id="key_{$CONFIGLINE->variableName()}" value="{$CONFIGLINE->variableValue()}"  onblur="this.className='detailedViewTextBox'" onfocus="this.className='detailedViewTextBoxOn'" class="detailedViewTextBox" >
+																					<input type="text" name="key_{$CONFIGLINE->variableName()}" id="key_{$CONFIGLINE->variableName()}" value="{$CONFIGLINE->variableValue()}" onblur="this.className='detailedViewTextBox'" onfocus="this.className='detailedViewTextBoxOn'" class="detailedViewTextBox" >
 																				{/if}
 																			{/if}
 																		{else}
