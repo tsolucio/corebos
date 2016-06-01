@@ -746,6 +746,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 					<input name="{$fldname}" type="file" value="" tabindex="{$vt_tab}" onchange="validateFilename(this);" /><br>{'LBL_IMG_FORMATS'|@getTranslatedString:$MODULE}
 					<input name="{$fldname}_hidden"  type="hidden" value="" />
 				{/if}
+					<div id="displaySize"></div>
 					<input type="hidden" name="id" value=""/>
 					{if isset($maindata[3].0.name) }
 					{$maindata[3].0.name}
