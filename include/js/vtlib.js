@@ -222,11 +222,7 @@ function vtlib_loadDetailViewWidget(urldata, target, indicator) {
                     ParseAjaxResponse(response);
                 else {
 					// Evaluate all the script tags in the response text.
-					var scriptTags = target.getElementsByTagName('script');
-					for(var i = 0; i< scriptTags.length; i++){
-						var scriptTag = scriptTags[i];
-						eval(scriptTag.innerHTML);
-					}
+					vtlib_executeJavascriptInElement(target);
                 }
                 if(indicator) {
                     indicator.style.display="none";
@@ -234,6 +230,15 @@ function vtlib_loadDetailViewWidget(urldata, target, indicator) {
             }
     });
     return false; // To stop event propogation
+}
+
+function vtlib_executeJavascriptInElement(element) {
+	// Evaluate all the script tags in the element.
+	var scriptTags = element.getElementsByTagName('script');
+	for(var i = 0; i< scriptTags.length; i++){
+		var scriptTag = scriptTags[i];
+		eval(scriptTag.innerHTML);
+	}
 }
 
 /**
