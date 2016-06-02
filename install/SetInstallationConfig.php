@@ -66,7 +66,6 @@ $db_options = Installation_Utils::getDbOptions();
 </style>
 
 <script type="text/javascript" language="Javascript">
-jQuery.noConflict();
 function fnShow_Hide(){
 	var sourceTag = document.getElementById('check_createdb').checked;
 	if(sourceTag){

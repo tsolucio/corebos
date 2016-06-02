@@ -8,9 +8,6 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script type="text/javascript" charset="utf-8">
-	jQuery.noConflict();
-</script>
 <script language="JavaScript" type="text/javascript" src="modules/Import/resources/Import.js"></script>
 {literal}
 <script type="text/javascript">

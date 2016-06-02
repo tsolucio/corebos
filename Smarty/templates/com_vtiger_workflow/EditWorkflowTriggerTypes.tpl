@@ -30,7 +30,6 @@
 }
 </style>
 <script type="text/javascript" charset="utf-8">
-	jQuery.noConflict();
 	fn.addStylesheet('modules/com_vtiger_workflow/resources/style.css');
 	var returnUrl = '{$returnUrl}';
 	var validator;

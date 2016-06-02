@@ -17,7 +17,6 @@
 <script src="modules/{$module->name}/resources/fieldexpressionpopup.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/editworkflowscript.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">
-	jQuery.noConflict();
 	fn.addStylesheet('modules/{$module->name}/resources/style.css');
 	var moduleName = '{$workflow->moduleName}';
 {if $workflow->test}

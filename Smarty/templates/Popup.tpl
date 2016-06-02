@@ -108,9 +108,6 @@ function redirectWhenNoRelatedRecordsFound()
 {/if}
 <script language="JavaScript" type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
 <script type='text/javascript' src='include/jquery/jquery.js'></script>
-<script type='text/javascript'>
-	jQuery.noConflict();
-</script>
 
 {* corebos customization: Inclusion of custom javascript and css as registered in popup *}
 {if $HEADERSCRIPTS}

@@ -12,9 +12,6 @@
 <script language="JavaScript" type="text/javascript" src="include/js/ListView.js"></script>
 <script language="JavaScript" type="text/javascript" src="include/js/general.js"></script>
 <script language="JavaScript" type="text/javascript" src="include/js/vtlib.js"></script>
-<script type="text/javascript" charset="utf-8">
-	jQuery.noConflict();
-</script>
 <script language="JavaScript" type="text/javascript" src="modules/Import/resources/Import.js"></script>
 
 <div id="status" style="position:absolute;display:none;left:850px;top:15px;height:27px;white-space:nowrap;">

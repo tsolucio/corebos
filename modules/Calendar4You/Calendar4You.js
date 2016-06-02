@@ -5,7 +5,7 @@
  * Portions created by IT-Solutions4You s.r.o. are Copyright(C) IT-Solutions4You s.r.o.
  * All Rights Reserved.
  ********************************************************************************/
-jQuery.noConflict();
+
 // Get User Default calendar variables
 var Calendar_Default_Reminder_Minutes = 0; // false
 GlobalVariable_getVariable('Calendar_Default_Reminder_Minutes', 0, 'Calendar', gVTUserID).then(function(response) {

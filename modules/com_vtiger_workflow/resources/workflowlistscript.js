@@ -7,9 +7,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-jQuery.noConflict();
 function workflowlistscript($){
-
 
 	function jsonget(operation, params, callback){
 		var obj = {

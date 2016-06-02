@@ -8,9 +8,6 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script type="text/javascript">
-  jQuery.noConflict();
-</script>
 <br>
 <table align="center" border="0" cellpadding="5" cellspacing="0" width="100%" class="mailSubHeader">
 	<tbody><tr>

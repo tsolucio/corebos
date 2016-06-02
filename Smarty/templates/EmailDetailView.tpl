@@ -18,9 +18,6 @@
 <style type="text/css">@import url("themes/{$THEME}/style.css");</style>
 <script language="JavaScript" type="text/javascript" src="include/js/general.js"></script>
 <script type="text/javascript" src="include/jquery/jquery.js"></script>
-<script type="text/javascript">
-	jQuery.noConflict();
-</script>
 <body marginheight="0" marginwidth="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
 <table class="small" border="0" cellpadding="0" cellspacing="0" width="100%">
 <tbody>

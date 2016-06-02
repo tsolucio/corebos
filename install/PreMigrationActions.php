@@ -33,7 +33,6 @@ $_SESSION['pre_migration'] = true;
 	<script type="text/javascript" src="include/js/general.js"></script>
 	<script type="text/javascript" src="include/jquery/jquery.js"></script>
 	<script type="text/javascript">
-		jQuery.noConflict();
 		function fixDBHealth(){
 			VtigerJS_DialogBox.progress();
 			var value = jQuery('#auth_key').attr('value');
