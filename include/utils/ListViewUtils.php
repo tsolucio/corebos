@@ -1711,10 +1711,10 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 
 					$slashes_temp_val = popup_from_html($temp_val);
 					$slashes_temp_val = htmlspecialchars($slashes_temp_val, ENT_QUOTES, $default_charset);
+					$count = counterValue();
 
 					//Added to avoid the error when select SO from Invoice through AjaxEdit
 					if ($module == 'SalesOrder') {
-						$count = counterValue();
 						$value = '<a href="javascript:window.close();" onclick=\'set_return_specific("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '","' . $_REQUEST['form'] . '");\' id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
 					} elseif ($module == 'Contacts') {
 						require_once('modules/Contacts/Contacts.php');
@@ -1735,17 +1735,17 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						$form = !empty($_REQUEST['form']) ? $_REQUEST['form'] : '';
 						if (!empty($form))
 							$form = htmlspecialchars($form, ENT_QUOTES, $default_charset);
-						$count = counterValue();
-						$value = '<a href="javascript:void(0);" onclick=\'set_return_address("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '", "' . popup_decode_html($cntct_focus->column_fields['mailingstreet']) . '", "' . popup_decode_html($cntct_focus->column_fields['otherstreet']) . '", "' . popup_decode_html($cntct_focus->column_fields['mailingcity']) . '", "' . popup_decode_html($cntct_focus->column_fields['othercity']) . '", "' . popup_decode_html($cntct_focus->column_fields['mailingstate']) . '", "' . popup_decode_html($cntct_focus->column_fields['otherstate']) . '", "' . popup_decode_html($cntct_focus->column_fields['mailingzip']) . '", "' . popup_decode_html($cntct_focus->column_fields['otherzip']) . '", "' . popup_decode_html($cntct_focus->column_fields['mailingcountry']) . '", "' . popup_decode_html($cntct_focus->column_fields['othercountry']) . '","' . popup_decode_html($cntct_focus->column_fields['mailingpobox']) . '", "' . popup_decode_html($cntct_focus->column_fields['otherpobox']) . '","' . $form . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
-					}
-
-					else
-					if ($popuptype == 'toDospecific') {
-						$count = counterValue();
-						$value = '<a href="javascript:window.close();" onclick=\'set_return_toDospecific("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+						if ($popuptype == 'toDospecific') {
+							$value = '<a href="javascript:window.close();" onclick=\'set_return_toDospecific("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+						} else {
+							$value = '<a href="javascript:void(0);" onclick=\'set_return_address("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '", "' . popup_decode_html($cntct_focus->column_fields['mailingstreet']) . '", "' . popup_decode_html($cntct_focus->column_fields['otherstreet']) . '", "' . popup_decode_html($cntct_focus->column_fields['mailingcity']) . '", "' . popup_decode_html($cntct_focus->column_fields['othercity']) . '", "' . popup_decode_html($cntct_focus->column_fields['mailingstate']) . '", "' . popup_decode_html($cntct_focus->column_fields['otherstate']) . '", "' . popup_decode_html($cntct_focus->column_fields['mailingzip']) . '", "' . popup_decode_html($cntct_focus->column_fields['otherzip']) . '", "' . popup_decode_html($cntct_focus->column_fields['mailingcountry']) . '", "' . popup_decode_html($cntct_focus->column_fields['othercountry']) . '","' . popup_decode_html($cntct_focus->column_fields['mailingpobox']) . '", "' . popup_decode_html($cntct_focus->column_fields['otherpobox']) . '","' . $form . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+						}
 					} else {
-						$count = counterValue();
-						$value = '<a href="javascript:window.close();" onclick=\'set_return_specific("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+						if ($popuptype == 'toDospecific') {
+							$value = '<a href="javascript:window.close();" onclick=\'set_return_toDospecific("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+						} else {
+							$value = '<a href="javascript:window.close();" onclick=\'set_return_specific("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
+						}
 					}
 				} elseif ($popuptype == "detailview") {
 					if ($colname == "lastname" && ($module == 'Contacts' || $module == 'Leads')) {

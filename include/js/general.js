@@ -2406,7 +2406,6 @@ function AjaxDuplicateValidate(module,fieldname,oform)
 check->to check select options enable or disable
 *type->to differentiate from task
 *frmName->form name*/
-
 function selectContact(check,type,frmName)
 {
 	var record = document.getElementsByName("record")[0].value;
@@ -2469,6 +2468,7 @@ function selectContact(check,type,frmName)
 	{
 		var formName = frmName.name;
 		var task_recordid = '';
+		var popuptype = '';
 		if(formName == 'EditView')
 		{
 			if(document.getElementById("parent_type"))
@@ -2495,7 +2495,7 @@ function selectContact(check,type,frmName)
 		}
 		else
 		{
-			if(task_recordid != '')
+			if(popuptype != '')
 				window.open("index.php?module=Contacts&action=Popup&html=Popup_picker"+popuptype+"&form="+formName+"&task_relmod_id="+task_recordid+"&task_parent_module="+task_module[0],"test","width=640,height=602,resizable=0,scrollbars=0");
 			else
 				window.open("index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form="+formName,"test","width=640,height=602,resizable=0,scrollbars=0");
