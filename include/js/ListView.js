@@ -744,7 +744,9 @@ function loadCvList(type,id) {
 			url: 'index.php?module=Campaigns&action=CampaignsAjax&file=LoadList&ajax=true&return_action=DetailView&return_id='+id+'&list_type='+type+'&cvid='+value
 		}).done(function (response) {
 					document.getElementById("status").style.display="none";
-					document.getElementById("RLContents").innerHTML = response;
+					var element = document.getElementById('RLContents');
+					element.innerHTML = response;
+					vtlib_executeJavascriptInElement(element);
 				}
 		);
 	}
@@ -758,7 +760,9 @@ function emptyCvList(type,id) {
 				url: 'index.php?module=Campaigns&action=CampaignsAjax&file=updateRelations&ajax=true&parentid='+id+'&destination_module='+type+'&mode=delete&idlist=All'
 			}).done(function (response) {
 					document.getElementById("status").style.display="none";
-					document.getElementById("RLContents").innerHTML = response;
+					var element = document.getElementById('RLContents');
+					element.innerHTML = response;
+					vtlib_executeJavascriptInElement(element);
 				}
 		);
 	}
