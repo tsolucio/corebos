@@ -74,7 +74,7 @@ var MailManageri18nInfo = {ldelim}{rdelim};
 
 <script type='text/javascript'>
 {literal}
-	jQuery( window ).load( MailManager.mainui);
+	jQuery( window ).on('load', MailManager.mainui);
 {/literal}
 </script>
 <input type="hidden" name="module" value="MailManager">

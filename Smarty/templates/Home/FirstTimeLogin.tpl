@@ -26,12 +26,12 @@
 			</div>
 		</td>
 	</table>
-        <div id="vtigerHelpWelcomeGTranslateEl"></div>
+	<div id="vtigerHelpWelcomeGTranslateEl"></div>
 </div>
 
 {literal}
 <script type="text/javascript">
-	jQuery( window ).load(function() {
+	jQuery( window ).on('load',function() {
 	if (typeof vtiger_help_welcome == 'function') {
 		vtiger_help_welcome(document.getElementById('vtigerHelpWelcomePopupLay'), document.getElementById('vtigerHelpWelcomePopupContent'));
 	}

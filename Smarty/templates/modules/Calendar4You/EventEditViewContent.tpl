@@ -1039,6 +1039,6 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 
 {if $PICKIST_DEPENDENCY_DATASOURCE neq ''}
 <script type="text/javascript">
-	jQuery( window ).load( function() {ldelim} (new FieldDependencies({$PICKIST_DEPENDENCY_DATASOURCE})).init() {rdelim});
+	jQuery( window ).on('load', function() {ldelim} (new FieldDependencies({$PICKIST_DEPENDENCY_DATASOURCE})).init() {rdelim});
 </script>
 {/if}

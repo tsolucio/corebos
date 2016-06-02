@@ -735,7 +735,7 @@ getTagCloud();
 
 <!-- SMSNotifier customization -->
 <script type="text/javascript">
-	jQuery( window ).load(function() {ldelim} 
+	jQuery( window ).on('load',function() {ldelim}
 		SMSNotifier.loadstatus('{$ID}');
 	{rdelim});
 </script>

@@ -154,7 +154,7 @@ function disableRelatedListBlock(urldata,target,imagesuffix){
 {if $SELECTEDHEADERS neq '' && $header|in_array:$SELECTEDHEADERS}
 <script type='text/javascript'>
 {if $smarty.request.ajax neq 'true'}
-	jQuery( window ).load(function() {ldelim}
+	jQuery( window ).on('load',function() {ldelim}
 		loadRelatedListBlock('module={$MODULE}&action={$MODULE}Ajax&file=DetailViewAjax&record={$ID}&ajxaction=LOADRELATEDLIST&header={$header}&relation_id={$detail.relationId}&actions={$detail.actions}&parenttab={$CATEGORY}&start={$smarty.request.start|@vtlib_purify}','tbl_{$MODULE}_{$header|replace:' ':''}','{$MODULE}_{$header|replace:' ':''}');
 	{rdelim});
 {else}
