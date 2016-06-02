@@ -11,7 +11,7 @@ var modifiedMappingValues = new Array();
 
 function changeDependencyPicklistModule(){
 	document.getElementById("status").style.display="inline";
-	var oModulePick = document.getElementById('pickmodule')
+	var oModulePick = document.getElementById('pickmodule');
 	var module=oModulePick.options[oModulePick.selectedIndex].value;
 	
 	jQuery.ajax({
@@ -82,7 +82,9 @@ function editDependencyPicklist(module, sourceField, targetField) {
 	}).done(function (response) {
 				document.getElementById("status").style.display="none";
 				modifiedMappingValues = new Array();
-				document.getElementById("picklist_datas").innerHTML=response;
+				var element = document.getElementById("picklist_datas");
+				element.innerHTML=response;
+				vtlib_executeJavascriptInElement(element);
 			}
 		);
 }
