@@ -612,4 +612,11 @@
 	<classname>UserFailedLoginAttempts</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Eliminate Calendar jquery loading. Use application jquery</description>
+	<filename>build/changeSets/CalendarDeletejQueryLinks.php</filename>
+	<classname>CalendarDeletejQueryLinks</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
