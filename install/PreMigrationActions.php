@@ -35,7 +35,7 @@ $_SESSION['pre_migration'] = true;
 	<script type="text/javascript">
 		function fixDBHealth(){
 			VtigerJS_DialogBox.progress();
-			var value = jQuery('#auth_key').attr('value');
+			var value = jQuery('#auth_key').val();
 			var url = 'install.php?file=VerifyDBHealth.php&ajax=true&updateTableEngine=true&updateEngineForAllTables=true&auth_key='+value;
 			jQuery.post(url,function(data,status){
 				fnvshNrm('responsePopupContainer');
@@ -43,13 +43,13 @@ $_SESSION['pre_migration'] = true;
 				var element = jQuery('#responsePopup');
 				if(status == 'success'){
 					if(trim(data) == 'TABLE_TYPE_FIXED'){
-						element.attr('innerHTML', '<?php echo $installationStrings['MSG_SUCCESSFULLY_FIXED_TABLE_TYPES']; ?>');
+						element.html('<?php echo $installationStrings['MSG_SUCCESSFULLY_FIXED_TABLE_TYPES']; ?>');
 						jQuery('#databaseFixMessageDiv').hide();
 					} else {
-						element.attr('innerHTML', '<?php echo $installationStrings['ERR_FAILED_TO_FIX_TABLE_TYPES']; ?>');
+						element.html('<?php echo $installationStrings['ERR_FAILED_TO_FIX_TABLE_TYPES']; ?>');
 					}
 				}else{
-					element.attr('innerHTML', '<?php echo $installationStrings['ERR_FAILED_TO_FIX_TABLE_TYPES']; ?>');
+					element.html('<?php echo $installationStrings['ERR_FAILED_TO_FIX_TABLE_TYPES']; ?>');
 				}
 				jQuery('#dbMirrorCopy').hide();
 				VtigerJS_DialogBox.hideprogress();
@@ -58,33 +58,33 @@ $_SESSION['pre_migration'] = true;
 		}
 		
 		function viewDBReport(){
-			var value = jQuery('#auth_key').attr('value');
+			var value = jQuery('#auth_key').val();
 			var url = 'install.php?file=VerifyDBHealth.php&ajax=true&viewDBReport=true&auth_key='+value;
 			window.open(url,'DBHealthCheck', 'width=700px, height=500px, resizable=1,menubar=0, location=0, toolbar=0,scrollbars=1');			
 		}
 		
 		function getDbDump(){
-			var value = jQuery('#auth_key').attr('value');
+			var value = jQuery('#auth_key').val();
 			var url = 'install.php?file=MigrationDbBackup.php&mode=dump&auth_key='+value;
 			window.open(url,'DatabaseDump', 'width=800px, height=600px, resizable=1,menubar=0, location=0, toolbar=0,scrollbars=1');
 		}
 		
 		function doDBCopy(){
-			var dbName = jQuery('#newDatabaseName').attr('value');
+			var dbName = jQuery('#newDatabaseName').val();
 			if (trim(dbName) == '') {
 				alert("<?php echo $installationStrings['ERR_SPECIFY_NEW_DATABASE_NAME']; ?>");
 				jQuery('#newDatabaseName').focus();
 				return false;
 			}
-			var rootUserName = jQuery('#rootUserName').attr('value');
+			var rootUserName = jQuery('#rootUserName').val();
 			if (trim(rootUserName) == '') {
 				alert("<?php echo $installationStrings['ERR_SPECIFY_ROOT_USER_NAME']; ?>");
 				jQuery('#rootUserName').focus();
 				return false;
 			}
 			VtigerJS_DialogBox.progress();
-			var rootPassword = jQuery('#rootPassword').attr('value');			
-			var value = jQuery('#auth_key').attr('value');
+			var rootPassword = jQuery('#rootPassword').val();
+			var value = jQuery('#auth_key').val();
 			var url = 'install.php?file=MigrationDbBackup.php&mode=copy&auth_key='+value;
 			url += ('&newDatabaseName='+dbName+'&rootUserName='+rootUserName+'&rootPassword='+rootPassword+'&createDB=true');
 			jQuery.post(url,function(data,status){
@@ -93,12 +93,12 @@ $_SESSION['pre_migration'] = true;
 				var element = jQuery('#responsePopup');
 				if(status == 'success'){
 					if(data != 'true' && data != true){
-						element.attr('innerHTML', '<?php echo $installationStrings['ERR_DATABASE_COPY_FAILED']; ?>.');
+						element.html('<?php echo $installationStrings['ERR_DATABASE_COPY_FAILED']; ?>.');
 					}else{
-						element.attr('innerHTML', '<?php echo $installationStrings['MSG_DATABASE_COPY_SUCCEDED']; ?>');
+						element.html('<?php echo $installationStrings['MSG_DATABASE_COPY_SUCCEDED']; ?>');
 					}
 				}else{
-					element.attr('innerHTML', '<?php echo $installationStrings['ERR_DATABASE_COPY_FAILED']; ?>.');
+					element.html('<?php echo $installationStrings['ERR_DATABASE_COPY_FAILED']; ?>.');
 				}
 				jQuery('#dbMirrorCopy').hide();
 				VtigerJS_DialogBox.hideprogress();

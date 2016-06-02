@@ -163,7 +163,7 @@ function VTCreateEntityTask($, fieldvaluemapping){
 		defaultValue(opType.name)(opType, mappingno);
 
 		var fv = $("#save_fieldvalues_"+mappingno+"_value");
-		fv.attr("name", fieldName);
+		fv.prop("name", fieldName);
 		var fieldLabel = jQuery("#save_fieldvalues_"+mappingno+"_fieldname option:selected").html();
 		validator.validateFieldData[fieldName] = {type: opType.name, label: fieldLabel};
 	}
@@ -181,7 +181,7 @@ function VTCreateEntityTask($, fieldvaluemapping){
 			$("#save_fieldvalues_"+mappingno+"_value_type").val("rawtext");
 
 			$("#save_fieldvalues_"+mappingno+"_modulename").val($('#entity_type').val());
-			$("#save_fieldvalues_"+mappingno+"_modulename").attr("disabled", "true");
+			$("#save_fieldvalues_"+mappingno+"_modulename").prop("disabled", "true");
 		}
 		var functions = {
 			string:function(opType, mappingno){
@@ -189,7 +189,7 @@ function VTCreateEntityTask($, fieldvaluemapping){
 				value.replaceWith(format('<input type="text" id="save_fieldvalues_%s_value" '+
 													'value="" class="expressionvalue" readonly />', mappingno));
 
-				$("#save_fieldvalues_"+mappingno+"_modulename").attr("disabled", "");
+				$("#save_fieldvalues_"+mappingno+"_modulename").prop("disabled", "");
 				var fv = $(format("#save_fieldvalues_%s_value", mappingno));
 				fv.bind("focus", function() {
 					editpopupobj.setModule($(format("#save_fieldvalues_%s_modulename", mappingno)).val());

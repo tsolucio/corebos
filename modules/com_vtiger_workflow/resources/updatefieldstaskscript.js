@@ -170,7 +170,7 @@ function VTUpdateFieldsTask($, fieldvaluemapping){
 	function resetFields(opType, fieldName, mappingno) {
 		defaultValue(opType.name)(opType, mappingno);
 		var fv = $("#save_fieldvalues_"+mappingno+"_value");
-		fv.attr("name", fieldName);
+		fv.prop("name", fieldName);
 		var fieldLabel = jQuery("#save_fieldvalues_"+mappingno+"_fieldname option:selected").html();
 		validator.validateFieldData[fieldName] = {
 			type: opType.name,

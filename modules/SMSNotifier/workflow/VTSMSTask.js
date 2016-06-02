@@ -198,7 +198,7 @@ function SMSTask($) {
 					$('#sms_fieldnames').show();
 					$('#sms_fieldnames').change(function(){
 						var textarea = $('#save_content').get(0);
-						var value = '$'+$(this).attr('value');
+						var value = '$'+$(this).val();
 						insertAtCursor(textarea, value);
 					});
 
@@ -207,8 +207,8 @@ function SMSTask($) {
 					$('#task_phonefields').show();
 					$('#task_phonefields').change(function(){
 						var input = $($('#save_recepient').get());
-						var value = '$'+$(this).attr('value');
-						input.attr("value", input.attr("value")+','+value);
+						var value = '$'+$(this).val();
+						input.val(input.val()+','+value);
 					});
 				}));
 			}));

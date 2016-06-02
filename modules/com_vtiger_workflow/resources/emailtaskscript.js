@@ -254,8 +254,8 @@ function VTEmailTask($){
 					$('#task-emailfieldsreplyto').show();
 					$('#task-emailfieldsreplyto').change(function(){
 						var input = $($('#save_replyto').get());
-						var value = '$'+$(this).attr('value');
-						input.attr("value", value);
+						var value = '$'+$(this).val();
+						input.val(value);
 					});
 
 					fillSelectBox('task-subjectfields', modules, moduleName,

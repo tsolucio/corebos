@@ -79,7 +79,7 @@ function edittaskscript($){
 			}else{
 				var out = JSON.stringify(conditions);
 			}
-			$("#save_conditions_json").attr("value", out);
+			$("#save_conditions_json").prop("value", out);
 		});
     });
 }
