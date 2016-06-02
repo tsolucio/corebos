@@ -3267,7 +3267,7 @@ var ActivityReminder_popup_onscreen = 2 * 1000; // Milli Seconds (should be less
 var ActivityReminder_callback_win_uniqueids = new Object();
 
 function ActivityReminderCallback() {
-	if(typeof(Ajax) == 'undefined') {
+	if(typeof(jQuery) == 'undefined') {
 		return;
 	}
 	if(ActivityReminder_regcallback_timer) {
