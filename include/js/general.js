@@ -3323,7 +3323,8 @@ function ActivityReminderCallbackProcess(message) {
 	}
 }
 function ActivityReminderCallbackRollout(z, ActivityReminder_callback_win) {
-	ActivityReminder_callback_win = document.getElementById(ActivityReminder_callback_win);
+	if (typeof(ActivityReminder_callback_win)=='string')
+		ActivityReminder_callback_win = document.getElementById(ActivityReminder_callback_win);
 
 	if (ActivityReminder_timer) {
 		window.clearTimeout(ActivityReminder_timer);
