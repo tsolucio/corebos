@@ -26,6 +26,7 @@ class Documents extends CRMEntity {
 	var $tab_name_index = Array('vtiger_crmentity'=>'crmid','vtiger_notes'=>'notesid','vtiger_notescf'=>'notesid','vtiger_senotesrel'=>'notesid');
 	var $customFieldTable = Array('vtiger_notescf', 'notesid');
 
+	var $popup_fields = Array('notes_title');
 	var $sortby_fields = Array('title','modifiedtime','filename','createdtime','lastname','filedownloadcount','smownerid');
 
 	// This is used to retrieve related vtiger_fields from form posts.
