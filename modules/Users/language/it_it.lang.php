@@ -112,6 +112,7 @@
   'ERR_PASSWORD_CHANGE_FAILED_1' => 'Impossibile modificare la password per',
   'ERR_PASSWORD_CHANGE_FAILED_2' => 'errore. La nuova password deve essere impostata.',
   'ERR_PASSWORD_INCORRECT_OLD' => 'Vecchia password sbagliata per questo nome utente. Reinserisci la password',
+  'ERR_PASSWORD_NOT_CHANGED' => 'Old and New Passwords are the same. Please use a different password.',
   'ERR_USER_NAME_EXISTS_1' => 'Il Nome Utente',
   'ERR_USER_NAME_EXISTS_2' => 'esiste gi&agrave; . Utenti duplicati non sono consentiti. Cambia il nome utente per essere unico',
   'ERR_LAST_ADMIN_1' => 'Il Nome Utente',
@@ -792,6 +793,7 @@
 'Min. 1 lowercase' => 'Minimo una lettera minuscola',
 'Min. 1 number' => 'Minimo un numero',
 'Min. 1 special character' => 'Minimo un carattere speciale ! ? , ; - @ #',
+'Generate password' => 'Generate password',
 );
 
 ?>

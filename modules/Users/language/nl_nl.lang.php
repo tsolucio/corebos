@@ -129,6 +129,7 @@ $mod_strings = Array(
 'ERR_PASSWORD_CHANGE_FAILED_1'=>'Gebruikers wachtwoord wijziging ging fout omdat ',
 'ERR_PASSWORD_CHANGE_FAILED_2'=>' FOUT. Het nieuwe wachtwoord moet opnieuw.',
 'ERR_PASSWORD_INCORRECT_OLD'=>'FOUT oude wachtwoord voor gebruiker $this->gebruikersnaam is niet correct. Opnieuw a.u.b..',
+'ERR_PASSWORD_NOT_CHANGED' => 'Old and New Passwords are the same. Please use a different password.',
 'ERR_USER_NAME_EXISTS_1'=>'De gebruikersnaam ',
 'ERR_USER_NAME_EXISTS_2'=>' bestaat al. Dubbele gebruikersnamen zijn niet toegestaan.<br>Verander de naam, deze moet uniek zijn.',
 'ERR_LAST_ADMIN_1'=>'Gebruikersnaam ',
@@ -836,6 +837,7 @@ $mod_strings = Array(
 'Min. 1 lowercase' => 'Min. 1 lowercase character',
 'Min. 1 number' => 'Min. 1 Number',
 'Min. 1 special character' => 'Min. 1 special character , ! ? , ; - @ #',
+'Generate password' => 'Generate password',
 );
 
 ?>

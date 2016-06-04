@@ -666,6 +666,7 @@ $app_strings = array(
 
 //Added for 5.0.3
 'Files_Maximum_6'=>'Dateimaximum 6',
+'Files_Maximum'=>'Dateimaximum ',
 'To'=>'An:',
 
 'Date & Time' => 'Datum & Zeit',
