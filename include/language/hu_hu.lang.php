@@ -655,6 +655,7 @@ $app_strings = array(
 	'LABEL_SET_SH_TAX_FOR_COLON' => 'Szállítási és kezelési ktg. adójának beállítása :',
 	'NO_DATA_AVAILABLE_WITH_SPECIFIED_PERIOD' => 'Nincs adat a megadott időszakra vonatkozóan',
 	'Files_Maximum_6' => 'Maximum 6 fájl',
+	'Files_Maximum' => 'Maximum fájl: ',
 	'To' => ' neki ',
 	'Date & Time' => 'Dátum és idő',
 	'Reminder' => 'Emlékeztető',

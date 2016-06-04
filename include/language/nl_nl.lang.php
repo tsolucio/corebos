@@ -679,6 +679,7 @@ $app_strings = array(
 	'LABEL_SET_SH_TAX_FOR_COLON' => 'V&H belasting over:',
 	'NO_DATA_AVAILABLE_WITH_SPECIFIED_PERIOD' => 'Geen gegevens beschikbaar voor de gespecificeerde tijdsperiode',
 	'Files_Maximum_6' => 'Maximaal 6',
+	'Files_Maximum' => 'Maximaal ',
 	'To' => 'Aan:',
 	'Date & Time' => 'Datum & tijd',
 	'Reminder' => 'Herinnering:',

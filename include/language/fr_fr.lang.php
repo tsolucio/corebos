@@ -653,6 +653,7 @@ $app_strings = array (
 	'LABEL_SET_SH_TAX_FOR_COLON' => 'Fixer taxe exp./trans. pour :',
 	'NO_DATA_AVAILABLE_WITH_SPECIFIED_PERIOD' => 'Aucune donnée disponible pour la période spécifiée',
 	'Files_Maximum_6' => '6 fichiers max',
+	'Files_Maximum' => 'Fichiers max: ',
 	'To' => 'à:',
 	'Date & Time' => 'Date & Heure',
 	'Reminder' => '[Rappel:',

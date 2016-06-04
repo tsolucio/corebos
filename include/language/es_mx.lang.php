@@ -666,6 +666,7 @@ $app_strings = array (
       'LABEL_SET_SH_TAX_FOR_COLON' => 'Establecer Impuesto de Manipulación y Transportes para:',
       'NO_DATA_AVAILABLE_WITH_SPECIFIED_PERIOD' => 'No hay datos disponible para ese periodo',
       'Files_Maximum_6' => 'Máximo 6 archivos',
+      'Files_Maximum' => 'Máximo archivos: ',
       'To' => 'Para:',
       'Date & Time' => 'Fecha y hora:',
       'Reminder' => 'Recordatorio:',
