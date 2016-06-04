@@ -30,16 +30,20 @@
 		</td>
 	</tr>
 	<tr>
-		<td colspan="2" align="left" valign="top">
-			<span id='std_filter_div_show' name='std_filter_div_show'>
+		<td colspan="2" align="left" valign="top" style="height: 1px;">
+{*		<td colspan="2" align="left" valign="top">*}
+                    	<div id='std_filter_div_show' name='std_filter_div_show'>
+{*			<span id='std_filter_div_show' name='std_filter_div_show'>*}
 				<img border="0" align="absmiddle" src={'inactivate.gif'|@vtiger_imageurl:$THEME}  onclick="showHideDivs('std_filter_div','std_filter_div_show');" style="cursor:pointer;" />
 				<b>{$MOD.LBL_SHOW_STANDARD_FILTERS}</b>
-			</span>
+{*			</span>*}
+                        </div>
 		</td>
 	</tr>
 	<tr>
-		<td colspan="2" valign="top">
-			<div id='std_filter_div' name='std_filter_div' style="display:none;height:100;">
+		<td colspan="2" valign="top" style="height: 1px;">
+{*		<td colspan="2" valign="top">*}
+			<div id='std_filter_div' name='std_filter_div' style="display:none;">
 				<table class="small" border="0" cellpadding="5" cellspacing="0" width="100%">
 					<tr>
 						<td class="detailedViewHeader" colspan="4">
@@ -53,7 +57,7 @@
 						<td class="dvtCellLabel" width="20%">{$MOD.LBL_SF_STARTDATE}:</td>
 						<td class="dvtCellLabel" width="20%">{$MOD.LBL_SF_ENDDATE}:</td>
 					</tr>
-					<tr>
+					<tr >
 						<td class="dvtCellInfo" width="60%">
 							<select name="stdDateFilterField" class="detailedViewTextBox" onchange='standardFilterDisplay();'>
 							{$BLOCK1_STD}
