@@ -116,6 +116,7 @@ $mod_strings = Array(
 'ERR_PASSWORD_CHANGE_FAILED_1'=>'Mudança na senha do usuário falhou ',
 'ERR_PASSWORD_CHANGE_FAILED_2'=>' falhou. Nova senha deve ser definida.',
 'ERR_PASSWORD_INCORRECT_OLD'=>'Senha antiga incorreta para usuário especificado. Entre novamente com a informação de senha.',
+'ERR_PASSWORD_NOT_CHANGED' => 'Old and New Passwords are the same. Please use a different password.',
 'ERR_USER_NAME_EXISTS_1'=>'O nome de usuário',
 'ERR_USER_NAME_EXISTS_2'=>' já existe.  Nomes de usuários duplicados não são permitidos.<br>Mude o nome de usuário de forma que seja único.',
 'ERR_LAST_ADMIN_1'=>'O nome de usuário',
@@ -819,6 +820,7 @@ $mod_strings = Array(
 'Min. 1 lowercase' => 'Min. 1 lowercase character',
 'Min. 1 number' => 'Min. 1 Number',
 'Min. 1 special character' => 'Min. 1 special character , ! ? , ; - @ #',
+'Generate password' => 'Generate password',
 );
 
 ?>

@@ -107,6 +107,7 @@ $mod_strings = array(
 	'ERR_PASSWORD_CHANGE_FAILED_1' => 'A jelszó csere nem sikerült ',
 	'ERR_PASSWORD_CHANGE_FAILED_2' => ' Az új jelszót meg kell, hogy add.',
 	'ERR_PASSWORD_INCORRECT_OLD' => 'Hibásan adtad meg a régi jelszót. Add meg újra a jelszó adatokat.',
+	'ERR_PASSWORD_NOT_CHANGED' => 'Old and New Passwords are the same. Please use a different password.',
 	'ERR_USER_NAME_EXISTS_1' => 'A felhasználó név ',
 	'ERR_USER_NAME_EXISTS_2' => ' már foglalt. Duplikált felhasználónevek nem engedélyezettek.<br>Válassz egyedi felhasználó nevet.',
 	'ERR_LAST_ADMIN_1' => 'A felhasználó név ',
@@ -702,5 +703,6 @@ $mod_strings = array(
 	'Min. 1 lowercase' => 'Min. 1 lowercase character',
 	'Min. 1 number' => 'Min. 1 Number',
 	'Min. 1 special character' => 'Min. 1 special character , ! ? , ; - @ #',
+	'Generate password' => 'Generate password',
 );
 ?>

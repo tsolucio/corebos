@@ -97,6 +97,7 @@ $mod_strings = array (
 		'ERR_PASSWORD_CHANGE_FAILED_1' => 'Echec lors du changement de mot de passe pour ',
 		'ERR_PASSWORD_CHANGE_FAILED_2' => ' échec. Le nouveau mot de passe doit être établi.',
 		'ERR_PASSWORD_INCORRECT_OLD' => 'Ancient mot de passe incorrect pour $this->user_name. Re-saisissez votre mot de passe.',
+		'ERR_PASSWORD_NOT_CHANGED' => 'Old and New Passwords are the same. Please use a different password.',
 		'ERR_USER_NAME_EXISTS_1' => 'Le nom d\'utilisateur ',
 		'ERR_USER_NAME_EXISTS_2' => ' existe déjà. Les doublons de noms d\'utilisateurs ne sont pas autorisés.
 		Changez de nom de manière à le rendre unique.',
@@ -598,5 +599,6 @@ $mod_strings = array (
 		'Min. 1 lowercase' => 'Min. 1 lowercase character',
 		'Min. 1 number' => 'Min. 1 Number',
 		'Min. 1 special character' => 'Min. 1 special character , ! ? , ; - @ #',
+		'Generate password' => 'Generate password',
 );
 ?>
