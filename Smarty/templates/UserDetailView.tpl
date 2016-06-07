@@ -52,6 +52,7 @@
 							{if $CATEGORY eq 'Settings'}
 							<input type="hidden" name="parenttab" value="{$PARENTTAB}" style="margin:0px">
 							{/if}
+							{include file='applicationmessage.tpl'}
 							<table width="100%" border="0" cellpadding="0" cellspacing="0" >
 							<tr>
 								<td colspan=2>
