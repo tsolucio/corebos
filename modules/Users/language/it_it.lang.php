@@ -120,6 +120,7 @@
   'ERR_MAXLOGINATTEMPTS' => 'Maximum number of login attempts reached. Contact your administrator to unblock your account',
   'LBL_FAILED_LOGIN_ATTEMPTS' => 'Failed Login Attempts',
   'ERR_DELETE_RECORD' => 'Un numero di record deve essere specificato per cancellare l`account.',
+  'ERR_MUST_CHANGE_PASSWORD' => 'Your password has expired. You must change your password to continue.',
 
   'LBL_ROLES' => 'Ruoli',
   'LBL_ROLES_SUBORDINATES' => 'Ruoli e Subordinati',

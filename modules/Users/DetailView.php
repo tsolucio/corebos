@@ -183,6 +183,12 @@ $smarty->assign("START_HOUR",$focus->start_hour);
 $_SESSION['Users_FORM_TOKEN'] = rand(5, 2000) * rand(2, 7);
 $smarty->assign('FORM_TOKEN', $_SESSION['Users_FORM_TOKEN']);
 
+if ($current_user->mustChangePassword()) {
+	$smarty->assign('ERROR_MESSAGE',getTranslatedString('ERR_MUST_CHANGE_PASSWORD','Users'));
+	$smarty->assign('mustChangePassword',1);
+} else {
+	$smarty->assign('mustChangePassword',0);
+}
 
 //for check audittrail if it is enable or not
 $smarty->assign("AUDITTRAIL",$audit_trail);

@@ -437,9 +437,22 @@ class Users extends CRMEntity {
 		$crypt_type = $this->DEFAULT_PASSWORD_CRYPT_TYPE;
 		$encrypted_new_password = $this->encrypt_password($new_password, $crypt_type);
 
-		$query = "UPDATE $this->table_name SET user_password=?, confirm_password=?, user_hash=?, " . "crypt_type=? where id=?";
+		// Set change password at next login to 0 if resetting your own password
+		if ($current_user->id == $this->id) {
+			$change_password_next_login = 0;
+		} else {
+			$change_password_next_login = 1;
+		}
+		$cnuser=$this->db->getColumnNames($this->table_name);
+		if (!in_array('change_password', $cnuser)) {
+			$this->db->query("ALTER TABLE `vtiger_users` ADD `change_password` boolean NOT NULL DEFAULT 0");
+		}
+		if (!in_array('last_password_reset_date', $cnuser)) {
+			$this->db->query("ALTER TABLE `vtiger_users` ADD `last_password_reset_date` date DEFAULT NULL");
+		}
+		$query = "UPDATE $this->table_name SET user_password=?, confirm_password=?, user_hash=?, crypt_type=?, change_password=?, last_password_reset_date=now() where id=?";
 		$this->db->startTransaction();
-		$this->db->pquery($query, array($encrypted_new_password, $encrypted_new_password, $user_hash, $crypt_type, $this->id));
+		$this->db->pquery($query, array($encrypted_new_password, $encrypted_new_password, $user_hash, $crypt_type, $change_password_next_login, $this->id));
 		if ($this->db->hasFailedTransaction()) {
 			if ($dieOnError) {
 				die("error setting new password: [" . $this->db->database->ErrorNo() . "] " . $this->db->database->ErrorMsg());
@@ -448,6 +461,15 @@ class Users extends CRMEntity {
 		}
 		$this->createAccessKey();
 		return true;
+	}
+
+	function mustChangePassword() {
+		$cnuser=$this->db->getColumnNames('vtiger_users');
+		if (!in_array('change_password', $cnuser)) {
+			$this->db->query("ALTER TABLE `vtiger_users` ADD `change_password` boolean NOT NULL DEFAULT 0");
+		}
+		$cprs = $this->db->pquery('select change_password from vtiger_users where id=?', array($this->id));
+		return $this->db->query_result($cprs, 0, 0);
 	}
 
 	function de_cryption($data) {

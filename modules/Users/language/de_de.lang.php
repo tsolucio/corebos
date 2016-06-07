@@ -119,6 +119,7 @@ $mod_strings = Array(
     'ERR_MAXLOGINATTEMPTS' => 'Maximum number of login attempts reached. Contact your administrator to unblock your account',
     'LBL_FAILED_LOGIN_ATTEMPTS' => 'Failed Login Attempts',
     'ERR_DELETE_RECORD'=>"Zum Löschen muss ein Eintrag markiert werden.",
+    'ERR_MUST_CHANGE_PASSWORD' => 'Your password has expired. You must change your password to continue.',
 
     // Additional Fields for i18n --- Release vtigerCRM 3.2 Patch 2
     // Users--listroles.php , createrole.php , ListPermissions.php , editpermissions.php

@@ -10,7 +10,6 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
-
  ********************************************************************************
 *  Module       : Users
 *  Language     : Español
@@ -129,6 +128,7 @@ $mod_strings = Array(
 'ERR_MAXLOGINATTEMPTS' => 'Se ha alcanzado el número máximo de intentos. Contacta con el administrador para desbloquear tu cuenta.',
 'LBL_FAILED_LOGIN_ATTEMPTS' => 'Intentos Fallidos de Acceso',
 'ERR_DELETE_RECORD'=>'Debe especificar un registro para eliminar la Cuenta.',
+'ERR_MUST_CHANGE_PASSWORD' => 'Tu contraseña ha caducado. Tienes que cambiar la contraseña para poder continuar trabajando.',
 
 // Additional Fields for i18n --- Release vtigerCRM 3.2 Patch 2
 // Users--listroles.php , createrole.php , ListPermissions.php , editpermissions.php

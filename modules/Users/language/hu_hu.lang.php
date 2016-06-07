@@ -115,6 +115,7 @@ $mod_strings = array(
 	'ERR_MAXLOGINATTEMPTS' => 'Maximum number of login attempts reached. Contact your administrator to unblock your account',
 	'LBL_FAILED_LOGIN_ATTEMPTS' => 'Failed Login Attempts',
 	'ERR_DELETE_RECORD' => 'Adj meg egy rekord azonosítót a Cég törléséhez',
+	'ERR_MUST_CHANGE_PASSWORD' => 'Your password has expired. You must change your password to continue.',
 	'LBL_ROLES' => 'Munkakörök',
 	'LBL_ROLES_SUBORDINATES' => 'Munkakörök és alárendeltségek',
 	'LBL_CREATE_NEW_ROLE' => 'Új Munkakör',
