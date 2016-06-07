@@ -6,7 +6,6 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 <script language="JavaScript" type="text/javascript" src="include/js/menu.js"></script>
