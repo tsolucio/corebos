@@ -612,4 +612,11 @@
 	<classname>UserFailedLoginAttempts</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>kikojover</author>
+	<description>Add recurring periods to SalesOrder</description>
+	<filename>build/changeSets/addRecurringSO.php</filename>
+	<classname>addRecurringSO</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

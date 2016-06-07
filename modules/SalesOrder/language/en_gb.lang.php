@@ -173,6 +173,10 @@ $mod_strings = array(
 	'Net 60 days' => 'Net 60 days',
 	'SalesOrder ID' => 'Sales Order ID',
 	'half-year'=>'Half Year',
+        '2years' => '2 Years',
+        '3years' => '3 Years',
+        '4years' => '4 Years',
+        '5years' => '5 Years',
 
 );
 ?>

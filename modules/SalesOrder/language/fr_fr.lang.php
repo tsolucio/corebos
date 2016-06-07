@@ -172,5 +172,9 @@ $mod_strings = array (
 		'Net 45 days' => 'Net 45 jours',
 		'Net 60 days' => 'Net 60 jours',
                 'half-year'=>'Half Year',
+                '2years' => '2 Years',
+                '3years' => '3 Years',
+                '4years' => '4 Years',
+                '5years' => '5 Years',
 );
 ?>

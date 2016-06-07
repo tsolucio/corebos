@@ -182,5 +182,9 @@ $mod_strings = array(
 	'Yearly' => 'Évente',
 	'Order Id' => 'Megrendelés AZ',
         'half-year'=>'Half Year',
+        '2years' => '2 Years',
+        '3years' => '3 Years',
+        '4years' => '4 Years',
+        '5years' => '5 Years',
 );
 ?>
