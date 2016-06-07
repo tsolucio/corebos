@@ -856,9 +856,12 @@ function addblock() {
 function deleteBlock() {
 	global $adb;
 	$blockid = vtlib_purify($_REQUEST['blockid']);
+	// move any hidden fields to another block
+	$fblckrs = $adb->pquery('update vtiger_field set vtiger_field.block = (select vtiger_blocks.blockid from vtiger_blocks
+		where vtiger_blocks.blockid!=? and tabid=(select vtiger_blocks.tabid from vtiger_blocks where vtiger_blocks.blockid=?) limit 1)
+		where vtiger_field.block=?',array($blockid,$blockid,$blockid));
 	$deleteblock = 'delete from vtiger_blocks where blockid = ? and iscustom = 1';
 	$res = $adb->pquery($deleteblock,array($blockid));
-
 }
 
 function addCustomField() {
