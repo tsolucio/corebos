@@ -425,7 +425,7 @@ class Users extends CRMEntity {
 			}
 			if ($this->db->hasFailedTransaction()) {
 				if ($dieOnError) {
-					die("error verifying old transaction[" . $this->db->database->ErrorNo() . "] " . $this->db->database->ErrorMsg());
+					die("error verifying old password[" . $this->db->database->ErrorNo() . "] " . $this->db->database->ErrorMsg());
 				}
 				return false;
 			}
