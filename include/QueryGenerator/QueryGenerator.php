@@ -315,15 +315,16 @@ class QueryGenerator {
 			$viewfields[] = 'activitytype';
 		}
 
-		if($this->module == 'Documents') {
-			if(in_array('filename', $viewfields)) {
-				if(!in_array('filelocationtype', $viewfields)) {
-					$viewfields[] = 'filelocationtype';
-				}
-				if(!in_array('filestatus', $viewfields)) {
-					$viewfields[] = 'filestatus';
-				}
+		if($this->module == 'Documents' and in_array('filename', $viewfields)) {
+			if(!in_array('filelocationtype', $viewfields)) {
+				$viewfields[] = 'filelocationtype';
 			}
+			if(!in_array('filestatus', $viewfields)) {
+				$viewfields[] = 'filestatus';
+			}
+		}
+		if(in_array('Documents.filename', $viewfields) and !in_array('Documents.note_no', $viewfields)) {
+			$viewfields[] = 'Documents.note_no';
 		}
 		$viewfields[] = 'id';
 		$this->setFields($viewfields);
