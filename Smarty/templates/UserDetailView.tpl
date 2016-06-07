@@ -84,6 +84,7 @@
 								<td colspan="2" nowrap align="right">
 									{if $IS_ADMIN eq 'true'}
 									<input type="button" onclick="showAuditTrail();" value="{$MOD.LBL_VIEW_AUDIT_TRAIL}" class="crmButton small save"></input>
+									<input type="button" onclick="VtigerJS_DialogBox.block();window.document.location.href = 'index.php?module=Users&action=UsersAjax&file=CalculatePrivilegeFiles&record={$ID}';" value="{$MOD.LBL_RECALCULATE_BUTTON}" class="crmButton small cancel"></input>
 									{/if}
 									{if $CATEGORY eq 'Settings'}
 														{$DUPLICATE_BUTTON}
