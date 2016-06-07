@@ -619,4 +619,11 @@
 	<classname>addRecurringSO</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>cron Expire User Password After Days</description>
+	<filename>build/changeSets/cronExpirePasswordAfterDays.php</filename>
+	<classname>cronExpirePasswordAfterDays</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
