@@ -959,7 +959,8 @@ class Users extends CRMEntity {
 		if (!is_admin($current_user) and $current_user->id != $this->id) {// only admin users can change other users profile
 			return false;
 		}
-
+		$userrs = $adb->pquery('select roleid from vtiger_user2role where userid = ?', array($this->id));
+		$oldrole = $adb->query_result($userrs, 0, 0);
 		//Save entity being called with the modulename as parameter
 		$this->saveentity($module_name);
 
@@ -979,7 +980,7 @@ class Users extends CRMEntity {
 		}
 		require_once ('modules/Users/CreateUserPrivilegeFile.php');
 		//createUserPrivilegesfile($this->id); // done in saveentity above
-		if ($this->mode!='edit') {
+		if ($this->mode!='edit' or $oldrole != $this->column_fields['roleid']) {
 			createUserSharingPrivilegesfile($this->id);
 		}
 	}
