@@ -626,4 +626,11 @@
 	<classname>cronExpirePasswordAfterDays</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Permissions: fixes found while testing</description>
+	<filename>build/changeSets/permissions_fixesfoundwhiletesting.php</filename>
+	<classname>permissions_fixesfoundwhiletesting</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
