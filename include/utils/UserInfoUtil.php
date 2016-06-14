@@ -752,7 +752,7 @@ function isPermitted($module,$actionname,$record_id='')
 		//Checking if the Record Owner is the current User
 		if($current_user->id == $recOwnId)
 		{
-			if (($actionname!='EditView' and $actionname!='Delete' and $actionname!='DetailView' and $actionname!='CreateView') or (!$racbr or $racbr->hasDetailViewPermissionTo($actionname))) {
+			if (($actionname!='EditView' and $actionname!='Delete' and $actionname!='DetailView' and $actionname!='CreateView') or (!$racbr or $racbr->hasDetailViewPermissionTo($actionname,true))) {
 				$permission = 'yes';
 			} else {
 				$permission = 'no';
@@ -765,14 +765,14 @@ function isPermitted($module,$actionname,$record_id='')
 		{
 			if(in_array($recOwnId,$userids))
 			{
-				if (($actionname!='EditView' and $actionname!='Delete' and $actionname!='DetailView' and $actionname!='CreateView') or (!$racbr or $racbr->hasDetailViewPermissionTo($actionname))) {
-					$permission = 'yes';
-				} else {
-					$permission = 'no';
-				}
+				$permission = 'yes';
 				$log->debug("Exiting isPermitted method ...");
 				return $permission;
 			}
+		}
+		if ($racbr!==false and $racbr->hasDetailViewPermissionTo($actionname,false)) {
+			$log->debug("Exiting isPermitted method via RAC User...");
+			return 'yes';
 		}
 	}
 	elseif($recOwnType == 'Groups')
