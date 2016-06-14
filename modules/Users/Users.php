@@ -450,7 +450,7 @@ class Users extends CRMEntity {
 		if (!in_array('last_password_reset_date', $cnuser)) {
 			$this->db->query("ALTER TABLE `vtiger_users` ADD `last_password_reset_date` date DEFAULT NULL");
 		}
-		$query = "UPDATE $this->table_name SET user_password=?, confirm_password=?, user_hash=?, crypt_type=?, change_password=?, last_password_reset_date=now() where id=?";
+		$query = "UPDATE $this->table_name SET user_password=?, confirm_password=?, user_hash=?, crypt_type=?, change_password=?, last_password_reset_date=now(), failed_login_attempts=0 where id=?";
 		$this->db->startTransaction();
 		$this->db->pquery($query, array($encrypted_new_password, $encrypted_new_password, $user_hash, $crypt_type, $change_password_next_login, $this->id));
 		if ($this->db->hasFailedTransaction()) {
