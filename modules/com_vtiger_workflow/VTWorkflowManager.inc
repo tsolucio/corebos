@@ -406,7 +406,8 @@
 		}
 
 		function performTasks($entityData) {
-			global $adb;
+			global $adb,$logbg;
+			$logbg->debug('entering PerformTasks for Workflow: '.$this->id);
 			$data = $entityData->getData();
 			$util = new VTWorkflowUtils();
 			$user = $util->adminUser();
