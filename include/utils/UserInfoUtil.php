@@ -615,6 +615,9 @@ function isPermitted($module,$actionname,$record_id='')
 {
 	global $log, $adb, $current_user, $seclog;
 	$log->debug("Entering isPermitted(".$module.",".$actionname.",".$record_id.") method ...");
+	if (strpos($record_id,'x')>0) { // is webserviceid
+		list($void,$record_id) = explode('x', $record_id);
+	}
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 	$parenttab = empty($_REQUEST['parenttab']) ? '' : vtlib_purify($_REQUEST['parenttab']);
