@@ -59,6 +59,7 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 		}
 		$smarty->assign('schdate',$schannualdates);
 		$smarty->assign('selected_days1_31',json_decode($workflow->schdayofmonth));
+		$smarty->assign('selected_minute_interval',json_decode($workflow->schminuteinterval));
 		$smarty->assign('dayOfWeek',json_decode($workflow->schdayofweek));
 	}
 
@@ -75,8 +76,11 @@ function vtWorkflowEdit($adb, $request, $requestUrl, $current_language, $app_str
 	$smarty->assign("taskTypes", $taskTypes);
 	$smarty->assign("newTaskReturnUrl", vtlib_purify($requestUrl));
 	$dayrange = array();
+	$intervalrange=array();
 	for ($d=1;$d<=31;$d++) $dayrange[$d] = $d;
+    for ($interval=5;$interval<=50;$interval+=5) $intervalrange[$interval]=$interval;
 	$smarty->assign('days1_31', $dayrange);
+    $smarty->assign('interval_range',$intervalrange);
 	$smarty->assign('wfnexttrigger_time',DateTimeField::convertToUserFormat($workflow->nexttrigger_time));
 	$smarty->assign("dateFormat", parse_calendardate($current_user->date_format));
 	$smarty->assign("returnUrl", vtlib_purify($request["return_url"]));
