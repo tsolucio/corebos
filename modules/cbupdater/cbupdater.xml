@@ -634,24 +634,10 @@
 	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
-	<author>joebordes</author>
-	<description>Permissions: fixes found while testing</description>
-	<filename>build/changeSets/permissions_fixesfoundwhiletesting.php</filename>
-	<classname>permissions_fixesfoundwhiletesting</classname>
-	<systemupdate>true</systemupdate>
-</changeSet>
-<changeSet>
 	<author>erimatraku</author>
 	<description>Add Minute Interval for wf shceduling</description>
 	<filename>build/changeSets/minuteintervalwfsched.php</filename>
 	<classname>minuteintervalwfsched</classname>
-	<systemupdate>true</systemupdate>
-</changeSet>
-<changeSet>
-	<author>erimatraku</author>
-	<description>Add Entity Method for scheduled wf testing</description>
-	<filename>build/changeSets/entitymethodconttest.php</filename>
-	<classname>entitymethodconttest</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
 </updatesChangeLog>
