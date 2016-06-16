@@ -329,23 +329,26 @@ class Documents extends CRMEntity {
 		$sql = getPermittedFieldsQuery("Documents", "detail_view");
 		$fields_list = getFieldsListFromQuery($sql);
 
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>
-							'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-		$query = "SELECT $fields_list, case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name" .
-				" FROM vtiger_notes
-				inner join vtiger_crmentity
-					on vtiger_crmentity.crmid=vtiger_notes.notesid
+		$query = "SELECT $fields_list, foldername, filename,
+					concat(path,vtiger_attachments.attachmentsid,'_',filename) as storagename,
+					concat(account_no,' ',accountname) as account, concat(contact_no,' ',firstname,' ',lastname) as contact
+				FROM vtiger_notes
+				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_notes.notesid
+				left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid=vtiger_notes.notesid
+				left join vtiger_attachments on vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid
 				LEFT JOIN vtiger_attachmentsfolder on vtiger_notes.folderid=vtiger_attachmentsfolder.folderid
-				LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid=vtiger_users.id " .
-				" LEFT JOIN vtiger_groups ON vtiger_crmentity.smownerid=vtiger_groups.groupid "
-				;
+				LEFT JOIN vtiger_senotesrel ON vtiger_senotesrel.notesid=vtiger_notes.notesid
+				LEFT JOIN vtiger_account ON vtiger_account.accountid=vtiger_senotesrel.crmid
+				LEFT JOIN vtiger_contactdetails ON vtiger_contactdetails.contactid=vtiger_senotesrel.crmid
+				LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid=vtiger_users.id
+				LEFT JOIN vtiger_groups ON vtiger_crmentity.smownerid=vtiger_groups.groupid ";
 		$query .= getNonAdminAccessControlQuery('Documents',$current_user);
 		$where_auto=" vtiger_crmentity.deleted=0";
 		if($where != "")
 			$query .= " WHERE ($where) AND ".$where_auto;
 		else
 			$query .= " WHERE ".$where_auto;
-
+		$query.=' group by vtiger_notes.notesid';
 		$log->debug("Exiting create_export_query method ...");
 		return $query;
 	}

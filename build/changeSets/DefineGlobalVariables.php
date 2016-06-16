@@ -24,6 +24,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 			$global_variables = array(
 				'Debug_Record_Not_Found',
 				'Debug_Report_Query',
+				'Debug_ListView_Query',
 				'Debug_Send_VtigerCron_Error',
 
 				'Application_Global_Search_SelectedModules',
@@ -33,6 +34,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_OpenRecordInNewXOnRelatedList',
 				'Application_OpenRecordInNewXOnListView',
 				'Application_MaxFailedLoginAttempts',
+				'Application_ExpirePasswordAfterDays',
+				'Application_ListView_MaxColumns',
 
 				'Calendar_Modules_Panel_Visible',
 				'Calendar_Default_Reminder_Minutes',
@@ -58,6 +61,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Product_Show_Subproducts_Popup',
 				'Product_Permit_Relate_Bundle_Parent',
 				'Product_Permit_Subproduct_Be_Parent',
+				'Product_Maximum_Number_Images',
 				'Workflow_Send_Email_ToCCBCC',
 
 				'Report_Send_Scheduled_ifEmpty',

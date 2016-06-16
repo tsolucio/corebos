@@ -43,10 +43,11 @@ if($recordid == "") {
 	if(isset($modulecollist)) {
 		$choosecolslist = getByModule_ColumnsList($cv_module,$modulecollist);
 	}
-	for($i=1;$i<10;$i++) {
-		$smarty->assign("CHOOSECOLUMN".$i,$choosecolslist);
-	}
-
+	$smarty->assign('CHOOSECOLUMN',$choosecolslist);
+	$smarty->assign('SELECTEDCOLUMN',array('none'));
+	$Application_ListView_MaxColumns = GlobalVariable::getVariable('Application_ListView_MaxColumns', 12);
+	$smarty->assign('ListView_MaxColumns',$Application_ListView_MaxColumns);
+	$smarty->assign('FILTERROWS',ceil($Application_ListView_MaxColumns/4)+1);
 	$stdfilterhtml = $oCustomView->getStdFilterCriteria();
 	$stdfiltercolhtml = getStdFilterHTML($cv_module);
 	$stdfilterjs = $oCustomView->getCriteriaJS();
@@ -85,12 +86,12 @@ if($recordid == "") {
 		}
 		$status = $customviewdtls["status"];
 		$smarty->assign("STATUS",$status);
-
-		for($i=1;$i<10;$i++) {
-			$choosecolslist = getByModule_ColumnsList($cv_module,$modulecollist,$selectedcolumnslist[$i-1]);
-			$smarty->assign("CHOOSECOLUMN".$i,$choosecolslist);
-		}
-
+		$choosecolslist = getByModule_ColumnsList($cv_module,$modulecollist);
+		$smarty->assign('CHOOSECOLUMN',$choosecolslist);
+		$smarty->assign('SELECTEDCOLUMN',$selectedcolumnslist);
+		$Application_ListView_MaxColumns = GlobalVariable::getVariable('Application_ListView_MaxColumns', 12);
+		$smarty->assign('ListView_MaxColumns',$Application_ListView_MaxColumns);
+		$smarty->assign('FILTERROWS',ceil($Application_ListView_MaxColumns/4)+1);
 		$stdfilterlist = $oCustomView->getStdFilterByCvid($recordid);
 		$log->info('CustomView :: Successfully got Standard Filter for the Viewid'.$recordid);
 		$stdfilterlist["stdfilter"] = ($stdfilterlist["stdfilter"] != "") ? ($stdfilterlist["stdfilter"]) : ("custom");

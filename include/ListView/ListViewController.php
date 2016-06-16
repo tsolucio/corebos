@@ -260,8 +260,22 @@ class ListViewController {
 					$value = $rawValue;
 				}
 
-				if($module == 'Documents' && $fieldName == 'filename') {
-					$downloadtype = $db->query_result($result,$i,'filelocationtype');
+				if(($module == 'Documents' && $fieldName == 'filename') or $fieldName == 'Documents.filename') {
+					if ($fieldName == 'Documents.filename') {
+						$docrs = $db->pquery('select filename,filelocationtype,filestatus,notesid from vtiger_notes where note_no=?',array($db->query_result($result,$i,'documentsnote_no')));
+						$downloadtype = $db->query_result($docrs,0,'filelocationtype');
+						$fileName = $db->query_result($docrs,0,'filename');
+						$status = $db->query_result($docrs,0,'filestatus');
+						$docid = $db->query_result($docrs,0,'notesid');
+					} else {
+						$docid = $recordId;
+						$downloadtype = $db->query_result($result,$i,'filelocationtype');
+						$fileName = $db->query_result($result,$i,'filename');
+						$status = $db->query_result($result,$i,'filestatus');
+					}
+					$fileIdQuery = "select attachmentsid from vtiger_seattachmentsrel where crmid=?";
+					$fileIdRes = $db->pquery($fileIdQuery,array($docid));
+					$fileId = $db->query_result($fileIdRes,0,'attachmentsid');
 					if($downloadtype == 'I') {
 						$ext =substr($value, strrpos($value, ".") + 1);
 						$ext = strtolower($ext);
@@ -297,24 +311,16 @@ class ListViewController {
 						$value = ' --';
 						$fileicon = '';
 					}
-
-					$fileName = $db->query_result($result,$i,'filename');
-
-					$downloadType = $db->query_result($result,$i,'filelocationtype');
-					$status = $db->query_result($result,$i,'filestatus');
-					$fileIdQuery = "select attachmentsid from vtiger_seattachmentsrel where crmid=?";
-					$fileIdRes = $db->pquery($fileIdQuery,array($recordId));
-					$fileId = $db->query_result($fileIdRes,0,'attachmentsid');
 					if($fileName != '' && $status == 1) {
-						if($downloadType == 'I' ) {
+						if($downloadtype == 'I' ) {
 							$value = "<a href='index.php?module=uploads&action=downloadfile&".
-									"entityid=$recordId&fileid=$fileId' title='".
+									"entityid=$docid&fileid=$fileId' title='".
 									getTranslatedString("LBL_DOWNLOAD_FILE",$module).
-									"' onclick='javascript:dldCntIncrease($recordId);'>".textlength_check($value).
+									"' onclick='javascript:dldCntIncrease($docid);'>".textlength_check($value).
 									"</a>";
-						} elseif($downloadType == 'E') {
+						} elseif($downloadtype == 'E') {
 							$value = "<a target='_blank' href='$fileName' onclick='javascript:".
-									"dldCntIncrease($recordId);' title='".
+									"dldCntIncrease($docid);' title='".
 									getTranslatedString("LBL_DOWNLOAD_FILE",$module)."'>".textlength_check($value).
 									"</a>";
 						} else {

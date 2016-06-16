@@ -315,15 +315,16 @@ class QueryGenerator {
 			$viewfields[] = 'activitytype';
 		}
 
-		if($this->module == 'Documents') {
-			if(in_array('filename', $viewfields)) {
-				if(!in_array('filelocationtype', $viewfields)) {
-					$viewfields[] = 'filelocationtype';
-				}
-				if(!in_array('filestatus', $viewfields)) {
-					$viewfields[] = 'filestatus';
-				}
+		if($this->module == 'Documents' and in_array('filename', $viewfields)) {
+			if(!in_array('filelocationtype', $viewfields)) {
+				$viewfields[] = 'filelocationtype';
 			}
+			if(!in_array('filestatus', $viewfields)) {
+				$viewfields[] = 'filestatus';
+			}
+		}
+		if(in_array('Documents.filename', $viewfields) and !in_array('Documents.note_no', $viewfields)) {
+			$viewfields[] = 'Documents.note_no';
 		}
 		$viewfields[] = 'id';
 		$this->setFields($viewfields);
@@ -666,6 +667,8 @@ class QueryGenerator {
 
 		// Adding support for conditions on reference module fields
 		if(count($this->referenceFieldInfoList)>0) {
+			$alreadyinfrom = array_keys($tableJoinMapping);
+			$alreadyinfrom[] = $baseTable;
 			$referenceFieldTableList = array();
 			if (isset($this->referenceModuleField) and is_array($this->referenceModuleField)) {
 			foreach ($this->referenceModuleField as $index=>$conditionInfo) {
@@ -694,16 +697,19 @@ class QueryGenerator {
 				if(!in_array($tableName, $referenceFieldTableList)) {
 					if($referenceFieldObject->getFieldName() == 'parent_id' && ($this->getModule() == 'Calendar' || $this->getModule() == 'Events')) {
 						$joinclause = 'LEFT JOIN vtiger_seactivityrel ON vtiger_seactivityrel.activityid = vtiger_activity.activityid';
+						$referenceFieldTableList[] = 'vtiger_seactivityrel';
 						if (strpos($sql, $joinclause)===false)
 							$sql .= " $joinclause ";
 					}
 					if($referenceFieldObject->getFieldName() == 'contact_id' && ($this->getModule() == 'Calendar' || $this->getModule() == 'Events')) {
 						$joinclause = 'LEFT JOIN vtiger_cntactivityrel ON vtiger_cntactivityrel.activityid = vtiger_activity.activityid';
+						$referenceFieldTableList[] = 'vtiger_cntactivityrel';
 						if (strpos($sql, $joinclause)===false)
 							$sql .= " $joinclause ";
 					}
 					if($this->getModule() == 'Emails') {
 						$joinclause = 'INNER JOIN vtiger_emaildetails ON vtiger_activity.activityid = vtiger_emaildetails.emailid';
+						$referenceFieldTableList[] = 'vtiger_emaildetails';
 						if (strpos($sql, $joinclause)===false)
 							$sql .= " $joinclause ";
 					}
@@ -762,6 +768,11 @@ class QueryGenerator {
 							$reltableList = $meta->getEntityTableIndexList();
 							$referenceFieldObject = $this->referenceFields[$fld][$fldmod][$fldname];
 							$tableName = $referenceFieldObject->getTableName();
+							if(!in_array($moduleFields[$fld]->getTableName(), array_merge($referenceFieldTableList,$alreadyinfrom))) {
+								$fldtname = $moduleFields[$fld]->getTableName();
+								$sql .= " LEFT JOIN $fldtname ON $fldtname".'.'.$moduleTableIndexList[$fldtname].'='.$baseTable.'.'.$baseTableIndex;
+								$alreadyinfrom[] = $fldtname;
+							}
 							if(!in_array($tableName, $referenceFieldTableList)) {
 								if(($referenceFieldObject->getFieldName() == 'parent_id' || $fld == 'parent_id') && ($this->getModule() == 'Calendar' || $this->getModule() == 'Events')) {
 									$joinclause = 'LEFT JOIN vtiger_seactivityrel ON vtiger_seactivityrel.activityid = vtiger_activity.activityid';

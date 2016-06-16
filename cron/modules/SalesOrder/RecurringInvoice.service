@@ -76,6 +76,30 @@ if($no_of_salesorder > 0) {
 				continue;
 			}
 		}
+		if (strtolower($recurring_frequency) == '2years') {
+			$next_recurring_date = date('Y-m-d', strtotime("+2 year", mktime(0, 0, 0, $m, $d, $y)));
+			if(strtotime($next_recurring_date) > strtotime($end_period) || strtotime($next_recurring_date) > strtotime(date('Y-m-d'))) {
+				continue;
+			}
+		}
+		if (strtolower($recurring_frequency) == '3years') {
+			$next_recurring_date = date('Y-m-d', strtotime("+3 year", mktime(0, 0, 0, $m, $d, $y)));
+			if(strtotime($next_recurring_date) > strtotime($end_period) || strtotime($next_recurring_date) > strtotime(date('Y-m-d'))) {
+				continue;
+			}
+		}
+		if (strtolower($recurring_frequency) == '4years') {
+			$next_recurring_date = date('Y-m-d', strtotime("+4 year", mktime(0, 0, 0, $m, $d, $y)));
+			if(strtotime($next_recurring_date) > strtotime($end_period) || strtotime($next_recurring_date) > strtotime(date('Y-m-d'))) {
+				continue;
+			}
+		}
+		if (strtolower($recurring_frequency) == '5years') {
+			$next_recurring_date = date('Y-m-d', strtotime("+5 year", mktime(0, 0, 0, $m, $d, $y)));
+			if(strtotime($next_recurring_date) > strtotime($end_period) || strtotime($next_recurring_date) > strtotime(date('Y-m-d'))) {
+				continue;
+			}
+		}
 		createInvoice($salesorder_id);
 		$adb->pquery("UPDATE vtiger_invoice_recurring_info SET last_recurring_date=? WHERE salesorderid=?", array($next_recurring_date,$salesorder_id));
 	}

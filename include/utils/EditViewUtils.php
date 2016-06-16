@@ -1106,7 +1106,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	//end of rdhital/Raju
 	elseif($uitype == 68)
 	{
-		if(isset($_REQUEST['parent_id']) && $_REQUEST['parent_id'] != '')
+		if(empty($value) && isset($_REQUEST['parent_id']) && $_REQUEST['parent_id'] != '')
 			$value = vtlib_purify($_REQUEST['parent_id']);
 
 		if($value != '')

@@ -252,7 +252,7 @@ class CustomView extends CRMEntity {
 						$shtml_public = "<option disabled>--- " . $app_strings['LBL_PUBLIC'] . " ---</option>";
 					$shtml_public .= $option;
 				} elseif ($cvrow['status'] == CV_STATUS_PENDING) {
-					if (in_array($cvrow['userid'], $cuserroles)) {
+					if (in_array($cvrow['userid'], $cuserroles) or $is_admin) {
 					if ($shtml_pending == '')
 						$shtml_pending = "<option disabled>--- " . $app_strings['LBL_PENDING'] . " ---</option>";
 					$shtml_pending .= $option;

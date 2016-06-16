@@ -228,6 +228,10 @@ $mod_strings = Array(
 'Net 60 days' => 'Netto 60 dagen',
 
 'half-year'=>'Half Year',
+'2years' => '2 Years',
+'3years' => '3 Years',
+'4years' => '4 Years',
+'5years' => '5 Years',
 
 );
 

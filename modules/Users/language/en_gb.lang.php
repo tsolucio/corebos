@@ -98,6 +98,7 @@ $mod_strings = array(
 	'ERR_PASSWORD_CHANGE_FAILED_1' => 'User password change failed for ',
 	'ERR_PASSWORD_CHANGE_FAILED_2' => 'failed. The new password must be set.',
 	'ERR_PASSWORD_INCORRECT_OLD' => 'Incorrect old password specified. Re-enter password information.',
+	'ERR_PASSWORD_NOT_CHANGED' => 'Old and New Passwords are the same. Please use a different password.',
 	'ERR_USER_NAME_EXISTS_1' => 'The username ',
 	'ERR_USER_NAME_EXISTS_2' => 'already exists. Duplicate usernames are not allowed.<br />Change the username to be unique.',
 	'ERR_LAST_ADMIN_1' => 'The user name ',
@@ -105,6 +106,7 @@ $mod_strings = array(
 	'ERR_MAXLOGINATTEMPTS' => 'Maximum number of login attempts reached. Contact your administrator to unblock your account',
 	'LBL_FAILED_LOGIN_ATTEMPTS' => 'Failed Login Attempts',
 	'ERR_DELETE_RECORD' => 'A record number must be specified to delete the account.',
+	'ERR_MUST_CHANGE_PASSWORD' => 'Your password has expired. You must change your password to continue.',
 	'LBL_ROLES' => 'Roles',
 	'LBL_ROLES_SUBORDINATES' => 'Roles and Subordinates',
 	'LBL_CREATE_NEW_ROLE' => 'Create New Role',
@@ -681,5 +683,6 @@ $mod_strings = array(
 	'Min. 1 lowercase' => 'Minimum one lowercase character',
 	'Min. 1 number' => 'Minimum one number',
 	'Min. 1 special character' => 'Minimum one special character ! ? , ; - @ #',
+	'Generate password' => 'Generate password',
 );
 ?>

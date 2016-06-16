@@ -746,6 +746,7 @@ $app_strings = array (
   'LABEL_SET_SH_TAX_FOR_COLON' => 'Imposta  Tasse di Spedizione for :',
   'NO_DATA_AVAILABLE_WITH_SPECIFIED_PERIOD' => 'Non ci sono dati disponibili per il periodo specificato',
   'Files_Maximum_6' => 'Numero massimo di file 6',
+  'Files_Maximum' => 'Numero massimo di file ',
   'To' => 'A:',
   'Date & Time' => 'Data e ora',
   'Reminder' => '[Promemoria:',

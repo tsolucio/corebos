@@ -106,7 +106,7 @@
 				<tr bgcolor="white" onmouseover="this.className='lvtColDataHover'" onmouseout="this.className='lvtColData'" id="row_99" class="lvtColData">
 					<td onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)"><a href="index.php?module=Webforms&amp;action=WebformsDetailView&amp;id={$webform->getId()}&amp;parenttab=Settings&amp;operation=detail" id="{$webform->getId()}">{$webform->getName()}</a></td>
 					<td onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">{$webform->getDescription()}</td>
-					<td onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">{$webform->getTargetModule()}</td>
+					<td onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">{$webform->getTargetModule()|@getTranslatedString}</td>
 					<td onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">{$webform->getPublicId()}</td>
 					<td onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">{$webform->getReturnUrl()}</td>
 					<td onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)" align="center"> {if $webform->getEnabled() eq 1}<img src="themes/images/prvPrfSelectedTick.gif">{else}<img src="themes/images/no.gif">{/if}</td>

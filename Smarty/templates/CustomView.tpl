@@ -144,313 +144,50 @@ function mandatoryCheck()
 		  <b>{$MOD.LBL_STEP_2_TITLE} </b>
 		 </td>
 		</tr>
-		<tr class="dvtCellLabel">
-		  <td><select name="column1" id="column1" onChange="checkDuplicate();" class="small">
-	                <option value="">{$MOD.LBL_NONE}</option>
-			{foreach item=filteroption key=label from=$CHOOSECOLUMN1}
-				<optgroup label="{$label}" class=\"select\" style=\"border:none\">
-					{foreach item=text from=$filteroption}
-					 {assign var=option_values value=$text.text}
-		   		         <option {$text.selected} value={$text.value}>
-			{if $MOD.$option_values neq ''}
-                                {if $DATATYPE.0.$option_values eq 'M'}
-                                        {$MOD.$option_values}   {$APP.LBL_REQUIRED_SYMBOL}
-                                {else}
-                                        {$MOD.$option_values}
-                                {/if}
-                        {elseif $APP.$option_values neq ''}
-                                {if $DATATYPE.0.$option_values eq 'M'}
-                                        {$APP.$option_values}   {$APP.LBL_REQUIRED_SYMBOL}
-                                {else}
-                                        {$APP.$option_values}
-                                {/if}
-                        {else}
-                                {if $DATATYPE.0.$option_values eq 'M'}
-                                        {$option_values}    {$APP.LBL_REQUIRED_SYMBOL}
-                                {else}
-                                        {$option_values}
-                                {/if}
-                        {/if}
-					</option>
-				{/foreach}
-			{/foreach}
-          	        {$CHOOSECOLUMN1}
-	              </select></td>
-		   <td><select name="column2" id="column2" onChange="checkDuplicate();" class="small">
-                        <option value="">{$MOD.LBL_NONE}</option>
-                        {foreach item=filteroption key=label from=$CHOOSECOLUMN2}
-                                <optgroup label="{$label}" class=\"select\" style=\"border:none\">
-                                {foreach item=text from=$filteroption}
-                              	 {assign var=option_values value=$text.text}
-		   		         <option {$text.selected} value={$text.value}>
-			{if $MOD.$option_values neq ''}
-                                {if $DATATYPE.0.$option_values eq 'M'}
-                                        {$MOD.$option_values}   {$APP.LBL_REQUIRED_SYMBOL}
-                                {else}
-                                        {$MOD.$option_values}
-                                {/if}
-                        {elseif $APP.$option_values neq ''}
-                                {if $DATATYPE.0.$option_values eq 'M'}
-                                        {$APP.$option_values}   {$APP.LBL_REQUIRED_SYMBOL}
-                                {else}
-                                        {$APP.$option_values}
-                                {/if}
-                        {else}
-                                {if $DATATYPE.0.$option_values eq 'M'}
-                                        {$option_values}    {$APP.LBL_REQUIRED_SYMBOL}
-                                {else}
-                                        {$option_values}
-                                {/if}
-                        {/if}
-					</option>
-                                {/foreach}
-                        {/foreach}
-                        {$CHOOSECOLUMN2}
-                      </select></td>
-		   <td><select name="column3" id="column3" onChange="checkDuplicate();" class="small">
-                        <option value="">{$MOD.LBL_NONE}</option>
-                        {foreach item=filteroption key=label from=$CHOOSECOLUMN3}
-                                <optgroup label="{$label}" class=\"select\" style=\"border:none\">
-                                {foreach item=text from=$filteroption}
-                                    	 {assign var=option_values value=$text.text}
-		   		         <option {$text.selected} value={$text.value}>
-			{if $MOD.$option_values neq ''}
-                                {if $DATATYPE.0.$option_values eq 'M'}
-                                        {$MOD.$option_values}   {$APP.LBL_REQUIRED_SYMBOL}
-                                {else}
-                                        {$MOD.$option_values}
-                                {/if}
-                        {elseif $APP.$option_values neq ''}
-                                {if $DATATYPE.0.$option_values eq 'M'}
-                                        {$APP.$option_values}   {$APP.LBL_REQUIRED_SYMBOL}
-                                {else}
-                                        {$APP.$option_values}
-                                {/if}
-                        {else}
-                                {if $DATATYPE.0.$option_values eq 'M'}
-                                        {$option_values}    {$APP.LBL_REQUIRED_SYMBOL}
-                                {else}
-                                        {$option_values}
-                                {/if}
-                        {/if}
-					</option>
-                                {/foreach}
-                        {/foreach}
-                        {$CHOOSECOLUMN3}
-                      </select></td>
-		   <td><select name="column4" id="column4" onChange="checkDuplicate();" class="small">
-                        <option value="">{$MOD.LBL_NONE}</option>
-                        {foreach item=filteroption key=label from=$CHOOSECOLUMN4}
-                                <optgroup label="{$label}" class=\"select\" style=\"border:none\">
-                                {foreach item=text from=$filteroption}
-                                    	 {assign var=option_values value=$text.text}
-		   		         <option {$text.selected} value={$text.value}>
-			{if $MOD.$option_values neq ''}
-                                {if $DATATYPE.0.$option_values eq 'M'}
-                                        {$MOD.$option_values}   {$APP.LBL_REQUIRED_SYMBOL}
-                                {else}
-                                        {$MOD.$option_values}
-                                {/if}
-                        {elseif $APP.$option_values neq ''}
-                                {if $DATATYPE.0.$option_values eq 'M'}
-                                        {$APP.$option_values}   {$APP.LBL_REQUIRED_SYMBOL}
-                                {else}
-                                        {$APP.$option_values}
-                                {/if}
-                        {else}
-                                {if $DATATYPE.0.$option_values eq 'M'}
-                                        {$option_values}    {$APP.LBL_REQUIRED_SYMBOL}
-                                {else}
-                                        {$option_values}
-                                {/if}
-                        {/if}
-					</option>
-                                {/foreach}
-                        {/foreach}
-                        {$CHOOSECOLUMN4}
-                      </select></td>
-			
-		</tr>
-		<tr class="dvtCellInfo">
-		   <td><select name="column5" id="column5" onChange="checkDuplicate();" class="small">
-                        <option value="">{$MOD.LBL_NONE}</option>
-                        {foreach item=filteroption key=label from=$CHOOSECOLUMN5}
-                                <optgroup label="{$label}" class=\"select\" style=\"border:none\">
-                                {foreach item=text from=$filteroption}
-                                    	 {assign var=option_values value=$text.text}
-		   		         <option {$text.selected} value={$text.value}>
-			{if $MOD.$option_values neq ''}
-                                {if $DATATYPE.0.$option_values eq 'M'}
-                                        {$MOD.$option_values}   {$APP.LBL_REQUIRED_SYMBOL}
-                                {else}
-                                        {$MOD.$option_values}
-                                {/if}
-                        {elseif $APP.$option_values neq ''}
-                                {if $DATATYPE.0.$option_values eq 'M'}
-                                        {$APP.$option_values}   {$APP.LBL_REQUIRED_SYMBOL}
-                                {else}
-                                        {$APP.$option_values}
-                                {/if}
-                        {else}
-                                {if $DATATYPE.0.$option_values eq 'M'}
-                                        {$option_values}    {$APP.LBL_REQUIRED_SYMBOL}
-                                {else}
-                                        {$option_values}
-                                {/if}
-                        {/if}
-					</option>
-                                {/foreach}
-                        {/foreach}
-                        {$CHOOSECOLUMN5}
-                      </select></td>
-                   <td><select name="column6" id="column6" onChange="checkDuplicate();" class="small">
-                        <option value="">{$MOD.LBL_NONE}</option>
-                        {foreach item=filteroption key=label from=$CHOOSECOLUMN6}
-                                <optgroup label="{$label}" class=\"select\" style=\"border:none\">
-                                {foreach item=text from=$filteroption}
-                                   	 {assign var=option_values value=$text.text}
-		   		         <option {$text.selected} value={$text.value}>
-			{if $MOD.$option_values neq ''}
-                                {if $DATATYPE.0.$option_values eq 'M'}
-                                        {$MOD.$option_values}   {$APP.LBL_REQUIRED_SYMBOL}
-                                {else}
-                                        {$MOD.$option_values}
-                                {/if}
-                        {elseif $APP.$option_values neq ''}
-                                {if $DATATYPE.0.$option_values eq 'M'}
-                                        {$APP.$option_values}   {$APP.LBL_REQUIRED_SYMBOL}
-                                {else}
-                                        {$APP.$option_values}
-                                {/if}
-                        {else}
-                                {if $DATATYPE.0.$option_values eq 'M'}
-                                        {$option_values}    {$APP.LBL_REQUIRED_SYMBOL}
-                                {else}
-                                        {$option_values}
-                                {/if}
-                        {/if}
-					</option>
-                                {/foreach}
-                        {/foreach}
-                        {$CHOOSECOLUMN6}
-                      </select></td>
-                   <td><select name="column7" id="column7" onChange="checkDuplicate();" class="small">
-                        <option value="">{$MOD.LBL_NONE}</option>
-                        {foreach item=filteroption key=label from=$CHOOSECOLUMN7}
-                                <optgroup label="{$label}" class=\"select\" style=\"border:none\">
-                                {foreach item=text from=$filteroption}
-                                    	 {assign var=option_values value=$text.text}
-		   		         <option {$text.selected} value={$text.value}>
-			{if $MOD.$option_values neq ''}
-                                {if $DATATYPE.0.$option_values eq 'M'}
-                                        {$MOD.$option_values}   {$APP.LBL_REQUIRED_SYMBOL}
-                                {else}
-                                        {$MOD.$option_values}
-                                {/if}
-                        {elseif $APP.$option_values neq ''}
-                                {if $DATATYPE.0.$option_values eq 'M'}
-                                        {$APP.$option_values}   {$APP.LBL_REQUIRED_SYMBOL}
-                                {else}
-                                        {$APP.$option_values}
-                                {/if}
-                        {else}
-                                {if $DATATYPE.0.$option_values eq 'M'}
-                                        {$option_values}    {$APP.LBL_REQUIRED_SYMBOL}
-                                {else}
-                                        {$option_values}
-                                {/if}
-                        {/if}
-					</option>
-                                {/foreach}
-                        {/foreach}
-                        {$CHOOSECOLUMN7}
-                      </select></td>
-                   <td><select name="column8" id="column8" onChange="checkDuplicate();" class="small">
-                        <option value="">{$MOD.LBL_NONE}</option>
-                        {foreach item=filteroption key=label from=$CHOOSECOLUMN8}
-                                <optgroup label="{$label}" class=\"select\" style=\"border:none\">
-                                {foreach item=text from=$filteroption}
-                                    	 {assign var=option_values value=$text.text}
-		   		         <option {$text.selected} value={$text.value}>
-			{if $MOD.$option_values neq ''}
-                                {if $DATATYPE.0.$option_values eq 'M'}
-                                        {$MOD.$option_values}   {$APP.LBL_REQUIRED_SYMBOL}
-                                {else}
-                                        {$MOD.$option_values}
-                                {/if}
-                        {elseif $APP.$option_values neq ''}
-                                {if $DATATYPE.0.$option_values eq 'M'}
-                                        {$APP.$option_values}   {$APP.LBL_REQUIRED_SYMBOL}
-                                {else}
-                                        {$APP.$option_values}
-                                {/if}
-                        {else}
-                                {if $DATATYPE.0.$option_values eq 'M'}
-                                        {$option_values}    {$APP.LBL_REQUIRED_SYMBOL}
-                                {else}
-                                        {$option_values}
-                                {/if}
-                        {/if}
-					</option>
-                                {/foreach}
-                        {/foreach}
-                        {$CHOOSECOLUMN8}
-			</select></td>
-		</tr>
-		<tr class="dvtCellLabel">
-		   <td><select name="column9" id="column9" onChange="checkDuplicate();" class="small">
-                        <option value="">{$MOD.LBL_NONE}</option>
-                        {foreach item=filteroption key=label from=$CHOOSECOLUMN9}
-                                <optgroup label="{$label}" class=\"select\" style=\"border:none\">
-                                {foreach item=text from=$filteroption}
-                                    	 {assign var=option_values value=$text.text}
-		   		         <option {$text.selected} value={$text.value}>
-			{if $MOD.$option_values neq ''}
-                                {if $DATATYPE.0.$option_values eq 'M'}
-                                        {$MOD.$option_values}   {$APP.LBL_REQUIRED_SYMBOL}
-                                {else}
-                                        {$MOD.$option_values}
-                                {/if}
-                        {elseif $APP.$option_values neq ''}
-                                {if $DATATYPE.0.$option_values eq 'M'}
-                                        {$APP.$option_values}   {$APP.LBL_REQUIRED_SYMBOL}
-                                {else}
-                                        {$APP.$option_values}
-                                {/if}
-                        {else}
-                                {if $DATATYPE.0.$option_values eq 'M'}
-                                        {$option_values}    {$APP.LBL_REQUIRED_SYMBOL}
-                                {else}
-                                        {$option_values}
-                                {/if}
-                        {/if}
-					 </option>
-                                {/foreach}
-                        {/foreach}
-                        {$CHOOSECOLUMN9}
-                        </select></td>
-		     <td>&nbsp;</td>
-		     <td>&nbsp;</td>
-		     <td>&nbsp;</td>
-		</tr>	
-		{*section name=SelectColumn start=1 loop=4 step=1}
+		{section name=SelectColumn start=1 loop=$FILTERROWS step=1}
 		<tr class="{cycle values="dvtCellLabel,dvtCellInfo"}">
-		 {section name=Column start=1 loop=5 step=1}
-		<td align="center">
-		{math equation="(x-1)*4+ y" x=$smarty.section.SelectColumn.index y=$smarty.section.Column.index}.&nbsp;	
-		  <select id="column{math equation="(x-1)*4+ y" x=$smarty.section.SelectColumn.index y=$smarty.section.Column.index}" name ="column{math equation="(x-1)*4+ y" x=$smarty.section.SelectColumn.index y=$smarty.section.Column.index}" class="detailedViewTextBox">
-		   <option value="">{$MOD.LBL_NONE}</option>
-		   {foreach item=filteroption key=label from={$CHOOSECOLUMN|cat: {math equation="(x-1)*4+ y" x=$smarty.section.SelectColumn.index y=$smarty.section.Column.index}}}
-		    <optgroup label="{$label}" class=\"select\" style=\"border:none\">
-		    {foreach item=text from=$filteroption}
-		     <option {$text.selected} value={$text.value}>{$text.text}</option>
-		    {/foreach}
-		   {/foreach}
-		  </select>
-		 </td>
-		 {/section}
-	        </tr>
-		{/section*}
+		{section name=Column start=1 loop=5 step=1}
+		{math equation="(x-1)*4+y" x=$smarty.section.SelectColumn.index y=$smarty.section.Column.index assign="cvcolumn"}
+		{math equation="x-1" x=$cvcolumn assign="cvselected"}
+		{if $cvcolumn <= $ListView_MaxColumns}
+		<td>
+			<select id="column{$cvcolumn}" name ="column{$cvcolumn}" onChange="checkDuplicate();" class="small">
+				<option value="">{$MOD.LBL_NONE}</option>
+				{foreach item=filteroption key=label from=$CHOOSECOLUMN}
+					<optgroup label="{$label}" class=\"select\" style=\"border:none\">
+					{foreach item=text from=$filteroption}
+						{assign var=option_values value=$text.text}
+						<option {if $SELECTEDCOLUMN[$cvselected] eq $text.value}selected{/if} value={$text.value}>
+						{if $MOD.$option_values neq ''}
+							{if $DATATYPE.0.$option_values eq 'M'}
+								{$MOD.$option_values}   {$APP.LBL_REQUIRED_SYMBOL}
+							{else}
+								{$MOD.$option_values}
+							{/if}
+						{elseif $APP.$option_values neq ''}
+							{if $DATATYPE.0.$option_values eq 'M'}
+								{$APP.$option_values}   {$APP.LBL_REQUIRED_SYMBOL}
+							{else}
+								{$APP.$option_values}
+							{/if}
+						{else}
+							{if $DATATYPE.0.$option_values eq 'M'}
+								{$option_values}    {$APP.LBL_REQUIRED_SYMBOL}
+							{else}
+								{$option_values}
+							{/if}
+						{/if}
+						</option>
+					{/foreach}
+				{/foreach}
+			</select>
+		</td>
+		{else}
+		<td>&nbsp;</td>
+		{/if}
+		{/section}
+		</tr>
+		{/section}
 		<tr><td colspan="4">&nbsp;</td></tr>
 		<tr><td colspan="4"><table align="center" border="0" cellpadding="0" cellspacing="0" width="95%">
 		<tbody><tr>
@@ -469,8 +206,7 @@ function mandatoryCheck()
                     <td class="dvtSelectedCell" style="width: 100px;" align="center" nowrap id="mi">
                      <b>{$MOD.LBL_STEP_4_TITLE}</b>
                     </td>
-
-                    {/if}	
+                    {/if}
 		    <td class="dvtTabCache" nowrap style="width:55%;">&nbsp;</td>
 		   </tr>
 		   </tbody>
@@ -611,17 +347,20 @@ function checkDuplicate() {
 		alert(alert_arr.ALL_FILTER_CREATION_DENIED);
 		return false;
 	}
-	var cvselect_array = new Array('column1','column2','column3','column4','column5','column6','column7','column8','column9')
+	var cvselect_array = new Array();
+	for (var cols=1;cols<={/literal}{$ListView_MaxColumns}{literal};cols++) {
+		cvselect_array.push('column'+cols);
+	}
 	for(var loop=0;loop < cvselect_array.length-1;loop++) {
 		selected_cv_columnvalue = document.getElementById(cvselect_array[loop]).options[document.getElementById(cvselect_array[loop]).selectedIndex].value;
-		if(selected_cv_columnvalue != '') {	
+		if(selected_cv_columnvalue != '') {
 			for(var iloop=loop+1;iloop < cvselect_array.length;iloop++) {
 				selected_cv_icolumnvalue = document.getElementById(cvselect_array[iloop]).options[document.getElementById(cvselect_array[iloop]).selectedIndex].value;
 				if(selected_cv_columnvalue == selected_cv_icolumnvalue) {
-					{/literal}				
-                        alert('{$APP.COLUMNS_CANNOT_BE_DUPLICATED}');
-                        document.getElementById(cvselect_array[iloop]).selectedIndex = 0;
-                        return false;
+					{/literal}
+					alert('{$APP.COLUMNS_CANNOT_BE_DUPLICATED}');
+					document.getElementById(cvselect_array[iloop]).selectedIndex = 0;
+					return false;
 					{literal}
 				}
 

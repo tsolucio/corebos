@@ -478,6 +478,14 @@ if($use_current_login)
 	}
 	$log->debug('Current user is: '.$current_user->user_name);
 }
+// Force password change
+if($current_user->mustChangePassword() and $_REQUEST['action']!='Logout' and $_REQUEST['action']!='CalendarAjax' and $_REQUEST['action']!='UsersAjax' and $_REQUEST['action']!='ChangePassword' and !($_REQUEST['module']=='Users' and $_REQUEST['action']=='Save')) {
+	$currentModule = 'Users';
+	$currentModuleFile = 'modules/Users/DetailView.php';
+	$_REQUEST['action'] = $action = 'DeatilView';
+	$_REQUEST['module'] = $module = 'Users';
+	$_REQUEST['record'] = $current_user->id;
+}
 
 if(isset($_SESSION['vtiger_authenticated_user_theme']) && $_SESSION['vtiger_authenticated_user_theme'] != '')
 {

@@ -112,6 +112,7 @@
   'ERR_PASSWORD_CHANGE_FAILED_1' => 'Impossibile modificare la password per',
   'ERR_PASSWORD_CHANGE_FAILED_2' => 'errore. La nuova password deve essere impostata.',
   'ERR_PASSWORD_INCORRECT_OLD' => 'Vecchia password sbagliata per questo nome utente. Reinserisci la password',
+  'ERR_PASSWORD_NOT_CHANGED' => 'Old and New Passwords are the same. Please use a different password.',
   'ERR_USER_NAME_EXISTS_1' => 'Il Nome Utente',
   'ERR_USER_NAME_EXISTS_2' => 'esiste gi&agrave; . Utenti duplicati non sono consentiti. Cambia il nome utente per essere unico',
   'ERR_LAST_ADMIN_1' => 'Il Nome Utente',
@@ -119,6 +120,7 @@
   'ERR_MAXLOGINATTEMPTS' => 'Maximum number of login attempts reached. Contact your administrator to unblock your account',
   'LBL_FAILED_LOGIN_ATTEMPTS' => 'Failed Login Attempts',
   'ERR_DELETE_RECORD' => 'Un numero di record deve essere specificato per cancellare l`account.',
+  'ERR_MUST_CHANGE_PASSWORD' => 'Your password has expired. You must change your password to continue.',
 
   'LBL_ROLES' => 'Ruoli',
   'LBL_ROLES_SUBORDINATES' => 'Ruoli e Subordinati',
@@ -792,6 +794,7 @@
 'Min. 1 lowercase' => 'Minimo una lettera minuscola',
 'Min. 1 number' => 'Minimo un numero',
 'Min. 1 special character' => 'Minimo un carattere speciale ! ? , ; - @ #',
+'Generate password' => 'Generate password',
 );
 
 ?>

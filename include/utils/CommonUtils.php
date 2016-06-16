@@ -327,14 +327,12 @@ function getCurrencyName($currencyid, $show_symbol = true) {
  * returns the query result set object
  */
 function get_group_options() {
-	global $log;
-	$log->debug("Entering get_group_options() method ...");
-	global $adb, $noof_group_rows;
-	;
-	$sql = "select groupname,groupid from vtiger_groups";
+	global $log, $adb, $noof_group_rows;
+	$log->debug('Entering get_group_options() method ...');
+	$sql = 'select groupname,groupid from vtiger_groups';
 	$result = $adb->pquery($sql, array());
 	$noof_group_rows = $adb->num_rows($result);
-	$log->debug("Exiting get_group_options method ...");
+	$log->debug('Exiting get_group_options method ...');
 	return $result;
 }
 

@@ -70,7 +70,7 @@
 							<tr>
 								<td class="dvtTabCache" style="width:10px" nowrap="nowrap">&nbsp;</td>
 								<td class="dvtSelectedCell" nowrap="nowrap" align="center">Basic Information</td>
-								<td class="dvtTabCache" style="width:65%">&nbsp;</td>
+								<td class="dvtTabCache" style="width:55%">&nbsp;</td>
 								<td align="right">
 									<input type="button" id="edit_form" name="edit_form" value="{'LBL_EDIT_BUTTON_LABEL'|@getTranslatedString:$MODULE} " class="crmbutton small edit" onclick="Webforms.editForm({$WEBFORMMODEL->getId()})"></input>
 									<input type="button" id="show_html" name="show_html" value="{'LBL_SOURCE'|@getTranslatedString:$MODULE}" class="crmbutton small create" onclick="Webforms.getHTMLSource({$WEBFORMMODEL->getId()})"></input>
