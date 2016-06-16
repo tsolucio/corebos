@@ -726,22 +726,26 @@ function onschedule_selectschedule(selbox) {
 		jQuery('#scheduleMonthByDates').hide();
 		jQuery('#scheduleByDate').hide();
 		jQuery('#scheduledTime').hide();
+		jQuery('#minutesinterval').hide();
 		break;
 		case '2':
 		jQuery('#scheduledWeekDay').hide();
 		jQuery('#scheduleMonthByDates').hide();
 		jQuery('#scheduleByDate').hide();
+		jQuery('#minutesinterval').hide();
 		jQuery('#scheduledTime').show();
 		break;
 		case '3':
 		jQuery('#scheduledWeekDay').show();
 		jQuery('#scheduleMonthByDates').hide();
 		jQuery('#scheduleByDate').hide();
+		jQuery('#minutesinterval').hide();
 		jQuery('#scheduledTime').show();
 		break;
 		case '4':
 		jQuery('#scheduledWeekDay').hide();
 		jQuery('#scheduleMonthByDates').hide();
+		jQuery('#minutesinterval').hide();
 		jQuery('#scheduleByDate').show();
 		jQuery('#scheduledTime').show();
 		break;
@@ -749,6 +753,7 @@ function onschedule_selectschedule(selbox) {
 		jQuery('#scheduledWeekDay').hide();
 		jQuery('#scheduleMonthByDates').show();
 		jQuery('#scheduleByDate').hide();
+		jQuery('#minutesinterval').hide();
 		jQuery('#scheduledTime').show();
 		break;
 		case '6':  // Not Implemented yet
@@ -756,8 +761,16 @@ function onschedule_selectschedule(selbox) {
 		case '7':
 		jQuery('#scheduledWeekDay').hide();
 		jQuery('#scheduleMonthByDates').hide();
+		jQuery('#minutesinterval').hide();
 		jQuery('#scheduleByDate').show();
 		jQuery('#scheduledTime').show();
+		break;
+		case '8':
+		jQuery('#scheduledWeekDay').hide();
+		jQuery('#scheduleMonthByDates').hide();
+		jQuery('#scheduleByDate').hide();
+		jQuery('#scheduledTime').hide();
+		jQuery('#minutesinterval').show();
 		break;
 	}
 }
