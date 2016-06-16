@@ -35,6 +35,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_OpenRecordInNewXOnListView',
 				'Application_MaxFailedLoginAttempts',
 				'Application_ExpirePasswordAfterDays',
+				'Application_ListView_MaxColumns',
 
 				'Calendar_Modules_Panel_Visible',
 				'Calendar_Default_Reminder_Minutes',
