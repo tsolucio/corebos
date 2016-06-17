@@ -58,6 +58,7 @@ $mod_strings = Array (
     */
     'LBL_MODULE_NAME'=>'Service Verträge',
     'ServiceContracts ID'=>'Servicevertrags-ID',
+    'Service Requests'=>'Trouble Tickets',
 );
 
 ?>

@@ -82,4 +82,5 @@ $mod_strings = Array (
  * 5.2.0 changes 
  */
 'LBL_MODULE_NAME'=>'Service Contracten',
+'Service Requests'=>'Tickets',
 );
