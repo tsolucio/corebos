@@ -640,4 +640,11 @@
 	<classname>minuteintervalwfsched</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Fix types for hours and units in HelpDesk and ServiceContracts</description>
+	<filename>build/changeSets/changeHoursAndUse_UnitsFields.php</filename>
+	<classname>changeHoursAndUse_UnitsFields</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
