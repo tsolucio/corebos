@@ -173,6 +173,12 @@
         <input type="hidden" name="email_id">
         <input type="hidden" name="source_module">
         <input type="hidden" name="entity_id">
+        {if $MODULE eq 'Invoice' && $SinglePane_View neq 'true'}
+			<input type="hidden" name="RLreturn_module" id="RLreturn_module" value="{$MODULE}">
+			<input type="hidden" name="RLparent_id" id="RLparent_id" value="{$ID}">
+			<input type="hidden" name="parenttab" id="parenttab" value="{$CATEGORY}">
+		{/if}
+
 	{if $MODULE eq 'SalesOrder'}
         	<input type="hidden" name="convertmode">
 	{/if}
