@@ -805,6 +805,7 @@ class QueryGenerator {
 		if(!empty($this->query) || !empty($this->whereClause)) {
 			return $this->whereClause;
 		}
+		$db = PearDatabase::getInstance();
 		$deletedQuery = $this->meta->getEntityDeletedQuery();
 		$sql = '';
 		if(!empty($deletedQuery)) {
@@ -825,6 +826,10 @@ class QueryGenerator {
 		foreach ($this->conditionals as $index=>$conditionInfo) {
 			$fieldName = $conditionInfo['name'];
 			if ($fieldName=='id') {
+				if(empty($conditionInfo['value'])) {
+					$conditionInfo['value'] = '0';
+				}
+				$value = "'".$conditionInfo['value']."'";
 				switch($conditionInfo['operator']) {
 					case 'e': $sqlOperator = "=";
 						break;
@@ -838,13 +843,16 @@ class QueryGenerator {
 						break;
 					case 'h': $sqlOperator = ">=";
 						break;
+					case 'i':
+					case 'ni':
+					case 'nin':
+						$sqlOperator = '';
+						$vals = array_map(array( $db, 'quote'), $conditionInfo['value']);
+						$value = (($conditionInfo['operator']=='ni' or $conditionInfo['operator']=='nin') ? 'NOT ':'').'IN ('.implode(',', $vals).')';
+						break;
 					default: $sqlOperator = "=";
 				}
-				$value = $conditionInfo['value'];
-				if(empty($value)) {
-					$value = '0';
-				}
-				$fieldSqlList[$index] = "($baseTable.$baseTableIndex $sqlOperator '$value')";
+				$fieldSqlList[$index] = "($baseTable.$baseTableIndex $sqlOperator $value)";
 				continue;
 			}
 			$field = $moduleFieldList[$fieldName];
@@ -932,6 +940,7 @@ class QueryGenerator {
 				$fieldName = $conditionInfo['fieldName'];
 				$fields = $meta->getModuleFields();
 				if ($fieldName=='id') {
+					$value = "'".$conditionInfo['value']."'";
 					switch($conditionInfo['SQLOperator']) {
 						case 'e': $sqlOperator = "=";
 							break;
@@ -945,16 +954,22 @@ class QueryGenerator {
 							break;
 						case 'h': $sqlOperator = ">=";
 							break;
+						case 'i':
+						case 'ni':
+						case 'nin':
+							$sqlOperator = '';
+							$vals = array_map(array( $db, 'quote'), $conditionInfo['value']);
+							$value = (($conditionInfo['SQLOperator']=='ni' or $conditionInfo['SQLOperator']=='nin') ? 'NOT ':'').'IN ('.implode(',', $vals).')';
+							break;
 						default: $sqlOperator = "=";
 					}
-					$value = $conditionInfo['value'];
 					if(!empty($value)) {
 						$fname = $meta->getObectIndexColumn();
 						$bTable = $meta->getEntityBaseTable();
 						if ($bTable=='vtiger_users') {
-							$fieldSqlList[$index] = "(vtiger_users.id $sqlOperator '$value' or vtiger_groups.groupid $sqlOperator '$value')";
+							$fieldSqlList[$index] = "(vtiger_users.id $sqlOperator $value or vtiger_groups.groupid $sqlOperator $value)";
 						} else {
-							$fieldSqlList[$index] = "($bTable".$conditionInfo['referenceField'].".$fname $sqlOperator '$value')";
+							$fieldSqlList[$index] = "($bTable".$conditionInfo['referenceField'].".$fname $sqlOperator $value)";
 						}
 					}
 					continue;
