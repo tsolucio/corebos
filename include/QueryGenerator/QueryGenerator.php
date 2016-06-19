@@ -978,7 +978,7 @@ class QueryGenerator {
 				$fieldObject = $fields[$fieldName];
 				$columnName = $fieldObject->getColumnName();
 				$tableName = $fieldObject->getTableName();
-				$valueSQL = $this->getConditionValue($conditionInfo['value'], $conditionInfo['SQLOperator'], $fieldObject);
+				$valueSQL = $this->getConditionValue($conditionInfo['value'], $conditionInfo['SQLOperator'], $fieldObject, $tableName.$conditionInfo['referenceField']);
 				if ($conditionInfo['SQLOperator']=='exists') {
 					$fieldSqlList[$index] = '('.$valueSQL[0].')';
 					continue;
@@ -1015,7 +1015,7 @@ class QueryGenerator {
 	 * @param String $operator
 	 * @param WebserviceField $field
 	 */
-	private function getConditionValue($value, $operator, $field) {
+	private function getConditionValue($value, $operator, $field, $referenceFieldName='') {
 		$operator = strtolower($operator);
 		$db = PearDatabase::getInstance();
 		$noncommaSeparatedFieldTypes = array('currency','percentage','double','integer','number');
@@ -1075,11 +1075,11 @@ class QueryGenerator {
 				$value = trim($value);
 			}
 			if ($operator == 'empty' || $operator == 'y') {
-				$sql[] = sprintf("IS NULL OR %s = ''", $this->getSQLColumn($field->getFieldName(),false));
+				$sql[] = sprintf("IS NULL OR %s = ''", ($referenceFieldName=='' ? $this->getSQLColumn($field->getFieldName(),false) : $referenceFieldName.'.'.$field->getColumnName()));
 				continue;
 			}
 			if($operator == 'ny'){
-				$sql[] = sprintf("IS NOT NULL AND %s != ''", $this->getSQLColumn($field->getFieldName(),false));
+				$sql[] = sprintf("IS NOT NULL AND %s != ''", ($referenceFieldName=='' ? $this->getSQLColumn($field->getFieldName(),false) : $referenceFieldName.'.'.$field->getColumnName()));
 				continue;
 			}
 			if((strtolower(trim($value)) == 'null') ||
@@ -1101,7 +1101,7 @@ class QueryGenerator {
 			} elseif($this->isDateType($field->getFieldDataType())) {
 				$value = getValidDBInsertDateTimeValue($value);
 				if (empty($value)) {
-					$sql[] = 'IS NULL or '.$field->getTableName().'.'.$field->getFieldName()." = ''";
+					$sql[] = 'IS NULL or '.$field->getTableName().'.'.$field->getColumnName()." = ''";
 					return $sql;
 				}
 			} elseif($field->getFieldDataType()=='picklist' || $field->getFieldDataType()=='multipicklist') {
