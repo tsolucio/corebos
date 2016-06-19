@@ -265,6 +265,7 @@ function __FQNExtendedQueryAddCondition($queryGenerator,$condition,$glue,$mainMo
 			$val = ltrim($val,'(');
 			$val = rtrim($val,')');
 			$val = explode(',', $val);
+			array_walk($val,function(&$elemento, $clave, $prefijo) { $elemento = trim($elemento,"'"); });
 			break;
 		case 'like':
 			if (substr($val,-1)=='%' and substr($val,0,1)=='%') {
