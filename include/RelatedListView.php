@@ -36,7 +36,8 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 {
 	$log = LoggerManager::getLogger('account_list');
 	$log->debug("Entering GetRelatedList(".$module.",".$relatedmodule.",".get_class($focus).",".$query.",".$button.",".$returnset.",".$edit_val.",".$del_val.") method ...");
-
+	global $GetRelatedList_ReturnOnlyQuery;
+	if (isset($GetRelatedList_ReturnOnlyQuery) and $GetRelatedList_ReturnOnlyQuery) return array('query'=>$query);
 	require_once('Smarty_setup.php');
 	require_once("data/Tracker.php");
 	require_once('include/database/PearDatabase.php');
