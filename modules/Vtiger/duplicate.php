@@ -47,62 +47,62 @@ if(isset($_REQUEST['module_name']) && isset($_REQUEST['record_id']))
 	}
 
 	// Get dependents list  
- 	//	$sql = "select related_tabid from vtiger_relatedlists where tabid=? and name=?";
-	// $result = $adb->pquery($sql, array($curr_tab_id,"get_dependents_list"));
-	// $noofrows = $adb->num_rows($result);
-	// if($noofrows){
-	// 	while( $r = $adb->fetch_array($result) ){
-	// 		$dependents_list[] = getTabModuleName( $r['related_tabid'] );
-	// 	}
-	// }
+ 	$sql = "select related_tabid from vtiger_relatedlists where tabid=? and name=?";
+	$result = $adb->pquery($sql, array($curr_tab_id,"get_dependents_list"));
+	$noofrows = $adb->num_rows($result);
+	if($noofrows){
+		while( $r = $adb->fetch_array($result) ){
+			$dependents_list[] = getTabModuleName( $r['related_tabid'] );
+		}
+	}
 
-	// // Dependents table
-	// $dependent_tables = array();
-	// foreach ($dependents_list as $module) {
-	// 	$sql = "SELECT * FROM vtiger_fieldmodulerel JOIN vtiger_field  ON vtiger_fieldmodulerel.fieldid =  vtiger_field.fieldid WHERE module=? AND relmodule=?";
-	// 	$result = $adb->pquery($sql, array($module,$currentModule));
-	// 	$noofrows = $adb->num_rows($result);
-	// 	if($noofrows){
-	// 		while ($r = $adb->fetch_array($result)) {
-	// 			$dependent_row['tablename'] = $r['tablename'];
-	// 			$dependent_row['columname'] = $r['columnname'];
-	// 			$dependent_tables[$module] = $dependent_row;
-	// 		}
-	// 	}
-	// }
+	// Dependents table
+	$dependent_tables = array();
+	foreach ($dependents_list as $module) {
+		$sql = "SELECT * FROM vtiger_fieldmodulerel JOIN vtiger_field  ON vtiger_fieldmodulerel.fieldid =  vtiger_field.fieldid WHERE module=? AND relmodule=?";
+		$result = $adb->pquery($sql, array($module,$currentModule));
+		$noofrows = $adb->num_rows($result);
+		if($noofrows){
+			while ($r = $adb->fetch_array($result)) {
+				$dependent_row['tablename'] = $r['tablename'];
+				$dependent_row['columname'] = $r['columnname'];
+				$dependent_tables[$module] = $dependent_row;
+			}
+		}
+	}
 
-	// // Get dependent records
-	// $dependent_records = array();
-	// foreach ($dependent_tables as $key => $value) {
-	// 	$sql = ' SELECT * FROM ' . $dependent_tables[$key]['tablename'] . ' WHERE ' . $dependent_tables[$key]['columname']. '=?';
-	// 	$result = $adb->pquery($sql, array($record_id));
+	// Get dependent records
+	$dependent_records = array();
+	foreach ($dependent_tables as $key => $value) {
+		$sql = ' SELECT * FROM ' . $dependent_tables[$key]['tablename'] . ' WHERE ' . $dependent_tables[$key]['columname']. '=?';
+		$result = $adb->pquery($sql, array($record_id));
 		
-	// 	//Check for deleted records
-	// 	while($r = $adb->fetch_array($result))
-	// 	{
-	// 		$crmid_query = "SELECT crmid FROM vtiger_crmentity WHERE crmid=? AND deleted=?";
-	// 		$res = $adb->pquery($crmid_query, array($r[0],0));
-	// 		if($adb->num_rows($res) == 1)
-	// 		{
-	// 			$dependent_records[$key][] = $r[0];
-	// 		}
-	// 	}
-	// }
+		//Check for deleted records
+		while($r = $adb->fetch_array($result))
+		{
+			$crmid_query = "SELECT crmid FROM vtiger_crmentity WHERE crmid=? AND deleted=?";
+			$res = $adb->pquery($crmid_query, array($r[0],0));
+			if($adb->num_rows($res) == 1)
+			{
+				$dependent_records[$key][] = $r[0];
+			}
+		}
+	}
 
 	// Duplicate dependent records
-	//  foreach ($dependent_records as $module => $records) 
-	//  {
-	//  	require_once "modules/".$module."/".$module.".php";
-	//  	$related_field = $dependent_tables[$module]['columname'];
+	 foreach ($dependent_records as $module => $records) 
+	 {
+	 	require_once "modules/".$module."/".$module.".php";
+	 	$related_field = $dependent_tables[$module]['columname'];
 		
-	//  	foreach ($records as $key => $record) {
-	//  		$entity = new $module();
-	//  		$entity->retrieve_entity_info($record,$module); 
+	 	foreach ($records as $key => $record) {
+	 		$entity = new $module();
+	 		$entity->retrieve_entity_info($record,$module); 
 			
-	//  		$entity->column_fields[$related_field] = $new_record_id;
-	//  		$entity->save($module);
-	//  	}
-	//  }
+	 		$entity->column_fields[$related_field] = $new_record_id;
+	 		$entity->save($module);
+	 	}
+	 }
 
 	// Related list
 	foreach ($related_list as $rel_module) {
