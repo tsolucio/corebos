@@ -637,6 +637,7 @@ function positionDivInAccord(targetDiv,stufftitle,stufftype){
 		var dx = mainX * dashWidth / 100;
 	}
 	document.getElementById(targetDiv).style.width=dx + "%";
+	document.getElementById(targetDiv).style.position="relative";
 }
 
 /**
@@ -669,7 +670,7 @@ function fetch_homeDB(stuffid){
  */
 initHomePage = function () {
 	jQuery("#MainMatrix").sortable({
-		constraint: false, tag: 'div', overlap: 'Horizontal', handle: '.headerrow',
+		constraint: false, tag: 'div', overlap: 'Horizontal', handle: '.headerrow',opacity:0.7,
 		update: function () {
 			matrixarr = jQuery(this).sortable("serialize").split("&");
 			matrixseqarr = new Array();
