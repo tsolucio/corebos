@@ -565,6 +565,16 @@ class Invoice extends CRMEntity {
 		$log->debug("Exiting create_export_query method ...");
 		return $query;
 	}
+	/**
+	 * Handle saving related module information.
+	 * NOTE: This function has been added to CRMEntity (base class).
+	 * You can override the behavior by re-defining it here.
+	 */
+	function save_related_module($module, $crmid, $with_module, $with_crmid) {
+		global $adb;
+		if($module == 'Invoice' && $with_module == 'Assets')
+			$adb->pquery("UPDATE vtiger_assets SET invoiceid = ? WHERE assetsid = ?",array($crmid,$with_crmid));
+	}
 
 }
 ?>

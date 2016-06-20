@@ -59,6 +59,7 @@ $mod_strings = Array (
  */
 'LBL_MODULE_NAME'=>'Servizi a Contratto',
 'Residual Units'=>'Unit&agrave; Residue',	//crmv@19400
+'Service Requests'=>'Tickets',
 
 );
 

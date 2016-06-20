@@ -214,7 +214,8 @@ class DateTimeField {
 		//if(empty(self::$cache[$time][$targetTimeZoneName])) {
 			// create datetime object for given time in source timezone
 			$sourceTimeZone = new DateTimeZone($sourceTimeZoneName);
-			if($time == '24:00') $time = '00:00';
+                        list($date,$hour) = explode(' ',$time);
+                        if($hour >= '24:00') $time = $date.' 00:00';
 			$myDateTime = new DateTime($time, $sourceTimeZone);
 
 			// convert this to target timezone using the DateTimeZone object

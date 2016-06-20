@@ -60,7 +60,7 @@ $mod_strings = Array (
 'Hours'=>'Horas',
 'Days'=>'Días',
 'Incidents'=>'Incidentes',
-'Service Requests'=>'Peticiones de Servicio',
+'Service Requests'=>'Incidencias',
 
 /*
  * 5.2.0 changes 

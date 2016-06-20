@@ -167,6 +167,10 @@ $result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('s
 if (!($adb->num_rows($result))) {
 	ExecutePQuery("ALTER TABLE com_vtiger_workflows ADD schannualdates VARCHAR(200)", array());
 }
+$result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('schminuteinterval'));
+if (!($adb->num_rows($result))) {
+	ExecutePQuery("ALTER TABLE com_vtiger_workflows ADD schminuteinterval VARCHAR(200)", array());
+}
 $result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('nexttrigger_time'));
 if (!($adb->num_rows($result))) {
 	ExecutePQuery("ALTER TABLE com_vtiger_workflows ADD nexttrigger_time DATETIME", array());

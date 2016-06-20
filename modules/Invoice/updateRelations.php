@@ -7,5 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
+if($_REQUEST['module']=='Invoice' && $_REQUEST['destination_module'] == 'Assets')
+	$override_action = 'DetailView';
 require_once('modules/Vtiger/updateRelations.php');
 ?>

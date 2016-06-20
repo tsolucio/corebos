@@ -82,6 +82,10 @@ if ($num_rows1 > 0) {
 							$focus = CRMEntity::getInstance($currentModule);
 							$focus->retrieve_entity_info($record,$tab_type);
 							$focus->id = $record;
+                                                        //getting all invitees
+                                                        $invite=$adb->pquery("select GROUP_CONCAT(inviteeid SEPARATOR \";\") as invitee from vtiger_invitees join vtiger_users on id=inviteeid and deleted=0 where activityid=?",array($record));
+                                                        if($adb->num_rows($invite)>0)
+                                                        $_REQUEST["inviteesid"]=$adb->query_result($invite,0,0);
 							$focus->mode = 'edit';
 							$focus->column_fields['subject'] = $event->getSummary();
 							if (empty($focus->column_fields['subject'])) continue; // we don't update events with no subject

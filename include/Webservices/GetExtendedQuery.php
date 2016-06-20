@@ -265,6 +265,7 @@ function __FQNExtendedQueryAddCondition($queryGenerator,$condition,$glue,$mainMo
 			$val = ltrim($val,'(');
 			$val = rtrim($val,')');
 			$val = explode(',', $val);
+			array_walk($val,function(&$elemento, $clave, $prefijo) { $elemento = trim($elemento,"'"); });
 			break;
 		case 'like':
 			if (substr($val,-1)=='%' and substr($val,0,1)=='%') {
@@ -327,7 +328,11 @@ function __FQNExtendedQueryAddCondition($queryGenerator,$condition,$glue,$mainMo
 		}
 	} else {
 		if ($field=='id') {
-			list($wsid,$val) = explode('x', $val);
+			if (is_array($val)) {
+				array_walk($val,function(&$elemento, $clave, $prefijo) { $elemento = trim($elemento,"'");list($void,$elemento) = explode('x', $elemento); });
+			} else {
+				list($void,$val) = explode('x', $val);
+			}
 		}
 		$queryGenerator->addCondition($field, $val, $op, $glue);
 	}

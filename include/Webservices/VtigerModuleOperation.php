@@ -132,9 +132,8 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		return array("status"=>"successful");
 	}
 	
-	public function query($q){
+	public function wsVTQL2SQL($q,&$meta,&$queryRelatedModules){
 		require_once 'include/Webservices/GetExtendedQuery.php';
-
 		if (__FQNExtendedQueryIsRelatedQuery($q)) { // related query
 			require_once 'include/Webservices/GetRelatedRecords.php';
 			$queryParameters = array();
@@ -232,7 +231,11 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			$mysql_query = $parser->getSql();
 			$meta = $parser->getObjectMetaData();
 		}
+		return $mysql_query;
+	}
 
+	public function query($q){
+		$mysql_query = $this->wsVTQL2SQL($q,$meta,$queryRelatedModules);
 		$this->pearDB->startTransaction();
 		$result = $this->pearDB->pquery($mysql_query, array());
 		$error = $this->pearDB->hasFailedTransaction();

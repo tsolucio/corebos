@@ -54,6 +54,8 @@ require_once 'modules/com_vtiger_workflow/tasks/VTCreateEventTask.inc';
 		// TODO: change interface to send in many dates for annual scheduling
 		$schannualdates = DateTimeField::convertToDBFormat($request['schdate']);
 		$schannualdates = json_encode(array($schannualdates));
+		$schminuteinterval=$request['schminuteinterval'];
+		
 		$wm = new VTWorkflowManager($adb);
 		if($saveType=='new'){
 			$wf = $wm->newWorkflow($moduleName);
@@ -66,6 +68,7 @@ require_once 'modules/com_vtiger_workflow/tasks/VTCreateEventTask.inc';
 			$wf->schdayofmonth = json_encode($request['schdayofmonth']);
 			$wf->schdayofweek = json_encode($schdayofweek);
 			$wf->schannualdates = $schannualdates;
+			$wf->schminuteinterval=$schminuteinterval;
 			$wm->save($wf);
 		}else if($saveType=='edit'){
 			$wf = $wm->retrieve($request["workflow_id"]);
@@ -78,6 +81,7 @@ require_once 'modules/com_vtiger_workflow/tasks/VTCreateEventTask.inc';
 			$wf->schdayofmonth = json_encode($request['schdayofmonth']);
 			$wf->schdayofweek = json_encode($schdayofweek);
 			$wf->schannualdates = $schannualdates;
+			$wf->schminuteinterval=$schminuteinterval;
 			$wm->save($wf);
 		}else{
 			throw new Exception();

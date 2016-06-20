@@ -35,9 +35,9 @@
 				$wf=$workflow;
 				$adb->pquery("update com_vtiger_workflows set
 								module_name=?, summary=?, test=?, execution_condition=?, defaultworkflow=?,
-								schtypeid=?, schtime=?, schdayofmonth=?, schdayofweek=?, schannualdates=? where workflow_id=?",
+								schtypeid=?, schtime=?, schdayofmonth=?, schdayofweek=?, schannualdates=?,schminuteinterval=? where workflow_id=?",
 					array($wf->moduleName, $wf->description, $wf->test, $wf->executionCondition, $wf->defaultworkflow,
-						$wf->schtypeid, $wf->schtime, $wf->schdayofmonth, $wf->schdayofweek, $wf->schannualdates, $wf->id));
+						$wf->schtypeid, $wf->schtime, $wf->schdayofmonth, $wf->schdayofweek, $wf->schannualdates, $wf->schminuteinterval,$wf->id));
 			}else{
 				$workflowId = $adb->getUniqueID("com_vtiger_workflows");
 				$workflow->id = $workflowId;
@@ -47,15 +47,15 @@
 				if(in_array("type",$result)) {
 					$adb->pquery("insert into com_vtiger_workflows
 									(workflow_id, module_name, summary, test, execution_condition, type, defaultworkflow,
-									schtypeid, schtime, schdayofmonth, schdayofweek, schannualdates) values (?,?,?,?,?,?,?,?,?,?,?,?)",
+									schtypeid, schtime, schdayofmonth, schdayofweek, schannualdates,schminuteinterval) values (?,?,?,?,?,?,?,?,?,?,?,?,?)",
 						array($workflowId, $wf->moduleName, $wf->description, $wf->test,  $wf->executionCondition, $wf->type, $wf->defaultworkflow,
-							$wf->schtypeid, $wf->schtime, $wf->schdayofmonth, $wf->schdayofweek, $wf->schannualdates));
+							$wf->schtypeid, $wf->schtime, $wf->schdayofmonth, $wf->schdayofweek, $wf->schannualdates,$wf->schminuteinterval));
 				} else {
 					$adb->pquery("insert into com_vtiger_workflows
 									(workflow_id, module_name, summary, test, execution_condition, defaultworkflow,
-									schtypeid, schtime, schdayofmonth, schdayofweek, schannualdates) values (?,?,?,?,?,?,?,?,?,?,?)",
+									schtypeid, schtime, schdayofmonth, schdayofweek, schannualdates,schminuteinterval) values (?,?,?,?,?,?,?,?,?,?,?,?)",
 						array($workflowId, $wf->moduleName, $wf->description, $wf->test,  $wf->executionCondition, $wf->defaultworkflow,
-							$wf->schtypeid, $wf->schtime, $wf->schdayofmonth, $wf->schdayofweek, $wf->schannualdates));
+							$wf->schtypeid, $wf->schtime, $wf->schdayofmonth, $wf->schdayofweek, $wf->schannualdates,$wf->schminuteinterval));
 				}
 			}
 			$this->updateNexTriggerTime($workflow);
@@ -293,6 +293,7 @@
 			$exp['schdayofmonth'] = $workflow->schdayofmonth;
 			$exp['schdayofweek'] = $workflow->schdayofweek;
 			$exp['schannualdates'] = $workflow->schannualdates;
+			$exp['schminuteinterval']=$workflow->schminuteinterval;
 			$exp['tasks'] = array();
 			$tm = new VTTaskManager($this->adb);
 			$tasks = $tm->getTasksForWorkflow($workflow->id);
@@ -320,6 +321,7 @@
 			$workflow->schdayofmonth = $data['schdayofmonth'];
 			$workflow->schdayofweek = $data['schdayofweek'];
 			$workflow->schannualdates = $data['schannualdates'];
+			$workflow->schminuteinterval=$data['schminuteinterval'];
 			$this->save($workflow);
 			$tm = new VTTaskManager($this->adb);
 			$tasks = $data['tasks'];
@@ -348,6 +350,7 @@
 		static $SCHEDULED_MONTHLY_BY_DATE = 5;
 		static $SCHEDULED_MONTHLY_BY_WEEKDAY = 6;
 		static $SCHEDULED_ANNUALLY = 7;
+		static $SCHEDULED_BY_MINUTE=8;
 
 		function __construct(){
 			$this->conditionStrategy = new VTJsonCondition();
@@ -364,6 +367,7 @@
 			$this->schdayofmonth = isset($row['schdayofmonth']) ? $row['schdayofmonth'] : '';
 			$this->schdayofweek = isset($row['schdayofweek']) ? $row['schdayofweek'] : '';
 			$this->schannualdates = isset($row['schannualdates']) ? $row['schannualdates'] : '';
+			$this->schminuteinterval = isset($row['schminuteinterval']) ? $row['schminuteinterval'] : '';
 			if($row['defaultworkflow']){
 				$this->defaultworkflow=$row['defaultworkflow'];
 			}
@@ -481,6 +485,10 @@
 			return ($this->executionCondition == VTWorkflowManager::$ON_SCHEDULE ? $this->schtypeid : 0);
 		}
 
+		function getScheduleMinute(){
+			return $this->schminuteinterval;
+		}
+
 		function getWFScheduleTime(){
 			return $this->schtime;
 		}
@@ -509,7 +517,11 @@
 			@date_default_timezone_set($adminTimeZone);
 
 			$scheduleType = $this->getWFScheduleType();
-			$nextTime = null;
+			$scheduleMinute= $this->getScheduleMinute();
+			
+            if($scheduleType==Workflow::$SCHEDULED_BY_MINUTE){
+            	$nextTime=date("Y-m-d H:i:s",strtotime("+ $scheduleMinute minutes"));
+            }
 
 			if($scheduleType == Workflow::$SCHEDULED_HOURLY) {
 				$nextTime = date("Y-m-d H:i:s",strtotime("+1 hour"));
