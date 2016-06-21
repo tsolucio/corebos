@@ -314,7 +314,6 @@ function sendfile_email()
 																						<tr><td>&nbsp;</td></tr>
 																					{/if}
 
-
 																					{if $header neq 'Comments'}
 
 																						<tr>{strip}
@@ -333,7 +332,6 @@ function sendfile_email()
 																						</tr>
 																					{/if}
 																				</table>
-                                                                                                                                                                
 																				{if $header neq 'Comments'}
 																					{if $BLOCKINITIALSTATUS[$header] eq 1}
 																						<div style="width:auto;display:block;" id="tbl{$header|replace:' ':''}" >
@@ -341,9 +339,9 @@ function sendfile_email()
 																						<div style="width:auto;display:none;" id="tbl{$header|replace:' ':''}" >
 																						{/if}
 																							<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small detailview_table">
-                                                                                                                                                                                            {if $CUSTOMBLOCKS.$header.custom}
-                                                                                                                                                                                                {include file=$CUSTOMBLOCKS.$header.tpl}
-                                                                                                                                                                                            {else}
+																							{if $CUSTOMBLOCKS.$header.custom}
+																								{include file=$CUSTOMBLOCKS.$header.tpl}
+																							{else}
 																								{foreach item=detail from=$detail}
 																									<tr style="height:25px" class="detailview_row">
 																										{foreach key=label item=data from=$detail}
@@ -390,7 +388,7 @@ function sendfile_email()
 																											{/foreach}
 																									</tr>
 																								{/foreach}
-                                                                                                                                                                                            {/if}
+																							{/if}
 																							</table>
 																						</div>
 																					{/if}
@@ -400,15 +398,15 @@ function sendfile_email()
 																	{if $CUSTOM_LINKS && !empty($CUSTOM_LINKS.DETAILVIEWWIDGET)}
 																		{foreach item=CUSTOM_LINK_DETAILVIEWWIDGET from=$CUSTOM_LINKS.DETAILVIEWWIDGET}
 																			{if preg_match("/^block:\/\/.*/", $CUSTOM_LINK_DETAILVIEWWIDGET->linkurl)}
-																			 {if ($smarty.foreach.BLOCKS.first && $CUSTOM_LINK_DETAILVIEWWIDGET->sequence <= 1) 
-																			 	|| ($CUSTOM_LINK_DETAILVIEWWIDGET->sequence == $smarty.foreach.BLOCKS.iteration + 1)
-																			 	|| ($smarty.foreach.BLOCKS.last && $CUSTOM_LINK_DETAILVIEWWIDGET->sequence >= $smarty.foreach.BLOCKS.iteration + 1)}
+																			{if ($smarty.foreach.BLOCKS.first && $CUSTOM_LINK_DETAILVIEWWIDGET->sequence <= 1)
+																				|| ($CUSTOM_LINK_DETAILVIEWWIDGET->sequence == $smarty.foreach.BLOCKS.iteration + 1)
+																				|| ($smarty.foreach.BLOCKS.last && $CUSTOM_LINK_DETAILVIEWWIDGET->sequence >= $smarty.foreach.BLOCKS.iteration + 1)}
 																				<tr>
 																					<td style="padding:5px;" >
 																						{php} echo vtlib_process_widget($this->_tpl_vars['CUSTOM_LINK_DETAILVIEWWIDGET'], $this->_tpl_vars); {/php}
 																					</td>
 																				</tr>
-																			 {/if}
+																			{/if}
 																			{/if}
 																		{/foreach}
 																	{/if}
