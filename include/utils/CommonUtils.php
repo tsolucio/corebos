@@ -1738,19 +1738,21 @@ function setObjectValuesFromRequest($focus) {
 			$focus->column_fields[$fieldname] = $value;
 		}
 	}
+	$cbfrommodule = $moduleName;
+	$cbfrom = CRMEntity::getInstance($cbfrommodule);
 	$bmapname = $moduleName.'2'.$moduleName;
 	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 	if (!empty($_REQUEST['cbfromid'])) {
 		$cbfromid = vtlib_purify($_REQUEST['cbfromid']);
 		$cbfrommodule = getSalesEntityType($cbfromid);
 		$bmapname = $cbfrommodule.'2'.$moduleName;
+		$cbfrom = CRMEntity::getInstance($cbfrommodule);
+		$cbfrom->retrieve_entity_info($cbfromid, $cbfrommodule);
 		$cbMapidFromid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 		if ($cbMapidFromid) $cbMapid = $cbMapidFromid;
 	}
 	if ($cbMapid) {
 		$cbMap = cbMap::getMapByID($cbMapid);
-		$cbfrom = CRMEntity::getInstance($cbfrommodule);
-		$cbfrom->retrieve_entity_info($cbfromid, $cbfrommodule);
 		$focus->column_fields = $cbMap->Mapping($cbfrom->column_fields,$focus->column_fields);
 	}
 	$focus = cbEventHandler::do_filter('corebos.filter.editview.setObjectValues', $focus);
