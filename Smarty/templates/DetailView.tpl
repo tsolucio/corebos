@@ -44,18 +44,22 @@ function showHideStatus(sId,anchorImgId,sImagePath)
 	{
 		oObj.style.display = 'none';
 		if(anchorImgId !=null){
+{/literal}
 			eval(document.getElementById(anchorImgId)).src =  'themes/images/inactivate.gif';
-			eval(document.getElementById(anchorImgId)).alt = 'Display';
-			eval(document.getElementById(anchorImgId)).title = 'Display';
+			eval(document.getElementById(anchorImgId)).alt = '{'LBL_Show'|@getTranslatedString:'Settings'}';
+			eval(document.getElementById(anchorImgId)).title = '{'LBL_Show'|@getTranslatedString:'Settings'}';
+{literal}
 		}
 	}
 	else
 	{
 		oObj.style.display = 'block';
 		if(anchorImgId !=null){
+{/literal}
 			eval(document.getElementById(anchorImgId)).src = 'themes/images/activate.gif';
-			eval(document.getElementById(anchorImgId)).alt = 'Hide';
-			eval(document.getElementById(anchorImgId)).title = 'Hide';
+			eval(document.getElementById(anchorImgId)).alt = '{'LBL_Hide'|@getTranslatedString:'Settings'}';
+			eval(document.getElementById(anchorImgId)).title = '{'LBL_Hide'|@getTranslatedString:'Settings'}';
+{literal}
 		}
 	}
 }
@@ -318,9 +322,9 @@ function sendfile_email()
 
 																								<div style="float:left;font-weight:bold;"><div style="float:left;"><a href="javascript:showHideStatus('tbl{$header|replace:' ':''}','aid{$header|replace:' ':''}','{$IMAGE_PATH}');">
 																											{if $BLOCKINITIALSTATUS[$header] eq 1}
-																												<img id="aid{$header|replace:' ':''}" src="{'activate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;" alt="Hide" title="Hide"/>
+																												<img id="aid{$header|replace:' ':''}" src="{'activate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;" alt="{'LBL_Hide'|@getTranslatedString:'Settings'}" title="{'LBL_Hide'|@getTranslatedString:'Settings'}"/>
 																											{else}
-																												<img id="aid{$header|replace:' ':''}" src="{'inactivate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;" alt="Display" title="Display"/>
+																												<img id="aid{$header|replace:' ':''}" src="{'inactivate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;" alt="{'LBL_Show'|@getTranslatedString:'Settings'}" title="{'LBL_Show'|@getTranslatedString:'Settings'}"/>
 																											{/if}
 																										</a></div><b>&nbsp;
 																										{$header}
