@@ -60,7 +60,9 @@ if(isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
 if(empty($focus->column_fields['time_zone'])) {
 	$focus->column_fields['time_zone'] = DateTimeField::getDBTimeZone();
 }
-
+if($mode != 'edit'){
+	setObjectValuesFromRequest($focus);
+}
 global $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
