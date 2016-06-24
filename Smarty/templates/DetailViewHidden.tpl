@@ -13,6 +13,7 @@
 <input type="hidden" name="parenttab" value="{$CATEGORY}">
 <input type="hidden"  name="allselectedboxes" id="allselectedboxes">
 <input name="from_link" id="from_link" type="hidden" value="DetailView">
+<input type="hidden" name="cbfromid" id="cbfromid" value="{$ID}">
 {if $MODULE eq 'Accounts'}
 	<input type="hidden" name="module" value="{$MODULE}">
 	<input type="hidden" name="record" value="{$ID}">

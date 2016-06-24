@@ -90,13 +90,17 @@ class Mapping extends processcbMap {
 				if (strtoupper($idx[0])=='CONST') {
 					$const = array_pop($fieldinfo);
 					$value.= $const.$delim;
-				} elseif (strtoupper($idx[0])=='EXPRESSION' and !empty($ofields['record_id'])) {
-					$entity = new VTWorkflowEntity($current_user, $entityId);
+				} elseif (strtoupper($idx[0])=='EXPRESSION') {
 					$testexpression = array_pop($fieldinfo);
 					$parser = new VTExpressionParser(new VTExpressionSpaceFilter(new VTExpressionTokenizer($testexpression)));
 					$expression = $parser->expression();
 					$exprEvaluater = new VTFieldExpressionEvaluater($expression);
-					$exprEvaluation = $exprEvaluater->evaluate($entity);
+					if(empty($ofields['record_id'])){
+						$exprEvaluation = $exprEvaluater->evaluate(false);
+					}else{
+						$entity = new VTWorkflowEntity($current_user, $entityId);
+						$exprEvaluation = $exprEvaluater->evaluate($entity);
+					}
 					$value.= $exprEvaluation.$delim;
 				} else {
 					$fieldname = array_pop($fieldinfo);

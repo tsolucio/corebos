@@ -142,7 +142,7 @@ if(isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
 	$focus->id = "";
     	$focus->mode = '';
 }
-if(empty($_REQUEST['record']) && $focus->mode != 'edit'){
+if($focus->mode != 'edit'){
 	$_REQUEST['assigned_user_id'] = empty($_REQUEST['assigned_user_id']) ? $current_user->id : $_REQUEST['assigned_user_id'];
 	setObjectValuesFromRequest($focus);
 	if (empty($focus->column_fields['reminder_time'])) {

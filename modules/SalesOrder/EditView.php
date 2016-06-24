@@ -170,7 +170,7 @@ if (!empty($_REQUEST['save_error']) and $_REQUEST['save_error'] == "true") {
 	$errormessage = isset($_REQUEST['error_msg']) ? vtlib_purify($_REQUEST['error_msg']) : '';
 	$smarty->assign('ERROR_MESSAGE_CLASS', $errormessageclass);
 	$smarty->assign('ERROR_MESSAGE', $errormessage);
-} elseif(empty($_REQUEST['record']) && $focus->mode != 'edit'){
+} elseif($focus->mode != 'edit'){
 	setObjectValuesFromRequest($focus);
 }
 
