@@ -122,6 +122,17 @@ function vtws_getId($objId, $elemId){
 	return $objId."x".$elemId;
 }
 
+function vtws_getEntityId($entityName) {
+	global $adb,$log;
+	$wsrs=$adb->pquery('select id from vtiger_ws_entity where name=?',array($entityName));
+	if ($wsrs and $adb->num_rows($wsrs)==1) {
+		$wsid = $adb->query_result($wsrs,0,0);
+	} else {
+		$wsid = 0;
+	}
+	return $wsid;
+}
+
 function getEmailFieldId($meta, $entityId){
 	global $adb;
 	//no email field accessible in the module. since its only association pick up the field any way.
