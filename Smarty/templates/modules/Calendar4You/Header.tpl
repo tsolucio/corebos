@@ -6,17 +6,16 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
+  *
  ********************************************************************************/
 -->*}
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
 	<title>{$USER} - {$MODULE_NAME|@getTranslatedString:$MODULE_NAME} - {$APP.LBL_BROWSER_TITLE}</title>
-	<link REL="SHORTCUT ICON" HREF="{$FAVICON}">
-	<meta http-equiv="X-FRAME-OPTIONS" content="DENY" />
+	<link REL="SHORTCUT ICON" HREF="themes/images/vtigercrm_icon.ico">
 	<style type="text/css">@import url("themes/{$THEME}/style.css?v={$VERSION}");</style>
 	<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
-	<link rel="stylesheet" href="include/print.css" type="text/css" media="print" />
 {* vtlib customization: Inclusion of custom javascript and css as registered *}
 {if $HEADERCSS}
 	<!-- Custom Header CSS -->
@@ -37,18 +36,11 @@
 	<style type="text/css">div.drop_mnu_user { position:absolute; }</style>
 	<![endif]-->
 {/literal}
-	<!-- End -->
 </head>
-<script>
-var gVTModule = '{$smarty.request.module|@vtlib_purify}';
-var gVTTheme  = '{$THEME}';
-var gVTUserID = '{$CURRENT_USER_ID}';
-</script>
 	<body leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 class=small>
 	<a name="top"></a>
 	<!-- header -->
 	<!-- header-vtiger crm name & RSS -->
-	<script language="JavaScript" type="text/javascript" src="include/js/meld.js"></script>
 	<script language="JavaScript" type="text/javascript" src="include/js/json.js"></script>
 	<script language="JavaScript" type="text/javascript" src="include/js/general.js?v={$VERSION}"></script>
 	<!-- vtlib customization: Javascript hook -->
@@ -90,9 +82,9 @@ var gVTUserID = '{$CURRENT_USER_ID}';
 
 <TABLE border=0 cellspacing=0 cellpadding=0 width=100% class="small">
 	<tr>
-		<td valign=top align=left><img src="test/logo/{$FRONTLOGO}" alt="{$COMPANY_DETAILS.name}" title="{$COMPANY_DETAILS.name}" border=0 style="width: 15em;height: 4.2em;"></td>
+		<td valign=top align=left><img src="test/logo/{$LOGO}" alt="{$LOGO}" title="{$LOGO}" border=0 style="width: 15em;height: 4.2em;"></td>
 		<td align="center" valign=bottom  >
-			<div align ="center" width ="50%" border='3' style="padding:5px;" class="noprint">
+			<div align ="center" width ="50%" border='3' style="padding:5px;">
 				<table border=0 cellspacing=0 cellpadding=0 id="search" align="center">
 			   		<tr>
 					<form name="UnifiedSearch" method="post" action="index.php" style="margin:0px" onsubmit="VtigerJS_DialogBox.block();">
@@ -107,7 +99,7 @@ var gVTUserID = '{$CURRENT_USER_ID}';
                                 <a href='javascript:void(0);' ><img src="{'arrow_down_black.png'|@vtiger_imageurl:$THEME}" align='left' border=0></a>
                         </td>
 						<td style="background-color:#cccccc">
-							<input type="image" class="searchBtn"  alt="{$APP.LBL_FIND}" title="{$APP.LBL_FIND}" width = "70%;" height="70%" src="{'searchicon.PNG'|@vtiger_imageurl:$THEME}" align='left' border=1>
+							<input type="image" class="searchBtn"  alt="{$APP.LBL_FIND}" title="{$APP.LBL_FIND}" width = "70%;" height="70%" src="{'searchicon.PNG'|@vtiger_imageurl:$THEME}" align='left' border=1 onsubmit ="submit-form();">
 						</td>
 					</form>
 		   			</tr>
@@ -120,11 +112,13 @@ var gVTUserID = '{$CURRENT_USER_ID}';
 				<td valign="top" class="genHeaderSmall" style="padding-left:10px;padding-top:3px;">
 					<span class="userName">{$USER}</span>
 				</td>
-				<td class="small" valign="bottom" nowrap style="padding-bottom: 1em;"><a href="index.php?module=Users&action=DetailView&record={$CURRENT_USER_ID}&modechk=prefview"><img src="{$IMAGEPATH}user.PNG" border=0 style="padding: 0px;padding-left:5px" title="{$APP.LBL_MY_PREFERENCES}" alt="{$APP.LBL_MY_PREFERENCES}"></a></td>
+				{* ondemand customization: Header links on the top panel *}
+				<td class="small"  onmouseover="fnDropDownUser(this,'ondemand_sub','~{$CURRENT_USER_MAIL}`');" onmouseout="fnHideDrop('ondemand_sub');" valign="bottom" nowrap style="padding-bottom: 1em;"><img src="{$IMAGEPATH}user.PNG" border=0 style="padding: 0px;padding-left:5px"></td>
+				{* END *}
 				{* vtlib customization: Header links on the top panel *}
 				{if $HEADERLINKS}
-			<td style="padding-bottom:1em;padding-left:10px;padding-right:5px" class=small nowrap valign="bottom">
-				<a href="javascript:;" onmouseover="fnvshobj(this,'vtlib_headerLinksLay');" onclick="fnvshobj(this,'vtlib_headerLinksLay');"><img src="{'menu_more.png'|@vtiger_imageurl:$THEME}" border=0 style="padding: 0px;padding-left:5px"></a>
+				<td style="padding-left:10px;padding-right:5px" class=small nowrap>
+					<a href="javascript:;" onmouseover="fnvshobj(this,'vtlib_headerLinksLay');" onclick="fnvshobj(this,'vtlib_headerLinksLay');">{$APP.LBL_MORE}</a> <img src="{'arrow_down.gif'|@vtiger_imageurl:$THEME}" border=0>
 					<div style="display: none; left: 193px; top: 106px;width:155px; position:absolute;" id="vtlib_headerLinksLay"
 					onmouseout="fninvsh('vtlib_headerLinksLay')" onmouseover="fnvshNrm('vtlib_headerLinksLay')">
 					<table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -155,11 +149,10 @@ var gVTUserID = '{$CURRENT_USER_ID}';
 				{if $ADMIN_LINK neq ''}
 					{foreach key=maintabs item=detail from=$HEADERS}
 						{if $maintabs eq "Settings"}
-							<td  valign="bottom" nowrap style="padding-bottom: 1em;" class="small" onmouseout="fnHideDrop('mainsettings');" onmouseover="fnDropDown(this,'mainsettings');" nowrap><a href="index.php?module=Settings&action=index&parenttab=" id="settingslink"><img src="{$IMAGEPATH}mainSettings.PNG" border=0 style="padding: 0px;padding-left:5px"></a></td>
+							<td  valign="bottom" nowrap style="padding-bottom: 1em;" class="small" onmouseout="fnHideDrop('mainsettings');" onmouseover="fnDropDown(this,'mainsettings');" nowrap><img src="{$IMAGEPATH}mainSettings.PNG"  border=0 style="padding: 0px;padding-left:5px "></td>
 						{/if}
 					{/foreach}
 				{/if}
-				<td  valign="bottom" nowrap style="padding-bottom: 1em;" class="small" nowrap><a href="index.php?module=Users&action=Logout"> <img src="themes/images/logout.png" border=0 style="padding: 0px;padding-left:5px " title="{$APP.LBL_LOGOUT}" alt="{$APP.LBL_LOGOUT}"></a></td>
 			</tr>
 			</table>
         </td>
@@ -196,10 +189,10 @@ var gVTUserID = '{$CURRENT_USER_ID}';
 				<table border=0 celspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
 				<tr>
 					<td align="right" nowrap class="cellLabel small">
-						<input class="small" type='radio' name='exportCalendar' value = 'iCal' onclick="jQuery('#ics_filename').removeAttr('disabled');" checked /> iCal Format
+						<input class="small" type='radio' name='exportCalendar' value = 'iCal' onclick="document.getElementById('ics_filename').removeAttribute('disabled');" checked /> iCal Format
 					</td>
 					<td align="left">
-						<input class="small" type='text' name='ics_filename' id='ics_filename' size='25' value='{php}global $coreBOS_app_name; echo $coreBOS_app_name;{/php}.calendar'/>
+						<input class="small" type='text' name='ics_filename' id='ics_filename' size='25' value='vtiger.calendar'/>
 					</td>
 				</tr>
 				</table>
@@ -214,7 +207,7 @@ var gVTUserID = '{$CURRENT_USER_ID}';
 		</tr>
 		</table>
 	</div>
-	<div id='CalImport' style='position:absolute; display:none; left:500px; top:100px; z-index:100000' class="layerPopup">
+	<div id='CalImport' style='width:300px; position:absolute; display:none; left:500px; top:100px; z-index:100000' class="layerPopup">
 		{assign var='label_filename' value='LBL_FILENAME'}
 		<form name='ical_import' id='ical_import' onsubmit="VtigerJS_DialogBox.block();" enctype="multipart/form-data" action="index.php" method="POST">
 		<input type='hidden' name='module' value=''>
@@ -249,7 +242,7 @@ var gVTUserID = '{$CURRENT_USER_ID}';
 	</form>
 	</div>
 {/if}
-{php}cbEventHandler::do_action('corebos.header.premenu');{/php}
+
 <!-- header - master tabs -->
 <TABLE border=0 cellspacing=0 cellpadding=0 width=100% class="hdrTabBg">
 <tr>
@@ -280,7 +273,7 @@ var gVTUserID = '{$CURRENT_USER_ID}';
 				{/foreach}
 				{foreach key=maintabs item=detail from=$MENUSTRUCTURE}
 					{if $maintabs eq 'more' && $detail != null}
-						<td class="tabUnSelected"  align="center" onmouseout="fnHide_Event('allMenu');" onmouseover="fnvshobjMore(this,'allMenu');"nowrap><a href="javascript:;" >{$APP.LBL_MORE}<img src="{'menuDnArrow.gif'|@vtiger_imageurl:$THEME}" border=0 style="padding-left:5px" /></a></td>
+						<td class="tabUnSelected"  align="center" onmouseout="fnHide_Event('allMenu');" onmouseover="fnvshobjMore(this,'allMenu','{$ANNOUNCEMENT}');"nowrap><a href="javascript:;" >{$APP.LBL_MORE}<img src="{'menuDnArrow.gif'|@vtiger_imageurl:$THEME}" border=0 style="padding-left:5px" /></a></td>
 						<td class="tabSeperator"><img src="{'spacer.gif'|@vtiger_imageurl:$THEME}"></td>
 					{/if}
 				{/foreach}
@@ -320,17 +313,17 @@ var gVTUserID = '{$CURRENT_USER_ID}';
 <script type='text/javascript'>
 {literal}
 function UnifiedSearch_SelectModuleForm(obj) {
-	if(jQuery('#UnifiedSearch_moduleform').length) {
+	if(document.getElementById('UnifiedSearch_moduleform')) {
 		// If we have loaded the form already.
 		UnifiedSearch_SelectModuleFormCallback(obj);
 	} else {
-		jQuery('#status').show();
+		document.getElementById('status').style.display="inline";
 		jQuery.ajax({
 				method:"POST",
 				url:'index.php?module=Home&action=HomeAjax&file=UnifiedSearchModules&ajax=true'
 		}).done(function(response) {
-				jQuery('#status').hide();
-				jQuery('#UnifiedSearch_moduleformwrapper').html(response);
+				document.getElementById('status').style.display="none";
+				document.getElementById('UnifiedSearch_moduleformwrapper').innerHTML = response;
 				UnifiedSearch_SelectModuleFormCallback(obj);
 		});
 	}
@@ -345,45 +338,40 @@ function UnifiedSearch_SelectModuleToggle(flag) {
 	);
 }
 function UnifiedSearch_SelectModuleCancel() {
-	jQuery('#UnifiedSearch_moduleformwrapper').hide();
+	document.getElementById('UnifiedSearch_moduleformwrapper').style.display="none";
 }
 function UnifiedSearch_SelectModuleSave() {
 	var UnifiedSearch_form = document.forms.UnifiedSearch;
 	UnifiedSearch_form.search_onlyin.value = jQuery('#UnifiedSearch_moduleform').serialize().replace(/search_onlyin=/g, '').replace(/&/g,',');
-	jQuery.ajax({
-			method:"POST",
-			url:'index.php?module=Home&action=HomeAjax&file=UnifiedSearchModulesSave&search_onlyin=' + encodeURIComponent(UnifiedSearch_form.search_onlyin.value)
-	}).done(function(response) {
-				// continue
-		}
-	);
 	UnifiedSearch_SelectModuleCancel();
 }
+
 {/literal}
 </script>
 <!-- End -->
 
 <script>
-function fetch_clock()
-{ldelim}
+var gVTModule = '{$smarty.request.module|@vtlib_purify}';
+var gVTTheme  = '{$THEME}';
+function fetch_clock() {ldelim}
 	jQuery.ajax({ldelim}
 			method:"POST",
 			url:'index.php?module=Utilities&action=UtilitiesAjax&file=Clock'
 	{rdelim}).done(function(response) {ldelim}
-				jQuery("#clock_cont").html(response);
-				execJS(jQuery('#clock_cont'));
-	{rdelim}
+				document.getElementById("clock_cont").innerHTML=response;
+				execJS(document.getElementById('clock_cont'));
+		{rdelim}
 	);
+
 {rdelim}
 
-function fetch_calc()
-{ldelim}
+function fetch_calc() {ldelim}
 	jQuery.ajax({ldelim}
 			method:"POST",
 			url:'index.php?module=Utilities&action=UtilitiesAjax&file=Calculator'
 	{rdelim}).done(function(response) {ldelim}
-				jQuery("#calculator_cont").html(response);
-				execJS(jQuery('#calculator_cont'));
+						document.getElementById("calculator_cont").innerHTML=response;
+						execJS(document.getElementById('calculator_cont'));
 		{rdelim}
 	);
 {rdelim}
@@ -419,8 +407,7 @@ function QCreate(qcoptions){
 					}
 					eval(document.getElementById("qcform"));
 					posLay(qcoptions, "qcform");
-			}
-		);
+		});
 	}else{
 		hide('qcform');
 	}
@@ -450,9 +437,12 @@ function QCreate(qcoptions){
 </div>
 
 <div id="status" style="position:absolute;display:none;left:850px;top:95px;height:27px;white-space:nowrap;"><img src="{'status.gif'|@vtiger_imageurl:$THEME}"></div>
-
+<script>
+function openwin(){ldelim}
+            window.open("index.php?module=Users&action=about_us","aboutwin","height=520,width=515,top=200,left=300")
+{rdelim}   
+</script>   
 <div id="tracker" style="display:none;position:absolute;z-index:100000001;" class="layerPopup">
-
 	<table border="0" cellpadding="5" cellspacing="0" width="200">
 	<tr style="cursor:move;">
 		<td colspan="2" class="mailClientBg small" id="Track_Handle"><strong>{$APP.LBL_LAST_VIEWED}</strong></td>
@@ -482,34 +472,58 @@ function QCreate(qcoptions){
 </div>
 <div  id="usersettings" class="drop_mnu_user" onmouseout="fnHideDrop('usersettings');" onmouseover="fnvshNrm('usersettings');"  style="width:110px;left:1226px;">
 	<table border=0 width="100%" border="0" cellpadding="0" cellspacing="0" >
-		<tr>
-			<td style="padding-left:0px;padding-right:10px font-weight:bold"  nowrap> <a href="{$smarty.const.MAIN_HELP_PAGE}" target="_blank" class="drop_down_usersettings">{$APP.LNK_HELP}</a> </td>
-		</tr>
+        <tr >
+			<td style="padding-left:0px;padding-right:10px font-weight:bold"  nowrap> <a href="http://wiki.vtiger.com/index.php/Main_Page" target="_blank" class="drop_down_usersettings">{$APP.LNK_HELP}</a> </td>
+        </tr>
+        <tr>
+			<td style="padding-left:0px;padding-right:10px font-weight:bold" nowrap> <a href="javascript:void(0);" onclick="vtiger_feedback();" class="drop_down_usersettings">{$APP.LBL_FEEDBACK}</a></td>
+        </tr>
 	</table>
 </div>
 <div  id="mainsettings" class="drop_mnu_user" onmouseout="fnHideDrop('mainsettings');" onmouseover="fnvshNrm('mainsettings');" style="width:110px;left:1226px;" >
 	<table border=0 width="100%" border="0" cellpadding="0" cellspacing="0" >
-		{foreach key=maintabs item=detail from=$HEADERS}
-			{if $maintabs eq "Settings"}
-			<tr><td style="padding-left:0px;padding-right:10px font-weight:bold"  nowrap><a href="index.php?module={$detail[0]}&action=index&parenttab=" class="drop_down_usersettings">{$detail[0]|@getTranslatedString:$detail[0]}</a></td></tr>
-			{/if}
-		{/foreach}
-		<tr><td style="padding-left:0px;padding-right:10px font-weight:bold"  nowrap><a href="index.php?module=Settings&action=index&parenttab=" class="drop_down_usersettings">{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}</a></td></tr>
-	</table>
+        {foreach key=maintabs item=detail from=$HEADERS}
+				{if $maintabs eq "Settings"}
+				<tr><td style="padding-left:0px;padding-right:10px font-weight:bold"  nowrap><a href="index.php?module={$detail[0]}&action=index&parenttab=" class="drop_down_usersettings">{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}</a></td></tr>
+                                {/if}
+        {/foreach}
+{foreach item=ONDEMANDLINK from=$ONDEMANDLINKS}
+		{assign var="headerlink_href" value=$ONDEMANDLINK->linkurl}
+		{assign var="headerlink_label" value=$ONDEMANDLINK->linklabel}
+		{if $headerlink_label eq ''}
+			{assign var="headerlink_label" value=$headerlink_href}
+		{else}
+			{* Pickup the translated label provided by the module *}
+			{assign var="headerlink_label" value=$headerlink_label|@getTranslatedString:$ONDEMANDLINK->module()}
+		{/if}
+                                            {if $headerlink_label neq 'Profile' &&  $headerlink_label neq 'Plugin Setup'}
+
+						<tr><td><a href="{$headerlink_href}" class="drop_down_usersettings">{$headerlink_label|@getTranslatedString:$MODULE_NAME}</a></td></tr>
+                                            {/if}
+	{/foreach}
+        </table>
 </div>
+<!-- vtiger Feedback -->
+<script type="text/javascript">
+{literal}
+function vtiger_feedback() {
+	window.open("http://vtiger.com/products/crm/feedback.php?uid={/literal}{php}global $application_unique_key; echo $application_unique_key;{/php}&version={php}global $vtiger_current_version; echo $vtiger_current_version;{/php}&email={$CURRENT_USER_MAIL}{literal}","feedbackwin","height=300,width=515,top=200,left=300")
+}
+{/literal}
+</script>
 <script type="text/javascript">
 {literal}
 function vtiger_news(obj) {
 	document.getElementById('status').style.display = 'inline';
 	jQuery.ajax({
-			method:"POST",
-			url:'index.php?module=Home&action=HomeAjax&file=HomeNews'
+				method:"POST",
+				url:'index.php?module=Home&action=HomeAjax&file=HomeNews'
 	}).done(function(response) {
-				jQuery("#vtigerNewsPopupLay").html(response);
+				document.getElementById("vtigerNewsPopupLay").innerHTML=response;
 				fnvshobj(obj, 'vtigerNewsPopupLay');
-				jQuery('#status').hide();
-			}
-	);
+				document.getElementById('status').style.display = 'none';
+	});
+
 }
 {/literal}
 </script>

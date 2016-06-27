@@ -481,18 +481,14 @@ function loadTaxes_Ajax(curr_row)
 	additionalinfo = additionalinfo + '&invid=' + getObj('record').value;
 	additionalinfo = additionalinfo + '&editmode=' + getObj('mode').value;
 	var lineItemType = document.getElementById("lineItemType"+curr_row).value;
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody: 'module='+lineItemType+'&action='+lineItemType+'Ajax&file=InventoryTaxAjax&productid='+document.getElementById("hdnProductId"+curr_row).value+'&curr_row='+curr_row+'&productTotal='+document.getElementById('totalAfterDiscount'+curr_row).innerHTML+additionalinfo,
-			onComplete: function(response)
-				{
-					$("tax_div"+curr_row).innerHTML=response.responseText;
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module='+lineItemType+'&action='+lineItemType+'Ajax&file=InventoryTaxAjax&productid='+document.getElementById("hdnProductId"+curr_row).value+'&curr_row='+curr_row+'&productTotal='+document.getElementById('totalAfterDiscount'+curr_row).innerHTML+additionalinfo
+	}).done(function (response) {
+					document.getElementById("tax_div"+curr_row).innerHTML=response;
 					document.getElementById("taxTotal"+curr_row).innerHTML = getObj('hdnTaxTotal'+curr_row).value;
 					calcTotal();
 				}
-		}
 	);
 }
 
@@ -501,16 +497,13 @@ function loadGlobalTaxes_Ajax() {
 	var additionalinfo = getInventoryModuleTaxRelatedInformation() + '&invmod=' + gVTModule;
 	additionalinfo = additionalinfo + '&invid=' + getObj('record').value;
 	additionalinfo = additionalinfo + '&editmode=' + getObj('mode').value;
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody: 'module=Products&action=ProductsAjax&file=InventoryGroupTaxAjax'+additionalinfo,
-			onComplete: function(response) {
-				$('group_tax_div').innerHTML=response.responseText;
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=Products&action=ProductsAjax&file=InventoryGroupTaxAjax'+additionalinfo
+	}).done(function (response) {
+				document.getElementById('group_tax_div').innerHTML=response;
 				calcTotal();
 			}
-		}
 	);
 }
 
@@ -969,20 +962,17 @@ function updatePrices() {
 
 		var currency_id = inventory_currency.value;
 		//Retrieve all the prices for all the products in currently selected currency
-		new Ajax.Request(
-			'index.php',
-			{queue: {position: 'end', scope: 'command'},
-				method: 'post',
-				postBody: 'module=Products&action=ProductsAjax&file=InventoryPriceAjax&currencyid='+currency_id+'&productsList='+products_list,
-				onComplete: function(response) {
-					if(trim(response.responseText).indexOf('SUCCESS') == 0) {
-						var res = trim(response.responseText).split("$");
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=Products&action=ProductsAjax&file=InventoryPriceAjax&currencyid='+currency_id+'&productsList='+products_list
+		}).done(function (response) {
+					if(trim(response).indexOf('SUCCESS') == 0) {
+						var res = trim(response).split("$");
 						updatePriceValues(res[1]);
 					} else {
 						alert(alert_arr.OPERATION_DENIED);
 					}
 				}
-			}
 		);
 	} else {
 		if (prev_cur != null && inventory_currency != null)
@@ -1203,7 +1193,7 @@ function InventorySelectAll(mod,image_pth)
 			if (document.selectall.selected_id.checked) {
 				idstring = document.selectall.selected_id.value;
 				c = document.selectall.selected_id.value;
-				var prod_array = JSON.parse($('popup_product_'+c).attributes['vt_prod_arr'].nodeValue);
+				var prod_array = JSON.parse(document.getElementById('popup_product_'+c).attributes['vt_prod_arr'].nodeValue);
 				var prod_id = prod_array['entityid'];
 				var prod_name = prod_array['prodname'];
 				var unit_price = prod_array['unitprice'];
@@ -1228,7 +1218,7 @@ function InventorySelectAll(mod,image_pth)
 				if(document.selectall.selected_id[i].checked) {
 					idstring = document.selectall.selected_id[i].value+";"+idstring;
 					c = document.selectall.selected_id[i].value;
-					var prod_array = JSON.parse($('popup_product_'+c).attributes['vt_prod_arr'].nodeValue);
+					var prod_array = JSON.parse(document.getElementById('popup_product_'+c).attributes['vt_prod_arr'].nodeValue);
 					var prod_id = prod_array['entityid'];
 					var prod_name = prod_array['prodname'];
 					var unit_price = prod_array['unitprice'];

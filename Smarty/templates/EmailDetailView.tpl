@@ -17,11 +17,7 @@
 <link REL="SHORTCUT ICON" HREF="themes/images/favicon.ico">	
 <style type="text/css">@import url("themes/{$THEME}/style.css");</style>
 <script language="JavaScript" type="text/javascript" src="include/js/general.js"></script>
-<script language="javascript" type="text/javascript" src="include/scriptaculous/prototype.js"></script>
-<script type="text/javascript" src="include/jquery/jquery-1.6.2.min.js"></script>
-<script type="text/javascript">
-	jQuery.noConflict();
-</script>
+<script type="text/javascript" src="include/jquery/jquery.js"></script>
 <body marginheight="0" marginwidth="0" topmargin="0" bottommargin="0" leftmargin="0" rightmargin="0">
 <table class="small" border="0" cellpadding="0" cellspacing="0" width="100%">
 <tbody>
@@ -100,5 +96,5 @@
    </tr>
 </table>
 <script>
-$('attach_cont').innerHTML = $('attach_temp_cont').innerHTML;
+document.getElementById('attach_cont').innerHTML = document.getElementById('attach_temp_cont').innerHTML;
 </script>

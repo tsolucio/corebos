@@ -14,7 +14,7 @@
 <script type="text/javascript">
 {literal}
 function vtmailscanner_folders_resetAll_To(checktype) {
-	var form = $('form');
+	var form = document.getElementById('form');
 	var inputs = form.getElementsByTagName('input');
 	for(var index = 0; index < inputs.length; ++index) {
 		var input = inputs[index];

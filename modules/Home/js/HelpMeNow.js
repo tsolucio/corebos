@@ -102,7 +102,7 @@ vtiger_help_controller = function() {
 
         if (typeof uri == 'undefined') uri = self.location.href;
 
-        var userid = $('_my_preferences_')? $('_my_preferences_').getAttribute('href').match(/record=([^&]+)/)[1] : 0;
+        var userid = document.getElementById('_my_preferences_')? document.getElementById('_my_preferences_').getAttribute('href').match(/record=([^&]+)/)[1] : 0;
         var module = uri.match(/module=([^&]+)/)[1];
         var action = uri.match(/action=([^&]+)/)[1];
         if(action=='ListView'){
@@ -145,9 +145,9 @@ vtiger_help_controller = function() {
         linkDiv.id='helpButton';
         link.setAttribute('class', 'helpTipsHandler');
         link.style.visibility = 'visible';
-        //link.setAttribute('onclick', "vtiger_help($('helpTipsHandlerPin'));");
+        //link.setAttribute('onclick', "vtiger_help(document.getElementById('helpTipsHandlerPin'));");
         link.onclick=function(){
-            vtiger_help($('helpTipsHandlerPin'));
+            vtiger_help(document.getElementById('helpTipsHandlerPin'));
             return false;
         };
         var themePath = vtlib_vtiger_imageurl(gVTTheme);
@@ -159,7 +159,7 @@ vtiger_help_controller = function() {
 	 * Widget styling...
 	 */
     this.css = function() {
-        if ($('vtigerHelpStyling')) return;
+        if (document.getElementById('vtigerHelpStyling')) return;
     /* BETTER TO BE MOVED INTO themes style.css */
     /*
         var rules = '.vtigerHelpPopupLay { font-size:12px; border: 1px solid #F5F5F5; }' +
@@ -186,7 +186,7 @@ vtiger_help_controller = function() {
      * Widget popup
      */
     this.popup = function() {
-        if (!$('vtigerHelpPopupLay')) {
+        if (!document.getElementById('vtigerHelpPopupLay')) {
             var vtigerHelpPopupLay = document.createElement('div');
             vtigerHelpPopupLay.id = 'vtigerHelpPopupLay';
             vtigerHelpPopupLay.className = 'lvtCol fixedLay1 vtigerHelpPopupLay';
@@ -200,7 +200,7 @@ vtiger_help_controller = function() {
 
             document.getElementById('helpButton').appendChild(vtigerHelpPopupLay);
         }
-        return $('vtigerHelpPopupLay');
+        return document.getElementById('vtigerHelpPopupLay');
     };
 
     /**
@@ -208,7 +208,7 @@ vtiger_help_controller = function() {
      */
     this.popupContainer = function() {
         this.popup();
-        return $('vtigerHelpPopupLayContainer');
+        return document.getElementById('vtigerHelpPopupLayContainer');
     };
 
     /**
@@ -304,14 +304,14 @@ vtiger_help_controller = function() {
                 qtype = 'regex';
         }
 
-        var v = $('_vtiger_product_version_')? $('_vtiger_product_version_').innerHTML : '';
+        var v = document.getElementById('_vtiger_product_version_')? document.getElementById('_vtiger_product_version_').innerHTML : '';
 
-        $('status').style.display = 'inline';
+        document.getElementById('status').style.display = 'inline';
 
         new vtiger_help_jsonp(this.apiURL(), {
             parameters: 'operation=find&q=' + encodeURIComponent(q) + '&qtype=' + encodeURIComponent(qtype) + '&v=' + encodeURIComponent(v),
             onComplete: function(data) {
-                $('status').style.display = 'none';
+                document.getElementById('status').style.display = 'none';
 
                 var records = (data.success) ? data.result.records: false;
                 if (records) {
@@ -325,7 +325,7 @@ vtiger_help_controller = function() {
                         document.getElementById('helpLink').style.display='none';
                         popUpLayBlock.style.display='block';
                         //Drag funtion for help
-                        Drag.init(document.getElementById('helpHandle'),document.getElementById('vtigerHelpPopupLay'),-1100,0,-100,1000);
+						jQuery("#vtigerHelpPopupLay").draggable({containment:[-1100,0,-100,1000], handle: "#helpHandle" });
                         // Trigger translation service
                         thisInstance.translate();
                     } else {
@@ -528,8 +528,8 @@ vtiger_help_controller = function() {
     this.currentLanguage = function() {
         if (!this._language) {
             this._language = 'en_us';
-            if ($('_current_language_')) {
-                this._language = $('_current_language_').getAttribute('src').match(/include\/js\/([^.]+)/)[1];
+            if (document.getElementById('_current_language_')) {
+                this._language = document.getElementById('_current_language_').getAttribute('src').match(/include\/js\/([^.]+)/)[1];
             }
         }
         return this._language.split('_');
@@ -626,7 +626,7 @@ function vtiger_help_welcome(obj, container) {
 /**
  * Trigger init of help controller on page load.
  */
-Event.observe(window, 'load', function(){
+jQuery( window ).on("load", function(){
     vtiger_help_controller_singleton.get();
 });
 

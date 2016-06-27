@@ -181,6 +181,7 @@ class Vtiger_MailScannerAction {
 	 * Create ticket action.
 	 */
 	function __CreateTicket($mailscanner, $mailrecord) {
+                global $adb;
 		// Prepare data to create trouble ticket
 		$usetitle = $mailrecord->_subject;
 		$description = $mailrecord->getBodyText();

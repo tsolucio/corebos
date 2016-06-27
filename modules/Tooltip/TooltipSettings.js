@@ -12,23 +12,20 @@
  * this function takes a fieldname and returns the fields related to it
  */
 function getRelatedFieldInfo(id){
-	var modulename = $('pick_module').value;
+	var modulename = document.getElementById('pick_module').value;
 
 	var fieldname = id.options[id.options.selectedIndex].value;
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody: 'module=Tooltip&action=TooltipAjax&file=EditQuickView&field_name='+fieldname+'&module_name='+modulename+'&parenttab=Settings&ajax=true',
-			onComplete: function(response) {
-				if(response.responseText == false){
+			jQuery.ajax({
+					method: 'POST',
+					url: 'index.php?module=Tooltip&action=TooltipAjax&file=EditQuickView&field_name='+fieldname+'&module_name='+modulename+'&parenttab=Settings&ajax=true'
+			}).done(function (response) {
+				if(response == false){
 					alert(alert_arr.ERR_FIELD_SELECTION);
 				}else{
-					var related_fields = response.responseText;
-					$('fieldList').innerHTML = related_fields;
+					var related_fields = response;
+					document.getElementById('fieldList').innerHTML = related_fields;
 				}
 			}
-		}
 	);
 }
 
@@ -36,22 +33,19 @@ function getRelatedFieldInfo(id){
  * this function saves the tooltip related information in the database using an ajax call
  */
 function saveTooltipInformation(fieldid, checkedFields){
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody: 'module=Tooltip&action=TooltipAjax&file=SaveTooltipInformation&fieldid='+fieldid+'&checkedFields='+checkedFields+'&parenttab=Settings&ajax=true',
-			onComplete: function(response) {
-				if(response.responseText == "FAILURE"){
+			jQuery.ajax({
+					method: 'POST',
+					url: 'index.php?module=Tooltip&action=TooltipAjax&file=SaveTooltipInformation&fieldid='+fieldid+'&checkedFields='+checkedFields+'&parenttab=Settings&ajax=true'
+			}).done(function (response) {
+				if(response == "FAILURE"){
 					alert(alert_arr.ERR_FIELD_SELECTION);
 					return false;
 				}else{
 					//success
 					var div = document.getElementById('fieldList');
-					div.innerHTML = response.responseText;
+					div.innerHTML = response;
 				}
 			}
-		}
 	);
 }
 

@@ -110,33 +110,30 @@ function dtlViewAjaxDirectFieldSave(fieldValue,module,tableName,fieldName,crmId,
 	if(module == 'Users') {
 		data += "&form_token=" + (document.getElementsByName('form_token')[0].value);
 	}
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-		method: 'post',
-		postBody: data,
-		onComplete: function(response) {
-			if(response.responseText.indexOf(":#:FAILURE")>-1) {
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?'+data
+	}).done(function (response) {
+			if(response.indexOf(":#:FAILURE")>-1) {
 				alert(alert_arr.ERROR_WHILE_EDITING);
 			}
-			else if(response.responseText.indexOf(":#:ERR")>-1) {
-				alert_str = response.responseText.replace(":#:ERR","");
+			else if(response.indexOf(":#:ERR")>-1) {
+				alert_str = response.replace(":#:ERR","");
 				alert(alert_str);
-				$("vtbusy_info").style.display="none";
+				document.getElementById("vtbusy_info").style.display="none";
 			}
-			else if(response.responseText.indexOf(":#:SUCCESS")>-1) {
+			else if(response.indexOf(":#:SUCCESS")>-1) {
 				//For HD & FAQ - comments, we should empty the field value
 				if((module == "HelpDesk" || module == "Faq") && fieldName == "comments") {
-					var comments = response.responseText.replace(":#:SUCCESS","");
+					var comments = response.replace(":#:SUCCESS","");
 					if(getObj("comments_div") != null) getObj("comments_div").innerHTML = comments;
 					if(getObj(dtlView) != null) getObj(dtlView).innerHTML = "";
 					if(getObj("comments") != null) getObj("comments").value = "";
 				} else {
 					if (okmsg != null && okmsg!= '') alert(okmsg);
 				}
-				$("vtbusy_info").style.display="none";
+				document.getElementById("vtbusy_info").style.display="none";
 			}
-		}
 		}
 	);
 }
@@ -168,7 +165,7 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 		else if(assign_type_G == true)
 		{
 			var txtBox= 'txtbox_G'+fieldLabel;
-			var group_id = encodeURIComponent($(txtBox).options[$(txtBox).selectedIndex].text);
+			var group_id = encodeURIComponent(document.getElementById(txtBox).options[document.getElementById(txtBox).selectedIndex].text);
 			var groupurl = "&assigned_group_id="+group_id+"&assigntype=T";
 		}
 	}
@@ -187,7 +184,7 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 	else if(globaluitype == 33 || globaluitype == 3313)
 	{
 		var txtBox= "txtbox_"+ fieldLabel;
-		var oMulSelect = $(txtBox);
+		var oMulSelect = document.getElementById(txtBox);
 		var r = new Array();
 		var notaccess_label = new Array();
 		for (iter=0;iter < oMulSelect.options.length ; iter++) {
@@ -204,7 +201,7 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 	var popupTxt= "popuptxt_"+ fieldLabel;
 	var hdTxt = "hdtxt_"+ fieldLabel;
 
-	$("vtbusy_info").style.display="inline";
+	document.getElementById("vtbusy_info").style.display="inline";
 	var isAdmin = document.getElementById("hdtxt_IsAdmin").value;
 
 	//overriden the tagValue based on UI Type for checkbox 
@@ -264,40 +261,37 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 	if(module == 'Users') {
 		data += "&form_token=" + (document.getElementsByName('form_token')[0].value);
 	}
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-		method: 'post',
-		postBody: data,
-		onComplete: function(response) {
-			if(response.responseText.indexOf(":#:FAILURE")>-1) {
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?'+ data
+	}).done(function (response) {
+			if(response.indexOf(":#:FAILURE")>-1) {
 				alert(alert_arr.ERROR_WHILE_EDITING);
 			}
-			else if(response.responseText.indexOf(":#:ERR")>-1) {
-				alert_str = response.responseText.replace(":#:ERR","");
+			else if(response.indexOf(":#:ERR")>-1) {
+				alert_str = response.replace(":#:ERR","");
 				alert(alert_str);
-				$("vtbusy_info").style.display="none";
+				document.getElementById("vtbusy_info").style.display="none";
 			}
-			else if(response.responseText.indexOf(":#:SUCCESS")>-1) {
+			else if(response.indexOf(":#:SUCCESS")>-1) {
 				//For HD & FAQ - comments, we should empty the field value
 				if((module == "HelpDesk" || module == "Faq") && fieldName == "comments") {
-					var comments = response.responseText.replace(":#:SUCCESS","");
+					var comments = response.replace(":#:SUCCESS","");
 					if(getObj("comments_div") != null) getObj("comments_div").innerHTML = comments;
 					if(getObj(dtlView) != null) getObj(dtlView).innerHTML = "";
 					if(getObj("comments") != null) getObj("comments").value = "";
 				}
-				$("vtbusy_info").style.display="none";
+				document.getElementById("vtbusy_info").style.display="none";
 			}
-		}
 		}
 	);
 	tagValue = get_converted_html(tagValue);
 	if(uitype == '13' || uitype == '104')
 	{
 		var temp_fieldname = 'internal_mailer_'+fieldName;
-		if($(temp_fieldname))
+		if(document.getElementById(temp_fieldname))
 		{
-			var mail_chk_arr = $(temp_fieldname).innerHTML.split("####");
+			var mail_chk_arr = document.getElementById(temp_fieldname).innerHTML.split("####");
 			var fieldId = mail_chk_arr[0];
 			var internal_mailer_flag = mail_chk_arr[1];
 			if(internal_mailer_flag == 1)
@@ -533,24 +527,21 @@ function dtlviewModuleValidation(fieldLabel,module,uitype,tableName,fieldName,cr
 
 function SaveTag(tagfield,crmId,module)
 {
-	var tagValue = $(tagfield).value;
+	var tagValue = document.getElementById(tagfield).value;
 	tagValue = encodeURIComponent(tagValue);
-	$("vtbusy_info").style.display="inline";
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-		method: 'post',
-		postBody: "file=TagCloud&module=" + module + "&action=" + module + "Ajax&recordid=" + crmId + "&ajxaction=SAVETAG&tagfields=" +tagValue,
-		onComplete: function(response) {
-			if(response.responseText.indexOf(":#:FAILURE") > -1)
+	document.getElementById("vtbusy_info").style.display="inline";
+	jQuery.ajax({
+			method: 'POST',
+			url: "index.php?file=TagCloud&module=" + module + "&action=" + module + "Ajax&recordid=" + crmId + "&ajxaction=SAVETAG&tagfields=" +tagValue
+	}).done(function (response) {
+			if(response.indexOf(":#:FAILURE") > -1)
 			{
 				alert(alert_arr.VALID_DATA);
 			}else{
-				getObj('tagfields').innerHTML = response.responseText;
-				$(tagfield).value = '';
+				getObj('tagfields').innerHTML = response;
+				document.getElementById(tagfield).value = '';
 			}
-			$("vtbusy_info").style.display="none";
-		}
+			document.getElementById("vtbusy_info").style.display="none";
 		}
 	);
 }
@@ -592,7 +583,7 @@ function hndMouseClick(fieldLabel)
 	globaleditareaspanid="editarea_"+ fieldLabel;//textareapanid;
 	globalfieldlabel = fieldLabel;
 	globaltxtboxid="txtbox_"+ fieldLabel;//textboxpanid;
-	$(globaltxtboxid).value = $(globaldtlviewspanid).innerHTML;
+	document.getElementById(globaltxtboxid).value = document.getElementById(globaldtlviewspanid).innerHTML;
 	handleEdit();
-	$(globaltxtboxid).select();
+	jQuery("#"+globaltxtboxid).select();
 }

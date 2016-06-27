@@ -8,10 +8,6 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script language="JavaScript" type="text/javascript" src="modules/MailManager/resources/jquery-1.6.2.min.js"></script>
-<script type="text/javascript" charset="utf-8">
-	jQuery.noConflict();
-</script>
 <script language="JavaScript" type="text/javascript" src="modules/Import/resources/Import.js"></script>
 
 <form onsubmit="VtigerJS_DialogBox.block();" action="index.php" enctype="multipart/form-data" method="POST" name="importBasic">

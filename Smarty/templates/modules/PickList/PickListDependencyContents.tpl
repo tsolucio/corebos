@@ -58,7 +58,7 @@
 				</ul>
 			</td>
 			<td align="right" valign="top">
-				<input type="button" class="small create" onclick="show('sourceValuesSelectionDiv');placeAtCenter($('sourceValuesSelectionDiv'));"
+				<input type="button" class="small create" onclick="show('sourceValuesSelectionDiv');placeAtCenter(document.getElementById('sourceValuesSelectionDiv'));"
 					    value="{'LBL_BUTTON_SELECTED_SOURCE_VALUES'|@getTranslatedString:$PICKLIST_MODULE}"
 						title="{'LBL_BUTTON_SELECTED_SOURCE_VALUES'|@getTranslatedString:$PICKLIST_MODULE}"/>
 

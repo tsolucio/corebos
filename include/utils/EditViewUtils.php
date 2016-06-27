@@ -2055,7 +2055,7 @@ function getBlockInformation($module, $result, $col_fields,$tabid,$block_label,$
 		$generatedtype = $adb->query_result($result,$i,"generatedtype");
 		$typeofdata = $adb->query_result($result,$i,"typeofdata");
 		$defaultvalue = $adb->query_result($result,$i,"defaultvalue");
-		if($mode == '' && empty($col_fields[$fieldname]) && !$isduplicate) {
+		if(($mode == '' or $mode == 'create') && empty($col_fields[$fieldname]) && !$isduplicate) {
 			$col_fields[$fieldname] = $defaultvalue;
 		}
 		$custfld = getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields,$generatedtype,$module,$mode,$typeofdata);

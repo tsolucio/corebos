@@ -12,163 +12,155 @@
  * @param string typeName - the selected option
  */
 function chooseType(typeName){
-	$('vtbusy_info').style.display="inline";
-	$('stufftype_id').value=typeName;
+	document.getElementById('vtbusy_info').style.display="inline";
+	document.getElementById('stufftype_id').value=typeName;
 
 	var typeLabel = typeName;
 	if(alert_arr[typeName] != null && alert_arr[typeName] != "" && alert_arr[typeName] != 'undefined'){
 		typeLabel = alert_arr[typeName];
 	}
 	if(typeLabel == 'defaultwidget'){
-		$('divHeader').innerHTML="<b>"+alert_arr.LBL_SELECT+"</b>";
-		$('vtbusy_info').style.display="inline";
-		new Ajax.Request(
-			'index.php',
-			{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody:'module=Home&action=HomeAjax&file=HomestuffAjax&home=homewidget',
-			onComplete: function(response){
-				var responseVal=response.responseText;
-				$('home').innerHTML=response.responseText;
+		document.getElementById('divHeader').innerHTML="<b>"+alert_arr.LBL_SELECT+"</b>";
+		document.getElementById('vtbusy_info').style.display="inline";
+		jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&home=homewidget'
+		}).done(function (response) {
+				var responseVal=response;
+				document.getElementById('home').innerHTML=response;
 				show('addWidgetsDiv');
-				placeAtCenter($('addWidgetsDiv'));
-				$('homewidget').style.display="block";
-				$('moduleNameRow').style.display="none";
-				$('moduleFilterRow').style.display="none";
-				$('modulePrimeRow').style.display="none";
-				$('rssRow').style.display="none";
-				$('showrow').style.display="none";
-				$('dashTypeRow').style.display="none";
-				$('dashNameRow').style.display="none";
-				$('StuffTitleId').style.display="none";
-				$('vtbusy_info').style.display="none";
-				$('reportNameRow').style.display="none";
-				$('reportTypeRow').style.display="none";
-			}
+				placeAtCenter(document.getElementById('addWidgetsDiv'));
+				document.getElementById('homewidget').style.display="block";
+				document.getElementById('moduleNameRow').style.display="none";
+				document.getElementById('moduleFilterRow').style.display="none";
+				document.getElementById('modulePrimeRow').style.display="none";
+				document.getElementById('rssRow').style.display="none";
+				document.getElementById('showrow').style.display="none";
+				document.getElementById('dashTypeRow').style.display="none";
+				document.getElementById('dashNameRow').style.display="none";
+				document.getElementById('StuffTitleId').style.display="none";
+				document.getElementById('vtbusy_info').style.display="none";
+				document.getElementById('reportNameRow').style.display="none";
+				document.getElementById('reportTypeRow').style.display="none";
 			}
 		);
 	}else{
-			$('divHeader').innerHTML="<b>"+alert_arr.LBL_ADD+typeLabel+"</b>";
+			document.getElementById('divHeader').innerHTML="<b>"+alert_arr.LBL_ADD+typeLabel+"</b>";
 	}
 	if(typeName=='Module'){
-		$('moduleNameRow').style.display="block";
-		$('moduleFilterRow').style.display="block";
-		$('modulePrimeRow').style.display="block";
-		$('showrow').style.display="block";
-		$('rssRow').style.display="none";
-		$('dashNameRow').style.display="none";
-		$('dashTypeRow').style.display="none";
-		$('StuffTitleId').style.display="block";
-		$('homewidget').style.display="none";
-		$('reportNameRow').style.display="none";
-		$('reportTypeRow').style.display="none";
-		//$('homeURLField').style.display = "none";
+		document.getElementById('moduleNameRow').style.display="block";
+		document.getElementById('moduleFilterRow').style.display="block";
+		document.getElementById('modulePrimeRow').style.display="block";
+		document.getElementById('showrow').style.display="block";
+		document.getElementById('rssRow').style.display="none";
+		document.getElementById('dashNameRow').style.display="none";
+		document.getElementById('dashTypeRow').style.display="none";
+		document.getElementById('StuffTitleId').style.display="block";
+		document.getElementById('homewidget').style.display="none";
+		document.getElementById('reportNameRow').style.display="none";
+		document.getElementById('reportTypeRow').style.display="none";
+		//document.getElementById('homeURLField').style.display = "none";
 	}else if(typeName=='DashBoard'){
-		$('moduleNameRow').style.display="none";
-		$('moduleFilterRow').style.display="none";
-		$('modulePrimeRow').style.display="none";
-		$('rssRow').style.display="none";
-		$('showrow').style.display="none";
-		$('dashNameRow').style.display="block";
-		$('dashTypeRow').style.display="block";
-		$('StuffTitleId').style.display="block";
-		$('reportNameRow').style.display="none";
-        $('reportTypeRow').style.display="none";
-		$('homewidget').style.display="none";
-		//$('homeURLField').style.display = "none";
-		new Ajax.Request(
-			'index.php',
-			{queue: {position: 'end', scope: 'command'},
-				method: 'post',
-				postBody:'module=Home&action=HomeAjax&file=HomestuffAjax&dash=dashboard',
-				onComplete: function(response){
-					var responseVal=response.responseText;
-					$('selDashName').innerHTML=response.responseText;
+		document.getElementById('moduleNameRow').style.display="none";
+		document.getElementById('moduleFilterRow').style.display="none";
+		document.getElementById('modulePrimeRow').style.display="none";
+		document.getElementById('rssRow').style.display="none";
+		document.getElementById('showrow').style.display="none";
+		document.getElementById('dashNameRow').style.display="block";
+		document.getElementById('dashTypeRow').style.display="block";
+		document.getElementById('StuffTitleId').style.display="block";
+		document.getElementById('reportNameRow').style.display="none";
+        document.getElementById('reportTypeRow').style.display="none";
+		document.getElementById('homewidget').style.display="none";
+		//document.getElementById('homeURLField').style.display = "none";
+		jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&dash=dashboard'
+		}).done(function (response) {
+					var responseVal=response;
+					document.getElementById('selDashName').innerHTML=response;
 					show('addWidgetsDiv');
-					placeAtCenter($('addWidgetsDiv'));
-					$('vtbusy_info').style.display="none";
+					placeAtCenter(document.getElementById('addWidgetsDiv'));
+					document.getElementById('vtbusy_info').style.display="none";
 				}
-			}
 		);
 	}else if(typeName=='RSS'){
-		$('moduleNameRow').style.display="none";
-		$('moduleFilterRow').style.display="none";
-		$('modulePrimeRow').style.display="none";
-		$('showrow').style.display="block";
-		$('rssRow').style.display="block";
-		$('dashNameRow').style.display="none";
-		$('dashTypeRow').style.display="none";
-		$('StuffTitleId').style.display="block";
-		$('homewidget').style.display="none";
-		$('vtbusy_info').style.display="none";
-		$('reportNameRow').style.display="none";
-		$('reportTypeRow').style.display="none";
-		//$('homeURLField').style.display = "none";
+		document.getElementById('moduleNameRow').style.display="none";
+		document.getElementById('moduleFilterRow').style.display="none";
+		document.getElementById('modulePrimeRow').style.display="none";
+		document.getElementById('showrow').style.display="block";
+		document.getElementById('rssRow').style.display="block";
+		document.getElementById('dashNameRow').style.display="none";
+		document.getElementById('dashTypeRow').style.display="none";
+		document.getElementById('StuffTitleId').style.display="block";
+		document.getElementById('homewidget').style.display="none";
+		document.getElementById('vtbusy_info').style.display="none";
+		document.getElementById('reportNameRow').style.display="none";
+		document.getElementById('reportTypeRow').style.display="none";
+		//document.getElementById('homeURLField').style.display = "none";
 	}else if(typeName=='Default'){
-		$('moduleNameRow').style.display="none";
-		$('moduleFilterRow').style.display="none";
-		$('modulePrimeRow').style.display="none";
-		$('showrow').style.display="none";
-		$('rssRow').style.display="none";
-		$('dashNameRow').style.display="none";
-		$('dashTypeRow').style.display="none";
-		$('StuffTitleId').style.display="none";
-		$('homewidget').style.display="none";
-		$('url_id').style.display = "none";
-		$('reportNameRow').style.display="none";
-		$('reportTypeRow').style.display="none";
+		document.getElementById('moduleNameRow').style.display="none";
+		document.getElementById('moduleFilterRow').style.display="none";
+		document.getElementById('modulePrimeRow').style.display="none";
+		document.getElementById('showrow').style.display="none";
+		document.getElementById('rssRow').style.display="none";
+		document.getElementById('dashNameRow').style.display="none";
+		document.getElementById('dashTypeRow').style.display="none";
+		document.getElementById('StuffTitleId').style.display="none";
+		document.getElementById('homewidget').style.display="none";
+		document.getElementById('url_id').style.display = "none";
+		document.getElementById('reportNameRow').style.display="none";
+		document.getElementById('reportTypeRow').style.display="none";
 	}else if(typeName == 'Notebook'){
-		$('moduleNameRow').style.display="none";
-		$('moduleFilterRow').style.display="none";
-		$('modulePrimeRow').style.display="none";
-		$('showrow').style.display="none";
-		$('rssRow').style.display="none";
-		$('dashNameRow').style.display="none";
-		$('dashTypeRow').style.display="none";
-		$('StuffTitleId').style.display="block";
-		$('vtbusy_info').style.display="none";
-		$('homewidget').style.display="none";
-		$('reportNameRow').style.display="none";
-		$('reportTypeRow').style.display="none";
-		//$('homeURLField').style.display = "none";
+		document.getElementById('moduleNameRow').style.display="none";
+		document.getElementById('moduleFilterRow').style.display="none";
+		document.getElementById('modulePrimeRow').style.display="none";
+		document.getElementById('showrow').style.display="none";
+		document.getElementById('rssRow').style.display="none";
+		document.getElementById('dashNameRow').style.display="none";
+		document.getElementById('dashTypeRow').style.display="none";
+		document.getElementById('StuffTitleId').style.display="block";
+		document.getElementById('vtbusy_info').style.display="none";
+		document.getElementById('homewidget').style.display="none";
+		document.getElementById('reportNameRow').style.display="none";
+		document.getElementById('reportTypeRow').style.display="none";
+		//document.getElementById('homeURLField').style.display = "none";
 	}
 	else if(typeName == 'ReportCharts'){
-		$('moduleNameRow').style.display="none";
-		$('moduleFilterRow').style.display="none";
-		$('modulePrimeRow').style.display="none";
-		$('rssRow').style.display="none";
-		$('showrow').style.display="none";
-		$('StuffTitleId').style.display="block";
-		$('reportNameRow').style.display="block";
-		$('reportTypeRow').style.display="block";
-		$('vtbusy_info').style.display="none";
-		$('dashNameRow').style.display="none";
-		$('dashTypeRow').style.display="none";
-		$('homewidget').style.display="none";
-		new Ajax.Request(
-			'index.php',
-			{queue: {position: 'end', scope: 'command'},
-				method: 'post',
-				postBody: 'module=Home&action=HomeAjax&file=HomeReportChart&ajax=true',
-				onComplete: function(response) {
-					$('selReportName').innerHTML=response.responseText;
+		document.getElementById('moduleNameRow').style.display="none";
+		document.getElementById('moduleFilterRow').style.display="none";
+		document.getElementById('modulePrimeRow').style.display="none";
+		document.getElementById('rssRow').style.display="none";
+		document.getElementById('showrow').style.display="none";
+		document.getElementById('StuffTitleId').style.display="block";
+		document.getElementById('reportNameRow').style.display="block";
+		document.getElementById('reportTypeRow').style.display="block";
+		document.getElementById('vtbusy_info').style.display="none";
+		document.getElementById('dashNameRow').style.display="none";
+		document.getElementById('dashTypeRow').style.display="none";
+		document.getElementById('homewidget').style.display="none";
+		jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?module=Home&action=HomeAjax&file=HomeReportChart&ajax=true'
+		}).done(function (response) {
+					document.getElementById('selReportName').innerHTML=response;
 					show('addWidgetsDiv');
-					placeAtCenter($('addWidgetsDiv'));
-					$('vtbusy_info').style.display="none";
+					placeAtCenter(document.getElementById('addWidgetsDiv'));
+					document.getElementById('vtbusy_info').style.display="none";
 				}
-			});
+			);
 	}
 	/*else if(typeName == 'URL'){
-		$('moduleNameRow').style.display="none";
-		$('moduleFilterRow').style.display="none";
-		$('modulePrimeRow').style.display="none";
-		$('showrow').style.display="none";
-		$('rssRow').style.display="none";
-		$('dashNameRow').style.display="none";
-		$('dashTypeRow').style.display="none";
-		$('StuffTitleId').style.display="block";
-		$('vtbusy_info').style.display="none";
-		//$('homeURLField').style.display = "block";
+		document.getElementById('moduleNameRow').style.display="none";
+		document.getElementById('moduleFilterRow').style.display="none";
+		document.getElementById('modulePrimeRow').style.display="none";
+		document.getElementById('showrow').style.display="none";
+		document.getElementById('rssRow').style.display="none";
+		document.getElementById('dashNameRow').style.display="none";
+		document.getElementById('dashTypeRow').style.display="none";
+		document.getElementById('StuffTitleId').style.display="block";
+		document.getElementById('vtbusy_info').style.display="none";
+		//document.getElementById('homeURLField').style.display = "block";
 	}*/
 }
 
@@ -180,19 +172,16 @@ function setFilter(modName){
 	var modval=modName.value;
 	document.getElementById('savebtn').disabled = true;
 	if(modval!=""){
-		new Ajax.Request(
-       		'index.php',
-			{queue: {position: 'end', scope: 'command'},
-				method: 'post',
-				postBody:'module=Home&action=HomeAjax&file=HomestuffAjax&modname='+modval,
-				onComplete: function(response){
-					var responseVal=response.responseText;
-					$('selModFilter_id').innerHTML=response.responseText;
+		jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&modname='+modval
+		}).done(function (response) {
+					var responseVal=response;
+					document.getElementById('selModFilter_id').innerHTML=response;
 					setPrimaryFld(document.getElementById('selFilterid'));
 					show('addWidgetsDiv');
-					placeAtCenter($('addWidgetsDiv'));
+					placeAtCenter(document.getElementById('addWidgetsDiv'));
 				}
-			}
 		);
 	}
 }
@@ -203,20 +192,17 @@ function setFilter(modName){
  */
 function setPrimaryFld(Primeval){
 	primecvid=Primeval.value;
-	var fldmodule = $('selmodule_id').options[$('selmodule_id').selectedIndex].value;
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-		method: 'post',
-		postBody:'module=Home&action=HomeAjax&file=HomestuffAjax&primecvid='+primecvid+'&fieldmodname='+fldmodule,
-		onComplete: function(response){
-			var responseVal=response.responseText;
-			$('selModPrime_id').innerHTML=response.responseText;
-			$('selPrimeFldid').selectedIndex = 0;
-			$('vtbusy_info').style.display="none";
+	var fldmodule = document.getElementById('selmodule_id').options[document.getElementById('selmodule_id').selectedIndex].value;
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&primecvid='+primecvid+'&fieldmodname='+fldmodule
+	}).done(function (response) {
+			var responseVal=response;
+			document.getElementById('selModPrime_id').innerHTML=response;
+			document.getElementById('selPrimeFldid').selectedIndex = 0;
+			document.getElementById('vtbusy_info').style.display="none";
 			document.getElementById('savebtn').disabled = false;
 		}
-	}
 	);
 }
 
@@ -225,7 +211,7 @@ function setPrimaryFld(Primeval){
  * @param string sid - the id of the widget for which the div is being displayed
  */
 function showEditrow(sid){
-	$('editRowmodrss_'+sid).className="show_tab";
+	document.getElementById('editRowmodrss_'+sid).className="show_tab";
 }
 
 /**
@@ -233,7 +219,7 @@ function showEditrow(sid){
  * @param string editRow - the id of the div
  */
 function cancelEntries(editRow){
-	$(editRow).className="hide_tab";
+	document.getElementById(editRow).className="hide_tab";
 }
 
 /**
@@ -243,20 +229,17 @@ function cancelEntries(editRow){
 function saveEntries(selMaxName){
 	sidarr=selMaxName.split("_");
 	sid=sidarr[1];
-	$('refresh_'+sid).innerHTML=$('vtbusy_homeinfo').innerHTML;
+	document.getElementById('refresh_'+sid).innerHTML=document.getElementById('vtbusy_homeinfo').innerHTML;
 	cancelEntries('editRowmodrss_'+sid);
-	showmax=$(selMaxName).value;
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody:'module=Home&action=HomeAjax&file=HomestuffAjax&showmaxval='+showmax+'&sid='+sid,
-			onComplete: function(response){
-				var responseVal=response.responseText;
-				eval(response.responseText);
-				$('refresh_'+sid).innerHTML='';
+	showmax=document.getElementById(selMaxName).value;
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&showmaxval='+showmax+'&sid='+sid
+	}).done(function (response) {
+				var responseVal=response;
+				eval(response);
+				document.getElementById('refresh_'+sid).innerHTML='';
 			}
-		}
 	);
 }
 
@@ -264,26 +247,23 @@ function saveEntries(selMaxName){
  * this function is used to save the dashboard values
  */
 function saveEditDash(dashRowId){
-	$('refresh_'+dashRowId).innerHTML=$('vtbusy_homeinfo').innerHTML;
+	document.getElementById('refresh_'+dashRowId).innerHTML=document.getElementById('vtbusy_homeinfo').innerHTML;
 	cancelEntries('editRowmodrss_'+dashRowId);
 	var dashVal='';
 	var iter=0;
 	for(iter=0;iter<3;iter++){
-		if($('dashradio_'+[iter]).checked)
-			dashVal=$('dashradio_'+[iter]).value;
+		if(document.getElementById('dashradio_'+[iter]).checked)
+			dashVal=document.getElementById('dashradio_'+[iter]).value;
 	}
 	did=dashRowId;
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody:'module=Home&action=HomeAjax&file=HomestuffAjax&dashVal='+dashVal+'&did='+did,
-			onComplete: function(response){
-				var responseVal=response.responseText;
-				eval(response.responseText);
-				$('refresh_'+did).innerHTML='';
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&dashVal='+dashVal+'&did='+did
+	}).done(function (response) {
+				var responseVal=response;
+				eval(response);
+				document.getElementById('refresh_'+did).innerHTML='';
 			}
-		}
 	);
 }
 
@@ -293,27 +273,24 @@ function saveEditDash(dashRowId){
  */
 function DelStuff(sid){
 	if(confirm(alert_arr.SURE_TO_DELETE)){
-		new Ajax.Request(
-			'index.php',
-			{queue: {position: 'end', scope: 'command'},
-				method: 'post',
-				postBody:'module=Home&action=HomeAjax&file=HomestuffAjax&homestuffid='+sid,
-				onComplete: function(response){
-					var responseVal=response.responseText;
-					if(response.responseText.indexOf('SUCCESS') > -1){
-						var delchild = $('stuff_'+sid);
-						odeletedChild = $('MainMatrix').removeChild(delchild);
-						$('seqSettings').innerHTML= '<table cellpadding="10" cellspacing="0" border="0" width="100%" class="vtResultPop small"><tr><td align="center">Widget deleted sucessfully.</td></tr></table>';
-						$('seqSettings').style.display = 'block';
-						$('seqSettings').style.display = 'none';
-						placeAtCenter($('seqSettings'));
-						Effect.Appear('seqSettings');
+		jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&homestuffid='+sid,
+		}).done(function (response) {
+					var responseVal=response;
+					if(response.indexOf('SUCCESS') > -1){
+						var delchild = document.getElementById('stuff_'+sid);
+						odeletedChild = document.getElementById('MainMatrix').removeChild(delchild);
+						document.getElementById('seqSettings').innerHTML= '<table cellpadding="10" cellspacing="0" border="0" width="100%" class="vtResultPop small"><tr><td align="center">Widget deleted sucessfully.</td></tr></table>';
+						document.getElementById('seqSettings').style.display = 'block';
+						document.getElementById('seqSettings').style.display = 'none';
+						placeAtCenter(document.getElementById('seqSettings'));
+						jQuery('#seqSettings').fadeIn();
 						setTimeout(hideSeqSettings,3000);
 					}else{
 						alert(alert_arr.ERROR_DELETING_TRY_AGAIN);
 					}
 				}
-			}
 		);
 	}
 }
@@ -325,21 +302,18 @@ function DelStuff(sid){
  */
 function loadAddedDiv(stuffid,stufftype){
 	gstuffId = stuffid;
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody:'module=Home&action=HomeAjax&file=NewBlock&stuffid='+stuffid+'&stufftype='+stufftype,
-			onComplete: function(response){
-				var responseVal=response.responseText;
-				$('MainMatrix').style.display= 'none';
-				$('MainMatrix').innerHTML = response.responseText + $('MainMatrix').innerHTML;
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=Home&action=HomeAjax&file=NewBlock&stuffid='+stuffid+'&stufftype='+stufftype
+	}).done(function (response) {
+				var responseVal=response;
+				document.getElementById('MainMatrix').style.display= 'none';
+				document.getElementById('MainMatrix').innerHTML = response + document.getElementById('MainMatrix').innerHTML;
 				positionDivInAccord('stuff_'+gstuffId,'',stufftype);
 				initHomePage();
 				loadStuff(stuffid,stufftype);
-				$('MainMatrix').style.display='block';
+				document.getElementById('MainMatrix').style.display='block';
 			}
-		}
 	);
 }
 
@@ -349,39 +323,37 @@ function loadAddedDiv(stuffid,stufftype){
  * @param string stufftype - the type of the widget
  */
 function loadStuff(stuffid,stufftype){
-	$('refresh_'+stuffid).innerHTML=$('vtbusy_homeinfo').innerHTML;
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody:'module=Home&action=HomeAjax&file=HomeBlock&homestuffid='+stuffid+'&blockstufftype='+stufftype,
-			onComplete: function(response){
-				var responseVal=response.responseText;
-				$('stuffcont_'+stuffid).innerHTML=response.responseText;
+	document.getElementById('refresh_'+stuffid).innerHTML=document.getElementById('vtbusy_homeinfo').innerHTML;
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=Home&action=HomeAjax&file=HomeBlock&homestuffid='+stuffid+'&blockstufftype='+stufftype
+	}).done(function (response) {
+				var responseVal=response;
+				document.getElementById('stuffcont_'+stuffid).innerHTML=response;
 				if(stufftype=="Module"){
-					if($('more_'+stuffid).value != null && $('more_'+stuffid).value != '')
-						$('a_'+stuffid).href = "index.php?module="+$('more_'+stuffid).value+"&action=ListView&viewname="+$('cvid_'+stuffid).value;
+					if(document.getElementById('more_'+stuffid).value != null && document.getElementById('more_'+stuffid).value != '')
+						document.getElementById('a_'+stuffid).href = "index.php?module="+document.getElementById('more_'+stuffid).value+"&action=ListView&viewname="+document.getElementById('cvid_'+stuffid).value;
 				}
-				if(stufftype=="Default" && typeof($('a_'+stuffid)) != 'undefined'){
-					if($('more_'+stuffid).value != ''){
-						$('a_'+stuffid).style.display = 'block';
-						var url = "index.php?module="+$('more_'+stuffid).value+"&action=index";
-						if($('search_qry_'+stuffid)!=''){
-							url += $('search_qry_'+stuffid).value;
+				if(stufftype=="Default" && typeof(document.getElementById('a_'+stuffid)) != 'undefined'){
+					if(document.getElementById('more_'+stuffid).value != ''){
+						document.getElementById('a_'+stuffid).style.display = 'block';
+						var url = "index.php?module="+document.getElementById('more_'+stuffid).value+"&action=index";
+						if(document.getElementById('search_qry_'+stuffid)!=''){
+							url += document.getElementById('search_qry_'+stuffid).value;
 						}
-						$('a_'+stuffid).href = url;
+						document.getElementById('a_'+stuffid).href = url;
 					}else{
-						$('a_'+stuffid).style.display = 'none';
+						document.getElementById('a_'+stuffid).style.display = 'none';
 					}
 				}
 				if(stufftype=="RSS"){
-					$('a_'+stuffid).href = $('more_'+stuffid).value;
+					document.getElementById('a_'+stuffid).href = document.getElementById('more_'+stuffid).value;
 				}
 				if(stufftype=="DashBoard"){
-					$('a_'+stuffid).href = "index.php?module=Dashboard&action=index&type="+$('more_'+stuffid).value;
+					document.getElementById('a_'+stuffid).href = "index.php?module=Dashboard&action=index&type="+document.getElementById('more_'+stuffid).value;
 				}
 				if(stufftype=="ReportCharts"){
-					$('a_'+stuffid).href = "index.php?module=Reports&action=SaveAndRun&record="+$('more_'+stuffid).value;
+					document.getElementById('a_'+stuffid).href = "index.php?module=Reports&action=SaveAndRun&record="+document.getElementById('more_'+stuffid).value;
 				}
 				if(stufftype=="Tag Cloud"){
 					TagCanvas.Start('tagcloudCanvas', '', {
@@ -391,9 +363,8 @@ function loadStuff(stuffid,stufftype){
 						weightMode: 'both'
 					});
 				}
-				$('refresh_'+stuffid).innerHTML='';
+				document.getElementById('refresh_'+stuffid).innerHTML='';
 			}
-		}
 	);
 }
 
@@ -404,47 +375,45 @@ function loadAllWidgets(widgetInfoList, batchSize){
 		var widgetId = widgetInfoList[index].widgetId;
 		var widgetType = widgetInfoList[index].widgetType;
 		widgetInfo[widgetId] = widgetType;
-		$('refresh_'+widgetId).innerHTML=$('vtbusy_homeinfo').innerHTML;
+		document.getElementById('refresh_'+widgetId).innerHTML=document.getElementById('vtbusy_homeinfo').innerHTML;
 		batchWidgetInfoList.push(widgetInfoList[index]);
 		if((index > 0 && (index+1) % batchSize == 0) || index+1 == widgetInfoList.length) {
-			new Ajax.Request(
-				'index.php',{
-					queue: {position: 'end', scope: 'command'},
-					method: 'post',
-					postBody:'module=Home&action=HomeAjax&file=HomeWidgetBlockList&widgetInfoList='
-						+ JSON.stringify(batchWidgetInfoList),
-					onComplete: function(response){
-						var responseVal=JSON.parse(response.responseText);
+			jQuery.ajax({
+					method: 'POST',
+					url: 'index.php?module=Home&action=HomeAjax&file=HomeWidgetBlockList&widgetInfoList='
+						+ JSON.stringify(batchWidgetInfoList)
+			}).done(function (response) {
+						var responseVal=JSON.parse(response);
 						var tagcloudfound = false;
 						for(var widgetId in responseVal) {
 							if(responseVal.hasOwnProperty(widgetId)) {
-								$('stuffcont_'+widgetId).innerHTML = responseVal[widgetId];
-								$('refresh_'+widgetId).innerHTML='';
+								document.getElementById('stuffcont_'+widgetId).innerHTML = responseVal[widgetId];
+								document.getElementById('refresh_'+widgetId).innerHTML='';
 								var widgetType = widgetInfo[widgetId];
-								if(widgetType=="Module" && $('more_'+widgetId).value != null &&
-										$('more_'+widgetId).value != '') {
-									$('a_'+widgetId).href = "index.php?module="+
-									$('more_'+widgetId).value+"&action=ListView&viewname="+
-									$('cvid_'+widgetId).value;
-								} else if(widgetType == "Default" && typeof($('a_'+widgetId)) !=
-										'undefined'){
-									if(typeof $('more_'+widgetId) != 'undefined' &&
-											$('more_'+widgetId).value != ''){
-										$('a_'+widgetId).style.display = 'block';
-										var url = "index.php?module="+$('more_'+widgetId).value+
+								if(widgetType=="Module" && document.getElementById('more_'+widgetId).value != null &&
+										document.getElementById('more_'+widgetId).value != '') {
+									document.getElementById('a_'+widgetId).href = "index.php?module="+
+									document.getElementById('more_'+widgetId).value+"&action=ListView&viewname="+
+									document.getElementById('cvid_'+widgetId).value;
+								} else if(widgetType == "Default" && typeof(document.getElementById('a_'+widgetId)) != 'undefined'
+									&& document.getElementById('a_'+widgetId) != null){
+									if(typeof document.getElementById('more_'+widgetId) != 'undefined' &&
+											document.getElementById('more_'+widgetId).value != ''){
+										document.getElementById('a_'+widgetId).style.display = 'block';
+										var url = "index.php?module="+document.getElementById('more_'+widgetId).value+
 											"&action=index";
-										if($('search_qry_'+widgetId)!=''){
-											url += $('search_qry_'+widgetId).value;
+										if(document.getElementById('search_qry_'+widgetId)!=''){
+											url += document.getElementById('search_qry_'+widgetId).value;
 										}
-										$('a_'+widgetId).href = url;
+										document.getElementById('a_'+widgetId).href = url;
 									}else{
-										$('a_'+widgetId).style.display = 'none';
+										document.getElementById('a_'+widgetId).style.display = 'none';
 									}
 								} else if(widgetType=="RSS"){
-									$('a_'+widgetId).href = $('more_'+widgetId).value;
+									document.getElementById('a_'+widgetId).href = document.getElementById('more_'+widgetId).value;
 								} else if(widgetType=="DashBoard"){
-									$('a_'+widgetId).href = "index.php?module=Dashboard&action="+
-										"index&type="+$('more_'+stuffid).value;
+									document.getElementById('a_'+widgetId).href = "index.php?module=Dashboard&action="+
+										"index&type="+document.getElementById('more_'+stuffid).value;
 								} else if(widgetType=="Tag Cloud"){
 									tagcloudfound = true;
 								}
@@ -459,7 +428,6 @@ function loadAllWidgets(widgetInfoList, batchSize){
 							});
 						}
 					}
-				}
 			);
 			batchWidgetInfoList = [];
 		}
@@ -470,9 +438,9 @@ function loadAllWidgets(widgetInfoList, batchSize){
  * this function validates the form for creating a new widget
  */
 function frmValidate(){
-	if($('stufftype_id').value=="defaultwidget"){
+	if(document.getElementById('stufftype_id').value=="defaultwidget"){
 		var namelist = new Array();
-		$('vtbusy_info').style.display="block";
+		document.getElementById('vtbusy_info').style.display="block";
 		var elem = document.getElementsByName("names");
 		for(var i = 0; i < elem.length; i++){
 			if(elem[i].checked) {
@@ -481,28 +449,25 @@ function frmValidate(){
 		}
 
 		var values = JSON.stringify(namelist);
-		new Ajax.Request(
-			'index.php',
-			{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody: 'action=HomeAjax&module=Home&file=HomeWidgetsSave&values='+encodeURIComponent(values),
-			onComplete: function(response) {
-				$('addWidgetsDiv').style.display="none";
-				$('vtbusy_info').style.display="none";
+		jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?action=HomeAjax&module=Home&file=HomeWidgetsSave&values='+encodeURIComponent(values)
+		}).done(function (response) {
+				document.getElementById('addWidgetsDiv').style.display="none";
+				document.getElementById('vtbusy_info').style.display="none";
 				window.location.reload();
 			}
-		}
 	);
 	}else{
-		if(trim($('stufftitle_id').value)==""){
+		if(trim(document.getElementById('stufftitle_id').value)==""){
 			alert(alert_arr.LBL_ENTER_WINDOW_TITLE);
-			$('stufftitle_id').focus();
+			document.getElementById('stufftitle_id').focus();
 			return false;
 		}
-		if($('stufftype_id').value=="RSS"){
-			if($('txtRss_id').value==""){
+		if(document.getElementById('stufftype_id').value=="RSS"){
+			if(document.getElementById('txtRss_id').value==""){
 				alert(alert_arr.LBL_ENTER_RSS_URL);
-				$('txtRss_id').focus();
+				document.getElementById('txtRss_id').focus();
 				return false;
 			}
 		}
@@ -513,7 +478,7 @@ function frmValidate(){
 				return false;
 			}
 		}*/
-		if($('stufftype_id').value=="Module"){
+		if(document.getElementById('stufftype_id').value=="Module"){
 			var selLen;
 			var fieldval=new Array();
 			var cnt=0;
@@ -532,9 +497,9 @@ function frmValidate(){
 				document.Homestuff.fldname.value=fieldval;
 			}
 		}
-		var stufftype=$('stufftype_id').value;
-		var stufftitle=$('stufftitle_id').value;
-		$('stufftitle_id').value = '';
+		var stufftype=document.getElementById('stufftype_id').value;
+		var stufftitle=document.getElementById('stufftitle_id').value;
+		document.getElementById('stufftitle_id').value = '';
 		var selFiltername='';
 		var fldname='';
 		var selmodule='';
@@ -550,50 +515,47 @@ function frmValidate(){
 		if(stufftype=="Module"){
 			selFiltername =document.Homestuff.selFiltername[document.Homestuff.selFiltername.selectedIndex].value;
 			fldname = fieldval;
-			selmodule =$('selmodule_id').value;
-			maxentries =$('maxentryid').value;
+			selmodule =document.getElementById('selmodule_id').value;
+			maxentries =document.getElementById('maxentryid').value;
 		}else if(stufftype=="RSS"){
-			txtRss=$('txtRss_id').value;
-			maxentries =$('maxentryid').value;
+			txtRss=document.getElementById('txtRss_id').value;
+			maxentries =document.getElementById('maxentryid').value;
 		}/*else if(stufftype=="URL"){
-			txtURL=$('url_id').value;
+			txtURL=document.getElementById('url_id').value;
 		}*/else if(stufftype=="DashBoard"){
-			seldashbd=$('seldashbd_id').value;
-			seldashtype=$('seldashtype_id').value;
+			seldashbd=document.getElementById('seldashbd_id').value;
+			seldashtype=document.getElementById('seldashtype_id').value;
 		}else if(stufftype=="Default"){
 			seldeftype=document.Homestuff.seldeftype[document.Homestuff.seldeftype.selectedIndex].value;
 		}
 	else if(stufftype=="ReportCharts"){
-		selreport = $('selreportchart_id').value;
-		selreportcharttype = $('selreportcharttype_id').value;
+		selreport = document.getElementById('selreportchart_id').value;
+		selreportcharttype = document.getElementById('selreportcharttype_id').value;
 	}
 
 	var url="stufftype="+stufftype+"&stufftitle="+stufftitle+"&selmodule="+selmodule+"&maxentries="+maxentries+"&selFiltername="+selFiltername+"&fldname="+encodeURIComponent(fldname)+"&txtRss="+txtRss+"&seldashbd="+seldashbd+"&seldashtype="+seldashtype+"&seldeftype="+seldeftype+"&selreport="+selreport+"&selreportcharttype="+selreportcharttype;//+'&txtURL='+txtURL;
 		var stuffarr=new Array();
-		$('vtbusy_info').style.display="inline";
+		document.getElementById('vtbusy_info').style.display="inline";
 
-		new Ajax.Request(
-			'index.php',
-			{queue: {position: 'end', scope: 'command'},
-				method: 'post',
-				postBody:'module=Home&action=HomeAjax&file=Homestuff&'+url,
-				onComplete: function(response){
-					var responseVal=response.responseText;
-					if(!response.responseText){
+		jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?module=Home&action=HomeAjax&file=Homestuff&'+url
+		}).done(function (response) {
+					var responseVal=response;
+					if(!response){
 						alert(alert_arr.LBL_ADD_HOME_WIDGET);
-						$('vtbusy_info').style.display="none";
-						$('stufftitle_id').value='';
-						$('txtRss_id').value='';
+						document.getElementById('vtbusy_info').style.display="none";
+						document.getElementById('stufftitle_id').value='';
+						document.getElementById('txtRss_id').value='';
 						return false;
 					}else{
 						hide('addWidgetsDiv');
-						$('vtbusy_info').style.display="none";
-						$('stufftitle_id').value='';
-						$('txtRss_id').value='';
-						eval(response.responseText);
+						document.getElementById('vtbusy_info').style.display="none";
+						document.getElementById('stufftitle_id').value='';
+						document.getElementById('txtRss_id').value='';
+						eval(response);
 					}
 				}
-			}
 		);
 	}
 }
@@ -603,27 +565,24 @@ function frmValidate(){
  * @param string sid - the id of the widget
  */
 function HideDefault(sid){
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody:'module=Home&action=HomeAjax&file=HomestuffAjax&stuffid='+sid+"&act=hide",
-			onComplete: function(response){
-				var responseVal=response.responseText;
-				if(response.responseText.indexOf('SUCCESS') > -1){
-					var delchild = $('stuff_'+sid);
-					odeletedChild = $('MainMatrix').removeChild(delchild);
-					$('seqSettings').innerHTML= '<table cellpadding="10" cellspacing="0" border="0" width="100%" class="vtResultPop small"><tr><td align="center">'+alert_arr.LBL_WIDGET_HIDDEN+'.'+alert_arr.LBL_RESTORE_FROM_PREFERENCES+'.</td></tr></table>';
-					$('seqSettings').style.display = 'block';
-					$('seqSettings').style.display = 'none';
-					placeAtCenter($('seqSettings'));
-					Effect.Appear('seqSettings');
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&stuffid='+sid+"&act=hide"
+	}).done(function (response) {
+				var responseVal=response;
+				if(response.indexOf('SUCCESS') > -1){
+					var delchild = document.getElementById('stuff_'+sid);
+					odeletedChild = document.getElementById('MainMatrix').removeChild(delchild);
+					document.getElementById('seqSettings').innerHTML= '<table cellpadding="10" cellspacing="0" border="0" width="100%" class="vtResultPop small"><tr><td align="center">'+alert_arr.LBL_WIDGET_HIDDEN+'.'+alert_arr.LBL_RESTORE_FROM_PREFERENCES+'.</td></tr></table>';
+					document.getElementById('seqSettings').style.display = 'block';
+					document.getElementById('seqSettings').style.display = 'none';
+					placeAtCenter(document.getElementById('seqSettings'));
+					jQuery('#seqSettings').fadeIn();
 					setTimeout(hideSeqSettings,5000);
 				}else{
 					alert(alert_arr.ERR_HIDING + '.'+ alert_arr.MSG_TRY_AGAIN + '.');
 				}
 			}
-		}
 	);
 }
 
@@ -649,7 +608,7 @@ function fnShowWindow(){
  * @param string stufftype - the type of the target widget
  */
 function positionDivInAccord(targetDiv,stufftitle,stufftype){
-	var layout=$('homeLayout').value;
+	var layout=document.getElementById('homeLayout').value;
 	var widgetWidth;
 	var dashWidth;
 
@@ -678,13 +637,14 @@ function positionDivInAccord(targetDiv,stufftitle,stufftype){
 		var dx = mainX * dashWidth / 100;
 	}
 	document.getElementById(targetDiv).style.width=dx + "%";
+	document.getElementById(targetDiv).style.position="relative";
 }
 
 /**
  * this function hides the seqSettings div
  */
 function hideSeqSettings(){
-	Effect.Fade('seqSettings');
+	jQuery('#seqSettings').fadeOut();
 }
 
 /**
@@ -692,40 +652,35 @@ function hideSeqSettings(){
  * @param string stuffid - the id of the dashboard widget
  */
 function fetch_homeDB(stuffid){
-	$('refresh_'+stuffid).innerHTML=$('vtbusy_homeinfo').innerHTML;
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody: 'module=Dashboard&action=DashboardAjax&file=HomepageDB',
-			onComplete: function(response){
-				$('stuffcont_'+stuffid).style.display = 'none';
-				$('stuffcont_'+stuffid).innerHTML=response.responseText;
-				$('refresh_'+stuffid).innerHTML='';
-				Effect.Appear('stuffcont_'+stuffid);
+	document.getElementById('refresh_'+stuffid).innerHTML=document.getElementById('vtbusy_homeinfo').innerHTML;
+	jQuery.ajax({
+		method: 'POST',
+		url: 'index.php?module=Dashboard&action=DashboardAjax&file=HomepageDB'
+	}).done(function (response) {
+				document.getElementById('stuffcont_'+stuffid).style.display = 'none';
+				document.getElementById('stuffcont_'+stuffid).innerHTML=response;
+				document.getElementById('refresh_'+stuffid).innerHTML='';
+				jQuery('#stuffcont_'+stuffid).fadeIn();
 			}
-		}
 	);
 }
 
 /**
  * this function initializes the homepage
  */
-initHomePage = function(){
-	Sortable.create(
-		"MainMatrix",
-		{
-			constraint:false,tag:'div',overlap:'Horizontal',handle:'headerrow',
-			onUpdate:function(){
-				matrixarr = Sortable.serialize('MainMatrix').split("&");
-				matrixseqarr=new Array();
-				seqarr=new Array();
-				for(x=0;x<matrixarr.length;x++){
-					matrixseqarr[x]=matrixarr[x].split("=")[1];
-				}
-				BlockSorting(matrixseqarr);
+initHomePage = function () {
+	jQuery("#MainMatrix").sortable({
+		constraint: false, tag: 'div', overlap: 'Horizontal', handle: '.headerrow',opacity:0.7,
+		update: function () {
+			matrixarr = jQuery(this).sortable("serialize").split("&");
+			matrixseqarr = new Array();
+			seqarr = new Array();
+			for (x = 0; x < matrixarr.length; x++) {
+				matrixseqarr[x] = matrixarr[x].split("=")[1];
 			}
+			BlockSorting(matrixseqarr);
 		}
+	}
 	);
 };
 
@@ -735,19 +690,17 @@ initHomePage = function(){
  */
 function BlockSorting(matrixseqarr){
 	var sequence = matrixseqarr.join("_");
-	new Ajax.Request('index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody:'module=Home&action=HomeAjax&file=HomestuffAjax&matrixsequence='+sequence,
-			onComplete: function(response){
-				$('seqSettings').innerHTML=response.responseText;
-				$('seqSettings').style.display = 'block';
-				$('seqSettings').style.display = 'none';
-				placeAtCenter($('seqSettings'));
-				Effect.Appear('seqSettings');
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&matrixsequence='+sequence
+	}).done(function (response) {
+				document.getElementById('seqSettings').innerHTML=response;
+				document.getElementById('seqSettings').style.display = 'block';
+				document.getElementById('seqSettings').style.display = 'none';
+				placeAtCenter(document.getElementById('seqSettings'));
+				jQuery('#seqSettings').fadeIn();
 				setTimeout(hideSeqSettings,3000);
 			}
-		}
 	);
 }
 
@@ -762,19 +715,17 @@ function isIE(){
  * this function adds a notebook widget to the homepage
  */
 function addNotebookWidget(){
-	new Ajax.Request('index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody:'module=Home&action=HomeAjax&file=HomestuffAjax&matrixsequence='+sequence,
-			onComplete: function(response){
-				$('seqSettings').innerHTML=response.responseText;
-				$('seqSettings').style.display = 'block';
-				$('seqSettings').style.display = 'none';
-				placeAtCenter($('seqSettings'));
-				Effect.Appear('seqSettings');
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&matrixsequence='+sequence
+	}).done(function (response) {
+				document.getElementById('seqSettings').innerHTML=response;
+				document.getElementById('seqSettings').style.display = 'block';
+				document.getElementById('seqSettings').style.display = 'none';
+				placeAtCenter(document.getElementById('seqSettings'));
+				jQuery('#seqSettings').fadeIn();
 				setTimeout(hideSeqSettings,3000);
 			}
-		}
 	);
 	loadAddedDiv(stuffid,stufftype);
 }
@@ -783,15 +734,15 @@ function addNotebookWidget(){
  * this function takes a widget id and adds scrolling property to it
  */
 function addScrollBar(id){
-	$('stuff_'+id).style['overflowX'] = "scroll";
-	$('stuff_'+id).style['overflowY'] = "scroll";
+	document.getElementById('stuff_'+id).style['overflowX'] = "scroll";
+	document.getElementById('stuff_'+id).style['overflowY'] = "scroll";
 }
 
 /**
  * this function will display the node passed to it in the center of the screen
  */
 function showOptions(id){
-	var node = $(id);
+	var node = document.getElementById(id);
 	node.style.display='block';
 	placeAtCenter(node);
 }
@@ -800,50 +751,44 @@ function showOptions(id){
  * this function will hide the node passed to it
  */
 function hideOptions(id){
-	Effect.Fade(id);
+	jQuery('#'+id).fadeOut();
 }
 
 /**
  * this function will be used to save the layout option
  */
 function saveLayout(){
-	$('status').show();
+	document.getElementById('status').style.display="none";
 	hideOptions('changeLayoutDiv');
-	var sel = $('layoutSelect');
+	var sel = document.getElementById('layoutSelect');
 	var layout = sel.options[sel.selectedIndex].value;
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody:'module=Home&action=HomeAjax&file=HomestuffAjax&layout='+layout,
-			onComplete: function(response){
-				var responseVal=response.responseText;
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&layout='+layout
+	}).done(function (response) {
+				var responseVal=response;
 				window.location.href = window.location.href;
 			}
-		}
 	);
 }
 function saveEditReportCharts(dashRowId){
-	$('refresh_'+dashRowId).innerHTML=$('vtbusy_homeinfo').innerHTML;
+	document.getElementById('refresh_'+dashRowId).innerHTML=document.getElementById('vtbusy_homeinfo').innerHTML;
 	cancelEntries('editRowmodrss_'+dashRowId);
 	var reportVal='';
 	var iter=0;
 	for(iter=0;iter<3;iter++){
-		if($('reportradio_'+iter).checked){
-			reportVal=$('reportradio_'+iter).value;
+		if(document.getElementById('reportradio_'+iter).checked){
+			reportVal=document.getElementById('reportradio_'+iter).value;
 		}
 	}
 	stuffid=dashRowId;
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody:'module=Home&action=HomeAjax&file=HomestuffAjax&reportVal='+reportVal+'&stuffid='+stuffid,
-			onComplete: function(response){
-				var responseVal=response.responseText;
-				eval(response.responseText);
-				$('refresh_'+stuffid).innerHTML='';
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&reportVal='+reportVal+'&stuffid='+stuffid
+	}).done(function (response) {
+				var responseVal=response;
+				eval(response);
+				document.getElementById('refresh_'+stuffid).innerHTML='';
 			}
-		}
 	);
 }

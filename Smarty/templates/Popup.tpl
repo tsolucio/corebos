@@ -21,7 +21,7 @@ var service_default_units = '{$Service_Default_Units}';
 {literal}
 function QCreate(module,urlpop) {
 	if (module != 'none') {
-		$("status").style.display="inline";
+		document.getElementById("status").style.display="inline";
 		if (module == 'Events') {
 			module = 'Calendar';
 			var urlstr = '&activity_mode=Events&from=popup&pop='+urlpop;
@@ -31,25 +31,22 @@ function QCreate(module,urlpop) {
 		} else {
 			var urlstr = '&from=popup&pop='+urlpop;
 		}
-		new Ajax.Request(
-			'index.php',
-				{queue: {position: 'end', scope: 'command'},
-				method: 'post',
-				postBody: 'module='+module+'&action='+module+'Ajax&file=QuickCreate'+urlstr,
-				onComplete: function(response){
-					$("status").style.display="none";
-					$("qcformpop").style.display="inline";
-					$("qcformpop").innerHTML = response.responseText;
+		jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?module='+module+'&action='+module+'Ajax&file=QuickCreate'+urlstr,
+				}).done(function(response) {
+					document.getElementById("status").style.display="none";
+					document.getElementById("qcformpop").style.display="inline";
+					document.getElementById("qcformpop").innerHTML = response;
 					// Evaluate all the script tags in the response text.
-					var scriptTags = $("qcformpop").getElementsByTagName("script");
+					var scriptTags = document.getElementById("qcformpop").getElementsByTagName("script");
 					for(var i = 0; i< scriptTags.length; i++){
 						var scriptTag = scriptTags[i];
 						eval(scriptTag.innerHTML);
 					}
-					eval($("qcformpop"));
+					eval(document.getElementById("qcformpop"));
 				}
-			}
-		);
+			);
 	} else {
 		hide('qcformpop');
 	}
@@ -110,11 +107,7 @@ function redirectWhenNoRelatedRecordsFound()
 <script language="JavaScript" type="text/javascript" src="modules/{$RETURN_MODULE}/{$RETURN_MODULE}.js"></script>
 {/if}
 <script language="JavaScript" type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
-<script language="javascript" type="text/javascript" src="include/scriptaculous/prototype.js"></script>
-<script type='text/javascript' src='modules/com_vtiger_workflow/resources/jquery-1.2.6.js'></script>
-<script type='text/javascript'>
-	jQuery.noConflict();
-</script>
+<script type='text/javascript' src='include/jquery/jquery.js'></script>
 
 {* corebos customization: Inclusion of custom javascript and css as registered in popup *}
 {if $HEADERSCRIPTS}
@@ -137,19 +130,15 @@ function add_data_to_relatedlist(entity_id,recordid,mod, popupmode, callback) {
 	}
 	if(popupmode == 'ajax') {
 		VtigerJS_DialogBox.block();
-		new Ajax.Request(
-			'index.php',
-			{
-				queue: {position: 'end', scope: 'command'},
-				method: 'post',
-				postBody: "module="+return_module+"&action="+return_module+"Ajax&file=updateRelations&destination_module="+mod+"&entityid="+entity_id+"&parentid="+recordid+"&mode=Ajax",
-				onComplete: function(response) {
+		jQuery.ajax({
+				method: 'POST',
+				url: "index.php?module="+return_module+"&action="+return_module+"Ajax&file=updateRelations&destination_module="+mod+"&entityid="+entity_id+"&parentid="+recordid+"&mode=Ajax",
+			}).done(function(response) {
 					VtigerJS_DialogBox.unblock();
-					var res = JSON.parse(response.responseText);
+					var res = JSON.parse(response);
 					if(typeof callback == 'function') {
 						callback(res);
 					}
-				}
 			}
 		);
 		return false;
@@ -162,7 +151,7 @@ function add_data_to_relatedlist(entity_id,recordid,mod, popupmode, callback) {
 }
 {/literal}
 function set_focus() {ldelim}
-	$('search_txt').focus();
+	document.getElementById('search_txt').focus();
 {rdelim}
 </script>
 </head>
@@ -312,13 +301,13 @@ function callSearch(searchtype)
 	else if(searchtype == 'Advanced')
 	{ldelim}
 		checkAdvancedFilter();
-		var advft_criteria = $('advft_criteria').value;
-		var advft_criteria_groups = $('advft_criteria_groups').value;
+		var advft_criteria = document.getElementById('advft_criteria').value;
+		var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
 		urlstring += '&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups+'&';
 		urlstring += 'searchtype=advance&'
 	{rdelim}
-	popuptype = $('popup_type').value;
-	act_tab = $('maintab').value;
+	popuptype = document.getElementById('popup_type').value;
+	act_tab = document.getElementById('maintab').value;
 	urlstring += '&popuptype='+popuptype;
 	urlstring += '&maintab='+act_tab;
 	urlstring = urlstring +'&query=true&file=Popup&module={$MODULE}&action={$MODULE}Ajax&ajax=true&search=true';
@@ -331,16 +320,13 @@ function callSearch(searchtype)
 
 	if(record_id!='')
 		urlstring += '&record_id='+record_id;
-	$("status").style.display="inline";
-	new Ajax.Request(
-		'index.php',
-		{ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-				method: 'post',
-				postBody: urlstring,
-				onComplete: function(response) {ldelim}
-					$("status").style.display="none";
-					$("ListViewContents").innerHTML= response.responseText;
-				{rdelim}
+	document.getElementById("status").style.display="inline";
+	jQuery.ajax({ldelim}
+				method: 'POST',
+				url: 'index.php?'+urlstring,
+		{rdelim}).done(function (response) {ldelim}
+					document.getElementById("status").style.display="none";
+					document.getElementById("ListViewContents").innerHTML= response;
 			{rdelim}
 		);
 {rdelim}
@@ -360,23 +346,20 @@ function alphabetic(module,url,dataid)
 	record_id = document.basicSearch.record_id.value;
 	if(record_id!='')
 		urlstring += '&record_id='+record_id;
-	$("status").style.display="inline";
-	new Ajax.Request(
-		'index.php',
-		{ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-						method: 'post',
-						postBody: urlstring,
-						onComplete: function(response) {ldelim}
-							$("status").style.display="none";
-							$("ListViewContents").innerHTML= response.responseText;
-		{rdelim}
-		{rdelim}
-	);
+	document.getElementById("status").style.display="inline";
+	jQuery.ajax({ldelim}
+				method: 'POST',
+				url: 'index.php?'+ urlstring,
+		{rdelim}).done(function (response) {ldelim}
+					document.getElementById("status").style.display="none";
+					document.getElementById("ListViewContents").innerHTML= response;
+				{rdelim}
+			);
 {rdelim}
 function gethiddenelements()
 {ldelim}
 	gstart='';
-	var urlstring=''
+	var urlstring='';
 	if(getObj('select_enable').value != '')
 		urlstring +='&select=enable';
 	if(document.getElementById('curr_row').value != '')
@@ -430,25 +413,26 @@ function getListViewEntries_js(module,url)
 	if(record_id!='')
 		urlstring += '&record_id='+record_id;
 
-	urlstring += (gsorder !='') ? gsorder : '';
-	var return_module = document.getElementById('return_module').value;
-	if(module == 'Documents' && return_module == 'MailManager')
+		record_id = document.basicSearch.record_id.value;
+		if(record_id!='')
+			urlstring += '&record_id='+record_id;
+
+		urlstring += (gsorder !='') ? gsorder : '';
+		var return_module = document.getElementById('return_module').value;
+		if(module == 'Documents' && return_module == 'MailManager')
 	{ldelim}
-		urlstring += '&callback=MailManager.add_data_to_relatedlist';
-		urlstring += '&popupmode=ajax';
-		urlstring += '&srcmodule=MailManager';
+			urlstring += '&callback=MailManager.add_data_to_relatedlist';
+			urlstring += '&popupmode=ajax';
+			urlstring += '&srcmodule=MailManager';
 	{rdelim}
 
-	$("status").style.display = "";
-	new Ajax.Request(
-		'index.php',
-		{ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-			method: 'post',
-			postBody: urlstring,
-			onComplete: function(response) {ldelim}
-				$("ListViewContents").innerHTML= response.responseText;
-				$("status").style.display = "none";
-				{rdelim}
+		document.getElementById("status").style.display = "";
+		jQuery.ajax({ldelim}
+					method: 'POST',
+					url: 'index.php?'+ urlstring,
+			{rdelim}).done(function (response) {ldelim}
+						document.getElementById("ListViewContents").innerHTML= response;
+						document.getElementById("status").style.display = "none";
 			{rdelim}
 		);
 {rdelim}
@@ -461,17 +445,14 @@ function getListViewSorted_js(module,url)
 	if(record_id!='')
 		urlstring += '&record_id='+record_id;
 	urlstring += (gstart !='') ? gstart : '';
-	$("status").style.display = "";
-	new Ajax.Request(
-		'index.php',
-		{ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-			method: 'post',
-			postBody: urlstring,
-			onComplete: function(response) {ldelim}
-				$("ListViewContents").innerHTML= response.responseText;
-				$("status").style.display = "none";
-				{rdelim}
-			{rdelim}
+	document.getElementById("status").style.display = "";
+	jQuery.ajax({ldelim}
+			method: 'POST',
+			url: 'index.php?'+ urlstring,
+	{rdelim}).done(function (response) {ldelim}
+			document.getElementById("ListViewContents").innerHTML= response;
+			document.getElementById("status").style.display = "none";
+	{rdelim}
 		);
 {rdelim}
 

@@ -98,30 +98,25 @@
 	function auditenabled(ochkbox) {
 		if (ochkbox.checked == true) {
 			var status = 'enabled';
-			$('audit_info').innerHTML = '{/literal}{$MOD.AuditTrailEnabled}{literal}';
-			$('audit_info').style.display = 'block';
+			document.getElementById('audit_info').innerHTML = '{/literal}{$MOD.AuditTrailEnabled}{literal}';
+			document.getElementById('audit_info').style.display = 'block';
 		} else {
 			var status = 'disabled';
-			$('audit_info').innerHTML = '{/literal}{$MOD.AuditTrailDisabled}{literal}';
-			$('audit_info').style.display = 'block';
+			document.getElementById('audit_info').innerHTML = '{/literal}{$MOD.AuditTrailDisabled}{literal}';
+			document.getElementById('audit_info').style.display = 'block';
 		}
-		$("status").style.display = "block";
-		new Ajax.Request('index.php', {
-			queue : {
-				position : 'end',
-				scope : 'command'
-			},
-			method : 'post',
-			postBody : 'module=Settings&action=SettingsAjax&file=SaveAuditTrail&ajax=true&audit_trail=' + status,
-			onComplete : function(response) {
-				$("status").style.display = "none";
-			}
+		document.getElementById("status").style.display = "block";
+		jQuery.ajax({
+			method:"POST",
+			url:'index.php?module=Settings&action=SettingsAjax&file=SaveAuditTrail&ajax=true&audit_trail=' + status,
+		}).done(function(response) {
+				document.getElementById("status").style.display = "none";
 		});
 		setTimeout("hide('audit_info')", 3000);
 	}
 
 	function showAuditTrail() {
-		var userid = $('user_list').options[$('user_list').selectedIndex].value;
+		var userid = jQuery('#user_list').val();
 		window.open("index.php?module=Settings&action=SettingsAjax&file=ShowAuditTrail&userid=" + userid, "", "width=645,height=750,resizable=0,scrollbars=1,left=100");
 	}
 </script>

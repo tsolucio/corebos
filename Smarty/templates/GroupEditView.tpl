@@ -15,7 +15,7 @@
 function dup_validation()
 {ldelim}
 	var mode = getObj('mode').value;
-	var groupname = $('groupName').value;
+	var groupname = document.getElementById('groupName').value;
 	var groupid = getObj('groupId').value;
 	if(mode == 'edit')
 		var reminstr = '&mode='+mode+'&groupName='+groupname+'&groupid='+groupid;
@@ -25,19 +25,16 @@ function dup_validation()
 	//var status = CharValidation(groupname,'namespace');
 	//if(status)
 	//{ldelim}
-	new Ajax.Request(
-		'index.php',
-		{ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-			method: 'post',
-			postBody: 'module=Users&action=UsersAjax&file=SaveGroup&ajax=true&dup_check=true'+reminstr,
-			onComplete: function(response) {ldelim}
-				if(response.responseText.indexOf('SUCCESS') >-1)
+	jQuery.ajax({ldelim}
+			method:"POST",
+			url:'index.php?module=Users&action=UsersAjax&file=SaveGroup&ajax=true&dup_check=true'+reminstr,
+	{rdelim}).done(function(response) {ldelim}
+				if(response.indexOf('SUCCESS') >-1)
 					document.newGroupForm.submit();
 				else {ldelim}
 					VtigerJS_DialogBox.unblock();
-					alert(response.responseText);
+					alert(response);
 				{rdelim}
-			{rdelim}
 		{rdelim}
 		);
 	//{rdelim}
@@ -142,7 +139,7 @@ function validate()
 	if( !emptyCheck( "groupName", "Group Name","text" ) )
 		return false;
 	//check to restrict the & < > , characters
-	var str = $("groupName").value;
+	var str = document.getElementById("groupName").value;
 	var re1=/[&\<\>\,]/
         if (re1.test(str))
         {ldelim}

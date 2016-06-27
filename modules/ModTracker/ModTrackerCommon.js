@@ -11,7 +11,7 @@ ModTrackerCommon = {
 	OVERLAYID : '__ModTrackerCommonOverlay__',
 
 	initOverlay : function() {
-		if ($(ModTrackerCommon.OVERLAYID)) {
+		if (document.getElementById(ModTrackerCommon.OVERLAYID)) {
 			return;
 		}
 		var overlaynode = document.createElement('div');
@@ -29,23 +29,19 @@ ModTrackerCommon = {
 		if ( typeof (highlight) == 'undefined')
 			highlight = true;
 
-		$('status').show();
-		new Ajax.Request('index.php', {
-			queue : {
-				position : 'end',
-				scope : 'command'
-			},
-			method : 'post',
-			postBody : 'module=ModTracker&action=ModTrackerAjax&file=ShowDiff&id=' + encodeURIComponent(record) + '&atpoint=' + encodeURIComponent(atpoint) + '&highlight=' + encodeURIComponent(highlight),
-			onComplete : function(response) {
-				$('status').hide();
-				var responseVal = response.responseText;
-				$(ModTrackerCommon.OVERLAYID).show();
-				$(ModTrackerCommon.OVERLAYID).innerHTML = response.responseText;
-				$(ModTrackerCommon.OVERLAYID).style.display = 'block';
-				placeAtCenter($(ModTrackerCommon.OVERLAYID));
+		document.getElementById('status').style.display="inline";
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=ModTracker&action=ModTrackerAjax&file=ShowDiff&id=' + encodeURIComponent(record) + '&atpoint=' + encodeURIComponent(atpoint) + '&highlight=' + encodeURIComponent(highlight),
+		}).done(function (response) {
+				document.getElementById('status').style.display="none";
+				var responseVal = response;
+				document.getElementById(ModTrackerCommon.OVERLAYID).style.display="inline";
+				document.getElementById(ModTrackerCommon.OVERLAYID).innerHTML = response;
+				document.getElementById(ModTrackerCommon.OVERLAYID).style.display = 'block';
+				placeAtCenter(document.getElementById(ModTrackerCommon.OVERLAYID));
 			}
-		});
+		);
 	},
 
 	showhistory : function(record, atpoint, highlight) {
@@ -56,24 +52,20 @@ ModTrackerCommon = {
 		if ( typeof (highlight) == 'undefined')
 			highlight = false;
 
-		$('status').show();
-		new Ajax.Request('index.php', {
-			queue : {
-				position : 'end',
-				scope : 'command'
-			},
-			method : 'post',
-			postBody : 'module=ModTracker&action=ModTrackerAjax&file=ShowDiff&mode=history&id=' + encodeURIComponent(record) + '&atpoint=' + encodeURIComponent(atpoint) + '&highlight=' + encodeURIComponent(highlight),
-			onComplete : function(response) {
-				$('status').hide();
-				var responseVal = response.responseText;
-				$(ModTrackerCommon.OVERLAYID).innerHTML = response.responseText;
-				$(ModTrackerCommon.OVERLAYID).style.display = 'block';
-				placeAtCenter($(ModTrackerCommon.OVERLAYID));
+		document.getElementById('status').style.display="inline";
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=ModTracker&action=ModTrackerAjax&file=ShowDiff&mode=history&id=' + encodeURIComponent(record) + '&atpoint=' + encodeURIComponent(atpoint) + '&highlight=' + encodeURIComponent(highlight),
+		}).done(function (response) {
+				document.getElementById('status').style.display="none";
+				var responseVal = response;
+				document.getElementById(ModTrackerCommon.OVERLAYID).innerHTML = response;
+				document.getElementById(ModTrackerCommon.OVERLAYID).style.display = 'block';
+				placeAtCenter(document.getElementById(ModTrackerCommon.OVERLAYID));
 			}
-		});
+		);
 	},
 	hide : function() {
-		$(ModTrackerCommon.OVERLAYID).hide();
+		document.getElementById(ModTrackerCommon.OVERLAYID).style.display="none";
 	}
 };

@@ -207,7 +207,7 @@ DIV.fixedLay {
 	</td>
 	<br>
 	<tr>
-		<td align="center"><input type="button" value="{$CMOD.LBL_YES}" onclick="return disableStyle('confId');">&nbsp;&nbsp;<input type="button" value="&nbsp;{$CMOD.LBL_NO}&nbsp;" onclick="showSelect();$('confId').style.display='none';document.body.removeChild($('freeze'));"></td>
+		<td align="center"><input type="button" value="{$CMOD.LBL_YES}" onclick="return disableStyle('confId');">&nbsp;&nbsp;<input type="button" value="&nbsp;{$CMOD.LBL_NO}&nbsp;" onclick="showSelect();document.getElementById('confId').style.display='none';document.body.removeChild(document.getElementById('freeze'));"></td>
 	</tr>
 </tr>
 </table>
@@ -227,27 +227,24 @@ DIV.fixedLay {
 
 <script>
 function callEditDiv(obj,modulename,mode,id)
-{ldelim}
-        $("status").style.display="inline";
-        new Ajax.Request(
-                'index.php',
-                {ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-                        method: 'post',
-                        postBody: 'module=Settings&action=SettingsAjax&orgajax=true&mode='+mode+'&sharing_module='+modulename+'&shareid='+id,
-                        onComplete: function(response) {ldelim}
-                                $("status").style.display="none";
-                                $("tempdiv").innerHTML=response.responseText;
-				fnvshobj(obj,"tempdiv");
-                                if(mode == 'edit')
-                                {ldelim}
-                                        setTimeout("",10000);
-                                        var related = $('rel_module_lists').value;
-                                        fnwriteRules(modulename,related);
-                                {rdelim}
-                        {rdelim}
-                {rdelim}
-        );
-{rdelim}
+	{ldelim}
+		document.getElementById("status").style.display="inline";
+		jQuery.ajax({ldelim}
+				method: 'POST',
+				url: 'index.php?module=Settings&action=SettingsAjax&orgajax=true&mode='+mode+'&sharing_module='+modulename+'&shareid='+id,
+	{rdelim}).done(function (response) {ldelim}
+								document.getElementById("status").style.display="none";
+								document.getElementById("tempdiv").innerHTML=response;
+								fnvshobj(obj,"tempdiv");
+								if(mode == 'edit')
+								{ldelim}
+										setTimeout("",10000);
+										var related = document.getElementById('rel_module_lists').value;
+										fnwriteRules(modulename,related);
+								{rdelim}
+				{rdelim}
+			);
+	{rdelim}
 
 function fnwriteRules(module,related)
 {ldelim}
@@ -293,20 +290,20 @@ function fnwriteRules(module,related)
 	
 	function disableStyle(id)
 	{ldelim}
-			$('orgSharingform').action.value = 'RecalculateSharingRules';
-			$('orgSharingform').submit();
- 			$(id).style.display = 'none';
+			document.getElementById('orgSharingform').action.value = 'RecalculateSharingRules';
+			document.getElementById('orgSharingform').submit();
+ 			document.getElementById(id).style.display = 'none';
 
 			if(browser_ie && (gBrowserAgent.indexOf("msie 7.")!=-1))//for IE 7
                         {ldelim}
-                                document.body.removeChild($('freeze'));
+                                document.body.removeChild(document.getElementById('freeze'));
                         {rdelim}else if(browser_ie)
                         {ldelim}
-                             var oDivfreeze = $('divId');
+                             var oDivfreeze = document.getElementById('divId');
                              oDivfreeze.style.height = document.documentElement['clientHeight'] + 'px';
 
                         {rdelim}
-                        $('divId').style.display = 'block';
+                        document.getElementById('divId').style.display = 'block';
 	{rdelim}
 
 	function freezeBackground()

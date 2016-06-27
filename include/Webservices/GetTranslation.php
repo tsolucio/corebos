@@ -14,7 +14,7 @@
 *************************************************************************************************/
 
 function vtws_gettranslation($totranslate, $portal_language, $module, $user){
-	
+
 	global $log,$adb,$default_language;
 	$log->debug("Entering function vtws_gettranslation");
 	$language = $portal_language;

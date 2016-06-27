@@ -8,11 +8,6 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script language="javascript" type="text/javascript" src="include/scriptaculous/effects.js"></script>
-<script type='text/javascript' src='include/jquery/jquery-1.6.2.min.js'></script>
-<script type="text/javascript">
-  jQuery.noConflict();
-</script>
 <br>
 <table align="center" border="0" cellpadding="5" cellspacing="0" width="100%" class="mailSubHeader">
 	<tbody><tr>

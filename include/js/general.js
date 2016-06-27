@@ -1919,7 +1919,7 @@ function fnvshobj(obj,Lay){
 	var IE = document.all?true:false;
 	if(IE)
 	{
-		if($("repposition1"))
+		if(document.getElementById("repposition1"))
 		{
 			if(topSide > 1200)
 			{
@@ -2384,17 +2384,11 @@ function AjaxDuplicateValidate(module,fieldname,oform)
 	VtigerJS_DialogBox.block();
 
 	var url = "module="+module+"&action="+module+"Ajax&file=Save&"+fieldname+"="+fieldvalue+"&dup_check=true&record="+recordid;
-	new Ajax.Request(
-		'index.php',
-		{
-			queue: {
-				position: 'end',
-				scope: 'command'
-			},
-			method: 'post',
-			postBody:url,
-			onComplete: function(response) {
-				var str = response.responseText
+	jQuery.ajax({
+			method: 'POST',
+			url: "index.php?"+url
+	}).done(function (response) {
+				var str = response;
 				if(str.indexOf('SUCCESS') > -1)
 				{
 					oform.submit();
@@ -2405,7 +2399,6 @@ function AjaxDuplicateValidate(module,fieldname,oform)
 					return false;
 				}
 			}
-		}
 		);
 }
 
@@ -2416,10 +2409,10 @@ check->to check select options enable or disable
 function selectContact(check,type,frmName)
 {
 	var record = document.getElementsByName("record")[0].value;
-	if($("single_accountid"))
+	if(document.getElementById("single_accountid"))
 	{
 		var potential_id = '';
-		if($("potential_id"))
+		if(document.getElementById("potential_id"))
 			potential_id = frmName.potential_id.value;
 		account_id = frmName.account_id.value;
 		if(potential_id != '')
@@ -2437,7 +2430,7 @@ function selectContact(check,type,frmName)
 		else
 			window.open("index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView","test","width=640,height=602,resizable=0,scrollbars=0");
 	}
-	else if($("vendor_name") && gVTModule=='PurchaseOrder') {
+	else if(document.getElementById("vendor_name") && gVTModule=='PurchaseOrder') {
 		record_id = frmName.vendor_id.value;
 		module_string = "&parent_module=Vendors";
 		if(record_id != '')
@@ -2445,7 +2438,7 @@ function selectContact(check,type,frmName)
 		else
 			window.open("index.php?module=Contacts&action=Popup&html=Popup_picker&popuptype=specific&form=EditView","test","width=640,height=602,resizable=0,scrollbars=0");
 	}
-	else if(($("parentid")) && type != 'task')
+	else if((document.getElementById("parentid")) && type != 'task')
 	{
 		if(getObj("parent_type")){
 			rel_parent_module = frmName.parent_type.value;
@@ -2471,14 +2464,14 @@ function selectContact(check,type,frmName)
 			window.open("index.php?module=Contacts&action=Popup&html=Popup_picker&return_module=Calendar&select=enable&popuptype=detailview&form=EditView&form_submit=false","test","width=640,height=602,resizable=0,scrollbars=0");
 		}
 	}
-	else if(($("contact_name")) && type == 'task')
+	else if((document.getElementById("contact_name")) && type == 'task')
 	{
 		var formName = frmName.name;
 		var task_recordid = '';
 		var popuptype = '';
 		if(formName == 'EditView')
 		{
-			if($("parent_type"))
+			if(document.getElementById("parent_type"))
 			{
 				task_parent_module = frmName.parent_type.value;
 				task_recordid = frmName.parent_id.value;
@@ -2488,7 +2481,7 @@ function selectContact(check,type,frmName)
 		}
 		else
 		{
-			if($("task_parent_type"))
+			if(document.getElementById("task_parent_type"))
 			{
 				task_parent_module = frmName.task_parent_type.value;
 				task_recordid = frmName.task_parent_id.value;
@@ -2759,7 +2752,7 @@ function selectedRecords(module,category)
 	var viewid = getviewId();
 	var url = '&viewname='+viewid;
 	if(document.getElementById('excludedRecords') != null && typeof(document.getElementById('excludedRecords')) != 'undefined') {
-		var excludedRecords = $('excludedRecords').value;
+		var excludedRecords = document.getElementById('excludedRecords').value;
 		var searchurl = document.getElementById('search_url').value;
 		url = url+searchurl+'&excludedRecords='+excludedRecords;
 	}
@@ -2782,46 +2775,40 @@ function record_export(module,category,exform,idstring)
 		if(exportData[i].checked == true)
 			var exp_type = exportData[i].value;
 	}
-	new Ajax.Request(
-		'index.php',
-		{
-			queue: {
-				position: 'end',
-				scope: 'command'
-			},
-			method: 'post',
-			postBody: "module="+module+"&action=ExportAjax&export_record=true&search_type="+sel_type+"&export_data="+exp_type+"&idstring="+idstring,
-			onComplete: function(response) {
-				if(response.responseText == 'NOT_SEARCH_WITHSEARCH_ALL')
+	jQuery.ajax({
+			method: 'POST',
+			url: "index.php?module="+module+"&action=ExportAjax&export_record=true&search_type="+sel_type+"&export_data="+exp_type+"&idstring="+idstring
+	}).done(function (response) {
+				if(response == 'NOT_SEARCH_WITHSEARCH_ALL')
 				{
-					$('not_search').style.display = 'block';
-					$('not_search').innerHTML="<font color='red'><b>"+alert_arr.LBL_NOTSEARCH_WITHSEARCH_ALL+" "+module+"</b></font>";
+					document.getElementById('not_search').style.display = 'block';
+					document.getElementById('not_search').innerHTML="<font color='red'><b>"+alert_arr.LBL_NOTSEARCH_WITHSEARCH_ALL+" "+module+"</b></font>";
 					setTimeout(hideErrorMsg1,6000);
 
 					exform.submit();
 				}
-				else if(response.responseText == 'NOT_SEARCH_WITHSEARCH_CURRENTPAGE')
+				else if(response == 'NOT_SEARCH_WITHSEARCH_CURRENTPAGE')
 				{
-					$('not_search').style.display = 'block';
-					$('not_search').innerHTML="<font color='red'><b>"+alert_arr.LBL_NOTSEARCH_WITHSEARCH_CURRENTPAGE+" "+module+"</b></font>";
+					document.getElementById('not_search').style.display = 'block';
+					document.getElementById('not_search').innerHTML="<font color='red'><b>"+alert_arr.LBL_NOTSEARCH_WITHSEARCH_CURRENTPAGE+" "+module+"</b></font>";
 					setTimeout(hideErrorMsg1,7000);
 
 					exform.submit();
 				}
-				else if(response.responseText == 'NO_DATA_SELECTED')
+				else if(response == 'NO_DATA_SELECTED')
 				{
-					$('not_search').style.display = 'block';
-					$('not_search').innerHTML="<font color='red'><b>"+alert_arr.LBL_NO_DATA_SELECTED+"</b></font>";
+					document.getElementById('not_search').style.display = 'block';
+					document.getElementById('not_search').innerHTML="<font color='red'><b>"+alert_arr.LBL_NO_DATA_SELECTED+"</b></font>";
 					setTimeout(hideErrorMsg1,3000);
 				}
-				else if(response.responseText == 'SEARCH_WITHOUTSEARCH_ALL')
+				else if(response == 'SEARCH_WITHOUTSEARCH_ALL')
 				{
 					if(confirm(alert_arr.LBL_SEARCH_WITHOUTSEARCH_ALL))
 					{
 						exform.submit();
 					}
 				}
-				else if(response.responseText == 'SEARCH_WITHOUTSEARCH_CURRENTPAGE')
+				else if(response == 'SEARCH_WITHOUTSEARCH_CURRENTPAGE')
 				{
 					if(confirm(alert_arr.LBL_SEARCH_WITHOUTSEARCH_CURRENTPAGE))
 					{
@@ -2833,7 +2820,6 @@ function record_export(module,category,exform,idstring)
 					exform.submit();
 				}
 			}
-		}
 		);
 
 }
@@ -2841,7 +2827,7 @@ function record_export(module,category,exform,idstring)
 
 function hideErrorMsg1()
 {
-	$('not_search').style.display = 'none';
+	document.getElementById('not_search').style.display = 'none';
 }
 
 // Replace the % sign with %25 to make sure the AJAX url is going wel.
@@ -2915,12 +2901,12 @@ function rel_check_object(sel_id,module)
 	var duplicate = select_global.indexOf(id);
 	var size = select_global.length-1;
 	var result = "";
-	var currentModule = $('return_module').value;
-	var excluded = $(currentModule+'_'+module+'_excludedRecords').value;
+	var currentModule = document.getElementById('return_module').value;
+	var excluded = document.getElementById(currentModule+'_'+module+'_excludedRecords').value;
 	if(box_value == true)
 	{
-		if($(currentModule+'_'+module+'_selectallActivate').value == 'true') {
-			$(currentModule+'_'+module+'_excludedRecords').value = excluded.replace(excluded.match(id+";"),'');
+		if(document.getElementById(currentModule+'_'+module+'_selectallActivate').value == 'true') {
+			document.getElementById(currentModule+'_'+module+'_excludedRecords').value = excluded.replace(excluded.match(id+";"),'');
 		} else {
 			if(duplicate == "-1")
 			{
@@ -2938,8 +2924,8 @@ function rel_check_object(sel_id,module)
 	}
 	else
 	{
-		if($(currentModule+'_'+module+'_selectallActivate').value == 'true'){
-			$(currentModule+'_'+module+'_excludedRecords').value= id+";"+excluded;
+		if(document.getElementById(currentModule+'_'+module+'_selectallActivate').value == 'true'){
+			document.getElementById(currentModule+'_'+module+'_excludedRecords').value= id+";"+excluded;
 		}
 		if(duplicate != "-1")
 
@@ -2966,21 +2952,21 @@ function rel_toggleSelect(state,relCheckName,module) {
 			rel_check_object(obj[i],module);
 		}
 	}
-	var current_module = $('return_module').value;
+	var current_module = document.getElementById('return_module').value;
 	if(current_module == 'Campaigns') {
 		if(state == true) {
-			var count = $(current_module+'_'+module+'_numOfRows').value;
+			var count = document.getElementById(current_module+'_'+module+'_numOfRows').value;
 			if(count == '')	{
 				getNoOfRelatedRows(current_module,module);
 			}
-			if(parseInt($('maxrecords').value) < parseInt(count)) {
-				$(current_module+'_'+module+'_linkForSelectAll').show();
+			if(parseInt(document.getElementById('maxrecords').value) < parseInt(count)) {
+				document.getElementById(current_module+'_'+module+'_linkForSelectAll').style.display="block";
 			}
 		} else {
-			if($(current_module+'_'+module+'_selectallActivate').value == 'true'){
-				$(current_module+'_'+module+'_linkForSelectAll').show();
+			if(document.getElementById(current_module+'_'+module+'_selectallActivate').value == 'true'){
+				document.getElementById(current_module+'_'+module+'_linkForSelectAll').style.display="block";
 			} else {
-				$(current_module+'_'+module+'_linkForSelectAll').hide();
+				document.getElementById(current_module+'_'+module+'_linkForSelectAll').style.display="none";
 			}
 		}
 	}
@@ -2989,7 +2975,7 @@ function rel_toggleSelect(state,relCheckName,module) {
 function rel_default_togglestate(module)
 {
 	var all_state=true;
-	var currentModule = $('return_module').value;
+	var currentModule = document.getElementById('return_module').value;
 	if(currentModule == 'Campaigns'){
 		var groupElements = document.getElementsByName(currentModule+'_'+module+"_selected_id");
 	} else {
@@ -3038,38 +3024,38 @@ function toggleSelect_ListView(state,relCheckName,groupParentElementId) {
 			}
 		}
 	}
-	if($('curmodule') != undefined && $('curmodule').value == 'Documents') {
+	if(document.getElementById('curmodule') != undefined && document.getElementById('curmodule').value == 'Documents') {
 		if(state==true)	{
-			var count = $('numOfRows_'+groupParentElementId).value;
+			var count = document.getElementById('numOfRows_'+groupParentElementId).value;
 			if(count == '') {
 				getNoOfRows(groupParentElementId);
 			}
-			if(parseInt($('maxrecords').value) < parseInt(count)) {
-				$('linkForSelectAll_'+groupParentElementId).show();
+			if(parseInt(document.getElementById('maxrecords').value) < parseInt(count)) {
+				document.getElementById('linkForSelectAll_'+groupParentElementId).style.display="block";
 			}
 
 		} else {
-			if($('selectedboxes_'+groupParentElementId).value == 'all') {
-				$('linkForSelectAll_'+groupParentElementId).show();
+			if(document.getElementById('selectedboxes_'+groupParentElementId).value == 'all') {
+				document.getElementById('linkForSelectAll_'+groupParentElementId).style.display="block";
 			} else {
-				$('linkForSelectAll_'+groupParentElementId).hide();
+				document.getElementById('linkForSelectAll_'+groupParentElementId).style.display="none";
 			}
 		}
 	} else {
 		if(state==true)	{
-			var count = $('numOfRows').value;
+			var count = document.getElementById('numOfRows').value;
 			if(count == '')	{
 				getNoOfRows();
 			}
-			if(parseInt($('maxrecords').value) < parseInt(count)) {
-				$('linkForSelectAll').show();
+			if(parseInt(document.getElementById('maxrecords').value) < parseInt(count)) {
+				document.getElementById('linkForSelectAll').style.display="block";
 			}
 
 		} else {
-			if($('allselectedboxes').value == 'all') {
-				$('linkForSelectAll').show();
+			if(document.getElementById('allselectedboxes').value == 'all') {
+				document.getElementById('linkForSelectAll').style.display="block";
 			} else {
-				$('linkForSelectAll').hide();
+				document.getElementById('linkForSelectAll').style.display="none";
 			}
 		}
 	}
@@ -3110,41 +3096,28 @@ function fnpriceValidation(txtObj) {
 }
 
 function delimage(id,fname,aname) {
-	new Ajax.Request(
-		'index.php',
-		{
-			queue: {
-				position: 'end',
-				scope: 'command'
-			},
-			method: 'post',
-			postBody: 'module=Contacts&action=ContactsAjax&file=DelImage&ImageModule='+gVTModule+'&recordid='+id+'&fieldname='+fname+'&attachmentname='+aname,
-			onComplete: function(response) {
-				if(response.responseText.indexOf("SUCCESS")>-1)
-					$(fname+'_replaceimage').innerHTML=alert_arr.LBL_IMAGE_DELETED;
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=Contacts&action=ContactsAjax&file=DelImage&ImageModule='+gVTModule+'&recordid='+id+'&fieldname='+fname+'&attachmentname='+aname,
+	}).done(function (response) {
+				if(response.indexOf("SUCCESS")>-1)
+					document.getElementById(fname+'_replaceimage').innerHTML=alert_arr.LBL_IMAGE_DELETED;
 				else
 					alert(alert_arr.ERROR_WHILE_EDITING);
 			}
-		});
+	);
 }
 
 function delUserImage(id) {
-	new Ajax.Request(
-		'index.php',
-		{
-			queue: {
-				position: 'end',
-				scope: 'command'
-			},
-			method: 'post',
-			postBody: 'module=Users&action=UsersAjax&file=Save&deleteImage=true&recordid='+id,
-			onComplete: function(response) {
-				if(response.responseText.indexOf("SUCCESS")>-1)
-					$("replaceimage").innerHTML=alert_arr.LBL_IMAGE_DELETED;
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=Users&action=UsersAjax&file=Save&deleteImage=true&recordid='+id,
+	}).done(function (response) {
+				if(response.indexOf("SUCCESS")>-1)
+					document.getElementById("replaceimage").innerHTML=alert_arr.LBL_IMAGE_DELETED;
 				else
 					alert(alert_arr.ERROR_WHILE_EDITING);
 			}
-		}
 		);
 }
 
@@ -3161,7 +3134,7 @@ function fnenableDisable(currObj,enableId) {
 
 // Update current value with current value of base currency and the conversion rate
 function updateCurrencyValue(currObj,txtObj,base_curid,conv_rate) {
-	var unit_price = $(base_curid).value;
+	var unit_price = document.getElementById(base_curid).value;
 
 	if(typeof userCurrencySeparator != 'undefined') {
 		while(unit_price.indexOf(userCurrencySeparator) != -1) {
@@ -3206,31 +3179,25 @@ function updateBaseCurrencyValue() {
 /******************************************************************************/
 /* Activity reminder Customization: Setup Callback */
 function ActivityReminderProgressIndicator(show) {
-	if(show) $("status").style.display = "inline";
-	else $("status").style.display = "none";
+	if(show) document.getElementById("status").style.display = "inline";
+	else document.getElementById("status").style.display = "none";
 }
 
 function ActivityReminderSetupCallback(cbmodule, cbrecord) {
 	if(cbmodule && cbrecord) {
 
 		ActivityReminderProgressIndicator(true);
-		new Ajax.Request(
-			'index.php',
-			{
-				queue: {
-					position: 'end',
-					scope: 'command'
-				},
-				method: 'post',
-				postBody:"module=Calendar&action=CalendarAjax&ajax=true&file=ActivityReminderSetupCallbackAjax&cbmodule="+
-				encodeURIComponent(cbmodule) + "&cbrecord=" + encodeURIComponent(cbrecord),
-				onComplete: function(response) {
-					$("ActivityReminder_callbacksetupdiv").innerHTML=response.responseText;
+		jQuery.ajax({
+			method: 'POST',
+			url: "index.php?module=Calendar&action=CalendarAjax&ajax=true&file=ActivityReminderSetupCallbackAjax&cbmodule="+
+				encodeURIComponent(cbmodule) + "&cbrecord=" + encodeURIComponent(cbrecord)
+		}).done(function (response) {
+					document.getElementById("ActivityReminder_callbacksetupdiv").innerHTML=response;
 
 					ActivityReminderProgressIndicator(false);
 
 				}
-			});
+			);
 }
 }
 
@@ -3245,56 +3212,44 @@ function ActivityReminderSetupCallbackSave(form) {
 	if(cbmodule && cbrecord) {
 		ActivityReminderProgressIndicator(true);
 
-		new Ajax.Request("index.php",
-		{
-			queue:{
-				position:"end",
-				scope:"command"
-			},
-			method:"post",
-			postBody:"module=Calendar&action=CalendarAjax&ajax=true&file=ActivityReminderSetupCallbackAjax" +
+		jQuery.ajax({
+			method: 'POST',
+			url: "index.php?module=Calendar&action=CalendarAjax&ajax=true&file=ActivityReminderSetupCallbackAjax" +
 			"&cbaction=" + encodeURIComponent(cbaction) +
 			"&cbmodule="+ encodeURIComponent(cbmodule) +
 			"&cbrecord=" + encodeURIComponent(cbrecord) +
 			"&cbdate=" + encodeURIComponent(cbdate) +
-			"&cbtime=" + encodeURIComponent(cbtime),
-			onComplete:function (response) {
-				ActivityReminderSetupCallbackSaveProcess(response.responseText);
+			"&cbtime=" + encodeURIComponent(cbtime)
+		}).done(function (response) {
+				ActivityReminderSetupCallbackSaveProcess(response);
 			}
-		});
+		);
 }
 }
 function ActivityReminderSetupCallbackSaveProcess(message) {
 	ActivityReminderProgressIndicator(false);
-	$('ActivityReminder_callbacksetupdiv_lay').style.display='none';
+	document.getElementById('ActivityReminder_callbacksetupdiv_lay').style.display='none';
 }
 
 function ActivityReminderPostponeCallback(cbmodule, cbrecord, cbreminderid) {
 	if(cbmodule && cbrecord) {
-
 		ActivityReminderProgressIndicator(true);
-		new Ajax.Request("index.php",
-		{
-			queue:{
-				position:"end",
-				scope:"command"
-			},
-			method:"post",
-			postBody:"module=Calendar&action=CalendarAjax&ajax=true&file=ActivityReminderSetupCallbackAjax&cbaction=POSTPONE&cbmodule="+
-			encodeURIComponent(cbmodule) + "&cbrecord=" + encodeURIComponent(cbrecord) + "&cbreminderid=" + encodeURIComponent(cbreminderid),
-			onComplete:function (response) {
-				ActivityReminderPostponeCallbackProcess(response.responseText);
+		jQuery.ajax({
+			method: 'POST',
+			url: "index.php?module=Calendar&action=CalendarAjax&ajax=true&file=ActivityReminderSetupCallbackAjax&cbaction=POSTPONE&cbmodule="+
+			encodeURIComponent(cbmodule) + "&cbrecord=" + encodeURIComponent(cbrecord) + "&cbreminderid=" + encodeURIComponent(cbreminderid)
+		}).done(function (response) {
+				ActivityReminderPostponeCallbackProcess(response);
 			}
-		});
-}
+		);
+	}
 }
 function ActivityReminderPostponeCallbackProcess(message) {
 	ActivityReminderProgressIndicator(false);
 }
 function ActivityReminderRemovePopupDOM(id) {
-	if($(id)) $(id).remove();
+	if (jQuery("#"+id).length) jQuery("#"+id).remove();
 }
-/* END */
 
 /* ActivityReminder Customization: Pool Callback */
 var ActivityReminder_regcallback_timer;
@@ -3312,25 +3267,20 @@ var ActivityReminder_popup_onscreen = 2 * 1000; // Milli Seconds (should be less
 var ActivityReminder_callback_win_uniqueids = new Object();
 
 function ActivityReminderCallback() {
-	if(typeof(Ajax) == 'undefined') {
+	if(typeof(jQuery) == 'undefined') {
 		return;
 	}
 	if(ActivityReminder_regcallback_timer) {
 		window.clearTimeout(ActivityReminder_regcallback_timer);
 		ActivityReminder_regcallback_timer = null;
 	}
-	new Ajax.Request("index.php",
-	{
-		queue:{
-			position:"end",
-			scope:"command"
-		},
-		method:"post",
-		postBody:"module=Calendar&action=CalendarAjax&file=ActivityReminderCallbackAjax&ajax=true",
-		onComplete:function (response) {
-			ActivityReminderCallbackProcess(response.responseText);
+	jQuery.ajax({
+			method: 'POST',
+			url: "index.php?module=Calendar&action=CalendarAjax&file=ActivityReminderCallbackAjax&ajax=true"
+	}).done(function (response) {
+			ActivityReminderCallbackProcess(response);
 		}
-	});
+	);
 }
 function ActivityReminderCallbackProcess(message) {
 	ActivityReminder_callback = document.getElementById("ActivityRemindercallback");
@@ -3347,22 +3297,22 @@ function ActivityReminderCallbackProcess(message) {
 	ActivityReminder_callback_win.id  = winuniqueid;
 	ActivityReminder_callback.appendChild(ActivityReminder_callback_win);
 
-	$(ActivityReminder_callback_win).update(message);
+	ActivityReminder_callback_win.innerHTML=message;
 	ActivityReminder_callback_win.style.height = "0px";
 	ActivityReminder_callback_win.style.display = "";
 
 	var ActivityReminder_Newdelay_response_node = '_vtiger_activityreminder_callback_interval_';
-	if($(ActivityReminder_Newdelay_response_node)) {
-		var ActivityReminder_Newdelay_response_value = parseInt($(ActivityReminder_Newdelay_response_node).innerHTML);
+	if(document.getElementById(ActivityReminder_Newdelay_response_node)) {
+		var ActivityReminder_Newdelay_response_value = parseInt(document.getElementById(ActivityReminder_Newdelay_response_node).innerHTML);
 		if(ActivityReminder_Newdelay_response_value > 0) {
 			ActivityReminder_callback_delay = ActivityReminder_Newdelay_response_value;
 		}
 		// We don't need the no any longer, it will be sent from server for next Popup
-		$(ActivityReminder_Newdelay_response_node).remove();
+		jQuery("#"+ActivityReminder_Newdelay_response_node).remove();
 	}
 	if(message == '' || trim(message).indexOf('<script') == 0) {
 		// We got only new dealay value but no popup information, let us remove the callback win created
-		$(ActivityReminder_callback_win.id).remove();
+		jQuery("#"+ActivityReminder_callback_win.id).remove();
 		ActivityReminder_callback_win = false;
 		message = '';
 	}
@@ -3373,7 +3323,8 @@ function ActivityReminderCallbackProcess(message) {
 	}
 }
 function ActivityReminderCallbackRollout(z, ActivityReminder_callback_win) {
-	ActivityReminder_callback_win = $(ActivityReminder_callback_win);
+	if (typeof(ActivityReminder_callback_win)=='string')
+		ActivityReminder_callback_win = document.getElementById(ActivityReminder_callback_win);
 
 	if (ActivityReminder_timer) {
 		window.clearTimeout(ActivityReminder_timer);
@@ -3388,7 +3339,7 @@ function ActivityReminderCallbackRollout(z, ActivityReminder_callback_win) {
 	}
 }
 function ActivityReminderCallbackRollin(z, ActivityReminder_callback_win) {
-	ActivityReminder_callback_win = $(ActivityReminder_callback_win);
+	ActivityReminder_callback_win = document.getElementById(ActivityReminder_callback_win);
 
 	if (ActivityReminder_timer) {
 		window.clearTimeout(ActivityReminder_timer);
@@ -3401,7 +3352,7 @@ function ActivityReminderCallbackRollin(z, ActivityReminder_callback_win) {
 	}
 }
 function ActivityReminderCallbackReset(z, ActivityReminder_callback_win) {
-	ActivityReminder_callback_win = $(ActivityReminder_callback_win);
+	ActivityReminder_callback_win = document.getElementById(ActivityReminder_callback_win);
 
 	if(ActivityReminder_callback_win) {
 		ActivityReminder_callback_win.style.height = z + "px";
@@ -3505,7 +3456,7 @@ function selectedColClick(oSel)
 function delFields()
 {
 	selectedColumnsObj=getObj("selectedCol");
-	selected_tab = $("dupmod").value;
+	selected_tab = document.getElementById("dupmod").value;
 	if (selectedColumnsObj.options.selectedIndex > -1)
 	{
 		for (i=0;i < selectedColumnsObj.options.length;i++)
@@ -3672,7 +3623,7 @@ function merge_fields(selectedNames,module,parent_tab)
 	var select_options=document.getElementsByName(selectedNames);
 	var x= select_options.length;
 	var req_module=module;
-	var num_group=$("group_count").innerHTML;
+	var num_group=document.getElementById("group_count").innerHTML;
 	var pass_url="";
 	var flag=0;
 	//var i=0;
@@ -3747,8 +3698,8 @@ function delete_fields(module)
 			xx++
 		}
 	}
-	if($("current_action"))
-		cur_action = $("current_action").innerHTML
+	if(document.getElementById("current_action"))
+		cur_action = document.getElementById("current_action").innerHTML;
 	if (xx == 0)
 	{
 		alert(alert_arr.SELECT);
@@ -3759,21 +3710,14 @@ function delete_fields(module)
 		alert_str = alert_arr.DELETE_ACCOUNT + xx +alert_arr.RECORDS;
 	if(confirm(alert_str))
 	{
-		$("status").style.display="inline";
-		new Ajax.Request(
-			'index.php',
-			{
-				queue: {
-					position: 'end',
-					scope: 'command'
-				},
-				method: 'post',
-				postBody:"module="+module+"&action="+module+"Ajax&file=FindDuplicateRecords&del_rec=true&ajax=true&return_module="+module+"&idlist="+url_rec+"&current_action="+cur_action+"&"+dup_start,
-				onComplete: function(response) {
-					$("status").style.display="none";
-					$("duplicate_ajax").innerHTML= response.responseText;
+		document.getElementById("status").style.display="inline";
+		jQuery.ajax({
+			method: 'POST',
+			url: "index.php?module="+module+"&action="+module+"Ajax&file=FindDuplicateRecords&del_rec=true&ajax=true&return_module="+module+"&idlist="+url_rec+"&current_action="+cur_action+"&"+dup_start
+		}).done(function (response) {
+					document.getElementById("status").style.display="none";
+					document.getElementById("duplicate_ajax").innerHTML= response;
 				}
-			}
 			);
 	}
 	else
@@ -3866,43 +3810,29 @@ var dup_start = "";
 function getDuplicateListViewEntries_js(module,url)
 {
 	dup_start = url;
-	$("status").style.display="block";
-	new Ajax.Request(
-		'index.php',
-		{
-			queue: {
-				position: 'end',
-				scope: 'command'
-			},
-			method: 'post',
-			postBody:"module="+module+"&action="+module+"Ajax&file=FindDuplicateRecords&ajax=true&"+dup_start,
-			onComplete: function(response) {
-				$("status").style.display="none";
-				$("duplicate_ajax").innerHTML = response.responseText;
+	document.getElementById("status").style.display="block";
+	jQuery.ajax({
+			method: 'POST',
+			url: "index.php?module="+module+"&action="+module+"Ajax&file=FindDuplicateRecords&ajax=true&"+dup_start,
+	}).done(function (response) {
+				document.getElementById("status").style.display="none";
+				document.getElementById("duplicate_ajax").innerHTML = response;
 			}
-		}
 		);
 }
 
 function getUnifiedSearchEntries_js(search,module,url){
 	var qryStr = document.getElementsByName('search_criteria')[0].value;
-	$("status").style.display="block";
+	document.getElementById("status").style.display="block";
 	var recordCount = document.getElementById(module+'RecordCount').value;
-	new Ajax.Request(
-		'index.php',
-		{
-			queue: {
-				position: 'end',
-				scope: 'command'
-			},
-			method: 'post',
-			postBody:"module="+module+"&search_tag="+search+"&action="+module+"Ajax&file=UnifiedSearch&ajax=true&"+url+
-			'&query_string='+qryStr+'&search_onlyin='+encodeURIComponent('--USESELECTED--')+'&recordCount='+recordCount,
-			onComplete: function(response) {
-				$("status").style.display="none";
-				$('global_list_'+module).innerHTML = response.responseText;
+	jQuery.ajax({
+			method: 'POST',
+			url: "index.php?module="+module+"&search_tag="+search+"&action="+module+"Ajax&file=UnifiedSearch&ajax=true&"+url+
+			'&query_string='+qryStr+'&search_onlyin='+encodeURIComponent('--USESELECTED--')+'&recordCount='+recordCount
+	}).done(function (response) {
+				document.getElementById("status").style.display="none";
+				document.getElementById('global_list_'+module).innerHTML = response;
 			}
-		}
 		);
 }
 
@@ -3961,18 +3891,11 @@ function FileAdd(obj,Lay,return_action){
 
 function dldCntIncrease(fileid)
 {
-	new Ajax.Request(
-		'index.php',
-		{
-			queue: {
-				position: 'end',
-				scope: 'command'
-			},
-			method: 'post',
-			postBody: 'action=DocumentsAjax&mode=ajax&file=SaveFile&module=Documents&file_id='+fileid+"&act=updateDldCnt",
-			onComplete: function(response) {
+	jQuery.ajax({
+			method: 'POST',
+			url: "index.php?action=DocumentsAjax&mode=ajax&file=SaveFile&module=Documents&file_id="+fileid+"&act=updateDldCnt",
+	}).done(function (response) {
 			}
-		}
 		);
 }
 //End Documents Module
@@ -4064,23 +3987,16 @@ function startCall(number, recordid){
 	outgoingPopup.displayPopup(outgoingPopup.content);
 
 	//var ASTERISK_DIV_TIMEOUT = 6000;
-	new Ajax.Request(
-		'index.php',
-		{
-			queue: {
-				position: 'end',
-				scope: 'command'
-			},
-			method: 'post',
-			postBody: 'action=PBXManagerAjax&mode=ajax&file=StartCall&ajax=true&module=PBXManager&number='+encodeURIComponent(number)+'&recordid='+recordid,
-			onComplete: function(response) {
-				if(response.responseText == ''){
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?action=PBXManagerAjax&mode=ajax&file=StartCall&ajax=true&module=PBXManager&number='+encodeURIComponent(number)+'&recordid='+recordid
+	}).done(function (response) {
+				if(response == ''){
 				//successfully called
 				}else{
-					alert(response.responseText);
+					alert(response);
 				}
 			}
-		}
 		);
 }
 //asterisk integration :: ends
@@ -4269,7 +4185,7 @@ VtigerJS_DialogBox = {
 		return olayer;
 	},
 	_removebyid : function(id) {
-		if($(id)) $(id).remove();
+		if (jQuery("#"+id).length) jQuery("#"+id).remove();
 	},
 	unblock : function() {
 		VtigerJS_DialogBox._olayer(false);
@@ -4331,8 +4247,8 @@ VtigerJS_DialogBox = {
 			'</tr>' +
 			'<tr>' +
 			'<td align="center">' +
-			'<input type="button" style="text-transform: capitalize;" onclick="$(\''+ dlgbxid + '\').hide();VtigerJS_DialogBox._olayer(false);VtigerJS_DialogBox._confirm_handler();" value="'+ alert_arr.YES + '"/>' +
-			'<input type="button" style="text-transform: capitalize;" onclick="$(\''+ dlgbxid + '\').hide();VtigerJS_DialogBox._olayer(false)" value="' + alert_arr.NO + '"/>' +
+			'<input type="button" style="text-transform: capitalize;" onclick="document.getElementById(\''+ dlgbxid + '\').style.display=\'none\';VtigerJS_DialogBox._olayer(false);VtigerJS_DialogBox._confirm_handler();" value="'+ alert_arr.YES + '"/>' +
+			'<input type="button" style="text-transform: capitalize;" onclick="document.getElementById(\''+ dlgbxid + '\').style.display=\'none\';VtigerJS_DialogBox._olayer(false)" value="' + alert_arr.NO + '"/>' +
 			'</td>'+
 			'</tr>' +
 			'</tbody>' +
@@ -4352,7 +4268,7 @@ VtigerJS_DialogBox = {
 			}
 		}
 	}
-}
+};
 
 function validateInputData(value, fieldLabel, typeofdata) {
 
@@ -4564,8 +4480,8 @@ function getTranslatedString(key, alertArray){
 
 function copySelectedOptions(source, destination) {
 
-	var srcObj = $(source);
-	var destObj = $(destination);
+	var srcObj = document.getElementById(source);
+	var destObj = document.getElementById(destination);
 
 	if(typeof(srcObj) == 'undefined' || typeof(destObj) == 'undefined') return;
 
@@ -4609,7 +4525,7 @@ function removeSelectedOptions(objName) {
 }
 
 function convertOptionsToJSONArray(objName,targetObjName) {
-	var obj = $(objName);
+	var obj = document.getElementById(objName);
 	var arr = [];
 	if(typeof(obj) != 'undefined') {
 		for (i=0; i<obj.options.length; ++i) {
@@ -4617,7 +4533,7 @@ function convertOptionsToJSONArray(objName,targetObjName) {
 		}
 	}
 	if(targetObjName != 'undefined') {
-		var targetObj = $(targetObjName);
+		var targetObj = document.getElementById(targetObjName);
 		if(typeof(targetObj) != 'undefined') targetObj.value = JSON.stringify(arr);
 	}
 	return arr;
@@ -4638,7 +4554,7 @@ function fnvshobjMore(obj,Lay){
 	}
 	var IE = document.all?true:false;
 	if(IE) {
-		if($("repposition1")) {
+		if(document.getElementById("repposition1")) {
 			if(topSide > 1200) {
 				topSide = topSide-250;
 			}
@@ -4688,7 +4604,7 @@ function fnvshobjsearch(obj,Lay){
 	}
 	var IE = document.all?true:false;
 	if(IE) {
-		if($("repposition1")) {
+		if(document.getElementById("repposition1")) {
 			if(topSide > 1200) {
 				topSide = topSide-250;
 			}
@@ -4728,16 +4644,16 @@ function toggleSelectAll_Records(module,state,relCheckName) {
 
 	toggleSelect_ListView(state,relCheckName);
 	if(state == true) {
-		$('allselectedboxes').value = 'all';
-		$('selectAllRec').style.display = 'none';
-		$('deSelectAllRec').style.display = 'inline';
+		document.getElementById('allselectedboxes').value = 'all';
+		document.getElementById('selectAllRec').style.display = 'none';
+		document.getElementById('deSelectAllRec').style.display = 'inline';
 	} else {
-		$('allselectedboxes').value = '';
-		$('excludedRecords').value = '';
-		$('selectCurrentPageRec').checked = false;
-		$('selectAllRec').style.display = 'inline';
-		$('deSelectAllRec').style.display = 'none';
-		$('linkForSelectAll').hide();
+		document.getElementById('allselectedboxes').value = '';
+		document.getElementById('excludedRecords').value = '';
+		document.getElementById('selectCurrentPageRec').checked = false;
+		document.getElementById('selectAllRec').style.display = 'inline';
+		document.getElementById('deSelectAllRec').style.display = 'none';
+		document.getElementById('linkForSelectAll').style.display = 'none';
 	}
 }
 
@@ -4745,54 +4661,47 @@ function toggleSelectDocumentRecords(module,state,relCheckName,parentEleId) {
 
 	toggleSelect_ListView(state,relCheckName,parentEleId);
 	if(state == true) {
-		$('selectedboxes_'+parentEleId).value = 'all';
-		$('selectAllRec_'+parentEleId).style.display = 'none';
-		$('deSelectAllRec_'+parentEleId).style.display = 'inline';
+		document.getElementById('selectedboxes_'+parentEleId).value = 'all';
+		document.getElementById('selectAllRec_'+parentEleId).style.display = 'none';
+		document.getElementById('deSelectAllRec_'+parentEleId).style.display = 'inline';
 	} else {
-		$('selectedboxes_'+parentEleId).value = '';
-		$('excludedRecords_'+parentEleId).value = '';
-		$('currentPageRec_'+parentEleId).checked = false;
-		$('selectAllRec_'+parentEleId).style.display = 'inline';
-		$('deSelectAllRec_'+parentEleId).style.display = 'none';
-		$('linkForSelectAll_'+parentEleId).hide();
+		document.getElementById('selectedboxes_'+parentEleId).value = '';
+		document.getElementById('excludedRecords_'+parentEleId).value = '';
+		document.getElementById('currentPageRec_'+parentEleId).checked = false;
+		document.getElementById('selectAllRec_'+parentEleId).style.display = 'inline';
+		document.getElementById('deSelectAllRec_'+parentEleId).style.display = 'none';
+		document.getElementById('linkForSelectAll_'+parentEleId).style.display = 'none';
 	}
 }
 
 //Compute the number of rows in the current module
 function getNoOfRows(id){
-	var module = $('curmodule').value;
-	var searchurl = $('search_url').value;
+	var module = document.getElementById('curmodule').value;
+	var searchurl = document.getElementById('search_url').value;
 	var viewid = getviewId();
 	var url = "module="+module+"&action="+module+"Ajax&file=ListViewCount&viewname="+viewid+searchurl;
 	if(module == 'Documents') {
-		var folderid = $('folderid_'+id).value;
+		var folderid = document.getElementById('folderid_'+id).value;
 		url = url+"&folderidstring="+folderid;
 	}
-	new Ajax.Request(
-		'index.php',
-		{
-			queue: {
-				position: 'end',
-				scope: 'command'
-			},
-			method: 'post',
-			postBody:url,
-			onComplete: function(response) {
+	jQuery.ajax({
+			method: 'POST',
+			url: "index.php?"+url
+	}).done(function (response) {
 				if(module != 'Documents') {
-					$('numOfRows').value = response.responseText;
-					$('count').innerHTML = response.responseText;
-					if(parseInt($('maxrecords').value) < parseInt(response.responseText)){
-						$('linkForSelectAll').show();
+					document.getElementById('numOfRows').value = response;
+					document.getElementById('count').innerHTML = response;
+					if(parseInt(document.getElementById('maxrecords').value) < parseInt(response)){
+						document.getElementById('linkForSelectAll').style.display="block";
 					}
 				} else {
-					$('numOfRows_'+id).value = response.responseText;
-					$('count_'+id).innerHTML = response.responseText;
-					if(parseInt($('maxrecords').value) < parseInt(response.responseText)){
-						$('linkForSelectAll_'+id).show();
+					document.getElementById('numOfRows_'+id).value = response;
+					document.getElementById('count_'+id).innerHTML = response;
+					if(parseInt(document.getElementById('maxrecords').value) < parseInt(response)){
+						document.getElementById('linkForSelectAll_'+id).style.display="block";
 					}
 				}
 			}
-		}
 	);
 }
 
@@ -4801,39 +4710,32 @@ function rel_toggleSelectAll_Records(module,relmodule,state,relCheckName) {
 
 	 rel_toggleSelect(state,relCheckName,relmodule);
 	 if(state == true) {
-		$(module+'_'+relmodule+'_selectallActivate').value = 'true';
-		$(module+'_'+relmodule+'_selectAllRec').style.display = 'none';
-		$(module+'_'+relmodule+'_deSelectAllRec').style.display = 'inline';
+		document.getElementById(module+'_'+relmodule+'_selectallActivate').value = 'true';
+		document.getElementById(module+'_'+relmodule+'_selectAllRec').style.display = 'none';
+		document.getElementById(module+'_'+relmodule+'_deSelectAllRec').style.display = 'inline';
 	} else {
-		$(module+'_'+relmodule+'_selectallActivate').value = 'false';
-		$(module+'_'+relmodule+'_excludedRecords').value = '';
-		$(module+'_'+relmodule+'_selectCurrentPageRec').checked = false;
-		$(module+'_'+relmodule+'_selectAllRec').style.display = 'inline';
-		$(module+'_'+relmodule+'_deSelectAllRec').style.display = 'none';
-		$(module+'_'+relmodule+'_linkForSelectAll').hide();
+		document.getElementById(module+'_'+relmodule+'_selectallActivate').value = 'false';
+		document.getElementById(module+'_'+relmodule+'_excludedRecords').value = '';
+		document.getElementById(module+'_'+relmodule+'_selectCurrentPageRec').checked = false;
+		document.getElementById(module+'_'+relmodule+'_selectAllRec').style.display = 'inline';
+		document.getElementById(module+'_'+relmodule+'_deSelectAllRec').style.display = 'none';
+		document.getElementById(module+'_'+relmodule+'_linkForSelectAll').style.display = 'none';
 	}
 }
 
 // Compute the number of records related to capmaign record
 function getNoOfRelatedRows(current_module,related_module){
 	var recordid = document.getElementById('recordid').value;
-	new Ajax.Request(
-		'index.php',
-		{
-			queue: {
-				position: 'end',
-				scope: 'command'
-			},
-			method: 'post',
-			postBody:"module="+current_module+"&related_module="+related_module+"&action="+current_module+"Ajax&idlist="+recordid+"&file=ListViewCount&mode=relatedlist",
-			onComplete: function(response) {
-				$(current_module+'_'+related_module+'_numOfRows').value = response.responseText;
-				$(related_module+'_count').innerHTML = response.responseText;
-				if(parseInt($('maxrecords').value) < parseInt(response.responseText)){
-					$(current_module+'_'+related_module+'_linkForSelectAll').show();
+	jQuery.ajax({
+			method: 'POST',
+			url: "index.php?module="+current_module+"&related_module="+related_module+"&action="+current_module+"Ajax&idlist="+recordid+"&file=ListViewCount&mode=relatedlist",
+	}).done(function (response) {
+				document.getElementById(current_module+'_'+related_module+'_numOfRows').value = response;
+				document.getElementById(related_module+'_count').innerHTML = response;
+				if(parseInt(document.getElementById('maxrecords').value) < parseInt(response)){
+					document.getElementById(current_module+'_'+related_module+'_linkForSelectAll').style.display="block";
 				}
 			}
-		}
 	);
 }
 
@@ -4846,8 +4748,9 @@ function updateParentCheckbox(obj,id){
 			}
 		}
 	}
-	if(parentCheck){
-		$(id+'_selectCurrentPageRec').checked=parentCheck;
+	var selelem = document.getElementById(id+'_selectCurrentPageRec');
+	if(selelem && parentCheck){
+		selelem.checked=parentCheck;
 	}
 }
 

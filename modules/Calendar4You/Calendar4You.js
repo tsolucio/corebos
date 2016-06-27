@@ -5,7 +5,7 @@
  * Portions created by IT-Solutions4You s.r.o. are Copyright(C) IT-Solutions4You s.r.o.
  * All Rights Reserved.
  ********************************************************************************/
-jQuery.noConflict();
+
 // Get User Default calendar variables
 var Calendar_Default_Reminder_Minutes = 0; // false
 GlobalVariable_getVariable('Calendar_Default_Reminder_Minutes', 0, 'Calendar', gVTUserID).then(function(response) {
@@ -144,16 +144,11 @@ function getITSMiniCal(url){
 		url = 'module=Calendar4You&action=ActivityAjax&type=minical&ajax=true';
 	else
 		url = 'module=Calendar4You&action=ActivityAjax&'+url+'&type=minical&ajax=true';
-	new Ajax.Request('index.php', {
-		queue : {
-			position : 'end',
-			scope : 'command'
-		},
-		method : 'post',
-		postBody : url,
-		onComplete : function(response) {
-			$("miniCal").innerHTML = response.responseText;
-		}
+	jQuery.ajax({
+			method:"POST",
+			url:'index.php?'+ url
+	}).done(function(response) {
+			document.getElementById("miniCal").innerHTML = response;
 	});
 }
 
@@ -178,16 +173,11 @@ function changeCalendarDate(year,month,date){
 
 function getITSCalSettings(){
 	url = getITSCalURL();
-	new Ajax.Request('index.php', {
-		queue : {
-			position : 'end',
-			scope : 'command'
-		},
-		method : 'post',
-		postBody : 'module=Calendar4You&action=ActivityAjax' + url + '&type=settings&ajax=true',
-		onComplete : function(response) {
-			$("calSettings").innerHTML = response.responseText;
-		}
+	jQuery.ajax({
+			method:"POST",
+			url:'index.php?module=Calendar4You&action=ActivityAjax' + url + '&type=settings&ajax=true',
+	}).done(function(response) {
+			document.getElementById("calSettings").innerHTML = response;
 	});
 }
 
@@ -216,23 +206,18 @@ function getITSCalURL(){
 }
 
 function loadITSEventSettings(el,mode,id){
-	$('event_setting').innerHTML = '<img src=\'themes/images/vtbusy.gif\'>';
+	document.getElementById('event_setting').innerHTML = '<img src=\'themes/images/vtbusy.gif\'>';
 	fnvshobj(el, 'event_setting');
 
 	var url = getITSCalURL();
 
 	url += "&mode=" + mode + "&id=" + id;
 
-	new Ajax.Request('index.php', {
-		queue : {
-			position : 'end',
-			scope : 'command'
-		},
-		method : 'post',
-		postBody : 'module=Calendar4You&action=ActivityAjax' + url + '&type=event_settings&ajax=true',
-		onComplete : function(response) {
-			$('event_setting').innerHTML = response.responseText;
-		}
+	jQuery.ajax({
+			method:"POST",
+			url:'index.php?module=Calendar4You&action=ActivityAjax' + url + '&type=event_settings&ajax=true'
+	}).done(function(response) {
+			document.getElementById('event_setting').innerHTML = response;
 	});
 }
 
@@ -456,19 +441,15 @@ function controlGoogleSync(){
 		if (google_login_val != "" && google_apikey_val != "" && google_clientid_val != "" && google_keyfile_val != ""){
 			fnShowDrop("google_sync_verifying");
 			fnHideDrop("google_sync_text");
-			new Ajax.Request('index.php', {
-				queue : {
-					position : 'end',
-					scope : 'command'
-				},
-				method : 'post',
-				postBody : 'module=Calendar4You&action=Calendar4YouAjax&file=GoogleSync4YouControl&ajax=true&login=' + google_login_val + '&apikey=' + google_apikey_val + '&keyfile=' + google_keyfile_val + '&clientid=' + google_clientid_val + "&refresh_token=" + google_refresh + "&googleinsert=" + googleinsert,
-				onComplete : function(response) {
+			jQuery.ajax({
+					method:"POST",
+					url:'index.php?module=Calendar4You&action=Calendar4YouAjax&file=GoogleSync4YouControl&ajax=true&login=' + google_login_val + '&apikey=' + google_apikey_val + '&keyfile=' + google_keyfile_val + '&clientid=' + google_clientid_val + "&refresh_token=" + google_refresh + "&googleinsert=" + googleinsert
+			}).done(function(response) {
 					if (google_refresh == '') {
 						document.getElementById('google_sync_text').style.color = '#000000';
 						document.forms["SharingForm"].submit();
 					} else {
-						result = JSON.parse(response.responseText);
+						result = JSON.parse(response);
 						document.getElementById('google_sync_text').innerHTML = result["text"];
 						fnHideDrop("google_sync_verifying");
 						fnShowDrop("google_sync_text");
@@ -480,7 +461,6 @@ function controlGoogleSync(){
 							document.forms["SharingForm"].submit();
 						}
 					}
-				}
 			});
 		}else{
 			document.forms["SharingForm"].submit();

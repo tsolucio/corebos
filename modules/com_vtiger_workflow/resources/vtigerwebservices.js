@@ -17,14 +17,20 @@ function vtigerwebservicesproto(){
 
 	function doGet(params, callback){
 		$.get(this.serviceUrl, params, function(result){
-			var parsed = JSON.parse(result);
+			if (typeof(result)=='string')
+				var parsed = JSON.parse(result);
+			else
+				var parsed = result;
 			callback(parsed);
 		});
 	}
 
 	function doPost(params, callback){
 		$.post(this.serviceUrl, params, function(result){
-			var parsed = JSON.parse(result);
+			if (typeof(result)=='string')
+				var parsed = JSON.parse(result);
+			else
+				var parsed = result;
 			callback(parsed);
 		});
 	}

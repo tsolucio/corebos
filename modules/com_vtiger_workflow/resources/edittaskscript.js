@@ -25,7 +25,7 @@ function edittaskscript($){
 		});
 
 		$('.box_cel').click(function(){
-			element.attr('value', parseInt($(this).text(), 10));
+			element.val(parseInt($(this).text(), 10));
 		});
 	}
 
@@ -38,7 +38,7 @@ function edittaskscript($){
 		NumberBox($('#select_date_days'));
         //UI to set the date for executing the task.
     	$('#check_select_date').click(function(){
-    	    if($(this).attr('checked')){
+    	    if($(this).prop('checked')){
     	        $('#select_date').css('display', 'block');
     	    }else{
     	        $('#select_date').css('display', 'none');
@@ -53,14 +53,14 @@ function edittaskscript($){
 			$("#save_conditions").children(".condition_group_block").each(function(j, conditiongroupblock){
 				$(conditiongroupblock).children(".save_condition_group").each(function(k, conditiongroup){
 					$(conditiongroup).children().each(function(l){
-						var fieldname = $(this).children(".fieldname").attr("value");
-						var operation = $(this).children(".operation").attr("value");
-						var value = $(this).children(".expressionvalue").attr("value");
-						var valuetype = $(this).children(".expressiontype").attr("value");
-						var joincondition = $(this).children(".joincondition").attr("value");
-						var groupid = $(this).children(".groupid").attr("value");
+						var fieldname = $(this).children(".fieldname").val();
+						var operation = $(this).children(".operation").val();
+						var value = $(this).children(".expressionvalue").val();
+						var valuetype = $(this).children(".expressiontype").val();
+						var joincondition = $(this).children(".joincondition").val();
+						var groupid = $(this).children(".groupid").val();
 						var groupjoin = '';
-						if(groupid != '') groupjoin = $('#save_condition_group_'+groupid+'_joincondition').attr("value");
+						if(groupid != '') groupjoin = $('#save_condition_group_'+groupid+'_joincondition').val();
 						var condition = {
 							fieldname:fieldname,
 							operation:operation,
@@ -79,7 +79,7 @@ function edittaskscript($){
 			}else{
 				var out = JSON.stringify(conditions);
 			}
-			$("#save_conditions_json").attr("value", out);
+			$("#save_conditions_json").prop("value", out);
 		});
     });
 }

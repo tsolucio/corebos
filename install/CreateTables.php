@@ -74,7 +74,7 @@ session_destroy();
 	<title><?php echo $installationStrings['APP_NAME']. ' - ' . $installationStrings['LBL_CONFIG_WIZARD']. ' - ' . $installationStrings['LBL_FINISH']?></title>
 	<link href="include/install/install.css" rel="stylesheet" type="text/css">
 	<link href="themes/softed/style.css" rel="stylesheet" type="text/css">
-	<script language="javascript" type="text/javascript" src="include/scriptaculous/prototype.js"></script>
+	<script language="javascript" type="text/javascript" src="include/jquery/jquery.js"></script>
 </head>
 
 <body class="small cwPageBg" topmargin="0" leftmargin="0" marginheight="0" marginwidth="0">
@@ -124,14 +124,11 @@ session_destroy();
 														
 														<script type="text/javascript"> 
 														<?php if ($db_populate == 'true') { ?>
-															new Ajax.Request(
-																'install.php',
-																{queue: {position: 'end', scope: 'command'},
-															    	method: 'post',
-																	postBody:"file=PopulateSeedData.php",
-																		onComplete: function(response) {
-														                	window.document.finishform.submit();
-																		}
+															jQuery.ajax({
+																	method:"POST",
+																	url:"install.php?file=PopulateSeedData.php"
+															}).done(function(response) {
+																window.document.finishform.submit();
 																}
 															);
 														<?php } else { ?>

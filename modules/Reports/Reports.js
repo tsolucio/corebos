@@ -457,12 +457,11 @@ function changeSteps() {
 			alert(alert_arr.MISSING_REPORT_NAME);
 			return false;
 		} else {
-			new Ajax.Request('index.php',
-				{queue: {position: 'end', scope: 'command'},
-				method: 'post',
-				postBody: 'action=ReportsAjax&mode=ajax&file=CheckReport&module=Reports&check=reportCheck&reportName='+encodeURIComponent(document.NewRep.reportname.value)+'&reportid='+document.NewRep.record.value,
-				onComplete: function(response) {
-					if(response.responseText!=0) {
+			jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?action=ReportsAjax&mode=ajax&file=CheckReport&module=Reports&check=reportCheck&reportName='+encodeURIComponent(document.NewRep.reportname.value)+'&reportid='+document.NewRep.record.value
+			}).done(function (response) {
+					if(response!=0) {
 						alert(alert_arr.REPORT_NAME_EXISTS);
 						return false;
 					} else {
@@ -472,7 +471,7 @@ function changeSteps() {
 						getObj('step1label').className = 'settingsTabList';
 						getObj('step2label').className = 'settingsTabSelected';
 					}
-				}}
+				}
 			);
 		}
 	} else {
@@ -506,8 +505,8 @@ function editReport(id)
 }
 function CreateReport(element)
 {
-	if($(element) == null) return;
-	var module = $(element).value;
+	if(document.getElementById(element) == null) return;
+	var module = document.getElementById(element).value;
 	var arg ='index.php?module=Reports&action=ReportsAjax&file=NewReport0&folder='+gcurrepfolderid+'&reportmodule='+module;
 	fnPopupWin(arg);
 }
@@ -665,35 +664,30 @@ function fnLoadRepValues(tab1,tab2,block1,block2){
 	document.getElementById(tab1).className='dvtSelectedCell';
 	document.getElementById(tab2).className='dvtUnSelectedCell';
 }
-function addChartsToHomepage(reportid){
-	var windowtitle = $('windowtitle_id').value;
-	if(windowtitle.length == 0){
+function addChartsToHomepage(reportid) {
+	var windowtitle = document.getElementById('windowtitle_id').value;
+	if (windowtitle.length == 0) {
 		alert(alert_arr.LBL_ENTER_WINDOW_TITLE);
 		return false;
 	}
-	var charttype = $('selreportcharttype_id').value;
-	new Ajax.Request('index.php', {
-		queue : {
-			position : 'end',
-			scope : 'command'
-		},
-		method : 'post',
-		postBody : 'module=Reports&action=ReportsAjax&file=UpdatedashbordReportRel&ajax=true&reportid=' + reportid + '&windowtitle=' + windowtitle + '&charttype=' + charttype,
-		onComplete : function(response) {
-			if ((response.responseText != '')) {
-				alert(response.responseText);
-			}
-			fnhide('addcharttoHomepage');
-			$('widgetsuccess').style.display = 'block';
-			$('widgetsuccess').style.display = 'none';
-			Effect.Appear('widgetsuccess');
-			setTimeout(hidewidgetmessage, 3000);
+	var charttype = document.getElementById('selreportcharttype_id').value;
+	jQuery.ajax({
+		method: 'POST',
+		url: 'index.php?module=Reports&action=ReportsAjax&file=UpdatedashbordReportRel&ajax=true&reportid=' + reportid + '&windowtitle=' + windowtitle + '&charttype=' + charttype
+	}).done(function (response) {
+		if ((response != '')) {
+			alert(response);
 		}
+		fnhide('addcharttoHomepage');
+		document.getElementById('widgetsuccess').style.display = 'block';
+		document.getElementById('widgetsuccess').style.display = 'none';
+		jQuery.show('#widgetsuccess');
+		setTimeout(hidewidgetmessage, 3000);
 	});
 	return true;
 }
-function hidewidgetmessage(){
-	Effect.Fade('widgetsuccess');
+function hidewidgetmessage() {
+	jQuery('#widgetsuccess').fadeOut();
 }
 function getDateFieldGrouping(group1){
 	var selectfield = document.getElementById(group1).value;

@@ -13,10 +13,6 @@
 <script type="text/javascript" src="jscalendar/lang/calendar-{$CALENDAR_LANG}.js"></script>
 <script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
 <script type="text/javascript" src="include/js/FieldDependencies.js"></script>
-<script type="text/javascript" src="modules/com_vtiger_workflow/resources/jquery-1.2.6.js"></script>
-<script type="text/javascript">
-	jQuery.noConflict();
-</script>
 {if $PICKIST_DEPENDENCY_DATASOURCE neq ''}
 <script type="text/javascript">
 	jQuery(document).ready(function() {ldelim} (new FieldDependencies({$PICKIST_DEPENDENCY_DATASOURCE})).init() {rdelim});
@@ -37,23 +33,20 @@
 var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 function sensex_info()
 {ldelim}
-        var Ticker = $('tickersymbol').value;
+        var Ticker = document.getElementById('tickersymbol').value;
         if(Ticker!='')
         {ldelim}
-                $("vtbusy_info").style.display="inline";
-                new Ajax.Request(
-                      'index.php',
-                      {ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-                                method: 'post',
-                                postBody: 'module={$MODULE}&action=Tickerdetail&tickersymbol='+Ticker,
-                                onComplete: function(response) {ldelim}
-                                        $('autocom').innerHTML = response.responseText;
-                                        $('autocom').style.display="block";
-                                        $("vtbusy_info").style.display="none";
-                                {rdelim}
-                        {rdelim}
-                );
-        {rdelim}
+				document.getElementById("vtbusy_info").style.display="inline";
+				jQuery.ajax({ldelim}
+						method:"POST",
+						url:'index.php?module={$MODULE}&action=Tickerdetail&tickersymbol='+Ticker
+				{rdelim}).done(function(response) {ldelim}
+							document.getElementById('autocom').innerHTML = response;
+							document.getElementById('autocom').style.display="block";
+							document.getElementById("vtbusy_info").style.display="none";
+				{rdelim}
+			 );
+		{rdelim}
 {rdelim}
 </script>
 

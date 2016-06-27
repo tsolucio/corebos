@@ -8,7 +8,7 @@ function ShowFolders(folderid)
 		var mail_folder=document.getElementById('mail_fldrname').innerHTML;
 	{rdelim}
 	gselectedrowid = 0;
-	$("status").style.display="inline";
+	document.getElementById("status").style.display="inline";
 	gFolderid = folderid;
 	folder='';
 //	getObj('search_text').value = '';
@@ -39,66 +39,62 @@ function ShowFolders(folderid)
 			folder='<b>{'LBL_QUAL_CONTACT'|@getTranslatedString:$MODULE}</b>';
 	{rdelim}
 
-	new Ajax.Request(
-		'index.php',
-		{ldelim}
-			queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-			method: 'post',
-			postBody: 'module=Emails&ajax=true&action=EmailsAjax&file=ListView&folderid='+folderid,
-			onComplete: function(response) {ldelim}
-				$("status").style.display="none";
-				if(document.getElementById('mail_fldrname')!=null){ldelim}
-					if(document.getElementById('_mailfolder_'+mail_folder)!=null && document.getElementById('_mailfolder_'+mail_folder).className!='mm_folder'){ldelim}
-						document.getElementById('_mailfolder_'+mail_folder).className='mm_folder';
-						document.getElementById('_mailfolder_'+mail_folder).parentNode.className='';
-					{rdelim}
-				{rdelim}
-				if(document.getElementById('_replydiv_')!=null){ldelim}
-					if(document.getElementById('_replydiv_').style.display!='none')
-					{ldelim}
-						document.getElementById('_replydiv_').style.display='none';
-						document.getElementById('_contentdiv_').style.display='block';
-						document.getElementById('_mailfolder_mm_compose').parentNode.className='';
-						document.getElementById('_mailfolder_mm_compose').className='';
-					{rdelim}
-				{rdelim}
-				if(document.getElementById('_settingsdiv_')!=null){ldelim}
-					if(document.getElementById('_settingsdiv_').style.display!='none')
-					{ldelim}
-						document.getElementById('_settingsdiv_').style.display='none';
-						document.getElementById('_contentdiv_').style.display='block';
-						document.getElementById('_mailfolder_mm_settings').parentNode.className='';
-						document.getElementById('_mailfolder_mm_settings').className='';
-					{rdelim}
-				{rdelim}
-				if(document.getElementById('_contentdiv2_')!=null){ldelim}
-					if(document.getElementById('_contentdiv2_').style.display!='none')
-					{ldelim}
-						document.getElementById('_contentdiv2_').style.display='none';
-						document.getElementById('_contentdiv_').style.display='block';
-						document.getElementById('_mailfolder_mm_settings').parentNode.className='';
-					{rdelim}
-				{rdelim}
-				if(gFolderid == folderid) {ldelim}
-					gselectedrowid = 0;
-					$("email_con").innerHTML=response.responseText;
-					$('EmailDetails').innerHTML = '<table valign="top" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="forwardBg"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2">&nbsp;</td></tr></tbody></table></td></tr><tr><td style="padding-top:10px;" bgcolor="#ffffff" height="300" valign="top"></td></tr></tbody></table>';
-					execJS($('email_con'));
-				{rdelim}
-				else
-				{ldelim}
-					$('EmailDetails').innerHTML = '<table valign="top" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="forwardBg"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2">&nbsp;</td></tr></tbody></table></td></tr><tr><td style="padding-top:10px;" bgcolor="#ffffff" height="300" valign="top"></td></tr></tbody></table>';
-					$("email_con").innerHTML=response.responseText;
-					execJS($('email_con'));
-				{rdelim}
-				if(document.getElementById('_contentdiv_')!=null){ldelim}
-					if(document.getElementById('_mailfolder_mm_drafts').parentNode.className=='mm_folder_selected'){ldelim}
-						document.getElementById('_mailfolder_mm_drafts').parentNode.className='';
-						document.getElementById('mm_folder mm_folder_selected').className='';
-					{rdelim}
-				{rdelim}
-			{rdelim}
-		{rdelim}
+	jQuery.ajax({ldelim}
+				method:"POST",
+				url:'index.php?module=Emails&ajax=true&action=EmailsAjax&file=ListView&folderid='+folderid
+	{rdelim}).done(function(response) {ldelim}
+										document.getElementById("status").style.display="none";
+										if(document.getElementById('mail_fldrname')!=null){ldelim}
+											if(document.getElementById('_mailfolder_'+mail_folder)!=null && document.getElementById('_mailfolder_'+mail_folder).className!='mm_folder'){ldelim}
+												document.getElementById('_mailfolder_'+mail_folder).className='mm_folder';
+												document.getElementById('_mailfolder_'+mail_folder).parentNode.className='';
+											{rdelim}
+										{rdelim}
+										if(document.getElementById('_replydiv_')!=null){ldelim}
+											if(document.getElementById('_replydiv_').style.display!='none')
+											{ldelim}
+											document.getElementById('_replydiv_').style.display='none';
+											document.getElementById('_contentdiv_').style.display='block';
+												document.getElementById('_mailfolder_mm_compose').parentNode.className='';
+												document.getElementById('_mailfolder_mm_compose').className='';
+											{rdelim}
+										{rdelim}
+										if(document.getElementById('_settingsdiv_')!=null){ldelim}
+											if(document.getElementById('_settingsdiv_').style.display!='none')
+											{ldelim}document.getElementById('_settingsdiv_').style.display='none';
+											document.getElementById('_contentdiv_').style.display='block';
+												document.getElementById('_mailfolder_mm_settings').parentNode.className='';
+												document.getElementById('_mailfolder_mm_settings').className='';
+											{rdelim}
+										{rdelim}
+										if(document.getElementById('_contentdiv2_')!=null){ldelim}
+											if(document.getElementById('_contentdiv2_').style.display!='none')
+											{ldelim}
+											document.getElementById('_contentdiv2_').style.display='none';
+											document.getElementById('_contentdiv_').style.display='block';
+												document.getElementById('_mailfolder_mm_settings').parentNode.className='';
+											{rdelim}
+										{rdelim}
+                                        if(gFolderid == folderid)
+                                        {ldelim}
+                                                gselectedrowid = 0;
+                                                document.getElementById("email_con").innerHTML=response;
+												document.getElementById('EmailDetails').innerHTML = '<table valign="top" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="forwardBg"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2">&nbsp;</td></tr></tbody></table></td></tr><tr><td style="padding-top:10px;" bgcolor="#ffffff" height="300" valign="top"></td></tr></tbody></table>';
+                                                execJS(document.getElementById('email_con'));
+                                        {rdelim}
+                                        else
+                                        {ldelim}
+                                                document.getElementById('EmailDetails').innerHTML = '<table valign="top" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="forwardBg"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2">&nbsp;</td></tr></tbody></table></td></tr><tr><td style="padding-top:10px;" bgcolor="#ffffff" height="300" valign="top"></td></tr></tbody></table>';
+                                                document.getElementById("email_con").innerHTML=response;
+                                                execJS(document.getElementById('email_con'));
+                                        {rdelim}
+										if(document.getElementById('_contentdiv_')!=null){ldelim}
+											if(document.getElementById('_mailfolder_mm_drafts').parentNode.className=='mm_folder_selected'){ldelim}
+												document.getElementById('_mailfolder_mm_drafts').parentNode.className='';
+												document.getElementById('mm_folder mm_folder_selected').className='';
+											{rdelim}
+										{rdelim}
+                                {rdelim}
 	);
 {rdelim}
 </script>

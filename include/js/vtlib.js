@@ -56,14 +56,14 @@ function vtlib_open_popup_window(fromlink,fldname,MODULE,ID) {
  * Show the vtiger field help if available.
  */
 function vtlib_field_help_show(basenode, fldname) {
-    var domnode = $('vtlib_fieldhelp_div');
+    var domnode = jQuery('#vtlib_fieldhelp_div');
 
     if(typeof(fieldhelpinfo) == 'undefined') return;
 
     var helpcontent = fieldhelpinfo[fldname];
     if(typeof(helpcontent) == 'undefined') return;
 
-    if(!domnode) {
+    if(domnode.length==0) {
         domnode = document.createElement('div');
         domnode.id = 'vtlib_fieldhelp_div';
         domnode.className = 'dvtSelectedCell';
@@ -73,23 +73,23 @@ function vtlib_field_help_show(basenode, fldname) {
         domnode.style.fontWeight = 'normal';
         document.body.appendChild(domnode);
 
-        domnode = $('vtlib_fieldhelp_div');
-        Event.observe(domnode, 'mouseover', function() {
-            $('vtlib_fieldhelp_div').show();
+        domnode = jQuery('#vtlib_fieldhelp_div');
+		domnode.on("mouseenter",function() {
+            jQuery(this).show();
         });
-        Event.observe(domnode, 'mouseout', vtlib_field_help_hide);
+		domnode.on("mouseleave",vtlib_field_help_hide);
     }
     else {
         domnode.show();
     }
-    domnode.innerHTML = helpcontent;
+    domnode.html(helpcontent);
     fnvshobj(basenode,'vtlib_fieldhelp_div');
 }
 /**
  * Hide the vtiger field help
  */
 function vtlib_field_help_hide(evt) {
-    var domnode = $('vtlib_fieldhelp_div');
+    var domnode = jQuery('#vtlib_fieldhelp_div');
     if(domnode) domnode.hide();
 }
 
@@ -200,46 +200,45 @@ function vtlib_loadDetailViewWidget(urldata, target, indicator) {
     if(typeof(target) == 'undefined') {
         target = false;
     } else {
-        target = $(target);
+        target = document.getElementById(target);
     }
     if(typeof(indicator) == 'undefined') {
         indicator = false;
     } else {
-        indicator = $(indicator);
+        indicator = document.getElementById(indicator);
     }
 	
     if(indicator) {
-        indicator.show();
+        indicator.style.display="block";
     }
 	
-    new Ajax.Request('index.php',
-    {
-        queue: {
-            position: 'end',
-            scope: 'command'
-        },
-        method: 'post',
-        postBody:urldata,
-        onComplete: function(response) {
+    jQuery.ajax({
+			method: 'POST',
+			url: "index.php?"+urldata
+    }).done(function (response) {
             if(target) {
-                target.innerHTML = response.responseText;
-                if(typeof ParseAjaxResponse == 'function')
-                    ParseAjaxResponse(response.responseText);
+                target.innerHTML = response;
+                if(typeof(ParseAjaxResponse)== 'function')
+                    ParseAjaxResponse(response);
                 else {
 					// Evaluate all the script tags in the response text.
-					var scriptTags = target.getElementsByTagName('script');
-					for(var i = 0; i< scriptTags.length; i++){
-						var scriptTag = scriptTags[i];
-						eval(scriptTag.innerHTML);
-					}
+					vtlib_executeJavascriptInElement(target);
                 }
                 if(indicator) {
-                    indicator.hide();
+                    indicator.style.display="none";
                 }
             }
-        }
     });
     return false; // To stop event propogation
+}
+
+function vtlib_executeJavascriptInElement(element) {
+	// Evaluate all the script tags in the element.
+	var scriptTags = element.getElementsByTagName('script');
+	for(var i = 0; i< scriptTags.length; i++){
+		var scriptTag = scriptTags[i];
+		eval(scriptTag.innerHTML);
+	}
 }
 
 /**

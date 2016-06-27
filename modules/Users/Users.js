@@ -61,25 +61,20 @@ function updateWidgets(activity) {
 		}
 	}
 
-	new Ajax.Request('index.php', {
-		queue : {
-			position : 'end',
-			scope : 'command'
-		},
-		method : 'post',
-		postBody : 'module=Users&action=UsersAjax&activity=' + activity + '&' + ( submitStr ? submitStr : ''),
-		onComplete : function(response) {
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=Users&action=UsersAjax&activity=' + activity + '&' + (submitStr?submitStr:'')
+	}).done(function (response) {
 			document.getElementById("widgets").style.display.block = "block";
 			document.getElementById("rView").style.display = (activity == "EditWidgets" ? 'none' : 'block');
 			document.getElementById("eView").style.display = (activity == "EditWidgets" ? 'block' : 'none');
 			document.getElementById("widgets").innerHTML = "";
 			var newdiv = document.createElement("div");
-			newdiv.innerHTML = response.responseText;
+			newdiv.innerHTML = response;
 			var container = document.getElementById("widgets");
 			container.appendChild(newdiv);
-			//document.getElementById("widgets").innerHTML = response.responseText;
-		}
-	});
+	//		document.getElementById("widgets").innerHTML = response.responseText;
+		});
 	return true;
 }
 
@@ -135,15 +130,11 @@ function manageWidgets(id, check){
 	}else{
 		str = 'module=Users&action=UsersAjax&activity=widgetUpdate&id='+id+'&update=1&type=delete';
 	}
-	new Ajax.Request('index.php', {
-		queue : {
-			position : 'end',
-			scope : 'command'
-		},
-		method : 'post',
-		postBody : str,
-		onComplete : function(response) {
-			updateWidgets('RefreshWidgetsrView');
-		}
+
+	jQuery.ajax({
+		method: 'POST',
+		url: 'index.php?' + str
+	}).done(function (response) {
+		updateWidgets('RefreshWidgetsrView');
 	});
 }

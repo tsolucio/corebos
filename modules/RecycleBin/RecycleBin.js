@@ -15,50 +15,40 @@ function callRBSearch(searchtype)
         getObj(data_td_id).className = 'searchAlph';
     }
     gPopupAlphaSearchUrl = '';
-	search_fld_val= $('bas_searchfield').options[$('bas_searchfield').selectedIndex].value;
+	search_fld_val= document.getElementById('bas_searchfield').options[document.getElementById('bas_searchfield').selectedIndex].value;
 	search_txt_val=document.basicSearch.search_text.value;
 	var urlstring = '';
 	if(searchtype == 'Basic')
 	{
 		urlstring = 'search_field='+search_fld_val+'&searchtype=BasicSearch&search_text='+search_txt_val+'&';
 	}
-	var selectedmodule = $('select_module').options[$('select_module').selectedIndex].value;
+	var selectedmodule = document.getElementById('select_module').options[document.getElementById('select_module').selectedIndex].value;
 	urlstring += 'selected_module='+selectedmodule;
-        	new Ajax.Request(
-		'index.php',
-		{
-			queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody:urlstring +'&query=true&module=RecycleBin&action=RecycleBinAjax&file=index&ajax=true&mode=ajax',
-			onComplete: function(response) 
-			{
-				$("status").style.display="none";
-                $("modules_datas").innerHTML=response.responseText;
-				$("search_ajax").innerHTML = '';
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?'+urlstring +'&query=true&module=RecycleBin&action=RecycleBinAjax&file=index&ajax=true&mode=ajax'
+			}).done(function (response) {
+				document.getElementById("status").style.display="none";
+				document.getElementById("modules_datas").innerHTML=response;
+				document.getElementById("search_ajax").innerHTML = '';
 			}
-	      }
-        );
+		);
 
 }
 function changeModule(pickmodule)
 {
-	$("status").style.display="inline";
+	document.getElementById("status").style.display="inline";
 	var module=pickmodule.options[pickmodule.options.selectedIndex].value;
-	new Ajax.Request(
-                'index.php',
-                {
-			queue: {position: 'end', scope: 'command'},
-                        method: 'post',
-                        postBody: 'action=RecycleBinAjax&module=RecycleBin&mode=ajax&file=ListView&selected_module='+module,
-	                onComplete: function(response) 
-					{
-						$("status").style.display="none";
-						$("modules_datas").innerHTML=response.responseText;
-						$("searchAcc").innerHTML = $("search_ajax").innerHTML; 
-						$("search_ajax").innerHTML = '';
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?action=RecycleBinAjax&module=RecycleBin&mode=ajax&file=ListView&selected_module='+module
+	}).done(function (response) {
+						document.getElementById("status").style.display="none";
+						document.getElementById("modules_datas").innerHTML=response;
+						document.getElementById("searchAcc").innerHTML = document.getElementById("search_ajax").innerHTML; 
+						document.getElementById("search_ajax").innerHTML = '';
 					}
-                }
-        );
+			);
 }
 
 function massRestore()
@@ -100,27 +90,19 @@ function massRestore()
 	else confirm_status = true;
 
 	if(confirm_status){
-		var selectmodule = $('selected_module').value;
-		var selectmoduletranslated =  $('selected_module_translated').value;
+		var selectmodule = document.getElementById('selected_module').value;
+		var selectmoduletranslated =  document.getElementById('selected_module_translated').value;
 		if(confirm(mod_alert_arr.MSG_RESTORE_CONFIRMATION + " " + count + " " + selectmoduletranslated + "?"))
 		{
-			$("status").style.display="inline";
-			new Ajax.Request(
-				'index.php',
-				{
-					queue: {
-						position: 'end',
-						scope: 'command'
-					},
-					method: 'post',
-					postBody: 'action=RecycleBinAjax&module=RecycleBin&mode=ajax&file=Restoration&idlist='+idstring+'&selectmodule='+selectmodule+'&excludedRecords='+excludedRecords,
-					onComplete: function(response)
-					{
-						$("status").style.display="none";
-						$("modules_datas").innerHTML=response.responseText;
-						$("search_ajax").innerHTML = '';
+			document.getElementById("status").style.display="inline";
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?action=RecycleBinAjax&module=RecycleBin&mode=ajax&file=Restoration&idlist='+idstring+'&selectmodule='+selectmodule+'&excludedRecords='+excludedRecords
+		}).done(function (response) {
+						document.getElementById("status").style.display="none";
+						document.getElementById("modules_datas").innerHTML=response;
+						document.getElementById("search_ajax").innerHTML = '';
 					}
-				}
 				);
 		}
 	}
@@ -130,62 +112,55 @@ function restore(entityid,select_module)
 {
 	if(confirm(mod_alert_arr.MSG_RESTORE_CONFIRMATION + " " + select_module + "?"))
 	{
-		$("status").style.display="inline";
-		new Ajax.Request(
-			'index.php',
-	        {
-				queue: {position: 'end', scope: 'command'},
-	            method: 'post',
-	            postBody: 'action=RecycleBinAjax&module=RecycleBin&mode=ajax&file=Restoration&idlist='+entityid+'&selectmodule='+select_module,
-		        onComplete: function(response) {
-		            $("status").style.display="none";
-		            $("modules_datas").innerHTML=response.responseText;
-					$("search_ajax").innerHTML = '';
-	            }
-			}
+		document.getElementById("status").style.display="inline";
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?action=RecycleBinAjax&module=RecycleBin&mode=ajax&file=Restoration&idlist='+entityid+'&selectmodule='+select_module
+		}).done(function (response) {
+					document.getElementById("status").style.display="none";
+					document.getElementById("modules_datas").innerHTML=response;
+					document.getElementById("search_ajax").innerHTML = '';
+				}
 		);
 	}
 }
 
 function getListViewEntries_js(module,url)
 {
-	var all_selected = $('allselectedboxes').value;
-	var excludedRecords = $('excludedRecords').value;
+	var all_selected = document.getElementById('allselectedboxes').value;
+	var excludedRecords = document.getElementById('excludedRecords').value;
 
-	$("status").show();
-	var selected_module = $("select_module").value;
+	document.getElementById("status").style.display="block";
+	var selected_module = document.getElementById("select_module").value;
 	var urlstring = "&selected_module=" + selected_module;
-	if($('search_url').value!='')
-		urlstring = $('search_url').value+"&selected_module="+selected_module;
+	if(document.getElementById('search_url').value!='')
+		urlstring = document.getElementById('search_url').value+"&selected_module="+selected_module;
 
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody : "module=RecycleBin&action=RecycleBinAjax&file=ListView&mode=ajax&ajax=true&"+url+urlstring+"&allselobjs="+all_selected+"&excludedRecords="+excludedRecords,
-			onComplete: function(response) {
-				$("status").hide();
-				if($("modules_datas")) {
-					$("modules_datas").innerHTML = response.responseText;
+	jQuery.ajax({
+			method: 'POST',
+			url: "index.php?module=RecycleBin&action=RecycleBinAjax&file=ListView&mode=ajax&ajax=true&"+url+urlstring+"&allselobjs="+all_selected+"&excludedRecords="+excludedRecords
+	}).done(function (response) {
+				document.getElementById("status").style.display="none";
+				if(document.getElementById("modules_datas")) {
+					document.getElementById("modules_datas").innerHTML = response;
 				}
 				if(all_selected == 'all'){
-					$('linkForSelectAll').show();
-					$('selectAllRec').style.display='none';
-					$('deSelectAllRec').style.display='inline';
+					document.getElementById('linkForSelectAll').style.display="block";
+					document.getElementById('selectAllRec').style.display='none';
+					document.getElementById('deSelectAllRec').style.display='inline';
 					var exculdedArray=excludedRecords.split(';');
 					var obj = document.getElementsByName('selected_id');
 					if (obj) {
 						var viewForSelectLink = showSelectAllLink(obj,exculdedArray);
-						$('selectCurrentPageRec').checked = viewForSelectLink;
-						$('allselectedboxes').value='all';
-						$('excludedRecords').value = $('excludedRecords').value+excludedRecords;
+						document.getElementById('selectCurrentPageRec').checked = viewForSelectLink;
+						document.getElementById('allselectedboxes').value='all';
+						document.getElementById('excludedRecords').value = document.getElementById('excludedRecords').value+excludedRecords;
 					}
 				}else{
-					$('linkForSelectAll').hide();
+					document.getElementById('linkForSelectAll').style.display="none";
 					update_selected_checkbox();
 				}
 			}
-		}
 	);
 }
 
@@ -197,40 +172,35 @@ function alphabetic(module,url,dataid)
                 getObj(data_td_id).className = 'searchAlph';
 
         }
-	var selectedmodule = $('select_module').options[$('select_module').selectedIndex].value;
+	var selectedmodule = document.getElementById('select_module').options[document.getElementById('select_module').selectedIndex].value;
 	url += '&selected_module='+selectedmodule;
 	getObj(dataid).className = 'searchAlphselected';
-	$("status").style.display="inline";
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody:"module="+module+"&action="+module+"Ajax&file=index&mode=ajax&ajax=true&"+url,
-			onComplete: function(response) {
-				$("status").style.display="none";
-				$("modules_datas").innerHTML=response.responseText;
-				$("search_ajax").innerHTML = '';
+	document.getElementById("status").style.display="inline";
+	jQuery.ajax({
+			method: 'POST',
+			url: "index.php?module="+module+"&action="+module+"Ajax&file=index&mode=ajax&ajax=true&"+url
+	}).done(function (response) {
+				document.getElementById("status").style.display="none";
+				document.getElementById("modules_datas").innerHTML=response;
+				document.getElementById("search_ajax").innerHTML = '';
 			}
-		}
 	);
 }
 
 function emptyRecyclebin(id) {
-	if($(id)) $(id).hide();
+	if(document.getElementById(id)) document.getElementById(id).style.display="none";
 	VtigerJS_DialogBox.progress();
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-		method: 'post',
-		postBody:"module=RecycleBin&action=RecycleBinAjax&file=EmptyRecyclebin&mode=ajax&ajax=true&selected_module=&allrec=1",
-		onComplete: function(response) {
-			$("status").style.display="none";
-			$("modules_datas").innerHTML= response.responseText;
-			$("searchAcc").innerHTML = $("search_ajax").innerHTML; 
-			$("search_ajax").innerHTML = '';
+	jQuery.ajax({
+			method: 'POST',
+			url: "index.phpmodule=RecycleBin&action=RecycleBinAjax&file=EmptyRecyclebin&mode=ajax&ajax=true&selected_module=&allrec=1"
+	}).done(function (response) {
+			document.getElementById("status").style.display="none";
+			document.getElementById("modules_datas").innerHTML= response;
+			document.getElementById("searchAcc").innerHTML = document.getElementById("search_ajax").innerHTML; 
+			document.getElementById("search_ajax").innerHTML = '';
 			VtigerJS_DialogBox.hideprogress();
 		}
-	});
+	);
 }
 
 function callEmptyRecyclebin() {
@@ -275,25 +245,18 @@ function callEmptyRecyclebin() {
 	}
 	else confirm_status = true;
 	if(confirm_status){
-		var selectmodule = $('selected_module').value;
-		var selectmoduletranslated =  $('selected_module_translated').value;
+		var selectmodule = document.getElementById('selected_module').value;
+		var selectmoduletranslated =  document.getElementById('selected_module_translated').value;
 		if(confirm(mod_alert_arr.MSG_EMPTY_CONFIRMATION + " " + count + " " + selectmoduletranslated + "?")) {
-			$("status").style.display="inline";
-			new Ajax.Request(
-				'index.php',
-				{
-					queue: {
-						position: 'end',
-						scope: 'command'
-					},
-					method: 'post',
-					postBody: 'action=RecycleBinAjax&module=RecycleBin&ajax=true&file=EmptyRecyclebin&idlist='+idstring+'&selectmodule='+selectmodule+'&excludedRecords='+excludedRecords+'&allrec='+allrec,
-					onComplete: function(response) {
-						$("status").style.display="none";
-						$("modules_datas").innerHTML=response.responseText;
-						$("search_ajax").innerHTML = '';
+			document.getElementById("status").style.display="inline";
+			jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?action=RecycleBinAjax&module=RecycleBin&ajax=true&file=EmptyRecyclebin&idlist='+idstring+'&selectmodule='+selectmodule+'&excludedRecords='+excludedRecords+'&allrec='+allrec
+			}).done(function (response) {
+						document.getElementById("status").style.display="none";
+						document.getElementById("modules_datas").innerHTML=response;
+						document.getElementById("search_ajax").innerHTML = '';
 					}
-				}
 				);
  			}
  		}

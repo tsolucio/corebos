@@ -180,7 +180,7 @@ function ghide(argg2)
 
 function switchClass(myModule,toStatus) {
 	var x=document.getElementById(myModule);
-	if($(x))
+	if((x))
 	{
 		if (toStatus=="on") {
 			x.className="dvtSelectedCell";
@@ -544,7 +544,7 @@ function formSelectColumnString(usr,col) {
 }
 
 function fnRedirect() {
-	var OptionData = $('view_Option').options[$('view_Option').selectedIndex].value;
+	var OptionData = document.getElementById('view_Option').options[document.getElementById('view_Option').selectedIndex].value;
 	if(OptionData == 'listview')
 	{
 		document.EventViewOption.action.value = "index";
@@ -591,123 +591,99 @@ function getMiniCal(url){
 		url = 'module=Calendar&action=ActivityAjax&type=minical&ajax=true';
 	else
 		url = 'module=Calendar&action=ActivityAjax&'+url+'&type=minical&ajax=true';
-	new Ajax.Request('index.php', {
-		queue : {
-			position : 'end',
-			scope : 'command'
-		},
-		method : 'post',
-		postBody : url,
-		onComplete : function(response) {
-			$("miniCal").innerHTML = response.responseText;
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?'+url,
+	}).done(function (response) {
+			document.getElementById("miniCal").innerHTML = response;
 		}
-	});
+	);
 }
 
 function getCalSettings(url){
-	new Ajax.Request('index.php', {
-		queue : {
-			position : 'end',
-			scope : 'command'
-		},
-		method : 'post',
-		postBody : 'module=Calendar&action=ActivityAjax&' + url + '&type=settings&ajax=true',
-		onComplete : function(response) {
-			$("calSettings").innerHTML = response.responseText;
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=Calendar&action=ActivityAjax&' + url + '&type=settings&ajax=true'
+	}).done(function (response) {
+			document.getElementById("calSettings").innerHTML = response;
 		}
-	}); 
+	); 
 }
 
 function updateStatus(record,status,view,hour,day,month,year,type){
 	if (type == 'event') {
-		var OptionData = $('view_Option').options[$('view_Option').selectedIndex].value;
-		new Ajax.Request('index.php', {
-			queue : {
-				position : 'end',
-				scope : 'command'
-			},
-			method : 'post',
-			postBody : 'module=Calendar&action=ActivityAjax&record=' + record + '&' + status + '&view=' + view + '&hour=' + hour + '&day=' + day + '&month=' + month + '&year=' + year + '&type=change_status&viewOption=' + OptionData + '&subtab=event&ajax=true',
-			onComplete : function(response) {
+		var OptionData = document.getElementById('view_Option').options[document.getElementById('view_Option').selectedIndex].value;
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=Calendar&action=ActivityAjax&record=' + record + '&' + status + '&view=' + view + '&hour=' + hour + '&day=' + day + '&month=' + month + '&year=' + year + '&type=change_status&viewOption=' + OptionData + '&subtab=event&ajax=true'
+		}).done(function (response) {
 				if (OptionData == 'listview') {
-					result = response.responseText.split('####');
-					$("total_activities").innerHTML = result[1];
-					//$("listView").innerHTML=result[0];
+					result = response.split('####');
+					document.getElementById("total_activities").innerHTML = result[1];
+					//document.getElementById("listView").innerHTML=result[0];
 					document.EventViewOption.action.value = "index";
 					window.document.EventViewOption.submit();
 				}
 				if (OptionData == 'hourview') {
-					result = response.responseText.split('####');
-					$("total_activities").innerHTML = result[1];
-					//$("hrView").innerHTML=result[0];
+					result = response.split('####');
+					document.getElementById("total_activities").innerHTML = result[1];
+					//document.getElementById("hrView").innerHTML=result[0];
 					document.EventViewOption.action.value = "index";
 					window.document.EventViewOption.submit();
 				}
 			}
-		});
+		);
 	}
 	if (type == 'todo') {
-		new Ajax.Request('index.php', {
-			queue : {
-				position : 'end',
-				scope : 'command'
-			},
-			method : 'post',
-			postBody : 'module=Calendar&action=ActivityAjax&record=' + record + '&' + status + '&view=' + view + '&hour=' + hour + '&day=' + day + '&month=' + month + '&year=' + year + '&type=change_status&subtab=todo&ajax=true',
-			onComplete : function(response) {
-				result = response.responseText.split('####');
-				$("total_activities").innerHTML = result[1];
-				$("mnuTab2").innerHTML = result[0];
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=Calendar&action=ActivityAjax&record=' + record + '&' + status + '&view=' + view + '&hour=' + hour + '&day=' + day + '&month=' + month + '&year=' + year + '&type=change_status&subtab=todo&ajax=true'
+		}).done(function (response) {
+				result = response.split('####');
+				document.getElementById("total_activities").innerHTML = result[1];
+				document.getElementById("mnuTab2").innerHTML = result[0];
 			}
-		});
+		);
 	}
 }
 
 function cal_navigation(type,urlstring,start) {
 	var url = urlstring;
-	$("status").style.display = "inline";
+	document.getElementById("status").style.display = "inline";
 	if (type == 'event') {
 		var users = document.getElementsByName('onlyforuser');
 		var onlyforusers = users[0].value;
-		var OptionData = $('view_Option').options[$('view_Option').selectedIndex].value;
-		new Ajax.Request('index.php', {
-			queue : {
-				position : 'end',
-				scope : 'command'
-			},
-			method : 'post',
-			postBody : 'module=Calendar&action=CalendarAjax&file=ActivityAjax&ajax=true&n_type=nav&viewOption=' + OptionData + url + start + '&subtab=' + type + '&onlyforuser=' + encodeURIComponent(onlyforusers),
-			onComplete : function(response) {
+		var OptionData = document.getElementById('view_Option').options[document.getElementById('view_Option').selectedIndex].value;
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=Calendar&action=CalendarAjax&file=ActivityAjax&ajax=true&n_type=nav&viewOption=' + OptionData + url + start + '&subtab=' + type + '&onlyforuser=' + encodeURIComponent(onlyforusers)
+		}).done(function (response) {
 				if (OptionData == 'listview') {
-					result = response.responseText.split('####');
-					$("total_activities").innerHTML = result[1];
-					$("listView").innerHTML = result[0];
-					$("status").style.display = "none";
+					result = response.split('####');
+					document.getElementById("total_activities").innerHTML = result[1];
+					document.getElementById("listView").innerHTML = result[0];
+					document.getElementById("status").style.display = "none";
 				}
 				if (OptionData == 'hourview') {
-					result = response.responseText.split('####');
-					$("total_activities").innerHTML = result[1];
-					$("hrView").innerHTML = result[0];
-					$("status").style.display = "none";
+					result = response.split('####');
+					document.getElementById("total_activities").innerHTML = result[1];
+					document.getElementById("hrView").innerHTML = result[0];
+					document.getElementById("status").style.display = "none";
 				}
 			}
-		});
+		);
 	}
 	if (type == 'todo') {
-		new Ajax.Request('index.php', {
-			queue : {
-				position : 'end',
-				scope : 'command'
-			},
-			method : 'post',
-			postBody : 'module=Calendar&action=CalendarAjax&file=ActivityAjax&ajax=true&n_type=nav' + url + start + '&subtab=todo',
-			onComplete : function(response) {
-				result = response.responseText.split('####');
-				$("total_activities").innerHTML = result[1];
-				$("mnuTab2").innerHTML = result[0];
-				$("status").style.display = "none";
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=Calendar&action=CalendarAjax&file=ActivityAjax&ajax=true&n_type=nav' + url + start + '&subtab=todo'
+		}).done(function (response) {
+				result = response.split('####');
+				document.getElementById("total_activities").innerHTML = result[1];
+				document.getElementById("mnuTab2").innerHTML = result[0];
+				document.getElementById("status").style.display = "none";
 			}
-		});
+		);
 	}
 }
 
@@ -778,7 +754,7 @@ function dispLayer(lay)
 
 //check whether user form selected or group form selected
 function checkgroup() {
-	if($("group_checkbox").checked) {
+	if(document.getElementById("group_checkbox").checked) {
 		document.change_owner.lead_group_owner.style.display = "block";
 		document.change_owner.lead_owner.style.display = "none";
 	} else {
@@ -798,7 +774,7 @@ function calendarChangeOwner()
 	var subtab = document.change_owner.subtab.value;
 
 	//var checked = document.change_owner.user_lead_owner[0].checked;
-	if($("user_checkbox").checked) {
+	if(document.getElementById("user_checkbox").checked) {
 		var user_id = document.getElementById('lead_owner').options[document.getElementById('lead_owner').options.selectedIndex].value;
 		var url = 'module=Users&action=updateLeadDBStatus&return_module=Calendar&return_action=ActivityAjax&owner_id='+user_id+'&idlist='+idlist+'&view='+view+'&hour='+hour+'&day='+day+'&month='+month+'&year='+year+'&type=change_owner&owner_type=User';
 	} else {
@@ -807,48 +783,40 @@ function calendarChangeOwner()
 	}
 
 	if (subtab == 'event') {
-		var OptionData = $('view_Option').options[$('view_Option').selectedIndex].value;
+		var OptionData = document.getElementById('view_Option').options[document.getElementById('view_Option').selectedIndex].value;
 		var eventurl = url + '&viewOption=' + OptionData + '&subtab=event&ajax=true';
-		new Ajax.Request('index.php', {
-			queue : {
-				position : 'end',
-				scope : 'command'
-			},
-			method : 'post',
-			postBody : eventurl,
-			onComplete : function(response) {
+		jQuery.ajax({
+			method: 'POST',
+			url: "index.php?"+eventurl
+		}).done(function (response) {
 				if (OptionData == 'listview') {
-					result = response.responseText.split('####');
-					$("total_activities").innerHTML = result[1];
-					$("listView").innerHTML = result[0];
+					result = response.split('####');
+					document.getElementById("total_activities").innerHTML = result[1];
+					document.getElementById("listView").innerHTML = result[0];
 					document.EventViewOption.action.value = "index";
 					window.document.EventViewOption.submit();
 				}
 				if (OptionData == 'hourview') {
-					result = response.responseText.split('####');
-					$("total_activities").innerHTML = result[1];
-					$("hrView").innerHTML = result[0];
+					result = response.split('####');
+					document.getElementById("total_activities").innerHTML = result[1];
+					document.getElementById("hrView").innerHTML = result[0];
 					document.EventViewOption.action.value = "index";
 					window.document.EventViewOption.submit();
 				}
 			}
-		});
+		);
 	}
 	if (subtab == 'todo') {
 		var todourl = url + '&subtab=todo&ajax=true';
-		new Ajax.Request('index.php', {
-			queue : {
-				position : 'end',
-				scope : 'command'
-			},
-			method : 'post',
-			postBody : todourl,
-			onComplete : function(response) {
-				result = response.responseText.split('####');
-				$("total_activities").innerHTML = result[1];
-				$("mnuTab2").innerHTML = result[0];
+		jQuery.ajax({
+			method: 'POST',
+			url: "index.php?"+todourl
+		}).done(function (response) {
+				result = response.split('####');
+				document.getElementById("total_activities").innerHTML = result[1];
+				document.getElementById("mnuTab2").innerHTML = result[0];
 			}
-		});
+		);
 	}
 }
 
@@ -856,42 +824,34 @@ function delActivity(id,view,hour,day,month,year,subtab) {
 	if (subtab == 'event') {
 		var users = document.getElementsByName('onlyforuser');
 		var onlyforuser = users[0].value;
-		var OptionData = $('view_Option').options[$('view_Option').selectedIndex].value;
-		new Ajax.Request('index.php', {
-			queue : {
-				position : 'end',
-				scope : 'command'
-			},
-			method : 'post',
-			postBody : 'module=Users&action=massdelete&return_module=Calendar&return_action=ActivityAjax&idlist=' + id + '&view=' + view + '&hour=' + hour + '&day=' + day + '&month=' + month + '&year=' + year + '&type=activity_delete&viewOption=' + OptionData + '&subtab=event&ajax=true&onlyforuser=' + encodeURIComponent(onlyforuser),
-			onComplete : function(response) {
+		var OptionData = document.getElementById('view_Option').options[document.getElementById('view_Option').selectedIndex].value;
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=Users&action=massdelete&return_module=Calendar&return_action=ActivityAjax&idlist=' + id + '&view=' + view + '&hour=' + hour + '&day=' + day + '&month=' + month + '&year=' + year + '&type=activity_delete&viewOption=' + OptionData + '&subtab=event&ajax=true&onlyforuser=' + encodeURIComponent(onlyforuser)
+		}).done(function (response) {
 				if (OptionData == 'listview') {
-					result = response.responseText.split('####');
-					$("total_activities").innerHTML = result[1];
-					$("listView").innerHTML = result[0];
+					result = response.split('####');
+					document.getElementById("total_activities").innerHTML = result[1];
+					document.getElementById("listView").innerHTML = result[0];
 				}
 				if (OptionData == 'hourview') {
-					result = response.responseText.split('####');
-					$("total_activities").innerHTML = result[1];
-					$("hrView").innerHTML = result[0];
+					result = response.split('####');
+					document.getElementById("total_activities").innerHTML = result[1];
+					document.getElementById("hrView").innerHTML = result[0];
 				}
 			}
-		});
+		);
 	}
 	if (subtab == 'todo') {
-		new Ajax.Request('index.php', {
-			queue : {
-				position : 'end',
-				scope : 'command'
-			},
-			method : 'post',
-			postBody : 'module=Users&action=massdelete&return_module=Calendar&return_action=ActivityAjax&idlist=' + id + '&view=' + view + '&hour=' + hour + '&day=' + day + '&month=' + month + '&year=' + year + '&type=activity_delete&subtab=todo&ajax=true',
-			onComplete : function(response) {
-				result = response.responseText.split('####');
-				$("total_activities").innerHTML = result[1];
-				$("mnuTab2").innerHTML = result[0];
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=Users&action=massdelete&return_module=Calendar&return_action=ActivityAjax&idlist=' + id + '&view=' + view + '&hour=' + hour + '&day=' + day + '&month=' + month + '&year=' + year + '&type=activity_delete&subtab=todo&ajax=true'
+		}).done(function (response) {
+				result = response.split('####');
+				document.getElementById("total_activities").innerHTML = result[1];
+				document.getElementById("mnuTab2").innerHTML = result[0];
 			}
-		});
+		);
 	}
 }
 
@@ -953,18 +913,14 @@ function fnHidePopup(){
 }
 
 function getValidationarr(id,activity_mode,opmode,subtab,viewOption) {
-	new Ajax.Request('index.php', {
-		queue : {
-			position : 'end',
-			scope : 'command'
-		},
-		method : 'post',
-		postBody : 'module=Calendar&action=ActivityAjax&record=' + id + '&activity_mode=' + activity_mode + '&ajax=true&type=view&file=DetailView',
-		onComplete : function(response) {
-			$("dataArray").innerHTML = response.responseText;
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=Calendar&action=ActivityAjax&record=' + id + '&activity_mode=' + activity_mode + '&ajax=true&type=view&file=DetailView'
+	}).done(function (response) {
+			document.getElementById("dataArray").innerHTML = response;
 			setFieldvalues(opmode, subtab, viewOption);
 		}
-	});
+	);
 }
 
 function setFieldvalues(opmode,subtab,viewOption)

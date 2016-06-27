@@ -42,7 +42,7 @@
                        		<td width="5%" id="{$smarty.foreach.groupfields.iteration}_{$smarty.foreach.curvalue.iteration}">
                        			{$elementinfo.input}
                        		</td>
-                       		<td width="25%" nowrap onMouseOver="this.className='prvPrfHoverOn',$('{$smarty.foreach.groupfields.iteration}_{$smarty.foreach.curvalue.iteration}').className='prvPrfHoverOn'" onMouseOut="this.className='prvPrfHoverOff',$('{$smarty.foreach.groupfields.iteration}_{$smarty.foreach.curvalue.iteration}').className='prvPrfHoverOff'">
+                       		<td width="25%" nowrap onMouseOver="this.className='prvPrfHoverOn',document.getElementById('{$smarty.foreach.groupfields.iteration}_{$smarty.foreach.curvalue.iteration}').className='prvPrfHoverOn'" onMouseOut="this.className='prvPrfHoverOff',document.getElementById('{$smarty.foreach.groupfields.iteration}_{$smarty.foreach.curvalue.iteration}').className='prvPrfHoverOff'">
                        			{$elementinfo.fieldlabel}
                        		</td>
 						{/foreach}

@@ -25,17 +25,17 @@ function UpdateProfile()
 {
 	if(default_charset.toLowerCase() == 'utf-8')
 	{
-		var prof_name = $('profile_name').value;
-		var prof_desc = $('description').value;
+		var prof_name = document.getElementById('profile_name').value;
+		var prof_desc = document.getElementById('description').value;
 	}
 	else
 	{
-		var prof_name = escapeAll($('profile_name').value);
-		var prof_desc = escapeAll($('description').value);
+		var prof_name = escapeAll(document.getElementById('profile_name').value);
+		var prof_desc = escapeAll(document.getElementById('description').value);
 	}
 	if(prof_name == '')
 	{
-		$('profile_name').focus();
+		document.getElementById('profile_name').focus();
 {/literal}
 		alert("{$APP.PROFILENAME_CANNOT_BE_EMPTY}");
 {literal}
@@ -45,20 +45,16 @@ function UpdateProfile()
 {/literal}
 		var urlstring ="module=Users&action=UsersAjax&file=RenameProfile&profileid="+{$PROFILEID}+"&profilename="+prof_name+"&description="+prof_desc;
 {literal}
-	new Ajax.Request(
-                'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                        method: 'post',
-                        postBody:urlstring,
-			onComplete: function(response)
-			{
-				$('renameProfile').style.display="none";
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?'+urlstring,
+		}).done(function (response) {
+				document.getElementById('renameProfile').style.display="none";
 				window.location.reload();
-				{/literal}
-                                alert("{$APP.PROFILE_DETAILS_UPDATED}");
-                                {literal}
+			{/literal}
+					alert("{$APP.PROFILE_DETAILS_UPDATED}");
+			{literal}
 			}
-                }
 		);
 	}
 }
@@ -387,18 +383,17 @@ function UpdateProfile()
 <script language="javascript" type="text/javascript">
 {literal}
 function fnToggleVIew(obj){
-	if($(obj).hasClassName('hideTable')) {
-		$(obj).removeClassName('hideTable');
+	obj = "#"+obj;
+	if(jQuery(obj).hasClass('hideTable')) {
+		jQuery(obj).removeClass('hideTable');
 	} else {
-		$(obj).addClassName('hideTable');
+		jQuery(obj).addClass('hideTable');
 	}
 }
 {/literal}
 {literal}
 	//for move RenameProfile
-	var Handle = document.getElementById("renameUI");
-	var Root   = document.getElementById("renameProfile");
-	Drag.init(Handle,Root);
+	jQuery("#renameProfile").draggable({ handle: "#renameUI" });
 {/literal}
 </script>
 

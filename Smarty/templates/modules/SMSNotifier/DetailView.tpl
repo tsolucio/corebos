@@ -12,9 +12,7 @@
 <script type="text/javascript" src="jscalendar/calendar.js"></script>
 <script type="text/javascript" src="jscalendar/lang/calendar-en.js"></script>
 <script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
-
 <script type="text/javascript" src="include/js/reflection.js"></script>
-<script src="include/scriptaculous/scriptaculous.js" type="text/javascript"></script>
 <script language="JavaScript" type="text/javascript" src="include/js/dtlviewajax.js"></script>
 <span id="crmspanid" style="display:none;position:absolute;"  onmouseover="show('crmspanid');">
    <a class="link"  align="right" href="javascript:;">{$APP.LBL_EDIT_BUTTON}</a>
@@ -26,17 +24,13 @@
 var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 function callConvertLeadDiv(id)
 {
-        new Ajax.Request(
-                'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                        method: 'post',
-                        postBody: 'module=Leads&action=LeadsAjax&file=ConvertLead&record='+id,
-                        onComplete: function(response) {
-                                $("convertleaddiv").innerHTML=response.responseText;
-				eval($("conv_leadcal").innerHTML);
-                        }
-                }
-        );
+		jQuery.ajax({
+			method:"POST",
+			url:'index.php?module=Leads&action=LeadsAjax&file=ConvertLead&record='+id
+		}).done(function(response) {
+			document.getElementById("convertleaddiv").innerHTML=response;
+			eval(document.getElementById("conv_leadcal").innerHTML);
+		});
 }
 function showHideStatus(sId,anchorImgId,sImagePath)
 {
@@ -73,15 +67,13 @@ function setCoOrdinate(elemId){
 
 function getListOfRecords(obj, sModule, iId,sParentTab)
 {
-		new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody: 'module=Users&action=getListOfRecords&ajax=true&CurModule='+sModule+'&CurRecordId='+iId+'&CurParentTab='+sParentTab,
-			onComplete: function(response) {
-				sResponse = response.responseText;
-				$("lstRecordLayout").innerHTML = sResponse;
-				Lay = 'lstRecordLayout';
+		jQuery.ajax({
+			method:"POST",
+			url:'index.php?module=Users&action=getListOfRecords&ajax=true&CurModule='+sModule+'&CurRecordId='+iId+'&CurParentTab='+sParentTab
+		}).done(function(response) {
+				sResponse = response;
+				document.getElementById("lstRecordLayout").innerHTML = sResponse;
+				Lay = 'lstRecordLayout';	
 				var tagName = document.getElementById(Lay);
 				var leftSide = findPosX(obj);
 				var topSide = findPosY(obj);
@@ -98,9 +90,7 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 				setCoOrdinate(obj.id);
 				tagName.style.display = 'block';
 				tagName.style.visibility = "visible";
-			}
-		}
-	);
+		});
 }
 {/literal}
 function tagvalidate()
@@ -115,25 +105,22 @@ function tagvalidate()
 {rdelim}
 function DeleteTag(id,recordid)
 {ldelim}
-	$("vtbusy_info").style.display="inline";
-	Effect.Fade('tag_'+id);
-	new Ajax.Request(
-		'index.php',
-                {ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-                        method: 'post',
-                        postBody: "file=TagCloud&module={$MODULE}&action={$MODULE}Ajax&ajxaction=DELETETAG&recordid="+recordid+"&tagid=" +id,
-                        onComplete: function(response) {ldelim}
-						getTagCloud();
-						$("vtbusy_info").style.display="none";
-                        {rdelim}
-                {rdelim}
-        );
+	document.getElementById("vtbusy_info").style.display="inline";
+	jQuery('#tag_'+id).fadeOut();
+	jQuery.ajax({ldelim}
+		method:"POST",
+		url:"index.php?file=TagCloud&module={$MODULE}&action={$MODULE}Ajax&ajxaction=DELETETAG&recordid="+recordid+"&tagid=" +id
+	{rdelim}).done(function(response) {ldelim}
+				getTagCloud();
+				document.getElementById("vtbusy_info").style.display="none";
+		{rdelim}
+	 );
 {rdelim}
 
 //Added to send a file, in Documents module, as an attachment in an email
 function sendfile_email()
 {ldelim}
-	filename = $('dldfilename').value;
+	filename = document.getElementById('dldfilename').value;
 	document.DetailView.submit();
 	OpenCompose(filename,'Documents');
 {rdelim}
@@ -718,18 +705,15 @@ function sendfile_email()
 
 function getTagCloud()
 {ldelim}
-	var obj = $("tagfields");
+	var obj = document.getElementById("tagfields");
 	if(obj != null && typeof(obj) != undefined) {ldelim}
-		new Ajax.Request(
-        	'index.php',
-        	{ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-        	method: 'post',
-        	postBody: 'module={$MODULE}&action={$MODULE}Ajax&file=TagCloud&ajxaction=GETTAGCLOUD&recordid={$ID}',
-        	onComplete: function(response) {ldelim}
-                        	$("tagfields").innerHTML=response.responseText;
-                            $("txtbox_tagfields").value ='';
-                        {rdelim}
-	        {rdelim}
+		jQuery.ajax({ldelim}
+			method:"POST",
+			url:'index.php?module={$MODULE}&action={$MODULE}Ajax&file=TagCloud&ajxaction=GETTAGCLOUD&recordid={$ID}'
+		{rdelim}).done(function(response) {ldelim}
+				document.getElementById("tagfields").innerHTML=response;
+				document.getElementById("txtbox_tagfields").value ='';
+		{rdelim}
 		);
 	{rdelim}
 {rdelim}
@@ -751,5 +735,7 @@ getTagCloud();
 
 <!-- SMSNotifier customization -->
 <script type="text/javascript">
-Event.observe(window, 'load', function() {ldelim} SMSNotifier.loadstatus('{$ID}'); {rdelim});
+	jQuery( window ).on('load',function() {ldelim}
+		SMSNotifier.loadstatus('{$ID}');
+	{rdelim});
 </script>

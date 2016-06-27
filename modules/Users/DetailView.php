@@ -91,24 +91,13 @@ $smarty->assign("APP", $app_strings);
 $oGetUserGroups = new GetUserGroups();
 $oGetUserGroups->getAllUserGroups($focus->id);
 if(useInternalMailer() == 1)
-        $smarty->assign("INT_MAILER","true");
+	$smarty->assign("INT_MAILER","true");
 
 $smarty->assign("GROUP_COUNT",count($oGetUserGroups->user_groups));
 $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH", $image_path);
 $smarty->assign("ID", $focus->id);
 $smarty->assign("CATEGORY", $category);
-if(isset($focus->imagename) && $focus->imagename!='')
-{
-	$imagestring="<div id='track1' style='margin: 4px 0pt 0pt 10px; width: 200px; background-image: url(themes/images/scaler_slider_track.gif); background-repeat: repeat-x; background-position: left center; height: 18px;'>
-	<div class='selected' id='handle1' style='width: 18px; height: 18px; position: relative; left: 145px;cursor:pointer;'><img src='" . vtiger_imageurl('scaler_slider.gif', $theme) . "'></div>
-	</div>
-<script language='JavaScript' type='text/javascript' src='include/js/slider.js'></script>
-
-	<div class='scale-image' style='padding: 10px; float: left; width: 83.415px;'><img src='test/user/".$focus->imagename."' width='100%'</div>
-	<p><script type='text/javascript' src='include/js/scale_demo.js'></script></p>";
-	//$smarty->assign("USER_IMAGE",$imagestring);
-}
 
 if(isset($_REQUEST['modechk']) && $_REQUEST['modechk'] != '' )
 {

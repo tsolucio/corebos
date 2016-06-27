@@ -60,7 +60,7 @@ function mandatoryCheck()
                                 {rdelim}
                                 if(mandatorycheck == true)
                                 {ldelim}
-					if(($("jscal_field_date_start").value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0) || ($("jscal_field_date_end").value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0))
+					if((document.getElementById("jscal_field_date_start").value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0) || (document.getElementById("jscal_field_date_end").value.replace(/^\s+/g, '').replace(/\s+$/g, '').length!=0))
 						return stdfilterdateValidate();
 					else
 						return true;
@@ -352,14 +352,14 @@ function checkDuplicate() {
 		cvselect_array.push('column'+cols);
 	}
 	for(var loop=0;loop < cvselect_array.length-1;loop++) {
-		selected_cv_columnvalue = $(cvselect_array[loop]).options[$(cvselect_array[loop]).selectedIndex].value;
+		selected_cv_columnvalue = document.getElementById(cvselect_array[loop]).options[document.getElementById(cvselect_array[loop]).selectedIndex].value;
 		if(selected_cv_columnvalue != '') {
 			for(var iloop=loop+1;iloop < cvselect_array.length;iloop++) {
-				selected_cv_icolumnvalue = $(cvselect_array[iloop]).options[$(cvselect_array[iloop]).selectedIndex].value;
+				selected_cv_icolumnvalue = document.getElementById(cvselect_array[iloop]).options[document.getElementById(cvselect_array[iloop]).selectedIndex].value;
 				if(selected_cv_columnvalue == selected_cv_icolumnvalue) {
 					{/literal}
 					alert('{$APP.COLUMNS_CANNOT_BE_DUPLICATED}');
-					$(cvselect_array[iloop]).selectedIndex = 0;
+					document.getElementById(cvselect_array[iloop]).selectedIndex = 0;
 					return false;
 					{literal}
 				}

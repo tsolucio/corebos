@@ -15,38 +15,30 @@
 <script language="JavaScript" type="text/javascript" src="include/js/ListView.js"></script>
 {literal}
 <script>
-function editProductListPrice(id,pbid,price)
-{
-        $("status").style.display="inline";
-        new Ajax.Request(
-                'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                        method: 'post',
-                        postBody: 'action=ProductsAjax&file=EditListPrice&return_action=DetailView&return_module=PriceBooks&module=Products&record='+id+'&pricebook_id='+pbid+'&listprice='+price,
-                        onComplete: function(response) {
-                                        $("status").style.display="none";
-                                        $("editlistprice").innerHTML= response.responseText;
-                        }
-                }
-        );
+function editProductListPrice(id,pbid,price) {
+		document.getElementById("status").style.display="inline";
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?action=ProductsAjax&file=EditListPrice&return_action=DetailView&return_module=PriceBooks&module=Products&record='+id+'&pricebook_id='+pbid+'&listprice='+price,
+		}).done(function (response) {
+				document.getElementById("status").style.display="none";
+				document.getElementById("editlistprice").innerHTML= response;
+			}
+		);
 }
 
-function gotoUpdateListPrice(id,pbid,proid)
-{
-        $("status").style.display="inline";
-        $("roleLay").style.display = "none";
-        var listprice=$("list_price").value;
-                new Ajax.Request(
-                        'index.php',
-                        {queue: {position: 'end', scope: 'command'},
-                                method: 'post',
-                                postBody: 'module=Products&action=ProductsAjax&file=UpdateListPrice&ajax=true&return_action=CallRelatedList&return_module=PriceBooks&record='+id+'&pricebook_id='+pbid+'&product_id='+proid+'&list_price='+listprice,
-                                onComplete: function(response) {
-                                        $("status").style.display="none";
-                                        $("RLContents").innerHTML= response.responseText;
-                                }
-                        }
-                );
+function gotoUpdateListPrice(id,pbid,proid) {
+		document.getElementById("status").style.display="inline";
+		document.getElementById("roleLay").style.display = "none";
+		var listprice=document.getElementById("list_price").value;
+				jQuery.ajax({
+						method: 'POST',
+						url: 'index.php?module=Products&action=ProductsAjax&file=UpdateListPrice&ajax=true&return_action=CallRelatedList&return_module=PriceBooks&record='+id+'&pricebook_id='+pbid+'&product_id='+proid+'&list_price='+listprice,
+				}).done(function (response) {
+						document.getElementById("status").style.display="none";
+						document.getElementById("RLContents").innerHTML= response;
+					}
+				);
 }
 {/literal}
 

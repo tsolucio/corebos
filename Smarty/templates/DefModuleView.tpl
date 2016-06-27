@@ -107,31 +107,25 @@ function viewenabled(ochkbox)
 {
 	if(ochkbox.checked == true)
 	{
-	     var status='enabled';
-	$('view_info').innerHTML = alert_arr.MSG_ENABLE_SINGLEPANE_VIEW;
-	     $('view_info').style.display = 'block';		
+		var status='enabled';
+		document.getElementById('view_info').innerHTML = alert_arr.MSG_ENABLE_SINGLEPANE_VIEW;
+		document.getElementById('view_info').style.display = 'block';
 		
-			
 	}
 	else
 	{
-	    var status = 'disabled';	
-	     $('view_info').innerHTML = alert_arr.MSG_DISABLE_SINGLEPANE_VIEW;
-	     $('view_info').style.display = 'block';		
+		var status = 'disabled';	
+		document.getElementById('view_info').innerHTML = alert_arr.MSG_DISABLE_SINGLEPANE_VIEW;
+		document.getElementById'view_info').style.display = 'block';
 	
 	}
-             $("status").style.display="block";
-	     new Ajax.Request(
-                'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                        method: 'post',
-                        postBody: 'module=Users&action=UsersAjax&file=SaveDefModuleView&ajax=true&audit_trail='+status,
-                        onComplete: function(response) {
-                                $("status").style.display="none";
-                        }
-                }
-        );
-			
+		document.getElementById("status").style.display="block";
+		jQuery.ajax({
+				method:"POST",
+				url:'index.php?module=Users&action=UsersAjax&file=SaveDefModuleView&ajax=true&audit_trail='+status,
+		}).done(function(response) {
+				jQuery("#status").hide();
+		});
 	setTimeout("hide('view_info')",3000);
 }
 

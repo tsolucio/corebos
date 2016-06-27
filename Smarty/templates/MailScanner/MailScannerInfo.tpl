@@ -13,18 +13,15 @@
 <script language="JAVASCRIPT" type="text/javascript">
 {literal}
 function performScanNow(app_key, scannername) {
-	$('status').style.display = 'inline';
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody: 'module=Settings&action=SettingsAjax&file=MailScanner' + 
-					  '&mode=scannow&service=MailScanner&app_key=' + encodeURIComponent(app_key)+ '&scannername=' + encodeURIComponent(scannername),
-			onComplete: function(response) {
-				$('status').style.display = 'none';
+	document.getElementById('status').style.display = 'inline';
+	jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?module=Settings&action=SettingsAjax&file=MailScanner' + 
+					'&mode=scannow&service=MailScanner&app_key=' + encodeURIComponent(app_key)+ '&scannername=' + encodeURIComponent(scannername),
+			}).done(function(response) {
+				document.getElementById('status').style.display = 'none';
 			}
-		}
-	);
+			);
 }
 {/literal}
 </script>

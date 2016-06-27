@@ -85,7 +85,7 @@ if($next == true) {
 	<title><?php echo $installationStrings['APP_NAME']. ' - ' . $installationStrings['LBL_CONFIG_WIZARD']. ' - ' . $installationStrings['LBL_CONFIRM_SETTINGS']?></title>
 	<link href="include/install/install.css" rel="stylesheet" type="text/css">
 	<link href="themes/softed/style.css" rel="stylesheet" type="text/css">
-	<script language="javascript" type="text/javascript" src="include/scriptaculous/prototype.js"></script>
+	<script language="javascript" type="text/javascript" src="include/jquery/jquery.js"></script>
 	<script type="text/javascript" src="include/js/general.js"></script>
 </head>
 

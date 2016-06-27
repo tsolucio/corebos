@@ -16,22 +16,19 @@
 <script>
 function Announcement()
 {
-	$("an_busy").style.display="inline";
-	var announcement=$("announcement").value;
+	document.getElementById("an_busy").style.display="inline";
+	var announcement=document.getElementById("announcement").value;
 
 	//Replace & with ##$## and do vice versa in modules/Settings/SettingsAjax.php. if we pass as it is, request of announcement will be skipped after &
 	announcement = announcement.replace(/&/g,"##$##");//replace('&','##$##');
 
-	new Ajax.Request(
-	'index.php',
-        {queue: {position: 'end', scope: 'command'},
-       		method: 'post',
-	        postBody: 'module=Settings&action=SettingsAjax&announcement='+announcement+'&announce_save=yes',
-	        onComplete: function(response) {
-					$("announcement").value=response.responseText;
-					$("an_busy").style.display="none";
-                        	}
-	        }
+	jQuery.ajax({
+			method:"POST",
+			url:'index.php?module=Settings&action=SettingsAjax&announcement='+announcement+'&announce_save=yes'
+	}).done(function(response) {
+			document.getElementById("announcement").value=response;
+			document.getElementById("an_busy").style.display="none";
+		}
 	);
 }
 </script>

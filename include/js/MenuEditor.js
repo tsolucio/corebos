@@ -89,15 +89,12 @@ MenuEditorJs = {
 		otherRoles = JSON.stringify(otherRoles);
 
 		var values = JSON.stringify(arr);
-		$("status").style.display="inline";
-		new Ajax.Request(
-			'index.php',
-			{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody: 'action=SettingsAjax&module=Settings&file=MenuSaveAssignedValue&values='+encodeURIComponent(values),
-			onComplete: function(response) {
-	            $("status").style.display="none";
-			}
+		document.getElementById("status").style.display="inline";
+		jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?action=SettingsAjax&module=Settings&file=MenuSaveAssignedValue&values='+encodeURIComponent(values)
+		}).done(function (response) {
+				document.getElementById("status").style.display="none";
 			}
 		);
 	}

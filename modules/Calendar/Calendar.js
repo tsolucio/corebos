@@ -98,7 +98,7 @@ function showActivityView(selectactivity_view)
 
 function exportCalendar(){
 	if(document.getElementsByName('exportCalendar')[0].value == 'iCal'){
-		var filename = $('ics_filename').value;
+		var filename = document.getElementById('ics_filename').value;
 		VtigerJS_DialogBox.block();
 	
       	var url = "index.php?module=Calendar&action=iCalExport&filename="+filename;

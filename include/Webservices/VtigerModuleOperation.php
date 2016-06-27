@@ -300,7 +300,6 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		if (array_key_exists($mfkey, $purified_mfcache)) {
 			return $purified_mfcache[$mfkey];
 		}
-		
 		$fields = array();
 		$moduleFields = $this->meta->getModuleFields();
 		foreach ($moduleFields as $fieldName=>$webserviceField) {

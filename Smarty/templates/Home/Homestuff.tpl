@@ -10,9 +10,6 @@
  ********************************************************************************/
 -->*}
 <script language="javascript" type="text/javascript" src="modules/Home/Homestuff.js"></script>
-<script language="javascript" type="text/javascript" src="include/scriptaculous/prototype.js"></script>
-<script language="javascript" type="text/javascript" src="include/scriptaculous/scriptaculous.js"></script>
-<script language="javascript" type="text/javascript" src="include/scriptaculous/unittest.js"></script>
 <script language="javascript" type="text/javascript" src="include/js/notebook.js"></script>
 <script language="javascript" type="text/javascript" src="include/freetag/tagcanvas.min.js"></script>
 <input id="homeLayout" type="hidden" value="{$LAYOUT}">
@@ -28,6 +25,7 @@
 <tr>
 	<td width="100%" align="center" valign="top" height="350">
 		<div id="MainMatrix" class="show_tab topMarginHomepage" style="padding:0px;width:100%">
+			<script type="text/javascript" src="include/jquery/jquery-ui.js"></script>
 			{foreach item=tablestuff from=$HOMEFRAME name="homeframe"}
 				{*<!-- create divs for each widget - the contents will be loaded dynamically from javascript -->*}
 				{include file="Home/MainHomeBlock.tpl"}
@@ -78,13 +76,13 @@ function fnAddWindow(obj,CurrObj){
 	tagName.style.left= left_Side + 2 + 'px';
 	tagName.style.top= top_Side + 22 + 'px';
 	tagName.style.display = 'block';
-	document.getElementById("addmodule").href="javascript:chooseType('Module');fnRemoveWindow();setFilter($('selmodule_id'))";
-	document.getElementById("addNotebook").href="javascript:chooseType('Notebook');fnRemoveWindow();show('addWidgetsDiv');placeAtCenter($('addWidgetsDiv'));";
+	document.getElementById("addmodule").href="javascript:chooseType('Module');fnRemoveWindow();setFilter(document.getElementById('selmodule_id'))";
+	document.getElementById("addNotebook").href="javascript:chooseType('Notebook');fnRemoveWindow();show('addWidgetsDiv');placeAtCenter(document.getElementById('addWidgetsDiv'));";
     document.getElementById("defaultwidget").href="javascript:chooseType('defaultwidget');fnRemoveWindow();";
-	//document.getElementById("addURL").href="javascript:chooseType('URL');fnRemoveWindow();show('addWidgetsDiv');placeAtCenter($('addWidgetsDiv'));";
+	//document.getElementById("addURL").href="javascript:chooseType('URL');fnRemoveWindow();show('addWidgetsDiv');placeAtCenter(document.getElementById('addWidgetsDiv'));";
 {/literal}
 {if $ALLOW_RSS eq "yes"}
-	document.getElementById("addrss").href="javascript:chooseType('RSS');fnRemoveWindow();show('addWidgetsDiv');placeAtCenter($('addWidgetsDiv'));";
+	document.getElementById("addrss").href="javascript:chooseType('RSS');fnRemoveWindow();show('addWidgetsDiv');placeAtCenter(document.getElementById('addWidgetsDiv'));";
 {/if}
 {if $ALLOW_DASH eq "yes"}
 	document.getElementById("adddash").href="javascript:chooseType('DashBoard');fnRemoveWindow()";

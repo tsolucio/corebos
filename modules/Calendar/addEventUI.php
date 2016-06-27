@@ -1108,14 +1108,10 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 </div>
 <script>
 	//for move addEventUI
-	var theEventHandle = document.getElementById("moveEvent");
-	var theEventRoot   = document.getElementById("addEvent");
-	Drag.init(theEventHandle, theEventRoot);
+	jQuery('#addEvent').draggable({ handle: "#moveEvent" });
 
 	//for move addToDo
-	var theTodoHandle = document.getElementById("moveTodo");
-	var theTodoRoot   = document.getElementById("createTodo");
-	Drag.init(theTodoHandle, theTodoRoot);
+	jQuery("#createTodo").draggable({ handle: "#moveTodo" });
 </script>
 
 <?php
@@ -1123,10 +1119,6 @@ $picklistDependencyDSEvents = Vtiger_DependencyPicklist::getPicklistDependencyDa
 $picklistDependencyDSCalendar = Vtiger_DependencyPicklist::getPicklistDependencyDatasource('Calendar');
 ?>
 <script type="text/javascript" src="include/js/FieldDependencies.js"></script>
-<script type="text/javascript" src="modules/com_vtiger_workflow/resources/jquery-1.2.6.js"></script>
-<script type="text/javascript">
-	jQuery.noConflict();
-</script>
 <script type="text/javascript">
 	jQuery(document).ready(function() { 
 		<?php if(!empty($picklistDependencyDSEvents)) { ?>

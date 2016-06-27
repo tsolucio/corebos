@@ -28,8 +28,5 @@
 </div>
 
 <script>
-
-	var cal_Handle = document.getElementById("calc_Handle");
-	var cal_Root   = document.getElementById("calc");
-	Drag.init(cal_Handle, cal_Root);
+	jQuery("#calc").draggable({ldelim} handle: "#calc_Handle" {rdelim});
 </script>	

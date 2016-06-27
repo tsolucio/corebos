@@ -130,19 +130,19 @@
 function createrepFolder(oLoc,divid)
 {
 	{/literal}
-	$('editfolder_info').innerHTML=' {$MOD.LBL_ADD_NEW_GROUP} ';
+	document.getElementById('editfolder_info').innerHTML=' {$MOD.LBL_ADD_NEW_GROUP} ';
 	{literal}
-	getObj('fldrsave_mode').value = 'save';
-	$('folder_id').value = '';
-	$('folder_name').value = '';
-	$('folder_desc').value='';
+	getObj('fldrsave_mode').value = 'save';	
+	document.getElementById('folder_id').value = '';
+	document.getElementById('folder_name').value = '';
+	document.getElementById('folder_desc').value='';
 	fnvshobj(oLoc,divid);
 }
 function closeEditReport()
 {
-	$('folder_id').value = '';
-	$('folder_name').value = '';
-	$('folder_desc').value='';
+	document.getElementById('folder_id').value = '';
+	document.getElementById('folder_name').value = '';
+	document.getElementById('folder_desc').value='';
 	fninvsh('orgLay')
 }
 function DeleteFolder(id)
@@ -150,23 +150,20 @@ function DeleteFolder(id)
 	var title = 'folder'+id;
 	var fldr_name = getObj(title).innerHTML;
 	{/literal}
-        if(confirm("{$APP.DELETE_FOLDER_CONFIRMATION}"+fldr_name +"' ?"))
-        {literal}
+	if(confirm("{$APP.DELETE_FOLDER_CONFIRMATION}"+fldr_name +"' ?"))
+	{literal}
 	{
-		new Ajax.Request(
-			'index.php',
-	                {queue: {position: 'end', scope: 'command'},
-        	                method: 'post',
-                	        postBody: 'action=ReportsAjax&mode=ajax&file=DeleteReportFolder&module=Reports&record='+id,
-                        	onComplete: function(response) {
-							var item = trim(response.responseText);
-							if(item.charAt(0)=='<')
-						        getObj('customizedrep').innerHTML = item;
-						    else
-						    	alert(item);
-                        	}
-                	}
-        	);
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?action=ReportsAjax&mode=ajax&file=DeleteReportFolder&module=Reports&record='+id
+		}).done(function (response) {
+					var item = trim(response);
+					if(item.charAt(0)=='<')
+						getObj('customizedrep').innerHTML = item;
+					else
+						alert(item);
+				}
+			);
 	}
 	else
 	{
@@ -203,14 +200,12 @@ function AddFolder()
 	else
 	{
 		var foldername = encodeURIComponent(getObj('folder_name').value);
-		new Ajax.Request(
-                        'index.php',
-                        {queue: {position: 'end', scope: 'command'},
-                                method: 'post',
-                                postBody: 'action=ReportsAjax&mode=ajax&file=CheckReport&module=Reports&check=folderCheck&folderName='+foldername,
-                                onComplete: function(response) {
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?action=ReportsAjax&mode=ajax&file=CheckReport&module=Reports&check=folderCheck&folderName='+foldername
+		}).done(function (response) {
 				var folderid = getObj('folder_id').value;
-				var resresult =response.responseText.split("::");
+				var resresult =response.split("::");
 				var mode = getObj('fldrsave_mode').value;
 				if(resresult[0] != 0 &&  mode =='save' && resresult[0] != 999)
 				{
@@ -226,7 +221,7 @@ function AddFolder()
                                                 return false;
                                                 {literal}
 					}
-				else if(response.responseText == 999) // 999 check for special chars
+				else if(response == 999) // 999 check for special chars
 					{
                                                 {/literal}
                                                 alert("{$APP.SPECIAL_CHARS_NOT_ALLOWED}");
@@ -253,31 +248,24 @@ function AddFolder()
 							url ='&savemode=Edit&foldername='+foldername+'&folderdesc='+folderdesc+'&record='+folderid;
 						}
 						getObj('fldrsave_mode').value = 'save';
-						new Ajax.Request(
-				                        'index.php',
-				                        {queue: {position: 'end', scope: 'command'},
-			                                method: 'post',
-			                                postBody: 'action=ReportsAjax&mode=ajax&file=SaveReportFolder&module=Reports'+url,
-			                                onComplete: function(response) {
-			                                        var item = response.responseText;
-                        			                getObj('customizedrep').innerHTML = item;
-			                                }
-						}
-			                      
-				                );
+						jQuery.ajax({
+								method: 'POST',
+								url: 'index.php?action=ReportsAjax&mode=ajax&file=SaveReportFolder&module=Reports'+url
+						}).done(function (response) {
+									var item = response;
+									getObj('customizedrep').innerHTML = item;
+							}
+						);
 					}
 				}
-			}
 			);
-		
 	}
 }
-
 
 function EditFolder(id,name,desc)
 {
 {/literal}
-	$('editfolder_info').innerHTML= ' {$MOD.LBL_RENAME_FOLDER} '; 	
+	document.getElementById('editfolder_info').innerHTML= ' {$MOD.LBL_RENAME_FOLDER} '; 	
 {literal}
 	getObj('folder_name').value = name;
 	getObj('folder_desc').value = desc;
@@ -323,22 +311,18 @@ function massDeleteReport()
 	{	{/literal}
                 if(confirm("{$APP.DELETE_CONFIRMATION}"+count+"{$APP.RECORDS}"))
                 {literal}
-       		{
-			new Ajax.Request(
-                        'index.php',
-                        {queue: {position: 'end', scope: 'command'},
-                                method: 'post',
-                                postBody: 'action=ReportsAjax&mode=ajax&file=Delete&module=Reports&idlist='+idstring,
-                                onComplete: function(response) {
-                                        var item = response.responseText;
-                                        	getObj('customizedrep').innerHTML = item;
-                                }
-                        }
-                );
-		}else
-		{
-			return false;
-		}
+				{
+				jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?action=ReportsAjax&mode=ajax&file=Delete&module=Reports&idlist='+idstring
+				}).done(function (response) {
+							var item = response;
+							getObj('customizedrep').innerHTML = item;
+						}
+					);
+				} else {
+					return false;
+				}
 			
 	}else
 	{
@@ -354,16 +338,13 @@ function DeleteReport(id)
         if(confirm("{$APP.DELETE_REPORT_CONFIRMATION}"))
         {literal}
 	{
-		new Ajax.Request(
-                        'index.php',
-                        {queue: {position: 'end', scope: 'command'},
-                                method: 'post',
-                                postBody: 'action=ReportsAjax&file=Delete&module=Reports&record='+id,
-                                onComplete: function(response) {
-					getObj('reportContents').innerHTML = response.responseText;
-                                }
-                        }
-                );
+		jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?action=ReportsAjax&file=Delete&module=Reports&record='+id
+		}).done(function (response) {
+					getObj('reportContents').innerHTML = response;
+				}
+			);
 	}else
 	{
 		return false;
@@ -411,16 +392,13 @@ function MoveReport(id,foldername)
                 if(confirm("{$APP.MOVE_REPORT_CONFIRMATION}"+foldername+"{$APP.FOLDER}"))
                 {literal}
         	{
-			new Ajax.Request(
-                        'index.php',
-                        {queue: {position: 'end', scope: 'command'},
-                                method: 'post',
-                                postBody: 'action=ReportsAjax&file=ChangeFolder&module=Reports&folderid='+id+'&idlist='+idstring,
-                                onComplete: function(response) {
-                                	        getObj('reportContents').innerHTML = response.responseText;
-                	                }
-                        	}
-	                );
+			jQuery.ajax({
+					method: 'POST',
+					url: 'index.php?action=ReportsAjax&file=ChangeFolder&module=Reports&folderid='+id+'&idlist='+idstring
+			}).done(function (response) {
+						getObj('reportContents').innerHTML = response;
+				}
+			);
 		}else
 		{
 			return false;
