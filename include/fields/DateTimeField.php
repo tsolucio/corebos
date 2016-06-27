@@ -214,7 +214,16 @@ class DateTimeField {
 		//if(empty(self::$cache[$time][$targetTimeZoneName])) {
 			// create datetime object for given time in source timezone
 			$sourceTimeZone = new DateTimeZone($sourceTimeZoneName);
-                        list($date,$hour) = explode(' ',$time);
+                        preg_match('/(\d{1,2}\:\d{2}:\d{2}$|^\d{1,2}\:\d{2})/', $time, $matches);
+                        if($matches){
+                            $timefield = $matches[0];
+                            $postime = strpos($time, $timefield);
+                            $date = trim(substr($time, 0, $postime));
+                            $hour = $timefield;
+                        }else{
+                            $date = $time;
+                            $hour = '00:00';
+                        }
                         if($hour >= '24:00') $time = $date.' 00:00';
 			$myDateTime = new DateTime($time, $sourceTimeZone);
 
