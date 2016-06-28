@@ -51,6 +51,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Users_ReplyTo_SecondEmail',
 				'Users_Default_Send_Email_Template',
 
+				'Accounts_BlockDuplicateName',
 				'Campaign_CreatePotentialOnAccountRelation',
 				'Campaign_CreatePotentialOnContactRelation',
 				'GoogleCalendarSync_BaseUpdateMonths',
