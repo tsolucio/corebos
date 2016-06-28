@@ -83,6 +83,7 @@ class Install_InitSchema {
 		$newUser = new Users();
 		$newUser->retrieve_entity_info(1, 'Users');
 		$newUser->change_password('admin', $adminPassword, false);
+		$this->db->query('UPDATE `vtiger_users` SET `change_password` = 0 where id=1');
 		require_once('modules/Users/CreateUserPrivilegeFile.php');
 		createUserPrivilegesfile(1);
 	}
