@@ -661,4 +661,11 @@
 	<classname>fixConvertLeadWebserviceParameters</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Users: set Default Values For User Fields</description>
+	<filename>build/changeSets/setDefaultValuesForUserFields.php</filename>
+	<classname>setDefaultValuesForUserFields</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

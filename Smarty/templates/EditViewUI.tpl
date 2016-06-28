@@ -453,7 +453,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 					</td>
 				{else}
 					<td width="30%" align=left class="dvtCellInfo">
-						<input name="{$fldname}" tabindex="{$vt_tab}" type="checkbox" {if $USER_MODE eq 'create'}checked{/if}>
+						<input name="{$fldname}" tabindex="{$vt_tab}" type="checkbox">
 					</td>
 				{/if}
 			{/if}
