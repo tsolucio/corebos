@@ -654,4 +654,11 @@
 	<classname>changeHoursAndUse_UnitsFields</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>WebService: correct Convert Lead parameters</description>
+	<filename>build/changeSets/fixConvertLeadWebserviceParameters.php</filename>
+	<classname>fixConvertLeadWebserviceParameters</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
