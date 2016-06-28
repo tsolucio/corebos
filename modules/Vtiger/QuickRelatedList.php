@@ -55,7 +55,11 @@ foreach ($rls as $relid => $relinfo) {
 	} else {
 		echo '<td><a title="'.$goto.'" href="index.php?action=CallRelatedList&module='.$formodule.'&record='.$forrecord.'&selected_header='.$label.'&relation_id='.$relid.'">'.getTranslatedString($label,$module).'</a></td>';
 	}
-	echo '<td><img align="absmiddle" width="20px" title="'.$add.'" src="themes/softed/images/btnL3Add.gif" onclick="document.location=\'index.php?module='.$module.'&action=EditView&return_id='.$forrecord.'&return_module='.$formodule.'&cbfromid='.$forrecord.'\'"></td>';
+	if ($module=='Emails') {
+		echo '<td><img align="absmiddle" width="20px" title="'.$add.'" src="themes/softed/images/btnL3Add.gif" onclick="fnvshobj(this,\'sendmail_cont\');sendmail(\''.$formodule."',$forrecord);".'"></td>';
+	} else {
+		echo '<td><img align="absmiddle" width="20px" title="'.$add.'" src="themes/softed/images/btnL3Add.gif" onclick="document.location=\'index.php?module='.$module.'&action=EditView&return_id='.$forrecord.'&return_module='.$formodule.'&cbfromid='.$forrecord.'\'"></td>';
+	}
 	echo '</tr>';
 }
 echo '</table>';
