@@ -1906,7 +1906,13 @@ function fnvshobj(obj,Lay){
 	var leftSide = findPosX(obj);
 	var topSide = findPosY(obj);
 	var maxW = tagName.style.width;
-	var widthM = maxW.substring(0,maxW.length-2);
+	if (maxW == '') {
+		maxW = tagName.getBoundingClientRect();
+		var widthM = maxW.width;
+	} else {
+		var widthM = maxW.substring(0,maxW.length-2);
+	}
+	if (widthM==0) widthM = 360; // element is still empty, we estimate some size to avoid going off screen
 	if(Lay == 'editdiv')
 	{
 		leftSide = leftSide - 225;
