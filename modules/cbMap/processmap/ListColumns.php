@@ -26,6 +26,7 @@
   <relatedlists>
    <relatedlist>
    <module>{parentmodule}</module>
+   <linkfield></linkfield>
     <columns>
      <field>
       <label></label>
@@ -39,6 +40,7 @@
    ....
   </relatedlists>
   <popup>
+    <linkfield></linkfield>
     <columns>
      <field>
       <label><label>
@@ -78,12 +80,23 @@ class ListColumns extends processcbMap {
 		return $this->mapping['cbmapDEFAULT']['ListFieldsName'];
 	}
 
+	public function getListLinkFor($module) {
+		if (isset($this->mapping[$module])) {
+			return $this->mapping[$module]['LINKFIELD'];
+		}
+		return $this->mapping['cbmapDEFAULT']['LINKFIELD'];
+	}
+
 	public function getSearchFields() {
 		return $this->mapping['cbmapPOPUP']['SearchFields'];
 	}
 
 	public function getSearchFieldsName() {
 		return $this->mapping['cbmapPOPUP']['SearchFieldsName'];
+	}
+
+	public function getSearchLinkField() {
+		return $this->mapping['cbmapPOPUP']['LINKFIELD'];
 	}
 
 	public function getCompleteMapping() {
@@ -95,13 +108,16 @@ class ListColumns extends processcbMap {
 		$this->modulename = (String)$xml->originmodule->originname;
 		$this->moduleid = (isset($xml->originmodule->originid) ? (String)$xml->originmodule->originid : 0);
 		$f = CRMEntity::getInstance($this->modulename);
+		$this->mapping['cbmapDEFAULT']['LINKFIELD'] = $f->list_link_field;
 		$this->mapping['cbmapDEFAULT']['ListFields'] = $f->list_fields;
 		$this->mapping['cbmapDEFAULT']['ListFieldsName'] = $f->list_fields_name;
+		$this->mapping['cbmapPOPUP']['LINKFIELD'] = $f->list_link_field;
 		$this->mapping['cbmapPOPUP']['SearchFields'] = $f->search_fields;
 		$this->mapping['cbmapPOPUP']['SearchFieldsName'] = $f->search_fields_name;
 		if (isset($xml->popup)) {
 			$this->mapping['cbmapPOPUP']['SearchFields'] = array();
 			$this->mapping['cbmapPOPUP']['SearchFieldsName'] = array();
+			if (!empty($xml->popup->linkfield)) $this->mapping['cbmapPOPUP']['LINKFIELD'] = (String)$xml->popup->linkfield;
 			foreach($xml->popup->columns->field as $k=>$v) {
 				$this->mapping['cbmapPOPUP']['SearchFields'][(String)$v->label] = array((String)$v->table=>(String)$v->columnname);
 				$this->mapping['cbmapPOPUP']['SearchFieldsName'][(String)$v->label] = (String)$v->name;
@@ -112,6 +128,7 @@ class ListColumns extends processcbMap {
 				$modulename = (String)$v->module;
 				$this->mapping[$modulename]['ListFields'] = array();
 				$this->mapping[$modulename]['ListFieldsName'] = array();
+				$this->mapping[$modulename]['LINKFIELD'] = (!empty($v->linkfield) ? (String)$v->linkfield : $f->list_link_field);
 				foreach($v->columns->field as $kl=>$vl) {
 					$this->mapping[$modulename]['ListFields'][(String)$vl->label] = array((String)$vl->table=>(String)$vl->columnname);
 					$this->mapping[$modulename]['ListFieldsName'][(String)$vl->label] = (String)$vl->name;

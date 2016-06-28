@@ -456,6 +456,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 		$parentmodule = vtlib_purify($_REQUEST['module']);
 		$focus->list_fields = $cbMap->ListColumns()->getListFieldsFor($parentmodule);
 		$focus->list_fields_name = $cbMap->ListColumns()->getListFieldsNameFor($parentmodule);
+		$focus->list_link_field = $cbMap->ListColumns()->getListLinkFor($parentmodule);
 	}
 	if ($oCv) {
 		if (isset($oCv->list_fields)) {
@@ -990,6 +991,8 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 		$cbMap = cbMap::getMapByID($cbMapid);
 		$focus->search_fields = $cbMap->ListColumns()->getSearchFields();
 		$focus->search_fields_name = $cbMap->ListColumns()->getSearchFieldsName();
+		$focus->popup_fields = array($cbMap->ListColumns()->getSearchLinkField());
+		$focus->list_link_field = $cbMap->ListColumns()->getSearchLinkField();
 	}
 	//Added to reduce the no. of queries logging for non-admin user -- by Minnie-start
 	$field_list = array_values($focus->search_fields_name);
