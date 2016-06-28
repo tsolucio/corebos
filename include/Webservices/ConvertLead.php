@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ******************************************************************************** */
-
 require_once 'include/Webservices/Retrieve.php';
 require_once 'include/Webservices/Create.php';
 require_once 'include/Webservices/Delete.php';
@@ -32,20 +31,17 @@ function vtws_convertlead($entityvalues, $user) {
 
 	$leadHandler = new $handlerClass($leadObject, $user, $adb, $log);
 
-
 	$leadInfo = vtws_retrieve($entityvalues['leadId'], $user);
 	$sql = "select converted from vtiger_leaddetails where converted = 1 and leadid=?";
 	$leadIdComponents = vtws_getIdComponents($entityvalues['leadId']);
 	$result = $adb->pquery($sql, array($leadIdComponents[1]));
 	if ($result === false) {
 		throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR,
-				vtws_getWebserviceTranslatedString('LBL_' .
-						WebServiceErrorCode::$DATABASEQUERYERROR));
+				vtws_getWebserviceTranslatedString('LBL_' . WebServiceErrorCode::$DATABASEQUERYERROR));
 	}
 	$rowCount = $adb->num_rows($result);
 	if ($rowCount > 0) {
-		throw new WebServiceException(WebServiceErrorCode::$LEAD_ALREADY_CONVERTED,
-				"Lead is already converted");
+		throw new WebServiceException(WebServiceErrorCode::$LEAD_ALREADY_CONVERTED,"Lead is already converted");
 	}
 
 	$entityIds = array();
@@ -229,14 +225,12 @@ function vtws_getConvertLeadFieldInfo($module, $fieldname) {
 
 //function to handle the transferring of related records for lead
 function vtws_convertLeadTransferHandler($leadIdComponents, $entityIds, $entityvalues) {
-
 	try {
 		$entityidComponents = vtws_getIdComponents($entityIds[$entityvalues['transferRelatedRecordsTo']]);
 		vtws_transferLeadRelatedRecords($leadIdComponents[1], $entityidComponents[1], $entityvalues['transferRelatedRecordsTo']);
 	} catch (Exception $e) {
 		return false;
 	}
-
 	return true;
 }
 
@@ -247,8 +241,7 @@ function vtws_updateConvertLeadStatus($entityIds, $leadId, $user) {
 		$sql = "UPDATE vtiger_leaddetails SET converted = 1 where leadid=?";
 		$result = $adb->pquery($sql, array($leadIdComponents[1]));
 		if ($result === false) {
-			throw new WebServiceException(WebServiceErrorCode::$FAILED_TO_MARK_CONVERTED,
-					"Failed mark lead converted");
+			throw new WebServiceException(WebServiceErrorCode::$FAILED_TO_MARK_CONVERTED,"Failed mark lead converted");
 		}
 		//updating the campaign-lead relation --Minnie
 		$sql = "DELETE FROM vtiger_campaignleadrel WHERE leadid=?";
