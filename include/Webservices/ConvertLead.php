@@ -19,9 +19,12 @@ function vtws_convertlead($entityvalues, $user) {
 		$entityvalues['assignedTo'] = vtws_getWebserviceEntityId('Users', $user->id);
 	}
 	if (empty($entityvalues['transferRelatedRecordsTo'])) {
-		$entityvalues['transferRelatedRecordsTo'] = 'Contacts';
+		if ($entityvalues['entities']['Contacts']['create']) {
+			$entityvalues['transferRelatedRecordsTo'] = 'Contacts';
+		} else {
+			$entityvalues['transferRelatedRecordsTo'] = 'Accounts';
+		}
 	}
-
 
 	$leadObject = VtigerWebserviceObject::fromName($adb, 'Leads');
 	$handlerPath = $leadObject->getHandlerPath();
@@ -85,7 +88,7 @@ function vtws_convertlead($entityvalues, $user) {
 
 			try {
 				$create = true;
-				if ($entityvalue['name'] == 'Accounts') {
+				if ($entityvalue['name'] == 'Accounts' and empty($entityvalue['forcecreate'])) {
 					$sql = "SELECT vtiger_account.accountid FROM vtiger_account,vtiger_crmentity WHERE vtiger_crmentity.crmid=vtiger_account.accountid AND vtiger_account.accountname=? AND vtiger_crmentity.deleted=0";
 					$result = $adb->pquery($sql, array($entityvalue['accountname']));
 					if ($adb->num_rows($result) > 0) {
