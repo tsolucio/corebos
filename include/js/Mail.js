@@ -135,7 +135,11 @@ function validate_sendmail(idlist,module){
 		var excludedRecords = document.getElementById('excludedRecords').value;
 		url1 = "&recordid="+recordid+"&excludedRecords="+excludedRecords;
 	} else {
-		url1 = '';
+		if (idlist.indexOf(':')==-1) {
+			url1 = '&cbfromid='+idlist;
+		} else {
+			url1 = '';
+		}
 	}
 	var chk_emails = document.SendMail.elements.length;
 	var oFsendmail = document.SendMail.elements;
