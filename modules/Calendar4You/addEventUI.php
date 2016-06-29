@@ -213,7 +213,7 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 				<td nowrap align="right"><b><font color="red">*</font><?php echo $c_mod_strings['LBL_EVENTNAME']?></b></td>
 				<td align="left"><input name="subject" type="text" class="textbox" value="" style="width:50%">&nbsp;&nbsp;&nbsp;
 			<?php if(getFieldVisibilityPermission('Events',$current_user->id,'visibility', 'readwrite') == '0') {
-				$visrs = $adb->pquery("select defaultvalue from vtiger_field where tabid=16 and columnname='visibility'");
+				$visrs = $adb->query("select defaultvalue from vtiger_field where tabid=16 and columnname='visibility'");
 				$vis = $adb->query_result($visrs, 0, 0);
 				$visiblecheck = '';
 				if ($vis == 'Public') {
