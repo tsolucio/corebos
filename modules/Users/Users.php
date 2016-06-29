@@ -46,7 +46,7 @@ class Users extends CRMEntity {
 
 	var $object_name = "User";
 	var $user_preferences;
-	var $homeorder_array = array('HDB', 'ALVT', 'PLVT', 'QLTQ', 'CVLVT', 'HLT', 'GRT', 'OLTSO', 'ILTI', 'MNL', 'OLTPO', 'LTFAQ', 'UA', 'PA');
+	var $homeorder_array = array('HDB'=>'', 'ALVT'=>'', 'PLVT'=>'', 'QLTQ'=>'', 'CVLVT'=>'', 'HLT'=>'', 'GRT'=>'', 'OLTSO'=>'', 'ILTI'=>'', 'MNL'=>'', 'OLTPO'=>'', 'LTFAQ'=>'', 'UA'=>'', 'PA'=>'');
 
 	var $encodeFields = Array("first_name", "last_name", "description");
 
@@ -1015,7 +1015,7 @@ class Users extends CRMEntity {
 	function getHomeStuffOrder($id) {
 		global $adb;
 		if (!is_array($this->homeorder_array)) {
-			$this->homeorder_array = array('UA', 'PA', 'ALVT', 'HDB', 'PLVT', 'QLTQ', 'CVLVT', 'HLT', 'GRT', 'OLTSO', 'ILTI', 'MNL', 'OLTPO', 'LTFAQ');
+			$this->homeorder_array = array('HDB'=>'', 'ALVT'=>'', 'PLVT'=>'', 'QLTQ'=>'', 'CVLVT'=>'', 'HLT'=>'', 'GRT'=>'', 'OLTSO'=>'', 'ILTI'=>'', 'MNL'=>'', 'OLTPO'=>'', 'LTFAQ'=>'', 'UA'=>'', 'PA'=>'');
 		}
 		$return_array = Array();
 		$homeorder = Array();
@@ -1025,19 +1025,34 @@ class Users extends CRMEntity {
 			for ($q = 0; $q < $adb->num_rows($res); $q++) {
 				$homeorder[] = $adb->query_result($res, $q, "hometype");
 			}
-			for ($i = 0; $i < count($this->homeorder_array); $i++) {
-				if (in_array($this->homeorder_array[$i], $homeorder)) {
-					$return_array[$this->homeorder_array[$i]] = $this->homeorder_array[$i];
+			foreach ($this->homeorder_array as $key => $value) {
+				if (in_array($key, $homeorder)) {
+					$return_array[$key] = $key;
 				} else {
-					$return_array[$this->homeorder_array[$i]] = '';
+					$return_array[$key] = '';
 				}
 			}
 		} else {
-			for ($i = 0; $i < count($this->homeorder_array); $i++) {
-				$return_array[$this->homeorder_array[$i]] = $this->homeorder_array[$i];
+			foreach ($this->homeorder_array as $fieldname => $val) {
+				if (isset($this->column_fields[$fieldname])) {
+					$value = trim($this->column_fields[$fieldname]);
+					$this->homeorder_array[$fieldname] = $value;
+				}
+			}
+			foreach ($this->homeorder_array as $key => $value) {
+				$return_array[$key] = $value;
 			}
 		}
-		$return_array['Tag Cloud'] = (getTagCloudView($id) ? 'true' : 'false');
+		if($id == '' && isset($this->column_fields['tagcloudview'])){
+			$return_array['Tag Cloud'] = $this->column_fields['tagcloudview'];
+		}else{
+			$return_array['Tag Cloud'] = (getTagCloudView($id) ? 'true' : 'false');
+		}
+		if($id == '' && isset($this->column_fields['showtagas'])){
+			$return_array['showtagas'] = $this->column_fields['showtagas'];
+		}else{
+			$return_array['showtagas'] = getTagCloudShowAs($id);
+		}
 		return $return_array;
 	}
 
@@ -1181,14 +1196,14 @@ class Users extends CRMEntity {
 		$log->debug("Entering in function saveHomeOrder($id)");
 
 		if ($this->mode == 'edit') {
-			for ($i = 0; $i < count($this->homeorder_array); $i++) {
-				if ($_REQUEST[$this->homeorder_array[$i]] != '') {
-					$save_array[] = $this->homeorder_array[$i];
-					$qry = " update vtiger_homestuff,vtiger_homedefault set vtiger_homestuff.visible=0 where vtiger_homestuff.stuffid=vtiger_homedefault.stuffid and vtiger_homestuff.userid=" . $id . " and vtiger_homedefault.hometype='" . $this->homeorder_array[$i] . "'";
+			foreach ($this->homeorder_array as $key => $value) {
+				if ($_REQUEST[$key] != '') {
+					$save_array[] = $key;
+					$qry = " update vtiger_homestuff,vtiger_homedefault set vtiger_homestuff.visible=0 where vtiger_homestuff.stuffid=vtiger_homedefault.stuffid and vtiger_homestuff.userid=" . $id . " and vtiger_homedefault.hometype='" . $key . "'";
 					//To show the default Homestuff on the the Home Page
 					$result = $adb->pquery($qry, array());
 				} else {
-					$qry = "update vtiger_homestuff,vtiger_homedefault set vtiger_homestuff.visible=1 where vtiger_homestuff.stuffid=vtiger_homedefault.stuffid and vtiger_homestuff.userid=" . $id . " and vtiger_homedefault.hometype='" . $this->homeorder_array[$i] . "'";
+					$qry = "update vtiger_homestuff,vtiger_homedefault set vtiger_homestuff.visible=1 where vtiger_homestuff.stuffid=vtiger_homedefault.stuffid and vtiger_homestuff.userid=" . $id . " and vtiger_homedefault.hometype='" . $key . "'";
 					//To hide the default Homestuff on the the Home Page
 					$result = $adb->pquery($qry, array());
 				}
