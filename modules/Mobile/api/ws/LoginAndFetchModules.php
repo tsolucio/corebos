@@ -60,8 +60,8 @@ class Mobile_WS_LoginAndFetchModules extends Mobile_WS_Login {
 					'id'   => $modulewsids[$modulename],
 					'name' => $modulename,
 					'isEntity' => $listresult['information'][$modulename]['isEntity'],
-					'label' => $app_strings[$modulename],
-					'singular' => $app_strings['SINGLE_'.$modulename]
+					'label' => getTranslatedString($modulename,$modulename),
+					'singular' => getTranslatedString('SINGLE_'.$modulename,$modulename)
 				);
 			}
 		}
