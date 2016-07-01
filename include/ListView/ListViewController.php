@@ -580,6 +580,8 @@ class ListViewController {
 					$value = "<span align='right'>".textlength_check($value)."</div>";
 				} elseif ($field->getUIType() == 55) {
 					$value = getTranslatedString($value,$currentModule);
+				}elseif ($module == 'Emails' && ($fieldName == 'subject')) {
+						$value = '<a href="javascript:;" onClick="ShowEmail(\'' . $recordId . '\');">' . textlength_check($value) . '</a>';
 				} else {
 					$value = textlength_check($value);
 				}
