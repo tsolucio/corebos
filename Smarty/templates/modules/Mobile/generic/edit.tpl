@@ -19,14 +19,14 @@
 <div data-role="page" data-theme="b" data-mini="true" id="edit_page">
 	<!-- header -->
 	<div data-role="header" class="ui-bar" data-theme="b"  data-position="fixed">
-		<h4>{$MOD.LBL_EDIT}</h4>
+		<h4>{'LBL_EDIT'|@getTranslatedString:'Mobile'}</h4>
 	</div>
 	<!-- /header -->
 	<div data-role="collapsible-set" data-mini="true">	
 		<form method="post" data-transition="pop" data-ajax="false" name="EditView" id="EditView" action="index.php?_operation=saveRecord&module={$_MODULE->name()}&record={$_RECORD->id()}">
 			<div data-role="controlgroup" data-type="horizontal" data-mini="true">
-					<input data-inline="true"  type="submit" name="submit" value="{$MOD.LBL_SAVE}" />
-					<a href="#"  onclick="window.history.back()" data-mini="true" data-role="button"> {$MOD.LBL_CANCEL}</a>
+					<input data-inline="true"  type="submit" name="submit" value="{'LBL_SAVE'|@getTranslatedString:'Mobile'}" />
+					<a href="#"  onclick="window.history.back()" data-mini="true" data-role="button"> {'LBL_CANCEL'|@getTranslatedString:'Mobile'}</a>
 			</div>
 			<input type="hidden" name="pagenumber" value="{$smarty.request.start|@vtlib_purify}">
 			<input type="hidden" name="module" id="module" value="{$_MODULE->name()}">
@@ -180,9 +180,9 @@
 									{/if}
 									<div data-role="fieldcontain" >
 									    <fieldset data-role="controlgroup" data-type="horizontal" data-mini="true" >
-										    <label for="User">{$MOD.LBL_USER}</label>
+										    <label for="User">{'LBL_USER'|@getTranslatedString:'Mobile'}</label>
 											<input id="User"  type="radio"  name="assigntype" {$select_user} value="U" onclick="toggleAssignType(this.value)" >
-											<label for="Group">{$MOD.LBL_GROUP}</label>
+											<label for="Group">{'LBL_GROUP'|@getTranslatedString:'Mobile'}</label>
 											<input  id="Group" type="radio" name="assigntype" {$select_group} value="T" onclick="toggleAssignType(this.value)" >
 										</fieldset>   
 									</div>
@@ -320,8 +320,8 @@
 				</div>
 			{/foreach}
 			<div data-role="controlgroup" data-type="horizontal" data-mini="true" >
-			    <input data-inline="true" onclick="this.form.action.value='Save'; " type="submit" name="submit" value="{$MOD.LBL_SAVE}" />
-				<input type="button"  onclick="window.history.back()" value="{$MOD.LBL_CANCEL}" />
+			    <input data-inline="true" onclick="this.form.action.value='Save'; " type="submit" name="submit" value="{'LBL_SAVE'|@getTranslatedString:'Mobile'}" />
+				<input type="button"  onclick="window.history.back()" value="{'LBL_CANCEL'|@getTranslatedString:'Mobile'}" />
 			</div>
 	    </form>
 	</div><!-- /content -->

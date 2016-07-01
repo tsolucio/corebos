@@ -30,17 +30,17 @@
 	<div data-role="header" class="ui-bar" data-mini='true' data-theme="b">
 		<div class="ui-grid-b" data-role="controlgroup" data-type="horizontal">
 		{if $_MODULE->name() neq 'Quotes' AND  $_MODULE->name() neq 'SalesOrder' AND  $_MODULE->name() neq 'Invoice' AND  $_MODULE->name() neq 'PurchaseOrder'}
-		<a href="?_operation=edit&module={$_MODULE->name()}&record={$_RECORD->id()}" data-mini='true' data-role="button" data-prefetch>{$MOD.LBL_EDIT}</a>
+		<a href="?_operation=edit&module={$_MODULE->name()}&record={$_RECORD->id()}" data-mini='true' data-role="button" data-prefetch>{'LBL_EDIT'|@getTranslatedString:'Mobile'}</a>
 		{/if}
-		<a data-role="button" data-inline="true" href="index.php?_operation=listModuleRecords&module={$_MODULE->name()}" data-mini='true' rel=external>{$MOD.LBL_LISTVIEW}</a>
+		<a data-role="button" data-inline="true" href="index.php?_operation=listModuleRecords&module={$_MODULE->name()}" data-mini='true' rel=external>{'LBL_LISTVIEW'|@getTranslatedString:'Mobile'}</a>
 		</div>
 	</div>
 	{else}
 	<div data-role="header" class="ui-bar" data-theme="b">
 		<div class="ui-grid-b" data-role="controlgroup" data-type="horizontal">
-				<a href="?_operation=edit&module={$_MODULE->name()}&record={$_RECORD->id()}" data-role="button"  data-prefetch>{$MOD.LBL_EDIT}</a>
-				<a href="?_operation=getrelatedlists&module={$_MODULE->name()}&record={$_RECORD->id()}" data-role="button"  data-prefetch>{$MOD.LBL_RELATED_LISTS}</a>
-				<a href="index.php?_operation=listModuleRecords&module={$_MODULE->name()}"  data-role="button"   rel=external>{$MOD.LBL_LISTVIEW}</a>
+				<a href="?_operation=edit&module={$_MODULE->name()}&record={$_RECORD->id()}" data-role="button"  data-prefetch>{'LBL_EDIT'|@getTranslatedString:'Mobile'}</a>
+				<a href="?_operation=getrelatedlists&module={$_MODULE->name()}&record={$_RECORD->id()}" data-role="button"  data-prefetch>{'LBL_RELATED_LISTS'|@getTranslatedString:'Mobile'}</a>
+				<a href="index.php?_operation=listModuleRecords&module={$_MODULE->name()}"  data-role="button"   rel=external>{'LBL_LISTVIEW'|@getTranslatedString:'Mobile'}</a>
 			
 		</div>
 	</div>
@@ -56,7 +56,7 @@
 			  <div class="ui-field-contain">
 				<textarea name="comment_text" id="comment_text"></textarea>
 			  </div>
-			  <input type="submit" data-inline="true" value="{$MOD.LBL_SAVE}" onClick="addComment('{$_RECORD->id()}');">
+			  <input type="submit" data-inline="true" value="{'LBL_SAVE'|@getTranslatedString:'Mobile'}" onClick="addComment('{$_RECORD->id()}');">
 			</div>
 		</div>
 	{/if}
@@ -95,9 +95,9 @@
 									{else}
 										{if $_FIELD->uitype() eq '56'}
 											{if $_FIELD->valueLabel() eq '1'}
-												{$MOD.LBL_YES}
+												{'LBL_YES'|@getTranslatedString:'Mobile'}
 											{else}
-												{$MOD.LBL_NO}
+												{'LBL_NO'|@getTranslatedString:'Mobile'}
 											{/if}
 										{else}
 											{if ($_FIELD->name() neq 'eventstatus' && $_FIELD->name() neq 'taskstatus') || $_FIELD->valueLabel() neq ''}
@@ -108,9 +108,9 @@
 								{elseif $_MODULE->name() neq 'Calendar' && $_MODULE->name() neq 'Events'}
 									{if $_FIELD->uitype() eq '56'}
 										{if $_FIELD->valueLabel() eq '1'}
-											{$MOD.LBL_YES}
+											{'LBL_YES'|@getTranslatedString:'Mobile'}
 										{else}
-											{$MOD.LBL_NO}
+											{'LBL_NO'|@getTranslatedString:'Mobile'}
 										{/if}
 									{else}
 										{if $_FIELD->name() eq 'phone' || $_FIELD->name() eq 'homephone'|| $_FIELD->name() eq 'mobile'|| $_FIELD->name() eq 'otherphone' }
@@ -142,7 +142,7 @@
 		{/foreach}
 	</div>
 	<div class="ui-grid-b">
-		<a href="?_operation=deleteConfirmation&module={$_MODULE->name()}&record={$_RECORD->id()}&&lang={$LANGUAGE}" data-mini='true' data-role='button' data-inline='true' data-rel="dialog" data-transition="turn" data-prefetch>{$MOD.LBL_DELETE}</a>
+		<a href="?_operation=deleteConfirmation&module={$_MODULE->name()}&record={$_RECORD->id()}&&lang={$LANGUAGE}" data-mini='true' data-role='button' data-inline='true' data-rel="dialog" data-transition="turn" data-prefetch>{'LBL_DELETE'|@getTranslatedString:'Mobile'}</a>
 	</div> 
 	{if $_MODULE->name() neq 'Accounts'}
 	{/if}	
