@@ -668,4 +668,11 @@
 	<classname>setDefaultValuesForUserFields</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Emails: make shareble by profile settings</description>
+	<filename>build/changeSets/makeEmailsShareable.php</filename>
+	<classname>makeEmailsShareable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

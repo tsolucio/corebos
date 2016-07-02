@@ -520,10 +520,6 @@ class Emails extends CRMEntity {
 		$this->db->pquery('UPDATE vtiger_crmentity SET modifiedtime = ? WHERE crmid = ?', array(date('y-m-d H:i:d'), $id));
 	}
 
-	public function getNonAdminAccessControlQuery($module, $user, $scope='') {
-		return " and vtiger_crmentity$scope.smownerid=$user->id ";
-	}
-
 }
 
 /** Function to get the emailids for the given ids form the request parameters
