@@ -828,7 +828,7 @@ function getReferenceAutocomplete($term, $filter, $searchinmodules, $limit, $use
 		$searchin = explode(',', $searchinmodules);
 	} else {
 		$searchin = array('HelpDesk','Project','ProjectTask','Potentials','ProjectMilestone',
-		'Invoice','PurchaseOrder','Quotes','SalesOrder','ServiceContracts','Accounts','Contacts',);
+		'Invoice','PurchaseOrder','Quotes','SalesOrder','ServiceContracts','Accounts','Contacts');
 	}
 	if (empty($limit)) $limit = 30;  // hard coded default
 	$respuesta=array();
