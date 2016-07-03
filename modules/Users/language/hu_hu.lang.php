@@ -10,7 +10,6 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  *********************************************************************************
  * $Header:  \modules\Users\language\hu_hu.lang.php - 12:14 2011.02.27. $
  * Description:  Defines the Hungarian language pack for the Users module vtiger 5.2.x
@@ -108,11 +107,15 @@ $mod_strings = array(
 	'ERR_PASSWORD_CHANGE_FAILED_1' => 'A jelszó csere nem sikerült ',
 	'ERR_PASSWORD_CHANGE_FAILED_2' => ' Az új jelszót meg kell, hogy add.',
 	'ERR_PASSWORD_INCORRECT_OLD' => 'Hibásan adtad meg a régi jelszót. Add meg újra a jelszó adatokat.',
+	'ERR_PASSWORD_NOT_CHANGED' => 'Old and New Passwords are the same. Please use a different password.',
 	'ERR_USER_NAME_EXISTS_1' => 'A felhasználó név ',
 	'ERR_USER_NAME_EXISTS_2' => ' már foglalt. Duplikált felhasználónevek nem engedélyezettek.<br>Válassz egyedi felhasználó nevet.',
 	'ERR_LAST_ADMIN_1' => 'A felhasználó név ',
 	'ERR_LAST_ADMIN_2' => ' az utolsó Admin felhasználó. Legalább egy felhasználónak Admin felhasználónak kell lennie.<br>Ellenőrizd az Admin felhasználó beállításait.',
+	'ERR_MAXLOGINATTEMPTS' => 'Maximum number of login attempts reached. Contact your administrator to unblock your account',
+	'LBL_FAILED_LOGIN_ATTEMPTS' => 'Failed Login Attempts',
 	'ERR_DELETE_RECORD' => 'Adj meg egy rekord azonosítót a Cég törléséhez',
+	'ERR_MUST_CHANGE_PASSWORD' => 'Your password has expired. You must change your password to continue.',
 	'LBL_ROLES' => 'Munkakörök',
 	'LBL_ROLES_SUBORDINATES' => 'Munkakörök és alárendeltségek',
 	'LBL_CREATE_NEW_ROLE' => 'Új Munkakör',
@@ -188,6 +191,7 @@ $mod_strings = array(
 	'LBL_VIEWING' => 'Megnézés',
 	'LBL_PROPERTIES' => 'Tulajdonsága',
 	'LBL_ASTERISKEXTENSIONS_EXIST' => 'Az Asterisk bővítmény már létezik!',
+	'LBL_CURRENCY_SEPARATORS_INCORRECT' => 'Decimal Separator and Digit Grouping Separator cannot be the same.',
 	'LBL_CREATE_NEW_GROUP' => 'Új Csoport',
 	'LBL_NEW_GROUP' => 'Új Csoport',
 	'LBL_EDIT_GROUP' => 'Csoport Szerkesztése',
@@ -678,6 +682,7 @@ $mod_strings = array(
 	'Symbol Placement' => 'Szimbólum elhelyezés',
 	'Digit Grouping Pattern' => 'Számjegy csoportosítási minta',
 	'Digit Grouping Separator' => 'Ezres elválasztó',
+	'Number Of Currency Decimals'  =>  'Tizedesek száma a Pénznemben',
 	'LBL_GROUP_NMAE' => 'Csoportnév',
 	'LBL_USER_ASTERISK_OPTIONS' => 'Asterisk beállítási lehetőségek',
 	'Use Asterisk' => 'Asterisk használata',
@@ -699,5 +704,6 @@ $mod_strings = array(
 	'Min. 1 lowercase' => 'Min. 1 lowercase character',
 	'Min. 1 number' => 'Min. 1 Number',
 	'Min. 1 special character' => 'Min. 1 special character , ! ? , ; - @ #',
+	'Generate password' => 'Generate password',
 );
 ?>

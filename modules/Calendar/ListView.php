@@ -89,7 +89,6 @@ $_SESSION['ACTIVITIES_ORDER_BY'] = $order_by;
 $_SESSION['ACTIVITIES_SORT_ORDER'] = $sorder;
 //<<<<<<< sort ordering >>>>>>>>>>>>>
 
-
 //<<<<cutomview>>>>>>>
 $oCustomView = new CustomView($currentModule);
 $viewid = $oCustomView->getViewId($currentModule);
@@ -159,9 +158,7 @@ if(isPermitted("Calendar","Delete",$_REQUEST['record']) == 'yes') {
 if(isPermitted('Calendar','EditView','') == 'yes') {
 	$other_text['c_owner'] = $app_strings[LBL_CHANGE_OWNER];
 }
-global  $task_title;
 $title_display = $current_module_strings['LBL_LIST_FORM_TITLE'];
-if ($task_title) $title_display= $task_title;
 
 //Retreive the list from Database
 //<<<<<<<<<customview>>>>>>>>>
@@ -198,11 +195,11 @@ if (isset($_REQUEST['from_homepage'])) {
 	$endDateTime = $userEndDateTime->getDBInsertDateTimeValue();
 
 	if ($_REQUEST['from_homepage'] == 'upcoming_activities')
-		$list_query .= " AND (vtiger_activity.status is NULL OR vtiger_activity.status not in ('Completed','Deferred')) and (vtiger_activity.eventstatus is NULL OR  vtiger_activity.eventstatus not in ('Held','Not Held')) AND (CAST((CONCAT(date_start,' ',time_start)) AS DATETIME) >= '$startDateTime' OR CAST((CONCAT(vtiger_recurringevents.recurringdate,' ',time_start)) AS DATETIME) >= '$startDateTime')";
+		$list_query .= " AND (vtiger_activity.status is NULL OR vtiger_activity.status not in ('Completed','Deferred')) and (vtiger_activity.eventstatus is NULL OR vtiger_activity.eventstatus not in ('Held','Not Held')) AND (CAST((CONCAT(date_start,' ',time_start)) AS DATETIME) >= '$startDateTime' OR CAST((CONCAT(vtiger_recurringevents.recurringdate,' ',time_start)) AS DATETIME) >= '$startDateTime')";
 	elseif ($_REQUEST['from_homepage'] == 'pending_activities')
-		$list_query .= " AND (vtiger_activity.status is NULL OR vtiger_activity.status not in ('Completed','Deferred')) and (vtiger_activity.eventstatus is NULL OR  vtiger_activity.eventstatus not in ('Held','Not Held')) AND (CAST((CONCAT(due_date,' ',time_end)) AS DATETIME) <= '$endDateTime' OR CAST((CONCAT(vtiger_recurringevents.recurringdate,' ',time_start)) AS DATETIME) <= '$endDateTime')";
+		$list_query .= " AND (vtiger_activity.status is NULL OR vtiger_activity.status not in ('Completed','Deferred')) and (vtiger_activity.eventstatus is NULL OR vtiger_activity.eventstatus not in ('Held','Not Held')) AND (CAST((CONCAT(due_date,' ',time_end)) AS DATETIME) <= '$endDateTime' OR CAST((CONCAT(vtiger_recurringevents.recurringdate,' ',time_start)) AS DATETIME) <= '$endDateTime')";
 }
-
+$list_query .= ' GROUP BY vtiger_activity.activityid'; // only one row per event no matter how many contacts are related
 if(isset($order_by) && $order_by != '') {
 	if($order_by == 'smownerid') {
 		$list_query .= ' ORDER BY user_name '.$sorder;
@@ -217,8 +214,12 @@ if(isset($order_by) && $order_by != '') {
 }
 
 if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true){
-	$count_result = $adb->query( mkCountQuery( $list_query));
-	$noofrows = $adb->query_result($count_result,0,"count");
+	$count_query = preg_replace("/[\n\r\s]+/", " ", $list_query);
+	$count_query = 'SELECT 1 ' . substr($count_query, stripos($count_query, ' FROM '), strlen($count_query));
+	if (stripos($count_query, 'ORDER BY') > 0)
+		$count_query = substr($count_query, 0, stripos($count_query, 'ORDER BY'));
+	$count_result = $adb->query("SELECT count(*) AS count FROM ($count_query) as calcount");
+	$noofrows = $adb->query_result($count_result,0,'count');
 }else{
 	$noofrows = null;
 }

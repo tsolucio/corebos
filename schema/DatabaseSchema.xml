@@ -6831,9 +6831,14 @@
 		<field name="task" type="X">
 			<notnull />
 		</field>
+		<field name="executionorder" type="I" >
+		</field>
 		<index name="com_vtiger_workflowtasks_idx">
 			<unique />
 			<col>task_id</col>
+		</index>
+		<index name="executionorder_idx">
+			<col>executionorder</col>
 		</index>
 		<opt platform="mysql">Engine=InnoDB</opt>
 	</table>

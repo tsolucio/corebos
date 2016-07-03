@@ -22,7 +22,11 @@ $Calendar4You = new Calendar4You();
 
 $Calendar4You->GetDefPermission($current_user->id);
 
-$edit_permissions = $Calendar4You->CheckPermissions("EDIT",$_REQUEST['record']);
+if(isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
+	$edit_permissions = $Calendar4You->CheckPermissions('EDIT',$_REQUEST['record']);
+} else {
+	$edit_permissions = $Calendar4You->CheckPermissions('CREATE',$_REQUEST['record']);
+}
 
 if(!$edit_permissions) {
 	NOPermissionDiv();

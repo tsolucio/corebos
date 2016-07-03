@@ -287,7 +287,7 @@ function editworkflowscript($, conditions){
 
 		// Remove 'has changed' operation for reference fields
 		var fe = $("#save_condition_"+condno+"_fieldname");
-		var fullFieldName = fe.attr('value');
+		var fullFieldName = fe.val();
 		var group = fullFieldName.match(/(\w+) : \((\w+)\) (\w+)/);
 		if(group != null){
 			for(var i=0; i<selOperations.length; ++i) {
@@ -318,7 +318,7 @@ function editworkflowscript($, conditions){
 				);
 			value.replaceWith('<select id="save_condition_'+condno+'_value" class="expressionvalue">'+
 				options+'</select>');
-			$("#save_condition_"+condno+"_value_type").attr("value", "rawtext");
+			$("#save_condition_"+condno+"_value_type").val("rawtext");
 		}
 		var functions = {
 			string:function(opType, condno){
@@ -448,15 +448,14 @@ function editworkflowscript($, conditions){
 	}
 
 	function editFieldExpression(fieldValueNode, fieldType) {
-		editpopupobj.edit(fieldValueNode.attr('id'), fieldValueNode.attr('value'), fieldType);
+		editpopupobj.edit(fieldValueNode.attr('id'), fieldValueNode.val(), fieldType);
 	}
 
 	$(document).ready(function(){
 		fieldValidator = new VTFieldValidator($('#edit_workflow_form'));
 		fieldValidator.mandatoryFields = ["description"];
 		pageLoadingPopup.show();
-
-		Drag.init(document.getElementById('editpopup_draghandle'), document.getElementById('editpopup'));
+		jQuery("#editpopup").draggable({ handle: "#editpopup_draghandle" });
 		editpopupobj = fieldExpressionPopup(moduleName, $);
 		editpopupobj.setModule(moduleName);
 		editpopupobj.close();
@@ -565,7 +564,7 @@ function editworkflowscript($, conditions){
 						$("#save_condition_group_"+groupid).append(
 							'<div id="save_condition_'+condid+'" style=\'margin-bottom: 5px\'> \
 								<input type="hidden" id="save_condition_'+condid+'_groupid" class="groupid" value="'+groupid+'" /> \
-                                <select id="save_condition_'+condid+'_fieldname" class="fieldname"></select> \
+                                <select id="save_condition_'+condid+'_fieldname" class="fieldname" style="width:300px;"></select> \
 								<select id="save_condition_'+condid+'_operation" class="operation"></select> \
                                 <input type="hidden" id="save_condition_'+condid+'_value_type" class="expressiontype" /> \
                                 <input type="text" id="save_condition_'+condid+'_value" class="expressionvalue" readonly /> \
@@ -583,7 +582,7 @@ function editworkflowscript($, conditions){
 						var fjc = $("#save_condition_"+condid+"_joincondition");
 						fillOptions(fjc, JoinConditionOptions);
 
-						var fullFieldName = fe.attr("value");
+						var fullFieldName = fe.val();
 
 						resetFields(getFieldType(fullFieldName), condid);
 
@@ -595,13 +594,13 @@ function editworkflowscript($, conditions){
 						fe.bind("change", function(){
 							var select = $(this);
 							var condNo = select.attr("id").match(/save_condition_(\d+)_fieldname/)[1];
-							var fullFieldName = $(this).attr('value');
+							var fullFieldName = $(this).val();
 							resetFields(getFieldType(fullFieldName), condNo);
 						});
 
 						var condition = $('#save_condition_'+condid+'_operation');
 						condition.bind('change', function() {
-							var value = $(this).attr('value');
+							var value = $(this).val();
 							if(value == 'is empty' || value == 'is not empty') {
 								$('#save_condition_'+condid+'_value').hide();
 							} else {
@@ -629,9 +628,9 @@ function editworkflowscript($, conditions){
 							var groupid = condition["groupid"];
 							if(groupid == '') groupid = 0;
 							addCondition(groupid, condno);
-							$(format("#save_condition_%s_fieldname", condno)).attr("value", fieldname);
+							$(format("#save_condition_%s_fieldname", condno)).val(fieldname);
 							resetFields(getFieldType(fieldname), condno);
-							$(format("#save_condition_%s_operation", condno)).attr("value", condition["operation"]);
+							$(format("#save_condition_%s_operation", condno)).val(condition["operation"]);
 							$('#dump').html(condition["value"]);
 							var text = $('#dump').text();
 							if(condition["operation"] == 'is empty' || condition["operation"] == 'is not empty')  {
@@ -640,10 +639,10 @@ function editworkflowscript($, conditions){
 							$(format("#save_condition_%s_value", condno)).val(text);
 							$(format("#save_condition_%s_value_type", condno)).val(condition["valuetype"]);
 							if(condition["joincondition"] != '') {
-								$(format("#save_condition_%s_joincondition", condno)).attr("value", condition["joincondition"]);
+								$(format("#save_condition_%s_joincondition", condno)).val(condition["joincondition"]);
 							}
 							if(condition["groupjoin"]  != '') {
-								$(format("#save_condition_group_%s_joincondition", groupid)).attr("value", condition["groupjoin"]);
+								$(format("#save_condition_group_%s_joincondition", groupid)).val(condition["groupjoin"]);
 							}
 							condno+=1;
 						});
@@ -659,14 +658,14 @@ function editworkflowscript($, conditions){
 						$("#save_conditions").children(".condition_group_block").each(function(j, conditiongroupblock){
 							$(conditiongroupblock).children(".save_condition_group").each(function(k, conditiongroup){
 								$(conditiongroup).children().each(function(l){
-									var fieldname = $(this).children(".fieldname").attr("value");
-									var operation = $(this).children(".operation").attr("value");
-									var value = $(this).children(".expressionvalue").attr("value");
-									var valuetype = $(this).children(".expressiontype").attr("value");
-									var joincondition = $(this).children(".joincondition").attr("value");
-									var groupid = $(this).children(".groupid").attr("value");
+									var fieldname = $(this).children(".fieldname").val();
+									var operation = $(this).children(".operation").val();
+									var value = $(this).children(".expressionvalue").val();
+									var valuetype = $(this).children(".expressiontype").val();
+									var joincondition = $(this).children(".joincondition").val();
+									var groupid = $(this).children(".groupid").val();
 									var groupjoin = '';
-									if(groupid != '') groupjoin = $('#save_condition_group_'+groupid+'_joincondition').attr("value");
+									if(groupid != '') groupjoin = $('#save_condition_group_'+groupid+'_joincondition').val();
 									var condition = {
 										fieldname:fieldname,
 										operation:operation,
@@ -685,7 +684,7 @@ function editworkflowscript($, conditions){
 						}else{
 							var out = JSON.stringify(conditions);
 						}
-						$("#save_conditions_json").attr("value", out);
+						$("#save_conditions_json").val(out);
 					});
 					pageLoadingPopup.close();
 					$('#save_conditions_add').show();
@@ -696,6 +695,18 @@ function editworkflowscript($, conditions){
 		}));
 	});
 
+}
+
+function moveWorkflowTaskUpDown(direction,task_id) {
+	jQuery.get('index.php', {
+			module:'com_vtiger_workflow',
+			action:'com_vtiger_workflowAjax',
+			file:'WorkflowComponents', ajax:'true',
+			wftaskid:task_id, mode:'moveWorkflowTaskUpDown', movedirection:direction},
+		function(result){
+			location.reload();
+		}
+	);
 }
 
 // On Schedule functionality
@@ -714,22 +725,26 @@ function onschedule_selectschedule(selbox) {
 		jQuery('#scheduleMonthByDates').hide();
 		jQuery('#scheduleByDate').hide();
 		jQuery('#scheduledTime').hide();
+		jQuery('#minutesinterval').hide();
 		break;
 		case '2':
 		jQuery('#scheduledWeekDay').hide();
 		jQuery('#scheduleMonthByDates').hide();
 		jQuery('#scheduleByDate').hide();
+		jQuery('#minutesinterval').hide();
 		jQuery('#scheduledTime').show();
 		break;
 		case '3':
 		jQuery('#scheduledWeekDay').show();
 		jQuery('#scheduleMonthByDates').hide();
 		jQuery('#scheduleByDate').hide();
+		jQuery('#minutesinterval').hide();
 		jQuery('#scheduledTime').show();
 		break;
 		case '4':
 		jQuery('#scheduledWeekDay').hide();
 		jQuery('#scheduleMonthByDates').hide();
+		jQuery('#minutesinterval').hide();
 		jQuery('#scheduleByDate').show();
 		jQuery('#scheduledTime').show();
 		break;
@@ -737,6 +752,7 @@ function onschedule_selectschedule(selbox) {
 		jQuery('#scheduledWeekDay').hide();
 		jQuery('#scheduleMonthByDates').show();
 		jQuery('#scheduleByDate').hide();
+		jQuery('#minutesinterval').hide();
 		jQuery('#scheduledTime').show();
 		break;
 		case '6':  // Not Implemented yet
@@ -744,8 +760,16 @@ function onschedule_selectschedule(selbox) {
 		case '7':
 		jQuery('#scheduledWeekDay').hide();
 		jQuery('#scheduleMonthByDates').hide();
+		jQuery('#minutesinterval').hide();
 		jQuery('#scheduleByDate').show();
 		jQuery('#scheduledTime').show();
+		break;
+		case '8':
+		jQuery('#scheduledWeekDay').hide();
+		jQuery('#scheduleMonthByDates').hide();
+		jQuery('#scheduleByDate').hide();
+		jQuery('#scheduledTime').hide();
+		jQuery('#minutesinterval').show();
 		break;
 	}
 }

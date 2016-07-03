@@ -55,6 +55,8 @@ $db_options = Installation_Utils::getDbOptions();
 	<title><?php echo $installationStrings['APP_NAME']. ' - ' . $installationStrings['LBL_CONFIG_WIZARD']. ' - ' . $installationStrings['LBL_SYSTEM_CONFIGURATION']?></title>
 	<link href="include/install/install.css" rel="stylesheet" type="text/css">
 	<link href="themes/softed/style.css" rel="stylesheet" type="text/css">
+	<script type="text/javascript" src="include/js/general.js"></script>
+	<script type="text/javascript" src="include/jquery/jquery.js"></script>
 </head>
 
 <body class="small cwPageBg" topmargin="0" leftmargin="0" marginheight="0" marginwidth="0">
@@ -64,19 +66,18 @@ $db_options = Installation_Utils::getDbOptions();
 </style>
 
 <script type="text/javascript" language="Javascript">
-
 function fnShow_Hide(){
 	var sourceTag = document.getElementById('check_createdb').checked;
 	if(sourceTag){
 		document.getElementById('root_user').className = 'show_div';
 		document.getElementById('root_pass').className = 'show_div';
-		document.getElementById('create_db_config').className = 'show_div';
+		//document.getElementById('create_db_config').className = 'show_div';
 		document.getElementById('root_user_txtbox').focus();
 	}
 	else{
 		document.getElementById('root_user').className = 'hide_tab';
 		document.getElementById('root_pass').className = 'hide_tab';
-		document.getElementById('create_db_config').className = 'hide_tab';
+		//document.getElementById('create_db_config').className = 'hide_tab';
 	}
 }
 
@@ -155,14 +156,16 @@ function verify_data(form) {
 	var SiteUrl = form.site_URL.value;
     if(SiteUrl.indexOf("localhost") > -1 && SiteUrl.indexOf("localhost") < 10) {
         if(confirm("<?php echo $installationStrings['WARNING_LOCALHOST_IN_SITE_URL']; ?>")) {
+			VtigerJS_DialogBox.progress();
 			form.submit();
         } else {
             form.site_URL.select();
             return false;
         }
     } else {
+		VtigerJS_DialogBox.progress();
 		form.submit();
-    }	
+    }
 }
 </script>
 
@@ -199,8 +202,8 @@ function verify_data(form) {
 							  	</tr>
 							    <tr valign=top >
 							    	<form action="install.php" method="post" name="installform" id="form">
-							    	<input type="hidden" name="file" value="ConfirmConfig.php" />				    
-									<td align=left class="small" width=50% style="padding-left:10px">				
+							    	<input type="hidden" name="file" value="ConfirmConfig.php" />
+									<td align=left class="small" width=50% style="padding-left:10px">
 										<table width="100%" cellpadding="0"  cellspacing="1" border="0" align=center class="level3">
 											<tr>
 												<td colspan=4><strong><?php echo $installationStrings['LBL_DATABASE_INFORMATION']; ?></strong><hr noshade size=1></td>
@@ -239,12 +242,12 @@ function verify_data(form) {
 												<td align="left" width='30%'><input type="text" class="small" name="db_name" value="<?php if (isset($db_name)) echo "$db_name"; ?>" />&nbsp;
 											</tr>
 											<tr>
-												<td colspan=2> 
+												<td colspan=2>
 										      		<?php if($check_createdb == 'on')
 											       	{?>
-											       	<input class="small" name="check_createdb" type="checkbox" id="check_createdb" checked onClick="fnShow_Hide()"/> 
+											       	<input class="small" name="check_createdb" type="checkbox" id="check_createdb" checked onClick="fnShow_Hide()"/>
 											       	<?php }else{?>
-											       		<input class="small" name="check_createdb" type="checkbox" id="check_createdb" onClick="fnShow_Hide()"/> 
+											       		<input class="small" name="check_createdb" type="checkbox" id="check_createdb" onClick="fnShow_Hide()"/>
 											       	<?php } ?>
 											       	&nbsp;<?php echo $installationStrings['LBL_CREATE_DATABASE'] . " (". $installationStrings['LBL_DROP_IF_EXISTS'] .")"; ?></td>
 		              							</td>
@@ -257,25 +260,25 @@ function verify_data(form) {
 											   	<td nowrap="nowrap" width="20%"><?php echo $installationStrings['LBL_ROOT']. ' ' .$installationStrings['LBL_PASSWORD']; ?></td>
 											   	<td align="left" width="30%"><input class="small" name="root_password" value="<?php echo $root_password;?>" type="password"></td>
 										 	</tr>
-								          	<tr id="create_db_config" class="hide_tab">
+								          	<tr id="create_db_config" class="hide_tab" style="visibility: hidden;">
 											   	<td nowrap="nowrap"><?php echo $installationStrings['LBL_UTF8_SUPPORT']; ?></td>
-											   	<td align="left" colspan=3><input class="small" type="checkbox" id="create_utf8_db" name="create_utf8_db" <?php if($create_utf8_db == 'true') echo "checked"; ?> /> <!-- DEFAULT CHARACTER SET utf8, DEFAULT COLLATE utf8_general_ci --></td>
-									      	</tr>							      	
+											   	<td align="left" colspan=3><input class="small" type="checkbox" id="create_utf8_db" name="create_utf8_db" checked /> <!-- DEFAULT CHARACTER SET utf8, DEFAULT COLLATE utf8_general_ci --></td>
+									      	</tr>
 											<tr>
 												<td colspan=2  style="border-top:1px dotted black;">
-													<input type="checkbox" class="dataInput" name="db_populate"  <?php if($db_populate == 'true') echo "checked"; ?> />
-													&nbsp;<?php echo $installationStrings['LBL_POPULATE_DEMO_DATA']; ?>
+													<input type="checkbox" class="dataInput" name="db_populate" style="visibility: hidden;" />
+													&nbsp;<?php echo 'If you are looking for demo data use the <a href="https://github.com/tsolucio/coreBOSTests">coreBOSTests database</a>'; ?>
 												</td>
 											</tr>
-		              					</table>
+									</table>
 										<br>
-									</td>			
+									</td>
 									<td align=left class="small" width=50% style="padding-left:2em;">
-				  						<!-- Web site configuration -->
+										<!-- Web site configuration -->
 										<table width="100%" cellpadding="0" border="0" cellspacing="1" align=center class="level3"><tbody>
-			            					<tr>
+										<tr>
 												<td colspan=2><strong><?php echo $installationStrings['LBL_CRM_CONFIGURATION']; ?></strong><hr noshade size=1></td>
-			            					</tr>
+										</tr>
 											<tr>
 												<td width="20%" ><?php echo $installationStrings['LBL_URL']; ?> <sup><font color=red>*</font></sup></td>
 												<td width="80%" align="left"><input class="small" type="text" name="site_URL"
@@ -303,7 +306,6 @@ function verify_data(form) {
 											<input type="hidden" name="cache_dir" size='40' value="<?php if (isset($cache_dir)) echo $cache_dir; ?>" size="40" />
 										</table>
 										<br>
-						
 										<!-- Admin Configuration -->
 										<table width="100%" cellpadding="0" border="0" align=center class="level3" cellspacing="1" >
 											<tr>
@@ -321,12 +323,11 @@ function verify_data(form) {
 												<td nowrap><?php echo $installationStrings['LBL_EMAIL']; ?> <sup><font color=red>*</font></sup></td>
 												<td align="left"><input class="small" size=25 type="text" name="admin_email" value="<?php if (isset($admin_email)) echo "$admin_email"; ?>"></td>
 											</tr>
-										</table>		
-										<!-- System Configuration -->										
+										</table>
+										<!-- System Configuration -->
 									</td>
 									</form>
 								</tr>
-								
 								<tr>
 									<td align="left">
 										<input type="button" class="button" value="&#139;&#139;&nbsp;<?php echo $installationStrings['LBL_BACK']; ?>" title="<?php echo $installationStrings['LBL_BACK']; ?>" onClick="window.history.back();" />
@@ -353,7 +354,7 @@ function verify_data(form) {
 		<tr>
 			<td align=center><img src="include/install/images/bottomShadow.jpg"></td>
 		</tr>
-	</table>	
+	</table>
 	<table border=0 cellspacing=0 cellpadding=0 width=85% align=center>
       	<tr>
         	<td class=small align=center> <a href="<?php echo $coreBOS_app_url; ?>" target="_blank"><?php echo $coreBOS_app_name; ?></a></td>

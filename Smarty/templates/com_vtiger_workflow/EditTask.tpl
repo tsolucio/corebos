@@ -1,5 +1,4 @@
 {include file='com_vtiger_workflow/Header.tpl'}
-<script src="modules/{$module->name}/resources/jquery-1.2.6.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/jquery.timepicker.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/functional.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/json2.js" type="text/javascript" charset="utf-8"></script>
@@ -10,13 +9,12 @@
 <script src="modules/{$module->name}/resources/fieldexpressionpopup.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/{$module->name}/resources/editworkflowscript.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">
-	jQuery.noConflict();
 	fn.addStylesheet('modules/{$module->name}/resources/style.css');
 	var returnUrl = '{$returnUrl}';
 	var validator;
 	edittaskscript(jQuery);
 {if $task->test}
-	var conditions = JSON.parse('{$task->test}');
+	var conditions = JSON.parse('{$task->test|@addslashes}');
 {else}
 	var conditions = null;
 {/if}

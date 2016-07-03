@@ -76,7 +76,7 @@ function fieldExpressionPopup(moduleName, $){
 	}
 
 	function handleExpressionType(ele) {
-		var value = ele.attr('value');
+		var value = ele.val();
 		var helpElements = $('.layerPopup .helpmessagebox');
 		$.each(helpElements, function(index, helpElement) {
 			hideElement(helpElement);
@@ -96,22 +96,22 @@ function fieldExpressionPopup(moduleName, $){
 			hideElement($('#editpopup_fieldnames'));
 			hideElement($('#editpopup_functions'));
 
-			var fieldType = $('#editpopup_field_type').attr('value');
+			var fieldType = $('#editpopup_field_type').val();
 			setFieldType(fieldType)(opType);
 		}
 	}
 
 	$('#editpopup_close').bind('click', close);
 	$('#editpopup_save').bind('click', function(){
-		var expression = $('#editpopup_expression').attr('value');
+		var expression = $('#editpopup_expression').val();
 		expression = expression.replace(/<script(.|\s)*?\/script>/g, "");
 		expression = expression.replace(/\n/g, "<br>");  // convert \n to <br> for saving
 
-		var fieldElementId = $("#editpopup_field").attr('value');
-		$("#"+fieldElementId).attr('value', expression);
+		var fieldElementId = $("#editpopup_field").val();
+		$("#"+fieldElementId).val(expression);
 
-		var expressionType = $("#editpopup_expression_type").attr('value');
-		$("#"+fieldElementId+"_type").attr('value', expressionType);
+		var expressionType = $("#editpopup_expression_type").val();
+		$("#"+fieldElementId+"_type").val(expressionType);
 
 		close();
 	});
@@ -124,7 +124,7 @@ function fieldExpressionPopup(moduleName, $){
 
 	$('#editpopup_fieldnames').bind('change', function(){
 		var textarea = $('#editpopup_expression').get(0);
-		var value = $(this).attr('value');
+		var value = $(this).val();
 		if(value != '') value += ' ';
 		//http://alexking.org/blog/2003/06/02/inserting-at-the-cursor-using-javascript
 		if (document.selection) {
@@ -188,7 +188,7 @@ function fieldExpressionPopup(moduleName, $){
 				{inputField : "editpopup_expression", ifFormat : "%Y-%m-%d", showsTime : false, button : "jscal_trigger_editpopup_expression", singleClick : true, step : 1}
 			);
 		}
-		function forTimeField(opType){ 
+		function forTimeField(opType){
 			var value = $("#editpopup_expression");
 			value.replaceWith('<input type="text" id="editpopup_expression" value="0" class="value">');
 		}
@@ -219,7 +219,7 @@ function fieldExpressionPopup(moduleName, $){
 			owner: forOwnerField,
 			date: forDateField,
 			datetime: forDateTimeField,
-			time: forTimeField 
+			time: forTimeField
 		};
 
 		if($('#jscal_trigger_editpopup_expression'))  $('#jscal_trigger_editpopup_expression').remove();
@@ -260,7 +260,7 @@ function fieldExpressionPopup(moduleName, $){
 		});
 		$('#editpopup_functions').bind('change', function(){
 			var textarea = $('#editpopup_expression').get(0);
-			var value = $(this).attr('value');
+			var value = $(this).val();
 			//http://alexking.org/blog/2003/06/02/inserting-at-the-cursor-using-javascript
 			if (document.selection) {
 				textarea.focus();
@@ -294,21 +294,21 @@ function fieldExpressionPopup(moduleName, $){
 	fieldExpressionPopup_LOADED = {
 		create: show,
 		edit: function(fieldelementid, expression, fieldtype){
-			$("#editpopup_field").attr('value', fieldelementid);
-			$("#editpopup_field_type").attr('value', fieldtype.name);
+			$("#editpopup_field").val(fieldelementid);
+			$("#editpopup_field_type").val(fieldtype.name);
 
 			opType = fieldtype;
 			var expressionTypeElement = $("#"+fieldelementid+"_type");
-			var expressionType = expressionTypeElement.attr('value');
+			var expressionType = expressionTypeElement.val();
 			if(expressionType != '') {
-				$("#editpopup_expression_type").attr('value', expressionTypeElement.attr('value'));
+				$("#editpopup_expression_type").val(expressionTypeElement.val());
 			} else {
-				$("#editpopup_expression_type").attr('value', 'rawtext');
+				$("#editpopup_expression_type").val('rawtext');
 			}
 			handleExpressionType(expressionTypeElement);
 			expression = expression.replace(/<br\s*\/?>/mg,"\n");  // convert <br> to \n for easy editing
 			if(expression != '') {
-				$("#editpopup_expression").attr('value', expression);
+				$("#editpopup_expression").val(expression);
 			}
 			$("#editpopup_expression").focus();
 			show();

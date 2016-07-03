@@ -12,7 +12,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 	protected $tabId;
 	protected $isEntity = true;
 	
-	public function VtigerModuleOperation($webserviceObject,$user,$adb,$log){
+	public function __construct($webserviceObject,$user,$adb,$log){
 		parent::__construct($webserviceObject,$user,$adb,$log);
 		$this->meta = $this->getMetaInstance();
 		$this->tabId = $this->meta->getTabId();
@@ -33,14 +33,13 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$error = $crmObject->create($element);
 		if(!$error){
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR,
-					vtws_getWebserviceTranslatedString('LBL_'.
-							WebServiceErrorCode::$DATABASEQUERYERROR));
+					vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
 		}
 		
 		$id = $crmObject->getObjectId();
 
 		// Bulk Save Mode
-		if(CRMEntity::isBulkSaveMode()) {		
+		if(CRMEntity::isBulkSaveMode()) {
 			// Avoiding complete read, as during bulk save mode, $result['id'] is enough
 			return array('id' => vtws_getId($this->meta->getEntityId(), $id) );
 		}
@@ -48,15 +47,13 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$error = $crmObject->read($id);
 		if(!$error){
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR,
-				vtws_getWebserviceTranslatedString('LBL_'.
-						WebServiceErrorCode::$DATABASEQUERYERROR));
+				vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
 		}
 		
 		return DataTransform::filterAndSanitize($crmObject->getFields(),$this->meta);
 	}
 	
 	public function retrieve($id){
-		
 		$ids = vtws_getIdComponents($id);
 		$elemid = $ids[1];
 		
@@ -64,10 +61,8 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$error = $crmObject->read($elemid);
 		if(!$error){
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR,
-					vtws_getWebserviceTranslatedString('LBL_'.
-							WebServiceErrorCode::$DATABASEQUERYERROR));
+					vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
 		}
-		
 		return DataTransform::filterAndSanitize($crmObject->getFields(),$this->meta);
 	}
 	
@@ -88,8 +83,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$error = $crmObject->update($element);
 		if(!$error){
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR,
-					vtws_getWebserviceTranslatedString('LBL_'.
-							WebServiceErrorCode::$DATABASEQUERYERROR));
+					vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
 		}
 		
 		$id = $crmObject->getObjectId();
@@ -97,8 +91,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$error = $crmObject->read($id);
 		if(!$error){
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR,
-				vtws_getWebserviceTranslatedString('LBL_'.
-							WebServiceErrorCode::$DATABASEQUERYERROR));
+				vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
 		}
 		
 		return DataTransform::filterAndSanitize($crmObject->getFields(),$this->meta);
@@ -113,8 +106,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$error = $crmObject->revise($element);
 		if(!$error){
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR,
-					vtws_getWebserviceTranslatedString('LBL_'.
-							WebServiceErrorCode::$DATABASEQUERYERROR));
+					vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
 		}
 
 		$id = $crmObject->getObjectId();
@@ -122,8 +114,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$error = $crmObject->read($id);
 		if(!$error){
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR,
-					vtws_getWebserviceTranslatedString('LBL_'.
-							WebServiceErrorCode::$DATABASEQUERYERROR));
+					vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
 		}
 
 		return DataTransform::filterAndSanitize($crmObject->getFields(),$this->meta);
@@ -132,21 +123,17 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 	public function delete($id){
 		$ids = vtws_getIdComponents($id);
 		$elemid = $ids[1];
-		
 		$crmObject = new VtigerCRMObject($this->tabId, true);
-		
 		$error = $crmObject->delete($elemid);
 		if(!$error){
 			throw new WebServiceException(WebServiceErrorCode::$DATABASEQUERYERROR,
-					vtws_getWebserviceTranslatedString('LBL_'.
-							WebServiceErrorCode::$DATABASEQUERYERROR));
+					vtws_getWebserviceTranslatedString('LBL_'.WebServiceErrorCode::$DATABASEQUERYERROR));
 		}
 		return array("status"=>"successful");
 	}
 	
-	public function query($q){
+	public function wsVTQL2SQL($q,&$meta,&$queryRelatedModules){
 		require_once 'include/Webservices/GetExtendedQuery.php';
-
 		if (__FQNExtendedQueryIsRelatedQuery($q)) { // related query
 			require_once 'include/Webservices/GetRelatedRecords.php';
 			$queryParameters = array();
@@ -164,7 +151,7 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			// eliminate related conditions
 			$relatedCond = "/\(*[rR][eE][lL][aA][tT][eE][dD]\.([^\s;]+)\s*=\s*([^\s;]+)\)*\s*([aA][nN][dD]|[oO][rR]\s)*/";
 			preg_match($relatedCond,$afterwhere,$pieces);
-			$glue = isset($pieces[3]) ? trim($pieces[3]) : 'and'; 
+			$glue = isset($pieces[3]) ? trim($pieces[3]) : 'and';
 			$afterwhere=trim(preg_replace($relatedCond,'',$afterwhere),' ;');
 			$relatedCond = "/\s+([aA][nN][dD]|[oO][rR])+\s+([oO][rR][dD][eE][rR])+/";
 			$afterwhere=trim(preg_replace($relatedCond,' order ',$afterwhere),' ;');
@@ -244,7 +231,11 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 			$mysql_query = $parser->getSql();
 			$meta = $parser->getObjectMetaData();
 		}
+		return $mysql_query;
+	}
 
+	public function query($q){
+		$mysql_query = $this->wsVTQL2SQL($q,$meta,$queryRelatedModules);
 		$this->pearDB->startTransaction();
 		$result = $this->pearDB->pquery($mysql_query, array());
 		$error = $this->pearDB->hasFailedTransaction();
@@ -290,8 +281,8 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 	
 	public function describe($elementType){
 		$app_strings = VTWS_PreserveGlobal::getGlobal('app_strings');
-		$current_user = vtws_preserveGlobal('current_user',$this->user);;
-		
+		$current_user = vtws_preserveGlobal('current_user',$this->user);
+
 		$label = (isset($app_strings[$elementType]))? $app_strings[$elementType]:$elementType;
 		$createable = (strcasecmp(isPermitted($elementType,EntityMeta::$CREATE),'yes')===0)? true:false;
 		$updateable = (strcasecmp(isPermitted($elementType,EntityMeta::$UPDATE),'yes')===0)? true:false;
@@ -309,7 +300,6 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		if (array_key_exists($mfkey, $purified_mfcache)) {
 			return $purified_mfcache[$mfkey];
 		}
-		
 		$fields = array();
 		$moduleFields = $this->meta->getModuleFields();
 		foreach ($moduleFields as $fieldName=>$webserviceField) {
@@ -322,22 +312,22 @@ class VtigerModuleOperation extends WebserviceEntityOperation {
 		$purified_mfcache[$mfkey] = $fields;
 		return $fields;
 	}
-	
+
 	function getDescribeFieldArray($webserviceField){
 		static $purified_dfcache = array();
 		$dfkey = $webserviceField->getFieldName().$webserviceField->getTabId();
 		if (array_key_exists($dfkey, $purified_dfcache)) {
 			return $purified_dfcache[$dfkey];
 		}
-		$default_language = VTWS_PreserveGlobal::getGlobal('default_language');
-		
+		$default_language = isset($this->user->language) ? $this->user->language : VTWS_PreserveGlobal::getGlobal('default_language');
+
 		require 'modules/'.$this->meta->getTabName()."/language/$default_language.lang.php";
 		$fieldLabel = $webserviceField->getFieldLabelKey();
 		if(isset($mod_strings[$fieldLabel])){
 			$fieldLabel = $mod_strings[$fieldLabel];
 		}
 		$typeDetails = $this->getFieldTypeDetails($webserviceField);
-		
+
 		//set type name, in the type details array.
 		$typeDetails['name'] = $webserviceField->getFieldDataType();
 		$editable = $this->isEditable($webserviceField);

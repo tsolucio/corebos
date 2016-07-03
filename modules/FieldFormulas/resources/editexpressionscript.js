@@ -6,7 +6,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ******************************************************************************/
-jQuery.noConflict();
+//jQuery.noConflict();
 function editexpressionscript($){
 	function errorDialog(message){
 		alert(message);
@@ -35,10 +35,10 @@ function editexpressionscript($){
 				module:'FieldFormulas',
 				action:'FieldFormulasAjax',
 				file:operation, ajax:'true'};
-		$.each(params,function(key, value){
+		jQuery.each(params,function(key, value){
 			obj[key] = value;
 		});
-		$.get('index.php', obj,
+		jQuery.get('index.php', obj,
 			function(result){
 				var parsed = JSON.parse(result);
 				callback(parsed);
@@ -66,18 +66,18 @@ function editexpressionscript($){
 					<td class="listTableRow small" valign="top" nowrap="">%s</td>\
 					<td class="listTableRow small" valign="top" nowrap="">%s | %s</td>\
 				</tr>', fieldName, fieldLabel, expression.replace("\n","<BR/>"), editLink, deleteLink);
-		$('#expressionlist').append(row);
-		$(format('#expressionlist_deletelink_%s', fieldName)).click(function(){
+		jQuery('#expressionlist').append(row);
+		jQuery(format('#expressionlist_deletelink_%s', fieldName)).click(function(){
 			if(confirm(strings.LBL_DELETE_EXPRESSION_CONFIRM)) {
-				$('#status').show();
+				jQuery('#status').show();
 				
 				jsonget('deleteexpressionjson',
 					{modulename:moduleName, fieldname:fieldName},
 					function(result){
-						$('#status').hide();
+						jQuery('#status').hide();
 						
 						if(result.status=='success'){
-							$(format('#expressionlistrow_%s', fieldName)).remove();
+							jQuery(format('#expressionlistrow_%s', fieldName)).remove();
 						}else{
 							errorDialog(result.message);
 						}
@@ -85,7 +85,7 @@ function editexpressionscript($){
 				);
 			}
 		});
-		$(format('#expressionlist_editlink_%s', fieldName)).click(function(){
+		jQuery(format('#expressionlist_editlink_%s', fieldName)).click(function(){
 			ep.edit(fieldName, expression);
 		});
 	}
@@ -94,13 +94,13 @@ function editexpressionscript($){
 	var moduleName;
 	function editpopup(){
 			function close(){
-				$('#editpopup').css('display', 'none');
-				$('#editpopup_expression').text('');
+				jQuery('#editpopup').css('display', 'none');
+				jQuery('#editpopup_expression').text('');
 			}
 
 			function show(module){
-				$('#editpopup').css('display', 'block');
-				center($('#editpopup'));
+				jQuery('#editpopup').css('display', 'block');
+				center(jQuery('#editpopup'));
 			}
 			
 			function center(el){
@@ -110,18 +110,18 @@ function editexpressionscript($){
 				placeAtCenter(el.get(0));
 			}
 
-			$('#editpopup_close').bind('click', close);
-			$('#editpopup_save').bind('click', function(){
-				var expression = $('#editpopup_expression').attr('value');
-				var fieldName = $('#editpopup_field').attr('value');
+			jQuery('#editpopup_close').bind('click', close);
+			jQuery('#editpopup_save').bind('click', function(){
+				var expression = jQuery('#editpopup_expression').attr('value');
+				var fieldName = jQuery('#editpopup_field').attr('value');
 				var fieldLabel = getfieldlabel(fieldName);
-				var moduleName = $('#pick_module').attr('value');
+				var moduleName = jQuery('#pick_module').attr('value');
 				
 				expression = expression.replace(/<script(.|\s)*?\/script>/g, "");
 				if(expression == '') return false;
 				
 				VtigerJS_DialogBox.block();
-				$.get('index.php', {
+				jQuery.get('index.php', {
 						module:'FieldFormulas',
 						action:'FieldFormulasAjax',
 						file:'saveexpressionjson', ajax:'true',
@@ -133,7 +133,7 @@ function editexpressionscript($){
 						try {
 							var parsed = JSON.parse(result);
 							if(parsed.status=='success'){
-								$("#expressionlistrow_"+fieldName).remove();
+								jQuery("#expressionlistrow_"+fieldName).remove();
 								addFieldExpression(moduleName, fieldName, fieldLabel, expression);
 								close();
 							}else{
@@ -145,11 +145,11 @@ function editexpressionscript($){
 					});
 				});
 
-			$('#editpopup_cancel').bind('click', close);
+			jQuery('#editpopup_cancel').bind('click', close);
 
-			$('#editpopup_fieldnames').bind('change', function(){
-				var textarea = $('#editpopup_expression').get(0);
-				var value = $(this).attr('value');
+			jQuery('#editpopup_fieldnames').bind('change', function(){
+				var textarea = jQuery('#editpopup_expression').get(0);
+				var value = jQuery(this).attr('value');
 				if(value != '') value += ' ';
 				//http://alexking.org/blog/2003/06/02/inserting-at-the-cursor-using-javascript
 				if (document.selection) {
@@ -182,13 +182,13 @@ function editexpressionscript($){
 			jsonget('getfunctionsjson',
 				{modulename:moduleName},
 				function(result){
-					var functions = $('#editpopup_functions');
-					$.each(result, function(label, template){
+					var functions = jQuery('#editpopup_functions');
+					jQuery.each(result, function(label, template){
 						functions.append(format('<option value="%s">%s</option>', template, label));
 					});
-					$('#editpopup_functions').bind('change', function(){
-						var textarea = $('#editpopup_expression').get(0);
-						var value = $(this).attr('value');
+					jQuery('#editpopup_functions').bind('change', function(){
+						var textarea = jQuery('#editpopup_expression').get(0);
+						var value = jQuery(this).attr('value');
 						//http://alexking.org/blog/2003/06/02/inserting-at-the-cursor-using-javascript
 						if (document.selection) {
 							textarea.focus();
@@ -223,31 +223,31 @@ function editexpressionscript($){
 			return {
 				create: show,
 				edit: function(field, expression){
-					$("#editpopup_field").attr('value', field);
-					$("#editpopup_expression").attr('value', expression);
+					jQuery("#editpopup_field").attr('value', field);
+					jQuery("#editpopup_expression").attr('value', expression);
 					show();
 				},
 				close:close,
 				changeModule: function(moduleName, exprFields, moduleFields){
-					var field = $('#editpopup_field');
+					var field = jQuery('#editpopup_field');
 					field.children().remove();
-					$.each(exprFields, function(fieldName, fieldLabel){
+					jQuery.each(exprFields, function(fieldName, fieldLabel){
 						field.append(format('<option value="%s">%s</option>', fieldName, fieldLabel));
 					});
 
-					var fieldNames = $('#editpopup_fieldnames');
+					var fieldNames = jQuery('#editpopup_fieldnames');
 					fieldNames.children().remove();
 					fieldNames.append(format('<option value="">%s</options>', strings.LBL_USE_FIELD_VALUE_DASHDASH));
-					$.each(moduleFields, function(fieldName, fieldLabel){
+					jQuery.each(moduleFields, function(fieldName, fieldLabel){
 						fieldNames.append(format('<option value="%s">%s</option>', fieldName, fieldLabel));
 					});
 				}
 			};
 	}
 
-	$(document).ready(
+	jQuery(document).ready(
 	    function(){
-	    	Drag.init(document.getElementById('editpopup_draghandle'), document.getElementById('editpopup'));
+			jQuery("#editpopup").draggable({ handle: "#editpopup_draghandle" });
 			toExec();
 		}
     );
@@ -255,40 +255,40 @@ function editexpressionscript($){
     function toExec(){
 		ep = editpopup();
 		function setModule(moduleName){
-			$.get('index.php', {
+			jQuery.get('index.php', {
 					module:'FieldFormulas',
 					action:'FieldFormulasAjax',
 					file:'getfieldsjson', ajax:'true',
 					modulename:moduleName},
 				function(result){					
 					var parsed = JSON.parse(result);
-					ep.changeModule($(this).attr("value"), parsed['exprFields'], parsed['moduleFields']);
+					ep.changeModule(jQuery(this).attr("value"), parsed['exprFields'], parsed['moduleFields']);
 					
-					$('#new_field_expression_busyicon').hide();
-					$('#new_field_expression').show();
+					jQuery('#new_field_expression_busyicon').hide();
+					jQuery('#new_field_expression').show();
 					
 					if(parsed['exprFields'].length!=0){
-						$('#new_field_expression').attr('disabled', false);
-						$('#new_field_expression').attr('class', 'crmButton create small');
-						$('#new_field_expression').bind('click', function(){
+						jQuery('#new_field_expression').attr('disabled', false);
+						jQuery('#new_field_expression').attr('class', 'crmButton create small');
+						jQuery('#new_field_expression').bind('click', function(){
 							ep.create();
 						});
-						$('#status_message').html('');
-						$('#status_message').hide();
+						jQuery('#status_message').html('');
+						jQuery('#status_message').hide();
 					}else{
-					    $('#new_field_expression').hide();
-					    $('#status_message').show();
-						$('#status_message').html(strings.NEED_TO_ADD_A + ' <a href="index.php?module=Settings&action=LayoutBlockList&parenttab=Settings&formodule='+moduleName+'" target="_blank"> ' + strings.CUSTOM_FIELD +'</a>');
+					    jQuery('#new_field_expression').hide();
+					    jQuery('#status_message').show();
+						jQuery('#status_message').html(strings.NEED_TO_ADD_A + ' <a href="index.php?module=Settings&action=LayoutBlockList&parenttab=Settings&formodule='+moduleName+'" target="_blank"> ' + strings.CUSTOM_FIELD +'</a>');
 					}
 
 			jsonget('getexpressionlistjson',
 				{modulename:moduleName},
 				function(result){
-					$('#expressionlist_busyicon').hide();
+					jQuery('#expressionlist_busyicon').hide();
 					
 					var exprFields = parsed['exprFields'];
-					$('.expressionlistrow').remove();
-					$.each(result, function(fieldName, expression){
+					jQuery('.expressionlistrow').remove();
+					jQuery.each(result, function(fieldName, expression){
 						var fieldLabel = getfieldlabel(fieldName);
 						if(exprFields[fieldName]){
 							addFieldExpression(moduleName, fieldName, fieldLabel, expression);
@@ -307,11 +307,11 @@ function editexpressionscript($){
 
 		}
 
-		$('#pick_module').bind('change', function(){
-			var moduleName =  $(this).attr("value");
+		jQuery('#pick_module').bind('change', function(){
+			var moduleName =  jQuery(this).attr("value");
 			setModule(moduleName);
 		});
-		setModule($('#pick_module').attr('value'));
+		setModule(jQuery('#pick_module').attr('value'));
 
 
 

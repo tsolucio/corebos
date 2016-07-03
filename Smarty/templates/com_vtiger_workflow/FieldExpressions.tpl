@@ -36,11 +36,11 @@
                                 <option value="expression">{$MOD.LBL_EXPRESSION}</option>
                             </select>
 
-                            <select id='editpopup_fieldnames' class='small'>
+                            <select id='editpopup_fieldnames' class='small' style="width:255px;">
                                 <option value="">{$MOD.LBL_USE_FIELD_VALUE_DASHDASH}</option>
                             </select>
 
-                            <select id='editpopup_functions' class='small'>
+                            <select id='editpopup_functions' class='small' style="width:255px;">
                                 <option value="">{$MOD.LBL_USE_FUNCTION_DASHDASH}</option>
                             </select>
                         </td>

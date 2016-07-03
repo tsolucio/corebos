@@ -118,6 +118,11 @@ class SMSNotifier extends SMSNotifierBase {
 		}
 	}
 
+	function save_module($module) {
+		$this->smsAssignedTo();
+		parent::save_module($module);
+	}
+
 	protected function smsAssignedTo() {
 		global $adb;
 
@@ -179,6 +184,7 @@ class SMSNotifier extends SMSNotifierBase {
 			$adb->pquery("INSERT INTO vtiger_smsnotifier_status(smsnotifierid,tonumber,status,statusmessage,smsmessageid,needlookup) VALUES(?,?,?,?,?,?)",
 				array($this->id,$response['to'],$responseStatus,$responseStatusMessage,$responseID,$needlookup)
 			);
+			$adb->pquery('UPDATE vtiger_smsnotifier SET status=? WHERE smsnotifierid = ?',array($responseStatus, $this->id));
 		}
 	}
 
@@ -208,11 +214,10 @@ class SMSNotifier extends SMSNotifierBase {
 
 				$adb->pquery("UPDATE vtiger_smsnotifier_status SET status=?, statusmessage=?, needlookup=? WHERE smsmessageid = ?",
 					array($responseStatus, $responseStatusMessage, $needlookup, $messageid));
+				$adb->pquery('UPDATE vtiger_smsnotifier SET status=? WHERE smsnotifierid = ?',array($responseStatus, $messageid));
 			}
 		}
 	}
-
-
 
 	static function fireSendSMS($message, $tonumbers) {
 		global $log;

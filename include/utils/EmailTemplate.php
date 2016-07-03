@@ -58,12 +58,14 @@ class EmailTemplate {
 		$columnTableMapping = $meta->getColumnTableMapping();
 		$tableList = array();
 		$columnList = array();
+		$columnList_full = array();
 		$allColumnList = $meta->getUserAccessibleColumns();
 
 		if(count($variableList) > 0){
 			foreach ($variableList as $column) {
 				if(in_array($column,$allColumnList)){
 					$columnList[] = $column;
+					$columnList_full[] = $columnTableMapping[$column].'.'.$column;
 				
 				}
 			}
@@ -89,7 +91,7 @@ class EmailTemplate {
 			// can extend to non-module entity without many changes as long as the reference field
 			// refers to one type of entity, either module entities or non-module entities.
 			if(count($tableList) > 0){
-				$sql = 'select '.implode(', ', $columnList).' from '.$tableList[0];
+				$sql = 'select '.implode(', ', $columnList_full).' from '.$tableList[0];
 				$moduleTableIndexList = $meta->getEntityTableIndexList();
 				foreach ($tableList as $index=>$tableName) {
 					if($tableName != $tableList[0]){

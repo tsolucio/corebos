@@ -51,11 +51,10 @@ $mod_strings = array(
     'LBL_SET_EXPRESSION'=>'setze Ausdruck',
 
     'LBL_MANUAL'=>'System',
-
+	'LBL_RECORD_ACCESS_CONTROL' => 'Record Access Control',
     'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL'=>'neue Bedinungsgruppe',
 
     'VTUpdateFieldsTask' => 'aktualisiere Felder',
-
 
     'LBL_VALIDATION_DUPLICATE_FIELDNAMES' => 'Ein Feld wurde mehrmals gewählt.',
     'LBL_VALIDATION_INVALID_FIELD_VALUES' => 'Ungültee Feldwerte',
@@ -103,6 +102,8 @@ $mod_strings = array(
 	'Relate Service' => 'Relate Service',
 	'Relate with AccountVendor' => 'Relate with Account/Vendor',
 	'Relate with Contact' => 'Relate with Contact',
+	'CBDeleteRelatedTask' => 'Delete Related Records',
+	'CBSelectcbMap' => 'Select Business Rule',
 	'LBL_HELPDESK_SUPPORT_EMAILID'=>'Trouble Ticket E-Mail-Id',
 	'LBL_HELPDESK_SUPPORT_NAME'=>'Trouble Ticket Support Name',
 	'LBL_ORGANIZATION_LOGO'=>'Logo Name',
@@ -115,6 +116,9 @@ $mod_strings = array(
 	'LBL_MONTHLY_BY_DATE' => 'Monthly by Date',
 	'LBL_MONTHLY_BY_WEEKDAY' => 'Monthly by Weekday',
 	'LBL_YEARLY' => 'Yearly',
+    'LBL_MINUTES_INTERVAL'=>'Minute Interval',
+    'LBL_EVERY_MINUTEINTERVAL'=>'Every',
+    'LBL_MINUTES'=>'minutes',
 	'LBL_SPECIFIC_DATE' => 'On Specific Date',
 	'LBL_CHOOSE_DATE' => 'Choose Date',
 	'LBL_SELECT_MONTH_AND_DAY' => 'Select Month and Date',

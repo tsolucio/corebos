@@ -22,7 +22,7 @@ var TOOLTIP = {
 			if(TOOLTIP._cache[module][fieldname][recordid]) {
 				var tooltipdata = TOOLTIP._cache[module][fieldname][recordid];
 				tooltip.tip(node,tooltipdata,recordid,fieldname);
-				if(!this._relinguishStatusControl) $('status').style.display = 'none';
+				if(!this._relinguishStatusControl) document.getElementById('status').style.display = 'none';
 			}
 		}
 	},
@@ -47,7 +47,7 @@ var TOOLTIP = {
 		var fieldname = evtparams['fieldname'];
 		var recordid  = evtparams['recordid'];
 		var node = evtparams['domnode'];
-		if ($('status').style.display == 'block') {
+		if (document.getElementById('status').style.display == 'block') {
 			this._relinguishStatusControl = true;
 		}
 		if(evtparams['event'] == 'cell.onmouseover' ) {
@@ -67,12 +67,12 @@ var TOOLTIP = {
 	},
 	
 	_showForField : function(node, module, fieldname, recordid) {
-		if(!this._relinguishStatusControl) $('status').style.display = 'block';
+		if(!this._relinguishStatusControl) document.getElementById('status').style.display = 'block';
 		if(typeof(TOOLTIP._cache[module]) == 'undefined') {
 			TOOLTIP._cache[module] = {};
 		}
 		if(TOOLTIP._cache[module][fieldname] == false) {
-			if(!this._relinguishStatusControl) $('status').style.display = 'none';
+			if(!this._relinguishStatusControl) document.getElementById('status').style.display = 'none';
 			return;
 		}
 		
@@ -83,23 +83,20 @@ var TOOLTIP = {
 		if(typeof(TOOLTIP._cache[module][fieldname][recordid]) == 'undefined') {
 			// Cache miss
 			TOOLTIP._cache[module][fieldname][recordid] = false;
-			new Ajax.Request(
-				'index.php',
-				{queue : {position : 'end', scope: 'command'},
-					method : 'post',
-					postBody: 'module=Tooltip&action=TooltipAjax&file=ComputeTooltip&fieldname='+fieldname+'&id='+recordid+'&modname='+module+'&ajax=true&submode=getTooltip',
-					onComplete: function(response) {
-						var data = response.responseText;
+			jQuery.ajax({
+					method: 'POST',
+					url: 'index.php?module=Tooltip&action=TooltipAjax&file=ComputeTooltip&fieldname='+fieldname+'&id='+recordid+'&modname='+module+'&ajax=true&submode=getTooltip'
+			}).done(function (response) {
+						var data = response;
 						if(data != false){
 							TOOLTIP._cache[module][fieldname][recordid] = data;
 							TOOLTIP.show(node, module, fieldname, recordid);
-							if(!this._relinguishStatusControl) $('status').style.display = 'none';
+							if(!this._relinguishStatusControl) document.getElementById('status').style.display = 'none';
 						}else{
 							TOOLTIP._cache[module][fieldname] = false;
-							if(!this._relinguishStatusControl) $('status').style.display = 'none';
+							if(!this._relinguishStatusControl) document.getElementById('status').style.display = 'none';
 						}
 					}
-				}
 			);
 		} else {
 			// Cache hit

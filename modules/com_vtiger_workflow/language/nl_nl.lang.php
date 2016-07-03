@@ -76,7 +76,7 @@ $mod_strings = array(
 'LBL_SET_EXPRESSION'=>'Stel Formule in',
 
 'LBL_MANUAL'=>'Systeem',
-
+'LBL_RECORD_ACCESS_CONTROL' => 'Record Access Control',
 'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL'=>'Nieuwe Conditiegroep',
 
 'VTUpdateFieldsTask' => 'Bijwerken velden',
@@ -126,6 +126,8 @@ $mod_strings = array(
 'Relate Service' => 'Relate Service',
 'Relate with AccountVendor' => 'Relate with Account/Vendor',
 'Relate with Contact' => 'Relate with Contact',
+'CBDeleteRelatedTask' => 'Delete Related Records',
+'CBSelectcbMap' => 'Select Business Rule',
 'LBL_HELPDESK_SUPPORT_EMAILID'=>'Helpdesk support e-mail',
 'LBL_HELPDESK_SUPPORT_NAME'=>'Helpdesk support naam',
 'LBL_ORGANIZATION_LOGO'=>'Logo',
@@ -138,6 +140,9 @@ $mod_strings = array(
 'LBL_MONTHLY_BY_DATE' => 'Monthly by Date',
 'LBL_MONTHLY_BY_WEEKDAY' => 'Monthly by Weekday',
 'LBL_YEARLY' => 'Yearly',
+'LBL_MINUTES_INTERVAL'=>'Minute Interval',
+'LBL_EVERY_MINUTEINTERVAL'=>'Every',
+'LBL_MINUTES'=>'minutes',
 'LBL_SPECIFIC_DATE' => 'On Specific Date',
 'LBL_CHOOSE_DATE' => 'Choose Date',
 'LBL_SELECT_MONTH_AND_DAY' => 'Select Month and Date',

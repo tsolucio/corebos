@@ -12,7 +12,7 @@ global $current_user, $currentModule, $singlepane_view;
 checkFileAccessForInclusion("modules/$currentModule/$currentModule.php");
 require_once("modules/$currentModule/$currentModule.php");
 
-$search = vtlib_purify($_REQUEST['search_url']);
+$search = isset($_REQUEST['search_url']) ? vtlib_purify($_REQUEST['search_url']) : '';
 
 $focus = new $currentModule();
 setObjectValuesFromRequest($focus);

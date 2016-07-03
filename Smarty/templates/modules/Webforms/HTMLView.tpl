@@ -11,8 +11,9 @@
 {* NOTE: PLEASE MAKE SURE THE SPACES BESIDE TAGS ARE STRIPPED TO PRESEVE FORMATTING OF THE OUTPUT *}
 <form name="{$WEBFORMMODEL->getName()}" action="{$ACTIONPATH}/modules/Webforms/capture.php" method="post" accept-charset="utf-8">
 	<p>
-		<input type="hidden" name="publicid" value="{$WEBFORMMODEL->getpublicId()}"></input>
-		<input type="hidden" name="name" value="{$WEBFORMMODEL->getName()}"></input>
+		<input type="hidden" name="publicid" value="{$WEBFORMMODEL->getpublicId()}"/>
+		<input type="hidden" name="name" value="{$WEBFORMMODEL->getName()}"/>
+		<input type="hidden" name="moduleName" value="{$WEBFORMMODEL->getTargetModule()}"/>
 	</p>
 	{foreach item=field from=$WEBFORMFIELDS name=fieldloop}{assign var=fieldinfo value=$WEBFORM->getFieldInfo($WEBFORMMODEL->getTargetModule(), $field->getFieldName())}
 
@@ -25,7 +26,7 @@
 		{/foreach}
 </select>
 {elseif $fieldinfo.type.name eq boolean}
-<input type="checkbox"  name="{$field->getNeutralizedField()}" >
+<input type="checkbox" name="{$field->getNeutralizedField()}" >
 	{else}{if $field->getNeutralizedField() eq salutationtype}
 <select name="{$field->getNeutralizedField()}" {if $field->getRequired() eq 1}required="true"{/if} >
 			<option value="">--None--</option>
@@ -34,11 +35,11 @@
 			<option value="Mrs.">Mrs.</option>
 			<option value="Dr.">Dr.</option>
 			<option value="Prof.">Prof</option>
-		</select>{else}<input type="text" value="" name="{$field->getNeutralizedField()}"  {if $field->getRequired() eq 1}required="true"{/if}></input>{/if}{/if}
+		</select>{else}<input type="text" value="" name="{$field->getNeutralizedField()}" {if $field->getRequired() eq 1}required="true"{/if}></input>{/if}{/if}
 
 	</p>{/foreach}
 
 	<p>
-		<input type="submit" value="Submit" ></input>
+		<input type="submit" value="Submit"/>
 	</p>
 </form>

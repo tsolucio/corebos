@@ -11,7 +11,7 @@ if(typeof(SMSNotifierCommon) == 'undefined') {
 		
 		/** Wizard Container **/
 		getWizardContainer : function() {
-			var container = $('__smsnotifier_wizard_container__');
+			var container = document.getElementById('__smsnotifier_wizard_container__');
 			if(!container) {
 				container = document.createElement('div');
 				container.className = 'layerPopup';
@@ -43,7 +43,7 @@ if(typeof(SMSNotifierCommon) == 'undefined') {
 		hideWizardContainer : function() {
 			if(typeof(container) == 'undefined') container = SMSNotifierCommon.getWizardContainer();
 			if(container) {
-				container.hide();
+				container.style.display='none';
 			}
 		},	
 		
@@ -102,17 +102,13 @@ if(typeof(SMSNotifierCommon) == 'undefined') {
 					url += '&viewname=' +encodeURIComponent(viewid);
 					url += '&searchurl=' +encodeURIComponent(searchurl);
 							
-					new Ajax.Request('index.php', {
-						queue: {
-							position: 'end',
-							scope: 'command'
-						},
-						method: 'post',
-						postBody:url,
-						onComplete: function(response) {
-							SMSNotifierCommon.buildSelectWizard(response.responseText, sourcenode);
+					jQuery.ajax({
+						method: 'POST',
+						url: 'index.php?'+url
+					}).done(function (response) {
+							SMSNotifierCommon.buildSelectWizard(response, sourcenode);
 						}
-					});
+					);
 				}
 			}
 		},
@@ -163,14 +159,13 @@ if(typeof(SMSNotifierCommon) == 'undefined') {
             url += '&searchurl=' +encodeURIComponent(searchurl);
 			url += '&phonefields='+ encodeURIComponent(phonefields);
 			
-			new Ajax.Request('index.php', {
-				queue: {position: 'end', scope: 'command'},
-				method: 'post',
-				postBody:url,
-				onComplete: function(response) {					
-					SMSNotifierCommon.buildComposeWizard(response.responseText, sourcenode);					
+			jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?'+url
+			}).done(function (response) {
+					SMSNotifierCommon.buildComposeWizard(response, sourcenode);					
 				}
-			});
+			);
 		},
 		
 		buildComposeWizard : function(content, sourcenode) {
@@ -201,7 +196,7 @@ if(typeof(SMSNotifierCommon) == 'undefined') {
 			var sourcemodule = form.sourcemodule.value;
 			var message = messageTextInput.value;
 			
-			$('status').show();
+			document.getElementById('status').show();
 			
 			VtigerJS_DialogBox.block();
 			
@@ -214,17 +209,15 @@ if(typeof(SMSNotifierCommon) == 'undefined') {
             url += '&viewname=' +encodeURIComponent(viewid);
             url += '&searchurl=' +encodeURIComponent(searchurl);
 			
-			new Ajax.Request('index.php', {
-				queue: {position: 'end', scope: 'command'},
-				method: 'post',
-				postBody:url,
-				onComplete: function(response) {					
+			jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?'+url
+			}).done(function (response) {
 					SMSNotifierCommon.hideComposeWizard();
-					
-					$('status').hide();
+					document.getElementById('status').style.display='none';
 					VtigerJS_DialogBox.unblock();
 				}
-			});
+			);
 		}
 	};
 }

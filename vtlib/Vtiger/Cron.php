@@ -318,7 +318,7 @@ class Vtiger_Cron {
             $result = self::querySilent('SELECT * FROM vtiger_cron_task WHERE status <> ? ORDER BY SEQUENCE',array(self::$STATUS_DISABLED   ));
         }
         else {
-            $result = self::querySilent('SELECT * FROM vtiger_cron_task  ORDER BY SEQUENCE');
+            $result = self::querySilent('SELECT * FROM vtiger_cron_task ORDER BY SEQUENCE');
 
         }
         if ($result && $adb->num_rows($result)) {

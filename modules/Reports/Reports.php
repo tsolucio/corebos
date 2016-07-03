@@ -11,6 +11,7 @@ require_once('include/database/PearDatabase.php');
 require_once('data/CRMEntity.php');
 require_once('include/utils/UserInfoUtil.php');
 require_once 'modules/Reports/ReportUtils.php';
+require_once 'modules/Reports/ReportRun.php';
 global $app_strings,$mod_strings, $app_list_strings, $modules, $blocks, $adv_filter_options;
 global $log, $report_modules, $related_modules, $old_related_modules;
 
@@ -338,28 +339,20 @@ class Reports extends CRMEntity{
 		}
 	}
 
-	/** Function to get the Listview of Reports
-	 *  This function accepts no argument
-	 *  This generate the Reports view page and returns a string
-	 *  contains HTML
+	/** Get the information to generate the Listview of Reports per folder
+	 *  param $mode type of reports to return
 	 */
-	function sgetRptFldr($mode='')
-	{
-
+	function sgetRptFldr($mode='') {
 		global $adb,$log,$mod_strings;
 		$returndata = Array();
-		$sql = "select * from vtiger_reportfolder order by folderid";
+		$sql = 'select * from vtiger_reportfolder order by folderid';
 		$result = $adb->pquery($sql, array());
 		$reportfldrow = $adb->fetch_array($result);
-		if($mode != '')
-		{
+		if ($mode != '') {
 			// Fetch detials of all reports of folder at once
 			$reportsInAllFolders = $this->sgetRptsforFldr(false);
-
-			do
-			{
-				if($reportfldrow["state"] == $mode)
-				{
+			do {
+				if($reportfldrow["state"] == $mode) {
 					$details = Array();
 					$details['state'] = $reportfldrow["state"];
 					$details['id'] = $reportfldrow["folderid"];
@@ -370,11 +363,9 @@ class Reports extends CRMEntity{
 					$details['details'] = $reportsInAllFolders[$reportfldrow["folderid"]];
 					$returndata[] = $details;
 				}
-			}while($reportfldrow = $adb->fetch_array($result));
-		}else
-		{
-			do
-			{
+			} while($reportfldrow = $adb->fetch_array($result));
+		} else {
+			do {
 				$details = Array();
 				$details['state'] = $reportfldrow["state"];
 				$details['id'] = $reportfldrow["folderid"];
@@ -383,24 +374,18 @@ class Reports extends CRMEntity{
 				$details['fname'] = popup_decode_html($details['name']);
 				$details['fdescription'] = popup_decode_html($reportfldrow["description"]);
 				$returndata[] = $details;
-			}while($reportfldrow = $adb->fetch_array($result));
+			} while($reportfldrow = $adb->fetch_array($result));
 		}
-
-		$log->info("Reports :: ListView->Successfully returned vtiger_report folder HTML");
+		$log->info('Reports :: sgetRptFldr -> returned report folder information');
 		return $returndata;
 	}
 
-	/** Function to get the Reports inside each modules
-	 *  This function accepts the folderid
-	 *  This Generates the Reports under each Reports module
-	 *  This Returns a HTML sring
+	/** Get Report information for reports inside each folder
+	 *  param folderid if not given will return all folders
+	 *  returns only the reports the current user has access to
 	 */
-	function sgetRptsforFldr($rpt_fldr_id)
-	{
-		$srptdetails="";
-		global $adb;
-		global $log;
-		global $mod_strings,$current_user;
+	function sgetRptsforFldr($rpt_fldr_id) {
+		global $adb, $log, $mod_strings,$current_user;
 		$returndata = Array();
 
 		require_once('include/utils/UserInfoUtil.php');
@@ -440,10 +425,8 @@ class Reports extends CRMEntity{
 		$result = $adb->pquery($sql, $params);
 
 		$report = $adb->fetch_array($result);
-		if(count($report)>0)
-		{
-			do
-			{
+		if(count($report)>0) {
+			do {
 				$report_details = Array();
 				$report_details ['customizable'] = $report["customizable"];
 				$report_details ['reportid'] = $report["reportid"];
@@ -467,21 +450,8 @@ class Reports extends CRMEntity{
 			$returndata = $returndata[$rpt_fldr_id];
 		}
 
-		$log->info("Reports :: ListView->Successfully returned vtiger_report details HTML");
+		$log->info('Reports :: sgetRptsforFldr -> returned report folder information');
 		return $returndata;
-	}
-
-	/** Function to get the array of ids
-	 *  This function forms the array for the ExpandCollapse
-	 *  Javascript
-	 *  It returns the array of ids
-	 *  Array('1RptFldr','2RptFldr',........,'9RptFldr','10RptFldr')
-	 */
-	function sgetJsRptFldr()
-	{
-		$srptfldr_js = "var ReportListArray=new Array(".$this->srptfldridjs.")
-			setExpandCollapse()";
-		return $srptfldr_js;
 	}
 
 	/** Function to set the Primary module vtiger_fields for the given Report
@@ -674,7 +644,8 @@ class Reports extends CRMEntity{
 				$fieldlabel = 'Date Sent';
 				$fieldtypeofdata = 'D';
 			}
-			$fieldlabel1 = str_replace(array(" "),"_",$fieldlabel);
+			$fieldlabel1 = str_replace(' ','_',$fieldlabel);
+			$fieldlabel1 = ReportRun::replaceSpecialChar($fieldlabel1);
 			$optionvalue = $fieldtablename.":".$fieldcolname.":".$module."_".$fieldlabel1.":".$fieldname.":".$fieldtypeofdata;
 			$this->adv_rel_fields[$fieldtypeofdata][] = '$'.$module.'#'.$fieldname.'$'."::".getTranslatedString($module,$module)." ".getTranslatedString($fieldlabel,$module);
 			$module_columnlist[$optionvalue] = $fieldlabel;
@@ -1659,9 +1630,9 @@ function updateAdvancedCriteria($reportid, $advft_criteria, $advft_criteria_grou
 			$field = WebserviceField::fromArray($adb, $fieldInfo);
 			$fieldType = $field->getFieldDataType();
 		}
-		if($fieldType == 'currency') {
-			// Some of the currency fields like Unit Price, Total, Sub-total etc of Inventory modules, do not need currency conversion
-			if($field->getUIType() == '72') {
+		if($fieldType == 'currency' or $fieldType == 'double') {
+			$flduitype = $fieldInfo['uitype'];
+			if($flduitype == '72' or $flduitype == 9 or $flduitype ==7) {
 				$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value, null, true);
 			} else {
 				$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value);

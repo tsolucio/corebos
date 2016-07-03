@@ -23,7 +23,7 @@
 		<td>
 		
 			Message:<br/>
-			<textarea name="message" class="small" rows="12" cols="10" onkeyup="$('__smsnotifer_compose_wordcount__').innerHTML=this.value.length"></textarea>
+			<textarea name="message" class="small" rows="12" cols="10" onkeyup="document.getElementById('__smsnotifer_compose_wordcount__').innerHTML=this.value.length;"></textarea>
 		</td>
 	<tr>
 		<td align="right"><span id="__smsnotifer_compose_wordcount__">0</span> characters </td>	

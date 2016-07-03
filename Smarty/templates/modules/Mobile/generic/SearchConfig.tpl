@@ -10,7 +10,7 @@
 		Search {$_MODULE->label()}
 		</h1>
 	</td>
-	<td align="right" style="padding-right: 5px;"><button onclick="$('_searchconfig_form_').submit();">Save</button></td>
+	<td align="right" style="padding-right: 5px;"><button onclick="document.getElementById('_searchconfig_form_').submit();">Save</button></td>
 </tr>
 	
 <tr>
@@ -51,11 +51,11 @@
 					{/if}
 					
 					<div class='{$_checkbox_on_class}'>
-					<a href='javascript:void(0);' id='_checkbox_{$_FIELDNAME}_on' onclick="$('include_{$_FIELDNAME}').checked=true;$fnCheckboxOn('_checkbox_{$_FIELDNAME}');">ON</a>
+					<a href='javascript:void(0);' id='_checkbox_{$_FIELDNAME}_on' onclick="document.getElementById('include_{$_FIELDNAME}').checked=true;$fnCheckboxOn('_checkbox_{$_FIELDNAME}');">ON</a>
 					</div>
 					
 					<div class='{$_checkbox_off_class}'>
-					<a href='javascript:void(0);' id='_checkbox_{$_FIELDNAME}_off' onclick="$('include_{$_FIELDNAME}').checked=false;$fnCheckboxOff('_checkbox_{$_FIELDNAME}');">OFF</a>
+					<a href='javascript:void(0);' id='_checkbox_{$_FIELDNAME}_off' onclick="document.getElementById('include_{$_FIELDNAME}').checked=false;$fnCheckboxOff('_checkbox_{$_FIELDNAME}');">OFF</a>
 					</div>
 					
 					</td>

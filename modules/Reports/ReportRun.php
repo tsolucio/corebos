@@ -16,6 +16,7 @@ require_once('data/CRMEntity.php');
 require_once("modules/Reports/Reports.php");
 require_once 'modules/Reports/ReportUtils.php';
 require_once("vtlib/Vtiger/Module.php");
+include_once("include/fields/InventoryLineField.php");
 
 class ReportRun extends CRMEntity {
 
@@ -29,6 +30,7 @@ class ReportRun extends CRMEntity {
 	var $reporttype;
 	var $reportname;
 	var $totallist;
+	var $number_of_rows;
 
 	var $_groupinglist  = false;
 	var $_columnslist    = false;
@@ -594,7 +596,6 @@ class ReportRun extends CRMEntity {
 	}
 
 	function generateAdvFilterSql($advfilterlist) {
-
 		global $adb;
 
 		$advfiltersql = "";
@@ -691,23 +692,15 @@ class ReportRun extends CRMEntity {
 							$fieldvalue = "(".$selectedfields[0].".".$selectedfields[1]." IS NULL OR ".$selectedfields[0].".".$selectedfields[1]." = '')";
 						} elseif($comparator == 'e' && $datatype == 'D' && (trim($value) == "--$" || trim($value) == '$')) {
 							$fieldvalue = "(".$selectedfields[0].".".$selectedfields[1]." IS NULL OR ".$selectedfields[0].".".$selectedfields[1]." = '')";
-						} elseif($selectedfields[0] == 'vtiger_inventoryproductrel' && ($selectedfields[1] == 'productid' || $selectedfields[1] == 'serviceid')) {
+						} elseif(substr($selectedfields[0],0,26) == 'vtiger_inventoryproductrel' && ($selectedfields[1] == 'productid' || $selectedfields[1] == 'serviceid' || $selectedfields[1] == 'discount')) {
+							$invmod = (in_array($this->primarymodule, getInventoryModules()) ? $this->primarymodule : $this->secondarymodule);
 							if($selectedfields[1] == 'productid'){
-								$fieldvalue = "vtiger_products{$this->primarymodule}.productname ".$this->getAdvComparator($comparator,trim($value),$datatype);
+								$fieldvalue = "vtiger_products{$invmod}.productname ".$this->getAdvComparator($comparator,trim($value),$datatype);
 							} else if($selectedfields[1] == 'serviceid'){
-								$fieldvalue = "vtiger_service{$this->primarymodule}.servicename ".$this->getAdvComparator($comparator,trim($value),$datatype);
+								$fieldvalue = "vtiger_service{$invmod}.servicename ".$this->getAdvComparator($comparator,trim($value),$datatype);
 							} else if($selectedfields[1] == 'discount'){
-								$fieldvalue = "(vtiger_inventoryproductrel{$this->primarymodule}.discount_amount ".$this->getAdvComparator($comparator,trim($value),$datatype)."
-										OR ROUND((vtiger_inventoryproductrel{$this->primarymodule}.listprice * vtiger_inventoryproductrel{$this->primarymodule}.quantity * (vtiger_inventoryproductrel{$this->primarymodule}.discount_percent/100)),3)) ".$this->getAdvComparator($comparator,trim($value),$datatype).") ";
-							}
-						} elseif($selectedfields[0] == 'vtiger_inventoryproductrel'.$this->primarymodule && ($selectedfields[1] == 'productid' || $selectedfields[1] == 'serviceid' || $selectedfields[1] == 'discount')) {
-							if($selectedfields[1] == 'productid'){
-								$fieldvalue = "vtiger_products{$this->primarymodule}.productname ".$this->getAdvComparator($comparator,trim($value),$datatype);
-							} else if($selectedfields[1] == 'serviceid'){
-								$fieldvalue = "vtiger_service{$this->primarymodule}.servicename ".$this->getAdvComparator($comparator,trim($value),$datatype);
-							} else if($selectedfields[1] == 'discount'){
-								$fieldvalue = "(vtiger_inventoryproductrel{$this->primarymodule}.discount_amount ".$this->getAdvComparator($comparator,trim($value),$datatype)."
-										OR ROUND((vtiger_inventoryproductrel{$this->primarymodule}.listprice * vtiger_inventoryproductrel{$this->primarymodule}.quantity * (vtiger_inventoryproductrel{$this->primarymodule}.discount_percent/100)),3) ".$this->getAdvComparator($comparator,trim($value),$datatype).") ";
+								$fieldvalue = "(vtiger_inventoryproductrel{$invmod}.discount_amount ".$this->getAdvComparator($comparator,trim($value),$datatype)."
+									OR ROUND((vtiger_inventoryproductrel{$invmod}.listprice * vtiger_inventoryproductrel{$invmod}.quantity * (vtiger_inventoryproductrel{$invmod}.discount_percent/100)),3) ".$this->getAdvComparator($comparator,trim($value),$datatype).") ";
 							}
 						} elseif($fieldInfo['uitype'] == '10' || isReferenceUIType($fieldInfo['uitype'])) {
 
@@ -886,14 +879,12 @@ class ReportRun extends CRMEntity {
 
 		}
 		return $stdfilterlist;
-
 	}
 
 	/** Function to get the RunTime Advanced filter conditions
 	 *  @ param $advft_criteria : Type Array
 	 *  @ param $advft_criteria_groups : Type Array
 	 *  This function returns  $advfiltersql
-	 *
 	 */
 	function RunTimeAdvFilter($advft_criteria,$advft_criteria_groups) {
 		$adb = PearDatabase::getInstance();
@@ -923,9 +914,9 @@ class ReportRun extends CRMEntity {
 					$fieldType = $field->getFieldDataType();
 				}
 
-				if($fieldType == 'currency') {
-					// Some of the currency fields like Unit Price, Total, Sub-total etc of Inventory modules, do not need currency conversion
-					if($field->getUIType() == '72') {
+				if($fieldType == 'currency' or $fieldType == 'double') {
+					$flduitype = $fieldInfo['uitype'];
+					if($flduitype == '72' or $flduitype == 9 or $flduitype ==7) {
 						$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value, null, true);
 					} else {
 						$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value);
@@ -980,19 +971,15 @@ class ReportRun extends CRMEntity {
 			$advfiltersql = $this->generateAdvFilterSql($advfilterlist);
 		}
 		return $advfiltersql;
-
 	}
 
 	/** Function to get standardfilter for the given reportid
 	 *  @ param $reportid : Type Integer
 	 *  returns the query of columnlist for the selected columns
 	 */
-
 	function getStandardCriterialSql($reportid)
 	{
-		global $adb;
-		global $modules;
-		global $log;
+		global $adb, $modules, $log;
 
 		$sreportstdfiltersql = "select vtiger_reportdatefilter.* from vtiger_report";
 		$sreportstdfiltersql .= " inner join vtiger_reportdatefilter on vtiger_report.reportid = vtiger_reportdatefilter.datefilterid";
@@ -1365,14 +1352,14 @@ class ReportRun extends CRMEntity {
 	 *  @ param $selectedfield : type string
 	 *  this returns the string for grouplist
 	 */
-	function replaceSpecialChar($selectedfield){
+	public static function replaceSpecialChar($selectedfield){
 		$selectedfield = decode_html(decode_html($selectedfield));
 		preg_match('/&/', $selectedfield, $matches);
 		if(!empty($matches)){
 			$selectedfield = str_replace('&', 'and',($selectedfield));
 		}
 		return $selectedfield;
-		}
+	}
 
 	/** function to get the selectedorderbylist for the given reportid
 	 *  @ param $reportid : type integer
@@ -1474,17 +1461,11 @@ class ReportRun extends CRMEntity {
 		}
 		else if($module == "Accounts")
 		{
-			$query = "from vtiger_account
-				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_account.accountid
-				inner join vtiger_accountbillads on vtiger_account.accountid=vtiger_accountbillads.accountaddressid
+			$focus = CRMEntity::getInstance($module);
+			$query = $focus->generateReportsQuery($module);
+			$query.= " inner join vtiger_accountbillads on vtiger_account.accountid=vtiger_accountbillads.accountaddressid
 				inner join vtiger_accountshipads on vtiger_account.accountid=vtiger_accountshipads.accountaddressid
-				inner join vtiger_accountscf on vtiger_account.accountid = vtiger_accountscf.accountid
-				left join vtiger_groups as vtiger_groupsAccounts on vtiger_groupsAccounts.groupid = vtiger_crmentity.smownerid
 				left join vtiger_account as vtiger_accountAccounts on vtiger_accountAccounts.accountid = vtiger_account.parentid
-				left join vtiger_users as vtiger_usersAccounts on vtiger_usersAccounts.id = vtiger_crmentity.smownerid
-				left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid
-				left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
-				left join vtiger_users as vtiger_lastModifiedByAccounts on vtiger_lastModifiedByAccounts.id = vtiger_crmentity.modifiedby
 				".$this->getRelatedModulesQuery($module,$this->secondarymodule,$type,$where_condition).
 						getNonAdminAccessControlQuery($this->primarymodule,$current_user)."
 				where vtiger_crmentity.deleted=0 ";
@@ -1531,13 +1512,9 @@ class ReportRun extends CRMEntity {
 		//For this Product - we can related Accounts, Contacts (Also Leads, Potentials)
 		else if($module == "Products")
 		{
-			$query = "from vtiger_products
-				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_products.productid
-				left join vtiger_productcf on vtiger_products.productid = vtiger_productcf.productid
-				left join vtiger_users as vtiger_lastModifiedByProducts on vtiger_lastModifiedByProducts.id = vtiger_crmentity.modifiedby
-				left join vtiger_users as vtiger_usersProducts on vtiger_usersProducts.id = vtiger_crmentity.smownerid
-				left join vtiger_groups as vtiger_groupsProducts on vtiger_groupsProducts.groupid = vtiger_crmentity.smownerid
-				left join vtiger_vendor as vtiger_vendorRelProducts on vtiger_vendorRelProducts.vendorid = vtiger_products.vendor_id
+			$focus = CRMEntity::getInstance($module);
+			$query = $focus->generateReportsQuery($module);
+			$query.= " left join vtiger_vendor as vtiger_vendorRelProducts on vtiger_vendorRelProducts.vendorid = vtiger_products.vendor_id
 				LEFT JOIN (
 						SELECT vtiger_products.productid,
 								(CASE WHEN (vtiger_products.currency_id = 1 ) THEN vtiger_products.unit_price
@@ -1838,6 +1815,13 @@ class ReportRun extends CRMEntity {
 			if($columnstotalsql != '')
 			{
 				$totalsselectedcolumns = $columnlist;
+				// eliminate product/service columns for inventory modules
+				foreach ($columnlist as $key => $value) {
+					$finfo = explode(':',$key);
+					if ($finfo[0]=='vtiger_inventoryproductrel'.$this->primarymodule) {
+						unset($totalsselectedcolumns[$key]);
+					}
+				}
 				if (isset($this->_columnstotallistaddtoselect) and is_array($this->_columnstotallistaddtoselect) and count($this->_columnstotallistaddtoselect)>0) {
 					$_columnstotallistaddtoselect = ', '.implode(', ', $this->_columnstotallistaddtoselect);
 					$totalscolalias = array();
@@ -1848,7 +1832,7 @@ class ReportRun extends CRMEntity {
 					}
 					foreach ($columnlist as $key => $value) {
 						foreach ($totalscolalias as $cal) {
-							if (preg_match("/\b$cal\b/i", $value)) {
+							if (preg_match("/\b".trim($cal)."\b/i", $value)) {
 								unset($totalsselectedcolumns[$key]);
 								break;
 							}
@@ -1873,7 +1857,7 @@ class ReportRun extends CRMEntity {
 		if(trim($groupsquery) != "" && $type !== 'COLUMNSTOTOTAL')
 		{
 			if($chartReport == true){
-				$reportquery .= "group by ".$this->GetFirstSortByField($reportid);
+				$reportquery .= " group by ".$this->GetFirstSortByField($reportid);
 			}else{
 				$reportquery .= " order by ".$groupsquery;
 			}
@@ -1967,6 +1951,7 @@ class ReportRun extends CRMEntity {
 			{
 				$y=$adb->num_fields($result);
 				$noofrows = $adb->num_rows($result);
+				$this->number_of_rows = $noofrows;
 				$custom_field_values = $adb->fetch_array($result);
 				$groupslist = $this->getGroupingList($this->reportid);
 				$column_definitions = $adb->getFieldsDefinition($result);
@@ -2131,7 +2116,7 @@ class ReportRun extends CRMEntity {
 				if($directOutput) {
 					echo "</tr></table>";
 					echo "<script type='text/javascript' id='__reportrun_directoutput_recordcount_script'>
-						if($('_reportrun_total')) $('_reportrun_total').innerHTML=$noofrows;</script>";
+						if(document.getElementById('_reportrun_total')) document.getElementById('_reportrun_total').innerHTML=$noofrows;</script>";
 				} else {
 					$sHTML ='<table cellpadding="5" cellspacing="0" align="center" class="rptTable">
 					<tr>'.
@@ -2159,9 +2144,11 @@ class ReportRun extends CRMEntity {
 			{
 				$y=$adb->num_fields($result);
 				$noofrows = $adb->num_rows($result);
+				$this->number_of_rows = $noofrows;
 				$custom_field_values = $adb->fetch_array($result);
 				$column_definitions = $adb->getFieldsDefinition($result);
-
+				$ILF = new InventoryLineField();
+				$invMods = getInventoryModules();
 				do
 				{
 					$arraylists = Array();
@@ -2173,6 +2160,32 @@ class ReportRun extends CRMEntity {
 						$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
 						if(!empty($fieldInfo)) {
 							$field = WebserviceField::fromArray($adb, $fieldInfo);
+						} else {
+							if(in_array($module, $invMods)) {
+							  if(substr($fld->table,0,26) == 'vtiger_inventoryproductrel') {
+								foreach ($ILF->getInventoryLineFieldsByName() as $ilfname => $ilfinfo) {
+									$ilflabel = getTranslatedString($ilfinfo['fieldlabel'], $module);
+									if ($ilflabel==$fieldLabel) {
+										$fieldInfo = $ilfinfo;
+										$fieldInfo['tabid'] = getTabid($module);
+										$fieldInfo['presence'] = 1;
+										$field = WebserviceField::fromArray($adb, $fieldInfo);
+										break;
+									}
+								}
+							  } else if(substr($fld->table,0,15) == 'vtiger_products' or substr($fld->table,0,14) == 'vtiger_service') {
+								foreach ($ILF->getInventoryLineProductServiceNameFields() as $ilfname => $ilfinfo) {
+									$ilflabel = getTranslatedString($ilfinfo['fieldlabel'], $module);
+									if ($ilflabel==$fieldLabel) {
+										$fieldInfo = $ilfinfo;
+										$fieldInfo['tabid'] = getTabid($ilfinfo['module']);
+										$fieldInfo['presence'] = 1;
+										$field = WebserviceField::fromArray($adb, $fieldInfo);
+										break;
+									}
+								}
+							  }
+							}
 						}
 						if(!empty($fieldInfo)) {
 							$headerLabel = getTranslatedString($field->getFieldLabelKey(), $module);
@@ -2449,6 +2462,7 @@ class ReportRun extends CRMEntity {
 			if($result)
 			{
 				$noofrows = $adb->num_rows($result);
+				$this->number_of_rows = $noofrows;
 				$custom_field_values = $adb->fetch_array($result);
 				$groupslist = $this->getGroupingList($this->reportid);
 				$column_definitions = $adb->getFieldsDefinition($result);
@@ -3078,6 +3092,8 @@ class ReportRun extends CRMEntity {
 			$FieldDataTypes = array();
 			foreach($arr_val[0] as $hdr=>$value) {
 				$FieldDataTypes[$hdr] = $fieldinfo[$hdr]->getFieldDataType();
+				if ($fieldinfo[$hdr]->getColumnName()=='totaltime') $FieldDataTypes[$hdr] = 'time';
+				if ($fieldinfo[$hdr]->getColumnName()=='totaldaytime') $FieldDataTypes[$hdr] = 'time';
 			}
 			$BoolTrue = getTranslatedString('LBL_YES');
 			//$BoolFalse = getTranslatedString('LBL_NO');
@@ -3118,6 +3134,22 @@ class ReportRun extends CRMEntity {
 						case 'currency':
 							$celltype = PHPExcel_Cell_DataType::TYPE_NUMERIC;
 							break;
+						case 'date':
+						case 'time':
+							if ($value!='-') {
+								if (strpos($value,':')>0 and (strpos($value,'-')===false)) {
+									// only time, no date
+									$dt = new DateTime("1970-01-01 $value");
+								} else {
+									$value = DateTimeField::__convertToDBFormat($value, $current_user->date_format);
+									$dt = new DateTime($value);
+								}
+								$value = PHPExcel_Shared_Date::PHPToExcel($dt);
+								$celltype = PHPExcel_Cell_DataType::TYPE_NUMERIC;
+							} else {
+								$celltype = PHPExcel_Cell_DataType::TYPE_STRING;
+							}
+							break;
 						default:
 							$celltype = PHPExcel_Cell_DataType::TYPE_STRING;
 							break;
@@ -3130,6 +3162,11 @@ class ReportRun extends CRMEntity {
 							$value = str_replace($current_user->currency_decimal_separator, '.', $value);
 					}
 					$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $value, $celltype);
+					if ($FieldDataTypes[$hdr]=='date') {
+						$worksheet->getStyleByColumnAndRow($count, $rowcount)->getNumberFormat()->setFormatCode($current_user->date_format);
+					} elseif ($FieldDataTypes[$hdr]=='time') {
+						$worksheet->getStyleByColumnAndRow($count, $rowcount)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME4);
+					}
 					if ($FieldDataTypes[$hdr]=='currency') {
 						$count = $count + 1;
 						$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $csym, PHPExcel_Cell_DataType::TYPE_STRING);

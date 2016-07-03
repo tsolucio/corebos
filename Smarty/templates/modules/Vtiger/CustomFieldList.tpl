@@ -34,17 +34,13 @@ function getCustomFieldList(customField)
 {
 	var modulename = customField.options[customField.options.selectedIndex].value;
 	var modulelabel = customField.options[customField.options.selectedIndex].text;
-	$('module_info').innerHTML = '{$MOD.LBL_CUSTOM_FILED_IN} "'+modulelabel+'" {$APP.LBL_MODULE}';
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody: 'module=Settings&action=SettingsAjax&file=CustomFieldList&fld_module='+modulename+'&parenttab=Settings&ajax=true',
-			onComplete: function(response) {
-				$("cfList").innerHTML=response.responseText;
-			}
-		}
-	);	
+	document.getElementById('module_info').innerHTML = '{$MOD.LBL_CUSTOM_FILED_IN} "'+modulelabel+'" {$APP.LBL_MODULE}';
+	jQuery.ajax({
+		method:"POST",
+		url:'index.php?module=Settings&action=SettingsAjax&file=CustomFieldList&fld_module='+modulename+'&parenttab=Settings&ajax=true'
+	}).done(function(response) {
+		document.getElementById("cfList").innerHTML=response;
+	});
 }
 
 function deleteCustomField(id, fld_module, colName, uitype)
@@ -68,24 +64,20 @@ function getCreateCustomFieldForm(customField,id,tabid,ui)
     			activitytype = activityobj[i].value;
     	}
     }
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody: 'module=Settings&action=SettingsAjax&file=CreateCustomField&fld_module='+customField+'&parenttab=Settings&ajax=true&fieldid='+id+'&tabid='+tabid+'&uitype='+ui+'&activity_type='+activitytype,
-			onComplete: function(response) {
-				$("createcf").innerHTML=response.responseText;
-				gselected_fieldtype = '';
-			}
-		}
-	);
+	jQuery.ajax({
+		method:"POST",
+		url:'index.php?module=Settings&action=SettingsAjax&file=CreateCustomField&fld_module='+customField+'&parenttab=Settings&ajax=true&fieldid='+id+'&tabid='+tabid+'&uitype='+ui+'&activity_type='+activitytype
+	}).done(function(response) {
+		document.getElementById("createcf").innerHTML=response;
+		gselected_fieldtype = '';
+	});
 
 }
 function makeFieldSelected(oField,fieldid,blockid)
 {
 	if(gselected_fieldtype != '')
 	{
-		$(gselected_fieldtype).className = 'customMnu';
+		document.getElementById(gselected_fieldtype).className = 'customMnu';
 	}
 	oField.className = 'customMnuSelected';
 	gselected_fieldtype = oField.id;

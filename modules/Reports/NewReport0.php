@@ -17,7 +17,7 @@ global $app_strings, $app_list_strings, $mod_strings;
 $current_module_strings = return_module_language($current_language, 'Reports');
 global $list_max_entries_per_page, $urlPrefix;
 $log = LoggerManager::getLogger('report_list');
-global $currentModule, $image_path, $theme, $focus_list;
+global $currentModule, $image_path, $theme;
 $recordid = vtlib_purify($_REQUEST['record']);
 
 $theme_path="themes/".$theme."/";
@@ -26,7 +26,7 @@ $list_report_form = new vtigerCRM_Smarty;
 $list_report_form->assign("MOD", $mod_strings);
 $list_report_form->assign("APP", $app_strings);
 $repObj = new Reports ();
-
+$folderid = 0;
 if($recordid!=''){
 	$oRep = new Reports($recordid);
 	if($oRep->secmodule!=''){
@@ -63,6 +63,7 @@ if($recordid!=''){
 	$list_report_form->assign("REPORTNAME",$oRep->reportname);
 	$list_report_form->assign("REPORTDESC",$oRep->reportdescription);
 	$list_report_form->assign("REP_MODULE",$oRep->primodule);
+	$folderid = $oRep->folderid;
 	if(!isset($_REQUEST['secondarymodule'])){
 		$list_report_form->assign("SEC_MODULE",$sec_module);
 	}
@@ -72,7 +73,7 @@ if($recordid!=''){
 		$restrictedmod = '';
 	}
 	$list_report_form->assign("RESTRICTEDMODULES",$restrictedmod);
-	$list_report_form->assign("BACK",'false');
+	$list_report_form->assign("BACK",'true');
 }
 if(!empty($_REQUEST['reportmodule'])) {
 	if(vtlib_isModuleActive($_REQUEST['reportmodule'])==false || isPermitted($_REQUEST['reportmodule'],'index')!= "yes"){
@@ -108,7 +109,7 @@ if(!empty($_REQUEST['reportName'])) {
 	$list_report_form->assign("SEC_MODULE",$sec_module);
 	$list_report_form->assign("BACK_WALK",'true');
 }
-$list_report_form->assign('FOLDERID',isset($_REQUEST['folder'])?vtlib_purify($_REQUEST['folder']):0);
+$list_report_form->assign('FOLDERID',isset($_REQUEST['folder'])?vtlib_purify($_REQUEST['folder']):$folderid);
 $list_report_form->assign("REP_FOLDERS",$repObj->sgetRptFldr());
 $list_report_form->assign("IMAGE_PATH", $image_path);
 $list_report_form->assign("THEME_PATH", $theme_path);

@@ -1,14 +1,10 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************
 *  Module       : Reports
@@ -103,7 +99,7 @@ $mod_strings = Array(
 'LBL_DESCRIPTION'=>'Descripción',
 'LBL_TOOLS'=>'Herramientas',
 'LBL_AND'=>'y',
-'LBL_ADD_NEW_GROUP'=>'Añadir un Nuevo Grupo',
+'LBL_ADD_NEW_GROUP'=>'Añadir una Nueva Carpeta',
 'LBL_REPORT_MODULE'=>'Módulo de Informes',
 'LBL_SELECT_RELATIVE_MODULE_FOR_REPORT'=>'Seleccione el Módulo Relacionado para el Informe',
 'LBL_SELECT_REPORT_TYPE_BELOW'=>'Seleccione abajo el tipo de Informe',
@@ -112,8 +108,8 @@ $mod_strings = Array(
 'LBL_SUMMARY_REPORT_VIEW_DATA_WITH_SUBTOTALS'=>'Los Informes Resumen le permiten ver sus datos junto con los subtotales y otra información de resumen',
 'LBL_FILTERS'=>'Filtros',
 'LBL_MOVE_TO'=>'Mover a',
-'LBL_RENAME_FOLDER'=>'Renombrar Directorio',
-'LBL_DELETE_FOLDER'=>'Borrar Directorio',
+'LBL_RENAME_FOLDER'=>'Renombrar Carpeta',
+'LBL_DELETE_FOLDER'=>'Borrar Carpeta',
 
 'Account and Contact Reports'=>'Informes de Cuentas y Contactos',
 'Lead Reports'=>'Informes de Pre-Contactos',
@@ -256,6 +252,7 @@ $mod_strings = Array(
 'Monthly'=>'Mensual',
 'Annually'=>'Anual',
 'LBL_SCHEDULE_REPORT'=>'Programar Informe',
+'ScheduleReports'=>'Programar Informe',
 'LBL_SCHEDULE_FREQUENCY'=>'Frecuencia',
 'OPTION_SCHEDULE_EMAIL_CHOOSE'=>'Elige ..... ',
 'LBL_SCHEDULE_EMAIL_TIME'=>'Hora',

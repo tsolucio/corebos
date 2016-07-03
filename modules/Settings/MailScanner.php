@@ -6,9 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
-
 require_once('include/utils/utils.php');
 require_once('Smarty_setup.php');
 
@@ -28,7 +26,7 @@ if($mode == 'scannow') {
 
 } else if($mode == 'remove') {
 	include('modules/Settings/MailScanner/MailScannerRemove.php');
-	
+
 } else if($mode == 'rule') {
 	include('modules/Settings/MailScanner/MailScannerRule.php');
 } else if($mode == 'ruleedit') {
@@ -49,6 +47,4 @@ if($mode == 'scannow') {
 } else {
 	include('modules/Settings/MailScanner/MailScannerInfo.php');
 }
-
 ?>
-

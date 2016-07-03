@@ -252,7 +252,7 @@ class CustomView extends CRMEntity {
 						$shtml_public = "<option disabled>--- " . $app_strings['LBL_PUBLIC'] . " ---</option>";
 					$shtml_public .= $option;
 				} elseif ($cvrow['status'] == CV_STATUS_PENDING) {
-					if (in_array($cvrow['userid'], $cuserroles)) {
+					if (in_array($cvrow['userid'], $cuserroles) or $is_admin) {
 					if ($shtml_pending == '')
 						$shtml_pending = "<option disabled>--- " . $app_strings['LBL_PENDING'] . " ---</option>";
 					$shtml_pending .= $option;
@@ -290,7 +290,7 @@ class CustomView extends CRMEntity {
 		}
 		if ($tabid == 9)
 			$tabid = "9,16";
-		$display_type = " vtiger_field.displaytype in (1,2,3)";
+		$display_type = " vtiger_field.displaytype in (1,2,3,4)";
 
 		if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
 			$tab_ids = explode(",", $tabid);
@@ -325,23 +325,10 @@ class CustomView extends CRMEntity {
 			$tabid = "9";
 		$result = $adb->pquery($sql, $params);
 		$noofrows = $adb->num_rows($result);
-		//Added on 14-10-2005 -- added ticket id in list
-		if ($module == 'HelpDesk' && $block == 25) {
-			$module_columnlist['vtiger_crmentity:crmid::HelpDesk_Ticket_ID:I'] = 'Ticket ID';
-		}
 		//Added to include vtiger_activity type in vtiger_activity vtiger_customview list
 		if ($module == 'Calendar' && $block == 19) {
 			$module_columnlist['vtiger_activity:activitytype:activitytype:Calendar_Activity_Type:V'] = 'Activity Type';
 		}
-
-		if ($module == 'SalesOrder' && $block == 63)
-			$module_columnlist['vtiger_crmentity:crmid::SalesOrder_Order_No:I'] = $app_strings['Order No'];
-
-		if ($module == 'PurchaseOrder' && $block == 57)
-			$module_columnlist['vtiger_crmentity:crmid::PurchaseOrder_Order_No:I'] = $app_strings['Order No'];
-
-		if ($module == 'Quotes' && $block == 51)
-			$module_columnlist['vtiger_crmentity:crmid::Quotes_Quote_No:I'] = $app_strings['Quote No'];
 		if ($module != 'Calendar') {
 			$moduleFieldList = $this->meta->getModuleFields();
 		}
@@ -1040,7 +1027,7 @@ class CustomView extends CRMEntity {
 					}
 				}
 			}
-			$returnsql = implode(",", $sqllist);
+			$returnsql = implode(",", array_unique($sqllist));
 		}
 		return $returnsql;
 	}

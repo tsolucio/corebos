@@ -71,6 +71,7 @@ $mod_strings = array(
 	'Commission Rate' => 'Commission Rate',
 	'Qty/Unit' => 'Qty/Unit',
 	'Unit Price' => 'Unit Price',
+	'Cost Price' => 'Cost Price',
 	'Manufacturer' => 'Manufacturer',
 	'Product Category' => 'Product Category',
 	'Support Start Date' => 'Support Start Date',

@@ -8,6 +8,11 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+	<title>{$MODULE|@getTranslatedString:$MODULE} - {$APP.LBL_BROWSER_TITLE}</title>
+	<link REL="SHORTCUT ICON" HREF="themes/images/blank.gif">
 <script language="JavaScript" type="text/javascript">
 var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 var image_pth = '{$IMAGE_PATH}';
@@ -16,7 +21,7 @@ var service_default_units = '{$Service_Default_Units}';
 {literal}
 function QCreate(module,urlpop) {
 	if (module != 'none') {
-		$("status").style.display="inline";
+		document.getElementById("status").style.display="inline";
 		if (module == 'Events') {
 			module = 'Calendar';
 			var urlstr = '&activity_mode=Events&from=popup&pop='+urlpop;
@@ -26,25 +31,22 @@ function QCreate(module,urlpop) {
 		} else {
 			var urlstr = '&from=popup&pop='+urlpop;
 		}
-		new Ajax.Request(
-			'index.php',
-				{queue: {position: 'end', scope: 'command'},
-				method: 'post',
-				postBody: 'module='+module+'&action='+module+'Ajax&file=QuickCreate'+urlstr,
-				onComplete: function(response){
-					$("status").style.display="none";
-					$("qcformpop").style.display="inline";
-					$("qcformpop").innerHTML = response.responseText;
+		jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?module='+module+'&action='+module+'Ajax&file=QuickCreate'+urlstr,
+				}).done(function(response) {
+					document.getElementById("status").style.display="none";
+					document.getElementById("qcformpop").style.display="inline";
+					document.getElementById("qcformpop").innerHTML = response;
 					// Evaluate all the script tags in the response text.
-					var scriptTags = $("qcformpop").getElementsByTagName("script");
+					var scriptTags = document.getElementById("qcformpop").getElementsByTagName("script");
 					for(var i = 0; i< scriptTags.length; i++){
 						var scriptTag = scriptTags[i];
 						eval(scriptTag.innerHTML);
 					}
-					eval($("qcformpop"));
+					eval(document.getElementById("qcformpop"));
 				}
-			}
-		);
+			);
 	} else {
 		hide('qcformpop');
 	}
@@ -52,33 +54,32 @@ function QCreate(module,urlpop) {
 {/literal}
 function showAllRecords()
 {ldelim}
-        modname = document.getElementById("relmod").name;
-        idname= document.getElementById("relrecord_id").name;
-        var locate = location.href;
-        url_arr = locate.split("?");
-        emp_url = url_arr[1].split("&");
-        for(i=0;i< emp_url.length;i++)
-        {ldelim}
-                if(emp_url[i] != '')
-                {ldelim}
-                        split_value = emp_url[i].split("=");
-                        if(split_value[0] == modname || split_value[0] == idname )
-                                emp_url[i]='';
-                        else if(split_value[0] == "fromPotential" || split_value[0] == "acc_id")
-                                emp_url[i]='';
-
-                {rdelim}
-        {rdelim}
-        correctUrl =emp_url.join("&");
-        Url = "index.php?"+correctUrl;
-        return Url;
+	modname = document.getElementById("relmod").name;
+	idname= document.getElementById("relrecord_id").name;
+	var locate = location.href;
+	url_arr = locate.split("?");
+	emp_url = url_arr[1].split("&");
+	for(i=0;i< emp_url.length;i++)
+	{ldelim}
+		if(emp_url[i] != '')
+		{ldelim}
+			split_value = emp_url[i].split("=");
+			if(split_value[0] == modname || split_value[0] == idname )
+				emp_url[i]='';
+			else if(split_value[0] == "fromPotential" || split_value[0] == "acc_id")
+				emp_url[i]='';
+			{rdelim}
+		{rdelim}
+		correctUrl =emp_url.join("&");
+		Url = "index.php?"+correctUrl;
+		return Url;
 {rdelim}
 
 //function added to get all the records when parent record doesn't relate with the selection module records while opening/loading popup.
 function redirectWhenNoRelatedRecordsFound()
 {ldelim}
-        var loadUrl = showAllRecords();
-        window.location.href = loadUrl;
+	var loadUrl = showAllRecords();
+	window.location.href = loadUrl;
 {rdelim}
 </script>
 <link rel="stylesheet" type="text/css" href="{$THEME_PATH}style.css">
@@ -91,6 +92,7 @@ function redirectWhenNoRelatedRecordsFound()
 	<!-- END -->
 {/if}
 {* END *}
+<script language="JavaScript" type="text/javascript" src="include/js/{php} echo $_SESSION['authenticated_user_language'];{/php}.lang.js?{php} echo $_SESSION['vtiger_version'];{/php}"></script>
 <script language="JavaScript" type="text/javascript" src="include/js/meld.js"></script>
 <script language="JavaScript" type="text/javascript" src="include/js/ListView.js"></script>
 <script language="JavaScript" type="text/javascript" src="include/js/general.js"></script>
@@ -101,16 +103,11 @@ function redirectWhenNoRelatedRecordsFound()
 <!-- vtlib customization: Javascript hook -->
 <script language="JavaScript" type="text/javascript" src="include/js/vtlib.js"></script>
 <!-- END -->
-<script language="JavaScript" type="text/javascript" src="include/js/{php} echo $_SESSION['authenticated_user_language'];{/php}.lang.js?{php} echo $_SESSION['vtiger_version'];{/php}"></script>
 {if $RETURN_MODULE != ''}
 <script language="JavaScript" type="text/javascript" src="modules/{$RETURN_MODULE}/{$RETURN_MODULE}.js"></script>
 {/if}
 <script language="JavaScript" type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
-<script language="javascript" type="text/javascript" src="include/scriptaculous/prototype.js"></script>
-<script type='text/javascript' src='modules/com_vtiger_workflow/resources/jquery-1.2.6.js'></script>
-<script type='text/javascript'>
-	jQuery.noConflict();
-</script>
+<script type='text/javascript' src='include/jquery/jquery.js'></script>
 
 {* corebos customization: Inclusion of custom javascript and css as registered in popup *}
 {if $HEADERSCRIPTS}
@@ -133,55 +130,52 @@ function add_data_to_relatedlist(entity_id,recordid,mod, popupmode, callback) {
 	}
 	if(popupmode == 'ajax') {
 		VtigerJS_DialogBox.block();
-		new Ajax.Request(
-            'index.php',
-            {queue: {position: 'end', scope: 'command'},
-             method: 'post',
-             postBody: "module="+return_module+"&action="+return_module+"Ajax&file=updateRelations&destination_module="+mod+"&entityid="+entity_id+"&parentid="+recordid+"&mode=Ajax",
-             onComplete: function(response) {
+		jQuery.ajax({
+				method: 'POST',
+				url: "index.php?module="+return_module+"&action="+return_module+"Ajax&file=updateRelations&destination_module="+mod+"&entityid="+entity_id+"&parentid="+recordid+"&mode=Ajax",
+			}).done(function(response) {
 					VtigerJS_DialogBox.unblock();
-					var res = JSON.parse(response.responseText);
+					var res = JSON.parse(response);
 					if(typeof callback == 'function') {
 						callback(res);
 					}
-                }
 			}
 		);
 		return false;
 	} else {
 		{/literal}
-        opener.document.location.href="index.php?module={$RETURN_MODULE}&action=updateRelations&destination_module="+mod+"&entityid="+entity_id+"&parentid="+recordid+"&return_module={$RETURN_MODULE}&return_action={$RETURN_ACTION}&parenttab={$CATEGORY}";
+		opener.document.location.href="index.php?module={$RETURN_MODULE}&action=updateRelations&destination_module="+mod+"&entityid="+entity_id+"&parentid="+recordid+"&return_module={$RETURN_MODULE}&return_action={$RETURN_ACTION}&parenttab={$CATEGORY}";
 		if (document.getElementById("closewindow").value=="true") window.close();
 		{literal}
 	}
 }
 {/literal}
 function set_focus() {ldelim}
-	$('search_txt').focus();
+	document.getElementById('search_txt').focus();
 {rdelim}
 </script>
-
-<body  onload=set_focus() class="small" marginwidth=0 marginheight=0 leftmargin=0 topmargin=0 bottommargin=0 rightmargin=0>
+</head>
+<body onload=set_focus() class="small" marginwidth=0 marginheight=0 leftmargin=0 topmargin=0 bottommargin=0 rightmargin=0>
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="mailClient mailClientBg">
 	<tr>
 		<td>
 			<table width="100%" border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					{if $recid_var_value neq ''}
-                            <td class="moduleName" width="80%" style="padding-left:10px;">{$MODULE|@getTranslatedString:$MODULE}&nbsp;{$APP.LBL_RELATED_TO}&nbsp;{$PARENT_MODULE|@getTranslatedString:$PARENT_MODULE}</td>
-                    {else}
-                            {if $RECORD_ID}
-	                            <td class="moduleName" width="80%" style="padding-left:10px;"><a href="javascript:;" onclick="window.history.back();">{$MODULE|@getTranslatedString:$MODULE}</a> > {$PRODUCT_NAME}</td>
-							{else}
-	                            <td class="moduleName" width="80%" style="padding-left:10px;">{$MODULE|@getTranslatedString:$MODULE}</td>
-							{/if}
-                    {/if}
-					<td  width=24% nowrap class="componentName" align=right>{'APP_NAME'|@getTranslatedString}</td>
-					<td  width=6% nowrap class="componentName" align=right><input type="hidden" id='closewindow' value="true"/><img src="themes/images/unlocked.png" id='closewindowimage' onclick="if (document.getElementById('closewindow').value=='true') {ldelim}document.getElementById('closewindowimage').src='themes/images/locked.png';document.getElementById('closewindow').value='false';{rdelim} else {ldelim}document.getElementById('closewindowimage').src='themes/images/unlocked.png';document.getElementById('closewindow').value='true';{rdelim};"/></td>
+						<td class="moduleName" width="80%" style="padding-left:10px;">{$MODULE|@getTranslatedString:$MODULE}&nbsp;{$APP.LBL_RELATED_TO}&nbsp;{$PARENT_MODULE|@getTranslatedString:$PARENT_MODULE}</td>
+					{else}
+						{if $RECORD_ID}
+							<td class="moduleName" width="80%" style="padding-left:10px;"><a href="javascript:;" onclick="window.history.back();">{$MODULE|@getTranslatedString:$MODULE}</a> > {$PRODUCT_NAME}</td>
+						{else}
+							<td class="moduleName" width="80%" style="padding-left:10px;">{$MODULE|@getTranslatedString:$MODULE}</td>
+						{/if}
+					{/if}
+					<td width=24% nowrap class="componentName" align=right>{'APP_NAME'|@getTranslatedString}</td>
+					<td width=6% nowrap class="componentName" align=right><input type="hidden" id='closewindow' value="true"/><img src="themes/images/unlocked.png" id='closewindowimage' onclick="if (document.getElementById('closewindow').value=='true') {ldelim}document.getElementById('closewindowimage').src='themes/images/locked.png';document.getElementById('closewindow').value='false';{rdelim} else {ldelim}document.getElementById('closewindowimage').src='themes/images/unlocked.png';document.getElementById('closewindow').value='true';{rdelim};"/></td>
 				</tr>
 			</table>
 			<div id="status" style="position:absolute;display:none;right:135px;top:15px;height:27px;white-space:nowrap;"><img src="{'status.gif'|@vtiger_imageurl:$THEME}"></div>
-			<table width="100%" cellpadding="5" cellspacing="0" border="0"  class="homePageMatrixHdr">
+			<table width="100%" cellpadding="5" cellspacing="0" border="0" class="homePageMatrixHdr">
 				<tr>
 					<td style="padding:10px;" >
 						<div id="searchAcc" style="display: block;position:relative;">
@@ -194,10 +188,10 @@ function set_focus() {ldelim}
 							<td width="30%" class="dvtCellLabel"><input type="text" name="search_text" id="search_txt" class="txtBox"> </td>
 							<td width="30%" class="dvtCellLabel"><b>{$APP.LBL_IN}</b>&nbsp;
 								<select name ="search_field" class="txtBox">
-											 {html_options  options=$SEARCHLISTHEADER }
+									{html_options options=$SEARCHLISTHEADER }
 								</select>
 								<input type="hidden" name="searchtype" value="BasicSearch">
-								<input type="hidden" name="module" value="{$MODULE}">
+								<input type="hidden" name="module" id="module" value="{$MODULE}">
 								<input type="hidden" name="action" value="Popup">
 								<input type="hidden" name="query" value="true">
 								<input type="hidden" name="select_enable" id="select_enable" value="{$SELECT}">
@@ -212,15 +206,15 @@ function set_focus() {ldelim}
 								<input name="maintab" id="maintab" type="hidden" value="{$MAINTAB}">
 								<input type="hidden" id="relmod" name="{$mod_var_name}" value="{$mod_var_value}">
 								<input type="hidden" id="relrecord_id" name="{$recid_var_name}" value="{$recid_var_value}">
-								<input name="form"  id="popupform" type="hidden" value="{$smarty.request.form|@vtlib_purify}">
+								<input name="form" id="popupform" type="hidden" value="{$smarty.request.form|@vtlib_purify}">
 								{* vtlib customization: For uitype 10 popup during paging *}
 								{if $smarty.request.form eq 'vtlibPopupView'}
-									<input name="forfield"  id="forfield" type="hidden" value="{$smarty.request.forfield|@vtlib_purify}">
-									<input name="srcmodule"  id="srcmodule" type="hidden" value="{$smarty.request.srcmodule|@vtlib_purify}">
-									<input name="forrecord"  id="forrecord" type="hidden" value="{$smarty.request.forrecord|@vtlib_purify}">
+									<input name="forfield" id="forfield" type="hidden" value="{$smarty.request.forfield|@vtlib_purify}">
+									<input name="srcmodule" id="srcmodule" type="hidden" value="{$smarty.request.srcmodule|@vtlib_purify}">
+									<input name="forrecord" id="forrecord" type="hidden" value="{$smarty.request.forrecord|@vtlib_purify}">
 								{/if}
 								{if $smarty.request.currencyid neq ''}
-									<input type="hidden" name="curr_row" id="currencyid" value="{$smarty.request.currencyid|@vtlib_purify}">
+									<input type="hidden" name="currencyid" id="currencyid" value="{$smarty.request.currencyid|@vtlib_purify}">
 								{/if}
 								{* END *}
 							</td>
@@ -234,7 +228,7 @@ function set_focus() {ldelim}
 						 <tr>
 							<td colspan="5" align="center">
 								<table width="100%" class="small">
-								<tr>	
+								<tr>
 									{$ALPHABETICAL}
 								</tr>
 								</table>
@@ -242,19 +236,19 @@ function set_focus() {ldelim}
 						</tr>
 						</table>
 						</form>
-                                              </div>
+						</div>
 					</td>
 				</tr>
 				{if $recid_var_value neq ''}
-                                <tr>
-                                        <td align="right"><input id="all_contacts" alt="{$APP.LBL_SELECT_BUTTON_LABEL} {$APP.$MODULE}" title="{$APP.LBL_SELECT_BUTTON_LABEL} {$APP.$MODULE}" accessKey="" class="crmbutton small edit" value="{$APP.SHOW_ALL}&nbsp;{$APP.$MODULE}" LANGUAGE=javascript onclick="window.location.href=showAllRecords();" type="button"  name="button"></td>
-                                </tr>
-                                {/if}
+					<tr>
+						<td align="right"><input id="all_contacts" alt="{$APP.LBL_SELECT_BUTTON_LABEL} {$APP.$MODULE}" title="{$APP.LBL_SELECT_BUTTON_LABEL} {$APP.$MODULE}" accessKey="" class="crmbutton small edit" value="{$APP.SHOW_ALL}&nbsp;{$APP.$MODULE}" LANGUAGE=javascript onclick="window.location.href=showAllRecords();" type="button" name="button"></td>
+					</tr>
+				{/if}
 			</table>
 			<!-- ADVANCED SEARCH -->
 			<div id="advSearch" style="display:none;">
 			<form name="advSearch" method="post" action="index.php" onSubmit="return callSearch('Advanced');">
-				<table  cellspacing=0 cellpadding=5 width=100% class="searchUIAdv1 small" align="center" border=0>
+				<table cellspacing=0 cellpadding=5 width=100% class="searchUIAdv1 small" align="center" border=0>
 					<tr>
 						<td class="searchUIName small" nowrap align="left"><span class="moduleName">{$APP.LBL_SEARCH}</span><br><span class="small"><a href="#" onClick="show('searchAcc');fnhide('advSearch')">{$APP.LBL_GO_TO} {$APP.LNK_BASIC_SEARCH}</a></span></td>
 						<td class="small" align="right" valign="top">&nbsp;</td>
@@ -282,7 +276,6 @@ function set_focus() {ldelim}
 			</div>
 		</td>
 	</tr>
-	
 </table>
 </body>
 <script>
@@ -291,30 +284,30 @@ var gsorder ='';
 var gstart ='';
 function callSearch(searchtype)
 {ldelim}
-    gstart='';
-    for(i=1;i<=26;i++)
-    {ldelim}
-        var data_td_id = 'alpha_'+ eval(i);
-        getObj(data_td_id).className = 'searchAlph';
-    {rdelim}
-    gPopupAlphaSearchUrl = '';
-    search_fld_val= document.basicSearch.search_field[document.basicSearch.search_field.selectedIndex].value;
-    search_txt_val= encodeURIComponent(document.basicSearch.search_text.value.replace(/\'/,"\\'"));
-    var urlstring = '';
-    if(searchtype == 'Basic')
-    {ldelim}
+	gstart='';
+	for(i=1;i<=26;i++)
+	{ldelim}
+		var data_td_id = 'alpha_'+ eval(i);
+		getObj(data_td_id).className = 'searchAlph';
+	{rdelim}
+	gPopupAlphaSearchUrl = '';
+	search_fld_val= document.basicSearch.search_field[document.basicSearch.search_field.selectedIndex].value;
+	search_txt_val= encodeURIComponent(document.basicSearch.search_text.value.replace(/\'/,"\\'"));
+	var urlstring = '';
+	if(searchtype == 'Basic')
+	{ldelim}
 	urlstring = 'search_field='+search_fld_val+'&searchtype=BasicSearch&search_text='+search_txt_val;
-    {rdelim}
+	{rdelim}
 	else if(searchtype == 'Advanced')
 	{ldelim}
 		checkAdvancedFilter();
-		var advft_criteria = $('advft_criteria').value;
-		var advft_criteria_groups = $('advft_criteria_groups').value;
+		var advft_criteria = document.getElementById('advft_criteria').value;
+		var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
 		urlstring += '&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups+'&';
 		urlstring += 'searchtype=advance&'
 	{rdelim}
-	popuptype = $('popup_type').value;
-	act_tab = $('maintab').value;
+	popuptype = document.getElementById('popup_type').value;
+	act_tab = document.getElementById('maintab').value;
 	urlstring += '&popuptype='+popuptype;
 	urlstring += '&maintab='+act_tab;
 	urlstring = urlstring +'&query=true&file=Popup&module={$MODULE}&action={$MODULE}Ajax&ajax=true&search=true';
@@ -327,67 +320,60 @@ function callSearch(searchtype)
 
 	if(record_id!='')
 		urlstring += '&record_id='+record_id;
-	$("status").style.display="inline";
-	new Ajax.Request(
-		'index.php',
-		{ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-				method: 'post',
-				postBody: urlstring,
-				onComplete: function(response) {ldelim}
-					$("status").style.display="none";
-					$("ListViewContents").innerHTML= response.responseText;
-				{rdelim}
+	document.getElementById("status").style.display="inline";
+	jQuery.ajax({ldelim}
+				method: 'POST',
+				url: 'index.php?'+urlstring,
+		{rdelim}).done(function (response) {ldelim}
+					document.getElementById("status").style.display="none";
+					document.getElementById("ListViewContents").innerHTML= response;
 			{rdelim}
 		);
-{rdelim}	
+{rdelim}
 function alphabetic(module,url,dataid)
 {ldelim}
-    gstart='';
-    document.basicSearch.search_text.value = '';	
-    for(i=1;i<=26;i++)
-    {ldelim}
+	gstart='';
+	document.basicSearch.search_text.value = '';
+	for(i=1;i<=26;i++)
+	{ldelim}
 	var data_td_id = 'alpha_'+ eval(i);
 	getObj(data_td_id).className = 'searchAlph';
-    {rdelim}
-    getObj(dataid).className = 'searchAlphselected';
-    gPopupAlphaSearchUrl = '&'+url;	
-    var urlstring ="module="+module+"&action="+module+"Ajax&file=Popup&ajax=true&search=true&"+url;
-    urlstring +=gethiddenelements();
+	{rdelim}
+	getObj(dataid).className = 'searchAlphselected';
+	gPopupAlphaSearchUrl = '&'+url;
+	var urlstring ="module="+module+"&action="+module+"Ajax&file=Popup&ajax=true&search=true&"+url;
+	urlstring +=gethiddenelements();
 	record_id = document.basicSearch.record_id.value;
 	if(record_id!='')
 		urlstring += '&record_id='+record_id;
-    $("status").style.display="inline";
-    new Ajax.Request(
-                'index.php',
-                {ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-                                method: 'post',
-                                postBody: urlstring,
-                                onComplete: function(response) {ldelim}
-                                	$("status").style.display="none";
-									$("ListViewContents").innerHTML= response.responseText;
+	document.getElementById("status").style.display="inline";
+	jQuery.ajax({ldelim}
+				method: 'POST',
+				url: 'index.php?'+ urlstring,
+		{rdelim}).done(function (response) {ldelim}
+					document.getElementById("status").style.display="none";
+					document.getElementById("ListViewContents").innerHTML= response;
 				{rdelim}
-			{rdelim}
-		);
+			);
 {rdelim}
 function gethiddenelements()
 {ldelim}
 	gstart='';
-	var urlstring=''	
+	var urlstring='';
 	if(getObj('select_enable').value != '')
-		urlstring +='&select=enable';	
+		urlstring +='&select=enable';
 	if(document.getElementById('curr_row').value != '')
-		urlstring +='&curr_row='+document.getElementById('curr_row').value;	
+		urlstring +='&curr_row='+document.getElementById('curr_row').value;
 	if(getObj('fldname_pb').value != '')
-		urlstring +='&fldname='+getObj('fldname_pb').value;	
+		urlstring +='&fldname='+getObj('fldname_pb').value;
 	if(getObj('productid_pb').value != '')
-		urlstring +='&productid='+getObj('productid_pb').value;	
+		urlstring +='&productid='+getObj('productid_pb').value;
 	if(getObj('recordid').value != '')
 		urlstring +='&recordid='+getObj('recordid').value;
 	if(getObj('relmod').value != '')
-                urlstring +='&'+getObj('relmod').name+'='+getObj('relmod').value;
-    if(getObj('relrecord_id').value != '')
-            urlstring +='&'+getObj('relrecord_id').name+'='+getObj('relrecord_id').value;
-	
+		urlstring +='&'+getObj('relmod').name+'='+getObj('relmod').value;
+	if(getObj('relrecord_id').value != '')
+		urlstring +='&'+getObj('relrecord_id').name+'='+getObj('relrecord_id').value;
 	// vtlib customization: For uitype 10 popup during paging
 	if(document.getElementById('popupform'))
 		urlstring +='&form='+encodeURIComponent(getObj('popupform').value);
@@ -398,7 +384,6 @@ function gethiddenelements()
 	if(document.getElementById('forrecord'))
 		urlstring +='&forrecord='+encodeURIComponent(getObj('forrecord').value);
 	// END
-		
 	if(document.getElementById('currencyid') != null && document.getElementById('currencyid').value != '')
 		urlstring +='&currencyid='+document.getElementById('currencyid').value;
 
@@ -407,15 +392,13 @@ function gethiddenelements()
 		urlstring += '&return_module='+return_module;
 	return urlstring;
 {rdelim}
-																									
 function getListViewEntries_js(module,url)
 {ldelim}
 	gstart="&"+url;
 
 	popuptype = document.getElementById('popup_type').value;
-        var urlstring ="module="+module+"&action="+module+"Ajax&file=Popup&ajax=true&"+url;
-    	urlstring +=gethiddenelements();
-	
+	var urlstring ="module="+module+"&action="+module+"Ajax&file=Popup&ajax=true&"+url;
+	urlstring +=gethiddenelements();
 	{if !$RECORD_ID}
 		search_fld_val= document.basicSearch.search_field[document.basicSearch.search_field.selectedIndex].value;
 		search_txt_val=document.basicSearch.search_text.value;
@@ -423,33 +406,33 @@ function getListViewEntries_js(module,url)
 			urlstring += '&query=true&search_field='+search_fld_val+'&searchtype=BasicSearch&search_text='+search_txt_val;
 	{/if}
 	if(gPopupAlphaSearchUrl != '')
-		urlstring += gPopupAlphaSearchUrl;	
+		urlstring += gPopupAlphaSearchUrl;
 	else
-		urlstring += '&popuptype='+popuptype;	
-	
+		urlstring += '&popuptype='+popuptype;
 	record_id = document.basicSearch.record_id.value;
 	if(record_id!='')
 		urlstring += '&record_id='+record_id;
 
-	urlstring += (gsorder !='') ? gsorder : '';
-	var return_module = document.getElementById('return_module').value;
-	if(module == 'Documents' && return_module == 'MailManager')
+		record_id = document.basicSearch.record_id.value;
+		if(record_id!='')
+			urlstring += '&record_id='+record_id;
+
+		urlstring += (gsorder !='') ? gsorder : '';
+		var return_module = document.getElementById('return_module').value;
+		if(module == 'Documents' && return_module == 'MailManager')
 	{ldelim}
-		urlstring += '&callback=MailManager.add_data_to_relatedlist';
-		urlstring += '&popupmode=ajax';
-		urlstring += '&srcmodule=MailManager';
+			urlstring += '&callback=MailManager.add_data_to_relatedlist';
+			urlstring += '&popupmode=ajax';
+			urlstring += '&srcmodule=MailManager';
 	{rdelim}
 
-	$("status").style.display = "";
-	new Ajax.Request(
-                'index.php',
-                {ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-                                method: 'post',
-                                postBody: urlstring,
-                                onComplete: function(response) {ldelim}
-                                        $("ListViewContents").innerHTML= response.responseText;
-									$("status").style.display = "none";
-				{rdelim}
+		document.getElementById("status").style.display = "";
+		jQuery.ajax({ldelim}
+					method: 'POST',
+					url: 'index.php?'+ urlstring,
+			{rdelim}).done(function (response) {ldelim}
+						document.getElementById("ListViewContents").innerHTML= response;
+						document.getElementById("status").style.display = "none";
 			{rdelim}
 		);
 {rdelim}
@@ -457,22 +440,19 @@ function getListViewEntries_js(module,url)
 function getListViewSorted_js(module,url)
 {ldelim}
 	gsorder=url;
-        var urlstring ="module="+module+"&action="+module+"Ajax&file=Popup&ajax=true"+url;
+	var urlstring ="module="+module+"&action="+module+"Ajax&file=Popup&ajax=true"+url;
 	record_id = document.basicSearch.record_id.value;
 	if(record_id!='')
 		urlstring += '&record_id='+record_id;
 	urlstring += (gstart !='') ? gstart : '';
-	$("status").style.display = "";
-	new Ajax.Request(
-                'index.php',
-                {ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-                                method: 'post',
-                                postBody: urlstring,
-                                onComplete: function(response) {ldelim}
-                                        $("ListViewContents").innerHTML= response.responseText;
-									$("status").style.display = "none";
-				{rdelim}
-			{rdelim}
+	document.getElementById("status").style.display = "";
+	jQuery.ajax({ldelim}
+			method: 'POST',
+			url: 'index.php?'+ urlstring,
+	{rdelim}).done(function (response) {ldelim}
+			document.getElementById("ListViewContents").innerHTML= response;
+			document.getElementById("status").style.display = "none";
+	{rdelim}
 		);
 {rdelim}
 
@@ -486,4 +466,7 @@ var product_labelarr = {ldelim}
 	DIRECT_PRICE_REDUCTION:'{$APP.LBL_DIRECT_PRICE_REDUCTION}'
 {rdelim};
 
+var fieldname = new Array({$VALIDATION_DATA_FIELDNAME});
+var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
+var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});
 </script>

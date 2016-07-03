@@ -15,8 +15,7 @@
 <title>{$MOD.TITLE_COMPOSE_MAIL}</title>
 <link REL="SHORTCUT ICON" HREF="themes/images/favicon.ico">
 <style type="text/css">@import url("themes/{$THEME}/style.css");</style>
-<script language="javascript" type="text/javascript" src="include/scriptaculous/prototype.js"></script>
-<script src="include/scriptaculous/scriptaculous.js" type="text/javascript"></script>
+<script type="text/javascript" src="include/jquery/jquery.js"></script>
 <script src="include/js/general.js" type="text/javascript"></script>
 <script language="JavaScript" type="text/javascript" src="include/js/{php} echo $_SESSION['authenticated_user_language'];{/php}.lang.js?{php} echo $_SESSION['vtiger_version'];{/php}"></script>
 <script type="text/javascript" src="include/ckeditor/ckeditor.js"></script>
@@ -69,7 +68,7 @@
 			<img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" LANGUAGE=javascript onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
 		</span>
 		<span class="mailClientCSSButton" >
-			<img src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" LANGUAGE=javascript onClick="$('parent_id').value=''; $('hidden_toid').value='';$('parent_name').value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
+			<img src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" LANGUAGE=javascript onClick="document.getElementById('parent_id').value=''; document.getElementById('hidden_toid').value='';document.getElementById('parent_name').value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
 		</span>
 	</td>
 	<td class="cellText" style="padding: 5px;" align="left" nowrap>
@@ -80,7 +79,7 @@
 				{else}
 					{assign var=selectmodule value=""}
 				{/if}
-				<option value="{$labelval}" {$selectmodule}>{$APP[$labelval]}</option>
+				<option value="{$labelval}" {$selectmodule}>{$labelval|@getTranslatedString:$labelval}</option>
 			{/foreach}
 		</select>
 		&nbsp;
@@ -95,7 +94,7 @@
 			<img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" LANGUAGE=javascript onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails&email_field=cc_name","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
 		</span>
 		<span class="mailClientCSSButton" >
-			<img src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" LANGUAGE=javascript onClick="$('cc_name').value='';return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
+			<img src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" LANGUAGE=javascript onClick="document.getElementById('cc_name').value='';return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
 		</span>
 	</td>
 	{else}
@@ -113,7 +112,7 @@
 			<img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" LANGUAGE=javascript onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails&email_field=bcc_name","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
 		</span>
 		<span class="mailClientCSSButton" >
-			<img src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" LANGUAGE=javascript onClick="$('bcc_name').value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
+			<img src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_CLEAR}" title="{$APP.LBL_CLEAR}" LANGUAGE=javascript onClick="document.getElementById('bcc_name').value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>
 		</span>
 	</td>
 	</tr>
@@ -212,6 +211,7 @@ var cc_err_msg = '{$MOD.LBL_CC_EMAIL_ERROR}';
 var no_rcpts_err_msg = '{$MOD.LBL_NO_RCPTS_EMAIL_ERROR}';
 var bcc_err_msg = '{$MOD.LBL_BCC_EMAIL_ERROR}';
 var conf_mail_srvr_err_msg = '{$MOD.LBL_CONF_MAILSERVER_ERROR}';
+var conf_srvr_storage_err_msg = '{$MOD.LBL_CONF_SERVERSTORAGE_ERROR}';
 var remove_image_url = "{'no.gif'|@vtiger_imageurl:$THEME}";
 {literal}
 function searchDocuments() {
@@ -340,44 +340,40 @@ function findAngleBracket(mailadd)
                 return false;
 
 }
-function server_check()
-{
+function server_check(){
 	var oform = window.document.EditView;
-        new Ajax.Request(
-        	'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                	method: 'post',
-                        postBody:"module=Emails&action=EmailsAjax&file=Save&ajax=true&server_check=true",
-			onComplete: function(response) {
-			if(response.responseText.indexOf('SUCCESS') > -1)
-			{
+		jQuery.ajax({
+			method:"POST",
+			url:"index.php?module=Emails&action=EmailsAjax&file=Save&ajax=true&server_check=true",
+		}).done(function(response) {
+			if(response.indexOf('SUCCESS') > -1){
 				oform.send_mail.value='true';
 				oform.action.value='Save';
 				oform.submit();
-			}else
-			{
-				//alert('Please Configure Your Mail Server');
-				alert(conf_mail_srvr_err_msg);
+			}else{
+				if (response.indexOf('FAILURESTORAGE') > -1) {
+					if (confirm(conf_srvr_storage_err_msg)) {
+						oform.send_mail.value='true';
+						oform.action.value='Save';
+						oform.submit();
+					}
+				} else {
+					alert(conf_mail_srvr_err_msg);
+				}
 				return false;
 			}
-               	    }
-                }
-        );
+				}
+		);
 }
-$('attach_cont').innerHTML = $('attach_temp_cont').innerHTML;
-function delAttachments(id)
-{
-    new Ajax.Request(
-        'index.php',
-        {queue: {position: 'end', scope: 'command'},
-            method: 'post',
-            postBody: 'module=Contacts&action=ContactsAjax&file=DelImage&attachmodule=Emails&recordid='+id,
-            onComplete: function(response)
-            {
-		Effect.Fade('row_'+id);
-            }
-        }
-    );
+document.getElementById('attach_cont').innerHTML = document.getElementById('attach_temp_cont').innerHTML;
+function delAttachments(id){
+	jQuery.ajax({
+		method:"POST",
+		url:'index.php?module=Contacts&action=ContactsAjax&file=DelImage&attachmodule=Emails&recordid='+id
+	}).done(function(response) {
+		jQuery('#row_'+id).fadeOut();
+		}
+	);
 }
 {/literal}
 </script>

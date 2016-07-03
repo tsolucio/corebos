@@ -24,20 +24,16 @@
 function getModuleEntityNoInfo(form) {
 	var module = form.selmodule.value;
 
-	$("status").style.display="inline";
-	new Ajax.Request(
-    	'index.php',
-        {queue: {position: 'end', scope: 'command'},
-        	method: 'post',
-            postBody: 'module=Settings&action=SettingsAjax&file=CustomModEntityNo&ajax=true&selmodule=' + encodeURIComponent(module),
-            onComplete: function(response) {
-				$("status").style.display="none";
+	document.getElementById("status").style.display="inline";
+	jQuery.ajax({
+			method:"POST",
+			url:'index.php?module=Settings&action=SettingsAjax&file=CustomModEntityNo&ajax=true&selmodule=' + encodeURIComponent(module)
+	}).done(function(response) {
+				document.getElementById("status").style.display="none";
 
-				var restext = response.responseText;
-				$('customentity_infodiv').innerHTML = restext;
-            }
-        }
-    );
+				var restext = response;
+				document.getElementById('customentity_infodiv').innerHTML = restext;
+	});
 }
 function updateModEntityNoSetting(button, form) {
 	var module = form.selmodule.value;
@@ -55,27 +51,21 @@ function updateModEntityNoSetting(button, form) {
 		return;
 	}
 
-	$("status").style.display="inline";
+	document.getElementById("status").style.display="inline";
 	button.disabled = true;
 
-	new Ajax.Request(
-    	'index.php',
-        {queue: {position: 'end', scope: 'command'},
-        	method: 'post',
-            postBody: 'module=Settings&action=SettingsAjax&file=CustomModEntityNo&ajax=true' + 
+	jQuery.ajax({
+			method:"POST",
+			url:'index.php?module=Settings&action=SettingsAjax&file=CustomModEntityNo&ajax=true' + 
 					'&selmodule=' + encodeURIComponent(module) +
 					'&recprefix=' + encodeURIComponent(recprefix) +
-                    '&recnumber=' + encodeURIComponent(recnumber) +
-					'&mode=' + encodeURIComponent(mode),
-
-            onComplete: function(response) {
-				$("status").style.display="none";
-
-				var restext = response.responseText;
-				$('customentity_infodiv').innerHTML = restext;
-            }
-        }
-    );
+					'&recnumber=' + encodeURIComponent(recnumber) +
+					'&mode=' + encodeURIComponent(mode)
+	}).done(function(response) {
+				document.getElementById("status").style.display="none";
+				var restext = response;
+				document.getElementById('customentity_infodiv').innerHTML = restext;
+	});
 }
 function updateModEntityExisting(button, form) {
 	var module = form.selmodule.value;
@@ -96,22 +86,16 @@ function updateModEntityExisting(button, form) {
 	VtigerJS_DialogBox.progress();
 	button.disabled = true;
 
-	new Ajax.Request(
-    	'index.php',
-        {queue: {position: 'end', scope: 'command'},
-        	method: 'post',
-            postBody: 'module=Settings&action=SettingsAjax&file=CustomModEntityNo&ajax=true' + 
+	jQuery.ajax({
+			method:"POST",
+			url:'index.php?module=Settings&action=SettingsAjax&file=CustomModEntityNo&ajax=true' + 
 					'&selmodule=' + encodeURIComponent(module) +
-					'&mode=' + encodeURIComponent(mode),
-
-            onComplete: function(response) {
+					'&mode=' + encodeURIComponent(mode)
+	}).done(function(response) {
 				VtigerJS_DialogBox.hideprogress();
-
-				var restext = response.responseText;
-				$('customentity_infodiv').innerHTML = restext;
-            }
-        }
-    );
+				var restext = response;
+				document.getElementById('customentity_infodiv').innerHTML = restext;
+	});
 }
 </script>
 {/literal}

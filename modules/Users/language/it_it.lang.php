@@ -112,15 +112,15 @@
   'ERR_PASSWORD_CHANGE_FAILED_1' => 'Impossibile modificare la password per',
   'ERR_PASSWORD_CHANGE_FAILED_2' => 'errore. La nuova password deve essere impostata.',
   'ERR_PASSWORD_INCORRECT_OLD' => 'Vecchia password sbagliata per questo nome utente. Reinserisci la password',
+  'ERR_PASSWORD_NOT_CHANGED' => 'Old and New Passwords are the same. Please use a different password.',
   'ERR_USER_NAME_EXISTS_1' => 'Il Nome Utente',
   'ERR_USER_NAME_EXISTS_2' => 'esiste gi&agrave; . Utenti duplicati non sono consentiti. Cambia il nome utente per essere unico',
   'ERR_LAST_ADMIN_1' => 'Il Nome Utente',
   'ERR_LAST_ADMIN_2' => '&Egrave; l`ultimo Utente amministratore. Almeno uno deve essere un Utente Amministratore. Controlla l`impostazione dell`Utente Amministratore',
-
+  'ERR_MAXLOGINATTEMPTS' => 'Maximum number of login attempts reached. Contact your administrator to unblock your account',
+  'LBL_FAILED_LOGIN_ATTEMPTS' => 'Failed Login Attempts',
   'ERR_DELETE_RECORD' => 'Un numero di record deve essere specificato per cancellare l`account.',
-
-
-
+  'ERR_MUST_CHANGE_PASSWORD' => 'Your password has expired. You must change your password to continue.',
 
   'LBL_ROLES' => 'Ruoli',
   'LBL_ROLES_SUBORDINATES' => 'Ruoli e Subordinati',
@@ -201,10 +201,8 @@
   'LBL_VIEWING' => 'Visualizzazione',
   'LBL_PROPERTIES' => 'Propriet&agrave;  di',
 
-
-
   'LBL_ASTERISKEXTENSIONS_EXIST' => 'Estensione Asterisk gi&agrave esistente!',
-
+  'LBL_CURRENCY_SEPARATORS_INCORRECT' => 'Decimal Separator and Digit Grouping Separator cannot be the same.',
 
   'LBL_CREATE_NEW_GROUP' => 'Crea Nuovo Gruppo',
   'LBL_NEW_GROUP' => 'Nuovo Gruppo',
@@ -502,9 +500,6 @@
   'LBL_CHANGE_PHOTO' => 'Cambia foto ...',
   'LBL_CHANGE' => 'Cambia',
 
-
-
-
   'LBL_GLOBAL_FIELDS_MANAGER' => 'Gestore Campi Globali',
   'LBL_GLOBAL_ACCESS_PRIVILEGES' => 'Privilegi di Condivisione a livello di Organizzazione',
   'LBL_CUSTOM_ACCESS_PRIVILEGES' => 'Regole di Condivisione Personalizzati',
@@ -561,7 +556,7 @@
   'Symbol Placement' => 'Posizione Simbolo Valuta',
   'Digit Grouping Separator' => 'Separatore delle Migliaia',
   'Digit Grouping Pattern' => 'Modello Raggruppamento delle Migliaia',
-  
+  'Number Of Currency Decimals'  =>  'Number Of Currency Decimals',
   'LBL_SHOWN' => 'Mostrato',
   'LBL_HIDDEN' => 'Nascosto',
   'LBL_SHOW' => 'Mostra',
@@ -578,18 +573,12 @@
   'LBL_TRANSFER_ROLES_TO_PROFILE' => 'Trasferisci Ruoli al Profilo',
   'LBL_PROFILE_TO_BE_DELETED' => 'Profilo da Eliminare',
 
-	
-	
-
-
   'LBL_RECALC_MSG' => 'Sei sicuro di voler Ricalcolare le Regole di Accesso Condiviso?',
   'LBL_YES' => 'Si',
   'LBL_NO' => 'No',
 
   'LBL_MANDATORY_MSG' => 'Campi Obbligatori',
   'LBL_DISABLE_FIELD_MSG' => 'Campi Disabilitati da Impostazioni di Accesso Globale',
-
-
 
   'LBL_CONTACT_US' => 'Contattaci',
   'LBL_READ_LICENSE' => 'Leggi la Licenza',
@@ -600,8 +589,6 @@
   'LBL_COMMUNITY' => 'E la comunit&agrave; di vtiger',
 
   'LBL_ASSIGN_ROLE' => 'Assegna Ruolo',
-
-
 
   'LBL_ADD_MAIL_ACCOUNT' => 'Aggiungi Mail Account',
   'LBL_NEW_MAIL_ACCOUNT_TITLE' => 'Nuovo Mail Account [Alt+M]',
@@ -807,6 +794,7 @@
 'Min. 1 lowercase' => 'Minimo una lettera minuscola',
 'Min. 1 number' => 'Minimo un numero',
 'Min. 1 special character' => 'Minimo un carattere speciale ! ? , ; - @ #',
+'Generate password' => 'Generate password',
 );
 
 ?>

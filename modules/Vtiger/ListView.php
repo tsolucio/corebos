@@ -141,6 +141,9 @@ if(!empty($order_by)) {
 		$list_query .= ' ORDER BY ' . $tablename . $order_by . ' ' . $sorder;
 	}
 }
+if (GlobalVariable::getVariable('Debug_ListView_Query', '0')=='1') {
+	echo '<br>'.$list_query.'<br>';
+}
 try {
 if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true) {
 	$count_result = $adb->query( mkCountQuery( $list_query));

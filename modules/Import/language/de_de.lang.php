@@ -56,6 +56,7 @@ $mod_strings = array (
 	'ERR_UNIMPORTED_RECORDS_IN_QUEUE' => 'Der Benutzer hat noch nicht importierte Datensätze in der Warteschlange',
 	'ERR_FILE_READ_FAILED' => 'Fehler beim lesen der Datei',
 	'LBL_IMPORT_SCHEDULED' => 'Import geplant',
+	'Scheduled Import' => 'Import geplant',
 	'LBL_SCHEDULED_IMPORT_DETAILS' => 'Ihr Import wurde geplant und Sie werden via E-Mail informiert werden, wenn der Import abgeschlossen ist. <br>
                                        Bitte stellen Sie sicher, dass der Postausgangsserver in den Einstellungen für ausgehende E-Mails konfiguriert ist.',
 	'ERR_DETAILS_BELOW' => 'Details werden unten angezeigt',

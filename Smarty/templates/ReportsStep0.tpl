@@ -36,7 +36,7 @@
 	</style>
 	<script language="JavaScript" type="text/javascript" src="include/js/general.js"></script>
 	<script language="JavaScript" type="text/javascript" src="include/js/{php} echo $_SESSION['authenticated_user_language'];{/php}.lang.js?{php} echo $_SESSION['vtiger_version'];{/php}"></script>
-	<script language="javascript" type="text/javascript" src="include/scriptaculous/prototype.js"></script>
+	<script type='text/javascript' src='include/jquery/jquery.js'></script>
 	<script language="JavaScript" type="text/javascript" src="modules/Reports/Reports.js"></script>
 </head>
 <body topmargin="0" leftmargin="0" marginheight="0" marginwidth="0">
@@ -46,7 +46,7 @@
 		<form name="NewRep" method="POST" ENCTYPE="multipart/form-data" action="index.php" style="margin:0px" onSubmit="return changeSteps();">
 		<input type="hidden" name="module" value="Reports">
 		<input type="hidden" name="primarymodule" value="{$REP_MODULE}">
-		<input type="hidden" name="record" value="{$RECORDID}">
+		<input type="hidden" name="record" id="record" value="{$RECORDID}">
 		<input type="hidden" name="file" value="NewReport1">
 		<input type="hidden" name="action" value="ReportsAjax">
 

@@ -60,7 +60,9 @@ if(isset($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') {
 if(empty($focus->column_fields['time_zone'])) {
 	$focus->column_fields['time_zone'] = DateTimeField::getDBTimeZone();
 }
-
+if($mode != 'edit'){
+	setObjectValuesFromRequest($focus);
+}
 global $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
@@ -112,16 +114,13 @@ if(isset($_REQUEST['record']) && $_REQUEST['isDuplicate'] != 'true')
 {
 	$smarty->assign("USERNAME_READONLY", "readonly");
 }
+$HomeValues = $focus->getHomeStuffOrder($focus->id);
+$smarty->assign("TAGCLOUDVIEW",$HomeValues['Tag Cloud']);
+$smarty->assign("SHOWTAGAS",$HomeValues['showtagas']);
+unset($HomeValues['Tag Cloud']);
+unset($HomeValues['showtagas']);
+$smarty->assign("HOMEORDER",$HomeValues);
 
-$smarty->assign("HOMEORDER",$focus->getHomeStuffOrder($focus->id));
-//Added to provide User based Tagcloud
-if($mode == 'create') { // While creating user select tag cloud by default
-	$smarty->assign("TAGCLOUDVIEW","true");
-	$smarty->assign("SHOWTAGAS",'hring');
-} else {
-	$smarty->assign("TAGCLOUDVIEW",getTagCloudView($focus->id));
-	$smarty->assign("SHOWTAGAS",getTagCloudShowAs($focus->id));
-}
 $smarty->assign("tagshow_options", array(
  "flat" => $mod_strings['flat'],
  "hring" => $mod_strings['hring'],

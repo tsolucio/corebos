@@ -16,7 +16,7 @@ function replaceUploadSize(){
 
 
 function vtlib_field_help_show_this(basenode, fldname) {
-	var domnode = $('vtlib_fieldhelp_div');
+	var domnode = document.getElementById('vtlib_fieldhelp_div');
 
 	
 
@@ -33,12 +33,14 @@ function vtlib_field_help_show_this(basenode, fldname) {
 		domnode.style.fontWeight = 'normal';
 		document.body.appendChild(domnode);
 
-		domnode = $('vtlib_fieldhelp_div');
-		Event.observe(domnode, 'mouseover', function() { $('vtlib_fieldhelp_div').show(); });
-		Event.observe(domnode, 'mouseout', vtlib_field_help_hide);
+		domnode = document.getElementById('vtlib_fieldhelp_div');
+		jQuery("#vtlib_fieldhelp_div").mouseover(function() { 
+			jQuery('#vtlib_fieldhelp_div').show(); 
+		});
+		jQuery("#vtlib_fieldhelp_div").mouseout(vtlib_field_help_hide);
 	}
 	else {
-		domnode.show();
+		domnode.style.display="block";
 	}
 	domnode.innerHTML = helpcontent;
 	fnvshobj(basenode,'vtlib_fieldhelp_div');

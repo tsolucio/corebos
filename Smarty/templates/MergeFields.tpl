@@ -1,5 +1,4 @@
 {*<!--
-
 /*********************************************************************************
 ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
@@ -7,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 -->*}
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -31,11 +29,8 @@
 {if $EDIT_DUPLICATE eq 'permitted'}
 <script language="JAVASCRIPT" type="text/javascript" src="include/js/smoothscroll.js"></script>
 <script language="JavaScript" type="text/javascript" src="include/js/menu.js"></script>
-<script src="include/scriptaculous/prototype.js" type="text/javascript"></script>
 <script src="include/js/general.js" type="text/javascript"></script>
 <script src="include/js/{php} echo $_SESSION['authenticated_user_language'];{/php}.lang.js" type="text/javascript"></script>
-<script src="include/scriptaculous/scriptaculous.js" type="text/javascript"></script>
-
 <form name="merge" method="POST" action="index.php" id="form" onsubmit="if(validate_merge('{$MODULENAME}')){ldelim}VtigerJS_DialogBox.block(); return true;{rdelim} else {ldelim} return false; {rdelim};">
 	<input type=hidden name="module" value="{$MODULENAME}">
 	<input type=hidden name="return_module" value="{$MODULENAME}">

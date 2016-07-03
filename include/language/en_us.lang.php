@@ -10,7 +10,6 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
 $app_strings = array (
 'LBL_BROWSER_TITLE' => 'coreBOS',
@@ -202,6 +201,7 @@ $app_strings = array (
 'LBL_EXPORT' => 'Export',
 'LBL_EXPORT_ALL' => 'Export All',
 'LBL_QUICK_CREATE' => 'Quick Create',
+'QuickRelatedList' => 'Related Modules',
 'Export' => 'Export',
 'Import' => 'Import',
 'Merge' => 'Merge',
@@ -666,6 +666,7 @@ $app_strings = array (
 
 //Added for 5.0.3
 'Files_Maximum_6'=>'Files Maximum 6',
+'Files_Maximum'=>'Files Maximum ',
 'To'=>'To:',
 
 'Date & Time' => 'Date & Time',
@@ -1190,7 +1191,6 @@ $app_strings = array (
  
 //added for find duplicate
 'LBL_DUPLICATE_DATA_IN'=>'Duplicate ',
-'LBL_DELETE'=>'Delete',
 'LBL_MERGE_SELECT'=>'Merge Select',
 'LBL_MERGE_DATA_IN'=>'Merge Records In',
 'LBL_MERGE'=>'Merge',
@@ -1324,7 +1324,7 @@ $app_list_strings = array (
     'Leads' => 'Leads',
     'Contacts' => 'Contacts',
     'Accounts' => 'Organizations',
-    'Potentials' => 'Oppurtunities',
+    'Potentials' => 'Opportunities',
     'Campaigns' => 'Campaigns',
     'Emails' => 'Emails',
     'Activities' => 'Activities',

@@ -233,7 +233,7 @@
 											{if $ACTIVITYDATA.repeat_str neq ''}
 											<tr>
 												<td width="30%" align=right>&nbsp;</td>
-												<td>{$CMOD.LBL_REPEATEVENT}&nbsp;{$ACTIVITYDATA.repeat_frequency}&nbsp;{$MOD[$ACTIVITYDATA.recurringtype]}</td>
+												<td>{$CMOD.LBL_REPEATEVENT}&nbsp;{$ACTIVITYDATA.repeat_frequency}&nbsp;{$CMOD[$ACTIVITYDATA.recurringtype]}</td>
 											</tr>
 											<tr>
 												<td width="30%" align=right>&nbsp;</td>
@@ -248,7 +248,7 @@
 											{if $LABEL.parent_id neq ''}
 											<tr>
 												<td width="30%" align=right valign="top"><b>{$LABEL.parent_id}</b></td>
-												<td width="70%" align=left valign="top" onmouseover="vtlib_listview.trigger('cell.onmouseover', $(this))" onmouseout="vtlib_listview.trigger('cell.onmouseout', $(this))">{$ACTIVITYDATA.parent_name}</td>
+												<td width="70%" align=left valign="top" onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">{$ACTIVITYDATA.parent_name}</td>
 											</tr>
 											{/if}
 											{if $CONTACTS|@count > 0}
@@ -257,7 +257,7 @@
 												<td width="70%" valign="top" align=left>
 													<table border=0>
 													{foreach item=contactname key=cntid from=$CONTACTS}
-														<tr><td onmouseover="vtlib_listview.trigger('cell.onmouseover', $(this))" onmouseout="vtlib_listview.trigger('cell.onmouseout', $(this))">
+														<tr><td onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">
 															{$contactname}<span type='vtlib_metainfo' vtrecordid='{$cntid}' vtfieldname='firstname' vtmodule='Contacts' style='display:none;'></span>
 														</td></tr>
 													{/foreach}
@@ -284,12 +284,13 @@
 									<table border="0" cellpadding="5" cellspacing="1" width="100%" >
 										<tr>
 											{if $LABEL.taskstatus neq ''}
-											<td class="cellLabel" width=33% align="left"><b>{$LABEL.taskstatus}</b></td>
+											<td class="cellLabel" width=25% align="left"><b>{$LABEL.taskstatus}</b></td>
 											{/if}
 											{if $LABEL.taskpriority neq ''}
-											<td class="cellLabel" width=33% align="left"><b>{$LABEL.taskpriority}</b></td>
+											<td class="cellLabel" width=25% align="left"><b>{$LABEL.taskpriority}</b></td>
 											{/if}
-											<td class="cellLabel" width=34% align="left"><b>{$LABEL.assigned_user_id}</b></td>
+											<td class="cellLabel" width=25% align="left"><b>{$LABEL.assigned_user_id}</b></td>
+											<td class="cellLabel" width=25% align="left"><b>{$CMOD.LBL_SENDNOTIFICATION}</b></td>
 										</tr>
 										<tr>
 											{if $LABEL.taskstatus neq ''}
@@ -303,6 +304,7 @@
 											{/if} </td>
 											{/if}
 											<td class="cellInfo" align="left" valign="top">{$ACTIVITYDATA.assigned_user_id}</td>
+											<td width="70%" align=left>{$ACTIVITYDATA.sendnotification}</td>
 										</tr>
 									</table></td>
 								</tr>
@@ -378,34 +380,24 @@
 									<tr>
 										<td class="dvtTabCache" style="width: 10px;" nowrap="nowrap">&nbsp;</td>
 										<td id="cellTabRelatedto" class='dvtSelectedCell' align=center nowrap><a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','off');switchClass('cellTabRelatedto','on');dispLayer('addTaskRelatedtoUI');ghide('addTaskAlarmUI');">{$CMOD.LBL_RELATEDTO}</a></td>
-										<td class="dvtTabCache" style="width: 10px;" nowrap="nowrap">&nbsp;</td>
-										<td id="cellTabInvite" class="dvtUnSelectedCell" align="center" nowrap="nowrap"><a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','on');switchClass('cellTabRelatedto','off');dispLayer('addTaskAlarmUI');ghide('addTaskRelatedtoUI');">{$CMOD.LBL_NOTIFICATION}</td></a></td>
 										<td class="dvtTabCache" style="width: 100%;">&nbsp;</td>
 								</tr>
 							</table></td>
 						</tr>
 						<tr>
 							<td width=100% valign=top align=left class="dvtContentSpace" style="padding:10px;height:120px"><!-- Notification UI -->
-							<DIV id="addTaskAlarmUI" style="display:none;width:100%">
-								<table width="100%" cellpadding="5" cellspacing="0" border="0">
-									<tr>
-										<td width="30%" align=right><b>{$CMOD.LBL_SENDNOTIFICATION}</b></td>
-										<td width="70%" align=left>{$ACTIVITYDATA.sendnotification}</td>
-									</tr>
-								</table>
-							</DIV>
 							<div id="addTaskRelatedtoUI" style="display:block;width:100%">
 								<table width="100%" cellpadding="5" cellspacing="0" border="0">
 									<tr>
 										{if $LABEL.parent_id neq ''}
 										<td width="30%" align=right><b>{$LABEL.parent_id}</b></td>
-										<td width="70%" align=left onmouseover="vtlib_listview.trigger('cell.onmouseover', $(this))" onmouseout="vtlib_listview.trigger('cell.onmouseout', $(this))">{$ACTIVITYDATA.parent_name}</td>
+										<td width="70%" align=left onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">{$ACTIVITYDATA.parent_name}</td>
 										{/if}
 									</tr>
 									<tr>
 										{if $ACTIVITYDATA.contact_id neq ''}
 										<td width="30%" align=right><b>{$CMOD.LBL_CONTACT_NAME}</b></td>
-										<td width="70%" align=left onmouseover="vtlib_listview.trigger('cell.onmouseover', $(this))" onmouseout="vtlib_listview.trigger('cell.onmouseout', $(this))"><a href="{$ACTIVITYDATA.contact_idlink}">{$ACTIVITYDATA.contact_id}</a><span type='vtlib_metainfo' vtrecordid='{$ACTIVITYDATA.contact_idid}' vtfieldname='firstname' vtmodule='Contacts' style='display:none;'></span></td>
+										<td width="70%" align=left onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)"><a href="{$ACTIVITYDATA.contact_idlink}">{$ACTIVITYDATA.contact_id}</a><span type='vtlib_metainfo' vtrecordid='{$ACTIVITYDATA.contact_idid}' vtfieldname='firstname' vtmodule='Contacts' style='display:none;'></span></td>
 										{/if}
 									</tr>
 								</table>

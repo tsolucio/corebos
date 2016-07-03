@@ -6,7 +6,6 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 		{assign var="uitype" value="$maindata[0][0]"}
@@ -19,7 +18,7 @@
 		{assign var="secondvalue" value="$maindata[3][1]"}
 		{assign var="thirdvalue" value="$maindata[3][2]"}
 		{assign var="typeofdata" value="$maindata[4]"}
-	 	{assign var="vt_tab" value="$maindata[5][0]"}
+		{assign var="vt_tab" value="$maindata[5][0]"}
 
 		{if $typeofdata eq 'M'}
 			{assign var="mandatory_field" value="*"}
@@ -55,7 +54,7 @@
 			{if $fromlink eq 'qcreate'}
 			<select id="{$fldname}_type" class="small" name="{$fldname}_type" onChange='document.QcEditView.{$fldname}_display.value=""; document.QcEditView.{$fldname}.value="";'>
 			{else}
-			<select id="{$fldname}_type" class="small" name="{$fldname}_type" onChange='document.EditView.{$fldname}_display.value=""; document.EditView.{$fldname}.value="";$("qcform").innerHTML=""'>
+			<select id="{$fldname}_type" class="small" name="{$fldname}_type" onChange='document.EditView.{$fldname}_display.value=""; document.EditView.{$fldname}.value="";document.getElementById("qcform").innerHTML=""'>
 			{/if}
 			{foreach item=option from=$fldlabel.options}
 				<option value="{$option}"
@@ -70,14 +69,14 @@
 
 			</td>
 			<td width="30%" align=left class="dvtCellInfo">
-				<input id="{$fldname}" name="{$fldname}" type="hidden" value="{$fldvalue.entityid}" id="{$fldname}">
-				<input id="{$fldname}_display" name="{$fldname}_display" id="edit_{$fldname}_display" readonly type="text" style="border:1px solid #bababa;" value="{$fldvalue.displayvalue}">&nbsp;
+				<input id="{$fldname}" name="{$fldname}" type="hidden" value="{$fldvalue.entityid}">
+				<input id="{$fldname}_display" name="{$fldname}_display" readonly type="text" style="border:1px solid #bababa;" value="{$fldvalue.displayvalue}">&nbsp;
 				<img src="{'select.gif'|@vtiger_imageurl:$THEME}" tabindex="{$vt_tab}"
-alt="Select" title="Select" LANGUAGE=javascript  onclick='return {$vtui10func}("{$fromlink}","{$fldname}","{$MODULE}","{$ID}");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
+alt="{'LBL_SELECT'|@getTranslatedString}" title="{'LBL_SELECT'|@getTranslatedString}" onclick='return {$vtui10func}("{$fromlink}","{$fldname}","{$MODULE}","{$ID}");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
 				<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}"
-alt="Clear" title="Clear" LANGUAGE=javascript	onClick="this.form.{$fldname}.value=''; this.form.{$fldname}_display.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
+alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedString}" onClick="this.form.{$fldname}.value=''; this.form.{$fldname}_display.value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
 			</td>
-		{* END *}
+
 		{elseif $uitype eq 2}
 			<td width=20% class="dvtCellLabel" align=right>
 				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small">{/if}
@@ -155,7 +154,7 @@ alt="Clear" title="Clear" LANGUAGE=javascript	onClick="this.form.{$fldname}.valu
 				<font color="red">{$mandatory_field}</font>{$usefldlabel} {if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
 			</td>
 			<td width="30%" align=left class="dvtCellInfo">
-				<select MULTIPLE name="{$fldname}[]" size="4" style="width:160px;" tabindex="{$vt_tab}" class="small">
+				<select MULTIPLE name="{$fldname}[]" size="4" style="width:280px;" tabindex="{$vt_tab}" class="small">
 				{foreach item=arr from=$fldvalue}
 					<option value="{$arr[1]}" {$arr[2]}>{$arr[0]}</option>
 				{/foreach}
@@ -206,7 +205,7 @@ alt="Clear" title="Clear" LANGUAGE=javascript	onClick="this.form.{$fldname}.valu
 
 				{if $secondvalue neq ''}
 					<span id="assign_team" style="{$style_group}">
-						<select name="assigned_group_id" class="small">';
+						<select name="assigned_group_id" class="small">
 							{foreach key=key_one item=arr from=$secondvalue}
 								{foreach key=sel_value item=value from=$arr}
 									<option value="{$key_one}" {$value}>{$sel_value}</option>
@@ -454,7 +453,7 @@ alt="Clear" title="Clear" LANGUAGE=javascript	onClick="this.form.{$fldname}.valu
 					</td>
 				{else}
 					<td width="30%" align=left class="dvtCellInfo">
-						<input name="{$fldname}" tabindex="{$vt_tab}" type="checkbox" {if $USER_MODE eq 'create'}checked{/if}>
+						<input name="{$fldname}" tabindex="{$vt_tab}" type="checkbox">
 					</td>
 				{/if}
 			{/if}
@@ -628,7 +627,7 @@ alt="Clear" title="Clear" LANGUAGE=javascript	onClick="this.form.{$fldname}.valu
 				{if $MODULE eq 'Products'}
 					<input name="del_file_list" type="hidden" value="">
 					<div id="files_list" style="border: 1px solid grey; width: 500px; padding: 5px; background: rgb(255, 255, 255) none repeat scroll 0%; -moz-background-clip: initial; -moz-background-origin: initial; -moz-background-inline-policy: initial; font-size: x-small">
-						<span id="limitmsg" style= "color:red;"> {'LBL_MAX_SIZE'|@getTranslatedString:$MODULE} {$UPLOADSIZE}{'LBL_FILESIZEIN_MB'|@getTranslatedString:$MODULE}, {$APP.Files_Maximum_6}</span>
+						<span id="limitmsg" style= "color:red;"> {'LBL_MAX_SIZE'|@getTranslatedString:$MODULE} {$UPLOADSIZE}{'LBL_FILESIZEIN_MB'|@getTranslatedString:$MODULE}, {$APP.Files_Maximum}{$Product_Maximum_Number_Images}</span>
 						<input id="my_file_element" type="file" name="file_1" tabindex="{$vt_tab}"  onchange="validateFilename(this)"/>
 						<!--input type="hidden" name="file_1_hidden" value=""/-->
 						{assign var=image_count value=0}
@@ -644,8 +643,8 @@ alt="Clear" title="Clear" LANGUAGE=javascript	onClick="this.form.{$fldname}.valu
 
 					<script>
 						{*<!-- Create an instance of the multiSelector class, pass it the output target and the max number of files -->*}
-						var multi_selector = new MultiSelector( document.getElementById( 'files_list' ), 6 );
-						multi_selector.count = {$image_count}
+						var multi_selector = new MultiSelector( document.getElementById( 'files_list' ), {$Product_Maximum_Number_Images} );
+						multi_selector.count = {$image_count};
 						{*<!-- Pass in the file element -->*}
 						multi_selector.addElement( document.getElementById( 'my_file_element' ) );
 					</script>
@@ -740,13 +739,14 @@ alt="Clear" title="Clear" LANGUAGE=javascript	onClick="this.form.{$fldname}.valu
 			</td>
 			<td width="30%" align=left class="dvtCellInfo">
 				{if $MODE eq 'edit' && $IMAGENAME neq ''}
-					<input name="{$fldname}"  type="file" value="{$maindata[3].0.name}" tabindex="{$vt_tab}" onchange="validateFilename(this);" /><div id="replaceimage">[{$IMAGENAME}]&nbsp;<a href="javascript:;" onClick="delUserImage({$ID})">Del</a></div>
+					<input name="{$fldname}" type="file" value="{$maindata[3].0.name}" tabindex="{$vt_tab}" onchange="validateFilename(this);" /><div id="replaceimage">[{$IMAGENAME}]&nbsp;<a href="javascript:;" onClick="delUserImage({$ID})">Del</a></div>
 					<br>{'LBL_IMG_FORMATS'|@getTranslatedString:$MODULE}
 					<input name="{$fldname}_hidden"  type="hidden" value="{$maindata[3].0.name}" />
 				{else}
-					<input name="{$fldname}"  type="file" value="" tabindex="{$vt_tab}" onchange="validateFilename(this);" /><br>{'LBL_IMG_FORMATS'|@getTranslatedString:$MODULE}
+					<input name="{$fldname}" type="file" value="" tabindex="{$vt_tab}" onchange="validateFilename(this);" /><br>{'LBL_IMG_FORMATS'|@getTranslatedString:$MODULE}
 					<input name="{$fldname}_hidden"  type="hidden" value="" />
 				{/if}
+					<div id="displaySize"></div>
 					<input type="hidden" name="id" value=""/>
 					{if isset($maindata[3].0.name) }
 					{$maindata[3].0.name}
@@ -937,7 +937,7 @@ alt="Clear" title="Clear" LANGUAGE=javascript	onClick="this.form.{$fldname}.valu
 					file.value = '';
 					filename.style.display = 'none';
 					filename.innerHTML="";
-                                        msg.style.display = 'none';
+					msg.style.display = 'none';
 				}
 				{/literal}
 			{rdelim}
@@ -948,13 +948,13 @@ alt="Clear" title="Clear" LANGUAGE=javascript	onClick="this.form.{$fldname}.valu
 			<input type="hidden" name="id" value=""/>
 			<input type="text" id="{$fldname}_E__" name="{$fldname}" class="detailedViewTextBox" onFocus="this.className='detailedViewTextBoxOn'" onBlur="this.className='detailedViewTextBox'" value="{$secondvalue}" /><br>
 			<div id="displaySize"></div>
-                        <span id="{$fldname}_value" style="display:none;">
-				{if $secondvalue neq ''}
-					[{$secondvalue}]
-				{/if}
+			<span id="{$fldname}_value" style="display:none;">
+			{if $secondvalue neq ''}
+				[{$secondvalue}]
+			{/if}
 			</span>
 		</div>
-                <span id="limitmsg" style= "color:red; display:none;"> {'LBL_MAX_SIZE'|@getTranslatedString:$MODULE} {$UPLOADSIZE}{'LBL_FILESIZEIN_MB'|@getTranslatedString:$MODULE}</span>
+		<span id="limitmsg" style= "color:red; display:none;"> {'LBL_MAX_SIZE'|@getTranslatedString:$MODULE} {$UPLOADSIZE}{'LBL_FILESIZEIN_MB'|@getTranslatedString:$MODULE}</span>
 		</td>
 
 		{elseif $uitype eq 83} <!-- Handle the Tax in Inventory -->

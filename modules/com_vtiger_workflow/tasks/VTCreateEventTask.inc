@@ -43,7 +43,10 @@ class VTCreateEventTask extends VTTask{
 	}
 	
 	public function doTask(&$entityData){
-		if(!vtlib_isModuleActive('Calendar')) {
+                global $from_wf;
+                $from_wf = true;
+
+                if(!vtlib_isModuleActive('Calendar')) {
 			return;
 		}
 		global $adb, $current_user;
@@ -187,6 +190,7 @@ class VTCreateEventTask extends VTTask{
 			$_REQUEST['createmode'] = '';
 
 		}
+                $from_wf = false;
 		global $current_user;
 		$current_user = $this->originalUser;
 	}

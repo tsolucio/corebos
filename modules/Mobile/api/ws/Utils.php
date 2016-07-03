@@ -6,24 +6,26 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
+ * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
 class Mobile_WS_Utils {
-	/*
+
 	static function initAppGlobals() {
 		global $current_language, $app_strings, $app_list_strings, $app_currency_strings;
-		$current_language = 'en_us';
-		
 		$app_currency_strings = return_app_currency_strings_language($current_language);
 		$app_strings = return_application_language($current_language);
 		$app_list_strings = return_app_list_strings_language($current_language);
 	}
-	
+
 	static function initModuleGlobals($module) {
 		global $mod_strings, $current_language;
-		if(isset($current_language)) {
-			$mod_strings = return_module_language($current_language, $module);
+		if ($module == 'Events') {
+			$module = 'Calendar';
 		}
-	}*/
+		if(isset($current_language)) {
+			@include("modules/$module/language/$current_language.lang.php");
+		}
+	}
 	
 	static function getVtigerVersion() {
 		global $vtiger_current_version;
@@ -131,7 +133,7 @@ class Mobile_WS_Utils {
 		$resolveUITypes = array(10, 101, 116, 117, 26, 357, 50, 51, 52, 53, 57, 58, 59, 66, 68, 73, 75, 76, 77, 78, 80, 81);
 		
 		$result = $adb->pquery(
-			"SELECT DISTINCT fieldname FROM vtiger_field WHERE uitype IN(". 
+			"SELECT fieldname FROM vtiger_field WHERE uitype IN(". 
 			generateQuestionMarks($resolveUITypes) .") AND tabid=?", array($resolveUITypes, getTabid($module)) 
 		);
 		$fieldnames = array();
@@ -148,31 +150,50 @@ class Mobile_WS_Utils {
 	static $gatherModuleFieldGroupInfoCache = array();
 	
 	static function gatherModuleFieldGroupInfo($module) {
-		global $adb;
-		
-		if($module == 'Events') $module = 'Calendar';
-		
+		global $adb,$mod_strings, $current_language;
+		$current_language = Mobile_WS_Controller::sessionGet('language') ;
+		self::initModuleGlobals($module);
 		// Cache hit?
 		if(isset(self::$gatherModuleFieldGroupInfoCache[$module])) {
 			return self::$gatherModuleFieldGroupInfoCache[$module];
 		}
-		
-		$result = $adb->pquery(
-			"SELECT fieldname, fieldlabel, blocklabel, uitype FROM vtiger_field INNER JOIN
-			vtiger_blocks ON vtiger_blocks.tabid=vtiger_field.tabid AND vtiger_blocks.blockid=vtiger_field.block 
-			WHERE vtiger_field.tabid=? AND vtiger_field.presence != 1 ORDER BY vtiger_blocks.sequence, vtiger_field.sequence", array(getTabid($module))
-		);
+		if ($module != 'Calendar') {
+			$result = $adb->pquery(
+				"SELECT fieldname, fieldlabel, blocklabel, uitype, typeofdata FROM vtiger_field INNER JOIN
+				vtiger_blocks ON vtiger_blocks.tabid=vtiger_field.tabid AND vtiger_blocks.blockid=vtiger_field.block 
+				WHERE vtiger_field.tabid=? AND vtiger_field.presence != 1 AND vtiger_field.tablename !='vtiger_ticketcomments'  ORDER BY vtiger_blocks.sequence, vtiger_field.sequence", array(getTabid($module))
+			);
+		}
+		else {
+			$result = $adb->pquery(
+				"SELECT fieldname, fieldlabel, blocklabel, uitype, typeofdata FROM vtiger_field INNER JOIN
+				vtiger_blocks ON vtiger_blocks.tabid=vtiger_field.tabid AND vtiger_blocks.blockid=vtiger_field.block 
+				WHERE vtiger_field.tabid=? AND vtiger_field.presence != 1 and fieldname != 'eventstatus' and fieldname !=  'activitytype' ORDER BY vtiger_blocks.sequence, vtiger_field.sequence", array(getTabid($module))
+			);
+		}
 
 		$fieldgroups = array();
 		while($resultrow = $adb->fetch_array($result)) {
-			$blocklabel = getTranslatedString($resultrow['blocklabel'], $module);
+			if (array_key_exists ($resultrow['blocklabel'], $mod_strings)) {
+				$blocklabel = $mod_strings[$resultrow['blocklabel']];
+			}
+			else {
+				$blocklabel = ($resultrow['blocklabel']);
+			}
+			if (array_key_exists ($resultrow['fieldlabel'], $mod_strings)) {
+				$fieldlabel = $mod_strings[$resultrow['fieldlabel']];
+			}
+			else {
+				$fieldlabel = ($resultrow['fieldlabel']);
+			}
 			if(!isset($fieldgroups[$blocklabel])) {
 				$fieldgroups[$blocklabel] = array();
 			}
 			$fieldgroups[$blocklabel][$resultrow['fieldname']] = 
 				array(
-					'label' => getTranslatedString($resultrow['fieldlabel'], $module),
-					'uitype'=> self::fixUIType($module, $resultrow['fieldname'], $resultrow['uitype'])
+					'label' => $fieldlabel,
+					'uitype'=> self::fixUIType($module, $resultrow['fieldname'], $resultrow['uitype']),
+					'typeofdata'=>self::getMandatory ($resultrow['typeofdata'])
 				);
 		}
 		
@@ -201,6 +222,50 @@ class Mobile_WS_Utils {
 		}
 		return $options;
 	}
+
+	static function getassignedtoValues($userObj,$assigned_user_id='') {
+		//get users info
+		$recordprefix= self::getEntityModuleWSId('Users') ;
+		if ($assigned_user_id=='') {
+			$assigned_user_id = $recordprefix.'x'.$userObj->id;
+		}
+	    if ($userObj->is_admin==false) {
+			$resultuser =get_user_array(FALSE, "Active", $assigned_user_id,'private');
+		}
+		else { 
+			$resultuser =get_user_array(FALSE, "Active", $assigned_user_id);
+		}
+
+		//add prefix to key
+		$data = array_flip($resultuser);
+		foreach($data as $key => &$val) { 
+			$val = $recordprefix.'x'.$val; 
+		}
+		$resultuser = array_flip($data);
+		$users_combo = get_select_options_array($resultuser, $assigned_user_id);
+		//handle groups
+		$resultgroups= array();
+		if ($userObj->is_admin==false) {
+			$resultgroups=vtws_getUserAccessibleGroups ($module, $userObj);
+		}
+		else {
+			$resultgroups=vtws_getUserAccessibleGroups ($module, $userObj);
+		}
+		//add prefix to key for groups
+		$groups_combo = array();
+		if (count($resultgroups) > 0) {
+			$newgrouporder = array ();
+			foreach($resultgroups as $key => &$val) { 
+				$newid = $recordprefix.'x'.$val['id'];
+				$newgrouporder[$newid] = $val['name'];
+			}
+			$groups_combo = get_select_options_array($newgrouporder, $assigned_user_id);
+		}
+		$fieldvalue = array();
+		$fieldvalue[]=$users_combo;
+		$fieldvalue[] =$groups_combo;
+		return $fieldvalue;
+	}
 	
 	static function visibilityValues() {
 		$options = array();
@@ -225,7 +290,17 @@ class Mobile_WS_Utils {
 		return $uitype;
 	}
 	
-	static function fixDescribeFieldInfo($module, &$describeInfo) {
+	static function fixDescribeFieldInfo($module, &$describeInfo,$current_user) {
+		//assigned to field settings
+		foreach($describeInfo['fields'] as $index => $fieldInfo) {
+			if ($fieldInfo['name'] == 'assigned_user_id') {
+				$picklistValues = self::getassignedtoValues($current_user);
+				$fieldInfo['type']['name'] = 'picklist';
+				$fieldInfo['type']['picklistValues'] = $picklistValues;
+				//$fieldInfo['type']['defaultValue'] = $picklistValues[0];
+				$describeInfo['fields'][$index] = $fieldInfo;
+			}
+		}
 		
 		if ($module == 'Leads' || $module == 'Contacts') {
 			foreach($describeInfo['fields'] as $index => $fieldInfo) {
@@ -325,4 +400,61 @@ class Mobile_WS_Utils {
 		}
 		return $querySuffix;
 	}
+	static function getMandatory($typeofdata) {
+		$type_array = explode( '~', $typeofdata );
+		return $type_array[1];
+	}
+	
+	/**     Function to get all the comments for a troubleticket
+	  *     @param int $ticketid -- troubleticket id
+	  *     return all the comments as a sequencial string which are related to this ticket
+	**/
+	static function getTicketComments($ticket) {
+        global $adb;
+        $commentlist = '';
+        $sql = "select * from vtiger_ticketcomments where ticketid=?";
+		$recordid = vtws_getIdComponents($ticket['id']);
+		$recordid = $recordid[1];
+        $result = $adb->pquery($sql, array($recordid));
+		$recordprefix= self::getEntityModuleWSId('Users') ;
+        for($i=0;$i<$adb->num_rows($result);$i++) {
+                $comment = $adb->query_result($result,$i,'comments');
+                if($comment != '') {
+                        $commentlist[$i]['commentcontent'] = $comment;
+                        $commentlist[$i]['assigned_user_id'] = $recordprefix.'x'.$adb->query_result($result,$i,'ownerid');
+                        $commentlist[$i]['createdtime'] = $adb->query_result($result,$i,'createdtime');
+                }
+        }
+        return $commentlist;
+	}
+	/**     Function to create a comment for a troubleticket
+	  *     @param int $ticketid -- troubleticket id, comments array
+	  *     returns the comment as a array
+	**/
+	static function createTicketComment($comment_arr) {
+        global $adb;
+		$current_time = $adb->formatDate(date('YmdHis'), true);
+		$ownertype = 'user';
+		$sql = "insert into vtiger_ticketcomments values(?,?,?,?,?,?)";	
+	    $params = array('', $comment_arr['related_to'], from_html($comment_arr['commentcontent']), $comment_arr['creator'], $ownertype, $current_time);
+		$result = $adb->pquery($sql, $params);
+		return true;
+	}
+	
+	//     Function to find the related modulename by given fieldname
+
+	static function getEntityName($fieldname, $module='') {
+      global $adb;
+		// Exception for Assets Module
+		if($module == 'Assets'){
+			switch($fieldname){
+				case 'account' : $fieldname = 'account_id'; break;
+				case 'product' : $fieldname = 'product_id'; break;
+			}
+		}
+		$sql = "SELECT `modulename` FROM `vtiger_entityname` WHERE `entityidcolumn` = ? LIMIT 1";
+		$result = $adb->pquery($sql, array($fieldname));
+		return $adb->query_result($result,0,'modulename');;
+	}
+	
 }

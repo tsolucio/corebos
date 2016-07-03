@@ -19,7 +19,8 @@ class VTUpdateFieldsTask extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $current_user, $default_charset, $log, $logbg;
+		global $adb, $current_user, $default_charset, $log, $logbg,$from_wf;
+		$from_wf = true;
 		$logbg->info('Entering workflow task VTUpdateFieldsTask');
 		$util = new VTWorkflowUtils();
 		$util->adminUser();
@@ -58,7 +59,11 @@ class VTUpdateFieldsTask extends VTTask {
 				$fieldValue = trim($fieldInfo['value']);
 
 				$fieldInstance = $moduleFields[$fieldName];
+				$fieldtype = $fieldInstance->getFieldDataType();
 				if ($fieldValueType == 'fieldname') {
+					if ($fieldtype === 'currency' or $fieldtype === 'double') {
+						$focus->column_fields[$fieldValue] = $focus->adjustCurrencyField($fieldValue,$focus->column_fields[$fieldValue],$handlerMeta->getTabId());
+					}
 					$fieldValue = $focus->column_fields[$fieldValue];
 				} elseif ($fieldValueType == 'expression') {
 					require_once 'modules/com_vtiger_workflow/expression_engine/include.inc';
@@ -73,6 +78,9 @@ class VTUpdateFieldsTask extends VTTask {
 						$fieldValue = $exprEvaluater->evaluate($entity);
 					}
 				} else {
+					if ($fieldtype === 'currency' or $fieldtype === 'double') {
+						$focus->column_fields[$fieldValue] = $focus->adjustCurrencyField($fieldValue,$focus->column_fields[$fieldValue],$handlerMeta->getTabId());
+					}
 					if (preg_match('/([^:]+):boolean$/', $fieldValue, $match)) {
 						$fieldValue = $match[1];
 						if ($fieldValue == 'true') {
@@ -101,36 +109,17 @@ class VTUpdateFieldsTask extends VTTask {
 				$focus->column_fields[$fieldName] = $fieldValue;
 				$entity->data[$fieldName] = $fieldValue;
 			}
-
-			foreach ($focus->column_fields as $fieldName => $fieldValue) {
-				$focus->column_fields[$fieldName] = html_entity_decode($fieldValue, ENT_QUOTES, $default_charset);
-			}
-
-			// Convert currency fields to User format before save
-			$webserviceObject = VtigerWebserviceObject::fromName($adb, $moduleName);
-			$handlerPath = $webserviceObject->getHandlerPath();
-			$handlerClass = $webserviceObject->getHandlerClass();
-			$handler = new $handlerClass($webserviceObject,$current_user,$adb,$log);
-			$meta = $handler->getMeta();
-			$moduleFields = $meta->getModuleFields();
-			foreach($moduleFields as $fieldName=>$fieldObj){
-				if (in_array($moduleName, array('SalesOrder', 'PurchaseOrder', 'Invoice', 'Quotes')) && ($fieldName == 'hdnSubTotal' || $fieldName == 'hdnGrandTotal')) {
-					continue;
-				}
-				if($fieldObj->getFieldDataType()=="currency"){
-					if(!empty($focus->column_fields[$fieldName])){
-						$focus->column_fields[$fieldName] = CurrencyField::convertToUserFormat($focus->column_fields[$fieldName],$current_user);
-					}
-				}
-			}
+			$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields,$handlerMeta);
 			$hold_ajxaction = $_REQUEST['ajxaction'];
 			$_REQUEST['ajxaction'] = 'Workflow';
+			$logbg->debug('field values presave: '.print_r($focus->column_fields,true));
 			$focus->saveentity($moduleName);
 			$_REQUEST['ajxaction'] = $hold_ajxaction;
 			$util->revertUser();
-			$logbg->debug('field values post: '.print_r($focus->column_fields,true));
+			$logbg->debug('field values postsave: '.print_r($focus->column_fields,true));
 		}
 		$util->revertUser();
+		$from_wf = false;
 		$logbg->info('Exiting workflow task VTUpdateFieldsTask');
 	}
 

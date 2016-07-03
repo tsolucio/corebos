@@ -12,7 +12,7 @@ require_once('modules/Users/CreateUserPrivilegeFile.php');
 require_once('include/logging.php');
 require_once('user_privileges/audit_trail.php');
 
-global $mod_strings, $default_charset;
+global $mod_strings, $default_charset, $adb;
 
 $focus = new Users();
 
@@ -45,7 +45,7 @@ if($focus->is_authenticated())
 	require_once('include/utils/UserInfoUtil.php');
 
 	createUserPrivilegesfile($focus->id);
-	
+
 	//Security related entries end
 	unset($_SESSION['login_password']);
 	unset($_SESSION['login_error']);
@@ -54,22 +54,16 @@ if($focus->is_authenticated())
 	$_SESSION['authenticated_user_id'] = $focus->id;
 	$_SESSION['app_unique_key'] = $application_unique_key;
 
-	global $upload_badext;
 	//Enabled session variable for KCFINDER
-	$_SESSION['KCFINDER'] = array();
-	$_SESSION['KCFINDER']['disabled'] = false;
-	$_SESSION['KCFINDER']['uploadURL'] = 'storage/kcimages';
-	$_SESSION['KCFINDER']['uploadDir'] = '../storage/kcimages';
-	$deniedExts = implode(" ", $upload_badext);
-	$_SESSION['KCFINDER']['deniedExts'] = $deniedExts;
-	
+	coreBOS_Session::setKCFinderVariables();
+
 	// store the user's theme in the session
 	if(!empty($focus->column_fields["theme"])) {
 		$authenticated_user_theme = $focus->column_fields["theme"];
 	} else {
 		$authenticated_user_theme = $default_theme;
 	}
-	
+
 	// store the user's language in the session
 	if(!empty($focus->column_fields["language"])) {
 		$authenticated_user_language = $focus->column_fields["language"];
@@ -77,23 +71,17 @@ if($focus->is_authenticated())
 		$authenticated_user_language = $default_language;
 	}
 
-	// If this is the default user and the default user theme is set to reset, reset it to the default theme value on each login
-	if($reset_theme_on_default_user && $focus->user_name == $default_user_name)
-	{
-		$authenticated_user_theme = $default_theme;
-	}
-	if(isset($reset_language_on_default_user) && $reset_language_on_default_user && $focus->user_name == $default_user_name)
-	{
-		$authenticated_user_language = $default_language;
-	}
-
 	$_SESSION['vtiger_authenticated_user_theme'] = $authenticated_user_theme;
 	$_SESSION['authenticated_user_language'] = $authenticated_user_language;
-	
+
 	$log->debug("authenticated_user_theme is $authenticated_user_theme");
 	$log->debug("authenticated_user_language is $authenticated_user_language");
 	$log->debug("authenticated_user_id is ". $focus->id);
 	$log->debug("app_unique_key is $application_unique_key");
+
+	// Reset number of failed login attempts
+	$query = 'UPDATE vtiger_users SET failed_login_attempts=0 where user_name=?';
+	$adb->pquery($query, array($focus->column_fields['user_name']));
 
 // Clear all uploaded import files for this user if it exists
 	global $import_dir;
@@ -112,20 +100,19 @@ if($focus->is_authenticated())
 }
 else
 {
-	$sql = 'select user_name, id, crypt_type from vtiger_users where user_name=?';
+	$sql = 'select failed_login_attempts from vtiger_users where user_name=?';
 	$result = $adb->pquery($sql, array($focus->column_fields["user_name"]));
-	$rowList = $result->GetRows();
-	foreach ($rowList as $row) {
-		$cryptType = $row['crypt_type'];
-		/* PHP 5.3 WIN implementation of crypt API not compatible with earlier version */
-		if(strtolower($cryptType) == 'md5' && version_compare(PHP_VERSION, '5.3.0') >= 0 && strtoupper(substr(PHP_OS, 0, 3)) === 'WIN' ) {
-			header("Location: modules/Migration/PHP5.3_PasswordHelp.php");
-			die;
-		}
+	$failed_login_attempts = 0;
+	if ($result and $adb->num_rows($result)>0) {
+		$failed_login_attempts = $adb->query_result($result, 0, 0);
 	}
+	$maxFailedLoginAttempts = GlobalVariable::getVariable('Application_MaxFailedLoginAttempts', 5);
+	// Increment number of failed login attempts
+	$query = 'UPDATE vtiger_users SET failed_login_attempts=COALESCE(failed_login_attempts,0)+1 where user_name=?';
+	$adb->pquery($query, array($focus->column_fields['user_name']));
 	$_SESSION['login_user_name'] = $focus->column_fields["user_name"];
 	$_SESSION['login_password'] = $user_password;
-	$_SESSION['login_error'] = $mod_strings['ERR_INVALID_PASSWORD'];
+	$_SESSION['login_error'] = ($failed_login_attempts>=$maxFailedLoginAttempts ? $mod_strings['ERR_MAXLOGINATTEMPTS'] : $mod_strings['ERR_INVALID_PASSWORD']);
 	cbEventHandler::do_action('corebos.audit.login.attempt',array(0, $focus->column_fields["user_name"], 'Login Attempt', 0, date('Y-m-d H:i:s')));
 	// go back to the login screen.
 	// create an error message for the user.

@@ -19,7 +19,7 @@ $mod_strings = array (
 	'LBL_IMPORT_STEP_3_DESCRIPTION' => 'Manejo de Registros Duplicados',
 	'LBL_IMPORT_STEP_4_DESCRIPTION' => 'Asigna las Columnas a Campos del Módulo',
 	'Skip' => 'Ignorar',
-	'Overwrite' => 'Sobreescribir',
+	'Overwrite' => 'Sobrescribir',
 	'Merge' => 'Combinar',
 	'LBL_IMPORT_SUPPORTED_FILE_TYPES' => 'Formato(s) aceptados: .CSV, .VCF',
 	'LBL_IMPORT_STEP_3_DESCRIPTION_DETAILED' => 'Selecciona esta opción para habilitar y configurar el control de duplicados',
@@ -56,6 +56,7 @@ $mod_strings = array (
 	'ERR_UNIMPORTED_RECORDS_IN_QUEUE' => 'Todavía hay registros en la cola pendientes de importar',
 	'ERR_FILE_READ_FAILED' => 'Error en la lectura del fichero',
 	'LBL_IMPORT_SCHEDULED' => 'Importación Planificada',
+	'Scheduled Import' => 'Importación Planificada',
 	'LBL_SCHEDULED_IMPORT_DETAILS' => 'La importación ha sido programada y recibirás un correo cuando termine el proceso. <br>
 										Asegúrate de que puedes recibir correos de notificación de la aplicación',
 	'ERR_DETAILS_BELOW' => 'Detalles a continuación',

@@ -23,111 +23,85 @@ function isRelatedListBlockLoaded(id,urldata){
 }
 
 function loadRelatedListBlock(urldata,target,imagesuffix) {
-	if( $('return_module').value == 'Campaigns'){
-		var selectallActivation = $(imagesuffix+'_selectallActivate').value;
-		var excludedRecords = $(imagesuffix+'_excludedRecords').value = $(imagesuffix+'_excludedRecords').value;
-		var numofRows = $(imagesuffix+'_numOfRows').value;
+	if( document.getElementById('return_module').value == 'Campaigns'){
+		var selectallActivation = document.getElementById(imagesuffix+'_selectallActivate').value;
+		var excludedRecords = document.getElementById(imagesuffix+'_excludedRecords').value = document.getElementById(imagesuffix+'_excludedRecords').value;
+		var numofRows = document.getElementById(imagesuffix+'_numOfRows').value;
 	}
 	var showdata = 'show_'+imagesuffix;
-	var showdata_element = $(showdata);
+	var showdata_element = document.getElementById(showdata);
 
 	var hidedata = 'hide_'+imagesuffix;
-	var hidedata_element = $(hidedata);
+	var hidedata_element = document.getElementById(hidedata);
 	if(isRelatedListBlockLoaded(target,urldata) == true){
-		$(target).show();
-		showdata_element.hide();
-      	hidedata_element.show();
-		$('delete_'+imagesuffix).show();
+		jQuery('#'+target).show();
+		jQuery(showdata_element).hide();
+		jQuery(hidedata_element).show();
+		jQuery('#delete_'+imagesuffix).show();
 		return;
 	}
 	var indicator = 'indicator_'+imagesuffix;
-	var indicator_element = $(indicator);
-	indicator_element.show();
-	$('delete_'+imagesuffix).show();
+	var indicator_element = document.getElementById(indicator);
+	jQuery(indicator_element).show();
+	jQuery('#delete_'+imagesuffix).show();
+
+	var target_element = document.getElementById(target);
 	
-	var target_element = $(target);
-	
-	new Ajax.Request(
-		'index.php',
-        {queue: {position: 'end', scope: 'command'},
-                method: 'post',
-                postBody: urldata,
-                onComplete: function(response) {
-					var responseData = trim(response.responseText);
-      				target_element.update(responseData);
-					target_element.show();
-      				showdata_element.hide();
-      				hidedata_element.show();
-      				indicator_element.hide();
-					if($('return_module').value == 'Campaigns'){
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?'+urldata,
+		}).done(function (response) {
+					var responseData = trim(response);
+					target_element.innerHTML=responseData;
+					jQuery(target_element).show();
+					jQuery(showdata_element).hide();
+					jQuery(hidedata_element).show();
+					jQuery(indicator_element).hide();
+					if(document.getElementById('return_module').value == 'Campaigns'){
 						var obj = document.getElementsByName(imagesuffix+'_selected_id');
 						var relatedModule = imagesuffix.replace('Campaigns_',"");
-						$(relatedModule+'_count').innerHTML = numofRows;
+						document.getElementById(relatedModule+'_count').innerHTML = numofRows;
 						if(selectallActivation == 'true'){
-							$(imagesuffix+'_selectallActivate').value='true';
-							$(imagesuffix+'_linkForSelectAll').show();
-							$(imagesuffix+'_selectAllRec').style.display='none';
-							$(imagesuffix+'_deSelectAllRec').style.display='inline';
+							document.getElementById(imagesuffix+'_selectallActivate').value='true';
+							jQuery('#'+imagesuffix+'_linkForSelectAll').show();
+							document.getElementById(imagesuffix+'_selectAllRec').style.display='none';
+							document.getElementById(imagesuffix+'_deSelectAllRec').style.display='inline';
 							var exculdedArray=excludedRecords.split(';');
 							if (obj) {
 								var viewForSelectLink = showSelectAllLink(obj,exculdedArray);
-								$(imagesuffix+'_selectCurrentPageRec').checked = viewForSelectLink;
-								$(imagesuffix+'_excludedRecords').value = $(imagesuffix+'_excludedRecords').value+excludedRecords;
+								document.getElementById(imagesuffix+'_selectCurrentPageRec').checked = viewForSelectLink;
+								document.getElementById(imagesuffix+'_excludedRecords').value = document.getElementById(imagesuffix+'_excludedRecords').value+excludedRecords;
 							}
 						}else{
-							$(imagesuffix+'_linkForSelectAll').hide();
+							jQuery('#'+imagesuffix+'_linkForSelectAll').hide();
 							//rel_toggleSelect(false,imagesuffix+'_selected_id',relatedModule);
 						}
 						updateParentCheckbox(obj,imagesuffix);
 					}
-				}
-        }
+			}
 	);
 }
 
 function hideRelatedListBlock(target, imagesuffix) {
-	
-	var showdata = 'show_'+imagesuffix;
-	var showdata_element = $(showdata);
-	
-	var hidedata = 'hide_'+imagesuffix;
-	var hidedata_element = $(hidedata);
-	
-	var target_element = $(target);
-	if(target_element){
-		target_element.hide();
-	}
-	hidedata_element.hide();
-	showdata_element.show();
-	$('delete_'+imagesuffix).hide();
+	jQuery('#'+target).hide();
+	jQuery('#hide_'+imagesuffix).hide();
+	jQuery('#show_'+imagesuffix).show();
+	jQuery('#delete_'+imagesuffix).hide();
 }
 
 function disableRelatedListBlock(urldata,target,imagesuffix){
-	var showdata = 'show_'+imagesuffix;
-	var showdata_element = $(showdata);
-
-	var hidedata = 'hide_'+imagesuffix;
-	var hidedata_element = $(hidedata);
-
-	var indicator = 'indicator_'+imagesuffix;
-	var indicator_element = $(indicator);
-	indicator_element.show();
-	
-	var target_element = $(target);
-	new Ajax.Request(
-		'index.php',
-        {queue: {position: 'end', scope: 'command'},
-                method: 'post',
-                postBody: urldata,
-                onComplete: function(response) {
-					var responseData = trim(response.responseText);
-					target_element.hide();
-					$('delete_'+imagesuffix).hide();
-      				hidedata_element.hide();
-					showdata_element.show();
-      				indicator_element.hide();
-				}
-        }
+	jQuery('#indicator_'+imagesuffix).show();
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?'+urldata,
+		}).done(function (response) {
+			var responseData = trim(response);
+			jQuery('#'+target).hide();
+			jQuery('#delete_'+imagesuffix).hide();
+			jQuery('#hide_'+imagesuffix).hide();
+			jQuery('#show_'+imagesuffix).show();
+			jQuery('#indicator_'+imagesuffix).hide();
+		}
 	);
 }
 
@@ -147,11 +121,11 @@ function disableRelatedListBlock(urldata,target,imagesuffix){
 					<a href="javascript:loadRelatedListBlock(
 						'module={$MODULE}&action={$MODULE}Ajax&file=DetailViewAjax&record={$ID}&ajxaction=LOADRELATEDLIST&header={$header}&relation_id={$detail.relationId}&actions={$detail.actions}&parenttab={$CATEGORY}',
 						'tbl_{$MODULE}_{$header|replace:' ':''}','{$MODULE}_{$header|replace:' ':''}');">
-						<img id="show_{$MODULE}_{$header|replace:' ':''}" src="{'inactivate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;" alt="Display" title="Display"/>
+						<img id="show_{$MODULE}_{$header|replace:' ':''}" src="{'inactivate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;" alt="{'LBL_Show'|@getTranslatedString:'Settings'}" title="{'LBL_Show'|@getTranslatedString:'Settings'}"/>
 					</a>
 					<a href="javascript:hideRelatedListBlock('tbl_{$MODULE}_{$header|replace:' ':''}','{$MODULE}_{$header|replace:' ':''}');">
-						<img id="hide_{$MODULE}_{$header|replace:' ':''}" src="{'activate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;display:none;" alt="Display" title="Display"/>
-					</a>					
+						<img id="hide_{$MODULE}_{$header|replace:' ':''}" src="{'activate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;display:none;" alt="{'LBL_Show'|@getTranslatedString:'Settings'}" title="{'LBL_Show'|@getTranslatedString:'Settings'}"/>
+					</a>
 				</span>
 				&nbsp;{$HEADERLABEL}&nbsp;
 				<img id="indicator_{$MODULE}_{$header|replace:' ':''}" style="display:none;" src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" />
@@ -180,11 +154,9 @@ function disableRelatedListBlock(urldata,target,imagesuffix){
 {if $SELECTEDHEADERS neq '' && $header|in_array:$SELECTEDHEADERS}
 <script type='text/javascript'>
 {if $smarty.request.ajax neq 'true'}
-	if(typeof(Event) == 'function') {ldelim}
-	Event.observe(window, 'load', function(){ldelim}
+	jQuery( window ).on('load',function() {ldelim}
 		loadRelatedListBlock('module={$MODULE}&action={$MODULE}Ajax&file=DetailViewAjax&record={$ID}&ajxaction=LOADRELATEDLIST&header={$header}&relation_id={$detail.relationId}&actions={$detail.actions}&parenttab={$CATEGORY}&start={$smarty.request.start|@vtlib_purify}','tbl_{$MODULE}_{$header|replace:' ':''}','{$MODULE}_{$header|replace:' ':''}');
 	{rdelim});
-	{rdelim}
 {else}
 	loadRelatedListBlock('module={$MODULE}&action={$MODULE}Ajax&file=DetailViewAjax&record={$ID}&ajxaction=LOADRELATEDLIST&header={$header}&relation_id={$detail.relationId}&actions={$detail.actions}&parenttab={$CATEGORY}&start={$smarty.request.start|@vtlib_purify}','tbl_{$MODULE}_{$header|replace:' ':''}','{$MODULE}_{$header|replace:' ':''}');
 {/if}

@@ -47,7 +47,7 @@ $mod_strings = array(
 'LBL_SET_EXPRESSION'=>'Expresión Asignación',
 
 'LBL_MANUAL'=>'Sistema',
-
+'LBL_RECORD_ACCESS_CONTROL' => 'Control de Acceso a Registro',
 'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL'=>'Añadir Condición de Grupo',
 
 'VTUpdateFieldsTask' => 'Actualizar Campos',
@@ -98,6 +98,8 @@ $mod_strings = array(
 'Relate Service' => 'Relacionar Servicio',
 'Relate with AccountVendor' => 'Relacionar con Cuenta/Proveedor',
 'Relate with Contact' => 'Relacionar con Contacto',
+'CBDeleteRelatedTask' => 'Eliminar Registros Relacionados',
+'CBSelectcbMap' => 'Selecciona Regla de Negocio',
 
 'LBL_EVENTNAME' => 'Nombre de Evento',
 'LBL_DESCRIPTION' => 'Descripción',
@@ -123,6 +125,9 @@ $mod_strings = array(
 'LBL_MONTHLY_BY_DATE' => 'Mensual por Fecha',
 'LBL_MONTHLY_BY_WEEKDAY' => 'Mensual por Día de Semana',
 'LBL_YEARLY' => 'Cada año',
+'LBL_MINUTES_INTERVAL'=>'Intervalo de Minutos',
+'LBL_EVERY_MINUTEINTERVAL'=>'Cada',
+'LBL_MINUTES'=>'minutos',
 'LBL_SPECIFIC_DATE' => 'En esta fecha',
 'LBL_CHOOSE_DATE' => 'Elige Fecha',
 'LBL_SELECT_MONTH_AND_DAY' => 'Selecciona Mes y Día',

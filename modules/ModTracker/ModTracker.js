@@ -35,9 +35,9 @@ function delRow() {
 }
 
 function searchModTrackerResult() {
-    var filterRows = $('addModTrackerSrc').rows.length;
+    var filterRows = document.getElementById('addModTrackerSrc').rows.length;
     var urlstring='';
-    var reportname = $('reportname').value;
+    var reportname = document.getElementById('reportname').value;
     for(i=0; i<filterRows; i++) {
         var modtrac_searchfield = getObj("modtrac_fields"+i);
         var modtrac_condition = getObj("modtrac_condition"+i);
@@ -47,34 +47,28 @@ function searchModTrackerResult() {
         urlstring = urlstring+'condition'+i+'='+modtrac_condition.value.replace(/\\'/g,'')+'&';
         urlstring = urlstring+'value'+i+'='+encodeURIComponent(modtrac_searchfieldvalue.value)+'&';
     }
-    $("status").style.display="inline";
-    new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody: 'module=ModTracker&action=ModTrackerAjax&ajax=true&file=Report&'+urlstring+'&filtercount='+filterRows+'&reportname='+reportname,
-			onComplete: function(response) {
-			$("status").style.display="none";
-                        $("modtrac_reportInnerContents").innerHTML= response.responseText;
-                    }
-	       }
-        );
+    document.getElementById("status").style.display="inline";
+    jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=ModTracker&action=ModTrackerAjax&ajax=true&file=Report&'+urlstring+'&filtercount='+filterRows+'&reportname='+reportname
+	}).done(function (response) {
+			document.getElementById("status").style.display="none";
+			document.getElementById("modtrac_reportInnerContents").innerHTML= response;
+			}
+		);
 }
 
 function getListViewModTrackerEntries_js(reportname, url) {
-     var filterRows = $('addModTrackerSrc').rows.length;
-    $("status").style.display="inline";
-    new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody: 'module=ModTracker&action=ModTrackerAjax&ajax=true&file=Report&'+url+'&reportname='+reportname+'&filtercount='+filterRows,
-			onComplete: function(response) {
-			$("status").style.display="none";
-                        $("modtrac_reportInnerContents").innerHTML= response.responseText;
-                    }
-	       }
-        );
+     var filterRows = document.getElementById('addModTrackerSrc').rows.length;
+    document.getElementById("status").style.display="inline";
+    jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=ModTracker&action=ModTrackerAjax&ajax=true&file=Report&'+url+'&reportname='+reportname+'&filtercount='+filterRows
+	}).done(function (response) {
+			document.getElementById("status").style.display="none";
+			document.getElementById("modtrac_reportInnerContents").innerHTML= response;
+			}
+		);
 }
 
 
@@ -83,7 +77,7 @@ function goToURL( url ) {
 }
 
 function getFilterList() {
-    var filterRows = $('addModTrackerSrc').rows.length;
+    var filterRows = document.getElementById('addModTrackerSrc').rows.length;
     var urlstring = '';
     if(filterRows == 1) {
         var value = getObj("modtrac_src_value0").value;
@@ -104,29 +98,26 @@ function getFilterList() {
 }
 
 function ModTracker_CreatePDF(reportname) {
-    var filterRows = $('addModTrackerSrc').rows.length;
+    var filterRows = document.getElementById('addModTrackerSrc').rows.length;
     urlstring = getFilterList();
     return "index.php?module=ModTracker&action=ModTrackerAjax&file=CreateModTrackerPDF&"+urlstring+"&reportname="+reportname+"&mode=createpdf&filtercount="+filterRows;
 }
 
 function ModTracker_CreateXL(reportname) {
-    var filterRows = $('addModTrackerSrc').rows.length;
+    var filterRows = document.getElementById('addModTrackerSrc').rows.length;
     urlstring = getFilterList();
     return "index.php?module=ModTracker&action=ModTrackerAjax&file=CreateModTrackerXL&"+urlstring+"&reportname="+reportname+"&mode=createxl&filtercount="+filterRows;
 }
 
 function toggleModule_mod(tabid, action) {
-$('status').style.display='block';
+document.getElementById('status').style.display='block';
 var data = 'module=ModTracker&action=ModTrackerAjax&file=BasicSettings&tabid='+tabid+'&status='+action+'&ajax=true';
-new Ajax.Request(
-		'index.php',
-        {queue: {position: 'end', scope: 'command'},
-        	method: 'post',
-            postBody: data,
-            onComplete: function(response) {
-				$('status').style.display='none';
-				$('modTrackerContents').innerHTML = response.responseText;
+jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?'+data
+}).done(function (response) {
+				document.getElementById('status').style.display='none';
+				document.getElementById('modTrackerContents').innerHTML = response;
 			}
-		}
 	);
 }

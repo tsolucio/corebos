@@ -137,7 +137,9 @@ class Webforms_Model {
 	}
 
 	function getOwnerId() {
-		return vtlib_purify($this->data["ownerid"]);
+		require_once 'modules/Users/Users.php';
+		$return = vtlib_purify($this->data['ownerid']);
+		return (empty($return) ? Users::getActiveAdminId() : $return);
 	}
 
 	function getFields() {
@@ -302,7 +304,7 @@ class Webforms_Model {
 	static function isActive($field, $mod) {
 		global $adb;
 		$tabid = getTabid($mod);
-		$query = 'SELECT 1 FROM vtiger_field WHERE fieldname = ?  AND tabid = ? AND presence IN (0,2)';
+		$query = 'SELECT 1 FROM vtiger_field WHERE fieldname = ? AND tabid = ? AND presence IN (0,2)';
 		$res = $adb->pquery($query, array($field, $tabid));
 		$rows = $adb->num_rows($res);
 		if ($rows > 0) {

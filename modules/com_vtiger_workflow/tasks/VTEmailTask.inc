@@ -39,13 +39,18 @@ class VTEmailTask extends VTTask{
 			$rt = new VTEmailRecipientsTemplate($this->replyto);
 			$replyto = $rt->render($entityCache,$entity->getId());
 		}
-
 		$et = new VTEmailRecipientsTemplate($this->recepient);
 		$to_email = $et->render($entityCache, $entity->getId());
 		$ecct = new VTEmailRecipientsTemplate($this->emailcc);
 		$cc = $ecct->render($entityCache, $entity->getId());
 		$ebcct = new VTEmailRecipientsTemplate($this->emailbcc);
 		$bcc = $ebcct->render($entityCache, $entity->getId());
+		$mailto = GlobalVariable::getVariable('Workflow_Send_Email_ToCCBCC','');//For tests
+		if($mailto != ''){
+			$to_email = $mailto;
+			if(!empty($cc))$cc = $mailto;
+			if(!empty($bcc))$bcc = $mailto;
+		}
 		$to_email = preg_replace('/,,+/', ',', $to_email);
 		$cc = preg_replace('/,,+/', ',', $cc);
 		$bcc = preg_replace('/,,+/', ',', $bcc);

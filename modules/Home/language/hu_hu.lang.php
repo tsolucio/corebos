@@ -96,6 +96,7 @@ $mod_strings = array(
 	'LBL_HOME_REPORT_NAME' => 'Jelentés neve',
 	'LBL_HOME_REPORT_TYPE' => 'Jelentés típusa',
 	'LBL_DEFAULT_WIDGET' => 'Alapértelmezett dobozok',
-	'LBL_NO_WIDGETS_HIDDEN' => 'Nincsen alapértelmezett doboz elrejtve'
+	'LBL_NO_WIDGETS_HIDDEN' => 'Nincsen alapértelmezett doboz elrejtve',
+	'UpdateExchangeRate' => 'Update Exchange Rate',
 );
 ?>

@@ -71,9 +71,9 @@ if(PerformancePrefs::getBoolean('DETAILVIEW_RECORD_NAVIGATION', true) && isset($
 	$recordNavigationInfo = ListViewSession::getListViewNavigation($focus->id);
 	VT_detailViewNavigation($smarty,$recordNavigationInfo,$focus->id);
 }
-if(isPermitted('SalesOrder','EditView',$record) == 'yes')
+if(isPermitted('SalesOrder','CreateView',$record) == 'yes')
 	$smarty->assign('CONVERTSALESORDER','permitted');
-if(isPermitted('Invoice','EditView',$record) == 'yes')
+if(isPermitted('Invoice','CreateView',$record) == 'yes')
 	$smarty->assign('CONVERTINVOICE','permitted');
 $smarty->assign('CONVERTMODE','quotetoinvoice');
 //Get the associated Products and then display above Terms and Conditions
@@ -100,12 +100,16 @@ if($singlepane_view == 'true') {
 	$smarty->assign("SELECTEDHEADERS", $open_related_modules);
 }
 
-if(isPermitted($currentModule, 'EditView', $record) == 'yes')
-	$smarty->assign('EDIT_DUPLICATE', 'permitted');
+if(isPermitted($currentModule, 'CreateView', $record) == 'yes')
+	$smarty->assign('CREATE_PERMISSION', 'permitted');
 if(isPermitted($currentModule, 'Delete', $record) == 'yes')
 	$smarty->assign('DELETE', 'permitted');
 
-$smarty->assign('BLOCKS', getBlocks($currentModule,'detail_view','',$focus->column_fields));
+$blocks = getBlocks($currentModule,'detail_view','',$focus->column_fields);
+$custom_blocks = getCustomBlocks($currentModule,'detail_view');
+$smarty->assign('BLOCKS', $blocks);
+$smarty->assign('CUSTOMBLOCKS', $custom_blocks);
+$smarty->assign('FIELDS',$focus->column_fields);
 
 // Gather the custom link information to display
 include_once('vtlib/Vtiger/Link.php');

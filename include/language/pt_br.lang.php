@@ -201,6 +201,7 @@ $app_strings = array (
 'LBL_EXPORT' => 'Exportar',
 'LBL_EXPORT_ALL' => 'Exportar tudo',
 'LBL_QUICK_CREATE' => 'Criar Rápido',
+'QuickRelatedList' => 'Related Modules',
 'Export' => 'Exportar',
 'Import' => 'Importar',
 'Merge' => 'Mesclar',
@@ -666,6 +667,7 @@ $app_strings = array (
 
 //Added for 5.0.3
 'Files_Maximum_6'=>'Máximo 6 Arquivos',
+'Files_Maximum'=>'Máximo Arquivos: ',
 'To'=>'Para:',
 
 'Date & Time' => 'Data & Hora',
@@ -1188,7 +1190,6 @@ $app_strings = array (
 
 //added for find duplicate
 'LBL_DUPLICATE_DATA_IN'=>'Duplicar',
-'LBL_DELETE'=>'Apagar',
 'LBL_MERGE_SELECT'=>'Selecionar Mesclagem',
 'LBL_MERGE_DATA_IN'=>'Mesclar Registros em',
 'LBL_MERGE'=>'Mesclar',

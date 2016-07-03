@@ -9,11 +9,7 @@
  ********************************************************************************/
 require_once('include/utils/utils.php');
 require_once('include/utils/UserInfoUtil.php');
-global $mod_strings;
-global $app_strings;
-global $app_list_strings;
-
-global $theme;
+global $mod_strings, $app_strings, $app_list_strings, $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 
@@ -26,20 +22,19 @@ foreach($defSharingPermissionData as $tab_id => $def_perr)
 {
 
 	$entity_name = getTabname($tab_id);
-	if($tab_id == 6)
-    {
-    	$cont_name = getTabname(4);
-        $entity_name .= ' & '.$cont_name;
-    }
+	if($tab_id == 6) {
+		$cont_name = getTabname(4);
+		$entity_name .= ' & '.$cont_name;
+	}
 
 	$entity_perr = getDefOrgShareActionName($def_perr);
 
 	$access_privileges[] = $entity_name;
 	$access_privileges[] = $entity_perr;
-	if($entity_perr != 'Private')	
+	if($entity_perr != 'Private')
 		$access_privileges[] = $mod_strings['LBL_DESCRIPTION_'.$entity_perr] . $app_strings[$entity_name];
 	else
-	        $access_privileges[] = $mod_strings['LBL_USR_CANNOT_ACCESS'] . $app_strings[$entity_name];
+		$access_privileges[] = $mod_strings['LBL_USR_CANNOT_ACCESS'] . $app_strings[$entity_name];
 	$row++;
 }
 $access_privileges=array_chunk($access_privileges,3);
@@ -90,7 +85,15 @@ $othermodules = getSharingModuleList(Array('Contacts'));
 if(!empty($othermodules)) {
 	foreach($othermodules as $moduleresname) {
 		if(!isset($custom_access[$moduleresname])) {
-			$custom_access[$moduleresname] = getSharingRuleList($moduleresname);
+			$sr4module = getSharingRuleList($moduleresname);
+			if (isset($_REQUEST['sortrulesby'])) {
+				usort($sr4module, function($a,$b) {
+					$sba = substr($a[$_REQUEST['sortrulesby']],strpos($a[$_REQUEST['sortrulesby']], '>'));
+					$sbb = substr($b[$_REQUEST['sortrulesby']],strpos($b[$_REQUEST['sortrulesby']], '>'));
+					return $sba < $sbb ? -1 : 1;
+				});
+			}
+			$custom_access[$moduleresname] = $sr4module;
 		}
 	}
 }
@@ -108,7 +111,7 @@ function getSharingRuleList($module)
 
 	$tabid=getTabid($module);
 	$dataShareTableArray=getDataShareTableandColumnArray();
-	
+
 	$i=1;
 	$access_permission = array();
 	foreach($dataShareTableArray as $table_name => $colName)
@@ -151,7 +154,6 @@ function getSharingRuleList($module)
 
 			$i++;
 		}
-	
 	}
 	if(is_array($access_permission))
 		$access_permission = array_chunk($access_permission,4);

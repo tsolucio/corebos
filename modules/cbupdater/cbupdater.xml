@@ -506,4 +506,173 @@
 	<classname>PdoDiscontinuedToCheckbox</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete Related records task</description>
+	<filename>build/changeSets/add_workflow_delrelated.php</filename>
+	<classname>add_workflow_delrelated</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add sort column to sort workflow tasks</description>
+	<filename>build/changeSets/sortworkflowtasks.php</filename>
+	<classname>sortworkflowtasks</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Add cost price to Products and Services</description>
+	<filename>build/changeSets/addCostPrice.php</filename>
+	<classname>addCostPrice</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Maximum 6 decimal precision on currency</description>
+	<filename>build/changeSets/addNumberDecimalPlaces.php</filename>
+	<classname>addNumberDecimalPlaces</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add and fix Currencies</description>
+	<filename>build/changeSets/addfixCurrencies01.php</filename>
+	<classname>addfixCurrencies01</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Install Business Mapping and Conditions</description>
+	<filename>build/changeSets/installcbmap.php</filename>
+	<classname>installcbmap</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Business Mapping and Conditions Target Module field</description>
+	<filename>build/changeSets/cbMapTargetModuleField.php</filename>
+	<classname>cbMapTargetModuleField</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Define new Business Map types</description>
+	<filename>build/changeSets/cbMapAddMapTypes.php</filename>
+	<classname>cbMapAddMapTypes</classname>
+	<systemupdate>true</systemupdate>
+	<continuous>true</continuous>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Select Business Rules workflow task</description>
+	<filename>build/changeSets/add_workflow_selectcbmap.php</filename>
+	<classname>add_workflow_selectcbmap</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>kikojover</author>
+	<description>add half-year recurring frequency to recurring Invoices from Salesorder</description>
+	<filename>build/changeSets/add_halfyear_recurring_invoice.php</filename>
+	<classname>add_halfyear_recurring_invoice</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Fix Calendar Start and End Date On Reports, error with ampersand</description>
+	<filename>build/changeSets/fixCalendarStartEndDateOnReports.php</filename>
+	<classname>fixCalendarStartEndDateOnReports</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Separate Create and Edit Permissions</description>
+	<filename>build/changeSets/separateCreateAndEditPermissions.php</filename>
+	<classname>separateCreateAndEditPermissions</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Workflow custom method to update assigned to of contact on contact save</description>
+	<filename>build/changeSets/workflow_contactassignedtoaccount.php</filename>
+	<classname>workflow_contactassignedtoaccount</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Update Mobile Module</description>
+	<filename>build/changeSets/updateMobileModuleToCrmNow.php</filename>
+	<classname>updateMobileModuleToCrmNow</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>User Failed Login Attempts</description>
+	<filename>build/changeSets/UserFailedLoginAttempts.php</filename>
+	<classname>UserFailedLoginAttempts</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Eliminate Calendar jquery loading. Use application jquery</description>
+	<filename>build/changeSets/CalendarDeletejQueryLinks.php</filename>
+	<classname>CalendarDeletejQueryLinks</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>kikojover</author>
+	<description>Add recurring periods to SalesOrder</description>
+	<filename>build/changeSets/addRecurringSO.php</filename>
+	<classname>addRecurringSO</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>cron Expire User Password After Days</description>
+	<filename>build/changeSets/cronExpirePasswordAfterDays.php</filename>
+	<classname>cronExpirePasswordAfterDays</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Permissions: fixes found while testing</description>
+	<filename>build/changeSets/permissions_fixesfoundwhiletesting.php</filename>
+	<classname>permissions_fixesfoundwhiletesting</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>erimatraku</author>
+	<description>Add Minute Interval for wf shceduling</description>
+	<filename>build/changeSets/minuteintervalwfsched.php</filename>
+	<classname>minuteintervalwfsched</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Fix types for hours and units in HelpDesk and ServiceContracts</description>
+	<filename>build/changeSets/changeHoursAndUse_UnitsFields.php</filename>
+	<classname>changeHoursAndUse_UnitsFields</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>WebService: correct Convert Lead parameters</description>
+	<filename>build/changeSets/fixConvertLeadWebserviceParameters.php</filename>
+	<classname>fixConvertLeadWebserviceParameters</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Users: set Default Values For User Fields</description>
+	<filename>build/changeSets/setDefaultValuesForUserFields.php</filename>
+	<classname>setDefaultValuesForUserFields</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Emails: make shareble by profile settings</description>
+	<filename>build/changeSets/makeEmailsShareable.php</filename>
+	<classname>makeEmailsShareable</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

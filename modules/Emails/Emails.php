@@ -74,7 +74,6 @@ class Emails extends CRMEntity {
 	function save_module($module) {
 		global $adb;
 		//Inserting into seactivityrel
-		//modified by Richie as raju's implementation broke the feature for addition of webmail to vtiger_crmentity.need to be more careful in future while integrating code
 		if ($_REQUEST['module'] == "Emails" && $_REQUEST['smodule'] != 'webmails' && (!$this->plugin_save)) {
 			if ($_REQUEST['currentid'] != '') {
 				$actid = $_REQUEST['currentid'];
@@ -122,7 +121,6 @@ class Emails extends CRMEntity {
 
 
 		//Insert into cntactivity rel
-
 		if (isset($this->column_fields['contact_id']) && $this->column_fields['contact_id'] != '') {
 			$this->insertIntoEntityTable('vtiger_cntactivityrel', $module);
 		} elseif ($this->column_fields['contact_id'] == '' && $insertion_mode == "edit") {
@@ -130,11 +128,10 @@ class Emails extends CRMEntity {
 		}
 
 		//Inserting into attachment
-
 		$this->insertIntoAttachment($this->id, $module);
 	}
 
-	function insertIntoAttachment($id, $module) {
+	function insertIntoAttachment($id, $module, $direct_import=false) {
 		global $log, $adb;
 		$log->debug("Entering into insertIntoAttachment($id,$module) method.");
 
@@ -174,7 +171,7 @@ class Emails extends CRMEntity {
 				$adb->query($query);
 			}
 		}
-		if ($_REQUEST['att_module'] == 'Webmails') {
+		if (isset($_REQUEST['att_module']) and $_REQUEST['att_module'] == 'Webmails') {
 			require_once("modules/Webmails/Webmails.php");
 			require_once("modules/Webmails/MailParse.php");
 			require_once('modules/Webmails/MailBox.php');
@@ -196,6 +193,15 @@ class Emails extends CRMEntity {
 			}
 		}
 		$log->debug("Exiting from insertIntoAttachment($id,$module) method.");
+	}
+
+	public static function EmailHasBeenSent($emailid) {
+		global $adb;
+		if (strpos($emailid, 'x')>0) list($wsid,$emailid) = explode('x', $emailid);
+		$sql = 'select email_flag from vtiger_emaildetails where emailid=?';
+		$result = $adb->pquery($sql, array($emailid));
+		$email_flag = $adb->query_result($result, 0, 'email_flag');
+		return  ($email_flag != 'SAVED');
 	}
 
 	function saveForwardAttachments($id, $module, $file_details) {
@@ -253,7 +259,7 @@ class Emails extends CRMEntity {
 	* @param - $secmodule secondary module name
 	* returns the query string formed on fetching the related data for report for secondary module
 	*/
-	function generateReportsSecQuery($module, $secmodule, $queryPlanner){
+	function generateReportsSecQuery($module, $secmodule){
 		$query = " LEFT JOIN vtiger_seactivityrel ON vtiger_crmentity.crmid=vtiger_seactivityrel.crmid";
 		$query .= " LEFT JOIN vtiger_activity ON vtiger_seactivityrel.activityid=vtiger_activity.activityid and vtiger_activity.activitytype = 'Emails'";
 		$query .= " LEFT JOIN vtiger_crmentity as vtiger_crmentityEmails ON vtiger_crmentityEmails.crmid=vtiger_activity.activityid and vtiger_crmentityEmails.deleted = 0";
@@ -360,9 +366,7 @@ class Emails extends CRMEntity {
 		return $order_by;
 	}
 
-	// Mike Crowe Mod --------------------------------------------------------
-
-	/** Returns a list of the associated vtiger_users */
+	/** Returns a list of the associated users */
 	function get_users($id) {
 		global $log;
 		$log->debug("Entering get_users(" . $id . ") method ...");
@@ -525,10 +529,6 @@ class Emails extends CRMEntity {
 		$this->db->pquery('UPDATE vtiger_crmentity SET modifiedtime = ? WHERE crmid = ?', array(date('y-m-d H:i:d'), $id));
 	}
 
-	public function getNonAdminAccessControlQuery($module, $user, $scope='') {
-		return " and vtiger_crmentity$scope.smownerid=$user->id ";
-	}
-
 }
 
 /** Function to get the emailids for the given ids form the request parameters
@@ -641,11 +641,9 @@ function get_to_emailids($module) {
 
 //added for attach the generated pdf with email
 function pdfAttach($obj, $module, $file_name, $id) {
-	global $log;
+	global $log, $adb, $current_user, $upload_badext;
 	$log->debug("Entering into pdfAttach() method.");
 
-	global $adb, $current_user;
-	global $upload_badext;
 	$date_var = date('Y-m-d H:i:s');
 
 	$ownerid = $obj->column_fields['assigned_user_id'];

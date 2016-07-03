@@ -131,7 +131,7 @@ function InventorySelectAllServices(mod,z,image_pth)
 			if (document.selectall.selected_id.checked) {
 				idstring = document.selectall.selected_id.value;
 				c = document.selectall.selected_id.value;
-				var prod_array = JSON.parse($('popup_product_'+c).attributes['vt_prod_arr'].nodeValue);
+				var prod_array = JSON.parse(document.getElementById('popup_product_'+c).attributes['vt_prod_arr'].nodeValue);
 				var prod_id = prod_array['entityid'];
 				var prod_name = prod_array['prodname'];
 				var unit_price = prod_array['unitprice'];
@@ -150,7 +150,7 @@ function InventorySelectAllServices(mod,z,image_pth)
 				if(document.selectall.selected_id[i].checked) {
 					idstring = document.selectall.selected_id[i].value+";"+idstring;
 					c = document.selectall.selected_id[i].value;
-					var prod_array = JSON.parse($('popup_product_'+c).attributes['vt_prod_arr'].nodeValue);
+					var prod_array = JSON.parse(document.getElementById('popup_product_'+c).attributes['vt_prod_arr'].nodeValue);
 					var prod_id = prod_array['entityid'];
 					var prod_name = prod_array['prodname'];
 					var unit_price = prod_array['unitprice'];
@@ -338,4 +338,26 @@ function servicePickList(currObj,module, row_no) {
     	window.open("index.php?module=Services&action=Popup&html=Popup_picker&select=enable&form=HelpDeskEditView&popuptype="+popuptype+"&curr_row="+rowId+"&relmod_id="+record_id+"&parent_module=Accounts&return_module="+module+"&currencyid="+currencyid,"productWin","width=640,height=600,resizable=0,scrollbars=0,status=1,top=150,left=200");
     else
 		window.open("index.php?module=Services&action=Popup&html=Popup_picker&select=enable&form=HelpDeskEditView&popuptype="+popuptype+"&curr_row="+rowId+"&return_module="+module+"&currencyid="+currencyid,"productWin","width=640,height=600,resizable=0,scrollbars=0,status=1,top=150,left=200");
+}
+
+function AssetssetValueFromCapture(recordid,value,target_fieldname) {
+	if(target_fieldname=="invoiceid") {
+		var url = "module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getFieldValuesFromRecord&getTheseFields=account_id,Accounts.accountname&getFieldValuesFrom="+recordid;
+		new Ajax.Request(
+			'index.php',
+			{
+				queue: {
+					position: 'end',
+					scope: 'command'
+				},
+				method: 'post',
+				postBody:url,
+				onComplete: function(response) {
+					var str = JSON.parse(response.responseText);
+					document.EditView.account.value = str["accountid"];
+					document.EditView.account_display.value = str["Accounts.accountname"];
+				}
+			}
+			);
+	}
 }

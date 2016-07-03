@@ -114,6 +114,8 @@ class HelpDesk extends CRMEntity {
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id,$module);
 		}
+		if(isset($_REQUEST['mode']) && $_REQUEST['mode'] =='Import')
+			$this->column_fields['comments'] = '';
 		//Inserting into Ticket Comment Table
 		$this->insertIntoTicketCommentTable("vtiger_ticketcomments",$module);
 
@@ -174,7 +176,7 @@ class HelpDesk extends CRMEntity {
 	 * @param int $id - entity id to which the files to be uploaded
 	 * @param string $module - the current module name
 	*/
-	function insertIntoAttachment($id,$module)
+	function insertIntoAttachment($id,$module, $direct_import=false)
 	{
 		global $log, $adb;
 		$log->debug("Entering into insertIntoAttachment($id,$module) method.");
@@ -228,7 +230,7 @@ class HelpDesk extends CRMEntity {
 						" value='". getTranslatedString('LBL_ADD_NEW'). " " . getTranslatedString('LBL_TODO', $related_module) ."'>&nbsp;";
 				}
 				if(getFieldVisibilityPermission('Events',$current_user->id,'parent_id', 'readwrite') == '0') {
-					$button .= "<input title='".getTranslatedString('LBL_NEW'). " ". getTranslatedString('LBL_TODO', $related_module) ."' class='crmbutton small create'" .
+					$button .= "<input title='".getTranslatedString('LBL_NEW'). " ". getTranslatedString('LBL_EVENT', $related_module) ."' class='crmbutton small create'" .
 						" onclick='this.form.action.value=\"EventEditView\";this.form.module.value=\"Calendar4You\";this.form.return_module.value=\"$this_module\";this.form.activity_mode.value=\"Events\";' type='submit' name='button'" .
 						" value='". getTranslatedString('LBL_ADD_NEW'). " " . getTranslatedString('LBL_EVENT', $related_module) ."'>";
 				}

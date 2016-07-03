@@ -6,20 +6,15 @@
 * The Initial Developer of the Original Code is vtiger.
 * Portions created by vtiger are Copyright (C) vtiger.
 * All Rights Reserved.
-*
 ********************************************************************************/
-
 require_once('include/logging.php');
 require_once('include/ListView/ListViewSession.php');
 
-/**initializes Related ListViewSession
- * Portions created by vtigerCRM are Copyright (C) vtigerCRM.
- * All Rights Reserved.
- */
+/**initializes Related ListViewSession */
 class RelatedListViewSession {
 
 	var $module = null;
-	var $start = null;
+	var $relstart = null;
 	var $sorder = null;
 	var $sortby = null;
 	var $page_view = null;
@@ -27,27 +22,24 @@ class RelatedListViewSession {
 	function RelatedListViewSession() {
 		global $log,$currentModule;
 		$log->debug("Entering RelatedListViewSession() method ...");
-		
 		$this->module = $currentModule;
-		$this->start =1;
+		$this->relstart =1;
 	}
-	
+
 	public static function addRelatedModuleToSession($relationId, $header) {
 		global $currentModule;
 		$_SESSION['relatedlist'][$currentModule][$relationId] = $header;
-		$start = RelatedListViewSession::getRequestStartPage();
-		RelatedListViewSession::saveRelatedModuleStartPage($relationId, $start);
+		$relstart = RelatedListViewSession::getRequestStartPage();
+		RelatedListViewSession::saveRelatedModuleStartPage($relationId, $relstart);
 	}
-	
+
 	public static function removeRelatedModuleFromSession($relationId, $header) {
-		global $currentModule;		
-		
+		global $currentModule;
 		unset($_SESSION['relatedlist'][$currentModule][$relationId]);
 	}
-	
-	public static function getRelatedModulesFromSession() {
-		global $currentModule;		
 
+	public static function getRelatedModulesFromSession() {
+		global $currentModule;
 		$allRelatedModuleList = isPresentRelatedLists($currentModule);
 		$moduleList = array();
 		if(is_array($_SESSION['relatedlist'][$currentModule])){
@@ -59,58 +51,55 @@ class RelatedListViewSession {
 		}
 		return $moduleList;
 	}
-	
-	public static function saveRelatedModuleStartPage($relationId, $start) {
+
+	public static function saveRelatedModuleStartPage($relationId, $relstart) {
 		global $currentModule;
-		
-		$_SESSION['rlvs'][$currentModule][$relationId]['start'] = $start;
+		$_SESSION['rlvs'][$currentModule][$relationId]['relstart'] = $relstart;
 	}
-	
+
 	public static function getCurrentPage($relationId) {
 		global $currentModule;
-		
-		if(!empty($_SESSION['rlvs'][$currentModule][$relationId]['start'])){
-			return $_SESSION['rlvs'][$currentModule][$relationId]['start'];
+		if(!empty($_SESSION['rlvs'][$currentModule][$relationId]['relstart'])){
+			return $_SESSION['rlvs'][$currentModule][$relationId]['relstart'];
 		}
 		return 1;
 	}
-	
+
 	public static function getRequestStartPage(){
-		$start = $_REQUEST['start'];
-		if(!is_numeric($start)){
-			$start = 1;
+		$relstart = $_REQUEST['relstart'];
+		if(!is_numeric($relstart)){
+			$relstart = 1;
 		}
-		if($start < 1){
-			$start = 1;
+		if($relstart < 1){
+			$relstart = 1;
 		}
-		$start = ceil($start);
-		return $start;
+		$relstart = ceil($relstart);
+		return $relstart;
 	}
-	
+
 	public static function getRequestCurrentPage($relationId, $query) {
-		global $list_max_entries_per_page, $adb;
-		
-		$start = 1;
-		if(!empty($_REQUEST['start'])){
-			$start = $_REQUEST['start'];
-			if($start == 'last'){
+		global $list_max_entries_per_page, $adb,$log;
+		$relstart = 1;
+		if(!empty($_REQUEST['relstart'])){
+			$relstart = $_REQUEST['relstart'];
+			if($relstart == 'last'){
 				$count_result = $adb->query( mkCountQuery( $query));
-				$noofrows = $adb->query_result($count_result,0,"count");				
+				$noofrows = $adb->query_result($count_result,0,'count');
 				if($noofrows > 0){
-					$start = ceil($noofrows/$list_max_entries_per_page);
+					$relstart = ceil($noofrows/$list_max_entries_per_page);
 				}
 			}
-			if(!is_numeric($start)){
-				$start = 1;
-			}elseif($start < 1){
-				$start = 1;
+			if(!is_numeric($relstart)){
+				$relstart = 1;
+			}elseif($relstart < 1){
+				$relstart = 1;
 			}
-			$start = ceil($start);
+			$relstart = ceil($relstart);
 		}else {
-			$start = RelatedListViewSession::getCurrentPage($relationId);
+			$relstart = RelatedListViewSession::getCurrentPage($relationId);
 		}
-		return $start;
+		return $relstart;
 	}
-	
+
 }
 ?>

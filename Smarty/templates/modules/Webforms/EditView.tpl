@@ -61,7 +61,7 @@
 											{if $WEBFORM->hasId()}
 											<input type="hidden" name="id" value={$WEBFORM->getId()}></input>
 											{/if}
-											<table   class="small" border="0" cellpadding="0" cellspacing="0" width="100%">
+											<table class="small" border="0" cellpadding="0" cellspacing="0" width="100%">
 												<tr>
 													<td colspan="4" style="padding:5px">
 														<div align="center" >
@@ -76,7 +76,7 @@
 														<b>{'LBL_MODULE_INFORMATION'|@getTranslatedString:$MODULE}</b>
 													</td>
 													{if $WEBFORM->hasId()}
-													<td  colspan="1" class="detailedViewHeader" align="right">
+													<td colspan="1" class="detailedViewHeader" align="right">
 														{'LBL_ENABLE'|@getTranslatedString:$MODULE}
 														{if $WEBFORM->getEnabled() eq 1}
 															<input type="checkbox" name="enabled" id="enabled" checked="checked"></input>
@@ -86,13 +86,13 @@
 													</td>
 													{/if}
 												</tr>
-												<!-- Cell information  -->
+												<!-- Cell information -->
 												<tr style="height:25px">
 													<td class="dvtCellLabel" align="right" width="10%" nowrap="nowrap">
 														<font color="red">*</font>{'LBL_WEBFORM_NAME'|@getTranslatedString:$MODULE}
 													</td>
 													<td class="dvtCellInfo" align="left" width="40%">
-														<input type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="name"  name="name" value="{$WEBFORM->getName()}" {if $WEBFORM->hasId()}readonly="readonly"{/if}>
+														<input type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="name" name="name" value="{$WEBFORM->getName()}" {if $WEBFORM->hasId()}readonly="readonly"{/if}>
 													</td>
 													<td class="dvtCellLabel" align="right" width="10%" nowrap="nowrap">
 														<font color="red">*</font>{'LBL_MODULE'|@getTranslatedString:$MODULE} :
@@ -105,7 +105,7 @@
 															<select id="targetmodule" name="targetmodule" onchange='javascript:Webforms.fetchFieldsView(this.value);' class="small">
 																<option value="">--module--</option>
 																 {foreach item=module from=$WEBFORMMODULES name=moduleloop}
-																	<option value="{$module}">{$module}</option>
+																	<option value="{$module}">{$module|@getTranslatedString:$module}</option>
 																{/foreach}
 															</select>
 														{/if}
@@ -116,21 +116,38 @@
 														<font color="red">*</font>{'LBL_ASSIGNED_TO'|@getTranslatedString:$MODULE}
 													</td>
 													<td class="dvtCellInfo" align="left" >
-														<select id="ownerid" name="ownerid" class="small">
-															<option value="">--{'LBL_SELECT_USER'|@getTranslatedString:$MODULE}--</option>
-																{foreach key=userid item=username name=assigned_user from=$USERS}
-																<option value="{$userid}"
-																	{if $WEBFORMID && $userid eq $WEBFORM->getOwnerId()} selected {/if}>
-																	{$username}
-																</option>
+														{if $usr_selected eq 1}
+															{assign var=select_user value='checked'}
+															{assign var=style_user value='display:block'}
+															{assign var=style_group value='display:none'}
+														{else}
+															{assign var=select_group value='checked'}
+															{assign var=style_user value='display:none'}
+															{assign var=style_group value='display:block'}
+														{/if}
+														<input type="radio" tabindex="{$vt_tab}" name="assigntype" {$select_user} value="U" onclick="toggleAssignType(this.value);jQuery('#ownerid').val(jQuery('#assigned_user_id').val());" >&nbsp;{$APP.LBL_USER}
+														<input type="radio" name="assigntype" {$select_group} value="T" onclick="toggleAssignType(this.value);jQuery('#ownerid').val(jQuery('#assigned_group_id').val());">&nbsp;{$APP.LBL_GROUP}
+														<input type="hidden" name="ownerid" id="ownerid" value="{$WEBFORM->getOwnerId()}">
+														<span id="assign_user" style="{$style_user}">
+															<select name="assigned_user_id" id="assigned_user_id" class="small" onchange="jQuery('#ownerid').val(jQuery('#assigned_user_id').val());">
+															{foreach key=userid item=username name=assigned_user from=$USERS}
+																<option value="{$userid}" {if $WEBFORMID && $userid eq $WEBFORM->getOwnerId()} selected {/if}>{$username}</option>
 															{/foreach}
-														</select>
+															</select>
+														</span>
+														<span id="assign_team" style="{$style_group}">
+															<select name="assigned_group_id" id="assigned_group_id" class="small" onchange="jQuery('#ownerid').val(jQuery('#assigned_group_id').val());">
+															{foreach key=userid item=username name=assigned_user from=$GROUPS}
+																<option value="{$userid}" {if $WEBFORMID && $userid eq $WEBFORM->getOwnerId()} selected {/if}>{$username}</option>
+															{/foreach}
+															</select>
+														</span>
 													</td>
 													<td class="dvtCellLabel" align="right" >
 														{'LBL_RETURNURL'|@getTranslatedString:$MODULE}
 													</td>
 													<td class="dvtCellInfo" align="left" >
-														http:// <input type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="returnurl"  name="returnurl" value="{$WEBFORM->getReturnUrl()}">
+														http:// <input type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="returnurl" name="returnurl" value="{$WEBFORM->getReturnUrl()}">
 													</td>
 												</tr>
 												{if $WEBFORM->hasId()}
@@ -153,8 +170,8 @@
 													<td class="dvtCellLabel" align="right" colspan="1">
 														{'LBL_DESCRIPTION'|@getTranslatedString:$MODULE}
 													</td>
-													<td  colspan="3">
-														<textarea  onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" rows="8" cols="90" onblur="this.className='detailedViewTextBox'" name="description" id="description" onfocus="this.className='detailedViewTextBoxOn'" tabindex="" class="detailedViewTextBox" >{if $WEBFORM->hasId()}{$WEBFORM->getDescription()}{/if}</textarea>
+													<td colspan="3">
+														<textarea onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" rows="8" cols="90" onblur="this.className='detailedViewTextBox'" name="description" id="description" onfocus="this.className='detailedViewTextBoxOn'" tabindex="" class="detailedViewTextBox" >{if $WEBFORM->hasId()}{$WEBFORM->getDescription()}{/if}</textarea>
 													</td>
 												</tr>
 												<!--Cell Information end-->
@@ -166,12 +183,12 @@
 													<td colspan="3" class="detailedViewHeader">
 														<b>{'LBL_FIELD_INFORMATION'|@getTranslatedString:$MODULE}</b>
 													</td>
-													<td  colspan="1" class="detailedViewHeader" align="right">
+													<td colspan="1" class="detailedViewHeader" align="right">
 													</td>
 												</tr>
 	<!-- Cell information for fields -->
 												<tr >
-													<td colspan="4"  >
+													<td colspan="4">
 														<div id="Webforms_FieldsView"></div>
 														{if $WEBFORM->hasId()}{include file="modules/Webforms/FieldsView.tpl"}{/if}
 													</td>

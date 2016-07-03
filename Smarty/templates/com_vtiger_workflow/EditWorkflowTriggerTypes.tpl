@@ -30,7 +30,6 @@
 }
 </style>
 <script type="text/javascript" charset="utf-8">
-	jQuery.noConflict();
 	fn.addStylesheet('modules/com_vtiger_workflow/resources/style.css');
 	var returnUrl = '{$returnUrl}';
 	var validator;
@@ -41,11 +40,6 @@
 	<tr>
 		<td class="big" nowrap="nowrap">
 			<strong>{$MOD.LBL_WHEN_TO_RUN_WORKFLOW}</strong>
-		</td>
-		<td width="5%" align="right">
-			<a href="{$WORKFLOW_TRIGGER_TYPES_HELP_LINK}" target="_blank" style="cursor:pointer;">
-				<img border="0" title="" alt="" src="{'help_icon.gif'|@vtiger_imageURL:$THEME}" />
-			</a>
 		</td>
 	</tr>
 </table>
@@ -80,6 +74,7 @@
 						<option value="5" {if $workflow->schtypeid eq 5}selected{/if}>{'LBL_MONTHLY_BY_DATE'|@getTranslatedString:$MODULE_NAME}</option>
 						<!--option value="6" {if $workflow->schtypeid eq 6}selected{/if}>{'LBL_MONTHLY_BY_WEEKDAY'|@getTranslatedString:$MODULE_NAME}</option-->
 						<option value="7" {if $workflow->schtypeid eq 7}selected{/if}>{'LBL_YEARLY'|@getTranslatedString:$MODULE_NAME}</option>
+						<option value="8" {if $workflow->schtypeid eq 8}selected{/if}>{'LBL_MINUTES_INTERVAL'|@getTranslatedString:$MODULE_NAME}</option>
 					  </select>
 					</div>
 				</div>
@@ -130,12 +125,20 @@
 				</div>
 
 				{* show time for all other than Hourly option*}
-				<div id='scheduledTime' class='wfsclear' style='padding:5px 0px;display:{if $workflow->schtypeid < 2}none{else}block{/if};'>
+				<div id='scheduledTime' class='wfsclear' style='padding:5px 0px;display:{if $workflow->schtypeid < 2 || $workflow->schtypeid eq 8}none{else}block{/if};'>
 					<div class="wfslabel">{'LBL_AT_TIME'|@getTranslatedString:$MODULE_NAME}</div>
 					<div style='margin-left:6px;float:left;' id='schtimerow'>
 						<input type="hidden" name="schtime" value="{$schdtime_12h}" id="schtime" style="width:60px" class="time_field">
 					</div>
 				</div>
+				{* show minutes interval*}
+				<div id="minutesinterval" class='wfsclear' style='padding:5px 0px;display:{if $workflow->schtypeid neq 8}none{else}block{/if};'>
+					<div class="wfslabel">{'LBL_EVERY_MINUTEINTERVAL'|@getTranslatedString:$MODULE_NAME}</div>
+						<select style='width:50px;'  name='schminuteinterval' id='schminuteinterval'>
+							{html_options options=$interval_range selected=$selected_minute_interval} 
+						</select>
+					   {'LBL_MINUTES'|@getTranslatedString:$MODULE_NAME}
+				</div>	
 				{if $workflow->nexttrigger_time}
 					<div class='wfsclear'>
 						<div class="wfslabel" style="width: 100%;">{'LBL_NEXT_TRIGGER_TIME'|@getTranslatedString:$MODULE_NAME}:&nbsp;{$wfnexttrigger_time}</div>
@@ -144,6 +147,9 @@
 			</div>
 		{/if}
 		</td></tr>
+	<tr><td><input type="radio" name="execution_condition" value="RECORD_ACCESS_CONTROL" onclick="onschedule_preparescreen(this);"
+		{if $workflow->executionConditionAsLabel() eq 'RECORD_ACCESS_CONTROL'}checked{/if} /></td>
+		<td>{$MOD.LBL_RECORD_ACCESS_CONTROL}.</td></tr>
 	<tr><td><input type="radio" name="execution_condition" value="MANUAL"
 		{if $workflow->executionConditionAsLabel() eq 'MANUAL'}checked{/if} disabled /></td>
 		<td>{$MOD.LBL_MANUAL}.</td></tr>

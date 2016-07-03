@@ -7,16 +7,12 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *********************************************************************************/
-
 require_once("Smarty_setup.php");
 require_once("include/utils/CommonUtils.php");
 require_once("include/FormValidationUtil.php");
 
-global $mod_strings,$current_user;
-global $app_strings, $currentModule;
-global $adb;
-global $app_list_strings;
-global $theme;
+global $mod_strings,$current_user, $app_strings, $currentModule;
+global $adb, $app_list_strings, $theme, $upload_maxsize;
 
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
@@ -27,7 +23,6 @@ $qcreate_array = QuickCreate("$module");
 $validationData = $qcreate_array['data'];
 $data = split_validationdataArray($validationData);
 $smarty->assign("QUICKCREATE", $qcreate_array['form']);
-$smarty->assign("THEME",$theme);
 $smarty->assign("APP",$app_strings);
 $smarty->assign("MOD",$mod_strings);
 $smarty->assign("THEME",$theme);

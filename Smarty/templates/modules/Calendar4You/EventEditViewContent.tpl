@@ -17,10 +17,6 @@
 var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 </script>
 <script type="text/javascript" src="include/js/FieldDependencies.js"></script>
-<script type="text/javascript" src="modules/com_vtiger_workflow/resources/jquery-1.2.6.js"></script>
-<script type="text/javascript">
-	jQuery.noConflict();
-</script>
 {if $PICKIST_DEPENDENCY_DATASOURCE neq ''}
 <script type="text/javascript">
 	jQuery(document).ready(function() {ldelim} (new FieldDependencies({$PICKIST_DEPENDENCY_DATASOURCE})).init() {rdelim});
@@ -30,7 +26,7 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 {*<!-- Contents -->*}
 <form name="EditView" method="POST" action="index.php"
 	{if $ACTIVITY_MODE neq 'Task'} onsubmit="if(check_form()){ldelim} VtigerJS_DialogBox.block(); {rdelim} else {ldelim} return false; {rdelim}"
-	{else} onsubmit="maintask_check_form();if(formValidate()) {ldelim} VtigerJS_DialogBox.block(); {rdelim} else {ldelim} return false; {rdelim}" {/if} >
+	{else} onsubmit="maintask_check_form();return formValidate();" {/if} >
 <input type="hidden" name="time_start" id="time_start">
 <input type="hidden" name="view" value="{$view}">
 <input type="hidden" name="hour" value="{$hour}">
@@ -470,7 +466,7 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 								<td colspan="2">
 									<input name="contactidlist" id="contactidlist" value="{$CONTACTSID}" type="hidden">
 									<input name="deletecntlist" id="deletecntlist" type="hidden">
-									<select name="contactlist" size=5  style="height: 100px;width: 300px"  id="parentid" class="small" multiple>
+									<select name="contactlist" size=5  style="height: 100px;width: 300px" id="parentid" class="small" multiple>
 									{foreach item=contactname key=cntid from=$CONTACTSNAME}
 									<option value="{$cntid}">{$contactname}</option>
 									{/foreach}
@@ -705,8 +701,10 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 														<td>on</td>
 														<td>
 														<select name="repeatMonth_daytype">
-															<option value="first" {if $ACTIVITYDATA.repeatMonth_daytype eq 'first'} selected {/if}>First</option>
-															<option value="last" {if $ACTIVITYDATA.repeatMonth_daytype eq 'last'} selected {/if}>Last</option>
+															<option value="first" {if $ACTIVITYDATA.repeatMonth_daytype eq 'first'} selected {/if}>{$CMOD.First}</option>
+															<option value="second" {if $ACTIVITYDATA.repeatMonth_daytype eq 'second'} selected {/if}>{$CMOD.Second}</option>
+															<option value="third" {if $ACTIVITYDATA.repeatMonth_daytype eq 'third'} selected {/if}>{$CMOD.Third}</option>
+															<option value="last" {if $ACTIVITYDATA.repeatMonth_daytype eq 'last'} selected {/if}>{$CMOD.Last}</option>
 														</select>
 														</td>
 														<td>
@@ -758,13 +756,16 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 					<table border="0" cellpadding="5" cellspacing="1" width="100%">
             					<tr>
 							{if $LABEL.taskstatus != ''}
-							<td class="cellLabel" width=33% align="left"><b><font color="red">{$TYPEOFDATA.taskstatus}</font>{$LABEL.taskstatus}</b></td>
+							<td class="cellLabel" width=25% align="left"><b><font color="red">{$TYPEOFDATA.taskstatus}</font>{$LABEL.taskstatus}</b></td>
 							{/if}
 							{if $LABEL.taskpriority != ''}
-              						<td class="cellLabel" width=33% align="left"><b><font color="red">{$TYPEOFDATA.taskpriority}</font>{$LABEL.taskpriority}</b></td>
+              				<td class="cellLabel" width=25% align="left"><b><font color="red">{$TYPEOFDATA.taskpriority}</font>{$LABEL.taskpriority}</b></td>
 							{/if}
-              						{if $LABEL.assigned_user_id != ''}
-							<td class="cellLabel" width=34% align="left"><b>{$LABEL.assigned_user_id}</b></td>
+							{if $LABEL.assigned_user_id != ''}
+							<td class="cellLabel" width=25% align="left"><b>{$LABEL.assigned_user_id}</b></td>
+							{/if}
+							{if $LABEL.sendnotification neq ''}
+							<td class="cellLabel" width=25% align="left"><font color="red">{$TYPEOFDATA.sendnotification}</font>{$LABEL.sendnotification}</td>
 							{/if}
 						</tr>
 						<tr>
@@ -847,6 +848,9 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 							{else}
 								<input name="assigned_user_id" value="{$CURRENTUSERID}" type="hidden">
 							{/if}
+							{if $LABEL.sendnotification neq ''}
+							<td><input name="sendnotification" type="checkbox"{if $ACTIVITYDATA.sendnotification eq 1} checked{/if}></td>
+							{/if}
 						</tr>
 					</table>
 				</td>
@@ -917,7 +921,7 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
                      </table>
                  {/if}
 				<br><br>
-		{if $LABEL.sendnotification neq '' || ($LABEL.parent_id neq '') || ($LABEL.contact_id neq '') }
+		{if $LABEL.parent_id neq '' || $LABEL.contact_id neq '' }
 		<table align="center" border="0" cellpadding="0" cellspacing="0" width="95%" bgcolor="#FFFFFF">
 			<tr>
 				<td>
@@ -925,8 +929,6 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 						<tr>
 							<td class="dvtTabCache" style="width: 10px;" nowrap="nowrap">&nbsp;</td>
 							<td id="cellTabRelatedto" class="dvtSelectedCell" align=center nowrap><a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','off');switchClass('cellTabRelatedto','on');Taskshow('addTaskRelatedtoUI','todo',document.EditView.date_start.value,document.EditView.starthr.value,document.EditView.startmin.value,document.EditView.startfmt.value);ghide('addTaskAlarmUI');">{$CMOD.LBL_RELATEDTO}</a></td>
-							<td class="dvtTabCache" style="width: 10px;" nowrap="nowrap">&nbsp;</td>
-							<td id="cellTabInvite" class="dvtUnSelectedCell" align="center" nowrap="nowrap"><a href="javascript:doNothing()" onClick="switchClass('cellTabInvite','on');switchClass('cellTabRelatedto','off');Taskshow('addTaskAlarmUI','todo',document.EditView.date_start.value,document.EditView.starthr.value,document.EditView.startmin.value,document.EditView.startfmt.value);ghide('addTaskRelatedtoUI');">{$CMOD.LBL_NOTIFICATION}</a></td>
 							<td class="dvtTabCache" style="width:100%">&nbsp;</td>
 						</tr>
 					</table>
@@ -971,14 +973,6 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 		</table>
 		{/if}
               	</div>
-			<!-- Reminder UI -->
-			<div id="addTaskAlarmUI" style="display: none; width: 100%;">
-			<table>
-				<tr><td><font color="red">{$TYPEOFDATA.sendnotification}</font>{$LABEL.sendnotification}</td>
-					<td><input name="sendnotification" type="checkbox"{if $ACTIVITYDATA.sendnotification eq 1} checked{/if}></td>
-				</tr>
-			</table>
-			</div>
                 </td></tr></table>
 
 		{/if}
@@ -1045,6 +1039,6 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 
 {if $PICKIST_DEPENDENCY_DATASOURCE neq ''}
 <script type="text/javascript">
-	Event.observe(window, 'load', function() {ldelim} (new FieldDependencies({$PICKIST_DEPENDENCY_DATASOURCE})).init() {rdelim});
+	jQuery( window ).on('load', function() {ldelim} (new FieldDependencies({$PICKIST_DEPENDENCY_DATASOURCE})).init() {rdelim});
 </script>
 {/if}

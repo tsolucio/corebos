@@ -79,8 +79,8 @@ class Vtiger_Profile {
 		global $adb;
 
 		$actionids = Array();
-		$result = $adb->pquery("SELECT actionid from vtiger_actionmapping WHERE actionname IN 
-			(?,?,?,?,?)", array('Save','EditView','Delete','index','DetailView'));
+		$result = $adb->pquery('SELECT actionid from vtiger_actionmapping WHERE actionname IN (?,?,?,?,?,?)',
+			array('Save','EditView','CreateView','Delete','index','DetailView'));
 		/* 
 		 * NOTE: Other actionname (actionid >= 5) is considered as utility (tools) for a profile.
 		 * Gather all the actionid for associating to profile.
@@ -89,9 +89,8 @@ class Vtiger_Profile {
 			$actionids[] = $adb->query_result($result, $index, 'actionid');
 		}
 
-		$profileids = self::getAllIds();		
-
-		foreach($profileids as $profileid) {			
+		$profileids = self::getAllIds();
+		foreach($profileids as $profileid) {
 			$adb->pquery("INSERT INTO vtiger_profile2tab (profileid, tabid, permissions) VALUES (?,?,?)",
 				Array($profileid, $moduleInstance->id, 0));
 

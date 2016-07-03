@@ -1,5 +1,4 @@
 {*<!--
-
 /*********************************************************************************
 ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
@@ -7,13 +6,10 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
 -->*}
 <script type="text/javascript" src="modules/{$MODULE}/Calendar.js"></script>
 <script type="text/javascript" src="include/js/reflection.js"></script>
-<script src="include/scriptaculous/scriptaculous.js" type="text/javascript"></script>
 <script language="JavaScript" type="text/javascript" src="include/js/dtlviewajax.js"></script>
 <span id="crmspanid" style="display:none;position:absolute;"  onmouseover="show('crmspanid');">
    <a class="link"  align="right" href="javascript:;">{$APP.LBL_EDIT_BUTTON}</a>
@@ -49,56 +45,49 @@ function setCoOrdinate(elemId)
 	tagName.style.left= leftpos - 276 + 'px';
 }
 
-function getListOfRecords(obj, sModule, iId,sParentTab)
-{
-		new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody: 'module=Users&action=getListOfRecords&ajax=true&CurModule='+sModule+'&CurRecordId='+iId+'&CurParentTab='+sParentTab,
-			onComplete: function(response) {
-				sResponse = response.responseText;
-				$("lstRecordLayout").innerHTML = sResponse;
-				Lay = 'lstRecordLayout';	
-				var tagName = document.getElementById(Lay);
-				var leftSide = findPosX(obj);
-				var topSide = findPosY(obj);
-				var maxW = tagName.style.width;
-				var widthM = maxW.substring(0,maxW.length-2);
-				var getVal = eval(leftSide) + eval(widthM);
-				if(getVal  > document.body.clientWidth ){
-					leftSide = eval(leftSide) - eval(widthM);
-					tagName.style.left = leftSide + 230 + 'px';
-				}
-				else
-					tagName.style.left= leftSide + 388 + 'px';
-				
-				setCoOrdinate(obj.id);
-				
-				tagName.style.display = 'block';
-				tagName.style.visibility = "visible";
-			}
+function getListOfRecords(obj, sModule, iId,sParentTab){
+jQuery.ajax({
+	method:"POST",
+	url:'index.php?module=Users&action=getListOfRecords&ajax=true&CurModule='+sModule+'&CurRecordId='+iId+'&CurParentTab='+sParentTab,
+}).done(function(response) {
+		sResponse = response;
+		jQuery("#lstRecordLayout").html(sResponse);
+		Lay = 'lstRecordLayout';	
+		var tagName = document.getElementById(Lay);
+		var leftSide = findPosX(obj);
+		var topSide = findPosY(obj);
+		var maxW = tagName.style.width;
+		var widthM = maxW.substring(0,maxW.length-2);
+		var getVal = eval(leftSide) + eval(widthM);
+		if(getVal  > document.body.clientWidth ){
+			leftSide = eval(leftSide) - eval(widthM);
+			tagName.style.left = leftSide + 230 + 'px';
 		}
-	);
+		else{
+			tagName.style.left= leftSide + 388 + 'px';
+		}
+		setCoOrdinate(obj.id);
+
+		tagName.style.display = 'block';
+		tagName.style.visibility = "visible";
+	});
 }
 
 {/literal}
 
 function DeleteTag(id,recordid)
 {ldelim}
-        $("vtbusy_info").style.display="inline";
-        Effect.Fade('tag_'+id);
-        new Ajax.Request(
-                'index.php',
-                {ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-                        method: 'post',
-                        postBody: "file=TagCloud&module={$MODULE}&action={$MODULE}Ajax&ajxaction=DELETETAG&recordid="+recordid+"&tagid=" +id,
-                        onComplete: function(response) {ldelim}
-                                                getTagCloud();
-                                                $("vtbusy_info").style.display="none";
-                        {rdelim}
-                {rdelim}
-        );
+		document.getElementById("vtbusy_info").style.display="inline";
+		jQuery('#tag_'+id).fadeOut();
+		
+		jQuery.ajax({ldelim}
+		 method:"POST",
+		url:"index.php?file=TagCloud&module={$MODULE}&action={$MODULE}Ajax&ajxaction=DELETETAG&recordid="+recordid+"&tagid=" +id,
+		{rdelim}).done(function(response) {ldelim}
+				getTagCloud();
+				jQuery("#vtbusy_info").hide();
+		{rdelim}
+		);
 {rdelim}
 
 </script>
@@ -109,7 +98,7 @@ function DeleteTag(id,recordid)
 <tr><td>&nbsp;</td>
 	<td>
                 <table cellpadding="0" cellspacing="5" border="0">
-		</table>	
+		</table>
 
 <!-- Contents -->
 <table  border="0" cellpadding="5" cellspacing="0" width="100%" >
@@ -118,19 +107,19 @@ function DeleteTag(id,recordid)
 	
 		<table border="0" cellpadding="0" cellspacing="0" width="100%">
 			<tr>
-				<td align="left">		
+				<td align="left">
 					<span class="lvtHeaderText"><font color="purple">[ {$ID} ] </font>{$NAME} -  {$SINGLE_MOD} {$APP.LBL_INFORMATION}</span>&nbsp;&nbsp;<span class="small">{$UPDATEINFO}</span>&nbsp;<span id="vtbusy_info" style="display:none;" valign="bottom"><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span><span id="vtbusy_info" style="visibility:hidden;" valign="bottom"><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
 				</td>
-				<td align="right">		
-					{if $EDIT_DUPLICATE eq 'permitted'}
+				<td align="right">
+					{if $EDIT_PERMISSION eq 'yes'}
 					<input title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" class="crmbutton small edit" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.return_id.value='{$ID}';DetailView.module.value='{$MODULE}'; submitFormForAction('DetailView','EditView');" type="button" name="Edit" value="&nbsp;{$APP.LBL_EDIT_BUTTON_LABEL}&nbsp;">&nbsp;
 					{/if}
 					
-					{if $EDIT_DUPLICATE eq 'permitted'}
+					{if (isset($CREATE_PERMISSION) && $CREATE_PERMISSION eq 'permitted') || (isset($EDIT_PERMISSION) && $EDIT_PERMISSION eq 'yes')}
 					<input title="{$APP.LBL_DUPLICATE_BUTTON_TITLE}" accessKey="{$APP.LBL_DUPLICATE_BUTTON_KEY}" class="crmbutton small create" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.isDuplicate.value='true';DetailView.module.value='{$MODULE}'; submitFormForAction('DetailView','EditView');" type="button" name="Duplicate" value="{$APP.LBL_DUPLICATE_BUTTON_LABEL}">&nbsp;
-                    {/if}
-                    
-                    {if $DELETE eq 'permitted'}
+					{/if}
+
+					{if $DELETE eq 'permitted'}
 					<input title="{$APP.LBL_DELETE_BUTTON_TITLE}" accessKey="{$APP.LBL_DELETE_BUTTON_KEY}" class="crmbutton small delete" onclick="DetailView.return_module.value='{$MODULE}'; {if $VIEWTYPE eq 'calendar'} DetailView.return_action.value='index'; {else} DetailView.return_action.value='ListView'; {/if}  submitFormForActionWithConfirmation('DetailView', 'Delete', '{$APP.NTC_DELETE_CONFIRMATION}');" type="button" name="Delete" value="{$APP.LBL_DELETE_BUTTON_LABEL}">&nbsp;
 					{/if}
 					
@@ -139,7 +128,7 @@ function DeleteTag(id,recordid)
 					{else}
 					<img align="absmiddle" title="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev_disabled.gif'|@vtiger_imageurl:$THEME}">
 					{/if}
-					
+
 					{if $privrecord neq '' || $nextrecord neq ''}
 					<img align="absmiddle" title="{$APP.LBL_JUMP_BTN}" accessKey="{$APP.LBL_JUMP_BTN}" onclick="var obj = this;var lhref = getListOfRecords(obj, '{$MODULE}',{$ID},'{$CATEGORY}');" name="jumpBtnIdTop" id="jumpBtnIdTop" src="{'rec_jump.gif'|@vtiger_imageurl:$THEME}">
 					{/if}
@@ -698,31 +687,30 @@ function DeleteTag(id,recordid)
 	</td>
 </tr>
 </table>
-		
 		</div>
 		<!-- PUBLIC CONTENTS STOPS-->
 	</td>
 </tr>
 <tr>
-	<td align="right" style="border-top:1px dotted #cccccc">		
-		{if $EDIT_DUPLICATE eq 'permitted'}
+	<td align="right" style="border-top:1px dotted #cccccc">
+		{if $EDIT_PERMISSION eq 'yes'}
 		<input title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" class="crmbutton small edit" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.return_id.value='{$ID}';DetailView.module.value='{$MODULE}'; submitFormForAction('DetailView','EditView');" type="button" name="Edit" value="&nbsp;{$APP.LBL_EDIT_BUTTON_LABEL}&nbsp;">&nbsp;
 		{/if}
 		
-		{if $EDIT_DUPLICATE eq 'permitted'}
+		{if (isset($CREATE_PERMISSION) && $CREATE_PERMISSION eq 'permitted') || (isset($EDIT_PERMISSION) && $EDIT_PERMISSION eq 'yes')}
 		<input title="{$APP.LBL_DUPLICATE_BUTTON_TITLE}" accessKey="{$APP.LBL_DUPLICATE_BUTTON_KEY}" class="crmbutton small create" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.isDuplicate.value='true';DetailView.module.value='{$MODULE}'; submitFormForAction('DetailView','EditView');" type="button" name="Duplicate" value="{$APP.LBL_DUPLICATE_BUTTON_LABEL}">&nbsp;
-        {/if}
-        
-        {if $DELETE eq 'permitted'}
+		{/if}
+
+		{if $DELETE eq 'permitted'}
 		<input title="{$APP.LBL_DELETE_BUTTON_TITLE}" accessKey="{$APP.LBL_DELETE_BUTTON_KEY}" class="crmbutton small delete" onclick="DetailView.return_module.value='{$MODULE}'; {if $VIEWTYPE eq 'calendar'} DetailView.return_action.value='index'; {else} DetailView.return_action.value='ListView'; {/if} submitFormForActionWithConfirmation('DetailView', 'Delete', '{$APP.NTC_DELETE_CONFIRMATION}');" type="button" name="Delete" value="{$APP.LBL_DELETE_BUTTON_LABEL}">&nbsp;
 		{/if}
-		
+
 		{if $privrecord neq ''}
 		<img align="absmiddle" title="{$APP.LNK_LIST_PREVIOUS}" accessKey="{$APP.LNK_LIST_PREVIOUS}" onclick="location.href='index.php?module={$MODULE}&viewtype={$VIEWTYPE}&action=DetailView&record={$privrecord}&parenttab={$CATEGORY}'" name="privrecord" value="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev.gif'|@vtiger_imageurl:$THEME}">&nbsp;
 		{else}
 		<img align="absmiddle" title="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev_disabled.gif'|@vtiger_imageurl:$THEME}">
 		{/if}
-		
+
 		{if $privrecord neq '' || $nextrecord neq ''}
 		<img align="absmiddle" title="{$APP.LBL_JUMP_BTN}" accessKey="{$APP.LBL_JUMP_BTN}" onclick="var obj = this;var lhref = getListOfRecords(obj, '{$MODULE}',{$ID},'{$CATEGORY}');" name="jumpBtnIdBottom" id="jumpBtnIdBottom" src="{'rec_jump.gif'|@vtiger_imageurl:$THEME}">
 		{/if}
@@ -744,20 +732,16 @@ function DeleteTag(id,recordid)
 <script>
 function getTagCloud()
 {ldelim}
-	var obj = $("tagfields");
+	var obj = jQuery("#tagfields");
 	if(obj != null && typeof(obj) != undefined) {ldelim}
-		new Ajax.Request(
-        	'index.php',
-        	{ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-        	method: 'post',
-        	postBody: 'module={$MODULE}&action={$MODULE}Ajax&file=TagCloud&ajxaction=GETTAGCLOUD&recordid={$ID}',
-        	onComplete: function(response) {ldelim}
-                        	$("tagfields").innerHTML=response.responseText;
-                            $("txtbox_tagfields").value ='';
-                        {rdelim}
-        	{rdelim}
+		jQuery.ajax({ldelim}
+			method:"POST",
+			url:'index.php?module={$MODULE}&action={$MODULE}Ajax&file=TagCloud&ajxaction=GETTAGCLOUD&recordid={$ID}',
+		{rdelim}).done(function(response) {ldelim}
+				jQuery("#tagfields").html(response);
+				jQuery("#txtbox_tagfields").val('');
+		{rdelim}
 		);
-	{rdelim}
 {rdelim}
 getTagCloud();
 </script>

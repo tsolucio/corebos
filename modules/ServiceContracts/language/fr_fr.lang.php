@@ -56,6 +56,7 @@ $mod_strings = Array(
 	 */
 	'LBL_MODULE_NAME'=>'Contrats de Service',
 	'ServiceContracts ID'=>'Contrat de Service ID',
+	'Service Requests'=>'Tickets',
 );
 
 ?>

@@ -38,9 +38,9 @@ fLabels['h'] = "{$APP.greater_or_equal}";
 var noneLabel;
 {literal}
 function trimfValues(value){
-    var string_array;
-    string_array = value.split(":");
-    return string_array[4];
+	var string_array;
+	string_array = value.split(":");
+	return string_array[4];
 }
 
 function updatefOptions(sel, opSelName){
@@ -84,7 +84,6 @@ function updatefOptions(sel, opSelName){
     		selObj.options[0].selected = true;
     	}
     }
-
 }
 {/literal}
 </script>
@@ -114,27 +113,24 @@ function callSearch(searchtype) {ldelim}
                 urlstring = 'search_field='+search_fld_val+'&searchtype=BasicSearch&search_text='+search_txt_val+'&';
         {rdelim} else if(searchtype == 'Advanced') {ldelim}
         		checkAdvancedFilter();
-				var advft_criteria = $('advft_criteria').value;
-				var advft_criteria_groups = $('advft_criteria_groups').value;
+				var advft_criteria = document.getElementById('advft_criteria').value;
+				var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
 				urlstring += '&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups+'&';
 				urlstring += 'searchtype=advance&'
         {rdelim}
-    $("status").style.display="inline";
-	new Ajax.Request(
-		'index.php',
-		{ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-			method: 'post',
-			postBody:urlstring +'query=true&file=ListView&module={$MODULE}&action={$MODULE}Ajax&ajax=true&search=true',
-			onComplete: function(response) {ldelim}
-								$("status").style.display="none";
-                                result = response.responseText.split('&#&#&#');
-                                $("ListViewContents").innerHTML= result[2];
-                                if(result[1] != '')
-                                        alert(result[1]);
-				$('basicsearchcolumns').innerHTML = '';
-			{rdelim}
-	       {rdelim}
-        );
+    document.getElementById("status").style.display="inline";
+	jQuery.ajax({ldelim}
+			method:"POST",
+			url:'index.php?'+urlstring +'query=true&file=ListView&module={$MODULE}&action={$MODULE}Ajax&ajax=true&search=true'
+	{rdelim}).done(function(response) {ldelim}
+				document.getElementById("status").style.display="none";
+				result = response.split('&#&#&#');
+				document.getElementById("ListViewContents").innerHTML= result[2];
+				if(result[1] != '')
+						alert(result[1]);
+				document.getElementById('basicsearchcolumns').innerHTML = '';
+		{rdelim}
+		);
 	return false; 
 {rdelim}
 
@@ -143,23 +139,19 @@ function alphabetic(module,url,dataid) {ldelim}
         {ldelim}
                 var data_td_id = 'alpha_'+ eval(i);
                 getObj(data_td_id).className = 'searchAlph';
-
         {rdelim}
         getObj(dataid).className = 'searchAlphselected';
-	$("status").style.display="inline";
-	new Ajax.Request(
-		'index.php',
-		{ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-			method: 'post',
-			postBody: 'module='+module+'&action='+module+'Ajax&file=ListView&ajax=true&search=true&'+url,
-			onComplete: function(response) {ldelim}
-				$("status").style.display="none";
-				result = response.responseText.split('&#&#&#');
-				$("ListViewContents").innerHTML= result[2];
+	document.getElementById("status").style.display="inline";
+	jQuery.ajax({ldelim}
+			method:"POST",
+			url:'index.php?module='+module+'&action='+module+'Ajax&file=ListView&ajax=true&search=true&'+url
+	{rdelim}).done(function(response) {ldelim}
+				document.getElementById("status").style.display="none";
+				result = response.split('&#&#&#');
+				document.getElementById("ListViewContents").innerHTML= result[2];
 				if(result[1] != '')
-				alert(result[1]);
-				$('basicsearchcolumns').innerHTML = '';
-			{rdelim}
+					alert(result[1]);
+				document.getElementById('basicsearchcolumns').innerHTML = '';
 		{rdelim}
 	);
 {rdelim}
@@ -173,7 +165,6 @@ function alphabetic(module,url,dataid) {ldelim}
                                                 </td>
                                         </tr>
                                         </table>
-
                                 </div>
                         </td>
                 </tr>
@@ -219,7 +210,6 @@ function alphabetic(module,url,dataid) {ldelim}
 		</td>
 		<td class="small" nowrap width=40% >
 			  <input name="submit" type="button" class="crmbutton small create" onClick="callSearch('Basic');" value=" {$APP.LBL_SEARCH_NOW_BUTTON} ">&nbsp;
-			  
 		</td>
 		<td class="small" valign="top" onMouseOver="this.style.cursor='pointer';" onclick="moveMe('searchAcc');searchshowhide('searchAcc','advSearch')">[x]</td>
 	</tr>
@@ -227,9 +217,9 @@ function alphabetic(module,url,dataid) {ldelim}
 		<td colspan="7" align="center" class="small">
 			<table border=0 cellspacing=0 cellpadding=0 width=100%>
 				<tr>
-                                                {$ALPHABETICAL}
-                                </tr>
-                        </table>
+				{$ALPHABETICAL}
+				</tr>
+			</table>
 		</td>
 	</tr>
 </table>
@@ -251,7 +241,6 @@ function alphabetic(module,url,dataid) {ldelim}
 			</td>
 		</tr>
 	</table>
-		
 	<table border=0 cellspacing=0 cellpadding=5 width=98% class="searchUIAdv3 small" align="center">
 		<tr>
 			<td align="center" class="small"><input type="button" class="crmbutton small create" value=" {$APP.LBL_SEARCH_NOW_BUTTON} " onClick="callSearch('Advanced');">
@@ -260,8 +249,8 @@ function alphabetic(module,url,dataid) {ldelim}
 	</table>
 </form>
 </div>
-</div>		
-{*<!-- Searching UI -->*}     
+</div>
+{*<!-- Searching UI -->*}
 
 <div class="small" style="padding: 10px;">
 	<table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
@@ -275,9 +264,9 @@ function alphabetic(module,url,dataid) {ldelim}
 					<td class="dvtSelectedCell" align="center" nowrap="nowrap">{$CMOD.LBL_ALL_EVENTS_TODOS}</td>
 					<td class="dvtTabCache" style="width: 100%;">&nbsp;</td>
 				</tr>
-                                </table>
-                        </td>
-                </tr>
+				</table>
+			</td>
+		</tr>
 		<tr>
 			<td align="left" valign="top">
 				<table class="dvtContentSpace" border="0" cellpadding="3" cellspacing="0" width="100%">
@@ -309,12 +298,11 @@ function alphabetic(module,url,dataid) {ldelim}
                                     <td class="small" nowrap width="25%">
 						{$recordListRange}
 					</td>
-					
 				 <td align="center">
 				   <table border=0 cellspacing=0 cellpadding=0 class="small">
 					<tr>
 						<td style="padding-left:5px;padding-right:5px">
-                                    <b><font size =2>{$APP.LBL_VIEW}</font></b> <SELECT NAME="viewname" id="viewname" class="small" onchange="showDefaultCustomView(this,'{$MODULE}','{$CATEGORY}')">{$CUSTOMVIEW_OPTION}</SELECT>
+							<b><font size =2>{$APP.LBL_VIEW}</font></b> <SELECT NAME="viewname" id="viewname" class="small" onchange="showDefaultCustomView(this,'{$MODULE}','{$CATEGORY}')">{$CUSTOMVIEW_OPTION}</SELECT>
                         </td>
                         <td>
                             {if $ALL eq 'All'}
@@ -362,7 +350,7 @@ function alphabetic(module,url,dataid) {ldelim}
                                                 {/if}
                                         {/if}
 
-                                 {/foreach}						
+                                 {/foreach}
                 
 		                {* vtlib customization: Custom link buttons on the List view basic buttons *}
 						{if $CUSTOM_LINKS && $CUSTOM_LINKS.LISTVIEWBASIC}
@@ -383,7 +371,7 @@ function alphabetic(module,url,dataid) {ldelim}
 						{if $CUSTOM_LINKS && !empty($CUSTOM_LINKS.LISTVIEW)}
 							&nbsp;
 							<a href="javascript:;" onmouseover="fnvshobj(this,'vtlib_customLinksLay');" onclick="fnvshobj(this,'vtlib_customLinksLay');">
-									<b>{$APP.LBL_MORE} {$APP.LBL_ACTIONS} <img src="{'arrow_down.gif'|@vtiger_imageurl:$THEME}" border="0"></b>
+								<b>{$APP.LBL_MORE} {$APP.LBL_ACTIONS} <img src="{'arrow_down.gif'|@vtiger_imageurl:$THEME}" border="0"></b>
 							</a>
 							<div style="display: none; left: 193px; top: 106px;width:155px; position:absolute;" id="vtlib_customLinksLay" 
 								onmouseout="fninvsh('vtlib_customLinksLay')" onmouseover="fnvshNrm('vtlib_customLinksLay')">
@@ -428,7 +416,7 @@ function alphabetic(module,url,dataid) {ldelim}
 			      {foreach item=entity key=entity_id from=$LISTENTITY}
 			      <tr bgcolor=white onMouseOver="this.className='lvtColDataHover'" onMouseOut="this.className='lvtColData'" id="row_{$entity_id}">
 				 <td width="2%"><input type="checkbox" NAME="selected_id" id="{$entity_id}" value= '{$entity_id}' onClick=check_object(this); toggleSelectAll(this.name,"selectall")></td>
-				 {foreach item=data from=$entity}	
+				 {foreach item=data from=$entity}
 				 <td>{$data}</td>
 	                         {/foreach}
 			      </tr>
@@ -451,7 +439,7 @@ function alphabetic(module,url,dataid) {ldelim}
 									&nbsp;&nbsp;-<a href="index.php?module={$MODULE}&amp;action=EditView&amp;return_module=Calendar&amp;activity_mode=Task&amp;return_action=DetailView&amp;parenttab={$CATEGORY}">{$APP.LBL_CREATE} {$APP.LBL_A} {$APP.Todo}</a>
 								</td>
 							</tr>
-							</table> 
+							</table>
 							{else}
 							<table border="0" cellpadding="5" cellspacing="0" width="98%">
 							<tr>
@@ -464,8 +452,8 @@ function alphabetic(module,url,dataid) {ldelim}
 							</tr>
 							</table>
 							{/if}
-						</div>					
-				</td></tr>	
+						</div>
+				</td></tr>
 			      {/foreach}
 			 </table>
 			 </div>
@@ -508,7 +496,7 @@ function alphabetic(module,url,dataid) {ldelim}
 						{if $CUSTOM_LINKS && !empty($CUSTOM_LINKS.LISTVIEW)}
 							&nbsp;
 							<a href="javascript:;" onmouseover="fnvshobj(this,'vtlib_customLinksLay');" onclick="fnvshobj(this,'vtlib_customLinksLay');">
-									<b>{$APP.LBL_MORE} {$APP.LBL_ACTIONS} <img src="{'arrow_down.gif'|@vtiger_imageurl:$THEME}" border="0"></b>
+								<b>{$APP.LBL_MORE} {$APP.LBL_ACTIONS} <img src="{'arrow_down.gif'|@vtiger_imageurl:$THEME}" border="0"></b>
 							</a>
 							<div style="display: none; left: 193px; top: 106px;width:155px; position:absolute;" id="vtlib_customLinksLay" 
 								onmouseout="fninvsh('vtlib_customLinksLay')" onmouseover="fnvshNrm('vtlib_customLinksLay')">
@@ -537,7 +525,7 @@ function alphabetic(module,url,dataid) {ldelim}
 				 <td align="right" width=100%>
 				   <table border=0 cellspacing=0 cellpadding=0 class="small">
 					<tr>
-                                           {$WORDTEMPLATEOPTIONS}{$MERGEBUTTON}
+						{$WORDTEMPLATEOPTIONS}{$MERGEBUTTON}
 					</tr>
 				   </table>
 				 </td>
@@ -549,7 +537,7 @@ function alphabetic(module,url,dataid) {ldelim}
                                     <!-- Page Navigation -->
                                     <td nowrap width="50%" align="right">
 					<table border=0 cellspacing=0 cellpadding=0 class="small">
-                                    		<tr>{$NAVIGATION}</tr>
+						<tr>{$NAVIGATION}</tr>
 					</table>
                                     </td>
                               </tr>
@@ -558,19 +546,17 @@ function alphabetic(module,url,dataid) {ldelim}
 		   </tr>
 	    </table>
 
-   </form>	
+   </form>
 {$SELECT_SCRIPT}
 	</div>
 	 </td></tr></table>
 	 </td></tr></table>
          </td></tr></table>
         </div>
-
      </td>
         <td valign=top><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
    </tr>
 </table>
-
 
 <div id="changeowner" class="statechange">
 <table width="100%" border="0" cellpadding="3" cellspacing="0">
@@ -591,8 +577,8 @@ function alphabetic(module,url,dataid) {ldelim}
 			{if $CHANGE_GROUP_OWNER neq ''}
 			<input type = "radio" id = "group_checkbox" name = "user_lead_owner" onclick=checkgroup(); >{$APP.LBL_GROUP}<br>
 			<select name="lead_group_owner" id="lead_group_owner" class="detailedViewTextBox" style="display:none;">
-                                {$CHANGE_GROUP_OWNER}
-                        </select>
+				{$CHANGE_GROUP_OWNER}
+			</select>
 			{/if}
 			<select name="lead_owner" id="lead_owner" class="detailedViewTextBox">
 				{$CHANGE_OWNER}
@@ -610,12 +596,10 @@ function alphabetic(module,url,dataid) {ldelim}
 </tr>
 </table>
 </div>
-
-
 <script>
-{literal} 
+{literal}
 function ajaxChangeStatus(statusname){
-	$("status").style.display="inline";
+	document.getElementById("status").style.display="inline";
 	var viewid = document.massdelete.viewname.value;
 	var excludedRecords=document.getElementById("excludedRecords").value;
 	var idstring = document.getElementById('allselectedboxes').value;
@@ -625,7 +609,7 @@ function ajaxChangeStatus(statusname){
 		var urlstring ="module=Users&action=updateLeadDBStatus&return_module=Leads"+url+"&viewname="+viewid+"&idlist="+idstring+"&excludedRecords="+excludedRecords;
 	} else if(statusname == 'owner') {
 		
-	   if($("user_checkbox").checked) {
+	   if(document.getElementById("user_checkbox").checked) {
 		    fninvsh('changeowner');
 		    var url='&owner_id='+document.getElementById('lead_owner').options[document.getElementById('lead_owner').options.selectedIndex].value+'&owner_type=User';
 		    {/literal}
@@ -639,21 +623,17 @@ function ajaxChangeStatus(statusname){
     		    {literal}
         }   
 	}
-	new Ajax.Request(
-                'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                        method: 'post',
-                        postBody: urlstring,
-                        onComplete: function(response) {
-                                $("status").style.display="none";
-                                result = response.responseText.split('&#&#&#');
-                                $("ListViewContents").innerHTML= result[2];
-                                if(result[1] != '')
-                                        alert(result[1]);
-				$('basicsearchcolumns').innerHTML = '';
-                        }
-                }
-        );
+	jQuery.ajax({
+			method:"POST",
+			url:'index.php?'+ urlstring
+	}).done(function(response) {
+			document.getElementById("status").style.display="none";
+			result = response.split('&#&#&#');
+			document.getElementById("ListViewContents").innerHTML= result[2];
+			if(result[1] != '')
+				alert(result[1]);
+			document.getElementById('basicsearchcolumns').innerHTML = '';
+	});
 }
 </script>
 {/literal}

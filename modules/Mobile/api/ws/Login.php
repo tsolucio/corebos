@@ -27,27 +27,32 @@ class Mobile_WS_Login extends Mobile_WS_Controller {
 			return $response;
 		}
 		
-		if(!$current_user->doLogin($password)) {
-			
-			$response->setError(1210, 'Authentication Failed');
+		if(!$current_user->load_user($password) || !$current_user->authenticated) {
+			global $mod_strings;
+			$response->setError(1210, $mod_strings['ERR_INVALID_PASSWORD']);
 			
 		} else {
 			// Start session now
 			$sessionid = Mobile_API_Session::init();
-
+            
 			if($sessionid === false) {
 				echo "Session init failed $sessionid\n";
 			}
+			
+			include_once('config.php'); 
+			global $application_unique_key;	
 
 			$current_user->id = $current_user->retrieve_user_id($username);
 			$this->setActiveUser($current_user);
-			
+			$_SESSION["authenticated_user_id"]=$current_user->id;
+			$_SESSION["app_unique_key"]=$application_unique_key;
 			$result = array();
 			$result['login'] = array(
 				'userid' => $current_user->id,
 				'crm_tz' => DateTimeField::getDBTimeZone(),
 				'user_tz' => $current_user->time_zone,
 				'session'=> $sessionid,
+				'language' => $current_user->language,
 				'vtiger_version' => Mobile_WS_Utils::getVtigerVersion(),
 				'mobile_module_version' => Mobile_WS_Utils::getVersion()
 			);

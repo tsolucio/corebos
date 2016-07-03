@@ -100,12 +100,19 @@ class WorkFlowScheduler {
 					foreach ($tasks as $task) {
 						if ($task->active) {
 							$trigger = $task->trigger;
+							$wfminutes=$workflow->schminuteinterval;
+							if($wfminutes!=null){
+								$time = time();
+								$delay=$time;
+							}
+							else {
 							if ($trigger != null) {
 								$delay = strtotime($data[$trigger['field']]) + $trigger['days'] * 86400;
 							} else {
 								$delay = 0;
 							}
-							if ($task->executeImmediately == true) {
+						    }
+							if ($task->executeImmediately == true && $wfminutes==null) {
 								if (empty($task->test) or $task->evaluate($entityCache, $entityData->getId())) {
 									$task->doTask($entityData);
 								}
@@ -184,7 +191,7 @@ class WorkFlowScheduler {
 				}
 				$columnCondition = $condition['joincondition'];
 				$groupId = $condition['groupid'];
-				$groupJoin = $condition['groupjoin'];
+				$groupJoin = (isset($condition['groupjoin']) ? $condition['groupjoin'] : '');
 				$operator = $conditionMapping[$operation];
 				$fieldname = $condition['fieldname'];
 

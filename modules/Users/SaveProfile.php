@@ -78,12 +78,12 @@ $num_act_util_per = $adb->num_rows($act_utility_result);
 			if($tab_id ==9)
 			{
 				$sql4="insert into vtiger_profile2tab values(?,?,?)";
-                $adb->pquery($sql4, array($profileid,16, $permission_value));	
+                $adb->pquery($sql4, array($profileid,16, $permission_value));
 			}
 		}
 	}
 	
-	//profile2standard permissions	
+	//profile2standard permissions
 	for($i=0; $i<$num_act_per; $i++)
 	{
 		$tab_id = $adb->query_result($act_perr_result,$i,"tabid");
@@ -91,7 +91,7 @@ $num_act_util_per = $adb->num_rows($act_utility_result);
 		if($tab_id != 16)
 		{
 			$action_name = getActionname($action_id);
-			if($action_name == 'EditView' || $action_name == 'Delete' || $action_name == 'DetailView')
+			if($action_name == 'EditView' || $action_name == 'Delete' || $action_name == 'DetailView' || $action_name == 'CreateView')
 			{
 				$request_var = $tab_id.'_'.$action_name;
 			}

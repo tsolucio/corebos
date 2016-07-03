@@ -26,7 +26,7 @@ class CobroPago extends CRMEntity {
 	 */
 	var $customFieldTable = Array('vtiger_cobropagocf', 'cobropagoid');
 	// Uncomment the line below to support custom field columns on related lists
-	// var $related_tables = Array('vtiger_cobropagocf'=>array('cobropagoid','vtiger_cobropago', 'cobropagoid'));
+	var $related_tables = Array('vtiger_cobropagocf'=>array('cobropagoid','vtiger_cobropago', 'cobropagoid'));
 
 	/**
 	 * Mandatory for Saving, Include tables related to this module.
@@ -131,7 +131,7 @@ class CobroPago extends CRMEntity {
 		$rate = $rate_symbol['rate'];
 		$value=0;
 		if(isset($data['amount']) and isset($data['cost'])) {
-			$value = convertToDollar($data['amount']-$data['cost'],$rate);
+			$value = CurrencyField::convertToDollar($data['amount']-$data['cost'],$rate);
 		}
 		$adb->query("update vtiger_cobropago set benefit='$value' where cobropagoid=".$cypid);
 
@@ -637,7 +637,7 @@ class CobroPago extends CRMEntity {
 				$button .= "<input title='".getTranslatedString('LBL_NEW'). " ". getTranslatedString('LBL_TODO', $related_module) ."' class='crmbutton small create'" .
 					" onclick='this.form.action.value=\"EventEditView\";this.form.module.value=\"Calendar4You\";this.form.return_module.value=\"$this_module\";this.form.activity_mode.value=\"Task\";' type='submit' name='button'" .
 					" value='". getTranslatedString('LBL_ADD_NEW'). " " . getTranslatedString('LBL_TODO', $related_module) ."'>&nbsp;";
-				$button .= "<input title='".getTranslatedString('LBL_NEW'). " ". getTranslatedString('LBL_TODO', $related_module) ."' class='crmbutton small create'" .
+				$button .= "<input title='".getTranslatedString('LBL_NEW'). " ". getTranslatedString('LBL_EVENT', $related_module) ."' class='crmbutton small create'" .
 					" onclick='this.form.action.value=\"EventEditView\";this.form.module.value=\"Calendar4You\";this.form.return_module.value=\"$this_module\";this.form.activity_mode.value=\"Events\";' type='submit' name='button'" .
 					" value='". getTranslatedString('LBL_ADD_NEW'). " " . getTranslatedString('LBL_EVENT', $related_module) ."'>";
 			}

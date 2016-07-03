@@ -116,12 +116,15 @@ $mod_strings = Array(
 'ERR_PASSWORD_CHANGE_FAILED_1'=>'Mudança na senha do usuário falhou ',
 'ERR_PASSWORD_CHANGE_FAILED_2'=>' falhou. Nova senha deve ser definida.',
 'ERR_PASSWORD_INCORRECT_OLD'=>'Senha antiga incorreta para usuário especificado. Entre novamente com a informação de senha.',
+'ERR_PASSWORD_NOT_CHANGED' => 'Old and New Passwords are the same. Please use a different password.',
 'ERR_USER_NAME_EXISTS_1'=>'O nome de usuário',
 'ERR_USER_NAME_EXISTS_2'=>' já existe.  Nomes de usuários duplicados não são permitidos.<br>Mude o nome de usuário de forma que seja único.',
 'ERR_LAST_ADMIN_1'=>'O nome de usuário',
 'ERR_LAST_ADMIN_2'=>' é o único usuário Admin.  Pelo menos um usuário deve ser o Admininstrador do Sistema.<br>Verifique as configurações do usuário Administrador.',
-
+'ERR_MAXLOGINATTEMPTS' => 'Maximum number of login attempts reached. Contact your administrator to unblock your account',
+'LBL_FAILED_LOGIN_ATTEMPTS' => 'Failed Login Attempts',
 'ERR_DELETE_RECORD'=>"Um número de registro deve ser especificado para apagar a Organização.",
+'ERR_MUST_CHANGE_PASSWORD' => 'Your password has expired. You must change your password to continue.',
 
 // Additional Fields for i18n --- Release vtigerCRM 3.2 Patch 2
 // Users--listroles.php , createrole.php , ListPermissions.php , editpermissions.php
@@ -208,6 +211,7 @@ $mod_strings = Array(
 
 //added to fix the issue #6630
 'LBL_ASTERISKEXTENSIONS_EXIST' => 'Extensão Asterisk já Existe!',
+'LBL_CURRENCY_SEPARATORS_INCORRECT' => 'Decimal Separator and Digit Grouping Separator cannot be the same.',
 
 // Added fields in createnewgroup.php
 'LBL_CREATE_NEW_GROUP'=>'Criar Novo Grupo',
@@ -695,6 +699,7 @@ $mod_strings = Array(
 'Decimal Separator'=>'Separador Decimal',
 'Symbol Placement'=>'Localização Símbolo',
 'Digit Grouping Separator'=>'Separador Agrupamento Dígitos',
+'Number Of Currency Decimals'  =>  'Number Of Currency Decimals',
 
 //Time zones-Dont change any value
 'Kwajalein' => '(UTC-12:00) Data Internacional Linha Oeste',
@@ -816,6 +821,7 @@ $mod_strings = Array(
 'Min. 1 lowercase' => 'Min. 1 lowercase character',
 'Min. 1 number' => 'Min. 1 Number',
 'Min. 1 special character' => 'Min. 1 special character , ! ? , ; - @ #',
+'Generate password' => 'Generate password',
 );
 
 ?>

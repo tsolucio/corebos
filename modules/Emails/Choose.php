@@ -15,7 +15,7 @@ $ids=explode(';',$idlist);
 
 if ($pmodule=='Accounts')
 {
-	$querystr="select fieldid,fieldlabel,columnname,tablename from vtiger_field where tabid=6 and uitype='13' and vtiger_field.presence in (0,2)"; 
+	$querystr="select fieldid,fieldlabel,columnname,tablename from vtiger_field where tabid=6 and uitype='13' and vtiger_field.presence in (0,2)";
 }
 elseif ($pmodule=='Contacts')
 {
@@ -46,9 +46,9 @@ $numrows = $adb->num_rows($result);
 
 	<script language="javascript">
 	function passemail()
-	{		
+	{
 		y=new Array();
-		<?php  
+		<?php
 		foreach ($ids as $id_num => $id)
 		{
 			print "y.push(\"$id\" );";
@@ -56,7 +56,7 @@ $numrows = $adb->num_rows($result);
 		$cnt=count($ids);
 		print "idcount=$cnt;";
 		?>
-		<?php 
+		<?php
 		for ($x=0;$x<$numrows;$x++)
 		{
 			?>
@@ -67,8 +67,8 @@ $numrows = $adb->num_rows($result);
 					y[m]=y[m]+"@<?php echo $adb->query_result($result,$x,'fieldid');?>";
 				}
 			}
-			<?php 
-		} 
+		<?php
+		}
 		?>
 		stry = y.join("");
 		document.choosemails.emailids.value=stry;

@@ -12,5 +12,7 @@ $mod_strings = array(
 	'LBL_ZIP_FILE_ADD_FAILURE' => 'Erreur lors de l\'ajout du fichier ',
 	'LBL_FTP_CONNECT_FAILED' => 'Connexion au serveur FTP echouée',
 	'LBL_FTP_LOGIN_FAILED' => 'Login FTP echoué',
+	'Native Backup' => 'Native Backup',
+	'External Backup' => 'External Backup',
 );
 ?>

@@ -90,6 +90,7 @@ $mod_strings = array(
 	'LBL_HOME_REPORT_NAME' => 'Report Name',
 	'LBL_HOME_REPORT_TYPE' => 'Report Type',
 	'LBL_DEFAULT_WIDGET' => 'Default widgets',
-	'LBL_NO_WIDGETS_HIDDEN' => 'No default widgets are hidden'
+	'LBL_NO_WIDGETS_HIDDEN' => 'No default widgets are hidden',
+	'UpdateExchangeRate' => 'Update Exchange Rate',
 );
 ?>

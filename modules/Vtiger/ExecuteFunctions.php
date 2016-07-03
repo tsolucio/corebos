@@ -72,6 +72,51 @@ switch ($functiontocall) {
 		}
 		$ret = getReferenceAutocomplete($term, $op, $searchinmodule, $limit, $current_user);
 		break;
+	case 'getFieldValuesFromRecord':
+		$crmid = vtlib_purify($_REQUEST['getFieldValuesFrom']);
+		$module = getSalesEntityType($crmid);
+		$fields = vtlib_purify($_REQUEST['getTheseFields']);
+		$fields = explode(',',$fields);
+		$queryGenerator = new QueryGenerator($module, $current_user);
+		$queryGenerator->setFields($fields);
+		$queryGenerator->addCondition('id',$crmid,'e');
+		$query = $queryGenerator->getQuery();
+		$queryres=$adb->pquery($query,array());
+		if ($adb->num_rows($queryres)>0) {
+			$col=0;
+			foreach ($fields as $field) {
+				$ret[$field]=$adb->query_result($queryres,0,$col++);
+			}
+		}
+		break;
+	case 'getEmailTemplateDetails':
+		$emltplid = vtlib_purify($_REQUEST['templateid']);
+		$emltpl = getTemplateDetails($emltplid);
+		$ret = array();
+		if (count($emltpl)>0) {
+			$ret['subject'] = $emltpl[2];
+			$ret['body'] = $emltpl[1];
+			$ret['from_email'] = $emltpl[3];
+		}
+		break;
+	case 'ValidationExists':
+		$valmod = vtlib_purify($_REQUEST['valmodule']);
+		if (file_exists("modules/{$valmod}/{$valmod}Validation.php")) {
+			echo 'yes';
+		} else {
+			echo 'no';
+		}
+		die();
+		break;
+	case 'ValidationLoad':
+		$valmod = vtlib_purify($_REQUEST['valmodule']);
+		if (file_exists("modules/{$valmod}/{$valmod}Validation.php")) {
+			include "modules/{$valmod}/{$valmod}Validation.php";
+		} else {
+			echo '%%%OK%%%';
+		}
+		die();
+		break;
 	case 'ismoduleactive':
 	default:
 		$mod = vtlib_purify($_REQUEST['checkmodule']);
@@ -81,4 +126,5 @@ switch ($functiontocall) {
 }
 
 echo json_encode($ret);
+die();
 ?>

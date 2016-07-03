@@ -19,7 +19,8 @@ class VTCreateEntityTask extends VTTask {
 	}
 
 	public function doTask(&$entity) {
-		global $adb, $current_user;
+		global $adb, $current_user,$from_wf;
+                $from_wf = true;
 		$util = new VTWorkflowUtils();
 
 		$admin = $util->adminUser();
@@ -100,10 +101,12 @@ class VTCreateEntityTask extends VTTask {
 				$newEntity->column_fields[$fieldName] = $fieldValue;
 			}
 			$newEntity->column_fields[$this->reference_field] = $focus->id;
+			$newEntity->column_fields = DataTransform::sanitizeRetrieveEntityInfo($newEntity->column_fields,$handlerMeta);
 			$newEntity->save($entityType);
 			relateEntities($focus, $moduleName, $recordId, $entityType, $newEntity->id);
 		}
 
+                $from_wf = false;
 		$util->revertUser();
 	}
 

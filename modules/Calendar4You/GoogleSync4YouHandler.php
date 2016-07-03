@@ -36,7 +36,12 @@ class GoogleSync4YouHandler extends VTEventHandler {
 			if ($moduleName == 'Calendar' || $moduleName == 'Events') {
 				$InGCalendars = array();
 				$id = $entityData->getId();
-				$Data = $entityData->getData();
+				//$Data = $entityData->getData();
+                                $ev=CRMEntity::getInstance("Calendar");
+                                $ev->id=$id;
+                                $ev->mode='edit';
+                                $evv=$ev->retrieve_entity_info($id, "Events");
+                                $Data=$ev->column_fields;
 				$sql1 = 'SELECT userid, geventid, eventtype FROM its4you_googlesync4you_events WHERE crmid = ?';
 				$result1 = $adb->pquery($sql1,array($id));
 				$num_rows1 = $adb->num_rows($result1);

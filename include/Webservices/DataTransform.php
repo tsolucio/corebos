@@ -49,6 +49,13 @@ class DataTransform{
 		return $newRow;
 	}
 
+	static function sanitizeRetrieveEntityInfo($newRow,$meta){
+		$newRow = DataTransform::sanitizeDateFieldsForInsert($newRow,$meta);
+		$newRow = DataTransform::sanitizeCurrencyFieldsForInsert($newRow,$meta);
+		$newRow = DataTransform::sanitizeTextFieldsForInsert($newRow,$meta);
+		return $newRow;
+	}
+
 	function sanitizeForInsert($row,$meta){
 		global $adb;
 		$associatedToUser = false;
@@ -75,9 +82,9 @@ class DataTransform{
 				$hours = (int)($reminder/(60*60))%24;
 				$days = (int)($reminder/(60*60*24));
 
-				//at vtiger there cant be 0 minutes reminder so we are setting to 1
+				// there cannot be 0 minutes reminder so we are setting to 1
 				if($minutes == 0){
-						$minutes = 1;
+					$minutes = 1;
 				}
 
 				$_REQUEST['remmin'] = $minutes;
@@ -127,8 +134,7 @@ class DataTransform{
 					$row['parent_id'] = $row['parent_id']."@-1|";
 					$_REQUEST['parent_id'] = $row['parent_id'];
 				}else{
-					$referenceHandler = vtws_getModuleHandlerFromId($parentTypeId,
-							$meta->getUser());
+					$referenceHandler = vtws_getModuleHandlerFromId($parentTypeId, $meta->getUser());
 					$referenceMeta = $referenceHandler->getMeta();
 					$fieldId = getEmailFieldId($referenceMeta, $row['parent_id']);
 					$row['parent_id'] .= "@$fieldId|";
@@ -142,8 +148,8 @@ class DataTransform{
 			unset($row[$meta->getObectIndexColumn()]);
 		}
 
-		$row = DataTransform::sanitizeDateFieldsForInsert($row,$meta);
-		$row = DataTransform::sanitizeCurrencyFieldsForInsert($row,$meta);
+		//$row = DataTransform::sanitizeDateFieldsForInsert($row,$meta);
+		//$row = DataTransform::sanitizeCurrencyFieldsForInsert($row,$meta);
 
 		return $row;
 	}
@@ -270,11 +276,15 @@ class DataTransform{
 		global $current_user;
 		$moduleFields = $meta->getModuleFields();
 		foreach($moduleFields as $fieldName=>$fieldObj){
-			if($fieldObj->getFieldDataType()=="currency" && !empty($row[$fieldName])) {
-				if($fieldObj->getUIType() == '71') {
-					$row[$fieldName] = CurrencyField::convertToUserFormat($row[$fieldName],$current_user);
-				} else if($fieldObj->getUIType() == '72') {
-					$row[$fieldName] = CurrencyField::convertToUserFormat($row[$fieldName],$current_user,true);
+			if(($fieldObj->getFieldDataType()=="currency" || $fieldObj->getFieldDataType()=="double") && !empty($row[$fieldName])) {
+				$uitype = $fieldObj->getUIType();
+				$cryFields = new CurrencyField($row[$fieldName]);
+				$cryFields->initialize($current_user);
+				$cryFields->setNumberofDecimals($cryFields::$maxNumberOfDecimals);
+				if($uitype == '71') {
+					$row[$fieldName] = $cryFields->getDisplayValue($current_user,false,true);
+				} else if($uitype == '72' || $uitype == '7' || $uitype == '9') {
+					$row[$fieldName] = $cryFields->getDisplayValue($current_user,true,true);
 				}
 			}
 		}

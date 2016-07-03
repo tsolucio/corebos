@@ -67,7 +67,7 @@ $num_act_util_per = $adb->num_rows($act_utility_result);
 		}
 	}
 	
-	//profile2standard permissions	
+	//profile2standard permissions
 	for($i=0; $i<$num_act_per; $i++)
 	{
 		$tab_id = $adb->query_result($act_perr_result,$i,"tabid");
@@ -75,7 +75,7 @@ $num_act_util_per = $adb->num_rows($act_utility_result);
 		{
 			$action_id = $adb->query_result($act_perr_result,$i,"operation");
 			$action_name = getActionname($action_id);
-			if($action_name == 'EditView' || $action_name == 'Delete' || $action_name == 'DetailView')
+			if($action_name == 'EditView' || $action_name == 'Delete' || $action_name == 'DetailView' || $action_name == 'CreateView')
 			{
 				$request_var = $tab_id.'_'.$action_name;
 			}
@@ -104,9 +104,6 @@ $num_act_util_per = $adb->num_rows($act_utility_result);
 				$update_query = "update vtiger_profile2standardpermissions set permissions=? where tabid=16 and Operation=? and profileid=?";
 				$adb->pquery($update_query, array($permission_value, $action_id, $profileid));
 			}
-
-
-
 		}
 	}
 

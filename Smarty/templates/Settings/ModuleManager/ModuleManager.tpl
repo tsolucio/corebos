@@ -5,19 +5,15 @@ function vtlib_toggleModule(module, action, type) {
 
 	var data = "module=Settings&action=SettingsAjax&file=ModuleManager&module_name=" + encodeURIComponent(module) + "&" + action + "=true" + "&module_type=" + type;
 
-	$('status').show();
-	new Ajax.Request(
-		'index.php',
-        {queue: {position: 'end', scope: 'command'},
-        	method: 'post',
-            postBody: data,
-            onComplete: function(response) {
-				$('status').hide();
+	document.getElementById('status').style.display = "inline";
+	jQuery.ajax({
+			method:"POST",
+			url:"index.php?"+data
+	}).done(function(response) {
+				document.getElementById('status').style.display = "none";
 				// Reload the page to apply the effect of module setting
 				window.location.href = 'index.php?module=Settings&action=ModuleManager&parenttab=Settings';
-			}
-		}
-	);
+	});
 }
 </script>
 {/literal}

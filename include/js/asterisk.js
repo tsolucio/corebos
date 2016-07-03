@@ -11,14 +11,11 @@ function _defAsteriskTimer(){
 	var ASTERISK_INCOMING_DIV_TIMEOUT = 15;	//the incoming call div is present for this number of seconds
 	function AsteriskCallback() {
 		var url = "module=PBXManager&action=PBXManagerAjax&file=TraceIncomingCall&mode=ajax&ajax=true";
-		new Ajax.Request(
-			'index.php',
-			{
-				queue: {position: 'end', scope: 'command'},
-				method: 'post',
-				postBody:url,
-				onComplete: function(response){
-					popupText = trim(response.responseText);
+		jQuery.ajax({
+				method: 'POST',
+				url: "index.php?"+url
+		}).done(function (response) {
+					popupText = trim(response);
 					if(popupText != '' && popupText != 'failure'){
 						var div = popupText;
 						Popup_vtiger = _defPopup();
@@ -26,7 +23,6 @@ function _defAsteriskTimer(){
 						Popup_vtiger.displayPopup(Popup_vtiger.content,ASTERISK_INCOMING_DIV_TIMEOUT);
 					}
 				}
-			}
 		);
 	}
 

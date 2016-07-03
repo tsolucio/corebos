@@ -13,7 +13,7 @@
 <script language="javascript">
 function dup_validation()
 {ldelim}
-	var rolename = $('rolename').value;
+	var rolename = document.getElementById('rolename').value;
 	var mode = getObj('mode').value;
 	var roleid = getObj('roleid').value;
 	if(mode == 'edit')
@@ -23,19 +23,16 @@ function dup_validation()
 	//var status = CharValidation(rolename,'namespace');
 	//if(status)
 	//{ldelim}
-	new Ajax.Request(
-                'index.php',
-                {ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-                                method: 'post',
-                                postBody: 'module=Settings&action=SettingsAjax&file=SaveRole&ajax=true&dup_check=true'+urlstring,
-                                onComplete: function(response) {ldelim}
-					if(response.responseText.indexOf('SUCCESS') > -1)
+	jQuery.ajax({ldelim}
+			method:"POST",
+			url:'index.php?module=Settings&action=SettingsAjax&file=SaveRole&ajax=true&dup_check=true'+urlstring
+	{rdelim}).done(function(response) {ldelim}
+					if(response.indexOf('SUCCESS') > -1)
 						document.newRoleForm.submit();
 					else
-						alert(response.responseText);
-                                {rdelim}
-                        {rdelim}
-                );
+						alert(response);
+			{rdelim}
+				);
 	//{rdelim}
 	//else
 	//	alert(alert_arr.NO_SPECIAL+alert_arr.IN_ROLENAME)

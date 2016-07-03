@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 require_once("data/Tracker.php");
 require_once('Smarty_setup.php');
@@ -14,20 +13,12 @@ require_once('include/logging.php');
 require_once('include/ListView/ListView.php');
 require_once('include/utils/utils.php');
 require_once('modules/Rss/Rss.php');
-global $app_strings;
-global $app_list_strings;
-global $mod_strings;
+global $app_strings, $app_list_strings, $mod_strings;
 
 $current_module_strings = return_module_language($current_language, 'Rss');
 $log = LoggerManager::getLogger('rss_list');
 
-global $currentModule;
-global $image_path;
-global $theme;
-global $cache_dir;
-// focus_list is the means of passing data to a ListView.
-global $focus_list;
-global $adb;
+global $currentModule, $image_path, $theme, $cache_dir, $adb;
 
 $oRss = new vtigerRSS();
 if(isset($_REQUEST['folders']) && $_REQUEST['folders'] == 'true')
@@ -54,19 +45,16 @@ $rss_form->assign("CATEGORY", getParenttab());
 //$url = 'http://forums/weblog_rss.php?w=202';
 if(isset($_REQUEST[record]))
 {
-    $recordid = vtlib_purify($_REQUEST['record']);
+	$recordid = vtlib_purify($_REQUEST['record']);
 	$url = $oRss->getRssUrlfromId($recordid);
-	if($oRss->setRSSUrl($url))
-	{
-        	$rss_html = $oRss->getSelectedRssHTML($recordid);
-	}else
-	{
-        	$rss_html = "<strong>".$mod_strings['LBL_ERROR_MSG']."</strong>";
+	if($oRss->setRSSUrl($url)) {
+		$rss_html = $oRss->getSelectedRssHTML($recordid);
+	} else {
+		$rss_html = "<strong>".$mod_strings['LBL_ERROR_MSG']."</strong>";
 	}
 	$rss_form->assign("TITLE",gerRssTitle($recordid));
 	$rss_form->assign("ID",$recordid);
-}else
-{
+} else {
 	$rss_form->assign("TITLE",gerRssTitle());
 	$rss_html = $oRss->getStarredRssHTML();
 	$query = "select rssid from vtiger_rss where starred=1";

@@ -5,7 +5,7 @@ Allow from all
 Satisfy Any
 </FilesMatch>
 
-<FilesMatch "^(sync|Pay|processSendNotification|capture|webservice)\.php$">
+<FilesMatch "^(sync|Pay|processSendNotification|capture|webservice|ping|TrackAccess)\.php$">
 Allow from all
 Satisfy Any
 </FilesMatch>

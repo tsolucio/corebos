@@ -157,7 +157,6 @@ if($_POST["command"] == "check_mbox") {
 }
 
 ?>
-<script language="JavaScript" type="text/javascript" src="include/scriptaculous/scriptaculous.js?load=effects,builder"></script>
 
 <script type="text/javascript">
 // Pass our PHP variables to js.
@@ -252,8 +251,8 @@ if($numPages > 1) {
 	}
 }
 
-if(isPermitted('Contacts','EditView','') == 'yes')
-        $show_qualify = "yes";
+if(isPermitted('Contacts','CreateView','') == 'yes')
+	$show_qualify = "yes";
 else
 	$show_qualify = "no";
 $overview=$elist["overview"];

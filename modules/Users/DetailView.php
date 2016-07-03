@@ -10,16 +10,7 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Users/DetailView.php,v 1.21 2005/04/19 14:44:02 ray Exp $
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
 require_once('Smarty_setup.php');
 require_once('data/Tracker.php');
 require_once('modules/Users/Users.php');
@@ -29,13 +20,7 @@ require_once('include/utils/GetUserGroups.php');
 require_once('modules/Users/UserTimeZonesArray.php');
 //to check audittrail if enable or not
 require_once('user_privileges/audit_trail.php');
-global $current_user;
-global $theme;
-global $default_language;
-global $adb;
-global $currentModule;
-global $app_strings;
-global $mod_strings;
+global $current_user, $theme, $default_language, $adb, $currentModule, $app_strings, $mod_strings;
 
 $focus = new Users();
 
@@ -106,24 +91,13 @@ $smarty->assign("APP", $app_strings);
 $oGetUserGroups = new GetUserGroups();
 $oGetUserGroups->getAllUserGroups($focus->id);
 if(useInternalMailer() == 1)
-        $smarty->assign("INT_MAILER","true");
+	$smarty->assign("INT_MAILER","true");
 
 $smarty->assign("GROUP_COUNT",count($oGetUserGroups->user_groups));
 $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH", $image_path);
 $smarty->assign("ID", $focus->id);
 $smarty->assign("CATEGORY", $category);
-if(isset($focus->imagename) && $focus->imagename!='')
-{
-	$imagestring="<div id='track1' style='margin: 4px 0pt 0pt 10px; width: 200px; background-image: url(themes/images/scaler_slider_track.gif); background-repeat: repeat-x; background-position: left center; height: 18px;'>
-	<div class='selected' id='handle1' style='width: 18px; height: 18px; position: relative; left: 145px;cursor:pointer;'><img src='" . vtiger_imageurl('scaler_slider.gif', $theme) . "'></div>
-	</div>
-<script language='JavaScript' type='text/javascript' src='include/js/slider.js'></script>
-
-	<div class='scale-image' style='padding: 10px; float: left; width: 83.415px;'><img src='test/user/".$focus->imagename."' width='100%'</div>
-	<p><script type='text/javascript' src='include/js/scale_demo.js'></script></p>";
-	//$smarty->assign("USER_IMAGE",$imagestring);
-}
 
 if(isset($_REQUEST['modechk']) && $_REQUEST['modechk'] != '' )
 {
@@ -147,11 +121,8 @@ if ((is_admin($current_user) || $_REQUEST['record'] == $current_user->id)
 elseif (is_admin($current_user) || $_REQUEST['record'] == $current_user->id) {
 	$buttons = "<input title='".$app_strings['LBL_EDIT_BUTTON_TITLE']."' accessKey='".$app_strings['LBL_EDIT_BUTTON_KEY']."' class='crmButton small edit' onclick=\"this.form.return_module.value='Users'; this.form.return_action.value='DetailView'; this.form.return_id.value='$focus->id'; this.form.action.value='EditView';\" type='submit' name='Edit' value='  ".$app_strings['LBL_EDIT_BUTTON_LABEL']."  '>";
 	$smarty->assign('EDIT_BUTTON',$buttons);
-	
-		$buttons = "<input title='".$mod_strings['LBL_CHANGE_PASSWORD_BUTTON_TITLE']."' accessKey='".$mod_strings['LBL_CHANGE_PASSWORD_BUTTON_KEY']."' class='crmButton password small' LANGUAGE=javascript onclick='return window.open(\"index.php?module=Users&action=ChangePassword&form=DetailView\",\"test\",\"width=400,height=200,resizable=no,scrollbars=0, toolbar=no, titlebar=no, left=200, top=226, screenX=100, screenY=126\");' type='button' name='password' value='".$mod_strings['LBL_CHANGE_PASSWORD_BUTTON_LABEL']."'>";
-		$smarty->assign('CHANGE_PW_BUTTON',$buttons);
-	
-	
+	$buttons = "<input title='".$mod_strings['LBL_CHANGE_PASSWORD_BUTTON_TITLE']."' accessKey='".$mod_strings['LBL_CHANGE_PASSWORD_BUTTON_KEY']."' class='crmButton password small' LANGUAGE=javascript onclick='return window.open(\"index.php?module=Users&action=ChangePassword&form=DetailView\",\"test\",\"width=700,height=490,resizable=no,scrollbars=0, toolbar=no, titlebar=no, left=200, top=226, screenX=100, screenY=126\");' type='button' name='password' value='".$mod_strings['LBL_CHANGE_PASSWORD_BUTTON_LABEL']."'>";
+	$smarty->assign('CHANGE_PW_BUTTON',$buttons);
 }
 if (is_admin($current_user))
 {
@@ -201,6 +172,12 @@ $smarty->assign("START_HOUR",$focus->start_hour);
 $_SESSION['Users_FORM_TOKEN'] = rand(5, 2000) * rand(2, 7);
 $smarty->assign('FORM_TOKEN', $_SESSION['Users_FORM_TOKEN']);
 
+if ($current_user->mustChangePassword()) {
+	$smarty->assign('ERROR_MESSAGE',getTranslatedString('ERR_MUST_CHANGE_PASSWORD','Users'));
+	$smarty->assign('mustChangePassword',1);
+} else {
+	$smarty->assign('mustChangePassword',0);
+}
 
 //for check audittrail if it is enable or not
 $smarty->assign("AUDITTRAIL",$audit_trail);

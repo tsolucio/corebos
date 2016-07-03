@@ -6,12 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  *********************************************************************************/
-
-/**
- * @author MAK
- */
 
 $mod_strings = array(
 	'VtigerBackup'=>'Copia Seguridad',
@@ -20,6 +15,7 @@ $mod_strings = array(
 	'LBL_ZIP_FILE_ADD_FAILURE' => 'error añadiendo fichero',
 	'LBL_FTP_CONNECT_FAILED' => 'Conexión FTP fallida',
 	'LBL_FTP_LOGIN_FAILED' => 'Acceso FTP fallido',
+	'Native Backup' => 'Copia con PHP',
+	'External Backup' => 'Copia Externa',
 );
-
 ?>

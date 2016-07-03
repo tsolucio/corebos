@@ -100,7 +100,7 @@ Calendar_Event_Types = {literal}{
                  
                  var view_val = jQuery('#calendar_div').fullCalendar('getView'); 
 
-                 $("status").style.display="inline";
+                 document.getElementById("status").style.display="inline";
                  
                  jQuery.ajax({
                             url: 'index.php',
@@ -161,7 +161,7 @@ Calendar_Event_Types = {literal}{
                                 
                                 callback(events);
                                 
-                                $("status").style.display="none";
+                                document.getElementById("status").style.display="none";
                             }
                         });
                 }
@@ -237,7 +237,6 @@ jQuery(document).ready(function(){
 		},
         
         dayClick : function(date, allDay, jsEvent, view){
-            
             if (allDay) {
                 argg1 = 'createTodo';
                 type = 'todo'; 
@@ -246,7 +245,7 @@ jQuery(document).ready(function(){
                 type = '0';
             }
             {/literal}
-            
+            if ('{$CREATE_PERMISSION}'!='permitted') return false;
             var formated_date = jQuery.fullCalendar.formatDate(date, '{$USER_DATE_FORMAT}');
             
             {if $IS_24 eq "true"}
@@ -363,10 +362,10 @@ jQuery(document).ready(function(){
                                         jQuery('#event_info_content').html(object['title']);
                                     }
                                 });
-                }           
+                }
             } else {
                 jQuery(this).css('cursor', 'default');
-            }   
+            }
         },
         
         eventDragStart: function( event, jsEvent, ui, view ) {

@@ -20,6 +20,7 @@
 
 $tool_buttons = array(
 'EditView' => 'no',
+'CreateView' => 'no',
 'index' => 'yes',
 'Import' => 'no',
 'Export' => 'no',

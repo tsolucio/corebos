@@ -17,6 +17,8 @@ $mod_strings = array(
 	'LBL_CREATE_ZIP_FAILURE' => 'A ZIP fájl létrehozása nem sikerült',
 	'LBL_ZIP_FILE_ADD_FAILURE' => 'hozzáadás a fájlhoz nem sikerült',
 	'LBL_FTP_CONNECT_FAILED' => 'FTP kapcsolat hiba',
-	'LBL_FTP_LOGIN_FAILED' => 'FTP bejelentkezés nem sikerült'
+	'LBL_FTP_LOGIN_FAILED' => 'FTP bejelentkezés nem sikerült',
+	'Native Backup' => 'Native Backup',
+	'External Backup' => 'External Backup',
 );
 ?>

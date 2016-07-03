@@ -25,7 +25,7 @@ class Assets extends CRMEntity {
 	 */
 	var $customFieldTable = Array('vtiger_assetscf', 'assetsid');
 	// Uncomment the line below to support custom field columns on related lists
-	// var $related_tables = Array('vtiger_assetscf'=>array('assetsid','vtiger_assets', 'assetsid'));
+	var $related_tables = Array('vtiger_assetscf'=>array('assetsid','vtiger_assets', 'assetsid'));
 
 	/**
 	 * Mandatory for Saving, Include tables related to this module.
@@ -106,12 +106,13 @@ class Assets extends CRMEntity {
 	var $unit_price;
 
 	function __construct() {
-		global $log, $currentModule;
-		$this->column_fields = getColumnFields($currentModule);
+		global $log;
+		$this_module = get_class($this);
+		$this->column_fields = getColumnFields($this_module);
 		$this->db = PearDatabase::getInstance();
 		$this->log = $log;
 		$sql = 'SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid = ? limit 1';
-		$tabid = getTabid($currentModule);
+		$tabid = getTabid($this_module);
 		$result = $this->db->pquery($sql, array($tabid));
 		if ($result and $this->db->num_rows($result)==1) {
 			$this->HasDirectImageField = true;
@@ -130,6 +131,17 @@ class Assets extends CRMEntity {
 	 */
 	function getQueryByModuleField($module, $fieldname, $srcrecord, $query='') {
 		// $srcrecord could be empty
+		global $adb,$log;
+		//$query_relation = ' INNER JOIN vtiger_crmentityrel ON (vtiger_crmentityrel.relcrmid = vtiger_crmentity.crmid OR vtiger_crmentityrel.crmid = vtiger_crmentity.crmid) ';
+		$wherepos = stripos($query, 'where'); // there is always a where
+		$query_body = substr($query, 0, $wherepos-1);
+		$query_cond = substr($query, $wherepos+5);
+		if($module == 'Invoice' && (isset($_REQUEST['invoiceid']) && $_REQUEST['invoiceid'] != '') && (isset($_REQUEST['productid']) && $_REQUEST['productid'] != '')) {
+			$query1 = $query_body .$query_relation." WHERE (vtiger_assets.invoiceid = '' || vtiger_assets.invoiceid = '0')
+						AND vtiger_assets.product = ".$_REQUEST['productid']." and " . $query_cond;
+			return $query1;
+		}
+		return $query;
 	}
 
 	/**

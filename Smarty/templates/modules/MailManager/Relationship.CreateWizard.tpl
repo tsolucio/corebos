@@ -36,9 +36,9 @@
 			<td align=right>
 			{if $MODULE eq 'Accounts'}
 				<input title="{'LBL_SAVE_LABEL'|getTranslatedString}" accessKey="{'LBL_SAVE_LABEL'|getTranslatedString}" class="crmbutton small save" 
-					   onclick="if(getFormValidate()) MailManager.AjaxDuplicateValidate('Accounts', 'accountname', this.form).done(function(form) {ldelim} MailManager.mail_associate_create(form);{rdelim} );" type="button" name="button" value="{'LBL_SAVE_LABEL'|getTranslatedString}">
+					   onclick="if(QCformValidate()) MailManager.AjaxDuplicateValidate('Accounts', 'accountname', this.form).done(function(form) {ldelim} MailManager.mail_associate_create(form);{rdelim} );" type="button" name="button" value="{'LBL_SAVE_LABEL'|getTranslatedString}">
 			{else}
-				<input type="button" class="crmbutton small save" value="{'LBL_SAVE_LABEL'|getTranslatedString}" onclick="if(getFormValidate()) MailManager.mail_associate_create(this.form);">
+				<input type="button" class="crmbutton small save" value="{'LBL_SAVE_LABEL'|getTranslatedString}" onclick="if(QCformValidate()) MailManager.mail_associate_create(this.form);">
 			{/if}
 			</td>
 			<td><input type="button" class="crmbutton small cancel" value="{'LBL_Cancel'|getTranslatedString}" onclick="MailManager.mail_associate_create_cancel();"></td>

@@ -6,17 +6,10 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  *********************************************************************************/
-
 require_once 'modules/VtigerBackup/Zip/ExtensionZip.php';
 require_once 'modules/VtigerBackup/Zip/PHPZip.php';
 
-/**
- * Description of BackupZip
- *
- * @author MAK
- */
 abstract class Vtiger_BackupZip {
 	protected $fileName;
 	protected static $defaultPath;
@@ -47,8 +40,7 @@ abstract class Vtiger_BackupZip {
 	}
 
 	public static function addTrailingSlash($path) {
-		return (strrpos($path, DIRECTORY_SEPARATOR) === strlen($path) - 1)?
-				$path.DIRECTORY_SEPARATOR:$path;
+		return (strrpos($path, DIRECTORY_SEPARATOR) === strlen($path) - 1)?$path.DIRECTORY_SEPARATOR:$path;
 	}
 
 	public static function getDefaultFileName($time = null) {
@@ -58,6 +50,7 @@ abstract class Vtiger_BackupZip {
 		global $site_URL;
 		$archive_prefix=str_replace('http://','',$site_URL);
 		$archive_prefix=str_replace('/','',$archive_prefix);
+		$archive_prefix=str_replace(':','',$archive_prefix);
 		return $archive_prefix.gmdate('d_M_Y-H_i_s-T',$time).'.zip';
 	}
 

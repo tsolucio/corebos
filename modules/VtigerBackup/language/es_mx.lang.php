@@ -9,10 +9,6 @@
  *  Author       : Francisco Hernandez Odin Consultores www.odin.mx
  *********************************************************************************/
 
-/**
- * @author MAK
- */
-
 $mod_strings = array(
 	'VtigerBackup'=>'Copia de Seguridad',
 	'SINGLE_VtigerBackup'=>'Copia de Seguridad',
@@ -20,6 +16,7 @@ $mod_strings = array(
 	'LBL_ZIP_FILE_ADD_FAILURE' => 'error añadiendo archivo',
 	'LBL_FTP_CONNECT_FAILED' => 'Conexión FTP fallida',
 	'LBL_FTP_LOGIN_FAILED' => 'Acceso FTP fallido',
+	'Native Backup' => 'Copia con PHP',
+	'External Backup' => 'Copia Externa',
 );
-
 ?>

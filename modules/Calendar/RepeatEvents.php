@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
 ********************************************************************************/
 
 /**
@@ -56,7 +55,7 @@ class Calendar_RepeatEvents {
 		$starting = self::mktime($start_date);
 		$limiting = self::mktime($limit_date);
 
-		if($type == 'Daily') {	
+		if($type == 'Daily') {
 			$count = 0;
 			while(true) {
 				++$count;
@@ -123,7 +122,6 @@ class Calendar_RepeatEvents {
 	 * Repeat Activity instance till given limit.
 	 */
 	static function repeat($focus, $recurObj) {
-		
 		$frequency = $recurObj->recur_freq;
 		$repeattype= $recurObj->recur_type;
 		
@@ -137,9 +135,8 @@ class Calendar_RepeatEvents {
 		$new_focus = new Activity();
 
 		$eventStartDate = $focus->column_fields['date_start'];
-		$interval = strtotime($focus->column_fields['due_date']) - 
-				strtotime($focus->column_fields['date_start']);
-		
+		$interval = strtotime($focus->column_fields['due_date']) - strtotime($focus->column_fields['date_start']);
+
 		foreach ($recurObj->recurringdates as $index => $startDate) {
 			if($index == 0 && $eventStartDate == $startDate) {
 				continue;

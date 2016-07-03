@@ -8,8 +8,6 @@
  * All Rights Reserved.
  *************************************************************************************/
 
-define('WORKFLOW_TRIGGER_TYPES','http://wiki.vtiger.com/index.php/Vtiger530:Module_Workflow');
 define('BASE_HELP_WIKI','http://wiki.vtiger.com');
 define('MAIN_HELP_PAGE','http://wiki.vtiger.com/index.php/Main_Page');
-
 ?>

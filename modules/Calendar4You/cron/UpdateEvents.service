@@ -67,7 +67,7 @@ if ($num_rows1 > 0) {
 					$geventid = $row2['geventid'];
 					$cal=$row2['calendar'];
 					$event = $GoogleSync4You->getGoogleCalEventfromcron($geventid,$cal);
-					if($event == false) continue;
+					if($event != false){
 					if ($event->getStatus()=='cancelled') {
 						$sql3 = 'DELETE FROM its4you_googlesync4you_events WHERE id = ?';
 						$adb->pquery($sql3,array($eventid));
@@ -82,13 +82,17 @@ if ($num_rows1 > 0) {
 							$focus = CRMEntity::getInstance($currentModule);
 							$focus->retrieve_entity_info($record,$tab_type);
 							$focus->id = $record;
+                                                        //getting all invitees
+                                                        $invite=$adb->pquery("select GROUP_CONCAT(inviteeid SEPARATOR \";\") as invitee from vtiger_invitees join vtiger_users on id=inviteeid and deleted=0 where activityid=?",array($record));
+                                                        if($adb->num_rows($invite)>0)
+                                                        $_REQUEST["inviteesid"]=$adb->query_result($invite,0,0);
 							$focus->mode = 'edit';
 							$focus->column_fields['subject'] = $event->getSummary();
 							if (empty($focus->column_fields['subject'])) continue; // we don't update events with no subject
 							$focus->column_fields['description'] = $event->getDescription();
 							$focus->column_fields['location'] = $event->getLocation();
 							$recurrence = $event->getRecurrence();
-							if (empty($recurrence)) {
+							//if (empty($recurrence)) {
 								//$When = $event->getWhen();
 								$evdtst = (empty($event->getStart()->dateTime) ? $event->getStart()->date : $event->getStart()->dateTime);
 								$evdted = (empty($event->getEnd()->dateTime) ? $event->getEnd()->date : $event->getEnd()->dateTime);
@@ -122,13 +126,13 @@ if ($num_rows1 > 0) {
 								$duration_minutes = ($duration_time - ($duration_hour * 3600 )) / 60;
 								$focus->column_fields['duration_hours'] = $duration_hour;
 								$focus->column_fields['duration_minutes'] = $duration_minutes;
-							}
+							//}
 							$focus->save($currentModule);
 							$sql3 = 'UPDATE its4you_googlesync4you_events SET lastmodified = ? WHERE id = ?';
 							$adb->pquery($sql3,array($event->getUpdated(),$eventid));
 						}
 					}
-				}
+                                }}
 			}
 		}
 	}

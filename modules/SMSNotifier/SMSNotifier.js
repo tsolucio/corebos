@@ -14,7 +14,7 @@ if(typeof(SMSNotifier) == 'undefined') {
 		},
 		
 		loadstatus : function(record, query) {
-			var wrapper = $('tblStatusInformation');
+			var wrapper = document.getElementById('tblStatusInformation');
 			
 			if(typeof(query) == 'undefined') query = false;
 			
@@ -24,18 +24,16 @@ if(typeof(SMSNotifier) == 'undefined') {
 					url += '&mode=query';
 				}
 				
-				$('vtbusy_info').show();
+				document.getElementById('vtbusy_info').style.display="block";
 				
-				new Ajax.Request('index.php', {
-                     queue: {position: 'end', scope: 'command'},
-                     method: 'post',
-                     postBody:  url,
-                     onComplete: function(response)
-                     {
-                     	wrapper.innerHTML = response.responseText;
-                     	$('vtbusy_info').hide();
+				jQuery.ajax({
+					method: 'POST',
+					url: 'index.php?'+url,
+                }).done(function (response) {
+                     	wrapper.innerHTML = response;
+                     	document.getElementById('vtbusy_info').style.display="none";
                      }
-             	});				
+             )
 			}	
 		}
 		

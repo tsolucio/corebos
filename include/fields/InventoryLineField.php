@@ -83,7 +83,32 @@ class InventoryLineField {
 		),
 	);
 	private static $ILFieldsLabel = array();
-
+	private static $ILProductServiceNameFields = array(
+		'productname' => array(
+			'uitype' => 2,
+			'module' => 'Products',
+			'fieldtype' => 'string',
+			'fieldname' => 'productname',
+			'columnname' => 'productname',
+			'fieldlabel' => 'Product Name',
+			'tablename' => 'vtiger_products',
+			'typeofdata'=>'V~M',
+			'mandatory'=>'true',
+			'presence' => 0,
+		),
+		'servicename' => array(
+			'uitype' => 2,
+			'module' => 'Services',
+			'fieldtype' => 'string',
+			'fieldname' => 'servicename',
+			'columnname' => 'servicename',
+			'fieldlabel' => 'Service Name',
+			'tablename' => 'servicename',
+			'typeofdata'=>'V~M',
+			'mandatory'=>'true',
+			'presence' => 0,
+		),
+	);
 	var $fieldname;
 
 	function __construct($fieldname='') {
@@ -119,6 +144,10 @@ class InventoryLineField {
 
 	function getInventoryLineFieldsByName() {
 		return InventoryLineField::$ILFieldsName;
+	}
+
+	function getInventoryLineProductServiceNameFields() {
+		return InventoryLineField::$ILProductServiceNameFields;
 	}
 
 	function getInventoryLineFieldsByObject() {

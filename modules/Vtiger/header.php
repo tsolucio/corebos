@@ -84,14 +84,17 @@ if (!in_array('faviconlogo', $cnorg)) {
 }
 $sql="select * from vtiger_organizationdetails";
 $result = $adb->pquery($sql, array());
-//Handle for allowed organation logo/logoname likes UTF-8 Character
-$organization_logo = decode_html($adb->query_result($result,0,'logoname'));
-$smarty->assign("LOGO",$organization_logo);
-if(decode_html($adb->query_result($result,0,'faviconlogo'))=='')
-$favicon='themes/images/favicon.ico';
-else $favicon='test/logo/'.decode_html($adb->query_result($result,0,'faviconlogo'));
+//Handle for allowed organization logo/logoname likes UTF-8 Character
+// $organization_logo = decode_html($adb->query_result($result,0,'logoname'));
+// if(!file_exists('test/logo/'.$organization_logo)) $organization_logo='noimageloaded.png';
+// $smarty->assign("LOGO",$organization_logo);
+$favicon = decode_html($adb->query_result($result,0,'faviconlogo'));
+if($favicon=='') $favicon='themes/images/favicon.ico';
+else $favicon='test/logo/'.$favicon;
 $smarty->assign("FAVICON",$favicon);
-$smarty->assign("FRONTLOGO",decode_html($adb->query_result($result,0,'frontlogo')));
+$frontlogo = decode_html($adb->query_result($result,0,'frontlogo'));
+if($frontlogo=='') $frontlogo='noimageloaded.png';
+$smarty->assign("FRONTLOGO",$frontlogo);
 $companyDetails = array();
 $companyDetails['name'] = $adb->query_result($result,0,'organizationname');
 $companyDetails['website'] = $adb->query_result($result,0,'website');

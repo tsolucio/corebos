@@ -9,9 +9,9 @@
 if (typeof(ModCommentsCommon) == 'undefined') {
 	ModCommentsCommon = {
 		addComment : function(domkeyid, parentid) {
-			var textBoxField = $('txtbox_'+domkeyid);
-			var editareaDOM = $('editarea_'+domkeyid);
-			var contentWrapDOM = $('contentwrap_'+domkeyid);
+			var textBoxField = document.getElementById('txtbox_'+domkeyid);
+			var editareaDOM = document.getElementById('editarea_'+domkeyid);
+			var contentWrapDOM = document.getElementById('contentwrap_'+domkeyid);
 			if (textBoxField.value == '') {
 				return;
 			}
@@ -20,42 +20,40 @@ if (typeof(ModCommentsCommon) == 'undefined') {
 			url += '&comment=' + encodeURIComponent(textBoxField.value);
 			
 			VtigerJS_DialogBox.block();
-			$("vtbusy_info").style.display="inline"; 
+			document.getElementById("vtbusy_info").style.display="inline"; 
 
-			new Ajax.Request('index.php',{
-				queue: {position: 'end', scope: 'command'},
-				method: 'post',
-				postBody:url,
-				onComplete: function(response) {
-					 $("vtbusy_info").style.display="none"; 
+			jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?'+url,
+			}).done(function (response) {
+					 document.getElementById("vtbusy_info").style.display="none"; 
 					VtigerJS_DialogBox.unblock();
 					
-					var responseTextTrimmed = trim(response.responseText);
+					var responseTextTrimmed = trim(response);
 					if (responseTextTrimmed.substring(0, 10) == ':#:SUCCESS') {
 						textBoxField.value = '';
 						contentWrapDOM.innerHTML = responseTextTrimmed.substring(10)+contentWrapDOM.innerHTML;
 					} else {
 						alert(alert_arr.OPERATION_DENIED);
 					}
-				}}
+				}
 			);
 		},
 		reloadContentWithFiltering : function(widget, parentid, criteria, targetdomid, indicator) {
-			if($(indicator)) $(indicator).style.display="inline";
+			if(document.getElementById(indicator)) document.getElementById(indicator).style.display="inline";
 
 			var url = 'module=ModComments&action=ModCommentsAjax&file=ModCommentsWidgetHandler&ajax=true';
 			url += '&widget=' + encodeURIComponent(widget) + '&parentid='+encodeURIComponent(parentid);
 			url += '&criteria='+ encodeURIComponent(criteria);
 			
-			new Ajax.Request('index.php',{
-				queue: {position: 'end', scope: 'command'},
-				method: 'post',
-				postBody:url,
-				onComplete: function(response) {
-					if($(indicator)) $(indicator).style.display="none";
+			jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?'+url,
+			}).done(function (response) {
+					if(document.getElementById(indicator)) document.getElementById(indicator).style.display="none";
 					
-					if($(targetdomid)) $(targetdomid).innerHTML = response.responseText;
-				}}
+					if(document.getElementById(targetdomid)) document.getElementById(targetdomid).innerHTML = response;
+				}
 			);
 		}
 	};

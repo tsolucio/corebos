@@ -12,6 +12,8 @@ $mod_strings = array(
 	'LBL_CREATE_ZIP_FAILURE' => 'Failed to create zip file',
 	'LBL_ZIP_FILE_ADD_FAILURE' => 'Failed to add file',
 	'LBL_FTP_CONNECT_FAILED' => 'FTP connect failed',
-	'LBL_FTP_LOGIN_FAILED' => 'FTP login failed'
+	'LBL_FTP_LOGIN_FAILED' => 'FTP login failed',
+	'Native Backup' => 'Native Backup',
+	'External Backup' => 'External Backup',
 );
 ?>

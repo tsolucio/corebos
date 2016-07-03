@@ -54,7 +54,7 @@ $navigation_array = getNavigationValues($start, $no_of_rows, '100');
 
 $start_rec = $navigation_array['start'];
 $end_rec = $navigation_array['end_val'];
-$record_string= $app_strings[LBL_SHOWING]." " .$start_rec." - ".$end_rec." " .$app_strings[LBL_LIST_OF] ." ".$no_of_rows;
+$record_string= $app_strings['LBL_SHOWING']." " .$start_rec." - ".$end_rec." " .$app_strings['LBL_LIST_OF'] ." ".$no_of_rows;
 
 $navigationOutput = getTableHeaderNavigation($navigation_array, $url_string,"Settings","ShowAuditTrail",'');
 

@@ -73,52 +73,43 @@
 <script>
 function getListViewEntries_js(module,url)
 {
-        $("status").style.display="inline";
-        new Ajax.Request(
-                'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                        method: 'post',
-                        postBody: 'module=Users&action=UsersAjax&file=ListView&ajax=true&'+url,
-                        onComplete: function(response) {
-                                $("status").style.display="none";
-                                $("ListViewContents").innerHTML= response.responseText;
-                        }
-                }
-        );
+		document.getElementById("status").style.display="inline";
+		jQuery.ajax({
+				method:"POST",
+				url:'index.php?module=Users&action=UsersAjax&file=ListView&ajax=true&'+url
+		}).done(function(response) {
+				document.getElementById("status").style.display="none";
+				document.getElementById("ListViewContents").innerHTML= response;
+			}
+		);
 }
 
 function deleteUser(obj,userid)
 {
-        $("status").style.display="inline";
-        new Ajax.Request(
-                'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                        method: 'post',
-                        postBody: 'action=UsersAjax&file=UserDeleteStep1&return_action=ListView&return_module=Users&module=Users&parenttab=Settings&record='+userid,
-                        onComplete: function(response) {
-                                $("status").style.display="none";
-                                $("tempdiv").innerHTML= response.responseText;
+		document.getElementById("status").style.display="inline";
+		jQuery.ajax({
+				method:"POST",
+				url:'index.php?action=UsersAjax&file=UserDeleteStep1&return_action=ListView&return_module=Users&module=Users&parenttab=Settings&record='+userid
+		}).done(function(response) {
+				document.getElementById("status").style.display="none";
+				document.getElementById("tempdiv").innerHTML= response;
 				fnvshobj(obj,"tempdiv");
-                        }
-                }
-        );
+			}
+		);
 }
 function transferUser(del_userid)
 {
-        $("status").style.display="inline";
-        $("DeleteLay").style.display="none";
-        var trans_userid=$('transfer_user_id').options[$('transfer_user_id').options.selectedIndex].value;
-        new Ajax.Request(
-                'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                        method: 'post',
-                        postBody: 'module=Users&action=UsersAjax&file=DeleteUser&ajax=true&delete_user_id='+del_userid+'&transfer_user_id='+trans_userid,
-                        onComplete: function(response) {
-                                $("status").style.display="none";
-                                $("ListViewContents").innerHTML= response.responseText;
-                        }
-                }
-        );
+		document.getElementById("status").style.display="inline";
+		document.getElementById("DeleteLay").style.display="none";
+		var trans_userid=document.getElementById('transfer_user_id').options[document.getElementById('transfer_user_id').options.selectedIndex].value;
+		jQuery.ajax({
+				method:"POST",
+				url:'index.php?module=Users&action=UsersAjax&file=DeleteUser&ajax=true&delete_user_id='+del_userid+'&transfer_user_id='+trans_userid
+		}).done(function(response) {
+				document.getElementById("status").style.display="none";
+				document.getElementById("ListViewContents").innerHTML= response;
+			}
+		);
 
 }
 </script>

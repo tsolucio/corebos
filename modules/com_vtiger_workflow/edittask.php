@@ -7,12 +7,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-
 require_once("Smarty_setup.php");
 require_once("include/utils/CommonUtils.php");
 require_once("include/events/SqlResultIterator.inc");
 require_once("include/events/VTWSEntityType.inc");
-
 require_once("VTWorkflowApplication.inc");
 require_once("VTTaskManager.inc");
 require_once("VTWorkflowManager.inc");
@@ -60,7 +58,6 @@ require_once("VTWorkflowUtils.php");
 			return;
 		}
 
-
 		$smarty->assign("workflow", $workflow);
 		$smarty->assign("returnUrl", $request["return_url"]);
 		$smarty->assign("task", $task);
@@ -89,7 +86,6 @@ require_once("VTWorkflowUtils.php");
 		}
 
 		$smarty->assign('dateFields', $dateFields);
-
 
 		if($task->trigger!=null){
 			$trigger = $task->trigger;

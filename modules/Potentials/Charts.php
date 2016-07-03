@@ -124,7 +124,7 @@ class jpgraph {
 					}
 					if (isset($record->column_fields['amount']) && in_array($record->column_fields['assigned_user_id'],$user_id)) {
 						// Strip all non numbers from this string.
-						$amount = convertFromMasterCurrency(preg_replace('/[^0-9]/', '', floor($record->column_fields['amount'])),$current_user->conv_rate);
+						$amount = CurrencyField::convertFromMasterCurrency(preg_replace('/[^0-9]/', '', floor($record->column_fields['amount'])),$current_user->conv_rate);
 						$sum[$month][$sales_stage][$record->column_fields['assigned_user_id']] = $sum[$month][$sales_stage][$record->column_fields['assigned_user_id']] + $amount;
 						if (isset($count[$month][$sales_stage][$record->column_fields['assigned_user_id']])) {
 						
@@ -460,7 +460,7 @@ class jpgraph {
 					}
 					if (isset($record->column_fields['amount']) && in_array($record->column_fields['assigned_user_id'],$user_id))	{
 						// Strip all non numbers from this string.
-						$amount = convertFromMasterCurrency(preg_replace('/[^0-9]/', '', floor($record->column_fields['amount'])),$current_user->conv_rate);
+						$amount = CurrencyField::convertFromMasterCurrency(preg_replace('/[^0-9]/', '', floor($record->column_fields['amount'])),$current_user->conv_rate);
 						$sum[$lead_source][$sales_stage][$record->column_fields['assigned_user_id']] = $sum[$lead_source][$sales_stage][$record->column_fields['assigned_user_id']] + $amount;
 						if (isset($count[$lead_source][$sales_stage][$record->column_fields['assigned_user_id']])) {
 							$count[$lead_source][$sales_stage][$record->column_fields['assigned_user_id']]++;
@@ -773,7 +773,7 @@ class jpgraph {
 					}
 					if (isset($record->column_fields['amount']) && in_array($record->column_fields['assigned_user_id'],$user_id))	{
 						// Strip all non numbers from this string.
-						$amount = convertFromMasterCurrency(preg_replace('/[^0-9]/', '', floor($record->column_fields['amount'])),$current_user->conv_rate);
+						$amount = CurrencyField::convertFromMasterCurrency(preg_replace('/[^0-9]/', '', floor($record->column_fields['amount'])),$current_user->conv_rate);
 						$sum[$record->column_fields['sales_stage']][$record->column_fields['assigned_user_id']] = $sum[$record->column_fields['sales_stage']][$record->column_fields['assigned_user_id']] + $amount;
 						if (isset($count[$record->column_fields['sales_stage']][$record->column_fields['assigned_user_id']])) {
 							$count[$record->column_fields['sales_stage']][$record->column_fields['assigned_user_id']]++;
@@ -1036,7 +1036,7 @@ class jpgraph {
 					if (!isset($sum[$record->column_fields['leadsource']])) $sum[$record->column_fields['leadsource']] = 0;
 					if (isset($record->column_fields['amount']) && isset($record->column_fields['leadsource']))	{
 						// Strip all non numbers from this string.
-						$amount = convertFromMasterCurrency(preg_replace('/[^0-9]/', '', floor($record->column_fields['amount'])),$current_user->conv_rate);
+						$amount = CurrencyField::convertFromMasterCurrency(preg_replace('/[^0-9]/', '', floor($record->column_fields['amount'])),$current_user->conv_rate);
 						$sum[$record->column_fields['leadsource']] = $sum[$record->column_fields['leadsource']] + ($amount/1000);
 						if (isset($count[$record->column_fields['leadsource']])) $count[$record->column_fields['leadsource']]++;
 						else $count[$record->column_fields['leadsource']] = 1;

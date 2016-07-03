@@ -6,12 +6,16 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
+ * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
-
 include_once dirname(__FILE__) . '/Mobile.Config.php';
+include_once dirname(__FILE__) . '/MobileSettings.config.php';
+//settings information
+global $displayed_modules; 
+global $config_settings; 
 
 class Mobile {
-	
+
 	/**
 	 * Detect if request is from IPhone
 	 */
@@ -22,11 +26,11 @@ class Mobile {
 		}
 		return false;
 	}
-	
+
 	static function templatePath($filename) {
 		return vtlib_getModuleTemplate('Mobile',"generic/$filename");
 	}
-	
+
 	static function config($key, $defvalue = false) {
 		// Defined in the configuration file
 		global $Module_Mobile_Configuration;
@@ -35,7 +39,7 @@ class Mobile {
 		}
 		return $defvalue;
 	}
-	
+
 	/**
 	 * Alert management
 	 */
@@ -63,17 +67,16 @@ class Mobile {
 		global $adb;
 		$adb->pquery("UPDATE vtiger_mobile_alerts SET deleted=? WHERE handler_path=? AND handler_class=?", array($flag, $handlerPath, $handlerClass));
 	}
-	
+
 	/**
 	 * Invoked when special actions are performed on the module.
 	 * @param String Module name
 	 * @param String Event Type (module.postinstall, module.disabled, module.enabled, module.preuninstall)
 	 */
 	function vtlib_handler($modulename, $event_type) {
-		
-		$registerWSAPI = false; 
+		$registerWSAPI = false;
 		$registerAlerts = false;
-		
+
 		if($event_type == 'module.postinstall') {
 			$registerWSAPI = true;
 			$registerAlerts= true;
@@ -89,7 +92,7 @@ class Mobile {
 			$registerWSAPI = true;
 			$registerAlerts= true;
 		}
-		
+
 		// Register alerts
 		if ($registerAlerts) {
 			self::alert_register('modules/Mobile/api/ws/models/alerts/IdleTicketsOfMine.php', 'Mobile_WS_AlertModel_IdleTicketsOfMine');
@@ -100,52 +103,52 @@ class Mobile {
 			self::alert_register('modules/Mobile/api/ws/models/alerts/ProjectTasksOfMine.php','Mobile_WS_AlertModel_ProjectTasksOfMine');
 			self::alert_register('modules/Mobile/api/ws/models/alerts/Projects.php','Mobile_WS_AlertModel_Projects');
 		}
-		
+
 		// Register webservice API
 		if($registerWSAPI) {
 			$operations = array();
-			
+
 			$operations[] = array (
 				'name'       => 'mobile.fetchallalerts',
 				'handler'    => 'mobile_ws_fetchAllAlerts',
 			);
-			
+
 			$operations[] = array (
 				'name'       => 'mobile.alertdetailswithmessage',
 				'handler'    => 'mobile_ws_alertDetailsWithMessage',
 				'parameters' => array( array( 'name' => 'alertid', 'type' => 'string' ) )
 			);
-			
+
 			$operations[] = array (
 				'name'       => 'mobile.fetchmodulefilters',
 				'handler'    => 'mobile_ws_fetchModuleFilters',
 				'parameters' => array( array( 'name' => 'module', 'type' => 'string' ) )
 			);
-			
+
 			$operations[] = array (
 				'name'       => 'mobile.fetchrecord',
 				'handler'    => 'mobile_ws_fetchRecord',
 				'parameters' => array( array( 'name' => 'record', 'type' => 'string' ) )
 			);
-			
+
 			$operations[] = array (
 				'name'       => 'mobile.fetchrecordwithgrouping',
 				'handler'    => 'mobile_ws_fetchRecordWithGrouping',
 				'parameters' => array( array( 'name' => 'record', 'type' => 'string' ) )
 			);
-			
+
 			$operations[] = array (
 				'name'       => 'mobile.filterdetailswithcount',
 				'handler'    => 'mobile_ws_filterDetailsWithCount',
 				'parameters' => array( array( 'name' => 'filterid', 'type' => 'string' ) )
 			);
-			
+
 			$operations[] = array (
 				'name'       => 'mobile.listmodulerecords',
 				'handler'    => 'mobile_ws_listModuleRecords',
 				'parameters' => array( array( 'name' => 'elements', 'type' => 'encoded' ) )
 			);
-			
+
 			$operations[] = array (
 				'name'       => 'mobile.saverecord',
 				'handler'    => 'mobile_ws_saveRecord',
@@ -154,7 +157,7 @@ class Mobile {
 					array( 'name' => 'values', 'type' => 'encoded' ),
 				)
 			);
-			
+
 			$operations[] = array (
 				'name'       => 'mobile.syncModuleRecords',
 				'handler'    => 'mobile_ws_syncModuleRecords',
@@ -163,7 +166,7 @@ class Mobile {
 					array( 'name' => 'page', 'type' => 'string' ),
 				)
 			);
-			
+
 			$operations[] = array (
 				'name'       => 'mobile.query',
 				'handler'    => 'mobile_ws_query',
@@ -172,7 +175,7 @@ class Mobile {
 					array( 'name' => 'page', 'type' => 'string' ),
 				)
 			);
-			
+
 			$operations[] = array (
 				'name'       => 'mobile.querywithgrouping',
 				'handler'    => 'mobile_ws_queryWithGrouping',
@@ -181,7 +184,7 @@ class Mobile {
 					array( 'name' => 'page', 'type' => 'string' ),
 				)
 			);
-			
+
 			foreach($operations as $o) {
 				$operation = new Mobile_WS_Operation($o['name'], $o['handler'], 'modules/Mobile/api/wsapi.php', 'POST');
 				if(!empty($o['parameters'])) {
@@ -199,33 +202,33 @@ class Mobile {
 class Mobile_WS_Operation {
 	var $opName, $opClass, $opFile, $opType;
 	var $parameters = array();
-	
+
 	function __construct($apiName, $className, $handlerFile, $reqType) {
 		$this->opName = $apiName;
 		$this->opClass= $className;
 		$this->opFile = $handlerFile;
 		$this->opType = $reqType;
 	}
-	
+
 	function addParameter($name, $type) {
 		$this->parameters[] = array('name' => $name, 'type' => $type);
 		return $this;
 	}
-	
+
 	function register() {
 		global $adb;
 		$checkresult = $adb->pquery("SELECT 1 FROM vtiger_ws_operation WHERE name = ?", array($this->opName));
 		if($adb->num_rows($checkresult)) {
 			return;
 		}
-		
+
 		Vtiger_Utils::Log("Enabling webservice operation {$this->opName}", true);
-		
+
 		$operationid = vtws_addWebserviceOperation($this->opName, $this->opFile, $this->opClass, $this->opType);
 		for($index = 0; $index < count($this->parameters); ++$index) {
 			vtws_addWebserviceOperationParam($operationid, $this->parameters[$index]['name'], $this->parameters[$index]['type'], ($index+1));
 		}
 	}
 }
-	
+
 ?>

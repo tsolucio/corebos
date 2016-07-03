@@ -9,15 +9,12 @@
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|30/12/2010|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  *********************************************************************************/
 
-/**
- * @author MAK
- */
-
 $mod_strings = array(
 	'LBL_CREATE_ZIP_FAILURE' => 'Falha ao criar arquivo zip',
 	'LBL_ZIP_FILE_ADD_FAILURE' => 'falha ao adicionar arquivo',
 	'LBL_FTP_CONNECT_FAILED' => 'Falha ao conectar o FTP',
 	'LBL_FTP_LOGIN_FAILED' => 'Falha ao acessar o FTP',
+	'Native Backup' => 'Native Backup',
+	'External Backup' => 'External Backup',
 );
-
 ?>

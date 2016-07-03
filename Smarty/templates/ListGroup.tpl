@@ -106,20 +106,16 @@
 <div id="tempdiv" style="display:block;position:absolute;left:350px;top:200px;"></div>
 <script>
 function deletegroup(obj,groupid)
-{ldelim}
-	$("status").style.display="inline";
-        new Ajax.Request(
-                'index.php',
-                {ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-                        method: 'post',
-                        postBody:'module=Users&action=UsersAjax&file=GroupDeleteStep1&groupid='+groupid,
-                        onComplete: function(response) {ldelim}
-                                $("status").style.display="none";
-                                $("tempdiv").innerHTML=response.responseText;
-								fnvshobj(obj,"tempdiv");
-                        {rdelim}
-                {rdelim}
-        );
-{rdelim}
-
+	{ldelim}
+	document.getElementById("status").style.display="inline";
+		jQuery.ajax({ldelim}
+				method: 'POST',
+				url:'index.php?module=Users&action=UsersAjax&file=GroupDeleteStep1&groupid='+groupid,
+	{rdelim}).done(function(response) {ldelim}
+					document.getElementById("status").style.display="none";
+					document.getElementById("tempdiv").innerHTML=response;
+					fnvshobj(obj,"tempdiv");
+	{rdelim}
+				);
+	{rdelim}
 </script>

@@ -112,54 +112,54 @@ function searchMapLocation(addressType)
 	if (addressType == 'Main') {
 		if(fieldname.indexOf('mailingstreet') > -1)
 		{
-			if(document.getElementById("dtlview_"+fieldlabel[fieldname.indexOf('mailingstreet')]))
-				mapParameter = document.getElementById("dtlview_"+fieldlabel[fieldname.indexOf('mailingstreet')]).innerHTML+' ';
+			if(document.getElementById("dtlview_mailingstreet"))
+				mapParameter = document.getElementById("dtlview_mailingstreet").innerHTML+' ';
 		}
 		if(fieldname.indexOf('mailingcity') > -1)
 		{
-			if(document.getElementById("dtlview_"+fieldlabel[fieldname.indexOf('mailingcity')]))
-				mapParameter = mapParameter + document.getElementById("dtlview_"+fieldlabel[fieldname.indexOf('mailingcity')]).innerHTML+' ';
+			if(document.getElementById("dtlview_mailingcity"))
+				mapParameter = mapParameter + document.getElementById("dtlview_mailingcity").innerHTML+' ';
 		}
 		if(fieldname.indexOf('mailingstate') > -1)
 		{
-			if(document.getElementById("dtlview_"+fieldlabel[fieldname.indexOf('mailingstate')]))
-				mapParameter = mapParameter + document.getElementById("dtlview_"+fieldlabel[fieldname.indexOf('mailingstate')]).innerHTML+' ';
+			if(document.getElementById("dtlview_mailingstate"))
+				mapParameter = mapParameter + document.getElementById("dtlview_mailingstate").innerHTML+' ';
 		}
 		if(fieldname.indexOf('mailingcountry') > -1)
 		{
-			if(document.getElementById("dtlview_"+fieldlabel[fieldname.indexOf('mailingcountry')]))
-				mapParameter = mapParameter + document.getElementById("dtlview_"+fieldlabel[fieldname.indexOf('mailingcountry')]).innerHTML+' ';
+			if(document.getElementById("dtlview_mailingcountry"))
+				mapParameter = mapParameter + document.getElementById("dtlview_mailingcountry").innerHTML+' ';
 		}
 		if(fieldname.indexOf('mailingzip') > -1)
 		{
-			if(document.getElementById("dtlview_"+fieldlabel[fieldname.indexOf('mailingzip')]))
-				mapParameter = mapParameter + document.getElementById("dtlview_"+fieldlabel[fieldname.indexOf('mailingzip')]).innerHTML;
+			if(document.getElementById("dtlview_mailingzip"))
+				mapParameter = mapParameter + document.getElementById("dtlview_mailingzip").innerHTML;
 		}
 	} else if (addressType == 'Other') {
 		if(fieldname.indexOf('otherstreet') > -1)
 		{
-			if(document.getElementById("dtlview_"+fieldlabel[fieldname.indexOf('otherstreet')]))
-				mapParameter = document.getElementById("dtlview_"+fieldlabel[fieldname.indexOf('otherstreet')]).innerHTML+' ';
+			if(document.getElementById("dtlview_otherstreet"))
+				mapParameter = document.getElementById("dtlview_otherstreet").innerHTML+' ';
 		}
 		if(fieldname.indexOf('othercity') > -1)
 		{
-			if(document.getElementById("dtlview_"+fieldlabel[fieldname.indexOf('othercity')]))
-				mapParameter = mapParameter + document.getElementById("dtlview_"+fieldlabel[fieldname.indexOf('othercity')]).innerHTML+' ';
+			if(document.getElementById("dtlview_othercity"))
+				mapParameter = mapParameter + document.getElementById("dtlview_othercity").innerHTML+' ';
 		}
 		if(fieldname.indexOf('otherstate') > -1)
 		{
-			if(document.getElementById("dtlview_"+fieldlabel[fieldname.indexOf('otherstate')]))
-				mapParameter = mapParameter + document.getElementById("dtlview_"+fieldlabel[fieldname.indexOf('otherstate')]).innerHTML+' ';
+			if(document.getElementById("dtlview_otherstate"))
+				mapParameter = mapParameter + document.getElementById("dtlview_otherstate").innerHTML+' ';
 		}
 		if(fieldname.indexOf('othercountry') > -1)
 		{
-			if(document.getElementById("dtlview_"+fieldlabel[fieldname.indexOf('othercountry')]))
-				mapParameter = mapParameter + document.getElementById("dtlview_"+fieldlabel[fieldname.indexOf('othercountry')]).innerHTML+' ';
+			if(document.getElementById("dtlview_othercountry"))
+				mapParameter = mapParameter + document.getElementById("dtlview_othercountry").innerHTML+' ';
 		}
 		if(fieldname.indexOf('otherzip') > -1)
 		{
-			if(document.getElementById("dtlview_"+fieldlabel[fieldname.indexOf('otherzip')]))
-				mapParameter = mapParameter + document.getElementById("dtlview_"+fieldlabel[fieldname.indexOf('otherzip')]).innerHTML;
+			if(document.getElementById("dtlview_otherzip"))
+				mapParameter = mapParameter + document.getElementById("dtlview_otherzip").innerHTML;
 		}
 	}
 	mapParameter = removeHTMLFormatting(mapParameter);

@@ -103,11 +103,11 @@ POSITION: absolute;
 		for (var index = 0; index < providers.length; ++index) {
 			var provideropt = providers[index];
 
-			if ($('paramrows_' + provideropt.value)) {
+			if (document.getElementById('paramrows_' + provideropt.value)) {
 				if (provideropt.selected) {
-					$('paramrows_' + provideropt.value).show();
+					document.getElementById('paramrows_' + provideropt.value).style.display = "block";
 				} else {
-					$('paramrows_' + provideropt.value).hide();
+					document.getElementById('paramrows_' + provideropt.value).style.display = "none";
 				}
 			}
 		}
@@ -134,55 +134,40 @@ POSITION: absolute;
 			return false;
 		}
 
-		$("editdiv").style.display = "none";
-		var frmvalues = Form.serialize(form);
+		document.getElementById("editdiv").style.display = "none";
+		var frmvalues = jQuery(form).serialize();
 
-		$("status").show();
-		new Ajax.Request('index.php', {
-			queue : {
-				position : 'end',
-				scope : 'command'
-			},
-			method : 'post',
-			postBody : 'action=SMSNotifierAjax&module=SMSNotifier&file=SMSConfigServer&mode=Save&' + frmvalues,
-			onComplete : function(response) {
-				$("status").style.display = "none";
-				$("_smsservers_").innerHTML = response.responseText;
-			}
+		document.getElementById("status").style.display = "inline";
+		jQuery.ajax({
+			method:"POST",
+			url:'index.php?action=SMSNotifierAjax&module=SMSNotifier&file=SMSConfigServer&mode=Save&' + frmvalues
+		}).done(function(response) {
+			document.getElementById("status").style.display = "none";
+			document.getElementById("_smsservers_").innerHTML = response;
 		});
 	}
 
 	function _SMSConfigServerDelete(id) {
-		$("editdiv").style.display = "none";
-		$("status").style.display = "inline";
-		new Ajax.Request('index.php', {
-			queue : {
-				position : 'end',
-				scope : 'command'
-			},
-			method : 'post',
-			postBody : 'action=SMSNotifierAjax&module=SMSNotifier&file=SMSConfigServer&ajax=true&mode=Delete&record=' + id,
-			onComplete : function(response) {
-				$("status").style.display = "none";
-				$("_smsservers_").innerHTML = response.responseText;
-			}
+		document.getElementById("editdiv").style.display = "none";
+		document.getElementById("status").style.display = "inline";
+		jQuery.ajax({
+			method:"POST",
+			url:'index.php?action=SMSNotifierAjax&module=SMSNotifier&file=SMSConfigServer&ajax=true&mode=Delete&record=' + id
+		}).done(function(response) {
+			document.getElementById("status").style.display = "none";
+			document.getElementById("_smsservers_").innerHTML = response;
 		});
 	}
 
 	function _SMSConfigServerFetchEdit(id) {
-		$("status").style.display = "inline";
-		new Ajax.Request('index.php', {
-			queue : {
-				position : 'end',
-				scope : 'command'
-			},
-			method : 'post',
-			postBody : 'action=SMSNotifierAjax&module=SMSNotifier&file=SMSConfigServer&ajax=true&mode=Edit&record=' + id,
-			onComplete : function(response) {
-				$("status").style.display = "none";
-				$("editdiv").innerHTML = response.responseText;
-				$("editdiv").show();
-			}
+		document.getElementById("status").style.display = "inline";
+		jQuery.ajax({
+			method:"POST",
+			url:'index.php?action=SMSNotifierAjax&module=SMSNotifier&file=SMSConfigServer&ajax=true&mode=Edit&record=' + id
+		}).done(function(response) {
+			document.getElementById("status").style.display = "none";
+			document.getElementById("editdiv").innerHTML = response;
+			document.getElementById("editdiv").style.display = "block";
 		});
 	}
 

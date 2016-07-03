@@ -243,6 +243,8 @@ ExecuteQuery("delete from vtiger_links where linktype in ('DASHBOARDWIDGET','DET
 ExecuteQuery("delete from vtiger_eventhandlers where handler_class='PickListHandler' and handler_path='modules/Settings/Picklist/handlers/PickListHandler.php'");
 ExecuteQuery("update vtiger_blocks set blocklabel='' where blocklabel like 'Emails_Block%'");
 
+ExecuteQuery("UPDATE vtiger_links SET handler = null, handler_class = null, handler_path = null WHERE handler = 'isLinkPermitted'");
+
 ExecuteQuery("delete from vtiger_settings_field where name='LBL_EDIT_FIELDS'");
 $fieldId = $adb->getUniqueID('vtiger_settings_field');
 $query = "INSERT INTO vtiger_settings_field (fieldid, blockid, name, iconpath, description, linkto, sequence) ".

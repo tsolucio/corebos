@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('include/logging.php');
 require_once('modules/Users/Users.php');
 require_once('include/database/PearDatabase.php');
@@ -34,10 +33,9 @@ if($ajaxaction == "DETAILVIEW")
 
 		if($fieldname=='asterisk_extension' and trim($fieldvalue)!=''){
 			$query = "select 1 from vtiger_asteriskextensions
-                     inner join vtiger_users on vtiger_users.id=vtiger_asteriskextensions.userid
-                     where status='Active' and asterisk_extension =? and vtiger_users.id!=?";
+				inner join vtiger_users on vtiger_users.id=vtiger_asteriskextensions.userid
+				where status='Active' and asterisk_extension =? and vtiger_users.id!=?";
 			$params = array(trim($fieldvalue),$userid);
-			
 			$result = $adb->pquery($query, $params);
 			if($adb->num_rows($result) > 0)
 			{
@@ -45,8 +43,14 @@ if($ajaxaction == "DETAILVIEW")
 				return false;
 			}
 		}
+		if($fieldname=='currency_grouping_separator' or $fieldname=='currency_decimal_separator'){
+			if($userObj->column_fields['currency_grouping_separator']==$userObj->column_fields['currency_decimal_separator'])
+			{
+				echo ":#:ERR".$mod_strings['LBL_CURRENCY_SEPARATORS_INCORRECT'];
+				return false;
+			}
+		}
 		if($fieldname == 'internal_mailer'){
-			
 			if(isset($_SESSION['internal_mailer']) && $_SESSION['internal_mailer'] != $userObj->column_fields['internal_mailer'])
 				$_SESSION['internal_mailer'] = $userObj->column_fields['internal_mailer'];
 		}
@@ -65,7 +69,7 @@ if($ajaxaction == "DETAILVIEW")
 		}else
 		{
 			echo ":#:FAILURE";
-		}   
+		}
 	}else
 	{
 		echo ":#:FAILURE";

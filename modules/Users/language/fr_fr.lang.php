@@ -97,13 +97,17 @@ $mod_strings = array (
 		'ERR_PASSWORD_CHANGE_FAILED_1' => 'Echec lors du changement de mot de passe pour ',
 		'ERR_PASSWORD_CHANGE_FAILED_2' => ' échec. Le nouveau mot de passe doit être établi.',
 		'ERR_PASSWORD_INCORRECT_OLD' => 'Ancient mot de passe incorrect pour $this->user_name. Re-saisissez votre mot de passe.',
+		'ERR_PASSWORD_NOT_CHANGED' => 'Old and New Passwords are the same. Please use a different password.',
 		'ERR_USER_NAME_EXISTS_1' => 'Le nom d\'utilisateur ',
 		'ERR_USER_NAME_EXISTS_2' => ' existe déjà. Les doublons de noms d\'utilisateurs ne sont pas autorisés.
 		Changez de nom de manière à le rendre unique.',
 		'ERR_LAST_ADMIN_1' => 'Le nom d\'utilisateur ',
 		'ERR_LAST_ADMIN_2' => ' est le dernier utilisateur Admin. Au moins un utilisateur doit rester en Admin.
 		Vérifiez les paramètres utilisateur Admin.',
+		'ERR_MAXLOGINATTEMPTS' => 'Maximum number of login attempts reached. Contact your administrator to unblock your account',
+		'LBL_FAILED_LOGIN_ATTEMPTS' => 'Failed Login Attempts',
 		'ERR_DELETE_RECORD' => 'Un numéro d\'enregistrement doit être spécifié pour supprimer ce compte.',
+		'ERR_MUST_CHANGE_PASSWORD' => 'Your password has expired. You must change your password to continue.',
 		'LBL_ROLES' => 'Rôles',
 		'LBL_ROLES_SUBORDINATES' => 'Rôles et subordonnés',
 		'LBL_CREATE_NEW_ROLE' => 'Nouveau rôle',
@@ -179,6 +183,8 @@ $mod_strings = array (
 		'LBL_TEMPLATE_MESSAGE' => 'Message',
 		'LBL_VIEWING' => 'Visualiser',
 		'LBL_PROPERTIES' => 'Propriétés de',
+		'LBL_ASTERISKEXTENSIONS_EXIST' => 'Asterisk extension already exists',
+		'LBL_CURRENCY_SEPARATORS_INCORRECT' => 'Decimal Separator and Digit Grouping Separator cannot be the same.',
 		'LBL_CREATE_NEW_GROUP' => 'Nouvelle équipe',
 		'LBL_NEW_GROUP' => 'Nouvelle équipe',
 		'LBL_EDIT_GROUP' => 'Editer équipe',
@@ -572,6 +578,7 @@ $mod_strings = array (
 		'Decimal Separator' => 'Séparateur de décimales',
 		'Digit Grouping Separator' => 'Séparateur de groupe',
 		'Symbol Placement' => 'Position du symbole monétaire',
+		'Number Of Currency Decimals'  =>  'Number Of Currency Decimals',
 		'Secondary Email' => 'Email secondaire',
 		'Time Zone' => 'Fuseau horaire',
 		'Theme' => 'Thème graphique',
@@ -593,5 +600,6 @@ $mod_strings = array (
 		'Min. 1 lowercase' => 'Min. 1 lowercase character',
 		'Min. 1 number' => 'Min. 1 Number',
 		'Min. 1 special character' => 'Min. 1 special character , ! ? , ; - @ #',
+		'Generate password' => 'Generate password',
 );
 ?>

@@ -9,7 +9,6 @@
  ******************************************************************************/
 -->*}
 
-<script src="modules/FieldFormulas/resources/jquery-1.2.6.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/FieldFormulas/resources/functional.js" type="text/javascript" charset="utf-8"></script>
 <script src="modules/FieldFormulas/resources/json2.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" charset="utf-8">

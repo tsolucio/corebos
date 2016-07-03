@@ -37,6 +37,7 @@ $mod_strings = Array(
 'No of Units'=>'No. Unidades',
 'Commission Rate'=>'Comissão(%)',
 'Unit Price'=>'Preço Unitário',
+'Cost Price' => 'Preço Coste',
 'Price'=>'Preço',
 'Support Start Date'=>'Início Suporte',
 'Support Expiry Date'=>'Final Suporte',

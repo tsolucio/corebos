@@ -567,6 +567,7 @@ $mod_strings = array (
 		'LBL_CHECK_ASSIGNEDTO_MAILID' => 'Veuillez vérifier l\'adresse email du référent',
 		'LBL_MAILSENDERROR' => 'Le message n\'a pas pu être envoyé à l\'administrateur. Veuillez vérifier l\'adresse email de l\'administrateur du système.',
 		'LBL_RECORD_NOEXIST' => 'Enregistrement inexistant',
+		'Could not get file list' => 'Could not get file list',
 		'LBL_ENTER_PROFILE' => 'Saisissez un nom pour le profil',
 		'LBL_DISABLE' => 'Désactiver',
 		'Language' => 'Language',

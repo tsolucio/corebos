@@ -195,7 +195,7 @@ function addRequiredElements(columnindex) {
 					defaultRequiredElements(columnindex);
 					break;
 				}
-				var dateformat = $('jscal_dateformat').value;
+				var dateformat = document.getElementById('jscal_dateformat').value;
 						var timeformat = "%H:%M:%S";
 						var showtime = true;
 						if(fieldtype == 'D' || (tableName == 'vtiger_activity' && fieldName == 'date_start')) {
@@ -204,7 +204,7 @@ function addRequiredElements(columnindex) {
 						}
 						if(!document.getElementById('jscal_trigger_fval'+columnindex)) {
 							var node = document.createElement('img');
-							node.setAttribute('src',$('image_path').value+'btnL3Calendar.gif');
+							node.setAttribute('src',document.getElementById('image_path').value+'btnL3Calendar.gif');
 							node.setAttribute('id','jscal_trigger_fval'+columnindex);
 							node.setAttribute('align','absmiddle');
 							node.setAttribute('width','20');
@@ -234,7 +234,7 @@ function addRequiredElements(columnindex) {
 
 							if(!document.getElementById('jscal_trigger_fval_ext'+columnindex)) {
 								var node2 = document.createElement('img');
-								node2.setAttribute('src',$('image_path').value+'btnL3Calendar.gif');
+								node2.setAttribute('src',document.getElementById('image_path').value+'btnL3Calendar.gif');
 								node2.setAttribute('id','jscal_trigger_fval_ext'+columnindex);
 								node2.setAttribute('align','absmiddle');
 								node2.setAttribute('width','20');
@@ -406,7 +406,7 @@ function checkAdvancedFilter() {
 										};
 	}
 
-	$('advft_criteria').value = JSON.stringify(criteriaConditions);
+	document.getElementById('advft_criteria').value = JSON.stringify(criteriaConditions);
 
 	var conditionGroups = vt_getElementsByName('div', "conditionGroup");
 	var criteriaGroups = [];
@@ -423,7 +423,7 @@ function checkAdvancedFilter() {
 		}
 		criteriaGroups[groupIndex] = {"groupcondition":groupCondition};
 	}
-	$('advft_criteria_groups').value = JSON.stringify(criteriaGroups);
+	document.getElementById('advft_criteria_groups').value = JSON.stringify(criteriaGroups);
 	return true;
 }
 

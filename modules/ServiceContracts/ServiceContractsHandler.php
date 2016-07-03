@@ -7,13 +7,13 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
- 
+
 class ServiceContractsHandler extends VTEventHandler {
 
 	function handleEvent($eventName, $entityData) {
 		global $log, $adb;
 
-		if($eventName == 'vtiger.entity.beforesave') {			
+		if($eventName == 'vtiger.entity.beforesave') {
 			$moduleName = $entityData->getModuleName();
 			if ($moduleName == 'HelpDesk') {
 				$ticketId = $entityData->getId();
@@ -26,7 +26,7 @@ class ServiceContractsHandler extends VTEventHandler {
 				}
 				$entityData->oldStatus = $oldStatus;
 			}
-			if ($moduleName == 'ServiceContracts') {				
+			if ($moduleName == 'ServiceContracts') {
 				$contractId = $entityData->getId();
 				$oldTrackingUnit = '';
 				if(!empty($contractId)) {
@@ -40,9 +40,7 @@ class ServiceContractsHandler extends VTEventHandler {
 		}
 
 		if($eventName == 'vtiger.entity.aftersave') {
-			
 			$moduleName = $entityData->getModuleName();
-			
 			// Update Used Units for the Service Contract, everytime the status of a ticket related to the Service Contract changes
 			if ($moduleName == 'HelpDesk' && $_REQUEST['return_module'] != 'ServiceContracts') {
 				$ticketId = $entityData->getId();
@@ -64,32 +62,30 @@ class ServiceContractsHandler extends VTEventHandler {
 						$noOfContracts = $adb->num_rows($contract_tktresult);
 						if($noOfContracts > 0) {
 							for($i=0;$i<$noOfContracts;$i++) {
-								$contract_id = $adb->query_result($contract_tktresult,$i,'crmid');								
+								$contract_id = $adb->query_result($contract_tktresult,$i,'crmid');
 								$scFocus = CRMEntity::getInstance('ServiceContracts');
 								$scFocus->id = $contract_id;
 								$scFocus->retrieve_entity_info($contract_id,'ServiceContracts');
-								
 								$prevUsedUnits = $scFocus->column_fields['used_units'];
 								if(empty($prevUsedUnits)) $prevUsedUnits = 0;
-								
 								$usedUnits = $scFocus->computeUsedUnits($data);
 								if ($op == '-') {
 									$totalUnits = $prevUsedUnits - $usedUnits;
 								} else {
-									$totalUnits = $prevUsedUnits + $usedUnits;									
+									$totalUnits = $prevUsedUnits + $usedUnits;
 								}
 								$scFocus->updateUsedUnits($totalUnits);
-								$scFocus->calculateProgress();							
+								$scFocus->calculateProgress();
 							}
 						}
 					}
-				}				
+				}
 			}
-			
-			// Update the Planned Duration, Actual Duration, End Date and Progress based on other field values.			
-			if ($moduleName == 'ServiceContracts') {				
-				$contractId = $entityData->getId();	
-				$data = $entityData->getData();							
+
+			// Update the Planned Duration, Actual Duration, End Date and Progress based on other field values.
+			if ($moduleName == 'ServiceContracts') {
+				$contractId = $entityData->getId();
+				$data = $entityData->getData();
 				$scFocus = CRMEntity::getInstance('ServiceContracts');
 				if($data['tracking_unit'] != $entityData->oldTrackingUnit) { // Need to recompute used_units based when tracking_unit changes.
 					$scFocus->updateServiceContractState($contractId);

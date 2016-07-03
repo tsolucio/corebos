@@ -11,20 +11,29 @@
 
 <table class="listTable" width="100%" border="0" cellspacing="1" cellpadding="5" id='expressionlist'>
 	<tr>
+		<td class="colHeader small" width="6%"></td>
 		<td class="colHeader small" width="70%">
 			{$MOD.LBL_TASK}
 		</td>
-		<td class="colHeader small" width="15%">
+		<td class="colHeader small" width="12%">
 			{$MOD.LBL_STATUS}
 		</td>
-		<td class="colHeader small" width="15%">
+		<td class="colHeader small" width="12%">
 			{$MOD.LBL_LIST_TOOLS}
 		</td>
 	</tr>
-	{foreach item=task from=$tasks}
+	{foreach item=task from=$tasks name=wftasks}
 	<tr>
+		<td class="listTableRow small">{$task->executionorder}
+		{if not $smarty.foreach.wftasks.first}
+			&nbsp;<a href="javascript:moveWorkflowTaskUpDown('UP','{$task->id}')" title="Move Upward"><img src="{'up_layout.gif'|@vtiger_imageurl:$THEME}" border="0"></a>
+		{/if}
+		{if not $smarty.foreach.wftasks.last}
+			&nbsp;<a href="javascript:moveWorkflowTaskUpDown('DOWN','{$task->id}')" title="Move Downward"><img src="{'down_layout.gif'|@vtiger_imageurl:$THEME}" border="0" ></a>
+		{/if}
+		</td>
 		<td class="listTableRow small">{$task->summary|@to_html}</td>
-		<td class="listTableRow small">{if $task->active}Active{else}Inactive{/if}</td>
+		<td class="listTableRow small">{if $task->active}{'Active'|@getTranslatedString:$MODULE}{else}{'Inactive'|@getTranslatedString:$MODULE}{/if}</td>
 		<td class="listTableRow small">
 			<a href="{$module->editTaskUrl($task->id)}">
 				<img border="0" title="{'LBL_EDIT_BUTTON'|@getTranslatedString:$MODULE}" alt="{'LBL_EDIT_BUTTON'|@getTranslatedString:$MODULE}" \

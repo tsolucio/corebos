@@ -563,6 +563,7 @@ $mod_strings = array (
       'LBL_CHECK_ASSIGNEDTO_MAILID' => 'Compruebe el emailid asignado',
       'LBL_MAILSENDERROR' => 'El correo no se puede enviar al administrador. Compruebe su Id',
       'LBL_RECORD_NOEXIST' => 'Registro no encontrado',
+      'Could not get file list' => 'No se ha podido encontrar ficheros',
       'LBL_ENTER_PROFILE' => 'Introduzca el nombre del Perfil',
       'Language' => 'Idioma',
       'AlwaysActive' => 'siempre activo',
@@ -659,6 +660,7 @@ $mod_strings = array (
 
       // vtmailscanner START
       'LBL_MAIL_SCANNER'=>'Clasificar Correos',
+      'MailScanner' =>'Clasificar Correos',
       'LBL_MAIL_SCANNER_DESCRIPTION'=>'Configura el buzón para clasificación',
       'LBL_SCAN_NOW'=>'Clasifica Ahora',
       'LBL_RULE'=>'Regla',

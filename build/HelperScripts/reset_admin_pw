@@ -1,0 +1,17 @@
+#!/bin/sh
+
+if [ -z "$1" ]
+then
+	echo "Resets the admin password in a coreBOS database."
+	echo "USAGE: $(basename $0) <database_name> [mysql_user]"
+	exit
+fi
+
+UPDATE="update vtiger_users set user_password='\$1\$ad\$hsl2KFybNRnbXBa.b.WWv.', crypt_type='MD5' where id=1;"
+if [ -z "$2" ]
+then
+	echo $UPDATE | mysql $1
+else
+	echo $UPDATE | mysql $1 -p -u $2
+fi
+

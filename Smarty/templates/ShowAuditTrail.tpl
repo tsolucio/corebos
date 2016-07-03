@@ -6,11 +6,9 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 <link rel="stylesheet" type="text/css" href="{$THEME_PATH}style.css">
-<script language="javascript" type="text/javascript" src="include/scriptaculous/prototype.js"></script>
 <body class="small" marginwidth=0 marginheight=0 leftmargin=0 topmargin=0 bottommargin=0 rigthmargin=0>
 
 <form action="index.php" method="post" id="form" onsubmit="VtigerJS_DialogBox.block();">
@@ -46,16 +44,13 @@
 function getListViewEntries_js(module,url)
 {
 	var userid = document.getElementById('userid').value;
-        new Ajax.Request(
-                'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                        method: 'post',
-                        postBody: 'module=Settings&action=SettingsAjax&file=ShowAuditTrail&ajax=true&'+url+'&userid='+userid,
-                        onComplete: function(response) {
-                                $("AuditTrailContents").innerHTML= response.responseText;
-                        }
-                }
-        );
+		jQuery.ajax({
+				method:"POST",
+				url:'index.php?module=Settings&action=SettingsAjax&file=ShowAuditTrail&ajax=true&'+url+'&userid='+userid,
+		}).done(function(response) {
+				document.getElementById("AuditTrailContents").innerHTML= response;
+			}
+		);
 }
 </script>
 {/literal}

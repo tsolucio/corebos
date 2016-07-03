@@ -1,17 +1,10 @@
 <?php
-/*******************************************************************************
- * The contents of this file are subject to the following licences:
- * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
- * - vtiger CRM Public License Version 1.0 
- * You may not use this file except in compliance with the License
- * Software distributed under the License is distributed on an  "AS IS" basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is: SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
- * Portions created by Vicus are Copyright (C) Vicus.
  * All Rights Reserved.
  * Feel free to use / redistribute these languagefiles under the VPL 1.0.
  * This translations is based on earlier work of: 
@@ -31,7 +24,6 @@
  ********************************************************************************/
  
 $mod_strings = Array(
-// Mike Crowe Mod --------------------------------------------------------added for general search
 'LBL_GENERAL_INFORMATION'=>'Algemene Informatie',
 
 'LBL_MODULE_NAME'=>'E-mails',
@@ -78,6 +70,8 @@ $mod_strings = Array(
 'LBL_QUALIFY_BUTTON'=>'Kwalificeer',
 'LBL_REPLY_BUTTON'=>'Reageer',
 'LBL_FORWARD_BUTTON'=>'Doorsturen',
+'Re' => 'Re',
+'Fwd' => 'Fwd',
 'LBL_DOWNLOAD_ATTCH_BUTTON'=>'Download bijlagen',
 'LBL_FROM'=>'Van :',
 'LBL_CC'=>'Cc :',
@@ -177,6 +171,7 @@ $mod_strings = Array(
 'LBL_BCC_EMAIL_ERROR'=>'Uw bcc e-mailadres is niet correct',
 'LBL_NO_RCPTS_EMAIL_ERROR'=>'Geen ontvangers weergegeven',
 'LBL_CONF_MAILSERVER_ERROR'=>'Configureer uw uitgaande mailserver selecteer settings ---> uitgaande server link a.u.b. ',
+'LBL_CONF_SERVERSTORAGE_ERROR'=>'The permissions on your storage directory are insufficient, you will not be able to send attachments!',
 'LBL_MAILSELECT_INFO3'=>'U heeft geen permissie om de e-mailadressen van de geselecteerde velden te bekijken.',
 //Added  for script alerts
 'FEATURE_AVAILABLE_INFO' => 'Dit kenmerk is momenteel alleen beschikbaar voor Microsoft Internet Explorer 5.5+!',

@@ -9,6 +9,10 @@
  ************************************************************************************/
 	require_once("VTJsonCondition.inc");
 	require_once 'include/utils/ConfigReader.php';
+	require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
+	require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
+	require_once 'modules/com_vtiger_workflow/include.inc';
+	require_once 'include/Webservices/Retrieve.php';
 
 	class VTWorkflowManager{
 
@@ -19,6 +23,7 @@
 		static $ON_DELETE = 5; // Not supported yet
 		static $ON_SCHEDULE=6;
 		static $MANUAL = 7;
+		static $RECORD_ACCESS_CONTROL = 8;
 
 		function __construct($adb){
 			$this->adb = $adb;
@@ -30,9 +35,9 @@
 				$wf=$workflow;
 				$adb->pquery("update com_vtiger_workflows set
 								module_name=?, summary=?, test=?, execution_condition=?, defaultworkflow=?,
-								schtypeid=?, schtime=?, schdayofmonth=?, schdayofweek=?, schannualdates=? where workflow_id=?",
+								schtypeid=?, schtime=?, schdayofmonth=?, schdayofweek=?, schannualdates=?,schminuteinterval=? where workflow_id=?",
 					array($wf->moduleName, $wf->description, $wf->test, $wf->executionCondition, $wf->defaultworkflow,
-						$wf->schtypeid, $wf->schtime, $wf->schdayofmonth, $wf->schdayofweek, $wf->schannualdates, $wf->id));
+						$wf->schtypeid, $wf->schtime, $wf->schdayofmonth, $wf->schdayofweek, $wf->schannualdates, $wf->schminuteinterval,$wf->id));
 			}else{
 				$workflowId = $adb->getUniqueID("com_vtiger_workflows");
 				$workflow->id = $workflowId;
@@ -42,15 +47,15 @@
 				if(in_array("type",$result)) {
 					$adb->pquery("insert into com_vtiger_workflows
 									(workflow_id, module_name, summary, test, execution_condition, type, defaultworkflow,
-									schtypeid, schtime, schdayofmonth, schdayofweek, schannualdates) values (?,?,?,?,?,?,?,?,?,?,?,?)",
+									schtypeid, schtime, schdayofmonth, schdayofweek, schannualdates,schminuteinterval) values (?,?,?,?,?,?,?,?,?,?,?,?,?)",
 						array($workflowId, $wf->moduleName, $wf->description, $wf->test,  $wf->executionCondition, $wf->type, $wf->defaultworkflow,
-							$wf->schtypeid, $wf->schtime, $wf->schdayofmonth, $wf->schdayofweek, $wf->schannualdates));
+							$wf->schtypeid, $wf->schtime, $wf->schdayofmonth, $wf->schdayofweek, $wf->schannualdates,$wf->schminuteinterval));
 				} else {
 					$adb->pquery("insert into com_vtiger_workflows
 									(workflow_id, module_name, summary, test, execution_condition, defaultworkflow,
-									schtypeid, schtime, schdayofmonth, schdayofweek, schannualdates) values (?,?,?,?,?,?,?,?,?,?,?)",
+									schtypeid, schtime, schdayofmonth, schdayofweek, schannualdates,schminuteinterval) values (?,?,?,?,?,?,?,?,?,?,?,?)",
 						array($workflowId, $wf->moduleName, $wf->description, $wf->test,  $wf->executionCondition, $wf->defaultworkflow,
-							$wf->schtypeid, $wf->schtime, $wf->schdayofmonth, $wf->schdayofweek, $wf->schannualdates));
+							$wf->schtypeid, $wf->schtime, $wf->schdayofmonth, $wf->schdayofweek, $wf->schannualdates,$wf->schminuteinterval));
 				}
 			}
 			$this->updateNexTriggerTime($workflow);
@@ -122,6 +127,87 @@
 									from com_vtiger_workflows where module_name=?",array($moduleName));
 			}
 			return $this->getWorkflowsForResult($result);
+		}
+
+		function getRACRuleForRecord($moduleName,$recordid) {
+			$adb=$this->adb;
+			$not_supported = array('RecycleBin','Users');
+			if (in_array($moduleName, $not_supported)) {
+				return false;
+			}
+			if (strpos($recordid,'x')>0) {
+				list($void,$recordid) = explode('x', $recordid);
+			}
+			$rrs = $adb->pquery('select setype,deleted from vtiger_crmentity where crmid=?', array($recordid));
+			if (!$rrs) return false;
+			$rec = $adb->fetch_array($rrs);
+			$moduleName = $adb->query_result($rrs, 0, 'setype');
+			$deleted = $adb->query_result($rrs, 0, 'deleted');
+			if ($deleted!=0 or in_array($moduleName, $not_supported)) {
+				return false;
+			}
+			if ($moduleName=='Calendar') {
+				$actrs = $adb->pquery('select activitytype from vtiger_activity where activityid=?',array($recordid));
+				$actvity_type = $adb->query_result($actrs, 0, 'activitytype');
+				switch ($actvity_type) {
+					case 'Emails':
+						$moduleName = 'Emails';
+						break;
+					case 'Task':
+						$moduleName = 'Calendar';
+						break;
+					default:
+						$moduleName = 'Events';
+						break;
+				}
+			}
+			$result = $adb->pquery('select id from vtiger_ws_entity where name=?',array($moduleName));
+			$recordid = $adb->query_result($result, 0, 0).'x'.$recordid;
+			$wf = $this->getoneRACWorkflowForRecord($moduleName,$recordid);
+			if ($wf) {
+				return $this->executeRACWorkflow($wf,$recordid);
+			}
+			return false;
+		}
+
+		function getRACWorkflowsForModule($moduleName) {
+			$adb=$this->adb;
+			$result = $adb->pquery('select * from com_vtiger_workflows where execution_condition = ? and module_name=?',
+				array(VTWorkflowManager::$RECORD_ACCESS_CONTROL,$moduleName));
+			return $this->getWorkflowsForResult($result);
+		}
+
+		function getoneRACWorkflowForRecord($moduleName,$recordid) {
+			$util = new VTWorkflowUtils();
+			$adminUser = $util->adminUser();
+			$entityCache = new VTEntityCache($adminUser);
+			$entityData = $entityCache->forId($recordid);
+			$wfs = $this->getRACWorkflowsForModule($moduleName);
+			$found = false;
+			foreach ($wfs as $wf) {
+				$found = $wf->evaluate($entityCache, $recordid);
+				if ($found) break;
+			}
+			$util->revertUser();
+			if ($found) {
+				return $wf;
+			} else {
+				return false;
+			}
+		}
+
+		function executeRACWorkflow($workflow,$recordid) {
+			$adb=$this->adb;
+			$tm = new VTTaskManager($adb);
+			$taskQueue = new VTTaskQueue($adb);
+			$tasks = $tm->getTasksForWorkflow($workflow->id);
+			foreach($tasks as $task){
+				if(is_object($task) and $task->active and get_class($task) == 'CBSelectcbMap') {
+					$void = array();
+					return $task->doTask($recordid);
+				}
+			}
+			return false;
 		}
 
 		function getWorkflowsForResult($result){
@@ -207,6 +293,7 @@
 			$exp['schdayofmonth'] = $workflow->schdayofmonth;
 			$exp['schdayofweek'] = $workflow->schdayofweek;
 			$exp['schannualdates'] = $workflow->schannualdates;
+			$exp['schminuteinterval']=$workflow->schminuteinterval;
 			$exp['tasks'] = array();
 			$tm = new VTTaskManager($this->adb);
 			$tasks = $tm->getTasksForWorkflow($workflow->id);
@@ -234,6 +321,7 @@
 			$workflow->schdayofmonth = $data['schdayofmonth'];
 			$workflow->schdayofweek = $data['schdayofweek'];
 			$workflow->schannualdates = $data['schannualdates'];
+			$workflow->schminuteinterval=$data['schminuteinterval'];
 			$this->save($workflow);
 			$tm = new VTTaskManager($this->adb);
 			$tasks = $data['tasks'];
@@ -262,6 +350,7 @@
 		static $SCHEDULED_MONTHLY_BY_DATE = 5;
 		static $SCHEDULED_MONTHLY_BY_WEEKDAY = 6;
 		static $SCHEDULED_ANNUALLY = 7;
+		static $SCHEDULED_BY_MINUTE=8;
 
 		function __construct(){
 			$this->conditionStrategy = new VTJsonCondition();
@@ -278,6 +367,7 @@
 			$this->schdayofmonth = isset($row['schdayofmonth']) ? $row['schdayofmonth'] : '';
 			$this->schdayofweek = isset($row['schdayofweek']) ? $row['schdayofweek'] : '';
 			$this->schannualdates = isset($row['schannualdates']) ? $row['schannualdates'] : '';
+			$this->schminuteinterval = isset($row['schminuteinterval']) ? $row['schminuteinterval'] : '';
 			if($row['defaultworkflow']){
 				$this->defaultworkflow=$row['defaultworkflow'];
 			}
@@ -320,7 +410,8 @@
 		}
 
 		function performTasks($entityData) {
-			global $adb;
+			global $adb,$logbg;
+			$logbg->debug('entering PerformTasks for Workflow: '.$this->id);
 			$data = $entityData->getData();
 			$util = new VTWorkflowUtils();
 			$user = $util->adminUser();
@@ -362,7 +453,7 @@
 
 		function executionConditionAsLabel($label=null){
 			if($label==null){
-				$arr = array('ON_FIRST_SAVE', 'ONCE', 'ON_EVERY_SAVE', 'ON_MODIFY', 'ON_DELETE', 'ON_SCHEDULE', 'MANUAL');
+				$arr = array('ON_FIRST_SAVE', 'ONCE', 'ON_EVERY_SAVE', 'ON_MODIFY', 'ON_DELETE', 'ON_SCHEDULE', 'MANUAL', 'RECORD_ACCESS_CONTROL');
 				return $arr[$this->executionCondition-1];
 			}else{
 				$arr = array(
@@ -372,7 +463,8 @@
 					'ON_MODIFY'=>VTWorkflowManager::$ON_MODIFY,
 					'ON_DELETE'=>VTWorkflowManager::$ON_DELETE,
 					'ON_SCHEDULE'=>VTWorkflowManager::$ON_SCHEDULE,
-					'MANUAL'=>VTWorkflowManager::$MANUAL
+					'MANUAL'=>VTWorkflowManager::$MANUAL,
+					'RECORD_ACCESS_CONTROL'=>VTWorkflowManager::$RECORD_ACCESS_CONTROL,
 				);
 				$this->executionCondition = $arr[$label];
 			}
@@ -391,6 +483,10 @@
 
 		function getWFScheduleType(){
 			return ($this->executionCondition == VTWorkflowManager::$ON_SCHEDULE ? $this->schtypeid : 0);
+		}
+
+		function getScheduleMinute(){
+			return $this->schminuteinterval;
 		}
 
 		function getWFScheduleTime(){
@@ -421,7 +517,11 @@
 			@date_default_timezone_set($adminTimeZone);
 
 			$scheduleType = $this->getWFScheduleType();
-			$nextTime = null;
+			$scheduleMinute= $this->getScheduleMinute();
+			
+            if($scheduleType==Workflow::$SCHEDULED_BY_MINUTE){
+            	$nextTime=date("Y-m-d H:i:s",strtotime("+ $scheduleMinute minutes"));
+            }
 
 			if($scheduleType == Workflow::$SCHEDULED_HOURLY) {
 				$nextTime = date("Y-m-d H:i:s",strtotime("+1 hour"));
@@ -486,7 +586,7 @@
 					$nextTriggerWeekDay = null;
 					sort($scheduledDaysOfWeek);
 					foreach ($scheduledDaysOfWeek as $index => $weekDay) {
-						if ($weekDay-1 == $currentWeekDay) { //if today is the weekday selected
+						if ($weekDays[$weekDay-1] == $weekDays[$currentWeekDay]) { //if today is the weekday selected
 							$scheduleWeekDayInTime = strtotime(date('Y-m-d', strtotime($weekDays[$currentWeekDay])) . ' ' . $scheduledTime);
 							if ($currentTime < $scheduleWeekDayInTime) { //if the scheduled time is greater than current time, select today
 								$nextTriggerWeekDay = $currentWeekDay;

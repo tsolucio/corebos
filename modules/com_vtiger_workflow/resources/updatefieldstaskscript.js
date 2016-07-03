@@ -10,7 +10,6 @@
 function VTUpdateFieldsTask($, fieldvaluemapping){
 	var vtinst = new VtigerWebservices("webservice.php");
 	var desc = null;
-
 	var format = fn.format;
 
 	function errorDialog(message){
@@ -165,14 +164,13 @@ function VTUpdateFieldsTask($, fieldvaluemapping){
 	}
 
 	function editFieldExpression(fieldValueNode, fieldType) {
-		editpopupobj.edit(fieldValueNode.attr('id'), fieldValueNode.attr('value'), fieldType);
+		editpopupobj.edit(fieldValueNode.attr('id'), fieldValueNode.val(), fieldType);
 	}
 
-	function resetFields(opType, fieldName, mappingno) {		
+	function resetFields(opType, fieldName, mappingno) {
 		defaultValue(opType.name)(opType, mappingno);
-		
 		var fv = $("#save_fieldvalues_"+mappingno+"_value");
-		fv.attr("name", fieldName);
+		fv.prop("name", fieldName);
 		var fieldLabel = jQuery("#save_fieldvalues_"+mappingno+"_fieldname option:selected").html();
 		validator.validateFieldData[fieldName] = {
 			type: opType.name,
@@ -192,25 +190,26 @@ function VTUpdateFieldsTask($, fieldvaluemapping){
 				);
 			value.replaceWith('<select id="save_fieldvalues_'+mappingno+'_value" class="expressionvalue">'+
 				options+'</select>');
-			$("#save_fieldvalues_"+mappingno+"_value_type").attr("value", "rawtext");
+			$("#save_fieldvalues_"+mappingno+"_value_type").val("rawtext");
+		}
+		function forStringField(opType, mappingno){
+			var value = $(format("#save_fieldvalues_%s_value", mappingno));
+			value.replaceWith(format('<input type="text" id="save_fieldvalues_%s_value" '+
+				'value="" class="expressionvalue" readonly />', mappingno));
+
+			var fv = $(format("#save_fieldvalues_%s_value", mappingno));
+			fv.bind("focus", function() {
+				editFieldExpression($(this), opType);
+			});
+			fv.bind("click", function() {
+				editFieldExpression($(this), opType);
+			});
+			fv.bind("keypress", function() {
+				editFieldExpression($(this), opType);
+			});
 		}
 		var functions = {
-			string:function(opType, mappingno){
-				var value = $(format("#save_fieldvalues_%s_value", mappingno));
-				value.replaceWith(format('<input type="text" id="save_fieldvalues_%s_value" '+
-					'value="" class="expressionvalue" readonly />', mappingno));
-
-				var fv = $(format("#save_fieldvalues_%s_value", mappingno));
-				fv.bind("focus", function() {
-					editFieldExpression($(this), opType);
-				});
-				fv.bind("click", function() {
-					editFieldExpression($(this), opType);
-				});
-				fv.bind("keypress", function() {
-					editFieldExpression($(this), opType);
-				});
-			},
+			string:forStringField,
 			picklist:forPicklist,
 			multipicklist:forPicklist
 		};
@@ -232,7 +231,7 @@ function VTUpdateFieldsTask($, fieldvaluemapping){
 			var selectedFieldNames = $(".fieldname");
 			result = successResult;
 			$.each(selectedFieldNames, function(i, ele) {
-				var fieldName = $(ele).attr("value");
+				var fieldName = $(ele).val();
 				var fields = $("[name="+fieldName+"]");
 				if(fields.length > 1) {
 					result = failureResult;
@@ -241,16 +240,15 @@ function VTUpdateFieldsTask($, fieldvaluemapping){
 			return result;
 		}
 	};
-	
+
 	$(document).ready(function(){
 
-		Drag.init(document.getElementById('editpopup_draghandle'), document.getElementById('editpopup'));
+		jQuery("#editpopup").draggable({ handle: "#editpopup_draghandle" });
 		editpopupobj = fieldExpressionPopup(moduleName, $);
 		editpopupobj.setModule(moduleName);
 		editpopupobj.close();
-		
 		validator.addValidator('validateDuplicateFields', validateDuplicateFields);
-        
+
 		vtinst.extendSession(handleError(function(result){
 			vtinst.describeObject(moduleName, handleError(function(result){
 				var parent = result;
@@ -326,7 +324,7 @@ function VTUpdateFieldsTask($, fieldvaluemapping){
 					fillOptions(fe, fieldLabels);
 
 
-					var fullFieldName = fe.attr("value");
+					var fullFieldName = fe.val();
 					resetFields(getFieldType(fullFieldName), fullFieldName, mappingno);
 
 					var re = $("#save_fieldvalues_"+mappingno+"_remove");
@@ -337,7 +335,7 @@ function VTUpdateFieldsTask($, fieldvaluemapping){
 					fe.bind("change", function(){
 						var select = $(this);
 						var mappingno = select.attr("id").match(/save_fieldvalues_(\d+)_fieldname/)[1];
-						var fullFieldName = $(this).attr('value');
+						var fullFieldName = $(this).val();
 						resetFields(getFieldType(fullFieldName), fullFieldName, mappingno);
 					});
 				}
@@ -347,16 +345,16 @@ function VTUpdateFieldsTask($, fieldvaluemapping){
 					$.each(fieldvaluemapping, function(i, fieldvaluemap){
 						var fieldname = fieldvaluemap["fieldname"];
 						addFieldValueMapping(mappingno);
-						$(format("#save_fieldvalues_%s_fieldname", mappingno)).attr("value", fieldname);
+						$(format("#save_fieldvalues_%s_fieldname", mappingno)).val(fieldname);
 						resetFields(getFieldType(fieldname), fieldname, mappingno);
-						$(format("#save_fieldvalues_%s_value_type", mappingno)).attr("value", fieldvaluemap['valuetype']);
+						$(format("#save_fieldvalues_%s_value_type", mappingno)).val(fieldvaluemap['valuetype']);
 						$('#dump').html(fieldvaluemap["value"]);
 						if (fieldvaluemap['valuetype'] == 'rawtext') {
 							var text = $('#dump').html();
 						} else {
 						var text = $('#dump').text();
 						}
-						$(format("#save_fieldvalues_%s_value", mappingno)).attr("value", text);
+						$(format("#save_fieldvalues_%s_value", mappingno)).val(text);
 						mappingno+=1;
 					});
 				}
@@ -369,9 +367,9 @@ function VTUpdateFieldsTask($, fieldvaluemapping){
 					var validateFieldValues = new Array();
 					var fieldvaluemapping = [];
 					$("#save_fieldvaluemapping").children().each(function(i){
-						var fieldname = $(this).children(".fieldname").attr("value");
-						var type = $(this).children(".type").attr("value");
-						var value = $(this).children(".expressionvalue").attr("value");
+						var fieldname = $(this).children(".fieldname").val();
+						var type = $(this).children(".type").val();
+						var value = $(this).children(".expressionvalue").val();
 						var fieldvaluemap = {
 							fieldname:fieldname,
 							valuetype:type,
@@ -388,7 +386,7 @@ function VTUpdateFieldsTask($, fieldvaluemapping){
 					}else{
 						var out = JSON.stringify(fieldvaluemapping);
 					}
-					$("#save_fieldvaluemapping_json").attr("value", out);
+					$("#save_fieldvaluemapping_json").val(out);
 
 					for(var fieldName in validator.validateFieldData) {
 						if(validateFieldValues.indexOf(fieldName) < 0) {

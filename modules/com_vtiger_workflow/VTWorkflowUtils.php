@@ -121,7 +121,7 @@ class VTWorkflowUtils {
 	function checkModuleWorkflow($modulename) {
 		global $adb;
 		$tabid = getTabid($modulename);
-		$modules_not_supported = array('Calendar', 'Emails', 'Faq', 'Events', 'PBXManager', 'Users');
+		$modules_not_supported = array('Calendar', 'Faq', 'Events', 'PBXManager', 'Users');
 		$query = "SELECT name FROM vtiger_tab WHERE name not in (" . generateQuestionMarks($modules_not_supported) . ") AND isentitytype=1 AND presence = 0 AND tabid = ?";
 		$result = $adb->pquery($query, array($modules_not_supported, $tabid));
 		$rows = $adb->num_rows($result);
@@ -133,7 +133,7 @@ class VTWorkflowUtils {
 	}
 
 	function vtGetModules($adb) {
-		$modules_not_supported = array('Emails', 'PBXManager');
+		$modules_not_supported = array('PBXManager');
 		$sql = "select distinct vtiger_field.tabid, name
 			from vtiger_field 
 			inner join vtiger_tab 

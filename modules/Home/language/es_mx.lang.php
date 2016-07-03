@@ -131,7 +131,7 @@ $mod_strings = Array(
 //added for Default Widgets
 'LBL_DEFAULT_WIDGET'=>'Widgets por Defecto',
 'LBL_NO_WIDGETS_HIDDEN'=>'No hay widgets ocultos',
-
+'UpdateExchangeRate' => 'Actualizar Cotización Moneda',
 );
 
 ?>

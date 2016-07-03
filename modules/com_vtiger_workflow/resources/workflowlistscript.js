@@ -7,9 +7,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 
-jQuery.noConflict();
 function workflowlistscript($){
-
 
 	function jsonget(operation, params, callback){
 		var obj = {
@@ -55,7 +53,7 @@ function workflowlistscript($){
 	var templatesForModule = {};
 	function updateTemplateList(){
 		var moduleSelect = $('#module_list');
-		var currentModule = moduleSelect.attr('value');
+		var currentModule = moduleSelect.val();
 		
 		$('#template_list').hide();
 		$('#template_list_foundnone').hide();
@@ -97,7 +95,7 @@ function workflowlistscript($){
 
 		$('.workflow_creation_mode').click(function(){
 			var el = $(this);
-			workflowCreationMode = el.attr('value');
+			workflowCreationMode = el.val();
 			if(workflowCreationMode=='from_template'){
 				updateTemplateList();
 				$('#template_select_field').show();
@@ -112,16 +110,16 @@ function workflowlistscript($){
 			}
 		});
 
-		var filterModule = $('#pick_module').attr('value');
+		var filterModule = $('#pick_module').val();
 		if(filterModule!='All'){
-			$('#module_list').attr('value', filterModule);
+			$('#module_list').val(filterModule);
 			$('#module_list').change();
 		}
 		
 		$('#new_workflow_popup_save').click(function() {
 			if(workflowCreationMode == 'from_template') {
 				// No templates selected?
-				if($('#template_list').attr('value') == '') {
+				if($('#template_list').val() == '') {
 					return false;
 				}
 			}

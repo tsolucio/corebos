@@ -1,5 +1,4 @@
 {*<!--
-
 /*********************************************************************************
 ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
@@ -7,12 +6,9 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
 -->*}
 <script language="JavaScript" type="text/javascript" src="include/js/dtlviewajax.js"></script>
-<script src="include/scriptaculous/scriptaculous.js" type="text/javascript"></script>
 <div id="convertleaddiv" style="display:block;position:absolute;left:225px;top:150px;"></div>
 <span id="crmspanid" style="display:none;position:absolute;"  onmouseover="show('crmspanid');">
    <a class="link"  align="right" href="javascript:;">{$APP.LBL_EDIT_BUTTON}</a>
@@ -21,7 +17,7 @@
 function tagvalidate()
 {ldelim}
 	if(trim(document.getElementById('txtbox_tagfields').value) != '')
-		SaveTag('txtbox_tagfields','{$ID}','{$MODULE}');	
+		SaveTag('txtbox_tagfields','{$ID}','{$MODULE}');
 	else
 	{ldelim}
 		alert("{$APP.PLEASE_ENTER_TAG}");
@@ -30,19 +26,16 @@ function tagvalidate()
 {rdelim}
 function DeleteTag(id,recordid)
 {ldelim}
-	$("vtbusy_info").style.display="inline";
-	Effect.Fade('tag_'+id);
-	new Ajax.Request(
-		'index.php',
-                {ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-                        method: 'post',
-                        postBody: "file=TagCloud&module={$MODULE}&action={$MODULE}Ajax&ajxaction=DELETETAG&recordid="+recordid+"&tagid=" +id,
-                        onComplete: function(response) {ldelim}
+	document.getElementById("vtbusy_info").style.display="inline";
+	jQuery('#tag_'+id).fadeOut();
+	jQuery.ajax({ldelim}
+			method:"POST",
+			url:"index.php?file=TagCloud&module={$MODULE}&action={$MODULE}Ajax&ajxaction=DELETETAG&recordid="+recordid+"&tagid=" +id,
+{rdelim}).done(function(response) {ldelim}
 						getTagCloud();
-						$("vtbusy_info").style.display="none";
-                        {rdelim}
-                {rdelim}
-        );
+						document.getElementById("vtbusy_info").style.display="none";
+{rdelim}
+		);
 {rdelim}
 {literal}
 function showHideStatus(sId,anchorImgId,sImagePath)
@@ -80,16 +73,13 @@ function setCoOrdinate(elemId)
 	tagName.style.left= leftpos - 276 + 'px';
 }
 
-function getListOfRecords(obj, sModule, iId,sParentTab)
-{
-		new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody: 'module=Users&action=getListOfRecords&ajax=true&CurModule='+sModule+'&CurRecordId='+iId+'&CurParentTab='+sParentTab,
-			onComplete: function(response) {
-				sResponse = response.responseText;
-				$("lstRecordLayout").innerHTML = sResponse;
+function getListOfRecords(obj, sModule, iId,sParentTab) {
+	jQuery.ajax({
+				method:"POST",
+				url:'index.php?module=Users&action=getListOfRecords&ajax=true&CurModule='+sModule+'&CurRecordId='+iId+'&CurParentTab='+sParentTab,
+	}).done(function(response) {
+				sResponse = response;
+				document.getElementById("lstRecordLayout").innerHTML = sResponse;
 				Lay = 'lstRecordLayout';	
 				var tagName = document.getElementById(Lay);
 				var leftSide = findPosX(obj);
@@ -109,7 +99,6 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 				tagName.style.display = 'block';
 				tagName.style.visibility = "visible";
 			}
-		}
 	);
 }
 {/literal}
@@ -136,8 +125,7 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 					<td>
 			         {* Module Record numbering, used MOD_SEQ_ID instead of ID *}
 			         {assign var="USE_ID_VALUE" value=$MOD_SEQ_ID}
-		  			 {if $USE_ID_VALUE eq ''} {assign var="USE_ID_VALUE" value=$ID} {/if}
-		  			
+					 {if $USE_ID_VALUE eq ''} {assign var="USE_ID_VALUE" value=$ID} {/if}
 						<span class="lvtHeaderText"><font color="purple">[ {$USE_ID_VALUE} ] </font>{$NAME} -  {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</span>&nbsp;&nbsp;&nbsp;<span class="small">{$UPDATEINFO}</span>&nbsp;<span id="vtbusy_info" style="display:none;" valign="bottom"><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span><span id="vtbusy_info" style="visibility:hidden;" valign="bottom"><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
 					</td>
 				   </tr>
@@ -148,7 +136,7 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 				<table border=0 cellspacing=0 cellpadding=0 width=95% align=center>
 				   <tr>
 					<td>
-   						<table border=0 cellspacing=0 cellpadding=3 width=100% class="small">
+						<table border=0 cellspacing=0 cellpadding=3 width=100% class="small">
 						   <tr>
 								<td class="dvtTabCache" style="width:10px" nowrap>&nbsp;</td>
 								
@@ -168,10 +156,10 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 									</td>
 								{/if}
 								<td class="dvtTabCache" align="right" style="width:100%">
-									{if $EDIT_DUPLICATE eq 'permitted'}
+									{if $EDIT_PERMISSION eq 'yes'}
 									<input title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" class="crmbutton small edit" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.return_id.value='{$ID}';DetailView.module.value='{$MODULE}'; submitFormForAction('DetailView','EditView');" type="button" name="Edit" value="&nbsp;{$APP.LBL_EDIT_BUTTON_LABEL}&nbsp;">&nbsp;
 									{/if}
-									{if $EDIT_DUPLICATE eq 'permitted' && $MODULE neq 'Documents'}
+									{if ((isset($CREATE_PERMISSION) && $CREATE_PERMISSION eq 'permitted') || (isset($EDIT_PERMISSION) && $EDIT_PERMISSION eq 'yes')) && $MODULE neq 'Documents'}
 									<input title="{$APP.LBL_DUPLICATE_BUTTON_TITLE}" accessKey="{$APP.LBL_DUPLICATE_BUTTON_KEY}" class="crmbutton small create" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.isDuplicate.value='true';DetailView.module.value='{$MODULE}'; submitFormForAction('DetailView','EditView');" type="button" name="Duplicate" value="{$APP.LBL_DUPLICATE_BUTTON_LABEL}">&nbsp;
 									{/if}
 									{if $DELETE eq 'permitted'}
@@ -248,51 +236,55 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 							{/if}
 							<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small">
 
-	   {foreach item=detail from=$detail}
-	   <tr style="height:25px">
-		{foreach key=label item=data from=$detail}
-			{assign var=keyid value=$data.ui}
-			{assign var=keyval value=$data.value}
-			{assign var=keytblname value=$data.tablename}
-			{assign var=keyfldname value=$data.fldname}
-			{assign var=keyfldid value=$data.fldid}
-			{assign var=keyoptions value=$data.options}
-			{assign var=keysecid value=$data.secid}
-			{assign var=keyseclink value=$data.link}
-			{assign var=keycursymb value=$data.cursymb}
-			{assign var=keysalut value=$data.salut}
-			{assign var=keycntimage value=$data.cntimage}
-			{assign var=keyadmin value=$data.isadmin}
-			{assign var=display_type value=$data.displaytype}
-			{assign var=_readonly value=$data.readonly}
+            {if $CUSTOMBLOCKS.$header.custom}
+                {include file=$CUSTOMBLOCKS.$header.tpl}
+            {else}
+               {foreach item=detail from=$detail}
+               <tr style="height:25px">
+                    {foreach key=label item=data from=$detail}
+                            {assign var=keyid value=$data.ui}
+                            {assign var=keyval value=$data.value}
+                            {assign var=keytblname value=$data.tablename}
+                            {assign var=keyfldname value=$data.fldname}
+                            {assign var=keyfldid value=$data.fldid}
+                            {assign var=keyoptions value=$data.options}
+                            {assign var=keysecid value=$data.secid}
+                            {assign var=keyseclink value=$data.link}
+                            {assign var=keycursymb value=$data.cursymb}
+                            {assign var=keysalut value=$data.salut}
+                            {assign var=keycntimage value=$data.cntimage}
+                            {assign var=keyadmin value=$data.isadmin}
+                            {assign var=display_type value=$data.displaytype}
+                            {assign var=_readonly value=$data.readonly}
 
-				{if $label ne ''}
-					{if $keycntimage ne ''}
-						<td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$keycntimage}</td>
-					{elseif $label neq 'Tax Class'}<!-- Avoid to display the label Tax Class -->
-						{if $keyid eq '71' || $keyid eq '72'}  <!--CurrencySymbol-->
-							<td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$label} ({$keycursymb})</td>
-						{elseif $keyid eq '9'}
-							<td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$label} {$APP.COVERED_PERCENTAGE}</td>
-						{else}
-							<td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$label}</td>
-						{/if}
-					{/if}  
-					{if $EDIT_PERMISSION eq 'yes' && $display_type neq '2' && $_readonly eq '0'}
-						{* Performance Optimization Control *}
-						{if !empty($DETAILVIEW_AJAX_EDIT) }
-							{include file="DetailViewUI.tpl"}
-						{else}
-							{include file="DetailViewFields.tpl"}
-						{/if}
-						{* END *}
-					{else}
-						{include file="DetailViewFields.tpl"}
-					{/if}
-				{/if}
-		{/foreach}
-	   </tr>
-	   {/foreach}
+                                    {if $label ne ''}
+                                            {if $keycntimage ne ''}
+                                                    <td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$keycntimage}</td>
+                                            {elseif $label neq 'Tax Class'}<!-- Avoid to display the label Tax Class -->
+                                                    {if $keyid eq '71' || $keyid eq '72'}  <!--CurrencySymbol-->
+                                                            <td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$label} ({$keycursymb})</td>
+                                                    {elseif $keyid eq '9'}
+                                                            <td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$label} {$APP.COVERED_PERCENTAGE}</td>
+                                                    {else}
+                                                            <td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$label}</td>
+                                                    {/if}
+                                            {/if}  
+                                            {if $EDIT_PERMISSION eq 'yes' && $display_type neq '2' && $_readonly eq '0'}
+                                                    {* Performance Optimization Control *}
+                                                    {if !empty($DETAILVIEW_AJAX_EDIT) }
+                                                            {include file="DetailViewUI.tpl"}
+                                                    {else}
+                                                            {include file="DetailViewFields.tpl"}
+                                                    {/if}
+                                                    {* END *}
+                                            {else}
+                                                    {include file="DetailViewFields.tpl"}
+                                            {/if}
+                                    {/if}
+                    {/foreach}
+               </tr>
+               {/foreach}
+           {/if}
 	</table>
 	</div> <!-- Line added by SAKTI on 10th Apr, 2008 -->
 <!-- Entity information(blocks) display - ends -->
@@ -361,10 +353,10 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 								<td class="dvtUnSelectedCell" align=center nowrap><a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</a></td>
 								{/if}
 								<td class="dvtTabCacheBottom" align="right" style="width:100%">
-									{if $EDIT_DUPLICATE eq 'permitted'}
+									{if $EDIT_PERMISSION eq 'yes'}
 									<input title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" class="crmbutton small edit" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.return_id.value='{$ID}';DetailView.module.value='{$MODULE}'; submitFormForAction('DetailView','EditView');" type="button" name="Edit" value="&nbsp;{$APP.LBL_EDIT_BUTTON_LABEL}&nbsp;">&nbsp;
 									{/if}
-									{if $EDIT_DUPLICATE eq 'permitted' && $MODULE neq 'Documents'}
+									{if ((isset($CREATE_PERMISSION) && $CREATE_PERMISSION eq 'permitted') || (isset($EDIT_PERMISSION) && $EDIT_PERMISSION eq 'yes')) && $MODULE neq 'Documents'}
 									<input title="{$APP.LBL_DUPLICATE_BUTTON_TITLE}" accessKey="{$APP.LBL_DUPLICATE_BUTTON_KEY}" class="crmbutton small create" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.isDuplicate.value='true';DetailView.module.value='{$MODULE}'; submitFormForAction('DetailView','EditView');" type="button" name="Duplicate" value="{$APP.LBL_DUPLICATE_BUTTON_LABEL}">&nbsp;
 									{/if}
 									{if $DELETE eq 'permitted'}
@@ -405,18 +397,15 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 <script>
 function getTagCloud()
 {ldelim}
-	var obj = $("tagfields");
+	var obj = document.getElementById("tagfields");
 	if(obj != null && typeof(obj) != undefined) {ldelim}
-		new Ajax.Request(
-        	'index.php',
-        	{ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-      		method: 'post',
-			postBody: 'module={$MODULE}&action={$MODULE}Ajax&file=TagCloud&ajxaction=GETTAGCLOUD&recordid={$ID}',
-			onComplete: function(response) {ldelim}
-							$("tagfields").innerHTML=response.responseText;
-                            $("txtbox_tagfields").value ='';
-                        {rdelim}
-        	{rdelim}
+		jQuery.ajax({ldelim}
+				method:"POST",
+				url:'index.php?module={$MODULE}&action={$MODULE}Ajax&file=TagCloud&ajxaction=GETTAGCLOUD&recordid={$ID}',
+{rdelim}).done(function(response) {ldelim}
+			document.getElementById("tagfields").innerHTML=response;
+			document.getElementById("txtbox_tagfields").value ='';
+{rdelim}
 		);
 	{rdelim}
 {rdelim}

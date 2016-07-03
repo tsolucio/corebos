@@ -219,7 +219,7 @@ if (typeof(ImportJs) == 'undefined') {
 							mapid: mapId,
 							ajax: true},
 					complete : function(response) {
-						jQuery('#savedMapsContainer').html(response.responseText);
+						jQuery('#savedMapsContainer').html(response);
 						jQuery('#status').hide();
 					}
 				});
@@ -239,7 +239,7 @@ if (typeof(ImportJs) == 'undefined') {
 						foruser: userid,
 						ajax: true},
 				complete : function(response) {
-					jQuery('#import_listview_contents').html(response.responseText);
+					jQuery('#import_listview_contents').html(response);
 					jQuery('#status').hide();
 				}
 			});

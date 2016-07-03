@@ -197,18 +197,15 @@ function dup_validation(profilename)
 	//var status = CharValidation(profilename,'namespace');
 	//if(status)
 	//{ldelim}
-	new Ajax.Request(
-		'index.php',
-		{ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-			method: 'post',
-			postBody: 'module=Users&action=UsersAjax&file=CreateProfile&ajax=true&dup_check=true&profile_name='+profilename,
-			onComplete: function(response) {ldelim}
-					if(response.responseText.indexOf('SUCCESS') > -1)
-						document.profileform.submit();
-					else
-						alert(response.responseText);
-				{rdelim}
-		{rdelim}
+	jQuery.ajax({ldelim}
+			method:"POST",
+			url:'index.php?module=Users&action=UsersAjax&file=CreateProfile&ajax=true&dup_check=true&profile_name='+profilename,
+	{rdelim}).done(function(response) {ldelim}
+				if(response.indexOf('SUCCESS') > -1)
+					document.profileform.submit();
+				else
+					alert(response);
+			{rdelim}
 	);
 	//{rdelim}
 	//else

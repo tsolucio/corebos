@@ -26,20 +26,20 @@ var Webforms ={
 		var i;
 		var len=arguments.length;
 		for(i=0;i<len;i++){
-			if($(arguments[i])){
-				if($(arguments[i]).style.display!="none"){
-					$(arguments[i]).style.display="none";
+			if(document.getElementById(arguments[i])){
+				if(document.getElementById(arguments[i]).style.display!="none"){
+					document.getElementById(arguments[i]).style.display="none";
 				}else{
-					$(arguments[i]).style.display="inline";
+					document.getElementById(arguments[i]).style.display="inline";
 				}
 			}
 		}
 	},
 
 	validateForm: function(form,action) {
-		var name=$('name').value;
-		var ownerid=$('ownerid').value;
-		var module=$('targetmodule').value;
+		var name=document.getElementById('name').value;
+		var ownerid=document.getElementById('ownerid').value;
+		var module=document.getElementById('targetmodule').value;
 		if((name=="")||(name==null)||(ownerid=="")||(ownerid==null)||(module=="")||(module==null)){
 			if (typeof webforms_alert_arr != 'undefined') {
 				alert(getTranslatedString('LBL_MADATORY_FIELDS', webforms_alert_arr));
@@ -84,21 +84,17 @@ var Webforms ={
 		var url = "module=Webforms&action=WebformsAjax&file=WebformsHTMLView&ajax=true&id=" + encodeURIComponent(id);
 
 		VtigerJS_DialogBox.block();
-		new Ajax.Request('index.php', {
-			queue: {
-				position: 'end',
-				scope: 'command'
-			},
-			method: 'post',
-			postBody:url,
-			onComplete: function(response) {
+		jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?'+url
+		}).done(function (response) {
 				VtigerJS_DialogBox.unblock();
-				var str = response.responseText;
-				$('webform_source').innerText = str;
-				$('webform_source').value=str;
-				$('orgLay').style.display="block";
+				var str = response;
+				document.getElementById('webform_source').innerText = str;
+				document.getElementById('webform_source').value=str;
+				document.getElementById('orgLay').style.display="block";
 			}
-		});
+		);
 	},
 
 	fetchFieldsView: function(module) {
@@ -106,17 +102,13 @@ var Webforms ={
 		var url = "module=Webforms&action=WebformsAjax&file=WebformsFieldsView&ajax=true&targetmodule=" + encodeURIComponent(module);
 
 		VtigerJS_DialogBox.block();
-		new Ajax.Request('index.php', {
-			queue: {
-				position: 'end',
-				scope: 'command'
-			},
-			method: 'post',
-			postBody:url,
-			onComplete: function(response) {
+		jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?'+url
+		}).done(function (response) {
 				VtigerJS_DialogBox.unblock();
-				var str = response.responseText;
-				$('Webforms_FieldsView').innerHTML = str;
+				var str = response;
+				document.getElementById('Webforms_FieldsView').innerHTML = str;
 				eval(document.getElementById('counter').innerHTML);
 				for(i=1;i<=count;i++){
 					if(document.getElementById("date_"+i)){
@@ -124,21 +116,17 @@ var Webforms ={
 					}
 				}
 			}
-		});
+		);
 	},
 	checkName: function(name,form,action) {
 		if((name=="")||(name==null)) return;
 		var url = "module=Webforms&action=WebformsAjax&file=Save&ajax=true&name=" + encodeURIComponent(name);
 
-		new Ajax.Request('index.php', {
-			queue: {
-				position: 'end',
-				scope: 'command'
-			},
-			method: 'post',
-			postBody:url,
-			onComplete: function(response) {
-				var JSONres = JSON.parse(response.responseText);
+		jQuery.ajax({
+				method: 'POST',
+				url: 'index.php?'+url
+		}).done(function (response) {
+				var JSONres = JSON.parse(response);
 				if(JSONres.result==false){
 					alert(getTranslatedString('LBL_DUPLICATE_NAME', webforms_alert_arr));
 				}
@@ -146,7 +134,7 @@ var Webforms ={
 					Webforms.submitForm(form, action);
 				}
 			}
-		});
+		);
 
 	}
 };

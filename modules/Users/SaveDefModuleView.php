@@ -6,9 +6,7 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
-
 global $root_directory;
 $filename = $root_directory.'user_privileges/default_module_view.php';
 
@@ -40,6 +38,4 @@ if($readhandle)
 $handle = fopen($filename, "w");
 fputs($handle, $new_buffer);
 fclose($handle);
-
 ?>
-

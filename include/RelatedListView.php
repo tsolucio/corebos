@@ -31,13 +31,13 @@ if(!function_exists('GetRelatedList')) {
   * @param $edit_val -- edit value:: Type string
   * @param $del_val -- delete value:: Type string
   * @returns $related_entries -- related entires:: Type string array
-  *
   */
 function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$returnset,$id='',$edit_val='',$del_val='',$skipActions=false)
 {
 	$log = LoggerManager::getLogger('account_list');
 	$log->debug("Entering GetRelatedList(".$module.",".$relatedmodule.",".get_class($focus).",".$query.",".$button.",".$returnset.",".$edit_val.",".$del_val.") method ...");
-
+	global $GetRelatedList_ReturnOnlyQuery;
+	if (isset($GetRelatedList_ReturnOnlyQuery) and $GetRelatedList_ReturnOnlyQuery) return array('query'=>$query);
 	require_once('Smarty_setup.php');
 	require_once("data/Tracker.php");
 	require_once('include/database/PearDatabase.php');
@@ -47,8 +47,6 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 	$current_module_strings = return_module_language($current_language, $module);
 
 	global $list_max_entries_per_page, $urlPrefix, $currentModule, $theme, $theme_path, $theme_path, $mod_strings;
-	// focus_list is the means of passing data to a ListView.
-	global $focus_list;
 	$smarty = new vtigerCRM_Smarty;
 	if (!isset($where)) $where = "";
 
@@ -134,10 +132,9 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 		$mod_listquery = strtolower($relatedmodule)."_listquery";
 	$_SESSION[$mod_listquery] = $query;
 
-	$url_qry .="&order_by=".$order_by."&sorder=".$sorder;
-	$computeCount = $_REQUEST['withCount'];
-	if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true ||
-			(boolean) $computeCount == true){
+	$url_qry ="&order_by=".$order_by."&sorder=".$sorder;
+	$computeCount = isset($_REQUEST['withCount']) ? $_REQUEST['withCount'] : '';
+	if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true || (boolean) $computeCount == true){
 		//Retreiving the no of rows
 		if($relatedmodule == "Calendar") {
 			//for calendar related list, count will increase when we have multiple contacts
@@ -219,7 +216,6 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
   * @param $query -- query:: Type string
   * @param $id -- id:: Type string
   * @returns $entries_list -- entries list:: Type string array
-  *
   */
 function getAttachmentsAndNotes($parentmodule,$query,$id,$sid='')
 {
@@ -398,7 +394,6 @@ function getAttachmentsAndNotes($parentmodule,$query,$id,$sid='')
   * @param $query -- query:: Type string
   * @param $id -- id:: Type string
   * @returns $return_data -- return data:: Type string array
-  *
   */
 function getHistory($parentmodule,$query,$id)
 {

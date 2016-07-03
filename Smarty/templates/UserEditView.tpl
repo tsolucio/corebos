@@ -38,24 +38,21 @@ function check_duplicate()
 	
         if(status)
 	{ldelim}
-	new Ajax.Request(
-                'index.php',
-                {ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-                        method: 'post',
-                        postBody: 'module=Users&action=UsersAjax&file=Save&ajax=true&dup_check=true&userName='+user_name,
-                        onComplete: function(response) {ldelim}
-							if(response.responseText.indexOf('SUCCESS') > -1)
-							{ldelim}
-							//	$('user_status').disabled = false;
-								document.EditView.submit();
-							{rdelim}
-			       				else {ldelim}
-			       					VtigerJS_DialogBox.unblock();
-									alert(response.responseText);
-						        {rdelim}
-			            {rdelim}
-                {rdelim}
-        );
+	jQuery.ajax({ldelim}
+				method:"POST",
+				url:'index.php?module=Users&action=UsersAjax&file=Save&ajax=true&dup_check=true&userName='+user_name
+	{rdelim}).done(function(response) {ldelim}
+				if(response.indexOf('SUCCESS') > -1)
+				{ldelim}
+				//	$('user_status').disabled = false;
+					document.EditView.submit();
+				{rdelim}
+					else {ldelim}
+						VtigerJS_DialogBox.unblock();
+						alert(response);
+					{rdelim}
+			{rdelim}
+		);
 	{rdelim}
 	else
             alert(alert_arr.NO_SPECIAL+alert_arr.IN_USERNAME)

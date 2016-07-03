@@ -6,30 +6,20 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 require_once("data/Tracker.php");
 require_once('include/logging.php');
 require_once('include/utils/utils.php');
 require_once('modules/Reports/Reports.php');
 
-global $app_strings;
-global $app_list_strings;
-global $mod_strings;
+global $app_strings, $app_list_strings, $mod_strings;
 $current_module_strings = return_module_language($current_language, 'Reports');
 
-global $list_max_entries_per_page;
-global $urlPrefix;
+global $list_max_entries_per_page, $urlPrefix;
 
 $log = LoggerManager::getLogger('report_list');
 
-global $currentModule;
-
-global $image_path;
-global $theme;
-
-// focus_list is the means of passing data to a ListView.
-global $focus_list;
+global $currentModule, $image_path, $theme;
 
 $save_report_form=new XTemplate ("modules/Reports/SaveReport.html");
 $save_report_form->assign("MOD", $mod_strings);

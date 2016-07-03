@@ -1,21 +1,11 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- ********************************************************************************
-*  Module       : Emails
-*  Language     : Español
-*  Version      : 504
-*  Created Date : 2007-03-30 Last change : 2007-10-10
-*  Author       : Rafael Soler
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -62,6 +52,8 @@ $mod_strings = Array(
 'LBL_QUALIFY_BUTTON'=>'Clasificar',
 'LBL_REPLY_BUTTON'=>'Responder',
 'LBL_FORWARD_BUTTON'=>'Reenviar',
+'Re' => 'Re',
+'Fwd' => 'Fwd',
 'LBL_DOWNLOAD_ATTCH_BUTTON'=>'Descargar Adjuntos',
 'LBL_FROM'=>'De: ',
 'LBL_CC'=>'Cc: ',
@@ -160,6 +152,7 @@ $mod_strings = Array(
 'LBL_BCC_EMAIL_ERROR'=>'Cuenta de correo bcc incorrecta',
 'LBL_NO_RCPTS_EMAIL_ERROR'=>'No se ha especificado destinatario',
 'LBL_CONF_MAILSERVER_ERROR'=>'Configura el servidor de correo saliente en Herramientas --> Servidor de Correo',
+'LBL_CONF_SERVERSTORAGE_ERROR'=>'Los permisos en tu directorio storage son insuficientes, no podrás enviar adjuntos!',
 'LBL_VTIGER_EMAIL_CLIENT'=>'Webmail Vtiger',
 'LBL_MAILSELECT_INFO3'=>'No tienes permiso para visualizar las cuentas de correo del registro seleccionado.',
 //Added  for script alerts

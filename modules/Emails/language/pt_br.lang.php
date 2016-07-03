@@ -1,24 +1,16 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
+ ********************************************************************************
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
- ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Emails/language/en_us.lang.php,v 1.17 2005/03/28 06:31:38 rank Exp $
- * Description:  Defines the English language pack for the Emails module.
  ********************************************************************************/
 
 $mod_strings = Array(
-// Mike Crowe Mod --------------------------------------------------------added for general search
 'LBL_GENERAL_INFORMATION'=>'Informação Geral',
 
 'LBL_MODULE_NAME'=>'Email',
@@ -46,7 +38,6 @@ $mod_strings = Array(
 'LBL_COLON'=>':',
 'LBL_CHK_MAIL'=>'Checar Email',
 'LBL_COMPOSE'=>'Nova Mensagem',
-//Single change for 5.0.3
 'LBL_SETTINGS'=>'Configurações Servidor',
 'LBL_EMAIL_FOLDERS'=>'Folders Email',
 'LBL_INBOX'=>'Caixa Entrada',
@@ -62,6 +53,8 @@ $mod_strings = Array(
 'LBL_QUALIFY_BUTTON'=>'Qualificar',
 'LBL_REPLY_BUTTON'=>'Responder',
 'LBL_FORWARD_BUTTON'=>'Reenviar',
+'Re' => 'Re',
+'Fwd' => 'Fwd',
 'LBL_DOWNLOAD_ATTCH_BUTTON'=>'Download Anexos',
 'LBL_FROM'=>'De :',
 'LBL_CC'=>'Cc :',
@@ -160,6 +153,7 @@ $mod_strings = Array(
 'LBL_BCC_EMAIL_ERROR'=>'Seu endereço de email BCC não está correto',
 'LBL_NO_RCPTS_EMAIL_ERROR'=>'Nenhum destinatário epecificado',
 'LBL_CONF_MAILSERVER_ERROR'=>'Por favor configure seu servidor de envio de mensagens em Configurações --> link Servidor de Envio',
+'LBL_CONF_SERVERSTORAGE_ERROR'=>'The permissions on your storage directory are insufficient, you will not be able to send attachments!',
 'LBL_MAILSELECT_INFO3'=>'Você não tem permissão para visualizar endereço(s) de emai(s)l nos Registro(s) selecionado(s)',
 //Added  for script alerts
 'FEATURE_AVAILABLE_INFO' => 'Este atributo está disponível atualmente somente para usuários do Microsoft Internet Explorer 5.5+  \n\nAguarde

@@ -6,16 +6,13 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 -->*}
 <link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
 <script type="text/javascript" src="jscalendar/calendar.js"></script>
 <script type="text/javascript" src="jscalendar/lang/calendar-en.js"></script>
 <script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
-
 <script type="text/javascript" src="include/js/reflection.js"></script>
-<script src="include/scriptaculous/scriptaculous.js" type="text/javascript"></script>
 <script language="JavaScript" type="text/javascript" src="include/js/dtlviewajax.js"></script>
 <span id="crmspanid" style="display:none;position:absolute;"  onmouseover="show('crmspanid');">
 	<a class="link"  align="right" href="javascript:;">{$APP.LBL_EDIT_BUTTON}</a>
@@ -25,19 +22,15 @@
 <script>
 var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 {literal}
-function callConvertLeadDiv(id)
-{
-        new Ajax.Request(
-                'index.php',
-                {queue: {position: 'end', scope: 'command'},
-                        method: 'post',
-                        postBody: 'module=Leads&action=LeadsAjax&file=ConvertLead&record='+id,
-                        onComplete: function(response) {
-                                $("convertleaddiv").innerHTML=response.responseText;
-				eval($("conv_leadcal").innerHTML);
-                        }
-                }
-        );
+function callConvertLeadDiv(id){
+		jQuery.ajax({
+				method:"POST",
+				url:'index.php?module=Leads&action=LeadsAjax&file=ConvertLead&record='+id,
+		}).done(function(response) {
+				jQuery("#convertleaddiv").html(response);
+				eval(jQuery("#conv_leadcal").html());
+			}
+		);
 }
 function showHideStatus(sId,anchorImgId,sImagePath)
 {
@@ -46,18 +39,22 @@ function showHideStatus(sId,anchorImgId,sImagePath)
 	{
 		oObj.style.display = 'none';
 		if(anchorImgId !=null){
+{/literal}
 			eval(document.getElementById(anchorImgId)).src =  'themes/images/inactivate.gif';
-			eval(document.getElementById(anchorImgId)).alt = 'Display';
-			eval(document.getElementById(anchorImgId)).title = 'Display';
+			eval(document.getElementById(anchorImgId)).alt = '{'LBL_Show'|@getTranslatedString:'Settings'}';
+			eval(document.getElementById(anchorImgId)).title = '{'LBL_Show'|@getTranslatedString:'Settings'}';
+{literal}
 		}
 	}
 	else
 	{
 		oObj.style.display = 'block';
 		if(anchorImgId !=null){
+{/literal}
 			eval(document.getElementById(anchorImgId)).src = 'themes/images/activate.gif';
-			eval(document.getElementById(anchorImgId)).alt = 'Hide';
-			eval(document.getElementById(anchorImgId)).title = 'Hide';
+			eval(document.getElementById(anchorImgId)).alt = '{'LBL_Hide'|@getTranslatedString:'Settings'}';
+			eval(document.getElementById(anchorImgId)).title = '{'LBL_Hide'|@getTranslatedString:'Settings'}';
+{literal}
 		}
 	}
 }
@@ -79,16 +76,13 @@ function setCoOrdinate(elemId){
 	tagName.style.left= leftpos - 276 + 'px';
 }
 
-function getListOfRecords(obj, sModule, iId,sParentTab)
-{
-		new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody: 'module=Users&action=getListOfRecords&ajax=true&CurModule='+sModule+'&CurRecordId='+iId+'&CurParentTab='+sParentTab,
-			onComplete: function(response) {
-				sResponse = response.responseText;
-				$("lstRecordLayout").innerHTML = sResponse;
+function getListOfRecords(obj, sModule, iId,sParentTab) {
+		jQuery.ajax({
+				method:"POST",
+				url:'index.php?module=Users&action=getListOfRecords&ajax=true&CurModule='+sModule+'&CurRecordId='+iId+'&CurParentTab='+sParentTab,
+		}).done(function(response) {
+				sResponse = response;
+				jQuery("#lstRecordLayout").html(sResponse);
 				Lay = 'lstRecordLayout';
 				var tagName = document.getElementById(Lay);
 				var leftSide = findPosX(obj);
@@ -108,7 +102,6 @@ function getListOfRecords(obj, sModule, iId,sParentTab)
 				tagName.style.display = 'block';
 				tagName.style.visibility = "visible";
 			}
-		}
 	);
 }
 {/literal}
@@ -124,25 +117,22 @@ function tagvalidate()
 {rdelim}
 function DeleteTag(id,recordid)
 {ldelim}
-	$("vtbusy_info").style.display="inline";
-	Effect.Fade('tag_'+id);
-	new Ajax.Request(
-		'index.php',
-                {ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-                        method: 'post',
-                        postBody: "file=TagCloud&module={$MODULE}&action={$MODULE}Ajax&ajxaction=DELETETAG&recordid="+recordid+"&tagid=" +id,
-                        onComplete: function(response) {ldelim}
-						getTagCloud();
-						$("vtbusy_info").style.display="none";
-                        {rdelim}
-                {rdelim}
-        );
+	document.getElementById("vtbusy_info").style.display="inline";
+	jQuery('#tag_'+id).fadeOut();
+	jQuery.ajax({ldelim}
+			method:"POST",
+			url:"index.php?file=TagCloud&module={$MODULE}&action={$MODULE}Ajax&ajxaction=DELETETAG&recordid="+recordid+"&tagid=" +id,
+	{rdelim}).done(function(response) {ldelim}
+				getTagCloud();
+				jQuery("#vtbusy_info").hide();
+	{rdelim}
+	);
 {rdelim}
 
 //Added to send a file, in Documents module, as an attachment in an email
 function sendfile_email()
 {ldelim}
-	filename = $('dldfilename').value;
+	filename = document.getElementById('dldfilename').value;
 	document.DetailView.submit();
 	OpenCompose(filename,'Documents');
 {rdelim}
@@ -229,10 +219,10 @@ function sendfile_email()
 												</td>
 											{/if}
 											<td class="dvtTabCache" align="right" style="width:100%">
-												{if $EDIT_DUPLICATE eq 'permitted'}
+												{if $EDIT_PERMISSION eq 'yes'}
 													<input title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" class="crmbutton small edit" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.return_id.value='{$ID}';DetailView.module.value='{$MODULE}';submitFormForAction('DetailView','EditView');" type="button" name="Edit" value="&nbsp;{$APP.LBL_EDIT_BUTTON_LABEL}&nbsp;">&nbsp;
 												{/if}
-												{if $EDIT_DUPLICATE eq 'permitted' && $MODULE neq 'Documents'}
+												{if ((isset($CREATE_PERMISSION) && $CREATE_PERMISSION eq 'permitted') || (isset($EDIT_PERMISSION) && $EDIT_PERMISSION eq 'yes')) && $MODULE neq 'Documents'}
 													<input title="{$APP.LBL_DUPLICATE_BUTTON_TITLE}" accessKey="{$APP.LBL_DUPLICATE_BUTTON_KEY}" class="crmbutton small create" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.isDuplicate.value='true';DetailView.module.value='{$MODULE}'; submitFormForAction('DetailView','EditView');" type="button" name="Duplicate" value="{$APP.LBL_DUPLICATE_BUTTON_LABEL}">&nbsp;
 												{/if}
 												{if $DELETE eq 'permitted'}
@@ -312,7 +302,6 @@ function sendfile_email()
 																						<tr><td>&nbsp;</td></tr>
 																					{/if}
 
-
 																					{if $header neq 'Comments'}
 
 																						<tr>{strip}
@@ -320,9 +309,9 @@ function sendfile_email()
 
 																								<div style="float:left;font-weight:bold;"><div style="float:left;"><a href="javascript:showHideStatus('tbl{$header|replace:' ':''}','aid{$header|replace:' ':''}','{$IMAGE_PATH}');">
 																											{if $BLOCKINITIALSTATUS[$header] eq 1}
-																												<img id="aid{$header|replace:' ':''}" src="{'activate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;" alt="Hide" title="Hide"/>
+																												<img id="aid{$header|replace:' ':''}" src="{'activate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;" alt="{'LBL_Hide'|@getTranslatedString:'Settings'}" title="{'LBL_Hide'|@getTranslatedString:'Settings'}"/>
 																											{else}
-																												<img id="aid{$header|replace:' ':''}" src="{'inactivate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;" alt="Display" title="Display"/>
+																												<img id="aid{$header|replace:' ':''}" src="{'inactivate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;" alt="{'LBL_Show'|@getTranslatedString:'Settings'}" title="{'LBL_Show'|@getTranslatedString:'Settings'}"/>
 																											{/if}
 																										</a></div><b>&nbsp;
 																										{$header}
@@ -338,6 +327,9 @@ function sendfile_email()
 																						<div style="width:auto;display:none;" id="tbl{$header|replace:' ':''}" >
 																						{/if}
 																							<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small detailview_table">
+																							{if $CUSTOMBLOCKS.$header.custom}
+																								{include file=$CUSTOMBLOCKS.$header.tpl}
+																							{else}
 																								{foreach item=detail from=$detail}
 																									<tr style="height:25px" class="detailview_row">
 																										{foreach key=label item=data from=$detail}
@@ -384,6 +376,7 @@ function sendfile_email()
 																											{/foreach}
 																									</tr>
 																								{/foreach}
+																							{/if}
 																							</table>
 																						</div>
 																					{/if}
@@ -393,15 +386,15 @@ function sendfile_email()
 																	{if $CUSTOM_LINKS && !empty($CUSTOM_LINKS.DETAILVIEWWIDGET)}
 																		{foreach item=CUSTOM_LINK_DETAILVIEWWIDGET from=$CUSTOM_LINKS.DETAILVIEWWIDGET}
 																			{if preg_match("/^block:\/\/.*/", $CUSTOM_LINK_DETAILVIEWWIDGET->linkurl)}
-																			 {if ($smarty.foreach.BLOCKS.first && $CUSTOM_LINK_DETAILVIEWWIDGET->sequence <= 1) 
-																			 	|| ($CUSTOM_LINK_DETAILVIEWWIDGET->sequence == $smarty.foreach.BLOCKS.iteration + 1)
-																			 	|| ($smarty.foreach.BLOCKS.last && $CUSTOM_LINK_DETAILVIEWWIDGET->sequence >= $smarty.foreach.BLOCKS.iteration + 1)}
+																			{if ($smarty.foreach.BLOCKS.first && $CUSTOM_LINK_DETAILVIEWWIDGET->sequence <= 1)
+																				|| ($CUSTOM_LINK_DETAILVIEWWIDGET->sequence == $smarty.foreach.BLOCKS.iteration + 1)
+																				|| ($smarty.foreach.BLOCKS.last && $CUSTOM_LINK_DETAILVIEWWIDGET->sequence >= $smarty.foreach.BLOCKS.iteration + 1)}
 																				<tr>
 																					<td style="padding:5px;" >
 																						{php} echo vtlib_process_widget($this->_tpl_vars['CUSTOM_LINK_DETAILVIEWWIDGET'], $this->_tpl_vars); {/php}
 																					</td>
 																				</tr>
-																			 {/if}
+																			{/if}
 																			{/if}
 																		{/foreach}
 																	{/if}
@@ -699,10 +692,10 @@ function sendfile_email()
 											{/if}
 											<td class="dvtTabCacheBottom" align="right" style="width:100%">
 												&nbsp;
-												{if $EDIT_DUPLICATE eq 'permitted'}
+												{if $EDIT_PERMISSION eq 'yes' }
 													<input title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" class="crmbutton small edit" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.return_id.value='{$ID}';DetailView.module.value='{$MODULE}';submitFormForAction('DetailView','EditView');" type="submit" name="Edit" value="&nbsp;{$APP.LBL_EDIT_BUTTON_LABEL}&nbsp;">&nbsp;
 												{/if}
-												{if $EDIT_DUPLICATE eq 'permitted' && $MODULE neq 'Documents'}
+												{if ((isset($CREATE_PERMISSION) && $CREATE_PERMISSION eq 'permitted') || (isset($EDIT_PERMISSION) && $EDIT_PERMISSION eq 'yes')) && $MODULE neq 'Documents'}
 													<input title="{$APP.LBL_DUPLICATE_BUTTON_TITLE}" accessKey="{$APP.LBL_DUPLICATE_BUTTON_KEY}" class="crmbutton small create" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.isDuplicate.value='true';DetailView.module.value='{$MODULE}'; submitFormForAction('DetailView','EditView');" type="submit" name="Duplicate" value="{$APP.LBL_DUPLICATE_BUTTON_LABEL}">&nbsp;
 												{/if}
 												{if $DELETE eq 'permitted'}
@@ -739,18 +732,15 @@ function sendfile_email()
 
 function getTagCloud()
 {ldelim}
-	var obj = $("tagfields");
+	var obj = document.getElementById("tagfields");
 	if(obj != null && typeof(obj) != undefined) {ldelim}
-		new Ajax.Request(
-		    'index.php',
-			{ldelim}queue: {ldelim}position: 'end', scope: 'command'{rdelim},
-			method: 'post',
-			postBody: 'module={$MODULE}&action={$MODULE}Ajax&file=TagCloud&ajxaction=GETTAGCLOUD&recordid={$ID}',
-			onComplete: function(response) {ldelim}
-                                $("tagfields").innerHTML=response.responseText;
-                                $("txtbox_tagfields").value ='';
-                        {rdelim}
-			{rdelim}
+		jQuery.ajax({ldelim}
+				method:"POST",
+				url:'index.php?module={$MODULE}&action={$MODULE}Ajax&file=TagCloud&ajxaction=GETTAGCLOUD&recordid={$ID}',
+		{rdelim}).done(function(response) {ldelim}
+					jQuery("#tagfields").html(response);
+					jQuery("#txtbox_tagfields").val('');
+		{rdelim}
 		);
 	{rdelim}
 {rdelim}

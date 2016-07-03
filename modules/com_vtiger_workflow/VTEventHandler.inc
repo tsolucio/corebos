@@ -77,14 +77,11 @@ class VTWorkflowEventHandler extends VTEventHandler {
 						$doEvaluate = !($isNew);
 						break;
 					}
-				case VTWorkflowManager::$MANUAL: {
+				case VTWorkflowManager::$MANUAL:
+				case VTWorkflowManager::$ON_SCHEDULE:
+				case VTWorkflowManager::$RECORD_ACCESS_CONTROL:
 						$doEvaluate = false;
 						break;
-					}
-				case VTWorkflowManager::$ON_SCHEDULE:{
-						$doEvaluate = false;
-						break;
-					}
 				default: {
 						throw new Exception("Should never come here! Execution Condition:" . $workflow->executionCondition);
 					}

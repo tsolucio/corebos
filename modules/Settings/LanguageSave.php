@@ -172,6 +172,7 @@ if(isset($langid) && $langid !='' && $pmodule!='' ){
 			$_REQUEST['translate_value'] = array_map("quote_replace", $_REQUEST['translate_value']);
 			foreach($_REQUEST['translate_value'] as $key=>$string){
 				$_key = ($key=='#empty#')?'':$key;
+				if ($string=='') $string = $key;
 				fwrite($fd,"	'$_key' => '".iconv("UTF-8", $langencoding, $string)."',".$line_break);
 			}
 			if(is_array($_REQUEST['translate_list_value'])){
@@ -181,6 +182,7 @@ if(isset($langid) && $langid !='' && $pmodule!='' ){
 						fwrite($fd,"	'$key1' => array(".$line_break);
 						foreach($arr as $key2=>$value){
 							$_key = ($key2=='#empty#')?'':$key2;
+							if ($value=='') $value = $key2;
 							fwrite($fd,"		'$_key' => '".iconv("UTF-8", $langencoding, $value)."',".$line_break);
 						}
 						fwrite($fd,'	),'.$line_break);

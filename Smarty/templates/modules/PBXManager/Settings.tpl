@@ -135,28 +135,24 @@ function setSoftphoneDetails(module){
 	var asterisk_port = document.getElementById("asterisk_port").value;
 	var asterisk_username = document.getElementById("asterisk_username").value;
 	var asterisk_password = document.getElementById("asterisk_password").value;
-	var asterisk_version = $('asterisk_version').value;
+	var asterisk_version = document.getElementById('asterisk_version').value;
 	
 	if(asterisk_port == ""){
 		//port not specified :: so set default
 		asterisk_port = "5038";
 	}
-	$("status").style.display="block";
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody: 'module=PBXManager&action=PBXManagerAjax&file=UpdatePBXDetails&ajax=true&qserver='+asterisk_server_ip+'&qport='+asterisk_port+'&qusername='+asterisk_username+'&qpassword='+asterisk_password+'&semodule='+module+'&version='+asterisk_version,
-			onComplete: function(response) {
-				if((response.responseText != '')){
-					alert(response.responseText);
-				}else{
-					window.history.back();	//successfully saved, so go back
-				}		
-				$("status").style.display="none";
-		    }
-		}
-    );
+	document.getElementById("status").style.display="block";
+	jQuery.ajax({
+		method:"POST",
+		url:'index.php?module=PBXManager&action=PBXManagerAjax&file=UpdatePBXDetails&ajax=true&qserver='+asterisk_server_ip+'&qport='+asterisk_port+'&qusername='+asterisk_username+'&qpassword='+asterisk_password+'&semodule='+module+'&version='+asterisk_version
+	}).done(function(response) {
+			if((response != '')){
+				alert(response);
+			}else{
+				window.history.back();	//successfully saved, so go back
+			}		
+			document.getElementById("status").style.display="none";
+		});
 }
 
 function validatefn1(module){

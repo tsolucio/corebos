@@ -1,19 +1,13 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
 $mod_strings = Array(
-// Mike Crowe Mod --------------------------------------------------------added for general search
 'LBL_GENERAL_INFORMATION'=>'Allgemeine Information',
 
 'LBL_MODULE_NAME'=>'E-Mails',
@@ -57,6 +51,8 @@ $mod_strings = Array(
 'LBL_QUALIFY_BUTTON'=>'Qualifiziere',
 'LBL_REPLY_BUTTON'=>'Antworten',
 'LBL_FORWARD_BUTTON'=>'Weiterleiten',
+'Re' => 'Re',
+'Fwd' => 'Fwd',
 'LBL_DOWNLOAD_ATTCH_BUTTON'=>'Anlagen runterladen',
 'LBL_FROM'=>'Von :',
 'LBL_CC'=>'CC :',
@@ -155,6 +151,7 @@ $mod_strings = Array(
 'LBL_BCC_EMAIL_ERROR'=>'Ihre BCC E-Mail Adresse ist fehlerhaft.',
 'LBL_NO_RCPTS_EMAIL_ERROR'=>'Es wurde kein Adressat eingetragen.',
 'LBL_CONF_MAILSERVER_ERROR'=>'Bitte konfigurieren Sie den Server für rausgehende E-Mails ---> Server Link',
+'LBL_CONF_SERVERSTORAGE_ERROR'=>'The permissions on your storage directory are insufficient, you will not be able to send attachments!',
 'LBL_VTIGER_EMAIL_CLIENT'=>'E-Mail Client',
 'LBL_MAILSELECT_INFO3'=>'Sie haben nicht die Berechtigung, auf die E-Mail Adresse zuzugreifen.',
 //Added  for script alerts

@@ -84,7 +84,31 @@ function deleteWorkflow($wfid) {
 
 echo "<table width=80% align=center border=1>";
 
+$result = $adb->pquery('show columns from com_vtiger_workflowtasks like ?', array('executionorder'));
+if (!($adb->num_rows($result))) {
+	ExecuteQuery('ALTER TABLE com_vtiger_workflowtasks ADD executionorder INT(10)', array());
+	ExecuteQuery('ALTER TABLE `com_vtiger_workflowtasks` ADD INDEX(`executionorder`)');
+}
+
 $force = (isset($_REQUEST['force']) ? 1 : 0);
+
+$cver = vtws_getVtigerVersion();
+if ($cver=='6.4.0' or $force) {
+	putMsg('<h2>** Starting Migration from 6.4 **</h2>');
+	include 'build/migrate6/migrate_from_vt64.php';
+}
+
+$cver = vtws_getVtigerVersion();
+if ($cver=='6.3.0' or $force) {
+	putMsg('<h2>** Starting Migration from 6.3 **</h2>');
+	include 'build/migrate6/migrate_from_vt63.php';
+}
+
+$cver = vtws_getVtigerVersion();
+if ($cver=='6.2.0' or $force) {
+	putMsg('<h2>** Starting Migration from 6.2 **</h2>');
+	include 'build/migrate6/migrate_from_vt62.php';
+}
 
 $cver = vtws_getVtigerVersion();
 if ($cver=='6.1.0' or $force) {
@@ -104,7 +128,6 @@ ExecuteQuery("update vtiger_version set old_version='5.4.0', current_version='5.
 ExecuteQuery("DELETE FROM vtiger_field WHERE tablename = 'vtiger_inventoryproductrel'");
 // Recalculate permissions  RecalculateSharingRules
 RecalculateSharingRules();
-
 
 ?>
 </table>

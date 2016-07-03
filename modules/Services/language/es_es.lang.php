@@ -61,6 +61,7 @@ $mod_strings = Array(
 
 'Commission Rate'=>'Comisión',
 'Unit Price'=>'Precio unitario',
+'Cost Price'=>'Precio de Coste',
 'Price'=>'Precio',
 'No of Units' => 'Número unidades',
 'Service No' => 'Número Servicio',

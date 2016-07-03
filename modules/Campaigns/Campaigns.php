@@ -107,7 +107,6 @@ class Campaigns extends CRMEntity {
 		}
 	}
 
-	// Mike Crowe Mod --------------------------------------------------------Default ordering for us
 	/**
 	 * Function to get Campaign related Accouts
 	 * @param  integer   $id      - campaignid
@@ -497,7 +496,7 @@ class Campaigns extends CRMEntity {
 						" value='". getTranslatedString('LBL_ADD_NEW'). " " . getTranslatedString('LBL_TODO', $related_module) ."'>&nbsp;";
 				}
 				if(getFieldVisibilityPermission('Events',$current_user->id,'parent_id', 'readwrite') == '0') {
-					$button .= "<input title='".getTranslatedString('LBL_NEW'). " ". getTranslatedString('LBL_TODO', $related_module) ."' class='crmbutton small create'" .
+					$button .= "<input title='".getTranslatedString('LBL_NEW'). " ". getTranslatedString('LBL_EVENT', $related_module) ."' class='crmbutton small create'" .
 						" onclick='this.form.action.value=\"EventEditView\";this.form.module.value=\"Calendar4You\";this.form.return_module.value=\"$this_module\";this.form.activity_mode.value=\"Events\";' type='submit' name='button'" .
 						" value='". getTranslatedString('LBL_ADD_NEW'). " " . getTranslatedString('LBL_EVENT', $related_module) ."'>";
 				}
@@ -656,7 +655,9 @@ class Campaigns extends CRMEntity {
 				}
 				$sql = 'INSERT INTO vtiger_campaigncontrel VALUES(?,?,1)';
 				$adb->pquery($sql, array($crmid, $with_crmid));
-
+				if (GlobalVariable::getVariable('Campaign_CreatePotentialOnContactRelation', '0')=='1') {
+					self::createPotentialRelatedTo($with_crmid, $crmid);
+				}
 			} elseif($with_module == 'Accounts') {
 				$checkResult = $adb->pquery('SELECT 1 FROM vtiger_campaignaccountrel WHERE campaignid = ? AND accountid = ?',
 												array($crmid, $with_crmid));
@@ -665,10 +666,63 @@ class Campaigns extends CRMEntity {
 				}
 				$sql = 'INSERT INTO vtiger_campaignaccountrel VALUES(?,?,1)';
 				$adb->pquery($sql, array($crmid, $with_crmid));
-
+				if (GlobalVariable::getVariable('Campaign_CreatePotentialOnAccountRelation', '0')=='1') {
+					self::createPotentialRelatedTo($with_crmid, $crmid);
+				}
 			} else {
 				parent::save_related_module($module, $crmid, $with_module, $with_crmid);
 			}
+		}
+	}
+
+	/* Create potential */
+	public static function createPotentialRelatedTo($relatedto,$campaignid) {
+		global $adb, $current_user;
+		$checkrs = $adb->pquery('select 1
+			from vtiger_potential
+			inner join vtiger_crmentity on crmid=potentialid
+			where deleted=0 and related_to=? and campaignid=?',array($relatedto,$campaignid));
+		if ($adb->num_rows($checkrs)==0) {
+			require_once('modules/Potentials/Potentials.php');
+			$entity = new Potentials();
+			$entity->mode = '';
+			$cname = getEntityName('Campaigns', $campaignid);
+			$cname = $cname[$campaignid].' - ';
+			$setype = getSalesEntityType($relatedto);
+			$rname = getEntityName($setype, $relatedto);
+			$rname = $rname[$relatedto];
+			$cbMapid = GlobalVariable::getVariable('BusinessMapping_PotentialOnCampaignRelation', cbMap::getMapIdByName('PotentialOnCampaignRelation'));
+			if ($cbMapid) {
+				$cmp = CRMEntity::getInstance('Campaigns');
+				$cmp->retrieve_entity_info($campaignid, 'Campaigns');
+				if ($setype=='Accounts') {
+					$cmp->column_fields['AccountName'] = $rname;
+					$cmp->column_fields['ContactName'] = '';
+				} else {
+					$cmp->column_fields['AccountName'] = '';
+					$cmp->column_fields['ContactName'] = $rname;
+				}
+				$cbMap = cbMap::getMapByID($cbMapid);
+				$entity->column_fields = $cbMap->Mapping($cmp->column_fields,array());
+			}
+			if (empty($entity->column_fields['assigned_user_id'])) {
+				$entity->column_fields['assigned_user_id'] = $current_user->id;
+			}
+			$entity->column_fields['related_to'] = $relatedto;
+			$entity->column_fields['campaignid'] = $campaignid;
+			if (empty($entity->column_fields['closingdate'])) {
+				$dt = new DateTimeField();
+				$entity->column_fields['closingdate'] = $dt->getDisplayDate();
+			}
+			if (empty($entity->column_fields['potentialname'])) {
+				$entity->column_fields['potentialname'] = $cname.$rname;
+			}
+			if (empty($entity->column_fields['sales_stage'])) {
+				$entity->column_fields['sales_stage'] = 'Prospecting';
+			}
+			$_REQUEST['assigntype'] = 'U';
+			$_REQUEST['assigned_user_id'] = $entity->column_fields['assigned_user_id'];
+			$entity->save('Potentials');
 		}
 	}
 

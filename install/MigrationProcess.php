@@ -30,7 +30,7 @@ Migration_Utils::copyRequiredFiles($_SESSION['migration_info']['source_directory
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title><?php echo $installationStrings['APP_NAME']. ' - ' . $installationStrings['LBL_CONFIG_WIZARD']. ' - ' . $installationStrings['LBL_MIGRATION']?></title>
-	<script language="javascript" type="text/javascript" src="include/scriptaculous/prototype.js"></script>		
+	<script language="javascript" type="text/javascript" src="include/jquery/jquery.js"></script>
 	<script type="text/javascript" src="include/js/general.js"></script>
 	<link href="themes/softed/style.css" rel="stylesheet" type="text/css">
 	<link href="include/install/install.css" rel="stylesheet" type="text/css">
@@ -38,12 +38,10 @@ Migration_Utils::copyRequiredFiles($_SESSION['migration_info']['source_directory
 
 <?php
 if($_REQUEST['migration_start'] != 'true') {
-?>	
+?>
 	<body class="small cwPageBg" topmargin="0" leftmargin="0" marginheight="0" marginwidth="0">
-	
 		<br>
 		<!-- Table for cfgwiz starts -->
-	
 		<table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
 		<tr>
 			<td class="cwHeadBg" align=left><img src="include/install/images/configwizard.gif" alt="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>" hspace="20" title="<?php echo $installationStrings['LBL_CONFIG_WIZARD']; ?>"></td>
@@ -54,7 +52,6 @@ if($_REQUEST['migration_start'] != 'true') {
 		<table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
 		<tr>
 			<td background="include/install/images/topInnerShadow.gif" colspan=2 align=left><img height="10" src="include/install/images/topInnerShadow.gif" ></td>
-	
 		</tr>
 		</table>
 		<table border=0 cellspacing=0 cellpadding=10 width=80% align=center>
@@ -70,7 +67,7 @@ if($_REQUEST['migration_start'] != 'true') {
 						<tr>
 							<td width=80% valign=top class="cwContentDisplay" align=center colspan=2>
 							<!-- Right side tabs -->
-							    <table cellspacing=0 cellpadding=10 width=95% align=center class='level3'>
+								<table cellspacing=0 cellpadding=10 width=95% align=center class='level3'>
 									<tr>
 										<td align=center>
 											<iframe class='licence' id='triggermigration_iframe' frameborder=0 src='' marginwidth=20 scrolling='auto'>
@@ -83,7 +80,7 @@ if($_REQUEST['migration_start'] != 'true') {
 						<tr>
 							<td width=80% valign=top class="cwContentDisplay" align=center colspan=2>
 							<!-- Right side tabs -->
-							    <table cellspacing=0 cellpadding=10 width=90% align=center class='cwContentDisplay'>
+								<table cellspacing=0 cellpadding=10 width=90% align=center class='cwContentDisplay'>
 									<tr>
 							<td align=left width=50% valign=top ><br>
 							</td>
@@ -91,10 +88,10 @@ if($_REQUEST['migration_start'] != 'true') {
 											<br>
 								<div id='Mig_Close' style='display:none;'>
 									<form action="install.php" method="post" name="form" id="form">
-										<input type="hidden" name="file" value="MigrationComplete.php" />	
-								        <input type="submit" class="button" value="<?php echo $installationStrings['LBL_NEXT']; ?>&nbsp;&#155;&#155;" title="<?php echo $installationStrings['LBL_NEXT']; ?>" />
-							    	</form>
-							    </div>
+										<input type="hidden" name="file" value="MigrationComplete.php" />
+										<input type="submit" class="button" value="<?php echo $installationStrings['LBL_NEXT']; ?>&nbsp;&#155;&#155;" title="<?php echo $installationStrings['LBL_NEXT']; ?>" />
+									</form>
+								</div>
 							</td>
 									</tr>
 								</table>
@@ -106,7 +103,6 @@ if($_REQUEST['migration_start'] != 'true') {
 		</table>
 		<table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
 		<tr>
-	
 			<td background="include/install/images/bottomGradient.gif"><img src="include/install/images/bottomGradient.gif"></td>
 		</tr>
 		</table>
@@ -114,40 +110,37 @@ if($_REQUEST['migration_start'] != 'true') {
 		<tr>
 			<td align=center><img src="include/install/images/bottomShadow.jpg"></td>
 		</tr>
-		</table>	
+		</table>
 		<table border=0 cellspacing=0 cellpadding=0 width=80% align=center>
-	
-	      	<tr>
-	        	<td class=small align=center> <a href="<?php echo $coreBOS_app_url; ?>" target="_blank"><?php echo $coreBOS_app_name; ?></a></td>
-	      	</tr>
-	    </table>
-	    
-	    <script type='text/javascript'>
-	    var auth_key = '<?php echo $auth_key; ?>';
-	    if(typeof('Event') != 'undefined') {
-	    	Event.observe(window, 'load', function() {
-	    		VtigerJS_DialogBox.progress();
-	    		document.getElementById('triggermigration_iframe').src = 'install.php?file=MigrationProcess.php&migration_start=true&auth_key='+auth_key;
-	    	});
-	    }
-	    function Migration_Complete() {
-	    	$('Mig_Close').style.display = 'block';
-	    }
-	    </script>
-	    
-	    <!-- Prefetch image to display later for Screen blocker -->
+			<tr>
+			<td class=small align=center> <a href="<?php echo $coreBOS_app_url; ?>" target="_blank"><?php echo $coreBOS_app_name; ?></a></td>
+			</tr>
+		</table>
+		<script type='text/javascript'>
+		var auth_key = '<?php echo $auth_key; ?>';
+		if(typeof('Event') != 'undefined') {
+			jQuery( window ).on('load', function() {
+				VtigerJS_DialogBox.progress();
+				document.getElementById('triggermigration_iframe').src = 'install.php?file=MigrationProcess.php&migration_start=true&auth_key='+auth_key;
+			});
+		}
+		function Migration_Complete() {
+			document.getElementById('Mig_Close').style.display = 'block';
+		}
+		</script>
+		<!-- Prefetch image to display later for Screen blocker -->
 		<img style="display: none;" src="include/install/images/loading.gif">
-	    <img src="themes/softed/images/layerPopupBg.gif" style="display: none;"/>
-<?php 
+		<img src="themes/softed/images/layerPopupBg.gif" style="display: none;"/>
+<?php
 } else {
-	// Start the migration now	
+	// Start the migration now
 	echo '<body onload="window.parent.VtigerJS_DialogBox.hideprogress();">';
-	
+
 	require_once('include/utils/utils.php');
 	require_once('include/logging.php');
-	$migrationlog = & LoggerManager::getLogger('MIGRATION');	
-	
-	if($_SESSION['authentication_key']==$_REQUEST['auth_key']) {		
+	$migrationlog = & LoggerManager::getLogger('MIGRATION');
+
+	if($_SESSION['authentication_key']==$_REQUEST['auth_key']) {
 		$completed = Migration_Utils::migrate($_SESSION['migration_info']);
 		if ($completed == true) {
 			echo "<script type='text/javascript'>window.parent.Migration_Complete();</script>";
@@ -156,4 +149,4 @@ if($_REQUEST['migration_start'] != 'true') {
 }
 ?>
 	</body>
-</html>	
+</html>

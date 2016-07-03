@@ -116,6 +116,7 @@ $mod_strings = array (
 'LBL_HOME_REPORT_TYPE' => 'Tipo Report',
 'LBL_DEFAULT_WIDGET'=>'Widget Predefiniti',
 'LBL_NO_WIDGETS_HIDDEN'=>'Non ci sono Widget predefiniti nascosti',
+'UpdateExchangeRate' => 'Update Exchange Rate',
 );
 
 ?>

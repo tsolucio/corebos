@@ -36,5 +36,5 @@ if(isset($PERFORMANCE_CONFIG) && isset($PERFORMANCE_CONFIG['LOG4PHP_DEBUG']) && 
 }
 global $logbg;
 if (empty($logbg))
-	$logbg=& LoggerManager::getLogger('BACKGROUND');
+	$logbg= LoggerManager::getLogger('BACKGROUND');
 ?>

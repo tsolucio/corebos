@@ -327,45 +327,36 @@ if($CHAT_DISPLAY == 'true') {
 
 </body>
 </html>
-
-
-<script language="javascript" type="text/javascript" src="include/scriptaculous/prototype.js"></script>
-<script language="javascript" type="text/javascript" src="include/scriptaculous/scriptaculous.js"></script>
 <script>
 function loadDashBoard(oSelect)
 {
-	Effect.Fade("dashChart");
-	var oCombo = $('dashboard_combo');
-	var oCombo1 = $('dashboard_combo1');
+	jQuery("#dashChart").fadeOut();
+	var oCombo = document.getElementById('dashboard_combo');
+	var oCombo1 = document.getElementById('dashboard_combo1');
 	oCombo.selectedIndex = oSelect.selectedIndex;
 	oCombo1.selectedIndex = oSelect.selectedIndex;
 	var type = oSelect.options[oSelect.selectedIndex].value; 
 	if(type != 'DashboardHome')
 		url = 'module=Dashboard&action=DashboardAjax&display_view='+gdash_display_type+'&file=loadDashBoard&type='+type;
-	else	
+	else
 		url = 'module=Dashboard&action=DashboardAjax&file=DashboardHome&display_view='+gdash_display_type;
-	new Ajax.Request(
-		'index.php',
-		{queue: {position: 'end', scope: 'command'},
-			method: 'post',
-			postBody: url,
-			onComplete: function(response)
-			{
-				$("dashChart").innerHTML=response.responseText;
-				$("dashChart").style.display='none';
-				setTimeout('Effect.Appear("dashChart")', 500);
+		jQuery.ajax({
+			method:"POST",
+			url:'index.php?'+ url
+		}).done(function(response) {
+				document.getElementById("dashChart").innerHTML=response;
+				document.getElementById("dashChart").style.display='none';
+				jQuery("#dashChart").fadeIn(500);
 				var dashst = document.getElementById('dash_script');
 				eval(dashst.innerHTML);
-				$("dashTitle_div").innerHTML = oCombo.options[oCombo.selectedIndex].text;
-			}
-		}
-	);	
+				document.getElementById("dashTitle_div").innerHTML = oCombo.options[oCombo.selectedIndex].text;
+		});
 }
 
 function changeView(displaytype)
 {
 	gdash_displaytype = displaytype;
-	var oCombo = $('dashboard_combo');
+	var oCombo = document.getElementById('dashboard_combo');
 	var type = oCombo.options[oCombo.selectedIndex].value; 
 	var currenttime = new Date();
 	var time="&time="+currenttime.getTime();

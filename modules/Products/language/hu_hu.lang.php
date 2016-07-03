@@ -75,6 +75,7 @@ $mod_strings = array(
 	'Commission Rate' => 'Jutalék (%)',
 	'Qty/Unit' => 'db/egység',
 	'Unit Price' => 'Egyedi ár',
+	'Cost Price' => 'Cost Price',
 	'Manufacturer' => 'Gyártó',
 	'Product Category' => 'Termék kategória',
 	'Support Start Date' => 'Támogatás Kezdő Dátum',

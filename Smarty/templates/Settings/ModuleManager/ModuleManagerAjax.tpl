@@ -1,11 +1,19 @@
 <script type="text/javascript">
 {literal}
 function vtlib_modulemanager_toggleTab(shownode, hidenode, highlighttab, dehighlighttab) {
-	if($(shownode)) $(shownode).show();
-	if($(hidenode)) $(hidenode).hide();
-	if($(highlighttab)) { $(highlighttab).addClassName('dvtSelectedCell'); $(highlighttab).removeClassName('dvtUnSelectedCell'); }
-	if($(dehighlighttab)) { $(dehighlighttab).addClassName('dvtUnSelectedCell'); $(dehighlighttab).removeClassName('dvtSelectedCell'); }
-}
+		if (jQuery("#" + shownode))
+			jQuery("#" + shownode).show();
+		if (jQuery("#" + hidenode))
+			jQuery("#" + hidenode).hide();
+		if (jQuery("#" + highlighttab)) {
+			jQuery("#" + highlighttab).addClass('dvtSelectedCell');
+			jQuery("#" + highlighttab).removeClass('dvtUnSelectedCell');
+		}
+		if (jQuery("#" + dehighlighttab)) {
+			jQuery("#" + dehighlighttab).addClass('dvtUnSelectedCell');
+			jQuery("#" + dehighlighttab).removeClass('dvtSelectedCell');
+		}
+	}
 {/literal}
 </script>
 

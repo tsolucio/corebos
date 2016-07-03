@@ -8,7 +8,7 @@
  ********************************************************************************/
 
 function UpdateAjaxSave(label, fid, fldname, fileOrFolder) {
-	fldVal = $('txtbox_' + label).value;
+	fldVal = document.getElementById('txtbox_' + label).value;
 	if (fldVal.replace(/^\s+/g, '').replace(/\s+$/g, '').length == 0) {
 		alert(alert_arr.FOLDERNAME_EMPTY);
 		return false;
@@ -30,42 +30,38 @@ function UpdateAjaxSave(label, fid, fldname, fileOrFolder) {
 		var url = 'action=DocumentsAjax&mode=ajax&file=SaveFolder&module=Documents&record=' + fid + '&foldername=' + fldVal + '&savemode=Save';
 	}
 	if (fldname == 'status') {
-		fldVal = $('txtbox_'+label).options[$('txtbox_' + label).options.selectedIndex].text;
-		gtempselectedIndex = $('txtbox_' + label).options.selectedIndex;
+		fldVal = document.getElementById('txtbox_'+label).options[document.getElementById('txtbox_' + label).options.selectedIndex].text;
+		gtempselectedIndex = document.getElementById('txtbox_' + label).options.selectedIndex;
 	}
-	$('status').style.display = "block";
-	new Ajax.Request('index.php', {
-		queue : {
-			position : 'end',
-			scope : 'command'
-		},
-		method : 'post',
-		postBody : url,
-		onComplete : function(response) {
-			var item = response.responseText;
-			$('status').style.display = "none";
+	document.getElementById('status').style.display = "block";
+	jQuery.ajax({
+			method: 'POST',
+			url: "index.php?"+ url
+	}).done(function (response) {
+			var item = response;
+			document.getElementById('status').style.display = "none";
 			if (item.indexOf("Failure") > -1) {
-				$("lblError").innerHTML = "<table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td class=small bgcolor=red><font color=white size=2><b>" + alert_arr.LBL_UNABLE_TO_UPDATE + "</b></font></td></tr></table>";
+				document.getElementById("lblError").innerHTML = "<table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td class=small bgcolor=red><font color=white size=2><b>" + alert_arr.LBL_UNABLE_TO_UPDATE + "</b></font></td></tr></table>";
 				setTimeout(hidelblError, 3000);
 			} else if (item.indexOf('DUPLICATE_FOLDERNAME') > -1) {
 				alert(alert_arr.DUPLICATE_FOLDER_NAME);
 			} else {
-				$('dtlview_' + label).innerHTML = fldVal;
+				document.getElementById('dtlview_' + label).innerHTML = fldVal;
 				eval("hndCancel('dtlview_" + label + "','editarea_" + label + "','" + label + "')");
 				if (fldname == 'status')
-					$('txtbox_' + label).selectedIndex = gtempselectedIndex;
+					document.getElementById('txtbox_' + label).selectedIndex = gtempselectedIndex;
 				else
-					$('txtbox_' + label).value = fldVal;
+					document.getElementById('txtbox_' + label).value = fldVal;
 				eval(item);
 			}
 		}
-	});
+	);
 }
 
 function closeFolderCreate() {
-	$('folder_id').value = '';
-	$('folder_name').value = '';
-	$('folder_desc').value = '';
+	document.getElementById('folder_id').value = '';
+	document.getElementById('folder_name').value = '';
+	document.getElementById('folder_desc').value = '';
 	fninvsh('orgLay');
 }
 
@@ -106,19 +102,15 @@ function AddFolder() {
 		url = '&savemode=Save&foldername=' + foldername + '&folderdesc=' + folderdesc;
 	}
 	getObj('fldrsave_mode').value = 'save';
-	$('status').style.display = 'block';
-	new Ajax.Request('index.php', {
-		queue : {
-			position : 'end',
-			scope : 'command'
-		},
-		method : 'post',
-		postBody : 'action=DocumentsAjax&mode=ajax&file=SaveFolder&module=Documents' + url,
-		onComplete : function(response) {
-			var item = response.responseText;
-			$('status').style.display = 'none';
+	document.getElementById('status').style.display = 'block';
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?action=DocumentsAjax&mode=ajax&file=SaveFolder&module=Documents' + url
+	}).done(function (response) {
+			var item = response;
+			document.getElementById('status').style.display = 'none';
 			if (item.indexOf('Failure') > -1) {
-				$('lblError').innerHTML = "<table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td class=small bgcolor=red><font color=white size=2><b>" + alert_arr.LBL_UNABLE_TO_ADD_FOLDER + "</b></font></td></tr></table>";
+				document.getElementById('lblError').innerHTML = "<table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td class=small bgcolor=red><font color=white size=2><b>" + alert_arr.LBL_UNABLE_TO_ADD_FOLDER + "</b></font></td></tr></table>";
 				setTimeOutFn();
 			} else if (item.indexOf('DUPLICATE_FOLDERNAME') > -1) {
 				alert(alert_arr.DUPLICATE_FOLDER_NAME);
@@ -126,20 +118,16 @@ function AddFolder() {
 				getObj("ListViewContents").innerHTML = item;
 			}
 		}
-	});
+	);
 }
 
 function DeleteFolderCheck(folderId) {
 	gtempfolderId = folderId;
-	new Ajax.Request('index.php', {
-		queue : {
-			position : 'end',
-			scope : 'command'
-		},
-		method : 'post',
-		postBody : "module=Documents&action=DocumentsAjax&mode=ajax&file=DeleteFolder&deletechk=true&folderid=" + folderId,
-		onComplete : function(response) {
-			var item = response.responseText;
+	jQuery.ajax({
+			method: 'POST',
+			url: "index.php?module=Documents&action=DocumentsAjax&mode=ajax&file=DeleteFolder&deletechk=true&folderid=" + folderId
+	}).done(function (response) {
+			var item = response;
 			if (item.indexOf("NOT_PERMITTED") > -1) {
 				alert(alert_arr.NOT_PERMITTED);
 				return false;
@@ -151,32 +139,28 @@ function DeleteFolderCheck(folderId) {
 				}
 			}
 		}
-	});
+	);
 }
 
 function DeleteFolder(folderId) {
-	$('status').style.display = "block";
-	new Ajax.Request('index.php', {
-		queue : {
-			position : 'end',
-			scope : 'command'
-		},
-		method : 'post',
-		postBody : "module=Documents&action=DocumentsAjax&mode=ajax&file=DeleteFolder&folderid=" + folderId,
-		onComplete : function(response) {
-			var item = response.responseText;
-			$('status').style.display = "none";
+	document.getElementById('status').style.display = "block";
+	jQuery.ajax({
+			method: 'POST',
+			url: "index.php?module=Documents&action=DocumentsAjax&mode=ajax&file=DeleteFolder&folderid=" + folderId
+	}).done(function (response) {
+			var item = response;
+			document.getElementById('status').style.display = "none";
 			if (item.indexOf("FAILURE") > -1)
 				alert(alert_arr.LBL_ERROR_WHILE_DELETING_FOLDER);
 			else
-				$('ListViewContents').innerHTML = item;
+				document.getElementById('ListViewContents').innerHTML = item;
 		}
-	});
+	);
 }
 
 function MoveFile(id, foldername) {
 	fninvsh('movefolderlist');
-	var searchurl = $('search_url').value;
+	var searchurl = document.getElementById('search_url').value;
 	var viewid = getviewId();
 	var idstring = '';
 	var select_options = '';
@@ -188,14 +172,14 @@ function MoveFile(id, foldername) {
 	if (obj) {
 		for (var i = 0; i < obj.length; i++) {
 			var folid = obj[i].value;
-			if ($('selectedboxes_selectall' + folid).value == 'all') {
-				excludedRecords = excludedRecords + $('excludedRecords_selectall' + folid).value;
-				var rows = $('numOfRows_selectall' + folid).value;
+			if (document.getElementById('selectedboxes_selectall' + folid).value == 'all') {
+				excludedRecords = excludedRecords + document.getElementById('excludedRecords_selectall' + folid).value;
+				var rows = document.getElementById('numOfRows_selectall' + folid).value;
 				numOfRows = numOfRows + parseInt(rows);
 				folderid = folid + ';' + folderid;
 				activation = 'true';
 			} else {
-				select_options = select_options + $('selectedboxes_selectall' + folid).value;
+				select_options = select_options + document.getElementById('selectedboxes_selectall' + folid).value;
 			}
 		}
 	}
@@ -243,24 +227,20 @@ function MoveFile(id, foldername) {
 			if (confirm(alert_arr.LBL_ARE_YOU_SURE_TO_MOVE_TO + foldername + alert_arr.LBL_FOLDER)) {
 
 				var url = "&viewname=" + viewid + searchurl + "&excludedRecords=" + excludedRecords + "&folderidstring=" + folderid + "&selectallmode=" + activation;
-				$('status').style.display = "block";
-				new Ajax.Request('index.php', {
-					queue : {
-						position : 'end',
-						scope : 'command'
-					},
-					method : 'post',
-					postBody : 'action=DocumentsAjax&file=MoveFile&from_folderid=0&module=Documents&folderid=' + id + '&idlist=' + idstring + url,
-					onComplete : function(response) {
-						var item = response.responseText;
-						$('status').style.display = "none";
+				document.getElementById('status').style.display = "block";
+				jQuery.ajax({
+					method: 'POST',
+					url: 'index.php?action=DocumentsAjax&file=MoveFile&from_folderid=0&module=Documents&folderid=' + id + '&idlist=' + idstring + url
+				}).done(function (response) {
+						var item = response;
+						document.getElementById('status').style.display = "none";
 						if (item.indexOf("NOT_PERMITTED") > -1) {
-							$("lblError").innerHTML = "<table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td class=small bgcolor=red><font color=white size=2><b>" + alert_arr.NOT_PERMITTED + "</b></font></td></tr></table>";
+							document.getElementById("lblError").innerHTML = "<table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td class=small bgcolor=red><font color=white size=2><b>" + alert_arr.NOT_PERMITTED + "</b></font></td></tr></table>";
 							setTimeout(hidelblError, 3000);
 						} else
 							getObj('ListViewContents').innerHTML = item;
 					}
-				});
+				);
 			} else {
 				return false;
 			}
@@ -275,51 +255,43 @@ function MoveFile(id, foldername) {
 }
 
 function dldCntIncrease(fileid) {
-	new Ajax.Request('index.php', {
-		queue : {
-			position : 'end',
-			scope : 'command'
-		},
-		method : 'post',
-		postBody : 'action=DocumentsAjax&mode=ajax&file=SaveFile&module=Documents&file_id=' + fileid + "&act=updateDldCnt",
-		onComplete : function(response) {
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?action=DocumentsAjax&mode=ajax&file=SaveFile&module=Documents&file_id=' + fileid + "&act=updateDldCnt"
+	}).done(function (response) {
 		}
-	});
+	);
 }
 
 function checkFileIntegrityDetailView(noteid) {
-	$('vtbusy_integrity_info').style.display = '';
-	new Ajax.Request('index.php', {
-		queue : {
-			position : 'end',
-			scope : 'command'
-		},
-		method : 'post',
-		postBody : 'module=Documents&action=DocumentsAjax&mode=ajax&file=SaveFile&act=checkFileIntegrityDetailView&noteid=' + noteid,
-		onComplete : function(response) {
-			var item = response.responseText;
+	document.getElementById('vtbusy_integrity_info').style.display = '';
+	jQuery.ajax({
+			method: 'POST',
+			url: 'index.php?module=Documents&action=DocumentsAjax&mode=ajax&file=SaveFile&act=checkFileIntegrityDetailView&noteid=' + noteid
+	}).done(function (response) {
+			var item = response;
 			if (item.indexOf('file_available') > -1) {
-				$('vtbusy_integrity_info').style.display = 'none';
-				$('integrity_result').innerHTML = '<br><br>&nbsp;&nbsp;&nbsp;<font style=color:green>' + alert_arr.LBL_FILE_CAN_BE_DOWNLOAD + '</font>';
-				$('integrity_result').style.display = '';
+				document.getElementById('vtbusy_integrity_info').style.display = 'none';
+				document.getElementById('integrity_result').innerHTML = '<br><br>&nbsp;&nbsp;&nbsp;<font style=color:green>' + alert_arr.LBL_FILE_CAN_BE_DOWNLOAD + '</font>';
+				document.getElementById('integrity_result').style.display = '';
 				setTimeout(hideresult, 4000);
 			} else if (item.indexOf('file_not_available') > -1) {
-				$('vtbusy_integrity_info').style.display = 'none';
-				$('integrity_result').innerHTML = '<br><br>&nbsp;&nbsp;&nbsp;<font style=color:red>' + alert_arr.LBL_DOCUMENT_NOT_AVAILABLE + '</font>';
-				$('integrity_result').style.display = '';
+				document.getElementById('vtbusy_integrity_info').style.display = 'none';
+				document.getElementById('integrity_result').innerHTML = '<br><br>&nbsp;&nbsp;&nbsp;<font style=color:red>' + alert_arr.LBL_DOCUMENT_NOT_AVAILABLE + '</font>';
+				document.getElementById('integrity_result').style.display = '';
 				setTimeout(hideresult, 6000);
 			} else if (item.indexOf('lost_integrity') > -1) {
-				$('vtbusy_integrity_info').style.display = 'none';
-				$('integrity_result').innerHTML = '<br><br>&nbsp;&nbsp;&nbsp;<font style=color:red>' + alert_arr.LBL_DOCUMENT_LOST_INTEGRITY + '</font>';
-				$('integrity_result').style.display = '';
+				document.getElementById('vtbusy_integrity_info').style.display = 'none';
+				document.getElementById('integrity_result').innerHTML = '<br><br>&nbsp;&nbsp;&nbsp;<font style=color:red>' + alert_arr.LBL_DOCUMENT_LOST_INTEGRITY + '</font>';
+				document.getElementById('integrity_result').style.display = '';
 				setTimeout(hideresult, 6000);
 			}
 		}
-	});
+	);
 }
 
 function hideresult() {
-	$('integrity_result').style.display = 'none';
+	document.getElementById('integrity_result').style.display = 'none';
 }
 
 function add_data_to_relatedlist(entity_id, recordid) {

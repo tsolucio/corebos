@@ -4083,17 +4083,12 @@ $migrationlog->debug("\n\nDB Changes from 4.2.x to 5.0 GA -------- Ends \n\n");
 
 		if(crate != 0 && crate > 0)
 		{
-			new Ajax.Request(
-			'index.php',
-			{queue: {position: 'end', scope: 'command'},
-				method: 'post',
-				postBody: 'module=Migration&action=updateCurrency&ajax=1&crate='+crate,
-				onComplete: function(response)
-					{
-						//alert("Existing Currency values has been converted to base currency");
-					}
-			}
-			);
+			jQuery.ajax({
+				method:"POST",
+				url:'index.php?module=Migration&action=updateCurrency&ajax=1&crate='+crate
+			}).done(function(response) {
+				//alert("Existing Currency values has been converted to base currency");
+			});
 
 			//var ajaxObj = new VtigerAjax(ajaxSaveResponse);
 			//url = 'module=Migration&action=updateCurrency&ajax=1&crate='+crate;

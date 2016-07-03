@@ -213,6 +213,7 @@ $mod_strings = Array(
 'SalesOrder No'=>'Verkooporder Nr',
 
 'Recurring Invoice Information' => 'Periodiek factureren',
+'RecurringInvoice' => 'Periodiek Factureren',
 'Enable Recurring' => 'Activeer periodiek factureren',
 'Frequency' => 'Frequentie',
 'Start Period' => 'Start Periode',
@@ -226,6 +227,11 @@ $mod_strings = Array(
 'Net 45 days' => 'Netto 45 dagen',
 'Net 60 days' => 'Netto 60 dagen',
 
+'half-year'=>'Half Year',
+'2years' => '2 Years',
+'3years' => '3 Years',
+'4years' => '4 Years',
+'5years' => '5 Years',
 
 );
 

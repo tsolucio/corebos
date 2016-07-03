@@ -1,16 +1,11 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-
  ********************************************************************************
 *  Module       : Sales Orders
 *  Language     : Español
@@ -203,6 +198,7 @@ $mod_strings = Array(
 'SalesOrder No'=>'No Pedido',
 
 'Recurring Invoice Information' => 'Información Facturación Recurrente',
+'RecurringInvoice' => 'Facturación Recurrente',
 'Enable Recurring' => 'Habilitar facturación recurrente',
 'Frequency' => 'Frecuencia',
 '--None--'=>'--Ninguna--',
@@ -211,6 +207,11 @@ $mod_strings = Array(
 'Monthly'=>'Mensual',
 'Quarterly'=>'Trimestral',
 'Yearly'=>'Anual',
+'half-year'=>'Semestral',
+'2years' => '2 Años',
+'3years' => '3 Años',
+'4years' => '4 Años',
+'5years' => '5 Años',
 'Start Period' => 'Inicio Periodo',
 'End Period' => 'Final Periodo',
 'Payment Duration' => 'Duración',

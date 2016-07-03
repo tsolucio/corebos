@@ -129,8 +129,14 @@ function getActTypeForCalendar($activitytypeid, $translate = true) {
 	global $adb,$default_charset;
 	$q = 'select * from vtiger_activitytype where activitytypeid = ?';
 	$Res = $adb->pquery($q,array($activitytypeid));
-	$value = $adb->query_result($Res,0,'activitytype');
-	$value = html_entity_decode($value,ENT_QUOTES,$default_charset);
+        if($adb->num_rows($Res)>0){
+        $value = $adb->query_result($Res,0,'activitytype');}
+        else {
+        $q1 = 'select * from vtiger_activitytype order by activitytypeid limit 1';
+	$Res1 = $adb->pquery($q1,array());   
+        $value = $adb->query_result($Res1,0,'activitytype');
+        }
+        $value = html_entity_decode($value,ENT_QUOTES,$default_charset);
 	if ($translate) 
 		return getTranslatedString($value,'Calendar');
 	else
@@ -256,7 +262,9 @@ function getCalendar4YouListQuery($userid, $invites, $where = '', $type='1') {
 	LEFT JOIN vtiger_cntactivityrel
 		ON vtiger_cntactivityrel.activityid = vtiger_activity.activityid
 	LEFT JOIN vtiger_contactdetails
-		ON vtiger_contactdetails.contactid = vtiger_cntactivityrel.contactid
+		ON vtiger_contactdetails.contactid = (select vtiger_cntactivityrel.contactid
+		from vtiger_cntactivityrel
+		where vtiger_cntactivityrel.activityid = vtiger_activity.activityid limit 1)
 	LEFT JOIN vtiger_seactivityrel
 		ON vtiger_seactivityrel.activityid = vtiger_activity.activityid
 	LEFT OUTER JOIN vtiger_activity_reminder
@@ -461,7 +469,7 @@ function transferForAddIntoTitle($type, $row, $CD) {
 		return $Cal_Data[1];
 	else
 //		return "<br><b>".$Cal_Data[0]."</b>: ".$value;
-		return '<table><tr><td><b>'.$Cal_Data[0].':</b></td><td onmouseover="vtlib_listview.trigger(\'cell.onmouseover\', $(this))" onmouseout="vtlib_listview.trigger(\'cell.onmouseout\', $(this))">'.$value.'</td></tr></table>';
+		return '<table><tr><td><b>'.$Cal_Data[0].':</b></td><td onmouseover="vtlib_listview.trigger(\'cell.onmouseover\', this)" onmouseout="vtlib_listview.trigger(\'cell.onmouseout\', this)">'.$value.'</td></tr></table>';
 }
 
 function getEventActivityMode($id) {

@@ -257,6 +257,7 @@ $mod_strings = Array(
 'Monthly'=>'Mensal',
 'Annually'=>'Anual',
 'LBL_SCHEDULE_REPORT'=>'Agendar Relatório',
+'ScheduleReports'=>'Agendar Relatório',
 'LBL_SCHEDULE_FREQUENCY'=>'Frequência',
 'OPTION_SCHEDULE_EMAIL_CHOOSE'=>'Escolher..... ',
 'LBL_SCHEDULE_EMAIL_TIME'=>'Hora',
