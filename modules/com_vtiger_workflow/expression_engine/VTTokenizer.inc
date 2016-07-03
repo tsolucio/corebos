@@ -29,12 +29,12 @@ class VTExpressionTokenizer{
 				"SYMBOL" => array('[a-zA-Z][\w]*', '_vt_processtoken_symbol'),
 				"ESCAPED_SYMBOL" => array('?:`([^`]+)`', '_vt_processtoken_symbol'),
 				//"STRING" => array('?:(?:"((?:\\\\"|[^"])+)"|'."'((?:\\\\'|[^'])+)')", 'stripcslashes'),
-                //"STRING" => array('?:"((?:\\\\"|[^"])+)"', 'stripcslashes'),
-                "STRING" => array("?:'((?:\\\\'|[^'])+)'", 'stripcslashes'),
+				//"STRING" => array('?:"((?:\\\\"|[^"])+)"', 'stripcslashes'),
+				"STRING" => array("?:'((?:\\\\'|[^'])+)'", 'stripcslashes'),
 				"FLOAT" => array('\d+[.]\d+', 'floatval'),
 				"INTEGER" => array('\d+', 'intval'),
 				'OPERATOR' => array('[+]|[-]|[*]|>=|<=|[<]|[>]|==|!=|\/', '_vt_processtoken_symbol'),
-				// NOTE: Any new Operator added should be updated in VTParser.inc::$precedence and operation at VTExpressionEvaluater				
+				// NOTE: Any new Operator added should be updated in VTParser.inc::$precedence and operation at VTExpressionEvaluater
 				'OPEN_BRACKET' => array('[(]', '_vt_processtoken_symbol'),
 				'CLOSE_BRACKET' => array('[)]', '_vt_processtoken_symbol'),
 				'COMMA' => array('[,]', '_vt_processtoken_symbol')
@@ -42,7 +42,6 @@ class VTExpressionTokenizer{
 		$tokenReArr = array();
 		$tokenNames = array();
 		$this->tokenTypes = $tokenTypes;
-			
 		foreach($tokenTypes as $tokenName => $code){
 			list($re, $processtoken) = $code;
 			$tokenReArr[] = '('.$re.')';
@@ -51,7 +50,6 @@ class VTExpressionTokenizer{
 		$this->tokenNames = $tokenNames;
 		$tokenRe = '/'.implode('|', $tokenReArr).'/';
 		$this->EOF = new VTExpressionToken("EOF");
-			
 		$matches = array();
 		$expr = html_entity_decode($expr, ENT_QUOTES, $default_charset);
 		preg_match_all($tokenRe, $expr, $matches, PREG_SET_ORDER);
@@ -90,6 +88,5 @@ class VTExpressionSpaceFilter{
 		return $token;
 	}
 }
-
 
 ?>
