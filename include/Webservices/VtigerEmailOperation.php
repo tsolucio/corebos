@@ -100,15 +100,18 @@ class VtigerEmailOperation extends VtigerModuleOperation {
 		global $adb;
 		$ids = vtws_getIdComponents($id);
 		$elemid = $ids[1];
-		$doc = parent::retrieve($id,$deleted);
+		$data = parent::retrieve($id);
+		if (!Emails::EmailHasBeenSent($elemid)) {
+			$data['date_start'] = '';
+		}
 		// Add relations
 		$relsrs=$adb->pquery("SELECT crmid FROM vtiger_senotesrel where notesid=?",Array($elemid));
 		$rels=array();
 		while ($rl = $adb->fetch_array($relsrs)) {
 			$rels[]=$this->vtyiicpng_getWSEntityId(getSalesEntityType($rl['crmid'])).$rl['crmid'];
 		}
-		$doc['relations']=$rels;
-		return $doc;
+		$data['relations']=$rels;
+		return $data;
 	}
 
 	/*

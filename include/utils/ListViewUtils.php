@@ -856,10 +856,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 							}
 							$value.= '<a href="javascript:;" onClick="ShowEmail(\'' . $entity_id . '\');">' . textlength_check($tmp_value) . '</a>';
 							if ($name == 'Date Sent') {
-								$sql = "select email_flag from vtiger_emaildetails where emailid=?";
-								$result = $adb->pquery($sql, array($entity_id));
-								$email_flag = $adb->query_result($result, 0, "email_flag");
-								if ($email_flag != 'SAVED')
+								if (Emails::EmailHasBeenSent($entity_id))
 									$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, "list", "", $returnset, $oCv->setdefaultviewid);
 								else
 									$value = '';

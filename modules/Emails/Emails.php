@@ -195,6 +195,15 @@ class Emails extends CRMEntity {
 		$log->debug("Exiting from insertIntoAttachment($id,$module) method.");
 	}
 
+	public static function EmailHasBeenSent($emailid) {
+		global $adb;
+		if (strpos($emailid, 'x')>0) list($wsid,$emailid) = explode('x', $emailid);
+		$sql = 'select email_flag from vtiger_emaildetails where emailid=?';
+		$result = $adb->pquery($sql, array($emailid));
+		$email_flag = $adb->query_result($result, 0, 'email_flag');
+		return  ($email_flag != 'SAVED');
+	}
+
 	function saveForwardAttachments($id, $module, $file_details) {
 		global $log;
 		$log->debug("Entering into saveForwardAttachments($id,$module,$file_details) method.");
