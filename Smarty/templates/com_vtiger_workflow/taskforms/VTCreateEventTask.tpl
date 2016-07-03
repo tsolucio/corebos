@@ -204,6 +204,8 @@ var eventType = '{$task->eventType}';
 										<td>
 											<select name="repeatMonth_daytype" class="small">
 												<option value="first" {if $task->repeatMonth_daytype eq "first"}selected{/if}>{$MOD.First}</option>
+												<option value="second" {if $task->repeatMonth_daytype eq "second"}selected{/if}>{$MOD.Second}</option>
+												<option value="third" {if $task->repeatMonth_daytype eq "third"}selected{/if}>{$MOD.Third}</option>
 												<option value="last" {if $task->repeatMonth_daytype eq "last"}selected{/if}>{$MOD.Last}</option>
 											</select>
 										</td>
