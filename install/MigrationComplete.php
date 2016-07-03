@@ -68,7 +68,7 @@ $_SESSION['VTIGER_DB_VERSION']= $vtiger_current_version;
 	<table border=0 cellspacing=0 cellpadding=5 align="center" width="80%" class="contentDisplay">
 		<tr>
 			<td align=center class=small>
-				<b><?php echo $installationStrings['LBL_MIGRATION_FINISHED'].'. '. $coreBOS_app_url. '-' .$vtiger_current_version. ' ' .$installationStrings['LBL_ALL_SET_TO_GO']; ?></b>
+				<b><?php echo $installationStrings['LBL_MIGRATION_FINISHED'].'. '. $coreBOS_app_url. '-' .$coreBOS_app_version. ' ' .$installationStrings['LBL_ALL_SET_TO_GO']; ?></b>
 				<hr noshade size=1>
 				<div style="width:100%;padding:10px;" align=left>
 					<ul>

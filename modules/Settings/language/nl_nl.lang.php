@@ -146,7 +146,7 @@ $mod_strings = Array(
 
 'Time'=>'Tijd',
 
-//added for patch2
+'Relation'=>'Relation',
 'USERGROUPLIST'=>'Groepen',
 'EMAILTEMPLATES'=>'E-mail sjablonen',
 'WORDINTEGRATION'=>'Samenvoegen met sjablonen',

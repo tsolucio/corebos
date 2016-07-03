@@ -238,6 +238,7 @@ $mod_strings = Array(
 'LBL_SHARING_TYPE'=>'Deel Type',
 'LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS'=>'Selecteer Type om toegang tot het rapport te regelen',
 'LBL_ACTION' => 'Actie',
+'ACTION' => 'Actie',
 'LBL_VIEW_DETAILS' => 'Toon Details',
 'LBL_SHOW_STANDARD_FILTERS' => 'Toon Standaard Filters',
 'LBL_YEAR' => 'Jaar',

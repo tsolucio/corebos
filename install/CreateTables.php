@@ -106,7 +106,7 @@ session_destroy();
 												</form>
 												<div class="fixedSmallHeight textCenter fontBold">
 													<div style="padding-top:50px;width:100%;">
-														<?php echo $installationStrings['APP_NAME'].' - '.$vtiger_current_version. ' - ' . $installationStrings['LBL_SUCCESSFULLY_INSTALLED']; ?></b><br /><br />
+														<?php echo $installationStrings['APP_NAME'].' - '.$coreBOS_app_version. ' - ' . $installationStrings['LBL_SUCCESSFULLY_INSTALLED']; ?></b><br /><br />
 														<?php if ($db_populate == 'true') { echo $installationStrings['LBL_DEMO_DATA_IN_PROGRESS'] . '...'; } ?><br /><br />
 														
 														<script type="text/javascript"> 
@@ -131,7 +131,7 @@ session_destroy();
 											</td>
 										</tr>
 									</table>
-									<br>		
+									<br>
 								</td>
 							</tr>
 						</table>

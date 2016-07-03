@@ -115,6 +115,7 @@ $mod_strings = array(
 	'LBL_MULTISELECT_COMBO' => 'Több választásos kombinált doboz',
 	'Skype' => 'Skype',
 	'Time' => 'Idő',
+	'Relation'=>'Relation',
 	'USERGROUPLIST' => 'Csoportok',
 	'EMAILTEMPLATES' => 'E-mail Sablon',
 	'WORDINTEGRATION' => 'Levél Összefésülő Sablon',

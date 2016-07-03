@@ -1068,6 +1068,7 @@ $app_strings = array(
 	'LBL_PLATFORM_INDEPENDENT' => 'Platform Onafhankelijk',
 	'LBL_HIDE' => 'Verberg',
 	'LBL_JUMP_BTN' => 'SPRING',
+	'LBL_JUMP_To'=> 'Jump to',
 	'LBL_ASSIGN_BUTTON_LABEL' => 'Toewijzen Velden',
 	'LBL_MASS_EDIT' => 'Bulk bewerken',
 	'LBL_MASSEDIT_FORM_HEADER' => 'Bulk bewerken - Beschikbare velden',

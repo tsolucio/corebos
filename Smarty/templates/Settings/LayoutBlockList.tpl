@@ -269,15 +269,21 @@ function getCreateCustomFieldForm(modulename,blockid,mode)
    return false;
    var type = document.getElementById("fieldType_"+blockid).value;
    var label = document.getElementById("fldLabel_"+blockid).value;
-   var fldLength = document.getElementById("fldLength_"+blockid).value;  
+   var fldLength = document.getElementById("fldLength_"+blockid).value;
    var fldDecimal = document.getElementById("fldDecimal_"+blockid).value;
    var fldPickList = encodeURIComponent(document.getElementById("fldPickList_"+blockid).value);
+   var selrelationmodules=document.getElementById("fldRelMods_"+blockid).selectedOptions;
+   var relationmodules='';
+   for (var mods=0, mod;mod=selrelationmodules[mods];mods++) {
+     relationmodules=relationmodules+mod.value+';'
+   }
+   var relationmodules=encodeURIComponent(relationmodules);
    VtigerJS_DialogBox.block();
    new Ajax.Request(
 		'index.php',
 		{queue: {position: 'end', scope: 'command'},
 			method: 'post',
-			postBody: 'module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=addCustomField&fld_module='+modulename+'&ajax=true&blockid='+blockid+'&fieldType='+type+'&fldLabel='+label+'&fldLength='+fldLength+'&fldDecimal='+fldDecimal+'&fldPickList='+fldPickList,
+			postBody: 'module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=addCustomField&fld_module='+modulename+'&ajax=true&blockid='+blockid+'&fieldType='+type+'&fldLabel='+label+'&fldLength='+fldLength+'&fldDecimal='+fldDecimal+'&fldPickList='+fldPickList+'&relationmodules='+relationmodules,
 			onComplete: function(response) {
 				VtigerJS_DialogBox.unblock();
 				var str = response.responseText;
@@ -406,7 +412,7 @@ var gselected_fieldtype = '';
 					<td rowspan="2" valign="top" width="50"><img src="{'orgshar.gif'|@vtiger_imageurl:$THEME}" alt="Users" title="Users" border="0" height="48" width="48"></td>
 					<td class="heading2" valign="bottom">
 						<b><a href="index.php?module=Settings&action=ModuleManager&parenttab=Settings">{$MOD.VTLIB_LBL_MODULE_MANAGER}</a> 
-						&gt;<a href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$MODULE}&parenttab=Settings">{if $APP.$MODULE } {$APP.$MODULE} {elseif $MOD.$MODULE} {$MOD.$MODULE} {else} {$MODULE} {/if}</a> &gt; 
+						&gt;<a href="index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$MODULE}&parenttab=Settings">{$MODULE|@getTranslatedString:$MODULE}</a> &gt; 
 						{$MOD.LBL_LAYOUT_EDITOR}</b>
 					</td>
 				</tr>

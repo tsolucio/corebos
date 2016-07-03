@@ -5,13 +5,12 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 
 function splitValues(object) {
 	var picklistObj=object;
-	var pickListContent=picklistObj.value
-	var pickListAry=new Array()
+	var pickListContent=picklistObj.value;
+	var pickListAry=new Array();
 	var i=0;
 
 	//Splitting up of Values
@@ -19,22 +18,20 @@ function splitValues(object) {
 		while(pickListContent.length>0) {
 			if(pickListContent.indexOf("\n")!=-1) {
 				if (pickListContent.replace(/^\s+/g, '').replace(/\s+$/g, '').length>0) {
-					pickListAry[i]=pickListContent.substr(0,pickListContent.indexOf("\n")).replace(/^\s+/g, '').replace(/\s+$/g, '')
-					pickListContent=pickListContent.substr(pickListContent.indexOf("\n")+1,pickListContent.length)
-					i++
+					pickListAry[i]=pickListContent.substr(0,pickListContent.indexOf("\n")).replace(/^\s+/g, '').replace(/\s+$/g, '');
+					pickListContent=pickListContent.substr(pickListContent.indexOf("\n")+1,pickListContent.length);
+					i++;
 				} else break;
 			} else {
-				pickListAry[i]=pickListContent.substr(0,pickListContent.length)
+				pickListAry[i]=pickListContent.substr(0,pickListContent.length);
 				break;
 			}
 		}
 	} else if (pickListContent.replace(/^\s+/g, '').replace(/\s+$/g, '').length>0) {
-		pickListAry[0]=pickListContent.replace(/^\s+/g, '').replace(/\s+$/g, '')
+		pickListAry[0]=pickListContent.replace(/^\s+/g, '').replace(/\s+$/g, '');
 	}
-
 	return pickListAry;
 }
-
 
 function validate(blockid) {
 	var nummaxlength = 255;
@@ -45,46 +42,45 @@ function validate(blockid) {
 		alert(alert_arr.FIELD_TYPE_NOT_SELECTED);
 		return false;
 	}
-	lengthLayer=document.getElementById("lengthdetails_"+blockid)
-	decimalLayer=document.getElementById("decimaldetails_"+blockid)
+	lengthLayer=document.getElementById("lengthdetails_"+blockid);
+	decimalLayer=document.getElementById("decimaldetails_"+blockid);
 	var pickListLayer=document.getElementById("fldPickList_"+blockid);
 	var fldlbl = document.getElementById("fldLabel_"+blockid);
 	var str = fldlbl.value;
 	if (!emptyCheck("fldLabel_"+blockid,"Label","text"))
-		return false
-	var re2=/[&\<\>\:\'\"\,\_]/
+		return false;
+	var re2=/[&\<\>\:\'\"\,\_]/;
 	if (re2.test(str))
 	{
-		alert(alert_arr.SPECIAL_CHARACTERS+" & < > ' \" : , _ "+alert_arr.NOT_ALLOWED)
+		alert(alert_arr.SPECIAL_CHARACTERS+" & < > ' \" : , _ "+alert_arr.NOT_ALLOWED);
 		return false;
 	}
 	var fieldlength = document.getElementById('fldLength_'+blockid);
 	if (lengthLayer != null && lengthLayer.style.visibility=="visible") {
 		if (!emptyCheck('fldLength_'+blockid,"Length"))
-			return false
+			return false;
 
 		if (!intValidate('fldLength_'+blockid,"Length"))
-			return false
+			return false;
 
 		if (!numConstComp('fldLength_'+blockid,"Length","G",0))
-			return false
-
+			return false;
 	}
 
 	if (decimalLayer != null && decimalLayer.style.visibility=="visible") {
 		if (document.getElementById("fldDecimal_"+blockid).value.replace(/^\s+/g, '').replace(/\s+$/g, '').length>0)
 			if (!intValidate("fldDecimal_"+blockid,"Decimal"))
-				return false
+				return false;
 		if (!numConstComp("fldDecimal_"+blockid,"Decimal","GE",0))
-			return false
+			return false;
 
 		if (!numConstComp("fldDecimal_"+blockid,"Decimal","LE",30))
-			return false
+			return false;
 	}
 	var decimallength = '';
 	if (decimalLayer != null && decimalLayer.style.visibility=="visible" && document.getElementById('fldDecimal_'+blockid) != null)
 		decimallength = document.getElementById("fldDecimal_"+blockid).value;
-        
+
 	if(fieldValueArr[fieldtype] == 'Percent' || fieldValueArr[fieldtype] == 'Currency' || fieldValueArr[fieldtype] == 'Number')
 	{
 		if(decimallength == '')
@@ -93,19 +89,19 @@ function validate(blockid) {
 	}
 	var lengthObj = document.getElementById("lengthdetails_"+blockid);
 	if ( lengthObj != null && lengthObj.style.visibility == "visible" && !numConstComp('fldLength_'+blockid,"Length","LE",nummaxlength))
-		return false
-	var picklistObj=document.getElementById("fldPickList_"+blockid)
+		return false;
+	var picklistObj=document.getElementById("fldPickList_"+blockid);
 	if (pickListLayer != null && getObj("picklistdetails_"+blockid).style.visibility=="visible") {
 		var pickListAry=new Array();
 		pickListAry=splitValues(pickListLayer);
-		if (emptyCheck("fldPickList_"+blockid,"Picklist values"))        {
+		if (emptyCheck("fldPickList_"+blockid,"Picklist values")) {
 
 			//Empty Check validation
 			for (i=0;i<pickListAry.length;i++) {
 				if (pickListAry[i]=="") {
 					alert(alert_arr.PICKLIST_CANNOT_BE_EMPTY);
 					picklistObj.focus();
-					return false
+					return false;
 				}
 			}
 
@@ -113,9 +109,9 @@ function validate(blockid) {
 			for (i=0;i<pickListAry.length;i++) {
 				for (j=i+1;j<pickListAry.length;j++) {
 					if (trim(pickListAry[i].toUpperCase())== trim(pickListAry[j].toUpperCase())) {
-						alert(alert_arr.DUPLICATE_VALUES_FOUND)
+						alert(alert_arr.DUPLICATE_VALUES_FOUND);
 						picklistObj.focus();
-						return false
+						return false;
 					}
 				}
 			}
@@ -126,98 +122,107 @@ function validate(blockid) {
 					alert(alert_arr.SPECIAL_CHARACTERS+'"<" ">" "\\" "/"'+alert_arr.NOT_ALLOWED);
 
 					picklistObj.focus();
-					return false
+					return false;
 				}
 			}
 
-			return true
-		} else return false
+			return true;
+		} else return false;
 	}
 	return true;
 }
-var fieldValueArr=new Array('Text','Number','Percent','Currency','Date','Email','Phone','Picklist','URL','Checkbox','TextArea','MultiSelectCombo','Skype','Time');
-var fieldTypeArr=new Array('text','number','percent','currency','date','email','phone','picklist','url','checkbox','textarea','multiselectcombo','skype','time');
+var fieldValueArr=new Array('Text','Number','Percent','Currency','Date','Email','Phone','Picklist','URL','Checkbox','TextArea','MultiSelectCombo','Skype','Time','Relation','Image');
+var fieldTypeArr=new Array('text','number','percent','currency','date','email','phone','picklist','url','checkbox','textarea','multiselectcombo','skype','time','relation','image');
 var currFieldIdx=0,totFieldType;
 var focusFieldType;
 
 /*function init() {
-        lengthLayer=getObj("lengthdetails")
-        decimalLayer=getObj("decimaldetails")
-        pickListLayer=getObj("picklist")
-        totFieldType=fieldTypeArr.length-1
+	lengthLayer=getObj("lengthdetails")
+	decimalLayer=getObj("decimaldetails")
+	pickListLayer=getObj("picklist")
+	totFieldType=fieldTypeArr.length-1
 }*/
-
 
 function setVisible() {
 	if (focusFieldType==true) {
-		var selFieldType=fieldLayer.getObj("field"+currFieldIdx)
-		var height=findPosY(selFieldType)+selFieldType.offsetHeight
+		var selFieldType=fieldLayer.getObj("field"+currFieldIdx);
+		var height=findPosY(selFieldType)+selFieldType.offsetHeight;
 
 		if (currFieldIdx==0) {
-			fieldLayer.document.body.scrollTop=0
+			fieldLayer.document.body.scrollTop=0;
 		} else if (height>220) {
-			fieldLayer.document.body.scrollTop+=height-220
+			fieldLayer.document.body.scrollTop+=height-220;
 		} else {
-			fieldLayer.document.body.scrollTop-=220-height
+			fieldLayer.document.body.scrollTop-=220-height;
 		}
 
 		if (window.navigator.appName.toUpperCase()=="OPERA") {
-			var newDiv=fieldLayer.document.createElement("DIV")
-			newDiv.style.zIndex="-1"
-			newDiv.style.position="absolute"
-			newDiv.style.top=findPosY(selFieldType)+"px"
-			newDiv.style.left="25px"
+			var newDiv=fieldLayer.document.createElement("DIV");
+			newDiv.style.zIndex="-1";
+			newDiv.style.position="absolute";
+			newDiv.style.top=findPosY(selFieldType)+"px";
+			newDiv.style.left="25px";
 
-			var newObj=fieldLayer.document.createElement("INPUT")
-			newObj.type="text"
+			var newObj=fieldLayer.document.createElement("INPUT");
+			newObj.type="text";
 
-			fieldLayer.document.body.appendChild(newDiv)
-			newDiv.appendChild(newObj)
-			newObj.focus()
+			fieldLayer.document.body.appendChild(newDiv);
+			newDiv.appendChild(newObj);
+			newObj.focus();
 
-			fieldLayer.document.body.removeChild(newDiv)
+			fieldLayer.document.body.removeChild(newDiv);
 		}
 	}
 }
 
 function selFieldType(id,scrollLayer,bool,blockid) {
-	currFieldIdx=id
-	var type=fieldTypeArr[id]
+	currFieldIdx=id;
+	var type=fieldTypeArr[id];
 	var lengthLayer=document.getElementById("lengthdetails_"+blockid);
 	var decimalLayer=document.getElementById("decimaldetails_"+blockid);
 	var pickListLayer=document.getElementById("picklistdetails_"+blockid);
+	var relationmodules=document.getElementById("relationmodules_"+blockid);
 	if (type=='text') {
-		lengthLayer.style.visibility="visible"
-		decimalLayer.style.visibility="hidden"
-		pickListLayer.style.visibility="hidden"
-	} else if (type=='date' || type=='percent' || type=='email' || type=='phone' || type=='url' || type=='checkbox' || type=='textarea' || type=='skype' || type=='time') {
-		document.getElementById("lengthdetails_"+blockid).style.visibility="hidden"
-		decimalLayer.style.visibility="hidden"
-		pickListLayer.style.visibility="hidden"
+		lengthLayer.style.display="table-row";
+		decimalLayer.style.display="none";
+		pickListLayer.style.display="none";
+		relationmodules.style.display="none";
+	} else if (type=='date' || type=='percent' || type=='email' || type=='phone' || type=='url' || type=='checkbox' || type=='textarea' || type=='skype' || type=='time' || type=='image') {
+		lengthLayer.style.display="none";
+		decimalLayer.style.display="none";
+		pickListLayer.style.display="none";
+		relationmodules.style.display="none";
 	} else if (type=='number' || type=='currency') {
-		lengthLayer.style.visibility="visible"
-		decimalLayer.style.visibility="visible"
-		pickListLayer.style.visibility="hidden"
+		lengthLayer.style.display="table-row";
+		decimalLayer.style.display="table-row";
+		pickListLayer.style.display="none";
+		relationmodules.style.display="none";
 	} else if (type=='picklist' || type=='multiselectcombo') {
-		lengthLayer.style.visibility="hidden"
-		decimalLayer.style.visibility="hidden"
-		pickListLayer.style.visibility="visible"
+		lengthLayer.style.display="none";
+		decimalLayer.style.display="none";
+		pickListLayer.style.display="table-row";
+		relationmodules.style.display="none";
+	} else if (type=='relation') {
+		lengthLayer.style.display="none";
+		decimalLayer.style.display="none";
+		pickListLayer.style.display="none";
+		relationmodules.style.display="table-row";
 	}
 	document.getElementById("fieldType_"+blockid).value = fieldValueArr[id];
 }
 
 function srchFieldType(ev) {
 	if (browser_ie) {
-		var keyCode=window.fieldLayer.event.keyCode
-		var currElement=window.fieldLayer.event.srcElement
-		if (currElement.id.indexOf("field")>=0) var doSearch=true
-		else var doSearch=false
-		window.fieldLayer.event.cancelBubble=true
+		var keyCode=window.fieldLayer.event.keyCode;
+		var currElement=window.fieldLayer.event.srcElement;
+		if (currElement.id.indexOf("field")>=0) var doSearch=true;
+		else var doSearch=false;
+		window.fieldLayer.event.cancelBubble=true;
 	} else if (browser_nn4 || browser_nn6) {
-		var keyCode=ev.which
-		var currElement=ev.target
-		if (currElement.type) doSearch=false
-		else doSearch=true
+		var keyCode=ev.which;
+		var currElement=ev.target;
+		if (currElement.type) doSearch=false;
+		else doSearch=true;
 	}
 
 	if (doSearch==true) {
@@ -246,28 +251,28 @@ function srchFieldType(ev) {
 					selFieldType(0,"yes");
 			default : //Character Search
 				if (keyCode>=65 && keyCode<=90) {
-					var srchChar=String.fromCharCode(keyCode)
-					if (currFieldIdx==totFieldType) var startIdx=0
-					else var startIdx=currFieldIdx+1
+					var srchChar=String.fromCharCode(keyCode);
+					if (currFieldIdx==totFieldType) var startIdx=0;
+					else var startIdx=currFieldIdx+1;
 
-					var loop=1
+					var loop=1;
 					for (i=startIdx;i<=totFieldType;) {
-						currFieldStr=fieldLayer.getObj("field"+i).innerHTML
-						currFieldStr=currFieldStr.replace(/^\s+/g, '').replace(/\s+$/g, '').substr(0,1)
+						currFieldStr=fieldLayer.getObj("field"+i).innerHTML;
+						currFieldStr=currFieldStr.replace(/^\s+/g, '').replace(/\s+$/g, '').substr(0,1);
 						if (currFieldStr==srchChar) {
-							selFieldType(i,"yes")
-							i++
+							selFieldType(i,"yes");
+							i++;
 						} else if (i==totFieldType && loop<=2) {
-							i=0
-							loop++
-						} else i++
+							i=0;
+							loop++;
+						} else i++;
 					}
 				}
 		}
 	}
 }
 function resetFieldTypeHilite() {
-	fieldLayer.getObj("field"+currFieldIdx).className="fieldType sel"
+	fieldLayer.getObj("field"+currFieldIdx).className="fieldType sel";
 }
 function validateCustomFieldAccounts()
 {
@@ -275,7 +280,7 @@ function validateCustomFieldAccounts()
 	var i,j=0,k=0,l=0;
 	var n=obj.length;
 	account = new Array;
-	contact =  new Array;
+	contact = new Array;
 	potential = new Array;
 	for( i = 0; i < n; i++)
 	{
@@ -327,10 +332,8 @@ function validateCustomFieldAccounts()
 				return false;
 			}
 		}
-
 	}
 }
-
 
 function gotourl(url)
 {
@@ -369,7 +372,6 @@ function validateTypeforCFMapping(leadtype,leadtypeofdata,type,typeofdata,field_
 						{
 							var lead_dec = lead_tod[2].split(",");
 							var dec = tod[2].split(",");
-						
 						}
 						else
 						{
@@ -394,7 +396,7 @@ function validateTypeforCFMapping(leadtype,leadtypeofdata,type,typeofdata,field_
 							return false;
 						}
 						break;
-				}	
+				}
 			}
 		}
 		else
@@ -412,7 +414,7 @@ function cloneAndAddLeadMapping(nodeid,tableid){
 	newTR=document.createElement('tr');
 	newRow=mapBody.appendChild(newTR);
 	newRow.style.visibility="visible";
-	
+
 	snoHTML=document.getElementById("snoDiv").innerHTML;
 	snoHTML=snoHTML.replace(/incId/g,incId);
 	newCell=newRow.appendChild(document.createElement('td'));
@@ -450,7 +452,6 @@ function cloneAndAddLeadMapping(nodeid,tableid){
 	document.getElementById('map['+incId+'][Leads]').focus();
 
 	++incId;
-
 }
 
 function validateMapping(id,chngSelect,field_id){
@@ -479,7 +480,6 @@ function validateMapping(id,chngSelect,field_id){
 						continue;
 					}
 					if(document.getElementById('map['+i+'][Accounts]').options[document.getElementById('map['+i+'][Accounts]').selectedIndex].value==document.getElementById('map['+id+'][Accounts]').options[document.getElementById('map['+id+'][Accounts]').selectedIndex].value){
-	
 						alert(alertmessage[5]);
 						document.getElementById('map['+id+'][Accounts]').value='';
 						return false;

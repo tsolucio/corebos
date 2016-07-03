@@ -44,11 +44,12 @@ if(isset($_REQUEST["record"]) && $_REQUEST["record"]!='')
 	$secondarymodules =Array();
 	if(!empty($oReport->related_modules[$primarymodule])) {
 		foreach($oReport->related_modules[$primarymodule] as $key=>$value){
-			if(isset($_REQUEST["secondarymodule_".$value]))$secondarymodules []= $_REQUEST["secondarymodule_".$value];
-			$oReport->getSecModuleColumnsList($_REQUEST["secondarymodule_".$value]);
-			if(!isPermitted($_REQUEST["secondarymodule_".$value],'index')== "yes" && !isset($_REQUEST["secondarymodule_".$value]))
-			{
-				$permission = false;
+			if (isset($_REQUEST["secondarymodule_".$value])) {
+				$secondarymodules []= $_REQUEST["secondarymodule_".$value];
+				$oReport->getSecModuleColumnsList($_REQUEST["secondarymodule_".$value]);
+				if(!isPermitted($_REQUEST["secondarymodule_".$value],'index')== "yes" && !isset($_REQUEST["secondarymodule_".$value])) {
+					$permission = false;
+				}
 			}
 		}
 	}

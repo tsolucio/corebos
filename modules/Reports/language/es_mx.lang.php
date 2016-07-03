@@ -229,6 +229,7 @@ $mod_strings = Array(
 'LBL_SHARING_TYPE'=>'Compartir',
 'LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS'=>'Selecciona el método de compartir para controlar el acceso al Informe', 
 'LBL_ACTION' => 'Acción',
+'ACTION' => 'Acción',
 'LBL_VIEW_DETAILS' => 'Ver Detalles',
 'LBL_SHOW_STANDARD_FILTERS' => 'Mostrar Filtros Estándar',
 'LBL_YEAR' => 'Año',

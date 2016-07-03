@@ -551,25 +551,6 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 			} else {
 				$entity_id = $adb->query_result($list_result, $i - 1, "id");
 			}
-			// Fredy Klammsteiner, 4.8.2005: changes from 4.0.1 migrated to 4.2
-			// begin: Armando Lüscher 05.07.2005 -> §priority
-			// Code contri buted by fredy Desc: Set Priority color
-			$priority = $adb->query_result($list_result, $i - 1, "priority");
-
-			$font_color_high = "color:#00DD00;";
-			$font_color_medium = "color:#DD00DD;";
-			$P_FONT_COLOR = "";
-			switch ($priority) {
-				case 'High':
-					$P_FONT_COLOR = $font_color_high;
-					break;
-				case 'Medium':
-					$P_FONT_COLOR = $font_color_medium;
-					break;
-				default:
-					$P_FONT_COLOR = "";
-			}
-			//end: Armando Lüscher 05.07.2005 -> §priority
 			foreach ($focus->list_fields as $name => $tableinfo) {
 				$fieldname = $focus->list_fields_name[$name];
 
@@ -662,8 +643,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 										}
 									}
 									if (($contact_name != "") && ($contact_id != 'NULL')) {
-										// Fredy Klammsteiner, 4.8.2005: changes from 4.0.1 migrated to 4.2
-										$value = "<a href='index.php?module=Contacts&action=DetailView&parenttab=" . $tabname . "&record=" . $contact_id . "' style='" . $P_FONT_COLOR . "'>" . textlength_check($contact_name) . "</a>"; // Armando Lüscher 05.07.2005 -> §priority -> Desc: inserted style="$P_FONT_COLOR"
+										$value = "<a href='index.php?module=Contacts&action=DetailView&parenttab=" . $tabname . "&record=" . $contact_id . "'>" . textlength_check($contact_name) . "</a>";
 									}
 								}
 								if ($fieldname == "firstname") {
@@ -695,8 +675,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 											if ($returnset == '') {
 												$returnset = '&return_module=Calendar&return_action=ListView&return_id=' . $activityid . '&return_viewname=' . $oCv->setdefaultviewid;
 											}
-											// Fredy Klammsteiner, 4.8.2005: changes from 4.0.1 migrated to 4.2
-											$value = "<a href='index.php?action=Save&module=Calendar&record=" . $activityid . "&parenttab=" . $tabname . "&change_status=true" . $returnset . $evt_status . "&start=" . $navigation_array['current'] . "' style='" . $P_FONT_COLOR . "'>X</a>"; // Armando Lüscher 05.07.2005 -> §priority -> Desc: inserted style="$P_FONT_COLOR"
+											$value = "<a href='index.php?action=Save&module=Calendar&record=" . $activityid . "&parenttab=" . $tabname . "&change_status=true" . $returnset . $evt_status . "&start=" . $navigation_array['current'] . "'>X</a>";
 										} else {
 											$value = "";
 										}
@@ -810,32 +789,26 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 								$contact_name = getFullNameFromQResult($list_result, $i - 1, "Contacts");
 								$value = "";
 								if (($contact_name != "") && ($contact_id != 'NULL'))
-									$value = "<a href='index.php?module=Contacts&action=DetailView&parenttab=" . $tabname . "&record=" . $contact_id . "' style='" . $P_FONT_COLOR . "'>" . textlength_check($contact_name) . "</a>";
+									$value = "<a href='index.php?module=Contacts&action=DetailView&parenttab=" . $tabname . "&record=" . $contact_id . "'>" . textlength_check($contact_name) . "</a>";
 							}
 						} elseif ($name == 'Product') {
 							$product_id = textlength_check($adb->query_result($list_result, $i - 1, "productname"));
 							$value = $product_id;
 						} elseif ($name == 'Account Name') {
-							//modified for vtiger_customview 27/5
 							if ($module == 'Accounts') {
 								$account_id = $adb->query_result($list_result, $i - 1, "crmid");
-								//$account_name = getAccountName($account_id);
-								$account_name = textlength_check($adb->query_result($list_result, $i - 1, "accountname"));
-								// Fredy Klammsteiner, 4.8.2005: changes from 4.0.1 migrated to 4.2
-								$value = '<a href="index.php?module=Accounts&action=DetailView&record=' . $account_id . '&parenttab=' . $tabname . '" style="' . $P_FONT_COLOR . '">' . $account_name . '</a>'; // Armando Lüscher 05.07.2005 -> §priority -> Desc: inserted style="$P_FONT_COLOR"
+								$account_name = $adb->query_result($list_result, $i - 1, 'accountname');
 							} elseif ($module == 'Potentials' || $module == 'Contacts' || $module == 'Invoice' || $module == 'SalesOrder' || $module == 'Quotes') { //Potential,Contacts,Invoice,SalesOrder & Quotes  records   sort by Account Name
-								$accountname = textlength_check($adb->query_result($list_result, $i - 1, "accountname"));
-								$accountid = $adb->query_result($list_result, $i - 1, "accountid");
-								if (empty($accountname))
-									$accountname = getAccountName($accountid);
-								$value = '<a href="index.php?module=Accounts&action=DetailView&record=' . $accountid . '&parenttab=' . $tabname . '" style="' . $P_FONT_COLOR . '">' . $accountname . '</a>';
+								$account_name = $adb->query_result($list_result, $i - 1, 'accountname');
+								$account_id = $adb->query_result($list_result, $i - 1, "accountid");
 							} else {
 								$account_id = $adb->query_result($list_result, $i - 1, "accountid");
 								$account_name = getAccountName($account_id);
-								$acc_name = textlength_check($account_name);
-								// Fredy Klammsteiner, 4.8.2005: changes from 4.0.1 migrated to 4.2
-								$value = '<a href="index.php?module=Accounts&action=DetailView&record=' . $account_id . '&parenttab=' . $tabname . '" style="' . $P_FONT_COLOR . '">' . $acc_name . '</a>'; // Armando Lüscher 05.07.2005 -> §priority -> Desc: inserted style="$P_FONT_COLOR"
 							}
+							if (empty($account_name))
+								$account_name = getAccountName($account_id);
+							$acc_name = textlength_check($account_name);
+							$value = '<a href="index.php?module=Accounts&action=DetailView&record=' . $account_id . '&parenttab=' . $tabname . '">' . htmlspecialchars($acc_name,ENT_QUOTES,$default_charset) . '</a>';
 						} elseif (( $module == 'HelpDesk' || $module == 'PriceBook' || $module == 'Quotes' || $module == 'PurchaseOrder' || $module == 'Faq') && $name == 'Product Name') {
 							if ($module == 'HelpDesk' || $module == 'Faq')
 								$product_id = $adb->query_result($list_result, $i - 1, "product_id");
@@ -1277,7 +1250,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 			$entity_name = textlength_check(getAccountName($parentid));
 		elseif ($module == 'Products')
 			$entity_name = textlength_check(getProductName($parentid));
-		$value = '<a href="index.php?module=' . $module . '&action=DetailView&record=' . $parentid . '&parenttab=' . $tabname . '" style="' . $P_FONT_COLOR . '">' . $entity_name . '</a>';
+		$value = '<a href="index.php?module=' . $module . '&action=DetailView&record=' . $parentid . '&parenttab=' . $tabname . '">' . $entity_name . '</a>';
 	}
 	elseif ($uitype == 77) {
 		$value = getOwnerName($adb->query_result($list_result, $list_result_count, 'inventorymanager'));

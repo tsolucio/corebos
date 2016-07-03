@@ -1141,7 +1141,7 @@ $app_strings = array(
 'LNK_LIST_NEXT' => 'weiter',
 'LNK_LIST_PREVIOUS' => 'zurück',
 'LBL_JUMP_BTN'=> 'SPRINGE',
-
+'LBL_JUMP_To'=> 'Jump to',
 'LBL_ASSIGN_BUTTON_LABEL'=>'Felder zuordnen',
 
 // Mass Edit Feature

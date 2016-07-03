@@ -476,26 +476,6 @@ function getSearchingListViewEntries($focus, $module,$list_result,$navigation_ar
 			{
 				$entity_id = $adb->query_result($list_result,$i-1,"id");
 			}
-			// Fredy Klammsteiner, 4.8.2005: changes from 4.0.1 migrated to 4.2
-			// begin: Armando Lüscher 05.07.2005 -> §priority
-			// Code contri buted by fredy Desc: Set Priority color
-			$priority = $adb->query_result($list_result,$i-1,"priority");
-
-			$font_color_high = "color:#00DD00;";
-			$font_color_medium = "color:#DD00DD;";
-			$P_FONT_COLOR = "";
-			switch ($priority)
-			{
-				case 'High':
-					$P_FONT_COLOR = $font_color_high;
-					break;
-				case 'Medium':
-					$P_FONT_COLOR = $font_color_medium;
-					break;
-				default:
-					$P_FONT_COLOR = "";
-			}
-			//end: Armando Lüscher 05.07.2005 -> §priority
 			foreach($focus->list_fields as $name=>$tableinfo)
 			{
 				$fieldname = $focus->list_fields_name[$name];
@@ -583,8 +563,7 @@ function getSearchingListViewEntries($focus, $module,$list_result,$navigation_ar
 										$contact_name = getContactName($contact_id);
 									}
 									if(($contact_name != "") && ($contact_id !='NULL')) {
-										// Fredy Klammsteiner, 4.8.2005: changes from 4.0.1 migrated to 4.2
-										$value =  $contact_name; // Armando Lüscher 05.07.2005 -> §priority -> Desc: inserted style="$P_FONT_COLOR"
+										$value =  $contact_name;
 									}
 								}
 								if($fieldname == "firstname") {
@@ -742,8 +721,7 @@ function getSearchingListViewEntries($focus, $module,$list_result,$navigation_ar
 								$account_id = $adb->query_result($list_result,$i-1,"crmid");
 								//$account_name = getAccountName($account_id);
 								$account_name = textlength_check($adb->query_result($list_result,$i-1,"accountname"));
-								// Fredy Klammsteiner, 4.8.2005: changes from 4.0.1 migrated to 4.2
-								$value = $account_name; // Armando Lüscher 05.07.2005 -> §priority -> Desc: inserted style="$P_FONT_COLOR"
+								$value = $account_name;
 							} elseif($module == 'Potentials' || $module == 'Contacts' || $module == 'Invoice' || $module == 'SalesOrder' || $module == 'Quotes') { //Potential,Contacts,Invoice,SalesOrder & Quotes  records   sort by Account Name
 								//$accountname = textlength_check($adb->query_result($list_result,$i-1,"accountname"));
 								$accountid = $adb->query_result($list_result,$i-1,"accountid");
@@ -753,8 +731,7 @@ function getSearchingListViewEntries($focus, $module,$list_result,$navigation_ar
 								$account_id = $adb->query_result($list_result,$i-1,"accountid");
 								$account_name = getAccountName($account_id);
 								$acc_name = textlength_check($account_name);
-								// Fredy Klammsteiner, 4.8.2005: changes from 4.0.1 migrated to 4.2
-								$value = $acc_name; // Armando Lüscher 05.07.2005 -> §priority -> Desc: inserted style="$P_FONT_COLOR"
+								$value = $acc_name;
 							}
 						} elseif(( $module == 'HelpDesk' || $module == 'PriceBook' || $module == 'Quotes' || $module == 'PurchaseOrder' || $module == 'Faq') && $name == 'Product Name') {
 							if($module == 'HelpDesk' || $module == 'Faq')

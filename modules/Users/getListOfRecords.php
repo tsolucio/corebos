@@ -71,8 +71,8 @@ if(!empty($_SESSION[$sModule.'_DetailView_Navigation'.$viewId])){
 }else{
 	$recordList = array();
 }
-$output = '<table width="100%" border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine">
-	<tr><td width="60%" align="left" style="font-size:12px;font-weight:bold;">Jump to '.$app_strings[$sModule].':</td>
+$output = '<table width="100%" border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine"> 
+	<tr><td width="60%" align="left" style="font-size:12px;font-weight:bold;">'.$app_strings['LBL_JUMP_To'].' '.$app_strings[$sModule].':</td>
 	<td width="5%" align="right"><a href="javascript:fninvsh(\'lstRecordLayout\');"><img src="'. vtiger_imageurl('close.gif', $theme).'" border="0" align="absmiddle" /></a></td>
 	</tr>
 	</table><table border=0 cellspacing=0 cellpadding=0 width=100% align=center>
