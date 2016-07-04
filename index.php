@@ -443,7 +443,7 @@ if($use_current_login)
 		coreBOS_Session::destroy();
 		header("Location: index.php?action=Login&module=Users");
 	}
-
+	coreBOS_Session::setUserGlobalSessionVariables();
 	$moduleList = getPermittedModuleNames();
 
 	//auditing

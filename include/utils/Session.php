@@ -84,6 +84,19 @@ class coreBOS_Session {
 	}
 
 	/**
+	 * set global User session variables
+	 */
+	static function setUserGlobalSessionVariables() {
+		if (empty($_SESSION['__UnifiedSearch_SelectedModules__'])) {
+			$appSearchModules = GlobalVariable::getVariable('Application_Global_Search_SelectedModules', '');
+			if (!empty($appSearchModules)) {
+				$selected_modules = explode(',',$appSearchModules);
+				$_SESSION['__UnifiedSearch_SelectedModules__'] = $selected_modules;
+			}
+		}
+	}
+
+	/**
 	 * Is key defined in session?
 	 */
 	static function has($key) {
