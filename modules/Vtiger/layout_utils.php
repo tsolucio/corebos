@@ -92,21 +92,9 @@ if (is_file($image_path.$module.".gif")) {
 $the_title .= "</td><td class='moduleTitle' vAlign='middle' align='left' noWrap width='100%'>&nbsp;";
 $the_title .= $module_title."</td></tr></tbody></table></td>\n";
 $the_title .= "<td width='100%'><IMG height='1' src='themes/images/blank.gif'></td>";
-
-if ($show_help) {
-//	$the_title .= "<td class='bodySmall' nowrap align='right'> <A href='phprint.php?jt=".session_id().$GLOBALS['request_string']."'><img align=absmiddle hspace=3 border=0 src='themes/images/print.gif'>".$app_strings['LNK_PRINT']."</A> &nbsp;</td>\n";
-//	$the_title .= "<td class='bodySmall' nowrap align='right'> <A href='http://www.vtiger.com/products/crm/document.html' target='_blank'><img align=absmiddle hspace=3 border=0 src='themes/images/help_icon.gif'>".$app_strings['LNK_HELP']."</A></td>\n";
-}
-else {
-	$the_title .= "<td class='bodySmall' align='right'>&nbsp;</td>\n";
-	$the_title .= "<td class='bodySmall' align='right'>&nbsp;</td>\n";
-}
-
 $the_title .= "</tr><tr><td colspan='4' width='100%' class='hline'><IMG width='100%' height='1' src='themes/images/blank.gif'></td>";
 $the_title .= "</tr></tbody></table>\n";
-
 return $the_title;
-
 }
 
 /**
