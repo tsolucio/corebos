@@ -12,9 +12,9 @@
 {assign var="fromlink" value=""}
 {foreach key=label item=subdata from=$data}
 	{if $header eq 'Product Details'}
-		<tr name="tbl{$header|replace:' ':''}Content">
+		<tr name="tbl{$header|replace:' ':''}Content" class="createview_field_row">
 	{else}
-		<tr name="tbl{$header|replace:' ':''}Content" style="height:25px">
+		<tr name="tbl{$header|replace:' ':''}Content" style="height:25px" class="createview_field_row">
 	{/if}
 	{foreach key=mainlabel item=maindata from=$subdata}
 		{include file='EditViewUI.tpl'}
