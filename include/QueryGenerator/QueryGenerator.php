@@ -396,7 +396,7 @@ class QueryGenerator {
 		return $this->getQuery();
 	}
 
-	public function getQuery() {
+	public function getQuery($distinct=false) {
 		if(empty($this->query)) {
 			$conditionedReferenceFields = array();
 			$allFields = array_merge($this->whereFields,$this->fields);
@@ -414,7 +414,7 @@ class QueryGenerator {
 				}
 			}
 
-			$query = "SELECT ";
+			$query = 'SELECT '.($distinct ? 'DISTINCT ' : '');
 			$query .= $this->getSelectClauseColumnSQL();
 			$query .= $this->getFromClause();
 			$query .= $this->getWhereClause();
