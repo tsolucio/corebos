@@ -131,7 +131,7 @@
 
 		function getRACRuleForRecord($moduleName,$recordid) {
 			$adb=$this->adb;
-			$not_supported = array('RecycleBin','Users');
+			$not_supported = array('RecycleBin','Users','Home');
 			if (in_array($moduleName, $not_supported)) {
 				return false;
 			}
