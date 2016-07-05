@@ -675,4 +675,11 @@
 	<classname>makeEmailsShareable</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Apply SQL optimizations</description>
+	<filename>build/changeSets/cleanoptimizedatabase_150.php</filename>
+	<classname>cleanoptimizedatabase_150</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
