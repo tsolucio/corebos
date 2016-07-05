@@ -325,14 +325,46 @@ function __cb_getCurrentUserAddress($userid = ''){
 	$from.= empty($fld) ? '':', '.$fld;
 	return $from;
 }
-
+/**
+ * Calculate distance from current user and account billing address
+ * @param Array $arr $arr[0] - accountid,
+ * $arr[1] - Is for specify from wich address field you want to calculate the distance
+ * The next values are accepted
+ * country - this values is needed and we will add in the query always
+ * state - to calculate the distance from the state
+ * city - to calculate the distance from the city
+ * code - to calculate the distnace from the postal code.
+ * And if the $a[1] not exist we always search from all the address fields if they have values.
+ * @return int km distance
+ */
 function __cb_getGEODistanceFromUser2AccountBilling($arr){
 	global $adb,$current_user;
 	$accid = $arr[0];
 	if (empty($accid)) return '0';
 	list($wsid,$accid) = explode('x', $accid);
-	$compAdr = $adb->pquery('Select bill_street,bill_city,bill_state,bill_country,bill_code
-		from vtiger_accountbillads
+	if(isset($arr[1])){
+		$field_address = $arr[1];
+	}else{
+		$field_address = '';
+	}
+	switch ($field_address) {
+		case 'country':
+			$columns = 'bill_country';
+			break;
+		case 'state':
+			$columns = 'bill_country, bill_state';
+			break;
+		case 'city':
+			$columns = 'bill_country, bill_city';
+			break;
+		case 'code':
+			$columns = 'bill_country, bill_code';
+			break;
+		default:
+			$columns = 'bill_street,bill_city,bill_state,bill_country,bill_code';
+			break;
+	}
+	$compAdr = $adb->pquery('Select '.$columns.' from vtiger_accountbillads
 		where accountaddressid=?',array($accid));
 	if ($compAdr and $adb->num_rows($compAdr)>0) {
 		$to = $adb->query_result($compAdr, 0, 'bill_country');
@@ -351,15 +383,47 @@ function __cb_getGEODistanceFromUser2AccountBilling($arr){
 	$array = array($from, $to);
 	return __cb_getGEODistance($array);
 }
-
+/**
+ * Calculate distance from assign user and account billing address
+ * @param Array $arr $arr[0] - accountid,
+ * $arr[1] - Is for specify from wich address field you want to calculate the distance
+ * The next values are accepted
+ * country - this values is needed and we will add in the query always
+ * state - to calculate the distance from the state
+ * city - to calculate the distance from the city
+ * code - to calculate the distnace from the postal code.
+ * And if the $a[1] not exist we always search from all the address fields if they have values.
+ * @return int km distance
+ */
 function __cb_getGEODistanceFromAssignUser2AccountBilling($arr){
 	global $adb,$current_user;
 	$accid = $arr[0];
 	$userid = $arr[1];
 	if (empty($accid)) return '0';
 	list($wsid,$accid) = explode('x', $accid);
-	$compAdr = $adb->pquery('Select bill_street,bill_city,bill_state,bill_country,bill_code
-		from vtiger_accountbillads
+	if(isset($arr[2])){
+		$field_address = $arr[2];
+	}else{
+		$field_address = '';
+	}
+	switch ($field_address) {
+		case 'country':
+			$columns = 'bill_country';
+			break;
+		case 'state':
+			$columns = 'bill_country, bill_state';
+			break;
+		case 'city':
+			$columns = 'bill_country, bill_city';
+			break;
+		case 'code':
+			$columns = 'bill_country, bill_code';
+			break;
+		default:
+			$columns = 'bill_street,bill_city,bill_state,bill_country,bill_code';
+			break;
+	}
+	$compAdr = $adb->pquery('Select '.$columns.' from vtiger_accountbillads
 		where accountaddressid=?',array($accid));
 	if ($compAdr and $adb->num_rows($compAdr)>0) {
 		$to = $adb->query_result($compAdr, 0, 'bill_country');
@@ -378,14 +442,46 @@ function __cb_getGEODistanceFromAssignUser2AccountBilling($arr){
 	$array = array($from, $to);
 	return __cb_getGEODistance($array);
 }
-
+/**
+ * Calculate distance from current user and account shipping address
+ * @param Array $arr $arr[0] - accountid,
+ * $arr[1] - Is for specify from wich address field you want to calculate the distance
+ * The next values are accepted
+ * country - this values is needed and we will add in the query always
+ * state - to calculate the distance from the state
+ * city - to calculate the distance from the city
+ * code - to calculate the distnace from the postal code.
+ * And if the $a[1] not exist we always search from all the address fields if they have values.
+ * @return int km distance
+ */
 function __cb_getGEODistanceFromUser2AccountShipping($arr){
 	global $adb,$current_user;
 	$accid = $arr[0];
 	if (empty($accid)) return '0';
 	list($wsid,$accid) = explode('x', $accid);
-	$compAdr = $adb->pquery('Select ship_street,ship_city,ship_state,ship_country,ship_code
-		from vtiger_accountshipads
+	if(isset($arr[1])){
+		$field_address = $arr[1];
+	}else{
+		$field_address = '';
+	}
+	switch ($field_address) {
+		case 'country':
+			$columns = 'ship_country';
+			break;
+		case 'state':
+			$columns = 'ship_country, ship_state';
+			break;
+		case 'city':
+			$columns = 'ship_country, ship_city';
+			break;
+		case 'code':
+			$columns = 'ship_country, ship_code';
+			break;
+		default:
+			$columns = 'ship_street,ship_city,ship_state,ship_country,ship_code';
+			break;
+	}
+	$compAdr = $adb->pquery('Select '.$columns.' from vtiger_accountshipads
 		where accountaddressid=?',array($accid));
 	if ($compAdr and $adb->num_rows($compAdr)>0) {
 		$to = $adb->query_result($compAdr, 0, 'ship_country');
@@ -404,15 +500,47 @@ function __cb_getGEODistanceFromUser2AccountShipping($arr){
 	$array = array($from, $to);
 	return __cb_getGEODistance($array);
 }
-
+/**
+ * Calculate distance from assign user and account shipping address
+ * @param Array $arr $arr[0] - accountid,
+ * $arr[1] - Is for specify from wich address field you want to calculate the distance
+ * The next values are accepted
+ * country - this values is needed and we will add in the query always
+ * state - to calculate the distance from the state
+ * city - to calculate the distance from the city
+ * code - to calculate the distnace from the postal code.
+ * And if the $a[1] not exist we always search from all the address fields if they have values.
+ * @return int km distance
+ */
 function __cb_getGEODistanceFromAssignUser2AccountShipping($arr){
 	global $adb,$current_user;
 	$accid = $arr[0];
 	$userid = $arr[1];
 	if (empty($accid)) return '0';
 	list($wsid,$accid) = explode('x', $accid);
-	$compAdr = $adb->pquery('Select ship_street,ship_city,ship_state,ship_country,ship_code
-		from vtiger_accountshipads
+	if(isset($arr[2])){
+		$field_address = $arr[2];
+	}else{
+		$field_address = '';
+	}
+	switch ($field_address) {
+		case 'country':
+			$columns = 'ship_country';
+			break;
+		case 'state':
+			$columns = 'ship_country, ship_state';
+			break;
+		case 'city':
+			$columns = 'ship_country, ship_city';
+			break;
+		case 'code':
+			$columns = 'ship_country, ship_code';
+			break;
+		default:
+			$columns = 'ship_street,ship_city,ship_state,ship_country,ship_code';
+			break;
+	}
+	$compAdr = $adb->pquery('Select '.$columns.' from vtiger_accountshipads
 		where accountaddressid=?',array($accid));
 	if ($compAdr and $adb->num_rows($compAdr)>0) {
 		$to = $adb->query_result($compAdr, 0, 'ship_country');
@@ -431,14 +559,46 @@ function __cb_getGEODistanceFromAssignUser2AccountShipping($arr){
 	$array = array($from, $to);
 	return __cb_getGEODistance($array);
 }
-
+/**
+ * Calculate distance from current user and contact billing address
+ * @param Array $arr $arr[0] - contactid,
+ * $arr[1] - Is for specify from wich address field you want to calculate the distance
+ * The next values are accepted
+ * country - this values is needed and we will add in the query always
+ * state - to calculate the distance from the state
+ * city - to calculate the distance from the city
+ * code - to calculate the distnace from the postal code.
+ * And if the $a[1] not exist we always search from all the address fields if they have values.
+ * @return int km distance
+ */
 function __cb_getGEODistanceFromUser2ContactBilling($arr){
 	global $adb,$current_user;
 	$ctoid = $arr[0];
 	if (empty($ctoid)) return '0';
 	list($wsid,$ctoid) = explode('x', $ctoid);
-	$compAdr = $adb->pquery('Select mailingstreet,mailingcity,mailingstate,mailingcountry,mailingzip
-		from vtiger_contactaddress
+	if(isset($arr[1])){
+		$field_address = $arr[1];
+	}else{
+		$field_address = '';
+	}
+	switch ($field_address) {
+		case 'country':
+			$columns = 'mailingcountry';
+			break;
+		case 'state':
+			$columns = 'mailingcountry, mailingstate';
+			break;
+		case 'city':
+			$columns = 'mailingcountry, mailingcity';
+			break;
+		case 'code':
+			$columns = 'mailingcountry, mailingzip';
+			break;
+		default:
+			$columns = 'mailingstreet,mailingcity,mailingstate,mailingcountry,mailingzip';
+			break;
+	}
+	$compAdr = $adb->pquery('Select '.$columns.' from vtiger_contactaddress
 		where contactaddressid=?',array($ctoid));
 	if ($compAdr and $adb->num_rows($compAdr)>0) {
 		$to = $adb->query_result($compAdr, 0, 'mailingcountry');
@@ -457,15 +617,47 @@ function __cb_getGEODistanceFromUser2ContactBilling($arr){
 	$array = array($from, $to);
 	return __cb_getGEODistance($array);
 }
-
+/**
+ * Calculate distance from assign user and contact billing address
+ * @param Array $arr $arr[0] - contactid,
+ * $arr[1] - Is for specify from wich address field you want to calculate the distance
+ * The next values are accepted
+ * country - this values is needed and we will add in the query always
+ * state - to calculate the distance from the state
+ * city - to calculate the distance from the city
+ * code - to calculate the distnace from the postal code.
+ * And if the $a[1] not exist we always search from all the address fields if they have values.
+ * @return int km distance
+ */
 function __cb_getGEODistanceFromAssignUser2ContactBilling($arr){
 	global $adb,$current_user;
 	$ctoid = $arr[0];
 	$userid = $arr[1];
 	if (empty($ctoid)) return '0';
 	list($wsid,$ctoid) = explode('x', $ctoid);
-	$compAdr = $adb->pquery('Select mailingstreet,mailingcity,mailingstate,mailingcountry,mailingzip
-		from vtiger_contactaddress
+	if(isset($arr[2])){
+		$field_address = $arr[2];
+	}else{
+		$field_address = '';
+	}
+	switch ($field_address) {
+		case 'country':
+			$columns = 'mailingcountry';
+			break;
+		case 'state':
+			$columns = 'mailingcountry, mailingstate';
+			break;
+		case 'city':
+			$columns = 'mailingcountry, mailingcity';
+			break;
+		case 'code':
+			$columns = 'mailingcountry, mailingzip';
+			break;
+		default:
+			$columns = 'mailingstreet,mailingcity,mailingstate,mailingcountry,mailingzip';
+			break;
+	}
+	$compAdr = $adb->pquery('Select '.$columns.' from vtiger_contactaddress
 		where contactaddressid=?',array($ctoid));
 	if ($compAdr and $adb->num_rows($compAdr)>0) {
 		$to = $adb->query_result($compAdr, 0, 'mailingcountry');
@@ -484,15 +676,47 @@ function __cb_getGEODistanceFromAssignUser2ContactBilling($arr){
 	$array = array($from, $to);
 	return __cb_getGEODistance($array);
 }
-
+/**
+ * Calculate distance from current user and contact shipping address
+ * @param Array $arr $arr[0] - contactid,
+ * $arr[1] - Is for specify from wich address field you want to calculate the distance
+ * The next values are accepted
+ * country - this values is needed and we will add in the query always
+ * state - to calculate the distance from the state
+ * city - to calculate the distance from the city
+ * code - to calculate the distnace from the postal code.
+ * And if the $a[1] not exist we always search from all the address fields if they have values.
+ * @return int km distance
+ */
 function __cb_getGEODistanceFromUser2ContactShipping($arr){
 	global $adb,$current_user;
 	$ctoid = $arr[0];
 	if (empty($ctoid)) return '0';
 	list($wsid,$ctoid) = explode('x', $ctoid);
-	$compAdr = $adb->pquery('Select otherstreet,othercity,otherstate,othercountry,otherzip
-		from vtiger_contactaddress
-		where accountaddressid=?',array($ctoid));
+	if(isset($arr[1])){
+		$field_address = $arr[1];
+	}else{
+		$field_address = '';
+	}
+	switch ($field_address) {
+		case 'country':
+			$columns = 'othercountry';
+			break;
+		case 'state':
+			$columns = 'othercountry, otherstate';
+			break;
+		case 'city':
+			$columns = 'othercountry, othercity';
+			break;
+		case 'code':
+			$columns = 'othercountry, otherzip';
+			break;
+		default:
+			$columns = 'otherstreet,othercity,otherstate,othercountry,otherzip';
+			break;
+	}
+	$compAdr = $adb->pquery('Select '.$columns.' from vtiger_contactaddress
+		where contactaddressid=?',array($ctoid));
 	if ($compAdr and $adb->num_rows($compAdr)>0) {
 		$to = $adb->query_result($compAdr, 0, 'othercountry');
 		$fld = $adb->query_result($compAdr, 0, 'otherstate');
@@ -506,20 +730,53 @@ function __cb_getGEODistanceFromUser2ContactShipping($arr){
 	} else {
 		return '0';
 	}
+
 	$from = __cb_getCurrentUserAddress();
 	$array = array($from, $to);
 	return __cb_getGEODistance($array);
 }
-
+/**
+ * Calculate distance from assign user and contact shipping address
+ * @param Array $arr $arr[0] - contactid,
+ * $arr[1] - Is for specify from wich address field you want to calculate the distance
+ * The next values are accepted
+ * country - this values is needed and we will add in the query always
+ * state - to calculate the distance from the state
+ * city - to calculate the distance from the city
+ * code - to calculate the distnace from the postal code.
+ * And if the $a[1] not exist we always search from all the address fields if they have values.
+ * @return int km distance
+ */
 function __cb_getGEODistanceFromAssignUser2ContactShipping($arr){
 	global $adb,$current_user;
 	$ctoid = $arr[0];
 	$userid = $arr[1];
 	if (empty($ctoid)) return '0';
 	list($wsid,$ctoid) = explode('x', $ctoid);
-	$compAdr = $adb->pquery('Select otherstreet,othercity,otherstate,othercountry,otherzip
-		from vtiger_contactaddress
-		where accountaddressid=?',array($ctoid));
+	if(isset($arr[2])){
+		$field_address = $arr[2];
+	}else{
+		$field_address = '';
+	}
+	switch ($field_address) {
+		case 'country':
+			$columns = 'othercountry';
+			break;
+		case 'state':
+			$columns = 'othercountry, otherstate';
+			break;
+		case 'city':
+			$columns = 'othercountry, othercity';
+			break;
+		case 'code':
+			$columns = 'othercountry, otherzip';
+			break;
+		default:
+			$columns = 'otherstreet,othercity,otherstate,othercountry,otherzip';
+			break;
+	}
+	$compAdr = $adb->pquery('Select '.$columns.' from vtiger_contactaddress
+		where contactaddressid=?',array($ctoid));
 	if ($compAdr and $adb->num_rows($compAdr)>0) {
 		$to = $adb->query_result($compAdr, 0, 'othercountry');
 		$fld = $adb->query_result($compAdr, 0, 'otherstate');
@@ -596,8 +853,8 @@ class VTFieldExpressionEvaluater{
 				'getGEODistanceFromAssignUser2AccountShipping' => '__cb_getGEODistanceFromAssignUser2AccountShipping',
 				'getGEODistanceFromUser2ContactBilling' => '__cb_getGEODistanceFromUser2ContactBilling',
 				'getGEODistanceFromAssignUser2ContactBilling' => '__cb_getGEODistanceFromAssignUser2ContactBilling',
-				'getGEODistanceFromUser2ContacttShipping' => '__cb_getGEODistanceFromUser2ContacttShipping',
-				'getGEODistanceFromAssignUser2ContacttShipping' => '__cb_getGEODistanceFromAssignUser2ContacttShipping',
+				'getGEODistanceFromUser2ContactShipping' => '__cb_getGEODistanceFromUser2ContactShipping',
+				'getGEODistanceFromAssignUser2ContactShipping' => '__cb_getGEODistanceFromAssignUser2ContactShipping',
 				'getGEODistanceFromCoordinates' => '__cb_getGEODistanceFromCoordinates'
 		);
 
@@ -636,11 +893,13 @@ class VTFieldExpressionEvaluater{
 				$func = $this->operations[$op->value];
 				if (substr($func, 0, 28)=='__cb_getGEODistanceFromUser2' || substr($func, 0, 33)=='__cb_getGEODistanceFromAssignUser') {
 					$relto = $expr->getParams();
-					$relto0 = $relto[0];
-					$params = array($this->env($relto0,true));
-					if(isset($relto[1])){
-						$relto1 = $relto[1];
-						$params[1] = $this->env($relto1,true);
+					$params = array();
+					foreach ($relto as $key => $value) {
+						if(is_object($value)){
+							array_push($params,$this->env($value,true));
+						}else{
+							array_push($params,$value);
+						}
 					}
 				} else {
 					$params = array_map(array($this, 'exec'), $expr->getParams());
