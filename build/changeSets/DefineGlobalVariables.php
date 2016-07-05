@@ -41,6 +41,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Calendar_Default_Reminder_Minutes',
 				'Calendar_Slot_Minutes',
 				'Calendar_Show_Inactive_Users',
+				'Calendar_Show_Group_Events',
 				'calendar_call_default_duration',
 				'calendar_other_default_duration',
 				'calendar_sort_users_by',
