@@ -60,6 +60,8 @@
 	{else}
 	<tr><td width="20%" align="right" valign="top"><b>{$MOD.LBL_FROM}</b></td><td width="2%" align="left">&nbsp;</td><td align="left">{$TO_MAIL}&nbsp;</td></tr>
 	{/if}
+	<tr><td width="20%" align="right" valign="top"><b>{$MOD.LBL_DATE}</b></td><td width="2%" align="left">&nbsp;</td><td align="left">{$DATE_START}&nbsp;</td></tr>
+	<tr><td width="20%" align="right" valign="top"><b>{$MOD.LBL_TIME}</b></td><td width="2%" align="left">&nbsp;</td><td align="left">{$TIME_START}&nbsp;</td></tr>
 	<tr><td align="right"><b>{$MOD.LBL_SUBJECT}</b></td><td align="left">&nbsp;</td><td align="left">{$elements.value}&nbsp;</td></tr>
 			<tr><td align="right" style="border-bottom:1px solid #666666;" colspan="3">&nbsp;</td></tr>
 		</table>
