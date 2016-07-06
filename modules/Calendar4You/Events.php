@@ -139,8 +139,11 @@ if (count($Load_Task_Status) > 0) {
 		array_push($Task_Status, $taskstatus);
 	}
 }
+$showGroupEvents = GlobalVariable::getVariable('Calendar_Show_Group_Events',1);
 $modtab = array_flip($tasklabel);
 foreach($Users_Ids AS $userid) {
+	if (!$userid) continue;
+	if ($showGroupEvents) $groups = fetchUserGroupids($userid);
 	foreach($Type_Ids AS $activitytypeid) {
 		$allDay = true;
 		$list_array = array();
@@ -228,9 +231,12 @@ foreach($Users_Ids AS $userid) {
 				$list_query .= " AND vtiger_activity.due_date >= '".$start_date."'";
 			}
 			if (!$invites) {
-				$list_query .= " AND vtiger_crmentity.smownerid = ?";
-				$list_query .= " AND vtiger_activity.activitytype = ?";
-				$list_array = array($userid,$activitytype);
+				if ($showGroupEvents and $groups != '')
+					$list_query.= ' AND vtiger_crmentity.smownerid IN (' . $userid . ',' . $groups . ')';
+				else
+					$list_query.= " AND vtiger_crmentity.smownerid = '" . $userid . "'";
+				$list_query .= ' AND vtiger_activity.activitytype = ?';
+				$list_array = array($activitytype);
 			}
 			if (count($Event_Status) > 0) {
 				$list_query .= " AND (vtiger_activity.eventstatus NOT IN (" . generateQuestionMarks($Event_Status) . ") OR vtiger_activity.eventstatus IS NULL)";

@@ -1,0 +1,90 @@
+<?php
+/*************************************************************************************************
+ * Copyright 2016 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
+ * file except in compliance with the License. You can redistribute it and/or modify it
+ * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
+ * granted by the License. coreBOS distributed by JPL TSolucio S.L. is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. Unless required by
+ * applicable law or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT ANY WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language governing
+ * permissions and limitations under the License. You may obtain a copy of the License
+ * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
+ *************************************************************************************************
+* Allows a webservice client to retrieve the information of the image attachments associated to a product
+* Which can then be used with the build/HelperScripts/getImageData.php script to obtain the image
+* params:
+*   id: webservice product id
+* returns json string:
+*   results: number of images available
+*   images: array
+*     name: image name
+*     path: image path in application
+*     fullpath: image absolute path
+*     type: image mime type
+*     id: image id
+ *************************************************************************************************/
+
+function cbws_getproductimageinfo($id, $user){
+	global $log,$adb,$site_URL;
+	$log->debug("Entering function cbws_getproductimageinfo($id)");
+
+	$webserviceObject = VtigerWebserviceObject::fromId($adb,$id);
+	$handlerPath = $webserviceObject->getHandlerPath();
+	$handlerClass = $webserviceObject->getHandlerClass();
+
+	require_once $handlerPath;
+
+	$handler = new $handlerClass($webserviceObject,$user,$adb,$log);
+	$meta = $handler->getMeta();
+	$entityName = $meta->getObjectEntityName($id);
+	if($entityName!='Products'){
+		throw new WebServiceException(WebServiceErrorCode::$INVALIDID,"Entity ID must be a product");
+	}
+	$types = vtws_listtypes(null, $user);
+	if(!in_array($entityName,$types['types'])){
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to perform the operation is denied");
+	}
+	if($meta->hasReadAccess()!==true){
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to read entity is denied");
+	}
+	if($entityName !== $webserviceObject->getEntityName()){
+		throw new WebServiceException(WebServiceErrorCode::$INVALIDID,"Id specified is incorrect");
+	}
+	if(!$meta->hasPermission(EntityMeta::$RETRIEVE,$id)){
+		throw new WebServiceException(WebServiceErrorCode::$ACCESSDENIED,"Permission to read given object is denied");
+	}
+	$idComponents = vtws_getIdComponents($id);
+	if(!$meta->exists($idComponents[1])){
+		throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND,"Record you are trying to access is not found");
+	}
+
+	$ids = vtws_getIdComponents($id);
+	$pdoid = $ids[1];
+	$rdo = array();
+	$query = 'select vtiger_attachments.name, vtiger_attachments.type, vtiger_attachments.attachmentsid, vtiger_attachments.path
+			 from vtiger_attachments
+			 inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
+			 inner join vtiger_seattachmentsrel on vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid
+			 where vtiger_crmentity.setype="Products Image" and deleted=0 and vtiger_seattachmentsrel.crmid=?';
+	$result_image = $adb->pquery($query, array($pdoid));
+	$rdo['results']=$adb->num_rows($result_image);
+	$rdo['images']=array();
+	while ($img = $adb->fetch_array($result_image)) {
+		$imga = array();
+		$imga['name'] = $img['name'];
+		$imga['path'] = $img['path'];
+		$imga['fullpath'] = $site_URL.'/'.$img['path'].$img['attachmentsid'].'_'.$img['name'];
+		$imga['type'] = $img['type'];
+		$imga['id'] = $img['attachmentsid'];
+		$rdo['images'][] = $imga;
+	}
+
+	VTWS_PreserveGlobal::flush();
+	$log->debug("Leaving function cbws_getproductimageinfo");
+	return $rdo;
+}
+
+?>

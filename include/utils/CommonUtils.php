@@ -461,9 +461,9 @@ function getTabOwnedBy($module) {
 }
 
 /**
- * Function to get the tabid
- * Takes the input as $module - module name
- * returns the tabid, integer type
+ * Function to get the module name/type of a given crmid
+ * @param interger $crmid  CRMID of the record we want to know the type
+ * @return string module name of the crmid record
  */
 function getSalesEntityType($crmid) {
 	global $log, $adb;

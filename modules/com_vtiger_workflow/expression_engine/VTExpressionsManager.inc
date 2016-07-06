@@ -47,14 +47,14 @@ class VTExpressionsManager{
 			'getGEODistance' => 'getGEODistance(address_from,address_to)',
 			'getGEODistanceFromCompanyAddress' => 'getGEODistanceFromCompanyAddress(address)',
 			'getGEODistanceFromUserAddress' => 'getGEODistanceFromUserAddress(address)',
-			'getGEODistanceFromUser2AccountBilling' => 'getGEODistanceFromUser2AccountBilling(account)',
-			'getGEODistanceFromAssignUser2AccountBilling' => 'getGEODistanceFromAssignUser2AccountBilling(account,assigned_user)',
-			'getGEODistanceFromUser2AccountShipping' => 'getGEODistanceFromUser2AccountShipping(account)',
-			'getGEODistanceFromAssignUser2AccountShipping' => 'getGEODistanceFromAssignUser2AccountShipping(account,assigned_user)',
-			'getGEODistanceFromUser2ContactBilling' => 'getGEODistanceFromUser2ContactBilling(contact)',
-			'getGEODistanceFromAssignUser2ContactBilling' => 'getGEODistanceFromAssignUser2ContactBilling(contact,assigned_user)',
-			'getGEODistanceFromUser2ContacttShipping' => 'getGEODistanceFromUser2ContacttShipping(contact)',
-			'getGEODistanceFromAssignUser2ContacttShipping' => 'getGEODistanceFromAssignUser2ContacttShipping(contact,assigned_user)',
+			'getGEODistanceFromUser2AccountBilling' => 'getGEODistanceFromUser2AccountBilling(account,address_specification)',
+			'getGEODistanceFromAssignUser2AccountBilling' => 'getGEODistanceFromAssignUser2AccountBilling(account,assigned_user,address_specification)',
+			'getGEODistanceFromUser2AccountShipping' => 'getGEODistanceFromUser2AccountShipping(account,address_specification)',
+			'getGEODistanceFromAssignUser2AccountShipping' => 'getGEODistanceFromAssignUser2AccountShipping(account,assigned_user,address_specification)',
+			'getGEODistanceFromUser2ContactBilling' => 'getGEODistanceFromUser2ContactBilling(contact,address_specification)',
+			'getGEODistanceFromAssignUser2ContactBilling' => 'getGEODistanceFromAssignUser2ContactBilling(contact,assigned_user,address_specification)',
+			'getGEODistanceFromUser2ContactShipping' => 'getGEODistanceFromUser2ContactShipping(contact,address_specification)',
+			'getGEODistanceFromAssignUser2ContactShipping' => 'getGEODistanceFromAssignUser2ContactShipping(contact,assigned_user,address_specification)',
 			'getGEODistanceFromCoordinates' => 'getGEODistanceFromCoordinates({lat1},{long1},{lat2},{long2})');
 	}
 }

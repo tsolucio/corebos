@@ -166,7 +166,7 @@ if(!isset($_SERVER['REQUEST_URI']))
 $action = '';
 if(isset($_REQUEST['action']))
 {
-	$action = $_REQUEST['action'];
+	$action = vtlib_purify($_REQUEST['action']);
 }
 if($action == 'Export')
 {
@@ -187,7 +187,7 @@ $is_module = false;
 $is_action = false;
 if(isset($_REQUEST['module']))
 {
-	$module = $_REQUEST['module'];
+	$module = vtlib_purify($_REQUEST['module']);
 	$dir = @scandir($root_directory."modules");
 	$temp_arr = Array("CVS","Attic");
 	$res_arr = @array_intersect($dir,$temp_arr);
@@ -201,13 +201,14 @@ if(isset($_REQUEST['module']))
 		if(@in_array($action.".php",$in_dir))
 			$is_action = true;
 	}
+	if (empty($action)) $is_action = false;
 	if(!$is_module)
 	{
-		die("Module name is missing. Please check the module name.");
+		die("Module name is missing or incorrect. Please check the module name.");
 	}
 	if(!$is_action)
 	{
-		die("Action name is missing. Please check the action name.");
+		die("Action name is missing or incorrect. Please check the action name.");
 	}
 }
 
@@ -415,9 +416,6 @@ if(isset($action) && isset($module))
 		$currentModuleFile = 'modules/'.$module.'/'.$action.'.php';
 	}
 	$currentModule = $module;
-} elseif(isset($module)) {
-	$currentModule = $module;
-	$currentModuleFile = $moduleDefaultFile[$currentModule];
 } else {
 	// use $default_module and $default_action as set in config.php
 	// Redirect to the correct module with the correct action.  We need the URI to include these fields.
@@ -425,15 +423,12 @@ if(isset($action) && isset($module))
 	exit();
 }
 
-$log->info("current page is $currentModuleFile");
-$log->info("current module is $currentModule ");
+$log->info("current page is $currentModuleFile current module is $currentModule ");
 
-// for printing
 $module = (isset($_REQUEST['module'])) ? vtlib_purify($_REQUEST['module']) : "";
 $action = (isset($_REQUEST['action'])) ? vtlib_purify($_REQUEST['action']) : "";
 $record = (isset($_REQUEST['record'])) ? vtlib_purify($_REQUEST['record']) : "";
 $lang_crm = (isset($_SESSION['authenticated_user_language'])) ? $_SESSION['authenticated_user_language'] : "";
-$GLOBALS['request_string'] = "&module=$module&action=$action&record=$record&lang_crm=$lang_crm";
 
 $current_user = new Users();
 
@@ -448,12 +443,8 @@ if($use_current_login)
 		coreBOS_Session::destroy();
 		header("Location: index.php?action=Login&module=Users");
 	}
-
+	coreBOS_Session::setUserGlobalSessionVariables();
 	$moduleList = getPermittedModuleNames();
-
-	foreach ($moduleList as $mod) {
-		$moduleDefaultFile[$mod] = "modules/".$currentModule."/index.php";
-	}
 
 	//auditing
 	require_once('user_privileges/audit_trail.php');

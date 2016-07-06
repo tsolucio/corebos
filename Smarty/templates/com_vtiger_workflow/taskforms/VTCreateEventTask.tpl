@@ -46,24 +46,24 @@ var eventType = '{$task->eventType}';
 	<tr valign="top">
 		<td class='dvtCellLabel' align="right" width=15% nowrap="nowrap"><b>{'LBL_ASSIGNED_TO'|@getTranslatedString}</b></td>
 		<td class='dvtCellLabel'>
-			<select id="task_assignedto" name="assigned_user_id" class="small">
+			<select id="assigned_user_id" name="assigned_user_id" class="small">
 				<option value="">{'LBL_SELECT'|@getTranslatedString}</option>
 				<optgroup label="{'LBL_USER'|@getTranslatedString}">
 				{foreach from=$ASSIGNED_TO.user item=ASSIGNED_USER key=ASSIGNED_USER_KEY}
 				 {if $ASSIGNED_USER != ''}
-					<option value="{$ASSIGNED_USER_KEY}" {if $ASSIGNED_USER_KEY eq $TASK_OBJECT->assigned_user_id} selected="" {/if}>{$ASSIGNED_USER}</option>
+					<option value="{$ASSIGNED_USER_KEY}" {if $ASSIGNED_USER_KEY eq $task->assigned_user_id} selected="" {/if}>{$ASSIGNED_USER}</option>
 				 {/if}
 				{/foreach}
 				</optgroup>
 				<optgroup label="{'LBL_GROUP'|@getTranslatedString}">
 				{foreach from=$ASSIGNED_TO.group item=ASSIGNED_USER key=ASSIGNED_USER_KEY}
 				 {if $ASSIGNED_USER != ''}
-					<option value="{$ASSIGNED_USER_KEY}" {if $ASSIGNED_USER_KEY eq $TASK_OBJECT->assigned_user_id} selected="" {/if}>{$ASSIGNED_USER}</option>
+					<option value="{$ASSIGNED_USER_KEY}" {if $ASSIGNED_USER_KEY eq $task->assigned_user_id} selected="" {/if}>{$ASSIGNED_USER}</option>
 				 {/if}
 				{/foreach}
 				</optgroup>
 				<optgroup label="{'LBL_SPECIAL_OPTIONS'|@getTranslatedString}">
-					<option value="copyParentOwner" {if $TASK_OBJECT->assigned_user_id eq 'copyParentOwner'} selected="" {/if}>{'LBL_PARENT_OWNER'|@getTranslatedString}</option>
+					<option value="copyParentOwner" {if $task->assigned_user_id eq 'copyParentOwner'} selected="" {/if}>{'LBL_PARENT_OWNER'|@getTranslatedString}</option>
 				</optgroup>
 			</select>
 		</td>
@@ -204,6 +204,8 @@ var eventType = '{$task->eventType}';
 										<td>
 											<select name="repeatMonth_daytype" class="small">
 												<option value="first" {if $task->repeatMonth_daytype eq "first"}selected{/if}>{$MOD.First}</option>
+												<option value="second" {if $task->repeatMonth_daytype eq "second"}selected{/if}>{$MOD.Second}</option>
+												<option value="third" {if $task->repeatMonth_daytype eq "third"}selected{/if}>{$MOD.Third}</option>
 												<option value="last" {if $task->repeatMonth_daytype eq "last"}selected{/if}>{$MOD.Last}</option>
 											</select>
 										</td>
