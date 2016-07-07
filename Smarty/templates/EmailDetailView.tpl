@@ -55,6 +55,14 @@
 	   </tr>
 	   {/if}
 	<tr>
+            <td class="lvtCol" style="padding: 5px;" align="right"><b>{$MOD.LBL_DATE}</b></td>
+            <td class="dvtCellLabel" style="padding: 5px;">{$DATE_START}&nbsp;</td>
+        </tr>
+	<tr>
+            <td class="lvtCol" style="padding: 5px;" align="right"><b>{$MOD.LBL_TIME}</b></td>
+            <td class="dvtCellLabel" style="padding: 5px;">{$TIME_START}&nbsp;</td>
+        </tr>
+	<tr>
 	<td class="lvtCol" style="padding: 5px;" align="right"><b>{$MOD.LBL_SUBJECT}</b></td>
 	<td class="dvtCellLabel" style="padding: 5px;">&nbsp;{$elements.value}</td>
 	</tr>

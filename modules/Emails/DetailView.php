@@ -24,7 +24,8 @@ if(isset($_REQUEST['record'])) {
 	$focus->retrieve_entity_info($_REQUEST['record'],"Emails");
 	$log->info("Entity info successfully retrieved for DetailView.");
 	$focus->id = $_REQUEST['record'];
-	$query = 'select email_flag,from_email,to_email,cc_email,bcc_email from vtiger_emaildetails where emailid = ?';
+	$query = 'select email_flag,from_email,to_email,cc_email,bcc_email,date_start,time_start from vtiger_emaildetails '
+                . 'left join vtiger_activity on vtiger_emaildetails.emailid = vtiger_activity.activityid where emailid = ?';
 	$result = $adb->pquery($query, array($focus->id));
 	$smarty->assign('FROM_MAIL',$adb->query_result($result,0,'from_email'));
 	$to_email = $json->decode($adb->query_result($result,0,'to_email'));
@@ -34,6 +35,11 @@ if(isset($_REQUEST['record'])) {
 	$bcc_email = $json->decode($adb->query_result($result,0,'bcc_email'));
 	$smarty->assign('BCC_MAIL',vt_suppressHTMLTags(@implode(',',$bcc_email)));
 	$smarty->assign('EMAIL_FLAG',$adb->query_result($result,0,'email_flag'));
+
+        $dt = new DateTimeField($adb->query_result($result,0,'date_start'));
+        $fmtdate = $dt->getDisplayDate($current_user);
+	$smarty->assign('DATE_START',$fmtdate);
+	$smarty->assign('TIME_START',$adb->query_result($result,0,'time_start'));
 	if($focus->column_fields['name'] != '')
 		$focus->name = $focus->column_fields['name'];
 	else
