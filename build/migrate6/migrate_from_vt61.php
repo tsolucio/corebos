@@ -49,6 +49,54 @@ foreach ($dropflds as $fqfn) {
 	ExecuteQuery("ALTER TABLE $table DROP $field");
 }
 
+// Add Scheduled Workflows fields
+$result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('schtypeid'));
+if (!($adb->num_rows($result))) {
+	ExecuteQuery("ALTER TABLE com_vtiger_workflows ADD schtypeid INT(10)", array());
+}
+$result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('schtime'));
+if (!($adb->num_rows($result))) {
+	ExecuteQuery("ALTER TABLE com_vtiger_workflows ADD schtime TIME", array());
+} else {
+	ExecuteQuery('ALTER TABLE com_vtiger_workflows CHANGE schtime schtime TIME NULL DEFAULT NULL', array());
+}
+$result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('schdayofmonth'));
+if (!($adb->num_rows($result))) {
+	ExecuteQuery("ALTER TABLE com_vtiger_workflows ADD schdayofmonth VARCHAR(200)", array());
+}
+$result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('schdayofweek'));
+if (!($adb->num_rows($result))) {
+	ExecuteQuery("ALTER TABLE com_vtiger_workflows ADD schdayofweek VARCHAR(200)", array());
+}
+$result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('schannualdates'));
+if (!($adb->num_rows($result))) {
+	ExecuteQuery("ALTER TABLE com_vtiger_workflows ADD schannualdates VARCHAR(200)", array());
+}
+$result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('schminuteinterval'));
+if (!($adb->num_rows($result))) {
+	ExecuteQuery("ALTER TABLE com_vtiger_workflows ADD schminuteinterval VARCHAR(200)", array());
+}
+$result = $adb->pquery("show columns from com_vtiger_workflows like ?", array('nexttrigger_time'));
+if (!($adb->num_rows($result))) {
+	ExecuteQuery("ALTER TABLE com_vtiger_workflows ADD nexttrigger_time DATETIME", array());
+}
+$result = $adb->pquery('show columns from com_vtiger_workflowtasks like ?', array('executionorder'));
+if (!($adb->num_rows($result))) {
+	ExecuteQuery('ALTER TABLE com_vtiger_workflowtasks ADD executionorder INT(10)', array());
+	ExecuteQuery('ALTER TABLE `com_vtiger_workflowtasks` ADD INDEX(`executionorder`)', array());
+	$result = $adb->pquery('select task_id,workflow_id from com_vtiger_workflowtasks order by workflow_id', array());
+	$upd = 'update com_vtiger_workflowtasks set executionorder=? where task_id=?';
+	$wfid = null;
+	while ($task = $adb->fetch_array($result)) {
+		if ($task['workflow_id']!=$wfid) {
+			$order = 1;
+			$wfid = $task['workflow_id'];
+		}
+		$adb->pquery($upd, array($order,$task['task_id']));
+		$order++;
+	}
+}
+
 $droptable = array(
 	'vtiger_feedback','vtiger_shareduserinfo','vtiger_schedulereports','vtiger_calendar_default_activitytypes',
 	'vtiger_calendar_user_activitytypes','vtiger_reporttype'
