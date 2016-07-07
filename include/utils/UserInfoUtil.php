@@ -1298,6 +1298,7 @@ function getProfileGlobalPermission($profileid)
 {
 	global $log, $adb;
 	$log->debug('Entering getProfileGlobalPermission('.$profileid.') method ...');
+	$copy=Array();
 	$sql = 'select * from vtiger_profile2globalpermissions where profileid=?';
 	$result = $adb->pquery($sql, array($profileid));
 	$num_rows = $adb->num_rows($result);
@@ -2942,7 +2943,6 @@ function getCombinedUserGlobalPermissions($userId)
 	$log->debug("Entering getCombinedUserGlobalPermissions(".$userId.") method ...");
 	$profArr=getUserProfile($userId);
 	$no_of_profiles=sizeof($profArr);
-	$userGlobalPerrArr=Array();
 	$userGlobalPerrArr=getProfileGlobalPermission($profArr[0]);
 	if($no_of_profiles != 1)
 	{
