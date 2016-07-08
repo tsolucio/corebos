@@ -1323,7 +1323,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 			}
 		}
 	} elseif ($uitype == 15 || ($uitype == 55 && $fieldname == "salutationtype")) {
-		$temp_val = decode_html($adb->query_result($list_result, $list_result_count, $colname));
+		$temp_val = decode_html_force($adb->query_result($list_result, $list_result_count, $colname));
 		if (($is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1) && $temp_val != '') {
 			$temp_acttype = $adb->query_result($list_result, $list_result_count, 'activitytype');
 			if (($temp_acttype != 'Task') && $fieldname == "taskstatus")
@@ -1336,11 +1336,8 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 			if (count($subrole) > 0)
 				$roleids = $subrole;
 			array_push($roleids, $roleid);
-
-			//here we are checking wheather the table contains the sortorder column .If  sortorder is present in the main picklist table, then the role2picklist will be applicable for this table...
-
 			$sql = "select * from vtiger_$temptable where $temptable=?";
-			$res = $adb->pquery($sql, array(decode_html($temp_val)));
+			$res = $adb->pquery($sql, array(decode_html_force($temp_val)));
 			$picklistvalueid = $adb->query_result($res, 0, 'picklist_valueid');
 			if ($picklistvalueid != null) {
 				$pick_query = "select * from vtiger_role2picklist where picklistvalueid=$picklistvalueid and roleid in (" . generateQuestionMarks($roleids) . ")";
