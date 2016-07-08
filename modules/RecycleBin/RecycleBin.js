@@ -233,8 +233,8 @@ function callEmptyRecyclebin() {
 			document.getElementById('idlist').value=select_options;
 			idstring = select_options;
 		} else{
-			alert(mod_alert_arr.SELECT_ATLEAST_ONE_ENTITY);
-			return false;
+			allrec=1;
+			count = ++numOfRows;
 		}
 		count = count-1;
 	}
