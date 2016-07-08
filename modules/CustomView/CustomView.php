@@ -924,6 +924,7 @@ class CustomView extends CRMEntity {
 				if (($col[1]=='smownerid' || $col[1]=='smcreatorid' || $col[1]=='modifiedby')
 					&& $advfilterval=='current_user' && $_REQUEST['action']!='CustomView' && empty($_REQUEST['record'])) {
 					$advfilterval = trim($current_user->first_name.' '.$current_user->last_name);
+					$advfilterval = decode_html($advfilterval);
 				}
 				$criteria['value'] = $advfilterval;
 				$criteria['column_condition'] = $relcriteriarow["column_condition"];
