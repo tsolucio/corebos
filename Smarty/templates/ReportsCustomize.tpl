@@ -15,9 +15,9 @@
 	{/if}
 	<input id="folder_ids" name="folderId" type="hidden" value='{$FOLDE_IDS}'>
 	{assign var=poscount value=0}
-	{foreach item=reportfolder from=$REPT_CUSFLDR}	
+	{foreach item=reportfolder from=$REPT_CUSFLDR}
 	{assign var=poscount value=$poscount+1}
-		<table class="reportsListTable" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">		
+		<table class="reportsListTable" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
 		<tr>
 		<td class="mailSubHeader" align="left" colspan="3" style="font-weight:bold;">
 		<span id='folder{$reportfolder.id}'> {$reportfolder.name}</span>
@@ -26,27 +26,29 @@
 				 - {$reportfolder.description}
 			{/if}
 		</font></i>
-		
 		</td>
 		</tr>
 		<tr>
-			<td  class="hdrNameBg" colspan="3" style="padding: 5px;" align="right" >
+			<td class="hdrNameBg" colspan="3" style="padding: 5px;" align="right" >
 				<!-- Custom Report Group's Buttons -->
-				<table width="100%" border="0" cellpadding="0" cellspacing="0"><tr>
-		<td  id="repposition{$poscount}" width="5%" align="right"><input name="newReportInThisModule" value="{$MOD.LBL_CREATE_REPORT}..." class="crmButton small create" onclick="gcurrepfolderid={$reportfolder.id};fnvshobj(this,'reportLay')" type="button"></td>
-			<td  width="75%" align="right">
-					<input type="button" name="Edit" value=" {$MOD.LBL_RENAME_FOLDER} " class="crmbutton small edit" onClick='EditFolder("{$reportfolder.id}","{$reportfolder.fname}","{$reportfolder.fdescription}"),fnvshobj(this,"orgLay");'>&nbsp;
-			</td>
-			<td align="right">
-					<input type="button" name="delete" value=" {$MOD.LBL_DELETE_FOLDER} " class="crmbutton small delete" onClick="DeleteFolder('{$reportfolder.id}');">
+				<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td id="repposition{$poscount}" width="5%" align="right">
+						<input name="newReportInThisModule" value="{$MOD.LBL_CREATE_REPORT}..." class="crmButton small create" onclick="gcurrepfolderid={$reportfolder.id};fnvshobj(this,'reportLay')" type="button">
+					</td>
+					<td width="75%" align="right">
+						<input type="button" name="Edit" value=" {$MOD.LBL_RENAME_FOLDER} " class="crmbutton small edit" onClick='EditFolder("{$reportfolder.id}","{$reportfolder.fname}","{$reportfolder.fdescription}"),fnvshobj(this,"orgLay");'>&nbsp;
+					</td>
+					<td align="right">
+						<input type="button" name="delete" value=" {$MOD.LBL_DELETE_FOLDER} " class="crmbutton small delete" onClick="DeleteFolder('{$reportfolder.id}');">
+					</td>
+				</tr>
+				</table>
 			</td>
 		</tr>
-		</table>
-			</td>
-			</tr>
 		<tr>
 		<td colspan="3">
-		<table  border="0" cellpadding="3" cellspacing="1" width="100%">
+		<table border="0" cellpadding="3" cellspacing="1" width="100%">
 			<tbody>
 			<tr>
 			<td class="lvtCol" width="5%">
@@ -65,7 +67,7 @@
 			</td>
 			<td align="left"><a href="index.php?module=Reports&action=SaveAndRun&record={$reportdetails.reportid}&folderid={$reportfolder.id}">{$reportdetails.reportname}</a>
 			{if $reportdetails.sharingtype eq 'Shared'}
-				<img src="{'Meetings.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border=0 height=12 width=12 /> 
+				<img src="{'Meetings.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border=0 height=12 width=12 />
 			{/if}
 			</td>
 			<td align="left">{$reportdetails.description}</td>

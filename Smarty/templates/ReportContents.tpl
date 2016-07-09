@@ -8,7 +8,7 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<table align="center" border="0" cellpadding="0" cellspacing="0" width="99%"  class="showPanelBg">
+<table align="center" border="0" cellpadding="0" cellspacing="0" width="99%" class="showPanelBg">
 	<tbody><tr>
 	<td valign=top><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 	<td valign="top" width="50%" style="padding: 10px;border-right:1px dashed #CCCCCC">
@@ -49,13 +49,13 @@
 				{if $MOD[$reportdetails.reportname] neq ''}
 					<td><a href="index.php?module=Reports&action=SaveAndRun&record={$reportdetails.reportid}&folderid={$reportfolder.id}">{$MOD[$reportdetails.reportname]}</a>
 					{if $reportdetails.sharingtype eq 'Shared'}
-						<img src="{'Meetings.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border=0 height=12 width=12 /> 
+						<img src="{'Meetings.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border=0 height=12 width=12 />
 					{/if}
 					</td>
 				{else}
 					<td><a href="index.php?module=Reports&action=SaveAndRun&record={$reportdetails.reportid}&folderid={$reportfolder.id}">{$reportdetails.reportname}</a>
 					{if $reportdetails.sharingtype eq 'Shared'}
-						<img src="{'Meetings.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border=0 height=12 width=12 /> 
+						<img src="{'Meetings.gif'|@vtiger_imageurl:$THEME}" align="absmiddle" border=0 height=12 width=12 />
 					{/if}
 					</td>
 				{/if}

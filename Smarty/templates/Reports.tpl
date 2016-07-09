@@ -265,7 +265,7 @@ function AddFolder()
 function EditFolder(id,name,desc)
 {
 {/literal}
-	document.getElementById('editfolder_info').innerHTML= ' {$MOD.LBL_RENAME_FOLDER} '; 	
+	document.getElementById('editfolder_info').innerHTML= ' {$MOD.LBL_RENAME_FOLDER} ';
 {literal}
 	getObj('folder_name').value = name;
 	getObj('folder_desc').value = desc;
