@@ -253,7 +253,7 @@ function AddFolder()
 								url: 'index.php?action=ReportsAjax&mode=ajax&file=SaveReportFolder&module=Reports'+url
 						}).done(function (response) {
 									var item = response;
-									getObj('customizedrep').innerHTML = item;
+									getObj('reportContents').innerHTML = item;
 							}
 						);
 					}

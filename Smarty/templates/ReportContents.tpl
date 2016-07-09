@@ -17,12 +17,7 @@
 	<table width="100%" border="0" cellpadding="0" cellspacing="0" align="center" class="reportsListTable">
 		<tr>
 		<td class="mailSubHeader"><b>
-		
-		{if $MOD[$reportfolder.name] neq ''}
-			{$MOD[$reportfolder.name]}
-		{else}
-			{$reportfolder.name}
-		{/if}
+		<span id='folder{$reportfolder.id}'>{if $MOD[$reportfolder.name] neq ''}{$MOD[$reportfolder.name]}{else}{$reportfolder.name}{/if}</span>
 		</b>
 		<i><font color='#C0C0C0'>
 			{if $MOD[$reportfolder.description] neq ''}
@@ -34,8 +29,25 @@
 		</td>
 		</tr>
 		<tr>
+			<td class="hdrNameBg" colspan="3" style="padding: 5px;" align="right" >
+				<table width="100%" border="0" cellpadding="0" cellspacing="0">
+				<tr>
+					<td id="repposition{$poscount}" width="5%" align="right">
+						<input name="newReportInThisModule" value="{$MOD.LBL_CREATE_REPORT}..." class="crmButton small create" onclick="gcurrepfolderid={$reportfolder.id};fnvshobj(this,'reportLay')" type="button">
+					</td>
+					<td width="75%" align="right">
+						<input type="button" name="Edit" value=" {$MOD.LBL_RENAME_FOLDER} " class="crmbutton small edit" onClick='EditFolder("{$reportfolder.id}","{$reportfolder.fname}","{$reportfolder.fdescription}"),fnvshobj(this,"orgLay");'>&nbsp;
+					</td>
+					<td align="right">
+						{if $ISADMIN}<input type="button" name="delete" value=" {$MOD.LBL_DELETE_FOLDER} " class="crmbutton small delete" onClick="DeleteFolder('{$reportfolder.id}');">{/if}
+					</td>
+				</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
 		<td>
-		<table  class="small" border="0" cellpadding="5" cellspacing="1" width="100%">
+		<table class="small" border="0" cellpadding="5" cellspacing="1" width="100%">
 			<tbody>
 			<tr>
 			<td class="lvtCol" width="5%">#</td>
