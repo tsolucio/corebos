@@ -65,6 +65,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Product_Permit_Subproduct_Be_Parent',
 				'Product_Maximum_Number_Images',
 				'Workflow_Send_Email_ToCCBCC',
+				'Workflow_GeoDistance_Country_Default',
 
 				'Report_Send_Scheduled_ifEmpty',
 
