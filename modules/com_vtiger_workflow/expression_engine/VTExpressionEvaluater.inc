@@ -367,7 +367,12 @@ function __cb_getGEODistanceFromUser2AccountBilling($arr){
 	$compAdr = $adb->pquery('Select '.$columns.' from vtiger_accountbillads
 		where accountaddressid=?',array($accid));
 	if ($compAdr and $adb->num_rows($compAdr)>0) {
-		$to = $adb->query_result($compAdr, 0, 'bill_country');
+		$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
+		if($country != ''){
+			$to = $country;
+		}else{
+			$to = $adb->query_result($compAdr, 0, 'bill_country');
+		}
 		$fld = $adb->query_result($compAdr, 0, 'bill_state');
 		$to.= empty($fld) ? '':', '.$fld;
 		$fld = $adb->query_result($compAdr, 0, 'bill_city');
@@ -426,7 +431,12 @@ function __cb_getGEODistanceFromAssignUser2AccountBilling($arr){
 	$compAdr = $adb->pquery('Select '.$columns.' from vtiger_accountbillads
 		where accountaddressid=?',array($accid));
 	if ($compAdr and $adb->num_rows($compAdr)>0) {
-		$to = $adb->query_result($compAdr, 0, 'bill_country');
+		$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
+		if($country != ''){
+			$to = $country;
+		}else{
+			$to = $adb->query_result($compAdr, 0, 'bill_country');
+		}
 		$fld = $adb->query_result($compAdr, 0, 'bill_state');
 		$to.= empty($fld) ? '':', '.$fld;
 		$fld = $adb->query_result($compAdr, 0, 'bill_city');
@@ -484,7 +494,12 @@ function __cb_getGEODistanceFromUser2AccountShipping($arr){
 	$compAdr = $adb->pquery('Select '.$columns.' from vtiger_accountshipads
 		where accountaddressid=?',array($accid));
 	if ($compAdr and $adb->num_rows($compAdr)>0) {
-		$to = $adb->query_result($compAdr, 0, 'ship_country');
+		$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
+		if($country != ''){
+			$to = $country;
+		}else{
+			$to = $adb->query_result($compAdr, 0, 'ship_country');
+		}
 		$fld = $adb->query_result($compAdr, 0, 'ship_state');
 		$to.= empty($fld) ? '':', '.$fld;
 		$fld = $adb->query_result($compAdr, 0, 'ship_city');
@@ -543,7 +558,12 @@ function __cb_getGEODistanceFromAssignUser2AccountShipping($arr){
 	$compAdr = $adb->pquery('Select '.$columns.' from vtiger_accountshipads
 		where accountaddressid=?',array($accid));
 	if ($compAdr and $adb->num_rows($compAdr)>0) {
-		$to = $adb->query_result($compAdr, 0, 'ship_country');
+		$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
+		if($country != ''){
+			$to = $country;
+		}else{
+			$to = $adb->query_result($compAdr, 0, 'ship_country');
+		}
 		$fld = $adb->query_result($compAdr, 0, 'ship_state');
 		$to.= empty($fld) ? '':', '.$fld;
 		$fld = $adb->query_result($compAdr, 0, 'ship_city');
@@ -601,7 +621,12 @@ function __cb_getGEODistanceFromUser2ContactBilling($arr){
 	$compAdr = $adb->pquery('Select '.$columns.' from vtiger_contactaddress
 		where contactaddressid=?',array($ctoid));
 	if ($compAdr and $adb->num_rows($compAdr)>0) {
-		$to = $adb->query_result($compAdr, 0, 'mailingcountry');
+		$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
+		if($country != ''){
+			$to = $country;
+		}else{
+			$to = $adb->query_result($compAdr, 0, 'mailingcountry');
+		}
 		$fld = $adb->query_result($compAdr, 0, 'mailingstate');
 		$to.= empty($fld) ? '':', '.$fld;
 		$fld = $adb->query_result($compAdr, 0, 'mailingcity');
@@ -660,7 +685,12 @@ function __cb_getGEODistanceFromAssignUser2ContactBilling($arr){
 	$compAdr = $adb->pquery('Select '.$columns.' from vtiger_contactaddress
 		where contactaddressid=?',array($ctoid));
 	if ($compAdr and $adb->num_rows($compAdr)>0) {
-		$to = $adb->query_result($compAdr, 0, 'mailingcountry');
+		$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
+		if($country != ''){
+			$to = $country;
+		}else{
+			$to = $adb->query_result($compAdr, 0, 'mailingcountry');
+		}
 		$fld = $adb->query_result($compAdr, 0, 'mailingstate');
 		$to.= empty($fld) ? '':', '.$fld;
 		$fld = $adb->query_result($compAdr, 0, 'mailingcity');
@@ -718,7 +748,12 @@ function __cb_getGEODistanceFromUser2ContactShipping($arr){
 	$compAdr = $adb->pquery('Select '.$columns.' from vtiger_contactaddress
 		where contactaddressid=?',array($ctoid));
 	if ($compAdr and $adb->num_rows($compAdr)>0) {
-		$to = $adb->query_result($compAdr, 0, 'othercountry');
+		$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
+		if($country != ''){
+			$to = $country;
+		}else{
+			$to = $adb->query_result($compAdr, 0, 'othercountry');
+		}
 		$fld = $adb->query_result($compAdr, 0, 'otherstate');
 		$to.= empty($fld) ? '':', '.$fld;
 		$fld = $adb->query_result($compAdr, 0, 'othercity');
@@ -778,7 +813,12 @@ function __cb_getGEODistanceFromAssignUser2ContactShipping($arr){
 	$compAdr = $adb->pquery('Select '.$columns.' from vtiger_contactaddress
 		where contactaddressid=?',array($ctoid));
 	if ($compAdr and $adb->num_rows($compAdr)>0) {
-		$to = $adb->query_result($compAdr, 0, 'othercountry');
+		$country = GlobalVariable::getVariable('Workflow_GeoDistance_Country_Default','');
+		if($country != ''){
+			$to = $country;
+		}else{
+			$to = $adb->query_result($compAdr, 0, 'othercountry');
+		}
 		$fld = $adb->query_result($compAdr, 0, 'otherstate');
 		$to.= empty($fld) ? '':', '.$fld;
 		$fld = $adb->query_result($compAdr, 0, 'othercity');
