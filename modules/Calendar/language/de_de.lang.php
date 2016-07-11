@@ -401,7 +401,9 @@ $mod_strings = Array(
     //added to send dates and time in calendar notification/invitation mail.
 
     'Start date and time'=>'beginnt',
+    'Start Date and Time'=>'beginnt',
     'End date and time'=>'endet',
+    'End Date and Time'=>'endet',
     //this is for task
     'End date'=>'Endedatum',
     'LBL_SET_DATE'=>'Datum angeben..',
