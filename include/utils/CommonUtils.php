@@ -2333,10 +2333,16 @@ function getTemplateDetails($templateid) {
  * 	return string $description - Returns description, merged with the input template.
  */
 function getMergedDescription($description, $id, $parent_type) {
-	global $adb, $log;
-	$log->debug("Entering getMergedDescription ...");
+	global $adb, $log, $current_user;
+	$log->debug("Entering getMergedDescription ($id, $parent_type)...");
 	$token_data_pair = explode('$', $description);
-	global $current_user;
+	if (empty($parent_type)) {
+		$parent_type = getSalesEntityType($id);
+	}
+	if (empty($parent_type) or empty($id)) {
+		$log->debug("Exiting from getMergedDescription due to no record information ...");
+		return $description;
+	}
 	if($parent_type != 'Users'){
 		$emailTemplate = new EmailTemplate($parent_type, $description, $id, $current_user);
 		$description = $emailTemplate->getProcessedDescription();
@@ -2350,7 +2356,7 @@ function getMergedDescription($description, $id, $parent_type) {
 		$fields[$module[0]][] = $module[1];
 	}
 	if (is_array($fields['custom']) && count($fields['custom']) > 0) {
-		//Puneeth : Added for custom date & time fields
+		// Custom date & time fields
 		$description = getMergedDescriptionCustomVars($fields, $description);
 	}
 	if($parent_type == 'Users' && is_array($fields["users"]))
