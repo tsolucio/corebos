@@ -34,10 +34,10 @@
 		width: 100%;
 	{rdelim}
 	</style>
-	<script language="JavaScript" type="text/javascript" src="include/js/general.js"></script>
-	<script language="JavaScript" type="text/javascript" src="include/js/{php} echo $_SESSION['authenticated_user_language'];{/php}.lang.js?{php} echo $_SESSION['vtiger_version'];{/php}"></script>
 	<script type='text/javascript' src='include/jquery/jquery.js'></script>
-	<script language="JavaScript" type="text/javascript" src="modules/Reports/Reports.js"></script>
+	<script type="text/javascript" src="include/js/general.js"></script>
+	<script type="text/javascript" src="include/js/{php} echo $_SESSION['authenticated_user_language'];{/php}.lang.js?{php} echo $_SESSION['vtiger_version'];{/php}"></script>
+	<script type="text/javascript" src="modules/Reports/Reports.js"></script>
 </head>
 <body topmargin="0" leftmargin="0" marginheight="0" marginwidth="0">
 <table width="100%" border="0" cellspacing="0" cellpadding="0" class="mailClient mailClientBg">
