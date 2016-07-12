@@ -267,9 +267,8 @@ $check_mysql_extension = Common_Install_Wizard_Utils::check_mysql_extension();
         	<td class=small align=center> <a href="<?php echo $coreBOS_app_url; ?>" target="_blank"><?php echo $coreBOS_app_name; ?></a></td>
       	</tr>
 	</table>
-    	  	
-<script language="javascript">
 
+<script>
 function isPermitted(){
 <?php
 

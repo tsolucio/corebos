@@ -45,7 +45,7 @@ elseif ($pmodule=='Leads')
 	$myfocus->retrieve_entity_info($entityid,"Leads");
 }
 ?>
-<script language="javascript">
+<script>
 function passemail()
 {
 	y=window.opener.document.EditView.parent_id.value+"<?php echo $entityid;?>";

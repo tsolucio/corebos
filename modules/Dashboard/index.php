@@ -148,7 +148,7 @@ if($CHAT_DISPLAY == 'true') {
 </TABLE>
 <br>
 
-<script language="JAVASCRIPT" type="text/javascript" src="include/js/smoothscroll.js"></script>
+<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <a name="top"></a>
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
      <tr>

@@ -7,14 +7,9 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
-
-
 require_once('include/ComboUtil.php');
 require_once('modules/Leads/Leads.php');
-global $app_list_strings;
-global $app_strings;
-global $current_user;
+global $app_list_strings, $app_strings, $current_user;
 
 $focus = new Leads();
 $idlist = $_POST['idlist'];
@@ -25,7 +20,7 @@ $comboFieldNames = Array('leadstatus'=>'lead_status_dom');
 $comboFieldArray = getComboArray($comboFieldNames);
 
 ?>
-<script language="javascript">
+<script>
 function updateOwner()
 {
 	var username=document.setLeadOwner.lead_owner.value;

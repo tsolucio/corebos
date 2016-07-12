@@ -10,30 +10,11 @@
  * The Initial Developer of the Original Code is SugarCRM, Inc.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  Contains a variety of utility functions used to display UI
- * components such as form headers and footers.  Intended to be modified on a per
- * theme basis.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
-
-/**
- * Create javascript to validate the data entered into a record.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- */
-
- require_once('include/utils/utils.php'); //new
+require_once('include/utils/utils.php'); //new
 
 function get_validate_record_js () {
-global $mod_strings;
-global $app_strings;
+global $mod_strings, $app_strings;
 
 $lbl_last_name = $mod_strings['LBL_LIST_LAST_NAME'];
 $lbl_email_id = $mod_strings['LBL_EMAIL_ADDRESS'];
@@ -45,7 +26,7 @@ $err_invalid_email_address = $app_strings['ERR_INVALID_EMAIL_ADDRESS'];
 $err_invalid_page_count = $app_strings['ERR_INVALID_PAGE_COUNT'];
 $the_script  = <<<EOQ
 
-<script type="text/javascript" language="Javascript">
+<script type="text/javascript">
 <!--  to hide script contents from old browsers
 
 function verify_data(form) {

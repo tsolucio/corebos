@@ -1,26 +1,21 @@
 <?php
-	/*********************************************************************************
-	** The contents of this file are subject to the vtiger CRM Public License Version 1.0
-	* ("License"); You may not use this file except in compliance with the License
-	* The Original Code is:  vtiger CRM Open Source
-	* The Initial Developer of the Original Code is vtiger.
-	* Portions created by vtiger are Copyright (C) vtiger.
-	* All Rights Reserved.
-	*
-	********************************************************************************/
+/*********************************************************************************
+** The contents of this file are subject to the vtiger CRM Public License Version 1.0
+* ("License"); You may not use this file except in compliance with the License
+* The Original Code is:  vtiger CRM Open Source
+* The Initial Developer of the Original Code is vtiger.
+* Portions created by vtiger are Copyright (C) vtiger.
+* All Rights Reserved.
+********************************************************************************/
 
 require_once('Smarty_setup.php');
 global $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 
-global $app_strings;
-global $mod_strings;
-global $currentModule;
-global $current_language;
+global $app_strings, $mod_strings, $currentModule, $current_language, $adb;
 $current_module_strings = return_module_language($current_language, 'Portal');
-global $adb;
-	
+
 $query="select * from vtiger_portal";
 $result=$adb->pquery($query, array());
 //Getting the Default URL Value if any
@@ -29,7 +24,7 @@ $no_of_portals=$adb->num_rows($result);
 $portal_info=array();
 //added as an enhancement to set default
 ?>
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
 var mysitesArray = new Array()
 <?php
 for($i=0 ; $i<$no_of_portals; $i++)
@@ -39,19 +34,18 @@ for($i=0 ; $i<$no_of_portals; $i++)
 	//added as an enhancement to set default value
 	$portalid = $adb->query_result($result,$i,'portalid');
 	$set_default = $adb->query_result($result,$i,'setdefault');
-	$portal_array['set_def'] =  $set_default;
-	$portal_array['portalid'] =  $portalid;
-	if($set_default == 1)
-		{
-			$def_ault = $portalurl;
-		}
-	$portal_array['portalname'] = (strlen($portalname) > 100) ? (substr($portalname,0,100).'...') : $portalname;	
+	$portal_array['set_def'] = $set_default;
+	$portal_array['portalid'] = $portalid;
+	if($set_default == 1) {
+		$def_ault = $portalurl;
+	}
+	$portal_array['portalname'] = (strlen($portalname) > 100) ? (substr($portalname,0,100).'...') : $portalname;
 	$portal_array['portalurl'] = $portalurl;
 	$portal_array['portaldisplayurl'] = (strlen($portalurl) > 100) ? (substr($portalurl,0,100).'...') : $portalurl;
 	$portal_info[]=$portal_array;
-?>		
-		mysitesArray['<?php echo $portalid;?>'] = "<?php echo $portalurl;?>";
-<?php		
+?>
+	mysitesArray['<?php echo $portalid;?>'] = "<?php echo $portalurl;?>";
+<?php
 }
 ?>
 </script>

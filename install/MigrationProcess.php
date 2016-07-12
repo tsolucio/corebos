@@ -30,7 +30,7 @@ Migration_Utils::copyRequiredFiles($_SESSION['migration_info']['source_directory
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title><?php echo $installationStrings['APP_NAME']. ' - ' . $installationStrings['LBL_CONFIG_WIZARD']. ' - ' . $installationStrings['LBL_MIGRATION']?></title>
-	<script language="javascript" type="text/javascript" src="include/jquery/jquery.js"></script>
+	<script type="text/javascript" src="include/jquery/jquery.js"></script>
 	<script type="text/javascript" src="include/js/general.js"></script>
 	<link href="themes/softed/style.css" rel="stylesheet" type="text/css">
 	<link href="include/install/install.css" rel="stylesheet" type="text/css">

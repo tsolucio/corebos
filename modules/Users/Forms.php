@@ -86,8 +86,8 @@ $extensions_list = Zend_Json::encode($extensions);
 //check asteriskdetails end
 
 $the_script  = <<<EOQ
-<script language="JavaScript" type="text/javascript" src="include/js/json.js"></script>
-<script type="text/javascript" language="Javascript">
+<script type="text/javascript" src="include/js/json.js"></script>
+<script type="text/javascript">
 <!--  to hide script contents from old browsers
 function set_fieldfocus(errorMessage,oMiss_field){
 	alert("$err_missing_required_fields" + errorMessage);

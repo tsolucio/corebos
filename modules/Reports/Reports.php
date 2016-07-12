@@ -951,7 +951,7 @@ class Reports extends CRMEntity{
 			$cFqEndDateTime = new DateTimeField($cFq1.' '. date('H:i:s'));
 		}
 
-		$sjsStr = '<script language="JavaScript" type="text/javaScript">
+		$sjsStr = '<script type="text/javaScript">
 			function showDateRange( type ) {
 				if (type!="custom") {
 					document.NewReport.startdate.readOnly=true

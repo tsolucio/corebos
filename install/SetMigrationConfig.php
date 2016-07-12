@@ -47,17 +47,16 @@ $_SESSION['pre_migration'] = false;
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 	<title><?php echo $installationStrings['APP_NAME']. ' - ' . $installationStrings['LBL_CONFIG_WIZARD']. ' - ' . $installationStrings['LBL_SYSTEM_CONFIGURATION']?></title>
 
-    <link rel='stylesheet' type='text/css' href='themes/softed/style.css'></link>
-    <script type="text/javascript" src="include/js/en_us.lang.js"></script>
-    <script type="text/javascript" src="include/jquery/jquery.js"></script>
-    <script type="text/javascript" src="include/js/general.js"></script>
-
+	<link rel='stylesheet' type='text/css' href='themes/softed/style.css'></link>
+	<script type="text/javascript" src="include/js/en_us.lang.js"></script>
+	<script type="text/javascript" src="include/jquery/jquery.js"></script>
+	<script type="text/javascript" src="include/js/general.js"></script>
 	<link href="include/install/install.css" rel="stylesheet" type="text/css">
 </head>
 
 <body class="small cwPageBg" topmargin="0" leftmargin="0" marginheight="0" marginwidth="0">
 
-<script type="text/javascript" language="Javascript">
+<script type="text/javascript">
 
 function verify_data(form) {
 	var isError = false;

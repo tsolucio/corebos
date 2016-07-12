@@ -705,31 +705,7 @@ if((!$viewAttachment) && (!$viewAttachment && $action != 'home_rss') && $action 
 		font-size:9px;
 		font-family: Verdana, Arial, Helvetica, Sans-serif;
 	}
-	</style>
-		<script language=javascript>
-		function LogOut(e)
-		{
-			var nav4 = window.Event ? true : false;
-			var iX,iY;
-			if (nav4)
-			{
-				iX = e.pageX;
-				iY = e.pageY;
-			}
-			else
-			{
-				iX = event.clientX + document.body.scrollLeft;
-				iY = event.clientY + document.body.scrollTop;
-
-			}
-			if (iX <= 30 && iY < 0 )
-			{
-				w=window.open(\"index.php?action=Logout&module=Users\");
-				w.close();
-			}
-		}
-	//window.onunload=LogOut
-	</script>";
+	</style>";
 
 	if((!$skipFooters) && $action != "about_us" && $action != "vtchat" && $action != "ChangePassword" && $action != "body" && $action != $module."Ajax" && $action!='Popup' && $action != 'ImportStep3' && $action != 'ActivityAjax' && $action != 'getListOfRecords') {
 		echo $copyrightstatement;

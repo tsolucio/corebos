@@ -140,7 +140,7 @@ for($i=0;$i<count($cftextcombo);$i++)
 		$sel_val = '';
 	$combo_output.= '<a href="javascript:void(0);" onClick="makeFieldSelected(this,'.$i.','.$blockid.');" id="field'.$i.'" style="text-decoration:none;background-image:url('.$cfimagecombo[$i].');" class="customMnu" '.$disable_str.'>'.$cftextcombo[$i].'</a>';
 }
-$output .= '<div id="customfield" style="display:block;" class="layerPopup"><script language="JavaScript" type="text/javascript" src="include/js/customview.js"></script>
+$output .= '<div id="customfield" style="display:block;" class="layerPopup"><script type="text/javascript" src="include/js/customview.js"></script>
 			<form action="index.php" method="post" name="addtodb" onSubmit="if(validate('.$blockid.')) {VtigerJS_DialogBox.block();}else{return false;}">
 			<input type="hidden" name="module" value="Settings">
 			<input type="hidden" name="fld_module" value="'.vtlib_purify($_REQUEST['fld_module']).'">
