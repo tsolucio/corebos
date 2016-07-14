@@ -682,4 +682,11 @@
 	<classname>cleanoptimizedatabase_150</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Fix event handler if timecontrol is installed</description>
+	<filename>build/changeSets/fixEventHandlerPathForConvertTZ.php</filename>
+	<classname>fixEventHandlerPathForConvertTZ</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
