@@ -149,14 +149,17 @@ class EmailTemplate {
 									inner join vtiger_seattachmentsrel on vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid
 									where (vtiger_crmentity.setype LIKE "%Image" or vtiger_crmentity.setype LIKE "%Attachment")
 									  and deleted=0 and vtiger_seattachmentsrel.crmid=?';
-							$result_image = $db->pquery($query, array($this->recordId));
+							$params = array($this->recordId);
+							if (!empty($values[$fieldColumnMapping[$fieldName]])) {
+								$query .= ' and vtiger_attachments.name = ?';
+								$params[] = $values[$fieldColumnMapping[$fieldName]];
+							}
+							$result_image = $db->pquery($query, $params);
 							if ($db->num_rows($result_image)>0) {
 								$img = $db->fetch_array($result_image);
 								$fullpath = $site_URL.'/'.$img['path'].$img['attachmentsid'].'_'.$img['name'];
 								$values[$fieldColumnMapping[$fieldName].'_fullpath'] = $fullpath;
-								if (empty($values[$fieldColumnMapping[$fieldName]])) {
-									$values[$fieldColumnMapping[$fieldName]] = $img['name'];
-								}
+								$values[$fieldColumnMapping[$fieldName]] = $img['name'];
 								$imagefound = true;
 							}
 						}
