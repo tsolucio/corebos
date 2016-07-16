@@ -50,6 +50,8 @@ class EmailTemplate {
 	}
 
 	public function process(){
+		global $site_URL;
+		$imagefound = false;
 		$variableList = $this->getTemplateVariableListForModule($this->module);
 		$handler = vtws_getModuleHandlerFromName($this->module, $this->user);
 		$meta = $handler->getMeta();
@@ -140,10 +142,28 @@ class EmailTemplate {
 							$values[$fieldColumnMapping[$fieldName]] = getTranslatedString($values[$fieldColumnMapping[$fieldName]], $this->module);
 						}elseif(strcasecmp($webserviceField->getFieldDataType(),'datetime') === 0){
 							$values[$fieldColumnMapping[$fieldName]] = $values[$fieldColumnMapping[$fieldName]] .' '. DateTimeField::getDBTimeZone();
+						}elseif($webserviceField->getUIType() == 69){
+							$query = 'select vtiger_attachments.name, vtiger_attachments.type, vtiger_attachments.attachmentsid, vtiger_attachments.path
+									from vtiger_attachments
+									inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid
+									inner join vtiger_seattachmentsrel on vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid
+									where (vtiger_crmentity.setype LIKE "%Image" or vtiger_crmentity.setype LIKE "%Attachment")
+									  and deleted=0 and vtiger_seattachmentsrel.crmid=?';
+							$result_image = $db->pquery($query, array($this->recordId));
+							if ($db->num_rows($result_image)>0) {
+								$img = $db->fetch_array($result_image);
+								$fullpath = $site_URL.'/'.$img['path'].$img['attachmentsid'].'_'.$img['name'];
+								$values[$fieldColumnMapping[$fieldName].'_fullpath'] = $fullpath;
+								$imagefound = true;
+							}
 						}
 					}
 				}
 				foreach ($columnList as $column) {
+					if ($imagefound) {
+						$needle = '$'.strtolower($this->module)."-$column".'_fullpath$';
+						$this->processedDescription = str_replace($needle,$values[$column.'_fullpath'],$this->processedDescription);
+					}
 					$needle = '$'.strtolower($this->module)."-$column$";
 					$this->processedDescription = str_replace($needle,$values[$column],$this->processedDescription);
 				}
