@@ -3054,6 +3054,8 @@ function getEmailTemplateVariables($modules_list = null) {
 	$allFields[] = $option;
 	$option = array(getTranslatedString('Current Time'), '$custom-currenttime$');
 	$allFields[] = $option;
+	$option = array(getTranslatedString('Image Field'), '${module}-{imagefield}_fullpath$');
+	$allFields[] = $option;
 	$allOptions[] = $allFields;
 	return $allOptions;
 }
