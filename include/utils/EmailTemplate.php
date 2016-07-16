@@ -154,6 +154,9 @@ class EmailTemplate {
 								$img = $db->fetch_array($result_image);
 								$fullpath = $site_URL.'/'.$img['path'].$img['attachmentsid'].'_'.$img['name'];
 								$values[$fieldColumnMapping[$fieldName].'_fullpath'] = $fullpath;
+								if (empty($values[$fieldColumnMapping[$fieldName]])) {
+									$values[$fieldColumnMapping[$fieldName]] = $img['name'];
+								}
 								$imagefound = true;
 							}
 						}
