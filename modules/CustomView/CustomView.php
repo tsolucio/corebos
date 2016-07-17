@@ -1751,8 +1751,7 @@ class CustomView extends CRMEntity {
 	 * and return the array
 	 */
 	function getCustomViewModuleInfo($module) {
-		global $adb;
-		global $current_language;
+		global $adb, $current_language;
 		$current_mod_strings = return_specified_module_language($current_language, $module);
 		$block_info = Array();
 		$modules_list = explode(",", $module);
@@ -1762,6 +1761,12 @@ class CustomView extends CRMEntity {
 		}
 
 		// Tabid mapped to the list of block labels to be skipped for that tab.
+		$showUserAdvancedBlock = GlobalVariable::getVariable('Webservice_showUserAdvancedBlock',0);
+		if ($showUserAdvancedBlock) {
+			$userNoShowBlocks = array('LBL_USER_IMAGE_INFORMATION','Asterisk Configuration');
+		} else {
+			$userNoShowBlocks = array('LBL_USER_IMAGE_INFORMATION','LBL_USER_ADV_OPTIONS','Asterisk Configuration');
+		}
 		$skipBlocksList = array(
 			getTabid('HelpDesk') => array('LBL_COMMENTS'),
 			getTabid('Faq') => array('LBL_COMMENT_INFORMATION'),
@@ -1769,7 +1774,7 @@ class CustomView extends CRMEntity {
 			getTabid('PurchaseOrder') => array('LBL_RELATED_PRODUCTS'),
 			getTabid('SalesOrder') => array('LBL_RELATED_PRODUCTS'),
 			getTabid('Invoice') => array('LBL_RELATED_PRODUCTS'),
-			getTabid('Users') => array('LBL_USER_IMAGE_INFORMATION','LBL_USER_ADV_OPTIONS','Asterisk Configuration')
+			getTabid('Users') => $userNoShowBlocks,
 		);
 
 		$Sql = "select distinct block,vtiger_field.tabid,name,blocklabel from vtiger_field inner join vtiger_blocks on vtiger_blocks.blockid=vtiger_field.block inner join vtiger_tab on vtiger_tab.tabid=vtiger_field.tabid where displaytype != 3 and vtiger_tab.name in (" . generateQuestionMarks($modules_list) . ") and vtiger_field.presence in (0,2) order by block";

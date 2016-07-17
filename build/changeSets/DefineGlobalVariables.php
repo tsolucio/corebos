@@ -48,6 +48,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 
 				'BusinessMapping_SalesOrder2Invoice',
 				'BusinessMapping_PotentialOnCampaignRelation',
+				'Webservice_showUserAdvancedBlock',
 
 				'Users_ReplyTo_SecondEmail',
 				'Users_Default_Send_Email_Template',
