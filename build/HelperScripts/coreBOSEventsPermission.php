@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2015 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Copyright 2016 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
  * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
  * file except in compliance with the License. You can redistribute it and/or modify it
  * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
@@ -82,7 +82,7 @@ class coreBOSEventsPermissionExample extends VTEventHandler {
 			if ($hdownerrs and $adb->num_rows($hdownerrs)>0) {
 				$ret = 'yes';
 			}
-		} else {
+		} elseif ($this->typeOfPermissionOverride=='addToUserPermission') {
 			// check if ticket is owned by user or the related account or product is owned by user
 			$hdownerrs = $adb->pquery('select 1
 				from vtiger_troubletickets
@@ -91,6 +91,17 @@ class coreBOSEventsPermissionExample extends VTEventHandler {
 				inner join vtiger_crmentity as pdocrm on pdocrm.crmid = vtiger_troubletickets.product_id
 				where (hdcrm.smownerid=? or acccrm.smownerid=? or pdocrm.smownerid=?) and ticketid=?',
 				array($current_user->id,$current_user->id,$current_user->id,$record_id));
+			if ($hdownerrs and $adb->num_rows($hdownerrs)>0) {
+				$ret = 'yes';
+			}
+		} else { // showTheseRecords
+			// check if the related account or product is owned by user
+			$hdownerrs = $adb->pquery('select 1
+				from vtiger_troubletickets
+				inner join vtiger_crmentity as acccrm on acccrm.crmid = vtiger_troubletickets.parent_id
+				inner join vtiger_crmentity as pdocrm on pdocrm.crmid = vtiger_troubletickets.product_id
+				where (acccrm.smownerid=? or pdocrm.smownerid=?) and ticketid=?',
+				array($current_user->id,$current_user->id,$record_id));
 			if ($hdownerrs and $adb->num_rows($hdownerrs)>0) {
 				$ret = 'yes';
 			}
