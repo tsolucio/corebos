@@ -3429,7 +3429,7 @@ function getListViewSecurityParameter($module)
 function getSecListViewSecurityParameter($module)
 {
 	global $log, $adb, $current_user;
-	$log->debug("Entering getListViewSecurityParameter(".$module.") method ...");
+	$log->debug("Entering getSecListViewSecurityParameter(".$module.") method ...");
 
 	$tabid=getTabid($module);
 	if($current_user) {
@@ -3598,7 +3598,7 @@ function getSecListViewSecurityParameter($module)
 		}
 		$sec_query .= " vtiger_groups$module.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid.")))) ";
 	}
-	$log->debug("Exiting getListViewSecurityParameter method ...");
+	$log->debug("Exiting getSecListViewSecurityParameter method ...");
 	return $sec_query;
 }
 
