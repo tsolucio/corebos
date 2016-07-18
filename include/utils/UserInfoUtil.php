@@ -605,14 +605,20 @@ function getProfileDescription($profileid)
 	return $profileDescription;
 }
 
+/** This function is a wrapper that extends the permissions system with a hook to specific functionality **/
+function isPermitted($module, $actionname, $record_id='') {
+	$permission = _vtisPermitted($module,$actionname,$record_id);
+	list($permission, $unused1, $unused2, $unused3) = cbEventHandler::do_filter('corebos.permissions.ispermitted', array($permission, $module, $actionname, $record_id));
+	return $permission;
+}
+
 /** Function to check if the currently logged in user is permitted to perform the specified action
  * @param $module -- Module Name:: Type varchar
  * @param $actionname -- Action Name:: Type varchar
  * @param $recordid -- Record Id:: Type integer
  * @returns yes or no. If Yes means this action is allowed for the currently logged in user. If no means this action is not allowed for the currently logged in user
  */
-function isPermitted($module,$actionname,$record_id='')
-{
+function _vtisPermitted($module,$actionname,$record_id='') {
 	global $log, $adb, $current_user, $seclog;
 	$log->debug("Entering isPermitted(".$module.",".$actionname.",".$record_id.") method ...");
 	if (strpos($record_id,'x')>0) { // is webserviceid
