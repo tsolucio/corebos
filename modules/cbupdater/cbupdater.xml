@@ -689,4 +689,11 @@
 	<classname>fixEventHandlerPathForConvertTZ</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Fix activity types with values with special chars</description>
+	<filename>build/changeSets/cleanActivityTypesSpecialChars.php</filename>
+	<classname>cleanActivityTypesSpecialChars</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
