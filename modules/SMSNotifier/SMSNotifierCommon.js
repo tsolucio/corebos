@@ -34,7 +34,7 @@ if(typeof(SMSNotifierCommon) == 'undefined') {
 						}
 					}
 				}
-				container.show();
+				jQuery(container).show();
 			}
 		},
 
@@ -188,7 +188,7 @@ if(typeof(SMSNotifierCommon) == 'undefined') {
 			var searchurl = form.searchurl.value;
 			var sourcemodule = form.sourcemodule.value;
 			var message = messageTextInput.value;
-			document.getElementById('status').show();
+			jQuery('#status').show();
 			VtigerJS_DialogBox.block();
 			var url = 'module=SMSNotifier&action=SMSNotifierAjax&ajax=true&file=SMSNotifierSend';
 			url += '&sourcemodule=' + encodeURIComponent(sourcemodule);
