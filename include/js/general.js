@@ -4698,13 +4698,13 @@ function getNoOfRows(id){
 					document.getElementById('numOfRows').value = response;
 					document.getElementById('count').innerHTML = response;
 					if(parseInt(document.getElementById('maxrecords').value) < parseInt(response)){
-						document.getElementById('linkForSelectAll').style.display="block";
+						document.getElementById('linkForSelectAll').style.display="table-cell";
 					}
 				} else {
 					document.getElementById('numOfRows_'+id).value = response;
 					document.getElementById('count_'+id).innerHTML = response;
 					if(parseInt(document.getElementById('maxrecords').value) < parseInt(response)){
-						document.getElementById('linkForSelectAll_'+id).style.display="block";
+						document.getElementById('linkForSelectAll_'+id).style.display="table-cell";
 					}
 				}
 			}
@@ -4729,7 +4729,7 @@ function rel_toggleSelectAll_Records(module,relmodule,state,relCheckName) {
 	}
 }
 
-// Compute the number of records related to capmaign record
+// Compute the number of records related to campaign record
 function getNoOfRelatedRows(current_module,related_module){
 	var recordid = document.getElementById('recordid').value;
 	jQuery.ajax({
