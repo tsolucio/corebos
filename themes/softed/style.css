@@ -2843,7 +2843,7 @@ a.allMnu:Hover{
 }
 .linkForSelectAll{
 	text-align:center;
-	background-color:white;
+	background-color:inherit;
 }
 
 .cb-alert-warning, .cb-alert-danger, .cb-alert-info, .cb-alert-success {
