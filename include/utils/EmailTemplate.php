@@ -40,6 +40,10 @@ class EmailTemplate {
 		$this->templateFields = Array();
 		for($i=1;$i < count($templateVariablePair);$i+=2) {
 			list($module,$fieldName) = explode('-',$templateVariablePair[$i]);
+                        if($pos = strpos($fieldName,'_fullpath')){
+                            list($field,$fpath) = explode('_',$fieldName);
+                            $this->templateFields[$module][] = $field;
+                        }
 			$this->templateFields[$module][] = $fieldName;
 		}
 		$this->processed = false;
