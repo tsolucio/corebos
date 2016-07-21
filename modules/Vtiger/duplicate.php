@@ -1,4 +1,22 @@
 <?php
+ /*************************************************************************************************
+ * Copyright 2016 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
+ * file except in compliance with the License. You can redistribute it and/or modify it
+ * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
+ * granted by the License. coreBOS distributed by JPL TSolucio S.L. is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. Unless required by
+ * applicable law or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT ANY WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language governing
+ * permissions and limitations under the License. You may obtain a copy of the License
+ * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
+ *************************************************************************************************
+ *  Module       : 
+ *  Version      : 5.4.0
+ *  Author       : JPL TSolucio, S. L.
+ *************************************************************************************************/
 
 error_reporting("E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED & ~E_WARNING");
 require_once 'include/utils/utils.php';
@@ -14,23 +32,33 @@ if(isset($_REQUEST['module_name']) && isset($_REQUEST['record_id']))
 	$focus = new $currentModule();
 	$focus->retrieve_entity_info($record_id, $currentModule);
 
-	// Duplicate Records that this Record is dependent of 
-	foreach ($focus->column_fields as $fieldname => $value) {
-		$sql = "SELECT 	* FROM vtiger_field WHERE columnname = ? AND uitype IN (10,50,51,57,58,59,73,68,76,75,81,78,80)";
-		$result = $adb->pquery($sql , array($fieldname));
-		if($adb->num_rows($result) == 1 && $value !=0)
-		{
-			$sql = "SELECT setype FROM vtiger_crmentity WHERE crmid = ?";
-			$get_module = $adb->pquery($sql , array($value));
-			$module = $adb->query_result($get_module , 0 , "setype");
-			require_once "modules/" . $module ."/". $module .".php";
-			$entity = new $module();
-			$entity->retrieve_entity_info($value,$module);
+	// Retrieve relations map
+ 	$bmapname = $currentModule.'_DuplicateRelations';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$maped_relations = $cbMap->DuplicateRelations()->getRelatedModules();
+	}
 
-			sanitizeModuleFields($entity,$module);
-			$entity->save($module);
-			$new_entity_id = $entity->id;
-			$focus->column_fields[$fieldname] = $new_entity_id;
+	// Duplicate Records that this Record is dependent of 
+	if($cbMapid && $cbMap->DuplicateRelations()->DuplicateDirectRelations() ) {
+		foreach ($focus->column_fields as $fieldname => $value) {
+			$sql = "SELECT 	* FROM vtiger_field WHERE columnname = ? AND uitype IN (10,50,51,57,58,59,73,68,76,75,81,78,80)";
+			$result = $adb->pquery($sql , array($fieldname));
+			if($adb->num_rows($result) == 1 && $value !=0)
+			{
+				$sql = "SELECT setype FROM vtiger_crmentity WHERE crmid = ?";
+				$get_module = $adb->pquery($sql , array($value));
+				$module = $adb->query_result($get_module , 0 , "setype");
+				require_once "modules/" . $module ."/". $module .".php";
+				$entity = new $module();
+				$entity->retrieve_entity_info($value,$module);
+
+				sanitizeModuleFields($entity,$module);
+				$entity->save($module);
+				$new_entity_id = $entity->id;
+				$focus->column_fields[$fieldname] = $new_entity_id;
+			}
 		}
 	}
 
@@ -40,26 +68,6 @@ if(isset($_REQUEST['module_name']) && isset($_REQUEST['record_id']))
  	$curr_tab_id = gettabid($currentModule);
  	$dependents_list = array();
  	$related_list = array();
-
- 	// Retrieve relations map
- 	require_once "modules/cbMap/cbMap.php";
-	require_once "modules/cbMap/cbMapcore.php";
-
-	$sql = "SELECT * FROM vtiger_cbmap WHERE mapname=? AND targetname=?";
-	$result = $adb->pquery($sql , array($currentModule."_relations",$currentModule));
-	if($adb->num_rows($result))
-	{
-		$cbmap_id = $adb->query_result($result,0,"cbmapid");
-		$module_map = new cbMap();
-		$module_map->retrieve_entity_info($cbmap_id,"cbMap");
-		$cbMapcore = new cbMapcore($module_map);
-
-		$xml = $cbMapcore->getXMLContent();
-		$maped_relations = array();
-		foreach ($xml->relatedmodules->relatedmodule as $r) {
-			$maped_relations[ (string)$r->module ] = (string)$r->relation;
-		}
-	}
 
 	// Get related list
 	$sql = "select related_tabid from vtiger_relatedlists where tabid=? and name=?";

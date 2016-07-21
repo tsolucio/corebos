@@ -35,5 +35,6 @@ $mod_strings = Array(
 	'Record Access Control' => 'Control de Acceso a Registro',
 	'Record Set Mapping' => 'Conjunto de Registros',
 	'ListColumns' => 'Columnas de Listas',
+	'DuplicateRelations' => 'Duplicar Relaciones',
 );
 ?>
