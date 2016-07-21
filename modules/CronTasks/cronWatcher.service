@@ -1,0 +1,94 @@
+<?php
+/*************************************************************************************************
+ * Copyright 2016 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS customizations.
+ * You can copy, adapt and distribute the work under the "Attribution-NonCommercial-ShareAlike"
+ * Vizsage Public License (the "License"). You may not use this file except in compliance with the
+ * License. Roughly speaking, non-commercial users may share and modify this code, but must give credit
+ * and share improvements. However, for proper details please read the full License, available at
+ * http://vizsage.com/license/Vizsage-License-BY-NC-SA.html and the handy reference for understanding
+ * the full license at http://vizsage.com/license/Vizsage-Deed-BY-NC-SA.html. Unless required by
+ * applicable law or agreed to in writing, any software distributed under the License is distributed
+ * on an  "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and limitations under the
+ * License terms of Creative Commons Attribution-NonCommercial-ShareAlike 3.0 (the License).
+ *************************************************************************************************
+ *  Module       : cron Watcher Service
+ *               : will send email to admin user if any active cron task is running for more than
+ *               : $warningTimeThreshold seconds.
+ *  Version      : 1.0
+ *  Author       : JPL TSolucio, S. L.
+ *************************************************************************************************/
+
+// Time Threshold: after these minutes running we will send email
+$warningTimeThreshold = 30*60; // 30 minutes.
+///////////////////////////////////
+
+$Vtiger_Utils_Log = false;
+include_once('vtlib/Vtiger/Module.php');
+require_once('vtlib/Vtiger/Cron.php');
+require_once('modules/Emails/mail.php');
+require_once('modules/Emails/Emails.php');
+global $HELPDESK_SUPPORT_EMAIL_ID, $HELPDESK_SUPPORT_NAME, $site_URL, $currentModule;
+
+// i18n
+//$i18nInactive = getTranslatedString('LBL_INACTIVE','CronTasks');
+//$i18nActive = getTranslatedString('LBL_ACTIVE','CronTasks');
+$i18nRunning = getTranslatedString('LBL_RUNNING','CronTasks');
+
+$cronTasks = Vtiger_Cron::listAllActiveInstances();
+$output = Array();
+$holdCM = $currentModule;
+$currentModule = 'CronTasks';
+foreach ($cronTasks as $cronTask) {
+	$cron_st = $cronTask->getStatus();
+	if ($cron_st!=Vtiger_Cron::$STATUS_RUNNING) continue;
+	if($cronTask->getLastStart() != 0) {
+		$start_ts = $cronTask->getLastStart();
+		$end_ts = time();
+		$elapsed = $end_ts - $start_ts;
+		$cron_started = dateDiffAsString($start_ts, $end_ts);
+	} else {
+		$elapsed = 86400000; // 1000 days
+		$cron_started = 'Never started!?!';
+	}
+	if ($elapsed<$warningTimeThreshold) continue;
+	$out = Array();
+	$cron_id = $cronTask->getId();
+	$cron_mod = $cronTask->getName();
+	$cron_freq = $cronTask->getFrequency();
+	$out['cronname'] = getTranslatedString($cron_mod,$cronTask->getModule());
+	$out['hours'] = str_pad((int)(($cron_freq/(60*60))),2,0,STR_PAD_LEFT);
+	$out['mins'] =str_pad((int)(($cron_freq%(60*60))/60),2,0,STR_PAD_LEFT);
+	$out['laststart']= $cron_started;
+	$output[] = $out;
+}
+$currentModule = $holdCM;
+
+//Send email with error.
+$auser = Users::getActiveAdminUser();
+$mailto = $auser->column_fields['email1'];
+if ($mailto != '') {
+	$from_name = $HELPDESK_SUPPORT_NAME;
+	$form_mail = $HELPDESK_SUPPORT_EMAIL_ID;
+	$mailsubject = "[Warning]: cron Task(s) exceed time threshold";
+	$mailcontent = '<br>Some cron tasks in <b>'.$site_URL.'</b> have exceeded the maximum execution time.<br><br>';
+	$mailcontent.= '<table width="100%" border=1>';
+	$mailcontent.= '<tr>';
+	$mailcontent.= '<th>'.getTranslatedString('Cron Job','CronTasks').'</th>';
+	$mailcontent.= '<th>'.getTranslatedString('LBL_FREQUENCY','CronTasks').'</th>';
+	$mailcontent.= '<th>'.getTranslatedString('LBL_STATUS','CronTasks').'</th>';
+	$mailcontent.= '<th>'.getTranslatedString('LAST_START','CronTasks').'</th>';
+	$mailcontent.= '</tr>';
+	foreach ($output as $ctsk) {
+		$mailcontent.= '<tr>';
+		$mailcontent.= '<td>'.$ctsk['cronname'].'</td>';
+		$mailcontent.= '<td>'.$ctsk['hours'].':'.$ctsk['mins'].'</td>';
+		$mailcontent.= '<td>'.$i18nRunning.'</td>';
+		$mailcontent.= '<td>'.$ctsk['laststart'].'</td>';
+		$mailcontent.= '</tr>';
+	}
+	$mailcontent.= '</table>';
+	send_mail('Emails',$mailto,$from_name,$form_mail,$mailsubject,$mailcontent);
+}
+
+?>

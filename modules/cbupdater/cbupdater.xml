@@ -696,4 +696,11 @@
 	<classname>cleanActivityTypesSpecialChars</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>cron Watcher Service</description>
+	<filename>build/changeSets/cronWatcher.php</filename>
+	<classname>cronWatcherService</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
