@@ -35,5 +35,6 @@ $mod_strings = Array(
 	'Record Access Control' => 'Record Access Control',
 	'Record Set Mapping' => 'Record Set Mapping',
 	'ListColumns' => 'List Columns',
+	'DuplicateRelations' => 'Duplicate Relations',
 );
 ?>

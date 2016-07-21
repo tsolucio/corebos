@@ -4772,3 +4772,19 @@ function QCformValidate(){
 	}
 	return true;
 }
+
+function duplicate_record(module,record)
+{
+	jQuery.ajax({
+		url: ' index.php?module=Utilities&action=UtilitiesAjax&file=duplicate',
+		type:'POST',
+		data: {module_name: module, record_id: record },
+		dataType:'JSON',
+		error: function(data){
+			console.log(data);
+		},
+		success: function(response) {
+			window.location = "index.php?module=" + response.module + "&action=DetailView&record=" + response.record_id;
+		}
+	});
+}
