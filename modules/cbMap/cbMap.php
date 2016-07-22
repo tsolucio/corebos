@@ -496,12 +496,18 @@ class cbMap extends CRMEntity {
 		return $cbmap;
 	}
 
-	public static function getMapByName($name) {
+	public static function getMapByName($name,$type='') {
 		global $adb;
-		$mrs = $adb->pquery('select cbmapid
+		$sql = 'select cbmapid
 			from vtiger_cbmap
 			inner join vtiger_crmentity on crmid=cbmapid
-			where deleted=0 and mapname=?', array($name));
+			where deleted=0 and mapname=?';
+		$prm = array($name);
+		if ($type!='') {
+			$sql .= ' and maptype=?';
+			$prm[] = $type;
+		}
+		$mrs = $adb->pquery($sql, $prm);
 		if ($mrs and $adb->num_rows($mrs)>0) {
 			$cbmapid = $adb->query_result($mrs, 0, 0);
 			$cbmap = new cbMap();
