@@ -1467,9 +1467,9 @@ function getCurrencyId($fieldValue) {
 	return $currencyId;
 }
 
-function inventoryCanSaveProductLines($request) {
+function inventoryCanSaveProductLines($request,$module) {
 	global $log;
-	$return = ($request['action'] != 'SalesOrderAjax' && $request['ajxaction'] != 'DETAILVIEW' && $request['ajxaction'] != 'Workflow'
+	$return = ($request['action'] != $module.'Ajax' && $request['ajxaction'] != 'DETAILVIEW' && $request['ajxaction'] != 'Workflow'
 		&& $request['action'] != 'MassEditSave' && $request['action'] != 'ProcessDuplicates');
 	$log->debug('inventoryCanSaveProductLines: '.($return ? 'true':'false'));
 	return $return;

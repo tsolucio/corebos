@@ -117,7 +117,7 @@ class SalesOrder extends CRMEntity {
 		}
 
 		//in ajax save we should not call this function, because this will delete all the existing product values
-		if(inventoryCanSaveProductLines($_REQUEST)) {
+		if(inventoryCanSaveProductLines($_REQUEST, 'SalesOrder')) {
 			//Based on the total Number of rows we will save the product relationship with this entity
 			saveInventoryProductDetails($this, 'SalesOrder');
 			if(vtlib_isModuleActive("InventoryDetails"))
