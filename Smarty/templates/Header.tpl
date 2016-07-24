@@ -412,6 +412,7 @@ function QCreate(qcoptions){
 					document.getElementById("status").style.display="none";
 					document.getElementById("qcform").style.display="inline";
 					document.getElementById("qcform").innerHTML = response;
+					jQuery("#qcform").draggable();
 					// Evaluate all the script tags in the response text.
 					var scriptTags = document.getElementById("qcform").getElementsByTagName("script");
 					for(var i = 0; i< scriptTags.length; i++){
