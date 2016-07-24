@@ -150,7 +150,7 @@ class CRMEntity {
 				$tblname = $adb->query_result($result, 0, 'tablename');
 				$colname = $adb->query_result($result, 0, 'columnname');
 				$fldname = $fileindex;
-				//This is to added to store the existing attachment id so we can delete it when given a new image
+				// This is to store the existing attachment id so we can delete it when given a new image
 				$attachmentname = $this->DirectImageFieldValues[$colname];
 				$old_attachmentrs = $adb->pquery('select vtiger_crmentity.crmid from vtiger_seattachmentsrel
 				 inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_seattachmentsrel.attachmentsid
