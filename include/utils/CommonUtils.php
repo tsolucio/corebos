@@ -3086,7 +3086,7 @@ function checkFileAccessForInclusion($filepath) {
 		$use_root_directory = realpath(dirname(__FILE__) . '/../../.');
 	}
 
-	$unsafeDirectories = array('storage', 'cache', 'test');
+	$unsafeDirectories = array('storage', 'cache', 'test', 'build', 'logs', 'backup', 'packages', 'schema');
 
 	$realfilepath = realpath($filepath);
 
