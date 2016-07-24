@@ -202,25 +202,6 @@ class Users extends CRMEntity {
 		return $encrypted_password;
 	}
 
-	/** Function to authenticate the current user with the given password
-	 * @param $password -- password::Type varchar
-	 * @returns true if authenticated or false if not authenticated
-	 */
-	function authenticate_user($password) {
-		$usr_name = $this->column_fields["user_name"];
-
-		$query = "SELECT * from $this->table_name where user_name=? AND user_hash=?";
-		$params = array($usr_name, $password);
-		$result = $this->db->requirePsSingleResult($query, $params, false);
-
-		if (empty($result)) {
-			$this->log->fatal("SECURITY: failed login by $usr_name");
-			return false;
-		}
-
-		return true;
-	}
-
 	/** Function for validation check */
 	function validation_check($validate, $md5, $alt = '') {
 		$validate = base64_decode($validate);
@@ -348,13 +329,6 @@ class Users extends CRMEntity {
 		$this->column_fields = $row;
 		$this->id = $row['id'];
 
-		$user_hash = strtolower(md5($user_password));
-
-		// If there is no user_hash is not present or is out of date, then create a new one.
-		if (!isset($row['user_hash']) || $row['user_hash'] != $user_hash) {
-			$query = "UPDATE $this->table_name SET user_hash=? where id=?";
-			$this->db->pquery($query, array($user_hash, $row['id']), true, "Error setting new hash for {$row['user_name']}: ");
-		}
 		$this->loadPreferencesFromDB($row['user_preferences']);
 
 		if ($row['status'] != "Inactive")
@@ -431,8 +405,6 @@ class Users extends CRMEntity {
 			}
 		}
 
-		$user_hash = strtolower(md5($new_password));
-
 		//set new password
 		$crypt_type = $this->DEFAULT_PASSWORD_CRYPT_TYPE;
 		$encrypted_new_password = $this->encrypt_password($new_password, $crypt_type);
@@ -450,9 +422,9 @@ class Users extends CRMEntity {
 		if (!in_array('last_password_reset_date', $cnuser)) {
 			$this->db->query("ALTER TABLE `vtiger_users` ADD `last_password_reset_date` date DEFAULT NULL");
 		}
-		$query = "UPDATE $this->table_name SET user_password=?, confirm_password=?, user_hash=?, crypt_type=?, change_password=?, last_password_reset_date=now(), failed_login_attempts=0 where id=?";
+		$query = "UPDATE $this->table_name SET user_password=?, confirm_password=?, crypt_type=?, change_password=?, last_password_reset_date=now(), failed_login_attempts=0 where id=?";
 		$this->db->startTransaction();
-		$this->db->pquery($query, array($encrypted_new_password, $encrypted_new_password, $user_hash, $crypt_type, $change_password_next_login, $this->id));
+		$this->db->pquery($query, array($encrypted_new_password, $encrypted_new_password, $crypt_type, $change_password_next_login, $this->id));
 		if ($this->db->hasFailedTransaction()) {
 			if ($dieOnError) {
 				die("error setting new password: [" . $this->db->database->ErrorNo() . "] " . $this->db->database->ErrorMsg());

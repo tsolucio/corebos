@@ -703,4 +703,11 @@
 	<classname>cronWatcherService</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Empty user_hash column which was a security issue and not being used.</description>
+	<filename>build/changeSets/UserDeleteUserHashColumn.php</filename>
+	<classname>UserDeleteUserHashColumn</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
