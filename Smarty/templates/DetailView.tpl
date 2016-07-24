@@ -242,6 +242,7 @@ function sendfile_email()
 												{else}
 													<img align="absmiddle" title="{$APP.LNK_LIST_NEXT}" src="{'rec_next_disabled.gif'|@vtiger_imageurl:$THEME}">&nbsp;
 												{/if}
+												<img align="absmiddle" title="{$APP.TOGGLE_ACTIONS}" src="{'menu-icon.png'|@vtiger_imageurl:$THEME}" width="16px;" onclick="{literal}if (document.getElementById('actioncolumn').style.display=='none') {document.getElementById('actioncolumn').style.display='table-cell';}else{document.getElementById('actioncolumn').style.display='none';}{/literal}">&nbsp;
 											</td>
 										</tr>
 									</table>
@@ -417,7 +418,7 @@ function sendfile_email()
 														</td></tr></table>
 											</td>
 
-		<td width=22% valign=top style="border-left:1px dashed #cccccc;padding:13px" class="noprint">
+											<td width=22% valign=top style="border-left:1px dashed #cccccc;padding:13px;{$DEFAULT_ACTION_PANEL_STATUS}" class="noprint" id="actioncolumn">
 												<!-- right side relevant info -->
 												<!-- Action links for Event & Todo START-by Minnie -->
 												<table width="100%" border="0" cellpadding="5" cellspacing="0">

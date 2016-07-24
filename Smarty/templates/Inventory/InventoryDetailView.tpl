@@ -178,6 +178,7 @@ function getListOfRecords(obj, sModule, iId,sParentTab) {
 									{else}
 									<img align="absmiddle" title="{$APP.LNK_LIST_NEXT}" src="{'rec_next_disabled.gif'|@vtiger_imageurl:$THEME}">&nbsp;
 									{/if}
+									<img align="absmiddle" title="{$APP.TOGGLE_ACTIONS}" src="{'menu-icon.png'|@vtiger_imageurl:$THEME}" width="16px;" onclick="{literal}if (document.getElementById('actioncolumn').style.display=='none') {document.getElementById('actioncolumn').style.display='table-cell';}else{document.getElementById('actioncolumn').style.display='none';}{/literal}">&nbsp;
 								</td>
 							</tr>
 						</table>
@@ -326,15 +327,13 @@ function getListOfRecords(obj, sModule, iId,sParentTab) {
 			{/if}
 		</td></tr></table>
 </td></tr></table>
-									<!-- Inventory Actions - ends -->
-									<td width=22% valign=top style="padding:10px;" class="noprint">
-										<!-- right side InventoryActions -->
+									<!-- Inventory Actions -->
+									<td width=22% valign=top style="padding:10px;{$DEFAULT_ACTION_PANEL_STATUS}" class="noprint" id="actioncolumn">
 										{include file="Inventory/InventoryActions.tpl"}
-
 										<br>
 										<!-- To display the Tag Clouds -->
 										<div>
-										      {include file="TagCloudDisplay.tpl"}
+											{include file="TagCloudDisplay.tpl"}
 										</div>
 									</td>
 								   </tr>
@@ -343,7 +342,7 @@ function getListOfRecords(obj, sModule, iId,sParentTab) {
 						   </tr>
 						    <tr>
 					<td>
-   						<table border=0 cellspacing=0 cellpadding=3 width=100% class="small">
+						<table border=0 cellspacing=0 cellpadding=3 width=100% class="small">
 						   <tr>
 								<td class="dvtTabCacheBottom" style="width:10px" nowrap>&nbsp;</td>
 								
