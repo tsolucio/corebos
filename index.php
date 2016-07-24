@@ -517,22 +517,18 @@ $mod_strings = return_module_language($current_language, $currentModule);
 //If DetailView, set focus to record passed in
 if($action == "DetailView")
 {
-	if(!isset($_REQUEST['record']))
-		die("A record number must be specified to view details.");
+	if(empty($_REQUEST['record']))
+		die('A record number must be specified to view details.');
 
-	// If we are going to a detail form, load up the record now.
-	// Use the record to track the viewing.
-	// todo - Have a record of modules and thier primary object names.
-	//Getting the actual module
-	switch($currentModule)
-	{
+	// If we are going to a detail form, load up the record now and use the record to track the viewing.
+	switch($currentModule) {
 		case 'Webmails':
 			//No need to create a webmail object here
 			break;
 		default:
 			$focus = CRMEntity::getInstance($currentModule);
 			break;
-		}
+	}
 
 	if(isset($_REQUEST['record']) && $_REQUEST['record']!='' && $_REQUEST["module"] != "Webmails" && $current_user->id != '') {
 		// Only track a viewing if the record was retrieved.
