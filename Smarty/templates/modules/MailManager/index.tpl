@@ -9,9 +9,6 @@
 {include file='Buttons_List1.tpl'}
 <script type='text/javascript' src='include/js/json.js'></script>
 <script type='text/javascript' src='include/ckeditor/ckeditor.js'></script>
-
-<script type='text/javascript' src='modules/MailManager/resources/jquery-ui-1.8.16.custom.min.js'></script>
-
 <script type='text/javascript' src='modules/MailManager/resources/jquery.tokeninput.js'></script>
 <link rel='stylesheet' type='text/css' href='modules/MailManager/resources/token-input-facebook.css'>
 
