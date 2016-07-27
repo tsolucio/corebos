@@ -65,10 +65,8 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 	if ($module!= 'Calendar') {
 		$focus->initSortByField($relatedmodule);
 	}
-	//Retreive the list from Database
-	//Appending the security parameter Security fix by Don
-	if($relatedmodule != 'Faq' && $relatedmodule != 'PriceBook'
-			&& $relatedmodule != 'Vendors' && $relatedmodule != 'Users') {
+	// Append security parameter
+	if($relatedmodule != 'Users') {
 		global $current_user;
 		$secQuery = getNonAdminAccessControlQuery($relatedmodule, $current_user);
 		if(strlen($secQuery) > 1) {
@@ -111,7 +109,7 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 		$sorder = $focus->default_sort_order;
 	}
 
-	//Added by Don for AssignedTo ordering issue in Related Lists
+	// AssignedTo ordering issue in Related Lists
 	$query_order_by = $order_by;
 	if($order_by == 'smownerid') {
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name',
