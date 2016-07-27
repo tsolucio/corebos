@@ -73,7 +73,7 @@ if($mailto != ''){
 }else {
 	$mailto = $mailtoDefined;
 }
-if ($mailto != '') {
+if ($mailto != '' and count($output)>0) {
 	$from_name = $HELPDESK_SUPPORT_NAME;
 	$form_mail = $HELPDESK_SUPPORT_EMAIL_ID;
 	$mailsubject = "[Warning]: cron Task(s) exceed time threshold";
