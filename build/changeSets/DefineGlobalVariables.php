@@ -47,6 +47,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'calendar_other_default_duration',
 				'calendar_sort_users_by',
 
+				'CronTasks_cronWatcher_mailto',
+
 				'BusinessMapping_SalesOrder2Invoice',
 				'BusinessMapping_PotentialOnCampaignRelation',
 				'Webservice_showUserAdvancedBlock',

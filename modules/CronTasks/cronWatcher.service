@@ -28,7 +28,7 @@ include_once('vtlib/Vtiger/Module.php');
 require_once('vtlib/Vtiger/Cron.php');
 require_once('modules/Emails/mail.php');
 require_once('modules/Emails/Emails.php');
-global $HELPDESK_SUPPORT_EMAIL_ID, $HELPDESK_SUPPORT_NAME, $site_URL, $currentModule;
+global $HELPDESK_SUPPORT_EMAIL_ID, $HELPDESK_SUPPORT_NAME, $site_URL, $currentModule,$current_user;
 
 // i18n
 //$i18nInactive = getTranslatedString('LBL_INACTIVE','CronTasks');
@@ -67,6 +67,12 @@ $currentModule = $holdCM;
 //Send email with error.
 $auser = Users::getActiveAdminUser();
 $mailto = $auser->column_fields['email1'];
+$mailtoDefined = GlobalVariable::getVariable('CronTasks_cronWatcher_mailto', '', 'CronTasks', $current_user->id);
+if($mailto != ''){
+	$mailto .= ','.$mailtoDefined;
+}else {
+	$mailto = $mailtoDefined;
+}
 if ($mailto != '') {
 	$from_name = $HELPDESK_SUPPORT_NAME;
 	$form_mail = $HELPDESK_SUPPORT_EMAIL_ID;
