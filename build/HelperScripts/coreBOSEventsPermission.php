@@ -29,9 +29,9 @@ class coreBOSEventsPermissionExample extends VTEventHandler {
 
 	public function handleFilter($handlerType, $parameter) {
 		global $currentModule;
-		if ($currentModule == 'HelpDesk') {
-			if ($handlerType == 'corebos.permissions.accessquery') {
-				$module = $parameter[2];
+		if ($handlerType == 'corebos.permissions.accessquery') {
+			$module = $parameter[2];
+			if ($module == 'HelpDesk') {
 				$user = $parameter[3];
 				$parameter[1] = $this->typeOfPermissionOverride;
 				switch ($this->typeOfPermissionOverride) {
@@ -53,7 +53,9 @@ class coreBOSEventsPermissionExample extends VTEventHandler {
 						$parameter[0] = $this->getHelpDeskAccessQuery($module, $user);
 						break;
 				}
-			} elseif ($handlerType == 'corebos.permissions.ispermitted') {
+			}
+		} elseif ($handlerType == 'corebos.permissions.ispermitted') {
+			if ($currentModule == 'HelpDesk') {
 				$permission = $parameter[0];
 				if ($permission == 'no') {
 					$module = $parameter[1];
