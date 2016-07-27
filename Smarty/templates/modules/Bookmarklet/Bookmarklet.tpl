@@ -6,7 +6,6 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
@@ -132,7 +131,7 @@ Update your custom description ...</textarea>
 						<input id="userEmail" value="{$userEmail}" type="hidden" />
 					</td>
 					<td class="dvtCellInfo">
-						<input id="__searchaccount__" value="" size="30" />&nbsp; 
+						<input id="__searchaccount__" value="" size="30" />&nbsp;
 						<input class="button save" id="__searchVtigerAccount__" value="Search" type="button" />
 					</td>
 				</tr>
