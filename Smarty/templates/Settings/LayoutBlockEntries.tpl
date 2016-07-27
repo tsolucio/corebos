@@ -361,12 +361,8 @@
 													<td valign="top" class="dvtCellInfo" align="left" width="10px">
 														{assign var="defaultsetting" value=$value.defaultvalue}
 														<input id="defaultvalue_check_{$value.fieldselect}" type="checkbox"
-														{if $defaultsetting.permitted eq false}
-															 disabled
-														{/if}
-														{if $defaultsetting.value neq ''}
-															 checked
-														{/if}
+														{if $defaultsetting.permitted eq false} disabled{/if}
+														{if $defaultsetting.value neq ''} checked{/if}>
 													</td>
 													<td valign="top" class="dvtCellInfo" align="left">
 														&nbsp;<label for="defaultvalue_check_{$value.fieldselect}">{$MOD.LBL_DEFAULT_VALUE}</label><br>

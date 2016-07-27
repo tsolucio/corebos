@@ -94,9 +94,9 @@ ul.searchResult li a:hover {
 <body onload="init();" class="small">
 	<div id="__vtigerBookMarkletDiv__">
 		<div>
-		<img src="themes/images/logo_mail.jpg" alt="{'APP_NAME'|getTranslatedString:$MODULE}" title="{'APP_NAME'|getTranslatedString:$MODULE}" border="0" style="width: 80px; height: 30px"
+		<img src="themes/images/logo_mail.jpg" alt="{'APP_NAME'|getTranslatedString:$MODULE}" title="{'APP_NAME'|getTranslatedString:$MODULE}" border="0" style="width: 80px; height: 30px">
 		</div>
-								
+
 		<table width="99%" cellspacing="0" cellpadding="5" border="0" class="tableHeading">
 		<tr>
 			<td class="big">Google Mail Information<br/></td>
