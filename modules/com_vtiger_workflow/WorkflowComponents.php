@@ -77,10 +77,10 @@ function vtJsonOwnersList($adb) {
 	$activeUsersList = get_user_array(false);
 	$allGroupsList = get_group_array(false);
 	foreach ($activeUsersList as $userId => $userName) {
-		$ownersList[] = array('label' => $userName, 'value' => getUserName($userId));
+		$ownersList[] = array('label' => $userName, 'value' => getUserName($userId), 'id' => $userId);
 	}
 	foreach ($allGroupsList as $groupId => $groupName) {
-		$ownersList[] = array('label' => $groupName, 'value' => $groupName);
+		$ownersList[] = array('label' => $groupName, 'value' => $groupName, 'id' => $groupId);
 	}
 
 	echo Zend_Json::encode($ownersList);
