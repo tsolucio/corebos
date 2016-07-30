@@ -710,4 +710,11 @@
 	<classname>UserDeleteUserHashColumn</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>kevinduqi</author>
+	<description>Assign Related records workflow task</description>
+	<filename>build/changeSets/add_workflow_assignrelated.php</filename>
+	<classname>add_workflow_assignrelated</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
 </updatesChangeLog>
