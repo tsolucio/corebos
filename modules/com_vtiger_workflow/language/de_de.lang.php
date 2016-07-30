@@ -85,10 +85,11 @@ $mod_strings = array(
 
     'Workflow'=>'Workflow',
 
-    'VTCreateEntityTask' => 'erstelle Objekt',
-    'LBL_ENTITY_TYPE' => 'Objekttyp',
-    'LBL_SELECT_ENTITY_TYPE' => '-- wähle Objekttyp --',
-    'LBL_NO_ENTITIES_FOUND' => 'Keine Objekte zum erstellen gefunden',
+	'VTCreateEntityTask' => 'erstelle Objekt',
+	'LBL_ENTITY_TYPE' => 'Objekttyp',
+	'LBL_SELECT_ENTITY_TYPE' => '-- wähle Objekttyp --',
+	'Assigned User' => 'Assigned User',
+	'LBL_NO_ENTITIES_FOUND' => 'Keine Objekte zum erstellen gefunden',
 	'LBL_PARENT_OWNER' => 'Parent Record Owner',
 	'LBL_SPECIAL_OPTIONS' => 'Special Options',
 	'CBTagTask' => 'Add/Delete Tag',
@@ -103,6 +104,7 @@ $mod_strings = array(
 	'Relate with AccountVendor' => 'Relate with Account/Vendor',
 	'Relate with Contact' => 'Relate with Contact',
 	'CBDeleteRelatedTask' => 'Delete Related Records',
+	'CBAssignRelatedTask' => 'Assign Related Records',
 	'CBSelectcbMap' => 'Select Business Rule',
 	'LBL_HELPDESK_SUPPORT_EMAILID'=>'Trouble Ticket E-Mail-Id',
 	'LBL_HELPDESK_SUPPORT_NAME'=>'Trouble Ticket Support Name',

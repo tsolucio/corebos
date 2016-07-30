@@ -28,7 +28,7 @@ class CBAssignRelatedTask extends VTTask{
 	public function doTask(&$entity) {
 		global $adb,$default_charset,$log,$current_user;
 		list($cto,$cto_id) = explode('x',$entity->getId());
-		if (!empty($cto_id) and !empty($this->relmodule)) {
+		if (!empty($cto_id) and !empty($this->relmodule) and !empty($this->username)) {
 			$module = getSalesEntityType($cto_id);
 			$webserviceObject = VtigerWebserviceObject::fromName($adb,$this->relmodule);
 			$handlerPath = $webserviceObject->getHandlerPath();
@@ -47,19 +47,17 @@ class CBAssignRelatedTask extends VTTask{
 			$queryGenerator->setFields(array('id'));
 			$queryGenerator->addReferenceModuleFieldCondition($module, $reffield, 'id', $cto_id, 'e');
 			$query = $queryGenerator->getQuery();
-			if (!empty($this->username)) {
-				if($this->username=="assigneduser") {
-					$usrquery = $adb->pquery("SELECT smownerid FROM vtiger_crmentity WHERE crmid=?", array($cto_id));
-					$usr = $adb->query_result($usrquery, 0, 0);
-				}
-				else
-					$usr = $this->username;
+			if($this->username=="assigneduser") {
+				$usrquery = $adb->pquery("SELECT smownerid FROM vtiger_crmentity WHERE crmid=?", array($cto_id));
+				$usr = $adb->query_result($usrquery, 0, 0);
+			} else {
+				$usr = $this->username;
 			}
 
 			$updquery = 'UPDATE vtiger_crmentity set smownerid=? where crmid=?';
 			$relrecs = $adb->query($query);
 			for ($relrec=0;$relrec<$adb->num_rows($relrecs);$relrec++) {
-				// direct delete to avoid relaunching workflows > I am not sure this is correct (!)
+				// direct assignment to avoid relaunching workflows > I am not sure this is correct (!)
 				$adb->pquery($updquery, array($usr, $adb->query_result($relrecs, $relrec, 0)));
 			}
 		}

@@ -80,7 +80,7 @@
 							uname.val(selectedEntityType);
 						}
 					}
-					uname.append('<option value="assigneduser">Assigned User</option>');
+					uname.append('<option value="assigneduser">{/literal}{'Assigned User'|@getTranslatedString:$MODULE}{literal}</option>');
 					jQuery('#entity_type-busyicon').hide();
 					uname.show();
 				}
@@ -106,8 +106,8 @@
 	</select>
 </div>
 <div style="float: left;">
-	<h2>{'LBL_SELECT_USER'|@getTranslatedString:$MODULE}</h2>
+	<h2>{'LBL_SELECT_USER_BUTTON_LABEL'|@getTranslatedString:$MODULE}</h2>
 	<select id="username" name="username" style="display:none;">
-		<option value=''>{'LBL_SELECT_ASSIGNED_USER'|@getTranslatedString:$MODULE}</option>
+		<option value=''>-- {'LBL_SELECT_USER_BUTTON_LABEL'|@getTranslatedString:$MODULE} --</option>
 	</select>
 </div>
