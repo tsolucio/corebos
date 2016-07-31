@@ -343,21 +343,13 @@ function servicePickList(currObj,module, row_no) {
 function AssetssetValueFromCapture(recordid,value,target_fieldname) {
 	if(target_fieldname=="invoiceid") {
 		var url = "module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getFieldValuesFromRecord&getTheseFields=account_id,Accounts.accountname&getFieldValuesFrom="+recordid;
-		new Ajax.Request(
-			'index.php',
-			{
-				queue: {
-					position: 'end',
-					scope: 'command'
-				},
-				method: 'post',
-				postBody:url,
-				onComplete: function(response) {
-					var str = JSON.parse(response.responseText);
-					document.EditView.account.value = str["accountid"];
-					document.EditView.account_display.value = str["Accounts.accountname"];
-				}
-			}
-			);
+		jQuery.ajax({
+			method: 'GET',
+			url: "index.php?"+url
+		}).done(function (response) {
+			var str = JSON.parse(response);
+			document.EditView.account.value = str["accountid"];
+			document.EditView.account_display.value = str["Accounts.accountname"];
+		});
 	}
 }

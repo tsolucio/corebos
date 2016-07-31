@@ -787,16 +787,14 @@ if (typeof(MailManager) == 'undefined') {
 				var emltpl = JSON.parse(response);
 				if (emltpl.Users_Default_Send_Email_Template!='') {
 					var baseurl = 'module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=getEmailTemplateDetails&templateid=';
-					new Ajax.Request('index.php', {
-						method: 'post',
-						postBody: baseurl + encodeURIComponent(emltpl.Users_Default_Send_Email_Template),
-						onComplete: function(response){
-							emltpl = JSON.parse(response.responseText);
-							console.log(emltpl.subject);
-							document.getElementById('_mail_replyfrm_subject_').value = emltpl.subject;
-							document.getElementById('_mail_replyfrm_body_').value = emltpl.body;
-							MailManager.mail_reply_rteinit(emltpl.body);
-						}
+					jQuery.ajax({
+						method: 'POST',
+						url: "index.php?"+baseurl + encodeURIComponent(emltpl.Users_Default_Send_Email_Template)
+					}).done(function (response) {
+						emltpl = JSON.parse(response);
+						document.getElementById('_mail_replyfrm_subject_').value = emltpl.subject;
+						document.getElementById('_mail_replyfrm_body_').value = emltpl.body;
+						MailManager.mail_reply_rteinit(emltpl.body);
 					});
 				}
 			});
