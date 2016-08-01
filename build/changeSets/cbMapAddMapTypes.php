@@ -25,6 +25,7 @@ class cbMapAddMapTypes extends cbupdaterWorker {
 			$cbmaptypes = array(
 				'Record Access Control',
 				'Record Set Mapping',
+				'Module Set Mapping',
 				'ListColumns',
 				'DuplicateRelations',
 			);

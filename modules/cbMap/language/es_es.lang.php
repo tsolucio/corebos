@@ -34,6 +34,7 @@ $mod_strings = Array(
 	'Field Dependency' => 'Dependencia de Campos',
 	'Record Access Control' => 'Control de Acceso a Registro',
 	'Record Set Mapping' => 'Conjunto de Registros',
+	'Module Set Mapping' => 'Conjunto de módulos',
 	'ListColumns' => 'Columnas de Listas',
 	'DuplicateRelations' => 'Duplicar Relaciones',
 );
