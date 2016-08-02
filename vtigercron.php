@@ -32,7 +32,7 @@ else {
 	// Run all service
 	$cronTasks = Vtiger_Cron::listAllActiveInstances();
 }
-
+$app_strings = return_application_language($default_language);
 foreach ($cronTasks as $cronTask) {
 	try {
 		$cronTask->setBulkMode(true);
