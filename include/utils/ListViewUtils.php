@@ -3701,11 +3701,15 @@ function setSessionVar($lv_array, $noofrows, $max_ent, $module = '', $related = 
 function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $related_module, $recordid) {
 	global $log, $app_strings, $adb, $theme;
 	$log->debug("Entering getTableHeaderNavigation(" . $url_qry . "," . $module . "," . $related_module . "," . $recordid . ") method ...");
-	$relatedTabId = getTabid($related_module);
 	$tabid = getTabid($module);
-
-	$relatedListResult = $adb->pquery('SELECT * FROM vtiger_relatedlists WHERE tabid=? AND
-		related_tabid=?', array($tabid, $relatedTabId));
+	if($related_module == 'Parent Product'){
+		$relatedListResult = $adb->pquery('SELECT * FROM vtiger_relatedlists WHERE tabid=? AND
+			label=?', array($tabid, $related_module));
+	}else{
+		$relatedTabId = getTabid($related_module);
+		$relatedListResult = $adb->pquery('SELECT * FROM vtiger_relatedlists WHERE tabid=? AND
+			related_tabid=?', array($tabid, $relatedTabId));
+	}
 	if (empty($relatedListResult))
 		return;
 	$relatedListRow = $adb->fetch_row($relatedListResult);
