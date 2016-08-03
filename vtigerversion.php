@@ -14,4 +14,6 @@ $_SESSION['vtiger_version'] = $vtiger_current_version;
 $coreBOS_app_version = '5.8.0';
 $coreBOS_app_name ='coreBOS';
 $coreBOS_app_url = 'http://corebos.org';
+$coreBOS_commit_date = '$Date$';
+$coreBOS_commit_hash = '$Hash$';
 ?>
