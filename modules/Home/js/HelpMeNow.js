@@ -7,10 +7,7 @@
  * All Rights Reserved.
  ******************************************************************************/
 
-/**
- * Utility classes for prototype 1.4
- */
-// Based on https://gist.github.com/145466 (MIT) - modified to suit Prototype v1.4
+// Based on https://gist.github.com/145466 (MIT)
 
 vtiger_help_jsonp = Class.create();
 vtiger_help_jsonp.prototype = Object.extend(Ajax.Base, (function() {
