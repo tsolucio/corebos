@@ -994,6 +994,7 @@ function doModuleValidation(edit_type,editForm,callback) {
 		var formName = editForm;
 	}
 	if((formName == 'QcEditView' && QCformValidate()) || (doformValidation(edit_type))) { //base function which validates form data
+		VtigerJS_DialogBox.block();
 		if (edit_type=='mass_edit') {
 			var action = 'MassEditSave';
 		} else {
@@ -1025,7 +1026,6 @@ function doModuleValidation(edit_type,editForm,callback) {
 						data : {structure: sentForm},
 						url : "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule="+gVTModule,
 						success : function(msg) {  //Validation file answers
-							VtigerJS_DialogBox.unblock();
 							if (msg.search("%%%CONFIRM%%%") > -1) { //Allow to use confirm alert
 								//message to display
 								var display = msg.split("%%%CONFIRM%%%");
@@ -1044,11 +1044,12 @@ function doModuleValidation(edit_type,editForm,callback) {
 								}
 							} else { //Error
 								alert(msg);
+								VtigerJS_DialogBox.unblock();
 							}
 						},
 						error : function() {  //Error while asking file
-							VtigerJS_DialogBox.unblock();
 							alert('Error with AJAX');
+							VtigerJS_DialogBox.unblock();
 						}
 					});
 				} else { // no validation we send form
