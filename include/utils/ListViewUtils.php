@@ -2739,10 +2739,12 @@ function getListQuery($module, $where = '') {
 					WHERE deleted=0 " . $where;
 			break;
 		default:
-			// vtlib customization: Include the module file
 			$focus = CRMEntity::getInstance($module);
-			$query = $focus->getListQuery($module, $where);
-		// END
+			if (method_exists($focus, 'getListQuery')) {
+				$query = $focus->getListQuery($module, $where);
+			} else {
+				$query = "SELECT * FROM vtiger_crmentity_seq WHERE id='notexist'"; // return valid empty query
+			}
 	}
 
 	if ($module != 'Users') {
