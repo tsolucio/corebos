@@ -418,7 +418,6 @@ function QCreate(qcoptions){
 						var scriptTag = scriptTags[i];
 						eval(scriptTag.innerHTML);
 					}
-					eval(document.getElementById("qcform"));
 					posLay(qcoptions, "qcform");
 			}
 		);

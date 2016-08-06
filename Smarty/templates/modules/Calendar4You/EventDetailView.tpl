@@ -14,7 +14,7 @@
 <script type="text/javascript" src="jscalendar/lang/calendar-en.js"></script>
 <script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
 <script type="text/javascript" src="include/js/reflection.js"></script>
-<script language="JavaScript" type="text/javascript" src="include/js/dtlviewajax.js"></script>
+<script type="text/javascript" src="include/js/dtlviewajax.js"></script>
 <span id="crmspanid" style="display:none;position:absolute;"  onmouseover="show('crmspanid');">
 	<a class="link"  align="right" href="javascript:;">{$APP.LBL_EDIT_BUTTON}</a>
 </span>
@@ -32,21 +32,31 @@ function callConvertLeadDiv(id){
 			eval(document.getElementById("conv_leadcal").innerHTML);
 		});
 }
-function showHideStatus(sId,anchorImgId,sImagePath){
-	oObj = eval(document.getElementById(sId));
-	if(oObj.style.display == 'block'){
+function showHideStatus(sId,anchorImgId,sImagePath)
+{
+	oObj = document.getElementById(sId);
+	if(oObj.style.display == 'block')
+	{
 		oObj.style.display = 'none';
 		if(anchorImgId !=null){
-			eval(document.getElementById(anchorImgId)).src =  'themes/images/inactivate.gif';
-			eval(document.getElementById(anchorImgId)).alt = 'Display';
-			eval(document.getElementById(anchorImgId)).title = 'Display';
+{/literal}
+			document.getElementById(anchorImgId).src = 'themes/images/inactivate.gif';
+			document.getElementById(anchorImgId).alt = '{'LBL_Show'|@getTranslatedString:'Settings'}';
+			document.getElementById(anchorImgId).title = '{'LBL_Show'|@getTranslatedString:'Settings'}';
+			document.getElementById(anchorImgId).parentElement.className = 'exp_coll_block activate';
+{literal}
 		}
-	} else {
+	}
+	else
+	{
 		oObj.style.display = 'block';
 		if(anchorImgId !=null){
-			eval(document.getElementById(anchorImgId)).src = 'themes/images/activate.gif';
-			eval(document.getElementById(anchorImgId)).alt = 'Hide';
-			eval(document.getElementById(anchorImgId)).title = 'Hide';
+{/literal}
+			document.getElementById(anchorImgId).src = 'themes/images/activate.gif';
+			document.getElementById(anchorImgId).alt = '{'LBL_Hide'|@getTranslatedString:'Settings'}';
+			document.getElementById(anchorImgId).title = '{'LBL_Hide'|@getTranslatedString:'Settings'}';
+			document.getElementById(anchorImgId).parentElement.className = 'exp_coll_block inactivate';
+{literal}
 		}
 	}
 }

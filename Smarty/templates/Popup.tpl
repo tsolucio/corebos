@@ -45,7 +45,6 @@ function QCreate(module,urlpop) {
 						var scriptTag = scriptTags[i];
 						eval(scriptTag.innerHTML);
 					}
-					eval(document.getElementById("qcformpop"));
 				}
 			);
 	} else {

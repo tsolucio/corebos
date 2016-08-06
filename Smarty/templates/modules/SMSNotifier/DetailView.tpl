@@ -34,23 +34,32 @@ function callConvertLeadDiv(id)
 }
 function showHideStatus(sId,anchorImgId,sImagePath)
 {
-	oObj = eval(document.getElementById(sId));
+	oObj = document.getElementById(sId);
 	if(oObj.style.display == 'block')
 	{
 		oObj.style.display = 'none';
-		eval(document.getElementById(anchorImgId)).src =  'themes/images/inactivate.gif';
-		eval(document.getElementById(anchorImgId)).alt = 'Display';
-		eval(document.getElementById(anchorImgId)).title = 'Display';
+		if(anchorImgId !=null){
+{/literal}
+			document.getElementById(anchorImgId).src = 'themes/images/inactivate.gif';
+			document.getElementById(anchorImgId).alt = '{'LBL_Show'|@getTranslatedString:'Settings'}';
+			document.getElementById(anchorImgId).title = '{'LBL_Show'|@getTranslatedString:'Settings'}';
+			document.getElementById(anchorImgId).parentElement.className = 'exp_coll_block activate';
+{literal}
+		}
 	}
 	else
 	{
 		oObj.style.display = 'block';
-		eval(document.getElementById(anchorImgId)).src = 'themes/images/activate.gif';
-		eval(document.getElementById(anchorImgId)).alt = 'Hide';
-		eval(document.getElementById(anchorImgId)).title = 'Hide';
+		if(anchorImgId !=null){
+{/literal}
+			document.getElementById(anchorImgId).src = 'themes/images/activate.gif';
+			document.getElementById(anchorImgId).alt = '{'LBL_Hide'|@getTranslatedString:'Settings'}';
+			document.getElementById(anchorImgId).title = '{'LBL_Hide'|@getTranslatedString:'Settings'}';
+			document.getElementById(anchorImgId).parentElement.className = 'exp_coll_block inactivate';
+{literal}
+		}
 	}
 }
-
 function setCoOrdinate(elemId){
 	oBtnObj = document.getElementById(elemId);
 	var tagName = document.getElementById('lstRecordLayout');
