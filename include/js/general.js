@@ -2894,33 +2894,35 @@ function toggleSelect_ListView(state,relCheckName,groupParentElementId) {
 		}
 	}
 	if(document.getElementById('curmodule') != undefined && document.getElementById('curmodule').value == 'Documents') {
-		if(state==true)	{
+		if(state==true) {
 			var count = document.getElementById('numOfRows_'+groupParentElementId).value;
 			if(count == '') {
 				getNoOfRows(groupParentElementId);
+				count = document.getElementById('numOfRows_'+groupParentElementId).value;
 			}
 			if(parseInt(document.getElementById('maxrecords').value) < parseInt(count)) {
-				document.getElementById('linkForSelectAll_'+groupParentElementId).style.display="block";
+				document.getElementById('linkForSelectAll_'+groupParentElementId).style.display="table-cell";
 			}
 		} else {
 			if(document.getElementById('selectedboxes_'+groupParentElementId).value == 'all') {
-				document.getElementById('linkForSelectAll_'+groupParentElementId).style.display="block";
+				document.getElementById('linkForSelectAll_'+groupParentElementId).style.display="table-cell";
 			} else {
 				document.getElementById('linkForSelectAll_'+groupParentElementId).style.display="none";
 			}
 		}
 	} else {
-		if(state==true)	{
+		if(state==true) {
 			var count = document.getElementById('numOfRows').value;
-			if(count == '')	{
+			if(count == '') {
 				getNoOfRows();
+				count = document.getElementById('numOfRows').value;
 			}
 			if(parseInt(document.getElementById('maxrecords').value) < parseInt(count)) {
-				document.getElementById('linkForSelectAll').style.display="block";
+				document.getElementById('linkForSelectAll').style.display="table-cell";
 			}
 		} else {
 			if(document.getElementById('allselectedboxes').value == 'all') {
-				document.getElementById('linkForSelectAll').style.display="block";
+				document.getElementById('linkForSelectAll').style.display="table-cell";
 			} else {
 				document.getElementById('linkForSelectAll').style.display="none";
 			}

@@ -464,7 +464,7 @@ function getListViewEntries_js(module,url)
 						document.getElementById('numOfRows_selectall'+id).value = numOfRows[i];
 						document.getElementById('count_selectall'+id).innerHTML = numOfRows[i];
 						if(selectedRecords[i] == 'all'){
-							document.getElementById('linkForSelectAll_selectall'+id).style.display = 'block';
+							document.getElementById('linkForSelectAll_selectall'+id).style.display = 'table-cell';
 							document.getElementById('selectAllRec_selectall'+id).style.display='none';
 							document.getElementById('deSelectAllRec_selectall'+id).style.display='inline';
 							var exculdedArray = excludedRecords[i].split(';');
@@ -488,7 +488,7 @@ function getListViewEntries_js(module,url)
 					document.getElementById('numOfRows').value = count;
 					document.getElementById("count").innerHTML = count;
 					if(all_selected == 'all'){
-						document.getElementById('linkForSelectAll').style.display = 'block';
+						document.getElementById('linkForSelectAll').style.display = 'table-cell';
 						document.getElementById('selectAllRec').style.display = 'none';
 						document.getElementById('deSelectAllRec').style.display = 'inline';
 						exculdedArray=excludedRecords.split(';');
