@@ -234,7 +234,7 @@ function getListOfRecords(obj, sModule, iId,sParentTab) {
 							{else}
 							<div style="width:auto;display:none;" id="tbl{$header|replace:' ':''}" >
 							{/if}
-							<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small detailview_table">
+							<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small">
 
             {if $CUSTOMBLOCKS.$header.custom}
                 {include file=$CUSTOMBLOCKS.$header.tpl}
