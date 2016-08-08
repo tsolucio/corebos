@@ -105,14 +105,18 @@ var genUiType = "";
 var genFldValue = "";
 
 function dtlViewAjaxDirectFieldSave(fieldValue,module,tableName,fieldName,crmId,okmsg) {
-	var data = "file=DetailViewAjax&module=" + module + "&action=" + module + "Ajax&record=" + crmId+"&recordid=" + crmId ;
-	data = data + "&fldName=" + fieldName + "&fieldValue=" + escapeAll(fieldValue) + "&ajxaction=DETAILVIEW";
+	var data = {
+		"fldName" : fieldName,
+		"fieldValue" : escapeAll(tagValue)
+	};
+	var url = "file=DetailViewAjax&module=" + module + "&action=" + module + "Ajax&record=" + crmId + "&recordid=" + crmId + "&ajxaction=DETAILVIEW";
 	if(module == 'Users') {
-		data += "&form_token=" + (document.getElementsByName('form_token')[0].value);
+		url += "&form_token=" + (document.getElementsByName('form_token')[0].value);
 	}
 	jQuery.ajax({
 			method: 'POST',
-			url: 'index.php?'+data
+			url: 'index.php?' + url,
+			data : data
 	}).done(function (response) {
 			if(response.indexOf(":#:FAILURE")>-1) {
 				alert(alert_arr.ERROR_WHILE_EDITING);
@@ -256,14 +260,18 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 		}
 	}
 
-	var data = "file=DetailViewAjax&module=" + module + "&action=" + module + "Ajax&record=" + crmId+"&recordid=" + crmId ;
-	data = data + "&fldName=" + fieldName + "&fieldValue=" + escapeAll(tagValue) + "&ajxaction=DETAILVIEW"+groupurl;
+	var data = {
+		"fldName" : fieldName,
+		"fieldValue" : escapeAll(tagValue)
+	};
+	var url = "file=DetailViewAjax&module=" + module + "&action=" + module + "Ajax&record=" + crmId + "&recordid=" + crmId + "&ajxaction=DETAILVIEW" + groupurl;
 	if(module == 'Users') {
-		data += "&form_token=" + (document.getElementsByName('form_token')[0].value);
+		url += "&form_token=" + (document.getElementsByName('form_token')[0].value);
 	}
 	jQuery.ajax({
 			method: 'POST',
-			url: 'index.php?'+ data
+			url: 'index.php?'+ url,
+			data : data
 	}).done(function (response) {
 			if(response.indexOf(":#:FAILURE")>-1) {
 				alert(alert_arr.ERROR_WHILE_EDITING);
