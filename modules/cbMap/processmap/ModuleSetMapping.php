@@ -40,14 +40,14 @@ class ModuleSetMapping extends processcbMap {
 		$xml = $this->getXMLContent();
 		if (isset($xml->modules)) {
 			foreach($xml->modules->module as $k=>$v) {
-				$module_set[] = strtolower((String)$v);
+				$module_set[] = (String)$v;
 			}
 		}
 		return $module_set;
 	}
 
 	public function getFullModuleSet() {
-		$this->convertMap2Array();;
+		return $this->convertMap2Array();;
 	}
 
 

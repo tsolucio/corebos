@@ -139,6 +139,8 @@ function vtws_convertlead($entityvalues, $user) {
 		return null;
 	}
 
+	vtws_createEntities($entityIds);
+
 	return $entityIds;
 }
 
@@ -261,6 +263,75 @@ function vtws_updateConvertLeadStatus($entityIds, $leadId, $user) {
 		$leadModifiedTime = $adb->formatDate(date('Y-m-d H:i:s'), true);
 		$crmentityUpdateSql = "UPDATE vtiger_crmentity SET modifiedtime=?, modifiedby=? WHERE crmid=?";
 		$adb->pquery($crmentityUpdateSql, array($leadModifiedTime, $user->id, $leadIdComponents[1]));
+	}
+}
+
+function vtws_createEntities($entityIds) {
+	global $adb,$current_user;
+
+	if(isset($entityIds['Accounts']))
+		$accountid = vtws_getIdComponents($entityIds['Accounts'])[1];
+	if(isset($entityIds['Accounts']))
+		$contactid = vtws_getIdComponents($entityIds['Contacts'])[1];
+
+	$bmapname = 'LeadConversion';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$modules = $cbMap->ModuleSetMapping()->getFullModuleSet();
+
+		foreach ($modules as $module) {
+			if($module != "Potentials") {
+				if(isset($accountid))
+					vtws_createEntity($accountid,"Accounts",$module);
+				if(isset($contactid))
+					vtws_createEntity($contactid,"Contacts",$module);
+			}
+		}
+	}
+}
+
+function vtws_createEntity($recordid,$originMod,$targetMod) {
+	global $adb,$current_user,$log;
+
+	if($originMod == "Accounts")
+		$map_name = "Account2".$targetMod;
+	else if($originMod == "Contacts")
+		$map_name = "Contact2".$targetMod;
+
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$map_name, cbMap::getMapIdByName($map_name));
+	if($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$map_results = $cbMap->Mapping();
+
+		$entityId = vtws_getWebserviceEntityId($originMod,$recordid);
+		$entityObject = VtigerWebserviceObject::fromName($adb, $originMod);
+		$handlerPath = $entityObject->getHandlerPath();
+		$handlerClass = $entityObject->getHandlerClass();
+
+		require_once $handlerPath;
+		$leadHandler = new $handlerClass($entityObject,$current_user, $adb, $log);
+
+		$entityInfo = vtws_retrieve($entityId,$current_user);
+		$related_fields = array_flip($map_results);
+		$newEntityInfo = array();
+		foreach ($related_fields as $field => $value) {
+			if($field =="accountid" || $field =="contactid")
+				$newEntityInfo[$value] = $entityInfo["id"];
+			else if(isset($entityInfo[$field]))
+				$newEntityInfo[$value] = $entityInfo[$field];
+		}
+
+		if(!array_key_exists("assigned_user_id",$newEntityInfo))
+			$newEntityInfo['assigned_user_id'] = $entityInfo['assigned_user_id'];
+
+		//Create new entity
+		try{
+			vtws_create($targetMod, $newEntityInfo, $current_user);
+		} catch (Exception $e) {
+			throw new WebServiceException(WebServiceErrorCode::$UNKNOWNOPERATION,
+					$e->getMessage().' : '.$targetMod);
+		}
 	}
 }
 
