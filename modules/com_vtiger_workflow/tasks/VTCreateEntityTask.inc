@@ -129,7 +129,7 @@ class VTCreateEntityTask extends VTTask {
                         $newEntity->mode = 'edit';
 			$newEntity->save($entityType);
                 }                
-echo '<pre>';var_dump($cbfromid,$cbfrommodule,$bmapname,$cbMapidFromid);echo '</pre>';exit;
+
                 $from_wf = false;
 		$util->revertUser();
 	}
