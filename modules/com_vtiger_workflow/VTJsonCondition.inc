@@ -16,6 +16,8 @@ class VTJsonCondition {
 	}
 
 	function evaluate($condition, $entityCache, $id) {
+		global $logbg;
+		$logbg->debug("Entering evaluate($condition,$id) method ...");
 		$expr = Zend_Json::decode($condition);
 		$entityData = $entityCache->forId($id);
 		$data = $entityData->getData();
@@ -86,6 +88,9 @@ class VTJsonCondition {
 				}
 			}
 		}
+		$logbg->debug('expressionResults: '.var_export($expressionResults,TRUE));
+		$logbg->debug('groupResults: '.var_export($groupResults,TRUE));
+		$logbg->debug('Exiting evaluate(): '.var_export($finalResult,true));
 		return $finalResult;
 	}
 

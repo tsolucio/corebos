@@ -122,7 +122,7 @@ class Invoice extends CRMEntity {
 				InventoryDetails::createInventoryDetails($this,'Invoice');
 
 		} else if(isset($_REQUEST)) {
-			if(inventoryCanSaveProductLines($_REQUEST)) {
+			if(inventoryCanSaveProductLines($_REQUEST,'Invoice')) {
 				//Based on the total Number of rows we will save the product relationship with this entity
 				saveInventoryProductDetails($this, 'Invoice');
 				if(vtlib_isModuleActive("InventoryDetails"))

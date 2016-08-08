@@ -99,7 +99,7 @@ class PurchaseOrder extends CRMEntity {
 			$this->insertIntoAttachment($this->id,$module);
 		}
 		//in ajax save we should not call this function, because this will delete all the existing product values
-		if(inventoryCanSaveProductLines($_REQUEST)) {
+		if(inventoryCanSaveProductLines($_REQUEST, 'PurchaseOrder')) {
 			//Based on the total Number of rows we will save the product relationship with this entity
 			saveInventoryProductDetails($this, 'PurchaseOrder');
 			if(vtlib_isModuleActive("InventoryDetails"))

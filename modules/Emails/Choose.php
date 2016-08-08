@@ -44,7 +44,7 @@ $numrows = $adb->num_rows($result);
 	}
 	?>
 
-	<script language="javascript">
+	<script>
 	function passemail()
 	{
 		y=new Array();

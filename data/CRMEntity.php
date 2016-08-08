@@ -150,7 +150,7 @@ class CRMEntity {
 				$tblname = $adb->query_result($result, 0, 'tablename');
 				$colname = $adb->query_result($result, 0, 'columnname');
 				$fldname = $fileindex;
-				//This is to added to store the existing attachment id so we can delete it when given a new image
+				// This is to store the existing attachment id so we can delete it when given a new image
 				$attachmentname = $this->DirectImageFieldValues[$colname];
 				$old_attachmentrs = $adb->pquery('select vtiger_crmentity.crmid from vtiger_seattachmentsrel
 				 inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_seattachmentsrel.attachmentsid
@@ -2508,10 +2508,32 @@ class CRMEntity {
 			} elseif ($module == 'Calendar' || !empty($scope)) {
 				$tableName .= '_t' . $tabId;
 			}
-			$this->setupTemporaryTable($tableName, $sharedTabId, $user, $current_user_parent_role_seq, $current_user_groups);
-			$query = " INNER JOIN $tableName $tableName$scope ON $tableName$scope.id = " .
-					"vtiger_crmentity$scope.smownerid ";
+			list($tsSpecialAccessQuery, $typeOfPermissionOverride, $unused1, $unused2) = cbEventHandler::do_filter('corebos.permissions.accessquery', array('', 'none', $module, $user));
+			if ($typeOfPermissionOverride=='fullOverride') {
+				VTCacheUtils::updateCachedInformation('SpecialPermissionWithDuplicateRows', true);
+				return $tsSpecialAccessQuery;
+			}
+			if ($typeOfPermissionOverride=='none' or $tsSpecialAccessQuery=='') {
+				$this->setupTemporaryTable($tableName, $sharedTabId, $user, $current_user_parent_role_seq, $current_user_groups);
+				$query = " INNER JOIN $tableName $tableName$scope ON $tableName$scope.id = vtiger_crmentity$scope.smownerid ";
+			} else {
+				global $adb;
+				VTCacheUtils::updateCachedInformation('SpecialPermissionWithDuplicateRows', true);
+				$tsTableName = "tsolucio_tmp_u{$user->id}";
+				$adb->query("drop table if exists {$tsTableName}");
+				if ($typeOfPermissionOverride=='addToUserPermission') {
+					$query = $this->getNonAdminAccessQuery($module, $user, $current_user_parent_role_seq, $current_user_groups);
+					$tsSpecialAccessQuery = "$query UNION ($tsSpecialAccessQuery) ";
+				}
+				$adb->query("create temporary table {$tsTableName} (id int primary key) as {$tsSpecialAccessQuery}");
+				if ($typeOfPermissionOverride=='addToUserPermission') {
+					$query = " INNER JOIN {$tsTableName} on ({$tsTableName}.id=vtiger_crmentity.crmid or {$tsTableName}.id = vtiger_crmentity$scope.smownerid) ";
+				} else { // $typeOfPermissionOverride=='showTheseRecords'
+					$query = " INNER JOIN {$tsTableName} on {$tsTableName}.id=vtiger_crmentity.crmid ";
+				}
+			}
 		}
+
 		return $query;
 	}
 

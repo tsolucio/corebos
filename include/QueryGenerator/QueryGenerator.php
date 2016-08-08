@@ -414,10 +414,11 @@ class QueryGenerator {
 				}
 			}
 
-			$query = 'SELECT '.($distinct ? 'DISTINCT ' : '');
-			$query .= $this->getSelectClauseColumnSQL();
+			$query  = $this->getSelectClauseColumnSQL();
 			$query .= $this->getFromClause();
 			$query .= $this->getWhereClause();
+			list($specialPermissionWithDuplicateRows,$cached) = VTCacheUtils::lookupCachedInformation('SpecialPermissionWithDuplicateRows');
+			$query = 'SELECT '.(($distinct or $specialPermissionWithDuplicateRows) ? 'DISTINCT ' : '') . $query;
 			$this->query = $query;
 			return $query;
 		} else {

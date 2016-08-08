@@ -7,7 +7,7 @@
 * Portions created by vtiger are Copyright (C) vtiger.
 * All Rights Reserved.
 ************************************************************************************/
-
+header('X-Frame-Options: DENY');
 require_once('Smarty_setup.php');
 require_once("data/Tracker.php");
 require_once("include/utils/utils.php");

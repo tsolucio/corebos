@@ -253,7 +253,7 @@ function AddFolder()
 								url: 'index.php?action=ReportsAjax&mode=ajax&file=SaveReportFolder&module=Reports'+url
 						}).done(function (response) {
 									var item = response;
-									getObj('customizedrep').innerHTML = item;
+									getObj('reportContents').innerHTML = item;
 							}
 						);
 					}
@@ -265,7 +265,7 @@ function AddFolder()
 function EditFolder(id,name,desc)
 {
 {/literal}
-	document.getElementById('editfolder_info').innerHTML= ' {$MOD.LBL_RENAME_FOLDER} '; 	
+	document.getElementById('editfolder_info').innerHTML= ' {$MOD.LBL_RENAME_FOLDER} ';
 {literal}
 	getObj('folder_name').value = name;
 	getObj('folder_desc').value = desc;

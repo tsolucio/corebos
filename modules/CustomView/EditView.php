@@ -175,7 +175,6 @@ function getByModule_ColumnsList($mod,$columnslist,$selected="") {
 	$advfilter = array();
 	$check_dup = Array();
 	foreach($oCustomView->module_list as $module=>$blks) {
-	  $mod_strings = return_specified_module_language($current_language,$module);
 	  $modname = getTranslatedString($module,$module);
 	  foreach($blks as $key=>$value) {
 		$advfilter = array();
@@ -186,33 +185,9 @@ function getByModule_ColumnsList($mod,$columnslist,$selected="") {
 			{
 				if(!in_array($module.$fieldlabel,$check_dup))
 				{
-					if(isset($mod_strings[$fieldlabel]))
-					{
-						if($selected == $field)
-						{
-							$advfilter_option['value'] = $field;
-							$advfilter_option['text'] = $mod_strings[$fieldlabel];
-							$advfilter_option['selected'] = "selected";
-						}else
-						{
-							$advfilter_option['value'] = $field;
-							$advfilter_option['text'] = $mod_strings[$fieldlabel];
-							$advfilter_option['selected'] = "";
-						}
-					}else
-					{
-						if($selected == $field)
-						{
-							$advfilter_option['value'] = $field;
-							$advfilter_option['text'] = $fieldlabel;
-							$advfilter_option['selected'] = "selected";
-						}else
-						{
-							$advfilter_option['value'] = $field;
-							$advfilter_option['text'] = $fieldlabel;
-							$advfilter_option['selected'] = "";
-						}
-					}
+					$advfilter_option['value'] = $field;
+					$advfilter_option['text'] = getTranslatedString($fieldlabel,$module);
+					$advfilter_option['selected'] = ($selected == $field ? 'selected' : '');
 					$advfilter[] = $advfilter_option;
 					$check_dup [] = $module.$fieldlabel;
 				}

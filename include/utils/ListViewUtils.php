@@ -1105,7 +1105,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 								$value = str_replace(array("\r","\n"), '', $value);
 								$count = counterValue();
 								if (property_exists($focus,'popup_function') and !empty($focus->popup_function)) {
-									$value = "<a href='javascript:void(0);' onclick='return ".$focus->popup_function."($entity_id, \"$value\", \"$forfield\")' id =$count >$value1</a>";
+									$value = "<a href='javascript:void(0);' onclick='return ".$focus->popup_function."($entity_id, \"$value\", \"$forfield\"".(empty($forform)?'':',"'.$forform.'"').")' id =$count >$value1</a>";
 								} else {
 									$value = "<a href='javascript:if (document.getElementById(\"closewindow\").value==\"true\") {window.close();}' onclick='return vtlib_setvalue_from_popup($entity_id, \"$value\", \"$forfield\"".(empty($forform)?'':',"'.$forform.'"').")' id =$count >$value1</a>";
 								}
@@ -1323,7 +1323,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 			}
 		}
 	} elseif ($uitype == 15 || ($uitype == 55 && $fieldname == "salutationtype")) {
-		$temp_val = decode_html($adb->query_result($list_result, $list_result_count, $colname));
+		$temp_val = decode_html_force($adb->query_result($list_result, $list_result_count, $colname));
 		if (($is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1) && $temp_val != '') {
 			$temp_acttype = $adb->query_result($list_result, $list_result_count, 'activitytype');
 			if (($temp_acttype != 'Task') && $fieldname == "taskstatus")
@@ -1336,11 +1336,8 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 			if (count($subrole) > 0)
 				$roleids = $subrole;
 			array_push($roleids, $roleid);
-
-			//here we are checking wheather the table contains the sortorder column .If  sortorder is present in the main picklist table, then the role2picklist will be applicable for this table...
-
 			$sql = "select * from vtiger_$temptable where $temptable=?";
-			$res = $adb->pquery($sql, array(decode_html($temp_val)));
+			$res = $adb->pquery($sql, array(decode_html_force($temp_val)));
 			$picklistvalueid = $adb->query_result($res, 0, 'picklist_valueid');
 			if ($picklistvalueid != null) {
 				$pick_query = "select * from vtiger_role2picklist where picklistvalueid=$picklistvalueid and roleid in (" . generateQuestionMarks($roleids) . ")";
@@ -2742,10 +2739,12 @@ function getListQuery($module, $where = '') {
 					WHERE deleted=0 " . $where;
 			break;
 		default:
-			// vtlib customization: Include the module file
 			$focus = CRMEntity::getInstance($module);
-			$query = $focus->getListQuery($module, $where);
-		// END
+			if (method_exists($focus, 'getListQuery')) {
+				$query = $focus->getListQuery($module, $where);
+			} else {
+				$query = "SELECT * FROM vtiger_crmentity_seq WHERE id='notexist'"; // return valid empty query
+			}
 	}
 
 	if ($module != 'Users') {
@@ -3704,11 +3703,15 @@ function setSessionVar($lv_array, $noofrows, $max_ent, $module = '', $related = 
 function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $related_module, $recordid) {
 	global $log, $app_strings, $adb, $theme;
 	$log->debug("Entering getTableHeaderNavigation(" . $url_qry . "," . $module . "," . $related_module . "," . $recordid . ") method ...");
-	$relatedTabId = getTabid($related_module);
 	$tabid = getTabid($module);
-
-	$relatedListResult = $adb->pquery('SELECT * FROM vtiger_relatedlists WHERE tabid=? AND
-		related_tabid=?', array($tabid, $relatedTabId));
+	if($related_module == 'Parent Product'){
+		$relatedListResult = $adb->pquery('SELECT * FROM vtiger_relatedlists WHERE tabid=? AND
+			label=?', array($tabid, $related_module));
+	}else{
+		$relatedTabId = getTabid($related_module);
+		$relatedListResult = $adb->pquery('SELECT * FROM vtiger_relatedlists WHERE tabid=? AND
+			related_tabid=?', array($tabid, $relatedTabId));
+	}
 	if (empty($relatedListResult))
 		return;
 	$relatedListRow = $adb->fetch_row($relatedListResult);

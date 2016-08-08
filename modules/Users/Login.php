@@ -7,7 +7,7 @@
   * Portions created by vtiger are Copyright (C) vtiger.
   * All Rights Reserved.
   *********************************************************************************/
-
+header('X-Frame-Options: DENY');
 //we don't want the parent module's string file, but rather the string file specifc to this subpanel
 global $current_language;
 $current_module_strings = return_module_language($current_language, 'Users');

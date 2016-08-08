@@ -30,7 +30,7 @@ insert_popup_header($theme);
 <link REL="SHORTCUT ICON" HREF="themes/images/blank.gif">
 <script type='text/javascript' src="include/js/general.js"></script>
 <script type='text/javascript' src="include/js/PasswordManagement.js"></script>
-<script type='text/javascript' language='JavaScript'>
+<script type='text/javascript'>
 function set_password(form) {
 	var errmsg = document.getElementById('chgpasserrmsg');
 	if (trim(form.old_password.value) == trim(form.new_password.value)) {
@@ -119,7 +119,7 @@ function set_password(form) {
 </tr>
 </table>
 </form>
-<script language="JavaScript">
+<script>
 <?php
 	if (is_admin($current_user)) {
 		echo 'document.ChangePassword.new_password.focus();';

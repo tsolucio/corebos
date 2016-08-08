@@ -28,16 +28,16 @@ class Faq extends CRMEntity {
 
 	// This is the list of vtiger_fields that are in the lists.
 	var $list_fields = Array(
-		'FAQ Id'=>Array('faq'=>'id'),
+		'FAQ No'=>Array('faq'=>'faq_no'),
 		'Question'=>Array('faq'=>'question'),
-		'Category'=>Array('faq'=>'category'),
+		'Category'=>Array('faq'=>'faqcategories'),
 		'Product Name'=>Array('faq'=>'product_id'),
 		'Created Time'=>Array('crmentity'=>'createdtime'),
 		'Modified Time'=>Array('crmentity'=>'modifiedtime')
 	);
 
 	var $list_fields_name = Array(
-		'FAQ Id'=>'',
+		'FAQ No'=>'faq_no',
 		'Question'=>'question',
 		'Category'=>'faqcategories',
 		'Product Name'=>'product_id',
@@ -47,12 +47,14 @@ class Faq extends CRMEntity {
 	var $list_link_field= 'question';
 
 	var $search_fields = Array(
-		'Account Name'=>Array('account'=>'accountname'),
-		'City'=>Array('accountbillads'=>'bill_city'),
+		'Question'=>Array('faq'=>'question'),
+		'Category'=>Array('faq'=>'faqcategories'),
+		'Product Name'=>Array('faq'=>'product_id'),
 	);
 	var $search_fields_name = Array(
-		'Account Name'=>'accountname',
-		'City'=>'bill_city',
+		'Question'=>'question',
+		'Category'=>'faqcategories',
+		'Product Name'=>'product_id',
 	);
 
 	// Column value to use on detail view record text display

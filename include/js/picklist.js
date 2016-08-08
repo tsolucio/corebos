@@ -196,13 +196,21 @@ function validateAdd(fieldname, module){
 		alert(alert_arr.LBL_ADD_PICKLIST_VALUE);
 		return false;
 	}
-	for(i=0;i<new_vals.length;i++){
-		if (trim(new_vals[i]).search(/(\<|\>|\\|\/)/gi)!=-1) {
-			alert(alert_arr.SPECIAL_CHARACTERS+'"<" ">" "\\" "/"'+alert_arr.NOT_ALLOWED);
-			return false;
+	if(module == 'Calendar' || module == 'Events'){
+		for(i=0;i<new_vals.length;i++){
+			if (trim(new_vals[i]).search(/(\<|\>|\\|\/|\'|\")/gi)!=-1) {
+				alert(alert_arr.SPECIAL_CHARACTERS+'"<" ">" "\\" "/"\'\"'+alert_arr.NOT_ALLOWED);
+				return false;
+			}
+		}
+	}else{
+		for(i=0;i<new_vals.length;i++){
+			if (trim(new_vals[i]).search(/(\<|\>|\\|\/")/gi)!=-1) {
+				alert(alert_arr.SPECIAL_CHARACTERS+'"<" ">" "\\" "/"'+alert_arr.NOT_ALLOWED);
+				return false;
+			}
 		}
 	}
-	
 	var node = document.getElementsByClassName('picklist_noneditable_options');
 	var nonEdit = new Array();
 	for(var i=0;i<node.length;i++){

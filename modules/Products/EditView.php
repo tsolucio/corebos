@@ -276,6 +276,8 @@ if($errormessage!="")
 	$smarty->assign("ERROR_MESSAGE",$errormessage);
 }
 
+$smarty->assign('Product_Maximum_Number_Images',GlobalVariable::getVariable('Product_Maximum_Number_Images',6));
+
 // Gather the help information associated with fields
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
 

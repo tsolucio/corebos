@@ -65,4 +65,19 @@ function mkCountQuery($query) {
 
 	return ($query);
 }
+
+
+// Make a count query with FULL query
+function mkCountWithFullQuery($query) {
+	// Remove all the \n, \r and white spaces to keep the space between the words consistent.
+	// This is required for proper pattern matching for words like ' FROM ', 'ORDER BY', 'GROUP BY' as they depend on the spaces between the words.
+	$query = preg_replace("/[\n\r\s]+/", ' ', $query);
+
+	//Strip of any "ORDER BY" clause
+	if (stripos($query, 'ORDER BY') > 0)
+		$query = substr($query, 0, stripos($query, 'ORDER BY'));
+
+	return "SELECT count(*) AS count FROM ($query) as sqlcount";
+}
+
 ?>

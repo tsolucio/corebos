@@ -11,9 +11,9 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+	<meta http-equiv="Content-Type" content="text/html; charset={$APP.LBL_CHARSET}">
 	<title>{$USER} - {$MODULE_NAME|@getTranslatedString:$MODULE_NAME} - {$APP.LBL_BROWSER_TITLE}</title>
 	<link REL="SHORTCUT ICON" HREF="{$FAVICON}">
-	<meta http-equiv="X-FRAME-OPTIONS" content="DENY" />
 	<style type="text/css">@import url("themes/{$THEME}/style.css?v={$VERSION}");</style>
 	<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
 	<link rel="stylesheet" href="include/print.css" type="text/css" media="print" />
@@ -48,23 +48,23 @@ var gVTUserID = '{$CURRENT_USER_ID}';
 	<a name="top"></a>
 	<!-- header -->
 	<!-- header-vtiger crm name & RSS -->
-	<script language="JavaScript" type="text/javascript" src="include/js/meld.js"></script>
-	<script language="JavaScript" type="text/javascript" src="include/js/json.js"></script>
-	<script language="JavaScript" type="text/javascript" src="include/js/general.js?v={$VERSION}"></script>
+	<script type="text/javascript" src="include/jquery/jquery.js"></script>
+	<script type="text/javascript" src="include/jquery/jquery-ui.js"></script>
+	<script type="text/javascript" src="include/js/meld.js"></script>
+	<script type="text/javascript" src="include/js/json.js"></script>
+	<script type="text/javascript" src="include/js/general.js?v={$VERSION}"></script>
 	<!-- vtlib customization: Javascript hook -->
-	<script language="JavaScript" type="text/javascript" src="include/js/vtlib.js?v={$VERSION}"></script>
+	<script type="text/javascript" src="include/js/vtlib.js?v={$VERSION}"></script>
 	<!-- END -->
-	<script language="JavaScript" type="text/javascript" id="_current_language_" src="include/js/{php} echo $_SESSION['authenticated_user_language'];{/php}.lang.js?{php} echo $_SESSION['vtiger_version'];{/php}"></script>
-	<script language="JavaScript" type="text/javascript" src="include/js/QuickCreate.js"></script>
-	<script language="JavaScript" type="text/javascript" src="include/js/menu.js?v={$VERSION}"></script>
-	<script language="JavaScript" type="text/javascript" src="include/calculator/calc.js"></script>
-	<script language="JavaScript" type="text/javascript" src="modules/Calendar/script.js"></script>
-	<script language="JavaScript" type="text/javascript" src="include/js/notificationPopup.js"></script>
+	<script type="text/javascript" id="_current_language_" src="include/js/{php} echo $_SESSION['authenticated_user_language'];{/php}.lang.js?{php} echo $_SESSION['vtiger_version'];{/php}"></script>
+	<script type="text/javascript" src="include/js/QuickCreate.js"></script>
+	<script type="text/javascript" src="include/js/menu.js?v={$VERSION}"></script>
+	<script type="text/javascript" src="include/calculator/calc.js"></script>
+	<script type="text/javascript" src="modules/Calendar/script.js"></script>
+	<script type="text/javascript" src="include/js/notificationPopup.js"></script>
 	<script type="text/javascript" src="jscalendar/calendar.js"></script>
 	<script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
 	<script type="text/javascript" src="jscalendar/lang/calendar-{$APP.LBL_JSCALENDAR_LANG}.js"></script>
-	<script type="text/javascript" src="include/jquery/jquery.js"></script>
-	<script type="text/javascript" src="include/jquery/jquery-ui.js"></script>
     <!-- asterisk Integration -->
 {if $USE_ASTERISK eq 'true'}
 	<script type="text/javascript" src="include/js/asterisk.js"></script>
@@ -411,13 +411,13 @@ function QCreate(qcoptions){
 					document.getElementById("status").style.display="none";
 					document.getElementById("qcform").style.display="inline";
 					document.getElementById("qcform").innerHTML = response;
+					jQuery("#qcform").draggable();
 					// Evaluate all the script tags in the response text.
 					var scriptTags = document.getElementById("qcform").getElementsByTagName("script");
 					for(var i = 0; i< scriptTags.length; i++){
 						var scriptTag = scriptTags[i];
 						eval(scriptTag.innerHTML);
 					}
-					eval(document.getElementById("qcform"));
 					posLay(qcoptions, "qcform");
 			}
 		);

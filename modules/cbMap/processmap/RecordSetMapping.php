@@ -22,9 +22,9 @@
   <records>
   <record>
   <id>1</id> if given, module and value are ignored
-	<module>ModuleName</module>
+  <module>ModuleName</module>
   <value>EntityCustomNumberValue</value> we only search on the uitype 4 field
-  <action>1</action>  Include | Exclude | Group
+  <action>include</action>  Include | Exclude | Group  The default action is Exclude
   </record>
   .....
   </records>
@@ -35,7 +35,8 @@ class RecordSetMapping extends processcbMap {
 	private $mapping = array(
 		'include'=>array(),
 		'exclude'=>array(),
-		'group'=>array()
+		'group'=>array(),
+		'modules'=>array()
 	);
 	private $actions = array('include','exclude','group');
 	private $default_action = 'exclude';
@@ -57,11 +58,12 @@ class RecordSetMapping extends processcbMap {
 					$action = $this->default_action;
 				}
 				if (isset($v->id)) {
-					$rs = $adb->pquery('select setype,deleted from vtiger_crmentity where crmid=?',array((Integer)$v->id));
-					$recinfo = $adb->fetch_array($rs);
-					if ($recinfo['deleted']==0) {
+					$rs = $adb->pquery('select setype from vtiger_crmentity where crmid=? and deleted=0',array((Integer)$v->id));
+					if ($adb->num_rows($rs)==1) {
+						$recinfo = $adb->fetch_array($rs);
 						$this->mapping[$action]['ids'][] = (Integer)$v->id;
 						$this->mapping[$action][$recinfo['setype']][] = (Integer)$v->id;
+						if (!in_array($recinfo['setype'],$this->mapping['modules'])) $this->mapping['modules'][] = $recinfo['setype'];
 					}
 				} else {
 					$tabid = getTabid((String)$v->module);
@@ -76,6 +78,7 @@ class RecordSetMapping extends processcbMap {
 						$id = $adb->query_result($idrs,0,0);
 						$this->mapping[$action]['ids'][] = (Integer)$id;
 						$this->mapping[$action][(String)$v->module][] = (Integer)$id;
+						if (!in_array($recinfo['setype'],$this->mapping['modules'])) $this->mapping['modules'][] = $recinfo['setype'];
 					}
 				}
 			}
@@ -99,6 +102,13 @@ class RecordSetMapping extends processcbMap {
 	*/
 	public function getRecordSetModule($action,$module) {
 		return $this->mapping[strtolower($action)][$module];
+	}
+
+	/**
+	 * returns the set of modules that have at least on CRMid in the record set
+	 **/
+	public function getRecordSetModules() {
+		return $this->mapping['modules'];
 	}
 
 	/**

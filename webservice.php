@@ -88,12 +88,24 @@
 		echo $output;
 	}
 
-	// some frameworks (namely angularjs) send information in application/json format, we try to adapt to those system with the next if
+	// some frameworks (namely angularjs and polymer) send information in application/json format, we try to adapt to those system with the next two if
 	if (empty($_REQUEST)) {
 		$data = json_decode(file_get_contents("php://input"));
 		if (is_object($data) and !empty($data->operation)) {
 			$_POST = get_object_vars($data);  // only post is affected by this
 			$_REQUEST = $_POST;
+		}
+	}
+	// php 5.6.x codifies application/json format in one empty entry where the key are the values, so we process that
+	if (count($_REQUEST)==1) {
+		foreach ($_REQUEST as $key => $value) {
+			if (empty($value)) {
+				$data = json_decode($key);
+				if (is_object($data) and !empty($data->operation)) {
+					$_POST = get_object_vars($data);  // only post is affected by this
+					$_REQUEST = $_POST;
+				}
+			}
 		}
 	}
 	$operation = vtws_getParameter($_REQUEST, "operation");

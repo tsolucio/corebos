@@ -65,10 +65,8 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 	if ($module!= 'Calendar') {
 		$focus->initSortByField($relatedmodule);
 	}
-	//Retreive the list from Database
-	//Appending the security parameter Security fix by Don
-	if($relatedmodule != 'Faq' && $relatedmodule != 'PriceBook'
-			&& $relatedmodule != 'Vendors' && $relatedmodule != 'Users') {
+	// Append security parameter
+	if($relatedmodule != 'Users') {
 		global $current_user;
 		$secQuery = getNonAdminAccessControlQuery($relatedmodule, $current_user);
 		if(strlen($secQuery) > 1) {
@@ -111,7 +109,7 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 		$sorder = $focus->default_sort_order;
 	}
 
-	//Added by Don for AssignedTo ordering issue in Related Lists
+	// AssignedTo ordering issue in Related Lists
 	$query_order_by = $order_by;
 	if($order_by == 'smownerid') {
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name',
@@ -135,22 +133,22 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 	$url_qry ="&order_by=".$order_by."&sorder=".$sorder;
 	$computeCount = isset($_REQUEST['withCount']) ? $_REQUEST['withCount'] : '';
 	if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true || (boolean) $computeCount == true){
-		//Retreiving the no of rows
-		if($relatedmodule == "Calendar") {
-			//for calendar related list, count will increase when we have multiple contacts
-			//relationship for single activity
-			$count_query = mkCountQuery($query);
-			$count_result = $adb->query($count_query);
-			$noofrows =$adb->query_result($count_result,0,"count");
+		// Retreiving the no of rows
+		list($specialPermissionWithDuplicateRows,$cached) = VTCacheUtils::lookupCachedInformation('SpecialPermissionWithDuplicateRows');
+		if (FALSE and ($specialPermissionWithDuplicateRows or $relatedmodule == 'Calendar')) {
+			// FIXME FIXME FIXME FIXME
+			// the FALSE above MUST be eliminated, we need to execute mkCountWithFullQuery for modified queries
+			// the problem is that related list queries are hardcoded and can (mostly do) repeat columns which is not supported as a
+			// subquery which is what mkCountWithFullQuery does
+			// This works on ListView because we use query generator that eliminates those repeated columns
+			// It is currently incorrect and will produce wrong count on related lists when special permissions are active
+			// FIXME FIXME FIXME FIXME
+			// for calendar (with multiple contacts for single activity) and special permissions, count will change
+			$count_result = $adb->query(mkCountWithFullQuery($query));
 		} else {
-			$count_query = mkCountQuery($query);
-			$count_result = $adb->query($count_query);
-
-			if($adb->num_rows($count_result) > 0)
-				$noofrows =$adb->query_result($count_result,0,"count");
-			else
-				$noofrows = $adb->num_rows($count_result);
+			$count_result = $adb->query(mkCountQuery($query));
 		}
+		$noofrows = $adb->query_result($count_result,0,'count');
 	}else{
 		$noofrows = null;
 	}

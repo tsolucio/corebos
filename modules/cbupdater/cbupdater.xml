@@ -682,4 +682,39 @@
 	<classname>cleanoptimizedatabase_150</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Fix event handler if timecontrol is installed</description>
+	<filename>build/changeSets/fixEventHandlerPathForConvertTZ.php</filename>
+	<classname>fixEventHandlerPathForConvertTZ</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Fix activity types with values with special chars</description>
+	<filename>build/changeSets/cleanActivityTypesSpecialChars.php</filename>
+	<classname>cleanActivityTypesSpecialChars</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>cron Watcher Service</description>
+	<filename>build/changeSets/cronWatcher.php</filename>
+	<classname>cronWatcherService</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Empty user_hash column which was a security issue and not being used.</description>
+	<filename>build/changeSets/UserDeleteUserHashColumn.php</filename>
+	<classname>UserDeleteUserHashColumn</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>kevinduqi</author>
+	<description>Assign Related records workflow task</description>
+	<filename>build/changeSets/add_workflow_assignrelated.php</filename>
+	<classname>add_workflow_assignrelated</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
 </updatesChangeLog>

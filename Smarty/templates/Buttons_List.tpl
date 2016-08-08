@@ -48,7 +48,7 @@
 			</tr>
 			</table>
 		</td>
-		<td style="width:20px;">&nbsp;</td>
+		<td style="width:20px;" class="LB_Divider">&nbsp;</td>
 		<td class="small">
 			<!-- Calendar Clock Calculator and Chat -->
 				<table border=0 cellspacing=0 cellpadding=5>
@@ -78,7 +78,7 @@
 				</tr>
 				</table>
 		</td>
-		<td style="width:20px;">&nbsp;</td>
+		<td style="width:20px;" class="LB_Divider">&nbsp;</td>
 		<td class="small">
 			<!-- Import / Export -->
 			<table border=0 cellspacing=0 cellpadding=5>
@@ -108,7 +108,7 @@
 			{/if}
 			</tr>
 			</table>
-		<td style="width:20px;">&nbsp;</td>
+		<td style="width:20px;" class="LB_Divider">&nbsp;</td>
 		<td class="small">
 				<table border=0 cellspacing=0 cellpadding=5>
 				<tr>

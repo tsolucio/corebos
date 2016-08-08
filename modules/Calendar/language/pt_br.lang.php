@@ -398,11 +398,13 @@ $mod_strings = Array(
 'LBL_REMAINDER_HRS'=>'h',
 'Call'=>'Chamada',
 'Meeting'=>'Reunião',
-      
+
 //added to send dates and time in calendar notification/invitation mail.
-      
+
 'Start date and time'=>'Data e Hora Inicial',
+'Start Date and Time'=>'Data e Hora Inicial',
 'End date and time'=>'Data e Hora Final',
+'End Date and Time'=>'Data e Hora Final',
 //this is for task
 'End date'=>'Data final',
 'LBL_SET_DATE'=>'Definição data...',

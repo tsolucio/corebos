@@ -10,6 +10,7 @@
 $Vtiger_Utils_Log = true;
 include_once('vtlib/Vtiger/Module.php');
 require_once('include/events/include.inc');
+global $adb;
 
 function registerEvent($event) {
 	global $adb;
@@ -40,6 +41,12 @@ registerEvent('corebos.audit.authenticate');
 registerEvent('corebos.audit.login');
 registerEvent('corebos.audit.logout');
 registerEvent('corebos.audit.login.attempt');
+
+// Permission examples live in their own file
+$em = new VTEventsManager($adb);
+$em->registerHandler('corebos.permissions.accessquery', 'build/HelperScripts/coreBOSEventsPermission.php', 'coreBOSEventsPermissionExample');
+$em->registerHandler('corebos.permissions.ispermitted', 'build/HelperScripts/coreBOSEventsPermission.php', 'coreBOSEventsPermissionExample');
+echo "<h4>Permission Events accessquery and ispermitted registered.</h4>";
 
 echo '</body></html>';
 ?>

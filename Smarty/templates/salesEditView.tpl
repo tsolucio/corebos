@@ -50,7 +50,7 @@ function sensex_info()
 {rdelim}
 </script>
 
-		{include file='Buttons_List1.tpl'}	
+{include file='Buttons_List1.tpl'}
 
 {*<!-- Contents -->*}
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
@@ -64,15 +64,15 @@ function sensex_info()
 			{assign var="SINGLE_MOD_LABEL" value=$SINGLE_MOD}
 			{if $APP.$SINGLE_MOD} {assign var="SINGLE_MOD_LABEL" value=$APP.SINGLE_MOD} {/if}
 				
-			{if $OP_MODE eq 'edit_view'} 
+			{if $OP_MODE eq 'edit_view'}
 				{assign var="USE_ID_VALUE" value=$MOD_SEQ_ID}
-		  		{if $USE_ID_VALUE eq ''} {assign var="USE_ID_VALUE" value=$ID} {/if}			
+				{if $USE_ID_VALUE eq ''} {assign var="USE_ID_VALUE" value=$ID} {/if}
 				<span class="lvtHeaderText"><font color="purple">[ {$USE_ID_VALUE} ] </font>{$NAME} - {$APP.LBL_EDITING} {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</span> <br>
-				{$UPDATEINFO}	 
+				{$UPDATEINFO}
 			{/if}
 			{if $OP_MODE eq 'create_view'}
 				{if $DUPLICATE neq 'true'}
-		            {assign var=create_new value="LBL_CREATING_NEW_"|cat:$SINGLE_MOD}
+					{assign var=create_new value="LBL_CREATING_NEW_"|cat:$SINGLE_MOD}
 					{* vtlib customization: use translation only if present *}
 					{assign var="create_newlabel" value=$APP.$create_new}
 					{if $create_newlabel neq ''}
@@ -119,7 +119,7 @@ function sensex_info()
 							   <tr>
 								<td style="padding:10px">
 									<!-- General details -->
-									<table border=0 cellspacing=0 cellpadding=0 width=100% class="small">
+									<table border=0 cellspacing=0 cellpadding=0 width=100% class="small createview_table">
 									   <tr>
 										<td  colspan=4 style="padding:5px">
 											<div align="center">

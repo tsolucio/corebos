@@ -43,21 +43,27 @@ require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
 require_once 'modules/com_vtiger_workflow/include.inc';
 
 function vtRunTaskJob($adb){
+	global $logbg;
 	$util = new VTWorkflowUtils();
 	$adminUser = $util->adminUser();
 	$tq = new VTTaskQueue($adb);
 	$readyTasks = $tq->getReadyTasks();
+	$logbg->debug("WF Cron:: Ready Tasks from de queue");
+	$logbg->debug($readyTasks);
 	$tm = new VTTaskManager($adb);
 	foreach($readyTasks as $pair){
 		list($taskId, $entityId) = $pair;
+		$logbg->debug("WF Cron:: Task ".$taskId." will be executed with entityId: ".$entityId);
 		$task = $tm->retrieveTask($taskId);
 		if (empty($task)) {  //If task is not there then continue
+			$logbg->debug("WF Cron:: Task: ".$taskId." fail when was retrieve");
 			continue;
 		}
 		list($moduleId, $crmId) = explode('x', $entityId);
 		$query = "select deleted from vtiger_crmentity where crmid={$crmId}";
 		$res = $adb->query($query);
 		if ($adb->num_rows($res) == 0 || $adb->query_result($res, 0, 0)) {
+			$logbg->debug("WF Cron:: CRMID ".$crmId." was deleted");
 			continue;
 		}
 		$entity = new VTWorkflowEntity($adminUser, $entityId);
@@ -65,7 +71,9 @@ function vtRunTaskJob($adb){
 		$wsModuleName = $util->toWSModuleName($entity);
 		$wsId = vtws_getWebserviceEntityId($wsModuleName, $entity->getId());
 		if (empty($task->test) or $task->evaluate($entityCache, $entity->getId())) {
+			$logbg->debug("WF Cron:: Task ".$taskId." will be call function doTask with entityId: ".$entityId);
 			$task->doTask($entity);
+			$logbg->debug("WF Cron:: Task ".$taskId." executed with success the function doTask with entityId: ".$entityId);
 		}
 	}
 }

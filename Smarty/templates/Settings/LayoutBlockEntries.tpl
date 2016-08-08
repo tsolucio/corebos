@@ -21,7 +21,7 @@
 							<tr><td><img src="{'blank.gif'|@vtiger_imageurl:$THEME}" style="width:16px;height:16px;" border="0" />&nbsp;&nbsp;</td></tr>
 							{/if}
 							<tr>
-								<td  class="colHeader small" colspan="2">
+								<td class="colHeader small" colspan="2">
 								<select name="display_status_{$entries.blockid}" style="border:1px solid #666666;font-family:Arial, Helvetica, sans-serif;font-size:11px; width:auto" onChange="changeShowstatus('{$entries.tabid}','{$entries.blockid}','{$MODULE}')" id='display_status_{$entries.blockid}'>
 									<option value="show" {if $entries.display_status==1}selected{/if}>{$MOD.LBL_Show}</option>
 									<option value="hide" {if $entries.display_status==0}selected{/if}>{$MOD.LBL_Hide}</option>
@@ -33,17 +33,17 @@
 									<img style="cursor:pointer;" onClick=" deleteCustomBlock('{$MODULE}','{$entries.blockid}','{$entries.no}')" src="{'delete.gif'|@vtiger_imageurl:$THEME}" border="0" alt="{$APP.LBL_DELETE}" title="{$APP.LBL_DELETE}"/>&nbsp;&nbsp;
 									{/if}
 									{if $entries.blockid neq $COMMENTSECTIONID && $entries.blockid neq $SOLUTIONBLOCKID}
-									<img src="{'hidden_fields.png'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;"  onclick="fnvshobj(this,'hiddenfields_{$entries.blockid}');" alt="{$MOD.HIDDEN_FIELDS}" title="{$MOD.HIDDEN_FIELDS}"/>&nbsp;&nbsp;
+									<img src="{'hidden_fields.png'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;" onclick="fnvshobj(this,'hiddenfields_{$entries.blockid}');" alt="{$MOD.HIDDEN_FIELDS}" title="{$MOD.HIDDEN_FIELDS}"/>&nbsp;&nbsp;
 									{/if}
 										<div id = "hiddenfields_{$entries.blockid}" style="display:none; position:absolute; width:300px;" class="layerPopup">
 											<div style="position:relative; display:block">
 		 										<table width="100%" border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine">
 													<tr>
-														<td width="95%" align="left"  class="layerPopupHeading">
+														<td width="95%" align="left" class="layerPopupHeading">
 															{$MOD.HIDDEN_FIELDS}
 														</td>
 														<td width="5%" align="right">
-															<a href="javascript:fninvsh('hiddenfields_{$entries.blockid}');"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0"  align="absmiddle" /></a>
+															<a href="javascript:fninvsh('hiddenfields_{$entries.blockid}');"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" /></a>
 														</td>
 													</tr>
 												</table>
@@ -90,17 +90,17 @@
 											</div>
 										</div>
 									{if $entries.hascustomtable && $entries.blockid neq $COMMENTSECTIONID && $entries.blockid neq $SOLUTIONBLOCKID }
-										<img src="{'plus_layout.gif'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;"  onclick="fnvshobj(this,'addfield_{$entries.blockid}'); " alt="{$MOD.LBL_ADD_CUSTOMFIELD}" title="{$MOD.LBL_ADD_CUSTOMFIELD}"/>&nbsp;&nbsp;
+										<img src="{'plus_layout.gif'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;" onclick="fnvshobj(this,'addfield_{$entries.blockid}'); " alt="{$MOD.LBL_ADD_CUSTOMFIELD}" title="{$MOD.LBL_ADD_CUSTOMFIELD}"/>&nbsp;&nbsp;
 									{/if}
 											<!-- for adding customfield -->
 												<div id="addfield_{$entries.blockid}" style="display:none; position:absolute; width:500px;" class="layerPopup">
 													<input type="hidden" name="mode" id="cfedit_mode" value="add">
-	  												<table width="100%" border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine">
+													<table width="100%" border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine">
 														<tr>
 															<td width="60%" align="left" class="layerPopupHeading">{$MOD.LBL_ADD_FIELD}
 															</td>
 															<td width="40%" align="right"><a href="javascript:fninvsh('addfield_{$entries.blockid}');">
-															<img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0"  align="absmiddle" /></a>
+															<img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" /></a>
 															</td>
 														</tr>
 													</table>
@@ -117,22 +117,22 @@
 																				</tr>
 																				<tr>
 																					<td>
-																						<div name="cfcombo" id="cfcombo" class="small"  style="width:205px; height:150px; overflow-y:auto ;overflow-x:hidden ;overflow:auto; border:1px  solid #CCCCCC ;">
+																						<div name="cfcombo" id="cfcombo" class="small" style="width:205px; height:150px; overflow-y:auto ;overflow-x:hidden ;overflow:auto; border:1px solid #CCCCCC ;">
 																							<table>
-																								<tr><td align="left"><a id="field0_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'text.gif'|@vtiger_imageurl:$THEME});" 		onclick = "makeFieldSelected(this,0,{$entries.blockid});">  {$MOD.Text} </a></td></tr>
-																								<tr><td align="left"><a id="field1_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'number.gif'|@vtiger_imageurl:$THEME});" 		onclick = "makeFieldSelected(this,1,{$entries.blockid})" >  {$MOD.Number} </a></td></tr>
-																								<tr><td align="left"><a id="field2_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'percent.gif'|@vtiger_imageurl:$THEME});" 	onclick = "makeFieldSelected(this,2,{$entries.blockid});">  {$MOD.Percent} </a></td></tr>
-																								<tr><td align="left"><a id="field3_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'cfcurrency.gif'|@vtiger_imageurl:$THEME});" 	onclick = "makeFieldSelected(this,3,{$entries.blockid});">  {$MOD.Currency} </a></td></tr>
-																								<tr><td align="left"><a id="field4_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'date.gif'|@vtiger_imageurl:$THEME});" 		onclick = "makeFieldSelected(this,4,{$entries.blockid});">  {$MOD.Date} </a></td></tr>
-																								<tr><td align="left"><a id="field5_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'email.gif'|@vtiger_imageurl:$THEME});" 		onclick = "makeFieldSelected(this,5,{$entries.blockid});">  {$MOD.Email} </a></td></tr>
-																								<tr><td align="left"><a id="field6_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'phone.gif'|@vtiger_imageurl:$THEME});" 		onclick = "makeFieldSelected(this,6,{$entries.blockid});">  {$MOD.Phone} </a>	</td></tr>
-																								<tr><td align="left"><a id="field7_{$entries.blockid}" 	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'cfpicklist.gif'|@vtiger_imageurl:$THEME});" 	onclick = "makeFieldSelected(this,7,{$entries.blockid});">  {$MOD.PickList} </a></td></tr>
-																								<tr><td align="left"><a id="field8_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'url.gif'|@vtiger_imageurl:$THEME});" 		onclick = "makeFieldSelected(this,8,{$entries.blockid});">  {$MOD.LBL_URL} </a></td></tr>
-																								<tr><td align="left"><a id="field9_{$entries.blockid}" 	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'checkbox.gif'|@vtiger_imageurl:$THEME});" 	onclick = "makeFieldSelected(this,9,{$entries.blockid});">  {$MOD.LBL_CHECK_BOX} </a></td></tr>
-																								<tr><td align="left"><a id="field10_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'text.gif'|@vtiger_imageurl:$THEME});" 		onclick = "makeFieldSelected(this,10,{$entries.blockid});"> {$MOD.LBL_TEXT_AREA} </a></td></tr>
-																								<tr><td align="left"><a id="field11_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'cfpicklist.gif'|@vtiger_imageurl:$THEME});" 	onclick = "makeFieldSelected(this,11,{$entries.blockid});"> {$MOD.LBL_MULTISELECT_COMBO} </a></td></tr>
-																								<tr><td align="left"><a id="field12_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'skype.gif'|@vtiger_imageurl:$THEME});" 		onclick = "makeFieldSelected(this,12,{$entries.blockid});"> {$MOD.Skype} </a></td></tr>
-																								<tr><td align="left"><a id="field13_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'time.PNG'|@vtiger_imageurl:$THEME});" 		onclick = "makeFieldSelected(this,13,{$entries.blockid});"> {$MOD.Time} </a></td></tr>
+																								<tr><td align="left"><a id="field0_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'text.gif'|@vtiger_imageurl:$THEME});" onclick = "makeFieldSelected(this,0,{$entries.blockid});"> {$MOD.Text} </a></td></tr>
+																								<tr><td align="left"><a id="field1_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'number.gif'|@vtiger_imageurl:$THEME});" onclick = "makeFieldSelected(this,1,{$entries.blockid})"> {$MOD.Number} </a></td></tr>
+																								<tr><td align="left"><a id="field2_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'percent.gif'|@vtiger_imageurl:$THEME});" onclick = "makeFieldSelected(this,2,{$entries.blockid});"> {$MOD.Percent} </a></td></tr>
+																								<tr><td align="left"><a id="field3_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'cfcurrency.gif'|@vtiger_imageurl:$THEME});" onclick = "makeFieldSelected(this,3,{$entries.blockid});"> {$MOD.Currency} </a></td></tr>
+																								<tr><td align="left"><a id="field4_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'date.gif'|@vtiger_imageurl:$THEME});" onclick = "makeFieldSelected(this,4,{$entries.blockid});"> {$MOD.Date} </a></td></tr>
+																								<tr><td align="left"><a id="field5_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'email.gif'|@vtiger_imageurl:$THEME});" onclick = "makeFieldSelected(this,5,{$entries.blockid});"> {$MOD.Email} </a></td></tr>
+																								<tr><td align="left"><a id="field6_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'phone.gif'|@vtiger_imageurl:$THEME});" onclick = "makeFieldSelected(this,6,{$entries.blockid});"> {$MOD.Phone} </a>	</td></tr>
+																								<tr><td align="left"><a id="field7_{$entries.blockid}" 	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'cfpicklist.gif'|@vtiger_imageurl:$THEME});" onclick = "makeFieldSelected(this,7,{$entries.blockid});"> {$MOD.PickList} </a></td></tr>
+																								<tr><td align="left"><a id="field8_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'url.gif'|@vtiger_imageurl:$THEME});" onclick = "makeFieldSelected(this,8,{$entries.blockid});"> {$MOD.LBL_URL} </a></td></tr>
+																								<tr><td align="left"><a id="field9_{$entries.blockid}" 	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'checkbox.gif'|@vtiger_imageurl:$THEME});" onclick = "makeFieldSelected(this,9,{$entries.blockid});"> {$MOD.LBL_CHECK_BOX} </a></td></tr>
+																								<tr><td align="left"><a id="field10_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'text.gif'|@vtiger_imageurl:$THEME});" onclick = "makeFieldSelected(this,10,{$entries.blockid});"> {$MOD.LBL_TEXT_AREA} </a></td></tr>
+																								<tr><td align="left"><a id="field11_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'cfpicklist.gif'|@vtiger_imageurl:$THEME});" onclick = "makeFieldSelected(this,11,{$entries.blockid});"> {$MOD.LBL_MULTISELECT_COMBO} </a></td></tr>
+																								<tr><td align="left"><a id="field12_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'skype.gif'|@vtiger_imageurl:$THEME});" onclick = "makeFieldSelected(this,12,{$entries.blockid});"> {$MOD.Skype} </a></td></tr>
+																								<tr><td align="left"><a id="field13_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'time.PNG'|@vtiger_imageurl:$THEME});" onclick = "makeFieldSelected(this,13,{$entries.blockid});"> {$MOD.Time} </a></td></tr>
 																								<tr><td align="left"><a id="field14_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'createrelation.png'|@vtiger_imageurl:$THEME});" onclick = "makeFieldSelected(this,14,{$entries.blockid});"> {$MOD.Relation} </a></td></tr>
 																								<tr><td align="left"><a id="field15_{$entries.blockid}"	href="javascript:void(0);" class="customMnu" style="text-decoration:none; background-image:url({'pictureicon.png'|@vtiger_imageurl:$THEME});" onclick = "makeFieldSelected(this,15,{$entries.blockid});"> {$APP.Image} </a></td></tr>
 																							</table>
@@ -145,7 +145,7 @@
 																			<table width="100%" border="0" cellpadding="5" cellspacing="0">
 																				<tr>
 																					<td align="left" width="70%"><b>{$MOD.LBL_LABEL} </b><br>
-																					<input id="fldLabel_{$entries.blockid}"  value="" type="text" class="txtBox">
+																					<input id="fldLabel_{$entries.blockid}" value="" type="text" class="txtBox">
 																					</td>
 																				</tr>
 																				<tr id="lengthdetails_{$entries.blockid}">
@@ -155,7 +155,7 @@
 																				</tr>
 																				<tr id="decimaldetails_{$entries.blockid}" style="display:none;">
 																					<td align="left"><b>{$MOD.LBL_DECIMAL_PLACES}</b><br>
-																					<input type="text" id="fldDecimal_{$entries.blockid}" value=""  class="txtBox">
+																					<input type="text" id="fldDecimal_{$entries.blockid}" value="" class="txtBox">
 																					</td>
 																				</tr>
 																				<tr id="picklistdetails_{$entries.blockid}" style="display:none;">
@@ -180,7 +180,7 @@
 													<table border="0" cellspacing="0" cellpadding="5" width="100%" class="layerPopupTransport">
 														<tr>
 															<td align="center">
-																<input type="button" name="save" value=" {$APP.LBL_SAVE_BUTTON_LABEL}" class="crmButton small save"  onclick = "getCreateCustomFieldForm('{$MODULE}','{$entries.blockid}','add');"/>&nbsp;
+																<input type="button" name="save" value=" {$APP.LBL_SAVE_BUTTON_LABEL}" class="crmButton small save" onclick = "getCreateCustomFieldForm('{$MODULE}','{$entries.blockid}','add');"/>&nbsp;
 																<input type="button" name="cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL} " class="crmButton small cancel" onclick="fninvsh('addfield_{$entries.blockid}');" />
 															</td>
 														<input type="hidden" name="fieldType_{$entries.blockid}" id="fieldType_{$entries.blockid}" value="">
@@ -190,13 +190,13 @@
 												</div>
 									<!-- end custom field -->
 									{if $entries.blockid neq $COMMENTSECTIONID && $entries.blockid neq $SOLUTIONBLOCKID}
-										<img src="{'moveinto.png'|@vtiger_imageurl:$THEME}" border="0"  style="cursor:pointer; height:16px; width:16px" onClick="fnvshobj(this,'movefields_{$entries.blockid}');" alt="{$MOD.LBL_MOVE_FIELDS}" title="{$MOD.LBL_MOVE_FIELDS}"/>&nbsp;&nbsp;
+										<img src="{'moveinto.png'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer; height:16px; width:16px" onClick="fnvshobj(this,'movefields_{$entries.blockid}');" alt="{$MOD.LBL_MOVE_FIELDS}" title="{$MOD.LBL_MOVE_FIELDS}"/>&nbsp;&nbsp;
 									{/if}
 									<div id = "movefields_{$entries.blockid}" style="display:none; position:absolute; width:300px;" class="layerPopup">
 											<div style="position:relative; display:block">
 		 										<table width="100%" border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine">
 													<tr>
-														<td width="95%" align="left"  class="layerPopupHeading">
+														<td width="95%" align="left" class="layerPopupHeading">
 															{$MOD.LBL_MOVE_FIELDS}
 														</td>
 														<td width="5%" align="right">
@@ -276,7 +276,7 @@
 														{$value.label}
 													</th>
 													<th width="5%" align="right">
-														<a href="javascript:fninvsh('editfield_{$value.fieldselect}');"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0"  align="absmiddle" /></a>
+														<a href="javascript:fninvsh('editfield_{$value.fieldselect}');"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" /></a>
 													</th>
 												</tr>
 											</table>
@@ -361,12 +361,8 @@
 													<td valign="top" class="dvtCellInfo" align="left" width="10px">
 														{assign var="defaultsetting" value=$value.defaultvalue}
 														<input id="defaultvalue_check_{$value.fieldselect}" type="checkbox"
-														{if $defaultsetting.permitted eq false}
-															 disabled
-														{/if}
-														{if $defaultsetting.value neq ''}
-															 checked
-														{/if}
+														{if $defaultsetting.permitted eq false} disabled{/if}
+														{if $defaultsetting.value neq ''} checked{/if}>
 													</td>
 													<td valign="top" class="dvtCellInfo" align="left">
 														&nbsp;<label for="defaultvalue_check_{$value.fieldselect}">{$MOD.LBL_DEFAULT_VALUE}</label><br>
@@ -383,11 +379,11 @@
 												</tr>
 												<tr>
 													<td colspan="3" class="dvtCellInfo" align="center">
-														<input  type="button" name="save"  value=" &nbsp; {$APP.LBL_SAVE_BUTTON_LABEL} &nbsp; " class="crmButton small save" onclick="saveFieldInfo('{$value.fieldselect}','{$MODULE}','updateFieldProperties','{$value.typeofdata}');" />&nbsp;
+														<input type="button" name="save" value=" &nbsp; {$APP.LBL_SAVE_BUTTON_LABEL} &nbsp; " class="crmButton small save" onclick="saveFieldInfo('{$value.fieldselect}','{$MODULE}','updateFieldProperties','{$value.typeofdata}');" />&nbsp;
 														{if $value.customfieldflag neq 0}
 															<input type="button" name="delete" value=" {$APP.LBL_DELETE_BUTTON_LABEL} " class="crmButton small delete" onclick="deleteCustomField('{$value.fieldselect}','{$MODULE}','{$value.columnname}','{$value.uitype}')" />
 														{/if}
-														<input  type="button" name="cancel" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="crmButton small cancel" onclick="fninvsh('editfield_{$value.fieldselect}');" />
+														<input type="button" name="cancel" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="crmButton small cancel" onclick="fninvsh('editfield_{$value.fieldselect}');" />
 													</td>
 												</tr>
 											</table>
@@ -468,7 +464,7 @@
 							<tr>
 								<td width="95%" align="left" class="layerPopupHeading">{$MOD.LBL_ADD_BLOCK}
 								</td>
-								<td width="5%" align="right"><a href="javascript:fninvsh('addblock');"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0"  align="absmiddle" /></a>
+								<td width="5%" align="right"><a href="javascript:fninvsh('addblock');"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" /></a>
 								</td>
 							</tr>
 						</table>
@@ -502,8 +498,8 @@
 									<table border=0 cellspacing=0 cellpadding=5 width=100% >
 										<tr>
 											<td align="center">
-												<input type="button" name="save"  value= "{$APP.LBL_SAVE_BUTTON_LABEL}"  class="crmButton small save" onclick=" getCreateCustomBlockForm('{$MODULE}','add') "/>&nbsp;
-												<input type="button" name="cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}"  class="crmButton small cancel" onclick= "fninvsh('addblock');" />
+												<input type="button" name="save" value= "{$APP.LBL_SAVE_BUTTON_LABEL}" class="crmButton small save" onclick=" getCreateCustomBlockForm('{$MODULE}','add') "/>&nbsp;
+												<input type="button" name="cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" class="crmButton small cancel" onclick= "fninvsh('addblock');" />
 											</td>
 										</tr>
 									</table>

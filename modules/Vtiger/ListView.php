@@ -146,7 +146,12 @@ if (GlobalVariable::getVariable('Debug_ListView_Query', '0')=='1') {
 }
 try {
 if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true) {
-	$count_result = $adb->query( mkCountQuery( $list_query));
+	list($specialPermissionWithDuplicateRows,$cached) = VTCacheUtils::lookupCachedInformation('SpecialPermissionWithDuplicateRows');
+	if ($specialPermissionWithDuplicateRows) {
+		$count_result = $adb->query(mkCountWithFullQuery($list_query));
+	} else {
+		$count_result = $adb->query(mkCountQuery($list_query));
+	}
 	$noofrows = $adb->query_result($count_result,0,"count");
 }else {
 	$noofrows = null;

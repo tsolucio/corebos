@@ -135,7 +135,11 @@ class VTSimpleTemplate{
                     $ggu = new GetGroupUsers();
                     $ggu->getAllUsersInGroup($assigned_user_id);
                     $users = $ggu->group_users;
-                    $assigned_user_id = $users[0];
+					if(!empty($users)){
+						$assigned_user_id = $users[0];
+					}else{
+						$assigned_user_id = $backCurrentUser->id;
+					}
                 }
 		$current_user = new Users();
 		$current_user->retrieveCurrentUserInfoFromFile($assigned_user_id);

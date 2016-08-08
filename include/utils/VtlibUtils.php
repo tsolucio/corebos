@@ -562,7 +562,7 @@ function vtlib_purify($input, $ignore=false) {
 	static $purified_cache = array();
 
 	if (!is_array($input)) {  // thank you Boris and Adam (from developers list)
-		$md5OfInput = md5($input);
+		$md5OfInput = md5($input.($ignore?'T':'F'));
 		if (array_key_exists($md5OfInput, $purified_cache)) {
 			return $purified_cache[$md5OfInput];
 		}
@@ -597,9 +597,9 @@ function vtlib_purify($input, $ignore=false) {
 				$value = $__htmlpurifier_instance->purify($input);
 			}
 		}
-		$purified_cache[$md5OfInput] = $value;
 	}
 	$value = str_replace('&amp;','&',$value);
+	$purified_cache[$md5OfInput] = $value;
 	return $value;
 }
 

@@ -425,7 +425,7 @@ class Migration
 				$continue_process = 0;
 				$msg = "The dump may not be applied correctly. Tables exist in 4.2.3 database : $old_tables_count. Tables exist in current database after apply the dump : $new_tables_count";
 			   ?>
-				<script language="javascript">
+				<script>
 					alert("<?php echo $msg; ?>");
 				</script>
 			   <?php

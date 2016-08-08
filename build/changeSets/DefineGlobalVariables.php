@@ -36,6 +36,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_MaxFailedLoginAttempts',
 				'Application_ExpirePasswordAfterDays',
 				'Application_ListView_MaxColumns',
+				'Application_Action_Panel_Open',
 
 				'Calendar_Modules_Panel_Visible',
 				'Calendar_Default_Reminder_Minutes',
@@ -46,8 +47,11 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'calendar_other_default_duration',
 				'calendar_sort_users_by',
 
+				'CronTasks_cronWatcher_mailto',
+
 				'BusinessMapping_SalesOrder2Invoice',
 				'BusinessMapping_PotentialOnCampaignRelation',
+				'Webservice_showUserAdvancedBlock',
 
 				'Users_ReplyTo_SecondEmail',
 				'Users_Default_Send_Email_Template',
@@ -65,6 +69,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Product_Permit_Subproduct_Be_Parent',
 				'Product_Maximum_Number_Images',
 				'Workflow_Send_Email_ToCCBCC',
+				'Workflow_GeoDistance_Country_Default',
 
 				'Report_Send_Scheduled_ifEmpty',
 

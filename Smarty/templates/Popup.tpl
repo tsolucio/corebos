@@ -11,6 +11,7 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 <html>
 <head>
+	<meta http-equiv="Content-Type" content="text/html; charset={$APP.LBL_CHARSET}">
 	<title>{$MODULE|@getTranslatedString:$MODULE} - {$APP.LBL_BROWSER_TITLE}</title>
 	<link REL="SHORTCUT ICON" HREF="themes/images/blank.gif">
 <script language="JavaScript" type="text/javascript">
@@ -44,7 +45,6 @@ function QCreate(module,urlpop) {
 						var scriptTag = scriptTags[i];
 						eval(scriptTag.innerHTML);
 					}
-					eval(document.getElementById("qcformpop"));
 				}
 			);
 	} else {
@@ -92,22 +92,22 @@ function redirectWhenNoRelatedRecordsFound()
 	<!-- END -->
 {/if}
 {* END *}
-<script language="JavaScript" type="text/javascript" src="include/js/{php} echo $_SESSION['authenticated_user_language'];{/php}.lang.js?{php} echo $_SESSION['vtiger_version'];{/php}"></script>
-<script language="JavaScript" type="text/javascript" src="include/js/meld.js"></script>
-<script language="JavaScript" type="text/javascript" src="include/js/ListView.js"></script>
-<script language="JavaScript" type="text/javascript" src="include/js/general.js"></script>
-<script language="JavaScript" type="text/javascript" src="include/js/QuickCreate.js"></script>
-<script language="JavaScript" type="text/javascript" src="include/js/Inventory.js"></script>
-<script language="JavaScript" type="text/javascript" src="include/js/json.js"></script>
-<script language="JavaScript" type="text/javascript" src="include/js/search.js"></script>
+<script type="text/javascript" src="include/js/{php} echo $_SESSION['authenticated_user_language'];{/php}.lang.js?{php} echo $_SESSION['vtiger_version'];{/php}"></script>
+<script type="text/javascript" src="include/js/meld.js"></script>
+<script type='text/javascript' src='include/jquery/jquery.js'></script>
+<script type="text/javascript" src="include/js/ListView.js"></script>
+<script type="text/javascript" src="include/js/general.js"></script>
+<script type="text/javascript" src="include/js/QuickCreate.js"></script>
+<script type="text/javascript" src="include/js/Inventory.js"></script>
+<script type="text/javascript" src="include/js/json.js"></script>
+<script type="text/javascript" src="include/js/search.js"></script>
 <!-- vtlib customization: Javascript hook -->
-<script language="JavaScript" type="text/javascript" src="include/js/vtlib.js"></script>
+<script type="text/javascript" src="include/js/vtlib.js"></script>
 <!-- END -->
 {if $RETURN_MODULE != ''}
-<script language="JavaScript" type="text/javascript" src="modules/{$RETURN_MODULE}/{$RETURN_MODULE}.js"></script>
+<script type="text/javascript" src="modules/{$RETURN_MODULE}/{$RETURN_MODULE}.js"></script>
 {/if}
-<script language="JavaScript" type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
-<script type='text/javascript' src='include/jquery/jquery.js'></script>
+<script type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
 
 {* corebos customization: Inclusion of custom javascript and css as registered in popup *}
 {if $HEADERSCRIPTS}

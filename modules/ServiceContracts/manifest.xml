@@ -1,6 +1,5 @@
 <?xml version='1.0'?>
 <module>
-<exporttime>2009-02-06 12:10:01</exporttime>
 <name>ServiceContracts</name>
 <label>Service Contracts</label>
 <parent>Support</parent>
@@ -9,6 +8,18 @@
 <vtiger_version>5.1.0</vtiger_version>
 <vtiger_max_version>5.*</vtiger_max_version>
 </dependencies>
+<license>
+<inline><![CDATA[
+*********************************************************************************
+** The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
+ * All Rights Reserved.
+ ********************************************************************************
+]]></inline>
+</license>
 <migrations>
 	<migration version='1.0'>
 		<tables>

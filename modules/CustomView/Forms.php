@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 function get_validate_import_fields_js (&$req_fields,&$all_fields)
 {
@@ -25,7 +24,7 @@ function get_validate_import_fields_js (&$req_fields,&$all_fields)
 
 	$the_script  = <<<EOQ
 
-<script type="text/javascript" language="Javascript">
+<script type="text/javascript">
 <!--  to hide script contents from old browsers
 
 function verify_data(form) 
@@ -105,8 +104,7 @@ EOQ;
 
 
 
-function get_validate_upload_js () 
-{
+function get_validate_upload_js () {
 	global $mod_strings;
 
 	$err_missing_required_fields = $mod_strings['ERR_MISSING_REQUIRED_FIELDS'];
@@ -115,7 +113,7 @@ function get_validate_upload_js ()
 
 	$the_script  = <<<EOQ
 
-<script type="text/javascript" language="Javascript">
+<script type="text/javascript">
 <!--  to hide script contents from old browsers
 
 function verify_data(form) 
@@ -223,7 +221,7 @@ function getFieldSelect(&$column_fields,$colnum,&$required_fields,$suggest_field
 function get_readonly_js () 
 {
 ?>
-<script type="text/javascript" language="Javascript">
+<script type="text/javascript">
 <!--  to hide script contents from old browsers
 
 function set_readonly(form) 

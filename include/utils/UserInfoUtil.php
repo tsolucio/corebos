@@ -605,14 +605,20 @@ function getProfileDescription($profileid)
 	return $profileDescription;
 }
 
+/** This function is a wrapper that extends the permissions system with a hook to specific functionality **/
+function isPermitted($module, $actionname, $record_id='') {
+	$permission = _vtisPermitted($module,$actionname,$record_id);
+	list($permission, $unused1, $unused2, $unused3) = cbEventHandler::do_filter('corebos.permissions.ispermitted', array($permission, $module, $actionname, $record_id));
+	return $permission;
+}
+
 /** Function to check if the currently logged in user is permitted to perform the specified action
  * @param $module -- Module Name:: Type varchar
  * @param $actionname -- Action Name:: Type varchar
  * @param $recordid -- Record Id:: Type integer
  * @returns yes or no. If Yes means this action is allowed for the currently logged in user. If no means this action is not allowed for the currently logged in user
  */
-function isPermitted($module,$actionname,$record_id='')
-{
+function _vtisPermitted($module,$actionname,$record_id='') {
 	global $log, $adb, $current_user, $seclog;
 	$log->debug("Entering isPermitted(".$module.",".$actionname.",".$record_id.") method ...");
 	if (strpos($record_id,'x')>0) { // is webserviceid
@@ -1298,6 +1304,7 @@ function getProfileGlobalPermission($profileid)
 {
 	global $log, $adb;
 	$log->debug('Entering getProfileGlobalPermission('.$profileid.') method ...');
+	$copy=Array();
 	$sql = 'select * from vtiger_profile2globalpermissions where profileid=?';
 	$result = $adb->pquery($sql, array($profileid));
 	$num_rows = $adb->num_rows($result);
@@ -2942,7 +2949,6 @@ function getCombinedUserGlobalPermissions($userId)
 	$log->debug("Entering getCombinedUserGlobalPermissions(".$userId.") method ...");
 	$profArr=getUserProfile($userId);
 	$no_of_profiles=sizeof($profArr);
-	$userGlobalPerrArr=Array();
 	$userGlobalPerrArr=getProfileGlobalPermission($profArr[0]);
 	if($no_of_profiles != 1)
 	{
@@ -3429,7 +3435,7 @@ function getListViewSecurityParameter($module)
 function getSecListViewSecurityParameter($module)
 {
 	global $log, $adb, $current_user;
-	$log->debug("Entering getListViewSecurityParameter(".$module.") method ...");
+	$log->debug("Entering getSecListViewSecurityParameter(".$module.") method ...");
 
 	$tabid=getTabid($module);
 	if($current_user) {
@@ -3598,7 +3604,7 @@ function getSecListViewSecurityParameter($module)
 		}
 		$sec_query .= " vtiger_groups$module.groupid in(select vtiger_tmp_read_group_sharing_per.sharedgroupid from vtiger_tmp_read_group_sharing_per where userid=".$current_user->id." and tabid=".$tabid.")))) ";
 	}
-	$log->debug("Exiting getListViewSecurityParameter method ...");
+	$log->debug("Exiting getSecListViewSecurityParameter method ...");
 	return $sec_query;
 }
 

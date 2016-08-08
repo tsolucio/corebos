@@ -136,6 +136,8 @@ switch($currentModule)
 		$log = LoggerManager::getLogger('quotes_list');
 		$smarty->assign("SINGLE_MOD",'Quote');
 		$alphabetical = AlphabeticalSearch($currentModule,'Popup','subject','true','basic',$popuptype,"","",$url);
+		if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='')
+			$smarty->assign("RETURN_MODULE",vtlib_purify($_REQUEST['return_module']));
 		break;
 	case 'Invoice':
 		$smarty->assign("SINGLE_MOD",'Invoice');
@@ -163,6 +165,8 @@ switch($currentModule)
 		if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='')
 			$smarty->assign("RETURN_MODULE",vtlib_purify($_REQUEST['return_module']));
 		$alphabetical = AlphabeticalSearch($currentModule,'Popup','vendorname','true','basic',$popuptype,"","",$url);
+		if(isset($_REQUEST['return_module']) && $_REQUEST['return_module'] !='')
+			$smarty->assign("RETURN_MODULE",vtlib_purify($_REQUEST['return_module']));
 		break;
 	case 'SalesOrder':
 		$smarty->assign("SINGLE_MOD",'SalesOrder');

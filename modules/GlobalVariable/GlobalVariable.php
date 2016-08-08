@@ -603,7 +603,8 @@ class GlobalVariable extends CRMEntity {
 			return $value;
 		}
 
-		$user = " and vtiger_crmentity.smownerid=$gvuserid";
+		if (!is_numeric($gvuserid) and $gvuserid>0) return $default;
+		$user = $adb->convert2Sql(' and vtiger_crmentity.smownerid=?', array($gvuserid));
 		$sql=$select.$where.$user;
 		$gvvalidationinfo[] = '---';
 		$value=$focus->return_global_var_value($sql,$var,$module);

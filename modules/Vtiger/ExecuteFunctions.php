@@ -117,6 +117,14 @@ switch ($functiontocall) {
 		}
 		die();
 		break;
+	case 'getModuleWebseriviceID':
+		$wsmod = vtlib_purify($_REQUEST['wsmodule']);
+		if (!empty($wsmod)) {
+			$ret = vtws_getEntityId($wsmod);
+		} else {
+			$ret = '';
+		}
+		break;
 	case 'ismoduleactive':
 	default:
 		$mod = vtlib_purify($_REQUEST['checkmodule']);

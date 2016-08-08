@@ -30,7 +30,7 @@ global $app_strings, $app_list_strings, $mod_strings;
 <meta http-equiv="Content-Type" content="text/html; charset=<?php echo $app_strings['LBL_CHARSET'];?>">
 <title><?php echo $mod_strings['TITLE_VTIGER_CRM_5'];?></title>
 <link href="<?php echo $theme_path;?>style.css" rel="stylesheet" type="text/css">
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
 function newpopup(str){
 	window.open (str,"mywinw","menubar=1,resizable=1,scrollbars=yes");
 }

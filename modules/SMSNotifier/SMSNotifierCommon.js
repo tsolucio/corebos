@@ -8,7 +8,7 @@
  ************************************************************************************/
 if(typeof(SMSNotifierCommon) == 'undefined') {
 	var SMSNotifierCommon = {
-		
+
 		/** Wizard Container **/
 		getWizardContainer : function() {
 			var container = document.getElementById('__smsnotifier_wizard_container__');
@@ -16,17 +16,15 @@ if(typeof(SMSNotifierCommon) == 'undefined') {
 				container = document.createElement('div');
 				container.className = 'layerPopup';
 				container.id = '__smsnotifier_wizard_container__';
-				document.body.appendChild(container);				
+				document.body.appendChild(container);
 			}
-			
 			return container;
 		},
-		
+
 		displayWizardContainer : function(container, sourcenode) {
 			if(typeof(container) == 'undefined') container = SMSNotifierCommon.getWizardContainer();
 			if(container) {
 				if(typeof(sourcenode) != 'undefined') {
-					
 					if(sourcenode != null) {
 						fnvshobj(sourcenode, container.id);
 					} else {
@@ -36,26 +34,26 @@ if(typeof(SMSNotifierCommon) == 'undefined') {
 						}
 					}
 				}
-				container.show();
+				jQuery(container).show();
 			}
 		},
-		
+
 		hideWizardContainer : function() {
 			if(typeof(container) == 'undefined') container = SMSNotifierCommon.getWizardContainer();
 			if(container) {
 				container.style.display='none';
 			}
-		},	
-		
+		},
+
 		/** Select Wizard **/
 		displaySelectWizard_DetailView : function(sourcemodule, recordid) {
-			var sourcenode = null;			
+			var sourcenode = null;
 			SMSNotifierCommon.displaySelectWizard(sourcenode, sourcemodule, recordid);
 		},
-		
+
 		displaySelectWizard : function(sourcenode, sourcemodule, recordid) {
 			var idstring = false;
-			
+
 			// Record id not sent directly? Could be from ListView
 			if(typeof(recordid) == 'undefined' || recordid == null || recordid == '') {
 				var excludedRecords = document.getElementById("excludedRecords").value;
@@ -66,7 +64,6 @@ if(typeof(SMSNotifierCommon) == 'undefined') {
 				if(select_options != 'all'){
 					var x = select_options.split(';');
 					var count = x.length;
-                                
 					if(count > 1) {
 						idstring = select_options;
 					} else {
@@ -93,7 +90,6 @@ if(typeof(SMSNotifierCommon) == 'undefined') {
 			}
 
 			if(confirm_status){
-	
 				if(idstring) {
 					var url = 'module=SMSNotifier&action=SMSNotifierAjax&ajax=true&file=SMSNotifierSelectWizard';
 					url += '&sourcemodule=' + encodeURIComponent(sourcemodule);
@@ -101,7 +97,6 @@ if(typeof(SMSNotifierCommon) == 'undefined') {
 					url += '&excludedRecords=' + encodeURIComponent(excludedRecords);
 					url += '&viewname=' +encodeURIComponent(viewid);
 					url += '&searchurl=' +encodeURIComponent(searchurl);
-							
 					jQuery.ajax({
 						method: 'POST',
 						url: 'index.php?'+url
@@ -112,103 +107,97 @@ if(typeof(SMSNotifierCommon) == 'undefined') {
 				}
 			}
 		},
-		
+
 		buildSelectWizard : function(content, sourcenode) {
 			var container = SMSNotifierCommon.getWizardContainer();
-			container.innerHTML = content;			
-			SMSNotifierCommon.displayWizardContainer(container, sourcenode);			
+			container.innerHTML = content;
+			SMSNotifierCommon.displayWizardContainer(container, sourcenode);
 		},
-		
+
 		hideSelectWizard : function() {
 			SMSNotifierCommon.hideWizardContainer();
 		},
-		
+
 		/** Compose Wizard **/
 		displayComposeWizard : function(form, sourcenode) {
-			
+
 			var form_phonetype_inputs = form.phonetype;
 			if(typeof form_phonetype_inputs.length == 'undefined') {
 				form_phonetype_inputs = [form.phonetype];
 			}
-			
+
 			// Variables to submit for next wizard
 			var phonefields = '';
 			var idstring = form.idstring.value;
-            var excludedRecords = form.excludedRecords.value;
-            var viewid = form.viewid.value;
-            var searchurl = form.searchurl.value;
+			var excludedRecords = form.excludedRecords.value;
+			var viewid = form.viewid.value;
+			var searchurl = form.searchurl.value;
 			var sourcemodule = form.sourcemodule.value;
-			
+
 			// Gather the phone fields selected.
 			for(var index = 0; index < form_phonetype_inputs.length; ++index) {
 				if(form_phonetype_inputs[index].checked) {
 					phonefields += form_phonetype_inputs[index].value + ';';
 				}
 			}
-			
+
 			if(phonefields == '') {
 				// TODO Show alert?
 				return false;
-			}			
-			
-			var url = 'module=SMSNotifier&action=SMSNotifierAjax&ajax=true&file=SMSNotifierComposeWizard';			
-			url += '&sourcemodule=' + encodeURIComponent(sourcemodule);			
+			}
+
+			var url = 'module=SMSNotifier&action=SMSNotifierAjax&ajax=true&file=SMSNotifierComposeWizard';
+			url += '&sourcemodule=' + encodeURIComponent(sourcemodule);
 			url += '&idstring=' + encodeURIComponent(idstring);
-            url += '&excludedRecords=' + encodeURIComponent(excludedRecords);
-            url += '&viewname=' +encodeURIComponent(viewid);
-            url += '&searchurl=' +encodeURIComponent(searchurl);
+			url += '&excludedRecords=' + encodeURIComponent(excludedRecords);
+			url += '&viewname=' +encodeURIComponent(viewid);
+			url += '&searchurl=' +encodeURIComponent(searchurl);
 			url += '&phonefields='+ encodeURIComponent(phonefields);
-			
 			jQuery.ajax({
 				method: 'POST',
 				url: 'index.php?'+url
 			}).done(function (response) {
-					SMSNotifierCommon.buildComposeWizard(response, sourcenode);					
+					SMSNotifierCommon.buildComposeWizard(response, sourcenode);
 				}
 			);
 		},
-		
+
 		buildComposeWizard : function(content, sourcenode) {
 			var container = SMSNotifierCommon.getWizardContainer();
-			container.innerHTML = content;			
+			container.innerHTML = content;
 			SMSNotifierCommon.displayWizardContainer(container, sourcenode);
 		},
-		
+
 		hideComposeWizard : function() {
 			SMSNotifierCommon.hideWizardContainer();
 		},
-		
+
 		/** Send Operation **/
 		triggerSendSMS : function(form) {
-			
 			var messageTextInput = form.message;
 			if(messageTextInput.value == '') {
 				messageTextInput.focus();
-				return false; 
+				return false;
 			}
-			
+
 			// Variables to submit for next wizard
 			var phonefields = form.phonefields.value;
 			var idstring = form.idstring.value;
-            var excludedRecords = form.excludedRecords.value;
-            var viewid = form.viewid.value;
-            var searchurl = form.searchurl.value;
+			var excludedRecords = form.excludedRecords.value;
+			var viewid = form.viewid.value;
+			var searchurl = form.searchurl.value;
 			var sourcemodule = form.sourcemodule.value;
 			var message = messageTextInput.value;
-			
-			document.getElementById('status').show();
-			
+			jQuery('#status').show();
 			VtigerJS_DialogBox.block();
-			
-			var url = 'module=SMSNotifier&action=SMSNotifierAjax&ajax=true&file=SMSNotifierSend';			
-			url += '&sourcemodule=' + encodeURIComponent(sourcemodule);			
+			var url = 'module=SMSNotifier&action=SMSNotifierAjax&ajax=true&file=SMSNotifierSend';
+			url += '&sourcemodule=' + encodeURIComponent(sourcemodule);
 			url += '&idstring=' + encodeURIComponent(idstring);
 			url += '&phonefields='+ encodeURIComponent(phonefields);
 			url += '&message=' + encodeURIComponent(message);
-            url += '&excludedRecords=' + encodeURIComponent(excludedRecords);
-            url += '&viewname=' +encodeURIComponent(viewid);
-            url += '&searchurl=' +encodeURIComponent(searchurl);
-			
+			url += '&excludedRecords=' + encodeURIComponent(excludedRecords);
+			url += '&viewname=' +encodeURIComponent(viewid);
+			url += '&searchurl=' +encodeURIComponent(searchurl);
 			jQuery.ajax({
 				method: 'POST',
 				url: 'index.php?'+url
