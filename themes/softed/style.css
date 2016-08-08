@@ -2430,6 +2430,7 @@ a.drop_downnew_parent{
 	padding: 2px;
 	margin: 0 0 2px 0;
 	border: 1px solid yellow;
+        line-height: 1.5em;
 }
 /* feedback or help message end here*/
 

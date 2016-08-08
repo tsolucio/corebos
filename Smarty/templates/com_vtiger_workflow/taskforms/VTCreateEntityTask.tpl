@@ -71,6 +71,11 @@
 
 	<tr>
 		<td style='padding-top: 10px;' colspan="2">
+			<span class="helpmessagebox">{'LBL_CREATE_ENTITY_NOTE_BUSINESSMAPS'|@getTranslatedString:$MODULE}</span>
+		</td>
+	</tr>
+	<tr>
+		<td style='padding-top: 10px;' colspan="2">
 			<span class="helpmessagebox">{'LBL_CREATE_ENTITY_NOTE_ORDER_MATTERS'|@getTranslatedString:$MODULE}</span>
 		</td>
 	</tr>

@@ -56,6 +56,7 @@ $mod_strings = array(
 'LBL_VALIDATION_INVALID_FIELD_VALUES' => 'Valores de Campos Inválidos',
 'LBL_CREATE_ENTITY_NOTE_ORDER_MATTERS' => 'Nota: Las expresiones se evalúan en el orden de los campos.
 											Así que asegurate de asignar un valor al campo antes de utilizarlo.',
+'LBL_CREATE_ENTITY_NOTE_BUSINESSMAPS' => 'Nota: Puedes usar un Mapa de Negocio para mapear los campos de una entidad a otra, en ese caso los campos de mapeo indicados en el mapa, prevalecerán sobre los que se definan aquí.',
 'LBL_SET_VALUE' => 'Establecer Valor',
 
 'LBL_EMAIL_RECIPIENT' => 'Destinatario',
