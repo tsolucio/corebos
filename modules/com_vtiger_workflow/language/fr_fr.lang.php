@@ -57,7 +57,7 @@ $mod_strings = array(
 	'LBL_VALIDATION_INVALID_FIELD_VALUES' => 'Valeurs de champs invalides',
 	'LBL_CREATE_ENTITY_NOTE_ORDER_MATTERS' => 'Note: Les expressions seront évaluées dans l\'ordre des champs définis.
 												Prévoir de fournir des valeurs de champ avant de les utiliser dans une exxpression.',
-	
+	'LBL_CREATE_ENTITY_NOTE_BUSINESSMAPS' => 'Note: You can use a Field Business Map to map fields from one entity to the other, in that case the business map definitions will overwrite the ones defined here.',
 	'LBL_SET_VALUE' => 'Définir la valeur',
 	
 	'LBL_EMAIL_RECIPIENT' => 'Destinataires',

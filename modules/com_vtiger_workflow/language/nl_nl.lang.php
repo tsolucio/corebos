@@ -84,6 +84,7 @@ $mod_strings = array(
 'LBL_VALIDATION_DUPLICATE_FIELDNAMES' => 'Zelfde veld is meer dan eens gekozen.',
 'LBL_VALIDATION_INVALID_FIELD_VALUES' => 'Ongeldige veldwaarden',
 'LBL_CREATE_ENTITY_NOTE_ORDER_MATTERS' => 'Opmerking: Formules worden afgewerkt in de volgorde van de aangeboden veldwaarden. Zorg er dus voro dat elk veld een waarde heeft alvorens deze in een formule te gebruiken.',
+'LBL_CREATE_ENTITY_NOTE_BUSINESSMAPS' => 'Note: You can use a Field Business Map to map fields from one entity to the other, in that case the business map definitions will overwrite the ones defined here.',
 'LBL_SET_VALUE' => 'Stel waarde in',
 
 'LBL_EMAIL_RECIPIENT' => 'Ontvanger',
