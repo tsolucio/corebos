@@ -37,5 +37,6 @@ $mod_strings = Array(
 	'Module Set Mapping' => 'Module Set Mapping',
 	'ListColumns' => 'List Columns',
 	'DuplicateRelations' => 'Duplicate Relations',
+	'MasterDetailLayout' => 'Master Detail Layout',
 );
 ?>

@@ -110,6 +110,9 @@ switch ($focus->column_fields['maptype']) {
 		$mapinfo['TargetModule'] = $focus->getMapTargetModule();
 		$mapinfo['OriginModule'] = $focus->getMapOriginModule();
 		break;
+	case 'MasterDetailLayout':
+		$mapinfo = $focus->MasterDetailLayout();
+		break;
 	case 'SendMail':
 		$mapinfo = $focus->getMapMessageMailer();
 		break;
