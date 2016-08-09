@@ -60,6 +60,7 @@ $mod_strings = array(
 'LBL_VALIDATION_INVALID_FIELD_VALUES' => 'Invalid field values',
 'LBL_CREATE_ENTITY_NOTE_ORDER_MATTERS' => 'Note: Expressions will be evaluated in the order of the field values provided.
 											So make sure to provide value for a field before using it in expressions.',
+'LBL_CREATE_ENTITY_NOTE_BUSINESSMAPS' => 'Note: You can use a Field Business Map to map fields from one entity to the other, in that case the business map definitions will overwrite the ones defined here.',
 'LBL_SET_VALUE' => 'Set Value',
 
 'LBL_EMAIL_RECIPIENT' => 'Recipient',
@@ -153,6 +154,8 @@ $mod_strings = array(
 'Workflow for Calendar Todos when Send Notification is True' => 'Workflow for Calendar Todos when Send Notification is True',
 'Calculate or Update forecast amount' => 'Calculate or Update forecast amount',
 'LBL_METHOD_NAME' => 'Method Name',
-'NO_METHOD_AVAILABLE' => 'No method is available for this module.'
+'NO_METHOD_AVAILABLE' => 'No method is available for this module.',
+'LBL_INV_DAYS_FROM_WF' => 'Number of offset days between today and invoice duedate',
+'EXACT_PAYMENT_CONDS' => 'Exact Payment Condition'
 );
 ?>
