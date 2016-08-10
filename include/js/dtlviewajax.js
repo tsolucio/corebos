@@ -107,7 +107,7 @@ var genFldValue = "";
 function dtlViewAjaxDirectFieldSave(fieldValue,module,tableName,fieldName,crmId,okmsg) {
 	var data = {
 		"fldName" : fieldName,
-		"fieldValue" : escapeAll(tagValue)
+		"fieldValue" : escapeAll(fieldValue)
 	};
 	var url = "file=DetailViewAjax&module=" + module + "&action=" + module + "Ajax&record=" + crmId + "&recordid=" + crmId + "&ajxaction=DETAILVIEW";
 	if(module == 'Users') {
