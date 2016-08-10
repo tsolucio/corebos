@@ -58,6 +58,7 @@ $mod_strings = array(
 	'LBL_VALIDATION_DUPLICATE_FIELDNAMES' => 'Ugyanazt a mezőt egynél többször választottad.',
 	'LBL_VALIDATION_INVALID_FIELD_VALUES' => 'Érvénytelen mező érték',
 	'LBL_CREATE_ENTITY_NOTE_ORDER_MATTERS' => 'Megjegyzés: A kifejezéseket abban a sorrendben értékeljük ki, ahogy a mezők értéket kapnak.											Tehát légy biztos abban, hogy a mezők már azelőtt kaptak értéket, mielőtt egy kifejezésben használnád őket.',
+	'LBL_CREATE_ENTITY_NOTE_BUSINESSMAPS' => 'Note: You can use a Field Business Map to map fields from one entity to the other, in that case the business map definitions will overwrite the ones defined here.',
 	'LBL_SET_VALUE' => 'Érték megadása',
 	'LBL_EMAIL_RECIPIENT' => 'Címzett',
 	'LBL_EMAIL_CC' => 'CC',
