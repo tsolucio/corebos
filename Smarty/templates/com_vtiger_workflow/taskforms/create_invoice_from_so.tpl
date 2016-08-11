@@ -21,7 +21,3 @@
 <script type="text/javascript" charset="utf-8">
 var moduleName = '{$entityName}';
 </script>
-<h2>{'LBL_INV_DAYS_FROM_WF'|@getTranslatedString:'com_vtiger_workflow'}</h2>
-<input type="text" name="invoice_duedate_days" id="invoice_duedate_days" value="{$task->invoice_duedate_days}"><br>
-<h2>{'EXACT_PAYMENT_CONDS'|@getTranslatedString:'com_vtiger_workflow'}</h2>
-<input type="text" name="exact_payment_cond" id="exact_payment_cond" value="{$task->exact_payment_cond}">

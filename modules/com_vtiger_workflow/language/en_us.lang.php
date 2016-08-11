@@ -154,8 +154,6 @@ $mod_strings = array(
 'Workflow for Calendar Todos when Send Notification is True' => 'Workflow for Calendar Todos when Send Notification is True',
 'Calculate or Update forecast amount' => 'Calculate or Update forecast amount',
 'LBL_METHOD_NAME' => 'Method Name',
-'NO_METHOD_AVAILABLE' => 'No method is available for this module.',
-'LBL_INV_DAYS_FROM_WF' => 'Number of offset days between today and invoice duedate',
-'EXACT_PAYMENT_CONDS' => 'Exact Payment Condition'
+'NO_METHOD_AVAILABLE' => 'No method is available for this module.'
 );
 ?>

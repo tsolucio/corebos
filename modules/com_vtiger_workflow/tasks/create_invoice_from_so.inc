@@ -26,55 +26,33 @@ class CreateInvFromSO extends VTTask{
 	public $executeImmediately = true;
 
 	public function getFieldNames() {
-		return array('invoice_duedate_days','exact_payment_cond');
+		return array();
 	}
 
 	public function doTask(&$entity) {
-		global $adb;
+
+		global $adb, $log;
 
 		$user = new Users();
 		$current_user = $user->retrieveCurrentUserInfoFromFile(Users::getActiveAdminId());
 
-		// Get invoice instance
-		$focus = CRMEntity::getInstance('Invoice');
-
-		// Split the webservice ID from the CRM id
-		list($so_wsid,$soid) = explode('x',$entity->getId());
-
-		// Create the SO instance
-		$so_focus = CRMEntity::getInstance('SalesOrder');
-		$so_focus->id = $soid;
-		// Fill the SO instance with the correct SO data
-		$so_focus->retrieve_entity_info($soid, "SalesOrder");
-
-		// Convert the SO to an invoice, overwriting the existing invoice instance
-		$focus = getConvertSoToInvoice($focus, $so_focus, $soid);
-
-		 // Get the webservice version of the SO
+		// Get the salesorder in question
 		$wsso = vtws_retrieve($entity->getId(), $current_user);
 
-		// Fill some fields the 'getConvertSoToInvoice' missed
-		$focus->column_fields['pdoInformation'] = $wsso['pdoInformation'];
-		$focus->column_fields['assigned_user_id'] = $wsso['assigned_user_id'];
-		$focus->column_fields['exact_payment_cond'] = $this->exact_payment_cond;
-		$focus->column_fields['invoicestatus'] = 'AutoCreated';
+		// // Start with the salesorder and overwrite what's needed to overwrite
+		$data = $wsso;
 
-		// Get the number of days the duedate should be more than today
-		if ($this->invoice_duedate_days != '') {
-			$focus->column_fields['duedate'] = date('d-m-Y', strtotime("+" . $this->invoice_duedate_days . " days"));
-		}	
+		$data['pdoInformation'] = $wsso['pdoInformation'];
+		$data['salesorder_id'] = $wsso['id'];
+		$data['invoicedate'] = date('d-m-Y');
+		$data['invoicestatus'] = 'AutoCreated';
+		$data['createdtime'] = date('Y-m-d H:i:s');
+		$data['modifiedtime'] = date('Y-m-d H:i:s');
 
-		$webserviceObject = VtigerWebserviceObject::fromName($adb,'Invoice');
-		$handlerPath = $webserviceObject->getHandlerPath();
-		$handlerClass = $webserviceObject->getHandlerClass();
-		require_once $handlerPath;
-		$handler = new $handlerClass($webserviceObject,$current_user,$adb,$log);
-		$meta = $handler->getMeta();
+		$_REQUEST['action'] = '';
+		$_REQUEST['ajxaction'] = '';		
 
-		// Sanitize for insert through webservice
-		$sanitized_focus = DataTransform::sanitizeReferences($focus->column_fields, $meta);
-
-		$invoice = vtws_create('Invoice', $sanitized_focus, $current_user);	
-	}	
+		$invoice = vtws_create('Invoice', $data, $current_user);
+	}
 }
 ?>
