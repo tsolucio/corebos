@@ -25,8 +25,10 @@ class cbMapAddMapTypes extends cbupdaterWorker {
 			$cbmaptypes = array(
 				'Record Access Control',
 				'Record Set Mapping',
+				'Module Set Mapping',
 				'ListColumns',
 				'DuplicateRelations',
+				'MasterDetailLayout',
 			);
 			$moduleInstance = Vtiger_Module::getInstance('cbMap');
 			$field = Vtiger_Field::getInstance('maptype',$moduleInstance);

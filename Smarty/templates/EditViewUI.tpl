@@ -133,9 +133,9 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			</td>
 			<td width="30%" align=left class="dvtCellInfo">
 				{if $MODULE eq 'Calendar'}
-					<select name="{$fldname}" tabindex="{$vt_tab}" class="small" style="width:160px;">
+					<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small" style="width:160px;">
 				{else}
-					<select name="{$fldname}" tabindex="{$vt_tab}" class="small" style="width:280px;">
+					<select name="{$fldname}" id="{$fldname}" tabindex="{$vt_tab}" class="small" style="width:280px;">
 				{/if}
 				{foreach item=arr from=$fldvalue}
 					{if $arr[0] eq $APP.LBL_NOT_ACCESSIBLE}
