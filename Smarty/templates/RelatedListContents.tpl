@@ -128,6 +128,7 @@ function disableRelatedListBlock(urldata,target,imagesuffix){
 		<td class="dvInnerHeader" class="rel_mod_header_wrapper">
 			<div style="font-weight: bold;height: 1.75em;" class="rel_mod_header">
 				<span class="toggle_rel_mod_table">
+				{strip}
 					<a href="javascript:loadRelatedListBlock(
 						'module={$MODULE}&action={$MODULE}Ajax&file=DetailViewAjax&record={$ID}&ajxaction=LOADRELATEDLIST&header={$header}&relation_id={$detail.relationId}&actions={$detail.actions}&parenttab={$CATEGORY}',
 						'tbl_{$MODULE}_{$header|replace:' ':''}','{$MODULE}_{$header|replace:' ':''}');">
@@ -136,6 +137,7 @@ function disableRelatedListBlock(urldata,target,imagesuffix){
 					<a href="javascript:hideRelatedListBlock('tbl_{$MODULE}_{$header|replace:' ':''}','{$MODULE}_{$header|replace:' ':''}');">
 						<span class="exp_coll_block inactivate" style="display: none"><img id="hide_{$MODULE}_{$header|replace:' ':''}" src="{'activate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid #000000;display:none;" alt="{'LBL_Show'|@getTranslatedString:'Settings'}" title="{'LBL_Show'|@getTranslatedString:'Settings'}"/></span>
 					</a>
+				{/strip}
 				</span>
 				&nbsp;{$HEADERLABEL}&nbsp;
 				<img id="indicator_{$MODULE}_{$header|replace:' ':''}" style="display:none;" src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0" align="absmiddle" />
