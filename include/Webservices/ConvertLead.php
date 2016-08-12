@@ -267,7 +267,7 @@ function vtws_createEntities($entityIds) {
 
 	if(isset($entityIds['Accounts']))
 		$accountid = vtws_getIdComponents($entityIds['Accounts'])[1];
-	if(isset($entityIds['Accounts']))
+	if(isset($entityIds['Contacts']))
 		$contactid = vtws_getIdComponents($entityIds['Contacts'])[1];
 
 	$bmapname = 'LeadConversion';
@@ -275,14 +275,13 @@ function vtws_createEntities($entityIds) {
 	if ($cbMapid) {
 		$cbMap = cbMap::getMapByID($cbMapid);
 		$modules = $cbMap->ModuleSetMapping()->getFullModuleSet();
-
+		$excludedModules = array('Potentials','Accounts','Contacts','Users');
 		foreach ($modules as $module) {
-			if($module != "Potentials") {
-				if(isset($accountid))
-					vtws_createEntity($accountid,"Accounts",$module);
-				if(isset($contactid))
-					vtws_createEntity($contactid,"Contacts",$module);
-			}
+			if(in_array($module,$excludedModules)) continue;
+			if(isset($accountid))
+				vtws_createEntity($accountid,"Accounts",$module);
+			if(isset($contactid))
+				vtws_createEntity($contactid,"Contacts",$module);
 		}
 	}
 }
