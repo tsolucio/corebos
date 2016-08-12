@@ -41,7 +41,7 @@
 
 	<td class="showPanelBg" valign="top" width=100% style="padding:10px;">
 	 <!-- SIMPLE SEARCH -->
-<div id="searchAcc" style="display: block;position:relative;">
+<div id="searchAcc" style="{$DEFAULT_SEARCH_PANEL_STATUS};position:relative;">
 <form name="basicSearch" method="post" action="index.php" onSubmit="document.basicSearch.searchtype.searchlaunched='basic';return callSearch('Basic');">
 <table width="100%" cellpadding="5" cellspacing="0"  class="searchUIBasic small" align="center" border=0>
 	<tr>
