@@ -299,7 +299,7 @@ class Users extends CRMEntity {
 	 */
 	function load_user($user_password) {
 		$usr_name = $this->column_fields["user_name"];
-		$maxFailedLoginAttempts = GlobalVariable::getVariable('Application_MaxFailedLoginAttempts', 5);
+		$maxFailedLoginAttempts = GlobalVariable::getVariable('Application_MaxFailedLoginAttempts', 5, 'Users');
 		if (isset($_SESSION['loginattempts'])) {
 			$_SESSION['loginattempts'] += 1;
 		} else {
@@ -331,8 +331,34 @@ class Users extends CRMEntity {
 
 		$this->loadPreferencesFromDB($row['user_preferences']);
 
-		if ($row['status'] != "Inactive")
+		// Make sure admin is logging in from authorized IPs
+		if ($row['is_admin'] == 'on' or $row['is_admin'] == '1') {
+			$AdminLoginIPs = GlobalVariable::getVariable('Application_AdminLoginIPs','','Users');
+			if ($AdminLoginIPs != '') {
+				$admin_ip_addresses = explode(',',$AdminLoginIPs);
+				if (!in_array($_SERVER['REMOTE_ADDR'],$admin_ip_addresses)) {
+					$row['status'] = 'Inactive';
+					$this->authenticated = false;
+					$_SESSION['login_error'] = getTranslatedString('ERR_INVALID_ADMINIPLOGIN','Users');
+					$mailsubject = "[Security Alert]: Admin login attempt rejected for login: $usr_name from external IP: " . $_SERVER['REMOTE_ADDR'];
+					$this->log->warn($mailsubject);
+					// Send email with authentification error.
+					$mailto = GlobalVariable::getVariable('Debug_Send_AdminLoginIPAuth_Error','','Users');
+					if ($mailto != '') {
+						require_once('modules/Emails/mail.php');
+						require_once('modules/Emails/Emails.php');
+						global $HELPDESK_SUPPORT_EMAIL_ID,$HELPDESK_SUPPORT_NAME;
+						$from_name = $HELPDESK_SUPPORT_NAME;
+						$form_mail = $HELPDESK_SUPPORT_EMAIL_ID;
+						$mailcontent = $mailsubject. "\n";
+						send_mail('Emails',$mailto,$from_name,$form_mail,$mailsubject,$mailcontent);
+					}
+				}
+			}
+		}
+		if ($row['status'] != 'Inactive') {
 			$this->authenticated = true;
+		}
 
 		unset($_SESSION['loginattempts']);
 		return $this;

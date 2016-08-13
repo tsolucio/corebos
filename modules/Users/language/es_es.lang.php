@@ -116,6 +116,7 @@ $mod_strings = Array(
 'ERR_ENTER_CONFIRMATION_PASSWORD'=>'Por favor, confirme su nueva contraseña.',
 'ERR_REENTER_PASSWORDS'=>"Por favor, vuelva a introducir sus contraseñas. Los valores de 'Nueva Contraseña' y 'Confirmar Contraseña' no coinciden.",
 'ERR_INVALID_PASSWORD'=>'Debe especificar un nombre de usuario y contraseña válidos.',
+'ERR_INVALID_ADMINIPLOGIN' => 'Administradores deben acceder desde dispositivos autorizados.',
 'ERR_PASSWORD_CHANGE_FAILED_1'=>'El Cambio de contraseña ha fallado para ',
 'ERR_PASSWORD_CHANGE_FAILED_2'=>' Error. La nueva contraseña debe ser fijada.',
 'ERR_PASSWORD_INCORRECT_OLD'=>'Contraseña actual incorrecta para el usuario. Vuelva a introducir la información de las contraseñas.',

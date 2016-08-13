@@ -125,6 +125,7 @@ $mod_strings = Array(
 'ERR_ENTER_NEW_PASSWORD'=>'Voer uw nieuwe wachtwoord in a.u.b.',
 'ERR_ENTER_CONFIRMATION_PASSWORD'=>'Herhaal uw nieuwe wachtwoord a.u.b.',
 'ERR_REENTER_PASSWORDS'=>'Voer uw nieuwe wachtwoord opnieuw in a.u.b.  Uw \"nieuwe wachtwoord\" en \"Herhaal wachtwoord\" zijn niet het zelfde.',
+'ERR_INVALID_ADMINIPLOGIN' => 'Administrator users must login from authorized devices.',
 'ERR_INVALID_PASSWORD'=>'U moet wel een geldige gebruikersnaam en wachtwoord invullen.',
 'ERR_PASSWORD_CHANGE_FAILED_1'=>'Gebruikers wachtwoord wijziging ging fout omdat ',
 'ERR_PASSWORD_CHANGE_FAILED_2'=>' FOUT. Het nieuwe wachtwoord moet opnieuw.',

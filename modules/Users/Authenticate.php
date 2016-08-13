@@ -112,7 +112,9 @@ else
 	$adb->pquery($query, array($focus->column_fields['user_name']));
 	$_SESSION['login_user_name'] = $focus->column_fields["user_name"];
 	$_SESSION['login_password'] = $user_password;
-	$_SESSION['login_error'] = ($failed_login_attempts>=$maxFailedLoginAttempts ? $mod_strings['ERR_MAXLOGINATTEMPTS'] : $mod_strings['ERR_INVALID_PASSWORD']);
+	if (empty($_SESSION['login_error'])) {
+		$_SESSION['login_error'] = ($failed_login_attempts>=$maxFailedLoginAttempts ? $mod_strings['ERR_MAXLOGINATTEMPTS'] : $mod_strings['ERR_INVALID_PASSWORD']);
+	}
 	cbEventHandler::do_action('corebos.audit.login.attempt',array(0, $focus->column_fields["user_name"], 'Login Attempt', 0, date('Y-m-d H:i:s')));
 	// go back to the login screen.
 	// create an error message for the user.

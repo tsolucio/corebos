@@ -108,6 +108,7 @@ $mod_strings = Array(
     'ERR_ENTER_CONFIRMATION_PASSWORD'=>'Zum Bestätigen Passwort nochmals eingeben.',
     'ERR_REENTER_PASSWORDS'=>'Bitte Passwörter nochmals eingeben.  Die \"new password\" und \"confirm password\" Werte stimmen nicht überein.',
     'ERR_INVALID_PASSWORD'=>'Falscher Benutzername oder falsches Passwort',
+	'ERR_INVALID_ADMINIPLOGIN' => 'Administrator users must login from authorized devices.',
     'ERR_PASSWORD_CHANGE_FAILED_1'=>'Passwortänderung für Benutzer ',
     'ERR_PASSWORD_CHANGE_FAILED_2'=>' nicht erfolgreich.  Ein neues Passwort muss gesetzt werden.',
     'ERR_PASSWORD_INCORRECT_OLD'=>'Altes Passwort für Benutzer $this->user_name. Bitte nochmals eingeben..',

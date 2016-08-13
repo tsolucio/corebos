@@ -104,6 +104,7 @@ $mod_strings = array(
 	'ERR_ENTER_CONFIRMATION_PASSWORD' => 'Kérjük, hogy ismételd meg a jelszavadat megerősítésként.',
 	'ERR_REENTER_PASSWORDS' => 'Kérjük, hogy ismételd meg a jelszavadat.  Az "új jelszó" és a "megerősített jelszó" nem egyeznek meg.',
 	'ERR_INVALID_PASSWORD' => 'Meg kell, hogy adjál egy érvényes felhasználónevet és jelszót.',
+	'ERR_INVALID_ADMINIPLOGIN' => 'Administrator users must login from authorized devices.',
 	'ERR_PASSWORD_CHANGE_FAILED_1' => 'A jelszó csere nem sikerült ',
 	'ERR_PASSWORD_CHANGE_FAILED_2' => ' Az új jelszót meg kell, hogy add.',
 	'ERR_PASSWORD_INCORRECT_OLD' => 'Hibásan adtad meg a régi jelszót. Add meg újra a jelszó adatokat.',
