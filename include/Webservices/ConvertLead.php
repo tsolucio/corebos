@@ -101,8 +101,7 @@ function vtws_convertlead($entityvalues, $user) {
 					$entityIds[$entityName] = $entityRecord['id'];
 				}
 			} catch (Exception $e) {
-				throw new WebServiceException(WebServiceErrorCode::$UNKNOWNOPERATION,
-						$e->getMessage().' : '.$entityvalue['name']);
+				throw new WebServiceException(WebServiceErrorCode::$UNKNOWNOPERATION, $e->getMessage().' : '.$entityvalue['name']);
 			}
 		}
 	}
@@ -324,8 +323,7 @@ function vtws_createEntity($recordid,$originMod,$targetMod) {
 		try{
 			vtws_create($targetMod, $newEntityInfo, $current_user);
 		} catch (Exception $e) {
-			throw new WebServiceException(WebServiceErrorCode::$UNKNOWNOPERATION,
-					$e->getMessage().' : '.$targetMod);
+			throw new WebServiceException(WebServiceErrorCode::$UNKNOWNOPERATION, $e->getMessage().' : '.$targetMod);
 		}
 	}
 }
