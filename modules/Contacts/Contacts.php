@@ -93,7 +93,7 @@ class Contacts extends CRMEntity {
 	);
 
 	// For Popup window record selection
-	var $popup_fields = Array('lastname');
+	var $popup_fields = Array('firstname','lastname');
 
 	// Placeholder for sort fields - All the fields will be initialized for Sorting through initSortFields
 	var $sortby_fields = Array('lastname','firstname','title','email','phone','smownerid','accountname');
@@ -1538,7 +1538,7 @@ function get_contactsforol($user_name)
 					if ($columnname == 'account_id') {
 						$accountid = $adb->query_result($res,$i,'accountid');
 						$accountname = getAccountName($accountid);
-						$child_contact_info[$columnname] = '<a href="index.php?module=Accounts&action=DetailView&record='.$accountid.'">'.$accountname.'</a>';;
+						$child_contact_info[$columnname] = '<a href="index.php?module=Accounts&action=DetailView&record='.$accountid.'">'.$accountname.'</a>';
 					} else {
 						if ($columnname == 'assigned_user_id') {
 							$child_contact_info[$columnname] = $adb->query_result($res, $i, 'user_name');
