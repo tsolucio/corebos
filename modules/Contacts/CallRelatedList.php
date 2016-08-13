@@ -18,7 +18,8 @@ $record = vtlib_purify($_REQUEST['record']);
 $isduplicate = vtlib_purify($_REQUEST['isDuplicate']);
 
 if($singlepane_view == 'true' && $action == 'CallRelatedList') {
-	header("Location:index.php?action=DetailView&module=$currentModule&record=$record&parenttab=$category");
+	echo "<script>document.location='index.php?action=DetailView&module=$currentModule&record=$record&parenttab=$category';</script>";
+	die();
 } else {
 
 	$tool_buttons = Button_Check($currentModule);
@@ -41,7 +42,7 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	if(!$_SESSION['rlvs'][$currentModule]) unset($_SESSION['rlvs']);
 
 	// Identify this module as custom module.
-	$smarty->assign('CUSTOM_MODULE', false);
+	$smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
 
 	$smarty->assign('APP', $app_strings);
 	$smarty->assign('MOD', $mod_strings);
