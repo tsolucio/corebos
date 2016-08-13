@@ -575,8 +575,10 @@ class GlobalVariable extends CRMEntity {
 	 *   - return $default
 	 */
 	public static function getVariable($var,$default, $module='', $gvuserid='') {
-		global $adb,$current_user, $gvvalidationinfo, $currentModule;
+		global $adb, $current_user, $gvvalidationinfo, $currentModule;
 		$gvvalidationinfo[] = "search for variable '$var' with default value of '$default'";
+		if (empty($module)) $module = $currentModule;
+		if (empty($gvuserid)) $gvuserid = $current_user->id;
 		$key = md5('gvcache'.$var.$module.$gvuserid);
 		list($value,$found) = VTCacheUtils::lookupCachedInformation($key);
 		if ($found) {
@@ -585,8 +587,6 @@ class GlobalVariable extends CRMEntity {
 		}
 		$value='';
 		$list_of_modules=array();
-		if (empty($module)) $module = $currentModule;
-		if (empty($gvuserid)) $gvuserid = $current_user->id;
 		$focus = CRMEntity::getInstance('GlobalVariable');
 		$select = 'SELECT *
 		 FROM vtiger_globalvariable
