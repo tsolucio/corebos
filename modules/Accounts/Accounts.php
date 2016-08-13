@@ -79,9 +79,6 @@ class Accounts extends CRMEntity {
 	// Required Information for enabling Import feature
 	var $required_fields = array();
 
-	//Default Fields for Email Templates -- Pavani
-	var $emailTemplate_defaultFields = array('accountname','account_type','industry','annualrevenue','phone','email1','rating','website','fax');
-
 	var $default_order_by = 'accountname';
 	var $default_sort_order='ASC';
 	// Used when enabling/disabling the mandatory fields for the module.

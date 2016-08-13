@@ -59,9 +59,6 @@ class Users extends CRMEntity {
 	var $list_fields = Array('First Name' => Array('vtiger_users' => 'first_name'), 'Last Name' => Array('vtiger_users' => 'last_name'), 'Role Name' => Array('vtiger_user2role' => 'roleid'), 'User Name' => Array('vtiger_users' => 'user_name'), 'Status' => Array('vtiger_users' => 'status'), 'Email' => Array('vtiger_users' => 'email1'), 'Email2' => Array('vtiger_users' => 'email2'), 'Admin' => Array('vtiger_users' => 'is_admin'), 'Phone' => Array('vtiger_users' => 'phone_work'));
 	var $list_fields_name = Array('Last Name' => 'last_name', 'First Name' => 'first_name', 'Role Name' => 'roleid', 'User Name' => 'user_name', 'Status' => 'status', 'Email' => 'email1', 'Email2' => 'email2', 'Admin' => 'is_admin', 'Phone' => 'phone_work');
 
-	//Default Fields for Email Templates -- Pavani
-	var $emailTemplate_defaultFields = array('first_name', 'last_name', 'title', 'department', 'phone_home', 'phone_mobile', 'signature', 'email1', 'email2', 'address_street', 'address_city', 'address_state', 'address_country', 'address_postalcode');
-
 	var $popup_fields = array('last_name');
 
 	// This is the list of fields that are in the lists.

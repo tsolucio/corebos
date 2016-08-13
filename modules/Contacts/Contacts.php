@@ -27,100 +27,94 @@ class Contacts extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	var $IsCustomModule = false;
 
-	var $tab_name = Array('vtiger_crmentity','vtiger_contactdetails','vtiger_contactaddress','vtiger_contactsubdetails','vtiger_contactscf','vtiger_customerdetails');
-	var $tab_name_index = Array('vtiger_crmentity'=>'crmid','vtiger_contactdetails'=>'contactid','vtiger_contactaddress'=>'contactaddressid','vtiger_contactsubdetails'=>'contactsubscriptionid','vtiger_contactscf'=>'contactid','vtiger_customerdetails'=>'customerid');
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
 	var $customFieldTable = Array('vtiger_contactscf', 'contactid');
 
-	var $sortby_fields = Array('lastname','firstname','title','email','phone','smownerid','accountname');
+	/**
+	 * Mandatory for Saving, Include tables related to this module.
+	 */
+	var $tab_name = Array('vtiger_crmentity','vtiger_contactdetails','vtiger_contactaddress','vtiger_contactsubdetails','vtiger_contactscf','vtiger_customerdetails');
 
+	/**
+	 * Mandatory for Saving, Include tablename and tablekey columnname here.
+	 */
+	var $tab_name_index = Array(
+		'vtiger_crmentity'=>'crmid',
+		'vtiger_contactdetails'=>'contactid',
+		'vtiger_contactaddress'=>'contactaddressid',
+		'vtiger_contactsubdetails'=>'contactsubscriptionid',
+		'vtiger_contactscf'=>'contactid',
+		'vtiger_customerdetails'=>'customerid');
+
+	/**
+	 * Mandatory for Listing (Related listview)
+	 */
+	var $list_fields = Array(
+		/* Format: Field Label => Array(tablename => columnname) */
+		// tablename should not have prefix 'vtiger_'
+		'Last Name' => Array('contactdetails'=>'lastname'),
+		'First Name' => Array('contactdetails'=>'firstname'),
+		'Title' => Array('contactdetails'=>'title'),
+		'Account Name' => Array('account'=>'accountid'),
+		'Email' => Array('contactdetails'=>'email'),
+		'Office Phone' => Array('contactdetails'=>'phone'),
+		'Assigned To' => Array('crmentity'=>'smownerid')
+	);
+	var $list_fields_name = Array(
+		/* Format: Field Label => fieldname */
+		'Last Name' => 'lastname',
+		'First Name' => 'firstname',
+		'Title' => 'title',
+		'Account Name' => 'account_id',
+		'Email' => 'email',
+		'Office Phone' => 'phone',
+		'Assigned To' => 'assigned_user_id'
+	);
+
+	// Make the field link to detail view from list view (Fieldname)
 	var $list_link_field= 'lastname';
 
-	// This is the list of vtiger_fields that are in the lists.
-	var $list_fields = Array(
-	'Last Name' => Array('contactdetails'=>'lastname'),
-	'First Name' => Array('contactdetails'=>'firstname'),
-	'Title' => Array('contactdetails'=>'title'),
-	'Account Name' => Array('account'=>'accountid'),
-	'Email' => Array('contactdetails'=>'email'),
-	'Office Phone' => Array('contactdetails'=>'phone'),
-	'Assigned To' => Array('crmentity'=>'smownerid')
-	);
-
-	var $range_fields = Array(
-		'first_name',
-		'last_name',
-		'primary_address_city',
-		'account_name',
-		'account_id',
-		'id',
-		'email1',
-		'salutation',
-		'title',
-		'phone_mobile',
-		'reports_to_name',
-		'primary_address_street',
-		'primary_address_city',
-		'primary_address_state',
-		'primary_address_postalcode',
-		'primary_address_country',
-		'alt_address_city',
-		'alt_address_street',
-		'alt_address_city',
-		'alt_address_state',
-		'alt_address_postalcode',
-		'alt_address_country',
-		'office_phone',
-		'home_phone',
-		'other_phone',
-		'fax',
-		'department',
-		'birthdate',
-		'assistant_name',
-		'assistant_phone');
-
-
-	var $list_fields_name = Array(
-	'Last Name' => 'lastname',
-	'First Name' => 'firstname',
-	'Title' => 'title',
-	'Account Name' => 'account_id',
-	'Email' => 'email',
-	'Office Phone' => 'phone',
-	'Assigned To' => 'assigned_user_id'
-	);
-
+	// For Popup listview and UI type support
 	var $search_fields = Array(
-	'Name' => Array('contactdetails'=>'lastname'),
-	'Title' => Array('contactdetails'=>'title'),
-	'Account Name'=>Array('contactdetails'=>'account_id'),
-	'Assigned To'=>Array('crmentity'=>'smownerid'),
+		/* Format: Field Label => Array(tablename => columnname) */
+		// tablename should not have prefix 'vtiger_'
+		'Name' => Array('contactdetails'=>'lastname'),
+		'Title' => Array('contactdetails'=>'title'),
+		'Account Name'=>Array('contactdetails'=>'account_id'),
+		'Assigned To'=>Array('crmentity'=>'smownerid'),
 	);
 	var $search_fields_name = Array(
-	'Name' => 'lastname',
-	'Title' => 'title',
-	'Account Name'=>'account_id',
-	'Assigned To'=>'assigned_user_id'
+		'Name' => 'lastname',
+		'Title' => 'title',
+		'Account Name'=>'account_id',
+		'Assigned To'=>'assigned_user_id'
 	);
 
-	// This is the list of vtiger_fields that are required
-	var $required_fields = array("lastname"=>1);
+	// For Popup window record selection
+	var $popup_fields = Array('lastname');
 
-	// Used when enabling/disabling the mandatory fields for the module.
-	// Refers to vtiger_field.fieldname values.
-	var $mandatory_fields = Array('assigned_user_id','lastname','createdtime' ,'modifiedtime');
-
-	//Default Fields for Email Templates -- Pavani
-	var $emailTemplate_defaultFields = array('firstname','lastname','salutation','title','email','department','phone','mobile','support_start_date','support_end_date');
-
-	//Added these variables which are used as default order by and sortorder in ListView
-	var $default_order_by = 'lastname';
-	var $default_sort_order = 'ASC';
+	// Placeholder for sort fields - All the fields will be initialized for Sorting through initSortFields
+	var $sortby_fields = Array('lastname','firstname','title','email','phone','smownerid','accountname');
 
 	// For Alphabetical search
 	var $def_basicsearch_col = 'lastname';
+
+	// Column value to use on detail view record text display
+	var $def_detailview_recname = 'lastname';
+
+	// Required Information for enabling Import feature
+	var $required_fields = array("lastname"=>1);
+
+	// Callback function list during Importing
+	var $special_functions = Array('set_import_assigned_user');
+
+	var $default_order_by = 'lastname';
+	var $default_sort_order = 'ASC';
+	// Used when enabling/disabling the mandatory fields for the module.
+	// Refers to vtiger_field.fieldname values.
+	var $mandatory_fields = Array('assigned_user_id','lastname','createdtime' ,'modifiedtime');
 
 	function __construct() {
 		global $log;

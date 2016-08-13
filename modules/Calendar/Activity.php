@@ -55,22 +55,6 @@ class Activity extends CRMEntity {
        'Contact Name'=>Array('contactdetails'=>'lastname')
        );
 
-	var $range_fields = Array(
-		'name',
-		'date_modified',
-		'start_date',
-		'id',
-		'status',
-		'date_due',
-		'time_start',
-		'description',
-		'contact_name',
-		'priority',
-		'duehours',
-		'dueminutes',
-		'location'
-	);
-
        var $list_fields_name = Array(
        'Close'=>'status',
        'Type'=>'activitytype',
