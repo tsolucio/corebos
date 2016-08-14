@@ -206,11 +206,6 @@ function check_form() {
 		document.EditView.subject.focus();
 		return false;
 	} else {
-		if(document.EditView.record.value != '') {
-			document.EditView.mode.value = 'edit';
-		} else {
-			document.EditView.mode.value = 'create';
-		}
 		starthour = parseInt(document.EditView.starthr.value,10);
 		startmin  = parseInt(document.EditView.startmin.value,10);
 		startformat = document.EditView.startfmt.value;
