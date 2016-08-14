@@ -36,15 +36,9 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 <input type="hidden" name="viewOption" value="{$viewOption}">
 <input type="hidden" name="subtab" value="{$subtab}">
 <input type="hidden" name="maintab" value="{$maintab}">
-<table width="100%" cellpadding="2" cellspacing="0" border="0">
-<tr>
-        <td>
-                <table cellpadding="0" cellspacing="5" border="0">
-			<input type="hidden" name="activity_mode" value="{$ACTIVITY_MODE}" onsubmit="VtigerJS_DialogBox.block();">
-	<input type="hidden" name="product_id" value="{$PRODUCTID}">
-    <input type="hidden" name="activity_mode" value="{$ACTIVITY_MODE}" onsubmit="VtigerJS_DialogBox.block();">
-	<input type="hidden" name="product_id" value="{$PRODUCTID}">
-    <input type="hidden" name="pagenumber" value="{$smarty.request.start|@vtlib_purify}">
+<input type="hidden" name="product_id" value="{$PRODUCTID}">
+<input type="hidden" name="activity_mode" value="{$ACTIVITY_MODE}" onsubmit="VtigerJS_DialogBox.block();">
+<input type="hidden" name="pagenumber" value="{$smarty.request.start|@vtlib_purify}">
 <input type="hidden" name="module" value="{$MODULE}">
 <input type="hidden" name="record" value="{$ID}">
 <input type="hidden" name="mode" value="{$MODE}">
@@ -55,7 +49,9 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 <input type="hidden" name="return_action" value="{$RETURN_ACTION}">
 <input type="hidden" name="return_viewname" value="{$RETURN_VIEWNAME}">
 <input type="hidden" name="createmode" value="{$CREATEMODE}" />
-                </table>
+<table width="100%" cellpadding="2" cellspacing="0" border="0">
+<tr>
+        <td>
 <table  border="0" cellpadding="5" cellspacing="0" width="100%" >
 <tr>
         <td class="lvtHeaderText" style="border-bottom:1px dotted #cccccc">
