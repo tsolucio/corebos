@@ -12,6 +12,8 @@
  * All Rights Reserved.
  ********************************************************************************/
 require_once('include/utils/utils.php');
+require_once('include/utils/VTCacheUtils.php');
+require_once('include/utils/VtlibUtils.php');
 require_once('include/utils/RecurringType.php');
 require_once('include/utils/EmailTemplate.php');
 require_once 'include/QueryGenerator/QueryGenerator.php';
@@ -3383,14 +3385,6 @@ function getEntityFieldNameDisplay($module, $fieldsName, $fieldValues) {
 	}
 	return '';
 }
-
-// vtiger cache utility
-require_once('include/utils/VTCacheUtils.php');
-
-// vtlib customization: Extended vtiger CRM utlitiy functions
-require_once('include/utils/VtlibUtils.php');
-
-// END
 
 function vt_suppressHTMLTags($string) {
 	return preg_replace(array('/</', '/>/', '/"/'), array('&lt;', '&gt;', '&quot;'), $string);

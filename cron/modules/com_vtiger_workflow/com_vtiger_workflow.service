@@ -48,7 +48,7 @@ function vtRunTaskJob($adb){
 	$adminUser = $util->adminUser();
 	$tq = new VTTaskQueue($adb);
 	$readyTasks = $tq->getReadyTasks();
-	$logbg->debug("WF Cron:: Ready Tasks from de queue");
+	$logbg->debug("WF Cron:: Ready Tasks from the queue");
 	$logbg->debug($readyTasks);
 	$tm = new VTTaskManager($adb);
 	foreach($readyTasks as $pair){
