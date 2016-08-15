@@ -16,6 +16,7 @@ $mod_strings = Array(
 	'LBL_CUSTOM_INFORMATION' => 'Custom Information',
 	'LBL_GLOBAL_VARIABLE_INFORMATION'=>'Global Variable Information',
 	'LBL_DESCRIPTION_INFORMATION'=>'Description',
+	'Definitions' => 'Definitions',
 
 	'Name' => 'Name',
 	'Default' => 'Default',

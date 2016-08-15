@@ -16,6 +16,7 @@ $mod_strings = Array(
 	'LBL_CUSTOM_INFORMATION' => 'Información Personalizada',
 	'LBL_GLOBAL_VARIABLE_INFORMATION' => 'Información Variable Global',
 	'LBL_DESCRIPTION_INFORMATION' => 'Descripción',
+	'Definitions' => 'Definiciones',
 
 	'Name' => 'Nombre',
 	'Default' => 'Defecto',
@@ -71,7 +72,7 @@ $mod_strings = Array(
 	'Module Functionality' => 'Funcionalidad Módulo',
 	'Other' => 'Otro',
 	'product_service_default' => 'Productos o Servicios por defecto en las líneas de productos',
-        'Users_ReplyTo_SecondEmail' => 'Responder al Email Secundario del usuario',
+	'Users_ReplyTo_SecondEmail' => 'Responder al Email Secundario del usuario',
 
 );
 
