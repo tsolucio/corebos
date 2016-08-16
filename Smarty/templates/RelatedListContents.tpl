@@ -110,6 +110,8 @@ function disableRelatedListBlock(urldata,target,imagesuffix){
 			jQuery('#delete_'+imagesuffix).hide();
 			jQuery('#hide_'+imagesuffix).hide();
 			jQuery('#show_'+imagesuffix).show();
+			var showdata_element = document.getElementById('show_'+imagesuffix);
+			showdata_element.parentElement.style.display = 'inline-block';
 			jQuery('#indicator_'+imagesuffix).hide();
 		}
 	);
