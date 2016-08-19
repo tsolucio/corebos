@@ -405,10 +405,20 @@ function getFieldFromEditViewBlockArray($blocks,$fldlabel) {
 		$found = false;
 		foreach ($blocks as $blklabel => $fieldarray) {
 			foreach ($fieldarray as $key => $row) {
-				if ($row[0][1][0]==$fldlabel) {
+				if ($row[0][0][0]=='10') {
+					$col0label = $row[0][1][0]['displaylabel'];
+				} else {
+					$col0label = $row[0][1][0];
+				}
+				if ($row[1][0][0]=='10') {
+					$col1label = $row[1][1][0]['displaylabel'];
+				} else {
+					$col1label = $row[1][1][0];
+				}
+				if ($col0label==$fldlabel) {
 					$fieldkey = 0;
 					$found = true;
-				} elseif ($row[0][1][0]==$fldlabel) {
+				} elseif ($col1label==$fldlabel) {
 					$fieldkey = 1;
 					$found = true;
 				}
