@@ -1,5 +1,11 @@
 <?php
 /** YOUR LICENSE TEXT HERE **/
+/******************************************************************************************
+*
+* Contributor: Ranieri Slemer | missing terms - translate portuguese | www.ecrmweb.com.br
+*
+*******************************************************************************************
+**/
 $mod_strings = Array (
 'CustomerPortal' => 'Portal do Cliente',
 'LBL_BASIC_SETTINGS'=>'Configurações Básicas',
@@ -15,7 +21,19 @@ $mod_strings = Array (
 'LBL_ENABLE' =>'Habilitar',
 'Module' => 'Módulo',
 'Sequence' =>'Sequência',
-'Visible'=>'Visível'
+'Visible'=>'Visível',
+
+// Ranieri 20-8-16
+
+'LBL_CUSTOMERPORTAL_SETTINGS'=>'Configurações Portal do Clinte',
+'LBL_MODULE_INFORMATION'=>'Informação Módulo',
+'LBL_MODULE' => 'Módulo',
+'LBL_SEQUENCE' =>'Sequencia',
+'LBL_VISIBLE'=>'Visível',
+'LBL_USER_INFORMATION'=>'Informação do Usuário',
+'LBL_SELECT_USERS'=>'Perfil do Usuário',
+'LBL_DEFAULT_USERS'=>'Usuário Modelo',
+'LBL_GROUP_DESCRIPTION'=>'NOTA: Os Tickets serão atribuídos ao usuário selecionado acima, por padrão grupo / usuário a partir do Portal do Cliente.',
 
 );
 
