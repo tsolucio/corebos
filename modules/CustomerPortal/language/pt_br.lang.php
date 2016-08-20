@@ -25,7 +25,7 @@ $mod_strings = Array (
 
 // Ranieri 20-8-16
 
-'LBL_CUSTOMERPORTAL_SETTINGS'=>'Configurações Portal do Clinte',
+'LBL_CUSTOMERPORTAL_SETTINGS'=>'Configurações Portal do Cliente',
 'LBL_MODULE_INFORMATION'=>'Informação Módulo',
 'LBL_MODULE' => 'Módulo',
 'LBL_SEQUENCE' =>'Sequencia',
