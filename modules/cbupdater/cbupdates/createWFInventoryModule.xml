@@ -2,9 +2,9 @@
 <updatesChangeLog>
 <changeSet>
 	<author>MajorLabel</author>
-	<description>Adds a workflow that allows for creation of invoice from salesorder</description>
-	<filename>build/changeSets/add_invoice_from_so_workflow.php</filename>
-	<classname>create_invoice_from_so</classname>
+	<description>Adds a workflow that allows for converting inventory modules to inventory modules</description>
+	<filename>build/changeSets/add_workflow_convert_inventorymodule.php</filename>
+	<classname>add_workflow_convert_inventorymodule</classname>
 	<systemupdate>false</systemupdate>
 </changeSet>
 </updatesChangeLog>

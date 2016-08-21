@@ -107,6 +107,7 @@ $mod_strings = array(
 'CBDeleteRelatedTask' => 'Delete Related Records',
 'CBAssignRelatedTask' => 'Assign Related Records',
 'CBSelectcbMap' => 'Select Business Rule',
+'ConvertInventoryModule' => 'Convert Inventory Module Records',
 'LBL_HELPDESK_SUPPORT_EMAILID'=>'Email Suporte',
 'LBL_HELPDESK_SUPPORT_NAME'=>'Nome Suporte',
 'LBL_ORGANIZATION_LOGO'=>'Logo da Empresa',

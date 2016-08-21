@@ -103,6 +103,7 @@ $mod_strings = array(
 'CBDeleteRelatedTask' => 'Eliminar Registros Relacionados',
 'CBAssignRelatedTask' => 'Asignar Registros Relacionados',
 'CBSelectcbMap' => 'Selecciona Regla de Negocio',
+'ConvertInventoryModule' => 'Convertir Módulos Inventario',
 
 'LBL_EVENTNAME' => 'Nombre de Evento',
 'LBL_DESCRIPTION' => 'Descripción',

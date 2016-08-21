@@ -21,7 +21,7 @@ require_once('include/Webservices/Retrieve.php');
 require_once('include/Webservices/Create.php');
 require_once('modules/Users/Users.php');
 
-class CreateInvFromSO extends VTTask{
+class ConvertInventoryModule extends VTTask{
 
 	public $executeImmediately = true;
 
@@ -50,7 +50,7 @@ class CreateInvFromSO extends VTTask{
 		$data['modifiedtime'] = date('Y-m-d H:i:s');
 
 		$_REQUEST['action'] = '';
-		$_REQUEST['ajxaction'] = '';		
+		$_REQUEST['ajxaction'] = '';
 
 		$invoice = vtws_create('Invoice', $data, $current_user);
 	}

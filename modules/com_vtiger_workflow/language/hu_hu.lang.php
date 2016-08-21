@@ -106,6 +106,7 @@ $mod_strings = array(
 	'CBDeleteRelatedTask' => 'Delete Related Records',
 	'CBAssignRelatedTask' => 'Assign Related Records',
 	'CBSelectcbMap' => 'Select Business Rule',
+	'ConvertInventoryModule' => 'Convert Inventory Module Records',
 	'LBL_HELPDESK_SUPPORT_EMAILID' => 'Ügyfélszolgálat E-mail címe',
 	'LBL_HELPDESK_SUPPORT_NAME' => 'Ügyfélszolgálat E-mail feladó neve',
 	'LBL_ORGANIZATION_LOGO' => 'Cég Logo',
