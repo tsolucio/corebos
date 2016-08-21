@@ -20,6 +20,7 @@ require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
 require_once('include/Webservices/Retrieve.php');
 require_once('include/Webservices/Create.php');
 require_once('modules/Users/Users.php');
+require_once('include/utils/EditViewUtils.php');
 
 class ConvertInventoryModule extends VTTask{
 
@@ -30,29 +31,62 @@ class ConvertInventoryModule extends VTTask{
 	}
 
 	public function doTask(&$entity) {
-
-		global $adb, $log;
-
-		$user = new Users();
-		$current_user = $user->retrieveCurrentUserInfoFromFile(Users::getActiveAdminId());
+		global $adb, $current_user, $logbg, $from_wf;
+		$from_wf = true;
+		$util = new VTWorkflowUtils();
+		$admin = $util->adminUser();
 
 		// Get the salesorder in question
 		$wsso = vtws_retrieve($entity->getId(), $current_user);
 
-		// // Start with the salesorder and overwrite what's needed to overwrite
+		// Start with the inventory module values and overwrite what's needed to overwrite
 		$data = $wsso;
+		$cbfrommodule = $entity->getModuleName();
+		if ($cbfrommodule=='Quotes' and $this->convertto=='Invoice') {
+			$fromEntity = CRMEntity::getInstance($cbfrommodule);
+			$toEntity = CRMEntity::getInstance($this->convertto);
+			$fromEntity->column_fields = $data;
+			$toEntity->column_fields = $data;
+			$result = getConvertQuoteToInvoice($toEntity,$fromEntity,$entity->getId());
+			$data = $result->column_fields;
+		} elseif ($cbfrommodule=='Quotes' and $this->convertto=='SalesOrder') {
+			$fromEntity = CRMEntity::getInstance($cbfrommodule);
+			$toEntity = CRMEntity::getInstance($this->convertto);
+			$fromEntity->column_fields = $data;
+			$toEntity->column_fields = $data;
+			$result = getConvertQuoteToSoObject($toEntity,$fromEntity,$entity->getId());
+			$data = $result->column_fields;
+		} elseif ($cbfrommodule=='SalesOrder' and $this->convertto=='Invoice') {
+			$fromEntity = CRMEntity::getInstance($cbfrommodule);
+			$toEntity = CRMEntity::getInstance($this->convertto);
+			$fromEntity->column_fields = $data;
+			$toEntity->column_fields = $data;
+			$result = getConvertSoToInvoice($toEntity,$fromEntity,$entity->getId());
+			$data = $result->column_fields;
+		} else {
+			$bmapname = $cbfrommodule.'2'.$this->convertto;
+			$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+			if ($cbMapid) {
+				$cbMap = cbMap::getMapByID($cbMapid);
+				$data = $cbMap->Mapping($data,$data);
+			}
+		}
 
-		$data['pdoInformation'] = $wsso['pdoInformation'];
-		$data['salesorder_id'] = $wsso['id'];
-		$data['invoicedate'] = date('d-m-Y');
-		$data['invoicestatus'] = 'AutoCreated';
-		$data['createdtime'] = date('Y-m-d H:i:s');
-		$data['modifiedtime'] = date('Y-m-d H:i:s');
-
+		$holdaction = $_REQUEST['action'];
+		$holdajxaction = $_REQUEST['ajxaction'];
 		$_REQUEST['action'] = '';
 		$_REQUEST['ajxaction'] = '';
 
-		$invoice = vtws_create('Invoice', $data, $current_user);
+		$invmod = vtws_create($this->convertto, $data, $current_user);
+
+		$_REQUEST['action'] = $holdaction;
+		$_REQUEST['ajxaction'] = $holdajxaction;
+		$from_wf = false;
+		$util->revertUser();
+		$logbg->debug('ConvertInventoryModule: From '.$cbfrommodule.' '.$entity->getId().' to '.$this->convertto);
+		$logbg->debug('ConvertInventoryModule: From '.print_r($wsso,true));
+		$logbg->debug('ConvertInventoryModule: To '.print_r($data,true));
+		$logbg->debug('ConvertInventoryModule: Result '.print_r($invmod,true));
 	}
 }
 ?>
