@@ -26,7 +26,7 @@ class ConvertInventoryModule extends VTTask{
 	public $executeImmediately = true;
 
 	public function getFieldNames() {
-		return array();
+		return array('convertto');
 	}
 
 	public function doTask(&$entity) {

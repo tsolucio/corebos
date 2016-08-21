@@ -21,3 +21,25 @@
 <script type="text/javascript" charset="utf-8">
 var moduleName = '{$entityName}';
 </script>
+<br>
+<table border="0" cellpadding="5" cellspacing="0" width="100%" class="small">
+	<tr>
+		<td style='padding-top: 10px;' colspan="2">
+			<select name="convertto">
+			<option value='Quotes'{if $task->convertto eq 'Quotes'} selected{/if}>{'Quotes'|@getTranslatedString:$MODULE}</option>
+			<option value='SalesOrder'{if $task->convertto eq 'SalesOrder'} selected{/if}>{'SalesOrder'|@getTranslatedString:$MODULE}</option>
+			<option value='Invoice'{if $task->convertto eq 'Invoice'} selected{/if}>{'Invoice'|@getTranslatedString:$MODULE}</option>
+			<option value='PurchaseOrder'{if $task->convertto eq 'PurchaseOrder'} selected{/if}>{'PurchaseOrder'|@getTranslatedString:$MODULE}</option>
+			</select>
+		</td>
+	</tr>
+</table>
+<br>
+<table border="0" cellpadding="5" cellspacing="0" width="100%" class="small">
+	<tr>
+		<td style='padding-top: 10px;' colspan="2">
+			<span class="helpmessagebox">{'ConvertInventoryModuleMessage'|@getTranslatedString:$MODULE}</span>
+		</td>
+	</tr>
+</table>
+<br>

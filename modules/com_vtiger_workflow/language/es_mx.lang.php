@@ -109,6 +109,7 @@ $mod_strings = array(
 'CBAssignRelatedTask' => 'Asignar Registros Relacionados',
 'CBSelectcbMap' => 'Selecciona Regla de Negocio',
 'ConvertInventoryModule' => 'Convertir Módulos Inventario',
+'ConvertInventoryModuleMessage' => 'La correspondencia de campos es la que trae la aplicación por defecto y puede ajustarse utilizando las Reglas de Negocio de tipo Mapeo de Campo.',
 'LBL_HELPDESK_SUPPORT_EMAILID'=>'Email de Asistencia y Soporte',
 'LBL_HELPDESK_SUPPORT_NAME'=>'Nombre de Asistencia y Soporte',
 'LBL_ORGANIZATION_LOGO' => 'Logo Empresa',
