@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ************************************************************
 *  Module       : ModComments
 *  Language     : ES Spanish
@@ -39,6 +38,8 @@ $mod_strings = Array (
 
 'ModComments ID' => 'Id Comentario',
 'Related Assigned Email' => 'Email Usuario Relacionado',
+'LBL_CONFIGURATION_DESCRIPTION' => 'Activar/Desactivar la funcionalidad para cada módulo.',
+'LBL_ModComments_SETTINGS' => 'Módulos Activados',
 );
 
 ?>

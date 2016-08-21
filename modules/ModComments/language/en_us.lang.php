@@ -31,6 +31,8 @@ $mod_strings = Array (
 'LBL_LAST5'=> 'Last 5',
 'ModComments ID' => 'Comments ID ',
 'Related Assigned Email' => 'Related Assigned Email',
+'LBL_CONFIGURATION_DESCRIPTION' => 'Activate/Deactivate the functionality for each module.',
+'LBL_ModComments_SETTINGS' => 'Activated Modules',
 );
 
 ?>
