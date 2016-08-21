@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<updatesChangeLog>
+<changeSet>
+	<author>MajorLabel</author>
+	<description>Adds a workflow that allows for converting inventory modules to inventory modules</description>
+	<filename>build/changeSets/add_workflow_convert_inventorymodule.php</filename>
+	<classname>add_workflow_convert_inventorymodule</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
+</updatesChangeLog>
