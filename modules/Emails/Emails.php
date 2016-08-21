@@ -539,6 +539,19 @@ function get_to_emailids($module) {
 	require_once 'include/Webservices/Query.php';
 	//$idlists1 = "";
 	$mailds = '';
+	if (empty($_REQUEST['field_lists'])) {
+		switch ($module) {
+		case 'Accounts':
+			$_REQUEST["field_lists"]=9;
+			break;
+		case 'Contacts':
+			$_REQUEST["field_lists"]=80;
+			break;
+		case 'Vendors':
+			$_REQUEST["field_lists"]=292;
+			break;
+		}
+	}
 	$fieldids = explode(":", vtlib_purify($_REQUEST['field_lists']));
 	if($_REQUEST['idlist'] == 'all' || $_REQUEST['idlist'] == 'relatedListSelectAll'){
 		$idlist = getSelectedRecords($_REQUEST,vtlib_purify($_REQUEST['pmodule']),vtlib_purify($_REQUEST['idlist']),vtlib_purify($_REQUEST['excludedRecords']));

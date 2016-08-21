@@ -82,17 +82,15 @@ elseif(isset($_REQUEST['sendmail']) && $_REQUEST['sendmail'] !='')
 elseif(!empty($_REQUEST['invmodid'])) {
 	$crmid = vtlib_purify($_REQUEST['invmodid']);
 	switch (getSalesEntityType($crmid)) {
-		case 'Invoice':
-			$emailcrmid=$adb->query_result($adb->pquery('select case accountid when 0 then contactid else accountid end from vtiger_invoice where invoiceid=?',array($crmid)),0,0);
-			break;
-		case 'Quotes':
-			$emailcrmid=$adb->query_result($adb->pquery('select case accountid when 0 then contactid else accountid end from vtiger_quotes where quoteid=?',array($crmid)),0,0);
-			break;
-		case 'SalesOrder':
-			$emailcrmid=$adb->query_result($adb->pquery('select case accountid when 0 then contactid else accountid end from vtiger_salesorder where salesorderid=?',array($crmid)),0,0);
-			break;
 		case 'PurchaseOrder':
-			$emailcrmid=$adb->query_result($adb->pquery('select case vendorid when 0 then contactid else vendorid end from vtiger_purchaseorder where purchaseorderid=?',array($crmid)),0,0);
+			$rs = $adb->pquery('select case vendorid when 0 then contactid else vendorid end from vtiger_purchaseorder where purchaseorderid=?',array($crmid));
+			$emailcrmid=$adb->query_result($rs,0,0);
+			break;
+		default:
+			$emailcrmid=getRelatedAccountContact($crmid,'Accounts');
+			if ($emailcrmid==0) {
+				$emailcrmid=getRelatedAccountContact($crmid,'Contacts');
+			}
 			break;
 	}
 	$pmodule = getSalesEntityType($emailcrmid);
@@ -371,6 +369,7 @@ if($ret_error == 1) {
 }
 $check_button = Button_Check($module);
 $smarty->assign("CHECK", $check_button);
+$smarty->assign('LISTID',vtlib_purify($_REQUEST['idlist']));
 
 $smarty->display("ComposeEmail.tpl");
 
