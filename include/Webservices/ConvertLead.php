@@ -270,7 +270,7 @@ function vtws_createEntities($entityIds, $leadId) {
 		$cbMap = cbMap::getMapByID($cbMapid);
 		$modules = $cbMap->ModuleSetMapping()->getFullModuleSet();
 		$originModules = array('Leads', 'Accounts', 'Contacts', 'Potentials');
-		$excludedModules = array('Potentials','Accounts','Contacts','Users');
+		$excludedModules = array('Leads','Potentials','Accounts','Contacts','Users');
 		foreach ($modules as $module) {
 			if(in_array($module,$excludedModules)) continue;
 			$entityRecord = vtws_createEntity($entityIds,$originModules,$module);
@@ -284,6 +284,7 @@ function vtws_createEntities($entityIds, $leadId) {
 
 function vtws_createEntity($recordid,$originMod,$targetMod) {
 	global $adb,$current_user,$log;
+	$return = 0;
 	$newEntityInfo = CRMEntity::getInstance($targetMod);
 	$mapfound = false;
 	foreach ($originMod as $modName) {
@@ -295,27 +296,26 @@ function vtws_createEntity($recordid,$originMod,$targetMod) {
 			if($cbMapid) {
 				$mapfound = true;
 				$cbMap = cbMap::getMapByID($cbMapid);
-				$map_results = $cbMap->Mapping();
-				$entityId = vtws_getWebserviceEntityId($modName,vtws_getIdComponents($recordid[$modName])[1]);
-				$entityObject = VtigerWebserviceObject::fromName($adb, $modName);
-				$handlerPath = $entityObject->getHandlerPath();
-				$handlerClass = $entityObject->getHandlerClass();
-				require_once $handlerPath;
-				$leadHandler = new $handlerClass($entityObject,$current_user, $adb, $log);
-				$entityInfo = vtws_retrieve($entityId,$current_user);
-				$related_fields = array_flip($map_results);
 				$newEntityInfo->column_fields = $cbMap->Mapping($oldEntityInfo->column_fields, $newEntityInfo->column_fields);
 			}
 		}
 	}
 	if($mapfound) {
 		try{
-			return vtws_create($targetMod, $newEntityInfo->column_fields, $current_user);
+			$webserviceObject = VtigerWebserviceObject::fromName($adb,$targetMod);
+			$handlerPath = $webserviceObject->getHandlerPath();
+			$handlerClass = $webserviceObject->getHandlerClass();
+			require_once $handlerPath;
+			$handler = new $handlerClass($webserviceObject,$current_user,$adb,$log);
+			$meta = $handler->getMeta();
+			$values = DataTransform::sanitizeReferences($newEntityInfo->column_fields,$meta);
+			$values = DataTransform::sanitizeOwnerFields($values,$meta);
+			$return = vtws_create($targetMod, $values, $current_user);
 		} catch (Exception $e) {
-			throw new WebServiceException(WebServiceErrorCode::$UNKNOWNOPERATION,
-					$e->getMessage().' : '.$targetMod);
+			throw new WebServiceException(WebServiceErrorCode::$UNKNOWNOPERATION, $e->getMessage().' : '.$targetMod);
 		}
 	}
+	return $return;
 }
 
 ?>
