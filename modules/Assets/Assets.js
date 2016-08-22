@@ -63,7 +63,7 @@ function AssetssetValueFromCapture(recordid,value,target_fieldname) {
 			url: "index.php?"+url
 		}).done(function (response) {
 			var str = JSON.parse(response);
-			document.EditView.account.value = str["accountid"];
+			document.EditView.account.value = str["account_id"];
 			document.EditView.account_display.value = str["Accounts.accountname"];
 		});
 	}
