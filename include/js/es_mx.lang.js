@@ -377,5 +377,9 @@ var alert_arr = {
 	'MAXIMUM_OF_TWO_MODULES_PERMITTED' : 'Solo se permite relacionar con un máximo de dos módulos.',
 	'LBL_NEW_CONDITION' : 'New Condition',
 	'WF_UPDATE_MAP_ERROR' : '**ERROR**: Esta acción utiliza un campo que no está disponible: ',
-	'WF_UPDATE_MAP_ERROR_INFO' : 'Se cargará la acción con información INCORRECTA para que puedas arreglarla. NO ES CORRECTA!'
+	'WF_UPDATE_MAP_ERROR_INFO' : 'Se cargará la acción con información INCORRECTA para que puedas arreglarla. NO ES CORRECTA!',
+	'MoveUp' : 'Mover Arriba',
+	'MoveDown' : 'Mover Abajo',
+	'Products' : 'Productos',
+	'Services' : 'Servicios'
 };
