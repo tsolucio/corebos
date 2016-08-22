@@ -405,10 +405,12 @@ Class ChartUtils {
 					$groupFieldValue = $valueComp[1];
 				}
 				if ($dateField) {
-					if (!empty($groupFieldValue))
-						$groupByFields[] = CustomReportUtils::getXAxisDateFieldValue($groupFieldValue, $criteria);
-					else
+					if (!empty($groupFieldValue)) {
+						$grpField = CustomReportUtils::getXAxisDateFieldValue($groupFieldValue, $criteria);
+						$groupByFields[] = getTranslatedString($grpField,$module);
+					} else {
 						$groupByFields[] = "Null";
+					}
 				}
 				else if (in_array($fieldname, array_keys($referenceFields))) {
 					if (count($referenceFields[$fieldname]) > 1) {
@@ -417,7 +419,7 @@ Class ChartUtils {
 					else {
 						$refenceModule = $referenceFields[$fieldname][0];
 					}
-					$groupByFields[] = $groupFieldValue;
+					$groupByFields[] = getTranslatedString($groupFieldValue,$module);
 
 					if ($fieldname == 'currency_id' && in_array($module, $inventorymodules)) {
 						$tablename = 'vtiger_currency_info';
@@ -432,7 +434,7 @@ Class ChartUtils {
 						$condition = "c";
 					}
 				} else {
-					$groupByFields[] = $groupFieldValue;
+					$groupByFields[] = getTranslatedString($groupFieldValue,$module);
 				}
 				$yaxisArray[] = $adb->query_result($queryResult, $i, 'groupby_count');
 				if ($fieldDetails != '') {

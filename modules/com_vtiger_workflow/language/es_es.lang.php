@@ -103,6 +103,8 @@ $mod_strings = array(
 'CBDeleteRelatedTask' => 'Eliminar Registros Relacionados',
 'CBAssignRelatedTask' => 'Asignar Registros Relacionados',
 'CBSelectcbMap' => 'Selecciona Regla de Negocio',
+'ConvertInventoryModule' => 'Convertir Módulos Inventario',
+'ConvertInventoryModuleMessage' => 'La correspondencia de campos es la que trae la aplicación por defecto y puede ajustarse utilizando las Reglas de Negocio de tipo Mapeo de Campo.',
 
 'LBL_EVENTNAME' => 'Nombre de Evento',
 'LBL_DESCRIPTION' => 'Descripción',

@@ -681,7 +681,7 @@ function addChartsToHomepage(reportid) {
 		fnhide('addcharttoHomepage');
 		document.getElementById('widgetsuccess').style.display = 'block';
 		document.getElementById('widgetsuccess').style.display = 'none';
-		jQuery.show('#widgetsuccess');
+		jQuery('#widgetsuccess').show();
 		setTimeout(hidewidgetmessage, 3000);
 	});
 	return true;

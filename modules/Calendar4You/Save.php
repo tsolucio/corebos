@@ -39,14 +39,10 @@ $tab_type = 'Calendar';
 $search=vtlib_purify($_REQUEST['search_url']);
 
 $focus->column_fields["activitytype"] = 'Task';
-if(isset($_REQUEST['record'])) {
-	$focus->id = $_REQUEST['record'];
-	$local_log->debug("id is ".$id);
-}
-
-if(isset($_REQUEST['mode'])) {
-	$focus->mode = $_REQUEST['mode'];
-}
+$mode = vtlib_purify($_REQUEST['mode']);
+$record=vtlib_purify($_REQUEST['record']);
+if($mode) $focus->mode = $mode;
+if($record)$focus->id  = $record;
 
 if((isset($_REQUEST['change_status']) && $_REQUEST['change_status']) && ($_REQUEST['status']!='' || $_REQUEST['eventstatus']!='')) {
 	$status ='';

@@ -19,8 +19,8 @@ $smarty->assign('THEME', $theme);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
 
 // Operation to be restricted for non-admin users.
-if(!is_admin($current_user)) {	
-	$smarty->display(vtlib_getModuleTemplate('Vtiger','OperationNotPermitted.tpl'));	
+if(!is_admin($current_user)) {
+	$smarty->display(vtlib_getModuleTemplate('Vtiger','OperationNotPermitted.tpl'));
 } else {
 	$module = vtlib_purify($_REQUEST['formodule']);
 
@@ -30,7 +30,7 @@ if(!is_admin($current_user)) {
 	$menu_array['LayoutEditor']['image_src'] = 'themes/images/orgshar.gif';
 	$menu_array['LayoutEditor']['desc'] = getTranslatedString('LBL_LAYOUT_EDITOR_DESCRIPTION');
 	$menu_array['LayoutEditor']['label'] = getTranslatedString('LBL_LAYOUT_EDITOR');
-	
+
 	if(vtlib_isModuleActive('FieldFormulas')) {
 		$modules = com_vtGetModules($adb);
 		if(in_array(getTranslatedString($module),$modules)) {
@@ -43,7 +43,7 @@ if(!is_admin($current_user)) {
 			}
 		}
 	}
-	
+
 	if(vtlib_isModuleActive('Tooltip')){
 		$sql_result = $adb->pquery("select * from vtiger_settings_field where name = ? and active=0",array('LBL_TOOLTIP_MANAGEMENT'));
 		if($adb->num_rows($sql_result) > 0) {

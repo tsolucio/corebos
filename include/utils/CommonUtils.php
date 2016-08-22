@@ -12,6 +12,8 @@
  * All Rights Reserved.
  ********************************************************************************/
 require_once('include/utils/utils.php');
+require_once('include/utils/VTCacheUtils.php');
+require_once('include/utils/VtlibUtils.php');
 require_once('include/utils/RecurringType.php');
 require_once('include/utils/EmailTemplate.php');
 require_once 'include/QueryGenerator/QueryGenerator.php';
@@ -395,6 +397,45 @@ function getFieldid($tabid, $fieldname, $onlyactive = true) {
 		}
 	}
 	return $fieldid;
+}
+
+function getFieldFromEditViewBlockArray($blocks,$fldlabel) {
+	$result = array();
+	if (is_array($blocks)) {
+		$found = false;
+		foreach ($blocks as $blklabel => $fieldarray) {
+			foreach ($fieldarray as $key => $row) {
+				if ($row[0][0][0]=='10') {
+					$col0label = $row[0][1][0]['displaylabel'];
+				} else {
+					$col0label = $row[0][1][0];
+				}
+				if ($row[1][0][0]=='10') {
+					$col1label = $row[1][1][0]['displaylabel'];
+				} else {
+					$col1label = $row[1][1][0];
+				}
+				if ($col0label==$fldlabel) {
+					$fieldkey = 0;
+					$found = true;
+				} elseif ($col1label==$fldlabel) {
+					$fieldkey = 1;
+					$found = true;
+				}
+				if ($found) {
+					$result['block_label'] = $blklabel;
+					$result['row_key'] = $key;
+					$result['field_key'] = $fieldkey;
+					break 2;
+				}
+			}
+		}
+	}
+	return $result;
+}
+
+function getFieldFromDetailViewBlockArray($blocks,$fldlabel) {
+	return getFieldFromBlockArray($blocks,$fldlabel);
 }
 
 function getFieldFromBlockArray($blocks,$fldlabel) {
@@ -3383,14 +3424,6 @@ function getEntityFieldNameDisplay($module, $fieldsName, $fieldValues) {
 	}
 	return '';
 }
-
-// vtiger cache utility
-require_once('include/utils/VTCacheUtils.php');
-
-// vtlib customization: Extended vtiger CRM utlitiy functions
-require_once('include/utils/VtlibUtils.php');
-
-// END
 
 function vt_suppressHTMLTags($string) {
 	return preg_replace(array('/</', '/>/', '/"/'), array('&lt;', '&gt;', '&quot;'), $string);

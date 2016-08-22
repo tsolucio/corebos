@@ -46,6 +46,7 @@ class DataTransform{
 		$newRow = DataTransform::sanitizeReferences($newRow,$meta);
 		$newRow = DataTransform::sanitizeOwnerFields($newRow,$meta,$t);
 		$newRow = DataTransform::sanitizeFields($newRow,$meta);
+		//$newRow = DataTransform::sanitizeCurrencyFieldsForDisplay($newRow,$meta);
 		return $newRow;
 	}
 
@@ -281,6 +282,24 @@ class DataTransform{
 				$cryFields = new CurrencyField($row[$fieldName]);
 				$cryFields->initialize($current_user);
 				$cryFields->setNumberofDecimals($cryFields::$maxNumberOfDecimals);
+				if($uitype == '71') {
+					$row[$fieldName] = $cryFields->getDisplayValue($current_user,false,true);
+				} else if($uitype == '72' || $uitype == '7' || $uitype == '9') {
+					$row[$fieldName] = $cryFields->getDisplayValue($current_user,true,true);
+				}
+			}
+		}
+		return $row;
+	}
+
+	function sanitizeCurrencyFieldsForDisplay($row,$meta){
+		global $current_user;
+		$moduleFields = $meta->getModuleFields();
+		foreach($moduleFields as $fieldName=>$fieldObj){
+			if(($fieldObj->getFieldDataType()=="currency" || $fieldObj->getFieldDataType()=="double") && !empty($row[$fieldName])) {
+				$uitype = $fieldObj->getUIType();
+				$cryFields = new CurrencyField($row[$fieldName]);
+				$cryFields->initialize($current_user);
 				if($uitype == '71') {
 					$row[$fieldName] = $cryFields->getDisplayValue($current_user,false,true);
 				} else if($uitype == '72' || $uitype == '7' || $uitype == '9') {

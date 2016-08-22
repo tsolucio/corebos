@@ -161,10 +161,12 @@ $smarty->assign("VALIDATION_DATA_FIELDDATATYPE",$data['datatype']);
 $smarty->assign("VALIDATION_DATA_FIELDLABEL",$data['fieldlabel']);
 $smarty->assign("MODULE", 'Users');
 $smarty->assign("CURRENT_USERID", $current_user->id);
-$smarty->assign("HOMEORDER",$focus->getHomeStuffOrder($focus->id));
-//Added to provide User based Tagcloud
-$smarty->assign("TAGCLOUDVIEW",getTagCloudView($focus->id));
-$smarty->assign("SHOWTAGAS",$mod_strings[getTagCloudShowAs($focus->id)]);
+$HomeValues = $focus->getHomeStuffOrder($focus->id);
+$smarty->assign("TAGCLOUDVIEW",$HomeValues['Tag Cloud']);
+$smarty->assign("SHOWTAGAS",$HomeValues['showtagas']);
+unset($HomeValues['Tag Cloud']);
+unset($HomeValues['showtagas']);
+$smarty->assign("HOMEORDER",$HomeValues);
 $smarty->assign("BLOCKS", getBlocks($currentModule,"detail_view",'',$focus->column_fields));
 $smarty->assign("USERNAME", getFullNameFromArray('Users', $focus->column_fields));
 $smarty->assign("HOUR_FORMAT",$focus->hour_format);

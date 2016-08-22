@@ -21,19 +21,32 @@ class HelpDesk extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	var $IsCustomModule = false;
 	var $HasDirectImageField = false;
-	var $tab_name = Array('vtiger_crmentity','vtiger_troubletickets','vtiger_ticketcf');
-	var $tab_name_index = Array('vtiger_crmentity'=>'crmid','vtiger_troubletickets'=>'ticketid','vtiger_ticketcf'=>'ticketid','vtiger_ticketcomments'=>'ticketid');
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
 	var $customFieldTable = Array('vtiger_ticketcf', 'ticketid');
 
-	//Pavani: Assign value to entity_table
+	/**
+	 * Mandatory for Saving, Include tables related to this module.
+	 */
+	var $tab_name = Array('vtiger_crmentity','vtiger_troubletickets','vtiger_ticketcf');
+
+	/**
+	 * Mandatory for Saving, Include tablename and tablekey columnname here.
+	 */
+	var $tab_name_index = Array(
+		'vtiger_crmentity'=>'crmid',
+		'vtiger_troubletickets'=>'ticketid',
+		'vtiger_ticketcf'=>'ticketid',
+		'vtiger_ticketcomments'=>'ticketid');
 	var $entity_table = 'vtiger_crmentity';
 
-	var $sortby_fields = Array('title','status','priority','crmid','firstname','smownerid');
-
+	/**
+	 * Mandatory for Listing (Related listview)
+	 */
 	var $list_fields = Array(
+		/* Format: Field Label => Array(tablename => columnname) */
+		// tablename should not have prefix 'vtiger_'
 		'Ticket No'=>Array('troubletickets'=>'ticket_no'),
 		'Subject'=>Array('troubletickets'=>'title'),
 		'Related to'=>Array('troubletickets'=>'parent_id'),
@@ -41,8 +54,8 @@ class HelpDesk extends CRMEntity {
 		'Priority'=>Array('troubletickets'=>'priority'),
 		'Assigned To'=>Array('crmentity' => 'smownerid')
 	);
-
 	var $list_fields_name = Array(
+		/* Format: Field Label => fieldname */
 		'Ticket No'=>'ticket_no',
 		'Subject'=>'ticket_title',
 		'Related to'=>'parent_id',
@@ -51,33 +64,27 @@ class HelpDesk extends CRMEntity {
 		'Assigned To'=>'assigned_user_id'
 	);
 
+	// Make the field link to detail view from list view (Fieldname)
 	var $list_link_field= 'ticket_title';
 
-	var $range_fields = Array(
-		'ticketid',
-		'title',
-		'firstname',
-		'lastname',
-		'parent_id',
-		'productid',
-		'productname',
-		'priority',
-		'severity',
-		'status',
-		'category',
-		'description',
-		'solution',
-		'modifiedtime',
-		'createdtime'
-	);
+	// For Popup listview and UI type support
 	var $search_fields = Array(
+		/* Format: Field Label => Array(tablename => columnname) */
+		// tablename should not have prefix 'vtiger_'
 		'Ticket No' =>Array('vtiger_troubletickets'=>'ticket_no'),
 		'Title' => Array('vtiger_troubletickets'=>'title')
 	);
 	var $search_fields_name = Array(
+		/* Format: Field Label => fieldname */
 		'Ticket No' => 'ticket_no',
 		'Title'=>'ticket_title',
 	);
+
+	// For Popup window record selection
+	var $popup_fields = Array('ticket_title');
+
+	// Placeholder for sort fields - All the fields will be initialized for Sorting through initSortFields
+	var $sortby_fields = Array('title','status','priority','crmid','firstname','smownerid');
 
 	// For Alphabetical search
 	var $def_basicsearch_col = 'ticket_title';
@@ -85,16 +92,14 @@ class HelpDesk extends CRMEntity {
 	// Column value to use on detail view record text display
 	var $def_detailview_recname = 'ticket_title';
 
-	//Specify Required fields
+	// Required Information for enabling Import feature
 	var $required_fields = array();
 
+	var $default_order_by = 'title';
+	var $default_sort_order = 'DESC';
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
 	var $mandatory_fields = Array('assigned_user_id', 'createdtime', 'modifiedtime', 'ticket_title', 'update_log');
-
-	//Added these variables which are used as default order by and sortorder in ListView
-	var $default_order_by = 'title';
-	var $default_sort_order = 'DESC';
 
 	function __construct() {
 		global $log;

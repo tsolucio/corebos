@@ -94,6 +94,7 @@ $mod_strings = array (
 		'ERR_ENTER_CONFIRMATION_PASSWORD' => 'Veuillez confirmer votre de mot de passe.',
 		'ERR_REENTER_PASSWORDS' => 'Veuillez re-saisir vos mots de passe. Le \"nouveau mot de passe\" et \"confirmation mot de passe\" ne sont pas identiques.',
 		'ERR_INVALID_PASSWORD' => 'Vous devez spécifier un nom utilisateur et mot de passe valide.',
+		'ERR_INVALID_ADMINIPLOGIN' => 'Administrator users must login from authorized devices.',
 		'ERR_PASSWORD_CHANGE_FAILED_1' => 'Echec lors du changement de mot de passe pour ',
 		'ERR_PASSWORD_CHANGE_FAILED_2' => ' échec. Le nouveau mot de passe doit être établi.',
 		'ERR_PASSWORD_INCORRECT_OLD' => 'Ancient mot de passe incorrect pour $this->user_name. Re-saisissez votre mot de passe.',

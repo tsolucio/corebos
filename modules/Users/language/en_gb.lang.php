@@ -95,6 +95,7 @@ $mod_strings = array(
 	'ERR_ENTER_CONFIRMATION_PASSWORD' => 'Please enter your password confirmation.',
 	'ERR_REENTER_PASSWORDS' => 'Please re-enter passwords. The \"new password\" and \"confirm password\" values do not match.',
 	'ERR_INVALID_PASSWORD' => 'You must specify a valid username and password.',
+	'ERR_INVALID_ADMINIPLOGIN' => 'Administrator users must login from authorized devices.',
 	'ERR_PASSWORD_CHANGE_FAILED_1' => 'User password change failed for ',
 	'ERR_PASSWORD_CHANGE_FAILED_2' => 'failed. The new password must be set.',
 	'ERR_PASSWORD_INCORRECT_OLD' => 'Incorrect old password specified. Re-enter password information.',

@@ -66,6 +66,7 @@ if(!empty($_REQUEST['entities']))
 	try{
 		$result = vtws_convertlead($entityValues,$current_user);
 	}catch(Exception $e){
+		echo "<br><div style='margin:auto;text-align:center;font-weight:bold;'>".$e->message.'</div><br>';
 		showError($entityValues);
 		die();
 	}

@@ -120,7 +120,7 @@ class VTCreateTodoTask extends VTTask{
 
 		relateEntities(CRMEntity::getInstance($moduleName), $moduleName, $entityIdDetails[1], 'Calendar', $todoIdDetails[1]);
 
-		$from_wf = true;
+		$from_wf = false;
 		global $current_user;
 		$current_user = $this->originalUser;
 		$logbg->info('Exiting workflow task VTCreateTodoTask');

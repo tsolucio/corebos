@@ -717,4 +717,11 @@
 	<classname>add_workflow_assignrelated</classname>
 	<systemupdate>false</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Install Global Variable Definitions infrastructure</description>
+	<filename>build/changeSets/installGlobalVarDefinitions.php</filename>
+	<classname>installGlobalVarDefinitions</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

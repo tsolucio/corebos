@@ -110,9 +110,7 @@
 <picklistvalue>corebos_app_name</picklistvalue>
 <picklistvalue>corebos_app_url</picklistvalue>
 <picklistvalue>first_day_of_week</picklistvalue>
-<picklistvalue>preload_prototype</picklistvalue>
 <picklistvalue>preload_jscalendar</picklistvalue>
-<picklistvalue>preload_jquery</picklistvalue>
 </picklistvalues>
 </field>
 <field>
@@ -373,6 +371,9 @@
 </field>
 </fields>
 </block>
+<block>
+<label>GVarDefinitions</label>
+</block>
 </blocks>
 <customviews>
 <customview>
@@ -441,6 +442,16 @@
 <linkurl><![CDATA[javascript:gotourl('index.php?module=GlobalVariable&action=TestGlobalVar&parenttab=Tools')]]></linkurl>
 <linkicon><![CDATA[]]></linkicon>
 <sequence>0</sequence>
+<handler_path><![CDATA[]]></handler_path>
+<handler_class><![CDATA[]]></handler_class>
+<handler><![CDATA[]]></handler>
+</customlink>
+<customlink>
+<linktype>LISTVIEWBASIC</linktype>
+<linklabel>Definitions</linklabel>
+<linkurl><![CDATA[javascript:gotourl('index.php?module=GlobalVariable&action=GlobalVariableDefinitions&parenttab=Tools')]]></linkurl>
+<linkicon><![CDATA[]]></linkicon>
+<sequence>1</sequence>
 <handler_path><![CDATA[]]></handler_path>
 <handler_class><![CDATA[]]></handler_class>
 <handler><![CDATA[]]></handler>

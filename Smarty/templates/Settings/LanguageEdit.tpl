@@ -191,6 +191,9 @@ function lang_changeEditTab(obj1, obj2, SelTab, unSelTab) {
 															</td>
 														</tr>
 														{/foreach}
+														{foreach key=var_name item=string from=$HIDDEN_FIELDS}
+															<input type="hidden" name="translate_value[{$string[2]}]" value="{if $string[3] eq 'new'}{$string[0]}{else}{$string[1]}{/if}">
+														{/foreach}
 													</table>
 												</div>
 												<div id="moreTab" style="width:100%;height:500px;overflow:auto;display:none;">

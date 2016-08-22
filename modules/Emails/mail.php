@@ -366,7 +366,7 @@ function addAllAttachments($mail,$record)
 function setCCAddress($mail,$cc_mod,$cc_val)
 {
 	global $adb;
-	$adb->println("Inside the functin setCCAddress");
+	$adb->println("Inside of setCCAddress");
 
 	if($cc_mod == 'cc')
 		$method = 'AddCC';

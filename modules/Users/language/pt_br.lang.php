@@ -113,6 +113,7 @@ $mod_strings = Array(
 'ERR_ENTER_CONFIRMATION_PASSWORD'=>'Por favor entre com a confirmação de senha.',
 'ERR_REENTER_PASSWORDS'=>'Por favor entre novamente com sua senha.  Os valores \"nova senha\" e \"confirme senha\" não combinam.',
 'ERR_INVALID_PASSWORD'=>'Você deve especificar um nome de usuário e senha válidos',
+'ERR_INVALID_ADMINIPLOGIN' => 'Administrator users must login from authorized devices.',
 'ERR_PASSWORD_CHANGE_FAILED_1'=>'Mudança na senha do usuário falhou ',
 'ERR_PASSWORD_CHANGE_FAILED_2'=>' falhou. Nova senha deve ser definida.',
 'ERR_PASSWORD_INCORRECT_OLD'=>'Senha antiga incorreta para usuário especificado. Entre novamente com a informação de senha.',

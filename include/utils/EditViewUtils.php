@@ -1487,11 +1487,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 function getConvertSoToInvoice($focus,$so_focus,$soid) {
 	global $log,$current_user;
 	$log->debug("Entering getConvertSoToInvoice(".get_class($focus).",".get_class($so_focus).",".$soid.") method ...");
-	$cbMapid = GlobalVariable::getVariable('BusinessMapping_SalesOrder2Invoice', cbMap::getMapIdByName('SalesOrder2Invoice'));
-	if ($cbMapid) {
-		$cbMap = cbMap::getMapByID($cbMapid);
-		$focus->column_fields = $cbMap->Mapping($so_focus->column_fields,$focus->column_fields);
-	} else {
 	$xyz=array('bill_street','bill_city','bill_code','bill_pobox','bill_country','bill_state','ship_street','ship_city','ship_code','ship_pobox','ship_country','ship_state');
 	for($i=0;$i<count($xyz);$i++){
 		if (getFieldVisibilityPermission('SalesOrder', $current_user->id,$xyz[$i]) == '0') {
@@ -1525,6 +1520,10 @@ function getConvertSoToInvoice($focus,$so_focus,$soid) {
 	$focus->column_fields['terms_conditions'] = $so_focus->column_fields['terms_conditions'];
 	$focus->column_fields['currency_id'] = $so_focus->column_fields['currency_id'];
 	$focus->column_fields['conversion_rate'] = $so_focus->column_fields['conversion_rate'];
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_SalesOrder2Invoice', cbMap::getMapIdByName('SalesOrder2Invoice'));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$focus->column_fields = $cbMap->Mapping($so_focus->column_fields,$focus->column_fields);
 	}
 	$log->debug("Exiting getConvertSoToInvoice method ...");
 	return $focus;
@@ -1567,7 +1566,11 @@ function getConvertQuoteToInvoice($focus,$quote_focus,$quoteid)
 	$focus->column_fields['terms_conditions'] = $quote_focus->column_fields['terms_conditions'];
 	$focus->column_fields['currency_id'] = $quote_focus->column_fields['currency_id'];
 	$focus->column_fields['conversion_rate'] = $quote_focus->column_fields['conversion_rate'];
-
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_Quotes2Invoice', cbMap::getMapIdByName('Quotes2Invoice'));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$focus->column_fields = $cbMap->Mapping($quote_focus->column_fields,$focus->column_fields);
+	}
 	$log->debug("Exiting getConvertQuoteToInvoice method ...");
 	return $focus;
 }
@@ -1612,7 +1615,11 @@ function getConvertQuoteToSoObject($focus,$quote_focus,$quoteid)
 	$focus->column_fields['terms_conditions'] = $quote_focus->column_fields['terms_conditions'];
 	$focus->column_fields['currency_id'] = $quote_focus->column_fields['currency_id'];
 	$focus->column_fields['conversion_rate'] = $quote_focus->column_fields['conversion_rate'];
-
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_Quotes2SalesOrder', cbMap::getMapIdByName('Quotes2SalesOrder'));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$focus->column_fields = $cbMap->Mapping($quote_focus->column_fields,$focus->column_fields);
+	}
 	$log->debug("Exiting getConvertQuoteToSoObject method ...");
 	return $focus;
 }

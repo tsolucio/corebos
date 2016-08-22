@@ -977,4 +977,8 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 			{/foreach}
 
 			<td colspan="2" class="dvtCellInfo">&nbsp;</td>
+		{else}
+			{* just show field on screen *}
+			<td width=20% class="dvtCellLabel" align=right>{$fldlabel}</td>
+			<td width=30% align=left class="dvtCellInfo"><input type="hidden" name="{$fldname}" id="{$fldname}" value="{$fldvalue.fieldsavevalue}">{$fldvalue.fieldshowvalue}</td>
 		{/if}

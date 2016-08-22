@@ -18,7 +18,8 @@ $record = vtlib_purify($_REQUEST['record']);
 $isduplicate = vtlib_purify($_REQUEST['isDuplicate']);
 
 if($singlepane_view == 'true' && $action == 'CallRelatedList') {
-	header("Location:index.php?action=DetailView&module=$currentModule&record=$record&parenttab=$category");
+	echo "<script>document.location='index.php?action=DetailView&module=$currentModule&record=$record&parenttab=$category';</script>";
+	die();
 } else {
 
 	$tool_buttons = Button_Check($currentModule);

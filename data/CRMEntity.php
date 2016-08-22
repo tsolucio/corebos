@@ -2508,12 +2508,12 @@ class CRMEntity {
 			} elseif ($module == 'Calendar' || !empty($scope)) {
 				$tableName .= '_t' . $tabId;
 			}
-			list($tsSpecialAccessQuery, $typeOfPermissionOverride, $unused1, $unused2) = cbEventHandler::do_filter('corebos.permissions.accessquery', array('', 'none', $module, $user));
+			list($tsSpecialAccessQuery, $typeOfPermissionOverride, $unused1, $unused2) = cbEventHandler::do_filter('corebos.permissions.accessquery', array(' ', 'none', $module, $user));
 			if ($typeOfPermissionOverride=='fullOverride') {
 				VTCacheUtils::updateCachedInformation('SpecialPermissionWithDuplicateRows', true);
 				return $tsSpecialAccessQuery;
 			}
-			if ($typeOfPermissionOverride=='none' or $tsSpecialAccessQuery=='') {
+			if ($typeOfPermissionOverride=='none' or trim($tsSpecialAccessQuery)=='') {
 				$this->setupTemporaryTable($tableName, $sharedTabId, $user, $current_user_parent_role_seq, $current_user_groups);
 				$query = " INNER JOIN $tableName $tableName$scope ON $tableName$scope.id = vtiger_crmentity$scope.smownerid ";
 			} else {

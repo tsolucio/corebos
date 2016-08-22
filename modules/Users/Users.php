@@ -59,9 +59,6 @@ class Users extends CRMEntity {
 	var $list_fields = Array('First Name' => Array('vtiger_users' => 'first_name'), 'Last Name' => Array('vtiger_users' => 'last_name'), 'Role Name' => Array('vtiger_user2role' => 'roleid'), 'User Name' => Array('vtiger_users' => 'user_name'), 'Status' => Array('vtiger_users' => 'status'), 'Email' => Array('vtiger_users' => 'email1'), 'Email2' => Array('vtiger_users' => 'email2'), 'Admin' => Array('vtiger_users' => 'is_admin'), 'Phone' => Array('vtiger_users' => 'phone_work'));
 	var $list_fields_name = Array('Last Name' => 'last_name', 'First Name' => 'first_name', 'Role Name' => 'roleid', 'User Name' => 'user_name', 'Status' => 'status', 'Email' => 'email1', 'Email2' => 'email2', 'Admin' => 'is_admin', 'Phone' => 'phone_work');
 
-	//Default Fields for Email Templates -- Pavani
-	var $emailTemplate_defaultFields = array('first_name', 'last_name', 'title', 'department', 'phone_home', 'phone_mobile', 'signature', 'email1', 'email2', 'address_street', 'address_city', 'address_state', 'address_country', 'address_postalcode');
-
 	var $popup_fields = array('last_name');
 
 	// This is the list of fields that are in the lists.
@@ -299,7 +296,7 @@ class Users extends CRMEntity {
 	 */
 	function load_user($user_password) {
 		$usr_name = $this->column_fields["user_name"];
-		$maxFailedLoginAttempts = GlobalVariable::getVariable('Application_MaxFailedLoginAttempts', 5);
+		$maxFailedLoginAttempts = GlobalVariable::getVariable('Application_MaxFailedLoginAttempts', 5, 'Users');
 		if (isset($_SESSION['loginattempts'])) {
 			$_SESSION['loginattempts'] += 1;
 		} else {
@@ -331,8 +328,34 @@ class Users extends CRMEntity {
 
 		$this->loadPreferencesFromDB($row['user_preferences']);
 
-		if ($row['status'] != "Inactive")
+		// Make sure admin is logging in from authorized IPs
+		if ($row['is_admin'] == 'on' or $row['is_admin'] == '1') {
+			$AdminLoginIPs = GlobalVariable::getVariable('Application_AdminLoginIPs','','Users');
+			if ($AdminLoginIPs != '') {
+				$admin_ip_addresses = explode(',',$AdminLoginIPs);
+				if (!in_array($_SERVER['REMOTE_ADDR'],$admin_ip_addresses)) {
+					$row['status'] = 'Inactive';
+					$this->authenticated = false;
+					$_SESSION['login_error'] = getTranslatedString('ERR_INVALID_ADMINIPLOGIN','Users');
+					$mailsubject = "[Security Alert]: Admin login attempt rejected for login: $usr_name from external IP: " . $_SERVER['REMOTE_ADDR'];
+					$this->log->warn($mailsubject);
+					// Send email with authentification error.
+					$mailto = GlobalVariable::getVariable('Debug_Send_AdminLoginIPAuth_Error','','Users');
+					if ($mailto != '') {
+						require_once('modules/Emails/mail.php');
+						require_once('modules/Emails/Emails.php');
+						global $HELPDESK_SUPPORT_EMAIL_ID,$HELPDESK_SUPPORT_NAME;
+						$from_name = $HELPDESK_SUPPORT_NAME;
+						$form_mail = $HELPDESK_SUPPORT_EMAIL_ID;
+						$mailcontent = $mailsubject. "\n";
+						send_mail('Emails',$mailto,$from_name,$form_mail,$mailsubject,$mailcontent);
+					}
+				}
+			}
+		}
+		if ($row['status'] != 'Inactive') {
 			$this->authenticated = true;
+		}
 
 		unset($_SESSION['loginattempts']);
 		return $this;
@@ -1009,7 +1032,7 @@ class Users extends CRMEntity {
 		if($id == '' && isset($this->column_fields['tagcloudview'])){
 			$return_array['Tag Cloud'] = $this->column_fields['tagcloudview'];
 		}else{
-			$return_array['Tag Cloud'] = (getTagCloudView($id) ? 'true' : 'false');
+			$return_array['Tag Cloud'] = getTagCloudView($id);
 		}
 		if($id == '' && isset($this->column_fields['showtagas'])){
 			$return_array['showtagas'] = $this->column_fields['showtagas'];

@@ -78,6 +78,7 @@
         <column>linetotal</column>
         <variable>dqlinestotal</variable>
         <label>Subtotal</label>
+        <currency>true | false</currency>
         <position>top</position>
       </operation>
   </aggregations>
@@ -188,8 +189,9 @@ class MasterDetailLayout extends processcbMap {
 				'items' => isset($v->items) ? (String)$v->items : '',
 				'operation' => isset($v->operation) ? (String)$v->operation : '',
 				'column' => isset($v->column) ? (String)$v->column : '',
-				'variable' => isset($v->variable) ? (String)$v->variable : '',
-				'label' => isset($v->label) ? (String)$v->label : '0',
+				'variable' => isset($v->variable) ? (String)$v->variable : '0',
+				'label' => isset($v->label) ? (String)$v->label : '',
+				'currency' => isset($v->currency) ? (strtolower((String)$v->currency)=='true' ? 1 : 0) : 0,
 				'position' => isset($v->position) ? (String)$v->position : '',
 			);
 		}

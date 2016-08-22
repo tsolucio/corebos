@@ -528,20 +528,42 @@ class GlobalVariable extends CRMEntity {
 		for ($i=0;$i<$adb->num_rows($query);$i++) {
 			$gvvalidationinfo[] = 'evaluate candidate <a href="index.php?action=DetailView&record='.$adb->query_result($query,$i,'globalvariableid').'&module=GlobalVariable">'.$adb->query_result($query,$i,'globalno').'</a>';
 			if ($adb->query_result($query,$i,'module_list')=='') {
-				$value = ($isBusinessMapping ? $adb->query_result($query,$i,'bmapid') : $adb->query_result($query,$i,'value'));
+				if ($isBusinessMapping) {
+					$value = $adb->query_result($query,$i,'bmapid');
+				} else {
+					$value = $adb->query_result($query,$i,'value');
+					if ($value=='[[Use Description]]') {
+						$value = $adb->query_result($query,$i,'description');
+					}
+				}
 				$list_of_modules['Default']=$value;
 			} else {
 				$in_module_list=$adb->query_result($query,$i,'in_module_list');
 				$modules_list=array_map('trim', explode('|##|',$adb->query_result($query,$i,'module_list')));
 				if ($in_module_list==1) {
 					for($j=0;$j<sizeof($modules_list);$j++) {
-						$value = ($isBusinessMapping ? $adb->query_result($query,$i,'bmapid') : $adb->query_result($query,$i,'value'));
+						if ($isBusinessMapping) {
+							$value = $adb->query_result($query,$i,'bmapid');
+						} else {
+							$value = $adb->query_result($query,$i,'value');
+							if ($value=='[[Use Description]]') {
+								$value = $adb->query_result($query,$i,'description');
+							}
+						}
 						$list_of_modules[$modules_list[$j]]=$value;
 					}
 				} else {
 					$all_modules=vtws_getModuleNameList();
 					$other_modules=array_diff($all_modules,$modules_list);
 					for($l=0;$l<sizeof($other_modules);$l++){
+						if ($isBusinessMapping) {
+							$value = $adb->query_result($query,$i,'bmapid');
+						} else {
+							$value = $adb->query_result($query,$i,'value');
+							if ($value=='[[Use Description]]') {
+								$value = $adb->query_result($query,$i,'description');
+							}
+						}
 						$value = ($isBusinessMapping ? $adb->query_result($query,$i,'bmapid') : $adb->query_result($query,$i,'value'));
 						$list_of_modules[$other_modules[$l]]=$value;
 					}
@@ -575,8 +597,10 @@ class GlobalVariable extends CRMEntity {
 	 *   - return $default
 	 */
 	public static function getVariable($var,$default, $module='', $gvuserid='') {
-		global $adb,$current_user, $gvvalidationinfo, $currentModule;
+		global $adb, $current_user, $gvvalidationinfo, $currentModule;
 		$gvvalidationinfo[] = "search for variable '$var' with default value of '$default'";
+		if (empty($module)) $module = $currentModule;
+		if (empty($gvuserid)) $gvuserid = $current_user->id;
 		$key = md5('gvcache'.$var.$module.$gvuserid);
 		list($value,$found) = VTCacheUtils::lookupCachedInformation($key);
 		if ($found) {
@@ -585,8 +609,6 @@ class GlobalVariable extends CRMEntity {
 		}
 		$value='';
 		$list_of_modules=array();
-		if (empty($module)) $module = $currentModule;
-		if (empty($gvuserid)) $gvuserid = $current_user->id;
 		$focus = CRMEntity::getInstance('GlobalVariable');
 		$select = 'SELECT *
 		 FROM vtiger_globalvariable

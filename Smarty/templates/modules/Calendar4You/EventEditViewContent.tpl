@@ -36,15 +36,9 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 <input type="hidden" name="viewOption" value="{$viewOption}">
 <input type="hidden" name="subtab" value="{$subtab}">
 <input type="hidden" name="maintab" value="{$maintab}">
-<table width="100%" cellpadding="2" cellspacing="0" border="0">
-<tr>
-        <td>
-                <table cellpadding="0" cellspacing="5" border="0">
-			<input type="hidden" name="activity_mode" value="{$ACTIVITY_MODE}" onsubmit="VtigerJS_DialogBox.block();">
-	<input type="hidden" name="product_id" value="{$PRODUCTID}">
-    <input type="hidden" name="activity_mode" value="{$ACTIVITY_MODE}" onsubmit="VtigerJS_DialogBox.block();">
-	<input type="hidden" name="product_id" value="{$PRODUCTID}">
-    <input type="hidden" name="pagenumber" value="{$smarty.request.start|@vtlib_purify}">
+<input type="hidden" name="product_id" value="{$PRODUCTID}">
+<input type="hidden" name="activity_mode" value="{$ACTIVITY_MODE}" onsubmit="VtigerJS_DialogBox.block();">
+<input type="hidden" name="pagenumber" value="{$smarty.request.start|@vtlib_purify}">
 <input type="hidden" name="module" value="{$MODULE}">
 <input type="hidden" name="record" value="{$ID}">
 <input type="hidden" name="mode" value="{$MODE}">
@@ -55,7 +49,9 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 <input type="hidden" name="return_action" value="{$RETURN_ACTION}">
 <input type="hidden" name="return_viewname" value="{$RETURN_VIEWNAME}">
 <input type="hidden" name="createmode" value="{$CREATEMODE}" />
-                </table>
+<table width="100%" cellpadding="2" cellspacing="0" border="0">
+<tr>
+        <td>
 <table  border="0" cellpadding="5" cellspacing="0" width="100%" >
 <tr>
         <td class="lvtHeaderText" style="border-bottom:1px dotted #cccccc">
@@ -96,8 +92,8 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 						     <tr>
 							<td  colspan=4 style="padding:5px">
 								<div align="center">
-								<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.action.value='Save';"  type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  " style="width:70px" >
-								<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="window.history.back()" type="button" name="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}  " style="width:70px">
+								<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.action.value='Save';"  type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
+								<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="window.history.back()" type="button" name="button" value="{$APP.LBL_CANCEL_BUTTON_LABEL}  ">
 								</div>
 							</td>
 						     </tr>
@@ -978,10 +974,10 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 		{/if}
 			</td></tr>
 			<tr>
-				<td  colspan=4 style="padding:5px">
+				<td colspan=4 style="padding:5px">
 					<div align="center">
-                        	        	<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.action.value='Save'; " type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  " style="width:70px" >
-						<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="window.history.back()" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  " style="width:70px">
+						<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.action.value='Save'; " type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
+						<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="window.history.back()" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
 					</div>
 				</td>
 			</tr></table>

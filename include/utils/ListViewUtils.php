@@ -3702,7 +3702,7 @@ function setSessionVar($lv_array, $noofrows, $max_ent, $module = '', $related = 
  */
 function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $related_module, $recordid) {
 	global $log, $app_strings, $adb, $theme;
-	$log->debug("Entering getTableHeaderNavigation(" . $url_qry . "," . $module . "," . $related_module . "," . $recordid . ") method ...");
+	$log->debug("Entering getRelatedTableHeaderNavigation(" . $url_qry . "," . $module . "," . $related_module . "," . $recordid . ") method ...");
 	$tabid = getTabid($module);
 	if($related_module == 'Parent Product'){
 		$relatedListResult = $adb->pquery('SELECT * FROM vtiger_relatedlists WHERE tabid=? AND
@@ -3761,7 +3761,7 @@ function getRelatedTableHeaderNavigation($navigation_array, $url_qry, $module, $
 		$output .= '<img src="' . vtiger_imageurl('end_disabled.gif', $theme) . '" border="0" align="absmiddle">&nbsp;';
 	}
 	$output .= '</td>';
-	$log->debug("Exiting getTableHeaderNavigation method ...");
+	$log->debug("Exiting getRelatedTableHeaderNavigation method ...");
 	if ($navigation_array['first'] == '')
 		return;
 	else
