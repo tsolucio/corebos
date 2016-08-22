@@ -8,16 +8,27 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-$mod_strings = Array(
-	'ModuleName' => 'Module Name',
-	'SINGLE_ModuleName' => 'Module Name',
-	'ModuleName ID' => 'Module Name ID',
-
-	'LBL_CUSTOM_INFORMATION' => 'Custom Information',
-	'LBL_MODULEBLOCK_INFORMATION' => 'ModuleBlock Information',
-	'LBL_DESCRIPTION_INFORMATION' => 'Verkoopkans omschrijving',
-
+$mod_strings = array(
+	'ModuleName' => 'Globale Variabelen',
+	'SINGLE_ModuleName' => 'Globale variabele',
+	'ModuleName ID' => 'Globale variabele ID',
+	'LBL_CUSTOM_INFORMATION' => 'Eigen informatie',
+	'LBL_MODULEBLOCK_INFORMATION' => 'Blok informatie',
+	'LBL_DESCRIPTION_INFORMATION' => 'Beschrijving',
 	'ModuleFieldLabel' => 'ModuleFieldLabel Text',
+	'Name' => 'Naam',
+	'Default' => 'Standaard',
+	'Value' => 'Waarde',
+	'Mandatory' => 'Verplicht',
+	'User' => 'Gebruiker',
+	'Blocked' => 'Geblokkeerd',
+	'Module List' => 'Modulelijst',
+	'Category' => 'Categorie',
+	'In Module List' => 'In module lijst',
+	'Globalno' => 'Globale variabele nr.',
+	'Created Time' => 'Gemaakt op',
+	'Modified Time' => 'Gewijzigd op',
+	'Description' => 'Beschrijving',
+	'cbMap' => 'Interne relatie',
 );
-
 ?>
