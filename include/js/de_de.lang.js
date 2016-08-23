@@ -149,6 +149,7 @@ var alert_arr = {
     'LBL_NO_DATA_SELECTED':'Sie haben keine Auswahl getroffen. Für einen Export muessen Sie wenigstens einen Eintrag auswählen.',
     'LBL_SEARCH_WITHOUTSEARCH_ALL':'Sie haben die Suchfunktion verwendet, um Daten auszuwählen. Jedoch haben Sie ihr Exportkriterium darauf nicht bezogen. Wenn Sie auf [ok] klicken werden alle Daten exportiert. Wenn Sie auf [Abbrechen] klicken, können Sie Ihre Exportkriterien neu bestimmen.',
     'STOCK_IS_NOT_ENOUGH' : 'Ihr Lager hat so viel nicht vorrätig.',
+    'LBL_QTY_IN_STOCK' : 'Menge im Lager',
     'INVALID_QTY' : 'ungültige Mengenangabe',
     'LBL_SEARCH_WITHOUTSEARCH_CURRENTPAGE':'Sie haben die Suchfunktion verwendet, um Daten auszuwählen. Jedoch haben Sie ihr Exportkriterium daruaf nicht bezogen. Wenn Sie auf [ok] werden die Daten Ihrer aktuellen Listenansicht exportiert. Wenn Sie auf [Abbrechen] klicken, können Sie Ihre Exportkriterien neu bestimmen.',
     'LBL_SELECT_COLUMN': 'Ungültige Spalte.\nBitte wählen Sie eine Spalte.',

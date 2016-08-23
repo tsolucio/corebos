@@ -624,22 +624,15 @@ function fnAddProductRow(module,image_path){
 	var row = tableName.insertRow(prev);
 	row.id = "row"+count;
 	row.style.verticalAlign = "top";
-	
+
 	var colone = row.insertCell(0);
 	var coltwo = row.insertCell(1);
-	if(module == "PurchaseOrder"){
-		var colfour = row.insertCell(2);
-		var colfive = row.insertCell(3);
-		var colsix = row.insertCell(4);
-		var colseven = row.insertCell(5);
-	}
-	else{
-		var colthree = row.insertCell(2);
-		var colfour = row.insertCell(3);
-		var colfive = row.insertCell(4);
-		var colsix = row.insertCell(5);
-		var colseven = row.insertCell(6);
-	}
+	var colthree = row.insertCell(2);
+	var colfour = row.insertCell(3);
+	var colfive = row.insertCell(4);
+	var colsix = row.insertCell(5);
+	var colseven = row.insertCell(6);
+
 	/* Product Re-Ordering Feature Code Addition Starts */
 	iMax = tableName.rows.length;
 	for(iCount=1;iCount<=iMax-3;iCount++)
@@ -677,16 +670,16 @@ function fnAddProductRow(module,image_path){
 					'</td></tr><tr><td class="small"><input type="hidden" value="" id="subproduct_ids'+count+'" name="subproduct_ids'+count+'" /><span id="subprod_names'+count+'" name="subprod_names'+count+'" style="color:#C0C0C0;font-style:italic;"> </span>'+
 					'</td></tr><tr><td class="small" id="setComment'+count+'"><textarea id="comment'+count+'" name="comment'+count+'" class=small style="width:70%;height:40px"></textarea><img src="themes/images/clear_field.gif" onClick="getObj(\'comment'+count+'\').value=\'\'"; style="cursor:pointer;" /></td></tr></tbody></table>';
 
-	//Quantity In Stock - only for SO, Quotes and Invoice
-	if(module != "PurchaseOrder"){
+	//Additional Information column
 	colthree.className = "crmTableRow small";
-	colthree.innerHTML='<span id="qtyInStock'+count+'">&nbsp;</span>';
+	if(module != "PurchaseOrder"){
+	colthree.innerHTML=alert_arr.LBL_QTY_IN_STOCK+':&nbsp;<span id="qtyInStock'+count+'">&nbsp;</span>';
 	}
 
 	//Quantity
 	var temp='';
 	colfour.className = "crmTableRow small";
-	temp='<input id="qty'+count+'" name="qty'+count+'" type="text" class="small " style="width:50px" onfocus="this.className=\'detailedViewTextBoxOn\'" onBlur="settotalnoofrows(); calcTotal(); loadTaxes_Ajax('+count+');';
+	temp='<input id="qty'+count+'" name="qty'+count+'" type="text" class="small " style="width:50px" onBlur="settotalnoofrows(); calcTotal(); loadTaxes_Ajax('+count+');';
 	if(module == "Invoice") {
 		temp+='stock_alert('+count+');';
 	}

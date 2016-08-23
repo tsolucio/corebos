@@ -139,6 +139,7 @@ var alert_arr = {
 	'LBL_NO_DATA_SELECTED':'Aucun enregistrement n\'est sélectionné. Sélectionnez-en au moins un pour exporter',
 	'LBL_SEARCH_WITHOUTSEARCH_ALL':'Vous avez utilisé les options de recherche mais vous n\'avez pas sélectionné d\'options.\nVous pouvez cliquer sur [ok] pour exporter toutes les données ou vous pouvez cliquer sur [annuler] et réessayer avec d\'autres paramètres d\'export',
 	'STOCK_IS_NOT_ENOUGH':'Stock trop faible',
+	'LBL_QTY_IN_STOCK' : 'Qté en stock',
 	'INVALID_QTY':'Quantité invalide',
 	'LBL_SEARCH_WITHOUTSEARCH_CURRENTPAGE':'Vous avez utilisé les options de recherche mais vous n\'avez pas sélectionné d\'options.\nVous pouvez cliquer sur [ok] pour exporter toutes les données ou vous pouvez cliquer sur [annuler] et réessayer avec d\'autres paramètres d\'export',
 	'LBL_SELECT_COLUMN':'Colonne invalide. Sélectionnez une autre colonne',

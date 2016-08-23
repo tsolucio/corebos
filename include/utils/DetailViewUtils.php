@@ -1332,13 +1332,8 @@ function getDetailAssociatedProducts($module, $focus) {
 		} else {
 			$acvid = $focus->column_fields['contact_id'];
 		}
-		if($hide_stock == 'no')
-			$colspan = '2';
-		else
-			$colspan = '1';
 	} else {
 		$acvid = $focus->column_fields['vendor_id'];
-		$colspan = '1';
 	}
 
 	//Get the taxtype of this entity
@@ -1350,7 +1345,7 @@ function getDetailAssociatedProducts($module, $focus) {
 	$output .= '
 	<table width="100%" border="0" align="center" cellpadding="5" cellspacing="0" class="crmTable detailview_inventory_table" id="proTab">
 	<tr valign="top" class="detailview_inventory_header">
-		<td colspan="' . $colspan . '" class="dvInnerHeader"><b>' . $app_strings['LBL_ITEM_DETAILS'] . '</b></td>
+		<td colspan="2" class="dvInnerHeader"><b>' . $app_strings['LBL_ITEM_DETAILS'] . '</b></td>
 		<td class="dvInnerHeader" align="center" colspan="2"><b>' .
 			$app_strings['LBL_CURRENCY'] . ' : </b>' . getTranslatedCurrencyString($currencytype['currency_name']) . ' (' . $currencytype['currency_symbol'] . ')
 		</td>
@@ -1363,15 +1358,14 @@ function getDetailAssociatedProducts($module, $focus) {
 			<b>' . $app_strings['LBL_ITEM_NAME'] . '</b>
 		</td>';
 
-	//Add Quantity in Stock column for SO, Quotes and Invoice
-	if (($module == 'Quotes' || $module == 'SalesOrder' || $module == 'Invoice') && $hide_stock == 'no')
-		$output .= '<td width=10% class="lvtCol"><b>' . $app_strings['LBL_QTY_IN_STOCK'] . '</b></td>';
+	//Additional information column
+	$output .= '<td width=20% class="lvtCol"><b>' . $app_strings['LBL_INFORMATION'] . '</b></td>';
 
 	$output .= '
 		<td width=10% class="lvtCol"><b>' . $app_strings['LBL_QTY'] . '</b></td>
 		<td width=10% class="lvtCol" align="right"><b>' . $app_strings['LBL_LIST_PRICE'] . '</b></td>
-		<td width=12% nowrap class="lvtCol" align="right"><b>' . $app_strings['LBL_TOTAL'] . '</b></td>
-		<td width=13% valign="top" class="lvtCol" align="right"><b>' . $app_strings['LBL_NET_PRICE'] . '</b></td>
+		<td width=10% nowrap class="lvtCol" align="right"><b>' . $app_strings['LBL_TOTAL'] . '</b></td>
+		<td width=10% valign="top" class="lvtCol" align="right"><b>' . $app_strings['LBL_NET_PRICE'] . '</b></td>
 	</tr>';
 
 	if ($module == 'Quotes' || $module == 'PurchaseOrder' || $module == 'SalesOrder' || $module == 'Invoice') {
@@ -1498,9 +1492,11 @@ function getDetailAssociatedProducts($module, $focus) {
 		//Upto this added to display the Product name and comment
 
 
+		$output .= '<td class="crmTableRow small lineOnTop detailview_inventory_stockcell">';
 		if ($module != 'PurchaseOrder' && $hide_stock == 'no') {
-			$output .= '<td class="crmTableRow small lineOnTop detailview_inventory_stockcell">' . $qtyinstock . '</td>';
+			$output .= $app_strings['LBL_QTY_IN_STOCK'].':&nbsp;'.$qtyinstock;
 		}
+		$output .= '</td>';
 		$output .= '<td class="crmTableRow small lineOnTop detailview_inventory_qtycell">' . $qty . '</td>';
 		$output .= '
 			<td class="crmTableRow small lineOnTop detailview_inventory_lpricecell" align="right">
