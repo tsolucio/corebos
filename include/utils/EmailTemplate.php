@@ -147,7 +147,7 @@ class EmailTemplate {
 							$values[$fieldColumnMapping[$fieldName]] = getTranslatedString($values[$fieldColumnMapping[$fieldName]], $this->module);
 						}elseif(strcasecmp($fieldtype,'datetime') === 0){
 							$values[$fieldColumnMapping[$fieldName]] = $values[$fieldColumnMapping[$fieldName]] .' '. DateTimeField::getDBTimeZone();
-						}elseif(strcasecmp($fieldtype,'currency') === 0){
+						}elseif(strcasecmp($fieldtype,'currency') === 0 or strcasecmp($fieldtype,'double') === 0){
 							$currencyField = new CurrencyField($values[$fieldColumnMapping[$fieldName]]);
 							$values[$fieldColumnMapping[$fieldName]] = $currencyField->getDisplayValue(null, true);
 						}elseif($webserviceField->getUIType() == 69){
