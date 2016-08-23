@@ -59,14 +59,14 @@ function getProductDetailsBlockInfo($mode,$module,$focus='',$num_of_products='',
  * Param $productid - product id
  * Param $qty - product quantity in no's
  * Param $mode - mode type
- * Param $ext_prod_arr - existing products
+ * Param $ext_prod_arr - existing products ** NOT USED: empty **
  * Param $module - module name
  * return type void
  */
 function updateStk($product_id,$qty,$mode,$ext_prod_arr,$module)
 {
 	global $log, $adb, $current_user;
-	$log->debug("Entering updateStk($product_id,$qty,$mode,".print_r($ext_prod_arr,true).",$module) method ...");
+	$log->debug("Entering updateStk($product_id,$qty,$mode,$module) method ...");
 
 	$prod_name = getProductName($product_id);
 	$qtyinstk= getPrdQtyInStck($product_id);
@@ -415,15 +415,12 @@ function getTaxDetailsForProduct($productid, $available='all', $acvid=0)
 }
 
 /**	Function used to delete the Inventory product details for the passed entity
- *	@param int $objectid - entity id to which we want to delete the product details from REQUEST values where as the entity will be Purchase Order, Sales Order, Quotes or Invoice
- *	@param string $return_old_values - string which contains the string return_old_values or may be empty, if the string is return_old_values then before delete old values will be retrieved
- *	@return array $ext_prod_arr - if the second input parameter is 'return_old_values' then the array which contains the productid and quantity which will be retrieved before delete the product details will be returned otherwise return empty
+ *	@param int $objectid - entity id to which we want to delete the product details values where as the entity will be Purchase Order, Sales Order, Quotes or Invoice
  */
 function deleteInventoryProductDetails($focus)
 {
 	global $log, $adb,$updateInventoryProductRel_update_product_array;
 	$log->debug("Entering into function deleteInventoryProductDetails(".$focus->id.").");
-
 	$product_info = $adb->pquery("SELECT productid, quantity, sequence_no, incrementondel from vtiger_inventoryproductrel WHERE id=?",array($focus->id));
 	$numrows = $adb->num_rows($product_info);
 	for($index = 0;$index <$numrows;$index++){
@@ -548,7 +545,6 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 		$id=vtlib_purify($_REQUEST['duplicate_from']);
 	}
 	$ipr_cols = $adb->getColumnNames('vtiger_inventoryproductrel');
-	$ext_prod_arr = Array();
 	if($focus->mode == 'edit')
 	{
 		if($_REQUEST['taxtype'] == 'group')
@@ -558,9 +554,6 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 		{
 			$return_old_values = 'return_old_values';
 		}
-
-		//we will retrieve the existing product details and store it in a array and then delete all the existing product details and save new values, retrieve the old value and update stock only for SO, Quotes and Invoice not for PO
-		//$ext_prod_arr = deleteInventoryProductDetails($focus->id,$return_old_values);
 		deleteInventoryProductDetails($focus);
 	}
 	else
@@ -633,7 +626,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 		if($module != 'PurchaseOrder')
 		{
 			//update the stock with existing details
-			updateStk($prod_id,$qty,$focus->mode,$ext_prod_arr,$module);
+			updateStk($prod_id,$qty,$focus->mode,array(),$module);
 		}
 
 		//we should update discount and tax details
