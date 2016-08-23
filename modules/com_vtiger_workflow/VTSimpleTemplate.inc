@@ -38,6 +38,9 @@ class VTSimpleTemplate{
 				} elseif ($uitype == '70') {  // datetime
 					$date = new DateTimeField($data[$fieldname]);
 					$result = $date->getDisplayDateTimeValue($current_user);
+				} elseif ($uitype == '71' || $uitype == '72' || $uitype == '7' || $uitype == '9'){
+					$currencyField = new CurrencyField($data[$fieldname]);
+					$result = $currencyField->getDisplayValue(null, true);
 				} elseif ($uitype == '14' || ($uitype == '2' && ($fieldname == "time_start" || $fieldname == "time_end"))) {  // time
 					$date = new DateTimeField($data[$fieldname]);
 					$result = $date->getDisplayTime($current_user);
@@ -73,6 +76,9 @@ class VTSimpleTemplate{
 								} elseif ($uitype == '70') {  // datetime
 									$date = new DateTimeField($data[$fieldname]);
 									$result = $date->getDisplayDateTimeValue($current_user);
+								} elseif ($uitype == '71' || $uitype == '72' || $uitype == '7' || $uitype == '9'){
+									$currencyField = new CurrencyField($data[$fieldname]);
+									$result = $currencyField->getDisplayValue(null, true);
 								} elseif ($uitype == '14' || ($uitype == '2' && ($fieldname == "time_start" || $fieldname == "time_end"))) {  // time
 									$date = new DateTimeField($data[$fieldname]);
 									$result = $date->getDisplayTime($current_user);
