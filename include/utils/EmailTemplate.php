@@ -127,7 +127,8 @@ class EmailTemplate {
 				foreach ($moduleFields as $fieldName=>$webserviceField) {
 					if(isset($values[$fieldColumnMapping[$fieldName]]) &&
 						$values[$fieldColumnMapping[$fieldName]] !== null){
-						if(strcasecmp($webserviceField->getFieldDataType(),'reference') === 0){
+						$fieldtype = $webserviceField->getFieldDataType();
+						if(strcasecmp($fieldtype,'reference') === 0){
 							$details = $webserviceField->getReferenceList();
 							if(count($details)==1){
 								$referencedObjectHandler = vtws_getModuleHandlerFromName($details[0],$this->user);
@@ -138,14 +139,17 @@ class EmailTemplate {
 							$referencedObjectMeta = $referencedObjectHandler->getMeta();
 							$values[$fieldColumnMapping[$fieldName]] =
 								$referencedObjectMeta->getName(vtws_getId($referencedObjectMeta->getEntityId(),$values[$fieldColumnMapping[$fieldName]]));
-						}elseif(strcasecmp($webserviceField->getFieldDataType(),'owner') === 0){
+						}elseif(strcasecmp($fieldtype,'owner') === 0){
 							$referencedObjectHandler = vtws_getModuleHandlerFromName(vtws_getOwnerType($values[$fieldColumnMapping[$fieldName]]),$this->user);
 							$referencedObjectMeta = $referencedObjectHandler->getMeta();
 							$values[$fieldColumnMapping[$fieldName]] = $referencedObjectMeta->getName(vtws_getId($referencedObjectMeta->getEntityId(),$values[$fieldColumnMapping[$fieldName]]));
-						}elseif(strcasecmp($webserviceField->getFieldDataType(),'picklist') === 0 or $fieldName== 'salutationtype'){
+						}elseif(strcasecmp($fieldtype,'picklist') === 0 or $fieldName== 'salutationtype'){
 							$values[$fieldColumnMapping[$fieldName]] = getTranslatedString($values[$fieldColumnMapping[$fieldName]], $this->module);
-						}elseif(strcasecmp($webserviceField->getFieldDataType(),'datetime') === 0){
+						}elseif(strcasecmp($fieldtype,'datetime') === 0){
 							$values[$fieldColumnMapping[$fieldName]] = $values[$fieldColumnMapping[$fieldName]] .' '. DateTimeField::getDBTimeZone();
+						}elseif(strcasecmp($fieldtype,'currency') === 0){
+							$currencyField = new CurrencyField($values[$fieldColumnMapping[$fieldName]]);
+							$values[$fieldColumnMapping[$fieldName]] = $currencyField->getDisplayValue(null, true);
 						}elseif($webserviceField->getUIType() == 69){
 							$query = 'select vtiger_attachments.name, vtiger_attachments.type, vtiger_attachments.attachmentsid, vtiger_attachments.path
 									from vtiger_attachments
