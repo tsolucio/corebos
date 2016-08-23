@@ -1722,6 +1722,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 		if (!empty($entitytype)) {
 			$product_Detail[$i]['entityType'.$i]=$entitytype;
 		}
+		$product_Detail[$i]['lineitem_id'.$i]=$adb->query_result($result,$i-1,'lineitem_id');
 
 		if($listprice == '')
 			$listprice = $unitprice;

@@ -606,11 +606,16 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 			}
 		}
 
-		$query ="insert into vtiger_inventoryproductrel(id, productid, sequence_no, quantity, listprice, comment, description) values(?,?,?,?,?,?,?)";
-		$qparams = array($focus->id,$prod_id,$prod_seq,$qty,$listprice,$comment,$description);
+		if (!empty($_REQUEST['lineitem_id'.$i]) and $focus->mode == 'edit') {
+			$lineitem_id = vtlib_purify($_REQUEST['lineitem_id'.$i]);
+			$query ="insert into vtiger_inventoryproductrel(id, productid, sequence_no, quantity, listprice, comment, description, lineitem_id) values(?,?,?,?,?,?,?,?)";
+			$qparams = array($focus->id,$prod_id,$prod_seq,$qty,$listprice,$comment,$description,$lineitem_id);
+		} else {
+			$query ="insert into vtiger_inventoryproductrel(id, productid, sequence_no, quantity, listprice, comment, description) values(?,?,?,?,?,?,?)";
+			$qparams = array($focus->id,$prod_id,$prod_seq,$qty,$listprice,$comment,$description);
+			$lineitem_id = $adb->getLastInsertID();
+		}
 		$adb->pquery($query,$qparams);
-
-		$lineitem_id = $adb->getLastInsertID();
 
 		$sub_prod_str = $_REQUEST['subproduct_ids'.$i];
 		if (!empty($sub_prod_str)) {

@@ -156,6 +156,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 	{assign var="subprod_names" value="subprod_names"|cat:$row_no}
 	{assign var="entityIdentifier" value="entityType"|cat:$row_no}
 	{assign var="entityType" value=$data.$entityIdentifier}
+	{assign var="lineitem_id" value="lineitem_id"|cat:$row_no}
 
 	{assign var="discount_type" value="discount_type"|cat:$row_no}
 	{assign var="discount_percent" value="discount_percent"|cat:$row_no}
@@ -186,6 +187,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 			&nbsp;<a href="javascript:moveUpDown('DOWN','{$MODULE}',{$row_no})" title="{'LBL_MOVE'|@getTranslatedString:'Settings'} {'LBL_DOWN'|@getTranslatedString:'Settings'}"><img src="{'down_layout.gif'|@vtiger_imageurl:$THEME}" border="0" ></a>
 		{/if}
 		<input type="hidden" id="{$deleted}" name="{$deleted}" value="0">
+		<input type="hidden" id="{$lineitem_id}" name="{$lineitem_id}" value="{$data[$lineitem_id]}">
 	</td>
 
 	<!-- column 2 - Product Name - starts -->
