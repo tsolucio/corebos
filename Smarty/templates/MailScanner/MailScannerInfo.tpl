@@ -6,7 +6,6 @@
   * The Initial Developer of the Original Code is vtiger.
   * Portions created by vtiger are Copyright (C) vtiger.
   * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 
@@ -20,6 +19,8 @@ function performScanNow(app_key, scannername) {
 					'&mode=scannow&service=MailScanner&app_key=' + encodeURIComponent(app_key)+ '&scannername=' + encodeURIComponent(scannername),
 			}).done(function(response) {
 				document.getElementById('status').style.display = 'none';
+				document.getElementById(scannername).innerHTML = response;
+				document.getElementById(scannername).style.display = 'block';
 			}
 			);
 }
@@ -78,15 +79,15 @@ function performScanNow(app_key, scannername) {
 							<td class="big" width="60%"><strong>{$MOD.LBL_MAILBOX}</strong></td>
 							<td width="30%" nowrap align="right">
 								<a href="index.php?module=Settings&action=MailScanner&parenttab=Settings&mode=edit&scannername="><img src="{'btnL3Add.gif'|@vtiger_imageurl:$THEME}" border="0" /></a>
-							</td>								
+							</td>
 						</tr>
 						</table>
 					</td>
 				</tr>
 				
-				{foreach item=SCANNER from=$SCANNERS}				
+				{foreach item=SCANNER from=$SCANNERS}
 				
-				{assign var="SCANNERINFO" value=$SCANNER->getAsMap()}				
+				{assign var="SCANNERINFO" value=$SCANNER->getAsMap()}
 				<tr>
 				<td>
 
@@ -102,7 +103,7 @@ function performScanNow(app_key, scannername) {
 				{* When mode is Ajax, xmode will be set *}
 				<input type='hidden' name='xmode' value=''>
 				<input type='hidden' name='file' value=''>
-		
+				<div class="cb-alert-info" id="{$SCANNERINFO.scannername|@decode_html|@addslashes|@to_html}" style="display:none;"></div>
 				<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 				<tr>
 				<td class="big" width="70%"><strong>{$SCANNERINFO.scannername} {$MOD.LBL_INFORMATION}</strong></td>

@@ -26,10 +26,10 @@
 	<tr>
 		<td class="listTableRow small">{$task->executionorder}
 		{if not $smarty.foreach.wftasks.first}
-			&nbsp;<a href="javascript:moveWorkflowTaskUpDown('UP','{$task->id}')" title="Move Upward"><img src="{'up_layout.gif'|@vtiger_imageurl:$THEME}" border="0"></a>
+			&nbsp;<a href="javascript:moveWorkflowTaskUpDown('UP','{$task->id}')" title="{'LBL_MOVE'|@getTranslatedString:'Settings'} {'LBL_UP'|@getTranslatedString:'Settings'}"><img src="{'up_layout.gif'|@vtiger_imageurl:$THEME}" border="0"></a>
 		{/if}
 		{if not $smarty.foreach.wftasks.last}
-			&nbsp;<a href="javascript:moveWorkflowTaskUpDown('DOWN','{$task->id}')" title="Move Downward"><img src="{'down_layout.gif'|@vtiger_imageurl:$THEME}" border="0" ></a>
+			&nbsp;<a href="javascript:moveWorkflowTaskUpDown('DOWN','{$task->id}')" title="{'LBL_MOVE'|@getTranslatedString:'Settings'} {'LBL_DOWN'|@getTranslatedString:'Settings'}"><img src="{'down_layout.gif'|@vtiger_imageurl:$THEME}" border="0" ></a>
 		{/if}
 		</td>
 		<td class="listTableRow small">{$task->summary|@to_html}</td>

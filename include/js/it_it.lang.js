@@ -368,5 +368,9 @@ var alert_arr = {
 	'MAXIMUM_OF_TWO_MODULES_PERMITTED' : 'A maximum of two modules is permitted.',
 	'LBL_NEW_CONDITION' : 'New Condition',
 	'WF_UPDATE_MAP_ERROR' : '**ERROR**: This task uses a field that does not exist: ',
-	'WF_UPDATE_MAP_ERROR_INFO' : 'The task will load with INCORRECT settings to permit you to fix it. It is NOT CORRECT!!'
+	'WF_UPDATE_MAP_ERROR_INFO' : 'The task will load with INCORRECT settings to permit you to fix it. It is NOT CORRECT!!',
+	'MoveUp' : 'Move Up',
+	'MoveDown' : 'Move Down',
+	'Products' : 'Products',
+	'Services' : 'Services'
 };
