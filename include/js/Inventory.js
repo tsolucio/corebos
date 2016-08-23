@@ -311,6 +311,8 @@ function validateInventory(module) {
 function finishValidateInventory() {
 	if (validateInventoryLines(gVTModule)) {
 		submitFormForAction('EditView', 'Save');
+	} else {
+		VtigerJS_DialogBox.unblock();
 	}
 }
 
