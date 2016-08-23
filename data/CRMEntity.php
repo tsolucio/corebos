@@ -2510,6 +2510,8 @@ class CRMEntity {
 			}
 			list($tsSpecialAccessQuery, $typeOfPermissionOverride, $unused1, $unused2) = cbEventHandler::do_filter('corebos.permissions.accessquery', array(' ', 'none', $module, $user));
 			if ($typeOfPermissionOverride=='fullOverride') {
+				// create the default temporary table in case it is needed
+				$this->setupTemporaryTable($tableName, $sharedTabId, $user, $current_user_parent_role_seq, $current_user_groups);
 				VTCacheUtils::updateCachedInformation('SpecialPermissionWithDuplicateRows', true);
 				return $tsSpecialAccessQuery;
 			}
