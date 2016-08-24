@@ -1705,6 +1705,12 @@ function getAssociatedProducts($module,$focus,$seid='')
 			$params = array($seid);
 	}
 
+	$cbMap = cbMap::getMapByName($module.'InventoryDetails','MasterDetailLayout');
+	$MDMapFound = ($cbMap!=null);
+	if ($MDMapFound) {
+		$cbMapFields = $cbMap->MasterDetailLayout();
+	}
+
 	$result = $adb->pquery($query, $params);
 	$num_rows=$adb->num_rows($result);
 	for($i=1;$i<=$num_rows;$i++)
@@ -1770,6 +1776,23 @@ function getAssociatedProducts($module,$focus,$seid='')
 			$product_Detail[$i]['comment'.$i]= $productdescription;
 		}else {
 			$product_Detail[$i]['comment'.$i]= $comment;
+		}
+		if ($MDMapFound) {
+			foreach ($cbMapFields['detailview']['fields'] as $mdfield) {
+				$output .= '<br>';
+				$output .= '<b>'.$mdfield['fieldinfo']['label'].'</b>:&nbsp;';
+				$mdrs = $adb->pquery('select '.$mdfield['fieldinfo']['name'].' from vtiger_inventorydetails
+						inner join vtiger_crmentity on crmid=vtiger_inventorydetails.inventorydetailsid
+						inner join vtiger_inventorydetailscf on vtiger_inventorydetailscf.inventorydetailsid=vtiger_inventorydetails.inventorydetailsid
+						where deleted=0 and related_to=? and lineitem_id=?',
+					array($focus->id,$adb->query_result($result, $i - 1, 'lineitem_id')));
+				if ($mdrs) {
+					$col_fields = array();
+					$col_fields[$mdfield['fieldinfo']['name']] = $adb->query_result($mdrs, 0, 0);
+					$foutput = getOutputHtml($mdfield['fieldinfo']['uitype'], $mdfield['fieldinfo']['name'], $mdfield['fieldinfo']['label'], 100, $col_fields, 0, 'InventoryDetails', 'edit', $mdfield['fieldinfo']['typeofdata']);
+					$product_Detail[$i]['moreinfo'.$i][] = $foutput;
+				}
+			}
 		}
 
 		if($module != 'PurchaseOrder' && $focus->object_name != 'Order')

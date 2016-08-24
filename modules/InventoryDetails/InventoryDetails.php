@@ -617,19 +617,25 @@ class InventoryDetails extends CRMEntity {
 			}
 
 			foreach ($invdet_focus->column_fields as $fieldname => $val) {
-				$invdet_focus->column_fields[$fieldname] = isset($row[$fieldname]) ? $row[$fieldname] : $invdet_focus->column_fields[$fieldname];
+				if (isset($row[$fieldname])) {
+					$invdet_focus->column_fields[$fieldname] = $row[$fieldname];
+				} elseif (isset($_REQUEST[$fieldname.$row['sequence_no']])) {
+					$invdet_focus->column_fields[$fieldname] = vtlib_purify($_REQUEST[$fieldname.$row['sequence_no']]);
+				}
 			}
-			$_REQUEST['assigntype'] == 'U';
+			$_REQUEST['assigntype'] = 'U';
 			$invdet_focus->column_fields['assigned_user_id'] = $current_user->id;
 			$invdet_focus->column_fields['account_id'] = $accountid;
 			$invdet_focus->column_fields['contact_id'] = $contactid;
 
-			//Search if the product is related with a Vendor.
-			$vendorid = '0';
-			$result = $adb->pquery("SELECT vendor_id FROM vtiger_products WHERE productid = ?",array($row['productid']));
-			if($adb->num_rows($result) > 0)
-				$vendorid = $adb->query_result($result,0,0);
-			$invdet_focus->column_fields['vendor_id'] = $vendorid;
+			if (!isset($_REQUEST['vendor_id'.$row['sequence_no']])) {
+				//Search if the product is related with a Vendor.
+				$vendorid = '0';
+				$result = $adb->pquery("SELECT vendor_id FROM vtiger_products WHERE productid = ?",array($row['productid']));
+				if($adb->num_rows($result) > 0)
+					$vendorid = $adb->query_result($result,0,0);
+				$invdet_focus->column_fields['vendor_id'] = $vendorid;
+			}
 
 			if($taxtype == 'group')
 			{

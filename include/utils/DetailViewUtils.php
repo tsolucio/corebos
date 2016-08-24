@@ -1325,7 +1325,7 @@ function getDetailAssociatedProducts($module, $focus) {
 		$hide_stock = 'no';
 	else
 		$hide_stock = 'yes';
-
+	$tabid = getTabid($module);
 	if ($module != 'PurchaseOrder') {
 		if (GlobalVariable::getVariable('B2B', '1')=='1') {
 			$acvid = $focus->column_fields['account_id'];
@@ -1334,6 +1334,12 @@ function getDetailAssociatedProducts($module, $focus) {
 		}
 	} else {
 		$acvid = $focus->column_fields['vendor_id'];
+	}
+
+	$cbMap = cbMap::getMapByName($module.'InventoryDetails','MasterDetailLayout');
+	$MDMapFound = ($cbMap!=null);
+	if ($MDMapFound) {
+		$cbMapFields = $cbMap->MasterDetailLayout();
 	}
 
 	//Get the taxtype of this entity
@@ -1494,7 +1500,24 @@ function getDetailAssociatedProducts($module, $focus) {
 
 		$output .= '<td class="crmTableRow small lineOnTop detailview_inventory_stockcell">';
 		if ($module != 'PurchaseOrder' && $hide_stock == 'no') {
-			$output .= $app_strings['LBL_QTY_IN_STOCK'].':&nbsp;'.$qtyinstock;
+			$output .= '<b>'.$app_strings['LBL_QTY_IN_STOCK'].':</b>&nbsp;'.$qtyinstock;
+		}
+		if ($MDMapFound) {
+			foreach ($cbMapFields['detailview']['fields'] as $mdfield) {
+				$output .= '<br>';
+				$output .= '<b>'.$mdfield['fieldinfo']['label'].'</b>:&nbsp;';
+				$mdrs = $adb->pquery('select '.$mdfield['fieldinfo']['name'].' from vtiger_inventorydetails
+						inner join vtiger_crmentity on crmid=vtiger_inventorydetails.inventorydetailsid
+						inner join vtiger_inventorydetailscf on vtiger_inventorydetailscf.inventorydetailsid=vtiger_inventorydetails.inventorydetailsid
+						where deleted=0 and related_to=? and lineitem_id=?',
+					array($focus->id,$adb->query_result($result, $i - 1, 'lineitem_id')));
+				if ($mdrs) {
+					$col_fields = array();
+					$col_fields[$mdfield['fieldinfo']['name']] = $adb->query_result($mdrs, 0, 0);
+					$foutput = getDetailViewOutputHtml($mdfield['fieldinfo']['uitype'], $mdfield['fieldinfo']['name'], $mdfield['fieldinfo']['label'], $col_fields, 0, $tabid, $module);
+					$output .= $foutput[1];
+				}
+			}
 		}
 		$output .= '</td>';
 		$output .= '<td class="crmTableRow small lineOnTop detailview_inventory_qtycell">' . $qty . '</td>';

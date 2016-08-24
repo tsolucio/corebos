@@ -127,8 +127,8 @@ function displayCoords(currObj,obj,mode,curr_row)
    <!-- Header for the Product Details -->
    <tr valign="top">
 	<td width=5% valign="top" class="lvtCol" align="right"><b>{$APP.LBL_TOOLS}</b></td>
-	<td width=37% class="lvtCol"><font color='red'>*</font><b>{$APP.LBL_ITEM_NAME}</b></td>
-	<td width=18% class="lvtCol"><b>{$APP.LBL_INFORMATION}</b></td>
+	<td width=35% class="lvtCol"><font color='red'>*</font><b>{$APP.LBL_ITEM_NAME}</b></td>
+	<td width=20% class="lvtCol"><b>{$APP.LBL_INFORMATION}</b></td>
 	<td width=10% class="lvtCol"><b>{$APP.LBL_QTY}</b></td>
 	<td width=10% class="lvtCol" align="right"><b>{$APP.LBL_LIST_PRICE}</b></td>
 	<td width=10% nowrap class="lvtCol" align="right"><b>{$APP.LBL_TOTAL}</b></td>
@@ -150,6 +150,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 	{assign var="entityIdentifier" value="entityType"|cat:$row_no}
 	{assign var="entityType" value=$data.$entityIdentifier}
 	{assign var="lineitem_id" value="lineitem_id"|cat:$row_no}
+	{assign var="moreinfo" value="moreinfo"|cat:$row_no}
 
 	{assign var="discount_type" value="discount_type"|cat:$row_no}
 	{assign var="discount_percent" value="discount_percent"|cat:$row_no}
@@ -223,6 +224,13 @@ function displayCoords(currObj,obj,mode,curr_row)
 		{if ($MODULE eq 'Quotes' || $MODULE eq 'SalesOrder' || $MODULE eq 'Invoice')  && 'Products'|vtlib_isModuleActive}
 		{$APP.LBL_QTY_IN_STOCK}:&nbsp;<span id="{$qtyInStock}">{$data.$qtyInStock}</span>
 		{/if}
+		{foreach item=maindata from=$data.$moreinfo}
+			<table>
+			<tr>
+				{include file='Inventory/EditViewUI.tpl'}
+			</tr>
+			</table>
+		{/foreach}
 	</td>
 	<!-- column 3 - Quantity in Stock - ends -->
 
