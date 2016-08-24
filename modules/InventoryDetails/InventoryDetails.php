@@ -141,9 +141,12 @@ class InventoryDetails extends CRMEntity {
 	}
 
 	function save_module($module) {
+		global $adb;
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id,$module);
 		}
+		$this->column_fields['cost_gross'] = $this->column_fields['quantity'] * $this->column_fields['cost_price'];
+		$adb->pquery('update vtiger_inventorydetails set cost_gross=? where inventorydetailsid=?', array($this->column_fields['cost_gross'], $this->id));
 	}
 
 	/**
@@ -541,26 +544,34 @@ class InventoryDetails extends CRMEntity {
 		$related_to = $related_focus->id;
 		$taxtype = getInventoryTaxType($module, $related_to);
 		if($taxtype == 'group'){
-			$query = "SELECT id as related_to , productid , sequence_no ,lineitem_id,quantity , listprice , comment as description , 
-			quantity * listprice AS extgross, 
-			COALESCE( discount_percent, COALESCE( discount_amount *100 / ( quantity * listprice ) , 0 ) ) AS discount_percent, 
-			COALESCE( discount_amount, COALESCE( discount_percent * quantity * listprice /100, 0 ) ) AS discount_amount, 
-			(quantity * listprice) - COALESCE( discount_amount, COALESCE( discount_percent * quantity * listprice /100, 0 )) AS extnet, 
-			((quantity * listprice) - COALESCE( discount_amount, COALESCE( discount_percent * quantity * listprice /100, 0 ))) AS linetotal 
-			FROM vtiger_inventoryproductrel 
+			$query = "SELECT id as related_to, vtiger_inventoryproductrel.productid, sequence_no, lineitem_id, quantity, listprice, comment as description,
+			quantity * listprice AS extgross,
+			COALESCE( discount_percent, COALESCE( discount_amount *100 / ( quantity * listprice ) , 0 ) ) AS discount_percent,
+			COALESCE( discount_amount, COALESCE( discount_percent * quantity * listprice /100, 0 ) ) AS discount_amount,
+			(quantity * listprice) - COALESCE( discount_amount, COALESCE( discount_percent * quantity * listprice /100, 0 )) AS extnet,
+			((quantity * listprice) - COALESCE( discount_amount, COALESCE( discount_percent * quantity * listprice /100, 0 ))) AS linetotal,
+			case when vtiger_products.productid != '' then vtiger_products.cost_price else vtiger_service.cost_price end as cost_price,
+			case when vtiger_products.productid != '' then vtiger_products.vendor_id else 0 end as vendor_id
+			FROM vtiger_inventoryproductrel
+			LEFT JOIN vtiger_products ON vtiger_products.productid=vtiger_inventoryproductrel.productid
+			LEFT JOIN vtiger_service ON vtiger_service.serviceid=vtiger_inventoryproductrel.productid
 			WHERE id = ?";
 		}
 		elseif($taxtype == 'individual'){
-			$query = "SELECT id as related_to , productid , sequence_no ,lineitem_id,quantity , listprice , comment as description , 
-			coalesce( tax1 , 0 ) AS tax1, coalesce( tax2 , 0 ) AS tax2, coalesce( tax3 , 0 ) AS tax3, 
-			( COALESCE( tax1, 0 ) + COALESCE( tax2, 0 ) + COALESCE( tax3, 0 ) ) as tax_percent, 
-			quantity * listprice AS extgross, 
-			COALESCE( discount_percent, COALESCE( discount_amount *100 / ( quantity * listprice ) , 0 ) ) AS discount_percent, 
-			COALESCE( discount_amount, COALESCE( discount_percent * quantity * listprice /100, 0 ) ) AS discount_amount, 
-			(quantity * listprice) - COALESCE( discount_amount, COALESCE( discount_percent * quantity * listprice /100, 0 )) AS extnet, 
-			((quantity * listprice) - COALESCE( discount_amount, COALESCE( discount_percent * quantity * listprice /100, 0 ))) * ( COALESCE( tax1, 0 ) + COALESCE( tax2, 0 ) + COALESCE( tax3, 0 ) ) /100 AS linetax, 
-			((quantity * listprice) - COALESCE( discount_amount, COALESCE( discount_percent * quantity * listprice /100, 0 ))) * ( 1 + ( COALESCE( tax1, 0 ) + COALESCE( tax2, 0 ) + COALESCE( tax3, 0 )) /100) AS linetotal 
-			FROM vtiger_inventoryproductrel 
+			$query = "SELECT id as related_to, vtiger_inventoryproductrel.productid, sequence_no, lineitem_id, quantity, listprice, comment as description,
+			coalesce( tax1 , 0 ) AS tax1, coalesce( tax2 , 0 ) AS tax2, coalesce( tax3 , 0 ) AS tax3,
+			( COALESCE( tax1, 0 ) + COALESCE( tax2, 0 ) + COALESCE( tax3, 0 ) ) as tax_percent,
+			quantity * listprice AS extgross,
+			COALESCE( discount_percent, COALESCE( discount_amount *100 / ( quantity * listprice ) , 0 ) ) AS discount_percent,
+			COALESCE( discount_amount, COALESCE( discount_percent * quantity * listprice /100, 0 ) ) AS discount_amount,
+			(quantity * listprice) - COALESCE( discount_amount, COALESCE( discount_percent * quantity * listprice /100, 0 )) AS extnet,
+			((quantity * listprice) - COALESCE( discount_amount, COALESCE( discount_percent * quantity * listprice /100, 0 ))) * ( COALESCE( tax1, 0 ) + COALESCE( tax2, 0 ) + COALESCE( tax3, 0 ) ) /100 AS linetax,
+			((quantity * listprice) - COALESCE( discount_amount, COALESCE( discount_percent * quantity * listprice /100, 0 ))) * ( 1 + ( COALESCE( tax1, 0 ) + COALESCE( tax2, 0 ) + COALESCE( tax3, 0 )) /100) AS linetotal,
+			case when vtiger_products.productid != '' then vtiger_products.cost_price else vtiger_service.cost_price end as cost_price,
+			case when vtiger_products.productid != '' then vtiger_products.vendor_id else 0 end as vendor_id
+			FROM vtiger_inventoryproductrel
+			LEFT JOIN vtiger_products ON vtiger_products.productid=vtiger_inventoryproductrel.productid
+			LEFT JOIN vtiger_service ON vtiger_service.serviceid=vtiger_inventoryproductrel.productid
 			WHERE id = ?";
 		}
 		$res_inv_lines = $adb->pquery($query,array($related_to));
@@ -620,17 +631,11 @@ class InventoryDetails extends CRMEntity {
 				$invdet_focus->mode = '';
 			}
 
-			//Search if the product is related with a Vendor.
-			$vendorid = '0';
-			$result = $adb->pquery("SELECT vendor_id FROM vtiger_products WHERE productid = ?",array($row['productid']));
-			if($adb->num_rows($result) > 0)
-				$vendorid = $adb->query_result($result,0,0);
-			$invdet_focus->column_fields['vendor_id'] = $vendorid;
 			foreach ($invdet_focus->column_fields as $fieldname => $val) {
-				if (isset($row[$fieldname])) {
-					$invdet_focus->column_fields[$fieldname] = $row[$fieldname];
-				} elseif (isset($_REQUEST[$fieldname.$requestindex])) {
+				if (isset($_REQUEST[$fieldname.$requestindex])) {
 					$invdet_focus->column_fields[$fieldname] = vtlib_purify($_REQUEST[$fieldname.$requestindex]);
+				} elseif (isset($row[$fieldname])) {
+					$invdet_focus->column_fields[$fieldname] = $row[$fieldname];
 				}
 			}
 			$_REQUEST['assigntype'] = 'U';
@@ -638,9 +643,7 @@ class InventoryDetails extends CRMEntity {
 			$invdet_focus->column_fields['account_id'] = $accountid;
 			$invdet_focus->column_fields['contact_id'] = $contactid;
 
-
-			if($taxtype == 'group')
-			{
+			if($taxtype == 'group') {
 				$invdet_focus->column_fields['tax_percent'] = 0;
 				$invdet_focus->column_fields['linetax'] = 0;
 			}

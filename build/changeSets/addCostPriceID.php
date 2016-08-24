@@ -13,7 +13,7 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
-class addCostPrice extends cbupdaterWorker {
+class addCostPriceID extends cbupdaterWorker {
 	function applyChange() {
 		global $adb;
 		if ($this->hasError()) $this->sendError();
@@ -21,9 +21,9 @@ class addCostPrice extends cbupdaterWorker {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
 			global $adb;
-			$modname = 'Products';
+			$modname = 'InventoryDetails';
 			$module = Vtiger_Module::getInstance($modname);
-			$block = Vtiger_Block::getInstance('LBL_PRICING_INFORMATION', $module);
+			$block = Vtiger_Block::getInstance('LBL_INVENTORYDETAILS_INFORMATION', $module);
 			$field = Vtiger_Field::getInstance('cost_price',$module);
 			if (!$field) {
 				$field1 = new Vtiger_Field();
@@ -37,15 +37,12 @@ class addCostPrice extends cbupdaterWorker {
 				$field1->presence = 0;
 				$block->addField($field1);
 			}
-			$modname = 'Services';
-			$module = Vtiger_Module::getInstance($modname);
-			$block = Vtiger_Block::getInstance('LBL_PRICING_INFORMATION', $module);
-			$field = Vtiger_Field::getInstance('cost_price',$module);
+			$field = Vtiger_Field::getInstance('cost_gross',$module);
 			if (!$field) {
 				$field1 = new Vtiger_Field();
-				$field1->name = 'cost_price';
-				$field1->label= 'Cost Price';
-				$field1->column = 'cost_price';
+				$field1->name = 'cost_gross';
+				$field1->label= 'Cost Total';
+				$field1->column = 'cost_gross';
 				$field1->columntype = 'DECIMAL(28,6)';
 				$field1->uitype = 71;
 				$field1->typeofdata = 'N~O';
@@ -57,15 +54,6 @@ class addCostPrice extends cbupdaterWorker {
 
 		$this->sendMsg('Changeset '.get_class($this).' applied!');
 		$this->markApplied();
-		$this->finishExecution();
-	}
-	
-	function undoChange() {
-		if ($this->isBlocked()) return true;
-		if ($this->hasError()) $this->sendError();
-		if ($this->isSystemUpdate()) {
-			$this->sendMsg('Changeset '.get_class($this).' is a system update, it cannot be undone!');
-		}
 		$this->finishExecution();
 	}
 }
