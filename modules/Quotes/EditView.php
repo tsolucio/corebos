@@ -196,6 +196,11 @@ elseif (isset ($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') 
 else {
 	$smarty->assign('ROWCOUNT', '1');
 }
+$cbMap = cbMap::getMapByName($currentModule.'InventoryDetails','MasterDetailLayout');
+if ($cbMap!=null) {
+	$cbMapFields = $cbMap->MasterDetailLayout();
+	$smarty->assign('moreinfofields', "'".implode("','",$cbMapFields['detailview']['fieldnames'])."'");
+}
 
 if (isset ($_REQUEST['return_module']))
 	$smarty->assign("RETURN_MODULE", vtlib_purify($_REQUEST['return_module']));

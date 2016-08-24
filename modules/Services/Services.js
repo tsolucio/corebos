@@ -225,8 +225,7 @@ function fnAddServiceRow(module,image_path){
 	var oPrevRow = tableName.rows[iPrevRowIndex+1]; 
 	var delete_row_count=count;
 	/* Product Re-Ordering Feature Code Addition ends */
-	
-	
+
 	//Delete link
 	colone.className = "crmTableRow small";
 	colone.id = row.id+"_col1";
@@ -252,9 +251,7 @@ function fnAddServiceRow(module,image_path){
 
 	//Additional information column
 	colthree.className = "crmTableRow small";
-	if(module != "PurchaseOrder"  && hide_stock == 'no'){
-		colthree.innerHTML='<span id="qtyInStock'+count+'">NA</span>';
-	}
+	cloneMoreInfoNode(count);
 
 	//Quantity
 	var temp='';

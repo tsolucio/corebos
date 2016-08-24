@@ -672,9 +672,7 @@ function fnAddProductRow(module,image_path){
 
 	//Additional Information column
 	colthree.className = "crmTableRow small";
-	if(module != "PurchaseOrder"){
-	colthree.innerHTML=alert_arr.LBL_QTY_IN_STOCK+':&nbsp;<span id="qtyInStock'+count+'">&nbsp;</span>';
-	}
+	cloneMoreInfoNode(count);
 
 	//Quantity
 	var temp='';
@@ -703,6 +701,42 @@ function fnAddProductRow(module,image_path){
 	decideTaxDiv();
 	calcTotal();
 	return count;
+}
+
+function cloneMoreInfoNode(newRowId) {
+	var tblBody = document.getElementById('proTab').tBodies[0];
+	var moreinfocell1 = tblBody.rows[2].cells[2];
+	var moreinfocell = moreinfocell1.cloneNode(true);
+	// change IDs
+	var domfld = moreinfocell.querySelector('#qtyInStock1');
+	if (domfld) {
+		domfld.id = 'qtyInStock'+ newRowId;
+	}
+	for(var i=0; i<moreInfoFields.length; i++) {
+		moreinfocell.innerHTML = moreinfocell.innerHTML.replace(new RegExp(moreInfoFields[i]+'1', 'g'), moreInfoFields[i]+ newRowId);
+	}
+	tblBody.rows[newRowId+1].cells[2].innerHTML=moreinfocell.innerHTML;
+	vtlib_executeJavascriptInElement(moreinfocell);
+	// empty fields
+	var domflddisp = document.getElementById('qtyInStock'+ newRowId);
+	if (domflddisp) {
+		domflddisp.innerHTML = '';
+	}
+	for(var i=0; i<moreInfoFields.length; i++) {
+		var domfld = document.getElementById(moreInfoFields[i]+ newRowId);
+		if (domfld) {
+			domfld.value = '';
+			var domflddisp = document.getElementById(moreInfoFields[i]+ newRowId+ '_display');
+			if (domflddisp) {
+				domflddisp.value = '';
+			}
+		} else {
+			var domfld = document.getElementById('jscal_field_'+ moreInfoFields[i]+ newRowId);
+			if (domfld) {
+				domfld.value = '';
+			}
+		}
+	}
 }
 
 function decideTaxDiv() {
@@ -1026,6 +1060,7 @@ function resetSHandAdjValues() {
 function moveUpDown(sType,oModule,iIndex)
 {
 	var aFieldIds = Array('hidtax_row_no','productName','subproduct_ids','hdnProductId','comment','qty','listPrice','discount_type','discount_percentage','discount_amount','tax1_percentage','hidden_tax1_percentage','popup_tax_row','tax2_percentage','hidden_tax2_percentage','lineItemType');
+	var aFieldIds = aFieldIds.concat(moreInfoFields);
 	var aContentIds = Array('qtyInStock','netPrice','subprod_names');
 	var aOnClickHandlerIds = Array('searchIcon');
 

@@ -599,6 +599,10 @@ class InventoryDetails extends CRMEntity {
 			$invdet_focus->trash('InventoryDetails',$invdet_focus->id);
 		}
 
+		$requestindex = 1;
+		while (isset($_REQUEST['deleted'.$requestindex]) and $_REQUEST['deleted'.$requestindex] == 1) {
+			$requestindex++;
+		}
 		// read $res_inv_lines result to create a new InventoryDetail for each register.
 		// Remember to take the Vendor if the Product is related with this.
 		while ($row = $adb->getNextRow($res_inv_lines,false)) {
@@ -616,11 +620,17 @@ class InventoryDetails extends CRMEntity {
 				$invdet_focus->mode = '';
 			}
 
+			//Search if the product is related with a Vendor.
+			$vendorid = '0';
+			$result = $adb->pquery("SELECT vendor_id FROM vtiger_products WHERE productid = ?",array($row['productid']));
+			if($adb->num_rows($result) > 0)
+				$vendorid = $adb->query_result($result,0,0);
+			$invdet_focus->column_fields['vendor_id'] = $vendorid;
 			foreach ($invdet_focus->column_fields as $fieldname => $val) {
 				if (isset($row[$fieldname])) {
 					$invdet_focus->column_fields[$fieldname] = $row[$fieldname];
-				} elseif (isset($_REQUEST[$fieldname.$row['sequence_no']])) {
-					$invdet_focus->column_fields[$fieldname] = vtlib_purify($_REQUEST[$fieldname.$row['sequence_no']]);
+				} elseif (isset($_REQUEST[$fieldname.$requestindex])) {
+					$invdet_focus->column_fields[$fieldname] = vtlib_purify($_REQUEST[$fieldname.$requestindex]);
 				}
 			}
 			$_REQUEST['assigntype'] = 'U';
@@ -628,14 +638,6 @@ class InventoryDetails extends CRMEntity {
 			$invdet_focus->column_fields['account_id'] = $accountid;
 			$invdet_focus->column_fields['contact_id'] = $contactid;
 
-			if (!isset($_REQUEST['vendor_id'.$row['sequence_no']])) {
-				//Search if the product is related with a Vendor.
-				$vendorid = '0';
-				$result = $adb->pquery("SELECT vendor_id FROM vtiger_products WHERE productid = ?",array($row['productid']));
-				if($adb->num_rows($result) > 0)
-					$vendorid = $adb->query_result($result,0,0);
-				$invdet_focus->column_fields['vendor_id'] = $vendorid;
-			}
 
 			if($taxtype == 'group')
 			{
@@ -646,6 +648,10 @@ class InventoryDetails extends CRMEntity {
 			$meta = $handler->getMeta();
 			$invdet_focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($invdet_focus->column_fields,$meta);
 			$invdet_focus->save("InventoryDetails");
+			$requestindex++;
+			while (isset($_REQUEST['deleted'.$requestindex]) and $_REQUEST['deleted'.$requestindex] == 1) {
+				$requestindex++;
+			}
 		}
 		$currentModule = $save_currentModule;
 	}
