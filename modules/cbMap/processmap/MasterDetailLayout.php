@@ -149,6 +149,7 @@ class MasterDetailLayout extends processcbMap {
 				'hidden' => isset($v->hidden) ? (String)$v->hidden : '0',
 				'layout' => isset($v->layout) ? (String)$v->layout : '',
 			);
+			$mapping['listview']['fieldnames'][] = $fieldinfo['name'];
 		}
 		$mapping['detailview'] = array();
 		$mapping['detailview']['layout'] = isset($xml->detailview->layout) ? (String)$xml->detailview->layout : '';
@@ -181,6 +182,7 @@ class MasterDetailLayout extends processcbMap {
 				'value' => isset($v->value) ? (String)$v->value : '',
 				'layout' => isset($v->layout) ? (String)$v->layout : '',
 			);
+			$mapping['detailview']['fieldnames'][] = $fieldinfo['name'];
 		}
 		$mapping['aggregations'] = array();
 		foreach($xml->aggregations->operation as $k=>$v) {
