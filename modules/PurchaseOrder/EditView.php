@@ -172,6 +172,11 @@ elseif (isset ($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') 
 	$smarty->assign('AVAILABLE_PRODUCTS', 'true');
 	$smarty->assign('MODE', $focus->mode);
 }
+$cbMap = cbMap::getMapByName($currentModule.'InventoryDetails','MasterDetailLayout');
+if ($cbMap!=null) {
+	$cbMapFields = $cbMap->MasterDetailLayout();
+	$smarty->assign('moreinfofields', "'".implode("','",$cbMapFields['detailview']['fieldnames'])."'");
+}
 
 if (isset ($_REQUEST['return_module']))
 	$smarty->assign("RETURN_MODULE", vtlib_purify($_REQUEST['return_module']));

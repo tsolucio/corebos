@@ -149,6 +149,7 @@ var alert_arr = {
     'LBL_NO_DATA_SELECTED':'Nenhum registro selecionado. Selecione pelo menos um resgistro para Exportar',
     'LBL_SEARCH_WITHOUTSEARCH_ALL':'você utilizou a opção pesquisar mas não selecionou as Opções pesquisar & todos.\nvocê pode clicar em [ok] para exportar todos os dados ou pode clicar em [cancelar] e tentar novamente outro critério para exportar',
     'STOCK_IS_NOT_ENOUGH': 'A quantidade em Estoque não é suficiente',
+    'LBL_QTY_IN_STOCK' : 'Qde em Estoque',
     'INVALID_QTY': 'Qde. inválida',
     'LBL_SEARCH_WITHOUTSEARCH_CURRENTPAGE':'você utilizou a opção pesquisar mas não selecionou as Opções pesquisa & página atual.\nvocê pode clicar em [ok] para exportar os dados da página atual ou\n você pode clicar em [cancelar] e tentar novamente outro critério para exportar.',
     'LBL_SELECT_COLUMN': ' Coluna inválida.\n Por gentileza, selecione a coluna',

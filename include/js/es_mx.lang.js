@@ -146,6 +146,7 @@ var alert_arr = {
 	'LBL_NO_DATA_SELECTED':'No hay registros seleccionados. Seleccione, al menos, un registro a exportar',
 	'LBL_SEARCH_WITHOUTSEARCH_ALL':'You have used search option but you have not selected without search & all options.\n You can click [ok] to export all data or  You can click [cancel] and try again with other export criteria',
 	'STOCK_IS_NOT_ENOUGH':'No hay suficiente Stock',
+	'LBL_QTY_IN_STOCK' : 'Cantidad en Stock',
 	'INVALID_QTY':'Cantidad Inválida',
 	'LBL_SEARCH_WITHOUTSEARCH_CURRENTPAGE':'You have used search option but you have not selected without search & currentpage options.\n You can click [ok]to export  current page data or You can click [cancel] and try again with some other export criteria.',
 	'LBL_SELECT_COLUMN':'Columna inválida.\nSelecciona columna.',

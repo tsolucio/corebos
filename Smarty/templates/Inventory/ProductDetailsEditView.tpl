@@ -76,28 +76,25 @@ function displayCoords(currObj,obj,mode,curr_row)
 	document.getElementById(obj).style.display = "block";
 
 {rdelim}
-  
+
 	function doNothing(){ldelim}
 	{rdelim}
-	
+
 	function fnHidePopDiv(obj){ldelim}
 		document.getElementById(obj).style.display = 'none';
 	{rdelim}
-</script>
 
+	var moreInfoFields = Array({$moreinfofields});
+</script>
 
 <tr><td colspan="4" align="left">
 
 <table width="100%"  border="0" align="center" cellpadding="5" cellspacing="0" class="crmTable" id="proTab">
-   <tr>
-   	{if $MODULE neq 'PurchaseOrder' && 'Products'|vtlib_isModuleActive}
-			<td colspan="3" class="dvInnerHeader">
-	{else}
-			<td colspan="2" class="dvInnerHeader">
-	{/if}
+	<tr>
+	<td colspan="3" class="dvInnerHeader">
 		<b>{$APP.LBL_ITEM_DETAILS}</b>
 	</td>
-	
+
 	<td class="dvInnerHeader" align="center" colspan="2">
 		<input type="hidden" value="{$INV_CURRENCY_ID}" id="prev_selected_currency_id" />
 		<b>{$APP.LBL_CURRENCY}</b>&nbsp;&nbsp;
@@ -132,14 +129,12 @@ function displayCoords(currObj,obj,mode,curr_row)
    <!-- Header for the Product Details -->
    <tr valign="top">
 	<td width=5% valign="top" class="lvtCol" align="right"><b>{$APP.LBL_TOOLS}</b></td>
-	<td width=40% class="lvtCol"><font color='red'>*</font><b>{$APP.LBL_ITEM_NAME}</b></td>
-	{if $MODULE neq 'PurchaseOrder' && 'Products'|vtlib_isModuleActive}
-		<td width=10% class="lvtCol"><b>{$APP.LBL_QTY_IN_STOCK}</b></td>
-	{/if}
+	<td width=35% class="lvtCol"><font color='red'>*</font><b>{$APP.LBL_ITEM_NAME}</b></td>
+	<td width=20% class="lvtCol"><b>{$APP.LBL_INFORMATION}</b></td>
 	<td width=10% class="lvtCol"><b>{$APP.LBL_QTY}</b></td>
 	<td width=10% class="lvtCol" align="right"><b>{$APP.LBL_LIST_PRICE}</b></td>
-	<td width=12% nowrap class="lvtCol" align="right"><b>{$APP.LBL_TOTAL}</b></td>
-	<td width=13% valign="top" class="lvtCol" align="right"><b>{$APP.LBL_NET_PRICE}</b></td>
+	<td width=10% nowrap class="lvtCol" align="right"><b>{$APP.LBL_TOTAL}</b></td>
+	<td width=10% valign="top" class="lvtCol" align="right"><b>{$APP.LBL_NET_PRICE}</b></td>
    </tr>
 
    {foreach key=row_no item=data from=$ASSOCIATEDPRODUCTS name=outer1}
@@ -156,6 +151,8 @@ function displayCoords(currObj,obj,mode,curr_row)
 	{assign var="subprod_names" value="subprod_names"|cat:$row_no}
 	{assign var="entityIdentifier" value="entityType"|cat:$row_no}
 	{assign var="entityType" value=$data.$entityIdentifier}
+	{assign var="lineitem_id" value="lineitem_id"|cat:$row_no}
+	{assign var="moreinfo" value="moreinfo"|cat:$row_no}
 
 	{assign var="discount_type" value="discount_type"|cat:$row_no}
 	{assign var="discount_percent" value="discount_percent"|cat:$row_no}
@@ -186,6 +183,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 			&nbsp;<a href="javascript:moveUpDown('DOWN','{$MODULE}',{$row_no})" title="{'LBL_MOVE'|@getTranslatedString:'Settings'} {'LBL_DOWN'|@getTranslatedString:'Settings'}"><img src="{'down_layout.gif'|@vtiger_imageurl:$THEME}" border="0" ></a>
 		{/if}
 		<input type="hidden" id="{$deleted}" name="{$deleted}" value="0">
+		<input type="hidden" id="{$lineitem_id}" name="{$lineitem_id}" value="{$data[$lineitem_id]}">
 	</td>
 
 	<!-- column 2 - Product Name - starts -->
@@ -224,11 +222,19 @@ function displayCoords(currObj,obj,mode,curr_row)
 	<!-- column 2 - Product Name - ends -->
 
 	<!-- column 3 - Quantity in Stock - starts -->
-	{if ($MODULE eq 'Quotes' || $MODULE eq 'SalesOrder' || $MODULE eq 'Invoice')  && 'Products'|vtlib_isModuleActive}
-	   <td class="crmTableRow small lineOnTop" valign="top"><span id="{$qtyInStock}">{$data.$qtyInStock}</span></td>
-	{/if}
+	<td class="crmTableRow small lineOnTop" valign="top">
+		{if ($MODULE eq 'Quotes' || $MODULE eq 'SalesOrder' || $MODULE eq 'Invoice')  && 'Products'|vtlib_isModuleActive}
+		{$APP.LBL_QTY_IN_STOCK}:&nbsp;<span id="{$qtyInStock}">{$data.$qtyInStock}</span><br>
+		{/if}
+		{foreach item=maindata from=$data.$moreinfo}
+			<table>
+			<tr>
+				{include file='Inventory/EditViewUI.tpl'}
+			</tr>
+			</table>
+		{/foreach}
+	</td>
 	<!-- column 3 - Quantity in Stock - ends -->
-
 
 	<!-- column 4 - Quantity - starts -->
 	<td class="crmTableRow small lineOnTop" valign="top">

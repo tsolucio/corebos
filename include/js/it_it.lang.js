@@ -17,7 +17,7 @@ var alert_arr = {
 	'OVERWRITE_EXISTING_ACCOUNT1':'Sovrascrivere l\'indirizzo esistente con i dettagli dell\'indirizzo dell\'Azienda (',
 	'OVERWRITE_EXISTING_ACCOUNT2':') selezionato?',
 	'OVERWRITE_EXISTING_CONTACT1':'Sovrascrivi indirizzo esistente con questo contatto selezionato(',
-	'OVERWRITE_EXISTING_CONTACT2':') dettagli indirizzo?',	
+	'OVERWRITE_EXISTING_CONTACT2':') dettagli indirizzo?',
 	'MISSING_FIELDS':'Numero di campi non specificato:',
 	'NOT_ALLOWED_TO_EDIT':'non hai i privilegi per modificare questo campo',
 	'NOT_ALLOWED_TO_EDIT_FIELDS':'non hai i privilegi per modificare questi campi',
@@ -139,8 +139,7 @@ var alert_arr = {
 	'NAME_DESC':' per Nome Cartella & Descrizione',
 	'ENDS_WITH':'finisce con',
 	'SHARED_EVENT_DEL_MSG':'Questo utente non ha autorizzazioni per cancellare o modificare eventi condivisi.',
-	
-	
+
 	'LBL_WRONG_IMAGE_TYPE':'Tipo di file immagine per i contatti - jpeg, png, jpg, pjpeg, x-png or gif',
 	'SELECT_MAIL_MOVE':'Prego scegli una mail e poi sposta..',
 	
@@ -149,6 +148,7 @@ var alert_arr = {
 	'LBL_NO_DATA_SELECTED':'Nessun record selezionato. Seleziona almeno un record da esportare.',
 	'LBL_SEARCH_WITHOUTSEARCH_ALL':'Hai usato l\'opzione di ricerca ma non hai selezionato n\u00E8 l\'opzione senza n\u00E8 l\'opzione tutti.\n Clicca [ok] per esportare tutti i dati o clicca [cancel] e riprova con altri criteri di esportazione.',
 	'STOCK_IS_NOT_ENOUGH':'Lo Stock in magazzino non \u00E8 sufficiente',
+	'LBL_QTY_IN_STOCK' : 'Quantit\u00E0 in Stock',
 	'INVALID_QTY':'Quantit\u00E0 non valida',
 	'LBL_SEARCH_WITHOUTSEARCH_CURRENTPAGE':'Hai utilizzato la funzione di ricerca, ma non hai selezionato l\'opzione senza ricerca&pagina corrente.\n  Clicca [ok] per esportare tutti i dati o\n clicca [cancel] e riprova con altri criteri di esportazione.',
 	'LBL_SELECT_COLUMN':'Colonna non valida.\n Prego seleziona una colonna valida',
@@ -158,10 +158,7 @@ var alert_arr = {
 	'LBL_NO_FEEDS_SELECTED':'Nessun Feed selezionato',
 	'LBL_SELECT_PICKLIST':'Prego seleziona almeno un valore da eliminare',
 	'LBL_CANT_REMOVE':'Non puoi eliminare tutti i valori',
-	
-	
-	
-	
+
 	'LBL_GIVE_PICKLIST_VALUE':'Prego fornire qualche valore da essere sostituito alla picklist',
 	'LBL_SELECT_ROLE':'Prego selezionare almeno un ruolo per il quale i nuovi valori devono essere aggiunti',
 	'LBL_ADD_PICKLIST_VALUE':'Prego fornire almeno un nuovo valore da aggiungere',

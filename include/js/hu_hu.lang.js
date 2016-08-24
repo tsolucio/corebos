@@ -155,6 +155,7 @@ var alert_arr = {
 	'LBL_NO_DATA_SELECTED' : 'Egyetlen rekordot sem választottál ki. Legalább egy rekordot ke kell választani az exportáláshoz',
 	'LBL_SEARCH_WITHOUTSEARCH_ALL' : 'Használtad a keresési opciókat, de nem választottad a kereséssel és összes opciókkal lehetőséget.Kattinthatsz az [OK]-ra, hogy exportáld az összes adatot vagy kattinthatsz a [Mégse]-re és próbálkozhatsz újból más export szempontokkal.',
 	'STOCK_IS_NOT_ENOUGH' : 'A készlet nem elegendő',
+	'LBL_QTY_IN_STOCK' : 'Készlet',
 	'INVALID_QTY' : 'Érvénytelen mennyiség',
 	'LBL_SEARCH_WITHOUTSEARCH_CURRENTPAGE' : 'Használtad a keresési opciókat, de nem választottad a kereséssel és összes opciókkal lehetőséget.Kattinthatsz az [OK]-ra, hogy exportáld az aktuális oldal adatait vagy kattinthatsz a [Mégse]-re és próbálkozhatsz újból más export szempontokkal.',
 	'LBL_SELECT_COLUMN' : ' Érvénytelen oszlop. Kérjük, hogy válassz egy oszlopot',
