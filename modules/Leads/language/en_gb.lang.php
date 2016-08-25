@@ -201,5 +201,6 @@ $mod_strings = array(
 	'LBL_LEADS_FIELD_MAPPING' => 'Leads Custom Field Mapping',
 	'LBL_FIELD_SETTINGS' => 'Field Settings',
 	'Leads ID' => 'Leads ID',
+	'LeadAlreadyConverted' => 'Lead cannot be converted. Either it has already been converted or you lack permission on one or more of the destination modules.',
 );
 ?>

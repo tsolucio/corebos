@@ -1,22 +1,16 @@
 <?php
-/***********************************************************
-*  License      : 
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************
 *  Module       : Leads
 *  Language     : Español
 *  Version      : 5.4.0
 *  Created Date : 2007-03-30
-*  Author       : Rafael Soler
 *  Last change  : 2012-02-28
 *  Author       : Joe Bordes JPL TSolucio, S.L.
  ********************************************************************************/
@@ -87,7 +81,6 @@ $mod_strings = Array(
 'NTC_REMOVE_OPP_CONFIRMATION'=>'¿Est&aacute seguro usted desea eliminar este contacto de esta oportunidad?',
 'ERR_DELETE_RECORD'=>'Debe especificar un registro para poder eliminar el contacto.',
 
-// Added vtiger_fields in fetchfile.php, import.php -- crm4-Beta
 'LBL_COLON'=>' : ',
 'LBL_IMPORT_LEADS'=>'Importar Pre-Contacto',
 'LBL_LEADS_FILE_LIST'=>'Lista de archivos Pre-Contacto',
@@ -101,7 +94,6 @@ $mod_strings = Array(
 'LBL_GENERAL_INFORMATION'=>'Información General',
 'LBL_DO_NOT_CREATE_NEW_POTENTIAL'=>'No crear una nueva oportunidad tras la conversión',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Nueva Oportunidad',
 'LBL_POTENTIAL_TITLE'=>'Oportunidades',
 
@@ -118,20 +110,16 @@ $mod_strings = Array(
 'LBL_NEW_ATTACHMENT'=>'Nuevo Adjunto',
 'LBL_ATTACHMENT_TITLE'=>'Adjuntos',
 
-
-//Added vtiger_fields after RC1 - Release 
 'LBL_ALL'=>'Todo',
 'LBL_CONTACTED'=>'Contactado',
 'LBL_LOST'=>'Perdido',
 'LBL_HOT'=>'Caliente',
 'LBL_COLD'=>'Frio',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Herramientas de Pre-Contacto',
 
 'LBL_SELECT_TEMPLATE_TO_MAIL_MERGE'=>'Seleccione una plantilla para enviar el Mailing:',
 
-//Added for 4GA
 'Salutation'=>'Saludo',
 'First Name'=>'Nombre',
 'Phone'=>'Teléfono',
@@ -159,12 +147,10 @@ $mod_strings = Array(
 'Description'=>'Descripción',
 'Po Box'=>'Apdo. Correos',
 'Campaign Source'=>'Campaña Origen',
-//Added for CustomView 4.2 Release
 'Name'=>'Nombre',
 'LBL_NEW_LEADS'=>'Mis Pre-Contactos',
 
 //Added for Existing Picklist Entries
-
 '--None--'=>'-----',
 'Mr.'=>'Sr.',
 'Ms.'=>'Sra.',
@@ -234,15 +220,10 @@ $mod_strings = Array(
 'Qualified'=>'Calificado',
 'Warm'=>'Tibio',
 
-// Added/Updated for vtiger CRM 5.0.4
-
 'Designation'=>'Designación',
-     
-// Added after 5.0.4 GA
 
 //Module Sequence Numbering
 'Lead No'=>'Núm. Pre-Contacto',
-// END
 
 'LBL_TRANSFER_RELATED_RECORDS_TO' => 'Transferir elementos relacionados a',
 
@@ -253,6 +234,7 @@ $mod_strings = Array(
 
 'LBL_FIELD_SETTINGS' => 'Configuración Campos',
 'Leads ID' => 'Id PreContacto',
+'LeadAlreadyConverted' => 'Este PreContacto no se puede convertir. O bien ya ha sido convertido, o te faltan permisos en uno de los módulos dependientes.',
 
 );
 

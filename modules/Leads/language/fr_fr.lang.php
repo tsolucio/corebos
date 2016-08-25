@@ -210,5 +210,6 @@ $mod_strings = array (
 	'LBL_LEADS_FIELD_MAPPING' => 'Mapping des champs du module prospects',
 	'LBL_FIELD_SETTINGS' => 'Réglages des champs',
 	'Leads ID' => 'Prospect ID',
+	'LeadAlreadyConverted' => 'Lead cannot be converted. Either it has already been converted or you lack permission on one or more of the destination modules.',
 );
 ?>
