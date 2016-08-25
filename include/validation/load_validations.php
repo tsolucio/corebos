@@ -26,7 +26,7 @@ class cbValidator extends Validator {
 		global $current_language;
 		parent::__construct($data, $fields, substr($current_language, 0, 2), 'include/validation/lang');
 		foreach ($this->CustomValidations as $validation => $function) {
-			$this->addRule($validation, $function);
+			$this->addRule($validation, $function, getTranslatedString('INVALID'));
 		}
 	}
 }
