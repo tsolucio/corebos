@@ -424,6 +424,9 @@ if(isset($_REQUEST['start']) && $_REQUEST['start'] != '') {
 $limstart=($start-1)*$list_max_entries_per_page;
 $query.=" LIMIT $limstart,$list_max_entries_per_page";
 $list_result = $adb->pquery($query, array());
+if (GlobalVariable::getVariable('Debug_Popup_Query', '0')=='1') {
+	echo '<br>'.$query.'<br>';
+}
 
 //Retreive the Navigation array
 $navigation_array = getNavigationValues($start, $noofrows, $list_max_entries_per_page);
