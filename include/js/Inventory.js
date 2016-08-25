@@ -1147,6 +1147,27 @@ function moveUpDown(sType,oModule,iIndex)
 			document.getElementById(sId).value = document.getElementById(sSwapId).value;
 			document.getElementById(sSwapId).value = sTemp;
 		}
+		sId = 'jscal_field_' + aFieldIds[iCt] + iIndex;
+		sSwapId = 'jscal_field_'+ aFieldIds[iCt] + iSwapIndex;
+		if(document.getElementById(sId) && document.getElementById(sSwapId))
+		{
+			sTemp = document.getElementById(sId).value;
+			document.getElementById(sId).value = document.getElementById(sSwapId).value;
+			document.getElementById(sSwapId).value = sTemp;
+		}
+		sId = aFieldIds[iCt] + iIndex + '_display';
+		sSwapId = aFieldIds[iCt] + iSwapIndex + '_display';
+		if(document.getElementById(sId) && document.getElementById(sSwapId))
+		{
+			sTemp = document.getElementById(sId).value;
+			document.getElementById(sId).value = document.getElementById(sSwapId).value;
+			document.getElementById(sSwapId).value = sTemp;
+			sId = aFieldIds[iCt] + iIndex + '_type';
+			sSwapId = aFieldIds[iCt] + iSwapIndex + '_type';
+			sTemp = document.getElementById(sId).value;
+			document.getElementById(sId).value = document.getElementById(sSwapId).value;
+			document.getElementById(sSwapId).value = sTemp;
+		}
 		//oCurTr.cells[iCt].innerHTML;
 	}
 	iMaxElement = aContentIds.length;
