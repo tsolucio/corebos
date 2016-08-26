@@ -724,4 +724,11 @@
 	<classname>installGlobalVarDefinitions</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add cost price and total to Inventory Details</description>
+	<filename>build/changeSets/addCostPriceID.php</filename>
+	<classname>addCostPriceID</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

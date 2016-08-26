@@ -1,16 +1,11 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
  
 $mod_strings = Array(
@@ -79,7 +74,6 @@ $mod_strings = Array(
 'NTC_REMOVE_OPP_CONFIRMATION'=>'Are you sure you want to remove this contact from this opportunity?',
 'ERR_DELETE_RECORD'=>'A record number must be specified to delete the contact.',
 
-// Added vtiger_fields in fetchfile.php, import.php -- crm4-Beta
 'LBL_COLON'=>' : ', 
 'LBL_IMPORT_LEADS'=>'Import Leads',
 'LBL_LEADS_FILE_LIST'=>'Leads File List',
@@ -93,7 +87,6 @@ $mod_strings = Array(
 'LBL_GENERAL_INFORMATION'=>'General Information',
 'LBL_DO_NOT_CREATE_NEW_POTENTIAL'=>'Do not create a New Opportunity upon Conversion',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'New Opportunity',
 'LBL_POTENTIAL_TITLE'=>'Opportunities',
 
@@ -110,20 +103,16 @@ $mod_strings = Array(
 'LBL_NEW_ATTACHMENT'=>'New Attachment',
 'LBL_ATTACHMENT_TITLE'=>'Attachments',
 
-
-//Added vtiger_fields after RC1 - Release 
 'LBL_ALL'=>'All',
 'LBL_CONTACTED'=>'Contacted',
 'LBL_LOST'=>'Lost',
 'LBL_HOT'=>'Hot',
 'LBL_COLD'=>'Cold',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Lead Tools',
 
 'LBL_SELECT_TEMPLATE_TO_MAIL_MERGE'=>'Select template to Mail Merge:',
 
-//Added for 4GA
 'Salutation'=>'Salutation',
 'First Name'=>'First Name',
 'Phone'=>'Phone',
@@ -156,7 +145,6 @@ $mod_strings = Array(
 'LBL_NEW_LEADS'=>'My New Leads',
 
 //Added for Existing Picklist Entries
-
 '--None--'=>'--None--',
 'Mr.'=>'Mr.',
 'Ms.'=>'Ms.',
@@ -226,15 +214,10 @@ $mod_strings = Array(
 'Qualified'=>'Qualified',
 'Warm'=>'Warm',
 
-// Added/Updated for vtiger CRM 5.0.4
-
 'Designation'=>'Title',
-     
-// Added after 5.0.4 GA
 
 //Module Sequence Numbering
 'Lead No'=>'Lead No',
-// END
 
 'LBL_TRANSFER_RELATED_RECORDS_TO' => 'Transfer related records to',
 
@@ -244,6 +227,7 @@ $mod_strings = Array(
 'LBL_LEADS_FIELD_MAPPING' => 'Leads Custom Field Mapping',
 'LBL_FIELD_SETTINGS' => 'Field Settings',
 'Leads ID' => 'Leads ID',
+'LeadAlreadyConverted' => 'Lead cannot be converted. Either it has already been converted or you lack permission on one or more of the destination modules.',
 );
 
 ?>

@@ -1325,20 +1325,21 @@ function getDetailAssociatedProducts($module, $focus) {
 		$hide_stock = 'no';
 	else
 		$hide_stock = 'yes';
-
+	$tabid = getTabid($module);
 	if ($module != 'PurchaseOrder') {
 		if (GlobalVariable::getVariable('B2B', '1')=='1') {
 			$acvid = $focus->column_fields['account_id'];
 		} else {
 			$acvid = $focus->column_fields['contact_id'];
 		}
-		if($hide_stock == 'no')
-			$colspan = '2';
-		else
-			$colspan = '1';
 	} else {
 		$acvid = $focus->column_fields['vendor_id'];
-		$colspan = '1';
+	}
+
+	$cbMap = cbMap::getMapByName($module.'InventoryDetails','MasterDetailLayout');
+	$MDMapFound = ($cbMap!=null);
+	if ($MDMapFound) {
+		$cbMapFields = $cbMap->MasterDetailLayout();
 	}
 
 	//Get the taxtype of this entity
@@ -1350,7 +1351,7 @@ function getDetailAssociatedProducts($module, $focus) {
 	$output .= '
 	<table width="100%" border="0" align="center" cellpadding="5" cellspacing="0" class="crmTable detailview_inventory_table" id="proTab">
 	<tr valign="top" class="detailview_inventory_header">
-		<td colspan="' . $colspan . '" class="dvInnerHeader"><b>' . $app_strings['LBL_ITEM_DETAILS'] . '</b></td>
+		<td colspan="2" class="dvInnerHeader"><b>' . $app_strings['LBL_ITEM_DETAILS'] . '</b></td>
 		<td class="dvInnerHeader" align="center" colspan="2"><b>' .
 			$app_strings['LBL_CURRENCY'] . ' : </b>' . getTranslatedCurrencyString($currencytype['currency_name']) . ' (' . $currencytype['currency_symbol'] . ')
 		</td>
@@ -1363,15 +1364,14 @@ function getDetailAssociatedProducts($module, $focus) {
 			<b>' . $app_strings['LBL_ITEM_NAME'] . '</b>
 		</td>';
 
-	//Add Quantity in Stock column for SO, Quotes and Invoice
-	if (($module == 'Quotes' || $module == 'SalesOrder' || $module == 'Invoice') && $hide_stock == 'no')
-		$output .= '<td width=10% class="lvtCol"><b>' . $app_strings['LBL_QTY_IN_STOCK'] . '</b></td>';
+	//Additional information column
+	$output .= '<td width=20% class="lvtCol"><b>' . $app_strings['LBL_INFORMATION'] . '</b></td>';
 
 	$output .= '
 		<td width=10% class="lvtCol"><b>' . $app_strings['LBL_QTY'] . '</b></td>
 		<td width=10% class="lvtCol" align="right"><b>' . $app_strings['LBL_LIST_PRICE'] . '</b></td>
-		<td width=12% nowrap class="lvtCol" align="right"><b>' . $app_strings['LBL_TOTAL'] . '</b></td>
-		<td width=13% valign="top" class="lvtCol" align="right"><b>' . $app_strings['LBL_NET_PRICE'] . '</b></td>
+		<td width=10% nowrap class="lvtCol" align="right"><b>' . $app_strings['LBL_TOTAL'] . '</b></td>
+		<td width=10% valign="top" class="lvtCol" align="right"><b>' . $app_strings['LBL_NET_PRICE'] . '</b></td>
 	</tr>';
 
 	if ($module == 'Quotes' || $module == 'PurchaseOrder' || $module == 'SalesOrder' || $module == 'Invoice') {
@@ -1498,9 +1498,28 @@ function getDetailAssociatedProducts($module, $focus) {
 		//Upto this added to display the Product name and comment
 
 
+		$output .= '<td class="crmTableRow small lineOnTop detailview_inventory_stockcell">';
 		if ($module != 'PurchaseOrder' && $hide_stock == 'no') {
-			$output .= '<td class="crmTableRow small lineOnTop detailview_inventory_stockcell">' . $qtyinstock . '</td>';
+			$output .= '<b>'.$app_strings['LBL_QTY_IN_STOCK'].':</b>&nbsp;'.$qtyinstock;
 		}
+		if ($MDMapFound) {
+			foreach ($cbMapFields['detailview']['fields'] as $mdfield) {
+				$output .= '<br>';
+				$output .= '<b>'.$mdfield['fieldinfo']['label'].'</b>:&nbsp;';
+				$mdrs = $adb->pquery('select '.$mdfield['fieldinfo']['name'].' from vtiger_inventorydetails
+						inner join vtiger_crmentity on crmid=vtiger_inventorydetails.inventorydetailsid
+						inner join vtiger_inventorydetailscf on vtiger_inventorydetailscf.inventorydetailsid=vtiger_inventorydetails.inventorydetailsid
+						where deleted=0 and related_to=? and lineitem_id=?',
+					array($focus->id,$adb->query_result($result, $i - 1, 'lineitem_id')));
+				if ($mdrs) {
+					$col_fields = array();
+					$col_fields[$mdfield['fieldinfo']['name']] = $adb->query_result($mdrs, 0, 0);
+					$foutput = getDetailViewOutputHtml($mdfield['fieldinfo']['uitype'], $mdfield['fieldinfo']['name'], $mdfield['fieldinfo']['label'], $col_fields, 0, $tabid, $module);
+					$output .= $foutput[1];
+				}
+			}
+		}
+		$output .= '</td>';
 		$output .= '<td class="crmTableRow small lineOnTop detailview_inventory_qtycell">' . $qty . '</td>';
 		$output .= '
 			<td class="crmTableRow small lineOnTop detailview_inventory_lpricecell" align="right">

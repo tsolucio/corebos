@@ -7,6 +7,7 @@
  * Portions created by JPL TSolucio, S.L are Copyright (C) JPL TSolucio, S.L.
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contribuitor: Ranieri Slemer | 23-8-2016 | Translate missing terms | www.ecrmweb.com.br
  ********************************************************************************/
 
 $mod_strings = Array(
@@ -231,9 +232,11 @@ $mod_strings = Array(
 'Secondary Email'=>'Email Alternativo',
 // END
 
+// Ranieri - Ago 2016
 'Contacts ID'=>'ID Contatos',
-'LBL_SHOW_CONTACT_HIERARCHY' => 'Show Contact Hierarchy',
-'LBL_CONTACT_HIERARCHY' => 'Contact Hierarchy',
+'LBL_SHOW_CONTACT_HIERARCHY' => 'Exibir Hierarquia do Contato',
+'LBL_CONTACT_HIERARCHY' => 'Hierarquia do Contato',
+
 );
 
 ?>

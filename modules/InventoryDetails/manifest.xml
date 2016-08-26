@@ -51,6 +51,8 @@
   `extnet` decimal(28,6) DEFAULT NULL,
   `linetax` decimal(28,6) DEFAULT NULL,
   `linetotal` decimal(28,6) DEFAULT NULL,
+  `cost_price` decimal(28,6) DEFAULT NULL,
+  `cost_gross` decimal(28,6) DEFAULT NULL,
   `units_delivered_received` decimal(25,3) DEFAULT NULL,
   `line_completed` varchar(3) default NULL,
   PRIMARY KEY (`inventorydetailsid`)
@@ -452,6 +454,26 @@
 <masseditable>1</masseditable>
 </field>
 <field>
+<fieldname>cost_price</fieldname>
+<uitype>71</uitype>
+<columnname>cost_price</columnname>
+<tablename>vtiger_inventorydetails</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Cost Price</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>19</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>N~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>17</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
 <fieldname>line_completed</fieldname>
 <uitype>56</uitype>
 <columnname>line_completed</columnname>
@@ -461,12 +483,32 @@
 <readonly>1</readonly>
 <presence>0</presence>
 <selected>0</selected>
-<sequence>19</sequence>
+<sequence>20</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>C~O</typeofdata>
 <quickcreate>0</quickcreate>
 <quickcreatesequence>0</quickcreatesequence>
 <displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+</field>
+<field>
+<fieldname>cost_gross</fieldname>
+<uitype>71</uitype>
+<columnname>cost_gross</columnname>
+<tablename>vtiger_inventorydetails</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>Cost Total</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<defaultvalue></defaultvalue>
+<sequence>21</sequence>
+<maximumlength>100</maximumlength>
+<typeofdata>N~O</typeofdata>
+<quickcreate>0</quickcreate>
+<quickcreatesequence>17</quickcreatesequence>
+<displaytype>2</displaytype>
 <info_type>BAS</info_type>
 <helpinfo><![CDATA[]]></helpinfo>
 <masseditable>1</masseditable>
@@ -481,7 +523,7 @@
 <readonly>1</readonly>
 <presence>0</presence>
 <defaultvalue></defaultvalue>
-<sequence>20</sequence>
+<sequence>22</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>V~M</typeofdata>
 <quickcreate>1</quickcreate>
@@ -501,7 +543,7 @@
 <readonly>1</readonly>
 <presence>0</presence>
 <defaultvalue></defaultvalue>
-<sequence>21</sequence>
+<sequence>23</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>DT~O</typeofdata>
 <quickcreate>1</quickcreate>
@@ -521,7 +563,7 @@
 <readonly>1</readonly>
 <presence>0</presence>
 <defaultvalue></defaultvalue>
-<sequence>22</sequence>
+<sequence>24</sequence>
 <maximumlength>100</maximumlength>
 <typeofdata>DT~O</typeofdata>
 <quickcreate>1</quickcreate>

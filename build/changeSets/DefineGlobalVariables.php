@@ -25,6 +25,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Debug_Record_Not_Found',
 				'Debug_Report_Query',
 				'Debug_ListView_Query',
+				'Debug_Popup_Query',
 				'Debug_Send_VtigerCron_Error',
 				'Debug_Send_AdminLoginIPAuth_Error',
 

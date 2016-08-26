@@ -76,6 +76,9 @@ if(isPermitted($currentModule, 'CreateView', $record) == 'yes') {
 		&& (($uiinfo->getCompany() != null) || ($uiinfo->isModuleActive('Contacts') == true))
 	) {
 		$smarty->assign('CONVERTLEAD', 'permitted');
+	} else {
+		$smarty->assign('ERROR_MESSAGE', getTranslatedString('LeadAlreadyConverted','Leads'));
+		$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-warning');
 	}
 }
 

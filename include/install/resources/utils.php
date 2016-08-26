@@ -523,7 +523,7 @@ class Migration_Utils {
 		/* Install Vtlib Compliant Modules */
 		Common_Install_Wizard_Utils::installMandatoryModules();
 		Migration_Utils::installOptionalModules($migrationInfo['selected_optional_modules'], $migrationInfo['source_directory'], $migrationInfo['root_directory']);
-		Migration_utils::copyLanguageFiles($migrationInfo['source_directory'], $migrationInfo['root_directory']);
+
 
 		//Here we have to update the version in table. so that when we do migration next time we will get the version
 		$res = $adb->query('SELECT * FROM vtiger_version');

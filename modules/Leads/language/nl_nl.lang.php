@@ -1,5 +1,4 @@
 <?php
-
 /*******************************************************************************
  * The contents of this file are subject to the following licences:
  * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
@@ -97,7 +96,6 @@ $mod_strings = Array(
 'NTC_REMOVE_OPP_CONFIRMATION'=>'Wilt u dit verwijderen?',
 'ERR_DELETE_RECORD'=>'Een veld moet gespecificeerd zijn om een contact te verwijderen.',
 
-// Added fields in fetchfile.php, import.php -- crm4-Beta
 'LBL_COLON'=>' : ', 
 'LBL_IMPORT_LEADS'=>'Importeer Leads',
 'LBL_LEADS_FILE_LIST'=>'Bestandslijst Lead',
@@ -111,7 +109,6 @@ $mod_strings = Array(
 'LBL_GENERAL_INFORMATION'=>'Algemene informatie',
 'LBL_DO_NOT_CREATE_NEW_POTENTIAL'=>'Hier geen nieuwe verkoopkans maken a.u.b.',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Nieuwe Verkoopkans',
 'LBL_POTENTIAL_TITLE'=>'Verkoopkans',
 
@@ -128,20 +125,16 @@ $mod_strings = Array(
 'LBL_NEW_ATTACHMENT'=>'Nieuwe bijlage',
 'LBL_ATTACHMENT_TITLE'=>'Bijlagen',
 
-
-//Added fields after RC1 - Release 
 'LBL_ALL'=>'Alle',
 'LBL_CONTACTED'=>'Contact',
 'LBL_LOST'=>'Verloren',
 'LBL_HOT'=>'Heet',
 'LBL_COLD'=>'Koud',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Leads gereedschap',
 
 'LBL_SELECT_TEMPLATE_TO_MAIL_MERGE'=>'Selecteer sjabloon voor e-mail merge:',
 
-//Added for 4GA
 'Salutation'=>'Begroeting',
 'First Name'=>'Voornaam',
 'Phone'=>'Telefoon',
@@ -170,12 +163,10 @@ $mod_strings = Array(
 'Description'=>'Omschrijving',
 'Po Box'=>'Postbus',
 'Campaign Source'=>'Bron campagne',
-//Added for CustomView 4.2 Release
 'Name'=>'Naam',
 'LBL_NEW_LEADS'=>'Mijn nieuwe Leads',
 
 //Added for Existing Picklist Entries
-
 '--None--'=>'--Geen--',
 'Mr.'=>'heer',
 'Ms.'=>'mevrouw',
@@ -244,16 +235,11 @@ $mod_strings = Array(
 'Pre Qualified'=>'Voorgekwalificeerd',
 'Qualified'=>'Gekwalificeerd',
 'Warm'=>'Warm',
-  
-// Added/Updated for vtiger CRM 5.0.4
 
 'Designation'=>'Functie',
-     
-// Added after 5.0.4 GA
 
 //Module Sequence Numbering
 'Lead No'=>'Lead Nr',
-// END   
 
 'LBL_TRANSFER_RELATED_RECORDS_TO' => 'Draag geselecteerde records over aan',
 
@@ -262,6 +248,7 @@ $mod_strings = Array(
 'LBL_LEADS_FIELD_MAPPING_INCOMPLETE' => 'Niet alle verplichte velden zijn gekoppeld',
 'LBL_MANDATORY_FIELDS_ARE_EMPTY' => 'Enkele van de verplichte velden zijn leeg',
 'LBL_LEADS_FIELD_MAPPING' => 'Leads Maatwerk Veldmapping',
+'LeadAlreadyConverted' => 'Lead cannot be converted. Either it has already been converted or you lack permission on one or more of the destination modules.',
 
 );
 

@@ -46,8 +46,6 @@ function set_return(product_id, product_name) {
 	}
 }
 function set_return_specific(product_id, product_name) {
-        //getOpenerObj used for DetailView 
-
 	if(document.getElementById('from_link').value != '')
 	{
 		var fldName = window.opener.document.QcEditView.product_name;
@@ -96,24 +94,7 @@ function set_return_inventory(product_id,product_name,unitprice,taxstr,curr_row,
 }
 
 function set_return_inventory_po(product_id,product_name,unitprice,taxstr,curr_row,desc) {
-	window.opener.document.EditView.elements["productName"+curr_row].value = product_name;
-	window.opener.document.EditView.elements["hdnProductId"+curr_row].value = product_id;
-	window.opener.document.EditView.elements["listPrice"+curr_row].value = unitprice;
-	window.opener.document.EditView.elements["comment"+curr_row].value = desc;
-	//getOpenerObj("unitPrice"+curr_row).innerHTML = unitprice;
-	
-	// Apply decimal round-off to value
-	if(!isNaN(parseFloat(unitprice))) unitprice = roundPriceValue(unitprice);
-	window.opener.document.EditView.elements["listPrice"+curr_row].value = unitprice;
-	var tax_array = new Array();
-	var tax_details = new Array();
-	tax_array = taxstr.split(',');
-	for(var i=0;i<tax_array.length;i++)
-	{
-		tax_details = tax_array[i].split('=');
-	}
-	window.opener.document.EditView.elements["qty"+curr_row].value = service_default_units;
-	window.opener.document.EditView.elements["qty"+curr_row].focus();
+	set_return_inventory(product_id,product_name,unitprice,taxstr,curr_row,desc);
 }
 
 function InventorySelectAllServices(mod,z,image_pth)
@@ -222,24 +203,15 @@ function fnAddServiceRow(module,image_path){
 	var row = tableName.insertRow(prev);
 	row.id = "row"+count;
 	row.style.verticalAlign = "top";
-	
+
 	var colone = row.insertCell(0);
 	var coltwo = row.insertCell(1);
-	
-	
-	if(module == "PurchaseOrder" || hide_stock == 'yes'){
-		var colfour = row.insertCell(2);
-		var colfive = row.insertCell(3);
-		var colsix = row.insertCell(4);
-		var colseven = row.insertCell(5);
-	}
-	else{
-		var colthree = row.insertCell(2);
-		var colfour = row.insertCell(3);
-		var colfive = row.insertCell(4);
-		var colsix = row.insertCell(5);
-		var colseven = row.insertCell(6);
-	}
+	var colthree = row.insertCell(2);
+	var colfour = row.insertCell(3);
+	var colfive = row.insertCell(4);
+	var colsix = row.insertCell(5);
+	var colseven = row.insertCell(6);
+
 	/* Product Re-Ordering Feature Code Addition Starts */
 	iMax = tableName.rows.length;
 	for(iCount=1;iCount<=iMax-3;iCount++)
@@ -253,8 +225,7 @@ function fnAddServiceRow(module,image_path){
 	var oPrevRow = tableName.rows[iPrevRowIndex+1]; 
 	var delete_row_count=count;
 	/* Product Re-Ordering Feature Code Addition ends */
-	
-	
+
 	//Delete link
 	colone.className = "crmTableRow small";
 	colone.id = row.id+"_col1";
@@ -277,17 +248,15 @@ function fnAddServiceRow(module,image_path){
 						'&nbsp;<img id="searchIcon'+count+'" title="'+alert_arr.Services+'" src="themes/images/services.gif" style="cursor: pointer;" onclick="servicePickList(this,\''+module+'\','+count+')" align="absmiddle">'+
 						'</td></tr><tr><td class="small"><input type="hidden" value="" id="subproduct_ids'+count+'" name="subproduct_ids'+count+'" /><span id="subprod_names'+count+'" name="subprod_names'+count+'" style="color:#C0C0C0;font-style:italic;"> </span>'+
 						'</td></tr><tr><td class="small" id="setComment'+count+'"><textarea id="comment'+count+'" name="comment'+count+'" class=small style="width:70%;height:40px"></textarea><img src="themes/images/clear_field.gif" onClick="getObj(\'comment'+count+'\').value=\'\'"; style="cursor:pointer;" /></td></tr></tbody></table>';	
-					
-	//Quantity In Stock - only for SO, Quotes and Invoice
-	if(module != "PurchaseOrder"  && hide_stock == 'no'){
+
+	//Additional information column
 	colthree.className = "crmTableRow small";
-	colthree.innerHTML='<span id="qtyInStock'+count+'">NA</span>';
-	}
+	cloneMoreInfoNode(count);
 
 	//Quantity
 	var temp='';
 	colfour.className = "crmTableRow small";
-	temp='<input id="qty'+count+'" name="qty'+count+'" type="text" class="small " style="width:50px" onfocus="this.className=\'detailedViewTextBoxOn\'" onBlur="settotalnoofrows(); calcTotal(); loadTaxes_Ajax('+count+');';
+	temp='<input id="qty'+count+'" name="qty'+count+'" type="text" class="small " style="width:50px" onBlur="settotalnoofrows(); calcTotal(); loadTaxes_Ajax('+count+');';
 	temp+='" onChange="setDiscount(this,'+count+')" value=""/><br>';
 	colfour.innerHTML=temp;
 	//List Price with Discount, Total after Discount and Tax labels

@@ -79,7 +79,6 @@ $mod_strings = Array(
 'NTC_REMOVE_OPP_CONFIRMATION'=>'Você tem certeza que deseja remover este Contato desta Oportunidade?',
 'ERR_DELETE_RECORD'=>'Defina um número de registro para deletar o Contato.',
 
-// Added vtiger_fields in fetchfile.php, import.php -- crm4-Beta
 'LBL_COLON'=>' : ',
 'LBL_IMPORT_LEADS'=>'Importar Leads',
 'LBL_LEADS_FILE_LIST'=>'Lista de Arquivos de Leads',
@@ -93,7 +92,6 @@ $mod_strings = Array(
 'LBL_GENERAL_INFORMATION'=>'Informação Geral',
 'LBL_DO_NOT_CREATE_NEW_POTENTIAL'=>'Não criar Nova Oportunidade após Conversão',
 
-//for v4 release added
 'LBL_NEW_POTENTIAL'=>'Nova Oportunidade',
 'LBL_POTENTIAL_TITLE'=>'Oportunidades',
 
@@ -110,20 +108,16 @@ $mod_strings = Array(
 'LBL_NEW_ATTACHMENT'=>'Novo Anexo',
 'LBL_ATTACHMENT_TITLE'=>'Anexos',
 
-
-//Added vtiger_fields after RC1 - Release
 'LBL_ALL'=>'Todos',
 'LBL_CONTACTED'=>'Contactado',
 'LBL_LOST'=>'Perdido',
 'LBL_HOT'=>'Quente',
 'LBL_COLD'=>'Frio',
 
-// Added for 4GA
 'LBL_TOOL_FORM_TITLE'=>'Ferramentas Lead',
 
 'LBL_SELECT_TEMPLATE_TO_MAIL_MERGE'=>'Selecione modelo para Mesclar Mensagem:',
 
-//Added for 4GA
 'Salutation'=>'Saudação',
 'First Name'=>'Nome',
 'Phone'=>'Fone',
@@ -226,11 +220,7 @@ $mod_strings = Array(
 'Qualified'=>'Qualificado',
 'Warm'=>'Morno',
 
-// Added/Updated for vtiger CRM 5.0.4
-
 'Designation'=>'Título',
-
-// Added after 5.0.4 GA
 
 //Module Sequence Numbering
 'Lead No'=>'Cod. Lead',
@@ -247,6 +237,7 @@ $mod_strings = Array(
 
 //Missing label in vtiger CRM
 'Secondary Email'=>'Email Alternativo', 
+'LeadAlreadyConverted' => 'Lead cannot be converted. Either it has already been converted or you lack permission on one or more of the destination modules.',
 
 );
 

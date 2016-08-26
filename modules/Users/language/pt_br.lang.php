@@ -11,6 +11,7 @@
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor: Ranieri Slemer, translate missing terms to brazilian portuguese | Ago 2016 | www.ecrmweb.com.br
  ********************************************************************************/
 /*********************************************************************************
  * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Users/language/en_us.lang.php,v 1.18 2005/04/19 14:45:38 ray Exp $
@@ -113,19 +114,19 @@ $mod_strings = Array(
 'ERR_ENTER_CONFIRMATION_PASSWORD'=>'Por favor entre com a confirmação de senha.',
 'ERR_REENTER_PASSWORDS'=>'Por favor entre novamente com sua senha.  Os valores \"nova senha\" e \"confirme senha\" não combinam.',
 'ERR_INVALID_PASSWORD'=>'Você deve especificar um nome de usuário e senha válidos',
-'ERR_INVALID_ADMINIPLOGIN' => 'Administrator users must login from authorized devices.',
+'ERR_INVALID_ADMINIPLOGIN' => 'O usuário Administrador deve fazer login a partir de dispositivos autorizados.',
 'ERR_PASSWORD_CHANGE_FAILED_1'=>'Mudança na senha do usuário falhou ',
 'ERR_PASSWORD_CHANGE_FAILED_2'=>' falhou. Nova senha deve ser definida.',
 'ERR_PASSWORD_INCORRECT_OLD'=>'Senha antiga incorreta para usuário especificado. Entre novamente com a informação de senha.',
-'ERR_PASSWORD_NOT_CHANGED' => 'Old and New Passwords are the same. Please use a different password.',
+'ERR_PASSWORD_NOT_CHANGED' => 'Antiga e Nova Senha são iguais. Por favor, use senhas diferentes.',
 'ERR_USER_NAME_EXISTS_1'=>'O nome de usuário',
 'ERR_USER_NAME_EXISTS_2'=>' já existe.  Nomes de usuários duplicados não são permitidos.<br>Mude o nome de usuário de forma que seja único.',
 'ERR_LAST_ADMIN_1'=>'O nome de usuário',
 'ERR_LAST_ADMIN_2'=>' é o único usuário Admin.  Pelo menos um usuário deve ser o Admininstrador do Sistema.<br>Verifique as configurações do usuário Administrador.',
-'ERR_MAXLOGINATTEMPTS' => 'Maximum number of login attempts reached. Contact your administrator to unblock your account',
-'LBL_FAILED_LOGIN_ATTEMPTS' => 'Failed Login Attempts',
+'ERR_MAXLOGINATTEMPTS' => 'Número máximo de logins com falha ultrapassado. Contate o seu administrator para desbloquear sua conta',
+'LBL_FAILED_LOGIN_ATTEMPTS' => 'Número de tentativas de login',
 'ERR_DELETE_RECORD'=>"Um número de registro deve ser especificado para apagar a Organização.",
-'ERR_MUST_CHANGE_PASSWORD' => 'Your password has expired. You must change your password to continue.',
+'ERR_MUST_CHANGE_PASSWORD' => 'Sua senha expirou. Você precisa mudar a senha para continuar.',
 
 // Additional Fields for i18n --- Release vtigerCRM 3.2 Patch 2
 // Users--listroles.php , createrole.php , ListPermissions.php , editpermissions.php
@@ -700,7 +701,8 @@ $mod_strings = Array(
 'Decimal Separator'=>'Separador Decimal',
 'Symbol Placement'=>'Localização Símbolo',
 'Digit Grouping Separator'=>'Separador Agrupamento Dígitos',
-'Number Of Currency Decimals'  =>  'Number Of Currency Decimals',
+// coreBOS // Ranieri
+'Number Of Currency Decimals'  =>  'Número de Casas Decimais',
 
 //Time zones-Dont change any value
 'Kwajalein' => '(UTC-12:00) Data Internacional Linha Oeste',
@@ -800,29 +802,29 @@ $mod_strings = Array(
 'Pacific/Auckland' => '(UTC+12:00) Auckland',
 'Asia/Magadan' => '(UTC+11:00) Magadan, New Caledonia',
 'Pacific/Tongatapu' => '(UTC+13:00) Nukualofa',
-
-'Calendar Hour Format' => 'Calendar Hour Format',
-'Day ends at' => 'Day ends at',
-'Day starts at' => 'Day starts at',
+// Ranieri - Ago 2016
+'Calendar Hour Format' => 'Formato Hora no Calendário',
+'Day ends at' => 'Dia termina às',
+'Day starts at' => 'Dia começa às',
 'Theme'=>'Tema',
 'Language'=>'Idioma',
 'Secondary Email'=>'Email Secundário',
 'Time Zone'=>'Fuso Horário',
 'flat'=>'Flat',
-'hring'=>'Horizontal Ring',
-'vring'=>'Vertical Ring',
-'hcylinder'=>'Horizontal Cylinder',
-'vcylinder'=>'Vertical Cylinder',
-'LBL_SEND_EMAIL_TO_SENDER' => 'Send copy of email',
-'PASSWORD REQUIREMENTS' => 'PASSWORD REQUIREMENTS',
-'REQUIRED' => 'REQUIRED',
-'Min. 8 characters' => 'Min. 8 characters',
-'Contains3of4' => 'PASSWORD CONTAINS AT LEAST THREE OF THE FOLLOWING FOUR CHARACTER GROUPS',
-'Min. 1 uppercase' => 'Min. 1 uppercase character',
-'Min. 1 lowercase' => 'Min. 1 lowercase character',
-'Min. 1 number' => 'Min. 1 Number',
-'Min. 1 special character' => 'Min. 1 special character , ! ? , ; - @ #',
-'Generate password' => 'Generate password',
+'hring'=>'Anel Horizontal',
+'vring'=>'Anel Vertical',
+'hcylinder'=>'Cilindro Horizontal',
+'vcylinder'=>'Cilindro Vertical',
+'LBL_SEND_EMAIL_TO_SENDER' => 'Enviar uma cópia do eMail',
+'PASSWORD REQUIREMENTS' => 'EXIGÊNCIAS PARA A SENHA',
+'REQUIRED' => 'EXIGIDO',
+'Min. 8 characters' => 'Min. 8 caracteres',
+'Contains3of4' => 'SENHA CONTÉM AO MENOS TRES DOS SEGUINTES QUATRO GRUPOS DE CARACTERES',
+'Min. 1 uppercase' => 'Min. 1 letra maiúscula',
+'Min. 1 lowercase' => 'Min. 1 letra minúscula',
+'Min. 1 number' => 'Min. 1 número',
+'Min. 1 special character' => 'Min. 1 caracter especial , ! ? , ; - @ #',
+'Generate password' => 'Gerar senha',
 );
 
 ?>

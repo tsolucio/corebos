@@ -311,6 +311,8 @@ function validateInventory(module) {
 function finishValidateInventory() {
 	if (validateInventoryLines(gVTModule)) {
 		submitFormForAction('EditView', 'Save');
+	} else {
+		VtigerJS_DialogBox.unblock();
 	}
 }
 
@@ -622,22 +624,15 @@ function fnAddProductRow(module,image_path){
 	var row = tableName.insertRow(prev);
 	row.id = "row"+count;
 	row.style.verticalAlign = "top";
-	
+
 	var colone = row.insertCell(0);
 	var coltwo = row.insertCell(1);
-	if(module == "PurchaseOrder"){
-		var colfour = row.insertCell(2);
-		var colfive = row.insertCell(3);
-		var colsix = row.insertCell(4);
-		var colseven = row.insertCell(5);
-	}
-	else{
-		var colthree = row.insertCell(2);
-		var colfour = row.insertCell(3);
-		var colfive = row.insertCell(4);
-		var colsix = row.insertCell(5);
-		var colseven = row.insertCell(6);
-	}
+	var colthree = row.insertCell(2);
+	var colfour = row.insertCell(3);
+	var colfive = row.insertCell(4);
+	var colsix = row.insertCell(5);
+	var colseven = row.insertCell(6);
+
 	/* Product Re-Ordering Feature Code Addition Starts */
 	iMax = tableName.rows.length;
 	for(iCount=1;iCount<=iMax-3;iCount++)
@@ -675,16 +670,14 @@ function fnAddProductRow(module,image_path){
 					'</td></tr><tr><td class="small"><input type="hidden" value="" id="subproduct_ids'+count+'" name="subproduct_ids'+count+'" /><span id="subprod_names'+count+'" name="subprod_names'+count+'" style="color:#C0C0C0;font-style:italic;"> </span>'+
 					'</td></tr><tr><td class="small" id="setComment'+count+'"><textarea id="comment'+count+'" name="comment'+count+'" class=small style="width:70%;height:40px"></textarea><img src="themes/images/clear_field.gif" onClick="getObj(\'comment'+count+'\').value=\'\'"; style="cursor:pointer;" /></td></tr></tbody></table>';
 
-	//Quantity In Stock - only for SO, Quotes and Invoice
-	if(module != "PurchaseOrder"){
+	//Additional Information column
 	colthree.className = "crmTableRow small";
-	colthree.innerHTML='<span id="qtyInStock'+count+'">&nbsp;</span>';
-	}
+	cloneMoreInfoNode(count);
 
 	//Quantity
 	var temp='';
 	colfour.className = "crmTableRow small";
-	temp='<input id="qty'+count+'" name="qty'+count+'" type="text" class="small " style="width:50px" onfocus="this.className=\'detailedViewTextBoxOn\'" onBlur="settotalnoofrows(); calcTotal(); loadTaxes_Ajax('+count+');';
+	temp='<input id="qty'+count+'" name="qty'+count+'" type="text" class="small " style="width:50px" onBlur="settotalnoofrows(); calcTotal(); loadTaxes_Ajax('+count+');';
 	if(module == "Invoice") {
 		temp+='stock_alert('+count+');';
 	}
@@ -708,6 +701,42 @@ function fnAddProductRow(module,image_path){
 	decideTaxDiv();
 	calcTotal();
 	return count;
+}
+
+function cloneMoreInfoNode(newRowId) {
+	var tblBody = document.getElementById('proTab').tBodies[0];
+	var moreinfocell1 = tblBody.rows[2].cells[2];
+	var moreinfocell = moreinfocell1.cloneNode(true);
+	// change IDs
+	var domfld = moreinfocell.querySelector('#qtyInStock1');
+	if (domfld) {
+		domfld.id = 'qtyInStock'+ newRowId;
+	}
+	for(var i=0; i<moreInfoFields.length; i++) {
+		moreinfocell.innerHTML = moreinfocell.innerHTML.replace(new RegExp(moreInfoFields[i]+'1', 'g'), moreInfoFields[i]+ newRowId);
+	}
+	tblBody.rows[newRowId+1].cells[2].innerHTML=moreinfocell.innerHTML;
+	vtlib_executeJavascriptInElement(moreinfocell);
+	// empty fields
+	var domflddisp = document.getElementById('qtyInStock'+ newRowId);
+	if (domflddisp) {
+		domflddisp.innerHTML = '';
+	}
+	for(var i=0; i<moreInfoFields.length; i++) {
+		var domfld = document.getElementById(moreInfoFields[i]+ newRowId);
+		if (domfld) {
+			domfld.value = '';
+			var domflddisp = document.getElementById(moreInfoFields[i]+ newRowId+ '_display');
+			if (domflddisp) {
+				domflddisp.value = '';
+			}
+		} else {
+			var domfld = document.getElementById('jscal_field_'+ moreInfoFields[i]+ newRowId);
+			if (domfld) {
+				domfld.value = '';
+			}
+		}
+	}
 }
 
 function decideTaxDiv() {
@@ -1031,6 +1060,7 @@ function resetSHandAdjValues() {
 function moveUpDown(sType,oModule,iIndex)
 {
 	var aFieldIds = Array('hidtax_row_no','productName','subproduct_ids','hdnProductId','comment','qty','listPrice','discount_type','discount_percentage','discount_amount','tax1_percentage','hidden_tax1_percentage','popup_tax_row','tax2_percentage','hidden_tax2_percentage','lineItemType');
+	var aFieldIds = aFieldIds.concat(moreInfoFields);
 	var aContentIds = Array('qtyInStock','netPrice','subprod_names');
 	var aOnClickHandlerIds = Array('searchIcon');
 
@@ -1113,6 +1143,27 @@ function moveUpDown(sType,oModule,iIndex)
 		sSwapId = aFieldIds[iCt] + iSwapIndex;
 		if(document.getElementById(sId) && document.getElementById(sSwapId))
 		{
+			sTemp = document.getElementById(sId).value;
+			document.getElementById(sId).value = document.getElementById(sSwapId).value;
+			document.getElementById(sSwapId).value = sTemp;
+		}
+		sId = 'jscal_field_' + aFieldIds[iCt] + iIndex;
+		sSwapId = 'jscal_field_'+ aFieldIds[iCt] + iSwapIndex;
+		if(document.getElementById(sId) && document.getElementById(sSwapId))
+		{
+			sTemp = document.getElementById(sId).value;
+			document.getElementById(sId).value = document.getElementById(sSwapId).value;
+			document.getElementById(sSwapId).value = sTemp;
+		}
+		sId = aFieldIds[iCt] + iIndex + '_display';
+		sSwapId = aFieldIds[iCt] + iSwapIndex + '_display';
+		if(document.getElementById(sId) && document.getElementById(sSwapId))
+		{
+			sTemp = document.getElementById(sId).value;
+			document.getElementById(sId).value = document.getElementById(sSwapId).value;
+			document.getElementById(sSwapId).value = sTemp;
+			sId = aFieldIds[iCt] + iIndex + '_type';
+			sSwapId = aFieldIds[iCt] + iSwapIndex + '_type';
 			sTemp = document.getElementById(sId).value;
 			document.getElementById(sId).value = document.getElementById(sSwapId).value;
 			document.getElementById(sSwapId).value = sTemp;

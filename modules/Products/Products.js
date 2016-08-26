@@ -75,30 +75,8 @@ function add_data_to_relatedlist(entity_id,recordid) {
 }
 
 function set_return_inventory(product_id,product_name,unitprice,qtyinstock,taxstr,curr_row,desc,subprod_id) {
-	var subprod = subprod_id.split("::");
-	window.opener.document.EditView.elements["subproduct_ids"+curr_row].value = subprod[0];
-	window.opener.document.getElementById("subprod_names"+curr_row).innerHTML = subprod[1];
-
-	window.opener.document.EditView.elements["productName"+curr_row].value = product_name;
-	window.opener.document.EditView.elements["hdnProductId"+curr_row].value = product_id;
-	window.opener.document.EditView.elements["listPrice"+curr_row].value = unitprice;
-	window.opener.document.EditView.elements["comment"+curr_row].value = desc;
-	//getOpenerObj("unitPrice"+curr_row).innerHTML = unitprice;
 	getOpenerObj("qtyInStock"+curr_row).innerHTML = qtyinstock;
-
-	// Apply decimal round-off to value
-	if(!isNaN(parseFloat(unitprice))) unitprice = roundPriceValue(unitprice);
-	window.opener.document.EditView.elements["listPrice"+curr_row].value = unitprice;
-	
-	var tax_array = new Array();
-	var tax_details = new Array();
-	tax_array = taxstr.split(',');
-	for(var i=0;i<tax_array.length;i++)
-	{
-		tax_details = tax_array[i].split('=');
-	}
-	window.opener.document.EditView.elements["qty"+curr_row].value = product_default_units;
-	window.opener.document.EditView.elements["qty"+curr_row].focus();
+	set_return_inventory_po(product_id,product_name,unitprice,taxstr,curr_row,desc,subprod_id);
 }
 
 function set_return_inventory_po(product_id,product_name,unitprice,taxstr,curr_row,desc,subprod_id) {
@@ -111,7 +89,7 @@ function set_return_inventory_po(product_id,product_name,unitprice,taxstr,curr_r
 	window.opener.document.EditView.elements["listPrice"+curr_row].value = unitprice;
 	window.opener.document.EditView.elements["comment"+curr_row].value = desc;
 	//getOpenerObj("unitPrice"+curr_row).innerHTML = unitprice;
-	
+
 	// Apply decimal round-off to value
 	if(!isNaN(parseFloat(unitprice))) unitprice = roundPriceValue(unitprice);
 	window.opener.document.EditView.elements["listPrice"+curr_row].value = unitprice;

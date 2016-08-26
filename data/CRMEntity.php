@@ -2495,14 +2495,12 @@ class CRMEntity {
 		require('user_privileges/sharing_privileges_' . $user->id . '.php');
 		$query = ' ';
 		$tabId = getTabid($module);
-		if ($is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2]
-				== 1 && $defaultOrgSharingPermission[$tabId] == 3) {
+		if ($is_admin == false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tabId] == 3) {
 			$tableName = 'vt_tmp_u' . $user->id;
 			$sharingRuleInfoVariable = $module . '_share_read_permission';
 			$sharingRuleInfo = $$sharingRuleInfoVariable;
 			$sharedTabId = null;
-			if (!empty($sharingRuleInfo) && (count($sharingRuleInfo['ROLE']) > 0 ||
-					count($sharingRuleInfo['GROUP']) > 0)) {
+			if (!empty($sharingRuleInfo) && (count($sharingRuleInfo['ROLE']) > 0 || count($sharingRuleInfo['GROUP']) > 0)) {
 				$tableName = $tableName . '_t' . $tabId;
 				$sharedTabId = $tabId;
 			} elseif ($module == 'Calendar' || !empty($scope)) {
@@ -2510,6 +2508,8 @@ class CRMEntity {
 			}
 			list($tsSpecialAccessQuery, $typeOfPermissionOverride, $unused1, $unused2) = cbEventHandler::do_filter('corebos.permissions.accessquery', array(' ', 'none', $module, $user));
 			if ($typeOfPermissionOverride=='fullOverride') {
+				// create the default temporary table in case it is needed
+				$this->setupTemporaryTable($tableName, $sharedTabId, $user, $current_user_parent_role_seq, $current_user_groups);
 				VTCacheUtils::updateCachedInformation('SpecialPermissionWithDuplicateRows', true);
 				return $tsSpecialAccessQuery;
 			}
