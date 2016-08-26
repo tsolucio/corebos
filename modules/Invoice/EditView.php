@@ -338,12 +338,21 @@ elseif (isset ($_REQUEST['isDuplicate']) && $_REQUEST['isDuplicate'] == 'true') 
 	$smarty->assign('MODE', $focus->mode);
 }
 
-$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
 $cbMap = cbMap::getMapByName($currentModule.'InventoryDetails','MasterDetailLayout');
 if ($cbMap!=null) {
 	$cbMapFields = $cbMap->MasterDetailLayout();
 	$smarty->assign('moreinfofields', "'".implode("','",$cbMapFields['detailview']['fieldnames'])."'");
+	if (empty($associated_prod)) { // creating
+		$product_Detail = $col_fields = array();
+		foreach ($cbMapFields['detailview']['fields'] as $mdfield) {
+			$col_fields[$mdfield['fieldinfo']['name']] = '';
+			$foutput = getOutputHtml($mdfield['fieldinfo']['uitype'], $mdfield['fieldinfo']['name'], $mdfield['fieldinfo']['label'], 100, $col_fields, 0, 'InventoryDetails', 'edit', $mdfield['fieldinfo']['typeofdata']);
+			$product_Detail['moreinfo'][] = $foutput;
+		}
+		$associated_prod = $product_Detail;
+	}
 }
+$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
 
 if (isset ($_REQUEST['return_module']))
 	$smarty->assign("RETURN_MODULE", vtlib_purify($_REQUEST['return_module']));
