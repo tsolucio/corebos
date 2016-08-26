@@ -262,8 +262,5 @@ $smarty->assign('TAX_TYPE', GlobalVariable::getVariable('Tax_Type_Default', 'ind
 //Show or not the Header to copy address to left or right
 $smarty->assign('SHOW_COPY_ADDRESS', GlobalVariable::getVariable('Show_Copy_Adress_Header', 'yes', $currentModule, $current_user->id));
 
-if ($focus->mode == 'edit')
-	$smarty->display('Inventory/InventoryEditView.tpl');
-else
-	$smarty->display('Inventory/InventoryCreateView.tpl');
+$smarty->display('Inventory/InventoryEditView.tpl');
 ?>

@@ -9,9 +9,7 @@
  ********************************************************************************/
 -->*}
 
-<script type="text/javascript" src="include/js/Inventory.js"></script>
-<!-- Added to display the Product Details -->
-<script type="text/javascript">
+<script>
 if(typeof(e) != 'undefined')
 	window.captureEvents(Event.MOUSEMOVE);
 
@@ -38,7 +36,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 	//Set the Header value for Discount
 	if(mode == 'discount')
 	{ldelim}
-		document.getElementById("discount_div_title"+curr_row).innerHTML = '<b>{$APP.LABEL_SET_DISCOUNT_FOR_X_COLON} '+document.getElementById("productTotal"+curr_row).innerHTML+'</b>';
+		document.getElementById("discount_div_title"+curr_row).innerHTML = '<b>{$APP.LABEL_SET_DISCOUNT_FOR_COLON} '+document.getElementById("productTotal"+curr_row).innerHTML+'</b>';
 	{rdelim}
 	else if(mode == 'tax')
 	{ldelim}
@@ -46,7 +44,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 	{rdelim}
 	else if(mode == 'discount_final')
 	{ldelim}
-		document.getElementById("discount_div_title_final").innerHTML = '<b>{$APP.LABEL_SET_DISCOUNT_FOR_COLON} '+document.getElementById("netTotal").innerHTML+'</b>';
+		document.getElementById("discount_div_title_final").innerHTML = '<b>{$APP.LABEL_SET_DISCOUNT_FOR} '+document.getElementById("netTotal").innerHTML+'</b>';
 	{rdelim}
 	else if(mode == 'sh_tax_div_title')
 	{ldelim}
@@ -168,11 +166,10 @@ function displayCoords(currObj,obj,mode,curr_row)
 	{assign var="taxTotal" value="taxTotal"|cat:$row_no}
 	{assign var="netPrice" value="netPrice"|cat:$row_no}
 
-
    <tr id="row{$row_no}" valign="top">
 
 	<!-- column 1 - delete link - starts -->
-	<td  class="crmTableRow small lineOnTop">
+	<td class="crmTableRow small lineOnTop">
 		{if $row_no neq 1}
 			<img src="{'delete.gif'|@vtiger_imageurl:$THEME}" border="0" onclick="deleteRow('{$MODULE}',{$row_no},'{$IMAGE_PATH}')" style="cursor:pointer;" title="{'LBL_DELETE'|@getTranslatedString:'Settings'}">
 		{/if}<br/><br/>
@@ -227,11 +224,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 		{$APP.LBL_QTY_IN_STOCK}:&nbsp;<span id="{$qtyInStock}">{$data.$qtyInStock}</span><br>
 		{/if}
 		{foreach item=maindata from=$data.$moreinfo}
-			<table>
-			<tr>
-				{include file='Inventory/EditViewUI.tpl'}
-			</tr>
-			</table>
+			{include file='Inventory/EditViewUI.tpl'}
 		{/foreach}
 	</td>
 	<!-- column 3 - Quantity in Stock - ends -->
@@ -243,7 +236,6 @@ function displayCoords(currObj,obj,mode,curr_row)
 		{else}
 			<input id="{$qty}" name="{$qty}" type="text" class="small " style="width:50px" onBlur="settotalnoofrows(); calcTotal(); loadTaxes_Ajax('{$row_no}'); {if $MODULE eq 'Invoice' && $entityType neq 'Services'} stock_alert('{$row_no}');{/if}" onChange="setDiscount(this,'{$row_no}')" value="{$data.$qty}"/><br><span id="stock_alert{$row_no}"></span>
 		{/if}
-
 	</td>
 	<!-- column 4 - Quantity - ends -->
 
@@ -351,7 +343,6 @@ function displayCoords(currObj,obj,mode,curr_row)
 	</td>
 	<!-- column 7 - Net Price - ends -->
 
-
    </tr>
    <!-- Product Details First row - Ends -->
    {/foreach}
@@ -431,8 +422,6 @@ so we will get that array, parse that array and fill the details
    </tr>
    <!-- Group Tax - ends -->
 
-
-
    <tr valign="top">
 	<td class="crmTableRow small" style="border-right:1px #dadada;">&nbsp;</td>
 	<td class="crmTableRow small" align="right">
@@ -442,7 +431,6 @@ so we will get that array, parse that array and fill the details
 		<input id="shipping_handling_charge" name="shipping_handling_charge" type="text" class="small" style="width:40px" align="right" value="{$FINAL.shipping_handling_charge}" onBlur="calcSHTax();">
 	</td>
    </tr>
-
 
    <tr valign="top">
 	<td class="crmTableRow small" style="border-right:1px #dadada;">&nbsp;</td>
@@ -479,8 +467,6 @@ so we will get that array, parse that array and fill the details
 	</td>
 	<td id="shipping_handling_tax" class="crmTableRow small" align="right">{$FINAL.shtax_totalamount}</td>
    </tr>
-
-
    <tr valign="top">
 	<td class="crmTableRow small" style="border-right:1px #dadada;">&nbsp;</td>
 	<td class="crmTableRow small" align="right">
@@ -494,8 +480,6 @@ so we will get that array, parse that array and fill the details
 		<input id="adjustment" name="adjustment" type="text" class="small" style="width:40px" align="right" value="{$FINAL.adjustment}" onBlur="calcTotal();">
 	</td>
    </tr>
-
-
    <tr valign="top">
 	<td class="crmTableRow big lineOnTop" style="border-right:1px #dadada;">&nbsp;</td>
 	<td class="crmTableRow big lineOnTop" align="right"><b>{$APP.LBL_GRAND_TOTAL}</b></td>
@@ -507,7 +491,6 @@ so we will get that array, parse that array and fill the details
 		<input type="hidden" name="subtotal" id="subtotal" value="">
 		<input type="hidden" name="total" id="total" value="">
 </td></tr>
-<!-- Upto this Added to display the Product Details -->
 
 {foreach key=row_no item=data from=$ASSOCIATEDPRODUCTS}
 	<!-- This is added to call the function calcCurrentTax which will calculate the tax amount from percentage -->

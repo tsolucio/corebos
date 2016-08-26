@@ -1634,7 +1634,6 @@ function getAssociatedProducts($module,$focus,$seid='')
 {
 	global $log, $adb, $theme,$current_user;
 	$log->debug("Entering getAssociatedProducts(".$module.",".get_class($focus).",".$seid."='') method ...");
-	$output = '';
 
 	$theme_path="themes/".$theme."/";
 	$image_path=$theme_path."images/";
@@ -1779,8 +1778,6 @@ function getAssociatedProducts($module,$focus,$seid='')
 		}
 		if ($MDMapFound) {
 			foreach ($cbMapFields['detailview']['fields'] as $mdfield) {
-				$output .= '<br>';
-				$output .= '<b>'.$mdfield['fieldinfo']['label'].'</b>:&nbsp;';
 				$mdrs = $adb->pquery('select '.$mdfield['fieldinfo']['name'].' from vtiger_inventorydetails
 						inner join vtiger_crmentity on crmid=vtiger_inventorydetails.inventorydetailsid
 						inner join vtiger_inventorydetailscf on vtiger_inventorydetailscf.inventorydetailsid=vtiger_inventorydetails.inventorydetailsid
@@ -2021,7 +2018,6 @@ function getNoOfAssocProducts($module,$focus,$seid='')
 {
 	global $log, $adb;
 	$log->debug("Entering getNoOfAssocProducts(".$module.",".get_class($focus).",".$seid."='') method ...");
-	$output = '';
 	if($module == 'Quotes')
 	{
 		$query="select vtiger_products.productname, vtiger_products.unit_price, vtiger_inventoryproductrel.* from vtiger_inventoryproductrel inner join vtiger_products on vtiger_products.productid=vtiger_inventoryproductrel.productid where id=?";
