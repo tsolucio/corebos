@@ -731,4 +731,11 @@
 	<classname>addCostPriceID</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>kevinduqi</author>
+	<description>Duplicate Records workflow task</description>
+	<filename>build/changeSets/add_workflow_duplicaterecords.php</filename>
+	<classname>add_workflow_duplicaterecords</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
 </updatesChangeLog>
