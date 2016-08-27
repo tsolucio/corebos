@@ -256,10 +256,8 @@ if($foldercount > 0 )
 		$foldername = $folder_details['foldername'];
 		$folder_details['description']=$adb->query_result($result,$i,"description");
 		$folder_url_string = $url_string . "&folderid=$folderid";
-		$folder_details['header'] = $controller->getListViewHeader($focus,$currentModule,
-				$folder_url_string,$sorder, $order_by);
-		$folder_files = $controller->getListViewEntries($focus,$currentModule,$list_result,
-			$navigation_array);
+		$folder_details['header'] = $controller->getListViewHeader($focus,$currentModule,$folder_url_string,$sorder, $order_by);
+		$folder_files = $controller->getListViewEntries($focus,$currentModule,$list_result,$navigation_array);
 		$folder_details['entries']= $folder_files;
 		$folder_details['navigation'] = getTableHeaderSimpleNavigation($navigation_array, $url_string,"Documents",$folder_id,$viewid);
 		$folder_details['recordListRange'] = getRecordRangeMessage($list_result, $limit_start_rec,
