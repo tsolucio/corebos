@@ -18,6 +18,7 @@ class ModComments_DetailViewBlockCommentWidget {
 	protected $criteria= false;
 	
 	function __construct() {
+		$this->defaultCriteria = GlobalVariable::getVariable('ModComments_DefaultCriteria',$this->defaultCriteria);
 	}
 	
 	function getFromContext($key, $purify=false) {
@@ -105,6 +106,8 @@ class ModComments_DetailViewBlockCommentWidget {
 		$viewer = $this->getViewer();
 		$viewer->assign('ID', $sourceRecordId);
 		$viewer->assign('CRITERIA', $usecriteria);
+		$BLOCKOPEN = GlobalVariable::getVariable('ModComments_DefaultBlockStatus',1);
+		$viewer->assign('BLOCKOPEN', $BLOCKOPEN);
 		list($void,$canaddcomments) = cbEventHandler::do_filter('corebos.filter.ModComments.canAdd', array($sourceRecordId, true));
 		$viewer->assign('CANADDCOMMENTS', ($canaddcomments ? 'YES' : 'NO'));
 		$viewer->assign('COMMENTS', $this->getModels($sourceRecordId, $usecriteria) );

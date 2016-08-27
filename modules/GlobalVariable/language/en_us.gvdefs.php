@@ -76,6 +76,20 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'If set to 1, which is the default value, you will not be able to duplicate account names, if set to 0 that will be permitted.',
 ),
+'ModComments_DefaultBlockStatus' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Module Functionality',
+	'values' => '0 | 1',
+	'definition' => 'If set to 1, which is the default value, the Comments block will be open, if set to 0 it will be closed.',
+),
+'ModComments_DefaultCriteria' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Module Functionality',
+	'values' => 'All | Last5 | Mine',
+	'definition' => '"All" (default value) will show all comments related to the module, "Last5" will show only the last 5 commentas and "Mine" will show all comments of the current user.',
+),
 'Debug_Send_VtigerCron_Error' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'CSV EMail',

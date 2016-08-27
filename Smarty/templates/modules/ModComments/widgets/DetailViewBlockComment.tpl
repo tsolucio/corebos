@@ -13,7 +13,13 @@
 <td colspan="4" class="dvInnerHeader">
 	<div style="float: left; font-weight: bold;">
 	<div style="float: left;">
-	<a href="javascript:showHideStatus('tbl{$UIKEY}','aid{$UIKEY}','$IMAGE_PATH');"><span class="exp_coll_block inactivate"><img id="aid{$UIKEY}" src="{'activate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid rgb(0, 0, 0);" alt="{'LBL_Hide'|@getTranslatedString:'Settings'}" title="{'LBL_Hide'|@getTranslatedString:'Settings'}"></span></a>
+	<a href="javascript:showHideStatus('tbl{$UIKEY}','aid{$UIKEY}','$IMAGE_PATH');">
+	{if $BLOCKOPEN}
+	<span class="exp_coll_block inactivate"><img id="aid{$UIKEY}" src="{'activate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid rgb(0, 0, 0);" alt="{'LBL_Hide'|@getTranslatedString:'Settings'}" title="{'LBL_Hide'|@getTranslatedString:'Settings'}"></span></a>
+	{else}
+	<span class="exp_coll_block activate"><img id="aid{$UIKEY}" src="{'inactivate.gif'|@vtiger_imageurl:$THEME}" style="border: 0px solid rgb(0, 0, 0);" alt="{'LBL_Show'|@getTranslatedString:'Settings'}" title="{'LBL_Show'|@getTranslatedString:'Settings'}">
+	{/if}
+	</span></a>
 	</div><b>&nbsp;{$WIDGET_TITLE}</b></div>
 	<span style="float: right;">
 		<img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border=0 id="indicator{$UIKEY}" style="display:none;">
@@ -28,7 +34,7 @@
 </table>
 {/if}
 
-<div id="tbl{$UIKEY}" style="display: block">
+<div id="tbl{$UIKEY}" style="display: {if $BLOCKOPEN}block{else}none{/if};">
 	<table class="small" border="0" cellpadding="0" cellspacing="0" width="100%">
 	<tr style="height: 25px;">
 		<td colspan="4" align="left" class="dvtCellInfo commentCell">
