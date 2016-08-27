@@ -13,6 +13,7 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************
+ *  Module       : Duplicate Related Record functionality
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
 
@@ -28,11 +29,11 @@ class DuplicateRecords extends VTTask{
 	}
 
 	public function doTask(&$recordid) {
-		global $adb,$default_charset,$log,$current_user;
 		list($cto,$cto_id) = explode('x',$recordid->getId());
 		if (!empty($cto_id) and !empty($this->bmapid)) {
 			$module = getSalesEntityType($cto_id);
-			duplicaterec($module, $cto_id, $this->bmapid_display);
+			$map = $module.'_DuplicateRelations';
+			duplicaterec($module, $cto_id, $map);
 		}
 	}
 }

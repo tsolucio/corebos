@@ -13,7 +13,7 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************
- *  Module       : 
+ *  Module       : Duplicate Related Record functionality
  *  Version      : 5.4.0
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
@@ -22,14 +22,13 @@ error_reporting("E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED & ~E_WARNING");
 require_once 'include/utils/utils.php';
 require_once 'include/utils/duplicate.php';
 require_once 'include/utils/CommonUtils.php';
-global $current_user;
 
-if(isset($_REQUEST['module_name']) && isset($_REQUEST['record_id']))
-{
-	$module = $_REQUEST['module_name'];
-	$rec_id = $_REQUEST['record_id'];
-	$map = 'BusinessMapping_'.$module.'_DuplicateRelations';
-	duplicaterec($module, $rec_id, $map);
+if(isset($_REQUEST['module_name']) && isset($_REQUEST['record_id'])) {
+	$module = vtlib_purify($_REQUEST['module_name']);
+	$rec_id = vtlib_purify($_REQUEST['record_id']);
+	$map = $module.'_DuplicateRelations';
+	$new_record_id = duplicaterec($module, $rec_id, $map);
+	echo json_encode(array('module'=>$module, 'record_id'=>$new_record_id));
+	exit();
 }
-
 ?>

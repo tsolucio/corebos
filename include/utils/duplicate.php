@@ -13,7 +13,7 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************
- *  Module       : 
+ *  Module       : Duplicate Related Record functionality
  *  Version      : 5.4.0
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
@@ -22,64 +22,58 @@ error_reporting("E_ALL & ~E_NOTICE & ~E_STRICT & ~E_DEPRECATED & ~E_WARNING");
 require_once 'include/utils/utils.php';
 require_once 'include/utils/CommonUtils.php';
 
-global $current_user;
-
-
 function duplicaterec($currentModule, $record_id, $bmapname) {
-	require_once 'modules/'.$currentModule.'/'.$currentModule.'.php';
+	global $adb, $current_user;
 
-	$focus = new $currentModule();
+	$focus = CRMEntity::getInstance($currentModule);
 	$focus->retrieve_entity_info($record_id, $currentModule);
 
 	// Retrieve relations map
- 	//$bmapname = 'BusinessMapping_'.$currentModule.'_DuplicateRelations';
-	$cbMapid = GlobalVariable::getVariable($bmapname, cbMap::getMapIdByName($bmapname));
+	//$bmapname = 'BusinessMapping_'.$currentModule.'_DuplicateRelations';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 	if ($cbMapid) {
 		$cbMap = cbMap::getMapByID($cbMapid);
 		$maped_relations = $cbMap->DuplicateRelations()->getRelatedModules();
 	}
 
-	// Duplicate Records that this Record is dependent of 
-	if($cbMapid && $cbMap->DuplicateRelations()->DuplicateDirectRelations() ) {
+	// Duplicate Records that this Record is dependent of
+	if ($cbMapid && $cbMap->DuplicateRelations()->DuplicateDirectRelations()) {
+		$invmods = getInventoryModules();
 		foreach ($focus->column_fields as $fieldname => $value) {
-			$sql = "SELECT 	* FROM vtiger_field WHERE columnname = ? AND uitype IN (10,50,51,57,58,59,73,68,76,75,81,78,80)";
-			$result = $adb->pquery($sql , array($fieldname));
-
-			if($adb->num_rows($result) == 1 && $value !=0)
-			{
-				$sql = "SELECT setype FROM vtiger_crmentity WHERE crmid = ?";
-				$get_module = $adb->pquery($sql , array($value));
-				$module = $adb->query_result($get_module , 0 , "setype");
-				require_once "modules/" . $module ."/". $module .".php";
-				$entity = new $module();
+			$sql = 'SELECT * FROM vtiger_field WHERE columnname = ? AND uitype IN (10,50,51,57,58,59,73,68,76,75,81,78,80)';
+			$result = $adb->pquery($sql, array($fieldname));
+			if($adb->num_rows($result) == 1 && !empty($value)) {
+				$module = getSalesEntityType($value);
+				if (in_array($module, $invmods)) continue; // we can't duplicate these
+				$handler = vtws_getModuleHandlerFromName($module, $current_user);
+				$meta = $handler->getMeta();
+				$entity = CRMEntity::getInstance($module);
+				$entity->mode='';
 				$entity->retrieve_entity_info($value,$module);
-
-				sanitizeModuleFields($entity,$module);
-				$entity->saveentity($module);
-				$new_entity_id = $entity->id;
-				$focus->column_fields[$fieldname] = $new_entity_id;
+				$entity->column_fields = DataTransform::sanitizeRetrieveEntityInfo($entity->column_fields, $meta);
+				$entity->save($module);
+				$focus->column_fields[$fieldname] = $entity->id;
 			}
 		}
 	}
 
-	//sanitizeModuleFields($focus,$currentModule);
-
-	$focus->saveentity($currentModule);
- 	$new_record_id = $focus->id;
- 	$curr_tab_id = gettabid($currentModule);
- 	$related_list = get_related_lists($curr_tab_id);
- 	dup_related_lists($related_list, $record_id);
- 	$dependents_list = get_dependent_lists($curr_tab_id);
- 	$dependent_tables = get_dependent_tables($dependent_list,$currentModule);
- 	$dependent_rec = get_dependent_rec($dependent_tables);
- 	dup_dependent_rec($dependent_rec);
- 	echo json_encode(array("module"=>$currentModule, "record_id"=>$new_record_id));
-	exit();
- 	
+	$handler = vtws_getModuleHandlerFromName($currentModule, $current_user);
+	$meta = $handler->getMeta();
+	$focus->column_fields = DataTransform::sanitizeRetrieveEntityInfo($focus->column_fields, $meta);
+	$focus->saveentity($currentModule); // no workflows for this one => so we don't reenter this process
+	$new_record_id = $focus->id;
+	$curr_tab_id = gettabid($currentModule);
+	$related_list = get_related_lists($curr_tab_id, $maped_relations);
+	dup_related_lists($new_record_id, $currentModule, $related_list, $record_id, $maped_relations);
+	$dependents_list = get_dependent_lists($curr_tab_id);
+	$dependent_tables = get_dependent_tables($dependents_list,$currentModule);
+	dup_dependent_rec($record_id, $currentModule, $new_record_id, $dependent_tables, $maped_relations);
+	return $new_record_id;
 }
 
-function get_related_lists($curr_tab_id) {
+function get_related_lists($curr_tab_id, $maped_relations) {
 	// Get related list
+	global $adb;
 	$related_list = array();
 	$sql = "select related_tabid from vtiger_relatedlists where tabid=? and name=?";
 	$result = $adb->pquery($sql, array($curr_tab_id,"get_related_list"));
@@ -89,44 +83,47 @@ function get_related_lists($curr_tab_id) {
 			$related_list[] = getTabModuleName( $r['related_tabid'] );
 		}
 	}
+	if(isset($maped_relations['Documents'])) $related_list[] = 'Documents';
+	return $related_list;
 }
 
-function dup_related_lists($related_list, $record_id) {
+function dup_related_lists($new_record_id, $currentModule, $related_list, $record_id, $maped_relations) {
+	global $adb;
+	$sql = 'INSERT INTO vtiger_crmentityrel (crmid,module,relcrmid,relmodule) SELECT ?,?,relcrmid,relmodule FROM vtiger_crmentityrel WHERE crmid=? AND relmodule=?';
+	$sqldocs = 'INSERT INTO vtiger_senotesrel (crmid,notesid) SELECT ?,notesid FROM vtiger_senotesrel WHERE crmid=?';
 	foreach ($related_list as $rel_module) {
-		
-		$sql = "SELECT * FROM vtiger_crmentityrel WHERE crmid=? AND relmodule=?";
-		$result = $adb->pquery($sql,array($record_id,$rel_module));
-		
-		while ($r = $adb->fetch_array($result)) {
-			$rel_crmid = $r['relcrmid'];
-			$sql = "INSERT INTO vtiger_crmentityrel VALUES(?,?,?,?)";
-			$adb->pquery($sql,array($new_record_id,$currentModule,$rel_crmid,$rel_module));
-		}
-	}
-}
-
-function get_dependent_lists($curr_tab_id) {
-	// Get dependents list 
-	$dependents_list = array(); 
- 	$sql = "select related_tabid from vtiger_relatedlists where tabid=? and name=?";
-	$result = $adb->pquery($sql, array($curr_tab_id,"get_dependents_list"));
-	$noofrows = $adb->num_rows($result);
-	if($noofrows){
-		while( $r = $adb->fetch_array($result) ){
-			$moduleName = getTabModuleName( $r['related_tabid'] );
-			if(isset($maped_relations[$moduleName]))
-			{
-				$dependents_list[] = $moduleName;
+		if(empty($maped_relations) or isset($maped_relations[$rel_module])) {
+			if ($rel_module=='Documents') {
+				$adb->pquery($sqldocs,array($new_record_id,$record_id));
+			} else {
+				$adb->pquery($sql,array($new_record_id,$currentModule,$record_id,$rel_module));
 			}
 		}
 	}
 }
 
+function get_dependent_lists($curr_tab_id) {
+	// Get dependents list
+	global $adb;
+	$dependents_list = array();
+	$sql = "select related_tabid from vtiger_relatedlists where tabid=? and name=?";
+	$result = $adb->pquery($sql, array($curr_tab_id,"get_dependents_list"));
+	$noofrows = $adb->num_rows($result);
+	if($noofrows){
+		while( $r = $adb->fetch_array($result) ){
+			$moduleName = getTabModuleName( $r['related_tabid'] );
+			$dependents_list[] = $moduleName;
+		}
+	}
+	return $dependents_list;
+}
+
 function get_dependent_tables($dependents_list, $currentModule) {
 	// Dependents table
-	$dependent_tables = array();
+	global $adb;
+	$dependent_tables = $dependent_row = array();
 	foreach ($dependents_list as $module) {
-		$sql = "SELECT * FROM vtiger_fieldmodulerel JOIN vtiger_field  ON vtiger_fieldmodulerel.fieldid =  vtiger_field.fieldid WHERE module=? AND relmodule=?";
+		$sql = 'SELECT * FROM vtiger_fieldmodulerel JOIN vtiger_field ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid WHERE module=? AND relmodule=?';
 		$result = $adb->pquery($sql, array($module,$currentModule));
 		$noofrows = $adb->num_rows($result);
 		if($noofrows){
@@ -137,54 +134,35 @@ function get_dependent_tables($dependents_list, $currentModule) {
 			}
 		}
 	}
+	return $dependent_tables;
 }
 
-function get_dependent_rec($dependent_tables) {
-	// Get dependent records
-	$dependent_records = array();
-	foreach ($dependent_tables as $key => $value) {
-		$sql = ' SELECT * FROM ' . $dependent_tables[$key]['tablename'] . ' WHERE ' . $dependent_tables[$key]['columname']. '=?';
-		$result = $adb->pquery($sql, array($record_id));
-		
-		//Check for deleted records
-		while($r = $adb->fetch_array($result))
-		{
-			$crmid_query = "SELECT crmid FROM vtiger_crmentity WHERE crmid=? AND deleted=?";
-			$res = $adb->pquery($crmid_query, array($r[0],0));
-			if($adb->num_rows($res) == 1)
-			{
-				$dependent_records[$key][] = $r[0];
+function dup_dependent_rec($record_id, $relatedModule, $new_record_id, $dependent_tables, $maped_relations) {
+	global $adb, $current_user;
+	$invmods = getInventoryModules();
+	foreach ($dependent_tables as $module => $tables) {
+		if (in_array($module, $invmods)) continue; // we can't duplicate these
+		if(empty($maped_relations) or isset($maped_relations[$module])) {
+			require_once "modules/".$module."/".$module.".php";
+			$handler = vtws_getModuleHandlerFromName($module, $current_user);
+			$meta = $handler->getMeta();
+			$related_field = $tables['columname'];
+			$queryGenerator = new QueryGenerator($module, $current_user);
+			$queryGenerator->setFields(array('id'));
+			$queryGenerator->addReferenceModuleFieldCondition($relatedModule, $related_field, 'id', $record_id,'e');
+			$query = $queryGenerator->getQuery();
+			$result=$adb->pquery($query,array());
+			while($r = $adb->fetch_array($result)) {
+				// Duplicate dependent records
+				$entity = new $module();
+				$entity->mode='';
+				$entity->retrieve_entity_info($r[0],$module);
+				$entity->column_fields[$related_field] = $new_record_id;
+				$entity->column_fields = DataTransform::sanitizeRetrieveEntityInfo($entity->column_fields, $meta);
+				$entity->save($module);
 			}
 		}
 	}
-}
-
-function dup_dependent_rec($dependent_records) {
-	// Duplicate dependent records
-	 foreach ($dependent_records as $module => $records) 
-	 {
-	 	require_once "modules/".$module."/".$module.".php";
-	 	$related_field = $dependent_tables[$module]['columname'];
-		
-	 	foreach ($records as $key => $record) {
-	 		$entity = new $module();
-	 		$entity->retrieve_entity_info($record,$module); 
-			
-	 		$entity->column_fields[$related_field] = $new_record_id;
-	 		sanitizeModuleFields($entity,$module);
-	 		$entity->saveentity($module);
-	 	}
-	 }
-}
-
-function sanitizeModuleFields($module,$module_name)
-{
-	global $adb , $current_user;
-
-	$handler = vtws_getModuleHandlerFromName($module_name, $current_user);
-	$meta = $handler->getMeta();
-	$module->column_fields = DataTransform::sanitizeForInsert($module->column_fields,$meta);
-	$module->column_fields = DataTransform::sanitizeTextFieldsForInsert($module->column_fields,$meta);
 }
 
 ?>
