@@ -43,9 +43,14 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 	if ($cbMapid) {
 		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapLC = $cbMap->ListColumns();
 		$parentmodule = vtlib_purify($_REQUEST['module']);
-		$focus->list_fields = $cbMap->ListColumns()->getListFieldsFor($parentmodule);
-		$focus->list_fields_name = $cbMap->ListColumns()->getListFieldsNameFor($parentmodule);
+		$focus->list_fields = $cbMapLC->getListFieldsFor($parentmodule);
+		$focus->list_fields_name = $cbMapLC->getListFieldsNameFor($parentmodule);
+		if ($parentmodule == 'Home' and $cbMapLC->issetListFieldsMappingFor('Home')) {
+			$oCv->list_fields = $focus->list_fields;
+			$oCv->list_fields_name = $focus->list_fields_name;
+		}
 	}
 	if ($oCv) {
 		if (isset($oCv->list_fields)) {
@@ -447,10 +452,15 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 	if ($cbMapid) {
 		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapLC = $cbMap->ListColumns();
 		$parentmodule = vtlib_purify($_REQUEST['module']);
-		$focus->list_fields = $cbMap->ListColumns()->getListFieldsFor($parentmodule);
-		$focus->list_fields_name = $cbMap->ListColumns()->getListFieldsNameFor($parentmodule);
-		$focus->list_link_field = $cbMap->ListColumns()->getListLinkFor($parentmodule);
+		$focus->list_fields = $cbMapLC->getListFieldsFor($parentmodule);
+		$focus->list_fields_name = $cbMapLC->getListFieldsNameFor($parentmodule);
+		$focus->list_link_field = $cbMapLC->getListLinkFor($parentmodule);
+		if ($parentmodule == 'Home' and $cbMapLC->issetListFieldsMappingFor('Home')) {
+			$oCv->list_fields = $focus->list_fields;
+			$oCv->list_fields_name = $focus->list_fields_name;
+		}
 	}
 	if ($oCv) {
 		if (isset($oCv->list_fields)) {
