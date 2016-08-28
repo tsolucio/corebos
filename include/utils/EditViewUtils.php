@@ -208,9 +208,9 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			}
 			$pickListValue = to_html($pickListValue);
 			if(isset($_REQUEST['file']) && $_REQUEST['file'] == 'QuickCreate')
-				$options[] = array(htmlentities(getTranslatedString($pickListValue, $module_name),ENT_QUOTES,$default_charset),$pickListValue,$chk_val);
+				$options[] = array(htmlentities(getTranslatedString($pickListValue, $pickListValue),ENT_QUOTES,$default_charset),$pickListValue,$chk_val);
 			else
-				$options[] = array(getTranslatedString($pickListValue, $module_name),$pickListValue,$chk_val);
+				$options[] = array(getTranslatedString($pickListValue, $pickListValue),$pickListValue,$chk_val);
 		}
 		uasort($options, function($a,$b) {return (strtolower($a[0]) < strtolower($b[0])) ? -1 : 1;});
 		$fieldvalue [] = $options;
@@ -264,9 +264,9 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 					$chk_val = '';
 				}
 				if(isset($_REQUEST['file']) && $_REQUEST['file'] == 'QuickCreate'){
-					$options[] = array(htmlentities(getTranslatedString($pickListValue, $module_name),ENT_QUOTES,$default_charset),$pickListValue,$chk_val );
+					$options[] = array(htmlentities(getTranslatedString($pickListValue, $pickListValue),ENT_QUOTES,$default_charset),$pickListValue,$chk_val );
 				}else{
-					$options[] = array(getTranslatedString($pickListValue, $module_name),$pickListValue,$chk_val );
+					$options[] = array(getTranslatedString($pickListValue, $pickListValue),$pickListValue,$chk_val );
 				}
 			}
 
