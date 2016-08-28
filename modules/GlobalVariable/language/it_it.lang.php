@@ -68,6 +68,7 @@ $mod_strings = Array(
 	'Module Functionality' => 'Module Functionality',
 	'Other' => 'Other',
 	'product_service_default' => 'Productos or Services by default in Product Lines',
+	'GVarDefinitions' => 'Variable Definitions',
 
 );
 ?>
