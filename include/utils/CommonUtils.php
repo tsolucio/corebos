@@ -2444,11 +2444,9 @@ function getMergedDescriptionCustomVars($fields, $description) {
 function getSingleFieldValue($tablename, $fieldname, $idname, $id) {
 	global $log, $adb;
 	$log->debug("Entering into function getSingleFieldValue($tablename, $fieldname, $idname, $id)");
-
-	$fieldval = $adb->query_result($adb->pquery("select $fieldname from $tablename where $idname = ?", array($id)), 0, $fieldname);
-
+	$rs = $adb->pquery("select $fieldname from $tablename where $idname = ?", array($id));
+	$fieldval = $adb->query_result($rs, 0, $fieldname);
 	$log->debug("Exit from function getSingleFieldValue. return value ==> \"$fieldval\"");
-
 	return $fieldval;
 }
 
