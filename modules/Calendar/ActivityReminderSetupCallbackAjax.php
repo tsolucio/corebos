@@ -25,9 +25,9 @@ require_once('include/utils/utils.php');
 
 $log = LoggerManager::getLogger('Activity_Reminder');
 
-$cbaction = $_REQUEST['cbaction'];
-$cbmodule = $_REQUEST['cbmodule'];
-$cbrecord = $_REQUEST['cbrecord'];
+$cbaction = vtlib_purify($_REQUEST['cbaction']);
+$cbmodule = vtlib_purify($_REQUEST['cbmodule']);
+$cbrecord = vtlib_purify($_REQUEST['cbrecord']);
 
 if($cbaction == 'POSTPONE') {
 	if(isset($cbmodule) && isset($cbrecord)) {
