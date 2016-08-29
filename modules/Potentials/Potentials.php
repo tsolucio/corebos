@@ -102,6 +102,8 @@ class Potentials extends CRMEntity {
 	// Refers to vtiger_field.fieldname values.
 	var $mandatory_fields = Array('assigned_user_id', 'createdtime', 'modifiedtime', 'potentialname', 'related_to');
 
+	var $sales_stage = '';
+
 	function __construct() {
 		global $log;
 		$this_module = get_class($this);
@@ -116,9 +118,27 @@ class Potentials extends CRMEntity {
 		}
 	}
 
+	function save($module) {
+		global $adb;
+		if ($this->mode=='edit') {
+			$rs = $adb->pquery('select sales_stage from vtiger_potential where potentialid = ?', array($this->id));
+			$this->sales_stage = $adb->query_result($rs, 0, 'sales_stage');
+		}
+		parent::save($module);
+	}
+
 	function save_module($module) {
+		global $adb;
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id,$module);
+		}
+		if ($this->mode=='edit' and !empty($this->sales_stage) and $this->sales_stage != $this->column_fields['sales_stage'] && $this->column_fields['sales_stage'] != '') {
+			$date_var = date("Y-m-d H:i:s");
+			$closingDateField = new DateTimeField($this->column_fields['closingdate']);
+			$closingdate = ($_REQUEST['ajxaction'] == 'DETAILVIEW') ? $this->column_fields['closingdate'] : $closingDateField->getDBInsertDateValue();
+			$sql = "insert into vtiger_potstagehistory values(?,?,?,?,?,?,?,?)";
+			$params = array('', $this->id, $this->column_fields['amount'], decode_html($this->sales_stage), $this->column_fields['probability'], 0, $adb->formatDate($closingdate, true), $adb->formatDate($date_var, true));
+			$adb->pquery($sql, $params);
 		}
 	}
 
