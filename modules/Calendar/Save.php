@@ -17,7 +17,6 @@ $local_log =& LoggerManager::getLogger('index');
 $focus = new Activity();
 $activity_mode = vtlib_purify($_REQUEST['activity_mode']);
 $tab_type = 'Calendar';
-//added to fix 4600
 $search=vtlib_purify($_REQUEST['search_url']);
 
 $focus->column_fields["activitytype"] = 'Task';
