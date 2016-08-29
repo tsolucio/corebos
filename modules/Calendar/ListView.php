@@ -208,7 +208,10 @@ if(isset($order_by) && $order_by != '') {
 			$list_query .= ' ORDER BY '.$tablename.$order_by.' '.$sorder;
 	}
 }
-
+if (GlobalVariable::getVariable('Debug_ListView_Query', '0')=='1') {
+	echo '<br>'.$list_query.'<br>';
+}
+try {
 if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true){
 	$count_query = preg_replace("/[\n\r\s]+/", " ", $list_query);
 	$count_query = 'SELECT 1 ' . substr($count_query, stripos($count_query, ' FROM '), strlen($count_query));
@@ -228,6 +231,14 @@ $navigation_array = VT_getSimpleNavigationValues($start,$list_max_entries_per_pa
 $limit_start_rec = ($start-1) * $list_max_entries_per_page;
 
 $list_result = $adb->pquery($list_query. " LIMIT $limit_start_rec, $list_max_entries_per_page", array());
+} catch (Exception $e) {
+	$sql_error = true;
+}
+$smarty->assign('SQLERROR',$sql_error);
+if ($sql_error) {
+	$smarty->assign('ERROR', getTranslatedString('ERROR_GETTING_FILTER'));
+	$smarty->assign("CUSTOMVIEW_OPTION",$customview_html);
+} else {
 
 $recordListRangeMsg = getRecordRangeMessage($list_result, $limit_start_rec,$noofrows);
 $smarty->assign('recordListRange',$recordListRangeMsg);
@@ -291,7 +302,12 @@ $_SESSION[$currentModule.'_listquery'] = $list_query;
 include_once('vtlib/Vtiger/Link.php');
 $customlink_params = Array('MODULE'=>$currentModule, 'ACTION'=>vtlib_purify($_REQUEST['action']), 'CATEGORY'=> $category);
 $smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), Array('LISTVIEWBASIC','LISTVIEW'), $customlink_params));
-// END
+} // try query
+$smarty->assign('IS_ADMIN', is_admin($current_user));
+
+// Search Panel Status
+$DEFAULT_SEARCH_PANEL_STATUS = GlobalVariable::getVariable('Application_Search_Panel_Open',1);
+$smarty->assign('DEFAULT_SEARCH_PANEL_STATUS',($DEFAULT_SEARCH_PANEL_STATUS ? 'display: block' : 'display: none'));
 
 if(isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '')
 	$smarty->display("ListViewEntries.tpl");
