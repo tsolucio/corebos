@@ -139,6 +139,9 @@
 															<input type="button" name="show" value="{$MOD.LBL_VIEW_EMPTY_FOLDERS}" class="crmbutton small cancel" onClick="fnvshobj(this,'emptyfolder');" title="{$MOD.LBL_VIEW_EMPTY_FOLDERS}">
 														</td>
 													{/if}
+													<td>
+														<input type="button" name="show" value="{$MOD.LNK_DOWNLOAD}" class="crmbutton small edit" onClick="massDownload();" title="{$MOD.LNK_DOWNLOAD}">
+													</td>
 												</tr>
 											</table>
 										</td>
