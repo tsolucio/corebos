@@ -90,6 +90,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'All | Last5 | Mine',
 	'definition' => '"All" (default value) will show all comments related to the module, "Last5" will show only the last 5 commentas and "Mine" will show all comments of the current user.',
 ),
+'Application_TrackerMaxHistory' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Application Functionality',
+	'values' => '',
+	'definition' => 'Máximum number of elements in the Recent Viewed elements popup. The default value is 10.',
+),
 'Debug_Send_VtigerCron_Error' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'CSV EMail',

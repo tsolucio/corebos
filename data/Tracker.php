@@ -18,6 +18,7 @@ class Tracker {
 	var $log;
 	var $db;
 	var $table_name = 'vtiger_tracker';
+	var $history_max_viewed = 10;
 
 	// Tracker table
 	var $column_fields = Array(
@@ -32,6 +33,7 @@ function __construct() {
 	$this->log = LoggerManager::getLogger('Tracker');
 	global $adb;
 	$this->db = $adb;
+	$this->history_max_viewed = GlobalVariable::getVariable('Application_TrackerMaxHistory',10);
 }
 
 /**
@@ -137,12 +139,11 @@ function delete_item_history($item_id) {
  * INTERNAL -- This function will clean out old history records for this user if necessary.
  */
 function prune_history($user_id) {
-	global $history_max_viewed;
 	$this->log->debug("Enter prune_history($user_id)");
 	// Check to see if the number of items in the list is now greater than the config max.
 	$rs = $this->db->pquery("SELECT count(*) from {$this->table_name} WHERE user_id=?",array($user_id));
 	$count = $this->db->query_result($rs,0,0);
-	while($count > $history_max_viewed) {
+	while($count > $this->history_max_viewed) {
 		// delete the last one. This assumes that entries are added one at a time > we should never add a bunch of entries
 		$query = "SELECT * from $this->table_name WHERE user_id='$user_id' ORDER BY id ASC";
 		$result = $this->db->limitQuery($query,0,1);
