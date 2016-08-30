@@ -738,4 +738,11 @@
 	<classname>add_workflow_duplicaterecords</classname>
 	<systemupdate>false</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add decimals to status history logs and apply SQL optimizations</description>
+	<filename>build/changeSets/cleanoptimizedatabase_160.php</filename>
+	<classname>cleanoptimizedatabase_160</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

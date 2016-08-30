@@ -643,50 +643,6 @@ class CRMEntity {
 		}
 
 		if ($insertion_mode == 'edit') {
-			if ($module == 'PurchaseOrder' || $module == 'SalesOrder' || $module == 'Quotes' || $module == 'Invoice') {
-				//added to update the history for PO, SO, Quotes and Invoice
-				$history_field_array = Array(
-					"PurchaseOrder" => "postatus",
-					"SalesOrder" => "sostatus",
-					"Quotes" => "quotestage",
-					"Invoice" => "invoicestatus"
-				);
-
-				$inventory_module = $module;
-
-				if ($_REQUEST['ajxaction'] == 'DETAILVIEW') {//if we use ajax edit
-					if ($inventory_module == "PurchaseOrder")
-						$relatedname = getVendorName($this->column_fields['vendor_id']);
-					else
-						$relatedname = getAccountName($this->column_fields['account_id']);
-
-					$total = $this->column_fields['hdnGrandTotal'];
-				}
-				else {//using edit button and save
-					if ($inventory_module == "PurchaseOrder")
-						$relatedname = $_REQUEST["vendor_name"];
-					else
-						$relatedname = $_REQUEST["account_name"];
-
-					$total = $_REQUEST['total'];
-				}
-
-				if ($this->column_fields["$history_field_array[$inventory_module]"] == $app_strings['LBL_NOT_ACCESSIBLE']) {
-
-					//If the value in the request is Not Accessible for a picklist, the existing value will be replaced instead of Not Accessible value.
-					$his_col = $history_field_array[$inventory_module];
-					$his_sql = "select $his_col from $this->table_name where " . $this->table_index . "=?";
-					$his_res = $adb->pquery($his_sql, array($this->id));
-					$status_value = $adb->query_result($his_res, 0, $his_col);
-					$stat_value = $status_value;
-				} else {
-					$stat_value = $this->column_fields["$history_field_array[$inventory_module]"];
-				}
-				$oldvalue = getSingleFieldValue($this->table_name, $history_field_array[$inventory_module], $this->table_index, $this->id);
-				if ($this->column_fields["$history_field_array[$inventory_module]"] != '' && $oldvalue != $stat_value) {
-					addInventoryHistory($inventory_module, $this->id, $relatedname, $total, $stat_value);
-				}
-			}
 			// If update is empty the query fails
 			if (count($update) > 0) {
 				$sql1 = "update $table_name set " . implode(",", $update) . " where " . $this->tab_name_index[$table_name] . "=?";

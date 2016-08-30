@@ -85,6 +85,7 @@ class SalesOrder extends CRMEntity {
 	var $default_sort_order = 'ASC';
 
 	var $mandatory_fields = Array('subject','createdtime' ,'modifiedtime');
+	var $record_status = '';
 
 	function __construct() {
 		global $log;
@@ -100,10 +101,20 @@ class SalesOrder extends CRMEntity {
 		}
 	}
 
+	function save($module) {
+		if ($this->mode=='edit') {
+			$this->record_status = getSingleFieldValue($this->table_name, 'sostatus', $this->table_index, $this->id);
+		}
+		parent::save($module);
+	}
+
 	function save_module($module) {
 		global $updateInventoryProductRel_deduct_stock;
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id,$module);
+		}
+		if ($this->mode=='edit' and !empty($this->record_status) and $this->record_status != $this->column_fields['sostatus'] && $this->column_fields['sostatus'] != '') {
+			$this->registerInventoryHistory();
 		}
 		$updateInventoryProductRel_deduct_stock = true;
 		//Checking if quote_id is present and updating the quote status
@@ -130,6 +141,32 @@ class SalesOrder extends CRMEntity {
 		$update_query = "update vtiger_salesorder set currency_id=?, conversion_rate=? where salesorderid=?";
 		$update_params = array($this->column_fields['currency_id'], $this->column_fields['conversion_rate'], $this->id);
 		$this->db->pquery($update_query, $update_params);
+	}
+
+	function registerInventoryHistory() {
+		global $app_strings;
+		if ($_REQUEST['ajxaction'] == 'DETAILVIEW') { //if we use ajax edit
+			if (GlobalVariable::getVariable('B2B', '1')) {
+				$relatedname = getAccountName($this->column_fields['account_id']);
+			} else {
+				$relatedname = getContactName($this->column_fields['contact_id']);
+			}
+			$total = $this->column_fields['hdnGrandTotal'];
+		} else { //using edit button and save
+			if (GlobalVariable::getVariable('B2B', '1')) {
+				$relatedname = $_REQUEST["account_name"];
+			} else {
+				$relatedname = $_REQUEST["contact_name"];
+			}
+			$total = $_REQUEST['total'];
+		}
+		if ($this->column_fields['sostatus'] == $app_strings['LBL_NOT_ACCESSIBLE']) {
+			//If the value in the request is Not Accessible for a picklist, the existing value will be replaced instead of Not Accessible value.
+			$stat_value = getSingleFieldValue($this->table_name, 'sostatus', $this->table_index, $this->id);
+		} else {
+			$stat_value = $this->column_fields['sostatus'];
+		}
+		addInventoryHistory(get_class($this), $this->id, $relatedname, $total, $stat_value);
 	}
 
 	/**
@@ -303,14 +340,9 @@ class SalesOrder extends CRMEntity {
 	 *	@param $id - salesorder id
 	 *	@return $return_data - array with header and the entries in format Array('header'=>$header,'entries'=>$entries_list) where as $header and $entries_list are arrays which contains header values and all column values of all entries
 	 */
-	function get_sostatushistory($id)
-	{
-		global $log;
+	function get_sostatushistory($id) {
+		global $log, $adb, $mod_strings, $app_strings, $current_user;
 		$log->debug("Entering get_sostatushistory(".$id.") method ...");
-
-		global $adb;
-		global $mod_strings;
-		global $app_strings;
 
 		$query = 'select vtiger_sostatushistory.*, vtiger_salesorder.salesorder_no from vtiger_sostatushistory inner join vtiger_salesorder on vtiger_salesorder.salesorderid = vtiger_sostatushistory.salesorderid inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_salesorder.salesorderid where vtiger_crmentity.deleted = 0 and vtiger_salesorder.salesorderid = ?';
 		$result=$adb->pquery($query, array($id));
@@ -324,7 +356,6 @@ class SalesOrder extends CRMEntity {
 
 		//Getting the field permission for the current user. 1 - Not Accessible, 0 - Accessible
 		//Account Name , Total are mandatory fields. So no need to do security check to these fields.
-		global $current_user;
 
 		//If field is accessible then getFieldVisibilityPermission function will return 0 else return 1
 		$sostatus_access = (getFieldVisibilityPermission('SalesOrder', $current_user->id, 'sostatus') != '0')? 1 : 0;
@@ -333,19 +364,16 @@ class SalesOrder extends CRMEntity {
 		$sostatus_array = ($sostatus_access != 1)? $picklistarray['sostatus']: array();
 		//- ==> picklist field is not permitted in profile
 		//Not Accessible - picklist is permitted in profile but picklist value is not permitted
-		$error_msg = ($sostatus_access != 1)? 'Not Accessible': '-';
+		$error_msg = ($sostatus_access != 1)? getTranslatedString('LBL_NOT_ACCESSIBLE'): '-';
 
-		while($row = $adb->fetch_array($result))
-		{
+		while($row = $adb->fetch_array($result)) {
 			$entries = Array();
 
-			// Module Sequence Numbering
-			//$entries[] = $row['salesorderid'];
 			$entries[] = $row['salesorder_no'];
-			// END
 			$entries[] = $row['accountname'];
-			$entries[] = $row['total'];
-			$entries[] = (in_array($row['sostatus'], $sostatus_array))? $row['sostatus']: $error_msg;
+			$total = new CurrencyField($row['total']);
+			$entries[] = $total->getDisplayValueWithSymbol($current_user);
+			$entries[] = (in_array($row['sostatus'], $sostatus_array))? getTranslatedString($row['sostatus'],'SalesOrder'): $error_msg;
 			$date = new DateTimeField($row['lastmodified']);
 			$entries[] = $date->getDisplayDateTimeValue();
 
@@ -353,7 +381,6 @@ class SalesOrder extends CRMEntity {
 		}
 
 		$return_data = Array('header'=>$header,'entries'=>$entries_list);
-
 		$log->debug("Exiting get_sostatushistory method ...");
 		return $return_data;
 	}

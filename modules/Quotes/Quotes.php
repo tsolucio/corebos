@@ -88,6 +88,7 @@ class Quotes extends CRMEntity {
 	var $default_sort_order = 'ASC';
 
 	var $mandatory_fields = Array('subject','createdtime' ,'modifiedtime');
+	var $record_status = '';
 
 	function __construct() {
 		global $log;
@@ -103,10 +104,20 @@ class Quotes extends CRMEntity {
 		}
 	}
 
+	function save($module) {
+		if ($this->mode=='edit') {
+			$this->record_status = getSingleFieldValue($this->table_name, 'quotestage', $this->table_index, $this->id);
+		}
+		parent::save($module);
+	}
+
 	function save_module($module) {
 		global $adb;
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id,$module);
+		}
+		if ($this->mode=='edit' and !empty($this->record_status) and $this->record_status != $this->column_fields['quotestage'] && $this->column_fields['quotestage'] != '') {
+			$this->registerInventoryHistory();
 		}
 		//in ajax save we should not call this function, because this will delete all the existing product values
 		if(inventoryCanSaveProductLines($_REQUEST,'Quotes')) {
@@ -120,6 +131,32 @@ class Quotes extends CRMEntity {
 		$update_query = "update vtiger_quotes set currency_id=?, conversion_rate=? where quoteid=?";
 		$update_params = array($this->column_fields['currency_id'], $this->column_fields['conversion_rate'], $this->id);
 		$adb->pquery($update_query, $update_params);
+	}
+
+	function registerInventoryHistory() {
+		global $app_strings;
+		if ($_REQUEST['ajxaction'] == 'DETAILVIEW') { //if we use ajax edit
+			if (GlobalVariable::getVariable('B2B', '1')) {
+				$relatedname = getAccountName($this->column_fields['account_id']);
+			} else {
+				$relatedname = getContactName($this->column_fields['contact_id']);
+			}
+			$total = $this->column_fields['hdnGrandTotal'];
+		} else { //using edit button and save
+			if (GlobalVariable::getVariable('B2B', '1')) {
+				$relatedname = $_REQUEST["account_name"];
+			} else {
+				$relatedname = $_REQUEST["contact_name"];
+			}
+			$total = $_REQUEST['total'];
+		}
+		if ($this->column_fields['quotestage'] == $app_strings['LBL_NOT_ACCESSIBLE']) {
+			//If the value in the request is Not Accessible for a picklist, the existing value will be replaced instead of Not Accessible value.
+			$stat_value = getSingleFieldValue($this->table_name, 'quotestage', $this->table_index, $this->id);
+		} else {
+			$stat_value = $this->column_fields['quotestage'];
+		}
+		addInventoryHistory(get_class($this), $this->id, $relatedname, $total, $stat_value);
 	}
 
 	/**	function used to get the list of sales orders which are related to the Quotes
@@ -266,14 +303,9 @@ class Quotes extends CRMEntity {
 	 *	@param $id - quote id
 	 *	@return $return_data - array with header and the entries in format Array('header'=>$header,'entries'=>$entries_list) where as $header and $entries_list are arrays which contains header values and all column values of all entries
 	 */
-	function get_quotestagehistory($id)
-	{
-		global $log;
+	function get_quotestagehistory($id) {
+		global $log, $adb, $mod_strings, $app_strings, $current_user;
 		$log->debug("Entering get_quotestagehistory(".$id.") method ...");
-
-		global $adb;
-		global $mod_strings;
-		global $app_strings;
 
 		$query = 'select vtiger_quotestagehistory.*, vtiger_quotes.quote_no from vtiger_quotestagehistory inner join vtiger_quotes on vtiger_quotes.quoteid = vtiger_quotestagehistory.quoteid inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_quotes.quoteid where vtiger_crmentity.deleted = 0 and vtiger_quotes.quoteid = ?';
 		$result=$adb->pquery($query, array($id));
@@ -287,7 +319,6 @@ class Quotes extends CRMEntity {
 
 		//Getting the field permission for the current user. 1 - Not Accessible, 0 - Accessible
 		//Account Name , Total are mandatory fields. So no need to do security check to these fields.
-		global $current_user;
 
 		//If field is accessible then getFieldVisibilityPermission function will return 0 else return 1
 		$quotestage_access = (getFieldVisibilityPermission('Quotes', $current_user->id, 'quotestage') != '0')? 1 : 0;
@@ -296,19 +327,16 @@ class Quotes extends CRMEntity {
 		$quotestage_array = ($quotestage_access != 1)? $picklistarray['quotestage']: array();
 		//- ==> picklist field is not permitted in profile
 		//Not Accessible - picklist is permitted in profile but picklist value is not permitted
-		$error_msg = ($quotestage_access != 1)? 'Not Accessible': '-';
+		$error_msg = ($quotestage_access != 1)? getTranslatedString('LBL_NOT_ACCESSIBLE'): '-';
 
-		while($row = $adb->fetch_array($result))
-		{
+		while($row = $adb->fetch_array($result)) {
 			$entries = Array();
 
-			// Module Sequence Numbering
-			//$entries[] = $row['quoteid'];
 			$entries[] = $row['quote_no'];
-			// END
 			$entries[] = $row['accountname'];
-			$entries[] = $row['total'];
-			$entries[] = (in_array($row['quotestage'], $quotestage_array))? $row['quotestage']: $error_msg;
+			$total = new CurrencyField($row['total']);
+			$entries[] = $total->getDisplayValueWithSymbol($current_user);
+			$entries[] = (in_array($row['quotestage'], $quotestage_array))? getTranslatedString($row['quotestage'],'Quotes'): $error_msg;
 			$date = new DateTimeField($row['lastmodified']);
 			$entries[] = $date->getDisplayDateTimeValue();
 
@@ -316,9 +344,7 @@ class Quotes extends CRMEntity {
 		}
 
 		$return_data = Array('header'=>$header,'entries'=>$entries_list);
-
-	 	$log->debug("Exiting get_quotestagehistory method ...");
-
+		$log->debug("Exiting get_quotestagehistory method ...");
 		return $return_data;
 	}
 
