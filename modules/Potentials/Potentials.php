@@ -140,6 +140,30 @@ class Potentials extends CRMEntity {
 			$params = array('', $this->id, $this->column_fields['amount'], decode_html($this->sales_stage), $this->column_fields['probability'], 0, $adb->formatDate($closingdate, true), $adb->formatDate($date_var, true));
 			$adb->pquery($sql, $params);
 		}
+		$relModule = getSalesEntityType($this->column_fields['related_to']);
+		if($relModule == "Contacts") {
+			if($this->column_fields['campaignid'] != NULL && $this->column_fields['campaignid'] !=  0)
+			{
+				$res_cnt = $adb->pquery("SELECT COUNT(*) as num FROM vtiger_campaigncontrel WHERE (contactid  = ? AND campaignid  = ?)",array($this->column_fields['related_to'],$this->column_fields['campaignid']));
+				$relacionado = $adb->query_result($res_cnt,0,'num');
+				if($relacionado == 0)
+				{
+					$sql = "INSERT INTO vtiger_campaigncontrel VALUES(?,?,1)";
+					$adb->pquery($sql, array($this->column_fields['campaignid'], $this->column_fields['related_to']));
+				}
+			}
+		} else {
+			if($this->column_fields['campaignid'] != NULL && $this->column_fields['campaignid'] !=  0)
+			{
+				$res_acc = $adb->pquery("SELECT COUNT(*) as num FROM vtiger_campaignaccountrel WHERE (accountid  = ? AND campaignid  = ?)",array($this->column_fields['related_to'],$this->column_fields['campaignid']));
+				$relacionado = $adb->query_result($res_acc,0,'num');
+				if($relacionado == 0)
+				{
+					$sql = "INSERT INTO vtiger_campaignaccountrel VALUES(?,?,1)";
+					$adb->pquery($sql, array($this->column_fields['campaignid'], $this->column_fields['related_to']));
+				}
+			}
+		}
 	}
 
 	/** Function to create list query
