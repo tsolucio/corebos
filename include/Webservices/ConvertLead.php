@@ -290,7 +290,8 @@ function vtws_createEntity($recordid,$originMod,$targetMod) {
 	foreach ($originMod as $modName) {
 		if($recordid[$modName]) {
 			$oldEntityInfo = CRMEntity::getInstance($modName);
-			$oldEntityInfo->retrieve_entity_info(vtws_getIdComponents($recordid[$modName])[1], $modName);
+			$modNameIdComponents = vtws_getIdComponents($recordid[$modName]);
+			$oldEntityInfo->retrieve_entity_info($modNameIdComponents[1], $modName);
 			$map_name = $modName.'2'.$targetMod;
 			$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$map_name, cbMap::getMapIdByName($map_name));
 			if($cbMapid) {
