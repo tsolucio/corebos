@@ -306,10 +306,8 @@ class CRMEntity {
 			$log->info("module is =" . $module);
 			$ownerid = $current_user->id;
 		}
-		// Asha - Change ownerid from '' to null since its an integer field.
-		// It is empty for modules like Invoice/Quotes/SO/PO which do not have Assigned to field
-		if ($ownerid === '')
-			$ownerid = 0;
+		if (empty($ownerid))
+			$ownerid = $current_user->id;
 
 		if ($module == 'Events') {
 			$module = 'Calendar';
