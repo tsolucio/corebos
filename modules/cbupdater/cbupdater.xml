@@ -738,4 +738,11 @@
 	<classname>add_workflow_duplicaterecords</classname>
 	<systemupdate>false</systemupdate>
 </changeSet>
+<changeSet>
+	<author>kevinduqi</author>
+	<description>Mass Document Download action</description>
+	<filename>build/changeSets/mass_document_download.php</filename>
+	<classname>mass_document_download</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
 </updatesChangeLog>

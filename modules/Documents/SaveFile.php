@@ -61,8 +61,8 @@ if(isset($_REQUEST['act']) && $_REQUEST['act'] == 'checkFileIntegrityDetailView'
 
 if(isset($_REQUEST['act']) && $_REQUEST['act'] == 'massDldCnt')
 {
-	$all_files = $_REQUEST['file_id'];
-	$zipfilename = "cache/Documents.zip";
+	$all_files = vtlib_purify($_REQUEST['file_id']);
+	$zipfilename = "cache/Documents".$current_user->id.".zip";
 	$zip = new Vtiger_Zip($zipfilename);
 	if (file_exists($zipfilename)) @unlink($zipfilename);
 	$dec_files =json_decode($all_files,true);
@@ -86,8 +86,8 @@ if(isset($_REQUEST['act']) && $_REQUEST['act'] == 'massDldCnt')
 				}
 			}
 		}
-	}$zip->save();
+	}
+	$zip->save();
 	$zip->forceDownload($zipfilename);
-	unlink($zipfilename);
 }
 ?>
