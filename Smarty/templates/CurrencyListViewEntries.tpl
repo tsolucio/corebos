@@ -14,10 +14,11 @@
 		<td class="colHeader small" width="3%">#</td>
 		<td class="colHeader small" width="9%">{$MOD.LBL_CURRENCY_TOOL}</td>
 		<td class="colHeader small" width="23%">{$MOD.LBL_CURRENCY_NAME}</td>
-		<td class="colHeader small" width="20%">{$MOD.LBL_CURRENCY_CODE}</td>
+		<td class="colHeader small" width="15%">{$MOD.LBL_CURRENCY_CODE}</td>
 		<td class="colHeader small" width="10%">{$MOD.LBL_CURRENCY_SYMBOL}</td>
-		<td class="colHeader small" width="20%">{$MOD.LBL_CURRENCY_CRATE}</td>
-		<td class="colHeader small" width="15%">{$MOD.LBL_CURRENCY_STATUS}</td>
+		<td class="colHeader small" width="16%">{'Symbol Placement'|@getTranslatedString:'Users'}</td>
+		<td class="colHeader small" width="16%">{$MOD.LBL_CURRENCY_CRATE}</td>
+		<td class="colHeader small" width="8%">{$MOD.LBL_CURRENCY_STATUS}</td>
 	</tr>
 	{foreach item=currencyvalues name=currlist key=id from=$CURRENCY_LIST}
 	<tr>
@@ -26,6 +27,7 @@
 		<td nowrap class="listTableRow small" valign="top"><b>{$currencyvalues.name|@getTranslatedCurrencyString}</b></td>
 		<td nowrap class="listTableRow small" valign="top">{$currencyvalues.code}</td>
 		<td nowrap class="listTableRow small" valign="top">{$currencyvalues.symbol}</td>
+		<td nowrap class="listTableRow small" valign="top">{$currencyvalues.position}</td>
 		<td nowrap class="listTableRow small" valign="top">{$currencyvalues.crate}</td>
 		{if $currencyvalues.status eq 'Active'}
 			<td nowrap class="listTableRow small active" valign="top">{$currencyvalues.status|@getTranslatedString}</td>

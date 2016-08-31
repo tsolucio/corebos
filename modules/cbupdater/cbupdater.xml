@@ -745,4 +745,11 @@
 	<classname>cleanoptimizedatabase_160</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Currency Position to currency settings</description>
+	<filename>build/changeSets/addCurrencyPosition.php</filename>
+	<classname>addCurrencyPosition</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

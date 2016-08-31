@@ -6,11 +6,10 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 -->*}
-<script language="JAVASCRIPT" type="text/javascript" src="include/js/smoothscroll.js"></script>
-<script language="JavaScript" type="text/javascript" src="include/js/menu.js"></script>
+<script type="text/javascript" src="include/js/smoothscroll.js"></script>
+<script type="text/javascript" src="include/js/menu.js"></script>
 <br>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tbody><tr>
@@ -116,11 +115,19 @@
 				</tr>
 				<tr valign="top">
 					<td nowrap class="small cellLabel"><font color="red">*</font><strong>{$MOD.LBL_CURRENCY_CODE}</strong></td>
- 					<td class="small cellText"><input type="text" readonly class="detailedViewTextBox small" value="{$CURRENCY_CODE}" name="currency_code" id="currency_code"></td>
+					<td class="small cellText"><input type="text" readonly class="detailedViewTextBox small" value="{$CURRENCY_CODE}" name="currency_code" id="currency_code"></td>
 				</tr>
 				<tr valign="top">
 					<td nowrap class="small cellLabel"><font color="red">*</font><strong>{$MOD.LBL_CURRENCY_SYMBOL}</strong></td>
 					<td class="small cellText"><input type="text" readonly class="detailedViewTextBox small" value="{$CURRENCY_SYMBOL}" name="currency_symbol" id="currency_symbol"></td>
+				</tr>
+				<tr valign="top">
+					<td nowrap class="small cellLabel"><font color="red">*</font><strong>{'Symbol Placement'|@getTranslatedString:'Users'}</strong></td>
+					<td class="small cellText">
+						<select name="currency_position" class="importBox">
+							{html_options options=$symbolpositionvalues selected=$CURRENCY_POSITION}
+						</select>
+					</td>
 				</tr>
 				<tr valign="top">
 					<td nowrap class="small cellLabel"><font color="red">*</font><strong>{$MOD.LBL_CURRENCY_CRATE}</strong><br>({$MOD.LBL_BASE_CURRENCY}{$MASTER_CURRENCY|@getTranslatedCurrencyString})</td>
@@ -130,10 +137,10 @@
 					<td nowrap class="small cellLabel"><strong>{$MOD.LBL_CURRENCY_STATUS}</strong></td>
 					<td class="small cellText">
 						<input type="hidden" value="{$CURRENCY_STATUS}" id="old_currency_status" />
-							<select name="currency_status" {$STATUS_DISABLE} class="importBox">
-									<option value="Active"  {$ACTSELECT}>{$MOD.LBL_ACTIVE}</option>
-				        	        <option value="Inactive" {$INACTSELECT}>{$MOD.LBL_INACTIVE}</option>
-							</select>
+						<select name="currency_status" {$STATUS_DISABLE} class="importBox">
+							<option value="Active"  {$ACTSELECT}>{$MOD.LBL_ACTIVE}</option>
+							<option value="Inactive" {$INACTSELECT}>{$MOD.LBL_INACTIVE}</option>
+						</select>
 					</td>
 				</tr>	
                        </table>
