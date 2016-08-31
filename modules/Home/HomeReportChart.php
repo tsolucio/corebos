@@ -21,7 +21,7 @@ $num_rows = $adb->num_rows($reportRes);
 for ($i = 0; $i < $num_rows; $i++) {
 	$reportId = $adb->query_result($reportRes, $i, 'reportid');
 	$reportName = $adb->query_result($reportRes, $i, 'reportname');
-	$selectElement .= '<option value="' . $reportId . '">' . $reportName . '</option>';
+	$selectElement .= '<option value="' . $reportId . '">' . getTranslatedString($reportName,'Reports') . '</option>';
 }
 $selectElement.='</select>';
 echo $selectElement;
