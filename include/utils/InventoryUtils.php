@@ -786,31 +786,10 @@ function getInventoryTaxType($module, $id)
  *	@param int $id - id of the PO or SO or Quotes or Invoice
  *	@return string $pricetype - pricetype for the given entity which will be unitprice or secondprice
  */
-function getInventoryCurrencyInfo($module, $id)
-{
-	global $log, $adb;
-
+function getInventoryCurrencyInfo($module, $id) {
+	global $log;
 	$log->debug("Entering into function getInventoryCurrencyInfo($module, $id).");
-
-	$inv_table_array = Array('PurchaseOrder'=>'vtiger_purchaseorder','SalesOrder'=>'vtiger_salesorder','Quotes'=>'vtiger_quotes','Invoice'=>'vtiger_invoice');
-	$inv_id_array = Array('PurchaseOrder'=>'purchaseorderid','SalesOrder'=>'salesorderid','Quotes'=>'quoteid','Invoice'=>'invoiceid');
-
-	$inventory_table = $inv_table_array[$module];
-	$inventory_id = $inv_id_array[$module];
-	$res = $adb->pquery("select currency_id, $inventory_table.conversion_rate as conv_rate, vtiger_currency_info.* from $inventory_table
-						inner join vtiger_currency_info on $inventory_table.currency_id = vtiger_currency_info.id
-						where $inventory_id=?", array($id));
-
-	$currency_info = array();
-	$currency_info['currency_id'] = $adb->query_result($res,0,'currency_id');
-	$currency_info['conversion_rate'] = $adb->query_result($res,0,'conv_rate');
-	$currency_info['currency_name'] = $adb->query_result($res,0,'currency_name');
-	$currency_info['currency_code'] = $adb->query_result($res,0,'currency_code');
-	$currency_info['currency_symbol'] = $adb->query_result($res,0,'currency_symbol');
-
-	$log->debug("Exit from function getInventoryCurrencyInfo($module, $id).");
-
-	return $currency_info;
+	return CurrencyField::getMultiCurrencyInfoFrom($module, $id);
 }
 
 /**	function used to get the taxvalue which is associated with a product for PO/SO/Quotes or Invoice
