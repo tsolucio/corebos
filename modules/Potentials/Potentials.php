@@ -118,13 +118,13 @@ class Potentials extends CRMEntity {
 		}
 	}
 
-	function save($module) {
+	function save($module, $fileid = '') {
 		global $adb;
 		if ($this->mode=='edit') {
 			$rs = $adb->pquery('select sales_stage from vtiger_potential where potentialid = ?', array($this->id));
 			$this->sales_stage = $adb->query_result($rs, 0, 'sales_stage');
 		}
-		parent::save($module);
+		parent::save($module, $fileid);
 	}
 
 	function save_module($module) {

@@ -102,11 +102,11 @@ class Invoice extends CRMEntity {
 		}
 	}
 
-	function save($module) {
+	function save($module, $fileid = '') {
 		if ($this->mode=='edit') {
 			$this->record_status = getSingleFieldValue($this->table_name, 'invoicestatus', $this->table_index, $this->id);
 		}
-		parent::save($module);
+		parent::save($module, $fileid);
 	}
 
 	function save_module($module) {
