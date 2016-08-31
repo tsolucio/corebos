@@ -263,6 +263,27 @@ function dldCntIncrease(fileid) {
 	);
 }
 
+function massDownload() {
+		var arrayobj = {};
+		var obj = document.getElementsByName('folderidVal');
+		if (obj) {
+			for (var i = 0; i < obj.length; i++) {
+				var id = obj[i].value;
+				var values = document.getElementById('selectedboxes_selectall' + id).value;
+				if (values)
+					arrayobj[id] = values;
+			}
+		}
+		var count  = Object.keys(arrayobj).length;
+		var array_val = JSON.stringify(arrayobj);
+		if (count !== 0) {
+			window.location.href = 'index.php?action=DocumentsAjax&mode=ajax&file=SaveFile&module=Documents&file_id=' + array_val + "&act=massDldCnt";
+		} else {
+			alert(alert_arr.SELECT);
+			return false;
+		}
+}
+
 function checkFileIntegrityDetailView(noteid) {
 	document.getElementById('vtbusy_integrity_info').style.display = '';
 	jQuery.ajax({
