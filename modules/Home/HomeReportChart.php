@@ -7,12 +7,11 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-
 global $adb;
 
 $summaryReportQuery = "SELECT * FROM vtiger_report
-                        INNER JOIN vtiger_reportsortcol ON vtiger_report.reportid = vtiger_reportsortcol.reportid
-                        WHERE vtiger_report.reporttype='summary' and vtiger_reportsortcol.columnname!='none'";
+ INNER JOIN vtiger_reportsortcol ON vtiger_report.reportid = vtiger_reportsortcol.reportid
+ WHERE vtiger_report.reporttype='summary' and vtiger_reportsortcol.columnname!='none'";
 
 $reportRes = $adb->pquery($summaryReportQuery, array());
 
