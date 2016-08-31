@@ -128,6 +128,7 @@ function mass_edit_formload(idstring, module, parenttab) {
 				document.getElementById("massedit_form_div").innerHTML=result;
 				document.getElementById("massedit_form")["massedit_recordids"].value = document.getElementById("massedit_form")['idstring'].value;
 				document.getElementById("massedit_form")["massedit_module"].value = module;
+				vtlib_executeJavascriptInElement(document.getElementById("massedit_form_div"));
 			}
 		);
 }
