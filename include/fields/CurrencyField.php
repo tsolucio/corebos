@@ -107,7 +107,7 @@ class CurrencyField {
 		$currencyRateAndSymbol = getCurrencySymbolandCRate($this->currencyId);
 		$this->currencySymbol = $currencyRateAndSymbol['symbol'];
 		$this->conversionRate = $currencyRateAndSymbol['rate'];
-		$this->currencySymbolPlacement = $user->currency_symbol_placement;
+		$this->currencySymbolPlacement = (empty($currencyRateAndSymbol['position']) ? $user->currency_symbol_placement : $currencyRateAndSymbol['position']);
 		$this->numberOfDecimal = self::getCurrencyDecimalPlaces($user);
 	}
 

@@ -151,12 +151,13 @@ class VTCacheUtils {
 		}
 		return false;
 	}
-	static function updateCurrencyInfo($currencyid, $name, $code, $symbol, $rate) {
+	static function updateCurrencyInfo($currencyid, $name, $code, $symbol, $rate, $position) {
 		self::$_currencyinfo_cache[$currencyid] = array(
 			'currencyid' => $currencyid,
 			'name'       => $name,
 			'code'       => $code,
 			'symbol'     => $symbol,
+			'position'   => $position,
 			'rate'       => $rate
 		);
 	}

@@ -305,8 +305,8 @@ function getCurrencyName($currencyid, $show_symbol = true) {
 		$resultinfo = $adb->fetch_array($result);
 
 		// Update cache
-		VTCacheUtils::updateCurrencyInfo($currencyid, $resultinfo['currency_name'], $resultinfo['currency_code'], $resultinfo['currency_symbol'], $resultinfo['conversion_rate']
-		);
+		VTCacheUtils::updateCurrencyInfo($currencyid, $resultinfo['currency_name'], $resultinfo['currency_code'],
+			$resultinfo['currency_symbol'], $resultinfo['conversion_rate'], $resultinfo['currency_position']);
 
 		// Re-look at the cache now
 		$currencyinfo = VTCacheUtils::lookupCurrencyInfo($currencyid);
@@ -1109,6 +1109,7 @@ function getCurrencySymbolandCRate($id) {
 
 	$rate_symbol['rate'] = $currencyinfo['rate'];
 	$rate_symbol['symbol'] = $currencyinfo['symbol'];
+	$rate_symbol['position'] = $currencyinfo['position'];
 
 	$log->debug("Exiting getCurrencySymbolandCRate method ...");
 	return $rate_symbol;
