@@ -45,8 +45,6 @@ global $current_user, $adb;
 $util = new VTWorkflowUtils();
 $adminUser = $util->adminUser();
 $current_user = $adminUser;
-$tq = new VTTaskQueue($adb);
-$readyTasks = $tq->getReadyTasks();
 $tm = new VTTaskManager($adb);
 $taskId = 41;
 $entityId = '12x136';
