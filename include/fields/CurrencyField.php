@@ -107,7 +107,7 @@ class CurrencyField {
 		$currencyRateAndSymbol = getCurrencySymbolandCRate($this->currencyId);
 		$this->currencySymbol = $currencyRateAndSymbol['symbol'];
 		$this->conversionRate = $currencyRateAndSymbol['rate'];
-		$this->currencySymbolPlacement = $user->currency_symbol_placement;
+		$this->currencySymbolPlacement = (empty($currencyRateAndSymbol['position']) ? $user->currency_symbol_placement : $currencyRateAndSymbol['position']);
 		$this->numberOfDecimal = self::getCurrencyDecimalPlaces($user);
 	}
 
@@ -381,6 +381,36 @@ class CurrencyField {
 	 */
 	public static function convertFromMasterCurrency($amount, $conversionRate) {
 		return $amount * $conversionRate;
+	}
+
+	/** For modules with multi currency functionality this function returns all the information of the currency being used on one record
+	 * For this to work, the module MUST have two fields on their MAIN table:
+	 *  currency_id: integer uitype 117
+	 *  conversion_rate: decimal(10,3) uitype 1 displaytype 3
+	 * param $module module name to get the currrency from
+	 * param $crmid record to get the currrency from
+	 * returns array with all the currency information
+	 */
+	public static function getMultiCurrencyInfoFrom($module, $crmid) {
+		global $log, $adb;
+		$log->debug("Entering into function getMultiCurrencyInfoFrom($module, $crmid).");
+		$m = CRMEntity::getInstance($module);
+		$inventory_table = $m->table_name;
+		$inventory_id = $m->table_index;
+		$res = $adb->pquery("select currency_id, $inventory_table.conversion_rate as conv_rate, vtiger_currency_info.* from $inventory_table
+							inner join vtiger_currency_info on $inventory_table.currency_id = vtiger_currency_info.id
+							where $inventory_id=?", array($crmid));
+
+		$currency_info = array();
+		$currency_info['currency_id'] = $adb->query_result($res,0,'currency_id');
+		$currency_info['conversion_rate'] = $adb->query_result($res,0,'conv_rate');
+		$currency_info['currency_name'] = $adb->query_result($res,0,'currency_name');
+		$currency_info['currency_code'] = $adb->query_result($res,0,'currency_code');
+		$currency_info['currency_symbol'] = $adb->query_result($res,0,'currency_symbol');
+		$currency_info['currency_position'] = $adb->query_result($res,0,'currency_position');
+
+		$log->debug("Exit from function getMultiCurrencyInfoFrom.");
+		return $currency_info;
 	}
 
 	public static function getDecimalsFromTypeOfData($typeofdata) {

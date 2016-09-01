@@ -980,5 +980,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 		{else}
 			{* just show field on screen *}
 			<td width=20% class="dvtCellLabel" align=right>{$fldlabel}</td>
-			<td width=30% align=left class="dvtCellInfo"><input type="hidden" name="{$fldname}" id="{$fldname}" value="{$fldvalue.fieldsavevalue}">{$fldvalue.fieldshowvalue}</td>
+			<td width=30% align=left class="dvtCellInfo">
+				{if $fldname neq ''}<input type="hidden" name="{$fldname}" id="{$fldname}" value="{$fldvalue.fieldsavevalue}">{/if}{$fldvalue.fieldshowvalue}
+			</td>
 		{/if}

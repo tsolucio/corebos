@@ -33,10 +33,16 @@ if(!empty($deletecheck) && $adb->query_result($deletecheck, 0, 'deleted') == 1) 
 		$fileContent = fread(fopen($filepath.$saved_filename, "r"), $filesize);
 		header("Content-type: $fileType");
 		header("Pragma: public");
+		header("Expires: ".gmdate("D, d M Y H:i:s")." GMT");
+		header("Cache-Control: must-revalidate, post-check=0, pre-check=0");
 		header("Cache-Control: private");
+		header("Content-Description: File Transfer");
+		header("Content-length: ".$disk_file_size);
+		header("Content-type: ".$fileType);
+		header("Content-Transfer-Encoding: binary");
 		header("Content-Disposition: attachment; filename=\"$name\"");
-		header("Content-Description: PHP Generated Data");
 		echo $fileContent;
+		die();
 	} else {
 		echo $app_strings['LBL_RECORD_NOT_FOUND'];
 	}

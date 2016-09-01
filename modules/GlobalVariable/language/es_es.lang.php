@@ -74,6 +74,7 @@ $mod_strings = Array(
 	'product_service_default' => 'Productos o Servicios por defecto en las líneas de productos',
 	'Show_Copy_Adress_Header' => 'Mostrar Copiar Dirección',
 	'Users_ReplyTo_SecondEmail' => 'Responder al Email Secundario del usuario',
+	'GVarDefinitions' => 'Definiciones de Variables',
 
 );
 

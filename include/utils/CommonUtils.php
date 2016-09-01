@@ -305,8 +305,8 @@ function getCurrencyName($currencyid, $show_symbol = true) {
 		$resultinfo = $adb->fetch_array($result);
 
 		// Update cache
-		VTCacheUtils::updateCurrencyInfo($currencyid, $resultinfo['currency_name'], $resultinfo['currency_code'], $resultinfo['currency_symbol'], $resultinfo['conversion_rate']
-		);
+		VTCacheUtils::updateCurrencyInfo($currencyid, $resultinfo['currency_name'], $resultinfo['currency_code'],
+			$resultinfo['currency_symbol'], $resultinfo['conversion_rate'], $resultinfo['currency_position']);
 
 		// Re-look at the cache now
 		$currencyinfo = VTCacheUtils::lookupCurrencyInfo($currencyid);
@@ -1109,6 +1109,7 @@ function getCurrencySymbolandCRate($id) {
 
 	$rate_symbol['rate'] = $currencyinfo['rate'];
 	$rate_symbol['symbol'] = $currencyinfo['symbol'];
+	$rate_symbol['position'] = $currencyinfo['position'];
 
 	$log->debug("Exiting getCurrencySymbolandCRate method ...");
 	return $rate_symbol;
@@ -2444,11 +2445,9 @@ function getMergedDescriptionCustomVars($fields, $description) {
 function getSingleFieldValue($tablename, $fieldname, $idname, $id) {
 	global $log, $adb;
 	$log->debug("Entering into function getSingleFieldValue($tablename, $fieldname, $idname, $id)");
-
-	$fieldval = $adb->query_result($adb->pquery("select $fieldname from $tablename where $idname = ?", array($id)), 0, $fieldname);
-
+	$rs = $adb->pquery("select $fieldname from $tablename where $idname = ?", array($id));
+	$fieldval = $adb->query_result($rs, 0, $fieldname);
 	$log->debug("Exit from function getSingleFieldValue. return value ==> \"$fieldval\"");
-
 	return $fieldval;
 }
 

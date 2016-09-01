@@ -41,6 +41,7 @@ if(isset($_REQUEST['record']) && $_REQUEST['record'] != '' )
 			$smarty->assign("CURRENCY_NAME",$currencyResult['currency_name']);
 			$smarty->assign("CURRENCY_CODE",$currencyResult['currency_code']);
 			$smarty->assign("CURRENCY_SYMBOL",decode_html($currencyResult['currency_symbol']));
+			$smarty->assign("CURRENCY_POSITION",$currencyResult['currency_position']);
 			$smarty->assign("CONVERSION_RATE",$currencyResult['conversion_rate']);
 			$smarty->assign("CURRENCY_STATUS",$currencyResult['currency_status']);
 			$currency = $currencyResult['currency_name'];
@@ -76,9 +77,14 @@ foreach($currencies as $key=>$value){
 		$currencies_not_listed[$key] = $value;
 }
 
-require_once('include/Zend/Json.php');
-$smarty->assign("CURRENCIES_ARRAY", Zend_Json::encode($currencies_not_listed));
+$smarty->assign("CURRENCIES_ARRAY", json_encode($currencies_not_listed));
 
+$positions = array();
+$positionsrs = $adb->pquery('SELECT currency_symbol_placement from vtiger_currency_symbol_placement WHERE presence=1 order by sortorderid',array());
+while ($pos=$adb->fetch_array($positionsrs)) {
+	$positions[$pos['currency_symbol_placement']] = $pos['currency_symbol_placement'];
+}
+$smarty->assign("symbolpositionvalues", $positions);
 $smarty->assign("MOD", $mod_strings);
 $smarty->assign("APP", $app_strings);
 $smarty->assign("THEME", $theme);

@@ -139,6 +139,7 @@
 															<input type="button" name="show" value="{$MOD.LBL_VIEW_EMPTY_FOLDERS}" class="crmbutton small cancel" onClick="fnvshobj(this,'emptyfolder');" title="{$MOD.LBL_VIEW_EMPTY_FOLDERS}">
 														</td>
 													{/if}
+													<td style="padding-right:20px" nowrap>{include file='ListViewCustomButtons.tpl'}</td>
 												</tr>
 											</table>
 										</td>

@@ -731,4 +731,32 @@
 	<classname>addCostPriceID</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>kevinduqi</author>
+	<description>Duplicate Records workflow task</description>
+	<filename>build/changeSets/add_workflow_duplicaterecords.php</filename>
+	<classname>add_workflow_duplicaterecords</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add decimals to status history logs and apply SQL optimizations</description>
+	<filename>build/changeSets/cleanoptimizedatabase_160.php</filename>
+	<classname>cleanoptimizedatabase_160</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Currency Position to currency settings</description>
+	<filename>build/changeSets/addCurrencyPosition.php</filename>
+	<classname>addCurrencyPosition</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>kevinduqi</author>
+	<description>Mass Document Download action</description>
+	<filename>build/changeSets/mass_document_download.php</filename>
+	<classname>mass_document_download</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
 </updatesChangeLog>

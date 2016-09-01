@@ -9,8 +9,6 @@
  ********************************************************************************/
 -->*}
 
-<script type="text/javascript" src="include/js/Inventory.js"></script>
-<script type="text/javascript" src="modules/Services/Services.js"></script>
 <script>
 if(typeof(e) != 'undefined')
 	window.captureEvents(Event.MOUSEMOVE);
@@ -27,7 +25,6 @@ function displayCoords(currObj,obj,mode,curr_row)
 			alert("{$APP.PLEASE_SELECT_LINE_ITEM}");
 			return false;
 		{rdelim}
-
 		var curr_quantity = document.getElementById("qty"+curr_row).value;
 		if(curr_quantity == '')
 		{ldelim}
@@ -68,7 +65,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 
 		var divtop = document.getElementById("tax_container").style.top;
 		var divabstop =  divtop.substring(0,divtop.length-2);
-		document.getElementById(obj).style.top = eval(divabstop) - 200;
+		document.getElementById(obj).style.top = eval(divabstop);
 	{rdelim}else
 	{ldelim}
 		document.getElementById(obj).style.left =  document.getElementById("tax_container").left;
@@ -77,29 +74,22 @@ function displayCoords(currObj,obj,mode,curr_row)
 	document.getElementById(obj).style.display = "block";
 
 {rdelim}
-  
+
 	function doNothing(){ldelim}
 	{rdelim}
 	
 	function fnHidePopDiv(obj){ldelim}
 		document.getElementById(obj).style.display = 'none';
 	{rdelim}
+
+	var moreInfoFields = Array({$moreinfofields});
 </script>
 
-<!-- Added this file to display and hanld the Product Details in Inventory module  -->
-
-   <tr>
-	<td colspan="4" align="left">
-
-
+<tr><td colspan="4" align="left">
 
 <table width="100%"  border="0" align="center" cellpadding="5" cellspacing="0" class="crmTable" id="proTab">
-   <tr>
-   	{if $MODULE neq 'PurchaseOrder' && 'Products'|vtlib_isModuleActive}
+	<tr>
 			<td colspan="3" class="dvInnerHeader">
-	{else}
-			<td colspan="2" class="dvInnerHeader">
-	{/if}
 		<b>{$APP.LBL_ITEM_DETAILS}</b>
 	</td>
 	
@@ -130,43 +120,32 @@ function displayCoords(currObj,obj,mode,curr_row)
 			{/if}
 		</select>
 	</td>
-   </tr>
+	</tr>
 
-
-   <!-- Header for the Product Details -->
-   <tr valign="top">
+	<!-- Header for the Product Details -->
+	<tr valign="top">
 	<td width=5% valign="top" class="lvtCol" align="right"><b>{$APP.LBL_TOOLS}</b></td>
-	<td width=40% class="lvtCol"><font color='red'>*</font><b>{$APP.LBL_ITEM_NAME}</b></td>
-	{if $MODULE neq 'PurchaseOrder' && 'Products'|vtlib_isModuleActive}
-		<td width=10% class="lvtCol"><b>{$APP.LBL_QTY_IN_STOCK}</b></td>
-	{/if}
+	<td width=35% class="lvtCol"><font color='red'>*</font><b>{$APP.LBL_ITEM_NAME}</b></td>
+	<td width=20% class="lvtCol"><b>{$APP.LBL_INFORMATION}</b></td>
 	<td width=10% class="lvtCol"><b>{$APP.LBL_QTY}</b></td>
 	<td width=10% class="lvtCol" align="right"><b>{$APP.LBL_LIST_PRICE}</b></td>
-	<td width=12% nowrap class="lvtCol" align="right"><b>{$APP.LBL_TOTAL}</b></td>
-	<td width=13% valign="top" class="lvtCol" align="right"><b>{$APP.LBL_NET_PRICE}</b></td>
-   </tr>
+	<td width=10% nowrap class="lvtCol" align="right"><b>{$APP.LBL_TOTAL}</b></td>
+	<td width=10% valign="top" class="lvtCol" align="right"><b>{$APP.LBL_NET_PRICE}</b></td>
+	</tr>
 
-
-
-
-
-
-<!-- Following code is added for form the first row. Based on these we should form additional rows using script -->
-
-   <!-- Product Details First row - Starts -->
-   <tr valign="top" id="row1">
+	<tr valign="top" id="row1">
 
 	<!-- column 1 - delete link - starts -->
-	<td  class="crmTableRow small lineOnTop">&nbsp;
+	<td class="crmTableRow small lineOnTop">&nbsp;
 		<input type="hidden" id="deleted1" name="deleted1" value="0">
+		<input type="hidden" id="lineitem_id1" name="lineitem_id1" value="1">
 	</td>
-	<!-- column 1 - delete link - ends -->
 
 	<!-- column 2 - Product Name - starts -->
 	<td class="crmTableRow small lineOnTop">
 		<table width="100%"  border="0" cellspacing="0" cellpadding="1">
-		   <tr>
-			<td class="small">
+			<tr>
+			<td class="small" valign="top">
 				<input type="text" id="productName1" name="productName1" class="small" style="width:70%" value="{$PRODUCT_NAME}" readonly />
 				<input type="hidden" id="hdnProductId1" name="hdnProductId1" value="{$PRODUCT_ID}" />
 				{if $PRODUCT_OR_SERVICE eq 'Services'}
@@ -176,7 +155,6 @@ function displayCoords(currObj,obj,mode,curr_row)
 					<input type="hidden" id="lineItemType1" name="lineItemType1" value="Products" />
 					&nbsp;<img id="searchIcon1" title="Products" src="{'products.gif'|@vtiger_imageurl:$THEME}" style="cursor: pointer;" align="absmiddle" onclick="productPickList(this,'{$MODULE}',1)" />
 				{/if}
-
 			</td>
 		</tr>
 		<tr>
@@ -184,8 +162,8 @@ function displayCoords(currObj,obj,mode,curr_row)
 				<input type="hidden" value="" id="subproduct_ids1" name="subproduct_ids1" />
 				<span id="subprod_names1" name="subprod_names1" style="color:#C0C0C0;font-style:italic;"> </span>
 			</td>
-		   </tr>
-		   <tr valign="bottom">
+			</tr>
+			<tr>
 			<td class="small" id="setComment">
 				<textarea id="comment1" name="comment1" class=small style="width:70%;height:40px"></textarea>
 				<img src="{'clear_field.gif'|@vtiger_imageurl:$THEME}" onClick="{literal}${/literal}('comment1').value=''"; style="cursor:pointer;" />
@@ -196,29 +174,33 @@ function displayCoords(currObj,obj,mode,curr_row)
 	<!-- column 2 - Product Name - ends -->
 
 	<!-- column 3 - Quantity in Stock - starts -->
-	{if $MODULE neq 'PurchaseOrder' && 'Products'|vtlib_isModuleActive}
-		<td class="crmTableRow small lineOnTop" ><span id="qtyInStock1">{$QTY_IN_STOCK}</span></td>
-	{/if}
+	<td class="crmTableRow small lineOnTop" valign="top">
+		{if ($MODULE eq 'Quotes' || $MODULE eq 'SalesOrder' || $MODULE eq 'Invoice')  && 'Products'|vtlib_isModuleActive}
+		{$APP.LBL_QTY_IN_STOCK}:&nbsp;<span id="qtyInStock1">{$QTY_IN_STOCK}</span><br>
+		{/if}
+		{foreach item=maindata from=$ASSOCIATEDPRODUCTS.moreinfo}
+			{assign var="row_no" value="1"}
+			{include file='Inventory/EditViewUI.tpl'}
+		{/foreach}
+	</td>
 	<!-- column 3 - Quantity in Stock - ends -->
 
-
 	<!-- column 4 - Quantity - starts -->
-	<td class="crmTableRow small lineOnTop">
+	<td class="crmTableRow small lineOnTop" valign="top">
 		{if $TAX_TYPE eq 'group'}
-			<input id="qty1" name="qty1" type="text" class="small " style="width:50px" onfocus="this.className='detailedViewTextBoxOn'" onBlur="settotalnoofrows();calcTotal(); loadTaxes_Ajax(1); calcGroupTax(); setDiscount(this,'1'); calcTotal();{if $MODULE eq 'Invoice'}stock_alert(1);{/if}" value=""/><br><span id="stock_alert1"></span>
+			<input id="qty1" name="qty1" type="text" class="small " style="width:50px" onBlur="settotalnoofrows(); calcTotal(); loadTaxes_Ajax(1); calcGroupTax(); setDiscount(this,'1'); calcTotal();{if $MODULE eq 'Invoice'}stock_alert(1);{/if}" value=""/><br><span id="stock_alert1"></span>
 		{else}
-			<input id="qty1" name="qty1" type="text" class="small " style="width:50px" onfocus="this.className='detailedViewTextBoxOn'" onBlur="settotalnoofrows();calcTotal(); loadTaxes_Ajax(1); setDiscount(this,'1'); calcTotal();{if $MODULE eq 'Invoice'}stock_alert(1);{/if}" value=""/><br><span id="stock_alert1"></span>
+			<input id="qty1" name="qty1" type="text" class="small " style="width:50px" onBlur="settotalnoofrows(); calcTotal(); loadTaxes_Ajax(1); setDiscount(this,'1'); calcTotal();{if $MODULE eq 'Invoice'}stock_alert(1);{/if}" value=""/><br><span id="stock_alert1"></span>
 		{/if}
 	</td>
 	<!-- column 4 - Quantity - ends -->
 
-
 	<!-- column 5 - List Price with Discount, Total After Discount and Tax as table - starts -->
-	<td class="crmTableRow small lineOnTop" align="right">
+	<td class="crmTableRow small lineOnTop" align="right" valign="top">
 		<table width="100%" cellpadding="0" cellspacing="0">
 		   <tr>
 			<td align="right">
-				<input id="listPrice1" name="listPrice1" value="{$UNIT_PRICE}" type="text" class="small " style="width:70px" onBlur="calcTotal();setDiscount(this,'1'); callTaxCalc(1);calcTotal();"/>&nbsp;{if 'PriceBooks'|vtlib_isModuleActive}<img src="{'pricebook.gif'|@vtiger_imageurl:$THEME}" onclick="priceBookPickList(this,1)">{/if}
+				<input id="listPrice1" name="listPrice1" value="{$UNIT_PRICE}" type="text" class="small " style="width:70px" onBlur="calcTotal(); setDiscount(this,'1');callTaxCalc(1);calcTotal();"/>&nbsp;{if 'PriceBooks'|vtlib_isModuleActive}<img src="{'pricebook.gif'|@vtiger_imageurl:$THEME}" onclick="priceBookPickList(this,1)">{/if}
 			</td>
 		   </tr>
 		   <tr>
@@ -283,7 +265,6 @@ function displayCoords(currObj,obj,mode,curr_row)
 	</td>
 	<!-- column 6 - Product Total - ends -->
 
-
 	<!-- column 7 - Net Price - starts -->
 	<td valign="bottom" class="crmTableRow small lineOnTop" align="right"><span id="netPrice1"><b>&nbsp;</b></span></td>
 	<!-- column 7 - Net Price - ends -->
@@ -291,7 +272,6 @@ function displayCoords(currObj,obj,mode,curr_row)
    </tr>
    <!-- Product Details First row - Ends -->
 </table>
-<!-- Upto this has been added for form the first row. Based on these above we should form additional rows using script -->
 
 <table width="100%"  border="0" align="center" cellpadding="5" cellspacing="0" class="crmTable">
    <!-- Add Product Button -->
@@ -317,6 +297,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 	<td class="crmTableRow small lineOnTop" width="60%" style="border-right:1px #dadada;">&nbsp;</td>
 	<td class="crmTableRow small lineOnTop" align="right">
 		(-)&nbsp;<b><a href="javascript:doNothing();" onClick="displayCoords(this,'discount_div_final','discount_final','1')">{$APP.LBL_DISCOUNT}</a>
+
 		<!-- Popup Discount DIV -->
 		<div class="discountUI" id="discount_div_final">
 			<input type="hidden" id="discount_type_final" name="discount_type_final" value="">
@@ -340,6 +321,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 			</table>
 		</div>
 		<!-- End Div -->
+
 	</td>
 	<td id="discountTotal_final" class="crmTableRow small lineOnTop" align="right">0.00</td>
    </tr>
@@ -357,7 +339,6 @@ function displayCoords(currObj,obj,mode,curr_row)
 	<td id="tax_final" class="crmTableRow small lineOnTop" align="right">0.00</td>
    </tr>
    <!-- Group Tax - ends -->
-
 
    <tr valign="top">
 	<td class="crmTableRow small" style="border-right:1px #dadada;">&nbsp;</td>
@@ -426,12 +407,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 		<input type="hidden" name="totalProductCount" id="totalProductCount" value="">
 		<input type="hidden" name="subtotal" id="subtotal" value="">
 		<input type="hidden" name="total" id="total" value="">
-
-
-
-
-	</td>
-   </tr>
+</td></tr>
 
 
 <!-- Added to calculate the tax and total values when page loads -->

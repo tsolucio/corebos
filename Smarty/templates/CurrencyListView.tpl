@@ -6,19 +6,18 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 -->*}
-<script language="JAVASCRIPT" type="text/javascript" src="include/js/smoothscroll.js"></script>
-<script language="JavaScript" type="text/javascript" src="include/js/menu.js"></script>
+<script type="text/javascript" src="include/js/smoothscroll.js"></script>
+<script type="text/javascript" src="include/js/menu.js"></script>
 <br>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tbody><tr>
-        <td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-        <td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
+	<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
+	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
 <br>
 	<div align=center>
-	
+
 			{include file='SetMenu.tpl'}
 
 			<!-- DISPLAY -->
@@ -43,17 +42,17 @@
 			<table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 				<tr>
 					<td class="big"><strong>{$MOD.LBL_CURRENCY_LIST}</strong></td>
-                	       		<td class="small" align="right">&nbsp;</td>
+					<td class="small" align="right">&nbsp;</td>
 				</tr>
 			</table>
 
 			<table width="100%" border="0" cellpadding="5" cellspacing="0" class="listTableTopButtons">
-	                <tr>
+			<tr>
 				<td class=small align=right>
 					<input type="submit" value="{$MOD.LBL_NEW_CURRENCY}" class="crmButton create small">
 				</td>
-	                </tr>
-	                </table>
+			</tr>
+			</table>
 
 			<div id="CurrencyListViewContents">
 				{include file="CurrencyListViewEntries.tpl"}
@@ -72,12 +71,11 @@
 	</tr>
 	</form>
 	</table>
-		
 	</div>
 
 </td>
-        <td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
-   </tr>
+<td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
+</tr>
 </tbody>
 </table>
 

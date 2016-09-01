@@ -1035,6 +1035,8 @@ function doModuleValidation(edit_type,editForm,callback) {
 									} else {
 										submitFormForAction(formName, action);
 									}
+								} else {
+									VtigerJS_DialogBox.unblock();
 								}
 							} else if (msg.search("%%%OK%%%") > -1) { //No error
 								if (typeof callback == 'function') {

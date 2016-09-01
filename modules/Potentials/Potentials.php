@@ -102,6 +102,8 @@ class Potentials extends CRMEntity {
 	// Refers to vtiger_field.fieldname values.
 	var $mandatory_fields = Array('assigned_user_id', 'createdtime', 'modifiedtime', 'potentialname', 'related_to');
 
+	var $sales_stage = '';
+
 	function __construct() {
 		global $log;
 		$this_module = get_class($this);
@@ -116,9 +118,51 @@ class Potentials extends CRMEntity {
 		}
 	}
 
+	function save($module, $fileid = '') {
+		global $adb;
+		if ($this->mode=='edit') {
+			$rs = $adb->pquery('select sales_stage from vtiger_potential where potentialid = ?', array($this->id));
+			$this->sales_stage = $adb->query_result($rs, 0, 'sales_stage');
+		}
+		parent::save($module, $fileid);
+	}
+
 	function save_module($module) {
+		global $adb;
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id,$module);
+		}
+		if ($this->mode=='edit' and !empty($this->sales_stage) and $this->sales_stage != $this->column_fields['sales_stage'] && $this->column_fields['sales_stage'] != '') {
+			$date_var = date("Y-m-d H:i:s");
+			$closingDateField = new DateTimeField($this->column_fields['closingdate']);
+			$closingdate = ($_REQUEST['ajxaction'] == 'DETAILVIEW') ? $this->column_fields['closingdate'] : $closingDateField->getDBInsertDateValue();
+			$sql = "insert into vtiger_potstagehistory values(?,?,?,?,?,?,?,?)";
+			$params = array('', $this->id, $this->column_fields['amount'], decode_html($this->sales_stage), $this->column_fields['probability'], $this->column_fields['expectedrevenue'], $adb->formatDate($closingdate, true), $adb->formatDate($date_var, true));
+			$adb->pquery($sql, $params);
+		}
+		$relModule = getSalesEntityType($this->column_fields['related_to']);
+		if($relModule == "Contacts") {
+			if($this->column_fields['campaignid'] != NULL && $this->column_fields['campaignid'] !=  0)
+			{
+				$res_cnt = $adb->pquery("SELECT COUNT(*) as num FROM vtiger_campaigncontrel WHERE (contactid  = ? AND campaignid  = ?)",array($this->column_fields['related_to'],$this->column_fields['campaignid']));
+				$relacionado = $adb->query_result($res_cnt,0,'num');
+				if($relacionado == 0)
+				{
+					$sql = "INSERT INTO vtiger_campaigncontrel VALUES(?,?,1)";
+					$adb->pquery($sql, array($this->column_fields['campaignid'], $this->column_fields['related_to']));
+				}
+			}
+		} else {
+			if($this->column_fields['campaignid'] != NULL && $this->column_fields['campaignid'] !=  0)
+			{
+				$res_acc = $adb->pquery("SELECT COUNT(*) as num FROM vtiger_campaignaccountrel WHERE (accountid  = ? AND campaignid  = ?)",array($this->column_fields['related_to'],$this->column_fields['campaignid']));
+				$relacionado = $adb->query_result($res_acc,0,'num');
+				if($relacionado == 0)
+				{
+					$sql = "INSERT INTO vtiger_campaignaccountrel VALUES(?,?,1)";
+					$adb->pquery($sql, array($this->column_fields['campaignid'], $this->column_fields['related_to']));
+				}
+			}
 		}
 	}
 
@@ -411,14 +455,9 @@ class Potentials extends CRMEntity {
 	 *	@param $id - potentialid
 	 *	return $return_data - array with header and the entries in format Array('header'=>$header,'entries'=>$entries_list) where as $header and $entries_list are array which contains all the column values of an row
 	 */
-	function get_stage_history($id)
-	{
-		global $log;
+	function get_stage_history($id) {
+		global $log, $adb, $mod_strings, $app_strings, $current_user;
 		$log->debug("Entering get_stage_history(".$id.") method ...");
-
-		global $adb;
-		global $mod_strings;
-		global $app_strings;
 
 		$query = 'select vtiger_potstagehistory.*, vtiger_potential.potentialname from vtiger_potstagehistory inner join vtiger_potential on vtiger_potential.potentialid = vtiger_potstagehistory.potentialid inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_potential.potentialid where vtiger_crmentity.deleted = 0 and vtiger_potential.potentialid = ?';
 		$result=$adb->pquery($query, array($id));
@@ -432,7 +471,6 @@ class Potentials extends CRMEntity {
 
 		//Getting the field permission for the current user. 1 - Not Accessible, 0 - Accessible
 		//Sales Stage, Expected Close Dates are mandatory fields. So no need to do security check to these fields.
-		global $current_user;
 
 		//If field is accessible then getFieldVisibilityPermission function will return 0 else return 1
 		$amount_access = (getFieldVisibilityPermission('Potentials', $current_user->id, 'amount') != '0')? 1 : 0;
@@ -442,15 +480,15 @@ class Potentials extends CRMEntity {
 		$potential_stage_array = $picklistarray['sales_stage'];
 		//- ==> picklist field is not permitted in profile
 		//Not Accessible - picklist is permitted in profile but picklist value is not permitted
-		$error_msg = 'Not Accessible';
+		$error_msg = getTranslatedString('LBL_NOT_ACCESSIBLE');
 
-		while($row = $adb->fetch_array($result))
-		{
+		while($row = $adb->fetch_array($result)) {
 			$entries = Array();
 
-			$entries[] = ($amount_access != 1)? $row['amount'] : 0;
-			$entries[] = (in_array($row['stage'], $potential_stage_array))? $row['stage']: $error_msg;
-			$entries[] = ($probability_access != 1) ? $row['probability'] : 0;
+			$amount = new CurrencyField($row['amount']);
+			$entries[] = ($amount_access != 1)? $amount->getDisplayValueWithSymbol($current_user) : 0;
+			$entries[] = (in_array($row['stage'], $potential_stage_array))? getTranslatedString($row['stage'],'Potentials'): $error_msg;
+			$entries[] = ($probability_access != 1) ? number_format($row['probability'],2) : 0;
 			$entries[] = DateTimeField::convertToUserFormat($row['closedate']);
 			$date = new DateTimeField($row['lastmodified']);
 			$entries[] = $date->getDisplayDate();
@@ -459,9 +497,7 @@ class Potentials extends CRMEntity {
 		}
 
 		$return_data = Array('header'=>$header,'entries'=>$entries_list);
-
-	 	$log->debug("Exiting get_stage_history method ...");
-
+		$log->debug("Exiting get_stage_history method ...");
 		return $return_data;
 	}
 

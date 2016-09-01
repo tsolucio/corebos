@@ -74,6 +74,11 @@ function sensex_info()
 			<hr noshade size=1>
 			<br>
 			{include file='EditViewHidden.tpl'}
+			{if $OP_MODE eq 'create_view'}
+				<input type="hidden" name="convert_from" value="{$CONVERT_MODE}">
+				<input type="hidden" name="duplicate_from" value="{$DUPLICATE_FROM}">
+			{/if}
+			<input name='search_url' id="search_url" type='hidden' value='{$SEARCH}'>
 
 			{*<!-- Account details tabs -->*}
 			<table border=0 cellspacing=0 cellpadding=0 width=95% align=center>
@@ -142,7 +147,15 @@ function sensex_info()
 									   {if $MODULE eq 'PurchaseOrder' || $MODULE eq 'SalesOrder' || $MODULE eq 'Quotes' || $MODULE eq 'Invoice'}
 									   <tr>
 										<td colspan=4>
+										{if $OP_MODE eq 'create_view'}
+											{if $AVAILABLE_PRODUCTS eq 'true'}
+												{include file="Inventory/ProductDetailsEditView.tpl"}
+											{else}
+												{include file="Inventory/ProductDetails.tpl"}
+											{/if}
+										{else}
 											{include file="Inventory/ProductDetailsEditView.tpl"}
+										{/if}
 										</td>
 									   </tr>
 									   {/if}
@@ -170,7 +183,6 @@ function sensex_info()
 	</td>
    </tr>
 </table>
-<input name='search_url' id="search_url" type='hidden' value='{$SEARCH}'>
 </form>
 
 <!-- This div is added to get the left and top values to show the tax details-->

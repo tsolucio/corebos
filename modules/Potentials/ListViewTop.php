@@ -1,24 +1,12 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
- ********************************************************************************/
-/*********************************************************************************
- * $Header: /advent/projects/wesat/vtiger_crm/sugarcrm/modules/Potentials/ListViewTop.php,v 1.18 2005/04/20 20:24:30 ray Exp $
- * Description:  TODO: To be written.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
- * All Rights Reserved.
- * Contributor(s): ______________________________________..
- ********************************************************************************/
+ ************************************************************************************/
 
 /**Function to get the top 5 Potentials order by Amount in Descending Order
  *return array $values - array with the title, header and entries like  Array('Title'=>$title,'Header'=>$listview_header,'Entries'=>$listview_entries) where as listview_header and listview_entries are arrays of header and entity values which are returned from function getListViewHeader and getListViewEntries
@@ -50,7 +38,7 @@ function getTopPotentials($maxval,$calCnt)
 	$rate_symbol = getCurrencySymbolandCRate($currencyid);
 	$rate = $rate_symbol['rate'];
 	$curr_symbol = $rate_symbol['symbol'];
-        $header[]=$current_module_strings['LBL_LIST_AMOUNT'].'('.$curr_symbol.')';
+	$header[]=$current_module_strings['LBL_LIST_AMOUNT'].'('.$curr_symbol.')';
 	$list_query = "SELECT vtiger_crmentity.crmid, vtiger_potential.potentialname,
 			vtiger_potential.amount, potentialid
 			FROM vtiger_potential
@@ -94,26 +82,26 @@ function getTopPotentials($maxval,$calCnt)
 	$advft_criteria_groups = array('1' => array('groupcondition' => null));
 	$advft_criteria = array(
 		array (
-            'groupid' => 1,
-            'columnname' => 'vtiger_potential:sales_stage:sales_stage:Potentials_Sales_Stage:V',
-            'comparator' => 'k',
-            'value' => 'closed',
-            'columncondition' => 'and'
-        ),
+			'groupid' => 1,
+			'columnname' => 'vtiger_potential:sales_stage:sales_stage:Potentials_Sales_Stage:V',
+			'comparator' => 'k',
+			'value' => 'closed',
+			'columncondition' => 'and'
+		),
 		array (
-            'groupid' => 1,
-            'columnname' => 'vtiger_potential:amount:amount:Potentials_Amount:N',
-            'comparator' => 'g',
-            'value' => '0',
-            'columncondition' => 'and'
-        ),
+			'groupid' => 1,
+			'columnname' => 'vtiger_potential:amount:amount:Potentials_Amount:N',
+			'comparator' => 'g',
+			'value' => '0',
+			'columncondition' => 'and'
+		),
 		array (
-            'groupid' => 1,
-            'columnname' => 'vtiger_crmentity:smownerid:assigned_user_id:Leads_Assigned_To:V',
-            'comparator' => 'e',
-            'value' => getFullNameFromArray('Users', $current_user->column_fields),
-            'columncondition' => null
-        )
+			'groupid' => 1,
+			'columnname' => 'vtiger_crmentity:smownerid:assigned_user_id:Leads_Assigned_To:V',
+			'comparator' => 'e',
+			'value' => getFullNameFromArray('Users', $current_user->column_fields),
+			'columncondition' => null
+		)
 	);
 	$search_qry = '&advft_criteria='.Zend_Json::encode($advft_criteria).'&advft_criteria_groups='.Zend_Json::encode($advft_criteria_groups).'&searchtype=advance&query=true';
 

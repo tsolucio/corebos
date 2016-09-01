@@ -638,6 +638,7 @@ class InventoryDetails extends CRMEntity {
 					$invdet_focus->column_fields[$fieldname] = $row[$fieldname];
 				}
 			}
+			$invdet_focus->column_fields['lineitem_id'] = $row['lineitem_id'];
 			$_REQUEST['assigntype'] = 'U';
 			$invdet_focus->column_fields['assigned_user_id'] = $current_user->id;
 			$invdet_focus->column_fields['account_id'] = $accountid;

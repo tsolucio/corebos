@@ -1,16 +1,12 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- ********************************************************************************/
+ ************************************************************************************/
 include_once('config.php');
 require_once('include/logging.php');
 require_once('data/Tracker.php');
@@ -310,10 +306,8 @@ class CRMEntity {
 			$log->info("module is =" . $module);
 			$ownerid = $current_user->id;
 		}
-		// Asha - Change ownerid from '' to null since its an integer field.
-		// It is empty for modules like Invoice/Quotes/SO/PO which do not have Assigned to field
-		if ($ownerid === '')
-			$ownerid = 0;
+		if (empty($ownerid))
+			$ownerid = $current_user->id;
 
 		if ($module == 'Events') {
 			$module = 'Calendar';
@@ -649,62 +643,7 @@ class CRMEntity {
 		}
 
 		if ($insertion_mode == 'edit') {
-			if ($module == 'Potentials') {
-				$dbquery = 'select sales_stage from vtiger_potential where potentialid = ?';
-				$sales_stage = $adb->query_result($adb->pquery($dbquery, array($this->id)), 0, 'sales_stage');
-				if ($sales_stage != $_REQUEST['sales_stage'] && $_REQUEST['sales_stage'] != '') {
-					$date_var = date("Y-m-d H:i:s");
-					$closingDateField = new DateTimeField($this->column_fields['closingdate']);
-					$closingdate = ($_REQUEST['ajxaction'] == 'DETAILVIEW') ? $this->column_fields['closingdate'] : $closingDateField->getDBInsertDateValue();
-					$sql = "insert into vtiger_potstagehistory values(?,?,?,?,?,?,?,?)";
-					$params = array('', $this->id, $this->column_fields['amount'], decode_html($sales_stage), $this->column_fields['probability'], 0, $adb->formatDate($closingdate, true), $adb->formatDate($date_var, true));
-					$adb->pquery($sql, $params);
-				}
-			} elseif ($module == 'PurchaseOrder' || $module == 'SalesOrder' || $module == 'Quotes' || $module == 'Invoice') {
-				//added to update the history for PO, SO, Quotes and Invoice
-				$history_field_array = Array(
-					"PurchaseOrder" => "postatus",
-					"SalesOrder" => "sostatus",
-					"Quotes" => "quotestage",
-					"Invoice" => "invoicestatus"
-				);
-
-				$inventory_module = $module;
-
-				if ($_REQUEST['ajxaction'] == 'DETAILVIEW') {//if we use ajax edit
-					if ($inventory_module == "PurchaseOrder")
-						$relatedname = getVendorName($this->column_fields['vendor_id']);
-					else
-						$relatedname = getAccountName($this->column_fields['account_id']);
-
-					$total = $this->column_fields['hdnGrandTotal'];
-				}
-				else {//using edit button and save
-					if ($inventory_module == "PurchaseOrder")
-						$relatedname = $_REQUEST["vendor_name"];
-					else
-						$relatedname = $_REQUEST["account_name"];
-
-					$total = $_REQUEST['total'];
-				}
-
-				if ($this->column_fields["$history_field_array[$inventory_module]"] == $app_strings['LBL_NOT_ACCESSIBLE']) {
-
-					//If the value in the request is Not Accessible for a picklist, the existing value will be replaced instead of Not Accessible value.
-					$his_col = $history_field_array[$inventory_module];
-					$his_sql = "select $his_col from $this->table_name where " . $this->table_index . "=?";
-					$his_res = $adb->pquery($his_sql, array($this->id));
-					$status_value = $adb->query_result($his_res, 0, $his_col);
-					$stat_value = $status_value;
-				} else {
-					$stat_value = $this->column_fields["$history_field_array[$inventory_module]"];
-				}
-				$oldvalue = getSingleFieldValue($this->table_name, $history_field_array[$inventory_module], $this->table_index, $this->id);
-				if ($this->column_fields["$history_field_array[$inventory_module]"] != '' && $oldvalue != $stat_value) {
-					addInventoryHistory($inventory_module, $this->id, $relatedname, $total, $stat_value);
-				}
-			}
-			//Check done by Don. If update is empty the the query fails
+			// If update is empty the query fails
 			if (count($update) > 0) {
 				$sql1 = "update $table_name set " . implode(",", $update) . " where " . $this->tab_name_index[$table_name] . "=?";
 				array_push($update_params, $this->id);

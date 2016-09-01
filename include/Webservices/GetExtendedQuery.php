@@ -313,7 +313,7 @@ function __FQNExtendedQueryAddCondition($queryGenerator,$condition,$glue,$mainMo
 				$found = true;
 				if ($fname=='id') {
 					list($wsid,$val) = explode('x', $val);
-					$fname = $relmeta->getObectIndexColumn();
+					//$fname = $relmeta->getObectIndexColumn();
 				}
 				$fmodreffld = __FQNExtendedQueryGetRefFieldForModule($fromrfs,$fmod,$reffld);
 				$queryGenerator->addReferenceModuleFieldCondition($fmod, $fmodreffld, $fname, $val, $op, $glue);

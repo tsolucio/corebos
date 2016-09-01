@@ -289,6 +289,16 @@ $cbMap = cbMap::getMapByName($currentModule.'InventoryDetails','MasterDetailLayo
 if ($cbMap!=null) {
 	$cbMapFields = $cbMap->MasterDetailLayout();
 	$smarty->assign('moreinfofields', "'".implode("','",$cbMapFields['detailview']['fieldnames'])."'");
+	if (empty($associated_prod)) { // creating
+		$product_Detail = $col_fields = array();
+		foreach ($cbMapFields['detailview']['fields'] as $mdfield) {
+			$col_fields[$mdfield['fieldinfo']['name']] = '';
+			$foutput = getOutputHtml($mdfield['fieldinfo']['uitype'], $mdfield['fieldinfo']['name'], $mdfield['fieldinfo']['label'], 100, $col_fields, 0, 'InventoryDetails', 'edit', $mdfield['fieldinfo']['typeofdata']);
+			$product_Detail['moreinfo'][] = $foutput;
+		}
+		$associated_prod = $product_Detail;
+		$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
+	}
 }
 
 if (isset ($_REQUEST['return_module']))
@@ -375,8 +385,5 @@ $smarty->assign('TAX_TYPE', GlobalVariable::getVariable('Tax_Type_Default', 'ind
 //Show or not the Header to copy address to left or right
 $smarty->assign('SHOW_COPY_ADDRESS', GlobalVariable::getVariable('Show_Copy_Adress_Header', 'yes', $currentModule, $current_user->id));
 
-if ($focus->mode == 'edit')
-	$smarty->display('Inventory/InventoryEditView.tpl');
-else
-	$smarty->display('Inventory/InventoryCreateView.tpl');
+$smarty->display('Inventory/InventoryEditView.tpl');
 ?>

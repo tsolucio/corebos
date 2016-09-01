@@ -66,6 +66,10 @@ class ListColumns extends processcbMap {
 		return $this;
 	}
 
+	public function issetListFieldsMappingFor($module) {
+		return (isset($this->mapping[$module]));
+	}
+
 	public function getListFieldsFor($module) {
 		if (isset($this->mapping[$module])) {
 			return $this->mapping[$module]['ListFields'];

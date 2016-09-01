@@ -8,14 +8,12 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
-
-{*<!-- module header -->*}
-<script language="JavaScript" type="text/javascript" src="include/js/ListView.js"></script>
-<script language="JavaScript" type="text/javascript" src="include/js/search.js"></script>
-<script language="JavaScript" type="text/javascript" src="include/js/Merge.js"></script>
-<script language="JavaScript" type="text/javascript" src="include/js/dtlviewajax.js"></script>
-<script language="JavaScript" type="text/javascript" src="include/js/FieldDependencies.js"></script>
-<script language="JavaScript" type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
+<script type="text/javascript" src="include/js/ListView.js"></script>
+<script type="text/javascript" src="include/js/search.js"></script>
+<script type="text/javascript" src="include/js/Merge.js"></script>
+<script type="text/javascript" src="include/js/dtlviewajax.js"></script>
+<script type="text/javascript" src="include/js/FieldDependencies.js"></script>
+<script type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
 		{include file='Buttons_List.tpl'}
 								<div id="searchingUI" style="display:none;">
 										<table border=0 cellspacing=0 cellpadding=0 width=100%>
@@ -25,7 +23,6 @@
 												</td>
 										</tr>
 										</table>
-
 								</div>
 						</td>
 				</tr>
@@ -107,7 +104,6 @@
 		</tr>
 	</table>
 </form><br>
-</div>
 </div>
 {*<!-- Searching UI -->*}
 

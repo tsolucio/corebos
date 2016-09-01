@@ -20,12 +20,12 @@ $result = $adb->pquery($sql, array());
 $temprow = $adb->fetch_array($result);
 $cnt=1;
 $currency = Array();
-do
-{
+do {
 	$currency_element = Array();
 	$currency_element['name'] = $temprow["currency_name"];
 	$currency_element['code'] = $temprow["currency_code"];
 	$currency_element['symbol'] = $temprow["currency_symbol"];
+	$currency_element['position'] = $temprow["currency_position"];
 	$currency_element['crate'] = $temprow["conversion_rate"];
 	$currency_element['status'] = $temprow["currency_status"];
 	if($temprow["defaultid"] != '-11')

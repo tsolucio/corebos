@@ -764,5 +764,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 		{else}
 			{* just show field on screen *}
 			<span class="mdCellLabel">{$fldlabel}</span>
-			<span class="mdCellInfo"><input type="hidden" name="{$fldname}" id="{$fldname}" value="{$fldvalue.fieldsavevalue}">{$fldvalue.fieldshowvalue}</span>
+			<span class="mdCellInfo">
+				{if $fldname neq ''}<input type="hidden" name="{$fldname}" id="{$fldname}" value="{$fldvalue.fieldsavevalue}">{/if}{$fldvalue.fieldshowvalue}
+			</span>
 		{/if}

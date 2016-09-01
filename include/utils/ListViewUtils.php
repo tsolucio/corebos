@@ -1,16 +1,12 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- ********************************************************************************/
+ ************************************************************************************/
 require_once('include/database/PearDatabase.php');
 require_once('include/ComboUtil.php');
 require_once('include/utils/CommonUtils.php');
@@ -19,7 +15,7 @@ require_once('include/utils/UserInfoUtil.php');
 require_once('include/Zend/Json.php');
 require_once 'include/CustomFieldUtil.php';
 
-/* * This function is used to get the list view header values in a list view
+/** This function is used to get the list view header values in a list view
  * Param $focus - module object
  * Param $module - module name
  * Param $sort_qry - sort by value
@@ -47,9 +43,14 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 	if ($cbMapid) {
 		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapLC = $cbMap->ListColumns();
 		$parentmodule = vtlib_purify($_REQUEST['module']);
-		$focus->list_fields = $cbMap->ListColumns()->getListFieldsFor($parentmodule);
-		$focus->list_fields_name = $cbMap->ListColumns()->getListFieldsNameFor($parentmodule);
+		$focus->list_fields = $cbMapLC->getListFieldsFor($parentmodule);
+		$focus->list_fields_name = $cbMapLC->getListFieldsNameFor($parentmodule);
+		if ($parentmodule == 'Home' and $cbMapLC->issetListFieldsMappingFor('Home')) {
+			$oCv->list_fields = $focus->list_fields;
+			$oCv->list_fields_name = $focus->list_fields_name;
+		}
 	}
 	if ($oCv) {
 		if (isset($oCv->list_fields)) {
@@ -437,8 +438,6 @@ function getNavigationValues($display, $noofrows, $limit) {
  * Param $oCv - vtiger_customview object
  * Returns an array type
  */
-
-//parameter added for vtiger_customview $oCv 27/5
 function getListViewEntries($focus, $module, $list_result, $navigation_array, $relatedlist = '', $returnset = '', $edit_action = 'EditView', $del_action = 'Delete', $oCv = '', $page = '', $selectedfields = '', $contRelatedfields = '', $skipActions = false) {
 	global $log, $mod_strings, $adb, $current_user, $app_strings, $theme;
 	$log->debug("Entering getListViewEntries(" . get_class($focus) . "," . $module . "," . $list_result . "," . $relatedlist . "," . $returnset . "," . $edit_action . "," . $del_action . "," . (is_object($oCv) ? get_class($oCv) : $oCv) . ") method ...");
@@ -453,10 +452,15 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 	if ($cbMapid) {
 		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapLC = $cbMap->ListColumns();
 		$parentmodule = vtlib_purify($_REQUEST['module']);
-		$focus->list_fields = $cbMap->ListColumns()->getListFieldsFor($parentmodule);
-		$focus->list_fields_name = $cbMap->ListColumns()->getListFieldsNameFor($parentmodule);
-		$focus->list_link_field = $cbMap->ListColumns()->getListLinkFor($parentmodule);
+		$focus->list_fields = $cbMapLC->getListFieldsFor($parentmodule);
+		$focus->list_fields_name = $cbMapLC->getListFieldsNameFor($parentmodule);
+		$focus->list_link_field = $cbMapLC->getListLinkFor($parentmodule);
+		if ($parentmodule == 'Home' and $cbMapLC->issetListFieldsMappingFor('Home')) {
+			$oCv->list_fields = $focus->list_fields;
+			$oCv->list_fields_name = $focus->list_fields_name;
+		}
 	}
 	if ($oCv) {
 		if (isset($oCv->list_fields)) {

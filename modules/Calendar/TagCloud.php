@@ -6,7 +6,6 @@
 * The Initial Developer of the Original Code is vtiger.
 * Portions created by vtiger are Copyright (C) vtiger.
 * All Rights Reserved.
-*
 ********************************************************************************/
-	require_once('include/Ajax/TagCloud.php')
+require_once('include/Ajax/TagCloud.php')
 ?>

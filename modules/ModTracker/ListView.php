@@ -158,10 +158,8 @@ $navigationOutput = getTableHeaderSimpleNavigation($navigation_array, $url_strin
 $smarty->assign("NAVIGATION", $navigationOutput);
 
 $controller = new ListViewController($adb, $current_user, $queryGenerator);
-$listview_header = $controller->getListViewHeader($focus,$currentModule,$url_string,$sorder,
-		$order_by);
-$listview_entries = $controller->getListViewEntries($focus,$currentModule,$list_result,
-		$navigation_array);
+$listview_header = $controller->getListViewHeader($focus,$currentModule,$url_string,$sorder,$order_by);
+$listview_entries = $controller->getListViewEntries($focus,$currentModule,$list_result,$navigation_array);
 $listview_header_search = $controller->getBasicSearchFieldInfoList();
 
 $smarty->assign('LISTHEADER', $listview_header);
@@ -189,7 +187,6 @@ $_SESSION[$currentModule.'_listquery'] = $list_query;
 include_once('vtlib/Vtiger/Link.php');
 $customlink_params = Array('MODULE'=>$currentModule, 'ACTION'=>vtlib_purify($_REQUEST['action']), 'CATEGORY'=> $category);
 $smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), Array('LISTVIEWBASIC','LISTVIEW'), $customlink_params));
-// END
 
 if(isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '')
 	$smarty->display("ListViewEntries.tpl");

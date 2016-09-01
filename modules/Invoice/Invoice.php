@@ -86,6 +86,7 @@ class Invoice extends CRMEntity {
 	var $mandatory_fields = Array('subject','createdtime' ,'modifiedtime');
 	var $_salesorderid;
 	var $_recurring_mode;
+	var $record_status = '';
 
 	function __construct() {
 		global $log;
@@ -101,9 +102,19 @@ class Invoice extends CRMEntity {
 		}
 	}
 
+	function save($module, $fileid = '') {
+		if ($this->mode=='edit') {
+			$this->record_status = getSingleFieldValue($this->table_name, 'invoicestatus', $this->table_index, $this->id);
+		}
+		parent::save($module, $fileid);
+	}
+
 	function save_module($module) {
 		global $updateInventoryProductRel_deduct_stock;
 		$updateInventoryProductRel_deduct_stock = true;
+		if ($this->mode=='edit' and !empty($this->record_status) and $this->record_status != $this->column_fields['invoicestatus'] && $this->column_fields['invoicestatus'] != '') {
+			$this->registerInventoryHistory();
+		}
 		//Checking if salesorderid is present and updating the SO status
 		if(!empty($this->column_fields['salesorder_id'])) {
 			$newStatus = GlobalVariable::getVariable('SalesOrderStatusOnInvoiceSave', 'Approved');
@@ -137,6 +148,32 @@ class Invoice extends CRMEntity {
 
 		$update_params = array($this->column_fields['currency_id'], $this->column_fields['conversion_rate'], $this->id);
 		$this->db->pquery($update_query, $update_params);
+	}
+
+	function registerInventoryHistory() {
+		global $app_strings;
+		if ($_REQUEST['ajxaction'] == 'DETAILVIEW') { //if we use ajax edit
+			if (GlobalVariable::getVariable('B2B', '1')) {
+				$relatedname = getAccountName($this->column_fields['account_id']);
+			} else {
+				$relatedname = getContactName($this->column_fields['contact_id']);
+			}
+			$total = $this->column_fields['hdnGrandTotal'];
+		} else { //using edit button and save
+			if (GlobalVariable::getVariable('B2B', '1')) {
+				$relatedname = $_REQUEST["account_name"];
+			} else {
+				$relatedname = $_REQUEST["contact_name"];
+			}
+			$total = $_REQUEST['total'];
+		}
+		if ($this->column_fields['invoicestatus'] == $app_strings['LBL_NOT_ACCESSIBLE']) {
+			//If the value in the request is Not Accessible for a picklist, the existing value will be replaced instead of Not Accessible value.
+			$stat_value = getSingleFieldValue($this->table_name, 'invoicestatus', $this->table_index, $this->id);
+		} else {
+			$stat_value = $this->column_fields['invoicestatus'];
+		}
+		addInventoryHistory(get_class($this), $this->id, $relatedname, $total, $stat_value);
 	}
 
 	/**
@@ -264,14 +301,9 @@ class Invoice extends CRMEntity {
 	 *	@param $id - invoice id
 	 *	@return $return_data - array with header and the entries in format Array('header'=>$header,'entries'=>$entries_list) where as $header and $entries_list are arrays which contains header values and all column values of all entries
 	 */
-	function get_invoicestatushistory($id)
-	{
-		global $log;
+	function get_invoicestatushistory($id) {
+		global $log, $adb, $mod_strings, $app_strings, $current_user;
 		$log->debug("Entering get_invoicestatushistory(".$id.") method ...");
-
-		global $adb;
-		global $mod_strings;
-		global $app_strings;
 
 		$query = 'select vtiger_invoicestatushistory.*, vtiger_invoice.invoice_no from vtiger_invoicestatushistory inner join vtiger_invoice on vtiger_invoice.invoiceid = vtiger_invoicestatushistory.invoiceid inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_invoice.invoiceid where vtiger_crmentity.deleted = 0 and vtiger_invoice.invoiceid = ?';
 		$result=$adb->pquery($query, array($id));
@@ -285,7 +317,6 @@ class Invoice extends CRMEntity {
 
 		//Getting the field permission for the current user. 1 - Not Accessible, 0 - Accessible
 		//Account Name , Amount are mandatory fields. So no need to do security check to these fields.
-		global $current_user;
 
 		//If field is accessible then getFieldVisibilityPermission function will return 0 else return 1
 		$invoicestatus_access = (getFieldVisibilityPermission('Invoice', $current_user->id, 'invoicestatus') != '0')? 1 : 0;
@@ -294,28 +325,23 @@ class Invoice extends CRMEntity {
 		$invoicestatus_array = ($invoicestatus_access != 1)? $picklistarray['invoicestatus']: array();
 		//- ==> picklist field is not permitted in profile
 		//Not Accessible - picklist is permitted in profile but picklist value is not permitted
-		$error_msg = ($invoicestatus_access != 1)? 'Not Accessible': '-';
+		$error_msg = ($invoicestatus_access != 1)? getTranslatedString('LBL_NOT_ACCESSIBLE'): '-';
 
-		while($row = $adb->fetch_array($result))
-		{
+		while($row = $adb->fetch_array($result)) {
 			$entries = Array();
 
-			// Module Sequence Numbering
-			//$entries[] = $row['invoiceid'];
 			$entries[] = $row['invoice_no'];
-			// END
 			$entries[] = $row['accountname'];
-			$entries[] = $row['total'];
-			$entries[] = (in_array($row['invoicestatus'], $invoicestatus_array))? $row['invoicestatus']: $error_msg;
+			$total = new CurrencyField($row['total']);
+			$entries[] = $total->getDisplayValueWithSymbol($current_user);
+			$entries[] = (in_array($row['invoicestatus'], $invoicestatus_array))? getTranslatedString($row['invoicestatus'],'Invoice'): $error_msg;
 			$entries[] = DateTimeField::convertToUserFormat($row['lastmodified']);
 
 			$entries_list[] = $entries;
 		}
 
 		$return_data = Array('header'=>$header,'entries'=>$entries_list);
-
 		$log->debug("Exiting get_invoicestatushistory method ...");
-
 		return $return_data;
 	}
 
