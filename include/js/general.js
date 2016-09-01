@@ -1013,7 +1013,14 @@ function doModuleValidation(edit_type,editForm,callback) {
 			},
 			success: function(data) { //Validation file exists
 				if (data == 'yes') {
-					sentForm = document.forms[formName].serialize();
+					// Create object which gets the values of all input, textarea, select and button elements from the form
+					var myFields = document.forms[formName].elements;
+					var sentForm = new Object();
+					for (f=0; f<myFields.length; f++){
+						sentForm[myFields[f].name] = myFields[f].value;
+					}
+					//JSONize form data
+					sentForm = JSON.stringify(sentForm);
 					jQuery.ajax({
 						type : 'post',
 						data : {structure: sentForm},
@@ -1028,8 +1035,6 @@ function doModuleValidation(edit_type,editForm,callback) {
 									} else {
 										submitFormForAction(formName, action);
 									}
-								} else {
-									VtigerJS_DialogBox.unblock();
 								}
 							} else if (msg.search("%%%OK%%%") > -1) { //No error
 								if (typeof callback == 'function') {
