@@ -759,4 +759,11 @@
 	<classname>mass_document_download</classname>
 	<systemupdate>false</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Status picklist to Project Task module</description>
+	<filename>build/changeSets/addStatus2ProjectTask.php</filename>
+	<classname>addStatus2ProjectTask</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
 </updatesChangeLog>
