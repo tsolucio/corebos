@@ -75,14 +75,16 @@ function ShowFolders(folderid)
 												document.getElementById('_mailfolder_mm_settings').parentNode.className='';
 											{rdelim}
 										{rdelim}
+										result = response.split('&#&#&#');
+										if (result[1] != '') alert(result[1]);
 										if(gFolderid == folderid) {ldelim}
 											gselectedrowid = 0;
-											document.getElementById("email_con").innerHTML=response;
+											document.getElementById("email_con").innerHTML=result[2];
 											document.getElementById('EmailDetails').innerHTML = '<table valign="top" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="forwardBg"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2">&nbsp;</td></tr></tbody></table></td></tr><tr><td style="padding-top:10px;" bgcolor="#ffffff" height="300" valign="top"></td></tr></tbody></table>';
 											execJS(document.getElementById('email_con'));
 										{rdelim} else {ldelim}
 											document.getElementById('EmailDetails').innerHTML = '<table valign="top" border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td class="forwardBg"><table border="0" cellpadding="0" cellspacing="0" width="100%"><tbody><tr><td colspan="2">&nbsp;</td></tr></tbody></table></td></tr><tr><td style="padding-top:10px;" bgcolor="#ffffff" height="300" valign="top"></td></tr></tbody></table>';
-											document.getElementById("email_con").innerHTML=response;
+											document.getElementById("email_con").innerHTML=result[2];
 											execJS(document.getElementById('email_con'));
 										{rdelim}
 										if(document.getElementById('_contentdiv_')!=null){ldelim}
