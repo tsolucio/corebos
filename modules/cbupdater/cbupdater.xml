@@ -766,4 +766,11 @@
 	<classname>addStatus2ProjectTask</classname>
 	<systemupdate>false</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add EmailOptOut and Conversion Related Fields to Leads module</description>
+	<filename>build/changeSets/addLeadEmailOptOutAndConversionRelatedFields.php</filename>
+	<classname>addLeadEmailOptOutAndConversionRelatedFields</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

@@ -235,6 +235,8 @@ $mod_strings = Array(
 'LBL_FIELD_SETTINGS' => 'Configuración Campos',
 'Leads ID' => 'Id PreContacto',
 'LeadAlreadyConverted' => 'Este PreContacto no se puede convertir. O bien ya ha sido convertido, o te faltan permisos en uno de los módulos dependientes.',
+'Is Converted From Lead' => 'Convertido desde PreContacto',
+'Converted From Lead' => 'Convertido del PreContacto',
 
 );
 

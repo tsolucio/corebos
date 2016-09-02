@@ -227,6 +227,8 @@ $mod_strings = Array(
     'LBL_FIELD_SETTINGS' => 'Feldeinstellungen',
     'Leads ID' => 'Leads-ID',
 	'LeadAlreadyConverted' => 'Lead cannot be converted. Either it has already been converted or you lack permission on one or more of the destination modules.',
+	'Is Converted From Lead' => 'Wird konvertiert, aus Blei',
+	'Converted From Lead' => 'Konvertiert aus Blei',
 );
 
 ?>
