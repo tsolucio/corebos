@@ -328,12 +328,14 @@ class Vtiger_PackageExport {
 			if(!empty($focus->customFieldTable)) $tables[] = $focus->customFieldTable[0];
 
 			foreach($tables as $table) {
-				$this->openNode('table');
-				$this->outputNode($table, 'name');
-				$this->outputNode('<![CDATA['.Vtiger_Utils::CreateTableSql($table).']]>', 'sql');
-				$this->closeNode('table');
-
-				$_exportedTables[] = $table;
+				$tbldef = Vtiger_Utils::CreateTableSql($table);
+				if ($tbldef!='') {
+					$this->openNode('table');
+					$this->outputNode($table, 'name');
+					$this->outputNode('<![CDATA['.$tbldef.']]>', 'sql');
+					$this->closeNode('table');
+					$_exportedTables[] = $table;
+				}
 			}
 			
 		}
@@ -346,12 +348,17 @@ class Vtiger_PackageExport {
 				foreach($schema->tables->table as $tablenode) {
 					$table = trim($tablenode->name);
 					if(!in_array($table,$_exportedTables)) {
-						$this->openNode('table');
-						$this->outputNode($table, 'name');
-						$this->outputNode('<![CDATA['.Vtiger_Utils::CreateTableSql($table).']]>', 'sql');
-						$this->closeNode('table');
-
-						$_exportedTables[] = $table;
+						$tbldef = Vtiger_Utils::CreateTableSql($table);
+						if (empty($tbldef)) {
+							$tbldef = (String) $tablenode->sql;
+						}
+						if (!empty($tbldef)) {
+							$this->openNode('table');
+							$this->outputNode($table, 'name');
+							$this->outputNode('<![CDATA['.$tbldef.']]>', 'sql');
+							$this->closeNode('table');
+							$_exportedTables[] = $table;
+						}
 					}
 				}
 			}
