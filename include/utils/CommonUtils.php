@@ -781,14 +781,13 @@ function getUserName($userid) {
 
 /**
  * Get the user full name by giving the user id.   This method expects the user id
- * DG 30 Aug 2006
  */
 function getUserFullName($userid) {
 	global $log;
 	$log->debug("Entering getUserFullName(" . $userid . ") method ...");
-	$log->info("in getUserFullName " . $userid);
 	global $adb;
 	if ($userid != '') {
+		if (strpos($userid,'x')) list($wsid,$userid) = explode('x', $userid);
 		$displayValueArray = getEntityName('Users', $userid);
 		if (!empty($displayValueArray)) {
 			foreach ($displayValueArray as $key => $value) {
@@ -806,7 +805,7 @@ function getParentName($parent_id) {
 	if (empty($parent_id) || $parent_id == 0) {
 		return "";
 	}
-
+	if (strpos($parent_id,'x')) list($wsid,$parent_id) = explode('x', $parent_id);
 	$seType = getSalesEntityType($parent_id);
 	$entityNames = getEntityName($seType, $parent_id);
 	return $entityNames[$parent_id];
