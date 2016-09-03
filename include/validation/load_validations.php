@@ -20,6 +20,7 @@ class cbValidator extends Validator {
 
 	public $CustomValidations = array(
 		'IBAN_BankAccount' => 'validate_IBAN_BankAccount',
+		'EU_VAT' => 'validate_EU_VAT',
 	);
 
 	public function __construct($data, $fields = array()) {
