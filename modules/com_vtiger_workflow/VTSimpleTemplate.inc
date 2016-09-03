@@ -100,6 +100,103 @@ class VTSimpleTemplate{
 
 	}
 
+	function getComments($num,$sort,$format,$field) {
+		global $adb, $log, $current_user;
+		$sort = strtolower($sort);
+		if ($sort!='a' and $sort!='d') $sort = 'a';
+		$format = strtolower($format);
+		if ($format!='html' and $format!='text') $format = 'html';
+		$html = ($format == 'html');
+		$field = strtolower($field);
+		if ($field!='creator' and $field!='comment' and $field!='date' and $field!='all') $field = 'all';
+		if ($field=='all') {
+			$fields = array('creator','date','comment');
+		} else {
+			$fields = array($field);
+		}
+		$singlefield = (count($fields)==1);
+		$wsId = $this->parent->getId();
+		$moduleName = $this->parent->getModuleName();
+		$wsUsersId = vtws_getEntityId('Users');
+		include_once 'include/Webservices/GetRelatedRecords.php';
+		$queryParameters = array(
+			'orderby' => 'createdtime ' . ($sort=='a'?'asc':'desc'),
+			'columns' => '*',
+		);
+		if ($num>0) {
+			$queryParameters['limit'] = $num;
+		}
+		$cmsqlws = __getRLQuery($wsId, $moduleName, 'ModComments', $queryParameters, $current_user);
+		$retcm = '';
+		if ($html) {
+			$retcm = '<div class="comments">';
+		}
+		$cmrs = $adb->pquery($cmsqlws, array());
+		while ($cm = $adb->fetch_array($cmrs)) {
+			if ($html) {
+				$retcm .= '<div class="commentdetails"><ul class="commentfields">';
+			}
+			foreach ($fields as $field) {
+				switch ($field) {
+					case 'creator':
+						if ($html) {
+							$retcm .= '<li class="commentcreator">';
+						}
+						if ($moduleName!='HelpDesk' and $moduleName!='Faq') {
+							$wsid = $wsUsersId;
+						} else {
+							list($wsid,$crmid) = explode('x',$cm['creator']);
+						}
+						if ($wsUsersId==$wsid) {
+							$un = getUserFullName($cm['creator']);
+						} else {
+							$un = getParentName($cm['creator']);
+						}
+						$retcm .= $un;
+						if (!$html and !$singlefield) {
+							$retcm .= "\n";
+						}
+						if ($html) {
+							$retcm .= '</li>';
+						}
+						break;
+					case 'date':
+						if ($html) {
+							$retcm .= '<li class="commentdate">';
+						}
+						$dt = new DateTimeField($cm['createdtime']);
+						$retcm .= $dt->getDisplayDateTimeValue($current_user);
+						if (!$html and !$singlefield) {
+							$retcm .= "\n";
+						}
+						if ($html) {
+							$retcm .= '</li>';
+						}
+						break;
+					case 'comment':
+						if ($html) {
+							$retcm .= '<li class="commentcomment">';
+						}
+						$retcm .= vtlib_purify($cm['commentcontent']);
+						if (!$html and !$singlefield) {
+							$retcm .= "\n";
+						}
+						if ($html) {
+							$retcm .= '</li>';
+						}
+						break;
+				}
+			}
+			if ($html) {
+				$retcm .= '</ul></div>';
+			}
+		}
+		if ($html) {
+			$retcm .= '</div>';
+		}
+		return $retcm;
+	}
+
 	function getGroupFieldList($groupref,$fieldname) {
 		require_once('include/utils/GetGroupUsers.php');
 		$groupId = getGrpId($groupref);
@@ -161,6 +258,34 @@ class VTSimpleTemplate{
 			$groupname = trim(str_replace('_', ' ', substr($fieldname, 14)));
 			$fieldname = 'groupEmailList';
 		}
+		if (substr($fieldname,0,8)=='comments') {
+			if (strpos($fieldname, '_')>0) {
+				$commspec = explode('_', $fieldname);
+				$fieldname = 'comments';
+				$srtcomm = substr($commspec[1], -1);
+				if (is_numeric($srtcomm)) {
+					$srtcomm = 'a';
+					$numcomm = $commspec[1];
+				} else {
+					$numcomm = substr($commspec[1], 0, strlen($commspec[1])-1);
+				}
+				if (count($commspec)>2) {
+					$fmtcomm = $commspec[2];
+				} else {
+					$fmtcomm = 'html';
+				}
+				if (count($commspec)>3) {
+					$fldcomm = $commspec[3];
+				} else {
+					$fldcomm = 'all';
+				}
+			} else {
+				$numcomm = 0;
+				$srtcomm = 'a';
+				$fmtcomm = 'html';
+				$fldcomm = 'all';
+			}
+		}
 		switch($fieldname){
 			case 'date'					:	return getNewDisplayDate();
 			case 'time'					:	return getNewDisplayTime();
@@ -196,6 +321,7 @@ class VTSimpleTemplate{
 
 			case 'supportName'			: return $HELPDESK_SUPPORT_NAME;
 			case 'supportEmailId'		: return $HELPDESK_SUPPORT_EMAIL_ID;
+			case 'comments'				: return $this->getComments($numcomm,$srtcomm,$fmtcomm,$fldcomm);
 			case 'groupEmailList'		: return $this->getGroupFieldList($groupname,'email1');
 			default: '';
 		}
