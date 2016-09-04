@@ -116,6 +116,38 @@ if(isset($_REQUEST['record']) && $_REQUEST['record']!='') {
     }
 
 }else {
+	if (!empty($_REQUEST['parent_id']) && empty($_REQUEST['contact_id'])) {
+		$pid = vtlib_purify($_REQUEST['parent_id']);
+		$sepid = getSalesEntityType($pid);
+		if ($sepid=='Potentials') {
+			$psql = 'select vtiger_contactdetails.contactid from vtiger_contactdetails
+					inner join vtiger_contpotentialrel on vtiger_contpotentialrel.contactid = vtiger_contactdetails.contactid
+					inner join vtiger_potential on vtiger_contpotentialrel.potentialid = vtiger_potential.potentialid
+					inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
+					where vtiger_potential.potentialid = ? and vtiger_crmentity.deleted=0';
+			$rspot = $adb->pquery($psql, array($pid));
+			if ($rspot and $adb->num_rows($rspot)>0) {
+				$cnt_idlist = $cnt_namelist = array();
+				while ($ctopot = $adb->fetch_array($rspot)) {
+					$cnt_idlist[] = $ctopot['contactid'];
+					$displayValueArray = getEntityName('Contacts', array($ctopot['contactid']));
+					if (!empty($displayValueArray)) {
+						foreach ($displayValueArray as $key => $field_value) {
+							$cnt_namelist[$key] =  $field_value;
+						}
+					}
+					if($activity_mode == 'Task') {
+						$_REQUEST['contact_id'] = $ctopot['contactid'];
+						break;
+					}
+				}
+				$smarty->assign("CONTACTSID",  implode(';', $cnt_idlist));
+				$smarty->assign("CONTACTSNAME",$cnt_namelist);
+			}
+		} else {
+			$_REQUEST['contact_id'] = getRelatedAccountContact($pid,'Contacts');
+		}
+	}
 	if(isset($_REQUEST['contact_id']) && $_REQUEST['contact_id']!=''){
 		$contactId = vtlib_purify($_REQUEST['contact_id']);
 		$entityIds = array($contactId);
