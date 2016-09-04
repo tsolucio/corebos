@@ -190,7 +190,6 @@ $mod_strings = Array(
 'The comments are' => 'Os comentários são',
 'Ticket Title' => 'Título Ticket',
 'Re' => 'Re :',
-// Added/Updated for vtiger CRM 5.0.4
 
 //this label for customerportal.
 'LBL_STATUS_CLOSED' =>'Closed',//Do not convert this label. This is used to check the status. If the status 'Closed' is changed in vtigerCRM server side then you have to change in customerportal language file also.
@@ -213,16 +212,15 @@ $mod_strings = Array(
 'LBL_MAIL_SENT' => 'Mensagem enviada para seu e-mail com detalhes do login no Portal do Cliente.',
 'LBL_ALTBODY' => 'Este é o corpo da mensagem em texto simples para programas de e-mail que não suportam HTML',
 
-// Added after 5.0.4 GA
-
 // Module Sequence Numbering
 'Ticket No' => 'No. Ticket',
-// END
 
 'Hours' => 'Horas',
 'Days' => 'Dias',
 
 'From Portal' => 'Do Portal',
+'From mailscanner' => 'From Mail Converter',
+'Comment Added' => 'Comment Added',
 'HelpDesk ID' => 'ID Tickets',
 );
 

@@ -115,6 +115,15 @@ class HelpDesk extends CRMEntity {
 		}
 	}
 
+	function save($module, $fileid = '') {
+		global $adb;
+		if (!empty($this->id)) {
+			$adb->pquery("update vtiger_troubletickets set commentadded='0' where ticketid=?",array($this->id));
+		}
+		$this->column_fields['commentadded'] = '0';
+		parent::save($module, $fileid);
+	}
+
 	function save_module($module) {
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id,$module);
@@ -167,6 +176,8 @@ class HelpDesk extends CRMEntity {
 			$sql = "insert into vtiger_ticketcomments values(?,?,?,?,?,?)";
 			$params = array('', $this->id, from_html($comment), $ownerId, $ownertype, $current_time);
 			$adb->pquery($sql, $params);
+			$adb->pquery("update vtiger_troubletickets set commentadded='1' where ticketid=?",array($this->id));
+			$this->column_fields['commentadded'] = '1';
 		}
 	}
 

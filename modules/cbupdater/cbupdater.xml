@@ -773,4 +773,11 @@
 	<classname>addLeadEmailOptOutAndConversionRelatedFields</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add CommentAdded field to HelpDesk module</description>
+	<filename>build/changeSets/addCommentAdded2HelpDesk.php</filename>
+	<classname>addCommentAdded2HelpDesk</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

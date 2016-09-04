@@ -194,6 +194,8 @@ $mod_strings = array (
 'Hours' => 'Ore',
 'Days' => 'Giorni',
 'From Portal' => 'Dal Portale',
+'From mailscanner' => 'From Mail Converter',
+'Comment Added' => 'Comment Added',
 'HelpDesk ID' => 'ID Trouble Tickets',
 );
 
