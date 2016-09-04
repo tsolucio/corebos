@@ -77,6 +77,7 @@ $mod_strings = array(
 	'Portal Detail View URL' => 'Ügyfél Portál Részletes adatok nézet URL',
 	'Site Url' => 'URL (CRM)',
 	'Portal Url' => 'Ügyfél Portál URL',
+	'groupEmailList' => 'Group Email List',
 	'Workflow' => 'Munkafolyamat',
 	'VTCreateEntityTask' => 'Entitás létrehozása',
 	'LBL_ENTITY_TYPE' => 'Entitás típus',

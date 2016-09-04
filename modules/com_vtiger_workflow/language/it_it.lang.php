@@ -80,6 +80,7 @@ $mod_strings = array(
 'Portal Detail View URL' => 'Visualizza URL Dettaglio Portale',
 'Site Url' => 'URL Sito',
 'Portal Url' => 'URL Portale',
+'groupEmailList' => 'Group Email List',
 
 'Workflow'=>'Workflow',
 

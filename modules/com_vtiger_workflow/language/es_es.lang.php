@@ -79,6 +79,7 @@ $mod_strings = array(
 'Portal Detail View URL' => 'URL Vista Detalle del Portal',
 'Site Url' => 'Url CRM',
 'Portal Url' => 'Url Portal',
+'groupEmailList' => 'Emails de Grupo',
 
 'Workflow'=>'Flujo de Trabajo',
 
