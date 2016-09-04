@@ -2629,7 +2629,7 @@ function getTicketComments($ticketid) {
 
 	$moduleName = getSalesEntityType($ticketid);
 	$commentlist = '';
-	$sql = "select * from vtiger_ticketcomments where ticketid=?";
+	$sql = 'select * from vtiger_ticketcomments where ticketid=? order by createdtime';
 	$result = $adb->pquery($sql, array($ticketid));
 	for ($i = 0; $i < $adb->num_rows($result); $i++) {
 		$comment = $adb->query_result($result, $i, 'comments');

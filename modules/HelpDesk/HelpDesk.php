@@ -122,7 +122,7 @@ class HelpDesk extends CRMEntity {
 		if(isset($_REQUEST['mode']) && $_REQUEST['mode'] =='Import')
 			$this->column_fields['comments'] = '';
 		//Inserting into Ticket Comment Table
-		$this->insertIntoTicketCommentTable("vtiger_ticketcomments",$module);
+		$this->insertIntoTicketCommentTable();
 
 		//Inserting into vtiger_attachments
 		$this->insertIntoAttachment($this->id,$module);
@@ -143,21 +143,15 @@ class HelpDesk extends CRMEntity {
 		parent::save_related_module($module, $crmid, $with_module, $with_crmid);
 		if ($with_module == 'ServiceContracts') {
 			$serviceContract = CRMEntity::getInstance("ServiceContracts");
-	 		$serviceContract->updateHelpDeskRelatedTo($with_crmid,$crmid);
-	 		$serviceContract->updateServiceContractState($with_crmid);
-	 	}
+			$serviceContract->updateHelpDeskRelatedTo($with_crmid,$crmid);
+			$serviceContract->updateServiceContractState($with_crmid);
+		}
 	}
 
-	/** Function to insert values in vtiger_ticketcomments for the specified tablename and module
-	 * @param $table_name -- table name:: Type varchar
-	 * @param $module -- module:: Type varchar
-	 */
-	function insertIntoTicketCommentTable($table_name, $module)
-	{
-		global $log;
-		$log->info("in insertIntoTicketCommentTable ".$table_name." module is ".$module);
-		global $adb;
-		global $current_user;
+	// Function to insert values in ticketcomments
+	function insertIntoTicketCommentTable() {
+		global $log, $adb, $current_user;
+		$log->info('in insertIntoTicketCommentTable');
 
 		$current_time = $adb->formatDate(date('Y-m-d H:i:s'), true);
 		if ($this->column_fields['from_portal'] != 1) {
