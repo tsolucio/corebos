@@ -116,6 +116,18 @@ class VTSimpleTemplate{
 		}
 		$singlefield = (count($fields)==1);
 		$wsId = $this->parent->getId();
+		$datefmtuserid = $this->parent->get('assigned_user_id');
+		if (!empty($datefmtuserid)) {
+			list($void,$dfuid) = explode('x',$datefmtuserid);
+			if (file_exists('user_privileges/user_privileges_' . $userid . '.php')) {
+				$datefmtuser = new Users();
+				$datefmtuser->retrieveCurrentUserInfoFromFile($dfuid);
+			} else {
+				$datefmtuser = $current_user;
+			}
+		} else {
+			$datefmtuser = $current_user;
+		}
 		$moduleName = $this->parent->getModuleName();
 		$wsUsersId = vtws_getEntityId('Users');
 		include_once 'include/Webservices/GetRelatedRecords.php';
@@ -165,7 +177,7 @@ class VTSimpleTemplate{
 							$retcm .= '<li class="commentdate">';
 						}
 						$dt = new DateTimeField($cm['createdtime']);
-						$retcm .= $dt->getDisplayDateTimeValue($current_user);
+						$retcm .= $dt->getDisplayDateTimeValue($datefmtuser);
 						if (!$html and !$singlefield) {
 							$retcm .= "\n";
 						}
