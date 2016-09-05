@@ -13,23 +13,36 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
-include_once 'include/validation/Validator.php';
-include_once 'include/validation/Validations.php';
+class addCommentAdded2HelpDesk extends cbupdaterWorker {
 
-class cbValidator extends Validator {
-
-	public $CustomValidations = array(
-		'IBAN_BankAccount' => 'validate_IBAN_BankAccount',
-		'EU_VAT' => 'validate_EU_VAT',
-	);
-
-	public function __construct($data, $fields = array()) {
-		global $current_language;
-		parent::__construct($data, $fields, substr($current_language, 0, 2), 'include/validation/lang');
-		foreach ($this->CustomValidations as $validation => $function) {
-			$this->addRule($validation, $function, getTranslatedString('INVALID'));
+	function applyChange() {
+		if ($this->hasError()) $this->sendError();
+		if ($this->isApplied()) {
+			$this->sendMsg('Changeset '.get_class($this).' already applied!');
+		} else {
+			$modname = 'HelpDesk';
+			$module = Vtiger_Module::getInstance($modname);
+			$block = Vtiger_Block::getInstance('LBL_TICKET_INFORMATION', $module);
+			$field = Vtiger_Field::getInstance('commentadded',$module);
+			if ($field) {
+				$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid='.$field->id);
+			} else {
+				$fieldInstance = new Vtiger_Field();
+				$fieldInstance->name = 'commentadded';
+				$fieldInstance->label = 'Comment Added';
+				$fieldInstance->columntype = 'varchar(3)';
+				$fieldInstance->uitype = 56;
+				$fieldInstance->displaytype = 3;
+				$fieldInstance->typeofdata = 'C~O';
+				$fieldInstance->quickcreate = 0;
+				$block->addField($fieldInstance);
+			}
+			$this->sendMsg('Changeset '.get_class($this).' applied!');
+			$this->markApplied();
 		}
+		$this->finishExecution();
 	}
+
 }
 
 ?>

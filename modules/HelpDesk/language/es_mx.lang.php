@@ -1,14 +1,10 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************
 *  Module       : Helpdesk
@@ -20,7 +16,6 @@
  ********************************************************************************/
 
 $mod_strings = Array(
-// Added in release 4.0
 'LBL_MODULE_NAME' => 'Casos',
 'LBL_GROUP' => 'Grupo',
 'LBL_ACCOUNT_NAME' => 'Nombre de Cuenta',
@@ -61,12 +56,10 @@ $mod_strings = Array(
 'LBL_AUTHOR' => 'Autor',
 'LBL_QUESTION' => 'Pregunta',
 
-//Added vtiger_fields for File Attachment and Mail send in Tickets
 'LBL_ATTACHMENTS' => 'Adjuntos',
 'LBL_NEW_ATTACHMENT' => 'Nuevo Adjunto',
 'LBL_SEND_MAIL' => 'Enviar Email',
 
-//Added vtiger_fields for search option  in TicketsList -- 4Beta
 'LBL_CREATED_DATE' => 'Fecha de Creación',
 'LBL_IS' => 'es',
 'LBL_IS_NOT' => 'no es',
@@ -85,21 +78,18 @@ $mod_strings = Array(
 'LBL_TICKET_CATEGORY' => 'Categoría',
 'LBL_TICKET_PRIORITY' => 'Prioridad',
 
-//Added vtiger_fields after 4 -- Beta
 'LBL_NEW_TICKET' => 'Nuevo Caso',
 'LBL_TICKET_INFORMATION' => 'Información del Caso',
 
 'LBL_LIST_FORM_TITLE' => 'Lista de casos',
 'LBL_SEARCH_FORM_TITLE' => 'Buscar Caso',
 
-//Added vtiger_fields after RC1 - Release
 'LBL_CHOOSE_A_VIEW' => 'Seleccionar una vista...',
 'LBL_ALL' => 'Todos',
 'LBL_LOW' => 'Baja',
 'LBL_MEDIUM' => 'Media',
 'LBL_HIGH' => 'Alta',
 'LBL_CRITICAL' => 'Crítica',
-//Added vtiger_fields for 4GA
 'Assigned To' => 'Asignado a',
 'Contact Name' => 'Nombre de Contacto',
 'Priority' => 'Prioridad',
@@ -121,17 +111,14 @@ $mod_strings = Array(
 'LBL_PRIORITIES' => 'Prioridades',
 'LBL_SUPPORTERS' => 'Agentes',
 
-//Added vtiger_fields after 4_0_1
 'LBL_TICKET_RESOLUTION' => 'Solución Propuesta',
 'Solution' => 'Solución',
 'Add Comment' => 'Agregar comentario',
 'LBL_ADD_COMMENT' => 'Agregar comentario',
 
-//Added for 4.2 Release -- CustomView
 'Ticket ID' => 'ID del Caso',
 'Subject' => 'Asunto',
 
-//Added after 4.2 alpha
 'Severity' => 'Importancia',
 'Product Name' => 'Producto',
 'Related To' => 'Relacionado con',
@@ -139,17 +126,13 @@ $mod_strings = Array(
 
 'LBL_TICKETS' => 'casos',
 
-//Added on 09-12-2005
 'LBL_CUMULATIVE_STATISTICS' => 'Estadísticas Acumuladas',
 
-//Added on 12-12-2005
 'LBL_CONVERT_AS_FAQ_BUTTON_TITLE' => 'Convertir en FAQ',
 'LBL_CONVERT_AS_FAQ_BUTTON_KEY' => 'C',
 'LBL_CONVERT_AS_FAQ_BUTTON_LABEL' => 'Convertir en FAQ',
 'Attachment' => 'Adjunto',
 'LBL_COMMENT_INFORMATION' => 'Comentarios al Caso',
-
-//Added for existing picklist entries
 
 'Big Problem' => 'Problema Grave',
 'Small Problem' => 'Problema menor',
@@ -170,7 +153,6 @@ $mod_strings = Array(
 'Wait For Response' => 'Esperando Respuesta',
 'Closed' => 'Cerrada',
 
-//added to support i18n in ticket mails
 'Hi' => 'Hola',
 'Dear' => 'Estimado',
 'LBL_PORTAL_BODY_MAILINFO' => 'El Caso ha sido',
@@ -189,9 +171,7 @@ $mod_strings = Array(
 'The comments are' => 'Los comentarios son',
 'Ticket Title' => 'Título Caso',
 'Re' => 'Re :',
-// Added/Updated for vtiger CRM 5.0.4
 
-//this label for customerportal.
 'LBL_STATUS_CLOSED' =>'Closed',//Do not convert this label. This is used to check the status. If the status 'Closed' is changed in vtigerCRM server side then you have to change in customerportal language file also.
 'LBL_STATUS_UPDATE' => 'Estado de Caso actualizado a',
 'LBL_COULDNOT_CLOSED' => 'El Caso no puede ser',
@@ -213,12 +193,12 @@ $mod_strings = Array(
 'LBL_ALTBODY' => 'Este es el mensaje de correo para los clientes que no soportan HTML',
 'Hours' => 'Horas',
 'Days' => 'Días',
-// Added after 5.0.4 GA
 
 // Module Sequence Numbering
 'Ticket No' => 'Núm. Caso',
-// END
 'From Portal' => 'Proviene del Portal',
+'From mailscanner' => 'Proviene del Conversor de EMail',
+'Comment Added' => 'Comentario Añadido',
 'HelpDesk ID' => 'Id Incidencia',
 );
 

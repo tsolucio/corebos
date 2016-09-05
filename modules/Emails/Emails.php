@@ -581,6 +581,10 @@ function get_to_emailids($module) {
 				  INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_leaddetails.leadid
 				  LEFT JOIN vtiger_leadscf ON vtiger_leaddetails.leadid = vtiger_leadscf.leadid
 				  WHERE vtiger_crmentity.deleted=0 AND vtiger_leaddetails.leadid IN ('.generateQuestionMarks($idlist).')';
+		$leadcols = $adb->getColumnNames('vtiger_leaddetails');
+		if (in_array('emailoptout', $leadcols)) {
+			$query = $query.' AND vtiger_leaddetails.emailoptout=0';
+		}
 	} else if ($module == 'Contacts'){
 		$query = 'SELECT firstname,lastname,'.implode(",", $emailFields).',vtiger_contactdetails.contactid as id
 				  FROM vtiger_contactdetails

@@ -15,7 +15,7 @@
 *  Author       : JPL TSolucio, S. L.
 *************************************************************************************************/
 
-require_once 'modules/Emails/mail.php';
+require_once 'include/Webservices/Revise.php';
 
 /* Function used to add comments to Tickets and Faq
  * Parameters
@@ -26,9 +26,8 @@ require_once 'modules/Emails/mail.php';
  * 		'comments' string, comment to add
 */
 	function vtws_addTicketFaqComment($id, $values, $user){
-		
 		global $log,$adb,$current_user;
-		
+
 		$webserviceObject = VtigerWebserviceObject::fromId($adb,$id);
 		$handlerPath = $webserviceObject->getHandlerPath();
 		$handlerClass = $webserviceObject->getHandlerClass();
@@ -65,75 +64,7 @@ require_once 'modules/Emails/mail.php';
 			throw new WebServiceException(WebServiceErrorCode::$MANDFIELDSMISSING,"Comment empty.");
 		}
 
-		$current_time = $adb->formatDate(date('Y-m-d H:i:s'), true);
-		if($entityName == 'HelpDesk'){
-			if ($values['from_portal'] != 1) {
-				$ownertype = 'user';
-				if (!empty($user))
-					$ownerId = $user->id;
-				elseif (!empty($current_user))
-					$ownerId = $current_user->id;
-				else
-					$ownerId = 1;
-				//get the user email
-				$result = $adb->pquery("SELECT email1 FROM vtiger_users WHERE id=?", array($ownerId));
-				$fromname = getUserFullName($ownerId);
-			} else {
-				$ownertype = 'customer';
-				$webserviceObject = VtigerWebserviceObject::fromId($adb,$values['parent_id']);
-				$handlerPath = $webserviceObject->getHandlerPath();
-				$handlerClass = $webserviceObject->getHandlerClass();
-				
-				require_once $handlerPath;
-				
-				$handler = new $handlerClass($webserviceObject,$user,$adb,$log);
-				$meta = $handler->getMeta();
-				$entityName = $meta->getObjectEntityName($values['parent_id']);
-				
-				if($entityName !== 'Contacts'){
-					throw new WebServiceException(WebServiceErrorCode::$INVALIDID,"Invalid owner module specified. Must be Contacts");
-				}
-				
-				if($entityName !== $webserviceObject->getEntityName()){
-					throw new WebServiceException(WebServiceErrorCode::$INVALIDID,"Id specified is incorrect");
-				}
-				
-				$pidComponents = vtws_getIdComponents($values['parent_id']);
-				if(!$meta->exists($pidComponents[1])){
-					throw new WebServiceException(WebServiceErrorCode::$RECORDNOTFOUND,"Record you are trying to access is not found");
-				}
-				$ownerId = $pidComponents[1];
-				//get the contact email id who creates the ticket from portal and use this email as from email id in email
-				$result = $adb->pquery("SELECT email FROM vtiger_contactdetails WHERE contactid=?", array($ownerId));
-				$ename = getEntityName('Contacts', $ownerId);
-				$fromname = $ename[$ownerId];
-			}
-			$sql = "insert into vtiger_ticketcomments values(?,?,?,?,?,?)";
-			$params = array('', $idComponents[1], $comment, $ownerId, $ownertype, $current_time);
-			//send mail to the assigned to user when customer add comment
-			$toresult = $adb->pquery("SELECT email1,first_name
-					FROM vtiger_users
-					INNER JOIN vtiger_crmentity on smownerid=id
-					INNER JOIN vtiger_troubletickets on ticketid=crmid
-					WHERE ticketid=?", array($idComponents[1]));
-			$to_email = $adb->query_result($toresult,0,0);
-			$ownerName = $adb->query_result($toresult,0,1);
-			$moduleName = 'HelpDesk';
-			$subject = getTranslatedString('LBL_RESPONDTO_TICKETID', $moduleName)."##".$idComponents[1]."##". getTranslatedString('LBL_CUSTOMER_PORTAL', $moduleName);
-			$contents = getTranslatedString('Dear', $moduleName)." ".$ownerName.","."<br><br>"
-					.getTranslatedString('LBL_CUSTOMER_COMMENTS', $moduleName)."<br><br>
-					<b>".$comment."</b><br><br>"
-					.getTranslatedString('LBL_RESPOND', $moduleName)."<br><br>"
-					.getTranslatedString('LBL_REGARDS', $moduleName)."<br>"
-					.getTranslatedString('LBL_SUPPORT_ADMIN', $moduleName);
-			$from_email = $adb->query_result($result,0,0);
-			//send mail to assigned to user
-			$mail_status = send_mail('HelpDesk',$to_email,$fromname,$from_email,$subject,$contents);
-		} else {
-			$sql = "insert into vtiger_faqcomments values(?, ?, ?, ?)";
-			$params = array('', $idComponents[1], $comment, $current_time);
-		}
-		$adb->pquery($sql, $params);
+		vtws_revise(array('id'=>$id,'comments'=>$comment,'from_portal'=>vtlib_purify($values['from_portal'])),$current_user);
 		VTWS_PreserveGlobal::flush();
 		return array('success'=>true);
 	}

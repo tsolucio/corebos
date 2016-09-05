@@ -1,16 +1,12 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- ********************************************************************************/
+ ************************************************************************************/
 require_once('include/utils/utils.php');
 require_once('include/utils/VTCacheUtils.php');
 require_once('include/utils/VtlibUtils.php');
@@ -785,14 +781,13 @@ function getUserName($userid) {
 
 /**
  * Get the user full name by giving the user id.   This method expects the user id
- * DG 30 Aug 2006
  */
 function getUserFullName($userid) {
 	global $log;
 	$log->debug("Entering getUserFullName(" . $userid . ") method ...");
-	$log->info("in getUserFullName " . $userid);
 	global $adb;
 	if ($userid != '') {
+		if (strpos($userid,'x')) list($wsid,$userid) = explode('x', $userid);
 		$displayValueArray = getEntityName('Users', $userid);
 		if (!empty($displayValueArray)) {
 			foreach ($displayValueArray as $key => $value) {
@@ -810,7 +805,7 @@ function getParentName($parent_id) {
 	if (empty($parent_id) || $parent_id == 0) {
 		return "";
 	}
-
+	if (strpos($parent_id,'x')) list($wsid,$parent_id) = explode('x', $parent_id);
 	$seType = getSalesEntityType($parent_id);
 	$entityNames = getEntityName($seType, $parent_id);
 	return $entityNames[$parent_id];
@@ -2634,7 +2629,7 @@ function getTicketComments($ticketid) {
 
 	$moduleName = getSalesEntityType($ticketid);
 	$commentlist = '';
-	$sql = "select * from vtiger_ticketcomments where ticketid=?";
+	$sql = 'select * from vtiger_ticketcomments where ticketid=? order by createdtime';
 	$result = $adb->pquery($sql, array($ticketid));
 	for ($i = 0; $i < $adb->num_rows($result); $i++) {
 		$comment = $adb->query_result($result, $i, 'comments');

@@ -1,20 +1,14 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
 
 $mod_strings = Array(
-    // Added in release 4.0
     'LBL_MODULE_NAME'=>'Trouble Tickets',
     'LBL_GROUP'=>'Gruppe',
     'LBL_ACCOUNT_NAME'=>'Organisation',
@@ -55,12 +49,10 @@ $mod_strings = Array(
     'LBL_AUTHOR'=>'Autor',
     'LBL_QUESTION'=>'Frage',
 
-    //Added fields for File Attachment and Mail send in Tickets
     'LBL_ATTACHMENTS'=>'Anhang',
     'LBL_NEW_ATTACHMENT'=>'Neuer Anhang',
     'LBL_SEND_MAIL'=>'sende E-Mail',
 
-    //Added fields for search option  in TicketsList -- 4Beta
     'LBL_CREATED_DATE'=>'Erstelldatum',
     'LBL_IS'=>'ist',
     'LBL_IS_NOT'=>'ist nicht',
@@ -79,21 +71,18 @@ $mod_strings = Array(
     'LBL_TICKET_CATEGORY'=>'Kategorie',
     'LBL_TICKET_PRIORITY'=>'Priorität',
 
-    //Added fields after 4 -- Beta
     'LBL_NEW_TICKET'=>'Neues Ticket',
     'LBL_TICKET_INFORMATION'=>'Ticket',
 
     'LBL_LIST_FORM_TITLE'=>'Tickets',
     'LBL_SEARCH_FORM_TITLE'=>'Ticket suchen',
 
-    //Added fields after RC1 - Release
     'LBL_CHOOSE_A_VIEW'=>'Ansicht auswählen...',
     'LBL_ALL'=>'Alle',
     'LBL_LOW'=>'gering',
     'LBL_MEDIUM'=>'mittel',
     'LBL_HIGH'=>'hoch',
     'LBL_CRITICAL'=>'kritisch',
-    //Added fields for 4GA
     'Assigned To'=>'zuständig',
     'Contact Name'=>'Person',
     'Priority'=>'Priorität',
@@ -115,17 +104,14 @@ $mod_strings = Array(
     'LBL_PRIORITIES'=>'Prioritäten',
     'LBL_SUPPORTERS'=>'Supporter',
 
-    //Added fields after 4_0_1
     'LBL_TICKET_RESOLUTION'=>'Lösung',
     'Solution'=>'Lösung',
     'Add Comment'=>'Kommentar hinzufügen',
     'LBL_ADD_COMMENT'=>'Kommentar hinzufügen',//give the same value given to the above string 'Add Comment'
 
-    //Added for 4.2 Release -- CustomView
     'Ticket ID'=>'Ticketnummer',
     'Subject'=>'Thema',
 
-    //Added after 4.2 alpha
     'Severity'=>'Gewichtung',
     'Product Name'=>'Produktname',
     'Related To'=>'bezogen auf',
@@ -133,10 +119,8 @@ $mod_strings = Array(
 
     'LBL_TICKETS'=>'Tickets',
 
-    //Added on 09-12-2005
     'LBL_CUMULATIVE_STATISTICS'=>'Zusammenfassende Statistik',
 
-    //Added on 12-12-2005
     'LBL_CONVERT_AS_FAQ_BUTTON_TITLE'=>'zur Wissensbasis hinzufügen',
     'LBL_CONVERT_AS_FAQ_BUTTON_KEY'=>'C',
     'LBL_CONVERT_AS_FAQ_BUTTON_LABEL'=>'zur Wissensbasis hinzufügen',
@@ -183,7 +167,6 @@ $mod_strings = Array(
     'The comments are' => 'Die Kommentare sind',
     'Ticket Title' => 'Ticket Titel',
     'Re' => 'Re :',
-    // Added/Updated for vtiger CRM 5.0.4
 
     //this label for customerportal.
     'LBL_STATUS_CLOSED' =>'Closed',//Do not convert this label. This is used to check the status. If the status 'Closed' is changed in vtigerCRM server side then you have to change in customerportal language file also.
@@ -206,17 +189,16 @@ $mod_strings = Array(
     'LBL_MAIL_SENT' => 'Eine E-Mail mit den Zugangsdaten wurde zu Ihnen gesendet.',
     'LBL_ALTBODY' => 'Das ist die Nachricht für Clients ohne HTML',
 
-    // Added after 5.0.4 GA
-
     // Module Sequence Numbering
     'Ticket No' => 'interne Ticket Nr.',
-    // END
 
     'Hours' => 'Stunden',
     'Days' => 'Tage',
 
     'From Portal' => 'Von Kundenportal',
-    'HelpDesk ID' => 'Trouble Ticket ID',
+	'From mailscanner' => 'From Mail Converter',
+	'Comment Added' => 'Comment Added',
+	'HelpDesk ID' => 'Trouble Ticket ID',
 );
 
 ?>

@@ -41,8 +41,8 @@ if($focus->id != '')
 		$answer .= "\r\n\r\n".$app_strings['LBL_SOLUTION'].":\r\n".$solution;
 	}
 
-	//Retrive the ticket comments from the vtiger_ticketcomments vtiger_table and added into the vtiger_faq answer
-	$sql = "select ticketid, comments, createdtime from vtiger_ticketcomments where ticketid=?";
+	//Retrieve the ticket comments and add them into the faq answer
+	$sql = "select ticketid, comments, createdtime from vtiger_ticketcomments where ticketid=? order by createdtime";
 	$res = $adb->pquery($sql, array($_REQUEST['record']));
 	$noofrows = $adb->num_rows($res);
 

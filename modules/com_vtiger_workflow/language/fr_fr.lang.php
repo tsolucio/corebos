@@ -69,7 +69,6 @@ $mod_strings = array(
 	'LBL_EMAIL_REPLYTO' => 'Répond à',
 	
 	'LBL_WORKFLOW_NOTE_EVENT_TASK_TIMEZONE' => 'Note: Toutes les informations de date et temps configuré pour cet évènement seront basé sur le fuseau horaire configuré dans config.inc.php',
-	// 5.4.0
 	'Select Meta Variables' => 'Choix des meta variables',
 	'Current Date' => 'Date courante',
 	'Current Time' => 'Heure courante',
@@ -79,7 +78,8 @@ $mod_strings = array(
 	'Portal Detail View URL' => 'URL de la vue détail du portail CRM',
 	'Site Url' => 'URL du CRM',
 	'Portal Url' => 'URL du portail CRM',
-	
+	'groupEmailList' => 'Group Email List',
+
 	'Workflow'=>'Flux de travail',
 	
 	'VTCreateEntityTask' => 'Créer une entité',

@@ -194,6 +194,68 @@ class cbupdaterWorker {
 		$this->ExecuteQuery("DELETE FROM com_vtiger_workflows WHERE workflow_id=?", array($wfid));
 	}
 
+	/* Given an array of field definitions this method will create or activate the fields.
+	 * The layout is an array of Module Name, Block Name and Field Definition
+		array(
+			'{modulename}' => array(
+				'{blockname}' => array(
+					'{fieldname}' => array(
+						'columntype'=>'decimal(10,3)',
+						'typeofdata'=>'NN~O',
+						'uitype'=>'1',
+						'displaytype'=>'3',
+						'label'=>'', // optional, if empty fieldname will be used
+						'massedit' => 0 | 1  // optional, if empty 0 will be set
+						'mods'=>array(module names), // used if uitype 10
+						'vals'=>array(picklist values), // used if uitype 15 or 16
+					),
+				)),
+	* See changeset addLeadEmailOptOutAndConversionRelatedFields for an example
+	*/
+	function massCreateFields($fieldLayout) {
+		global $adb;
+		foreach ($fieldLayout as $mod => $blocks) {
+			$moduleInstance = Vtiger_Module::getInstance($mod);
+			if ($moduleInstance) {
+				foreach ($blocks as $blockname => $fields) {
+					$block = Vtiger_Block::getInstance($blockname, $moduleInstance);
+					if (!$block) {
+						$block = new VTiger_Block();
+						$block->label = $blockname;
+						$moduleInstance->addBlock($block);
+					}
+					foreach ($fields as $fieldname => $fieldinfo) {
+						$field = Vtiger_Field::getInstance($fieldname,$moduleInstance);
+						if ($field) {
+							$adb->pquery('update vtiger_field set presence=2 where fieldid=?',array($field->id));
+						} else {
+							$fname = strtolower($fieldname);
+							$fname = str_replace(' ', '_', $fname);
+							$newfield = new Vtiger_Field();
+							$newfield->name = $fname;
+							$newfield->label = (empty($fieldinfo['label']) ? $fname : $fieldinfo['label']);
+							$newfield->column = $fname;
+							$newfield->columntype = $fieldinfo['columntype'];
+							$newfield->typeofdata = $fieldinfo['typeofdata'];
+							$newfield->uitype = $fieldinfo['uitype'];
+							$newfield->displaytype = $fieldinfo['displaytype'];
+							$newfield->masseditable = (empty($fieldinfo['massedit']) ? '0' : $fieldinfo['massedit']);
+							$block->addField($newfield);
+							if ($fieldinfo['uitype']=='10' and !empty($fieldinfo['mods'])) {
+								$newfield->setRelatedModules($fieldinfo['mods']);
+							}
+							if (($fieldinfo['uitype']=='15' or $fieldinfo['uitype']=='16') and !empty($fieldinfo['vals'])) {
+								$newfield->setPicklistValues($fieldinfo['vals']);
+							}
+						}
+					}
+				}
+			} else {
+				$this->sendMsg('Module not found: '.$mod.'!');
+			}
+		}
+	}
+
 	function installManifestModule($module) {
 		$package = new Vtiger_Package();
 		ob_start();

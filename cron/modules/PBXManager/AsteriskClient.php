@@ -8,7 +8,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-@ini_set('error_reporting', E_WARNING & ~E_NOTICE);
+@ini_set('error_reporting', E_ERROR);
 
 chdir('../../../');
 

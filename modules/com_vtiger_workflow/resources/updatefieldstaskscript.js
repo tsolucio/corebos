@@ -210,7 +210,7 @@ function VTUpdateFieldsTask($, fieldvaluemapping){
 		}
 		var functions = {
 			string:forStringField,
-			picklist:forPicklist,
+			picklist:forStringField,
 			multipicklist:forPicklist
 		};
 		var ret = functions[fieldType];
