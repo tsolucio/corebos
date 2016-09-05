@@ -121,8 +121,8 @@ switch ($focus->column_fields['maptype']) {
 		$mapinfo['OriginModule'] = $focus->getMapOriginModule();
 		break;
 	case 'IOMap':
-		$mapinfo['InputFields'] = $focus->readInputFields();
-		$mapinfo['OutputFields'] = $focus->readOutputFields();
+	        $mapinfo['InputFields'] = $focus->IOMap()->readInputFields();
+               $mapinfo['OutputFields'] = $focus->IOMap()->readOutputFields();
 		break;
 	case 'Search and Update':
 		$mapinfo = $focus->read_map();
