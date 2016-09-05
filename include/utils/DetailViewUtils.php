@@ -166,6 +166,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$label_fld ["options"] = $options;
 	} elseif ($uitype == 15) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
+		$col_fields[$fieldname] = trim(html_entity_decode($col_fields[$fieldname], ENT_QUOTES, $default_charset));
 		$label_fld[] = $col_fields[$fieldname];
 		$roleid = $current_user->roleid;
 
