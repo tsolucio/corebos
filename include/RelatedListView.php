@@ -201,8 +201,11 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 	$navigationOutput = Array();
 	$navigationOutput[] = getRecordRangeMessage($list_result, $limit_start_rec,$noofrows);
 	if(empty($id) && !empty($_REQUEST['record'])) $id = vtlib_purify($_REQUEST['record']);
-	$navigationOutput[] = getRelatedTableHeaderNavigation($navigation_array, $url_qry,$module,$relatedmodule,$id);
-
+	if(($module == 'Products' && $relatedmodule == 'Products') && strpos($returnset, 'is_parent') !== false) {
+		$navigationOutput[] = getRelatedTableHeaderNavigation($navigation_array, $url_qry,$module,'Parent Product',$id);
+	}else{
+		$navigationOutput[] = getRelatedTableHeaderNavigation($navigation_array, $url_qry,$module,$relatedmodule,$id);
+	}
 	$related_entries = array('header'=>$listview_header,'entries'=>$listview_entries,'navigation'=>$navigationOutput);
 
 	$log->debug("Exiting GetRelatedList method ...");
