@@ -249,7 +249,7 @@ var gVTUserID = '{$CURRENT_USER_ID}';
 	</form>
 	</div>
 {/if}
-{* {php}cbEventHandler::do_action('corebos.header.premenu');{/php}*}
+{$COREBOS_HEADER_PREMENU}
 <!-- header - master tabs -->
 <TABLE border=0 cellspacing=0 cellpadding=0 width=100% class="hdrTabBg">
 <tr>
