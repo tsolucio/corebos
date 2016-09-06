@@ -294,11 +294,7 @@ function DeleteTag(id,recordid)
 							{foreach item=CUSTOM_LINK_DETAILVIEWWIDGET from=$CUSTOM_LINKS.DETAILVIEWWIDGET}
 								{if preg_match("/^block:\/\/.*/", $CUSTOM_LINK_DETAILVIEWWIDGET->linkurl)}
 								<tr>
-									<td style="padding:5px;" >
-									{php}
-										echo vtlib_process_widget($this->_tpl_vars['CUSTOM_LINK_DETAILVIEWWIDGET'], $this->_tpl_vars);
-									{/php}
-									</td>
+									<td style="padding:5px;">{process_widget widgetLinkInfo=$CUSTOM_LINK_DETAILVIEWWIDGET}</td>
 								</tr>
 								{/if}
 							{/foreach}

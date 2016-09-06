@@ -8,6 +8,7 @@
  * All Rights Reserved.
 ********************************************************************************/
 require('Smarty/libs/Smarty.class.php');
+include_once 'include/smarty/function.process_widget.php';
 class vtigerCRM_Smarty extends Smarty{
 
 	/** Cache the tag cloud display information for re-use */
@@ -22,7 +23,7 @@ class vtigerCRM_Smarty extends Smarty{
 	/** END */
 
 	/** This function sets the smarty directory path for the member variables */
-	function vtigerCRM_Smarty()
+	function __construct()
 	{
 		global $CALENDAR_DISPLAY, $WORLD_CLOCK_DISPLAY, $CALCULATOR_DISPLAY, $CHAT_DISPLAY, $current_user;
 
@@ -46,6 +47,7 @@ class vtigerCRM_Smarty extends Smarty{
 			$this->assign('TAG_CLOUD_DISPLAY', self::lookupTagCloudView($current_user->id) );
 		}
 		$this->load_filter('output', 'trimwhitespace');
+		$this->register_function('process_widget', 'smarty_function_process_widget');
 	}
 }
 
