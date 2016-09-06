@@ -128,9 +128,9 @@ switch ($focus->column_fields['maptype']) {
 		$mapinfo = $focus->read_map();
 		break;
 	case 'FieldDependency':
-		$mapinfo = $focus->getMapFieldDependency();
-		$mapinfo['TargetModule'] = $focus->getMapTargetModule();
-		$mapinfo['OriginModule'] = $focus->getMapOriginModule();
+		$mapinfo = $focus->FieldDependency()->getCompleteMapping();
+		$mapinfo['TargetModule'] = $focus->FieldDependency()->getMapTargetModule();
+		$mapinfo['OriginModule'] = $focus->FieldDependency()->getMapOriginModule();
 		break;
 	default:
 
