@@ -39,21 +39,24 @@
      .............
      <Orgfield> 
       <fieldname>metodopagamento</fieldname> 
-      <fieldaction></fieldaction> 
+      <fieldaction>show/hide/readonly</fieldaction> 
       <fieldvalue></fieldvalue> 
-      <ResponsibleMode> 
-       <values>DetailView</values> 
-      </ResponsibleMode>
-      <ResponsibleRole> 
-       <values>H16</values> 
-      </ResponsibleRole>
       <mandatory>mandatory</mandatory>
      </Orgfield> 
+     <ResponsibleMode> 
+      <values>DetailView</values>
+     .............
+     </ResponsibleMode>
+     <ResponsibleRole> 
+      <values>H16</values> 
+     .............
+     </ResponsibleRole>
      .............
      <Picklist> 
       <fieldname>status</fieldname> 
       <values>OK</values>
       <values>KO</values>
+     .............
      </Picklist>
      .............
     </Orgfields> 
@@ -136,24 +139,20 @@ class FieldDependency extends processcbMap {
                 $fieldaction= isset($v2->fieldaction) ? (String)$v2->fieldaction : '';
                 $fieldvalue= isset($v2->fieldvalue) ? (String)$v2->fieldvalue : '';
                 $mandatory= isset($v2->mandatory) ? (String)$v2->mandatory : '';
-                if(isset($v2->ResponsibleMode))
-                {
-                foreach ($v2->ResponsibleMode->values as $k3 => $v3) {
-                $responsiblemode[]= isset($v3) ? (String)$v3 : '';
-                }   
-                }
-                else $responsiblemode=array();
-                if(isset($v2->ResponsibleRole))
-                {
-                foreach ($v2->ResponsibleRole->values as $k4 => $v4) {
-                $responsiblerole[]= isset($v4) ? (String)$v4 : '';
-                }   
-                }
-                else $responsiblerole=array();
                 $fieldinfoorg[]=array("fieldname"=>$fieldnameout,
-                "fieldaction"=>$fieldaction,"fieldvalue"=>$fieldvalue,"mandatory"=>$mandatory,"ResponsibleMode"=>$responsiblemode,"ResponsibleRole"=>$responsiblerole);
+                "fieldaction"=>$fieldaction,"fieldvalue"=>$fieldvalue,"mandatory"=>$mandatory);
                 }
                 $mapping['fields']['field']['Orgfields']['Orgfield']=$fieldinfoorg;
+                $mapping['fields']['field']['Orgfields']['ResponsibleMode']=array();
+                foreach ($xml->fields->field->Orgfields->ResponsibleMode->values as $k3 => $v3) {
+                $responsiblemode[]= isset($v3) ? (String)$v3 : '';
+                }   
+                $mapping['fields']['field']['Orgfields']['ResponsibleMode']=$responsiblemode;
+                $mapping['fields']['field']['Orgfields']['ResponsibleRole']=array();
+                foreach ($xml->fields->field->Orgfields->ResponsibleRole->values as $k4 => $v4) {
+                $responsiblerole[]= isset($v4) ? (String)$v4 : '';
+                }   
+                $mapping['fields']['field']['Orgfields']['ResponsibleRole']=$responsiblerole;
                 $mapping['fields']['field']['Orgfields']['Picklist']=array();
                 foreach ($xml->fields->field->Orgfields->Picklist as $k5 => $v5) {
                 $value=array();
