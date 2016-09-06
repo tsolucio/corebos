@@ -80,8 +80,7 @@ if($singlepane_view == 'true') {
 
 	require_once('include/ListView/RelatedListViewSession.php');
 	if(!empty($_REQUEST['selected_header']) && !empty($_REQUEST['relation_id'])) {
-		RelatedListViewSession::addRelatedModuleToSession(vtlib_purify($_REQUEST['relation_id']),
-				vtlib_purify($_REQUEST['selected_header']));
+		RelatedListViewSession::addRelatedModuleToSession(vtlib_purify($_REQUEST['relation_id']),vtlib_purify($_REQUEST['selected_header']));
 	}
 	$open_related_modules = RelatedListViewSession::getRelatedModulesFromSession();
 	$smarty->assign("SELECTEDHEADERS", $open_related_modules);
@@ -97,7 +96,7 @@ $smarty->assign('BLOCKS', $blocks);
 $custom_blocks = getCustomBlocks($currentModule,'detail_view');
 $smarty->assign('CUSTOMBLOCKS', $custom_blocks);
 $smarty->assign('FIELDS',$focus->column_fields);
-
+$smarty->assign("BLOCKINITIALSTATUS",$_SESSION['BLOCKINITIALSTATUS']);
 // Gather the custom link information to display
 include_once('vtlib/Vtiger/Link.php');
 $customlink_params = Array('MODULE'=>$currentModule, 'RECORD'=>$focus->id, 'ACTION'=>vtlib_purify($_REQUEST['action']));

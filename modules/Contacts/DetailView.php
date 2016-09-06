@@ -162,7 +162,7 @@ $custom_blocks = getCustomBlocks($currentModule,'detail_view');
 $smarty->assign('BLOCKS', $blocks);
 $smarty->assign('CUSTOMBLOCKS', $custom_blocks);
 $smarty->assign('FIELDS',$focus->column_fields);
-
+$smarty->assign("BLOCKINITIALSTATUS",$_SESSION['BLOCKINITIALSTATUS']);
 // Gather the custom link information to display
 include_once('vtlib/Vtiger/Link.php');
 $customlink_params = Array('MODULE'=>$currentModule, 'RECORD'=>$focus->id, 'ACTION'=>vtlib_purify($_REQUEST['action']));

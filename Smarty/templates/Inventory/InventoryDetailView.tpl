@@ -211,7 +211,6 @@ function DeleteTag(id,recordid)
 
 <!-- The following table is used to display the buttons -->
 <!-- Button displayed - finished-->
-{include_php file="include/DetailViewBlockStatus.php"}
 
 <!-- Entity information(blocks) display - start -->
 {foreach key=header item=detail from=$BLOCKS name=BLOCKS}

@@ -263,11 +263,6 @@ function sendfile_email()
 																   Singlepane view is enabled. -->
 																<form action="index.php" method="post" name="DetailView" id="form">
 																	{include file='DetailViewHidden.tpl'}
-
-																	<!-- Start of File Include by SAKTI on 10th Apr, 2008 -->
-																	{include_php file="include/DetailViewBlockStatus.php"}
-																	<!-- Start of File Include by SAKTI on 10th Apr, 2008 -->
-
 																	{foreach key=header item=detail from=$BLOCKS name=BLOCKS}
 																		<tr><td style="padding:5px">
 																				<!-- Detailed View Code starts here-->

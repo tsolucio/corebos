@@ -256,9 +256,6 @@ function sendfile_email()
 							<!-- NOTE: We should avoid form-inside-form condition, which could happen when Singlepane view is enabled. -->
 							<form action="index.php" method="post" name="DetailView" id="form">
 							{include file='DetailViewHidden.tpl'}
-
-							{include_php file="include/DetailViewBlockStatus.php"}
-
 							{foreach key=header item=detail from=$BLOCKS}
 
 							<!-- Detailed View Code starts here-->
