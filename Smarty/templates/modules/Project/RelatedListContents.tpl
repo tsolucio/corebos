@@ -88,7 +88,7 @@
 	</table>
 {/if}
 <br><br>
-{ if $MODULE eq 'Campaigns' && ($rel_mod eq 'Contacts' || $rel_mod eq 'Leads')}
+{if $MODULE eq 'Campaigns' && ($rel_mod eq 'Contacts' || $rel_mod eq 'Leads')}
 <script>
 rel_default_togglestate('{$rel_mod}');
 </script>
