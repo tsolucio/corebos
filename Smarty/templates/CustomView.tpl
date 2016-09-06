@@ -13,7 +13,7 @@
 <script type="text/javascript" src="jscalendar/lang/calendar-{$APP.LBL_JSCALENDAR_LANG}.js"></script>
 <script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
 <script type="text/javascript" src="modules/CustomView/CustomView.js"></script>
-<script language="JavaScript" type="text/javascript" src="include/calculator/calc.js"></script>
+<script type="text/javascript" src="include/calculator/calc.js"></script>
 {literal}
 <form enctype="multipart/form-data" name="CustomView" method="POST" action="index.php" onsubmit="if(mandatoryCheck()){VtigerJS_DialogBox.block();} else{ return false; }">
 {/literal}
@@ -25,7 +25,7 @@
 <input type="hidden" name="record" value="{$CUSTOMVIEWID}">
 <input type="hidden" name="return_action" value="{$RETURN_ACTION}">
 <input type="hidden" id="user_dateformat" name="user_dateformat" value="{$DATEFORMAT}">
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
 function mandatoryCheck()
 {ldelim}
         var mandatorycheck = false;
@@ -316,7 +316,7 @@ function mandatoryCheck()
 {$STDFILTER_JAVASCRIPT}
 {$JAVASCRIPT}
 <!-- to show the mandatory fields while creating new customview -->
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
 var k;
 var colOpts;
 var manCheck = new Array({$MANDATORYCHECK});

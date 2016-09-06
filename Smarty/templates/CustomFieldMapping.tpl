@@ -8,7 +8,7 @@
  * All Rights Reserved.
 *
  ********************************************************************************/ *}
-<script language="JavaScript" type="text/javascript" src="include/js/customview.js"></script>
+<script type="text/javascript" src="include/js/customview.js"></script>
 <br>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 	<tbody>
@@ -166,7 +166,7 @@
 	</tbody>
 </table>
 
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 	incId={$CNT+1};
 </script>
 <script>

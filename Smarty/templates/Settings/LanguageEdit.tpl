@@ -19,8 +19,8 @@
  * the code is based on the work of Gaëtan KRONEISEN technique@expert-web.fr and Pius Tschümperlin ep-t.ch
  *************************************************************************************************/
 -->*}
-<script language="JavaScript" type="text/javascript" src="include/js/customview.js"></script>
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript" src="include/js/customview.js"></script>
+<script type="text/javascript">
 {literal}
 function lang_changeEditTab(obj1, obj2, SelTab, unSelTab) {
 	var tabName1 = document.getElementById(obj1);

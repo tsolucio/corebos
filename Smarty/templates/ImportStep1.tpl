@@ -6,31 +6,25 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 -->*}
 
-
-<script type="text/javascript" language="Javascript">
+<script type="text/javascript">
 function validateFile(form) 
 	{ldelim}
 
 	if(!emptyCheck("userfile","File Location","any"))
 		{ldelim}
-                
 			form.userfile.focus();
-		        return false;
+			return false;
 		{rdelim}
 
-
-    	if(! upload_filter("userfile", "csv") )
+	if(! upload_filter("userfile", "csv") )
 		{ldelim}
-        
-                	form.userfile.focus();
-	                return false;
-	
+		form.userfile.focus();
+		return false;
 		{rdelim}
-	
+
 		return true;
 	{rdelim}
 </script>

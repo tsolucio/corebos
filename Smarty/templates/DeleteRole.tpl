@@ -11,7 +11,7 @@
  ********************************************************************************/
 
 -->*}
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 function openPopup(del_roleid){ldelim}
                 window.open("index.php?module=Users&action=UsersAjax&file=RolePopup&maskid="+del_roleid+"&parenttab=Settings","roles_popup_window","height=425,width=640,toolbar=no,menubar=no,dependent=yes,resizable =no");
         {rdelim}

@@ -6,11 +6,10 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
-<script language="JAVASCRIPT" type="text/javascript" src="include/js/smoothscroll.js"></script>
-<script language="JavaScript" type="text/JavaScript">    
+<script type="text/javascript" src="include/js/smoothscroll.js"></script>
+<script type="text/JavaScript">
         var moveupLinkObj,moveupDisabledObj,movedownLinkObj,movedownDisabledObj;
         function setObjects() 
         {ldelim}
@@ -88,8 +87,8 @@
             document.mergeDuplicates.selectedColumnsString.value = selectedColStr;
             return;
         {rdelim}
-	setObjects();		
-</script>	
+	setObjects();
+</script>
 
 <form enctype="multipart/form-data" name="mergeDuplicates" method="post" action="index.php?module={$MODULE}&action=FindDuplicateRecords" onsubmit="VtigerJS_DialogBox.block();">
 	<input type="hidden" name="module" value="{$MODULE}">

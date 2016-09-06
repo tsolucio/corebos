@@ -235,7 +235,7 @@ $Calendar_Settings = $Calendar4You->getSettings();
 				echo "<div id='google_account_info_div'>";
 				echo getTranslatedString("LBL_GOOGLECLIENTSECRET","Calendar4You").":";
 				echo $google_login;
-				echo '&nbsp;<input title="'.$mod_strings["LBL_SET_ACCESS_DATA"].'" class="crmButton password small" language="javascript" onclick="changeGoogleAccount();" name="change_google_user" value="'.$mod_strings["LBL_CHANGE_GOOGLE_ACCOUNT"].'" type="button">';
+				echo '&nbsp;<input title="'.$mod_strings["LBL_SET_ACCESS_DATA"].'" class="crmButton password small" onclick="changeGoogleAccount();" name="change_google_user" value="'.$mod_strings["LBL_CHANGE_GOOGLE_ACCOUNT"].'" type="button">';
 				echo "</div>";
 				$update_google_account = 0;
 				echo "<div id='google_account_change_div' style='display:none'>";

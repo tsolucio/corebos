@@ -10,7 +10,7 @@
 -->*}
 
 {*<!-- module header -->*}
-<script language="JavaScript" type="text/javascript" src="modules/Reports/Reports.js"></script>
+<script type="text/javascript" src="modules/Reports/Reports.js"></script>
 
 <!-- Toolbar -->
 <TABLE border=0 cellspacing=0 cellpadding=0 width=100% class=small>

@@ -91,12 +91,12 @@
 			</a>
 		</td>
 {/if}
-	</tr>	
+	</tr>
 	</table>
 </div>
 
-<script language="javascript">
+<script>
 	{*<!-- position the div in the page -->*}
 	window.onresize = function(){ldelim}positionDivInAccord('stuff_{$tablestuff.Stuffid}','{$tablestuff.Stufftitle}','{$tablestuff.Stufftype}');{rdelim};
 	positionDivInAccord('stuff_{$tablestuff.Stuffid}','{$tablestuff.Stufftitle}','{$tablestuff.Stufftype}');
-</script>	
+</script>

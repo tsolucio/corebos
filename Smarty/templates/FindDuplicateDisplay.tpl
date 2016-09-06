@@ -11,7 +11,7 @@
  ********************************************************************************/
 
 -->*}
-<script language="JavaScript" type="text/javascript" src="include/js/ListView.js"></script>
+<script type="text/javascript" src="include/js/ListView.js"></script>
 {* If we duplicate merge is within same module show the headers ... *}
 {if $MODULE eq $smarty.request.module}
 

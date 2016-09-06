@@ -10,7 +10,7 @@
  ********************************************************************************/
 -->*}
 
-<script language="JavaScript" type="text/javascript" src="include/js/MenuEditor.js"></script>
+<script type="text/javascript" src="include/js/MenuEditor.js"></script>
 
 <div id="vtlib_modulemanager" style="display:block;position:absolute;width:500px;"></div>
 <br>

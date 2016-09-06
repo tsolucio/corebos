@@ -40,7 +40,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	$fieldvalue = Array();
 	$final_arr = Array();
 	$value = $col_fields[$fieldname];
-	$custfld = '';
 	$ui_type[]= $uitype;
 	$editview_fldname[] = $fieldname;
 
@@ -1086,12 +1085,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 					}
 				}
 			}
-			$custfld .= '<td width="20%" class="dataLabel">'.$app_strings['To'].'&nbsp;</td>';
-			$custfld .= '<td width="90%" colspan="3"><input name="parent_id" type="hidden" value="'.$parent_id.'"><textarea readonly name="parent_name" cols="70" rows="2">'.$parent_name.'</textarea>&nbsp;<select name="parent_type" >';
-			$custfld .= '<OPTION value="Contacts" selected>'.$app_strings['COMBO_CONTACTS'].'</OPTION>';
-			$custfld .= '<OPTION value="Accounts" >'.$app_strings['COMBO_ACCOUNTS'].'</OPTION>';
-			$custfld .= '<OPTION value="Leads" >'.$app_strings['COMBO_LEADS'].'</OPTION>';
-			$custfld .= '<OPTION value="Vendors" >'.$app_strings['COMBO_VENDORS'].'</OPTION></select><img src="' . vtiger_imageurl('select.gif', $theme) . '" alt="Select" title="Select" LANGUAGE=javascript onclick=\'$log->debug("Exiting getOutputHtml method ..."); return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&popuptype=set_$log->debug("Exiting getOutputHtml method ..."); return_emails&form=EmailEditView&form_submit=false","test","width=600,height=400,resizable=1,scrollbars=1,top=150,left=200");\' align="absmiddle" style=\'cursor:hand;cursor:pointer\'>&nbsp;<input type="image" src="' . vtiger_imageurl('clear_field.gif', $theme) . '" alt="Clear" title="Clear" LANGUAGE=javascript onClick="this.form.parent_id.value=\'\';this.form.parent_name.value=\'\';$log->debug("Exiting getOutputHtml method ..."); return false;" align="absmiddle" style=\'cursor:hand;cursor:pointer\'></td>';
 			$editview_label[] = array(
 					'Contacts'=>$contact_selected,
 					'Accounts'=>$account_selected,
@@ -1458,15 +1451,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		}
 		else
 			$fieldvalue[] = $value;
-	}
-
-	// Mike Crowe Mod --------------------------------------------------------force numerics right justified.
-	if ( !preg_match("/id=/i",$custfld) )
-		$custfld = preg_replace("/<input/iS","<input id='$fieldname' ",$custfld);
-
-	if (in_array($uitype,array(71,72,7,9,90)) )
-	{
-		$custfld = preg_replace("/<input/iS","<input align=right ",$custfld);
 	}
 	$final_arr[]=$ui_type;
 	$final_arr[]=$editview_label;

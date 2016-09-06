@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script language="JavaScript" type="text/javascript" src="modules/Import/resources/Import.js"></script>
+<script type="text/javascript" src="modules/Import/resources/Import.js"></script>
 {literal}
 <script type="text/javascript">
 jQuery(document).ready(function() {

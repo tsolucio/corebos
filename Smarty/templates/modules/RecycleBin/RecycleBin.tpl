@@ -8,10 +8,10 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script language="JavaScript" type="text/javascript" src="include/js/search.js"></script>
-<script language="JavaScript" type="text/javascript" src="include/js/ListView.js"></script>
-<script language="JavaScript" type='text/javascript' src='include/js/Merge.js'></script>
-<script language="JavaScript" type='text/javascript' src='modules/RecycleBin/language/{$LANGUAGE}.lang.js'></script>
+<script type="text/javascript" src="include/js/search.js"></script>
+<script type="text/javascript" src="include/js/ListView.js"></script>
+<script type='text/javascript' src='include/js/Merge.js'></script>
+<script type='text/javascript' src='modules/RecycleBin/language/{$LANGUAGE}.lang.js'></script>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 {include file='Buttons_List.tpl'}
                                 <div id="searchingUI" style="display:none;">

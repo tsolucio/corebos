@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script language="JavaScript" type="text/javascript" src="modules/Portal/Portal.js"></script>
+<script type="text/javascript" src="modules/Portal/Portal.js"></script>
 
 {include file="Buttons_List1.tpl"}
 

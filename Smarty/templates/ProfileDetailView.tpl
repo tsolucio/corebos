@@ -18,8 +18,8 @@
 }
 </style>
 {/literal}
-<script language="JAVASCRIPT" type="text/javascript" src="include/js/smoothscroll.js"></script>
-<script language="JAVASCRIPT" type="text/javascript">
+<script type="text/javascript" src="include/js/smoothscroll.js"></script>
+<script type="text/javascript">
 {literal}
 function UpdateProfile()
 {
@@ -380,7 +380,7 @@ function UpdateProfile()
 	</tr>
 </tbody>
 </table>
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
 {literal}
 function fnToggleVIew(obj){
 	obj = "#"+obj;

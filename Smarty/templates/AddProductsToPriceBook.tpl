@@ -8,7 +8,7 @@
 *
  ********************************************************************************/
 -->
-<script language="javascript">
+<script>
 var parenttab = "{$CATEGORY}";
 function updateAllListPrice()
 {ldelim}
@@ -43,7 +43,7 @@ function updateListPriceForField(fieldname,element)
 {rdelim}
 
 </script>
-<script language="javascript" src="modules/PriceBooks/PriceBooks.js"></script>
+<script src="modules/PriceBooks/PriceBooks.js"></script>
 <BR>
 <BR>
 {$PRODUCTLISTHEADER}

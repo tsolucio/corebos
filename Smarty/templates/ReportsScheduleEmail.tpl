@@ -8,7 +8,7 @@
  * All Rights Reserved.
  *********************************************************************************/
 -->*}
-<script language="JAVASCRIPT" type="text/javascript" src="include/js/smoothscroll.js"></script>
+<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 
 <table class="small" bgcolor="#ffffff" border="0" cellpadding="5" cellspacing="0" height='530' width="100%">
 	<tr valign='top'>
@@ -156,7 +156,7 @@
 	</tr>
 </table>
 
-<script language="JavaScript" type="text/JavaScript">
+<script type="text/JavaScript">
 
 function showRecipientsOptions()
 {ldelim}

@@ -9,9 +9,9 @@
  ********************************************************************************/
 -->*}
 <link rel="stylesheet" type="text/css" href="themes/{$THEME}/style.css">
-<script language="JavaScript" type="text/javascript" src="include/js/general.js"></script>
-<script language="JavaScript" type="text/javascript" src="include/js/{$LANGUAGE}.lang.js?{$VERSION}"></script>
-<script language="JavaScript" type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
+<script type="text/javascript" src="include/js/general.js"></script>
+<script type="text/javascript" src="include/js/{$LANGUAGE}.lang.js?{$VERSION}"></script>
+<script type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
 
 {include file='Buttons_List1.tpl'}
 		</td>

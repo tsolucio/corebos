@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 -->*}
 <link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
@@ -559,8 +558,8 @@ function sendfile_email() {ldelim}
 
 
                     {if $MODULE eq 'Products'}
-                    <script language="JavaScript" type="text/javascript" src="modules/Products/Productsslide.js"></script>
-                    <script language="JavaScript" type="text/javascript">Carousel();</script>
+                    <script type="text/javascript" src="modules/Products/Productsslide.js"></script>
+                    <script type="text/javascript">Carousel();</script>
                     {/if}
                     
                     <script>
@@ -582,7 +581,7 @@ function sendfile_email() {ldelim}
                     getTagCloud();
                     </script>
                     <!-- added for validation -->
-                    <script language="javascript">
+                    <script>
                       var fieldname = new Array({$VALIDATION_DATA_FIELDNAME});
                       var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
                       var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});

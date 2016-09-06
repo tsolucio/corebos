@@ -721,8 +721,8 @@ function sendfile_email()
 
 
 {if $MODULE eq 'Products'}
-<script language="JavaScript" type="text/javascript" src="modules/Products/Productsslide.js"></script>
-<script language="JavaScript" type="text/javascript">Carousel();</script>
+<script type="text/javascript" src="modules/Products/Productsslide.js"></script>
+<script type="text/javascript">Carousel();</script>
 {/if}
 
 <script>
@@ -744,7 +744,7 @@ function getTagCloud()
 getTagCloud();
 </script>
 <!-- added for validation -->
-<script language="javascript">
+<script>
   var fieldname = new Array({$VALIDATION_DATA_FIELDNAME});
   var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
   var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});

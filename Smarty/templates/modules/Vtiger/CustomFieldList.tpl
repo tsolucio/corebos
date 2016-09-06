@@ -8,8 +8,8 @@
  * All Rights Reserved.
 *
  ********************************************************************************/ *}
-<script language="JavaScript" type="text/javascript" src="include/js/customview.js"></script>
-<script language="javascript">
+<script type="text/javascript" src="include/js/customview.js"></script>
+<script>
 {literal}
 
 function confirmAction(msg){
