@@ -123,17 +123,15 @@ class FieldDependency extends processcbMap {
                 $mapping['originmodule']['originid']=$xml->originmodule->originid;
                 $mapping['originmodule']['originname']=$xml->originmodule->originname;
                 $mapping['fields']=array();
-                $mapping['fields']['field']=array();
-                $mapping['fields']['field']['Orgfields']=array();
-                $mapping['fields']['field']['Orgfields']['Responsiblefield']=array();
+                $mapping['fields']['Responsiblefield']=array();
                 foreach ($xml->fields->field->Orgfields->Responsiblefield as $k => $v) {
                 $fieldname= isset($v->fieldname) ? (String)$v->fieldname : '';
                 $fieldvalue= isset($v->fieldvalue) ? (String)$v->fieldvalue : '';
                 $comparison= isset($v->comparison) ? (String)$v->comparison : '';
                 $fieldinfo[]=array("fieldname"=>$fieldname,"fieldvalue"=>$fieldvalue,"comparison"=>$comparison);
                 }
-                $mapping['fields']['field']['Orgfields']['Responsiblefield']=$fieldinfo;
-                $mapping['fields']['field']['Orgfields']['Orgfield']=array();
+                $mapping['fields']['Responsiblefield']=$fieldinfo;
+                $mapping['fields']['Orgfield']=array();
                 foreach ($xml->fields->field->Orgfields->Orgfield as $k2 => $v2) {
                 $fieldnameout= isset($v2->fieldname) ? (String)$v2->fieldname : '';
                 $fieldaction= isset($v2->fieldaction) ? (String)$v2->fieldaction : '';
@@ -142,18 +140,18 @@ class FieldDependency extends processcbMap {
                 $fieldinfoorg[]=array("fieldname"=>$fieldnameout,
                 "fieldaction"=>$fieldaction,"fieldvalue"=>$fieldvalue,"mandatory"=>$mandatory);
                 }
-                $mapping['fields']['field']['Orgfields']['Orgfield']=$fieldinfoorg;
-                $mapping['fields']['field']['Orgfields']['ResponsibleMode']=array();
+                $mapping['fields']['Orgfield']=$fieldinfoorg;
+                $mapping['fields']['ResponsibleMode']=array();
                 foreach ($xml->fields->field->Orgfields->ResponsibleMode->values as $k3 => $v3) {
                 $responsiblemode[]= isset($v3) ? (String)$v3 : '';
                 }   
-                $mapping['fields']['field']['Orgfields']['ResponsibleMode']=$responsiblemode;
-                $mapping['fields']['field']['Orgfields']['ResponsibleRole']=array();
+                $mapping['fields']['ResponsibleMode']=$responsiblemode;
+                $mapping['fields']['ResponsibleRole']=array();
                 foreach ($xml->fields->field->Orgfields->ResponsibleRole->values as $k4 => $v4) {
                 $responsiblerole[]= isset($v4) ? (String)$v4 : '';
                 }   
-                $mapping['fields']['field']['Orgfields']['ResponsibleRole']=$responsiblerole;
-                $mapping['fields']['field']['Orgfields']['Picklist']=array();
+                $mapping['fields']['ResponsibleRole']=$responsiblerole;
+                $mapping['fields']['Picklist']=array();
                 foreach ($xml->fields->field->Orgfields->Picklist as $k5 => $v5) {
                 $value=array();
                 $fieldnamepick= isset($v5->fieldname) ? (String)$v5->fieldname : '';
@@ -166,7 +164,7 @@ class FieldDependency extends processcbMap {
                 else $value=array();
                 $fieldinfopick[]=array("fieldname"=>$fieldnamepick,"value"=>$value);
                 }
-                $mapping['fields']['field']['Orgfields']['Picklist']=$fieldinfopick;
+                $mapping['fields']['Picklist']=$fieldinfopick;
 		$this->mapping = $mapping;
 	}
 
