@@ -290,6 +290,9 @@ elseif (is_null($focus->parent_type)) {
 
 $log->info("Email detail view");
 
+// Pass on the authenticated user language
+global $current_language;
+$smarty->assign('LANGUAGE', $current_language);
 $smarty->assign("MOD", $mod_strings);
 $smarty->assign("APP", $app_strings);
 if (isset($focus->name)) $smarty->assign("NAME", $focus->name);

@@ -169,6 +169,9 @@ $smarty->assign("MODULE",$currentModule);
 $smarty->assign("CATEGORY",$category);
 $smarty->assign("THEME",$theme);
 $smarty->assign("IMAGE_PATH",$image_path);
+// Pass on the authenticated user language
+global $current_language;
+$smarty->assign('LANGUAGE', $current_language);
 $smarty->assign("APP", $app_strings);
 $smarty->assign("CMOD", return_module_language($current_language,$select_module));
 $smarty->assign("lvEntries", $lvEntries);
