@@ -114,6 +114,7 @@ $smarty->assign("COMPANY_DETAILS",$companyDetails);
 ob_start();
 cbEventHandler::do_action('corebos.header.premenu');
 $smarty->assign("COREBOS_HEADER_PREMENU",ob_get_clean());
+getBrowserVariables($smarty);
 
 $smarty->display("Header.tpl");
 cbEventHandler::do_action('corebos.header');

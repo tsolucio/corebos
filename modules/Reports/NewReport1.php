@@ -82,19 +82,7 @@ if(isset($_REQUEST["record"]) && $_REQUEST["record"]!='')
 	$list_report_form->assign('BACK_WALK','true');
 }
 
-$list_report_form->assign('USER_DATE_FORMAT',$current_user->date_format);
-
-if(isset($current_user->currency_grouping_separator) && $current_user->currency_grouping_separator == '') {
-	$list_report_form->assign('USER_CURRENCY_SEPARATOR', ' ');
-} else {
-	$list_report_form->assign('USER_CURRENCY_SEPARATOR', html_entity_decode($current_user->currency_grouping_separator, ENT_QUOTES, $default_charset));
-}
-if(isset($current_user->currency_decimal_separator) && $current_user->currency_decimal_separator == '') {
-	$list_report_form->assign('USER_DECIMAL_FORMAT', ' ');
-} else {
-	$list_report_form->assign('USER_DECIMAL_FORMAT', html_entity_decode($current_user->currency_decimal_separator, ENT_QUOTES, $default_charset));
-}
-
+getBrowserVariables($list_report_form);
 $list_report_form->assign('PRI_MODULE',$primarymodule);
 $list_report_form->assign('SEC_MODULE',$secondarymodule);
 $reportname = htmlspecialchars($reportname, ENT_COMPAT, $default_charset);
