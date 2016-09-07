@@ -172,7 +172,6 @@ var alert_arr = {
 	'SAME_GROUPS' : 'Ugyanabból a csoportból kell választanod a rekordot az egyesítéshez',
 	'ATLEAST_TWO' : 'Legalább 2 rekordot kell választanod az egyesítéshez',
 	'MAX_THREE' : 'A számodra engedélyezett maximum: 3 rekord kiválasztása',
-	'PARENT_RECORD' : 'Válassz ki egy szülő rekordot.',
 	'MAX_RECORDS' : 'A számodra engedélyezett maximum: 4 rekord kiválasztása',
 	'CON_MANDATORY' : 'Válaszd a kötelező mezőt Vezetéknév',
 	'LE_MANDATORY' : 'Válaszd a kötelező mezőket Vezetéknév és Cég',

@@ -157,7 +157,6 @@ var alert_arr = {
 	'LBL_SELECT_PICKLIST':'Por favor selecciona al menos un valor para borrar',
 	'LBL_CANT_REMOVE':'No se pueden eliminar todos los valores',
 
-	// Added after 5.0.4 GA
 	/*For global add/delete in picklist*/
 	'LBL_GIVE_PICKLIST_VALUE':'Añade algún valor a la lista de selección',
 	'LBL_SELECT_ROLE':'Selecciona al menos un rol que verá los nuevos valores',
@@ -168,7 +167,6 @@ var alert_arr = {
 	'SAME_GROUPS': 'Tienes que seleccionar los registros en el mismo grupo para combinar',
 	'ATLEAST_TWO': 'Selecciona al menos dos registros para combinar',
 	'MAX_THREE': 'Está permitido seleccionar un máximo de tres registros',
-	//PARENT_RECORD: 'Selecciona un registro como registro paterno',  MergeFields.tpl Line:59
 	'MAX_RECORDS': 'Está permitido seleccionar un máximo de cuatro registros',
 	'CON_MANDATORY': 'Selecciona el campo obligatorio Apellido',
 	'LE_MANDATORY': 'Selecciona el campo obligatorio Apellido y Compañía',

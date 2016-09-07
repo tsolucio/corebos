@@ -160,19 +160,16 @@ var alert_arr = {
 	'LBL_SELECT_PICKLIST':'Por favor, selecione pelo menos um valor para apagar',
 	'LBL_CANT_REMOVE':'você não pode remover todos os valores',
 	
-	// Added after 5.0.4 GA
-				
 	/*For global add/delete in picklist*/
 	'LBL_GIVE_PICKLIST_VALUE':'Por gentileza, forneça um valor para a Lista de Opções selecionada ser substituída',
 	'LBL_SELECT_ROLE':'Por gentileza, selecione pelo menos uma Função para a qual o novo valor será adicionado',
 	'LBL_ADD_PICKLIST_VALUE':'Por gentileza, forneça pelo menos um novo valor para ser adicionado',
 	'LBL_NO_VALUES_TO_DELETE': "nenhum valor para apagar",
 
-        /* For Duplicate merging feature */
+	/* For Duplicate merging feature */
 	'SAME_GROUPS': 'você terá que selecionar um registro de em um mesmo grupo para mesclar',
 	'ATLEAST_TWO': 'Selecione pelo menos dois registros para mesclar',
 	'MAX_THREE': 'você tem permissão para selecionar no máximo três registros',
-	//PARENT_RECORD: 'Select a record as parent record',  MergeFields.tpl Line:59
 	'MAX_RECORDS': 'você tem permissão para selecionar no máximo quatro registros',
 	'CON_MANDATORY': 'Selecione o campo obrigatório Sobrenome',
 	'LE_MANDATORY': 'Selecione os campos obrigatórios Sobrenome e Empresa',
@@ -182,24 +179,22 @@ var alert_arr = {
 	'POTEN_MANDATORY': 'Selecione o campo obrigatório Oportunidade',
 	'VEN_MANDATORY': 'Selecione o campo obrigatório Fornecedor',
 	'DEL_MANDATORY': 'você não tem permissão para apagar o campo obrigatório',
-				
+
 	/* For Multi-Currency Support */
 	'MSG_CHANGE_CURRENCY_REVISE_UNIT_PRICE': 'O Preço Unitário de todas as Moedas serão corrigidos tomando-se por base a Moeda selecionada. você confirma?',
-				
 	'Select_one_record_as_parent_record': 'Selecionar um registro como registro pai',
 	'RECURRING_FREQUENCY_NOT_PROVIDED': 'Frequencia retorno não fornecida',
 	'RECURRING_FREQNECY_NOT_ENABLED': 'Frequência retorno fornecida, mas retorno não está habilitado',
-        /* Added for Documents module */
+	/* Added for Documents module */
 	'NO_SPECIAL_CHARS_DOCS':'Caracteres especiais tais como aspas, contrabarra, símbolo de +, % e ? não são permitidos',
 	'FOLDER_NAME_TOO_LONG':'Nome Pasta é muito longo. Tente novamente!',
 	'FOLDERNAME_EMPTY':'O nome da Pasta não pode estar vazio',
 	'DUPLICATE_FOLDER_NAME':'você está tentando duplicar um nome de Pasta existente. Por gentileza, tente novamente!',
 	'FOLDER_DESCRIPTION_TOO_LONG':'Descrição da Pasta é muito longa. Tente novamente!',
 	'NOT_PERMITTED':"você não tem permissão para executar esta operação.",
-				
 	'ALL_FILTER_CREATION_DENIED':'não é possível criar Visualização Customizada utilizando "Todos", tente utilizar condição diferente',
 	'OPERATION_DENIED':'você não tem permissão para realizar esta operação',
-    	'EMAIL_CHECK_MSG': 'Desabilitar acesso ao Portal para salvar o campo de e-mail como em branco',
+	'EMAIL_CHECK_MSG': 'Desabilitar acesso ao Portal para salvar o campo de e-mail como em branco',
 	'IS_PARENT': 'Este Produto possui Sub Produtos, você não tem permissão para selecionar um Pai para este Produto',
 
 	/*global actions on picklist*/
