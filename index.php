@@ -575,6 +575,7 @@ if(!$skipHeaders) {
 	}
 } else {
 	if(($action != 'mytkt_rss') && ($action != 'home_rss') && ($action != $module."Ajax") && ($action != "body") && ($action != 'ActivityAjax')) {
+		require_once('Smarty_setup.php');
 		$vartpl = new vtigerCRM_Smarty;
 		getBrowserVariables($vartpl);
 		$vartpl->display('BrowserVariables.tpl');
