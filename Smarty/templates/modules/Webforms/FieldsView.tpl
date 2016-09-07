@@ -19,7 +19,7 @@
 	{assign var="CNT" value=0}
 	{foreach item=field from=$WEBFORMFIELDS name=fieldloop}
 	{assign var="CNT" value=$CNT+1}
-	{if $field.editable eq true && $field.type.name neq reference && $field.name neq assigned_user_id}
+	{if $field.editable eq true && $field.type.name neq 'reference' && $field.name neq 'assigned_user_id'}
 	<tr style="height:25px" id="field_row">
 		<td class="dvtCellInfo" align="right" colspan="1">
 		{if $field.mandatory eq 1}
@@ -46,26 +46,28 @@
 		<td class="dvtCellInfo">
 		{if $WEBFORMID && $WEBFORM->isWebformField($WEBFORMID,$field.name) eq true }
 		{assign var="defaultvalue" value=$WEBFORM->retrieveDefaultValue($WEBFORMID,$field.name)}
-			{if $field.type.name eq picklist | $field.type.name eq multipicklist}{assign var="val_arr" value=$WEBFORM->retrieveDefaultValue($WEBFORMID,$field.name)}{assign var="values" value=","|explode:$val_arr}
-				<select fieldtype="{$field.type.name}" fieldlabel="{$field.label}" class="small" name="value[{$field.name}][]" id="value[{$field.name}]" style="display:inline;" {if $field.type.name eq multipicklist}multiple="multiple" size="5"{/if}>
+			{if $field.type.name eq 'picklist' || $field.type.name eq 'multipicklist'}
+				{assign var="val_arr" value=$WEBFORM->retrieveDefaultValue($WEBFORMID,$field.name)}
+				{assign var="values" value=","|explode:$val_arr}
+				<select fieldtype="{$field.type.name}" fieldlabel="{$field.label}" class="small" name="value[{$field.name}][]" id="value[{$field.name}]" style="display:inline;" {if $field.type.name eq 'multipicklist'}multiple="multiple" size="5"{/if}>
 						<option value="">{'LBL_SELECT_VALUE'|@getTranslatedString:$MODULE}</option>
 					{foreach item=option from=$field.type.picklistValues name=optionloop}
 						<option value="{$option.value}" {if in_array($option.value,$defaultvalue)}selected="selected"{/if}>{$option.label}</option>
 					{/foreach}
 				</select>
-			{elseif $field.type.name eq date}
+			{elseif $field.type.name eq 'date'}
 				<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="value[{$field.name}]" name="value[{$field.name}]" value="{$defaultvalue[0]}">
 				<img src="{'miniCalendar.gif'|@vtiger_imageurl:$THEME}" id="jscal_trigger_{$field.name}">
 				<font size=1 id="mincal_{$field.name}"><em old="(yyyy-mm-dd)">({$DATE_FORMAT})</em></font>
 				<script id="date_{$CNT}">
 					getCalendarPopup('jscal_trigger_{$field.name}','value[{$field.name}]','{$CAL_DATE_FORMAT}')
 				</script>
-			{elseif $field.type.name eq text}
+			{elseif $field.type.name eq 'text'}
 				<textarea fieldtype="{$field.type.name}" fieldlabel="{$field.label}" rows="2" onblur="this.className='detailedViewTextBox'" onfocus="this.className='detailedViewTextBoxOn'" class="detailedViewTextBox" id="value[{$field.name}]" name="value[{$field.name}]" value="{$defaultvalue[0]}">{$defaultvalue[0]}</textarea>
-			{elseif $field.type.name eq boolean}
+			{elseif $field.type.name eq 'boolean'}
 				<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="checkbox" id="value[{$field.name}]" name="value[{$field.name}]" {if $defaultvalue[0] eq 'on'}checked="checked"{/if}" >
 			{else}
-					{if $field.name eq salutationtype}
+					{if $field.name eq 'salutationtype'}
 							<select fieldtype="{$field.type.name}" fieldlabel="{$field.label}" class="small" id="value[{$field.name}]" name="value[{$field.name}]">
 								<option value="" {if $WEBFORM->retrieveDefaultValue($WEBFORMID,$field.name) eq ""}selected="selected"{/if}>--None--</option>
 								<option value="Mr." {if $WEBFORM->retrieveDefaultValue($WEBFORMID,$field.name) eq "Mr."}selected="selected"{/if}>Mr.</option>
@@ -80,26 +82,28 @@
 			{/if}
 		{else}
 			{if $field.mandatory eq 1}
-				{if $field.type.name eq picklist | $field.type.name eq multipicklist}{assign var="val_arr" value=$WEBFORM->retrieveDefaultValue($WEBFORMID,$field.name)}{assign var="values" value=","|explode:$val_arr}
-					<select fieldtype="{$field.type.name}" fieldlabel="{$field.label}" class="small" name="value[{$field.name}][]" id="value[{$field.name}]" style="display:inline;" class="small" {if $field.type.name eq multipicklist}multiple="multiple" size="5"{/if}>
+				{if $field.type.name eq 'picklist' || $field.type.name eq 'multipicklist'}
+					{assign var="val_arr" value=$WEBFORM->retrieveDefaultValue($WEBFORMID,$field.name)}
+					{assign var="values" value=","|explode:$val_arr}
+					<select fieldtype="{$field.type.name}" fieldlabel="{$field.label}" class="small" name="value[{$field.name}][]" id="value[{$field.name}]" style="display:inline;" class="small" {if $field.type.name eq 'multipicklist'}multiple="multiple" size="5"{/if}>
 							<option value="" {if $field.default eq $option.value} selected="selected"{/if}>{'LBL_SELECT_VALUE'|@getTranslatedString:$MODULE}</option>
 						{foreach item=option from=$field.type.picklistValues name=optionloop}
 							<option value="{$option.value}" {if $field.default eq $option.value} selected="selected"{/if}>{$option.label}</option>
 						{/foreach}
 					</select>
-				{elseif $field.type.name eq date}
+				{elseif $field.type.name eq 'date'}
 					<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="value[{$field.name}]" name="value[{$field.name}]" value="{$field.default}">
 					<img src="{'miniCalendar.gif'|@vtiger_imageurl:$THEME}" id="jscal_trigger_{$field.name}" >
 					<font size=1 id="mincal_{$field.name}"><em old="(yyyy-mm-dd)">({$DATE_FORMAT})</em></font>
 					<script id="date_{$CNT}">
 						getCalendarPopup('jscal_trigger_{$field.name}','value[{$field.name}]','{$CAL_DATE_FORMAT}')
 					</script>
-				{elseif $field.type.name eq text}
+				{elseif $field.type.name eq 'text'}
 					<textarea fieldtype="{$field.type.name}" fieldlabel="{$field.label}" rows="2" onblur="this.className='detailedViewTextBox'" onfocus="this.className='detailedViewTextBoxOn'" class="detailedViewTextBox" id="value[{$field.name}]" name="value[{$field.name}]" value="$field.default" style="display:inline;">{$field.default}</textarea>
-				{elseif $field.type.name eq boolean}
+				{elseif $field.type.name eq 'boolean'}
 					<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="checkbox" id="value[{$field.name}]" name="value[{$field.name}]" style="display:inline;" {if $field.default}checked="checked"{/if} >
 				{else}
-						{if $field.name eq salutationtype}
+						{if $field.name eq 'salutationtype'}
 							<select fieldtype="{$field.type.name}" fieldlabel="{$field.label}" class="small" id="value[{$field.name}]" name="value[{$field.name}]">
 								<option value="" {if $field.default eq ""}selected="selected"{/if}>--None--</option>
 								<option value="Mr." {if $field.default eq "Mr."}selected="selected"{/if}>Mr.</option>
@@ -113,26 +117,28 @@
 						{/if}
 				{/if}
 			{else}
-				{if $field.type.name eq picklist | $field.type.name eq multipicklist}{assign var="val_arr" value=$WEBFORM->retrieveDefaultValue($WEBFORMID,$field.name)}{assign var="values" value=","|explode:$val_arr}
-					<select fieldtype="{$field.type.name}" fieldlabel="{$field.label}" class="small" name="value[{$field.name}][]" id="value[{$field.name}]" style="display:none;" class="small" {if $field.type.name eq multipicklist}multiple="multiple" size="5"{/if}>
+				{if $field.type.name eq 'picklist' || $field.type.name eq 'multipicklist'}
+					{assign var="val_arr" value=$WEBFORM->retrieveDefaultValue($WEBFORMID,$field.name)}
+					{assign var="values" value=","|explode:$val_arr}
+					<select fieldtype="{$field.type.name}" fieldlabel="{$field.label}" class="small" name="value[{$field.name}][]" id="value[{$field.name}]" style="display:none;" class="small" {if $field.type.name eq 'multipicklist'}multiple="multiple" size="5"{/if}>
 							<option value="" {if $field.default eq $option.value} selected="selected"{/if}>{'LBL_SELECT_VALUE'|@getTranslatedString:$MODULE}</option>
 						{foreach item=option from=$field.type.picklistValues name=optionloop}
 							<option value="{$option.value}" {if $field.default eq $option.value} selected="selected"{/if} >{$option.label}</option>
 						{/foreach}
 					</select>
-				{elseif $field.type.name eq date}
+				{elseif $field.type.name eq 'date'}
 					<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="text" onblur="this.className='detailedViewTextBox';" onfocus="this.className='detailedViewTextBoxOn';" class="detailedViewTextBox" id="value[{$field.name}]" name="value[{$field.name}]" value="{$field.default}" style="display:none;">
 					<img src="{'miniCalendar.gif'|@vtiger_imageurl:$THEME}" id="jscal_trigger_{$field.name}" style="display:none;">
 					<font size=1 id="mincal_{$field.name}" style="display:none;"><em old="(yyyy-mm-dd)">({$DATE_FORMAT})</em></font>
 					<script id="date_{$CNT}">
 						getCalendarPopup('jscal_trigger_{$field.name}','value[{$field.name}]','{$CAL_DATE_FORMAT}')
 					</script>
-				{elseif $field.type.name eq text}
+				{elseif $field.type.name eq 'text'}
 					<textarea fieldtype="{$field.type.name}" fieldlabel="{$field.label}" rows="2" onblur="this.className='detailedViewTextBox'" onfocus="this.className='detailedViewTextBoxOn'" class="detailedViewTextBox" id="value[{$field.name}]" name="value[{$field.name}]" value="{$field.default}" style="display:none;">{$field.default}</textarea>
-				{elseif $field.type.name eq boolean}
+				{elseif $field.type.name eq 'boolean'}
 					<input fieldtype="{$field.type.name}" fieldlabel="{$field.label}" type="checkbox" id="value[{$field.name}]" name="value[{$field.name}]" style="display:none;" {if $field.default}checked="checked"{/if}>
 				{else}
-						{if $field.name eq salutationtype}
+						{if $field.name eq 'salutationtype'}
 							<select fieldtype="{$field.type.name}" fieldlabel="{$field.label}" class="small" id="value[{$field.name}]" name="value[{$field.name}]" style="display:none;">
 								<option value="" {if $field.default eq ""}selected="selected"{/if}>--None--</option>
 								<option value="Mr." {if $field.default eq "Mr."}selected="selected"{/if}>Mr.</option>

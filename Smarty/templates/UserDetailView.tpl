@@ -114,9 +114,9 @@
 									</table>
 
 									<table border="0" cellpadding="5" cellspacing="0" width="100%">
-									{foreach item=detail from=$detail}
+									{foreach item=detailInfo from=$detail}
 									<tr >
-										{foreach key=label item=data from=$detail}
+										{foreach key=label item=data from=$detailInfo}
 										   {assign var=keyid value=$data.ui}
 										   {assign var=keyval value=$data.value}
 										   {assign var=keytblname value=$data.tablename}
