@@ -8,17 +8,17 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-		{assign var="uitype" value="$maindata[0][0]"}
-		{assign var="fldlabel" value="$maindata[1][0]"}
-		{assign var="fldlabel_sel" value="$maindata[1][1]"}
-		{assign var="fldlabel_combo" value="$maindata[1][2]"}
-		{assign var="fldlabel_other" value="$maindata[1][3]"}
-		{assign var="fldname" value="$maindata[2][0]"}
-		{assign var="fldvalue" value="$maindata[3][0]"}
-		{assign var="secondvalue" value="$maindata[3][1]"}
-		{assign var="thirdvalue" value="$maindata[3][2]"}
-		{assign var="typeofdata" value="$maindata[4]"}
-		{assign var="vt_tab" value="$maindata[5][0]"}
+		{assign var="uitype" value=$maindata[0][0]}
+		{assign var="fldlabel" value=$maindata[1][0]}
+		{assign var="fldlabel_sel" value=$maindata[1][1]}
+		{assign var="fldlabel_combo" value=$maindata[1][2]}
+		{assign var="fldlabel_other" value=$maindata[1][3]}
+		{assign var="fldname" value=$maindata[2][0]}
+		{assign var="fldvalue" value=$maindata[3][0]}
+		{assign var="secondvalue" value=$maindata[3][1]}
+		{assign var="thirdvalue" value=$maindata[3][2]}
+		{assign var="typeofdata" value=$maindata[4]}
+		{assign var="vt_tab" value=$maindata[5][0]}
 
 		{if $typeofdata eq 'M'}
 			{assign var="mandatory_field" value="*"}
@@ -830,11 +830,11 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 				<input type="radio" name="set_reminder" value="No">&nbsp;{$no_val}&nbsp;
 
 				{foreach item=val_arr from=$fldvalue}
-					{assign var=start value="$val_arr[0]"}
-					{assign var=end value="$val_arr[1]"}
-					{assign var=sendname value="$val_arr[2]"}
-					{assign var=disp_text value="$val_arr[3]"}
-					{assign var=sel_val value="$val_arr[4]"}
+					{assign var=start value=$val_arr[0]}
+					{assign var=end value=$val_arr[1]}
+					{assign var=sendname value=$val_arr[2]}
+					{assign var=disp_text value=$val_arr[3]}
+					{assign var=sel_val value=$val_arr[4]}
 					<select name="{$sendname}" class="small">
 						{section name=reminder start=$start max=$end loop=$end step=1 }
 							{if $smarty.section.reminder.index eq $sel_val}
