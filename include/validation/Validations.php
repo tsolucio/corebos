@@ -86,4 +86,28 @@ function validate_EU_VAT($field, $num_tva, $params, $fields) {
 	return false;
 }
 
+/** check if record exists with the same value in the given field
+ * params[0] module name
+ * params[1] crmid
+ */
+function validate_notDuplicate($field, $fieldval, $params, $fields) {
+	global $adb, $current_user;
+	$module = $params[0];
+	$crmid = $params[1];
+	$queryGenerator = new QueryGenerator($module, $current_user);
+	$queryGenerator->setFields(array('id'));
+	$queryGenerator->addCondition($field, $fieldval, 'e');
+	if(isset($crmid) && $crmid !='') {
+		$queryGenerator->addCondition('id',$crmid,'ne','and');
+	}
+	$query = $queryGenerator->getQuery();
+	global $log;$log->fatal($query);
+	$result = $adb->pquery($query, array());
+	if ($result and $adb->num_rows($result) == 0) {
+		return true;
+	} else {
+		return false;
+	}
+}
+
 ?>
