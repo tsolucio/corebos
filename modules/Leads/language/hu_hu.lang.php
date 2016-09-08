@@ -218,5 +218,7 @@ $mod_strings = array(
 	'LBL_FIELDLISTS' => 'Mezőlista',
 	'LBL_RECORD' => 'Rekord',
 	'LeadAlreadyConverted' => 'Lead cannot be converted. Either it has already been converted or you lack permission on one or more of the destination modules.',
+	'Is Converted From Lead'  => 'Vevőjelöltből konvertált?',
+	'Converted From Lead'  => 'Vevőjelöltből konvertált',
 );
 ?>

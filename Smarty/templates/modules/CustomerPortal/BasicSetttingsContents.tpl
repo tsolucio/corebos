@@ -9,7 +9,7 @@
   *
  ********************************************************************************/
 -->*}
-<script language="JavaScript" type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
+<script type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
 
 <script type="text/javascript">
 	var moduleInfo = JSON.parse('{$PORTALMODULES}');

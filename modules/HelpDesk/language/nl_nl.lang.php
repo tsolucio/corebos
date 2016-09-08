@@ -174,6 +174,7 @@ $mod_strings = array(
 	'Last Modified By' => 'Laatst gewijzigd door',
 	'Email' => 'E-mail',
 	'From mailscanner' => 'Vanuit mailscanner',
+	'Comment Added' => 'Comment Added',
 	'Activities' => 'Activiteiten',
 	'Documents' => 'Documenten',
 	'Ticket History' => 'Storingshistorie',

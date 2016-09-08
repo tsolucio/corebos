@@ -10,7 +10,7 @@
  ********************************************************************************/
 -->*}
 
-<script language="JAVASCRIPT" type="text/javascript" src="include/js/smoothscroll.js"></script>
+<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 
 <br>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">

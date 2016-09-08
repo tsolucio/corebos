@@ -115,12 +115,9 @@
 									{else}
 										{if $_FIELD->name() eq 'phone' || $_FIELD->name() eq 'homephone'|| $_FIELD->name() eq 'mobile'|| $_FIELD->name() eq 'otherphone' }
 											{assign var=phoneinput value=$_FIELD->valueLabel()}	
-											{php}
-												$phoneinput = $this->get_template_vars('phoneinput'); 
-											    $phoneinput = preg_replace('/\A\+/', '00', $phoneinput);
-												$phoneinput = preg_replace('/[^0-9]+/', '', $phoneinput);
-											{/php}
-											<a href="tel:{php}echo $phoneinput;{/php}">{$_FIELD->valueLabel()}</a>
+											{assign var=phoneinput value=$phoneinput|regex_replace:"/[\A\+]/":"00"}
+											{assign var=phoneinput value=$phoneinput|regex_replace:"/[^0-9]/":""}
+											<a href="tel:{$phoneinput}">{$_FIELD->valueLabel()}</a>
 										{elseif $_FIELD->name() eq 'skype'}
 											<a href="skype:{$_FIELD->valueLabel()}">{$_FIELD->valueLabel()}</a>
 										{elseif $_FIELD->uitype() eq 'crm_app_map'}

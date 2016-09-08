@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script language="JavaScript" type="text/javascript" src="modules/Import/resources/Import.js"></script>
+<script type="text/javascript" src="modules/Import/resources/Import.js"></script>
 
 <table style="width:70%;margin-left:auto;margin-right:auto;margin-top:10px;" cellpadding="10" cellspacing="10" class="searchUIBasic">
 	<tr>

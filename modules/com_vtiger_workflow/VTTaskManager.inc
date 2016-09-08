@@ -201,6 +201,8 @@
 				'LBL_ORGANIZATION_LOGO' => '(general : (__VtigerMeta__) logo)',
 				'LBL_HELPDESK_SUPPORT_NAME' => '(general : (__VtigerMeta__) supportName)',
 				'LBL_HELPDESK_SUPPORT_EMAILID' => '(general : (__VtigerMeta__) supportEmailId)',
+				'Comments' => '(general : (__VtigerMeta__) comments)',
+				'groupEmailList' => '(general : (__VtigerMeta__) groupEmailList_Put_Group_Name_Here)',
 			);
 		}
 

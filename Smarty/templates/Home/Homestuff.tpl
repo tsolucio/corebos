@@ -6,12 +6,11 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
-<script language="javascript" type="text/javascript" src="modules/Home/Homestuff.js"></script>
-<script language="javascript" type="text/javascript" src="include/js/notebook.js"></script>
-<script language="javascript" type="text/javascript" src="include/freetag/tagcanvas.min.js"></script>
+<script type="text/javascript" src="modules/Home/Homestuff.js"></script>
+<script type="text/javascript" src="include/js/notebook.js"></script>
+<script type="text/javascript" src="include/freetag/tagcanvas.min.js"></script>
 <input id="homeLayout" type="hidden" value="{$LAYOUT}">
 {*<!--Home Page Entries  -->*}
 
@@ -95,7 +94,6 @@ function fnAddWindow(obj,CurrObj){
 {/literal}
 var user_tag_showas = '{$USER_TAG_SHOWAS}';
 </script>
-
 
 {* First time login *}
 {if $FIRST_TIME_LOGIN}

@@ -40,7 +40,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	$fieldvalue = Array();
 	$final_arr = Array();
 	$value = $col_fields[$fieldname];
-	$custfld = '';
 	$ui_type[]= $uitype;
 	$editview_fldname[] = $fieldname;
 
@@ -1086,12 +1085,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 					}
 				}
 			}
-			$custfld .= '<td width="20%" class="dataLabel">'.$app_strings['To'].'&nbsp;</td>';
-			$custfld .= '<td width="90%" colspan="3"><input name="parent_id" type="hidden" value="'.$parent_id.'"><textarea readonly name="parent_name" cols="70" rows="2">'.$parent_name.'</textarea>&nbsp;<select name="parent_type" >';
-			$custfld .= '<OPTION value="Contacts" selected>'.$app_strings['COMBO_CONTACTS'].'</OPTION>';
-			$custfld .= '<OPTION value="Accounts" >'.$app_strings['COMBO_ACCOUNTS'].'</OPTION>';
-			$custfld .= '<OPTION value="Leads" >'.$app_strings['COMBO_LEADS'].'</OPTION>';
-			$custfld .= '<OPTION value="Vendors" >'.$app_strings['COMBO_VENDORS'].'</OPTION></select><img src="' . vtiger_imageurl('select.gif', $theme) . '" alt="Select" title="Select" LANGUAGE=javascript onclick=\'$log->debug("Exiting getOutputHtml method ..."); return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&popuptype=set_$log->debug("Exiting getOutputHtml method ..."); return_emails&form=EmailEditView&form_submit=false","test","width=600,height=400,resizable=1,scrollbars=1,top=150,left=200");\' align="absmiddle" style=\'cursor:hand;cursor:pointer\'>&nbsp;<input type="image" src="' . vtiger_imageurl('clear_field.gif', $theme) . '" alt="Clear" title="Clear" LANGUAGE=javascript onClick="this.form.parent_id.value=\'\';this.form.parent_name.value=\'\';$log->debug("Exiting getOutputHtml method ..."); return false;" align="absmiddle" style=\'cursor:hand;cursor:pointer\'></td>';
 			$editview_label[] = array(
 					'Contacts'=>$contact_selected,
 					'Accounts'=>$account_selected,
@@ -1459,15 +1452,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		else
 			$fieldvalue[] = $value;
 	}
-
-	// Mike Crowe Mod --------------------------------------------------------force numerics right justified.
-	if ( !preg_match("/id=/i",$custfld) )
-		$custfld = preg_replace("/<input/iS","<input id='$fieldname' ",$custfld);
-
-	if (in_array($uitype,array(71,72,7,9,90)) )
-	{
-		$custfld = preg_replace("/<input/iS","<input align=right ",$custfld);
-	}
 	$final_arr[]=$ui_type;
 	$final_arr[]=$editview_label;
 	$final_arr[]=$editview_fldname;
@@ -1797,16 +1781,15 @@ function getAssociatedProducts($module,$focus,$seid='')
 			$product_Detail[$i]['qtyInStock'.$i]=$qtyinstock;
 		}
 		$qty = number_format($qty, 2,'.',''); //Convert to 2 decimals
-		$listprice = number_format($listprice, 2,'.',''); //Convert to 2 decimals
 		$product_Detail[$i]['qty'.$i]=$qty;
-		$product_Detail[$i]['listPrice'.$i]=$listprice;
-		$product_Detail[$i]['unitPrice'.$i]=$unitprice;
-		$product_Detail[$i]['productTotal'.$i]=$productTotal;
+		$product_Detail[$i]['listPrice'.$i]=CurrencyField::convertToUserFormat($listprice, null, true);
+		$product_Detail[$i]['unitPrice'.$i]=CurrencyField::convertToUserFormat($unitprice, null, true);
+		$product_Detail[$i]['productTotal'.$i]=CurrencyField::convertToUserFormat($productTotal, null, true);
 		$product_Detail[$i]['subproduct_ids'.$i]=$subprodid_str;
 		$product_Detail[$i]['subprod_names'.$i]=$subprodname_str;
 		$discount_percent=$adb->query_result($result,$i-1,'discount_percent');
 		$discount_amount=$adb->query_result($result,$i-1,'discount_amount');
-		$discount_amount = number_format((is_numeric($discount_amount) ? $discount_amount : 0), 2,'.',''); //Convert to 2 decimals
+		$discount_amount = (is_numeric($discount_amount) ? $discount_amount : 0);
 		$discountTotal = '0.00';
 		//Based on the discount percent or amount we will show the discount details
 
@@ -1826,7 +1809,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 		elseif($discount_amount != 'NULL' && $discount_amount != '')
 		{
 			$product_Detail[$i]['discount_type'.$i] = "amount";
-			$product_Detail[$i]['discount_amount'.$i] = $discount_amount;
+			$product_Detail[$i]['discount_amount'.$i] = CurrencyField::convertToUserFormat($discount_amount, null, true);
 			$product_Detail[$i]['checked_discount_amount'.$i] = ' checked';
 			$product_Detail[$i]['style_discount_amount'.$i] = ' style="visibility:visible"';
 			$product_Detail[$i]['style_discount_percent'.$i] = ' style="visibility:hidden"';
@@ -1837,11 +1820,11 @@ function getAssociatedProducts($module,$focus,$seid='')
 			$product_Detail[$i]['checked_discount_zero'.$i] = ' checked';
 		}
 		$totalAfterDiscount = $productTotal-$discountTotal;
-		$product_Detail[$i]['discountTotal'.$i] = $discountTotal;
-		$product_Detail[$i]['totalAfterDiscount'.$i] = $totalAfterDiscount;
+		$product_Detail[$i]['discountTotal'.$i] = CurrencyField::convertToUserFormat($discountTotal, null, true);
+		$product_Detail[$i]['totalAfterDiscount'.$i] = CurrencyField::convertToUserFormat($totalAfterDiscount, null, true);
 
 		$taxTotal = '0.00';
-		$product_Detail[$i]['taxTotal'.$i] = $taxTotal;
+		$product_Detail[$i]['taxTotal'.$i] = CurrencyField::convertToUserFormat($taxTotal, null, true);
 
 		//Calculate netprice
 		$netPrice = $totalAfterDiscount+$taxTotal;
@@ -1855,7 +1838,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 				$netPrice = $netPrice+$taxTotal;
 			}
 		}
-		$product_Detail[$i]['netPrice'.$i] = $netPrice;
+		$product_Detail[$i]['netPrice'.$i] = CurrencyField::convertToUserFormat($netPrice, null, true);
 
 		//First we will get all associated taxes as array
 		$tax_details = getTaxDetailsForProduct($hdnProductId,'all',$acvid);
@@ -1893,12 +1876,10 @@ function getAssociatedProducts($module,$focus,$seid='')
 	$product_Detail[1]['final_details']['discount_type_final'] = 'zero';
 
 	$subTotal = ($focus->column_fields['hdnSubTotal'] != '')?$focus->column_fields['hdnSubTotal']:'0.00';
-	$subTotal = number_format($subTotal, 2,'.',''); //Convert to 2 decimals
 
-	$product_Detail[1]['final_details']['hdnSubTotal'] = $subTotal;
+	$product_Detail[1]['final_details']['hdnSubTotal'] = CurrencyField::convertToUserFormat($subTotal, null, true);
 	$discountPercent = ($focus->column_fields['hdnDiscountPercent'] != '')?$focus->column_fields['hdnDiscountPercent']:'0.00';
 	$discountAmount = ($focus->column_fields['hdnDiscountAmount'] != '')?$focus->column_fields['hdnDiscountAmount']:'0.00';
-	$discountAmount = number_format($discountAmount, 2,'.',''); //Convert to 2 decimals
 
 	//To avoid NaN javascript error, here we assign 0 initially to' %of price' and 'Direct Price reduction'(For Final Discount)
 	$product_Detail[1]['final_details']['discount_percentage_final'] = 0;
@@ -1917,13 +1898,12 @@ function getAssociatedProducts($module,$focus,$seid='')
 	{
 		$finalDiscount = $focus->column_fields['hdnDiscountAmount'];
 		$product_Detail[1]['final_details']['discount_type_final'] = 'amount';
-		$product_Detail[1]['final_details']['discount_amount_final'] = $discountAmount;
+		$product_Detail[1]['final_details']['discount_amount_final'] = CurrencyField::convertToUserFormat($discountAmount, null, true);
 		$product_Detail[1]['final_details']['checked_discount_amount_final'] = ' checked';
 		$product_Detail[1]['final_details']['style_discount_amount_final'] = ' style="visibility:visible"';
 		$product_Detail[1]['final_details']['style_discount_percentage_final'] = ' style="visibility:hidden"';
 	}
-	$finalDiscount = number_format($finalDiscount, 2,'.',''); //Convert to 2 decimals
-	$product_Detail[1]['final_details']['discountTotal_final'] = $finalDiscount;
+	$product_Detail[1]['final_details']['discountTotal_final'] = CurrencyField::convertToUserFormat($finalDiscount, null, true);
 
 	//To set the Final Tax values
 	//we will get all taxes. if individual then show the product related taxes only else show all taxes
@@ -1952,19 +1932,17 @@ function getAssociatedProducts($module,$focus,$seid='')
 		if($tax_percent == '' || $tax_percent == 'NULL')
 			$tax_percent = '0.00';
 		$taxamount = ($subTotal-$finalDiscount)*$tax_percent/100;
-		$taxamount = number_format($taxamount, 2,'.',''); //Convert to 2 decimals
 		$taxtotal = $taxtotal + $taxamount;
 		$product_Detail[1]['final_details']['taxes'][$tax_count]['taxname'] = $tax_name;
 		$product_Detail[1]['final_details']['taxes'][$tax_count]['taxlabel'] = $tax_label;
 		$product_Detail[1]['final_details']['taxes'][$tax_count]['percentage'] = $tax_percent;
-		$product_Detail[1]['final_details']['taxes'][$tax_count]['amount'] = $taxamount;
+		$product_Detail[1]['final_details']['taxes'][$tax_count]['amount'] = CurrencyField::convertToUserFormat($taxamount, null, true);
 	}
-	$product_Detail[1]['final_details']['tax_totalamount'] = $taxtotal;
+	$product_Detail[1]['final_details']['tax_totalamount'] = CurrencyField::convertToUserFormat($taxtotal, null, true);
 
 	//To set the Shipping & Handling charge
 	$shCharge = ($focus->column_fields['hdnS_H_Amount'] != '')?$focus->column_fields['hdnS_H_Amount']:'0.00';
-	$shCharge = number_format($shCharge, 2,'.',''); //Convert to 2 decimals
-	$product_Detail[1]['final_details']['shipping_handling_charge'] = $shCharge;
+	$product_Detail[1]['final_details']['shipping_handling_charge'] = CurrencyField::convertToUserFormat($shCharge, null, true);
 
 	//To set the Shipping & Handling tax values
 	//calculate S&H tax
@@ -1988,19 +1966,17 @@ function getAssociatedProducts($module,$focus,$seid='')
 		$product_Detail[1]['final_details']['sh_taxes'][$shtax_count]['taxname'] = $shtax_name;
 		$product_Detail[1]['final_details']['sh_taxes'][$shtax_count]['taxlabel'] = $shtax_label;
 		$product_Detail[1]['final_details']['sh_taxes'][$shtax_count]['percentage'] = $shtax_percent;
-		$product_Detail[1]['final_details']['sh_taxes'][$shtax_count]['amount'] = $shtaxamount;
+		$product_Detail[1]['final_details']['sh_taxes'][$shtax_count]['amount'] = CurrencyField::convertToUserFormat($shtaxamount, null, true);
 	}
-	$product_Detail[1]['final_details']['shtax_totalamount'] = $shtaxtotal;
+	$product_Detail[1]['final_details']['shtax_totalamount'] = CurrencyField::convertToUserFormat($shtaxtotal, null, true);
 
 	//To set the Adjustment value
 	$adjustment = ($focus->column_fields['txtAdjustment'] != '')?$focus->column_fields['txtAdjustment']:'0.00';
-	$adjustment = number_format($adjustment, 2,'.',''); //Convert to 2 decimals
-	$product_Detail[1]['final_details']['adjustment'] = $adjustment;
+	$product_Detail[1]['final_details']['adjustment'] = CurrencyField::convertToUserFormat($adjustment, null, true);
 
 	//To set the grand total
 	$grandTotal = ($focus->column_fields['hdnGrandTotal'] != '')?$focus->column_fields['hdnGrandTotal']:'0.00';
-	$grandTotal = number_format($grandTotal, 2,'.',''); //Convert to 2 decimals
-	$product_Detail[1]['final_details']['grandTotal'] = $grandTotal;
+	$product_Detail[1]['final_details']['grandTotal'] = CurrencyField::convertToUserFormat($grandTotal, null, true);
 
 	$log->debug("Exiting getAssociatedProducts method ...");
 

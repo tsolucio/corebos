@@ -8,10 +8,10 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script language="JavaScript" type="text/javascript" src="include/js/menu.js"></script>
-<script language="JavaScript" type="text/javascript" src="include/js/ColorPicker2.js"></script>
-<script language="JavaScript" type="text/javascript" src="include/js/dtlviewajax.js"></script>
-<script language="JAVASCRIPT" type="text/javascript" src="include/js/smoothscroll.js"></script>
+<script type="text/javascript" src="include/js/menu.js"></script>
+<script type="text/javascript" src="include/js/ColorPicker2.js"></script>
+<script type="text/javascript" src="include/js/dtlviewajax.js"></script>
+<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <span id="crmspanid" style="display:none;position:absolute;"  onmouseover="show('crmspanid');">
    <a class="link"  align="right" href="javascript:;">{$APP.LBL_EDIT_BUTTON}</a>
 </span>
@@ -114,9 +114,9 @@
 									</table>
 
 									<table border="0" cellpadding="5" cellspacing="0" width="100%">
-									{foreach item=detail from=$detail}
+									{foreach item=detailInfo from=$detail}
 									<tr >
-										{foreach key=label item=data from=$detail}
+										{foreach key=label item=data from=$detailInfo}
 										   {assign var=keyid value=$data.ui}
 										   {assign var=keyval value=$data.value}
 										   {assign var=keytblname value=$data.tablename}
@@ -275,7 +275,7 @@
 {$JAVASCRIPT}
 <div id="tempdiv" style="display:block;position:absolute;left:350px;top:200px;"></div>
 <!-- added for validation -->
-<script language="javascript">
+<script>
   var gVTModule = '{$smarty.request.module|@vtlib_purify}';
   var fieldname = new Array({$VALIDATION_DATA_FIELDNAME});
   var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});

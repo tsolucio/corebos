@@ -1,16 +1,12 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- ********************************************************************************/
+ ************************************************************************************/
 require_once('Smarty_setup.php');
 require_once('data/Tracker.php');
 require_once('include/CustomFieldUtil.php');
@@ -19,8 +15,7 @@ require_once('include/FormValidationUtil.php');
 require_once("modules/Emails/mail.php");
 require_once("modules/Calendar4You/Calendar4You.php");
 require_once("modules/Calendar4You/CalendarUtils.php");
-global $app_strings;
-global $mod_strings,$current_user,$current_language;
+global $app_strings, $mod_strings,$current_user,$current_language;
 // Unimplemented until jscalendar language files are fixed
 
 $Calendar4You = new Calendar4You();
@@ -121,6 +116,38 @@ if(isset($_REQUEST['record']) && $_REQUEST['record']!='') {
     }
 
 }else {
+	if (!empty($_REQUEST['parent_id']) && empty($_REQUEST['contact_id'])) {
+		$pid = vtlib_purify($_REQUEST['parent_id']);
+		$sepid = getSalesEntityType($pid);
+		if ($sepid=='Potentials') {
+			$psql = 'select vtiger_contactdetails.contactid from vtiger_contactdetails
+					inner join vtiger_contpotentialrel on vtiger_contpotentialrel.contactid = vtiger_contactdetails.contactid
+					inner join vtiger_potential on vtiger_contpotentialrel.potentialid = vtiger_potential.potentialid
+					inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid
+					where vtiger_potential.potentialid = ? and vtiger_crmentity.deleted=0';
+			$rspot = $adb->pquery($psql, array($pid));
+			if ($rspot and $adb->num_rows($rspot)>0) {
+				$cnt_idlist = $cnt_namelist = array();
+				while ($ctopot = $adb->fetch_array($rspot)) {
+					$cnt_idlist[] = $ctopot['contactid'];
+					$displayValueArray = getEntityName('Contacts', array($ctopot['contactid']));
+					if (!empty($displayValueArray)) {
+						foreach ($displayValueArray as $key => $field_value) {
+							$cnt_namelist[$key] =  $field_value;
+						}
+					}
+					if($activity_mode == 'Task') {
+						$_REQUEST['contact_id'] = $ctopot['contactid'];
+						break;
+					}
+				}
+				$smarty->assign("CONTACTSID",  implode(';', $cnt_idlist));
+				$smarty->assign("CONTACTSNAME",$cnt_namelist);
+			}
+		} else {
+			$_REQUEST['contact_id'] = getRelatedAccountContact($pid,'Contacts');
+		}
+	}
 	if(isset($_REQUEST['contact_id']) && $_REQUEST['contact_id']!=''){
 		$contactId = vtlib_purify($_REQUEST['contact_id']);
 		$entityIds = array($contactId);

@@ -242,9 +242,11 @@ class Vtiger_Utils {
 	 */
 	static function CreateTableSql($tablename) {
 		global $adb;
-
+		$sql = '';
 		$create_table = $adb->pquery("SHOW CREATE TABLE $tablename", array());
-		$sql = decode_html($adb->query_result($create_table, 0, 1));
+		if ($create_table) {
+			$sql = decode_html($adb->query_result($create_table, 0, 1));
+		}
 		return $sql;
 	}
 

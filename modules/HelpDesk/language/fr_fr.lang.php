@@ -167,6 +167,8 @@ $mod_strings = array (
 	'Hours' => 'Heures',
 	'Days' => 'Jours',	
 	'From Portal' => 'Depuis le portail',
+	'From mailscanner' => 'From Mail Converter',
+	'Comment Added' => 'Comment Added',
 	'HelpDesk ID' => 'Ticket ID',
 );
 ?>

@@ -159,7 +159,6 @@ var alert_arr = {
 	'SAME_GROUPS' : 'You have to select the records in the same groups for merging',
 	'ATLEAST_TWO' : 'Select at least two records for merging',
 	'MAX_THREE' : 'You are allowed to select a maximum of three records',
-	'PARENT_RECORD' : 'Select a record as parent record\',  MergeFields.tpl Line:5',
 	'MAX_RECORDS' : 'You are allowed to select a maximum of four records',
 	'CON_MANDATORY' : 'Select the mandatory field Last Name',
 	'LE_MANDATORY' : 'Select the mandatory fields Last Name and Company',

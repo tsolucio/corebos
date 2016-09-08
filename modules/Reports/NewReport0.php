@@ -23,6 +23,9 @@ $recordid = vtlib_purify($_REQUEST['record']);
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 $list_report_form = new vtigerCRM_Smarty;
+// Pass on the authenticated user language
+global $current_language;
+$list_report_form->assign('LANGUAGE', $current_language);
 $list_report_form->assign("MOD", $mod_strings);
 $list_report_form->assign("APP", $app_strings);
 $repObj = new Reports ();

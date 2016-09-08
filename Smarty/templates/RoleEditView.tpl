@@ -6,11 +6,10 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
-<script language="JAVASCRIPT" type="text/javascript" src="include/js/smoothscroll.js"></script>
-<script language="javascript">
+<script type="text/javascript" src="include/js/smoothscroll.js"></script>
+<script>
 function dup_validation()
 {ldelim}
 	var rolename = document.getElementById('rolename').value;
@@ -197,8 +196,8 @@ function validate()
    </tr>
 </tbody>
 </table>
-	
-<script language="JavaScript" type="text/JavaScript">    
+
+<script type="text/JavaScript">
         var moveupLinkObj,moveupDisabledObj,movedownLinkObj,movedownDisabledObj;
         function setObjects() 
         {ldelim}
@@ -257,7 +256,7 @@ function validate()
                 selectedColumnsObj.remove(selectedColumnsObj.options.selectedIndex)
             {rdelim}
         {rdelim}
-                        
+
         function formSelectColumnString()
         {ldelim}
             var selectedColStr = "";
@@ -267,5 +266,5 @@ function validate()
             {rdelim}
             document.newRoleForm.selectedColumnsString.value = selectedColStr;
         {rdelim}
-	setObjects();			
-</script>	
+	setObjects();
+</script>

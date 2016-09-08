@@ -161,7 +161,7 @@
 														{'LBL_DESCRIPTION'|@getTranslatedString:$MODULE}
 													</td>
 													<td class="dvtCellInfo" align="left" >
-														{$WEBFORMMODEL->getDescription()
+														{$WEBFORMMODEL->getDescription()}
 													</td>
 												</tr>
 												<!--Cell Information end-->

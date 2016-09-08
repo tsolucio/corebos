@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script language="JavaScript" type="text/javascript" src="include/js/ListView.js"></script>
+<script type="text/javascript" src="include/js/ListView.js"></script>
 <table border=0 cellspacing=0 cellpadding=5 width=100% class="tableHeading">
 <tr>
 	<td class="big"><strong>{$MOD.LBL_USERS_LIST}</strong></td>

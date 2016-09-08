@@ -9,8 +9,8 @@
   *
  ********************************************************************************/
 -->*}
-<script language="JAVASCRIPT" type="text/javascript" src="include/js/smoothscroll.js"></script>
-<script language="JavaScript" type="text/javascript" src="include/js/menu.js"></script>
+<script type="text/javascript" src="include/js/smoothscroll.js"></script>
+<script type="text/javascript" src="include/js/menu.js"></script>
 {literal}
 <style>
 DIV.fixedLay{

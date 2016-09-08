@@ -10,7 +10,7 @@
  ********************************************************************************/
 -->*}
 
-<script language="JAVASCRIPT" type="text/javascript" src="include/js/smoothscroll.js"></script>
+<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <style type="text/css">
 a.x {ldelim}
 		color:black;
@@ -166,7 +166,7 @@ ul {ldelim}color:black;{rdelim}
 </table>
 	<div id="Drag_content">&nbsp;</div>
 
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
 	var hideAll = false;
 	var parentId = "";
 	var parentName = "";

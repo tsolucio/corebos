@@ -1,5 +1,4 @@
 <?php
-
 /*******************************************************************************
  * The contents of this file are subject to the following licences:
  * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
@@ -51,6 +50,8 @@ $mod_strings = Array(
     'Related Project' => 'Gerelateerd Project',
     'Priority' => 'Prioriteit',
     'Progress' => 'Voortgang (%)',
+	'Open' => 'Open',
+	'Cancelled' => 'Afgezegd',
     'Type'=>'Type',
     'Worked Hours'=>'Gewerkte Uren',
     'Start Date'=>'Startdatum',

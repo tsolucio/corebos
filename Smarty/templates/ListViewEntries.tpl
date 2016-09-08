@@ -11,14 +11,14 @@
 {if $smarty.request.ajax neq ''}
 &#&#&#{$ERROR}&#&#&#
 {/if}
-<script language="JavaScript" type="text/javascript" src="include/js/ListView.js"></script>
+<script type="text/javascript" src="include/js/ListView.js"></script>
 <form name="massdelete" method="POST" id="massdelete" onsubmit="VtigerJS_DialogBox.block();">
 	<input name='search_url' id="search_url" type='hidden' value='{$SEARCH_URL}'>
 	<input name="idlist" id="idlist" type="hidden">
 	<input name="change_owner" type="hidden">
 	<input name="change_status" type="hidden">
 	<input name="action" type="hidden">
-	<input name="where_export" type="hidden" value="{php} echo to_html($_SESSION['export_where']);{/php}">
+	<input name="where_export" type="hidden" value="{$export_where}">
 	<input name="step" type="hidden">
 	<input name="excludedRecords" type="hidden" id="excludedRecords" value="">
 	<input name="numOfRows" id="numOfRows" type="hidden" value="">

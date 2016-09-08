@@ -160,8 +160,6 @@ var alert_arr = {
     'LBL_SELECT_PICKLIST':'Bitte wenigstens einen Eintrag auswählen',
     'LBL_CANT_REMOVE':'Sie können nicht alle Werte entfernen.',
     
-    // Added after 5.0.4 GA
-    
     /*For global add/delete in picklist*/
     'LBL_GIVE_PICKLIST_VALUE':'Bitte geben Sie eine Auswahlliste an, die berücksichtigt werden soll',
     'LBL_SELECT_ROLE':'Bitte wenigstens eine Rolle auswählen zu der die neuen Werte gehören sollen',
@@ -172,7 +170,6 @@ var alert_arr = {
     'SAME_GROUPS': 'Sie haben Daten aus der gleichen Gruppe ausgewählt',
     'ATLEAST_TWO': 'Sie müssen mindestens 2 Datensätze zm zusammenführen auswählen',
     'MAX_THREE': 'Sie können maximal 3 Datensätze auswählen',
-    //PARENT_RECORD: 'Select a record as parent record',  MergeFields.tpl Line:59
     'MAX_RECORDS': 'Sie können maximal 4 Datensätze auswählen',
     'CON_MANDATORY': 'Bitte das Pflichtfeld Nachname auswählen',
     'LE_MANDATORY': 'Bitte die Pflichtfelder Nachname und Organisation auswählen',
@@ -227,7 +224,7 @@ var alert_arr = {
     'FIELD_IS_MANDATORY' : 'Pflichtfeld',
     'FIELD_IS_ACTIVE' : 'das Feld kann genutzt werden',
     'FIELD_IN_QCREATE' : 'im Schnellmenü präsent',
-    'FIELD_IS_MASSEDITABLE' : 'für Massenfeldänderungen zugelassen',	
+    'FIELD_IS_MASSEDITABLE' : 'für Massenfeldänderungen zugelassen',
     
     'IS_MANDATORY_FIELD' : 'ist Pflichtfels',
     'CLOSEDATE_CANNOT_BE_EMPTY' : 'das Abschlussdatumdarf nicht leer sein',

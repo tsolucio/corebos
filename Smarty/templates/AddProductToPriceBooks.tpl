@@ -9,7 +9,7 @@
  ********************************************************************************/
 -->
 {literal}
-<script language="javascript">
+<script>
 function addtopricebook()
 {
 	x = document.addToPB.selected_id.length;
@@ -156,7 +156,7 @@ function updateListPriceForField(fieldname,element)
 	updateListPrice(unitprice_array[index],fieldname,element);
 {rdelim}
 </script>
-<script language="javascript" src="modules/Products/Products.js"></script>
+<script src="modules/Products/Products.js"></script>
 <table width="95%" border="0" cellpadding="0" cellspacing="0">
 	<tr><td colspan="3">&nbsp;</td></tr>
 	<tr>

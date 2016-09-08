@@ -13,7 +13,7 @@
 <script type="text/javascript" src="jscalendar/lang/calendar-en.js"></script>
 <script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
 <script type="text/javascript" src="include/js/reflection.js"></script>
-<script language="JavaScript" type="text/javascript" src="include/js/dtlviewajax.js"></script>
+<script type="text/javascript" src="include/js/dtlviewajax.js"></script>
 <span id="crmspanid" style="display:none;position:absolute;"  onmouseover="show('crmspanid');">
    <a class="link"  align="right" href="javascript:;">{$APP.LBL_EDIT_BUTTON}</a>
 </span>
@@ -256,9 +256,6 @@ function sendfile_email()
 							<!-- NOTE: We should avoid form-inside-form condition, which could happen when Singlepane view is enabled. -->
 							<form action="index.php" method="post" name="DetailView" id="form">
 							{include file='DetailViewHidden.tpl'}
-
-							{include_php file="include/DetailViewBlockStatus.php"}
-
 							{foreach key=header item=detail from=$BLOCKS}
 
 							<!-- Detailed View Code starts here-->
@@ -377,11 +374,7 @@ function sendfile_email()
 			{foreach item=CUSTOM_LINK_DETAILVIEWWIDGET from=$CUSTOM_LINKS.DETAILVIEWWIDGET}
 				{if preg_match("/^block:\/\/.*/", $CUSTOM_LINK_DETAILVIEWWIDGET->linkurl)}
 				<tr>
-					<td style="padding:5px;" >
-					{php}
-						echo vtlib_process_widget($this->_tpl_vars['CUSTOM_LINK_DETAILVIEWWIDGET'], $this->_tpl_vars);
-					{/php}
-					</td>
+					<td style="padding:5px;" >{process_widget widgetLinkInfo=$CUSTOM_LINK_DETAILVIEWWIDGET}</td>
 				</tr>
 				{/if}
 			{/foreach}
@@ -706,8 +699,8 @@ function sendfile_email()
 </table>
 
 {if $MODULE eq 'Products'}
-<script language="JavaScript" type="text/javascript" src="modules/Products/Productsslide.js"></script>
-<script language="JavaScript" type="text/javascript">Carousel();</script>
+<script type="text/javascript" src="modules/Products/Productsslide.js"></script>
+<script type="text/javascript">Carousel();</script>
 {/if}
 
 <script>
@@ -729,7 +722,7 @@ function getTagCloud()
 getTagCloud();
 </script>
 <!-- added for validation -->
-<script language="javascript">
+<script>
   var fieldname = new Array({$VALIDATION_DATA_FIELDNAME});
   var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
   var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});

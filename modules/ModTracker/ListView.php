@@ -121,6 +121,7 @@ if(isset($where) && $where != '') {
 } else {
 	unset($_SESSION['export_where']);
 }
+$smarty->assign('export_where',to_html($where));
 
 // Sorting
 if(!empty($order_by)) {

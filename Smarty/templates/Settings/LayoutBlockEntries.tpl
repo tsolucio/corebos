@@ -12,8 +12,8 @@
 				<input type="hidden" name="module" value="Settings">
 				<input type="hidden" name="parenttab" value="Settings">
 				<input type="hidden" name="mode">
-				<script language="JavaScript" type="text/javascript" src="include/js/customview.js"></script>
-				<script language="JavaScript" type="text/javascript" src="include/js/general.js"></script>
+				<script type="text/javascript" src="include/js/customview.js"></script>
+				<script type="text/javascript" src="include/js/general.js"></script>
 				<table class="listTable" border="0" cellpadding="3" cellspacing="0" width="100%">
 					{foreach item=entries key=id from=$CFENTRIES name=outer}
 						{if $entries.blockid ne $RELPRODUCTSECTIONID && $entries.blocklabel neq '' }

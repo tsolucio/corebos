@@ -1,14 +1,11 @@
 <?php
-/*******************************************************************************
- * The contents of this file are subject to the following licences:
- * - SugarCRM Public License Version 1.1.2 http://www.sugarcrm.com/SPL
- * - vtiger CRM Public License Version 1.0 
- * You may not use this file except in compliance with the License
- * Software distributed under the License is distributed on an  "AS IS" basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is: SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
+ * All Rights Reserved.
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
  * Portions created by vtiger are Copyright (C) vtiger.
  * Portions created by Vicus are Copyright (C) Vicus.
@@ -243,12 +240,13 @@ $mod_strings = Array(
 
 'LBL_TRANSFER_RELATED_RECORDS_TO' => 'Draag geselecteerde records over aan',
 
-
 'LBL_FOLLOWING_ARE_POSSIBLE_REASONS' => 'Hetvolgende is een van de mogelijke redenen',
 'LBL_LEADS_FIELD_MAPPING_INCOMPLETE' => 'Niet alle verplichte velden zijn gekoppeld',
 'LBL_MANDATORY_FIELDS_ARE_EMPTY' => 'Enkele van de verplichte velden zijn leeg',
 'LBL_LEADS_FIELD_MAPPING' => 'Leads Maatwerk Veldmapping',
 'LeadAlreadyConverted' => 'Lead cannot be converted. Either it has already been converted or you lack permission on one or more of the destination modules.',
+'Is Converted From Lead' => 'Wordt geconverteerd van Lead',
+'Converted From Lead' => 'Wordt geconverteerd Lead',
 
 );
 

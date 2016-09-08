@@ -9,7 +9,7 @@
   *
  ********************************************************************************/
 -->*}
-<script language="JavaScript" type="text/javascript" src="modules/Webmails/Webmails.js"></script>
+<script type="text/javascript" src="modules/Webmails/Webmails.js"></script>
 
 <table width="100%" border="0" cellpadding="0" cellspacing="0" valign="top">
 <tr>

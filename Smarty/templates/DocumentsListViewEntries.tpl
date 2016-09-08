@@ -66,7 +66,7 @@
 	<input name="change_owner" type="hidden">
 	<input name="change_status" type="hidden">
 	<input name="action" type="hidden">
-	<input name="where_export" type="hidden" value="{php} echo to_html($_SESSION['export_where']);{/php}">
+	<input name="where_export" type="hidden" value="{$export_where}">
 	<input name="step" type="hidden">
 	<input name="allids" type="hidden" id="allids" value="{$ALLIDS}">
 	<input name="allselectedboxes" id="allselectedboxes" type="hidden" value="">

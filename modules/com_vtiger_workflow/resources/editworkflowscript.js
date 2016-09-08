@@ -316,28 +316,26 @@ function editworkflowscript($, conditions){
 				},
 				opType['picklistValues'])
 				);
-			value.replaceWith('<select id="save_condition_'+condno+'_value" class="expressionvalue">'+
-				options+'</select>');
+			value.replaceWith('<select id="save_condition_'+condno+'_value" class="expressionvalue">'+options+'</select>');
 			$("#save_condition_"+condno+"_value_type").val("rawtext");
 		}
+		function forString(opType, condno){
+			var value = $(format("#save_condition_%s_value", condno));
+			value.replaceWith(format('<input type="text" id="save_condition_%s_value" '+'value="" class="expressionvalue" readonly />', condno));
+			var fv = $("#save_condition_"+condno+"_value");
+			fv.bind("focus", function() {
+				editFieldExpression($(this), opType);
+			});
+			fv.bind("click", function() {
+				editFieldExpression($(this), opType);
+			});
+			fv.bind("keypress", function() {
+				editFieldExpression($(this), opType);
+			});
+		}
 		var functions = {
-			string:function(opType, condno){
-				var value = $(format("#save_condition_%s_value", condno));
-				value.replaceWith(format('<input type="text" id="save_condition_%s_value" '+
-					'value="" class="expressionvalue" readonly />', condno));
-
-				var fv = $("#save_condition_"+condno+"_value");
-				fv.bind("focus", function() {
-					editFieldExpression($(this), opType);
-				});
-				fv.bind("click", function() {
-					editFieldExpression($(this), opType);
-				});
-				fv.bind("keypress", function() {
-					editFieldExpression($(this), opType);
-				});
-			},
-			picklist:forPicklist,
+			string:forString,
+			picklist:forString,
 			multipicklist:forPicklist
 		};
 		var ret = functions[fieldType];

@@ -6,11 +6,10 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
-<script language="JAVASCRIPT" type="text/javascript" src="include/js/smoothscroll.js"></script>
-<script language="javascript">
+<script type="text/javascript" src="include/js/smoothscroll.js"></script>
+<script>
 
 function dup_validation()
 {ldelim}
@@ -302,7 +301,7 @@ function validate()
         <td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
 </tr>
 </table>
-<script language="JavaScript" type="text/JavaScript">    
+<script type="text/JavaScript">
 var moveupLinkObj,moveupDisabledObj,movedownLinkObj,movedownDisabledObj;
 function setObjects() 
 {ldelim}
@@ -311,31 +310,24 @@ selectedColumnsObj=getObj("selectedColumns")
 
 {rdelim}
 
-function addColumn() 
-        {ldelim}
-            for (i=0;i<selectedColumnsObj.length;i++) 
-            {ldelim}
+function addColumn() {ldelim}
+            for (i=0;i<selectedColumnsObj.length;i++) {ldelim}
                 selectedColumnsObj.options[i].selected=false
             {rdelim}
 
-            for (i=0;i<availListObj.length;i++) 
-            {ldelim}
-                if (availListObj.options[i].selected==true) 
-                {ldelim}            	
+            for (i=0;i<availListObj.length;i++) {ldelim}
+                if (availListObj.options[i].selected==true) {ldelim}
                 	var rowFound=false;
                 	var existingObj=null;
-                    for (j=0;j<selectedColumnsObj.length;j++) 
-                    {ldelim}
-                        if (selectedColumnsObj.options[j].value==availListObj.options[i].value) 
-                        {ldelim}
+                    for (j=0;j<selectedColumnsObj.length;j++) {ldelim}
+                        if (selectedColumnsObj.options[j].value==availListObj.options[i].value) {ldelim}
                             rowFound=true
                             existingObj=selectedColumnsObj.options[j]
                             break
                         {rdelim}
                     {rdelim}
 
-                    if (rowFound!=true) 
-                    {ldelim}
+                    if (rowFound!=true) {ldelim}
                         var newColObj=document.createElement("OPTION")
                         newColObj.value=availListObj.options[i].value
                         if (browser_ie) newColObj.innerText=availListObj.options[i].innerText
@@ -344,8 +336,8 @@ function addColumn()
                         availListObj.options[i].selected=false
                         newColObj.selected=true
                         rowFound=false
-                    {rdelim} 
-                    else 
+                    {rdelim}
+                    else
                     {ldelim}
                         if(existingObj != null) existingObj.selected=true
                     {rdelim}
@@ -353,12 +345,10 @@ function addColumn()
             {rdelim}
         {rdelim}
 
-function delColumn() 
-{ldelim}
-for (i=selectedColumnsObj.options.length;i>0;i--) 
-{ldelim}
+function delColumn() {ldelim}
+for (i=selectedColumnsObj.options.length;i>0;i--) {ldelim}
 	if (selectedColumnsObj.options.selectedIndex>=0)
-selectedColumnsObj.remove(selectedColumnsObj.options.selectedIndex)
+		selectedColumnsObj.remove(selectedColumnsObj.options.selectedIndex)
 {rdelim}
 {rdelim}
 

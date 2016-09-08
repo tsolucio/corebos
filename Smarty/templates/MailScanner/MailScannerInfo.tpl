@@ -9,7 +9,7 @@
  ********************************************************************************/
 -->*}
 
-<script language="JAVASCRIPT" type="text/javascript">
+<script type="text/javascript">
 {literal}
 function performScanNow(app_key, scannername) {
 	document.getElementById('status').style.display = 'inline';

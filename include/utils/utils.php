@@ -52,6 +52,45 @@ define("RB_RECORD_DELETED", 'delete');
 define("RB_RECORD_INSERTED", 'insert');
 define("RB_RECORD_UPDATED", 'update');
 
+/** Function to load global browser variables for javascript
+ * @param smarty object to load the variables, if empty it will only return the variables in an array
+ * @returns array with the variables
+ */
+function getBrowserVariables(&$smarty) {
+	global $currentModule,$current_user,$default_charset,$theme;
+	$vars = array();
+	$vars['gVTModule'] = $currentModule;
+	$vars['gVTTheme']  = $theme;
+	$vars['gVTUserID'] = $current_user->id;
+	$vars['default_charset'] = $default_charset;
+	$vars['userDateFormat'] = $current_user->date_format;
+	if(isset($current_user->currency_grouping_separator) && $current_user->currency_grouping_separator == '') {
+		$vars['userCurrencySeparator'] = ' ';
+	} else {
+		$vars['userCurrencySeparator'] = html_entity_decode($current_user->currency_grouping_separator, ENT_QUOTES, $default_charset);
+	}
+	if(isset($current_user->currency_decimal_separator) && $current_user->currency_decimal_separator == '') {
+		$vars['userDecimalSeparator'] = ' ';
+	} else {
+		$vars['userDecimalSeparator'] = html_entity_decode($current_user->currency_decimal_separator, ENT_QUOTES, $default_charset);
+	}
+	if(isset($current_user->no_of_currency_decimals) && $current_user->no_of_currency_decimals == '') {
+		$vars['userNumberOfDeciamls'] = '2';
+	} else {
+		$vars['userNumberOfDeciamls'] = html_entity_decode($current_user->no_of_currency_decimals, ENT_QUOTES, $default_charset);
+	}
+	if ($smarty) {
+		$smarty->assign('GVTMODULE',$vars['gVTModule']);
+		$smarty->assign('THEME', $vars['gVTTheme']);
+		$smarty->assign('DEFAULT_CHARSET', $vars['default_charset']);
+		$smarty->assign('CURRENT_USER_ID', $vars['gVTUserID']);
+		$smarty->assign('USER_DATE_FORMAT',$vars['userDateFormat']);
+		$smarty->assign('USER_CURRENCY_SEPARATOR', $vars['userCurrencySeparator']);
+		$smarty->assign('USER_DECIMAL_FORMAT', $vars['userDecimalSeparator']);
+		$smarty->assign('USER_NUMBER_DECIMALS', $vars['userNumberOfDeciamls']);
+	}
+}
+
 /** Function to return a full name
   * @param $row -- row:: Type integer
   * @param $first_column -- first column:: Type string
@@ -1725,7 +1764,7 @@ function get_textaccField($label,$name,$tid)
 		$form_field .= '<font color="red">*</font>';
 		$form_field .= $label.':<br>';
 		$form_field .='<input name="account_name" type="text" size="20" maxlength="" id="account_name" value="" readonly><br>';
-		$form_field .='<input name="account_id" id="QCK_'.$name.'" type="hidden" value="">&nbsp;<input title="'.$app_strings[LBL_CHANGE_BUTTON_TITLE].'" accessKey="'.$app_strings[LBL_CHANGE_BUTTON_KEY].'" type="button" tabindex="3" class="button" value="'.$app_strings[LBL_CHANGE_BUTTON_LABEL].'" name="btn1" LANGUAGE=javascript onclick=\'return window.open("index.php?module=Accounts&action=Popup&popuptype=specific&form=EditView&form_submit=false","test","width=600,height=400,resizable=1,scrollbars=1");\'></td>';
+		$form_field .='<input name="account_id" id="QCK_'.$name.'" type="hidden" value="">&nbsp;<input title="'.$app_strings[LBL_CHANGE_BUTTON_TITLE].'" accessKey="'.$app_strings[LBL_CHANGE_BUTTON_KEY].'" type="button" tabindex="3" class="button" value="'.$app_strings[LBL_CHANGE_BUTTON_LABEL].'" name="btn1" onclick=\'return window.open("index.php?module=Accounts&action=Popup&popuptype=specific&form=EditView&form_submit=false","test","width=600,height=400,resizable=1,scrollbars=1");\'></td>';
 		$log->debug("Exiting get_textaccField method ...");
 		return $form_field;
 	}
@@ -1734,7 +1773,7 @@ function get_textaccField($label,$name,$tid)
 		$form_field .='<td>';
 		$form_field .= $label.':<br>';
 		$form_field .='<input name="account_name" type="text" size="20" maxlength="" value="" readonly><br>';
-		$form_field .='<input name="'.$name.'" id="QCK_'.$name.'" type="hidden" value="">&nbsp;<input title="'.$app_strings[LBL_CHANGE_BUTTON_TITLE].'" accessKey="'.$app_strings[LBL_CHANGE_BUTTON_KEY].'" type="button" tabindex="3" class="button" value="'.$app_strings[LBL_CHANGE_BUTTON_LABEL].'" name="btn1" LANGUAGE=javascript onclick=\'return window.open("index.php?module=Accounts&action=Popup&popuptype=specific&form=EditView&form_submit=false","test","width=600,height=400,resizable=1,scrollbars=1");\'></td>';
+		$form_field .='<input name="'.$name.'" id="QCK_'.$name.'" type="hidden" value="">&nbsp;<input title="'.$app_strings[LBL_CHANGE_BUTTON_TITLE].'" accessKey="'.$app_strings[LBL_CHANGE_BUTTON_KEY].'" type="button" tabindex="3" class="button" value="'.$app_strings[LBL_CHANGE_BUTTON_LABEL].'" name="btn1" onclick=\'return window.open("index.php?module=Accounts&action=Popup&popuptype=specific&form=EditView&form_submit=false","test","width=600,height=400,resizable=1,scrollbars=1");\'></td>';
 		$log->debug("Exiting get_textaccField method ...");
 		return $form_field;
 	}

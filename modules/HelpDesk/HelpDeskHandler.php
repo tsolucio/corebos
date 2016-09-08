@@ -135,7 +135,7 @@ function HelpDesk_notifyParentOnTicketChange($entityData) {
 
 	$subject = $entityData->get('ticket_no') . ' [ '.getTranslatedString('LBL_TICKET_ID', $moduleName)
 						.' : '.$entityId.' ] '.$reply.$entityData->get('ticket_title');
-	$bodysubject = getTranslatedString('Ticket No', $moduleName) .":<br>" . $entityData->get('ticket_no')
+	$bodysubject = getTranslatedString('Ticket No', $moduleName) .' : ' . $entityData->get('ticket_no')
 						. "<br>" . getTranslatedString('LBL_TICKET_ID', $moduleName).' : '.$entityId.'<br> '
 						.getTranslatedString('LBL_SUBJECT', $moduleName).$entityData->get('ticket_title');
 
@@ -145,8 +145,7 @@ function HelpDesk_notifyParentOnTicketChange($entityData) {
 	if($parentId != '') {
 		$parent_module = getSalesEntityType($parentId);
 		if($parent_module == 'Contacts') {
-			$result = $adb->pquery('SELECT email, emailoptout FROM vtiger_contactdetails WHERE contactid=?',
-										array($parentId));
+			$result = $adb->pquery('SELECT email, emailoptout FROM vtiger_contactdetails WHERE contactid=?', array($parentId));
 			$emailoptout = $adb->query_result($result,0,'emailoptout');
 			$parent_email = $contact_mailid = $adb->query_result($result,0,'email');
 			$displayValueArray = getEntityName($parent_module, $parentId);
@@ -164,8 +163,7 @@ function HelpDesk_notifyParentOnTicketChange($entityData) {
 			}
 		}
 		if($parent_module == 'Accounts') {
-			$result = $adb->pquery("SELECT accountname, emailoptout, email1 FROM vtiger_account WHERE accountid=?",
-										array($parentId));
+			$result = $adb->pquery("SELECT accountname, emailoptout, email1 FROM vtiger_account WHERE accountid=?", array($parentId));
 			$emailoptout = $adb->query_result($result,0,'emailoptout');
 			$parent_email = $adb->query_result($result,0,'email1');
 			$parentname = $adb->query_result($result,0,'accountname');
@@ -190,7 +188,6 @@ function HelpDesk_notifyParentOnTicketChange($entityData) {
 				$ownerHasChanged = $entityDelta->hasChanged($entityData->getModuleName(), $entityId, 'assigned_user_id');
 				$commentsHasChanged = $entityDelta->hasChanged($entityData->getModuleName(), $entityId, 'comments');
 				if(($statusHasChanged && $entityData->get('ticketstatus') == "Closed") || $commentsHasChanged || $solutionHasChanged || $ownerHasChanged) {
-
 					$mail_status = send_mail('HelpDesk',$parent_email,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$subject,$email_body);
 				}
 			}
@@ -250,7 +247,6 @@ function HelpDesk_notifyOwnerOnTicketChange($entityData) {
 				$ownerHasChanged = $entityDelta->hasChanged($entityData->getModuleName(), $entityId, 'assigned_user_id');
 				$commentsHasChanged = $entityDelta->hasChanged($entityData->getModuleName(), $entityId, 'comments');
 				if(($statusHasChanged && $entityData->get('ticketstatus') == "Closed") || $commentsHasChanged || $solutionHasChanged || $ownerHasChanged) {
-
 					$mail_status = send_mail('HelpDesk',$to_email,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$subject,$email_body);
 				}
 			}

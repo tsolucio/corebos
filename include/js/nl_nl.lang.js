@@ -162,8 +162,6 @@ var alert_arr = {
 	'LBL_SELECT_PICKLIST':'Selecteer tenminste 1 waarde om te wissen',
 	'LBL_CANT_REMOVE':'U kunt niet alle waarden wissen',
 
-	// Added after 5.0.4 GA
-
 	/*For global add/delete in picklist*/
 	'LBL_GIVE_PICKLIST_VALUE':'Geef een waarde voor de geselecteerde keuzelijst om mee te vervangen',
 	'LBL_SELECT_ROLE':'Selecteer tenminste 1 rol om de nieuwe waarden toe te voegen',
@@ -174,7 +172,6 @@ var alert_arr = {
 	'SAME_GROUPS': 'U dient de records in dezelfde groep te selecteren voor merging',
 	'ATLEAST_TWO': 'Selecteer tenminste twee records voor merging',
 	'MAX_THREE': 'U kunt maximaal drie records selecteren',
-	//PARENT_RECORD: 'Select a record as parent record',  MergeFields.tpl Line:59
 	'MAX_RECORDS': 'U kunt maximaal vier records selecteren',
 	'CON_MANDATORY': 'Selecteer het verplichte veld -Laatste Naam-',
 	'LE_MANDATORY': 'Selecteer het verplichte velden -Laatste Naam en Bedrijf-',

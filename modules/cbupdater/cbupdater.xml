@@ -759,4 +759,25 @@
 	<classname>mass_document_download</classname>
 	<systemupdate>false</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Status picklist to Project Task module</description>
+	<filename>build/changeSets/addStatus2ProjectTask.php</filename>
+	<classname>addStatus2ProjectTask</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add EmailOptOut and Conversion Related Fields to Leads module</description>
+	<filename>build/changeSets/addLeadEmailOptOutAndConversionRelatedFields.php</filename>
+	<classname>addLeadEmailOptOutAndConversionRelatedFields</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add CommentAdded field to HelpDesk module</description>
+	<filename>build/changeSets/addCommentAdded2HelpDesk.php</filename>
+	<classname>addCommentAdded2HelpDesk</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

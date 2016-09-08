@@ -9,12 +9,12 @@
  *********************************************************************************/
 
 -->*}
-<script language="JavaScript" type="text/javascript" src="include/js/general.js"></script>
-<script language="JavaScript" type="text/javascript" src="include/js/search.js"></script>
-<script language="JavaScript" type="text/javascript" src="include/js/ListView.js"></script>
+<script type="text/javascript" src="include/js/general.js"></script>
+<script type="text/javascript" src="include/js/search.js"></script>
+<script type="text/javascript" src="include/js/ListView.js"></script>
 {if $MODULE eq 'Contacts'}
 {$IMAGELISTS}
-<script language="JavaScript" type="text/javascript" src="include/js/thumbnail.js"></script>
+<script type="text/javascript" src="include/js/thumbnail.js"></script>
 <div id="dynloadarea" style=float:left;position:absolute;left:350px;top:150px;></div>
 {/if}
 <div id="searchResultContainerId">

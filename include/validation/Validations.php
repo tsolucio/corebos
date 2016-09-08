@@ -67,4 +67,23 @@ function validate_IBAN_BankAccount($field, $iban, $params, $fields) {
 	return false;
 }
 
+// Intra-Community VAT number verification - www.bigotconsulting.fr (thanks)
+function validate_EU_VAT($field, $num_tva, $params, $fields) {
+	if ($num_tva=='') return true;
+	if (extension_loaded('soap')) {
+		ini_set("soap.wsdl_cache_enabled", "0");
+		$prefix = substr($num_tva, 0, 2);
+		$tva = substr($num_tva, 2);
+		$param = array('countryCode' => $prefix, 'vatNumber' => $tva);
+		$soap = new SoapClient('http://ec.europa.eu/taxation_customs/vies/checkVatService.wsdl');
+		try {
+			$xml = $soap->checkVat($param);
+		} catch (Exception $e) {
+			return false;
+		}
+		return (($xml->valid)=="1");
+	}
+	return false;
+}
+
 ?>

@@ -77,6 +77,16 @@ $smarty->assign('HEADERCSS', $COMMONHDRLINKS['HEADERCSS']);
 global $vtiger_current_version;
 $smarty->assign('VERSION', $vtiger_current_version);
 // END
+// Pass on the authenticated user language
+global $current_language;
+$smarty->assign('LANGUAGE', $current_language);
+// END
+// Pass on the coreBOS app name
+global $coreBOS_app_name;
+$smarty->assign('coreBOS_app_name', $coreBOS_app_name);
+// END
+global $application_unique_key;
+$smarty->assign('application_unique_key', $application_unique_key);
 // We check if we have the two new logo fields > if not we create them
 $cnorg=$adb->getColumnNames('vtiger_organizationdetails');
 if (!in_array('faviconlogo', $cnorg)) {
@@ -101,6 +111,10 @@ $companyDetails['website'] = $adb->query_result($result,0,'website');
 $companyDetails['logo'] = $organization_logo;
 
 $smarty->assign("COMPANY_DETAILS",$companyDetails);
+ob_start();
+cbEventHandler::do_action('corebos.header.premenu');
+$smarty->assign("COREBOS_HEADER_PREMENU",ob_get_clean());
+getBrowserVariables($smarty);
 
 $smarty->display("Header.tpl");
 cbEventHandler::do_action('corebos.header');

@@ -101,7 +101,8 @@ $smarty->assign("COMPANY_DETAILS",$companyDetails);
 if(isset($login_error) && $login_error != "") {
 	$smarty->assign("LOGIN_ERROR", $login_error);
 }
-
+$currentYear = date('Y');
+$smarty->assign('currentYear',$currentYear);
 $smarty->display('Login.tpl');
 
 ?>
