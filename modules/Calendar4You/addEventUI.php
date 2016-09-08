@@ -158,7 +158,6 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 	<!--script type="text/javascript" src="include/js/ListView.js"></script-->
 	<div class="calAddITSEvent layerPopup" style="display:none;width:650px;left:200px;top:150px;z-index:10000;background-color:#ffffff" id="addITSEvent" align=center>
 	<form id="EditView" name="EditView" method="POST" action="index.php">
-	<input type="hidden" name="action" value="SaveEvent">
 	<input type="hidden" name="module" value="Calendar4You">
 	<input type="hidden" name="return_action" value="index">
 	<input type="hidden" name="return_module" value="Calendar4You">
@@ -989,6 +988,7 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 	</tr></table>
 </form>
 <script>
+	var taskfieldname = new Array('task_subject','task_date_start','task_time_start','task_due_date','taskstatus');
 	var fieldname = new Array('task_subject','task_date_start','task_time_start','task_due_date','taskstatus');
 	var fieldlabel = new Array('<?php echo $c_mod_strings['LBL_LIST_SUBJECT']?>','<?php echo $c_mod_strings['LBL_START_DATE']?>','<?php echo $c_mod_strings['LBL_TIME']?>','<?php echo $c_mod_strings['LBL_DUE_DATE']?>','<?php echo $c_mod_strings['LBL_STATUS']?>');
 	var fielddatatype = new Array('V~M','D~M~time_start','T~O','D~M~OTH~GE~task_date_start~Start Date & Time','V~O');
@@ -1101,33 +1101,37 @@ function triggerOnChangeHandler(elementName, formName){
 }
 
 var frm1 = jQuery('#EditView');
+function c4y_eventsave() {
+	VtigerJS_DialogBox.block();
+	var frm1r = jQuery('#EditView');
+	jQuery.ajax({
+		type: frm1.attr('method'),
+		url: "index.php?module=Calendar4You&action=Calendar4YouAjax&file=SaveEvent",
+		data: frm1r.serialize(),
+		success: function (data){
+			jQuery('#EditView')[0].reset();
+			var return_data = data.split("-");
+			jQuery('#calendar_div').fullCalendar( 'refetchEvents' );
+			ghide('addITSEvent');
+			VtigerJS_DialogBox.unblock();
+			if (return_data[0] != "undefined" && return_data[1] != "undefined" && return_data[2] != "undefined"){
+				go_to_month = (return_data[1] * 1) - 1;
+				jQuery('#calendar_div').fullCalendar('gotoDate', return_data[0] * 1, go_to_month, return_data[2] * 1);
+				alert(return_data[3]);
+			} else {
+				alert(data);
+			}
+		}
+	});
+	return false;
+};
 frm1.submit(function (){
 	if(check_form()){
-		VtigerJS_DialogBox.block();
-		var frm1r = jQuery('#EditView');
-		jQuery.ajax({
-			type: frm1.attr('method'),
-			url: "index.php?module=Calendar4You&action=Calendar4YouAjax&file=SaveEvent",
-			data: frm1r.serialize(),
-			success: function (data){
-				jQuery('#EditView')[0].reset();
-				var return_data = data.split("-");
-				jQuery('#calendar_div').fullCalendar( 'refetchEvents' );
-				ghide('addITSEvent');
-				VtigerJS_DialogBox.unblock();
-				if (return_data[0] != "undefined" && return_data[1] != "undefined" && return_data[2] != "undefined"){
-					go_to_month = (return_data[1] * 1) - 1;
-					jQuery('#calendar_div').fullCalendar('gotoDate', return_data[0] * 1, go_to_month, return_data[2] * 1);
-					alert(return_data[3]);
-				} else {
-					alert(data);
-				}
-			}
-		});
+		return doModuleValidation('','EditView',c4y_eventsave);
+	} else {
+		return false;
 	}
-	return false;
 });
-
 var frm2 = jQuery('#createTodoID');
 function c4y_todosave(val_result) {
 	var frm2r = jQuery('#createTodoID');
