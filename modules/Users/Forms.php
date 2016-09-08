@@ -88,7 +88,6 @@ $extensions_list = Zend_Json::encode($extensions);
 $the_script  = <<<EOQ
 <script type="text/javascript" src="include/js/json.js"></script>
 <script type="text/javascript">
-<!--  to hide script contents from old browsers
 function set_fieldfocus(errorMessage,oMiss_field){
 	alert("$err_missing_required_fields" + errorMessage);
 	oMiss_field.focus();
@@ -204,7 +203,6 @@ function verify_data(form) {
 	}
 }
 
-// end hiding contents from old browsers  -->
 </script>
 
 EOQ;
