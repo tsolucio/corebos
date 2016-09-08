@@ -1417,7 +1417,6 @@ function getDetailAssociatedProducts($module, $focus) {
 		$unitprice = $adb->query_result($result, $i - 1, 'unit_price');
 		$listprice = $adb->query_result($result, $i - 1, 'listprice');
 		$total = $qty * $listprice;
-		$listprice = number_format($listprice, 2,'.',''); //Convert to 2 decimals
 
 		//Product wise Discount calculation - starts
 		$discount_percent = $adb->query_result($result, $i - 1, 'discount_percent');
@@ -1427,7 +1426,6 @@ function getDetailAssociatedProducts($module, $focus) {
 		$productDiscount = '0.00';
 		if ($discount_percent != 'NULL' && $discount_percent != '') {
 			$productDiscount = $total * $discount_percent / 100;
-			$productDiscount = number_format($productDiscount, 2,'.','');
 			$totalAfterDiscount = $total - $productDiscount;
 			//if discount is percent then show the percentage
 			$discount_info_message = "$discount_percent % of ".
@@ -1435,7 +1433,6 @@ function getDetailAssociatedProducts($module, $focus) {
 										CurrencyField::convertToUserFormat($productDiscount, null, true);
 		} elseif ($discount_amount != 'NULL' && $discount_amount != '') {
 			$productDiscount = $discount_amount;
-			$productDiscount = number_format($productDiscount, 2,'.','');
 			$totalAfterDiscount = $total - $productDiscount;
 			$discount_info_message = $app_strings['LBL_DIRECT_AMOUNT_DISCOUNT'] . " = ". CurrencyField::convertToUserFormat($productDiscount, null, true);
 		} else {
@@ -1443,7 +1440,6 @@ function getDetailAssociatedProducts($module, $focus) {
 		}
 		//Product wise Discount calculation - ends
 
-		$totalAfterDiscount = number_format($totalAfterDiscount, 2,'.',''); //Convert to 2 decimals
 		$netprice = $totalAfterDiscount;
 		//Calculate the individual tax if taxtype is individual
 		if ($taxtype == 'individual') {
@@ -1456,14 +1452,11 @@ function getDetailAssociatedProducts($module, $focus) {
 				$tax_value = getInventoryProductTaxValue($focus->id, $productid, $tax_name);
 
 				$individual_taxamount = $totalAfterDiscount * $tax_value / 100;
-				$individual_taxamount = number_format($individual_taxamount, 2,'.',''); //Convert to 2 decimals
 				$taxtotal = $taxtotal + $individual_taxamount;
-				$taxtotal = number_format($taxtotal, 2,'.',''); //Convert to 2 decimals
 				$tax_info_message .= "$tax_label : $tax_value % = ".CurrencyField::convertToUserFormat($individual_taxamount, null, true)." \\n";
 			}
 			$tax_info_message .= "\\n " . $app_strings['LBL_TOTAL_TAX_AMOUNT'] . " = ". CurrencyField::convertToUserFormat($taxtotal, null, true);
 			$netprice = $netprice + $taxtotal;
-			$netprice = number_format($netprice, 2,'.',''); //Convert to 2 decimals
 		}
 
 		$sc_image_tag = '';
@@ -1568,7 +1561,6 @@ function getDetailAssociatedProducts($module, $focus) {
 
 	//$netTotal should be equal to $focus->column_fields['hdnSubTotal']
 	$netTotal = $focus->column_fields['hdnSubTotal'];
-	$netTotal = number_format($netTotal, 2,'.',''); //Convert to 2 decimals
 
 	//Display the total, adjustment, S&H details
 	$output .= '<table width="100%" border="0" cellspacing="0" cellpadding="5" class="crmTable detailview_inventory_totals">';
@@ -1583,12 +1575,10 @@ function getDetailAssociatedProducts($module, $focus) {
 	//if($focus->column_fields['hdnDiscountPercent'] != '') - previously (before changing to prepared statement) the selected option (either percent or amount) will have value and the other remains empty. So we can find the non selected item by empty check. But now with prepared statement, the non selected option stored as 0
 	if ($focus->column_fields['hdnDiscountPercent'] != '0') {
 		$finalDiscount = ($netTotal * $focus->column_fields['hdnDiscountPercent'] / 100);
-		$finalDiscount = number_format($finalDiscount, 2,'.','');
 		$final_discount_info = $focus->column_fields['hdnDiscountPercent'] . " % of ".CurrencyField::convertToUserFormat($netTotal, null, true).
 											" = ". CurrencyField::convertToUserFormat($finalDiscount, null, true);
 	} elseif ($focus->column_fields['hdnDiscountAmount'] != '0') {
 		$finalDiscount = $focus->column_fields['hdnDiscountAmount'];
-		$finalDiscount = number_format($finalDiscount, 2,'.','');
 		$final_discount_info = CurrencyField::convertToUserFormat($finalDiscount, null, true);
 	}
 
@@ -1632,7 +1622,6 @@ function getDetailAssociatedProducts($module, $focus) {
 	}
 
 	$shAmount = ($focus->column_fields['hdnS_H_Amount'] != '') ? $focus->column_fields['hdnS_H_Amount'] : '0.00';
-	$shAmount = number_format($shAmount, 2,'.',''); //Convert to 2 decimals
 	$output .= '<tr id="detailview_inventory_shippingrow">';
 	$output .= '<td align="right" class="crmTableRow small">(+)&nbsp;<b>' . $app_strings['LBL_SHIPPING_AND_HANDLING_CHARGES'] . '</b></td>';
 	$output .= '<td align="right" class="crmTableRow small">' . CurrencyField::convertToUserFormat($shAmount, null, true) . '</td>';
@@ -1649,7 +1638,6 @@ function getDetailAssociatedProducts($module, $focus) {
 		$shtax_label = $shtax_details[$shtax_count]['taxlabel'];
 		$shtax_percent = getInventorySHTaxPercent($focus->id, $shtax_name);
 		$shtaxamount = $shAmount * $shtax_percent / 100;
-		$shtaxamount = number_format($shtaxamount, 2,'.','');
 		$shtaxtotal = $shtaxtotal + $shtaxamount;
 		$shtax_info_message .= "$shtax_label : $shtax_percent % = ". CurrencyField::convertToUserFormat($shtaxamount, null, true) ." \\n";
 	}
@@ -1661,14 +1649,12 @@ function getDetailAssociatedProducts($module, $focus) {
 	$output .= '</tr>';
 
 	$adjustment = ($focus->column_fields['txtAdjustment'] != '') ? $focus->column_fields['txtAdjustment'] : '0.00';
-	$adjustment = number_format($adjustment, 2,'.',''); //Convert to 2 decimals
 	$output .= '<tr id="detailview_inventory_adjustrow">';
 	$output .= '<td align="right" class="crmTableRow small">&nbsp;<b>' . $app_strings['LBL_ADJUSTMENT'] . '</b></td>';
 	$output .= '<td align="right" class="crmTableRow small">' . CurrencyField::convertToUserFormat($adjustment, null, true) . '</td>';
 	$output .= '</tr>';
 
 	$grandTotal = ($focus->column_fields['hdnGrandTotal'] != '') ? $focus->column_fields['hdnGrandTotal'] : '0.00';
-	$grandTotal = number_format($grandTotal, 2,'.',''); //Convert to 2 decimals
 	$output .= '<tr id="detailview_inventory_grandtotrow">';
 	$output .= '<td align="right" class="crmTableRow small lineOnTop"><b>' . $app_strings['LBL_GRAND_TOTAL'] . '</b></td>';
 	$output .= '<td align="right" class="crmTableRow small lineOnTop">' . CurrencyField::convertToUserFormat($grandTotal, null, true) . '</td>';
