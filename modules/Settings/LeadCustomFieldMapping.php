@@ -6,16 +6,14 @@
 * The Initial Developer of the Original Code is vtiger.
 * Portions created by vtiger are Copyright (C) vtiger.
 * All Rights Reserved.
-*
 ********************************************************************************/
 require_once('Smarty_setup.php');
 require_once('include/database/PearDatabase.php');
 require_once('include/CustomFieldUtil.php');
 require_once 'include/Webservices/DescribeObject.php';
-global $mod_strings, $app_strings;
+global $mod_strings, $app_strings, $theme;
 
 $smarty = new vtigerCRM_Smarty;
-global $theme;
 $theme_path = "themes/" . $theme . "/";
 $image_path = $theme_path . "images/";
 $smarty->assign("IMAGE_PATH", $image_path);
