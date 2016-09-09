@@ -552,7 +552,9 @@ function sendfile_email()
 																	{/if}
 																	{if $CUSTOMLINK->linkicon}
 																		<a class="webMnu" href="{$customlink_href}"><img hspace=5 align="absmiddle" border=0 src="{$CUSTOMLINK->linkicon}"></a>
-																		{/if}
+																	{else}
+																		<a class="webMnu" href="{$customlink_href}"><img hspace=5 align="absmiddle" border=0 src="themes/images/no_icon.png"></a>
+																	{/if}
 																	<a class="webMnu" href="{$customlink_href}">{$customlink_label}</a>
 																</td>
 															</tr>
