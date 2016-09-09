@@ -356,6 +356,9 @@ function validateTypeforCFMapping(leadtype,leadtypeofdata,type,typeofdata,field_
 		{
 			if(leadtypeofdata == typeofdata)
 			{
+				if (leadtype==PICKLISTTYPE && type==PICKLISTTYPE) {
+					alert(alert_arr.PICKLIST2PICKLISTALERT);
+				}
 				return true;
 			}
 			else
@@ -407,9 +410,13 @@ function validateTypeforCFMapping(leadtype,leadtypeofdata,type,typeofdata,field_
 		}
 		else
 		{
-			alert(alertmessage[0]+" "+leadtype+" "+alertmessage[1]+" "+type+" "+alertmessage[2]);
-			document.getElementById(field_name).value = '';
-			return false;
+			if (leadtype==PICKLISTTYPE && type==TEXTTYPE) {
+				alert(alert_arr.PICKLIST2TEXTALERT);
+			} else {
+				alert(alertmessage[0]+" "+leadtype+" "+alertmessage[1]+" "+type+" "+alertmessage[2]);
+				document.getElementById(field_name).value = '';
+				return false;
+			}
 		}
 	}
 }

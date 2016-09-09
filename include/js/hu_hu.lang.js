@@ -211,6 +211,8 @@ var alert_arr = {
 	'LBL_WITH' : 'azzal a(z)',
 	'LBL_LENGTHALERT' : 'Sajnos, nem tudod leképezni a mezőket különböző karakter hosszal. Kérjük, hogy ugyan azzal vagy nagyobb karakterhosszal képezz le mezőket.',
 	'LBL_DECIMALALERT' : 'Sajnos, nem tudod leképezni a mezőket különböző tizedes helyekkel. Kérjük, hogy ugyan azzal vagy több tizedes hellyel képezz le mezőket.',
+	'PICKLIST2PICKLISTALERT': 'Please make sure both picklists share the same values',
+	'PICKLIST2TEXTALERT': 'Please make sure the destination text field can hold the longest picklist value',
 	'FIELD_IS_MANDATORY' : 'Kötelező mező',
 	'FIELD_IS_ACTIVE' : 'A mező használatra kész',
 	'FIELD_IN_QCREATE' : 'A gyors létrehozásban elérhető a mező',

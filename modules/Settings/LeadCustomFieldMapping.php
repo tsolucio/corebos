@@ -131,5 +131,7 @@ $smarty->assign("APP", $app_strings);
 $smarty->assign("THEME", $theme);
 $smarty->assign("CUSTOMFIELDMAPPING", customFieldMappings());
 $smarty->assign("MODULE", $module);
+$smarty->assign('PICKLISTTYPE', $mod_strings['PickList']);
+$smarty->assign('TEXTTYPE', $mod_strings['Text']);
 $smarty->display("CustomFieldMapping.tpl");
 ?>
