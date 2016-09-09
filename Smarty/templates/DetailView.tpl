@@ -540,7 +540,7 @@ function sendfile_email()
 												{if $CUSTOM_LINKS && $CUSTOM_LINKS.DETAILVIEWBASIC}
 													<table width="100%" border="0" cellpadding="5" cellspacing="0">
 														{foreach item=CUSTOMLINK from=$CUSTOM_LINKS.DETAILVIEWBASIC}
-															<tr class="actionlink actionlink_customlink">
+															<tr class="actionlink actionlink_customlink actionlink_{$CUSTOMLINK->linklabel}">
 																<td align="left" style="padding-left:10px;">
 																	{assign var="customlink_href" value=$CUSTOMLINK->linkurl}
 																	{assign var="customlink_label" value=$CUSTOMLINK->linklabel}
