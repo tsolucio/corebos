@@ -21,13 +21,14 @@ class cbValidator extends Validator {
 	public $CustomValidations = array(
 		'IBAN_BankAccount' => 'validate_IBAN_BankAccount',
 		'EU_VAT' => 'validate_EU_VAT',
+		'notDuplicate' => 'validate_notDuplicate',
 	);
 
 	public function __construct($data, $fields = array()) {
 		global $current_language;
 		parent::__construct($data, $fields, substr($current_language, 0, 2), 'include/validation/lang');
 		foreach ($this->CustomValidations as $validation => $function) {
-			$this->addRule($validation, $function, getTranslatedString('INVALID'));
+			$this->addRule($validation, $function, ($validation=='notDuplicate' ? getTranslatedString('COLUMNS_CANNOT_BE_DUPLICATED'):getTranslatedString('INVALID')));
 		}
 	}
 }

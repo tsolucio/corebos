@@ -39,5 +39,6 @@ $mod_strings = array(
 	'Modified Time' => 'Gewijzigd op',
 	'Description' => 'Beschrijving',
 	'GlobalVariable' => 'Globale Variabele',
+	'Validations' => 'Validations',
 );
 ?>

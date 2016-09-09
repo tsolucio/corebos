@@ -780,4 +780,11 @@
 	<classname>addCommentAdded2HelpDesk</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>kikojover</author>
+	<description>Add relation between Vendors and Documents</description>
+	<filename>build/changeSets/setDocRelVendor.php</filename>
+	<classname>setDocRelVendor</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
