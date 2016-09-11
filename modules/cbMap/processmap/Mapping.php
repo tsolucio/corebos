@@ -52,6 +52,24 @@
       </Orgfields>
     </field>
     <field>
+      <fieldname>description</fieldname>   {destination field on invoice}
+      <Orgfields>  {if more than one is present they will be concatenated with the delimiter}
+        <Orgfield>
+          <OrgfieldName>$(assigned_user_id : (Users) first_name)</OrgfieldName>
+          <OrgfieldID>FIELD</OrgfieldID>
+        </Orgfield>
+        <Orgfield>
+          <OrgfieldName>$(assigned_user_id : (Users) last_name)</OrgfieldName>
+          <OrgfieldID>FIELD</OrgfieldID>
+        </Orgfield>
+        <Orgfield>
+          <OrgfieldName>The user assigned to the Sales Order is: $(assigned_user_id : (Users) first_name) $(assigned_user_id : (Users) last_name)</OrgfieldName>  {this is a constant string}
+          <OrgfieldID>TEMPLATE</OrgfieldID>
+        </Orgfield>
+        <delimiter> - </delimiter>
+      </Orgfields>
+    </field>
+    <field>
      .....
     </field>
   </fields>
@@ -78,8 +96,7 @@ class Mapping extends processcbMap {
 		$ofields = $arguments[0];
 		if (!empty($ofields['record_id'])) {
 			$setype = getSalesEntityType($ofields['record_id']);
-			$wsidrs = $adb->pquery('SELECT id FROM vtiger_ws_entity WHERE name=?',array($setype));
-			$entityId = $adb->query_result($wsidrs, 0, 0).'x'.$ofields['record_id'];
+			$entityId = vtws_getId(vtws_getEntityId($setype),$ofields['record_id']);
 		}
 		$tfields = $arguments[1];
 		foreach ($mapping['fields'] as $targetfield => $sourcefields) {
@@ -102,6 +119,14 @@ class Mapping extends processcbMap {
 						$exprEvaluation = $exprEvaluater->evaluate($entity);
 					}
 					$value.= $exprEvaluation.$delim;
+				} elseif (!empty($ofields['record_id']) and (strtoupper($idx[0])=='FIELD' or strtoupper($idx[0])=='TEMPLATE')) {
+					$util = new VTWorkflowUtils();
+					$adminUser = $util->adminUser();
+					$entityCache = new VTEntityCache($adminUser);
+					$testexpression = array_pop($fieldinfo);
+					$ct = new VTSimpleTemplate($testexpression);
+					$value.= $ct->render($entityCache, $entityId).$delim;
+					$util->revertUser();
 				} else {
 					$fieldname = array_pop($fieldinfo);
 					$value.= $ofields[$fieldname].$delim;
