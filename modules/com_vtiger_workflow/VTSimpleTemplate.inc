@@ -102,6 +102,8 @@ class VTSimpleTemplate{
 
 	function getComments($num,$sort,$format,$field) {
 		global $adb, $log, $current_user;
+		$wsId = $this->parent->getId();
+		if (empty($wsId)) return '';
 		$sort = strtolower($sort);
 		if ($sort!='a' and $sort!='d') $sort = 'a';
 		$format = strtolower($format);
@@ -115,7 +117,6 @@ class VTSimpleTemplate{
 			$fields = array($field);
 		}
 		$singlefield = (count($fields)==1);
-		$wsId = $this->parent->getId();
 		$datefmtuserid = $this->parent->get('assigned_user_id');
 		if (!empty($datefmtuserid)) {
 			list($void,$dfuid) = explode('x',$datefmtuserid);
