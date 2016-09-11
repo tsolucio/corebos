@@ -82,6 +82,7 @@ require_once('modules/com_vtiger_workflow/VTSimpleTemplate.inc');
 require_once 'modules/com_vtiger_workflow/VTEntityCache.inc';
 require_once('modules/com_vtiger_workflow/VTWorkflowUtils.php');
 require_once('modules/com_vtiger_workflow/expression_engine/include.inc');
+require_once('modules/com_vtiger_workflow/VTSimpleTemplateOnData.inc');
 require_once 'include/Webservices/Retrieve.php';
 
 class Mapping extends processcbMap {
@@ -126,6 +127,18 @@ class Mapping extends processcbMap {
 					$testexpression = array_pop($fieldinfo);
 					$ct = new VTSimpleTemplate($testexpression);
 					$value.= $ct->render($entityCache, $entityId).$delim;
+					$util->revertUser();
+				} elseif (empty($ofields['record_id']) and (strtoupper($idx[0])=='FIELD' or strtoupper($idx[0])=='TEMPLATE')) {
+					if (empty($ofields['assigned_user_id'])) {
+						$userwsid = vtws_getEntityId('Users');
+						$ofields['assigned_user_id'] = vtws_getId($userwsid, $current_user->id);
+					}
+					$util = new VTWorkflowUtils();
+					$adminUser = $util->adminUser();
+					$entityCache = new VTEntityCache($adminUser);
+					$testexpression = array_pop($fieldinfo);
+					$ct = new VTSimpleTemplateOnData($testexpression);
+					$value.= $ct->render($entityCache,$mapping['origin'],$ofields).$delim;
 					$util->revertUser();
 				} else {
 					$fieldname = array_pop($fieldinfo);
