@@ -82,6 +82,8 @@ class VTSimpleTemplate{
 								} elseif ($uitype == '14' || ($uitype == '2' && ($fieldname == "time_start" || $fieldname == "time_end"))) {  // time
 									$date = new DateTimeField($data[$fieldname]);
 									$result = $date->getDisplayTime($current_user);
+								} elseif ($uitype == '10') { // related field
+									list($void,$result) = explode('x',$data[$fieldname]);
 								} else
 									$result = $data[$fieldname];
 							}else{
