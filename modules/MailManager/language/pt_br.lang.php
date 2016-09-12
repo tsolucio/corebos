@@ -6,6 +6,8 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger. All Rights Reserved.
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese|10/11/2011|Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
+ * Contributor(s): Ranieri Slemer | 10/08/2016 |tranlate to Brazilian Portugues, missing terms |www.ecrmweb.com.br
+ * Contributor: Ranieri Slemer | Brazilian translate Organization as Conta | 12-09-2016 | www.ecrmweb.com.br
  ************************************************************************************/
 $mod_strings = Array (
 	'MailManager' => 'Gestor Mensagens',
@@ -34,10 +36,10 @@ $mod_strings = Array (
 	'JSLBL_Other'                     => 'Outro',
 	'JSLBL_Gmail'                     => 'Gmail',
 	'JSLBL_Fastmail'                  => 'Fastmail',
-	'JSLBL_Search_For_Email'          => 'Pesquisar por Email',
+	'JSLBL_Search_For_Email'          => 'Pesquisar por eMail',
 	'JSLBL_Nothing_Found'             => 'Nada encontrado',
-	'JSLBL_Delete_Confirm'            =>'Deseja apagar os Emails permanentemente?',
-	'JSLBL_Delete_Mails_Confirm'      =>'Deseja apagar os Emails?',
+	'JSLBL_Delete_Confirm'            =>'Deseja apagar os eMails permanentemente?',
+	'JSLBL_Delete_Mails_Confirm'      =>'Deseja apagar os eMails?',
 	'JSLBL_Receipents_Warning_Message'=>'Por favor, selecione os destinatários',
 	'JSLBL_NO_MATCH'				  => 'Nenhum dado correspondente encontrado',
 	'JSLBL_Saving'					=> 'Salvando',
@@ -45,12 +47,12 @@ $mod_strings = Array (
 	'JSLBL_ATTACHMENT_NOT_DELETED'	=>	'Anexo não pode ser apagado',
 	'JSLBL_UPLOAD_CANCEL'	=> 'Cancelar',
 	'JSLBL_UPLOAD_DROPFILES'=>'Liberar arquivo aqui, para enviar',
-	'JSLBL_UPLOAD_FILE'=>'Enviar',
+	'JSLBL_UPLOAD_FILE'=>'Anexar',
 	'JSLBL_UPLOAD_DELETE'=>'[x]',
 	'JSLBL_UPLOAD_FAILED'=>'Falhou',
 	'JSLBL_FILEUPLOAD_LIMIT_EXCEEDED'=>'Limite de Envio de Arquivo excedeu!!',
 	'JSLBL_MAIL_SENT'=>'Mensagem Enviada',
-	'JSLBL_EMAIL_FORMAT_INCORRECT'=>'Por favor, forneça um endereço de email apropriado',
+	'JSLBL_EMAIL_FORMAT_INCORRECT'=>'Por favor, forneça um endereço de eMail apropriado',
 	'JSLBL_Saving'=>'Salvando',
 	'JSLBL_SaveWith_EmptySubject'=>'Salvar com Assunto vazio?',
 	'JSLBL_Delete'            =>  'Apagar',
@@ -73,7 +75,7 @@ $mod_strings = Array (
 	'JSLBL_ADD_COMMENT'=>'Adicionar Comentário',
     'JSLBL_Yahoo'=>'Yahoo',
     'JSLBL_CANNOT_ADD_EMPTY_COMMENT' => 'O Comentário não pode estar vazio',
-    'JSLBL_NO_EMAILS_SELECTED' => 'Nenhum Email Selecionado.',
+    'JSLBL_NO_EMAILS_SELECTED' => 'Nenhum eMail Selecionado.',
     'JSLBL_ENTER_SOME_VALUE' => 'Digite alguma palavra-chave para pesquisa',
     'JSLBL_DRAFT_MAIL_SAVED'=>'A Mensagem é salva em Rascunhos',
     
@@ -107,7 +109,7 @@ $mod_strings = Array (
 	'LBL_Delete'            =>  'Apagar',
 	
 	'LBL_Username'             => 'Nome Usuário',
-	'LBL_Your_Mailbox_Account' => 'sua conta de email',
+	'LBL_Your_Mailbox_Account' => 'sua conta de eMail',
 	'LBL_Password'             => 'Senha',
 	'LBL_Account_Password'     => 'senha conta',
 	'LBL_Protocol'    => 'Protocolo',
@@ -128,15 +130,15 @@ $mod_strings = Array (
 	'LBL_BCC'         => 'BCC',
 	'LBL_Date'        => 'Data',
 	'LBL_Attachments' => 'Anexos',
-	'LBL_EMAIL_TEMPLATES_LIST'=>'Modelos Emails',
-	'LBL_SELECT_EMAIL_TEMPLATE'=>'Selecionar Modelo Email',
+	'LBL_EMAIL_TEMPLATES_LIST'=>'Modelos eMails',
+	'LBL_SELECT_EMAIL_TEMPLATE'=>'Selecionar Modelo eMail',
 	'LBL_ATTACHMENTS'  =>'Anexo:',
 	'LBL_SELECT_DOCUMENTS'=>'Selecionar Documentos',
 	'LBL_IN' =>'em',
 	'LBL_FIND'=>'Encontrar',
 	'LBL_SAVE_NOW'=>'Salvar Agora',
 	'LBL_Drafts'=>'Rascunhos',
- 	'LBL_NO_EMAILS_SELECTED' => 'Nenhum Email Selecionado.',
+ 	'LBL_NO_EMAILS_SELECTED' => 'Nenhum eMail Selecionado.',
 	'LBL_SUBJECT'	=>	'Assunto',
 	'LBL_WRITE_ACCESS_FOR'	=>'Acesso Escrita para',
 	'LBL_READ_ACCESS_FOR'	=>'Acesso Leitura para',
@@ -151,12 +153,34 @@ $mod_strings = Array (
     'LBL_MAILMANAGER_ADD_Leads' => 'Adicionar Lead',
     'LBL_MAILMANAGER_ADD_Calendar' => 'Adicionar Compromisso',
     'LBL_MAILMANAGER_ADD_HelpDesk' => 'Adicionar Ticket',
-    'LBL_MAILMANAGER_ADD_Emails' => 'Anexar Email',
+    'LBL_MAILMANAGER_ADD_Emails' => 'Anexar eMail',
     'LBL_MAILMANAGER_ADD_ModComments' => 'Adicionar Comentário',
-    'LBL_MAILMANAGER_ADD_Potentials' => 'Add Potential',
-    'LBL_MAILMANAGER_ADD_Project' => 'Add Project',
-    'LBL_MAILMANAGER_ADD_ProjectTask' => 'Add Project Task',
-    'LBL_ADD' => 'Adicionar'
+    'LBL_MAILMANAGER_ADD_Potentials' => 'Adic. Oportunidade',
+    'LBL_MAILMANAGER_ADD_Project' => 'Adic. Projeto',
+    'LBL_MAILMANAGER_ADD_ProjectTask' => 'Adic. Tarefa Projeto',
+    'LBL_ADD' => 'Adicionar',
+    
+    // Ranieri 
+    
+    'LBL_SENT_MAILS' => 'Pasta Enviadas',
+	'JSLBL_SendWith_EmptyText' => 'Enviar sem nenhum texto no corpo do eMail?',
+	'LBL_ALLMAILS' => 'Todos eMails',
+	'LBL_TO_CONTACTS' => 'P/ Contatos',
+	'LBL_TO_ACCOUNTS' => 'P/ Contas',
+	'LBL_TO_LEADS' => 'P/ Leads',
+	'LBL_TO_USERS' => 'P/ Usuários',
+	'LBL_SENT_MAILS' => 'eMails Enviados',
+	'TO'			=> 'PARA',
+	'BCC'			=> 'CCO',
+	'FROM'			=> 'DE',
+	'BODY'			=> 'CORPO',
+	'SUBJECT'		=> 'ASSUNTO',
+	'Inbox'			=> 'Entrada',
+	'Deleted Items'	=> 'Lixeira',
+	'Junk E-Mail'	=> 'Spam',
+	'Sent Items'	=> 'Enviadas',
+	'Drafts'		=> 'Rascunho',
+	
 );
 
 ?>

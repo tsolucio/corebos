@@ -222,6 +222,8 @@ var alert_arr = {
 	'LBL_TYPEALERT_2': 'data type. Kindly map the same data types.',
 	'LBL_LENGTHALERT': 'Sorry, you can cannot map fields with different character size. Kindly map the data with same or more character size.',
 	'LBL_DECIMALALERT': 'Sorry, you can cannot map fields with different decimal places. Kindly map the data with same or more decimal places.',
+	'PICKLIST2PICKLISTALERT': 'Please make sure both picklists share the same values',
+	'PICKLIST2TEXTALERT': 'Please make sure the destination text field can hold the longest picklist value',
 	'FIELD_IS_MANDATORY': 'Mandatory Field',
 	'FIELD_IS_ACTIVE': 'Field is available for use',
 	'FIELD_IN_QCREATE': 'Present in Quick Create',

@@ -218,6 +218,8 @@ var alert_arr = {
       'LBL_TYPEALERT_2' : '. Vincula siempre tipos de datos equivalentes.',
       'LBL_LENGTHALERT' : 'No está permitido vincular campos con diferente número de caracteres. Trate de vincular los datos con igual o más número de caracteres.',
       'LBL_DECIMALALERT' : 'No está permitido vincular campos con diferente número de decimales. Trate de vincular los datos con igual o más número de decimales.',
+	'PICKLIST2PICKLISTALERT': 'Asegúrate de que ambas listas comparten los mismos valores',
+	'PICKLIST2TEXTALERT': 'Asegúrate de que el campo de texto puede guardar el valor más largo de la lista desplegable',
       'FIELD_IS_MANDATORY' : 'Campo obligatorio',
       'FIELD_IS_ACTIVE' : 'Campo disponible',
       'FIELD_IN_QCREATE' : 'Disponible en Creación Rápida',

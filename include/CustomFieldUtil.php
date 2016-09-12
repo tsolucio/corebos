@@ -6,9 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
 require_once('include/database/PearDatabase.php');
 require_once('include/utils/utils.php');
 
@@ -19,12 +17,8 @@ require_once('include/utils/utils.php');
  */
 function getCustomFieldTypeName($uitype)
 {
-	
-	global $mod_strings,$app_strings;
-	global $log;
+	global $mod_strings,$app_strings, $log;
 	$log->debug("Entering getCustomFieldTypeName(".$uitype.") method ...");
-	global $log;
-        $log->info("uitype is ".$uitype);
 	$fldname = '';
 
 	/*
@@ -83,7 +77,7 @@ function getCustomFieldTypeName($uitype)
 	{
 		$fldname = $mod_strings['Skype'];
 	}
-$log->debug("Exiting getCustomFieldTypeName method ...");
+	$log->debug("Exiting getCustomFieldTypeName method ...");
 	return $fldname;
 }
 
@@ -94,9 +88,8 @@ $log->debug("Exiting getCustomFieldTypeName method ...");
  */
 function getCustomFieldArray($module)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getCustomFieldArray(".$module.") method ...");
-	global $adb;
 	$custquery = "select tablename,fieldname from vtiger_field where tablename=? and vtiger_field.presence in (0,2) order by tablename";
 	$custresult = $adb->pquery($custquery, array('vtiger_'.strtolower($module).'cf'));
 	$custFldArray = Array();
@@ -118,10 +111,9 @@ function getCustomFieldArray($module)
  */
 function getCustomFieldTrans($module, $trans_array)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getCustomFieldTrans(".$module.",". $trans_array.") method ...");
-	global $adb;
-	$tab_id = getTabid($module);	
+	$tab_id = getTabid($module);
 	$custquery = "select columnname,fieldlabel from vtiger_field where generatedtype=2 and vtiger_field.presence in (0,2) and tabid=?";
 	$custresult = $adb->pquery($custquery, array($tab_id));
 	$custFldArray = Array();
@@ -131,10 +123,9 @@ function getCustomFieldTrans($module, $trans_array)
 		$colName=$adb->query_result($custresult,$i,"columnname");
 		$fldLbl = $adb->query_result($custresult,$i,"fieldlabel");
 		$trans_array[$colName] = $fldLbl;
-	}	
+	}
 	$log->debug("Exiting getCustomFieldTrans method ...");
 }
-
 
 /**
  * Function to get customfield record from vtiger_field vtiger_table
@@ -145,9 +136,8 @@ function getCustomFieldTrans($module, $trans_array)
  */
 function getCustomFieldData($tab,$id,$datatype)
 {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getCustomFieldData(".$tab.",".$id.",".$datatype.") method ...");
-	global $adb;
 	$query = "select * from vtiger_field where tabid=? and fieldid=? and vtiger_field.presence in (0,2)";
 	$result = $adb->pquery($query, array($tab, $id));
 	$return_data=$adb->fetch_array($result);
@@ -175,7 +165,6 @@ function getCustomFieldTableInfo($module)
 	return $cfinfo;
 }
 
-
 /**
  * Function to get customfield type,length value,decimal value and picklist value
  * @param $label :: vtiger_field typename -- Type string
@@ -185,8 +174,7 @@ function getCustomFieldTableInfo($module)
  */
 function getFldTypeandLengthValue($label,$typeofdata)
 {
-	global $log;
-	global $mod_strings,$app_strings;
+	global $log, $mod_strings,$app_strings;
 	$log->debug("Entering getFldTypeandLengthValue(".$label.",".$typeofdata.") method ...");
 	if($label == $mod_strings['Text'])
 	{
@@ -243,9 +231,9 @@ function getFldTypeandLengthValue($label,$typeofdata)
 		$fieldtype = '10';
 	}
 	elseif($label == $mod_strings['LBL_MULTISELECT_COMBO'])
-        {
-                $fieldtype = '11';
-        }
+	{
+		$fieldtype = '11';
+	}
 	elseif($label == $mod_strings['Skype'])
 	{
 		$fieldtype = '12';
@@ -257,31 +245,29 @@ function getFldTypeandLengthValue($label,$typeofdata)
 function getCalendarCustomFields($tabid,$mode='edit',$col_fields='') {
 	global $adb, $log, $current_user;
 	$log->debug("Entering getCalendarCustomFields($tabid, $mode, $col_fields)");
-	
+
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	$isduplicate = vtlib_purify($_REQUEST['isDuplicate']);
 	$calmode = vtlib_purify($_REQUEST['action']);
 	$block = getBlockId($tabid,"LBL_CUSTOM_INFORMATION");
 	$custparams = array($block, $tabid);
-	
+
 	if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0) {
-		$custquery = "select * from vtiger_field where block=? AND vtiger_field.tabid=? ORDER BY fieldid";		
+		$custquery = "select * from vtiger_field where block=? AND vtiger_field.tabid=? ORDER BY fieldid";
 	} else {
 		$profileList = getCurrentUserProfileList();
- 		$custquery = "SELECT vtiger_field.* FROM vtiger_field" .
- 				" INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid" .
- 				" INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid" .
- 				" WHERE vtiger_field.block=? AND vtiger_field.tabid=? AND vtiger_profile2field.visible=0" .
- 				" AND vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN (". generateQuestionMarks($profileList) .")";
- 		
- 		if ($mode == 'edit') {
- 			$custquery .= "  AND vtiger_profile2field.readonly = 0";
- 		}
- 		$custquery .= " GROUP BY vtiger_field.fieldid";
- 		array_push($custparams, $profileList);		
+		$custquery = "SELECT vtiger_field.* FROM vtiger_field" .
+				" INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid" .
+				" INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid" .
+				" WHERE vtiger_field.block=? AND vtiger_field.tabid=? AND vtiger_profile2field.visible=0" .
+				" AND vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN (". generateQuestionMarks($profileList) .")";
+		if ($mode == 'edit') {
+			$custquery .= "  AND vtiger_profile2field.readonly = 0";
+		}
+		$custquery .= " GROUP BY vtiger_field.fieldid";
+		array_push($custparams, $profileList);
 	}
 	$custresult = $adb->pquery($custquery, $custparams);
-	
 	$custFldArray = Array();
 	$noofrows = $adb->num_rows($custresult);
 	for($i=0; $i<$noofrows; $i++)
@@ -302,7 +288,7 @@ function getCalendarCustomFields($tabid,$mode='edit',$col_fields='') {
 			$custfld = getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields,$generatedtype,'Calendar',$mode, $typeofdata);
 		if ($mode == 'detail_view')
 			$custfld = getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields,$generatedtype,$tabid);
-		$custFldArray[] = $custfld;		
+		$custFldArray[] = $custfld;
 	}
 	$log->debug("Exiting getCalendarCustomFields()");
 	return $custFldArray;

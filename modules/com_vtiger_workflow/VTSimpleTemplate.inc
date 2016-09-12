@@ -82,6 +82,8 @@ class VTSimpleTemplate{
 								} elseif ($uitype == '14' || ($uitype == '2' && ($fieldname == "time_start" || $fieldname == "time_end"))) {  // time
 									$date = new DateTimeField($data[$fieldname]);
 									$result = $date->getDisplayTime($current_user);
+								} elseif ($uitype == '10') { // related field
+									list($void,$result) = explode('x',$data[$fieldname]);
 								} else
 									$result = $data[$fieldname];
 							}else{
@@ -102,6 +104,8 @@ class VTSimpleTemplate{
 
 	function getComments($num,$sort,$format,$field) {
 		global $adb, $log, $current_user;
+		$wsId = $this->parent->getId();
+		if (empty($wsId)) return '';
 		$sort = strtolower($sort);
 		if ($sort!='a' and $sort!='d') $sort = 'a';
 		$format = strtolower($format);
@@ -115,7 +119,6 @@ class VTSimpleTemplate{
 			$fields = array($field);
 		}
 		$singlefield = (count($fields)==1);
-		$wsId = $this->parent->getId();
 		$datefmtuserid = $this->parent->get('assigned_user_id');
 		if (!empty($datefmtuserid)) {
 			list($void,$dfuid) = explode('x',$datefmtuserid);

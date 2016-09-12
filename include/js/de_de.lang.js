@@ -221,6 +221,8 @@ var alert_arr = {
     'LBL_TYPEALERT_2' : 'Daten zusammenfügen. Bitte benutzen Sie den gleichen Datentyp.',
     'LBL_LENGTHALERT' : 'Das geht nicht. Ihre Datenfelder müssen die gleiche Anzahl von Zeichen haben, also gleich groß sein und müssen vom gleichen Typ (z.B. Pflichtfeld) sein.',
     'LBL_DECIMALALERT' : 'Das geht nicht. Ihre Datenfelder müssen das gleiche Zahlenformat haben. Die Anzahl der Dezimalstellen nach dem Komma muss gleich sein.',
+	'PICKLIST2PICKLISTALERT': 'Please make sure both picklists share the same values',
+	'PICKLIST2TEXTALERT': 'Please make sure the destination text field can hold the longest picklist value',
     'FIELD_IS_MANDATORY' : 'Pflichtfeld',
     'FIELD_IS_ACTIVE' : 'das Feld kann genutzt werden',
     'FIELD_IN_QCREATE' : 'im Schnellmenü präsent',

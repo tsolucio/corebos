@@ -219,6 +219,8 @@ var alert_arr = {
 	'LBL_TYPEALERT_2': 'tipo de dados. Por gentileza, mapeie os mesmos tipos de dados.',
 	'LBL_LENGTHALERT': 'Desculpe, você não pode mapear campos com tamanho de caracteres diferentes. Mapeie os dados com pelo menos o mesmo tamanho de caracteres. ',
 	'LBL_DECIMALALERT': 'Desculpe, você não pode mapear campos com casas decimais diferentes. Mapeie os dados com pelo menos o mesmo número de casas decimais.',
+	'PICKLIST2PICKLISTALERT': 'Please make sure both picklists share the same values',
+	'PICKLIST2TEXTALERT': 'Please make sure the destination text field can hold the longest picklist value',
 	'FIELD_IS_MANDATORY': 'Campo obrigatório',
 	'FIELD_IS_ACTIVE': 'O Campo está disponível para uso',
 	'FIELD_IN_QCREATE': 'Presente no Criar Rápido',

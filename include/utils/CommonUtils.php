@@ -2412,13 +2412,17 @@ function getMergedDescription($description, $id, $parent_type) {
 }
 
 /* Function to merge the custom date & time fields in email templates */
-
 function getMergedDescriptionCustomVars($fields, $description) {
+	global $current_language;
+	$lang = return_module_language($current_language, 'Reports');
 	foreach ($fields['custom'] as $columnname) {
 		$token_data = '$custom-' . $columnname . '$';
 		$token_value = '';
 		switch ($columnname) {
-			case 'currentdate': $token_value = date("F j, Y");
+			case 'currentdate':
+				$mes = date('m')-1;
+				$mesi18n = $lang['MONTH_STRINGS'][$mes];
+				$token_value = $mesi18n.date(' j, Y');
 				break;
 			case 'currenttime': $token_value = date("G:i:s T");
 				break;
