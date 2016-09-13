@@ -156,6 +156,7 @@ or an update!',
 'LBL_PRINT_EMAIL'=> 'Print',
 
 'LBL_ATTACH_DOCUMENTS' => 'Attach documents',
+'Access Count' => 'Access Count',
 );
 
 ?>

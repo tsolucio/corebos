@@ -172,6 +172,7 @@ $mod_strings = Array(
 'LBL_PRINT_EMAIL'=> 'Imprimir',
 
 'LBL_ATTACH_DOCUMENTS' => 'Adjuntar documentos',
+'Access Count' => 'Número Accesos',
 );
 
 ?>
