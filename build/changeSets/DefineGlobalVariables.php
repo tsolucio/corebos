@@ -77,6 +77,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Workflow_GeoDistance_Country_Default',
 				'ModComments_DefaultCriteria',
 				'ModComments_DefaultBlockStatus',
+				'EMail_OpenTrackingEnabled',
 
 				'Report_Send_Scheduled_ifEmpty',
 
