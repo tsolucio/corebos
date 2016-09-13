@@ -158,6 +158,7 @@ list($startHour, $startMin) = explode(':', $date->getDisplayTime());
 	<!--script type="text/javascript" src="include/js/ListView.js"></script-->
 	<div class="calAddITSEvent layerPopup" style="display:none;width:650px;left:200px;top:150px;z-index:10000;background-color:#ffffff" id="addITSEvent" align=center>
 	<form id="EditView" name="EditView" method="POST" action="index.php">
+	<input type="hidden" name="action" value="SaveEvent">
 	<input type="hidden" name="module" value="Calendar4You">
 	<input type="hidden" name="return_action" value="index">
 	<input type="hidden" name="return_module" value="Calendar4You">
