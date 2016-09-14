@@ -288,7 +288,7 @@ function calcGrandTotal() {
 
 function roundValue(val) {
 	// http://www.jacklmoore.com/notes/rounding-in-javascript
-	return Number(Math.round(val+'e'+userNumberOfDeciamls)+'e-'+userNumberOfDeciamls);
+	return Number(Math.round(val+'e'+userNumberOfDecimals)+'e-'+userNumberOfDecimals);
 }
 
 //This function is used to validate the Inventory modules

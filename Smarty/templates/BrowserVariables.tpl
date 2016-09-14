@@ -9,12 +9,12 @@
  ********************************************************************************/
 -->*}
 <script>
-var gVTModule = '{$GVTMODULE}';
-var gVTTheme  = '{$THEME}';
-var gVTUserID = '{$CURRENT_USER_ID}';
-var default_charset = '{$DEFAULT_CHARSET}';
-var userDateFormat = '{$USER_DATE_FORMAT}';
-var userCurrencySeparator = '{$USER_CURRENCY_SEPARATOR}';
-var userDecimalSeparator = '{$USER_DECIMAL_FORMAT}';
-var userNumberOfDeciamls = '{$USER_NUMBER_DECIMALS}';
+var gVTModule = "{$GVTMODULE}";
+var gVTTheme  = "{$THEME}";
+var gVTUserID = "{$CURRENT_USER_ID}";
+var default_charset = "{$DEFAULT_CHARSET}";
+var userDateFormat = "{$USER_DATE_FORMAT}";
+var userCurrencySeparator = "{$USER_CURRENCY_SEPARATOR}";
+var userDecimalSeparator = "{$USER_DECIMAL_FORMAT}";
+var userNumberOfDecimals = "{$USER_NUMBER_DECIMALS}";
 </script>

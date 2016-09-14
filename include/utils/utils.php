@@ -75,9 +75,9 @@ function getBrowserVariables(&$smarty) {
 		$vars['userDecimalSeparator'] = html_entity_decode($current_user->currency_decimal_separator, ENT_QUOTES, $default_charset);
 	}
 	if(isset($current_user->no_of_currency_decimals) && $current_user->no_of_currency_decimals == '') {
-		$vars['userNumberOfDeciamls'] = '2';
+		$vars['userNumberOfDecimals'] = '2';
 	} else {
-		$vars['userNumberOfDeciamls'] = html_entity_decode($current_user->no_of_currency_decimals, ENT_QUOTES, $default_charset);
+		$vars['userNumberOfDecimals'] = html_entity_decode($current_user->no_of_currency_decimals, ENT_QUOTES, $default_charset);
 	}
 	if ($smarty) {
 		$smarty->assign('GVTMODULE',$vars['gVTModule']);
@@ -87,7 +87,7 @@ function getBrowserVariables(&$smarty) {
 		$smarty->assign('USER_DATE_FORMAT',$vars['userDateFormat']);
 		$smarty->assign('USER_CURRENCY_SEPARATOR', $vars['userCurrencySeparator']);
 		$smarty->assign('USER_DECIMAL_FORMAT', $vars['userDecimalSeparator']);
-		$smarty->assign('USER_NUMBER_DECIMALS', $vars['userNumberOfDeciamls']);
+		$smarty->assign('USER_NUMBER_DECIMALS', $vars['userNumberOfDecimals']);
 	}
 }
 
