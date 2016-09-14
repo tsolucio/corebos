@@ -10,23 +10,19 @@
 require_once('Smarty_setup.php');
 
 class MailManager_Viewer extends vtigerCRM_Smarty {
-	
-	function MailManager_Viewer() {
-		parent::vtigerCRM_Smarty();
-		
-		global $app_strings, $mod_strings, $currentModule, $theme;
-		
-		$this->assign('CUSTOM_MODULE', true);
 
+	function __construct() {
+		parent::__construct();
+		global $app_strings, $mod_strings, $currentModule, $theme;
+		$this->assign('CUSTOM_MODULE', true);
 		$this->assign('APP', $app_strings);
 		$this->assign('MOD', $mod_strings);
 		$this->assign('MODULE', $currentModule);
 		// TODO: Update Single Module Instance name here.
-		$this->assign('SINGLE_MOD', 'SINGLE_'.$currentModule); 
+		$this->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 		$this->assign('CATEGORY', getParentTab());
 		$this->assign('IMAGE_PATH', "themes/$theme/images/");
 		$this->assign('THEME', $theme);
-		return parent::vtigerCRM_Smarty();
 	}
 }
 ?>

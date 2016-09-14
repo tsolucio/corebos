@@ -59,6 +59,7 @@ function gITSshow(argg1,type,startdate,enddate,starthr,startmin,startfmt,endhr,e
 	var y=document.getElementById(argg1).style;
 
 	if(type != 'todo' && type!=''){
+		fieldname = new Array();
 		for(var i=0;;i++){
 			if( document.EditView.activitytype[i].value == type){
 				document.EditView.activitytype[i].selected='yes';
@@ -117,6 +118,7 @@ function gITSshow(argg1,type,startdate,enddate,starthr,startmin,startfmt,endhr,e
 		}
 	}
 	if(type == 'todo'){
+		fieldname = taskfieldname;
 		smin = _2digit(smin);
 		document.createTodo.task_date_start.value = startdate;
 		document.createTodo.task_due_date.value = enddate;

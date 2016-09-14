@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
 -->*}
 
@@ -41,14 +40,14 @@
 												</td>
 			   								</tr>
 		  	   								<tr>
-												{ if $SESSION_WHERE neq ''}
+												{if $SESSION_WHERE neq ''}
 												<td align="right" valign="top" width="50%" class=small>{$APP.LBL_WITH_SEARCH}</td>
-												<td  align="left" valign="top" width="5%" class=small>
+												<td align="left" valign="top" width="5%" class=small>
 													<input type="radio" name="search_type" checked value="includesearch">
 												</td>
 												{else}
 												<td align="right" valign="top" width="50%" class=small>{$APP.LBL_WITH_SEARCH}</td>
-												<td  align="left" valign="top" width="5%" class=small>
+												<td align="left" valign="top" width="5%" class=small>
 													<input type="radio" name="search_type"  value="includesearch">
 												</td>
 												{/if}

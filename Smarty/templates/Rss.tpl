@@ -8,7 +8,7 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script language="JavaScript" type="text/javascript" src="modules/Rss/Rss.js"></script>
+<script type="text/javascript" src="modules/Rss/Rss.js"></script>
 <script>
 {literal}
 
@@ -186,7 +186,7 @@ function SaveRssFeeds()
 	</form>
 	</div>
 
-<script type="text/javascript" language="Javascript">
+<script type="text/javascript">
 function makedefaultRss(id)
 {ldelim}
 	if(id != '')

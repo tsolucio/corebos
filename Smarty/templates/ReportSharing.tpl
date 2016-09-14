@@ -6,14 +6,13 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 <link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
 <script type="text/javascript" src="jscalendar/calendar.js"></script>
 <script type="text/javascript" src="jscalendar/lang/calendar-{$APP.LBL_JSCALENDAR_LANG}.js"></script>
 <script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
-<script language="JavaScript" type="text/javascript" src="include/calculator/calc.js"></script>
+<script type="text/javascript" src="include/calculator/calc.js"></script>
 {$BLOCKJS_STD}
 <table class="small" bgcolor="#ffffff" border="0" cellpadding="5" cellspacing="0" height='530' width="100%">
 	<tbody>
@@ -34,12 +33,12 @@
 				<table width="100%" cellspacing="0" cellpadding="0" border="0" class="small">
 					<tbody>
 						<tr>
-					    	<td nowrap="" align="center" id="mi" style="width: 100px;" colspan="2" class="detailedViewHeader"><!--onclick="fnLoadRepValues('mi','pi','mnuTab2','mnuTab')"-->
-					     	<b>{$MOD.LBL_SHARING}</b>
-					    	</td>
+							<td nowrap="" align="center" id="mi" style="width: 100px;" colspan="2" class="detailedViewHeader"><!--onclick="fnLoadRepValues('mi','pi','mnuTab2','mnuTab')"-->
+							<b>{$MOD.LBL_SHARING}</b>
+							</td>
 						</tr>
 					</tbody>
-				</table>		
+				</table>
 			</td>
 		</tr>
 		<tr>
@@ -258,9 +257,7 @@ function formSelectedColumnString()
 
 set_Objects();
 show_Options();
-</script>
 
-<script language="JavaScript" type="text/JavaScript">    
 var moveupLinkObj,moveupDisabledObj,movedownLinkObj,movedownDisabledObj;
 
 </script>

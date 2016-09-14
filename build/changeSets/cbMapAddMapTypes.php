@@ -29,8 +29,9 @@ class cbMapAddMapTypes extends cbupdaterWorker {
 				'ListColumns',
 				'DuplicateRelations',
 				'MasterDetailLayout',
-                                'IOMap',
-                                'FieldDependency',
+				'IOMap',
+				'FieldDependency',
+				'Validations',
 			);
 			$moduleInstance = Vtiger_Module::getInstance('cbMap');
 			$field = Vtiger_Field::getInstance('maptype',$moduleInstance);

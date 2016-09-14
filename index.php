@@ -573,20 +573,14 @@ if(!$skipHeaders) {
 		}
 		include('modules/Vtiger/header.php');
 	}
-
-	if(isset($_SESSION['administrator_error']))
-	{
-		// only print DB errors once otherwise they will still look broken after they are fixed.
-		// Only print the errors for admin users.
-		if(is_admin($current_user))
-			echo $_SESSION['administrator_error'];
-		unset($_SESSION['administrator_error']);
-	}
-
-	echo "<!-- startscrmprint -->";
-}
-else {
-		$log->debug("skipping headers");
+} else {
+	/*if(($action != 'mytkt_rss') && ($action != 'home_rss') && ($action != $module."Ajax") && ($action != "body") && ($action != 'ActivityAjax')) {
+		require_once('Smarty_setup.php');
+		$vartpl = new vtigerCRM_Smarty;
+		getBrowserVariables($vartpl);
+		$vartpl->display('BrowserVariables.tpl');
+	}*/
+	$log->debug("skipping headers");
 }
 
 //fetch the permission set from session and search it for the requisite data
@@ -683,11 +677,6 @@ else
 	include($currentModuleFile);
 }
 
-	if((!$viewAttachment) && (!$viewAttachment && $action != 'home_rss' && $action != $module."Ajax" && $action != "chat" && $action != 'massdelete' && $action != "body") )
-	{
-		echo "<!-- stopscrmprint -->";
-	}
-
 //added to get the theme . This is a bad fix as we need to know where the problem lies yet
 if(isset($_SESSION['vtiger_authenticated_user_theme']) && $_SESSION['vtiger_authenticated_user_theme'] != '') {
 	$theme = $_SESSION['vtiger_authenticated_user_theme'];
@@ -733,29 +722,6 @@ if((!$viewAttachment) && (!$viewAttachment && $action != 'home_rss') && $action 
 	//		echo('&nbsp;Server response time: '.$deltaTime.' seconds.');
 	//	}
 	//	echo "</td></tr></table>\n";
-	}
-	if(($action != 'mytkt_rss') && ($action != 'home_rss') && ($action != $module."Ajax") && ($action != "body") && ($action != 'ActivityAjax'))
-	{
-	?>
-		<script type="text/javascript">
-			var userDateFormat = "<?php echo $current_user->date_format ?>";
-			var default_charset = "<?php echo $default_charset; ?>";
-			var userCurrencySeparator = "<?php if(isset($current_user->currency_grouping_separator)
-													&& $current_user->currency_grouping_separator == '') {
-													echo ' ';
-												} else {
-													echo html_entity_decode($current_user->currency_grouping_separator, ENT_QUOTES, $default_charset);
-												}
-										?>";
-			var userDecimalSeparator = "<?php if(isset($current_user->currency_decimal_separator)
-													&& $current_user->currency_decimal_separator == '') {
-													echo ' ';
-												} else {
-													echo html_entity_decode($current_user->currency_decimal_separator, ENT_QUOTES, $default_charset);
-												}
-										?>";
-		</script>
-<?php
 	}
 	// ActivityReminder Customization for callback
 	if(!$skipFooters) {

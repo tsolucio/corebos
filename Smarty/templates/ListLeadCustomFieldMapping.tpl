@@ -8,7 +8,7 @@
  * All Rights Reserved.
 *
  ********************************************************************************/ *}
-<script language="JavaScript" type="text/javascript" src="include/js/customview.js"></script>
+<script type="text/javascript" src="include/js/customview.js"></script>
 <table width="100%" border="0" cellpadding="0" cellspacing="0">
         <tr>
                 {include file='SettingsMenu.tpl'}

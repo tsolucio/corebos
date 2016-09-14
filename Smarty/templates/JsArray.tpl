@@ -12,7 +12,7 @@
 
 -->*}
 
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
 	
 		alert_arr = {ldelim}DELETE:'{$APP.DELETE_CONFIRMATION}',
                                 RECORDS:'{$APP.RECORDS}',

@@ -14,7 +14,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset={$APP.LBL_CHARSET}">
 	<title>{$MODULE|@getTranslatedString:$MODULE} - {$APP.LBL_BROWSER_TITLE}</title>
 	<link REL="SHORTCUT ICON" HREF="themes/images/blank.gif">
-<script language="JavaScript" type="text/javascript">
+<script type="text/javascript">
 var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 var image_pth = '{$IMAGE_PATH}';
 var product_default_units = '{$Product_Default_Units}';
@@ -92,7 +92,7 @@ function redirectWhenNoRelatedRecordsFound()
 	<!-- END -->
 {/if}
 {* END *}
-<script type="text/javascript" src="include/js/{php} echo $_SESSION['authenticated_user_language'];{/php}.lang.js?{php} echo $_SESSION['vtiger_version'];{/php}"></script>
+<script type="text/javascript" src="include/js/{$LANGUAGE}.lang.js?{$VERSION}"></script>
 <script type="text/javascript" src="include/js/meld.js"></script>
 <script type='text/javascript' src='include/jquery/jquery.js'></script>
 <script type="text/javascript" src="include/js/ListView.js"></script>
@@ -241,7 +241,7 @@ function set_focus() {ldelim}
 				</tr>
 				{if $recid_var_value neq ''}
 					<tr>
-						<td align="right"><input id="all_contacts" alt="{$APP.LBL_SELECT_BUTTON_LABEL} {$APP.$MODULE}" title="{$APP.LBL_SELECT_BUTTON_LABEL} {$APP.$MODULE}" accessKey="" class="crmbutton small edit" value="{$APP.SHOW_ALL}&nbsp;{$APP.$MODULE}" LANGUAGE=javascript onclick="window.location.href=showAllRecords();" type="button" name="button"></td>
+						<td align="right"><input id="all_contacts" alt="{$APP.LBL_SELECT_BUTTON_LABEL} {$APP.$MODULE}" title="{$APP.LBL_SELECT_BUTTON_LABEL} {$APP.$MODULE}" accessKey="" class="crmbutton small edit" value="{$APP.SHOW_ALL}&nbsp;{$APP.$MODULE}" onclick="window.location.href=showAllRecords();" type="button" name="button"></td>
 					</tr>
 				{/if}
 			</table>

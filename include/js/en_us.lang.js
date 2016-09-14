@@ -161,8 +161,6 @@ var alert_arr = {
 	'LBL_SELECT_PICKLIST':'Please select at least one value to delete',
 	'LBL_CANT_REMOVE':'You can\'t remove all the values',
 
-	// Added after 5.0.4 GA
-
 	/*For global add/delete in picklist*/
 	'LBL_GIVE_PICKLIST_VALUE':'Please provide some value for the selected picklist to be replaced',
 	'LBL_SELECT_ROLE':'Please select at least one role for which the new values are to be added',
@@ -173,7 +171,6 @@ var alert_arr = {
 	'SAME_GROUPS': 'You have to select the records in the same groups for merging',
 	'ATLEAST_TWO': 'Select at least two records for merging',
 	'MAX_THREE': 'You are allowed to select a maximum of three records',
-	//PARENT_RECORD: 'Select a record as parent record',  MergeFields.tpl Line:59
 	'MAX_RECORDS': 'You are allowed to select a maximum of four records',
 	'CON_MANDATORY': 'Select the mandatory field Last Name',
 	'LE_MANDATORY': 'Select the mandatory fields Last Name and Company',
@@ -225,6 +222,8 @@ var alert_arr = {
 	'LBL_TYPEALERT_2': 'data type. Kindly map the same data types.',
 	'LBL_LENGTHALERT': 'Sorry, you can cannot map fields with different character size. Kindly map the data with same or more character size.',
 	'LBL_DECIMALALERT': 'Sorry, you can cannot map fields with different decimal places. Kindly map the data with same or more decimal places.',
+	'PICKLIST2PICKLISTALERT': 'Please make sure both picklists share the same values',
+	'PICKLIST2TEXTALERT': 'Please make sure the destination text field can hold the longest picklist value',
 	'FIELD_IS_MANDATORY': 'Mandatory Field',
 	'FIELD_IS_ACTIVE': 'Field is available for use',
 	'FIELD_IN_QCREATE': 'Present in Quick Create',

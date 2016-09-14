@@ -19,15 +19,15 @@
 
 	<p>
 		<label>{$fieldinfo.label}</label>
-		{if $fieldinfo.type.name eq picklist | $fieldinfo.type.name eq multipicklist}
-<select name="{$field->getNeutralizedField()}[]" {if $field->getRequired() eq 1}required="true"{/if}{if $fieldinfo.type.name eq multipicklist}multiple="multiple" size="5"{/if}>{foreach item=option from=$fieldinfo.type.picklistValues name=optionloop}
+		{if $fieldinfo.type.name eq 'picklist' || $fieldinfo.type.name eq 'multipicklist'}
+<select name="{$field->getNeutralizedField()}[]" {if $field->getRequired() eq 1}required="true"{/if}{if $fieldinfo.type.name eq 'multipicklist'}multiple="multiple" size="5"{/if}>{foreach item=option from=$fieldinfo.type.picklistValues name=optionloop}
 
 		<option value="{$option.value|escape:'html'}">{$option.label|escape:'html'}</option>
 		{/foreach}
 </select>
 {elseif $fieldinfo.type.name eq boolean}
 <input type="checkbox" name="{$field->getNeutralizedField()}" >
-	{else}{if $field->getNeutralizedField() eq salutationtype}
+	{else}{if $field->getNeutralizedField() eq 'salutationtype'}
 <select name="{$field->getNeutralizedField()}" {if $field->getRequired() eq 1}required="true"{/if} >
 			<option value="">--None--</option>
 			<option value="Mr.">Mr.</option>

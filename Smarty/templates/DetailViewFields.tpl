@@ -1,5 +1,4 @@
 {*<!--
-
 /*********************************************************************************
 ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
@@ -7,9 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
 -->*}
 
 <!-- This file is used to display the fields based on the ui type in detailview -->
@@ -105,7 +102,7 @@
 			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<a href="{$keyval}" target="_blank">{$keyval}</a></td>
 		{elseif $keyid eq '85'}<!--Skype-->
 			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$label}">
-				&nbsp;<img src="{'skype.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SKYPE}" title="{$APP.LBL_SKYPE}" LANGUAGE=javascript align="absmiddle"></img>
+				&nbsp;<img src="{'skype.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SKYPE}" title="{$APP.LBL_SKYPE}" align="absmiddle"></img>
 				<span id="dtlview_{$label}"><a href="skype:{$keyval}?call">{$keyval}</a></span>
 			</td>
 		{elseif $keyid eq '19' || $keyid eq '20'} <!--TextArea/Description-->

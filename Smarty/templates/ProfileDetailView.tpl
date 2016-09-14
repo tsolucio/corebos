@@ -18,23 +18,13 @@
 }
 </style>
 {/literal}
-<script language="JAVASCRIPT" type="text/javascript" src="include/js/smoothscroll.js"></script>
-<script language="JAVASCRIPT" type="text/javascript">
+<script type="text/javascript" src="include/js/smoothscroll.js"></script>
+<script type="text/javascript">
 {literal}
-function UpdateProfile()
-{
-	if(default_charset.toLowerCase() == 'utf-8')
-	{
-		var prof_name = document.getElementById('profile_name').value;
-		var prof_desc = document.getElementById('description').value;
-	}
-	else
-	{
-		var prof_name = escapeAll(document.getElementById('profile_name').value);
-		var prof_desc = escapeAll(document.getElementById('description').value);
-	}
-	if(prof_name == '')
-	{
+function UpdateProfile() {
+	var prof_name = document.getElementById('profile_name').value;
+	var prof_desc = document.getElementById('description').value;
+	if(prof_name == '') {
 		document.getElementById('profile_name').focus();
 {/literal}
 		alert("{$APP.PROFILENAME_CANNOT_BE_EMPTY}");
@@ -43,7 +33,7 @@ function UpdateProfile()
 	else
 	{
 {/literal}
-		var urlstring ="module=Users&action=UsersAjax&file=RenameProfile&profileid="+{$PROFILEID}+"&profilename="+prof_name+"&description="+prof_desc;
+		var urlstring = "module=Users&action=UsersAjax&file=RenameProfile&profileid="+{$PROFILEID}+"&profilename="+encodeURIComponent(prof_name)+"&description="+encodeURIComponent(prof_desc);
 {literal}
 	jQuery.ajax({
 			method: 'POST',
@@ -380,7 +370,7 @@ function UpdateProfile()
 	</tr>
 </tbody>
 </table>
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
 {literal}
 function fnToggleVIew(obj){
 	obj = "#"+obj;

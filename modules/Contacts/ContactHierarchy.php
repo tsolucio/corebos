@@ -20,6 +20,9 @@ $smarty->assign('CATEGORY',$parent_tab);
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 
+// Pass on the authenticated user language
+global $current_language;
+$smarty->assign('LANGUAGE', $current_language);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('THEME', $theme);

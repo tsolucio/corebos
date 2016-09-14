@@ -263,11 +263,6 @@ function sendfile_email()
 																   Singlepane view is enabled. -->
 																<form action="index.php" method="post" name="DetailView" id="form">
 																	{include file='DetailViewHidden.tpl'}
-
-																	<!-- Start of File Include by SAKTI on 10th Apr, 2008 -->
-																	{include_php file="include/DetailViewBlockStatus.php"}
-																	<!-- Start of File Include by SAKTI on 10th Apr, 2008 -->
-
 																	{foreach key=header item=detail from=$BLOCKS name=BLOCKS}
 																		<tr><td style="padding:5px">
 																				<!-- Detailed View Code starts here-->
@@ -332,9 +327,9 @@ function sendfile_email()
 																							{if $CUSTOMBLOCKS.$header.custom}
 																								{include file=$CUSTOMBLOCKS.$header.tpl}
 																							{else}
-																								{foreach item=detail from=$detail}
+																								{foreach item=detailInfo from=$detail}
 																									<tr style="height:25px" class="detailview_row">
-																										{foreach key=label item=data from=$detail}
+																										{foreach key=label item=data from=$detailInfo}
 																											{assign var=keyid value=$data.ui}
 																											{assign var=keyval value=$data.value}
 																											{assign var=keytblname value=$data.tablename}
@@ -392,9 +387,7 @@ function sendfile_email()
 																				|| ($CUSTOM_LINK_DETAILVIEWWIDGET->sequence == $smarty.foreach.BLOCKS.iteration + 1)
 																				|| ($smarty.foreach.BLOCKS.last && $CUSTOM_LINK_DETAILVIEWWIDGET->sequence >= $smarty.foreach.BLOCKS.iteration + 1)}
 																				<tr>
-																					<td style="padding:5px;" >
-																						{php} echo vtlib_process_widget($this->_tpl_vars['CUSTOM_LINK_DETAILVIEWWIDGET'], $this->_tpl_vars); {/php}
-																					</td>
+																					<td style="padding:5px;">{process_widget widgetLinkInfo=$CUSTOM_LINK_DETAILVIEWWIDGET}</td>
 																				</tr>
 																			{/if}
 																			{/if}
@@ -547,7 +540,7 @@ function sendfile_email()
 												{if $CUSTOM_LINKS && $CUSTOM_LINKS.DETAILVIEWBASIC}
 													<table width="100%" border="0" cellpadding="5" cellspacing="0">
 														{foreach item=CUSTOMLINK from=$CUSTOM_LINKS.DETAILVIEWBASIC}
-															<tr class="actionlink actionlink_customlink">
+															<tr class="actionlink actionlink_customlink actionlink_{$CUSTOMLINK->linklabel|lower|replace:' ':'_'}">
 																<td align="left" style="padding-left:10px;">
 																	{assign var="customlink_href" value=$CUSTOMLINK->linkurl}
 																	{assign var="customlink_label" value=$CUSTOMLINK->linklabel}
@@ -559,7 +552,9 @@ function sendfile_email()
 																	{/if}
 																	{if $CUSTOMLINK->linkicon}
 																		<a class="webMnu" href="{$customlink_href}"><img hspace=5 align="absmiddle" border=0 src="{$CUSTOMLINK->linkicon}"></a>
-																		{/if}
+																	{else}
+																		<a class="webMnu" href="{$customlink_href}"><img hspace=5 align="absmiddle" border=0 src="themes/images/no_icon.png"></a>
+																	{/if}
 																	<a class="webMnu" href="{$customlink_href}">{$customlink_label}</a>
 																</td>
 															</tr>
@@ -726,8 +721,8 @@ function sendfile_email()
 
 
 {if $MODULE eq 'Products'}
-<script language="JavaScript" type="text/javascript" src="modules/Products/Productsslide.js"></script>
-<script language="JavaScript" type="text/javascript">Carousel();</script>
+<script type="text/javascript" src="modules/Products/Productsslide.js"></script>
+<script type="text/javascript">Carousel();</script>
 {/if}
 
 <script>
@@ -749,7 +744,7 @@ function getTagCloud()
 getTagCloud();
 </script>
 <!-- added for validation -->
-<script language="javascript">
+<script>
   var fieldname = new Array({$VALIDATION_DATA_FIELDNAME});
   var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
   var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});

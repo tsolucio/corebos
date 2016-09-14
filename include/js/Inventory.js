@@ -243,7 +243,7 @@ function calcGrandTotal() {
 		}
 	}
 	//	alert(netTotal);
-	netTotal = netTotal.toFixed(2);
+	netTotal = roundValue(netTotal.toString());
 	document.getElementById("netTotal").innerHTML = netTotal;
 	document.getElementById("subtotal").value = netTotal;
 	setDiscount(this,'_final');
@@ -287,20 +287,8 @@ function calcGrandTotal() {
 }
 
 function roundValue(val) {
-	val = parseFloat(val);
-	val = Math.round(val*100)/100;
-	val = val.toString();
-
-	if (val.indexOf(".")<0) {
-		val+=".00";
-	} else {
-		var dec=val.substring(val.indexOf(".")+1,val.length);
-		if (dec.length>2)
-			val=val.substring(0,val.indexOf("."))+"."+dec.substring(0,2);
-		else if (dec.length==1)
-			val=val+"0";
-	}
-	return val;
+	// http://www.jacklmoore.com/notes/rounding-in-javascript
+	return Number(Math.round(val+'e'+userNumberOfDeciamls)+'e-'+userNumberOfDeciamls);
 }
 
 //This function is used to validate the Inventory modules

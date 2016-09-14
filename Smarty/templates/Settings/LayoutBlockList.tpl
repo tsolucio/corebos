@@ -7,9 +7,9 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/ *}
-<script language="JavaScript" type="text/javascript" src="include/js/customview.js"></script>
-<script language="JavaScript" type="text/javascript" src="include/js/general.js"></script>
-<script language="JavaScript">
+<script type="text/javascript" src="include/js/customview.js"></script>
+<script type="text/javascript" src="include/js/general.js"></script>
+<script>
 {literal}
 function check(){
 	var blocklabel = document.getElementById('blocklabel');
@@ -22,7 +22,7 @@ function check(){
 	return true;
 }
 {/literal}</script>
-<script language="javascript">
+<script>
 
 function getCustomFieldList(customField)
 {ldelim}

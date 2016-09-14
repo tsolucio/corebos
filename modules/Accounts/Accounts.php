@@ -418,18 +418,17 @@ class Accounts extends CRMEntity {
 				array_push($entityIds, $adb->query_result($accountContacts, $i, 'contactid'));
 			}
 		}
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>
-						'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
+		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 		$query = "SELECT case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,
 			vtiger_activity.activityid, vtiger_activity.subject, vtiger_emaildetails.*,
 			vtiger_activity.activitytype, vtiger_crmentity.modifiedtime,vtiger_activity.time_start,
 			vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_activity.date_start, vtiger_seactivityrel.crmid as parent_id
-			FROM vtiger_activity, vtiger_seactivityrel, vtiger_account, vtiger_emaildetails, vtiger_users, vtiger_crmentity
+			FROM vtiger_activity, vtiger_seactivityrel, vtiger_account, vtiger_emaildetails, vtiger_crmentity
+			LEFT JOIN vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid
 			LEFT JOIN vtiger_groups ON vtiger_groups.groupid=vtiger_crmentity.smownerid
 			WHERE vtiger_seactivityrel.activityid = vtiger_activity.activityid
 				AND vtiger_seactivityrel.crmid IN (". implode(',', $entityIds) .")
 				AND vtiger_emaildetails.emailid = vtiger_activity.activityid
-				AND vtiger_users.id=vtiger_crmentity.smownerid
 				AND vtiger_crmentity.crmid = vtiger_activity.activityid
 				AND vtiger_account.accountid = ".$id."
 				AND vtiger_activity.activitytype='Emails'

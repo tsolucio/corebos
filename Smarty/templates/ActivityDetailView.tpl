@@ -10,7 +10,7 @@
 -->*}
 <script type="text/javascript" src="modules/{$MODULE}/Calendar.js"></script>
 <script type="text/javascript" src="include/js/reflection.js"></script>
-<script language="JavaScript" type="text/javascript" src="include/js/dtlviewajax.js"></script>
+<script type="text/javascript" src="include/js/dtlviewajax.js"></script>
 <span id="crmspanid" style="display:none;position:absolute;"  onmouseover="show('crmspanid');">
    <a class="link"  align="right" href="javascript:;">{$APP.LBL_EDIT_BUTTON}</a>
 </span>
@@ -294,11 +294,7 @@ function DeleteTag(id,recordid)
 							{foreach item=CUSTOM_LINK_DETAILVIEWWIDGET from=$CUSTOM_LINKS.DETAILVIEWWIDGET}
 								{if preg_match("/^block:\/\/.*/", $CUSTOM_LINK_DETAILVIEWWIDGET->linkurl)}
 								<tr>
-									<td style="padding:5px;" >
-									{php}
-										echo vtlib_process_widget($this->_tpl_vars['CUSTOM_LINK_DETAILVIEWWIDGET'], $this->_tpl_vars);
-									{/php}
-									</td>
+									<td style="padding:5px;">{process_widget widgetLinkInfo=$CUSTOM_LINK_DETAILVIEWWIDGET}</td>
 								</tr>
 								{/if}
 							{/foreach}
@@ -725,8 +721,8 @@ function DeleteTag(id,recordid)
 </table>
 
 {if $MODULE eq 'Products'}
-<script language="JavaScript" type="text/javascript" src="modules/Products/Productsslide.js"></script>
-<script language="JavaScript" type="text/javascript">Carousel();</script>
+<script type="text/javascript" src="modules/Products/Productsslide.js"></script>
+<script type="text/javascript">Carousel();</script>
 {/if}
 
 <script>
@@ -746,7 +742,7 @@ function getTagCloud()
 getTagCloud();
 </script>
 <!-- added for validation -->
-<script language="javascript">
+<script>
   var fieldname = new Array({$VALIDATION_DATA_FIELDNAME});
   var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
   var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});

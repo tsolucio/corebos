@@ -139,5 +139,6 @@ $mod_strings = array(
 	'LBL_NO_RECORDS' => 'No records found',
 	'LBL_PRINT_EMAIL' => 'Print',
 	'LBL_ATTACH_DOCUMENTS' => 'Attach documents',
+	'Access Count' => 'Access Count',
 );
 ?>

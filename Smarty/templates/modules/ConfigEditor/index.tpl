@@ -111,7 +111,7 @@
 		}
 </script>
 {/literal}
-<script language="JavaScript" type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
+<script type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
 <body onload="replaceUploadSize();">
 <input type="hidden" value="{$MOD.LBL_MAX_UPLOAD_SIZE_MSG}" id="uploadSize"></input>
 <input type="hidden" value="{$MOD.LBL_INVALID_EMAIL_MSG}" id="invalidEmail"></input>

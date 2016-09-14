@@ -211,7 +211,6 @@ function DeleteTag(id,recordid)
 
 <!-- The following table is used to display the buttons -->
 <!-- Button displayed - finished-->
-{include_php file="include/DetailViewBlockStatus.php"}
 
 <!-- Entity information(blocks) display - start -->
 {foreach key=header item=detail from=$BLOCKS name=BLOCKS}
@@ -252,9 +251,9 @@ function DeleteTag(id,recordid)
             {if $CUSTOMBLOCKS.$header.custom}
                 {include file=$CUSTOMBLOCKS.$header.tpl}
             {else}
-               {foreach item=detail from=$detail}
+               {foreach item=detailInfo from=$detail}
 				<tr style="height:25px" class="detailview_row">
-                    {foreach key=label item=data from=$detail}
+                    {foreach key=label item=data from=$detailInfo}
                             {assign var=keyid value=$data.ui}
                             {assign var=keyval value=$data.value}
                             {assign var=keytblname value=$data.tablename}
@@ -313,9 +312,7 @@ function DeleteTag(id,recordid)
 		 	|| ($CUSTOM_LINK_DETAILVIEWWIDGET->sequence == $smarty.foreach.BLOCKS.iteration + 1)
 		 	|| ($smarty.foreach.BLOCKS.last && $CUSTOM_LINK_DETAILVIEWWIDGET->sequence >= $smarty.foreach.BLOCKS.iteration + 1)}
 			<tr>
-				<td style="padding:5px;" >
-					{php} echo vtlib_process_widget($this->_tpl_vars['CUSTOM_LINK_DETAILVIEWWIDGET'], $this->_tpl_vars); {/php}
-				</td>
+				<td style="padding:5px;" >{process_widget widgetLinkInfo=$CUSTOM_LINK_DETAILVIEWWIDGET}</td>
 			</tr>
 		{/if}
 	{/if}
@@ -430,7 +427,7 @@ getTagCloud();
 	</td>
    </tr>
 </table>
-<script language="javascript">
+<script>
   var fieldname = new Array({$VALIDATION_DATA_FIELDNAME});
   var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
   var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});

@@ -18,7 +18,7 @@
 }
 </style>
 {/literal}
-<script language="JAVASCRIPT" type="text/javascript" src="include/js/smoothscroll.js"></script>
+<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 
 <br>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
@@ -315,7 +315,7 @@
 	</tr>
 </tbody>
 </table>
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
 {literal}
 var Imagid_array = new Array('img_2','img_4','img_6','img_7','img_8','img_9','img_10','img_13','img_14','img_18','img_19','img_20','img_21','img_22','img_23','img_26')
 function fnToggleVIew(obj){

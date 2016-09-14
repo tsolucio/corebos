@@ -10,10 +10,10 @@
 -->*}
 
 {*<!-- module header -->*}
-<script language="JavaScript" type="text/javascript" src="include/js/general.js"></script>
-<script language="JavaScript" type="text/javascript" src="include/js/ListView.js"></script>
-<script language="JavaScript" type="text/javascript" src="include/js/search.js"></script>
-<script language="javascript" type="text/javascript">
+<script type="text/javascript" src="include/js/general.js"></script>
+<script type="text/javascript" src="include/js/ListView.js"></script>
+<script type="text/javascript" src="include/js/search.js"></script>
+<script type="text/javascript">
 var typeofdata = new Array();
 typeofdata['E'] = ['e','n','s','ew','c','k'];
 typeofdata['V'] = ['e','n','s','ew','c','k'];
@@ -86,9 +86,7 @@ function updatefOptions(sel, opSelName){
     }
 }
 {/literal}
-</script>
 
-<script language="javascript">
 function checkgroup()
 {ldelim}
   if(document.change_ownerform_name.user_lead_owner[1].checked) {ldelim}
@@ -131,7 +129,7 @@ function callSearch(searchtype) {ldelim}
 				document.getElementById('basicsearchcolumns').innerHTML = '';
 		{rdelim}
 		);
-	return false; 
+	return false;
 {rdelim}
 
 function alphabetic(module,url,dataid) {ldelim}

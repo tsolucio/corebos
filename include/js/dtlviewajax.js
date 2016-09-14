@@ -107,7 +107,7 @@ var genFldValue = "";
 function dtlViewAjaxDirectFieldSave(fieldValue,module,tableName,fieldName,crmId,okmsg) {
 	var data = {
 		"fldName" : fieldName,
-		"fieldValue" : escapeAll(fieldValue)
+		"fieldValue" : encodeURIComponent(fieldValue)
 	};
 	var url = "file=DetailViewAjax&module=" + module + "&action=" + module + "Ajax&record=" + crmId + "&recordid=" + crmId + "&ajxaction=DETAILVIEW";
 	if(module == 'Users') {
@@ -262,7 +262,7 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 
 	var data = {
 		"fldName" : fieldName,
-		"fieldValue" : escapeAll(tagValue)
+		"fieldValue" : encodeURIComponent(tagValue)
 	};
 	var url = "file=DetailViewAjax&module=" + module + "&action=" + module + "Ajax&record=" + crmId + "&recordid=" + crmId + "&ajxaction=DETAILVIEW" + groupurl;
 	if(module == 'Users') {

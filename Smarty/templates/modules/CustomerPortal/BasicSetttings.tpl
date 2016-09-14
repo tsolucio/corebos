@@ -6,10 +6,9 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
-<script language="JavaScript" type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
+<script type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
 <style type="text/css">
 	{literal}
 td.showPanelBg div.small table.lvtBg tbody tr td table.small {
@@ -39,7 +38,7 @@ td.showPanelBg div.small table.lvtBg tbody tr td table.small {
 										<td class="dvtSelectedCell" nowrap>{'LBL_CUSTOMERPORTAL_SETTINGS'|@getTranslatedString:$MODULE}</td>
 							<td class="dvtTabCache" width="100%">&nbsp;</td>
 						</tr>
-					<!-- Acutal Contents -->				
+					<!-- Acutal Contents -->
 						<tr>
 										<td colspan="2">
 											<table border=0 cellspacing=0 cellpadding=10 width="100%" align="center" class="dvtContentSpace" style='border-bottom: 0'>

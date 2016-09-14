@@ -102,7 +102,7 @@
 <br>
 
 {literal}
-<script language="javascript" type="text/javascript">
+<script type="text/javascript">
 function view_chk_clicked(source_chk, edit_chk_id, delete_chk_id){
     if(source_chk.checked == false){
         document.getElementById(edit_chk_id).checked = false;

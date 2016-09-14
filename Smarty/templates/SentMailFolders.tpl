@@ -1,6 +1,6 @@
 <script type="text/javascript" src="modules/Emails/Emails.js"></script>
 
-<script language="javascript">
+<script>
 function ShowFolders(folderid)
 {ldelim}
 

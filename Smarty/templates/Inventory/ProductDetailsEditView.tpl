@@ -428,7 +428,7 @@ so we will get that array, parse that array and fill the details
 		(+)&nbsp;<b>{$APP.LBL_SHIPPING_AND_HANDLING_CHARGES} </b>
 	</td>
 	<td class="crmTableRow small" align="right">
-		<input id="shipping_handling_charge" name="shipping_handling_charge" type="text" class="small" style="width:40px" align="right" value="{$FINAL.shipping_handling_charge}" onBlur="calcSHTax();">
+		<input id="shipping_handling_charge" name="shipping_handling_charge" type="text" class="small" style="width:75px;text-align:right" align="right" value="{$FINAL.shipping_handling_charge}" onBlur="calcSHTax();">
 	</td>
    </tr>
 
@@ -477,7 +477,7 @@ so we will get that array, parse that array and fill the details
 		</select>
 	</td>
 	<td class="crmTableRow small" align="right">
-		<input id="adjustment" name="adjustment" type="text" class="small" style="width:40px" align="right" value="{$FINAL.adjustment}" onBlur="calcTotal();">
+		<input id="adjustment" name="adjustment" type="text" class="small" style="width:75px;text-align:right" align="right" value="{$FINAL.adjustment}" onBlur="calcTotal();">
 	</td>
    </tr>
    <tr valign="top">

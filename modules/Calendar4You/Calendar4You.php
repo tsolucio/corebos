@@ -623,7 +623,7 @@ public function setgoogleaccessparams($userid){
 		$focus = new Users();
 
 		$button = '<input title="Change" accessKey="" tabindex="2" type="button" class="crmbutton small edit" 
-					value="'.getTranslatedString('LBL_SELECT_USER_BUTTON_LABEL').'" name="button" LANGUAGE=javascript 
+					value="'.getTranslatedString('LBL_SELECT_USER_BUTTON_LABEL').'" name="button"
 					onclick=\'return window.open("index.php?module=Users&return_module=Calendar&return_action={$return_modname}&activity_mode=Events&action=Popup&popuptype=detailview&form=EditView&form_submit=true&select=enable&return_id='.$id.'&recordid='.$id.'","test","width=640,height=525,resizable=0,scrollbars=0")\';>';                  
 
 		$returnset = '&return_module=Calendar&return_action=CallRelatedList&return_id='.$id;

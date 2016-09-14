@@ -13,9 +13,6 @@
 <script type="text/javascript" src="jscalendar/calendar.js"></script>
 <script type="text/javascript" src="jscalendar/lang/calendar-{$CALENDAR_LANG}.js"></script>
 <script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
-<script type="text/javascript">
-var gVTModule = '{$smarty.request.module|@vtlib_purify}';
-</script>
 <script type="text/javascript" src="include/js/FieldDependencies.js"></script>
 {if $PICKIST_DEPENDENCY_DATASOURCE neq ''}
 <script type="text/javascript">
@@ -25,7 +22,7 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 
 {*<!-- Contents -->*}
 <form name="EditView" method="POST" action="index.php"
-	{if $ACTIVITY_MODE neq 'Task'} onsubmit="if(check_form()){ldelim} VtigerJS_DialogBox.block(); {rdelim} else {ldelim} return false; {rdelim}"
+	{if $ACTIVITY_MODE neq 'Task'} onsubmit="if(check_form()){ldelim} return doModuleValidation('','EditView'); {rdelim} else {ldelim} return false; {rdelim}"
 	{else} onsubmit="maintask_check_form();return formValidate();" {/if} >
 <input type="hidden" name="time_start" id="time_start">
 <input type="hidden" name="view" value="{$view}">
@@ -349,8 +346,7 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
                                                                                                         {/foreach}
                                                                                                         <input type="text" name="followup_date" id="jscal_field_followup_date" class="textbox" style="width:90px" value="{$date_val}"></td><td width=100%><img border=0 src="{$IMAGE_PATH}btnL3Calendar.gif" alt="{$CMOD.LBL_SET_DATE}" title="{$CMOD.LBL_SET_DATE}" id="jscal_trigger_followup_date">
                                                                                                         {foreach key=date_fmt item=date_str from=$secondvalue.due_date}
-                                                                                                        {assign var=date_vl
- value="$date_fmt"}
+                                                                                                        {assign var=date_vl value="$date_fmt"}
                                                                                                         {/foreach}
 													<script type="text/javascript">
                                                                                                         Calendar.setup ({ldelim}
@@ -555,11 +551,11 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 														<tr>
 															<td colspan=2>
 															{foreach item=val_arr from=$ACTIVITYDATA.reminder_time}
-															{assign var=start value="$val_arr[0]"}
-															{assign var=end value="$val_arr[1]"}
-															{assign var=sendname value="$val_arr[2]"}
-															{assign var=disp_text value="$val_arr[3]"}
-															{assign var=sel_val value="$val_arr[4]"}
+															{assign var=start value=$val_arr[0]}
+															{assign var=end value=$val_arr[1]}
+															{assign var=sendname value=$val_arr[2]}
+															{assign var=disp_text value=$val_arr[3]}
+															{assign var=sel_val value=$val_arr[4]}
 															<select name="{$sendname}">
 															{section name=reminder start=$start max=$end loop=$end step=1 }
 															{if $smarty.section.reminder.index eq $sel_val}

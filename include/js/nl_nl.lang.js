@@ -162,8 +162,6 @@ var alert_arr = {
 	'LBL_SELECT_PICKLIST':'Selecteer tenminste 1 waarde om te wissen',
 	'LBL_CANT_REMOVE':'U kunt niet alle waarden wissen',
 
-	// Added after 5.0.4 GA
-
 	/*For global add/delete in picklist*/
 	'LBL_GIVE_PICKLIST_VALUE':'Geef een waarde voor de geselecteerde keuzelijst om mee te vervangen',
 	'LBL_SELECT_ROLE':'Selecteer tenminste 1 rol om de nieuwe waarden toe te voegen',
@@ -174,7 +172,6 @@ var alert_arr = {
 	'SAME_GROUPS': 'U dient de records in dezelfde groep te selecteren voor merging',
 	'ATLEAST_TWO': 'Selecteer tenminste twee records voor merging',
 	'MAX_THREE': 'U kunt maximaal drie records selecteren',
-	//PARENT_RECORD: 'Select a record as parent record',  MergeFields.tpl Line:59
 	'MAX_RECORDS': 'U kunt maximaal vier records selecteren',
 	'CON_MANDATORY': 'Selecteer het verplichte veld -Laatste Naam-',
 	'LE_MANDATORY': 'Selecteer het verplichte velden -Laatste Naam en Bedrijf-',
@@ -226,10 +223,12 @@ var alert_arr = {
 	'LBL_TYPEALERT_2' : 'data type. Koppel dezelfde data types.',
 	'LBL_LENGTHALERT' : 'Sorry, u kunt geen velden koppelen met verschillende karakter groten. Koppel de data met dezelfde or meer karakter groten.',
 	'LBL_DECIMALALERT' : 'Sorry, u kunt geen velden koppelen met verschillende decimale posities. Koppel de data met dezelfde of meer decimale posities.',
+	'PICKLIST2PICKLISTALERT': 'Please make sure both picklists share the same values',
+	'PICKLIST2TEXTALERT': 'Please make sure the destination text field can hold the longest picklist value',
 	'FIELD_IS_MANDATORY' : 'Verplicht Veld',
 	'FIELD_IS_ACTIVE' : 'Veld is beschikbaar voor gebruik',
 	'FIELD_IN_QCREATE' : 'Aanwezig in Snel Toevoegen',
-	'FIELD_IS_MASSEDITABLE' : 'Beschikbaar voor Massa Wijzigen',	
+	'FIELD_IS_MASSEDITABLE' : 'Beschikbaar voor Massa Wijzigen',
 
 	'IS_MANDATORY_FIELD' : 'is Verplicht Veld',
 	'CLOSEDATE_CANNOT_BE_EMPTY' : 'Sluitings datum kan niet leeg zijn',

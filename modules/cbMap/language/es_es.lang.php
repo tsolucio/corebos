@@ -38,5 +38,6 @@ $mod_strings = Array(
 	'ListColumns' => 'Columnas de Listas',
 	'DuplicateRelations' => 'Duplicar Relaciones',
 	'MasterDetailLayout' => 'Disposición Maestro-Detalle',
+	'Validations' => 'Validaciones',
 );
 ?>
