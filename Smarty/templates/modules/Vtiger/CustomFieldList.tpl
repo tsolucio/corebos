@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/ *}
 <script type="text/javascript" src="include/js/customview.js"></script>
 <script>
@@ -96,17 +95,15 @@ var gselected_fieldtype = '';
 <br>
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tbody><tr>
-        <td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-        <td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
-        <br>
-
+	<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
+	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
+	<br>
 	<div align=center>
 			{include file='SetMenu.tpl'}
 			<!-- DISPLAY -->
 			{if $MODE neq 'edit'}
 			<b><font color=red>{$DUPLICATE_ERROR} </font></b>
 			{/if}
-			
 				<table class="settingsSelUITopLine" border="0" cellpadding="5" cellspacing="0" width="100%" >
 					<tbody>
 						<tr align="left">
@@ -115,24 +112,22 @@ var gselected_fieldtype = '';
 						</tr>
 					</tbody>
 				</table>
-				
 				<br>
 				<table border="0" cellpadding="10" cellspacing="0" width="100%">
 				<tbody><tr>
 				<td>
 				{if $MODULE eq 'Leads'}
 				<div id="cfList">
-                                {include file="'Leads'|@vtlib_getModuleTemplate:'LeadsCustomEntries.tpl'}
-                </div>	
-                {else}
-                <div id="cfList">
-                                {include file="'Vtiger'|@vtlib_getModuleTemplate:'CustomFieldEntries.tpl'}
-                </div>	
-                {/if}
-            <table border="0" cellpadding="5" cellspacing="0" width="100%">
+				{include file='Leads'|@vtlib_getModuleTemplate:'LeadsCustomEntries.tpl'}
+				</div>
+				{else}
+				<div id="cfList">
+				{include file='Vtiger'|@vtlib_getModuleTemplate:'CustomFieldEntries.tpl'}
+				</div>
+				{/if}
+			<table border="0" cellpadding="5" cellspacing="0" width="100%">
 			<tr>
-
-		  	<td class="small" align="right" nowrap="nowrap"><a href="#top">{$MOD.LBL_SCROLL}</a></td>
+			<td class="small" align="right" nowrap="nowrap"><a href="#top">{$MOD.LBL_SCROLL}</a></td>
 			</tr>
 			</table>
 			</td>
@@ -141,10 +136,10 @@ var gselected_fieldtype = '';
 		<!-- End of Display -->
 		</div>
 		</td>
-        </tr>
-        <tr>
-        <td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
-        </tr>
+		</tr>
+		<tr>
+		<td valign="top"><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
+		</tr>
 </tbody>
 </table>
 <br>

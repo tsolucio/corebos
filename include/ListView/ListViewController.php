@@ -560,16 +560,6 @@ class ListViewController {
 					} else {
 						$value = textlength_check($this->ownerNameList[$fieldName][$value]);
 					}
-				} elseif ($field->getUIType() == 25) {
-					//TODO clean request object reference.
-					$contactId=$_REQUEST['record'];
-					$emailId=$this->db->query_result($result,$i,"activityid");
-					$result1 = $this->db->pquery("SELECT access_count FROM vtiger_email_track WHERE ".
-							"crmid=? AND mailid=?", array($contactId,$emailId));
-					$value=$this->db->query_result($result1,0,"access_count");
-					if(!$value) {
-						$value = 0;
-					}
 				} elseif($field->getUIType() == 8){
 					if(!empty($value)){
 						$temp_val = html_entity_decode($value,ENT_QUOTES,$default_charset);

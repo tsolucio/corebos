@@ -12,25 +12,50 @@
  * either express or implied. See the License for the specific language governing
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
+ *************************************************************************************************
+ *  Version      : 1.0
+ *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
-include_once 'include/validation/Validator.php';
-include_once 'include/validation/Validations.php';
+require_once('modules/com_vtiger_workflow/VTSimpleTemplate.inc');
 
-class cbValidator extends Validator {
+/**
+ * This class renders a text template with data passed in as an array
+ * It is identical to VTSimpleTemplate except that it does not expect a record to exist,
+ * it just uses the information it has.
+ * if one of the fields is a reference field it will search for that record.
+ */
+class VTSimpleTemplateOnData extends VTSimpleTemplate {
 
-	public $CustomValidations = array(
-		'IBAN_BankAccount' => 'validate_IBAN_BankAccount',
-		'EU_VAT' => 'validate_EU_VAT',
-		'notDuplicate' => 'validate_notDuplicate',
-	);
-
-	public function __construct($data, $fields = array()) {
-		global $current_language;
-		parent::__construct($data, $fields, substr($current_language, 0, 2), 'include/validation/lang');
-		foreach ($this->CustomValidations as $validation => $function) {
-			$this->addRule($validation, $function, ($validation=='notDuplicate' ? getTranslatedString('COLUMNS_CANNOT_BE_DUPLICATED'):getTranslatedString('INVALID')));
-		}
+	function render($entityCache, $modulename, $data){
+		$this->cache = $entityCache;
+		$this->parent = $this;
+		$this->data = $data;
+		$this->moduleName = $modulename;
+		return $this->parseTemplate();
 	}
-}
 
+	function getData(){
+		return $this->data;
+	}
+
+	function get($fieldName){
+		return $this->data[$fieldName];
+	}
+
+	function getId(){
+		if (isset($this->data['record_id']) and is_numeric($this->data['record_id'])) {
+			$id = $this->data['record_id'];
+		} elseif (isset($this->data['id']) and is_numeric($this->data['id'])) {
+			$id = $this->data['id'];
+		} else {
+			$id = 0;
+		}
+		return $id;
+	}
+
+	function getModuleName(){
+		return $this->moduleName;
+	}
+
+}
 ?>

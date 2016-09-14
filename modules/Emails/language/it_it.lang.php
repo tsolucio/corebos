@@ -151,6 +151,7 @@ $mod_strings = array (
   'LBL_MAILSELECT_INFO' => 'ha i seguenti ID Email associati. Seleziona ID Email al quale la mail dovrebbe essere mandata',
   'LBL_NO_RECORDS' => 'Nessun record trovato',
 	'LBL_PRINT_EMAIL' => 'Stampa',
+	'Access Count' => 'Access Count',
 
 );
 

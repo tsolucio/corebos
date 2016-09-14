@@ -150,12 +150,12 @@ for ($i=0;$i<(count($myids)-1);$i++)
 			//This is to convert the html encoded string to original html entities so that in mail description contents will be displayed correctly
 			//$focus->column_fields['description'] = from_html($focus->column_fields['description']);
 
-			if($emailadd != '')
-			{
+			if($emailadd != '') {
 				$description = getMergedDescription($_REQUEST['description'],$mycrmid,$pmodule);
-				//Email Open Tracking
-				global $site_URL, $application_unique_key, $disable_stats_tracking;
-				if (!$disable_stats_tracking) {
+				//Email Open/Stat Tracking
+				global $site_URL, $application_unique_key;
+				$EMail_OpenTrackingEnabled = GlobalVariable::getVariable('EMail_OpenTrackingEnabled',1,'Emails');
+				if ($EMail_OpenTrackingEnabled) {
 					$emailid = $focus->id;
 					$track_URL = "$site_URL/modules/Emails/TrackAccess.php?record=$mycrmid&mailid=$emailid&app_key=$application_unique_key";
 					$description = "$description<img src='$track_URL' alt='' width='1' height='1'>";

@@ -14,30 +14,21 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 
-class cbMapAddMapTypes extends cbupdaterWorker {
+class changeEMailAccessCountToInteger extends cbupdaterWorker {
 
 	function applyChange() {
-		global $adb;
 		if ($this->hasError()) $this->sendError();
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$cbmaptypes = array(
-				'Record Access Control',
-				'Record Set Mapping',
-				'Module Set Mapping',
-				'ListColumns',
-				'DuplicateRelations',
-				'MasterDetailLayout',
-				'IOMap',
-				'FieldDependency',
-				'Validations',
-			);
-			$moduleInstance = Vtiger_Module::getInstance('cbMap');
-			$field = Vtiger_Field::getInstance('maptype',$moduleInstance);
-			if ($field) {
-				$field->setPicklistValues($cbmaptypes);
-			}
+			// field
+			$this->ExecuteQuery("UPDATE `vtiger_field` SET `uitype`=7,`typeofdata`='I~O' WHERE `columnname`='access_count';");
+			//filters
+			$this->ExecuteQuery("UPDATE `vtiger_cvcolumnlist` SET `columnname`='vtiger_email_track:access_count:Emails_Access_Count:access_count:I' WHERE `columnname`='vtiger_email_track:access_count:Emails_Access_Count:access_count:V'");
+			// report columns
+			$this->ExecuteQuery("UPDATE `vtiger_selectcolumn` SET `columnname`='vtiger_email_track:access_count:Emails_Access_Count:access_count:I' WHERE `columnname`='vtiger_email_track:access_count:Emails_Access_Count:access_count:V'");
+			// report criteria
+			$this->ExecuteQuery("UPDATE `vtiger_relcriteria` SET `columnname`='vtiger_email_track:access_count:Emails_Access_Count:access_count:I' WHERE `columnname`='vtiger_email_track:access_count:Emails_Access_Count:access_count:V'");
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}

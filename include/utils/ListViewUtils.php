@@ -1682,17 +1682,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		} else {
 			$value = $temp_val;
 		}
-	}
-	//asterisk changes end here
-	//Added for email status tracking
-	elseif ($uitype == 25) {
-		$contactid = $_REQUEST['record'];
-		$emailid = $adb->query_result($list_result, $list_result_count, "activityid");
-		$result = $adb->pquery("SELECT access_count FROM vtiger_email_track WHERE crmid=? AND mailid=?", array($contactid, $emailid));
-		$value = $adb->query_result($result, 0, "access_count");
-		if (!$value) {
-			$value = 0;
-		}
 	} elseif ($uitype == 8) {
 		if (!empty($temp_val)) {
 			$temp_val = html_entity_decode($temp_val, ENT_QUOTES, $default_charset);
@@ -1700,7 +1689,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 			$value = vt_suppressHTMLTags(implode(',', $json->decode($temp_val)));
 		}
 	}
-	//end email status tracking
 	else {
 		if ($fieldname == $focus->list_link_field) {
 			if ($mode == "search") {

@@ -48,7 +48,7 @@
 				<select class='small' id="moveFolderList" onchange="MailManager.moveMail(this);">
 					<option value="">{'LBL_MOVE_TO'|@getTranslatedString:$MODULE}</option>
 					{foreach item=folder from=$FOLDERLIST}
-						<option value="{$folder|@htmlentities}" >{$folder|@htmlentities}</option>
+						<option value="{$folder|@htmlentities}" >{$folder|@htmlentities|@getTranslatedString}</option>
 					{/foreach}
 				</select>
 			</td>

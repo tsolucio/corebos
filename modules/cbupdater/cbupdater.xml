@@ -787,4 +787,11 @@
 	<classname>setDocRelVendor</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Change EMail access_count to integer</description>
+	<filename>build/changeSets/changeEMailAccessCountToInteger.php</filename>
+	<classname>changeEMailAccessCountToInteger</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
