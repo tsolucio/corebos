@@ -1032,5 +1032,6 @@
 {if $PICKIST_DEPENDENCY_DATASOURCE neq ''}
 <script type="text/javascript">
 	jQuery( window ).on('load', function() {ldelim} (new FieldDependencies({$PICKIST_DEPENDENCY_DATASOURCE})).init() {rdelim});
+	getSelectedStatus(); // Call status onchange function in case default status is Held
 </script>
 {/if}
