@@ -376,6 +376,7 @@ catch(Exception $e){
          global $default_timezone;
         $startTime = $Data["time_start"];
         $endTime = $Data["time_end"];
+        try{
         $event = $this->gService->events->get($this->selected_calendar, $eventOld);
         $event->setSummary(trim($Data["subject"]));
         $event->setDescription($Data["description"]);
@@ -396,12 +397,15 @@ catch(Exception $e){
 			$event->attendees=$whos;
 		}
 		try {
-	    $this->gService->events->update($this->selected_calendar,$eventOld, $event);
-            $status = true;
+	        $this->gService->events->update($this->selected_calendar,$eventOld, $event);
+                $status = true;
 		} catch (Exception $e) {
 		    $status = null;
 		}
-        
+        }
+        catch(Exception $e){
+        $status=null;
+        }
         set_include_path($this->root_directory);
         
         return $status;
@@ -412,7 +416,11 @@ catch(Exception $e){
         $gevent = $this->getEvent($eventURL);
         
         set_include_path($this->root_directory. "modules/Calendar4You/");
-        $this->gService->events->delete($this->selected_calendar,$eventURL);
+        try{
+        $this->gService->events->delete($this->selected_calendar,$eventURL);}
+        catch(Exception $e){
+        echo $e->getMessage();
+        }
         set_include_path($this->root_directory); 
 
 	}
@@ -518,8 +526,12 @@ catch(Exception $e){
     }
     catch(Exception $e){
       if(strstr($e,"Sync token is no longer valid, a full sync is required")){
+      try{
       $optParams1 = array("singleEvents"=>true);
-      $events = $this->gService->events->listEvents($CALENDAR_ID,$optParams1);}
+      $events = $this->gService->events->listEvents($CALENDAR_ID,$optParams1);
+      }
+      catch(Exception $e){echo $e->getMessage();}
+      }
     }
 //        $user = str_replace("http://www.google.com/calendar/feeds/default/", '', $calendar_feed);
 //        
