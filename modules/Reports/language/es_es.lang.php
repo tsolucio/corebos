@@ -232,6 +232,7 @@ $mod_strings = Array(
 'LBL_YEAR' => 'Año',
 'LBL_MONTH'=> 'Mes',
 'LBL_QUARTER'=> 'Trimestre',
+'LBL_DAY'=> 'Día',
 'LBL_NONE'=> 'Ninguno',
 
 'LBL_ROLES'=>'Roles',

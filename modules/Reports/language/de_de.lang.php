@@ -230,6 +230,7 @@ $mod_strings = Array(
 
     'LBL_YEAR' => 'Jahr',
     'LBL_MONTH'=> 'Monat',
+    'LBL_DAY'=> 'Tag',
     'LBL_QUARTER'=> 'Quartal',
     'LBL_NONE'=> 'Keine',
 

@@ -48,7 +48,8 @@ class ReportRun extends CRMEntity {
 	var $ui10_fields = array();
 	var $ui101_fields = array();
 	var $groupByTimeParent = array( 'Quarter'=>array('Year'),
-									'Month'=>array('Year')
+                                        'Month'=>array('Year'),
+                                        'Day'=>array('Year','Month')
 								);
 
 	/** Function to set reportid,primarymodule,secondarymodule,reporttype,reportname, for given reportid
@@ -3280,6 +3281,9 @@ class ReportRun extends CRMEntity {
 		}
 		else if(strtolower($criteria)=='quarter'){
 			$condition = "CEIL(DATE_FORMAT($dateField,'%m')/3)";
+		}
+		if(strtolower($criteria)=='day'){
+			$condition = "DATE_FORMAT($dateField,'%d')";
 		}
 		return $condition;
 	}

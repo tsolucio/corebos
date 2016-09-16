@@ -223,6 +223,9 @@ function getGroupByTimeDiv($sortid,$reportid=''){
 		else if($selected_groupby == 'Quarter'){
 			$quarterselected = 'selected';
 		}
+		else if($selected_groupby == 'Day'){
+			$dayselected = 'selected';
+		}
 		else if(strtolower($selected_groupby)=='none'){
 			$noneselected='selected';
 		}
@@ -240,6 +243,7 @@ function getGroupByTimeDiv($sortid,$reportid=''){
 	$div .= "<option value='Year' $yearselected>".$mod_strings['LBL_YEAR']."</option>";
 	$div .= "<option value='Month' $monthselected>".$mod_strings['LBL_MONTH']."</option>";
 	$div .= "<option value='Quarter' $quarterselected>".$mod_strings['LBL_QUARTER']."</option>";
+	$div .= "<option value='Day' $dayselected>".$mod_strings['LBL_DAY']."</option>";
 	$div .= "</select></div>";
 	return $div;
 }
