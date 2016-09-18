@@ -74,7 +74,7 @@ if(isset($_REQUEST['act']) && $_REQUEST['act'] == 'massDldCnt')
 			foreach ($files as $file) {
 				if ($file) {
 					$dbQuery = 'SELECT * FROM vtiger_attachments JOIN vtiger_seattachmentsrel ON vtiger_attachments.attachmentsid = vtiger_seattachmentsrel.attachmentsid WHERE crmid = ?' ;
-					$result = $adb->pquery($dbQuery, array($file)) or die('Could not get file list ');
+					$result = $adb->pquery($dbQuery, array($file)) || die('Could not get file list ');
 					if($adb->num_rows($result) == 1) {
 						$pname = @$adb->query_result($result, 0, 'attachmentsid');
 						$name = @$adb->query_result($result, 0, 'name');

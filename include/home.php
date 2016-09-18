@@ -691,7 +691,7 @@ function getGroupTaskLists($maxval,$calCnt){
 		}
 
 		$log->info("Here is the where clause for the list view: $query");
-		$result = $adb->pquery($query, $params) or die("Couldn't get the group listing");
+		$result = $adb->pquery($query, $params) || die("Couldn't get the group listing");
 
 		$title=array();
 		$title[]='myGroupAllocation.gif';

@@ -6,17 +6,11 @@
 * The Initial Developer of the Original Code is vtiger.
 * Portions created by vtiger are Copyright (C) vtiger.
 * All Rights Reserved.
-*
 ********************************************************************************/
 
-	
 require_once('Smarty_setup.php');
 
-global $mod_strings;
-global $app_strings;
-global $app_list_strings;
-global $adb;
-global $theme;
+global $mod_strings, $app_strings, $app_list_strings, $adb, $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 
@@ -61,7 +55,7 @@ if (isset($organization_logo))
 	$smarty->assign("ORGANIZATIONLOGO",$organization_logo);
 
 $path = "test/logo";
-$dir_handle = @opendir($path) or die("Unable to open directory $path");
+$dir_handle = @opendir($path) || die("Unable to open directory $path");
 
 while ($file = readdir($dir_handle))
 {
@@ -86,11 +80,9 @@ while ($file = readdir($dir_handle))
                          $favicon_logo_name=$file;
                      }
 		}
-			
         }
-   }	
+   }
 }
-
 
 if (isset($organization_logopath))
 	$smarty->assign("ORGANIZATIONLOGOPATH",$path);

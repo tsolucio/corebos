@@ -51,7 +51,7 @@ if ($shownoimage) {
 	header("Cache-Control: private");
 	header("Content-Disposition: filename=noimage.png");
 	header("Content-Description: php/coreBOS Generated Data");
-	$im = @imagecreate(110, 110) or die("Cannot Initialize new GD image stream");
+	$im = @imagecreate(110, 110) || die("Cannot Initialize new GD image stream");
 	$background_color = imagecolorallocate($im, 255, 255, 255);
 	$text_color = imagecolorallocate($im, 0, 0, 0);
 	imagestring($im, 4, 22, 25, getTranslatedString('No Image'), $text_color);

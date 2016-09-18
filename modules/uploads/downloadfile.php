@@ -21,7 +21,7 @@ if(!empty($deletecheck) && $adb->query_result($deletecheck, 0, 'deleted') == 1) 
 	echo $app_strings['LBL_RECORD_DELETE'];
 } else {
 	$dbQuery = 'SELECT * FROM vtiger_attachments WHERE attachmentsid = ?' ;
-	$result = $adb->pquery($dbQuery, array($attachmentsid)) or die('Could not get file list');
+	$result = $adb->pquery($dbQuery, array($attachmentsid)) || die('Could not get file list');
 	if($adb->num_rows($result) == 1) {
 		$fileType = @$adb->query_result($result, 0, 'type');
 		$name = @$adb->query_result($result, 0, 'name');

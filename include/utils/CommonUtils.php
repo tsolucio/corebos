@@ -3001,11 +3001,11 @@ function clear_smarty_cache($path = null) {
 			if (is_dir($path . $file)) {
 				chdir('.');
 				clear_smarty_cache($path . $file . '/');
-				//rmdir($path.$file) or DIE("couldn't delete $path$file<br />"); // No need to delete the directories.
+				//rmdir($path.$file) || die("couldn't delete $path$file<br />"); // No need to delete the directories.
 			} else {
 				// Delete only files ending with .tpl.php
 				if (strripos($file, '.tpl.php') == (strlen($file) - strlen('.tpl.php'))) {
-					unlink($path . $file) or DIE("couldn't delete $path$file<br />");
+					unlink($path . $file) || die("couldn't delete $path$file<br />");
 				}
 			}
 		}
@@ -3031,7 +3031,7 @@ function get_smarty_compiled_file($template_file, $path = null) {
 			if (is_dir($path . $file)) {
 				chdir('.');
 				$compiled_file = get_smarty_compiled_file($template_file, $path . $file . '/');
-				//rmdir($path.$file) or DIE("couldn't delete $path$file<br />"); // No need to delete the directories.
+				//rmdir($path.$file) || die("couldn't delete $path$file<br />"); // No need to delete the directories.
 			} else {
 				// Check if the file name matches the required template fiel name
 				if (strripos($file, $template_file . '.php') == (strlen($file) - strlen($template_file . '.php'))) {

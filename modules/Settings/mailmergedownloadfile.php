@@ -15,7 +15,7 @@ global $fileId, $default_charset;
 $templateid = vtlib_purify($_REQUEST['record']);
 $dbQuery = 'SELECT filename,filetype, data FROM vtiger_wordtemplates WHERE templateid=?';
 
-$result = $adb->pquery($dbQuery, array($templateid)) or die(getTranslatedString('Could not get file list','Settings'));
+$result = $adb->pquery($dbQuery, array($templateid)) || die(getTranslatedString('Could not get file list','Settings'));
 if($adb->num_rows($result) == 1) {
 	$fileType = $adb->query_result($result, 0, "filetype");
 	$name = $adb->query_result($result, 0, "filename");

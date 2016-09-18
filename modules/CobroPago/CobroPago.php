@@ -443,11 +443,11 @@ class CobroPago extends CRMEntity {
 		global $adb;
 		$count = 0;
 		$query1 = "select bean_id from vtiger_users_last_import where assigned_user_id=? AND bean_type='$module' AND deleted=0";
-		$result1 = $adb->pquery($query1, array($user_id)) or die("Error getting last import for undo: ".mysql_error());
+		$result1 = $adb->pquery($query1, array($user_id)) || die("Error getting last import for undo: ".mysql_error());
 		while ( $row1 = $adb->fetchByAssoc($result1))
 		{
 			$query2 = "update vtiger_crmentity set deleted=1 where crmid=?";
-			$result2 = $adb->pquery($query2, array($row1['bean_id'])) or die("Error undoing last import: ".mysql_error());
+			$result2 = $adb->pquery($query2, array($row1['bean_id'])) || die("Error undoing last import: ".mysql_error());
 			$count++;
 		}
 		return $count;
