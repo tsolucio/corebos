@@ -794,4 +794,11 @@
 	<classname>changeEMailAccessCountToInteger</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Database changes for mysql strict NO_ZERO_IN_DATE</description>
+	<filename>build/changeSets/mysqlstrictNO_ZERO_IN_DATE.php</filename>
+	<classname>mysqlstrictNO_ZERO_IN_DATE</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

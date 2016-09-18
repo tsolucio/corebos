@@ -1228,8 +1228,7 @@ class Users extends CRMEntity {
 			unset($_SESSION['next_reminder_interval']);
 			unset($_SESSION['next_reminder_time']);
 			$set_reminder_next = date('Y-m-d H:i');
-			// NOTE date_entered has CURRENT_TIMESTAMP constraint, so we need to reset when updating the table
-			$adb->pquery("UPDATE vtiger_users SET reminder_next_time=?, date_entered=? WHERE id=?", array($set_reminder_next, $this->column_fields['date_entered'], $this->id));
+			$adb->pquery("UPDATE vtiger_users SET reminder_next_time=? WHERE id=?", array($set_reminder_next, $this->id));
 		}
 	}
 
