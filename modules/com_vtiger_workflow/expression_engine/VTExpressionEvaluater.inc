@@ -278,9 +278,9 @@ function __cb_getGEODistance($arr){
 	$to = decode_html($arr[1]);
 	$coo1 = __cb_getLatitude($from).",".__cb_getLongitude($from);
 	$coo2 = __cb_getLatitude($to).",".__cb_getLongitude($to);
-	$distance = file_get_contents("http://router.project-osrm.org/viaroute?loc=$coo1&loc=$coo2");
+	$distance = file_get_contents("http://router.project-osrm.org/route/v1/driving/$coo1;$coo2?overview=false");
 	$dis = json_decode($distance);
-	$total_distance = $dis->route_summary->total_distance/1000;
+	$total_distance = $dis->routes[0]->distance/1000;
 	return $total_distance." km";
 }
 
