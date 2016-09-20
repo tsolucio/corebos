@@ -180,23 +180,6 @@ class PriceBooks extends CRMEntity {
 	}
 
 	/**
-	 * Delete the last imported records.
-	 */
-	function undo_import($module, $user_id) {
-		global $adb;
-		$count = 0;
-		$query1 = "select bean_id from vtiger_users_last_import where assigned_user_id=? AND bean_type='$module' AND deleted=0";
-		$result1 = $adb->pquery($query1, array($user_id)) || die("Error getting last import for undo: ".mysql_error());
-		while ( $row1 = $adb->fetchByAssoc($result1))
-		{
-			$query2 = "update vtiger_crmentity set deleted=1 where crmid=?";
-			$result2 = $adb->pquery($query2, array($row1['bean_id'])) || die("Error undoing last import: ".mysql_error());
-			$count++;
-		}
-		return $count;
-	}
-
-	/**
 	 * Transform the value while exporting
 	 */
 	function transform_export_value($key, $value) {
