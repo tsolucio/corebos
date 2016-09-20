@@ -337,7 +337,7 @@ function getAllTaxes($available='all', $sh='',$mode='',$id='')
 			$where_ids="taxid in ($insert_str) or";
 		}
 
-		$res = $adb->pquery("select * from $tablename where $where_ids  deleted=0 order by taxid",$result_ids);
+		$res = $adb->pquery("select * from $tablename where $where_ids deleted=0 order by taxid",$result_ids);
 	} else {
 		//This where condition is added to get all products or only availble products
 		$where = '';

@@ -22,8 +22,7 @@ function homepage_getUpcomingActivities($maxval,$calCnt){
 	require_once("data/Tracker.php");
 	require_once('include/utils/utils.php');
 
-	global $adb;
-	global $current_user;
+	global $adb, $current_user;
 
 	$dbStartDateTime = new DateTimeField(date('Y-m-d H:i:s'));
 	$userStartDate = $dbStartDateTime->getDisplayDate();
@@ -154,8 +153,7 @@ function homepage_getPendingActivities($maxval,$calCnt){
 	require_once("include/utils/utils.php");
 	require_once('include/utils/CommonUtils.php');
 
-	global $adb;
-	global $current_user;
+	global $adb, $current_user;
 
 	$dbStartDateTime = new DateTimeField(date('Y-m-d H:i:s'));
 	$userStartDate = $dbStartDateTime->getDisplayDate();

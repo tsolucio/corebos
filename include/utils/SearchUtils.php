@@ -523,19 +523,15 @@ function BasicSearch($module,$search_field,$search_string,$input=''){
 *Param $module - module name
 *Returns the where conditions for list query in string format
 */
-
 function getAdvSearchfields($module)
 {
-	global $log;
-        $log->debug("Entering getAdvSearchfields(".$module.") method ...");
-	global $adb;
-	global $current_user;
-	global $mod_strings,$app_strings;
+	global $log, $adb, $current_user, $mod_strings,$app_strings;
+	$log->debug("Entering getAdvSearchfields(".$module.") method ...");
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 
 	$tabid = getTabid($module);
-        if($tabid==9)
-                $tabid="9,16";
+	if($tabid==9)
+		$tabid='9,16';
 
 	if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0)
 	{
@@ -640,20 +636,18 @@ function getAdvSearchfields($module)
 		}
 		//$fieldlabel1 = str_replace(" ","_",$fieldlabel); // Is not used anywhere
 		//Check added to search the lists by Inventory manager
-                if($fieldtablename == 'vtiger_quotes' && $fieldcolname == 'inventorymanager')
-                {
-                        $fieldtablename = 'vtiger_usersQuotes';
-                        $fieldcolname = 'user_name';
-                }
-		if($fieldtablename == 'vtiger_contactdetails' && $fieldcolname == 'reportsto')
-                {
-                        $fieldtablename = 'vtiger_contactdetails2';
-                        $fieldcolname = 'lastname';
-                }
-                if($fieldtablename == 'vtiger_notes' && $fieldcolname == 'folderid'){
-                	$fieldtablename = 'vtiger_attachmentsfolder';
-                	$fieldcolname = 'foldername';
-                }
+		if($fieldtablename == 'vtiger_quotes' && $fieldcolname == 'inventorymanager') {
+			$fieldtablename = 'vtiger_usersQuotes';
+			$fieldcolname = 'user_name';
+		}
+		if($fieldtablename == 'vtiger_contactdetails' && $fieldcolname == 'reportsto') {
+			$fieldtablename = 'vtiger_contactdetails2';
+			$fieldcolname = 'lastname';
+		}
+		if($fieldtablename == 'vtiger_notes' && $fieldcolname == 'folderid'){
+			$fieldtablename = 'vtiger_attachmentsfolder';
+			$fieldcolname = 'foldername';
+		}
 		if($fieldlabel != 'Related to')
 		{
 			if ($i==0)
@@ -681,7 +675,7 @@ function getAdvSearchfields($module)
 	if($module == 'HelpDesk')
 	{
 		$mod_fieldlabel = $mod_strings['Ticket ID'];
-                if($mod_fieldlabel =="") $mod_fieldlabel = 'Ticket ID';
+		if($mod_fieldlabel =="") $mod_fieldlabel = 'Ticket ID';
 
 		$OPTION_SET .= "<option value=\'vtiger_crmentity:crmid:".$fieldname."::".$fieldtypeofdata."\'>".$mod_fieldlabel."</option>";
 	}
@@ -689,7 +683,7 @@ function getAdvSearchfields($module)
 	if($module == 'Activities')
 	{
 		$mod_fieldlabel = $mod_strings['Activity Type'];
-                if($mod_fieldlabel =="") $mod_fieldlabel = 'Activity Type';
+		if($mod_fieldlabel =="") $mod_fieldlabel = 'Activity Type';
 
 		$OPTION_SET .= "<option value=\'vtiger_activity.activitytype:".$fieldname."::".$fieldtypeofdata."\'>".$mod_fieldlabel."</option>";
 	}

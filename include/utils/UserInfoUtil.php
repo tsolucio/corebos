@@ -3140,33 +3140,29 @@ function getSubordinateRoleAndUsers($roleId, $users = true)
 function getCurrentUserProfileList()
 {
 	global $log,$current_user;
-	$log->debug("Entering getCurrentUserProfileList() method ...");
+	$log->debug('Entering getCurrentUserProfileList() method ...');
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	$profList = array();
-	$i=0;
 	foreach ($current_user_profiles as $profid) {
 		array_push($profList, $profid);
-		$i++;
 	}
-	$log->debug("Exiting getCurrentUserProfileList method ...");
+	$log->debug('Exiting getCurrentUserProfileList method ...');
 	return $profList;
 }
 
 function getCurrentUserGroupList()
 {
 	global $log,$current_user;
-	$log->debug("Entering getCurrentUserGroupList() method ...");
+	$log->debug('Entering getCurrentUserGroupList() method ...');
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	$grpList= array();
 	if(sizeof($current_user_groups) > 0)
 	{
-		$i=0;
 		foreach ($current_user_groups as $grpid) {
 			array_push($grpList, $grpid);
-			$i++;
 		}
 	}
-	$log->debug("Exiting getCurrentUserGroupList method ...");
+	$log->debug('Exiting getCurrentUserGroupList method ...');
 	return $grpList;
 }
 
@@ -3662,12 +3658,13 @@ function getGrpId($groupname) {
   * @param $fld_module -- Module :: Type String
   * @param $userid -- User Id :: Type integer
   * @param $fieldname -- Field Name :: Type varchar
-  * @returns $rolename -- Role Name :: Type varchar
+  * @param $accessmode -- Access Mode :: Type varchar :: readonly or anything else
+  * @returns 0 | 1 :: Type varchar if visible or not
  */
 function getFieldVisibilityPermission($fld_module, $userid, $fieldname, $accessmode='readonly')
 {
 	global $log,$adb, $current_user;
-	$log->debug("Entering getFieldVisibilityPermission(".$fld_module.",". $userid.",". $fieldname.") method ...");
+	$log->debug("Entering getFieldVisibilityPermission(".$fld_module.",". $userid.",". $fieldname.", $accessmode) method ...");
 
 	// Check if field is in-active
 	$fieldActive = isFieldActive($fld_module,$fieldname);
