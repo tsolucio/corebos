@@ -1003,15 +1003,14 @@ function doModuleValidation(edit_type,editForm,callback) {
 		//Testing if a Validation file exists
 		jQuery.ajax({
 			url: "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationExists&valmodule="+gVTModule,
-			type:'get',
-			error: function() { //Validation file does not exist
+			type:'get'
+		}).fail(function (jqXHR, textStatus) { //Validation file does not exist
 				if (typeof callback == 'function') {
 					callback('submit');
 				} else {
 					submitFormForAction(formName, action);
 				}
-			},
-			success: function(data) { //Validation file exists
+		}).done(function(data) { //Validation file exists
 				if (data == 'yes') {
 					// Create object which gets the values of all input, textarea, select and button elements from the form
 					var myFields = document.forms[formName].elements;
@@ -1024,8 +1023,8 @@ function doModuleValidation(edit_type,editForm,callback) {
 					jQuery.ajax({
 						type : 'post',
 						data : {structure: sentForm},
-						url : "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule="+gVTModule,
-						success : function(msg) {  //Validation file answers
+						url : "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule="+gVTModule
+					}).done(function(msg) {  //Validation file answers
 							if (msg.search("%%%CONFIRM%%%") > -1) { //Allow to use confirm alert
 								//message to display
 								var display = msg.split("%%%CONFIRM%%%");
@@ -1048,11 +1047,9 @@ function doModuleValidation(edit_type,editForm,callback) {
 								alert(msg);
 								VtigerJS_DialogBox.unblock();
 							}
-						},
-						error : function() {  //Error while asking file
+					}).fail(function() {  //Error while asking file
 							alert('Error with AJAX');
 							VtigerJS_DialogBox.unblock();
-						}
 					});
 				} else { // no validation we send form
 					if (typeof callback == 'function') {
@@ -1061,8 +1058,7 @@ function doModuleValidation(edit_type,editForm,callback) {
 						submitFormForAction(formName, action);
 					}
 				}
-			}
-		});
+			});
 	}
 	return false;
 }

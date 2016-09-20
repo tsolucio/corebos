@@ -487,11 +487,10 @@ function dtlviewModuleValidation(fieldLabel,module,uitype,tableName,fieldName,cr
 		//Testing if a Validation file exists
 		jQuery.ajax({
 			url: "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationExists&valmodule="+gVTModule,
-			type:'get',
-			error: function() { //Validation file does not exist
+			type:'get'
+		}).fail(function() { //Validation file does not exist
 				dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmId);
-			},
-			success: function(data) { //Validation file exists
+		}).done(function(data) { //Validation file exists
 				if (data == 'yes') {
 					// Create object which gets the values of all input, textarea, select and button elements from the form
 					var myFields = document.forms[formName].elements;
@@ -504,8 +503,8 @@ function dtlviewModuleValidation(fieldLabel,module,uitype,tableName,fieldName,cr
 					jQuery.ajax({
 						type : 'post',
 						data : {structure: sentForm},
-						url : "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule="+gVTModule,
-						success : function(msg) {  //Validation file answers
+						url : "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule="+gVTModule
+					}).done(function(msg) {  //Validation file answers
 							VtigerJS_DialogBox.unblock();
 							if (msg.search("%%%CONFIRM%%%") > -1) { //Allow to use confirm alert
 								//message to display
@@ -518,16 +517,13 @@ function dtlviewModuleValidation(fieldLabel,module,uitype,tableName,fieldName,cr
 							} else { //Error
 								alert(msg);
 							}
-						},
-						error : function() {  //Error while asking file
+					}).fail(function() {  //Error while asking file
 							VtigerJS_DialogBox.unblock();
 							alert('Error with AJAX');
-						}
 					});
 				} else { // no validation we send form
 					dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 				}
-			}
 		});
 	}
 	return false;
