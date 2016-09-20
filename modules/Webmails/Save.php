@@ -167,9 +167,13 @@ function add_attachment_to_contact($cid,$email,$emailid) {
 		//we have to add attachmentsid_ as prefix for the filename
 		$move_filename = $upload_filepath.'/'.$current_id.'_'.$filename;
 
-		$fp = fopen($move_filename, "w") || die("Can't open file");
-		fputs($fp, base64_decode($attachments[$i]["filedata"]));
-		fclose($fp);
+		$fp = fopen($move_filename, "w");
+		if ($fp) {
+			fputs($fp, base64_decode($attachments[$i]["filedata"]));
+			fclose($fp);
+		} else {
+			echo "Can't open file";
+		}
 	    }
 	}
 }

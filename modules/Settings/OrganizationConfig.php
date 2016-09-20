@@ -55,7 +55,7 @@ if (isset($organization_logo))
 	$smarty->assign("ORGANIZATIONLOGO",$organization_logo);
 
 $path = "test/logo";
-$dir_handle = @opendir($path) || die("Unable to open directory $path");
+$dir_handle = @opendir($path);
 
 while ($file = readdir($dir_handle))
 {

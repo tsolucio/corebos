@@ -15,7 +15,7 @@ $file = $_REQUEST['file'];
 $ServerName = "{localhost/imap:143/notls}INBOX"; // For a IMAP connection    (PORT 143)
 $UserName = "user";
 $PassWord = "password";
-$mbox = imap_open($ServerName, $UserName,$PassWord) || die("Could not open Mailbox - try again later!");
+$mbox = imap_open($ServerName, $UserName,$PassWord);
 
 if ($download == "1") {
 	echo "attribute=";

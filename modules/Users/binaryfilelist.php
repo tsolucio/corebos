@@ -18,7 +18,7 @@ function getAttachmentsList()
 	$dbQuery .= "FROM vtiger_wordtemplates" ;
 	$dbQuery .= " ORDER BY filename ASC";
 
-	$result = $adb->pquery($dbQuery, array()) || die("Couldn't get file list");
+	$result = $adb->pquery($dbQuery, array());
 
 $list = '<table border="0" cellpadding="5" cellspacing="1" class="FormBorder" width="90%">';
 

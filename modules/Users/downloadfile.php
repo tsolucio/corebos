@@ -18,9 +18,8 @@ $dbQuery = "SELECT filename,filetype, data ";
 $dbQuery .= "FROM vtiger_wordtemplates ";
 $dbQuery .= "WHERE templateid=?";
 
-$result = $adb->pquery($dbQuery, array($templateid)) || die("Couldn't get file list");
-if($adb->num_rows($result) == 1)
-{
+$result = $adb->pquery($dbQuery, array($templateid));
+if($result and $adb->num_rows($result) == 1) {
 $fileType = $adb->query_result($result, 0, "filetype");
 $name = $adb->query_result($result, 0, "filename");
 //echo 'filetype is ' .$fileType;
