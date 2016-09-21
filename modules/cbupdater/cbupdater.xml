@@ -794,4 +794,11 @@
 	<classname>changeEMailAccessCountToInteger</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Set number of decimals to uitype 9, percent values</description>
+	<filename>build/changeSets/changeTypeOfDataUitype9.php</filename>
+	<classname>changeTypeOfDataUitype9</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
