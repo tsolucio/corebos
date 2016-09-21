@@ -795,6 +795,13 @@
 	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
+	<author>omarllorens</author>
+	<description>Set number of decimals to uitype 9, percent values</description>
+	<filename>build/changeSets/changeTypeOfDataUitype9.php</filename>
+	<classname>changeTypeOfDataUitype9</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
 	<author>joebordes</author>
 	<description>Database changes for mysql strict NO_ZERO_IN_DATE</description>
 	<filename>build/changeSets/mysqlstrictNO_ZERO_IN_DATE.php</filename>
