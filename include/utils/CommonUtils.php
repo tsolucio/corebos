@@ -2008,11 +2008,8 @@ function getQuickCreateModules() {
  * returns the value in array format
  */
 function QuickCreate($module) {
-	global $log;
+	global $log, $adb, $current_user, $mod_strings;
 	$log->debug("Entering QuickCreate(" . $module . ") method ...");
-	global $adb;
-	global $current_user;
-	global $mod_strings;
 
 	$tabid = getTabid($module);
 

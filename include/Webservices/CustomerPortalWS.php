@@ -948,7 +948,6 @@ function getFieldAutocomplete($term, $filter, $searchinmodule, $fields, $returnf
 	}
 	$query = $queryGenerator->getQuery();
 	$rsemp=$adb->query($query);
-	global $log;$log->fatal($rsemp);
 	$wsid = vtyiicpng_getWSEntityId($searchinmodule);
 	while ($emp=$adb->fetch_array($rsemp)) {
 		$rsp = array();
