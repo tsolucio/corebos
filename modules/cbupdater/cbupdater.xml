@@ -808,4 +808,11 @@
 	<classname>mysqlstrictNO_ZERO_IN_DATE</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>FIX:: Set number of decimals to uitype 9, percent values</description>
+	<filename>build/changeSets/changeTypeOfDataUitype9FIX.php</filename>
+	<classname>changeTypeOfDataUitype9FIX</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

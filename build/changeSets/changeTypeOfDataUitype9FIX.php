@@ -13,15 +13,14 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
-class changeTypeOfDataUitype9 extends cbupdaterWorker {
+class changeTypeOfDataUitype9FIX extends cbupdaterWorker {
 	function applyChange() {
 		global $adb;
 		if ($this->hasError()) $this->sendError();
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$this->ExecuteQuery("UPDATE vtiger_field SET typeofdata = 'N~O~3,2' WHERE typeofdata = 'N~O' and uitype = 9");
-			$this->ExecuteQuery("UPDATE vtiger_field SET typeofdata = 'N~M~3,2' WHERE typeofdata = 'N~M' and uitype = 9");
+			$this->ExecuteQuery("UPDATE vtiger_field SET typeofdata = 'N~O' WHERE typeofdata = 'N~O~3,2' and uitype != 9");
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
