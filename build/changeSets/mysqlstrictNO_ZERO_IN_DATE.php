@@ -26,10 +26,10 @@ class mysqlstrictNO_ZERO_IN_DATE extends cbupdaterWorker {
 			$sm = $adb->query_result($smrs,0,0);
 			$adb->query("SET SESSION sql_mode = ''");
 			$this->ExecuteQuery('ALTER TABLE `vtiger_email_access` CHANGE `accesstime` `accesstime` TIME NULL DEFAULT NULL');
+			$this->ExecuteQuery('ALTER TABLE `vtiger_users` CHANGE `date_entered` `date_entered` DATETIME NOT NULL');
 			$this->ExecuteQuery('ALTER TABLE `vtiger_users` CHANGE `date_modified` `date_modified` TIMESTAMP on update CURRENT_TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP;');
-			$this->ExecuteQuery('ALTER TABLE `vtiger_users` CHANGE `date_entered` `date_entered` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP');
+			$this->ExecuteQuery('ALTER TABLE `vtiger_import_maps` CHANGE `date_entered` `date_entered` DATETIME NOT NULL');
 			$this->ExecuteQuery('ALTER TABLE `vtiger_import_maps` CHANGE `date_modified` `date_modified` TIMESTAMP on update CURRENT_TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP;');
-			$this->ExecuteQuery('ALTER TABLE `vtiger_import_maps` CHANGE `date_entered` `date_entered` TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP');
 			$this->ExecuteQuery('ALTER TABLE `vtiger_loginhistory` CHANGE `login_time` `login_time` TIMESTAMP NULL DEFAULT NULL;');
 			$this->ExecuteQuery('ALTER TABLE `vtiger_loginhistory` CHANGE `logout_time` `logout_time` TIMESTAMP NULL DEFAULT NULL');
 			$this->ExecuteQuery("UPDATE `vtiger_users` set date_modified=date_entered");
