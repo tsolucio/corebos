@@ -12,7 +12,7 @@ function showDefaultCustomView(selectView,module,parenttab) {
 	var viewName = encodeURIComponent(selectView.options[selectView.options.selectedIndex].value);
 	var gotopage = "index.php?_operation=listModuleRecords&module="+ module +"&viewName="+ viewName +"&view=1";
 	window.location = gotopage;
-    return true;
+	return true;
 }
 function toggleAssignType(currType) {
 	if (currType=="U") {
@@ -25,8 +25,7 @@ function toggleAssignType(currType) {
 
 	}
 }
- 
- 
+
 if(typeof($) == 'undefined') {
 	$ = function(id) {
 		var node = document.getElementById(id);
@@ -266,14 +265,14 @@ function addComment(relid) {
 		  "parentid": relid,
 		  "comment": $('#comment_text').val()
 		},
-		async: true,
-		success: function(response) {
+		async: true
+	})
+	.done(function(response) {
 			$('#comment_content').prepend(response.html);
 			$('#comment_text').val('');
-		},
-		error: function(response, error) {
+	})
+	.fail(function(response, error) {
 			
-		}
 	});
 }
 
