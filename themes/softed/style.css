@@ -1902,18 +1902,25 @@ ul {
 	background-image: url(images/buttongreen.png);
 }
 
-.save{
+.save, .ajax_save_detailview {
 	background-color:green;
 	color:#fff;
 	font-weight:bold;
 	background-image: url(images/buttongreen.png);
 }
 
-.cancel {
+.cancel, .ajax_cancelsave_detailview {
 	background-color: orange;
 	color:#fff;
 	font-weight:bold;
 	background-image: url(images/buttonorange.png);
+}
+
+.ajax_save_detailview, .ajax_cancelsave_detailview {
+	padding: 5px;
+	margin: 2px;
+	display: inline-block;
+	border-radius: 5px;
 }
 
 .inactive{
