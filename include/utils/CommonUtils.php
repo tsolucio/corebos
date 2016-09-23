@@ -1314,10 +1314,8 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
  * This function returns an array
  */
 function getCustomBlocks($module, $disp_view) {
-	global $log;
+	global $log, $adb, $current_user, $mod_strings;
 	$log->debug("Entering getCustomBlocks(" . $module . "," . $disp_view . ") method ...");
-	global $adb, $current_user;
-	global $mod_strings;
 	$tabid = getTabid($module);
 	$block_detail = Array();
 	$getBlockinfo = "";
@@ -1332,16 +1330,14 @@ function getCustomBlocks($module, $disp_view) {
 		$block_label[$blockid] = $adb->query_result($result, $i, "blocklabel");
 		$sLabelVal = getTranslatedString($block_label[$blockid], $module);
 		array_push($block_list, $sLabelVal);
-//                echo '<pre>';var_dump($disp_view,$disp_view == 'detail_view',file_exists("Smarty/templates/modules/$module/{$block_label[$blockid]}_display.tpl"),"Smarty/templates/modules/$module/{$block_label[$blockid]}_display.tpl");echo '</pre>';
-                if (($disp_view == 'edit_view' || $disp_view == 'create' || $disp_view == 'create_view') && file_exists("Smarty/templates/modules/$module/{$block_label[$blockid]}_edit.tpl")) {
-                    $block_list[$sLabelVal] = array('custom' => true, 'tpl' => "modules/$module/{$block_label[$blockid]}_edit.tpl");
-                } elseif ($disp_view == 'detail_view' && file_exists("Smarty/templates/modules/$module/{$block_label[$blockid]}_detail.tpl")) {
-                    $block_list[$sLabelVal] = array('custom' => true, 'tpl' => "modules/$module/{$block_label[$blockid]}_detail.tpl");
-                } else {
-                    $block_list[$sLabelVal] = array('custom' => false, 'tpl' => '');
-                }
+		if (($disp_view == 'edit_view' || $disp_view == 'create' || $disp_view == 'create_view') && file_exists("Smarty/templates/modules/$module/{$block_label[$blockid]}_edit.tpl")) {
+			$block_list[$sLabelVal] = array('custom' => true, 'tpl' => "modules/$module/{$block_label[$blockid]}_edit.tpl");
+		} elseif ($disp_view == 'detail_view' && file_exists("Smarty/templates/modules/$module/{$block_label[$blockid]}_detail.tpl")) {
+			$block_list[$sLabelVal] = array('custom' => true, 'tpl' => "modules/$module/{$block_label[$blockid]}_detail.tpl");
+		} else {
+			$block_list[$sLabelVal] = array('custom' => false, 'tpl' => '');
+		}
 	}
-
 	return $block_list;
 }
 

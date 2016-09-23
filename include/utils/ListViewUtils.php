@@ -116,10 +116,7 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 			$field[] = $adb->query_result($result, $k, "fieldname");
 		}
 	}
-	//end
-	//modified for vtiger_customview 27/5 - $app_strings change to $mod_strings
 	foreach ($focus->list_fields as $name => $tableinfo) {
-		//added for vtiger_customview 27/5
 		if ($oCv) {
 			if (isset($oCv->list_fields_name)) {
 				$fieldname = $oCv->list_fields_name[$name];
@@ -149,7 +146,7 @@ function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order
 		}
 		if ($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0 || in_array($fieldname, $field) || $fieldname == '' || ($name == 'Close' && $module == 'Calendar')) {
 			if (isset($focus->sortby_fields) && $focus->sortby_fields != '' && $name != 'Close') {
-				//Added on 14-12-2005 to avoid if and else check for every list field for arrow image and change order
+				//Avoid if and else check for every list field for arrow image and change order
 				$change_sorder = array('ASC' => 'DESC', 'DESC' => 'ASC');
 				$arrow_gif = array('ASC' => 'arrow_down.gif', 'DESC' => 'arrow_up.gif');
 				foreach ($focus->list_fields[$name] as $tab => $col) {
@@ -576,8 +573,6 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 			}
 			foreach ($focus->list_fields as $name => $tableinfo) {
 				$fieldname = $focus->list_fields_name[$name];
-
-				//added for vtiger_customview 27/5
 				if ($oCv) {
 					if (isset($oCv->list_fields_name)) {
 						$fieldname = $oCv->list_fields_name[$name];
@@ -881,9 +876,9 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 									$value = '';
 								}
 							}
-                                                } elseif ($module == 'PriceBooks' && $fieldname == 'listprice') {
-                                                    $val_raw = $adb->query_result($list_result, $i - 1, $fieldname);
-                                                    $value = $val_raw;
+						} elseif ($module == 'PriceBooks' && $fieldname == 'listprice') {
+							$val_raw = $adb->query_result($list_result, $i - 1, $fieldname);
+							$value = $val_raw;
 						} else {
 							$list_result_count = $i - 1;
 							$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, "list", "", $returnset, $oCv->setdefaultviewid);

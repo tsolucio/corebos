@@ -1192,7 +1192,6 @@ function createRecords($obj) {
 
 	for ($i = 0; $i < $numberOfRecords; ++$i) {
 		$row = $adb->raw_query_result_rowdata($result, $i);
-		$rowId = $row['id'];
 		$entityInfo = null;
 		$fieldData = array();
 		$lineItems = array();

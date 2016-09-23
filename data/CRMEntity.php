@@ -744,7 +744,7 @@ class CRMEntity {
 			}
 		}
 
-		/* Prasad: Fix for ticket #4595 */
+		/* Block access to empty record */
 		if (isset($this->table_name)) {
 			$mod_index_col = $this->tab_name_index[$this->table_name];
 			if ($adb->query_result($result[$this->table_name], 0, $mod_index_col) == '') {
