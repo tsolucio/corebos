@@ -1101,7 +1101,7 @@ class freetag {
 			ON (${prefix}freetags.id = tag_id)
 			WHERE 1=1
 			$tagger_sql
-			GROUP BY tag
+			GROUP BY tag_id
 			ORDER BY quantity DESC LIMIT 0, $max";
 		$rs = $adb->pquery($sql, $params);
 		$retarr = $retarr1 = $return_value = array();

@@ -1761,9 +1761,6 @@ class ReportRun extends CRMEntity {
 		if(isset($selectlist))
 		{
 			$selectedcolumns = implode(", ",$selectlist);
-			if($chartReport == true){
-				$selectedcolumns .= ", count(*) AS 'groupby_count'";
-			}
 		}
 		//groups list
 		if(isset($groupslist))
@@ -1806,7 +1803,7 @@ class ReportRun extends CRMEntity {
 			$wheresql .= " and ".$advfiltersql;
 		}
 
-		$reportquery = $this->getReportsQuery($this->primarymodule, $type,$where_condition);
+		$reportquery = $basereportquery = $this->getReportsQuery($this->primarymodule, $type,$where_condition);
 
 		// If we don't have access to any columns, let us select one column and limit result to show we have no results
 		// Fix for: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/4758 - Prasad
@@ -1859,7 +1856,9 @@ class ReportRun extends CRMEntity {
 		if(trim($groupsquery) != "" && $type !== 'COLUMNSTOTOTAL')
 		{
 			if($chartReport == true){
-				$reportquery .= " group by ".$this->GetFirstSortByField($reportid);
+				reset($groupslist);
+				$first_key = key($groupslist);
+				$reportquery = 'select '.$columnlist[$first_key].", count(*) AS 'groupby_count' $basereportquery $wheresql group by ".$this->GetFirstSortByField($reportid);
 			}else{
 				$reportquery .= " order by ".$groupsquery;
 			}

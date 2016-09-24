@@ -2445,7 +2445,7 @@ function getListQuery($module, $where = '') {
 			$query .= "WHERE vtiger_crmentity.deleted = 0 " . $where;
 			break;
 		Case "Calendar":
-
+			// only one row per event no matter how many contacts are related
 			$query = "SELECT vtiger_activity.activityid as act_id,vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_crmentity.setype,
 		vtiger_activity.*,
 		vtiger_contactdetails.lastname, vtiger_contactdetails.firstname,
@@ -2454,10 +2454,12 @@ function getListQuery($module, $where = '') {
 		FROM vtiger_activity
 		LEFT JOIN vtiger_activitycf
 			ON vtiger_activitycf.activityid = vtiger_activity.activityid
-		LEFT JOIN vtiger_cntactivityrel
-			ON vtiger_cntactivityrel.activityid = vtiger_activity.activityid
-		LEFT JOIN vtiger_contactdetails
-			ON vtiger_contactdetails.contactid = vtiger_cntactivityrel.contactid
+		LEFT JOIN (SELECT min(vtiger_cntactivityrel.contactid) as contactid,vtiger_cntactivityrel.activityid
+					from vtiger_cntactivityrel
+					inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_cntactivityrel.contactid and deleted=0
+					GROUP BY vtiger_cntactivityrel.activityid
+					) ctorel ON ctorel.activityid = vtiger_activity.activityid
+		LEFT JOIN vtiger_contactdetails ON vtiger_contactdetails.contactid = ctorel.contactid
 		LEFT JOIN vtiger_seactivityrel
 			ON vtiger_seactivityrel.activityid = vtiger_activity.activityid
 		LEFT OUTER JOIN vtiger_activity_reminder

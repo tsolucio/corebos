@@ -25,7 +25,7 @@ function getTopAccounts($maxval,$calCnt)
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 
-	$list_query = "select vtiger_potential.potentialname,vtiger_account.accountid, vtiger_account.accountname, ".
+	$list_query = "select vtiger_account.accountid, vtiger_account.accountname, ".
 	"vtiger_account.tickersymbol, sum(vtiger_potential.amount) as amount from vtiger_potential ".
 	"inner join vtiger_crmentity on (vtiger_potential.potentialid=vtiger_crmentity.crmid) ".
 	"inner join vtiger_account on (vtiger_potential.related_to=vtiger_account.accountid) ";

@@ -385,7 +385,7 @@ function getTaxDetailsForProduct($productid, $available='all', $acvid=0)
 		}
 		if($available != 'all' && $available == 'available_associated')
 		{
-			$query = "SELECT vtiger_producttaxrel.*, vtiger_inventorytaxinfo.* FROM vtiger_inventorytaxinfo left JOIN vtiger_producttaxrel ON vtiger_inventorytaxinfo.taxid = vtiger_producttaxrel.taxid WHERE vtiger_producttaxrel.productid = ? or vtiger_inventorytaxinfo.deleted=0 GROUP BY vtiger_inventorytaxinfo.taxid";
+			$query = "SELECT max(vtiger_producttaxrel.taxpercentage), vtiger_inventorytaxinfo.* FROM vtiger_inventorytaxinfo left JOIN vtiger_producttaxrel ON vtiger_inventorytaxinfo.taxid = vtiger_producttaxrel.taxid WHERE vtiger_producttaxrel.productid = ? or vtiger_inventorytaxinfo.deleted=0 GROUP BY vtiger_inventorytaxinfo.taxid";
 		}
 		else
 		{
@@ -396,7 +396,7 @@ function getTaxDetailsForProduct($productid, $available='all', $acvid=0)
 		$res = $adb->pquery($query, $params);
 		for($i=0;$i<$adb->num_rows($res);$i++)
 		{
-			$tax_details[$i]['productid'] = $adb->query_result($res,$i,'productid');
+			$tax_details[$i]['productid'] = $productid;
 			$tax_details[$i]['taxid'] = $adb->query_result($res,$i,'taxid');
 			$tax_details[$i]['taxname'] = $adb->query_result($res,$i,'taxname');
 			$tax_details[$i]['taxlabel'] = html_entity_decode($adb->query_result($res,$i,'taxlabel'),ENT_QUOTES,$default_charset);
@@ -1175,7 +1175,7 @@ function createRecords($obj) {
 	}
 
 	$tableName = Import_Utils::getDbTableName($obj->user);
-	$sql = 'SELECT * FROM ' . $tableName . ' WHERE status = '. Import_Data_Controller::$IMPORT_RECORD_NONE .' GROUP BY subject';
+	$sql = 'SELECT subject FROM ' . $tableName . ' WHERE status = '. Import_Data_Controller::$IMPORT_RECORD_NONE .' GROUP BY subject';
 	if($obj->batchImport) {
 		$importBatchLimit = GlobalVariable::getVariable('Import_Batch_Limit', 100);
 		$sql .= ' LIMIT '. $importBatchLimit;
@@ -1283,9 +1283,9 @@ function createRecords($obj) {
 			array_push($lineItems,$lineItemData);
 		}
 		foreach ($fieldMapping as $fieldName => $index) {
-			$fieldData[$fieldName] = $row[strtolower($fieldName)];
+			$fieldData[$fieldName] = $subjectRow[strtolower($fieldName)];
 			if ($fieldName=='hdnTaxType') {
-				$fieldData['taxtype'] = $row[strtolower($fieldName)];
+				$fieldData['taxtype'] = $subjectRow[strtolower($fieldName)];
 			}
 			if ($fieldName=='txtAdjustment' and $fieldData[$fieldName]!=0) {
 				$fieldData['adjustmentType'] = 'add';
@@ -1351,7 +1351,7 @@ function importRecord($obj, $inventoryFieldData, $lineItems) {
 function getImportStatusCount($obj) {
 	global $adb;
 	$tableName = Import_Utils_Helper::getDbTableName($obj->user);
-	$result = $adb->query('SELECT status FROM '.$tableName. ' GROUP BY subject');
+	$result = $adb->query('SELECT status FROM '.$tableName. ' GROUP BY subject,status');
 
 	$statusCount = array('TOTAL' => 0, 'IMPORTED' => 0, 'FAILED' => 0, 'PENDING' => 0,
 		'CREATED' => 0, 'SKIPPED' => 0, 'UPDATED' => 0, 'MERGED' => 0);
@@ -1399,7 +1399,7 @@ function undoLastImport($obj, $user) {
 		exit;
 	}
 	$result = $adb->query("SELECT recordid FROM $dbTableName WHERE status = ". Import_Data_Controller::$IMPORT_RECORD_CREATED
-			." AND recordid IS NOT NULL GROUP BY subject");
+			." AND recordid IS NOT NULL GROUP BY subject,recordid");
 	$noOfRecords = $adb->num_rows($result);
 	$noOfRecordsDeleted = 0;
 	for($i=0; $i<$noOfRecords; ++$i) {

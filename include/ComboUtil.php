@@ -37,7 +37,7 @@ function getComboArray($combofieldNames)
 			{
 				$roleids = $roleid;
 			}
-			$sql = "select distinct $tableName from vtiger_$tableName  inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$tableName.picklist_valueid where roleid in(". generateQuestionMarks($roleids) .") order by sortid";
+			$sql = "select distinct $tableName,sortid from vtiger_$tableName  inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$tableName.picklist_valueid where roleid in(". generateQuestionMarks($roleids) .") order by sortid";
 			$params = array($roleids);
 		}
 		$result = $adb->pquery($sql, $params);
