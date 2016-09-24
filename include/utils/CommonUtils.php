@@ -350,18 +350,15 @@ function getTabid($module) {
 			include('tabdata.php');
 			if (!isset($tab_info_array[$module])) return null;
 			$tabid = $tab_info_array[$module];
-			// Update information to cache for re-use
-			VTCacheUtils::updateTabidInfo($tabid, $module);
 		} else {
-			$log->info("module is " . $module);
 			global $adb;
 			$sql = "select tabid from vtiger_tab where name=?";
 			$result = $adb->pquery($sql, array($module));
 			if (!$result or $adb->num_rows($result)==0) return null;
 			$tabid = $adb->query_result($result, 0, "tabid");
-			// Update information to cache for re-use
-			VTCacheUtils::updateTabidInfo($tabid, $module);
 		}
+		// Update information to cache for re-use
+		VTCacheUtils::updateTabidInfo($tabid, $module);
 	}
 	$log->debug("Exiting getTabid method ...");
 	return $tabid;
@@ -1245,11 +1242,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 		$display_type_check = 'vtiger_field.displaytype in (1,4)';
 	}
 
-	/* if($non_mass_edit_fields!='' && sizeof($non_mass_edit_fields)!=0){
-	  $mass_edit_query = "AND vtiger_field.fieldname NOT IN (". generateQuestionMarks($non_mass_edit_fields) .")";
-	  } */
-
-	//retreive the vtiger_profileList from database
+	// Retrieve the profile list from database
 	require('user_privileges/user_privileges_' . $current_user->id . '.php');
 	if ($disp_view == "detail_view") {
 		if ($is_admin == true || $profileGlobalPermission[2] == 0 || $module == "Users" || $module == "Emails") {
