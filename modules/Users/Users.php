@@ -803,9 +803,7 @@ class Users extends CRMEntity {
 				$column .= ', crypt_type';
 				$qparams[] = $crypt_type;
 			}
-			// END
-
-			$sql1 = "insert into $table_name ($column) values(" . generateQuestionMarks($qparams) . ")";
+			$sql1 = "insert into $table_name ($column, date_entered) values(" . generateQuestionMarks($qparams) . ",NOW())";
 			$this->db->pquery($sql1, $qparams);
 		}
 	}
