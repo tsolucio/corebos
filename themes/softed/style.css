@@ -1916,11 +1916,12 @@ ul {
 	background-image: url(images/buttonorange.png);
 }
 
-.ajax_save_detailview, .ajax_cancelsave_detailview {
+.detailview_ajaxbutton {
 	padding: 5px;
 	margin: 2px;
 	display: inline-block;
 	border-radius: 5px;
+	text-decoration: none !important;
 }
 
 .inactive{
