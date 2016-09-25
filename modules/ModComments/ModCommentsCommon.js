@@ -17,13 +17,13 @@ if (typeof(ModCommentsCommon) == 'undefined') {
 			}
 
 			var url = 'module=ModComments&action=ModCommentsAjax&file=DetailViewAjax&ajax=true&ajxaction=WIDGETADDCOMMENT&parentid='+encodeURIComponent(parentid);
-			url += '&comment=' + encodeURIComponent(textBoxField.value);
 
 			VtigerJS_DialogBox.block();
 			document.getElementById("vtbusy_info").style.display="inline";
 
 			jQuery.ajax({
 				method: 'POST',
+				data : {'comment': textBoxField.value},
 				url: 'index.php?'+url,
 			}).done(function (response) {
 					document.getElementById("vtbusy_info").style.display="none";
