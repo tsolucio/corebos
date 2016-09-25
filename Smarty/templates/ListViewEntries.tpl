@@ -162,12 +162,14 @@
 							<td style="border-bottom: 1px solid rgb(204, 204, 204);" nowrap="nowrap" width="75%">
 								<span class="genHeaderSmall">
 								{if $MODULE_CREATE eq 'SalesOrder' || $MODULE_CREATE eq 'PurchaseOrder' || $MODULE_CREATE eq 'Invoice' || $MODULE_CREATE eq 'Quotes'}
-									{$APP.LBL_NO} {$APP.$MODULE_CREATE} {$APP.LBL_FOUND} !
+									<!--{$APP.LBL_NO} {$APP.$MODULE_CREATE} {$APP.LBL_FOUND} !-->
+									{$APP.LBL_NO_RECORD}&nbsp;{$APP.LBL_FOUND}
 								{elseif $MODULE eq 'Calendar'}
 									{$APP.LBL_NO} {$APP.ACTIVITIES} {$APP.LBL_FOUND} !
 								{else}
 									{* vtlib customization: Use translation string only if available *}
-									{$APP.LBL_NO} {if $APP.$MODULE_CREATE}{$APP.$MODULE_CREATE}{else}{$MODULE_CREATE}{/if} {$APP.LBL_FOUND} !
+									<!--{$APP.LBL_NO} {if $APP.$MODULE_CREATE}{$APP.$MODULE_CREATE}{else}{$MODULE_CREATE}{/if} {$APP.LBL_FOUND} !-->
+									{$APP.LBL_NO_RECORD}&nbsp;{$APP.LBL_FOUND}
 								{/if}
 								</span>
 							</td>
