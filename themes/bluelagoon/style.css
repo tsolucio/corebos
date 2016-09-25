@@ -1780,16 +1780,24 @@ ul {
     font-weight:bold;
 }
 
-.save{
+.save, .ajax_save_detailview {
     background-color:#0000CD;
     color:#fff;
     font-weight:bold;
 }
 
-.cancel {
+.cancel, .ajax_cancelsave_detailview {
     background-color:#C6E2FF;
     color:#000;
     font-weight:bold;
+}
+
+.detailview_ajaxbutton {
+	padding: 5px;
+	margin: 2px;
+	display: inline-block;
+	border-radius: 5px;
+	text-decoration: none !important;
 }
 
 .inactive{
