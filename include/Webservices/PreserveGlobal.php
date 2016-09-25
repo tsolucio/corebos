@@ -14,7 +14,7 @@ class VTWS_PreserveGlobal{
 
 	static function preserveGlobal($name,$value){
 		//$name store the name of the global.
-		global $$name;
+		global ${$name};
 
 		if(!isset(VTWS_PreserveGlobal::$globalData[$name]) or !is_array(VTWS_PreserveGlobal::$globalData[$name])){
 			VTWS_PreserveGlobal::$globalData[$name] = array();
@@ -26,17 +26,16 @@ class VTWS_PreserveGlobal{
 
 	static function restore($name){
 		//$name store the name of the global.
-		global $$name;
+		global ${$name};
 
 		if(is_array(VTWS_PreserveGlobal::$globalData[$name]) && count(VTWS_PreserveGlobal::$globalData[$name]) > 0){
 			$$name = array_pop(VTWS_PreserveGlobal::$globalData[$name]);
 			unset(VTWS_PreserveGlobal::$globalData[$name]);
 		}
-		$$name;
 	}
 
 	static function getGlobal($name){
-		global $$name;
+		global ${$name};
 		return VTWS_PreserveGlobal::preserveGlobal($name,$$name);
 	}
 
@@ -47,7 +46,7 @@ class VTWS_PreserveGlobal{
 	static function flush(){
 		foreach (VTWS_PreserveGlobal::$globalData as $name => $detail) {
 			//$name store the name of the global.
-			global $$name;
+			global ${$name};
 			if(is_array(VTWS_PreserveGlobal::$globalData[$name]) && count(VTWS_PreserveGlobal::$globalData[$name]) > 0) {
 				$$name = array_pop(VTWS_PreserveGlobal::$globalData[$name]);
 				unset(VTWS_PreserveGlobal::$globalData[$name]);
