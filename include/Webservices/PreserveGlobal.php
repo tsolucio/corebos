@@ -30,6 +30,7 @@ class VTWS_PreserveGlobal{
 		
 		if(is_array(VTWS_PreserveGlobal::$globalData[$name]) && count(VTWS_PreserveGlobal::$globalData[$name]) > 0){
 			$$name = array_pop(VTWS_PreserveGlobal::$globalData[$name]);
+			unset(VTWS_PreserveGlobal::$globalData[$name]);
 		}
 		$$name;
 	}
@@ -45,6 +46,7 @@ class VTWS_PreserveGlobal{
 			global $$name;
 			if(is_array(VTWS_PreserveGlobal::$globalData[$name]) && count(VTWS_PreserveGlobal::$globalData[$name]) > 0) {
 				$$name = array_pop(VTWS_PreserveGlobal::$globalData[$name]);
+				unset(VTWS_PreserveGlobal::$globalData[$name]);
 			}
 		}
 	}
