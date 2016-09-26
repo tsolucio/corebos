@@ -1091,9 +1091,9 @@ $picklistDependencyDSCalendar = Vtiger_DependencyPicklist::getPicklistDependency
 		<?php if(!empty($picklistDependencyDSCalendar)){ ?>
 		(new FieldDependencies(<?php echo Zend_Json::encode($picklistDependencyDSCalendar) ?>)).init(document.forms['createTodo']);
 		<?php } ?>
+		getSelectedStatus(); // Call status onchange function in case default status is Held
 	});
-</script>
-<script type="text/javascript">
+
 function triggerOnChangeHandler(elementName, formName){
 	if(typeof(formName) == 'undefined') {
 		formName = document.forms['EditView'];

@@ -342,8 +342,13 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		if ($account_id != '') {
 			$account_name = getAccountName($account_id);
 		}
+		// vtlib customization: For listview javascript triggers
+		$modMetaInfo=getEntityFieldNames('Accounts');
+		$modEName=(is_array($modMetaInfo['fieldname']) ? $modMetaInfo['fieldname'][0] : $modMetaInfo['fieldname']);
+		$vtlib_metainfo = "<span type='vtlib_metainfo' vtrecordid='$account_id' vtfieldname=".
+				"'$modEName' vtmodule='Accounts' style='display:none;'></span>";
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
-		$label_fld[] = $account_name;
+		$label_fld[] = $account_name.$vtlib_metainfo;
 		$label_fld["secid"] = $account_id;
 		$label_fld["link"] = "index.php?module=Accounts&action=DetailView&record=" . $account_id;
 		//Account Name View
