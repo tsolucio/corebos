@@ -6,19 +6,8 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
-{*
-/*********************************************************************************
-** The contents of this file are subject to the vtiger CRM Public License Version 1.0
- * ("License"); You may not use this file except in compliance with the License
- * The Original Code is:  vtiger CRM Open Source
- * The Initial Developer of the Original Code is vtiger.
- * Portions created by vtiger are Copyright (C) vtiger.
- * All Rights Reserved.
-*
- ********************************************************************************/ *}
 {literal}
 <script type="text/javascript">
 function getModuleEntityNoInfo(form) {
@@ -38,7 +27,7 @@ function getModuleEntityNoInfo(form) {
 function updateModEntityNoSetting(button, form) {
 	var module = form.selmodule.value;
 	var recprefix = form.recprefix.value;
-    var recnumber = form.recnumber.value;
+	var recnumber = form.recnumber.value;
 	var mode = 'UPDATESETTINGS';
 
 	if(recnumber == '') {
@@ -70,7 +59,7 @@ function updateModEntityNoSetting(button, form) {
 function updateModEntityExisting(button, form) {
 	var module = form.selmodule.value;
 	var recprefix = form.recprefix.value;
-    var recnumber = form.recnumber.value;
+	var recnumber = form.recnumber.value;
 	var mode = 'UPDATEBULKEXISTING';
 
 	if(recnumber == '') {
@@ -106,8 +95,8 @@ function updateModEntityExisting(button, form) {
 <tbody>
 <tr>
 	<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-    <td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
-    <br>
+	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
+	<br>
 
 	<div align=center>
 		{include file='SetMenu.tpl'}
@@ -120,7 +109,7 @@ function updateModEntityExisting(button, form) {
 		<tr>
 			<td valign=top class="small">{$MOD.LBL_CUSTOMIZE_MODENT_NUMBER_DESCRIPTION}</td>
 		</tr>
-		</table>				
+		</table>
 		<br>
 		<form method="POST" action="javascript:;" onsubmit="VtigerJS_DialogBox.block();">
 		<table border="0" cellpadding="10" cellspacing="0" width="100%">
@@ -147,7 +136,7 @@ function updateModEntityExisting(button, form) {
 				</table>
 
 				<div id='customentity_infodiv' class="listRow">
-					{include file='Settings/CustomModEntityNoInfo.tpl'}				
+					{include file='Settings/CustomModEntityNoInfo.tpl'}
 				</div>
 
 			<table border="0" cellpadding="5" cellspacing="0" width="100%">
