@@ -337,7 +337,7 @@ function getAllTaxes($available='all', $sh='',$mode='',$id='')
 			$where_ids="taxid in ($insert_str) or";
 		}
 
-		$res = $adb->pquery("select * from $tablename where $where_ids  deleted=0 order by taxid",$result_ids);
+		$res = $adb->pquery("select * from $tablename where $where_ids deleted=0 order by taxid",$result_ids);
 	} else {
 		//This where condition is added to get all products or only availble products
 		$where = '';
@@ -385,7 +385,7 @@ function getTaxDetailsForProduct($productid, $available='all', $acvid=0)
 		}
 		if($available != 'all' && $available == 'available_associated')
 		{
-			$query = "SELECT vtiger_producttaxrel.*, vtiger_inventorytaxinfo.* FROM vtiger_inventorytaxinfo left JOIN vtiger_producttaxrel ON vtiger_inventorytaxinfo.taxid = vtiger_producttaxrel.taxid WHERE vtiger_producttaxrel.productid = ? or vtiger_inventorytaxinfo.deleted=0 GROUP BY vtiger_inventorytaxinfo.taxid";
+			$query = "SELECT max(vtiger_producttaxrel.taxpercentage), vtiger_inventorytaxinfo.* FROM vtiger_inventorytaxinfo left JOIN vtiger_producttaxrel ON vtiger_inventorytaxinfo.taxid = vtiger_producttaxrel.taxid WHERE vtiger_producttaxrel.productid = ? or vtiger_inventorytaxinfo.deleted=0 GROUP BY vtiger_inventorytaxinfo.taxid";
 		}
 		else
 		{
@@ -396,7 +396,7 @@ function getTaxDetailsForProduct($productid, $available='all', $acvid=0)
 		$res = $adb->pquery($query, $params);
 		for($i=0;$i<$adb->num_rows($res);$i++)
 		{
-			$tax_details[$i]['productid'] = $adb->query_result($res,$i,'productid');
+			$tax_details[$i]['productid'] = $productid;
 			$tax_details[$i]['taxid'] = $adb->query_result($res,$i,'taxid');
 			$tax_details[$i]['taxname'] = $adb->query_result($res,$i,'taxname');
 			$tax_details[$i]['taxlabel'] = html_entity_decode($adb->query_result($res,$i,'taxlabel'),ENT_QUOTES,$default_charset);
@@ -610,12 +610,13 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 			$lineitem_id = vtlib_purify($_REQUEST['lineitem_id'.$i]);
 			$query ="insert into vtiger_inventoryproductrel(id, productid, sequence_no, quantity, listprice, comment, description, lineitem_id) values(?,?,?,?,?,?,?,?)";
 			$qparams = array($focus->id,$prod_id,$prod_seq,$qty,$listprice,$comment,$description,$lineitem_id);
+			$adb->pquery($query,$qparams);
 		} else {
 			$query ="insert into vtiger_inventoryproductrel(id, productid, sequence_no, quantity, listprice, comment, description) values(?,?,?,?,?,?,?)";
 			$qparams = array($focus->id,$prod_id,$prod_seq,$qty,$listprice,$comment,$description);
+			$adb->pquery($query,$qparams);
 			$lineitem_id = $adb->getLastInsertID();
 		}
-		$adb->pquery($query,$qparams);
 
 		$sub_prod_str = $_REQUEST['subproduct_ids'.$i];
 		if (!empty($sub_prod_str)) {
@@ -642,13 +643,13 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 		if($_REQUEST['discount_type'.$i] == 'percentage')
 		{
 			$updatequery .= " discount_percent=?,";
-			array_push($updateparams, $_REQUEST['discount_percentage'.$i]);
+			array_push($updateparams, floatval($_REQUEST['discount_percentage'.$i]));
 		}
 		elseif($_REQUEST['discount_type'.$i] == 'amount')
 		{
 			$updatequery .= " discount_amount=?,";
 			$discount_amount = $_REQUEST['discount_amount'.$i];
-			array_push($updateparams, $discount_amount);
+			array_push($updateparams, floatval($discount_amount));
 		}
 		if($_REQUEST['taxtype'] == 'group')
 		{
@@ -661,7 +662,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 				if(isset($_REQUEST[$request_tax_name]))
 					$tax_val =vtlib_purify($_REQUEST[$request_tax_name]);
 				$updatequery .= " $tax_name = ?,";
-				array_push($updateparams,$tax_val);
+				array_push($updateparams,floatval($tax_val));
 			}
 			$updatequery = trim($updatequery,',')." where id=? and productid=? and lineitem_id = ?";
 			array_push($updateparams,$focus->id,$prod_id, $lineitem_id);
@@ -673,7 +674,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 				if (!in_array($tax_name, $ipr_cols)) continue;
 				$request_tax_name = $tax_name."_percentage".$i;
 				$updatequery .= " $tax_name = ?,";
-				array_push($updateparams, vtlib_purify($_REQUEST[$request_tax_name]));
+				array_push($updateparams, floatval(vtlib_purify($_REQUEST[$request_tax_name])));
 			}
 			$updatequery = trim($updatequery,',')." where id=? and productid=? and lineitem_id = ?";
 			array_push($updateparams, $focus->id,$prod_id, $lineitem_id);
@@ -689,29 +690,29 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 
 	$updatequery  = " update $focus->table_name set ";
 	$updateparams = array();
-	$subtotal = $_REQUEST['subtotal'];
+	$subtotal = vtlib_purify($_REQUEST['subtotal']);
 	$updatequery .= " subtotal=?,";
-	array_push($updateparams, $subtotal);
+	array_push($updateparams, floatval($subtotal));
 
 	$updatequery .= " taxtype=?,";
-	array_push($updateparams, $_REQUEST['taxtype']);
+	array_push($updateparams, vtlib_purify($_REQUEST['taxtype']));
 
 	//for discount percentage or discount amount
 	if($_REQUEST['discount_type_final'] == 'percentage')
 	{
 		$updatequery .= " discount_percent=?,";
-		array_push($updateparams, vtlib_purify($_REQUEST['discount_percentage_final']));
+		array_push($updateparams, floatval(vtlib_purify($_REQUEST['discount_percentage_final'])));
 	}
 	elseif($_REQUEST['discount_type_final'] == 'amount')
 	{
 		$discount_amount_final = vtlib_purify($_REQUEST['discount_amount_final']);
 		$updatequery .= " discount_amount=?,";
-		array_push($updateparams, $discount_amount_final);
+		array_push($updateparams, floatval($discount_amount_final));
 	}
 
 	$shipping_handling_charge = vtlib_purify($_REQUEST['shipping_handling_charge']);
 	$updatequery .= " s_h_amount=?,";
-	array_push($updateparams, $shipping_handling_charge);
+	array_push($updateparams, floatval($shipping_handling_charge));
 
 	//if the user gave - sign in adjustment then add with the value
 	$adjustmentType = '';
@@ -720,11 +721,11 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 
 	$adjustment = vtlib_purify($_REQUEST['adjustment']);
 	$updatequery .= " adjustment=?,";
-	array_push($updateparams, $adjustmentType.$adjustment);
+	array_push($updateparams, floatval($adjustmentType.$adjustment));
 
 	$total = vtlib_purify($_REQUEST['total']);
 	$updatequery .= " total=?";
-	array_push($updateparams, $total);
+	array_push($updateparams, floatval($total));
 
 	//$id_array = Array('PurchaseOrder'=>'purchaseorderid','SalesOrder'=>'salesorderid','Quotes'=>'quoteid','Invoice'=>'invoiceid');
 	//Added where condition to which entity we want to update these values
@@ -744,7 +745,7 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 		if($_REQUEST[$tax_name] != '' and in_array($sh_tax_details[$i]['taxname'], $isr_cols)) {
 			$sh_query_fields .= $sh_tax_details[$i]['taxname'].",";
 			$sh_query_values .= "?,";
-			array_push($sh_query_params, vtlib_purify($_REQUEST[$tax_name]));
+			array_push($sh_query_params, floatval(vtlib_purify($_REQUEST[$tax_name])));
 		}
 	}
 	$sh_query_fields = trim($sh_query_fields,',');
@@ -1174,7 +1175,7 @@ function createRecords($obj) {
 	}
 
 	$tableName = Import_Utils::getDbTableName($obj->user);
-	$sql = 'SELECT * FROM ' . $tableName . ' WHERE status = '. Import_Data_Controller::$IMPORT_RECORD_NONE .' GROUP BY subject';
+	$sql = 'SELECT subject FROM ' . $tableName . ' WHERE status = '. Import_Data_Controller::$IMPORT_RECORD_NONE .' GROUP BY subject';
 	if($obj->batchImport) {
 		$importBatchLimit = GlobalVariable::getVariable('Import_Batch_Limit', 100);
 		$sql .= ' LIMIT '. $importBatchLimit;
@@ -1191,7 +1192,6 @@ function createRecords($obj) {
 
 	for ($i = 0; $i < $numberOfRecords; ++$i) {
 		$row = $adb->raw_query_result_rowdata($result, $i);
-		$rowId = $row['id'];
 		$entityInfo = null;
 		$fieldData = array();
 		$lineItems = array();
@@ -1283,9 +1283,9 @@ function createRecords($obj) {
 			array_push($lineItems,$lineItemData);
 		}
 		foreach ($fieldMapping as $fieldName => $index) {
-			$fieldData[$fieldName] = $row[strtolower($fieldName)];
+			$fieldData[$fieldName] = $subjectRow[strtolower($fieldName)];
 			if ($fieldName=='hdnTaxType') {
-				$fieldData['taxtype'] = $row[strtolower($fieldName)];
+				$fieldData['taxtype'] = $subjectRow[strtolower($fieldName)];
 			}
 			if ($fieldName=='txtAdjustment' and $fieldData[$fieldName]!=0) {
 				$fieldData['adjustmentType'] = 'add';
@@ -1351,7 +1351,7 @@ function importRecord($obj, $inventoryFieldData, $lineItems) {
 function getImportStatusCount($obj) {
 	global $adb;
 	$tableName = Import_Utils_Helper::getDbTableName($obj->user);
-	$result = $adb->query('SELECT status FROM '.$tableName. ' GROUP BY subject');
+	$result = $adb->query('SELECT status FROM '.$tableName. ' GROUP BY subject,status');
 
 	$statusCount = array('TOTAL' => 0, 'IMPORTED' => 0, 'FAILED' => 0, 'PENDING' => 0,
 		'CREATED' => 0, 'SKIPPED' => 0, 'UPDATED' => 0, 'MERGED' => 0);
@@ -1399,7 +1399,7 @@ function undoLastImport($obj, $user) {
 		exit;
 	}
 	$result = $adb->query("SELECT recordid FROM $dbTableName WHERE status = ". Import_Data_Controller::$IMPORT_RECORD_CREATED
-			." AND recordid IS NOT NULL GROUP BY subject");
+			." AND recordid IS NOT NULL GROUP BY subject,recordid");
 	$noOfRecords = $adb->num_rows($result);
 	$noOfRecordsDeleted = 0;
 	for($i=0; $i<$noOfRecords; ++$i) {

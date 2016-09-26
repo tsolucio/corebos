@@ -135,7 +135,7 @@ function sensex_info()
 						   <tr>
 							<td style="padding:10px">
 							<!-- General details -->
-								<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small">
+								<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small createview_table">
 								   <tr>
 									<td  colspan=4 style="padding:5px">
 									   <div align="center">

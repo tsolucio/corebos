@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 require_once('include/utils/CommonUtils.php');
 require_once('include/database/PearDatabase.php');
@@ -16,16 +15,14 @@ require_once('include/database/PearDatabase.php');
  */
 function getComboArray($combofieldNames)
 {
-	global $log,$mod_strings;
-        $log->debug("Entering getComboArray(".$combofieldNames.") method ...");
-	global $adb,$current_user;
-        $roleid=$current_user->roleid;
+	global $log, $mod_strings, $adb, $current_user;
+	$log->debug("Entering getComboArray(".$combofieldNames.") method ...");
+	$roleid=$current_user->roleid;
 	$comboFieldArray = Array();
 	foreach ($combofieldNames as $tableName => $arrayName)
 	{
 		$fldArrName= $arrayName;
 		$arrayName = Array();
-		
 		$sql = "select $tableName from vtiger_$tableName";
 		$params = array();
 		if(!is_admin($current_user))
@@ -40,10 +37,10 @@ function getComboArray($combofieldNames)
 			{
 				$roleids = $roleid;
 			}
-			$sql = "select distinct $tableName from vtiger_$tableName  inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$tableName.picklist_valueid where roleid in(". generateQuestionMarks($roleids) .") order by sortid";
+			$sql = "select distinct $tableName,sortid from vtiger_$tableName  inner join vtiger_role2picklist on vtiger_role2picklist.picklistvalueid = vtiger_$tableName.picklist_valueid where roleid in(". generateQuestionMarks($roleids) .") order by sortid";
 			$params = array($roleids);
 		}
-		$result = $adb->pquery($sql, $params);	
+		$result = $adb->pquery($sql, $params);
 		while($row = $adb->fetch_array($result))
 		{
 			$val = $row[$tableName];
@@ -52,16 +49,11 @@ function getComboArray($combofieldNames)
 		$comboFieldArray[$fldArrName] = $arrayName;
 	}
 	$log->debug("Exiting getComboArray method ...");
-	return $comboFieldArray;	
+	return $comboFieldArray;
 }
 function getUniquePicklistID()
 {
 	global $adb;
-	/*$sql="select id from vtiger_picklistvalues_seq";
-	$picklistvalue_id = $adb->query_result($adb->pquery($sql, array()),0,'id');
-
-	$qry = "update vtiger_picklistvalues_seq set id =?";
-	$adb->pquery($qry, array(++$picklistvalue_id));*/
 	return $adb->getUniqueID('vtiger_picklistvalues');
 }
 

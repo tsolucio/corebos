@@ -195,7 +195,6 @@ if (isset($_REQUEST['from_homepage'])) {
 	elseif ($_REQUEST['from_homepage'] == 'pending_activities')
 		$list_query .= " AND (vtiger_activity.status is NULL OR vtiger_activity.status not in ('Completed','Deferred')) and (vtiger_activity.eventstatus is NULL OR vtiger_activity.eventstatus not in ('Held','Not Held')) AND (CAST((CONCAT(due_date,' ',time_end)) AS DATETIME) <= '$endDateTime' OR CAST((CONCAT(vtiger_recurringevents.recurringdate,' ',time_start)) AS DATETIME) <= '$endDateTime')";
 }
-$list_query .= ' GROUP BY vtiger_activity.activityid'; // only one row per event no matter how many contacts are related
 if(isset($order_by) && $order_by != '') {
 	if($order_by == 'smownerid') {
 		$list_query .= ' ORDER BY user_name '.$sorder;

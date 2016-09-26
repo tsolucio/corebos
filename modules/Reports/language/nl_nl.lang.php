@@ -243,6 +243,7 @@ $mod_strings = Array(
 'LBL_SHOW_STANDARD_FILTERS' => 'Toon Standaard Filters',
 'LBL_YEAR' => 'Jaar',
 'LBL_MONTH'=> 'Maand',
+'LBL_DAY'=> 'Day',
 'LBL_QUARTER'=> 'Kwartaal',
 'LBL_NONE'=> 'Geen',
 

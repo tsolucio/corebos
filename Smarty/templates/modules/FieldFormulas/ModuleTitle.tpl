@@ -14,4 +14,5 @@
 	</tr>
 </tbody></table>
 <br><br>
-
+{assign var='ERROR_MESSAGE' value='<b>DO NOT use this extension, it is OBSOLETE</b>. Please use <a href="index.php?module=com_vtiger_workflow&action=workflowlist&parenttab=Settings">Update Field Workflows</a> instead. Thank you.'}
+{include file='applicationmessage.tpl'}

@@ -1108,8 +1108,9 @@ function c4y_eventsave() {
 	jQuery.ajax({
 		type: frm1.attr('method'),
 		url: "index.php?module=Calendar4You&action=Calendar4YouAjax&file=SaveEvent",
-		data: frm1r.serialize(),
-		success: function (data){
+		data: frm1r.serialize()
+	})
+	.done(function (data){
 			jQuery('#EditView')[0].reset();
 			var return_data = data.split("-");
 			jQuery('#calendar_div').fullCalendar( 'refetchEvents' );
@@ -1122,7 +1123,6 @@ function c4y_eventsave() {
 			} else {
 				alert(data);
 			}
-		}
 	});
 	return false;
 };
@@ -1140,8 +1140,9 @@ function c4y_todosave(val_result) {
 	jQuery.ajax({
 		type: frm2.attr('method'),
 		url: "index.php?module=Calendar4You&action=Calendar4YouAjax&file=SaveTodo",
-		data: frm2r.serialize(),
-		success: function (data) {
+		data: frm2r.serialize()
+	})
+	.done(function (data) {
 			jQuery('#createTodoID')[0].reset();
 			var return_data = data.split("-");
 			jQuery('#calendar_div').fullCalendar( 'refetchEvents' );
@@ -1154,7 +1155,6 @@ function c4y_todosave(val_result) {
 			} else {
 				alert("error:"+data);
 			}
-		}
 	});
 }
 frm2.submit(function (){

@@ -37,8 +37,7 @@ if(empty($current_language))
 	$current_language = 'en_us';
 
 //modified query for recurring events -Jag
-$query="select vtiger_crmentity.crmid,vtiger_seactivityrel.crmid as setype,vtiger_activity.*,
-	vtiger_activity_reminder.reminder_time,vtiger_activity_reminder.recurringid,vtiger_recurringevents.recurringdate
+$query="select vtiger_activity.activityid,vtiger_recurringevents.recurringid
 	from vtiger_activity
 	inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid
 	inner join vtiger_activity_reminder on vtiger_activity.activityid=vtiger_activity_reminder.activity_id
@@ -52,8 +51,17 @@ $result = $adb->pquery($query, array());
 
 if($adb->num_rows($result) >= 1)
 {
-	while($result_set = $adb->fetch_array($result))
-	{
+	$query='select vtiger_crmentity.crmid,vtiger_seactivityrel.crmid as setype,vtiger_activity.*,
+	vtiger_activity_reminder.reminder_time,vtiger_activity_reminder.recurringid,vtiger_recurringevents.recurringdate
+	from vtiger_activity
+	inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_activity.activityid
+	inner join vtiger_activity_reminder on vtiger_activity.activityid=vtiger_activity_reminder.activity_id
+	left outer join vtiger_recurringevents on vtiger_activity.activityid=vtiger_recurringevents.activityid
+	left outer join vtiger_seactivityrel on vtiger_seactivityrel.activityid = vtiger_activity.activityid
+	where vtiger_activity.activityid = ? limit 1';
+	while($allactrs = $adb->fetch_array($result)) {
+		$actrs = $adb->pquery($query, array($allactrs['activityid']));
+		$result_set = $adb->fetch_array($actrs);
 		$date_start = $result_set['date_start'];
 		$time_start = $result_set['time_start'];
 		$reminder_time = $result_set['reminder_time'];

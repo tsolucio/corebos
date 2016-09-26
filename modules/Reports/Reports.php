@@ -572,37 +572,45 @@ class Reports extends CRMEntity{
 		if ($module == 'Calendar') {
 			$tabid = array('9','16');
 		}
-		$params = array($tabid, $block);
 
 		require('user_privileges/user_privileges_'.$current_user->id.'.php');
 		//Security Check
 		if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] ==0)
 		{
-			$sql = "select * from vtiger_field where vtiger_field.tabid in (". generateQuestionMarks($tabid) .") and vtiger_field.block in (". generateQuestionMarks($block) .") and vtiger_field.displaytype in (1,2,3) and vtiger_field.presence in (0,2) AND tablename NOT IN (".generateQuestionMarks($skipTalbes).") ";
-
-			//fix for Ticket #4016
-			if($module == "Calendar")
-				$sql.=" group by vtiger_field.fieldlabel order by sequence";
-			else
-			$sql.=" order by sequence";
+			if($module == 'Calendar') {
+				// calendar is special because it is two modules and has many overlapping fields so we have to filter them
+				$sql = 'select * from vtiger_field where vtiger_field.block in ('. generateQuestionMarks($block) .') and vtiger_field.displaytype in (1,2,3) and vtiger_field.presence in (0,2) AND tablename NOT IN ('.generateQuestionMarks($skipTalbes).') ';
+				$sql.= ' and vtiger_field.fieldid in (select min(fieldid) from vtiger_field where vtiger_field.tabid in ('. generateQuestionMarks($tabid) .') group by fieldlabel) order by sequence';
+				$params = array($block, $skipTalbes, $tabid);
+			} else {
+				$sql = 'select * from vtiger_field where vtiger_field.tabid in ('. generateQuestionMarks($tabid) .') and vtiger_field.block in ('. generateQuestionMarks($block) .') and vtiger_field.displaytype in (1,2,3) and vtiger_field.presence in (0,2) AND tablename NOT IN ('.generateQuestionMarks($skipTalbes).') order by sequence';
+				$params = array($tabid, $block, $skipTalbes);
+			}
 		}
 		else
 		{
+			if($module == 'Calendar') {
+				// calendar is special because it is two modules and has many overlapping fields so we have to filter them
+				$sql = 'select distinct vtiger_field.* from vtiger_field inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid where vtiger_field.block in ('. generateQuestionMarks($block) .') and vtiger_field.displaytype in (1,2,3) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)';
+				$params = array($block);
+			} else {
+				$sql = 'select distinct vtiger_field.* from vtiger_field inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid where vtiger_field.tabid in ('. generateQuestionMarks($tabid) .') and vtiger_field.block in ('. generateQuestionMarks($block) .') and vtiger_field.displaytype in (1,2,3) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)';
+				$params = array($tabid, $block);
+			}
 			$profileList = getCurrentUserProfileList();
-			$sql = "select * from vtiger_field inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid where vtiger_field.tabid in (". generateQuestionMarks($tabid) .") and vtiger_field.block in (". generateQuestionMarks($block) .") and vtiger_field.displaytype in (1,2,3) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)";
 			if (count($profileList) > 0) {
 				$sql .= " and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
 				array_push($params, $profileList);
 			}
 			$sql .= ' and tablename NOT IN ('.generateQuestionMarks($skipTalbes).') ';
-
-			//fix for Ticket #4016
-			if($module == "Calendar")
-				$sql.=" group by vtiger_field.fieldlabel order by sequence";
-			else
-				$sql.=" group by vtiger_field.fieldid order by sequence";
+			array_push($params, $skipTalbes);
+			if($module == 'Calendar') {
+				$sql.= ' and vtiger_field.fieldid in (select min(fieldid) from vtiger_field where vtiger_field.tabid in ('. generateQuestionMarks($tabid) .') group by fieldlabel) order by sequence';
+				array_push($params, $tabid);
+			} else {
+				$sql.= ' group by vtiger_field.fieldid order by sequence';
+			}
 		}
-		array_push($params, $skipTalbes);
 		$module_columnlist = array();
 		$result = $adb->pquery($sql, $params);
 		$noofrows = $adb->num_rows($result);

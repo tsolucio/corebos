@@ -210,8 +210,9 @@ function set_return_contact_address(contact_id,contact_name, mailingstreet, othe
 function set_return_address(contact_id,contact_name, mailingstreet, otherstreet, mailingcity, othercity, mailingstate, otherstate, mailingzip, otherzip, mailingcountry, othercountry,mailingpobox,otherpobox) {
 	jQuery.ajax({
 		url: 'index.php?module=Contacts&action=ContactsAjax&file=SelectContactAddress',
-		context: document.body,
-		success: function(response) {
+		context: document.body
+	})
+	.done(function(response) {
 			jQuery('#setaddresscontactdiv').html(response);
 			jQuery('#setaddresscontactdiv').show();
 			fnvshNrm('setaddresscontactdiv');
@@ -229,7 +230,6 @@ function set_return_address(contact_id,contact_name, mailingstreet, otherstreet,
 			jQuery("#otherzip").val(otherzip);
 			jQuery("#othercountry").val(othercountry);
 			jQuery("#otherpobox").val(otherpobox);
-		}
 	});
 }
 

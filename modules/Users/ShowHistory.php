@@ -15,19 +15,11 @@ require_once('modules/Users/Users.php');
 require_once('include/logging.php');
 require_once('include/utils/utils.php');
 
-global $app_strings;
-global $mod_strings;
-global $app_list_strings;
-global $current_language, $current_user, $adb;
-
-global $list_max_entries_per_page;
-global $urlPrefix;
+global $app_strings, $mod_strings, $app_list_strings, $current_language, $current_user, $adb, $list_max_entries_per_page, $urlPrefix;
 
 $log = LoggerManager::getLogger('login_list');
 
-global $currentModule;
-
-global $theme;
+global $currentModule, $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 

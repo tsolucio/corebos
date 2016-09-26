@@ -331,7 +331,7 @@ class Documents extends CRMEntity {
 
 		$query = "SELECT $fields_list, foldername, filename,
 					concat(path,vtiger_attachments.attachmentsid,'_',filename) as storagename,
-					concat(account_no,' ',accountname) as account, concat(contact_no,' ',firstname,' ',lastname) as contact
+					concat(account_no,' ',accountname) as account, concat(contact_no,' ',firstname,' ',lastname) as contact,vtiger_senotesrel.crmid as relatedid
 				FROM vtiger_notes
 				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_notes.notesid
 				left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid=vtiger_notes.notesid
@@ -348,7 +348,6 @@ class Documents extends CRMEntity {
 			$query .= " WHERE ($where) AND ".$where_auto;
 		else
 			$query .= " WHERE ".$where_auto;
-		$query.=' group by vtiger_notes.notesid';
 		$log->debug("Exiting create_export_query method ...");
 		return $query;
 	}

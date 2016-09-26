@@ -13,10 +13,10 @@ $modObj = CRMEntity::getInstance($currentModule);
 $ajaxaction = $_REQUEST["ajxaction"];
 
 if($ajaxaction == 'WIDGETADDCOMMENT') {
-	global $current_user;
+	global $current_user, $default_charset;
 	list($void,$canaddcomments) = cbEventHandler::do_filter('corebos.filter.ModComments.canAdd', array(vtlib_purify($_REQUEST['parentid']), true));
 	if (isPermitted($currentModule, 'CreateView', '') == 'yes' and $canaddcomments) {
-		$modObj->column_fields['commentcontent'] = vtlib_purify($_REQUEST['comment']);
+		$modObj->column_fields['commentcontent'] = htmlentities($_REQUEST['comment'], ENT_QUOTES, $default_charset); // we don't clean this one to accept all characters in comment
 		$modObj->column_fields['related_to'] = vtlib_purify($_REQUEST['parentid']);
 		$modObj->column_fields['assigned_user_id'] = $current_user->id;
 		$modObj->save($currentModule);
@@ -29,6 +29,7 @@ if($ajaxaction == 'WIDGETADDCOMMENT') {
 		$adb->query("update vtiger_crmentity set modifiedtime ='".$modObj->column_fields['modifiedtime']."' where crmid =".$modObj->column_fields['related_to']);
 		//end update
 		$widgetInstance = $modObj->getWidget('DetailViewBlockCommentWidget');
+		$modObj->column_fields['commentcontent'] = htmlentities($modObj->column_fields['commentcontent'], ENT_QUOTES, $default_charset);
 		echo ':#:SUCCESS'. $widgetInstance->processItem($modObj->getAsCommentModel($modObj->column_fields));
 	} else {
 		echo ':#:FAILURE';

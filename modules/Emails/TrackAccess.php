@@ -37,7 +37,7 @@ $em->initTriggerCache();
 $entityData = VTEntityData::fromEntityId($adb, $mailid);
 //Event triggering code
 $em->triggerEvent("vtiger.entity.beforesave", $entityData);
-$adb->pquery("INSERT INTO vtiger_email_access(crmid, mailid, accessdate, accesstime) VALUES(?,?,?,?)", array($crmid, $mailid, date('Y-m-d'), '0000-00-00 '.date('H:i:s')));
+$adb->pquery("INSERT INTO vtiger_email_access(crmid, mailid, accessdate, accesstime) VALUES(?,?,?,?)", array($crmid, $mailid, date('Y-m-d'), date('H:i:s')));
 
 $result = $adb->pquery("select count(*) as count from vtiger_email_access where crmid=? and mailid=?",array($crmid, $mailid));
 $count = $adb->query_result($result,0,'count');

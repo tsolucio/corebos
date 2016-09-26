@@ -109,9 +109,8 @@ class Vtiger_Link {
 			Array($tabid, $type, $url, $iconpath, $label));
 		if(!$adb->num_rows($checkres)) {
 			$uniqueid = self::__getUniqueId();
-			$sql = 'INSERT INTO vtiger_links (linkid,tabid,linktype,linklabel,linkurl,linkicon,'.
-			'sequence';
-			$params = Array($uniqueid, $tabid, $type, $label, $url, $iconpath, $sequence);
+			$sql = 'INSERT INTO vtiger_links (linkid,tabid,linktype,linklabel,linkurl,linkicon,sequence';
+			$params = Array($uniqueid, $tabid, $type, $label, $url, $iconpath, intval($sequence));
 			if(!empty($handlerInfo)) {
 				$sql .= (', handler_path, handler_class, handler');
 				$params[] = $handlerInfo['path'];

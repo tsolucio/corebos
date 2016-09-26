@@ -363,11 +363,12 @@ class VtigerCRMObjectMeta extends EntityMeta {
 	private function retrieveMetaForBlock($block){
 		global $adb;
 		$tabid = $this->getTabId();
+		$uniqueFieldsRestriction = 'vtiger_field.fieldid IN (select min(vtiger_field.fieldid) from vtiger_field where vtiger_field.tabid=? GROUP BY vtiger_field.columnname)';
 		//Select condition if we are in Calendar
 		if($tabid == '9')
-			$condition = "(vtiger_field.tabid=? or vtiger_field.tablename='vtiger_activitycf')";
+			$condition = "($uniqueFieldsRestriction or vtiger_field.tablename='vtiger_activitycf')";
 		else
-			$condition = "vtiger_field.tabid=?";
+			$condition = $uniqueFieldsRestriction;
 		require('user_privileges/user_privileges_'.$this->user->id.'.php');
 		if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] ==0){
 			$sql = "select *, '0' as readonly from vtiger_field where ".$condition." and block in (".generateQuestionMarks($block).") and displaytype in (1,2,3,4)";
@@ -375,7 +376,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 		}else{
 			$profileList = getCurrentUserProfileList();
 			if (count($profileList) > 0) {
-				$sql = "SELECT vtiger_field.*, vtiger_profile2field.readonly
+				$sql = "SELECT distinct vtiger_field.*, vtiger_profile2field.readonly
 						FROM vtiger_field
 						INNER JOIN vtiger_profile2field
 						ON vtiger_profile2field.fieldid = vtiger_field.fieldid
@@ -383,10 +384,10 @@ class VtigerCRMObjectMeta extends EntityMeta {
 						ON vtiger_def_org_field.fieldid = vtiger_field.fieldid
 						WHERE ".$condition." AND vtiger_profile2field.visible = 0
 						AND vtiger_profile2field.profileid IN (". generateQuestionMarks($profileList) .")
-						AND vtiger_def_org_field.visible = 0 and vtiger_field.block in (".generateQuestionMarks($block).") and vtiger_field.displaytype in (1,2,3,4) and vtiger_field.presence in (0,2) group by columnname";
+						AND vtiger_def_org_field.visible = 0 and vtiger_field.block in (".generateQuestionMarks($block).") and vtiger_field.displaytype in (1,2,3,4) and vtiger_field.presence in (0,2)";
 				$params = array($tabid, $profileList, $block);
 			} else {
-				$sql = "SELECT vtiger_field.*, vtiger_profile2field.readonly
+				$sql = "SELECT distinct vtiger_field.*, vtiger_profile2field.readonly
 						FROM vtiger_field
 						INNER JOIN vtiger_profile2field
 						ON vtiger_profile2field.fieldid = vtiger_field.fieldid
@@ -394,14 +395,9 @@ class VtigerCRMObjectMeta extends EntityMeta {
 						ON vtiger_def_org_field.fieldid = vtiger_field.fieldid
 						WHERE ".$condition."
 						AND vtiger_profile2field.visible = 0
-						AND vtiger_def_org_field.visible = 0 and vtiger_field.block in (".generateQuestionMarks($block).") and vtiger_field.displaytype in (1,2,3,4) and vtiger_field.presence in (0,2) group by columnname";
+						AND vtiger_def_org_field.visible = 0 and vtiger_field.block in (".generateQuestionMarks($block).") and vtiger_field.displaytype in (1,2,3,4) and vtiger_field.presence in (0,2)";
 				$params = array($tabid, $block);
 			}
-		}
-
-		// Bulk Save Mode: Group by is not required!?
-		if(CRMEntity::isBulkSaveMode()) {
-			$sql = preg_replace("/group by [^ ]*/", " ", $sql);
 		}
 
 		$result = $adb->pquery($sql,$params);

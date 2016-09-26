@@ -641,15 +641,16 @@ function insertIntoRecurringTable(& $recurObj)
 		$result1 = $adb->pquery($sql1, $params1);
 		for($i=0;$i < $adb->num_rows($result1);$i++)
 		{
-			$permitted_lists[] = $adb->query_result($result1,$i,'tablename');
-			$permitted_lists[] = $adb->query_result($result1,$i,'columnname');
-			if($adb->query_result($result1,$i,'columnname') == "date_start")
-			{
+			$tname = $adb->query_result($result1,$i,'tablename');
+			if ($tname == 'vtiger_seactivityrel' or $tname == 'vtiger_contactdetails') continue;
+			$cname = $adb->query_result($result1,$i,'columnname');
+			$permitted_lists[] = $tname;
+			$permitted_lists[] = $cname;
+			if($cname == "date_start") {
 				$permitted_lists[] = 'vtiger_activity';
 				$permitted_lists[] = 'time_start';
 			}
-			if($adb->query_result($result1,$i,'columnname') == "due_date")
-			{
+			if($cname == "due_date") {
 				$permitted_lists[] = 'vtiger_activity';
 				$permitted_lists[] = 'time_end';
 			}
@@ -665,18 +666,12 @@ function insertIntoRecurringTable(& $recurObj)
 				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_activity.activityid 
 				LEFT JOIN vtiger_salesmanactivityrel ON vtiger_salesmanactivityrel.activityid=vtiger_activity.activityid 
 				LEFT JOIN vtiger_users ON vtiger_users.id=vtiger_salesmanactivityrel.smid 
-				LEFT JOIN vtiger_cntactivityrel ON vtiger_cntactivityrel.activityid=vtiger_activity.activityid 
-				LEFT JOIN vtiger_contactdetails ON vtiger_contactdetails.contactid=vtiger_cntactivityrel.contactid 
-				LEFT JOIN vtiger_seactivityrel ON vtiger_seactivityrel.activityid = vtiger_activity.activityid 
 				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid 
 				WHERE vtiger_crmentity.deleted=0 AND vtiger_activity.activitytype='Meeting' ";
 				if (isset($groupidlist))
 					$query .= " AND (vtiger_users.user_name='".$user_name."' OR vtiger_crmentity.smownerid IN (".substr($groupidlist,1)."))";
 				else
 					$query .= " AND vtiger_users.user_name='".$user_name."'";
-				//crm-now added GROUP BY to prevent the same entry to appear multiple times if assigned to multiple contacts during synchronization with Outlook
-				$query .= " GROUP BY clndrid";
-				
 		$log->debug("Exiting get_calendarsforol method ...");
 		return $query;
 	}

@@ -113,8 +113,9 @@ function set_return_address(account_id, account_name, bill_street, ship_street, 
 function set_return_shipbilladdress(account_id, account_name, bill_street, ship_street, bill_city, ship_city, bill_state, ship_state, bill_code, ship_code, bill_country, ship_country, bill_pobox, ship_pobox) {
 	jQuery.ajax({
 		url : 'index.php?module=Accounts&action=AccountsAjax&file=SelectAccountAddress',
-		context : document.body,
-		success : function(response) {
+		context : document.body
+	})
+	.done(function(response) {
 			jQuery('#setaddressaccountdiv').html(response);
 			jQuery('#setaddressaccountdiv').show();
 			fnvshNrm('setaddressaccountdiv');
@@ -132,7 +133,6 @@ function set_return_shipbilladdress(account_id, account_name, bill_street, ship_
 			jQuery("#ship_code").val(ship_code);
 			jQuery("#ship_country").val(ship_country);
 			jQuery("#ship_pobox").val(ship_pobox);
-		}
 	});
 }
 

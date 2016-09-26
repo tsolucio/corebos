@@ -3140,33 +3140,29 @@ function getSubordinateRoleAndUsers($roleId, $users = true)
 function getCurrentUserProfileList()
 {
 	global $log,$current_user;
-	$log->debug("Entering getCurrentUserProfileList() method ...");
+	$log->debug('Entering getCurrentUserProfileList() method ...');
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	$profList = array();
-	$i=0;
 	foreach ($current_user_profiles as $profid) {
 		array_push($profList, $profid);
-		$i++;
 	}
-	$log->debug("Exiting getCurrentUserProfileList method ...");
+	$log->debug('Exiting getCurrentUserProfileList method ...');
 	return $profList;
 }
 
 function getCurrentUserGroupList()
 {
 	global $log,$current_user;
-	$log->debug("Entering getCurrentUserGroupList() method ...");
+	$log->debug('Entering getCurrentUserGroupList() method ...');
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	$grpList= array();
 	if(sizeof($current_user_groups) > 0)
 	{
-		$i=0;
 		foreach ($current_user_groups as $grpid) {
 			array_push($grpList, $grpid);
-			$i++;
 		}
 	}
-	$log->debug("Exiting getCurrentUserGroupList method ...");
+	$log->debug('Exiting getCurrentUserGroupList method ...');
 	return $grpList;
 }
 
@@ -3662,12 +3658,13 @@ function getGrpId($groupname) {
   * @param $fld_module -- Module :: Type String
   * @param $userid -- User Id :: Type integer
   * @param $fieldname -- Field Name :: Type varchar
-  * @returns $rolename -- Role Name :: Type varchar
+  * @param $accessmode -- Access Mode :: Type varchar :: readonly or anything else
+  * @returns 0 | 1 :: Type varchar if visible or not
  */
 function getFieldVisibilityPermission($fld_module, $userid, $fieldname, $accessmode='readonly')
 {
 	global $log,$adb, $current_user;
-	$log->debug("Entering getFieldVisibilityPermission(".$fld_module.",". $userid.",". $fieldname.") method ...");
+	$log->debug("Entering getFieldVisibilityPermission(".$fld_module.",". $userid.",". $fieldname.", $accessmode) method ...");
 
 	// Check if field is in-active
 	$fieldActive = isFieldActive($fld_module,$fieldname);
@@ -3675,6 +3672,7 @@ function getFieldVisibilityPermission($fld_module, $userid, $fieldname, $accessm
 		return '1';
 	}
 
+	if (empty($userid)) $userid = $current_user->id;
 	require('user_privileges/user_privileges_'.$userid.'.php');
 
 	/* Asha: Fix for ticket #4508. Users with View all and Edit all permission will also have visibility permission for all fields */
@@ -3685,32 +3683,34 @@ function getFieldVisibilityPermission($fld_module, $userid, $fieldname, $accessm
 	}
 	else
 	{
-		//get vtiger_profile list using userid
-		$profilelist = getCurrentUserProfileList();
+		//get profile list using userid
+		$profilelist = array();
+		foreach ($current_user_profiles as $profid) {
+			array_push($profilelist, $profid);
+		}
 
 		//get tabid
 		$tabid = getTabid($fld_module);
 
 		if (count($profilelist) > 0) {
 			if($accessmode == 'readonly') {
-				$query="SELECT vtiger_profile2field.* FROM vtiger_field INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid WHERE vtiger_field.tabid=? AND vtiger_profile2field.visible=0 AND vtiger_def_org_field.visible=0  AND vtiger_profile2field.profileid in (". generateQuestionMarks($profilelist) .") AND vtiger_field.fieldname= ? and vtiger_field.presence in (0,2) GROUP BY vtiger_field.fieldid";
+				$query="SELECT vtiger_profile2field.visible FROM vtiger_field INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid WHERE vtiger_field.tabid=? AND vtiger_profile2field.visible=0 AND vtiger_def_org_field.visible=0  AND vtiger_profile2field.profileid in (". generateQuestionMarks($profilelist) .") AND vtiger_field.fieldname= ? and vtiger_field.presence in (0,2) GROUP BY vtiger_field.fieldid";
 			} else {
-				$query="SELECT vtiger_profile2field.* FROM vtiger_field INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid WHERE vtiger_field.tabid=? AND vtiger_profile2field.visible=0 AND vtiger_profile2field.readonly=0 AND vtiger_def_org_field.visible=0  AND vtiger_profile2field.profileid in (". generateQuestionMarks($profilelist) .") AND vtiger_field.fieldname= ? and vtiger_field.presence in (0,2) GROUP BY vtiger_field.fieldid";
+				$query="SELECT vtiger_profile2field.visible FROM vtiger_field INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid WHERE vtiger_field.tabid=? AND vtiger_profile2field.visible=0 AND vtiger_profile2field.readonly=0 AND vtiger_def_org_field.visible=0  AND vtiger_profile2field.profileid in (". generateQuestionMarks($profilelist) .") AND vtiger_field.fieldname= ? and vtiger_field.presence in (0,2) GROUP BY vtiger_field.fieldid";
 			}
 			$params = array($tabid, $profilelist, $fieldname);
-
 		} else {
 			if($accessmode == 'readonly') {
-				$query="SELECT vtiger_profile2field.* FROM vtiger_field INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid WHERE vtiger_field.tabid=? AND vtiger_profile2field.visible=0 AND vtiger_def_org_field.visible=0  AND vtiger_field.fieldname= ? and vtiger_field.presence in (0,2) GROUP BY vtiger_field.fieldid";
- 			} else {
-				$query="SELECT vtiger_profile2field.* FROM vtiger_field INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid WHERE vtiger_field.tabid=? AND vtiger_profile2field.visible=0 AND vtiger_profile2field.readonly=0 AND vtiger_def_org_field.visible=0  AND vtiger_field.fieldname= ? and vtiger_field.presence in (0,2) GROUP BY vtiger_field.fieldid";
+				$query="SELECT vtiger_profile2field.visible FROM vtiger_field INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid WHERE vtiger_field.tabid=? AND vtiger_profile2field.visible=0 AND vtiger_def_org_field.visible=0  AND vtiger_field.fieldname= ? and vtiger_field.presence in (0,2) GROUP BY vtiger_field.fieldid";
+			} else {
+				$query="SELECT vtiger_profile2field.visible FROM vtiger_field INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid WHERE vtiger_field.tabid=? AND vtiger_profile2field.visible=0 AND vtiger_profile2field.readonly=0 AND vtiger_def_org_field.visible=0  AND vtiger_field.fieldname= ? and vtiger_field.presence in (0,2) GROUP BY vtiger_field.fieldid";
 			}
 			$params = array($tabid, $fieldname);
 		}
 		$result = $adb->pquery($query, $params);
 		$log->debug("Exiting getFieldVisibilityPermission method ...");
 		if($adb->num_rows($result) == 0) return '1';
-		return ($adb->query_result($result,"0","visible")."");
+		return ($adb->query_result($result,0,'visible').'');
 	}
 }
 

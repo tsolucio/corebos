@@ -134,8 +134,8 @@ class LoginHistory {
 		global $adb;
 		cbEventHandler::do_action('corebos.audit.login',array($usname, 'Users', 'Login', $usname, date("Y-m-d H:i:s")));
 		$query = "Insert into vtiger_loginhistory (user_name, user_ip, logout_time, login_time, status) values (?,?,?,?,?)";
-		$params = array($usname,$usip,'0000-00-00 00:00:00', $this->db->formatDate($intime, true),'Signed in');
-		$result = $adb->pquery($query, $params) or die("MySQL error: ".mysql_error());
+		$params = array($usname,$usip,null, $this->db->formatDate($intime, true),'Signed in');
+		$result = $adb->pquery($query, $params);
 		return $result;
 	}
 	
@@ -156,8 +156,7 @@ class LoginHistory {
 		}
 		// update the user login info.
 		$query = "Update vtiger_loginhistory set logout_time =?, status=? where login_id = ?";
-		$result = $adb->pquery($query, array($this->db->formatDate($outtime, true), 'Signed off', $loginid))
-			or die("MySQL error: ".mysql_error());
+		$result = $adb->pquery($query, array($this->db->formatDate($outtime, true), 'Signed off', $loginid));
 	}
 
 	/** Function to create list query 
@@ -212,7 +211,7 @@ class LoginHistory {
 				$row = $adb->fetch_array($result);
 				$login_delay = time() - strtotime($row['login_time']);
 				// User not logged out and is within expected delay?
-				if (strcmp('0000-00-00 00:00:00', $row['logout_time']) === 0 && $login_delay < $accept_delay_seconds) {
+				if (empty($row['logout_time']) && $login_delay < $accept_delay_seconds) {
 					$firstTimeLoginStatus = true;
 				}
 			}

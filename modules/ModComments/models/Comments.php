@@ -9,13 +9,13 @@
  ************************************************************************************/
 class ModComments_CommentsModel {
 	private $data;
-	
+
 	static $ownerNamesCache = array();
 	
 	function __construct($datarow) {
 		$this->data = $datarow;
 	}
-	
+
 	function author() {
 		$authorid = $this->data['smcreatorid'];
 		if(!isset(self::$ownerNamesCache[$authorid])) {
@@ -23,12 +23,12 @@ class ModComments_CommentsModel {
 		}
 		return self::$ownerNamesCache[$authorid];
 	}
-	
+
 	function timestamp(){
 		$date = new DateTimeField($this->data['modifiedtime']);
 		return $date->getDisplayDateTimeValue();
 	}
-	
+
 	function content() {
 		return decode_html($this->data['commentcontent']);
 	}

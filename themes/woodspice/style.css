@@ -1875,16 +1875,24 @@ ul {
     font-weight:bold;
 }
 
-.save{
+.save, .ajax_save_detailview {
     background-color:#ddccaa;
     color:#333333;
     font-weight:bold;
 }
 
-.cancel {
+.cancel, .ajax_cancelsave_detailview {
     background-color:#8F8C74;
     color:#ffffff;
     font-weight:bold;
+}
+
+.detailview_ajaxbutton {
+	padding: 5px;
+	margin: 2px;
+	display: inline-block;
+	border-radius: 5px;
+	text-decoration: none !important;
 }
 
 .inactive{

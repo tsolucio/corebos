@@ -22,8 +22,7 @@ function homepage_getUpcomingActivities($maxval,$calCnt){
 	require_once("data/Tracker.php");
 	require_once('include/utils/utils.php');
 
-	global $adb;
-	global $current_user;
+	global $adb, $current_user;
 
 	$dbStartDateTime = new DateTimeField(date('Y-m-d H:i:s'));
 	$userStartDate = $dbStartDateTime->getDisplayDate();
@@ -48,7 +47,7 @@ function homepage_getUpcomingActivities($maxval,$calCnt){
 	"('Completed','Deferred')) and  (  vtiger_activity.eventstatus is NULL OR ".
 	"vtiger_activity.eventstatus not in ('Held','Not Held') )".$upcoming_condition;
 
-	$list_query.= " GROUP BY vtiger_activity.activityid";
+	$list_query.= ' GROUP BY vtiger_activity.activityid,vtiger_recurringevents.recurringdate';
 	$list_query.= " ORDER BY date_start,time_start ASC";
 	$list_query.= " limit $maxval";
 
@@ -154,8 +153,7 @@ function homepage_getPendingActivities($maxval,$calCnt){
 	require_once("include/utils/utils.php");
 	require_once('include/utils/CommonUtils.php');
 
-	global $adb;
-	global $current_user;
+	global $adb, $current_user;
 
 	$dbStartDateTime = new DateTimeField(date('Y-m-d H:i:s'));
 	$userStartDate = $dbStartDateTime->getDisplayDate();
@@ -179,7 +177,7 @@ function homepage_getPendingActivities($maxval,$calCnt){
 	"('Completed','Deferred')) and (vtiger_activity.eventstatus is NULL OR  vtiger_activity.".
 	"eventstatus not in ('Held','Not Held')) ".$pending_condition;
 
-	$list_query.= " GROUP BY vtiger_activity.activityid";
+	$list_query.= ' GROUP BY vtiger_activity.activityid,vtiger_recurringevents.recurringdate';
 	$list_query.= " ORDER BY date_start,time_start ASC";
 	$list_query.= " limit $maxval";
 

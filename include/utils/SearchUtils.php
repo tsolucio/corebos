@@ -78,12 +78,11 @@ function getSearchListHeaderValues($focus, $module,$sort_qry='',$sorder='',$orde
 		}
 		array_push($field_list, $fieldname);
 	}
-	//Getting the Entries from Profile2 vtiger_field vtiger_table
+	//Getting the Entries from Profile2field table
 	if($is_admin == false)
 	{
 		$profileList = getCurrentUserProfileList();
-		//changed to get vtiger_field.fieldname
-		$query  = "SELECT vtiger_profile2field.*,vtiger_field.fieldname FROM vtiger_field INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid WHERE vtiger_field.tabid=? AND vtiger_profile2field.visible=0 AND vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN (". generateQuestionMarks($profileList) .") AND vtiger_field.fieldname IN (". generateQuestionMarks($field_list) .") and vtiger_field.presence in (0,2) GROUP BY vtiger_field.fieldid";
+		$query  = "SELECT vtiger_field.fieldname FROM vtiger_field INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid WHERE vtiger_field.tabid=? AND vtiger_profile2field.visible=0 AND vtiger_def_org_field.visible=0 AND vtiger_profile2field.profileid IN (". generateQuestionMarks($profileList) .") AND vtiger_field.fieldname IN (". generateQuestionMarks($field_list) .") and vtiger_field.presence in (0,2) GROUP BY vtiger_field.fieldid";
 		$result = $adb->pquery($query, array($tabid, $profileList, $field_list));
 		$field=Array();
 		for($k=0;$k < $adb->num_rows($result);$k++)
@@ -523,25 +522,19 @@ function BasicSearch($module,$search_field,$search_string,$input=''){
 *Param $module - module name
 *Returns the where conditions for list query in string format
 */
-
 function getAdvSearchfields($module)
 {
-	global $log;
-        $log->debug("Entering getAdvSearchfields(".$module.") method ...");
-	global $adb;
-	global $current_user;
-	global $mod_strings,$app_strings;
+	global $log, $adb, $current_user, $mod_strings,$app_strings;
+	$log->debug("Entering getAdvSearchfields(".$module.") method ...");
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 
 	$tabid = getTabid($module);
-        if($tabid==9)
-                $tabid="9,16";
+	if($tabid==9)
+		$tabid='9,16';
 
 	if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0)
 	{
-		$sql = "select * from vtiger_field ";
-		$sql.= " where vtiger_field.tabid in(?) and";
-		$sql.= " vtiger_field.displaytype in (1,2,3) and vtiger_field.presence in (0,2)";
+		$sql = 'select vtiger_field.* from vtiger_field where vtiger_field.displaytype in (1,2,3) and vtiger_field.presence in (0,2)';
 		if($tabid == 13 || $tabid == 15)
 		{
 			$sql.= " and vtiger_field.fieldlabel != 'Add Comment'";
@@ -562,18 +555,17 @@ function getAdvSearchfields($module)
 		{
 			$sql.= " and vtiger_field.fieldlabel != 'Attachment'";
 		}
-		$sql.= " group by vtiger_field.fieldlabel order by block,sequence";
+		$sql.= ' and vtiger_field.fieldid in (select min(fieldid) from vtiger_field where vtiger_field.tabid in (?) group by vtiger_field.fieldlabel) order by block,sequence';
 
 		$params = array($tabid);
 	}
 	else
 	{
 		$profileList = getCurrentUserProfileList();
-		$sql = "select * from vtiger_field inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid ";
-		$sql.= " where vtiger_field.tabid in(?) and";
-		$sql.= " vtiger_field.displaytype in (1,2,3) and vtiger_field.presence in (0,2) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0";
+		$sql = "select distinct vtiger_field.* from vtiger_field inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid ";
+		$sql.= ' where vtiger_field.displaytype in (1,2,3) and vtiger_field.presence in (0,2) and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0';
 
-		$params = array($tabid);
+		$params = array();
 
 		if (count($profileList) > 0) {
 			$sql.= "  and vtiger_profile2field.profileid in (". generateQuestionMarks($profileList) .")";
@@ -600,7 +592,8 @@ function getAdvSearchfields($module)
 		{
 			$sql.= " and vtiger_field.fieldlabel != 'Attachment'";
 		}
-		$sql .= " group by vtiger_field.fieldlabel order by block,sequence";
+		$sql.= ' and vtiger_field.fieldid in (select min(fieldid) from vtiger_field where vtiger_field.tabid in (?) group by vtiger_field.fieldlabel) order by block,sequence';
+		$params[] = $tabid;
 	}
 
 	$result = $adb->pquery($sql, $params);
@@ -640,20 +633,18 @@ function getAdvSearchfields($module)
 		}
 		//$fieldlabel1 = str_replace(" ","_",$fieldlabel); // Is not used anywhere
 		//Check added to search the lists by Inventory manager
-                if($fieldtablename == 'vtiger_quotes' && $fieldcolname == 'inventorymanager')
-                {
-                        $fieldtablename = 'vtiger_usersQuotes';
-                        $fieldcolname = 'user_name';
-                }
-		if($fieldtablename == 'vtiger_contactdetails' && $fieldcolname == 'reportsto')
-                {
-                        $fieldtablename = 'vtiger_contactdetails2';
-                        $fieldcolname = 'lastname';
-                }
-                if($fieldtablename == 'vtiger_notes' && $fieldcolname == 'folderid'){
-                	$fieldtablename = 'vtiger_attachmentsfolder';
-                	$fieldcolname = 'foldername';
-                }
+		if($fieldtablename == 'vtiger_quotes' && $fieldcolname == 'inventorymanager') {
+			$fieldtablename = 'vtiger_usersQuotes';
+			$fieldcolname = 'user_name';
+		}
+		if($fieldtablename == 'vtiger_contactdetails' && $fieldcolname == 'reportsto') {
+			$fieldtablename = 'vtiger_contactdetails2';
+			$fieldcolname = 'lastname';
+		}
+		if($fieldtablename == 'vtiger_notes' && $fieldcolname == 'folderid'){
+			$fieldtablename = 'vtiger_attachmentsfolder';
+			$fieldcolname = 'foldername';
+		}
 		if($fieldlabel != 'Related to')
 		{
 			if ($i==0)
@@ -681,7 +672,7 @@ function getAdvSearchfields($module)
 	if($module == 'HelpDesk')
 	{
 		$mod_fieldlabel = $mod_strings['Ticket ID'];
-                if($mod_fieldlabel =="") $mod_fieldlabel = 'Ticket ID';
+		if($mod_fieldlabel =="") $mod_fieldlabel = 'Ticket ID';
 
 		$OPTION_SET .= "<option value=\'vtiger_crmentity:crmid:".$fieldname."::".$fieldtypeofdata."\'>".$mod_fieldlabel."</option>";
 	}
@@ -689,7 +680,7 @@ function getAdvSearchfields($module)
 	if($module == 'Activities')
 	{
 		$mod_fieldlabel = $mod_strings['Activity Type'];
-                if($mod_fieldlabel =="") $mod_fieldlabel = 'Activity Type';
+		if($mod_fieldlabel =="") $mod_fieldlabel = 'Activity Type';
 
 		$OPTION_SET .= "<option value=\'vtiger_activity.activitytype:".$fieldname."::".$fieldtypeofdata."\'>".$mod_fieldlabel."</option>";
 	}
