@@ -66,6 +66,15 @@ foreach ($pdoInformation as $pdoline) {
 			$totalwithtax += ($qty * $_REQUEST['listPrice'.$i]) * ($tax_val/100);
 		}
 	}
+        $cbMap = cbMap::getMapByName($elementType.'InventoryDetails','MasterDetailLayout');
+        if ($cbMap!=null) {
+                $cbMapFields = $cbMap->MasterDetailLayout();
+                    foreach ($cbMapFields['detailview']['fieldnames'] as $mdfield) {
+                        if(!is_null($pdoline[$mdfield])){
+                            $_REQUEST[$mdfield.$i] = $pdoline[$mdfield];
+                        }
+                    }
+        }
 }
 $_REQUEST['totalProductCount']=$i;
 $_REQUEST['subtotal']=round($subtotal + $totalwithtax,2);
