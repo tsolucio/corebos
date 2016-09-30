@@ -265,6 +265,14 @@ function setMailerProperties($mail,$subject,$contents,$from_email,$from_name,$to
 		}
 	}
 
+        //If we send attachments from MarketingDashboard
+	if(is_array($attachment))
+	{
+            foreach($attachment as $file){
+			addAttachment($mail,$file,$emailid);
+            }
+	}
+
 	$mail->IsHTML(true);		// set email format to HTML
 	$mail->AllowEmpty = true; //allow sent empty body.
 	return;
