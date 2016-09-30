@@ -967,7 +967,7 @@ class VTFieldExpressionEvaluater{
 				$rsfld = $adb->pquery('select * from vtiger_field where fieldid=?',array($field->id));
 				$field = WebserviceField::fromQueryResult($adb, $rsfld, 0);
 				$fieldType = $field->getFieldDataType();
-				if ($fieldType=='reference') {
+				if ($fieldType=='reference' or $fieldType=='owner') {
 					preg_match("/([0-9]+)x([0-9]+)/", $val, $results);
 					if (count($results)>0) {  // if it has the form of a webserviceid
 						$query = 'select name from vtiger_ws_entity where id = ?';
