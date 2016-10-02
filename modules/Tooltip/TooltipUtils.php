@@ -122,8 +122,9 @@ function getToolTipText($view,$fieldname,$module,$value){
 			if(empty($fieldvalue)) {
 				$fieldvalue = '&nbsp;';
 			}
-			if(strlen($fieldvalue)>35){
-				$fieldvalue = substr($fieldvalue,0,35).'...';
+			$ttMaxFieldValueLength = GlobalVariable::getVariable('ToolTip_MaxFieldValueLength',35,$module);
+			if(strlen($fieldvalue)>$ttMaxFieldValueLength){
+				$fieldvalue = substr($fieldvalue,0,$ttMaxFieldValueLength).'...';
 			}
 			$text[$label] = $fieldvalue;
 		}
@@ -229,7 +230,6 @@ function vttooltip_processResult($result, $descObj){
 	}
 	return $result;
 }
-
 
 /**
  * this function returns the fields for a given module in a select dropdown format

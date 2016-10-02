@@ -78,6 +78,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'ModComments_DefaultCriteria',
 				'ModComments_DefaultBlockStatus',
 				'EMail_OpenTrackingEnabled',
+				'ToolTip_MaxFieldValueLength',
 
 				'Report_Send_Scheduled_ifEmpty',
 
