@@ -275,7 +275,7 @@ class Homestuff{
                     $queryGenerator->setFields($newFields);
                     $query = $queryGenerator->getQuery();
                 }
-                $count_result = $adb->query(mkCountQuery($query));
+                $count_result = $adb->query(mkCountWithFullQuery($query));
 				$noofrows = $adb->query_result($count_result,0,"count");
 				$navigation_array = getNavigationValues(1, $noofrows, $maxval);
 
