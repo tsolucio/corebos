@@ -14,10 +14,10 @@ include_once 'include/Webservices/DescribeObject.php';
 include_once dirname(__FILE__) . '/Describe.php';
 
 class Mobile_WS_FetchRecordWithGrouping extends Mobile_WS_FetchRecord {
-	
+
 	private $_cachedDescribeInfo = false;
 	private $_cachedDescribeFieldInfo = false;
-	
+
 	protected function cacheDescribeInfo($describeInfo) {
 		$this->_cachedDescribeInfo = $describeInfo;
 		$this->_cachedDescribeFieldInfo = array();
@@ -27,11 +27,11 @@ class Mobile_WS_FetchRecordWithGrouping extends Mobile_WS_FetchRecord {
 			}
 		}
 	}
-	
+
 	protected function cachedDescribeInfo() {
 		return $this->_cachedDescribeInfo;
 	}
-	
+
 	protected function cachedDescribeFieldInfo($fieldname) {
 		if ($this->_cachedDescribeFieldInfo !== false) {
 			if(isset($this->_cachedDescribeFieldInfo[$fieldname])) {
@@ -40,7 +40,7 @@ class Mobile_WS_FetchRecordWithGrouping extends Mobile_WS_FetchRecord {
 		}
 		return false;
 	}
-	
+
 	protected function cachedEntityFieldnames($module) {
 		$describeInfo = $this->cachedDescribeInfo();
 		$labelFields = $describeInfo['labelFields'];
@@ -50,25 +50,22 @@ class Mobile_WS_FetchRecordWithGrouping extends Mobile_WS_FetchRecord {
 		}
 		return explode(',', $labelFields);
 	}
-	
+
 	protected function isTemplateRecordRequest(Mobile_API_Request $request) {
 		$recordid = $request->get('record');
-		
 		return (preg_match("/([0-9]+)x0/", $recordid));
 	}
-	
+
 	protected function processRetrieve(Mobile_API_Request $request) {
 		$recordid = $request->get('record');
-		
-		// Create a template record for use 
+
+		// Create a template record for use
 		if ($this->isTemplateRecordRequest($request)) {
 			$current_user = $this->getActiveUser();
 			$module = $this->detectModuleName($recordid);
-		 	$describeInfo = vtws_describe($module, $current_user);
-		 	Mobile_WS_Utils::fixDescribeFieldInfo($module, $describeInfo,$current_user);
-
-		 	$this->cacheDescribeInfo($describeInfo);
-
+			$describeInfo = vtws_describe($module, $current_user);
+			Mobile_WS_Utils::fixDescribeFieldInfo($module, $describeInfo,$current_user);
+			$this->cacheDescribeInfo($describeInfo);
 			$templateRecord = array();
 			foreach($describeInfo['fields'] as $describeField) {
 				$templateFieldValue = '';
@@ -81,16 +78,15 @@ class Mobile_WS_FetchRecordWithGrouping extends Mobile_WS_FetchRecord {
 			}
 			if (isset($templateRecord['assigned_user_id'])) {
 				$templateRecord['assigned_user_id'] = sprintf("%sx%s", Mobile_WS_Utils::getEntityModuleWSId('Users'), $current_user->id);
-			} 
+			}
 			// Reset the record id
 			$templateRecord['id'] = $recordid;
-			
 			return $templateRecord;
 		}
 		// Or else delegate the action to parent
 		return parent::processRetrieve($request);
 	}
-	
+
 	function process(Mobile_API_Request $request) {
 		$operation = new Mobile_API_Request();
 		$operation = $request->getOperation();
@@ -105,16 +101,16 @@ class Mobile_WS_FetchRecordWithGrouping extends Mobile_WS_FetchRecord {
 			return $this->processWithGrouping($request, $response);
 		}
 	}
-	
+
 	protected function processWithGrouping(Mobile_API_Request $request, $response) {
 		$isTemplateRecord = $this->isTemplateRecordRequest($request);
 		$result = $response->getResult();
-		
+
 		$resultRecord = $result['record'];
 		$relatedlistcontent = $result['relatedlistcontent'];
 		$comments = $result['comments'];
 		$module = $this->detectModuleName($resultRecord['id']);
-		
+
 		$modifiedRecord = $this->transformRecordWithGrouping($resultRecord, $module, $isTemplateRecord);
 		$ret_arr = array('record' => $modifiedRecord);
 		if (is_array ($relatedlistcontent)) {
@@ -126,12 +122,12 @@ class Mobile_WS_FetchRecordWithGrouping extends Mobile_WS_FetchRecord {
 		$response->setResult($ret_arr);
 		return $response;
 	}
-	
+
 	protected function transformRecordWithGrouping($resultRecord, $module, $isTemplateRecord=false) {
 		$current_user = $this->getActiveUser();
 		$moduleFieldGroups = Mobile_WS_Utils::gatherModuleFieldGroupInfo($module);
 		$modifiedResult = array();
-		$blocks = array(); 
+		$blocks = array();
 		$labelFields = false;
 		foreach($moduleFieldGroups as $blocklabel => $fieldgroups) {
 			$fields = array();
@@ -190,19 +186,18 @@ class Mobile_WS_FetchRecordWithGrouping extends Mobile_WS_FetchRecord {
 						$recordarray=explode('x', $output[0][0]);
 						$recordprefix=$recordarray[0];
 						$value = $output[0][0];
-		                if($value != '' && $value != 0) {
-			                    $assigned_user_id = $value;
-						}		
-	                    else {
+						if($value != '' && $value != 0) {
+							$assigned_user_id = $value;
+						} else {
 							$assigned_user_id = $current_user->id;
-						}		
+						}
 						$fieldvalue = Mobile_WS_Utils::getassignedtoValues($current_user,$assigned_user_id);
-			            $field['type']['value'] = array('value' => $fieldvalue, 'name' =>$fieldname);
+						$field['type']['value'] = array('value' => $fieldvalue, 'name' =>$fieldname);
 					//end UI 53
-					} 
+					}
 					else if($field['uitype'] == '117') {
 						$field['type']['defaultValue'] = $field['value'];
-					} 
+					}
 					else if($field['uitype'] == '15' || $field['uitype'] == '16'  || $field['uitype'] == '33')   {
 						//picklists
 						global $adb;
@@ -239,16 +234,15 @@ class Mobile_WS_FetchRecordWithGrouping extends Mobile_WS_FetchRecord {
 						if ($field['uitype'] == '33') {
 							$field['value'] = implode ( ',' , $valueArr ) ;
 						}
-	
+
 						$fieldvalue [] = $options;
 						$field['type']['value'] =array('value' =>$options,'name' =>$fieldname);
-					//end picklists	 
+					//end picklists
 					}else if($field['uitype'] == '51' || $field['uitype'] == '59' || $field['uitype'] == '10'){
 						$field['relatedmodule'] = Mobile_WS_Utils::getEntityName($field['name'], $module);
 					}
 					$fields[] = $field;
-										
-				} 
+				}
 			}
 			// build address for "open address in maps" button
 			// array with all different address fieldnames for each module
@@ -258,13 +252,13 @@ class Mobile_WS_FetchRecordWithGrouping extends Mobile_WS_FetchRecord {
 				"Contacts" 		=> array("mailingstreet", "otherstreet", "mailingcity", "othercity", "mailingstate", "otherstate", "mailingzip", "otherzip", "mailingcountry", "othercountry", "mailingaddress", "otheraddress"),
 				"Leads" 			=> array("lane", "", "city", "", "state", "", "code", "", "country", "", "mailingaddress", ""),
 			);
-			
+
 			// get the right array depending on current module
 			$fieldnames = $fieldnamesByModule[$module];
 			/*
 			0 = appears if fieldgroup is not address information
 			1 = address values are set, show button
-			-1 = city or street is missing, don't show the button and avoid set back to 1 
+			-1 = city or street is missing, don't show the button and avoid set back to 1
 			*/
 			$mailingAddressOK = 0;
 			$otherAddressOK = 0;
@@ -284,7 +278,7 @@ class Mobile_WS_FetchRecordWithGrouping extends Mobile_WS_FetchRecord {
 							$mailingAddressOK = -1;
 						}
 					}
-					// check street and city for second address 
+					// check street and city for second address
 					else if($otherAddressOK != -1 AND ($fieldname == $fieldnames[1] OR $fieldname == $fieldnames[3])) {
 						$otherAddressOK = 1;
 						if(strlen($value)>0) {
@@ -294,11 +288,11 @@ class Mobile_WS_FetchRecordWithGrouping extends Mobile_WS_FetchRecord {
 							$otherAddressOK = -1;
 						}
 					}
-					// check state and ZIP for first address 
+					// check state and ZIP for first address
 					else if(in_array($fieldname, array($fieldnames[4], $fieldnames[6])) AND strlen($value)>0) {
 						$mailingAddress .= $value." ";
 					}
-					// check state and ZIP for second address 
+					// check state and ZIP for second address
 					else if(in_array($fieldname, array($fieldnames[5],$fieldnames[7])) AND strlen($value)>0) {
 						$otherAddress .= $value." ";
 					}
@@ -307,8 +301,7 @@ class Mobile_WS_FetchRecordWithGrouping extends Mobile_WS_FetchRecord {
 			if($mailingAddressOK == 1) {
 				if($module == 'Contacts') {
 					$label = getTranslatedString("address", "Mobile");
-				} 
-				else {
+				} else {
 					$label = getTranslatedString("bill_address", "Mobile");
 				}
 				$fields[] = array("name" => $fieldnames[10], "value" => $mailingAddress, "label" => $label, "uitype" => "crm_app_map", "typeofdata" => "O");
@@ -335,8 +328,7 @@ class Mobile_WS_FetchRecordWithGrouping extends Mobile_WS_FetchRecord {
 		$modifiedResult = array('blocks' => $blocks, 'id' => $resultRecord['id']);
 		if($labelFields) {
 			$modifiedResult['labelFields'] = $labelFields;
-		} 
-
+		}
 		return $modifiedResult;
 	}
 }

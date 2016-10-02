@@ -908,7 +908,6 @@ function close_current_ticket($input_array)
 	$adb->println("Inside customer portal function close_current_ticket");
 	$adb->println($input_array);
 
-	//foreach($input_array as $fieldname => $fieldvalue)$input_array[$fieldname] = mysql_real_escape_string($fieldvalue);
 	$userid = getPortalUserid();
 
 	$current_user->id = $userid;
