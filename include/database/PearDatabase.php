@@ -1119,10 +1119,8 @@ class PearDatabase{
 	//To get a function name with respect to the database type which escapes strings in given text
 	function sql_escape_string($str)
 	{
-		if($this->isMySql())
-			$result_data = mysql_real_escape_string($str);
-		elseif($this->isPostgres())
-			$result_data = pg_escape_string($str);
+		$result_data = $this->database->qstr($str);
+		$result_data = substr($result_data, 1, -1);
 		return $result_data;
 	}
 
