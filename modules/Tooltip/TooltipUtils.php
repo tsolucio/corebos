@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once 'include/Webservices/DescribeObject.php';
 require_once 'include/Webservices/Utils.php';
 require_once 'include/Webservices/Query.php';
@@ -23,10 +22,6 @@ function getFieldList($module_name, $field_name = "") {
 
 	$query = "select * from vtiger_field where tabid = ?";
 	$params = array($tabid);
-	if (!empty ($field_name)) {
-		$query .= " and fieldname not like ?";
-		$params = array($tabid,$field_name);
-	}
 	$query.= " and columnname not like 'imagename' and uitype not in (61, 122) and vtiger_field.presence in (0,2)";
 	$result = $adb->pquery($query, $params);
 	while ($fieldinfo = $adb->fetch_array($result)) {
