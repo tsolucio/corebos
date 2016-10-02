@@ -19,7 +19,7 @@ for($i=0; $i<$num_rows; $i++) {
 	$ruleid=$adb->query_result($result2,$i,'ruleid');
 	$tabid=$adb->query_result($result2,$i,'tabid');
 	$reqval = $tabid.'_per';	
-	$permission=$_REQUEST[$reqval];
+	$permission=(empty($_REQUEST[$reqval]) ? 2 : $_REQUEST[$reqval]);
 	$sql7="update vtiger_def_org_share set permission=? where tabid=? and ruleid=?";
 	$adb->pquery($sql7, array($permission, $tabid, $ruleid));
 
