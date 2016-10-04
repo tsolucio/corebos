@@ -24,7 +24,7 @@ $logsqltm =& LoggerManager::getLogger('SQLTIME');
 // See function convertPS2Sql in PearDatabase below
 class PreparedQMark2SqlValue {
 	// Constructor
-	function PreparedQMark2SqlValue($vals){
+	function __construct($vals){
         $this->ctr = 0;
         $this->vals = $vals;
     }
@@ -934,7 +934,7 @@ class PearDatabase{
 	/**
 	 * Constructor
 	 */
-    function PearDatabase($dbtype='',$host='',$dbname='',$username='',$passwd='') {
+	function __construct($dbtype='',$host='',$dbname='',$username='',$passwd='') {
 		global $currentModule;
 		$this->log =& LoggerManager::getLogger('PearDatabase_'. $currentModule);
 		$this->resetSettings($dbtype,$host,$dbname,$username,$passwd);
