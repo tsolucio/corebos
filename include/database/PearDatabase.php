@@ -752,6 +752,7 @@ class PearDatabase{
 	function sql_concat($list) {
 		switch ($this->dbType) {
 			case 'mysql':
+			case 'mysqli':
 				return 'concat('.implode(',',$list).')';
 			case 'pgsql':
 				return '('.implode('||',$list).')';
@@ -964,6 +965,8 @@ class PearDatabase{
 		if(isset($this->database)){
 			if($this->dbType == "mysql"){
 				mysql_close($this->database);
+			} elseif($this->dbType == 'mysqli'){
+				mysqli_close($this->database);
 			} else {
 				$this->database->disconnect();
 			}
