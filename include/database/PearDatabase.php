@@ -24,7 +24,7 @@ $logsqltm =& LoggerManager::getLogger('SQLTIME');
 // See function convertPS2Sql in PearDatabase below
 class PreparedQMark2SqlValue {
 	// Constructor
-	function PreparedQMark2SqlValue($vals){
+	function __construct($vals){
         $this->ctr = 0;
         $this->vals = $vals;
     }
@@ -215,7 +215,8 @@ class PearDatabase{
 	}
 	// END
 
-    function isMySQL() { return (stripos($this->dbType ,'mysql') === 0);}
+    function isMySQL() { return (strtolower($this->dbType) === "mysql");}
+    function isMySQLi() { return (strtolower($this->dbType) === "mysqli");}
     function isOracle() { return $this->dbType=='oci8'; }
     function isPostgres() { return $this->dbType=='pgsql'; }
 
@@ -774,6 +775,7 @@ class PearDatabase{
     function sql_concat($list) {
 	    switch ($this->dbType) {
 		    case 'mysql':
+		    case 'mysqli':
 			    return 'concat('.implode(',',$list).')';
 		    case 'pgsql':
 			    return '('.implode('||',$list).')';
@@ -934,7 +936,7 @@ class PearDatabase{
 	/**
 	 * Constructor
 	 */
-    function PearDatabase($dbtype='',$host='',$dbname='',$username='',$passwd='') {
+    function __construct($dbtype='',$host='',$dbname='',$username='',$passwd='') {
 		global $currentModule;
 		$this->log =& LoggerManager::getLogger('PearDatabase_'. $currentModule);
 		$this->resetSettings($dbtype,$host,$dbname,$username,$passwd);
@@ -988,6 +990,8 @@ class PearDatabase{
 		if(isset($this->database)){
 	    	if($this->dbType == "mysql"){
 			mysql_close($this->database);
+	    } elseif($this->dbType == "mysqli") {
+			mysqli_close($this->database);
 	    } else {
 			$this->database->disconnect();
 	    }
@@ -1121,6 +1125,8 @@ class PearDatabase{
 	{
 		if($this->isMySql())
 			$result_data = mysql_real_escape_string($str);
+		elseif($this->isMySQLi())
+			$result_data = substr($this->database->qstr($str),1,-1);
 		elseif($this->isPostgres())
 			$result_data = pg_escape_string($str);
 		return $result_data;
@@ -1144,7 +1150,7 @@ class PearDatabase{
 	// Function to escape the special characters in database name based on database type.
 	function escapeDbName($dbName='') {
 		if ($dbName == '')  $dbName = $this->dbName;
-		if($this->isMySql()) {
+		if($this->isMySql() || $this->isMySQLi()) {
 			$dbName = "`{$dbName}`";
 		}
 		return $dbName;
