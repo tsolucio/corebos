@@ -96,7 +96,8 @@ class VTEventTrigger{
 			);
 		}
 
-		if($name) return $evtinfosbyname[$name];
+		if(is_array($name)) return $evtinfosbyname[$name[0]];
+		elseif($name) return $evtinfosbyname[$name];
 		else return $evtinfosbyname;
 	}
 	/** END **/
