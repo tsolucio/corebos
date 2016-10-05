@@ -1024,7 +1024,7 @@ function getBaseConversionRateForProduct($productid, $mode='edit', $module='Prod
 	$res = $adb->pquery($sql, $params);
 	$conv_rate = $adb->query_result($res, 0, 'conversion_rate');
 
-	return 1 / $conv_rate;
+	return 1 / (empty($conv_rate) ? 1 : $conv_rate);
 }
 
 /**	Function used to get the prices for the given list of products based in the specified currency
