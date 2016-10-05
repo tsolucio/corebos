@@ -78,6 +78,12 @@ if(count($module_name) > 0)
 
 	$queryGenerator = new QueryGenerator($select_module, $current_user);
 	$queryGenerator->initForCustomViewById($viewid);
+	$rbfields = $queryGenerator->getFields();
+	if (!in_array('modifiedtime',$rbfields)) {
+		// Recycle Bin List view always shows modifiedtime
+		$rbfields[] = 'modifiedtime';
+		$queryGenerator->setFields($rbfields);
+	}
 	// Enabling Module Search
 	$url_string = '';
 	if($_REQUEST['query'] == 'true') {
