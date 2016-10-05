@@ -329,22 +329,13 @@ class Mobile_WS_Utils {
 		else if($module == 'Calendar' || $module == 'Events') {
 			foreach($describeInfo['fields'] as $index => $fieldInfo) {
 				$fieldInfo['uitype'] = self::fixUIType($module, $fieldInfo['name'], $fieldInfo['uitype']); 				
-				if ($fieldInfo['name'] == 'activitytype') {
-					// Provide the option to create Todo like anyother Event.
-					$taskTypeFound = false;
-					foreach ($fieldInfo['type']['picklistValues'] as $option) {
-						if ($option['value'] == 'Task') { $taskTypeFound = true; break; }
-					}
-					if (!$taskTypeFound) {
-						array_unshift($fieldInfo['type']['picklistValues'], array('label' => 'Task', 'value' => 'Task'));
-					}
-				} else if ($fieldInfo['name'] == 'visibility') {
+				if ($fieldInfo['name'] == 'visibility') {
 					if (empty($fieldInfo['type']['picklistValues'])) {
 						$fieldInfo['type']['picklistValues'] = self::visibilityValues();
 						$fieldInfo['type']['defaultValue'] = $fieldInfo['type']['picklistValues'][0]['value'];
 					}
 				}
-				$describeInfo['fields'][$index] = $fieldInfo;				
+				$describeInfo['fields'][$index] = $fieldInfo;
 			}
 		}
 	}
