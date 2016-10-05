@@ -45,7 +45,6 @@
 			<input type="hidden" name="origmodule" id="origmodule" value="{$ORIGMODULE}" />
 			{if $CURRENTMODUL eq 'Calendar' || $CURRENTMODUL eq 'Events'}
 				<input type="hidden" name="duration_minutes" id="duration_minutes" value="0">
-				<input type="hidden" name="time_end" id="time_end" value="0" />
 			{/if}
 			{if $CURRENTMODUL eq 'Events'}
 				<input type="hidden" name="inviteesid" value="{$INVITEES}">
@@ -80,6 +79,9 @@
 											{if $_FIELD->name() eq 'date_start'}
 												<input type="hidden" name="dateformat" id="dateformat" value="{$DATEFORMAT}" />
 												<label for="{$_FIELD->name()}">{'Start Date & Time'|@getTranslatedString:$_MODULE->name()}{if $_FIELD->typeofdata() eq 'M'}*{/if}:</label>
+											{elseif $_MODULE->name() eq 'Calendar' && $_FIELD->name() eq 'due_date'}
+												<input type="hidden" name="dateformat" id="dateformat" value="{$DATEFORMAT}" />
+												<label for="{$_FIELD->name()}">{'End Date & Time'|@getTranslatedString:$_MODULE->name()}{if $_FIELD->typeofdata() eq 'M'}*{/if}:</label>
 											{else}
 												<label for="{$_FIELD->name()}">{$_FIELD->label()}{if $_FIELD->typeofdata() eq 'M'}*{/if}:</label>
 											{/if}
@@ -93,6 +95,17 @@
 														});
 													</script>
 												{/literal}
+											{if $_MODULE->name() eq 'Calendar' && $_FIELD->name() eq 'due_date'}
+												<input type="text" name="time_end" id="time_end" value="{$time_value}" />
+												{literal}
+													<script type="text/javascript">
+														$(document).ready(function () {
+															$('#time_end').show();
+															$('#time_end').scroller({ preset: 'time', theme: 'default', display: 'modal', mode: 'mixed', showLabel:'false', height: '40', timeFormat: 'HH:ii', timeWheels: '{/literal}{$TIMEWHEEL}{literal}', lang:'{/literal}{$LANGFORMATFORMAT}{literal}'});
+													});
+													</script>
+												{/literal}
+											{/if}
 										{/if}
 										{if $_FIELD->uitype() eq '252' && $_FIELD->name() eq 'time_start'}
 											<input type="hidden" name="startformat" id="startformat" value="{$dateStr}" />
@@ -106,8 +119,16 @@
 												</script>
 											{/literal}
 										{/if}
-										{if $_FIELD->uitype() eq '252' && $_FIELD->name() eq 'time_end'}
-											<input type="hidden" name="time_end" id="time_end" value="{$time_value}" />
+										{if $_FIELD->uitype() eq '252' && $_FIELD->name() eq 'time_end' && $_MODULE->name() neq 'Calendar'}
+											<input type="text" name="time_end" id="time_end" value="{$time_value}" />
+											{literal}
+												<script type="text/javascript">
+													$(document).ready(function () {
+														$('#time_end').show();
+														$('#time_end').scroller({ preset: 'time', theme: 'default', display: 'modal', mode: 'mixed', showLabel:'false', height: '40', timeFormat: 'HH:ii', timeWheels: '{/literal}{$TIMEWHEEL}{literal}', lang:'{/literal}{$LANGFORMATFORMAT}{literal}'});
+												});
+												</script>
+											{/literal}
 										{/if}
 								{/if}			
 								{if $_FIELD->uitype() eq '4'}
