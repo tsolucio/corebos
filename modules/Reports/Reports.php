@@ -655,8 +655,23 @@ class Reports extends CRMEntity{
 			$fieldlabel1 = str_replace(' ','_',$fieldlabel);
 			$fieldlabel1 = ReportRun::replaceSpecialChar($fieldlabel1);
 			$optionvalue = $fieldtablename.":".$fieldcolname.":".$module."_".$fieldlabel1.":".$fieldname.":".$fieldtypeofdata;
-			$this->adv_rel_fields[$fieldtypeofdata][] = '$'.$module.'#'.$fieldname.'$'."::".getTranslatedString($module,$module)." ".getTranslatedString($fieldlabel,$module);
+			$comparefield = '$'.$module.'#'.$fieldname.'$'."::".getTranslatedString($module,$module)." ".getTranslatedString($fieldlabel,$module);
+			switch ($fieldtypeofdata) {
+				case 'NN':
+				case 'N':
+				case 'I':
+					$this->adv_rel_fields['NN'][] = $comparefield;
+					$this->adv_rel_fields['N'][] = $comparefield;
+					$this->adv_rel_fields['I'][] = $comparefield;
+					break;
+				default:
+					$this->adv_rel_fields[$fieldtypeofdata][] = $comparefield;
+					break;
+			}
 			$module_columnlist[$optionvalue] = $fieldlabel;
+		}
+		foreach ($this->adv_rel_fields as $ftypes => $flds) {
+			$this->adv_rel_fields[$ftypes] = array_unique($this->adv_rel_fields[$ftypes]);
 		}
 		$blockname = getBlockName($block);
 		if($blockname == 'LBL_RELATED_PRODUCTS' && in_array($module,getInventoryModules())) {
