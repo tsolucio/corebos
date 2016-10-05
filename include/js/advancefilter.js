@@ -384,11 +384,15 @@ function checkAdvancedFilter() {
 						return false;
 				}
 			} else if(col[4] == 'I') {
+				if (specifiedValue.charAt(0) != "$" && specifiedValue.charAt(specifiedValue.length-1) != "$"){
 				if(!intValidate(valueId,selectedColumnLabel+" (Integer Criteria)"+i))
 					return false;
+				}
 			} else if(col[4] == 'N' || col[4] == 'NN') {
+				if (specifiedValue.charAt(0) != "$" && specifiedValue.charAt(specifiedValue.length-1) != "$"){
 				if (!numValidate(valueId,selectedColumnLabel+" (Number) ","any",(col[4] == 'NN')))
 					return false;
+				}
 			} else if(col[4] == 'E') {
 				if ((comparatorValue=='e' || comparatorValue=='n') && !patternValidate(valueId,selectedColumnLabel+" (Email Id)","EMAIL"))
 					return false;

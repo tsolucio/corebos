@@ -13,6 +13,7 @@
 	<meta http-equiv="Content-Type" content="text/html; charset={$APP.LBL_CHARSET}">
 	<title>{$MOD.TITLE_VTIGERCRM_CREATE_REPORT}</title>
 	<link href="{$THEME_PATH}style.css" rel="stylesheet" type="text/css">
+	<script type='text/javascript' src='include/jquery/jquery.js'></script>
 	<script type="text/javascript" src="include/js/json.js"></script>
 	<script type="text/javascript" src="include/js/general.js"></script>
 	<script type="text/javascript" src="include/js/{$LANGUAGE}.lang.js?{$VERSION}"></script>

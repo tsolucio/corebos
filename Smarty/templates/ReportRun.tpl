@@ -258,7 +258,8 @@ function generateReport(id) {
 
 	jQuery.ajax({
 			method: 'POST',
-			url: 'index.php?action=ReportsAjax&file=SaveAndRun&mode=ajax&module=Reports&submode=generateReport&record='+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups,
+			data : {'advft_criteria': advft_criteria, 'advft_criteria_groups=': advft_criteria_groups},
+			url: 'index.php?action=ReportsAjax&file=SaveAndRun&mode=ajax&module=Reports&submode=generateReport&record='+id,
 	}).done(function (response) {
 							getObj('Generate').innerHTML = response;
 							// Performance Optimization: To update record count of the report result 
