@@ -815,4 +815,11 @@
 	<classname>changeTypeOfDataUitype9FIX</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Database changes for mysql strict. Fix update_log for cobropago. Not permit null and we save with null value</description>
+	<filename>build/changeSets/mysqlstrictCobroPagoUpdateLog.php</filename>
+	<classname>mysqlstrictCobroPagoUpdateLog</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

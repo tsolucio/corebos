@@ -50,7 +50,7 @@
   `cost` decimal(14,2) default NULL,
   `benefit` decimal(14,2) default NULL,
   `comercialid` int(19) default NULL,
-  `update_log` text NOT NULL,
+  `update_log` text default NULL,
   PRIMARY KEY (`cobropagoid`),
   index (`parent_id`),
   index (`related_id`)
