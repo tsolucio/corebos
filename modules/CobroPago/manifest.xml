@@ -469,6 +469,7 @@
 <quickcreate>1</quickcreate>
 <quickcreatesequence>11</quickcreatesequence>
 <displaytype>1</displaytype>
+<defaultvalue>0</defaultvalue>
 <info_type>BAS</info_type>
 <helpinfo><![CDATA[]]></helpinfo>
 <masseditable>1</masseditable>

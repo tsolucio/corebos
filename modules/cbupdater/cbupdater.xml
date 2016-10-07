@@ -822,4 +822,11 @@
 	<classname>mysqlstrictCobroPagoUpdateLog</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Database changes for mysql strict. Uitype 101 need a number by default, not accpet empty value</description>
+	<filename>build/changeSets/mysqlstrict_Uitype101NotAcceptEmptyValue.php</filename>
+	<classname>mysqlstrict_Uitype101NotAcceptEmptyValue</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
