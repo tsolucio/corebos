@@ -1047,7 +1047,7 @@ class CRMEntity {
 		if (is_uitype($uitype, "_date_") && $fldvalue == '') {
 			return null;
 		}
-		if ($datatype == 'I' || $datatype == 'N' || $datatype == 'NN' || $uitype == 10) {
+		if ($datatype == 'I' || $datatype == 'N' || $datatype == 'NN' || $uitype == 10 || $uitype == 101) {
 			return 0;
 		}
 		$log->debug("Exiting function get_column_value");
