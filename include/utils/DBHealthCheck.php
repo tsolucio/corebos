@@ -15,7 +15,7 @@ class DBHealthCheck {
 	var $dbHostName;
 	var $recommendedEngineType = 'InnoDB';
 	
-	function DBHealthCheck($db) {
+	function __construct($db) {
 		$this->db = $db;
 		$this->dbType = $db->databaseType;
 		$this->dbName = $db->databaseName;

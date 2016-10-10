@@ -19,7 +19,7 @@
 		private $hasError ;
 		private $error ;
 		private $user; 
-		function Parser($user, $q){
+		function __construct($user, $q){
 			$this->query = $q;
 			$this->out = array();
 			$this->hasError = false;

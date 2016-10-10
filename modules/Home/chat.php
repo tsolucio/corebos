@@ -70,7 +70,7 @@ class Chat
   // stores the string to be returned
   var $json;
   
-  function Chat()
+  function __construct()
   {
 	global $adb;
     $this->json = '';

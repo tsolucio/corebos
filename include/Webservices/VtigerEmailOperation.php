@@ -20,7 +20,7 @@ class VtigerEmailOperation extends VtigerModuleOperation {
 	protected $tabId;
 	protected $isEntity = true;
 
-	public function VtigerEmailOperation($webserviceObject,$user,$adb,$log){
+	public function __construct($webserviceObject,$user,$adb,$log){
 		parent::__construct($webserviceObject,$user,$adb,$log);
 		$this->tabId = $this->meta->getTabId();
 	}

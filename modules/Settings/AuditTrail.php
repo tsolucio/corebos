@@ -33,7 +33,7 @@ class AuditTrail{
 
 	var $object_name = "AuditTrail";
 
-	function AuditTrail() {
+	function __construct() {
 		$this->log = LoggerManager::getLogger('audit_trial');
 		$this->db = PearDatabase::getInstance();
 	}

@@ -70,7 +70,7 @@ class Image_Graph_Axis_Marker_Area extends Image_Graph_Grid
     /**
      * [Constructor]
      */
-    function Image_Graph_Axis_Marker_Area()
+    function __construct()
     {
         parent::Image_Graph_Grid();
         $this->_lineStyle = false;

@@ -27,7 +27,7 @@ class http {
   /*
   The class constructor. Configure defaults.
   */ 
-  function http() {
+  function __construct() {
     $this->log = "New http() object instantiated.<br />\n";
     $this->headers = array();
     $this->postvars = array();

@@ -60,7 +60,7 @@ class Image_Graph_Simple extends Image_Graph
      * @param string $fillColor Color for fills
      * @param ???    $font      ???
      */
-    function Image_Graph_Simple($width, $height, $plotType, $data, $title, $lineColor = 'black', $fillColor = 'white', $font = false)
+    function __construct($width, $height, $plotType, $data, $title, $lineColor = 'black', $fillColor = 'white', $font = false)
     {
         parent::__construct($width, $height);
 

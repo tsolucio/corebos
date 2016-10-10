@@ -18,7 +18,7 @@ class DatabaseBackupException extends Exception{
 	public $code;
 	public $message;
 
-	function DatabaseBackupException($errCode,$msg){
+	function __construct($errCode,$msg){
 		$this->code = $errCode;
 		$this->message = $msg;
 	}

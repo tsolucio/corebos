@@ -92,7 +92,7 @@ class HTTP_Session_Container_DB extends HTTP_Session_Container
      * @access public
      * @return object
      */
-    function HTTP_Session_Container_DB($options)
+    function __construct($options)
     {
         $this->_setDefaults();
         if (is_array($options)) {

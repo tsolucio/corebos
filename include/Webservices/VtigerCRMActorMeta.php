@@ -12,7 +12,7 @@ class VtigerCRMActorMeta extends EntityMeta {
 	protected $pearDB;
 	protected static $fieldTypeMapping = array();
 	
-	function VtigerCRMActorMeta($tableName,$webserviceObject,$adb,$user){
+	function __construct($tableName,$webserviceObject,$adb,$user){
 		parent::__construct($webserviceObject,$user);
 		$this->baseTable = $tableName;
 		$this->idColumn = null;

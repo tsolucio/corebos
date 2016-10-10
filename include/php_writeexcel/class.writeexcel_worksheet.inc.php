@@ -105,7 +105,7 @@ class writeexcel_worksheet extends writeexcel_biffwriter {
     /*
      * Constructor. Creates a new Worksheet object from a BIFFwriter object
      */
-    function writeexcel_worksheet($name, $index, &$activesheet, &$firstsheet,
+    function __construct($name, $index, &$activesheet, &$firstsheet,
                                   &$url_format, &$parser, $tempdir) {
 
         $this->writeexcel_biffwriter();

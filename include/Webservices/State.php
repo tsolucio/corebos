@@ -14,7 +14,7 @@
 		var $result ;
 		var $error;
 		
-		function State(){
+		function __construct(){
 			$this->success = false;
 			$this->result = array();
 			$this->error = array();

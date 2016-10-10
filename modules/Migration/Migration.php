@@ -38,7 +38,7 @@ class Migration
 
 	/**	Constructor with old database and new database connections
 	 */
-	function Migration($old='',$new='')
+	function __construct($old='',$new='')
 	{
 		global $migrationlog;
 		$migrationlog->debug("Inside the constructor Migration.");

@@ -54,7 +54,7 @@ class Image_Graph_Fill extends Image_Graph_Common
     /**
      * Constructor
      */
-    function Image_Graph_Fill() {
+    function __construct() {
         parent::__construct();
     }
 

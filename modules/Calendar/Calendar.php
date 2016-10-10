@@ -29,7 +29,7 @@ class Calendar
 	constructor
 	*/
 	//var $groupTable = Array('vtiger_activitygrouprelation','activityid');
-	function Calendar($view='',$data=Array())
+	function __construct($view='',$data=Array())
 	{
 		$this->view = $view;
 		$this->date_time = new vt_DateTime($data,true);
@@ -257,7 +257,7 @@ class Layout
 	* @param  string   $time - time string 
 	*/
 
-	function Layout($view,$time)
+	function __construct($view,$time)
         {
                 $this->view = $view;
                 $this->start_time = $time;

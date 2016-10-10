@@ -26,7 +26,7 @@ class ListViewSession {
  * All Rights Reserved.
 */
 
-	function ListViewSession()
+	function __construct()
 	{
 		global $log,$currentModule;
 		$log->debug("Entering ListViewSession() method ...");

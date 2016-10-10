@@ -262,7 +262,7 @@ class ExportUtils{
 	var $fieldsArr = array();
 	var $picklistValues = array();
 
-	function ExportUtils($module, $fields_array){
+	function __construct($module, $fields_array){ExportUtils
 		self::__init($module, $fields_array);
 	}
 

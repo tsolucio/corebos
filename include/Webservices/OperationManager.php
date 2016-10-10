@@ -36,7 +36,7 @@
 		private $operationId;
 		private $operationParams;
 		
-		function OperationManager($adb,$operationName,$format, $sessionManager){
+		function __construct($adb,$operationName,$format, $sessionManager){
 			
 			$this->format = strtolower($format);
 			$this->sessionManager = $sessionManager;

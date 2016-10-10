@@ -35,7 +35,7 @@ class MailBox {
 	var $mailbox;
 	var $mailList;
 
-	function MailBox($mailbox = '',$p='',$s='') {
+	function __construct($mailbox = '',$p='',$s='') {
 		global $current_user;
 		require_once('include/utils/encryption.php');
 		$oencrypt = new Encryption();

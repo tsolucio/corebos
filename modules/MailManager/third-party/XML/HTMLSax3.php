@@ -156,7 +156,7 @@ class XML_HTMLSax3_StateParser {
     * @var XML_HTMLSax3 instance of user front end class
     * @access protected
     */
-    function XML_HTMLSax3_StateParser (& $htmlsax) {
+    function __construct (& $htmlsax) {
         $this->htmlsax = & $htmlsax;
         $this->State[XML_HTMLSAX3_STATE_START] =& new XML_HTMLSax3_StartingState();
 
@@ -327,7 +327,7 @@ class XML_HTMLSax3_StateParser_Lt430 extends XML_HTMLSax3_StateParser {
     * @var XML_HTMLSax3 instance of user front end class
     * @access protected
     */
-    function XML_HTMLSax3_StateParser_Lt430(& $htmlsax) {
+    function __construct(& $htmlsax) {
         parent::XML_HTMLSax3_StateParser($htmlsax);
         $this->parser_options['XML_OPTION_TRIM_DATA_NODES'] = 0;
         $this->parser_options['XML_OPTION_CASE_FOLDING'] = 0;
@@ -391,7 +391,7 @@ class XML_HTMLSax3_StateParser_Gtet430 extends XML_HTMLSax3_StateParser {
     * @var XML_HTMLSax3 instance of user front end class
     * @access protected
     */
-    function XML_HTMLSax3_StateParser_Gtet430(& $htmlsax) {
+    function __construct(& $htmlsax) {
         parent::XML_HTMLSax3_StateParser($htmlsax);
         $this->parser_options['XML_OPTION_TRIM_DATA_NODES'] = 0;
         $this->parser_options['XML_OPTION_CASE_FOLDING'] = 0;
@@ -481,7 +481,7 @@ class XML_HTMLSax3 {
     * </pre>
     * @access public
     */
-    function XML_HTMLSax3() {
+    function __construct() {
         if (version_compare(phpversion(), '4.3', 'ge')) {
             $this->state_parser =& new XML_HTMLSax3_StateParser_Gtet430($this);
         } else {

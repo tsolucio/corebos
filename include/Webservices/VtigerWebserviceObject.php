@@ -15,7 +15,7 @@ class VtigerWebserviceObject{
 	private $handlerPath;
 	private $handlerClass;
 	
-	private function VtigerWebserviceObject($entityId,$entityName,$handler_path,$handler_class){
+	private function __construct($entityId,$entityName,$handler_path,$handler_class){
 		$this->id = $entityId;
 		$this->name = $entityName;
 		$this->handlerPath = $handler_path;

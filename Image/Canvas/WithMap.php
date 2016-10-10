@@ -72,7 +72,7 @@ class Image_Canvas_WithMap extends Image_Canvas
      *
      * @abstract
      */
-    function Image_Canvas_WithMap($params)
+    function __construct($params)
     {
         parent::Image_Canvas($params);
                 

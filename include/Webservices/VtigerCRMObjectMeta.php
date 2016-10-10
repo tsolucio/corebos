@@ -19,7 +19,7 @@ class VtigerCRMObjectMeta extends EntityMeta {
 	private $hasDeleteAccess;
 	private $assignUsers;
 
-	function VtigerCRMObjectMeta($webserviceObject,$user){
+	function __construct($webserviceObject,$user){
 		parent::__construct($webserviceObject,$user);
 		$this->columnTableMapping = null;
 		$this->fieldColumnMapping = null;

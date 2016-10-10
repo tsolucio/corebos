@@ -38,7 +38,7 @@ class ListView {
  * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.
  * All Rights Reserved.
 */
-function ListView(){
+function __construct(){
 	global $log;
 	$log->debug("Entering ListView() method ...");
 	if(!$this->initialized){
