@@ -14,7 +14,7 @@
 <div id="loginTop"><a href="index.php"><img src="test/logo/{$COMPANY_DETAILS.logo}"></a></div>
 <div id="loginBody">
 	<div class="loginForm">
-		<div class="poweredBy">Powered by coreBOS</div>
+		<div class="poweredBy">Powered by {$APP.APP_NAME}</div>
 		<form action="index.php" method="post" name="DetailView" id="form">
 			<input type="hidden" name="module" value="Users" />
 			<input type="hidden" name="action" value="Authenticate" />
@@ -22,10 +22,10 @@
 			<input type="hidden" name="return_action" value="Login" />
 			<table border="0">
 					<tr>
-					<td valign="middle"><img src="themes/login/images/user.png"></td><td  valign="middle"><input type="text" name="user_name" tabindex="1"></td>
+					<td valign="middle">{'LBL_USER_NAME'|getTranslatedString:'Users'}</td><td valign="middle"><input type="text" name="user_name" tabindex="1"></td>
 					<td rowspan="2" align="center" valign="middle"><input type="submit" id="submitButton" value="" tabindex="3"></td>
 					</tr>
-					<tr><td  valign="middle"><img src="themes/login/images/password.png"></td><td  valign="middle"><input type="password" name="user_password" tabindex="2"></td></tr>
+					<tr><td valign="middle">{'LBL_PASSWORD'|getTranslatedString:'Users'}</td><td valign="middle"><input type="password" name="user_password" tabindex="2"></td></tr>
 			</table>
 				{if $LOGIN_ERROR neq ''}
 				<div class="errorMessage">
