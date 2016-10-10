@@ -96,18 +96,6 @@
 			$_REQUEST = $_POST;
 		}
 	}
-	// php 5.6.x codifies application/json format in one empty entry where the key are the values, so we process that
-	if (count($_REQUEST)==1) {
-		foreach ($_REQUEST as $key => $value) {
-			if (empty($value)) {
-				$data = json_decode($key);
-				if (is_object($data) and !empty($data->operation)) {
-					$_POST = get_object_vars($data);  // only post is affected by this
-					$_REQUEST = $_POST;
-				}
-			}
-		}
-	}
 	$operation = vtws_getParameter($_REQUEST, "operation");
 	$operation = strtolower($operation);
 	$format = vtws_getParameter($_REQUEST, "format","json");
