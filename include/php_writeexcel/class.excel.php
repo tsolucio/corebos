@@ -11,7 +11,7 @@ class Excel_Workbook extends writeexcel_workbook {
     * @return Spreadsheet_Excel_Writer_Workbook The Workbook created
     */
     
-    function Excel_Workbook($filename = '') {
+    function __construct($filename = '') {
         $this->_filename = $filename;
         $this->writeexcel_workbook($filename);
     }

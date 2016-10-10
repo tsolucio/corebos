@@ -80,7 +80,7 @@ class Image_Graph_Marker_Icon extends Image_Graph_Marker
      *
      * @return void
      */
-    function Image_Graph_Marker_Icon($filename, $width = 0, $height = 0)
+    function __construct($filename, $width = 0, $height = 0)
     {
         parent::__construct();
         $this->_filename = $filename;

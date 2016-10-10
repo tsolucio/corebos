@@ -67,7 +67,7 @@ class Image_Canvas_GD_JPG extends Image_Canvas_GD
      *
      * @param array $param Parameter array
      */
-    function Image_Canvas_GD_JPG($param)
+    function __construct($param)
     {
         parent::Image_Canvas_GD($param);
         

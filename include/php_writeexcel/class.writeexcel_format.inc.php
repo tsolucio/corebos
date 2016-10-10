@@ -63,7 +63,7 @@ class writeexcel_format {
     /*
      * Constructor
      */
-    function writeexcel_format() {
+    function __construct() {
         $_=func_get_args();
 
         $this->_xf_index       = (sizeof($_)>0) ? array_shift($_) : 0;

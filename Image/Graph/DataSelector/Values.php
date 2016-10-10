@@ -62,7 +62,7 @@ class Image_Graph_DataSelector_Values extends Image_Graph_DataSelector
      *
      * @param array $values The array to use as filter (default empty) 
      */
-    function &Image_Graph_DataSelector_Values($values)
+    function &__construct($values)
     {
         parent::__construct();
         $this->_values = $values;

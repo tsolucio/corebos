@@ -35,7 +35,7 @@ class writeexcel_biffwriter {
     /*
      * Constructor
      */
-    function writeexcel_biffwriter() {
+    function __construct() {
 
         $this->byte_order   = '';
         $this->BIFF_version = 0x0500;

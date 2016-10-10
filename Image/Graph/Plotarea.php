@@ -133,7 +133,7 @@ class Image_Graph_Plotarea extends Image_Graph_Layout
      *
      * @return void
      */
-    function Image_Graph_Plotarea($axisX = 'Image_Graph_Axis_Category', $axisY = 'Image_Graph_Axis', $direction = 'vertical')
+    function __construct($axisX = 'Image_Graph_Axis_Category', $axisY = 'Image_Graph_Axis', $direction = 'vertical')
     {
         parent::__construct();
 

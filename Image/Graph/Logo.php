@@ -81,7 +81,7 @@ class Image_Graph_Logo extends Image_Graph_Element
      *
      * @return void
      */
-    function Image_Graph_Logo($filename, $alignment = IMAGE_GRAPH_ALIGN_TOP_RIGHT)
+    function __construct($filename, $alignment = IMAGE_GRAPH_ALIGN_TOP_RIGHT)
     {
         parent::__construct();
         $this->_filename = $filename;
