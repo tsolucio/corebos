@@ -280,7 +280,7 @@ function patternValidate(fldName,fldLabel,type) {
 	}
 	//Asha: Remove spaces on either side of a Email id before validating
 	if (type.toUpperCase()=="EMAIL" || type.toUpperCase() == "DATE") currObj.value = trim(currObj.value);
-	if (!re.test(currObj.value)) {
+	if (typeof(re) != 'undefined' && !re.test(currObj.value)) {
 		alert(alert_arr.ENTER_VALID + fldLabel + " ("+type+")");
 		try {
 			currObj.focus();
