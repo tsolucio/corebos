@@ -2174,10 +2174,15 @@ class soap_transport_http extends nusoap_base {
 	* @param boolean $use_curl Whether to try to force cURL use
 	* @access public
 	*/
+<<<<<<< HEAD
 	function __construct($url, $curl_options = NULL, $use_curl = false){
 		parent::__construct();
 		$this->debug("ctor url=$url use_curl=$use_curl curl_options:");
 		$this->appendDebug($this->varDump($curl_options));
+=======
+	function __construct($url){
+		parent::__construct();
+>>>>>>> compatibility(PHP7) update classes that inherit from classes that now use __construct()
 		$this->setURL($url);
 		if (is_array($curl_options)) {
 			$this->ch_options = $curl_options;
@@ -4614,9 +4619,15 @@ class wsdl extends nusoap_base {
 	 * @param boolean $use_curl try to use cURL
      * @access public 
      */
+<<<<<<< HEAD
     function __construct($wsdl = '',$proxyhost=false,$proxyport=false,$proxyusername=false,$proxypassword=false,$timeout=0,$response_timeout=30,$curl_options=null,$use_curl=false){
 		parent::__construct();
 		$this->debug("ctor wsdl=$wsdl timeout=$timeout response_timeout=$response_timeout");
+=======
+    function __construct($wsdl = '',$proxyhost=false,$proxyport=false,$proxyusername=false,$proxypassword=false,$timeout=0,$response_timeout=30){
+		parent::__construct();
+        $this->wsdl = $wsdl;
+>>>>>>> compatibility(PHP7) update classes that inherit from classes that now use __construct()
         $this->proxyhost = $proxyhost;
         $this->proxyport = $proxyport;
 		$this->proxyusername = $proxyusername;
@@ -7210,7 +7221,11 @@ class nusoap_client extends nusoap_base  {
 	* @param	string $portName optional portName in WSDL document
 	* @access   public
 	*/
+<<<<<<< HEAD
 	function __construct($endpoint,$wsdl = false,$proxyhost = false,$proxyport = false,$proxyusername = false, $proxypassword = false, $timeout = 0, $response_timeout = 30, $portName = ''){
+=======
+	function __construct($endpoint,$wsdl = false,$proxyhost = false,$proxyport = false,$proxyusername = false, $proxypassword = false, $timeout = 0, $response_timeout = 30){
+>>>>>>> compatibility(PHP7) update classes that inherit from classes that now use __construct()
 		parent::__construct();
 		$this->endpoint = $endpoint;
 		$this->proxyhost = $proxyhost;

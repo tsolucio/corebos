@@ -64,7 +64,7 @@ class Image_Graph_Marker_Pointing_Radial extends Image_Graph_Marker_Pointing
      */
     function __construct($radius, & $markerEnd)
     {
-        parent::Image_Graph_Marker_Pointing(0, 0, $markerEnd);
+        parent::__construct(0, 0, $markerEnd);
         $this->_radius = $radius;
     }
 
