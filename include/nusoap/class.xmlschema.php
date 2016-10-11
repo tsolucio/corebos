@@ -54,7 +54,7 @@ class XMLSchema extends nusoap_base  {
 	* @access   public
 	*/
 	function __construct($schema='',$xml='',$namespaces=array()){
-		parent::nusoap_base();
+		parent::__construct();
 		$this->debug('xmlschema class instantiated, inside constructor');
 		// files
 		$this->schema = $schema;

@@ -69,7 +69,7 @@ class Image_Canvas_GD_JPG extends Image_Canvas_GD
      */
     function __construct($param)
     {
-        parent::Image_Canvas_GD($param);
+        parent::__construct($param);
         
         if (isset($param['quality'])) {
             $this->_quality = max(0, min(100, $param['quality']));

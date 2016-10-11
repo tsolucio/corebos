@@ -951,7 +951,7 @@ class soap_fault extends nusoap_base {
     * @param mixed $faultdetail detail, typically a string or array of string
 	*/
 	function __construct($faultcode,$faultactor='',$faultstring='',$faultdetail=''){
-		parent::nusoap_base();
+		parent::__construct();
 		$this->faultcode = $faultcode;
 		$this->faultactor = $faultactor;
 		$this->faultstring = $faultstring;
@@ -1042,7 +1042,7 @@ class XMLSchema extends nusoap_base  {
 	* @access   public
 	*/
 	function __construct($schema='',$xml='',$namespaces=array()){
-		parent::nusoap_base();
+		parent::__construct();
 		$this->debug('xmlschema class instantiated, inside constructor');
 		// files
 		$this->schema = $schema;
@@ -1961,7 +1961,7 @@ class soapval extends nusoap_base {
 	* @access   public
 	*/
   	function __construct($name='soapval',$type=false,$value=-1,$element_ns=false,$type_ns=false,$attributes=false) {
-		parent::nusoap_base();
+		parent::__construct();
 		$this->name = $name;
 		$this->type = $type;
 		$this->value = $value;
@@ -2042,7 +2042,7 @@ class soap_transport_http extends nusoap_base {
 	* constructor
 	*/
 	function __construct($url){
-		parent::nusoap_base();
+		parent::__construct();
 		$this->setURL($url);
 		ereg('\$Revisio' . 'n: ([^ ]+)', $this->revision, $rev);
 		$this->outgoing_headers['User-Agent'] = $this->title.'/'.$this->version.' ('.$rev[1].')';
@@ -3196,7 +3196,7 @@ class soap_server extends nusoap_base {
 	* @access   public
 	*/
 	function __construct($wsdl=false){
-		parent::nusoap_base();
+		parent::__construct();
 		// turn on debugging?
 		global $debug;
 		global $HTTP_SERVER_VARS;
@@ -4140,7 +4140,7 @@ class wsdl extends nusoap_base {
      * @access public 
      */
     function __construct($wsdl = '',$proxyhost=false,$proxyport=false,$proxyusername=false,$proxypassword=false,$timeout=0,$response_timeout=30){
-		parent::nusoap_base();
+		parent::__construct();
         $this->wsdl = $wsdl;
         $this->proxyhost = $proxyhost;
         $this->proxyport = $proxyport;
@@ -5861,7 +5861,7 @@ class soap_parser extends nusoap_base {
 	* @access   public
 	*/
 	function __construct($xml,$encoding='UTF-8',$method='',$decode_utf8=true){
-		parent::nusoap_base();
+		parent::__construct();
 		$this->xml = $xml;
 		$this->xml_encoding = $encoding;
 		$this->method = $method;
@@ -6491,7 +6491,7 @@ class soapclient2 extends nusoap_base  {
 	* @access   public
 	*/
 	function __construct($endpoint,$wsdl = false,$proxyhost = false,$proxyport = false,$proxyusername = false, $proxypassword = false, $timeout = 0, $response_timeout = 30){
-		parent::nusoap_base();
+		parent::__construct();
 		$this->endpoint = $endpoint;
 		$this->proxyhost = $proxyhost;
 		$this->proxyport = $proxyport;
