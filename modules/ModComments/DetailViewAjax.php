@@ -37,9 +37,8 @@ if($ajaxaction == 'WIDGETADDCOMMENT') {
 }
 
 else if($ajaxaction == 'DETAILVIEW') {
-	$crmid = $_REQUEST['recordid'];
-	$tablename = $_REQUEST['tableName'];
-	$fieldname = $_REQUEST['fldName'];
+	$crmid = vtlib_purify($_REQUEST['recordid']);
+	$fieldname = vtlib_purify($_REQUEST['fldName']);
 	$fieldvalue = utf8RawUrlDecode($_REQUEST['fieldValue']);
 	if($crmid != '') {
 		$modObj->retrieve_entity_info($crmid, $currentModule);
