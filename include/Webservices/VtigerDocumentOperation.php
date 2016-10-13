@@ -45,12 +45,24 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 
 		if ($element['filelocationtype']=='I' and !empty($element['filename'])) {
 			$file = $element['filename'];
-			$element['filesize']=$file['size'];
 			$file['assigned_user_id'] = $element['assigned_user_id'];
 			$file['setype'] = "Documents Attachment";
 			$attachid = SaveAttachmentDB($file);
 			$element['filetype']=$file['type'];
 			$element['filename']=$filename = str_replace(array(' ','/'), '_',$file['name']);  // no spaces nor slashes
+			$element['filesize']=$file['size'];
+			if ($element['filesize']==0) {
+				$dbQuery = 'SELECT * FROM vtiger_attachments WHERE attachmentsid = ?' ;
+				$result = $adb->pquery($dbQuery, array($attachid));
+				if($result and $adb->num_rows($result) == 1) {
+					$name = @$adb->query_result($result, 0, 'name');
+					$filepath = @$adb->query_result($result, 0, 'path');
+					$name = html_entity_decode($name, ENT_QUOTES, $default_charset);
+					$saved_filename = $attachid."_".$name;
+					$disk_file_size = filesize($filepath.$saved_filename);
+					$element['filesize']=$file['size']=$disk_file_size;
+				}
+			}
 		}
 
 		$element = DataTransform::sanitizeForInsert($element,$this->meta);
