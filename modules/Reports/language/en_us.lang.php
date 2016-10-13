@@ -66,7 +66,7 @@ $mod_strings = Array(
 'LBL_EXPORTXL_BUTTON'=>'Export To Excel',
 'LBL_EXPORTCSV'=>'Export To CSV',
 //Added for 5 Beta
-'LBL_NO_PERMISSION'=>'Your profile dosen\'t allow you view the reports for one of the  module(s)',
+'LBL_NO_PERMISSION'=>'Your profile dosen\'t allow you to view the reports for one of the  module(s)',
 'LBL_SELECT_COLUMNS_TO_GENERATE_REPORTS'=>'Select columns to generate reports',
 'LBL_AVAILABLE_FIELDS'=>'Available Fields',
 'LBL_SELECTED_FIELDS'=>'Selected Fields',
