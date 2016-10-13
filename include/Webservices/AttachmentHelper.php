@@ -51,6 +51,11 @@ include_once 'modules/Settings/MailScanner/core/MailAttachmentMIME.php';
 		$saveasfile = "$dirname$attachid" . "_$filename";
 		if(!file_exists($saveasfile)) {
 			$fh = fopen($saveasfile, 'wb');
+			if (substr($filecontent,0,strlen('data:image/png;base64,'))=='data:image/png;base64,') {
+				// Base64 Encoded HTML5 Canvas image
+				$filecontent = str_replace('data:image/png;base64,', '', $filecontent);
+				$filecontent = str_replace(' ', '+', $filecontent);
+			}
 			fwrite($fh, base64_decode($filecontent));
 			fclose($fh);
 		}
