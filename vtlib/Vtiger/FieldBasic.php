@@ -156,8 +156,8 @@ class Vtiger_FieldBasic {
 
 		if(!$this->label) $this->label = $this->name;
 
-		$chkrs = $adb->pquery('select 1 from vtiger_field where tabid=? and columnname=? limit 1',
-			array($this->getModuleId(), $this->column));
+		$chkrs = $adb->pquery('select 1 from vtiger_field where tabid=? and (columnname=? or fieldlabel=?) limit 1',
+			array($this->getModuleId(), $this->column, $this->label));
 		if ($adb->num_rows($chkrs)==0) {
 			$result = $adb->pquery("INSERT INTO vtiger_field (tabid, fieldid, columnname, tablename, generatedtype,
 				uitype, fieldname, fieldlabel, readonly, presence, defaultvalue, maximumlength, sequence,
