@@ -1116,6 +1116,8 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
 							$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, "search", $focus->popup_type, $form);
 						}
 					}
+					// vtlib customization: For listview javascript triggers
+					$value = "$value <span type='vtlib_metainfo' vtrecordid='{$entity_id}' vtfieldname='{$fieldname}' vtmodule='$module' style='display:none;'></span>";
 					$list_header[] = $value;
 				}
 			}

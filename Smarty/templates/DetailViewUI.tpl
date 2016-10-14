@@ -373,7 +373,7 @@
 
 				{elseif $keyid eq 69}<!-- for Image Reflection -->
 					<td align="left" width=25%>&nbsp;{$keyval}</td>
-				{elseif $keyid eq 68}
+				{elseif $keyid eq 68 || $keyid eq 101}
 					<td class="dvtCellInfo" id="mouseArea_{$keyfldname}" align="left" width=25% onmouseover="vtlib_listview.trigger('cell.onmouseover', this);" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">&nbsp;{$keyval}</td>
 				{elseif $keyid eq 10}<!-- for vtlib reference field -->
 					<td class="dvtCellInfo" id="mouseArea_{$keyfldname}" align="left" width=25% onmouseover="hndMouseOver({$keyid},'{$keyfldname}');vtlib_listview.trigger('cell.onmouseover', this);" onmouseout="fnhide('crmspanid');vtlib_listview.trigger('cell.onmouseout', this)" onclick='handleEdit(event);'>

@@ -63,7 +63,7 @@
 								{foreach item=entity key=entity_id from=$LISTENTITY}
 								<tr bgcolor=white onMouseOver="this.className='lvtColDataHover'" onMouseOut="this.className='lvtColData'" >
 								{foreach item=data from=$entity}
-									<td>{$data}</td>
+									<td onmouseout="vtlib_listview.trigger('cell.onmouseout', this)" onmouseover="vtlib_listview.trigger('cell.onmouseover', this)">{$data}</td>
 								{/foreach}
 								</tr>
 								{/foreach}

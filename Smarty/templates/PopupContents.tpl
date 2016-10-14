@@ -57,7 +57,7 @@
 				<td><input type="checkbox" name="selected_id" value="{$entity_id}" onClick=toggleSelectAll(this.name,"select_all")></td>
 			{/if}
 			{foreach item=data from=$entity}
-				<td>{$data}</td>
+				<td onMouseOver="vtlib_listview.trigger('cell.onmouseover', this);" onMouseOut="vtlib_listview.trigger('cell.onmouseout', this)">{$data}</td>
 			{/foreach}
 		</tr>
 		{foreachelse}
