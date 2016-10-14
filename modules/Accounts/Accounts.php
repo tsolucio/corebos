@@ -400,6 +400,20 @@ class Accounts extends CRMEntity {
 
 		$button .= '<input type="hidden" name="email_directing_module"><input type="hidden" name="record">';
 
+		$accountContacts = $adb->pquery('SELECT contactid,firstname,lastname FROM vtiger_contactdetails
+										INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid
+										WHERE vtiger_contactdetails.accountid = ? AND vtiger_crmentity.deleted = 0 ORDER BY firstname,lastname',array($id));
+		$relid = $adb->run_query_field('select relation_id from vtiger_relatedlists where tabid='.$cur_tab_id.' and related_tabid='.$rel_tab_id,'relation_id');
+		$button .= '<select name="email_filter" class="small"
+		 onchange="loadRelatedListBlock(\'module=Accounts&action=AccountsAjax&file=DetailViewAjax&record='.$id.'&ajxaction=LOADRELATEDLIST&header=Emails&relation_id='.$relid.'&email_filter=\'+this.options[this.options.selectedIndex].value+\'&actions=add&parenttab=Support\',\'tbl_Accounts_Emails\',\'Accounts_Emails\');">
+		<option value="all">'.getTranslatedString('LBL_ALL').'</option>';
+		$accname = getEntityName('Accounts',$id);
+		$button .= '<option value="'.$id.'" '.($_REQUEST['email_filter']==$id ? 'selected' : '').'>'.$accname[$id].'</option>';
+		while($cnt=$adb->fetch_array($accountContacts)) {
+			$button .= '<option value="'.$cnt['contactid'].'" '.($_REQUEST['email_filter']==$cnt['contactid'] ? 'selected' : '').'>'.$cnt['firstname'].' '.$cnt['lastname'].'</option>';
+		}
+		$button .= '</select>&nbsp;';
+
 		if($actions) {
 			if(is_string($actions)) $actions = explode(',', strtoupper($actions));
 			if(in_array('ADD', $actions) && isPermitted($related_module,1, '') == 'yes') {
@@ -407,16 +421,16 @@ class Accounts extends CRMEntity {
 			}
 		}
 
-		$entityIds = array($id);
-		$accountContacts = $adb->pquery('SELECT contactid FROM vtiger_contactdetails
-										INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid
-										WHERE vtiger_contactdetails.accountid = ? AND vtiger_crmentity.deleted = 0',
-										array($id));
-		$numOfContacts = $adb->num_rows($accountContacts);
-		if($accountContacts && $numOfContacts > 0) {
-			for($i=0; $i < $numOfContacts; ++ $i) {
-				array_push($entityIds, $adb->query_result($accountContacts, $i, 'contactid'));
+		if (empty($_REQUEST['email_filter']) or $_REQUEST['email_filter']=='all') {
+			$entityIds = array($id);
+			$numOfContacts = $adb->num_rows($accountContacts);
+			if($accountContacts && $numOfContacts > 0) {
+				for($i=0; $i < $numOfContacts; ++ $i) {
+					array_push($entityIds, $adb->query_result($accountContacts, $i, 'contactid'));
+				}
 			}
+		} else {
+			$entityIds = array(vtlib_purify($_REQUEST['email_filter']));
 		}
 		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
 		$query = "SELECT case when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,
