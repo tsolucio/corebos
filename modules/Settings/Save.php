@@ -13,7 +13,7 @@ checkFileAccessForInclusion($root_directory."include/database/PearDatabase.php")
 require_once($root_directory."include/database/PearDatabase.php");
 
 $server=vtlib_purify($_REQUEST['server']);
-$port=vtlib_purify($_REQUEST['port']);
+$port=(empty($_REQUEST['port']) ? 0 : vtlib_purify($_REQUEST['port']));
 $server_username=vtlib_purify($_REQUEST['server_username']);
 $server_password=vtlib_purify($_REQUEST['server_password']);
 $server_type = vtlib_purify($_REQUEST['server_type']);
