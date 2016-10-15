@@ -21,7 +21,7 @@ $server_path = vtlib_purify($_REQUEST['server_path']);
 $from_email_field = vtlib_purify($_REQUEST['from_email_field']);
 $db_update = true;
 $smtp_auth = vtlib_purify($_REQUEST['smtp_auth']);
-	
+
 $sql="select * from vtiger_systems where server_type = ?";
 $id=$adb->query_result($adb->pquery($sql, array($server_type)),0,"id");
 
@@ -37,13 +37,13 @@ if($server_type == 'proxy')
 		$url = "http://www.google.co.in";
 		$proxy_cont = '';
 		$sock = fsockopen($server, $port);
-		if (!$sock)    {return false;}
+		if (!$sock) {return false;}
 		fputs($sock, "GET $url HTTP/1.0\r\nHost: $server\r\n");
 		fputs($sock, "Proxy-Authorization: Basic " . base64_encode ("$server_username:$server_password") . "\r\n\r\n");
 		while(!feof($sock)) {$proxy_cont .= fread($sock,4096);}
 		fclose($sock);
 		$proxy_cont = substr($proxy_cont, strpos($proxy_cont,"\r\n\r\n")+4);
-		
+
 		if(substr_count($proxy_cont, "Cache Access Denied") > 0)
 		{
 			$error_str = 'error=LBL_PROXY_AUTHENTICATION_REQUIRED';
@@ -132,7 +132,7 @@ if($server_type != 'ftp_backup' && $server_type != 'proxy' && $server_type != 'l
 	$to_email = getUserEmailId('id',$current_user->id);
 	$from_email = $to_email;
 	$subject = 'Test mail about the mail server configuration.';
-	$description = 'Dear '.$current_user->user_name.', <br><br><b> This is a test mail sent to confirm if a mail is actually being sent through the smtp server that you have configured. </b><br>Feel free to delete this mail.<br><br>Thanks  and  Regards,<br> '.$HELPDESK_SUPPORT_NAME.' <br>';
+	$description = 'Dear '.$current_user->user_name.', <br><br><b> This is a test mail sent to confirm if a mail is actually being sent through the smtp server that you have configured. </b><br>Feel free to delete this mail.<br><br>Thanks and Regards,<br> '.$HELPDESK_SUPPORT_NAME.' <br>';
 	if($to_email != '')
 	{
 		$mail_status = send_mail('Users',$to_email,$current_user->user_name,$from_email,$subject,$description);
@@ -151,28 +151,23 @@ if($server_type != 'ftp_backup' && $server_type != 'proxy' && $server_type != 'l
 			vtlib_purify($_REQUEST['smtp_auth']);
 	}
 	else{
-		if($db_update)
-        	{
-                	if($id=='') {
-                        $id = $adb->getUniqueID("vtiger_systems");
-                        $sql="insert into vtiger_systems values(?,?,?,?,?,?,?,?,?)";
-						$params = array($id, $server, $port, $server_username, $server_password, $server_type, $smtp_auth, '',$from_email_field);
-                	} else {
-                        $sql="update vtiger_systems set server=?, server_username=?, server_password=?, smtp_auth=?, server_type=?, server_port=?,from_email_field=? where id=?";
-                		$params = array($server, $server_username, $server_password, $smtp_auth, $server_type, $port,$from_email_field,$id);
-					}
-				$adb->pquery($sql, $params);
-        	}	
+		if($db_update) {
+			if($id=='') {
+				$id = $adb->getUniqueID('vtiger_systems');
+				$sql='insert into vtiger_systems values(?,?,?,?,?,?,?,?,?)';
+				$params = array($id, $server, $port, $server_username, $server_password, $server_type, $smtp_auth, '',$from_email_field);
+			} else {
+				$sql='update vtiger_systems set server=?, server_username=?, server_password=?, smtp_auth=?, server_type=?, server_port=?,from_email_field=? where id=?';
+				$params = array($server, $server_username, $server_password, $smtp_auth, $server_type, $port,$from_email_field,$id);
+			}
+			$adb->pquery($sql, $params);
+		}
 	}
 }
 //While configuring Proxy settings, the submitted values will be retained when exception is thrown - dina
-if($server_type == 'proxy' && $error_str != '')
-{
-        header("Location: index.php?module=Settings&parenttab=Settings&action=$action&server=$server&port=$port&server_username=$server_username&$error_str");
+if($server_type == 'proxy' && $error_str != '') {
+	header("Location: index.php?module=Settings&parenttab=Settings&action=$action&server=$server&port=$port&server_username=$server_username&$error_str");
+} else {
+	header("Location: index.php?module=Settings&parenttab=Settings&action=$action&$error_str");
 }
-else
-{
-        header("Location: index.php?module=Settings&parenttab=Settings&action=$action&$error_str");
-}
-
 ?>

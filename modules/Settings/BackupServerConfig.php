@@ -92,7 +92,6 @@ require_once('config.php');
 require_once('include/db_backup/backup.php');
 require_once('include/db_backup/ftp.php');
 require_once('include/database/PearDatabase.php');
-require_once('user_privileges/enable_backup.php');
 
 global $adb, $enable_backup;
 
