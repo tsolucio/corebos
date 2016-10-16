@@ -14,7 +14,7 @@ class VtigerCRMObject{
 	private $moduleId ;
 	private $instance ;
 	
-	function VtigerCRMObject($moduleCredential, $isId=false){
+	function __construct($moduleCredential, $isId=false){
 		
 		if($isId){
 			$this->moduleId = $moduleCredential;

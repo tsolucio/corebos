@@ -111,15 +111,6 @@ class BURAK_Gantt {
 	*/
 	var $heights = array();
 
-
-	/**
-	* Class constructor
-	*
-	*/
-	function BURAK_Gantt() {
-		$this->__construct();
-	}
-	
 	/**
 	* Class constructor
 	*

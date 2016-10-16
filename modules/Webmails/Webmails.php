@@ -51,7 +51,7 @@ class Webmails extends CRMEntity {
 	var $has_attachments = false;
 
 
- 	function Webmails($mbox='',$mailid='') {
+ 	function __construct($mbox='',$mailid='') {
 
 		$this->db = PearDatabase::getInstance();
 		$this->db->println("Entering Webmail($mbox,$mailid)");

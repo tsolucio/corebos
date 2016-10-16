@@ -19,7 +19,7 @@ class RelatedListViewSession {
 	var $sortby = null;
 	var $page_view = null;
 
-	function RelatedListViewSession() {
+	function __construct() {
 		global $log,$currentModule;
 		$log->debug("Entering RelatedListViewSession() method ...");
 		$this->module = $currentModule;

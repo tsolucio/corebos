@@ -64,7 +64,7 @@ class Image_Graph_Grid extends Image_Graph_Plotarea_Element
     /**
      * Constructor
      */
-    function Image_Graph_Grid() {
+    function __construct() {
         parent::__construct();
     }
 

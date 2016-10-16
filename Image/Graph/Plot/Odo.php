@@ -176,7 +176,7 @@ class Image_Graph_Plot_Odo extends Image_Graph_Plot
      *
      * @return void
      */
-    function Image_Graph_Plot_Odo(&$dataset)
+    function __construct(&$dataset)
     {
         parent::__construct($dataset);
         

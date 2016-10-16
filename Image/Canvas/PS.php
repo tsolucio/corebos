@@ -144,7 +144,7 @@ class Image_Canvas_PS extends Image_Canvas
      *
      * @param array $param Parameter array
      */
-    function Image_Canvas_PS($param)
+    function __construct($param)
     {
         if (isset($param['page'])) {
             switch (strtoupper($param['page'])) {

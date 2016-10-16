@@ -23,7 +23,7 @@ class Homestuff{
 	/**
 	 * this is the constructor for the class
 	 */
-	function Homestuff(){
+	function __construct(){
 
 	}
 

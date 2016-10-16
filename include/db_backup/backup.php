@@ -43,7 +43,7 @@ function save_structure($filename, $root_directory) {
  */
 class DatabaseDump {
 		private $fhandle;
-		function DatabaseDump($dbserver, $username, $password) {
+		function __construct($dbserver, $username, $password) {
 				mysql_connect($dbserver, $username, $password);
 		}
 		function save($database, $filename) {

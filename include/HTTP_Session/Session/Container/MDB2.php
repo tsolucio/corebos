@@ -92,7 +92,7 @@ class HTTP_Session_Container_MDB2 extends HTTP_Session_Container
      * @access public
      * @return void
      */
-    function HTTP_Session_Container_MDB2($options)
+    function __construct($options)
     {
         $this->_setDefaults();
         if (is_array($options)) {

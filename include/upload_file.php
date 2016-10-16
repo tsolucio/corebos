@@ -26,7 +26,7 @@ class UploadFile
 	var $field_name;
 	var $stored_file_name;
 
-        function UploadFile ($field_name)
+        function __construct ($field_name)
         {
 		global $log;
 		$log->debug("Entering UploadFile (".$field_name.") method ...");

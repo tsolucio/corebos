@@ -85,7 +85,7 @@ class Image_Graph_Font extends Image_Graph_Common
      * @param string $name Font name
      * @param int    $size Font size
      */
-    function Image_Graph_Font($name = false, $size = false)
+    function __construct($name = false, $size = false)
     {
         parent::__construct();
         if ($name !== false) {

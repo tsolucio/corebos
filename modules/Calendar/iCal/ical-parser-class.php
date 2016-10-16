@@ -4,7 +4,7 @@ class iCal {
 
     var $folders;
     
-    function iCal() {
+    function __construct() {
         $this->folders = 'cache/import/';
     }
     

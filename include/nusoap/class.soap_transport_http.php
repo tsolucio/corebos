@@ -46,8 +46,8 @@ class soap_transport_http extends nusoap_base {
 	/**
 	* constructor
 	*/
-	function soap_transport_http($url){
-		parent::nusoap_base();
+	function __construct($url){
+		parent::__construct();
 		$this->setURL($url);
 		ereg('\$Revisio' . 'n: ([^ ]+)', $this->revision, $rev);
 		$this->outgoing_headers['User-Agent'] = $this->title.'/'.$this->version.' ('.$rev[1].')';

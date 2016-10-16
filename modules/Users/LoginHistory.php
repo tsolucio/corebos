@@ -43,7 +43,7 @@ class LoginHistory {
 		,"status"
 		);
 	
-	function LoginHistory() {
+	function __construct() {
 		$this->log = LoggerManager::getLogger('loginhistory');
 		$this->db = PearDatabase::getInstance();
 	}

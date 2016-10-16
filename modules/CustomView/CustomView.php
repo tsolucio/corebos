@@ -53,7 +53,7 @@ class CustomView extends CRMEntity {
 	 * @param $module -- The module Name:: Type String(optional)
 	 * @returns  nothing
 	 */
-	function CustomView($module = "") {
+	function __construct($module = "") {
 		global $current_user, $adb;
 		$this->customviewmodule = $module;
 		$this->escapemodule[] = $module . "_";

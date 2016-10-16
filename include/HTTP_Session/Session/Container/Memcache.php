@@ -66,7 +66,7 @@ class HTTP_Session_Container_Memcache extends HTTP_Session_Container
      * @access public
      * @return object
      */
-    function HTTP_Session_Container_Memcache($options)
+    function __construct($options)
     {
         $this->_setDefaults();
 

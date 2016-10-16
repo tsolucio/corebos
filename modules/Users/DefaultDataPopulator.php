@@ -14,7 +14,7 @@ require_once('include/utils/utils.php');
 /** Class to populate the default required data during installation */
 class DefaultDataPopulator extends CRMEntity {
 
-	function DefaultDataPopulator() {
+	function __construct() {
 		$this->log = LoggerManager::getLogger('DefaultDataPopulator');
 		$this->db = PearDatabase::getInstance();
 	}

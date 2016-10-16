@@ -60,7 +60,7 @@ class HTTP_Session_Container
      * @access public
      * @return object
      */
-    function HTTP_Session_Container($options = null)
+    function __construct($options = null)
     {
         $this->_setDefaults();
         if (is_array($options)) {
