@@ -2444,17 +2444,12 @@ function getSingleFieldValue($tablename, $fieldname, $idname, $id) {
  * 	return string $announcement  - List of announments for the CRM users
  */
 function get_announcements() {
-	global $adb, $default_charset;
-	$announcement = '';
-	$sql = 'select * from vtiger_announcement inner join vtiger_users on vtiger_announcement.creatorid=vtiger_users.id';
-	$sql.=" AND vtiger_users.is_admin='on' AND vtiger_users.status='Active' AND vtiger_users.deleted = 0";
-	$result = $adb->pquery($sql, array());
-	for ($i = 0; $i < $adb->num_rows($result); $i++) {
-		$announce = getUserFullName($adb->query_result($result, $i, 'creatorid')) . '&nbsp;:&nbsp;' . $adb->query_result($result, $i, 'announcement') . '&nbsp;&nbsp;';
-		if ($adb->query_result($result, $i, 'announcement') != '')
-			$announcement.=$announce;
+	global $default_charset, $currentModule;
+	$announcement = GlobalVariable::getVariable('Application_Announcement','',$currentModule);
+	if ($announcement != '') {
+			$announcement = html_entity_decode($announcement, ENT_QUOTES, $default_charset);
 	}
-	return html_entity_decode($announcement, ENT_QUOTES, $default_charset);
+	return $announcement;
 }
 
 /**
