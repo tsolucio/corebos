@@ -409,7 +409,7 @@ function MailSend($mail)
 		$log->debug("Error in Mail Sending : Error log = '".$mail->ErrorInfo."'");
 		return $mail->ErrorInfo;
 	} else {
-		$log->info("Mail has been sent from the vtigerCRM system : Status : '".$mail->ErrorInfo."'");
+		$log->info("Mail has been sent from the application : Status : '".$mail->ErrorInfo."'");
 		return 1;
 	}
 }
