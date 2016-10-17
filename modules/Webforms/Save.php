@@ -25,9 +25,9 @@ if ($_REQUEST['ajax'] == 'true') {
 	$webform = new Webforms_Model($_REQUEST);
 	try {
 		$webform->save();
-		$URL = 'index.php?module=Webforms&action=WebformsDetailView&parenttab=Settings&id=' . $webform->getId();
+		$URL = 'index.php?module=Webforms&action=WebformsDetailView&id=' . $webform->getId();
 	} catch (Exception $e) {
-		$URL = 'index.php?module=Webforms&action=Error&parenttab=Settings&errormsg=' . $e->getMessage();
+		$URL = 'index.php?module=Webforms&action=Error&errormsg=' . $e->getMessage();
 	}
 	header(sprintf("Location: %s", $URL));
 }

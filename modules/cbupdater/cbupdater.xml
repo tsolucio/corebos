@@ -836,4 +836,11 @@
 	<classname>delSettingsBackupAnnouncements</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete Customer Portal and Webforms from Settings</description>
+	<filename>build/changeSets/delSettingsCPortalWebform.php</filename>
+	<classname>delSettingsCPortalWebform</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
