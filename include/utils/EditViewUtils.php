@@ -119,7 +119,8 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 					$curr_time = date('H:i', strtotime('+10 minutes'));
 				}
 			}
-			$disp_value = getValidDisplayDate($value);
+			$date = new DateTimeField($value);
+			$disp_value = $date->getDisplayDate();
 		}
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$date_format = parse_calendardate($app_strings['NTC_DATE_FORMAT']);
