@@ -829,4 +829,11 @@
 	<classname>mysqlstrict_Uitype101NotAcceptEmptyValue</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete Settings Backup and Announcements</description>
+	<filename>build/changeSets/delSettingsBackupAnnouncements.php</filename>
+	<classname>delSettingsBackupAnnouncements</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

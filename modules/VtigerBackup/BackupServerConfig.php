@@ -8,6 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 require_once('Smarty_setup.php');
+if (isPermitted('VtigerBackup','')=='yes') {
 
 global $mod_strings, $app_strings, $enable_backup, $app_list_strings, $adb, $theme;
 $theme_path="themes/".$theme."/";
@@ -112,14 +113,22 @@ if((isset($_REQUEST['backupnow'])))
 		$backup = new VtigerBackup();
 		$backup->backup();
 		$fileName = $backup->getBackupFileName();
-		$smarty->assign("BACKUP_RESULT", '<b><font color="red">'. $fileName.'</font></b>');
+		$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-info');
+		$smarty->assign('ERROR_MESSAGE', getTranslatedString('LBL_BACKEDUPSUCCESSFULLY_TO_FILE').' : '.$fileName);
+	} else {
+		$smarty->assign('ERROR_MESSAGE', getTranslatedString('Failed to backup'));
 	}
-	else
-		$smarty->assign("BACKUP_RESULT", '<b><font color="red">Failed to backup</font></b>');
 }
 
 if($_REQUEST['ajax'] == 'true' && $_REQUEST['server_type'] == 'ftp_backup')
-	$smarty->display("Settings/BackupServerContents.tpl");
+	$smarty->display("modules/VtigerBackup/BackupServerContents.tpl");
 else
-	$smarty->display("Settings/BackupServer.tpl");
+	$smarty->display("modules/VtigerBackup/BackupServer.tpl");
+
+} else {
+	echo '<br><br>';
+	$smarty = new vtigerCRM_Smarty();
+	$smarty->assign('ERROR_MESSAGE', getTranslatedString('LBL_PERMISSION'));
+	$smarty->display('applicationmessage.tpl');
+}
 ?>

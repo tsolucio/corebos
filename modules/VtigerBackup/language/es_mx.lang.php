@@ -12,11 +12,18 @@
 $mod_strings = array(
 	'VtigerBackup'=>'Copia de Seguridad',
 	'SINGLE_VtigerBackup'=>'Copia de Seguridad',
+	'Vtiger Backup'=>'Copia Seguridad',
 	'LBL_CREATE_ZIP_FAILURE' => 'No se ha podido crear el archivo comprimido',
 	'LBL_ZIP_FILE_ADD_FAILURE' => 'error añadiendo archivo',
 	'LBL_FTP_CONNECT_FAILED' => 'Conexión FTP fallida',
 	'LBL_FTP_LOGIN_FAILED' => 'Acceso FTP fallido',
 	'Native Backup' => 'Copia con PHP',
 	'External Backup' => 'Copia Externa',
+	'Failed to backup' => 'No se ha podido realizar la copia de seguridad',
+	'FTP support is not enabled' => 'No está presente la extensión de FTP en el servidor',
+	'Unable to connect to' => 'No se ha podido conectar con',
+	'User name or password were not accepted' => 'No se ha aceptado el usuario o la contraseña dada',
+	'Incorrect Folder' => 'No esite la carpeta o el camino especificado',
+	'Access Denied to write in specified folder' => 'Se ha denegado el acceso de escritura en la carpeta especificada',
 );
 ?>

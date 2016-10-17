@@ -8,21 +8,17 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <br>
-<strong>{if $BACKUP_RESULT neq ''} {$APP.LBL_BACKEDUPSUCCESSFULLY_TO_FILE} : {$BACKUP_RESULT}{/if}</strong>
+{include file='applicationmessage.tpl'}
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tbody><tr>
 	<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 	<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
 <br>
-			{include file="SetMenu.tpl"}
-				<!-- DISPLAY -->
 				<table border=0 cellspacing=0 cellpadding=5 width=100% class="settingsSelUITopLine">
-
 				<tr>
 					<td width=50 rowspan=2 valign=top><img src="{'backupserver.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_USERS}" width="48" height="48" border=0 title="{$MOD.LBL_USERS}"></td>
-					<td class=heading2 valign=bottom><b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString}</a> > {$MOD.LBL_BACKUP_SERVER_SETTINGS} </b></td>
+					<td class=heading2 valign=bottom><b>{$MOD.LBL_BACKUP_SERVER_SETTINGS}</b></td>
 				</tr>
 				<tr>
 					<td valign=top class="small">{$MOD.LBL_BACKUP_SERVER_DESC} </td>
@@ -30,10 +26,9 @@
 				</table>
 				<form action="index.php" method="post" name="tandd" onsubmit="VtigerJS_DialogBox.block();">
 				<input type="hidden" name="server_type" value="local_backup">
-				<input type="hidden" name="module" value="Settings">
+				<input type="hidden" name="module" value="VtigerBackup">
 				<input type="hidden" name="action" value="index">
 				<input type="hidden" name="local_server_mode">
-				<input type="hidden" name="parenttab" value="Settings">
 				<table border=0 cellspacing=0 cellpadding=0 width=100% class="tableHeading">
 					<tr>
 						<td class="big" height="40px;" width="70%">&nbsp;&nbsp;<strong>{$MOD.LBL_BACKUP_SERVER_SETTINGS}</strong></td>
@@ -93,8 +88,8 @@
 											<td width="20%" nowrap class="small cellLabel"><strong>{$MOD.LBL_BACKUP_LOCATION}
 											</strong></td>
 											{if $LOCAL_SERVER_MODE eq 'edit'}
-												<td width="80%" colspan=3>
-													&nbsp;<input type="text" size=80 class="detailedViewTextBox small" value="{$SERVER_BACKUP_PATH}" name="server_path" /></strong><br>{$ERROR_STR}
+												<td width="80%" colspan=3>&nbsp;<input type="text" size=80 class="detailedViewTextBox small" value="{$SERVER_BACKUP_PATH}" name="server_path" /></strong>
+													{if $ERROR_STR}<p style="padding:6px;margin-left:10px;">{$ERROR_STR}</p>{/if}
 												</td>
 											{else}
 												<td width="80%" class="small cellText">
@@ -115,17 +110,16 @@
 								</table>
 						</td>
 					</tr>
-				<form action="index.php" method="post" name="tandc">
+				<form action="index.php" method="post" name="tandc" onsubmit="VtigerJS_DialogBox.block();">
 				<input type="hidden" name="server_type" value="ftp_backup">
-				<input type="hidden" name="module" value="Settings">
+				<input type="hidden" name="module" value="VtigerBackup">
 				<input type="hidden" name="action" value="index">
 				<input type="hidden" name="bkp_server_mode">
-				<input type="hidden" name="parenttab" value="Settings">
 				<tr>
 						<td class="small" valign=top >
 							<table width="100%" border="0" cellspacing="0" cellpadding="5" class="tableHeading">
 								<tr>
-									<td nowrap class="small cellLabel"><strong>{$MOD.LBL_ENABLE} {$MOD.LBL_BACKUP_SERVER_SETTINGS} ({$MOD.LBL_FTP})<br>{$ERROR_MSG}</strong></td>
+									<td nowrap class="small cellLabel"><strong>{$MOD.LBL_ENABLE} {$MOD.LBL_BACKUP_SERVER_SETTINGS} ({$MOD.LBL_FTP})</strong></td>
 									<td width="50%" class="small cellText">
 										{if $FTP_BACKUP_STATUS eq 'enabled'}
 											<input type="checkbox" checked name="enable_ftp_backup" onclick="backupenabled(this)"></input>
@@ -163,7 +157,7 @@
 									<tr>
 										<td>
 											<div id="BackupServerContents">
-												{include file="Settings/BackupServerContents.tpl"}
+												{include file="modules/VtigerBackup/BackupServerContents.tpl"}
 											</div>
 										</td>
 									</tr>
@@ -188,13 +182,13 @@
 <script>
 function validate(type) {
 if(type == 'FTP'){
-	if (!emptyCheck("server","ftp Server Name","text")) return false
-		if (!emptyCheck("server_username","ftp User Name","text")) return false
-				if (!emptyCheck("server_password","ftp Password","text")) return false
+	if (!emptyCheck("server","FTP {/literal}{$MOD.LBL_SERVER_ADDRESS}{literal}","text")) return false
+		if (!emptyCheck("server_username","FTP {/literal}{$MOD.LBL_USERNAME}{literal}","text")) return false
+				if (!emptyCheck("server_password","FTP {/literal}{$MOD.LBL_PASWRD}{literal}","text")) return false
 			return true;
 }
 if(type == 'Local'){
-	if (!emptyCheck("server_path","Local Server Path","text")) return false;
+	if (!emptyCheck("server_path","{/literal}{$MOD.LBL_BACKUP_LOCATION}{literal}","text")) return false;
 	else return true;
 }
 }
@@ -203,7 +197,7 @@ function clearBackupServer(Obj)
 {
 	jQuery.ajax({
 			method:"POST",
-			url:'index.php?module=Settings&action=SettingsAjax&ajax=true&file=BackupServerConfig&opmode=del'
+			url:'index.php?module=VtigerBackup&action=VtigerBackupAjax&ajax=true&file=BackupServerConfig&opmode=del'
 	}).done(function(response) {
 			document.getElementById("BackupServerContents").innerHTML=response;
 	});
@@ -221,10 +215,10 @@ function backupenabled(ochkbox)
 
 		jQuery.ajax({
 			method:"POST",
-			url:'index.php?module=Settings&action=SettingsAjax&file=SaveEnableBackup&ajax=true&GetBackupDetail=true&servertype=ftp_backup'
+			url:'index.php?module=VtigerBackup&action=VtigerBackupAjax&file=SaveEnableBackup&ajax=true&GetBackupDetail=true&servertype=ftp_backup'
 		}).done(function(response) {
 				if(response.indexOf('FAILURE') > -1) {
-					document.location.href = "index.php?module=Settings&parenttab=Settings&action=BackupServerConfig&bkp_server_mode=edit";
+					document.location.href = "index.php?module=VtigerBackup&action=BackupServerConfig&bkp_server_mode=edit";
 					return false;
 				}
 		});
@@ -238,7 +232,7 @@ function backupenabled(ochkbox)
 
 	jQuery.ajax({
 			method:"POST",
-			url:'index.php?module=Settings&action=SettingsAjax&file=SaveEnableBackup&ajax=true&enable_ftp_backup='+status
+			url:'index.php?module=VtigerBackup&action=VtigerBackupAjax&file=SaveEnableBackup&ajax=true&enable_ftp_backup='+status
 	}).done(function(response) {
 			document.getElementById("status").style.display="none";
 	});
@@ -249,7 +243,7 @@ function backupenable_check()
 {
 	jQuery.ajax({
 			method:"POST",
-			url:'index.php?module=Settings&action=SettingsAjax&file=SaveEnableBackup&ajax=true&GetBackupDetail=true&servertype=ftp_backup'
+			url:'index.php?module=VtigerBackup&action=VtigerBackupAjax&file=SaveEnableBackup&ajax=true&GetBackupDetail=true&servertype=ftp_backup'
 	}).done(function(response) {
 			if(response.indexOf('FAILURE') > -1) {
 				document.forms['tandc'].enable_ftp_backup.checked = false;
@@ -269,10 +263,10 @@ function localbackupenabled(ochkbox)
 		document.getElementById('view_info').style.display = 'block';
 		jQuery.ajax({
 			method:"POST",
-			url:'index.php?module=Settings&action=SettingsAjax&file=SaveEnableBackup&ajax=true&GetBackupDetail=true&servertype=local_backup'
+			url:'index.php?module=VtigerBackup&action=VtigerBackupAjax&file=SaveEnableBackup&ajax=true&GetBackupDetail=true&servertype=local_backup'
 		}).done(function(response) {
 				if(response.indexOf('FAILURE') > -1) {
-					document.location.href = "index.php?module=Settings&parenttab=Settings&action=BackupServerConfig&local_server_mode=edit";
+					document.location.href = "index.php?module=VtigerBackup&action=BackupServerConfig&local_server_mode=edit";
 					return false;
 				}
 		});
@@ -285,7 +279,7 @@ function localbackupenabled(ochkbox)
 	}
 	jQuery.ajax({
 			method:"POST",
-			url:'index.php?module=Settings&action=SettingsAjax&file=SaveEnableBackup&ajax=true&enable_local_backup='+status
+			url:'index.php?module=VtigerBackup&action=VtigerBackupAjax&file=SaveEnableBackup&ajax=true&enable_local_backup='+status
 	}).done(function(response) {
 			document.getElementById("status").style.display="none";
 	});
