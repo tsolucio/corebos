@@ -65,10 +65,8 @@
 										</div>
 									</td>
 								</tr>
-								{if $ERROR_MSG neq ''}
-								<tr>
-								{$ERROR_MSG}
-								</tr>
+								{if $ERROR_MESSAGE neq ''}
+								<tr><td>{include 'applicationmessage.tpl'}</td></tr>
 								{/if}
 								</table>
 
@@ -104,7 +102,7 @@
 												</tr>
 												<tr>
 													<td nowrap class="small cellLabel"><strong>{$MOD.LBL_REQUIRES_AUTHENT}</strong></td>
-													<td class="small cellText">{if $SMTP_AUTH=='true'}{$MOD.LBL_YES}{elseif $SMTP_AUTH=='false'}{$MOD.LBL_NO}{else}{$SMTP_AUTH}{/if}</td>
+													<td class="small cellText">{if $SMTP_AUTH=='true'}{$MOD.LBL_YES}{elseif $SMTP_AUTH=='false'}{$MOD.LBL_NO}{else}{$SMTP_AUTH_SHOW}{/if}</td>
 													<input type="hidden" value={$SMTP_AUTH} id="smtp_auth">
 												</tr>
 										</table>

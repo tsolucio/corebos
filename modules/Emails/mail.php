@@ -310,6 +310,16 @@ function setMailServerProperties($mail)
 	if ("false" != $smtp_auth) {
 		$mail->SMTPAuth = true;
 		if ("true" != $smtp_auth) {
+			if ($smtp_auth == 'sslnc' or $smtp_auth == 'tlsnc') {
+				$mail->SMTPOptions = array(
+						'ssl' => array(
+							'verify_peer' => false,
+							'verify_peer_name' => false,
+							'allow_self_signed' => true
+						)
+				);
+				$smtp_auth = substr($smtp_auth,0,3);
+			}
 			$mail->SMTPSecure = $smtp_auth;
 		}
 	}

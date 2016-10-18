@@ -16,7 +16,7 @@ if($_REQUEST['mail_error'] != '') {
 	require_once("modules/Emails/mail.php");
 	$error_msg = strip_tags(parseEmailErrorString($_REQUEST['mail_error']));
 	$error_msg = $mod_strings['LBL_MAILSENDERROR'];
-	$smarty->assign("ERROR_MSG",$mod_strings['LBL_TESTMAILSTATUS'].' <b><font class="warning">'.$error_msg.'</font></b>');
+	$smarty->assign('ERROR_MESSAGE',$mod_strings['LBL_TESTMAILSTATUS'].':&nbsp;'.$error_msg);
 }
 
 $theme_path="themes/".$theme."/";
@@ -58,20 +58,30 @@ if(isset($_REQUEST['from_email_field'])){
 } elseif(isset($from_email_field)) {
 	$smarty->assign("FROM_EMAIL_FIELD",$from_email_field);
 }
+$SMTP_AUTH_OPTIONS = array(
+	'false' => getTranslatedString('LBL_NO'),
+	'true' => getTranslatedString('LBL_YES'),
+	'ssl' => 'SSL '.getTranslatedString('LBL_CERT_VAL','Settings'),
+	'sslnc' => 'SSL',
+	'tls' => 'TLS '.getTranslatedString('LBL_CERT_VAL','Settings'),
+	'tlsnc' => 'TLS',
+);
 if(isset($_REQUEST['auth_check']))
 {
 	$smarty->assign("SMTP_AUTH", vtlib_purify($_REQUEST['auth_check']));
+	$smarty->assign('SMTP_AUTH_SHOW', $SMTP_AUTH_OPTIONS[vtlib_purify($_REQUEST['auth_check'])]);
 }
 else
 {
 	$smarty->assign("SMTP_AUTH", $smtp_auth);
+	$smarty->assign('SMTP_AUTH_SHOW', $SMTP_AUTH_OPTIONS[$smtp_auth]);
 }
 
 if(isset($_REQUEST['emailconfig_mode']) && $_REQUEST['emailconfig_mode'] != '')
 	$smarty->assign("EMAILCONFIG_MODE",vtlib_purify($_REQUEST['emailconfig_mode']));
 else
 	$smarty->assign("EMAILCONFIG_MODE",'view');
-$smarty->assign("SMTP_AUTH_OPTIONS", array('false' => getTranslatedString('LBL_NO'), 'true' => getTranslatedString('LBL_YES'), 'ssl' => 'SSL', 'tls' => 'TLS'));
+$smarty->assign("SMTP_AUTH_OPTIONS", $SMTP_AUTH_OPTIONS);
 $smarty->assign("MOD", return_module_language($current_language,'Settings'));
 $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH",$image_path);
