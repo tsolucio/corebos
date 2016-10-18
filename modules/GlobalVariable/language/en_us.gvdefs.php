@@ -125,6 +125,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => '',
 ),
+'Application_Announcement' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'Text to show',
+	'definition' => 'Shows a scrolling header text as a system wide announcement',
+),
 'Application_Global_Search_SelectedModules' => array(
 	'status' => 'Implemented',
 	'valuetype' => '',

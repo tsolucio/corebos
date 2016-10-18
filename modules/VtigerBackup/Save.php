@@ -19,9 +19,9 @@ $server_username=vtlib_purify($_REQUEST['server_username']);
 $server_password=vtlib_purify($_REQUEST['server_password']);
 $server_type = vtlib_purify($_REQUEST['server_type']);
 $server_path = vtlib_purify($_REQUEST['server_path']);
-$from_email_field = vtlib_purify($_REQUEST['from_email_field']);
+$from_email_field = '';
+$smtp_auth = '';
 $db_update = true;
-$smtp_auth = vtlib_purify($_REQUEST['smtp_auth']);
 
 $error_str = '';
 if($server_type == 'ftp_backup')
