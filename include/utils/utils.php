@@ -4606,7 +4606,7 @@ function getEmailRelatedModules() {
 }
 
 function getInventoryModules() {
-	return array('Invoice','Quotes','PurchaseOrder','SalesOrder');
+	return array('Invoice','Quotes','PurchaseOrder','SalesOrder','Issuecards');
 }
 
 /**

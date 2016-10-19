@@ -236,10 +236,17 @@ function set_return_address(contact_id,contact_name, mailingstreet, otherstreet,
 function sca_fillinvalues() {
 	var contact_id = jQuery("#contact_id").val();
 	var contact_name = jQuery("#contact_name").val();
-	if(typeof(window.opener.document.EditView.contact_name) != 'undefined')
-		window.opener.document.EditView.contact_name.value = contact_name;
-	if(typeof(window.opener.document.EditView.contact_id) != 'undefined')
-		window.opener.document.EditView.contact_id.value = contact_id;
+	if(window.opener.gVTModule != 'Issuecards'){
+		if(typeof(window.opener.document.EditView.contact_name) != 'undefined')
+			window.opener.document.EditView.contact_name.value = contact_name;
+		if(typeof(window.opener.document.EditView.contact_id) != 'undefined')
+			window.opener.document.EditView.contact_id.value = contact_id;
+	}else{
+		if(typeof(window.opener.document.EditView.ctoid_display) != 'undefined')
+			window.opener.document.EditView.ctoid_display.value = contact_name;
+		if(typeof(window.opener.document.EditView.ctoid) != 'undefined')
+			window.opener.document.EditView.ctoid.value = contact_id;
+	}
 	if (jQuery('#sca_bill').is(':checked')) setReturnAddressBill();
 	if (jQuery('#sca_ship').is(':checked')) setReturnAddressShip();
 	window.close();
@@ -252,18 +259,31 @@ function setReturnAddressBill() {
 	var code = jQuery("#mailingzip").val();
 	var country = jQuery("#mailingcountry").val();
 	var pobox = jQuery("#mailingpobox").val();
-	if(typeof(window.opener.document.EditView.bill_street) != 'undefined')
-		window.opener.document.EditView.bill_street.value = street;
-	if(typeof(window.opener.document.EditView.bill_city) != 'undefined')
-		window.opener.document.EditView.bill_city.value = city;
-	if(typeof(window.opener.document.EditView.bill_state) != 'undefined')
-		window.opener.document.EditView.bill_state.value = state;
-	if(typeof(window.opener.document.EditView.bill_code) != 'undefined')
-		window.opener.document.EditView.bill_code.value = code;
-	if(typeof(window.opener.document.EditView.bill_country) != 'undefined')
-		window.opener.document.EditView.bill_country.value = country;
-	if(typeof(window.opener.document.EditView.bill_pobox) != 'undefined')
-		window.opener.document.EditView.bill_pobox.value = pobox;
+	if(window.opener.gVTModule != 'Issuecards'){
+		if(typeof(window.opener.document.EditView.bill_street) != 'undefined')
+			window.opener.document.EditView.bill_street.value = street;
+		if(typeof(window.opener.document.EditView.bill_city) != 'undefined')
+			window.opener.document.EditView.bill_city.value = city;
+		if(typeof(window.opener.document.EditView.bill_state) != 'undefined')
+			window.opener.document.EditView.bill_state.value = state;
+		if(typeof(window.opener.document.EditView.bill_code) != 'undefined')
+			window.opener.document.EditView.bill_code.value = code;
+		if(typeof(window.opener.document.EditView.bill_country) != 'undefined')
+			window.opener.document.EditView.bill_country.value = country;
+		if(typeof(window.opener.document.EditView.bill_pobox) != 'undefined')
+			window.opener.document.EditView.bill_pobox.value = pobox;
+	}else{
+		if (typeof (window.opener.document.EditView.calle) != 'undefined')
+			window.opener.document.EditView.calle.value = street;
+		if (typeof (window.opener.document.EditView.poblacion) != 'undefined')
+			window.opener.document.EditView.poblacion.value = city;
+		if (typeof (window.opener.document.EditView.provincia) != 'undefined')
+			window.opener.document.EditView.provincia.value = state;
+		if (typeof (window.opener.document.EditView.cpostal) != 'undefined')
+			window.opener.document.EditView.cpostal.value = code;
+		if (typeof (window.opener.document.EditView.pais) != 'undefined')
+			window.opener.document.EditView.pais.value = country;
+	}
 }
 
 function setReturnAddressShip() {
@@ -273,16 +293,29 @@ function setReturnAddressShip() {
 	var code = jQuery("#otherzip").val();
 	var country = jQuery("#othercountry").val();
 	var pobox = jQuery("#otherpobox").val();
-	if(typeof(window.opener.document.EditView.ship_street) != 'undefined')
-		window.opener.document.EditView.ship_street.value = street;
-	if(typeof(window.opener.document.EditView.ship_city) != 'undefined')
-		window.opener.document.EditView.ship_city.value = city;
-	if(typeof(window.opener.document.EditView.ship_state) != 'undefined')
-		window.opener.document.EditView.ship_state.value = state;
-	if(typeof(window.opener.document.EditView.ship_code) != 'undefined')
-		window.opener.document.EditView.ship_code.value = code;
-	if(typeof(window.opener.document.EditView.ship_country) != 'undefined')
-		window.opener.document.EditView.ship_country.value = country;
-	if(typeof(window.opener.document.EditView.ship_pobox) != 'undefined')
-		window.opener.document.EditView.ship_pobox.value = pobox;
+	if(window.opener.gVTModule != 'Issuecards'){
+		if(typeof(window.opener.document.EditView.ship_street) != 'undefined')
+			window.opener.document.EditView.ship_street.value = street;
+		if(typeof(window.opener.document.EditView.ship_city) != 'undefined')
+			window.opener.document.EditView.ship_city.value = city;
+		if(typeof(window.opener.document.EditView.ship_state) != 'undefined')
+			window.opener.document.EditView.ship_state.value = state;
+		if(typeof(window.opener.document.EditView.ship_code) != 'undefined')
+			window.opener.document.EditView.ship_code.value = code;
+		if(typeof(window.opener.document.EditView.ship_country) != 'undefined')
+			window.opener.document.EditView.ship_country.value = country;
+		if(typeof(window.opener.document.EditView.ship_pobox) != 'undefined')
+			window.opener.document.EditView.ship_pobox.value = pobox;
+	}else{
+		if (typeof (window.opener.document.EditView.calle) != 'undefined')
+			window.opener.document.EditView.calle.value = street;
+		if (typeof (window.opener.document.EditView.poblacion) != 'undefined')
+			window.opener.document.EditView.poblacion.value = city;
+		if (typeof (window.opener.document.EditView.provincia) != 'undefined')
+			window.opener.document.EditView.provincia.value = state;
+		if (typeof (window.opener.document.EditView.cpostal) != 'undefined')
+			window.opener.document.EditView.cpostal.value = code;
+		if (typeof (window.opener.document.EditView.pais) != 'undefined')
+			window.opener.document.EditView.pais.value = country;
+	}
 }

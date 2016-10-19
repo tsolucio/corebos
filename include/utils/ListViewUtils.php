@@ -562,6 +562,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 		$linkstart = '';
 	$wfs = new VTWorkflowManager($adb);
 	if ($navigation_array['start'] != 0)
+		$totals = array();
 		for ($i = 1; $i <= $noofrows; $i++) {
 			$list_header = Array();
 			//Getting the entityid
@@ -882,6 +883,16 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 						} else {
 							$list_result_count = $i - 1;
 							$value = getValue($ui_col_array, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, "list", "", $returnset, $oCv->setdefaultviewid);
+							$uicolarr = $ui_col_array[$fieldname];
+							foreach ($uicolarr as $key => $val) {
+								$uitype = $key;
+								$colname = $val;
+							}
+							if ($uitype == 71 or $uitype == 72) {
+								if (!isset($totals[$fieldname])) $totals[$fieldname]=0;
+								$field_val = $adb->query_result($list_result, $list_result_count, $colname);
+								$totals[$fieldname] =  $totals[$fieldname] + $field_val;
+							}
 						}
 					}
 
@@ -951,6 +962,20 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 			list($list_header, $unused, $unused2) = cbEventHandler::do_filter('corebos.filter.listview.render', array($list_header, $adb->query_result_rowdata($list_result, $i - 1), $entity_id));
 			$list_block[$entity_id] = $list_header;
 		}
+	if(count($totals) > 0){
+		$trow = array();
+		foreach ($focus->list_fields as $name => $tableinfo) {
+			$field_name = $focus->list_fields_name[$name];
+			if (isset($totals[$field_name])) {
+				$currencyField = new CurrencyField($totals[$field_name]);
+				$currencyValue = $currencyField->getDisplayValueWithSymbol();
+				$trow[] = '<span class="listview_total">'.$currencyValue.'</span>';
+			} else {
+				$trow[] = '';
+			}
+		}
+		$list_block['total'] = $trow;
+	}
 	$log->debug("Exiting getListViewEntries method ...");
 	return $list_block;
 }

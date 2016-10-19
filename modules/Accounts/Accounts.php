@@ -1353,5 +1353,12 @@ class Accounts extends CRMEntity {
 		$log->debug("Exiting process_list_query1 method ...");
 		return $response;
 	}
+	function getvtlib_open_popup_window_function($fieldname,$basemodule) {
+		if ($basemodule=='Issuecards') {
+			return 'set_return_shipbilladdress';
+		} else {
+			return 'vtlib_open_popup_window';
+		}
+	}
 }
 ?>

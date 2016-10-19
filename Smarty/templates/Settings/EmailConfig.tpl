@@ -66,7 +66,7 @@
 									</td>
 								</tr>
 								{if $ERROR_MESSAGE neq ''}
-								<tr><td>{include 'applicationmessage.tpl'}</td></tr>
+								<tr><td>{include file='applicationmessage.tpl'}</td></tr>
 								{/if}
 								</table>
 

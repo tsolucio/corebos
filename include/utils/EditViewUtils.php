@@ -1624,7 +1624,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 	$image_path=$theme_path."images/";
 	$product_Detail = Array();
 
-	if($module == 'Quotes' || $module == 'PurchaseOrder' || $module == 'SalesOrder' || $module == 'Invoice')
+	if (in_array($module, getInventoryModules()))
 	{
 		$query="SELECT
 			case when vtiger_products.productid != '' then vtiger_products.productname else vtiger_service.servicename end as productname,
@@ -1642,9 +1642,15 @@ function getAssociatedProducts($module,$focus,$seid='')
 			$params = array($focus->id);
 		if ($module != 'PurchaseOrder') {
 			if (GlobalVariable::getVariable('B2B', '1')=='1') {
-				$acvid = $focus->column_fields['account_id'];
+				if($module == 'Issuecards')
+					$acvid = $focus->column_fields['accid'];
+				else
+					$acvid = $focus->column_fields['account_id'];
 			} else {
-				$acvid = $focus->column_fields['contact_id'];
+				if($module == 'Issuecards')
+					$acvid = $focus->column_fields['ctoid'];
+				else
+					$acvid = $focus->column_fields['contact_id'];
 			}
 		} else {
 			$acvid = $focus->column_fields['vendor_id'];
@@ -1830,7 +1836,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 		//Calculate netprice
 		$netPrice = $totalAfterDiscount+$taxTotal;
 		//if condition is added to call this function when we create PO/SO/Quotes/Invoice from Product module
-		if($module == 'PurchaseOrder' || $module == 'SalesOrder' || $module == 'Quotes' || $module == 'Invoice')
+		if(in_array($module, getInventoryModules()))
 		{
 			$taxtype = getInventoryTaxType($module,$focus->id);
 			if($taxtype == 'individual')
@@ -1958,7 +1964,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 		$shtax_label = $shtax_details[$shtax_count]['taxlabel'];
 		$shtax_percent = '0.00';
 		//if condition is added to call this function when we create PO/SO/Quotes/Invoice from Product module
-		if($module == 'PurchaseOrder' || $module == 'SalesOrder' || $module == 'Quotes' || $module == 'Invoice')
+		if(in_array($module, getInventoryModules()))
 		{
 			$shtax_percent = getInventorySHTaxPercent($focus->id,$shtax_name);
 		}

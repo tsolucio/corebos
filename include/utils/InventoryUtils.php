@@ -476,8 +476,10 @@ function updateInventoryProductRel($entity) {
 	} elseif ($moduleName === 'PurchaseOrder') {
 		$statusFieldName = 'postatus';
 		$statusFieldValue = 'Received Shipment';
+	} elseif ($moduleName === 'Issuecards') {
+		$statusFieldName = 'invoicestatus';
+		$statusFieldValue = 'Cancel';
 	}
-
 	$statusChanged = false;
 	$vtEntityDelta = new VTEntityDelta ();
 	$oldEntity = $vtEntityDelta->getOldValue($moduleName, $entity_id, $statusFieldName);
@@ -770,8 +772,8 @@ function getInventoryTaxType($module, $id)
 
 	$log->debug("Entering into function getInventoryTaxType($module, $id).");
 
-	$inv_table_array = Array('PurchaseOrder'=>'vtiger_purchaseorder','SalesOrder'=>'vtiger_salesorder','Quotes'=>'vtiger_quotes','Invoice'=>'vtiger_invoice');
-	$inv_id_array = Array('PurchaseOrder'=>'purchaseorderid','SalesOrder'=>'salesorderid','Quotes'=>'quoteid','Invoice'=>'invoiceid');
+	$inv_table_array = Array('PurchaseOrder'=>'vtiger_purchaseorder','SalesOrder'=>'vtiger_salesorder','Quotes'=>'vtiger_quotes','Invoice'=>'vtiger_invoice','Issuecards'=>'vtiger_issuecards');
+	$inv_id_array = Array('PurchaseOrder'=>'purchaseorderid','SalesOrder'=>'salesorderid','Quotes'=>'quoteid','Invoice'=>'invoiceid','Issuecards'=>'issuecardid');
 
 	$res = $adb->pquery("select taxtype from $inv_table_array[$module] where $inv_id_array[$module]=?", array($id));
 
