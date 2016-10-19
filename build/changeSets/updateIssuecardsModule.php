@@ -15,7 +15,7 @@
 *************************************************************************************************/
 
 class updateIssuecardsModule extends cbupdaterWorker {
-	
+
 	function applyChange() {
 		if ($this->hasError()) $this->sendError();
 		if ($this->isApplied()) {
@@ -23,7 +23,6 @@ class updateIssuecardsModule extends cbupdaterWorker {
 		} else {
 			$module = 'Issuecards';
 			if ($this->isModuleInstalled($module)) {
-				
 				//Update module
 				$package = new Vtiger_Package();
 
@@ -32,16 +31,13 @@ class updateIssuecardsModule extends cbupdaterWorker {
 				$rdo = $package->update_Module($moduleInstance);
 
 				$this->sendMsg('Module updated: '.$module);
-				
-			} else {
-				$this->installManifestModule($module);
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
-	
+
 	function undoChange() {
 		if ($this->hasError()) $this->sendError();
 		if ($this->isApplied()) {
@@ -54,5 +50,5 @@ class updateIssuecardsModule extends cbupdaterWorker {
 		}
 		$this->finishExecution();
 	}
-	
+
 }
