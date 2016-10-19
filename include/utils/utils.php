@@ -57,13 +57,21 @@ define("RB_RECORD_UPDATED", 'update');
  * @returns array with the variables
  */
 function getBrowserVariables(&$smarty) {
-	global $currentModule,$current_user,$default_charset,$theme;
+	global $currentModule,$current_user,$default_charset,$theme,$adb;
 	$vars = array();
 	$vars['gVTModule'] = $currentModule;
 	$vars['gVTTheme']  = $theme;
 	$vars['gVTUserID'] = $current_user->id;
 	$vars['default_charset'] = $default_charset;
 	$vars['userDateFormat'] = $current_user->date_format;
+	$sql = 'SELECT dayoftheweek FROM its4you_calendar4you_settings WHERE userid=?';
+	$result = $adb->pquery($sql, array($current_user->id));
+	if ($adb and $adb->num_rows($result)>0) {
+		$fDOW = $adb->query_result($result, 0,0);
+		$vars['userFirstDOW'] = ($fDOW=='Monday' ? 1 : 0);
+	} else {
+		$vars['userFirstDOW'] = 0;
+	}
 	if(isset($current_user->currency_grouping_separator) && $current_user->currency_grouping_separator == '') {
 		$vars['userCurrencySeparator'] = ' ';
 	} else {
@@ -85,6 +93,7 @@ function getBrowserVariables(&$smarty) {
 		$smarty->assign('DEFAULT_CHARSET', $vars['default_charset']);
 		$smarty->assign('CURRENT_USER_ID', $vars['gVTUserID']);
 		$smarty->assign('USER_DATE_FORMAT',$vars['userDateFormat']);
+		$smarty->assign('USER_FIRST_DOW',$vars['userFirstDOW']);
 		$smarty->assign('USER_CURRENCY_SEPARATOR', $vars['userCurrencySeparator']);
 		$smarty->assign('USER_DECIMAL_FORMAT', $vars['userDecimalSeparator']);
 		$smarty->assign('USER_NUMBER_DECIMALS', $vars['userNumberOfDecimals']);
