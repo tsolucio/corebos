@@ -33,7 +33,7 @@ $i = 0;
 $pdoInformation=$element['pdoInformation'];
 foreach ($pdoInformation as $pdoline) {
 	$i++;
-	$_REQUEST['deleted'.$i]=0;
+	$_REQUEST['deleted'.$i]=(isset($pdoline['deleted']) ? $pdoline['deleted'] : 0);
 	$_REQUEST['comment'.$i]=$pdoline['comment'];
 	if (strpos($pdoline['productid'], 'x')>0) { // product is in webservice ID format
 		list($void,$pdoline['productid']) = explode('x', $pdoline['productid']);
