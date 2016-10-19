@@ -843,4 +843,11 @@
 	<classname>delSettingsCPortalWebform</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Update Packing Slip module if is installed </description>
+	<filename>build/changeSets/updateIssuecardsModule.php</filename>
+	<classname>updateIssuecardsModule</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
