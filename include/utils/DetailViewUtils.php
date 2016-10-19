@@ -1379,7 +1379,7 @@ function getDetailAssociatedProducts($module, $focus) {
 		<td width=10% valign="top" class="lvtCol" align="right"><b>' . $app_strings['LBL_NET_PRICE'] . '</b></td>
 	</tr>';
 
-	if ($module == 'Quotes' || $module == 'PurchaseOrder' || $module == 'SalesOrder' || $module == 'Invoice') {
+	if (in_array($module, getInventoryModules())) {
 		$query = "select case when vtiger_products.productid != '' then vtiger_products.productname else vtiger_service.servicename end as productname," .
 				" case when vtiger_products.productid != '' then 'Products' else 'Services' end as entitytype," .
 				" case when vtiger_products.productid != '' then vtiger_products.unit_price else vtiger_service.unit_price end as unit_price," .
