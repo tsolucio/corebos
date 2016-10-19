@@ -1046,6 +1046,7 @@ Calendar._keyEvent = function(ev) {
  *  (RE)Initializes the calendar to the given date and firstDayOfWeek
  */
 Calendar.prototype._init = function (firstDayOfWeek, date) {
+	date.setHours(12); // Bugfix: Required for daylight saving!!!
 	var today = new Date();
 	this.table.style.visibility = "hidden";
 	var year = date.getFullYear();
@@ -1080,7 +1081,11 @@ Calendar.prototype._init = function (firstDayOfWeek, date) {
 		var cell = row.firstChild;
 		if (this.weekNumbers) {
 			cell.className = "day wn";
-			cell.firstChild.data = date.getWeekNumber();
+			// Bugfix by Elmue: The week number must be taken from a working day; NOT from sunday, which always belongs to the PREVIOUS week! (ISO 8601)
+			thursday = new Date(date);
+			// Here date is Sunday or Monday depending on firstDayOfWeek
+			thursday.setDate(date.getDate() + 4 - firstDayOfWeek); // Su -> Th, Mo -> Th
+			cell.firstChild.data = thursday.getWeekNumber();
 			cell = cell.nextSibling;
 		}
 		row.className = "daysrow";
@@ -1484,7 +1489,7 @@ Calendar.prototype.hideShowCovered = function () {
 			return value;
 		};
 
-		var tags = new Array("applet", "iframe");
+		var tags = new Array("applet", "iframe", "select");
 		var el = self.element;
 
 		var p = Calendar.getAbsolutePos(el);
@@ -1606,20 +1611,20 @@ Date.prototype.getMonthDays = function(month) {
 
 /** Returns the number of day in the year. */
 Date.prototype.getDayOfYear = function() {
-	var now = new Date(this.getFullYear(), this.getMonth(), this.getDate(), 0, 0, 0);
-	var then = new Date(this.getFullYear(), 0, 0, 0, 0, 0);
+	var now = new Date(this.getFullYear(), this.getMonth(), this.getDate(), 12, 0, 0);
+	var then = new Date(this.getFullYear(), 0, 0, 12, 0, 0);
 	var time = now - then;
 	return Math.floor(time / Date.DAY);
 };
 
 /** Returns the number of the week in year, as defined in ISO 8601. */
 Date.prototype.getWeekNumber = function() {
-	var d = new Date(this.getFullYear(), this.getMonth(), this.getDate(), 0, 0, 0);
+	var d = new Date(this.getFullYear(), this.getMonth(), this.getDate(), 12, 0, 0);
 	var DoW = d.getDay();
-	d.setDate(d.getDate() - (DoW + 6) % 7 + 3); // Nearest Thu
+	d.setDate(d.getDate() - (DoW + 6) % 7 + 3); // Thursday of the same week (which ALWAYS starts with monday see ISO 8601)
 	var ms = d.valueOf(); // GMT
 	d.setMonth(0);
-	d.setDate(4); // Thu in Week 1
+	d.setDate(4); // 4th of January = week one
 	return Math.round((ms - d.valueOf()) / (7 * 864e5)) + 1;
 };
 
