@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('include/database/PearDatabase.php');
 global $adb;
 
@@ -18,8 +17,8 @@ $num_rows = $adb->num_rows($result2);
 for($i=0; $i<$num_rows; $i++) {
 	$ruleid=$adb->query_result($result2,$i,'ruleid');
 	$tabid=$adb->query_result($result2,$i,'tabid');
-	$reqval = $tabid.'_per';	
-	$permission=(empty($_REQUEST[$reqval]) ? 2 : $_REQUEST[$reqval]);
+	$reqval = $tabid.'_per';
+	$permission=(isset($_REQUEST[$reqval]) ? $_REQUEST[$reqval] : 2);
 	$sql7="update vtiger_def_org_share set permission=? where tabid=? and ruleid=?";
 	$adb->pquery($sql7, array($permission, $tabid, $ruleid));
 
@@ -30,7 +29,7 @@ for($i=0; $i<$num_rows; $i++) {
 
 	if($tabid == 9) {
 		$sql8="update vtiger_def_org_share set permission=? where tabid=16";
-		$adb->pquery($sql8, array($permission));		
+		$adb->pquery($sql8, array($permission));
 	}
 }
 $loc = "Location: index.php?action=OrgSharingDetailView&module=Settings&parenttab=Settings";
