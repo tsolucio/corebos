@@ -144,7 +144,7 @@ function sensex_info()
 
 
 									   <!-- Added to display the Product Details in Inventory-->
-									   {if $MODULE eq 'PurchaseOrder' || $MODULE eq 'SalesOrder' || $MODULE eq 'Quotes' || $MODULE eq 'Invoice'}
+									   {if $MODULE eq 'PurchaseOrder' || $MODULE eq 'SalesOrder' || $MODULE eq 'Quotes' || $MODULE eq 'Invoice' || $MODULE eq 'Issuecards'}
 									   <tr>
 										<td colspan=4>
 										{if $OP_MODE eq 'create_view'}

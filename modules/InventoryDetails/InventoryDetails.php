@@ -575,6 +575,10 @@ class InventoryDetails extends CRMEntity {
 					$accountid = $related_focus->column_fields['account_id'];
 					$contactid = $related_focus->column_fields['contact_id'];
 				break;
+			case 'Issuecards':
+					$accountid = $related_focus->column_fields['accid'];
+					$contactid = $related_focus->column_fields['ctoid'];
+				break;
 			case 'PurchaseOrder':
 					$contactid = $related_focus->column_fields['contact_id'];
 				break;
