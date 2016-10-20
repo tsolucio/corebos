@@ -800,15 +800,16 @@ function insertIntoRecurringTable(& $recurObj)
 			$module = getTabname($tabId);
 		}
 		$query = $this->getNonAdminAccessQuery($module, $user, $parentRole, $userGroups);
-		$query = "create temporary table IF NOT EXISTS $tableName(id int(11) primary key, shared ".
-			"int(1) default 0) ignore ".$query;
+		$query = "create temporary table IF NOT EXISTS $tableName(id int(11) primary key, shared int(1) default 0) ignore ".$query;
 		$db = PearDatabase::getInstance();
 		$result = $db->pquery($query, array());
 		if(is_object($result)) {
-			$query = "create temporary table IF NOT EXISTS $tableName(id int(11) primary key, shared ".
-			"int(1) default 0) replace select 1, userid as id from vtiger_sharedcalendar where ".
-			"sharedid = $user->id";
+			$query = "create temporary table IF NOT EXISTS $tableName(id int(11) primary key, shared int(1) default 0)";
 			$result = $db->pquery($query, array());
+			$shrrs = $db->pquery('select userid from vtiger_sharedcalendar where sharedid = ?',array($user->id));
+			while ($shr = $db->fetch_array($shrrs)) {
+				$shrchk = $db->pquery("INSERT INTO $tableName (id,shared) VALUES (?,1) ON DUPLICATE KEY UPDATE shared=1",array($shr['userid']));
+			}
 			if(is_object($result)) {
 				return true;
 			}
