@@ -120,7 +120,8 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 				}
 			}
 			$date = new DateTimeField($value);
-			$disp_value = $date->getDisplayDate();
+			$date_value = $date->getDisplayDate();
+			$disp_value = getValidDisplayDate($date_value);
 		}
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$date_format = parse_calendardate($app_strings['NTC_DATE_FORMAT']);
