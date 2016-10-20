@@ -393,20 +393,6 @@ function closet() {
 	}
 }
 
-function tickerFillIn(obj) {
-	var tagName = document.getElementById(obj);
-	document.EditView.description.value = document.getElementById('summary').innerHTML;
-	document.EditView.employees.value = getObj('emp').value;
-	document.EditView.website.value = getObj('site').value;
-	document.EditView.phone.value = getObj('Phone').value;
-	document.EditView.fax.value = getObj('Fax').value;
-	document.EditView.bill_street.value = getObj('address').value;
-	if (tagName.style.display == 'none')
-		tagName.style.display = 'block';
-	else
-		tagName.style.display = 'none';
-}
-
 function set_return_todo(product_id, product_name) {
 	window.opener.document.createTodo.task_parent_name.value = product_name;
 	window.opener.document.createTodo.task_parent_id.value = product_id;

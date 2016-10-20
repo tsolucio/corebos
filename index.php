@@ -325,7 +325,6 @@ if(isset($action) && isset($module))
 		preg_match("/^savetermsandconditions/",$action) ||
 		preg_match("/^home_rss/",$action) ||
 		preg_match("/^ConvertAsFAQ/",$action) ||
-		preg_match("/^Tickerdetail/",$action) ||
 		preg_match("/^".$module."Ajax/",$action) ||
 		preg_match("/^ActivityAjax/",$action) ||
 		preg_match("/^chat/",$action) ||
@@ -686,7 +685,7 @@ if(isset($_SESSION['vtiger_authenticated_user_theme']) && $_SESSION['vtiger_auth
 $Ajx_module= $module;
 if($module == 'Events')
 	$Ajx_module = 'Calendar';
-if((!$viewAttachment) && (!$viewAttachment && $action != 'home_rss') && $action != 'Tickerdetail' && $action != $Ajx_module."Ajax" && $action != "chat" && $action != "HeadLines" && $action != 'massdelete' && $action != "DashboardAjax" && $action != "ActivityAjax")
+if((!$viewAttachment) && (!$viewAttachment && $action != 'home_rss') && $action != $Ajx_module."Ajax" && $action != "chat" && $action != "HeadLines" && $action != 'massdelete' && $action != "DashboardAjax" && $action != "ActivityAjax")
 {
 	// Under the SPL you do not have the right to remove this copyright statement.
 	$copyrightstatement="<style>

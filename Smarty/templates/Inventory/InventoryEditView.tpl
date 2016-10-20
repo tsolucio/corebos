@@ -21,25 +21,6 @@
 </script>
 {/if}
 
-<script type="text/javascript">
-function sensex_info()
-{ldelim}
-		var Ticker = document.getElementById('tickersymbol').value;
-		if(Ticker!='')
-	{ldelim}
-				document.getElementById("vtbusy_info").style.display="inline";
-				jQuery.ajax({ldelim}
-							method:"POST",
-							url:'index.php?module={$MODULE}&action=Tickerdetail&tickersymbol='+Ticker,
-				{rdelim}).done(function(response) {ldelim}
-										document.getElementById('autocom').innerHTML = response;
-										document.getElementById('autocom').style.display="block";
-										document.getElementById("vtbusy_info").style.display="none";
-						{rdelim});
-	{rdelim}
-{rdelim}
-</script>
-
 {include file='Buttons_List1.tpl'}
 
 {*<!-- Contents -->*}
@@ -102,9 +83,6 @@ function sensex_info()
 						<td align=left style="padding:10px;border-right:1px #CCCCCC;" width=80%>
 							{*<!-- content cache -->*}
 							<table border=0 cellspacing=0 cellpadding=0 width=100%>
-							   <tr>
-								<td id ="autocom"></td>
-							   </tr>
 							   <tr>
 								<td style="padding:10px">
 								<!-- General details -->

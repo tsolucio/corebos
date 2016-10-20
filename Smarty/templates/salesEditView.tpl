@@ -19,35 +19,8 @@
 </script>
 {/if}
 
-<!-- overriding the pre-defined #company to avoid clash with vtiger_field in the view -->
-{literal}
-<style type='text/css'>
-#company {
-	height: auto;
-	width: 90%;
-}
-</style>
-{/literal}
-
 <script type="text/javascript">
 var gVTModule = '{$smarty.request.module|@vtlib_purify}';
-function sensex_info()
-{ldelim}
-        var Ticker = document.getElementById('tickersymbol').value;
-        if(Ticker!='')
-        {ldelim}
-				document.getElementById("vtbusy_info").style.display="inline";
-				jQuery.ajax({ldelim}
-						method:"POST",
-						url:'index.php?module={$MODULE}&action=Tickerdetail&tickersymbol='+Ticker
-				{rdelim}).done(function(response) {ldelim}
-							document.getElementById('autocom').innerHTML = response;
-							document.getElementById('autocom').style.display="block";
-							document.getElementById("vtbusy_info").style.display="none";
-				{rdelim}
-			 );
-		{rdelim}
-{rdelim}
 </script>
 
 {include file='Buttons_List1.tpl'}
@@ -113,9 +86,6 @@ function sensex_info()
 							{*<!-- content cache -->*}
 					
 							<table border=0 cellspacing=0 cellpadding=0 width=100%>
-							   <tr>
-								<td id ="autocom"></td>
-							   </tr>
 							   <tr>
 								<td style="padding:10px">
 									<!-- General details -->

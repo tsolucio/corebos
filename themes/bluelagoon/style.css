@@ -467,17 +467,6 @@ a:hover {
     vertical-align:top;
 }
 
-#company{
-    position:relative;
-    width:100%;
-    height:200px;
-    display:block;
-    background-color:#FFFFFF;
-    white-space:nowrap;
-    overflow:auto;
-    border:1px solid #CCCCCC;
-}
-
 #user{position:relative;left:0px;top:0px;width:100%;display:block;}
 
 #communication{position:relative;left:0px;top:0px;width:100%;display:block;}
