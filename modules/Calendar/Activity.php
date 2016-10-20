@@ -182,7 +182,7 @@ class Activity extends CRMEntity {
 	 */
 	function insertIntoReminderTable($table_name,$module,$recurid)
 	{
-	 	global $log;
+		global $log;
 		$log->info("in insertIntoReminderTable ".$table_name." module is ".$module);
 		if(isset($_REQUEST['set_reminder']) and $_REQUEST['set_reminder'] == 'Yes')
 		{
@@ -543,10 +543,10 @@ function insertIntoRecurringTable(& $recurObj)
 
 	//Used for vtigerCRM Outlook Add-In
 	/**
- 	* Function to get tasks to display in outlookplugin
- 	* @param   string    $username     -  User name
- 	* return   string    $query        -  sql query
- 	*/
+	* Function to get tasks to display in outlookplugin
+	* @param   string    $username     -  User name
+	* return   string    $query        -  sql query
+	*/
 	function get_tasksforol($username)
 	{
 		global $log,$adb;
@@ -620,11 +620,10 @@ function insertIntoRecurringTable(& $recurObj)
 		//get users group ID's
 		$gquery = 'SELECT groupid FROM vtiger_users2group WHERE userid=?';
 		$gresult = $adb->pquery($gquery, array($user_id));
-		for($j=0;$j < $adb->num_rows($gresult);$j++) 
-		{
+		for($j=0;$j < $adb->num_rows($gresult);$j++) {
 			$groupidlist.=",".$adb->query_result($gresult,$j,'groupid');
 		}
-	
+
 		if($is_admin == true || $profileGlobalPermission[1] == 0 || $profileGlobalPermission[2] == 0)
 		{
 			$sql1 = "select tablename,columnname from vtiger_field where tabid=9 and tablename <> 'vtiger_recurringevents' and tablename <> 'vtiger_activity_reminder' and vtiger_field.presence in (0,2)";
@@ -662,11 +661,11 @@ function insertIntoRecurringTable(& $recurObj)
 			if ($permitted_lists[$i][0] !='vtiger_activitycf') $column_table_lists[] = implode(".",$permitted_lists[$i]);
 		}
 
-		$query = "SELECT vtiger_activity.activityid AS clndrid, ".implode(',',$column_table_lists)." FROM vtiger_activity 
-				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_activity.activityid 
-				LEFT JOIN vtiger_salesmanactivityrel ON vtiger_salesmanactivityrel.activityid=vtiger_activity.activityid 
-				LEFT JOIN vtiger_users ON vtiger_users.id=vtiger_salesmanactivityrel.smid 
-				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid 
+		$query = "SELECT vtiger_activity.activityid AS clndrid, ".implode(',',$column_table_lists)." FROM vtiger_activity
+				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_activity.activityid
+				LEFT JOIN vtiger_salesmanactivityrel ON vtiger_salesmanactivityrel.activityid=vtiger_activity.activityid
+				LEFT JOIN vtiger_users ON vtiger_users.id=vtiger_salesmanactivityrel.smid
+				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 				WHERE vtiger_crmentity.deleted=0 AND vtiger_activity.activitytype='Meeting' ";
 				if (isset($groupidlist))
 					$query .= " AND (vtiger_users.user_name='".$user_name."' OR vtiger_crmentity.smownerid IN (".substr($groupidlist,1)."))";
@@ -779,16 +778,13 @@ function insertIntoRecurringTable(& $recurObj)
 		require('user_privileges/sharing_privileges_'.$user->id.'.php');
 		$query = ' ';
 		$tabId = getTabid($module);
-		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2]
-				== 1 && $defaultOrgSharingPermission[$tabId] == 3) {
+		if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1 && $defaultOrgSharingPermission[$tabId] == 3) {
 			$tableName = 'vt_tmp_u'.$user->id.'_t'.$tabId;
 			$sharingRuleInfoVariable = $module.'_share_read_permission';
 			$sharingRuleInfo = $$sharingRuleInfoVariable;
 			$sharedTabId = null;
-			$this->setupTemporaryTable($tableName, $sharedTabId, $user,
-					$current_user_parent_role_seq, $current_user_groups);
-			$query = " INNER JOIN $tableName $tableName$scope ON ($tableName$scope.id = ".
-					"vtiger_crmentity$scope.smownerid and $tableName$scope.shared=0) ";
+			$this->setupTemporaryTable($tableName, $sharedTabId, $user, $current_user_parent_role_seq, $current_user_groups);
+			$query = " INNER JOIN $tableName $tableName$scope ON ($tableName$scope.id = vtiger_crmentity$scope.smownerid and $tableName$scope.shared=0) ";
 			$sharedIds = getSharedCalendarId($user->id);
 			if(!empty($sharedIds)){
 				$query .= "or ($tableName$scope.id = vtiger_crmentity$scope.smownerid AND ".
