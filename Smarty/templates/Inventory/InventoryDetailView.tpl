@@ -14,7 +14,6 @@
 </span>
 <div id="convertleaddiv" style="display:block;position:absolute;left:225px;top:150px;"></div>
 <script>
-var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 {literal}
 function showHideStatus(sId,anchorImgId,sImagePath)
 {

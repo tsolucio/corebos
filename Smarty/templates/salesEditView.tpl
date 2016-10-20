@@ -19,11 +19,7 @@
 </script>
 {/if}
 
-<script type="text/javascript">
-var gVTModule = '{$smarty.request.module|@vtlib_purify}';
-</script>
-
-{include file='Buttons_List1.tpl'}
+{include file='Buttons_List.tpl'}
 
 {*<!-- Contents -->*}
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
@@ -89,14 +85,14 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 							   <tr>
 								<td style="padding:10px">
 									<!-- General details -->
-									<table border=0 cellspacing=0 cellpadding=0 width=100% class="small createview_table">
+									<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small createview_table">
 									   <tr>
 										<td  colspan=4 style="padding:5px">
 											<div align="center">
 												{if $MODULE eq 'Webmails'}
 													<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.action.value='Save';this.form.module.value='Webmails';this.form.send_mail.value='true';this.form.record.value='{$ID}'" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
 												{else}
-													<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmButton small save" onclick="this.form.action.value='Save'; displaydeleted(); return formValidate() " type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
+													<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmButton small save" onclick="this.form.action.value='Save'; displaydeleted(); return formValidate();" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
 												{/if}
 													<input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="window.history.back()" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
 											</div>
@@ -171,7 +167,7 @@ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 										{if $MODULE eq 'Webmails'}
 										<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.action.value='Save';this.form.module.value='Webmails';this.form.send_mail.value='true';this.form.record.value='{$ID}'" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
 										{else}
-											<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.action.value='Save';  displaydeleted();return formValidate()" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
+											<input title="{$APP.LBL_SAVE_BUTTON_TITLE}" accessKey="{$APP.LBL_SAVE_BUTTON_KEY}" class="crmbutton small save" onclick="this.form.action.value='Save';  displaydeleted();return formValidate();" type="submit" name="button" value="  {$APP.LBL_SAVE_BUTTON_LABEL}  ">
 										{/if}
                                             <input title="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" class="crmbutton small cancel" onclick="window.history.back()" type="button" name="button" value="  {$APP.LBL_CANCEL_BUTTON_LABEL}  ">
 											</div>

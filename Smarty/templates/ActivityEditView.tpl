@@ -16,9 +16,6 @@
 <script type="text/javascript" src="jscalendar/lang/calendar-{$CALENDAR_LANG}.js"></script>
 <script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
 <script type="text/javascript" src="modules/{$MODULE}/Calendar.js"></script>
-<script type="text/javascript">
-var gVTModule = '{$smarty.request.module|@vtlib_purify}';
-</script>
 <script type="text/javascript" src="include/js/FieldDependencies.js"></script>
 {if $PICKIST_DEPENDENCY_DATASOURCE neq ''}
 <script type="text/javascript">
