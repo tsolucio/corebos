@@ -2739,3 +2739,8 @@ a.drop_down_usersettings_name{
 	border-color: #d6e9c6;
 	color: #3c763d;
 }
+#LB_TaskIcon img {
+	background-color: #4bc076;
+	width: 28px;
+	border-radius: 4px;
+}
