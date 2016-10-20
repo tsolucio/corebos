@@ -17,9 +17,5 @@ $blocks[$kk['block_label']][$kk['row_key']][$kk['field_key']][3][0] = $gvnamearr
 $basblocks[$kk['block_label']][$kk['row_key']][$kk['field_key']][3][0] = $gvnamearray;
 $smarty->assign('BLOCKS', $blocks);
 $smarty->assign('BASBLOCKS', $basblocks);
-if($focus->mode == 'edit') {
-	$smarty->display('salesEditView.tpl');
-} else {
-	$smarty->display('CreateView.tpl');
-}
+$smarty->display('salesEditView.tpl');
 ?>

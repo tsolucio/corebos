@@ -20,11 +20,8 @@ if (!empty($_REQUEST['record'])) {
 
 	$smarty->display(vtlib_getModuleTemplate('Vtiger','OperationNotPermitted.tpl'));
 	exit;
-}	
-// END
+}
 
 require_once 'modules/Vtiger/EditView.php';
-
-$smarty->display('CreateView.tpl');
-
+$smarty->display('salesEditView.tpl');
 ?>

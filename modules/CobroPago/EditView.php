@@ -206,9 +206,5 @@ $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
 $picklistDependencyDatasource = Vtiger_DependencyPicklist::getPicklistDependencyDatasource($currentModule);
 $smarty->assign("PICKIST_DEPENDENCY_DATASOURCE", Zend_Json::encode($picklistDependencyDatasource));
 
-if($focus->mode == 'edit') {
-	$smarty->display('salesEditView.tpl');
-} else {
-	$smarty->display('CreateView.tpl');
-}
+$smarty->display('salesEditView.tpl');
 ?>
