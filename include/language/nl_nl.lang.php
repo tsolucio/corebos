@@ -564,6 +564,7 @@ $app_strings = array(
 	'Expected Revenue' => 'Verwachte Inkomsten',
 	'Expected Close Date' => 'Verwachte sluitingsdatum',
 	'LBL_ACTIONS' => 'Acties',
+	'TOGGLE_ACTIONS' => 'Toggle Actions',
 	'LBL_SEND' => 'Verstuur',
 	'LBL_VAT' => 'BTW',
 	'LBL_SALES' => 'Verkoop',

@@ -538,6 +538,7 @@ $app_strings = array (
 	'Expected Revenue' => 'Revenue potentiel',
 	'Expected Close Date' => 'Echéance',
 	'LBL_ACTIONS' => 'Actions',
+	'TOGGLE_ACTIONS' => 'Toggle Actions',
 	'LBL_SEND' => 'Envoyer',
 	'LBL_VAT' => 'TVA',
 	'LBL_SALES' => 'Vente',

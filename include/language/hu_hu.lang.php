@@ -543,6 +543,7 @@ $app_strings = array(
 	'Expected Revenue' => 'Várható jövedelem',
 	'Expected Close Date' => 'Várható lezárási dátum',
 	'LBL_ACTIONS' => 'Tevékenységek',
+	'TOGGLE_ACTIONS' => 'Toggle Actions',
 	'LBL_SEND' => 'Küldés',
 	'LBL_VAT' => 'ÁFA',
 	'LBL_SALES' => 'Értékesítés',
