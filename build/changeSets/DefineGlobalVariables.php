@@ -21,6 +21,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
+			global $adb;
 			$global_variables = array(
 				'Debug_Record_Not_Found',
 				'Debug_Report_Query',
@@ -95,11 +96,29 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'QuoteStatusOnSalesOrderSave',  // rename to Quote_StatusOnSalesOrderSave
 				'Report.Excel.Export.RowHeight', // rename to Report_Excel_Export_RowHeight
 			);
+			$delete_these = array(
+				'preload_prototype',
+				'preload_jquery',
+				'first_day_of_week',
+			);
 			
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');
 			$field = Vtiger_Field::getInstance('gvname',$moduleInstance);
 			if ($field) {
 				$field->setPicklistValues($global_variables);
+				foreach ($delete_these as $gvar) {
+					$sql = 'select * from vtiger_gvname where gvname=?';
+					$result = $adb->pquery($sql, array($gvar));
+					if ($adb->num_rows($result)>0) {
+						$origPicklistID = $adb->query_result($result, 0, 'picklist_valueid');
+						$sql = 'delete from vtiger_gvname where gvname=?';
+						$this->ExecuteQuery($sql, array($gvar));
+						$sql = 'delete from vtiger_role2picklist where picklistvalueid=?';
+						$this->ExecuteQuery($sql, array($origPicklistID));
+						$sql = 'DELETE FROM vtiger_picklist_dependency WHERE sourcevalue=? AND sourcefield=? AND tabid=?';
+						$this->ExecuteQuery($sql, array($gvar, 'gvname', $moduleInstance->id));
+					}
+				}
 			}
 			$this->ExecuteQuery("ALTER TABLE `vtiger_globalvariable` CHANGE `value` `value` VARCHAR(500) CHARACTER SET utf8 COLLATE utf8_general_ci NULL DEFAULT NULL;");
 			$this->sendMsg('Changeset '.get_class($this).' applied!');

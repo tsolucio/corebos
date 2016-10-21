@@ -109,7 +109,6 @@
 <picklistvalue>upload_dir</picklistvalue>
 <picklistvalue>corebos_app_name</picklistvalue>
 <picklistvalue>corebos_app_url</picklistvalue>
-<picklistvalue>first_day_of_week</picklistvalue>
 <picklistvalue>preload_jscalendar</picklistvalue>
 </picklistvalues>
 </field>
