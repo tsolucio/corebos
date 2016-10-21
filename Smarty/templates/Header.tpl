@@ -15,7 +15,7 @@
 	<title>{$USER} - {$MODULE_NAME|@getTranslatedString:$MODULE_NAME} - {$APP.LBL_BROWSER_TITLE}</title>
 	<link REL="SHORTCUT ICON" HREF="{$FAVICON}">
 	<style type="text/css">@import url("themes/{$THEME}/style.css?v={$VERSION}");</style>
-	<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
+	{if $PRELOAD_JSCALENDAR neq 'false'}<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">{/if}
 	<link rel="stylesheet" href="include/print.css" type="text/css" media="print" />
 {* vtlib customization: Inclusion of custom javascript and css as registered *}
 {if $HEADERCSS}
@@ -55,12 +55,16 @@
 	<script type="text/javascript" id="_current_language_" src="include/js/{$LANGUAGE}.lang.js?{$VERSION}"></script>
 	<script type="text/javascript" src="include/js/QuickCreate.js"></script>
 	<script type="text/javascript" src="include/js/menu.js?v={$VERSION}"></script>
+	{if $CALCULATOR_DISPLAY eq 'true'}
 	<script type="text/javascript" src="include/calculator/calc.js"></script>
+	{/if}
 	<script type="text/javascript" src="modules/Calendar/script.js"></script>
 	<script type="text/javascript" src="include/js/notificationPopup.js"></script>
+	{if $PRELOAD_JSCALENDAR neq 'false'}
 	<script type="text/javascript" src="jscalendar/calendar.js"></script>
 	<script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
 	<script type="text/javascript" src="jscalendar/lang/calendar-{$APP.LBL_JSCALENDAR_LANG}.js"></script>
+	{/if}
     <!-- asterisk Integration -->
 {if $USE_ASTERISK eq 'true'}
 	<script type="text/javascript" src="include/js/asterisk.js"></script>

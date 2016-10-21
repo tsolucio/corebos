@@ -25,7 +25,7 @@ class vtigerCRM_Smarty extends Smarty{
 	/** This function sets the smarty directory path for the member variables */
 	function __construct()
 	{
-		global $CALENDAR_DISPLAY, $WORLD_CLOCK_DISPLAY, $CALCULATOR_DISPLAY, $CHAT_DISPLAY, $current_user;
+		global $CALENDAR_DISPLAY, $WORLD_CLOCK_DISPLAY, $CALCULATOR_DISPLAY, $CHAT_DISPLAY, $current_user, $currentModule;
 
 		$this->Smarty();
 		$this->template_dir = 'Smarty/templates';
@@ -40,6 +40,7 @@ class vtigerCRM_Smarty extends Smarty{
 		$this->assign('CALCULATOR_DISPLAY', $CALCULATOR_DISPLAY);
 		$this->assign('CHAT_DISPLAY', $CHAT_DISPLAY);
 		$this->assign('CURRENT_USER_ID',(isset($current_user) ? $current_user->id : 0));
+		$this->assign('PRELOAD_JSCALENDAR', GlobalVariable::getVariable('preload_jscalendar','true',$currentModule));
 
 		// Query For TagCloud only when required
 		if(isset($_REQUEST['action']) && $_REQUEST['action'] == 'DetailView') {

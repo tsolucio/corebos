@@ -8,10 +8,6 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
-<script type="text/javascript" src="jscalendar/calendar.js"></script>
-<script type="text/javascript" src="jscalendar/lang/calendar-{$CALENDAR_LANG}.js"></script>
-<script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
 <script type="text/javascript" src="include/js/FieldDependencies.js"></script>
 {if $PICKIST_DEPENDENCY_DATASOURCE neq ''}
 <script type="text/javascript">

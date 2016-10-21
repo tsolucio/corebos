@@ -132,6 +132,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Text to show',
 	'definition' => 'Shows a scrolling header text as a system wide announcement',
 ),
+'preload_jscalendar' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'string',
+	'category' => 'Development',
+	'values' => 'true | false',
+	'definition' => 'true, which is the default value, will load the javascript date calendar extension, false will not load it. Specially used for extensions which load their own calendar plugin.',
+),
 'Application_Global_Search_SelectedModules' => array(
 	'status' => 'Implemented',
 	'valuetype' => '',
