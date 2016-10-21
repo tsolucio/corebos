@@ -93,6 +93,8 @@ class DateTimeField {
 	 */
 	public static function __convertToDBFormat($date, $format) {
 		if(empty($date)) return $date;
+		list($y, $m, $d) = explode('-', $date);
+		if(strlen($y) == 4) return $date;
 		if ($format == '') {
 			$format = 'dd-mm-yyyy';
 		}
