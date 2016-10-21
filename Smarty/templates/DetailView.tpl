@@ -191,14 +191,16 @@ function sendfile_email()
 						<table border=0 cellspacing=0 cellpadding=0 width=95% align=center>
 							<tr>
 								<td>
-									<table border=0 cellspacing=0 cellpadding=3 width=100% class="small detailview_utils_table_top">
-										<tr>
-											<td class="dvtTabCache" id="detailview_utils_firstfiller" style="width:10px" nowrap>&nbsp;</td>
-
-											<td class="dvtSelectedCell" align=center nowrap>{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</td>
-											<td class="dvtTabCache" id="detailview_utils_secondfiller" style="width:10px">&nbsp;</td>
+									<div class="small detailview_utils_table_top">
+										<div class="detailview_utils_table_tabs">
+											<div class="detailview_utils_table_tab detailview_utils_table_tab_selected detailview_utils_table_tab_selected_top">{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</div>
 											{if $SinglePane_View eq 'false' && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
-												<td class="dvtUnSelectedCell" onmouseout="fnHideDrop('More_Information_Modules_List');" onmouseover="fnDropDown(this,'More_Information_Modules_List');" align="center" nowrap>
+												{if $MODULE eq 'Accounts'}
+													{assign var='tabcache' value='dvtTabCache'}
+													{assign var='RETURN_RELATEDPANE' value=''} <!-- en detailview no hay pestaña relacionada activa -->
+													{include file='RelatedPanes.tpl'}
+												{else}
+												<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_top" onmouseout="fnHideDrop('More_Information_Modules_List');" onmouseover="fnDropDown(this,'More_Information_Modules_List');">
 													<a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</a>
 													<div onmouseover="fnShowDrop('More_Information_Modules_List')" onmouseout="fnHideDrop('More_Information_Modules_List')"
 														 id="More_Information_Modules_List" class="drop_mnu" style="left: 502px; top: 76px; display: none;">
@@ -208,9 +210,12 @@ function sendfile_email()
 															{/foreach}
 														</table>
 													</div>
-												</td>
+												</div>
+												{/if}
 											{/if}
-											<td class="dvtTabCache" id="detailview_utils_thirdfiller" align="right" style="width:100%">
+										</div>
+										<div class="detailview_utils_table_tabactionsep detailview_utils_table_tabactionsep_top" id="detailview_utils_table_tabactionsep_top"></div>
+										<div class="detailview_utils_table_actions detailview_utils_table_actions_top" id="detailview_utils_actions">
 												{if $EDIT_PERMISSION eq 'yes'}
 													<input title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" class="crmbutton small edit" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.return_id.value='{$ID}';DetailView.module.value='{$MODULE}';submitFormForAction('DetailView','EditView');" type="button" name="Edit" value="&nbsp;{$APP.LBL_EDIT_BUTTON_LABEL}&nbsp;">&nbsp;
 												{/if}
@@ -235,9 +240,8 @@ function sendfile_email()
 													<img align="absmiddle" title="{$APP.LNK_LIST_NEXT}" src="{'rec_next_disabled.gif'|@vtiger_imageurl:$THEME}">&nbsp;
 												{/if}
 												<span class="detailview_utils_toggleactions"><img align="absmiddle" title="{$APP.TOGGLE_ACTIONS}" src="{'menu-icon.png'|@vtiger_imageurl:$THEME}" width="16px;" onclick="{literal}if (document.getElementById('actioncolumn').style.display=='none') {document.getElementById('actioncolumn').style.display='table-cell';}else{document.getElementById('actioncolumn').style.display='none';}window.dispatchEvent(new Event('resize'));{/literal}"></span>&nbsp;
-											</td>
-										</tr>
-									</table>
+										</div>
+									</div>
 								</td>
 							</tr>
 							<tr>
@@ -673,17 +677,21 @@ function sendfile_email()
 							</tr>
 							<tr>
 								<td>
-									<table border=0 cellspacing=0 cellpadding=3 width=100% class="small">
-										<tr>
-											<td class="dvtTabCacheBottom" style="width:10px" nowrap>&nbsp;</td>
-
-											<td class="dvtSelectedCellBottom" align=center nowrap>{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</td>
-											<td class="dvtTabCacheBottom" style="width:10px">&nbsp;</td>
+									<div class="small detailview_utils_table_bottom">
+										<div class="detailview_utils_table_tabs">
+											<div class="detailview_utils_table_tab detailview_utils_table_tab_selected detailview_utils_table_tab_selected_bottom">{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</div>
 											{if $SinglePane_View eq 'false' && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
-												<td class="dvtUnSelectedCell" align=center nowrap><a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</a></td>
+												{if $MODULE eq 'Accounts'}
+													{assign var='tabcache' value='dvtTabCacheBottom'}
+													{assign var='RETURN_RELATEDPANE' value=''} <!-- en detailview no hay pestaña relacionada activa -->
+													{include file='RelatedPanes.tpl'}
+												{else}
+												<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_bottom"><a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</a></div>
+												{/if}
 											{/if}
-											<td class="dvtTabCacheBottom" align="right" style="width:100%">
-												&nbsp;
+										</div>
+										<div class="detailview_utils_table_tabactionsep detailview_utils_table_tabactionsep_bottom" id="detailview_utils_table_tabactionsep_bottom"></div>
+										<div class="detailview_utils_table_actions detailview_utils_table_actions_bottom" id="detailview_utils_actions">
 												{if $EDIT_PERMISSION eq 'yes' }
 													<input title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" class="crmbutton small edit" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.return_id.value='{$ID}';DetailView.module.value='{$MODULE}';submitFormForAction('DetailView','EditView');" type="submit" name="Edit" value="&nbsp;{$APP.LBL_EDIT_BUTTON_LABEL}&nbsp;">&nbsp;
 												{/if}
@@ -707,9 +715,9 @@ function sendfile_email()
 												{else}
 													<img align="absmiddle" title="{$APP.LNK_LIST_NEXT}" src="{'rec_next_disabled.gif'|@vtiger_imageurl:$THEME}">&nbsp;
 												{/if}
-											</td>
-										</tr>
-									</table>
+												<span class="detailview_utils_toggleactions"><img align="absmiddle" title="{$APP.TOGGLE_ACTIONS}" src="{'menu-icon.png'|@vtiger_imageurl:$THEME}" width="16px;" onclick="{literal}if (document.getElementById('actioncolumn').style.display=='none') {document.getElementById('actioncolumn').style.display='table-cell';}else{document.getElementById('actioncolumn').style.display='none';}window.dispatchEvent(new Event('resize'));{/literal}"></span>&nbsp;
+										</div>
+									</div>
 								</td>
 							</tr>
 						</table>

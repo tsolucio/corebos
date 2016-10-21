@@ -1715,18 +1715,26 @@ function getRelatedListsInformation($module, $focus) {
 /** This function returns the related vtiger_tab details for a given entity or a module.
  * Param $module - module name
  * Param $focus - module object
+ * Param $restrictedRelations - array of related list IDs that you want to access
  * Return type is an array
  */
-function getRelatedLists($module, $focus) {
+function getRelatedLists($module, $focus,$restrictedRelations=null) {
 	global $log, $adb, $current_user;
 	$log->debug("Entering getRelatedLists(" . $module . "," . get_class($focus) . ") method ...");
 	require('user_privileges/user_privileges_' . $current_user->id . '.php');
 
 	$cur_tab_id = getTabid($module);
 
+	//To select several specific Lists
+	$sel_list = '';
+	if(is_array($restrictedRelations) and count($restrictedRelations)>0){
+		$comma_list = implode(',',$restrictedRelations);
+		$sel_list = " AND relation_id IN ($comma_list) ";
+	}
+
 	//$sql1 = "select * from vtiger_relatedlists where tabid=? order by sequence";
 	// vtlib customization: Do not picklist module which are set as in-active
-	$sql1 = "select * from vtiger_relatedlists where tabid=? and related_tabid not in (SELECT tabid FROM vtiger_tab WHERE presence = 1) order by sequence";
+	$sql1 = "select * from vtiger_relatedlists where tabid=? and related_tabid not in (SELECT tabid FROM vtiger_tab WHERE presence = 1) $sel_list order by sequence";
 	// END
 	$result = $adb->pquery($sql1, array($cur_tab_id));
 	$num_row = $adb->num_rows($result);

@@ -60,6 +60,6 @@ if(isPermitted('Accounts','Merge','') == 'yes') {
 }
 
 require_once 'modules/Vtiger/DetailView.php';
-
+include 'modules/Accounts/AccountRelatedPanes.php';
 $smarty->display('DetailView.tpl');
 ?>

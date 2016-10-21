@@ -64,8 +64,9 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 		$mod_seq_id = $focus->id;
 	}
 	$smarty->assign('MOD_SEQ_ID', $mod_seq_id);
-
-	$related_array = getRelatedLists($currentModule, $focus);
+	include 'modules/Accounts/AccountRelatedPanes.php';
+	include 'modules/Accounts/RelatedPaneActions.php';
+	$related_array = getRelatedLists($currentModule, $focus,$restrictedRelations);
 	$smarty->assign('RELATEDLISTS', $related_array);
 
 	require_once('include/ListView/RelatedListViewSession.php');

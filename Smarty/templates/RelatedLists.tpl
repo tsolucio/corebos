@@ -61,24 +61,23 @@ function gotoUpdateListPrice(id,pbid,proid) {
 			<table border=0 cellspacing=0 cellpadding=0 width=95% align=center>
 			<tr>
 				<td>
-					<table border=0 cellspacing=0 cellpadding=3 width=100% class="small">
-						<tr>
-							{if $OP_MODE eq 'edit_view'}
-								{assign var="action" value="EditView"}
+					{if $OP_MODE eq 'edit_view'}
+						{assign var="action" value="EditView"}
+					{else}
+						{assign var="action" value="DetailView"}
+					{/if}
+					<div class="small detailview_utils_table_top">
+						<div class="detailview_utils_table_tabs">
+							<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_top"><a href="index.php?action={$action}&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$SINGLE_MOD} {$APP.LBL_INFORMATION}</a></div>
+							{if $MODULE eq 'Accounts'}
+								{assign var='tabcache' value='dvtTabCache'}
+								{include file='RelatedPanes.tpl'}
 							{else}
-								{assign var="action" value="DetailView"}
+							<div class="detailview_utils_table_tab detailview_utils_table_tab_selected detailview_utils_table_tab_selected_top">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</div>
 							{/if}
-							<td class="dvtTabCache" style="width:10px" nowrap>&nbsp;</td>
-							{if $MODULE eq 'Calendar'}
-								<td class="dvtUnSelectedCell" align=center nowrap><a href="index.php?action={$action}&module={$MODULE}&record={$ID}&activity_mode={$ACTIVITY_MODE}&parenttab={$CATEGORY}">{$SINGLE_MOD} {$APP.LBL_INFORMATION}</a></td>
-							{else}
-								<td class="dvtUnSelectedCell" align=center nowrap><a href="index.php?action={$action}&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$SINGLE_MOD} {$APP.LBL_INFORMATION}</a></td>
-							{/if}
-							<td class="dvtTabCache" style="width:10px">&nbsp;</td>
-							<td class="dvtSelectedCell" align=center nowrap>{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</td>
-							<td class="dvtTabCache" style="width:100%">&nbsp;</td>
-						</tr>
-					</table>
+						</div>
+						<div class="detailview_utils_table_tabactionsep detailview_utils_table_tabactionsep_top" id="detailview_utils_table_tabactionsep_top"></div>
+					</div>
 				</td>
 			</tr>
 			<tr>
@@ -101,30 +100,27 @@ function gotoUpdateListPrice(id,pbid,proid) {
 									</tr>
 								</table>
 							</td>
+					{if $MODULE eq 'Accounts'}
+					{include file='RelatedPaneActions.tpl'}
+					{/if}
 						</tr>
 					</table>
 				</td>
 			</tr>
 			<tr>
 				<td>
-					<table border=0 cellspacing=0 cellpadding=3 width=100% class="small">
-						<tr>
-							{if $OP_MODE eq 'edit_view'}
-								{assign var="action" value="EditView"}
+					<div class="small detailview_utils_table_bottom">
+						<div class="detailview_utils_table_tabs">
+							<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_bottom"><a href="index.php?action={$action}&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$SINGLE_MOD} {$APP.LBL_INFORMATION}</a></div>
+							{if $MODULE eq 'Accounts'}
+								{assign var='tabcache' value='dvtTabCacheBottom'}
+								{include file='RelatedPanes.tpl'}
 							{else}
-								{assign var="action" value="DetailView"}
+							<div class="detailview_utils_table_tab detailview_utils_table_tab_selected detailview_utils_table_tab_selected_bottom">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</div>
 							{/if}
-							<td class="dvtTabCacheBottom" style="width:10px" nowrap>&nbsp;</td>
-							{if $MODULE eq 'Calendar'}
-								<td class="dvtUnSelectedCell" align=center nowrap><a href="index.php?action={$action}&module={$MODULE}&record={$ID}&activity_mode={$ACTIVITY_MODE}&parenttab={$CATEGORY}">{$SINGLE_MOD} {$APP.LBL_INFORMATION}</a></td>
-							{else}
-								<td class="dvtUnSelectedCell" align=center nowrap><a href="index.php?action={$action}&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$SINGLE_MOD} {$APP.LBL_INFORMATION}</a></td>
-							{/if}
-							<td class="dvtTabCacheBottom" style="width:10px">&nbsp;</td>
-							<td class="dvtSelectedCellBottom" align=center nowrap>{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</td>
-							<td class="dvtTabCacheBottom" style="width:100%">&nbsp;</td>
-						</tr>
-					</table>
+						</div>
+						<div class="detailview_utils_table_tabactionsep detailview_utils_table_tabactionsep_bottom" id="detailview_utils_table_tabactionsep_bottom"></div>
+					</div>
 				</td>
 			</tr>
 			</table>
