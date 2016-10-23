@@ -89,7 +89,7 @@ if($singlepane_view == 'true') {
 	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
 	if ($cbMapid) {
 		$cbMap = cbMap::getMapByID($cbMapid);
-		$rltabs = $cbMap->RelatedPanes();
+		$rltabs = $cbMap->RelatedPanes($focus->id);
 		$smarty->assign('RLTabs', $rltabs['panes']);
 		$smarty->assign('HASRELATEDPANES', 'true');
 	}

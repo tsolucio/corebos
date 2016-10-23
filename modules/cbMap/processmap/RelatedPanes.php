@@ -31,7 +31,7 @@
        <block>
         <label></label>
         <sequence></sequence>
-        <type></type> RelatedList | Widget | CodeBlock | FullControl
+        <type></type> RelatedList | Widget | CodeWithHeader | CodeWithoutHeader
         <loadfrom></loadfrom> related list label or id | file to load | wdiget reference
        </block>
       </blocks>
@@ -40,6 +40,7 @@
   </panes>
  </map>
  *************************************************************************************************/
+include_once('vtlib/Vtiger/Link.php');
 
 class RelatedPanes extends processcbMap {
 
@@ -62,11 +63,12 @@ class RelatedPanes extends processcbMap {
 		return $mlist_ids;
 	}
 
-	function processMap() {
-		return $this->convertMap2Array();
+	function processMap($arguments) {
+		return $this->convertMap2Array($arguments[0]);
 	}
 
-	function convertMap2Array() {
+	function convertMap2Array($crmid) {
+		global $current_user;
 		$xml = $this->getXMLContent();
 		$mapping=array();
 		$mapping['origin'] = (String)$xml->originmodule->originname;
@@ -101,6 +103,35 @@ class RelatedPanes extends processcbMap {
 						$block['relatedid'] = $rels[$block['loadfrom']];
 						if (empty($block['label'])) $block['label'] = getTranslatedString($block['loadfrom'],$block['loadfrom']);
 						$restrictedRelations[] = $rels[$block['loadfrom']];
+					} elseif ($block['type']=='Widget') {
+						$instance = new Vtiger_Link();
+						$row['tabid'] = $origintab;
+						$row['linkid'] = 0;
+						$row['linktype'] = 'DETAILVIEWWIDGET';
+						$row['linklabel'] = $block['label'];
+						if ($block['label']=='DetailViewBlockCommentWidget') $block['label'] = getTranslatedString('ModComments','ModComments');
+						$row['linkurl']  = decode_html($block['loadfrom']);
+						$row['linkicon'] = '';
+						$row['sequence'] = $block['sequence'];
+						//$row['status'] = '';
+						$row['handler_path'] = (isset($value->handler_path) ? (String)$value->handler_path : '');
+						$row['handler_class'] = (isset($value->handler_class) ? (String)$value->handler_class : '');
+						$row['handler'] = (isset($value->handler) ? (String)$value->handler : '');
+						$instance->initialize($row);
+						if(!empty($row['handler_path']) && isFileAccessible($row['handler_path'])) {
+							checkFileAccessForInclusion($row['handler_path']);
+							require_once $row['handler_path'];
+							$linkData = new Vtiger_LinkData($instance, $current_user);
+							$ignore = call_user_func(array($row['handler_class'], $row['handler']), $linkData);
+							if(!$ignore) {
+								continue; // Ignoring Link
+							}
+						}
+						$strtemplate = new Vtiger_StringTemplate();
+						$strtemplate->assign('MODULE', $mapping['origin']);
+						$strtemplate->assign('RECORD', $crmid);
+						$instance->linkurl = $strtemplate->merge($instance->linkurl);
+						$block['instance'] = $instance;
 					}
 					$pane['blocks'][$block['sequence']] = $block;
 				}

@@ -75,13 +75,17 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 		}
 		$smarty->assign("RETURN_RELATEDPANE", $_RelatedPane);
 		$cbMap = cbMap::getMapByID($cbMapid);
-		$rltabs = $cbMap->RelatedPanes();
+		$rltabs = $cbMap->RelatedPanes($focus->id);
 		$smarty->assign('RLTabs', $rltabs['panes']);
 		$restrictedRelations = (isset($rltabs['panes'][$_RelatedPane]['restrictedRelations']) ? $rltabs['panes'][$_RelatedPane]['restrictedRelations'] : null);
 		$related_array = array();
 		$rel_array = getRelatedLists($currentModule, $focus, $restrictedRelations);
 		foreach ($rltabs['panes'][$_RelatedPane]['blocks'] as $blk) {
-			$related_array[$blk['loadfrom']] = $rel_array[$blk['loadfrom']];
+			if ($blk['type']=='RelatedList') {
+				$related_array[$blk['loadfrom']] = $rel_array[$blk['loadfrom']];
+			} else {
+				$related_array[$blk['sequence']] = $blk;
+			}
 		}
 		$smarty->assign('HASRELATEDPANES', 'true');
 		if (file_exists("modules/$currentModule/RelatedPaneActions.php")) {
