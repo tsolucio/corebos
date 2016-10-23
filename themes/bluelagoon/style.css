@@ -2715,3 +2715,91 @@ a.allMnu:Hover{
 	width: 28px;
 	border-radius: 4px;
 }
+.detailview_utils_table_top, .detailview_utils_table_bottom {
+	display: flex;
+	flex-direction: row;
+	width: 100%;
+}
+
+.detailview_utils_table_tabactionsep {
+	display: flex;
+	flex-grow: 1;
+}
+
+.detailview_utils_table_tabactionsep_top, .detailview_utils_table_actions_top {
+	border-bottom:1px solid #e0dddd;
+}
+
+.detailview_utils_table_tabactionsep_bottom, .detailview_utils_table_actions_bottom {
+	border-top:1px solid #e0dddd;
+	padding-top: 5px;
+}
+
+.detailview_utils_table_actions {
+	justify-content: flex-end;
+}
+
+.detailview_utils_table_tabs {
+	display: flex;
+	flex-direction: row;
+}
+
+.detailview_utils_table_tab {
+	white-space: nowrap;
+	text-align: center;
+}
+
+.detailview_utils_table_tab_selected {
+	border-left:1px solid #e0dddd;
+	border-top:1px solid #e0dddd;
+	border-bottom:0px solid #e0dddd;
+	border-right:1px solid #e0dddd;
+	padding-left:20px;
+	padding-right:20px;
+	font-weight:bold;
+	color: black;
+	line-height:20px;
+}
+
+.detailview_utils_table_tab_selected_top {
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	background:#ffffff url(images/tab.gif) top repeat-x;
+}
+
+.detailview_utils_table_tab_selected_bottom {
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	border-top:0px solid #e0dddd;
+	padding-top: 4px;
+	padding-bottom: 4px;
+	background:#ffffff url(images/tab.gif) bottom repeat-x;
+}
+
+.detailview_utils_table_tab_unselected {
+	border-left:1px solid #dedede;
+	border-top:1px solid #e0dddd;
+	border-right:1px solid #e0dddd;
+	border-bottom:1px solid #e0dddd;
+	padding-left:20px;
+	padding-right:20px;
+	background: #FFF ;
+	cursor:pointer;
+	color: black;
+}
+
+.detailview_utils_table_tab_unselected_top {
+	border-top-left-radius: 10px;
+	border-top-right-radius: 10px;
+	padding-top: 8px;
+	padding-bottom: 4px;
+}
+
+.detailview_utils_table_tab_unselected_bottom {
+	border-bottom-left-radius: 10px;
+	border-bottom-right-radius: 10px;
+	padding-top: 8px;
+	padding-bottom: 4px;
+}
