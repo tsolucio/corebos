@@ -8,6 +8,14 @@
  * All Rights Reserved.
  *************************************************************************************/
 
+if (!isset($_REQUEST['step'])) {
+	echo '<br><br>';
+	$smarty = new vtigerCRM_Smarty();
+	$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-info');
+	$smarty->assign('ERROR_MESSAGE', getTranslatedString('ImportInfo','Import'));
+	$smarty->display('applicationmessage.tpl');
+} else {
+
 require_once 'modules/Import/api/Request.php';
 require_once 'modules/Import/controllers/Import_Index_Controller.php';
 require_once 'modules/Import/controllers/Import_ListView_Controller.php';
@@ -23,5 +31,5 @@ $requestObject = new Import_API_Request($_REQUEST);
 Import_Index_Controller::process($requestObject, $current_user);
 
 $VTIGER_BULK_SAVE_MODE = $previousBulkSaveMode;
-
+}
 ?>

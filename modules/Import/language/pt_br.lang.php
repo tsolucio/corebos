@@ -91,5 +91,6 @@ $mod_strings = array (
 	'LBL_IMPORT_CHANGE_UPLOAD_SIZE' => ') pode ser necessário aumentar na sua configuração do PHP',
 	'LBL_IMPORT_DIRECTORY_NOT_WRITABLE' => 'Diretório de importação não permite gravação',
 	'LBL_IMPORT_FILE_COPY_FAILED' => 'Erro ao copiar arquivo para importar. Verifique as permissões do sistema de arquivos',
+	'ImportInfo' => 'This extension adds import functionality to the application and is accessed via the icon on each module not directly, so you can eliminate it from the menu.',
 );
 ?>
