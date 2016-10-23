@@ -175,12 +175,12 @@ function sendfile_email()
 					<td valign=top><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 					<td class="showPanelBg" valign=top width=100%>
 						<!-- PUBLIC CONTENTS STARTS-->
-						<div class="small" style="padding:10px" onclick="hndCancelOutsideClick();";>
+						<div class="small" style="padding:14px" onclick="hndCancelOutsideClick();";>
 
 							<table align="center" border="0" cellpadding="0" cellspacing="0" width="95%">
 								<tr><td>
-										{* Module Record numbering, used MOD_SEQ_ID instead of ID *}
-										{assign var="USE_ID_VALUE" value=$MOD_SEQ_ID}
+									{* Module Record numbering, used MOD_SEQ_ID instead of ID *}
+									{assign var="USE_ID_VALUE" value=$MOD_SEQ_ID}
 									{if $USE_ID_VALUE eq ''} {assign var="USE_ID_VALUE" value=$ID} {/if}
 									<span class="dvHeaderText">[ {$USE_ID_VALUE} ] {$NAME} -  {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</span>&nbsp;&nbsp;&nbsp;<span class="small">{$UPDATEINFO}</span>&nbsp;<span id="vtbusy_info" style="display:none;" valign="bottom"><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
 								</td></tr>
