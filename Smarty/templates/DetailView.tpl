@@ -195,10 +195,8 @@ function sendfile_email()
 										<div class="detailview_utils_table_tabs">
 											<div class="detailview_utils_table_tab detailview_utils_table_tab_selected detailview_utils_table_tab_selected_top">{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</div>
 											{if $SinglePane_View eq 'false' && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
-												{if $MODULE eq 'Accounts'}
-													{assign var='tabcache' value='dvtTabCache'}
-													{assign var='RETURN_RELATEDPANE' value=''} <!-- en detailview no hay pestaña relacionada activa -->
-													{include file='RelatedPanes.tpl'}
+												{if $HASRELATEDPANES eq 'true'}
+													{include file='RelatedPanes.tpl' tabposition='top' RETURN_RELATEDPANE=''}
 												{else}
 												<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_top" onmouseout="fnHideDrop('More_Information_Modules_List');" onmouseover="fnDropDown(this,'More_Information_Modules_List');">
 													<a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</a>
@@ -681,10 +679,8 @@ function sendfile_email()
 										<div class="detailview_utils_table_tabs">
 											<div class="detailview_utils_table_tab detailview_utils_table_tab_selected detailview_utils_table_tab_selected_bottom">{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</div>
 											{if $SinglePane_View eq 'false' && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
-												{if $MODULE eq 'Accounts'}
-													{assign var='tabcache' value='dvtTabCacheBottom'}
-													{assign var='RETURN_RELATEDPANE' value=''} <!-- en detailview no hay pestaña relacionada activa -->
-													{include file='RelatedPanes.tpl'}
+												{if $HASRELATEDPANES eq 'true'}
+													{include file='RelatedPanes.tpl' tabposition='bottom' RETURN_RELATEDPANE=''}
 												{else}
 												<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_bottom"><a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</a></div>
 												{/if}

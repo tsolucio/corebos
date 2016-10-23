@@ -73,7 +73,7 @@ if(PerformancePrefs::getBoolean('DETAILVIEW_RECORD_NAVIGATION', true) && isset($
 
 $smarty->assign('IS_REL_LIST', isPresentRelatedLists($currentModule));
 $smarty->assign('SinglePane_View', $singlepane_view);
-
+$smarty->assign('HASRELATEDPANES', 'false');
 if($singlepane_view == 'true') {
 	$related_array = getRelatedLists($currentModule,$focus);
 	$smarty->assign("RELATEDLISTS", $related_array);
@@ -84,6 +84,15 @@ if($singlepane_view == 'true') {
 	}
 	$open_related_modules = RelatedListViewSession::getRelatedModulesFromSession();
 	$smarty->assign("SELECTEDHEADERS", $open_related_modules);
+} else {
+	$bmapname = $currentModule.'RelatedPanes';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$rltabs = $cbMap->RelatedPanes();
+		$smarty->assign('RLTabs', $rltabs['panes']);
+		$smarty->assign('HASRELATEDPANES', 'true');
+	}
 }
 
 if(isPermitted($currentModule, 'CreateView', $record) == 'yes')
