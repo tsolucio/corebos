@@ -31,7 +31,6 @@ $__ConfigEditor_Config = array(
 		'HELPDESK_SUPPORT_EMAIL_ID'=>array('label'=>getTranslatedString('LBL_HELPDESK_SUPPORT_EMAILID','ConfigEditor'),'values'=>array()),
 		'HELPDESK_SUPPORT_NAME' => array('label' => getTranslatedString('LBL_HELPDESK_SUPPORT_NAME','ConfigEditor'),'values'=>array()),
 		'upload_maxsize' => array('label'=>getTranslatedString('LBL_MAX_UPLOAD_SIZE','ConfigEditor'),'values'=>array()),
-		'history_max_viewed' => array('label'=>getTranslatedString('LBL_MAX_HISTORY_VIEWED','ConfigEditor'),'values'=>array()),
 		'default_module' => array('label'=>getTranslatedString('LBL_DEFAULT_MODULE','ConfigEditor'),'values'=>$moduleLabels),
 		'listview_max_textlength' => array('label' => getTranslatedString('LBL_MAX_TEXT_LENGTH_IN_LISTVIEW','ConfigEditor'), 'values' => array() ),
 		'list_max_entries_per_page' => array('label' => getTranslatedString('LBL_MAX_ENTRIES_PER_PAGE_IN_LISTVIEW','ConfigEditor'), 'values'=> array()),

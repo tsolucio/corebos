@@ -330,7 +330,6 @@ $smarty->assign("ID", $focus->id);
 $smarty->assign("ENTITY_ID", vtlib_purify($_REQUEST["record"]));
 $smarty->assign("ENTITY_TYPE",vtlib_purify($_REQUEST["email_directing_module"]));
 $smarty->assign("OLD_ID", $old_id );
-//Display the RTE or not? -- configure $USE_RTE in config.php
 $USE_RTE = vt_hasRTE();
 $smarty->assign("USE_RTE",$USE_RTE);
 

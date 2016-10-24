@@ -33,12 +33,8 @@ $mod_strings = Array(
 	'LBL_MANDATORY_VALUE'=>'Solo se permite un valor <b>Obligatorio</b> por módulo y variable',
 	'LBL_MANDATORY_VALUEJS'=>'Solo se permite un valor "Obligatorio" por módulo y variable',
 
-	'calendar_display'=>'Mostrar Calendario',
-	'world_clock_display'=>'Mostrar Reloj Mundial',
-	'calculator_display'=>'Mostrar Calculadora',
 	'list_max_entries_per_page'=>'Entradas por página en vista de lista',
 	'limitpage_navigation'=>'Limitar navigación por página',
-	'history_max_viewed'=>'Máximo de Historial',
 	'default_module'=>'Módulo por Defecto',
 	'default_action'=>'Acción por Defecto',
 	'default_theme'=>'Tema por Defecto',

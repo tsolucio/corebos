@@ -85,7 +85,6 @@
 <picklistvalue>--none--</picklistvalue>
 <picklistvalue>list_max_entries_per_page</picklistvalue>
 <picklistvalue>limitpage_navigation</picklistvalue>
-<picklistvalue>history_max_viewed</picklistvalue>
 <picklistvalue>default_module</picklistvalue>
 <picklistvalue>default_action</picklistvalue>
 <picklistvalue>default_theme</picklistvalue>

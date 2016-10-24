@@ -534,27 +534,6 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => '',
 ),
-'calendar_display' => array(
-	'status' => 'Not Implemented',
-	'valuetype' => '',
-	'category' => '',
-	'values' => '',
-	'definition' => '',
-),
-'world_clock_display' => array(
-	'status' => 'Not Implemented',
-	'valuetype' => '',
-	'category' => '',
-	'values' => '',
-	'definition' => '',
-),
-'calculator_display' => array(
-	'status' => 'Not Implemented',
-	'valuetype' => '',
-	'category' => '',
-	'values' => '',
-	'definition' => '',
-),
 'list_max_entries_per_page' => array(
 	'status' => 'Not Implemented',
 	'valuetype' => '',
@@ -563,13 +542,6 @@ $GlobalVariableDefinitons = array(
 	'definition' => '',
 ),
 'limitpage_navigation' => array(
-	'status' => 'Not Implemented',
-	'valuetype' => '',
-	'category' => '',
-	'values' => '',
-	'definition' => '',
-),
-'history_max_viewed' => array(
 	'status' => 'Not Implemented',
 	'valuetype' => '',
 	'category' => '',

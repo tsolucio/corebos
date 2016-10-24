@@ -109,6 +109,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'calendar_display',
 				'world_clock_display',
 				'calculator_display',
+				'history_max_viewed',
 			);
 			
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');

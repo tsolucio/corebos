@@ -169,7 +169,6 @@ if(isset($_REQUEST['return_id']))        $smarty->assign("RETURN_ID", vtlib_puri
 if (isset($_REQUEST['return_viewname'])) $smarty->assign("RETURN_VIEWNAME", vtlib_purify($_REQUEST['return_viewname']));
 $smarty->assign("UPLOADSIZE", $upload_maxsize/1000000); //Convert to MB
 $smarty->assign("UPLOAD_MAXSIZE",$upload_maxsize);
-//Display the RTE or not? -- configure $USE_RTE in config.php
 $USE_RTE = vt_hasRTE();
 if(getFieldVisibilityPermission('Documents',$current_user->id,'notecontent') != '0')
 	$USE_RTE = false;
