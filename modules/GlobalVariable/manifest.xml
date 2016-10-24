@@ -86,9 +86,6 @@
 <picklistvalue>limitpage_navigation</picklistvalue>
 <picklistvalue>default_theme</picklistvalue>
 <picklistvalue>currency_name</picklistvalue>
-<picklistvalue>helpdesk_support_email_id</picklistvalue>
-<picklistvalue>helpdesk_support_name</picklistvalue>
-<picklistvalue>helpdesk_support_email_reply_id</picklistvalue>
 <picklistvalue>upload_badext</picklistvalue>
 <picklistvalue>maxWebServiceSessionLifeSpan</picklistvalue>
 <picklistvalue>maxWebServiceSessionIdleTime</picklistvalue>

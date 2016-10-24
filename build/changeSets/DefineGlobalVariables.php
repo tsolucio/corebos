@@ -93,6 +93,9 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'ModComments_DefaultBlockStatus',
 				'EMail_OpenTrackingEnabled',
 				'ToolTip_MaxFieldValueLength',
+				'HelpDesk_Support_EMail',
+				'HelpDesk_Support_Name',
+				'HelpDesk_Support_Reply_EMail',
 
 				'Report_Send_Scheduled_ifEmpty',
 
@@ -122,6 +125,9 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'listview_max_textlength',
 				'list_max_entries_per_page',
 				'upload_maxsize',
+				'helpdesk_support_email_id',
+				'helpdesk_support_name',
+				'helpdesk_support_email_reply_id',
 			);
 			
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');

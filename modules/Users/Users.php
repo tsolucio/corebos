@@ -344,11 +344,10 @@ class Users extends CRMEntity {
 					if ($mailto != '') {
 						require_once('modules/Emails/mail.php');
 						require_once('modules/Emails/Emails.php');
-						global $HELPDESK_SUPPORT_EMAIL_ID,$HELPDESK_SUPPORT_NAME;
-						$from_name = $HELPDESK_SUPPORT_NAME;
-						$form_mail = $HELPDESK_SUPPORT_EMAIL_ID;
+						$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail','support@your_support_domain.tld','HelpDesk');
+						$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name','your-support name','HelpDesk');
 						$mailcontent = $mailsubject. "\n";
-						send_mail('Emails',$mailto,$from_name,$form_mail,$mailsubject,$mailcontent);
+						send_mail('Emails',$mailto,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$mailsubject,$mailcontent);
 					}
 				}
 			}

@@ -17,11 +17,6 @@ ini_set('memory_limit','1024M');
 // url for customer portal (Example: http://your_support_domain.tld/portal)
 $PORTAL_URL = 'http://your_support_domain.tld/customerportal';
 
-// helpdesk support email id and support name (Example: 'support@your_support_domain.tld' and 'your-support name')
-$HELPDESK_SUPPORT_EMAIL_ID = '_USER_SUPPORT_EMAIL_';
-$HELPDESK_SUPPORT_NAME = 'your-support name';
-$HELPDESK_SUPPORT_EMAIL_REPLY_ID = $HELPDESK_SUPPORT_EMAIL_ID;
-
 /* database configuration
       db_server
       db_port

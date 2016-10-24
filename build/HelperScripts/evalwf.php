@@ -83,6 +83,7 @@ global $currentModule, $adb;
 			$fromemail = 'email of user with user_name: '.$from_name;
 		}
 		if (empty($from_name) and empty($from_email)) {
+			$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail','support@your_support_domain.tld','HelpDesk');
 			$fromemail = $HELPDESK_SUPPORT_EMAIL_ID;
 			$fromname = 'first and last name of user with user_name: '.$HELPDESK_SUPPORT_EMAIL_ID;
 		}

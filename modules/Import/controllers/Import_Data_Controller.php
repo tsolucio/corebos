@@ -579,7 +579,9 @@ class Import_Data_Controller {
 	public static function runScheduledImport() {
 		require_once('modules/Emails/mail.php');
 		require_once('modules/Emails/Emails.php');		
-		global $current_user,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID;
+		global $current_user;
+		$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail','support@your_support_domain.tld','HelpDesk');
+		$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name','your-support name','HelpDesk');
 		$scheduledImports = self::getScheduledImport();
 
 		foreach ($scheduledImports as $scheduledId => $importDataController) {

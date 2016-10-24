@@ -134,7 +134,7 @@ $GlobalVariableDefinitons = array(
 ),
 'preload_jscalendar' => array(
 	'status' => 'Implemented',
-	'valuetype' => 'string',
+	'valuetype' => 'String',
 	'category' => 'Development',
 	'values' => 'true | false',
 	'definition' => 'true, which is the default value, will load the javascript date calendar extension, false will not load it. Specially used for extensions which load their own calendar plugin.',
@@ -222,6 +222,27 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => '',
 	'definition' => 'Maximum file size for uploaded files in bytes also used when uploading import files. Default value = 3000000',
+),
+'HelpDesk_Support_EMail' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Email',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => '"From" email address for emails going out from the HelpDesk support module (and some other system emails).',
+),
+'HelpDesk_Support_Name' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => '"From" name and signature for emails going out from the HelpDesk support module (and some other system emails).',
+),
+'HelpDesk_Support_Reply_EMail' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Email',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => '"Reply To" email address for emails going out from the HelpDesk support module (and some other system emails). It will only be used if it is different from HelpDesk_Support_EMail',
 ),
 
 // TODO: fill in the ones below
@@ -590,27 +611,6 @@ $GlobalVariableDefinitons = array(
 	'definition' => '',
 ),
 'currency_name' => array(
-	'status' => 'Not Implemented',
-	'valuetype' => '',
-	'category' => '',
-	'values' => '',
-	'definition' => '',
-),
-'helpdesk_support_email_id' => array(
-	'status' => 'Not Implemented',
-	'valuetype' => '',
-	'category' => '',
-	'values' => '',
-	'definition' => '',
-),
-'helpdesk_support_name' => array(
-	'status' => 'Not Implemented',
-	'valuetype' => '',
-	'category' => '',
-	'values' => '',
-	'definition' => '',
-),
-'helpdesk_support_email_reply_id' => array(
 	'status' => 'Not Implemented',
 	'valuetype' => '',
 	'category' => '',

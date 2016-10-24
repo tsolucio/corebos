@@ -23,7 +23,8 @@ $smtp_auth = vtlib_purify($_REQUEST['smtp_auth']);
 
 	//Added code to send a test mail to the currently logged in user
 	require_once("modules/Emails/mail.php");
-	global $current_user,$HELPDESK_SUPPORT_NAME;
+	global $current_user;
+	$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name','your-support name','HelpDesk');
 
 	$to_email = getUserEmailId('id',$current_user->id);
 	$from_email = $to_email;
