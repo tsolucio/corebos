@@ -7,26 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-class ConfigEditor_Request {
-	protected $valuemap;
-	
-	function __construct($values) {
-		$this->valuemap = $values;
-	}
-	
-	function get($key, $defvalue='') {
-		$value = $defvalue;
-		if (isset($this->valuemap[$key])) {
-			$value = $this->valuemap[$key];
-		}
-		if (!empty($value)) {
-			$value = vtlib_purify($value);
-		}
-		return $value;
-	}
-	
-	function values() {
-		return $this->valuemap;
-	}
-}
+checkFileAccessForInclusion("modules/ConfigEditor/index.php");
 ?>
+<script>gotourl('index.php?module=ConfigEditor&action=index');</script>
