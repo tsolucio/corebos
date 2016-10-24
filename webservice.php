@@ -29,9 +29,14 @@
 
 	$API_VERSION = "0.22";
 
+	if (!GlobalVariable::getVariable('Webservice_Enabled',1)) {
+		echo 'Webservice - Service is not active';
+		return;
+	}
 	// Full CORS support: preflight options call support
 	// Access-Control headers are received during OPTIONS requests
 	if ($_SERVER['REQUEST_METHOD'] == 'OPTIONS') {
+		$cors_enabled_domains = GlobalVariable::getVariable('Webservice_CORS_Enabled_Domains','');
 		if (isset($_SERVER['HTTP_ORIGIN']) && !empty($cors_enabled_domains)) {
 			$parse = parse_url($_SERVER['HTTP_ORIGIN']);
 			if ($cors_enabled_domains=='*' or !(strpos($cors_enabled_domains,$parse['host'])===false)) {

@@ -167,6 +167,23 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'Use Rich Text Editor in those modules that support it',
 ),
+'Webservice_Enabled' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Webservice',
+	'values' => '0 | 1',
+	'definition' => 'Completely disables or enables webservice access.',
+),
+'Webservice_CORS_Enabled_Domains' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Webservice',
+	'values' => 'CSV of authorized CORS domains',
+	'definition' => 'CSV of URI of domains authorized to access webservice. The special entry asterisk "*" will give access to all domains.',
+),
+
+
+
 'Application_Global_Search_SelectedModules' => array(
 	'status' => 'Implemented',
 	'valuetype' => '',
