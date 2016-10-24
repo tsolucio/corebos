@@ -28,10 +28,6 @@ $__ConfigEditor_Config = array(
 	 * By setting it to array() lets allows editing of all variables but it is not RECOMMENDED
 	 */
 	'allow.editing.variables' => array(
-		'CALENDAR_DISPLAY' => array('label'=>getTranslatedString('LBL_MINI_CALENDAR_DISPLAY','ConfigEditor'),'values'=>$trueFalseArray),
-		'WORLD_CLOCK_DISPLAY' => array('label'=> getTranslatedString('LBL_WORLD_CLOCK_DISPLAY','ConfigEditor'),'values'=>$trueFalseArray),
-		'CALCULATOR_DISPLAY' => array('label' => getTranslatedString('LBL_CALCULATOR_DISPLAY','ConfigEditor') , 'values'=>$trueFalseArray),
-		'USE_RTE' => array('label'=>getTranslatedString('LBL_USE_RTE','ConfigEditor'), 'values'=>$trueFalseArray),
 		'HELPDESK_SUPPORT_EMAIL_ID'=>array('label'=>getTranslatedString('LBL_HELPDESK_SUPPORT_EMAILID','ConfigEditor'),'values'=>array()),
 		'HELPDESK_SUPPORT_NAME' => array('label' => getTranslatedString('LBL_HELPDESK_SUPPORT_NAME','ConfigEditor'),'values'=>array()),
 		'upload_maxsize' => array('label'=>getTranslatedString('LBL_MAX_UPLOAD_SIZE','ConfigEditor'),'values'=>array()),

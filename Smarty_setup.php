@@ -25,7 +25,7 @@ class vtigerCRM_Smarty extends Smarty{
 	/** This function sets the smarty directory path for the member variables */
 	function __construct()
 	{
-		global $CALENDAR_DISPLAY, $WORLD_CLOCK_DISPLAY, $CALCULATOR_DISPLAY, $CHAT_DISPLAY, $current_user, $currentModule;
+		global $current_user, $currentModule;
 
 		$this->Smarty();
 		$this->template_dir = 'Smarty/templates';
@@ -34,11 +34,15 @@ class vtigerCRM_Smarty extends Smarty{
 		$this->cache_dir = 'Smarty/cache';
 
 		//$this->caching = true;
-		//$this->assign('app_name', 'Login');
+		$CALENDAR_DISPLAY = GlobalVariable::getVariable('Application_Display_Mini_Calendar',1,$currentModule);
+		$CALENDAR_DISPLAY = empty($CALENDAR_DISPLAY) ? 'false' : 'true';
+		$WORLD_CLOCK_DISPLAY = GlobalVariable::getVariable('Application_Display_World_Clock',1,$currentModule);
+		$WORLD_CLOCK_DISPLAY = empty($WORLD_CLOCK_DISPLAY) ? 'false' : 'true';
+		$CALCULATOR_DISPLAY = GlobalVariable::getVariable('Application_Display_Calculator',1,$currentModule);
+		$CALCULATOR_DISPLAY = empty($CALCULATOR_DISPLAY) ? 'false' : 'true';
 		$this->assign('CALENDAR_DISPLAY', $CALENDAR_DISPLAY);
 		$this->assign('WORLD_CLOCK_DISPLAY', $WORLD_CLOCK_DISPLAY);
 		$this->assign('CALCULATOR_DISPLAY', $CALCULATOR_DISPLAY);
-		$this->assign('CHAT_DISPLAY', $CHAT_DISPLAY);
 		$this->assign('CURRENT_USER_ID',(isset($current_user) ? $current_user->id : 0));
 		$this->assign('PRELOAD_JSCALENDAR', GlobalVariable::getVariable('preload_jscalendar','true',$currentModule));
 

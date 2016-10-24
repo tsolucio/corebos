@@ -14,14 +14,6 @@ include('vtigerversion.php');
 // memory limit default value = 64M
 ini_set('memory_limit','1024M');
 
-// show or hide calendar, world clock, calculator, chat and CKEditor 
-// Do NOT remove the quotes if you set these to false! 
-$CALENDAR_DISPLAY = 'true';
-$WORLD_CLOCK_DISPLAY = 'true';
-$CALCULATOR_DISPLAY = 'true';
-$CHAT_DISPLAY = 'true'; 
-$USE_RTE = 'true';
-
 // url for customer portal (Example: http://your_support_domain.tld/portal)
 $PORTAL_URL = 'http://your_support_domain.tld/customerportal';
 
