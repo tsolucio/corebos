@@ -35,7 +35,6 @@ $mod_strings = Array(
 'LBL_IMPORT_MODULE_NO_DIRECTORY_END'=>' Deze bestaat niet of is niet overschrijfbaar',
 'LBL_IMPORT_MODULE_ERROR_NO_UPLOAD'=>'Het bestand is niet succesvol verstuurd, probeer nog een keer',
 'LBL_IMPORT_MODULE_ERROR_LARGE_FILE'=>'Bestand is te groot. Max:',
-'LBL_IMPORT_MODULE_ERROR_LARGE_FILE_END'=>'Bytes. Verander $upload_maxsize in config.php',
 'LBL_MODULE_NAME'=>'Importeren',
 'LBL_TRY_AGAIN'=>'Probeer nog een keer',
 'LBL_ERROR'=>'Foutmelding:',

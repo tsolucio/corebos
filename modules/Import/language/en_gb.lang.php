@@ -86,7 +86,6 @@ $mod_strings = array(
 	'LBL_IMPORT_MODULE_NO_DIRECTORY_END' => ' does not exist or is not writable',
 	'LBL_IMPORT_MODULE_ERROR_NO_UPLOAD' => 'File was not uploaded successfully, try again',
 	'LBL_IMPORT_MODULE_ERROR_LARGE_FILE' => 'File is too large. Max:',
-	'LBL_IMPORT_MODULE_ERROR_LARGE_FILE_END' => 'Bytes. Change $upload_maxsize in config.php',
 	'LBL_TRY_AGAIN' => 'Try Again',
 	'ERR_MULTIPLE' => 'Multiple columns have been defined with the same field name.',
 	'ERR_MISSING_REQUIRED_FIELDS' => 'Missing required fields:',

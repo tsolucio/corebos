@@ -83,10 +83,6 @@ $import_dir = 'cache/import/';
 // upload_dir default value prepended by cache_dir = upload/
 $upload_dir = '_VT_UPLOADDIR_';
 
-// maximum file size for uploaded files in bytes also used when uploading import files
-// upload_maxsize default value = 3000000
-$upload_maxsize = 3000000;
-
 // files with one of these extensions will have '.txt' appended to their filename on upload
 // upload_badext default value = php, php3, php4, php5, pl, cgi, py, asp, cfm, js, vbs, html, htm
 $upload_badext = array('php', 'php3', 'php4', 'php5', 'pl', 'cgi', 'py', 'asp', 'cfm', 'js', 'vbs', 'html', 'htm', 'exe', 'bin', 'bat', 'sh', 'dll', 'phps', 'phtml', 'xhtml', 'rb', 'msi', 'jsp', 'shtml', 'sth', 'shtm');

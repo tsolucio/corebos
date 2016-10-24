@@ -12,7 +12,6 @@ $mod_strings = array (
 	'LBL_IMPORT_MODULE_NO_DIRECTORY_END' => ' n\'existe pas ou est en lecture seule',
 	'LBL_IMPORT_MODULE_ERROR_NO_UPLOAD' => 'Erreur lors de l\'importation du fichier, veuillez réessayez.',
 	'LBL_IMPORT_MODULE_ERROR_LARGE_FILE' => 'Fichier trop volumineux. Taille max :',
-	'LBL_IMPORT_MODULE_ERROR_LARGE_FILE_END' => ' Octets. Vous pouvez modifier la valeur "Taille Max.de fichier téléchargement" dans le Config Editeur (droit administrateur requis)',
 	'LBL_MODULE_NAME' => 'Importer',
 	'LBL_TRY_AGAIN' => 'Réessayer',
 	'LBL_ERROR' => 'Erreur :',

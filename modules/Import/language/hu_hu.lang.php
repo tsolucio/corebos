@@ -87,7 +87,6 @@ $mod_strings = array(
 	'LBL_IMPORT_MODULE_NO_DIRECTORY_END' => ' nem létezik vagy írásvédett',
 	'LBL_IMPORT_MODULE_ERROR_NO_UPLOAD' => 'Nem sikerült feltölteni a fájlt, próbáld meg újra',
 	'LBL_IMPORT_MODULE_ERROR_LARGE_FILE' => 'A fájl túl nagy. Max:',
-	'LBL_IMPORT_MODULE_ERROR_LARGE_FILE_END' => 'Bájt. Növeld meg a $upload_maxsize értékét a config.inc.php fájlban.',
 	'LBL_TRY_AGAIN' => 'Próbáld újra',
 	'ERR_MULTIPLE' => 'Több oszlopot is ugyanazzal a mezőnévvel kötöttél össze.',
 	'ERR_MISSING_REQUIRED_FIELDS' => 'Kötelező mező hiányzik:',

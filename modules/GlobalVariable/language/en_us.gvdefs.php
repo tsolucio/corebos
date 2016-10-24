@@ -216,8 +216,15 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Number of rows per page in list views',
 ),
+'Application_Upload_MaxSize' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'Maximum file size for uploaded files in bytes also used when uploading import files. Default value = 3000000',
+),
 
-
+// TODO: fill in the ones below
 'Application_Global_Search_SelectedModules' => array(
 	'status' => 'Implemented',
 	'valuetype' => '',
@@ -625,13 +632,6 @@ $GlobalVariableDefinitons = array(
 	'definition' => '',
 ),
 'maxWebServiceSessionIdleTime' => array(
-	'status' => 'Not Implemented',
-	'valuetype' => '',
-	'category' => '',
-	'values' => '',
-	'definition' => '',
-),
-'upload_maxsize' => array(
 	'status' => 'Not Implemented',
 	'valuetype' => '',
 	'category' => '',

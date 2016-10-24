@@ -92,7 +92,6 @@
 <picklistvalue>upload_badext</picklistvalue>
 <picklistvalue>maxWebServiceSessionLifeSpan</picklistvalue>
 <picklistvalue>maxWebServiceSessionIdleTime</picklistvalue>
-<picklistvalue>upload_maxsize</picklistvalue>
 <picklistvalue>minimum_cron_frequency</picklistvalue>
 <picklistvalue>default_timezone</picklistvalue>
 <picklistvalue>default_language</picklistvalue>

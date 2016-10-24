@@ -43,7 +43,6 @@ $mod_strings = Array(
 	'upload_badext'=>'Extensiones no soportadas',
 	'maxWebServiceSessionLifeSpan'=>'Duración Máxima Sesión WebService',
 	'maxWebServiceSessionIdleTime'=>'Duración Máxima Inactividad Sesión WebService',
-	'upload_maxsize'=>'Tamaño máximo de carga',
 	'minimum_cron_frequency'=>'Frecuencia Mínima cron',
 	'default_timezone'=>'Zona Horaria por Defecto',
 	'default_language'=>'Idioma por Defecto',

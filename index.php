@@ -131,11 +131,6 @@ if(isset($_SESSION['VTIGER_DB_VERSION']) && isset($_SESSION['authenticated_user_
 		exit();
 	}
 }
-// END
-
-$default_config_values = Array( "allow_exports"=>"all","upload_maxsize"=>"3000000", "listview_max_textlength" => "40", "php_max_execution_time" => "0");
-
-set_default_config($default_config_values);
 
 // Set the default timezone preferred by user
 global $default_timezone;

@@ -13,7 +13,6 @@ $mod_strings = array (
   'LBL_IMPORT_MODULE_NO_DIRECTORY_END' => 'non esiste o non &egrave; scrivibile',
   'LBL_IMPORT_MODULE_ERROR_NO_UPLOAD' => 'Il file non &egrave; stato caricato con successo, prova di nuovo',
   'LBL_IMPORT_MODULE_ERROR_LARGE_FILE' => 'Il file &egrave; troppo grande. Massimo:',
-  'LBL_IMPORT_MODULE_ERROR_LARGE_FILE_END' => 'Bytes. Cambia $upload_maxsize in config.php',
   'LBL_MODULE_NAME' => 'Importa',
   'LBL_TRY_AGAIN' => 'Prova di nuovo',
   'LBL_ERROR' => 'Errore:',

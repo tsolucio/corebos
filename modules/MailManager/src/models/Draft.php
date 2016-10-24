@@ -260,9 +260,8 @@ class MailManager_Model_DraftEmail {
 	}
 
 	function handleUpload() {
-		global $upload_maxsize;
 		$allowedFileExtension = array();
-
+		$upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize',3000000,'Emails');
 		$uploadLimit = ConfigPrefs::get('MAXUPLOADLIMIT', $upload_maxsize);
 		$filePath = decideFilePath();
 

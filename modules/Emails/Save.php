@@ -82,6 +82,7 @@ if($file_name != '' && $_FILES['filename']['size'] == 0)
 	}
 	else if($errorCode == 2)
 	{
+		$upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize',3000000);
 		$errormessage = "<B><font color='red'>".$mod_strings['LBL_EXCEED_MAX'].$upload_maxsize.$mod_strings['LBL_BYTES']." </font></B> <br>";
 	}
 	else if($errorCode == 6)

@@ -7,11 +7,9 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('include/utils/utils.php');
 require_once('include/logging.php');
-global $log;
-global $current_user, $upload_badext;
+global $log, $current_user, $upload_badext;
 $vtigerpath = $_SERVER['REQUEST_URI'];
 $vtigerpath = str_replace("/index.php?module=uploads&action=add2db", "", $vtigerpath);
 
@@ -41,14 +39,13 @@ $log->debug("DEBUG In add2db.php");
 		{
 			$desc = vtlib_purify($_REQUEST['txtDescription']);
 			$subject = vtlib_purify($_REQUEST['uploadsubject']);
-			$date_var = $adb->formatDate(date('Y-m-d H:i:s'), true);	
+			$date_var = $adb->formatDate(date('Y-m-d H:i:s'), true);
 			$current_date = getdate();
-			$current_date = $adb->formatDate(date('Y-m-d H:i:s'), true);	
+			$current_date = $adb->formatDate(date('Y-m-d H:i:s'), true);
 			$query = "insert into vtiger_crmentity (crmid,smcreatorid,smownerid,setype,description,createdtime,modifiedtime) values(?,?,?,?,?,?,?)";
-			$params = array($current_id, $current_user->id, $current_user->id, vtlib_purify($_REQUEST['return_module']).' Attachment', $desc, $date_var, $current_date);	
+			$params = array($current_id, $current_user->id, $current_user->id, vtlib_purify($_REQUEST['return_module']).' Attachment', $desc, $date_var, $current_date);
 			$result = $adb->pquery($query, $params);
 
-			# Added by DG 26 Oct 2005
 			# Attachments added to contacts are also added to their accounts
 			$log->debug("DEBUG return_module: ".$_REQUEST['return_module']);
 			if ($_REQUEST['return_module'] == 'Contacts')
@@ -115,8 +112,8 @@ $log->debug("DEBUG In add2db.php");
 				<li><font color='red'>File has no data</font>
 				</ul></B></font> <br>" ;
 			header("Location: index.php?module=uploads&action=uploadsAjax&msg=true&file=upload&errormessage=".$errormessage);
-		}			
-	} 
+		}
+	}
 	else 
 	{
 		$errorCode =  $_FILES['binFile']['error'];
@@ -128,6 +125,7 @@ $log->debug("DEBUG In add2db.php");
 		}
 		else if($errorCode == 2)
 		{
+			$upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize',3000000);
 			$errormessage = "<B><font color='red'>Sorry, the uploaded file exceeds the maximum filesize limit. Please try a file smaller than $upload_maxsize bytes</font></B> <br>";
 		}
 		else if($errorCode == 6)

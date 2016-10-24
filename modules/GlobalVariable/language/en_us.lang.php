@@ -44,7 +44,6 @@ $mod_strings = Array(
 	'upload_badext'=>'Upload badext',
 	'maxWebServiceSessionLifeSpan'=>'Max WebService session lifespan',
 	'maxWebServiceSessionIdleTime'=>'Max WebService session idle time',
-	'upload_maxsize'=>'Upload max size',
 	'minimum_cron_frequency'=>'Minimum cron frequency',
 	'default_timezone'=>'Default timezone',
 	'default_language'=>'Default language',
