@@ -87,7 +87,6 @@
 <picklistvalue>limitpage_navigation</picklistvalue>
 <picklistvalue>default_theme</picklistvalue>
 <picklistvalue>currency_name</picklistvalue>
-<picklistvalue>listview_max_textlength</picklistvalue>
 <picklistvalue>helpdesk_support_email_id</picklistvalue>
 <picklistvalue>helpdesk_support_name</picklistvalue>
 <picklistvalue>helpdesk_support_email_reply_id</picklistvalue>
@@ -95,7 +94,6 @@
 <picklistvalue>maxWebServiceSessionLifeSpan</picklistvalue>
 <picklistvalue>maxWebServiceSessionIdleTime</picklistvalue>
 <picklistvalue>upload_maxsize</picklistvalue>
-<picklistvalue>allow_exports</picklistvalue>
 <picklistvalue>minimum_cron_frequency</picklistvalue>
 <picklistvalue>default_timezone</picklistvalue>
 <picklistvalue>default_language</picklistvalue>

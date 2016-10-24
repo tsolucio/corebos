@@ -195,6 +195,21 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Valid module name',
 	'definition' => 'Module that will be loaded by default when no module is specified in URL',
 ),
+'Application_Allow_Exports' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'all | admin | none',
+	'definition' => 'Global security check to permit exporting. "all" to allow anyone to use exports, "admin" to only allow admins to export, "none" to block exports completely. Default value = all',
+),
+'Application_ListView_Max_Text_Length' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'Maximum number of letters of a field to show in a list view column. Default value is 40 and 0 shows the full string.',
+),
+
 
 'Application_Global_Search_SelectedModules' => array(
 	'status' => 'Implemented',
@@ -574,13 +589,6 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => '',
 ),
-'listview_max_textlength' => array(
-	'status' => 'Not Implemented',
-	'valuetype' => '',
-	'category' => '',
-	'values' => '',
-	'definition' => '',
-),
 'helpdesk_support_email_id' => array(
 	'status' => 'Not Implemented',
 	'valuetype' => '',
@@ -624,13 +632,6 @@ $GlobalVariableDefinitons = array(
 	'definition' => '',
 ),
 'upload_maxsize' => array(
-	'status' => 'Not Implemented',
-	'valuetype' => '',
-	'category' => '',
-	'values' => '',
-	'definition' => '',
-),
-'allow_exports' => array(
 	'status' => 'Not Implemented',
 	'valuetype' => '',
 	'category' => '',

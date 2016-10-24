@@ -39,7 +39,7 @@ coreBOS_Session::init();
 // Set the current language and the language strings, if not already set.
 setCurrentLanguage();
 
-global $allow_exports,$app_strings;
+global $app_strings;
 
 $current_user = new Users();
 
@@ -55,6 +55,7 @@ if(isset($_SESSION['authenticated_user_id']))
 
 }
 
+$allow_exports = GlobalVariable::getVariable('Application_Allow_Exports','all');
 //Security Check
 if(isPermitted($_REQUEST['module'],"Export") == "no")
 {

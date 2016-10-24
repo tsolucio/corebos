@@ -1252,7 +1252,7 @@ function getSearchListViewEntries($focus, $module, $list_result, $navigation_arr
  * Returns an string value
  */
 function getValue($field_result, $list_result, $fieldname, $focus, $module, $entity_id, $list_result_count, $mode, $popuptype, $returnset = '', $viewid = '') {
-	global $log, $listview_max_textlength, $app_strings, $current_language, $currentModule;
+	global $log, $app_strings, $current_language, $currentModule;
 	$log->debug("Entering getValue(" . print_r($field_result,true) . "," . $list_result . "," . $fieldname . "," . get_class($focus) . "," . $module . "," . $entity_id . "," . $list_result_count . "," . $mode . "," . $popuptype . "," . $returnset . "," . $viewid . ") method ...");
 	global $adb, $current_user, $default_charset;
 
@@ -1667,6 +1667,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 				$value_temp = Array();
 				$string_temp = '';
 				$str_c = 0;
+				$listview_max_textlength = GlobalVariable::getVariable('Application_ListView_Max_Text_Length',40,$currentModule);
 				foreach ($value_arr as $ind => $val) {
 					$notaccess = '<font color="red">' . $app_strings['LBL_NOT_ACCESSIBLE'] . "</font>";
 					if (!$listview_max_textlength || !(strlen(preg_replace("/(<\/?)(\w+)([^>]*>)/i", "", $string_temp)) > $listview_max_textlength)) {
@@ -3988,7 +3989,8 @@ function popup_decode_html($str) {
 
 //function added to check the text length in the listview.
 function textlength_check($field_val) {
-	global $listview_max_textlength, $default_charset;
+	global $default_charset,$currentModule;
+	$listview_max_textlength = GlobalVariable::getVariable('Application_ListView_Max_Text_Length',40,$currentModule);
 	if ($listview_max_textlength && $listview_max_textlength > 0) {
 		$temp_val = preg_replace("/(<\/?)(\w+)([^>]*>)/i", "", $field_val);
 		if (function_exists('mb_strlen')) {

@@ -123,7 +123,8 @@ class ListViewController {
 	 */
 	function getListViewEntries($focus, $module,$result,$navigationInfo,$skipActions=false) {
 		require('user_privileges/user_privileges_'.$this->user->id.'.php');
-		global $listview_max_textlength, $theme, $default_charset, $current_user, $currentModule, $adb;
+		global $theme, $default_charset, $current_user, $currentModule, $adb;
+		$listview_max_textlength = GlobalVariable::getVariable('Application_ListView_Max_Text_Length',40,$currentModule);
 		$fields = $this->queryGenerator->getFields();
 		$whereFields = $this->queryGenerator->getWhereFields();
 		$meta = $this->queryGenerator->getMeta($this->queryGenerator->getModule());

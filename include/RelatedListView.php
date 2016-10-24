@@ -236,9 +236,8 @@ function getAttachmentsAndNotes($parentmodule,$query,$id,$sid='')
 	$theme_path="themes/".$theme."/";
 	$image_path=$theme_path."images/";
 
-	global $adb,$current_user;
-	global $mod_strings;
-	global $app_strings, $listview_max_textlength;
+	global $adb,$current_user, $mod_strings, $app_strings,$currentModule;
+	$listview_max_textlength = GlobalVariable::getVariable('Application_ListView_Max_Text_Length',40,$currentModule);
 
 	$result=$adb->query($query);
 	$noofrows = $adb->num_rows($result);

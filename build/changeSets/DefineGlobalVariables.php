@@ -50,6 +50,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_Use_RTE',
 				'Application_Default_Action',
 				'Application_Default_Module',
+				'Application_Allow_Exports',
+				'Application_ListView_Max_Text_Length',
 
 				'Calendar_Modules_Panel_Visible',
 				'Calendar_Default_Reminder_Minutes',
@@ -114,6 +116,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'history_max_viewed',
 				'default_module',
 				'default_action',
+				'allow_exports',
+				'listview_max_textlength',
 			);
 			
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');
