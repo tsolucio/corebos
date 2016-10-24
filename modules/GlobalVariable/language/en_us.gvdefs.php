@@ -596,13 +596,6 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => '',
 ),
-'limitpage_navigation' => array(
-	'status' => 'Not Implemented',
-	'valuetype' => '',
-	'category' => '',
-	'values' => '',
-	'definition' => '',
-),
 'default_theme' => array(
 	'status' => 'Not Implemented',
 	'valuetype' => '',
@@ -639,13 +632,6 @@ $GlobalVariableDefinitons = array(
 	'definition' => '',
 ),
 'minimum_cron_frequency' => array(
-	'status' => 'Not Implemented',
-	'valuetype' => '',
-	'category' => '',
-	'values' => '',
-	'definition' => '',
-),
-'default_timezone' => array(
 	'status' => 'Not Implemented',
 	'valuetype' => '',
 	'category' => '',

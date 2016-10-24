@@ -31,7 +31,6 @@ $mod_strings = Array(
 	'LBL_MANDATORY_VALUE'=>'Only one <b>mandatory</b> value is allowed for a given module and variable',
 	'LBL_MANDATORY_VALUEJS'=>'Only one "mandatory" value is allowed for a given module and variable',
 
-	'limitpage_navigation'=>'Limit page navigation',
 	'default_theme'=>'Default theme',
 	'currency_name'=>'Currency name',
 	'default_charset'=>'Default charset',
@@ -41,7 +40,6 @@ $mod_strings = Array(
 	'maxWebServiceSessionLifeSpan'=>'Max WebService session lifespan',
 	'maxWebServiceSessionIdleTime'=>'Max WebService session idle time',
 	'minimum_cron_frequency'=>'Minimum cron frequency',
-	'default_timezone'=>'Default timezone',
 	'default_language'=>'Default language',
 	'import_dir'=>'Import dir',
 	'upload_dir'=>'Upload dir',

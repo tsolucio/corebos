@@ -83,14 +83,12 @@
 <masseditable>1</masseditable>
 <picklistvalues>
 <picklistvalue>--none--</picklistvalue>
-<picklistvalue>limitpage_navigation</picklistvalue>
 <picklistvalue>default_theme</picklistvalue>
 <picklistvalue>currency_name</picklistvalue>
 <picklistvalue>upload_badext</picklistvalue>
 <picklistvalue>maxWebServiceSessionLifeSpan</picklistvalue>
 <picklistvalue>maxWebServiceSessionIdleTime</picklistvalue>
 <picklistvalue>minimum_cron_frequency</picklistvalue>
-<picklistvalue>default_timezone</picklistvalue>
 <picklistvalue>default_language</picklistvalue>
 <picklistvalue>import_dir</picklistvalue>
 <picklistvalue>upload_dir</picklistvalue>

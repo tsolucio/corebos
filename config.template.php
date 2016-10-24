@@ -86,9 +86,6 @@ $upload_badext = array('php', 'php3', 'php4', 'php5', 'pl', 'cgi', 'py', 'asp', 
 // includeDirectory default value = $root_directory..'include/
 $includeDirectory = $root_directory.'include/';
 
-// limitpage_navigation default value = 5
-$limitpage_navigation = '5';
-
 // set default theme
 // default_theme default value = blue
 $default_theme = 'softed';

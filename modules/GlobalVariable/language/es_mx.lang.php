@@ -33,7 +33,6 @@ $mod_strings = Array(
 	'LBL_MANDATORY_VALUE'=>'Solo se permite un valor <b>Obligatorio</b> por módulo y variable',
 	'LBL_MANDATORY_VALUEJS'=>'Solo se permite un valor "Obligatorio" por módulo y variable',
 
-	'limitpage_navigation'=>'Limitar navigación por página',
 	'default_theme'=>'Tema por Defecto',
 	'currency_name'=>'Moneda',
 	'default_charset'=>'Codificación por Defecto',
@@ -42,7 +41,6 @@ $mod_strings = Array(
 	'maxWebServiceSessionLifeSpan'=>'Duración Máxima Sesión WebService',
 	'maxWebServiceSessionIdleTime'=>'Duración Máxima Inactividad Sesión WebService',
 	'minimum_cron_frequency'=>'Frecuencia Mínima cron',
-	'default_timezone'=>'Zona Horaria por Defecto',
 	'default_language'=>'Idioma por Defecto',
 	'import_dir'=>'Directorio Importación',
 	'upload_dir'=>'Directorio Subidas',

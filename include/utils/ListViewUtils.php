@@ -353,7 +353,7 @@ function getNavigationValues($display, $noofrows, $limit) {
 	global $log;
 	$log->debug("Entering getNavigationValues(" . $display . "," . $noofrows . "," . $limit . ") method ...");
 	$navigation_array = Array();
-	global $limitpage_navigation;
+	$limitpage_navigation = '5'; // magic number to limit the end page to five more than the current page
 	if (isset($_REQUEST['allflag']) && $_REQUEST['allflag'] == 'All') {
 		$navigation_array['start'] = 1;
 		$navigation_array['first'] = 1;
