@@ -91,7 +91,7 @@ function br2nl_vt($str)
  * Return type text
  */
 function export($type){
-	global $log, $list_max_entries_per_page, $adb;
+	global $log, $adb;
 	$log->debug("Entering export(".$type.") method ...");
 
 	$focus = 0;
@@ -191,6 +191,7 @@ function export($type){
 	}
 
 	if($export_data == 'currentpage'){
+		$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$type);
 		$current_page = ListViewSession::getCurrentPage($type,$viewid);
 		$limit_start_rec = ($current_page - 1) * $list_max_entries_per_page;
 		if ($limit_start_rec < 0) $limit_start_rec = 0;

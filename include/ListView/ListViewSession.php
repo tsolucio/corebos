@@ -56,7 +56,8 @@ class ListViewSession {
 	}
 
 	public static function getListViewNavigation($currentRecordId){
-		global $currentModule,$current_user,$adb,$log,$list_max_entries_per_page;
+		global $currentModule,$current_user,$adb,$log;
+		$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$currentModule);
 		Zend_Json::$useBuiltinEncoderDecoder = true;
 		$reUseData = false;
 		$displayBufferRecordCount = 10;
@@ -171,7 +172,8 @@ class ListViewSession {
 	}
 
 	public static function getRequestCurrentPage($currentModule, $query, $viewid, $queryMode = false) {
-		global $list_max_entries_per_page, $adb;
+		global $adb;
+		$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$currentModule);
 		$start = 1;
 		if(isset($_REQUEST['query']) && $_REQUEST['query'] == 'true'&& $_REQUEST['start']!="last"){
 			return ListViewSession::getRequestStartPage();

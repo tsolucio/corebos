@@ -158,7 +158,7 @@ if(isset($query_string) && $query_string != ''){
 				}
 				$moduleRecordCount[$module]['count'] = $noofrows;
 
-				global $list_max_entries_per_page;
+				$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$module);
 				if(!empty($_REQUEST['start'])){
 					$start = $_REQUEST['start'];
 					if($start == 'last'){

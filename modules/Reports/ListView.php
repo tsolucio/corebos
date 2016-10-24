@@ -16,7 +16,7 @@ require_once('modules/Reports/Reports.php');
 global $log, $app_strings, $app_list_strings, $mod_strings;
 $current_module_strings = return_module_language($current_language, 'Reports');
 
-global $list_max_entries_per_page, $urlPrefix,$current_user;
+global $urlPrefix,$current_user;
 
 $log = LoggerManager::getLogger('report_list');
 

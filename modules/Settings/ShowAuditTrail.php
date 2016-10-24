@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
- 
 require_once('Smarty_setup.php');
 require_once('data/Tracker.php');
 require_once('modules/Settings/AuditTrail.php');
@@ -20,8 +19,6 @@ global $mod_strings;
 global $app_list_strings;
 global $current_language, $current_user, $adb;
 $current_module_strings = return_module_language($current_language, 'Settings');
-
-global $list_max_entries_per_page;
 global $urlPrefix;
 
 $log = LoggerManager::getLogger('audit_trial');

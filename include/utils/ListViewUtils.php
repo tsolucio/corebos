@@ -992,7 +992,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
  * Returns an array type
  */
 function getSearchListViewEntries($focus, $module, $list_result, $navigation_array, $form = '') {
-	global $log, $adb, $app_strings, $theme, $current_user, $list_max_entries_per_page;
+	global $log, $adb, $app_strings, $theme, $current_user;
 	$log->debug("Entering getSearchListViewEntries(" . get_class($focus) . "," . $module . "," . $list_result . ") method ...");
 
 	$noofrows = $adb->num_rows($list_result);

@@ -45,8 +45,7 @@ class Mobile_UI_ListModuleRecords extends Mobile_WS_ListModuleRecords {
 	/** END */
 	
 	function process(Mobile_API_Request $request) {
-		global $current_user,$current_language,$displayed_modules; 		
-		global $adb, $theme;
+		global $current_user,$current_language,$displayed_modules, $adb, $theme;
 		$wsResponse = parent::process($request);
 		$response = false;
 		if($wsResponse->hasError()) {
@@ -151,7 +150,7 @@ class Mobile_UI_ListModuleRecords extends Mobile_WS_ListModuleRecords {
 							}
 							
 							if($search_module != '' || $search_tag != ''){//This is for Tag search
-								$where = getTagWhere($search_val,$current_user->id);					
+								$where = getTagWhere($search_val,$current_user->id);
 								$search_msg =  $app_strings['LBL_TAG_SEARCH'];
 								$search_msg .=	"<b>".to_html($search_val)."</b>";
 							}
@@ -173,8 +172,7 @@ class Mobile_UI_ListModuleRecords extends Mobile_WS_ListModuleRecords {
 								$noofrows = vtlib_purify($_REQUEST['recordCount']);
 							}
 							$moduleRecordCount[$module]['count'] = $noofrows;
-							
-							global $list_max_entries_per_page;
+							$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$module);
 							if(!empty($_REQUEST['start'])){
 								$start = $_REQUEST['start'];
 								if($start == 'last'){

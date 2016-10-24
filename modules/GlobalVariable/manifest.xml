@@ -83,7 +83,6 @@
 <masseditable>1</masseditable>
 <picklistvalues>
 <picklistvalue>--none--</picklistvalue>
-<picklistvalue>list_max_entries_per_page</picklistvalue>
 <picklistvalue>limitpage_navigation</picklistvalue>
 <picklistvalue>default_theme</picklistvalue>
 <picklistvalue>currency_name</picklistvalue>

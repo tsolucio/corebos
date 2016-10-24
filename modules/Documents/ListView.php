@@ -16,11 +16,10 @@ require_once('include/ListView/ListView.php');
 require_once('include/utils/utils.php');
 require_once('modules/CustomView/CustomView.php');
 
-global $app_strings,$mod_strings,$list_max_entries_per_page;
-
 $log = LoggerManager::getLogger('note_list');
 
-global $currentModule,$image_path,$theme;
+global $app_strings,$mod_strings,$currentModule,$image_path,$theme;
+$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$currentModule);
 $category = getParentTab();
 if(!$_SESSION['lvs'][$currentModule])
 {

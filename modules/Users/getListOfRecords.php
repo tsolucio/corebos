@@ -16,7 +16,6 @@ require_once 'include/utils/ListViewUtils.php';
 require_once('modules/CustomView/CustomView.php');
 
 global $mod_strings,$app_strings,$app_list_strings,$theme,$adb,$current_user;
-global $list_max_entries_per_page;
 
 $theme_path="themes/".$theme."/";
 

@@ -16,7 +16,8 @@ require_once('include/utils/utils.php');
 require_once('modules/CustomView/CustomView.php');
 require_once('modules/Calendar/CalendarCommon.php');
 
-global $app_strings, $list_max_entries_per_page, $currentModule, $image_path, $theme, $adb, $current_user;
+global $app_strings, $currentModule, $image_path, $theme, $adb, $current_user;
+$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$module);
 $log = LoggerManager::getLogger('task_list');
 
 if (isset($_REQUEST['current_user_only'])) $current_user_only = vtlib_purify($_REQUEST['current_user_only']);

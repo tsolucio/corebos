@@ -3293,7 +3293,8 @@ function getDuplicateQuery($module,$field_values,$ui_type_arr)
 /** Function to return the duplicate records data as a formatted array */
 function getDuplicateRecordsArr($module)
 {
-	global $adb,$app_strings,$list_max_entries_per_page,$theme,$default_charset;
+	global $adb,$app_strings,$theme,$default_charset;
+	$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$module);
 	$field_values_array=getFieldValues($module);
 	$field_values=$field_values_array['fieldnames_list'];
 	$fld_arr=$field_values_array['fieldnames_array'];

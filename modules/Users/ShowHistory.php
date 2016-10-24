@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('Smarty_setup.php');
 require_once('data/Tracker.php');
 require_once('modules/Users/LoginHistory.php');
@@ -15,7 +14,7 @@ require_once('modules/Users/Users.php');
 require_once('include/logging.php');
 require_once('include/utils/utils.php');
 
-global $app_strings, $mod_strings, $app_list_strings, $current_language, $current_user, $adb, $list_max_entries_per_page, $urlPrefix;
+global $app_strings, $mod_strings, $app_list_strings, $current_language, $current_user, $adb, $urlPrefix;
 
 $log = LoggerManager::getLogger('login_list');
 

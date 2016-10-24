@@ -209,6 +209,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Maximum number of letters of a field to show in a list view column. Default value is 40 and 0 shows the full string.',
 ),
+'Application_ListView_PageSize' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'Number of rows per page in list views',
+),
 
 
 'Application_Global_Search_SelectedModules' => array(
@@ -556,13 +563,6 @@ $GlobalVariableDefinitons = array(
 ),
 'Report.Excel.Export.RowHeight' => array(
 	'status' => 'Implemented',
-	'valuetype' => '',
-	'category' => '',
-	'values' => '',
-	'definition' => '',
-),
-'list_max_entries_per_page' => array(
-	'status' => 'Not Implemented',
 	'valuetype' => '',
 	'category' => '',
 	'values' => '',

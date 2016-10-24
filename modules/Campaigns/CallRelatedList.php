@@ -51,7 +51,7 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	$smarty->assign('MODE', $focus->mode);
 	$smarty->assign('CHECK', $tool_buttons);
 	$smarty->assign('RECORDID', $record);
-	$smarty->assign('MAX_RECORDS', $list_max_entries_per_page);
+	$smarty->assign('MAX_RECORDS', GlobalVariable::getVariable('Application_ListView_PageSize',20,$currentModule));
 
 	$smarty->assign('NAME', $focus->column_fields[$focus->def_detailview_recname]);
 	$smarty->assign('UPDATEINFO',updateInfo($focus->id));

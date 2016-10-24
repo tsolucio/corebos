@@ -7,15 +7,13 @@
   * Portions created by vtiger are Copyright (C) vtiger.
   * All Rights Reserved.
   ********************************************************************************/
-
 require_once('include/utils/utils.php');
 require_once('Smarty_setup.php');
-global $app_strings;
-global $list_max_entries_per_page;
-global $currentModule, $current_user;
+global $app_strings, $currentModule, $current_user;
+$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$currentModule);
 if($current_user->is_admin != 'on')
 {
-        die("<br><br><center>".$app_strings['LBL_PERMISSION']." <a href='javascript:window.history.back()'>".$app_strings['LBL_GO_BACK'].".</a></center>");
+	die("<br><br><center>".$app_strings['LBL_PERMISSION']." <a href='javascript:window.history.back()'>".$app_strings['LBL_GO_BACK'].".</a></center>");
 }
 
 $log = LoggerManager::getLogger('user_list');

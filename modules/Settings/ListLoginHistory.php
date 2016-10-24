@@ -17,7 +17,7 @@ require_once('include/utils/utils.php');
 global $app_strings, $mod_strings, $app_list_strings, $current_language, $current_user, $adb;
 $current_module_strings = return_module_language($current_language, 'Settings');
 
-global $list_max_entries_per_page, $urlPrefix, $currentModule;
+global $urlPrefix, $currentModule;
 
 $log = LoggerManager::getLogger('login_list');
 

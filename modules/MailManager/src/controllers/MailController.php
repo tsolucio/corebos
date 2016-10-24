@@ -19,7 +19,6 @@ class MailManager_MailController extends MailManager_Controller {
 
     /**
      * Function which processes request for Mail Operations
-     * @global Integer $list_max_entries_per_page - Number of entries per page
      * @global PearDataBase Instance $adb
      * @global Users Instance $current_user
      * @global String $root_directory
@@ -27,7 +26,7 @@ class MailManager_MailController extends MailManager_Controller {
      * @return MailManager_Response
      */
 	function process(MailManager_Request $request) {
-		global $list_max_entries_per_page, $adb, $current_user;
+		global $adb, $current_user;
 
 		$response = new MailManager_Response();
 

@@ -33,7 +33,6 @@ $mod_strings = Array(
 	'LBL_MANDATORY_VALUE'=>'Only one <b>mandatory</b> value is allowed for a given module and variable',
 	'LBL_MANDATORY_VALUEJS'=>'Only one "mandatory" value is allowed for a given module and variable',
 
-	'list_max_entries_per_page'=>'List max entries per page',
 	'limitpage_navigation'=>'Limit page navigation',
 	'default_theme'=>'Default theme',
 	'currency_name'=>'Currency name',

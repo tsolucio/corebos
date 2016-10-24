@@ -18,7 +18,7 @@ $current_module_strings = return_module_language($current_language, 'Reports');
 
 $log = LoggerManager::getLogger('report_type');
 
-global $list_max_entries_per_page, $urlPrefix, $currentModule, $image_path, $theme;
+global $urlPrefix, $currentModule, $image_path, $theme;
 $report_column_tot=new vtigerCRM_Smarty;
 $report_column_tot->assign('MOD', $mod_strings);
 $report_column_tot->assign('APP', $app_strings);

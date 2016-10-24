@@ -16,7 +16,8 @@ function getTopInvoice($maxval,$calCnt)
 	require_once('include/utils/utils.php');
 	require_once('modules/CustomView/CustomView.php');
 
-	global $app_strings,$current_language,$current_user,$adb,$list_max_entries_per_page,$theme;
+	global $app_strings,$current_language,$current_user,$adb,$theme;
+	$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,'Invoice');
 	$current_module_strings = return_module_language($current_language, 'Invoice');
 
 	$log = LoggerManager::getLogger('invoice_list');

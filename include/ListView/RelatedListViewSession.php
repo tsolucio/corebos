@@ -78,7 +78,8 @@ class RelatedListViewSession {
 	}
 
 	public static function getRequestCurrentPage($relationId, $query) {
-		global $list_max_entries_per_page, $adb,$log;
+		global $adb,$log,$currentModule;
+		$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$currentModule);
 		$relstart = 1;
 		if(!empty($_REQUEST['relstart'])){
 			$relstart = $_REQUEST['relstart'];

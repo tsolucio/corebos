@@ -42,10 +42,10 @@ function ListView(){
 	global $log;
 	$log->debug("Entering ListView() method ...");
 	if(!$this->initialized){
-		global $list_max_entries_per_page;
+		global $theme, $app_strings, $image_path, $currentModule;
+		$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$currentModule);
 		$this->records_per_page = $list_max_entries_per_page + 0;
 		$this->initialized = true;
-		global $theme, $app_strings, $image_path, $currentModule;
 		$this->local_theme = $theme;
 		$this->local_app_strings = &$app_strings;
 		$this->local_image_path = $image_path;

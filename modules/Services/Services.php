@@ -782,8 +782,7 @@ class Services extends CRMEntity {
 		global $app_strings;
 		global $current_language,$current_user;
 		$current_module_strings = return_module_language($current_language, 'Services');
-
-		global $list_max_entries_per_page;
+		$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,'Services');
 		global $urlPrefix;
 
 		global $theme;

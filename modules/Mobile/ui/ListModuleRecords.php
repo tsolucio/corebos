@@ -122,9 +122,8 @@ class Mobile_UI_ListModuleRecords extends Mobile_WS_ListModuleRecords {
 			if($viewinfo['viewname'] == 'All' || $viewinfo['viewname'] == '' ) {
 				$viewer->assign('_ALL', 'ALL');
 			}
-		    global $current_user,$adb,$list_max_entries_per_page;
+			global $current_user,$adb;
 			$current_user = $this->getActiveUser();	
-			
 			$viewer->assign('_MODULE', $this->cachedModule($wsResponseResult['module']) );
 			$viewer->assign('_MODE', $request->get('mode'));
 			$viewer->assign('_CATEGORY', $CATEGORY);

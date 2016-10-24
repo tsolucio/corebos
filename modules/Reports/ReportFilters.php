@@ -8,7 +8,6 @@
  * All Rights Reserved.
 *
  *****************************************************>***************************/
- 
 require_once('Smarty_setup.php');
 require_once("data/Tracker.php");
 require_once('include/logging.php');
@@ -19,7 +18,6 @@ global $app_strings;
 global $app_list_strings;
 global $mod_strings;
 $current_module_strings = return_module_language($current_language, 'Reports');
-global $list_max_entries_per_page;
 global $urlPrefix;
 
 $log = LoggerManager::getLogger('report_type');

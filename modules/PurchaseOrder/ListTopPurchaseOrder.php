@@ -20,7 +20,8 @@ function getTopPurchaseOrder($maxval,$calCnt)
 	require_once('include/utils/utils.php');
 	require_once('modules/CustomView/CustomView.php');
 
-	global $current_language,$current_user,$list_max_entries_per_page,$theme,$adb;
+	global $current_language,$current_user,$theme,$adb;
+	$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,'PurchaseOrder');
 	$current_module_strings = return_module_language($current_language, 'PurchaseOrder');
 
 	$log = LoggerManager::getLogger('po_list');

@@ -21,9 +21,10 @@ function getTopQuotes($maxval,$calCnt)
 	require_once('modules/CustomView/CustomView.php');
 
 	global $app_strings,$current_language,$current_user;
+	$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,'Quotes');
 	$current_module_strings = return_module_language($current_language, 'Quotes');
 
-	global $list_max_entries_per_page,$adb,$theme,$mod_strings;
+	global $adb,$theme,$mod_strings;
 	$log = LoggerManager::getLogger('quote_list');
 
 	$url_string = '';
