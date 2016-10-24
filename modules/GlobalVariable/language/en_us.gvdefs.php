@@ -181,8 +181,20 @@ $GlobalVariableDefinitons = array(
 	'values' => 'CSV of authorized CORS domains',
 	'definition' => 'CSV of URI of domains authorized to access webservice. The special entry asterisk "*" will give access to all domains.',
 ),
-
-
+'Application_Default_Action' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'Valid module action, usually "index"',
+	'definition' => 'Action that will be executed when accessing the application with no action defined in URL',
+),
+'Application_Default_Module' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'Valid module name',
+	'definition' => 'Module that will be loaded by default when no module is specified in URL',
+),
 
 'Application_Global_Search_SelectedModules' => array(
 	'status' => 'Implemented',
@@ -542,20 +554,6 @@ $GlobalVariableDefinitons = array(
 	'definition' => '',
 ),
 'limitpage_navigation' => array(
-	'status' => 'Not Implemented',
-	'valuetype' => '',
-	'category' => '',
-	'values' => '',
-	'definition' => '',
-),
-'default_module' => array(
-	'status' => 'Not Implemented',
-	'valuetype' => '',
-	'category' => '',
-	'values' => '',
-	'definition' => '',
-),
-'default_action' => array(
 	'status' => 'Not Implemented',
 	'valuetype' => '',
 	'category' => '',

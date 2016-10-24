@@ -48,6 +48,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_Display_Calculator',
 				'Application_Display_Mini_Calendar',
 				'Application_Use_RTE',
+				'Application_Default_Action',
+				'Application_Default_Module',
 
 				'Calendar_Modules_Panel_Visible',
 				'Calendar_Default_Reminder_Minutes',
@@ -110,6 +112,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'world_clock_display',
 				'calculator_display',
 				'history_max_viewed',
+				'default_module',
+				'default_action',
 			);
 			
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');

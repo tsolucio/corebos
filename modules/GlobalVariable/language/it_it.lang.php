@@ -33,8 +33,6 @@ $mod_strings = Array(
 
 	'list_max_entries_per_page'=>'List max entries per page',
 	'limitpage_navigation'=>'Limit page navigation',
-	'default_module'=>'Default module',
-	'default_action'=>'Default action',
 	'default_theme'=>'Default theme',
 	'currency_name'=>'Currency name',
 	'default_charset'=>'Default charset',

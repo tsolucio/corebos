@@ -108,12 +108,6 @@ $list_max_entries_per_page = '20';
 // limitpage_navigation default value = 5
 $limitpage_navigation = '5';
 
-// default_module default value = Home
-$default_module = 'Home';
-
-// default_action default value = index
-$default_action = 'index';
-
 // set default theme
 // default_theme default value = blue
 $default_theme = 'softed';

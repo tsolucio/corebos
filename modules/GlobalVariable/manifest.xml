@@ -85,8 +85,6 @@
 <picklistvalue>--none--</picklistvalue>
 <picklistvalue>list_max_entries_per_page</picklistvalue>
 <picklistvalue>limitpage_navigation</picklistvalue>
-<picklistvalue>default_module</picklistvalue>
-<picklistvalue>default_action</picklistvalue>
 <picklistvalue>default_theme</picklistvalue>
 <picklistvalue>currency_name</picklistvalue>
 <picklistvalue>listview_max_textlength</picklistvalue>

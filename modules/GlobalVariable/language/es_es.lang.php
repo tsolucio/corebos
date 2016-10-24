@@ -35,8 +35,6 @@ $mod_strings = Array(
 
 	'list_max_entries_per_page'=>'Entradas por página en vista de lista',
 	'limitpage_navigation'=>'Limitar navigación por página',
-	'default_module'=>'Módulo por Defecto',
-	'default_action'=>'Acción por Defecto',
 	'default_theme'=>'Tema por Defecto',
 	'currency_name'=>'Moneda',
 	'default_charset'=>'Codificación por Defecto',
