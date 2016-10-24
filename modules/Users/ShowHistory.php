@@ -14,7 +14,7 @@ require_once('modules/Users/Users.php');
 require_once('include/logging.php');
 require_once('include/utils/utils.php');
 
-global $app_strings, $mod_strings, $app_list_strings, $current_language, $current_user, $adb, $urlPrefix;
+global $app_strings, $mod_strings, $app_list_strings, $current_language, $current_user, $adb;
 
 $log = LoggerManager::getLogger('login_list');
 

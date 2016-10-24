@@ -46,7 +46,7 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 
 	$current_module_strings = return_module_language($current_language, $module);
 
-	global $urlPrefix, $currentModule, $theme, $theme_path, $theme_path, $mod_strings;
+	global $currentModule, $theme, $theme_path, $theme_path, $mod_strings;
 	$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$currentModule);
 	$smarty = new vtigerCRM_Smarty;
 	if (!isset($where)) $where = "";
@@ -508,16 +508,9 @@ function getPriceBookRelatedProducts($query,$focus,$returnset='')
 	global $log;
 	$log->debug("Entering getPriceBookRelatedProducts(".$query.",".get_class($focus).",".$returnset.") method ...");
 
-	global $adb;
-	global $app_strings;
-	global $mod_strings;
-	global $current_language,$current_user;
+	global $adb, $app_strings, $mod_strings, $current_language,$current_user, $theme;
 	$current_module_strings = return_module_language($current_language, 'PriceBook');
-
 	$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,'PriceBook');
-	global $urlPrefix;
-
-	global $theme;
 	$pricebook_id = vtlib_purify($_REQUEST['record']);
 	$theme_path="themes/".$theme."/";
 	$image_path=$theme_path."images/";

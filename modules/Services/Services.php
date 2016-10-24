@@ -778,14 +778,10 @@ class Services extends CRMEntity {
 		global $log;
 		$log->debug("Entering getPriceBookRelatedServices(".$query.",".get_class($focus).",".$returnset.") method ...");
 
-		global $adb;
-		global $app_strings;
-		global $current_language,$current_user;
+		global $adb, $app_strings, $current_language,$current_user,$theme;
 		$current_module_strings = return_module_language($current_language, 'Services');
 		$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,'Services');
-		global $urlPrefix;
 
-		global $theme;
 		$pricebook_id = $_REQUEST['record'];
 		$theme_path="themes/".$theme."/";
 		$image_path=$theme_path."images/";

@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  *****************************************************>***************************/
 require_once('Smarty_setup.php');
 require_once("data/Tracker.php");
@@ -14,17 +13,11 @@ require_once('include/logging.php');
 require_once('include/utils/utils.php');
 require_once('modules/Reports/Reports.php');
 
-global $app_strings;
-global $app_list_strings;
-global $mod_strings;
+global $app_strings, $app_list_strings, $mod_strings;
 $current_module_strings = return_module_language($current_language, 'Reports');
-global $urlPrefix;
 
 $log = LoggerManager::getLogger('report_type');
-global $currentModule;
-global $image_path;
-global $theme;
-global $current_user;
+global $currentModule, $image_path, $theme, $current_user;
 
 $report_std_filter = new vtigerCRM_Smarty; 
 $report_std_filter->assign("MOD", $mod_strings);
