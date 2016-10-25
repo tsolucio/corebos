@@ -106,7 +106,7 @@ class Installation_Utils {
 					-  '.$installationStrings['MSG_DB_PARAMETERS_INVALID'].'.<BR>
 					-  '.$installationStrings['MSG_DB_USER_NOT_AUTHORIZED'];
 		}
-		elseif(Common_Install_Wizard_Utils::isMySQL($db_type) && $mysql_server_version < '4.1') {
+		elseif(Common_Install_Wizard_Utils::isMySQL($db_type) && version_compare($mysql_server_version,'4.1','<')) {
 			$error_msg = $mysql_server_version.' -> '.$installationStrings['ERR_INVALID_MYSQL_VERSION'];
 		}
 		elseif($db_creation_failed) {
