@@ -8,7 +8,6 @@
  * All Rights Reserved.
  *
  ********************************************************************************/
-
 require_once("config.php");
 require_once('include/logging.php');
 require_once('include/nusoap/nusoap.php');
@@ -19,6 +18,10 @@ require_once('include/utils/CommonUtils.php');
 require_once('include/utils/VtlibUtils.php');
 require_once 'modules/Users/Users.php';
 
+if (!GlobalVariable::getVariable('SOAP_CustomerPortal_Enabled',1)) {
+	echo 'SOAP - Service is not active';
+	return;
+}
 
 /** Configure language for server response translation */
 global $default_language, $current_language;

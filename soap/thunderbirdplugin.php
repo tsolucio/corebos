@@ -6,14 +6,17 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
 require_once("config.php");
 require_once('include/logging.php');
 require_once('include/nusoap/nusoap.php');
 require_once('include/database/PearDatabase.php');
 require_once('modules/Contacts/Contacts.php');
+
+if (!GlobalVariable::getVariable('SOAP_Thunderbird_Enabled',1)) {
+	echo 'SOAP - Service is not active';
+	return;
+}
 
 $log = &LoggerManager::getLogger('thunderbirdplugin');
 
@@ -661,6 +664,7 @@ function CheckLeadViewPerm($user_name)
 		return "denied";
 	}
 }
+
 /* Begin the HTTP listener service and exit. */ 
 if (!isset($HTTP_RAW_POST_DATA)){
 	$HTTP_RAW_POST_DATA = file_get_contents('php://input');

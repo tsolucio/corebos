@@ -81,6 +81,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Webservice_Enabled',
 				'WebService_Session_Life_Span',
 				'WebService_Session_Idle_Time',
+				'SOAP_Thunderbird_Enabled',
+				'SOAP_CustomerPortal_Enabled',
 
 				'Users_ReplyTo_SecondEmail',
 				'Users_Default_Send_Email_Template',
