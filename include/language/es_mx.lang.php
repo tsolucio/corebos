@@ -11,7 +11,6 @@
 
 $app_strings = array (
       'LBL_BROWSER_TITLE' => 'coreBOS',
-      'APP_NAME' => 'coreBOS',
       'LBL_MY_ACCOUNT' => 'Mi Cuenta',
       'LBL_MY_PREFERENCES' => 'Mis Preferencias',
       'LBL_ADMIN' => 'Admin',

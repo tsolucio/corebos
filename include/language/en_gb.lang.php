@@ -10,7 +10,6 @@
 
 $app_strings = array(
 	'LBL_BROWSER_TITLE' => 'coreBOS',
-	'APP_NAME' => 'coreBOS',
 	'LBL_MY_ACCOUNT' => 'My Organisation',
 	'LBL_MY_PREFERENCES' => 'My Preferences',
 	'LBL_ADMIN' => 'Admin',
