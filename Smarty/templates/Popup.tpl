@@ -169,7 +169,7 @@ function set_focus() {ldelim}
 							<td class="moduleName" width="80%" style="padding-left:10px;">{$MODULE|@getTranslatedString:$MODULE}</td>
 						{/if}
 					{/if}
-					<td width=24% nowrap class="componentName" align=right>{'APP_NAME'|@getTranslatedString}</td>
+					<td width=24% nowrap class="componentName" align=right>{$coreBOS_uiapp_name}</td>
 					<td width=6% nowrap class="componentName" align=right><input type="hidden" id='closewindow' value="true"/><img src="themes/images/unlocked.png" id='closewindowimage' onclick="if (document.getElementById('closewindow').value=='true') {ldelim}document.getElementById('closewindowimage').src='themes/images/locked.png';document.getElementById('closewindow').value='false';{rdelim} else {ldelim}document.getElementById('closewindowimage').src='themes/images/unlocked.png';document.getElementById('closewindow').value='true';{rdelim};"/></td>
 				</tr>
 			</table>

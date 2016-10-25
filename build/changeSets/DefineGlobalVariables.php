@@ -59,6 +59,9 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_Minimum_Cron_Frequency',
 				'Application_Customer_Portal_URL',
 				'Application_Help_URL',
+				'Application_UI_Name',
+				'Application_UI_Version',
+				'Application_UI_URL',
 
 				'Calendar_Modules_Panel_Visible',
 				'Calendar_Default_Reminder_Minutes',

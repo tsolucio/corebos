@@ -62,7 +62,7 @@ $smarty->assign("RECORD_COUNTS", $record_string);
 $smarty->assign("NAVIGATION", $navigationOutput);
 $smarty->assign("USERID", $userid);
 $smarty->assign("CATEGORY",$category);
-
+$smarty->assign('coreBOS_uiapp_name', GlobalVariable::getVariable('Application_UI_Name',$coreBOS_app_name));
 if($_REQUEST['ajax'] !='')
 	$smarty->display("ShowAuditTrailContents.tpl");
 else	

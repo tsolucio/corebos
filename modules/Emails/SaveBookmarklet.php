@@ -70,5 +70,6 @@ $smarty->assign("entityNameFields",$json->encode($moduleEntityNameDetails));
 $smarty->assign("emailFields",$json->encode($moduleEmailFieldDetails));
 $smarty->assign("userEmail",$current_user->column_fields['email1']);
 $smarty->assign("MODULE",$currentModule);
+$smarty->assign('coreBOS_uiapp_name', GlobalVariable::getVariable('Application_UI_Name',$coreBOS_app_name));
 $smarty->display("modules/Bookmarklet/Bookmarklet.tpl");
 ?>

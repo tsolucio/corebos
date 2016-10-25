@@ -21,7 +21,7 @@
 			<table width="100%" border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td class="moduleName" width="80%" style="padding-left:10px;">{$MOD.LBL_AUDIT_TRAIL}</td>
-					<td  width=30% nowrap class="componentName" align=right>{'APP_NAME'|@getTranslatedString}</td>
+					<td  width=30% nowrap class="componentName" align=right>{$coreBOS_uiapp_name}</td>
 				</tr>
 			</table>
 		</td>
@@ -34,8 +34,8 @@
 		</td>
 	</tr>
 	<tr>
-    <td align="center" style="padding:10px;" class="reportCreateBottom" >&nbsp;</td>
-  </tr>
+		<td align="center" style="padding:10px;" class="reportCreateBottom" >&nbsp;</td>
+	</tr>
 </table>
 </form>
 </body>

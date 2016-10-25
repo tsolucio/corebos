@@ -71,20 +71,18 @@ $COMMONHDRLINKS = Vtiger_Link::getAllByType(Vtiger_Link::IGNORE_MODULE, Array('H
 $smarty->assign('HEADERLINKS', $COMMONHDRLINKS['HEADERLINK']);
 $smarty->assign('HEADERSCRIPTS', $COMMONHDRLINKS['HEADERSCRIPT']);
 $smarty->assign('HEADERCSS', $COMMONHDRLINKS['HEADERCSS']);
-// END
 
 // Pass on the version information
 global $vtiger_current_version;
 $smarty->assign('VERSION', $vtiger_current_version);
-// END
+
 // Pass on the authenticated user language
 global $current_language;
 $smarty->assign('LANGUAGE', $current_language);
-// END
-// Pass on the coreBOS app name
-global $coreBOS_app_name;
-$smarty->assign('coreBOS_app_name', $coreBOS_app_name);
-// END
+
+// Pass on the Application Name
+$smarty->assign('coreBOS_app_name', GlobalVariable::getVariable('Application_UI_Name','coreBOS'));
+
 global $application_unique_key;
 $smarty->assign('application_unique_key', $application_unique_key);
 // We check if we have the two new logo fields > if not we create them

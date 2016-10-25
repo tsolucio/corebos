@@ -97,7 +97,7 @@ $favicon='themes/images/favicon.ico';
 else $favicon='test/logo/'.decode_html($adb->query_result($result,0,'faviconlogo'));
 $companyDetails['favicon'] = $favicon;
 $smarty->assign("COMPANY_DETAILS",$companyDetails);
-
+$smarty->assign('coreBOS_uiapp_name', GlobalVariable::getVariable('Application_UI_Name',$coreBOS_app_name));
 if(isset($login_error) && $login_error != "") {
 	$smarty->assign("LOGIN_ERROR", $login_error);
 }

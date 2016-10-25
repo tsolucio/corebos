@@ -14,7 +14,7 @@
 <div id="loginTop"><a href="index.php"><img src="test/logo/{$COMPANY_DETAILS.logo}"></a></div>
 <div id="loginBody">
 	<div class="loginForm">
-		<div class="poweredBy">Powered by {$APP.APP_NAME}</div>
+		<div class="poweredBy">Powered by {$coreBOS_uiapp_name}</div>
 		<form action="index.php" method="post" name="DetailView" id="form">
 			<input type="hidden" name="module" value="Users" />
 			<input type="hidden" name="action" value="Authenticate" />
@@ -33,12 +33,5 @@
 				</div>
 				{/if}
 		</form>
-	</div>
-	<div class="importantLinks">
-	<a href='copyright.html' target='_blank'>{$APP.LNK_READ_LICENSE}</a>
-	|
-	<a href='http://corebos.org/page/privacy-policy' target='_blank'>{$APP.LNK_PRIVACY_POLICY}</a>
-	|
-	&copy; 2004- {$currentYear}
 	</div>
 {include file="LoginFooter.tpl"}

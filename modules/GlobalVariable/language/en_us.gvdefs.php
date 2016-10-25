@@ -314,6 +314,27 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Maximum life span that a session should be kept alive after the last transaction. Default is 1800 (seconds)',
 ),
+'Application_UI_Name' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => '',
+),
+'Application_UI_Version' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => '',
+),
+'Application_UI_URL' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'URL',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => '',
+),
 
 // TODO: fill in the ones below
 'Application_Global_Search_SelectedModules' => array(
@@ -674,13 +695,6 @@ $GlobalVariableDefinitons = array(
 	'definition' => '',
 ),
 'translation_string_prefix' => array(
-	'status' => 'Not Implemented',
-	'valuetype' => '',
-	'category' => '',
-	'values' => '',
-	'definition' => '',
-),
-'Application_Name' => array(
 	'status' => 'Not Implemented',
 	'valuetype' => '',
 	'category' => '',

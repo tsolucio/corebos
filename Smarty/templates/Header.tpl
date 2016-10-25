@@ -200,7 +200,7 @@
 						<input class="small" type='radio' name='exportCalendar' value = 'iCal' onclick="jQuery('#ics_filename').removeAttr('disabled');" checked /> iCal Format
 					</td>
 					<td align="left">
-						<input class="small" type='text' name='ics_filename' id='ics_filename' size='25' value='{$coreBOS_app_name}.calendar'/>
+						<input class="small" type='text' name='ics_filename' id='ics_filename' size='25' value='export.calendar'/>
 					</td>
 				</tr>
 				</table>
