@@ -38,7 +38,6 @@ $mod_strings = Array(
 	'corebos_app_name'=>'Corebos app name',
 	'maxWebServiceSessionLifeSpan'=>'Max WebService session lifespan',
 	'maxWebServiceSessionIdleTime'=>'Max WebService session idle time',
-	'minimum_cron_frequency'=>'Minimum cron frequency',
 	'default_language'=>'Default language',
 	'corebos_app_url'=>'Corebos app url',
 	'tmp_dir'=>'Tmp dir',

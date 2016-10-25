@@ -140,8 +140,8 @@ if(isset($default_timezone) && function_exists('date_default_timezone_set')) {
 
 require_once('include/logging.php');
 require_once('modules/Users/Users.php');
-
-//if($calculate_response_time) $startTime = microtime();
+$calculate_response_time = GlobalVariable::getVariable('Debug_Calculate_Response_Time',0);
+if($calculate_response_time) $startTime = microtime(true);
 
 $log = LoggerManager::getLogger('index');
 
@@ -707,17 +707,13 @@ if((!$viewAttachment) && (!$viewAttachment && $action != 'home_rss') && $action 
 		echo "<br><br><br><table border=0 cellspacing=0 cellpadding=5 width=100% class=settingsSelectedUI >";
 		echo "<tr><td class=small align=left><span style='color: rgb(153, 153, 153);'>Powered by ".getTranslatedString('APP_NAME')." <span id='_vtiger_product_version_'>$coreBOS_app_version</span></span></td>";
 		echo "<td class=small align=right><span>&copy; 2004-".date('Y')." <a href='$coreBOS_app_url' target='_blank'>$coreBOS_app_name</a> | <a href='copyright.html' target='_blank'>".$app_strings['LNK_READ_LICENSE']."</a> | <a href='http://corebos.org/page/privacy-policy' target='_blank'>".getTranslatedString('LNK_PRIVACY_POLICY')."</a></span></td></tr></table>";
-	//	echo "<table align='center'><tr><td align='center'>";
-		// Under the Sugar Public License referenced above, you are required to leave in all copyright statements
-		// in both the code and end-user application.
-	//	if($calculate_response_time)
-	//	{
-	//		$endTime = microtime();
-
-	//		$deltaTime = microtime_diff($startTime, $endTime);
-	//		echo('&nbsp;Server response time: '.$deltaTime.' seconds.');
-	//	}
-	//	echo "</td></tr></table>\n";
+		if($calculate_response_time) {
+			$endTime = microtime(true);
+			echo "<table align='center'><tr><td align='center'>";
+			$deltaTime = round($endTime - $startTime,2);
+			echo('&nbsp;Server response time: '.$deltaTime.' seconds.');
+			echo "</td></tr></table>\n";
+		}
 	}
 	// ActivityReminder Customization for callback
 	if(!$skipFooters) {

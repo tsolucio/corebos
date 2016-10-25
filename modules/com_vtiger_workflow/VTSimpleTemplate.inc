@@ -268,7 +268,7 @@ class VTSimpleTemplate{
 
 	function getMetaValue($fieldname){
 		require_once 'config.inc.php';
-		global $site_URL, $PORTAL_URL, $current_user;
+		global $site_URL, $current_user;
 		if (substr($fieldname,0,14)=='groupEmailList') {
 			$groupname = trim(str_replace('_', ' ', substr($fieldname, 14)));
 			$fieldname = 'groupEmailList';
@@ -326,9 +326,10 @@ class VTSimpleTemplate{
 											if($moduleName == 'HelpDesk') $recorIdName = 'ticketid';
 											if($moduleName == 'Faq') $recorIdName = 'faqid';
 											if($moduleName == 'Products') $recorIdName = 'productid';
+											$PORTAL_URL = GlobalVariable::getVariable('Application_Customer_Portal_URL','http://your_support_domain.tld/customerportal');
 											return $PORTAL_URL.'/index.php?module='.$moduleName.'&action=index&'.$recorIdName.'='.$recordId.'&fun=detail';
 			case 'siteurl'				: return $site_URL;
-			case 'portalurl'			: return $PORTAL_URL;
+			case 'portalurl'			: return GlobalVariable::getVariable('Application_Customer_Portal_URL','http://your_support_domain.tld/customerportal');
 			case 'logo'					: return '<img src="cid:logo" />';
 
 			case 'recordId'				: list($moduleId, $recordId) = vtws_getIdComponents($this->parent->getId());

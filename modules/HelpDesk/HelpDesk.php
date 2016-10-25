@@ -750,9 +750,6 @@ class HelpDesk extends CRMEntity {
 	}
 
 	public static function getPortalTicketEmailContents($entityData) {
-		require_once 'config.inc.php';
-		global $PORTAL_URL;
-
 		$moduleName = $entityData->getModuleName();
 		$wsId = $entityData->getId();
 		$parts = explode('x', $wsId);
@@ -761,6 +758,7 @@ class HelpDesk extends CRMEntity {
 		$wsParentId = $entityData->get('parent_id');
 		$parentIdParts = explode('x', $wsParentId);
 		$parentId = $parentIdParts[1];
+		$PORTAL_URL = GlobalVariable::getVariable('Application_Customer_Portal_URL','http://your_support_domain.tld/customerportal');
 		$portalUrl = "<a href='" . $PORTAL_URL . "/index.php?module=HelpDesk&action=index&ticketid=" . $entityId . "&fun=detail'>"
 				. getTranslatedString('LBL_TICKET_DETAILS', $moduleName) . "</a>";
 		$contents = getTranslatedString('Dear', $moduleName) . " " . getParentName(parentId) . ",<br><br>";

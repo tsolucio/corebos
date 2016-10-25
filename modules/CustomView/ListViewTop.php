@@ -125,6 +125,7 @@ function getKeyMetrics($maxval,$calCnt)
 
 	}
 	$values=Array('Title'=>$title,'Header'=>$header,'Entries'=>$entries);
+	$display_empty_home_blocks = GlobalVariable::getVariable('Home_Display_Empty_Blocks',0);
 	if ( ($display_empty_home_blocks ) || (count($value)!= 0) )
 		return $values;
 

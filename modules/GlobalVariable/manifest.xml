@@ -85,7 +85,6 @@
 <picklistvalue>--none--</picklistvalue>
 <picklistvalue>maxWebServiceSessionLifeSpan</picklistvalue>
 <picklistvalue>maxWebServiceSessionIdleTime</picklistvalue>
-<picklistvalue>minimum_cron_frequency</picklistvalue>
 <picklistvalue>default_language</picklistvalue>
 <picklistvalue>corebos_app_name</picklistvalue>
 <picklistvalue>corebos_app_url</picklistvalue>

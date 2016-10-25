@@ -29,6 +29,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Debug_Popup_Query',
 				'Debug_Send_VtigerCron_Error',
 				'Debug_Send_AdminLoginIPAuth_Error',
+				'Debug_Calculate_Response_Time',
 
 				'Application_Global_Search_SelectedModules',
 				'Application_Storage_Directory',
@@ -55,6 +56,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_ListView_PageSize',
 				'Application_Upload_MaxSize',
 				'Application_Single_Pane_View',
+				'Application_Minimum_Cron_Frequency',
+				'Application_Customer_Portal_URL',
 
 				'Calendar_Modules_Panel_Visible',
 				'Calendar_Default_Reminder_Minutes',
@@ -97,6 +100,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'HelpDesk_Support_EMail',
 				'HelpDesk_Support_Name',
 				'HelpDesk_Support_Reply_EMail',
+				'Home_Display_Empty_Blocks',
 
 				'Report_Send_Scheduled_ifEmpty',
 
@@ -136,6 +140,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'upload_badext',
 				'default_theme',
 				'currency_name',
+				'minimum_cron_frequency',
 			);
 			
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');

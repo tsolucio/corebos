@@ -129,8 +129,26 @@ class delSettingsSinglePaneViewConfigEditor extends cbupdaterWorker {
 				$rec['category'] = 'Security';
 				vtws_create('GlobalVariable', $rec, $current_user);
 			}
+			if (!empty($MINIMUM_CRON_FREQUENCY) and $MINIMUM_CRON_FREQUENCY != 15) {
+				$rec = $default_values;
+				$rec['gvname'] = 'Application_Minimum_Cron_Frequency';
+				$rec['value'] = $MINIMUM_CRON_FREQUENCY;
+				vtws_create('GlobalVariable', $rec, $current_user);
+			}
+			if (!empty($PORTAL_URL) and $PORTAL_URL != 'http://your_support_domain.tld/customerportal') {
+				$rec = $default_values;
+				$rec['gvname'] = 'Application_Customer_Portal_URL';
+				$rec['value'] = $PORTAL_URL;
+				vtws_create('GlobalVariable', $rec, $current_user);
+			}
+			if (!empty($display_empty_home_blocks) and $display_empty_home_blocks != false) {
+				$rec = $default_values;
+				$rec['gvname'] = 'Home_Display_Empty_Blocks';
+				$rec['value'] = 1;
+				vtws_create('GlobalVariable', $rec, $current_user);
+			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			//$this->markApplied(false);
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}

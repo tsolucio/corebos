@@ -174,6 +174,7 @@ function HelpDesk_notifyParentOnTicketChange($entityData) {
 		if($emailoptout == 0) {
 
 			if($isPortalUser == 1){
+				$PORTAL_URL = GlobalVariable::getVariable('Application_Customer_Portal_URL','http://your_support_domain.tld/customerportal');
 				$url = "<a href='".$PORTAL_URL."/index.php?module=HelpDesk&action=index&ticketid=".$entityId."&fun=detail'>".$mod_strings['LBL_TICKET_DETAILS']."</a>";
 				$email_body = $bodysubject.'<br><br>'.HelpDesk::getPortalTicketEmailContents($entityData);
 			}

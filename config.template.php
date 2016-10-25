@@ -13,9 +13,6 @@ include('vtigerversion.php');
 // memory limit default value = 64M
 ini_set('memory_limit','1024M');
 
-// url for customer portal (Example: http://your_support_domain.tld/portal)
-$PORTAL_URL = 'http://your_support_domain.tld/customerportal';
-
 /* database configuration
  db_server
  db_port
@@ -85,10 +82,6 @@ $includeDirectory = $root_directory.'include/';
 // default_theme default value = blue
 $default_theme = 'softed';
 
-// show or hide time to compose each page
-// calculate_response_time default value = true
-$calculate_response_time = true;
-
 // default text that is placed initially in the login form for user name
 // no default_user_name default value
 $default_user_name = '';
@@ -123,9 +116,6 @@ $default_language = 'en_us';
 // translation_string_prefix default value = false
 $translation_string_prefix = false;
 
-//Option to hide empty home blocks if no entries.
-$display_empty_home_blocks = false;
-
 // Generating Unique Application Key
 $application_unique_key = '_VT_APP_UNIQKEY_';
 
@@ -139,9 +129,6 @@ $default_timezone = 'UTC';
 if(isset($default_timezone) && function_exists('date_default_timezone_set')) {
 	@date_default_timezone_set($default_timezone);
 }
-
-/** minimum cron frequency -- In minutes */
-$MINIMUM_CRON_FREQUENCY = 15;
 
 // Override with developer settings
 if(file_exists('config-dev.inc.php')){

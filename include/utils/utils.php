@@ -4875,12 +4875,7 @@ function dateDiffAsString($d1, $d2) {
 }
 
 function getMinimumCronFrequency() {
-	global $MINIMUM_CRON_FREQUENCY;
-
-	if(!empty($MINIMUM_CRON_FREQUENCY)) {
-		return $MINIMUM_CRON_FREQUENCY;
-	}
-	return 15;
+	return GlobalVariable::getVariable('Application_Minimum_Cron_Frequency',15);
 }
 
 ?>
