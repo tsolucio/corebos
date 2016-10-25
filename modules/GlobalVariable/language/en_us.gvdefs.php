@@ -20,7 +20,7 @@
  * Definition Template *
 'variable name' => array(
 	'status' => 'Not Implemented' | 'Implemented' | 'Deprecated',
-	'valuetype' => 'String' | 'Boolean' | 'Integer' | 'Float' | 'CSV',
+	'valuetype' => 'String' | 'Boolean' | 'Integer' | 'Float' | 'CSV' | EMail,
 	'category' => 'System' | 'User Interface' | 'Performance' | 'Module Functionality' | 'Security' | 'Other',
 	'values' => 'list of possible values',
 	'definition' => 'explanation and purpose',
@@ -243,6 +243,13 @@ $GlobalVariableDefinitons = array(
 	'category' => 'Application',
 	'values' => '',
 	'definition' => '"Reply To" email address for emails going out from the HelpDesk support module (and some other system emails). It will only be used if it is different from HelpDesk_Support_EMail',
+),
+'Application_Single_Pane_View' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'When activated the "More Information" tab will be shown at the end of the detail view block instead of on another tab.',
 ),
 
 // TODO: fill in the ones below

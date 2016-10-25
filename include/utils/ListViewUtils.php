@@ -3960,33 +3960,6 @@ function getParentId($parent_name) {
 	return $parent_id;
 }
 
-function decode_html($str) {
-	global $default_charset;
-	// Direct Popup action or Ajax Popup action should be treated the same.
-	$request['action'] = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
-	$request['file'] = isset($_REQUEST['file']) ? $_REQUEST['file'] : '';
-	if ($request['action'] == 'Popup' || $request['file'] == 'Popup')
-		return html_entity_decode($str);
-	else
-		return html_entity_decode($str, ENT_QUOTES, $default_charset);
-}
-
-/**
- * Alternative decoding function which coverts irrespective of $_REQUEST values.
- * Useful incase of Popup (Listview etc...) where if decode_html will not work as expected
- */
-function decode_html_force($str) {
-	global $default_charset;
-	return html_entity_decode($str, ENT_QUOTES, $default_charset);
-}
-
-function popup_decode_html($str) {
-	global $default_charset;
-	$slashes_str = popup_from_html($str);
-	$slashes_str = htmlspecialchars($slashes_str, ENT_QUOTES, $default_charset);
-	return decode_html(br2nl($slashes_str));
-}
-
 //function added to check the text length in the listview.
 function textlength_check($field_val) {
 	global $default_charset,$currentModule;

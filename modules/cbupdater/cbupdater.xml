@@ -850,4 +850,11 @@
 	<classname>updateIssuecardsModule</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete Single Pane View and Configuration Editor from Settings (global variables)</description>
+	<filename>build/changeSets/delSettingsSinglePaneViewConfigEditor.php</filename>
+	<classname>delSettingsSinglePaneViewConfigEditor</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

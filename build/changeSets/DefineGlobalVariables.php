@@ -54,6 +54,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_ListView_Max_Text_Length',
 				'Application_ListView_PageSize',
 				'Application_Upload_MaxSize',
+				'Application_Single_Pane_View',
 
 				'Calendar_Modules_Panel_Visible',
 				'Calendar_Default_Reminder_Minutes',

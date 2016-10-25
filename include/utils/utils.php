@@ -2618,6 +2618,33 @@ function html_to_utf8 ($data)
 	return preg_replace("/\\&\\#([0-9]{3,10})\\;/e", '_html_to_utf8("\\1")', $data);
 }
 
+function decode_html($str) {
+	global $default_charset;
+	// Direct Popup action or Ajax Popup action should be treated the same.
+	$request['action'] = isset($_REQUEST['action']) ? $_REQUEST['action'] : '';
+	$request['file'] = isset($_REQUEST['file']) ? $_REQUEST['file'] : '';
+	if ($request['action'] == 'Popup' || $request['file'] == 'Popup')
+		return html_entity_decode($str);
+	else
+		return html_entity_decode($str, ENT_QUOTES, $default_charset);
+}
+
+/**
+ * Alternative decoding function which coverts irrespective of $_REQUEST values.
+ * Useful in case of Popup (Listview etc...) where decode_html will not work as expected
+ */
+function decode_html_force($str) {
+	global $default_charset;
+	return html_entity_decode($str, ENT_QUOTES, $default_charset);
+}
+
+function popup_decode_html($str) {
+	global $default_charset;
+	$slashes_str = popup_from_html($str);
+	$slashes_str = htmlspecialchars($slashes_str, ENT_QUOTES, $default_charset);
+	return decode_html(br2nl($slashes_str));
+}
+
 function _html_to_utf8 ($data)
 {
 	if ($data > 127)
