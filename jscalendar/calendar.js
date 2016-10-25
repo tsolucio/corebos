@@ -1489,7 +1489,7 @@ Calendar.prototype.hideShowCovered = function () {
 			return value;
 		};
 
-		var tags = new Array("applet", "iframe", "select");
+		var tags = new Array("applet", "iframe");
 		var el = self.element;
 
 		var p = Calendar.getAbsolutePos(el);
