@@ -111,6 +111,7 @@ $companyDetails['website'] = $adb->query_result($result,0,'website');
 $companyDetails['logo'] = $organization_logo;
 
 $smarty->assign("COMPANY_DETAILS",$companyDetails);
+$smarty->assign('HELP_URL',GlobalVariable::getVariable('Application_Help_URL','http://corebos.org/documentation'));
 ob_start();
 cbEventHandler::do_action('corebos.header.premenu');
 $smarty->assign("COREBOS_HEADER_PREMENU",ob_get_clean());

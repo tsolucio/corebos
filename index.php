@@ -85,8 +85,6 @@ if (!isset($dbconfig['db_hostname']) || $dbconfig['db_status']=='_DB_STAT_') {
 if (is_file('config_override.php')) {
 	require_once('config_override.php');
 }
-// load global help links
-require_once 'config.help.link.php';
 
 /**
  * Check for vtiger installed version and codebase

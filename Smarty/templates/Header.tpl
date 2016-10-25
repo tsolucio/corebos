@@ -150,8 +150,9 @@
 					</div>
 				</td>
 				{/if}
-				{* END *}
-				<td  onmouseout="fnHideDrop('usersettings');" onmouseover="fnDropDownUser(this,'usersettings');"  valign="bottom" nowrap style="padding-bottom: 1em;" class="small" nowrap> <a> <img src="{$IMAGEPATH}info.PNG" border=0 style="padding: 0px;padding-left:5px"></a></td>
+				{if $HELP_URL}
+				<td valign="bottom" nowrap style="padding-bottom: 1em;" class="small" nowrap><a href="{$HELP_URL}" target="_blank"><img src="{$IMAGEPATH}info.PNG" border=0 style="padding: 0px;padding-left:5px" title="{$APP.LNK_HELP}"></a></td>
+				{/if}
 				{if $ADMIN_LINK neq ''}
 					{foreach key=maintabs item=detail from=$HEADERS}
 						{if $maintabs eq "Settings"}
@@ -478,13 +479,6 @@ function QCreate(qcoptions){
 	<table border="0" cellpadding="0" cellspacing="0" border="0" cellpadding="0" cellspacing="0">
 		<tr><td style="padding-left:0px;padding-right:10px font-weight:bold"  nowrap> <a id="_my_preferences_" href="index.php?module=Users&action=DetailView&record={$CURRENT_USER_ID}&modechk=prefview" class="drop_down_usersettings" >{$APP.LBL_MY_PREFERENCES}</a></td></tr>
 		<tr><td style="padding-left:0px;padding-right:10px font-weight:bold"  nowrap> <a href="index.php?module=Users&action=Logout" class="drop_down_usersettings" >{$APP.LBL_LOGOUT}</a> </td></tr>
-	</table>
-</div>
-<div  id="usersettings" class="drop_mnu_user" onmouseout="fnHideDrop('usersettings');" onmouseover="fnvshNrm('usersettings');"  style="width:110px;left:1226px;">
-	<table border=0 width="100%" border="0" cellpadding="0" cellspacing="0" >
-		<tr>
-			<td style="padding-left:0px;padding-right:10px font-weight:bold"  nowrap> <a href="{$smarty.const.MAIN_HELP_PAGE}" target="_blank" class="drop_down_usersettings">{$APP.LNK_HELP}</a> </td>
-		</tr>
 	</table>
 </div>
 <div  id="mainsettings" class="drop_mnu_user" onmouseout="fnHideDrop('mainsettings');" onmouseover="fnvshNrm('mainsettings');" style="width:110px;left:1226px;" >

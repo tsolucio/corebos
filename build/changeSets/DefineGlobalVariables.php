@@ -58,6 +58,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Application_Single_Pane_View',
 				'Application_Minimum_Cron_Frequency',
 				'Application_Customer_Portal_URL',
+				'Application_Help_URL',
 
 				'Calendar_Modules_Panel_Visible',
 				'Calendar_Default_Reminder_Minutes',
@@ -133,7 +134,6 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'list_max_entries_per_page',
 				'upload_maxsize',
 				'helpdesk_support_email_id',
-				'helpdesk_support_name',
 				'helpdesk_support_email_reply_id',
 				'limitpage_navigation',
 				'default_timezone',

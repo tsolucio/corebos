@@ -293,6 +293,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Threshold record limit for immediate import. If record count is more than this, then the import is scheduled through cron job. Default value is 1000',
 ),
+'Application_Help_URL' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'URL to go to when user clicks on help icon in upper right corner. If set to 0 no help icon will be shown. Default value is corebos.org wiki.',
+),
 
 // TODO: fill in the ones below
 'Application_Global_Search_SelectedModules' => array(
