@@ -163,8 +163,7 @@ class Import_Data_Controller {
 		$sql = 'SELECT * FROM ' . $tableName . ' WHERE status = '. Import_Data_Controller::$IMPORT_RECORD_NONE;
 
 		if($this->batchImport) {
-			$configReader = new ConfigReader('modules/Import/config.inc', 'ImportConfig');
-			$importBatchLimit = $configReader->getConfig('importBatchLimit');
+			$importBatchLimit = GlobalVariable::getVariable('Import_Batch_Limit','250');
 			$sql .= ' LIMIT '. $importBatchLimit;
 		}
 		$result = $adb->query($sql);

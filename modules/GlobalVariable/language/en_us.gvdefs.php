@@ -279,6 +279,20 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'If active will show the application response time at the bottom of each page.',
 ),
+'Import_Batch_Limit' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'Individual batch limit - Specified number of records will be imported at one shot and the cycle will repeat untill all records are imported. Default value is 250',
+),
+'Import_Scheduled_Limit' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'Threshold record limit for immediate import. If record count is more than this, then the import is scheduled through cron job. Default value is 1000',
+),
 
 // TODO: fill in the ones below
 'Application_Global_Search_SelectedModules' => array(
