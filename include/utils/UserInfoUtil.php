@@ -89,36 +89,6 @@ function fetchUserGroupids($userid)
 	return $groupidlists;
 }
 
-/** Function to load all the permissions */
-function loadAllPerms() {
-	global $log, $adb,$MAX_TAB_PER, $persistPermArray;
-	$log->debug("Entering loadAllPerms() method ...");
-
-	$persistPermArray = Array();
-	$profiles = Array();
-	$sql = "select distinct profileid from vtiger_profile2tab";
-	$result = $adb->pquery($sql, array());
-	$num_rows = $adb->num_rows($result);
-	for ( $i=0; $i < $num_rows; $i++ )
-		$profiles[] = $adb->query_result($result,$i,'profileid');
-
-	$persistPermArray = Array();
-	foreach ( $profiles as $profileid ) {
-		$sql = "select * from vtiger_profile2tab where profileid=?";
-		$result = $adb->pquery($sql, array($profileid));
-		if($MAX_TAB_PER !='') {
-			$persistPermArray[$profileid] = array_fill(0,$MAX_TAB_PER,0);
-		}
-		$num_rows = $adb->num_rows($result);
-		for($i=0; $i<$num_rows; $i++) {
-			$tabid= $adb->query_result($result,$i,'tabid');
-			$tab_per= $adb->query_result($result,$i,'permissions');
-			$persistPermArray[$profileid][$tabid] = $tab_per;
-		}
-	}
-	$log->debug("Exiting loadAllPerms method ...");
-}
-
 /** Function to get all the vtiger_tab permission for the specified vtiger_profile
   * @param $profileid -- Profile Id:: Type integer
   * @returns  TabPermission Array in the following format:
@@ -127,34 +97,23 @@ function loadAllPerms() {
   *                                |
   *                        $tabidn=>permission)
  */
-function getAllTabsPermission($profileid)
-{
-	global $log,$adb,$MAX_TAB_PER, $persistPermArray;
+function getAllTabsPermission($profileid) {
+	global $log,$adb;
 	$log->debug("Entering getAllTabsPermission(".$profileid.") method ...");
-	if ( $cache_tab_perms ) {
-		if ( count($persistPermArray) == 0 )
-			loadAllPerms();
-		$log->debug("Exiting getAllTabsPermission method ...");
-		return $persistPermArray[$profileid];
-	} else {
-		$sql = "select * from vtiger_profile2tab where profileid=?";
-		$result = $adb->pquery($sql, array($profileid));
-		$tab_perr_array = Array();
-		if($MAX_TAB_PER !='') {
-			$tab_perr_array = array_fill(0,$MAX_TAB_PER,0);
-		}
-		$num_rows = $adb->num_rows($result);
-		for($i=0; $i<$num_rows; $i++) {
-			$tabid= $adb->query_result($result,$i,'tabid');
-			$tab_per= $adb->query_result($result,$i,'permissions');
-			$tab_perr_array[$tabid] = $tab_per;
-		}
-		$log->debug("Exiting getAllTabsPermission method ...");
-		return $tab_perr_array;
+	$sql = "select * from vtiger_profile2tab where profileid=?";
+	$result = $adb->pquery($sql, array($profileid));
+	$tab_perr_array = Array();
+	$num_rows = $adb->num_rows($result);
+	for($i=0; $i<$num_rows; $i++) {
+		$tabid= $adb->query_result($result,$i,'tabid');
+		$tab_per= $adb->query_result($result,$i,'permissions');
+		$tab_perr_array[$tabid] = $tab_per;
 	}
+	$log->debug("Exiting getAllTabsPermission method ...");
+	return $tab_perr_array;
 }
 
-/** Function to get all the vtiger_tab permission for the specified vtiger_profile other than tabid 15
+/** Function to get all the tab permission for the specified profile other than tabid 15
   * @param $profileid -- Profile Id:: Type integer
   * @returns  TabPermission Array in the following format:
   * $tabPermission = Array($tabid1=>permission,
@@ -162,34 +121,23 @@ function getAllTabsPermission($profileid)
   *                                |
   *                        $tabidn=>permission)
  */
-function getTabsPermission($profileid)
-{
-	global $log, $persistPermArray, $adb;
+function getTabsPermission($profileid) {
+	global $log, $adb;
 	$log->debug("Entering getTabsPermission(".$profileid.") method ...");
-	if ($cache_tab_perms) {
-		if (count($persistPermArray) == 0)
-			loadAllPerms();
-		$tab_perr_array = $persistPermArray;
-		foreach (array(1,3,16,15) as $tabid)
-			$tab_perr_array[$tabid] = 0;
-		$log -> debug("Exiting getTabsPermission method ...");
-		return $tab_perr_array;
-	} else {
-		$sql = 'select vtiger_profile2tab.tabid,vtiger_profile2tab.permissions from vtiger_profile2tab
-			INNER JOIN vtiger_tab ON vtiger_tab.tabid=vtiger_profile2tab.tabid WHERE vtiger_profile2tab.profileid=? AND vtiger_tab.presence=0';
-		$result = $adb -> pquery($sql, array($profileid));
-		$tab_perr_array = Array();
-		$num_rows = $adb -> num_rows($result);
-		for ($i = 0; $i < $num_rows; $i++) {
-			$tabid = $adb -> query_result($result, $i, 'tabid');
-			$tab_per = $adb -> query_result($result, $i, 'permissions');
-			if ($tabid != 3 && $tabid != 16) {
-				$tab_perr_array[$tabid] = $tab_per;
-			}
+	$sql = 'select vtiger_profile2tab.tabid,vtiger_profile2tab.permissions from vtiger_profile2tab
+		INNER JOIN vtiger_tab ON vtiger_tab.tabid=vtiger_profile2tab.tabid WHERE vtiger_profile2tab.profileid=? AND vtiger_tab.presence=0';
+	$result = $adb -> pquery($sql, array($profileid));
+	$tab_perr_array = Array();
+	$num_rows = $adb -> num_rows($result);
+	for ($i = 0; $i < $num_rows; $i++) {
+		$tabid = $adb -> query_result($result, $i, 'tabid');
+		$tab_per = $adb -> query_result($result, $i, 'permissions');
+		if ($tabid != 3 && $tabid != 16) {
+			$tab_perr_array[$tabid] = $tab_per;
 		}
-		$log -> debug("Exiting getTabsPermission method ...");
-		return $tab_perr_array;
 	}
+	$log -> debug("Exiting getTabsPermission method ...");
+	return $tab_perr_array;
 }
 
  /** Function to get all the vtiger_tab standard action permission for the specified vtiger_profile

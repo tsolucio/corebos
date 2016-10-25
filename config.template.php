@@ -128,9 +128,6 @@ $default_language = 'en_us';
 // translation_string_prefix default value = false
 $translation_string_prefix = false;
 
-//Option to cache tabs permissions for speed.
-$cache_tab_perms = true;
-
 //Option to hide empty home blocks if no entries.
 $display_empty_home_blocks = false;
 
