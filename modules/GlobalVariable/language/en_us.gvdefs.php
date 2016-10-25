@@ -300,6 +300,20 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'URL to go to when user clicks on help icon in upper right corner. If set to 0 no help icon will be shown. Default value is corebos.org wiki.',
 ),
+'WebService_Session_Life_Span' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Webservice',
+	'values' => '',
+	'definition' => 'Maximum life span of a webservice session. After this time the session will be destroyed even if it is being kept alive. Default is a day.',
+),
+'WebService_Session_Idle_Time' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Webservice',
+	'values' => '',
+	'definition' => 'Maximum life span that a session should be kept alive after the last transaction. Default is 1800 (seconds)',
+),
 
 // TODO: fill in the ones below
 'Application_Global_Search_SelectedModules' => array(
@@ -652,20 +666,6 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => '',
 ),
-'maxWebServiceSessionLifeSpan' => array(
-	'status' => 'Not Implemented',
-	'valuetype' => '',
-	'category' => '',
-	'values' => '',
-	'definition' => '',
-),
-'maxWebServiceSessionIdleTime' => array(
-	'status' => 'Not Implemented',
-	'valuetype' => '',
-	'category' => '',
-	'values' => '',
-	'definition' => '',
-),
 'default_language' => array(
 	'status' => 'Not Implemented',
 	'valuetype' => '',
@@ -673,14 +673,14 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => '',
 ),
-'corebos_app_name' => array(
+'translation_string_prefix' => array(
 	'status' => 'Not Implemented',
 	'valuetype' => '',
 	'category' => '',
 	'values' => '',
 	'definition' => '',
 ),
-'corebos_app_url' => array(
+'Application_Name' => array(
 	'status' => 'Not Implemented',
 	'valuetype' => '',
 	'category' => '',

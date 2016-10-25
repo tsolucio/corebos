@@ -76,6 +76,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Webservice_showUserAdvancedBlock',
 				'Webservice_CORS_Enabled_Domains',
 				'Webservice_Enabled',
+				'WebService_Session_Life_Span',
+				'WebService_Session_Idle_Time',
 
 				'Users_ReplyTo_SecondEmail',
 				'Users_Default_Send_Email_Template',
@@ -143,8 +145,12 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'default_theme',
 				'currency_name',
 				'minimum_cron_frequency',
+				'maxWebServiceSessionLifeSpan',
+				'maxWebServiceSessionIdleTime',
+				'default_language',
+				'corebos_app_name',
+				'corebos_app_url',
 			);
-			
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');
 			$field = Vtiger_Field::getInstance('gvname',$moduleInstance);
 			if ($field) {

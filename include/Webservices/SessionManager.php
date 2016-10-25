@@ -7,17 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
-
-	require_once("include/HTTP_Session/Session.php");
-	// Later may we can move this to config file.
-	
-	global $maxWebServiceSessionLifeSpan, $maxWebServiceSessionIdleTime;
-	
-	$maxWebServiceSessionLifeSpan = 86400; //Max life span of a session is a day.
-	$maxWebServiceSessionIdleTime = 1800; //Max life span session should be kept alive after the last transaction.
-	
-	// Till Here.
-	
+require_once("include/HTTP_Session/Session.php");
 	class SessionManager{
 		private $maxLife ;  
 		private $idleLife ;
@@ -25,15 +15,12 @@
 		//private $sessionName = "sessionName";
 		private $sessionVar = "__SessionExists";
 		private $error ;
-		
+
 		function SessionManager(){
-			
-			global $maxWebServiceSessionLifeSpan, $maxWebServiceSessionIdleTime;
-			
 			$now = time();
-			$this->maxLife = $now + $maxWebServiceSessionLifeSpan;
-			$this->idleLife = $now + $maxWebServiceSessionIdleTime;
-			
+			$this->maxLife = $now + GlobalVariable::getVariable('WebService_Session_Life_Span',86400);
+			$this->idleLife = $now + GlobalVariable::getVariable('WebService_Session_Idle_Time',1800);
+
 			HTTP_Session::useCookies(false); //disable cookie usage. may this could be moved out constructor?
 			// only first invocation of following method, which is setExpire 
 			//have an effect and any further invocation will be have no effect.
@@ -42,9 +29,8 @@
 			//otherwise it subtracts the time from previous time
 			HTTP_Session::setIdle($this->idleLife, true);
 		}
-		
+
 		function isValid(){
-			
 			$valid = true;
 			// expired
 			if (HTTP_Session::isExpired()) {
@@ -52,7 +38,6 @@
 				HTTP_Session::destroy();
 				throw new WebServiceException(WebServiceErrorCode::$SESSLIFEOVER,"Session has life span over please login again");
 			}
-			
 			// idled
 			if (HTTP_Session::isIdle()) {
 				$valid = false;
@@ -67,25 +52,23 @@
 				HTTP_Session::destroy();
 				throw new WebServiceException(WebServiceErrorCode::$SESSIONIDINVALID,"Session Identifier provided is Invalid");
 			}
-			
 			return $valid;
 		}
-		
+
 		function startSession($sid = null,$adoptSession=false,$sname=null){
-			
 //			if($sid){
 //				HTTP_Session::id($sid);
 //			}
-			
+
 			if(!$sid || strlen($sid) ===0){
 				$sid = null;
 			}
-			
+
 			//session name is used for guessing the session id by http_session so pass null.
 			HTTP_Session::start($sname, $sid);
-			
+
 			$newSID = HTTP_Session::id();
-			
+
 			if(!$sid || $adoptSession==true){
 				$this->set($this->sessionVar,"true");
 			}else{
@@ -95,38 +78,34 @@
 					$newSID = null;
 				}
 			}
-			
+
 			if(!$this->isValid()){
 				$newSID = null;
 			}
 			$sid = $newSID;
 			return $sid;
-			
 		}
-		
+
 		function getSessionId(){
 			return HTTP_Session::id();
 		}
-		
+
 		function set($var_name, $var_value){
-			//TODO test setRef and getRef combination
-			//echo "<br>setting name: ",$var_name," :value: ",$var_value;
 			HTTP_Session::set($var_name, $var_value);
 		}
-		
+
 		function get($name){
 			//echo "<br> getting for: ",$name," :value: ",HTTP_Session::get($name);
 			return HTTP_Session::get($name);
 		}
-		
-		FUNCTION getError(){
+
+		function getError(){
 			return $this->error;
 		}
-		
+
 		function destroy(){
 			HTTP_Session::destroy();
 		}
-		
+
 	}
-	
 ?>
