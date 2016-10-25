@@ -32,7 +32,11 @@
         <label></label>
         <sequence></sequence>
         <type></type> RelatedList | Widget | CodeWithHeader | CodeWithoutHeader
-        <loadfrom></loadfrom> related list label or id | file to load | wdiget reference
+        <loadfrom></loadfrom> related list label or id | file to load | widget reference
+        <loadphp></loadphp>
+        <handler_path></handler_path>
+        <handler_class></handler_class>
+        <handler></handler>
        </block>
       </blocks>
     </pane>
@@ -98,6 +102,7 @@ class RelatedPanes extends processcbMap {
 					$block['sequence'] = (String)$value->sequence;
 					$block['label'] = getTranslatedString((String)$value->label,$mapping['origin']);
 					$block['loadfrom'] = (String)$value->loadfrom;
+					$block['loadphp'] = (isset($value->loadphp) ? (String)$value->loadphp : '');
 					if ($block['type']=='RelatedList') {
 						$rels = $this->getRelationIds($origintab,$block['loadfrom']);
 						$block['relatedid'] = $rels[$block['loadfrom']];

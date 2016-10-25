@@ -10,7 +10,7 @@
 require_once('Smarty_setup.php');
 require_once('user_privileges/default_module_view.php');
 
-global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $singlepane_view;
+global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $singlepane_view, $log;
 
 $category = getParentTab();
 $action = vtlib_purify($_REQUEST['action']);
@@ -84,6 +84,13 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 			if ($blk['type']=='RelatedList') {
 				$related_array[$blk['loadfrom']] = $rel_array[$blk['loadfrom']];
 			} else {
+				if (!empty($blk['loadphp'])) {
+					try {
+						include $blk['loadphp'];
+					} catch (Exception $e) {
+						$log->fatal('Related Pane LoadPHP error ('.$blk['loadphp'].'): '.$e->getMessage());
+					}
+				}
 				$related_array[$blk['sequence']] = $blk;
 			}
 		}
