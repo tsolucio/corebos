@@ -20,25 +20,24 @@ if(version_compare(phpversion(), '5.0') < 0) {
  * @param $value -- value:: Type string
  * @returns $value -- value:: Type string array
  */
- function stripslashes_checkstrings($value){
- 	if(is_string($value)){
- 		return stripslashes($value);
- 	}
- 	return $value;
+function stripslashes_checkstrings($value){
+	if(is_string($value)){
+		return stripslashes($value);
+	}
+	return $value;
 
- }
- if(get_magic_quotes_gpc() == 1){
- 	$_REQUEST = array_map("stripslashes_checkstrings", $_REQUEST);
+}
+if(get_magic_quotes_gpc() == 1){
+	$_REQUEST = array_map("stripslashes_checkstrings", $_REQUEST);
 	$_POST = array_map("stripslashes_checkstrings", $_POST);
 	$_GET = array_map("stripslashes_checkstrings", $_GET);
-
 }
 
 require_once('include/install/language/en_us.lang.php');
 require_once('include/install/resources/utils.php');
 require_once('vtigerversion.php');	
 global $installationStrings, $vtiger_current_version, $coreBOS_app_version;
-	
+
 @include_once('config.db.php');
 global $dbconfig, $vtconfig;
 if(empty($_REQUEST['file']) && is_array($vtconfig) && $vtconfig['quickbuild'] == 'true') {
@@ -48,5 +47,4 @@ else $the_file = "welcome.php";
 
 Common_Install_Wizard_Utils::checkFileAccessForInclusion("install/".$the_file);
 include("install/".$the_file);
-
 ?>

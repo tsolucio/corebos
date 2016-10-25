@@ -729,9 +729,6 @@ class ConfigFile_Utils {
 					/* replace the application unique key variable */
 					$buffer = str_replace( "_VT_APP_UNIQKEY_", md5((time() + rand(1,9999999)) . $this->rootDirectory) , $buffer);
 
-					/* replace support email variable */
-					$buffer = str_replace( "_USER_SUPPORT_EMAIL_", $this->adminEmail, $buffer);
-
 					fwrite($includeHandle, $buffer);
 				}
 				fclose($includeHandle);
