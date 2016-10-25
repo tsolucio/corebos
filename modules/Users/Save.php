@@ -179,6 +179,8 @@ if($_REQUEST['mode'] == 'create') {
 	$email_body .= "<br>" . $app_strings['MSG_THANKS'] . "<br>" . $current_user->user_name;
 	//$email_body = htmlentities($email_body, ENT_QUOTES, $default_charset);  // not needed anymore, PHPMailer takes care of it
 
+	$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail','support@your_support_domain.tld','HelpDesk');
+	$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name','your-support name','HelpDesk');
 	$mail_status = send_mail('Users',$user_emailid,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$subject,$email_body);
 	if($mail_status != 1) {
 		$mail_status_str = $user_emailid."=".$mail_status."&&&";
