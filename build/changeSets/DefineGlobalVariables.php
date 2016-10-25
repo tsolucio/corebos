@@ -131,6 +131,11 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'helpdesk_support_email_reply_id',
 				'limitpage_navigation',
 				'default_timezone',
+				'import_dir',
+				'upload_dir',
+				'upload_badext',
+				'default_theme',
+				'currency_name',
 			);
 			
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');

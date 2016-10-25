@@ -603,27 +603,6 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => '',
 ),
-'default_theme' => array(
-	'status' => 'Not Implemented',
-	'valuetype' => '',
-	'category' => '',
-	'values' => '',
-	'definition' => '',
-),
-'currency_name' => array(
-	'status' => 'Not Implemented',
-	'valuetype' => '',
-	'category' => '',
-	'values' => '',
-	'definition' => '',
-),
-'upload_badext' => array(
-	'status' => 'Not Implemented',
-	'valuetype' => '',
-	'category' => '',
-	'values' => '',
-	'definition' => '',
-),
 'maxWebServiceSessionLifeSpan' => array(
 	'status' => 'Not Implemented',
 	'valuetype' => '',
@@ -646,20 +625,6 @@ $GlobalVariableDefinitons = array(
 	'definition' => '',
 ),
 'default_language' => array(
-	'status' => 'Not Implemented',
-	'valuetype' => '',
-	'category' => '',
-	'values' => '',
-	'definition' => '',
-),
-'import_dir' => array(
-	'status' => 'Not Implemented',
-	'valuetype' => '',
-	'category' => '',
-	'values' => '',
-	'definition' => '',
-),
-'upload_dir' => array(
 	'status' => 'Not Implemented',
 	'valuetype' => '',
 	'category' => '',

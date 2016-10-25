@@ -10,7 +10,6 @@
 
 include('vtigerversion.php');
 
-// more than 8MB memory needed for graphics
 // memory limit default value = 64M
 ini_set('memory_limit','1024M');
 
@@ -18,14 +17,13 @@ ini_set('memory_limit','1024M');
 $PORTAL_URL = 'http://your_support_domain.tld/customerportal';
 
 /* database configuration
-      db_server
-      db_port
-      db_hostname
-      db_username
-      db_password
-      db_name
+ db_server
+ db_port
+ db_hostname
+ db_username
+ db_password
+ db_name
 */
-
 $dbconfig['db_server'] = '_DBC_SERVER_';
 $dbconfig['db_port'] = ':_DBC_PORT_';
 $dbconfig['db_username'] = '_DBC_USER_';
@@ -33,9 +31,6 @@ $dbconfig['db_password'] = '_DBC_PASS_';
 $dbconfig['db_name'] = '_DBC_NAME_';
 $dbconfig['db_type'] = '_DBC_TYPE_';
 $dbconfig['db_status'] = '_DB_STAT_';
-
-// TODO: test if port is empty
-// TODO: set db_hostname dependending on db_type
 $dbconfig['db_hostname'] = $dbconfig['db_server'].$dbconfig['db_port'];
 
 // log_sql default value = false
