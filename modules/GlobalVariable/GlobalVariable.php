@@ -501,7 +501,7 @@ class GlobalVariable extends CRMEntity {
 		}
 	}
 
-	function return_global_var_value($sql,$var,$module){
+	public static function return_global_var_value($sql,$var,$module){
 		global $log,$adb,$gvvalidationinfo;
 		$list_of_modules=array();
 		$list_of_modules['Default'] = '';
@@ -580,7 +580,9 @@ class GlobalVariable extends CRMEntity {
 	 *   - return $default
 	 */
 	public static function getVariable($var,$default, $module='', $gvuserid='') {
-		global $adb, $current_user, $gvvalidationinfo, $currentModule;
+		global $adb, $current_user, $gvvalidationinfo, $currentModule, $installationStrings;
+		if (!is_object($adb) or is_null($adb->database)) return $default;
+		if (isset($installationStrings)) return $default;
 		$gvvalidationinfo[] = "search for variable '$var' with default value of '$default'";
 		if (empty($module)) $module = $currentModule;
 		if (empty($gvuserid)) $gvuserid = $current_user->id;
@@ -592,7 +594,6 @@ class GlobalVariable extends CRMEntity {
 		}
 		$value='';
 		$list_of_modules=array();
-		$focus = CRMEntity::getInstance('GlobalVariable');
 		$select = 'SELECT *
 		 FROM vtiger_globalvariable
 		 INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_globalvariable.globalvariableid ';
@@ -601,7 +602,7 @@ class GlobalVariable extends CRMEntity {
 		$mandatory=" and mandatory='1'";
 		$sql=$select.$where.$mandatory;
 		$gvvalidationinfo[] = '---';
-		$value=$focus->return_global_var_value($sql,$var,$module);
+		$value=self::return_global_var_value($sql,$var,$module);
 		$gvvalidationinfo[] = "search as mandatory in module $module: $value";
 		if ($value!='') {
 			VTCacheUtils::updateCachedInformation($key, $value);
@@ -612,7 +613,7 @@ class GlobalVariable extends CRMEntity {
 		$user = $adb->convert2Sql(' and vtiger_crmentity.smownerid=?', array($gvuserid));
 		$sql=$select.$where.$user;
 		$gvvalidationinfo[] = '---';
-		$value=$focus->return_global_var_value($sql,$var,$module);
+		$value=self::return_global_var_value($sql,$var,$module);
 		$gvvalidationinfo[] = "search as set per user $gvuserid in module $module: $value";
 		if ($value!='') {
 			VTCacheUtils::updateCachedInformation($key, $value);
@@ -627,7 +628,7 @@ class GlobalVariable extends CRMEntity {
 			$groups=implode(',',$UserGroups->user_groups);
 			$group=' and vtiger_crmentity.smownerid in ('.$groups.') ';
 			$sql=$select.$where.$group;
-			$value=$focus->return_global_var_value($sql,$var,$module);
+			$value=self::return_global_var_value($sql,$var,$module);
 			$gvvalidationinfo[] = "search as set per group $groups in module $module: $value";
 			if ($value!='') {
 				VTCacheUtils::updateCachedInformation($key, $value);
@@ -639,7 +640,7 @@ class GlobalVariable extends CRMEntity {
 
 		$sql=$select.$where." and default_check='1'";
 		$gvvalidationinfo[] = '---';
-		$value=$focus->return_global_var_value($sql,$var,$module);
+		$value=self::return_global_var_value($sql,$var,$module);
 		$gvvalidationinfo[] = "search as default variable in module $module: $value";
 		if ($value!='') {
 			VTCacheUtils::updateCachedInformation($key, $value);
