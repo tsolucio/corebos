@@ -29,7 +29,7 @@ class Installation_Utils {
 	static function getDbOptions() {
 		$dbOptions = array();
 		if(function_exists('mysql_connect')) {
-			$dbOptions['mysql'] = 'MySQL';
+			$dbOptions['mysqli'] = 'MySQL';
 		}
 		return $dbOptions;
 	}
