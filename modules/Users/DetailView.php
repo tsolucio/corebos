@@ -180,6 +180,9 @@ if ($current_user->mustChangePassword()) {
 } else {
 	$smarty->assign('mustChangePassword',0);
 }
+if (isset($_REQUEST['error_string'])) {
+	$smarty->assign('ERROR_MESSAGE',vtlib_purify($_REQUEST['error_string']));
+}
 
 //for check audittrail if it is enable or not
 $smarty->assign("AUDITTRAIL",$audit_trail);

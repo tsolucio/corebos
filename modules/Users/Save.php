@@ -93,7 +93,7 @@ if($_REQUEST['changepassword'] == 'true') {
 	$focus->id = vtlib_purify($_REQUEST['record']);
 	if (isset($_REQUEST['new_password'])) {
 		if (!$focus->change_password(vtlib_purify($_REQUEST['old_password']), vtlib_purify($_REQUEST['new_password']))) {
-			header("Location: index.php?action=Error&module=Users&error_string=".urlencode($focus->error_string));
+			header("Location: index.php?action=DetailView&module=Users&record=".$focus->id."&error_string=".urlencode($focus->error_string));
 			exit;
 		}
 	}
@@ -140,7 +140,7 @@ if(! $_REQUEST['changepassword'] == 'true')
 		$new_pass = md5($new_pass);
 		$uname = $_POST['user_name'];
 		if (!$focus->change_password($_POST['confirm_new_password'], $_POST['new_password'])) {
-			header("Location: index.php?action=Error&module=Users&error_string=".urlencode($focus->error_string));
+			header("Location: index.php?action=DetailView&module=Users&record=".$focus->id."&error_string=".urlencode($focus->error_string));
 			exit;
 		}
 	}
