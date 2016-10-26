@@ -3075,11 +3075,6 @@ function getRecordValues($id_array,$module) {
 					if($product_name != '')
 						$value_pair['disp_value']=$product_name;
 					else $value_pair['disp_value']='';
-				} elseif($ui_type==58) {
-					$campaign_name=getCampaignName($field_values[$j][$fld_name]);
-					if($campaign_name != '')
-						$value_pair['disp_value']=$campaign_name;
-					else $value_pair['disp_value']='';
 				} elseif($ui_type == 10) {
 					$value_pair['disp_value'] = getRecordInfoFromID($field_values[$j][$fld_name]);
 				}elseif($ui_type == 5 || $ui_type == 6 || $ui_type == 23){
@@ -3489,13 +3484,6 @@ function getDuplicateRecordsArr($module)
 				} else {
 					$result[$col_arr[$k]]='';
 				}
-			}
-			if($ui_type[$fld_arr[$k]] ==58)
-			{
-				$campaign_name=getCampaignName($result[$col_arr[$k]]);
-				if($campaign_name != '')
-					$result[$col_arr[$k]]=$campaign_name;
-				else $result[$col_arr[$k]]='';
 			}
 			if($ui_type[$fld_arr[$k]] == 59)
 			{

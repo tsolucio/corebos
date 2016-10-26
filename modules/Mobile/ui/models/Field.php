@@ -66,7 +66,7 @@ class Mobile_UI_FieldModel {
 	
 	function isReferenceType() {
 		static $options = array('101', '116', '26', '357',
-			'50', '51', '52', '53', '57', '58', '59', '66',
+			'50', '51', '52', '53', '57', '59', '66',
 			'73', '75', '76', '77', '78', '80', '81'
 		);
 		if (isset($this->data['uitype'])) {

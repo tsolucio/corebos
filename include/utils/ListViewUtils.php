@@ -1459,19 +1459,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 		else
 			$value = '';
 	}
-	//Added by Minnie to get Campaign Source
-	elseif ($uitype == 58) {
-		if ($temp_val != '') {
-			$sql = "SELECT * FROM vtiger_campaign WHERE campaignid=?";
-			$result = $adb->pquery($sql, array($temp_val));
-			$campaignname = $adb->query_result($result, 0, "campaignname");
-			$value = '<a href=index.php?module=Campaigns&action=DetailView&record=' . $temp_val . '>' . textlength_check($campaignname) . '</a>';
-		}
-		else
-			$value = '';
-	}
-	//End
-	//Added By *Raj* for the Issue ProductName not displayed in CustomView of HelpDesk
 	elseif ($uitype == 59) {
 		if ($temp_val != '') {
 			$value = getProductName($temp_val);
@@ -1479,7 +1466,6 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 			$value = '';
 		}
 	}
-	//End
 	elseif ($uitype == 61) {
 		$attachmentid = $adb->query_result($adb->pquery("SELECT * FROM vtiger_seattachmentsrel WHERE crmid = ?", array($entity_id)), 0, 'attachmentsid');
 		$value = '<a href = "index.php?module=uploads&action=downloadfile&return_module=' . $module . '&fileid=' . $attachmentid . '&filename=' . $temp_val . '">' . textlength_check($temp_val) . '</a>';

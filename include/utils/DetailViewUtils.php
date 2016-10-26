@@ -554,15 +554,6 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		$label_fld[] = $contact_name;
 		$label_fld["secid"] = $contact_id;
 		$label_fld["link"] = "index.php?module=Contacts&action=DetailView&record=" . $contact_id;
-	} elseif ($uitype == 58) {
-		$label_fld[] = getTranslatedString($fieldlabel, $module);
-		$campaign_id = $col_fields[$fieldname];
-		if ($campaign_id != '') {
-			$campaign_name = getCampaignName($campaign_id);
-		}
-		$label_fld[] = $campaign_name;
-		$label_fld["secid"] = $campaign_id;
-		$label_fld["link"] = "index.php?module=Campaigns&action=DetailView&record=" . $campaign_id;
 	} elseif ($uitype == 59) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$product_id = $col_fields[$fieldname];

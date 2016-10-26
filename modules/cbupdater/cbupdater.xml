@@ -857,4 +857,11 @@
 	<classname>delSettingsSinglePaneViewConfigEditor</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Change uitype 58 (campaign) to 10</description>
+	<filename>build/changeSets/changeUitype58To10.php</filename>
+	<classname>changeUitype58To10</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
