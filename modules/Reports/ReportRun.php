@@ -1495,17 +1495,9 @@ class ReportRun extends CRMEntity {
 
 		else if($module == "Potentials")
 		{
-			$query = "from vtiger_potential
-				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_potential.potentialid
-				inner join vtiger_potentialscf on vtiger_potentialscf.potentialid = vtiger_potential.potentialid
-				left join vtiger_account as vtiger_accountPotentials on vtiger_potential.related_to = vtiger_accountPotentials.accountid
-				left join vtiger_contactdetails as vtiger_contactdetailsPotentials on vtiger_potential.related_to = vtiger_contactdetailsPotentials.contactid
-				left join vtiger_campaign as vtiger_campaignPotentials on vtiger_potential.campaignid = vtiger_campaignPotentials.campaignid
-				left join vtiger_groups vtiger_groupsPotentials on vtiger_groupsPotentials.groupid = vtiger_crmentity.smownerid
-				left join vtiger_users as vtiger_usersPotentials on vtiger_usersPotentials.id = vtiger_crmentity.smownerid
-				left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid
-				left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
-				left join vtiger_users as vtiger_lastModifiedByPotentials on vtiger_lastModifiedByPotentials.id = vtiger_crmentity.modifiedby
+			$focus = CRMEntity::getInstance($module);
+			$query = $focus->generateReportsQuery($module);
+			$query.= " left join vtiger_campaign as vtiger_campaignPotentials on vtiger_potential.campaignid = vtiger_campaignPotentials.campaignid
 				".$this->getRelatedModulesQuery($module,$this->secondarymodule,$type,$where_condition).
 						getNonAdminAccessControlQuery($this->primarymodule,$current_user)."
 				where vtiger_crmentity.deleted=0 ";
@@ -3400,8 +3392,6 @@ class ReportRun extends CRMEntity {
 					$referenceTableName = 'vtiger_contactdetailsInvoice';
 				} elseif ($moduleName == 'Invoice' && $referenceModule == 'Accounts') {
 					$referenceTableName = 'vtiger_accountInvoice';
-				} elseif ($moduleName == 'Potentials' && $referenceModule == 'Campaigns') {
-					$referenceTableName = 'vtiger_campaignPotentials';
 				} elseif ($moduleName == 'Products' && $referenceModule == 'Vendors') {
 					$referenceTableName = 'vtiger_vendorRelProducts';
 				} elseif ($moduleName == 'PurchaseOrder' && $referenceModule == 'Contacts') {
@@ -3422,10 +3412,6 @@ class ReportRun extends CRMEntity {
 					$referenceTableName = 'vtiger_contactdetailsSalesOrder';
 				} elseif ($moduleName == 'SalesOrder' && $referenceModule == 'Quotes') {
 					$referenceTableName = 'vtiger_quotesSalesOrder';
-				} elseif ($moduleName == 'Potentials' && $referenceModule == 'Contacts') {
-					$referenceTableName = 'vtiger_contactdetailsPotentials';
-				} elseif ($moduleName == 'Potentials' && $referenceModule == 'Accounts') {
-					$referenceTableName = 'vtiger_accountPotentials';
 				} elseif (in_array($referenceModule, $reportSecondaryModules) and $moduleName != 'Timecontrol') {
 					if($fieldInstance->getFieldId() != '') $referenceTableName = "{$entityTableName}Rel{$moduleName}{$fieldInstance->getFieldId()}";
 					else $referenceTableName = "{$entityTableName}Rel$referenceModule";
