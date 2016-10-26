@@ -2821,3 +2821,13 @@ a.drop_down_usersettings_name{
 	padding-top: 8px;
 	padding-bottom: 4px;
 }
+
+.listview_row_total, .listview_row_sigma {
+	font-weight: bold;
+}
+
+.listview_row_sigma {
+	text-align: center;
+	width: 100%;
+	display: block;
+}

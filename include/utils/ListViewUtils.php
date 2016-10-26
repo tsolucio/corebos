@@ -969,7 +969,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 			if (isset($totals[$field_name])) {
 				$currencyField = new CurrencyField($totals[$field_name]);
 				$currencyValue = $currencyField->getDisplayValueWithSymbol();
-				$trow[] = '<span class="listview_total">'.$currencyValue.'</span>';
+				$trow[] = '<span class="listview_row_total">'.$currencyValue.'</span>';
 			} else {
 				$trow[] = '';
 			}

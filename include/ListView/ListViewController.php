@@ -650,7 +650,7 @@ class ListViewController {
 				if (isset($totals[$fieldName])) {
 					$currencyField = new CurrencyField($totals[$fieldName]);
 					$currencyValue = $currencyField->getDisplayValueWithSymbol();
-					$trow[] = '<span class="listview_total">'.$currencyValue.'</span>';
+					$trow[] = '<span class="listview_row_total">'.$currencyValue.'</span>';
 				} else {
 					$trow[] = '';
 				}
