@@ -802,7 +802,11 @@ class Users extends CRMEntity {
 				$column .= ', crypt_type';
 				$qparams[] = $crypt_type;
 			}
-			$sql1 = "insert into $table_name ($column, date_entered) values(" . generateQuestionMarks($qparams) . ",NOW())";
+			if ($table_name == 'vtiger_users') {
+				$sql1 = "insert into $table_name ($column, date_entered) values(" . generateQuestionMarks($qparams) . ',NOW())';
+			} else {
+				$sql1 = "insert into $table_name ($column) values(" . generateQuestionMarks($qparams) . ')';
+			}
 			$this->db->pquery($sql1, $qparams);
 		}
 	}
