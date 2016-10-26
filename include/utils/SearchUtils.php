@@ -43,6 +43,19 @@ function getSearchListHeaderValues($focus, $module,$sort_qry='',$sorder='',$orde
         //require_once('include/utils/UserInfoUtil.php')
         $tabid = getTabid($module);
         //added for vtiger_customview 27/5
+	$bmapname = $module.'_ListColumns';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapLC = $cbMap->ListColumns();
+		$parentmodule = vtlib_purify($_REQUEST['module']);
+		$focus->list_fields = $cbMapLC->getSearchFields();
+		$focus->list_fields_name = $cbMapLC->getSearchFieldsName();
+		if ($parentmodule == 'Home' and $cbMapLC->issetListFieldsMappingFor('Home')) {
+			$oCv->list_fields = $focus->list_fields;
+			$oCv->list_fields_name = $focus->list_fields_name;
+		}
+	}
         if($oCv)
         {
                 if(isset($oCv->list_fields))
