@@ -83,9 +83,6 @@ $mod_strings = Array(
 'LBL_MORE'=>'More',
 'LBL_SCROLL'=>'Scroll',
 
-// vtiger CRM News
-'LBL_NEWS_NO'=>'No news',
-
 //added for home page changes
 'LBL_NOTEBOOK'=>'Notebook',
 'LBL_NOTEBOOK_TITLE'=>'Double-click to edit.',

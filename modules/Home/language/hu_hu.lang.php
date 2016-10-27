@@ -65,7 +65,6 @@ $mod_strings = array(
 	'LBL_HOME_ITEMS' => 'tétel(ek)',
 	'LBL_MORE' => 'Több',
 	'LBL_SCROLL' => 'Görgess',
-	'LBL_NEWS_NO' => 'Nincsenek újak',
 	'LBL_NOTEBOOK' => 'Jegyzettömb',
 	'LBL_NOTEBOOK_TITLE' => 'Dupla kattintás a Szerkesztéshez.',
 	'LBL_NOTEBOOK_SAVE_TITLE' => 'Kattints bárhova még az oldalon, hogy mentsd.',

@@ -60,12 +60,8 @@ $mod_strings = array (
 	'LBL_HOME_VERTICAL_BARCHART' => 'Graphique avec barre verticale',
 	'LBL_HOME_PIE_CHART' => 'Graphique en camembert',
 	'LBL_HOME_ITEMS' => 'objet(s)',
-	'LBL_NEWS_NO' => 'N° news',
 	'LBL_MORE'=>'Plus',
 	'LBL_SCROLL'=>'Défiler',
-
-	// vtiger CRM News
-	'LBL_NEWS_NO'=>'Aucune news',
 
 	//added for home page changes
 	'LBL_NOTEBOOK'=>'Bloc note',

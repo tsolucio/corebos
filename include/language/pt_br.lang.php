@@ -1160,12 +1160,6 @@ $app_strings = array (
 
 // vtlib customization: Language strings
 'VTLIB_MOD_NOT_ACTIVE' => ' o Módulo não está ativo!',
-// END
-
-// vtiger News & Feedback
-'LBL_VTIGER_NEWS'=>'Notícias vtiger',
-'LBL_FEEDBACK'=>'Feedback',
-// END
 
 //added for asterisk integration
 'CallHistory'=>'Histórico Chamada',

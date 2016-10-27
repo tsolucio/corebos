@@ -1130,14 +1130,8 @@ $app_strings = array (
     
       // vtlib customization: Language strings
       'VTLIB_MOD_NOT_ACTIVE' => ' módulo no está activado!',
-      // END
 
-      // vtiger News & Feedback
-     'LBL_VTIGER_NEWS'=>'Noticias vtiger',
-     'LBL_FEEDBACK'=>'Cuéntanos',
-     // END
-     
-     //added for asterisk integration
+      //added for asterisk integration
      'CallHistory'=>'Historia de Llamadas',
      'PBXManager'=>'Administrador PBX',
      'LBL_OUTGOING_CALL_MESSAGE'=>'Descuelgue el teléfono para marcar el número',

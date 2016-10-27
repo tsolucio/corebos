@@ -59,7 +59,6 @@ $mod_strings = array(
 	'LBL_HOME_ITEMS' => 'item(s)',
 	'LBL_MORE' => 'More',
 	'LBL_SCROLL' => 'Scroll',
-	'LBL_NEWS_NO' => 'No news',
 	'LBL_NOTEBOOK' => 'Notebook',
 	'LBL_NOTEBOOK_TITLE' => 'Double-click to edit.',
 	'LBL_NOTEBOOK_SAVE_TITLE' => 'Click anywhere else on the page to save.',

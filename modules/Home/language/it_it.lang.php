@@ -79,8 +79,6 @@ $mod_strings = array (
 'LBL_MORE' => 'Di Pi&ugrave;',
 'LBL_SCROLL' => 'Scorri',
 
-'LBL_NEWS_NO' => 'Nessuna news',
-
 'LBL_NOTEBOOK' => 'Appunti',
 'LBL_NOTEBOOK_TITLE' => 'Doppio-click per modificare.',
 'LBL_NOTEBOOK_SAVE_TITLE' => 'Cliccare ovunque nella pagina per salvare.',

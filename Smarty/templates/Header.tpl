@@ -491,25 +491,6 @@ function QCreate(qcoptions){
 		<tr><td style="padding-left:0px;padding-right:10px font-weight:bold"  nowrap><a href="index.php?module=Settings&action=index&parenttab=" class="drop_down_usersettings">{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}</a></td></tr>
 	</table>
 </div>
-<script type="text/javascript">
-{literal}
-function vtiger_news(obj) {
-	document.getElementById('status').style.display = 'inline';
-	jQuery.ajax({
-			method:"POST",
-			url:'index.php?module=Home&action=HomeAjax&file=HomeNews'
-	}).done(function(response) {
-				jQuery("#vtigerNewsPopupLay").html(response);
-				fnvshobj(obj, 'vtigerNewsPopupLay');
-				jQuery('#status').hide();
-			}
-	);
-}
-{/literal}
-</script>
-<div class="lvtCol fixedLay1" id="vtigerNewsPopupLay" style="display: none; height: 250px; bottom: 2px; padding: 2px; z-index: 12; font-weight: normal;" align="left">
-</div>
-<!-- END -->
 
 <!-- ActivityReminder Customization for callback -->
 <div class="lvtCol fixedLay1" id="ActivityRemindercallback" style="border: 0; right: 0px; bottom: 2px; display:none; padding: 2px; z-index: 10; font-weight: normal;" align="left">
