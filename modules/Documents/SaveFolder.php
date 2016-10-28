@@ -46,8 +46,9 @@ global $adb;
 				{
 					echo "Failure";
 				}
-				else
-					header("Location: index.php?action=DocumentsAjax&file=ListView&mode=ajax&module=Documents");
+				else {
+					header("Location: index.php?action=DocumentsAjax&file=ListView&mode=ajax&ajax=true&module=Documents");
+				}
 			}
 			elseif($flag == 1)
 				echo "DUPLICATE_FOLDERNAME";

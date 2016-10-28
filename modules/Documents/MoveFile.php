@@ -29,7 +29,7 @@ else
 		for($i = 0;$i < count($id_array);$i++) {
 			ChangeFolder($id_array[$i],$new_folderid);
 		}
-		header("Location: index.php?action=DocumentsAjax&file=ListView&mode=ajax&module=Documents");
+		header("Location: index.php?action=DocumentsAjax&file=ListView&mode=ajax&ajax=true&module=Documents");
 	}
 }
 

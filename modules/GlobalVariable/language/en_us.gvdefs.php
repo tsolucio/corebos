@@ -349,6 +349,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => '',
 ),
+'Document_Folder_View' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Boolean',
+	'category' => 'Application',
+	'values' => '0 | 1',
+	'definition' => 'Show Documents list view as separate folders or as a normal listview. Default is 1 = Folder view.',
+),
 
 // TODO: fill in the ones below
 'Application_Global_Search_SelectedModules' => array(

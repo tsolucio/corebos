@@ -258,7 +258,7 @@ function massDelete(module) {
 	var searchurl = document.getElementById('search_url').value;
 	var viewid = getviewId();
 	var idstring = "";
-	if (module != 'Documents') {
+	if (module != 'Documents' || Document_Folder_View == 0) {
 		var select_options = document.getElementById('allselectedboxes').value;
 		var excludedRecords = document.getElementById('excludedRecords').value;
 		var numOfRows = document.getElementById('numOfRows').value;
@@ -396,7 +396,7 @@ function showDefaultCustomView(selectView, module, parenttab)
 
 function getListViewEntries_js(module,url)
 {
-	if(module!='Documents'){
+	if(module!='Documents' || Document_Folder_View == 0){
 		var excludedRecords = document.getElementById('excludedRecords').value;
 		var all_selected = document.getElementById("allselectedboxes").value;
 		var count = document.getElementById('numOfRows').value;
@@ -452,7 +452,7 @@ function getListViewEntries_js(module,url)
 				var result = response.split('&#&#&#');
 				document.getElementById("ListViewContents").innerHTML= result[2];
 
-				if(module == 'Documents') {
+				if(module == 'Documents' && Document_Folder_View) {
 					obj = document.getElementsByName('folderidVal');
 					for(var i=0;i<obj.length;i++){
 						var id = obj[i].value;
@@ -509,7 +509,7 @@ function getListViewEntries_js(module,url)
 
 function check_object(sel_id,groupParentElementId)
 {
-	if(document.getElementById('curmodule') != undefined && document.getElementById('curmodule').value == 'Documents') {
+	if(document.getElementById('curmodule') != undefined && document.getElementById('curmodule').value == 'Documents' && Document_Folder_View) {
 		var selected = trim(document.getElementById('selectedboxes_'+groupParentElementId).value);
 		var skip = document.getElementById('excludedRecords_'+groupParentElementId).value;
 	} else {
@@ -525,7 +525,7 @@ function check_object(sel_id,groupParentElementId)
 	var result = "";
 	if(box_value == true)
 	{
-		if(document.getElementById('curmodule') != undefined && document.getElementById('curmodule').value == 'Documents' && document.getElementById('selectedboxes_'+groupParentElementId).value == 'all'){
+		if(document.getElementById('curmodule') != undefined && document.getElementById('curmodule').value == 'Documents' && Document_Folder_View && document.getElementById('selectedboxes_'+groupParentElementId).value == 'all'){
 			document.getElementById('excludedRecords_'+groupParentElementId).value = skip.replace(skip.match(id+";"),'');
 			document.getElementById('selectedboxes_'+groupParentElementId).value = 'all';
 		} else if(document.getElementById("allselectedboxes").value == 'all'){
@@ -541,7 +541,7 @@ function check_object(sel_id,groupParentElementId)
 					result=select_global[i]+";"+result;
 			}
 			//default_togglestate(sel_id.name,groupParentElementId);
-			if(document.getElementById('curmodule') != undefined && document.getElementById('curmodule').value == 'Documents') {
+			if(document.getElementById('curmodule') != undefined && document.getElementById('curmodule').value == 'Documents' && Document_Folder_View) {
 				document.getElementById('selectedboxes_'+groupParentElementId).value = result;
 			} else {
 				document.getElementById('allselectedboxes').value = result;
@@ -549,7 +549,7 @@ function check_object(sel_id,groupParentElementId)
 		}
 		default_togglestate(sel_id.name,groupParentElementId);
 	} else {
-		if(document.getElementById('curmodule') != undefined && document.getElementById('curmodule').value == 'Documents' && document.getElementById('selectedboxes_'+groupParentElementId).value == 'all'){
+		if(document.getElementById('curmodule') != undefined && document.getElementById('curmodule').value == 'Documents' && Document_Folder_View && document.getElementById('selectedboxes_'+groupParentElementId).value == 'all'){
 			document.getElementById('excludedRecords_'+groupParentElementId).value = id+";"+skip;
 			document.getElementById('selectedboxes_'+groupParentElementId).value = 'all';
 		} else if(document.getElementById("allselectedboxes").value == 'all') {
@@ -566,13 +566,13 @@ function check_object(sel_id,groupParentElementId)
 					result = select_global[i]+";"+result;
 			}
 			default_togglestate(sel_id.name,groupParentElementId);
-			if(document.getElementById('curmodule') != undefined && document.getElementById('curmodule').value == 'Documents'){
+			if(document.getElementById('curmodule') != undefined && document.getElementById('curmodule').value == 'Documents' && Document_Folder_View){
 				document.getElementById('selectedboxes_'+groupParentElementId).value = result;
 			} else {
 				document.getElementById("allselectedboxes").value = result;
 			}
 		}
-		if(document.getElementById('curmodule') != undefined && document.getElementById('curmodule').value == 'Documents'){
+		if(document.getElementById('curmodule') != undefined && document.getElementById('curmodule').value == 'Documents' && Document_Folder_View){
 			document.getElementById('currentPageRec_'+groupParentElementId).checked = false;
 		} else {
 			document.getElementById('selectCurrentPageRec').checked = false;

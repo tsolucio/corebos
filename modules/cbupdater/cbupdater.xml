@@ -864,4 +864,11 @@
 	<classname>changeUitype58To10</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Activate Document fields for mass edit</description>
+	<filename>build/changeSets/activateMassEditOnDocumentFields.php</filename>
+	<classname>activateMassEditOnDocumentFields</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

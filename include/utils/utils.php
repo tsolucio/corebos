@@ -4699,7 +4699,7 @@ function getSelectedRecords($input,$module,$idstring,$excludedRecords) {
 		$excludedRecords=explode(';',$excludedRecords);
 		$storearray=array_diff($storearray,$excludedRecords);
 
-	} else if($module == 'Documents') {
+	} else if($module == 'Documents' and GlobalVariable::getVariable('Document_Folder_View',1,'Documents')) {
 
 		if($input['selectallmode']=='true') {
 			$result = getSelectAllQuery($input,$module);
@@ -4767,7 +4767,7 @@ function getSelectAllQuery($input,$module) {
 		$queryGenerator->setFields(array('id'));
 		$query = $queryGenerator->getQuery();
 
-		if($module == 'Documents') {
+		if($module == 'Documents' and GlobalVariable::getVariable('Document_Folder_View',1,'Documents')) {
 			$folderid = vtlib_purify($input['folderidstring']);
 			$folderid = str_replace(';', ',', $folderid);
 			$query .= " AND vtiger_notes.folderid in (".$folderid.")";

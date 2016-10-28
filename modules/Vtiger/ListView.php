@@ -189,6 +189,10 @@ $controller = new ListViewController($adb, $current_user, $queryGenerator);
 if(!isset($skipAction)){
 	$skipAction = false;
 }
+$smarty->assign('Document_Folder_View',0);
+if ($currentModule == 'Documents') {
+	include 'modules/Documents/ListViewCalculations.php';
+}
 
 $listview_header = $controller->getListViewHeader($focus,$currentModule,$url_string,$sorder,$order_by,$skipAction);
 $listview_entries = $controller->getListViewEntries($focus,$currentModule,$list_result,$navigation_array,$skipAction);

@@ -20,7 +20,6 @@ class Documents extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	var $IsCustomModule = false;
 	var $HasDirectImageField = false;
-	var $default_note_name_dom = array('Meeting vtiger_notes', 'Reminder');
 
 	var $tab_name = Array('vtiger_crmentity','vtiger_notes','vtiger_notescf');
 	var $tab_name_index = Array('vtiger_crmentity'=>'crmid','vtiger_notes'=>'notesid','vtiger_notescf'=>'notesid','vtiger_senotesrel'=>'notesid');
@@ -263,16 +262,18 @@ class Documents extends CRMEntity {
 	*/
 	function getOrderBy()
 	{
-		global $log;
+		global $currentModule,$log;
 		$log->debug("Entering getOrderBy() method ...");
 
 		$use_default_order_by = '';
 		if(PerformancePrefs::getBoolean('LISTVIEW_DEFAULT_SORTING', true)) {
 			$use_default_order_by = $this->default_order_by;
 		}
-
+		$orderby = $use_default_order_by;
 		if (isset($_REQUEST['order_by']))
 			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
+		else if(isset($_SESSION[$currentModule.'_Order_By']))
+			$order_by = $_SESSION[$currentModule.'_Order_By'];
 		else
 			$order_by = (($_SESSION['NOTES_ORDER_BY'] != '')?($_SESSION['NOTES_ORDER_BY']):($use_default_order_by));
 		$log->debug("Exiting getOrderBy method ...");

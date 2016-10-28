@@ -2891,7 +2891,7 @@ function toggleSelect_ListView(state,relCheckName,groupParentElementId) {
 			}
 		}
 	}
-	if(document.getElementById('curmodule') != undefined && document.getElementById('curmodule').value == 'Documents') {
+	if(document.getElementById('curmodule') != undefined && document.getElementById('curmodule').value == 'Documents' && Document_Folder_View) {
 		if(state==true) {
 			var count = document.getElementById('numOfRows_'+groupParentElementId).value;
 			if(count == '') {
@@ -4525,7 +4525,7 @@ function getNoOfRows(id){
 	var searchurl = document.getElementById('search_url').value;
 	var viewid = getviewId();
 	var url = "module="+module+"&action="+module+"Ajax&file=ListViewCount&viewname="+viewid+searchurl;
-	if(module == 'Documents') {
+	if(module != undefined && module == 'Documents' && Document_Folder_View) {
 		var folderid = document.getElementById('folderid_'+id).value;
 		url = url+"&folderidstring="+folderid;
 	}
@@ -4533,7 +4533,7 @@ function getNoOfRows(id){
 			method: 'POST',
 			url: "index.php?"+url
 	}).done(function (response) {
-				if(module != 'Documents') {
+				if(module != 'Documents' || Document_Folder_View == 0) {
 					document.getElementById('numOfRows').value = response;
 					document.getElementById('count').innerHTML = response;
 					if(parseInt(document.getElementById('maxrecords').value) < parseInt(response)){

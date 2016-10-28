@@ -22,12 +22,12 @@ function UpdateAjaxSave(label, fid, fldname, fileOrFolder) {
 		return false;
 	}
 	if (fileOrFolder == 'file')
-		var url = 'action=DocumentsAjax&mode=ajax&file=Save&module=Documents&fileid=' + fid + '&fldVal=' + fldVal + '&fldname=' + fldname + '&act=ajaxEdit';
+		var url = 'action=DocumentsAjax&mode=ajax&ajax=true&file=Save&module=Documents&fileid=' + fid + '&fldVal=' + fldVal + '&fldname=' + fldname + '&act=ajaxEdit';
 	else {
 		var foldername = encodeURIComponent(fldVal);
 		foldername = foldername.replace(/^\s+/g, '').replace(/\s+$/g, '');
 		foldername = foldername.replace(/&/gi, '*amp*');
-		var url = 'action=DocumentsAjax&mode=ajax&file=SaveFolder&module=Documents&record=' + fid + '&foldername=' + fldVal + '&savemode=Save';
+		var url = 'action=DocumentsAjax&mode=ajax&ajax=true&file=SaveFolder&module=Documents&record=' + fid + '&foldername=' + fldVal + '&savemode=Save';
 	}
 	if (fldname == 'status') {
 		fldVal = document.getElementById('txtbox_'+label).options[document.getElementById('txtbox_' + label).options.selectedIndex].text;
@@ -105,7 +105,7 @@ function AddFolder() {
 	document.getElementById('status').style.display = 'block';
 	jQuery.ajax({
 			method: 'POST',
-			url: 'index.php?action=DocumentsAjax&mode=ajax&file=SaveFolder&module=Documents' + url
+			url: 'index.php?action=DocumentsAjax&mode=ajax&ajax=true&file=SaveFolder&module=Documents' + url
 	}).done(function (response) {
 			var item = response;
 			document.getElementById('status').style.display = 'none';
@@ -115,7 +115,7 @@ function AddFolder() {
 			} else if (item.indexOf('DUPLICATE_FOLDERNAME') > -1) {
 				alert(alert_arr.DUPLICATE_FOLDER_NAME);
 			} else {
-				getObj("ListViewContents").innerHTML = item;
+				getObj("ListViewContents").innerHTML = item.replace('&#&#&#&#&#&#','');
 			}
 		}
 	);
@@ -125,7 +125,7 @@ function DeleteFolderCheck(folderId) {
 	gtempfolderId = folderId;
 	jQuery.ajax({
 			method: 'POST',
-			url: "index.php?module=Documents&action=DocumentsAjax&mode=ajax&file=DeleteFolder&deletechk=true&folderid=" + folderId
+			url: "index.php?module=Documents&action=DocumentsAjax&mode=ajax&ajax=true&file=DeleteFolder&deletechk=true&folderid=" + folderId
 	}).done(function (response) {
 			var item = response;
 			if (item.indexOf("NOT_PERMITTED") > -1) {
@@ -146,14 +146,14 @@ function DeleteFolder(folderId) {
 	document.getElementById('status').style.display = "block";
 	jQuery.ajax({
 			method: 'POST',
-			url: "index.php?module=Documents&action=DocumentsAjax&mode=ajax&file=DeleteFolder&folderid=" + folderId
+			url: "index.php?module=Documents&action=DocumentsAjax&mode=ajax&ajax=true&file=DeleteFolder&folderid=" + folderId
 	}).done(function (response) {
 			var item = response;
 			document.getElementById('status').style.display = "none";
 			if (item.indexOf("FAILURE") > -1)
 				alert(alert_arr.LBL_ERROR_WHILE_DELETING_FOLDER);
 			else
-				document.getElementById('ListViewContents').innerHTML = item;
+				document.getElementById('ListViewContents').innerHTML = item.replace('&#&#&#&#&#&#','');
 		}
 	);
 }
@@ -169,7 +169,7 @@ function MoveFile(id, foldername) {
 	var folderid = '0';
 	var numOfRows = 0;
 	var activation = 'false';
-	if (obj) {
+	if (obj && Document_Folder_View) {
 		for (var i = 0; i < obj.length; i++) {
 			var folid = obj[i].value;
 			if (document.getElementById('selectedboxes_selectall' + folid).value == 'all') {
@@ -182,11 +182,38 @@ function MoveFile(id, foldername) {
 				select_options = select_options + document.getElementById('selectedboxes_selectall' + folid).value;
 			}
 		}
+	} else {
+		var select_options = document.getElementById('allselectedboxes').value;
+		var numOfRows = document.getElementById('numOfRows').value;
+		var excludedRecords = document.getElementById('excludedRecords').value;
+		if(select_options=='all') {
+			document.getElementById('idlist').value = select_options;
+			var idstring = select_options;
+			var skiprecords = excludedRecords.split(";");
+			var count = skiprecords.length;
+			if(count > 1) {
+				count = numOfRows - count + 1;
+			} else {
+				count = numOfRows;
+			}
+		} else {
+			var x = select_options.split(';');
+			var count = x.length;
+			if(count > 1) {
+				document.getElementById('idlist').value = select_options;
+				idstring = select_options;
+			} else {
+				alert(alert_arr.SELECT);
+				return false;
+			}
+			// we have to decrese the count value by 1 because when we split with semicolon we will get one extra count
+			count = count - 1;
+		}
 	}
 	var x = select_options.split(";");
 	var count = x.length;
 	numOfRows = numOfRows + count - 1;
-	if (activation == 'true') {
+	if (activation == 'true' || select_options == 'all') {
 		if (select_options == '') {
 			select_options = 'all';
 		}
@@ -238,7 +265,7 @@ function MoveFile(id, foldername) {
 							document.getElementById("lblError").innerHTML = "<table cellpadding=0 cellspacing=0 border=0 width=100%><tr><td class=small bgcolor=red><font color=white size=2><b>" + alert_arr.NOT_PERMITTED + "</b></font></td></tr></table>";
 							setTimeout(hidelblError, 3000);
 						} else
-							getObj('ListViewContents').innerHTML = item;
+							getObj('ListViewContents').innerHTML = item.replace('&#&#&#&#&#&#','');
 					}
 				);
 			} else {
@@ -257,7 +284,7 @@ function MoveFile(id, foldername) {
 function dldCntIncrease(fileid) {
 	jQuery.ajax({
 			method: 'POST',
-			url: 'index.php?action=DocumentsAjax&mode=ajax&file=SaveFile&module=Documents&file_id=' + fileid + "&act=updateDldCnt"
+			url: 'index.php?action=DocumentsAjax&mode=ajax&ajax=true&file=SaveFile&module=Documents&file_id=' + fileid + "&act=updateDldCnt"
 	}).done(function (response) {
 		}
 	);
@@ -277,7 +304,7 @@ function massDownload() {
 		var count  = Object.keys(arrayobj).length;
 		var array_val = JSON.stringify(arrayobj);
 		if (count !== 0) {
-			window.location.href = 'index.php?action=DocumentsAjax&mode=ajax&file=SaveFile&module=Documents&file_id=' + array_val + "&act=massDldCnt";
+			window.location.href = 'index.php?action=DocumentsAjax&mode=ajax&ajax=true&file=SaveFile&module=Documents&file_id=' + array_val + "&act=massDldCnt";
 		} else {
 			alert(alert_arr.SELECT);
 			return false;
@@ -288,7 +315,7 @@ function checkFileIntegrityDetailView(noteid) {
 	document.getElementById('vtbusy_integrity_info').style.display = '';
 	jQuery.ajax({
 			method: 'POST',
-			url: 'index.php?module=Documents&action=DocumentsAjax&mode=ajax&file=SaveFile&act=checkFileIntegrityDetailView&noteid=' + noteid
+			url: 'index.php?module=Documents&action=DocumentsAjax&mode=ajax&ajax=true&file=SaveFile&act=checkFileIntegrityDetailView&noteid=' + noteid
 	}).done(function (response) {
 			var item = response;
 			if (item.indexOf('file_available') > -1) {
