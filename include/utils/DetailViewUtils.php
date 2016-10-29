@@ -1758,6 +1758,16 @@ function getRelatedLists($module, $focus) {
 	return $focus_list;
 }
 
+/** This function returns whether related lists block is present for this particular module or not
+ * Param $module - module name
+ * Return true if at least one block exists, false otherwise
+ */
+function isPresentRelatedListBlock($module) {
+	global $adb;
+	$brs = $adb->pquery('select 1 from vtiger_blocks where tabid=? and isrelatedlist>0',array(getTabid($module)));
+	return ($brs and $adb->num_rows($brs)>0);
+}
+
 /** This function returns whether related lists is present for this particular module or not
  * Param $module - module name
  * Param $activity_mode - mode of activity
@@ -1904,6 +1914,14 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 				}
 			} elseif (file_exists("Smarty/templates/modules/$module/{$label}_detail.tpl")) {
 				$returndata[getTranslatedString($curBlock,$module)]=array_merge((array)$returndata[getTranslatedString($curBlock,$module)],array($label=>array()));
+			} else {
+				$brs = $adb->pquery('select isrelatedlist from vtiger_blocks where blockid=?',array($blockid));
+				if ($brs and $adb->num_rows($brs)>0) {
+					$rellist = $adb->query_result($brs, 0,'isrelatedlist');
+					if ($rellist>0) {
+						$returndata[$curBlock]=array_merge((array)$returndata[$curBlock],array($label=>array(),'relatedlist'=>$rellist));
+					}
+				}
 			}
 		}
 	}

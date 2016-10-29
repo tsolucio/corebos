@@ -295,7 +295,7 @@ function sendfile_email()
 																						<tr><td>&nbsp;</td></tr>
 																					{/if}
 
-																					{if $header neq 'Comments'}
+																					{if $header neq 'Comments' && $BLOCKS.$header.relatedlist eq 0}
 
 																						<tr class="detailview_block_header">{strip}
 																							<td colspan=4 class="dvInnerHeader">
@@ -318,7 +318,7 @@ function sendfile_email()
 																					{/if}
 																				</table>
 																				{if $header neq 'Comments'}
-																					{if $BLOCKINITIALSTATUS[$header] eq 1}
+																					{if $BLOCKINITIALSTATUS[$header] eq 1 || $BLOCKS.$header.relatedlist neq 0}
 																						<div style="width:auto;display:block;" id="tbl{$header|replace:' ':''}" >
 																						{else}
 																						<div style="width:auto;display:none;" id="tbl{$header|replace:' ':''}" >
@@ -326,6 +326,9 @@ function sendfile_email()
 																							<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small detailview_table">
 																							{if $CUSTOMBLOCKS.$header.custom}
 																								{include file=$CUSTOMBLOCKS.$header.tpl}
+																							{elseif $BLOCKS.$header.relatedlist && $IS_REL_LIST|@count > 0}
+																								{assign var='RELBINDEX' value=$BLOCKS.$header.relatedlist}
+																								{include file='RelatedListNew.tpl' RELATEDLISTS=$RELATEDLISTBLOCK.$RELBINDEX}
 																							{else}
 																								{foreach item=detailInfo from=$detail}
 																									<tr style="height:25px" class="detailview_row">

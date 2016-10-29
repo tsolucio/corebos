@@ -120,11 +120,12 @@ function getCreateCustomBlockForm(modulename,mode)
 	var blocklabel = document.getElementById('blocklabel');
 	var val = trim(blocklabel.value);
 	var blockid = document.getElementById('after_blockid').value;
+	var relblock = document.getElementById('relatedlistblock').value;
 	document.getElementById('vtbusy_info').style.display = "block";
 		jQuery.ajax({
 			method:"POST",
 			url:'index.php?module=Settings&action=SettingsAjax&file=LayoutBlockList&sub_mode=addBlock&fld_module='+modulename+'&parenttab=Settings&ajax=true&mode='+mode+'&blocklabel='+
-			encodeURIComponent(val)+'&after_blockid='+blockid
+			encodeURIComponent(val)+'&after_blockid='+blockid+'&relblock='+relblock
 		}).done(function(response) {
 				document.getElementById('vtbusy_info').style.display = "none";
 				var str = response;
