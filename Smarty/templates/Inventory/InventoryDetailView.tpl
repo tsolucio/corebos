@@ -326,7 +326,6 @@ function DeleteTag(id,recordid)
 
 										<!-- Product Details informations -->
 										{$ASSOCIATED_PRODUCTS}
-										</form>
 									</td>
 <!-- The following table is used to display the buttons -->
 								<table border=0 cellspacing=0 cellpadding=0 width=100%>
