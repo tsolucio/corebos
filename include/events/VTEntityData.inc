@@ -13,6 +13,7 @@
  */
 class VTEntityData{
 	private $isNew = false;
+	private $isDeleted = false;
 
 	/**
 	 * Get an entity data object.
@@ -144,12 +145,25 @@ class VTEntityData{
 	}
 
 	/**
-	* Check wether the obkect is new.
+	* Check whether the object is new.
 	* 
 	* @return True if the object is new, false otherwise.
 	*/
 	function isNew(){
 		return $this->isNew;
+	}
+
+	/**
+	* Check whether the object has been deleted.
+	* @return True if the object has been deleted, false otherwise.
+	*/
+	function isDeleted(){
+		return $this->isDeleted;
+	}
+	function SetDeleted($id){
+		$this->isNew=false;
+		$this->isDeleted=true;
+		$this->focus->id=$id;
 	}
 }
 

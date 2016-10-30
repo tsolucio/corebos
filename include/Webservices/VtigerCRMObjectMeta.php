@@ -412,6 +412,14 @@ class VtigerCRMObjectMeta extends EntityMeta {
 	}
 
 	function getObjectEntityName($webserviceId){
+		return $this->getObjectEntityNameWithDelete($webserviceId,0);
+	}
+
+	function getObjectEntityNameDeleted($webserviceId){
+		return $this->getObjectEntityNameWithDelete($webserviceId,1);
+	}
+
+	function getObjectEntityNameWithDelete($webserviceId,$deleted){
 		global $adb;
 
 		$idComponents = vtws_getIdComponents($webserviceId);
@@ -419,16 +427,16 @@ class VtigerCRMObjectMeta extends EntityMeta {
 
 		$seType = null;
 		if($this->objectName == 'Users'){
-			$sql = "select user_name from vtiger_users where id=? and deleted=0";
-			$result = $adb->pquery($sql , array($id));
+			$sql = "select user_name from vtiger_users where id=? and deleted=?";
+			$result = $adb->pquery($sql , array($id,$deleted));
 			if($result != null && isset($result)){
 				if($adb->num_rows($result)>0){
 					$seType = 'Users';
 				}
 			}
 		}else{
-			$sql = "select setype from vtiger_crmentity where crmid=? and deleted=0";
-			$result = $adb->pquery($sql , array($id));
+			$sql = "select setype from vtiger_crmentity where crmid=? and deleted=?";
+			$result = $adb->pquery($sql , array($id,$deleted));
 			if($result != null && isset($result)){
 				if($adb->num_rows($result)>0){
 					$seType = $adb->query_result($result,0,"setype");

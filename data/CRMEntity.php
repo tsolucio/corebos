@@ -731,13 +731,13 @@ class CRMEntity {
 	 * @param $module -- module:: Type varchar
 	 * This function retrives the information from the database and sets the value in the class columnfields array
 	 */
-	function retrieve_entity_info($record, $module) {
+	function retrieve_entity_info($record, $module, $deleted=false) {
 		global $adb, $log, $app_strings;
 		$result = Array();
 		foreach ($this->tab_name_index as $table_name => $index) {
 			$result[$table_name] = $adb->pquery("select * from $table_name where $index=?", array($record));
 			$isRecordDeleted = $adb->query_result($result["vtiger_crmentity"], 0, "deleted");
-			if ($isRecordDeleted !== 0 && $isRecordDeleted !== '0') {
+			if ($isRecordDeleted !== 0 && $isRecordDeleted !== '0' && !$deleted) {
 				die("<br><br><center>" . $app_strings['LBL_RECORD_DELETE'] . " $module: $record <a href='javascript:window.history.back()'>" . $app_strings['LBL_GO_BACK'] . ".</a></center>");
 			}
 		}
@@ -1161,7 +1161,8 @@ class CRMEntity {
 		$this->db->pquery($sql_recentviewed, array($current_user->id, $id));
 
 		if ($em) {
-		$em->triggerEvent("vtiger.entity.afterdelete", $entityData);
+			$entityData->SetDeleted($id);
+			$em->triggerEvent("vtiger.entity.afterdelete", $entityData);
 		}
 	}
 

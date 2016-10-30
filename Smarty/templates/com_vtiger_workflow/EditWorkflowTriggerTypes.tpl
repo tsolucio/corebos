@@ -56,6 +56,9 @@
 	<tr><td><input type="radio" name="execution_condition" value="ON_MODIFY" onclick="onschedule_preparescreen(this);"
 		{if $workflow->executionConditionAsLabel() eq 'ON_MODIFY'}checked{/if}/></td>
 		<td>{$MOD.LBL_ON_MODIFY}.</td></tr>
+	<tr><td><input type="radio" name="execution_condition" value="ON_DELETE" onclick="onschedule_preparescreen(this);"
+		{if $workflow->executionConditionAsLabel() eq 'ON_DELETE'}checked{/if}/></td>
+		<td>{$MOD.LBL_ON_DELETE}.</td></tr>
 	<tr><td valign="top"><input type="radio" name="execution_condition" value="ON_SCHEDULE" onclick="onschedule_preparescreen(this);"
 		{if $workflow->executionConditionAsLabel() eq 'ON_SCHEDULE'}checked{/if} {if $ScheduledWorkflowsCount>$MaxAllowedScheduledWorkflows}disabled{/if}/></td>
 		<td>{$MOD.LBL_ON_SCHEDULE}.

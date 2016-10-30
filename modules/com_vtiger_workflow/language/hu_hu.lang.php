@@ -55,6 +55,7 @@ $mod_strings = array(
 	'LBL_RECORD_ACCESS_CONTROL' => 'Record Access Control',
 	'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL' => 'Új Feltétel csoport',
 	'VTUpdateFieldsTask' => 'Mezők frissítése',
+	'LBL_ON_DELETE'=>'On Delete',
 	'LBL_VALIDATION_DUPLICATE_FIELDNAMES' => 'Ugyanazt a mezőt egynél többször választottad.',
 	'LBL_VALIDATION_INVALID_FIELD_VALUES' => 'Érvénytelen mező érték',
 	'LBL_CREATE_ENTITY_NOTE_ORDER_MATTERS' => 'Megjegyzés: A kifejezéseket abban a sorrendben értékeljük ki, ahogy a mezők értéket kapnak.											Tehát légy biztos abban, hogy a mezők már azelőtt kaptak értéket, mielőtt egy kifejezésben használnád őket.',

@@ -20,7 +20,7 @@
 		static $ONCE = 2;
 		static $ON_EVERY_SAVE = 3;
 		static $ON_MODIFY = 4;
-		static $ON_DELETE = 5; // Not supported yet
+		static $ON_DELETE = 5;
 		static $ON_SCHEDULE=6;
 		static $MANUAL = 7;
 		static $RECORD_ACCESS_CONTROL = 8;

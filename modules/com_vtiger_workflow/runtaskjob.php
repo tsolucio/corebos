@@ -50,7 +50,7 @@ require_once('VTWorkflowUtils.php');
 		foreach($readyTasks as $pair){
 			list($taskId, $entityId) = $pair;
 			$task = $tm->retrieveTask($taskId);
-			$entity = new VTWorkflowEntity($adminUser, $entityId);
+			$entity = new VTWorkflowEntity($adminUser, $entityId, !isRecordExists($entityId));
 			$task->doTask($entity);
 		}
 	}

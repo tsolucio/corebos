@@ -78,6 +78,7 @@ $mod_strings = array(
 'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL'=>'Nieuwe Conditiegroep',
 
 'VTUpdateFieldsTask' => 'Bijwerken velden',
+'LBL_ON_DELETE'=>'On Delete',
 
 'LBL_VALIDATION_DUPLICATE_FIELDNAMES' => 'Zelfde veld is meer dan eens gekozen.',
 'LBL_VALIDATION_INVALID_FIELD_VALUES' => 'Ongeldige veldwaarden',

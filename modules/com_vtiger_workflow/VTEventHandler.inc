@@ -77,6 +77,10 @@ class VTWorkflowEventHandler extends VTEventHandler {
 						$doEvaluate = !($isNew);
 						break;
 					}
+				case VTWorkflowManager::$ON_DELETE: {
+						$doEvaluate = ($eventName=='vtiger.entity.beforedelete');
+						break;
+					}
 				case VTWorkflowManager::$MANUAL:
 				case VTWorkflowManager::$ON_SCHEDULE:
 				case VTWorkflowManager::$RECORD_ACCESS_CONTROL:
