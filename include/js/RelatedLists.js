@@ -172,3 +172,4 @@ function showHideStatus(sId,anchorImgId,sImagePath)
 		}
 	}
 }
+} // cbRelatedListsLoaded

@@ -17,6 +17,11 @@
 				<table class="listTable" border="0" cellpadding="3" cellspacing="0" width="100%">
 					{foreach item=entries key=id from=$CFENTRIES name=outer}
 						{if $entries.blockid ne $RELPRODUCTSECTIONID && $entries.blocklabel neq '' }
+							{if $entries.blockid eq $COMMENTSECTIONID || $entries.blockid eq $SOLUTIONBLOCKID || $entries.isrelatedlist > 0}
+								{assign var='showactionbuttons' value=false}
+							{else}
+								{assign var='showactionbuttons' value=true}
+							{/if}
 							{if $smarty.foreach.outer.first neq true}
 							<tr><td><img src="{'blank.gif'|@vtiger_imageurl:$THEME}" style="width:16px;height:16px;" border="0" />&nbsp;&nbsp;</td></tr>
 							{/if}
@@ -32,7 +37,7 @@
 									{if $entries.iscustom == 1 }
 									<img style="cursor:pointer;" onClick=" deleteCustomBlock('{$MODULE}','{$entries.blockid}','{$entries.no}')" src="{'delete.gif'|@vtiger_imageurl:$THEME}" border="0" alt="{$APP.LBL_DELETE}" title="{$APP.LBL_DELETE}"/>&nbsp;&nbsp;
 									{/if}
-									{if $entries.blockid neq $COMMENTSECTIONID && $entries.blockid neq $SOLUTIONBLOCKID}
+									{if $showactionbuttons}
 									<img src="{'hidden_fields.png'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;" onclick="fnvshobj(this,'hiddenfields_{$entries.blockid}');" alt="{$MOD.HIDDEN_FIELDS}" title="{$MOD.HIDDEN_FIELDS}"/>&nbsp;&nbsp;
 									{/if}
 										<div id = "hiddenfields_{$entries.blockid}" style="display:none; position:absolute; width:300px;" class="layerPopup">
@@ -89,7 +94,7 @@
 												</table>
 											</div>
 										</div>
-									{if $entries.hascustomtable && $entries.blockid neq $COMMENTSECTIONID && $entries.blockid neq $SOLUTIONBLOCKID }
+									{if $entries.hascustomtable && $showactionbuttons}
 										<img src="{'plus_layout.gif'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer;" onclick="fnvshobj(this,'addfield_{$entries.blockid}'); " alt="{$MOD.LBL_ADD_CUSTOMFIELD}" title="{$MOD.LBL_ADD_CUSTOMFIELD}"/>&nbsp;&nbsp;
 									{/if}
 											<!-- for adding customfield -->
@@ -189,7 +194,7 @@
 													</table>
 												</div>
 									<!-- end custom field -->
-									{if $entries.blockid neq $COMMENTSECTIONID && $entries.blockid neq $SOLUTIONBLOCKID}
+									{if $showactionbuttons}
 										<img src="{'moveinto.png'|@vtiger_imageurl:$THEME}" border="0" style="cursor:pointer; height:16px; width:16px" onClick="fnvshobj(this,'movefields_{$entries.blockid}');" alt="{$MOD.LBL_MOVE_FIELDS}" title="{$MOD.LBL_MOVE_FIELDS}"/>&nbsp;&nbsp;
 									{/if}
 									<div id = "movefields_{$entries.blockid}" style="display:none; position:absolute; width:300px;" class="layerPopup">
@@ -497,8 +502,24 @@
 									</table>
 									<table border=0 cellspacing=0 cellpadding=5 width=100% >
 										<tr>
+										<td colspan=2><hr width="100%"></td>
+										</tr>
+										<tr>
+										<td class="dataLabel" nowrap="nowrap" align="right" width="30%"><b>{'QuickRelatedList'|@gettranslatedString:$MODULE}:</b></td>
+										<td align="left" width="70%">
+											<select name='relatedlistblock' id='relatedlistblock' onchange="getElementById('blocklabel').value=this.value;">
+												<option value="no" selected>{'LBL_NO'|@gettranslatedString:$MODULE}</option>
+												{foreach key=rlmname item=rllabel from=$NotBlockRelatedModules}
+												<option value="{$rlmname}">{$rlmname|@gettranslatedString:$rlmname}</option>
+												{/foreach}
+											</select>
+										</td>
+										</tr>
+									</table>
+									<table border=0 cellspacing=0 cellpadding=5 width=100% >
+										<tr>
 											<td align="center">
-												<input type="button" name="save" value= "{$APP.LBL_SAVE_BUTTON_LABEL}" class="crmButton small save" onclick=" getCreateCustomBlockForm('{$MODULE}','add') "/>&nbsp;
+												<input type="button" name="save" value= "{$APP.LBL_SAVE_BUTTON_LABEL}" class="crmButton small save" onclick="getCreateCustomBlockForm('{$MODULE}','add');"/>&nbsp;
 												<input type="button" name="cancel" value="{$APP.LBL_CANCEL_BUTTON_LABEL}" class="crmButton small cancel" onclick= "fninvsh('addblock');" />
 											</td>
 										</tr>

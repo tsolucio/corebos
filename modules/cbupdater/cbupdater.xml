@@ -878,4 +878,11 @@
 	<classname>WorkflowOnDelete</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Is Related List Block</description>
+	<filename>build/changeSets/addIsRelatedListBlock.php</filename>
+	<classname>addIsRelatedListBlock</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
