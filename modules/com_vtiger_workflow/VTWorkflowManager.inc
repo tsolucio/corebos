@@ -426,6 +426,7 @@
 
 			foreach($tasks as $task){
 				if(is_object($task) and $task->active) {
+					$logbg->debug($task->summary);
 					$trigger = $task->trigger;
 					if($trigger != null){
 						$delay = strtotime($data[$trigger['field']])+$trigger['days']*86400;
