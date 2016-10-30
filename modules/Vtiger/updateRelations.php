@@ -18,7 +18,7 @@ $forCRMRecord = vtlib_purify($_REQUEST['parentid']);
 $mode = $_REQUEST['mode'];
 if(isset($override_action))
 	$action = $override_action;
-elseif($singlepane_view == 'true')
+elseif($singlepane_view == 'true' or isPresentRelatedListBlockWithModule($currentModule,$destinationModule))
 	$action = 'DetailView';
 else
 	$action = 'CallRelatedList';

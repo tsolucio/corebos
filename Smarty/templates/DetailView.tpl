@@ -253,15 +253,12 @@ function sendfile_email()
 											<td align=left>
 												<!-- content cache -->
 
-
 												<table border=0 cellspacing=0 cellpadding=0 width=100%>
 													<tr valign=top>
 														<td style="padding:5px">
 															<!-- Command Buttons -->
 															<table border=0 cellspacing=0 cellpadding=0 width=100%>
-																<!-- NOTE: We should avoid form-inside-form condition, which could happen when
-																   Singlepane view is enabled. -->
-																<form action="index.php" method="post" name="DetailView" id="form">
+																<form action="index.php" method="post" name="DetailView" id="formDetailView">
 																	{include file='DetailViewHidden.tpl'}
 																	{foreach key=header item=detail from=$BLOCKS name=BLOCKS}
 																		<tr><td style="padding:5px">
@@ -328,7 +325,7 @@ function sendfile_email()
 																								{include file=$CUSTOMBLOCKS.$header.tpl}
 																							{elseif $BLOCKS.$header.relatedlist && $IS_REL_LIST|@count > 0}
 																								{assign var='RELBINDEX' value=$BLOCKS.$header.relatedlist}
-																								{include file='RelatedListNew.tpl' RELATEDLISTS=$RELATEDLISTBLOCK.$RELBINDEX}
+																								{include file='RelatedListNew.tpl' RELATEDLISTS=$RELATEDLISTBLOCK.$RELBINDEX RELLISTID=$RELBINDEX}
 																							{else}
 																								{foreach item=detailInfo from=$detail}
 																									<tr style="height:25px" class="detailview_row">
@@ -404,9 +401,6 @@ function sendfile_email()
 																	<tr>
 																		{$ASSOCIATED_PRODUCTS}
 																	</tr>
-
-																</form>
-																<!-- End the form related to detail view -->
 
 																{if $SinglePane_View eq 'true' && $IS_REL_LIST|@count > 0}
 																	{include file= 'RelatedListNew.tpl'}

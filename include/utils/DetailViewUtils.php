@@ -1768,6 +1768,31 @@ function isPresentRelatedListBlock($module) {
 	return ($brs and $adb->num_rows($brs)>0);
 }
 
+/** This function returns whether a related lists block is present for this particular module with another or not
+ * Param $originModule - origin module name
+ * Param $relatedModule - related module name
+ * Return true if related list block exists between origin and related modules, false otherwise
+ */
+function isPresentRelatedListBlockWithModule($originModule,$relatedModule) {
+	global $adb;
+	$brs = $adb->pquery('select 1
+		from vtiger_blocks
+		INNER JOIN vtiger_relatedlists ON vtiger_blocks.isrelatedlist=vtiger_relatedlists.relation_id
+		where vtiger_blocks.tabid=? and vtiger_relatedlists.related_tabid=?',
+		array(getTabid($module),getTabid($relatedModule)));
+	return ($brs and $adb->num_rows($brs)>0);
+}
+
+/** This function returns whether related lists block is present for this particular module or not
+ * Param $module - module name
+ * Return true if at least one block exists, false otherwise
+ */
+function isPresentRelatedListBlock($module) {
+	global $adb;
+	$brs = $adb->pquery('select 1 from vtiger_blocks where tabid=? and isrelatedlist>0',array(getTabid($module)));
+	return ($brs and $adb->num_rows($brs)>0);
+}
+
 /** This function returns whether related lists is present for this particular module or not
  * Param $module - module name
  * Param $activity_mode - mode of activity
