@@ -4440,7 +4440,21 @@ function getMailFields($tabid){
  */
 function isRecordExists($recordId) {
 	global $adb;
-	$query = "SELECT crmid FROM vtiger_crmentity where crmid=? AND deleted=0";
+	$users = $groups = false;
+	if (strpos($recordId, 'x')) {
+		list($moduleWS,$recordId) = explode('x', $recordId);
+		$userWS = vtws_getEntityId('Users');
+		$users = ($userWS==$moduleWS);
+		$groupWS = vtws_getEntityId('Groups');
+		$groups = ($groupWS==$moduleWS);
+	}
+	if ($users) {
+		$query = 'SELECT id FROM vtiger_users where id=? AND deleted=0';
+	} elseif ($groups) {
+		$query = 'SELECT groupid FROM vtiger_groups where groupid=?';
+	} else {
+		$query = 'SELECT crmid FROM vtiger_crmentity where crmid=? AND deleted=0';
+	}
 	$result = $adb->pquery($query, array($recordId));
 	if ($adb->num_rows($result)) {
 		return true;
