@@ -373,5 +373,7 @@ var alert_arr = {
 	'MoveUp' : 'Move Up',
 	'MoveDown' : 'Move Down',
 	'Products' : 'Products',
-	'Services' : 'Services'
+	'Services' : 'Services',
+	'LBL_Hide' : 'Cacher',
+	'LBL_Show' : 'Montrer'
 };

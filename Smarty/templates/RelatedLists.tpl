@@ -10,37 +10,8 @@
 -->*}
 <script type="text/javascript" src="modules/PriceBooks/PriceBooks.js"></script>
 <script type="text/javascript" src="include/js/ListView.js"></script>
-{literal}
-<script>
-
-function editProductListPrice(id,pbid,price) {
-		document.getElementById("status").style.display="inline";
-		jQuery.ajax({
-			method: 'POST',
-			url: 'index.php?action=ProductsAjax&file=EditListPrice&return_action=CallRelatedList&return_module=PriceBooks&module=Products&record='+id+'&pricebook_id='+pbid+'&listprice='+price,
-		}).done(function (response) {
-					document.getElementById("status").style.display="none";
-					document.getElementById("editlistprice").innerHTML= response;
-				}
-		);
-}
-
-function gotoUpdateListPrice(id,pbid,proid) {
-		document.getElementById("status").style.display="inline";
-		document.getElementById("roleLay").style.display = "none";
-		var listprice=document.getElementById("list_price").value;
-				jQuery.ajax({
-						method: 'POST',
-						url: 'index.php?module=Products&action=ProductsAjax&file=UpdateListPrice&ajax=true&return_action=CallRelatedList&return_module=PriceBooks&record='+id+'&pricebook_id='+pbid+'&product_id='+proid+'&list_price='+listprice,
-				}).done(function (response) {
-							document.getElementById("status").style.display="none";
-							document.getElementById("RLContents").innerHTML=response;
-						}
-				);
-}
-{/literal}
-</script>
-	{include file='Buttons_List.tpl'}
+<script type="text/javascript" src="include/js/RelatedLists.js"></script>
+{include file='Buttons_List.tpl'}
 <!-- Contents -->
 <div id="editlistprice" style="position:absolute;width:300px;"></div>
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
@@ -134,10 +105,3 @@ function gotoUpdateListPrice(id,pbid,proid) {
 {if $MODULE eq 'Leads' or $MODULE eq 'Contacts' or $MODULE eq 'Accounts' or $MODULE eq 'Campaigns' or $MODULE eq 'Vendors' or $MODULE eq 'Project' or $MODULE eq 'Potentials' or $MODULE eq 'ProjectTask' or $MODULE eq 'HelpDesk'}
 <form name="SendMail" onsubmit="VtigerJS_DialogBox.block();"><div id="sendmail_cont" style="z-index:100001;position:absolute;width:300px;"></div></form>
 {/if}
-
-<script>
-function OpenWindow(url)
-{ldelim}
-	openPopUp('xAttachFile',this,url,'attachfileWin',380,375,'menubar=no,toolbar=no,location=no,status=no,resizable=no');
-{rdelim}
-</script>
