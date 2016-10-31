@@ -15,16 +15,9 @@ if($current_user->is_admin != 'on')
 }
 
 //To get the Current installed MySQL path
-include("connection.php");
 $vtiger_home = $_ENV["VTIGER_HOME"];
-$mysqldir = $mysql_dir;
 
-if(is_file($mysqldir."/bin/mysqldump"))
-{
-	$installed_mysql_path = $mysqldir."/bin/mysqldump";
-	$getmysqlpath = 0;
-}
-elseif(is_file($vtiger_home."/mysql/bin/mysqldump"))
+if(is_file($vtiger_home."/mysql/bin/mysqldump"))
 {
 	$installed_mysql_path = $vtiger_home."/mysql/bin/mysqldump";
 	$getmysqlpath = 0;
