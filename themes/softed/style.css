@@ -1896,6 +1896,7 @@ ul {
 	color:#fff;
 	font-weight:bold;
 	background-image: url(images/buttongreen.png);
+	cursor: pointer;
 }
 
 .cancel, .ajax_cancelsave_detailview {
