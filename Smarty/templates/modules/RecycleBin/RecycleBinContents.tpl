@@ -73,11 +73,11 @@
 	</tr>
 	{foreach key=entity_id item=lvdata from=$lvEntries}
 	<tr bgcolor=white onMouseOver="this.className='lvtColDataHover'" onMouseOut="this.className='lvtColData'" id="row_{$entity_id}">
-        <td  width=2%><input type="checkbox" name="selected_id"  onclick='check_object(this)' value="{$entity_id}" id="{$entity_id}"></td>
+        <td  width=2%>{if $entity_id>0}<input type="checkbox" name="selected_id"  onclick='check_object(this)' value="{$entity_id}" id="{$entity_id}">{else}<span class="listview_row_sigma">&Sigma;</span>{/if}</td>
 		{foreach item=data from=$lvdata}
         <td >{$data}</td>
 		{/foreach}
-		<td class="samll"> <a href="javascript:;" onclick='restore({$entity_id},"{$SELECTED_MODULE}");'>{$MOD.LNK_RESTORE}</a></td>
+		<td class="samll">{if $entity_id>0}<a href="javascript:;" onclick='restore({$entity_id},"{$SELECTED_MODULE}");'>{$MOD.LNK_RESTORE}</a>{/if}</td>
 	</tr>
 	{foreachelse}
 	<tr>
