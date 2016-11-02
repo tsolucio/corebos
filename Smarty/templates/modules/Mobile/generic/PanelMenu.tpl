@@ -19,7 +19,7 @@
 	<div data-role="collapsible-set"   data-mini="true">
 		<ul data-role="listview" data-theme="c" >
 		{foreach item=_MODULELIST from=$_MODULES}
-			<li data-icon="false"><a href="index.php?_operation=listModuleRecords&module={$_MODULELIST->name()}" >{$_MODULELIST->label()}</a></li>
+			<li data-icon="false"><a href="index.php?_operation=listModuleRecords&module={$_MODULELIST->name()}" target="_self" >{$_MODULELIST->label()}</a></li>
 		{/foreach}
 		</ul>
 	</div>
