@@ -33,7 +33,7 @@
 <table>
 <name>vtiger_globalvariable</name>
 <sql><![CDATA[CREATE TABLE `vtiger_globalvariable` (
-  `globalvariableid` int(11) default NULL,
+  `globalvariableid` int(11) NOT NULL,
   `gvname` varchar(150) NOT NULL, 
   `globalno` varchar(150),
   `default_check` varchar(3),
