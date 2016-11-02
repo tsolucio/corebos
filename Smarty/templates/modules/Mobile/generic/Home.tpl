@@ -12,7 +12,7 @@
 <body>
 <div data-role="page" data-theme="b" id="home_page">
 	<div data-role="header" data-theme="b" data-position="fixed" class="ui-grid-b ui-responsive">
-		<a href="#mypanel" data-mini='true' data-role='button' class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-grid ui-corner-all ui-icon-bars"></a>
+		<a href="#panelmenu" data-mini='true' data-role='button' class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-grid ui-corner-all ui-icon-bars"></a>
 		<h4>MOBILE</h4>
 	</div><!-- /header -->
 	{include file="modules/Mobile/generic/PanelMenu.tpl"}

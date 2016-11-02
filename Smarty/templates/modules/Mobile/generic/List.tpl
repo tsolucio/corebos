@@ -154,7 +154,7 @@
 					</select>
 				</div>
 				<div style="position:relative; top:-48px;right:5px;">
-					<a href="#mypanel" data-mini='true' data-role='button' class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-grid ui-corner-all ui-icon-bars"></a>
+					<a href="#panelmenu" data-mini='true' data-role='button' class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-grid ui-corner-all ui-icon-bars"></a>
 				</div>
 			</div>
 		{/if}
@@ -171,7 +171,7 @@
 		<h4>{$_MODULE->label()}</h4>
 		{if $_MODULE->name() neq 'Calendar'}
 			<div style="position: absolute;top: 0;right: 35px;text-align: right;">
-				<a href="#mypanel" data-mini='true' data-role='button' class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-grid ui-corner-all ui-icon-bars"></a>
+				<a href="#panelmenu" data-mini='true' data-role='button' class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-grid ui-corner-all ui-icon-bars"></a>
 			</div>
 		{/if} 
 	</div>

@@ -33,6 +33,10 @@
 		<a href="?_operation=edit&module={$_MODULE->name()}&record={$_RECORD->id()}" data-mini='true' data-role="button" data-prefetch>{'LBL_EDIT'|@getTranslatedString:'Mobile'}</a>
 		{/if}
 		<a data-role="button" data-inline="true" href="index.php?_operation=listModuleRecords&module={$_MODULE->name()}" data-mini='true' rel=external>{'LBL_LISTVIEW'|@getTranslatedString:'Mobile'}</a>
+
+		</div>
+		<div style="position: absolute;top: 0;right: 35px;text-align: right;">
+			<a href="#panelmenu" data-mini='true' data-role='button' class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-grid ui-corner-all ui-icon-bars"></a>
 		</div>
 	</div>
 	{else}
@@ -42,6 +46,9 @@
 				<a href="?_operation=getrelatedlists&module={$_MODULE->name()}&record={$_RECORD->id()}" data-role="button"  data-prefetch>{'LBL_RELATED_LISTS'|@getTranslatedString:'Mobile'}</a>
 				<a href="index.php?_operation=listModuleRecords&module={$_MODULE->name()}"  data-role="button"   rel=external>{'LBL_LISTVIEW'|@getTranslatedString:'Mobile'}</a>
 			
+		</div>
+		<div style="position: absolute;top: 0;right: 35px;text-align: right;">
+			<a href="#panelmenu" data-mini='true' data-role='button' class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-grid ui-corner-all ui-icon-bars"></a>
 		</div>
 	</div>
 	{/if}
@@ -142,6 +149,7 @@
 		<a href="?_operation=deleteConfirmation&module={$_MODULE->name()}&record={$_RECORD->id()}&&lang={$LANGUAGE}" data-mini='true' data-role='button' data-inline='true' data-rel="dialog" data-transition="turn" data-prefetch>{'LBL_DELETE'|@getTranslatedString:'Mobile'}</a>
 	</div> 
 	{if $_MODULE->name() neq 'Accounts'}
-	{/if}	
+	{/if}
+	{include file="modules/Mobile/generic/PanelMenu.tpl"}
 </div>
 </body>

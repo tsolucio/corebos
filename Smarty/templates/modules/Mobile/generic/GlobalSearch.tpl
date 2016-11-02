@@ -14,6 +14,9 @@
 	<div data-role="header"  data-theme="b">
 		<a data-role="button" data-inline="true" href="index.php?_operation=logout" target="_self">Logout</a>
 		<h4>{$MOD.LBL_SEARCH_RESULTS}</h4>
+		<div style="position: absolute;top: 0;right: 35px;text-align: right;">
+			<a href="#panelmenu" data-mini='true' data-role='button' class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-grid ui-corner-all ui-icon-bars"></a>
+		</div>
 	</div>
 	<!-- /header -->
 	{foreach item=module key=modulename from=$LISTENTITY}
@@ -29,7 +32,7 @@
 			</ul>
 		</div>
 	{/foreach}
-	
+	{include file="modules/Mobile/generic/PanelMenu.tpl"}
 </div>		
 
 </body>					
