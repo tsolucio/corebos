@@ -52,7 +52,7 @@ function vtws_findByPortalUserName($username) {
 }
 
 function vtws_sendRecoverPassword($username) {
-	global $adb,$log,$current_user, $url_code;
+	global $adb,$log,$current_user;
 	$log->debug("Entering function vtws_sendRecoverPassword");
 
 	$ctors=$adb->pquery('select contactid,email,user_password

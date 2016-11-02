@@ -8,7 +8,6 @@
  * All Rights Reserved.
  ********************************************************************************/
 *}
-
 <form>
 <table border=0 cellspacing=1 cellpadding=0 width=100%>
 <tr><td>
@@ -34,7 +33,7 @@
           	</td>
 				<!-- Record Counts -->
 			<td style="padding-right:20px" class="small" nowrap>{$RECORD_COUNTS}</td>
-			<!-- Page Navigation -->		 			 	
+			<!-- Page Navigation -->
 			<td nowrap width="30%" align="center">
 				<table border=0 cellspacing=0 cellpadding=0 class="small">
 					<tr>{$NAVIGATION}</tr>
@@ -56,8 +55,7 @@
 		</tr>
 	</table>
 	<!-- List View's Buttons and Filters ends -->
-			
-	
+
 	<table border=0 cellspacing=1 cellpadding=3 width=100% class="lvt small">
 	<!-- Table Headers -->
 	<tr>
@@ -87,10 +85,10 @@
 			<table width=100% height="400px" align="center">
 			<tr>
 				<td align="center">
-					<div style="border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255);width:90%;">	
+					<div style="border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255);width:90%;">
 					<table cellspacing=0 cellpadding=5 width=98%  border=0 align=center>
 						<tr>
-							<td rowspan="2" width="30%" align='right'><img src="{'empty.jpg'|@vtiger_imageurl:$THEME}" height="60"></td>	
+							<td rowspan="2" width="30%" align='right'><img src="{'empty.jpg'|@vtiger_imageurl:$THEME}" height="60"></td>
 							<td style="border-bottom: 1 px solid rgb(204, 204, 204);" nowrap="nowrap" width="75%"><span class="genHeaderSmall">{$MOD.LBL_EMPTY_MODULE} {$SELECTED_MODULE|@getTranslatedString:$SELECTED_MODULE}</td>
 						</tr>
 					</table>
@@ -128,7 +126,7 @@
 			<td width=100% align="right">&nbsp;</td>
 		</tr>
 	</table>
-</td></tr>		
+</td></tr>
 <!--tr><td>
 		<br>
 		<table width=100% border=0 cellspacing=0 cellpadding=0>
@@ -137,18 +135,13 @@
 			<tr><td class="small"><font size=5 color="blue">*</font></td><td class="small">Will be automatically restored when the record is restored.</td></tr>
 		</table>
 	</td></tr>
-
 	</table>
 </td>
 <td>
-
 </td>
 </tr-->
    </table>
-
-
 </div>
-
 
 {if $smarty.request.mode eq 'ajax'}
 	<div id="search_ajax" style="display:none;">
