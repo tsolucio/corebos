@@ -14,6 +14,7 @@ include_once dirname(__FILE__) . '/models/SearchFilter.php';
 
 class Mobile_UI_ListModuleRecords extends Mobile_WS_ListModuleRecords {
 	var $current_language;
+
 	function cachedModule($moduleName) {
 		$modules = $this->sessionGet('_MODULES'); // Should be available post login
 		foreach($modules as $module) {
@@ -122,7 +123,7 @@ class Mobile_UI_ListModuleRecords extends Mobile_WS_ListModuleRecords {
 			if($viewinfo['viewname'] == 'All' || $viewinfo['viewname'] == '' ) {
 				$viewer->assign('_ALL', 'ALL');
 			}
-			global $current_user,$adb;
+			global $current_user,$adb,$displayed_modules;
 			$current_user = $this->getActiveUser();	
 			$viewer->assign('_MODULE', $this->cachedModule($wsResponseResult['module']) );
 			$viewer->assign('_MODE', $request->get('mode'));
@@ -135,6 +136,29 @@ class Mobile_UI_ListModuleRecords extends Mobile_WS_ListModuleRecords {
 			$viewer->assign('_VIEW', $viewid);
 			$viewer->assign('_VIEWNAME', $calendarview_selected);
 			$viewer->assign('CALENDARSELECT', $config_settings ['compactcalendar']);
+
+			//Get PanelMenu data
+			$modules = $this->sessionGet('_MODULES');
+			//remove Events from module list display
+			function filter_by_value ($array, $value){
+				if(is_array($array) && count($array)>0) {
+					foreach(array_keys($array) as $key){
+						$temp[$key] = $array[$key]->name();
+						if ($temp[$key] == $value){
+							$newarray[$key] = $array[$key]->name();
+						}
+					}
+				}
+				return $newarray;
+			}
+			$eventarray = filter_by_value($modules, 'Events');
+			$eventkey = array_keys($eventarray);
+			unset($modules[$eventkey[0]]);
+
+			$viewer->assign('_MODULES', $modules);
+			//reserved for future use: list modules for global search
+			$viewer->assign('SEARCHIN', implode(",", $displayed_modules));
+
 			$response = $viewer->process('generic/List.tpl');
 		}
 		return $response;
