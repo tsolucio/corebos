@@ -42,6 +42,23 @@ if($isduplicate == 'true') {
 	$focus->id = '';
 	$focus->mode = '';
 }
+// MajorLabel Addition: add products when converting from a salesorder
+if ($_REQUEST['return_module'] == 'SalesOrder' && $_REQUEST['salesorderid'] != '' && $_REQUEST['createmode'] == 'link') {
+	// Created from a sales order
+	require_once('modules/SalesOrder/SalesOrder.php');
+
+	$so_focus = new SalesOrder();
+	$so_focus->id = $_REQUEST['salesorderid'];
+	$so_focus->retrieve_entity_info($_REQUEST['salesorderid'], 'SalesOrder');
+
+	$associated_prod = getAssociatedProducts('SalesOrder', $so_focus);
+	$txtTax = (($so_focus->column_fields['txtTax'] != '') ? $so_focus->column_fields['txtTax'] : '0.000');
+	$txtAdj = (($so_focus->column_fields['txtAdjustment'] != '') ? $so_focus->column_fields['txtAdjustment'] : '0.000');	
+	$smarty->assign("ASSOCIATEDPRODUCTS", $associated_prod);
+	$smarty->assign("MODE", $so_focus->mode);
+	$smarty->assign("AVAILABLE_PRODUCTS", 'true');
+}
+// End MajorLabel addition to get products when coming from a salesorder
 $focus->preEditCheck($_REQUEST,$smarty);
 if (!empty($_REQUEST['save_error']) and $_REQUEST['save_error'] == "true") {
 	if (!empty($_REQUEST['encode_val'])) {
