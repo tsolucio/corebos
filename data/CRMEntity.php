@@ -830,6 +830,16 @@ class CRMEntity {
 		return array($saveerror,$errormessage,$error_action,$returnvalues);
 	}
 
+	/* Validate record trying to be deleted.
+	 * @return array
+	 *   delerror: true if error false if not
+	 *   errormessage: message to return to user if error, empty otherwise
+	 */
+	function preDeleteCheck() {
+		list($void,$delerror,$errormessage) = cbEventHandler::do_filter('corebos.filter.preDeleteCheck', array($this,false,''));
+		return array($delerror,$errormessage);
+	}
+
 	/* Check launched when entering Edit View, called after creating object and loading variables. Will be empty on create
 	 * @param array $_REQUEST input values. Note: column_fields array is already loaded
 	 * @param object smarty template object in order to load variables for output

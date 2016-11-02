@@ -25,6 +25,10 @@ if($record != '') {
 	$focus->name=$focus->column_fields[$focus->list_link_field];
 }
 if($isduplicate == 'true') $focus->id = '';
+$errormessageclass = isset($_REQUEST['error_msgclass']) ? vtlib_purify($_REQUEST['error_msgclass']) : '';
+$errormessage = isset($_REQUEST['error_msg']) ? vtlib_purify($_REQUEST['error_msg']) : '';
+$smarty->assign('ERROR_MESSAGE_CLASS', $errormessageclass);
+$smarty->assign('ERROR_MESSAGE', $errormessage);
 $focus->preViewCheck($_REQUEST, $smarty);
 
 // Identify this module as custom module.

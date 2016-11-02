@@ -4214,11 +4214,16 @@ function DeleteEntity($module,$return_module,$focus,$record,$return_id) {
 		if ($module != $return_module && !empty($return_module) && !empty($return_id)) {
 			$focus->unlinkRelationship($record, $return_module, $return_id);
 			$focus->trackUnLinkedInfo($return_module, $return_id, $module, $record);
+			$log->debug('Exiting DeleteEntity method ...');
 		} else {
-			$focus->trash($module, $record);
+			list($delerror,$errormessage) = $focus->preDeleteCheck();
+			if (!$delerror) {
+				$focus->trash($module, $record);
+			}
+			$log->debug('Exiting DeleteEntity method ...');
+			return array($delerror,$errormessage);
 		}
 	}
-	$log->debug("Exiting DeleteEntity method ...");
 }
 
 /**
