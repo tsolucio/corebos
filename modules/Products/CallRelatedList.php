@@ -8,9 +8,9 @@
  * All Rights Reserved.
  ************************************************************************************/
 require_once('Smarty_setup.php');
-require_once('user_privileges/default_module_view.php');
+require('user_privileges/default_module_view.php');
 
-global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $singlepane_view;
+global $mod_strings, $app_strings, $currentModule, $current_user, $theme;
 
 $category = getParentTab();
 $action = vtlib_purify($_REQUEST['action']);

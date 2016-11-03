@@ -9,7 +9,7 @@
  ************************************************************************************/
 require_once('data/CRMEntity.php');
 require_once('data/Tracker.php');
-require_once('user_privileges/default_module_view.php');
+require('user_privileges/default_module_view.php');
 
 class HelpDesk extends CRMEntity {
 	var $db, $log; // Used in class functions of CRMEntity

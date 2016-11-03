@@ -10,7 +10,7 @@
 require_once('data/CRMEntity.php');
 require_once('data/Tracker.php');
 require_once('include/RelatedListView.php');
-require_once('user_privileges/default_module_view.php');
+require('user_privileges/default_module_view.php');
 require_once('modules/InventoryDetails/InventoryDetails.php');
 
 class Quotes extends CRMEntity {

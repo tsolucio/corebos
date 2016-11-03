@@ -12,7 +12,7 @@ require_once('include/logging.php');
 require_once('include/utils/utils.php');
 require_once('modules/Contacts/Contacts.php');
 require_once('modules/Leads/Leads.php');
-require_once('user_privileges/default_module_view.php');
+require('user_privileges/default_module_view.php');
 
 class Campaigns extends CRMEntity {
 	var $db, $log; // Used in class functions of CRMEntity

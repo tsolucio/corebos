@@ -15,7 +15,7 @@ require_once('modules/Campaigns/Campaigns.php');
 require_once('modules/Documents/Documents.php');
 require_once('modules/Emails/Emails.php');
 require_once('modules/HelpDesk/HelpDesk.php');
-require_once('user_privileges/default_module_view.php');
+require('user_privileges/default_module_view.php');
 
 class Contacts extends CRMEntity {
 	var $db, $log; // Used in class functions of CRMEntity

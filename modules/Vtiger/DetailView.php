@@ -78,6 +78,8 @@ if(PerformancePrefs::getBoolean('DETAILVIEW_RECORD_NAVIGATION', true) && isset($
 $smarty->assign('IS_REL_LIST', isPresentRelatedLists($currentModule));
 $isPresentRelatedListBlock = isPresentRelatedListBlock($currentModule);
 $smarty->assign('IS_RELBLOCK_LIST', $isPresentRelatedListBlock);
+$singlepane_view = GlobalVariable::getVariable('Application_Single_Pane_View', 0, $currentModule);
+$singlepane_view = empty($singlepane_view) ? 'false' : 'true';
 $smarty->assign('SinglePane_View', $singlepane_view);
 $smarty->assign('HASRELATEDPANES', 'false');
 if($singlepane_view == 'true' or $isPresentRelatedListBlock) {

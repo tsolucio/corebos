@@ -10,7 +10,6 @@
 require_once('include/database/PearDatabase.php');
 require_once('include/ComboUtil.php');
 require_once('include/utils/CommonUtils.php');
-require_once('user_privileges/default_module_view.php');
 require_once('include/utils/UserInfoUtil.php');
 require_once('include/Zend/Json.php');
 require_once 'include/CustomFieldUtil.php';
@@ -26,7 +25,7 @@ require_once 'include/CustomFieldUtil.php';
  * Returns the listview header values in an array
  */
 function getListViewHeader($focus, $module, $sort_qry = '', $sorder = '', $order_by = '', $relatedlist = '', $oCv = '', $relatedmodule = '', $skipActions = false) {
-	global $log, $singlepane_view, $adb, $theme, $app_strings, $mod_strings, $counter;
+	global $log, $adb, $theme, $app_strings, $mod_strings, $counter;
 	$log->debug("Entering getListViewHeader(" . $module . "," . $sort_qry . "," . $sorder . "," . $order_by . "," . $relatedlist . "," . (is_object($oCv) ? get_class($oCv) : $oCv) . ") method ...");
 
 	$arrow = '';

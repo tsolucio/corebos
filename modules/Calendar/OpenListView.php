@@ -30,10 +30,8 @@ function getPendingActivities($mode,$view=''){
 	$log->debug("Entering getPendingActivities() method ...");
 	require_once('data/Tracker.php');
 	require_once('include/utils/utils.php');
-	require_once('user_privileges/default_module_view.php');
 
 	global $currentModule;
-	global $singlepane_view;
 	global $theme;
 	global $focus;
 	global $action;

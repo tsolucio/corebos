@@ -8,11 +8,11 @@
  * All Rights Reserved.
  ************************************************************************************/
 require_once('Smarty_setup.php');
-require_once('user_privileges/default_module_view.php');
+require('user_privileges/default_module_view.php');
 require_once("modules/Calendar4You/Calendar4You.php");
 require_once("modules/Calendar4You/CalendarUtils.php");
 
-global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $singlepane_view;
+global $mod_strings, $app_strings, $currentModule, $current_user, $theme;
 $currentmodule = vtlib_purify($_REQUEST['module']);
 $action = vtlib_purify($_REQUEST['action']);
 $RECORD = vtlib_purify($_REQUEST['record']);

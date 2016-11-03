@@ -313,10 +313,7 @@ class Migration_Utils {
 
 	static function copyRequiredFiles($sourceDirectory, $destinationDirectory) {
 		if (realpath($sourceDirectory) == realpath($destinationDirectory)) return;
-		@Migration_Utils::getFilesFromFolder($sourceDirectory."user_privileges/",$destinationDirectory."user_privileges/",
-								// Force copy these files - Overwrite if they exist in destination directory.
-								array($sourceDirectory."user_privileges/default_module_view.php")
-							);
+		@Migration_Utils::getFilesFromFolder($sourceDirectory."user_privileges/",$destinationDirectory."user_privileges/");
 		@Migration_Utils::getFilesFromFolder($sourceDirectory."storage/",$destinationDirectory."storage/");
 		@Migration_Utils::getFilesFromFolder($sourceDirectory."test/contact/",$destinationDirectory."test/contact/");
 		@Migration_Utils::getFilesFromFolder($sourceDirectory."test/logo/",$destinationDirectory."test/logo/");
