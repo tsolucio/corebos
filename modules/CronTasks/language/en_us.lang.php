@@ -1,7 +1,7 @@
 <?php
 $mod_strings = Array (
 	'LBL_ACTIVE' => 'Active',
-	'LBL_INACTIVE' => 'InActive',
+	'LBL_INACTIVE' => 'Inactive',
 	'LBL_STATUS' => 'Status',
 	'LBL_SCHEDULER' => 'Scheduler',
 	'LBL_FREQUENCY'=> 'Frequency',
