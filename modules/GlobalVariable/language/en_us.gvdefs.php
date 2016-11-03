@@ -723,3 +723,8 @@ $GlobalVariableDefinitons = array(
 	'definition' => '',
 ),
 );
+
+foreach (glob('modules/GlobalVariable/language/en_us.gvdefs.*.php',GLOB_BRACE) as $tcode) {
+	include($tcode);
+}
+
