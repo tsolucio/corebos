@@ -1,6 +1,5 @@
 <?xml version='1.0'?>
 <module>
-<exporttime>2010-04-27 15:17:37</exporttime>
 <name>ModComments</name>
 <label>Comments</label>
 <parent>Tools</parent>
@@ -13,10 +12,11 @@
 <table>
 <name>vtiger_modcomments</name>
 <sql><![CDATA[CREATE TABLE `vtiger_modcomments` (
-  `modcommentsid` int(11) DEFAULT NULL,
+  `modcommentsid` int(11) NOT NULL,
   `commentcontent` text,
   `related_to` int(19) NOT NULL,
-  `parent_comments` varchar(100) default NULL
+  `parent_comments` varchar(100) default NULL,
+  PRIMARY KEY (`modcommentsid`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
 </table>
 <table>

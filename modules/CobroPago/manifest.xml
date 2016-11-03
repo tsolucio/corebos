@@ -34,7 +34,7 @@
 <table>
 <name>vtiger_cobropago</name>
 <sql><![CDATA[CREATE TABLE `vtiger_cobropago` (
-  `cobropagoid` int(11) default NULL,
+  `cobropagoid` int(11) NOT NULL,
   `cyp_no` varchar(50) default NULL,
   `reference` varchar(256) default NULL,
   `parent_id` int(11) default NULL,

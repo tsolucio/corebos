@@ -16,7 +16,7 @@
 <table>
 <name>vtiger_moduleclass</name>
 <sql><![CDATA[CREATE TABLE `vtiger_moduleclass` (
-  `moduleclassid` int(11) default NULL,
+  `moduleclassid` int(11) NOT NULL,
   `moduleclass_no` varchar(56) default NULL,
   ..rest of fields..
   PRIMARY KEY (`moduleclassid`)
