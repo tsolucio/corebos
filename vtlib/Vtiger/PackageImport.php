@@ -578,7 +578,7 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 		$fieldInstance->readonly     = $fieldnode->readonly;
 		$fieldInstance->presence     = $fieldnode->presence;
 		$fieldInstance->defaultvalue = $fieldnode->defaultvalue;
-		$fieldInstance->maximumlength= $fieldnode->maximumlength;
+		$fieldInstance->maximumlength= (empty($fieldnode->maximumlength) ? 100 : $fieldnode->maximumlength);
 		$fieldInstance->sequence     = $fieldnode->sequence;
 		$fieldInstance->quicksequence= $fieldnode->quickcreatesequence;
 		$fieldInstance->typeofdata   = $fieldnode->typeofdata;
