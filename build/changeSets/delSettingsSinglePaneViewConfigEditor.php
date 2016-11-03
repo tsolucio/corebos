@@ -34,6 +34,13 @@ class delSettingsSinglePaneViewConfigEditor extends cbupdaterWorker {
 			include 'config.inc.php';
 			include_once 'include/Webservices/Create.php';
 			global $current_user;
+			$module = 'GlobalVariable';
+			if ($this->isModuleInstalled($module)) {
+				vtlib_toggleModuleAccess($module,true);
+				$this->sendMsg("$module activated!");
+			} else {
+				$this->installManifestModule($module);
+			}
 			$usrwsid = vtws_getEntityId('Users').'x'.$current_user->id;
 			$default_values =  array(
 				'default_check' => '1',
