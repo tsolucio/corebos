@@ -55,6 +55,27 @@ class Mobile_UI_GetRelatedLists extends Mobile_WS_RelatedRecordsWithGrouping {
 			$viewer->assign('MOD', $mod_strings);
 			$viewer->assign('_MODULE', $module);
 			$viewer->assign('_RECORDS', $relatedresponse);
+
+			//Get PanelMenu data
+			$modules = $this->sessionGet('_MODULES');
+			//remove Events from module list display
+			function filter_by_value ($array, $value){
+				if(is_array($array) && count($array)>0) {
+					foreach(array_keys($array) as $key){
+						$temp[$key] = $array[$key]->name();
+						if ($temp[$key] == $value){
+							$newarray[$key] = $array[$key]->name();
+						}
+					}
+				}
+				return $newarray;
+			}
+			$eventarray = filter_by_value($modules, 'Events');
+			$eventkey = array_keys($eventarray);
+			unset($modules[$eventkey[0]]);
+
+			$viewer->assign('_MODULES', $modules);
+
 			$response = $viewer->process('generic/getRelatedLists.tpl');
 		}
 		return $response;
