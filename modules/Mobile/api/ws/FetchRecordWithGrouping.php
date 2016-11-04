@@ -166,7 +166,8 @@ class Mobile_WS_FetchRecordWithGrouping extends Mobile_WS_FetchRecord {
 							'value' => $resultRecord[$fieldname],
 							'label' => $fieldinfo['label'],
 							'uitype'=> $fieldinfo['uitype'],
-							'typeofdata'=> $fieldinfo['typeofdata']
+							'typeofdata'=> $fieldinfo['typeofdata'],
+							'quickcreate'=> $fieldinfo['quickcreate']
 					);
 					// Template record requested, send more details if available
 					if ($isTemplateRecord) {
