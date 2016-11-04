@@ -13,7 +13,7 @@
  
 <body>
 <div data-role="page" data-theme="b" data-mini="true" id="login_page">
-<div id="loginTop" style="text-align:center;"><img src="../../test/logo/{$COMPANY_DETAILS.logo}"></div>
+<div id="loginTop" style="text-align:center;"><img src="../../test/logo/{$COMPANY_DETAILS.logo}"  style="width: 15em;height: 4.2em;"></div>
 	<div data-role="header"  data-theme="b" >
 			<h4>{$COMPANY_DETAILS.name}</h4>
 	</div><!-- /header -->

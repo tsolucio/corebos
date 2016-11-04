@@ -1,5 +1,5 @@
 <div data-role="panel" id="panelmenu" data-position="left" data-display="overlay">
-	<div id="loginTop"  style="text-align:center;"><img src="../../test/logo/{$COMPANY_DETAILS.logo}"></div>
+	<div id="loginTop"  style="text-align:center;"><img src="../../test/logo/{$COMPANY_DETAILS.logo}" style="width: 15em;height: 4.2em;"></div>
 	<h4>{$MOD.LBL_MOD_LIST}</h4>
 	<div  data-role="fieldcontain" data-mini="true">
 		{literal}
