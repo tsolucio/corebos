@@ -51,7 +51,18 @@ class Vtiger_Mailer extends PHPMailer {
 			$this->Host = $adb->query_result($result, 0, 'server');
 			$this->Username = $adb->query_result($result, 0, 'server_username');
 			$this->Password = $adb->query_result($result, 0, 'server_password');
-			$this->SMTPAuth = $adb->query_result($result, 0, 'smtp_auth');
+			$smtp_auth = $adb->query_result($result, 0, 'smtp_auth');
+			if ($smtp_auth == 'sslnc' or $smtp_auth == 'tlsnc') {
+				$this->SMTPOptions = array(
+						'ssl' => array(
+								'verify_peer' => false,
+								'verify_peer_name' => false,
+								'allow_self_signed' => true
+						)
+				);
+				$smtp_auth = substr($smtp_auth,0,3);
+			}
+			$this->SMTPAuth = $smtp_auth;
 			if(empty($this->SMTPAuth)) $this->SMTPAuth = false;
 
 			$this->ConfigSenderInfo($adb->query_result($result, 0, 'from_email_field'));
