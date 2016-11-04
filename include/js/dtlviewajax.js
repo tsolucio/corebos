@@ -54,9 +54,10 @@ function hndMouseOver(uitype,fieldLabel)
 	globaleditareaspanid="editarea_"+ fieldLabel;//textareapanid;
 	globalfieldlabel = fieldLabel;
 	if(globaluitype == 53) {
-		if(typeof(document.DetailView.assigntype[0]) != 'undefined') {
-			var assign_type_U = document.DetailView.assigntype[0].checked;
-			var assign_type_G = document.DetailView.assigntype[1].checked;
+		var assigntype = document.getElementsByName('assigntype');
+		if(assigntype.length > 0) {
+			var assign_type_U = assigntype[0].checked;
+			var assign_type_G = assigntype[1].checked;
 			if(assign_type_U == true)
 				globaltxtboxid= 'txtbox_U'+fieldLabel;
 			else if(assign_type_G == true)
