@@ -84,7 +84,8 @@ function handleEdit(event)
 {
 	show(globaleditareaspanid);
 	fnhide(globaldtlviewspanid);
-	if(globaluitype != 53) {
+	if( ((globaluitype == 15 || globaluitype == 16 || globaluitype == 1613) && globaltempvalue == '') ||
+		 (globaluitype != 53 && globaluitype != 15 && globaluitype != 16 && globaluitype != 1613) ) {
 		globaltempvalue = getObj(globaltxtboxid).value;
 		if(getObj(globaltxtboxid).type != 'hidden')
 			getObj(globaltxtboxid).focus();
