@@ -113,5 +113,9 @@ class Mobile_UI_FieldModel {
 	function relatedmodule() {
 		return $this->data['relatedmodule'];
 	}
-	
+
+	function quickcreate() {
+		return $this->data['quickcreate'];
+	}
+
 }

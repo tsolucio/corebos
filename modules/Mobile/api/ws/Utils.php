@@ -194,7 +194,7 @@ class Mobile_WS_Utils {
 					'label' => $fieldlabel,
 					'uitype'=> self::fixUIType($module, $resultrow['fieldname'], $resultrow['uitype']),
 					'typeofdata'=>self::getMandatory ($resultrow['typeofdata']),
-					'quickcreate' => isset($resultrow['quickcreate']) ? ($resultrow['quickcreate'] === '1')? true: false: false
+					'quickcreate' => $resultrow['quickcreate']
 				);
 		}
 		

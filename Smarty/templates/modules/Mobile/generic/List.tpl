@@ -162,7 +162,10 @@
 			<!-- without prefetch
 			<a  href="?_operation=create&module={$_MODULE->name()}&record=''"  data-mini='true' data-role='button' data-inline='true' >{$MOD.LBL_NEW}</a>
 			 -->
+			<div>
 			<a  href="?_operation=create&module={$_MODULE->name()}&record=''"  data-mini='true' data-role='button' data-inline='true' data-transition="turn">{$MOD.LBL_NEW}</a>
+			<a  href="?_operation=create&module={$_MODULE->name()}&record=''&quickcreate=1"  data-mini='true' data-role='button' data-inline='true' data-transition="turn">{$MOD.LBL_QUICKCREATE}</a>
+			</div>
 		{elseif $_MODULE->name() eq 'Calendar'}
 			<!-- select task or event -->
 			<a href="?_operation=createActivity&lang={$LANGUAGE}" class="ui-btn ui-corner-all" data-mini='true' data-role='button' data-inline='true' data-rel="dialog" data-transition="turn" data-prefetch>{$MOD.LBL_NEW}</a>

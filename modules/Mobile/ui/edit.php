@@ -136,8 +136,10 @@ class Mobile_UI_FetchRecordWithGrouping extends Mobile_WS_FetchRecordWithGroupin
 			$viewer->assign('_MODULES', $modules);
 			//reserved for future use: list modules for global search
 			$viewer->assign('SEARCHIN', implode(",", $displayed_modules));
-
-			$response = $viewer->process('generic/edit.tpl');
+			if(isset($_REQUEST['quickcreate']) && $_REQUEST['quickcreate'] == 1)
+				$response = $viewer->process('generic/quickcreate.tpl');
+			else
+				$response = $viewer->process('generic/edit.tpl');
 		}
 		return $response;
 	}
