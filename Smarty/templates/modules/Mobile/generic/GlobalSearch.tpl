@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <head>
 	<title>{$MOD.LBL_SEARCH_RESULTS}</title> 
-	<link REL="SHORTCUT ICON" HREF="../../themes/images/crm-now_icon.ico">	
+	<link REL="SHORTCUT ICON" HREF="../../themes/images/crm-now_icon.ico">
+	<meta name="viewport" content="width=device-width, initial-scale=1"> 
 	<script src="Js/jquery-1.11.2.min.js"></script>
 	<link rel="stylesheet" href="Css/jquery.mobile.structure-1.4.5.min.css" />
 	<script src="Js/jquery.mobile-1.4.5.min.js"></script>
+	<link rel="stylesheet" href="Css/jquery.mobile.icons.min.css" />
 	<link rel="stylesheet" href="Css/theme.css" />
 	<meta name="viewport" content="width=device-width, initial-scale=1"> 
 </head>
@@ -12,7 +14,6 @@
 <div data-role="page" data-theme="b">
 	<!-- header -->
 	<div data-role="header"  data-theme="b">
-		<a data-role="button" data-inline="true" href="index.php?_operation=logout" target="_self">Logout</a>
 		<h4>{$MOD.LBL_SEARCH_RESULTS}</h4>
 		<div style="position: absolute;top: 0;right: 35px;text-align: right;">
 			<a href="#panelmenu" data-mini='true' data-role='button' class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-grid ui-corner-all ui-icon-bars"></a>
