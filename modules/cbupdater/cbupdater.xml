@@ -885,4 +885,11 @@
 	<classname>addIsRelatedListBlock</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Fix Packing Slip module, currency fields are on incorrect block and for this not appear on filter columns </description>
+	<filename>build/changeSets/fixIssuecardsCurrencyFieldsBlock.php</filename>
+	<classname>fixIssuecardsCurrencyFieldsBlock</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

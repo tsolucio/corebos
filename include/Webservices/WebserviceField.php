@@ -28,6 +28,7 @@ class WebserviceField{
 	private $massEditable;
 	private $tabid;
 	private $presence;
+	private $quickCreate;
 	/**
 	 *
 	 * @var PearDatabase
@@ -60,6 +61,7 @@ class WebserviceField{
 		$this->massEditable = isset($row['masseditable']) ? ($row['masseditable'] === '1')? true: false: false;
 		$typeOfData = (isset($row['typeofdata']))? $row['typeofdata'] : '';
 		$this->presence = (isset($row['presence']))? $row['presence'] : -1;
+		$this->quickCreate = isset($row['quickcreate']) ? ($row['quickcreate'] === '1')? true: false: false;
 		$this->typeOfData = $typeOfData;
 		$typeOfData = explode("~",$typeOfData);
 		$this->mandatory = isset($typeOfData[1]) ? ($typeOfData[1] == 'M')? true: false: false;
@@ -164,6 +166,10 @@ class WebserviceField{
 
 	public function getFieldSequence(){
 		return $this->fieldSequence;
+	}
+
+	public function getQuickCreate(){
+		return $this->quickCreate;
 	}
 
 	public function getTabId(){
