@@ -149,8 +149,8 @@
 			<div style="position: absolute;right: 35px;text-align: right;"> 
 				<div style="position:relative; top:0;right:45px;">
 					<select name="slider" id="calslider" data-role="slider" data-mini='true'> 
-						<option value="off">{$MOD.LBL_OFF}</option> 
-						<option value="on">{$MOD.LBL_ON}</option> 
+						<option value="off">Off</option>
+						<option value="on">On</option>
 					</select>
 				</div>
 				<div style="position:relative; top:-48px;right:5px;">
