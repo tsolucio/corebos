@@ -115,5 +115,8 @@ class Mobile_UI_FieldModel {
 	function typeofdata() {
 		return $this->data['typeofdata'];
 	}
-	
+	function quickcreate() {
+		return $this->data['quickcreate'];
+	}
+
 }

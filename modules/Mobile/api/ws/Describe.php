@@ -48,7 +48,8 @@ class Mobile_WS_Describe extends Mobile_WS_Controller {
 				$field['value'] = '';	
 				$field['label'] = $fieldinfo['label'];	
 				$field['uitype'] = $fieldinfo['uitype'];	
-				$field['typeofdata'] = $fieldinfo['typeofdata'];	
+				$field['typeofdata'] = $fieldinfo['typeofdata'];
+				$field['quickcreate'] = $fieldinfo['quickcreate'];
 				foreach($describeInfo['fields'] as $describeField) {
 					if ($describeField['name']== $fieldname) {
 						$field['type'] = '';

@@ -159,14 +159,14 @@ class Mobile_WS_Utils {
 		}
 		if ($module != 'Calendar') {
 			$result = $adb->pquery(
-				"SELECT fieldname, fieldlabel, blocklabel, uitype, typeofdata FROM vtiger_field INNER JOIN
+				"SELECT fieldname, fieldlabel, blocklabel, uitype, typeofdata, quickcreate FROM vtiger_field INNER JOIN
 				vtiger_blocks ON vtiger_blocks.tabid=vtiger_field.tabid AND vtiger_blocks.blockid=vtiger_field.block 
 				WHERE vtiger_field.tabid=? AND vtiger_field.presence != 1 AND vtiger_field.tablename !='vtiger_ticketcomments'  ORDER BY vtiger_blocks.sequence, vtiger_field.sequence", array(getTabid($module))
 			);
 		}
 		else {
 			$result = $adb->pquery(
-				"SELECT fieldname, fieldlabel, blocklabel, uitype, typeofdata FROM vtiger_field INNER JOIN
+				"SELECT fieldname, fieldlabel, blocklabel, uitype, typeofdata, quickcreate FROM vtiger_field INNER JOIN
 				vtiger_blocks ON vtiger_blocks.tabid=vtiger_field.tabid AND vtiger_blocks.blockid=vtiger_field.block 
 				WHERE vtiger_field.tabid=? AND vtiger_field.presence != 1 and fieldname != 'eventstatus' and fieldname !=  'activitytype' ORDER BY vtiger_blocks.sequence, vtiger_field.sequence", array(getTabid($module))
 			);
@@ -193,7 +193,8 @@ class Mobile_WS_Utils {
 				array(
 					'label' => $fieldlabel,
 					'uitype'=> self::fixUIType($module, $resultrow['fieldname'], $resultrow['uitype']),
-					'typeofdata'=>self::getMandatory ($resultrow['typeofdata'])
+					'typeofdata'=>self::getMandatory ($resultrow['typeofdata']),
+					'quickcreate' => $resultrow['quickcreate']
 				);
 		}
 		
@@ -422,13 +423,19 @@ class Mobile_WS_Utils {
 	  *     @param int $ticketid -- troubleticket id, comments array
 	  *     returns the comment as a array
 	**/
-	static function createTicketComment($comment_arr) {
-        global $adb;
-		$current_time = $adb->formatDate(date('YmdHis'), true);
-		$ownertype = 'user';
-		$sql = "insert into vtiger_ticketcomments values(?,?,?,?,?,?)";	
-	    $params = array('', $comment_arr['related_to'], from_html($comment_arr['commentcontent']), $comment_arr['creator'], $ownertype, $current_time);
-		$result = $adb->pquery($sql, $params);
+	static function createTicketComment($id,$commentcontent,$user) {
+		global $adb,$current_user;
+		$current_user = $user;
+
+		$targetModule = 'HelpDesk';
+		$recordComponents = vtws_getIdComponents($id);
+
+		$focus = CRMEntity::getInstance('HelpDesk');
+		$focus->retrieve_entity_info($recordComponents[1], $targetModule);
+		$focus->id = $recordComponents[1];
+		$focus->mode = 'edit';
+		$focus->column_fields['comments'] = $commentcontent;
+		$focus->save($targetModule);
 		return true;
 	}
 	

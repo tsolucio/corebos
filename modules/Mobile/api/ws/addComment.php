@@ -40,7 +40,7 @@ class Mobile_WS_AddComment extends Mobile_WS_Controller {
 				$userrecordid = $userrecordid[1];
 				$arr_comment = array('commentcontent' => $comment, 'related_to' => $parentrecordid, 'creator' => $current_user_id);
 				//$ele = vtws_create('ModComments', $arr_comment, $current_user);
-				$saverecord = Mobile_WS_Utils::createTicketComment($arr_comment);
+				$saverecord = Mobile_WS_Utils::createTicketComment($parentid,$comment,$current_user);
 				if ($saverecord == true) {
 					$userid = Mobile_WS_Utils::getEntityModuleWSId('Users')."x".$current_user_id;
 					$ele['commentcontent'] = $arr_comment['commentcontent'];

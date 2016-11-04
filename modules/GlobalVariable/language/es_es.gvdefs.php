@@ -28,10 +28,10 @@
 
  *************************************************************************************************/
 $GlobalVariableDefinitonsHeader = array(
-	'valuetype' => 'Value Type',
-	'category' => 'Category',
-	'values' => 'Values',
-	'definition' => 'Definition',
+	'valuetype' => 'Tipo de Valor',
+	'category' => 'Categoría',
+	'values' => 'Valores',
+	'definition' => 'Definición',
 );
 $GlobalVariableDefinitons = array(
 'Application_AdminLoginIPs' => array(
@@ -722,10 +722,10 @@ $GlobalVariableDefinitons = array(
 	'definition' => '',
 ),
 'Mobile_Module_by_default' => array(
-	'status' => 'Implemented',
-	'valuetype' => 'String',
-	'category' => 'Mobile Functionality',
+	'status' => 'Implementado',
+	'valuetype' => 'Cadena de texto',
+	'category' => 'Funccionalidad module Mobile',
 	'values' => 'Calenar | HelpDesk | Contacts ...',
-	'definition' => 'Set the default module to show when access to the Mobile module.',
+	'definition' => 'Establecer el modulo por defecto a mostrar al entrar al modulo de Mobile.',
 ),
 );

@@ -20,6 +20,9 @@
 	<!-- header -->
 	<div data-role="header" class="ui-bar" data-theme="b"  data-position="fixed">
 		<h4>{'LBL_EDIT'|@getTranslatedString:'Mobile'}</h4>
+		<div style="position: absolute;top: 0;right: 35px;text-align: right;">
+			<a href="#panelmenu" data-mini='true' data-role='button' class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-grid ui-corner-all ui-icon-bars"></a>
+		</div>
 	</div>
 	<!-- /header -->
 	<div data-role="collapsible-set" data-mini="true">	
@@ -346,6 +349,7 @@
 			</div>
 	    </form>
 	</div><!-- /content -->
+	{include file="modules/Mobile/generic/PanelMenu.tpl"}
 </div><!-- /page -->
 </body>
 {include file="modules/Mobile/generic/Footer.tpl"}

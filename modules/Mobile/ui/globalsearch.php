@@ -45,7 +45,7 @@ class Mobile_UI_ListModuleRecords extends Mobile_WS_ListModuleRecords {
 	/** END */
 	
 	function process(Mobile_API_Request $request) {
-		global $current_user,$current_language,$displayed_modules, $adb, $theme;
+		global $current_user,$current_language,$displayed_modules, $adb, $theme,$companyDetails;
 		$wsResponse = parent::process($request);
 		$response = false;
 		if($wsResponse->hasError()) {
@@ -258,6 +258,28 @@ class Mobile_UI_ListModuleRecords extends Mobile_WS_ListModuleRecords {
 			$viewer->assign('MODLABEL', $modullabel);
 			$viewer->assign('HEADERCOUNT', count($listview_header));
 			$viewer->assign("SEARCH_CRITERIA","( $noofrows )".$search_msg);
+
+			$modules = $this->sessionGet('_MODULES');
+			//remove Events from module list display
+			function filter_by_value ($array, $value){
+				if(is_array($array) && count($array)>0) {
+					foreach(array_keys($array) as $key){
+						$temp[$key] = $array[$key]->name();
+						if ($temp[$key] == $value){
+							$newarray[$key] = $array[$key]->name();
+						}
+					}
+				}
+				return $newarray;
+			}
+			$eventarray = filter_by_value($modules, 'Events');
+			$eventkey = array_keys($eventarray);
+			unset($modules[$eventkey[0]]);
+
+			$viewer->assign('_MODULES', $modules);
+			//Get PanelMenu data
+			$viewer->assign('SEARCHIN', implode(",", $displayed_modules));
+			$viewer->assign("COMPANY_DETAILS",$companyDetails);
 
 			$response = $viewer->process('generic/GlobalSearch.tpl');
 		}

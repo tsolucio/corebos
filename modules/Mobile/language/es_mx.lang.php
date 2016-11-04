@@ -16,6 +16,7 @@ $mod_strings = Array (
 'LBL_ON' => 'Encendido',
 'LBL_OFF' => 'Apagado',
 'LBL_NEW' => 'Nuevo',
+'LBL_QUICKCREATE' => 'Creción Rápida',
 'LBL_FILTER' => 'Todos-Seleccionar Filtro',
 'LBL_MOD_LIST' => 'Módulos CRM',
 'LBL_LIST' => 'Lista',

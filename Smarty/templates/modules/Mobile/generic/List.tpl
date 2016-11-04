@@ -138,30 +138,45 @@
 </head>
 <body>
 <div data-role="page" data-theme="b"  id="list_page">
+
 	<!-- Calendar Settings -->
 	{if $_MODULE->name() eq 'Calendar'}
 	<input type="hidden" name="calendarselect" id="calendarselect" value="{$CALENDARSELECT}">
 	{/if}
 	<!-- header -->
-	<div data-role="header" class="ui-bar" data-theme="b" data-position="fixed">
+	<div data-role="header" class="ui-bar" data-theme="b" data-position="fixed" class="ui-grid-b ui-responsive">
 		{if $_MODULE->name() eq 'Calendar'}
 			<div style="position: absolute;right: 35px;text-align: right;"> 
-				<select name="slider" id="calslider" data-role="slider" data-mini='true'> 
-					<option value="off">{$MOD.LBL_OFF}</option> 
-					<option value="on">{$MOD.LBL_ON}</option> 
-				</select> 
-			</div> 
+				<div style="position:relative; top:0;right:45px;">
+					<select name="slider" id="calslider" data-role="slider" data-mini='true'> 
+						<option value="off">Off</option>
+						<option value="on">On</option>
+					</select>
+				</div>
+				<div style="position:relative; top:-48px;right:5px;">
+					<a href="#panelmenu" data-mini='true' data-role='button' class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-grid ui-corner-all ui-icon-bars"></a>
+				</div>
+			</div>
 		{/if}
 		{if $_MODULE->name() neq 'Calendar' AND $_MODULE->name() neq 'Quotes' AND  $_MODULE->name() neq 'SalesOrder' AND  $_MODULE->name() neq 'Invoice' AND  $_MODULE->name() neq 'PurchaseOrder'}
 			<!-- without prefetch
 			<a  href="?_operation=create&module={$_MODULE->name()}&record=''"  data-mini='true' data-role='button' data-inline='true' >{$MOD.LBL_NEW}</a>
 			 -->
-			<a  href="?_operation=create&module={$_MODULE->name()}&record=''"  data-mini='true' data-role='button' data-inline='true' data-transition="turn" data-prefetch>{$MOD.LBL_NEW}</a>
+			<div>
+			<a  href="?_operation=create&module={$_MODULE->name()}&record=''"  data-mini='true' data-role='button' data-inline='true' data-transition="turn">{$MOD.LBL_NEW}</a>
+			<a  href="?_operation=create&module={$_MODULE->name()}&record=''&quickcreate=1"  data-mini='true' data-role='button' data-inline='true' data-transition="turn">{$MOD.LBL_QUICKCREATE}</a>
+			</div>
 		{elseif $_MODULE->name() eq 'Calendar'}
 			<!-- select task or event -->
 			<a href="?_operation=createActivity&lang={$LANGUAGE}" class="ui-btn ui-corner-all" data-mini='true' data-role='button' data-inline='true' data-rel="dialog" data-transition="turn" data-prefetch>{$MOD.LBL_NEW}</a>
 		{/if}
-		<h4>{$_MODULE->label()}</h4> 
+		
+		<h4>{$_MODULE->label()}</h4>
+		{if $_MODULE->name() neq 'Calendar'}
+			<div style="position: absolute;top: 0;right: 35px;text-align: right;">
+				<a href="#panelmenu" data-mini='true' data-role='button' class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-grid ui-corner-all ui-icon-bars"></a>
+			</div>
+		{/if} 
 	</div>
 	<!-- /header -->
 	{if $_MODULE->name() eq 'Calendar'}	
@@ -196,8 +211,9 @@
 			<div id="content"></div>
 		</ul>
 	</div>
-	
+	{include file="modules/Mobile/generic/PanelMenu.tpl"}
 </div>
+
 </body>
 <script src="Js/moment.js" type="text/javascript"></script>
 <script src="Js/jquery.eventCalendar.min.js" type="text/javascript"></script>

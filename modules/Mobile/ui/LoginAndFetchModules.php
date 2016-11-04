@@ -19,7 +19,7 @@ class Mobile_UI_LoginAndFetchModules extends Mobile_WS_LoginAndFetchModules {
 	}
 	
 	function process(Mobile_API_Request $request) {
-	
+
 		if($request->get('username') == '') {
 				$response = new Mobile_API_Response();
 				$response->setError(1501, 'Login required');
@@ -62,30 +62,9 @@ class Mobile_UI_LoginAndFetchModules extends Mobile_WS_LoginAndFetchModules {
 				$this->cacheModules($modules);
 				Mobile_API_Session::set('language',$current_language);
 				include dirname(__FILE__) . '/../language/'.$current_language .'.lang.php';
-
-				//remove Events from module list display
-				function filter_by_value ($array, $index, $value){
-					if(is_array($array) && count($array)>0) {
-						foreach(array_keys($array) as $key){
-							$temp[$key] = $array[$key][$index];
-							if ($temp[$key] == $value){
-								$newarray[$key] = $array[$key];
-							}
-						}
-					}
-					return $newarray;
-				}
-				$eventarray = filter_by_value($wsResponseResult['modules'], 'name', 'Events'); 
-				$eventkey = array_keys($eventarray);
-				unset($modules[$eventkey[0]]);
-
-				$viewer = new Mobile_UI_Viewer();
-				$viewer->assign('_MODULES', $modules);
-				$viewer->assign('MOD', $mod_strings);
-				//reserved for future use: list modules for global search
-				$viewer->assign('SEARCHIN', implode(",", $displayed_modules));
-
-				$response = $viewer->process('generic/Home.tpl');
+				$module_by_default = GlobalVariable::getVariable('Mobile_Module_by_default', 'Calendar', 'Movile', $current_user->id);
+				header("Location:index.php?_operation=listModuleRecords&module=".$module_by_default);
+				die();
 			}
 		}
 		return $response;
