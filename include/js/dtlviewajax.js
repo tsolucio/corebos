@@ -155,13 +155,12 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 
 	if(globaluitype == 53)
 	{
-		if(typeof(document.DetailView.assigntype[0]) != 'undefined')
-		{
-			var assign_type_U = document.DetailView.assigntype[0].checked;
-			var assign_type_G = document.DetailView.assigntype[1].checked;
-		}else
-		{
-			var assign_type_U = document.DetailView.assigntype.checked;
+		var assigntype = document.getElementsByName('assigntype');
+		if(assigntype.length > 0) {
+			var assign_type_U = assigntype[0].checked;
+			var assign_type_G = assigntype[1].checked;
+		} else {
+			var assign_type_U = assigntype[0].checked;
 		}
 		if(assign_type_U == true)
 		{
@@ -338,13 +337,12 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 	}else if(uitype == '53')
 	{
 		var hdObj = getObj(hdTxt);
-		if(typeof(document.DetailView.assigntype[0]) != 'undefined')
-		{
-			var assign_type_U = document.DetailView.assigntype[0].checked;
-			var assign_type_G = document.DetailView.assigntype[1].checked;
-		}else
-		{
-			var assign_type_U = document.DetailView.assigntype.checked;
+		var assigntype = document.getElementsByName('assigntype');
+		if(assigntype.length > 0) {
+			var assign_type_U = assigntype[0].checked;
+			var assign_type_G = assigntype[1].checked;
+		} else {
+			var assign_type_U = assigntype[0].checked;
 		}
 		if(isAdmin == "0")
 		{
@@ -554,10 +552,10 @@ function setSelectValue(fieldLabel)
 {
 	if(globaluitype == 53)
 	{
-		if(typeof(document.DetailView.assigntype[0]) != 'undefined')
-		{
-			var assign_type_U = document.DetailView.assigntype[0].checked;
-			var assign_type_G = document.DetailView.assigntype[1].checked;
+		var assigntype = document.getElementsByName('assigntype');
+		if(assigntype.length > 0) {
+			var assign_type_U = assigntype[0].checked;
+			var assign_type_G = assigntype[1].checked;
 			if(assign_type_U == true)
 				var selCombo= 'txtbox_U'+fieldLabel;
 			else if(assign_type_G == true)
