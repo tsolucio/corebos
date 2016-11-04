@@ -47,7 +47,7 @@ class Mobile_UI_ListModuleRecords extends Mobile_WS_ListModuleRecords {
 	/** END */
 	
 	function process(Mobile_API_Request $request) {
-		global $config_settings,$app_strings,$mod_strings;
+		global $config_settings,$app_strings,$mod_strings,$companyDetails;
 		$wsResponse = parent::process($request);
 		if (isset ($_REQUEST['delaction'])) {
 			//delete?
@@ -158,6 +158,7 @@ class Mobile_UI_ListModuleRecords extends Mobile_WS_ListModuleRecords {
 			$viewer->assign('_MODULES', $modules);
 			//reserved for future use: list modules for global search
 			$viewer->assign('SEARCHIN', implode(",", $displayed_modules));
+			$viewer->assign("COMPANY_DETAILS",$companyDetails);
 
 			$response = $viewer->process('generic/List.tpl');
 		}

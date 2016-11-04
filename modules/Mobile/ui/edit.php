@@ -31,7 +31,7 @@ class Mobile_UI_FetchRecordWithGrouping extends Mobile_WS_FetchRecordWithGroupin
 	}
 	
 	function process(Mobile_API_Request $request) {
-		global $currentModule;
+		global $currentModule,$companyDetails;
 		if($request->getOperation()!='create') {
 			$wsResponse = parent::process($request);
 		}
@@ -136,6 +136,7 @@ class Mobile_UI_FetchRecordWithGrouping extends Mobile_WS_FetchRecordWithGroupin
 			$viewer->assign('_MODULES', $modules);
 			//reserved for future use: list modules for global search
 			$viewer->assign('SEARCHIN', implode(",", $displayed_modules));
+			$viewer->assign("COMPANY_DETAILS",$companyDetails);
 			if(isset($_REQUEST['quickcreate']) && $_REQUEST['quickcreate'] == 1)
 				$response = $viewer->process('generic/quickcreate.tpl');
 			else

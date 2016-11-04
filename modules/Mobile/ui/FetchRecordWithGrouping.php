@@ -23,7 +23,7 @@ class Mobile_UI_FetchRecordWithGrouping extends Mobile_WS_FetchRecordWithGroupin
 	}
 	
 	function process(Mobile_API_Request $request) {
-		global $modules_with_comments;
+		global $modules_with_comments,$companyDetails;
 		$wsResponse = parent::process($request);
 		$current_user = $this->getActiveUser();
 		$current_language = $this->sessionGet('language') ;
@@ -83,6 +83,7 @@ class Mobile_UI_FetchRecordWithGrouping extends Mobile_WS_FetchRecordWithGroupin
 			$viewer->assign('_MODULES', $modules);
 			//reserved for future use: list modules for global search
 			$viewer->assign('SEARCHIN', implode(",", $displayed_modules));
+			$viewer->assign("COMPANY_DETAILS",$companyDetails);
 
 			$response = $viewer->process('generic/Detail.tpl');
 		}

@@ -13,7 +13,9 @@ include_once dirname(__FILE__) . '/../api/ws/Login.php';
 class Mobile_UI_Login  extends Mobile_WS_Login {
 	
 	function process(Mobile_API_Request $request) {
+		global $companyDetails;
 		$viewer = new Mobile_UI_Viewer();
+		$viewer->assign("COMPANY_DETAILS",$companyDetails);
 		return $viewer->process('generic/Login.tpl');
 	}
 

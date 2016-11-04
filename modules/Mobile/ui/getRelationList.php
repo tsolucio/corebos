@@ -14,7 +14,7 @@ include_once dirname(__FILE__) . '/../api/ws/FetchRecordWithGrouping.php';
 
 class Mobile_UI_GetRelatedLists extends Mobile_WS_RelatedRecordsWithGrouping {
 	function process(Mobile_API_Request $request) {
-		global $app_strings,$mod_strings;
+		global $app_strings,$mod_strings,$companyDetails;
 		$wsResponse = parent::process($request);
 		$response = false;
 		if($wsResponse->hasError()) {
@@ -75,6 +75,7 @@ class Mobile_UI_GetRelatedLists extends Mobile_WS_RelatedRecordsWithGrouping {
 			unset($modules[$eventkey[0]]);
 
 			$viewer->assign('_MODULES', $modules);
+			$viewer->assign("COMPANY_DETAILS",$companyDetails);
 
 			$response = $viewer->process('generic/getRelatedLists.tpl');
 		}

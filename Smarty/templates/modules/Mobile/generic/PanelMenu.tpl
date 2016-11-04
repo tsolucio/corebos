@@ -1,5 +1,5 @@
 <div data-role="panel" id="panelmenu" data-position="left" data-display="overlay">
-	<a href="index.php?_operation=logout" data-mini='true' data-role='button' data-inline='true'>Logout</a>
+	<div id="loginTop"  style="text-align:center;"><img src="../../test/logo/{$COMPANY_DETAILS.logo}"></div>
 	<h4>{$MOD.LBL_MOD_LIST}</h4>
 	<div  data-role="fieldcontain" data-mini="true">
 		{literal}
@@ -23,4 +23,5 @@
 		{/foreach}
 		</ul>
 	</div>
+	<a href="index.php?_operation=logout" data-mini='true' data-role='button' data-inline='true'>Logout</a>
 </div>
