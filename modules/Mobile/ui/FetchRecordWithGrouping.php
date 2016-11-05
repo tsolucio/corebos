@@ -23,7 +23,7 @@ class Mobile_UI_FetchRecordWithGrouping extends Mobile_WS_FetchRecordWithGroupin
 	}
 	
 	function process(Mobile_API_Request $request) {
-		global $modules_with_comments;
+		global $modules_with_comments,$companyDetails;
 		$wsResponse = parent::process($request);
 		$current_user = $this->getActiveUser();
 		$current_language = $this->sessionGet('language') ;
@@ -62,6 +62,29 @@ class Mobile_UI_FetchRecordWithGrouping extends Mobile_WS_FetchRecordWithGroupin
 			if (isset($wsResponseResult['comments'])) {
 				$viewer->assign('_COMMENTS', $wsResponseResult['comments']);
 			}
+			//Get PanelMenu data
+			$modules = $this->sessionGet('_MODULES');
+			//remove Events from module list display
+			function filter_by_value ($array, $value){
+				if(is_array($array) && count($array)>0) {
+					foreach(array_keys($array) as $key){
+						$temp[$key] = $array[$key]->name();
+						if ($temp[$key] == $value){
+							$newarray[$key] = $array[$key]->name();
+						}
+					}
+				}
+				return $newarray;
+			}
+			$eventarray = filter_by_value($modules, 'Events');
+			$eventkey = array_keys($eventarray);
+			unset($modules[$eventkey[0]]);
+
+			$viewer->assign('_MODULES', $modules);
+			//reserved for future use: list modules for global search
+			$viewer->assign('SEARCHIN', implode(",", $displayed_modules));
+			$viewer->assign("COMPANY_DETAILS",$companyDetails);
+
 			$response = $viewer->process('generic/Detail.tpl');
 		}
 		return $response;

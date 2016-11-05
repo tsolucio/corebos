@@ -341,7 +341,7 @@ function ExecuteFunctions(functiontocall,checkModule) {
 	return new Promise(function(resolve, reject) {
 		var url = baseurl+'&functiontocall='+functiontocall+'&checkmodule='+checkModule;
 		var req = new XMLHttpRequest();
-		req.open('GET', url);
+		req.open('GET', url, true);  // make call asynchronous
 
 		req.onload = function() {
 			// check the status

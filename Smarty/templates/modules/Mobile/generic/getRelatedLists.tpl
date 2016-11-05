@@ -23,6 +23,9 @@
 <div data-role="page" data-theme="b" >
 	<div data-role="header" class="ui-bar" data-theme="b"  data-position="fixed">
 		<h4>{$MOD.LBL_RELATED_LIST}</h4>
+		<div style="position: absolute;top: 0;right: 35px;text-align: right;">
+			<a href="#panelmenu" data-mini='true' data-role='button' class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-grid ui-corner-all ui-icon-bars"></a>
+		</div>
 	</div>
 	<div data-role="collapsible-set">
 	{foreach item=_RECORD key=_MODULE from=$_RECORDS->getResult()}
@@ -43,8 +46,9 @@
 	{/foreach}
 </div>
 	<div  data-type="horizontal" data-mini="true">
-		<a href="#"  onclick="window.history.back()" data-mini="true" data-role="button"> {$MOD.LBL_CANCEL}</a>
+		<a href="#"  onclick="window.history.back()" data-mini="true" data-role="button"> {'LBL_CANCEL'|@getTranslatedString:'Mobile'}</a>
 	</div>
+{include file="modules/Mobile/generic/PanelMenu.tpl"}
 </div>
 </body>
 </html>
