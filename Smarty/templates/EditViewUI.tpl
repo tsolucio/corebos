@@ -19,7 +19,6 @@
 		{assign var="thirdvalue" value=$maindata[3][2]}
 		{assign var="typeofdata" value=$maindata[4]}
 		{assign var="vt_tab" value=$maindata[5][0]}
-
 		{if $typeofdata eq 'M'}
 			{assign var="mandatory_field" value="*"}
 		{else}
@@ -38,31 +37,29 @@
 		{/if}
 		{* END *}
 
-		{* vtlib customization *}
 		{if $uitype eq '10'}
 			<td width=20% class="dvtCellLabel{if $mandatory_field == '*'} mandatory_field_label{/if}" align=right>
 			<font color="red">{$mandatory_field}</font>
 			{$fldlabel.displaylabel}
 
+			{assign var="use_parentmodule" value=$fldlabel.options.0}
+			{assign var=vtui10func value=$use_parentmodule|getvtlib_open_popup_window_function:$fldname:$MODULE}
 			{if count($fldlabel.options) eq 1}
-				{assign var="use_parentmodule" value=$fldlabel.options.0}
 				<input type='hidden' class='small' name="{$fldname}_type" id="{$fldname}_type" value="{$use_parentmodule}">
-				{assign var=vtui10func value=$use_parentmodule|getvtlib_open_popup_window_function:$fldname:$MODULE}
 			{else}
-			{assign var=vtui10func value="vtlib_open_popup_window"}
-			<br>
-			{if $fromlink eq 'qcreate'}
-			<select id="{$fldname}_type" class="small" name="{$fldname}_type" onChange='document.QcEditView.{$fldname}_display.value=""; document.QcEditView.{$fldname}.value="";'>
-			{else}
-			<select id="{$fldname}_type" class="small" name="{$fldname}_type" onChange='document.EditView.{$fldname}_display.value=""; document.EditView.{$fldname}.value="";document.getElementById("qcform").innerHTML=""'>
-			{/if}
-			{foreach item=option from=$fldlabel.options}
-				<option value="{$option}"
-				{if $fldlabel.selected == $option}selected{/if}>
-				{$option|@getTranslatedString:$option}
-				</option>
-			{/foreach}
-			</select>
+				<br>
+				{if $fromlink eq 'qcreate'}
+				<select id="{$fldname}_type" class="small" name="{$fldname}_type" onChange='document.QcEditView.{$fldname}_display.value=""; document.QcEditView.{$fldname}.value="";'>
+				{else}
+				<select id="{$fldname}_type" class="small" name="{$fldname}_type" onChange='document.EditView.{$fldname}_display.value=""; document.EditView.{$fldname}.value="";document.getElementById("qcform").innerHTML=""'>
+				{/if}
+				{foreach item=option from=$fldlabel.options}
+					<option value="{$option}"
+					{if $fldlabel.selected == $option}selected{/if}>
+					{$option|@getTranslatedString:$option}
+					</option>
+				{/foreach}
+				</select>
 			{/if}
 			{if $MASS_EDIT eq '1'}<input type="checkbox" name="{$fldname}_mass_edit_check" id="{$fldname}_mass_edit_check" class="small" >{/if}
 			{$fldhelplink}
