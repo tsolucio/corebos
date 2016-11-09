@@ -892,4 +892,11 @@
 	<classname>fixIssuecardsCurrencyFieldsBlock</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Divisible checkbox to product and service</description>
+	<filename>build/changeSets/addPdoSrvDivisible.php</filename>
+	<classname>addPdoSrvDivisible</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
