@@ -69,6 +69,7 @@ class coreBOS_Session {
 	 */
 	static function setKCFinderVariables() {
 		global $upload_badext, $site_URL, $root_directory;
+		session_start();
 		$_SESSION['KCFINDER'] = array();
 		$_SESSION['KCFINDER']['disabled'] = false;
 		$_SESSION['KCFINDER']['uploadURL'] = $site_URL.'/storage/kcimages';
@@ -81,6 +82,7 @@ class coreBOS_Session {
 			list($domain,$port) = explode(':', $urldomain);
 			$_SESSION['KCFINDER']['cookieDomain'] = $domain;
 		}
+		session_write_close();
 	}
 
 	/**
@@ -91,37 +93,104 @@ class coreBOS_Session {
 			$appSearchModules = GlobalVariable::getVariable('Application_Global_Search_SelectedModules', '');
 			if (!empty($appSearchModules)) {
 				$selected_modules = explode(',',$appSearchModules);
+				session_start();
 				$_SESSION['__UnifiedSearch_SelectedModules__'] = $selected_modules;
+				session_write_close();
 			}
 		}
 	}
 
 	/**
 	 * Is key defined in session?
+	 * Array elements can be specified by separating them with a caret ^
 	 */
-	static function has($key) {
-		return isset($_SESSION[$key]);
+	static function has($key,$sespos=null) {
+		$keyparts = explode('^', $key);
+		if (count($keyparts)==1) {
+			if (is_null($sespos)) {
+				return isset($_SESSION[$key]);
+			} else {
+				return isset($sespos[$keyparts[0]]);
+			}
+		} else {
+			if (is_null($sespos)) {
+				if (!is_array($_SESSION[$keyparts[0]])) return false;
+				$sespos = $_SESSION[$keyparts[0]];
+			} else {
+				$sespos = $sespos[$keyparts[0]];
+			}
+			$key = substr($key, strpos($key,'^')+1);
+			return self::has($key,$sespos);
+		}
 	}
 
 	/**
 	 * Get value for the key.
+	 * Array elements can be specified by separating them with a caret ^
 	 */
 	static function get($key, $defvalue = '') {
-		return (isset($_SESSION[$key]) ? $_SESSION[$key] : $defvalue);
+		$keyparts = explode('^', $key);
+		if (count($keyparts)==1) {
+			return (isset($_SESSION[$key]) ? $_SESSION[$key] : $defvalue);
+		}
+		if (!isset($_SESSION[$keyparts[0]])) return $defvalue;
+		$sespos = $_SESSION[$keyparts[0]];
+		for ($p=1;$p<count($keyparts);$p++) {
+			if (!isset($sespos[$keyparts[$p]])) return $defvalue;
+			$sespos = $sespos[$keyparts[$p]];
+		}
+		return $sespos;
 	}
 
 	/**
 	 * Set value for the key.
+	 * Array elements can be specified by separating them with a caret ^
 	 */
-	static function set($key, $value) {
-		$_SESSION[$key] = $value;
+	static function set($key, $value,&$sespos=null) {
+		$keyparts = explode('^', $key);
+		session_start();
+		if (count($keyparts)==1) {
+			if (is_null($sespos)) {
+				$_SESSION[$key] = $value;
+			} else {
+				if (!is_array($sespos)) $sespos = array();
+				$sespos[$key] = $value;
+			}
+		} else {
+			$key = substr($key, strpos($key,'^')+1);
+			if (is_null($sespos)) {
+				if (!is_array($_SESSION[$keyparts[0]])) $_SESSION[$keyparts[0]] = array();
+				self::set($key, $value, $_SESSION[$keyparts[0]]);
+			} else {
+				self::set($key, $value, $sespos[$keyparts[0]]);
+			}
+		}
+		session_write_close();
 	}
 
 	/**
 	 * Delete value for the key.
+	 * Array elements can be specified by separating them with a caret ^
 	 */
-	static function delete($key) {
-		unset($_SESSION[$key]);
+	static function delete($key,&$sespos=null) {
+		$keyparts = explode('^', $key);
+		session_start();
+		if (count($keyparts)==1) {
+			if (is_null($sespos)) {
+				unset($_SESSION[$key]);
+			} else {
+				unset($sespos[$key]);
+			}
+		} else {
+			$key = substr($key, strpos($key,'^')+1);
+			if (is_null($sespos)) {
+				if (!is_array($_SESSION[$keyparts[0]])) return false; // this should be an exception
+				self::delete($key, $_SESSION[$keyparts[0]]);
+			} else {
+				self::delete($key, $sespos[$keyparts[0]]);
+			}
+		}
+		session_write_close();
 	}
 
 }
