@@ -31,7 +31,7 @@ class fixIssuecardsCurrencyFieldsBlock extends cbupdaterWorker {
 				$this->ExecuteQuery("UPDATE vtiger_field SET block = ? WHERE block = ? AND tabid = ?",array($correct_block,$bad_block,$IssuecarId));
 			}
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			//$this->markApplied();
+			$this->markApplied();
 		}
 		$this->finishExecution();
 	}
