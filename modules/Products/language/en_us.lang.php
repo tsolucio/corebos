@@ -219,6 +219,8 @@ $mod_strings = Array(
 'Parent Product' => 'Parent Product',
 
 'Products ID' => 'Products ID',
+'Divisible' => 'Divisible',
+'DIVISIBLE_WARNING' => 'can only be sold in multiplies of one',
 );
 
 ?>
