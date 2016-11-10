@@ -10,15 +10,22 @@ foreach ($screen_values as $sv_name => $sv) {
 		$i = substr($sv_name, -1);
 		$qty_i = 'qty'.$i;
 		$name_i = 'productName'.$i;
+		$type_i = 'lineItemType'.$i;
 		
 		$products[$i]['crmid'] = $sv;
 		$products[$i]['qty'] = $screen_values[$qty_i];
 		$products[$i]['name'] = $screen_values[$name_i];
+		$products[$i]['type'] = $screen_values[$type_i];
 	}
 }
 
 foreach ($products as $product) {
-	$q = $adb->pquery("SELECT divisible FROM vtiger_products WHERE productid = ?", array($product['crmid']));
+	if ($product['type'] == 'Products') {
+		$q = $adb->pquery("SELECT divisible FROM vtiger_products WHERE productid = ?", array($product['crmid']));
+	} else {
+		// Was a service
+		$q = $adb->pquery("SELECT divisible FROM vtiger_service WHERE serviceid = ?", array($product['crmid']));
+	}
 	if ($adb->query_result($q, 0, 'divisible') === '0') {
 		$divisible = false;
 	} else {
