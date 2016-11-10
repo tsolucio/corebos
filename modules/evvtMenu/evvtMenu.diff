@@ -1,0 +1,1029 @@
+Index: Smarty/templates/modules/FieldFormulas/EditExpressions.tpl
+===================================================================
+--- Smarty/templates/modules/FieldFormulas/EditExpressions.tpl	(revisión: 856)
++++ Smarty/templates/modules/FieldFormulas/EditExpressions.tpl	(copia de trabajo)
+@@ -9,7 +9,6 @@
+  ******************************************************************************/
+ -->*}
+ 
+-<script src="modules/FieldFormulas/resources/jquery-1.2.6.js" type="text/javascript" charset="utf-8"></script>
+ <script src="modules/FieldFormulas/resources/functional.js" type="text/javascript" charset="utf-8"></script>
+ <script src="modules/FieldFormulas/resources/json2.js" type="text/javascript" charset="utf-8"></script>
+ <script type="text/javascript" charset="utf-8">
+Index: Smarty/templates/Header.tpl
+===================================================================
+--- Smarty/templates/Header.tpl	(revisión: 856)
++++ Smarty/templates/Header.tpl	(copia de trabajo)
+@@ -49,5 +49,7 @@
+ 	<!-- END -->
+ 	<script language="JavaScript" type="text/javascript" id="_current_language_" src="include/js/{php} echo $_SESSION['authenticated_user_language'];{/php}.lang.js?{php} echo $_SESSION['vtiger_version'];{/php}"></script>
+ 	<script language="JavaScript" type="text/javascript" src="include/js/QuickCreate.js"></script>
++  {if $MODULE_NAME neq 'evvtApps' && $MODULE_NAME neq 'MarketingDashboard' && $smarty.request.action neq 'ACallCenter' && $MODULE_NAME neq 'com_vtiger_workflow'}
+ 	<script language="javascript" type="text/javascript" src="include/scriptaculous/prototype.js"></script>
++  {/if}
+ 	<script language="JavaScript" type="text/javascript" src="include/js/menu.js?v={$VERSION}"></script>
+@@ -61,7 +61,7 @@
+ 	<script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
+ 	<script type="text/javascript" src="jscalendar/lang/calendar-{$APP.LBL_JSCALENDAR_LANG}.js"></script>
+ 	{/if}
+-	<script type="text/javascript" src="include/jquery/jquery-1.6.2.min.js"></script>
++	<script type="text/javascript" src="{$KUIDIR}js/jquery.min.js"></script>
+    	<script type="text/javascript">
+ 		jQuery.noConflict();
+ 	</script>
+@@ -157,7 +157,7 @@
+ 				{if $ADMIN_LINK neq ''}
+ 					{foreach key=maintabs item=detail from=$HEADERS}
+ 						{if $maintabs eq "Settings"}
+-							<td  valign="bottom" nowrap style="padding-bottom: 1em;" class="small" onmouseout="fnHideDrop('mainsettings');" onmouseover="fnDropDown(this,'mainsettings');" nowrap><a href="index.php?module={$detail[0]}&action=index&parenttab="><img src="{$IMAGEPATH}mainSettings.PNG"  border=0 style="padding: 0px;padding-left:5px "></a></td>
++							<td  valign="bottom" nowrap style="padding-bottom: 1em;" class="small" onmouseout="fnHideDrop('mainsettings');" onmouseover="fnDropDown(this,'mainsettings');" nowrap><a href="index.php?module=Settings&action=index&parenttab="><img src="{$IMAGEPATH}mainSettings.PNG"  border=0 style="padding: 0px;padding-left:5px "></a></td>
+ 			 {/if}
+ 					{/foreach}
+ 				{/if}
+@@ -262,29 +262,7 @@
+ 	<td class=small nowrap>
+ 		<table border=0 cellspacing=0 cellpadding=0>
+ 		<tr>
+-			<td class=tabSeperator ><img src="{'spacer.gif'|@vtiger_imageurl:$THEME}" width=2px height=28px align="right"></td>
+-				{assign var="count" value=1}
+-                {foreach key=maintabs item=detail from=$MENUSTRUCTURE}
+-					{if $maintabs eq 'top'}
+-                    {foreach key=number item = name from = $detail}
+-						{assign var="modulename" value=$name[1]|@getTranslatedString:$name[0]}
+-                        {assign var="modulelabel" value=$name[0]}
+-                        {if $modulelabel ne $MODULE_NAME}
+-							<td class="tabUnSelected"  align="center" nowrap><a href="index.php?module={$name[0]}&action=index">{$modulename}</a></td>
+-				  <td class="tabSeperator"><img src="{'spacer.gif'|@vtiger_imageurl:$THEME}"></td>
+-				{else}
+-							<td class="tabSelected"  align="center" nowrap><a href="index.php?module={$name[0]}&action=index">{$modulename}</a></td>
+-                            <td class="tabSeperator"><img src="{'spacer.gif'|@vtiger_imageurl:$THEME}"></td>
+-						{/if}
+-					{/foreach}
+-					{/if}
+-				{/foreach}
+-				{foreach key=maintabs item=detail from=$MENUSTRUCTURE}
+-					{if $maintabs eq 'more' && $detail != null}
+-						<td class="tabUnSelected"  align="center" onmouseout="fnHide_Event('allMenu');" onmouseover="fnvshobjMore(this,'allMenu','{$ANNOUNCEMENT}');"nowrap><a href="javascript:;" >{$APP.LBL_MORE}<img src="{'menuDnArrow.gif'|@vtiger_imageurl:$THEME}" border=0 style="padding-left:5px" /></a></td>
+-				  <td class="tabSeperator"><img src="{'spacer.gif'|@vtiger_imageurl:$THEME}"></td>
+-				{/if}
+-			{/foreach}
++			<td><div id="evvtmenudiv" style="display:none;"><ul id="menutree"></ul></div></td>
+ 			<td style="padding-left:10px" nowrap>
+ 				{if $CNT eq 1}
+ 					<select class=small id="qccombo" style="width:110px"  onclick="QCreate(this);">
+@@ -616,7 +594,7 @@
+                             <td valign="top"><table stye="width:20px;">
+                             <tr><th><a class="drop_downnew_parent"> {$APP[$parent]}</a></th></tr>
+                             {foreach key = number item = modules from = $childs}
+-        			{assign var="modulelabel" value=$modules[0]|@getTranslatedString:$modules[0]}
++        			{assign var="modulelabel" value=$modules[1]|@getTranslatedString:$modules[0]}
+         			<tr><td><a id = "more" name = "{$modulelabel}"  href="index.php?module={$modules.0}&action=index"  class="drop_downnew">{$modulelabel}</a></td></tr>
+                             {/foreach}
+                             </table></td>
+@@ -677,10 +655,8 @@
+ </div>
+ <div  id="mainsettings" class="drop_mnu_user" onmouseout="fnHideDrop('mainsettings');" onmouseover="fnvshNrm('mainsettings');" style="width:110px;left:1226px;" >
+ 	<table border=0 width="100%" border="0" cellpadding="0" cellspacing="0" >
+-        {foreach key=maintabs item=detail from=$HEADERS}
+-				{if $maintabs eq "Settings"}
+-				<tr><td style="padding-left:0px;padding-right:10px font-weight:bold"  nowrap><a href="index.php?module={$detail[0]}&action=index&parenttab=" class="drop_down_usersettings">{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}</a></td></tr>
+-                                {/if}
++        {foreach key=maintabs item=detail from=$evvtAdminMenu}
++			<tr><td style="padding-left:0px;padding-right:10px font-weight:bold" nowrap><a href="{$detail}" class="drop_down_usersettings">{$maintabs}</a></td></tr>
+         {/foreach}
+ {foreach item=ONDEMANDLINK from=$ONDEMANDLINKS}
+ 		{assign var="headerlink_href" value=$ONDEMANDLINK->linkurl}
+@@ -724,8 +700,16 @@
+ 	);
+ 
+ }
++jQuery(document).ready(function() {
++	var evvtmenu={/literal}{$MENU}{literal};
++	var menu = jQuery("#menutree").kendoMenu({dataSource:evvtmenu });
++	jQuery('#evvtmenudiv').show();
++});
+ {/literal}
+ </script>
++<link href="{$KUIDIR}styles/kendo.common.min.css" rel="stylesheet" type="text/css"/>
++<link href="{$KUIDIR}styles/kendo.bootstrap.min.css" rel="stylesheet" type="text/css"/>
++<script type="text/javascript" src="{$KUIDIR}js/kendo.web.min.js"></script>
+ <div class="lvtCol fixedLay1" id="vtigerNewsPopupLay" style="display: none; height: 250px; bottom: 2px; padding: 2px; z-index: 12; font-weight: normal;" align="left">
+ </div>
+ <!-- END -->
+Index: Smarty/templates/ActivityEditView.tpl
+===================================================================
+--- Smarty/templates/ActivityEditView.tpl	(revisión: 856)
++++ Smarty/templates/ActivityEditView.tpl	(copia de trabajo)
+@@ -23,10 +23,6 @@
+ var gVTModule = '{$smarty.request.module|@vtlib_purify}';
+ </script>
+ <script type="text/javascript" src="include/js/FieldDependencies.js"></script>
+-<script type="text/javascript" src="modules/com_vtiger_workflow/resources/jquery-1.2.6.js"></script>
+-<script type="text/javascript">
+-	jQuery.noConflict();
+-</script>
+ {if $PICKIST_DEPENDENCY_DATASOURCE neq ''}
+ <script type="text/javascript">
+ 	jQuery(document).ready(function() {ldelim} (new FieldDependencies({$PICKIST_DEPENDENCY_DATASOURCE})).init() {rdelim});
+Index: Smarty/templates/Popup.tpl
+===================================================================
+--- Smarty/templates/Popup.tpl	(revisión: 856)
++++ Smarty/templates/Popup.tpl	(copia de trabajo)
+@@ -61,10 +61,6 @@
+ <script language="JavaScript" type="text/javascript" src="modules/evvtgendoc/evvtgendoc.js"></script>
+ {/if}
+ <script language="javascript" type="text/javascript" src="include/scriptaculous/prototype.js"></script>
+-<script type='text/javascript' src='modules/com_vtiger_workflow/resources/jquery-1.2.6.js'></script>
+-<script type='text/javascript'>
+-	jQuery.noConflict();
+-</script>
+ <script type="text/javascript" src="modules/Tooltip/TooltipHeaderScript.js"></script>
+ <script type="text/javascript">
+ {literal}
+Index: Smarty/templates/salesEditView.tpl
+===================================================================
+--- Smarty/templates/salesEditView.tpl	(revisión: 856)
++++ Smarty/templates/salesEditView.tpl	(copia de trabajo)
+@@ -19,10 +19,6 @@
+ <script type="text/javascript" src="jscalendar/lang/calendar-{$CALENDAR_LANG}.js"></script>
+ <script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
+ <script type="text/javascript" src="include/js/FieldDependencies.js"></script>
+-<script type="text/javascript" src="modules/com_vtiger_workflow/resources/jquery-1.2.6.js"></script>
+-<script type="text/javascript">
+-	jQuery.noConflict();
+-</script>
+ {if $PICKIST_DEPENDENCY_DATASOURCE neq ''}
+ <script type="text/javascript">
+ 	jQuery(document).ready(function() {ldelim} (new FieldDependencies({$PICKIST_DEPENDENCY_DATASOURCE})).init() {rdelim});
+Index: Smarty/templates/CreateView.tpl
+===================================================================
+--- Smarty/templates/CreateView.tpl	(revisión: 856)
++++ Smarty/templates/CreateView.tpl	(copia de trabajo)
+@@ -19,10 +19,6 @@
+ <script type="text/javascript" src="jscalendar/lang/calendar-{$CALENDAR_LANG}.js"></script>
+ <script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
+ <script type="text/javascript" src="include/js/FieldDependencies.js"></script>
+-<script type="text/javascript" src="modules/com_vtiger_workflow/resources/jquery-1.2.6.js"></script>
+-<script type="text/javascript">
+-	jQuery.noConflict();
+-</script>
+ {if $PICKIST_DEPENDENCY_DATASOURCE neq ''}
+ <script type="text/javascript">
+ 	jQuery(document).ready(function() {ldelim} (new FieldDependencies({$PICKIST_DEPENDENCY_DATASOURCE})).init() {rdelim});
+Index: Smarty/templates/Inventory/InventoryCreateView.tpl
+===================================================================
+--- Smarty/templates/Inventory/InventoryCreateView.tpl	(revisión: 856)
++++ Smarty/templates/Inventory/InventoryCreateView.tpl	(copia de trabajo)
+@@ -21,10 +21,6 @@
+ <script type="text/javascript" src="include/js/Inventory.js"></script>
+ <script type="text/javascript" src="modules/Services/Services.js"></script>
+ <script type="text/javascript" src="include/js/FieldDependencies.js"></script>
+-<script type="text/javascript" src="modules/com_vtiger_workflow/resources/jquery-1.2.6.js"></script>
+-<script type="text/javascript">
+-	jQuery.noConflict();
+-</script>
+ {if $PICKIST_DEPENDENCY_DATASOURCE neq ''}
+ <script type="text/javascript">
+ 	jQuery(document).ready(function() {ldelim} (new FieldDependencies({$PICKIST_DEPENDENCY_DATASOURCE})).init() {rdelim});
+Index: Smarty/templates/Inventory/InventoryEditView.tpl
+===================================================================
+--- Smarty/templates/Inventory/InventoryEditView.tpl	(revisión: 856)
++++ Smarty/templates/Inventory/InventoryEditView.tpl	(copia de trabajo)
+@@ -21,10 +21,6 @@
+ <script type="text/javascript" src="include/js/Inventory.js"></script>
+ <script type="text/javascript" src="modules/Services/Services.js"></script>
+ <script type="text/javascript" src="include/js/FieldDependencies.js"></script>
+-<script type="text/javascript" src="modules/com_vtiger_workflow/resources/jquery-1.2.6.js"></script>
+-<script type="text/javascript">
+-	jQuery.noConflict();
+-</script>
+ {if $PICKIST_DEPENDENCY_DATASOURCE neq ''}
+ <script type="text/javascript">
+ 	jQuery(document).ready(function() {ldelim} (new FieldDependencies({$PICKIST_DEPENDENCY_DATASOURCE})).init() {rdelim});
+Index: Smarty/templates/ListView.tpl
+===================================================================
+--- Smarty/templates/ListView.tpl	(revisión: 856)
++++ Smarty/templates/ListView.tpl	(copia de trabajo)
+@@ -15,10 +15,6 @@
+ <script language="JavaScript" type="text/javascript" src="include/js/Merge.js"></script>
+ <script language="JavaScript" type="text/javascript" src="include/js/dtlviewajax.js"></script>
+ <script language="JavaScript" type="text/javascript" src="include/js/FieldDependencies.js"></script>
+-<script type="text/javascript" src="modules/com_vtiger_workflow/resources/jquery-1.2.6.js"></script>
+-<script type="text/javascript">
+-	jQuery.noConflict();
+-</script>
+ <script language="javascript" type="text/javascript">
+ var typeofdata = new Array();
+ typeofdata['E'] = ['e','n','s','ew','c','k'];
+Index: Smarty/templates/com_vtiger_workflow/ListWorkflows.tpl
+===================================================================
+--- Smarty/templates/com_vtiger_workflow/ListWorkflows.tpl	(revisión: 856)
++++ Smarty/templates/com_vtiger_workflow/ListWorkflows.tpl	(copia de trabajo)
+@@ -1,5 +1,4 @@
+ {include file='com_vtiger_workflow/Header.tpl'}
+-<script src="modules/{$module->name}/resources/jquery-1.2.6.js" type="text/javascript" charset="utf-8"></script>
+ <script src="modules/{$module->name}/resources/json2.js" type="text/javascript" charset="utf-8"></script>
+ <script src="modules/{$module->name}/resources/functional.js" type="text/javascript" charset="utf-8"></script>
+ <script src="modules/{$module->name}/resources/workflowlistscript.js" type="text/javascript" charset="utf-8"></script>
+Index: Smarty/templates/com_vtiger_workflow/EditWorkflowIncludes.tpl
+===================================================================
+--- Smarty/templates/com_vtiger_workflow/EditWorkflowIncludes.tpl	(revisión: 856)
++++ Smarty/templates/com_vtiger_workflow/EditWorkflowIncludes.tpl	(copia de trabajo)
+@@ -9,7 +9,6 @@
+  ********************************************************************************/
+ -->*}
+ 
+-<script src="modules/{$module->name}/resources/jquery-1.2.6.js" type="text/javascript" charset="utf-8"></script>
+ <script src="modules/{$module->name}/resources/functional.js" type="text/javascript" charset="utf-8"></script>
+ <script src="modules/{$module->name}/resources/json2.js" type="text/javascript" charset="utf-8"></script>
+ <script src="modules/{$module->name}/resources/vtigerwebservices.js" type="text/javascript" charset="utf-8"></script>
+Index: Smarty/templates/com_vtiger_workflow/EditTask.tpl
+===================================================================
+--- Smarty/templates/com_vtiger_workflow/EditTask.tpl	(revisión: 856)
++++ Smarty/templates/com_vtiger_workflow/EditTask.tpl	(copia de trabajo)
+@@ -1,5 +1,4 @@
+ {include file='com_vtiger_workflow/Header.tpl'}
+-<script src="modules/{$module->name}/resources/jquery-1.2.6.js" type="text/javascript" charset="utf-8"></script>
+ <script src="modules/{$module->name}/resources/jquery.timepicker.js" type="text/javascript" charset="utf-8"></script>
+ <script src="modules/{$module->name}/resources/functional.js" type="text/javascript" charset="utf-8"></script>
+ <script src="modules/{$module->name}/resources/json2.js" type="text/javascript" charset="utf-8"></script>
+Index: modules/com_vtiger_workflow/resources/fieldexpressionpopup.js
+===================================================================
+--- modules/com_vtiger_workflow/resources/fieldexpressionpopup.js	(revisión: 856)
++++ modules/com_vtiger_workflow/resources/fieldexpressionpopup.js	(copia de trabajo)
+@@ -74,7 +74,7 @@
+ 	}
+ 
+ 	function handleExpressionType(ele) {
+-		var value = ele.attr('value');
++		var value = ele.val();
+ 		var helpElements = $('.layerPopup .helpmessagebox');
+ 		$.each(helpElements, function(index, helpElement) {
+ 			hideElement(helpElement);
+@@ -94,21 +94,21 @@
+ 			hideElement($('#editpopup_fieldnames'));
+ 			hideElement($('#editpopup_functions'));
+ 
+-			var fieldType = $('#editpopup_field_type').attr('value');
++			var fieldType = $('#editpopup_field_type').val();
+ 			setFieldType(fieldType)(opType);
+ 		}
+ 	}
+ 
+ 	$('#editpopup_close').bind('click', close);
+ 	$('#editpopup_save').bind('click', function(){
+-		var expression = $('#editpopup_expression').attr('value');
++		var expression = $('#editpopup_expression').val();
+ 		expression = expression.replace(/<script(.|\s)*?\/script>/g, "");
+ 
+-		var fieldElementId = $("#editpopup_field").attr('value');
+-		$("#"+fieldElementId).attr('value', expression);
++		var fieldElementId = $("#editpopup_field").val();
++		$("#"+fieldElementId).val(expression);
+ 
+-		var expressionType = $("#editpopup_expression_type").attr('value');
+-		$("#"+fieldElementId+"_type").attr('value', expressionType);
++		var expressionType = $("#editpopup_expression_type").val();
++		$("#"+fieldElementId+"_type").val(expressionType);
+ 
+ 		close();
+ 	});
+@@ -121,7 +121,7 @@
+ 
+ 	$('#editpopup_fieldnames').bind('change', function(){
+ 		var textarea = $('#editpopup_expression').get(0);
+-		var value = $(this).attr('value');
++		var value = $(this).val();
+ 		if(value != '') value += ' ';
+ 		//http://alexking.org/blog/2003/06/02/inserting-at-the-cursor-using-javascript
+ 		if (document.selection) {
+@@ -257,7 +257,7 @@
+ 		});
+ 		$('#editpopup_functions').bind('change', function(){
+ 			var textarea = $('#editpopup_expression').get(0);
+-			var value = $(this).attr('value');
++			var value = $(this).val();
+ 			//http://alexking.org/blog/2003/06/02/inserting-at-the-cursor-using-javascript
+ 			if (document.selection) {
+ 				textarea.focus();
+@@ -292,21 +292,21 @@
+ 	return {
+ 		create: show,
+ 		edit: function(fieldelementid, expression, fieldtype){
+-			$("#editpopup_field").attr('value', fieldelementid);
+-			$("#editpopup_field_type").attr('value', fieldtype.name);
++			$("#editpopup_field").val(fieldelementid);
++			$("#editpopup_field_type").val(fieldtype.name);
+ 
+ 			opType = fieldtype;
+ 			var expressionTypeElement = $("#"+fieldelementid+"_type");
+-			var expressionType = expressionTypeElement.attr('value');
++			var expressionType = expressionTypeElement.val();
+ 			if(expressionType != '') {
+-				$("#editpopup_expression_type").attr('value', expressionTypeElement.attr('value'));
++				$("#editpopup_expression_type").val(expressionTypeElement.val());
+ 			} else {
+-				$("#editpopup_expression_type").attr('value', 'rawtext');
++				$("#editpopup_expression_type").val('rawtext');
+ 			}
+ 			handleExpressionType(expressionTypeElement);
+ 
+ 			if(expression != '') {
+-				$("#editpopup_expression").attr('value', expression);
++				$("#editpopup_expression").val(expression);
+ 			}
+ 			$("#editpopup_expression").focus();
+ 			show();
+Index: modules/com_vtiger_workflow/resources/workflowlistscript.js
+===================================================================
+--- modules/com_vtiger_workflow/resources/workflowlistscript.js	(revisión: 856)
++++ modules/com_vtiger_workflow/resources/workflowlistscript.js	(copia de trabajo)
+@@ -55,7 +55,7 @@
+ 	var templatesForModule = {};
+ 	function updateTemplateList(){
+ 		var moduleSelect = $('#module_list');
+-		var currentModule = moduleSelect.attr('value');
++		var currentModule = moduleSelect.val();
+ 		
+ 		$('#template_list').hide();
+ 		$('#template_list_foundnone').hide();
+@@ -97,7 +97,7 @@
+ 
+ 		$('.workflow_creation_mode').click(function(){
+ 			var el = $(this);
+-			workflowCreationMode = el.attr('value');
++			workflowCreationMode = el.val();
+ 			if(workflowCreationMode=='from_template'){
+ 				updateTemplateList();
+ 				$('#template_select_field').show();
+@@ -112,16 +112,16 @@
+ 			}
+ 		});
+ 
+-		var filterModule = $('#pick_module').attr('value');
++		var filterModule = $('#pick_module').val();
+ 		if(filterModule!='All'){
+-			$('#module_list').attr('value', filterModule);
++			$('#module_list').val(filterModule);
+ 			$('#module_list').change();
+ 		}
+ 		
+ 		$('#new_workflow_popup_save').click(function() {
+ 			if(workflowCreationMode == 'from_template') {
+ 				// No templates selected?
+-				if($('#template_list').attr('value') == '') {
++				if($('#template_list').val() == '') {
+ 					return false;
+ 				}
+ 			}
+Index: modules/com_vtiger_workflow/resources/edittaskscript.js
+===================================================================
+--- modules/com_vtiger_workflow/resources/edittaskscript.js	(revisión: 856)
++++ modules/com_vtiger_workflow/resources/edittaskscript.js	(copia de trabajo)
+@@ -25,7 +25,7 @@
+ 		});
+ 
+ 		$('.box_cel').click(function(){
+-			element.attr('value', parseInt($(this).text(), 10));
++			element.val(parseInt($(this).text(), 10));
+ 		});
+ 	}
+ 
+@@ -38,7 +38,7 @@
+ 		NumberBox($('#select_date_days'));
+         //UI to set the date for executing the task.
+     	$('#check_select_date').click(function(){
+-    	    if($(this).attr('checked')){
++    	    if($(this).prop('checked')){
+     	        $('#select_date').css('display', 'block');
+     	    }else{
+     	        $('#select_date').css('display', 'none');
+Index: modules/com_vtiger_workflow/resources/emailtaskscript.js
+===================================================================
+--- modules/com_vtiger_workflow/resources/emailtaskscript.js	(revisión: 856)
++++ modules/com_vtiger_workflow/resources/emailtaskscript.js	(copia de trabajo)
+@@ -214,7 +214,7 @@
+ 					$('#task-fieldnames').show();
+ 					$('#task-fieldnames').change(function(){
+ 					var textarea = CKEDITOR.instances.save_content;
+-					var value = '$'+jQuery(this).attr('value');
++					var value = '$'+jQuery(this).val();
+ 					textarea.insertHtml(value);
+ 					});
+ 
+@@ -224,8 +224,8 @@
+ 					$('#task-subjectfields').show();
+ 					$('#task-subjectfields').change(function(){
+ 						var input = $($('#save_subject').get());
+-						var value = '$'+$(this).attr('value');
+-						input.attr("value", input.attr("value")+' '+value);
++						var value = '$'+$(this).val();
++						input.val(input.val()+' '+value);
+ 					});
+ 
+ 					fillSelectBox('task-emailfields', modules, moduleName,
+@@ -234,8 +234,8 @@
+ 					$('#task-emailfields').show();
+ 					$('#task-emailfields').change(function(){
+ 						var input = $($('#save_recepient').get());
+-						var value = '$'+$(this).attr('value');
+-						input.attr("value", input.attr("value")+','+value);
++						var value = '$'+$(this).val();
++						input.val(input.val()+','+value);
+ 					});
+ 					var selptype = document.getElementById('task-emailfields');
+ 			        var selecc = document.getElementById('task-emailfieldscc');
+@@ -246,8 +246,8 @@
+ 					$('#task-emailfieldscc').show();
+ 					$('#task-emailfieldscc').change(function(){
+ 						var input = $($('#save_emailcc').get());
+-						var value = '$'+$(this).attr('value');
+-						input.attr("value", input.attr("value")+','+value);
++						var value = '$'+$(this).val();
++						input.val(input.val()+','+value);
+ 					});
+ 			        var selebcc = document.getElementById('task-emailfieldsbcc');
+ 			        for (ops=0;ops<selptype.length;ops++) {
+@@ -257,14 +257,14 @@
+ 					$('#task-emailfieldsbcc').show();
+ 					$('#task-emailfieldsbcc').change(function(){
+ 						var input = $($('#save_emailbcc').get());
+-						var value = '$'+$(this).attr('value');
+-						input.attr("value", input.attr("value")+','+value);
++						var value = '$'+$(this).val();
++						input.val(input.val()+','+value);
+ 					});
+ 					
+ 					//time_changes
+ 					$('#task_timefields').change(function(){
+ 						var textarea = CKEDITOR.instances.save_content;
+-						var value = '$'+$(this).attr('value');
++						var value = '$'+$(this).val();
+ 						textarea.insertHtml(value);
+ 					});
+ 				
+@@ -274,7 +274,7 @@
+ 					$('#task-group_usersnames').show();
+ 					$('#task-group_usersnames').change(function(){
+ 						var textarea = $('#save_receipent').get(0);
+-						var value = '$'+$(this).attr('value');
++						var value = '$'+$(this).val();
+ 						insertAtCursor(textarea, value);
+ 					});
+ 				}));
+Index: modules/com_vtiger_workflow/resources/createtodotaskscript.js
+===================================================================
+--- modules/com_vtiger_workflow/resources/createtodotaskscript.js	(revisión: 856)
++++ modules/com_vtiger_workflow/resources/createtodotaskscript.js	(copia de trabajo)
+@@ -46,9 +46,9 @@
+ 					status.append('<option value="'+v['value']+'">'+v['label']+'</option>');
+ 				});
+ 				if(taskStatus!=''){
+-					status.attr('value', taskStatus);
++					status.val(taskStatus);
+ 				} else {
+-					status.attr('value',eventStatusValues[0]['value']);
++					status.val(eventStatusValues[0]['value']);
+ 				}
+ 				$('#task_status_busyicon').hide();
+ 				$('#task_status').show();
+@@ -58,9 +58,9 @@
+ 					priority.append('<option value="'+v['value']+'">'+v['label']+'</option>');
+ 				});
+ 				if(taskPriority!=''){
+-					priority.attr('value', taskPriority);
++					priority.val(taskPriority);
+ 				} else {
+-					priority.attr('value',taskPriorityValues[0]['value']);
++					priority.val(taskPriorityValues[0]['value']);
+ 				}
+ 				$('#task_priority_busyicon').hide();
+ 				$('#task_priority').show();
+Index: modules/com_vtiger_workflow/resources/vtigerwebservices.js
+===================================================================
+--- modules/com_vtiger_workflow/resources/vtigerwebservices.js	(revisión: 856)
++++ modules/com_vtiger_workflow/resources/vtigerwebservices.js	(copia de trabajo)
+@@ -17,14 +17,20 @@
+ 
+ 	function doGet(params, callback){
+ 		$.get(this.serviceUrl, params, function(result){
+-			var parsed = JSON.parse(result);
++			if (typeof(result)=='string')
++				var parsed = JSON.parse(result);
++			else
++				var parsed = result;
+ 			callback(parsed);
+ 		});
+ 	}
+ 
+ 	function doPost(params, callback){
+ 		$.post(this.serviceUrl, params, function(result){
+-			var parsed = JSON.parse(result);
++			if (typeof(result)=='string')
++				var parsed = JSON.parse(result);
++			else
++				var parsed = result;
+ 			callback(parsed);
+ 		});
+ 	}
+Index: modules/com_vtiger_workflow/resources/editworkflowscript.js
+===================================================================
+--- modules/com_vtiger_workflow/resources/editworkflowscript.js	(revisión: 856)
++++ modules/com_vtiger_workflow/resources/editworkflowscript.js	(copia de trabajo)
+@@ -252,7 +252,7 @@
+ 
+ 		// Remove 'has changed' operation for reference fields
+ 		var fe = $("#save_condition_"+condno+"_fieldname");
+-		var fullFieldName = fe.attr('value');
++		var fullFieldName = fe.val();
+ 		var group = fullFieldName.match(/(\w+) : \((\w+)\) (\w+)/);
+ 		if(group != null){
+ 			for(var i=0; i<selOperations.length; ++i) {
+@@ -281,7 +281,7 @@
+ 				);
+ 			value.replaceWith('<select id="save_condition_'+condno+'_value" class="expressionvalue">'+
+ 				options+'</select>');
+-			$("#save_condition_"+condno+"_value_type").attr("value", "rawtext");
++			$("#save_condition_"+condno+"_value_type").val("rawtext");
+ 		}
+ 		var functions = {
+ 			string:function(opType, condno){
+@@ -411,7 +411,7 @@
+ 	}
+ 
+ 	function editFieldExpression(fieldValueNode, fieldType) {
+-		editpopupobj.edit(fieldValueNode.attr('id'), fieldValueNode.attr('value'), fieldType);
++		editpopupobj.edit(fieldValueNode.attr('id'), fieldValueNode.val(), fieldType);
+ 	}
+ 
+ 	$(document).ready(function(){
+@@ -546,7 +546,7 @@
+ 						var i = 1;
+ 						fillOptions(fe, fieldLabels);
+ 
+-						var fullFieldName = fe.attr("value");
++						var fullFieldName = fe.val();
+ 
+ 						resetFields(getFieldType(fullFieldName), condid);
+ 
+@@ -558,7 +558,7 @@
+ 						fe.bind("change", function(){
+ 							var select = $(this);
+ 							var condNo = select.attr("id").match(/save_condition_(\d+)_fieldname/)[1];
+-							var fullFieldName = $(this).attr('value');
++							var fullFieldName = $(this).val();
+ 							resetFields(getFieldType(fullFieldName), condNo);
+ 						});
+ 					}
+@@ -581,18 +581,18 @@
+ 							var groupid = condition["groupid"];
+ 							if(groupid == '') groupid = 0;
+ 							addCondition(groupid, condno);
+-							$(format("#save_condition_%s_fieldname", condno)).attr("value", fieldname);
++							$(format("#save_condition_%s_fieldname", condno)).val(fieldname);
+ 							resetFields(getFieldType(fieldname), condno);
+-							$(format("#save_condition_%s_operation", condno)).attr("value", condition["operation"]);
++							$(format("#save_condition_%s_operation", condno)).val(condition["operation"]);
+ 							$('#dump').html(condition["value"]);
+ 							var text = $('#dump').text();
+-							$(format("#save_condition_%s_value", condno)).attr("value", text);
+-							$(format("#save_condition_%s_value_type", condno)).attr("value", condition["valuetype"]);
++							$(format("#save_condition_%s_value", condno)).val(text);
++							$(format("#save_condition_%s_value_type", condno)).val(condition["valuetype"]);
+ 							if(condition["joincondition"] != '') {
+-								$(format("#save_condition_%s_joincondition", condno)).attr("value", condition["joincondition"]);
++								$(format("#save_condition_%s_joincondition", condno)).val(condition["joincondition"]);
+ 							}
+ 							if(condition["groupjoin"]  != '') {
+-								$(format("#save_condition_group_%s_joincondition", groupid)).attr("value", condition["groupjoin"]);
++								$(format("#save_condition_group_%s_joincondition", groupid)).val(condition["groupjoin"]);
+ 							}
+ 							condno+=1;
+ 						});
+@@ -608,14 +608,14 @@
+ 						$("#save_conditions").children(".condition_group_block").each(function(j, conditiongroupblock){
+ 							$(conditiongroupblock).children(".save_condition_group").each(function(k, conditiongroup){
+ 								$(conditiongroup).children().each(function(l){
+-									var fieldname = $(this).children(".fieldname").attr("value");
+-									var operation = $(this).children(".operation").attr("value");
+-									var value = $(this).children(".expressionvalue").attr("value");
+-									var valuetype = $(this).children(".expressiontype").attr("value");
+-									var joincondition = $(this).children(".joincondition").attr("value");
+-									var groupid = $(this).children(".groupid").attr("value");
++									var fieldname = $(this).children(".fieldname").val();
++									var operation = $(this).children(".operation").val();
++									var value = $(this).children(".expressionvalue").val();
++									var valuetype = $(this).children(".expressiontype").val();
++									var joincondition = $(this).children(".joincondition").val();
++									var groupid = $(this).children(".groupid").val();
+ 									var groupjoin = '';
+-									if(groupid != '') groupjoin = $('#save_condition_group_'+groupid+'_joincondition').attr("value");
++									if(groupid != '') groupjoin = $('#save_condition_group_'+groupid+'_joincondition').val();
+ 									var condition = {
+ 										fieldname:fieldname,
+ 										operation:operation,
+@@ -634,7 +634,7 @@
+ 						}else{
+ 							var out = JSON.stringify(conditions);
+ 						}
+-						$("#save_conditions_json").attr("value", out);
++						$("#save_conditions_json").val(out);
+ 					});
+ 					pageLoadingPopup.close();
+ 					$('#save_conditions_add').show();
+Index: modules/com_vtiger_workflow/resources/createentitytaskscript.js
+===================================================================
+--- modules/com_vtiger_workflow/resources/createentitytaskscript.js	(revisión: 856)
++++ modules/com_vtiger_workflow/resources/createentitytaskscript.js	(copia de trabajo)
+@@ -156,7 +156,7 @@
+ 	}
+ 
+     function editFieldExpression(fieldValueNode, fieldType) {
+-		editpopupobj.edit(fieldValueNode.attr('id'), fieldValueNode.attr('value'), fieldType);
++		editpopupobj.edit(fieldValueNode.attr('id'), fieldValueNode.val(), fieldType);
+     }
+ 
+ 	function resetFields(opType, fieldName, mappingno) {
+@@ -178,9 +178,9 @@
+ 			);
+ 			value.replaceWith('<select id="save_fieldvalues_'+mappingno+'_value" class="expressionvalue">'+
+ 												options+'</select>');
+-			$("#save_fieldvalues_"+mappingno+"_value_type").attr("value", "rawtext");
++			$("#save_fieldvalues_"+mappingno+"_value_type").val("rawtext");
+ 
+-			$("#save_fieldvalues_"+mappingno+"_modulename").attr("value", $('#entity_type').attr("value"));
++			$("#save_fieldvalues_"+mappingno+"_modulename").val($('#entity_type').val());
+ 			$("#save_fieldvalues_"+mappingno+"_modulename").attr("disabled", "true");
+ 		}
+ 		var functions = {
+@@ -192,15 +192,15 @@
+ 				$("#save_fieldvalues_"+mappingno+"_modulename").attr("disabled", "");
+ 				var fv = $(format("#save_fieldvalues_%s_value", mappingno));
+ 				fv.bind("focus", function() {
+-					editpopupobj.setModule($(format("#save_fieldvalues_%s_modulename", mappingno)).attr('value'));
++					editpopupobj.setModule($(format("#save_fieldvalues_%s_modulename", mappingno)).val());
+ 					editFieldExpression($(this), opType);
+ 				});
+ 				fv.bind("click", function() {
+-					editpopupobj.setModule($(format("#save_fieldvalues_%s_modulename", mappingno)).attr('value'));
++					editpopupobj.setModule($(format("#save_fieldvalues_%s_modulename", mappingno)).val());
+ 					editFieldExpression($(this), opType);
+ 				});
+ 				fv.bind("keypress", function() {
+-					editpopupobj.setModule($(format("#save_fieldvalues_%s_modulename", mappingno)).attr('value'));
++					editpopupobj.setModule($(format("#save_fieldvalues_%s_modulename", mappingno)).val());
+ 					editFieldExpression($(this), opType);
+ 				});
+ 			},
+@@ -225,7 +225,7 @@
+ 			var selectedFieldNames = $(".fieldname");
+ 			result = successResult;
+ 			$.each(selectedFieldNames, function(i, ele) {
+-				var fieldName = $(ele).attr("value");
++				var fieldName = $(ele).val();
+ 				var fields = $("[name="+fieldName+"]");
+ 				if(fields.length > 1) {
+ 					result = failureResult;
+@@ -298,7 +298,7 @@
+ 				me.append(format('<option value="%s">%s</option>', moduleName, moduleLabel));
+ 				me.append(format('<option value="%s">%s</option>', entityName, entityLabel));
+ 
+-				var fullFieldName = fe.attr("value");
++				var fullFieldName = fe.val();
+ 				resetFields(entityFieldTypes[fullFieldName], fullFieldName, mappingno);
+ 				var re = $("#save_fieldvalues_"+mappingno+"_remove");
+ 				re.bind("click", function(){
+@@ -307,7 +307,7 @@
+ 				fe.bind("change", function(){
+ 					var select = $(this);
+ 					var mappingno = select.attr("id").match(/save_fieldvalues_(\d+)_fieldname/)[1];
+-					var fullFieldName = $(this).attr('value');
++					var fullFieldName = $(this).val();
+ 					resetFields(entityFieldTypes[fullFieldName], fullFieldName, mappingno);
+ 				});
+ 			}
+@@ -317,13 +317,13 @@
+ 				$.each(fieldvaluemapping, function(i, fieldvaluemap){
+ 					var fieldname = fieldvaluemap["fieldname"];
+ 					addFieldValueMapping(mappingno);
+-					$(format("#save_fieldvalues_%s_fieldname", mappingno)).attr("value", fieldname);
+-					$(format("#save_fieldvalues_%s_modulename", mappingno)).attr("value", fieldvaluemap['modulename']);
++					$(format("#save_fieldvalues_%s_fieldname", mappingno)).val(fieldname);
++					$(format("#save_fieldvalues_%s_modulename", mappingno)).val(fieldvaluemap['modulename']);
+ 					resetFields(entityFieldTypes[fieldname], fieldname, mappingno);
+-					$(format("#save_fieldvalues_%s_value_type", mappingno)).attr("value", fieldvaluemap['valuetype']);
++					$(format("#save_fieldvalues_%s_value_type", mappingno)).val(fieldvaluemap['valuetype']);
+ 					$('#dump').html(fieldvaluemap["value"]);
+ 					var text = $('#dump').text();
+-					$(format("#save_fieldvalues_%s_value", mappingno)).attr("value", text);
++					$(format("#save_fieldvalues_%s_value", mappingno)).val(text);
+ 					mappingno+=1;
+ 				});
+ 			}
+@@ -333,7 +333,7 @@
+ 				var mandatoryFieldElement = $('[name='+fieldname+']');
+ 				if(mandatoryFieldElement.length == 0) {
+ 					addFieldValueMapping(mappingno);
+-					$(format("#save_fieldvalues_%s_fieldname", mappingno)).attr("value", fieldname);
++					$(format("#save_fieldvalues_%s_fieldname", mappingno)).val(fieldname);
+ 					resetFields(entityFieldTypes[fieldname], fieldname, mappingno);
+ 					mappingno+=1;
+ 				}
+@@ -379,15 +379,15 @@
+ 						});
+ 						$('#entity_type').bind('change', function(){
+ 							if(this.value != '') {
+-								$('#reference_field').attr('value', entities[this.value]['fieldname']);
++								$('#reference_field').val(entities[this.value]['fieldname']);
+ 							}
+ 							loadModuleFields(this.value, null);
+ 						});
+ 
+ 						if(selectedEntityType != "") {
+-							$('#entity_type').attr('value', selectedEntityType);
++							$('#entity_type').val(selectedEntityType);
+ 						}
+-						loadModuleFields($('#entity_type').attr('value'), fieldvaluemapping);
++						loadModuleFields($('#entity_type').val(), fieldvaluemapping);
+ 					}
+ 
+ 					$('#entity_type-busyicon').hide();
+@@ -399,10 +399,10 @@
+ 				var validateFieldValues = new Array();
+ 				var fieldvaluemapping = [];
+ 				$("#save_fieldvaluemapping").children().each(function(i){
+-					var fieldname = $(this).children(".fieldname").attr("value");
+-					var modulename = $(this).children(".modulename").attr("value");
+-					var type = $(this).children(".type").attr("value");
+-					var value = $(this).children(".expressionvalue").attr("value");
++					var fieldname = $(this).children(".fieldname").val();
++					var modulename = $(this).children(".modulename").val();
++					var type = $(this).children(".type").val();
++					var value = $(this).children(".expressionvalue").val();
+ 					var fieldvaluemap = {fieldname:fieldname, modulename:modulename, valuetype:type, value:value};
+ 					fieldvaluemapping[i]=fieldvaluemap;
+ 
+@@ -415,7 +415,7 @@
+ 				}else{
+ 				  var out = JSON.stringify(fieldvaluemapping);
+ 				}
+-				$("#save_fieldvaluemapping_json").attr("value", out);
++				$("#save_fieldvaluemapping_json").val(out);
+ 
+ 				for(var fieldName in validator.validateFieldData) {
+ 					if(validateFieldValues.indexOf(fieldName) < 0) {
+Index: modules/com_vtiger_workflow/resources/createeventtaskscript.js
+===================================================================
+--- modules/com_vtiger_workflow/resources/createeventtaskscript.js	(revisión: 856)
++++ modules/com_vtiger_workflow/resources/createeventtaskscript.js	(copia de trabajo)
+@@ -46,9 +46,9 @@
+ 			select.append('<option value="'+v['value']+'">'+v['label']+'</option>');
+ 		});
+ 		if(defaultValue!=''){
+-			select.attr('value', defaultValue);
++			select.val(defaultValue);
+ 		} else{
+-			select.attr('value',values[0]['value']);
++			select.val(values[0]['value']);
+ 		}
+ 	}
+ 
+Index: modules/com_vtiger_workflow/resources/updatefieldstaskscript.js
+===================================================================
+--- modules/com_vtiger_workflow/resources/updatefieldstaskscript.js	(revisión: 856)
++++ modules/com_vtiger_workflow/resources/updatefieldstaskscript.js	(copia de trabajo)
+@@ -165,7 +165,7 @@
+ 	}
+ 
+ 	function editFieldExpression(fieldValueNode, fieldType) {
+-		editpopupobj.edit(fieldValueNode.attr('id'), fieldValueNode.attr('value'), fieldType);
++		editpopupobj.edit(fieldValueNode.attr('id'), fieldValueNode.val(), fieldType);
+ 	}
+ 
+ 	function resetFields(opType, fieldName, mappingno) {		
+@@ -192,7 +192,7 @@
+ 				);
+ 			value.replaceWith('<select id="save_fieldvalues_'+mappingno+'_value" class="expressionvalue">'+
+ 				options+'</select>');
+-			$("#save_fieldvalues_"+mappingno+"_value_type").attr("value", "rawtext");
++			$("#save_fieldvalues_"+mappingno+"_value_type").val("rawtext");
+ 		}
+ 		var functions = {
+ 			string:function(opType, mappingno){
+@@ -232,7 +232,7 @@
+ 			var selectedFieldNames = $(".fieldname");
+ 			result = successResult;
+ 			$.each(selectedFieldNames, function(i, ele) {
+-				var fieldName = $(ele).attr("value");
++				var fieldName = $(ele).val();
+ 				var fields = $("[name="+fieldName+"]");
+ 				if(fields.length > 1) {
+ 					result = failureResult;
+@@ -321,7 +321,7 @@
+ 					fillOptions(fe, fieldLabels);
+ 
+ 
+-					var fullFieldName = fe.attr("value");
++					var fullFieldName = fe.val();
+ 					resetFields(getFieldType(fullFieldName), fullFieldName, mappingno);
+ 
+ 					var re = $("#save_fieldvalues_"+mappingno+"_remove");
+@@ -332,7 +332,7 @@
+ 					fe.bind("change", function(){
+ 						var select = $(this);
+ 						var mappingno = select.attr("id").match(/save_fieldvalues_(\d+)_fieldname/)[1];
+-						var fullFieldName = $(this).attr('value');
++						var fullFieldName = $(this).val();
+ 						resetFields(getFieldType(fullFieldName), fullFieldName, mappingno);
+ 					});
+ 				}
+@@ -342,12 +342,12 @@
+ 					$.each(fieldvaluemapping, function(i, fieldvaluemap){
+ 						var fieldname = fieldvaluemap["fieldname"];
+ 						addFieldValueMapping(mappingno);
+-						$(format("#save_fieldvalues_%s_fieldname", mappingno)).attr("value", fieldname);
++						$(format("#save_fieldvalues_%s_fieldname", mappingno)).val(fieldname);
+ 						resetFields(getFieldType(fieldname), fieldname, mappingno);
+-						$(format("#save_fieldvalues_%s_value_type", mappingno)).attr("value", fieldvaluemap['valuetype']);
++						$(format("#save_fieldvalues_%s_value_type", mappingno)).val(fieldvaluemap['valuetype']);
+ 						$('#dump').html(fieldvaluemap["value"]);
+ 						var text = $('#dump').text();
+-						$(format("#save_fieldvalues_%s_value", mappingno)).attr("value", text);
++						$(format("#save_fieldvalues_%s_value", mappingno)).val(text);
+ 						mappingno+=1;
+ 					});
+ 				}
+@@ -360,9 +360,9 @@
+ 					var validateFieldValues = new Array();
+ 					var fieldvaluemapping = [];
+ 					$("#save_fieldvaluemapping").children().each(function(i){
+-						var fieldname = $(this).children(".fieldname").attr("value");
+-						var type = $(this).children(".type").attr("value");
+-						var value = $(this).children(".expressionvalue").attr("value");
++						var fieldname = $(this).children(".fieldname").val();
++						var type = $(this).children(".type").val();
++						var value = $(this).children(".expressionvalue").val();
+ 						var fieldvaluemap = {
+ 							fieldname:fieldname,
+ 							valuetype:type,
+@@ -379,7 +379,7 @@
+ 					}else{
+ 						var out = JSON.stringify(fieldvaluemapping);
+ 					}
+-					$("#save_fieldvaluemapping_json").attr("value", out);
++					$("#save_fieldvaluemapping_json").val(out);
+ 
+ 					for(var fieldName in validator.validateFieldData) {
+ 						if(validateFieldValues.indexOf(fieldName) < 0) {
+Index: modules/Calendar/addEventUI.php
+===================================================================
+--- modules/Calendar/addEventUI.php	(revisión: 856)
++++ modules/Calendar/addEventUI.php	(copia de trabajo)
+@@ -1118,11 +1118,7 @@
+ $picklistDependencyDSCalendar = Vtiger_DependencyPicklist::getPicklistDependencyDatasource('Calendar');
+ ?>
+ <script type="text/javascript" src="include/js/FieldDependencies.js"></script>
+-<script type="text/javascript" src="modules/com_vtiger_workflow/resources/jquery-1.2.6.js"></script>
+ <script type="text/javascript">
+-	jQuery.noConflict();
+-</script>
+-<script type="text/javascript">
+ 	jQuery(document).ready(function() { 
+ 		<?php if(!empty($picklistDependencyDSEvents)) { ?>
+ 		(new FieldDependencies(<?php echo Zend_Json::encode($picklistDependencyDSEvents) ?>)).init();
+Index: modules/Vtiger/header.php
+===================================================================
+--- modules/Vtiger/header.php	(revisión: 856)
++++ modules/Vtiger/header.php	(copia de trabajo)
+@@ -91,6 +91,11 @@
+ $smarty->assign('HEADERCSS', $COMMONHDRLINKS['HEADERCSS']);
+ // END
+ 
++require_once('modules/evvtMenu/evvtMenu.inc');
++$smarty->assign('KUIDIR', 'modules/evvtMenu/kendoui/');
++$smarty->assign("MENU", getMenuJSON(getMenuArray(0)));
++$smarty->assign("evvtAdminMenu", getAdminevvtMenu());
++
+ // Pass on the version information
+ global $vtiger_current_version;
+ $smarty->assign('VERSION', $vtiger_current_version);
+Index: Smarty/templates/ReportRunContents.tpl
+===================================================================
+--- Smarty/templates/ReportRunContents.tpl	(revisión: 137)
++++ Smarty/templates/ReportRunContents.tpl	(copia de trabajo)
+@@ -11,7 +11,6 @@
+ -->*}
+ 
+ <script language="javascript" type="text/javascript" src="include/scriptaculous/effects.js"></script>
+-<script type='text/javascript' src='include/jquery/jquery-1.6.2.min.js'></script>
+ <script type="text/javascript">
+   jQuery.noConflict();
+ </script>
+Index: Smarty/templates/modules/MailManager/index.tpl
+===================================================================
+--- Smarty/templates/modules/MailManager/index.tpl	(revisión: 165)
++++ Smarty/templates/modules/MailManager/index.tpl	(copia de trabajo)
+@@ -10,7 +10,6 @@
+ <script type='text/javascript' src='include/js/json.js'></script>
+ <script type='text/javascript' src='include/ckeditor/ckeditor.js'></script>
+ 
+-<script type='text/javascript' src='modules/MailManager/resources/jquery-1.6.2.min.js'></script>
+ <script type='text/javascript' src='modules/MailManager/resources/jquery-ui-1.8.16.custom.min.js'></script>
+ <script type='text/javascript'>
+ 	jQuery.noConflict();
+Index: Smarty/templates/modules/Import/ImportError.tpl
+===================================================================
+--- Smarty/templates/modules/Import/ImportError.tpl	(revisión: 165)
++++ Smarty/templates/modules/Import/ImportError.tpl	(copia de trabajo)
+@@ -9,7 +9,6 @@
+  *
+  ********************************************************************************/
+ -->*}
+-<script language="JavaScript" type="text/javascript" src="modules/MailManager/resources/jquery-1.6.2.min.js"></script>
+ <script type="text/javascript" charset="utf-8">
+ 	jQuery.noConflict();
+ </script>
+Index: Smarty/templates/modules/Import/ImportSchedule.tpl
+===================================================================
+--- Smarty/templates/modules/Import/ImportSchedule.tpl	(revisión: 165)
++++ Smarty/templates/modules/Import/ImportSchedule.tpl	(copia de trabajo)
+@@ -9,7 +9,6 @@
+  *
+  ********************************************************************************/
+ -->*}
+-<script language="JavaScript" type="text/javascript" src="modules/MailManager/resources/jquery-1.6.2.min.js"></script>
+ <script type="text/javascript" charset="utf-8">
+ 	jQuery.noConflict();
+ </script>
+Index: Smarty/templates/modules/Import/ImportUndoResult.tpl
+===================================================================
+--- Smarty/templates/modules/Import/ImportUndoResult.tpl	(revisión: 165)
++++ Smarty/templates/modules/Import/ImportUndoResult.tpl	(copia de trabajo)
+@@ -9,7 +9,6 @@
+  *
+  ********************************************************************************/
+ -->*}
+-<script language="JavaScript" type="text/javascript" src="modules/MailManager/resources/jquery-1.6.2.min.js"></script>
+ <script type="text/javascript" charset="utf-8">
+ 	jQuery.noConflict();
+ </script>
+Index: Smarty/templates/modules/Import/ImportAdvanced.tpl
+===================================================================
+--- Smarty/templates/modules/Import/ImportAdvanced.tpl	(revisión: 165)
++++ Smarty/templates/modules/Import/ImportAdvanced.tpl	(copia de trabajo)
+@@ -9,7 +9,6 @@
+  *
+  ********************************************************************************/
+ -->*}
+-<script language="JavaScript" type="text/javascript" src="modules/MailManager/resources/jquery-1.6.2.min.js"></script>
+ <script type="text/javascript" charset="utf-8">
+ 	jQuery.noConflict();
+ </script>
+Index: Smarty/templates/modules/Import/ImportListView.tpl
+===================================================================
+--- Smarty/templates/modules/Import/ImportListView.tpl	(revisión: 165)
++++ Smarty/templates/modules/Import/ImportListView.tpl	(copia de trabajo)
+@@ -14,7 +14,6 @@
+ <script language="JavaScript" type="text/javascript" src="include/js/ListView.js"></script>
+ <script language="JavaScript" type="text/javascript" src="include/js/general.js"></script>
+ <script language="JavaScript" type="text/javascript" src="include/js/vtlib.js"></script>
+-<script language="JavaScript" type="text/javascript" src="modules/MailManager/resources/jquery-1.6.2.min.js"></script>
+ <script type="text/javascript" charset="utf-8">
+ 	jQuery.noConflict();
+ </script>
+Index: Smarty/templates/modules/Import/ImportResult.tpl
+===================================================================
+--- Smarty/templates/modules/Import/ImportResult.tpl	(revisión: 165)
++++ Smarty/templates/modules/Import/ImportResult.tpl	(copia de trabajo)
+@@ -9,7 +9,6 @@
+  *
+  ********************************************************************************/
+ -->*}
+-<script language="JavaScript" type="text/javascript" src="modules/MailManager/resources/jquery-1.6.2.min.js"></script>
+ <script type="text/javascript" charset="utf-8">
+ 	jQuery.noConflict();
+ </script>
+Index: Smarty/templates/modules/Import/ImportBasic.tpl
+===================================================================
+--- Smarty/templates/modules/Import/ImportBasic.tpl	(revisión: 165)
++++ Smarty/templates/modules/Import/ImportBasic.tpl	(copia de trabajo)
+@@ -9,7 +9,6 @@
+  *
+  ********************************************************************************/
+ -->*}
+-<script language="JavaScript" type="text/javascript" src="modules/MailManager/resources/jquery-1.6.2.min.js"></script>
+ <script type="text/javascript" charset="utf-8">
+ 	jQuery.noConflict();
+ </script>
+Index: Smarty/templates/modules/Import/ImportStatus.tpl
+===================================================================
+--- Smarty/templates/modules/Import/ImportStatus.tpl	(revisión: 165)
++++ Smarty/templates/modules/Import/ImportStatus.tpl	(copia de trabajo)
+@@ -9,7 +9,6 @@
+  *
+  ********************************************************************************/
+ -->*}
+-<script language="JavaScript" type="text/javascript" src="modules/MailManager/resources/jquery-1.6.2.min.js"></script>
+ <script type="text/javascript" charset="utf-8">
+ 	jQuery.noConflict();
+ </script>

@@ -899,4 +899,11 @@
 	<classname>addPdoSrvDivisible</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>shpend</author>
+	<description>Lightning design evvtmenu</description>
+	<filename>build/changeSets/ldMenu.php</filename>
+	<classname>ldMenu</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
