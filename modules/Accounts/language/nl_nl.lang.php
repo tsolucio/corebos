@@ -212,8 +212,5 @@ $mod_strings = array(
 	'Is Converted From Lead' => 'Is gemaakt vanuit lead',
 	'Converted From Lead' => 'Gemaakt vanuit lead',
 	'Exact Payment Condition for Account' => 'Exact betalingsconditie voor klant',
-	'' => '#leeg#',
-	'' => '',
-	'' => '',
 );
 ?>
