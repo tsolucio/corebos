@@ -106,7 +106,7 @@ function check_duplicate()
 			<td>
 				<span class="lvtHeaderText">
 				{if $PARENTTAB neq ''}
-				<b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString} </a> &gt; <a href="index.php?module=Administration&action=index&parenttab=Settings">{$MOD.LBL_USERS}</a> &gt; 
+				<b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString} </a> &gt; <a href="index.php?module=Users&action=index&parenttab=Settings">{$MOD.LBL_USERS}</a> &gt;
 					{if $MODE eq 'edit'}
 						{$UMOD.LBL_EDITING} "{$USERNAME}"
 					{else}

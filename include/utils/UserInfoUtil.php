@@ -585,7 +585,7 @@ function _vtisPermitted($module,$actionname,$record_id='') {
 	}
 
 	//Checking the Access for the Settings Module
-	if($module == 'Settings' || $module == 'Administration' || $parenttab == 'Settings')
+	if($module == 'Settings' || $parenttab == 'Settings')
 	{
 		if(! $is_admin)
 		{
@@ -1150,7 +1150,7 @@ function isAllowed_Outlook($module,$action,$user_id,$record_id)
 	$log->debug("Entering isAllowed_Outlook(".$module.",".$action.",".$user_id.",".$record_id.") method ...");
 
 	$permission = "no";
-	if($module == 'Users' || $module == 'Home' || $module == 'Administration' || $module == 'uploads' ||  $module == 'Settings' || $module == 'Calendar')
+	if($module == 'Users' || $module == 'Home' || $module == 'uploads' ||  $module == 'Settings' || $module == 'Calendar')
 	{
 		//These modules done have security
 		$permission = "yes";

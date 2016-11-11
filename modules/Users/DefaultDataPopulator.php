@@ -2515,7 +2515,7 @@ Should any need arise,please do give us a call.';
 			'LBL_LIST_WORKFLOWS_DESCRIPTION',
 			'LBL_MENU_DESC');
 
-		$links = array('index.php?module=Administration&action=index&parenttab=Settings',
+		$links = array('index.php?module=Users&action=index&parenttab=Settings',
 			'index.php?module=Settings&action=listroles&parenttab=Settings',
 			'index.php?module=Settings&action=ListProfiles&parenttab=Settings',
 			'index.php?module=Settings&action=listgroups&parenttab=Settings',
