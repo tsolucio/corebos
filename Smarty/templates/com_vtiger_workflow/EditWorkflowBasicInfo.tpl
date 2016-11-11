@@ -27,7 +27,7 @@
 <table border="0" cellpadding="5" cellspacing="0" width="100%">
 	<tr>
 		<td class="dvtCellLabel" align=right width=20%><b><span style='color:red;'>*</span> {$APP.LBL_UPD_DESC}</b></td>
-		<td class="dvtCellInfo" align="left"><input type="text" class="detailedViewTextBox" name="description" id="save_description" value="{$workflow->description}"></td>
+		<td class="dvtCellInfo" align="left"><input type="text" class="detailedViewTextBox" name="description" id="save_description" value="{$workflow->description}"{if $workflow->executionConditionAsLabel() eq 'MANUAL'} readonly{/if}></td>
 	</tr>
 	<tr>
 		<td class="dvtCellLabel" align=right width=20%><b>{$APP.LBL_MODULE}</b></td>
