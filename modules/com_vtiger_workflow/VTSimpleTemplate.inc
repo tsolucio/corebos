@@ -212,6 +212,25 @@ class VTSimpleTemplate{
 		return $retcm;
 	}
 
+	function getinvitedUsersList($recid) {
+		global $adb;
+		$modulename = $this->parent->getModuleName();
+		if ($modulename!='Events') return '';
+		list($wsid,$activity_id) = explode('x', $recid);
+		$query_user='SELECT vtiger_users.email1 FROM vtiger_salesmanactivityrel inner join vtiger_users on vtiger_users.id=vtiger_salesmanactivityrel.smid where vtiger_salesmanactivityrel.activityid=? and vtiger_users.deleted=0';
+		$user_result = $adb->pquery($query_user, array($activity_id));
+		$ulist = array();
+		while($user_result_row = $adb->fetch_array($user_result)) {
+			if (!in_array($user_result_row['email1'],$ulist)) {
+				$ulist[] = $user_result_row['email1'];
+			}
+		}
+		if (count($ulist)>0) {
+			return implode(',', $ulist);
+		}
+		return '';
+	}
+
 	function getGroupFieldList($groupref,$fieldname) {
 		require_once('include/utils/GetGroupUsers.php');
 		$groupId = getGrpId($groupref);
@@ -339,6 +358,7 @@ class VTSimpleTemplate{
 			case 'supportEmailId'		: return GlobalVariable::getVariable('HelpDesk_Support_EMail','support@your_support_domain.tld','HelpDesk');
 			case 'comments'				: return $this->getComments($numcomm,$srtcomm,$fmtcomm,$fldcomm);
 			case 'groupEmailList'		: return $this->getGroupFieldList($groupname,'email1');
+			case 'Events_Users_Invited'	: return $this->getinvitedUsersList($this->parent->getId());
 			default: '';
 		}
 	}
