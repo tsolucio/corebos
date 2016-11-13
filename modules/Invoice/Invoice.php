@@ -449,7 +449,6 @@ class Invoice extends CRMEntity {
 				$prod_id = $col_value['productid'];
 				$qty = $col_value['quantity'];
 				$update_stock[$col_value['sequence_no']] = $qty;
-				updateStk($prod_id,$qty,'',array(),'Invoice');
 			}
 		}
 
@@ -471,7 +470,6 @@ class Invoice extends CRMEntity {
 				$adb->pquery($query2, array($values));
 				$prod_id = $col_value['productid'];
 				$qty = $update_stock[$col_value['sequence_no']];
-				updateStk($prod_id,$qty,'',array(),'Invoice');
 			}
 		}
 

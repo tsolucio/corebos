@@ -43,6 +43,7 @@ $mod_strings = Array(
 	'PurchaseOrder' => 'Ordenes de Compra',
 	'Products' => 'Productos',
 	'Services' => 'Servicios',
+	'Total Stock' => 'Total Stock',
 
 );
 

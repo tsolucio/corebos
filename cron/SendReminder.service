@@ -13,10 +13,10 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
+require_once('config.inc.php');
 require_once('include/utils/utils.php');
 require_once("modules/Emails/mail.php");
 require_once('include/logging.php');
-require_once("config.php");
 
 $current_user = Users::getActiveAdminUser();
 // Set the default sender email id
@@ -94,35 +94,53 @@ if($adb->num_rows($result) >= 1)
 		//code included for recurring events by jaguar ends
 		$date = new DateTimeField("$date_start $time_start");
 		$activity_time = strtotime($date->getDisplayDateTimeValue())/60;
-
 		if (($activity_time - $curr_time) > 0 && ($activity_time - $curr_time) <= $reminder_time) {
 			$log->debug('Inside REMINDER');
-			$query_user='SELECT vtiger_users.email1,vtiger_salesmanactivityrel.smid FROM vtiger_salesmanactivityrel inner join vtiger_users on vtiger_users.id=vtiger_salesmanactivityrel.smid where vtiger_salesmanactivityrel.activityid=? and vtiger_users.deleted=0';
-			$user_result = $adb->pquery($query_user, array($activity_id));
-			if($adb->num_rows($user_result)>=1) {
-				// Retrieving the Subject and message from reminder table
-				$sql = 'select active,notificationsubject,notificationbody from vtiger_notificationscheduler where schedulednotificationid=8';
-				$result_main = $adb->pquery($sql, array());
-				while($user_result_row = $adb->fetch_array($user_result)) {
-					if($user_result_row['email1']!='' || $user_result_row['email1'] != NULL) {
-						$user_id = $user_result_row['smid'];
-						$reminduser = new Users();
-						$reminduser->retrieveCurrentUserInfoFromFile($user_id);
-						$current_language = $reminduser->column_fields['language'];
-						$app_strings = return_application_language($current_language);
-						$stdatetime = new DateTimeField($result_set['date_start'].' '.$result_set['time_start']);
-						$subject = getTranslatedString('Reminder','Calendar').getTranslatedString($result_set['activitytype'],'Calendar').' @ '.
-							$stdatetime->getDisplayDateTimeValue($reminduser) .'] ('.$reminduser->column_fields['time_zone'].') '.
-							getTranslatedString($adb->query_result($result_main,0,'notificationsubject'),'Calendar');
-
-						//Set the mail body/contents here
-						$contents = nl2br(getTranslatedString($adb->query_result($result_main,0,'notificationbody'),'Calendar')) ."\n\n ".
-							getTranslatedString('Subject','Calendar').' : '.$activity_sub."\n ". $parent_content .' '.
-							getTranslatedString('Date & Time','Calendar').' : '.$stdatetime->getDisplayDateTimeValue($reminduser).' ('. $reminduser->column_fields['time_zone'] .")\n\n ".
-							getTranslatedString('Visit_Link','Calendar')." <a href='".$site_URL."/index.php?action=EventDetailView&module=Calendar4You&record=".$activity_id."&activity_mode=".$activitymode."'>".getTranslatedString('Click here','Calendar').'</a>';
-						$sendto = $user_result_row['email1'];
-						$rdo = send_mail('Calendar',$sendto,$HELPDESK_SUPPORT_NAME,$from,$subject,nl2br($contents));
+			// Retrieving the Subject and message from reminder table
+			$sql = 'select active,notificationsubject,notificationbody from vtiger_notificationscheduler where schedulednotificationid=8';
+			$result_main = $adb->pquery($sql, array());
+			if ($result_main and $adb->num_rows($result_main)) {
+				// vtiger crm notification system still in place
+				$query_user='SELECT vtiger_users.email1,vtiger_salesmanactivityrel.smid FROM vtiger_salesmanactivityrel inner join vtiger_users on vtiger_users.id=vtiger_salesmanactivityrel.smid where vtiger_salesmanactivityrel.activityid=? and vtiger_users.deleted=0';
+				$user_result = $adb->pquery($query_user, array($activity_id));
+				if($adb->num_rows($user_result)>=1) {
+					while($user_result_row = $adb->fetch_array($user_result)) {
+						if($user_result_row['email1']!='' || $user_result_row['email1'] != NULL) {
+							$user_id = $user_result_row['smid'];
+							$reminduser = new Users();
+							$reminduser->retrieveCurrentUserInfoFromFile($user_id);
+							$current_language = $reminduser->column_fields['language'];
+							$app_strings = return_application_language($current_language);
+							$stdatetime = new DateTimeField($result_set['date_start'].' '.$result_set['time_start']);
+							$subject = getTranslatedString('Reminder','Calendar').getTranslatedString($result_set['activitytype'],'Calendar').' @ '.
+								$stdatetime->getDisplayDateTimeValue($reminduser) .'] ('.$reminduser->column_fields['time_zone'].') '.
+								getTranslatedString($adb->query_result($result_main,0,'notificationsubject'),'Calendar');
+							//Set the mail body/contents here
+							$contents = nl2br(getTranslatedString($adb->query_result($result_main,0,'notificationbody'),'Calendar')) ."\n\n ".
+								getTranslatedString('Subject','Calendar').' : '.$activity_sub."\n ". $parent_content .' '.
+								getTranslatedString('Date & Time','Calendar').' : '.$stdatetime->getDisplayDateTimeValue($reminduser).' ('. $reminduser->column_fields['time_zone'] .")\n\n ".
+								getTranslatedString('Visit_Link','Calendar')." <a href='".$site_URL."/index.php?action=EventDetailView&module=Calendar4You&record=".$activity_id."&activity_mode=".$activitymode."'>".getTranslatedString('Click here','Calendar').'</a>';
+							$sendto = $user_result_row['email1'];
+							$rdo = send_mail('Calendar',$sendto,$HELPDESK_SUPPORT_NAME,$from,$subject,nl2br($contents));
+						}
 					}
+				}
+			} else {
+				// coreBOS workflow based notification template
+				$result = $adb->pquery("select * from com_vtiger_workflows where summary='Send Reminder Template' and module_name='Events' limit 1",array());
+				if ($result and $adb->num_rows($result)>0) {
+					$util = new VTWorkflowUtils();
+					$adminUser = $util->adminUser();
+					$entityCache = new VTEntityCache($adminUser);
+					$wfs = new VTWorkflowManager($adb);
+					$workflows = $wfs->getWorkflowsForResult($result);
+					$workflow = reset($workflows);
+					$wsid = vtws_getWebserviceEntityId(($result_set['activitytype'] == 'Task')?'Calendar':'Events', $activity_id);
+					$entityData = $entityCache->forId($wsid);
+					if ($workflow->evaluate($entityCache, $entityData->getId())) {
+						$workflow->performTasks($entityData);
+					}
+					$util->revertUser();
 				}
 			}
 
