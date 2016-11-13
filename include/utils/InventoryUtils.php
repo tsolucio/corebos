@@ -157,15 +157,17 @@ function sendPrdStckMail($product_id,$upd_qty,$prod_name,$qtyinstk,$qty,$module)
 *Param $product_id - product id
 *Returns type numeric
 */
-function getPrdQtyInStck($product_id)
-{
-	global $log;
-	$log->debug("Entering getPrdQtyInStck(".$product_id.") method ...");
-	global $adb;
-	$query1 = "SELECT qtyinstock FROM vtiger_products WHERE productid = ?";
+function getPrdQtyInStck($product_id) {
+	global $log, $adb;
+	$log->debug("Entering getPrdQtyInStck($product_id) method ...");
+	$query1 = 'SELECT qtyinstock FROM vtiger_products WHERE productid = ?';
 	$result=$adb->pquery($query1, array($product_id));
-	$qtyinstck= $adb->query_result($result,0,"qtyinstock");
-	$log->debug("Exiting getPrdQtyInStck method ...");
+	if ($result) {
+		$qtyinstck= $adb->query_result($result,0,'qtyinstock');
+	} else {
+		$qtyinstck= 0;
+	}
+	$log->debug('Exiting getPrdQtyInStck method ...');
 	return $qtyinstck;
 }
 
