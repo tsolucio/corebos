@@ -218,10 +218,10 @@ if(isset($_SESSION["authenticated_user_id"]) && (isset($_SESSION["app_unique_key
 	$use_current_login = true;
 }
 
-$default_action = GlobalVariable::getVariable('Application_Default_Action','index');
-$default_module = GlobalVariable::getVariable('Application_Default_Module','Home');
 // Prevent loading Login again if there is an authenticated user in the session.
 if (isset($_SESSION["authenticated_user_id"]) && $module == 'Users' && $action == 'Login') {
+	$default_action = GlobalVariable::getVariable('Application_Default_Action','index','',$_SESSION["authenticated_user_id"]);
+	$default_module = GlobalVariable::getVariable('Application_Default_Module','Home','',$_SESSION["authenticated_user_id"]);
 	header("Location: index.php?action=$default_action&module=$default_module");
 }
 
@@ -413,6 +413,13 @@ if(isset($action) && isset($module))
 } else {
 	// use $default_module and $default_action as set in config.php
 	// Redirect to the correct module with the correct action.  We need the URI to include these fields.
+	if(isset($_SESSION["authenticated_user_id"])){
+		$userid = $_SESSION["authenticated_user_id"];
+	}else{
+		$userid = 1;
+	}
+	$default_action = GlobalVariable::getVariable('Application_Default_Action','index','',$userid);
+	$default_module = GlobalVariable::getVariable('Application_Default_Module','Home','',$userid);
 	header("Location: index.php?action=$default_action&module=$default_module");
 	exit();
 }
