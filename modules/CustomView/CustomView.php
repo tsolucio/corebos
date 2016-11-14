@@ -125,7 +125,7 @@ class CustomView extends CRMEntity {
 			if ($this->isPermittedCustomView($viewid, $now_action, $this->customviewmodule) != 'yes')
 				$viewid = 0;
 		}
-		$_SESSION['lvs'][$module]["viewname"] = $viewid;
+		coreBOS_Session::set('lvs^'.$module.'^viewname', $viewid);
 		return $viewid;
 	}
 

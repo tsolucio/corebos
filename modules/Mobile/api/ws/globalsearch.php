@@ -93,7 +93,7 @@ if(isset($query_string) && $query_string != ''){
 		$search_onlyin = array();
 	}
 	// Save the selection for futur use (UnifiedSearchModules.php)
-	$_SESSION['__UnifiedSearch_SelectedModules__'] = $search_onlyin;
+	coreBOS_Session::set('__UnifiedSearch_SelectedModules__', $search_onlyin);
 
 	$object_array = getSearchModules($search_onlyin);
 
@@ -214,7 +214,7 @@ if(isset($query_string) && $query_string != ''){
 				$smarty->assign("searchstring", $query_string);
 				$smarty->assign("SEARCH_CRITERIA","( $noofrows )".$search_msg);
 				$smarty->display("UnifiedSearchAjax1.tpl");
-				unset($_SESSION['lvs'][$module]);
+				coreBOS_Session::delete('lvs^'.$module);
 				$i++;
 			}
 		}

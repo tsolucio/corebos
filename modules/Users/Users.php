@@ -138,7 +138,7 @@ class Users extends CRMEntity {
 			$this->user_preferences[$name] = $value;
 			$this->savePreferecesToDB();
 		}
-		$_SESSION[$name] = $value;
+		coreBOS_Session::set($name, $value);
 	}
 
 	/** Function to save the user preferences to db
@@ -149,7 +149,7 @@ class Users extends CRMEntity {
 		$query = "UPDATE $this->table_name SET user_preferences=? where id=?";
 		$result = &$this->db->pquery($query, array($data, $this->id));
 		$this->log->debug("SAVING: PREFERENCES SIZE " . strlen($data) . "ROWS AFFECTED WHILE UPDATING USER PREFERENCES:" . $this->db->getAffectedRowCount($result));
-		$_SESSION["USER_PREFERENCES"] = $this->user_preferences;
+		coreBOS_Session::set('USER_PREFERENCES', $this->user_preferences);
 	}
 
 	/** Function to load the user preferences from db
@@ -161,7 +161,7 @@ class Users extends CRMEntity {
 			$this->user_preferences = unserialize(base64_decode($value));
 			$_SESSION = array_merge($this->user_preferences, $_SESSION);
 			$this->log->debug("Finished Loading");
-			$_SESSION["USER_PREFERENCES"] = $this->user_preferences;
+			coreBOS_Session::set('USER_PREFERENCES', $this->user_preferences);
 		}
 	}
 
@@ -298,9 +298,9 @@ class Users extends CRMEntity {
 		$usr_name = $this->column_fields["user_name"];
 		$maxFailedLoginAttempts = GlobalVariable::getVariable('Application_MaxFailedLoginAttempts', 5, 'Users');
 		if (isset($_SESSION['loginattempts'])) {
-			$_SESSION['loginattempts'] += 1;
+			coreBOS_Session::set('loginattempts',$_SESSION['loginattempts'] + 1);
 		} else {
-			$_SESSION['loginattempts'] = 1;
+			coreBOS_Session::set('loginattempts', 1);
 		}
 		if ($_SESSION['loginattempts'] > $maxFailedLoginAttempts) {
 			$this->log->warn("SECURITY: " . $usr_name . " has attempted to login " . $_SESSION['loginattempts'] . " times.");
@@ -336,7 +336,7 @@ class Users extends CRMEntity {
 				if (!in_array($_SERVER['REMOTE_ADDR'],$admin_ip_addresses)) {
 					$row['status'] = 'Inactive';
 					$this->authenticated = false;
-					$_SESSION['login_error'] = getTranslatedString('ERR_INVALID_ADMINIPLOGIN','Users');
+					coreBOS_Session::set('login_error', getTranslatedString('ERR_INVALID_ADMINIPLOGIN','Users'));
 					$mailsubject = "[Security Alert]: Admin login attempt rejected for login: $usr_name from external IP: " . $_SERVER['REMOTE_ADDR'];
 					$this->log->warn($mailsubject);
 					// Send email with authentification error.
@@ -356,7 +356,7 @@ class Users extends CRMEntity {
 			$this->authenticated = true;
 		}
 
-		unset($_SESSION['loginattempts']);
+		coreBOS_Session::delete('loginattempts');
 		return $this;
 	}
 
@@ -610,8 +610,8 @@ class Users extends CRMEntity {
 		}
 		require_once ('modules/Users/CreateUserPrivilegeFile.php');
 		createUserPrivilegesfile($this->id);
-		unset($_SESSION['next_reminder_interval']);
-		unset($_SESSION['next_reminder_time']);
+		coreBOS_Session::delete('next_reminder_interval');
+		coreBOS_Session::delete('next_reminder_time');
 		if ($insertion_mode != 'edit') {
 			$this->createAccessKey();
 		}
@@ -735,7 +735,7 @@ class Users extends CRMEntity {
 					}
 				}
 				if ($current_user->id == $this->id) {
-					$_SESSION['vtiger_authenticated_user_theme'] = $fldvalue;
+					coreBOS_Session::set('vtiger_authenticated_user_theme', $fldvalue);
 				}
 			} elseif ($uitype == 32) {
 				$languageList = Vtiger_Language::getAll();
@@ -749,7 +749,7 @@ class Users extends CRMEntity {
 					}
 				}
 				if ($current_user->id == $this->id) {
-					$_SESSION['authenticated_user_language'] = $fldvalue;
+					coreBOS_Session::set('authenticated_user_language', $fldvalue);
 				}
 			}
 			if ($fldvalue == '') {
@@ -1212,8 +1212,8 @@ class Users extends CRMEntity {
 	function resetReminderInterval($prev_reminder_interval) {
 		global $adb;
 		if ($prev_reminder_interval != $this->column_fields['reminder_interval']) {
-			unset($_SESSION['next_reminder_interval']);
-			unset($_SESSION['next_reminder_time']);
+			coreBOS_Session::delete('next_reminder_interval');
+			coreBOS_Session::delete('next_reminder_time');
 			$set_reminder_next = date('Y-m-d H:i');
 			$adb->pquery("UPDATE vtiger_users SET reminder_next_time=? WHERE id=?", array($set_reminder_next, $this->id));
 		}

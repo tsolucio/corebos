@@ -119,9 +119,8 @@ class Mobile_UI_ListModuleRecords extends Mobile_WS_ListModuleRecords {
 					$search_onlyin = $displayed_modules;
 				}
 				// Save the selection for future use (UnifiedSearchModules.php)
-				$_SESSION['__UnifiedSearch_SelectedModules__'] = $search_onlyin;
-				// END
-		
+				coreBOS_Session::set('__UnifiedSearch_SelectedModules__', $search_onlyin);
+
 				$object_array = getSearchModules($search_onlyin);
 				$search_val = $query_string;
 				$search_module = $_REQUEST['search_module'];

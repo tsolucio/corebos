@@ -28,7 +28,7 @@ if (isset($_REQUEST['search_onlyin'])) {
 		$search_onlyin = array();
 	}
 	// Save the selection for future use (UnifiedSearchModules.php)
-	$_SESSION['__UnifiedSearch_SelectedModules__'] = $search_onlyin;
+	coreBOS_Session::set('__UnifiedSearch_SelectedModules__', $search_onlyin);
 	if (count($search_onlyin)>0) {
 		// we save this users preferences in a global variable
 		global $current_user, $adb;

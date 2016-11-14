@@ -177,9 +177,9 @@ class coreBOS_Session {
 		session_start();
 		if (count($keyparts)==1) {
 			if (is_null($sespos)) {
-				unset($_SESSION[$key]);
+				if (isset($_SESSION[$key])) unset($_SESSION[$key]);
 			} else {
-				unset($sespos[$key]);
+				if (isset($sespos[$key])) unset($sespos[$key]);
 			}
 		} else {
 			$key = substr($key, strpos($key,'^')+1);

@@ -53,24 +53,24 @@ if($norows  > 0){
 $smarty->assign("USERNODELETE",$userid);
 
 if(!$_SESSION['lvs'][$currentModule]) {
-	unset($_SESSION['lvs']);
+	coreBOS_Session::delete('lvs');
 	$modObj = new ListViewSession();
 	$modObj->sorder = $sorder;
 	$modObj->sortby = $order_by;
-	$_SESSION['lvs'][$currentModule] = get_object_vars($modObj);
+	coreBOS_Session::set('lvs^'.$currentModule, get_object_vars($modObj));
 }
 
 if($_REQUEST['sorder'] !='')
 	$sorder = $adb->sql_escape_string($_REQUEST['sorder']);
 else
 	$sorder = $focus->getSortOrder();
-$_SESSION['USERS_SORT_ORDER'] = $sorder;
+coreBOS_Session::set('USERS_SORT_ORDER', $sorder);
 
 if($_REQUEST['order_by'] != '')
 	$order_by = $adb->sql_escape_string($_REQUEST['order_by']);
 else
 	$order_by = $focus->getOrderBy();
-$_SESSION['USERS_ORDER_BY'] = $order_by;
+coreBOS_Session::set('USERS_ORDER_BY', $order_by);
 
 if(!empty($order_by)){
 	$list_query .= ' ORDER BY '.$order_by.' '.$sorder;

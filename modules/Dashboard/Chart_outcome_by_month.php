@@ -1,22 +1,12 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the 
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________.
  ********************************************************************************/
-/*********************************************************************************
- * $Header$
- * Description:  returns HTML for client-side image map.
- ********************************************************************************/
-
 require_once('include/utils/utils.php');
 require_once('include/logging.php');
 require_once("modules/Potentials/Charts.php");
@@ -41,16 +31,16 @@ $datax = array();
 //added to fix the issue4307
 if(isset($_REQUEST['obm_date_start']) && $_REQUEST['obm_date_start'] == '')
 {
-	$_SESSION['obm_date_start'] = ""; 
+	coreBOS_Session::set('obm_date_start', '');
 }
 elseif(isset($_REQUEST['obm_date_start']) && $_REQUEST['obm_date_start'] != '')
-	$_SESSION['obm_date_start'] = $_REQUEST['obm_date_start'];
+	coreBOS_Session::set('obm_date_start', $_REQUEST['obm_date_start']);
 if(isset($_REQUEST['obm_date_end']) && $_REQUEST['obm_date_end'] == '')
 {
-	$_SESSION['obm_date_end'] = ""; 
+	coreBOS_Session::set('obm_date_end', '');
 }
 elseif(isset($_REQUEST['obm_date_end']) && $_REQUEST['obm_date_end'] != '')
-	$_SESSION['obm_date_end'] = $_REQUEST['obm_date_end'];
+	coreBOS_Session::set('obm_date_end', $_REQUEST['obm_date_end']);
 if (isset($_SESSION['obm_date_start']) && $_SESSION['obm_date_start'] != '' && !isset($_REQUEST['obm_date_start'])) {
 	$date_start = $_SESSION['obm_date_start'];
 	$log->debug("_SESSION['obm_date_start'] is:");

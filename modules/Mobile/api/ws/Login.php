@@ -44,8 +44,8 @@ class Mobile_WS_Login extends Mobile_WS_Controller {
 
 			$current_user->id = $current_user->retrieve_user_id($username);
 			$this->setActiveUser($current_user);
-			$_SESSION["authenticated_user_id"]=$current_user->id;
-			$_SESSION["app_unique_key"]=$application_unique_key;
+			coreBOS_Session::set('authenticated_user_id', $current_user->id);
+			coreBOS_Session::set('app_unique_key', $application_unique_key);
 			$result = array();
 			$result['login'] = array(
 				'userid' => $current_user->id,

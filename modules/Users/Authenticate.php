@@ -47,12 +47,12 @@ if($focus->is_authenticated())
 	createUserPrivilegesfile($focus->id);
 
 	//Security related entries end
-	unset($_SESSION['login_password']);
-	unset($_SESSION['login_error']);
-	unset($_SESSION['login_user_name']);
+	coreBOS_Session::delete('login_password');
+	coreBOS_Session::delete('login_error');
+	coreBOS_Session::delete('login_user_name');
 
-	$_SESSION['authenticated_user_id'] = $focus->id;
-	$_SESSION['app_unique_key'] = $application_unique_key;
+	coreBOS_Session::set('authenticated_user_id', $focus->id);
+	coreBOS_Session::set('app_unique_key', $application_unique_key);
 
 	//Enabled session variable for KCFINDER
 	coreBOS_Session::setKCFinderVariables();
@@ -71,8 +71,8 @@ if($focus->is_authenticated())
 		$authenticated_user_language = $default_language;
 	}
 
-	$_SESSION['vtiger_authenticated_user_theme'] = $authenticated_user_theme;
-	$_SESSION['authenticated_user_language'] = $authenticated_user_language;
+	coreBOS_Session::set('vtiger_authenticated_user_theme', $authenticated_user_theme);
+	coreBOS_Session::set('authenticated_user_language', $authenticated_user_language);
 
 	$log->debug("authenticated_user_theme is $authenticated_user_theme");
 	$log->debug("authenticated_user_language is $authenticated_user_language");
@@ -110,10 +110,10 @@ else
 	// Increment number of failed login attempts
 	$query = 'UPDATE vtiger_users SET failed_login_attempts=COALESCE(failed_login_attempts,0)+1 where user_name=?';
 	$adb->pquery($query, array($focus->column_fields['user_name']));
-	$_SESSION['login_user_name'] = $focus->column_fields["user_name"];
-	$_SESSION['login_password'] = $user_password;
+	coreBOS_Session::set('login_user_name', $focus->column_fields["user_name"]);
+	coreBOS_Session::set('login_password', $user_password);
 	if (empty($_SESSION['login_error'])) {
-		$_SESSION['login_error'] = ($failed_login_attempts>=$maxFailedLoginAttempts ? $mod_strings['ERR_MAXLOGINATTEMPTS'] : $mod_strings['ERR_INVALID_PASSWORD']);
+		coreBOS_Session::set('login_error', ($failed_login_attempts>=$maxFailedLoginAttempts ? $mod_strings['ERR_MAXLOGINATTEMPTS'] : $mod_strings['ERR_INVALID_PASSWORD']));
 	}
 	cbEventHandler::do_action('corebos.audit.login.attempt',array(0, $focus->column_fields["user_name"], 'Login Attempt', 0, date('Y-m-d H:i:s')));
 	// go back to the login screen.

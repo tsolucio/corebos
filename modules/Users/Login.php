@@ -37,7 +37,7 @@ else
 	{
 		$login_user_name = $default_user_name;
 	}
-	$_session['login_user_name'] = $login_user_name;
+	coreBOS_Session::set('login_user_name', $login_user_name);
 }
 
 $current_module_strings['VLD_ERROR'] = base64_decode('UGxlYXNlIHJlcGxhY2UgdGhlIFN1Z2FyQ1JNIGxvZ29zLg==');
@@ -50,7 +50,7 @@ if(isset($_SESSION["login_password"]))
 else
 {
 	$login_password = $default_password;
-	$_session['login_password'] = $login_password;
+	coreBOS_Session::set('login_password', $login_password);
 }
 
 if(isset($_SESSION["login_error"]))
