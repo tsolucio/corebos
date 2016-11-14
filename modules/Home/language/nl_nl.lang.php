@@ -73,7 +73,6 @@ $mod_strings = Array(
 'Last Ten Days'=>'Afgelopen 10 Dagen',
 
 // Added/Updated for vtiger CRM 5.0.4 
-'TITLE_AJAX_CSS_POPUP_CHAT'=>'Chatkanaal',
 'User List'=>'Gebruikerslijst',
 
 // Added after 5.0.4 GA

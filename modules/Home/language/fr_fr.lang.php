@@ -40,7 +40,6 @@ $mod_strings = array (
 	'Last 2 Days' => 'Les 2 derniers jours',
 	'Last Ten Days' => 'Les 10 derniers jours',
 	
-	'TITLE_AJAX_CSS_POPUP_CHAT' => 'Chat en ligne',
 	'User List' => 'Liste des utilisateurs',
 	
 	'LBL_HOME_MODULE' => 'Module',

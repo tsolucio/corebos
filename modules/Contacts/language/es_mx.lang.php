@@ -223,10 +223,6 @@ $mod_strings = array (
 'We suggest you to change your password after logging in first time'=>'Le sugerimos que cambie la contraseña al identificarse por primera vez',
 'Support Team'=>'El Equipo de Soporte Técnico',
 
-'TITLE_AJAX_CSS_POPUP_CHAT'=>'Chat',
-
-// Added after 5.0.4 GA
-
 // Module Sequence Numbering
 'Contact Id' => 'Nº Contacto',
 // END

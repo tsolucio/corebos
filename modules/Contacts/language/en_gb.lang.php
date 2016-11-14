@@ -188,7 +188,6 @@ $mod_strings = array(
 	'Note :' => 'Note: ',
 	'We suggest you to change your password after loggi' => 'We suggest you to change your password after logging in first time.',
 	'Support Team' => 'Support Team',
-	'TITLE_AJAX_CSS_POPUP_CHAT' => 'Ajax Css-Popup chat',
 	'Contact Id' => 'Contact No.',
 	'Secondary Email' => 'Secondary Email',
 	'Contacts ID' => 'Contacts ID',

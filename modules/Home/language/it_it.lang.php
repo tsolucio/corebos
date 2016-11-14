@@ -58,7 +58,6 @@ $mod_strings = array (
   'Last 2 Days' => 'Ultimi Due Giorni',
   'Last Ten Days' => 'Ultimi Dieci Giorni',
 
-  'TITLE_AJAX_CSS_POPUP_CHAT' => 'Chat (ajax popup)',
   'User List' => 'Lista Utenti',
 
 'LBL_HOME_MODULE' => 'Modulo',

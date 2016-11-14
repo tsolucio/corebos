@@ -188,7 +188,6 @@ $mod_strings = array (
 		'Note :' => 'Note :',
 		'We suggest you to change your password after logging in first time' => 'Nous vous suggérons de modifier votre mot de passe dès votre première connexion.',
 		'Support Team' => 'L\'équipe support',
-		'TITLE_AJAX_CSS_POPUP_CHAT' => 'Chat',
 		'LBL_DUPLICATE_DATA_IN' => 'Dupliquer ',
 		'LBL_DELETE' => 'Supprimer',
 		'LBL_MERGE_SELECT' => 'Fusionner la sélection',

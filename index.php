@@ -314,7 +314,6 @@ if(isset($action) && isset($module))
 		preg_match("/^imap_general/",$action) ||
 		preg_match("/^mime/",$action) ||
 		preg_match("/^download/",$action) ||
-		preg_match("/^about_us/",$action) ||
 		preg_match("/^SendMailAction/",$action) ||
 		preg_match("/^CreateXL/",$action) ||
 		preg_match("/^savetermsandconditions/",$action) ||
@@ -322,11 +321,8 @@ if(isset($action) && isset($module))
 		preg_match("/^ConvertAsFAQ/",$action) ||
 		preg_match("/^".$module."Ajax/",$action) ||
 		preg_match("/^ActivityAjax/",$action) ||
-		preg_match("/^chat/",$action) ||
-		preg_match("/^vtchat/",$action) ||
 		preg_match("/^updateCalendarSharing/",$action) ||
 		preg_match("/^disable_sharing/",$action) ||
-		preg_match("/^HeadLines/",$action) ||
 		preg_match("/^TodoSave/",$action) ||
 		preg_match("/^RecalculateSharingRules/",$action) ||
 		(preg_match("/^body/",$action) && preg_match("/^Webmails/",$module)) ||
@@ -351,11 +347,8 @@ if(isset($action) && isset($module))
 			preg_match("/^downloadfile/", $action) ||
 			preg_match("/^fieldtypes/",$action) ||
 			preg_match("/^lookupemailtemplate/",$action) ||
-			preg_match("/^about_us/",$action) ||
 			preg_match("/^home_rss/",$action) ||
 			preg_match("/^".$module."Ajax/",$action) ||
-			preg_match("/^chat/",$action) ||
-			preg_match("/^vtchat/",$action) ||
 			preg_match("/^massdelete/", $action) ||
 			preg_match("/^mailmergedownloadfile/",$action) ||
 			preg_match("/^get_img/",$action) ||
@@ -451,9 +444,7 @@ if($use_current_login)
 	require_once('user_privileges/audit_trail.php');
 	/* Skip audit trail log for special request types */
 	$skip_auditing = false;
-	if($action == 'chat') {
-		$skip_auditing = true;
-	} else if(($action == 'ActivityReminderCallbackAjax' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'ActivityReminderCallbackAjax')) && $module == 'Calendar') {
+	if(($action == 'ActivityReminderCallbackAjax' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'ActivityReminderCallbackAjax')) && $module == 'Calendar') {
 		$skip_auditing = true;
 	} else if(($action == 'TraceIncomingCall' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'TraceIncomingCall')) && $module == 'PBXManager') {
 		$skip_auditing = true;
@@ -687,7 +678,7 @@ if(isset($_SESSION['vtiger_authenticated_user_theme']) && $_SESSION['vtiger_auth
 $Ajx_module= $module;
 if($module == 'Events')
 	$Ajx_module = 'Calendar';
-if((!$viewAttachment) && (!$viewAttachment && $action != 'home_rss') && $action != $Ajx_module."Ajax" && $action != "chat" && $action != "HeadLines" && $action != 'massdelete' && $action != "DashboardAjax" && $action != "ActivityAjax")
+if((!$viewAttachment) && (!$viewAttachment && $action != 'home_rss') && $action != $Ajx_module."Ajax" && $action != 'massdelete' && $action != "DashboardAjax" && $action != "ActivityAjax")
 {
 	// Under the SPL you do not have the right to remove this copyright statement.
 	$copyrightstatement="<style>
@@ -706,7 +697,7 @@ if((!$viewAttachment) && (!$viewAttachment && $action != 'home_rss') && $action 
 	}
 	</style>";
 
-	if((!$skipFooters) && $action != "about_us" && $action != "vtchat" && $action != "ChangePassword" && $action != "body" && $action != $module."Ajax" && $action!='Popup' && $action != 'ImportStep3' && $action != 'ActivityAjax' && $action != 'getListOfRecords') {
+	if((!$skipFooters) && $action != "ChangePassword" && $action != "body" && $action != $module."Ajax" && $action!='Popup' && $action != 'ImportStep3' && $action != 'ActivityAjax' && $action != 'getListOfRecords') {
 		echo $copyrightstatement;
 		cbEventHandler::do_action('corebos.footer.prefooter');
 		$coreBOS_uiapp_name = GlobalVariable::getVariable('Application_UI_Name',$coreBOS_app_name);
