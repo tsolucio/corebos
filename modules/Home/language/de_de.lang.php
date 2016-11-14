@@ -55,7 +55,6 @@ $mod_strings = Array(
     'Last Ten Days'=>'letzte 10 Tage',
 
     // Added/Updated for vtiger CRM 5.0.4
-    'TITLE_AJAX_CSS_POPUP_CHAT'=>'Chat',
     'User List'=>'Benutzerliste',
 
     // Added after 5.0.4 GA

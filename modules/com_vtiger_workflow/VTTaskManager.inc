@@ -203,6 +203,7 @@
 				'LBL_HELPDESK_SUPPORT_EMAILID' => '(general : (__VtigerMeta__) supportEmailId)',
 				'Comments' => '(general : (__VtigerMeta__) comments)',
 				'groupEmailList' => '(general : (__VtigerMeta__) groupEmailList_Put_Group_Name_Here)',
+				'invitedUsers' => '(general : (__VtigerMeta__) Events_Users_Invited)',
 			);
 		}
 

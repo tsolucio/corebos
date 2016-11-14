@@ -612,7 +612,8 @@ function getAllModulesWithDateTimeFields() {
 		$sqlmods = 'SELECT distinct cbfld.tabid,vtiger_tab.name
 			FROM vtiger_field as cbfld
 			INNER JOIN vtiger_tab on cbfld.tabid = vtiger_tab.tabid
-			WHERE vtiger_tab.presence=0 and vtiger_tab.isentitytype=1 and uitype=5';
+			WHERE vtiger_tab.presence=0 and vtiger_tab.isentitytype=1 and uitype=14 and
+				exists (select 1 from vtiger_field where vtiger_field.tabid = cbfld.tabid and uitype=5)';
 		$params = array();
 	} else {
 		$sqlmods = '';

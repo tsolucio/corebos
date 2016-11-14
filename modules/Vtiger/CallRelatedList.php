@@ -82,7 +82,7 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 		$rel_array = getRelatedLists($currentModule, $focus, $restrictedRelations);
 		foreach ($rltabs['panes'][$_RelatedPane]['blocks'] as $blk) {
 			if ($blk['type']=='RelatedList') {
-				$related_array[$blk['loadfrom']] = $rel_array[$blk['loadfrom']];
+				$related_array[$blk['loadfrom']] = empty($rel_array[$blk['loadfrom']]) ? $rel_array[$blk['label']] : $rel_array[$blk['loadfrom']];
 			} else {
 				if (!empty($blk['loadphp'])) {
 					try {

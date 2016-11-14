@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2014 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Copyright 2015 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
 * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
 * file except in compliance with the License. You can redistribute it and/or modify it
 * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
@@ -14,25 +14,21 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 
-class fixIssuecardsCurrencyFieldsBlock extends cbupdaterWorker {
+class delvtChatTables extends cbupdaterWorker {
 
 	function applyChange() {
 		if ($this->hasError()) $this->sendError();
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$module = 'Issuecards';
-			if ($this->isModuleInstalled($module)) {
-				global $adb;
-				$package = new Vtiger_Package();
-				$IssuecarId = getTabid($module);
-				$correct_block = $adb->run_query_field("SELECT blockid FROM vtiger_blocks WHERE tabid = ".$IssuecarId." AND blocklabel = 'LBL_ISSUECARDS_INFO'",'blockid');
-				$bad_block = $adb->run_query_field("SELECT blockid FROM vtiger_blocks WHERE tabid = ".$IssuecarId." AND blocklabel = 'LBL_RELATED_PRODUCTS'",'blockid');
-				$this->ExecuteQuery("UPDATE vtiger_field SET block = ? WHERE block = ? AND tabid = ?",array($correct_block,$bad_block,$IssuecarId));
-			}
+			$this->ExecuteQuery('DROP TABLE vtiger_chat_msg');
+			$this->ExecuteQuery('DROP TABLE vtiger_chat_pchat');
+			$this->ExecuteQuery('DROP TABLE vtiger_chat_pvchat');
+			$this->ExecuteQuery('DROP TABLE vtiger_chat_users');
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied();
+			$this->markApplied(false);
 		}
 		$this->finishExecution();
 	}
+
 }

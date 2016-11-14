@@ -194,7 +194,6 @@ $mod_strings = array(
 	'Note :' => 'Megjegyzés :',
 	'We suggest you to change your password after loggi' => 'Javasoljuk, hogy cserélje a jelszavát az első belépést követően.',
 	'Support Team' => 'Ügyfélszolgálat',
-	'TITLE_AJAX_CSS_POPUP_CHAT' => 'Azonnali üzenetküldő (chat)',
 	'Contact Id' => 'Kapcsolat No.',
 	'Secondary Email' => 'Másodlagos E-mail',
 	'Contacts ID' => 'Kapcsolat AZ',

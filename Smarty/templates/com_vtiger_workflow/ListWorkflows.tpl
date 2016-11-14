@@ -125,7 +125,7 @@
 						style="cursor: pointer;" id="expressionlist_editlink_{$workflow->id}"
 						src="{'editfield.gif'|@vtiger_imageurl:$THEME}"/>
 				</a>
-				{if $workflow->defaultworkflow neq '1'}
+				{if $workflow->defaultworkflow neq '1' && $workflow->executionConditionAsLabel() neq 'MANUAL'}
 				<a href="{$module->deleteWorkflowUrl($workflow->id)}" onclick="return confirm('{$APP.SURE_TO_DELETE}');">
 					<img border="0" title="{'LBL_DELETE'|@getTranslatedString}" alt="{'LBL_DELETE'|@getTranslatedString}"
 			 			src="{'delete.gif'|@vtiger_imageurl:$THEME}"

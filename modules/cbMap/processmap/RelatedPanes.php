@@ -104,10 +104,12 @@ class RelatedPanes extends processcbMap {
 					$block['loadfrom'] = (String)$value->loadfrom;
 					$block['loadphp'] = (isset($value->loadphp) ? (String)$value->loadphp : '');
 					if ($block['type']=='RelatedList') {
+						if (is_numeric($tid) and !vtlib_isModuleActive($block['loadfrom'])) continue;
 						$rels = $this->getRelationIds($origintab,$block['loadfrom']);
 						$block['relatedid'] = $rels[$block['loadfrom']];
+						$tid=getTabid($block['loadfrom']);
 						if (empty($block['label'])) $block['label'] = getTranslatedString($block['loadfrom'],$block['loadfrom']);
-						$restrictedRelations[] = $rels[$block['loadfrom']];
+						if (!empty($rels[$block['loadfrom']])) $restrictedRelations[] = $rels[$block['loadfrom']];
 					} elseif ($block['type']=='Widget') {
 						$instance = new Vtiger_Link();
 						$row['tabid'] = $origintab;

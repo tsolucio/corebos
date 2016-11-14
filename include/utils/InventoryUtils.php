@@ -54,118 +54,21 @@ function getProductDetailsBlockInfo($mode,$module,$focus='',$num_of_products='',
 	return $productBlock;
 }
 
-/**
- * This function updates the stock information once the product is ordered.
- * Param $productid - product id
- * Param $qty - product quantity in no's
- * Param $mode - mode type
- * Param $ext_prod_arr - existing products ** NOT USED: empty **
- * Param $module - module name
- * return type void
- */
-function updateStk($product_id,$qty,$mode,$ext_prod_arr,$module)
-{
-	global $log, $adb, $current_user;
-	$log->debug("Entering updateStk($product_id,$qty,$mode,$module) method ...");
-
-	$prod_name = getProductName($product_id);
-	$qtyinstk= getPrdQtyInStck($product_id);
-	$log->debug("Prd Qty in Stock ".$qtyinstk);
-
-	$upd_qty = $qtyinstk-$qty;
-	sendPrdStckMail($product_id,$upd_qty,$prod_name,$qtyinstk,$qty,$module);
-
-	$log->debug("Exiting updateStk method ...");
-}
-
-/**
- * This function sends a mail to the handler whenever the product reaches the reorder level.
- * Param $product_id - product id
- * Param $upd_qty - updated product quantity in no's
- * Param $prod_name - product name
- * Param $qtyinstk - quantity in stock
- * Param $qty - quantity
- * Param $module - module name
- * return type void
- */
-function sendPrdStckMail($product_id,$upd_qty,$prod_name,$qtyinstk,$qty,$module)
-{
-	global $log, $current_user, $adb;
-	$log->debug("Entering sendPrdStckMail(".$product_id.",".$upd_qty.",".$prod_name.",".$qtyinstk.",".$qty.",".$module.") method ...");
-	$reorderlevel = getPrdReOrderLevel($product_id);
-	$log->debug("Inside sendPrdStckMail function, module=".$module);
-	$log->debug("Prd reorder level ".$reorderlevel);
-	if($upd_qty < $reorderlevel)
-	{
-		//send mail to the handler
-		$handler = getRecordOwnerId($product_id);
-		$handlervals = array_values($handler);
-		$handlerid = array_shift($handlervals);
-		$handler_name = getOwnerName($handlerid);
-		if(vtws_isRecordOwnerUser($handler)) {
-			$to_address = getUserEmail($handler);
-		} else {
-			$to_address = implode(',', getDefaultAssigneeEmailIds($handler));
-		}
-
-		//Get the email details from database;
-		if($module == 'SalesOrder')
-		{
-			$notification_table = 'SalesOrderNotification';
-			$quan_name = '{SOQUANTITY}';
-		}
-		if($module == 'Quotes')
-		{
-			$notification_table = 'QuoteNotification';
-			$quan_name = '{QUOTEQUANTITY}';
-		}
-		if($module == 'Invoice')
-		{
-			$notification_table = 'InvoiceNotification';
-		}
-		$query = "select * from vtiger_inventorynotification where notificationname=?";
-		$result = $adb->pquery($query, array($notification_table));
-
-		$subject = $adb->query_result($result,0,'notificationsubject');
-		$body = $adb->query_result($result,0,'notificationbody');
-		$status = $adb->query_result($result,0,'status');
-
-		if($status == 0 || $status == '')
-				return false;
-
-		$subject = str_replace('{PRODUCTNAME}',$prod_name,$subject);
-		$body = str_replace('{HANDLER}',$handler_name,$body);
-		$body = str_replace('{PRODUCTNAME}',$prod_name,$body);
-		if($module == 'Invoice')
-		{
-			$body = str_replace('{CURRENTSTOCK}',$upd_qty,$body);
-			$body = str_replace('{REORDERLEVELVALUE}',$reorderlevel,$body);
-		}
-		else
-		{
-			$body = str_replace('{CURRENTSTOCK}',$qtyinstk,$body);
-			$body = str_replace($quan_name,$qty,$body);
-		}
-		$body = str_replace('{CURRENTUSER}',$current_user->user_name,$body);
-
-		$mail_status = send_mail($module,$to_address,$current_user->user_name,$current_user->email1,decode_html($subject),nl2br(to_html($body)));
-	}
-	$log->debug("Exiting sendPrdStckMail method ...");
-}
-
 /**This function is used to get the quantity in stock of a given product
 *Param $product_id - product id
 *Returns type numeric
 */
-function getPrdQtyInStck($product_id)
-{
-	global $log;
-	$log->debug("Entering getPrdQtyInStck(".$product_id.") method ...");
-	global $adb;
-	$query1 = "SELECT qtyinstock FROM vtiger_products WHERE productid = ?";
+function getPrdQtyInStck($product_id) {
+	global $log, $adb;
+	$log->debug("Entering getPrdQtyInStck($product_id) method ...");
+	$query1 = 'SELECT qtyinstock FROM vtiger_products WHERE productid = ?';
 	$result=$adb->pquery($query1, array($product_id));
-	$qtyinstck= $adb->query_result($result,0,"qtyinstock");
-	$log->debug("Exiting getPrdQtyInStck method ...");
+	if ($result) {
+		$qtyinstck= $adb->query_result($result,0,'qtyinstock');
+	} else {
+		$qtyinstck= 0;
+	}
+	$log->debug('Exiting getPrdQtyInStck method ...');
 	return $qtyinstck;
 }
 
@@ -630,12 +533,6 @@ function saveInventoryProductDetails(&$focus, $module, $update_prod_stock='false
 			}
 		}
 		$prod_seq++;
-
-		if($module != 'PurchaseOrder')
-		{
-			//update the stock with existing details
-			updateStk($prod_id,$qty,$focus->mode,array(),$module);
-		}
 
 		//we should update discount and tax details
 		$updatequery = "update vtiger_inventoryproductrel set ";

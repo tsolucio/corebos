@@ -892,4 +892,32 @@
 	<classname>fixIssuecardsCurrencyFieldsBlock</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Divisible checkbox to product and service</description>
+	<filename>build/changeSets/addPdoSrvDivisible.php</filename>
+	<classname>addPdoSrvDivisible</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete Administration directory (obsolete code)</description>
+	<filename>build/changeSets/delAdministration.php</filename>
+	<classname>delAdministration</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete Settings Notifications (moved to workflow)</description>
+	<filename>build/changeSets/delSettingsNotifications.php</filename>
+	<classname>delSettingsNotifications</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete chat functionality tables</description>
+	<filename>build/changeSets/delvtChatTables.php</filename>
+	<classname>delvtChatTables</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

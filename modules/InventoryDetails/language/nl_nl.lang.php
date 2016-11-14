@@ -40,5 +40,6 @@ $mod_strings = array(
 	'Assigned To' => 'Toegewezen aan',
 	'Created Time' => 'Gemaakt op',
 	'Modified Time' => 'Gewijzigd op',
+	'Total Stock' => 'Total Stock',
 );
 ?>

@@ -8,7 +8,7 @@
  * All Rights Reserved.
  *************************************************************************************/
 
-if (!isset($_REQUEST['step'])) {
+if (!isset($_REQUEST['step']) and !isset($_REQUEST['mode'])) {
 	echo '<br><br>';
 	$smarty = new vtigerCRM_Smarty();
 	$smarty->assign('ERROR_MESSAGE_CLASS', 'cb-alert-info');

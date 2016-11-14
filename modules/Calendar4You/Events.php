@@ -330,7 +330,7 @@ foreach($Users_Ids AS $userid) {
 					$stfst = date('Y',$start_time).'-'.substr($stfst, 6);
 					$stfed = date('Y',$start_time).'-'.substr($stfed, 6);
 				}
-				if (in_array($activitytypeid,$timeModules)) {
+				if (in_array($activitytypeid,$timeModules) && !empty($stfields['stime'])) {
 					$stfst = $stfst . ' ' . $row[$stfields['stime']];
 					$stfed = $stfed . ' ' . $row[$stfields['etime']];
 					$allDay = false;

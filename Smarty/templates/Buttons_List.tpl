@@ -50,7 +50,7 @@
 		</td>
 		<td style="width:20px;" class="LB_Divider">&nbsp;</td>
 		<td class="small">
-			<!-- Calendar Clock Calculator and Chat -->
+			<!-- Calendar, Clock and Calculator -->
 				<table border=0 cellspacing=0 cellpadding=5>
 				<tr>
 					{if $CALENDAR_DISPLAY eq 'true'}

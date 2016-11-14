@@ -5,7 +5,6 @@
 *  Version      : 5.3.0 
 *  License      : GPL
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
-
 ***********************************************************/
 
 $mod_strings = Array (
@@ -16,6 +15,7 @@ $mod_strings = Array (
 	'LBL_TOOLTIP_HELP_TEXT'=>'Sélectionnez les champs pour lesquels vous voulez ajouter des infobulles',
 	'LBL_FIELD'=>'Champs',
 	'LBL_NOT_ASSETS'=>'Pas de ressources allouées.',
+	'TooltipInfo' => 'This extension adds information hover tips on different fields on each module and is accessed in the settings of each module not directly, so you can eliminate it from the menu.',
 );
 
 ?>

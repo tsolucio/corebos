@@ -8,13 +8,14 @@
  ********************************************************************************/
 
 $mod_strings = Array (
-    'Tooltip' => 'Kurzinfo',
-    'LBL_TOOLTIP_MANAGEMENT'=>'Kurzinfo Management',
-    'LBL_TOOLTIP_MANAGEMENT_DESCRIPTION'=>'kontrollieren Sie die Anzeige von Kurzinfos von hier',
-    'LBL_FIELDS_IN'=>'Felder in',
-    'LBL_TOOLTIP_HELP_TEXT'=>'Wählen Sie die Felder aus, welche als Kurzinfo angezeigt werden sollen',
-    'LBL_FIELD'=>'Feld',
-    'LBL_NOT_ASSETS'=>'Keine Vermögenswerte zugeordnet.',
+	'Tooltip' => 'Kurzinfo',
+	'LBL_TOOLTIP_MANAGEMENT'=>'Kurzinfo Management',
+	'LBL_TOOLTIP_MANAGEMENT_DESCRIPTION'=>'kontrollieren Sie die Anzeige von Kurzinfos von hier',
+	'LBL_FIELDS_IN'=>'Felder in',
+	'LBL_TOOLTIP_HELP_TEXT'=>'Wählen Sie die Felder aus, welche als Kurzinfo angezeigt werden sollen',
+	'LBL_FIELD'=>'Feld',
+	'LBL_NOT_ASSETS'=>'Keine Vermögenswerte zugeordnet.',
+	'TooltipInfo' => 'This extension adds information hover tips on different fields on each module and is accessed in the settings of each module not directly, so you can eliminate it from the menu.',
 );
 
 ?>

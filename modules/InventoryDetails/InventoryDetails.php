@@ -147,6 +147,10 @@ class InventoryDetails extends CRMEntity {
 		}
 		$this->column_fields['cost_gross'] = $this->column_fields['quantity'] * $this->column_fields['cost_price'];
 		$adb->pquery('update vtiger_inventorydetails set cost_gross=? where inventorydetailsid=?', array($this->column_fields['cost_gross'], $this->id));
+		if (!empty($this->column_fields['productid'])) {
+			$this->column_fields['total_stock'] = getPrdQtyInStck($this->column_fields['productid']);
+			$adb->pquery('update vtiger_inventorydetails set total_stock=? where inventorydetailsid=?', array($this->column_fields['total_stock'], $this->id));
+		}
 	}
 
 	/**
