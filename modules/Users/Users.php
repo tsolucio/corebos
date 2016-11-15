@@ -159,7 +159,7 @@ class Users extends CRMEntity {
 		if (isset($value) && !empty($value)) {
 			$this->log->debug("LOADING :PREFERENCES SIZE " . strlen($value));
 			$this->user_preferences = unserialize(base64_decode($value));
-			$_SESSION = array_merge($this->user_preferences, $_SESSION);
+			coreBOS_Session::merge($this->user_preferences);
 			$this->log->debug("Finished Loading");
 			coreBOS_Session::set('USER_PREFERENCES', $this->user_preferences);
 		}

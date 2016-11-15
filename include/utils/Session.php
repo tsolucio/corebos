@@ -162,8 +162,24 @@ class coreBOS_Session {
 				if (!is_array($_SESSION[$keyparts[0]])) $_SESSION[$keyparts[0]] = array();
 				self::set($key, $value, $_SESSION[$keyparts[0]]);
 			} else {
+				if (!is_array($sespos[$keyparts[0]])) $sespos[$keyparts[0]] = array();
 				self::set($key, $value, $sespos[$keyparts[0]]);
 			}
+		}
+		session_write_close();
+	}
+
+	/**
+	 * Merge the values of an array on to the SESSION array
+	 * @param Array of key=>value to add to the SESSION
+	 * @param boolean, if true array values have precedence, else the existing SESSION values have precedence
+	 */
+	static function merge($values,$overwrite_session=false) {
+		session_start();
+		if ($overwrite_session) {
+			$_SESSION = array_merge($_SESSION, $values);
+		} else {
+			$_SESSION = array_merge($values, $_SESSION);
 		}
 		session_write_close();
 	}
