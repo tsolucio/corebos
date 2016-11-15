@@ -114,7 +114,7 @@ $smarty->assign("tagshow_options", array(
 $smarty->assign("DUPLICATE",vtlib_purify($_REQUEST['isDuplicate']));
 $smarty->assign("USER_MODE",$mode);
 $smarty->assign('PARENTTAB', getParentTab());
-coreBOS_Session('Users_FORM_TOKEN', rand(5, 2000) * rand(2, 7));
+coreBOS_Session::set('Users_FORM_TOKEN', rand(5, 2000) * rand(2, 7));
 $smarty->assign('FORM_TOKEN', $_SESSION['Users_FORM_TOKEN']);
 
 // Gather the help information associated with fields
