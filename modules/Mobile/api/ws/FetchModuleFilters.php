@@ -7,10 +7,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-class Mobile_WS_FetchModuleFilters extends Mobile_WS_Controller {
+class crmtogo_WS_FetchModuleFilters extends crmtogo_WS_Controller {
 	
-	function process(Mobile_API_Request $request) {
-		$response = new Mobile_API_Response();
+	function process(crmtogo_API_Request $request) {
+		$response = new crmtogo_API_Response();
 
 		$module = $request->get('module');
 		$current_user = $this->getActiveUser();

@@ -2,15 +2,34 @@
 <schema>
 	<tables>
 		<table>
-			<name>vtiger_mobile_alerts</name>
-			<sql><![CDATA[CREATE TABLE `vtiger_mobile_alerts` (
-  `id` int(11) NOT NULL auto_increment,
-  `handler_path` varchar(500) default NULL,
-  `handler_class` varchar(50) default NULL,
-  `sequence` int(11) default NULL,
-  `deleted` int(11) NOT NULL default '0',
-  PRIMARY KEY  (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8]]></sql>
+			<name>berli_crmtogo_defaults</name>
+			<sql><![CDATA[CREATE TABLE IF NOT EXISTS `berli_crmtogo_defaults` (
+				  `fetch_limit` int(3) NOT NULL,
+				  `crmtogo_lang` varchar(5) NOT NULL,
+				  `defaulttheme` varchar(1) NOT NULL,
+				  `crm_version` varchar(5) NOT NULL
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>berli_crmtogo_config</name>
+			<sql><![CDATA[CREATE TABLE IF NOT EXISTS `berli_crmtogo_config` (
+				  `crmtogouser` int(19) NOT NULL,
+				  `navi_limit` int(3) NOT NULL,
+				  `theme_color` varchar(1) NOT NULL,
+				  `compact_cal` int(1) NOT NULL,
+				   PRIMARY KEY  (`crmtogouser`),
+				   CONSTRAINT `fk_1_berli_crmtogo_config` FOREIGN KEY (`crmtogouser`) REFERENCES `vtiger_users` (`id`) ON DELETE CASCADE
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
+		</table>
+		<table>
+			<name>berli_crmtogo_modules</name>
+			<sql><![CDATA[CREATE TABLE IF NOT EXISTS `berli_crmtogo_modules` (
+				  `crmtogo_user` int(19) NOT NULL,
+				  `crmtogo_module` varchar(50) NOT NULL,
+				  `crmtogo_active` int(1) NOT NULL DEFAULT '1',
+				  `order_num` int(3) NOT NULL,
+				   CONSTRAINT `fk_1_berli_crmtogo_modules` FOREIGN KEY (`crmtogo_user`) REFERENCES `vtiger_users` (`id`) ON DELETE CASCADE
+				) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
 		</table>
 	</tables>
 </schema>

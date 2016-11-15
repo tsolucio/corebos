@@ -9,13 +9,13 @@
  ************************************************************************************/
 include_once dirname(__FILE__) . '/../../../include/HTTP_Session/Session.php';
 
-class Mobile_API_Session {
+class crmtogo_API_Session {
 	
 	function __construct() {
 	}
 	
 	static function destroy($sessionid = false) {
-		HTTP_Session_Destroy($sessionid);
+		HTTP_Session::destroy();
 	}
 	
 	static function init($sessionid = false) {

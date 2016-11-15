@@ -8,35 +8,33 @@
  * All Rights Reserved.
  * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
-include_once dirname(__FILE__) . '/FetchRecordWithGrouping.php';
 include_once dirname(__FILE__) . '/FetchRecord.php';
-
 include_once 'include/Webservices/Create.php';
 include_once 'include/Webservices/Update.php';
 
-class Mobile_WS_SaveRecord extends Mobile_WS_FetchRecord {
+class crmtogo_WS_SaveRecord extends crmtogo_WS_FetchRecord {
 	protected $recordValues = false;
 	
 	// Avoid retrieve and return the value obtained after Create or Update
-	protected function processRetrieve(Mobile_API_Request $request) {
+	protected function processRetrieve(crmtogo_API_Request $request) {
 		return $this->recordValues;
 	}
 
-	function process(Mobile_API_Request $request) {
-		global $current_user; // Required for vtws_update API
+	function process(crmtogo_API_Request $request) {
 		$current_user = $this->getActiveUser();
 		$module = $request->get('module');
 		//update if recordid exist
 		$recordid = $request->get('record');
-		$valueArray =  Mobile_API_Request::getvaluemap($request);
+		$valueArray = crmtogo_API_Request::getvaluemap($request);
 		$values = '';
 		if(!empty($valueArray) && is_string($valueArray)) {
 			$values = Zend_Json::decode($valueArray);
-		} else {
-			$values = $valueArray; // Either empty or already decoded.
+		} 
+		else {
+			$values = $valueArray;
 		}
 		//catch error
-		$response = new Mobile_API_Response();
+		$response = new crmtogo_API_Response();
 		if (empty($values)) {
 			$response->setError(1501, "Values cannot be empty!");
 			return $response;
@@ -44,16 +42,41 @@ class Mobile_WS_SaveRecord extends Mobile_WS_FetchRecord {
 		try {
 			// Retrieve or Initialize
 			if (!empty($recordid)) {
-				$this->recordValues = parent::processRetrieve($request);
+				$this->recordValues = parent::processRetrieve($request, $module);
 			} 
 			else {
 				$this->recordValues = array();
 			}
+		
+			if ($module == 'Events' || $module == 'Calendar') {
+				//Start Date and Time values
+				$values["time_start"] = $values["time_start"].":00";
+				$values["date_start"] = $values["date_start"];
+				//End Date and Time values
+				if (isset ($values["time_end"])) {
+					$endTime = $values["time_end"].":00";
+				}
+				else {
+					$endTime = '00:00:00';
+				}
+				$values["due_date"] = $values["due_date"];
+				$values["time_end"] = $endTime;
+			}
 			// Set the modified values
 			foreach($values as $name => $value) {
-				$this->recordValues[$name] = $value;
+				//for multi picklist remove _empty
+				if (is_array($value)) {
+					$value = array_flip($value);
+					unset($value['_empty']);
+					$value = array_flip($value);
+				}
+				$this->recordValues[$name] = $value; 
 			}
-			
+
+			// assigned to group?
+			if ($this->recordValues['assigntype']=='T') {
+				$this->recordValues['assigned_user_id'] = $this->recordValues['assigned_group_id']; 
+			}
 			// Update or Create
 			if (isset($this->recordValues['id'])) {
 				$this->recordValues = vtws_update($this->recordValues, $current_user);
@@ -64,6 +87,10 @@ class Mobile_WS_SaveRecord extends Mobile_WS_FetchRecord {
 					if (!empty($this->recordValues['eventstatus']) && $this->recordValues['activitytype'] != 'Task') {
 						$module = 'Events';
 					}
+					// make sure visibility is not NULL
+					if (empty($this->recordValues['visibility'])) {
+						$this->recordValues['visibility'] = 'all';
+					}
 				}
 				$this->recordValues = vtws_create($module, $this->recordValues, $current_user);
 			}
@@ -73,8 +100,8 @@ class Mobile_WS_SaveRecord extends Mobile_WS_FetchRecord {
 			
 			// Gather response with full details
 			$response = parent::process($request);
-			
-		} catch(Exception $e) {
+		} 
+		catch(Exception $e) {
 			$response->setError($e->getCode(), $e->getMessage());
 		}
 		return $response;

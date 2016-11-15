@@ -7,18 +7,22 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-include_once dirname(__FILE__) . '/FetchRecordWithGrouping.php';
+include_once dirname(__FILE__) . '/FetchRecordDetails.php';
 
 include_once 'include/Webservices/Query.php';
 
-class Mobile_WS_Query extends Mobile_WS_FetchRecordWithGrouping {
+class crmtogo_WS_Query extends crmtogo_WS_FetchRecordDetails {
 	
 	function processQueryResultRecord(&$record, $user) {
 		$this->resolveRecordValues($record, $user);
 		return $record;
 	}
 	
-	function process(Mobile_API_Request $request) {
+	function process(crmtogo_API_Request $request) {
+printf("This debug is in %s on line %d\n  for request",__FILE__, __LINE__); 
+print_r("<PRE>");
+print_r($request);
+print_r("</PRE>");
 		$current_user = $this->getActiveUser();
 		
 		$query = $request->get('query', '', false);
@@ -32,7 +36,7 @@ class Mobile_WS_Query extends Mobile_WS_FetchRecordWithGrouping {
 			$query = rtrim($query, ";");
 
 			$currentPage = intval($request->get('page', 0));
-			$FETCH_LIMIT = Mobile::config('API_RECORD_FETCH_LIMIT'); 
+			$FETCH_LIMIT = crmtogo::config('API_RECORD_FETCH_LIMIT'); 
 			$startLimit = $currentPage * $FETCH_LIMIT;
 			
 			$queryWithLimit = sprintf("%s LIMIT %u,%u;", $query, $startLimit, ($FETCH_LIMIT+1));
@@ -54,7 +58,7 @@ class Mobile_WS_Query extends Mobile_WS_FetchRecordWithGrouping {
 		}
 		$result = array('records' => $records, 'nextPage' => $nextPage );
 		
-		$response = new Mobile_API_Response();
+		$response = new crmtogo_API_Response();
 		$response->setResult($result);
 		return $response;
 	}

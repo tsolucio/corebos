@@ -11,7 +11,7 @@ include_once dirname(__FILE__) . '/Query.php';
 
 include_once 'include/Webservices/Query.php';
 
-class Mobile_WS_QueryWithGrouping extends Mobile_WS_Query {
+class crmtogo_WS_QueryWithGrouping extends crmtogo_WS_Query {
 	
 	private $queryModule;
 	
@@ -28,7 +28,7 @@ class Mobile_WS_QueryWithGrouping extends Mobile_WS_Query {
 		return $transformedRecord;
 	}
 	
-	function process(Mobile_API_Request $request) {
+	function process(crmtogo_API_Request $request) {
 		$this->queryModule = $request->get('module');
 		return parent::process($request);
 	}
