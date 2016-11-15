@@ -7,6 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
+require_once 'include/utils/Session.php';
 $patch_version = '';
 $modified_database = '';
 $vtiger_current_version = '5.5.0';
