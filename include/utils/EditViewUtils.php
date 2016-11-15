@@ -1596,7 +1596,7 @@ function getConvertQuoteToSoObject($focus,$quote_focus,$quoteid)
 */
 function getAssociatedProducts($module,$focus,$seid='')
 {
-	global $log, $adb, $theme,$current_user;
+	global $log, $adb, $theme, $currentModule;
 	$log->debug("Entering getAssociatedProducts(".$module.",".get_class($focus).",".$seid."='') method ...");
 
 	$theme_path="themes/".$theme."/";
@@ -1697,7 +1697,11 @@ function getAssociatedProducts($module,$focus,$seid='')
 		if (!empty($entitytype)) {
 			$product_Detail[$i]['entityType'.$i]=$entitytype;
 		}
-		$product_Detail[$i]['lineitem_id'.$i]=$adb->query_result($result,$i-1,'lineitem_id');
+		if ($module==$currentModule) {
+			$product_Detail[$i]['lineitem_id'.$i]=$adb->query_result($result,$i-1,'lineitem_id');
+		} else {
+			$product_Detail[$i]['lineitem_id'.$i]=0;
+		}
 
 		if($listprice == '')
 			$listprice = $unitprice;
