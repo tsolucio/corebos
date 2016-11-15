@@ -124,7 +124,7 @@ if(! $_REQUEST['changepassword'] == 'true')
 	else
 		$focus->column_fields['internal_mailer'] = 0;
 	if(isset($_SESSION['internal_mailer']) && $_SESSION['internal_mailer'] != $focus->column_fields['internal_mailer'])
-		$_SESSION['internal_mailer'] = $focus->column_fields['internal_mailer'];
+		coreBOS_Session::set('internal_mailer', $focus->column_fields['internal_mailer']);
 	setObjectValuesFromRequest($focus);
 
 	if(empty($focus->column_fields['roleid']) && !empty($_POST['user_role'])) {

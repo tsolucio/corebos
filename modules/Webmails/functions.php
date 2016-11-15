@@ -494,7 +494,7 @@ function clear_attachments()
     if (isset($_SESSION['nocc_attach_array']) && is_array($_SESSION['nocc_attach_array']))
         while ($tmpvar = array_shift($_SESSION['nocc_attach_array']))
             @unlink($conf->tmpdir.'/'.$tmpvar->tmp_file);
-    unset($_SESSION['nocc_attach_array']);
+    coreBOS_Session::delete('nocc_attach_array');
 }
 
 /* ----------------------------------------------------- */

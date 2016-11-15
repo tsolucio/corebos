@@ -17,9 +17,9 @@ require_once('modules/Home/language/'.$current_language.'.lang.php');
 // we eliminate order and sort by clause to avoid QueryGenerator errors on detail view
 foreach ($_SESSION as $key => $value) {
 	if (substr($key, -9)=='_Order_By') {
-		unset($_SESSION[$key]);
+		coreBOS_Session::delete($key);
 		$cmod = substr($key, 0, strlen($key)-9);
-		unset($_SESSION[$cmod.'_Sort_Order']);
+		coreBOS_Session::delete($cmod.'_Sort_Order');
 	}
 }
 $total_record_count = 0;
@@ -39,7 +39,7 @@ if(isset($query_string) && $query_string != ''){
 		$search_onlyin = array();
 	}
 	// Save the selection for futur use (UnifiedSearchModules.php)
-	$_SESSION['__UnifiedSearch_SelectedModules__'] = $search_onlyin;
+	coreBOS_Session::set('__UnifiedSearch_SelectedModules__', $search_onlyin);
 
 	$object_array = getSearchModules($search_onlyin);
 
@@ -194,7 +194,7 @@ if(isset($query_string) && $query_string != ''){
 					$smarty->display("UnifiedSearchAjax.tpl");
 				else
 					$smarty->display('UnifiedSearchDisplay.tpl');
-				unset($_SESSION['lvs'][$module]);
+				coreBOS_Session::delete('lvs^'.$module);
 				$i++;
 			}
 		}

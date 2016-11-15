@@ -20,7 +20,7 @@ if(isset($cvid) && $cvid != '')
 {
 	$deletesql = "delete from vtiger_customview where cvid =?";
 	$deleteresult = $adb->pquery($deletesql, array($cvid));
-	$_SESSION['lvs'][$module]["viewname"] = '';
+	coreBOS_Session::set('lvs^'.$module.'^viewname', '');
 }
 if(isset($smodule) && $smodule != '')
 {

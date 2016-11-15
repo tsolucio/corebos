@@ -6,9 +6,7 @@
 * The Initial Developer of the Original Code is vtiger.
 * Portions created by vtiger are Copyright (C) vtiger.
 * All Rights Reserved.
-*
 ********************************************************************************/
-
 require_once('include/logging.php');
 require_once('modules/CustomView/CustomView.php');
 
@@ -165,8 +163,7 @@ class ListViewSession {
 					$recordNavigationInfo[$current][] = $recordId;
 				}
 			}
-			$_SESSION[$currentModule.'_DetailView_Navigation'.$viewId] =
-				Zend_Json::encode($recordNavigationInfo);
+			coreBOS_Session::set($currentModule.'_DetailView_Navigation'.$viewId, Zend_Json::encode($recordNavigationInfo));
 		}
 		return $recordNavigationInfo;
 	}
@@ -197,7 +194,7 @@ class ListViewSession {
 			$start = $_SESSION['lvs'][$currentModule][$viewid]['start'];
 		}
 		if(!$queryMode) {
-			$_SESSION['lvs'][$currentModule][$viewid]['start'] = intval($start);
+			coreBOS_Session::set('lvs^'.$currentModule.'^'.$viewid.'^start', intval($start));
 		}
 		return $start;
 	}
@@ -205,10 +202,10 @@ class ListViewSession {
 	public static function setSessionQuery($currentModule,$query,$viewid){
 		if(isset($_SESSION[$currentModule.'_listquery'])){
 			if($_SESSION[$currentModule.'_listquery'] != $query){
-				unset($_SESSION[$currentModule.'_DetailView_Navigation'.$viewid]);
+				coreBOS_Session::delete($currentModule.'_DetailView_Navigation'.$viewid);
 			}
 		}
-		$_SESSION[$currentModule.'_listquery'] = $query;
+		coreBOS_Session::set($currentModule.'_listquery', $query);
 	}
 
 	public static function hasViewChanged($currentModule) {

@@ -29,7 +29,7 @@ if($record != '') {
 	//Display the error message
 	if($_SESSION['image_type_error'] != '') {
 		echo '<font color="red">'.$_SESSION['image_type_error'].'</font>';
-		unset($_SESSION['image_type_error']);
+		coreBOS_Session::delete('image_type_error');
 	}
 
 	$focus->id = $record;
