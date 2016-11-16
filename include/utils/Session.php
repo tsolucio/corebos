@@ -29,7 +29,7 @@ class coreBOS_Session {
 	 * Destroy session
 	 */
 	static function destroy() {
-		session_start();
+		@session_start();
 		session_regenerate_id(true);
 		session_unset();
 		session_destroy();
@@ -40,7 +40,7 @@ class coreBOS_Session {
 	 */
 	static function init($setKCFinder=false) {
 		session_name(self::getSessionName());
-		session_start();
+		@session_start();
 		if ($setKCFinder) self::setKCFinderVariables();
 	}
 
@@ -70,7 +70,7 @@ class coreBOS_Session {
 	 */
 	static function setKCFinderVariables() {
 		global $upload_badext, $site_URL, $root_directory;
-		session_start();
+		@session_start();
 		$_SESSION['KCFINDER'] = array();
 		$_SESSION['KCFINDER']['disabled'] = false;
 		$_SESSION['KCFINDER']['uploadURL'] = $site_URL.'/storage/kcimages';
@@ -94,7 +94,7 @@ class coreBOS_Session {
 			$appSearchModules = GlobalVariable::getVariable('Application_Global_Search_SelectedModules', '');
 			if (!empty($appSearchModules)) {
 				$selected_modules = explode(',',$appSearchModules);
-				session_start();
+				@session_start();
 				$_SESSION['__UnifiedSearch_SelectedModules__'] = $selected_modules;
 				session_write_close();
 			}
@@ -149,7 +149,7 @@ class coreBOS_Session {
 	 */
 	static function set($key, $value,&$sespos=null) {
 		$keyparts = explode('^', $key);
-		session_start();
+		@session_start();
 		if (count($keyparts)==1) {
 			if (is_null($sespos)) {
 				$_SESSION[$key] = $value;
@@ -176,7 +176,7 @@ class coreBOS_Session {
 	 * @param boolean, if true array values have precedence, else the existing SESSION values have precedence
 	 */
 	static function merge($values,$overwrite_session=false) {
-		session_start();
+		@session_start();
 		if ($overwrite_session) {
 			$_SESSION = array_merge($_SESSION, $values);
 		} else {
@@ -191,7 +191,7 @@ class coreBOS_Session {
 	 */
 	static function delete($key,&$sespos=null) {
 		$keyparts = explode('^', $key);
-		session_start();
+		@session_start();
 		if (count($keyparts)==1) {
 			if (is_null($sespos)) {
 				if (isset($_SESSION[$key])) unset($_SESSION[$key]);
