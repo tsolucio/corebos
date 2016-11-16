@@ -12,7 +12,7 @@ class iCalendar_property {
     var $val_multi        = false;
     var $val_default      = NULL;
 
-    function iCalendar_property() {
+    function __construct() {
         $this->construct();
     }
 

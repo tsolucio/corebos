@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 
 //Migration Procedure
@@ -16,8 +15,7 @@
 //Step : 4 => Put the old dump into the New Database
 //Step : 5 => Modify the new database with the new changes
 
-class Migration
-{
+class Migration {
 
 	var $conn;
 	var $oldconn;
@@ -38,11 +36,9 @@ class Migration
 
 	/**	Constructor with old database and new database connections
 	 */
-	function Migration($old='',$new='')
-	{
+	function __construct($old='',$new='') {
 		global $migrationlog;
 		$migrationlog->debug("Inside the constructor Migration.");
-		
 		$this->oldconn = $old;
 		$this->conn = $new;
 		$migrationlog->debug("Database Object has been created.");

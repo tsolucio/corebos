@@ -48,17 +48,17 @@ class ReportRun extends CRMEntity {
 						);
 	var $ui10_fields = array();
 	var $ui101_fields = array();
-	var $groupByTimeParent = array( 'Quarter'=>array('Year'),
-                                        'Month'=>array('Year'),
-                                        'Day'=>array('Year','Month')
-								);
+	var $groupByTimeParent = array(
+		'Quarter'=>array('Year'),
+		'Month'=>array('Year'),
+		'Day'=>array('Year','Month')
+	);
 
 	/** Function to set reportid,primarymodule,secondarymodule,reporttype,reportname, for given reportid
 	 *  This function accepts the $reportid as argument
 	 *  It sets reportid,primarymodule,secondarymodule,reporttype,reportname for the given reportid
 	 */
-	function ReportRun($reportid)
-	{
+	function __construct($reportid) {
 		$oReport = new Reports($reportid);
 		$this->reportid = $reportid;
 		$this->primarymodule = $oReport->primodule;

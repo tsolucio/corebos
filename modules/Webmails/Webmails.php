@@ -14,25 +14,23 @@ require_once('modules/Webmails/functions.php');
 require_once('include/database/PearDatabase.php');
 require_once('include/utils/CommonUtils.php');
 require_once('data/CRMEntity.php');
-class result
-{
-	  var $text = "";
-	    var $charset = "";
+
+class result {
+	var $text = "";
+	var $charset = "";
 }
 
-
-
 class Webmails extends CRMEntity {
-        var $log;
-        var $db;
+	var $log;
+	var $db;
 
 	var $headers;
-  	var $mailid;
-        var $to = array();
-        var $to_name = array();
-        var $from;
-        var $fromname;
-        var $fromaddr;
+	var $mailid;
+	var $to = array();
+	var $to_name = array();
+	var $from;
+	var $fromname;
+	var $fromaddr;
 	var $reply_to = array();
 	var $reply_to_name = array();
 	var $cc_list = array();
@@ -50,9 +48,7 @@ class Webmails extends CRMEntity {
 	var $replyToInformation = array();
 	var $has_attachments = false;
 
-
- 	function Webmails($mbox='',$mailid='') {
-
+	function __construct($mbox='',$mailid='') {
 		$this->db = PearDatabase::getInstance();
 		$this->db->println("Entering Webmail($mbox,$mailid)");
 		$this->log = &LoggerManager::getLogger('WEBMAILS');
@@ -84,7 +80,7 @@ class Webmails extends CRMEntity {
 
 		$this->relationship = $this->find_relationships(); // Added by Puneeth for 5231
 		$this->replyToInformation = null;
-        }
+	}
 
 	public function getReplyToInformation() {
 		if(empty($this->replyToInformation)) {

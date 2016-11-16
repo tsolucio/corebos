@@ -6,19 +6,13 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  *********************************************************************************/
 
-/**
- * Description of DatabaseBackupException
- *
- * @author MAK
- */
 class DatabaseBackupException extends Exception{
 	public $code;
 	public $message;
 
-	function DatabaseBackupException($errCode,$msg){
+	function __construct($errCode,$msg){
 		$this->code = $errCode;
 		$this->message = $msg;
 	}

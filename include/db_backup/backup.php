@@ -6,9 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
- *********************************************************************************
- */
+ **********************************************************************************/
 
 require_once("config.php");
 require_once("include/database/PearDatabase.php");
@@ -18,13 +16,12 @@ define("dbpass", $dbconfig['db_password']);
 define("dbname", $dbconfig['db_name']);
 
 function save_structure($filename, $root_directory) {
-		global $log;
-		$log->debug("Entering save_structure(".$filename.",".$root_directory.") method ...");
-
-		$dbdump = new DatabaseDump(dbserver, dbuser, dbpass);
-		$dumpfile = $root_directory.'/'.$filename;
-		$dbdump->save(dbname, $dumpfile) ;
-        $log->debug("Exiting save_structure method ...");
+	global $log;
+	$log->debug("Entering save_structure(".$filename.",".$root_directory.") method ...");
+	$dbdump = new DatabaseDump(dbserver, dbuser, dbpass);
+	$dumpfile = $root_directory.'/'.$filename;
+	$dbdump->save(dbname, $dumpfile) ;
+	$log->debug("Exiting save_structure method ...");
 }
 
 /**
@@ -43,7 +40,7 @@ function save_structure($filename, $root_directory) {
  */
 class DatabaseDump {
 		private $fhandle;
-		function DatabaseDump($dbserver, $username, $password) {
+		function __construct($dbserver, $username, $password) {
 				mysql_connect($dbserver, $username, $password);
 		}
 		function save($database, $filename) {
@@ -58,7 +55,7 @@ class DatabaseDump {
 			}
 			$this->file_open($filename);
 
-			// Write some information regarding database dump and the time first.	
+			// Write some information regarding database dump and the time first.
 			$this->writeln("SET NAMES 'utf8';");
 			$this->writeln("-- $database database dump");
 			$this->writeln("-- Date: " . date("D, M j, G:i:s T Y"));

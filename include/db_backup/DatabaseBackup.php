@@ -24,8 +24,8 @@ class DatabaseConfig{
 	private $rootUsername = null;
 	private $rootPassword = null;
 	private $dbType = null;
-	function DatabaseConfig($dbserver, $username, $password,$dbName, $dbType = 'mysql',
-			$rootusername='', $rootpassword=''){
+
+	function __construct($dbserver, $username, $password,$dbName, $dbType = 'mysql', $rootusername='', $rootpassword='') {
 		$this->hostName = $dbserver;
 		$this->username = $username;
 		$this->password = $password;
@@ -34,7 +34,7 @@ class DatabaseConfig{
 		$this->rootPassword = $rootpassword;
 		$this->dbType = $dbType;
 	}
-	
+
 	/**
 	 *
 	 * @return DatabaseConfig
@@ -107,7 +107,8 @@ class DatabaseBackup {
 	private $target = null;
 	private $skipStages = null;
 	public static $langString = null;
-	function DatabaseBackup($source, $target,$skipStages = array()){
+
+	function __construct($source, $target,$skipStages = array()) {
 		if(!is_array(DatabaseBackup::$langString)){
 			DatabaseBackup::$langString = getLanguageStrings();
 		}
@@ -115,7 +116,7 @@ class DatabaseBackup {
 		$this->source = $source;
 		$this->target = $target;
 	}
-	
+
 	function setSource($source){
 		$this->source = $source;
 	}

@@ -645,7 +645,7 @@ class ConfigFile_Utils {
 	private $currencyName;
 	private $adminEmail;
 
-	function ConfigFile_Utils($configFileParameters) {
+	function __construct($configFileParameters) {
 		if (isset($configFileParameters['root_directory']))
 			$this->rootDirectory = $configFileParameters['root_directory'];
 
