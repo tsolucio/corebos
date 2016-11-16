@@ -216,12 +216,10 @@ class ModTracker {
 	 * @param Integer $tabid
 	 */
 	static function getVisibilityForModule($tabid){
-		for($i=0;$i<count(self::$__cache_modtracker);$i++) {
-			if(isset(self::$__cache_modtracker[$tabid])) {
-				return $__cache_modtracker[$i]['visible'];
-			}
-			return false;
+		if(isset(self::$__cache_modtracker[$tabid])) {
+			return $__cache_modtracker[$tabid]['visible'];
 		}
+		return false;
 	}
 
 	/**
