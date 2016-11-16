@@ -73,6 +73,8 @@
                   </div>
               </div>
           </div>
+          <label class="slds-form-element__label" for="mpermission">Permissions</label>
+          {html_options name="mpermission[]" id="mpermission" multiple="multiple" options=$PROFILES}
           </br>
 
               <button class="slds-button slds-button--brand" onclick="VtigerJS_DialogBox.block();processTree('doAdd');">{'LBL_ADD_BUTTON'|getTranslatedString:$MODULE}</button>

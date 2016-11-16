@@ -458,7 +458,7 @@
 	}
 	jQuery(document).ready(function() {
 		var evvtmenu={/literal}{$MENU}{literal};
-		var mainMenu = '<div class="slds-context-bar__primary	">'
+		var mainMenu = '<div class="slds-context-bar__primary">'
 				+ '<div class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--click slds-no-hover"> '
 				+ '<div class="slds-context-bar__icon-action">'
 				+ '<a href="index.php?module=Home&action=index" class="slds-icon-waffle_container slds-context-bar__button">'
@@ -483,70 +483,82 @@
 				+'<nav class="slds-context-bar__secondary" role="navigation">'
 				+'<ul class="slds-grid">';
 
-		var menuElements = [];
-		for(var i in evvtmenu){
-			var menuItemHtml ='';
-			var subMenuElements = [];
-			var menuTitle = evvtmenu[i].text;
-			var menuUrl = evvtmenu[i].url;
-			var menuItems = evvtmenu[i].items;
-			if (menuItems === undefined || menuItems === null) {
-				menuItemHtml = '<li class="slds-context-bar__item">'
-						+'<a href="'+menuUrl+'" class="slds-context-bar__label-action" title="'+menuTitle+'">'
-						+'<span class="slds-truncate">'+menuTitle+'</span>'
-						+'</a>'
-						+'</li>';
-				menuElements.push(menuItemHtml);
-			}
-			else{
-				menuItemHtml = '<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true">'
-						+ '<a class="slds-context-bar__label-action" title="Menu Item">'
-						+ '<span class="slds-truncate">' + menuTitle + '</span>'
-						+ '</a>'
-						+ '<div class="slds-context-bar__icon-action slds-p-left--none" tabindex="' + i + '">'
-						+ '<button class="slds-button slds-button--icon slds-context-bar__button" tabindex="-1" title="Open menu item submenu">'
-						+ '<svg aria-hidden="true" class="slds-button__icon">'
-						+ '<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevrondown"></use>'
-						+ '</svg>'
-						+ '<span class="slds-assistive-text">Open menu item submenu</span>'
-						+ '</button>'
-						+ '</div>'
-						+ '<div class="slds-dropdown slds-dropdown--right">'
-						+ '<ul class="slds-dropdown__list" role="menu">';
-				menuElements.push(menuItemHtml);
-				if (menuItems.length > 0) {
-					for (var j in menuItems) {
-						var subMenuItemHtml ='';
-						var subMenuTitle = menuItems[j].text;
-						var subMenuUrl = menuItems[j].url;
-						// CHECK IF SEPERATOR!
-						if (subMenuUrl === undefined || subMenuUrl === null) {
-							subMenuItemHtml = '<li class="slds-dropdown__item" role="presentation">'
-									+ '<a><span class="slds-truncate">--------</span></a>'
-									+ '</li>';
-						}
-						else {
-							subMenuItemHtml = '<li class="slds-dropdown__item" role="presentation">'
-									+ '<a href="' + subMenuUrl + '" role="menuitem" tabindex="' + j + '">'
-									+ '<span class="slds-truncate">' + subMenuTitle + '</span>'
-									+ '</a>'
-									+ '</li>';
-						}
-						subMenuElements.push(subMenuItemHtml);
-					}
+
+		function buildMenu(object, depth){
+			for (var i in object) {
+				if (object[i].items != null) {
+					buildMenu(object[i].items, depth+1);
+					console.log(object[i].text);
 				}
-
-				menuElements.push(subMenuElements);
-				menuItemHtml = '</ul>'
-						+ '</div>';
-				menuElements.push(menuItemHtml);
 			}
-
 		}
-		var html = menuElements.join('');
-		mainMenu += html;
-		mainMenu = mainMenu.replace(/,/g, '');
-		mainMenu += '</li></ul>';
+
+		buildMenu(evvtmenu, 0);
+
+//		var menuElements = [];
+//		for(var i in evvtmenu){
+//			var menuItemHtml ='';
+//			var subMenuElements = [];
+//			var menuTitle = evvtmenu[i].text;
+//			var menuUrl = evvtmenu[i].url;
+//			var menuItems = evvtmenu[i].items;
+//			if (menuItems === undefined || menuItems === null) {
+//				menuItemHtml = '<li class="slds-context-bar__item">'
+//						+'<a href="'+menuUrl+'" class="slds-context-bar__label-action" title="'+menuTitle+'">'
+//						+'<span class="slds-truncate">'+menuTitle+'</span>'
+//						+'</a>'
+//						+'</li>';
+//				menuElements.push(menuItemHtml);
+//			}
+//			else{
+//				menuItemHtml = '<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true">'
+//						+ '<a class="slds-context-bar__label-action" title="Menu Item">'
+//						+ '<span class="slds-truncate">' + menuTitle + '</span>'
+//						+ '</a>'
+//						+ '<div class="slds-context-bar__icon-action slds-p-left--none" tabindex="' + i + '">'
+//						+ '<button class="slds-button slds-button--icon slds-context-bar__button" tabindex="-1" title="Open menu item submenu">'
+//						+ '<svg aria-hidden="true" class="slds-button__icon">'
+//						+ '<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevrondown"></use>'
+//						+ '</svg>'
+//						+ '<span class="slds-assistive-text">Open menu item submenu</span>'
+//						+ '</button>'
+//						+ '</div>'
+//						+ '<div class="slds-dropdown slds-dropdown--right">'
+//						+ '<ul class="slds-dropdown__list" role="menu">';
+//				menuElements.push(menuItemHtml);
+//				if (menuItems.length > 0) {
+//					for (var j in menuItems) {
+//						var subMenuItemHtml ='';
+//						var subMenuTitle = menuItems[j].text;
+//						var subMenuUrl = menuItems[j].url;
+//						// CHECK IF SEPERATOR!
+//						if (subMenuUrl === undefined || subMenuUrl === null) {
+//							subMenuItemHtml = '<li class="slds-dropdown__item" role="presentation">'
+//									+ '<a><span class="slds-truncate">--------</span></a>'
+//									+ '</li>';
+//						}
+//						else {
+//							subMenuItemHtml = '<li class="slds-dropdown__item" role="presentation">'
+//									+ '<a href="' + subMenuUrl + '" role="menuitem" tabindex="' + j + '">'
+//									+ '<span class="slds-truncate">' + subMenuTitle + '</span>'
+//									+ '</a>'
+//									+ '</li>';
+//						}
+//						subMenuElements.push(subMenuItemHtml);
+//					}
+//				}
+//
+//				menuElements.push(subMenuElements);
+//				menuItemHtml = '</ul>'
+//						+ '</div>';
+//				menuElements.push(menuItemHtml);
+//			}
+//
+//		}
+//		var html = menuElements.join('');
+//		mainMenu += html;
+//		mainMenu = mainMenu.replace(/,/g, '');
+//		mainMenu += '</li></ul>';
 		mainMenu += '<div class="slds-context-bar__tertiary" style="margin-left:20px; margin-top:auto; margin-bottom:auto;">'
 				+'<div class="slds-form-element">'
 				+'<div class="slds-form-element__control">'

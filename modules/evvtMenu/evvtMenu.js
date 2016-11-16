@@ -17,12 +17,14 @@
  *************************************************************************************************/
 
 function getMenuInfo(json){
-	document.getElementById('evvtmenuid').value = json['evvtmenuid'];
-	document.getElementById('mparent').value = json['mparent'];
-	document.getElementById('mtype').value = json['mtype'];
-	document.getElementById('mlabel').value = json['mlabel'];
-	document.getElementsById('modname').value = json['modname'];
-	//document.getElementById('mpermission').value = json['mpermission'];
+	console.log(json);
+	$('#evvtmenuid').val(json['evvtmenuid']);
+	$('#mparent').val(json['mparent']);
+	$('#mtype').val(json['mtype']);
+	$('#mlabel').val(json['mlabel']);
+	if(json.mtype==='module') $('#modname').val(json['mvalue']);
+	if(json.mtype==='url') $('#mvalue').val(json['mvalue']);
+	$('#mpermission').val(json['mpermission'].split(','));
 }
 function expandSection(i){
 	var id = 'trees-' + i;
@@ -60,10 +62,9 @@ function clearForm(){
 	document.getElementById('mparent').value = '';
 	document.getElementById('mtype').value = '';
 	document.getElementById('mlabel').value = '';
-	//document.getElementById('mpermission').value = '';
+	document.getElementById('mpermission').value = '';
 }
 function showFormParts(mtype){
-	console.log(mtype);
 	var element;
 	switch (mtype){
 		case 'module':
