@@ -29,7 +29,7 @@ class coreBOS_Session {
 	 * Destroy session
 	 */
 	static function destroy() {
-		@session_start();
+		self::init();
 		session_regenerate_id(true);
 		session_unset();
 		session_destroy();
@@ -47,8 +47,10 @@ class coreBOS_Session {
 	/**
 	 * create session name from given URL or $site_URL
 	 */
-	static function getSessionName($URL='') {
+	static function getSessionName($URL='',$force=false) {
 		global $site_URL;
+		static $session_name = '';
+		if ($session_name!='' and !$force) return $session_name;
 		if (empty($site_URL)) {
 			if (file_exists('config.inc.php')) {
 				include 'config.inc.php';
@@ -62,6 +64,7 @@ class coreBOS_Session {
 		$purl = parse_url($URL);
 		$sn = preg_replace('/[^A-Za-z0-9]/', '', $purl['host'].$purl['path'].(isset($purl['port'])?$purl['port']:''));
 		if (is_numeric($sn)) $sn = 'cb'.$sn;
+		$session_name = $sn;
 		return $sn;
 	}
 
@@ -70,7 +73,7 @@ class coreBOS_Session {
 	 */
 	static function setKCFinderVariables() {
 		global $upload_badext, $site_URL, $root_directory;
-		@session_start();
+		self::init();
 		$_SESSION['KCFINDER'] = array();
 		$_SESSION['KCFINDER']['disabled'] = false;
 		$_SESSION['KCFINDER']['uploadURL'] = $site_URL.'/storage/kcimages';
@@ -94,7 +97,7 @@ class coreBOS_Session {
 			$appSearchModules = GlobalVariable::getVariable('Application_Global_Search_SelectedModules', '');
 			if (!empty($appSearchModules)) {
 				$selected_modules = explode(',',$appSearchModules);
-				@session_start();
+				self::init();
 				$_SESSION['__UnifiedSearch_SelectedModules__'] = $selected_modules;
 				session_write_close();
 			}
@@ -149,7 +152,7 @@ class coreBOS_Session {
 	 */
 	static function set($key, $value,&$sespos=null) {
 		$keyparts = explode('^', $key);
-		@session_start();
+		self::init();
 		if (count($keyparts)==1) {
 			if (is_null($sespos)) {
 				$_SESSION[$key] = $value;
@@ -176,7 +179,7 @@ class coreBOS_Session {
 	 * @param boolean, if true array values have precedence, else the existing SESSION values have precedence
 	 */
 	static function merge($values,$overwrite_session=false) {
-		@session_start();
+		self::init();
 		if ($overwrite_session) {
 			$_SESSION = array_merge($_SESSION, $values);
 		} else {
@@ -191,7 +194,7 @@ class coreBOS_Session {
 	 */
 	static function delete($key,&$sespos=null) {
 		$keyparts = explode('^', $key);
-		@session_start();
+		self::init();
 		if (count($keyparts)==1) {
 			if (is_null($sespos)) {
 				if (isset($_SESSION[$key])) unset($_SESSION[$key]);
