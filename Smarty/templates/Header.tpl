@@ -252,9 +252,50 @@
 {/if}
 {$COREBOS_HEADER_PREMENU}
 <!-- header - master tabs -->
-<div id="evvtmenudiv" style="display:none;"><div class="slds-context-bar">
+<div class="slds-context-bar">
+	<div class="slds-context-bar__primary slds-context-bar__item--divider-right">
+		<div class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--click slds-no-hover">
+			<div class="slds-context-bar__icon-action">
+				<a href="index.php" class="slds-icon-waffle_container slds-context-bar__button">
+					<div class="slds-icon-waffle">
+						<div class="slds-r1"></div>
+						<div class="slds-r2"></div>
+						<div class="slds-r3"></div>
+						<div class="slds-r4"></div>
+						<div class="slds-r5"></div>
+						<div class="slds-r6"></div>
+						<div class="slds-r7"></div>
+						<div class="slds-r8"></div>
+						<div class="slds-r9"></div>
+					</div>
+				</a>
+			</div>
+			<span class="slds-context-bar__label-action slds-context-bar__app-name">
+        <span class="slds-truncate" title="{$APP.LBL_BROWSER_TITLE}">{$APP.LBL_BROWSER_TITLE}</span>
+      </span>
+		</div>
+	</div>
+	<nav class="slds-context-bar__secondary" role="navigation">
+		<ul class="slds-grid">
+		</ul>
+		<div class="slds-context-bar__tertiary" style="float:left; margin-top:auto; margin-bottom:auto;">
+			<div class="slds-form-element">
+				<div class="slds-form-element__control">
+					<div class="slds-select_container">
+						<select id="qccombo" class="slds-select" onchange="QCreate(this);">
+							<option value="none">{$APP.LBL_QUICK_CREATE}...</option>
+							{foreach item=detail from=$QCMODULE}
+								<option value="{$detail.1}">{$APP.NEW}&nbsp;{$detail.0}</option>
+							{/foreach}
+						</select>
+					</div>
+				</div>
+			</div>
 
-	</div></div></td>
+		</div>
+	</nav>
+</div>
+</td>
 
 
 <div id="calculator_cont" style="position:absolute; z-index:10000" ></div>
@@ -458,114 +499,101 @@
 	}
 	jQuery(document).ready(function() {
 		var evvtmenu={/literal}{$MENU}{literal};
-		var mainMenu = '<div class="slds-context-bar__primary">'
-				+ '<div class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--click slds-no-hover"> '
-				+ '<div class="slds-context-bar__icon-action">'
-				+ '<a href="index.php?module=Home&action=index" class="slds-icon-waffle_container slds-context-bar__button">'
-				+ '<div class="slds-icon-waffle">'
-				+ '<div class="slds-r1"></div>'
-				+ '<div class="slds-r2"></div>'
-				+ '<div class="slds-r3"></div>'
-				+ '<div class="slds-r4"></div>'
-				+ '<div class="slds-r5"></div>'
-				+ '<div class="slds-r6"></div>'
-				+ '<div class="slds-r7"></div>'
-				+ '<div class="slds-r8"></div>'
-				+ '<div class="slds-r9"></div>'
-				+ '</div>'
-				+ '</a>'
-				+ '</div>'
-				+ '<span class="slds-context-bar__label-action slds-context-bar__app-name">'
-				+ '<span class="slds-truncate" title="Demo">DEMO</span>'
-				+ '</span>'
-				+ '</div>'
-				+ '</div>'
-				+'<nav class="slds-context-bar__secondary" role="navigation">'
-				+'<ul class="slds-grid">';
 
-		var menuElements = [];
-		for(var i in evvtmenu){
-			var menuItemHtml ='';
-			var subMenuElements = [];
-			var menuTitle = evvtmenu[i].text;
-			var menuUrl = evvtmenu[i].url;
-			var menuItems = evvtmenu[i].items;
-			if (menuItems === undefined || menuItems === null) {
-				menuItemHtml = '<li class="slds-context-bar__item">'
-						+'<a href="'+menuUrl+'" class="slds-context-bar__label-action" title="'+menuTitle+'">'
-						+'<span class="slds-truncate">'+menuTitle+'</span>'
-						+'</a>'
-						+'</li>';
-				menuElements.push(menuItemHtml);
+
+
+		function buildMainMenu(object){
+			for (var i in object) {
+				if(object[i].items != null) {
+					$('.slds-grid').append('<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true"> \
+						<a href="javascript:void(0);" class="slds-context-bar__label-action" title="' + object[i].text + '">\
+						<span class="slds-truncate">' + object[i].text + '</span>\
+				</a>\
+				<div class="slds-context-bar__icon-action slds-p-left--none" tabindex="0">\
+					<svg aria-hidden="true" class="slds-button__icon">\
+						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevrondown"></use>\
+						</svg>\
+				</div>\
+				<div class="slds-dropdown slds-dropdown--right">\
+				<ul class="slds-dropdown__list" role="menu" id="menu' + i + '">\
+				</ul>\
+				</div>\
+				</li>');
+				} else {
+					$('.slds-grid').append('<li class="slds-context-bar__item">\
+							<a href="'+object[i].url+ '" class="slds-context-bar__label-action" title="'+object[i].text+'">\
+							<span class="slds-truncate">'+object[i].text+'</span>\
+							</a>\
+							</li>');
+				}
+				if(object[i].items != null) {
+					buildSubMenu(object[i].items, i)
+				}
 			}
-			else{
-				menuItemHtml = '<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true">'
-						+ '<a class="slds-context-bar__label-action" title="Menu Item">'
-						+ '<span class="slds-truncate">' + menuTitle + '</span>'
-						+ '</a>'
-						+ '<div class="slds-context-bar__icon-action slds-p-left--none" tabindex="' + i + '">'
-						+ '<button class="slds-button slds-button--icon slds-context-bar__button" tabindex="-1" title="Open menu item submenu">'
-						+ '<svg aria-hidden="true" class="slds-button__icon">'
-						+ '<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevrondown"></use>'
-						+ '</svg>'
-						+ '<span class="slds-assistive-text">Open menu item submenu</span>'
-						+ '</button>'
-						+ '</div>'
-						+ '<div class="slds-dropdown slds-dropdown--right">'
-						+ '<ul class="slds-dropdown__list" role="menu">';
-				menuElements.push(menuItemHtml);
-				if (menuItems.length > 0) {
-					for (var j in menuItems) {
-						var subMenuItemHtml ='';
-						var subMenuTitle = menuItems[j].text;
-						var subMenuUrl = menuItems[j].url;
-						// CHECK IF SEPERATOR!
-						if (subMenuUrl === undefined || subMenuUrl === null) {
-							subMenuItemHtml = '<li class="slds-dropdown__item" role="presentation">'
-									+ '<a><span class="slds-truncate">--------</span></a>'
-									+ '</li>';
-						}
-						else {
-							subMenuItemHtml = '<li class="slds-dropdown__item" role="presentation">'
-									+ '<a href="' + subMenuUrl + '" role="menuitem" tabindex="' + j + '">'
-									+ '<span class="slds-truncate">' + subMenuTitle + '</span>'
-									+ '</a>'
-									+ '</li>';
-						}
-						subMenuElements.push(subMenuItemHtml);
+		}
+
+		function buildSubMenu(object, index){
+			var menuid = 'menu'+index;
+			for (var i in object){
+				if (object[i].url === undefined || object[i].url === null) {
+					$('#' + menuid).append('<li class="slds-dropdown__header slds-has-divider--top-space" role="separator">\
+							</li>');
+				} else {
+					if (object[i].items === undefined || object[i].items === null) {
+						$('#' + menuid).append('<li class="slds-dropdown__item" role="presentation">\
+							<a href="' + object[i].url + '" role="menuitem" tabindex="-1">\
+							<span class="slds-truncate">' + object[i].text + '</span>\
+							</a>\
+							</li>');
+					} else {
+						$('#' + menuid).append('<li class="slds-dropdown__item" role="presentation" id="test">\
+							<a href="' + object[i].url + '" role="menuitem" tabindex="-1" id="test">\
+							<span class="slds-truncate">' + object[i].text + '</span>\
+							<svg aria-hidden="true" class="slds-button__icon">\
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>\
+							</svg>\
+							<ul class="slds-dropdown__list" role="menu"  id="submenu' + i + '">\
+							</ul>\
+							</a>\
+							</li>');
+						buildMoreMenu(object[i].items, i);
 					}
 				}
-
-				menuElements.push(subMenuElements);
-				menuItemHtml = '</ul>'
-						+ '</div>';
-				menuElements.push(menuItemHtml);
 			}
-
 		}
-		var html = menuElements.join('');
-		mainMenu += html;
-		mainMenu = mainMenu.replace(/,/g, '');
-		mainMenu += '</li></ul>';
-		mainMenu += '<div class="slds-context-bar__tertiary" style="margin-left:20px; margin-top:auto; margin-bottom:auto;">'
-				+'<div class="slds-form-element">'
-				+'<div class="slds-form-element__control">'
-				+'<div class="slds-select_container">'
-				+'<select id="qccombo" class="slds-select" onchange="QCreate(this);">'
-				+'<option value="none">{/literal}{$APP.LBL_QUICK_CREATE}{literal}...</option>'
-				{/literal}{foreach item=detail from=$QCMODULE}
-				{literal}
-				+'<option value="{/literal}{$detail.1}">{$APP.NEW}&nbsp;{$detail.0}{literal}</option>'
-				{/literal}
-				{/foreach}
-				{literal}
-				+'</select>'
-				+'</div>'
-				+'</div>'
-				+'</div>'
-				+'</div></nav>';
-		var menu = jQuery(".slds-context-bar").append(mainMenu );
-		jQuery('#evvtmenudiv').show();
+
+		function buildMoreMenu(object, index){
+			var sunMenuId = 'submenu' +index;
+			for (var i in object) {
+				if (object[i].items === undefined || object[i].items === null) {
+					$('#' + sunMenuId).append('<li class="slds-dropdown__item" role="presentation">\
+							<a href="' + object[i].url + '" role="menuitem" tabindex="-1">\
+							<span class="slds-truncate">' + object[i].text + '</span>\
+							</a>\
+							</li>');
+				} else {
+					$('#' + sunMenuId).append('<li class="slds-dropdown__item" role="presentation" id="test">\
+							<a href="' + object[i].url + '" role="menuitem" tabindex="-1" id="test">\
+							<span class="slds-truncate">' + object[i].text + '</span>\
+							<svg aria-hidden="true" class="slds-button__icon">\
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>\
+							</svg>\
+							<ul class="slds-dropdown__list" role="menu"  id="submenu' + i + '">\
+							</ul>\
+							</a>\
+							</li>');
+					buildMoreMenu(object[i].items, i);
+				}
+			}
+		}
+
+
+		$("#test").mouseover(function(){
+			console.log("A");
+		});
+		buildMainMenu(evvtmenu);
+
+
 	});
 	{/literal}
 </script>
