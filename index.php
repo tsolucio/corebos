@@ -89,7 +89,6 @@ if (is_file('config_override.php')) {
 /**
  * Check for vtiger installed version and codebase
  */
-require_once('vtigerversion.php');
 global $adb, $vtiger_current_version;
 if(isset($_SESSION['VTIGER_DB_VERSION']) && isset($_SESSION['authenticated_user_id'])) {
 	if(version_compare($_SESSION['VTIGER_DB_VERSION'], $vtiger_current_version, '!=')) {
