@@ -4,8 +4,11 @@
 <link href="{$KUIDIR}styles/kendo.bootstrap.min.css" rel="stylesheet" type="text/css"/>
 *}
 <script type="text/javascript" src="modules/evvtMenu/evvtMenu.js"></script>
+<script src="https://cdn.jsdelivr.net/select2/4.0.3/js/select2.min.js"></script>
+<script src="https://cdn.jsdelivr.net/select2/4.0.3/js/select2.full.min.js"></script>
 <script src="https://use.fontawesome.com/6022c11b2b.js"></script>
 <link href="modules/evvtMenu/evvtMenu.css" rel="stylesheet" type="text/css"/>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/select2/4.0.3/css/select2.min.css">
 
 <div style="padding:20px"><div style="color: #14a1e9; font-weight: bold; font-size: medium; padding: 10px; border: 1px solid #1399dd; background: #FFFFFF; border-radius: 5px; margin-bottom: 4px;">{'evvtMenuTitle'|getTranslatedString:$MODULE}</div></div>
 
@@ -61,7 +64,7 @@
                   <input name="mvalue" id="mvalue" class="slds-input" type="text"/>
               </div>
           </div>
-          <div class="slds-form-element hide" id="moduleForm">
+          <div class=" hide" id="moduleForm">
               <label class="slds-form-element__label" for="modname">Action</label>
               <div class="slds-form-element__control">
                   <div class="slds-select_container">
@@ -73,9 +76,24 @@
                   </div>
               </div>
           </div>
-          <label class="slds-form-element__label" for="mpermission">Permissions</label>
-          {html_options name="mpermission[]" id="mpermission" multiple="multiple" options=$PROFILES}
+
+
+          <div class="slds-form-element" id="permissionForm">
+              <label class="slds-form-element__label" for="mpermission">Permissions</label>
+              <div class="slds-form-element__control">
+                      <select class="mpermission" name="mpermission[]" id="mpermission" multiple>
+                          {foreach item=detail from=$PROFILES }
+                              <option value="{$detail}">{$detail}</option>
+                          {/foreach}
+                      </select>
+              </div>
+          </div>
+
+
+
+
           </br>
+
 
               <button class="slds-button slds-button--brand" onclick="VtigerJS_DialogBox.block();processTree('doAdd');">{'LBL_ADD_BUTTON'|getTranslatedString:$MODULE}</button>
               <button class="slds-button slds-button--brand" onclick="VtigerJS_DialogBox.block();processTree('doUpd');">{'LBL_UPDATE'|getTranslatedString:$MODULE}</button>
@@ -85,7 +103,9 @@
 
       </div>
 
-
+      <script type="text/javascript">
+          $(".mpermission").select2();
+      </script>
 
           {*<input type="submit" onclick="VtigerJS_DialogBox.block();processTree('doAdd');" class="crmbutton small create" value="{'LBL_ADD_BUTTON'|getTranslatedString:$MODULE}" name="menuadd">*}
           {*<input type="submit" onclick="VtigerJS_DialogBox.block();processTree('doUpd');" class="crmbutton small create" value="{'LBL_UPDATE'|getTranslatedString:$MODULE}" name="menuupd">*}
