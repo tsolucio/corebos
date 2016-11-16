@@ -1,0 +1,31 @@
+<?xml version='1.0'?>
+<module>
+<exporttime>2016-11-03 14:36:12</exporttime>
+<name>evvtMenu</name>
+<label>vtMenu</label>
+<parent>Settings</parent>
+<type>extension</type>
+<version>1.0</version>
+<dependencies>
+<vtiger_version>5.3.0</vtiger_version>
+</dependencies>
+<tables>
+<table>
+<name>evvtmenu</name>
+<sql><![CDATA[CREATE TABLE IF NOT EXISTS `vtiger_evvtmenu` (
+  `evvtmenuid` int(11) NOT NULL AUTO_INCREMENT,
+  `mtype` varchar(25) NOT NULL,
+  `mvalue` varchar(200) NOT NULL,
+  `mlabel` varchar(200) NOT NULL,
+  `mparent` int(11) NOT NULL,
+  `mseq` smallint(6) NOT NULL,
+  `mvisible` tinyint(4) NOT NULL,
+  `mpermission` varchar(250) NOT NULL,
+  PRIMARY KEY (`evvtmenuid`),
+  KEY `mparent` (`mparent`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 AUTO_INCREMENT=1;]]></sql>
+</table>
+</tables>
+<crons>
+</crons>
+</module>

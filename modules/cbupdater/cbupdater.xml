@@ -899,4 +899,11 @@
 	<classname>addPdoSrvDivisible</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>shpendsokoli</author>
+	<description>Add Kendo UI menu</description>
+	<filename>build/changeSets/kendoMenu.php</filename>
+	<classname>kendoMenu</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
