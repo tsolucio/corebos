@@ -123,7 +123,7 @@
 			{foreachelse}
 			<tr>
 			<td style="background-color:#efefef;height:340px" align="center" colspan="{$smarty.foreach.listviewforeach.iteration+1}">
-			<div id="no_entries_found" style="border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 45%; position: relative; z-index: 10000000;">
+			<div id="no_entries_found" style="border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 45%; position: relative;">
 				{assign var=vowel_conf value='LBL_A'}
 				{if $MODULE eq 'Accounts' || $MODULE eq 'Invoice'}
 					{assign var=vowel_conf value='LBL_AN'}
