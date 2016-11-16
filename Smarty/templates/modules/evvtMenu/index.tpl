@@ -76,14 +76,14 @@
                   </div>
               </div>
           </div>
-
-
+          {assign var=counter value=1}
           <div class="slds-form-element" id="permissionForm">
               <label class="slds-form-element__label" for="mpermission">Permissions</label>
               <div class="slds-form-element__control">
                       <select class="mpermission" name="mpermission[]" id="mpermission" multiple>
-                          {foreach item=detail from=$PROFILES }
-                              <option value="{$detail}">{$detail}</option>
+                          {foreach item=detail from=$PROFILES}
+                              <option value="{$counter}">{$detail}</option>
+                              {$counter++}
                           {/foreach}
                       </select>
               </div>
