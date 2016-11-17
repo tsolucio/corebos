@@ -125,7 +125,7 @@ class dUnzip2{
 		
 		// Open file, and set file handler
 		$fh = fopen($this->fileName, "r");
-		$this->fh = &$fh;
+		$this->fh = $fh;
 		if(!$fh){
 			$this->debugMsg(2, "Failed to load file.");
 			return false;
@@ -234,7 +234,7 @@ class dUnzip2{
 			$this->getList(false, $compressedFileName);
 		}
 		
-		$fdetails = &$this->compressedList[$compressedFileName];
+		$fdetails = $this->compressedList[$compressedFileName];
 		if(!isset($this->compressedList[$compressedFileName])){
 			$this->debugMsg(2, "File '<b>$compressedFileName</b>' is not compressed in the zip.");
 			return false;
