@@ -925,6 +925,6 @@
 	<description>Add Indexes on Inventorydetail table</description>
 	<filename>build/changeSets/add_Indexes_InvDetails.php</filename>
 	<classname>add_Indexes_InvDetails</classname>
-	<systemupdate>false</systemupdate>
+	<systemupdate>true</systemupdate>
 </changeSet>
 </updatesChangeLog>
