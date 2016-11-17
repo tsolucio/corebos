@@ -19,6 +19,8 @@
 	<link rel="stylesheet" href="include/print.css" type="text/css" media="print" />
 	<link rel="stylesheet" href="include/LD/assets/styles/salesforce-lightning-design-system.css" type="text/css" />
 	<link rel="stylesheet" href="include/LD/assets/styles/mainmenu.css" type="text/css" />
+
+	<script src="https://use.fontawesome.com/6022c11b2b.js"></script>
 	{* vtlib customization: Inclusion of custom javascript and css as registered *}
 	{if $HEADERCSS}
 		<!-- Custom Header CSS -->
@@ -511,9 +513,7 @@
 						<span class="slds-truncate">' + object[i].text + '</span>\
 				</a>\
 				<div class="slds-context-bar__icon-action slds-p-left--none" tabindex="0">\
-					<svg aria-hidden="true" class="slds-button__icon">\
-						<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevrondown"></use>\
-						</svg>\
+					<i class="fa fa-angle-down" aria-hidden="true"></i>\
 				</div>\
 				<div class="slds-dropdown slds-dropdown--right">\
 				<ul class="slds-dropdown__list" role="menu" id="menu' + i + '">\
@@ -549,10 +549,8 @@
 					} else {
 						$('#' + menuid).append('<li class="slds-dropdown__item" role="presentation">\
 							<a href="' + object[i].url + '" role="menuitem" tabindex="-1">\
-							<span class="slds-truncate">' + object[i].text + '</span>\
-							<svg aria-hidden="true" class="slds-button__icon">\
-							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>\
-							</svg>\
+							<span class="slds-truncate" style="padding-right:20px">' + object[i].text + '</span>\
+							<i class="fa fa-angle-right" aria-hidden="true"></i>\
 							</a>\
 							<ul class="moreMenu" id="submenu' + i + '-' + index+ '">\
 							</ul>\
@@ -577,10 +575,8 @@
 				} else {
 					$('#' + subMenuId).append('<li class="slds-dropdown__item" role="presentation" id="test">\
 							<a href="' + object[i].url + '" role="menuitem" tabindex="-1" id="test">\
-							<span class="slds-truncate">' + object[i].text + '</span>\
-							<svg aria-hidden="true" class="slds-button__icon">\
-							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>\
-							</svg>\
+							<span class="slds-truncate" style="padding-right:20px">' + object[i].text + '</span>\
+							<i class="fa fa-angle-right" aria-hidden="true"></i>\
 							<ul class="moreMenu2" id="submenu' + i + '-' + index + '">\
 							</ul>\
 							</a>\
