@@ -1155,7 +1155,7 @@ function getRelatedListInfo($module) {
 	global $adb;
 	$tabid = getTabid($module);
 	$related_query = 'select * from vtiger_relatedlists ' .
-			'inner join vtiger_tab on vtiger_relatedlists.related_tabid = vtiger_tab.tabid and vtiger_tab.presence = 0 where vtiger_relatedlists.tabid = ? order by sequence';
+			'left join vtiger_tab on vtiger_relatedlists.related_tabid = vtiger_tab.tabid and vtiger_tab.presence = 0 where vtiger_relatedlists.tabid = ? order by sequence';
 	$relinfo = $adb->pquery($related_query,array($tabid));
 	$noofrows = $adb->num_rows($relinfo);
 	for($i=0;$i<$noofrows;$i++) {
@@ -1163,7 +1163,7 @@ function getRelatedListInfo($module) {
 		$res[$i]['sequence'] = $adb->query_result($relinfo,$i,'sequence');
 		$label = $adb->query_result($relinfo,$i,'label');
 		$relatedModule = getTabname($adb->query_result($relinfo,$i,'related_tabid'));
-		$res[$i]['label'] = getTranslatedString($label,$relatedModule);
+		$res[$i]['label'] = (empty($relatedModule) ? getTranslatedString($label,$module) : getTranslatedString($label,$relatedModule));
 		$res[$i]['presence'] = $adb->query_result($relinfo,$i,'presence');
 		$res[$i]['tabid'] = $tabid;
 		$res[$i]['id'] = $adb->query_result($relinfo,$i,'relation_id');
