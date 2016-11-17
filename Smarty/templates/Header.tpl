@@ -18,6 +18,7 @@
 	<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
 	<link rel="stylesheet" href="include/print.css" type="text/css" media="print" />
 	<link rel="stylesheet" href="include/LD/assets/styles/salesforce-lightning-design-system.css" type="text/css" />
+	<link rel="stylesheet" href="include/LD/assets/styles/mainmenu.css" type="text/css" />
 	{* vtlib customization: Inclusion of custom javascript and css as registered *}
 	{if $HEADERCSS}
 		<!-- Custom Header CSS -->
@@ -502,7 +503,7 @@
 
 
 
-		function buildMainMenu(object){
+		function buildMainMenu(object){ //main menu
 			for (var i in object) {
 				if(object[i].items != null) {
 					$('.slds-grid').append('<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true"> \
@@ -532,7 +533,7 @@
 			}
 		}
 
-		function buildSubMenu(object, index){
+		function buildSubMenu(object, index){ //submenu
 			var menuid = 'menu'+index;
 			for (var i in object){
 				if (object[i].url === undefined || object[i].url === null) {
@@ -563,9 +564,10 @@
 			}
 		}
 
-		function buildMoreMenu(object, index){
+		function buildMoreMenu(object, index){ //pjest shtes qe duhen mmu shtu
 			var subMenuId = 'submenu' +index;
 			for (var i in object) {
+	 //shumica e punes qe ka met osht mi veqit ID qysh duhet edhe mi qas qato ID po sjom ka di lol sec v
 				if (object[i].items === undefined || object[i].items === null) {
 					$('#' + subMenuId).append('<li class="slds-dropdown__item" role="presentation">\
 							<a href="' + object[i].url + '" role="menuitem" tabindex="-1">\
@@ -579,7 +581,7 @@
 							<svg aria-hidden="true" class="slds-button__icon">\
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>\
 							</svg>\
-							<ul class="moreMenu2" style="float:left;" id="submenu' + i + '-' + index + '">\
+							<ul class="moreMenu2" id="submenu' + i + '-' + index + '">\
 							</ul>\
 							</a>\
 							</li>');
