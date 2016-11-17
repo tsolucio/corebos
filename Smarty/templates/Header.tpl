@@ -546,54 +546,60 @@
 							</a>\
 							</li>');
 					} else {
-						$('#' + menuid).append('<li class="slds-dropdown__item" role="presentation" id="test">\
-							<a href="' + object[i].url + '" role="menuitem" tabindex="-1" id="test">\
+						$('#' + menuid).append('<li class="slds-dropdown__item" role="presentation">\
+							<a href="' + object[i].url + '" role="menuitem" tabindex="-1">\
 							<span class="slds-truncate">' + object[i].text + '</span>\
 							<svg aria-hidden="true" class="slds-button__icon">\
 							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>\
 							</svg>\
-							<ul class="slds-dropdown__list" role="menu"  id="submenu' + i + '">\
-							</ul>\
 							</a>\
+							<ul class="moreMenu" id="submenu' + i + '-' + index+ '">\
+							</ul>\
 							</li>');
-						buildMoreMenu(object[i].items, i);
+						var pld = i + '-' + index;
+						buildMoreMenu(object[i].items, pld);//kallxom kur pe marron lvl3
 					}
 				}
 			}
 		}
 
 		function buildMoreMenu(object, index){
-			var sunMenuId = 'submenu' +index;
+			var subMenuId = 'submenu' +index;
 			for (var i in object) {
-//				if (object[i].items === undefined || object[i].items === null) {
-					$('#' + sunMenuId).append('<li class="newMenu" id="renatu" style="display:none;" role="presentation">\
+				if (object[i].items === undefined || object[i].items === null) {
+					$('#' + subMenuId).append('<li class="slds-dropdown__item" role="presentation">\
 							<a href="' + object[i].url + '" role="menuitem" tabindex="-1">\
-							<span class="slds-truncate">' + object[i].text + '</span><a></li>');
-//				} else {
-//					$('#' + sunMenuId).append('<li class="slds-dropdown__item" role="presentation" id="test">\
-//							<a href="' + object[i].url + '" role="menuitem" tabindex="-1" id="test">\
-//							<span class="slds-truncate">' + object[i].text + '</span>\
-//							<svg aria-hidden="true" class="slds-button__icon">\
-//							<use xlink:href="include/LD/as1sets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>\
-//							</svg>\
-//							<ul class="slds-dropdown__list" role="menu"  id="submenu' + i + '">\
-//							</ul>\
-//							</a>\
-//							</li>');
-//					buildMoreMenu(object[i].items, i);
-//				}
+							<span class="slds-truncate">' + object[i].text + '</span>\
+							</a>\
+							</li>');
+				} else {
+					$('#' + subMenuId).append('<li class="slds-dropdown__item" role="presentation" id="test">\
+							<a href="' + object[i].url + '" role="menuitem" tabindex="-1" id="test">\
+							<span class="slds-truncate">' + object[i].text + '</span>\
+							<svg aria-hidden="true" class="slds-button__icon">\
+							<use xlink:href="include/LD/assets/icons/utility-sprite/svg/symbols.svg#chevronright"></use>\
+							</svg>\
+							<ul class="moreMenu2" style="float:left;" id="submenu' + i + '-' + index + '">\
+							</ul>\
+							</a>\
+							</li>');
+					var pld = i + '-' + index;
+					buildMoreMenu(object[i].items, pld);
+				}
 			}
 		}
-
-
-
 		buildMainMenu(evvtmenu);
 
 		$(function () {
 			$(".slds-dropdown__item").hover(function () {
-				$(this).find("#renatux").toggle();
+				var id = $(this).children('ul').attr('id');
+				if (id === undefined || id === null) {
+					id = $(this).find('ul').attr('id');
+				}
+				$(this).find('#' + id).toggle();
 			});
 		});
+
 
 
 	});
