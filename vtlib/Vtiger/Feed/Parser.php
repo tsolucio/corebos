@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
-require_once('vtlib/thirdparty/parser/feed/simplepie.inc');
+require_once('include/simplepie/autoloader.php');
 
 /**
  * Extends SimplePie (feed parser library for Rss, Atom, etc)
@@ -27,8 +27,9 @@ class Vtiger_Feed_Parser extends SimplePie {
 		$this->set_feed_url($url);
 		$this->enable_order_by_date(false);
 		$this->enable_cache(false);
-		$this->init();
+		$success = $this->init();
 		$this->vt_fetchdone = true;
+		return $success;
 	}
 
 	/**

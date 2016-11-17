@@ -1,6 +1,6 @@
 
-This software is a collective work consisting of the following major Open Source components: 
-Apache software, MySQL server, PHP, SugarCRM, ADOdb, Smarty, PHPMailer, MagpieRSS and others, each licensed under a separate Open Source License.
+This software is a collective work consisting of the following major Open Source components:
+Apache software, MySQL server, PHP, SugarCRM, ADOdb, Smarty, PHPMailer and others, each licensed under a separate Open Source License.
 vtiger.com is not affiliated with nor endorsed by any of the above providers.
 
 1. Apache Web server software used under the Apache License available at <vtiger CRM Home>/vtigerCRM/apache/LICENSE.txt
@@ -19,7 +19,7 @@ vtiger.com is not affiliated with nor endorsed by any of the above providers.
 
 8. ADOdb software used under BSD license downloaded from http://adodb.sourceforge.net available at <vtiger CRM Home>/vtigerCRM/adodb/license.txt
 
-10. MagpieRSS software used under GNU GPL downloaded from http://magpierss.sourceforge.net/ available at http://magpierss.sourceforge.net 
+10. Simplepie software used under BSD downloaded from https://github.com/simplepie
 
 11. FCKeditor software used under GNU LGPL downloaded from http://www.fckeditor.net/download/default.html available at <vtiger CRM Home>/vtigerCRM/includes/FCKeditor/license.txt
 

@@ -14,7 +14,7 @@ NOTE: Bug Fix was added to function addFile of dZip class.
 
 2. For Feed Parsing
 -- ===============
-vtlib/thirdparty/parser/feed/simplepie.inc
+include/simplepie
 
 DOWNLOAD URL: http://simplepie.org
 
