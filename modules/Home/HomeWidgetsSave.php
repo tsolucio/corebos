@@ -9,18 +9,17 @@
  *********************************************************************************/
 require_once 'include/utils/utils.php';
 require_once 'modules/PickList/PickListUtils.php';
-require_once "include/Zend/Json.php";
 
 $values = vtlib_purify($_REQUEST['values']);
-$val = Zend_Json::decode($values);
+$val = json_decode($values,true);
 HomeDefaultWidgets::saveSelected($val);
 
 class HomeDefaultWidgets {
 	public static function saveSelected($values){
 		global $adb, $current_user;
 		$userId = $current_user->id;
-		for($i = 0;$i < count($values);$i++)
-		{	if($values[$i] != null){
+		for($i = 0;$i < count($values);$i++) {
+			if($values[$i] != null){
 				$query=" update vtiger_homestuff,vtiger_homedefault set vtiger_homestuff.visible=0 where vtiger_homestuff.stuffid=vtiger_homedefault.stuffid and vtiger_homestuff.userid=".$userId." and vtiger_homedefault.hometype='".$values[$i]."'";//To show the default Homestuff on the the Home Page
 				$result=$adb->query($query);
 			}

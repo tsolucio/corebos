@@ -286,7 +286,7 @@ $smarty->assign("CUSTOM_FIELDS_DATA", $custom_fields_data);
 $smarty->assign("REPEAT_LIMIT_DATEFORMAT", parse_calendardate($app_strings['NTC_DATE_FORMAT']));
 
 $picklistDependencyDatasource = Vtiger_DependencyPicklist::getPicklistDependencyDatasource($tab_type);
-$smarty->assign("PICKIST_DEPENDENCY_DATASOURCE", Zend_Json::encode($picklistDependencyDatasource));
+$smarty->assign("PICKIST_DEPENDENCY_DATASOURCE", json_encode($picklistDependencyDatasource));
 
 // Gather the help information associated with fields
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));

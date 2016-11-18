@@ -12,7 +12,6 @@ chdir('../../');
 header('Content-type: text/plain');
 
 include_once 'vtlib/Vtiger/Net/Client.php';
-include_once 'include/Zend/Json.php';
 
 $mobileAPITestController = new Mobile_API_TestController();
 $mobileAPITestController->doLoginAndFetchModules('admin','admin');
@@ -44,7 +43,7 @@ class Mobile_API_TestController {
 		$client = new Vtiger_Net_Client($this->URL);
 		$response = $client->doPost($parameters);
 		if($printResponse) echo $response;
-		$responseJSON = Zend_Json::decode($response);
+		$responseJSON = json_decode($response,true);
 		return $responseJSON;
 	}
 	
@@ -145,7 +144,7 @@ class Mobile_API_TestController {
 				'module' => $module,
 				//'alertid'=> '1'
 				//'filterid' => '2'
-				'search' => Zend_Json::encode(array('_sort'=>'ORDER BY modifiedtime desc')),
+				'search' => json_encode(array('_sort'=>'ORDER BY modifiedtime desc')),
 			), true);
 		//print_r($responseJSON);
 	}
@@ -177,7 +176,7 @@ class Mobile_API_TestController {
 				'_operation' => 'saveRecord',
 				'module' => $module,
 				'record' => $record,
-				'values' => Zend_Json::encode($values)
+				'values' => json_encode($values)
 			);
 			
 		$responseJSON = $this->doPost($parameters, true);
@@ -248,7 +247,7 @@ class Mobile_API_TestController {
 		$key = 'record'; $value = $recordids;
 		if (is_array($recordids)) {
 			$key = 'records';
-			$value = Zend_Json::encode($recordids);
+			$value = json_encode($recordids);
 		}
 		$parameters = array(
 				'_session' => $this->session,

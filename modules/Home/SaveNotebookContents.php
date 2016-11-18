@@ -11,7 +11,6 @@
  * Created on 10-Oct-08
  * this file saves the notebook contents to database
  */
-Zend_Json::$useBuiltinEncoderDecoder = true;
 $status = SaveNotebookContents();
 if($status == true) {
     require_once('include/home.php');
@@ -19,7 +18,7 @@ if($status == true) {
     $contents = $homeObj->getNoteBookContents($_REQUEST['notebookid']);
 }
 $returnvalue = array('status' => $status, 'contents' => $contents);
-echo Zend_Json::encode($returnvalue);
+echo json_encode($returnvalue);
 
 function SaveNotebookContents(){
 	if(empty($_REQUEST['notebookid'])){

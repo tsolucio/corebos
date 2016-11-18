@@ -196,8 +196,8 @@ function getTopQuotesSearch($output) {
         )
 	);
 
-	$output['advft_criteria'] = Zend_Json::encode($advft_criteria);
-	$output['advft_criteria_groups'] = Zend_Json::encode($advft_criteria_groups);
+	$output['advft_criteria'] = json_encode($advft_criteria);
+	$output['advft_criteria_groups'] = json_encode($advft_criteria_groups);
 
 	return $output;
 }

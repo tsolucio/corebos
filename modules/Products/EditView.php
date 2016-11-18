@@ -283,7 +283,7 @@ $smarty->assign('Product_Maximum_Number_Images',GlobalVariable::getVariable('Pro
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
 
 $picklistDependencyDatasource = Vtiger_DependencyPicklist::getPicklistDependencyDatasource($currentModule);
-$smarty->assign("PICKIST_DEPENDENCY_DATASOURCE", Zend_Json::encode($picklistDependencyDatasource));
+$smarty->assign("PICKIST_DEPENDENCY_DATASOURCE", json_encode($picklistDependencyDatasource));
 
 if($focus->mode == 'edit') {
 	$smarty->display('Inventory/InventoryEditView.tpl');

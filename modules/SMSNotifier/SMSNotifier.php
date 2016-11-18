@@ -9,7 +9,6 @@
  ************************************************************************************/
 include_once dirname(__FILE__) . '/SMSNotifierBase.php';
 include_once dirname(__FILE__) . '/ext/SMSProvider.php';
-include_once 'include/Zend/Json.php';
 
 class SMSNotifier extends SMSNotifierBase {
 
@@ -254,7 +253,7 @@ class SMSNotifierManager {
 			$resultrow = $adb->fetch_array($result);
 			$provider = SMSProvider::getInstance($resultrow['providertype']);
 			$parameters = array();
-			if(!empty($resultrow['parameters'])) $parameters = Zend_Json::decode(decode_html($resultrow['parameters']));
+			if(!empty($resultrow['parameters'])) $parameters = json_decode(decode_html($resultrow['parameters']),true);
 			foreach($parameters as $k=>$v) {
 				$provider->setParameter($k, $v);
 			}
@@ -303,7 +302,7 @@ class SMSNotifierManager {
 					$inputServerParams[$v] = vtlib_purify($frmvalues[$lookupkey]);
 				}
 			}
-			$parameters = Zend_Json::encode($inputServerParams);
+			$parameters = json_encode($inputServerParams);
 		}
 
 		if(empty($id)) {

@@ -23,7 +23,6 @@ require_once("config.inc.php");
 require_once('include/database/PearDatabase.php');
 require_once 'include/Webservices/Utils.php';
 require_once("modules/Users/Users.php");
-require_once("include/Zend/Json.php");
 require_once("include/Webservices/VtigerCRMObject.php");
 require_once("include/Webservices/VtigerCRMObjectMeta.php");
 require_once("include/Webservices/DataTransform.php");
@@ -89,9 +88,7 @@ function webforms_returnError($e,$moduleName){
 		header("Location: $failureURL");
 	}
 	if($defaultSuccessAction == 'JSON'){
-		Zend_Json::$useBuiltinEncoderDecoder = true;
-		$json = new Zend_Json();
-		echo $json->encode(array('success'=>false,'error'=>$e));
+		echo json_encode(array('success'=>false,'error'=>$e));
 	}else{
 		webforms_displayTemplate(getExceptionArray($e),$moduleName,'modules/Webforms/ErrorPage.tpl');
 	}
@@ -129,9 +126,7 @@ function webforms_returnSuccess($element,$moduleName){
 		header("Location: $successURL");
 	}
 	if($defaultSuccessAction == 'JSON'){
-		Zend_Json::$useBuiltinEncoderDecoder = true;
-		$json = new Zend_Json();
-		echo $json->encode(array('success'=>true,'result'=>$element));
+		echo json_encode(array('success'=>true,'result'=>$element));
 	}else{
 		webforms_displayTemplate($elemnet,$moduleName,'modules/Webforms/SuccessPage.tpl');
 	}

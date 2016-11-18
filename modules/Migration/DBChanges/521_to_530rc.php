@@ -90,7 +90,7 @@ function vt530_addDepedencyToVTWorkflowEventHandler(){
 	$db = PearDatabase::getInstance();
 
 	$dependentEventHandlers = array('VTEntityDelta');
-	$dependentEventHandlersJson = Zend_Json::encode($dependentEventHandlers);
+	$dependentEventHandlersJson = json_encode($dependentEventHandlers);
 	ExecuteQuery("UPDATE vtiger_eventhandlers SET dependent_on='$dependentEventHandlersJson'
 								WHERE event_name='vtiger.entity.aftersave' AND handler_class='VTWorkflowEventHandler'");
 }

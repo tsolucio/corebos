@@ -19,7 +19,7 @@ class Mobile_WS_ListModuleRecords extends Mobile_WS_Controller {
 	}
 	
 	function getSearchFilterModel($module, $search) {
-		return Mobile_WS_SearchFilterModel::modelWithCriterias($module, Zend_JSON::decode($search));
+		return Mobile_WS_SearchFilterModel::modelWithCriterias($module, json_decode($search,true));
 	}
 	
 	function getPagingModel(Mobile_API_Request $request) {

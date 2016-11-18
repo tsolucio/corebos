@@ -69,8 +69,7 @@ if($_REQUEST['directmode'] == 'ajax') {
 		for($i=0;$i<count($fieldValues);++$i) {
 			$picklistValues[$fieldValues[$i]] = getTranslatedString($fieldValues[$i], $fld_module);
 		}
-		$json = new Zend_Json();
-		echo $json->encode($picklistValues);
+		echo json_encode($picklistValues);
 
 	} elseif($subMode == 'editdependency') {
 		$sourceField = vtlib_purify($_REQUEST['sourcefield']);
@@ -112,8 +111,7 @@ if($_REQUEST['directmode'] == 'ajax') {
 
 		if($subMode == 'savedependency') {
 			$dependencyMapping = vtlib_purify($_REQUEST['dependencymapping']);
-			$json = new Zend_Json();
-			$dependencyMappingData = $json->decode($dependencyMapping);
+			$dependencyMappingData = json_decode($dependencyMapping,true);
 			Vtiger_DependencyPicklist::savePickListDependencies($fld_module, $dependencyMappingData);
 
 		} elseif($subMode == 'deletedependency') {

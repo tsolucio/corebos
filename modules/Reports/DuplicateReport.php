@@ -10,7 +10,6 @@
 require_once('modules/Reports/Reports.php');
 require_once('include/logging.php');
 require_once('include/database/PearDatabase.php');
-require_once 'include/Zend/Json.php';
 
 global $adb,$mod_strings,$app_strings;
 
@@ -102,11 +101,10 @@ if($numOfRows > 0) {
 					$advft_criteria = $_REQUEST['advft_criteria'];
 					$advft_criteria_groups = $_REQUEST['advft_criteria_groups'];
 					if(!empty($advft_criteria) && !empty($advft_criteria_groups)) {
-						$json = new Zend_Json();
-						$advft_criteria = $json->decode($advft_criteria);
-						$advft_criteria_groups = $json->decode($advft_criteria_groups);
+						$advft_criteria = json_decode($advft_criteria,true);
+						$advft_criteria_groups = json_decode($advft_criteria_groups,true);
 						updateAdvancedCriteria($genQueryId,$advft_criteria,$advft_criteria_groups);
-					} 
+					}
 
 				} else {
 					$errormessage = "<font color='red'><B>Error Message<ul>
@@ -120,8 +118,8 @@ if($numOfRows > 0) {
 					</ul></B></font> <br>" ;
 				$response_array['errormessage'] = $errormessage;
 			}
-		}		
-		
+		}
+
 	} else {
 
 		$errormessage = "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
@@ -164,6 +162,5 @@ if($numOfRows > 0) {
 		$response_array['errormessage'] = $errormessage;
 }
 
-$json = new Zend_Json();
-echo $json->encode($response_array);
+echo json_encode($response_array);
 ?>

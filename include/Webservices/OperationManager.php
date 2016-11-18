@@ -7,20 +7,16 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
-	
-	function setBuiltIn($json){
-		$json->useBuiltinEncoderDecoder = true;
-	}
-	
+
 	class OperationManager{
 		private $format;
 		private $formatsData=array(
 			"json"=>array(
-				"includePath"=>"include/Zend/Json.php",
-				"class"=>"Zend_Json",
+				"includePath"=>'include/Webservices/OperationManagerEnDecode.php',
+				"class"=>'OperationManagerEnDecode',
 				"encodeMethod"=>"encode",
 				"decodeMethod"=>"decode",
-				"postCreate"=>"setBuiltIn"
+				"postCreate"=>''
 			)
 		);
 		private $operationMeta = null;
@@ -177,5 +173,5 @@
 		}
 		
 	}
-	
+
 ?>

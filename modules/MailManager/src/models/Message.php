@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-
 include_once 'modules/Settings/MailScanner/core/MailRecord.php';
 include_once dirname(__FILE__) . '/../helpers/Utils.php';
 require_once dirname(__FILE__).'/../../config.inc.php';
@@ -205,10 +204,10 @@ class MailManager_Model_Message extends Vtiger_MailRecord  {
 			$resultrow = $adb->fetch_array($result);
 			$this->mUid  = decode_html($resultrow['muid']);
 
-			$this->_from = Zend_Json::decode(decode_html($resultrow['mfrom']));
-			$this->_to   = Zend_Json::decode(decode_html($resultrow['mto']));
-			$this->_cc   = Zend_Json::decode(decode_html($resultrow['mcc']));
-			$this->_bcc  = Zend_Json::decode(decode_html($resultrow['mbcc']));
+			$this->_from = json_decode(decode_html($resultrow['mfrom']));
+			$this->_to   = json_decode(decode_html($resultrow['mto']));
+			$this->_cc   = json_decode(decode_html($resultrow['mcc']));
+			$this->_bcc  = json_decode(decode_html($resultrow['mbcc']));
 
 			$this->_date	= decode_html($resultrow['mdate']);
 			$this->_subject = str_replace("_"," ",decode_html($resultrow['msubject']));
@@ -220,9 +219,9 @@ class MailManager_Model_Message extends Vtiger_MailRecord  {
 			$this->_htmlmessage  = intval($resultrow['mhtmlmessage'])? true :false;
 			$this->_uniqueid     = decode_html($resultrow['muniqueid']);
 			$this->_bodyparsed   = intval($resultrow['mbodyparsed'])? true : false;
-			
+
 			return true;
-		}	
+		}
 		return false;
 	}
 
@@ -283,10 +282,10 @@ class MailManager_Model_Message extends Vtiger_MailRecord  {
 		
 		$params = array($current_user->id);
 		$params[] = $uid;
-		$params[] = Zend_Json::encode($this->_from);
-		$params[] = Zend_Json::encode($this->_to);
-		$params[] = Zend_Json::encode($this->_cc);
-		$params[] = Zend_Json::encode($this->_bcc);
+		$params[] = json_encode($this->_from);
+		$params[] = json_encode($this->_to);
+		$params[] = json_encode($this->_cc);
+		$params[] = json_encode($this->_bcc);
 		$params[] = $this->_date;
 		$params[] = $this->_subject;
 		$params[] = $this->_body;
