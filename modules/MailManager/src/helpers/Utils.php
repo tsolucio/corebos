@@ -8,16 +8,19 @@
  * All Rights Reserved.
  ************************************************************************************/
 
-define('XML_HTMLSAX3', dirname(__FILE__) . '/../../third-party/XML/');
-include_once dirname(__FILE__) . '/../../third-party/HTML.Safe.php';
-
 class MailManager_Utils {
-	function safe_html_string( $string) {
-		$htmlSafe = new HTML_Safe();
-		return $htmlSafe->parse($string);
+	static function safe_html_string($string) {
+		global $root_directory;
+		include_once ('include/htmlpurifier/library/HTMLPurifier.auto.php');
+		$config = HTMLPurifier_Config::createDefault();
+		$config->set('Core.Encoding', 'UTF8');
+		$config->set('Cache.SerializerPath', "$root_directory/test/vtlib");
+		$htmlpurifier_instance = new HTMLPurifier($config);
+		$htmlSafe = $htmlpurifier_instance->purify($string);
+		return $htmlSafe;
 	}
-	
-	function allowedFileExtension($filename) {
+
+	static function allowedFileExtension($filename) {
 		global $upload_badext;
 		$parts = explode('.', $filename);
 		if (count($parts) > 1) {
@@ -26,10 +29,9 @@ class MailManager_Utils {
 		}
 		return false;
 	}
-	
-	function emitJSON($object) {
-		Zend_Json::$useBuiltinEncoderDecoder = true;		
-		echo Zend_Json::encode($object);
+
+	static function emitJSON($object) {
+		echo json_encode($object);
 	}
 }
 
