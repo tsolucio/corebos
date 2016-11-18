@@ -62,6 +62,7 @@ switch ($do) {
 		$evvtmenuid = vtlib_purify($_REQUEST['evvtmenuid']);
 		if (is_numeric($evvtmenuid)) {
 			$mtype = vtlib_purify($_REQUEST['mtype']);
+			$mparent = vtlib_purify($_REQUEST['mparent']);
 			$mlabel = vtlib_purify($_REQUEST['mlabel']);
 			$mvalue = vtlib_purify($_REQUEST['mvalue']);
 			if ($mtype=='module') {
@@ -69,8 +70,8 @@ switch ($do) {
 			}
 			$mpermission = vtlib_purify($_REQUEST['mpermission']);
 			$adb->pquery('update vtiger_evvtmenu
-				set mtype=?,mvalue=?,mlabel=?,mpermission=? where evvtmenuid=?',
-				array($mtype,$mvalue,$mlabel,implode(',',$mpermission),$evvtmenuid));
+				set mtype=?,mvalue=?,mlabel=?, mparent=?,mpermission=? where evvtmenuid=?',
+				array($mtype,$mvalue,$mlabel,$mparent, implode(',',$mpermission),$evvtmenuid));
 		}
 		break;
 	case 'doDel':
@@ -78,6 +79,18 @@ switch ($do) {
 		if (is_numeric($evvtmenuid)) {
 			delMenuBranch($evvtmenuid);
 		}
+		break;
+	case 'updateTree':
+		$treeIds = vtlib_purify($_REQUEST['treeIds']);
+		$treeParents = vtlib_purify($_REQUEST['treeParents']);
+		$ids = explode(",", $treeIds);
+		$parents = explode(",", $treeParents);
+		for($i=0; $i<count($ids); $i++){
+			$id = $ids[$i];
+			$parent = $parents[$i];
+			$adb->pquery('update vtiger_evvtmenu set mparent=? WHERE evvtmenuid=?', array($parent, $id));
+		}
+
 		break;
 }
 $parenttab = getParentTab();

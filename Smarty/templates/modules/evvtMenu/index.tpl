@@ -4,11 +4,69 @@
 <link href="{$KUIDIR}styles/kendo.bootstrap.min.css" rel="stylesheet" type="text/css"/>
 *}
 <script type="text/javascript" src="modules/evvtMenu/evvtMenu.js"></script>
-<script src="https://cdn.jsdelivr.net/select2/4.0.3/js/select2.min.js"></script>
-<script src="https://cdn.jsdelivr.net/select2/4.0.3/js/select2.full.min.js"></script>
 <script src="https://use.fontawesome.com/6022c11b2b.js"></script>
+<script src="https://cdn.jsdelivr.net/jquery.fancytree/2.20.0/jquery.fancytree-all.min.js"></script>
 <link href="modules/evvtMenu/evvtMenu.css" rel="stylesheet" type="text/css"/>
-<link rel="stylesheet" href="https://cdn.jsdelivr.net/select2/4.0.3/css/select2.min.css">
+
+
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/themes/default/style.min.css" />
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.12.1/jquery.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jstree/3.2.1/jstree.min.js"></script>
+
+
+
+
+{literal}<script type="text/javascript">
+    console.log({/literal}{$MENUSTRUCTURE}{literal});
+    var updates = [];
+    var ids = [];
+    var parents = [];
+        $(function () {
+            // 6 create an instance when the DOM is ready
+            var inst = $('#jstree').jstree({
+                "core" : {
+                    "check_callback" : true,
+                    "data" : {/literal}{$MENUSTRUCTURE}{literal},
+                    "themes" : {
+                        "variant" : "large"
+                    }
+                },
+                "types" : {
+                    "#" : {
+                        "valid_children" : ["root"]
+                    },
+                    "root" : {
+                        "icon" : "/static/3.3.3/assets/images/tree_icon.png",
+                        "valid_children" : ["default", "root", "file"]
+                    },
+                    "default" : {
+                        "valid_children" : ["default","file"]
+                    },
+                    "file" : {
+                        "icon" : "glyphicon glyphicon-file",
+                        "valid_children" : []
+                    }
+                },
+                "plugins" : [
+                    "dnd",
+                    "state", "types", "wholerow"
+                ]
+            });
+            // 7 bind to events triggered on the tree
+            $('#jstree').on('move_node.jstree', function (e, data) {
+                var id = data.node.id;
+                var parentId = data.instance.get_node(data.node.parent).id;
+                ids.push(id);
+                parents.push(parentId);
+            });
+
+        });
+
+
+</script>{/literal}
+
+
+
 
 <div style="padding:20px"><div style="color: #14a1e9; font-weight: bold; font-size: medium; padding: 10px; border: 1px solid #1399dd; background: #FFFFFF; border-radius: 5px; margin-bottom: 4px;">{'evvtMenuTitle'|getTranslatedString:$MODULE}</div></div>
 
@@ -20,22 +78,31 @@
         <input type="hidden" name="evvtmenutree" id="evvtmenutree" value="">
         <input type="hidden" name="evvtmenudo" value="doSave">
       </form>
-      <input type="button" onclick="sendMenuConfig();" class="crmbutton small save" style="float:right;margin-right: 45px;" value=" {'LBL_SAVE_LABEL'|getTranslatedString:$MODULE} " name="menusve">
-        <a onclick="expandTree();"<i class="fa fa-plus" aria-hidden="true"></i></a>&nbsp;&nbsp;<a onclick="contractTree();"<i class="fa fa-minus" aria-hidden="true"></i></a>
-        <div class="treeview" id="treeview">
-             <ul>
-                {$MENU}
-            </ul>
+
+
+        <button class="slds-button slds-button--neutral" onclick="saveTree();">Save</button>
+
+        <div id="jstree">
+            {$MENUTREE}
+        </div>
+
+        {*<input type="button" onclick="sendMenuConfig();" class="crmbutton small save" style="float:right;margin-right: 45px;" value=" {'LBL_SAVE_LABEL'|getTranslatedString:$MODULE} " name="menusve">*}
+        {*<a onclick="expandTree();"<i class="fa fa-plus" aria-hidden="true"></i></a>&nbsp;&nbsp;<a onclick="contractTree();"<i class="fa fa-minus" aria-hidden="true"></i></a>*}
+        {*<div class="treeview" id="treeview">*}
+             {*<ul>*}
+                {*{$MENU}*}
+            {*</ul>*}
       {*<input type="button" onclick="sendMenuConfig();" class="crmbutton small save" style="float:right;margin-right: 45px;margin-bottom: 15px;" value=" {'LBL_SAVE_LABEL'|getTranslatedString:$MODULE} " name="menusve">*}
-    </div>
+    {*</div>*}
   </div></div>
   <div class="evvtmenu-form">
     <div class="evvtmenu_header">{'evvtMenuItemInfo'|getTranslatedString:$MODULE}</div>
     <div class="evvtmenu_content">
       <form action="index.php?module={$MODULE}&action=Save&parenttab={$CATEGORY}" method="POST" id="menuitemform">
         <input type="hidden" name="evvtmenuid" id="evvtmenuid" value="">
-        <input type="hidden" name="mparent" id="mparent" value="">
         <input type="hidden" name="evvtmenudo" id="evvtmenudo" value="">
+        <input type="hidden" name="treeIds" id="treeIds" value="">
+        <input type="hidden" name="treeParents" id="treeParents" value="">
 
         </div>
       <div class="slds-form--horizontal" style="float:left;">
@@ -76,6 +143,18 @@
                   </div>
               </div>
           </div>
+          <div id="parentForm">
+              <label class="slds-form-element__label" for="mparent">Parent</label>
+              <div class="slds-form-element__control">
+                  <div class="slds-select_container">
+                      <select name="mparent" id="mparent" class="slds-select">
+                          {foreach item=details key=k from=$PARENTS}
+                              <option value="{$k}">{$details}</option>
+                          {/foreach}
+                      </select>
+                  </div>
+              </div>
+          </div>
           <label class="slds-form-element__label" for="mpermission">Permissions</label>
           {html_options name="mpermission[]" id="mpermission" multiple="multiple" options=$PROFILES}
 
@@ -92,11 +171,13 @@
 
       </div>
 
-      <script type="text/javascript">
-          $(".mpermission").select2();
-      </script>
 
-          {*<input type="submit" onclick="VtigerJS_DialogBox.block();processTree('doAdd');" class="crmbutton small create" value="{'LBL_ADD_BUTTON'|getTranslatedString:$MODULE}" name="menuadd">*}
+
+
+
+
+
+      {*<input type="submit" onclick="VtigerJS_DialogBox.block();processTree('doAdd');" class="crmbutton small create" value="{'LBL_ADD_BUTTON'|getTranslatedString:$MODULE}" name="menuadd">*}
           {*<input type="submit" onclick="VtigerJS_DialogBox.block();processTree('doUpd');" class="crmbutton small create" value="{'LBL_UPDATE'|getTranslatedString:$MODULE}" name="menuupd">*}
           {*<input type="submit" onclick="VtigerJS_DialogBox.block();processTree('doDel');" class="crmbutton small delete" value="{'LBL_DELETE_BUTTON'|getTranslatedString:$MODULE}" name="menudel">*}
           {*<input type="button" onclick="clearForm();" class="crmbutton small cancel" value=" {'LBL_CLEAR_BUTTON_LABEL'|getTranslatedString:$MODULE} " name="menucls">*}

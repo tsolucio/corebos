@@ -16,43 +16,18 @@
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
 
-function getMenuInfo(json){
-	console.log(json);
-	$('#evvtmenuid').val(json['evvtmenuid']);
-	$('#mparent').val(json['mparent']);
-	$('#mtype').val(json['mtype']);
-	$('#mlabel').val(json['mlabel']);
-	if(json.mtype==='module') $('#modname').val(json['mvalue']);
-	if(json.mtype==='url') $('#mvalue').val(json['mvalue']);
-	$('#mpermission').val(json['mpermission'].split(','));
+function getMenuInfo(info){
+	$('#evvtmenuid').val(info['evvtmenuid']);
+	$('#mparent').val(info['mparent']);
+	$('#mtype').val(info['mtype']);
+	$('#mlabel').val(info['mlabel']);
+	if(info.mtype==='module') $('#modname').val(info['mvalue']);
+	if(info.mtype==='url') $('#mvalue').val(info['mvalue']);
+	$('#mpermission').val(info['mpermission'].split(','));
+	showFormParts(info['mtype']);
 }
-function expandSection(i){
-	var id = 'trees-' + i;
-	var element = document.getElementById(id);
-	element.classList.remove("hide");
-	element.classList.add("show");
 
-}
-function contractSection(i){
-	var id = 'trees-' + i;
-	var element = document.getElementById(id);
-	element.classList.remove("show");
-	element.classList.add("hide");
-}
-function expandTree(){
-	var elements = document.getElementsByClassName("treeitems");
-	for(var i = 0; i<elements.length; i++){
-		elements[i].classList.remove("hide");
-		elements[i].classList.add("show");
-	}
-}
-function contractTree(){
-	var elements = document.getElementsByClassName("treeitems");
-	for(var i = 0; i<elements.length; i++){
-		elements[i].classList.remove("show");
-		elements[i].classList.add("hide");
-	}
-}
+
 function processTree(action){
 	document.getElementById("evvtmenudo").value = action;
 	document.getElementById("menuitemform").submit();
@@ -92,4 +67,13 @@ function showFormParts(mtype){
 			element.classList.add("hide");
 			break;
 	}
+}
+
+function saveTree() {
+	console.log(ids);
+	console.log(parents);
+	document.getElementById("evvtmenudo").value = 'updateTree';
+	document.getElementById("treeIds").value = ids;
+	document.getElementById("treeParents").value = parents;
+	document.getElementById("menuitemform").submit();
 }

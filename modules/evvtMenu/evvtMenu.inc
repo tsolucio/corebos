@@ -104,6 +104,49 @@ function getMenuBranchHTML($marray) {
     return $menuTreeHtml;
 }
 
+function getMenuJSON2() {
+	global $adb;
+	$menustructure = array(array('id'=>0, 'parent'=>'#', 'text' => 'Menu'));
+	$menurs = $adb->query("SELECT * FROM `vtiger_evvtmenu` ORDER BY mseq ASC");
+	if ($menurs and $adb->num_rows($menurs)>0) {
+		while ($menu = $adb->fetchByAssoc($menurs)) {
+			$info = array(
+				'evvtmenuid' => $menu['evvtmenuid'],
+				'mparent' =>$menu['mparent'],
+				'mtype' => $menu['mtype'],
+				'mvalue' => $menu['mvalue'],
+				'mlabel' => $menu['mlabel'],
+				'mvisible' => $menu['mvisible'],
+				'mpermission' => $menu['mpermission'],
+				'mseq' => $menu['mseq'],
+			);
+			$info = json_encode($info);
+			$menustructure[] = array(
+				'id' => $menu['evvtmenuid'],
+				'parent' => $menu['mparent'],
+				'text' => $menu['mlabel'],
+				'li_attr' => array('class'=>'jstree-drop',),
+				'a_attr' => array('onclick' => 'getMenuInfo('.$info.');',
+								'mseq' => $menu['mseq'])
+			);
+		}
+	}
+	return json_encode($menustructure);
+}
+
+
+function getMenuElements(){
+	global $adb;
+	$menustructure = array();
+	$menurs = $adb->query("SELECT `evvtmenuid`, `mlabel` FROM `vtiger_evvtmenu`");
+	if ($menurs and $adb->num_rows($menurs)>0) {
+		while ($menu = $adb->fetch_array($menurs)) {
+			$menustructure[$menu['evvtmenuid']] = $menu['mlabel'];
+		}
+	}
+	return $menustructure;
+}
+
 
 function getMenuArray($mparent) {
 	global $adb,$current_user;
