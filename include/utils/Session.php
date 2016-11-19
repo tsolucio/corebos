@@ -17,7 +17,7 @@
  * Session class
  */
 class coreBOS_Session {
-
+		static $session_name = '';
 	/**
 	 * Constructor
 	 * Avoid creation of instances.
@@ -50,7 +50,7 @@ class coreBOS_Session {
 	static function getSessionName($URL='',$force=false) {
 		global $site_URL;
 		static $session_name = '';
-		if ($session_name!='' and !$force) return $session_name;
+		if (self::$session_name!='' and !$force) return self::$session_name;
 		if (empty($site_URL)) {
 			if (file_exists('config.inc.php')) {
 				include 'config.inc.php';
@@ -64,10 +64,16 @@ class coreBOS_Session {
 		$purl = parse_url($URL);
 		$sn = preg_replace('/[^A-Za-z0-9]/', '', $purl['host'].$purl['path'].(isset($purl['port'])?$purl['port']:''));
 		if (is_numeric($sn)) $sn = 'cb'.$sn;
-		$session_name = $sn;
+		self::$session_name = $sn;
 		return $sn;
 	}
 
+	/**
+	* set session name
+	*/
+	static function setSessionName($session_name) {
+		self::$session_name = $session_name;
+	}
 	/**
 	 * set KCFinder session variables
 	 */
