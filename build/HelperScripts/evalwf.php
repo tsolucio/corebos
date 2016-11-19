@@ -14,7 +14,6 @@
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
 require 'build/cbHeader.inc';
-require_once("include/HTTP_Session/Session.php");
 require_once 'include/Webservices/Utils.php';
 require_once("modules/Users/Users.php");
 require_once("include/Webservices/State.php");

@@ -16,7 +16,6 @@
 	}
 
 	require_once("config.inc.php");
-	require_once("include/HTTP_Session/Session.php");
 	require_once("include/utils/Session.php");
 	require_once 'include/Webservices/Utils.php';
 	require_once("include/Webservices/State.php");
