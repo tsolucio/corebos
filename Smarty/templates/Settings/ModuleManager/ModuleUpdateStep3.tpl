@@ -19,33 +19,20 @@
 			<td class="small" valign="top">{$MOD.VTLIB_LBL_MODULE_MANAGER_DESCRIPTION}</td>
 		</tr>
 		</table>
-				
 		<br>
 		<table border="0" cellpadding="10" cellspacing="0" width="100%">
 		<tr>
 			<td>
 				<div id="vtlib_modulemanager_update_div">
-					
-                	<form method="POST" action="index.php">
+					<form method="POST" action="index.php">
 						<table class='tableHeading' cellpadding=5 cellspacing=0 border=0 width=100%>
 						<tr>
 							<td class='big' colspan=2><b>{$MOD.VTLIB_LBL_UPDAING_MODULE_START}</b></td>
 						</tr>
 						</table>
-						
 						<table class='tableHeading' cellpadding=5 cellspacing=0 border=0 width=100%>
 						<tr valign=top>
-							<td class='cellText small'>
-								{* Invoking API inside template to capture the logging details. *}
-								{php}
-									$__moduleupdate_package = $this->_tpl_vars['MODULEUPDATE_PACKAGE'];
-									$__moduleupdate_package_file = $this->_tpl_vars['MODULEUPDATE_PACKAGE_FILE'];
-									$__moduleupdate_targetinstance = $this->_tpl_vars['MODULEUPDATE_TARGETINSTANCE'];
-
-									$__moduleupdate_package->update($__moduleupdate_targetinstance,$__moduleupdate_package_file);
-									unlink($__moduleupdate_package_file);
-								{/php}
-							</td>
+							<td class='cellText small'>{$MODULEUPDATE_INFO}</td>
 						</tr>
 						</table>
 
