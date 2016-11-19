@@ -11,7 +11,7 @@
 class Mobile_UI_Logout extends Mobile_WS_Controller {
 	
 	function process(Mobile_API_Request $request) {
-		HTTP_Session::destroy(HTTP_Session::detectId());
+		coreBOS_Session::destroy();
 		header('Location: index.php');
 		exit;
 	}

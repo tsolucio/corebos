@@ -17,7 +17,6 @@ include_once dirname(__FILE__) . '/api/Relation.php';
 
 include_once dirname(__FILE__) . '/api/Request.php';
 include_once dirname(__FILE__) . '/api/Response.php';
-include_once dirname(__FILE__) . '/api/Session.php';
 
 include_once dirname(__FILE__) . '/api/ws/Controller.php';
 
@@ -62,7 +61,7 @@ class Mobile_API_Controller {
 
 			$operationSession = false;
 			if($operationController->requireLogin()) {
-				$operationSession = Mobile_API_Session::init($sessionid);
+				$operationSession = coreBOS_Session::init();
 				if($operationController->hasActiveUser() === false) {
 					$operationSession = false;
 				}
