@@ -181,13 +181,6 @@ $GlobalVariableDefinitons = array(
 	'values' => 'CSV of authorized CORS domains',
 	'definition' => 'CSV of URI of domains authorized to access webservice. The special entry asterisk "*" will give access to all domains.',
 ),
-'SOAP_Thunderbird_Enabled' => array(
-	'status' => 'Implemented',
-	'valuetype' => 'Boolean',
-	'category' => 'Webservice',
-	'values' => '0 | 1',
-	'definition' => 'Completely disables or enables SOAP Thunderbird access.',
-),
 'SOAP_CustomerPortal_Enabled' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Boolean',

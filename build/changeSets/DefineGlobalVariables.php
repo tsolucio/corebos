@@ -84,7 +84,6 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Webservice_Enabled',
 				'WebService_Session_Life_Span',
 				'WebService_Session_Idle_Time',
-				'SOAP_Thunderbird_Enabled',
 				'SOAP_CustomerPortal_Enabled',
 
 				'Users_ReplyTo_SecondEmail',
@@ -159,6 +158,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'default_language',
 				'corebos_app_name',
 				'corebos_app_url',
+				'SOAP_Thunderbird_Enabled',
 			);
 			$moduleInstance = Vtiger_Module::getInstance('GlobalVariable');
 			$field = Vtiger_Field::getInstance('gvname',$moduleInstance);
