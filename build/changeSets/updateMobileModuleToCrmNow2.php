@@ -14,7 +14,7 @@
 * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
 *************************************************************************************************/
 
-class updateMobileModuleToCrmNow extends cbupdaterWorker {
+class updateMobileModuleToCrmNow2 extends cbupdaterWorker {
 	
 	function applyChange() {
 		if ($this->hasError()) $this->sendError();
@@ -23,21 +23,22 @@ class updateMobileModuleToCrmNow extends cbupdaterWorker {
 		} else {
 			$module = 'Mobile';
 			if ($this->isModuleInstalled($module)) {
-				
-				//Update module
-				$package = new Vtiger_Package();
-
-				$moduleInstance = Vtiger_Module::getInstance($module);
-				$package->loadManifestFromFile('modules/'.$module.'/manifest.xml');
-				$rdo = $package->update_Module($moduleInstance);
 				global $adb;
 				$Mobilers = $adb->pquery("SELECT version FROM vtiger_tab WHERE name = 'Mobile'");
 				$version = $adb->query_result($Mobilers, 0, 'version');
-				if($version == '2.1'){
+				if($version == '3.0'){
+					//Update module
+					$package = new Vtiger_Package();
+
+					$moduleInstance = Vtiger_Module::getInstance($module);
+					$package->loadManifestFromFile('modules/'.$module.'/manifest.xml');
+					$rdo = $package->update_Module($moduleInstance);
 					//delete unused table
 					$this->ExecuteQuery("DROP TABLE vtiger_mobile_alerts");
+					$this->sendMsg('Module updated: '.$module);
+				}else{
+					$this->sendMsg($module.' was updated before ');
 				}
-				$this->sendMsg('Module updated: '.$module);
 				
 			} else {
 				$this->installManifestModule($module);
