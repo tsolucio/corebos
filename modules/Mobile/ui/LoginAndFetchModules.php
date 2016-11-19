@@ -60,7 +60,7 @@ class Mobile_UI_LoginAndFetchModules extends Mobile_WS_LoginAndFetchModules {
 				//fill cache
 				$modules = Mobile_UI_ModuleModel::buildModelsFromResponse($wsResponseResult['modules']);
 				$this->cacheModules($modules);
-				Mobile_API_Session::set('language',$current_language);
+				coreBOS_Session::set('language',$current_language);
 				include dirname(__FILE__) . '/../language/'.$current_language .'.lang.php';
 				$module_by_default = GlobalVariable::getVariable('Mobile_Module_by_default', 'Calendar', 'Mobile', $current_user->id);
 				header("Location:index.php?_operation=listModuleRecords&module=".$module_by_default);

@@ -14,7 +14,6 @@ chdir (dirname(__FILE__) . '/../../');
 
 include_once dirname(__FILE__) . '/api/Request.php';
 include_once dirname(__FILE__) . '/api/Response.php';
-include_once dirname(__FILE__) . '/api/Session.php';
 include_once dirname(__FILE__) . '/api/ws/Controller.php';
 include_once dirname(__FILE__) . '/Mobile.php';
 include_once dirname(__FILE__) . '/ui/Viewer.php';
@@ -44,8 +43,6 @@ class Mobile_Index_Controller {
 
 	static function process(Mobile_API_Request $request) {
 		$operation = $request->getOperation();
-		$sessionid = HTTP_Session::detectId(); //$request->getSession();
-
 		if (empty($operation)) $operation = 'login';
 
 		$response = false;
@@ -58,7 +55,7 @@ class Mobile_Index_Controller {
 
 			$operationSession = false;
 			if($operationController->requireLogin()) {
-				$operationSession = Mobile_API_Session::init($sessionid);
+				$operationSession = coreBOS_Session::init();
 				if($operationController->hasActiveUser() === false) {
 					$operationSession = false;
 				}
