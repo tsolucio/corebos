@@ -28,7 +28,7 @@ $target_modulename = $_REQUEST['target_modulename'];
 if($module_update_step == 'Step2') {
 	if(!is_dir($modulemanager_uploaddir)) mkdir($modulemanager_uploaddir);
 	$uploadfile = "usermodule_". time() . ".zip";
-	$uploadfilename = "$modulemanager_uploaddir/$uploadfile";	
+	$uploadfilename = "$modulemanager_uploaddir/$uploadfile";
 	checkFileAccess($modulemanager_uploaddir);
 
 	if ($_REQUEST['installtype'] == 'file') {
@@ -94,13 +94,13 @@ if($module_update_step == 'Step2') {
 
 			if(!$package->isLanguageType()) {
 				$moduleInstance = Vtiger_Module::getInstance($moduleupdate_name);
-				$moduleupdate_exists=($moduleInstance)? "true" : "false";			
-				$moduleupdate_dir_name="modules/$moduleupdate_name";				
+				$moduleupdate_exists=($moduleInstance)? "true" : "false";
+				$moduleupdate_dir_name="modules/$moduleupdate_name";
 				$moduleupdate_dir_exists= (is_dir($moduleupdate_dir_name)? "true" : "false");
 
 				$smarty->assign("MODULEUPDATE_CUR_VERSION", ($moduleInstance? $moduleInstance->version : ''));
 				$smarty->assign("MODULEUPDATE_NOT_EXISTS", !($moduleupdate_exists));
-				$smarty->assign("MODULEUPDATE_DIR", $moduleupdate_dir_name);	
+				$smarty->assign("MODULEUPDATE_DIR", $moduleupdate_dir_name);
 				$smarty->assign("MODULEUPDATE_DIR_NOT_EXISTS", !($moduleupdate_dir_exists));
 
 				// If version is matching, dis-allow migration
@@ -112,7 +112,7 @@ if($module_update_step == 'Step2') {
 
 			$smarty->assign("MODULEUPDATE_FILE", $uploadfile);
 			$smarty->assign("MODULEUPDATE_TYPE", $package->type());
-			$smarty->assign("MODULEUPDATE_NAME", $moduleupdate_name);			
+			$smarty->assign("MODULEUPDATE_NAME", $moduleupdate_name);
 			$smarty->assign("MODULEUPDATE_DEP_VTVERSION", $moduleupdate_dep_vtversion);
 			$smarty->assign("MODULEUPDATE_VERSION", $moduleupdate_version);
 			$smarty->assign("MODULEUPDATE_LICENSE", $moduleupdate_license);
