@@ -171,7 +171,7 @@ $smarty->assign("BLOCKS", getBlocks($currentModule,"detail_view",'',$focus->colu
 $smarty->assign("USERNAME", getFullNameFromArray('Users', $focus->column_fields));
 $smarty->assign("HOUR_FORMAT",$focus->hour_format);
 $smarty->assign("START_HOUR",$focus->start_hour);
-$_SESSION['Users_FORM_TOKEN'] = rand(5, 2000) * rand(2, 7);
+coreBOS_Session::set('Users_FORM_TOKEN', rand(5, 2000) * rand(2, 7));
 $smarty->assign('FORM_TOKEN', $_SESSION['Users_FORM_TOKEN']);
 
 if ($current_user->mustChangePassword()) {

@@ -33,25 +33,21 @@ class Mobile_WS_Login extends Mobile_WS_Controller {
 			
 		} else {
 			// Start session now
-			$sessionid = Mobile_API_Session::init();
-            
-			if($sessionid === false) {
-				echo "Session init failed $sessionid\n";
-			}
-			
+			coreBOS_Session::init();
+
 			include_once('config.php'); 
 			global $application_unique_key;	
 
 			$current_user->id = $current_user->retrieve_user_id($username);
 			$this->setActiveUser($current_user);
-			$_SESSION["authenticated_user_id"]=$current_user->id;
-			$_SESSION["app_unique_key"]=$application_unique_key;
+			coreBOS_Session::set('authenticated_user_id', $current_user->id);
+			coreBOS_Session::set('app_unique_key', $application_unique_key);
 			$result = array();
 			$result['login'] = array(
 				'userid' => $current_user->id,
 				'crm_tz' => DateTimeField::getDBTimeZone(),
 				'user_tz' => $current_user->time_zone,
-				'session'=> $sessionid,
+				'session'=> '',
 				'language' => $current_user->language,
 				'vtiger_version' => Mobile_WS_Utils::getVtigerVersion(),
 				'mobile_module_version' => Mobile_WS_Utils::getVersion()

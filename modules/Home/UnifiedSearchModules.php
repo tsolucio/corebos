@@ -17,7 +17,7 @@ if(!empty($_SESSION['__UnifiedSearch_SelectedModules__']) && is_array($_SESSION[
 	$appSearchModules = GlobalVariable::getVariable('Application_Global_Search_SelectedModules', '');
 	if (!empty($appSearchModules)) {
 		$selected_modules = explode(',',$appSearchModules);
-		$_SESSION['__UnifiedSearch_SelectedModules__'] = $selected_modules;
+		coreBOS_Session::set('__UnifiedSearch_SelectedModules__', $selected_modules);
 	}
 }
 

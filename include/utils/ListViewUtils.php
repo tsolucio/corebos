@@ -3683,14 +3683,14 @@ function setSessionVar($lv_array, $noofrows, $max_ent, $module = '', $related = 
 		$lv_array['viewname'] = vtlib_purify($_REQUEST['viewname']);
 
 	if ($related == '')
-		$_SESSION['lvs'][$_REQUEST['module']] = $lv_array;
+		coreBOS_Session::set('lvs^'.$_REQUEST['module'], $lv_array);
 	else
-		$_SESSION['rlvs'][$module][$related] = $lv_array;
+		coreBOS_Session::set('rlvs^'.$module.'^'.$related, $lv_array);
 
 	if ($start < ceil($noofrows / $max_ent) && $start != '') {
 		$start = ceil($noofrows / $max_ent);
 		if ($related == '')
-			$_SESSION['lvs'][$currentModule]['start'] = $start;
+			coreBOS_Session::set('lvs^'.$currentModule.'^start', $start);
 	}
 }
 

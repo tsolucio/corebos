@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
 global $current_user;
 require_once('include/utils/ListViewUtils.php');
@@ -23,7 +22,7 @@ class Homestuff{
 	/**
 	 * this is the constructor for the class
 	 */
-	function Homestuff(){
+	function __construct(){
 
 	}
 

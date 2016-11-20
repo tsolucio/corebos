@@ -73,10 +73,10 @@ if($_POST["command"] == "check_mbox_all") {
                         $boxes[$i]["newmsgs"] = 0;
                 elseif($val < $box->unseen) {
                         $boxes[$i]["newmsgs"] = ($box->unseen-$val);
-                        $_SESSION["mailboxes"][$key] = $box->unseen;
+                        coreBOS_Session::set('mailboxes^'.$key, $box->unseen);
                 } else {
                         $boxes[$i]["newmsgs"] = 0;
-                        $_SESSION["mailboxes"][$key] = $box->unseen;
+                        coreBOS_Session::set('mailboxes^'.$key, $box->unseen);
                 }
                 $i++;
                 imap_close($MailBox->mbox);
@@ -370,10 +370,10 @@ if (is_array($list)) {
 		if ($_REQUEST["mailbox"] == $tmpval) {
 		/*	if($tmpval != "INBOX")
 				$boxes .= '<option value="'.$tmpval.'">'.$tmpval;
-		 */
-			if(!isset($_SESSION["folder_image_path"]))
-                                $_SESSION["folder_image_path"] = $image_path;
-			$_SESSION["mailboxes"][$tmpval] = $unread_msgs;
+		*/
+		if(!isset($_SESSION["folder_image_path"]))
+			coreBOS_Session::set('folder_image_path', $image_path);
+			coreBOS_Session::set('mailboxes^'.$tmpval, $unread_msgs);
 			if($tmpval[0] != "."){
 				if($numEmails==0) {$num=$numEmails;} else {$num=($numEmails-1);}
 				$folders .= '<li style="padding-left:0px;"><img src="themes/'.$theme.'/images/'.$img.'"align="absmiddle" />&nbsp;&nbsp;<a href="javascript:changeMbox(\''.$tmpval.'\');" class="small">'.$tmpval.'</a>&nbsp;&nbsp;<span id="'.$tmpval.'_count" style="font-weight:bold">';
@@ -385,7 +385,7 @@ if (is_array($list)) {
 
 		} else {
 			$box = imap_status($MailBox->mbox, "{".$MailBox->imapServerAddress."}".$tmpval, SA_ALL);
-			$_SESSION["mailboxes"][$tmpval] = $box->unseen;
+			coreBOS_Session::set('mailboxes^'.$tmpval, $box->unseen);
 			if($tmpval[0] != ".") {
 				if($box->messages==0) {$num=$box->messages;} else {$num=($box->messages-1);}
 				$boxes .= '<option value="'.$tmpval.'">'.$tmpval;

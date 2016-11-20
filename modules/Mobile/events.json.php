@@ -3,10 +3,8 @@ header('Content-type: text/json');
 chdir (dirname(__FILE__) . '/../../');
 include_once dirname(__FILE__) . '/api/wsapi.php';
 
-$sessionid = HTTP_Session::detectId();
-session_id($sessionid);
-session_start();
-$current_user_ID = $_SESSION ['_authenticated_user_id'];
+coreBOS_Session::init();
+$current_user_ID = coreBOS_Session::get('_authenticated_user_id');
 
 $query  = "SELECT case when (vtiger_users.user_name not like '') then CONCAT(vtiger_users.last_name,' ',vtiger_users.first_name) else vtiger_groups.groupname end as user_name, vtiger_activity.activityid , vtiger_activity.subject, vtiger_activity.activitytype, vtiger_activity.date_start, vtiger_activity.due_date, vtiger_activity.time_start,vtiger_activity.time_end,  vtiger_crmentity.crmid, vtiger_crmentity.description, vtiger_crmentity.smownerid, vtiger_crmentity.modifiedtime, vtiger_recurringevents.recurringtype, case when (vtiger_activity.activitytype = 'Task') then vtiger_activity.status else vtiger_activity.eventstatus end as status,  vtiger_seactivityrel.crmid as parent_id  from vtiger_activity 
 inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_activity.activityid  

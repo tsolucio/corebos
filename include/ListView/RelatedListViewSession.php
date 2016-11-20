@@ -19,7 +19,7 @@ class RelatedListViewSession {
 	var $sortby = null;
 	var $page_view = null;
 
-	function RelatedListViewSession() {
+	function __construct() {
 		global $log,$currentModule;
 		$log->debug("Entering RelatedListViewSession() method ...");
 		$this->module = $currentModule;
@@ -28,14 +28,14 @@ class RelatedListViewSession {
 
 	public static function addRelatedModuleToSession($relationId, $header) {
 		global $currentModule;
-		$_SESSION['relatedlist'][$currentModule][$relationId] = $header;
+		coreBOS_Session::set('relatedlist^'.$currentModule.'^'.$relationId, $header);
 		$relstart = RelatedListViewSession::getRequestStartPage();
 		RelatedListViewSession::saveRelatedModuleStartPage($relationId, $relstart);
 	}
 
 	public static function removeRelatedModuleFromSession($relationId, $header) {
 		global $currentModule;
-		unset($_SESSION['relatedlist'][$currentModule][$relationId]);
+		coreBOS_Session::delete('relatedlist^'.$currentModule.'^'.$relationId);
 	}
 
 	public static function getRelatedModulesFromSession() {
@@ -54,7 +54,7 @@ class RelatedListViewSession {
 
 	public static function saveRelatedModuleStartPage($relationId, $relstart) {
 		global $currentModule;
-		$_SESSION['rlvs'][$currentModule][$relationId]['relstart'] = $relstart;
+		coreBOS_Session::set('rlvs^'.$currentModule.'^'.$relationId.'^relstart', $relstart);
 	}
 
 	public static function getCurrentPage($relationId) {

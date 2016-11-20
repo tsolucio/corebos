@@ -52,7 +52,7 @@ if(isset($_REQUEST['PHPSESSID']))
 if(isset($_REQUEST['view'])) {
 	//setcookie("view",$_REQUEST['view']);
 	$view = $_REQUEST["view"];
-	$_SESSION['view'] = $view;
+	coreBOS_Session::set('view', $view);
 }
 
 /** Function to set, character set in the header, as given in include/language/*_lang.php */
@@ -89,11 +89,10 @@ if (is_file('config_override.php')) {
 /**
  * Check for vtiger installed version and codebase
  */
-require_once('vtigerversion.php');
 global $adb, $vtiger_current_version;
 if(isset($_SESSION['VTIGER_DB_VERSION']) && isset($_SESSION['authenticated_user_id'])) {
 	if(version_compare($_SESSION['VTIGER_DB_VERSION'], $vtiger_current_version, '!=')) {
-		unset($_SESSION['VTIGER_DB_VERSION']);
+		coreBOS_Session::delete('VTIGER_DB_VERSION');
 		echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
 		echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
 			<table border='0' cellpadding='5' cellspacing='0' width='98%'>
@@ -112,7 +111,7 @@ if(isset($_SESSION['VTIGER_DB_VERSION']) && isset($_SESSION['authenticated_user_
 	$result = $adb->query("SELECT * FROM vtiger_version");
 	$dbversion = $adb->query_result($result, 0, 'current_version');
 	if(version_compare($dbversion, $vtiger_current_version, '=')) {
-		$_SESSION['VTIGER_DB_VERSION']= $dbversion;
+		coreBOS_Session::set('VTIGER_DB_VERSION', $dbversion);
 	} else {
 		echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
 		echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
@@ -229,14 +228,14 @@ if($use_current_login){
 	//getting the internal_mailer flag
 	if(!isset($_SESSION['internal_mailer'])){
 		$qry_res = $adb->pquery("select internal_mailer from vtiger_users where id=?", array($_SESSION["authenticated_user_id"]));
-		$_SESSION['internal_mailer'] = $adb->query_result($qry_res,0,"internal_mailer");
+		coreBOS_Session::set('internal_mailer', $adb->query_result($qry_res,0,'internal_mailer'));
 	}
 	$log->debug("We have an authenticated user id: ".$_SESSION["authenticated_user_id"]);
 }else if(isset($action) && isset($module) && $action=="Authenticate" && $module=="Users"){
 	$log->debug("We are authenticating user now");
 }else{
 	if(!isset($_REQUEST['action']) || ($_REQUEST['action'] != 'Logout' && $_REQUEST['action'] != 'Login')){
-		$_SESSION['lastpage'] = $_SERVER['QUERY_STRING'];
+		coreBOS_Session::set('lastpage', $_SERVER['QUERY_STRING']);
 	}
 	$log->debug('The current user does not have a session. Going to the login page');
 	$action = 'Login';

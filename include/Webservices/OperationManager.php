@@ -7,11 +7,11 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
-	
+
 	function setBuiltIn($json){
 		$json->useBuiltinEncoderDecoder = true;
 	}
-	
+
 	class OperationManager{
 		private $format;
 		private $formatsData=array(
@@ -35,9 +35,8 @@
 		private $preLogin;
 		private $operationId;
 		private $operationParams;
-		
-		function OperationManager($adb,$operationName,$format, $sessionManager){
-			
+
+		function __construct($adb,$operationName,$format, $sessionManager){
 			$this->format = strtolower($format);
 			$this->sessionManager = $sessionManager;
 			$this->formatObjects = array();
@@ -175,7 +174,6 @@
 			array_push($includes,$this->handlerPath);
 			return $includes;
 		}
-		
 	}
-	
+
 ?>

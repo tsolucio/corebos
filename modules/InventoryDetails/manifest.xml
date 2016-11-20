@@ -55,7 +55,13 @@
   `cost_gross` decimal(28,6) DEFAULT NULL,
   `units_delivered_received` decimal(25,3) DEFAULT NULL,
   `line_completed` varchar(3) default NULL,
-  PRIMARY KEY (`inventorydetailsid`)
+  PRIMARY KEY (`inventorydetailsid`),
+  INDEX (`productid`),
+  INDEX (`related_to`),
+  INDEX (`account_id`),
+  INDEX (`contact_id`),
+  INDEX (`vendor_id`),
+  INDEX (`lineitem_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8]]></sql>
 </table>
 <table>

@@ -9,14 +9,14 @@
  *************************************************************************************/
 require_once("include/HTTP_Session/Session.php");
 	class SessionManager{
-		private $maxLife ;  
-		private $idleLife ;
+		private $maxLife;
+		private $idleLife;
 		//Note: the url lookup part of http_session will have String null or this be used as id instead of ignoring it.
 		//private $sessionName = "sessionName";
 		private $sessionVar = "__SessionExists";
-		private $error ;
+		private $error;
 
-		function SessionManager(){
+		function __construct(){
 			$now = time();
 			$this->maxLife = $now + GlobalVariable::getVariable('WebService_Session_Life_Span',86400);
 			$this->idleLife = $now + GlobalVariable::getVariable('WebService_Session_Idle_Time',1800);

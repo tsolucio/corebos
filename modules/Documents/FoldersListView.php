@@ -22,11 +22,11 @@ $list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_P
 $category = getParentTab();
 if(!$_SESSION['lvs'][$currentModule])
 {
-	unset($_SESSION['lvs']);
+	coreBOS_Session::delete('lvs');
 	$modObj = new ListViewSession();
 	$modObj->sorder = $sorder;
 	$modObj->sortby = $order_by;
-	$_SESSION['lvs'][$currentModule] = get_object_vars($modObj);
+	coreBOS_Session::set('lvs^'.$currentModule, get_object_vars($modObj));
 }
 
 //<<<<cutomview>>>>>>>
@@ -53,15 +53,15 @@ if($_REQUEST['errormsg'] != '') {
 }
 
 if(ListViewSession::hasViewChanged($currentModule,$viewid)) {
-	$_SESSION['NOTES_ORDER_BY'] = '';
+	coreBOS_Session::set('NOTES_ORDER_BY', '');
 }
 //<<<<<<<<<<<<<<<<<<< sorting - stored in session >>>>>>>>>>>>>>>>>>>>
 $sorder = $focus->getSortOrder();
 $order_by = $focus->getOrderBy();
 
 if(empty($_REQUEST['folderid'])) {
-	$_SESSION['NOTES_ORDER_BY'] = $order_by;
-	$_SESSION['NOTES_SORT_ORDER'] = $sorder;
+	coreBOS_Session::set('NOTES_ORDER_BY', $order_by);
+	coreBOS_Session::set('NOTES_SORT_ORDER', $sorder);
 }
 //<<<<<<<<<<<<<<<<<<< sorting - stored in session >>>>>>>>>>>>>>>>>>>>
 
@@ -125,9 +125,9 @@ if($_REQUEST['query'] == 'true') {
 $query = $queryGenerator->getQuery();
 $where = $queryGenerator->getConditionalWhere();
 if(isset($where) && $where != '') {
-	$_SESSION['export_where'] = $where;
+	coreBOS_Session::set('export_where', $where);
 } else {
-	unset($_SESSION['export_where']);
+	coreBOS_Session::delete('export_where');
 }
 $smarty->assign('export_where',to_html($where));
 
@@ -191,14 +191,14 @@ if($foldercount > 0 )
 		$query .= " and vtiger_notes.folderid = $folder_id";
 		$sorder = $focus->getSortOrderForFolder($folder_id);
 		if(!is_array($_SESSION['NOTES_FOLDER_SORT_ORDER'])) {
-			$_SESSION['NOTES_FOLDER_SORT_ORDER'] = array();
+			coreBOS_Session::set('NOTES_FOLDER_SORT_ORDER', array());
 		}
-		$_SESSION['NOTES_FOLDER_SORT_ORDER'][$folder_id] = $sorder;
+		coreBOS_Session::set('NOTES_FOLDER_SORT_ORDER^'.$folder_id, $sorder);
 		$order_by = $focus->getOrderByForFolder($folder_id);
 		if(!is_array($_SESSION['NOTES_FOLDER_ORDER_BY'])) {
-			$_SESSION['NOTES_FOLDER_ORDER_BY'] = array();
+			coreBOS_Session::set('NOTES_FOLDER_ORDER_BY', array());
 		}
-		$_SESSION['NOTES_FOLDER_ORDER_BY'][$folder_id] = $order_by;
+		coreBOS_Session::set('NOTES_FOLDER_ORDER_BY^'.$folder_id, $order_by);
 		if($folder_id != $request_folderid)
 		{
 			$start[$folder_id] = 1;
@@ -239,9 +239,9 @@ if($foldercount > 0 )
 		$navigation_array = VT_getSimpleNavigationValues($start[$folder_id],$max_entries_per_page,$num_records);
 		if($folder_id == $request_folderid){
 			if(!is_array($_SESSION['lvs'][$currentModule]['start'])){
-				$_SESSION['lvs'][$currentModule]['start'] = array();
+				coreBOS_Session::set('lvs^'.$currentModule.'^start', array());
 			}
-			$_SESSION['lvs'][$currentModule]['start'][$folder_id] = $start[$folder_id];
+			coreBOS_Session::set('lvs^'.$currentModule.'^start^'.$folder_id, $start[$folder_id]);
 		}
 		$limit_start_rec = ($start[$folder_id]-1) * $max_entries_per_page;
 

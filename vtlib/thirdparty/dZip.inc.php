@@ -3,8 +3,7 @@
  * DOWNLOADED FROM: http://www.phpclasses.org/browse/package/2495/
  * License: 	BSD License
  */
-?>
-<?php
+
 class dZip{
 	var $filename;
 	var $overwrite;
@@ -15,7 +14,7 @@ class dZip{
 	var $files_count  = 0;
 	var $fh;
 	
-	Function dZip($filename, $overwrite=true){
+	Function __construct($filename, $overwrite=true){
 		$this->filename  = $filename;
 		$this->overwrite = $overwrite;
 	}
@@ -150,4 +149,3 @@ class dZip{
 		$this->centraldirs[$filename] = $properties;
 	}
 }
-?>

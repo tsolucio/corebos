@@ -20,7 +20,7 @@ $url = getBasic_Advance_SearchURL();
 if (!empty($_REQUEST['start']) and !empty($_REQUEST['return_viewname'])) {
 	$start = vtlib_purify($_REQUEST['start']);
 	$relationId = vtlib_purify($_REQUEST['return_viewname']);
-	$_SESSION['rlvs'][$return_module][$relationId]['start'] = $start;
+	coreBOS_Session::set('rlvs^'.$return_module.'^'.$relationId.'^start', $start);
 }
 $delerror = false;
 if($return_module!='Products' || ($return_module=='Products' && empty($return_id)))

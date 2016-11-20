@@ -90,7 +90,6 @@ function mobile_ws_queryWithGrouping($module, $query, $page, $user) {
  */
 include_once dirname(__FILE__) . '/Request.php';
 include_once dirname(__FILE__) . '/Response.php';
-include_once dirname(__FILE__) . '/Session.php';
 include_once dirname(__FILE__) . '/ws/Controller.php';
 
 class Mobile_WS_API {
@@ -100,7 +99,7 @@ class Mobile_WS_API {
 		include_once dirname(__FILE__) . "/$handlerPath";
 		
 		$this->controller = new $className();
-		Mobile_API_Session::init(session_id());
+		coreBOS_Session::init(session_id());
 		$this->controller->initActiveUser($user);
 		return $this->controller;
 	}

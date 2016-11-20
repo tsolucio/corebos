@@ -7,25 +7,25 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
+require_once("include/Webservices/VTQL_Lexer.php");
+require_once("include/Webservices/VTQL_Parser.php");
 
-	require_once("include/Webservices/VTQL_Lexer.php");
-	require_once("include/Webservices/VTQL_Parser.php");
-	
 	class Parser{
-		
-		private $query = "";
+
+		private $query = '';
 		private $out;
 		private $meta;
-		private $hasError ;
-		private $error ;
-		private $user; 
-		function Parser($user, $q){
+		private $hasError;
+		private $error;
+		private $user;
+
+		function __construct($user, $q){
 			$this->query = $q;
 			$this->out = array();
 			$this->hasError = false;
 			$this->user = $user; 
 		}
-		
+
 		function parse(){
 			
 			$lex = new VTQL_Lexer($this->query);
@@ -59,6 +59,5 @@
 		function getError(){
 			return $this->error;
 		}
-		
 	}
 ?>

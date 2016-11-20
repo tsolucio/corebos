@@ -1261,8 +1261,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 		$result = $adb->pquery($sql, $params);
 
 		// Added to unset the previous record's related listview session values
-		if (isset($_SESSION['rlvs']))
-			unset($_SESSION['rlvs']);
+		coreBOS_Session::delete('rlvs');
 
 		$getBlockInfo = getDetailBlockInformation($module, $result, $col_fields, $tabid, $block_label);
 	}
@@ -1298,7 +1297,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 			}
 		}
 	}
-	$_SESSION['BLOCKINITIALSTATUS'] = $aBlockStatus;
+	coreBOS_Session::set('BLOCKINITIALSTATUS', $aBlockStatus);
 	return $getBlockInfo;
 }
 
@@ -2326,7 +2325,8 @@ function validateImageFile($file_details) {
 		$saveimage = 'true';
 	} else {
 		$saveimage = 'false';
-		$_SESSION['image_type_error'] .= "<br> &nbsp;&nbsp;<b>" . $file_details['name'] . "</b>" . $app_strings['MSG_IS_NOT_UPLOADED'];
+		$imgtypeerror = coreBOS_Session::get('image_type_error');
+		coreBOS_Session::set('image_type_error', $imgtypeerror."<br> &nbsp;&nbsp;<b>" . $file_details['name'] . "</b>" . $app_strings['MSG_IS_NOT_UPLOADED']);
 		$log->debug("Invalid Image type == $filetype");
 	}
 

@@ -14,7 +14,7 @@ class MailManager_Response {
 	private $result = NULL;
 	private $json = false;
 	
-	function MailManager_Response($isjson=false) {
+	function __construct($isjson=false) {
 		$this->json = $isjson;
 	}
 	

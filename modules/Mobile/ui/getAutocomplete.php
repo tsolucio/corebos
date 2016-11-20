@@ -17,7 +17,7 @@ class Mobile_UI_GetAutocomplete extends Mobile_WS_Controller{
 		$response = new Mobile_API_Response();
 		global $adb;
 		global $current_language;
-		$current_language = Mobile_API_Session::get('language');
+		$current_language = coreBOS_Session::get('language');
 		
 		//never trust an entry
 		$sSearch = vtlib_purify($request->get('term'));

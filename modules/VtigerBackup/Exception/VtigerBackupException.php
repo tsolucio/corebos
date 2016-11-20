@@ -6,19 +6,13 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  *********************************************************************************/
 
-/**
- * Description of VtigerBackupException
- *
- * @author MAK
- */
 class VtigerBackupException extends Exception{
 	public $code;
 	public $message;
 
-	function VtigerBackupException($errCode,$msg){
+	function __construct($errCode,$msg){
 		$this->code = $errCode;
 		$this->message = $msg;
 	}

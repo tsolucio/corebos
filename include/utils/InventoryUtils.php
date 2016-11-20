@@ -63,7 +63,7 @@ function getPrdQtyInStck($product_id) {
 	$log->debug("Entering getPrdQtyInStck($product_id) method ...");
 	$query1 = 'SELECT qtyinstock FROM vtiger_products WHERE productid = ?';
 	$result=$adb->pquery($query1, array($product_id));
-	if ($result) {
+	if ($result and $adb->num_rows($result)>0) {
 		$qtyinstck= $adb->query_result($result,0,'qtyinstock');
 	} else {
 		$qtyinstck= 0;

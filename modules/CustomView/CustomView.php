@@ -53,7 +53,7 @@ class CustomView extends CRMEntity {
 	 * @param $module -- The module Name:: Type String(optional)
 	 * @returns  nothing
 	 */
-	function CustomView($module = "") {
+	function __construct($module = "") {
 		global $current_user, $adb;
 		$this->customviewmodule = $module;
 		$this->escapemodule[] = $module . "_";
@@ -125,7 +125,7 @@ class CustomView extends CRMEntity {
 			if ($this->isPermittedCustomView($viewid, $now_action, $this->customviewmodule) != 'yes')
 				$viewid = 0;
 		}
-		$_SESSION['lvs'][$module]["viewname"] = $viewid;
+		coreBOS_Session::set('lvs^'.$module.'^viewname', $viewid);
 		return $viewid;
 	}
 

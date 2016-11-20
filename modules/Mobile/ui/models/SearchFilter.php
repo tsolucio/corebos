@@ -69,7 +69,7 @@ class Mobile_UI_SearchFilterModel extends Mobile_WS_SearchFilterModel {
 				$viewinfo = $customView->getCustomViewByCvid($viewid);
 		         
 				global $current_user; // Required for vtws_update API
-				$userid = $_SESSION['_authenticated_user_id'];
+				$userid = coreBOS_Session::get('_authenticated_user_id');
 				$current_user = CRMEntity::getInstance('Users');
 				$current_user = $current_user->retrieveCurrentUserInfoFromFile($userid);
 		

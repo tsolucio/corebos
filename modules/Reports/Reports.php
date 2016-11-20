@@ -97,8 +97,7 @@ class Reports extends CRMEntity{
 	 *  This function accepts the vtiger_reportid as argument
 	 *  It sets primodule,secmodule,reporttype,reportname,reportdescription,folderid for the given vtiger_reportid
 	 */
-	function Reports($reportid="")
-	{
+	function __construct($reportid="") {
 		global $adb,$current_user,$theme,$mod_strings;
 		require('user_privileges/user_privileges_'.$current_user->id.'.php');
 		$this->initListOfModules();

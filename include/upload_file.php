@@ -19,21 +19,17 @@
 
 require_once('config.php');
 
-
-class UploadFile 
-{
-
+class UploadFile {
 	var $field_name;
 	var $stored_file_name;
 
-        function UploadFile ($field_name)
-        {
+	function __construct($field_name) {
 		global $log;
 		$log->debug("Entering UploadFile (".$field_name.") method ...");
 		$this->field_name = $field_name;
 		$log->debug("Exiting UploadFile method ...");
-        }
-	
+	}
+
 	/** Function to get the url of the attachment
 	  * @param $stored_file_name -- stored_file_name:: Type string
 	  * @param $bean_id -- bean_id:: Type integer
