@@ -41,11 +41,12 @@
 			</div> 
 		{/if}
 		{if $_MODULE->name() neq 'Calendar' AND $_MODULE->name() neq 'Quotes' AND  $_MODULE->name() neq 'SalesOrder' AND  $_MODULE->name() neq 'Invoice' AND  $_MODULE->name() neq 'PurchaseOrder' AND  $_MODULE->name() neq 'Products'}
-			<a href="?_operation=create&module={$_MODULE->name()}&record=''" class="ui-btn ui-corner-all ui-icon-plus ui-btn-icon-notext" data-transition="turn" data-prefetch>{$MOD.LBL_NEW}</a>
+			<a href="?_operation=create&module={$_MODULE->name()}&record=''" class="ui-btn ui-corner-all ui-icon-plus ui-btn-icon-notext" data-transition="turn">{$MOD.LBL_NEW}</a>
 		{elseif $_MODULE->name() eq 'Calendar'}
 			<!-- select task or event -->
-			<a href="?_operation=createActivity&lang={$LANGUAGE}" class="ui-btn ui-corner-all ui-icon-plus ui-btn-icon-notext" data-transition="turn" data-prefetch>{$MOD.LBL_NEW}</a>
+			<a href="?_operation=createActivity&lang={$LANGUAGE}" class="ui-btn ui-corner-all ui-icon-plus ui-btn-icon-notext" data-transition="turn">{$MOD.LBL_NEW}</a>
 		{/if}
+			<a href="#panelmenu" data-mini='true' data-role='button' class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-grid ui-corner-all ui-icon-bars"></a>
 		<h4>{$_MODULE->label()}</h4> 
 	</div>
 	<!-- /header -->
@@ -92,7 +93,8 @@
 	</div>
 	<div data-role="footer" data-theme="{$COLOR_HEADER_FOOTER}" data-position="fixed">
 		<h1></h1>
-	</div>	
+	</div>
+	{include file="modules/Mobile/PanelMenu.tpl"}
 </div>
 </body>
 {/strip}

@@ -20,9 +20,12 @@
 <div data-role="page" data-theme="b" data-mini="true" id="edit_page">
 	<!-- header -->
 	<div data-role="header" data-theme="{$COLOR_HEADER_FOOTER}" data-position="fixed">
-		<a href="#"  class="ui-btn ui-corner-all ui-icon-check ui-btn-icon-notext" >{$MOD.LBL_SAVE}</a>			
+		<div class="ui-btn-left" data-role="controlgroup" data-type="horizontal">
+			<a href="#"  class="ui-btn ui-corner-all ui-icon-check ui-btn-icon-notext" >{$MOD.LBL_SAVE}</a>
+			<a href="#"  onclick="window.history.back()" class="ui-btn ui-corner-all ui-icon-back ui-btn-icon-notext">{$MOD.LBL_CANCEL}</a>
+		</div>
 		<h2>{$MOD.LBL_EDIT}</h2>
-		<a href="#"  onclick="window.history.back()" class="ui-btn ui-corner-all ui-icon-back ui-btn-icon-notext">{$MOD.LBL_CANCEL}</a>
+		<a href="#panelmenu" data-mini='true' data-role='button' class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-grid ui-corner-all ui-icon-bars"></a>
 	</div>
 	<!-- /header -->
 	<div data-role="collapsible-set" data-mini="true">	
@@ -279,7 +282,8 @@
 	</div><!-- /content -->
 	<div data-role="footer" data-theme="{$COLOR_HEADER_FOOTER}" data-position="fixed">
 		<h1></h1>
-	</div>	
+	</div>
+	{include file="modules/Mobile/PanelMenu.tpl"}
 </div><!-- /page -->
 </body>
 {/strip}

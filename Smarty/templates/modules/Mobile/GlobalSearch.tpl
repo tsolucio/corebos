@@ -13,14 +13,15 @@
 </header>
 <body>
 <div data-role="page" data-theme="b">
+	{include file="modules/Mobile/PanelMenu.tpl"}
 	<!-- header -->
 	<div data-role="header" data-theme="{$COLOR_HEADER_FOOTER}" data-position="fixed" class="ui-grid-b ui-responsive">
-		<a href="index.php?_operation=logout" class="ui-btn ui-corner-all ui-icon-power ui-btn-icon-notext" >Logout</a>
 		<h4>{$MOD.LBL_SEARCH_RESULTS}</h4>
+		<a href="#panelmenu" data-mini='true' data-role='button' class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-grid ui-corner-all ui-icon-bars"></a>
 	</div><!-- /header -->
 	<!-- /header -->
 	{foreach item=module key=modulename from=$LISTENTITY}
-		<a href="index.php?_operation=listModuleRecords&module={$modulename}" data-role="button" data-corners="false" data-icon="bullets" data-iconpos="right" rel=external>{$MODLABEL.$modulename}</a> 
+		<a href="?_operation=listModuleRecords&module={$modulename}" data-role="button" data-corners="false" data-icon="bullets" data-iconpos="right">{$MODLABEL.$modulename}</a>
 		<div data-role="collapsible-set"   data-mini="true">	
 			<ul data-role="listview" data-theme="c" >
 			{foreach item=reco from=$module}
@@ -36,7 +37,7 @@
 	{/foreach}
 	<div data-role="footer" data-theme="{$COLOR_HEADER_FOOTER}" data-position="fixed">
 		<h2></h2>
-	</div>	
-</div>				
+	</div
+</div>
 </body>
 {/strip}	

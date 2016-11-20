@@ -106,6 +106,9 @@ class crmtogo_UI_EditView extends crmtogo_WS_FetchRecordDetails {
 			$viewer->assign('INVITEES',  implode (",", array_keys($invited_users)));
 			$viewer->assign('LANGUAGE', $current_language);
 			$viewer->assign('ORIGMODULE', $origmodule);
+			//Get PanelMenu data
+			$modules = $this->sessionGet('_MODULES');
+			$viewer->assign('_MODULES', $modules);
 			$response = $viewer->process('EditView.tpl');
 		}
 		return $response;

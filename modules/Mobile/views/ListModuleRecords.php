@@ -140,6 +140,10 @@ class crmtogo_UI_ListModuleRecords extends crmtogo_WS_ListModuleRecords {
 			$viewer->assign('_VIEW', $viewid);
 			$viewer->assign('CALSTARTDAY', $startday_code);
 			$viewer->assign('CALENDARSELECT', $config['compactcalendar']);
+			//Get PanelMenu data
+			$modules = $this->sessionGet('_MODULES');
+			$viewer->assign('_MODULES', $modules);
+
 			$response = $viewer->process('ListView.tpl');
 		}
 		return $response;

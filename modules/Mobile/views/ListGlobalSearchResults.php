@@ -181,7 +181,9 @@ class crmtogo_UI_GlobalSearch extends crmtogo_WS_ListModuleRecords {
 			$viewer->assign('LANGUAGE', $this->sessionGet('language'));
 			$viewer->assign('LISTENTITY', $lstcontent);
 			$viewer->assign('MODLABEL', $modullabel);
-
+			//Get PanelMenu data
+			$modules = $this->sessionGet('_MODULES');
+			$viewer->assign('_MODULES', $modules);
 			$response = $viewer->process('GlobalSearch.tpl');
 		}
 		return $response;

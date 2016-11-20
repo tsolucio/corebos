@@ -77,6 +77,9 @@ class crmtogo_UI_DetailView extends crmtogo_WS_FetchRecordDetails {
 			if (isset($wsResponseResult['comments'])) {
 				$viewer->assign('_COMMENTS', $wsResponseResult['comments']);
 			}
+			//Get PanelMenu data
+			$modules = $this->sessionGet('_MODULES');
+			$viewer->assign('_MODULES', $modules);
 			$response = $viewer->process('DetailView.tpl');
 		}
 		return $response;

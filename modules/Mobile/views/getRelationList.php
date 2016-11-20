@@ -52,6 +52,9 @@ class crmtogo_UI_GetRelatedLists extends crmtogo_WS_RelatedRecords {
 			$viewer->assign('LANGUAGE', $current_language);
 			$viewer->assign('_MODULE', $module);
 			$viewer->assign('_RECORDS', $relatedresponse);
+			//Get PanelMenu data
+			$modules = $this->sessionGet('_MODULES');
+			$viewer->assign('_MODULES', $modules);
 			$response = $viewer->process('RelatedListView.tpl');
 		}
 		return $response;

@@ -28,16 +28,11 @@ class crmtogo_UI_LoginAndFetchModules extends crmtogo_WS_LoginAndFetchModules {
 			$wsResponseResult = $wsResponse->getResult();
 			$modules = crmtogo_UI_ModuleModel::buildModelsFromResponse($wsResponseResult['modules']);
 			$this->cacheModules($modules);
-$datei = fopen("test/modules2222.txt","a+");
-fwrite($datei, print_r($modules, TRUE));
-fclose($datei);
-			$config = $this->getUserConfigSettings();
-			$viewer = new crmtogo_UI_Viewer();
-			$viewer->assign('COLOR_HEADER_FOOTER', $config['theme']);
-			$viewer->assign('MOD', $this->getUsersLanguage());
-			$viewer->assign('_MODULES', $modules);
 
-			$response = $viewer->process('Home.tpl');
+			$config = $this->getUserConfigSettings();
+
+			$module_by_default = GlobalVariable::getVariable('Mobile_Module_by_default', 'Contacts', 'Mobile', $current_user->id);
+			header("Location:index.php?_operation=listModuleRecords&module=".$module_by_default);
 		}
 		return $response;
 	}
