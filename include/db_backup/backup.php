@@ -40,28 +40,28 @@ function save_structure($filename, $root_directory) {
  */
 class DatabaseDump {
 		private $fhandle;
-		function DatabaseDump($dbserver, $username, $password) {
-				mysql_connect($dbserver, $username, $password);
+		function __construct($dbserver, $username, $password) {
+				mysqli_connect($dbserver, $username, $password);
 		}
 		function save($database, $filename) {
 			// Connect to database
-			$db = mysql_select_db($database);
-			$db_charset = mysql_fetch_assoc(mysql_query("SHOW variables LIKe'character_set_database'"));
+			$db = mysqli_select_db($database);
+			$db_charset = mysqli_fetch_assoc(mysqli_query("SHOW variables LIKe'character_set_database'"));
 			if($db_charset['Value']=='utf8'){
-				mysql_query("SET NAMES 'utf8'");
+				mysqli_query("SET NAMES 'utf8'");
 			}
 			if(empty($db)) {
 				return;
 			}
 			$this->file_open($filename);
 
-			// Write some information regarding database dump and the time first.	
+			// Write some information regarding database dump and the time first.
 			$this->writeln("SET NAMES 'utf8';");
 			$this->writeln("-- $database database dump");
 			$this->writeln("-- Date: " . date("D, M j, G:i:s T Y"));
 			$this->writeln("-- ----------------------------------");
 			$this->writeln("");
-	
+
 			// Meta information which helps to import into mysql database.
 			$this->writeln("SET FOREIGN_KEY_CHECKS=0;");
 			$this->writeln("SET SQL_MODE='NO_AUTO_VALUE_ON_ZERO';");
@@ -69,11 +69,11 @@ class DatabaseDump {
 
 			// Get all table names from database
 			$tcount = 0;
-			$trs = mysql_list_tables($database);
-			for($tindex = 0; $tindex < mysql_num_rows($trs); $tindex++) {
-				$table = mysql_tablename($trs, $tindex);
+			$trs = mysqli_list_tables($database);
+			for($tindex = 0; $tindex < mysqli_num_rows($trs); $tindex++) {
+				$table = mysqli_tablename($trs, $tindex);
 				if(!empty($table)) {
-					$tables[$tcount] = mysql_tablename($trs, $tindex);
+					$tables[$tcount] = mysqli_tablename($trs, $tindex);
 					$tcount++;
 				}
 			}
@@ -84,10 +84,10 @@ class DatabaseDump {
 				// Table Name
 				$table = $tables[$tindex];
 
-				$table_create_rs = mysql_query("SHOW CREATE TABLE `$table`");
-				$table_create_rows = mysql_fetch_array($table_create_rs);
+				$table_create_rs = mysqli_query("SHOW CREATE TABLE `$table`");
+				$table_create_rows = mysqli_fetch_array($table_create_rs);
 				$table_create_sql = $table_create_rows[1];
-				
+
 				// Our parser used for reading the dump file is very basic
 				// hence we will need to remove the new lines
 				$table_create_sql = str_replace("\n","",$table_create_sql);
@@ -112,14 +112,14 @@ class DatabaseDump {
 				$this->writeln("--");
 				$this->writeln("");
 
-				$table_query = mysql_query("SELECT * FROM `$table`");
-				$num_fields = mysql_num_fields($table_query);
-				while($fetch_row = mysql_fetch_array($table_query)) {
+				$table_query = mysqli_query("SELECT * FROM `$table`");
+				$num_fields = mysqli_num_fields($table_query);
+				while($fetch_row = mysqli_fetch_array($table_query)) {
 					$insert_sql = "INSERT INTO `$table` VALUES(";
 					for($n = 1; $n <= $num_fields; $n++) {
 							$m = $n -1;
 							$field_value = $fetch_row[$m];
-							$field_value = str_replace('\"', '"', mysql_escape_string($field_value));
+							$field_value = str_replace('\"', '"', mysqli_escape_string($field_value));
 							$insert_sql .= "'". $field_value . "', ";
 					}
 					$insert_sql = substr($insert_sql,0,-2);
