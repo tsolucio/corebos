@@ -69,7 +69,7 @@ class MailManager_Model_DraftEmail {
 			foreach($draftMails[$i] as $fieldname=>$fieldvalue) {
 				if($fieldname == "saved_toid" || $fieldname == "ccmail" || $fieldname == "bccmail") {
 					if(!empty($fieldvalue)) {
-						$value = implode(',',Zend_Json::decode($fieldvalue));
+						$value = implode(',',json_decode($fieldvalue),true);
 						if(strlen($value) > 45) {
 							$value = substr($value, 0, 45)."....";
 						}

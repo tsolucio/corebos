@@ -9,7 +9,6 @@
  *********************************************************************************/
 require_once 'include/utils/utils.php';
 require_once 'modules/PickList/PickListUtils.php';
-require_once "include/Zend/Json.php";
 
 global $adb, $current_user,$default_charset;
 
@@ -24,7 +23,7 @@ if(empty($tableName)){
 	exit;
 }
 
-$values = Zend_Json::decode($values);
+$values = json_decode($values,true);
 
 $sql = 'SELECT * FROM vtiger_picklist WHERE name = ?';
 $result = $adb->pquery($sql, array($tableName));
@@ -36,7 +35,7 @@ if(!empty($roleid)){
 	assignValues($picklistid, $roleid, $values, $tableName);
 }
 
-$otherRoles = Zend_Json::decode($otherRoles);
+$otherRoles = json_decode($otherRoles,true);
 if(!empty($otherRoles)){
 	foreach($otherRoles as $role){
 		assignValues($picklistid, $role, $values, $tableName);

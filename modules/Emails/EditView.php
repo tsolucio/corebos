@@ -11,13 +11,11 @@ require_once('Smarty_setup.php');
 require_once('data/Tracker.php');
 require_once('include/utils/utils.php');
 require_once('include/utils/UserInfoUtil.php');
-require_once("include/Zend/Json.php");
 
 global $log, $app_strings, $app_list_strings, $mod_strings, $current_user, $currentModule, $default_charset;
 
 $focus = CRMEntity::getInstance($currentModule);
 $smarty = new vtigerCRM_Smarty();
-$json = new Zend_Json();
 $upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize',3000000,$currentModule);
 $smarty->assign("UPLOADSIZE", $upload_maxsize/1000000); // Convert to MB
 if($_REQUEST['upload_error'] == true)
@@ -46,11 +44,11 @@ if(isset($_REQUEST['record']) && $_REQUEST['record'] !='') {
 	$result = $adb->pquery($query, array($focus->id));
 	$from_email = $adb->query_result($result,0,'from_email');
 	$smarty->assign('FROM_MAIL',$from_email);
-	$to_email = implode(',',$json->decode($adb->query_result($result,0,'to_email')));
+	$to_email = implode(',',json_decode($adb->query_result($result,0,'to_email'),true));
 	$smarty->assign('TO_MAIL',$to_email);
-	$cc_add = implode(',',$json->decode($adb->query_result($result,0,'cc_email')));
+	$cc_add = implode(',',json_decode($adb->query_result($result,0,'cc_email'),true));
 	$smarty->assign('CC_MAIL',$cc_add);
-	$bcc_add = implode(',',$json->decode($adb->query_result($result,0,'bcc_email')));
+	$bcc_add = implode(',',json_decode($adb->query_result($result,0,'bcc_email'),true));
 	$smarty->assign('BCC_MAIL',$bcc_add);
 	$idlist = $adb->query_result($result,0,'idlists');
 	$smarty->assign('IDLISTS',$idlist);
@@ -149,9 +147,9 @@ if($_REQUEST['reply'] == "true")
 		$result = $adb->pquery($query, array($fromadd));
 		$from_mail = $adb->query_result($result,0,'from_email');
 		$smarty->assign('TO_MAIL',trim($from_mail,",").',');
-		$cc_add = implode(',',$json->decode($adb->query_result($result,0,'cc_email')));
+		$cc_add = implode(',',json_decode($adb->query_result($result,0,'cc_email'),true));
 		$smarty->assign('CC_MAIL',$cc_add);
-		$bcc_add = implode(',',$json->decode($adb->query_result($result,0,'bcc_email')));
+		$bcc_add = implode(',',json_decode($adb->query_result($result,0,'bcc_email'),true));
 		$smarty->assign('BCC_MAIL',$bcc_add);
 		$smarty->assign('IDLISTS',preg_replace('/###/',',',$adb->query_result($result,0,'idlists')));
 }

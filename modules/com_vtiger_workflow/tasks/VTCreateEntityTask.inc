@@ -20,7 +20,7 @@ class VTCreateEntityTask extends VTTask {
 
 	public function doTask(&$entity) {
 		global $adb, $current_user,$from_wf;
-                $from_wf = true;
+		$from_wf = true;
 		$util = new VTWorkflowUtils();
 
 		$admin = $util->adminUser();
@@ -29,14 +29,14 @@ class VTCreateEntityTask extends VTTask {
 		$recordId = vtws_getIdComponents($entityId);
 		$recordId = $recordId[1];
 
-		$entityType = $this->entity_type;		
+		$entityType = $this->entity_type;
 		if(!vtlib_isModuleActive($entityType)) {
 			return;
 		}
 
 		$fieldValueMapping = array();
 		if (!empty($this->field_value_mapping)) {
-			$fieldValueMapping = Zend_Json::decode($this->field_value_mapping);
+			$fieldValueMapping = json_decode($this->field_value_mapping,true);
 		}
 
 		if (!empty($entityType) && !empty($fieldValueMapping) && count($fieldValueMapping) > 0) {

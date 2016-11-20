@@ -31,7 +31,7 @@ class Mobile_WS_SaveRecord extends Mobile_WS_FetchRecord {
 		$valueArray =  Mobile_API_Request::getvaluemap($request);
 		$values = '';
 		if(!empty($valueArray) && is_string($valueArray)) {
-			$values = Zend_Json::decode($valueArray);
+			$values = json_decode($valueArray,true);
 		} else {
 			$values = $valueArray; // Either empty or already decoded.
 		}

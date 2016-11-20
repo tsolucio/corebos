@@ -9,15 +9,14 @@
  ********************************************************************************/
 require_once('modules/Webforms/Webforms.php');
 require_once('modules/Webforms/model/WebformsModel.php');
-include_once 'include/Zend/Json.php';
 
 global $current_user, $theme;
 
 if ($_REQUEST['ajax'] == 'true') {
 	if(Webforms_Model::existWebformWithName(vtlib_purify($_REQUEST['name']))){
-		print_r(Zend_Json::encode(array('success' => false, 'result' => false)));
+		print_r(json_encode(array('success' => false, 'result' => false)));
 	}else{
-		print_r(Zend_Json::encode(array('success' => true, 'result' => true)));
+		print_r(json_encode(array('success' => true, 'result' => true)));
 	}
 } else {
 	Webforms::checkAdminAccess($current_user);

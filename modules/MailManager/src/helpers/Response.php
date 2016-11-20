@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-include_once dirname(__FILE__) . '/../../../../include/Zend/Json.php';
 
 class MailManager_Response {
 	private $error = NULL;
@@ -61,15 +60,13 @@ class MailManager_Response {
 	
 	function emit() {
 		if ($this->json)
-                     echo $this->emitJSON();
+			echo $this->emitJSON();
 		else
-                    echo $this->emitHTML();
+			echo $this->emitHTML();
 	}
 	
 	function emitJSON() {
-		// Allow use of native json encoder/decoder for better performance when the content is huge
-		Zend_Json::$useBuiltinEncoderDecoder = true;
-		$response = Zend_Json::encode($this->prepareResponse());
+		$response = json_encode($this->prepareResponse());
 		return $response;
 	}
 	

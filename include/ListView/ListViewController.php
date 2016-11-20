@@ -566,8 +566,7 @@ class ListViewController {
 				} elseif($field->getUIType() == 8){
 					if(!empty($value)){
 						$temp_val = html_entity_decode($value,ENT_QUOTES,$default_charset);
-						$json = new Zend_Json();
-						$value = vt_suppressHTMLTags(implode(',',$json->decode($temp_val)));
+						$value = vt_suppressHTMLTags(implode(',',json_decode($temp_val,true)));
 					}
 				} elseif ( in_array($uitype,array(7,9,90)) ) {
 					$value = "<span align='right'>".textlength_check($value)."</div>";

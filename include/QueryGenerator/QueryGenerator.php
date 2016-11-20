@@ -1280,11 +1280,10 @@ class QueryGenerator {
 		global $log,$default_charset;
 		if($input['searchtype']=='advance') {
 
-			$json = new Zend_Json();
 			$advft_criteria = (empty($input['advft_criteria']) ? $_REQUEST['advft_criteria'] : $input['advft_criteria']);
-			if(!empty($advft_criteria)) $advft_criteria = $json->decode($advft_criteria);
+			if(!empty($advft_criteria)) $advft_criteria = json_decode($advft_criteria,true);
 			$advft_criteria_groups = (empty($input['advft_criteria_groups']) ? $_REQUEST['advft_criteria_groups'] : $input['advft_criteria_groups']);
-			if(!empty($advft_criteria_groups)) $advft_criteria_groups = $json->decode($advft_criteria_groups);
+			if(!empty($advft_criteria_groups)) $advft_criteria_groups = json_decode($advft_criteria_groups,true);
 
 			if(empty($advft_criteria) || count($advft_criteria) <= 0) {
 				return ;

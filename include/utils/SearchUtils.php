@@ -837,11 +837,10 @@ function getWhereCondition($currentModule, $input = '')
 	
 	if($input['searchtype']=='advance')
 	{
-		$json = new Zend_Json();
 		$advft_criteria = $input['advft_criteria'];
-		if(!empty($advft_criteria))	$advft_criteria_decoded = $json->decode($advft_criteria);
+		if(!empty($advft_criteria))	$advft_criteria_decoded = json_decode($advft_criteria,true);
 		$advft_criteria_groups = $input['advft_criteria_groups'];
-		if(!empty($advft_criteria_groups))	$advft_criteria_groups_decoded = $json->decode($advft_criteria_groups);
+		if(!empty($advft_criteria_groups))	$advft_criteria_groups_decoded = json_decode($advft_criteria_groups,true);
 
 		$advfilterlist = getAdvancedSearchCriteriaList($advft_criteria_decoded, $advft_criteria_groups_decoded, $currentModule);
 		$adv_string = generateAdvancedSearchSql($advfilterlist);

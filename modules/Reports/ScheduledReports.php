@@ -9,7 +9,6 @@
  *************************************************************************************/
 require_once 'modules/Reports/Reports.php';
 require_once 'modules/Reports/ReportRun.php';
-require_once 'include/Zend/Json.php';
 
 class VTScheduledReport extends Reports {
 
@@ -47,8 +46,8 @@ class VTScheduledReport extends Reports {
 				if($adb->num_rows($result) > 0) {
 					$reportScheduleInfo = $adb->raw_query_result_rowdata($result, 0);
 
-					$scheduledInterval = (!empty($reportScheduleInfo['schedule']))?Zend_Json::decode($reportScheduleInfo['schedule']):array();
-					$scheduledRecipients = (!empty($reportScheduleInfo['recipients']))?Zend_Json::decode($reportScheduleInfo['recipients']):array();
+					$scheduledInterval = (!empty($reportScheduleInfo['schedule']))?json_decode($reportScheduleInfo['schedule'],true):array();
+					$scheduledRecipients = (!empty($reportScheduleInfo['recipients']))?json_decode($reportScheduleInfo['recipients'],true):array();
 
 					VTCacheUtils::updateReport_ScheduledInfo($this->user->id, $this->id, true, $reportScheduleInfo['format'],
 														$scheduledInterval, $scheduledRecipients, $reportScheduleInfo['next_trigger_time']);
@@ -340,8 +339,8 @@ class VTScheduledReport extends Reports {
 		for($i=0; $i<$noOfScheduledReports; ++$i) {
 			$reportScheduleInfo = $adb->raw_query_result_rowdata($result, $i);
 
-			$scheduledInterval = (!empty($reportScheduleInfo['schedule']))?Zend_Json::decode($reportScheduleInfo['schedule']):array();
-			$scheduledRecipients = (!empty($reportScheduleInfo['recipients']))?Zend_Json::decode($reportScheduleInfo['recipients']):array();
+			$scheduledInterval = (!empty($reportScheduleInfo['schedule']))?json_decode($reportScheduleInfo['schedule'],true):array();
+			$scheduledRecipients = (!empty($reportScheduleInfo['recipients']))?json_decode($reportScheduleInfo['recipients'],true):array();
 
 			$vtScheduledReport = new VTScheduledReport($adb, $user, $reportScheduleInfo['reportid']);
 			$vtScheduledReport->isScheduled			= true;

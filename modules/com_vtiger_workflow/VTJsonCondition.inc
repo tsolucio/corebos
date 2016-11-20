@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once("include/Zend/Json.php");
 
 class VTJsonCondition {
 
@@ -18,7 +17,7 @@ class VTJsonCondition {
 	function evaluate($condition, $entityCache, $id) {
 		global $logbg;
 		$logbg->debug("Entering evaluate($condition,$id) method ...");
-		$expr = Zend_Json::decode($condition);
+		$expr = json_decode($condition,true);
 		$entityData = $entityCache->forId($id);
 		$data = $entityData->getData();
 

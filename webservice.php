@@ -21,7 +21,6 @@
 	require_once("include/Webservices/State.php");
 	require_once("include/Webservices/OperationManager.php");
 	require_once("include/Webservices/SessionManager.php");
-	require_once("include/Zend/Json.php");
 	require_once('include/logging.php');
 	checkFileAccessForInclusion("include/language/$default_language.lang.php");
 	require_once "include/language/$default_language.lang.php";

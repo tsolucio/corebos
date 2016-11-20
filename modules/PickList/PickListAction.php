@@ -9,7 +9,6 @@
  *********************************************************************************/
 require_once 'include/utils/utils.php';
 require_once 'modules/PickList/PickListUtils.php';
-require_once "include/Zend/Json.php";
 
 global $adb, $current_user, $default_charset;
 
@@ -26,8 +25,8 @@ if($mode == 'add'){
 	$newValues = $_REQUEST['newValues'];
 	$selectedRoles = $_REQUEST['selectedRoles'];
 	
-	$arr = Zend_Json::decode($newValues);
-	$roles = Zend_Json::decode($selectedRoles);
+	$arr = json_decode($newValues,true);
+	$roles = json_decode($selectedRoles,true);
 	$count = count($arr);
 	
 	$sql = "select picklistid from vtiger_picklist where name=?";
@@ -57,8 +56,8 @@ if($mode == 'add'){
 	}
 	echo "SUCCESS";
 }elseif($mode == 'edit'){
-	$newValues = Zend_Json::decode($_REQUEST['newValues']);
-	$oldValues = Zend_Json::decode($_REQUEST['oldValues']);
+	$newValues = json_decode($_REQUEST['newValues'],true);
+	$oldValues = json_decode($_REQUEST['oldValues'],true);
 	if(count($newValues) != count($oldValues)){
 		echo "Some error occured";
 		exit;
@@ -98,7 +97,7 @@ if($mode == 'add'){
 	echo "SUCCESS";
 }elseif($mode == 'delete'){
 	
-	$values = Zend_Json::decode($_REQUEST['values']);
+	$values = json_decode($_REQUEST['values'],true);
 	$replaceVal = $_REQUEST['replaceVal'];
 	if(!empty($replaceVal)){
 		$sql = "select * from vtiger_$tableName where $tableName=?";

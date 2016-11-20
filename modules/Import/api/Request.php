@@ -15,8 +15,8 @@ class Import_API_Request extends Import_API_UserInput {
 	function get($key) {
 		if(isset($this->valuemap[$key])) {
 			$value = $this->valuemap[$key];
-			if(Zend_Json::decode($value) != null) {
-				$value = Zend_Json::decode($value);
+			if(json_decode($value) != null) {
+				$value = json_decode($value,true);
 			}
 
 			if(is_array($value)) {
@@ -35,7 +35,7 @@ class Import_API_Request extends Import_API_UserInput {
 	function getString($key) {
 		if(isset($this->valuemap[$key])) {
 			$value = $this->valuemap[$key];
-			if(Zend_Json::decode($value) != null) {
+			if(json_decode($value) != null) {
 				return $this->valuemap[$key];
 			} else {
 				return vtlib_purify($this->valuemap[$key]);

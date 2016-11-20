@@ -9,7 +9,6 @@
  ******************************************************************************/
 require_once("Smarty_setup.php");
 require_once("include/utils/utils.php");
-require_once("include/Zend/Json.php");
 
 function vtGetModules($adb) {
 	$modules = com_vtGetModules($adb);
@@ -34,7 +33,7 @@ function vtEditExpressions($adb, $appStrings, $current_language, $theme, $formod
 		'LBL_USE_FIELD_VALUE_DASHDASH'=>$mod['LBL_USE_FIELD_VALUE_DASHDASH'],
 		'LBL_DELETE_EXPRESSION_CONFIRM'=>$mod['LBL_DELETE_EXPRESSION_CONFIRM']
 	);
-	$smarty->assign("JS_STRINGS", Zend_Json::encode($jsStrings));
+	$smarty->assign("JS_STRINGS", json_encode($jsStrings));
 
 	$smarty->assign("MOD", $mod);
 	$smarty->assign("THEME",$theme);

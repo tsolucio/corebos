@@ -55,7 +55,6 @@ class ListViewSession {
 	public static function getListViewNavigation($currentRecordId){
 		global $currentModule,$current_user,$adb,$log;
 		$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$currentModule);
-		Zend_Json::$useBuiltinEncoderDecoder = true;
 		$reUseData = false;
 		$displayBufferRecordCount = 10;
 		$bufferRecordCount = 15;
@@ -68,7 +67,7 @@ class ListViewSession {
 		$cv = new CustomView();
 		$viewId = $cv->getViewId($currentModule);
 		if(!empty($_SESSION[$currentModule.'_DetailView_Navigation'.$viewId])){
-			$recordNavigationInfo = Zend_Json::decode($_SESSION[$currentModule.'_DetailView_Navigation'.$viewId]);
+			$recordNavigationInfo = json_decode($_SESSION[$currentModule.'_DetailView_Navigation'.$viewId],true);
 			$pageNumber =0;
 			if(count($recordNavigationInfo) == 1){
 				foreach ($recordNavigationInfo as $recordIdList) {
@@ -162,7 +161,7 @@ class ListViewSession {
 					$recordNavigationInfo[$current][] = $recordId;
 				}
 			}
-			coreBOS_Session::set($currentModule.'_DetailView_Navigation'.$viewId, Zend_Json::encode($recordNavigationInfo));
+			coreBOS_Session::set($currentModule.'_DetailView_Navigation'.$viewId, json_encode($recordNavigationInfo));
 		}
 		return $recordNavigationInfo;
 	}
@@ -193,7 +192,7 @@ class ListViewSession {
 			$start = $_SESSION['lvs'][$currentModule][$viewid]['start'];
 		}
 		if(!$queryMode) {
-			coreBOS_Session::set('lvs^'.$currentModule.'^'.$viewid.'^start', intval($start));
+			$_SESSION['lvs'][$currentModule][$viewid]['start'] = intval($start);
 		}
 		return $start;
 	}
@@ -201,10 +200,10 @@ class ListViewSession {
 	public static function setSessionQuery($currentModule,$query,$viewid){
 		if(isset($_SESSION[$currentModule.'_listquery'])){
 			if($_SESSION[$currentModule.'_listquery'] != $query){
-				coreBOS_Session::delete($currentModule.'_DetailView_Navigation'.$viewid);
+				unset($_SESSION[$currentModule.'_DetailView_Navigation'.$viewid]);
 			}
 		}
-		coreBOS_Session::set($currentModule.'_listquery', $query);
+		$_SESSION[$currentModule.'_listquery'] = $query;
 	}
 
 	public static function hasViewChanged($currentModule) {

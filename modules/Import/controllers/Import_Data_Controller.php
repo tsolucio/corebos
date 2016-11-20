@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************ */
-
 require_once 'include/Webservices/Create.php';
 require_once 'include/Webservices/Update.php';
 require_once 'include/Webservices/Delete.php';
@@ -62,7 +61,7 @@ class Import_Data_Controller {
 		$defaultValues = array();
 		if (!empty($this->defaultValues)) {
 			if(!is_array($this->defaultValues)) {
-				$this->defaultValues = Zend_Json::decode($this->defaultValues);
+				$this->defaultValues = json_decode($this->defaultValues,true);
 			}
 			if($this->defaultValues != null) {
 				$defaultValues = $this->defaultValues;

@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('include/Zend/Json.php');
 
 //check for mail server configuration through ajax
 if(isset($_REQUEST['server_check']) && $_REQUEST['server_check'] == 'true')
