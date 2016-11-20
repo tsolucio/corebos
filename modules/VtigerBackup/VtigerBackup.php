@@ -6,9 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  *********************************************************************************/
-
 require_once 'include/db_backup/StagedBackup.php';
 require_once 'include/db_backup/DatabaseBackup.php';
 require_once 'include/db_backup/Source/MysqlSource.php';
@@ -20,11 +18,6 @@ require_once 'modules/VtigerBackup/Utils.php';
 require_once 'modules/VtigerBackup/Locations/FTPBackup.php';
 require_once 'modules/VtigerBackup/Locations/LocalBackup.php';
 
-/**
- * Description of VtigerBackup
- *
- * @author MAK
- */
 class VtigerBackup {
 	private $folderList = array('storage','test','user_privileges');
 	private $location = null;
