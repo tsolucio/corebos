@@ -6,9 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
- *********************************************************************************
- */
+ *********************************************************************************/
 
 require_once("config.php");
 require_once("include/database/PearDatabase.php");
@@ -18,13 +16,12 @@ define("dbpass", $dbconfig['db_password']);
 define("dbname", $dbconfig['db_name']);
 
 function save_structure($filename, $root_directory) {
-		global $log;
-		$log->debug("Entering save_structure(".$filename.",".$root_directory.") method ...");
-
-		$dbdump = new DatabaseDump(dbserver, dbuser, dbpass);
-		$dumpfile = $root_directory.'/'.$filename;
-		$dbdump->save(dbname, $dumpfile) ;
-        $log->debug("Exiting save_structure method ...");
+	global $log;
+	$log->debug("Entering save_structure(".$filename.",".$root_directory.") method ...");
+	$dbdump = new DatabaseDump(dbserver, dbuser, dbpass);
+	$dumpfile = $root_directory.'/'.$filename;
+	$dbdump->save(dbname, $dumpfile) ;
+	$log->debug("Exiting save_structure method ...");
 }
 
 /**
@@ -144,8 +141,7 @@ class DatabaseDump {
 	function writeln($string)     { fprintf($this->fhandle, "%s\r\n", $string); }
 };
 
-
-class createZip  {  
+class createZip {
 
     public $compressedData = array();
     public $centralDirectory = array(); // central directory   
@@ -158,87 +154,82 @@ class createZip  {
      * @param $directoryName string
      *
      */
-    
     public function addDirectory($directoryName) {
-        $directoryName = str_replace("\\", "/", $directoryName);  
+        $directoryName = str_replace("\\", "/", $directoryName);
 
         $feedArrayRow = "\x50\x4b\x03\x04";
-        $feedArrayRow .= "\x0a\x00";    
-        $feedArrayRow .= "\x00\x00";    
-        $feedArrayRow .= "\x00\x00";    
+        $feedArrayRow .= "\x0a\x00";
+        $feedArrayRow .= "\x00\x00";
+        $feedArrayRow .= "\x00\x00";
         $feedArrayRow .= "\x00\x00\x00\x00";
 
         $feedArrayRow .= pack("V",0);
         $feedArrayRow .= pack("V",0);
         $feedArrayRow .= pack("V",0);
-        $feedArrayRow .= pack("v", strlen($directoryName) );
-        $feedArrayRow .= pack("v", 0 );
-        $feedArrayRow .= $directoryName; 
+        $feedArrayRow .= pack("v", strlen($directoryName));
+        $feedArrayRow .= pack("v", 0);
+        $feedArrayRow .= $directoryName;
 
         $feedArrayRow .= pack("V",0);
         $feedArrayRow .= pack("V",0);
         $feedArrayRow .= pack("V",0);
 
         $this -> compressedData[] = $feedArrayRow;
-        
         $newOffset = strlen(implode("", $this->compressedData));
 
         $addCentralRecord = "\x50\x4b\x01\x02";
-        $addCentralRecord .="\x00\x00";    
-        $addCentralRecord .="\x0a\x00";    
-        $addCentralRecord .="\x00\x00";    
-        $addCentralRecord .="\x00\x00";    
+        $addCentralRecord .="\x00\x00";
+        $addCentralRecord .="\x0a\x00";
+        $addCentralRecord .="\x00\x00";
+        $addCentralRecord .="\x00\x00";
         $addCentralRecord .="\x00\x00\x00\x00";
         $addCentralRecord .= pack("V",0);
         $addCentralRecord .= pack("V",0);
         $addCentralRecord .= pack("V",0);
-        $addCentralRecord .= pack("v", strlen($directoryName) );
-        $addCentralRecord .= pack("v", 0 );
-        $addCentralRecord .= pack("v", 0 );
-        $addCentralRecord .= pack("v", 0 );
-        $addCentralRecord .= pack("v", 0 );
+        $addCentralRecord .= pack("v", strlen($directoryName));
+        $addCentralRecord .= pack("v", 0);
+        $addCentralRecord .= pack("v", 0);
+        $addCentralRecord .= pack("v", 0);
+        $addCentralRecord .= pack("v", 0);
         $ext = "\x00\x00\x10\x00";
-        $ext = "\xff\xff\xff\xff";  
-        $addCentralRecord .= pack("V", 16 );
+        $ext = "\xff\xff\xff\xff";
+        $addCentralRecord .= pack("V", 16);
 
         $addCentralRecord .= pack("V", $this -> oldOffset );
         $this -> oldOffset = $newOffset;
 
-        $addCentralRecord .= $directoryName;  
+        $addCentralRecord .= $directoryName;
+        $this -> centralDirectory[] = $addCentralRecord;
+    }
 
-        $this -> centralDirectory[] = $addCentralRecord;  
-    }    
-    
     /**
      * Function to add file(s) to the specified directory in the archive
      *
      * @param $directoryName string
      *
      */
-    
-    public function addFile($data, $directoryName)   {
+    public function addFile($data, $directoryName) {
 
-        $directoryName = str_replace("\\", "/", $directoryName);  
-    
+        $directoryName = str_replace("\\", "/", $directoryName);
         $feedArrayRow = "\x50\x4b\x03\x04";
-        $feedArrayRow .= "\x14\x00";    
-        $feedArrayRow .= "\x00\x00";    
-        $feedArrayRow .= "\x08\x00";    
+        $feedArrayRow .= "\x14\x00";
+        $feedArrayRow .= "\x00\x00";
+        $feedArrayRow .= "\x08\x00";
         $feedArrayRow .= "\x00\x00\x00\x00";
 
-        $uncompressedLength = strlen($data);  
-        $compression = crc32($data);  
-        $gzCompressedData = gzcompress($data);  
+        $uncompressedLength = strlen($data);
+        $compression = crc32($data);
+        $gzCompressedData = gzcompress($data);
         $gzCompressedData = substr( substr($gzCompressedData, 0, strlen($gzCompressedData) - 4), 2);
-        $compressedLength = strlen($gzCompressedData);  
+        $compressedLength = strlen($gzCompressedData);
         $feedArrayRow .= pack("V",$compression);
         $feedArrayRow .= pack("V",$compressedLength);
         $feedArrayRow .= pack("V",$uncompressedLength);
-        $feedArrayRow .= pack("v", strlen($directoryName) );
-        $feedArrayRow .= pack("v", 0 );
-        $feedArrayRow .= $directoryName;  
+        $feedArrayRow .= pack("v", strlen($directoryName));
+        $feedArrayRow .= pack("v", 0);
+        $feedArrayRow .= $directoryName;
 
-        $feedArrayRow .= $gzCompressedData;  
+        $feedArrayRow .= $gzCompressedData;
 
         $feedArrayRow .= pack("V",$compression);
         $feedArrayRow .= pack("V",$compressedLength);
@@ -249,27 +240,27 @@ class createZip  {
         $newOffset = strlen(implode("", $this->compressedData));
 
         $addCentralRecord = "\x50\x4b\x01\x02";
-        $addCentralRecord .="\x00\x00";    
-        $addCentralRecord .="\x14\x00";    
-        $addCentralRecord .="\x00\x00";    
-        $addCentralRecord .="\x08\x00";    
+        $addCentralRecord .="\x00\x00";
+        $addCentralRecord .="\x14\x00";
+        $addCentralRecord .="\x00\x00";
+        $addCentralRecord .="\x08\x00";
         $addCentralRecord .="\x00\x00\x00\x00";
         $addCentralRecord .= pack("V",$compression);
         $addCentralRecord .= pack("V",$compressedLength);
         $addCentralRecord .= pack("V",$uncompressedLength);
         $addCentralRecord .= pack("v", strlen($directoryName) );
-        $addCentralRecord .= pack("v", 0 );
-        $addCentralRecord .= pack("v", 0 );
-        $addCentralRecord .= pack("v", 0 );
-        $addCentralRecord .= pack("v", 0 );
-        $addCentralRecord .= pack("V", 32 );
+        $addCentralRecord .= pack("v", 0);
+        $addCentralRecord .= pack("v", 0);
+        $addCentralRecord .= pack("v", 0);
+        $addCentralRecord .= pack("v", 0);
+        $addCentralRecord .= pack("V", 32);
 
         $addCentralRecord .= pack("V", $this -> oldOffset );
         $this -> oldOffset = $newOffset;
 
-        $addCentralRecord .= $directoryName;  
+        $addCentralRecord .= $directoryName;
 
-        $this -> centralDirectory[] = $addCentralRecord;  
+        $this -> centralDirectory[] = $addCentralRecord;
     }
 
     /**
@@ -277,21 +268,19 @@ class createZip  {
      *
      * @return zipfile (archive)
      */
-
     public function getZippedfile() {
+        $data = implode("", $this -> compressedData);
+        $controlDirectory = implode("", $this -> centralDirectory);
 
-        $data = implode("", $this -> compressedData);  
-        $controlDirectory = implode("", $this -> centralDirectory);  
-
-        return   
-            $data.  
-            $controlDirectory.  
-            $this -> endOfCentralDirectory.  
-            pack("v", sizeof($this -> centralDirectory)).     
-            pack("v", sizeof($this -> centralDirectory)).     
-            pack("V", strlen($controlDirectory)).             
-            pack("V", strlen($data)).                
-            "\x00\x00";                             
+        return
+            $data.
+            $controlDirectory.
+            $this -> endOfCentralDirectory.
+            pack("v", sizeof($this -> centralDirectory)).
+            pack("v", sizeof($this -> centralDirectory)).
+            pack("V", strlen($controlDirectory)).
+            pack("V", strlen($data)).
+            "\x00\x00";
     }
 
     /**
@@ -300,10 +289,8 @@ class createZip  {
      *
      * @param archiveName string - name of the created archive file
      */
-
     public function forceDownload($archiveName) {
         $headerInfo = '';
-        
         if(ini_get('zlib.output_compression')) {
             ini_set('zlib.output_compression', 'Off');
         }
@@ -327,10 +314,9 @@ class createZip  {
         header("Content-Transfer-Encoding: binary");
         header("Content-Length: ".filesize($archiveName));
         readfile("$archiveName");
-        
      }
 
-} 
+}
 
 class createDirZip extends createZip {
   function get_files_from_folder($directory, $put_into) {
