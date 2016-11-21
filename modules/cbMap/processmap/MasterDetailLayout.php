@@ -122,6 +122,7 @@ class MasterDetailLayout extends processcbMap {
 			'delete' => (String)$xml->listview->toolbar->delete,
 		);
 		$mapping['listview']['fields'] = array();
+		if (is_array($xml->listview->fields->field))
 		foreach($xml->listview->fields->field as $k=>$v) {
 			$fieldtype = isset($v->fieldtype) ? (String)$v->fieldtype : '';
 			$fieldname = isset($v->fieldname) ? (String)$v->fieldname : '';
@@ -185,6 +186,7 @@ class MasterDetailLayout extends processcbMap {
 			$mapping['detailview']['fieldnames'][] = $fieldinfo['name'];
 		}
 		$mapping['aggregations'] = array();
+		if (is_array($xml->aggregations->operation))
 		foreach($xml->aggregations->operation as $k=>$v) {
 			$mapping['aggregations'][] = array(
 				'type' => isset($v->type) ? (String)$v->type : '',
