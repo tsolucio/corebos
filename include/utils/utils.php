@@ -3497,16 +3497,16 @@ function getDuplicateRecordsArr($module)
 				$result[$col_arr[$k]] = getRecordInfoFromID($result[$col_arr[$k]]);
 			}
 			if($ui_type[$fld_arr[$k]] == 5 || $ui_type[$fld_arr[$k]] == 6 || $ui_type[$fld_arr[$k]] == 23){
-				if ($$result[$col_arr[$k]] != '' && $$result[$col_arr[$k]] != '0000-00-00') {
-					$date = new DateTimeField($$result[$col_arr[$k]]);
+				if ($result[$col_arr[$k]] != '' && $result[$col_arr[$k]] != '0000-00-00') {
+					$date = new DateTimeField($result[$col_arr[$k]]);
 					$value = $date->getDisplayDate();
-					if(strpos($$result[$col_arr[$k]], ' ') > -1) {
+					if(strpos($result[$col_arr[$k]], ' ') > -1) {
 						$value .= (' ' . $date->getDisplayTime());
 					}
-				} elseif ($$result[$col_arr[$k]] == '0000-00-00') {
+				} elseif ($result[$col_arr[$k]] == '0000-00-00') {
 					$value = '';
 				} else {
-					$value = $$result[$col_arr[$k]];
+					$value = $result[$col_arr[$k]];
 				}
 				$result[$col_arr[$k]] = $value;
 			}
