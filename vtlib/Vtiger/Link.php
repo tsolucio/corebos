@@ -27,6 +27,7 @@ class Vtiger_Link {
 	var $handler_path;
 	var $handler_class;
 	var $handler;
+	var $onlyonmymodule = false;
 
 	// Ignore module while selection
 	const IGNORE_MODULE = -1; 
@@ -52,6 +53,7 @@ class Vtiger_Link {
 		$this->handler_path	=$valuemap['handler_path'];
 		$this->handler_class=$valuemap['handler_class'];
 		$this->handler		=$valuemap['handler'];
+		$this->onlyonmymodule =$valuemap['onlyonmymodule'];
 	}
 
 	/**
@@ -91,6 +93,11 @@ class Vtiger_Link {
 			}
 			self::$__cacheSchemaChanges['vtiger_links'] = true;
 		}
+		global $adb;
+		$lns=$adb->getColumnNames('vtiger_links');
+		if (!in_array('onlyonmymodule', $lns)) {
+			$adb->query('ALTER TABLE `vtiger_links` ADD `onlyonmymodule` BOOLEAN NOT NULL DEFAULT FALSE');
+		}
 	}
 
 	/**
@@ -102,7 +109,7 @@ class Vtiger_Link {
 	 * @param String ICON to use on the display
 	 * @param Integer Order or sequence of displaying the link
 	 */
-	static function addLink($tabid, $type, $label, $url, $iconpath='',$sequence=0, $handlerInfo=null) {
+	static function addLink($tabid, $type, $label, $url, $iconpath='',$sequence=0, $handlerInfo=null, $onlyonmymodule=false) {
 		global $adb;
 		self::__initSchema();
 		$checkres = $adb->pquery('SELECT linkid FROM vtiger_links WHERE tabid=? AND linktype=? AND linkurl=? AND linkicon=? AND linklabel=?',
@@ -117,7 +124,8 @@ class Vtiger_Link {
 				$params[] = $handlerInfo['class'];
 				$params[] = $handlerInfo['method'];
 			}
-			$sql .= (') VALUES ('.generateQuestionMarks($params).')');
+			$params[] = $onlyonmymodule;
+			$sql .= (', onlyonmymodule) VALUES ('.generateQuestionMarks($params).')');
 			$adb->pquery($sql, $params);
 			self::log("Adding Link ($type - $label) ... DONE");
 		}
@@ -170,7 +178,7 @@ class Vtiger_Link {
 	 * @param Map Key-Value pair to use for formating the link url
 	 */
 	static function getAllByType($tabid, $type=false, $parameters=false) {
-		global $adb, $current_user;
+		global $adb, $current_user, $currentModule;
 		self::__initSchema();
 
 		$multitype = false;
@@ -189,6 +197,10 @@ class Vtiger_Link {
 							Vtiger_Utils::implodestr('?', count($permittedTabIdList), ',').')';
 						$params[] = $permittedTabIdList;
 					}
+					if (!empty($currentModule)) {
+						$sql .= ' and ((onlyonmymodule and tabid=?) or !onlyonmymodule) ';
+						$params[] = getTabid($currentModule);
+					}
 					$result = $adb->pquery($sql . $orderby, Array($adb->flatten_array($params)));
 				} else {
 					$result = $adb->pquery('SELECT * FROM vtiger_links WHERE tabid=? AND linktype IN ('.
@@ -200,7 +212,7 @@ class Vtiger_Link {
 				if($tabid === self::IGNORE_MODULE) {
 					$result = $adb->pquery('SELECT * FROM vtiger_links WHERE linktype=?' . $orderby, Array($type));
 				} else {
-					$result = $adb->pquery('SELECT * FROM vtiger_links WHERE tabid=? AND linktype=?' . $orderby, Array($tabid, $type));				
+					$result = $adb->pquery('SELECT * FROM vtiger_links WHERE tabid=? AND linktype=?' . $orderby, Array($tabid, $type));
 				}
 			}
 		} else {
