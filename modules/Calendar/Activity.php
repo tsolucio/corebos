@@ -808,7 +808,7 @@ function insertIntoRecurringTable(& $recurObj)
 			$result = $db->pquery($query, array());
 			$shrrs = $db->pquery('select userid from vtiger_sharedcalendar where sharedid = ?',array($user->id));
 			while ($shr = $db->fetch_array($shrrs)) {
-				$shrchk = $db->pquery("INSERT INTO $tableName (id,shared) VALUES (?,1) ON DUPLICATE KEY UPDATE shared=1",array($shr['userid']));
+				$shrchk = $db->pquery("INSERT IGNORE INTO $tableName (id,shared) VALUES (?,1)",array($shr['userid']));
 			}
 			if(is_object($result)) {
 				return true;
