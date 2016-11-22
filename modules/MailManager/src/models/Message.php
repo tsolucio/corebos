@@ -214,8 +214,8 @@ class MailManager_Model_Message extends Vtiger_MailRecord  {
 			$this->_charset = decode_html($resultrow['mcharset']);
 
 			$this->_isbodyhtml   = intval($resultrow['misbodyhtml'])? true : false;
-			$this->_plainmessage = intval($resultrow['mplainmessage'])? true:false;
-			$this->_htmlmessage  = intval($resultrow['mhtmlmessage'])? true :false;
+			$this->_plainmessage = $resultrow['mplainmessage'];
+			$this->_htmlmessage  = $resultrow['mhtmlmessage'];
 			$this->_uniqueid     = decode_html($resultrow['muniqueid']);
 			$this->_bodyparsed   = intval($resultrow['mbodyparsed'])? true : false;
 
