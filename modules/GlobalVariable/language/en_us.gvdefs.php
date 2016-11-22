@@ -398,6 +398,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'This is the maximum númber of scheduled workflows that the application will permit you to create. You should be careful with this limit, specially try to distrbute the scheduled workflows evenly on application low use time. The default value is 10.',
 ),
+'Email_Attachments_Folder' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'String',
+	'category' => 'Application',
+	'values' => 'Existing folder name',
+	'definition' => 'The application saves all attachments contained in emails as documents for future reference. These attachments will be saved in the first folder it finds which usually is the "Default" folder. This variable defines the name of the folder you want the attachments to be saved in.',
+),
 
 // TODO: fill in the ones below
 'Application_Storage_Directory' => array(

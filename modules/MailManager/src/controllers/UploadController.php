@@ -46,7 +46,7 @@ class MailManager_UploadFile {
 			$document->column_fields['filename']         = $this->getName();
 			$document->column_fields['filestatus']       = 1;
 			$document->column_fields['filelocationtype'] = 'I';
-			$document->column_fields['folderid']         = 1;
+			$document->column_fields['folderid']         = $this->getAttachmentsFolder();
 			$document->column_fields['filesize']		 = $this->getSize();
 			$document->column_fields['assigned_user_id'] = $current_user->id;
 			$document->save('Documents');
@@ -58,6 +58,23 @@ class MailManager_UploadFile {
 			return array('success'=>true, 'docid'=>$document->id, 'attachid'=>$attachid);
 		}
 		return false;
+	}
+
+	function getAttachmentsFolder() {
+		global $adb;
+		$attfolder = GlobalVariable::getVariable('Email_Attachments_Folder','Default','Emails');
+		$rs = $adb->pquery('select folderid from vtiger_attachmentsfolder where foldername=?',array($attfolder));
+		if ($rs and $adb->num_rows($rs)>0) {
+			$fldid = $adb->query_result($rs, 0, 0);
+		} else {
+			$rs = $adb->query('select folderid from vtiger_attachmentsfolder where folderid>0 order by folderid limit 1');
+			if ($rs and $adb->num_rows($rs)>0) {
+				$fldid = $adb->query_result($rs, 0, 0);
+			} else {
+				$fldid = 1;
+			}
+		}
+		return $fldid;
 	}
 
 	/**
