@@ -1175,6 +1175,7 @@ $app_strings = array(
 	'ERROR_GETTING_FILTER' => 'Fout bij het laden van het filter. Verwijder het filter en probeer opnieuw.',
 	'Upload Images' => 'Upload afbeeldingen',
 	'Drag file here or click to upload' => 'Sleep bestanden hier naar toe of klik om te uploaden',
+	'Drag attachment here or click to upload' => 'Drag attachment here or click to upload',
 	'SetReturnAddressTitle' => 'Kies adres om te gebruiken',
 	'SetReturnAddressDescription' => 'Kies welk adres overschreven moet worden. U kunt één van de adressen kiezen, allebei of geen adres.',
 	'Subscribe' => 'Subscribe',

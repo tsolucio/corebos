@@ -51,7 +51,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord  {
 			$loaded = false;
 			
 			// Unique ID based on sequence number
-			$this->mUid = imap_uid($mBox, $msgno);			
+			$this->mUid = imap_uid($mBox, $msgno);
 			if ($fetchbody) {
 				// Lookup if there was previous cached message
 				$loaded = $this->readFromDB($this->mUid);
@@ -198,8 +198,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord  {
 
 	function readFromDB($uid) {
 		global $adb, $current_user;
-		$result = $adb->pquery("SELECT * FROM vtiger_mailmanager_mailrecord 
-			WHERE userid=? AND muid=?", array($current_user->id, $uid));
+		$result = $adb->pquery("SELECT * FROM vtiger_mailmanager_mailrecord WHERE userid=? AND muid=?", array($current_user->id, $uid));
 		if ($adb->num_rows($result)) {
 			$resultrow = $adb->fetch_array($result);
 			$this->mUid  = decode_html($resultrow['muid']);
@@ -249,7 +248,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord  {
 
 			$atResult = $adb->pquery("SELECT {$filteredColumns} FROM vtiger_mailmanager_mailattachments
 						WHERE userid=? AND muid=? $whereClause", $params);
-			
+
 			if ($adb->num_rows($atResult)) {
 				for($atIndex = 0; $atIndex < $adb->num_rows($atResult); ++$atIndex) {
 					$atResultRow = $adb->raw_query_result_rowdata($atResult, $atIndex);
@@ -296,11 +295,11 @@ class MailManager_Model_Message extends Vtiger_MailRecord  {
 		$params[] = $this->_uniqueid;
 		$params[] = $this->_bodyparsed;
 		$params[] = $savedtime;
-		
-		$adb->pquery("INSERT INTO vtiger_mailmanager_mailrecord (userid, muid, mfrom, mto, mcc, mbcc, 
+
+		$adb->pquery("INSERT INTO vtiger_mailmanager_mailrecord (userid, muid, mfrom, mto, mcc, mbcc,
 				mdate, msubject, mbody, mcharset, misbodyhtml, mplainmessage, mhtmlmessage, muniqueid,
 				mbodyparsed, lastsavedtime) VALUES (".generateQuestionMarks($params).")", $params);
-		
+
 		// Take care of attachments...
 		if (!empty($this->_attachments)) {
 			foreach($this->_attachments as $aName => $aValue) {
@@ -315,7 +314,7 @@ class MailManager_Model_Message extends Vtiger_MailRecord  {
 					unset($this->_attachments[$aName]);					// This is needed first when we save attachment with invalid file extension,
 					$this->_attachments[$attachInfo['name']] = $aValue; // so the file name has to renamed.
 				}
-				unset($aValue); 
+				unset($aValue);
 			}
 		}
 		return true;
