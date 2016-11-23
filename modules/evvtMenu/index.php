@@ -47,13 +47,11 @@ $category = getParentTab();
 $smarty = new vtigerCRM_Smarty();
 
 $menu_structure = getMenuBranch(0);
-$menu_html = getMenuBranchHTML($menu_structure);
 $elements = getMenuElements();
 $json = getMenuJSON2();
 
 $smarty->assign("PARENTS", $elements);
 $smarty->assign("MENUSTRUCTURE", $json);
-$smarty->assign("MENU", $menu_html);
 $smarty->assign("PROFILES", getAllProfileInfo());
 $result = $adb->query('select name from vtiger_tab where presence = 0 order by name');
 $modulelist = array();

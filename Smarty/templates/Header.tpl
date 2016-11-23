@@ -536,7 +536,7 @@
 		function buildSubMenu(object, index){ //submenu
 			var menuid = 'menu'+index;
 			for (var i in object){
-				if (object[i].url === undefined || object[i].url === null) {
+				if (object[i].type == 'sep') {
 					$('#' + menuid).append('<li class="slds-dropdown__header slds-has-divider--top-space" role="separator">\
 							</li>');
 				} else {
@@ -565,7 +565,6 @@
 		function buildMoreMenu(object, index){ //pjest shtes qe duhen mmu shtu
 			var subMenuId = 'submenu' +index;
 			for (var i in object) {
-	 //shumica e punes qe ka met osht mi veqit ID qysh duhet edhe mi qas qato ID po sjom ka di lol sec v
 				if (object[i].items === undefined || object[i].items === null) {
 					$('#' + subMenuId).append('<li class="slds-dropdown__item" role="presentation">\
 							<a href="' + object[i].url + '" role="menuitem" tabindex="-1">\

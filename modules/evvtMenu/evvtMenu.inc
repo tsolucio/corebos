@@ -57,52 +57,13 @@ function getMenuBranch($mparent) {
 	return $menustructure;
 }
 
-//function getMenuBranchHTML2($marray) {
-//    $menuTreeHtml = '';
-//    for($i=0; $i<count($marray); $i++){
-//        $menuItem = $marray[$i];
-//        $submenu = $menuItem['submenu'];
-//        $menuTreeHtml .= "<li menuinfo=\"".$menuItem['json']."\"><input type=\"checkbox\"  checked=\"checked\" id=\"evvtmcb-".$menuItem['evvtmenuid']."\" /><label for=\"item-0-$i\">". $menuItem['mlabel']."</label>";
-//        $menuTreeHtml .= "<ul>";
-//        for($j=0; $j<count($submenu); $j++){
-//            $subMenuItem = $submenu[$j];
-//            $menuTreeHtml .= "<li menuinfo=\"".$menuItem['json']."\"><input type=\"checkbox\" id=\"evvtmcb-".$subMenuItem['evvtmenuid']."\" />". $subMenuItem['mlabel']."</li>";
-//        }
-//        $menuTreeHtml .= "</ul>";
-//        $menuTreeHtml .= "</li>";
-//
-//    }
-//    return $menuTreeHtml;
-//}
-
-function getMenuBranchHTML($marray) {
-    $menuTreeHtml = '';
-    for($i=0; $i<count($marray); $i++){
-        $menuItem = $marray[$i];
-        $submenu = $menuItem['submenu'];
-        $label = $menuItem['mlabel'];
-		$type = $menuItem['mtype'];
-        $json = $menuItem['jsoninfo'];
-        $json = json_encode($json);
-        $json = json_decode($json);
-        $json = str_replace('"', "'", $json);
-        $menuTreeHtml .= "<a onclick=\"getMenuInfo(".$json.");showFormParts('$type');\" id=\"tree-$i\">$label</a>&nbsp;&nbsp;<a onclick=\"expandSection($i);\"<i class=\"fa fa-plus\" aria-hidden=\"true\"></i></a>&nbsp;&nbsp;<a onclick=\"contractSection($i);\"<i class=\"fa fa-minus\" aria-hidden=\"true\"></i></a></br>";
-        $menuTreeHtml .= "<div class=\"treeitems\" id=\"trees-$i\">";
-        for($j=0; $j<count($submenu); $j++){
-            $subMenuItem = $submenu[$j];
-            $label = $subMenuItem['mlabel'];
-			$type = $subMenuItem['mtype'];
-            $json = $subMenuItem['jsoninfo'];
-            $json = json_encode($json);
-            $json = json_decode($json);
-            $json = str_replace('"', "'", $json);
-            $id = $subMenuItem['evvtmenuid'];
-            $menuTreeHtml .= "<a onclick=\"getMenuInfo(".$json.");showFormParts('$type');\" id=\"tree-$i\">$label</a></br>";
-        }
-        $menuTreeHtml .= "</div>";
-    }
-    return $menuTreeHtml;
-}
+/**
+ * This function creates JSON of all evvtMenu elements with
+ * the id, parent id and label as main elements, and also the info element that contains
+ * the full info of each item
+ *
+ * @return string
+ */
 
 function getMenuJSON2() {
 	global $adb;
@@ -224,6 +185,7 @@ function getMenuJSON($marray) {
 				$menubranch.= '{text:"<hr/>",encoded:false';
 				break;
 		}
+		$menubranch .= ',type:"' . $item['mtype'] . '"';
 		if (!empty($item['submenu']) and count($item['submenu'])>0) {
 			$menubranch.= ',items:';
 			$menubranch.= getMenuJSON($item['submenu']);

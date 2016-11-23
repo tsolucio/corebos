@@ -83,12 +83,18 @@ switch ($do) {
 	case 'updateTree':
 		$treeIds = vtlib_purify($_REQUEST['treeIds']);
 		$treeParents = vtlib_purify($_REQUEST['treeParents']);
+		$treePositions = vtlib_purify($_REQUEST['treePositions']);
 		$ids = explode(",", $treeIds);
 		$parents = explode(",", $treeParents);
-		for($i=0; $i<count($ids); $i++){
+		$positions = explode(",", $treePositions);
+		for($i=0; $i<count($positions); $i++){
 			$id = $ids[$i];
 			$parent = $parents[$i];
-			$adb->pquery('update vtiger_evvtmenu set mparent=? WHERE evvtmenuid=?', array($parent, $id));
+			$position = $positions[$i];
+			$adb->pquery('update vtiger_evvtmenu set mparent=?, mseq=? WHERE evvtmenuid=?', array($parent, $position, $id));
+
+			$adb->pquery('update vtiger_evvtmenu set mseq = mseq + 1 WHERE mparent=? AND mseq >= ? AND evvtmenuid <> ?', array($parent, $position, $id));
+
 		}
 
 		break;

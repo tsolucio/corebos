@@ -70,10 +70,9 @@ function showFormParts(mtype){
 }
 
 function saveTree() {
-	console.log(ids);
-	console.log(parents);
 	document.getElementById("evvtmenudo").value = 'updateTree';
 	document.getElementById("treeIds").value = ids;
 	document.getElementById("treeParents").value = parents;
+	document.getElementById("treePositions").value = positions;
 	document.getElementById("menuitemform").submit();
 }

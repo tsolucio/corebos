@@ -17,10 +17,9 @@
 
 
 {literal}<script type="text/javascript">
-    console.log({/literal}{$MENUSTRUCTURE}{literal});
-    var updates = [];
     var ids = [];
     var parents = [];
+    var positions = [];
         $(function () {
             // 6 create an instance when the DOM is ready
             var inst = $('#jstree').jstree({
@@ -56,9 +55,13 @@
             $('#jstree').on('move_node.jstree', function (e, data) {
                 var id = data.node.id;
                 var parentId = data.instance.get_node(data.node.parent).id;
+                var position = data.position + 1;
                 ids.push(id);
                 parents.push(parentId);
+                positions.push(position);
+                console.log(position);
             });
+
 
         });
 
@@ -103,6 +106,7 @@
         <input type="hidden" name="evvtmenudo" id="evvtmenudo" value="">
         <input type="hidden" name="treeIds" id="treeIds" value="">
         <input type="hidden" name="treeParents" id="treeParents" value="">
+        <input type="hidden" name="treePositions" id="treePositions" value="">
 
         </div>
       <div class="slds-form--horizontal" style="float:left;">
