@@ -139,31 +139,11 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 
 		$label_fld ["options"] = $options;
 	} elseif ($uitype == 1613) {
+		require_once 'modules/PickList/PickListUtils.php';
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$label_fld[] = getTranslatedString($col_fields[$fieldname], $module);
 		//get All the modules the current user is permitted to Access.
-		$pickListResult = getAllowedPicklistModules();
-
-		$options = array();
-		$options[] = "";
-		$count = 0;
-		$found = false;
-		foreach ($pickListResult as $pKey=>$pValue) {
-			$pickListValue = $pValue;
-			$col_fields[$fieldname] = decode_html($col_fields[$fieldname]);
-
-			if ($col_fields[$fieldname] == $pickListValue) {
-				$chk_val = "selected";
-				$count++;
-				$found = true;
-			} else {
-				$chk_val = '';
-			}
-			$pickListValue = to_html($pickListValue);
-			$options[] = array(getTranslatedString($pickListValue, $module), $pickListValue, $chk_val);
-		}
-		uasort($options, function($a,$b) {return (strtolower($a[0]) < strtolower($b[0])) ? -1 : 1;});
-		$label_fld ["options"] = $options;
+		$label_fld ["options"] = getPicklistValuesSpecialUitypes($uitype,$fieldname,$col_fields[$fieldname],'DetailView');
 	} elseif ($uitype == 15) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$col_fields[$fieldname] = trim(html_entity_decode($col_fields[$fieldname], ENT_QUOTES, $default_charset));
@@ -199,21 +179,9 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		}
 		$label_fld ["options"] = $options;
 	} elseif ($uitype == 1024) {
-		$content=array();
-		$j=0;
-		if ($col_fields[$fieldname]!='') {
-			$arr_evo_actions=explode(' |##| ',$col_fields[$fieldname]);
-			for($i=0;$i<sizeof($arr_evo_actions);$i++) {
-				$roleid=$arr_evo_actions[$i];
-				$rolename=getRoleName($roleid);
-				if((is_admin($current_user))) {
-					$content[$i]='<a href="index.php?module=Settings&action=RoleDetailView&parenttab=Settings&roleid='.$roleid.'">'.$rolename.'</a>';
-				} else {
-					$content[$i]=$rolename;
-				}
-			}
-		}
+		require_once 'modules/PickList/PickListUtils.php';
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
+		$content = getPicklistValuesSpecialUitypes($uitype,$fieldname,$col_fields[$fieldname],'DetailView');
 		$label_fld[] = implode(', ',$content);
 	} elseif ($uitype == 115) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
@@ -272,41 +240,10 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		}
 		$label_fld ["options"] = $options;
 	}elseif ($uitype == 3313) {
-		$roleid = $current_user->roleid;
+		require_once 'modules/PickList/PickListUtils.php';
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$label_fld[] = str_ireplace(' |##| ', ', ', $col_fields[$fieldname]);
-
-		$picklistValues = getAllowedPicklistModules();
-
-		$options = array();
-		$selected_entries = Array();
-		$selected_entries = explode(' |##| ', $col_fields[$fieldname]);
-
-		if (!empty($picklistValues)) {
-			$pickcount = 0;
-			foreach ($picklistValues as $order => $pickListValue) {
-				foreach ($selected_entries as $selected_entries_value) {
-					if (trim($selected_entries_value) == trim(htmlentities($pickListValue, ENT_QUOTES, $default_charset))) {
-						$chk_val = 'selected';
-						$pickcount++;
-						break;
-					} else {
-						$chk_val = '';
-					}
-				}
-				if (isset($_REQUEST['file']) && $_REQUEST['file'] == 'QuickCreate') {
-					$options[] = array(htmlentities(getTranslatedString($pickListValue, $module), ENT_QUOTES, $default_charset), $pickListValue, $chk_val);
-				} else {
-					$options[] = array(getTranslatedString($pickListValue, $module), $pickListValue, $chk_val);
-				}
-			}
-			if ($pickcount == 0 && !empty($value)) {
-				$not_access_lbl = "<font color='red'>" . $app_strings['LBL_NOT_ACCESSIBLE'] . "</font>";
-				$options[] = array($not_access_lbl, trim($selected_entries_value), 'selected');
-			}
-		}
-		uasort($options, function($a,$b) {return (strtolower($a[0]) < strtolower($b[0])) ? -1 : 1;});
-		$label_fld ["options"] = $options;
+		$label_fld ["options"] = getPicklistValuesSpecialUitypes($uitype,$fieldname,$col_fields[$fieldname],'DetailView');
 	} elseif ($uitype == 17) {
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$matchPattern = "^[\w]+:\/\/^";
