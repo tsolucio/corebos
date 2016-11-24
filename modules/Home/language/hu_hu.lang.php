@@ -96,5 +96,6 @@ $mod_strings = array(
 	'LBL_DEFAULT_WIDGET' => 'Alapértelmezett dobozok',
 	'LBL_NO_WIDGETS_HIDDEN' => 'Nincsen alapértelmezett doboz elrejtve',
 	'UpdateExchangeRate' => 'Update Exchange Rate',
+	'LBL_HOME_ADDWINDOW' => 'Add Window',
 );
 ?>
