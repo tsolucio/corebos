@@ -20,8 +20,8 @@ function startCall(){
 	require_once('modules/PBXManager/AsteriskUtils.php');
 
 	$id = $current_user->id;
-	$number = $_REQUEST['number'];
-	$record = $_REQUEST['recordid'];
+	$number = vtlib_purify($_REQUEST['number']);
+	$record = vtlib_purify($_REQUEST['recordid']);
 	$result = $adb->query("select * from vtiger_asteriskextensions where userid=".$current_user->id);
 	$extension = $adb->query_result($result, 0, "asterisk_extension");
 	$data = getAsteriskInfo($adb);
@@ -42,8 +42,8 @@ function startCall(){
 		$asterisk = new Asterisk($sock, $server, $port);
 
 		loginUser($username, $password, $asterisk);
-
-		$asterisk->transfer($extension,$number);
+		$pbxGetLinePrefix = GlobalVariable::getVariable('PBX_Get_Line_Prefix','','PBXManager');
+		$asterisk->transfer($extension,$pbxGetLinePrefix.$number);
 
 		$callerModule = getSalesEntityType($record);
 		$entityNames = getEntityName($callerModule, array($record));

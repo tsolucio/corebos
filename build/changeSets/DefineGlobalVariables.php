@@ -98,6 +98,7 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Import_Batch_Limit',
 				'Import_Scheduled_Limit',
 				'Lead_Convert_TransferToAccount',
+				'PBX_Get_Line_Prefix',
 				'Product_Copy_Bundle_OnDuplicate',
 				'Product_Show_Subproducts_Popup',
 				'Product_Permit_Relate_Bundle_Parent',

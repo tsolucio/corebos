@@ -405,6 +405,13 @@ $GlobalVariableDefinitons = array(
 	'values' => 'Existing folder name',
 	'definition' => 'The application saves all attachments contained in emails as documents for future reference. These attachments will be saved in the first folder it finds which usually is the "Default" folder. This variable defines the name of the folder you want the attachments to be saved in.',
 ),
+'PBX_Get_Line_Prefix' => array(
+		'status' => 'Implemented',
+		'valuetype' => 'String',
+		'category' => 'Application',
+		'values' => '',
+		'definition' => 'The number the user has to dial to get a line. This will be prefixed to the number that has to be dialed.',
+),
 
 // TODO: fill in the ones below
 'Application_Storage_Directory' => array(
