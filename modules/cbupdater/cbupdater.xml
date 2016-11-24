@@ -948,4 +948,11 @@
 	<classname>mysqlstrictMailManager</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Add UIType 1024 Webservice Field Type</description>
+	<filename>build/changeSets/addUIType1024WebserviceFieldType.php</filename>
+	<classname>addUIType1024WebserviceFieldType</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
