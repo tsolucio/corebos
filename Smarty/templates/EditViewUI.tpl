@@ -639,6 +639,7 @@ alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedStrin
 					{if $imagevalueexists}
 						<div id="{$fldname}_replaceimage">[{$maindata[3].0.orgname}] <input id="{$fldname}_attach" value="{'LBL_DELETE_BUTTON'|@getTranslatedString}" type="button" class="crmbutton small delete" onclick='delimage({$ID},"{$fldname}","{$maindata[3].0.orgname}");'></div>
 					{/if}
+					<div id="displaySize"></div>
 				{/if}
 			</td>
 
