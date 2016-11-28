@@ -203,7 +203,7 @@ class ListViewSession {
 				unset($_SESSION[$currentModule.'_DetailView_Navigation'.$viewid]);
 			}
 		}
-		$_SESSION[$currentModule.'_listquery'] = $query;
+		coreBOS_Session::set($currentModule.'_listquery',$query);
 	}
 
 	public static function hasViewChanged($currentModule) {
