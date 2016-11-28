@@ -3134,6 +3134,7 @@ class ReportRun extends CRMEntity {
 				$count = 0;
 				foreach($array_value as $hdr=>$value) {
 					$value = decode_html($value);
+					$datetime = false;
 					switch ($FieldDataTypes[$hdr]) {
 						case 'boolean':
 							$celltype = PHPExcel_Cell_DataType::TYPE_BOOL;
@@ -3150,6 +3151,10 @@ class ReportRun extends CRMEntity {
 								if (strpos($value,':')>0 and (strpos($value,'-')===false)) {
 									// only time, no date
 									$dt = new DateTime("1970-01-01 $value");
+								} elseif(strpos($value,':')>0 and (strpos($value,'-')>0)){
+									// date and time
+									$dt = new DateTime($value);
+									$datetime = true;
 								} else {
 									$value = DateTimeField::__convertToDBFormat($value, $current_user->date_format);
 									$dt = new DateTime($value);
@@ -3173,7 +3178,11 @@ class ReportRun extends CRMEntity {
 					}
 					$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $value, $celltype);
 					if ($FieldDataTypes[$hdr]=='date') {
-						$worksheet->getStyleByColumnAndRow($count, $rowcount)->getNumberFormat()->setFormatCode($current_user->date_format);
+						if($datetime){
+							$worksheet->getStyleByColumnAndRow($count, $rowcount)->getNumberFormat()->setFormatCode($current_user->date_format." ".PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME4);
+						}else{
+							$worksheet->getStyleByColumnAndRow($count, $rowcount)->getNumberFormat()->setFormatCode($current_user->date_format);
+						}
 					} elseif ($FieldDataTypes[$hdr]=='time') {
 						$worksheet->getStyleByColumnAndRow($count, $rowcount)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME4);
 					}
