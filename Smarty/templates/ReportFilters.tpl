@@ -84,7 +84,7 @@
                                 {rdelim})
 			                </script>
 						</td>
-					</tr>					
+					</tr>
 					<tr>
 						<td>&nbsp;</td>
 						<td>&nbsp;</td>
@@ -101,3 +101,4 @@
 		</td>
 	</tr>
 </table>
+<script>showDateRange(document.getElementById('stdDateFilter').value);</script>
