@@ -955,4 +955,11 @@
 	<classname>addUIType1024WebserviceFieldType</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Fix Calendar Start and End Date On Reports Filters, error with ampersand</description>
+	<filename>build/changeSets/fixCalendarStartEndDateOnReportsFilters.php</filename>
+	<classname>fixCalendarStartEndDateOnReportsFilters</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

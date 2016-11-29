@@ -87,6 +87,9 @@ function getPrimaryStdFilterHTML($module,$selected="")
 	{
 		foreach($result as $key=>$value)
 		{
+			if($module == 'Calendar' || $module == 'Events'){
+				$key = str_replace("&amp;", "and", $key);
+			}
 			if(isset($mod_strings[$value]))
 			{
 				if($key == $selected)
