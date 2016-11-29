@@ -211,4 +211,7 @@
         <input type="hidden" name="return_id">
 {/if}
 
+<input type="hidden" name="cbcustominfo1" value="{$smarty.request.cbcustominfo1|@urlencode}" />
+<input type="hidden" name="cbcustominfo2" value="{$smarty.request.cbcustominfo2|@urlencode}" />
+
 </form>
