@@ -62,8 +62,8 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 		$smarty->assign("OP_MODE",vtlib_purify($_REQUEST['mode']));
 	}
 	if(!$_SESSION['rlvs'][$module]) {
-		unset($_SESSION['rlvs']);
-	}	
+		coreBOS_Session::delete('rlvs');
+	}
 
 	// Module Sequence Numbering
 	$mod_seq_field = getModuleSequenceField($currentModule);

@@ -68,11 +68,11 @@ $other_text = Array();
 $c_mod_strings = return_specified_module_language($current_language, "Calendar");
 
 if(!$_SESSION['lvs'][$currentModule]) {
-	unset($_SESSION['lvs']);
+	coreBOS_Session::delete('lvs');
 	$modObj = new ListViewSession();
 	$modObj->sorder = $sorder;
 	$modObj->sortby = $order_by;
-	$_SESSION['lvs'][$currentModule] = get_object_vars($modObj);
+	coreBOS_Session::set('lvs^'.$currentModule, get_object_vars($modObj));
 }
 
 if($_REQUEST['errormsg'] != '') {
@@ -83,15 +83,15 @@ if($_REQUEST['errormsg'] != '') {
 }
 
 if(ListViewSession::hasViewChanged($currentModule,$viewid)) {
-	$_SESSION['ACTIVITIES_ORDER_BY'] = '';
+	coreBOS_Session::set('ACTIVITIES_ORDER_BY', '');
 }
 
 //<<<<<<< sort ordering >>>>>>>>>>>>>
 $sorder = $focus->getSortOrder();
 $order_by = $focus->getOrderBy();
 
-$_SESSION['ACTIVITIES_ORDER_BY'] = $order_by;
-$_SESSION['ACTIVITIES_SORT_ORDER'] = $sorder;
+coreBOS_Session::set('ACTIVITIES_ORDER_BY', $order_by);
+coreBOS_Session::set('ACTIVITIES_SORT_ORDER', $sorder);
 //<<<<<<< sort ordering >>>>>>>>>>>>>
 
 //<<<<cutomview>>>>>>>
@@ -167,7 +167,7 @@ $title_display = $current_module_strings['LBL_LIST_FORM_TITLE'];
 
 //Retreive the list from Database
 //<<<<<<<<<customview>>>>>>>>>
-
+$sql_error = false;
 if (!$Calendar4You->view_all) {
 	$userid = $current_user->id;
 	$invites = true;
@@ -175,13 +175,20 @@ if (!$Calendar4You->view_all) {
 	$userid = '';
 	$invites = true;
 }
-
-$list_query = getCalendar4YouListQuery($userid, $invites);
-
-if($viewid != "0") {
-	$list_query = $oCustomView->getModifiedCvListQuery($viewid,$list_query,"Calendar");
+try {
+	$list_query = getCalendar4YouListQuery($userid, $invites);
+	if($viewid != "0") {
+		$list_query = $oCustomView->getModifiedCvListQuery($viewid,$list_query,"Calendar");
+	}
+} catch (Exception $e) {
+	$sql_error = true;
 }
-
+//<<<<<<<<customview>>>>>>>>>
+$smarty->assign('SQLERROR',$sql_error);
+if ($sql_error) {
+	$smarty->assign('ERROR', getTranslatedString('ERROR_GETTING_FILTER'));
+	$smarty->assign("CUSTOMVIEW_OPTION",$customview_html);
+} else {
 if(isset($where) && $where != '') {
 	if(isset($_REQUEST['from_homepagedb']) && $_REQUEST['from_homepagedb'] == 'true')
 		$list_query .= " and ((vtiger_activity.status!='Completed' and vtiger_activity.status!='Deferred') or vtiger_activity.status is null) and ((vtiger_activity.eventstatus!='Held' and vtiger_activity.eventstatus!='Not Held') or vtiger_activity.eventstatus is null) AND ".$where;
@@ -202,7 +209,6 @@ if (isset($_REQUEST['from_homepage'])) {
 	elseif ($_REQUEST['from_homepage'] == 'pending_activities')
 		$list_query .= " AND (vtiger_activity.status is NULL OR vtiger_activity.status not in ('Completed','Deferred')) and (vtiger_activity.eventstatus is NULL OR vtiger_activity.eventstatus not in ('Held','Not Held')) AND (CAST((CONCAT(due_date,' ',time_end)) AS DATETIME) <= '$endDateTime' OR CAST((CONCAT(vtiger_recurringevents.recurringdate,' ',time_start)) AS DATETIME) <= '$endDateTime')";
 }
-
 if(isset($order_by) && $order_by != '') {
 	if($order_by == 'smownerid') {
 		$list_query .= ' ORDER BY user_name '.$sorder;
@@ -215,24 +221,17 @@ if(isset($order_by) && $order_by != '') {
 			$list_query .= ' ORDER BY '.$tablename.$order_by.' '.$sorder;
 	}
 }
-
-//Constructing the list view
-$smarty->assign("CUSTOMVIEW_OPTION",$customviewcombo_html);
-$smarty->assign("VIEWID", $viewid);
-$smarty->assign("MOD", $mod_strings);
-$smarty->assign("CMOD", $c_mod_strings);
-$smarty->assign("APP", $app_strings);
-$smarty->assign("THEME", $theme);
-$smarty->assign("IMAGE_PATH",$image_path);
-$smarty->assign("MODULE",$currentModule);
-$smarty->assign("SINGLE_MOD",getTranslatedString('SINGLE_'.$currentModule, $currentModule));
-$smarty->assign("BUTTONS",$other_text);
-$smarty->assign("NEW_EVENT",$app_strings['LNK_NEW_EVENT']);
-$smarty->assign("NEW_TASK",$app_strings['LNK_NEW_TASK']);
-
+if (GlobalVariable::getVariable('Debug_ListView_Query', '0')=='1') {
+	echo '<br>'.$list_query.'<br>';
+}
+try {
 if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true){
-	$count_result = $adb->query( mkCountQuery( $list_query));
-	$noofrows = $adb->query_result($count_result,0,"count");
+	$count_query = preg_replace("/[\n\r\s]+/", " ", $list_query);
+	$count_query = 'SELECT 1 ' . substr($count_query, stripos($count_query, ' FROM '), strlen($count_query));
+	if (stripos($count_query, 'ORDER BY') > 0)
+		$count_query = substr($count_query, 0, stripos($count_query, 'ORDER BY'));
+	$count_result = $adb->query("SELECT count(*) AS count FROM ($count_query) as calcount");
+	$noofrows = $adb->query_result($count_result,0,'count');
 }else{
 	$noofrows = null;
 }
@@ -245,6 +244,14 @@ $navigation_array = VT_getSimpleNavigationValues($start,$list_max_entries_per_pa
 $limit_start_rec = ($start-1) * $list_max_entries_per_page;
 
 $list_result = $adb->pquery($list_query. " LIMIT $limit_start_rec, $list_max_entries_per_page", array());
+} catch (Exception $e) {
+	$sql_error = true;
+}
+$smarty->assign('SQLERROR',$sql_error);
+if ($sql_error) {
+	$smarty->assign('ERROR', getTranslatedString('ERROR_GETTING_FILTER'));
+	$smarty->assign("CUSTOMVIEW_OPTION",$customview_html);
+} else {
 
 $recordListRangeMsg = getRecordRangeMessage($list_result, $limit_start_rec,$noofrows);
 $smarty->assign('recordListRange',$recordListRangeMsg);
@@ -282,6 +289,22 @@ $listview_entries = getListViewEntries($focus,"Calendar",$list_result,$navigatio
 $smarty->assign("LISTENTITY", $listview_entries);
 $smarty->assign("SELECT_SCRIPT", $view_script);
 
+} // end sqlerror
+
+//Constructing the list view
+$smarty->assign("CUSTOMVIEW_OPTION",$customviewcombo_html);
+$smarty->assign("VIEWID", $viewid);
+$smarty->assign("MOD", $mod_strings);
+$smarty->assign("CMOD", $c_mod_strings);
+$smarty->assign("APP", $app_strings);
+$smarty->assign("THEME", $theme);
+$smarty->assign("IMAGE_PATH",$image_path);
+$smarty->assign("MODULE",$currentModule);
+$smarty->assign("SINGLE_MOD",getTranslatedString('SINGLE_'.$currentModule, $currentModule));
+$smarty->assign("BUTTONS",$other_text);
+$smarty->assign("NEW_EVENT",$app_strings['LNK_NEW_EVENT']);
+$smarty->assign("NEW_TASK",$app_strings['LNK_NEW_TASK']);
+
 //Added to select Multiple records in multiple pages
 $smarty->assign("SELECTEDIDS", vtlib_purify($_REQUEST['selobjs']));
 $smarty->assign("ALLSELECTEDIDS", vtlib_purify($_REQUEST['allselobjs']));
@@ -301,13 +324,18 @@ $smarty->assign("CATEGORY",$category);
 $check_button = Button_Check($module);
 $smarty->assign("CHECK", $check_button);
 
-$_SESSION[$currentModule.'_listquery'] = $list_query;
+coreBOS_Session::set($currentModule.'_listquery', $list_query);
 
 // Gather the custom link information to display
 include_once('vtlib/Vtiger/Link.php');
 $customlink_params = Array('MODULE'=>$currentModule, 'ACTION'=>vtlib_purify($_REQUEST['action']), 'CATEGORY'=> $category);
 $smarty->assign('CUSTOM_LINKS', Vtiger_Link::getAllByType(getTabid($currentModule), Array('LISTVIEWBASIC','LISTVIEW'), $customlink_params));
-// END
+} // try query
+$smarty->assign('IS_ADMIN', is_admin($current_user));
+
+// Search Panel Status
+$DEFAULT_SEARCH_PANEL_STATUS = GlobalVariable::getVariable('Application_Search_Panel_Open',1);
+$smarty->assign('DEFAULT_SEARCH_PANEL_STATUS',($DEFAULT_SEARCH_PANEL_STATUS ? 'display: block' : 'display: none'));
 
 if(isset($_REQUEST['ajax']) && $_REQUEST['ajax'] != '')
 	$smarty->display("ListViewEntries.tpl");
