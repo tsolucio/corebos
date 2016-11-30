@@ -1749,7 +1749,7 @@ function setObjectValuesFromRequest($focus) {
 	global $log;
 	$moduleName = get_class($focus);
 	$log->debug("Entering setObjectValuesFromRequest($moduleName) method ...");
-	if (isset($_REQUEST['record']) && $_REQUEST['isDuplicate'] != 'true') {
+	if (isset($_REQUEST['record']) && (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'edit')) {
 		$focus->id = $_REQUEST['record'];
 	}
 	if (isset($_REQUEST['mode'])) {
