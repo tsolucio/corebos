@@ -1016,7 +1016,10 @@ function doModuleValidation(edit_type,editForm,callback) {
 					var myFields = document.forms[formName].elements;
 					var sentForm = new Object();
 					for (f=0; f<myFields.length; f++){
-						sentForm[myFields[f].name] = myFields[f].value;
+						if(myFields[f].type=='checkbox')
+							sentForm[myFields[f].name] = myFields[f].checked;
+						else
+							sentForm[myFields[f].name] = myFields[f].value;
 					}
 					//JSONize form data
 					sentForm = JSON.stringify(sentForm);
