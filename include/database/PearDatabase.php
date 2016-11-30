@@ -17,8 +17,8 @@ require_once('include/logging.php');
 include('adodb/adodb.inc.php');
 require_once("adodb/adodb-xmlschema.inc.php");
 
-$log =& LoggerManager::getLogger('VT');
-$logsqltm =& LoggerManager::getLogger('SQLTIME');
+$log = LoggerManager::getLogger('VT');
+$logsqltm = LoggerManager::getLogger('SQLTIME');
 
 // Callback class useful to convert PreparedStatement Question Marks to SQL value
 // See function convertPS2Sql in PearDatabase below
@@ -218,7 +218,7 @@ class PearDatabase{
 
 	function println($msg) {
 		require_once('include/logging.php');
-		$log1 =& LoggerManager::getLogger('VT');
+		$log1 = LoggerManager::getLogger('VT');
 		if(is_array($msg)) {
 			$log1->info("PearDatabse ->".print_r($msg,true));
 		} else {
@@ -385,7 +385,7 @@ class PearDatabase{
 	$this->executeSetNamesUTF8SQL();
 
 	$sql_start_time = microtime(true);
-	$result = & $this->database->Execute($sql);
+	$result = $this->database->Execute($sql);
 	$this->logSqlTiming($sql_start_time, microtime(true), $sql);
 
 	$this->lastmysqlrow = -1;
@@ -457,9 +457,9 @@ class PearDatabase{
 
 		if($this->avoidPreparedSql || empty($params)) {
 			$sql = $this->convert2Sql($sql, $params);
-			$result = &$this->database->Execute($sql);
+			$result = $this->database->Execute($sql);
 		} else {
-			$result = &$this->database->Execute($sql, $params);
+			$result = $this->database->Execute($sql, $params);
 		}
 		$sql_end_time = microtime(true);
 		$this->logSqlTiming($sql_start_time, $sql_end_time, $sql, $params);
@@ -535,7 +535,7 @@ class PearDatabase{
 	$this->executeSetNamesUTF8SQL();
 
 	$sql_start_time = microtime(true);
-	$result =& $this->database->SelectLimit($sql,$count,$start);
+	$result = $this->database->SelectLimit($sql,$count,$start);
 	$this->logSqlTiming($sql_start_time, microtime(true), "$sql LIMIT $count, $start");
 
 	if(!$result) $this->checkError($msg.' Limit Query Failed:' . $sql . '::', $dieOnError);
@@ -547,7 +547,7 @@ class PearDatabase{
 		$this->checkConnection();
 		$this->executeSetNamesUTF8SQL();
 		$sql_start_time = microtime(true);
-		$result =& $this->database->GetOne($sql);
+		$result = $this->database->GetOne($sql);
 		$this->logSqlTiming($sql_start_time, microtime(true), "$sql GetONE");
 		if(!$result) $this->checkError($msg.' Get one Query Failed:' . $sql . '::', $dieOnError);
 		return $result;
@@ -910,23 +910,21 @@ class PearDatabase{
 	 */
 	function __construct($dbtype='',$host='',$dbname='',$username='',$passwd='') {
 		global $currentModule;
-		$this->log =& LoggerManager::getLogger('PearDatabase_'. $currentModule);
+		$this->log = LoggerManager::getLogger('PearDatabase_'. $currentModule);
 		$this->resetSettings($dbtype,$host,$dbname,$username,$passwd);
 
 		// Initialize performance parameters
 		$this->isdb_default_utf8_charset = PerformancePrefs::getBoolean('DB_DEFAULT_CHARSET_UTF8');
 		$this->enableCache = PerformancePrefs::getBoolean('CACHE_QUERY_RESULT', false);
-		// END
 
-	if(!isset($this->dbType)) {
-		$this->println("ADODB Connect : DBType not specified");
-		return;
-	}
+		if(!isset($this->dbType)) {
+			$this->println("ADODB Connect : DBType not specified");
+			return;
+		}
 		// Initialize the cache object to use.
 		if(isset($this->enableCache) && $this->enableCache) {
 			$this->__setCacheInstance(new PearDatabaseCache($this));
 		}
-		// END
 	}
 
 	function resetSettings($dbtype,$host,$dbname,$username,$passwd){
@@ -1062,7 +1060,7 @@ class PearDatabase{
 
 	function formatDate($datetime, $strip_quotes=false) {
 		$this->checkConnection();
-		$db = &$this->database;
+		$db = $this->database;
 		$date = $db->DBTimeStamp($datetime);
 		/* Asha: Stripping single quotes to use the date as parameter for Prepared statement */
 		if($strip_quotes == true) {
@@ -1073,7 +1071,7 @@ class PearDatabase{
 
 	function getDBDateString($datecolname) {
 		$this->checkConnection();
-		$db = &$this->database;
+		$db = $this->database;
 		$datestr = $db->SQLDate("Y-m-d, H:i:s" ,$datecolname);
 		return $datestr;
 	}
@@ -1085,7 +1083,7 @@ class PearDatabase{
 
 	function get_tables() {
 		$this->checkConnection();
-		$result = & $this->database->MetaTables('TABLES');
+		$result = $this->database->MetaTables('TABLES');
 		$this->println($result);
 		return $result;
 	}

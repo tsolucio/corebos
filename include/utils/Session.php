@@ -169,10 +169,10 @@ class coreBOS_Session {
 		} else {
 			$key = substr($key, strpos($key,'^')+1);
 			if (is_null($sespos)) {
-				if (!is_array($_SESSION[$keyparts[0]])) $_SESSION[$keyparts[0]] = array();
+				if (!isset($_SESSION[$keyparts[0]]) || !is_array($_SESSION[$keyparts[0]])) $_SESSION[$keyparts[0]] = array();
 				self::set($key, $value, $_SESSION[$keyparts[0]]);
 			} else {
-				if (!is_array($sespos[$keyparts[0]])) $sespos[$keyparts[0]] = array();
+				if (!isset($sespos[$keyparts[0]]) || !is_array($sespos[$keyparts[0]])) $sespos[$keyparts[0]] = array();
 				self::set($key, $value, $sespos[$keyparts[0]]);
 			}
 		}

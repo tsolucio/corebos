@@ -118,8 +118,8 @@ if(isset($_REQUEST['query']) and $_REQUEST['query'] == 'true') {
 	$queryGenerator->addUserSearchConditions($_REQUEST);
 	$ustring = getSearchURL($_REQUEST);
 	$url_string .= "&query=true$ustring";
-	$smarty->assign('SEARCH_URL', $url_string);
 }
+$smarty->assign('SEARCH_URL', $url_string);
 
 $queryGenerator = cbEventHandler::do_filter('corebos.filter.listview.querygenerator.before', $queryGenerator);
 $list_query = $queryGenerator->getQuery();

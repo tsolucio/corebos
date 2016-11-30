@@ -906,6 +906,7 @@ function decide_to_html(){
 	}
 	$action = vtlib_purify($request['action']);
 	$search = vtlib_purify($request['search']);
+	$ajax_action = '';
 	if($request['module'] != 'Settings' && $request['file'] != 'ListView' && $request['module'] != 'Portal' && $request['module'] != "Reports")// && $request['module'] != 'Emails')
 		$ajax_action = $request['module'].'Ajax';
 
@@ -2003,7 +2004,7 @@ function getEmailParentsList($module,$id,$focus = false)
 	$res = $adb->pquery("select * from vtiger_field where tabid = ? and fieldname= ? and vtiger_field.presence in (0,2)", array(getTabid($module), $fieldname));
 	$fieldid = $adb->query_result($res,0,'fieldid');
 
-	$hidden .= '<input type="hidden" name="emailids" value="'.$id.'@'.$fieldid.'|">';
+	$hidden  = '<input type="hidden" name="emailids" value="'.$id.'@'.$fieldid.'|">';
 	$hidden .= '<input type="hidden" name="pmodule" value="'.$module.'">';
 
 	$log->debug("Exiting getEmailParentsList method ...");
@@ -2566,7 +2567,8 @@ function strip_selected_tags($text, $tags = array()) {
  */
 function useInternalMailer() {
 	global $current_user,$adb;
-	return $adb->query_result($adb->pquery("select int_mailer from vtiger_mail_accounts where user_id=?", array($current_user->id)),0,"int_mailer");
+	$rs = $adb->pquery('select int_mailer from vtiger_mail_accounts where user_id=?', array($current_user->id));
+	return $adb->query_result($rs,0,'int_mailer');
 }
 
 /**
@@ -4046,7 +4048,7 @@ function getSettingsFields(){
 		foreach($fields as $blockid=>&$field){
 			if(count($field)>0 && count($field)<4){
 				for($i=count($field);$i<4;$i++){
-					$field[$i] = array();
+					$field[$i] = array('icon'=>'', 'description'=>'', 'link'=>'', 'name'=>'', 'action'=>'', 'module'=>'');
 				}
 			}
 		}

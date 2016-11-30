@@ -217,9 +217,9 @@ class Homestuff{
 	 * this function only returns the widget contents for a given widget
 	 */
 	function getHomePageStuff($sid,$stuffType){
-		global $adb;
-		global $current_user;
+		global $adb, $current_user;
 		$header=Array();
+		$details='';
 		if($stuffType=="Module"){
 			$details=$this->getModuleFilters($sid);
 		}else if($stuffType=="RSS"){

@@ -444,6 +444,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 					$chk_val = '';
 				}
 			}
+			$notacc = '';
 			if ($salcount == 0 && $sal_value != '') {
 				$notacc = $app_strings['LBL_NOT_ACCESSIBLE'];
 			}

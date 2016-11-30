@@ -1443,12 +1443,12 @@ function getParentTabName($parenttabid) {
  * This returns value string type
  */
 function getParentTabFromModule($module) {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getParentTabFromModule(" . $module . ") method ...");
-	global $adb;
 	if (file_exists('tabdata.php') && (filesize('tabdata.php') != 0) && file_exists('parent_tabdata.php') && (filesize('parent_tabdata.php') != 0)) {
 		include('tabdata.php');
 		include('parent_tabdata.php');
+		if (!isset($tab_info_array[$module])) return $module;
 		$tabid = $tab_info_array[$module];
 		foreach ($parent_child_tab_rel_array as $parid => $childArr) {
 			if (in_array($tabid, $childArr)) {
@@ -2645,6 +2645,7 @@ function makeRandomPassword() {
 	$salt = "abcdefghijklmnopqrstuvwxyz0123456789";
 	srand((double) microtime() * 1000000);
 	$i = 0;
+	$pass = '';
 	while ($i <= 7) {
 		$num = rand() % 33;
 		$tmp = substr($salt, $num, 1);

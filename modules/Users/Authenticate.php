@@ -24,7 +24,7 @@ $focus->load_user($user_password);
 
 if($focus->is_authenticated())
 {
-	session_regenerate_id(true);
+	coreBOS_Session::destroy();
 	//Inserting entries for audit trail during login
 	if ($audit_trail == 'true') {
 		$date_var = $adb->formatDate(date('Y-m-d H:i:s'), true);
@@ -92,11 +92,11 @@ if($focus->is_authenticated())
 	{
 		unlink($tmp_file_name);
 	}
-	$arr = $_SESSION['lastpage'];
-	if(isset($_SESSION['lastpage']))
-		header("Location: index.php?".$arr);
-	else
+	if(isset($_SESSION['lastpage'])) {
+		header("Location: index.php?".$_SESSION['lastpage']);
+	} else {
 		header("Location: index.php");
+	}
 }
 else
 {

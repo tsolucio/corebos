@@ -27,7 +27,7 @@ $category = getParentTab($currentModule);
 
 if($record != '') {
 	//Display the error message
-	if($_SESSION['image_type_error'] != '') {
+	if(isset($_SESSION['image_type_error']) and $_SESSION['image_type_error'] != '') {
 		echo '<font color="red">'.$_SESSION['image_type_error'].'</font>';
 		coreBOS_Session::delete('image_type_error');
 	}
@@ -114,6 +114,7 @@ if(isPermitted('Contacts','Merge','') == 'yes') {
 	$wordTemplateResult = fetchWordTemplateList("Contacts");
 	$tempCount = $adb->num_rows($wordTemplateResult);
 	$tempVal = $adb->fetch_array($wordTemplateResult);
+	$optionString = array();
 	for($templateCount=0;$templateCount<$tempCount;$templateCount++)
 	{
 		$optionString[$tempVal["templateid"]]=$tempVal["filename"];

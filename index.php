@@ -218,7 +218,7 @@ if(isset($_SESSION["authenticated_user_id"]) && (isset($_SESSION["app_unique_key
 }
 
 // Prevent loading Login again if there is an authenticated user in the session.
-if (isset($_SESSION["authenticated_user_id"]) && $module == 'Users' && $action == 'Login') {
+if (isset($_SESSION["authenticated_user_id"]) && isset($module) && $module == 'Users' && $action == 'Login') {
 	$default_action = GlobalVariable::getVariable('Application_Default_Action','index','',$_SESSION["authenticated_user_id"]);
 	$default_module = GlobalVariable::getVariable('Application_Default_Module','Home','',$_SESSION["authenticated_user_id"]);
 	header("Location: index.php?action=$default_action&module=$default_module");

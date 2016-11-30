@@ -515,7 +515,7 @@ function getMailErrorString($mail_status_str)
 	$mail_status_str = trim($mail_status_str,"&&&");
 	$mail_status_array = explode("&&&",$mail_status_str);
 	$adb->println("All Mail status ==>\n".$mail_status_str."\n");
-
+	$mail_error_str = '';
 	foreach($mail_status_array as $key => $val)
 	{
 		$list = explode("=",$val);

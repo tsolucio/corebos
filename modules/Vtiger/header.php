@@ -106,7 +106,7 @@ $smarty->assign("FRONTLOGO",$frontlogo);
 $companyDetails = array();
 $companyDetails['name'] = $adb->query_result($result,0,'organizationname');
 $companyDetails['website'] = $adb->query_result($result,0,'website');
-$companyDetails['logo'] = $organization_logo;
+//$companyDetails['logo'] = $organization_logo;
 
 $smarty->assign("COMPANY_DETAILS",$companyDetails);
 $smarty->assign('HELP_URL',GlobalVariable::getVariable('Application_Help_URL','http://corebos.org/documentation'));
