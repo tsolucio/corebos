@@ -2637,7 +2637,7 @@ function getTicketComments($ticketid) {
 
 /**
  * This function is used to get a random password.
- * @return a random password with alpha numeric chanreters of length 8
+ * @return a random password with alpha numeric characters of length 8
  */
 function makeRandomPassword() {
 	global $log;

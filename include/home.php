@@ -229,8 +229,8 @@ class Homestuff{
 		}else if($stuffType=="Default"){
 			$details=$this->getDefaultDetails($sid,'');
 		}
-        else if($stuffType=="ReportCharts" && vtlib_isModuleActive("Reports")){
-        	$details = $this->getReportChartDetails($sid);
+		else if($stuffType=="ReportCharts" && vtlib_isModuleActive("Reports")){
+			$details = $this->getReportChartDetails($sid);
 		}
 		return $details;
 	}

@@ -54,7 +54,7 @@ class AntlrParser extends BaseRecognizer {
 	protected function getMissingSymbol($input, $e, $expectedTokenType, $follow)
 	{
 		$tokenText = null;
-		if ( $expectedTokenType==TokenConst::$EOF ){ 
+		if ( $expectedTokenType==TokenConst::$EOF ){
 			$tokenText = "<missing EOF>";
 		} else {
 			$tokenNames = $this->getTokenNames();
@@ -78,7 +78,7 @@ class AntlrParser extends BaseRecognizer {
 		$this->input = $input;
 	}
 
-    public function getTokenStream() {
+	public function getTokenStream() {
 		return $this->input;
 	}
 

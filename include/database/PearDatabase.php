@@ -188,7 +188,6 @@ class PearDatabase{
 		$this->enableCache = $newstatus;
 		return $oldstatus;
 	}
-	// END
 
 	/**
 	 * Manage instance usage of this class
@@ -201,7 +200,6 @@ class PearDatabase{
 		}
 		return $adb;
 	}
-	// END
 
 	/*
 	 * Reset query result for resuing if cache is enabled.
@@ -213,7 +211,6 @@ class PearDatabase{
 			}
 		}
 	}
-	// END
 
 	function isMySQL() { return (stripos($this->dbType ,'mysql') === 0);}
 	function isOracle() { return $this->dbType=='oci8'; }
@@ -474,7 +471,6 @@ class PearDatabase{
 		if($this->isCacheEnabled()) {
 			$this->getCacheInstance()->cacheResult($result, $sql, $params);
 		}
-		// END
 		return $result;
 	}
 
@@ -848,7 +844,7 @@ class PearDatabase{
 		if(isset($result) && $rowNum < 0) {
 			$row = $this->change_key_case($result->GetRowAssoc(false));
 			$result->MoveNext();
-			if($encode&& is_array($row))
+			if($encode && is_array($row))
 				return array_map('to_html', $row);
 			return $row;
 		}
@@ -861,7 +857,7 @@ class PearDatabase{
 		$result->MoveNext();
 		$this->println($row);
 
-		if($encode&& is_array($row))
+		if($encode && is_array($row))
 			return array_map('to_html', $row);
 		return $row;
 	}
@@ -871,7 +867,7 @@ class PearDatabase{
 		$log->info('getNextRow');
 		if(isset($result)){
 			$row = $this->change_key_case($result->FetchRow());
-			if($row && $encode&& is_array($row))
+			if($row && $encode && is_array($row))
 				return array_map('to_html', $row);
 			return $row;
 		}

@@ -6,11 +6,10 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 
-	{include file="Buttons_List1.tpl"}
+{include file="Buttons_List1.tpl"}
 
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 <tbody><tr>
@@ -37,7 +36,7 @@
 							<td width=25% valign=top>
 							{if $data.name eq ''}
 								&nbsp;
-							{else}							
+							{else}
 							<table border=0 cellspacing=0 cellpadding=5 width=100%>
 								<tr>
 									{assign var=label value=$data.name|@getTranslatedString:$data.module}
