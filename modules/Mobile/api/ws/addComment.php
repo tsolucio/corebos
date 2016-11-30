@@ -39,7 +39,7 @@ class crmtogo_WS_AddComment extends crmtogo_WS_Controller {
 				$userrecordid = $userrecordid[1];
 				$arr_comment = array('commentcontent' => $comment, 'related_to' => $parentrecordid, 'creator' => $current_user_id);
 				//$ele = vtws_create('ModComments', $arr_comment, $current_user);
-				$saverecord = crmtogo_WS_Utils::createTicketComment($arr_comment);
+				$saverecord = crmtogo_WS_Utils::createTicketComment($parentrecordid,$comment,$current_user);
 				$current_date_time = date('Y-m-d H:i:s');
 				if ($saverecord == true) {
 					$userid = crmtogo_WS_Utils::getEntityModuleWSId('Users')."x".$current_user_id;

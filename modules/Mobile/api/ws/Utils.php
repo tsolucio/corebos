@@ -423,13 +423,20 @@ class crmtogo_WS_Utils {
 	  *     @param int $ticketid -- troubleticket id, comments array
 	  *     returns the comment as a array
 	**/
-	static function createTicketComment($comment_arr) {
-		$db = PearDatabase::getInstance();
-		$current_time = $db->formatDate(date('YmdHis'), true);
-		$ownertype = 'user';
-		$sql = "insert into vtiger_ticketcomments values(?,?,?,?,?,?)";	
-	    $params = array('', $comment_arr['related_to'], from_html($comment_arr['commentcontent']), $comment_arr['creator'], $ownertype, $current_time);
-		$result = $db->pquery($sql, $params);
+	static function createTicketComment($id,$commentcontent,$user) {
+		global $adb,$current_user,$log;
+		$current_user = $user;
+
+		$targetModule = 'HelpDesk';
+
+		$focus = CRMEntity::getInstance('HelpDesk');
+		$focus->retrieve_entity_info($id, $targetModule);
+		$focus->id = $id;
+		$focus->mode = 'edit';
+		$focus->column_fields['comments'] = $commentcontent;
+		$log->fatal($focus->column_fields);
+		$focus->save($targetModule);
+
 		return true;
 	}
 	
@@ -704,6 +711,7 @@ class crmtogo_WS_Utils {
 				$comments_module[] =vtlib_getModuleNameById($tabid);
 			}
 		}
+		array_push($comments_module,'HelpDesk');
 		return $comments_module;
 	}
 	
