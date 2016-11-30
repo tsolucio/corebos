@@ -13,7 +13,6 @@ global $adb;
 
 $cvid = vtlib_purify($_REQUEST["record"]);
 $module = vtlib_purify($_REQUEST["dmodule"]);
-$smodule = vtlib_purify($_REQUEST["smodule"]);
 $parenttab = getParentTab();
 
 if(isset($cvid) && $cvid != '')
@@ -22,10 +21,6 @@ if(isset($cvid) && $cvid != '')
 	$deleteresult = $adb->pquery($deletesql, array($cvid));
 	coreBOS_Session::set('lvs^'.$module.'^viewname', '');
 }
-if(isset($smodule) && $smodule != '')
-{
-	$smodule_url = "&smodule=".$smodule;
-}
 
-header("Location: index.php?action=ListView&parenttab=$parenttab&module=$module".$smodule_url);
+header("Location: index.php?action=ListView&parenttab=$parenttab&module=$module");
 ?>

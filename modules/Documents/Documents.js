@@ -342,8 +342,3 @@ function hideresult() {
 	document.getElementById('integrity_result').style.display = 'none';
 }
 
-function add_data_to_relatedlist(entity_id, recordid) {
-
-	opener.document.location.href = "index.php?module={RETURN_MODULE}&action=updateRelations&smodule={SMODULE}&destination_module=Products&entityid=" + entity_id + "&parentid=" + recordid;
-}
-
