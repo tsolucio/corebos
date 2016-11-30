@@ -2615,7 +2615,7 @@ function utf8RawUrlDecode ($source) {
 */
 function html_to_utf8 ($data)
 {
-	return preg_replace("/\\&\\#([0-9]{3,10})\\;/e", '_html_to_utf8("\\1")', $data);
+	return preg_replace_callback("/\\&\\#([0-9]{3,10})\\;/", '_html_to_utf8', $data);
 }
 
 function decode_html($str) {
@@ -2647,6 +2647,7 @@ function popup_decode_html($str) {
 
 function _html_to_utf8 ($data)
 {
+	$data = $data[1];
 	if ($data > 127)
 	{
 		$i = 5;
