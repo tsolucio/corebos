@@ -15,7 +15,7 @@
 		<form  name="form"  method="post" action="?_operation=globalsearch&module={$_MODULES[0]->name()}" target="_self">
 			<input type="hidden" name="parenttab" value="{$CATEGORY}" style="margin:0px">
 			<input type="hidden" name="search_onlyin" value="{$SEARCHIN}" style="margin:0px">
-			<table style="width:100%">
+			<table style="width:100%;padding-top:5px;">
 				<tr >
 					<td>
 						<input type="text" data-inline="true" name="query_string" value="{$QUERY_STRING}">
