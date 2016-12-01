@@ -603,7 +603,7 @@ class ListViewController {
 
 			//Added for Actions ie., edit and delete links in listview
 			$actionLinkInfo = "";
-			if(isPermitted($module,"EditView","") == 'yes'){
+			if(isPermitted($module,"EditView",$recordId) == 'yes'){
 				$racbr = $wfs->getRACRuleForRecord($currentModule, $recordId);
 				if (!$racbr or $racbr->hasListViewPermissionTo('edit')) {
 				$edit_link = $this->getListViewEditLink($module,$recordId);
@@ -616,7 +616,7 @@ class ListViewController {
 				}
 			}
 
-			if(isPermitted($module,"Delete","") == 'yes'){
+			if(isPermitted($module,"Delete",$recordId) == 'yes'){
 				$racbr = $wfs->getRACRuleForRecord($currentModule, $recordId);
 				if (!$racbr or $racbr->hasListViewPermissionTo('delete')) {
 				$del_link = $this->getListViewDeleteLink($module,$recordId);

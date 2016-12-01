@@ -929,7 +929,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 			//Added for Actions ie., edit and delete links in listview
 			$links_info = '';
 			if (!(is_array($selectedfields) && $selectedfields != '')) {
-				if (isPermitted($module, 'EditView', '') == 'yes') {
+				if (isPermitted($module, 'EditView', $entity_id) == 'yes') {
 					$racbr = $wfs->getRACRuleForRecord($module, $entity_id);
 					if (!$racbr or $racbr->hasListViewPermissionTo('edit')) {
 					$edit_link = getListViewEditLink($module, $entity_id, $relatedlist, $varreturnset, $list_result, $list_result_count);
@@ -937,7 +937,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 					}
 				}
 
-				if (isPermitted($module, 'Delete', '') == 'yes') {
+				if (isPermitted($module, 'Delete', $entity_id) == 'yes') {
 					$racbr = $wfs->getRACRuleForRecord($module, $entity_id);
 					if (!$racbr or $racbr->hasListViewPermissionTo('delete')) {
 					$del_link = getListViewDeleteLink($module, $entity_id, $relatedlist, $varreturnset, $linkstart);
