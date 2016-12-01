@@ -151,7 +151,7 @@ class crmtogo_WS_FetchRecordDetails extends crmtogo_WS_FetchRecord {
 						}
 						else {
 							$htmlstring = str_replace("http://", "", $resultRecord[$fieldname]);
-							$resultRecord[$fieldname]= "<A HREF=\"#\" onclick=\"window.location.href ='http://" . $htmlstring . "';\" rel=external>"  . $htmlstring . "</A>";
+							$resultRecord[$fieldname]= "<A HREF=\"#\" onclick=\"window.open('http://" . $htmlstring . "','_blank');\" rel=external>"  . $htmlstring . "</A>";
 						}
 					}
 					if($fieldinfo['uitype'] == 13 && strlen($resultRecord[$fieldname]) ) {
