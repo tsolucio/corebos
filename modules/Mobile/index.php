@@ -22,7 +22,7 @@ if (file_exists('config_override.php')) {
 //require_once dirname(__FILE__) . '/api/Relation.php';
 include_once dirname(__FILE__) . '/api/Request.php';
 include_once dirname(__FILE__) . '/api/Response.php';
-include_once dirname(__FILE__) . '/api/Session.php';
+
 
 include_once dirname(__FILE__) . '/api/ws/Controller.php';
 
@@ -30,7 +30,7 @@ include_once dirname(__FILE__) . '/Mobile.php';
 include_once dirname(__FILE__) . '/views/Viewer.php';
 include_once dirname(__FILE__) . '/views/models/Module.php'; // Required for auto de-serializatio of session data
 
-class crmtogo_Index_Controlle {
+class crmtogo_Index_Controller {
 
 	static $opControllers = array(
 		'logout'                  => array('file' => '/views/Logout.php', 'class' => 'crmtogo_UI_Logout'),
@@ -54,7 +54,7 @@ class crmtogo_Index_Controlle {
 		'changeGUISettings'         => array('file' => '/actions/changeGUISettings.php', 'class' => 'crmtogo_UI_ChangeSettings' ),
 	);
 
-	static function process(Mobile_API_Request $request) {
+	static function process(crmtogo_API_Request $request) {
 		$operation = $request->getOperation();
 		if (empty($operation)) $operation = 'login';
 

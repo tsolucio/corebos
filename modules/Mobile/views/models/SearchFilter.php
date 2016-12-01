@@ -24,7 +24,7 @@ class crmtogo_UI_SearchFilterModel extends crmtogo_WS_SearchFilterModel {
 			$customview_html = $customView->getCustomViewCombo($viewid);
 			$viewinfo = $customView->getCustomViewByCvid($viewid);
 		       
-			$userid = $_SESSION['_authenticated_user_id'];
+			$userid = coreBOS_Session::get('_authenticated_user_id');
 			$current_user = CRMEntity::getInstance('Users');
 			$current_user = $current_user->retrieveCurrentUserInfoFromFile($userid);
 		

@@ -63,7 +63,7 @@ class crmtogo_WS_Login extends crmtogo_WS_Controller {
 				'password' => $password,
 				'crm_tz' => DateTimeField::getDBTimeZone(),
 				'user_tz' => $current_user->time_zone,
-				'session'=> $'',
+				'session'=> '',
 				'language' => $current_user->column_fields['language'],
 				'vtiger_version' => crmtogo_WS_Utils::getVtigerVersion(),
 				'crmtogo_module_version' => crmtogo_WS_Utils::getVersion()

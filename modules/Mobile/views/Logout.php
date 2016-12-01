@@ -23,9 +23,7 @@ class crmtogo_UI_Logout extends crmtogo_WS_Login {
 		$default_config = $this->getConfigDefaults();
 		$default_lang_strings = return_module_language($default_config['language'], 'Mobile');
 
-		session_start();
-		HTTP_Session::destroy(HTTP_Session::detectId());
-		$_SESSION = array();
+		coreBOS_Session::destroy();
 		$viewer = new crmtogo_UI_Viewer();
 		$viewer->assign('MOD', $default_lang_strings);
 		$viewer->assign('LANGUAGE', $default_lang_strings);
