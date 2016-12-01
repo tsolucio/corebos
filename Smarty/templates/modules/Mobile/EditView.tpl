@@ -1,7 +1,11 @@
 {strip}
 <!DOCTYPE html>
 <head>
-	<title>{$_MODULE->label()} {$MOD.LBL_EDIT}</title> 
+	{if $mode eq 'edit'}
+		<title>{$_MODULE->label()} {$MOD.LBL_EDIT}</title>
+	{else}
+		<title>{$_MODULE->label()} {$MOD.LBL_NEW}</title>
+	{/if}
 	<meta name="viewport" content="width=device-width, initial-scale=1"> 
 	<meta charset="utf-8">
 	<link REL="SHORTCUT ICON" HREF="resources/images/favicon.ico">	
@@ -24,7 +28,11 @@
 			<a href="#"  class="ui-btn ui-corner-all ui-icon-check ui-btn-icon-notext" >{$MOD.LBL_SAVE}</a>
 			<a href="#"  onclick="window.history.back()" class="ui-btn ui-corner-all ui-icon-back ui-btn-icon-notext">{$MOD.LBL_CANCEL}</a>
 		</div>
-		<h2>{$MOD.LBL_EDIT}</h2>
+		{if $mode eq 'edit'}
+			<h2>{$MOD.LBL_EDIT}</h2>
+		{else}
+			<h2>{$MOD.LBL_NEW}</h2>
+		{/if}
 		<a href="#panelmenu" data-mini='true' data-role='button' class="ui-btn ui-btn-right ui-btn-icon-notext ui-icon-grid ui-corner-all ui-icon-bars"></a>
 	</div>
 	<!-- /header -->
