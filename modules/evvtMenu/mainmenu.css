@@ -1,0 +1,137 @@
+.moreMenu{
+    display: none;
+    margin-left: 100%;
+    margin-top: -35%;
+    position: absolute;
+    background-color:white;
+    border: 1px solid #d8dde6;
+    border-radius: 0.25rem;
+}
+
+.moreMenu2{
+    display: none;
+    margin-left: 90%;
+    margin-top: -7%;
+    position: absolute;
+    background-color:white;
+    border: 1px solid #d8dde6;
+    border-radius: 0.25rem;
+}
+
+/* HEADER > MENU */
+#main-menu {
+    float: left;
+    font-size: 0;
+    margin: 10px 0;
+    margin-left:50px;
+}
+
+#main-menu > li {
+    display: inline-block;
+    margin-left: 30px;
+    padding: 2px 0;
+
+}
+
+#main-menu > li.parent {
+    background-image: url(../images/plus-gray.png);
+    background-size: 7px 7px;
+    background-repeat: no-repeat;
+    background-position: left center;
+}
+
+#main-menu > li.parent > a {
+    padding-left: 14px;
+}
+
+#main-menu > li > a {
+    color: #0e49ee;
+    font-size: 14px;
+    line-height: 14px;
+    padding: 30px 0;
+    text-decoration:none;
+}
+
+#main-menu > li:hover > a,
+#main-menu > li.current-menu-item > a {
+    color: #23dbdb;
+}
+
+/* HEADER > MENU > DROPDOWN */
+#main-menu li {
+    margin-top: -2px;
+    padding-top: 0;
+    top: 0;
+    left:-10px;
+    position: relative;
+    font-weight: bolder;
+}
+
+ul.sub-menu { /* level 2 */
+    display: none;
+    left: 0;
+    top: 20px;
+    padding-top: 10px;
+    position: absolute;
+    width: 150px;
+    z-index: 9999;
+}
+
+ul.sub-menu ul.sub-menu { /* level 3+ */
+    margin-top: 1px;
+    padding-top: 0;
+    left: 135px;
+    top: 0px;
+}
+
+ul.sub-menu > li > a {
+    background-color: #ffffff;
+    border: 1px solid #23dbdb;
+
+    color: #092335;
+    display: block;
+    font-size: 12px;
+    line-height: 15px;
+    padding: 10px 12px;
+    text-decoration: none;
+    text-align: center;
+}
+
+ul.sub-menu > li > a {
+    background-color: #ffffff;
+    border: 1px solid #23dbdb;
+    color: #092335;
+    display: block;
+    font-size: 12px;
+    line-height: 15px;
+    padding: 10px 12px;
+    text-decoration: none;
+}
+
+ul.sub-menu > li > a:hover {
+    background-color: #dfdfdf;
+    color: #0f84ff;
+}
+
+ul.sub-menu > li:first-child {
+    border-top: 3px solid #23dbdb;
+}
+
+ul.sub-menu ul.sub-menu > li:first-child {
+    border-top: 1px solid #444;
+}
+
+ul.sub-menu > li:last-child > a {
+    border-radius: 0 0 2px 2px;
+}
+
+ul.sub-menu > li > a.parent {
+    background-image: url(../images/arrow.png);
+    background-size: 5px 9px;
+    background-repeat: no-repeat;
+    background-position: 95% center;
+}
+
+#main-menu li:hover > ul.sub-menu {
+    display: block; /* show the submenu */
+}

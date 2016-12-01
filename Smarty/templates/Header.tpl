@@ -17,8 +17,7 @@
 	<style type="text/css">@import url("themes/{$THEME}/style.css?v={$VERSION}");</style>
 	<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
 	<link rel="stylesheet" href="include/print.css" type="text/css" media="print" />
-	<link rel="stylesheet" href="include/LD/assets/styles/salesforce-lightning-design-system.css" type="text/css" />
-	<link rel="stylesheet" href="include/LD/assets/styles/mainmenu.css" type="text/css" />
+	<link rel="stylesheet" href="modules/evvtMenu/mainmenu.css" type="text/css" />
 
 	<script src="https://use.fontawesome.com/6022c11b2b.js"></script>
 	{* vtlib customization: Inclusion of custom javascript and css as registered *}
@@ -255,52 +254,43 @@
 {/if}
 {$COREBOS_HEADER_PREMENU}
 <!-- header - master tabs -->
-<div class="slds-context-bar">
-	<div class="slds-context-bar__primary slds-context-bar__item--divider-right">
-		<div class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--click slds-no-hover">
-			<div class="slds-context-bar__icon-action">
-				<a href="index.php" class="slds-icon-waffle_container slds-context-bar__button">
-					<div class="slds-icon-waffle">
-						<div class="slds-r1"></div>
-						<div class="slds-r2"></div>
-						<div class="slds-r3"></div>
-						<div class="slds-r4"></div>
-						<div class="slds-r5"></div>
-						<div class="slds-r6"></div>
-						<div class="slds-r7"></div>
-						<div class="slds-r8"></div>
-						<div class="slds-r9"></div>
-					</div>
-				</a>
-			</div>
-			<span class="slds-context-bar__label-action slds-context-bar__app-name">
-        <span class="slds-truncate" title="{$APP.LBL_BROWSER_TITLE}">{$APP.LBL_BROWSER_TITLE}</span>
-      </span>
-		</div>
-	</div>
-	<nav class="slds-context-bar__secondary" role="navigation">
-		<ul class="slds-grid">
-		</ul>
-		<div class="slds-context-bar__tertiary" style="float:left; margin-top:auto; margin-bottom:auto;">
-			<div class="slds-form-element">
-				<div class="slds-form-element__control">
-					<div class="slds-select_container">
-						<select id="qccombo" class="slds-select" onchange="QCreate(this);">
-							<option value="none">{$APP.LBL_QUICK_CREATE}...</option>
-							{foreach item=detail from=$QCMODULE}
-								<option value="{$detail.1}">{$APP.NEW}&nbsp;{$detail.0}</option>
-							{/foreach}
-						</select>
-					</div>
-				</div>
-			</div>
-
-		</div>
+<table>
+<div>
+	<nav id="navigation">
+		<ul id="main-menu"></ul>
+		<select id="qccombo" style="margin-top:5px; margin-left:50px" onchange="QCreate(this);">
+			<option value="none">{$APP.LBL_QUICK_CREATE}...</option>
+			{foreach item=detail from=$QCMODULE}
+				<option value="{$detail.1}">{$APP.NEW}&nbsp;{$detail.0}</option>
+			{/foreach}
+		</select>
 	</nav>
-</div>
-</td>
 
+</div></br>
+<script type='text/javascript'>
+	{literal}
+	$(document).ready(function() {
 
+		/* MAIN MENU */
+		$('#main-menu > li:has(ul.sub-menu)').addClass('parent');
+		$('ul.sub-menu > li:has(ul.sub-menu) > a').addClass('parent');
+
+		$('#menu-toggle').click(function() {
+			$('#main-menu').slideToggle(300);
+			return false;
+		});
+
+		$(window).resize(function() {
+			if ($(window).width() > 700) {
+				$('#main-menu').removeAttr('style');
+			}
+		});
+
+	});
+	{/literal}
+</script>
+
+</table>
 <div id="calculator_cont" style="position:absolute; z-index:10000" ></div>
 {include file="Clock.tpl"}
 
@@ -507,25 +497,10 @@
 
 		function buildMainMenu(object){ //main menu
 			for (var i in object) {
-				if(object[i].items != null) {
-					$('.slds-grid').append('<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true"> \
-						<a href="javascript:void(0);" class="slds-context-bar__label-action" title="' + object[i].text + '">\
-						<span class="slds-truncate">' + object[i].text + '</span>\
-				</a>\
-				<div class="slds-context-bar__icon-action slds-p-left--none" tabindex="0">\
-					<i class="fa fa-angle-down" aria-hidden="true"></i>\
-				</div>\
-				<div class="slds-dropdown slds-dropdown--right">\
-				<ul class="slds-dropdown__list" role="menu" id="menu' + i + '">\
-				</ul>\
-				</div>\
-				</li>');
+				if(object[i].items != null) {1
+					$('#main-menu').append('<li class="parent menu-item"><a href="' + object[i].url + '">' + object[i].text + '</a><ul class="sub-menu" id="menu'+i+'"></ul>');
 				} else {
-					$('.slds-grid').append('<li class="slds-context-bar__item">\
-							<a href="'+object[i].url+ '" class="slds-context-bar__label-action" title="'+object[i].text+'">\
-							<span class="slds-truncate">'+object[i].text+'</span>\
-							</a>\
-							</li>');
+					$('#main-menu').append('li class="menu-item"><a href="' + object[i].url + '">' + object[i].text + '</a></li>');
 				}
 				if(object[i].items != null) {
 					buildSubMenu(object[i].items, i)
@@ -536,50 +511,29 @@
 		function buildSubMenu(object, index){ //submenu
 			var menuid = 'menu'+index;
 			for (var i in object){
+				console.log(menuid);
 				if (object[i].type == 'sep') {
-					$('#' + menuid).append('<li class="slds-dropdown__header slds-has-divider--top-space" role="separator">\
-							</li>');
+//					$('#' + menuid).append('<li class="slds-dropdown__header slds-has-divider--top-space" role="separator">\
+//							</li>');
 				} else {
 					if (object[i].items === undefined || object[i].items === null) {
-						$('#' + menuid).append('<li class="slds-dropdown__item" role="presentation">\
-							<a href="' + object[i].url + '" role="menuitem" tabindex="-1">\
-							<span class="slds-truncate">' + object[i].text + '</span>\
-							</a>\
-							</li>');
+						$('#' + menuid).append('<li><a href="' + object[i].url + '">' + object[i].text + '</a>');
 					} else {
-						$('#' + menuid).append('<li class="slds-dropdown__item" role="presentation">\
-							<a href="' + object[i].url + '" role="menuitem" tabindex="-1">\
-							<span class="slds-truncate" style="padding-right:20px">' + object[i].text + '</span>\
-							<i class="fa fa-angle-right" aria-hidden="true"></i>\
-							</a>\
-							<ul class="moreMenu" id="submenu' + i + '-' + index+ '">\
-							</ul>\
-							</li>');
+						$('#' + menuid).append('<li class="parent"><a href="' + object[i].url + '">' + object[i].text + ' &#187; </a><ul class="sub-menu" id="submenu' + i + '-' + index+ '"></ul>');
 						var pld = i + '-' + index;
-						buildMoreMenu(object[i].items, pld);//kallxom kur pe marron lvl3
+						buildMoreMenu(object[i].items, pld);
 					}
 				}
 			}
 		}
 
-		function buildMoreMenu(object, index){ //pjest shtes qe duhen mmu shtu
+		function buildMoreMenu(object, index){
 			var subMenuId = 'submenu' +index;
 			for (var i in object) {
 				if (object[i].items === undefined || object[i].items === null) {
-					$('#' + subMenuId).append('<li class="slds-dropdown__item" role="presentation">\
-							<a href="' + object[i].url + '" role="menuitem" tabindex="-1">\
-							<span class="slds-truncate">' + object[i].text + '</span>\
-							</a>\
-							</li>');
+					$('#' + subMenuId).append('<li><a href="' + object[i].url + '">' + object[i].text + '</a>');
 				} else {
-					$('#' + subMenuId).append('<li class="slds-dropdown__item" role="presentation" id="test">\
-							<a href="' + object[i].url + '" role="menuitem" tabindex="-1" id="test">\
-							<span class="slds-truncate" style="padding-right:20px">' + object[i].text + '</span>\
-							<i class="fa fa-angle-right" aria-hidden="true"></i>\
-							<ul class="moreMenu2" id="submenu' + i + '-' + index + '">\
-							</ul>\
-							</a>\
-							</li>');
+					$('#' + subMenuId).append('<li class="parent"><a href="' + object[i].url + '">' + object[i].text + ' &#187;</a><ul class="sub-menu" id="submenu' + i + '-' + index+ '"></ul>');
 					var pld = i + '-' + index;
 					buildMoreMenu(object[i].items, pld);
 				}
