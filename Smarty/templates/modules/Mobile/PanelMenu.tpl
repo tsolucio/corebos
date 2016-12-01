@@ -31,7 +31,10 @@
 		<ul data-role="listview" data-theme="c" id="homesortable">
 		{foreach item=_MODULE from=$_MODULES}
 			{if $_MODULE->active() && $_MODULE->name() neq 'Events'}
-			<li id={$_MODULE->name()}><a href="index.php?_operation=listModuleRecords&module={$_MODULE->name()}" class="ui-btn ui-btn-icon-right ui-icon-carat-r" target="_self">{$_MODULE->label()}</a></li>
+			<li id={$_MODULE->name()}>
+				<a href="index.php?_operation=listModuleRecords&module={$_MODULE->name()}" target="_self">{$_MODULE->label()}</a>
+				<a href="?_operation=create&module={$_MODULE->name()}&record=''&quickcreate=1" class="ui-btn ui-icon-plus ui-btn-icon-notext" alt="{$MOD.LBL_QUICKCREATE}" data-transition="turn">{$MOD.LBL_QUICKCREATE}</a>
+			</li>
 			{/if}
 		{/foreach}
 		</ul>
