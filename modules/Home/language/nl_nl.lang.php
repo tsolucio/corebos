@@ -133,6 +133,7 @@ $mod_strings = Array(
 'LBL_DEFAULT_WIDGET'=>'Standaard Widgets',
 'LBL_NO_WIDGETS_HIDDEN'=>'Er zijn Geen standaard widgets verborgen',
 'UpdateExchangeRate' => 'Update Exchange Rate',
+'LBL_HOME_ADDWINDOW' => 'Add Window',
 );
 
 ?>

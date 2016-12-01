@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ******************************************************************************/
-require_once("include/Zend/Json.php");
 require 'include.inc';
 function vtDeleteExpressionJson($adb, $request){
 	$moduleName = $request['modulename'];
@@ -16,7 +15,7 @@ function vtDeleteExpressionJson($adb, $request){
 	$me = $mem->retrieve($moduleName);
 	$me->remove($fieldName);
 	$mem->save($me);
-	echo Zend_Json::encode(array('status'=>'success'));
+	echo json_encode(array('status'=>'success'));
 }
 
 vtDeleteExpressionJson($adb, $_GET);

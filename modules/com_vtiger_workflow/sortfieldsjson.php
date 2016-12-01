@@ -7,12 +7,12 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-	function vtSortFieldsJson($request){
-		$moduleName = $request['module_name'];
-		checkFileAccessForInclusion("modules/$moduleName/$moduleName.php");
-		require_once("modules/$moduleName/$moduleName.php");
-		$focus = new $moduleName();
-		echo Zend_Json::encode($focus->sortby_fields);
-	}
-	vtSortFieldsJson($_REQUEST);
+function vtSortFieldsJson($request){
+	$moduleName = $request['module_name'];
+	checkFileAccessForInclusion("modules/$moduleName/$moduleName.php");
+	require_once("modules/$moduleName/$moduleName.php");
+	$focus = new $moduleName();
+	echo json_encode($focus->sortby_fields);
+}
+vtSortFieldsJson($_REQUEST);
 ?>

@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-include_once dirname(__FILE__) . '/../../../include/Zend/Json.php';
 
 class crmtogo_API_Response {
 	private $error = NULL;
@@ -51,7 +50,7 @@ class crmtogo_API_Response {
 	}
 	
 	function emitJSON() {
-		return Zend_Json::encode($this->prepareResponse());
+		return json_encode($this->prepareResponse());
 	}
 	
 	function emitHTML() {

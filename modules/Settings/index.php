@@ -17,11 +17,25 @@ global $app_list_strings;
 global $theme, $adb;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
+$tool_buttons = array(
+'EditView' => 'yes',
+'CreateView' => 'yes',
+'index' => 'yes',
+'Import' => 'yes',
+'Export' => 'yes',
+'Merge' => 'yes',
+'DuplicatesHandling' => 'yes',
+'Calendar' => 'yes',
+'moduleSettings' => 'yes',
+);
 
 $smarty = new vtigerCRM_Smarty;
 $smarty->assign("APP", $app_strings);
 $smarty->assign("MODULE", 'Settings');
+$smarty->assign("SINGLE_MOD", getTranslatedString('Settings','Settings'));
 $smarty->assign("CATEGORY", 'Settings');
+$smarty->assign("CHECK", $tool_buttons);
+$smarty->assign("CUSTOM_MODULE", false);
 $smarty->assign("MOD", $mod_strings);
 $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH", $image_path);

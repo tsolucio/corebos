@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
 require_once("config.php");
 require_once('include/logging.php');
@@ -31,7 +30,6 @@ $userid = getPortalUserid();
 $user = new Users();
 $current_user = $user->retrieveCurrentUserInfoFromFile($userid);
 
-
 $log = &LoggerManager::getLogger('customerportal');
 
 error_reporting(0);
@@ -46,6 +44,7 @@ $server->wsdl->addComplexType(
 	'complexType',
 	'array',
 	'',
+	'SOAP-ENC:Array',
 	array(
 		'fieldname' => array('name'=>'fieldname','type'=>'xsd:string'),
 	)
@@ -69,6 +68,7 @@ $server->wsdl->addComplexType(
     'complexType',
     'array',
     '',
+	'SOAP-ENC:Array',
 	array(
     	'salutation' => array('name'=>'salutation','type'=>'xsd:string'),
         'firstname' => array('name'=>'firstname','type'=>'xsd:string'),
@@ -85,6 +85,7 @@ $server->wsdl->addComplexType(
 	'complexType',
     'array',
     '',
+	'SOAP-ENC:Array',
 	array(
     	'fieldlabel' => array('name'=>'fieldlabel','type'=>'xsd:string'),
         'fieldvalue' => array('name'=>'fieldvalue','type'=>'xsd:string'),
@@ -95,6 +96,7 @@ $server->wsdl->addComplexType(
     'complexType',
     'array',
     '',
+	'SOAP-ENC:Array',
 	array(
     	'fielddata' => array('name'=>'fielddata','type'=>'xsd:string'),
 	)
@@ -105,6 +107,7 @@ $server->wsdl->addComplexType(
 	'complexType',
 	'array',
 	'',
+	'SOAP-ENC:Array',
 	array(
 		'productid' => array('name'=>'productid','type'=>'xsd:string'),
 		'productname' => array('name'=>'productname','type'=>'xsd:string'),
@@ -121,6 +124,7 @@ $server->wsdl->addComplexType(
     'complexType',
     'array',
     '',
+	'SOAP-ENC:Array',
 	array(
     	'files' => array(
 			'fileid'=>'xsd:string','type'=>'tns:xsd:string',

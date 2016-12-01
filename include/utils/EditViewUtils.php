@@ -190,32 +190,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	elseif($uitype == 1613) {
 		require_once 'modules/PickList/PickListUtils.php';
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldname = $adb->sql_escape_string($fieldname);
-		$pickListResult = getAllowedPicklistModules();
-
-		$options = array();
-		$options[] = "";
-		$pickcount = 0;
-		$found = false;
-		foreach ($pickListResult as $pKey=>$pValue) {
-			$value = decode_html($value);
-			$pickListValue = decode_html($pValue);
-			if($value == trim($pickListValue)) {
-				$chk_val = "selected";
-				$pickcount++;
-				$found = true;
-			}
-			else {
-				$chk_val = '';
-			}
-			$pickListValue = to_html($pickListValue);
-			if(isset($_REQUEST['file']) && $_REQUEST['file'] == 'QuickCreate')
-				$options[] = array(htmlentities(getTranslatedString($pickListValue, $pickListValue),ENT_QUOTES,$default_charset),$pickListValue,$chk_val);
-			else
-				$options[] = array(getTranslatedString($pickListValue, $pickListValue),$pickListValue,$chk_val);
-		}
-		uasort($options, function($a,$b) {return (strtolower($a[0]) < strtolower($b[0])) ? -1 : 1;});
-		$fieldvalue [] = $options;
+		$fieldvalue [] = getPicklistValuesSpecialUitypes($uitype,$fieldname,$value);
 	}
 	elseif($uitype == 15 || $uitype == 33){
 		require_once 'modules/PickList/PickListUtils.php';
@@ -246,58 +221,17 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 				$options[] = array($app_strings['LBL_NOT_ACCESSIBLE'],$value,'selected');
 			}
 		}
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
+		$editview_label[]=getTranslatedString($fieldlabel,$module_name,$value);
 		$fieldvalue [] = $options;
 	} elseif($uitype == 3313){
 		require_once 'modules/PickList/PickListUtils.php';
-		$picklistValues = getAllowedPicklistModules();
-		$valueArr = explode("|##|", $value);
-		foreach ($valueArr as $key => $value) {
-			$valueArr[$key] = trim(html_entity_decode($value, ENT_QUOTES, $default_charset));
-		}
-		$pickcount = 0;
-
-		if(!empty($picklistValues)){
-			foreach($picklistValues as $order=>$pickListValue){
-				if(in_array(trim($pickListValue),$valueArr)){
-					$chk_val = "selected";
-					$pickcount++;
-				}else{
-					$chk_val = '';
-				}
-				if(isset($_REQUEST['file']) && $_REQUEST['file'] == 'QuickCreate'){
-					$options[] = array(htmlentities(getTranslatedString($pickListValue, $pickListValue),ENT_QUOTES,$default_charset),$pickListValue,$chk_val );
-				}else{
-					$options[] = array(getTranslatedString($pickListValue, $pickListValue),$pickListValue,$chk_val );
-				}
-			}
-
-			if($pickcount == 0 && !empty($value)){
-				$options[] = array($app_strings['LBL_NOT_ACCESSIBLE'],$value,'selected');
-			}
-		}
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		uasort($options, function($a,$b) {return (strtolower($a[0]) < strtolower($b[0])) ? -1 : 1;});
-		$fieldvalue [] = $options;
+		$editview_label[]=getTranslatedString($fieldlabel,$module_name);
+		$fieldvalue [] = getPicklistValuesSpecialUitypes($uitype,$fieldname,$value);
 	}
 	elseif($uitype == 1024){
-		$options=array();
-		$arr_evo=explode(' |##| ',$value);
-		$roleid = $current_user->roleid;
-		$subrole = getRoleSubordinates($roleid);
-		$uservalues = array_merge($subrole,array($roleid));
-		for($i=0;$i<sizeof($uservalues);$i++) {
-			$currentValId=$uservalues[$i];
-			$currentValName= getRoleName($currentValId);
-			if(in_array(trim($currentValId),$arr_evo)){
-				$chk_val = 'selected';
-			}else{
-				$chk_val = '';
-			}
-			$options[] = array($currentValName,$currentValId,$chk_val);
-		}
-		$fieldvalue [] = $options;
+		require_once 'modules/PickList/PickListUtils.php';
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
+		$fieldvalue [] = getPicklistValuesSpecialUitypes($uitype,$fieldname,$value);
 	}
 	elseif($uitype == 17)
 	{
@@ -1596,7 +1530,7 @@ function getConvertQuoteToSoObject($focus,$quote_focus,$quoteid)
 */
 function getAssociatedProducts($module,$focus,$seid='')
 {
-	global $log, $adb, $theme,$current_user;
+	global $log, $adb, $theme, $currentModule;
 	$log->debug("Entering getAssociatedProducts(".$module.",".get_class($focus).",".$seid."='') method ...");
 
 	$theme_path="themes/".$theme."/";
@@ -1697,7 +1631,11 @@ function getAssociatedProducts($module,$focus,$seid='')
 		if (!empty($entitytype)) {
 			$product_Detail[$i]['entityType'.$i]=$entitytype;
 		}
-		$product_Detail[$i]['lineitem_id'.$i]=$adb->query_result($result,$i-1,'lineitem_id');
+		if ($module==$currentModule) {
+			$product_Detail[$i]['lineitem_id'.$i]=$adb->query_result($result,$i-1,'lineitem_id');
+		} else {
+			$product_Detail[$i]['lineitem_id'.$i]=0;
+		}
 
 		if($listprice == '')
 			$listprice = $unitprice;

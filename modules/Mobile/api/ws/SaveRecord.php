@@ -14,7 +14,7 @@ include_once 'include/Webservices/Update.php';
 
 class crmtogo_WS_SaveRecord extends crmtogo_WS_FetchRecord {
 	protected $recordValues = false;
-	
+
 	// Avoid retrieve and return the value obtained after Create or Update
 	protected function processRetrieve(crmtogo_API_Request $request) {
 		return $this->recordValues;
@@ -28,9 +28,8 @@ class crmtogo_WS_SaveRecord extends crmtogo_WS_FetchRecord {
 		$valueArray = crmtogo_API_Request::getvaluemap($request);
 		$values = '';
 		if(!empty($valueArray) && is_string($valueArray)) {
-			$values = Zend_Json::decode($valueArray);
-		} 
-		else {
+			$values = json_decode($valueArray,true);
+		} else {
 			$values = $valueArray;
 		}
 		//catch error
@@ -97,14 +96,14 @@ class crmtogo_WS_SaveRecord extends crmtogo_WS_FetchRecord {
 			// Update the record id
 			$request->set('record', $this->recordValues['id']);
 			$request->set('id', $this->recordValues['id']);
-			
+
 			// Gather response with full details
 			$response = parent::process($request);
-		} 
+		}
 		catch(Exception $e) {
 			$response->setError($e->getCode(), $e->getMessage());
 		}
 		return $response;
 	}
-	
+
 }

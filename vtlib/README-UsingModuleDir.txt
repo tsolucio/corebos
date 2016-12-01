@@ -1,7 +1,7 @@
 Using skeleton module
 =====================
 
-1. Copy ModuleDir/<target_vtiger_version> to modules/<NewModuleName>
+1. Copy ModuleDir/ to modules/<NewModuleName>
 2. Rename modules/<NewModuleName>/ModuleFile.php     to <NewModuleName>.php
 3. Rename modules/<NewModuleName>/ModuleFileAjax.php to <NewModuleName>Ajax.php
 4. Rename modules/<NewModuleName>/ModuleFile.js      to <NewModuleName>.js

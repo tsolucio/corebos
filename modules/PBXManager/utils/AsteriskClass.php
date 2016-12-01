@@ -26,7 +26,7 @@ class Asterisk {
 	 * @param string $server - the asterisk server address
 	 * @param integer $port - the port number where to connect to the asterisk server
 	 */
-	function Asterisk ( $sock, $server, $port){
+	function __construct( $sock, $server, $port) {
 		$this->sock = $sock;
 		$this->address = $server;
 		$this->port = $port;

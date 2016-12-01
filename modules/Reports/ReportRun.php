@@ -48,17 +48,17 @@ class ReportRun extends CRMEntity {
 						);
 	var $ui10_fields = array();
 	var $ui101_fields = array();
-	var $groupByTimeParent = array( 'Quarter'=>array('Year'),
-                                        'Month'=>array('Year'),
-                                        'Day'=>array('Year','Month')
-								);
+	var $groupByTimeParent = array(
+		'Quarter'=>array('Year'),
+		'Month'=>array('Year'),
+		'Day'=>array('Year','Month')
+	);
 
 	/** Function to set reportid,primarymodule,secondarymodule,reporttype,reportname, for given reportid
 	 *  This function accepts the $reportid as argument
 	 *  It sets reportid,primarymodule,secondarymodule,reporttype,reportname for the given reportid
 	 */
-	function ReportRun($reportid)
-	{
+	function __construct($reportid) {
 		$oReport = new Reports($reportid);
 		$this->reportid = $reportid;
 		$this->primarymodule = $oReport->primodule;
@@ -1962,13 +1962,11 @@ class ReportRun extends CRMEntity {
 				$this->number_of_rows = $noofrows;
 				$custom_field_values = $adb->fetch_array($result);
 				$groupslist = $this->getGroupingList($this->reportid);
-				$column_definitions = $adb->getFieldsDefinition($result);
 				$arrayHeaders = Array();
 				$header = '';
 				for ($x=0; $x<$y; $x++)
 				{
 					$fld = $adb->field_name($result, $x);
-					$fld_type = $column_definitions[$x]->type;
 					list($module, $fieldLabel) = explode('_', $fld->name, 2);
 					$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
 					if(!empty($fieldInfo)) {
@@ -2046,7 +2044,6 @@ class ReportRun extends CRMEntity {
 
 					for ($i=0; $i<$y; $i++) {
 						$fld = $adb->field_name($result, $i);
-						$fld_type = $column_definitions[$i]->type;
 						$fieldvalue = getReportFieldValue($this, $picklistarray, $fld, $custom_field_values, $i);
 
 						if($fieldvalue == '')
@@ -2154,7 +2151,6 @@ class ReportRun extends CRMEntity {
 				$noofrows = $adb->num_rows($result);
 				$this->number_of_rows = $noofrows;
 				$custom_field_values = $adb->fetch_array($result);
-				$column_definitions = $adb->getFieldsDefinition($result);
 				$ILF = new InventoryLineField();
 				$invMods = getInventoryModules();
 				do
@@ -2163,7 +2159,6 @@ class ReportRun extends CRMEntity {
 					for ($i=0; $i<$y-1; $i++) //No tratamos la última columna por ser el ACTION con el CRMID.
 					{
 						$fld = $adb->field_name($result, $i);
-						$fld_type = $column_definitions[$i]->type;
 						list($module, $fieldLabel) = explode('_', $fld->name, 2);
 						$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
 						if(!empty($fieldInfo)) {
@@ -2473,14 +2468,12 @@ class ReportRun extends CRMEntity {
 				$this->number_of_rows = $noofrows;
 				$custom_field_values = $adb->fetch_array($result);
 				$groupslist = $this->getGroupingList($this->reportid);
-				$column_definitions = $adb->getFieldsDefinition($result);
 				$y=$adb->num_fields($result);
 				$arrayHeaders = Array();
 				$header = '';
 				for ($x=0; $x<$y-1; $x++)
 				{
 					$fld = $adb->field_name($result, $x);
-					$fld_type = $column_definitions[$x]->type;
 					list($module, $fieldLabel) = explode('_', $fld->name, 2);
 					$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
 					if(!empty($fieldInfo)) {
@@ -2538,7 +2531,6 @@ class ReportRun extends CRMEntity {
 					for ($i=0; $i<$y-1; $i++)
 					{
 						$fld = $adb->field_name($result, $i);
-						$fld_type = $column_definitions[$i]->type;
 						$fieldvalue = getReportFieldValue($this, $picklistarray, $fld,$custom_field_values, $i);
 						if(($lastvalue == $fieldvalue) && $this->reporttype == "summary")
 						{
@@ -2733,7 +2725,7 @@ class ReportRun extends CRMEntity {
 		}
 
 		global $adb, $modules, $log, $current_user;
-
+		static $modulename_cache = array();
 		$query = "select * from vtiger_reportmodules where reportmodulesid =?";
 		$res = $adb->pquery($query , array($reportid));
 		$modrow = $adb->fetch_array($res);
@@ -2756,19 +2748,22 @@ class ReportRun extends CRMEntity {
 				$field_tablename = $fieldlist[1];
 				$field_columnname = $fieldlist[2];
 
-				$mod_query = $adb->pquery("SELECT distinct(tabid) as tabid from vtiger_field where tablename = ? and columnname=?",array($fieldlist[1],$fieldlist[2]));
-				if($adb->num_rows($mod_query)>0){
-					$module_name = getTabName($adb->query_result($mod_query,0,'tabid'));
-					$fieldlabel = trim($fieldlist[3]);
-					if($module_name){
-						$field_columnalias = $module_name."_".$fieldlist[3];
-					} else {
-						$field_columnalias = $module_name."_".$fieldlist[3];
+				$cachekey = $field_tablename . ":" . $field_columnname;
+				if (!isset($modulename_cache[$cachekey])) {
+					$mod_query = $adb->pquery("SELECT distinct(tabid) as tabid from vtiger_field where tablename = ? and columnname=?",array($fieldlist[1],$fieldlist[2]));
+					if($adb->num_rows($mod_query)>0){
+						$module_name = getTabModuleName($adb->query_result($mod_query,0,'tabid'));
+						$modulename_cache[$cachekey] = $module_name;
 					}
-					$field_columnalias = decode_html($field_columnalias);
-					$query_columnalias = substr($field_columnalias, 0, strrpos($field_columnalias, '_'));
-					$query_columnalias = str_replace(array(' ','&'),'_',$query_columnalias);
+				} else {
+					$module_name = $modulename_cache[$cachekey];
 				}
+
+				$fieldlabel = trim($fieldlist[3]);
+				$field_columnalias = $module_name."_".$fieldlist[3];
+				$field_columnalias = decode_html($field_columnalias);
+				$query_columnalias = substr($field_columnalias, 0, strrpos($field_columnalias, '_'));
+				$query_columnalias = str_replace(array(' ','&'),'_',$query_columnalias);
 				$sckey = $field_tablename.':'.$field_columnname.':'.$query_columnalias.':'.$field_columnname.':N'; // vtiger_invoice:subject:Invoice_Subject:subject:V
 				$scval = $field_tablename.'.'.$field_columnname." AS '".$query_columnalias."'"; // vtiger_invoice.subject AS 'Invoice_Subject'
 				$seltotalcols[$sckey] = $scval;
@@ -3134,6 +3129,7 @@ class ReportRun extends CRMEntity {
 				$count = 0;
 				foreach($array_value as $hdr=>$value) {
 					$value = decode_html($value);
+					$datetime = false;
 					switch ($FieldDataTypes[$hdr]) {
 						case 'boolean':
 							$celltype = PHPExcel_Cell_DataType::TYPE_BOOL;
@@ -3150,6 +3146,10 @@ class ReportRun extends CRMEntity {
 								if (strpos($value,':')>0 and (strpos($value,'-')===false)) {
 									// only time, no date
 									$dt = new DateTime("1970-01-01 $value");
+								} elseif(strpos($value,':')>0 and (strpos($value,'-')>0)){
+									// date and time
+									$dt = new DateTime($value);
+									$datetime = true;
 								} else {
 									$value = DateTimeField::__convertToDBFormat($value, $current_user->date_format);
 									$dt = new DateTime($value);
@@ -3173,7 +3173,11 @@ class ReportRun extends CRMEntity {
 					}
 					$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $value, $celltype);
 					if ($FieldDataTypes[$hdr]=='date') {
-						$worksheet->getStyleByColumnAndRow($count, $rowcount)->getNumberFormat()->setFormatCode($current_user->date_format);
+						if($datetime){
+							$worksheet->getStyleByColumnAndRow($count, $rowcount)->getNumberFormat()->setFormatCode($current_user->date_format." ".PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME4);
+						}else{
+							$worksheet->getStyleByColumnAndRow($count, $rowcount)->getNumberFormat()->setFormatCode($current_user->date_format);
+						}
 					} elseif ($FieldDataTypes[$hdr]=='time') {
 						$worksheet->getStyleByColumnAndRow($count, $rowcount)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME4);
 					}

@@ -126,17 +126,15 @@ function DeleteTag(id,recordid)
 			<td valign=top><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 			<td class="showPanelBg" valign=top width=100%>
 			<!-- PUBLIC CONTENTS STARTS-->
-			   <div class="small" style="padding:20px" onclick="hndCancelOutsideClick();";>
+						<div class="small" style="padding:14px" onclick="hndCancelOutsideClick();";>
 		
 				<table align="center" border="0" cellpadding="0" cellspacing="0" width="95%">
-				   <tr>
-					<td>
+								<tr><td>
 			         {* Module Record numbering, used MOD_SEQ_ID instead of ID *}
 			         {assign var="USE_ID_VALUE" value=$MOD_SEQ_ID}
 					 {if $USE_ID_VALUE eq ''} {assign var="USE_ID_VALUE" value=$ID} {/if}
-						<span class="lvtHeaderText"><font color="purple">[ {$USE_ID_VALUE} ] </font>{$NAME} -  {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</span>&nbsp;&nbsp;&nbsp;<span class="small">{$UPDATEINFO}</span>&nbsp;<span id="vtbusy_info" style="display:none;" valign="bottom"><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span><span id="vtbusy_info" style="visibility:hidden;" valign="bottom"><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
-					</td>
-				   </tr>
+									<span class="dvHeaderText">[ {$USE_ID_VALUE} ] {$NAME} -  {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</span>&nbsp;&nbsp;&nbsp;<span class="small">{$UPDATEINFO}</span>&nbsp;<span id="vtbusy_info" style="display:none;" valign="bottom"><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
+								</td></tr>
 				</table>
 				<br>
 				{include file='applicationmessage.tpl'}
@@ -200,22 +198,20 @@ function DeleteTag(id,recordid)
 						<table border=0 cellspacing=0 cellpadding=3 width=100% class="dvtContentSpace" style="border-bottom:0;">
 						   <tr valign=top>
 
-							<td align=left style="padding:10px;">
+											<td align=left>
 							<!-- content cache -->
-								<form action="index.php" method="post" name="DetailView" id="form" onsubmit="VtigerJS_DialogBox.block();">
-								{include file='DetailViewHidden.tpl'}
 						
-								<!-- Entity informations display - starts -->
 								<table border=0 cellspacing=0 cellpadding=0 width=100%>
-			                			   <tr>
-									<td style="padding:10px;border-right:1px dashed #CCCCCC;" width="80%">
-
-<!-- The following table is used to display the buttons -->
-<!-- Button displayed - finished-->
-
-<!-- Entity information(blocks) display - start -->
+													<tr valign=top>
+														<td style="padding:5px">
+															<!-- Command Buttons -->
+															<table border=0 cellspacing=0 cellpadding=0 width=100%>
+																<form action="index.php" method="post" name="DetailView" id="formDetailView">
+																	{include file='DetailViewHidden.tpl'}
 {foreach key=header item=detail from=$BLOCKS name=BLOCKS}
-	<table border=0 cellspacing=0 cellpadding=0 width=100% class="small">
+																		<tr><td style="padding:5px">
+																				<!-- Detailed View Code starts here-->
+																				<table border=0 cellspacing=0 cellpadding=0 width=100% class="small detailview_header_table">
 	   <tr>
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
@@ -223,8 +219,23 @@ function DeleteTag(id,recordid)
 		<td align=right>
 		</td>
 	   </tr>
-	   <tr class="detailview_block_header">
-		{strip}
+
+																					<!-- This is added to display the existing comments -->
+																					{if $header eq $MOD.LBL_COMMENTS || $header eq $MOD.LBL_COMMENT_INFORMATION}
+																						<tr>
+																							<td colspan=4 class="dvInnerHeader">
+																								<b>{$MOD.LBL_COMMENT_INFORMATION}</b>
+																							</td>
+																						</tr>
+																						<tr>
+																							<td colspan=4 class="dvtCellInfo">{$COMMENT_BLOCK}</td>
+																						</tr>
+																						<tr><td>&nbsp;</td></tr>
+																					{/if}
+
+																					{if $header neq 'Comments' && $BLOCKS.$header.relatedlist eq 0}
+
+																						<tr class="detailview_block_header">{strip}
 		<td colspan=4 class="dvInnerHeader" >
 							
 							<div style="float:left;font-weight:bold;"><div style="float:left;"><a href="javascript:showHideStatus('tbl{$header|replace:' ':''}','aid{$header|replace:' ':''}','{$IMAGE_PATH}');">
@@ -242,8 +253,10 @@ function DeleteTag(id,recordid)
 	  			     			</b></div>
 						</td>{/strip}
 	   </tr>
+																					{/if}
 							</table>
-							{if $BLOCKINITIALSTATUS[$header] eq 1}
+																				{if $header neq 'Comments'}
+																					{if $BLOCKINITIALSTATUS[$header] eq 1 || $BLOCKS.$header.relatedlist neq 0}
 							<div style="width:auto;display:block;" id="tbl{$header|replace:' ':''}" >
 							{else}
 							<div style="width:auto;display:none;" id="tbl{$header|replace:' ':''}" >
@@ -251,6 +264,9 @@ function DeleteTag(id,recordid)
 							<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small detailview_table">
             {if $CUSTOMBLOCKS.$header.custom}
                 {include file=$CUSTOMBLOCKS.$header.tpl}
+																							{elseif $BLOCKS.$header.relatedlist && $IS_REL_LIST|@count > 0}
+																								{assign var='RELBINDEX' value=$BLOCKS.$header.relatedlist}
+																								{include file='RelatedListNew.tpl' RELATEDLISTS=$RELATEDLISTBLOCK.$RELBINDEX RELLISTID=$RELBINDEX}
             {else}
                {foreach item=detailInfo from=$detail}
 				<tr style="height:25px" class="detailview_row">
@@ -275,7 +291,7 @@ function DeleteTag(id,recordid)
                                             {if $keycntimage ne ''}
                                                     <td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$keycntimage}</td>
                                             {elseif $label neq 'Tax Class'}<!-- Avoid to display the label Tax Class -->
-                                                    {if $keyid eq '71' || $keyid eq '72'}  <!--CurrencySymbol-->
+                                                    {if $keyid eq '71' || $keyid eq '72'}<!-- Currency symbol -->
                                                             <td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$label} ({$keycursymb})</td>
                                                     {elseif $keyid eq '9'}
                                                             <td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$label} {$APP.COVERED_PERCENTAGE}</td>
@@ -303,8 +319,9 @@ function DeleteTag(id,recordid)
            {/if}
 	</table>
 	</div>
-<!-- Entity information(blocks) display - ends -->
-
+																					{/if}
+																			</td>
+																		</tr>
 {* vtlib Customization: Embed DetailViewWidget block:// type if any *}
 {if $CUSTOM_LINKS && !empty($CUSTOM_LINKS.DETAILVIEWWIDGET)}
 {foreach item=CUSTOM_LINK_DETAILVIEWWIDGET from=$CUSTOM_LINKS.DETAILVIEWWIDGET}

@@ -113,8 +113,8 @@ class Vtiger_Module extends Vtiger_ModuleBasic {
 	 * NOTE: $url can have variables like $MODULE (module for which link is associated),
 	 * $RECORD (record on which link is dispalyed)
 	 */
-	function addLink($type, $label, $url, $iconpath='', $sequence=0, $handlerInfo=null) {
-		Vtiger_Link::addLink($this->id, $type, $label, $url, $iconpath, $sequence, $handlerInfo);
+	function addLink($type, $label, $url, $iconpath='', $sequence=0, $handlerInfo=null, $onlyonmymodule=false) {
+		Vtiger_Link::addLink($this->id, $type, $label, $url, $iconpath, $sequence, $handlerInfo, $onlyonmymodule);
 	}
 
 	/**

@@ -233,7 +233,7 @@ class VTTaskType {
 
 	public static function registerTaskType($taskType) {
 		$adb = PearDatabase::getInstance();
-		$modules = Zend_Json::encode($taskType['modules']);
+		$modules = json_encode($taskType['modules']);
 
 		$exists = $adb->pquery('select count(*) from com_vtiger_workflow_tasktypes
 				where tasktypename=? and label=? and classname=? and classpath=? and
@@ -260,7 +260,7 @@ class VTTaskType {
 			$taskName = $rawData['tasktypename'];
 			$moduleslist = $rawData['modules'];
 			$sourceModule = $rawData['sourcemodule'];
-			$modules = Zend_Json::decode($moduleslist);
+			$modules = json_decode($moduleslist,true);
 			$includeModules = $modules['include'];
 			$excludeModules = $modules['exclude'];
 

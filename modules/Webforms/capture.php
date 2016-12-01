@@ -10,7 +10,6 @@
 // Switch the working directory to base
 chdir(dirname(__FILE__) . '/../..');
 
-include_once 'include/Zend/Json.php';
 include_once 'vtlib/Vtiger/Module.php';
 include_once 'include/utils/VtlibUtils.php';
 include_once 'include/Webservices/Create.php';
@@ -71,8 +70,8 @@ class Webform_Capture {
 
 	protected function sendResponse($url, $success=false, $failure=false) {
 		if (empty($url)) {
-			if ($success) $response = Zend_Json::encode(array('success' => true, 'result' => $success));
-			else $response = Zend_Json::encode(array('success' => false, 'error' => array('message' => $failure)));
+			if ($success) $response = json_encode(array('success' => true, 'result' => $success));
+			else $response = json_encode(array('success' => false, 'error' => array('message' => $failure)));
 
 			// Support JSONP
 			if (!empty($_REQUEST['callback'])) {

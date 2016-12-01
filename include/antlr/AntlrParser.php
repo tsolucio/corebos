@@ -54,7 +54,7 @@ class AntlrParser extends BaseRecognizer {
 	protected function getMissingSymbol($input, $e, $expectedTokenType, $follow)
 	{
 		$tokenText = null;
-		if ( $expectedTokenType==TokenConst::$EOF ){ 
+		if ( $expectedTokenType==TokenConst::$EOF ){
 			$tokenText = "<missing EOF>";
 		} else {
 			$tokenNames = $this->getTokenNames();
@@ -78,7 +78,7 @@ class AntlrParser extends BaseRecognizer {
 		$this->input = $input;
 	}
 
-    public function getTokenStream() {
+	public function getTokenStream() {
 		return $this->input;
 	}
 
@@ -86,14 +86,13 @@ class AntlrParser extends BaseRecognizer {
 		return $this->input->getSourceName();
 	}
 
-	public function traceIn($ruleName, $ruleIndex)  {
+	public function traceIn($ruleName, $ruleIndex, $inputSymbol) {
 		parent::traceIn($ruleName, $ruleIndex, $this->input->LT(1));
 	}
 
-	public function traceOut($ruleName, $ruleIndex)  {
+	public function traceOut($ruleName, $ruleIndex, $inputSymbol) {
 		parent::traceOut($ruleName, $ruleIndex, $this->input->LT(1));
 	}
-	
 
 }
 

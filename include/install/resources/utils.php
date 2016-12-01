@@ -28,9 +28,7 @@ class Installation_Utils {
 
 	static function getDbOptions() {
 		$dbOptions = array();
-		if(function_exists('mysql_connect')) {
-			$dbOptions['mysqli'] = 'MySQL';
-		}
+		$dbOptions['mysqli'] = 'MySQL';
 		return $dbOptions;
 	}
 
@@ -645,7 +643,7 @@ class ConfigFile_Utils {
 	private $currencyName;
 	private $adminEmail;
 
-	function ConfigFile_Utils($configFileParameters) {
+	function __construct($configFileParameters) {
 		if (isset($configFileParameters['root_directory']))
 			$this->rootDirectory = $configFileParameters['root_directory'];
 

@@ -18,10 +18,10 @@ abstract class WebserviceEntityOperation{
 	 * @var PearDatabase
 	 */
 	protected $pearDB;
-	
+
 	protected static $metaCache = array();
-	
-	protected function WebserviceEntityOperation($webserviceObject,$user,$adb,$log){
+
+	protected function __construct($webserviceObject,$user,$adb,$log){
 		$this->user = $user;
 		$this->log = $log;
 		$this->webserviceObject = $webserviceObject;

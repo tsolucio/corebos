@@ -1282,6 +1282,7 @@ $app_strings = array (
 'LBL_MANDATORY_FIELD_MISSING'=>'Manca il valore in un campo obbligatorio',
 'Upload Images' => 'Upload Images',
 'Drag file here or click to upload' => 'Drag file here or click to upload',
+'Drag attachment here or click to upload' => 'Drag attachment here or click to upload',
 'SetReturnAddressTitle' => 'Select Address To Use',
 'SetReturnAddressDescription' => 'Select which address you wish to overwrite, if any',
 'Subscribe' => 'Subscribe',

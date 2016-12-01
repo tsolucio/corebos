@@ -42,12 +42,12 @@ class LoginHistory {
 		,"logout_time"
 		,"status"
 		);
-	
-	function LoginHistory() {
+
+	function __construct() {
 		$this->log = LoggerManager::getLogger('loginhistory');
 		$this->db = PearDatabase::getInstance();
 	}
-	
+
 	var $sortby_fields = Array('user_name', 'user_ip', 'login_time', 'logout_time', 'status');
 
 	// This is the list of vtiger_fields that are in the lists.

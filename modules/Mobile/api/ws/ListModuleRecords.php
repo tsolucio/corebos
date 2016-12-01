@@ -11,19 +11,19 @@
 include_once dirname(__FILE__) . '/models/SearchFilter.php';
 
 class crmtogo_WS_ListModuleRecords extends crmtogo_WS_Controller {
-	
+
 	function isCalendarModule($module) {
 		return ($module == 'Events' || $module == 'Calendar');
 	}
 	
 	function getSearchFilterModel($module, $search) {
-		return crmtogo_WS_SearchFilterModel::modelWithCriterias($module, Zend_JSON::decode($search));
+		return crmtogo_WS_SearchFilterModel::modelWithCriterias($module, json_decode($search,true));
 	}
-	
+
 	function process(crmtogo_API_Request $request) {
 		return $this->processSearchRecordLabel($request);
 	}
-	
+
 	function processSearchRecordLabel(crmtogo_API_Request $request) {
 		$current_user = $this->getActiveUser();
 		$module = $request->get('module');
@@ -40,7 +40,7 @@ class crmtogo_WS_ListModuleRecords extends crmtogo_WS_Controller {
 		else if(!empty($search)) {
 			$filterOrAlertInstance = $this->getSearchFilterModel($module, $search);
 		}
-		
+
 		if($filterOrAlertInstance && strcmp($module, $filterOrAlertInstance->moduleName)) {
 			$response = new crmtogo_API_Response();
 			$response->setError(1001, 'Mismached module information.');
@@ -74,7 +74,7 @@ class crmtogo_WS_ListModuleRecords extends crmtogo_WS_Controller {
 					}
 				}
 			}
-			
+
 			$recordid = $record['id'];
 			unset($record['id']);
 			
@@ -93,15 +93,16 @@ class crmtogo_WS_ListModuleRecords extends crmtogo_WS_Controller {
 			}
 			$modifiedRecords[] = $modifiedRecord;
 		}
-		
+
 		$response = new crmtogo_API_Response();
 		$response->setResult(array('records'=>$modifiedRecords, 'module'=>$module));
-		
+
 		return $response;
 	}
-	
+
 	function processSearchRecordLabelForCalendar(crmtogo_API_Request $request, $paging = false) {
 		$current_user = $this->getActiveUser();
+		
 		// Fetch both Calendar (Todo) and Event information
 		if ($request->get('compact')== true) {
 			//without paging per month
@@ -128,7 +129,7 @@ class crmtogo_WS_ListModuleRecords extends crmtogo_WS_Controller {
 		}
 		// Merge the Calendar & Events information
 		$records = array_merge($eventsRecords, $calendarRecords);
-		
+
 		$modifiedRecords = array();
 		foreach($records as $record) {
 			$modifiedRecord = array();
@@ -146,17 +147,17 @@ class crmtogo_WS_ListModuleRecords extends crmtogo_WS_Controller {
 			unset($record['time_end']);
 			$modifiedRecord['eventenddate'] = $record['due_date'];     
 			unset($record['due_date']);
-			
+
 			$modifiedRecord['label'] = implode(' ',array_values($record));
 			$modifiedRecords[] = $modifiedRecord;
 		}
-		
+
 		$response = new crmtogo_API_Response();
 		$response->setResult(array('records' =>$modifiedRecords, 'module'=>'Calendar'));
 		
 		return $response;
 	}
-	
+
 	function fetchRecordLabelsForModule($module, $user, $morefields=array(), $filterOrAlertInstance=false, $paging = false, $calfilter='') {
 		if($this->isCalendarModule($module)) {
 			$fieldnames = crmtogo_WS_Utils::getEntityFieldnames('Calendar');
@@ -174,7 +175,7 @@ class crmtogo_WS_ListModuleRecords extends crmtogo_WS_Controller {
 		}
 		return $this->queryToSelectFilteredRecords($module, $fieldnames, $filterOrAlertInstance, $paging,$calfilter);
 	}
-	
+
 	function queryToSelectFilteredRecords($module, $fieldnames, $filterOrAlertInstance, $paging,$calfilter='') {
 		if ($filterOrAlertInstance instanceof crmtogo_WS_SearchFilterModel) {
 			if (($module == 'Calendar' || $module == 'Events') and $calfilter !='') {
@@ -193,10 +194,10 @@ class crmtogo_WS_ListModuleRecords extends crmtogo_WS_Controller {
 			$selectColumnClause .= sprintf("%s.%s as %s,", $fieldinfo['table'],$fieldinfo['column'],$fieldname);
 		}
 		$selectColumnClause = rtrim($selectColumnClause, ',');
-		
+
 		$query = $filterOrAlertInstance->query();
 		$query = preg_replace("/SELECT.*FROM(.*)/i", "SELECT $selectColumnClause FROM $1", $query);
-		
+
 		if ($paging !== false) {
 			$config = crmtogo_WS_Controller::getUserConfigSettings();
 			$query .= " LIMIT ".$config['NavigationLimit'];
@@ -206,5 +207,5 @@ class crmtogo_WS_ListModuleRecords extends crmtogo_WS_Controller {
 		$prequeryResult = $db->pquery($query, $filterOrAlertInstance->queryParameters());
 		return new SqlResultIterator($db, $prequeryResult);
 	}
-	
+
 }

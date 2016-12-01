@@ -8,7 +8,7 @@
  * All Rights Reserved.
 ********************************************************************************/
 -->*}
-{if $smarty.request.ajax neq ''}
+{if isset($smarty.request.ajax) && $smarty.request.ajax neq ''}
 &#&#&#{$ERROR}&#&#&#
 {/if}
 <script type="text/javascript" src="include/js/ListView.js"></script>
@@ -242,5 +242,5 @@
 		</tr>
 	</table>
 </form>
-{$SELECT_SCRIPT}
+{if isset($SELECT_SCRIPT)}{$SELECT_SCRIPT}{/if}
 <div id="basicsearchcolumns" style="display:none;"><select name="search_field" id="bas_searchfield" class="txtBox" style="width:150px">{html_options options=$SEARCHLISTHEADER}</select></div>

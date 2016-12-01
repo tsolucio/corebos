@@ -7,23 +7,21 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-
 require_once 'modules/WSAPP/Utils.php';
 require_once 'include/database/PearDatabase.php';
-require_once 'include/Zend/Json.php';
 require_once 'include/utils/utils.php';
 
 class SyncServer {
-        private $appkey;
-        private $syncModule;
-        private $destHandler;
-        private $create = "create";
-        private $update = "update";
-        private $delete = "delete";
-        private $save = "save";
-        private $syncTypes = array("user","app");
+	private $appkey;
+	private $syncModule;
+	private $destHandler;
+	private $create = "create";
+	private $update = "update";
+	private $delete = "delete";
+	private $save = "save";
+	private $syncTypes = array("user","app");
 
-    /**
+	/**
 	 * Lookup application id using the key provided.
 	 */
 	function appid_with_key($key) {
@@ -81,7 +79,7 @@ class SyncServer {
         $db = PearDatabase::getInstance();
         $params = array();
         $params[] = $syncServerId;
-        $params[] = Zend_Json::encode($recordDetails);
+        $params[] = json_encode($recordDetails);
         $params[] = $flag;
         $params[] = $appid;
         $db->pquery("INSERT INTO vtiger_wsapp_queuerecords(syncserverid,details,flag,appid) VALUES(?,?,?,?)",array($params));

@@ -34,7 +34,7 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 
 	if($isduplicate == 'true') $focus->id = '';
 	if(isset($_REQUEST['mode']) && $_REQUEST['mode'] != ' ') $smarty->assign("OP_MODE",vtlib_purify($_REQUEST['mode']));
-	if(!$_SESSION['rlvs'][$currentModule]) unset($_SESSION['rlvs']);
+	if(!$_SESSION['rlvs'][$currentModule]) coreBOS_Session::delete('rlvs');
 
 	// Identify this module as custom module.
 	$smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);

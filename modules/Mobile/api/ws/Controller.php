@@ -51,11 +51,11 @@ class crmtogo_WS_Controller  {
 	}
 	
 	function sessionGet($key, $defvaule = '') {
-		return crmtogo_API_Session::get($key, $defvalue);
+		return coreBOS_Session::get($key, $defvalue);
 	}
 	
 	function sessionSet($key, $value) {
-		crmtogo_API_Session::set($key, $value);
+		coreBOS_Session::set($key, $value);
 	}
 	
 	function getLanguage() {

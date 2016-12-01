@@ -141,38 +141,6 @@ function gITSshow(argg1,type,startdate,enddate,starthr,startmin,startfmt,endhr,e
 	}
 }
 
-function getITSMiniCal(url){
-	if(url == undefined)
-		url = 'module=Calendar4You&action=ActivityAjax&type=minical&ajax=true';
-	else
-		url = 'module=Calendar4You&action=ActivityAjax&'+url+'&type=minical&ajax=true';
-	jQuery.ajax({
-			method:"POST",
-			url:'index.php?'+ url
-	}).done(function(response) {
-			document.getElementById("miniCal").innerHTML = response;
-	});
-}
-
-function changeCalendarMonthDate(year,month,date){
-	changeCalendarDate(year,month,date);
-	jQuery('#calendar_div').fullCalendar( 'changeView', 'month' );
-}
-
-function changeCalendarWeekDate(year,month,date){
-	changeCalendarDate(year,month,date);
-	jQuery('#calendar_div').fullCalendar( 'changeView', 'agendaWeek' );
-}
-
-function changeCalendarDayDate(year,month,date){
-	changeCalendarDate(year,month,date);
-	jQuery('#calendar_div').fullCalendar( 'changeView', 'agendaDay' );
-}
-
-function changeCalendarDate(year,month,date){
-	jQuery('#calendar_div').fullCalendar( 'gotoDate', year, month - 1, date);
-}
-
 function getITSCalSettings(){
 	url = getITSCalURL();
 	jQuery.ajax({

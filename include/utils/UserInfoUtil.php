@@ -3121,7 +3121,7 @@ function getSubordinateUsersList()
 	$user_array=Array();
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 
-	if(sizeof($subordinate_roles_users) > 0)
+	if(isset($subordinate_roles_users) and sizeof($subordinate_roles_users) > 0)
 	{
 		foreach ($subordinate_roles_users as $roleid => $userArray) {
 			foreach($userArray as $userid) {
@@ -3196,7 +3196,7 @@ function getWriteSharingGroupsList($module)
 function constructList($array,$data_type)
 {
 	global $log;
-	$log->debug("Entering constructList(".$array.",".$data_type.") method ...");
+	$log->debug("Entering constructList(".print_r($array,true).",".$data_type.") method ...");
 	$list= array();
 	if(sizeof($array) > 0)
 	{

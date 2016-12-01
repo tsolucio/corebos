@@ -121,6 +121,7 @@ $mod_strings = Array(
     'LBL_DEFAULT_WIDGET'=>'Standardfenster',
     'LBL_NO_WIDGETS_HIDDEN'=>'Keine versteckten Standardfenster',
     'UpdateExchangeRate' => 'Update Exchange Rate',
+	'LBL_HOME_ADDWINDOW' => 'Add Window',
 );
 
 ?>

@@ -17,21 +17,9 @@ if(isset($_REQUEST['service']))
 	{
 		include("soap/customerportal.php");
 	}
-	elseif($_REQUEST['service'] == "webforms")
-	{
-		include("soap/webforms.php");
-	}
-	elseif($_REQUEST['service'] == "firefox")
-	{
-		include("soap/firefoxtoolbar.php");
-	}
 	elseif($_REQUEST['service'] == "wordplugin")
 	{
 		include("soap/wordplugin.php");
-	}
-	elseif($_REQUEST['service'] == "thunderbird")
-	{
-		include("soap/thunderbirdplugin.php");
 	}
 	else
 	{
@@ -43,11 +31,7 @@ else
 	echo "<h1>vtigerCRM Soap Services</h1>";
 	echo "<li>vtigerCRM Outlook Plugin EndPoint URL -- Click <a href='vtigerservice.php?service=outlook'>here</a></li>";
 	echo "<li>vtigerCRM Word Plugin EndPoint URL -- Click <a href='vtigerservice.php?service=wordplugin'>here</a></li>";
-	echo "<li>vtigerCRM ThunderBird Extenstion EndPoint URL -- Click <a href='vtigerservice.php?service=thunderbird'>here</a></li>";
 	echo "<li>vtigerCRM Customer Portal EndPoint URL -- Click <a href='vtigerservice.php?service=customerportal'>here</a></li>";
-	echo "<li>vtigerCRM WebForm EndPoint URL -- Click <a href='vtigerservice.php?service=webforms'>here</a></li>";
-	echo "<li>vtigerCRM FireFox Extension EndPoint URL -- Click <a href='vtigerservice.php?service=firefox'>here</a></li>";
 }
-
 
 ?>

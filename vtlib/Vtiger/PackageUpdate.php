@@ -20,7 +20,7 @@ class Vtiger_PackageUpdate extends Vtiger_PackageImport {
     /**
      * Constructor
      */
-    function Vtiger_PackageUpdate() {
+    function __construct() {
         parent::__construct();
     }
 

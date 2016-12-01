@@ -207,13 +207,30 @@ function addTaxType($taxlabel, $taxvalue, $sh='')
 		$taxid = $adb->getUniqueID("vtiger_shippingtaxinfo");
 		$taxname = "shtax".$taxid;
 		$query = "alter table vtiger_inventoryshippingrel add column $taxname decimal(7,3) default NULL";
+
+		$event_data = array(
+			'tax_type' => 'sh',
+			'tax_id' => $taxid,
+			'tax_label' => $taxlabel,
+			'tax_value' => $taxvalue
+		);
 	}
 	else
 	{
 		$taxid = $adb->getUniqueID("vtiger_inventorytaxinfo");
 		$taxname = "tax".$taxid;
 		$query = "alter table vtiger_inventoryproductrel add column $taxname decimal(7,3) default NULL";
+
+		$event_data = array(
+			'tax_type' => 'tax',
+			'tax_id' => $taxid,
+			'tax_label' => $taxlabel,
+			'tax_value' => $taxvalue
+		);
 	}
+
+	cbEventHandler::do_action('corebos.add.tax',$event_data);		
+
 	$res = $adb->pquery($query, array());
 
 	//if the tax is added as a column then we should add this tax in the list of taxes

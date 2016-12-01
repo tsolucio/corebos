@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
 global $current_user;
 require_once('include/utils/ListViewUtils.php');
@@ -23,7 +22,7 @@ class Homestuff{
 	/**
 	 * this is the constructor for the class
 	 */
-	function Homestuff(){
+	function __construct(){
 
 	}
 
@@ -218,9 +217,9 @@ class Homestuff{
 	 * this function only returns the widget contents for a given widget
 	 */
 	function getHomePageStuff($sid,$stuffType){
-		global $adb;
-		global $current_user;
+		global $adb, $current_user;
 		$header=Array();
+		$details='';
 		if($stuffType=="Module"){
 			$details=$this->getModuleFilters($sid);
 		}else if($stuffType=="RSS"){
@@ -230,8 +229,8 @@ class Homestuff{
 		}else if($stuffType=="Default"){
 			$details=$this->getDefaultDetails($sid,'');
 		}
-        else if($stuffType=="ReportCharts" && vtlib_isModuleActive("Reports")){
-        	$details = $this->getReportChartDetails($sid);
+		else if($stuffType=="ReportCharts" && vtlib_isModuleActive("Reports")){
+			$details = $this->getReportChartDetails($sid);
 		}
 		return $details;
 	}

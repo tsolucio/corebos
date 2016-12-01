@@ -1282,6 +1282,7 @@ $app_strings = array (
 	'ERROR_GETTING_FILTER' => 'ERROR Aplicando Filtro. Por favor elimínalo y crealo de nuevo.',
 	'Upload Images' => 'Subir Imágenes',
 	'Drag file here or click to upload' => 'Arrastra la imagen aquí o haz click para cargar la imagen',
+	'Drag attachment here or click to upload' => 'Arrastra el adjunto aquí o haz click para cargar',
 	'SetReturnAddressTitle' => 'Dirección a Utilizar',
 	'SetReturnAddressDescription' => 'Selecciona que dirección quieres sobrescribir, si procede',
 	'Subscribe' => 'Suscribir',

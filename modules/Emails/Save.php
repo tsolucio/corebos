@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-require_once('include/Zend/Json.php');
 
 //check for mail server configuration through ajax
 if(isset($_REQUEST['server_check']) && $_REQUEST['server_check'] == 'true')
@@ -25,25 +24,6 @@ if(isset($_REQUEST['server_check']) && $_REQUEST['server_check'] == 'true')
 		echo 'FAILUREEMAIL';
 	}
 	die;
-}
-
-//Added on 09-11-2005 to avoid loading the webmail files in Email process
-if($_REQUEST['smodule'] != '')
-{
-	define('SM_PATH','modules/squirrelmail-1.4.4/');
-	/* SquirrelMail required files. */
-	require_once(SM_PATH . 'functions/strings.php');
-	require_once(SM_PATH . 'functions/imap_general.php');
-	require_once(SM_PATH . 'functions/imap_messages.php');
-	require_once(SM_PATH . 'functions/i18n.php');
-	require_once(SM_PATH . 'functions/mime.php');
-	require_once(SM_PATH .'include/load_prefs.php');
-	//require_once(SM_PATH . 'class/mime/Message.class.php');
-	require_once(SM_PATH . 'class/mime.class.php');
-	sqgetGlobalVar('key',       $key,        SQ_COOKIE);
-	sqgetGlobalVar('username',  $username,   SQ_SESSION);
-	sqgetGlobalVar('onetimepad',$onetimepad, SQ_SESSION);
-	$mailbox = 'INBOX';
 }
 
 require_once('modules/Emails/Emails.php');

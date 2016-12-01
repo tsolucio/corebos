@@ -21,9 +21,9 @@ class delvtChatTables extends cbupdaterWorker {
 		if ($this->isApplied()) {
 			$this->sendMsg('Changeset '.get_class($this).' already applied!');
 		} else {
-			$this->ExecuteQuery('DROP TABLE IF EXISTS vtiger_chat_msg');
 			$this->ExecuteQuery('DROP TABLE IF EXISTS vtiger_chat_pchat');
 			$this->ExecuteQuery('DROP TABLE IF EXISTS vtiger_chat_pvchat');
+			$this->ExecuteQuery('DROP TABLE IF EXISTS vtiger_chat_msg');
 			$this->ExecuteQuery('DROP TABLE IF EXISTS vtiger_chat_users');
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied(false);

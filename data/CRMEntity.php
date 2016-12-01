@@ -12,7 +12,6 @@ require_once('include/logging.php');
 require_once('data/Tracker.php');
 require_once('include/utils/utils.php');
 require_once('include/utils/UserInfoUtil.php');
-require_once("include/Zend/Json.php");
 require_once('modules/com_vtiger_workflow/VTWorkflowManager.inc');
 
 class CRMEntity {
@@ -592,8 +591,7 @@ class CRMEntity {
 				} elseif ($uitype == 8) {
 					$this->column_fields[$fieldname] = rtrim($this->column_fields[$fieldname], ',');
 					$ids = explode(',', $this->column_fields[$fieldname]);
-					$json = new Zend_Json();
-					$fldvalue = $json->encode($ids);
+					$fldvalue = json_encode($ids);
 				} elseif ($uitype == 12) {
 					// Bulk Save Mode: Consider the FROM email address as specified, if not lookup
 					$fldvalue = $this->column_fields[$fieldname];
@@ -1852,7 +1850,12 @@ class CRMEntity {
 			$relconds = array();
 			while ($depflds = $this->db->fetch_array($dependentFieldSql)) {
 			$dependentTable = $depflds['tablename'];
-			if ($dependentTable!=$other->table_name and !in_array($dependentTable, $other->related_tables)) {
+			if(!is_array($other->related_tables)){
+				$otherRelatedTable = array($other->related_tables);
+			}else {
+				$otherRelatedTable = $other->related_tables;
+			}
+			if ($dependentTable!=$other->table_name and !in_array($dependentTable, $otherRelatedTable)) {
 				$relidx = isset($other->tab_name_index[$dependentTable]) ? $other->tab_name_index[$dependentTable] : $other->table_index;
 				$other->related_tables[$dependentTable] = array($relidx,$other->table_name,$other->table_index);
 			}

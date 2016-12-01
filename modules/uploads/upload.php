@@ -77,9 +77,9 @@ $theme_path="themes/".$theme."/";
 	$ret_action = (vtlib_purify($_REQUEST['return_action']) != "")?vtlib_purify($_REQUEST['return_action']):$_SESSION['return_act'];
 	$ret_id = (vtlib_purify($_REQUEST['return_id']) != "")?vtlib_purify($_REQUEST['return_id']):$_SESSION['returnid'];
 
-	$_SESSION['return_act'] = $ret_action;
-	$_SESSION['return_mod'] = $ret_module;
-	$_SESSION['returnid'] = $ret_id;
+	coreBOS_Session::set('return_act', $ret_action);
+	coreBOS_Session::set('return_mod', $ret_module);
+	coreBOS_Session::set('returnid', $ret_id);
 	$upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize',3000000,$ret_module);
 ?>
 

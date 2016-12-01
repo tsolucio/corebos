@@ -9,23 +9,23 @@
  *********************************************************************************/
 
 class DBHealthCheck {
-	var $db;	
+	var $db;
 	var $dbType;
 	var $dbName;
 	var $dbHostName;
 	var $recommendedEngineType = 'InnoDB';
 	
-	function DBHealthCheck($db) {
+	function __construct($db) {
 		$this->db = $db;
 		$this->dbType = $db->databaseType;
 		$this->dbName = $db->databaseName;
 		$this->dbHostName = $db->host;
 	}
-	 
+
 	function isMySQL() { return (stripos($this->dbType ,'mysql') === 0);}
-    function isOracle() { return $this->dbType=='oci8'; }
-    function isPostgres() { return $this->dbType=='pgsql'; }
-    
+	function isOracle() { return $this->dbType=='oci8'; }
+	function isPostgres() { return $this->dbType=='pgsql'; }
+
 	function isDBHealthy() {
 		$tablesList = $this->getUnhealthyTablesList();
 		if (count($tablesList) > 0) {
@@ -33,7 +33,7 @@ class DBHealthCheck {
 		}
 		return true;
 	}
-	
+
 	function getUnhealthyTablesList() {
 		$tablesList = array();
 		if($this->isMySql()) {
@@ -41,19 +41,19 @@ class DBHealthCheck {
 		}
 		return $tablesList;
 	}
-	
+
 	function updateTableEngineType($tableName) {
 		if($this->isMySql()) {
 			$this->_mysql_updateEngineType($tableName);
 		}
 	}
-	
+
 	function updateAllTablesEngineType() {
 		if($this->isMySql()) {
 			$this->_mysql_updateEngineTypeForAllTables();
 		}
 	}
-	
+
 	function _mysql_getUnhealthyTables() {
 		$tablesResult = $this->db->_Execute("SHOW TABLE STATUS FROM `$this->dbName`");
 		$noOfTables = $tablesResult->NumRows($tablesResult);
@@ -72,7 +72,6 @@ class DBHealthCheck {
 			if ($tableNameParts[$tableNamePartsCount-1] == 'seq') {
 				$isHealthy = true;
 			}
-			
 			if(!$isHealthy) {
 				$unHealthyTables[$i]['name'] = $tableInfo['name'];
 				$unHealthyTables[$i]['engine'] = $tableInfo['engine'];
@@ -87,18 +86,18 @@ class DBHealthCheck {
 		}
 		return $unHealthyTables;
 	}
-	
+
 	function _mysql_updateEngineType($tableName) {
 		$this->db->_Execute("ALTER TABLE $tableName ENGINE=$this->recommendedEngineType");
 	}
-	
+
 	function _mysql_updateEngineTypeForAllTables() {
 		$unHealthyTables = $this->_mysql_getUnhealthyTables();
 		$noOfTables = count($unHealthyTables);
 		for($i=0; $i<$noOfTables; ++$i) {
 			$tableName = $unHealthyTables[$i]['name'];
 			$this->db->_Execute("ALTER TABLE $tableName ENGINE=$this->recommendedEngineType");
-		}		
+		}
 	}
 }
 ?>

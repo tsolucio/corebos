@@ -18,7 +18,7 @@ class crmtogo_WS_Login extends crmtogo_WS_Controller {
 			$response->setError(1501, $default_lang_strings['LBL_NO_SERVICE']);
 			return $response;
 		}
-		session_start();
+
 		$response = new crmtogo_API_Response();
 		
 		$username = $request->get('username');
@@ -39,26 +39,23 @@ class crmtogo_WS_Login extends crmtogo_WS_Controller {
 		}
 		else {
 			// Start session now
-			$sessionid = crmtogo_API_Session::init();
-          
-			if($sessionid === false) {
-				echo "Session init failed $sessionid\n";
-			}
+			coreBOS_Session::init();
 
+	
 			$current_user->id = $current_user->retrieve_user_id($username);
 			$current_user= $current_user->retrieveCurrentUserInfoFromFile($current_user->id);
 			$this->setActiveUser($current_user);
-			
+
 			//one day
-			$_SESSION["__HTTP_Session_Expire_TS"]== time() + (60 * 60 * 24);
+			coreBOS_Session::set("__HTTP_Session_Expire_TS", time() + (60 * 60 * 24));
 			// 1 hour
-			$_SESSION["__HTTP_Session_Idle_TS"]== 1*60*60;
-			$_SESSION['loginattempts'] = 0;
-			$_SESSION["_authenticated_user_id"]=$current_user->id;
-			$_SESSION["username"]=$username;
-			$_SESSION["password"]=$password;
-			$_SESSION["language"]= $current_user->column_fields['language'];
-			$_SESSION["user_tz"]=$current_user->column_fields['time_zone'];
+			coreBOS_Session::set("__HTTP_Session_Idle_TS", 1*60*60);
+			coreBOS_Session::set('loginattempts', 0);
+			coreBOS_Session::set("_authenticated_user_id",$current_user->id);
+			coreBOS_Session::set("username",$username);
+			coreBOS_Session::set("password",$password);
+			coreBOS_Session::set("language", $current_user->column_fields['language']);
+			coreBOS_Session::set("user_tz",$current_user->column_fields['time_zone']);
 			$result = array();
 			$result['login'] = array(
 				'userid' => $current_user->id,
@@ -66,12 +63,13 @@ class crmtogo_WS_Login extends crmtogo_WS_Controller {
 				'password' => $password,
 				'crm_tz' => DateTimeField::getDBTimeZone(),
 				'user_tz' => $current_user->time_zone,
-				'session'=> $sessionid,
+				'session'=> $'',
 				'language' => $current_user->column_fields['language'],
 				'vtiger_version' => crmtogo_WS_Utils::getVtigerVersion(),
 				'crmtogo_module_version' => crmtogo_WS_Utils::getVersion()
 			);
 			$response->setResult($result);
+
 			$this->postProcess($response);
 		}
 		return $response;

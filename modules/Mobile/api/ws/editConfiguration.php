@@ -9,7 +9,7 @@
  ************************************************************************************/
 
 class crmtogo_WS_Configuration extends crmtogo_WS_Controller {
-	
+
 	function requireLogin() {
 		return true;
 	}

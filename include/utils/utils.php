@@ -906,6 +906,7 @@ function decide_to_html(){
 	}
 	$action = vtlib_purify($request['action']);
 	$search = vtlib_purify($request['search']);
+	$ajax_action = '';
 	if($request['module'] != 'Settings' && $request['file'] != 'ListView' && $request['module'] != 'Portal' && $request['module'] != "Reports")// && $request['module'] != 'Emails')
 		$ajax_action = $request['module'].'Ajax';
 
@@ -2003,7 +2004,7 @@ function getEmailParentsList($module,$id,$focus = false)
 	$res = $adb->pquery("select * from vtiger_field where tabid = ? and fieldname= ? and vtiger_field.presence in (0,2)", array(getTabid($module), $fieldname));
 	$fieldid = $adb->query_result($res,0,'fieldid');
 
-	$hidden .= '<input type="hidden" name="emailids" value="'.$id.'@'.$fieldid.'|">';
+	$hidden  = '<input type="hidden" name="emailids" value="'.$id.'@'.$fieldid.'|">';
 	$hidden .= '<input type="hidden" name="pmodule" value="'.$module.'">';
 
 	$log->debug("Exiting getEmailParentsList method ...");
@@ -2566,7 +2567,8 @@ function strip_selected_tags($text, $tags = array()) {
  */
 function useInternalMailer() {
 	global $current_user,$adb;
-	return $adb->query_result($adb->pquery("select int_mailer from vtiger_mail_accounts where user_id=?", array($current_user->id)),0,"int_mailer");
+	$rs = $adb->pquery('select int_mailer from vtiger_mail_accounts where user_id=?', array($current_user->id));
+	return $adb->query_result($rs,0,'int_mailer');
 }
 
 /**
@@ -2615,7 +2617,7 @@ function utf8RawUrlDecode ($source) {
 */
 function html_to_utf8 ($data)
 {
-	return preg_replace("/\\&\\#([0-9]{3,10})\\;/e", '_html_to_utf8("\\1")', $data);
+	return preg_replace_callback("/\\&\\#([0-9]{3,10})\\;/", '_html_to_utf8', $data);
 }
 
 function decode_html($str) {
@@ -2647,6 +2649,7 @@ function popup_decode_html($str) {
 
 function _html_to_utf8 ($data)
 {
+	$data = $data[1];
 	if ($data > 127)
 	{
 		$i = 5;
@@ -3332,9 +3335,9 @@ function getDuplicateRecordsArr($module)
 	$no_of_rows = $adb->query_result($count_res,0,"count");
 
 	if($no_of_rows <= $list_max_entries_per_page)
-		$_SESSION['dup_nav_start'.$module] = 1;
+		coreBOS_Session::set('dup_nav_start'.$module, 1);
 	else if(isset($_REQUEST["start"]) && $_REQUEST["start"] != "" && $_SESSION['dup_nav_start'.$module] != $_REQUEST["start"])
-		$_SESSION['dup_nav_start'.$module] = ListViewSession::getRequestStartPage();
+		coreBOS_Session::set('dup_nav_start'.$module, ListViewSession::getRequestStartPage());
 	$start = ($_SESSION['dup_nav_start'.$module] != "")?$_SESSION['dup_nav_start'.$module]:1;
 	$navigation_array = getNavigationValues($start, $no_of_rows, $list_max_entries_per_page);
 	$start_rec = $navigation_array['start'];
@@ -3497,16 +3500,16 @@ function getDuplicateRecordsArr($module)
 				$result[$col_arr[$k]] = getRecordInfoFromID($result[$col_arr[$k]]);
 			}
 			if($ui_type[$fld_arr[$k]] == 5 || $ui_type[$fld_arr[$k]] == 6 || $ui_type[$fld_arr[$k]] == 23){
-				if ($$result[$col_arr[$k]] != '' && $$result[$col_arr[$k]] != '0000-00-00') {
-					$date = new DateTimeField($$result[$col_arr[$k]]);
+				if ($result[$col_arr[$k]] != '' && $result[$col_arr[$k]] != '0000-00-00') {
+					$date = new DateTimeField($result[$col_arr[$k]]);
 					$value = $date->getDisplayDate();
-					if(strpos($$result[$col_arr[$k]], ' ') > -1) {
+					if(strpos($result[$col_arr[$k]], ' ') > -1) {
 						$value .= (' ' . $date->getDisplayTime());
 					}
-				} elseif ($$result[$col_arr[$k]] == '0000-00-00') {
+				} elseif ($result[$col_arr[$k]] == '0000-00-00') {
 					$value = '';
 				} else {
-					$value = $$result[$col_arr[$k]];
+					$value = $result[$col_arr[$k]];
 				}
 				$result[$col_arr[$k]] = $value;
 			}
@@ -4045,7 +4048,7 @@ function getSettingsFields(){
 		foreach($fields as $blockid=>&$field){
 			if(count($field)>0 && count($field)<4){
 				for($i=count($field);$i<4;$i++){
-					$field[$i] = array();
+					$field[$i] = array('icon'=>'', 'description'=>'', 'link'=>'', 'name'=>'', 'action'=>'', 'module'=>'');
 				}
 			}
 		}

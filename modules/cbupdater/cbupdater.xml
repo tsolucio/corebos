@@ -921,6 +921,48 @@
 	<systemupdate>true</systemupdate>
 </changeSet>
 <changeSet>
+	<author>kikojover</author>
+	<description>Add Indexes on Inventorydetail table</description>
+	<filename>build/changeSets/add_Indexes_InvDetails.php</filename>
+	<classname>add_Indexes_InvDetails</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>vtlib Header Links Load Only On their Module</description>
+	<filename>build/changeSets/vtlibLinkLoadOnlyOnMyModule.php</filename>
+	<classname>vtlibLinkLoadOnlyOnMyModule</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Header Dropzone CSS and javascript</description>
+	<filename>build/changeSets/dropzonecssandjs.php</filename>
+	<classname>dropzonecssandjs</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>mysql strict Mail Manager record table</description>
+	<filename>build/changeSets/mysqlstrictMailManager.php</filename>
+	<classname>mysqlstrictMailManager</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Add UIType 1024 Webservice Field Type</description>
+	<filename>build/changeSets/addUIType1024WebserviceFieldType.php</filename>
+	<classname>addUIType1024WebserviceFieldType</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Fix Calendar Start and End Date On Reports Filters, error with ampersand</description>
+	<filename>build/changeSets/fixCalendarStartEndDateOnReportsFilters.php</filename>
+	<classname>fixCalendarStartEndDateOnReportsFilters</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
+<changeSet>
 	<author>omarllorens</author>
 	<description>Update Mobile Module</description>
 	<filename>build/changeSets/updateMobileModuleToCrmNow2.php</filename>

@@ -258,10 +258,9 @@ class MailManager_Connector {
 		}
 		if ($interval) {
 			MailManager_Model_Message::pruneOlderInDB($interval);
-			$_SESSION['mailmanager_clearDBCacheIntervalLast'] = $timenow;
+			coreBOS_Session::set('mailmanager_clearDBCacheIntervalLast', $timenow);
 		}
 	}
-
 
 	/**
 	 * Function which deletes the mails
@@ -274,7 +273,6 @@ class MailManager_Connector {
 			@imap_delete($this->mBox, $msgno[$i]);
 		}	
 	}
-
 
 	/**
 	 * Function which moves mail to another folder

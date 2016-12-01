@@ -11,17 +11,16 @@
 include_once 'include/Webservices/Delete.php';
 
 class crmtogo_WS_DeleteRecords extends crmtogo_WS_Controller {
-	
+
 	function process(crmtogo_API_Request $request) {
 		$current_user = $this->getActiveUser();
 		$records = $request->get('records');
 		if (empty($records)) {
 			$records = array($request->get('record'));
-		} 
-		else {
-			$records = Zend_Json::decode($records);
+		} else {
+			$records = json_decode($records,true);
 		}
-		
+
 		$deleted = array();
 		foreach($records as $record) {
 			try {
@@ -32,7 +31,7 @@ class crmtogo_WS_DeleteRecords extends crmtogo_WS_Controller {
 			}
 			$deleted[$record] = $result;
 		}
-		
+
 		$response = new crmtogo_API_Response();
 		$response->setResult(array('deleted' => $deleted));
 		return $response;

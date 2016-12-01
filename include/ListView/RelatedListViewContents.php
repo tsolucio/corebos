@@ -18,7 +18,7 @@ if($ajaxaction == "LOADRELATEDLIST") {
 		} else {
 			$resetCookie = false;
 		}
-		$_SESSION['rlvs'][$currentModule][$relationId]['currentRecord'] = $recordid;
+		coreBOS_Session::set('rlvs^'.$currentModule.'^'.$relationId.'^currentRecord', $recordid);
 		$actions = vtlib_purify($_REQUEST['actions']);
 		$header = vtlib_purify($_REQUEST['header']);
 		$modObj->id = $recordid;

@@ -74,7 +74,7 @@ class Emails extends CRMEntity {
 	function save_module($module) {
 		global $adb;
 		//Inserting into seactivityrel
-		if ($_REQUEST['module'] == "Emails" && $_REQUEST['smodule'] != 'webmails' && (!$this->plugin_save)) {
+		if ($_REQUEST['module'] == "Emails" && (!$this->plugin_save)) {
 			if ($_REQUEST['currentid'] != '') {
 				$actid = $_REQUEST['currentid'];
 			} else {

@@ -9,7 +9,6 @@
  ********************************************************************************/
 require_once 'modules/MailManager/src/controllers/DraftController.php' ;
 require_once 'data/CRMEntity.php';
-require_once 'include/Zend/Json.php';
 
 $draft = new MailManager_Model_DraftEmail();
 
@@ -22,14 +21,13 @@ if(!empty($_REQUEST['entityid']) && !empty($_REQUEST['parentid'])) {
 		$res = $adb->pquery("SELECT filename, filesize FROM vtiger_notes WHERE notesid = ?", array($entityId));
 		$fileName = $adb->query_result($res, 0, 'filename');
 		$size = $adb->query_result($res, 0, 'filesize');
-		echo Zend_Json::encode(array('success'=>true, 'error'=>$errorMessage, 'name'=>$fileName, 'size'=>$size));
+		echo json_encode(array('success'=>true, 'error'=>$errorMessage, 'name'=>$fileName, 'size'=>$size));
 		exit;
 	}
 
 	$document = CRMEntity::getInstance('Documents');
 	$document->retrieve_entity_info($entityId, 'Documents');
 	$parentId = vtlib_purify($_REQUEST['parentid']);
-	
 	$draft->saveEmailDocumentRel($parentId, $entityId);
 
 	//link the attachment to emails
@@ -41,7 +39,7 @@ if(!empty($_REQUEST['entityid']) && !empty($_REQUEST['parentid'])) {
 	$res['size'] = $document->column_fields['filesize'];
 	$res['docid'] = $entityId;
 	$res['emailid'] = $parentId;
-	$response = Zend_Json::encode($res);
+	$response = json_encode($res);
 	echo $response;
 }
 ?>

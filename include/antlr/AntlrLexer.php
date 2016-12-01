@@ -140,7 +140,7 @@ abstract class AntlrLexer extends BaseRecognizer{
 		}
 	}
 	
-	public function matchAny() {
+	public function matchAny($input) {
 		$this->input->consume();
 	}
 	
@@ -280,17 +280,17 @@ abstract class AntlrLexer extends BaseRecognizer{
 	 *  it all works out.  You can instead use the rule invocation stack
 	 *  to do sophisticated error recovery if you are in a fragment rule.
 	 */
-	public function recover($re) {
+	public function recover($input, $re) {
 		$this->input->consume();
 	}
 	
 	
-	public function traceIn($ruleName, $ruleIndex)  {
+	public function traceIn($ruleName, $ruleIndex, $inputSymbol) {
 		$inputSymbol = $this->input->LT(1)." line=".$this->getLine().":".$this->getCharPositionInLine();
 		parent::traceIn($ruleName, $ruleIndex, $inputSymbol);
 	}
 
-	public function traceOut($ruleName, $ruleIndex)  {
+	public function traceOut($ruleName, $ruleIndex, $inputSymbol) {
 		$inputSymbol = $this->input->LT(1)." line=".$this->getLine().":".$this->getCharPositionInLine();
 		parent::traceOut($ruleName, $ruleIndex, $inputSymbol);
 	}

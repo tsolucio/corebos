@@ -8,8 +8,6 @@
 * Portions created by FOSS Labs are Copyright (C) FOSS Labs.
 * All Rights Reserved.
 ************************************************************************************/
-//Modified By Krem on  30/05/2008  - Details  at http://creadev.net/Webmails-vTiger504
-  
 include_once('config.php');
 require_once('include/logging.php');
 require_once('include/utils/utils.php');
@@ -35,7 +33,7 @@ class MailBox {
 	var $mailbox;
 	var $mailList;
 
-	function MailBox($mailbox = '',$p='',$s='') {
+	function __construct($mailbox = '',$p='',$s='') {
 		global $current_user;
 		require_once('include/utils/encryption.php');
 		$oencrypt = new Encryption();
@@ -53,17 +51,17 @@ class MailBox {
 
 		$this->boxinfo = $this->db->fetch_array($tmp);
 
-		$this->login_username=trim($this->boxinfo["mail_username"]); 
-		$this->secretkey=$oencrypt->decrypt(trim($this->boxinfo["mail_password"])); 
-		$this->imapServerAddress=gethostbyname(trim($this->boxinfo["mail_servername"])); 
-		$this->mail_protocol=$this->boxinfo["mail_protocol"]; 
-		$this->ssltype=$this->boxinfo["ssltype"]; 
-		$this->sslmeth=$this->boxinfo["sslmeth"]; 
+		$this->login_username=trim($this->boxinfo["mail_username"]);
+		$this->secretkey=$oencrypt->decrypt(trim($this->boxinfo["mail_password"]));
+		$this->imapServerAddress=gethostbyname(trim($this->boxinfo["mail_servername"]));
+		$this->mail_protocol=$this->boxinfo["mail_protocol"];
+		$this->ssltype=$this->boxinfo["ssltype"];
+		$this->sslmeth=$this->boxinfo["sslmeth"];
 
 		$this->box_refresh=trim($this->boxinfo["box_refresh"]);
 		$this->mails_per_page=trim($this->boxinfo["mails_per_page"]);
 		if($this->mails_per_page < 1)
-        		$this->mails_per_page=20;
+			$this->mails_per_page=20;
 
 		$this->account_name=$this->boxinfo["account_name"];
 		$this->display_name=$this->boxinfo["display_name"];
@@ -81,7 +79,7 @@ class MailBox {
 		$pa=$p;
 		$se=$s;
 		if($this->mbox){
-			if ($se != ""){$this->mailList = $this->searchMailList($se,$pa);}		
+			if ($se != ""){$this->mailList = $this->searchMailList($se,$pa);}
 			else if ($pa == ""){$this->mailList = $this->customMailList(0);}
 			else {$this->mailList = $this->customMailList($pa);}
 		}
@@ -103,8 +101,8 @@ class MailBox {
 		return $out;
 	}
 
-	function searchMailList($searchstring,$page) {	
-		$search="";		
+	function searchMailList($searchstring,$page) {
+		$search="";
 		$searchlist = Array();
 
 		$searchlist = imap_search($this->mbox,$searchstring);
@@ -119,11 +117,11 @@ class MailBox {
 		$start = $current_mails-$this->mails_per_page;
 		if ($start < 0)$start=0;
 		$j=0;
-		for($i=$current_mails; $i >= $start ; $i--){	
-			if($i==$current_mails){			
+		for($i=$current_mails; $i >= $start ; $i--){
+			if($i==$current_mails){
 				$search=$searchlist[$i];
-			}else $search=$search.",".$searchlist[$i];			
-			$j++;			
+			}else $search=$search.",".$searchlist[$i];
+			$j++;
 		}
 		if ($search!="")
 			$result = @imap_fetch_overview($this->mbox, "$search",0);
@@ -157,49 +155,48 @@ class MailBox {
 			$port = "110";
 		else
 		{
-	    		if($mods["imap"]["SSL Support"] == "enabled" && ($this->ssltype == "tls" || $this->ssltype == "ssl"))
+			if($mods["imap"]["SSL Support"] == "enabled" && ($this->ssltype == "tls" || $this->ssltype == "ssl"))
 				$port = "993";
 			else
 				$port = "143";
 		}
 
 		$this->db->println("Building connection string");
-                if(preg_match("/@/",$this->login_username)) 
-		{
-                        $mailparts = explode("@",$this->login_username);
-                        $user="".trim($mailparts[0])."";
-                        $domain="".trim($mailparts[1])."";
+		if(preg_match("/@/",$this->login_username)) {
+			$mailparts = explode("@",$this->login_username);
+			$user="".trim($mailparts[0])."";
+			$domain="".trim($mailparts[1])."";
 
 			// This section added to fix a bug when connecting as user@domain.com
 			if($this->readonly == "true") 
 			{
-	    			if($mods["imap"]["SSL Support"] == "enabled")
-                                	$connectString = "/".$this->ssltype."/".$this->sslmeth."/user={$user}@{$domain}/readonly";
+				if($mods["imap"]["SSL Support"] == "enabled")
+					$connectString = "/".$this->ssltype."/".$this->sslmeth."/user={$user}@{$domain}/readonly";
 				else
-                                	$connectString = "/notls/novalidate-cert/user={$user}@{$domain}/readonly";
+					$connectString = "/notls/novalidate-cert/user={$user}@{$domain}/readonly";
 			}
 			else
 			{
-	    			if($mods["imap"]["SSL Support"] == "enabled")
-                                	$connectString = "/".$this->ssltype."/".$this->sslmeth."/user={$user}@{$domain}";
+				if($mods["imap"]["SSL Support"] == "enabled")
+					$connectString = "/".$this->ssltype."/".$this->sslmeth."/user={$user}@{$domain}";
 				else
-                                	$connectString = "/notls/novalidate-cert/user={$user}@{$domain}";
+					$connectString = "/notls/novalidate-cert/user={$user}@{$domain}";
 			}
 		}
 		else
 		{
 			if($this->readonly == "true")
 			{
-	    			if($mods["imap"]["SSL Support"] == "enabled")
+				if($mods["imap"]["SSL Support"] == "enabled")
 					$connectString = "/".$this->ssltype."/".$this->sslmeth."/readonly";
-	    			else
+				else
 					$connectString = "/notls/novalidate-cert/readonly";
 			}
 			else
 			{
-	    			if($mods["imap"]["SSL Support"] == "enabled")
+				if($mods["imap"]["SSL Support"] == "enabled")
 					$connectString = "/".$this->ssltype."/".$this->sslmeth;
-	    			else
+				else
 					$connectString = "/notls/novalidate-cert";
 			}
 		}
@@ -232,7 +229,6 @@ class MailBox {
 		$this->db->println("Done connecting to box");
 	}
 } // END CLASS
-
 
 function parsePHPModules() {
  ob_start();

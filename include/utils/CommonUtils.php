@@ -1261,8 +1261,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 		$result = $adb->pquery($sql, $params);
 
 		// Added to unset the previous record's related listview session values
-		if (isset($_SESSION['rlvs']))
-			unset($_SESSION['rlvs']);
+		coreBOS_Session::delete('rlvs');
 
 		$getBlockInfo = getDetailBlockInformation($module, $result, $col_fields, $tabid, $block_label);
 	}
@@ -1298,7 +1297,7 @@ function getBlocks($module, $disp_view, $mode, $col_fields = '', $info_type = ''
 			}
 		}
 	}
-	$_SESSION['BLOCKINITIALSTATUS'] = $aBlockStatus;
+	coreBOS_Session::set('BLOCKINITIALSTATUS', $aBlockStatus);
 	return $getBlockInfo;
 }
 
@@ -1444,12 +1443,12 @@ function getParentTabName($parenttabid) {
  * This returns value string type
  */
 function getParentTabFromModule($module) {
-	global $log;
+	global $log, $adb;
 	$log->debug("Entering getParentTabFromModule(" . $module . ") method ...");
-	global $adb;
 	if (file_exists('tabdata.php') && (filesize('tabdata.php') != 0) && file_exists('parent_tabdata.php') && (filesize('parent_tabdata.php') != 0)) {
 		include('tabdata.php');
 		include('parent_tabdata.php');
+		if (!isset($tab_info_array[$module])) return $module;
 		$tabid = $tab_info_array[$module];
 		foreach ($parent_child_tab_rel_array as $parid => $childArr) {
 			if (in_array($tabid, $childArr)) {
@@ -1750,7 +1749,7 @@ function setObjectValuesFromRequest($focus) {
 	global $log;
 	$moduleName = get_class($focus);
 	$log->debug("Entering setObjectValuesFromRequest($moduleName) method ...");
-	if (isset($_REQUEST['record'])) {
+	if (isset($_REQUEST['record']) && (isset($_REQUEST['mode']) && $_REQUEST['mode'] == 'edit')) {
 		$focus->id = $_REQUEST['record'];
 	}
 	if (isset($_REQUEST['mode'])) {
@@ -2326,7 +2325,8 @@ function validateImageFile($file_details) {
 		$saveimage = 'true';
 	} else {
 		$saveimage = 'false';
-		$_SESSION['image_type_error'] .= "<br> &nbsp;&nbsp;<b>" . $file_details['name'] . "</b>" . $app_strings['MSG_IS_NOT_UPLOADED'];
+		$imgtypeerror = coreBOS_Session::get('image_type_error');
+		coreBOS_Session::set('image_type_error', $imgtypeerror."<br> &nbsp;&nbsp;<b>" . $file_details['name'] . "</b>" . $app_strings['MSG_IS_NOT_UPLOADED']);
 		$log->debug("Invalid Image type == $filetype");
 	}
 
@@ -2637,7 +2637,7 @@ function getTicketComments($ticketid) {
 
 /**
  * This function is used to get a random password.
- * @return a random password with alpha numeric chanreters of length 8
+ * @return a random password with alpha numeric characters of length 8
  */
 function makeRandomPassword() {
 	global $log;
@@ -2645,6 +2645,7 @@ function makeRandomPassword() {
 	$salt = "abcdefghijklmnopqrstuvwxyz0123456789";
 	srand((double) microtime() * 1000000);
 	$i = 0;
+	$pass = '';
 	while ($i <= 7) {
 		$num = rand() % 33;
 		$tmp = substr($salt, $num, 1);

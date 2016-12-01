@@ -68,11 +68,10 @@ Class CustomReportUtils {
 		$grteqCondition = 'h';
 		$eqCondition = 'e';
 		$lessCondititon = 'l';
-		$json = new Zend_Json();
 		$advft_criteria_groups = array('1' => array('groupcondition' => null));
 		$advft_criteria = array();
 		if (empty($fieldvalue)) {
-			$condition = 'query=true&searchtype=advance&advft_criteria=' . $json->encode($advft_criteria) . '&advft_criteria_groups=' . $json->encode($advft_criteria_groups);
+			$condition = 'query=true&searchtype=advance&advft_criteria=' . json_encode($advft_criteria) . '&advft_criteria_groups=' . json_encode($advft_criteria_groups);
 			return $condition;
 		}
 		if (strtolower($criteria) == 'year') {
@@ -94,8 +93,8 @@ Class CustomReportUtils {
 					'columncondition' => 'and'
 				)
 			);
-			$conditionJson = urlencode($json->encode($condition));
-			$condition = "query=true&searchtype=advance&advft_criteria=" . $conditionJson . "&advft_criteria_groups=" . urlencode($json->encode($advft_criteria_groups));
+			$conditionJson = urlencode(json_encode($condition));
+			$condition = "query=true&searchtype=advance&advft_criteria=" . $conditionJson . "&advft_criteria_groups=" . urlencode(json_encode($advft_criteria_groups));
 		} else if (strtolower($criteria) == 'month') {
 			$date = DateTimeField::convertToUserFormat($year . "-" . $month);
 			$endMonth = $month + 1;
@@ -119,8 +118,8 @@ Class CustomReportUtils {
 					'columncondition' => 'and'
 				)
 			);
-			$conditionJson = urlencode($json->encode($condition));
-			$condition = "query=true&searchtype=advance&advft_criteria=" . $conditionJson . "&advft_criteria_groups=" . urlencode($json->encode($advft_criteria_groups));
+			$conditionJson = urlencode(json_encode($condition));
+			$condition = "query=true&searchtype=advance&advft_criteria=" . $conditionJson . "&advft_criteria_groups=" . urlencode(json_encode($advft_criteria_groups));
 		} else if (strtolower($criteria) == 'quarter') {
 			$condition = "";
 			$quraterNum = $month / 3;
@@ -153,8 +152,8 @@ Class CustomReportUtils {
 					'columncondition' => 'and'
 				)
 			);
-			$conditionJson = urlencode($json->encode($condition));
-			$condition = "query=true&searchtype=advance&advft_criteria=" . $conditionJson . "&advft_criteria_groups=" . urlencode($json->encode($advft_criteria_groups));
+			$conditionJson = urlencode(json_encode($condition));
+			$condition = "query=true&searchtype=advance&advft_criteria=" . $conditionJson . "&advft_criteria_groups=" . urlencode(json_encode($advft_criteria_groups));
 		} elseif (strtolower($criteria) == 'none') {
 			$date = DateTimeField::convertToUserFormat($fieldvalue);
 			$condition = array(
@@ -166,8 +165,8 @@ Class CustomReportUtils {
 					'columncondition' => 'and'
 				)
 			);
-			$conditionJson = urlencode($json->encode($condition));
-			$condition = "query=true&searchtype=advance&advft_criteria=" . $conditionJson . "&advft_criteria_groups=" . urlencode($json->encode($advft_criteria_groups));
+			$conditionJson = urlencode(json_encode($condition));
+			$condition = "query=true&searchtype=advance&advft_criteria=" . $conditionJson . "&advft_criteria_groups=" . urlencode(json_encode($advft_criteria_groups));
 		}
 		return $condition;
 	}

@@ -41,14 +41,10 @@ if(count($ids_list) > 0) {
 	$ret = getEntityName($returnmodule,$ids_list);
 	if(count($ret) > 0)
 	{
-       		$errormsg = implode(',',$ret);
+		$errormsg = implode(',',$ret);
 	}
 }
 
-if(isset($_REQUEST['smodule']) && ($_REQUEST['smodule']!=''))
-{
-	$smod = "&smodule=".vtlib_purify($_REQUEST['smodule']);
-}
 if(isset($_REQUEST['start']) && ($_REQUEST['start']!=''))
 {
 	$rstart = "&start=".vtlib_purify($_REQUEST['start']);

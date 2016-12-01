@@ -8,7 +8,6 @@
  * All Rights Reserved.
  ************************************************************************************/
 require_once 'include/Webservices/Utils.php';
-require_once("include/Zend/Json.php");
 require_once 'include/Webservices/WebserviceField.php';
 require_once 'include/Webservices/EntityMeta.php';
 require_once 'include/Webservices/VtigerWebserviceObject.php';
@@ -29,9 +28,6 @@ $url_string = '';
 $smarty = new vtigerCRM_Smarty;
 $smarty->assign("subject",$_REQUEST['subject']);
 $smarty->assign("description",$_REQUEST['description']);
-
-Zend_Json::$useBuiltinEncoderDecoder = true;
-$json = new Zend_Json();
 
 $elementType = $_REQUEST['module'];
 
@@ -66,8 +62,8 @@ foreach ($wsFieldDetails['type']['refersTo'] as $type) {
 }
 
 $smarty->assign("types",$wsFieldDetails['type']['refersTo']);
-$smarty->assign("entityNameFields",$json->encode($moduleEntityNameDetails));
-$smarty->assign("emailFields",$json->encode($moduleEmailFieldDetails));
+$smarty->assign("entityNameFields",json_encode($moduleEntityNameDetails));
+$smarty->assign("emailFields",json_encode($moduleEmailFieldDetails));
 $smarty->assign("userEmail",$current_user->column_fields['email1']);
 $smarty->assign("MODULE",$currentModule);
 $smarty->assign('coreBOS_uiapp_name', GlobalVariable::getVariable('Application_UI_Name',$coreBOS_app_name));
