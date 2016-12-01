@@ -31,6 +31,8 @@ class crmtogo_UI_Logout extends crmtogo_WS_Login {
 		$viewer->assign('LANGUAGE', $default_lang_strings);
 		$viewer->assign('COLOR_HEADER_FOOTER', $default_config['theme']);
 		$viewer->assign('LOGOUT', true);
+		$viewer->assign("COMPANY_LOGO",$default_config['company_logo']);
+		$viewer->assign("COMPANY_NAME",$default_config['company_name']);
 		return $viewer->process('Login.tpl');
 	}
 }
