@@ -256,7 +256,7 @@
 <!-- header - master tabs -->
 <table>
 <div>
-	<nav id="navigation">
+	<nav id="navigation" class="nav">
 		<ul id="main-menu"></ul>
 		<select id="qccombo" style="margin-top:5px; margin-left:50px" onchange="QCreate(this);">
 			<option value="none">{$APP.LBL_QUICK_CREATE}...</option>
