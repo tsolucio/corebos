@@ -109,7 +109,10 @@ class crmtogo_UI_EditView extends crmtogo_WS_FetchRecordDetails {
 			//Get PanelMenu data
 			$modules = $this->sessionGet('_MODULES');
 			$viewer->assign('_MODULES', $modules);
-			$response = $viewer->process('EditView.tpl');
+			if(isset($_REQUEST['quickcreate']) && $_REQUEST['quickcreate'] == 1)
+				$response = $viewer->process('QuickCreateView.tpl');
+			else
+				$response = $viewer->process('EditView.tpl');
 		}
 		return $response;
 	}

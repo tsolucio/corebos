@@ -108,4 +108,8 @@ class crmtogo_UI_FieldModel {
 	function ismandatory() {
 		return $this->data['mandatory'];
 	}
+
+	function quickcreate() {
+		return $this->data['quickcreate'];
+	}
 }

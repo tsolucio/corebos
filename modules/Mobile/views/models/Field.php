@@ -120,5 +120,9 @@ class crmtogo_UI_FieldModel {
 			return '';
 		}
 	}
-	
+
+	function quickcreate() {
+		return $this->data['quickcreate'];
+	}
+
 }

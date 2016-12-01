@@ -55,6 +55,9 @@ class crmtogo_WS_Describe extends crmtogo_WS_Controller {
 							$picklistValues = $describeField['type']['picklistValues'];
 							$field['type']['value'] = array ('value' =>$picklistValues,'name' => $fieldname);
 						}
+						if (isset($describeField['type']) && $describeField['type']!='') {
+							$field['quickcreate'] = $describeField['quickcreate'];
+						}
 					}
 				}
 				if($field['uitype'] == '51' || $field['uitype'] == '59' || $field['uitype'] == '10'){
