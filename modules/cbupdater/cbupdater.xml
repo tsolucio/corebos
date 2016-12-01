@@ -962,4 +962,11 @@
 	<classname>fixCalendarStartEndDateOnReportsFilters</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add Created-By Field to all modules</description>
+	<filename>build/changeSets/addCreatedByField.php</filename>
+	<classname>addCreatedByField</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

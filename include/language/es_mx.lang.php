@@ -860,6 +860,7 @@ $app_strings = array (
       'Created Time' => 'Fecha de Creación',
       'Modified Time' => 'Fecha de Modificación',
       'Last Modified By' => 'Ultima modificación por',
+	'Created By' => 'Creado por',
       'FAQ Id' => 'Id FAQ',
       'Lead Status' => 'Estado de Prospecto',
       'Lead Source' => 'Origen de Prospecto',

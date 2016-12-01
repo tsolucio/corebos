@@ -942,6 +942,7 @@ $app_strings = array (
   'Created Time' => 'Orario creazione',
   'Modified Time' => 'Orario modifica',
   'Last Modified By' => 'Last Modified By',
+	'Created By' => 'Created By',
   'FAQ Id' => 'Identificativo FAQ ',
   'Lead Status' => 'Stato Lead',
   'Lead Source' => 'Origine Lead',
