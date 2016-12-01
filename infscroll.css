@@ -1,0 +1,123 @@
+body {
+  background-color: #f8f8f8;
+  color: #333;
+  counter-reset: page;
+  -webkit-font-smoothing: antialiased;
+  -moz-font-smoothing: grayscale;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  text-transform: uppercase;
+}
+
+a {
+  color: #28f;
+  text-decoration: none;
+}
+a:hover, a:focus {
+  color: #0062d5;
+}
+a:active {
+  color: #003f88;
+}
+
+main {
+  margin: 0 auto;
+  max-width: 30em;
+  padding: 1em;
+}
+
+.article-list__page {
+  border-top: 1px solid #ddd;
+  clear: both;
+  counter-increment: page;
+  padding-bottom: 3em;
+  position: relative;
+}
+.article-list__page:before {
+  background-color: #ddd;
+  display: inline-block;
+  content: counter(page);
+  color: #888;
+  padding: .25em .5em;
+  position: absolute;
+  left: calc(50% - .75em);
+  top: -.75em;
+  vertical-align: middle;
+  z-index: 1;
+}
+
+.article-list__item {
+  background-color: #eee;
+  float: left;
+  height: 15em;
+  max-width: 50%;
+  opacity: .75;
+  -webkit-transform: scale(0.8);
+          transform: scale(0.8);
+  -webkit-transition: opacity 0.2s, -webkit-transform 0.2s;
+  transition: opacity 0.2s, -webkit-transform 0.2s;
+  transition: opacity 0.2s, transform 0.2s;
+  transition: opacity 0.2s, transform 0.2s, -webkit-transform 0.2s;
+  width: 15em;
+}
+.article-list__item:hover {
+  opacity: 1;
+  -webkit-transform: scale(1);
+          transform: scale(1);
+}
+
+.article-list__item__image {
+  display: block;
+  height: auto;
+  margin: 0;
+  opacity: 1;
+  -webkit-transition: opacity 0.2s;
+  transition: opacity 0.2s;
+  width: 100%;
+}
+
+.article-list__item__image--loading {
+  opacity: 0;
+}
+
+.article-list__pagination {
+  background-color: #222;
+  box-shadow: 0 0 1em rgba(0, 0, 0, 0.25);
+  display: block;
+  bottom: 0;
+  left: 0;
+  list-style-type: none;
+  margin: 0;
+  padding: .5em;
+  position: fixed;
+  right: 0;
+  text-align: center;
+  -webkit-transform: translateY(0);
+          transform: translateY(0);
+  -webkit-transition: -webkit-transform 0.2s;
+  transition: -webkit-transform 0.2s;
+  transition: transform 0.2s;
+  transition: transform 0.2s, -webkit-transform 0.2s;
+  z-index: 2;
+}
+
+.article-list__pagination--inactive {
+  -webkit-transform: translateY(100%);
+          transform: translateY(100%);
+}
+
+.article-list__pagination__item {
+  display: inline-block;
+  margin: 0 1em;
+}
+.article-list__pagination__item a {
+  color: #888;
+  text-decoration: none;
+}
+.article-list__pagination__item a:hover, .article-list__pagination__item a:focus {
+  color: #aeaeae;
+}
+.article-list__pagination__item a:active {
+  color: #d5d5d5;
+}
