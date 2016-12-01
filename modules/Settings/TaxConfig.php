@@ -210,7 +210,7 @@ function addTaxType($taxlabel, $taxvalue, $sh='')
 
 		$event_data = array(
 			'tax_type' => 'sh',
-			'tax_id' => $taxId,
+			'tax_id' => $taxid,
 			'tax_label' => $taxlabel,
 			'tax_value' => $taxvalue
 		);
@@ -223,7 +223,7 @@ function addTaxType($taxlabel, $taxvalue, $sh='')
 
 		$event_data = array(
 			'tax_type' => 'tax',
-			'tax_id' => $taxId,
+			'tax_id' => $taxid,
 			'tax_label' => $taxlabel,
 			'tax_value' => $taxvalue
 		);
