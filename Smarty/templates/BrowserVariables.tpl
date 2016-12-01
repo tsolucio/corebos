@@ -18,4 +18,10 @@ var userFirstDayOfWeek = {$USER_FIRST_DOW};
 var userCurrencySeparator = "{$USER_CURRENCY_SEPARATOR}";
 var userDecimalSeparator = "{$USER_DECIMAL_FORMAT}";
 var userNumberOfDecimals = "{$USER_NUMBER_DECIMALS}";
+if (typeof(Storage) !== "undefined") {ldelim}
+	var corebos_browsertabID = sessionStorage.corebos_browsertabID ? sessionStorage.corebos_browsertabID : sessionStorage.corebos_browsertabID = Math.random().toString().substring(2);
+	window.addEventListener('beforeunload', function(event) {
+		document.cookie = "corebos_browsertabID="+corebos_browsertabID;
+	});
+{rdelim}
 </script>
