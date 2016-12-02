@@ -43,9 +43,9 @@ class Mobile {
 		global $log;
 		if($event_type == 'module.postinstall') {
 			$db = PearDatabase::getInstance();
-			$db->pquery("INSERT INTO `berli_crmtogo_defaults` (`fetch_limit`, `crmtogo_lang`, `defaulttheme`, `crm_version`) VALUES (?, ?, ?, ?)", array('99','en_us', 'a', '6.3'));
+			$db->pquery("INSERT INTO `berli_crmtogo_defaults` (`fetch_limit`, `crmtogo_lang`, `defaulttheme`, `crm_version`) VALUES (?, ?, ?, ?)", array('99','en_us', 'b', '6.3'));
 			$log->fatal('crmtogo default config settings are created');
-			$db->pquery("INSERT INTO `berli_crmtogo_config` (`crmtogouser`, `navi_limit`, `theme_color`, `compact_cal`) VALUES (?, ?, ?, ?)", array('1','25', 'a', '1'));
+			$db->pquery("INSERT INTO `berli_crmtogo_config` (`crmtogouser`, `navi_limit`, `theme_color`, `compact_cal`) VALUES (?, ?, ?, ?)", array('1','25', 'b', '1'));
 			$log->fatal('crmtogo admin config settings are created');
 			$seq = 0;
 			$supported_module = array ('Contacts','Accounts','Leads','Calendar','Potentials','HelpDesk','Vendors','Assets','Faq','Documents','Quotes','SalesOrder','Invoice','Products','Project','ProjectMilestone','ProjectTask','Events');
@@ -93,9 +93,9 @@ class Mobile {
 			$db = PearDatabase::getInstance();
 			$res = $db->pquery("SELECT * FROM berli_crmtogo_config WHERE crmtogouser =?", array('1'));
 			if ($db->num_rows($res) ==0 )	{
-				$db->pquery("INSERT INTO `berli_crmtogo_defaults` (`fetch_limit`, `crmtogo_lang`, `defaulttheme`, `crm_version`) VALUES (?, ?, ?, ?)", array('99','en_us', 'a', '6.3'));
+				$db->pquery("INSERT INTO `berli_crmtogo_defaults` (`fetch_limit`, `crmtogo_lang`, `defaulttheme`, `crm_version`) VALUES (?, ?, ?, ?)", array('99','en_us', 'b', '6.3'));
 				$log->fatal('crmtogo default config settings are created');
-				$db->pquery("INSERT INTO `berli_crmtogo_config` (`crmtogouser`, `navi_limit`, `theme_color`, `compact_cal`) VALUES (?, ?, ?, ?)", array('1','25', 'a', '1'));
+				$db->pquery("INSERT INTO `berli_crmtogo_config` (`crmtogouser`, `navi_limit`, `theme_color`, `compact_cal`) VALUES (?, ?, ?, ?)", array('1','25', 'b', '1'));
 				$log->fatal('crmtogo admin config settings are created');
 				$seq = 0;
 				$supported_module = array ('Contacts','Accounts','Leads','Calendar','Potentials','HelpDesk','Vendors','Assets','Faq','Documents','Quotes','SalesOrder','Invoice','Products','Project','ProjectMilestone','ProjectTask','Events');
