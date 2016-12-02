@@ -31,7 +31,7 @@ class crmtogo_UI_LoginAndFetchModules extends crmtogo_WS_LoginAndFetchModules {
 
 			$config = $this->getUserConfigSettings();
 
-			$module_by_default = GlobalVariable::getVariable('Mobile_Module_by_default', 'Contacts', 'Mobile', $current_user->id);
+			$module_by_default = GlobalVariable::getVariable('Mobile_Module_by_default', 'Calendar', 'Mobile', $current_user->id);
 			header("Location:index.php?_operation=listModuleRecords&module=".$module_by_default);
 		}
 		return $response;
