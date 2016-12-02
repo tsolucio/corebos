@@ -14,6 +14,7 @@
 	<link rel="stylesheet" href="resources/css/theme.css" >
 	<script type="text/javascript" src="resources/jquery.mobile-1.4.5.min.js"></script>
 	<script type="text/javascript" src="resources/crmtogo.js"></script>
+	<script type="text/javascript" src="resources/settings.js" ></script>
 	<title>{if $TITLE}{$TITLE}{else}CRM{/if}</title>
 	<link rel="stylesheet" href="resources/css/jquery.mobile.icons.min.css" >
 </head>
