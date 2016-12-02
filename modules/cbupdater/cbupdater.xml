@@ -969,4 +969,11 @@
 	<classname>addCreatedByField</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>omarllorens</author>
+	<description>Update Mobile Module</description>
+	<filename>build/changeSets/updateMobileModuleToCrmNow2.php</filename>
+	<classname>updateMobileModuleToCrmNow2</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

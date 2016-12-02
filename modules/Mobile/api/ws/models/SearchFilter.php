@@ -10,8 +10,7 @@
 include_once 'include/Webservices/Query.php';
 include_once dirname(__FILE__) . '/Filter.php';
 	
-class Mobile_WS_SearchFilterModel extends Mobile_WS_FilterModel {
-	
+class crmtogo_WS_SearchFilterModel extends crmtogo_WS_FilterModel {
 	protected $criterias;
 	
 	function __construct($moduleName) {
@@ -30,16 +29,21 @@ class Mobile_WS_SearchFilterModel extends Mobile_WS_FilterModel {
 		$this->criterias = $criterias;
 	}
 	
-	function execute($fieldnames, $pagingModel = false) {
-	      
+	function execute($fieldnames, $paging = false, $calwhere ='') {	      
 		$selectClause = sprintf("SELECT %s", implode(',', $fieldnames));
 		$fromClause = sprintf("FROM %s", $this->moduleName);
-		
-		$whereClause = "";
+		if (($this->moduleName = 'Calendar' || $this->moduleName = 'Events') and $calwhere !='') {
+			$whereClause = " WHERE date_start >= '".$calwhere['start']."' AND date_start <= '".$calwhere['end']."'";
+		}
+		else {
+			$whereClause = "";
+		}
 		$orderClause = "";
 		$groupClause = "";
-		$limitClause = $pagingModel? " LIMIT {$pagingModel->currentCount()},{$pagingModel->limit()}" : "" ;
-		
+		if ($paging) {
+			$config = crmtogo_WS_Controller::getUserConfigSettings();
+			$limitClause = "LIMIT 0,".$config['NavigationLimit'];
+		}
 		if (!empty($this->criterias)) {
 			$_sortCriteria = $this->criterias['_sort'];
 			if(!empty($_sortCriteria)) {
@@ -48,12 +52,11 @@ class Mobile_WS_SearchFilterModel extends Mobile_WS_FilterModel {
 		}
 		 
 		$query = sprintf("%s %s %s %s %s %s;", $selectClause, $fromClause, $whereClause, $orderClause, $groupClause, $limitClause);
-		
 		return vtws_query($query, $this->getUser()); 
 	}
 	
 	static function modelWithCriterias($moduleName, $criterias = false) {
-		$model = new Mobile_WS_SearchFilterModel($moduleName);
+		$model = new crmtogo_WS_SearchFilterModel($moduleName);
 		$model->setCriterias($criterias);
 		return $model;
 	}
