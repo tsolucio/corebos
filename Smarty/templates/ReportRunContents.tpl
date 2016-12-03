@@ -48,6 +48,9 @@
 					$__oReportRun = $this->_tpl_vars['__REPORT_RUN_INSTANCE'];
 					$__filterSql = $this->_tpl_vars['__REPORT_RUN_FILTER_SQL'];
 					$__oReportRunReturnValue = $__oReportRun->GenerateReport("HTML", $__filterSql, true);
+					$__oReportRun->page=4;
+					$__oReportRunReturnValue = $__oReportRun->GenerateReport("HTMLPAGED", $__filterSql, true);
+					echo $__oReportRunReturnValue[0];
 				{/php}
 			{/if}
 		{elseif $ERROR_MSG eq ''}

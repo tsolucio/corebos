@@ -31,6 +31,8 @@ class ReportRun extends CRMEntity {
 	var $reportname;
 	var $totallist;
 	var $number_of_rows;
+	var $page = 1;
+	var $islastpage = false;
 
 	var $_groupinglist  = false;
 	var $_columnslist    = false;
@@ -1743,9 +1745,10 @@ class ReportRun extends CRMEntity {
 	}
 
 	/** function to get query for the given reportid,filterlist,type
-	 *  @ param $reportid : Type integer
-	 *  @ param $filtersql : Type Array
-	 *  @ param $module : Type String
+	 * @param $reportid : integer
+	 * @param $filtersql : Array
+	 * @param $type : String output format of the report
+	 * @param $chartReport : boolean
 	 *  this returns join query for the report
 	 */
 	function sGetSQLforReport($reportid,$filtersql,$type='',$chartReport=false)
@@ -1881,6 +1884,10 @@ class ReportRun extends CRMEntity {
 			$report=str_replace('&amp;', '&', $reportquery);
 			$reportquery = $this->replaceSpecialChar($report);
 		}
+		if ($type == 'HTMLPAGED' and !$allColumnsRestricted) {
+			$rowsperpage = 10;
+			$reportquery .= ' limit '.(($this->page-1)*$rowsperpage).', '.$rowsperpage;
+		}
 		$log->info("ReportRun :: Successfully returned sGetSQLforReport".$reportid);
 		if (GlobalVariable::getVariable('Debug_Report_Query', '0')=='1') {
 			echo '<br>'.$reportquery.'<br>';
@@ -1931,8 +1938,10 @@ class ReportRun extends CRMEntity {
 			}
 		}
 
-		if($outputformat == "HTML")
+		if($outputformat == 'HTML' || $outputformat == 'HTMLPAGED')
 		{
+			error_reporting(E_ALL);ini_set('display_errors', 1);
+			if ($outputformat=='HTMLPAGED') $directOutput = false;
 			$sSQL = $this->sGetSQLforReport($this->reportid,$filtersql,$outputformat);
 			$result = $adb->query($sSQL);
 			$error_msg = $adb->database->ErrorMsg();
@@ -1942,7 +1951,6 @@ class ReportRun extends CRMEntity {
 					echo getTranslatedString('LBL_REPORT_GENERATION_FAILED', $currentModule) . "<br>" . $error_msg;
 					$error_msg = false;
 				}
-				// END
 				return $error_msg;
 			}
 
@@ -1950,7 +1958,6 @@ class ReportRun extends CRMEntity {
 			if($directOutput) {
 				echo '<table cellpadding="5" cellspacing="0" align="center" class="rptTable"><tr>';
 			}
-			// END
 
 			if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1) {
 				$picklistarray = $this->getAccessPickListValues();
@@ -1960,6 +1967,12 @@ class ReportRun extends CRMEntity {
 				$y=$adb->num_fields($result);
 				$noofrows = $adb->num_rows($result);
 				$this->number_of_rows = $noofrows;
+				if($outputformat == 'HTMLPAGED') {
+					$rowsperpage = 10;
+					if ($this->page*$rowsperpage>$noofrows-$rowsperpage) {
+						$this->islastpage = true;
+					}
+				}
 				$custom_field_values = $adb->fetch_array($result);
 				$groupslist = $this->getGroupingList($this->reportid);
 				$arrayHeaders = Array();
@@ -2123,14 +2136,16 @@ class ReportRun extends CRMEntity {
 					echo "<script type='text/javascript' id='__reportrun_directoutput_recordcount_script'>
 						if(document.getElementById('_reportrun_total')) document.getElementById('_reportrun_total').innerHTML=$noofrows;</script>";
 				} else {
-					$sHTML ='<table cellpadding="5" cellspacing="0" align="center" class="rptTable">
-					<tr>'.
-					$header
-					.'<!-- BEGIN values -->
-					<tr>'.
-					$valtemplate
-					.'</tr>
-					</table>';
+					if ($this->page==1) {
+						$sHTML = '<table cellpadding="5" cellspacing="0" align="center" class="rptTable">
+						<tr>'.
+						$header
+						.'<!-- BEGIN values -->';
+					}
+					$sHTML .= '<tr>'.$valtemplate.'</tr>';
+					if ($this->islastpage) {
+						$sHTML .= '</table>';
+					}
 				}
 				//<<<<<<<<construct HTML>>>>>>>>>>>>
 				$return_data[] = $sHTML;
