@@ -9,7 +9,7 @@ function getDocumentHeight() {
 }
 ;
 function getScrollTop() {
-    return window.pageYOffset !== undefined ? window.pageYOffset : (document.documentElement || document.body.parentNode || document.body).scrollTop;
+    return document.getElementById('scrollrange').scrollTop;
 }
 function getArticleImage() {
     var hash = Math.floor(Math.random() * Number.MAX_SAFE_INTEGER);
@@ -82,7 +82,8 @@ function addPaginationPage(page) {
     var listItem = document.createElement('li');
     listItem.className = 'article-list__pagination__item';
     listItem.appendChild(pageLink);
-    articleListPagination.appendChild(listItem);
+    //articleListPagination.appendChild(listItem);
+    articleListPagination.innerHTML = articleListPagination.innerHTML+' '+pageLink;
     if (page === 2) {
         articleListPagination.classList.remove('article-list__pagination--inactive');
     }
@@ -101,8 +102,10 @@ var articleList = document.getElementById('article-list');
 var articleListPagination = document.getElementById('article-list-pagination');
 var page = 0;
 addPage(++page);
-window.onscroll = function () {
-    if (getScrollTop() < getDocumentHeight() - window.innerHeight)
-        return;
-    addPage(++page);
+function scrollrange_onscroll() {
+	var scrollobject = document.getElementById('scrollrange');
+	var soheight = scrollobject.scrollHeight-scrollobject.offsetHeight;
+	if (scrollobject.scrollTop >= soheight && scrollobject.scrollTop <= soheight+4.5) {
+		addPage(++page);
+	}
 };
