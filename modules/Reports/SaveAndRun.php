@@ -83,7 +83,6 @@ if($numOfRows > 0) {
 		$list_report_form->assign('THEME', $theme);
 		//Monolithic phase 6 changes
 		if($showCharts == true){
-			$list_report_form->assign("SHOWCHARTS",$showCharts);
 			require_once 'modules/Reports/CustomReportUtils.php';
 			require_once 'include/ChartUtils.php';
 
@@ -114,9 +113,8 @@ if($numOfRows > 0) {
 			else{
 				$showCharts = false;
 			}
-			$list_report_form->assign("SHOWCHARTS",$showCharts);
 		}
-		//Monolithic Changes Ends
+		$list_report_form->assign("SHOWCHARTS",$showCharts);
 
 		// Performance Optimization: Direct output of the report result
 		if($_REQUEST['submode'] == 'generateReport' && empty($advft_criteria)) {
