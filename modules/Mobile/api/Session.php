@@ -10,7 +10,7 @@
 ini_set('include_path',ini_get('include_path'). PATH_SEPARATOR . '../../../include/HTTP_Session2');
 include_once dirname(__FILE__) . '/../../../include/HTTP_Session2/Session2.php';
 
-class Mobile_API_Session {
+class crmtogo_API_Session {
 	
 	function __construct() {
 	}

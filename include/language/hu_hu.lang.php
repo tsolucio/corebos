@@ -846,6 +846,7 @@ $app_strings = array(
 	'Created Time' => 'Létrehozás ideje',
 	'Modified Time' => 'Módosítás ideje',
 	'Last Modified By' => 'Last Modified By',
+	'Created By' => 'Created By',
 	'FAQ Id' => 'TudásTár ID',
 	'Lead Status' => 'Jelölt állapot',
 	'Lead Source' => 'Jelölt forrás',

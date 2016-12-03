@@ -843,6 +843,7 @@ $app_strings = array(
 	'Created Time' => 'Created Time',
 	'Modified Time' => 'Modified Time',
 	'Last Modified By' => 'Last Modified By',
+	'Created By' => 'Created By',
 	'FAQ Id' => 'FAQ ID',
 	'Lead Status' => 'Lead Status',
 	'Lead Source' => 'Lead Source',

@@ -875,6 +875,7 @@ $app_strings = array(
 	'Created Time' => 'Gemaakt',
 	'Modified Time' => 'Gewijzigd',
 	'Last Modified By' => 'Last Modified By',
+	'Created By' => 'Created By',
 	'FAQ Id' => 'FAQ Id',
 	'Lead Status' => 'Lead status',
 	'Lead Source' => 'Lead bron',

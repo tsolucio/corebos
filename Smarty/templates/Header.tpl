@@ -72,7 +72,12 @@
 	if(typeof(use_asterisk) == 'undefined') use_asterisk = true;
 	</script>
 {/if}
-    <!-- END -->
+	<script type="text/javascript">
+	<!-- browser tab identification on ajax calls -->
+	jQuery(document).ajaxSend(function() {ldelim}
+		document.cookie = "corebos_browsertabID="+corebos_browsertabID;
+	{rdelim});
+	</script>
 
 {* vtlib customization: Inclusion of custom javascript and css as registered *}
 {if $HEADERSCRIPTS}

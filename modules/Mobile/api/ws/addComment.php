@@ -6,43 +6,43 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
+ * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
-include_once dirname(__FILE__) . '/models/Alert.php';
 
-class Mobile_WS_AddComment extends Mobile_WS_Controller {
+class crmtogo_WS_AddComment extends crmtogo_WS_Controller {
 	
-	function process(Mobile_API_Request $request) {
+	function process(crmtogo_API_Request $request) {
 		return $this->getContent($request);
 	}
 	
-	function getContent(Mobile_API_Request $request) {
+	function getContent(crmtogo_API_Request $request) {
 		$comment = $request->get('comment');
 		$parentid = $request->get('parentid');
-		
 		if (isset($comment) && !empty($comment)) {
-			$parentmodule = Mobile_WS_Utils::detectModulenameFromRecordId($parentid);
+			$parentmodule = crmtogo_WS_Utils::detectModulenameFromRecordId($parentid);
+			$current_user = $this->getActiveUser();
+			date_default_timezone_set($current_user->time_zone);
 			if ($parentmodule != 'HelpDesk') {
 				include_once 'include/Webservices/Create.php';
-				
-				$current_user = $this->getActiveUser();
-				$userid = Mobile_WS_Utils::getEntityModuleWSId('Users')."x".$current_user->id;
+				$userid = crmtogo_WS_Utils::getEntityModuleWSId('Users')."x".$current_user->id;
 				$arr_comment = array('commentcontent' => $comment, 'related_to' => $parentid, 'creator' => $userid, 'assigned_user_id'=> $userid);
 				$ele = vtws_create('ModComments', $arr_comment, $current_user);
+				$ele['createdtime'] = DateTimeField::convertToUserFormat($ele['createdtime']);
 			}
 			else {
 				$parentrecordid = vtws_getIdComponents($parentid);
 				$parentrecordid = $parentrecordid[1];
 
 				//there is currently no vtws service available for ticket comments
-				$current_user = $this->getActiveUser();
 				$current_user_id = $current_user ->id;
 				$userrecordid = vtws_getIdComponents($current_user_id);
 				$userrecordid = $userrecordid[1];
 				$arr_comment = array('commentcontent' => $comment, 'related_to' => $parentrecordid, 'creator' => $current_user_id);
 				//$ele = vtws_create('ModComments', $arr_comment, $current_user);
-				$saverecord = Mobile_WS_Utils::createTicketComment($parentid,$comment,$current_user);
+				$saverecord = crmtogo_WS_Utils::createTicketComment($parentrecordid,$comment,$current_user);
+				$current_date_time = date('Y-m-d H:i:s');
 				if ($saverecord == true) {
-					$userid = Mobile_WS_Utils::getEntityModuleWSId('Users')."x".$current_user_id;
+					$userid = crmtogo_WS_Utils::getEntityModuleWSId('Users')."x".$current_user_id;
 					$ele['commentcontent'] = $arr_comment['commentcontent'];
 					$ele['creator'] = $userid;
 					$ele['assigned_user_id'] = $userid;
@@ -52,11 +52,9 @@ class Mobile_WS_AddComment extends Mobile_WS_Controller {
 				}
 			}
 		}
-		
-		$response = new Mobile_API_Response();
+		$response = new crmtogo_API_Response();
 		$ele['assigned_user_id'] = vtws_getName($ele['creator'], $current_user);
 		$response->setResult(array('comment'=>$ele));
-		
 		return $response;
 	}
 }

@@ -7,7 +7,7 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-class Mobile_API_Request {
+class crmtogo_API_Request {
 	private $valuemap;
 	private $rawvaluemap;
 	private $defaultmap = array();
