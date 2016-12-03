@@ -1885,7 +1885,7 @@ class ReportRun extends CRMEntity {
 			$reportquery = $this->replaceSpecialChar($report);
 		}
 		if ($type == 'HTMLPAGED' and !$allColumnsRestricted) {
-			$rowsperpage = 10;
+			$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize',40);
 			$reportquery .= ' limit '.(($this->page-1)*$rowsperpage).', '.$rowsperpage;
 		}
 		$log->info("ReportRun :: Successfully returned sGetSQLforReport".$reportid);
@@ -1940,7 +1940,6 @@ class ReportRun extends CRMEntity {
 
 		if($outputformat == 'HTML' || $outputformat == 'HTMLPAGED')
 		{
-			error_reporting(E_ALL);ini_set('display_errors', 1);
 			if ($outputformat=='HTMLPAGED') $directOutput = false;
 			$sSQL = $this->sGetSQLforReport($this->reportid,$filtersql,$outputformat);
 			$result = $adb->query($sSQL);
@@ -1968,14 +1967,13 @@ class ReportRun extends CRMEntity {
 				$noofrows = $adb->num_rows($result);
 				$this->number_of_rows = $noofrows;
 				if($outputformat == 'HTMLPAGED') {
-					$rowsperpage = 10;
+					$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize',40);
 					if ($this->page*$rowsperpage>$noofrows-$rowsperpage) {
 						$this->islastpage = true;
 					}
 				}
 				$custom_field_values = $adb->fetch_array($result);
 				$groupslist = $this->getGroupingList($this->reportid);
-				$arrayHeaders = Array();
 				$header = '';
 				for ($x=0; $x<$y; $x++)
 				{
@@ -2024,7 +2022,6 @@ class ReportRun extends CRMEntity {
 				$thirdvalue = '';
 				$sHTML = '';
 				do {
-					$arraylists = Array();
 					$newvalue = '';
 					$snewvalue = '';
 					$tnewvalue = '';
@@ -2126,7 +2123,6 @@ class ReportRun extends CRMEntity {
 					$lastvalue = $newvalue;
 					$secondvalue = $snewvalue;
 					$thirdvalue = $tnewvalue;
-					$arr_val[] = $arraylists;
 					set_time_limit($php_max_execution_time);
 				}while($custom_field_values = $adb->fetch_array($result));
 
@@ -2168,8 +2164,8 @@ class ReportRun extends CRMEntity {
 				$custom_field_values = $adb->fetch_array($result);
 				$ILF = new InventoryLineField();
 				$invMods = getInventoryModules();
-				do
-				{
+				$arr_val = array();
+				do {
 					$arraylists = Array();
 					for ($i=0; $i<$y-1; $i++) //No tratamos la última columna por ser el ACTION con el CRMID.
 					{
@@ -2484,7 +2480,6 @@ class ReportRun extends CRMEntity {
 				$custom_field_values = $adb->fetch_array($result);
 				$groupslist = $this->getGroupingList($this->reportid);
 				$y=$adb->num_fields($result);
-				$arrayHeaders = Array();
 				$header = '';
 				for ($x=0; $x<$y-1; $x++)
 				{
@@ -2520,7 +2515,6 @@ class ReportRun extends CRMEntity {
 				$secondvalue = '';
 				$thirdvalue = '';
 				do {
-					$arraylists = Array();
 					$newvalue = '';
 					$snewvalue = '';
 					$tnewvalue = '';
@@ -2591,7 +2585,6 @@ class ReportRun extends CRMEntity {
 					$lastvalue = $newvalue;
 					$secondvalue = $snewvalue;
 					$thirdvalue = $tnewvalue;
-					$arr_val[] = $arraylists;
 					set_time_limit($php_max_execution_time);
 				}while($custom_field_values = $adb->fetch_array($result));
 
