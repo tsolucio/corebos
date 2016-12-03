@@ -1947,7 +1947,7 @@ class ReportRun extends CRMEntity {
 			if(!$result && $error_msg!=''){
 				// Performance Optimization: If direct output is requried
 				if($directOutput) {
-					echo getTranslatedString('LBL_REPORT_GENERATION_FAILED', $currentModule) . "<br>" . $error_msg;
+					echo getTranslatedString('LBL_REPORT_GENERATION_FAILED', 'Reports') . "<br>" . $error_msg;
 					$error_msg = false;
 				}
 				return $error_msg;
@@ -1978,7 +1978,12 @@ class ReportRun extends CRMEntity {
 				for ($x=0; $x<$y; $x++)
 				{
 					$fld = $adb->field_name($result, $x);
-					list($module, $fieldLabel) = explode('_', $fld->name, 2);
+					if ($fld->name=='LBL_ACTION') {
+						$module = 'Reports';
+						$fieldLabel = 'LBL_ACTION';
+					} else {
+						list($module, $fieldLabel) = explode('_', $fld->name, 2);
+					}
 					$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
 					if(!empty($fieldInfo)) {
 						$field = WebserviceField::fromArray($adb, $fieldInfo);
@@ -2062,7 +2067,7 @@ class ReportRun extends CRMEntity {
 						}
 						else if($fld->name == 'LBL_ACTION' && $fieldvalue != '-')
 						{
-							$fieldvalue = "<a href='index.php?module={$this->primarymodule}&action=DetailView&record={$fieldvalue}' target='_blank'>".getTranslatedString('LBL_VIEW_DETAILS')."</a>";
+							$fieldvalue = "<a href='index.php?module={$this->primarymodule}&action=DetailView&record={$fieldvalue}' target='_blank'>".getTranslatedString('LBL_VIEW_DETAILS','Reports')."</a>";
 						}
 
 						if(($lastvalue == $fieldvalue) && $this->reporttype == "summary")
@@ -2159,7 +2164,7 @@ class ReportRun extends CRMEntity {
 					'data' => array(),
 					'sql' => $sSQL,
 					'error' => true,
-					'error_message' => getTranslatedString('LBL_REPORT_GENERATION_FAILED', $currentModule) . ':' . $error_msg,
+					'error_message' => getTranslatedString('LBL_REPORT_GENERATION_FAILED', 'Reports') . ':' . $error_msg,
 				);
 				return json_encode($resp);
 			}
