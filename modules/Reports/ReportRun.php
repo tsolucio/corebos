@@ -2149,6 +2149,118 @@ class ReportRun extends CRMEntity {
 				$return_data[] = $sSQL;
 				return $return_data;
 			}
+		}elseif($outputformat == 'JSON' or $outputformat == 'JSONPAGED') {
+			$sSQL = $this->sGetSQLforReport($this->reportid,$filtersql,($outputformat == 'JSON' ? 'HTML' : 'HTMLPAGED'));
+			$result = $adb->query($sSQL);
+			$error_msg = $adb->database->ErrorMsg();
+			if(!$result && $error_msg!=''){
+				$resp = array(
+					'total' => 0,
+					'data' => array(),
+					'sql' => $sSQL,
+					'error' => true,
+					'error_message' => getTranslatedString('LBL_REPORT_GENERATION_FAILED', $currentModule) . ':' . $error_msg,
+				);
+				return json_encode($resp);
+			}
+
+			if($is_admin==false && $profileGlobalPermission[1] == 1 && $profileGlobalPermission[2] == 1) {
+				$picklistarray = $this->getAccessPickListValues();
+			}
+			if($result)
+			{
+				$fldcnt=$adb->num_fields($result);
+				if ($outputformat == 'JSONPAGED') {
+					$fullsSQL = $this->sGetSQLforReport($this->reportid,$filtersql, 'HTML');
+					$fullresult = $adb->query($fullsSQL);
+					$noofrows = $adb->num_rows($fullresult);
+					unset($fullsSQL);
+					unset($fullresult);
+				} else {
+					$noofrows = $adb->num_rows($result);
+				}
+				$this->number_of_rows = $noofrows;
+				$resp = array(
+					'total' => $noofrows,
+					'current_page' => $this->page,
+					'error' => false,
+				);
+				if($outputformat == 'JSONPAGED') {
+					$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize',40);
+					$resp['per_page'] = $rowsperpage;
+					$resp['from'] = ($this->page-1)*$rowsperpage+1;
+					if ($this->page*$rowsperpage>$noofrows-$rowsperpage) {
+						$this->islastpage = true;
+						$resp['to'] = $noofrows;
+					} else {
+						$this->islastpage = false;
+						$resp['to'] = $this->page*$rowsperpage;
+					}
+					$resp['last_page'] = ceil($noofrows/$rowsperpage);
+				} else {
+					$resp['per_page'] = $noofrows;
+					$resp['from'] = 1;
+					$resp['to'] = $noofrows;
+					$resp['current_page'] = 1;
+					$resp['last_page'] = 1;
+				}
+				$custom_field_values = $adb->fetch_array($result);
+				$groupslist = $this->getGroupingList($this->reportid);
+				$header = array();
+				for ($x=0; $x<$fldcnt; $x++)
+				{
+					$fld = $adb->field_name($result, $x);
+					list($module, $fieldLabel) = explode('_', $fld->name, 2);
+					$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
+					if(!empty($fieldInfo)) {
+						$field = WebserviceField::fromArray($adb, $fieldInfo);
+					}
+					if(!empty($fieldInfo)) {
+						$headerLabel = getTranslatedString($field->getFieldLabelKey(), $module);
+					} else {
+						$headerLabel = getTranslatedString(str_replace('_', " ", $fieldLabel), $module);
+					}
+					/*STRING TRANSLATION starts */
+					$moduleLabel = '';
+					if(in_array($module,$modules_selected))
+						$moduleLabel = getTranslatedString($module,$module);
+
+					if(empty($headerLabel)) {
+							$headerLabel = getTranslatedString(str_replace('_', " ", $fld->name));
+					}
+					if(!empty($this->secondarymodule)) {
+						if($moduleLabel != '') {
+							$headerLabel = $moduleLabel." ". $headerLabel;
+						}
+					}
+					$header[] = $headerLabel;
+				}
+
+				$data = array();
+				$rowcnt = 0;
+				do {
+					$crmid = $adb->query_result($result, $rowcnt++, $fldcnt-1);
+					$datarow = array();
+					$datarow['crmid'] = $crmid;
+					for ($i=0; $i<$fldcnt; $i++) {
+						$fld = $adb->field_name($result, $i);
+						$fieldvalue = getReportFieldValue($this, $picklistarray, $fld, $custom_field_values, $i);
+						if($fieldvalue == '')
+						{
+							$fieldvalue = "-";
+						}
+						else if($fld->name == 'LBL_ACTION' && $fieldvalue != '-')
+						{
+							$fieldvalue = "<a href='index.php?module={$this->primarymodule}&action=DetailView&record={$fieldvalue}' target='_blank'>".getTranslatedString('LBL_VIEW_DETAILS')."</a>";
+						}
+						$datarow[$header[$i]] = $fieldvalue;
+					}
+					$data[] = $datarow;
+					set_time_limit($php_max_execution_time);
+				}while($custom_field_values = $adb->fetch_array($result));
+				$resp['data'] = $data;
+				return json_encode($resp);
+			}
 		}elseif($outputformat == "PDF")
 		{
 			$sSQL = $this->sGetSQLforReport($this->reportid,$filtersql);
