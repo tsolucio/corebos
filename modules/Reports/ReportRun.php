@@ -2167,6 +2167,62 @@ class ReportRun extends CRMEntity {
 				$return_data[] = $sSQL;
 				return $return_data;
 			}
+		}elseif($outputformat == 'HEADERS') {
+			$sSQL = $this->sGetSQLforReport($this->reportid,$filtersql,'HTML');
+			$result = $adb->query($sSQL.' limit 1');
+			$error_msg = $adb->database->ErrorMsg();
+			if(!$result && $error_msg!=''){
+				$resp = array(
+					'has_contents' => false,
+					'jsonheaders' => array(),
+					'i18nheaders' => array(),
+					'error' => true,
+					'error_message' => getTranslatedString('LBL_REPORT_GENERATION_FAILED', 'Reports') . ':' . $error_msg,
+				);
+				return $resp;
+			}
+			$fldcnt=$adb->num_fields($result);
+			$i18nheader = $jsonheader = array();
+			for ($x=0; $x<$fldcnt; $x++) {
+				$fld = $adb->field_name($result, $x);
+				if ($fld->name=='LBL_ACTION') {
+					$module = 'Reports';
+					$fieldLabel = 'LBL_ACTION';
+				} else {
+					list($module, $fieldLabel) = explode('_', $fld->name, 2);
+				}
+				$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
+				if(!empty($fieldInfo)) {
+					$field = WebserviceField::fromArray($adb, $fieldInfo);
+				}
+				if(!empty($fieldInfo)) {
+					$headerLabel = $field->getFieldLabelKey();
+				} else {
+					$headerLabel = str_replace('_', ' ', $fieldLabel);
+				}
+				if(empty($headerLabel)) {
+					$headerLabel = str_replace('_', ' ', $fld->name);
+				}
+				$i18nheaderLabel = getTranslatedString($headerLabel, $module);
+				$moduleLabel = '';
+				if(!empty($this->secondarymodule) and in_array($module,$modules_selected)) {
+					$headerLabel = $module.' '.$headerLabel;
+					$i18nheaderLabel = getTranslatedString($module,$module).' '.$i18nheaderLabel;
+				}
+				if ($fld->name=='LBL_ACTION') {
+					$jsonheader[] = 'reportrowaction';
+				} else {
+					$jsonheader[] = $headerLabel;
+				}
+				$i18nheader[] = $i18nheaderLabel;
+			}
+			$resp = array(
+				'has_contents' => ($adb->num_rows($result)==1 ? true : false),
+				'jsonheaders' => $jsonheader,
+				'i18nheaders' => $i18nheader,
+				'error' => false,
+			);
+			return $resp;
 		}elseif($outputformat == 'JSON' or $outputformat == 'JSONPAGED') {
 			$sSQL = $this->sGetSQLforReport($this->reportid,$filtersql,($outputformat == 'JSON' ? 'HTML' : 'HTMLPAGED'));
 			$result = $adb->query($sSQL);
@@ -2246,7 +2302,7 @@ class ReportRun extends CRMEntity {
 						$headerLabel = str_replace('_', ' ', $fieldLabel);
 					}
 					if(empty($headerLabel)) {
-							$headerLabel = str_replace('_', ' ', $fld->name);
+						$headerLabel = str_replace('_', ' ', $fld->name);
 					}
 					if(!empty($this->secondarymodule) and in_array($module,$modules_selected)) {
 						$headerLabel = $module.' '.$headerLabel;
