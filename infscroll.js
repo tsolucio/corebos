@@ -23,3 +23,9 @@ DataTable.onRedraw(document.getElementsByTagName('datatable')[0], (data) => {
     console.info('Switched to page ' + data.current_page);
     console.info('First user name is:' + data.data[0].name);
 });
+
+Pagination._config.langFirst = "Primero";
+Pagination._config.langLast = "Ultimo";
+Pagination._config.langPrevious = "< Anterior";
+Pagination._config.langNext = "Siguiente >";
+Pagination._config.langStats = "{from}-{to} de {total} (Pág {currentPage} de {lastPage})";

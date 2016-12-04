@@ -2241,22 +2241,15 @@ class ReportRun extends CRMEntity {
 						$field = WebserviceField::fromArray($adb, $fieldInfo);
 					}
 					if(!empty($fieldInfo)) {
-						$headerLabel = getTranslatedString($field->getFieldLabelKey(), $module);
+						$headerLabel = $field->getFieldLabelKey();
 					} else {
-						$headerLabel = getTranslatedString(str_replace('_', " ", $fieldLabel), $module);
+						$headerLabel = str_replace('_', ' ', $fieldLabel);
 					}
-					/*STRING TRANSLATION starts */
-					$moduleLabel = '';
-					if(in_array($module,$modules_selected))
-						$moduleLabel = getTranslatedString($module,$module);
-
 					if(empty($headerLabel)) {
-							$headerLabel = getTranslatedString(str_replace('_', " ", $fld->name));
+							$headerLabel = str_replace('_', ' ', $fld->name);
 					}
-					if(!empty($this->secondarymodule)) {
-						if($moduleLabel != '') {
-							$headerLabel = $moduleLabel." ". $headerLabel;
-						}
+					if(!empty($this->secondarymodule) and in_array($module,$modules_selected)) {
+						$headerLabel = $module.' '.$headerLabel;
 					}
 					$header[] = $headerLabel;
 				}
