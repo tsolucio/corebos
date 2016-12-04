@@ -224,6 +224,7 @@ $mod_strings = Array(
 'NO_REL_MODULES'=>'Nenhum Módulo Relacionado para o Módulo Selecionado',
 'LBL_REPORT_GENERATION_FAILED'=>'Falha ao Gerar Relatório!',
 'ERR_TOO_MANY_ROWS' => 'This report has too many rows. Please add some filters and divide it into various smaller reports.',
+'ERR_INCORRECT_REPORTID' => 'Report cannot be found',
 'LBL_OR'=>'ou',
 'LBL_NEW_GROUP'=>'Novo Grupo',
 'LBL_DELETE_GROUP'=>'Apagar Grupo',

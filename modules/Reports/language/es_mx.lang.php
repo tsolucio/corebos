@@ -219,6 +219,7 @@ $mod_strings = Array(
 'NO_REL_MODULES'=>'No hay módulos relacionados con el módulo seleccionado',
 'LBL_REPORT_GENERATION_FAILED'=>'Error generando informe!',
 'ERR_TOO_MANY_ROWS' => 'Este informe contiene demasiadas filas para mostrar en el navegador. Por favor añade algunos filtros y divídelo en varios informes más pequeños.',
+'ERR_INCORRECT_REPORTID' => 'No se ha podido encontrar el informe',
 'LBL_OR'=>'o',
 'LBL_NEW_GROUP'=>'Agregar Grupo',
 'LBL_DELETE_GROUP'=>'Eliminar Grupo',

@@ -234,6 +234,7 @@ $mod_strings = Array(
 'NO_REL_MODULES'=>'Er zijn modules om mee te combineren',
 'LBL_REPORT_GENERATION_FAILED'=>'Het rapport kan niet worden gemaakt!',
 'ERR_TOO_MANY_ROWS' => 'This report has too many rows. Please add some filters and divide it into various smaller reports.',
+'ERR_INCORRECT_REPORTID' => 'Report cannot be found',
 'LBL_SHARING_TYPE'=>'Deel Type',
 'LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS'=>'Selecteer Type om toegang tot het rapport te regelen',
 'LBL_ACTION' => 'Actie',

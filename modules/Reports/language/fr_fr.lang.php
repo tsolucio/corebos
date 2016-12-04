@@ -201,6 +201,7 @@ $mod_strings = array (
 	'NO_REL_MODULES'=>'Aucun module en relation avec le module sélectionné',
 	'LBL_REPORT_GENERATION_FAILED'=>'Echec de la génération du rapport!',
 	'ERR_TOO_MANY_ROWS' => 'This report has too many rows. Please add some filters and divide it into various smaller reports.',
+	'ERR_INCORRECT_REPORTID' => 'Report cannot be found',
 	'LBL_SHARING_TYPE'=>'Type de partage',
 	'LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS'=>'Choix du type de partage pour définir les accès à ce rapport', 
 	'LBL_ACTION' => 'Action',

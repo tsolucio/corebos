@@ -212,6 +212,7 @@ $mod_strings = array(
 	'NO_REL_MODULES' => 'A kiválasztott Modulhoz nincs kapcsolódó Modul',
 	'LBL_REPORT_GENERATION_FAILED' => 'A Jelentés létrehozása nem sikerült!',
 	'ERR_TOO_MANY_ROWS' => 'This report has too many rows. Please add some filters and divide it into various smaller reports.',
+	'ERR_INCORRECT_REPORTID' => 'Report cannot be found',
 	'LBL_OR' => 'vagy',
 	'LBL_NEW_GROUP' => 'Új csoport',
 	'LBL_DELETE_GROUP' => 'Csoport törlése',
