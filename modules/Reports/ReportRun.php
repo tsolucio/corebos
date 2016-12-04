@@ -1968,7 +1968,7 @@ class ReportRun extends CRMEntity {
 				$this->number_of_rows = $noofrows;
 				if($outputformat == 'HTMLPAGED') {
 					$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize',40);
-					if ($this->page*$rowsperpage>$noofrows-$rowsperpage) {
+					if ($this->page*$rowsperpage>$noofrows-($noofrows % $rowsperpage)) {
 						$this->islastpage = true;
 					}
 				}
@@ -2194,7 +2194,7 @@ class ReportRun extends CRMEntity {
 					$rowsperpage = GlobalVariable::getVariable('Report_ListView_PageSize',40);
 					$resp['per_page'] = $rowsperpage;
 					$resp['from'] = ($this->page-1)*$rowsperpage+1;
-					if ($this->page*$rowsperpage>$noofrows-$rowsperpage) {
+					if ($this->page*$rowsperpage>$noofrows-($noofrows % $rowsperpage)) {
 						$this->islastpage = true;
 						$resp['to'] = $noofrows;
 					} else {
@@ -2209,13 +2209,20 @@ class ReportRun extends CRMEntity {
 					$resp['current_page'] = 1;
 					$resp['last_page'] = 1;
 				}
+				$resp['next_page_url'] = ($this->islastpage ? null : 'infscroll.php?page='.($this->page+1));
+				$resp['prev_page_url'] = ($this->page == 1 ? null : 'infscroll.php?page='.($this->page-1));
 				$custom_field_values = $adb->fetch_array($result);
 				$groupslist = $this->getGroupingList($this->reportid);
 				$header = array();
 				for ($x=0; $x<$fldcnt; $x++)
 				{
 					$fld = $adb->field_name($result, $x);
-					list($module, $fieldLabel) = explode('_', $fld->name, 2);
+					if ($fld->name=='LBL_ACTION') {
+						$module = 'Reports';
+						$fieldLabel = 'LBL_ACTION';
+					} else {
+						list($module, $fieldLabel) = explode('_', $fld->name, 2);
+					}
 					$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
 					if(!empty($fieldInfo)) {
 						$field = WebserviceField::fromArray($adb, $fieldInfo);
@@ -2256,9 +2263,13 @@ class ReportRun extends CRMEntity {
 						}
 						else if($fld->name == 'LBL_ACTION' && $fieldvalue != '-')
 						{
-							$fieldvalue = "<a href='index.php?module={$this->primarymodule}&action=DetailView&record={$fieldvalue}' target='_blank'>".getTranslatedString('LBL_VIEW_DETAILS')."</a>";
+							$fieldvalue = "index.php?module={$this->primarymodule}&action=DetailView&record={$fieldvalue}";
 						}
-						$datarow[$header[$i]] = $fieldvalue;
+						if ($header[$i]=='LBL ACTION') {
+							$datarow['reportrowaction'] = $fieldvalue;
+						} else {
+							$datarow[$header[$i]] = $fieldvalue;
+						}
 					}
 					$data[] = $datarow;
 					set_time_limit($php_max_execution_time);
