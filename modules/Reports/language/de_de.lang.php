@@ -216,7 +216,7 @@ $mod_strings = Array(
     'LBL_FLDR_NOT_EMPTY'=>'Das Verzeichnis, was Sie löschen wollen ist nicht leer.  Leeren Sie das Verzeichnis zuerst.',
     'NO_REL_MODULES'=>'Für das ausgewählte Modul gibt es keine bezogene Module',
     'LBL_REPORT_GENERATION_FAILED'=>'Fehler bei der Berichtserstellung!',
-
+	'ERR_TOO_MANY_ROWS' => 'This report has too many rows. Please add some filters and divide it into various smaller reports.',
     'LBL_OR'=>'oder',
     'LBL_NEW_GROUP'=>'neue Gruppe',
     'LBL_DELETE_GROUP'=>'Gruppe löschen',
@@ -224,6 +224,7 @@ $mod_strings = Array(
     'LBL_SHARING_TYPE'=>'Berichtstyp',
     'LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS'=>'Wählen Sie einen Berichtstyp um die Zugangsrechte zum Bericht zu setzen.', 
     'LBL_ACTION' => 'Aktion',
+    'LBL ACTION' => 'Aktion',
     'ACTION' => 'Aktion',
     'LBL_VIEW_DETAILS' => 'Details ansehen',
     'LBL_SHOW_STANDARD_FILTERS' => 'zeige Standardfilter',

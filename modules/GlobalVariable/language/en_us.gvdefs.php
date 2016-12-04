@@ -405,6 +405,13 @@ $GlobalVariableDefinitons = array(
 	'values' => '',
 	'definition' => 'Number of rows per page in reports list views',
 ),
+'Report_MaxRows_OnScreen' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'Maximum number of rows permitted for a full length HTML report. The default value is 5000.',
+),
 'Maximum_Scheduled_Workflows' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Integer',

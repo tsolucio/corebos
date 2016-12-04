@@ -211,7 +211,7 @@ $mod_strings = Array(
 'LBL_FLDR_NOT_EMPTY'=>'Folder you are trying to delete is not Empty, Move or Delete the Reports in it.',
 'NO_REL_MODULES'=>'No Related Modules for the Selected Module',
 'LBL_REPORT_GENERATION_FAILED'=>'Report generation failed!',
-
+'ERR_TOO_MANY_ROWS' => 'This report has too many rows. Please add some filters and divide it into various smaller reports.',
 'LBL_OR'=>'or',
 'LBL_NEW_GROUP'=>'New Group',
 'LBL_DELETE_GROUP'=>'Delete Group',
@@ -219,6 +219,7 @@ $mod_strings = Array(
 'LBL_SHARING_TYPE'=>'Sharing Type',
 'LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS'=>'Select Sharing Type to Control Access to the Report',
 'LBL_ACTION' => 'Action',
+'LBL ACTION' => 'Action',
 'ACTION' => 'Action',
 'LBL_VIEW_DETAILS' => 'View Details',
 'LBL_SHOW_STANDARD_FILTERS' => 'Show Standard Filters',

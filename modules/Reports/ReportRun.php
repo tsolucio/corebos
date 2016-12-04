@@ -1972,6 +1972,7 @@ class ReportRun extends CRMEntity {
 						$this->islastpage = true;
 					}
 				}
+				$reportmaxrows = GlobalVariable::getVariable('Report_MaxRows_OnScreen',5000);
 				$custom_field_values = $adb->fetch_array($result);
 				$groupslist = $this->getGroupingList($this->reportid);
 				$header = '';
@@ -2026,6 +2027,7 @@ class ReportRun extends CRMEntity {
 				$secondvalue = '';
 				$thirdvalue = '';
 				$sHTML = '';
+				if ($noofrows<=$reportmaxrows) {
 				do {
 					$newvalue = '';
 					$snewvalue = '';
@@ -2130,7 +2132,18 @@ class ReportRun extends CRMEntity {
 					$thirdvalue = $tnewvalue;
 					set_time_limit($php_max_execution_time);
 				}while($custom_field_values = $adb->fetch_array($result));
-
+				} else {
+					$reporterrmsg = new vtigerCRM_Smarty();
+					$errormessage = getTranslatedString('ERR_TOO_MANY_ROWS','Reports');
+					$reporterrmsg->assign('ERROR_MESSAGE', $errormessage);
+					$errormessage = $reporterrmsg->fetch('applicationmessage.tpl');
+					$errormessage = '<tr><td colspan="'.$y.'">'.$errormessage.'</td>';
+					if($directOutput) {
+						echo $errormessage;
+					} else {
+						$valtemplate = $errormessage;
+					}
+				}
 				// Performance Optimization
 				if($directOutput) {
 					echo "</tr></table>";
