@@ -906,7 +906,6 @@ $app_strings = array (
 	'LBL_SEND_EMAIL_PDF' => 'Envoyer un email avec le PDF',
 	'LBL_UPDATE' => 'Mettre à jour',
 	//Added for incoming mail server settings form js validation
-	'ERR_INVALID_PAGE_COUNT' => "Numéro de page invalide",
 	'LBL_CAL_LIMIT_MSG'=>'L\'année doit être comprise entre 1970 et 2037',
 	'Mobile' => 'Mobile',
 	'Home Phone' => 'Tél domicile',

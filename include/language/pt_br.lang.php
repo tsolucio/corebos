@@ -913,7 +913,6 @@ $app_strings = array (
 'LBL_SEND_EMAIL_PDF' => 'Enviar Email com PDF',
 'LBL_UPDATE' => 'Atualizar',
 //Added for incoming mail server settings form js validation
-'ERR_INVALID_PAGE_COUNT' => "Organizaçãogem Página Inválida",
 'LBL_CAL_LIMIT_MSG'=>'Desculpe, o ano deve estar entre 1970 e 2037',
 
 //added for fix i18n issue #4038 when importing Contacts
@@ -1146,8 +1145,6 @@ $app_strings = array (
 'LBL_HIDE'=>'Ocultar',
 
 // Layout Editor and Ease navigation between records in Detail view
-'LNK_LIST_NEXT' => 'Próximo',
-'LNK_LIST_PREVIOUS' => 'Anterior',
 'LBL_JUMP_BTN'=> 'PULAR',
 'LBL_JUMP_To'=> 'Jump to',
 'LBL_ASSIGN_BUTTON_LABEL'=>'Definir Campos',

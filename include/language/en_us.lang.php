@@ -911,7 +911,6 @@ $app_strings = array (
 'LBL_SEND_EMAIL_PDF' => 'Send Email With PDF',
 'LBL_UPDATE' => 'Update',
 //Added for incoming mail server settings form js validation
-'ERR_INVALID_PAGE_COUNT' => "Invalid Page count",
 'LBL_CAL_LIMIT_MSG'=>'Sorry, Year must be between 1970 and 2037',
 
 //added for fix i18n issue #4038 when importing contacts
@@ -1144,8 +1143,6 @@ $app_strings = array (
 'LBL_HIDE'=>'Hide',
 
 // Layout Editor and Ease navigation between records in Detail view
-'LNK_LIST_NEXT' => 'Next',
-'LNK_LIST_PREVIOUS' => 'Previous',
 'LBL_JUMP_BTN'=> 'JUMP',
 'LBL_JUMP_To'=> 'Jump to',
 'LBL_ASSIGN_BUTTON_LABEL'=>'Assign Fields',

@@ -129,7 +129,6 @@ $app_strings = array(
 'LNK_REMOVE'=>'entf',
 'LNK_DELETE'=>'lö',
 'LNK_LIST_START'=>'Anfang',
-'LNK_LIST_NEXT'=>'weiter',
 'LNK_LIST_PREVIOUS'=>'vorherige',
 'LNK_LIST_END'=>'Ende',
 'LBL_LIST_OF'=>'von',
@@ -912,7 +911,6 @@ $app_strings = array(
 'LBL_SEND_EMAIL_PDF' => 'Sende E-Mail mit PDF',
 'LBL_UPDATE' => 'Update',
 //Added for incoming mail server settings form js validation
-'ERR_INVALID_PAGE_COUNT' => "Seitenzahl ungültig",
 'LBL_CAL_LIMIT_MSG'=>'Es werden nur Jahresangaben in dem Bereich von 1970 bis 2037 unterstützt.',
 
 //added for fix i18n issue #4038 when importing contacts
@@ -1146,7 +1144,6 @@ $app_strings = array(
 
 // Layout Editor and Ease navigation between records in Detail view
 'LNK_LIST_NEXT' => 'weiter',
-'LNK_LIST_PREVIOUS' => 'zurück',
 'LBL_JUMP_BTN'=> 'SPRINGE',
 'LBL_JUMP_To'=> 'Jump to',
 'LBL_ASSIGN_BUTTON_LABEL'=>'Felder zuordnen',

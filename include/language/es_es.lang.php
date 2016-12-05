@@ -1116,8 +1116,6 @@ $app_strings = array (
 	  'LBL_HIDE'=>'Esconder',
 
       // Layout Editor and Ease navigation between records in Detail view
-      'LNK_LIST_NEXT' => 'Siguiente',
-      'LNK_LIST_PREVIOUS' => 'Anterior',
       'LBL_JUMP_BTN'=> 'IR A',
 	'LBL_JUMP_To'=> 'Ir a',
       'LBL_ASSIGN_BUTTON_LABEL'=>'Asignar Campos',
