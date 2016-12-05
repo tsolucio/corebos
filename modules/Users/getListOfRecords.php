@@ -16,7 +16,6 @@ require_once 'include/utils/ListViewUtils.php';
 require_once('modules/CustomView/CustomView.php');
 
 global $mod_strings,$app_strings,$app_list_strings,$theme,$adb,$current_user;
-global $list_max_entries_per_page;
 
 $theme_path="themes/".$theme."/";
 
@@ -55,7 +54,7 @@ foreach ($fieldname as $fieldName) {
 $cv = new CustomView();
 $viewId = $cv->getViewId($sModule);
 if(!empty($_SESSION[$sModule.'_DetailView_Navigation'.$viewId])){
-	$recordNavigationInfo = Zend_Json::decode($_SESSION[$sModule.'_DetailView_Navigation'.$viewId]);
+	$recordNavigationInfo = json_decode($_SESSION[$sModule.'_DetailView_Navigation'.$viewId],true);
 	$recordList = array();
 	$recordIndex = null;
 	$recordPageMapping = array();

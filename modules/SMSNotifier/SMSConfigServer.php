@@ -37,7 +37,7 @@ if(!is_admin($current_user)) {
 			$smsserverinfo = SMSNotifierManager::listConfiguredServer($record);
 			$smsserverparams = array();
 			if(!empty($smsserverinfo['parameters'])) {
-				$smsserverparams = Zend_Json::decode($smsserverinfo['parameters']);
+				$smsserverparams = json_decode($smsserverinfo['parameters'],true);
 			}
 			$smarty->assign('SMSSERVERINFO', $smsserverinfo);
 			$smarty->assign('SMSSERVERPARAMS', $smsserverparams);

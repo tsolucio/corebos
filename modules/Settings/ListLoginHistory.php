@@ -17,11 +17,10 @@ require_once('include/utils/utils.php');
 global $app_strings, $mod_strings, $app_list_strings, $current_language, $current_user, $adb;
 $current_module_strings = return_module_language($current_language, 'Settings');
 
-global $list_max_entries_per_page, $urlPrefix, $currentModule;
+global $theme, $currentModule;
 
 $log = LoggerManager::getLogger('login_list');
 
-global $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 

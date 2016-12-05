@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
-
 require_once 'include/utils/ConfigReader.php';
 require_once 'modules/Import/ui/Viewer.php';
 
@@ -42,8 +41,7 @@ class Import_Utils {
 	}
 
 	public static function getMaxUploadSize() {
-		global $upload_maxsize;
-		return $upload_maxsize;
+		return GlobalVariable::getVariable('Application_Upload_MaxSize',3000000,$currentModule);
 	}
 
 	public static function getImportDirectory() {

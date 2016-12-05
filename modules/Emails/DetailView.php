@@ -11,12 +11,10 @@ require_once('Smarty_setup.php');
 require_once('data/Tracker.php');
 require_once('include/upload_file.php');
 require_once('include/utils/utils.php');
-require_once("include/Zend/Json.php");
 
 global $log, $app_strings, $mod_strings, $currentModule, $theme;
 
 $focus = CRMEntity::getInstance($currentModule);
-$json = new Zend_Json();
 
 $smarty = new vtigerCRM_Smarty;
 if(isset($_REQUEST['record'])) {
@@ -24,20 +22,20 @@ if(isset($_REQUEST['record'])) {
 	$focus->retrieve_entity_info($_REQUEST['record'],"Emails");
 	$log->info("Entity info successfully retrieved for DetailView.");
 	$focus->id = $_REQUEST['record'];
-	$query = 'select email_flag,from_email,to_email,cc_email,bcc_email,date_start,time_start from vtiger_emaildetails '
-                . 'left join vtiger_activity on vtiger_emaildetails.emailid = vtiger_activity.activityid where emailid = ?';
+	$query = 'select email_flag,from_email,to_email,cc_email,bcc_email,date_start,time_start from vtiger_emaildetails '.
+		'left join vtiger_activity on vtiger_emaildetails.emailid = vtiger_activity.activityid where emailid = ?';
 	$result = $adb->pquery($query, array($focus->id));
 	$smarty->assign('FROM_MAIL',$adb->query_result($result,0,'from_email'));
-	$to_email = $json->decode($adb->query_result($result,0,'to_email'));
-	$cc_email = $json->decode($adb->query_result($result,0,'cc_email'));
+	$to_email = json_decode($adb->query_result($result,0,'to_email'),true);
+	$cc_email = json_decode($adb->query_result($result,0,'cc_email'),true);
 	$smarty->assign('TO_MAIL',vt_suppressHTMLTags(@implode(',',$to_email)));
 	$smarty->assign('CC_MAIL',vt_suppressHTMLTags(@implode(',',$cc_email)));
-	$bcc_email = $json->decode($adb->query_result($result,0,'bcc_email'));
+	$bcc_email = json_decode($adb->query_result($result,0,'bcc_email'),true);
 	$smarty->assign('BCC_MAIL',vt_suppressHTMLTags(@implode(',',$bcc_email)));
 	$smarty->assign('EMAIL_FLAG',$adb->query_result($result,0,'email_flag'));
 
-        $dt = new DateTimeField($adb->query_result($result,0,'date_start'));
-        $fmtdate = $dt->getDisplayDate($current_user);
+	$dt = new DateTimeField($adb->query_result($result,0,'date_start'));
+	$fmtdate = $dt->getDisplayDate($current_user);
 	$smarty->assign('DATE_START',$fmtdate);
 	$smarty->assign('TIME_START',$adb->query_result($result,0,'time_start'));
 	if($focus->column_fields['name'] != '')

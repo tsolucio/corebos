@@ -24,7 +24,7 @@ class ConfigReader {
 
 	function load($path, $name, $force = false) {
 		$this->name = $path;
-		if(!$force && self::$propertiesCache[$path]) {
+		if(!$force && isset(self::$propertiesCache[$path])) {
 			$this->properties = self::$propertiesCache[$path];
 			return;
 		}

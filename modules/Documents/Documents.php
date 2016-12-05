@@ -20,7 +20,6 @@ class Documents extends CRMEntity {
 	/** Indicator if this is a custom module or standard module */
 	var $IsCustomModule = false;
 	var $HasDirectImageField = false;
-	var $default_note_name_dom = array('Meeting vtiger_notes', 'Reminder');
 
 	var $tab_name = Array('vtiger_crmentity','vtiger_notes','vtiger_notescf');
 	var $tab_name_index = Array('vtiger_crmentity'=>'crmid','vtiger_notes'=>'notesid','vtiger_notescf'=>'notesid','vtiger_senotesrel'=>'notesid');
@@ -263,16 +262,18 @@ class Documents extends CRMEntity {
 	*/
 	function getOrderBy()
 	{
-		global $log;
+		global $currentModule,$log;
 		$log->debug("Entering getOrderBy() method ...");
 
 		$use_default_order_by = '';
 		if(PerformancePrefs::getBoolean('LISTVIEW_DEFAULT_SORTING', true)) {
 			$use_default_order_by = $this->default_order_by;
 		}
-
+		$orderby = $use_default_order_by;
 		if (isset($_REQUEST['order_by']))
 			$order_by = $this->db->sql_escape_string($_REQUEST['order_by']);
+		else if(isset($_SESSION[$currentModule.'_Order_By']))
+			$order_by = $_SESSION[$currentModule.'_Order_By'];
 		else
 			$order_by = (($_SESSION['NOTES_ORDER_BY'] != '')?($_SESSION['NOTES_ORDER_BY']):($use_default_order_by));
 		$log->debug("Exiting getOrderBy method ...");
@@ -331,7 +332,7 @@ class Documents extends CRMEntity {
 
 		$query = "SELECT $fields_list, foldername, filename,
 					concat(path,vtiger_attachments.attachmentsid,'_',filename) as storagename,
-					concat(account_no,' ',accountname) as account, concat(contact_no,' ',firstname,' ',lastname) as contact
+					concat(account_no,' ',accountname) as account, concat(contact_no,' ',firstname,' ',lastname) as contact,vtiger_senotesrel.crmid as relatedid
 				FROM vtiger_notes
 				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_notes.notesid
 				left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid=vtiger_notes.notesid
@@ -348,7 +349,6 @@ class Documents extends CRMEntity {
 			$query .= " WHERE ($where) AND ".$where_auto;
 		else
 			$query .= " WHERE ".$where_auto;
-		$query.=' group by vtiger_notes.notesid';
 		$log->debug("Exiting create_export_query method ...");
 		return $query;
 	}

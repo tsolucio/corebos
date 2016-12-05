@@ -46,7 +46,8 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 
 	$current_module_strings = return_module_language($current_language, $module);
 
-	global $list_max_entries_per_page, $urlPrefix, $currentModule, $theme, $theme_path, $theme_path, $mod_strings;
+	global $currentModule, $theme, $theme_path, $theme_path, $mod_strings;
+	$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$currentModule);
 	$smarty = new vtigerCRM_Smarty;
 	if (!isset($where)) $where = "";
 
@@ -87,7 +88,7 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 		$modObj = new ListViewSession();
 		$modObj->sortby = $focus->default_order_by;
 		$modObj->sorder = $focus->default_sort_order;
-		$_SESSION['rlvs'][$module][$relatedmodule] = get_object_vars($modObj);
+		coreBOS_Session::set('rlvs^'.$module.'^'.$relatedmodule, get_object_vars($modObj));
 	}
 
 	if(!empty($_REQUEST['order_by'])) {
@@ -97,8 +98,8 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 		$order_by = $focus->getOrderBy();
 
 		if(isset($order_by) && $order_by != '') {
-			$_SESSION['rlvs'][$module][$relatedmodule]['sorder'] = $sorder;
-			$_SESSION['rlvs'][$module][$relatedmodule]['sortby'] = $order_by;
+			coreBOS_Session::set('rlvs^'.$module.'^'.$relatedmodule.'^sorder', $sorder);
+			coreBOS_Session::set('rlvs^'.$module.'^'.$relatedmodule.'^sortby', $order_by);
 		}
 
 	} elseif($_SESSION['rlvs'][$module][$relatedmodule]) {
@@ -128,7 +129,7 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 		$mod_listquery = "activity_listquery";
 	else
 		$mod_listquery = strtolower($relatedmodule)."_listquery";
-	$_SESSION[$mod_listquery] = $query;
+	coreBOS_Session::set($mod_listquery, $query);
 
 	$url_qry ="&order_by=".$order_by."&sorder=".$sorder;
 	$computeCount = isset($_REQUEST['withCount']) ? $_REQUEST['withCount'] : '';
@@ -176,7 +177,7 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 	$relcv = new CustomView();
 	$relviewId = $relcv->getViewId($relatedmodule);
 	ListViewSession::setSessionQuery($relatedmodule,$query,$relviewId);
-	$_SESSION['lvs'][$relatedmodule][$relviewId]['start'] = $start;
+	coreBOS_Session::set('lvs^'.$relatedmodule.'^'.$relviewId.'^start', $start);
 
 	//Retreive the List View Table Header
 	$id = vtlib_purify($_REQUEST['record']);
@@ -236,14 +237,13 @@ function getAttachmentsAndNotes($parentmodule,$query,$id,$sid='')
 	$theme_path="themes/".$theme."/";
 	$image_path=$theme_path."images/";
 
-	global $adb,$current_user;
-	global $mod_strings;
-	global $app_strings, $listview_max_textlength;
+	global $adb,$current_user, $mod_strings, $app_strings,$currentModule;
+	$listview_max_textlength = GlobalVariable::getVariable('Application_ListView_Max_Text_Length',40,$currentModule);
 
 	$result=$adb->query($query);
 	$noofrows = $adb->num_rows($result);
 
-	$_SESSION['Documents_listquery'] = $query;
+	coreBOS_Session::set('Documents_listquery', $query);
 	$header[] = $app_strings['LBL_TITLE'];
 	$header[] = $app_strings['LBL_DESCRIPTION'];
 	$header[] = $app_strings['LBL_ATTACHMENTS'];
@@ -508,16 +508,9 @@ function getPriceBookRelatedProducts($query,$focus,$returnset='')
 	global $log;
 	$log->debug("Entering getPriceBookRelatedProducts(".$query.",".get_class($focus).",".$returnset.") method ...");
 
-	global $adb;
-	global $app_strings;
-	global $mod_strings;
-	global $current_language,$current_user;
+	global $adb, $app_strings, $mod_strings, $current_language,$current_user, $theme;
 	$current_module_strings = return_module_language($current_language, 'PriceBook');
-
-	global $list_max_entries_per_page;
-	global $urlPrefix;
-
-	global $theme;
+	$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,'PriceBook');
 	$pricebook_id = vtlib_purify($_REQUEST['record']);
 	$theme_path="themes/".$theme."/";
 	$image_path=$theme_path."images/";
@@ -537,7 +530,7 @@ function getPriceBookRelatedProducts($query,$focus,$returnset='')
 		$modObj = new ListViewSession();
 		$modObj->sortby = $focus->default_order_by;
 		$modObj->sorder = $focus->default_sort_order;
-		$_SESSION['rlvs'][$module][$relatedmodule] = get_object_vars($modObj);
+		coreBOS_Session::set('rlvs^'.$module.'^'.$relatedmodule, get_object_vars($modObj));
 	}
 
 

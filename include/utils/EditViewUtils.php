@@ -119,7 +119,10 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 					$curr_time = date('H:i', strtotime('+10 minutes'));
 				}
 			}
-			$disp_value = getValidDisplayDate($value);
+			$date = new DateTimeField($value);
+			$isodate = $date->convertToDBFormat($value);
+			$date = new DateTimeField($isodate);
+			$disp_value = $date->getDisplayDate();
 		}
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$date_format = parse_calendardate($app_strings['NTC_DATE_FORMAT']);
@@ -187,32 +190,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	elseif($uitype == 1613) {
 		require_once 'modules/PickList/PickListUtils.php';
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldname = $adb->sql_escape_string($fieldname);
-		$pickListResult = getAllowedPicklistModules();
-
-		$options = array();
-		$options[] = "";
-		$pickcount = 0;
-		$found = false;
-		foreach ($pickListResult as $pKey=>$pValue) {
-			$value = decode_html($value);
-			$pickListValue = decode_html($pValue);
-			if($value == trim($pickListValue)) {
-				$chk_val = "selected";
-				$pickcount++;
-				$found = true;
-			}
-			else {
-				$chk_val = '';
-			}
-			$pickListValue = to_html($pickListValue);
-			if(isset($_REQUEST['file']) && $_REQUEST['file'] == 'QuickCreate')
-				$options[] = array(htmlentities(getTranslatedString($pickListValue, $pickListValue),ENT_QUOTES,$default_charset),$pickListValue,$chk_val);
-			else
-				$options[] = array(getTranslatedString($pickListValue, $pickListValue),$pickListValue,$chk_val);
-		}
-		uasort($options, function($a,$b) {return (strtolower($a[0]) < strtolower($b[0])) ? -1 : 1;});
-		$fieldvalue [] = $options;
+		$fieldvalue [] = getPicklistValuesSpecialUitypes($uitype,$fieldname,$value);
 	}
 	elseif($uitype == 15 || $uitype == 33){
 		require_once 'modules/PickList/PickListUtils.php';
@@ -243,58 +221,17 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 				$options[] = array($app_strings['LBL_NOT_ACCESSIBLE'],$value,'selected');
 			}
 		}
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
+		$editview_label[]=getTranslatedString($fieldlabel,$module_name,$value);
 		$fieldvalue [] = $options;
 	} elseif($uitype == 3313){
 		require_once 'modules/PickList/PickListUtils.php';
-		$picklistValues = getAllowedPicklistModules();
-		$valueArr = explode("|##|", $value);
-		foreach ($valueArr as $key => $value) {
-			$valueArr[$key] = trim(html_entity_decode($value, ENT_QUOTES, $default_charset));
-		}
-		$pickcount = 0;
-
-		if(!empty($picklistValues)){
-			foreach($picklistValues as $order=>$pickListValue){
-				if(in_array(trim($pickListValue),$valueArr)){
-					$chk_val = "selected";
-					$pickcount++;
-				}else{
-					$chk_val = '';
-				}
-				if(isset($_REQUEST['file']) && $_REQUEST['file'] == 'QuickCreate'){
-					$options[] = array(htmlentities(getTranslatedString($pickListValue, $pickListValue),ENT_QUOTES,$default_charset),$pickListValue,$chk_val );
-				}else{
-					$options[] = array(getTranslatedString($pickListValue, $pickListValue),$pickListValue,$chk_val );
-				}
-			}
-
-			if($pickcount == 0 && !empty($value)){
-				$options[] = array($app_strings['LBL_NOT_ACCESSIBLE'],$value,'selected');
-			}
-		}
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		uasort($options, function($a,$b) {return (strtolower($a[0]) < strtolower($b[0])) ? -1 : 1;});
-		$fieldvalue [] = $options;
+		$editview_label[]=getTranslatedString($fieldlabel,$module_name);
+		$fieldvalue [] = getPicklistValuesSpecialUitypes($uitype,$fieldname,$value);
 	}
 	elseif($uitype == 1024){
-		$options=array();
-		$arr_evo=explode(' |##| ',$value);
-		$roleid = $current_user->roleid;
-		$subrole = getRoleSubordinates($roleid);
-		$uservalues = array_merge($subrole,array($roleid));
-		for($i=0;$i<sizeof($uservalues);$i++) {
-			$currentValId=$uservalues[$i];
-			$currentValName= getRoleName($currentValId);
-			if(in_array(trim($currentValId),$arr_evo)){
-				$chk_val = 'selected';
-			}else{
-				$chk_val = '';
-			}
-			$options[] = array($currentValName,$currentValId,$chk_val);
-		}
-		$fieldvalue [] = $options;
+		require_once 'modules/PickList/PickListUtils.php';
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
+		$fieldvalue [] = getPicklistValuesSpecialUitypes($uitype,$fieldname,$value);
 	}
 	elseif($uitype == 17)
 	{
@@ -576,29 +513,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue[] = $contact_name;
-		$fieldvalue[] = $value;
-	}
-
-	elseif($uitype == 58)
-	{
-		if($value != '')
-		{
-			$campaign_name = getCampaignName($value);
-		}
-		elseif(isset($_REQUEST['campaignid']) && $_REQUEST['campaignid'] != '')
-		{
-			if($_REQUEST['module'] == 'Campaigns' && $fieldname = 'campaignid')
-			{
-				$campaign_name = '';
-			}
-			else
-			{
-				$value = $_REQUEST['campaignid'];
-				$campaign_name = getCampaignName($value);
-			}
-		}
-		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue[]=$campaign_name;
 		$fieldvalue[] = $value;
 	}
 
@@ -1616,14 +1530,14 @@ function getConvertQuoteToSoObject($focus,$quote_focus,$quoteid)
 */
 function getAssociatedProducts($module,$focus,$seid='')
 {
-	global $log, $adb, $theme,$current_user;
+	global $log, $adb, $theme, $currentModule;
 	$log->debug("Entering getAssociatedProducts(".$module.",".get_class($focus).",".$seid."='') method ...");
 
 	$theme_path="themes/".$theme."/";
 	$image_path=$theme_path."images/";
 	$product_Detail = Array();
 
-	if($module == 'Quotes' || $module == 'PurchaseOrder' || $module == 'SalesOrder' || $module == 'Invoice')
+	if (in_array($module, getInventoryModules()))
 	{
 		$query="SELECT
 			case when vtiger_products.productid != '' then vtiger_products.productname else vtiger_service.servicename end as productname,
@@ -1641,9 +1555,15 @@ function getAssociatedProducts($module,$focus,$seid='')
 			$params = array($focus->id);
 		if ($module != 'PurchaseOrder') {
 			if (GlobalVariable::getVariable('B2B', '1')=='1') {
-				$acvid = $focus->column_fields['account_id'];
+				if($module == 'Issuecards')
+					$acvid = $focus->column_fields['accid'];
+				else
+					$acvid = $focus->column_fields['account_id'];
 			} else {
-				$acvid = $focus->column_fields['contact_id'];
+				if($module == 'Issuecards')
+					$acvid = $focus->column_fields['ctoid'];
+				else
+					$acvid = $focus->column_fields['contact_id'];
 			}
 		} else {
 			$acvid = $focus->column_fields['vendor_id'];
@@ -1711,7 +1631,11 @@ function getAssociatedProducts($module,$focus,$seid='')
 		if (!empty($entitytype)) {
 			$product_Detail[$i]['entityType'.$i]=$entitytype;
 		}
-		$product_Detail[$i]['lineitem_id'.$i]=$adb->query_result($result,$i-1,'lineitem_id');
+		if ($module==$currentModule) {
+			$product_Detail[$i]['lineitem_id'.$i]=$adb->query_result($result,$i-1,'lineitem_id');
+		} else {
+			$product_Detail[$i]['lineitem_id'.$i]=0;
+		}
 
 		if($listprice == '')
 			$listprice = $unitprice;
@@ -1782,9 +1706,9 @@ function getAssociatedProducts($module,$focus,$seid='')
 		}
 		$qty = number_format($qty, 2,'.',''); //Convert to 2 decimals
 		$product_Detail[$i]['qty'.$i]=$qty;
-		$product_Detail[$i]['listPrice'.$i]=CurrencyField::convertToUserFormat($listprice, null, true);
-		$product_Detail[$i]['unitPrice'.$i]=CurrencyField::convertToUserFormat($unitprice, null, true);
-		$product_Detail[$i]['productTotal'.$i]=CurrencyField::convertToUserFormat($productTotal, null, true);
+		$product_Detail[$i]['listPrice'.$i]=CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($listprice, null, true), null, true);
+		$product_Detail[$i]['unitPrice'.$i]=CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($unitprice, null, true), null, true);
+		$product_Detail[$i]['productTotal'.$i]=CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($productTotal, null, true), null, true);
 		$product_Detail[$i]['subproduct_ids'.$i]=$subprodid_str;
 		$product_Detail[$i]['subprod_names'.$i]=$subprodname_str;
 		$discount_percent=$adb->query_result($result,$i-1,'discount_percent');
@@ -1809,7 +1733,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 		elseif($discount_amount != 'NULL' && $discount_amount != '')
 		{
 			$product_Detail[$i]['discount_type'.$i] = "amount";
-			$product_Detail[$i]['discount_amount'.$i] = CurrencyField::convertToUserFormat($discount_amount, null, true);
+			$product_Detail[$i]['discount_amount'.$i] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($discount_amount, null, true), null, true);
 			$product_Detail[$i]['checked_discount_amount'.$i] = ' checked';
 			$product_Detail[$i]['style_discount_amount'.$i] = ' style="visibility:visible"';
 			$product_Detail[$i]['style_discount_percent'.$i] = ' style="visibility:hidden"';
@@ -1820,16 +1744,16 @@ function getAssociatedProducts($module,$focus,$seid='')
 			$product_Detail[$i]['checked_discount_zero'.$i] = ' checked';
 		}
 		$totalAfterDiscount = $productTotal-$discountTotal;
-		$product_Detail[$i]['discountTotal'.$i] = CurrencyField::convertToUserFormat($discountTotal, null, true);
-		$product_Detail[$i]['totalAfterDiscount'.$i] = CurrencyField::convertToUserFormat($totalAfterDiscount, null, true);
+		$product_Detail[$i]['discountTotal'.$i] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($discountTotal, null, true), null, true);
+		$product_Detail[$i]['totalAfterDiscount'.$i] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($totalAfterDiscount, null, true), null, true);
 
 		$taxTotal = '0.00';
-		$product_Detail[$i]['taxTotal'.$i] = CurrencyField::convertToUserFormat($taxTotal, null, true);
+		$product_Detail[$i]['taxTotal'.$i] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($taxTotal, null, true), null, true);
 
 		//Calculate netprice
 		$netPrice = $totalAfterDiscount+$taxTotal;
 		//if condition is added to call this function when we create PO/SO/Quotes/Invoice from Product module
-		if($module == 'PurchaseOrder' || $module == 'SalesOrder' || $module == 'Quotes' || $module == 'Invoice')
+		if(in_array($module, getInventoryModules()))
 		{
 			$taxtype = getInventoryTaxType($module,$focus->id);
 			if($taxtype == 'individual')
@@ -1838,7 +1762,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 				$netPrice = $netPrice+$taxTotal;
 			}
 		}
-		$product_Detail[$i]['netPrice'.$i] = CurrencyField::convertToUserFormat($netPrice, null, true);
+		$product_Detail[$i]['netPrice'.$i] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($netPrice, null, true), null, true);
 
 		//First we will get all associated taxes as array
 		$tax_details = getTaxDetailsForProduct($hdnProductId,'all',$acvid);
@@ -1877,7 +1801,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 
 	$subTotal = ($focus->column_fields['hdnSubTotal'] != '')?$focus->column_fields['hdnSubTotal']:'0.00';
 
-	$product_Detail[1]['final_details']['hdnSubTotal'] = CurrencyField::convertToUserFormat($subTotal, null, true);
+	$product_Detail[1]['final_details']['hdnSubTotal'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($subTotal, null, true), null, true);
 	$discountPercent = ($focus->column_fields['hdnDiscountPercent'] != '')?$focus->column_fields['hdnDiscountPercent']:'0.00';
 	$discountAmount = ($focus->column_fields['hdnDiscountAmount'] != '')?$focus->column_fields['hdnDiscountAmount']:'0.00';
 
@@ -1898,12 +1822,12 @@ function getAssociatedProducts($module,$focus,$seid='')
 	{
 		$finalDiscount = $focus->column_fields['hdnDiscountAmount'];
 		$product_Detail[1]['final_details']['discount_type_final'] = 'amount';
-		$product_Detail[1]['final_details']['discount_amount_final'] = CurrencyField::convertToUserFormat($discountAmount, null, true);
+		$product_Detail[1]['final_details']['discount_amount_final'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($discountAmount, null, true), null, true);
 		$product_Detail[1]['final_details']['checked_discount_amount_final'] = ' checked';
 		$product_Detail[1]['final_details']['style_discount_amount_final'] = ' style="visibility:visible"';
 		$product_Detail[1]['final_details']['style_discount_percentage_final'] = ' style="visibility:hidden"';
 	}
-	$product_Detail[1]['final_details']['discountTotal_final'] = CurrencyField::convertToUserFormat($finalDiscount, null, true);
+	$product_Detail[1]['final_details']['discountTotal_final'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($finalDiscount, null, true), null, true);
 
 	//To set the Final Tax values
 	//we will get all taxes. if individual then show the product related taxes only else show all taxes
@@ -1936,13 +1860,13 @@ function getAssociatedProducts($module,$focus,$seid='')
 		$product_Detail[1]['final_details']['taxes'][$tax_count]['taxname'] = $tax_name;
 		$product_Detail[1]['final_details']['taxes'][$tax_count]['taxlabel'] = $tax_label;
 		$product_Detail[1]['final_details']['taxes'][$tax_count]['percentage'] = $tax_percent;
-		$product_Detail[1]['final_details']['taxes'][$tax_count]['amount'] = CurrencyField::convertToUserFormat($taxamount, null, true);
+		$product_Detail[1]['final_details']['taxes'][$tax_count]['amount'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($taxamount, null, true), null, true);
 	}
-	$product_Detail[1]['final_details']['tax_totalamount'] = CurrencyField::convertToUserFormat($taxtotal, null, true);
+	$product_Detail[1]['final_details']['tax_totalamount'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($taxtotal, null, true), null, true);
 
 	//To set the Shipping & Handling charge
 	$shCharge = ($focus->column_fields['hdnS_H_Amount'] != '')?$focus->column_fields['hdnS_H_Amount']:'0.00';
-	$product_Detail[1]['final_details']['shipping_handling_charge'] = CurrencyField::convertToUserFormat($shCharge, null, true);
+	$product_Detail[1]['final_details']['shipping_handling_charge'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($shCharge, null, true), null, true);
 
 	//To set the Shipping & Handling tax values
 	//calculate S&H tax
@@ -1957,7 +1881,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 		$shtax_label = $shtax_details[$shtax_count]['taxlabel'];
 		$shtax_percent = '0.00';
 		//if condition is added to call this function when we create PO/SO/Quotes/Invoice from Product module
-		if($module == 'PurchaseOrder' || $module == 'SalesOrder' || $module == 'Quotes' || $module == 'Invoice')
+		if(in_array($module, getInventoryModules()))
 		{
 			$shtax_percent = getInventorySHTaxPercent($focus->id,$shtax_name);
 		}
@@ -1966,17 +1890,17 @@ function getAssociatedProducts($module,$focus,$seid='')
 		$product_Detail[1]['final_details']['sh_taxes'][$shtax_count]['taxname'] = $shtax_name;
 		$product_Detail[1]['final_details']['sh_taxes'][$shtax_count]['taxlabel'] = $shtax_label;
 		$product_Detail[1]['final_details']['sh_taxes'][$shtax_count]['percentage'] = $shtax_percent;
-		$product_Detail[1]['final_details']['sh_taxes'][$shtax_count]['amount'] = CurrencyField::convertToUserFormat($shtaxamount, null, true);
+		$product_Detail[1]['final_details']['sh_taxes'][$shtax_count]['amount'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($shtaxamount, null, true), null, true);
 	}
-	$product_Detail[1]['final_details']['shtax_totalamount'] = CurrencyField::convertToUserFormat($shtaxtotal, null, true);
+	$product_Detail[1]['final_details']['shtax_totalamount'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($shtaxtotal, null, true), null, true);
 
 	//To set the Adjustment value
 	$adjustment = ($focus->column_fields['txtAdjustment'] != '')?$focus->column_fields['txtAdjustment']:'0.00';
-	$product_Detail[1]['final_details']['adjustment'] = CurrencyField::convertToUserFormat($adjustment, null, true);
+	$product_Detail[1]['final_details']['adjustment'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($adjustment, null, true), null, true);
 
 	//To set the grand total
 	$grandTotal = ($focus->column_fields['hdnGrandTotal'] != '')?$focus->column_fields['hdnGrandTotal']:'0.00';
-	$product_Detail[1]['final_details']['grandTotal'] = CurrencyField::convertToUserFormat($grandTotal, null, true);
+	$product_Detail[1]['final_details']['grandTotal'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($grandTotal, null, true), null, true);
 
 	$log->debug("Exiting getAssociatedProducts method ...");
 

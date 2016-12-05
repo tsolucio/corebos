@@ -6,23 +6,21 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
+ * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
 include_once 'include/Webservices/Delete.php';
 
-class Mobile_WS_DeleteRecords extends Mobile_WS_Controller {
-	
-	function process(Mobile_API_Request $request) {
-		global $current_user;
-		
+class crmtogo_WS_DeleteRecords extends crmtogo_WS_Controller {
+
+	function process(crmtogo_API_Request $request) {
 		$current_user = $this->getActiveUser();
-		
 		$records = $request->get('records');
 		if (empty($records)) {
 			$records = array($request->get('record'));
 		} else {
-			$records = Zend_Json::decode($records);
+			$records = json_decode($records,true);
 		}
-		
+
 		$deleted = array();
 		foreach($records as $record) {
 			try {
@@ -33,10 +31,9 @@ class Mobile_WS_DeleteRecords extends Mobile_WS_Controller {
 			}
 			$deleted[$record] = $result;
 		}
-		
-		$response = new Mobile_API_Response();
+
+		$response = new crmtogo_API_Response();
 		$response->setResult(array('deleted' => $deleted));
-		
 		return $response;
 	}
 }

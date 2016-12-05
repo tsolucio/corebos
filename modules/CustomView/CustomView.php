@@ -53,7 +53,7 @@ class CustomView extends CRMEntity {
 	 * @param $module -- The module Name:: Type String(optional)
 	 * @returns  nothing
 	 */
-	function CustomView($module = "") {
+	function __construct($module = "") {
 		global $current_user, $adb;
 		$this->customviewmodule = $module;
 		$this->escapemodule[] = $module . "_";
@@ -122,10 +122,17 @@ class CustomView extends CRMEntity {
 			} else {
 				$viewid = $viewname;
 			}
-			if ($this->isPermittedCustomView($viewid, $now_action, $this->customviewmodule) != 'yes')
-				$viewid = 0;
+			if ($this->isPermittedCustomView($viewid, $now_action, $this->customviewmodule) != 'yes') {
+				if ($this->customviewmodule=='Calendar') {
+					if ($this->isPermittedCustomView($viewid, $now_action, 'Calendar4You') != 'yes') {
+						$viewid = 0;
+					}
+				} else {
+					$viewid = 0;
+				}
+			}
 		}
-		$_SESSION['lvs'][$module]["viewname"] = $viewid;
+		coreBOS_Session::set('lvs^'.$module.'^viewname', $viewid);
 		return $viewid;
 	}
 
@@ -305,8 +312,9 @@ class CustomView extends CRMEntity {
 		} else {
 			$tab_ids = explode(",", $tabid);
 			$profileList = getCurrentUserProfileList();
-			$sql = "select * from vtiger_field inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid ";
-			$sql.= " where vtiger_field.tabid in (" . generateQuestionMarks($tab_ids) . ") and vtiger_field.block in (" . generateQuestionMarks($block_ids) . ") and";
+			$uniqueFieldsRestriction = 'vtiger_field.fieldid IN (select min(vtiger_field.fieldid) from vtiger_field where vtiger_field.tabid in ('. generateQuestionMarks($tab_ids) .') GROUP BY vtiger_field.columnname)';
+			$sql = "select distinct vtiger_field.* from vtiger_field inner join vtiger_profile2field on vtiger_profile2field.fieldid=vtiger_field.fieldid inner join vtiger_def_org_field on vtiger_def_org_field.fieldid=vtiger_field.fieldid ";
+			$sql.= " where $uniqueFieldsRestriction and vtiger_field.block in (" . generateQuestionMarks($block_ids) . ") and";
 			$sql.= "$display_type and vtiger_profile2field.visible=0 and vtiger_def_org_field.visible=0 and vtiger_field.presence in (0,2)";
 
 			$params = array($tab_ids, $block_ids);
@@ -319,7 +327,7 @@ class CustomView extends CRMEntity {
 				$sql.= " and vtiger_field.fieldname not in('notime','duration_minutes','duration_hours')";
 			}
 
-			$sql.= " group by columnname order by sequence";
+			$sql.= ' order by sequence';
 		}
 		if ($tabid == '9,16')
 			$tabid = "9";

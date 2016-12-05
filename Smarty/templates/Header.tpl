@@ -15,7 +15,7 @@
 	<title>{$USER} - {$MODULE_NAME|@getTranslatedString:$MODULE_NAME} - {$APP.LBL_BROWSER_TITLE}</title>
 	<link REL="SHORTCUT ICON" HREF="{$FAVICON}">
 	<style type="text/css">@import url("themes/{$THEME}/style.css?v={$VERSION}");</style>
-	<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
+	{if $PRELOAD_JSCALENDAR neq 'false'}<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">{/if}
 	<link rel="stylesheet" href="include/print.css" type="text/css" media="print" />
 {* vtlib customization: Inclusion of custom javascript and css as registered *}
 {if $HEADERCSS}
@@ -55,12 +55,16 @@
 	<script type="text/javascript" id="_current_language_" src="include/js/{$LANGUAGE}.lang.js?{$VERSION}"></script>
 	<script type="text/javascript" src="include/js/QuickCreate.js"></script>
 	<script type="text/javascript" src="include/js/menu.js?v={$VERSION}"></script>
+	{if $CALCULATOR_DISPLAY eq 'true'}
 	<script type="text/javascript" src="include/calculator/calc.js"></script>
+	{/if}
 	<script type="text/javascript" src="modules/Calendar/script.js"></script>
 	<script type="text/javascript" src="include/js/notificationPopup.js"></script>
+	{if $PRELOAD_JSCALENDAR neq 'false'}
 	<script type="text/javascript" src="jscalendar/calendar.js"></script>
 	<script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
 	<script type="text/javascript" src="jscalendar/lang/calendar-{$APP.LBL_JSCALENDAR_LANG}.js"></script>
+	{/if}
     <!-- asterisk Integration -->
 {if $USE_ASTERISK eq 'true'}
 	<script type="text/javascript" src="include/js/asterisk.js"></script>
@@ -68,7 +72,12 @@
 	if(typeof(use_asterisk) == 'undefined') use_asterisk = true;
 	</script>
 {/if}
-    <!-- END -->
+	<script type="text/javascript">
+	<!-- browser tab identification on ajax calls -->
+	jQuery(document).ajaxSend(function() {ldelim}
+		document.cookie = "corebos_browsertabID="+corebos_browsertabID;
+	{rdelim});
+	</script>
 
 {* vtlib customization: Inclusion of custom javascript and css as registered *}
 {if $HEADERSCRIPTS}
@@ -146,8 +155,9 @@
 					</div>
 				</td>
 				{/if}
-				{* END *}
-				<td  onmouseout="fnHideDrop('usersettings');" onmouseover="fnDropDownUser(this,'usersettings');"  valign="bottom" nowrap style="padding-bottom: 1em;" class="small" nowrap> <a> <img src="{$IMAGEPATH}info.PNG" border=0 style="padding: 0px;padding-left:5px"></a></td>
+				{if $HELP_URL}
+				<td valign="bottom" nowrap style="padding-bottom: 1em;" class="small" nowrap><a href="{$HELP_URL}" target="_blank"><img src="{$IMAGEPATH}info.PNG" border=0 style="padding: 0px;padding-left:5px" title="{$APP.LNK_HELP}"></a></td>
+				{/if}
 				{if $ADMIN_LINK neq ''}
 					{foreach key=maintabs item=detail from=$HEADERS}
 						{if $maintabs eq "Settings"}
@@ -195,7 +205,7 @@
 						<input class="small" type='radio' name='exportCalendar' value = 'iCal' onclick="jQuery('#ics_filename').removeAttr('disabled');" checked /> iCal Format
 					</td>
 					<td align="left">
-						<input class="small" type='text' name='ics_filename' id='ics_filename' size='25' value='{$coreBOS_app_name}.calendar'/>
+						<input class="small" type='text' name='ics_filename' id='ics_filename' size='25' value='export.calendar'/>
 					</td>
 				</tr>
 				</table>
@@ -476,13 +486,6 @@ function QCreate(qcoptions){
 		<tr><td style="padding-left:0px;padding-right:10px font-weight:bold"  nowrap> <a href="index.php?module=Users&action=Logout" class="drop_down_usersettings" >{$APP.LBL_LOGOUT}</a> </td></tr>
 	</table>
 </div>
-<div  id="usersettings" class="drop_mnu_user" onmouseout="fnHideDrop('usersettings');" onmouseover="fnvshNrm('usersettings');"  style="width:110px;left:1226px;">
-	<table border=0 width="100%" border="0" cellpadding="0" cellspacing="0" >
-		<tr>
-			<td style="padding-left:0px;padding-right:10px font-weight:bold"  nowrap> <a href="{$smarty.const.MAIN_HELP_PAGE}" target="_blank" class="drop_down_usersettings">{$APP.LNK_HELP}</a> </td>
-		</tr>
-	</table>
-</div>
 <div  id="mainsettings" class="drop_mnu_user" onmouseout="fnHideDrop('mainsettings');" onmouseover="fnvshNrm('mainsettings');" style="width:110px;left:1226px;" >
 	<table border=0 width="100%" border="0" cellpadding="0" cellspacing="0" >
 		{foreach key=maintabs item=detail from=$HEADERS}
@@ -493,25 +496,6 @@ function QCreate(qcoptions){
 		<tr><td style="padding-left:0px;padding-right:10px font-weight:bold"  nowrap><a href="index.php?module=Settings&action=index&parenttab=" class="drop_down_usersettings">{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}</a></td></tr>
 	</table>
 </div>
-<script type="text/javascript">
-{literal}
-function vtiger_news(obj) {
-	document.getElementById('status').style.display = 'inline';
-	jQuery.ajax({
-			method:"POST",
-			url:'index.php?module=Home&action=HomeAjax&file=HomeNews'
-	}).done(function(response) {
-				jQuery("#vtigerNewsPopupLay").html(response);
-				fnvshobj(obj, 'vtigerNewsPopupLay');
-				jQuery('#status').hide();
-			}
-	);
-}
-{/literal}
-</script>
-<div class="lvtCol fixedLay1" id="vtigerNewsPopupLay" style="display: none; height: 250px; bottom: 2px; padding: 2px; z-index: 12; font-weight: normal;" align="left">
-</div>
-<!-- END -->
 
 <!-- ActivityReminder Customization for callback -->
 <div class="lvtCol fixedLay1" id="ActivityRemindercallback" style="border: 0; right: 0px; bottom: 2px; display:none; padding: 2px; z-index: 10; font-weight: normal;" align="left">

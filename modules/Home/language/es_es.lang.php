@@ -61,7 +61,6 @@ $mod_strings = Array(
 'Last 2 Days'=>'Últimos 2 días',
 'Last Ten Days'=>'Últimos 10 días',
 // Added/Updated for vtiger CRM 5.0.4 
-'TITLE_AJAX_CSS_POPUP_CHAT'=>'Chat',
 'User List'=>'Lista de Usuarios',
 
 // Added after 5.0.4 GA
@@ -84,9 +83,6 @@ $mod_strings = Array(
 'LBL_HOME_ITEMS'=>'elemento(s)',
 'LBL_MORE'=>'Más',
 'LBL_SCROLL'=>'Desplazar',
-
-// vtiger CRM News
-'LBL_NEWS_NO'=>'Sín Noticias',
 
 //added for home page changes
 'LBL_NOTEBOOK'=>'Notas',
@@ -131,6 +127,7 @@ $mod_strings = Array(
 'LBL_DEFAULT_WIDGET'=>'Widgets por Defecto',
 'LBL_NO_WIDGETS_HIDDEN'=>'No hay widgets escondidos',
 'UpdateExchangeRate' => 'Actualizar Cotización Moneda',
+'LBL_HOME_ADDWINDOW' => 'Añadir Ventana',
 );
 
 ?>

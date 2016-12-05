@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
- 
 require_once('Smarty_setup.php');
 require_once('data/Tracker.php');
 require_once('modules/Settings/AuditTrail.php');
@@ -15,20 +14,13 @@ require_once('modules/Users/Users.php');
 require_once('include/logging.php');
 require_once('include/utils/utils.php');
 
-global $app_strings;
-global $mod_strings;
-global $app_list_strings;
+global $app_strings, $mod_strings, $app_list_strings;
 global $current_language, $current_user, $adb;
 $current_module_strings = return_module_language($current_language, 'Settings');
 
-global $list_max_entries_per_page;
-global $urlPrefix;
-
 $log = LoggerManager::getLogger('audit_trial');
 
-global $currentModule;
-
-global $theme;
+global $currentModule, $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 
@@ -70,7 +62,7 @@ $smarty->assign("RECORD_COUNTS", $record_string);
 $smarty->assign("NAVIGATION", $navigationOutput);
 $smarty->assign("USERID", $userid);
 $smarty->assign("CATEGORY",$category);
-
+$smarty->assign('coreBOS_uiapp_name', GlobalVariable::getVariable('Application_UI_Name',$coreBOS_app_name));
 if($_REQUEST['ajax'] !='')
 	$smarty->display("ShowAuditTrailContents.tpl");
 else	

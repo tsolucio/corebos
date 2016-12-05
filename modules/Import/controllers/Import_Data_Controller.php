@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************ */
-
 require_once 'include/Webservices/Create.php';
 require_once 'include/Webservices/Update.php';
 require_once 'include/Webservices/Delete.php';
@@ -62,7 +61,7 @@ class Import_Data_Controller {
 		$defaultValues = array();
 		if (!empty($this->defaultValues)) {
 			if(!is_array($this->defaultValues)) {
-				$this->defaultValues = Zend_Json::decode($this->defaultValues);
+				$this->defaultValues = json_decode($this->defaultValues,true);
 			}
 			if($this->defaultValues != null) {
 				$defaultValues = $this->defaultValues;
@@ -163,8 +162,7 @@ class Import_Data_Controller {
 		$sql = 'SELECT * FROM ' . $tableName . ' WHERE status = '. Import_Data_Controller::$IMPORT_RECORD_NONE;
 
 		if($this->batchImport) {
-			$configReader = new ConfigReader('modules/Import/config.inc', 'ImportConfig');
-			$importBatchLimit = $configReader->getConfig('importBatchLimit');
+			$importBatchLimit = GlobalVariable::getVariable('Import_Batch_Limit','250');
 			$sql .= ' LIMIT '. $importBatchLimit;
 		}
 		$result = $adb->query($sql);
@@ -579,7 +577,9 @@ class Import_Data_Controller {
 	public static function runScheduledImport() {
 		require_once('modules/Emails/mail.php');
 		require_once('modules/Emails/Emails.php');		
-		global $current_user,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID;
+		global $current_user;
+		$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail','support@your_support_domain.tld','HelpDesk');
+		$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name','your-support name','HelpDesk');
 		$scheduledImports = self::getScheduledImport();
 
 		foreach ($scheduledImports as $scheduledId => $importDataController) {

@@ -1,0 +1,128 @@
+.tinyselect {
+	height: 34px;
+	display: inline-block;
+	min-width: 200px;
+	position: relative;
+}
+
+.tinyselect .selectbox {
+	position: absolute;
+	height: 100%;
+	width: 100%;
+
+	text-align: left;
+
+	border: 1px solid #ccc;
+
+	line-height: 32px;
+	padding-left: 10px;
+	box-sizing: border-box;
+
+	cursor: pointer;
+	border-radius: 3px;
+
+	white-space: nowrap;
+	overflow-x: hidden;
+}
+
+.tinyselect .selectbox::after {
+	content: ' ';
+	position: absolute;
+	right: 0px;
+	border-left: 1px solid #ccc;
+	height: 100%;
+	font-size: 10pt;
+	line-height: 34px;
+	padding: 0px 8px;
+	width: 10px;
+	background-color: #eee;
+	background-repeat: no-repeat;
+	background-position: center;
+
+	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAJCAYAAADkZNYtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAABXSURBVChTjY0BCYBAFMWugw3MYRAbmMROhjGDFXQTThSfcoNx/P8HV2DEvUG7kxVTUPV+MWCKqt4fLJhC9y96TLH7yIz30PmTDjc09HX+ZUJj3ybC96UczHIuzhJ1BlkAAAAASUVORK5CYII=');
+
+}
+
+.tinyselect .selectbox.open::after {
+	content: ' ';
+	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAsAAAAJCAYAAADkZNYtAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAABYSURBVChTY8ABWqE0QZAOxP+hNF4gDMTvgBikGESD+DgByHqQQhjG6RwlIEZWCMMgcQywA4ixKQaJowAbIMamEIZB8nBwB4ixKYJhkDwYRAAxNgVomCECALjaLs5bhaybAAAAAElFTkSuQmCC');
+
+}
+
+
+
+
+.tinyselect .dropdown {
+	position: absolute;
+	width: 100%;
+	top: 33px;
+	border: 1px solid #ccc;
+
+	background-color: white;
+	z-index: 100;
+
+	box-sizing: border-box;
+	max-height: 200px;
+
+	overflow-x: hidden;
+	overflow-y: scroll;
+}
+
+.tinyselect .dropdown .searchcontainer {
+	padding: 5px;
+}
+
+.tinyselect .dropdown .searchbox {
+	width: 100%;
+	border: 1px solid #ccc;
+	font-size: 10pt;
+	line-height: 2em;
+	padding: 0 5px;
+}
+
+.tinyselect .dropdown .searchicon {
+	position: absolute;
+	top: 12px;
+	right: 8px;
+	width: 14px;
+	height: 14px;
+	background-image: url('data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAA4AAAAOCAYAAAAfSC3RAAAAAXNSR0IArs4c6QAAAARnQU1BAACxjwv8YQUAAAAJcEhZcwAADsMAAA7DAcdvqGQAAAAYdEVYdFNvZnR3YXJlAHBhaW50Lm5ldCA0LjAuOWwzfk4AAADESURBVDhPnZLBDcIwDEW7DIt0CmZgBW5tc2AAFugWDNB7FuDMAB0g+FV25AQLJA5Prb797djJUEoJmabptCzLVVjneb4Lo483yYYadqF0bBQkJzJdSJIOT/7RtPuKLmS0yPgCq+zhyGq+NYGU0tkCXvdQVNh68TgmX697JJahEf/uaAEWE80oMbb9OSPJus1jq5zA6SxmR0erJhFGM30h20kOk85WL5wCWogu3N9q3Y3QFM3Xw8D+adUn9QtvfEQJMWV4A2WMBVG/g0M8AAAAAElFTkSuQmCC');
+}
+
+
+
+
+
+.tinyselect .itemcontainer {
+	list-style: none;
+	margin: 0;
+	padding: 0;
+}
+
+.tinyselect .itemcontainer > li {
+	padding: 5px 2px;
+}
+
+.tinyselect .itemcontainer > li.item {
+	padding: 5px 10px;
+}
+
+.tinyselect .itemcontainer > li.selected {
+	background-color: #eee;
+}
+
+.tinyselect .itemcontainer > li.item:hover {
+	background-color: #1b6eab;
+	color: white;
+}
+
+.tinyselect .itemcontainer li.loadindicator {
+	padding: 15px;
+	font-weight: bold;
+}
+
+.tinyselect .itemcontainer li.loaderrorindicator {
+	padding: 15px;
+	font-weight: bold;
+	color: red;
+}

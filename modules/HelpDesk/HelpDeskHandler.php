@@ -114,7 +114,8 @@ function HelpDesk_notifyOnPortalTicketComment($entityData) {
 }
 
 function HelpDesk_notifyParentOnTicketChange($entityData) {
-	global $HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID;
+	$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail','support@your_support_domain.tld','HelpDesk');
+	$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name','your-support name','HelpDesk');
 	$adb = PearDatabase::getInstance();
 	$moduleName = $entityData->getModuleName();
 	$wsId = $entityData->getId();
@@ -173,6 +174,7 @@ function HelpDesk_notifyParentOnTicketChange($entityData) {
 		if($emailoptout == 0) {
 
 			if($isPortalUser == 1){
+				$PORTAL_URL = GlobalVariable::getVariable('Application_Customer_Portal_URL','http://your_support_domain.tld/customerportal');
 				$url = "<a href='".$PORTAL_URL."/index.php?module=HelpDesk&action=index&ticketid=".$entityId."&fun=detail'>".$mod_strings['LBL_TICKET_DETAILS']."</a>";
 				$email_body = $bodysubject.'<br><br>'.HelpDesk::getPortalTicketEmailContents($entityData);
 			}
@@ -204,7 +206,8 @@ function HelpDesk_notifyParentOnTicketChange($entityData) {
 }
 
 function HelpDesk_notifyOwnerOnTicketChange($entityData) {
-	global $HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID;
+	$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail','support@your_support_domain.tld','HelpDesk');
+	$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name','your-support name','HelpDesk');
 
 	$moduleName = $entityData->getModuleName();
 	$wsId = $entityData->getId();

@@ -33,6 +33,7 @@ $mod_strings = Array(
 	'Cost Total' => 'Cost Total',
 	'Units Delivered Received' => 'Units Delivered/Received',
 	'Line Completed' => 'Line Completed',
+	'Total Stock' => 'Total Stock',
 	'Description' => 'Description',
 );
 

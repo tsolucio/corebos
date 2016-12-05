@@ -89,36 +89,6 @@ function fetchUserGroupids($userid)
 	return $groupidlists;
 }
 
-/** Function to load all the permissions */
-function loadAllPerms() {
-	global $log, $adb,$MAX_TAB_PER, $persistPermArray;
-	$log->debug("Entering loadAllPerms() method ...");
-
-	$persistPermArray = Array();
-	$profiles = Array();
-	$sql = "select distinct profileid from vtiger_profile2tab";
-	$result = $adb->pquery($sql, array());
-	$num_rows = $adb->num_rows($result);
-	for ( $i=0; $i < $num_rows; $i++ )
-		$profiles[] = $adb->query_result($result,$i,'profileid');
-
-	$persistPermArray = Array();
-	foreach ( $profiles as $profileid ) {
-		$sql = "select * from vtiger_profile2tab where profileid=?";
-		$result = $adb->pquery($sql, array($profileid));
-		if($MAX_TAB_PER !='') {
-			$persistPermArray[$profileid] = array_fill(0,$MAX_TAB_PER,0);
-		}
-		$num_rows = $adb->num_rows($result);
-		for($i=0; $i<$num_rows; $i++) {
-			$tabid= $adb->query_result($result,$i,'tabid');
-			$tab_per= $adb->query_result($result,$i,'permissions');
-			$persistPermArray[$profileid][$tabid] = $tab_per;
-		}
-	}
-	$log->debug("Exiting loadAllPerms method ...");
-}
-
 /** Function to get all the vtiger_tab permission for the specified vtiger_profile
   * @param $profileid -- Profile Id:: Type integer
   * @returns  TabPermission Array in the following format:
@@ -127,34 +97,23 @@ function loadAllPerms() {
   *                                |
   *                        $tabidn=>permission)
  */
-function getAllTabsPermission($profileid)
-{
-	global $log,$adb,$MAX_TAB_PER, $persistPermArray;
+function getAllTabsPermission($profileid) {
+	global $log,$adb;
 	$log->debug("Entering getAllTabsPermission(".$profileid.") method ...");
-	if ( $cache_tab_perms ) {
-		if ( count($persistPermArray) == 0 )
-			loadAllPerms();
-		$log->debug("Exiting getAllTabsPermission method ...");
-		return $persistPermArray[$profileid];
-	} else {
-		$sql = "select * from vtiger_profile2tab where profileid=?";
-		$result = $adb->pquery($sql, array($profileid));
-		$tab_perr_array = Array();
-		if($MAX_TAB_PER !='') {
-			$tab_perr_array = array_fill(0,$MAX_TAB_PER,0);
-		}
-		$num_rows = $adb->num_rows($result);
-		for($i=0; $i<$num_rows; $i++) {
-			$tabid= $adb->query_result($result,$i,'tabid');
-			$tab_per= $adb->query_result($result,$i,'permissions');
-			$tab_perr_array[$tabid] = $tab_per;
-		}
-		$log->debug("Exiting getAllTabsPermission method ...");
-		return $tab_perr_array;
+	$sql = "select * from vtiger_profile2tab where profileid=?";
+	$result = $adb->pquery($sql, array($profileid));
+	$tab_perr_array = Array();
+	$num_rows = $adb->num_rows($result);
+	for($i=0; $i<$num_rows; $i++) {
+		$tabid= $adb->query_result($result,$i,'tabid');
+		$tab_per= $adb->query_result($result,$i,'permissions');
+		$tab_perr_array[$tabid] = $tab_per;
 	}
+	$log->debug("Exiting getAllTabsPermission method ...");
+	return $tab_perr_array;
 }
 
-/** Function to get all the vtiger_tab permission for the specified vtiger_profile other than tabid 15
+/** Function to get all the tab permission for the specified profile other than tabid 15
   * @param $profileid -- Profile Id:: Type integer
   * @returns  TabPermission Array in the following format:
   * $tabPermission = Array($tabid1=>permission,
@@ -162,34 +121,23 @@ function getAllTabsPermission($profileid)
   *                                |
   *                        $tabidn=>permission)
  */
-function getTabsPermission($profileid)
-{
-	global $log, $persistPermArray, $adb;
+function getTabsPermission($profileid) {
+	global $log, $adb;
 	$log->debug("Entering getTabsPermission(".$profileid.") method ...");
-	if ($cache_tab_perms) {
-		if (count($persistPermArray) == 0)
-			loadAllPerms();
-		$tab_perr_array = $persistPermArray;
-		foreach (array(1,3,16,15) as $tabid)
-			$tab_perr_array[$tabid] = 0;
-		$log -> debug("Exiting getTabsPermission method ...");
-		return $tab_perr_array;
-	} else {
-		$sql = 'select vtiger_profile2tab.tabid,vtiger_profile2tab.permissions from vtiger_profile2tab
-			INNER JOIN vtiger_tab ON vtiger_tab.tabid=vtiger_profile2tab.tabid WHERE vtiger_profile2tab.profileid=? AND vtiger_tab.presence=0';
-		$result = $adb -> pquery($sql, array($profileid));
-		$tab_perr_array = Array();
-		$num_rows = $adb -> num_rows($result);
-		for ($i = 0; $i < $num_rows; $i++) {
-			$tabid = $adb -> query_result($result, $i, 'tabid');
-			$tab_per = $adb -> query_result($result, $i, 'permissions');
-			if ($tabid != 3 && $tabid != 16) {
-				$tab_perr_array[$tabid] = $tab_per;
-			}
+	$sql = 'select vtiger_profile2tab.tabid,vtiger_profile2tab.permissions from vtiger_profile2tab
+		INNER JOIN vtiger_tab ON vtiger_tab.tabid=vtiger_profile2tab.tabid WHERE vtiger_profile2tab.profileid=? AND vtiger_tab.presence=0';
+	$result = $adb -> pquery($sql, array($profileid));
+	$tab_perr_array = Array();
+	$num_rows = $adb -> num_rows($result);
+	for ($i = 0; $i < $num_rows; $i++) {
+		$tabid = $adb -> query_result($result, $i, 'tabid');
+		$tab_per = $adb -> query_result($result, $i, 'permissions');
+		if ($tabid != 3 && $tabid != 16) {
+			$tab_perr_array[$tabid] = $tab_per;
 		}
-		$log -> debug("Exiting getTabsPermission method ...");
-		return $tab_perr_array;
 	}
+	$log -> debug("Exiting getTabsPermission method ...");
+	return $tab_perr_array;
 }
 
  /** Function to get all the vtiger_tab standard action permission for the specified vtiger_profile
@@ -637,7 +585,7 @@ function _vtisPermitted($module,$actionname,$record_id='') {
 	}
 
 	//Checking the Access for the Settings Module
-	if($module == 'Settings' || $module == 'Administration' || $parenttab == 'Settings')
+	if($module == 'Settings' || $parenttab == 'Settings')
 	{
 		if(! $is_admin)
 		{
@@ -1202,7 +1150,7 @@ function isAllowed_Outlook($module,$action,$user_id,$record_id)
 	$log->debug("Entering isAllowed_Outlook(".$module.",".$action.",".$user_id.",".$record_id.") method ...");
 
 	$permission = "no";
-	if($module == 'Users' || $module == 'Home' || $module == 'Administration' || $module == 'uploads' ||  $module == 'Settings' || $module == 'Calendar')
+	if($module == 'Users' || $module == 'Home' || $module == 'uploads' ||  $module == 'Settings' || $module == 'Calendar')
 	{
 		//These modules done have security
 		$permission = "yes";
@@ -3140,33 +3088,29 @@ function getSubordinateRoleAndUsers($roleId, $users = true)
 function getCurrentUserProfileList()
 {
 	global $log,$current_user;
-	$log->debug("Entering getCurrentUserProfileList() method ...");
+	$log->debug('Entering getCurrentUserProfileList() method ...');
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	$profList = array();
-	$i=0;
 	foreach ($current_user_profiles as $profid) {
 		array_push($profList, $profid);
-		$i++;
 	}
-	$log->debug("Exiting getCurrentUserProfileList method ...");
+	$log->debug('Exiting getCurrentUserProfileList method ...');
 	return $profList;
 }
 
 function getCurrentUserGroupList()
 {
 	global $log,$current_user;
-	$log->debug("Entering getCurrentUserGroupList() method ...");
+	$log->debug('Entering getCurrentUserGroupList() method ...');
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 	$grpList= array();
 	if(sizeof($current_user_groups) > 0)
 	{
-		$i=0;
 		foreach ($current_user_groups as $grpid) {
 			array_push($grpList, $grpid);
-			$i++;
 		}
 	}
-	$log->debug("Exiting getCurrentUserGroupList method ...");
+	$log->debug('Exiting getCurrentUserGroupList method ...');
 	return $grpList;
 }
 
@@ -3177,7 +3121,7 @@ function getSubordinateUsersList()
 	$user_array=Array();
 	require('user_privileges/user_privileges_'.$current_user->id.'.php');
 
-	if(sizeof($subordinate_roles_users) > 0)
+	if(isset($subordinate_roles_users) and sizeof($subordinate_roles_users) > 0)
 	{
 		foreach ($subordinate_roles_users as $roleid => $userArray) {
 			foreach($userArray as $userid) {
@@ -3252,7 +3196,7 @@ function getWriteSharingGroupsList($module)
 function constructList($array,$data_type)
 {
 	global $log;
-	$log->debug("Entering constructList(".$array.",".$data_type.") method ...");
+	$log->debug("Entering constructList(".print_r($array,true).",".$data_type.") method ...");
 	$list= array();
 	if(sizeof($array) > 0)
 	{
@@ -3662,12 +3606,13 @@ function getGrpId($groupname) {
   * @param $fld_module -- Module :: Type String
   * @param $userid -- User Id :: Type integer
   * @param $fieldname -- Field Name :: Type varchar
-  * @returns $rolename -- Role Name :: Type varchar
+  * @param $accessmode -- Access Mode :: Type varchar :: readonly or anything else
+  * @returns 0 | 1 :: Type varchar if visible or not
  */
 function getFieldVisibilityPermission($fld_module, $userid, $fieldname, $accessmode='readonly')
 {
 	global $log,$adb, $current_user;
-	$log->debug("Entering getFieldVisibilityPermission(".$fld_module.",". $userid.",". $fieldname.") method ...");
+	$log->debug("Entering getFieldVisibilityPermission(".$fld_module.",". $userid.",". $fieldname.", $accessmode) method ...");
 
 	// Check if field is in-active
 	$fieldActive = isFieldActive($fld_module,$fieldname);
@@ -3675,6 +3620,7 @@ function getFieldVisibilityPermission($fld_module, $userid, $fieldname, $accessm
 		return '1';
 	}
 
+	if (empty($userid)) $userid = $current_user->id;
 	require('user_privileges/user_privileges_'.$userid.'.php');
 
 	/* Asha: Fix for ticket #4508. Users with View all and Edit all permission will also have visibility permission for all fields */
@@ -3685,32 +3631,34 @@ function getFieldVisibilityPermission($fld_module, $userid, $fieldname, $accessm
 	}
 	else
 	{
-		//get vtiger_profile list using userid
-		$profilelist = getCurrentUserProfileList();
+		//get profile list using userid
+		$profilelist = array();
+		foreach ($current_user_profiles as $profid) {
+			array_push($profilelist, $profid);
+		}
 
 		//get tabid
 		$tabid = getTabid($fld_module);
 
 		if (count($profilelist) > 0) {
 			if($accessmode == 'readonly') {
-				$query="SELECT vtiger_profile2field.* FROM vtiger_field INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid WHERE vtiger_field.tabid=? AND vtiger_profile2field.visible=0 AND vtiger_def_org_field.visible=0  AND vtiger_profile2field.profileid in (". generateQuestionMarks($profilelist) .") AND vtiger_field.fieldname= ? and vtiger_field.presence in (0,2) GROUP BY vtiger_field.fieldid";
+				$query="SELECT vtiger_profile2field.visible FROM vtiger_field INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid WHERE vtiger_field.tabid=? AND vtiger_profile2field.visible=0 AND vtiger_def_org_field.visible=0  AND vtiger_profile2field.profileid in (". generateQuestionMarks($profilelist) .") AND vtiger_field.fieldname= ? and vtiger_field.presence in (0,2) GROUP BY vtiger_field.fieldid";
 			} else {
-				$query="SELECT vtiger_profile2field.* FROM vtiger_field INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid WHERE vtiger_field.tabid=? AND vtiger_profile2field.visible=0 AND vtiger_profile2field.readonly=0 AND vtiger_def_org_field.visible=0  AND vtiger_profile2field.profileid in (". generateQuestionMarks($profilelist) .") AND vtiger_field.fieldname= ? and vtiger_field.presence in (0,2) GROUP BY vtiger_field.fieldid";
+				$query="SELECT vtiger_profile2field.visible FROM vtiger_field INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid WHERE vtiger_field.tabid=? AND vtiger_profile2field.visible=0 AND vtiger_profile2field.readonly=0 AND vtiger_def_org_field.visible=0  AND vtiger_profile2field.profileid in (". generateQuestionMarks($profilelist) .") AND vtiger_field.fieldname= ? and vtiger_field.presence in (0,2) GROUP BY vtiger_field.fieldid";
 			}
 			$params = array($tabid, $profilelist, $fieldname);
-
 		} else {
 			if($accessmode == 'readonly') {
-				$query="SELECT vtiger_profile2field.* FROM vtiger_field INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid WHERE vtiger_field.tabid=? AND vtiger_profile2field.visible=0 AND vtiger_def_org_field.visible=0  AND vtiger_field.fieldname= ? and vtiger_field.presence in (0,2) GROUP BY vtiger_field.fieldid";
- 			} else {
-				$query="SELECT vtiger_profile2field.* FROM vtiger_field INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid WHERE vtiger_field.tabid=? AND vtiger_profile2field.visible=0 AND vtiger_profile2field.readonly=0 AND vtiger_def_org_field.visible=0  AND vtiger_field.fieldname= ? and vtiger_field.presence in (0,2) GROUP BY vtiger_field.fieldid";
+				$query="SELECT vtiger_profile2field.visible FROM vtiger_field INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid WHERE vtiger_field.tabid=? AND vtiger_profile2field.visible=0 AND vtiger_def_org_field.visible=0  AND vtiger_field.fieldname= ? and vtiger_field.presence in (0,2) GROUP BY vtiger_field.fieldid";
+			} else {
+				$query="SELECT vtiger_profile2field.visible FROM vtiger_field INNER JOIN vtiger_profile2field ON vtiger_profile2field.fieldid=vtiger_field.fieldid INNER JOIN vtiger_def_org_field ON vtiger_def_org_field.fieldid=vtiger_field.fieldid WHERE vtiger_field.tabid=? AND vtiger_profile2field.visible=0 AND vtiger_profile2field.readonly=0 AND vtiger_def_org_field.visible=0  AND vtiger_field.fieldname= ? and vtiger_field.presence in (0,2) GROUP BY vtiger_field.fieldid";
 			}
 			$params = array($tabid, $fieldname);
 		}
 		$result = $adb->pquery($query, $params);
 		$log->debug("Exiting getFieldVisibilityPermission method ...");
 		if($adb->num_rows($result) == 0) return '1';
-		return ($adb->query_result($result,"0","visible")."");
+		return ($adb->query_result($result,0,'visible').'');
 	}
 }
 

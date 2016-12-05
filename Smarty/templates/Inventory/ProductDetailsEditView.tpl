@@ -220,7 +220,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 
 	<!-- column 3 - Quantity in Stock - starts -->
 	<td class="crmTableRow small lineOnTop" valign="top">
-		{if ($MODULE eq 'Quotes' || $MODULE eq 'SalesOrder' || $MODULE eq 'Invoice')  && 'Products'|vtlib_isModuleActive}
+		{if ($MODULE eq 'Quotes' || $MODULE eq 'SalesOrder' || $MODULE eq 'Invoice' || $MODULE eq 'Issuecards')  && 'Products'|vtlib_isModuleActive}
 		{$APP.LBL_QTY_IN_STOCK}:&nbsp;<span id="{$qtyInStock}">{$data.$qtyInStock}</span><br>
 		{/if}
 		{foreach item=maindata from=$data.$moreinfo}
@@ -292,7 +292,8 @@ function displayCoords(currObj,obj,mode,curr_row)
 
 					{foreach key=tax_row_no item=tax_data from=$data.taxes}
 					   {assign var="taxname" value=$tax_data.taxname|cat:"_percentage"|cat:$row_no}
-					   {assign var="tax_id_name" value="hidden_tax"|cat:$tax_row_no+1|cat:"_percentage"|cat:$row_no}
+					   {assign var="taxlinerowno" value=$tax_row_no+1}
+					   {assign var="tax_id_name" value="hidden_tax"|cat:$taxlinerowno|cat:"_percentage"|cat:$row_no}
 					   {assign var="taxlabel" value=$tax_data.taxlabel|cat:"_percentage"|cat:$row_no}
 					   {assign var="popup_tax_rowname" value="popup_tax_row"|cat:$row_no}
 					   <tr>

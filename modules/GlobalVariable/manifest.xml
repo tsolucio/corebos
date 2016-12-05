@@ -33,7 +33,7 @@
 <table>
 <name>vtiger_globalvariable</name>
 <sql><![CDATA[CREATE TABLE `vtiger_globalvariable` (
-  `globalvariableid` int(11) default NULL,
+  `globalvariableid` int(11) NOT NULL,
   `gvname` varchar(150) NOT NULL, 
   `globalno` varchar(150),
   `default_check` varchar(3),
@@ -83,33 +83,6 @@
 <masseditable>1</masseditable>
 <picklistvalues>
 <picklistvalue>--none--</picklistvalue>
-<picklistvalue>calendar_display</picklistvalue>
-<picklistvalue>world_clock_display</picklistvalue>
-<picklistvalue>calculator_display</picklistvalue>
-<picklistvalue>list_max_entries_per_page</picklistvalue>
-<picklistvalue>limitpage_navigation</picklistvalue>
-<picklistvalue>history_max_viewed</picklistvalue>
-<picklistvalue>default_module</picklistvalue>
-<picklistvalue>default_action</picklistvalue>
-<picklistvalue>default_theme</picklistvalue>
-<picklistvalue>currency_name</picklistvalue>
-<picklistvalue>listview_max_textlength</picklistvalue>
-<picklistvalue>helpdesk_support_email_id</picklistvalue>
-<picklistvalue>helpdesk_support_name</picklistvalue>
-<picklistvalue>helpdesk_support_email_reply_id</picklistvalue>
-<picklistvalue>upload_badext</picklistvalue>
-<picklistvalue>maxWebServiceSessionLifeSpan</picklistvalue>
-<picklistvalue>maxWebServiceSessionIdleTime</picklistvalue>
-<picklistvalue>upload_maxsize</picklistvalue>
-<picklistvalue>allow_exports</picklistvalue>
-<picklistvalue>minimum_cron_frequency</picklistvalue>
-<picklistvalue>default_timezone</picklistvalue>
-<picklistvalue>default_language</picklistvalue>
-<picklistvalue>import_dir</picklistvalue>
-<picklistvalue>upload_dir</picklistvalue>
-<picklistvalue>corebos_app_name</picklistvalue>
-<picklistvalue>corebos_app_url</picklistvalue>
-<picklistvalue>first_day_of_week</picklistvalue>
 <picklistvalue>preload_jscalendar</picklistvalue>
 </picklistvalues>
 </field>
@@ -224,7 +197,7 @@
 <presence>2</presence>
 <defaultvalue></defaultvalue>
 <sequence>7</sequence>
-<maximumlength></maximumlength>
+<maximumlength>100</maximumlength>
 <typeofdata>V~O</typeofdata>
 <quickcreate>1</quickcreate>
 <quickcreatesequence></quickcreatesequence>

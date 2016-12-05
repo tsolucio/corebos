@@ -10,21 +10,19 @@
 require_once("include/utils/CommonUtils.php");
 require_once 'include/Webservices/Utils.php';
 require_once 'include/Webservices/DescribeObject.php';
-require_once("include/Zend/Json.php");
-
 require_once 'modules/com_vtiger_workflow/expression_engine/VTExpressionsManager.inc';
 
 function vtJsonFields($adb, $request) {
 	$moduleName = $request['modulename'];
 	$mem = new VTExpressionsManager($adb);
 	$fields = $mem->fields($moduleName);
-	echo Zend_Json::encode(array('moduleFields' => $fields));
+	echo json_encode(array('moduleFields' => $fields));
 }
 
 function vtJsonFunctions($adb) {
 	$mem = new VTExpressionsManager($adb);
 	$functions = $mem->expressionFunctions();
-	echo Zend_Json::encode($functions);
+	echo json_encode($functions);
 }
 
 function vtJsonRelatedModules($adb, $request) {
@@ -77,7 +75,7 @@ function vtJsonDependentModules($adb, $request) {
 		}
 	}
 	$returnValue = array('count' => count($dependentFields), 'entities' => $dependentFields);
-	echo Zend_Json::encode($returnValue);
+	echo json_encode($returnValue);
 }
 
 function vtJsonOwnersList($adb) {
@@ -91,7 +89,7 @@ function vtJsonOwnersList($adb) {
 		$ownersList[] = array('label' => $groupName, 'value' => $groupName, 'id' => $groupId);
 	}
 
-	echo Zend_Json::encode($ownersList);
+	echo json_encode($ownersList);
 }
 
 function moveWorkflowTaskUpDown($adb, $request) {

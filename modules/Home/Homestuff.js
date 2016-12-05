@@ -343,7 +343,7 @@ function loadStuff(stuffid,stufftype){
 						}
 						document.getElementById('a_'+stuffid).href = url;
 					}else{
-						document.getElementById('a_'+stuffid).style.display = 'none';
+						if (document.getElementById('a_'+stuffid)) document.getElementById('a_'+stuffid).display = 'none';
 					}
 				}
 				if(stufftype=="RSS"){

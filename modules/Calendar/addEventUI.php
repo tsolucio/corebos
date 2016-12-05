@@ -1120,10 +1120,10 @@ $picklistDependencyDSCalendar = Vtiger_DependencyPicklist::getPicklistDependency
 <script type="text/javascript">
 	jQuery(document).ready(function() { 
 		<?php if(!empty($picklistDependencyDSEvents)) { ?>
-		(new FieldDependencies(<?php echo Zend_Json::encode($picklistDependencyDSEvents) ?>)).init();
+		(new FieldDependencies(<?php echo json_encode($picklistDependencyDSEvents) ?>)).init();
 		<?php } ?>
 		<?php if(!empty($picklistDependencyDSCalendar)) { ?>
-		(new FieldDependencies(<?php echo Zend_Json::encode($picklistDependencyDSCalendar) ?>)).init(document.forms['createTodo']);
+		(new FieldDependencies(<?php echo json_encode($picklistDependencyDSCalendar) ?>)).init(document.forms['createTodo']);
 		<?php } ?>
 	});
 </script>

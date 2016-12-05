@@ -1,6 +1,5 @@
 <?xml version='1.0'?>
 <module>
-<exporttime>2009-03-03 08:18:37</exporttime>
 <name>CustomerPortal</name>
 <label>CustomerPortal</label>
 <parent></parent>
@@ -11,10 +10,10 @@
 <vtiger_max_version>5.*</vtiger_max_version>
 </dependencies>
 <migrations>
-	<migration version='1.0'>		
+	<migration version='1.0'>
 	</migration>
-	<migration version='1.1'>		
-	</migration>	
+	<migration version='1.1'>
+	</migration>
 </migrations>
 <tables>
 	<table>

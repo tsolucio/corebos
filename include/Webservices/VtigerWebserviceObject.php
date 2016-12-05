@@ -9,22 +9,22 @@
  *************************************************************************************/
 
 class VtigerWebserviceObject{
-	
+
 	private $id;
 	private $name;
 	private $handlerPath;
 	private $handlerClass;
-	
-	private function VtigerWebserviceObject($entityId,$entityName,$handler_path,$handler_class){
+
+	private function __construct($entityId,$entityName,$handler_path,$handler_class){
 		$this->id = $entityId;
 		$this->name = $entityName;
 		$this->handlerPath = $handler_path;
 		$this->handlerClass = $handler_class;
 	}
-	
+
 	// Cache variables to enable result re-use
 	private static $_fromNameCache = array();
-		
+
 	static function fromName($adb,$entityName){
 		
 		$rowData = false;

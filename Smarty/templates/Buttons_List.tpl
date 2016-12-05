@@ -50,7 +50,7 @@
 		</td>
 		<td style="width:20px;" class="LB_Divider">&nbsp;</td>
 		<td class="small">
-			<!-- Calendar Clock Calculator and Chat -->
+			<!-- Calendar, Clock and Calculator -->
 				<table border=0 cellspacing=0 cellpadding=5>
 				<tr>
 					{if $CALENDAR_DISPLAY eq 'true'}
@@ -70,9 +70,6 @@
 					{/if}
 					{if $CALCULATOR_DISPLAY eq 'true'}
 						<td id="LB_CalcButton" class="LB_Button" style="padding-right:0px"><a href="#"><img src="{$IMAGE_PATH}btnL3Calc.gif" alt="{$APP.LBL_CALCULATOR_ALT}" title="{$APP.LBL_CALCULATOR_TITLE}" border=0 onClick="fnvshobj(this,'calculator_cont');fetch_calc();"></a></td>
-					{/if}
-					{if $CHAT_DISPLAY eq 'true'}
-						<td id="LB_ChatButton" class="LB_Button" style="padding-right:10px"><a href="javascript:;" onClick='return window.open("index.php?module=Home&action=vtchat","Chat","width=600,height=450,resizable=1,scrollbars=1");'><img src="{$IMAGE_PATH}tbarChat.gif" alt="{$APP.LBL_CHAT_ALT}" title="{$APP.LBL_CHAT_TITLE}" border=0></a></td>
 					{/if}
 					<td id="LB_TrackButton" class="LB_Button" style="padding-right:10px"><img src="{$IMAGE_PATH}btnL3Tracker.gif" alt="{$APP.LBL_LAST_VIEWED}" title="{$APP.LBL_LAST_VIEWED}" border=0 onClick="fnvshobj(this,'tracker');"></td>
 				</tr>
@@ -116,7 +113,7 @@
 					{if $MODE neq 'DetailView' && $MODE neq 'EditView' && $MODE neq 'RelatedList'}
 					<td id="LB_ITSCalSettings" class="LB_Button" style="padding-left:50px;"><a href="javascript:;" onclick="fnvshobj(this,'calSettings'); getITSCalSettings();"><img src="themes/softed/images/tbarSettings.gif" alt="Settings" title="Settings" align="absmiddle" border="0"></a></td>
 					{/if}
-					<td id="LB_TaskIcon" class="LB_Button"><a href='index.php?module=Calendar&action=index'><img src="themes/images/tasks-icon.png" alt="{'Tasks'|getTranslatedString:$MODULE}" title="{'Tasks'|getTranslatedString:$MODULE}" border="0"></a></td>
+					<td id="LB_TaskIcon" class="LB_Button"><a href='index.php?module=Calendar4You&action=ListView'><img src="themes/images/tasks-icon.png" alt="{'Tasks'|getTranslatedString:$MODULE}" title="{'Tasks'|getTranslatedString:$MODULE}" border="0"></a></td>
 				{/if}
 				{if $CHECK.moduleSettings eq 'yes'}
 					<td id="LB_ModSettingsButton" class="LB_Button" style="padding-left:10px;"><a href='index.php?module=Settings&action=ModuleManager&module_settings=true&formodule={$MODULE}&parenttab=Settings'><img src="{'settingsBox.png'|@vtiger_imageurl:$THEME}" alt="{$MODULE|getTranslatedString:$MODULE} {$APP.LBL_SETTINGS}" title="{$MODULE|getTranslatedString:$MODULE} {$APP.LBL_SETTINGS}" border="0"></a></td>

@@ -18,17 +18,17 @@
 					{else}
 						{$keysalut}
 					{/if}
-				{*elseif $keyid eq '71' || $keyid eq '72'}  <!--CurrencySymbol-->
+				{*elseif $keyid eq '71' || $keyid eq '72'} <!--CurrencySymbol-->
 					{$keycursymb*}
 				{/if}
 				{if $keyid eq 11 && $USE_ASTERISK eq 'true'}
-                    <span id="dtlview_{$label}"><a href='javascript:;' onclick='startCall("{$keyval}", "{$ID}")'>{$keyval}</a></span>
+					<span id="dtlview_{$label}"><a href='javascript:;' onclick='startCall("{$keyval}", "{$ID}")'>{$keyval}</a></span>
 				{else}
 					<span id="dtlview_{$label}">{$keyval}</span>
 				{/if}
 
-                {if $keyid eq '71' && $keyfldname eq 'unit_price'}
-                	{if $PRICE_DETAILS|@count > 0}
+				{if $keyid eq '71' && $keyfldname eq 'unit_price'}
+					{if $PRICE_DETAILS|@count > 0}
 						<span id="multiple_currencies" width="38%" style="align:right;">
 							&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<a href="javascript:void(0);" onclick="toggleShowHide('currency_class','multiple_currencies');">{$APP.LBL_MORE_CURRENCIES} &raquo;</a>
 						</span>
@@ -61,7 +61,7 @@
 							</table>
 						</div>
 					{/if}
-                {/if}
+				{/if}
 			</td>
 		{elseif $keyid eq '13'} <!--Email-->
 			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">
@@ -116,18 +116,13 @@
 		{elseif $keyid eq '21' || $keyid eq '24' || $keyid eq '22'} <!--TextArea/Street-->
 			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<span id ="dtlview_{$label}">{$keyval}</span></td>
 		{elseif $keyid eq '50' || $keyid eq '73' || $keyid eq '51' || $keyid eq '57' || $keyid eq '59' || $keyid eq '75' || $keyid eq '81' || $keyid eq '76' || $keyid eq '78' || $keyid eq '80'} <!--AccountPopup-->
-			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;<a href="{$keyseclink}">{$keyval}</a></td>
+			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="vtlib_listview.trigger('cell.onmouseover', this);" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">&nbsp;<a href="{$keyseclink}">{$keyval}</a></td>
 		{elseif $keyid eq 82} <!--Email Body-->
 			<td colspan="3" width=100% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;{$keyval}</td>
 		{elseif $keyid eq '53'} <!--Assigned To-->
-            <td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;
-	            {if $keyseclink eq ''}
-	                {$keyval}
-	            {else}
-	               	<a href="{$keyseclink.0}">{$keyval}</a>
-	            {/if}
-				&nbsp;
-            </td>
+			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">&nbsp;
+				{if $keyseclink eq ''}{$keyval}{else}<a href="{$keyseclink.0}">{$keyval}</a>{/if}&nbsp;
+			</td>
 		{elseif $keyid eq '56'} <!--CheckBox-->
 			<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}">{$keyval}&nbsp;</td>
 		{elseif $keyid eq 83}<!-- Handle the Tax in Inventory -->
@@ -139,10 +134,9 @@
 				<td colspan="2" class="dvtCellInfo">&nbsp;</td>
 			</tr>
 			{/foreach}
-
 		{elseif $keyid eq 69}<!-- for Image Reflection -->
 			<td align="left" width=25%>&nbsp;{$keyval}</td>
-		{elseif $keyid eq 10 || $keyid eq 68}<!-- for vtlib reference field -->
+		{elseif $keyid eq 10 || $keyid eq 101 || $keyid eq 68}<!-- for vtlib reference field -->
 			<td class="dvtCellInfo" align="left" width=25% id="mouseArea_{$keyfldname}" onmouseover="vtlib_listview.trigger('cell.onmouseover', this);" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">&nbsp;{$keyval}</td>
 		{else}
 			<td class="dvtCellInfo" align="left" width=25% id="mouseArea_{$keyfldname}">&nbsp;{$keyval}</td>

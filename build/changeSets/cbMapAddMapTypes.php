@@ -32,6 +32,8 @@ class cbMapAddMapTypes extends cbupdaterWorker {
 				'IOMap',
 				'FieldDependency',
 				'Validations',
+				'Import',
+				'RelatedPanes',
 			);
 			$moduleInstance = Vtiger_Module::getInstance('cbMap');
 			$field = Vtiger_Field::getInstance('maptype',$moduleInstance);

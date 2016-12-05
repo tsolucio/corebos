@@ -293,7 +293,6 @@ vtiger_help_controller = function() {
         var m = q.match(/([^-]+)/);
         switch (m[1]) {
             case 'Home': case 'Settings':
-            case 'Administration':
                 break;
             default:
                 // For other modules pull generic & specific help-topics

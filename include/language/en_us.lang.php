@@ -13,7 +13,6 @@
  ********************************************************************************/
 $app_strings = array (
 'LBL_BROWSER_TITLE' => 'coreBOS',
-'APP_NAME' => 'coreBOS',
 'LBL_MY_ACCOUNT' => 'My Organization',
 'LBL_MY_PREFERENCES' => 'My Preferences',
 'LBL_ADMIN' => 'Admin',
@@ -202,6 +201,9 @@ $app_strings = array (
 'LBL_EXPORT_ALL' => 'Export All',
 'LBL_QUICK_CREATE' => 'Quick Create',
 'QuickRelatedList' => 'Related Modules',
+'Photo2Document' => 'Photo to Document',
+'Snap Photo' => 'Snap Photo',
+'Clear Photo' => 'Clear Photo',
 'Export' => 'Export',
 'Import' => 'Import',
 'Merge' => 'Merge',
@@ -541,6 +543,7 @@ $app_strings = array (
 'Expected Revenue' => 'Expected Revenue',
 'Expected Close Date' => 'Expected Close Date',
 'LBL_ACTIONS' => 'Actions',
+'TOGGLE_ACTIONS' => 'Toggle Actions',
 'LBL_SEND' => 'Send',
 'LBL_VAT' => 'VAT',
 'LBL_SALES' => 'Sales',
@@ -872,6 +875,7 @@ $app_strings = array (
 'Created Time'=>'Created Time',
 'Modified Time'=>'Modified Time',
 'Last Modified By' => 'Last Modified By',
+'Created By' => 'Created By',
 'FAQ Id'=>'FAQ Id',
 'Lead Status'=>'Lead Status',
 'Lead Source'=>'Lead Source',
@@ -907,7 +911,6 @@ $app_strings = array (
 'LBL_SEND_EMAIL_PDF' => 'Send Email With PDF',
 'LBL_UPDATE' => 'Update',
 //Added for incoming mail server settings form js validation
-'ERR_INVALID_PAGE_COUNT' => "Invalid Page count",
 'LBL_CAL_LIMIT_MSG'=>'Sorry, Year must be between 1970 and 2037',
 
 //added for fix i18n issue #4038 when importing contacts
@@ -1140,8 +1143,6 @@ $app_strings = array (
 'LBL_HIDE'=>'Hide',
 
 // Layout Editor and Ease navigation between records in Detail view
-'LNK_LIST_NEXT' => 'Next',
-'LNK_LIST_PREVIOUS' => 'Previous',
 'LBL_JUMP_BTN'=> 'JUMP',
 'LBL_JUMP_To'=> 'Jump to',
 'LBL_ASSIGN_BUTTON_LABEL'=>'Assign Fields',
@@ -1155,12 +1156,6 @@ $app_strings = array (
 
 // vtlib customization: Language strings
 'VTLIB_MOD_NOT_ACTIVE' => ' module is not active!',
-// END
-
-// vtiger News & Feedback
-'LBL_VTIGER_NEWS'=>'vtiger News',
-'LBL_FEEDBACK'=>'Feedback',
-// END
 
 //added for asterisk integration
 'CallHistory'=>'Call History',
@@ -1194,7 +1189,6 @@ $app_strings = array (
 'LBL_MERGE_SELECT'=>'Merge Select',
 'LBL_MERGE_DATA_IN'=>'Merge Records In',
 'LBL_MERGE'=>'Merge',
-'LBL_ACTION'=>'Action',
 'LBL_FIELDLISTS'=> 'List Of Fields',
 'LBL_RECORD'=>'Record #',
 'LBL_DUP_PERMISSION' => 'You are not permitted to delete ',
@@ -1311,6 +1305,7 @@ $app_strings = array (
 'ERROR_GETTING_FILTER' => 'ERROR Retrieving information from filter. Please delete the filter and try again.',
 'Upload Images' => 'Upload Images',
 'Drag file here or click to upload' => 'Drag file here or click to upload',
+'Drag attachment here or click to upload' => 'Drag attachment here or click to upload',
 'SetReturnAddressTitle' => 'Select Address To Use',
 'SetReturnAddressDescription' => 'Select which address you wish to overwrite, if any',
 'Subscribe' => 'Subscribe',

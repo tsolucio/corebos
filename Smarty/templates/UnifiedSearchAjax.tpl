@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *********************************************************************************/
-
 -->*}
 {if $MODULE eq $SEARCH_MODULE && $SEARCH_MODULE neq ''}
 	<div id="global_list_{$SEARCH_MODULE}" style="display:block">
@@ -20,40 +19,39 @@
 {/if}
 <form name="massdelete" method="POST">
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
-     
-     <input name="idlist" type="hidden">
-     <input name="change_owner" type="hidden">
-     <input name="change_status" type="hidden">
-	 <input name="search_tag" type="hidden" value="{$TAG_SEARCH}" >
-     <input name="search_criteria" type="hidden" value="{$SEARCH_STRING}">
-     <input name="module" type="hidden" value="{$MODULE}" />
-     <input name="{$MODULE}RecordCount" id="{$MODULE}RecordCount" type="hidden" value="{$ModuleRecordCount.$MODULE.count}" />
-     <tr>
+	<input name="idlist" type="hidden">
+	<input name="change_owner" type="hidden">
+	<input name="change_status" type="hidden">
+	<input name="search_tag" type="hidden" value="{$TAG_SEARCH}" >
+	<input name="search_criteria" type="hidden" value="{$SEARCH_STRING}">
+	<input name="module" type="hidden" value="{$MODULE}" />
+	<input name="{$MODULE}RecordCount" id="{$MODULE}RecordCount" type="hidden" value="{$ModuleRecordCount.$MODULE.count}" />
+	<tr>
 		<td>
-	   <!-- PUBLIC CONTENTS STARTS-->
-	   <br>
+		<!-- PUBLIC CONTENTS STARTS-->
+		<br>
 		<div class="small" style="padding:2px">
 			<table border=0 cellspacing=1 cellpadding=0 width=100% class="lvtBg">
-	           <tr >
+				<tr >
 					<td>
 						<table border=0 cellspacing=0 cellpadding=2 width=100% class="small">
-				   			<tr>
+							<tr>
 							{assign var="MODULELABEL" value=$MODULE}
 							{if $APP.$MODULE neq ''}
 								{assign var="MODULELABEL" value=$APP.$MODULE}
 							{/if}
-								<td style="padding-right:20px" nowrap ><b class=big>{$MODULELABEL}</b>{$SEARCH_CRITERIA}</td>					
+								<td style="padding-right:20px" nowrap ><b class=big>{$MODULELABEL}</b>{$SEARCH_CRITERIA}</td>
 								<td style="padding-right:20px" class="small" align="right" nowrap>{$ModuleRecordCount.$MODULE.recordListRangeMessage}</td>
 								<td nowrap width="50%">
 									<table border=0 cellspacing=0 cellpadding=0 class="small">
-									   <tr>{$NAVIGATION}</tr>
+										<tr>{$NAVIGATION}</tr>
 									</table>
-								</td>					
-				  			 </tr>
+								</td>
+							</tr>
 						</table>
-                 		<div  class="searchResults">
-			 				<table border=0 cellspacing=0 cellpadding=3 width=100% class="small">
-				   				<tr>
+						<div class="searchResults">
+							<table border=0 cellspacing=0 cellpadding=3 width=100% class="small">
+								<tr>
 								{if $DISPLAYHEADER eq 1}
 									{foreach item=header from=$LISTHEADER}
 									<td class="mailSubHeader">{$header}</td>
@@ -61,24 +59,24 @@
 								{else}
 									<td class="searchResultsRow" colspan=$HEADERCOUNT> {$APP.LBL_NO_DATA} </td>
 								{/if}
-				   				</tr>
-							   {foreach item=entity key=entity_id from=$LISTENTITY}
-							   <tr bgcolor=white onMouseOver="this.className='lvtColDataHover'" onMouseOut="this.className='lvtColData'"  >
-								{foreach item=data from=$entity}	
-									<td>{$data}</td>
+								</tr>
+								{foreach item=entity key=entity_id from=$LISTENTITY}
+								<tr bgcolor=white onMouseOver="this.className='lvtColDataHover'" onMouseOut="this.className='lvtColData'" >
+								{foreach item=data from=$entity}
+									<td onmouseout="vtlib_listview.trigger('cell.onmouseout', this)" onmouseover="vtlib_listview.trigger('cell.onmouseover', this)">{$data}</td>
 								{/foreach}
-							   </tr>
-							   {/foreach}
+								</tr>
+								{/foreach}
 							</table>
-			 			</div>
+						</div>
 					</td>
-		   		</tr>
+				</tr>
 			</table>
-	   </div>	   
+		</div>
 	</td>
-   </tr>
+	</tr>
 </table>
-</form>	
+</form>
 </div>
 {if $SEARCH_MODULE eq 'All'}
 <script>

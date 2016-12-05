@@ -20,10 +20,14 @@ $url = getBasic_Advance_SearchURL();
 if (!empty($_REQUEST['start']) and !empty($_REQUEST['return_viewname'])) {
 	$start = vtlib_purify($_REQUEST['start']);
 	$relationId = vtlib_purify($_REQUEST['return_viewname']);
-	$_SESSION['rlvs'][$return_module][$relationId]['start'] = $start;
+	coreBOS_Session::set('rlvs^'.$return_module.'^'.$relationId.'^start', $start);
 }
 if(isset($_REQUEST['activity_mode']))
 	$url .= '&activity_mode='.vtlib_purify($_REQUEST['activity_mode']);
-DeleteEntity($currentModule, $return_module, $focus, $record, $return_id);
-header("Location: index.php?module=$return_module&action=$return_action&record=$return_id&parenttab=$parenttab&relmodule=$module".$url);
+list($delerror,$errormessage) = DeleteEntity($currentModule, $return_module, $focus, $record, $return_id);
+if ($delerror) {
+	header("Location: index.php?module=$module&action=DetailView&record=$record&parenttab=$parenttab&error_msg=".urlencode($errormessage).$url);
+} else {
+	header("Location: index.php?module=$return_module&action=$return_action&record=$return_id&parenttab=$parenttab&relmodule=$module".$url);
+}
 ?>

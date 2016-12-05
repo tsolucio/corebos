@@ -9,7 +9,7 @@
  ************************************************************************************/
 require_once('data/CRMEntity.php');
 require_once('data/Tracker.php');
-require_once('user_privileges/default_module_view.php');
+require('user_privileges/default_module_view.php');
 
 class HelpDesk extends CRMEntity {
 	var $db, $log; // Used in class functions of CRMEntity
@@ -173,8 +173,8 @@ class HelpDesk extends CRMEntity {
 
 		$comment = $this->column_fields['comments'];
 		if ($comment != '') {
-			$sql = "insert into vtiger_ticketcomments values(?,?,?,?,?,?)";
-			$params = array('', $this->id, from_html($comment), $ownerId, $ownertype, $current_time);
+			$sql = "insert into vtiger_ticketcomments (ticketid,comments,ownerid,ownertype,createdtime) values(?,?,?,?,?)";
+			$params = array($this->id, from_html($comment), $ownerId, $ownertype, $current_time);
 			$adb->pquery($sql, $params);
 			$adb->pquery("update vtiger_troubletickets set commentadded='1' where ticketid=?",array($this->id));
 			$this->column_fields['commentadded'] = '1';
@@ -750,9 +750,6 @@ class HelpDesk extends CRMEntity {
 	}
 
 	public static function getPortalTicketEmailContents($entityData) {
-		require_once 'config.inc.php';
-		global $PORTAL_URL;
-
 		$moduleName = $entityData->getModuleName();
 		$wsId = $entityData->getId();
 		$parts = explode('x', $wsId);
@@ -761,6 +758,7 @@ class HelpDesk extends CRMEntity {
 		$wsParentId = $entityData->get('parent_id');
 		$parentIdParts = explode('x', $wsParentId);
 		$parentId = $parentIdParts[1];
+		$PORTAL_URL = GlobalVariable::getVariable('Application_Customer_Portal_URL','http://your_support_domain.tld/customerportal');
 		$portalUrl = "<a href='" . $PORTAL_URL . "/index.php?module=HelpDesk&action=index&ticketid=" . $entityId . "&fun=detail'>"
 				. getTranslatedString('LBL_TICKET_DETAILS', $moduleName) . "</a>";
 		$contents = getTranslatedString('Dear', $moduleName) . " " . getParentName(parentId) . ",<br><br>";

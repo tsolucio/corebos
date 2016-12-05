@@ -6,7 +6,6 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  ********************************************************************************/
 global $current_user;
 require_once('include/utils/ListViewUtils.php');
@@ -23,7 +22,7 @@ class Homestuff{
 	/**
 	 * this is the constructor for the class
 	 */
-	function Homestuff(){
+	function __construct(){
 
 	}
 
@@ -218,9 +217,9 @@ class Homestuff{
 	 * this function only returns the widget contents for a given widget
 	 */
 	function getHomePageStuff($sid,$stuffType){
-		global $adb;
-		global $current_user;
+		global $adb, $current_user;
 		$header=Array();
+		$details='';
 		if($stuffType=="Module"){
 			$details=$this->getModuleFilters($sid);
 		}else if($stuffType=="RSS"){
@@ -230,8 +229,8 @@ class Homestuff{
 		}else if($stuffType=="Default"){
 			$details=$this->getDefaultDetails($sid,'');
 		}
-        else if($stuffType=="ReportCharts" && vtlib_isModuleActive("Reports")){
-        	$details = $this->getReportChartDetails($sid);
+		else if($stuffType=="ReportCharts" && vtlib_isModuleActive("Reports")){
+			$details = $this->getReportChartDetails($sid);
 		}
 		return $details;
 	}
@@ -275,7 +274,7 @@ class Homestuff{
                     $queryGenerator->setFields($newFields);
                     $query = $queryGenerator->getQuery();
                 }
-                $count_result = $adb->query(mkCountQuery($query));
+                $count_result = $adb->query(mkCountWithFullQuery($query));
 				$noofrows = $adb->query_result($count_result,0,"count");
 				$navigation_array = getNavigationValues(1, $noofrows, $maxval);
 
@@ -539,12 +538,12 @@ function getGroupTaskLists($maxval,$calCnt){
 		$query = '';
 		$params = array();
 		if(isPermitted('Leads','index') == "yes"){
-			$query = "select vtiger_leaddetails.leadid as id,vtiger_leaddetails.lastname as name,vtiger_groups.groupname as groupname, 'Leads     ' as Type from vtiger_leaddetails inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_leaddetails.leadid inner join vtiger_groups on vtiger_crmentity.smownerid=vtiger_groups.groupid where vtiger_crmentity.deleted=0 and vtiger_leaddetails.leadid > 0";
+			$query = "(select vtiger_leaddetails.leadid as id,vtiger_leaddetails.lastname as name,vtiger_groups.groupname as groupname, 'Leads     ' as Type from vtiger_leaddetails inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_leaddetails.leadid inner join vtiger_groups on vtiger_crmentity.smownerid=vtiger_groups.groupid where vtiger_crmentity.deleted=0 and vtiger_leaddetails.leadid > 0";
 			if (count($groupids) > 0){
 				$query .= " and vtiger_groups.groupid in (". generateQuestionMarks($groupids). ")";
 				array_push($params, $groupids);
 			}
-			$query .= " LIMIT $maxval";
+			$query .= " LIMIT $maxval)";
 		}
 
 		if(vtlib_isModuleActive("Calendar") && isPermitted('Calendar','index') == "yes"){
@@ -552,12 +551,12 @@ function getGroupTaskLists($maxval,$calCnt){
 				$query .= " union all ";
 			}
 			//Get the activities assigned to group
-			$query .= "select vtiger_activity.activityid as id,vtiger_activity.subject as name,vtiger_groups.groupname as groupname,'Activities' as Type from vtiger_activity inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_activity.activityid inner join vtiger_groups on vtiger_crmentity.smownerid=vtiger_groups.groupid where  vtiger_crmentity.deleted=0 and ((vtiger_activity.eventstatus !='held'and (vtiger_activity.status is null or vtiger_activity.status ='')) or (vtiger_activity.status !='completed' and (vtiger_activity.eventstatus is null or vtiger_activity.eventstatus=''))) and vtiger_activity.activityid > 0";
+			$query .= "(select vtiger_activity.activityid as id,vtiger_activity.subject as name,vtiger_groups.groupname as groupname,'Activities' as Type from vtiger_activity inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_activity.activityid inner join vtiger_groups on vtiger_crmentity.smownerid=vtiger_groups.groupid where  vtiger_crmentity.deleted=0 and ((vtiger_activity.eventstatus !='held'and (vtiger_activity.status is null or vtiger_activity.status ='')) or (vtiger_activity.status !='completed' and (vtiger_activity.eventstatus is null or vtiger_activity.eventstatus=''))) and vtiger_activity.activityid > 0";
 			if (count($groupids) > 0) {
 				$query .= " and vtiger_groups.groupid in (". generateQuestionMarks($groupids). ")";
 				array_push($params, $groupids);
 			}
-			$query .= " LIMIT $maxval";
+			$query .= " LIMIT $maxval)";
 		}
 
 		if(vtlib_isModuleActive("HelpDesk") && isPermitted('HelpDesk','index') == "yes"){
@@ -565,12 +564,12 @@ function getGroupTaskLists($maxval,$calCnt){
 				$query .= " union all ";
 			}
 			//Get the tickets assigned to group (status not Closed -- hardcoded value)
-			$query .= "select vtiger_troubletickets.ticketid,vtiger_troubletickets.title as name,vtiger_groups.groupname,'Tickets   ' as Type from vtiger_troubletickets inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_troubletickets.ticketid inner join vtiger_groups on vtiger_crmentity.smownerid=vtiger_groups.groupid where vtiger_crmentity.deleted=0 and vtiger_troubletickets.status != 'Closed' and vtiger_troubletickets.ticketid > 0";
+			$query .= "(select vtiger_troubletickets.ticketid,vtiger_troubletickets.title as name,vtiger_groups.groupname,'Tickets   ' as Type from vtiger_troubletickets inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_troubletickets.ticketid inner join vtiger_groups on vtiger_crmentity.smownerid=vtiger_groups.groupid where vtiger_crmentity.deleted=0 and vtiger_troubletickets.status != 'Closed' and vtiger_troubletickets.ticketid > 0";
 			if (count($groupids) > 0) {
 				$query .= " and vtiger_groups.groupid in (". generateQuestionMarks($groupids). ")";
 				array_push($params, $groupids);
 			}
-			$query .= " LIMIT $maxval";
+			$query .= " LIMIT $maxval)";
 		}
 
 		if(vtlib_isModuleActive("Potentials") && isPermitted('Potentials','index') == "yes"){
@@ -578,12 +577,12 @@ function getGroupTaskLists($maxval,$calCnt){
 				$query .=" union all ";
 			}
 			//Get the potentials assigned to group(sales stage not Closed Lost or Closed Won-- hardcoded value)
-			$query .= "select vtiger_potential.potentialid,vtiger_potential.potentialname as name,vtiger_groups.groupname as groupname,'Potentials ' as Type from vtiger_potential  inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_potential.potentialid inner join vtiger_groups on vtiger_crmentity.smownerid = vtiger_groups.groupid where vtiger_crmentity.deleted=0  and ((vtiger_potential.sales_stage !='Closed Lost') or (vtiger_potential.sales_stage != 'Closed Won')) and vtiger_potential.potentialid > 0";
+			$query .= "(select vtiger_potential.potentialid,vtiger_potential.potentialname as name,vtiger_groups.groupname as groupname,'Potentials ' as Type from vtiger_potential  inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_potential.potentialid inner join vtiger_groups on vtiger_crmentity.smownerid = vtiger_groups.groupid where vtiger_crmentity.deleted=0  and ((vtiger_potential.sales_stage !='Closed Lost') or (vtiger_potential.sales_stage != 'Closed Won')) and vtiger_potential.potentialid > 0";
 			if (count($groupids) > 0){
 				$query .= " and vtiger_groups.groupid in (". generateQuestionMarks($groupids). ")";
 				array_push($params, $groupids);
 			}
-			$query .= " LIMIT $maxval";
+			$query .= " LIMIT $maxval)";
 		}
 
 		if(vtlib_isModuleActive("Accounts") && isPermitted('Accounts','index') == "yes"){
@@ -591,12 +590,12 @@ function getGroupTaskLists($maxval,$calCnt){
 				$query .=" union all ";
 			}
 			//Get the Accounts assigned to group
-			$query .= "select vtiger_account.accountid as id,vtiger_account.accountname as name,vtiger_groups.groupname as groupname, 'Accounts ' as Type from vtiger_account inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_account.accountid inner join vtiger_groups on vtiger_crmentity.smownerid=vtiger_groups.groupid where vtiger_crmentity.deleted=0 and vtiger_account.accountid > 0";
+			$query .= "(select vtiger_account.accountid as id,vtiger_account.accountname as name,vtiger_groups.groupname as groupname, 'Accounts ' as Type from vtiger_account inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_account.accountid inner join vtiger_groups on vtiger_crmentity.smownerid=vtiger_groups.groupid where vtiger_crmentity.deleted=0 and vtiger_account.accountid > 0";
 			if (count($groupids) > 0){
 				$query .= " and vtiger_groups.groupid in (". generateQuestionMarks($groupids). ")";
 				array_push($params, $groupids);
 			}
-			$query .= " LIMIT $maxval";
+			$query .= " LIMIT $maxval)";
 		}
 
 		if(vtlib_isModuleActive("Contacts") && isPermitted('Contacts','index') =='yes'){
@@ -604,12 +603,12 @@ function getGroupTaskLists($maxval,$calCnt){
             	$query .=" union all ";
 			}
             //Get the Contacts assigned to group
-			$query .= "select vtiger_contactdetails.contactid as id, vtiger_contactdetails.lastname as name ,vtiger_groups.groupname as groupname, 'Contacts ' as Type from vtiger_contactdetails inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_contactdetails.contactid inner join vtiger_groups on vtiger_crmentity.smownerid = vtiger_groups.groupid where vtiger_crmentity.deleted=0 and vtiger_contactdetails.contactid > 0";
+			$query .= "(select vtiger_contactdetails.contactid as id, vtiger_contactdetails.lastname as name ,vtiger_groups.groupname as groupname, 'Contacts ' as Type from vtiger_contactdetails inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_contactdetails.contactid inner join vtiger_groups on vtiger_crmentity.smownerid = vtiger_groups.groupid where vtiger_crmentity.deleted=0 and vtiger_contactdetails.contactid > 0";
 			if (count($groupids) > 0) {
 				$query .= " and vtiger_groups.groupid in (". generateQuestionMarks($groupids). ")";
 				array_push($params, $groupids);
 			}
-			$query .= " LIMIT $maxval";
+			$query .= " LIMIT $maxval)";
 		}
 
 		if(vtlib_isModuleActive("Campaigns") && isPermitted('Campaigns','index') =='yes'){
@@ -617,12 +616,12 @@ function getGroupTaskLists($maxval,$calCnt){
 				$query .=" union all ";
 			}
 			//Get the Campaigns assigned to group(Campaign status not Complete -- hardcoded value)
-			$query .= "select vtiger_campaign.campaignid as id, vtiger_campaign.campaignname as name, vtiger_groups.groupname as groupname,'Campaigns ' as Type from vtiger_campaign inner join  vtiger_crmentity on vtiger_crmentity.crmid = vtiger_campaign.campaignid inner join vtiger_groups on vtiger_crmentity.smownerid = vtiger_groups.groupid where vtiger_crmentity.deleted=0  and (vtiger_campaign.campaignstatus != 'Complete') and vtiger_campaign.campaignid > 0";
+			$query .= "(select vtiger_campaign.campaignid as id, vtiger_campaign.campaignname as name, vtiger_groups.groupname as groupname,'Campaigns ' as Type from vtiger_campaign inner join  vtiger_crmentity on vtiger_crmentity.crmid = vtiger_campaign.campaignid inner join vtiger_groups on vtiger_crmentity.smownerid = vtiger_groups.groupid where vtiger_crmentity.deleted=0  and (vtiger_campaign.campaignstatus != 'Complete') and vtiger_campaign.campaignid > 0";
 			if (count($groupids) > 0) {
 				$query .= " and vtiger_groups.groupid in (". generateQuestionMarks($groupids). ")";
 				array_push($params, $groupids);
 			}
-			$query .= " LIMIT $maxval";
+			$query .= " LIMIT $maxval)";
 		}
 
 		if(vtlib_isModuleActive("Quotes") && isPermitted('Quotes','index') == 'yes'){
@@ -630,12 +629,12 @@ function getGroupTaskLists($maxval,$calCnt){
 				$query .=" union all ";
 			}
 			//Get the Quotes assigned to group(Quotes stage not Rejected -- hardcoded value)
-			$query .="select vtiger_quotes.quoteid as id,vtiger_quotes.subject as name, vtiger_groups.groupname as groupname ,'Quotes 'as Type from vtiger_quotes inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_quotes.quoteid inner join vtiger_groups on vtiger_crmentity.smownerid = vtiger_groups.groupid where vtiger_crmentity.deleted=0  and (vtiger_quotes.quotestage != 'Rejected') and vtiger_quotes.quoteid > 0";
+			$query .="(select vtiger_quotes.quoteid as id,vtiger_quotes.subject as name, vtiger_groups.groupname as groupname ,'Quotes 'as Type from vtiger_quotes inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_quotes.quoteid inner join vtiger_groups on vtiger_crmentity.smownerid = vtiger_groups.groupid where vtiger_crmentity.deleted=0  and (vtiger_quotes.quotestage != 'Rejected') and vtiger_quotes.quoteid > 0";
 			if (count($groupids) > 0) {
 				$query .= " and vtiger_groups.groupid in (". generateQuestionMarks($groupids). ")";
 				array_push($params, $groupids);
 			}
-			$query .= " LIMIT $maxval";
+			$query .= " LIMIT $maxval)";
 		}
 
 		if(vtlib_isModuleActive("SalesOrder") && isPermitted('SalesOrder','index') =='yes'){
@@ -643,12 +642,12 @@ function getGroupTaskLists($maxval,$calCnt){
 				$query .=" union all ";
 			}
             //Get the Sales Order assigned to group
-            $query .="select vtiger_salesorder.salesorderid as id, vtiger_salesorder.subject as name,vtiger_groups.groupname as groupname,'SalesOrder ' as Type from vtiger_salesorder inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_salesorder.salesorderid inner join vtiger_groups on vtiger_crmentity.smownerid = vtiger_groups.groupid where vtiger_crmentity.deleted=0 and vtiger_salesorder.salesorderid > 0";
+            $query .="(select vtiger_salesorder.salesorderid as id, vtiger_salesorder.subject as name,vtiger_groups.groupname as groupname,'SalesOrder ' as Type from vtiger_salesorder inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_salesorder.salesorderid inner join vtiger_groups on vtiger_crmentity.smownerid = vtiger_groups.groupid where vtiger_crmentity.deleted=0 and vtiger_salesorder.salesorderid > 0";
 			if (count($groupids) > 0){
 				$query .= " and vtiger_groups.groupid in (". generateQuestionMarks($groupids). ")";
 				array_push($params, $groupids);
 			}
-			$query .= " LIMIT $maxval";
+			$query .= " LIMIT $maxval)";
 		}
 
 		if(vtlib_isModuleActive("Invoice") && isPermitted('Invoice','index') =='yes'){
@@ -656,12 +655,12 @@ function getGroupTaskLists($maxval,$calCnt){
 				$query .=" union all ";
 			}
 			//Get the Sales Order assigned to group(Invoice status not Paid -- hardcoded value)
-			$query .="select vtiger_invoice.invoiceid as Id , vtiger_invoice.subject as Name, vtiger_groups.groupname as groupname,'Invoice ' as Type from vtiger_invoice inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_invoice.invoiceid inner join vtiger_groups on vtiger_crmentity.smownerid = vtiger_groups.groupid where vtiger_crmentity.deleted=0 and(vtiger_invoice.invoicestatus != 'Paid') and vtiger_invoice.invoiceid > 0";
+			$query .="(select vtiger_invoice.invoiceid as Id , vtiger_invoice.subject as Name, vtiger_groups.groupname as groupname,'Invoice ' as Type from vtiger_invoice inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_invoice.invoiceid inner join vtiger_groups on vtiger_crmentity.smownerid = vtiger_groups.groupid where vtiger_crmentity.deleted=0 and(vtiger_invoice.invoicestatus != 'Paid') and vtiger_invoice.invoiceid > 0";
 			if (count($groupids) > 0){
 				$query .= " and vtiger_groups.groupid in (". generateQuestionMarks($groupids). ")";
 				array_push($params, $groupids);
 			}
-			$query .= " LIMIT $maxval";
+			$query .= " LIMIT $maxval)";
 		}
 
 		if(vtlib_isModuleActive("PurchaseOrder") && isPermitted('PurchaseOrder','index') == 'yes'){
@@ -669,12 +668,12 @@ function getGroupTaskLists($maxval,$calCnt){
 				$query .=" union all ";
 			}
 			//Get the Purchase Order assigned to group
-			$query .="select vtiger_purchaseorder.purchaseorderid as id,vtiger_purchaseorder.subject as name,vtiger_groups.groupname as groupname, 'PurchaseOrder ' as Type from vtiger_purchaseorder inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_purchaseorder.purchaseorderid inner join  vtiger_groups on vtiger_crmentity.smownerid =vtiger_groups.groupid where vtiger_crmentity.deleted=0 and vtiger_purchaseorder.purchaseorderid >0";
+			$query .="(select vtiger_purchaseorder.purchaseorderid as id,vtiger_purchaseorder.subject as name,vtiger_groups.groupname as groupname, 'PurchaseOrder ' as Type from vtiger_purchaseorder inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_purchaseorder.purchaseorderid inner join  vtiger_groups on vtiger_crmentity.smownerid =vtiger_groups.groupid where vtiger_crmentity.deleted=0 and vtiger_purchaseorder.purchaseorderid >0";
 			if (count($groupids) > 0) {
 				$query .= " and vtiger_groups.groupid in (". generateQuestionMarks($groupids). ")";
 				array_push($params, $groupids);
 			}
-			$query .= " LIMIT $maxval";
+			$query .= " LIMIT $maxval)";
 		}
 
 		if(vtlib_isModuleActive("Documents") && isPermitted('Documents','index') == 'yes'){
@@ -682,16 +681,16 @@ function getGroupTaskLists($maxval,$calCnt){
 				$query .=" union all ";
 			}
 			//Get the Purchase Order assigned to group
-			$query .="select vtiger_notes.notesid as id,vtiger_notes.title as name,vtiger_groups.groupname as groupname, 'Documents' as Type from vtiger_notes inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_notes.notesid inner join  vtiger_groups on vtiger_crmentity.smownerid =vtiger_groups.groupid where vtiger_crmentity.deleted=0 and vtiger_notes.notesid > 0";
+			$query .="(select vtiger_notes.notesid as id,vtiger_notes.title as name,vtiger_groups.groupname as groupname, 'Documents' as Type from vtiger_notes inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_notes.notesid inner join  vtiger_groups on vtiger_crmentity.smownerid =vtiger_groups.groupid where vtiger_crmentity.deleted=0 and vtiger_notes.notesid > 0";
 			if (count($groupids) > 0) {
 				$query .= " and vtiger_groups.groupid in (". generateQuestionMarks($groupids). ")";
 				array_push($params, $groupids);
 			}
-			$query .= " LIMIT $maxval";
+			$query .= " LIMIT $maxval)";
 		}
 
 		$log->info("Here is the where clause for the list view: $query");
-		$result = $adb->pquery($query, $params) or die("Couldn't get the group listing");
+		$result = $adb->pquery($query, $params);
 
 		$title=array();
 		$title[]='myGroupAllocation.gif';

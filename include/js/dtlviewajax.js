@@ -54,9 +54,10 @@ function hndMouseOver(uitype,fieldLabel)
 	globaleditareaspanid="editarea_"+ fieldLabel;//textareapanid;
 	globalfieldlabel = fieldLabel;
 	if(globaluitype == 53) {
-		if(typeof(document.DetailView.assigntype[0]) != 'undefined') {
-			var assign_type_U = document.DetailView.assigntype[0].checked;
-			var assign_type_G = document.DetailView.assigntype[1].checked;
+		var assigntype = document.getElementsByName('assigntype');
+		if(assigntype.length > 0) {
+			var assign_type_U = assigntype[0].checked;
+			var assign_type_G = assigntype[1].checked;
 			if(assign_type_U == true)
 				globaltxtboxid= 'txtbox_U'+fieldLabel;
 			else if(assign_type_G == true)
@@ -83,7 +84,8 @@ function handleEdit(event)
 {
 	show(globaleditareaspanid);
 	fnhide(globaldtlviewspanid);
-	if(globaluitype != 53) {
+	if( ((globaluitype == 15 || globaluitype == 16 || globaluitype == 1613) && globaltempvalue == '') ||
+		 (globaluitype != 53 && globaluitype != 15 && globaluitype != 16 && globaluitype != 1613) ) {
 		globaltempvalue = getObj(globaltxtboxid).value;
 		if(getObj(globaltxtboxid).type != 'hidden')
 			getObj(globaltxtboxid).focus();
@@ -154,13 +156,12 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 
 	if(globaluitype == 53)
 	{
-		if(typeof(document.DetailView.assigntype[0]) != 'undefined')
-		{
-			var assign_type_U = document.DetailView.assigntype[0].checked;
-			var assign_type_G = document.DetailView.assigntype[1].checked;
-		}else
-		{
-			var assign_type_U = document.DetailView.assigntype.checked;
+		var assigntype = document.getElementsByName('assigntype');
+		if(assigntype.length > 0) {
+			var assign_type_U = assigntype[0].checked;
+			var assign_type_G = assigntype[1].checked;
+		} else {
+			var assign_type_U = assigntype[0].checked;
 		}
 		if(assign_type_U == true)
 		{
@@ -337,13 +338,12 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 	}else if(uitype == '53')
 	{
 		var hdObj = getObj(hdTxt);
-		if(typeof(document.DetailView.assigntype[0]) != 'undefined')
-		{
-			var assign_type_U = document.DetailView.assigntype[0].checked;
-			var assign_type_G = document.DetailView.assigntype[1].checked;
-		}else
-		{
-			var assign_type_U = document.DetailView.assigntype.checked;
+		var assigntype = document.getElementsByName('assigntype');
+		if(assigntype.length > 0) {
+			var assign_type_U = assigntype[0].checked;
+			var assign_type_G = assigntype[1].checked;
+		} else {
+			var assign_type_U = assigntype[0].checked;
 		}
 		if(isAdmin == "0")
 		{
@@ -487,11 +487,10 @@ function dtlviewModuleValidation(fieldLabel,module,uitype,tableName,fieldName,cr
 		//Testing if a Validation file exists
 		jQuery.ajax({
 			url: "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationExists&valmodule="+gVTModule,
-			type:'get',
-			error: function() { //Validation file does not exist
+			type:'get'
+		}).fail(function() { //Validation file does not exist
 				dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmId);
-			},
-			success: function(data) { //Validation file exists
+		}).done(function(data) { //Validation file exists
 				if (data == 'yes') {
 					// Create object which gets the values of all input, textarea, select and button elements from the form
 					var myFields = document.forms[formName].elements;
@@ -504,8 +503,8 @@ function dtlviewModuleValidation(fieldLabel,module,uitype,tableName,fieldName,cr
 					jQuery.ajax({
 						type : 'post',
 						data : {structure: sentForm},
-						url : "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule="+gVTModule,
-						success : function(msg) {  //Validation file answers
+						url : "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule="+gVTModule
+					}).done(function(msg) {  //Validation file answers
 							VtigerJS_DialogBox.unblock();
 							if (msg.search("%%%CONFIRM%%%") > -1) { //Allow to use confirm alert
 								//message to display
@@ -518,16 +517,13 @@ function dtlviewModuleValidation(fieldLabel,module,uitype,tableName,fieldName,cr
 							} else { //Error
 								alert(msg);
 							}
-						},
-						error : function() {  //Error while asking file
+					}).fail(function() {  //Error while asking file
 							VtigerJS_DialogBox.unblock();
 							alert('Error with AJAX');
-						}
 					});
 				} else { // no validation we send form
 					dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmId)
 				}
-			}
 		});
 	}
 	return false;
@@ -557,10 +553,10 @@ function setSelectValue(fieldLabel)
 {
 	if(globaluitype == 53)
 	{
-		if(typeof(document.DetailView.assigntype[0]) != 'undefined')
-		{
-			var assign_type_U = document.DetailView.assigntype[0].checked;
-			var assign_type_G = document.DetailView.assigntype[1].checked;
+		var assigntype = document.getElementsByName('assigntype');
+		if(assigntype.length > 0) {
+			var assign_type_U = assigntype[0].checked;
+			var assign_type_G = assigntype[1].checked;
 			if(assign_type_U == true)
 				var selCombo= 'txtbox_U'+fieldLabel;
 			else if(assign_type_G == true)

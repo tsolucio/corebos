@@ -42,13 +42,12 @@ class Appointment
 	var $recurring;
 	var $dur_hour;
 
-	function Appointment()
-	{
+	function __construct() {
 		$this->participant = Array();
 		$this->participant_state = Array();
 		$this->description = "";
 	}
-	
+
 	/** To get the events of the specified user and shared events
 	  * @param $userid -- The user Id:: Type integer
           * @param $from_datetime -- The start date Obj :: Type Array

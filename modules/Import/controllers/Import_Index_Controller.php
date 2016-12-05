@@ -180,8 +180,7 @@ class Import_Index_Controller {
 		$viewer->assign('HAS_HEADER', $hasHeader);
 		$viewer->assign('ROW_1_DATA', $rowData);
 		$viewer->assign('USER_INPUT', $userInputObject);
-		$viewer->assign('ENCODED_MANDATORY_FIELDS',
-						Zend_Json::encode($indexController->getMandatoryFields($moduleName)));
+		$viewer->assign('ENCODED_MANDATORY_FIELDS', json_encode($indexController->getMandatoryFields($moduleName)));
 		$viewer->assign('SAVED_MAPS', Import_Map::getAllByModule($moduleName));
 		$viewer->assign('USERS_LIST', Import_Utils::getAssignedToUserList($moduleName));
 		$viewer->assign('GROUPS_LIST', Import_Utils::getAssignedToGroupList($moduleName));

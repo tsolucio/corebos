@@ -19,7 +19,7 @@ function VTEmailTask($){
 	var parallelExecuter = fn.parallelExecuter;
 	var contains = fn.contains;
 	var concat = fn.concat;
-	
+
 	function diff(reflist, list) {
 		var out = [];
 		$.each(list, function(i, v) {
@@ -29,7 +29,7 @@ function VTEmailTask($){
 		});
 		return out;
 	}
-	
+
 	//Display an error message.
 	function errorDialog(message){
 		alert(message);
@@ -93,9 +93,7 @@ function VTEmailTask($){
 		vtinst.describeObject(moduleName, handleError(function(result){
 			var parent = referencify(result);
 			var fields = parent['fields'];
-			var referenceFields = filter(function(e){
-				return e['type']['name']=='reference';},
-			  fields);
+			var referenceFields = filter(function(e){return e['type']['name']=='reference';}, fields);
 			var referenceFieldModules =
 				map(
 					function(e){
@@ -159,7 +157,7 @@ function VTEmailTask($){
 				return (e['type']['name']=='reference');
 			},parent['fields']
 		);
-			
+
 		var moduleFieldTypes = {};
 		$.each(modules, function(k, v){
 				moduleFieldTypes[k] = dict(map(function(e){return [e['name'], e['type']];},filteredFields(v['fields'])));
@@ -184,8 +182,7 @@ function VTEmailTask($){
 			function forModule(moduleName){
 				// If module is not accessible return no field information
 				if(!contains(accessibleModulesInfo, moduleName)) return [];
-				
-				return map(function(field){					
+				return map(function(field){
 					return ['('+name+' : '+'('+moduleName+') '+field['name']+')',label+' : '+'('+modules[moduleName]['label']+') '+field['label']];
 					},
 					filteredFields(modules[moduleName]['fields']));
@@ -206,6 +203,9 @@ function VTEmailTask($){
 				select.append('<option class="'+optionClass+'" '+ 'value="'+plval+'">' + v.groupname + '</option>');
 			});
 		}
+		if (parentModule=='Events') {
+			select.append('<option class="'+optionClass+'" '+ 'value="(general : (__VtigerMeta__) Events_Users_Invited)">Invited Users</option>');
+		}
 	}
 
 	$(document).ready(function(){
@@ -217,7 +217,7 @@ function VTEmailTask($){
 			});
 			vtinst.listTypes(handleError(function(accessibleModules) {
 				accessibleModulesInfo = accessibleModules;
-				
+
 				getDescribeObjects(accessibleModules, moduleName, handleError(function(modules){
 					fillSelectBox('task-fieldnames', modules, moduleName);
 					$('#task-fieldnames-busyicon').hide();
@@ -228,8 +228,7 @@ function VTEmailTask($){
 					textarea.insertHtml(value);
 					});
 
-					fillSelectBox('task-emailfieldsfrmname', modules, moduleName,
-										 function(e){return (e['name'] == 'user_name');});
+					fillSelectBox('task-emailfieldsfrmname', modules, moduleName, function(e){return (e['name'] == 'user_name');});
 					$('#task-emailfieldsfrmname-busyicon').hide();
 					$('#task-emailfieldsfrmname').show();
 					$('#task-emailfieldsfrmname').change(function(){
@@ -238,8 +237,7 @@ function VTEmailTask($){
 						input.val(value);
 					});
 
-					fillSelectBox('task-emailfieldsfrmemail', modules, moduleName,
-										 function(e){return e['type']['name']=='email';});
+					fillSelectBox('task-emailfieldsfrmemail', modules, moduleName, function(e){return e['type']['name']=='email';});
 					$('#task-emailfieldsfrmemail-busyicon').hide();
 					$('#task-emailfieldsfrmemail').show();
 					$('#task-emailfieldsfrmemail').change(function(){
@@ -258,8 +256,7 @@ function VTEmailTask($){
 						input.val(value);
 					});
 
-					fillSelectBox('task-subjectfields', modules, moduleName,
-										 function(e){return (e['type']['name']!='file' && e['type']['name']!='text' );});
+					fillSelectBox('task-subjectfields', modules, moduleName, function(e){return (e['type']['name']!='file' && e['type']['name']!='text' );});
 					$('#task-subjectfields-busyicon').hide();
 					$('#task-subjectfields').show();
 					$('#task-subjectfields').change(function(){
@@ -268,8 +265,7 @@ function VTEmailTask($){
 						input.val(input.val()+' '+value);
 					});
 
-					fillSelectBox('task-emailfields', modules, moduleName,
-										 function(e){return e['type']['name']=='email';});
+					fillSelectBox('task-emailfields', modules, moduleName, function(e){return e['type']['name']=='email';});
 					$('#task-emailfields-busyicon').hide();
 					$('#task-emailfields').show();
 					$('#task-emailfields').change(function(){
@@ -278,21 +274,21 @@ function VTEmailTask($){
 						input.val(input.val()+','+value);
 					});
 					var selptype = document.getElementById('task-emailfields');
-			        var selecc = document.getElementById('task-emailfieldscc');
-			        for (ops=0;ops<selptype.length;ops++) {
-			          selecc.options[ops] = new Option(selptype.options[ops].text, selptype.options[ops].value);
-			        }
-			        $('#task-emailfieldscc-busyicon').hide();
+					var selecc = document.getElementById('task-emailfieldscc');
+					for (ops=0;ops<selptype.length;ops++) {
+						selecc.options[ops] = new Option(selptype.options[ops].text, selptype.options[ops].value);
+					}
+					$('#task-emailfieldscc-busyicon').hide();
 					$('#task-emailfieldscc').show();
 					$('#task-emailfieldscc').change(function(){
 						var input = $($('#save_emailcc').get());
 						var value = '$'+$(this).val();
 						input.val(input.val()+','+value);
 					});
-			        var selebcc = document.getElementById('task-emailfieldsbcc');
-			        for (ops=0;ops<selptype.length;ops++) {
-			          selebcc.options[ops] = new Option(selptype.options[ops].text, selptype.options[ops].value);
-			        }
+					var selebcc = document.getElementById('task-emailfieldsbcc');
+					for (ops=0;ops<selptype.length;ops++) {
+						selebcc.options[ops] = new Option(selptype.options[ops].text, selptype.options[ops].value);
+					}
 					$('#task-emailfieldsbcc-busyicon').hide();
 					$('#task-emailfieldsbcc').show();
 					$('#task-emailfieldsbcc').change(function(){

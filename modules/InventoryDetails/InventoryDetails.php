@@ -147,6 +147,10 @@ class InventoryDetails extends CRMEntity {
 		}
 		$this->column_fields['cost_gross'] = $this->column_fields['quantity'] * $this->column_fields['cost_price'];
 		$adb->pquery('update vtiger_inventorydetails set cost_gross=? where inventorydetailsid=?', array($this->column_fields['cost_gross'], $this->id));
+		if (!empty($this->column_fields['productid'])) {
+			$this->column_fields['total_stock'] = getPrdQtyInStck($this->column_fields['productid']);
+			$adb->pquery('update vtiger_inventorydetails set total_stock=? where inventorydetailsid=?', array($this->column_fields['total_stock'], $this->id));
+		}
 	}
 
 	/**
@@ -342,23 +346,6 @@ class InventoryDetails extends CRMEntity {
 			AND vtiger_users_last_import.bean_type='$module'
 			AND vtiger_users_last_import.deleted=0";
 		return $query;
-	}
-
-	/**
-	 * Delete the last imported records.
-	 */
-	function undo_import($module, $user_id) {
-		global $adb;
-		$count = 0;
-		$query1 = "select bean_id from vtiger_users_last_import where assigned_user_id=? AND bean_type='$module' AND deleted=0";
-		$result1 = $adb->pquery($query1, array($user_id)) or die("Error getting last import for undo: ".mysql_error());
-		while ( $row1 = $adb->fetchByAssoc($result1))
-		{
-			$query2 = "update vtiger_crmentity set deleted=1 where crmid=?";
-			$result2 = $adb->pquery($query2, array($row1['bean_id'])) or die("Error undoing last import: ".mysql_error());
-			$count++;
-		}
-		return $count;
 	}
 
 	/**
@@ -591,6 +578,10 @@ class InventoryDetails extends CRMEntity {
 			case 'Invoice':
 					$accountid = $related_focus->column_fields['account_id'];
 					$contactid = $related_focus->column_fields['contact_id'];
+				break;
+			case 'Issuecards':
+					$accountid = $related_focus->column_fields['accid'];
+					$contactid = $related_focus->column_fields['ctoid'];
 				break;
 			case 'PurchaseOrder':
 					$contactid = $related_focus->column_fields['contact_id'];

@@ -6,16 +6,9 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  *********************************************************************************/
-
 require_once 'include/db_backup/Exception/DatabaseBackupException.php';
 
-/**
- * Description of StagedBackup
- *
- * @author MAK
- */
 abstract class StagedBackup {
 	public $startBackupStage = 0;
 	public $tableCreateStage = 1;
@@ -31,15 +24,15 @@ abstract class StagedBackup {
 	}
 
 	public function getNextStage($stage) {
-		//noting to do.
+		//nothing to do.
 	}
 
 	public function getStageData($stage) {
-		//noting to do.
+		//nothing to do.
 	}
-	
+
 	public function addStageData($stage,$data) {
-		//noting to do.
+		//nothing to do.
 	}
 
 }

@@ -37,8 +37,9 @@ function set_return_specific(vendor_id, vendor_name) {
 function set_return_address(vendor_id, vendor_name, street, city, state, code, country,pobox ) {
 	jQuery.ajax({
 		url: 'index.php?module=Vendors&action=VendorsAjax&file=SelectVendorAddress',
-		context: document.body,
-		success: function(response) {
+		context: document.body
+	})
+	.done(function(response) {
 			jQuery('#setaddressvendordiv').html(response);
 			jQuery('#setaddressvendordiv').show();
 			fnvshNrm('setaddressvendordiv');
@@ -50,7 +51,6 @@ function set_return_address(vendor_id, vendor_name, street, city, state, code, c
 			jQuery("#code").val(code);
 			jQuery("#country").val(country);
 			jQuery("#pobox").val(pobox);
-		}
 	});
 }
 

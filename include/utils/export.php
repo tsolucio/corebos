@@ -39,7 +39,7 @@ coreBOS_Session::init();
 // Set the current language and the language strings, if not already set.
 setCurrentLanguage();
 
-global $allow_exports,$app_strings;
+global $app_strings;
 
 $current_user = new Users();
 
@@ -55,6 +55,7 @@ if(isset($_SESSION['authenticated_user_id']))
 
 }
 
+$allow_exports = GlobalVariable::getVariable('Application_Allow_Exports','all');
 //Security Check
 if(isPermitted($_REQUEST['module'],"Export") == "no")
 {
@@ -90,7 +91,7 @@ function br2nl_vt($str)
  * Return type text
  */
 function export($type){
-	global $log, $list_max_entries_per_page, $adb;
+	global $log, $adb;
 	$log->debug("Entering export(".$type.") method ...");
 
 	$focus = 0;
@@ -190,6 +191,7 @@ function export($type){
 	}
 
 	if($export_data == 'currentpage'){
+		$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$type);
 		$current_page = ListViewSession::getCurrentPage($type,$viewid);
 		$limit_start_rec = ($current_page - 1) * $list_max_entries_per_page;
 		if ($limit_start_rec < 0) $limit_start_rec = 0;
@@ -262,7 +264,7 @@ class ExportUtils{
 	var $fieldsArr = array();
 	var $picklistValues = array();
 
-	function ExportUtils($module, $fields_array){
+	function __construct($module, $fields_array){
 		self::__init($module, $fields_array);
 	}
 

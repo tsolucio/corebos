@@ -8,7 +8,7 @@
  * All Rights Reserved.
  ************************************************************************************/
 require_once('include/database/PearDatabase.php');
-@include_once('user_privileges/default_module_view.php');
+@include('user_privileges/default_module_view.php');
 
 global $adb, $singlepane_view, $currentModule;
 $idlist = vtlib_purify($_REQUEST['idlist']);

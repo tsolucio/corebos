@@ -77,9 +77,10 @@ $theme_path="themes/".$theme."/";
 	$ret_action = (vtlib_purify($_REQUEST['return_action']) != "")?vtlib_purify($_REQUEST['return_action']):$_SESSION['return_act'];
 	$ret_id = (vtlib_purify($_REQUEST['return_id']) != "")?vtlib_purify($_REQUEST['return_id']):$_SESSION['returnid'];
 
-	$_SESSION['return_act'] = $ret_action;	
-	$_SESSION['return_mod'] = $ret_module;	
-	$_SESSION['returnid'] = $ret_id;	
+	coreBOS_Session::set('return_act', $ret_action);
+	coreBOS_Session::set('return_mod', $ret_module);
+	coreBOS_Session::set('returnid', $ret_id);
+	$upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize',3000000,$ret_module);
 ?>
 
 <INPUT TYPE="hidden" NAME="MAX_FILE_SIZE" VALUE="<?php echo $upload_maxsize; ?>">
@@ -95,10 +96,10 @@ $theme_path="themes/".$theme."/";
 			<td width="70%" align="right">&nbsp;</td>
 		</tr>
 	</table>
-	<table border=0 cellspacing=0 cellpadding=5 width=95% align=center> 
+	<table border=0 cellspacing=0 cellpadding=5 width=95% align=center>
 		<tr>
 			<td class=small >
-				<table border=0 celspacing=0 cellpadding=5 width=100% align=center bgcolor=white class="small">		
+				<table border=0 celspacing=0 cellpadding=5 width=100% align=center bgcolor=white class="small">
 					<tr>
 						<td width="30%" colspan="2" align="left">
 							<b><?php echo $mod_strings["LBL_STEP_SELECT_FILE"];?></b><br>
@@ -128,7 +129,7 @@ $theme_path="themes/".$theme."/";
 			<td colspan="2" align="center">
 					<input type="submit" name="save" value="&nbsp;<?php echo $mod_strings["LBL_ATTACH"]; ?>&nbsp;" class="crmbutton small save" onclick = "return titleValidation();" />&nbsp;&nbsp;
 					<input type="button" name="cancel" value=" <?php echo $mod_strings["LBL_CANCEL"];?> " class="crmbutton small cancel" onclick="self.close();" />
-			</td>	
+			</td>
 		</tr>
 	</table>
 </td>

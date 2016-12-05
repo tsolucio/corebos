@@ -55,6 +55,7 @@ $mod_strings = array(
     'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL'=>'neue Bedinungsgruppe',
 
     'VTUpdateFieldsTask' => 'aktualisiere Felder',
+	'LBL_ON_DELETE'=>'On Delete',
 
     'LBL_VALIDATION_DUPLICATE_FIELDNAMES' => 'Ein Feld wurde mehrmals gewählt.',
     'LBL_VALIDATION_INVALID_FIELD_VALUES' => 'Ungültee Feldwerte',

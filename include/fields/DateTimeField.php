@@ -93,6 +93,8 @@ class DateTimeField {
 	 */
 	public static function __convertToDBFormat($date, $format) {
 		if(empty($date)) return $date;
+		list($y, $m, $d) = explode('-', $date);
+		if(strlen($y) == 4) return $date;
 		if ($format == '') {
 			$format = 'dd-mm-yyyy';
 		}
@@ -214,11 +216,13 @@ class DateTimeField {
 		//if(empty(self::$cache[$time][$targetTimeZoneName])) {
 			// create datetime object for given time in source timezone
 			$sourceTimeZone = new DateTimeZone($sourceTimeZoneName);
-                        preg_match('/(\d{1,2}\:\d{2}:\d{2}$|^\d{1,2}\:\d{2})/', $time, $matches);
+                        preg_match('/(\d{1,2}\:\d{2}:\d{2}$|\d{1,2}\:\d{2}$)/', $time, $matches);
                         if($matches){
                             $timefield = $matches[0];
                             $postime = strpos($time, $timefield);
                             $date = trim(substr($time, 0, $postime));
+                            if (strlen($date)<8) $date = ''; // will set today
+                            if (strlen($date)>10) $date = substr($date,0,10);
                             $hour = $timefield;
                         }else{
                             $date = $time;

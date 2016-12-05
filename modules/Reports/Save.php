@@ -10,7 +10,6 @@
 require_once('modules/Reports/Reports.php');
 require_once('include/logging.php');
 require_once('include/database/PearDatabase.php');
-require_once("include/Zend/Json.php");
 require_once 'modules/Reports/ReportUtils.php';
 require_once('modules/Reports/CustomReportUtils.php');
 
@@ -90,13 +89,11 @@ for ($i=0;$i<count($allKeys);$i++) {
 //<<<<<<<columnstototal>>>>>>>>>
 
 //<<<<<<<advancedfilter>>>>>>>>
-$json = new Zend_Json();
-
 $advft_criteria = $_REQUEST['advft_criteria'];
-$advft_criteria = $json->decode($advft_criteria);
+$advft_criteria = json_decode($advft_criteria,true);
 
 $advft_criteria_groups = $_REQUEST['advft_criteria_groups'];
-$advft_criteria_groups = $json->decode($advft_criteria_groups);
+$advft_criteria_groups = json_decode($advft_criteria_groups,true);
 //<<<<<<<advancedfilter>>>>>>>>
 
 //<<<<<<<scheduled report>>>>>>>>
@@ -240,7 +237,7 @@ if($reportid == '' || ($reportid!='' && strstr($saveas,'saveas')!='' && $newrepo
 							$fieldType = $field->getFieldDataType();
 						}
 
-						if($fieldType == 'currency' or $fieldType == 'double') {
+						if(($fieldType == 'currency' or $fieldType == 'double') and (substr($adv_filter_value,0,1) != "$" and substr($adv_filter_value,-1,1) != "$")) {
 							$flduitype = $fieldInfo['uitype'];
 							if($flduitype == '72' or $flduitype == 9 or $flduitype ==7) {
 								$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value, null, true);
@@ -452,7 +449,7 @@ if($reportid == '' || ($reportid!='' && strstr($saveas,'saveas')!='' && $newrepo
 					$fieldType = $field->getFieldDataType();
 				}
 
-				if($fieldType == 'currency' or $fieldType == 'double') {
+				if(($fieldType == 'currency' or $fieldType == 'double') and (substr($adv_filter_value,0,1) != "$" and substr($adv_filter_value,-1,1) != "$")) {
 					$flduitype = $fieldInfo['uitype'];
 					if($flduitype == '72' or $flduitype == 9 or $flduitype ==7) {
 						$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value, null, true);

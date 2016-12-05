@@ -51,7 +51,7 @@
 				<table width="100%" border="0" cellpadding="0" cellspacing="0">
 				<tr>
 					<td class="moduleName" width="80%" style="padding-left:10px;">{$CMOD.LBL_ASSIGN_ROLE}</td>
-					<td  width=30% nowrap class="componentName" align=right>{'APP_NAME'|@getTranslatedString}</td>
+					<td  width=30% nowrap class="componentName" align=right>{$coreBOS_uiapp_name}</td>
 				</tr>
 			</table>
 			</td>
@@ -108,7 +108,7 @@ function convert_lt_gt(str)
 	str = str.replace(/(&gt;)/g,'>');
 	str = str.replace(/(&amp;)/g,'&');
 	return str;
-{rdelim}		
+{rdelim}
 </script>
 </body>
 </html>

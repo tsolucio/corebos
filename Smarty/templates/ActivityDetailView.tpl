@@ -568,7 +568,6 @@ function DeleteTag(id,recordid)
                 </table>
 		{/if}
 	</table>
-	</form>
 	</td>
 	<td width=22% valign=top style="border-left:2px dashed #cccccc;padding:13px">
 						<!-- right side relevant info -->

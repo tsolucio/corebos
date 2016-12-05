@@ -19,21 +19,17 @@
 
 require_once('config.php');
 
-
-class UploadFile 
-{
-
+class UploadFile {
 	var $field_name;
 	var $stored_file_name;
 
-        function UploadFile ($field_name)
-        {
+	function __construct($field_name) {
 		global $log;
 		$log->debug("Entering UploadFile (".$field_name.") method ...");
 		$this->field_name = $field_name;
 		$log->debug("Exiting UploadFile method ...");
-        }
-	
+	}
+
 	/** Function to get the url of the attachment
 	  * @param $stored_file_name -- stored_file_name:: Type string
 	  * @param $bean_id -- bean_id:: Type integer
@@ -59,32 +55,24 @@ class UploadFile
 	  * @param $file_name -- filename:: Type string
 	  *
 	  */
-
 	function duplicate_file($old_id, $new_id, $file_name)
 	{
-		global $log;
+		global $log, $root_directory, $upload_dir;
 		$log->debug("Entering duplicate_file(".$old_id.", ".$new_id.", ".$file_name.") method ...");
-		global $root_directory;
-		global $upload_dir;
-                $source = $root_directory.'/'.$upload_dir.$old_id.$file_name;
-                $destination = $root_directory.'/'.$upload_dir.$new_id.$file_name;
+		$source = $root_directory.'/'.$upload_dir.$old_id.$file_name;
+		$destination = $root_directory.'/'.$upload_dir.$new_id.$file_name;
 		copy( $source,$destination);
 		$log->debug("Exiting duplicate_file method ...");
 	}
 	
 	/** Function to get the status of the file upload
-	  * @returns boolean
-	  */
-
+	 * @returns boolean
+	 */
 	function confirm_upload()
 	{
-		global $log;
+		global $log, $root_directory, $upload_dir, $upload_badext;
 		$log->debug("Eentering confirm_upload() method ...");
-		global $root_directory;
-		global $upload_dir;
-		global $upload_maxsize;
-		global $upload_badext;
-
+		$upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize',3000000,$currentModule);
 
 		if (!is_uploaded_file($_FILES[$this->field_name]['tmp_name']) )
 		{
@@ -96,10 +84,9 @@ class UploadFile
 			die("ERROR: uploaded file was too big: max filesize:$upload_maxsize");
 		}
 
-
 		if( !is_writable( $root_directory.'/'.$upload_dir))
 		{
-			die ("ERROR: cannot write to directory: $root_directory/$upload_dir for uploads");
+			die("ERROR: cannot write to directory: $root_directory/$upload_dir for uploads");
 		}
 
 		require_once('include/utils/utils.php');

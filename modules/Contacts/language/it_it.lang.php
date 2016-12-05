@@ -211,8 +211,6 @@ $mod_strings = array (
   'We suggest you to change your password after logging in first time' => 'Ti suggeriamo di modificare la password dopo aver eseguito il primo login.',
   'Support Team' => 'Team Supporto Clienti',
 
-  'TITLE_AJAX_CSS_POPUP_CHAT' => 'Chat (ajax popup)',
-
 'Contact Id' => 'Nr. Contatto',
 'Secondary Email'=>'Email Secondaria',
 

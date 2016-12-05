@@ -385,5 +385,7 @@ var alert_arr = {
 	'MoveUp' : 'Move Up',
 	'MoveDown' : 'Move Down',
 	'Products' : 'Products',
-	'Services' : 'Services'
+	'Services' : 'Services',
+	'LBL_Hide' : 'Verbergen',
+	'LBL_Show' : 'Anzeigen'
 };

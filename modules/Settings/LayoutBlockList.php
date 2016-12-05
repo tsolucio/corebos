@@ -115,6 +115,18 @@ foreach ($rellistinfo as $relmod) {
 }
 $notRelatedModules = array_diff_key($entityrelmods, $relmods);
 $smarty->assign('NotRelatedModules',$notRelatedModules);
+
+$blockrelmods = array();
+$brmrs = $adb->query('SELECT vtiger_tab.name
+	FROM vtiger_blocks
+	INNER JOIN vtiger_relatedlists ON vtiger_blocks.isrelatedlist=vtiger_relatedlists.relation_id
+	INNER JOIN vtiger_tab ON vtiger_relatedlists.related_tabid = vtiger_tab.tabid');
+while ($rl = $adb->fetch_array($brmrs)) {
+	$blockrelmods[$rl['name']] = 1;
+}
+$notBlockRelatedModules = array_diff_key($relmods, $blockrelmods);
+$smarty->assign('NotBlockRelatedModules',$notBlockRelatedModules);
+
 if(isset($_REQUEST["duplicate"]) && $_REQUEST["duplicate"] == "yes" || $duplicate == 'yes') {
 	echo "ERROR";
 	exit;
@@ -209,13 +221,25 @@ function getFieldListEntries($module) {
 			}
 			$cflist[$i]['tabpresence']= $row['tabpresence'];
 			$cflist[$i]['module'] = $module;
-			$cflist[$i]['blocklabel']=getTranslatedString($row["blocklabel"], $module);
+			$i18nMod = $module;
+			if ($row['isrelatedlist']>0) {
+				$brmrs = $adb->query('SELECT vtiger_tab.name
+					FROM vtiger_blocks
+					INNER JOIN vtiger_relatedlists ON vtiger_blocks.isrelatedlist=vtiger_relatedlists.relation_id
+					INNER JOIN vtiger_tab ON vtiger_relatedlists.related_tabid = vtiger_tab.tabid
+					LIMIT 1');
+				if ($brmrs and $adb->num_rows($brmrs)>0) {
+					$i18nMod = $adb->query_result($brmrs, 0,0);
+				}
+			}
+			$cflist[$i]['blocklabel']=getTranslatedString($row["blocklabel"], $i18nMod);
 			$cflist[$i]['blockid']=$row["blockid"];
 			$cflist[$i]['display_status']=$row["display_status"];
 			$cflist[$i]['tabid']=$tabid;
 			$cflist[$i]['blockselect']=$row["blockid"];
 			$cflist[$i]['sequence'] = $row["sequence"];
 			$cflist[$i]['iscustom'] = $row["iscustom"];
+			$cflist[$i]['isrelatedlist'] = $row['isrelatedlist'];
 
 			if($module!='Invoices' && $module!='Quotes' && $module!='SalesOrder' && $module!='Invoice') {
 				$sql_field="select * from  vtiger_field where block=? and vtiger_field.displaytype IN (1,2,4) order by sequence";
@@ -806,7 +830,6 @@ function deleteCustomField() {
 
 
 function addblock() {
-
 	global $mod_strings,$log,$adb;
 	$fldmodule = vtlib_purify($_REQUEST['fld_module']);
 	$mode= vtlib_purify($_REQUEST['mode']);
@@ -835,6 +858,20 @@ function addblock() {
 	}
 
 	if($flag!=1) {
+		$related_module = vtlib_purify($_REQUEST['relblock']);
+		if ($related_module=='no') {
+			$relatedlistid = 0;
+		} else {
+			$related_moduleid = getTabid($related_module);
+			$rlrs = $adb->pquery('select relation_id,label from vtiger_relatedlists where tabid=? and related_tabid=?',
+				array($tabid,$related_moduleid));
+			if ($rlrs and $adb->num_rows($rlrs)>0) {
+				$relatedlistid = $adb->query_result($rlrs,0,'relation_id');
+				$newblocklabel = $adb->query_result($rlrs,0,'label');
+			} else {
+				$relatedlistid = 0;
+			}
+		}
 		$sql_seq="select sequence from vtiger_blocks where blockid=?";
 		$res_seq= $adb->pquery($sql_seq, array($after_block));
 		$row_seq=$adb->fetch_array($res_seq);
@@ -846,8 +883,8 @@ function addblock() {
 
 		$max_blockid=$adb->getUniqueID('vtiger_blocks');
 		$iscustom = 1;
-		$sql="INSERT INTO vtiger_blocks (tabid, blockid, sequence, blocklabel,iscustom) values (?,?,?,?,?)";
-		$params = array($tabid,$max_blockid,$newblock_sequence,$newblocklabel,$iscustom);
+		$sql="INSERT INTO vtiger_blocks (tabid, blockid, sequence, blocklabel,iscustom,isrelatedlist) values (?,?,?,?,?,?)";
+		$params = array($tabid,$max_blockid,$newblock_sequence,$newblocklabel,$iscustom,$relatedlistid);
 		$adb->pquery($sql,$params);
 	}
 
@@ -1118,7 +1155,7 @@ function getRelatedListInfo($module) {
 	global $adb;
 	$tabid = getTabid($module);
 	$related_query = 'select * from vtiger_relatedlists ' .
-			'inner join vtiger_tab on vtiger_relatedlists.related_tabid = vtiger_tab.tabid and vtiger_tab.presence = 0 where vtiger_relatedlists.tabid = ? order by sequence';
+			'left join vtiger_tab on vtiger_relatedlists.related_tabid = vtiger_tab.tabid and vtiger_tab.presence = 0 where vtiger_relatedlists.tabid = ? order by sequence';
 	$relinfo = $adb->pquery($related_query,array($tabid));
 	$noofrows = $adb->num_rows($relinfo);
 	for($i=0;$i<$noofrows;$i++) {
@@ -1126,7 +1163,7 @@ function getRelatedListInfo($module) {
 		$res[$i]['sequence'] = $adb->query_result($relinfo,$i,'sequence');
 		$label = $adb->query_result($relinfo,$i,'label');
 		$relatedModule = getTabname($adb->query_result($relinfo,$i,'related_tabid'));
-		$res[$i]['label'] = getTranslatedString($label,$relatedModule);
+		$res[$i]['label'] = (empty($relatedModule) ? getTranslatedString($label,$module) : getTranslatedString($label,$relatedModule));
 		$res[$i]['presence'] = $adb->query_result($relinfo,$i,'presence');
 		$res[$i]['tabid'] = $tabid;
 		$res[$i]['id'] = $adb->query_result($relinfo,$i,'relation_id');

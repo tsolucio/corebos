@@ -96,7 +96,8 @@ class VTEventTrigger{
 			);
 		}
 
-		if($name) return $evtinfosbyname[$name];
+		if(is_array($name)) return $evtinfosbyname[$name[0]];
+		elseif($name) return $evtinfosbyname[$name];
 		else return $evtinfosbyname;
 	}
 	/** END **/
@@ -128,7 +129,7 @@ class VTEventTrigger{
 
 						$dependentEventsNotCompleted = false;
 						$dependentOn = $eventInfo['dependent_on'];
-						$dependentEvents = Zend_Json::decode($dependentOn);
+						$dependentEvents = json_decode($dependentOn,true);
 						foreach($dependentEvents as $eventHandlerClass) {
 							if(!in_array($eventHandlerClass, $completedEvents)) {
 								$dependentEventsNotCompleted = true;

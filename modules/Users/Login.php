@@ -21,8 +21,10 @@ if(isset($_SESSION["login_user_name"]))
 {
 	if (isset($_REQUEST['default_user_name']))
 		$login_user_name = trim(vtlib_purify($_REQUEST['default_user_name']), '"\'');
+	elseif (isset($_REQUEST['login_user_name']))
+		$login_user_name = trim(vtlib_purify($_REQUEST['login_user_name']), '"\'');
 	else
-		$login_user_name =  trim(vtlib_purify($_REQUEST['login_user_name']), '"\'');
+		$login_user_name = '';
 }
 else
 {
@@ -37,7 +39,7 @@ else
 	{
 		$login_user_name = $default_user_name;
 	}
-	$_session['login_user_name'] = $login_user_name;
+	coreBOS_Session::set('login_user_name', $login_user_name);
 }
 
 $current_module_strings['VLD_ERROR'] = base64_decode('UGxlYXNlIHJlcGxhY2UgdGhlIFN1Z2FyQ1JNIGxvZ29zLg==');
@@ -45,17 +47,18 @@ $current_module_strings['VLD_ERROR'] = base64_decode('UGxlYXNlIHJlcGxhY2UgdGhlIF
 // Retrieve username and password from the session if possible.
 if(isset($_SESSION["login_password"]))
 {
-	$login_password = trim(vtlib_purify($_REQUEST['login_password']), '"\'');
+	$login_password = trim(vtlib_purify($_SESSION['login_password']), '"\'');
 }
 else
 {
 	$login_password = $default_password;
-	$_session['login_password'] = $login_password;
+	coreBOS_Session::set('login_password', $login_password);
 }
 
-if(isset($_SESSION["login_error"]))
-{
+if(isset($_SESSION["login_error"])) {
 	$login_error = $_SESSION['login_error'];
+} else {
+	$login_error = '';
 }
 
 require_once('Smarty_setup.php');
@@ -97,12 +100,9 @@ $favicon='themes/images/favicon.ico';
 else $favicon='test/logo/'.decode_html($adb->query_result($result,0,'faviconlogo'));
 $companyDetails['favicon'] = $favicon;
 $smarty->assign("COMPANY_DETAILS",$companyDetails);
-
-if(isset($login_error) && $login_error != "") {
-	$smarty->assign("LOGIN_ERROR", $login_error);
-}
+$smarty->assign('coreBOS_uiapp_name', GlobalVariable::getVariable('Application_UI_Name',$coreBOS_app_name));
+$smarty->assign("LOGIN_ERROR", $login_error);
 $currentYear = date('Y');
 $smarty->assign('currentYear',$currentYear);
 $smarty->display('Login.tpl');
-
 ?>

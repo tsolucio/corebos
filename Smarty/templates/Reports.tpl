@@ -63,7 +63,7 @@
 			<tr>
 				<td class="cellLabel small" align="right" nowrap><b>{$MOD.LBL_REPORT_MODULE} </b></td>
 				<td class="cellText small" align="left">
-					<select name="selectModuleElement" id="selectModuleElement" class="small">
+					<select name="selectModuleElement" id="selectModuleElement" class="small" style="width:150px">
 					{foreach item=modulelabel key=modulename from=$REPT_MODULES}
 						<option value="{$modulename}">{$modulelabel}</option>
 					{/foreach}

@@ -1855,9 +1855,6 @@ $adb->query("insert into vtiger_field (tabid, fieldid, columnname, tablename, ge
 $adb->query("insert into vtiger_field (tabid, fieldid, columnname, tablename, generatedtype, uitype, fieldname, fieldlabel, readonly, presence, selected, maximumlength, sequence, block, displaytype, typeofdata, quickcreate, quickcreatesequence, info_type, masseditable, helpinfo) values($email_Tabid,".$adb->getUniqueID("vtiger_field").",'idlists','vtiger_emaildetails',1,1,'parent_id','Parent ID' ,1,2,0,1000,5,$blockid,3,'V~O',3,NULL,'BAS',0,NULL)");		
 $adb->query("insert into vtiger_field (tabid, fieldid, columnname, tablename, generatedtype, uitype, fieldname, fieldlabel, readonly, presence, selected, maximumlength, sequence, block, displaytype, typeofdata, quickcreate, quickcreatesequence, info_type, masseditable, helpinfo) values($email_Tabid,".$adb->getUniqueID("vtiger_field").",'email_flag','vtiger_emaildetails',1,16,'email_flag','Email Flag' ,1,2,0,1000,6,$blockid,3,'V~O',3,NULL,'BAS',0,NULL)");		
 
-require_once('include/Zend/Json.php');
-$json = new Zend_Json();
-
 $result = $adb->query("SELECT * FROM vtiger_emaildetails");
 $rows = $adb->num_rows($result);
 for($i=0 ; $i<$rows ;$i++) {
@@ -1870,19 +1867,19 @@ for($i=0 ; $i<$rows ;$i++) {
 	$to = str_replace('&amp;lt;','<',$to);
 	$to = str_replace('&amp;gt;','>',$to);
 	$to = explode(',',$to);
-	$to_json = $json->encode($to);
+	$to_json = json_encode($to);
 	
 	$cc = str_replace('&amp;lt;','<',$cc);
 	$cc = str_replace('&amp;gt;','>',$cc);
 	$cc = preg_replace("/###/",",",$cc);
 	$cc = explode(',',$cc);
-	$cc_json = $json->encode($cc);
+	$cc_json = json_encode($cc);
 	
 	$bcc = str_replace('&amp;lt;','<',$bcc);
 	$bcc = str_replace('&amp;gt;','>',$bcc);
 	$bcc = preg_replace("/###/",",",$bcc);
 	$bcc = explode(',',$bcc);
-	$bcc_json = $json->encode($bcc);
+	$bcc_json = json_encode($bcc);
 	
 	$adb->pquery("UPDATE vtiger_emaildetails set to_email = ?, cc_email= ?, bcc_email= ? WHERE emailid = ?",array($to_json,$cc_json,$bcc_json,$emailid));
 }

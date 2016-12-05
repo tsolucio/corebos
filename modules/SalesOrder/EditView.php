@@ -313,6 +313,7 @@ if (isset ($_REQUEST['return_id']))
 	$smarty->assign("RETURN_ID", vtlib_purify($_REQUEST['return_id']));
 if (isset ($_REQUEST['return_viewname']))
 	$smarty->assign("RETURN_VIEWNAME", vtlib_purify($_REQUEST['return_viewname']));
+$upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize',3000000,$currentModule);
 $smarty->assign("UPLOADSIZE", $upload_maxsize/1000000); //Convert to MB
 $smarty->assign("UPLOAD_MAXSIZE",$upload_maxsize);
 
@@ -376,7 +377,7 @@ $smarty->assign('CREATEMODE', vtlib_purify($_REQUEST['createmode']));
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
 
 $picklistDependencyDatasource = Vtiger_DependencyPicklist::getPicklistDependencyDatasource($currentModule);
-$smarty->assign("PICKIST_DEPENDENCY_DATASOURCE", Zend_Json::encode($picklistDependencyDatasource));
+$smarty->assign("PICKIST_DEPENDENCY_DATASOURCE", json_encode($picklistDependencyDatasource));
 
 //Get Service or Product by default when create
 $smarty->assign('PRODUCT_OR_SERVICE', GlobalVariable::getVariable('product_service_default', 'Products', $currentModule, $current_user->id));

@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ******************************************************************************/
-require_once "include/Zend/Json.php";
 require 'include.inc';
 
 function vtSaveExpressionJson($adb, $request){
@@ -20,9 +19,9 @@ function vtSaveExpressionJson($adb, $request){
 	$me->add($fieldName, $expression);
 	if($me->state=='savable'){
 		$mem->save($me);
-		echo Zend_Json::encode(array('status'=>'success'));
+		echo json_encode(array('status'=>'success'));
 	}else{
-		echo Zend_Json::encode(array('status'=>'fail', 'message'=>$me->message));
+		echo json_encode(array('status'=>'fail', 'message'=>$me->message));
 	}
 }
 vtSaveExpressionJson($adb, $_GET);

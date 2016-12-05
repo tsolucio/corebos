@@ -14,7 +14,6 @@
 </span>
 <div id="convertleaddiv" style="display:block;position:absolute;left:225px;top:150px;"></div>
 <script>
-var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 {literal}
 function showHideStatus(sId,anchorImgId,sImagePath)
 {
@@ -127,17 +126,15 @@ function DeleteTag(id,recordid)
 			<td valign=top><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 			<td class="showPanelBg" valign=top width=100%>
 			<!-- PUBLIC CONTENTS STARTS-->
-			   <div class="small" style="padding:20px" onclick="hndCancelOutsideClick();";>
+						<div class="small" style="padding:14px" onclick="hndCancelOutsideClick();";>
 		
 				<table align="center" border="0" cellpadding="0" cellspacing="0" width="95%">
-				   <tr>
-					<td>
+								<tr><td>
 			         {* Module Record numbering, used MOD_SEQ_ID instead of ID *}
 			         {assign var="USE_ID_VALUE" value=$MOD_SEQ_ID}
 					 {if $USE_ID_VALUE eq ''} {assign var="USE_ID_VALUE" value=$ID} {/if}
-						<span class="lvtHeaderText"><font color="purple">[ {$USE_ID_VALUE} ] </font>{$NAME} -  {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</span>&nbsp;&nbsp;&nbsp;<span class="small">{$UPDATEINFO}</span>&nbsp;<span id="vtbusy_info" style="display:none;" valign="bottom"><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span><span id="vtbusy_info" style="visibility:hidden;" valign="bottom"><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
-					</td>
-				   </tr>
+									<span class="dvHeaderText">[ {$USE_ID_VALUE} ] {$NAME} -  {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</span>&nbsp;&nbsp;&nbsp;<span class="small">{$UPDATEINFO}</span>&nbsp;<span id="vtbusy_info" style="display:none;" valign="bottom"><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
+								</td></tr>
 				</table>
 				<br>
 				{include file='applicationmessage.tpl'}
@@ -145,14 +142,14 @@ function DeleteTag(id,recordid)
 				<table border=0 cellspacing=0 cellpadding=0 width=95% align=center>
 				   <tr>
 					<td>
-						<table border=0 cellspacing=0 cellpadding=3 width=100% class="small detailview_utils_table_top">
-						   <tr>
-								<td class="dvtTabCache" id="detailview_utils_firstfiller" style="width:10px" nowrap>&nbsp;</td>
-								
-								<td class="dvtSelectedCell" align=center nowrap>{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</td>
-											<td class="dvtTabCache" id="detailview_utils_secondfiller" style="width:10px">&nbsp;</td>
+									<div class="small detailview_utils_table_top">
+										<div class="detailview_utils_table_tabs">
+											<div class="detailview_utils_table_tab detailview_utils_table_tab_selected detailview_utils_table_tab_selected_top">{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</div>
 								{if $SinglePane_View eq 'false' && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
-									<td class="dvtUnSelectedCell" onmouseout="fnHideDrop('More_Information_Modules_List');" onmouseover="fnDropDown(this,'More_Information_Modules_List');" align="center" nowrap>
+												{if $HASRELATEDPANES eq 'true'}
+													{include file='RelatedPanes.tpl' tabposition='top' RETURN_RELATEDPANE=''}
+												{else}
+												<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_top" onmouseout="fnHideDrop('More_Information_Modules_List');" onmouseover="fnDropDown(this,'More_Information_Modules_List');">
 										<a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</a>
 										<div onmouseover="fnShowDrop('More_Information_Modules_List')" onmouseout="fnHideDrop('More_Information_Modules_List')"
 													 id="More_Information_Modules_List" class="drop_mnu" style="left: 502px; top: 76px; display: none;">
@@ -162,9 +159,12 @@ function DeleteTag(id,recordid)
 											{/foreach}
 											</table>
 										</div>
-									</td>
+												</div>
 								{/if}
-								<td class="dvtTabCache" id="detailview_utils_thirdfiller" align="right" style="width:100%">
+											{/if}
+										</div>
+										<div class="detailview_utils_table_tabactionsep detailview_utils_table_tabactionsep_top" id="detailview_utils_table_tabactionsep_top"></div>
+										<div class="detailview_utils_table_actions detailview_utils_table_actions_top" id="detailview_utils_actions">
 									{if $EDIT_PERMISSION eq 'yes'}
 									<input title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" class="crmbutton small edit" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.return_id.value='{$ID}';DetailView.module.value='{$MODULE}'; submitFormForAction('DetailView','EditView');" type="button" name="Edit" value="&nbsp;{$APP.LBL_EDIT_BUTTON_LABEL}&nbsp;">&nbsp;
 									{/if}
@@ -176,22 +176,21 @@ function DeleteTag(id,recordid)
 									{/if}
 
 									{if $privrecord neq ''}
-										<span class="detailview_utils_prev"><img align="absmiddle" title="{$APP.LNK_LIST_PREVIOUS}" accessKey="{$APP.LNK_LIST_PREVIOUS}" onclick="location.href='index.php?module={$MODULE}&viewtype={$VIEWTYPE}&action=DetailView&record={$privrecord}&parenttab={$CATEGORY}&start={$privrecordstart}'" name="privrecord" value="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev.gif'|@vtiger_imageurl:$THEME}"></span>&nbsp;
+													<span class="detailview_utils_prev" onclick="location.href='index.php?module={$MODULE}&viewtype={$VIEWTYPE}&action=DetailView&record={$privrecord}&parenttab={$CATEGORY}&start={$privrecordstart}'" title="{$APP.LNK_LIST_PREVIOUS}"><img align="absmiddle" title="{$APP.LNK_LIST_PREVIOUS}" accessKey="{$APP.LNK_LIST_PREVIOUS}"  name="privrecord" value="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev.gif'|@vtiger_imageurl:$THEME}"></span>&nbsp;
 									{else}
 									<img align="absmiddle" title="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev_disabled.gif'|@vtiger_imageurl:$THEME}">
 									{/if}
 									{if $privrecord neq '' || $nextrecord neq ''}
-										<span class="detailview_utils_jumpto"><img align="absmiddle" title="{$APP.LBL_JUMP_BTN}" accessKey="{$APP.LBL_JUMP_BTN}" onclick="var obj = this;var lhref = getListOfRecords(obj, '{$MODULE}',{$ID},'{$CATEGORY}');" name="jumpBtnIdTop" id="jumpBtnIdTop" src="{'rec_jump.gif'|@vtiger_imageurl:$THEME}"></span>&nbsp;
+													<span class="detailview_utils_jumpto" id="jumpBtnIdTop" onclick="var obj = this;var lhref = getListOfRecords(obj, '{$MODULE}',{$ID},'{$CATEGORY}');" title="{$APP.LBL_JUMP_BTN}"><img align="absmiddle" title="{$APP.LBL_JUMP_BTN}" accessKey="{$APP.LBL_JUMP_BTN}" name="jumpBtnIdTop" id="jumpBtnIdTop" src="{'rec_jump.gif'|@vtiger_imageurl:$THEME}"></span>&nbsp;
 									{/if}
 									{if $nextrecord neq ''}
-										<span class="detailview_utils_next"><img align="absmiddle" title="{$APP.LNK_LIST_NEXT}" accessKey="{$APP.LNK_LIST_NEXT}" onclick="location.href='index.php?module={$MODULE}&viewtype={$VIEWTYPE}&action=DetailView&record={$nextrecord}&parenttab={$CATEGORY}&start={$nextrecordstart}'" name="nextrecord" src="{'rec_next.gif'|@vtiger_imageurl:$THEME}"></span>&nbsp;
+													<span class="detailview_utils_next" onclick="location.href='index.php?module={$MODULE}&viewtype={$VIEWTYPE}&action=DetailView&record={$nextrecord}&parenttab={$CATEGORY}&start={$nextrecordstart}'" title="{$APP.LNK_LIST_NEXT}"><img align="absmiddle" title="{$APP.LNK_LIST_NEXT}" accessKey="{$APP.LNK_LIST_NEXT}"  name="nextrecord" src="{'rec_next.gif'|@vtiger_imageurl:$THEME}"></span>&nbsp;
 									{else}
 									<img align="absmiddle" title="{$APP.LNK_LIST_NEXT}" src="{'rec_next_disabled.gif'|@vtiger_imageurl:$THEME}">&nbsp;
 									{/if}
-									<span class="detailview_utils_toggleactions"><img align="absmiddle" title="{$APP.TOGGLE_ACTIONS}" src="{'menu-icon.png'|@vtiger_imageurl:$THEME}" width="16px;" onclick="{literal}if (document.getElementById('actioncolumn').style.display=='none') {document.getElementById('actioncolumn').style.display='table-cell';}else{document.getElementById('actioncolumn').style.display='none';}{/literal}"></span>&nbsp;
-								</td>
-							</tr>
-						</table>
+												<span class="detailview_utils_toggleactions"><img align="absmiddle" title="{$APP.TOGGLE_ACTIONS}" src="{'menu-icon.png'|@vtiger_imageurl:$THEME}" width="16px;" onclick="{literal}if (document.getElementById('actioncolumn').style.display=='none') {document.getElementById('actioncolumn').style.display='table-cell';}else{document.getElementById('actioncolumn').style.display='none';}window.dispatchEvent(new Event('resize'));{/literal}"></span>&nbsp;
+										</div>
+									</div>
 					</td>
 				   </tr>
 				   <tr>
@@ -199,22 +198,20 @@ function DeleteTag(id,recordid)
 						<table border=0 cellspacing=0 cellpadding=3 width=100% class="dvtContentSpace" style="border-bottom:0;">
 						   <tr valign=top>
 
-							<td align=left style="padding:10px;">
+											<td align=left>
 							<!-- content cache -->
-								<form action="index.php" method="post" name="DetailView" id="form" onsubmit="VtigerJS_DialogBox.block();">
-								{include file='DetailViewHidden.tpl'}
 						
-								<!-- Entity informations display - starts -->
 								<table border=0 cellspacing=0 cellpadding=0 width=100%>
-			                			   <tr>
-									<td style="padding:10px;border-right:1px dashed #CCCCCC;" width="80%">
-
-<!-- The following table is used to display the buttons -->
-<!-- Button displayed - finished-->
-
-<!-- Entity information(blocks) display - start -->
+													<tr valign=top>
+														<td style="padding:5px">
+															<!-- Command Buttons -->
+															<table border=0 cellspacing=0 cellpadding=0 width=100%>
+																<form action="index.php" method="post" name="DetailView" id="formDetailView">
+																	{include file='DetailViewHidden.tpl'}
 {foreach key=header item=detail from=$BLOCKS name=BLOCKS}
-	<table border=0 cellspacing=0 cellpadding=0 width=100% class="small">
+																		<tr><td style="padding:5px">
+																				<!-- Detailed View Code starts here-->
+																				<table border=0 cellspacing=0 cellpadding=0 width=100% class="small detailview_header_table">
 	   <tr>
 		<td>&nbsp;</td>
 		<td>&nbsp;</td>
@@ -222,8 +219,23 @@ function DeleteTag(id,recordid)
 		<td align=right>
 		</td>
 	   </tr>
-	   <tr class="detailview_block_header">
-		{strip}
+
+																					<!-- This is added to display the existing comments -->
+																					{if $header eq $MOD.LBL_COMMENTS || $header eq $MOD.LBL_COMMENT_INFORMATION}
+																						<tr>
+																							<td colspan=4 class="dvInnerHeader">
+																								<b>{$MOD.LBL_COMMENT_INFORMATION}</b>
+																							</td>
+																						</tr>
+																						<tr>
+																							<td colspan=4 class="dvtCellInfo">{$COMMENT_BLOCK}</td>
+																						</tr>
+																						<tr><td>&nbsp;</td></tr>
+																					{/if}
+
+																					{if $header neq 'Comments' && $BLOCKS.$header.relatedlist eq 0}
+
+																						<tr class="detailview_block_header">{strip}
 		<td colspan=4 class="dvInnerHeader" >
 							
 							<div style="float:left;font-weight:bold;"><div style="float:left;"><a href="javascript:showHideStatus('tbl{$header|replace:' ':''}','aid{$header|replace:' ':''}','{$IMAGE_PATH}');">
@@ -241,8 +253,10 @@ function DeleteTag(id,recordid)
 	  			     			</b></div>
 						</td>{/strip}
 	   </tr>
+																					{/if}
 							</table>
-							{if $BLOCKINITIALSTATUS[$header] eq 1}
+																				{if $header neq 'Comments'}
+																					{if $BLOCKINITIALSTATUS[$header] eq 1 || $BLOCKS.$header.relatedlist neq 0}
 							<div style="width:auto;display:block;" id="tbl{$header|replace:' ':''}" >
 							{else}
 							<div style="width:auto;display:none;" id="tbl{$header|replace:' ':''}" >
@@ -250,6 +264,9 @@ function DeleteTag(id,recordid)
 							<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small detailview_table">
             {if $CUSTOMBLOCKS.$header.custom}
                 {include file=$CUSTOMBLOCKS.$header.tpl}
+																							{elseif $BLOCKS.$header.relatedlist && $IS_REL_LIST|@count > 0}
+																								{assign var='RELBINDEX' value=$BLOCKS.$header.relatedlist}
+																								{include file='RelatedListNew.tpl' RELATEDLISTS=$RELATEDLISTBLOCK.$RELBINDEX RELLISTID=$RELBINDEX}
             {else}
                {foreach item=detailInfo from=$detail}
 				<tr style="height:25px" class="detailview_row">
@@ -274,7 +291,7 @@ function DeleteTag(id,recordid)
                                             {if $keycntimage ne ''}
                                                     <td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$keycntimage}</td>
                                             {elseif $label neq 'Tax Class'}<!-- Avoid to display the label Tax Class -->
-                                                    {if $keyid eq '71' || $keyid eq '72'}  <!--CurrencySymbol-->
+                                                    {if $keyid eq '71' || $keyid eq '72'}<!-- Currency symbol -->
                                                             <td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$label} ({$keycursymb})</td>
                                                     {elseif $keyid eq '9'}
                                                             <td class="dvtCellLabel" align=right width=25%><input type="hidden" id="hdtxt_IsAdmin" value={$keyadmin}></input>{$label} {$APP.COVERED_PERCENTAGE}</td>
@@ -302,8 +319,9 @@ function DeleteTag(id,recordid)
            {/if}
 	</table>
 	</div>
-<!-- Entity information(blocks) display - ends -->
-
+																					{/if}
+																			</td>
+																		</tr>
 {* vtlib Customization: Embed DetailViewWidget block:// type if any *}
 {if $CUSTOM_LINKS && !empty($CUSTOM_LINKS.DETAILVIEWWIDGET)}
 {foreach item=CUSTOM_LINK_DETAILVIEWWIDGET from=$CUSTOM_LINKS.DETAILVIEWWIDGET}
@@ -325,7 +343,6 @@ function DeleteTag(id,recordid)
 
 										<!-- Product Details informations -->
 										{$ASSOCIATED_PRODUCTS}
-										</form>
 									</td>
 <!-- The following table is used to display the buttons -->
 								<table border=0 cellspacing=0 cellpadding=0 width=100%>
@@ -355,21 +372,24 @@ function DeleteTag(id,recordid)
 						   </tr>
 						    <tr>
 					<td>
-						<table border=0 cellspacing=0 cellpadding=3 width=100% class="small">
-						   <tr>
-								<td class="dvtTabCacheBottom" style="width:10px" nowrap>&nbsp;</td>
-								
-								<td class="dvtSelectedCellBottom" align=center nowrap>{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</td>	
-								<td class="dvtTabCacheBottom" style="width:10px">&nbsp;</td>
+									<div class="small detailview_utils_table_bottom">
+										<div class="detailview_utils_table_tabs">
+											<div class="detailview_utils_table_tab detailview_utils_table_tab_selected detailview_utils_table_tab_selected_bottom">{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</div>
 								{if $SinglePane_View eq 'false' && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
-								<td class="dvtUnSelectedCell" align=center nowrap><a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</a></td>
+												{if $HASRELATEDPANES eq 'true'}
+													{include file='RelatedPanes.tpl' tabposition='bottom' RETURN_RELATEDPANE=''}
+												{else}
+												<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_bottom"><a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</a></div>
 								{/if}
-								<td class="dvtTabCacheBottom" align="right" style="width:100%">
+											{/if}
+										</div>
+										<div class="detailview_utils_table_tabactionsep detailview_utils_table_tabactionsep_bottom" id="detailview_utils_table_tabactionsep_bottom"></div>
+										<div class="detailview_utils_table_actions detailview_utils_table_actions_bottom" id="detailview_utils_actions">
 									{if $EDIT_PERMISSION eq 'yes'}
-									<input title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" class="crmbutton small edit" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.return_id.value='{$ID}';DetailView.module.value='{$MODULE}'; submitFormForAction('DetailView','EditView');" type="button" name="Edit" value="&nbsp;{$APP.LBL_EDIT_BUTTON_LABEL}&nbsp;">&nbsp;
+													<input title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" class="crmbutton small edit" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.return_id.value='{$ID}';DetailView.module.value='{$MODULE}';submitFormForAction('DetailView','EditView');" type="submit" name="Edit" value="&nbsp;{$APP.LBL_EDIT_BUTTON_LABEL}&nbsp;">&nbsp;
 									{/if}
 									{if ((isset($CREATE_PERMISSION) && $CREATE_PERMISSION eq 'permitted') || (isset($EDIT_PERMISSION) && $EDIT_PERMISSION eq 'yes')) && $MODULE neq 'Documents'}
-									<input title="{$APP.LBL_DUPLICATE_BUTTON_TITLE}" accessKey="{$APP.LBL_DUPLICATE_BUTTON_KEY}" class="crmbutton small create" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.isDuplicate.value='true';DetailView.module.value='{$MODULE}'; submitFormForAction('DetailView','EditView');" type="button" name="Duplicate" value="{$APP.LBL_DUPLICATE_BUTTON_LABEL}">&nbsp;
+													<input title="{$APP.LBL_DUPLICATE_BUTTON_TITLE}" accessKey="{$APP.LBL_DUPLICATE_BUTTON_KEY}" class="crmbutton small create" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.isDuplicate.value='true';DetailView.module.value='{$MODULE}'; submitFormForAction('DetailView','EditView');" type="submit" name="Duplicate" value="{$APP.LBL_DUPLICATE_BUTTON_LABEL}">&nbsp;
 									{/if}
 									{if $DELETE eq 'permitted'}
 									<input title="{$APP.LBL_DELETE_BUTTON_TITLE}" accessKey="{$APP.LBL_DELETE_BUTTON_KEY}" class="crmbutton small delete" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='index'; {if $MODULE eq 'Accounts'} var confirmMsg = '{$APP.NTC_ACCOUNT_DELETE_CONFIRMATION}' {else} var confirmMsg = '{$APP.NTC_DELETE_CONFIRMATION}' {/if}; submitFormForActionWithConfirmation('DetailView', 'Delete', confirmMsg);" type="button" name="Delete" value="{$APP.LBL_DELETE_BUTTON_LABEL}">&nbsp;
@@ -388,9 +408,10 @@ function DeleteTag(id,recordid)
 									{else}
 									<img align="absmiddle" title="{$APP.LNK_LIST_NEXT}" src="{'rec_next_disabled.gif'|@vtiger_imageurl:$THEME}">&nbsp;
 									{/if}
-								</td>
-							</tr>
-						</table>
+												<span class="detailview_utils_toggleactions"><img align="absmiddle" title="{$APP.TOGGLE_ACTIONS}" src="{'menu-icon.png'|@vtiger_imageurl:$THEME}" width="16px;" onclick="{literal}if (document.getElementById('actioncolumn').style.display=='none') {document.getElementById('actioncolumn').style.display='table-cell';}else{document.getElementById('actioncolumn').style.display='none';}window.dispatchEvent(new Event('resize'));{/literal}"></span>&nbsp;
+								</div>
+							</div>
+						</div>
 					</td>
 				   </tr>
 						</table>

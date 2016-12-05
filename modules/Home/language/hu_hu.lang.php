@@ -46,7 +46,6 @@ $mod_strings = array(
 	'Last Week' => 'Elmúlt hét',
 	'Last 2 Days' => 'Elmúlt 2 nap',
 	'Last Ten Days' => 'Elmúlt 10 nap',
-	'TITLE_AJAX_CSS_POPUP_CHAT' => 'Ajax Css-Popup chat',
 	'User List' => 'Felhasználó Lista',
 	'LBL_HOME_MODULE' => 'Modul',
 	'LBL_HOME_RSS' => 'RSS Hírfolyam',
@@ -65,7 +64,6 @@ $mod_strings = array(
 	'LBL_HOME_ITEMS' => 'tétel(ek)',
 	'LBL_MORE' => 'Több',
 	'LBL_SCROLL' => 'Görgess',
-	'LBL_NEWS_NO' => 'Nincsenek újak',
 	'LBL_NOTEBOOK' => 'Jegyzettömb',
 	'LBL_NOTEBOOK_TITLE' => 'Dupla kattintás a Szerkesztéshez.',
 	'LBL_NOTEBOOK_SAVE_TITLE' => 'Kattints bárhova még az oldalon, hogy mentsd.',
@@ -98,5 +96,6 @@ $mod_strings = array(
 	'LBL_DEFAULT_WIDGET' => 'Alapértelmezett dobozok',
 	'LBL_NO_WIDGETS_HIDDEN' => 'Nincsen alapértelmezett doboz elrejtve',
 	'UpdateExchangeRate' => 'Update Exchange Rate',
+	'LBL_HOME_ADDWINDOW' => 'Add Window',
 );
 ?>

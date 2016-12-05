@@ -15,7 +15,7 @@ require_once('modules/Campaigns/Campaigns.php');
 require_once('modules/Documents/Documents.php');
 require_once('modules/Emails/Emails.php');
 require_once('modules/HelpDesk/HelpDesk.php');
-require_once('user_privileges/default_module_view.php');
+require('user_privileges/default_module_view.php');
 
 class Contacts extends CRMEntity {
 	var $db, $log; // Used in class functions of CRMEntity
@@ -1244,11 +1244,11 @@ function get_contactsforol($user_name)
 	//type argument included when when addin customizable tempalte for sending portal login details
 	public static function getPortalEmailContents($entityData, $password, $type='') {
 		require_once 'config.inc.php';
-		global $PORTAL_URL, $default_charset;
+		global $default_charset;
 
 		$adb = PearDatabase::getInstance();
 		$moduleName = $entityData->getModuleName();
-
+		$PORTAL_URL = GlobalVariable::getVariable('Application_Customer_Portal_URL','http://your_support_domain.tld/customerportal');
 		$portalURL = '<a href="'.$PORTAL_URL.'" style="font-family:Arial, Helvetica, sans-serif;font-size:12px; font-weight:bolder;text-decoration:none;color: #4242FD;">'.getTranslatedString('Please Login Here', $moduleName).'</a>';
 
 		//here id is hardcoded with 5. it is for support start notification in vtiger_notificationscheduler
@@ -1505,6 +1505,14 @@ function get_contactsforol($user_name)
 //////////////////////////////////////////////////////////////////////////////
 // END pag 2012-Jan-18 contacts hierarchy deducted from accounts hierarchy  //
 //////////////////////////////////////////////////////////////////////////////
+
+	function getvtlib_open_popup_window_function($fieldname,$basemodule) {
+		if ($basemodule=='Issuecards') {
+			return 'set_return_shipbilladdress';
+		} else {
+			return 'vtlib_open_popup_window';
+		}
+	}
 }
 
 ?>

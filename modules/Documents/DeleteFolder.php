@@ -37,7 +37,7 @@ else
 		}
 		else
 		{
-			header("Location: index.php?action=DocumentsAjax&file=ListView&mode=ajax&module=Documents");
+			header("Location: index.php?action=DocumentsAjax&file=ListView&mode=ajax&ajax=true&module=Documents");
 			exit;
 		}
 	}
@@ -45,7 +45,7 @@ else
 	{
 		$sql="delete from vtiger_attachmentsfolder where (folderid=? and folderid != 1)";
 		$adb->pquery($sql,array($folderId));
-		header("Location: index.php?action=DocumentsAjax&file=ListView&mode=ajax&module=Documents");
+		header("Location: index.php?action=DocumentsAjax&file=ListView&mode=ajax&ajax=true&module=Documents");
 		exit;
 	}
 }

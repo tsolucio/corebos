@@ -13,7 +13,6 @@
  * permissions and limitations under the License. You may obtain a copy of the License
  * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
  *************************************************************************************************/
-require_once('include/Zend/Json.php');
 /**
  * this function checks if the asterisk server details are set in the database or not
  * returns string "true" on success :: "false" on failure
@@ -82,7 +81,7 @@ $checkAsteriskDetails = checkAsteriskDetails();
 $record = ($_REQUEST['record'])?$_REQUEST['record']:'false';// used to check the asterisk extension in edit mode
  $mode = ($_REQUEST['isDuplicate'] == 'true')?'true':'false';
  $extensions = getAsteriskExtensions();
-$extensions_list = Zend_Json::encode($extensions);
+$extensions_list = json_encode($extensions);
 //check asteriskdetails end
 
 $the_script  = <<<EOQ

@@ -80,7 +80,7 @@ class Import_Map {
 		$columnNames = array_keys($map);
 		$columnValues = array_values($map);
 		if(count($map) > 0) {
-			$adb->pquery('INSERT INTO '.self::$tableName.' ('. implode(',',$columnNames).') VALUES ('. generateQuestionMarks($columnValues).')', array($columnValues));
+			$adb->pquery('INSERT INTO '.self::$tableName.' ('. implode(',',$columnNames).',date_entered) VALUES ('. generateQuestionMarks($columnValues).',now())', array($columnValues));
 			$adb->updateBlob(self::$tableName,"content","name='". $adb->sql_escape_string($this->getValue('name')).
 						"' AND module='".$adb->sql_escape_string($this->getValue('module'))."'",$this->getStringifiedContent());
 		}

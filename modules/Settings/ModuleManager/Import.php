@@ -116,14 +116,12 @@ if($module_import_step == 'Step2') {
 		$package = new Vtiger_Package();
 	}
 	$Vtiger_Utils_Log = true;
-	// NOTE: Import function will be called from Smarty to capture the log cleanly.
-	//$package->import($uploadfilename, $overwritedir);
-	//unlink($uploadfilename);
-	$smarty->assign("MODULEIMPORT_PACKAGE", $package);
-	$smarty->assign("MODULEIMPORT_DIR_OVERWRITE", $overwritedir);
-	$smarty->assign("MODULEIMPORT_PACKAGE_FILE", $uploadfilename);
+	ob_start();
+	$package->import($uploadfilename, $overwritedir);
+	unlink($uploadfilename);
+	$importinfo = ob_get_clean();
+	$smarty->assign('MODULEIMPORT_INFO', $importinfo);
 }
 
 $smarty->display("Settings/ModuleManager/ModuleImport$module_import_step.tpl");
-
 ?>

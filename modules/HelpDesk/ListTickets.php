@@ -83,7 +83,7 @@ function getMyTickets($maxval,$calCnt)
 				'columncondition' => null
 			)
 		);
-		$search_qry = '&advft_criteria='.Zend_Json::encode($advft_criteria).'&advft_criteria_groups='.Zend_Json::encode($advft_criteria_groups).'&searchtype=advance&query=true';
+		$search_qry = '&advft_criteria='.json_encode($advft_criteria).'&advft_criteria_groups='.json_encode($advft_criteria_groups).'&searchtype=advance&query=true';
 
 		$values=Array('ModuleName'=>'HelpDesk','Title'=>$title,'Header'=>$header,'Entries'=>$entries,'search_qry'=>$search_qry);
 		if ( ($noofrows == 0 ) || ($noofrows>0) )

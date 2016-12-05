@@ -13,10 +13,8 @@ require_once('include/logging.php');
 require_once('include/utils/utils.php');
 require_once('modules/Reports/Reports.php');
 
-global $log, $app_strings, $app_list_strings, $mod_strings;
+global $log, $app_strings, $app_list_strings, $mod_strings,$current_user;
 $current_module_strings = return_module_language($current_language, 'Reports');
-
-global $list_max_entries_per_page, $urlPrefix,$current_user;
 
 $log = LoggerManager::getLogger('report_list');
 

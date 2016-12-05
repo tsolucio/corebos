@@ -8,7 +8,7 @@ class iCalendar_component {
     var $valid_properties = NULL;
     var $valid_components = NULL;
 
-    function iCalendar_component() {
+    function __construct() {
         $this->construct();
     }
 
@@ -214,7 +214,7 @@ class iCalendar_component {
     			}
     			$this->add_property($key,$component);
     		} else if(!empty($components['function'])){
-    			$this->$components['function']($activity);
+    			$this->{$components['function']}($activity);
     		}
     	}
         return true;

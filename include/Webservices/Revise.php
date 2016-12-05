@@ -78,7 +78,13 @@
 				}
 			}
 		}
-		
+		//  Product line support
+		if(in_array($entityName,getInventoryModules()) && is_array($element['pdoInformation'])) {
+			include_once 'include/Webservices/ProductLines.php';
+		} else {
+			$_REQUEST['action'] = $entityName.'Ajax';
+		}
+
 		$entity = $handler->revise($element);
 		VTWS_PreserveGlobal::flush();
 		return $entity;

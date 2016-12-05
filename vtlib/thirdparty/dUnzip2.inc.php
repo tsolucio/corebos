@@ -3,8 +3,32 @@
  * DOWNLOADED FROM: http://www.phpclasses.org/browse/package/2495/
  * License: 	BSD License
  */
-?>
-<?php
+// 22/03/2013 (v2.67)
+// - New method: ->each(function($fileName, $fileInfo) use ($zip)), works as jQuery.
+//   Example: $z->each(function($filename) use ($z){ $z->unzip($filename, "unc/".basename($filename)); });
+// 25/07/2012 (v2.664)
+// - unzip was NOT respecting chmod parameters, and always setting to 0777. (thanks to Stef Dawson, http://stefdawson.com)
+// 19/08/2011 (v2.663)
+// - unzipAll was using double slashes (path//filename) to save files. (thanks to Karen Peyton).
+// 09/08/2010 (v2.662)
+// - unzipAll parameters fully reviewed and fixed. Thanks Ronny Dreschler and Conor Mac Aoidh.
+// 12/05/2010 (v2.661)
+// - Fixed E_STRICT notice: "Only variables should be passed by reference". Thanks Erik W.
+// 24/03/2010 (v2.66)
+// - Fixed bug inside unzipAll when dirname is "." (thanks to Thorsten Groth)
+// - Added character "Ž" to the string conversion table (ex: caixa dŽágua)
+// 27/02/2010
+// - Removed PHP4 support (file_put_contents redeclaration).
+// 04/12/2009 (v2.65)
+// * Added character translation to decode accents and/or special characters.
+// 10/11/2009
+// * Some security added to avoid malicious ZIP files (relative dirs)
+// * unzipAll() will output by default to same folder of the caller script
+// 25/09/2009
+// - Code optimization to reduce memory usage (uncompress(&$contents))
+// 12/07/2009 (2.62)
+// - Debug messages are shown only when explicit.
+// - New method: getLastError()
 // 15/07/2006 (2.6)
 // - Changed the algorithm to parse the ZIP file.. Now, the script will try to mount the compressed
 //   list, searching on the 'Central Dir' records. If it fails, the script will try to search by
@@ -30,7 +54,7 @@
 // - Fixed redeclaration of file_put_contents when in PHP4 (not returning true)
 
 ##############################################################
-# Class dUnzip2 v2.6
+# Class dUnzip2 v2.67
 #
 #  Author: Alexandre Tedeschi (d)
 #  E-Mail: alexandrebr at gmail dot com
@@ -48,6 +72,17 @@
 #   * Write a PHP-Side gzinflate, to completely avoid any external extensions
 #   * Write other decompress algorithms
 #
+#  Methods:
+#  * dUnzip2($filename)         - Constructor - Opens $filename
+#  * each($cbEach)              - Calls $cbEach($filename, $fileinfo) on each compressed file
+#  * getList([$stopOnFile])     - Retrieve the file list
+#  * getExtraInfo($zipfilename) - Retrieve more information about compressed file
+#  * getZipInfo([$entry])       - Retrieve ZIP file details.
+#  * unzip($zipfilename, [$outfilename, [$applyChmod]]) - Unzip file
+#  * unzipAll([$outDir, [$zipDir, [$maintainStructure, [$applyChmod]]]])
+#  * close()                    - Close file handler, but keep the list
+#  * __destroy()                - Close file handler and release memory
+#
 #  If you modify this class, or have any ideas to improve it, please contact me!
 #  You are allowed to redistribute this class, if you keep my name and contact e-mail on it.
 #
@@ -56,25 +91,13 @@
 #
 ##############################################################
 
-if(!function_exists('file_put_contents')){
-	// If not PHP5, creates a compatible function
-	Function file_put_contents($file, $data){
-		if($tmp = fopen($file, "w")){
-			fwrite($tmp, $data);
-			fclose($tmp);
-			return true;
-		}
-		echo "<b>file_put_contents:</b> Cannot create file $file<br>";
-		return false;
-	}
-}
-
 class dUnzip2{
 	Function getVersion(){
-		return "2.6";
+		return "2.67";
 	}
 	// Public
 	var $fileName;
+	var $lastError;
 	var $compressedList; // You will problably use only this one!
 	var $centralDirList; // Central dir list... It's a kind of 'extra attributes' for a set of files
 	var $endOfCentral;   // End of central dir, contains ZIP Comments
@@ -87,7 +110,7 @@ class dUnzip2{
 	var $dirSignatureE= "\x50\x4b\x05\x06"; // end of central dir signature
 	
 	// Public
-	Function dUnzip2($fileName){
+	Function __construct($fileName){
 		$this->fileName       = $fileName;
 		$this->compressedList = 
 		$this->centralDirList = 
@@ -102,7 +125,7 @@ class dUnzip2{
 		
 		// Open file, and set file handler
 		$fh = fopen($this->fileName, "r");
-		$this->fh = &$fh;
+		$this->fh = $fh;
 		if(!$fh){
 			$this->debugMsg(2, "Failed to load file.");
 			return false;
@@ -192,13 +215,26 @@ class dUnzip2{
 			$this->endOfCentral;
 	}
 	
+	Function each ($cbEachCompreesedFile){
+		// cbEachCompreesedFile(filename, fileinfo);
+		if(!is_callable($cbEachCompreesedFile))
+			die("dUnzip2: You called 'each' method, but failed to provide an Callback as argument. Usage: \$zip->each(function(\$filename, \$fileinfo) use (\$zip){ ... \$zip->unzip(\$filename, 'uncompress/\$filename'); }).");
+		
+		$lista = $this->getList();
+		if(sizeof($lista)) foreach($lista as $fileName=>$fileInfo){
+			if(false === call_user_func($cbEachCompreesedFile, $fileName, $fileInfo)){
+				return false;
+			}
+		}
+		return true;
+	}
 	Function unzip($compressedFileName, $targetFileName=false, $applyChmod=0664){
 		if(!sizeof($this->compressedList)){
 			$this->debugMsg(1, "Trying to unzip before loading file list... Loading it!");
 			$this->getList(false, $compressedFileName);
 		}
 		
-		$fdetails = &$this->compressedList[$compressedFileName];
+		$fdetails = $this->compressedList[$compressedFileName];
 		if(!isset($this->compressedList[$compressedFileName])){
 			$this->debugMsg(2, "File '<b>$compressedFileName</b>' is not compressed in the zip.");
 			return false;
@@ -215,12 +251,14 @@ class dUnzip2{
 		}
 		
 		fseek($this->fh, $fdetails['contents-startOffset']);
+		$toUncompress = fread($this->fh, $fdetails['compressed_size']);
 		$ret = $this->uncompress(
-				fread($this->fh, $fdetails['compressed_size']),
+				$toUncompress,
 				$fdetails['compression_method'],
 				$fdetails['uncompressed_size'],
 				$targetFileName
 			);
+		unset($toUncompress);
 		if($applyChmod && $targetFileName)
 			@chmod($targetFileName, $applyChmod == 0755? 0664 : $applyChmod);
 		
@@ -269,7 +307,7 @@ class dUnzip2{
 	}
 	
 	// Private (you should NOT call these methods):
-	Function uncompress($content, $mode, $uncompressedSize, $targetFileName=false){
+	Function uncompress(&$content, $mode, $uncompressedSize, $targetFileName=false){
 		switch($mode){
 			case 0:
 				// Not compressed
@@ -316,13 +354,19 @@ class dUnzip2{
 		}
 	}
 	Function debugMsg($level, $string){
-		if($this->debug)
+		if($this->debug){
 			if($level == 1)
 				echo "<b style='color: #777'>dUnzip2:</b> $string<br>";
+			
 			if($level == 2)
 				echo "<b style='color: #F00'>dUnzip2:</b> $string<br>";
+		}
+		$this->lastError = $string;
 	}
-
+	Function getLastError(){
+		return $this->lastError;
+	}
+	
 	Function _loadFileListByEOF(&$fh, $stopOnFile=false){
 		// Check if there's a valid Central Dir signature.
 		// Let's consider a file comment smaller than 1024 characters...
@@ -387,6 +431,11 @@ class dUnzip2{
 					$lastmod_timeH = bindec(substr($BINlastmod_time,   0, 5));
 					$lastmod_timeM = bindec(substr($BINlastmod_time,   5, 6));
 					$lastmod_timeS = bindec(substr($BINlastmod_time,  11, 5));	
+					
+					// Some protection agains attacks...
+					$dir['file_name']     = $this->_decodeFilename($dir['file_name']);
+					if(!$dir['file_name'] = $this->_protect($dir['file_name']))
+						continue;
 					
 					$this->centralDirList[$dir['file_name']] = Array(
 						'version_madeby'=>$dir['version_madeby'][1],
@@ -493,6 +542,11 @@ class dUnzip2{
 			$lastmod_timeM = bindec(substr($BINlastmod_time,   5, 6));
 			$lastmod_timeS = bindec(substr($BINlastmod_time,  11, 5));
 			
+			// Some protection agains attacks...
+			$file['file_name']     = $this->_decodeFilename($file['file_name']);
+			if(!$file['file_name'] = $this->_protect($file['file_name']))
+				return false;
+			
 			// Mount file table
 			$i = Array(
 				'file_name'         =>$file['file_name'],
@@ -513,5 +567,56 @@ class dUnzip2{
 		}
 		return false;
 	}
+	
+	Function _decodeFilename($filename){
+		$from = "\xb7\xb5\xb6\xc7\x8e\x8f\x92\x80\xd4\x90\xd2\xd3\xde\xd6\xd7\xd8\xd1\xa5\xe3\xe0".
+		        "\xe2\xe5\x99\x9d\xeb\xe9\xea\x9a\xed\xe8\xe1\x85\xa0\x83\xc6\x84\x86\x91\x87\x8a".
+				"\x82\x88\x89\x8d\xa1\x8c\x8b\xd0\xa4\x95\xa2\x93\xe4\x94\x9b\x97\xa3\x96\xec\xe7".
+				"\x98ï";
+		$to   = "ÀÁÂÃÄÅÆÇÈÉÊËÌÍÎÏÐÑÒÓÔÕÖØÙÚÛÜÝÞßàáâãäåæçèéêëìíîïðñòóôõöøùúûýþÿŽ";
+
+		return strtr($filename, $from, $to);
+	}
+	Function _protect($fullPath){
+		// Known hack-attacks (filename like):
+		//   /home/usr
+		//   ../../home/usr
+		//   folder/../../../home/usr
+		//   sample/(x0)../home/usr
+		
+		$fullPath = strtr($fullPath, ":*<>|\"\x0\\", "......./");
+		while($fullPath[0] == "/")
+			$fullPath = substr($fullPath, 1);
+		
+		if(substr($fullPath, -1) == "/"){
+			$base     = '';
+			$fullPath = substr($fullPath, 0, -1);
+		}
+		else{
+			$base     = basename($fullPath);
+			$fullPath = dirname($fullPath);
+		}
+		
+		$parts   = explode("/", $fullPath);
+		$lastIdx = false;
+		foreach($parts as $idx=>$part){
+			if($part == ".")
+				unset($parts[$idx]);
+			elseif($part == ".."){
+				unset($parts[$idx]);
+				if($lastIdx !== false){
+					unset($parts[$lastIdx]);
+				}
+			}
+			elseif($part === ''){
+				unset($parts[$idx]);
+			}
+			else{
+				$lastIdx = $idx;
+			}
+		}
+		
+		$fullPath = sizeof($parts)?implode("/", $parts)."/":"";
+		return $fullPath.$base;
+	}
 }
-?>

@@ -222,6 +222,7 @@ $mod_strings = array (
 'LBL_SHOW_STANDARD_FILTERS' => 'Mostra Filtri Standard',
 'LBL_YEAR' => 'Anno',
 'LBL_MONTH'=> 'Mese',
+'LBL_DAY'=> 'Giorno',
 'LBL_QUARTER'=> 'Quadrimestre',
 'LBL_NONE'=> 'Nessuno',
 

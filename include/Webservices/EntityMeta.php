@@ -34,7 +34,7 @@ abstract class EntityMeta{
 	protected $ownerFields;
 	protected $moduleFields;
 	
-	protected function EntityMeta($webserviceObject,$user){
+	protected function __construct($webserviceObject,$user){
 		$this->webserviceObject = $webserviceObject;
 		$this->objectName = $this->webserviceObject->getEntityName();
 		$this->objectId = $this->webserviceObject->getEntityId();

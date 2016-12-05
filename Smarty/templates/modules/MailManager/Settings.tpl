@@ -83,7 +83,7 @@
                 <td width="15%" nowrap="nowrap">{'LBL_REFRESH_TIME'|@getTranslatedString}</td>
                 <td>
                     <select name="_mbox_refresh_timeout">
-                        <option value="" {if $MAILBOX->refreshTimeOut() eq ''}selected{/if}>{$MOD.LBL_NONE}</option>
+                        <option value="0" {if $MAILBOX->refreshTimeOut() eq ''}selected{/if}>{$MOD.LBL_NONE}</option>
                         <option value="300000" {if strcasecmp($MAILBOX->refreshTimeOut(), '300000')==0}selected{/if}>{$MOD.LBL_5_MIN}</option>
                         <option value="600000" {if strcasecmp($MAILBOX->refreshTimeOut(), '600000')==0}selected{/if}>{$MOD.LBL_10_MIN}</option>
                     </select>

@@ -53,7 +53,7 @@ $mod_strings = array(
 'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL'=>'Nuovo Gruppo di Condizioni',
 
 'VTUpdateFieldsTask' => 'Aggiorna Campi',
-
+'LBL_ON_DELETE'=>'On Delete',
 
 'LBL_VALIDATION_DUPLICATE_FIELDNAMES' => 'Lo stesso campo risulta selezionato piu di una volta.',
 'LBL_VALIDATION_INVALID_FIELD_VALUES' => 'Valori di campo non validi',

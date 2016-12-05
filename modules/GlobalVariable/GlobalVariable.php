@@ -386,23 +386,6 @@ class GlobalVariable extends CRMEntity {
 	}
 
 	/**
-	 * Delete the last imported records.
-	 */
-	function undo_import($module, $user_id) {
-		global $adb;
-		$count = 0;
-		$query1 = "select bean_id from vtiger_users_last_import where assigned_user_id=? AND bean_type='$module' AND deleted=0";
-		$result1 = $adb->pquery($query1, array($user_id)) or die("Error getting last import for undo: ".mysql_error());
-		while ( $row1 = $adb->fetchByAssoc($result1))
-		{
-			$query2 = "update vtiger_crmentity set deleted=1 where crmid=?";
-			$result2 = $adb->pquery($query2, array($row1['bean_id'])) or die("Error undoing last import: ".mysql_error());
-			$count++;
-		}
-		return $count;
-	}
-
-	/**
 	 * Transform the value while exporting
 	 */
 	function transform_export_value($key, $value) {
@@ -518,7 +501,7 @@ class GlobalVariable extends CRMEntity {
 		}
 	}
 
-	function return_global_var_value($sql,$var,$module){
+	public static function return_global_var_value($sql,$var,$module){
 		global $log,$adb,$gvvalidationinfo;
 		$list_of_modules=array();
 		$list_of_modules['Default'] = '';
@@ -597,10 +580,13 @@ class GlobalVariable extends CRMEntity {
 	 *   - return $default
 	 */
 	public static function getVariable($var,$default, $module='', $gvuserid='') {
-		global $adb, $current_user, $gvvalidationinfo, $currentModule;
+		global $adb, $current_user, $gvvalidationinfo, $currentModule, $installationStrings;
+		if (!is_object($adb) or is_null($adb->database)) return $default;
+		if (isset($installationStrings)) return $default;
 		$gvvalidationinfo[] = "search for variable '$var' with default value of '$default'";
+		if (empty($gvuserid) and !empty($current_user)) $gvuserid = $current_user->id;
+		if (empty($gvuserid)) return $default;
 		if (empty($module)) $module = $currentModule;
-		if (empty($gvuserid)) $gvuserid = $current_user->id;
 		$key = md5('gvcache'.$var.$module.$gvuserid);
 		list($value,$found) = VTCacheUtils::lookupCachedInformation($key);
 		if ($found) {
@@ -609,7 +595,6 @@ class GlobalVariable extends CRMEntity {
 		}
 		$value='';
 		$list_of_modules=array();
-		$focus = CRMEntity::getInstance('GlobalVariable');
 		$select = 'SELECT *
 		 FROM vtiger_globalvariable
 		 INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_globalvariable.globalvariableid ';
@@ -618,7 +603,7 @@ class GlobalVariable extends CRMEntity {
 		$mandatory=" and mandatory='1'";
 		$sql=$select.$where.$mandatory;
 		$gvvalidationinfo[] = '---';
-		$value=$focus->return_global_var_value($sql,$var,$module);
+		$value=self::return_global_var_value($sql,$var,$module);
 		$gvvalidationinfo[] = "search as mandatory in module $module: $value";
 		if ($value!='') {
 			VTCacheUtils::updateCachedInformation($key, $value);
@@ -629,7 +614,7 @@ class GlobalVariable extends CRMEntity {
 		$user = $adb->convert2Sql(' and vtiger_crmentity.smownerid=?', array($gvuserid));
 		$sql=$select.$where.$user;
 		$gvvalidationinfo[] = '---';
-		$value=$focus->return_global_var_value($sql,$var,$module);
+		$value=self::return_global_var_value($sql,$var,$module);
 		$gvvalidationinfo[] = "search as set per user $gvuserid in module $module: $value";
 		if ($value!='') {
 			VTCacheUtils::updateCachedInformation($key, $value);
@@ -644,7 +629,7 @@ class GlobalVariable extends CRMEntity {
 			$groups=implode(',',$UserGroups->user_groups);
 			$group=' and vtiger_crmentity.smownerid in ('.$groups.') ';
 			$sql=$select.$where.$group;
-			$value=$focus->return_global_var_value($sql,$var,$module);
+			$value=self::return_global_var_value($sql,$var,$module);
 			$gvvalidationinfo[] = "search as set per group $groups in module $module: $value";
 			if ($value!='') {
 				VTCacheUtils::updateCachedInformation($key, $value);
@@ -656,7 +641,7 @@ class GlobalVariable extends CRMEntity {
 
 		$sql=$select.$where." and default_check='1'";
 		$gvvalidationinfo[] = '---';
-		$value=$focus->return_global_var_value($sql,$var,$module);
+		$value=self::return_global_var_value($sql,$var,$module);
 		$gvvalidationinfo[] = "search as default variable in module $module: $value";
 		if ($value!='') {
 			VTCacheUtils::updateCachedInformation($key, $value);

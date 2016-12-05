@@ -327,9 +327,9 @@ class GoogleSync4You {
         $startTime = $Data["time_start"];
         $endTime = $Data["time_end"];
         $event = new Google_Service_Calendar_Event();
-        $event->setSummary(trim($Data["subject"]));
-        $event->setDescription($Data["description"]);
-        $event->setLocation(trim($Data["location"]));
+        $event->setSummary(decode_html(trim($Data["subject"])));
+        $event->setDescription(decode_html($Data["description"]));
+        $event->setLocation(decode_html(trim($Data["location"])));
         $start = new Google_Service_Calendar_EventDateTime();
         if(strlen($startTime)>6)
         $start->setDateTime($startDate.'T'.$this->removeLastColon($startTime).':00.000');

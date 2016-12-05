@@ -12,7 +12,7 @@ require_once("include/utils/CommonUtils.php");
 require_once("include/FormValidationUtil.php");
 
 global $mod_strings,$current_user, $app_strings, $currentModule;
-global $adb, $app_list_strings, $theme, $upload_maxsize;
+global $adb, $app_list_strings, $theme;
 
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
@@ -44,5 +44,4 @@ $smarty->assign("MODULE", $currentModule);
 $smarty->assign("CATEGORY",$category);
 
 $smarty->display("QuickCreate.tpl");
-
 ?>

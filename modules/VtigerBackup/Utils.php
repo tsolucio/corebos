@@ -6,16 +6,10 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- *
  *********************************************************************************/
 
 require_once 'include/utils/utils.php';
 
-/**
- * Description of Utils
- *
- * @author MAK
- */
 class Vtiger_BackupUtils {
 
 	public static function getFTPBackupDetails() {
@@ -45,7 +39,7 @@ class Vtiger_BackupUtils {
 		$db = PearDatabase::getInstance();
 		$path_query = $db->pquery("SELECT * FROM vtiger_systems WHERE server_type = ?",
 				array('local_backup'));
-        $path = $db->query_result($path_query,0,'server_path');
+		$path = $db->query_result($path_query,0,'server_path');
 		return $path;
 	}
 

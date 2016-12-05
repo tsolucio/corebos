@@ -77,7 +77,6 @@ if (empty($_REQUEST['register'])) {
 }
 
 $update_after = false;
-//echo '<pre>';var_dump($focus->column_fields);echo '</pre>';
 if ($focus->column_fields['paid'] == 'on'){
 	if($focus->mode != 'edit'){
 		$update_after = true;

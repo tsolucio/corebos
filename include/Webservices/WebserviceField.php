@@ -28,6 +28,7 @@ class WebserviceField{
 	private $massEditable;
 	private $tabid;
 	private $presence;
+	private $quickCreate;
 	/**
 	 *
 	 * @var PearDatabase
@@ -60,6 +61,7 @@ class WebserviceField{
 		$this->massEditable = isset($row['masseditable']) ? ($row['masseditable'] === '1')? true: false: false;
 		$typeOfData = (isset($row['typeofdata']))? $row['typeofdata'] : '';
 		$this->presence = (isset($row['presence']))? $row['presence'] : -1;
+		$this->quickCreate = isset($row['quickcreate']) ? ($row['quickcreate'] === '0' || $row['quickcreate'] === '2')? true: false: false;
 		$this->typeOfData = $typeOfData;
 		$typeOfData = explode("~",$typeOfData);
 		$this->mandatory = isset($typeOfData[1]) ? ($typeOfData[1] == 'M')? true: false: false;
@@ -164,6 +166,10 @@ class WebserviceField{
 
 	public function getFieldSequence(){
 		return $this->fieldSequence;
+	}
+
+	public function getQuickCreate(){
+		return $this->quickCreate;
 	}
 
 	public function getTabId(){
@@ -373,7 +379,17 @@ class WebserviceField{
 		if(in_array(strtolower($this->getFieldName()),$hardCodedPickListNames)){
 			return $hardCodedPickListValues[strtolower($this->getFieldName())];
 		}
-		return $this->getPickListOptions($this->getFieldName());
+		$uitype = $this->getUIType();
+		switch ($uitype) {
+			case '1613':
+			case '3313':
+			case '1024':
+				return $this->getPickListOptionsSpecialUitypes($uitype);
+				break;
+			default: // 15 and 33
+				return $this->getPickListOptions($this->getFieldName());
+				break;
+		}
 	}
 
 	function getPickListOptions(){
@@ -427,6 +443,29 @@ class WebserviceField{
 		return $this->presence;
 	}
 
+	function getPickListOptionsSpecialUitypes($uitype){
+		global $log, $current_language;
+		require_once 'modules/PickList/PickListUtils.php';
+		static $purified_plcache = array();
+		$fieldName = $this->getFieldName();
+
+		$moduleName = getTabModuleName($this->getTabId());
+		if($moduleName == 'Events') $moduleName = 'Calendar';
+
+		if (array_key_exists($moduleName.$fieldName, $purified_plcache)) {
+			return $purified_plcache[$moduleName.$fieldName];
+		}
+		$options = array();
+		$list_options = getPicklistValuesSpecialUitypes($uitype,$fieldName,'');
+		foreach ($list_options as $key => $value) {
+				$elem = array();
+				$elem["label"] = $value[0];
+				$elem["value"] = $value[1];
+				array_push($options,$elem);
+		}
+		$purified_plcache[$moduleName.$fieldName] = $options;
+		return $options;
+	}
 }
 
 ?>

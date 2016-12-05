@@ -27,7 +27,7 @@ function pie_chart($referdata,$refer_code,$width,$height,$left,$right,$top,$bott
 	{
 		$name=$datax[$i];
 		$pos = substr_count($name," ");
-		$alts[]=htmlentities($name)."=%d";
+		$alts[]=htmlentities($name)."=".$datay[$i];
 		//If the datax value of a string is greater, adding '\n' to it so that it'll come in 2nd line
 		if(strlen($name)>=14)
 			$name=substr($name, 0, 34);
@@ -165,6 +165,5 @@ function pie_chart($referdata,$refer_code,$width,$height,$left,$right,$top,$bott
 	save_image_map($cache_file_name.'.map', $img);
 
 	return $img;
-
 }
 ?>

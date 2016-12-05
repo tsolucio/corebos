@@ -15,7 +15,8 @@ require_once('include/utils/utils.php');
 require_once('modules/CustomView/CustomView.php');
 require_once('modules/RecycleBin/RecycleBinUtils.php');
 
-global $adb, $log, $list_max_entries_per_page, $current_user;
+global $adb, $log, $current_user;
+$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$currentModule);
 
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
@@ -78,6 +79,12 @@ if(count($module_name) > 0)
 
 	$queryGenerator = new QueryGenerator($select_module, $current_user);
 	$queryGenerator->initForCustomViewById($viewid);
+	$rbfields = $queryGenerator->getFields();
+	if (!in_array('modifiedtime',$rbfields)) {
+		// Recycle Bin List view always shows modifiedtime
+		$rbfields[] = 'modifiedtime';
+		$queryGenerator->setFields($rbfields);
+	}
 	// Enabling Module Search
 	$url_string = '';
 	if($_REQUEST['query'] == 'true') {

@@ -1,5 +1,4 @@
 {*<!--
-
 /*********************************************************************************
 ** The contents of this file are subject to the vtiger CRM Public License Version 1.0
  * ("License"); You may not use this file except in compliance with the License
@@ -7,9 +6,7 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
-
 -->*}
 
 <table width="100%" border="0">
@@ -30,9 +27,9 @@
 		{/foreach}
 	</tr>
 {foreach item=entity key=entity_id from=$LIST_ENTRIES}
-	<tr bgcolor=white onMouseOver="this.className='lvtColDataHover'" onMouseOut="this.className='lvtColData'"  >
-	{foreach item=data from=$entity}	
-		{if $data neq "0000-00-00 00:00:00"}
+	<tr bgcolor=white onMouseOver="this.className='lvtColDataHover'" onMouseOut="this.className='lvtColData'">
+	{foreach item=data from=$entity}
+		{if !empty($data)}
 			<td>{$data}</td>
 		{else}
 			<td>&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;---</td>

@@ -111,18 +111,8 @@ class BURAK_Gantt {
 	*/
 	var $heights = array();
 
-
 	/**
 	* Class constructor
-	*
-	*/
-	function BURAK_Gantt() {
-		$this->__construct();
-	}
-	
-	/**
-	* Class constructor
-	*
 	*/
 	function __construct(){
 		if(!in_array("gd",get_loaded_extensions())){

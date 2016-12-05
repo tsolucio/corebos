@@ -48,9 +48,9 @@ if(!is_string($_SESSION[$currentModule.'_listquery']) || !empty($_REQUEST['globa
 	//print_r($where);
 	if($where != '') {
 		$list_query = "$list_query AND $where";
-		$_SESSION['export_where'] = $where;
+		coreBOS_Session::set('export_where', $where);
 	}else{
-		unset($_SESSION['export_where']);
+		coreBOS_Session::delete('export_where');
 	}
 	// Sorting
 	if($order_by) {

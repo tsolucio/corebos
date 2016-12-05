@@ -129,7 +129,6 @@ $app_strings = array(
 'LNK_REMOVE'=>'entf',
 'LNK_DELETE'=>'lö',
 'LNK_LIST_START'=>'Anfang',
-'LNK_LIST_NEXT'=>'weiter',
 'LNK_LIST_PREVIOUS'=>'vorherige',
 'LNK_LIST_END'=>'Ende',
 'LBL_LIST_OF'=>'von',
@@ -201,6 +200,9 @@ $app_strings = array(
 'LBL_EXPORT_ALL'=>'exportiere alle',
 'LBL_QUICK_CREATE'=>'Schnellmenü',
 'QuickRelatedList' => 'Related Modules',
+'Photo2Document' => 'Photo to Document',
+'Snap Photo' => 'Snap Photo',
+'Clear Photo' => 'Clear Photo',
 'Export'=>'Export',
 'Import'=>'Import',
 'Merge'=>'Zusammenführen',
@@ -540,6 +542,7 @@ $app_strings = array(
 'Expected Revenue'=>'Erwarteter Umsatz',
 'Expected Close Date'=>'Abschluss',
 'LBL_ACTIONS'=>'Aktionen',
+'TOGGLE_ACTIONS' => 'Toggle Actions',
 'LBL_SEND'=>'Senden',
 'LBL_VAT'=>'Mwst. 1',
 'LBL_SALES'=>'Vertrieb',
@@ -872,6 +875,7 @@ $app_strings = array(
 'Created Time'=>'erstellt',
 'Modified Time'=>'geändert',
 'Last Modified By' => 'Last Modified By',
+'Created By' => 'Created By',
 'FAQ Id'=>'Wissensbasisnr.',
 'Lead Status'=>'Leadstatus',
 'Lead Source'=>'Leadquelle',
@@ -907,7 +911,6 @@ $app_strings = array(
 'LBL_SEND_EMAIL_PDF' => 'Sende E-Mail mit PDF',
 'LBL_UPDATE' => 'Update',
 //Added for incoming mail server settings form js validation
-'ERR_INVALID_PAGE_COUNT' => "Seitenzahl ungültig",
 'LBL_CAL_LIMIT_MSG'=>'Es werden nur Jahresangaben in dem Bereich von 1970 bis 2037 unterstützt.',
 
 //added for fix i18n issue #4038 when importing contacts
@@ -1141,7 +1144,6 @@ $app_strings = array(
 
 // Layout Editor and Ease navigation between records in Detail view
 'LNK_LIST_NEXT' => 'weiter',
-'LNK_LIST_PREVIOUS' => 'zurück',
 'LBL_JUMP_BTN'=> 'SPRINGE',
 'LBL_JUMP_To'=> 'Jump to',
 'LBL_ASSIGN_BUTTON_LABEL'=>'Felder zuordnen',
@@ -1155,12 +1157,6 @@ $app_strings = array(
 
 // vtlib customization: Language strings
 'VTLIB_MOD_NOT_ACTIVE' => ' Modul ist nicht aktiv!',
-// END
-
-// vtiger News & Feedback
-'LBL_VTIGER_NEWS'=>'vtiger News',
-'LBL_FEEDBACK'=>'Feedback',
-// END
 
 //added for asterisk integration
 'CallHistory'=>'Anrufhistorie',
@@ -1194,7 +1190,6 @@ $app_strings = array(
 'LBL_MERGE_SELECT'=>'ausgewählte Zusammenführen',
 'LBL_MERGE_DATA_IN'=>'Zusammenführen von',
 'LBL_MERGE'=>'Zusammenführen',
-'LBL_ACTION'=>'Aktion',
 'LBL_FIELDLISTS'=> 'Liste der Felder',
 'LBL_RECORD'=>'Datensatznr.',
 'LBL_DUP_PERMISSION' => 'Sie haben keine Löscherlaubnis für ',
@@ -1321,6 +1316,7 @@ $app_strings = array(
 'ERROR_GETTING_FILTER' => 'ERROR Retrieving information from filter. Please delete the filter and try again.',
 'Upload Images' => 'Upload Images',
 'Drag file here or click to upload' => 'Drag file here or click to upload',
+'Drag attachment here or click to upload' => 'Drag attachment here or click to upload',
 'SetReturnAddressTitle' => 'Select Address To Use',
 'SetReturnAddressDescription' => 'Select which address you wish to overwrite, if any',
 'Subscribe' => 'Subscribe',

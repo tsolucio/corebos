@@ -8,7 +8,7 @@
  * All Rights Reserved.
 ********************************************************************************/
 -->*}
-{if $smarty.request.ajax neq ''}
+{if isset($smarty.request.ajax) && $smarty.request.ajax neq ''}
 &#&#&#{$ERROR}&#&#&#
 {/if}
 <script type="text/javascript" src="include/js/ListView.js"></script>
@@ -114,7 +114,7 @@
 			<!-- Table Contents -->
 			{foreach item=entity key=entity_id from=$LISTENTITY}
 				<tr bgcolor=white onMouseOver="this.className='lvtColDataHover'" onMouseOut="this.className='lvtColData'" id="row_{$entity_id}">
-					<td width="2%"><input type="checkbox" NAME="selected_id" id="{$entity_id}" value= '{$entity_id}' onClick="check_object(this)"></td>
+					<td width="2%">{if $entity_id>0}<input type="checkbox" NAME="selected_id" id="{$entity_id}" value= '{$entity_id}' onClick="check_object(this)">{else}<span class="listview_row_sigma">&Sigma;</span>{/if}</td>
 					{foreach item=data from=$entity}
 						{* vtlib customization: Trigger events on listview cell *}
 						<td onmouseover="vtlib_listview.trigger('cell.onmouseover', this)" onmouseout="vtlib_listview.trigger('cell.onmouseout', this)">{$data}</td>
@@ -123,7 +123,7 @@
 			{foreachelse}
 			<tr>
 			<td style="background-color:#efefef;height:340px" align="center" colspan="{$smarty.foreach.listviewforeach.iteration+1}">
-			<div style="border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 45%; position: relative; z-index: 10000000;">
+			<div id="no_entries_found" style="border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 45%; position: relative; z-index: 10000000;">
 				{assign var=vowel_conf value='LBL_A'}
 				{if $MODULE eq 'Accounts' || $MODULE eq 'Invoice'}
 					{assign var=vowel_conf value='LBL_AN'}
@@ -138,16 +138,7 @@
 					<tr>
 						<td rowspan="2" width="25%"><img src="{'empty.png'|@vtiger_imageurl:$THEME}" height="60" width="61"></td>
 						<td style="border-bottom: 1px solid rgb(204, 204, 204);" nowrap="nowrap" width="75%">
-							<span class="genHeaderSmall">
-							{if $MODULE_CREATE eq 'SalesOrder' || $MODULE_CREATE eq 'PurchaseOrder' || $MODULE_CREATE eq 'Invoice' || $MODULE_CREATE eq 'Quotes'}
-								{$APP.LBL_NO} {$APP.$MODULE_CREATE} {$APP.LBL_FOUND} !
-							{elseif $MODULE eq 'Calendar'}
-								{$APP.LBL_NO} {$APP.ACTIVITIES} {$APP.LBL_FOUND} !
-							{else}
-								{* vtlib customization: Use translation string only if available *}
-								{$APP.LBL_NO} {if $APP.$MODULE_CREATE}{$APP.$MODULE_CREATE}{else}{$MODULE_CREATE}{/if} {$APP.LBL_FOUND} !
-							{/if}
-							</span>
+							<span class="genHeaderSmall">{$APP.LBL_NO_DATA}</span>
 						</td>
 					</tr>
 					<tr>
@@ -160,47 +151,22 @@
 						<tr>
 							<td rowspan="2" width="25%"><img src="{'empty.png'|@vtiger_imageurl:$THEME}" height="60" width="61"></td>
 							<td style="border-bottom: 1px solid rgb(204, 204, 204);" nowrap="nowrap" width="75%">
-								<span class="genHeaderSmall">
-								{if $MODULE_CREATE eq 'SalesOrder' || $MODULE_CREATE eq 'PurchaseOrder' || $MODULE_CREATE eq 'Invoice' || $MODULE_CREATE eq 'Quotes'}
-									{$APP.LBL_NO} {$APP.$MODULE_CREATE} {$APP.LBL_FOUND} !
-								{elseif $MODULE eq 'Calendar'}
-									{$APP.LBL_NO} {$APP.ACTIVITIES} {$APP.LBL_FOUND} !
-								{else}
-									{* vtlib customization: Use translation string only if available *}
-									{$APP.LBL_NO} {if $APP.$MODULE_CREATE}{$APP.$MODULE_CREATE}{else}{$MODULE_CREATE}{/if} {$APP.LBL_FOUND} !
-								{/if}
-								</span>
+								<span class="genHeaderSmall">{$APP.LBL_NO_DATA}</span>
 							</td>
 						</tr>
 						<tr>
-							<td class="small" align="left" nowrap="nowrap">{$APP.LBL_YOU_CAN_CREATE} {$APP.$vowel_conf}
-								{if $MODULE_CREATE eq 'SalesOrder' || $MODULE_CREATE eq 'PurchaseOrder' || $MODULE_CREATE eq 'Invoice' || $MODULE_CREATE eq 'Quotes'}
-									{$MOD.$MODULE_CREATE}
-								{else}
-									{* vtlib customization: Use translation string only if available *}
-									{if $APP.$MODULE_CREATE}{$APP.$MODULE_CREATE}{else}{$MODULE_CREATE}{/if}
-								{/if}
-								{$APP.LBL_NOW}. {$APP.LBL_CLICK_THE_LINK}:<br>
+							<td class="small" align="left" nowrap="nowrap">
 								{if $MODULE neq 'Calendar'}
-									&nbsp;&nbsp;- <b><a href="index.php?module={$MODULE}&action=EditView&return_action=DetailView&parenttab={$CATEGORY}">{$APP.LBL_CREATE} {$APP.$vowel_conf}
-									{if $MODULE_CREATE eq 'SalesOrder' || $MODULE_CREATE eq 'PurchaseOrder' || $MODULE_CREATE eq 'Invoice' || $MODULE_CREATE eq 'Quotes'}
-										 {$MOD.$MODULE_CREATE}
-									{else}
-										{* vtlib customization: Use translation string only if available *}
+									<b><a class="nef_action" href="index.php?module={$MODULE}&action=EditView&return_action=DetailView&parenttab={$CATEGORY}">{$APP.LBL_CREATE} {$APP.$vowel_conf}
 										{if $APP.$MODULE_CREATE}{$APP.$MODULE_CREATE}{else}{$MODULE_CREATE}{/if}
-										{* Customization *}
-										{if $MODULE eq 'Vendors' || $MODULE eq 'HelpDesk' || $MODULE eq 'Contacts' || $MODULE eq 'Leads' || $MODULE eq 'Accounts' || $MODULE eq 'Potentials' || $MODULE eq 'Products' || $MODULE eq 'Documents'|| $CUSTOM_MODULE eq 'true' }
-											{if $CHECK.Import eq 'yes' && $MODULE neq 'Documents'}
-											</a></b><br>
-											&nbsp;&nbsp;- <b><a href="index.php?module={$MODULE}&action=Import&step=1&return_module={$MODULE}&return_action=ListView&parenttab={$CATEGORY}">{$APP.LBL_IMPORT} {$MODULE|@getTranslatedString:$MODULE}
-											{/if}
+										{if $CHECK.Import eq 'yes' && $MODULE neq 'Documents'}
+										</a></b><br>
+										<b><a class="nef_action" href="index.php?module={$MODULE}&action=Import&step=1&return_module={$MODULE}&return_action=ListView&parenttab={$CATEGORY}">{$APP.LBL_IMPORT} {$MODULE|@getTranslatedString:$MODULE}
 										{/if}
-										{* END *}
-									{/if}
 									</a></b><br>
 								{else}
-									&nbsp;&nbsp;-<b><a href="index.php?module=Calendar4You&amp;action=EventEditView&amp;return_module=Calendar4You&amp;activity_mode=Events&amp;return_action=DetailView&amp;parenttab={$CATEGORY}">{$APP.LBL_CREATE} {$APP.LBL_AN} {$APP.Event}</a></b><br>
-									&nbsp;&nbsp;-<b><a href="index.php?module=Calendar4You&amp;action=EventEditView&amp;return_module=Calendar4You&amp;activity_mode=Task&amp;return_action=DetailView&amp;parenttab={$CATEGORY}">{$APP.LBL_CREATE} {$APP.LBL_A} {$APP.Task}</a></b>
+									<b><a class="nef_action" href="index.php?module=Calendar4You&amp;action=EventEditView&amp;return_module=Calendar4You&amp;activity_mode=Events&amp;return_action=DetailView&amp;parenttab={$CATEGORY}">{$APP.LBL_CREATE} {$APP.LBL_AN} {$APP.Event}</a></b><br>
+									<b><a class="nef_action" href="index.php?module=Calendar4You&amp;action=EventEditView&amp;return_module=Calendar4You&amp;activity_mode=Task&amp;return_action=DetailView&amp;parenttab={$CATEGORY}">{$APP.LBL_CREATE} {$APP.LBL_A} {$APP.Task}</a></b>
 								{/if}
 							</td>
 						</tr>
@@ -209,23 +175,11 @@
 						<table border="0" cellpadding="5" cellspacing="0" width="98%">
 						<tr>
 							<td rowspan="2" width="25%"><img src="{'denied.gif'|@vtiger_imageurl:$THEME}"></td>
-							<td style="border-bottom: 1px solid rgb(204, 204, 204);" nowrap="nowrap" width="75%"><span class="genHeaderSmall">
-							{if $MODULE_CREATE eq 'SalesOrder' || $MODULE_CREATE eq 'PurchaseOrder' || $MODULE_CREATE eq 'Invoice' || $MODULE_CREATE eq 'Quotes'}
-								{$APP.LBL_NO} {$APP.$MODULE_CREATE} {$APP.LBL_FOUND} !
-							{else}
-								{* vtlib customization: Use translation string only if available *}
-								{$APP.LBL_NO} {if $APP.$MODULE_CREATE}{$APP.$MODULE_CREATE}{else}{$MODULE_CREATE}{/if} {$APP.LBL_FOUND} !
-							{/if}
-							</span></td>
+							<td style="border-bottom: 1px solid rgb(204, 204, 204);" nowrap="nowrap" width="75%"><span class="genHeaderSmall">{$APP.LBL_NO_DATA}</span></td>
 						</tr>
 						<tr>
 							<td class="small" align="left" nowrap="nowrap">{$APP.LBL_YOU_ARE_NOT_ALLOWED_TO_CREATE} {$APP.$vowel_conf}
-							{if $MODULE_CREATE eq 'SalesOrder' || $MODULE_CREATE eq 'PurchaseOrder' || $MODULE_CREATE eq 'Invoice' || $MODULE_CREATE eq 'Quotes'}
-								{$MOD.$MODULE_CREATE}
-							{else}
-								{* vtlib customization: Use translation string only if available *}
-								{if $APP.$MODULE_CREATE}{$APP.$MODULE_CREATE}{else}{$MODULE_CREATE}{/if}
-							{/if}
+							{if $APP.$MODULE_CREATE}{$APP.$MODULE_CREATE}{else}{$MODULE_CREATE}{/if}
 							<br>
 							</td>
 						</tr>
@@ -288,5 +242,5 @@
 		</tr>
 	</table>
 </form>
-{$SELECT_SCRIPT}
+{if isset($SELECT_SCRIPT)}{$SELECT_SCRIPT}{/if}
 <div id="basicsearchcolumns" style="display:none;"><select name="search_field" id="bas_searchfield" class="txtBox" style="width:150px">{html_options options=$SEARCHLISTHEADER}</select></div>

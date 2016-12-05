@@ -11,12 +11,7 @@
 <script type='text/javascript' src='include/ckeditor/ckeditor.js'></script>
 <script type='text/javascript' src='modules/MailManager/resources/jquery.tokeninput.js'></script>
 <link rel='stylesheet' type='text/css' href='modules/MailManager/resources/token-input-facebook.css'>
-
 <script type='text/javascript' src='modules/MailManager/MailManager.js'></script>
-
-<link href="modules/MailManager/third-party/AjaxUpload/fileuploader.css" rel="stylesheet" type="text/css">
-<script src="modules/MailManager/third-party/AjaxUpload/fileuploader.js" type="text/javascript"></script>
-<script src="modules/MailManager/MailManagerUploadFile.js" type="text/javascript"></script>
 
 {* Parse the translation string applicable to javascript *}
 <script type='text/javascript'>

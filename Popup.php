@@ -38,6 +38,7 @@ $smarty->assign("APP", $app_strings);
 $smarty->assign("THEME", $theme);
 $smarty->assign("THEME_PATH",$theme_path);
 $smarty->assign("MODULE",$currentModule);
+$smarty->assign('coreBOS_uiapp_name', GlobalVariable::getVariable('Application_UI_Name',$coreBOS_app_name));
 // Gather the custom link information to display
 include_once('vtlib/Vtiger/Link.php');
 $hdrcustomlink_params = Array('MODULE'=>$currentModule);
@@ -404,7 +405,7 @@ if(method_exists($focus, 'getQueryByModuleField')) {
 
 $count_result = $adb->pquery(mkCountQuery($query), array());
 $noofrows = $adb->query_result($count_result,0,'count');
-
+$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$currentModule);
 //Retreiving the start value from request
 if(isset($_REQUEST['start']) && $_REQUEST['start'] != '') {
 	$start = vtlib_purify($_REQUEST['start']);

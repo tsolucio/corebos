@@ -219,10 +219,6 @@ $mod_strings = Array(
     'We suggest you to change your password after logging in first time'=>'Wir empfehlen Ihnen das Passwort nach dem ersten Login zu wechseln.',
     'Support Team'=>'Support Team',
 
-    'TITLE_AJAX_CSS_POPUP_CHAT'=>'CRM Chat',
-
-    // Added after 5.0.4 GA
-
     // Module Sequence Numbering
     'Contact Id' => 'Kontaktnr.',
     'Secondary Email'=>'Secondary Email',

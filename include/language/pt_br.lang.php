@@ -202,6 +202,9 @@ $app_strings = array (
 'LBL_EXPORT_ALL' => 'Exportar tudo',
 'LBL_QUICK_CREATE' => 'Criar Rápido',
 'QuickRelatedList' => 'Related Modules',
+'Photo2Document' => 'Photo to Document',
+'Snap Photo' => 'Snap Photo',
+'Clear Photo' => 'Clear Photo',
 'Export' => 'Exportar',
 'Import' => 'Importar',
 'Merge' => 'Mesclar',
@@ -541,6 +544,7 @@ $app_strings = array (
 'Expected Revenue' => 'Previsão Receita',
 'Expected Close Date' => 'Previsão Fechamento',
 'LBL_ACTIONS' => 'Ações',
+'TOGGLE_ACTIONS' => 'Toggle Actions',
 'LBL_SEND' => 'Enviar',
 'LBL_VAT' => 'ICMS',
 'LBL_SALES' => 'Vendas',
@@ -873,6 +877,7 @@ $app_strings = array (
 'Created Time'=>'Data Criação',
 'Modified Time'=>'Hora Modificação',
 'Last Modified By' => 'Last Modified By',
+'Created By' => 'Created By',
 'FAQ Id'=>'ID FAQ',
 'Lead Status'=>'Status Lead',
 'Lead Source'=>'Fonte Lead',
@@ -908,7 +913,6 @@ $app_strings = array (
 'LBL_SEND_EMAIL_PDF' => 'Enviar Email com PDF',
 'LBL_UPDATE' => 'Atualizar',
 //Added for incoming mail server settings form js validation
-'ERR_INVALID_PAGE_COUNT' => "Organizaçãogem Página Inválida",
 'LBL_CAL_LIMIT_MSG'=>'Desculpe, o ano deve estar entre 1970 e 2037',
 
 //added for fix i18n issue #4038 when importing Contacts
@@ -1141,8 +1145,6 @@ $app_strings = array (
 'LBL_HIDE'=>'Ocultar',
 
 // Layout Editor and Ease navigation between records in Detail view
-'LNK_LIST_NEXT' => 'Próximo',
-'LNK_LIST_PREVIOUS' => 'Anterior',
 'LBL_JUMP_BTN'=> 'PULAR',
 'LBL_JUMP_To'=> 'Jump to',
 'LBL_ASSIGN_BUTTON_LABEL'=>'Definir Campos',
@@ -1156,12 +1158,6 @@ $app_strings = array (
 
 // vtlib customization: Language strings
 'VTLIB_MOD_NOT_ACTIVE' => ' o Módulo não está ativo!',
-// END
-
-// vtiger News & Feedback
-'LBL_VTIGER_NEWS'=>'Notícias vtiger',
-'LBL_FEEDBACK'=>'Feedback',
-// END
 
 //added for asterisk integration
 'CallHistory'=>'Histórico Chamada',
@@ -1193,7 +1189,6 @@ $app_strings = array (
 'LBL_MERGE_SELECT'=>'Selecionar Mesclagem',
 'LBL_MERGE_DATA_IN'=>'Mesclar Registros em',
 'LBL_MERGE'=>'Mesclar',
-'LBL_ACTION'=>'Ação',
 'LBL_FIELDLISTS'=> 'Lista de Campos',
 'LBL_RECORD'=>'No. Registro',
 'LBL_DUP_PERMISSION' => 'Você não tem permissão para apagar',
@@ -1325,6 +1320,7 @@ $app_strings = array (
 'ERROR_GETTING_FILTER' => 'ERROR Retrieving information from filter. Please delete the filter and try again.',
 'Upload Images' => 'Upload Images',
 'Drag file here or click to upload' => 'Drag file here or click to upload',
+'Drag attachment here or click to upload' => 'Drag attachment here or click to upload',
 'SetReturnAddressTitle' => 'Select Address To Use',
 'SetReturnAddressDescription' => 'Select which address you wish to overwrite, if any',
 'Subscribe' => 'Subscribe',

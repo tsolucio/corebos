@@ -3,8 +3,7 @@
  * DOWNLOADED FROM: http://www.phpclasses.org/browse/package/2495/
  * License: 	BSD License
  */
-?>
-<?php
+
 class dZip{
 	var $filename;
 	var $overwrite;
@@ -15,7 +14,7 @@ class dZip{
 	var $files_count  = 0;
 	var $fh;
 	
-	Function dZip($filename, $overwrite=true){
+	Function __construct($filename, $overwrite=true){
 		$this->filename  = $filename;
 		$this->overwrite = $overwrite;
 	}
@@ -25,7 +24,7 @@ class dZip{
 		$this->addFile(false, $dirname, $fileComments);
 	}
 	Function addFile($filename, $cfilename, $fileComments='', $data=false){
-		if(!($fh = &$this->fh))
+		if(!($fh = $this->fh))
 			$fh = fopen($this->filename, $this->overwrite?'wb':'a+b');
 		
 		// $filename can be a local file OR the data wich will be compressed
@@ -51,7 +50,7 @@ class dZip{
 			$details['comsize'] = $details['uncsize'];
 			$details['vneeded'] = 10;
 			$details['cmethod'] = 0;
-			$zdata = &$data;
+			$zdata = $data;
 		}
 		else{ // otherwise, compress it
 			$zdata = gzcompress($data);
@@ -103,7 +102,7 @@ class dZip{
 		$this->centraldirs[$filename][$property] = $value;
 	}
 	Function save($zipComments=''){
-		if(!($fh = &$this->fh))
+		if(!($fh = $this->fh))
 			$fh = fopen($this->filename, $this->overwrite?'w':'a+');
 		
 		$cdrec = "";
@@ -150,4 +149,3 @@ class dZip{
 		$this->centraldirs[$filename] = $properties;
 	}
 }
-?>

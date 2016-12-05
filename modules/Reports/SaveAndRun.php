@@ -68,13 +68,10 @@ if($numOfRows > 0) {
 	if(isPermitted($primarymodule,'index') == "yes" && $modules_permitted == true) {
 		$oReportRun = new ReportRun($reportid);
 
-		require_once 'include/Zend/Json.php';
-		$json = new Zend_Json();
-
 		$advft_criteria = $_REQUEST['advft_criteria'];
-		if(!empty($advft_criteria)) $advft_criteria = $json->decode($advft_criteria);
+		if(!empty($advft_criteria)) $advft_criteria = json_decode($advft_criteria,true);
 		$advft_criteria_groups = $_REQUEST['advft_criteria_groups'];
-		if(!empty($advft_criteria_groups)) $advft_criteria_groups = $json->decode($advft_criteria_groups);
+		if(!empty($advft_criteria_groups)) $advft_criteria_groups = json_decode($advft_criteria_groups,true);
 
 		if($_REQUEST['submode'] == 'saveCriteria') {
 			updateAdvancedCriteria($reportid,$advft_criteria,$advft_criteria_groups);
@@ -86,7 +83,6 @@ if($numOfRows > 0) {
 		$list_report_form->assign('THEME', $theme);
 		//Monolithic phase 6 changes
 		if($showCharts == true){
-			$list_report_form->assign("SHOWCHARTS",$showCharts);
 			require_once 'modules/Reports/CustomReportUtils.php';
 			require_once 'include/ChartUtils.php';
 
@@ -117,9 +113,8 @@ if($numOfRows > 0) {
 			else{
 				$showCharts = false;
 			}
-			$list_report_form->assign("SHOWCHARTS",$showCharts);
 		}
-		//Monolithic Changes Ends
+		$list_report_form->assign("SHOWCHARTS",$showCharts);
 
 		// Performance Optimization: Direct output of the report result
 		if($_REQUEST['submode'] == 'generateReport' && empty($advft_criteria)) {
@@ -143,7 +138,7 @@ if($numOfRows > 0) {
 		$list_report_form->assign("FOPTION",$FILTER_OPTION);
 
 		$rel_fields = $ogReport->adv_rel_fields;
-		$list_report_form->assign("REL_FIELDS",Zend_Json::encode($rel_fields));
+		$list_report_form->assign("REL_FIELDS",json_encode($rel_fields));
 
 		$list_report_form->assign("CRITERIA_GROUPS",$ogReport->advft_criteria);
 

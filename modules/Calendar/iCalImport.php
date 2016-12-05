@@ -14,7 +14,6 @@ include('modules/Calendar/iCal/iCalendar_components.php');
 include('modules/Calendar/iCal/iCalendar_properties.php');
 include('modules/Calendar/iCal/iCalendar_parameters.php');
 include('modules/Calendar/iCal/ical-parser-class.php');
-require_once('include/Zend/Json.php');
 require_once('modules/Calendar/iCalLastImport.php');
 
 require_once('include/utils/utils.php');

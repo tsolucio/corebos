@@ -280,7 +280,7 @@ function patternValidate(fldName,fldLabel,type) {
 	}
 	//Asha: Remove spaces on either side of a Email id before validating
 	if (type.toUpperCase()=="EMAIL" || type.toUpperCase() == "DATE") currObj.value = trim(currObj.value);
-	if (!re.test(currObj.value)) {
+	if (typeof(re) != 'undefined' && !re.test(currObj.value)) {
 		alert(alert_arr.ENTER_VALID + fldLabel + " ("+type+")");
 		try {
 			currObj.focus();
@@ -1003,29 +1003,31 @@ function doModuleValidation(edit_type,editForm,callback) {
 		//Testing if a Validation file exists
 		jQuery.ajax({
 			url: "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationExists&valmodule="+gVTModule,
-			type:'get',
-			error: function() { //Validation file does not exist
+			type:'get'
+		}).fail(function (jqXHR, textStatus) { //Validation file does not exist
 				if (typeof callback == 'function') {
 					callback('submit');
 				} else {
 					submitFormForAction(formName, action);
 				}
-			},
-			success: function(data) { //Validation file exists
+		}).done(function(data) { //Validation file exists
 				if (data == 'yes') {
 					// Create object which gets the values of all input, textarea, select and button elements from the form
 					var myFields = document.forms[formName].elements;
 					var sentForm = new Object();
 					for (f=0; f<myFields.length; f++){
-						sentForm[myFields[f].name] = myFields[f].value;
+						if(myFields[f].type=='checkbox')
+							sentForm[myFields[f].name] = myFields[f].checked;
+						else
+							sentForm[myFields[f].name] = myFields[f].value;
 					}
 					//JSONize form data
 					sentForm = JSON.stringify(sentForm);
 					jQuery.ajax({
 						type : 'post',
 						data : {structure: sentForm},
-						url : "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule="+gVTModule,
-						success : function(msg) {  //Validation file answers
+						url : "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule="+gVTModule
+					}).done(function(msg) {  //Validation file answers
 							if (msg.search("%%%CONFIRM%%%") > -1) { //Allow to use confirm alert
 								//message to display
 								var display = msg.split("%%%CONFIRM%%%");
@@ -1048,11 +1050,9 @@ function doModuleValidation(edit_type,editForm,callback) {
 								alert(msg);
 								VtigerJS_DialogBox.unblock();
 							}
-						},
-						error : function() {  //Error while asking file
+					}).fail(function() {  //Error while asking file
 							alert('Error with AJAX');
 							VtigerJS_DialogBox.unblock();
-						}
 					});
 				} else { // no validation we send form
 					if (typeof callback == 'function') {
@@ -1061,8 +1061,7 @@ function doModuleValidation(edit_type,editForm,callback) {
 						submitFormForAction(formName, action);
 					}
 				}
-			}
-		});
+			});
 	}
 	return false;
 }
@@ -2895,7 +2894,7 @@ function toggleSelect_ListView(state,relCheckName,groupParentElementId) {
 			}
 		}
 	}
-	if(document.getElementById('curmodule') != undefined && document.getElementById('curmodule').value == 'Documents') {
+	if(document.getElementById('curmodule') != undefined && document.getElementById('curmodule').value == 'Documents' && Document_Folder_View) {
 		if(state==true) {
 			var count = document.getElementById('numOfRows_'+groupParentElementId).value;
 			if(count == '') {
@@ -4529,7 +4528,7 @@ function getNoOfRows(id){
 	var searchurl = document.getElementById('search_url').value;
 	var viewid = getviewId();
 	var url = "module="+module+"&action="+module+"Ajax&file=ListViewCount&viewname="+viewid+searchurl;
-	if(module == 'Documents') {
+	if(module != undefined && module == 'Documents' && Document_Folder_View) {
 		var folderid = document.getElementById('folderid_'+id).value;
 		url = url+"&folderidstring="+folderid;
 	}
@@ -4537,7 +4536,7 @@ function getNoOfRows(id){
 			method: 'POST',
 			url: "index.php?"+url
 	}).done(function (response) {
-				if(module != 'Documents') {
+				if(module != 'Documents' || Document_Folder_View == 0) {
 					document.getElementById('numOfRows').value = response;
 					document.getElementById('count').innerHTML = response;
 					if(parseInt(document.getElementById('maxrecords').value) < parseInt(response)){
@@ -4793,3 +4792,40 @@ function duplicate_record(module,record)
 		}
 	});
 }
+
+function getITSMiniCal(url){
+	if(url == undefined)
+		url = 'module=Calendar4You&action=ActivityAjax&type=minical&ajax=true';
+	else
+		url = 'module=Calendar4You&action=ActivityAjax&'+url+'&type=minical&ajax=true';
+	jQuery.ajax({
+			method:"POST",
+			url:'index.php?'+ url
+	}).done(function(response) {
+			document.getElementById("miniCal").innerHTML = response;
+	});
+}
+
+function changeCalendarMonthDate(year,month,date){
+	if (jQuery('#calendar_div').fullCalendar == undefined) return false;
+	changeCalendarDate(year,month,date);
+	jQuery('#calendar_div').fullCalendar( 'changeView', 'month' );
+}
+
+function changeCalendarWeekDate(year,month,date){
+	if (jQuery('#calendar_div').fullCalendar == undefined) return false;
+	changeCalendarDate(year,month,date);
+	jQuery('#calendar_div').fullCalendar( 'changeView', 'agendaWeek' );
+}
+
+function changeCalendarDayDate(year,month,date){
+	if (jQuery('#calendar_div').fullCalendar == undefined) return false;
+	changeCalendarDate(year,month,date);
+	jQuery('#calendar_div').fullCalendar( 'changeView', 'agendaDay' );
+}
+
+function changeCalendarDate(year,month,date){
+	if (jQuery('#calendar_div').fullCalendar == undefined) return false;
+	jQuery('#calendar_div').fullCalendar( 'gotoDate', year, month - 1, date);
+}
+

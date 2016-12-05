@@ -9,12 +9,19 @@
  ********************************************************************************/
 -->*}
 <script>
-var gVTModule = '{$GVTMODULE}';
-var gVTTheme  = '{$THEME}';
-var gVTUserID = '{$CURRENT_USER_ID}';
-var default_charset = '{$DEFAULT_CHARSET}';
-var userDateFormat = '{$USER_DATE_FORMAT}';
-var userCurrencySeparator = '{$USER_CURRENCY_SEPARATOR}';
-var userDecimalSeparator = '{$USER_DECIMAL_FORMAT}';
-var userNumberOfDeciamls = '{$USER_NUMBER_DECIMALS}';
+var gVTModule = "{$GVTMODULE}";
+var gVTTheme  = "{$THEME}";
+var gVTUserID = "{$CURRENT_USER_ID}";
+var default_charset = "{$DEFAULT_CHARSET}";
+var userDateFormat = "{$USER_DATE_FORMAT}";
+var userFirstDayOfWeek = {$USER_FIRST_DOW};
+var userCurrencySeparator = "{$USER_CURRENCY_SEPARATOR}";
+var userDecimalSeparator = "{$USER_DECIMAL_FORMAT}";
+var userNumberOfDecimals = "{$USER_NUMBER_DECIMALS}";
+if (typeof(Storage) !== "undefined") {ldelim}
+	var corebos_browsertabID = sessionStorage.corebos_browsertabID ? sessionStorage.corebos_browsertabID : sessionStorage.corebos_browsertabID = Math.random().toString().substring(2);
+	window.addEventListener('beforeunload', function(event) {ldelim}
+		document.cookie = "corebos_browsertabID="+corebos_browsertabID;
+	{rdelim});
+{rdelim}
 </script>

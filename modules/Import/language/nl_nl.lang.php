@@ -35,7 +35,6 @@ $mod_strings = Array(
 'LBL_IMPORT_MODULE_NO_DIRECTORY_END'=>' Deze bestaat niet of is niet overschrijfbaar',
 'LBL_IMPORT_MODULE_ERROR_NO_UPLOAD'=>'Het bestand is niet succesvol verstuurd, probeer nog een keer',
 'LBL_IMPORT_MODULE_ERROR_LARGE_FILE'=>'Bestand is te groot. Max:',
-'LBL_IMPORT_MODULE_ERROR_LARGE_FILE_END'=>'Bytes. Verander $upload_maxsize in config.php',
 'LBL_MODULE_NAME'=>'Importeren',
 'LBL_TRY_AGAIN'=>'Probeer nog een keer',
 'LBL_ERROR'=>'Foutmelding:',
@@ -207,5 +206,18 @@ $mod_strings = Array(
 'LBL_IMPORT_CHANGE_UPLOAD_SIZE' => ') may be incremented in your PHP configuration',
 'LBL_IMPORT_DIRECTORY_NOT_WRITABLE' => 'Import Directory is not writable',
 'LBL_IMPORT_FILE_COPY_FAILED' => 'Error copying file to import. Check file system permissions',
+'ImportInfo' => 'This extension adds import functionality to the application and is accessed via the icon on each module not directly, so you can eliminate it from the menu.',
+'LBL_IMPORT_STEP_1' => 'Stap 1 van het importproces',
+'LBL_IMPORT_STEP_1_DESCRIPTION' => 'Kies eerst het bestand met te importeren gegevens',
+'LBL_IMPORT_SUPPORTED_FILE_TYPES' => 'Ondersteunde bestandstypen: .CSV, .VCF',
+'LBL_IMPORT_STEP_2' => 'Stap 2 van het importproces',
+'LBL_IMPORT_STEP_2_DESCRIPTION' => 'Geef het bestandsformaat aan',
+'LBL_FILE_TYPE' => 'Type bestand',
+'LBL_CHARACTER_ENCODING' => 'Karakter codering',
+'LBL_IMPORT_STEP_3' => 'Stap 3 van het importproces',
+'LBL_IMPORT_STEP_3_DESCRIPTION' => 'Omgang met gevonden dubbelen',
+'LBL_IMPORT_STEP_3_DESCRIPTION_DETAILED' => 'Vink dit aan om later het gewenste gedrag te kiezen wanneer dubbelen gevonden worden.',
+'LBL_SPECIFY_MERGE_TYPE' => 'Geef samenvoegtype aan',
+'LBL_SELECT_MERGE_FIELDS' => 'Kies samenvoegvelden'
 );
 ?>

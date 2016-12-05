@@ -57,10 +57,7 @@ class HTMLPurifier_Bootstrap
      */
     public static function getPath($class)
     {
-        static $_mypath_cache = array();
-        if (isset($_mypath_cache[$class])) return $_mypath_cache[$class];
         if (strncmp('HTMLPurifier', $class, 12) !== 0) {
-            $_mypath_cache[$class] = false;
             return false;
         }
         // Custom implementations
@@ -71,10 +68,8 @@ class HTMLPurifier_Bootstrap
             $file = str_replace('_', '/', $class) . '.php';
         }
         if (!file_exists(HTMLPURIFIER_PREFIX . '/' . $file)) {
-            $_mypath_cache[$class] = false;
             return false;
         }
-        $_mypath_cache[$class] = $file;
         return $file;
     }
 

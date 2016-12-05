@@ -62,7 +62,7 @@
 										<td>
 											{if $CATEGORY eq 'Settings'}
 											<span class="heading2">
-											<b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString} </a> &gt; <a href="index.php?module=Administration&action=index&parenttab=Settings"> {$MOD.LBL_USERS} </a>&gt;"{$USERNAME}" </b></span>
+											<b><a href="index.php?module=Settings&action=index&parenttab=Settings">{'LBL_SETTINGS'|@getTranslatedString} </a> &gt; <a href="index.php?module=Users&action=index&parenttab=Settings"> {$MOD.LBL_USERS} </a>&gt;"{$USERNAME}" </b></span>
 											{else}
 											<span class="heading2">
 											<b>{$APP.LBL_MY_PREFERENCES}</b>
@@ -268,15 +268,11 @@
 			</tr>
 			</table>
 
-
-
-
 <br>
 {$JAVASCRIPT}
 <div id="tempdiv" style="display:block;position:absolute;left:350px;top:200px;"></div>
 <!-- added for validation -->
 <script>
-  var gVTModule = '{$smarty.request.module|@vtlib_purify}';
   var fieldname = new Array({$VALIDATION_DATA_FIELDNAME});
   var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
   var fielddatatype = new Array({$VALIDATION_DATA_FIELDDATATYPE});

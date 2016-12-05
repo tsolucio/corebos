@@ -156,14 +156,14 @@ class Vtiger_FieldBasic {
 
 		if(!$this->label) $this->label = $this->name;
 
-		$chkrs = $adb->pquery('select 1 from vtiger_field where tabid=? and columnname=? limit 1',
-			array($this->getModuleId(), $this->column));
+		$chkrs = $adb->pquery('select 1 from vtiger_field where tabid=? and (columnname=? or fieldlabel=?) limit 1',
+			array($this->getModuleId(), $this->column, $this->label));
 		if ($adb->num_rows($chkrs)==0) {
 			$result = $adb->pquery("INSERT INTO vtiger_field (tabid, fieldid, columnname, tablename, generatedtype,
 				uitype, fieldname, fieldlabel, readonly, presence, defaultvalue, maximumlength, sequence,
 				block, displaytype, typeofdata, quickcreate, quickcreatesequence, info_type, helpinfo)
 				VALUES (?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?,?)",
-					Array($this->getModuleId(), $this->id, $this->column, $this->table, $this->generatedtype,
+					Array($this->getModuleId(), $this->id, $this->column, $this->table, intval($this->generatedtype),
 					$this->uitype, $this->name, $this->label, $this->readonly, $this->presence, $this->defaultvalue,
 					$this->maximumlength, $this->sequence, $this->getBlockId(), $this->displaytype, $this->typeofdata,
 					$this->quickcreate, $this->quicksequence, $this->info_type, $this->helpinfo));

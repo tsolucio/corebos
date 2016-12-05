@@ -80,7 +80,7 @@ function vtws_create($elementType, $element, $user) {
             }
         }
         //  Product line support
-        if(($elementType == 'Quotes' || $elementType == 'PurchaseOrder' || $elementType == 'SalesOrder' || $elementType == 'Invoice') && (is_array($element['pdoInformation']))) {
+        if(in_array($elementType, getInventoryModules()) && (is_array($element['pdoInformation']))) {
 			include 'include/Webservices/ProductLines.php';
         } else {
         	$_REQUEST['action'] = $elementType.'Ajax';
@@ -108,7 +108,6 @@ function vtws_create($elementType, $element, $user) {
         VTWS_PreserveGlobal::flush();
         return $entity;
     } else {
-
         return null;
     }
 }

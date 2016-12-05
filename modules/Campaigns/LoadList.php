@@ -8,9 +8,7 @@
  * All Rights Reserved.
  * Contributor(s): mmbrich
  ********************************************************************************/
-
 require_once('modules/CustomView/CustomView.php');
-require_once('user_privileges/default_module_view.php');
 
 global $currentModule, $current_user;
 $queryGenerator = new QueryGenerator(vtlib_purify($_REQUEST["list_type"]), $current_user);
@@ -27,7 +25,6 @@ if($_REQUEST["list_type"] == "Leads"){
 		$relid = "leadid";
 }
 elseif($_REQUEST["list_type"] == "Contacts"){
-
 		$reltable = "vtiger_campaigncontrel";
 		$relid = "contactid";
 }
@@ -41,7 +38,5 @@ while($row=$adb->fetch_array($rs)) {
 	relateEntities($focus, $currentModule, vtlib_purify($_REQUEST['return_id']), vtlib_purify($_REQUEST["list_type"]), $row[$relid]);
 }
 
-header("Location: index.php?module=Campaigns&action=CampaignsAjax&file=CallRelatedList&ajax=true&".
-			"record=".vtlib_purify($_REQUEST['return_id']));
-
+header("Location: index.php?module=Campaigns&action=CampaignsAjax&file=CallRelatedList&ajax=true&record=".vtlib_purify($_REQUEST['return_id']));
 ?>

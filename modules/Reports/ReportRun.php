@@ -43,20 +43,22 @@ class ReportRun extends CRMEntity {
 						'Invoice_Total', 'Invoice_Sub_Total', 'Invoice_S&H_Amount', 'Invoice_Discount_Amount', 'Invoice_Adjustment',
 						'Quotes_Total', 'Quotes_Sub_Total', 'Quotes_S&H_Amount', 'Quotes_Discount_Amount', 'Quotes_Adjustment',
 						'SalesOrder_Total', 'SalesOrder_Sub_Total', 'SalesOrder_S&H_Amount', 'SalesOrder_Discount_Amount', 'SalesOrder_Adjustment',
-						'PurchaseOrder_Total', 'PurchaseOrder_Sub_Total', 'PurchaseOrder_S&H_Amount', 'PurchaseOrder_Discount_Amount', 'PurchaseOrder_Adjustment'
+						'PurchaseOrder_Total', 'PurchaseOrder_Sub_Total', 'PurchaseOrder_S&H_Amount', 'PurchaseOrder_Discount_Amount', 'PurchaseOrder_Adjustment',
+						'Issuecards_Total', 'Issuecards_Sub_Total', 'Issuecards_S&H_Amount', 'Issuecards_Discount_Amount', 'Issuecards_Adjustment',
 						);
 	var $ui10_fields = array();
 	var $ui101_fields = array();
-	var $groupByTimeParent = array( 'Quarter'=>array('Year'),
-									'Month'=>array('Year')
-								);
+	var $groupByTimeParent = array(
+		'Quarter'=>array('Year'),
+		'Month'=>array('Year'),
+		'Day'=>array('Year','Month')
+	);
 
 	/** Function to set reportid,primarymodule,secondarymodule,reporttype,reportname, for given reportid
 	 *  This function accepts the $reportid as argument
 	 *  It sets reportid,primarymodule,secondarymodule,reporttype,reportname for the given reportid
 	 */
-	function ReportRun($reportid)
-	{
+	function __construct($reportid) {
 		$oReport = new Reports($reportid);
 		$this->reportid = $reportid;
 		$this->primarymodule = $oReport->primodule;
@@ -915,7 +917,7 @@ class ReportRun extends CRMEntity {
 					$fieldType = $field->getFieldDataType();
 				}
 
-				if($fieldType == 'currency' or $fieldType == 'double') {
+				if(($fieldType == 'currency' or $fieldType == 'double') and (substr($adv_filter_value,0,1) != "$" and substr($adv_filter_value,-1,1) != "$")) {
 					$flduitype = $fieldInfo['uitype'];
 					if($flduitype == '72' or $flduitype == 9 or $flduitype ==7) {
 						$adv_filter_value = CurrencyField::convertToDBFormat($adv_filter_value, null, true);
@@ -1494,17 +1496,9 @@ class ReportRun extends CRMEntity {
 
 		else if($module == "Potentials")
 		{
-			$query = "from vtiger_potential
-				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_potential.potentialid
-				inner join vtiger_potentialscf on vtiger_potentialscf.potentialid = vtiger_potential.potentialid
-				left join vtiger_account as vtiger_accountPotentials on vtiger_potential.related_to = vtiger_accountPotentials.accountid
-				left join vtiger_contactdetails as vtiger_contactdetailsPotentials on vtiger_potential.related_to = vtiger_contactdetailsPotentials.contactid
-				left join vtiger_campaign as vtiger_campaignPotentials on vtiger_potential.campaignid = vtiger_campaignPotentials.campaignid
-				left join vtiger_groups vtiger_groupsPotentials on vtiger_groupsPotentials.groupid = vtiger_crmentity.smownerid
-				left join vtiger_users as vtiger_usersPotentials on vtiger_usersPotentials.id = vtiger_crmentity.smownerid
-				left join vtiger_groups on vtiger_groups.groupid = vtiger_crmentity.smownerid
-				left join vtiger_users on vtiger_users.id = vtiger_crmentity.smownerid
-				left join vtiger_users as vtiger_lastModifiedByPotentials on vtiger_lastModifiedByPotentials.id = vtiger_crmentity.modifiedby
+			$focus = CRMEntity::getInstance($module);
+			$query = $focus->generateReportsQuery($module);
+			$query.= " left join vtiger_campaign as vtiger_campaignPotentials on vtiger_potential.campaignid = vtiger_campaignPotentials.campaignid
 				".$this->getRelatedModulesQuery($module,$this->secondarymodule,$type,$where_condition).
 						getNonAdminAccessControlQuery($this->primarymodule,$current_user)."
 				where vtiger_crmentity.deleted=0 ";
@@ -1720,6 +1714,20 @@ class ReportRun extends CRMEntity {
 					getNonAdminAccessControlQuery($this->primarymodule,$current_user)."
 				where vtiger_crmentity.deleted=0";
 		}
+		else if($module == "Issuecards")
+		{
+			$focus = CRMEntity::getInstance($module);
+			$query = $focus->generateReportsQuery($module);
+			$query .= " left join vtiger_currency_info as vtiger_currency_info$module on vtiger_currency_info$module.id = vtiger_issuecards.currency_id";
+			if(($type !== 'COLUMNSTOTOTAL') || ($type == 'COLUMNSTOTOTAL' && $where_condition == 'add')) {
+				$query .=" left join vtiger_inventoryproductrel as vtiger_inventoryproductrelIssuecards on vtiger_issuecards.issuecardid = vtiger_inventoryproductrelIssuecards.id
+					left join vtiger_products as vtiger_productsIssuecards on vtiger_productsIssuecards.productid = vtiger_inventoryproductrelIssuecards.productid
+					left join vtiger_service as vtiger_serviceIssuecards on vtiger_serviceIssuecards.serviceid = vtiger_inventoryproductrelIssuecards.productid";
+			}
+			$query .= $this->getRelatedModulesQuery($module,$this->secondarymodule,$type,$where_condition).
+						getNonAdminAccessControlQuery($this->primarymodule,$current_user)."
+				where vtiger_crmentity.deleted=0";
+		}
 		else {
 			if($module!=''){
 				$focus = CRMEntity::getInstance($module);
@@ -1760,9 +1768,6 @@ class ReportRun extends CRMEntity {
 		if(isset($selectlist))
 		{
 			$selectedcolumns = implode(", ",$selectlist);
-			if($chartReport == true){
-				$selectedcolumns .= ", count(*) AS 'groupby_count'";
-			}
 		}
 		//groups list
 		if(isset($groupslist))
@@ -1805,7 +1810,7 @@ class ReportRun extends CRMEntity {
 			$wheresql .= " and ".$advfiltersql;
 		}
 
-		$reportquery = $this->getReportsQuery($this->primarymodule, $type,$where_condition);
+		$reportquery = $basereportquery = $this->getReportsQuery($this->primarymodule, $type,$where_condition);
 
 		// If we don't have access to any columns, let us select one column and limit result to show we have no results
 		// Fix for: http://trac.vtiger.com/cgi-bin/trac.cgi/ticket/4758 - Prasad
@@ -1858,7 +1863,9 @@ class ReportRun extends CRMEntity {
 		if(trim($groupsquery) != "" && $type !== 'COLUMNSTOTOTAL')
 		{
 			if($chartReport == true){
-				$reportquery .= " group by ".$this->GetFirstSortByField($reportid);
+				reset($groupslist);
+				$first_key = key($groupslist);
+				$reportquery = 'select '.$columnlist[$first_key].", count(*) AS 'groupby_count' $basereportquery $wheresql group by ".$this->GetFirstSortByField($reportid);
 			}else{
 				$reportquery .= " order by ".$groupsquery;
 			}
@@ -1955,13 +1962,11 @@ class ReportRun extends CRMEntity {
 				$this->number_of_rows = $noofrows;
 				$custom_field_values = $adb->fetch_array($result);
 				$groupslist = $this->getGroupingList($this->reportid);
-				$column_definitions = $adb->getFieldsDefinition($result);
 				$arrayHeaders = Array();
 				$header = '';
 				for ($x=0; $x<$y; $x++)
 				{
 					$fld = $adb->field_name($result, $x);
-					$fld_type = $column_definitions[$x]->type;
 					list($module, $fieldLabel) = explode('_', $fld->name, 2);
 					$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
 					if(!empty($fieldInfo)) {
@@ -2039,7 +2044,6 @@ class ReportRun extends CRMEntity {
 
 					for ($i=0; $i<$y; $i++) {
 						$fld = $adb->field_name($result, $i);
-						$fld_type = $column_definitions[$i]->type;
 						$fieldvalue = getReportFieldValue($this, $picklistarray, $fld, $custom_field_values, $i);
 
 						if($fieldvalue == '')
@@ -2147,7 +2151,6 @@ class ReportRun extends CRMEntity {
 				$noofrows = $adb->num_rows($result);
 				$this->number_of_rows = $noofrows;
 				$custom_field_values = $adb->fetch_array($result);
-				$column_definitions = $adb->getFieldsDefinition($result);
 				$ILF = new InventoryLineField();
 				$invMods = getInventoryModules();
 				do
@@ -2156,7 +2159,6 @@ class ReportRun extends CRMEntity {
 					for ($i=0; $i<$y-1; $i++) //No tratamos la última columna por ser el ACTION con el CRMID.
 					{
 						$fld = $adb->field_name($result, $i);
-						$fld_type = $column_definitions[$i]->type;
 						list($module, $fieldLabel) = explode('_', $fld->name, 2);
 						$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
 						if(!empty($fieldInfo)) {
@@ -2466,14 +2468,12 @@ class ReportRun extends CRMEntity {
 				$this->number_of_rows = $noofrows;
 				$custom_field_values = $adb->fetch_array($result);
 				$groupslist = $this->getGroupingList($this->reportid);
-				$column_definitions = $adb->getFieldsDefinition($result);
 				$y=$adb->num_fields($result);
 				$arrayHeaders = Array();
 				$header = '';
 				for ($x=0; $x<$y-1; $x++)
 				{
 					$fld = $adb->field_name($result, $x);
-					$fld_type = $column_definitions[$x]->type;
 					list($module, $fieldLabel) = explode('_', $fld->name, 2);
 					$fieldInfo = getFieldByReportLabel($module, $fieldLabel);
 					if(!empty($fieldInfo)) {
@@ -2531,7 +2531,6 @@ class ReportRun extends CRMEntity {
 					for ($i=0; $i<$y-1; $i++)
 					{
 						$fld = $adb->field_name($result, $i);
-						$fld_type = $column_definitions[$i]->type;
 						$fieldvalue = getReportFieldValue($this, $picklistarray, $fld,$custom_field_values, $i);
 						if(($lastvalue == $fieldvalue) && $this->reporttype == "summary")
 						{
@@ -2726,7 +2725,7 @@ class ReportRun extends CRMEntity {
 		}
 
 		global $adb, $modules, $log, $current_user;
-
+		static $modulename_cache = array();
 		$query = "select * from vtiger_reportmodules where reportmodulesid =?";
 		$res = $adb->pquery($query , array($reportid));
 		$modrow = $adb->fetch_array($res);
@@ -2749,19 +2748,22 @@ class ReportRun extends CRMEntity {
 				$field_tablename = $fieldlist[1];
 				$field_columnname = $fieldlist[2];
 
-				$mod_query = $adb->pquery("SELECT distinct(tabid) as tabid from vtiger_field where tablename = ? and columnname=?",array($fieldlist[1],$fieldlist[2]));
-				if($adb->num_rows($mod_query)>0){
-					$module_name = getTabName($adb->query_result($mod_query,0,'tabid'));
-					$fieldlabel = trim($fieldlist[3]);
-					if($module_name){
-						$field_columnalias = $module_name."_".$fieldlist[3];
-					} else {
-						$field_columnalias = $module_name."_".$fieldlist[3];
+				$cachekey = $field_tablename . ":" . $field_columnname;
+				if (!isset($modulename_cache[$cachekey])) {
+					$mod_query = $adb->pquery("SELECT distinct(tabid) as tabid from vtiger_field where tablename = ? and columnname=?",array($fieldlist[1],$fieldlist[2]));
+					if($adb->num_rows($mod_query)>0){
+						$module_name = getTabModuleName($adb->query_result($mod_query,0,'tabid'));
+						$modulename_cache[$cachekey] = $module_name;
 					}
-					$field_columnalias = decode_html($field_columnalias);
-					$query_columnalias = substr($field_columnalias, 0, strrpos($field_columnalias, '_'));
-					$query_columnalias = str_replace(array(' ','&'),'_',$query_columnalias);
+				} else {
+					$module_name = $modulename_cache[$cachekey];
 				}
+
+				$fieldlabel = trim($fieldlist[3]);
+				$field_columnalias = $module_name."_".$fieldlist[3];
+				$field_columnalias = decode_html($field_columnalias);
+				$query_columnalias = substr($field_columnalias, 0, strrpos($field_columnalias, '_'));
+				$query_columnalias = str_replace(array(' ','&'),'_',$query_columnalias);
 				$sckey = $field_tablename.':'.$field_columnname.':'.$query_columnalias.':'.$field_columnname.':N'; // vtiger_invoice:subject:Invoice_Subject:subject:V
 				$scval = $field_tablename.'.'.$field_columnname." AS '".$query_columnalias."'"; // vtiger_invoice.subject AS 'Invoice_Subject'
 				$seltotalcols[$sckey] = $scval;
@@ -2793,7 +2795,7 @@ class ReportRun extends CRMEntity {
 						$query_columnalias = ' actual_unit_price';
 						$seltotalcols['innerService:actual_unit_price:Services_Unit_Price:actual_unit_price:N'] = 'innerService.actual_unit_price AS actual_unit_price';
 					}
-					if(($field_tablename == 'vtiger_invoice' || $field_tablename == 'vtiger_quotes' || $field_tablename == 'vtiger_purchaseorder' || $field_tablename == 'vtiger_salesorder')
+					if(($field_tablename == 'vtiger_invoice' || $field_tablename == 'vtiger_quotes' || $field_tablename == 'vtiger_purchaseorder' || $field_tablename == 'vtiger_salesorder' || $field_tablename == 'vtiger_issuecards')
 							&& ($field_columnname == 'total' || $field_columnname == 'subtotal' || $field_columnname == 'discount_amount' || $field_columnname == 's_h_amount')) {
 						$query_columnalias = " $query_columnalias/$module_name"."_Conversion_Rate ";
 						$seltotalcols[$field_tablename.':conversion_rate:'.$module_name.'_Conversion_Rate:conversion_rate:N'] = "$field_tablename.conversion_rate AS $module_name"."_Conversion_Rate ";
@@ -3127,6 +3129,7 @@ class ReportRun extends CRMEntity {
 				$count = 0;
 				foreach($array_value as $hdr=>$value) {
 					$value = decode_html($value);
+					$datetime = false;
 					switch ($FieldDataTypes[$hdr]) {
 						case 'boolean':
 							$celltype = PHPExcel_Cell_DataType::TYPE_BOOL;
@@ -3143,6 +3146,10 @@ class ReportRun extends CRMEntity {
 								if (strpos($value,':')>0 and (strpos($value,'-')===false)) {
 									// only time, no date
 									$dt = new DateTime("1970-01-01 $value");
+								} elseif(strpos($value,':')>0 and (strpos($value,'-')>0)){
+									// date and time
+									$dt = new DateTime($value);
+									$datetime = true;
 								} else {
 									$value = DateTimeField::__convertToDBFormat($value, $current_user->date_format);
 									$dt = new DateTime($value);
@@ -3166,7 +3173,11 @@ class ReportRun extends CRMEntity {
 					}
 					$worksheet->setCellValueExplicitByColumnAndRow($count, $rowcount, $value, $celltype);
 					if ($FieldDataTypes[$hdr]=='date') {
-						$worksheet->getStyleByColumnAndRow($count, $rowcount)->getNumberFormat()->setFormatCode($current_user->date_format);
+						if($datetime){
+							$worksheet->getStyleByColumnAndRow($count, $rowcount)->getNumberFormat()->setFormatCode($current_user->date_format." ".PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME4);
+						}else{
+							$worksheet->getStyleByColumnAndRow($count, $rowcount)->getNumberFormat()->setFormatCode($current_user->date_format);
+						}
 					} elseif ($FieldDataTypes[$hdr]=='time') {
 						$worksheet->getStyleByColumnAndRow($count, $rowcount)->getNumberFormat()->setFormatCode(PHPExcel_Style_NumberFormat::FORMAT_DATE_TIME4);
 					}
@@ -3280,6 +3291,9 @@ class ReportRun extends CRMEntity {
 		}
 		else if(strtolower($criteria)=='quarter'){
 			$condition = "CEIL(DATE_FORMAT($dateField,'%m')/3)";
+		}
+		if(strtolower($criteria)=='day'){
+			$condition = "DATE_FORMAT($dateField,'%d')";
 		}
 		return $condition;
 	}
@@ -3397,8 +3411,6 @@ class ReportRun extends CRMEntity {
 					$referenceTableName = 'vtiger_contactdetailsInvoice';
 				} elseif ($moduleName == 'Invoice' && $referenceModule == 'Accounts') {
 					$referenceTableName = 'vtiger_accountInvoice';
-				} elseif ($moduleName == 'Potentials' && $referenceModule == 'Campaigns') {
-					$referenceTableName = 'vtiger_campaignPotentials';
 				} elseif ($moduleName == 'Products' && $referenceModule == 'Vendors') {
 					$referenceTableName = 'vtiger_vendorRelProducts';
 				} elseif ($moduleName == 'PurchaseOrder' && $referenceModule == 'Contacts') {
@@ -3419,10 +3431,6 @@ class ReportRun extends CRMEntity {
 					$referenceTableName = 'vtiger_contactdetailsSalesOrder';
 				} elseif ($moduleName == 'SalesOrder' && $referenceModule == 'Quotes') {
 					$referenceTableName = 'vtiger_quotesSalesOrder';
-				} elseif ($moduleName == 'Potentials' && $referenceModule == 'Contacts') {
-					$referenceTableName = 'vtiger_contactdetailsPotentials';
-				} elseif ($moduleName == 'Potentials' && $referenceModule == 'Accounts') {
-					$referenceTableName = 'vtiger_accountPotentials';
 				} elseif (in_array($referenceModule, $reportSecondaryModules) and $moduleName != 'Timecontrol') {
 					if($fieldInstance->getFieldId() != '') $referenceTableName = "{$entityTableName}Rel{$moduleName}{$fieldInstance->getFieldId()}";
 					else $referenceTableName = "{$entityTableName}Rel$referenceModule";

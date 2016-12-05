@@ -14,6 +14,10 @@
 <script type="text/javascript" src="include/js/dtlviewajax.js"></script>
 <script type="text/javascript" src="include/js/FieldDependencies.js"></script>
 <script type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
+{if !isset($Document_Folder_View)}
+	{assign var=Document_Folder_View value=0}
+{/if}
+<script>var Document_Folder_View={$Document_Folder_View};</script>
 		{include file='Buttons_List.tpl'}
 								<div id="searchingUI" style="display:none;">
 										<table border=0 cellspacing=0 cellpadding=0 width=100%>
@@ -109,10 +113,10 @@
 
 <div id="mergeDup" style="z-index:1;display:none;position:relative;">
 	{include file="MergeColumns.tpl"}
-</div>	 
+</div>
 	   <!-- PUBLIC CONTENTS STARTS-->
 	  <div id="ListViewContents" class="small" style="width:100%;">
-	  {if $MODULE neq "Documents"}
+	  {if $MODULE neq "Documents" || $Document_Folder_View eq 0}
 			{include file="ListViewEntries.tpl"}
 	  {else}
 			{include file="DocumentsListViewEntries.tpl"}

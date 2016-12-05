@@ -21,6 +21,7 @@ function getMyFaq($maxval,$calCnt)
 	require_once('modules/CustomView/CustomView.php');
 
 	global $current_language,$current_user,$list_max_entries_per_page,$adb;
+	$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,'Faq');
 	$current_module_strings = return_module_language($current_language, 'Faq');
 
 	$url_string = '';
@@ -154,8 +155,8 @@ function getMyFaqSearch($output) {
 		)
 	);
 
-	$output['advft_criteria'] = Zend_Json::encode($advft_criteria);
-	$output['advft_criteria_groups'] = Zend_Json::encode($advft_criteria_groups);
+	$output['advft_criteria'] = json_encode($advft_criteria);
+	$output['advft_criteria_groups'] = json_encode($advft_criteria_groups);
 
 	return $output;
 }

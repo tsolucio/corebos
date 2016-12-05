@@ -40,7 +40,6 @@ $mod_strings = array(
 	'Last Week' => 'Last Week',
 	'Last 2 Days' => 'Last 2 Days',
 	'Last Ten Days' => 'Last Ten Days',
-	'TITLE_AJAX_CSS_POPUP_CHAT' => 'Ajax Css-Popup chat',
 	'User List' => 'User List',
 	'LBL_HOME_MODULE' => 'Module',
 	'LBL_HOME_RSS' => 'RSS',
@@ -59,7 +58,6 @@ $mod_strings = array(
 	'LBL_HOME_ITEMS' => 'item(s)',
 	'LBL_MORE' => 'More',
 	'LBL_SCROLL' => 'Scroll',
-	'LBL_NEWS_NO' => 'No news',
 	'LBL_NOTEBOOK' => 'Notebook',
 	'LBL_NOTEBOOK_TITLE' => 'Double-click to edit.',
 	'LBL_NOTEBOOK_SAVE_TITLE' => 'Click anywhere else on the page to save.',
@@ -92,5 +90,6 @@ $mod_strings = array(
 	'LBL_DEFAULT_WIDGET' => 'Default widgets',
 	'LBL_NO_WIDGETS_HIDDEN' => 'No default widgets are hidden',
 	'UpdateExchangeRate' => 'Update Exchange Rate',
+	'LBL_HOME_ADDWINDOW' => 'Add Window',
 );
 ?>

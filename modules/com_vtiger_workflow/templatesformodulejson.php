@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-require_once 'include/Zend/Json.php';
 require_once 'VTWorkflowTemplateManager.inc';
 function vtTemplatesForModuleJson($adb, $request){
 	$moduleName = $request['module_name'];
@@ -17,7 +16,7 @@ function vtTemplatesForModuleJson($adb, $request){
 	foreach($templates as $template){
 		$arr[] = array("title"=>$template->title, 'id'=>$template->id);
 	}
-	echo Zend_Json::encode($arr);
+	echo json_encode($arr);
 }
 vtTemplatesForModuleJson($adb, $_REQUEST);
 ?>

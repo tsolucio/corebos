@@ -8,9 +8,9 @@
  * All Rights Reserved.
  ************************************************************************************/
 require_once('Smarty_setup.php');
-require_once('user_privileges/default_module_view.php');
+require('user_privileges/default_module_view.php');
 require_once('modules/CustomView/CustomView.php');
-global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $singlepane_view;
+global $mod_strings, $app_strings, $currentModule, $current_user, $theme;
 
 $category = getParentTab();
 $action = vtlib_purify($_REQUEST['action']);
@@ -34,7 +34,7 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 
 	if($isduplicate == 'true') $focus->id = '';
 	if(isset($_REQUEST['mode']) && $_REQUEST['mode'] != ' ') $smarty->assign("OP_MODE",vtlib_purify($_REQUEST['mode']));
-	if(!$_SESSION['rlvs'][$currentModule]) unset($_SESSION['rlvs']);
+	if(!$_SESSION['rlvs'][$currentModule]) coreBOS_Session::delete('rlvs');
 
 	// Identify this module as custom module.
 	$smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
@@ -51,7 +51,7 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	$smarty->assign('MODE', $focus->mode);
 	$smarty->assign('CHECK', $tool_buttons);
 	$smarty->assign('RECORDID', $record);
-	$smarty->assign('MAX_RECORDS', $list_max_entries_per_page);
+	$smarty->assign('MAX_RECORDS', GlobalVariable::getVariable('Application_ListView_PageSize',20,$currentModule));
 
 	$smarty->assign('NAME', $focus->column_fields[$focus->def_detailview_recname]);
 	$smarty->assign('UPDATEINFO',updateInfo($focus->id));

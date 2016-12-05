@@ -52,7 +52,7 @@ if(isset($_REQUEST['PHPSESSID']))
 if(isset($_REQUEST['view'])) {
 	//setcookie("view",$_REQUEST['view']);
 	$view = $_REQUEST["view"];
-	$_SESSION['view'] = $view;
+	coreBOS_Session::set('view', $view);
 }
 
 /** Function to set, character set in the header, as given in include/language/*_lang.php */
@@ -85,17 +85,14 @@ if (!isset($dbconfig['db_hostname']) || $dbconfig['db_status']=='_DB_STAT_') {
 if (is_file('config_override.php')) {
 	require_once('config_override.php');
 }
-// load global help links
-require_once 'config.help.link.php';
 
 /**
  * Check for vtiger installed version and codebase
  */
-require_once('vtigerversion.php');
 global $adb, $vtiger_current_version;
 if(isset($_SESSION['VTIGER_DB_VERSION']) && isset($_SESSION['authenticated_user_id'])) {
 	if(version_compare($_SESSION['VTIGER_DB_VERSION'], $vtiger_current_version, '!=')) {
-		unset($_SESSION['VTIGER_DB_VERSION']);
+		coreBOS_Session::delete('VTIGER_DB_VERSION');
 		echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
 		echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
 			<table border='0' cellpadding='5' cellspacing='0' width='98%'>
@@ -114,7 +111,7 @@ if(isset($_SESSION['VTIGER_DB_VERSION']) && isset($_SESSION['authenticated_user_
 	$result = $adb->query("SELECT * FROM vtiger_version");
 	$dbversion = $adb->query_result($result, 0, 'current_version');
 	if(version_compare($dbversion, $vtiger_current_version, '=')) {
-		$_SESSION['VTIGER_DB_VERSION']= $dbversion;
+		coreBOS_Session::set('VTIGER_DB_VERSION', $dbversion);
 	} else {
 		echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
 		echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
@@ -131,11 +128,6 @@ if(isset($_SESSION['VTIGER_DB_VERSION']) && isset($_SESSION['authenticated_user_
 		exit();
 	}
 }
-// END
-
-$default_config_values = Array( "allow_exports"=>"all","upload_maxsize"=>"3000000", "listview_max_textlength" => "40", "php_max_execution_time" => "0");
-
-set_default_config($default_config_values);
 
 // Set the default timezone preferred by user
 global $default_timezone;
@@ -145,8 +137,8 @@ if(isset($default_timezone) && function_exists('date_default_timezone_set')) {
 
 require_once('include/logging.php');
 require_once('modules/Users/Users.php');
-
-//if($calculate_response_time) $startTime = microtime();
+$calculate_response_time = GlobalVariable::getVariable('Debug_Calculate_Response_Time',0);
+if($calculate_response_time) $startTime = microtime(true);
 
 $log = LoggerManager::getLogger('index');
 
@@ -226,7 +218,9 @@ if(isset($_SESSION["authenticated_user_id"]) && (isset($_SESSION["app_unique_key
 }
 
 // Prevent loading Login again if there is an authenticated user in the session.
-if (isset($_SESSION["authenticated_user_id"]) && $module == 'Users' && $action == 'Login') {
+if (isset($_SESSION["authenticated_user_id"]) && isset($module) && $module == 'Users' && $action == 'Login') {
+	$default_action = GlobalVariable::getVariable('Application_Default_Action','index','',$_SESSION["authenticated_user_id"]);
+	$default_module = GlobalVariable::getVariable('Application_Default_Module','Home','',$_SESSION["authenticated_user_id"]);
 	header("Location: index.php?action=$default_action&module=$default_module");
 }
 
@@ -234,14 +228,14 @@ if($use_current_login){
 	//getting the internal_mailer flag
 	if(!isset($_SESSION['internal_mailer'])){
 		$qry_res = $adb->pquery("select internal_mailer from vtiger_users where id=?", array($_SESSION["authenticated_user_id"]));
-		$_SESSION['internal_mailer'] = $adb->query_result($qry_res,0,"internal_mailer");
+		coreBOS_Session::set('internal_mailer', $adb->query_result($qry_res,0,'internal_mailer'));
 	}
 	$log->debug("We have an authenticated user id: ".$_SESSION["authenticated_user_id"]);
 }else if(isset($action) && isset($module) && $action=="Authenticate" && $module=="Users"){
 	$log->debug("We are authenticating user now");
 }else{
 	if(!isset($_REQUEST['action']) || ($_REQUEST['action'] != 'Logout' && $_REQUEST['action'] != 'Login')){
-		$_SESSION['lastpage'] = $_SERVER['QUERY_STRING'];
+		coreBOS_Session::set('lastpage', $_SERVER['QUERY_STRING']);
 	}
 	$log->debug('The current user does not have a session. Going to the login page');
 	$action = 'Login';
@@ -319,20 +313,15 @@ if(isset($action) && isset($module))
 		preg_match("/^imap_general/",$action) ||
 		preg_match("/^mime/",$action) ||
 		preg_match("/^download/",$action) ||
-		preg_match("/^about_us/",$action) ||
 		preg_match("/^SendMailAction/",$action) ||
 		preg_match("/^CreateXL/",$action) ||
 		preg_match("/^savetermsandconditions/",$action) ||
 		preg_match("/^home_rss/",$action) ||
 		preg_match("/^ConvertAsFAQ/",$action) ||
-		preg_match("/^Tickerdetail/",$action) ||
 		preg_match("/^".$module."Ajax/",$action) ||
 		preg_match("/^ActivityAjax/",$action) ||
-		preg_match("/^chat/",$action) ||
-		preg_match("/^vtchat/",$action) ||
 		preg_match("/^updateCalendarSharing/",$action) ||
 		preg_match("/^disable_sharing/",$action) ||
-		preg_match("/^HeadLines/",$action) ||
 		preg_match("/^TodoSave/",$action) ||
 		preg_match("/^RecalculateSharingRules/",$action) ||
 		(preg_match("/^body/",$action) && preg_match("/^Webmails/",$module)) ||
@@ -357,11 +346,8 @@ if(isset($action) && isset($module))
 			preg_match("/^downloadfile/", $action) ||
 			preg_match("/^fieldtypes/",$action) ||
 			preg_match("/^lookupemailtemplate/",$action) ||
-			preg_match("/^about_us/",$action) ||
 			preg_match("/^home_rss/",$action) ||
 			preg_match("/^".$module."Ajax/",$action) ||
-			preg_match("/^chat/",$action) ||
-			preg_match("/^vtchat/",$action) ||
 			preg_match("/^massdelete/", $action) ||
 			preg_match("/^mailmergedownloadfile/",$action) ||
 			preg_match("/^get_img/",$action) ||
@@ -419,6 +405,13 @@ if(isset($action) && isset($module))
 } else {
 	// use $default_module and $default_action as set in config.php
 	// Redirect to the correct module with the correct action.  We need the URI to include these fields.
+	if(isset($_SESSION["authenticated_user_id"])){
+		$userid = $_SESSION["authenticated_user_id"];
+	}else{
+		$userid = 1;
+	}
+	$default_action = GlobalVariable::getVariable('Application_Default_Action','index','',$userid);
+	$default_module = GlobalVariable::getVariable('Application_Default_Module','Home','',$userid);
 	header("Location: index.php?action=$default_action&module=$default_module");
 	exit();
 }
@@ -450,9 +443,7 @@ if($use_current_login)
 	require_once('user_privileges/audit_trail.php');
 	/* Skip audit trail log for special request types */
 	$skip_auditing = false;
-	if($action == 'chat') {
-		$skip_auditing = true;
-	} else if(($action == 'ActivityReminderCallbackAjax' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'ActivityReminderCallbackAjax')) && $module == 'Calendar') {
+	if(($action == 'ActivityReminderCallbackAjax' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'ActivityReminderCallbackAjax')) && $module == 'Calendar') {
 		$skip_auditing = true;
 	} else if(($action == 'TraceIncomingCall' || (isset($_REQUEST['file']) && $_REQUEST['file'] == 'TraceIncomingCall')) && $module == 'PBXManager') {
 		$skip_auditing = true;
@@ -657,11 +648,11 @@ if($display == "no")
 else if(!vtlib_isModuleActive($currentModule) and !($currentModule=='Tooltip' and $action==$module."Ajax" and $_REQUEST['file']=='ComputeTooltip')) {
 	echo "<link rel='stylesheet' type='text/css' href='themes/$theme/style.css'>";
 	echo "<table border='0' cellpadding='5' cellspacing='0' width='100%' height='450px'><tr><td align='center'>";
-	echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 55%; position: relative; z-index: 10000000;'>
+	echo "<div style='border: 3px solid rgb(153, 153, 153); background-color: rgb(255, 255, 255); width: 85%; position: relative; z-index: 10000000;'>
 		<table border='0' cellpadding='5' cellspacing='0' width='98%'>
 		<tbody><tr>
 		<td rowspan='2' width='11%'><img src='". vtiger_imageurl('denied.gif', $theme) . "' ></td>
-		<td style='border-bottom: 1px solid rgb(204, 204, 204);' nowrap='nowrap' width='70%'><span class='genHeaderSmall'>$currentModule ".$app_strings['VTLIB_MOD_NOT_ACTIVE']."</span></td>
+		<td style='border-bottom: 1px solid rgb(204, 204, 204);' width='70%'><span class='genHeaderSmall'>$currentModule ".$app_strings['VTLIB_MOD_NOT_ACTIVE']."</span></td>
 		</tr>
 		<tr>
 		<td class='small' align='right' nowrap='nowrap'>
@@ -686,7 +677,7 @@ if(isset($_SESSION['vtiger_authenticated_user_theme']) && $_SESSION['vtiger_auth
 $Ajx_module= $module;
 if($module == 'Events')
 	$Ajx_module = 'Calendar';
-if((!$viewAttachment) && (!$viewAttachment && $action != 'home_rss') && $action != 'Tickerdetail' && $action != $Ajx_module."Ajax" && $action != "chat" && $action != "HeadLines" && $action != 'massdelete' && $action != "DashboardAjax" && $action != "ActivityAjax")
+if((!$viewAttachment) && (!$viewAttachment && $action != 'home_rss') && $action != $Ajx_module."Ajax" && $action != 'massdelete' && $action != "DashboardAjax" && $action != "ActivityAjax")
 {
 	// Under the SPL you do not have the right to remove this copyright statement.
 	$copyrightstatement="<style>
@@ -705,23 +696,22 @@ if((!$viewAttachment) && (!$viewAttachment && $action != 'home_rss') && $action 
 	}
 	</style>";
 
-	if((!$skipFooters) && $action != "about_us" && $action != "vtchat" && $action != "ChangePassword" && $action != "body" && $action != $module."Ajax" && $action!='Popup' && $action != 'ImportStep3' && $action != 'ActivityAjax' && $action != 'getListOfRecords') {
+	if((!$skipFooters) && $action != "ChangePassword" && $action != "body" && $action != $module."Ajax" && $action!='Popup' && $action != 'ImportStep3' && $action != 'ActivityAjax' && $action != 'getListOfRecords') {
 		echo $copyrightstatement;
 		cbEventHandler::do_action('corebos.footer.prefooter');
+		$coreBOS_uiapp_name = GlobalVariable::getVariable('Application_UI_Name',$coreBOS_app_name);
+		$coreBOS_uiapp_version = GlobalVariable::getVariable('Application_UI_Version',$coreBOS_app_version);
+		$coreBOS_uiapp_url = GlobalVariable::getVariable('Application_UI_URL',$coreBOS_app_url);
 		echo "<br><br><br><table border=0 cellspacing=0 cellpadding=5 width=100% class=settingsSelectedUI >";
-		echo "<tr><td class=small align=left><span style='color: rgb(153, 153, 153);'>Powered by ".getTranslatedString('APP_NAME')." <span id='_vtiger_product_version_'>$coreBOS_app_version</span></span></td>";
-		echo "<td class=small align=right><span>&copy; 2004-".date('Y')." <a href='$coreBOS_app_url' target='_blank'>$coreBOS_app_name</a> | <a href='copyright.html' target='_blank'>".$app_strings['LNK_READ_LICENSE']."</a> | <a href='http://corebos.org/page/privacy-policy' target='_blank'>".getTranslatedString('LNK_PRIVACY_POLICY')."</a></span></td></tr></table>";
-	//	echo "<table align='center'><tr><td align='center'>";
-		// Under the Sugar Public License referenced above, you are required to leave in all copyright statements
-		// in both the code and end-user application.
-	//	if($calculate_response_time)
-	//	{
-	//		$endTime = microtime();
-
-	//		$deltaTime = microtime_diff($startTime, $endTime);
-	//		echo('&nbsp;Server response time: '.$deltaTime.' seconds.');
-	//	}
-	//	echo "</td></tr></table>\n";
+		echo "<tr><td class=small align=left><span style='color: rgb(153, 153, 153);'>Powered by ".$coreBOS_uiapp_name." <span id='_vtiger_product_version_'>$coreBOS_uiapp_version</span></span></td>";
+		echo "<td class=small align=right><span>&copy; 2004-".date('Y')." <a href='$coreBOS_uiapp_url' target='_blank'>$coreBOS_uiapp_name</a></span></td></tr></table>";
+		if($calculate_response_time) {
+			$endTime = microtime(true);
+			echo "<table align='center'><tr><td align='center'>";
+			$deltaTime = round($endTime - $startTime,2);
+			echo('&nbsp;Server response time: '.$deltaTime.' seconds.');
+			echo "</td></tr></table>\n";
+		}
 	}
 	// ActivityReminder Customization for callback
 	if(!$skipFooters) {

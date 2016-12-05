@@ -9,11 +9,10 @@
  *********************************************************************************/
 require_once 'include/utils/utils.php';
 require_once 'modules/PickList/PickListUtils.php';
-require_once "include/Zend/Json.php";
 
 global $adb, $current_user;
 $values = vtlib_purify($_REQUEST['values']);
-$values = Zend_Json::decode($values);
+$values = json_decode($values,true);
 MenuEditor :: saveMenuStructure($values);
 
 class MenuEditor {

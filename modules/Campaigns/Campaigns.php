@@ -12,7 +12,7 @@ require_once('include/logging.php');
 require_once('include/utils/utils.php');
 require_once('modules/Contacts/Contacts.php');
 require_once('modules/Leads/Leads.php');
-require_once('user_privileges/default_module_view.php');
+require('user_privileges/default_module_view.php');
 
 class Campaigns extends CRMEntity {
 	var $db, $log; // Used in class functions of CRMEntity
@@ -188,6 +188,7 @@ class Campaigns extends CRMEntity {
 				LEFT JOIN vtiger_groups ON vtiger_groups.groupid=vtiger_crmentity.smownerid
 				LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid=vtiger_users.id
 				LEFT JOIN vtiger_accountbillads ON vtiger_accountbillads.accountaddressid = vtiger_account.accountid
+				LEFT JOIN vtiger_accountscf ON vtiger_account.accountid = vtiger_accountscf.accountid
 				LEFT JOIN vtiger_campaignrelstatus ON vtiger_campaignrelstatus.campaignrelstatusid = vtiger_campaignaccountrel.campaignrelstatusid
 				WHERE vtiger_campaignaccountrel.campaignid = ".$id." AND vtiger_crmentity.deleted=0";
 
@@ -282,6 +283,9 @@ class Campaigns extends CRMEntity {
 				vtiger_crmentity.smownerid, vtiger_crmentity.modifiedtime, vtiger_campaignrelstatus.*
 				FROM vtiger_contactdetails
 				INNER JOIN vtiger_campaigncontrel ON vtiger_campaigncontrel.contactid = vtiger_contactdetails.contactid
+				INNER JOIN vtiger_contactaddress ON vtiger_contactdetails.contactid = vtiger_contactaddress.contactaddressid
+				INNER JOIN vtiger_contactsubdetails ON vtiger_contactdetails.contactid = vtiger_contactsubdetails.contactsubscriptionid
+				INNER JOIN vtiger_customerdetails ON vtiger_contactdetails.contactid = vtiger_customerdetails.customerid
 				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_contactdetails.contactid
 				LEFT JOIN vtiger_groups ON vtiger_groups.groupid=vtiger_crmentity.smownerid
 				LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid=vtiger_users.id
@@ -381,6 +385,7 @@ class Campaigns extends CRMEntity {
 				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_leaddetails.leadid
 				INNER JOIN vtiger_leadsubdetails  ON vtiger_leadsubdetails.leadsubscriptionid = vtiger_leaddetails.leadid
 				INNER JOIN vtiger_leadaddress ON vtiger_leadaddress.leadaddressid = vtiger_leadsubdetails.leadsubscriptionid
+				INNER JOIN vtiger_leadscf ON vtiger_leaddetails.leadid = vtiger_leadscf.leadid
 				LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id
 				LEFT JOIN vtiger_groups ON vtiger_groups.groupid=vtiger_crmentity.smownerid
 				LEFT JOIN vtiger_campaignrelstatus ON vtiger_campaignrelstatus.campaignrelstatusid = vtiger_campaignleadrel.campaignrelstatusid
@@ -398,65 +403,6 @@ class Campaigns extends CRMEntity {
 		$return_value['CUSTOM_BUTTON'] = $button;
 
 		$log->debug("Exiting get_leads method ...");
-		return $return_value;
-	}
-
-	/**
-	 * Function to get Campaign related Potentials
-	 * @param  integer   $id      - campaignid
-	 * returns related potentials record in array format
-	 */
-	function get_opportunities($id, $cur_tab_id, $rel_tab_id, $actions=false) {
-		global $log, $singlepane_view,$currentModule,$current_user;
-		$log->debug("Entering get_opportunities(".$id.") method ...");
-		$this_module = $currentModule;
-
-        $related_module = vtlib_getModuleNameById($rel_tab_id);
-		require_once("modules/$related_module/$related_module.php");
-		$other = new $related_module();
-        vtlib_setup_modulevars($related_module, $other);
-		$singular_modname = vtlib_toSingular($related_module);
-
-		$parenttab = getParentTab();
-
-		if($singlepane_view == 'true')
-			$returnset = '&return_module='.$this_module.'&return_action=DetailView&return_id='.$id;
-		else
-			$returnset = '&return_module='.$this_module.'&return_action=CallRelatedList&return_id='.$id;
-
-		$button = '';
-
-		if($actions && getFieldVisibilityPermission($related_module,$current_user->id,'campaignid', 'readwrite') == '0') {
-			if(is_string($actions)) $actions = explode(',', strtoupper($actions));
-			if(in_array('SELECT', $actions) && isPermitted($related_module,4, '') == 'yes') {
-				$button .= "<input title='".getTranslatedString('LBL_SELECT')." ". getTranslatedString($related_module). "' class='crmbutton small edit' type='button' onclick=\"return window.open('index.php?module=$related_module&return_module=$currentModule&action=Popup&popuptype=detailview&select=enable&form=EditView&form_submit=false&recordid=$id&parenttab=$parenttab','test','width=640,height=602,resizable=0,scrollbars=0');\" value='". getTranslatedString('LBL_SELECT'). " " . getTranslatedString($related_module) ."'>&nbsp;";
-			}
-			if(in_array('ADD', $actions) && isPermitted($related_module,1, '') == 'yes') {
-				$button .= "<input title='".getTranslatedString('LBL_ADD_NEW'). " ". getTranslatedString($singular_modname) ."' class='crmbutton small create'" .
-					" onclick='this.form.action.value=\"EditView\";this.form.module.value=\"$related_module\"' type='submit' name='button'" .
-					" value='". getTranslatedString('LBL_ADD_NEW'). " " . getTranslatedString($singular_modname) ."'>&nbsp;";
-			}
-		}
-
-		$userNameSql = getSqlForNameInDisplayFormat(array('first_name'=>
-							'vtiger_users.first_name', 'last_name' => 'vtiger_users.last_name'), 'Users');
-		$query = "SELECT CASE when (vtiger_users.user_name not like '') then $userNameSql else vtiger_groups.groupname end as user_name,
-					vtiger_potential.related_to, vtiger_account.accountname, vtiger_potential.potentialid, vtiger_potential.potentialname,
-					vtiger_potential.potentialtype, vtiger_potential.sales_stage, vtiger_potential.amount, vtiger_potential.closingdate,
-					vtiger_crmentity.crmid, vtiger_crmentity.smownerid FROM vtiger_campaign
-					INNER JOIN vtiger_potential ON vtiger_campaign.campaignid = vtiger_potential.campaignid
-					INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_potential.potentialid
-					LEFT JOIN vtiger_groups ON vtiger_groups.groupid=vtiger_crmentity.smownerid
-					LEFT JOIN vtiger_users ON vtiger_users.id=vtiger_crmentity.smownerid
-					LEFT JOIN vtiger_account ON vtiger_account.accountid = vtiger_potential.related_to
-					WHERE vtiger_campaign.campaignid = ".$id." AND vtiger_crmentity.deleted=0";
-
-		$return_value = GetRelatedList($this_module, $related_module, $other, $query, $button, $returnset);
-
-		if($return_value == null) $return_value = Array();
-		$return_value['CUSTOM_BUTTON'] = $button;
-
-		$log->debug("Exiting get_opportunities method ...");
 		return $return_value;
 	}
 
@@ -625,6 +571,8 @@ class Campaigns extends CRMEntity {
 			$this->db->pquery($sql, array($id, $return_id));
 		} elseif($return_module == 'Accounts') {
 			$sql = 'DELETE FROM vtiger_campaignaccountrel WHERE campaignid=? AND accountid=?';
+			$this->db->pquery($sql, array($id, $return_id));
+			$sql = 'DELETE FROM vtiger_campaigncontrel WHERE campaignid=? AND contactid IN (SELECT contactid FROM vtiger_contactdetails WHERE accountid=?)';
 			$this->db->pquery($sql, array($id, $return_id));
 		} else {
 			$sql = 'DELETE FROM vtiger_crmentityrel WHERE (crmid=? AND relmodule=? AND relcrmid=?) OR (relcrmid=? AND module=? AND crmid=?)';
@@ -811,23 +759,6 @@ class Campaigns extends CRMEntity {
 			AND vtiger_users_last_import.bean_type='$module'
 			AND vtiger_users_last_import.deleted=0";
 		return $query;
-	}
-
-	/**
-	 * Delete the last imported records.
-	 */
-	function undo_import($module, $user_id) {
-		global $adb;
-		$count = 0;
-		$query1 = "select bean_id from vtiger_users_last_import where assigned_user_id=? AND bean_type='$module' AND deleted=0";
-		$result1 = $adb->pquery($query1, array($user_id)) or die("Error getting last import for undo: ".mysql_error());
-		while ( $row1 = $adb->fetchByAssoc($result1))
-		{
-			$query2 = "update vtiger_crmentity set deleted=1 where crmid=?";
-			$result2 = $adb->pquery($query2, array($row1['bean_id'])) or die("Error undoing last import: ".mysql_error());
-			$count++;
-		}
-		return $count;
 	}
 
 	/**

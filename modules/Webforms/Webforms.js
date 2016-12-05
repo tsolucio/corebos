@@ -16,7 +16,7 @@ var Webforms ={
 		return true;
 	},
 	editForm:function(id){
-		Webforms.submitForm('action_form', 'index.php?module=Webforms&action=WebformsEditView&id='+id+'&parenttab=Settings&operation=edit');
+		Webforms.submitForm('action_form', 'index.php?module=Webforms&action=WebformsEditView&id='+id+'&operation=edit');
 	},
 	submitForm:function(formName,action){
 		document.forms[formName].action=action;

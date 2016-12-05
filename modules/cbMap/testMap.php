@@ -101,9 +101,12 @@ switch ($focus->column_fields['maptype']) {
 			$rsm = $focus->DuplicateRelations();
 			$mapinfo = $rsm->getCompleteMapping();
 			break;
+	case 'RelatedPanes':
+			$mapinfo = $focus->RelatedPanes();
+			break;
 	case 'Import':
-		$mapinfo = $focus->readImportType();
-		$mapinfo['TargetModule'] = $focus->getMapTargetModule();
+		$mapinfo = $focus->Import()->getCompleteMapping();
+		$mapinfo['TargetModule'] = $focus->Import()->getMapTargetModule();
 		break;
 	case 'Map fields':
 		$mapinfo = $focus->readMappingType();

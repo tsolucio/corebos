@@ -67,10 +67,6 @@ function set_return_formname_specific(formname,product_id, product_name) {
 	window.opener.document.EditView1.product_name.value = product_name;
 	window.opener.document.EditView1.product_id.value = product_id;
 }
-function add_data_to_relatedlist(entity_id,recordid) {
-
-	opener.document.location.href="index.php?module={RETURN_MODULE}&action=updateRelations&smodule={SMODULE}&destination_module=Products&entityid="+entity_id+"&parentid="+recordid;
-}
 
 function set_return_inventory(product_id,product_name,unitprice,taxstr,curr_row,desc) {
 	window.opener.document.EditView.elements["productName"+curr_row].value = product_name;

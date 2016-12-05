@@ -7,24 +7,16 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 require_once('Smarty_setup.php');
 require_once('include/utils/utils.php');
 require_once('modules/Settings/savewordtemplate.php');
 
-global $app_strings;
-global $mod_strings;
-global $app_list_strings;
-global $adb;
-global $upload_maxsize;
-global $theme,$default_charset;
+global $app_strings, $mod_strings, $app_list_strings, $adb, $theme, $default_charset;
 
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 
 $smarty = new vtigerCRM_Smarty;
-//error handling
-//echo '<pre>';print_r($_REQUEST);echo '</pre>';
 if(isset($_REQUEST['flag']) && $_REQUEST['flag'] != '')
 {
 	$flag = vtlib_purify($_REQUEST['flag']);
@@ -39,7 +31,7 @@ if(isset($_REQUEST['flag']) && $_REQUEST['flag'] != '')
 		default:
 			$smarty->assign("ERRORFLAG","");
 			break;
-	}		
+	}
 }
 
 $tempModule= vtlib_purify($_REQUEST['tempModule']);
@@ -49,17 +41,17 @@ $smarty->assign("IMAGE_PATH",$image_path);
 $smarty->assign("APP", $app_strings);
 $smarty->assign("UMOD", $mod_strings);
 $smarty->assign("PARENTTAB", getParentTab());
+$upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize',3000000,$currentModule);
 $smarty->assign("MAX_FILE_SIZE", $upload_maxsize);
 
 $template = Array(
-		"Leads"=>"LEADS_SELECTED",
-		"Accounts"=>"ACCOUNTS_SELECTED",
-		"Contacts"=>"CONTACTS_SELECTED",
-		"HelpDesk"=>"HELPDESK_SELECTED"
-	   );
+	"Leads"=>"LEADS_SELECTED",
+	"Accounts"=>"ACCOUNTS_SELECTED",
+	"Contacts"=>"CONTACTS_SELECTED",
+	"HelpDesk"=>"HELPDESK_SELECTED"
+);
 
 $smarty->assign($template[$tempModule],"selected");
 
 $smarty->display('CreateWordTemplate.tpl');
-
 ?>

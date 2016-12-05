@@ -8,7 +8,6 @@
  * All Rights Reserved.
  ************************************************************************************/
 global $app_strings, $mod_strings, $current_language, $currentModule, $theme;
-global $list_max_entries_per_page;
 
 require_once('Smarty_setup.php');
 

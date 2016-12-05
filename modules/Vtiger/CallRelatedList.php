@@ -8,9 +8,9 @@
  * All Rights Reserved.
  ************************************************************************************/
 require_once('Smarty_setup.php');
-require_once('user_privileges/default_module_view.php');
+require('user_privileges/default_module_view.php');
 
-global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $singlepane_view;
+global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
 
 $category = getParentTab();
 $action = vtlib_purify($_REQUEST['action']);
@@ -34,7 +34,7 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 
 	if($isduplicate == 'true') $focus->id = '';
 	if(isset($_REQUEST['mode']) && $_REQUEST['mode'] != ' ') $smarty->assign("OP_MODE",vtlib_purify($_REQUEST['mode']));
-	if(!$_SESSION['rlvs'][$currentModule]) unset($_SESSION['rlvs']);
+	if(!$_SESSION['rlvs'][$currentModule]) coreBOS_Session::delete('rlvs');
 
 	// Identify this module as custom module.
 	$smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
@@ -64,8 +64,48 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 		$mod_seq_id = $focus->id;
 	}
 	$smarty->assign('MOD_SEQ_ID', $mod_seq_id);
-
-	$related_array = getRelatedLists($currentModule, $focus);
+	$bmapname = $currentModule.'RelatedPanes';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		if (empty($_REQUEST['RelatedPane'])) {
+			$_RelatedPane=vtlib_purify($_SESSION['RelatedPane']);
+		} else {
+			$_RelatedPane=vtlib_purify($_REQUEST['RelatedPane']);
+			coreBOS_Session::set('RelatedPane',$_RelatedPane);
+		}
+		$smarty->assign("RETURN_RELATEDPANE", $_RelatedPane);
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$rltabs = $cbMap->RelatedPanes($focus->id);
+		$smarty->assign('RLTabs', $rltabs['panes']);
+		$restrictedRelations = (isset($rltabs['panes'][$_RelatedPane]['restrictedRelations']) ? $rltabs['panes'][$_RelatedPane]['restrictedRelations'] : null);
+		$related_array = array();
+		$rel_array = getRelatedLists($currentModule, $focus, $restrictedRelations);
+		foreach ($rltabs['panes'][$_RelatedPane]['blocks'] as $blk) {
+			if ($blk['type']=='RelatedList') {
+				$related_array[$blk['loadfrom']] = empty($rel_array[$blk['loadfrom']]) ? $rel_array[$blk['label']] : $rel_array[$blk['loadfrom']];
+			} else {
+				if (!empty($blk['loadphp'])) {
+					try {
+						include $blk['loadphp'];
+					} catch (Exception $e) {
+						$log->fatal('Related Pane LoadPHP error ('.$blk['loadphp'].'): '.$e->getMessage());
+					}
+				}
+				$related_array[$blk['sequence']] = $blk;
+			}
+		}
+		$smarty->assign('HASRELATEDPANES', 'true');
+		if (file_exists("modules/$currentModule/RelatedPaneActions.php")) {
+			include "modules/$currentModule/RelatedPaneActions.php";
+			$smarty->assign('HASRELATEDPANESACTIONS', 'true');
+		} else {
+			$smarty->assign('HASRELATEDPANESACTIONS', 'false');
+		}
+	} else {
+		$smarty->assign('HASRELATEDPANES', 'false');
+		$restrictedRelations = null;
+		$related_array = getRelatedLists($currentModule, $focus, $restrictedRelations);
+	}
 	$smarty->assign('RELATEDLISTS', $related_array);
 
 	require_once('include/ListView/RelatedListViewSession.php');

@@ -93,7 +93,7 @@ if($_REQUEST['changepassword'] == 'true') {
 	$focus->id = vtlib_purify($_REQUEST['record']);
 	if (isset($_REQUEST['new_password'])) {
 		if (!$focus->change_password(vtlib_purify($_REQUEST['old_password']), vtlib_purify($_REQUEST['new_password']))) {
-			header("Location: index.php?action=Error&module=Users&error_string=".urlencode($focus->error_string));
+			header("Location: index.php?action=DetailView&module=Users&record=".$focus->id."&error_string=".urlencode($focus->error_string));
 			exit;
 		}
 	}
@@ -124,7 +124,7 @@ if(! $_REQUEST['changepassword'] == 'true')
 	else
 		$focus->column_fields['internal_mailer'] = 0;
 	if(isset($_SESSION['internal_mailer']) && $_SESSION['internal_mailer'] != $focus->column_fields['internal_mailer'])
-		$_SESSION['internal_mailer'] = $focus->column_fields['internal_mailer'];
+		coreBOS_Session::set('internal_mailer', $focus->column_fields['internal_mailer']);
 	setObjectValuesFromRequest($focus);
 
 	if(empty($focus->column_fields['roleid']) && !empty($_POST['user_role'])) {
@@ -140,7 +140,7 @@ if(! $_REQUEST['changepassword'] == 'true')
 		$new_pass = md5($new_pass);
 		$uname = $_POST['user_name'];
 		if (!$focus->change_password($_POST['confirm_new_password'], $_POST['new_password'])) {
-			header("Location: index.php?action=Error&module=Users&error_string=".urlencode($focus->error_string));
+			header("Location: index.php?action=DetailView&module=Users&record=".$focus->id."&error_string=".urlencode($focus->error_string));
 			exit;
 		}
 	}
@@ -179,6 +179,8 @@ if($_REQUEST['mode'] == 'create') {
 	$email_body .= "<br>" . $app_strings['MSG_THANKS'] . "<br>" . $current_user->user_name;
 	//$email_body = htmlentities($email_body, ENT_QUOTES, $default_charset);  // not needed anymore, PHPMailer takes care of it
 
+	$HELPDESK_SUPPORT_EMAIL_ID = GlobalVariable::getVariable('HelpDesk_Support_EMail','support@your_support_domain.tld','HelpDesk');
+	$HELPDESK_SUPPORT_NAME = GlobalVariable::getVariable('HelpDesk_Support_Name','your-support name','HelpDesk');
 	$mail_status = send_mail('Users',$user_emailid,$HELPDESK_SUPPORT_NAME,$HELPDESK_SUPPORT_EMAIL_ID,$subject,$email_body);
 	if($mail_status != 1) {
 		$mail_status_str = $user_emailid."=".$mail_status."&&&";

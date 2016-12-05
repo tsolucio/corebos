@@ -8,10 +8,6 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
-<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">
-<script type="text/javascript" src="jscalendar/calendar.js"></script>
-<script type="text/javascript" src="jscalendar/lang/calendar-en.js"></script>
-<script type="text/javascript" src="jscalendar/calendar-setup.js"></script>
 <script type="text/javascript" src="include/js/reflection.js"></script>
 <script type="text/javascript" src="include/js/dtlviewajax.js"></script>
 <span id="crmspanid" style="display:none;position:absolute;"  onmouseover="show('crmspanid');">
@@ -19,7 +15,6 @@
 </span>
 <div id="convertleaddiv" style="display:block;position:absolute;left:225px;top:150px;"></div>
 <script>
-var gVTModule = '{$smarty.request.module|@vtlib_purify}';
 {literal}
 function callConvertLeadDiv(id){
 		jQuery.ajax({
@@ -180,12 +175,12 @@ function sendfile_email()
 					<td valign=top><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
 					<td class="showPanelBg" valign=top width=100%>
 						<!-- PUBLIC CONTENTS STARTS-->
-						<div class="small" style="padding:10px" onclick="hndCancelOutsideClick();";>
+						<div class="small" style="padding:14px" onclick="hndCancelOutsideClick();";>
 
 							<table align="center" border="0" cellpadding="0" cellspacing="0" width="95%">
 								<tr><td>
-										{* Module Record numbering, used MOD_SEQ_ID instead of ID *}
-										{assign var="USE_ID_VALUE" value=$MOD_SEQ_ID}
+									{* Module Record numbering, used MOD_SEQ_ID instead of ID *}
+									{assign var="USE_ID_VALUE" value=$MOD_SEQ_ID}
 									{if $USE_ID_VALUE eq ''} {assign var="USE_ID_VALUE" value=$ID} {/if}
 									<span class="dvHeaderText">[ {$USE_ID_VALUE} ] {$NAME} -  {$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</span>&nbsp;&nbsp;&nbsp;<span class="small">{$UPDATEINFO}</span>&nbsp;<span id="vtbusy_info" style="display:none;" valign="bottom"><img src="{'vtbusy.gif'|@vtiger_imageurl:$THEME}" border="0"></span>
 								</td></tr>
@@ -196,14 +191,14 @@ function sendfile_email()
 						<table border=0 cellspacing=0 cellpadding=0 width=95% align=center>
 							<tr>
 								<td>
-									<table border=0 cellspacing=0 cellpadding=3 width=100% class="small detailview_utils_table_top">
-										<tr>
-											<td class="dvtTabCache" id="detailview_utils_firstfiller" style="width:10px" nowrap>&nbsp;</td>
-
-											<td class="dvtSelectedCell" align=center nowrap>{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</td>
-											<td class="dvtTabCache" id="detailview_utils_secondfiller" style="width:10px">&nbsp;</td>
+									<div class="small detailview_utils_table_top">
+										<div class="detailview_utils_table_tabs">
+											<div class="detailview_utils_table_tab detailview_utils_table_tab_selected detailview_utils_table_tab_selected_top">{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</div>
 											{if $SinglePane_View eq 'false' && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
-												<td class="dvtUnSelectedCell" onmouseout="fnHideDrop('More_Information_Modules_List');" onmouseover="fnDropDown(this,'More_Information_Modules_List');" align="center" nowrap>
+												{if $HASRELATEDPANES eq 'true'}
+													{include file='RelatedPanes.tpl' tabposition='top' RETURN_RELATEDPANE=''}
+												{else}
+												<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_top" onmouseout="fnHideDrop('More_Information_Modules_List');" onmouseover="fnDropDown(this,'More_Information_Modules_List');">
 													<a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</a>
 													<div onmouseover="fnShowDrop('More_Information_Modules_List')" onmouseout="fnHideDrop('More_Information_Modules_List')"
 														 id="More_Information_Modules_List" class="drop_mnu" style="left: 502px; top: 76px; display: none;">
@@ -213,9 +208,12 @@ function sendfile_email()
 															{/foreach}
 														</table>
 													</div>
-												</td>
+												</div>
+												{/if}
 											{/if}
-											<td class="dvtTabCache" id="detailview_utils_thirdfiller" align="right" style="width:100%">
+										</div>
+										<div class="detailview_utils_table_tabactionsep detailview_utils_table_tabactionsep_top" id="detailview_utils_table_tabactionsep_top"></div>
+										<div class="detailview_utils_table_actions detailview_utils_table_actions_top" id="detailview_utils_actions">
 												{if $EDIT_PERMISSION eq 'yes'}
 													<input title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" class="crmbutton small edit" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.return_id.value='{$ID}';DetailView.module.value='{$MODULE}';submitFormForAction('DetailView','EditView');" type="button" name="Edit" value="&nbsp;{$APP.LBL_EDIT_BUTTON_LABEL}&nbsp;">&nbsp;
 												{/if}
@@ -227,22 +225,21 @@ function sendfile_email()
 												{/if}
 
 												{if $privrecord neq ''}
-													<span class="detailview_utils_prev"><img align="absmiddle" title="{$APP.LNK_LIST_PREVIOUS}" accessKey="{$APP.LNK_LIST_PREVIOUS}" onclick="location.href='index.php?module={$MODULE}&viewtype={$VIEWTYPE}&action=DetailView&record={$privrecord}&parenttab={$CATEGORY}&start={$privrecordstart}'" name="privrecord" value="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev.gif'|@vtiger_imageurl:$THEME}"></span>&nbsp;
+													<span class="detailview_utils_prev" onclick="location.href='index.php?module={$MODULE}&viewtype={$VIEWTYPE}&action=DetailView&record={$privrecord}&parenttab={$CATEGORY}&start={$privrecordstart}'" title="{$APP.LNK_LIST_PREVIOUS}"><img align="absmiddle" title="{$APP.LNK_LIST_PREVIOUS}" accessKey="{$APP.LNK_LIST_PREVIOUS}"  name="privrecord" value="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev.gif'|@vtiger_imageurl:$THEME}"></span>&nbsp;
 												{else}
 													<img align="absmiddle" title="{$APP.LNK_LIST_PREVIOUS}" src="{'rec_prev_disabled.gif'|@vtiger_imageurl:$THEME}">
 												{/if}
 												{if $privrecord neq '' || $nextrecord neq ''}
-													<span class="detailview_utils_jumpto"><img align="absmiddle" title="{$APP.LBL_JUMP_BTN}" accessKey="{$APP.LBL_JUMP_BTN}" onclick="var obj = this;var lhref = getListOfRecords(obj, '{$MODULE}',{$ID},'{$CATEGORY}');" name="jumpBtnIdTop" id="jumpBtnIdTop" src="{'rec_jump.gif'|@vtiger_imageurl:$THEME}"></span>&nbsp;
+													<span class="detailview_utils_jumpto" id="jumpBtnIdTop" onclick="var obj = this;var lhref = getListOfRecords(obj, '{$MODULE}',{$ID},'{$CATEGORY}');" title="{$APP.LBL_JUMP_BTN}"><img align="absmiddle" title="{$APP.LBL_JUMP_BTN}" accessKey="{$APP.LBL_JUMP_BTN}" name="jumpBtnIdTop" id="jumpBtnIdTop" src="{'rec_jump.gif'|@vtiger_imageurl:$THEME}"></span>&nbsp;
 												{/if}
 												{if $nextrecord neq ''}
-													<span class="detailview_utils_next"><img align="absmiddle" title="{$APP.LNK_LIST_NEXT}" accessKey="{$APP.LNK_LIST_NEXT}" onclick="location.href='index.php?module={$MODULE}&viewtype={$VIEWTYPE}&action=DetailView&record={$nextrecord}&parenttab={$CATEGORY}&start={$nextrecordstart}'" name="nextrecord" src="{'rec_next.gif'|@vtiger_imageurl:$THEME}"></span>&nbsp;
+													<span class="detailview_utils_next" onclick="location.href='index.php?module={$MODULE}&viewtype={$VIEWTYPE}&action=DetailView&record={$nextrecord}&parenttab={$CATEGORY}&start={$nextrecordstart}'" title="{$APP.LNK_LIST_NEXT}"><img align="absmiddle" title="{$APP.LNK_LIST_NEXT}" accessKey="{$APP.LNK_LIST_NEXT}"  name="nextrecord" src="{'rec_next.gif'|@vtiger_imageurl:$THEME}"></span>&nbsp;
 												{else}
 													<img align="absmiddle" title="{$APP.LNK_LIST_NEXT}" src="{'rec_next_disabled.gif'|@vtiger_imageurl:$THEME}">&nbsp;
 												{/if}
 												<span class="detailview_utils_toggleactions"><img align="absmiddle" title="{$APP.TOGGLE_ACTIONS}" src="{'menu-icon.png'|@vtiger_imageurl:$THEME}" width="16px;" onclick="{literal}if (document.getElementById('actioncolumn').style.display=='none') {document.getElementById('actioncolumn').style.display='table-cell';}else{document.getElementById('actioncolumn').style.display='none';}window.dispatchEvent(new Event('resize'));{/literal}"></span>&nbsp;
-											</td>
-										</tr>
-									</table>
+										</div>
+									</div>
 								</td>
 							</tr>
 							<tr>
@@ -253,15 +250,12 @@ function sendfile_email()
 											<td align=left>
 												<!-- content cache -->
 
-
 												<table border=0 cellspacing=0 cellpadding=0 width=100%>
 													<tr valign=top>
 														<td style="padding:5px">
 															<!-- Command Buttons -->
 															<table border=0 cellspacing=0 cellpadding=0 width=100%>
-																<!-- NOTE: We should avoid form-inside-form condition, which could happen when
-																   Singlepane view is enabled. -->
-																<form action="index.php" method="post" name="DetailView" id="form">
+																<form action="index.php" method="post" name="DetailView" id="formDetailView">
 																	{include file='DetailViewHidden.tpl'}
 																	{foreach key=header item=detail from=$BLOCKS name=BLOCKS}
 																		<tr><td style="padding:5px">
@@ -295,7 +289,7 @@ function sendfile_email()
 																						<tr><td>&nbsp;</td></tr>
 																					{/if}
 
-																					{if $header neq 'Comments'}
+																					{if $header neq 'Comments' && $BLOCKS.$header.relatedlist eq 0}
 
 																						<tr class="detailview_block_header">{strip}
 																							<td colspan=4 class="dvInnerHeader">
@@ -318,7 +312,7 @@ function sendfile_email()
 																					{/if}
 																				</table>
 																				{if $header neq 'Comments'}
-																					{if $BLOCKINITIALSTATUS[$header] eq 1}
+																					{if $BLOCKINITIALSTATUS[$header] eq 1 || $BLOCKS.$header.relatedlist neq 0}
 																						<div style="width:auto;display:block;" id="tbl{$header|replace:' ':''}" >
 																						{else}
 																						<div style="width:auto;display:none;" id="tbl{$header|replace:' ':''}" >
@@ -326,6 +320,9 @@ function sendfile_email()
 																							<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small detailview_table">
 																							{if $CUSTOMBLOCKS.$header.custom}
 																								{include file=$CUSTOMBLOCKS.$header.tpl}
+																							{elseif $BLOCKS.$header.relatedlist && $IS_REL_LIST|@count > 0}
+																								{assign var='RELBINDEX' value=$BLOCKS.$header.relatedlist}
+																								{include file='RelatedListNew.tpl' RELATEDLISTS=$RELATEDLISTBLOCK.$RELBINDEX RELLISTID=$RELBINDEX}
 																							{else}
 																								{foreach item=detailInfo from=$detail}
 																									<tr style="height:25px" class="detailview_row">
@@ -401,9 +398,6 @@ function sendfile_email()
 																	<tr>
 																		{$ASSOCIATED_PRODUCTS}
 																	</tr>
-
-																</form>
-																<!-- End the form related to detail view -->
 
 																{if $SinglePane_View eq 'true' && $IS_REL_LIST|@count > 0}
 																	{include file= 'RelatedListNew.tpl'}
@@ -678,17 +672,19 @@ function sendfile_email()
 							</tr>
 							<tr>
 								<td>
-									<table border=0 cellspacing=0 cellpadding=3 width=100% class="small">
-										<tr>
-											<td class="dvtTabCacheBottom" style="width:10px" nowrap>&nbsp;</td>
-
-											<td class="dvtSelectedCellBottom" align=center nowrap>{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</td>
-											<td class="dvtTabCacheBottom" style="width:10px">&nbsp;</td>
+									<div class="small detailview_utils_table_bottom">
+										<div class="detailview_utils_table_tabs">
+											<div class="detailview_utils_table_tab detailview_utils_table_tab_selected detailview_utils_table_tab_selected_bottom">{$SINGLE_MOD|@getTranslatedString:$MODULE} {$APP.LBL_INFORMATION}</div>
 											{if $SinglePane_View eq 'false' && $IS_REL_LIST neq false && $IS_REL_LIST|@count > 0}
-												<td class="dvtUnSelectedCell" align=center nowrap><a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</a></td>
+												{if $HASRELATEDPANES eq 'true'}
+													{include file='RelatedPanes.tpl' tabposition='bottom' RETURN_RELATEDPANE=''}
+												{else}
+												<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_bottom"><a href="index.php?action=CallRelatedList&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</a></div>
+												{/if}
 											{/if}
-											<td class="dvtTabCacheBottom" align="right" style="width:100%">
-												&nbsp;
+										</div>
+										<div class="detailview_utils_table_tabactionsep detailview_utils_table_tabactionsep_bottom" id="detailview_utils_table_tabactionsep_bottom"></div>
+										<div class="detailview_utils_table_actions detailview_utils_table_actions_bottom" id="detailview_utils_actions">
 												{if $EDIT_PERMISSION eq 'yes' }
 													<input title="{$APP.LBL_EDIT_BUTTON_TITLE}" accessKey="{$APP.LBL_EDIT_BUTTON_KEY}" class="crmbutton small edit" onclick="DetailView.return_module.value='{$MODULE}'; DetailView.return_action.value='DetailView'; DetailView.return_id.value='{$ID}';DetailView.module.value='{$MODULE}';submitFormForAction('DetailView','EditView');" type="submit" name="Edit" value="&nbsp;{$APP.LBL_EDIT_BUTTON_LABEL}&nbsp;">&nbsp;
 												{/if}
@@ -712,9 +708,9 @@ function sendfile_email()
 												{else}
 													<img align="absmiddle" title="{$APP.LNK_LIST_NEXT}" src="{'rec_next_disabled.gif'|@vtiger_imageurl:$THEME}">&nbsp;
 												{/if}
-											</td>
-										</tr>
-									</table>
+												<span class="detailview_utils_toggleactions"><img align="absmiddle" title="{$APP.TOGGLE_ACTIONS}" src="{'menu-icon.png'|@vtiger_imageurl:$THEME}" width="16px;" onclick="{literal}if (document.getElementById('actioncolumn').style.display=='none') {document.getElementById('actioncolumn').style.display='table-cell';}else{document.getElementById('actioncolumn').style.display='none';}window.dispatchEvent(new Event('resize'));{/literal}"></span>&nbsp;
+										</div>
+									</div>
 								</td>
 							</tr>
 						</table>

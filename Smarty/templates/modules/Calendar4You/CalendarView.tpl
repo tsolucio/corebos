@@ -473,7 +473,7 @@ function hideITSEventInfo(){
                     <table align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
                         <tbody>
                             <tr>
-                                  <td width="200px" valign="top">
+                                  <td width="200px" valign="top" class="noprint">
                                     <table class="dvtContentSpace" border="0" cellpadding="0" cellspacing="0" width="100%">
                                         <tbody>
                                             <tr>

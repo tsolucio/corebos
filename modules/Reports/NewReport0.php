@@ -15,7 +15,6 @@ require_once('modules/Reports/Reports.php');
 
 global $app_strings, $app_list_strings, $mod_strings;
 $current_module_strings = return_module_language($current_language, 'Reports');
-global $list_max_entries_per_page, $urlPrefix;
 $log = LoggerManager::getLogger('report_list');
 global $currentModule, $image_path, $theme;
 $recordid = vtlib_purify($_REQUEST['record']);

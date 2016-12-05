@@ -9,9 +9,8 @@
  ********************************************************************************/
 
 require_once('include/database/PearDatabase.php');
-require_once('user_privileges/default_module_view.php');
-global $adb,$singlepane_view;	
-global $log;
+require('user_privileges/default_module_view.php');
+global $adb,$log;
 $idlist = vtlib_purify($_POST['idlist']);
 $returnmodule = vtlib_purify($_REQUEST['return_module']);
 $pricebook_id = vtlib_purify($_REQUEST['pricebook_id']);

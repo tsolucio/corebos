@@ -13,9 +13,8 @@ require_once('include/utils/utils.php');
 require_once('modules/Reports/Reports.php');
 require_once('Smarty_setup.php');
 
-global $app_strings, $app_list_strings, $mod_strings;
+global $app_strings, $app_list_strings, $default_charset, $mod_strings;
 $current_module_strings = return_module_language($current_language, 'Reports');
-global $list_max_entries_per_page, $default_charset, $urlPrefix;
 $log = LoggerManager::getLogger('report_list');
 global $currentModule, $image_path, $theme, $ogReport;
 

@@ -19,9 +19,9 @@ class MailManager_FolderController extends MailManager_Controller {
      * @return MailManager_Response
      */
 	function process(MailManager_Request $request) {
-		global $list_max_entries_per_page;
+		$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,'Emails');
 		$response = new MailManager_Response();
-        
+
 		if ('open' == $request->getOperationArg()) {
 			$q = $request->get('q');
 			$foldername = $request->get('_folder');

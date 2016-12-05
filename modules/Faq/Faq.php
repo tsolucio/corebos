@@ -12,21 +12,36 @@ require_once('data/Tracker.php');
 
 class Faq extends CRMEntity {
 	var $db, $log; // Used in class functions of CRMEntity
+
 	var $table_name = 'vtiger_faq';
 	var $table_index= 'id';
-	var $tab_name = Array('vtiger_crmentity','vtiger_faq','vtiger_faqcf');
-	var $tab_name_index = Array('vtiger_crmentity'=>'crmid','vtiger_faq'=>'id','vtiger_faqcomments'=>'faqid','vtiger_faqcf'=>'faqid');
-	var $customFieldTable = Array('vtiger_faqcf', 'faqid');
-
-	var $entity_table = 'vtiger_crmentity';
-
 	var $column_fields = Array();
 
 	/** Indicator if this is a custom module or standard module */
 	var $IsCustomModule = false;
-	var $sortby_fields = Array('question','category','id');
+	var $HasDirectImageField = false;
+	/**
+	 * Mandatory table for supporting custom fields.
+	 */
+	var $customFieldTable = Array('vtiger_faqcf', 'faqid');
 
-	// This is the list of vtiger_fields that are in the lists.
+	/**
+	 * Mandatory for Saving, Include tables related to this module.
+	 */
+	var $tab_name = Array('vtiger_crmentity','vtiger_faq','vtiger_faqcf');
+
+	/**
+	 * Mandatory for Saving, Include tablename and tablekey columnname here.
+	 */
+	var $tab_name_index = Array(
+		'vtiger_crmentity' => 'crmid',
+		'vtiger_faq' => 'id',
+		'vtiger_faqcomments' => 'faqid',
+		'vtiger_faqcf' => 'faqid');
+
+	/**
+	 * Mandatory for Listing (Related listview)
+	 */
 	var $list_fields = Array(
 		'FAQ No'=>Array('faq'=>'faq_no'),
 		'Question'=>Array('faq'=>'question'),
@@ -35,7 +50,6 @@ class Faq extends CRMEntity {
 		'Created Time'=>Array('crmentity'=>'createdtime'),
 		'Modified Time'=>Array('crmentity'=>'modifiedtime')
 	);
-
 	var $list_fields_name = Array(
 		'FAQ No'=>'faq_no',
 		'Question'=>'question',
@@ -44,8 +58,11 @@ class Faq extends CRMEntity {
 		'Created Time'=>'createdtime',
 		'Modified Time'=>'modifiedtime'
 	);
+
+	// Make the field link to detail view from list view (Fieldname)
 	var $list_link_field= 'question';
 
+	// For Popup listview and UI type support
 	var $search_fields = Array(
 		'Question'=>Array('faq'=>'question'),
 		'Category'=>Array('faq'=>'faqcategories'),
@@ -57,16 +74,29 @@ class Faq extends CRMEntity {
 		'Product Name'=>'product_id',
 	);
 
-	// Column value to use on detail view record text display
-	var $def_detailview_recname = 'question';
+	// For Popup window record selection
+	var $popup_fields = Array('question');
 
-	var $default_order_by = 'id';
-	var $default_sort_order = 'DESC';
-
-	var $mandatory_fields = Array('question','faq_answer','createdtime' ,'modifiedtime');
+	// Placeholder for sort fields - All the fields will be initialized for Sorting through initSortFields
+	var $sortby_fields = Array();
 
 	// For Alphabetical search
 	var $def_basicsearch_col = 'question';
+
+	// Column value to use on detail view record text display
+	var $def_detailview_recname = 'question';
+
+	// Required Information for enabling Import feature
+	var $required_fields = Array('question'=>1);
+
+	// Callback function list during Importing
+	var $special_functions = Array('set_import_assigned_user');
+
+	var $default_order_by = 'id';
+	var $default_sort_order = 'DESC';
+	// Used when enabling/disabling the mandatory fields for the module.
+	// Refers to vtiger_field.fieldname values.
+	var $mandatory_fields = Array('question','faq_answer','createdtime' ,'modifiedtime');
 
 	function __construct() {
 		global $log;
@@ -278,23 +308,6 @@ class Faq extends CRMEntity {
 			AND vtiger_users_last_import.bean_type='$module'
 			AND vtiger_users_last_import.deleted=0";
 		return $query;
-	}
-
-	/**
-	 * Delete the last imported records.
-	 */
-	function undo_import($module, $user_id) {
-		global $adb;
-		$count = 0;
-		$query1 = "select bean_id from vtiger_users_last_import where assigned_user_id=? AND bean_type='$module' AND deleted=0";
-		$result1 = $adb->pquery($query1, array($user_id)) or die("Error getting last import for undo: ".mysql_error());
-		while ( $row1 = $adb->fetchByAssoc($result1))
-		{
-			$query2 = "update vtiger_crmentity set deleted=1 where crmid=?";
-			$result2 = $adb->pquery($query2, array($row1['bean_id'])) or die("Error undoing last import: ".mysql_error());
-			$count++;
-		}
-		return $count;
 	}
 
 	/**

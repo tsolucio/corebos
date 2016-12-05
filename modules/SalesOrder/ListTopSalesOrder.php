@@ -20,7 +20,8 @@ function getTopSalesOrder($maxval,$calCnt)
 	require_once('include/utils/utils.php');
 	require_once('modules/CustomView/CustomView.php');
 
-	global $current_language,$current_user,$list_max_entries_per_page,$theme,$adb;
+	global $current_language,$current_user,$theme,$adb;
+	$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,'SalesOrder');
 	$current_module_strings = return_module_language($current_language, 'SalesOrder');
 
 	$log = LoggerManager::getLogger('so_list');
@@ -137,6 +138,7 @@ function getTopSalesOrder($maxval,$calCnt)
 	$navigation_array, true);
 
 	$values=Array('ModuleName'=>'SalesOrder','Title'=>$title,'Header'=>$header,'Entries'=>$entries,'search_qry'=>$search_qry);
+	$display_empty_home_blocks = GlobalVariable::getVariable('Home_Display_Empty_Blocks',0);
 	if ( ($display_empty_home_blocks && $noofrows == 0 ) || ($noofrows>0) )
 		return $values;
 }
@@ -166,8 +168,8 @@ function getTopSalesOrderSearch($output) {
         )
 	);
 
-	$output['advft_criteria'] = Zend_Json::encode($advft_criteria);
-	$output['advft_criteria_groups'] = Zend_Json::encode($advft_criteria_groups);
+	$output['advft_criteria'] = json_encode($advft_criteria);
+	$output['advft_criteria_groups'] = json_encode($advft_criteria_groups);
 
 	return $output;
 }

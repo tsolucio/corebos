@@ -1,10 +1,10 @@
 <?php
 
-class iCal { 
+class iCal {
 
     var $folders;
-    
-    function iCal() {
+
+    function __construct() {
         $this->folders = 'cache/import/';
     }
     
@@ -12,7 +12,7 @@ class iCal {
         $iCaltoArray = $this->iCalDecoder($filename,$root_directory);
         return $iCaltoArray;
     }
-    
+
     function iCalDecoder($file,$root_directory) {
         $ical = file_get_contents($root_directory.$this->folders.$file);
         preg_match_all('/BEGIN:VEVENT.*?END:VEVENT/si', $ical, $eventresult, PREG_PATTERN_ORDER);

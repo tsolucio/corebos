@@ -52,7 +52,8 @@ $mod_strings = array(
 	'LBL_RECORD_ACCESS_CONTROL' => 'Record Access Control',
 	'LBL_NEW_CONDITION_GROUP_BUTTON_LABEL'=>'Nouveau groupe de condition',
 	'VTUpdateFieldsTask' => 'Mise à jour d\'un champ',
-	
+	'LBL_ON_DELETE'=>'On Delete',
+
 	'LBL_VALIDATION_DUPLICATE_FIELDNAMES' => 'Les mêmes champs sont sélectionnées plusieurs fois.',
 	'LBL_VALIDATION_INVALID_FIELD_VALUES' => 'Valeurs de champs invalides',
 	'LBL_CREATE_ENTITY_NOTE_ORDER_MATTERS' => 'Note: Les expressions seront évaluées dans l\'ordre des champs définis.

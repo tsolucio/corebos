@@ -24,7 +24,7 @@ class Vtiger_PackageExport {
 	/**
 	 * Constructor
 	 */
-	function Vtiger_PackageExport() {
+	function __construct() {
 		if(is_dir($this->_export_tmpdir) === FALSE) {
 			mkdir($this->_export_tmpdir);
 		}

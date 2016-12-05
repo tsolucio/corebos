@@ -382,5 +382,7 @@ var alert_arr = {
 	'MoveUp' : 'Mover Arriba',
 	'MoveDown' : 'Mover Abajo',
 	'Products' : 'Productos',
-	'Services' : 'Servicios'
+	'Services' : 'Servicios',
+	'LBL_Hide' : 'Esconder',
+	'LBL_Show' : 'Mostrar'
 };

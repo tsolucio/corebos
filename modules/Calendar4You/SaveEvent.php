@@ -187,6 +187,12 @@ if((isset($_REQUEST['change_status']) && $_REQUEST['change_status']) && ($_REQUE
 			}
 			if(($fieldname == 'recurringtype') && ! isset($_REQUEST['recurringcheck']))
 				$focus->column_fields['recurringtype'] = '--None--';
+			if(($fieldname == 'description') && isset($_REQUEST['description']))
+				$focus->column_fields['description'] =  decode_html($_REQUEST['description']);
+			if(($fieldname == 'subject') && isset($_REQUEST['subject']))
+				$focus->column_fields['subject'] =  decode_html($_REQUEST['subject']);
+			if(($fieldname == 'location') && isset($_REQUEST['location']))
+				$focus->column_fields['location'] =  decode_html($_REQUEST['location']);
 		}
 	}
 	if(isset($_REQUEST['visibility']) && $_REQUEST['visibility']!= '')

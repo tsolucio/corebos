@@ -875,7 +875,7 @@ function registerEvents($adb) {
 
 	// Workflow manager
 	$dependentEventHandlers = array('VTEntityDelta');
-	$dependentEventHandlersJson = Zend_Json::encode($dependentEventHandlers);
+	$dependentEventHandlersJson = json_encode($dependentEventHandlers);
 	$em->registerHandler('vtiger.entity.aftersave', 'modules/com_vtiger_workflow/VTEventHandler.inc', 'VTWorkflowEventHandler',
 								'',$dependentEventHandlersJson);
 

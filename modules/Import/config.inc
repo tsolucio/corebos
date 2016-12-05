@@ -14,13 +14,8 @@ $ImportConfig = array(
 						'vcf' => array('reader' => 'Import_VCard_Reader', 'classpath' => 'modules/Import/readers/VCardReader.php'),
 						'default' => array('reader' => 'Import_File_Reader', 'classpath' => 'modules/Import/readers/FileReader.php')
 					),
-
 	'userImportTablePrefix' => 'vtiger_import_',
-	// Individual batch limit - Specified number of records will be imported at one shot and the cycle will repeat till all records are imported
-	'importBatchLimit' => '250',
-	// Threshold record limit for immediate import. If record count is more than this, then the import is scheduled through cron job
-	'immediateImportLimit' => '1000',
 );
-
-
+$ImportConfig['importBatchLimit'] = GlobalVariable::getVariable('Import_Batch_Limit','250');
+$ImportConfig['immediateImportLimit'] = GlobalVariable::getVariable('Import_Scheduled_Limit',1000);
 ?>

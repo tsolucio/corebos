@@ -20,7 +20,7 @@
 		static $ONCE = 2;
 		static $ON_EVERY_SAVE = 3;
 		static $ON_MODIFY = 4;
-		static $ON_DELETE = 5; // Not supported yet
+		static $ON_DELETE = 5;
 		static $ON_SCHEDULE=6;
 		static $MANUAL = 7;
 		static $RECORD_ACCESS_CONTROL = 8;
@@ -302,7 +302,7 @@
 				unset($task->workflowId);
 				$exp['tasks'][] = serialize($task);
 			}
-			return  Zend_Json::encode($exp);
+			return  json_encode($exp);
 		}
 
 		/**
@@ -311,7 +311,7 @@
 		 * @return The Workflow instance representing the imported workflow.
 		 */
 		public function deserializeWorkflow($str){
-			$data =  Zend_Json::decode($str);
+			$data =  json_decode($str,true);
 			$workflow = $this->newWorkflow($data['moduleName']);
 			$workflow->description = $data['description'];
 			$workflow->test = $data['test'];
@@ -426,6 +426,7 @@
 
 			foreach($tasks as $task){
 				if(is_object($task) and $task->active) {
+					$logbg->debug($task->summary);
 					$trigger = $task->trigger;
 					if($trigger != null){
 						$delay = strtotime($data[$trigger['field']])+$trigger['days']*86400;
@@ -629,7 +630,7 @@
 		function getNextTriggerTimeForMonthlyByDate($scheduledDayOfMonth, $scheduledTime){
 			$currentDayOfMonth = date('j', time());
 			if($scheduledDayOfMonth) {
-				$scheduledDaysOfMonth = Zend_Json::decode($scheduledDayOfMonth);
+				$scheduledDaysOfMonth = json_decode($scheduledDayOfMonth,true);
 				if(is_array($scheduledDaysOfMonth)) {
 					// algorithm :
 					//1. First sort all the days in ascending order and find the closest day which is greater than currentDayOfMonth
@@ -697,7 +698,7 @@
 		function getNextTriggerTimeForAnnualDates($annualDates, $scheduledTime){
 			if($annualDates) {
 				$today = date('Y-m-d');
-				$annualDates = Zend_Json::decode($annualDates);
+				$annualDates = json_decode($annualDates);
 				$nextTriggerDay = null;
 				// sort the dates
 				sort($annualDates);

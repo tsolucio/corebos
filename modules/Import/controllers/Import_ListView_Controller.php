@@ -30,7 +30,6 @@ class Import_ListView_Controller {
 	}
 
 	public static function render($userInputObject, $user) {
-		global $list_max_entries_per_page;
 		$adb = PearDatabase::getInstance();
 
 		$viewer = new Import_UI_Viewer();
@@ -76,7 +75,7 @@ class Import_ListView_Controller {
 		}
 
 		$start = ListViewSession::getRequestCurrentPage($moduleName, $list_query, $viewId, false);
-
+		$list_max_entries_per_page = GlobalVariable::getVariable('Application_ListView_PageSize',20,$moduleName);
 		$navigation_array = VT_getSimpleNavigationValues($start,$list_max_entries_per_page,$noofrows);
 
 		$limit_start_rec = ($start-1) * $list_max_entries_per_page;

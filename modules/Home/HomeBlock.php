@@ -16,20 +16,21 @@ require_once('include/home.php');
 require_once('Smarty_setup.php');
 require_once('include/freetag/freetag.class.php');
 
-$homeObj=new Homestuff;
-$smarty=new vtigerCRM_Smarty;
+$homeObj=new Homestuff();
+$smarty=new vtigerCRM_Smarty();
 $smarty->assign("MOD",$mod_strings);
 $smarty->assign("APP",$app_strings);
 $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH",$image_path);
-
+$stuffid = '';
 if(!empty($_REQUEST['homestuffid'])){
 	$stuffid = $_REQUEST['homestuffid'];
 }
+$stufftype = '';
 if(!empty($_REQUEST['blockstufftype'])){
 	$stufftype = $_REQUEST['blockstufftype'];
 }
-
+$dashdet = '';
 if($stufftype=='Tag Cloud'){
 	$freetag = new freetag();
 	$smarty->assign("ALL_TAG",$freetag->get_tag_cloud_html("",$current_user->id));
