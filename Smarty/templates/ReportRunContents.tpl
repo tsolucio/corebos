@@ -41,38 +41,42 @@
 		<tr><td colspan="2">&nbsp;</td></tr>
 		<tr>
 		<td colspan="2">
-		{* Performance Optimization: Direct result output *}
-		{if $DIRECT_OUTPUT eq true}
-			{if isset($__REPORT_RUN_INSTANCE)}
-				{php}
-					$__oReportRun = $this->_tpl_vars['__REPORT_RUN_INSTANCE'];
-					$__filterSql = $this->_tpl_vars['__REPORT_RUN_FILTER_SQL'];
-					$__oReportRunReturnValue = $__oReportRun->GenerateReport("HTML", $__filterSql, true);
-					$__oReportRun->page=4;
-					$__oReportRunReturnValue = $__oReportRun->GenerateReport("HTMLPAGED", $__filterSql, true);
-					echo $__oReportRunReturnValue[0];
-				{/php}
-			{/if}
-		{elseif $ERROR_MSG eq ''}
-			{$REPORTHTML.0}
+		{if $ERROR_MSG eq ''}
+			<div class="rptContainer">
+				<datatable url="index.php?module=Reports&action=ReportsAjax&file=getJSON&record={$REPORTID}" template="report_row_template">
+					<table class="rptTable">
+						<tr>
+						{foreach item=dtheader from=$TABLEHEADERS}
+							<th class="rptCellLabel">{$dtheader}</th>
+						{/foreach}
+						</tr>
+					</table>
+					<footer>
+						<pagination limit="12" outer></pagination>
+						<stats></stats>
+					</footer>
+				</datatable>
+			</div>
+			<table id="report_row_template" hidden>
+				<tr>
+					{foreach item=dtheader from=$JSONHEADERS}
+						{if $dtheader eq 'reportrowaction'}
+						<td class="rptData"><a av="href:reportrowaction">{'LBL_VIEW_DETAILS'|@getTranslatedString:'Reports'}</a></td>
+						{else}
+						<td v="{$dtheader}" class="rptData"></td>
+						{/if}
+					{/foreach}
+				</tr>
+			</table>
 		{else}
 			{$ERROR_MSG}
 		{/if}
-		{* END *}
 		</td>
 		</tr>
 		<tr><td colspan="2">&nbsp;</td></tr>
 		<tr><td colspan="2">&nbsp;</td></tr>
 		<tr><td colspan="2">
-		{* Performance Optimization: Direct result output *}
-		{if $DIRECT_OUTPUT eq true}
-			{php}
-				if(is_array($__oReportRunReturnValue)) { $__oReportRun->GenerateReport("TOTALHTML", $__filterSql, true); }
-			{/php}
-		{else}
 			{$REPORTTOTHTML}
-		{/if}
-		{* END *}
 		</td></tr>
 		<tr><td colspan="2">&nbsp;</td></tr>
 		</tbody>

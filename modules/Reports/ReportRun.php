@@ -2278,8 +2278,14 @@ class ReportRun extends CRMEntity {
 					$resp['current_page'] = 1;
 					$resp['last_page'] = 1;
 				}
-				$resp['next_page_url'] = ($this->islastpage ? null : 'infscroll.php?page='.($this->page+1));
-				$resp['prev_page_url'] = ($this->page == 1 ? null : 'infscroll.php?page='.($this->page-1));
+				$resp['next_page_url'] = ($this->islastpage ? 'javascript:void(0);' : 'index.php?module=Reports&action=ReportsAjax&file=getJSON&record='.$this->reportid.'&page='.($this->page+1));
+				$resp['prev_page_url'] = ($this->page == 1 ? 'javascript:void(0);' : 'index.php?module=Reports&action=ReportsAjax&file=getJSON&record='.$this->reportid.'&page='.($this->page-1));
+				if ($this->islastpage and $this->page!=1) {
+					$resp['next_page_url'] = null;
+				} else {
+					$resp['next_page_url'] = 'index.php?module=Reports&action=ReportsAjax&file=getJSON&record='.$this->reportid.'&page='.($this->islastpage ? $this->page : $this->page+1);
+				}
+				$resp['prev_page_url'] = 'index.php?module=Reports&action=ReportsAjax&file=getJSON&record='.$this->reportid.'&page='.($this->page == 1 ? 1 : $this->page-1);
 				$custom_field_values = $adb->fetch_array($result);
 				$groupslist = $this->getGroupingList($this->reportid);
 				$header = array();
