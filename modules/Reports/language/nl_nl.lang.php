@@ -233,11 +233,12 @@ $mod_strings = Array(
 'LBL_FLDR_NOT_EMPTY'=>'De map die u wilt wijzigen is niet leeg, eerst leegmaken.',
 'NO_REL_MODULES'=>'Er zijn modules om mee te combineren',
 'LBL_REPORT_GENERATION_FAILED'=>'Het rapport kan niet worden gemaakt!',
-
-// since vtiger CRM 5.3 by Vicus
+'ERR_TOO_MANY_ROWS' => 'This report has too many rows. Please add some filters and divide it into various smaller reports.',
+'ERR_INCORRECT_REPORTID' => 'Report cannot be found',
 'LBL_SHARING_TYPE'=>'Deel Type',
 'LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS'=>'Selecteer Type om toegang tot het rapport te regelen',
 'LBL_ACTION' => 'Actie',
+'LBL ACTION' => 'Actie',
 'ACTION' => 'Actie',
 'LBL_VIEW_DETAILS' => 'Toon Details',
 'LBL_SHOW_STANDARD_FILTERS' => 'Toon Standaard Filters',

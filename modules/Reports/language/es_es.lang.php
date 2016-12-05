@@ -218,7 +218,8 @@ $mod_strings = Array(
 'LBL_FLDR_NOT_EMPTY'=>'La carpeta que intentas eliminar no esta vacía, Mueve o Elimina los Informes que contiene.',
 'NO_REL_MODULES'=>'No hay módulos relacionados con el módulo seleccionado',
 'LBL_REPORT_GENERATION_FAILED'=>'Error generando informe!',
-
+'ERR_TOO_MANY_ROWS' => 'Este informe contiene demasiadas filas para mostrar en el navegador. Por favor añade algunos filtros y divídelo en varios informes más pequeños.',
+'ERR_INCORRECT_REPORTID' => 'No se ha podido encontrar el informe',
 'LBL_OR'=>'o',
 'LBL_NEW_GROUP'=>'Grupo Nuevo',
 'LBL_DELETE_GROUP'=>'Eliminar Grupo',
@@ -226,6 +227,7 @@ $mod_strings = Array(
 'LBL_SHARING_TYPE'=>'Compartir',
 'LBL_SELECT_REPORT_TYPE_TO_CONTROL_ACCESS'=>'Selecciona el método de compartir para controlar el acceso al Informe', 
 'LBL_ACTION' => 'Acción',
+'LBL ACTION' => 'Acción',
 'ACTION' => 'Acción',
 'LBL_VIEW_DETAILS' => 'Ver Detalles',
 'LBL_SHOW_STANDARD_FILTERS' => 'Mostrar Filtros Estándar',

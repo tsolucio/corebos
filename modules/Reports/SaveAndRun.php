@@ -81,7 +81,6 @@ if($numOfRows > 0) {
 
 		$list_report_form = new vtigerCRM_Smarty;
 		$list_report_form->assign('THEME', $theme);
-		//Monolithic phase 6 changes
 		if($showCharts == true){
 			require_once 'modules/Reports/CustomReportUtils.php';
 			require_once 'include/ChartUtils.php';
@@ -120,12 +119,6 @@ if($numOfRows > 0) {
 		if($_REQUEST['submode'] == 'generateReport' && empty($advft_criteria)) {
 			$filtersql = '';
 		}
-		$sshtml = array();
-		$totalhtml = '';
-		$list_report_form->assign("DIRECT_OUTPUT", true);
-		$list_report_form->assign_by_ref("__REPORT_RUN_INSTANCE", $oReportRun);
-		$list_report_form->assign_by_ref("__REPORT_RUN_FILTER_SQL", $filtersql);
-
 		$ogReport->getPriModuleColumnsList($ogReport->primodule);
 		$ogReport->getSecModuleColumnsList($ogReport->secmodule);
 		$ogReport->getAdvancedFilterList($reportid);
@@ -151,8 +144,14 @@ if($numOfRows > 0) {
 		$list_report_form->assign("REP_FOLDERS",$ogReport->sgetRptFldr());
 
 		$list_report_form->assign("REPORTNAME", htmlspecialchars($ogReport->reportname,ENT_QUOTES,$default_charset));
-		if(is_array($sshtml))$list_report_form->assign("REPORTHTML", $sshtml);
-		else $list_report_form->assign("ERROR_MSG", getTranslatedString('LBL_REPORT_GENERATION_FAILED', $currentModule) . "<br>" . $sshtml);
+		$jsonheaders = $oReportRun->GenerateReport('HEADERS', '');
+		$list_report_form->assign('TABLEHEADERS', $jsonheaders['i18nheaders']);
+		$list_report_form->assign('JSONHEADERS', $jsonheaders['jsonheaders']);
+		if ($jsonheaders['has_contents']) {
+			$totalhtml = $oReportRun->GenerateReport('TOTALHTML', $filtersql, false);
+		} else {
+			$totalhtml = '';
+		}
 		$list_report_form->assign("REPORTTOTHTML", $totalhtml);
 		$list_report_form->assign("FOLDERID", $folderid);
 		$list_report_form->assign("DATEFORMAT",$current_user->date_format);

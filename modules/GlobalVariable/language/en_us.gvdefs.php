@@ -398,6 +398,20 @@ $GlobalVariableDefinitons = array(
 	'values' => '0 | 1',
 	'definition' => 'If set to 1 (default value) and a scheduled report has no records an empty report will be sent by email. If set to 0 no email will be sent if the report is empty.',
 ),
+'Report_ListView_PageSize' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'Number of rows per page in reports list views',
+),
+'Report_MaxRows_OnScreen' => array(
+	'status' => 'Implemented',
+	'valuetype' => 'Integer',
+	'category' => 'Application',
+	'values' => '',
+	'definition' => 'Maximum number of rows permitted for a full length HTML report. The default value is 5000.',
+),
 'Maximum_Scheduled_Workflows' => array(
 	'status' => 'Implemented',
 	'valuetype' => 'Integer',

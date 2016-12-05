@@ -99,6 +99,7 @@ class Reports extends CRMEntity{
 	 */
 	function __construct($reportid="") {
 		global $adb,$current_user,$theme,$mod_strings;
+		$current_user_parent_role_seq='';
 		require('user_privileges/user_privileges_'.$current_user->id.'.php');
 		$this->initListOfModules();
 		if($reportid != "")
@@ -116,6 +117,7 @@ class Reports extends CRMEntity{
 				$userGroups = new GetUserGroups();
 				$userGroups->getAllUserGroups($current_user->id);
 				$user_groups = $userGroups->user_groups;
+				$user_group_query = '';
 				if(!empty($user_groups) && $is_admin==false){
 					$user_group_query = " (shareid IN (".generateQuestionMarks($user_groups).") AND setype='groups') OR";
 					array_push($params, $user_groups);

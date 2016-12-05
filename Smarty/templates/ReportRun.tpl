@@ -172,16 +172,31 @@
 	</table>
 </div>
 {literal}
-
+<script src="include/bunnyjs/utils_dom.min.js"></script>
+<script src="include/bunnyjs/ajax.min.js"></script>
+<script src="include/bunnyjs/template.min.js"></script>
+<script src="include/bunnyjs/pagination.min.js"></script>
+<script src="include/bunnyjs/url.min.js"></script>
+<script src="include/bunnyjs/datatable.min.js"></script>
 <script type="text/javascript">
-function CrearEnlace(tipo,id){
+Template.define('report_row_template', {});
+{/literal}
+Pagination._config.langFirst = "{$APP.LNK_LIST_START}";
+Pagination._config.langLast = "{$APP.LNK_LIST_END}";
+Pagination._config.langPrevious = "< {$APP.LNK_LIST_PREVIOUS}";
+Pagination._config.langNext = "{$APP.LNK_LIST_NEXT} >";
+{literal}
+Pagination._config.langStats = "{from}-{to} {/literal}{$APP.LBL_LIST_OF}{literal} {total} ({/literal}{$APP.Page}{literal} {currentPage} {/literal}{$APP.LBL_LIST_OF}{literal} {lastPage})";
+DataTable.onRedraw(document.getElementsByTagName('datatable')[0], (data) => {
+	if(document.getElementById('_reportrun_total')) document.getElementById('_reportrun_total').innerHTML=data.total;
+});
 
+function CrearEnlace(tipo,id){
 	if(!checkAdvancedFilter()) return false;
 	var advft_criteria = encodeURIComponent(document.getElementById('advft_criteria').value);
 	var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
 
 	return "index.php?module=Reports&action="+tipo+"&record="+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups;
-
 }
 
 function goToURL(url) {
@@ -271,7 +286,6 @@ function generateReport(id) {
 		);
 }
 
-
 function saveReportAdvFilter(id) {
 
 	if(!checkAdvancedFilter()) return false;
@@ -329,7 +343,6 @@ function SaveAsReport(id) {
 {/literal}
 
 function goToPrintReport(id) {ldelim}
-
 	if(!checkAdvancedFilter()) return false;
 	var advft_criteria = document.getElementById('advft_criteria').value;
 	var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
