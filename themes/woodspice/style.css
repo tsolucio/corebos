@@ -1608,6 +1608,7 @@ datatable stats {
 .rptData {
     background: #FFF;
     font-weight: normal;
+    color: black;
 }
 
 .rptEmptyGrp {
