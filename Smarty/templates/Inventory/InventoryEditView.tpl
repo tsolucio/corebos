@@ -21,7 +21,7 @@
 </script>
 {/if}
 
-{include file='Buttons_List1.tpl'}
+{include file='Buttons_List.tpl'}
 
 {*<!-- Contents -->*}
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
@@ -86,7 +86,7 @@
 							   <tr>
 								<td style="padding:10px">
 								<!-- General details -->
-									<table border=0 cellspacing=0 cellpadding=0 width=100% class="small createview_table">
+									<table border=0 cellspacing=0 cellpadding=0 width="100%" class="small createview_table">
 									   <tr>
 										<td colspan=4 style="padding:5px">
 										   <div align="center">
@@ -98,7 +98,7 @@
 
 									   <!-- included to handle the edit fields based on ui types -->
 									   {foreach key=header item=data from=$BLOCKS}
-									      <tr id="tbl{$header|replace:' ':''}Head">
+										<tr id="tbl{$header|replace:' ':''}Head">
 										{if $header== $MOD.LBL_ADDRESS_INFORMATION && ($MODULE == 'Accounts' || $MODULE == 'Contacts' || $MODULE == 'Quotes' || $MODULE == 'PurchaseOrder' || $MODULE == 'SalesOrder'|| $MODULE == 'Invoice')  && $SHOW_COPY_ADDRESS eq 'yes'}
 											<td colspan=2 class="detailedViewHeader">
 											<b>{$header}</b></td>
@@ -109,14 +109,18 @@
 										{else}
 											<td colspan=4 class="detailedViewHeader">
 											<b>{$header}</b>
-										{/if}
 										</td>
-									      </tr>
+										{/if}
+										</tr>
 
-										<!-- Handle the ui types display -->
-										{include file="DisplayFields.tpl"}
+										{if $CUSTOMBLOCKS.$header.custom}
+											{include file=$CUSTOMBLOCKS.$header.tpl}
+										{else}
+											<!-- Handle the ui types display -->
+											{include file="DisplayFields.tpl"}
+										{/if}
 
-									      <tr style="height:25px"><td>&nbsp;</td></tr>
+										<tr style="height:25px"><td>&nbsp;</td></tr>
 
 									   {/foreach}
 

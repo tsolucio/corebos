@@ -179,7 +179,7 @@
 				</td>
 			   </tr>
 			</table>
-		<div>
+		</div>
 	</td>
 	<td align=right valign=top><img src="{'showPanelTopRight.gif'|@vtiger_imageurl:$THEME}"></td>
    </tr>
@@ -219,12 +219,6 @@
 </script>
 {/if}
 
-{if $MODULE eq 'Accounts'}
-<script>
-	ScrollEffect.limit = 201;
-	ScrollEffect.closelimit= 200;
-</script>
-{/if}
 <script>
 	var fieldname = new Array({$VALIDATION_DATA_FIELDNAME});
 	var fieldlabel = new Array({$VALIDATION_DATA_FIELDLABEL});
@@ -232,12 +226,10 @@
 
 	var ProductImages=new Array();
 	var count=0;
-
 	function delRowEmt(imagename)
 	{ldelim}
 		ProductImages[count++]=imagename;
 	{rdelim}
-
 	function displaydeleted()
 	{ldelim}
 		var imagelists='';
