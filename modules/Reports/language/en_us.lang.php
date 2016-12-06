@@ -276,6 +276,7 @@ $mod_strings = Array(
 'LBL_GROUPING_TIME' => 'Group By Time',
 'LBL_WIDGET_ADDED' => 'Widget Added Successfully.',
 'LBL_UNDEFINED' => 'Undefined',
-)
+'Add ReportCharts' => 'Add Report Charts',
+);
 
 ?>

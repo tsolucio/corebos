@@ -282,7 +282,8 @@ $mod_strings = Array(
 'LBL_HOME_WINDOW_TITLE' => 'Título Ventana',
 'LBL_GROUPING_TIME' => 'Agrupar por Tiempo',
 'LBL_WIDGET_ADDED' => 'Widget Añadido Correctamente.',
+'Add ReportCharts' => 'Añadir Gráfico de Informe',
 
-)
+);
 
 ?>

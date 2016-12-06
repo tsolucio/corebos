@@ -9,14 +9,6 @@
  ********************************************************************************/
 -->*}
 <br>
-<table align="center" border="0" cellpadding="5" cellspacing="0" width="100%" class="mailSubHeader">
-	<tbody><tr>
-	{if $SHOWCHARTS eq 'true'}
-		<td align="right"  width="100%"><input class="crmbutton small create" style="background:#E85313" id="viewcharts1" name="viewcharts1" value="{'LBL_VIEW_CHARTS'|@getTranslatedString:$MODULE}" type="button" onClick="window.location.href = '#viewcharts'" title="{'LBL_VIEW_CHARTS'|@getTranslatedString:$MODULE}"></td>
-	{/if}
-	</tr>
-	</tbody>
-</table>
 
 <table style="border: 1px solid rgb(0, 0, 0);" align="center" cellpadding="0" cellspacing="0" width="100%">
 	<tbody><tr>
@@ -110,7 +102,11 @@
 <table align="center" border="0" cellpadding="5" cellspacing="0" width="100%" class="mailSubHeader">
 	<tbody><tr>
 	{if $SHOWCHARTS eq 'true'}
-		<td align="right" width="100%"><input class="crmbutton small create" style="background:#E85313" id="addChartstodashboard" name="addChartstodashboard" value="{'LBL_ADD_CHARTS'|@getTranslatedString:$MODULE}" type="button" onClick="showAddChartPopup();" title="{'LBL_ADD_CHARTS'|@getTranslatedString:$MODULE}"></td>
+		<td align="right" width="100%">
+			<a href="javascript:void(0);" onclick="showAddChartPopup();"><img src="{'dashboard_60.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{'LBL_ADD_CHARTS'|@getTranslatedString:$MODULE}" title="{'LBL_ADD_CHARTS'|@getTranslatedString:$MODULE}" style="background:#E85313;border:0;width:24px;" id="addChartstodashboard" name="addChartstodashboard"></a>
+			&nbsp;
+			<a href="javascript:void(0);" onclick="window.location.href = '#rpttop'"><img src="{'jump_to_top_60.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{'LBL_JUMP_To'|@getTranslatedString:$MODULE}" title="{'LBL_JUMP_To'|@getTranslatedString:$MODULE}" border="0" width="24px"></a>
+		</td>
 	{/if}
 	</tr>
 	</tbody>
@@ -119,7 +115,7 @@
 <div id="addcharttoHomepage"  class="layerPopup" style="z-index:2000; display:none; width: 400px;">
 <table width="100%" border="0" cellpadding="5" cellspacing="0" class="layerHeadingULine">
     <tr>
-        <td align="left" id="divHeader" class="layerPopupHeading" width="80%"><b>Add ReportCharts</b></td>
+        <td align="left" id="divHeader" class="layerPopupHeading" width="80%"><b>{'Add ReportCharts'|@getTranslatedString:$MODULE}</b></td>
         <td align="right">
                 <a onclick="fnhide('addcharttoHomepage');" href="javascript:;">
                 <img border="0" align="absmiddle" src="{'close.gif'|@vtiger_imageurl:$THEME}"></a>

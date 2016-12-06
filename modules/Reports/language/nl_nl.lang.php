@@ -281,6 +281,7 @@ $mod_strings = Array(
 
 'LBL_SAVE_REPORT' => 'Opslaan',
 'LBL_SAVE_REPORT_AS' => 'Sla Rapport op als...',
+'Add ReportCharts' => 'Add Report Charts',
 
 )
 

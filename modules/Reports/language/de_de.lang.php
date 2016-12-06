@@ -281,6 +281,7 @@ $mod_strings = Array(
     'LBL_HOME_WINDOW_TITLE' => 'Fenstername',
     'LBL_GROUPING_TIME' => 'Gruppier nach Zeit',
     'LBL_WIDGET_ADDED' => 'Fenster erfolgreich hinzugefügt.',
+	'Add ReportCharts' => 'Add Report Charts',
 );
 
 ?>

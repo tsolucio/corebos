@@ -270,6 +270,7 @@ $mod_strings = array(
 	'LBL_GROUPING_TIME' => 'Csoportosítás idő alapján',
 	'LBL_WIDGET_ADDED' => 'A dobozt sikeresen hozzáadtuk',
 	'LBL_UNDEFINED' => 'Meghatározatlan',
-	'LBL_GENERATED_Raport' => 'Létrehozott jelentés'
+	'LBL_GENERATED_Raport' => 'Létrehozott jelentés',
+	'Add ReportCharts' => 'Add Report Charts',
 );
 ?>
