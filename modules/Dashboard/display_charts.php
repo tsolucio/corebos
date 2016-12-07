@@ -138,7 +138,7 @@ $product_category = "select vtiger_products.*,vtiger_crmentity.deleted from vtig
 			$module="Leads";
 			$where="";
 			$query=getDashboardQuery($leads_query,$module);
-			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
+			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"510","250","forhomepage");
 		}
 		// To display the charts  for Lead status
 		elseif ($profileTabsPermission[getTabid("Leads")] == 0 && ($type == "leadstatus")&& (getFieldVisibilityPermission('Leads',$user_id,'leadstatus') == "0"))
@@ -150,7 +150,7 @@ $product_category = "select vtiger_products.*,vtiger_crmentity.deleted from vtig
 			$query=getDashboardQuery($leads_query,$module);
 			if(!$is_admin)
 				$query .= ' and vtiger_leaddetails.leadsource '.picklist_check($module,$graph_by);
-				return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
+				return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"510","250","forhomepage");
 		}
 		//Charts for Lead Industry
 		elseif ($profileTabsPermission[getTabid("Leads")] == 0 && ($type == "leadindustry") && (getFieldVisibilityPermission('Leads',$user_id,'industry') == "0"))
@@ -160,7 +160,7 @@ $product_category = "select vtiger_products.*,vtiger_crmentity.deleted from vtig
 			$module="Leads";
 			$where="";
 			$query=getDashboardQuery($leads_query,$module);
-			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
+			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"510","250","forhomepage");
 		}
 		//Sales by Lead Source
 		elseif ($profileTabsPermission[getTabid("Potentials")] == 0 && ($type == "salesbyleadsource")&& (getFieldVisibilityPermission('Potentials',$user_id,'leadsource') == "0"))
@@ -170,7 +170,7 @@ $product_category = "select vtiger_products.*,vtiger_crmentity.deleted from vtig
 			$module="Potentials";
 			$where=" and vtiger_potential.sales_stage like '%Closed Won%' ";
 			$query=getDashboardQuery($potential_query,$module);
-			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
+			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"510","250","forhomepage");
 		}
 		//Sales by Account
 		elseif ($profileTabsPermission[getTabid("Potentials")] == 0 && ($type == "salesbyaccount") && (getFieldVisibilityPermission('Potentials',$user_id,'related_to') == "0"))
@@ -180,7 +180,7 @@ $product_category = "select vtiger_products.*,vtiger_crmentity.deleted from vtig
 			$module="Potentials";
 			$where=" and vtiger_potential.sales_stage like '%Closed Won%' ";
 			$query=getDashboardQuery($potential_query,$module);
-			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
+			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"510","250","forhomepage");
 		}
 		//Sales by User
 		elseif ($profileTabsPermission[getTabid("Potentials")] == 0 && ($type == "salesbyuser"))
@@ -190,7 +190,7 @@ $product_category = "select vtiger_products.*,vtiger_crmentity.deleted from vtig
 			$module="Potentials";
 			$where=" and vtiger_potential.sales_stage like '%Closed Won%' and (vtiger_groups.groupname is NULL)";
 			$query=getDashboardQuery($potential_query,$module);
-			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
+			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"510","250","forhomepage");
 		}
 		//Sales by team
 		elseif ($profileTabsPermission[getTabid("Potentials")] == 0 && ($type == "salesbyteam"))
@@ -200,7 +200,7 @@ $product_category = "select vtiger_products.*,vtiger_crmentity.deleted from vtig
 			$module="Potentials";
 			$where=" and vtiger_potential.sales_stage like '%Closed Won%' and (vtiger_groups.groupname != NULL || vtiger_groups.groupname != '')";
 			$query=getDashboardQuery($potential_query,$module);
-			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
+			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"510","250","forhomepage");
 		}
 		//Charts for Account by Industry
 		elseif ($profileTabsPermission[getTabid("Accounts")] == 0 && ($type == "accountindustry") && (getFieldVisibilityPermission('Accounts',$user_id,'industry') == "0"))
@@ -210,7 +210,7 @@ $product_category = "select vtiger_products.*,vtiger_crmentity.deleted from vtig
 			$module="Accounts";
 			$where="";
 			$query=getDashboardQuery($account_query,$module);
-			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
+			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"510","250","forhomepage");
 		}
 		//Charts for Products by Category
 		elseif ($profileTabsPermission[getTabid("Products")] == 0 && ($type == "productcategory") && (getFieldVisibilityPermission('Products',$user_id,'productcategory') == "0"))
@@ -220,7 +220,7 @@ $product_category = "select vtiger_products.*,vtiger_crmentity.deleted from vtig
 			$module="Products";
 			$where="";
 			$query=getDashboardQuery($product_category, $module);
-			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
+			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"510","250","forhomepage");
 		}
 		//Charts for Products by Quantity in stock
 		elseif ($profileTabsPermission[getTabid("Products")] == 0 && ($type == "productbyqtyinstock") && (getFieldVisibilityPermission('Products',$user_id,'qtyinstock') == "0"))
@@ -230,7 +230,7 @@ $product_category = "select vtiger_products.*,vtiger_crmentity.deleted from vtig
 			$module="Products";
 			$where="";
 			$query=getDashboardQuery($products_query,$module);
-			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
+			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"510","250","forhomepage");
 		}
 		//Charts for Products by PO
 		elseif ($profileTabsPermission[getTabid("Products")] == 0 && ($type == "productbypo") && $profileTabsPermission[getTabid("PurchaseOrder")] == 0)
@@ -240,7 +240,7 @@ $product_category = "select vtiger_products.*,vtiger_crmentity.deleted from vtig
 			$module="Products";
 			$where="";
 			$query=getDashboardQuery($probyPO,$module);
-			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
+			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"510","250","forhomepage");
 		}
 		//Charts for Products by Quotes
 		elseif ($profileTabsPermission[getTabid("Products")] == 0 && ($type == "productbyquotes") && $profileTabsPermission[getTabid("Quotes")] == 0)
@@ -250,7 +250,7 @@ $product_category = "select vtiger_products.*,vtiger_crmentity.deleted from vtig
 			$module="Products";
 			$where="";
 			$query=getDashboardQuery($probyQ, $module);
-			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
+			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"510","250","forhomepage");
 		}
 		//Charts for Products by Invoice
 		elseif ($profileTabsPermission[getTabid("Products")] == 0 && ($type == "productbyinvoice") && $profileTabsPermission[getTabid("Invoice")] == 0)
@@ -260,7 +260,7 @@ $product_category = "select vtiger_products.*,vtiger_crmentity.deleted from vtig
 			$module="Products";
 			$where="";
 			$query=getDashboardQuery($probyInv, $module);
-			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
+			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"510","250","forhomepage");
 		}
 		// Sales Order by Accounts
 		elseif ($profileTabsPermission[getTabid("SalesOrder")] == 0 && ($type == "sobyaccounts") && (getFieldVisibilityPermission('SalesOrder',$user_id,'account_id') == "0"))
@@ -270,7 +270,7 @@ $product_category = "select vtiger_products.*,vtiger_crmentity.deleted from vtig
 			$module="SalesOrder";
 			$where="";
 			$query=getDashboardQuery($so_query,$module);
-			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
+			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"510","250","forhomepage");
 		}
 		//Sales Order by Status
 		elseif ($profileTabsPermission[getTabid("SalesOrder")] == 0 && ($type == "sobystatus") && (getFieldVisibilityPermission('SalesOrder',$user_id,'sostatus') == "0"))
@@ -280,7 +280,7 @@ $product_category = "select vtiger_products.*,vtiger_crmentity.deleted from vtig
 			$module="SalesOrder";
 			$where="";
 			$query=getDashboardQuery($so_query,$module);
-			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
+			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"510","250","forhomepage");
 		}
 		//Purchase Order by Status
 		elseif ($profileTabsPermission[getTabid("PurchaseOrder")] == 0 && ($type == "pobystatus") && (getFieldVisibilityPermission('PurchaseOrder',$user_id,'postatus') == "0"))
@@ -290,7 +290,7 @@ $product_category = "select vtiger_products.*,vtiger_crmentity.deleted from vtig
 			$module="PurchaseOrder";
 			$where="";
 			$query=getDashboardQuery($po_query,$module);
-			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
+			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"510","250","forhomepage");
 		}
 		//Quotes by Accounts
 		elseif ($profileTabsPermission[getTabid("Quotes")] == 0 && ($type == "quotesbyaccounts") && (getFieldVisibilityPermission('Quotes',$user_id,'account_id') == "0"))
@@ -300,7 +300,7 @@ $product_category = "select vtiger_products.*,vtiger_crmentity.deleted from vtig
 			$module="Quotes";
 			$where="";
 			$query=getDashboardQuery($quotes_query,$module);
-			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
+			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"510","250","forhomepage");
 		}
 		//Quotes by Stage
 		elseif ($profileTabsPermission[getTabid("Quotes")] == 0 && ($type == "quotesbystage") && (getFieldVisibilityPermission('Quotes',$user_id,'quotestage') == "0"))
@@ -310,7 +310,7 @@ $product_category = "select vtiger_products.*,vtiger_crmentity.deleted from vtig
 			$module="Quotes";
 			$where="";
 			$query=getDashboardQuery($quotes_query,$module);
-			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
+			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"510","250","forhomepage");
 		}
 		//Invoice by Accounts
 		elseif ($profileTabsPermission[getTabid("Invoice")] == 0 && ($type == "invoicebyacnts") && (getFieldVisibilityPermission('Invoice',$user_id,'account_id') == "0"))
@@ -320,7 +320,7 @@ $product_category = "select vtiger_products.*,vtiger_crmentity.deleted from vtig
 			$module="Invoice";
 			$where="";
 			$query=getDashboardQuery($invoice_query,$module);
-			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
+			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"510","250","forhomepage");
 		}
 		//Invoices by status
 		elseif ($profileTabsPermission[getTabid("Invoice")] == 0 && ($type == "invoicebystatus") && (getFieldVisibilityPermission('Invoice',$user_id,'invoicestatus') == "0"))
@@ -330,7 +330,7 @@ $product_category = "select vtiger_products.*,vtiger_crmentity.deleted from vtig
 			$module="Invoice";
 			$where="";
 			$query=getDashboardQuery($invoice_query,$module);
-			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
+			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"510","250","forhomepage");
 		}
 		//Tickets by Status
 		elseif ($profileTabsPermission[getTabid("HelpDesk")] == 0 && ($type == "ticketsbystatus") && (getFieldVisibilityPermission('HelpDesk',$user_id,'ticketstatus') == "0"))
@@ -340,7 +340,7 @@ $product_category = "select vtiger_products.*,vtiger_crmentity.deleted from vtig
 			$module="HelpDesk";
 			$where="";
 			$query=getDashboardQuery($helpdesk_query,$module);
-			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
+			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"510","250","forhomepage");
 		}
 		//Tickets by Priority
 		elseif ($profileTabsPermission[getTabid("HelpDesk")] == 0 && ($type == "ticketsbypriority") && (getFieldVisibilityPermission('HelpDesk',$user_id,'ticketpriorities') == "0"))
@@ -350,7 +350,7 @@ $product_category = "select vtiger_products.*,vtiger_crmentity.deleted from vtig
 			$module="HelpDesk";
 			$where="";
 			$query=getDashboardQuery($helpdesk_query,$module);
-			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
+			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"510","250","forhomepage");
 		}
 		//Tickets by Category
 		elseif ($profileTabsPermission[getTabid("HelpDesk")] == 0 && ($type == "ticketsbycategory") && (getFieldVisibilityPermission('HelpDesk',$user_id,'ticketcategories') == "0"))
@@ -360,7 +360,7 @@ $product_category = "select vtiger_products.*,vtiger_crmentity.deleted from vtig
 			$module="HelpDesk";
 			$where="";
 			$query=getDashboardQuery($helpdesk_query,$module);
-			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
+			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"510","250","forhomepage");
 		}
 		//Tickets by User
 		elseif ($profileTabsPermission[getTabid("HelpDesk")] == 0 && ($type == "ticketsbyuser"))
@@ -370,7 +370,7 @@ $product_category = "select vtiger_products.*,vtiger_crmentity.deleted from vtig
 			$module="HelpDesk";
 			$where=" and (vtiger_groups.groupname is NULL)";
 			$query=getDashboardQuery($helpdesk_query,$module);
-			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
+			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"510","250","forhomepage");
 		}
 		//Tickets by Team
 		elseif ($profileTabsPermission[getTabid("HelpDesk")] == 0 && ($type == "ticketsbyteam"))
@@ -380,7 +380,7 @@ $product_category = "select vtiger_products.*,vtiger_crmentity.deleted from vtig
 			$module="HelpDesk";
 			$where=" and (vtiger_groups.groupname != NULL || vtiger_groups.groupname != ' ')";
 			$query=getDashboardQuery($helpdesk_query,$module);
-			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
+			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"510","250","forhomepage");
 		}
 		//Tickets by Product
 		elseif ($profileTabsPermission[getTabid("HelpDesk")] == 0 && ($type == "ticketsbyproduct") && (getFieldVisibilityPermission('HelpDesk',$user_id,'product_id') == "0"))
@@ -390,7 +390,7 @@ $product_category = "select vtiger_products.*,vtiger_crmentity.deleted from vtig
 			$module="HelpDesk";
 			$where="";
 			$query=getDashboardQuery($helpdesk_query,$module);
-			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
+			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"510","250","forhomepage");
 		}
 		//Campaigns by Contact
 		elseif ($profileTabsPermission[getTabid("Contacts")] == 0 && ($type == "contactbycampaign") && $profileTabsPermission[getTabid("Campaigns")] == 0)
@@ -400,7 +400,7 @@ $product_category = "select vtiger_products.*,vtiger_crmentity.deleted from vtig
 			$module="Contacts";
 			$where="";
 			$query=getDashboardQuery($campaign_query,$module);
-			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
+			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"510","250","forhomepage");
 		}
 		//Tickets by Account
 		elseif ($profileTabsPermission[getTabid("HelpDesk")] == 0 && ($type == "ticketsbyaccount") && (getFieldVisibilityPermission('HelpDesk',$user_id,'parent_id') == "0"))
@@ -410,7 +410,7 @@ $product_category = "select vtiger_products.*,vtiger_crmentity.deleted from vtig
 			$module="HelpDesk";
 			$where="";
 			$query=getDashboardQuery($tickets_by_account,$module);
-			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
+			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"510","250","forhomepage");
 		}
 		//Tickets by Contact
 		elseif ($profileTabsPermission[getTabid("HelpDesk")] == 0 && ($type == "ticketsbycontact") && (getFieldVisibilityPermission('HelpDesk',$user_id,'parent_id') == "0"))
@@ -420,7 +420,7 @@ $product_category = "select vtiger_products.*,vtiger_crmentity.deleted from vtig
 			$module="HelpDesk";
 			$where="";
 			$query=getDashboardQuery($tickets_by_contact,$module);
-			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"210","210","forhomepage");
+			return get_graph_by_type($graph_by,$graph_title,$module,$where,$query,"510","250","forhomepage");
 		}
 		else
 		{

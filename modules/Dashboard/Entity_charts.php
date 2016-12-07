@@ -11,6 +11,7 @@ require_once('include/utils/utils.php');
 include("modules/Dashboard/horizontal_bargraph.php");
 include("modules/Dashboard/vertical_bargraph.php");
 include_once("modules/Dashboard/pie_graph.php");
+require_once("modules/Dashboard/DashboardCharts.php");
 
 /* Function to get the Account name for a given vtiger_account id
  * Portions created by vtiger are Copyright (C) vtiger.
@@ -571,41 +572,53 @@ function get_graph_by_type($graph_by,$graph_title,$module,$where,$query,$width=9
 {
 	global $user_id,$date_start,$end_date,$type,$mod_strings;
 	$time = time();
-	//Giving the Cached image name
-	$cache_file_name=abs(crc32($user_id))."_".$type."_".crc32($date_start.$end_date).$time.".png";
 	$html_imagename=$graph_by; //Html image name for the graph
 
 	$graph_details=module_Chart($user_id,$date_start,$end_date,$query,$graph_by,$graph_title,$where,$module,$type);
 	if($graph_details!=0)
 	{
-		$name_val=$graph_details[0];
-		$cnt_val=$graph_details[1];
-		$graph_title=$graph_details[2];
-		$target_val=$graph_details[3];
-		$graph_date=$graph_details[4];
-		$urlstring=$graph_details[5];
-		$cnt_table=$graph_details[6];
-		$test_target_val=$graph_details[7];
+		$labels = DashboardCharts::convertToArray($graph_details[0],true,true);
+		$values = $graph_details[1];
+		$graph_title = $graph_details[2];
+		$target_values = DashboardCharts::convertToArray($graph_details[3],false,true);
+		$graph_date = $graph_details[4];
+		$urlstring = $graph_details[5];
+		$cnt_table = $graph_details[6];
+		$test_target_val = $graph_details[7];
 
 		if(isset($_REQUEST['display_view']) && $_REQUEST['display_view'] == 'MATRIX')
 		{
 			$width = 250;
 			$height = 250;
-		}else
-		{
-			$width = 850;
-			$height = 500;
 		}
 
 		$top=20;
 		$left=140;
 		$bottom=120;
-		$title=$graph_title;
+		if (isset($_REQUEST['Chart_Type'])) {
+			switch ($_REQUEST['Chart_Type']) {
+				case 'horizontalbarchart':
+					$Chart_Type = 'horizontalBar';
+					$Chart_position = 'top';
+					break;
+				case 'piechart':
+					$Chart_Type = 'pie';
+					$Chart_position = 'right';
+					break;
+				case 'verticalbarchart':
+				default:
+					$Chart_Type = 'bar';
+					$Chart_position = 'top';
+					break;
+			}
+		} else {
+			$Chart_Type = 'bar';
+			$Chart_position = 'top';
+		}
+
 		if($frompage != '')
 		{
-			//echo $width.'------'.$height.'------'.$left.'------'.$right.'------'.$top.'------'.$bottom.'------'.$title.'------'.$test_target_val.'------'.$date_start.'------'.$end_date;
-			//die;
-			return get_graph_homepg($cache_file_name,$html_imagename,$cnt_val,$name_val,280,285,$left,$right,$top,$bottom,$title,$target_val,$graph_date,$urlstring,$test_target_val,$date_start,$end_date);
+			return DashboardCharts::getChartHTML($labels, $values, $graph_title, $target_values,$html_imagename, $width, $height, $left, $right, $top, $bottom, $Chart_Type, $Chart_position);
 		}else
 		{
 			return get_graph($cache_file_name,$html_imagename,$cnt_val,$name_val,$width,$height,$left,$right,$top,$bottom,$title,$target_val,$graph_date,$urlstring,$test_target_val,$date_start,$end_date);
