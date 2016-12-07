@@ -88,8 +88,8 @@
 			<td>
 				<table border=0 cellspacing=1 cellpadding=0 width="100%" class="lvtBg">
 					<tr>
-						<td> {$PIECHART} </td>
-						<td> {$BARCHART} </td>
+						<td><canvas id="rptpiechart" style="width:400px;height:400px;margin:auto;padding:10px;"></canvas></td>
+						<td><canvas id="rptbarchart" style="width:400px;height:400px;margin:auto;padding:10px;"></canvas></td>
 					</tr>
 				</table>
 			</td>
@@ -97,6 +97,76 @@
 		</tr>
 	</tbody>
 </table>
+<script type="text/javascript">
+{literal}
+function getRandomColor() {
+	return randomColor({
+		luminosity: 'dark',
+		hue: 'random'
+	});
+}
+let chartDataObject = {
+	labels: [{/literal}{foreach item=LABEL name=chartlabels from=$CHARTDATA.xaxisData}"{$LABEL}"{if not $smarty.foreach.chartlabels.last},{/if}{/foreach}{literal}],
+	datasets: [{
+		data: [{/literal}{foreach item=CVALUE name=chartvalues from=$CHARTDATA.yaxisData}"{$CVALUE}"{if not $smarty.foreach.chartvalues.last},{/if}{/foreach}{literal}],
+		backgroundColor: [{/literal}{foreach item=CVALUE name=chartvalues from=$CHARTDATA.yaxisData}getRandomColor(){if not $smarty.foreach.chartvalues.last},{/if}{/foreach}{literal}]
+	}]
+};
+let rptpiechart = document.getElementById('rptpiechart');
+let rptbarchart = document.getElementById('rptbarchart');
+let pchart = new Chart(rptpiechart,{
+	type: 'pie',
+	data: chartDataObject,
+	options: {
+		responsive: false,
+		legend: {
+			position: "right",
+			labels: {
+				fontSize: 11,
+				boxWidth: 18
+			}
+		}
+	}
+});
+let barchar = new Chart(rptbarchart,{
+	type: 'horizontalBar',
+	data: chartDataObject,
+	options: {
+		responsive: false,
+		legend: {
+			display: false,
+			labels: {
+				fontSize: 11
+			}
+		}
+	}
+});
+rptpiechart.addEventListener('click',pieclick);
+function pieclick(evt) {
+	let activePoint = pchart.getElementAtEvent(evt);
+	let clickzone = {
+		{/literal}{foreach item=CLICKVALUE key=CLICKINDEX name=clickvalues from=$CHARTDATA.targetLink}{$CLICKINDEX}:"{$CLICKVALUE}"{if not $smarty.foreach.clickvalues.last},{/if}{/foreach}{literal}
+	};
+	let a = document.createElement("a");
+	a.target = "_blank";
+	a.href = clickzone[activePoint[0]._index];
+	document.body.appendChild(a);
+	a.click();
+}
+rptbarchart.addEventListener('click',barclick);
+function barclick(evt) {
+	let activePoint = barchar.getElementAtEvent(evt);
+	let clickzone = {
+		{/literal}{foreach item=CLICKVALUE key=CLICKINDEX name=clickvalues from=$CHARTDATA.targetLink}{$CLICKINDEX}:"{$CLICKVALUE}"{if not $smarty.foreach.clickvalues.last},{/if}{/foreach}{literal}
+	};
+	let a = document.createElement("a");
+	a.target = "_blank";
+	a.href = clickzone[activePoint[0]._index];
+	document.body.appendChild(a);
+	a.click();
+}
+{/literal}
+</script>
 </div>
 {/if}
 <table align="center" border="0" cellpadding="5" cellspacing="0" width="100%" class="mailSubHeader">

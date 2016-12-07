@@ -55,10 +55,10 @@ if($stufftype=='Tag Cloud'){
 		$homeObj->getDashDetails($stuffid,'type');
 		$dashdet=$homeObj->dashdetails;
 	}
-    if($stufftype=="ReportCharts"){
-    	$homeObj->getReportChartDetails($stuffid,'type');
-        $dashdet = $homeObj->reportdetails;
-    }
+	if($stufftype=="ReportCharts"){
+		$homeObj->getReportChartDetails($stuffid,'type');
+		$dashdet = $homeObj->reportdetails;
+	}
 }
 
 $smarty->assign("DASHDETAILS",$dashdet);

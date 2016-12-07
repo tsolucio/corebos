@@ -330,6 +330,7 @@ function loadStuff(stuffid,stufftype){
 	}).done(function (response) {
 				var responseVal=response;
 				document.getElementById('stuffcont_'+stuffid).innerHTML=response;
+				vtlib_executeJavascriptInElement(document.getElementById('stuffcont_'+stuffid));
 				if(stufftype=="Module"){
 					if(document.getElementById('more_'+stuffid).value != null && document.getElementById('more_'+stuffid).value != '')
 						document.getElementById('a_'+stuffid).href = "index.php?module="+document.getElementById('more_'+stuffid).value+"&action=ListView&viewname="+document.getElementById('cvid_'+stuffid).value;
@@ -792,3 +793,29 @@ function saveEditReportCharts(dashRowId){
 			}
 	);
 }
+
+function changeGraphType(chartid,type) {
+	let ctype = 'pie';
+	switch (trim(type)) {
+	case 'piechart':
+		ctype = 'pie';
+		break;
+	case 'verticalbarchart':
+		ctype = 'bar';
+		break;
+	case 'horizontalbarchart':
+		ctype = 'horizontalBar';
+		break;
+	}
+	let chart_object = window['schart'+chartid];
+	chart_object.destroy();
+	window['doChart'+chartid](ctype);
+}
+
+function getRandomColor() {
+	return randomColor({
+		luminosity: 'dark',
+		hue: 'random'
+	});
+}
+

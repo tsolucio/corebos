@@ -100,10 +100,8 @@ if($numOfRows > 0) {
 				$queryResult = $adb->pquery($queryReports,array());
 				//ChartUtils::generateChartDataFromReports($queryResult, strtolower($groupByNew[1]));
 				if($adb->num_rows($queryResult)){
-					$pieChart = ChartUtils::getReportPieChart($queryResult, strtolower($module_field),$fieldDetails,$reportid);
-					$barChart = ChartUtils::getReportBarChart($queryResult, strtolower($module_field),$fieldDetails,$reportid);
-					$list_report_form->assign("PIECHART",$pieChart);
-					$list_report_form->assign("BARCHART",$barChart);
+					$ChartDetails = ChartUtils::generateChartDataFromReports($queryResult, strtolower($module_field), $fieldDetails, $reportid);
+					$list_report_form->assign('CHARTDATA',$ChartDetails);
 				}
 				else{
 					$showCharts = false;

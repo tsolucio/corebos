@@ -32,9 +32,9 @@
 		</tr>
 {elseif $HOME_STUFFTYPE eq "ReportCharts"}
 		<td  valign="top" align='center' class="homePageMatrixHdr" style="height:28px;" width=60%>
-			<input type="radio" id="reportradio_0" name="reportradio_{$HOME_STUFFID}" value="horizontalbarchart" {if $DASHDETAILS.$HOME_STUFFID.Chart eq 'horizontalbarchart'}checked{/if}>Horizontal
-			<input type="radio" id="reportradio_1" name="reportradio_{$HOME_STUFFID}" value="verticalbarchart"{if $DASHDETAILS.$HOME_STUFFID.Chart eq 'verticalbarchart'}checked{/if}>Vertical
-			<input type="radio" id="reportradio_2" name="reportradio_{$HOME_STUFFID}" value="piechart" {if $DASHDETAILS.$HOME_STUFFID.Chart eq 'piechart'}checked{/if}>Pie
+			<input type="radio" id="reportradio_0" name="reportradio_{$HOME_STUFFID}" value="horizontalbarchart" {if $DASHDETAILS.$HOME_STUFFID.Chart eq 'horizontalbarchart'}checked{/if} onclick="changeGraphType({$HOME_STUFFID},'horizontalbarchart');">Horizontal
+			<input type="radio" id="reportradio_1" name="reportradio_{$HOME_STUFFID}" value="verticalbarchart"{if $DASHDETAILS.$HOME_STUFFID.Chart eq 'verticalbarchart'}checked{/if} onclick="changeGraphType({$HOME_STUFFID},'verticalbarchart');">Vertical
+			<input type="radio" id="reportradio_2" name="reportradio_{$HOME_STUFFID}" value="piechart" {if $DASHDETAILS.$HOME_STUFFID.Chart eq 'piechart'}checked{/if} onclick="changeGraphType({$HOME_STUFFID},'piechart');">Pie
 		</td>
 	</tr>
 	<tr>
@@ -139,10 +139,62 @@
 		</tr>
 	</table>
 {elseif $HOME_STUFFTYPE eq "ReportCharts"}
-        <input type=hidden id=more_{$HOME_STUFFID} value="{$DASHDETAILS[$HOME_STUFFID].ReportId}"/>
+	<input type=hidden id=more_{$HOME_STUFFID} value="{$DASHDETAILS[$HOME_STUFFID].ReportId}"/>
 	<table border=0 cellspacing=0 cellpadding=5 width=100%>
 		<tr>
-			<td align="left">{$HOME_STUFF}</td>
+			<td align="left">
+			<canvas id="homechart{$HOME_STUFFID}" style="width:350px;height:350px;margin:auto;padding:10px;"></canvas>
+<script type="text/javascript">
+window.doChart{$HOME_STUFFID} = function(charttype) {ldelim}
+	let stuffchart = document.getElementById('homechart{$HOME_STUFFID}');
+	let stuffcontext = stuffchart.getContext('2d');
+	stuffcontext.clearRect(0, 0, stuffchart.width, stuffchart.height);
+{literal}
+	let chartDataObject = {
+		labels: [{/literal}{foreach item=LABEL name=chartlabels from=$HOME_STUFF.xaxisData}"{$LABEL}"{if not $smarty.foreach.chartlabels.last},{/if}{/foreach}{literal}],
+		datasets: [{
+			data: [{/literal}{foreach item=CVALUE name=chartvalues from=$HOME_STUFF.yaxisData}"{$CVALUE}"{if not $smarty.foreach.chartvalues.last},{/if}{/foreach}{literal}],
+			backgroundColor: [{/literal}{foreach item=CVALUE name=chartvalues from=$HOME_STUFF.yaxisData}getRandomColor(){if not $smarty.foreach.chartvalues.last},{/if}{/foreach}{literal}]
+		}]
+	};
+	window.schart{/literal}{$HOME_STUFFID}{literal} = new Chart(stuffchart,{
+		type: charttype,
+		data: chartDataObject,
+		options: {
+			responsive: true,
+			legend: {
+				position: "right",
+				display: (charttype=='pie'),
+				labels: {
+					fontSize: 11,
+					boxWidth: 18
+				}
+			}
+		}
+	});
+	stuffchart.addEventListener('click',function(evt) {
+		let activePoint = schart{/literal}{$HOME_STUFFID}{literal}.getElementAtEvent(evt);
+		let clickzone = {
+			{/literal}{foreach item=CLICKVALUE key=CLICKINDEX name=clickvalues from=$HOME_STUFF.targetLink}{$CLICKINDEX}:"{$CLICKVALUE}"{if not $smarty.foreach.clickvalues.last},{/if}{/foreach}{literal}
+		};
+		let a = document.createElement("a");
+		a.target = "_blank";
+		a.href = clickzone[activePoint[0]._index];
+		document.body.appendChild(a);
+		a.click();
+	});
+}
+{/literal}
+{if $DASHDETAILS.$HOME_STUFFID.Chart eq 'horizontalbarchart'}
+let charttype = 'horizontalBar';
+{elseif $DASHDETAILS.$HOME_STUFFID.Chart eq 'verticalbarchart'}
+let charttype = 'bar';
+{elseif $DASHDETAILS.$HOME_STUFFID.Chart eq 'piechart'}
+let charttype = 'pie';
+{/if}
+doChart{$HOME_STUFFID}(charttype);
+</script>
+			</td>
 		</tr>
 	</table>
 {/if}
