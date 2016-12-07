@@ -778,18 +778,17 @@ function saveEditReportCharts(dashRowId){
 	var reportVal='';
 	var iter=0;
 	for(iter=0;iter<3;iter++){
-		if(document.getElementById('reportradio_'+iter).checked){
-			reportVal=document.getElementById('reportradio_'+iter).value;
+		if(document.getElementById('reportradio_'+dashRowId+'_'+iter).checked){
+			reportVal=document.getElementById('reportradio_'+dashRowId+'_'+iter).value;
 		}
 	}
-	stuffid=dashRowId;
 	jQuery.ajax({
 			method: 'POST',
-			url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&reportVal='+reportVal+'&stuffid='+stuffid
+			url: 'index.php?module=Home&action=HomeAjax&file=HomestuffAjax&reportVal='+reportVal+'&stuffid='+dashRowId
 	}).done(function (response) {
 				var responseVal=response;
 				eval(response);
-				document.getElementById('refresh_'+stuffid).innerHTML='';
+				document.getElementById('refresh_'+dashRowId).innerHTML='';
 			}
 	);
 }

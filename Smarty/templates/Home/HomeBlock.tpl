@@ -32,9 +32,9 @@
 		</tr>
 {elseif $HOME_STUFFTYPE eq "ReportCharts"}
 		<td  valign="top" align='center' class="homePageMatrixHdr" style="height:28px;" width=60%>
-			<input type="radio" id="reportradio_0" name="reportradio_{$HOME_STUFFID}" value="horizontalbarchart" {if $DASHDETAILS.$HOME_STUFFID.Chart eq 'horizontalbarchart'}checked{/if} onclick="changeGraphType({$HOME_STUFFID},'horizontalbarchart');">Horizontal
-			<input type="radio" id="reportradio_1" name="reportradio_{$HOME_STUFFID}" value="verticalbarchart"{if $DASHDETAILS.$HOME_STUFFID.Chart eq 'verticalbarchart'}checked{/if} onclick="changeGraphType({$HOME_STUFFID},'verticalbarchart');">Vertical
-			<input type="radio" id="reportradio_2" name="reportradio_{$HOME_STUFFID}" value="piechart" {if $DASHDETAILS.$HOME_STUFFID.Chart eq 'piechart'}checked{/if} onclick="changeGraphType({$HOME_STUFFID},'piechart');">Pie
+			<input type="radio" id="reportradio_{$HOME_STUFFID}_0" name="reportradio_{$HOME_STUFFID}_0" value="horizontalbarchart" {if $DASHDETAILS.$HOME_STUFFID.Chart eq 'horizontalbarchart'}checked{/if} onclick="changeGraphType({$HOME_STUFFID},'horizontalbarchart');">Horizontal
+			<input type="radio" id="reportradio_{$HOME_STUFFID}_1" name="reportradio_{$HOME_STUFFID}_1" value="verticalbarchart"{if $DASHDETAILS.$HOME_STUFFID.Chart eq 'verticalbarchart'}checked{/if} onclick="changeGraphType({$HOME_STUFFID},'verticalbarchart');">Vertical
+			<input type="radio" id="reportradio_{$HOME_STUFFID}_2" name="reportradio_{$HOME_STUFFID}_2" value="piechart" {if $DASHDETAILS.$HOME_STUFFID.Chart eq 'piechart'}checked{/if} onclick="changeGraphType({$HOME_STUFFID},'piechart');">Pie
 		</td>
 	</tr>
 	<tr>
@@ -143,7 +143,7 @@
 	<table border=0 cellspacing=0 cellpadding=5 width=100%>
 		<tr>
 			<td align="left">
-			<canvas id="homechart{$HOME_STUFFID}" style="width:350px;height:350px;margin:auto;padding:10px;"></canvas>
+			<canvas id="homechart{$HOME_STUFFID}" style="width:300px;height:300px;margin:auto;padding:10px;"></canvas>
 <script type="text/javascript">
 window.doChart{$HOME_STUFFID} = function(charttype) {ldelim}
 	let stuffchart = document.getElementById('homechart{$HOME_STUFFID}');
