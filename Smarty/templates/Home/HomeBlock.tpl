@@ -19,9 +19,9 @@
 		</td>
 {elseif $HOME_STUFFTYPE eq "DashBoard"}
 		<td  valign="top" align='center' class="homePageMatrixHdr" style="height:28px;" width=60%>
-			<input type="radio" id="dashradio_0" name="dashradio_{$HOME_STUFFID}" value="horizontalbarchart" {if $DASHDETAILS.$HOME_STUFFID.Chart eq 'horizontalbarchart'}checked{/if}>Horizontal
-			<input type="radio" id="dashradio_1" name="dashradio_{$HOME_STUFFID}" value="verticalbarchart"{if $DASHDETAILS.$HOME_STUFFID.Chart eq 'verticalbarchart'}checked{/if}>Vertical
-			<input type="radio" id="dashradio_2" name="dashradio_{$HOME_STUFFID}" value="piechart" {if $DASHDETAILS.$HOME_STUFFID.Chart eq 'piechart'}checked{/if}>Pie
+			<input type="radio" id="dashradio_0" name="dashradio_{$HOME_STUFFID}" value="horizontalbarchart" {if $DASHDETAILS.$HOME_STUFFID.Chart eq 'horizontalbarchart'}checked{/if}>{'LBL_HOME_HORIZONTAL'|@getTranslatedString:'Home'}
+			<input type="radio" id="dashradio_1" name="dashradio_{$HOME_STUFFID}" value="verticalbarchart"{if $DASHDETAILS.$HOME_STUFFID.Chart eq 'verticalbarchart'}checked{/if}>{'LBL_HOME_VERTICAL'|@getTranslatedString:'Home'}
+			<input type="radio" id="dashradio_2" name="dashradio_{$HOME_STUFFID}" value="piechart" {if $DASHDETAILS.$HOME_STUFFID.Chart eq 'piechart'}checked{/if}>{'LBL_HOME_PIE'|@getTranslatedString:'Home'}
 		</td>
 		</tr>
 		<tr>
@@ -32,9 +32,9 @@
 		</tr>
 {elseif $HOME_STUFFTYPE eq "ReportCharts"}
 		<td  valign="top" align='center' class="homePageMatrixHdr" style="height:28px;" width=60%>
-			<input type="radio" id="reportradio_{$HOME_STUFFID}_0" name="reportradio_{$HOME_STUFFID}_0" value="horizontalbarchart" {if $DASHDETAILS.$HOME_STUFFID.Chart eq 'horizontalbarchart'}checked{/if} onclick="changeGraphType({$HOME_STUFFID},'horizontalbarchart');">Horizontal
-			<input type="radio" id="reportradio_{$HOME_STUFFID}_1" name="reportradio_{$HOME_STUFFID}_1" value="verticalbarchart"{if $DASHDETAILS.$HOME_STUFFID.Chart eq 'verticalbarchart'}checked{/if} onclick="changeGraphType({$HOME_STUFFID},'verticalbarchart');">Vertical
-			<input type="radio" id="reportradio_{$HOME_STUFFID}_2" name="reportradio_{$HOME_STUFFID}_2" value="piechart" {if $DASHDETAILS.$HOME_STUFFID.Chart eq 'piechart'}checked{/if} onclick="changeGraphType({$HOME_STUFFID},'piechart');">Pie
+			<input type="radio" id="reportradio_{$HOME_STUFFID}_0" name="reportradio_{$HOME_STUFFID}" value="horizontalbarchart" {if $DASHDETAILS.$HOME_STUFFID.Chart eq 'horizontalbarchart'}checked{/if} onclick="changeGraphType({$HOME_STUFFID},'horizontalbarchart');">{'LBL_HOME_HORIZONTAL'|@getTranslatedString:'Home'}
+			<input type="radio" id="reportradio_{$HOME_STUFFID}_1" name="reportradio_{$HOME_STUFFID}" value="verticalbarchart"{if $DASHDETAILS.$HOME_STUFFID.Chart eq 'verticalbarchart'}checked{/if} onclick="changeGraphType({$HOME_STUFFID},'verticalbarchart');">{'LBL_HOME_VERTICAL'|@getTranslatedString:'Home'}
+			<input type="radio" id="reportradio_{$HOME_STUFFID}_2" name="reportradio_{$HOME_STUFFID}" value="piechart" {if $DASHDETAILS.$HOME_STUFFID.Chart eq 'piechart'}checked{/if} onclick="changeGraphType({$HOME_STUFFID},'piechart');">{'LBL_HOME_PIE'|@getTranslatedString:'Home'}
 		</td>
 	</tr>
 	<tr>

@@ -175,7 +175,7 @@ if(!empty($_REQUEST['matrixsequence'])){
 		$query = 'update vtiger_homestuff set stuffsequence=? where stuffid=?';
 		$result = $adb->pquery($query, array($seq, $sequence[$i]));
 	}
-	echo "<table cellpadding='10' cellspacing='0' border='0' width='100%' class='vtResultPop small'><tr><td align='center'>Layout Saved</td></tr></table>";
+	echo "<table cellpadding='100' cellspacing='0' border='0' width='100%' class='vtResultPop'><tr><td align='center' style='font-size:14;font-weight:bold;'>".getTranslatedString('Layout Saved','Home').'</td></tr></table>';
 }
 //Sequencing of blocks ends
 
