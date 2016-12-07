@@ -95,38 +95,8 @@ $tickets_by_contact="select vtiger_troubletickets.*, vtiger_groups.groupname AS 
 //Query for product by category
 $product_category = "select vtiger_products.*,vtiger_crmentity.deleted from vtiger_products inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_products.productid where vtiger_crmentity.deleted=0";
 
-	$graph_array = Array(
-		"DashboardHome" => $mod_strings['DashboardHome'],
-		"leadsource" => $mod_strings['leadsource'],
-		"leadstatus" => $mod_strings['leadstatus'],
-		"leadindustry" => $mod_strings['leadindustry'],
-		"salesbyleadsource" => $mod_strings['salesbyleadsource'],
-		"salesbyaccount" => $mod_strings['salesbyaccount'],
-		"salesbyuser" => $mod_strings['salesbyuser'],
-		"salesbyteam" => $mod_strings['salesbyteam'],
-		"accountindustry" => $mod_strings['accountindustry'],
-		"productcategory" => $mod_strings['productcategory'],
-		"productbyqtyinstock" => $mod_strings['productbyqtyinstock'],
-		"productbypo" => $mod_strings['productbypo'],
-		"productbyquotes" => $mod_strings['productbyquotes'],
-		"productbyinvoice" => $mod_strings['productbyinvoice'],
-		"sobyaccounts" => $mod_strings['sobyaccounts'],
-		"sobystatus" => $mod_strings['sobystatus'],
-		"pobystatus" => $mod_strings['pobystatus'],
-		"quotesbyaccounts" => $mod_strings['quotesbyaccounts'],
-		"quotesbystage" => $mod_strings['quotesbystage'],
-		"invoicebyacnts" => $mod_strings['invoicebyacnts'],
-		"invoicebystatus" => $mod_strings['invoicebystatus'],
-		"ticketsbystatus" => $mod_strings['ticketsbystatus'],
-		"ticketsbypriority" => $mod_strings['ticketsbypriority'],
-		"ticketsbycategory" => $mod_strings['ticketsbycategory'],
-		"ticketsbyuser" => $mod_strings['ticketsbyuser'],
-		"ticketsbyteam" => $mod_strings['ticketsbyteam'],
-		"ticketsbyproduct"=> $mod_strings['ticketsbyproduct'],
-		"contactbycampaign"=> $mod_strings['contactbycampaign'],
-		"ticketsbyaccount"=> $mod_strings['ticketsbyaccount'],
-		"ticketsbycontact"=> $mod_strings['ticketsbycontact'],
-	);
+require 'modules/Dashboard/graphdefinitions.php';
+
 	if(isset($_REQUEST['from_page']) && $_REQUEST['from_page'] == 'HomePage')
 	{
 
