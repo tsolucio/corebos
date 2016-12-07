@@ -82,7 +82,7 @@ class Homestuff{
 		}else if($this->stufftype=="Default"){
 			$querydef="insert into vtiger_homedefault values(?, ?)";
 			$params = array($stuffid,$this->defaultvalue);
-	       	$resultdef=$adb->pquery($querydef, $params);
+			$resultdef=$adb->pquery($querydef, $params);
 			if(!$resultdef){
 				return false;
 			}
@@ -90,14 +90,14 @@ class Homestuff{
 			$userid = $current_user->id;
 			$query="insert into vtiger_notebook_contents values(?,?,?)";
 			$params= array($userid,$stuffid,'');
-	       	$result=$adb->pquery($query, $params);
+			$result=$adb->pquery($query, $params);
 			if(!$result){
 				return false;
 			}
 		}else if($this->stufftype=='URL'){
 			$userid = $current_user->id;
 			$query="insert into vtiger_homewidget_url values(?, ?)";
-	       	$result=$adb->pquery($query, array($stuffid, $this->txtURL));
+			$result=$adb->pquery($query, array($stuffid, $this->txtURL));
 			if(!$result){
 				return false;
 			}
@@ -109,7 +109,7 @@ class Homestuff{
 				return false;
 			}
 		}
-	 	return "loadAddedDiv($stuffid,'".$this->stufftype."')";
+		return "loadAddedDiv($stuffid,'".$this->stufftype."')";
 	}
 
 	/**
@@ -152,7 +152,7 @@ class Homestuff{
 					continue;
 				}
 			}
-            elseif($stufftype == 'ReportCharts'){
+			elseif($stufftype == 'ReportCharts'){
 				if(vtlib_isModuleActive('Reports') === false){
 					continue;
 				}else{
@@ -167,7 +167,7 @@ class Homestuff{
 						continue;
 					}
 				}
-            }
+			}
 
 			$nontrans_stufftitle = $adb->query_result($resultstuff,$i,'stufftitle');
 			$trans_stufftitle = getTranslatedString($nontrans_stufftitle);
@@ -254,27 +254,27 @@ class Homestuff{
 				$focus = CRMEntity::getInstance($modname);
 
 				$oCustomView = new CustomView($modname);
-                if($modname == "Calendar"){
-                    $listquery = getListQuery($modname);
-                    if(trim($listquery) == ''){
-                        $listquery = $focus->getListQuery($modname);
-                    }
-                    $query = $oCustomView->getModifiedCvListQuery($cvid,$listquery,$modname);
-                }else{
-                    $queryGenerator = new QueryGenerator($modname, $current_user);
-                    $queryGenerator->initForCustomViewById($cvid);
-                    $customViewFields = $queryGenerator->getCustomViewFields();
-                    $fields = $queryGenerator->getFields();
-                    $newFields = array_diff($fields, $customViewFields);
-                    for($l=0;$l < $column_count;$l++){
-                        $customViewColumnInfo = $adb->query_result($resultcvid,$l,"fieldname");
-                        $details = explode(':', $customViewColumnInfo);
-                        $newFields[] = $details[2];
-                    }
-                    $queryGenerator->setFields($newFields);
-                    $query = $queryGenerator->getQuery();
-                }
-                $count_result = $adb->query(mkCountWithFullQuery($query));
+				if($modname == "Calendar"){
+					$listquery = getListQuery($modname);
+					if(trim($listquery) == ''){
+						$listquery = $focus->getListQuery($modname);
+					}
+					$query = $oCustomView->getModifiedCvListQuery($cvid,$listquery,$modname);
+				}else{
+					$queryGenerator = new QueryGenerator($modname, $current_user);
+					$queryGenerator->initForCustomViewById($cvid);
+					$customViewFields = $queryGenerator->getCustomViewFields();
+					$fields = $queryGenerator->getFields();
+					$newFields = array_diff($fields, $customViewFields);
+					for($l=0;$l < $column_count;$l++){
+						$customViewColumnInfo = $adb->query_result($resultcvid,$l,"fieldname");
+						$details = explode(':', $customViewColumnInfo);
+						$newFields[] = $details[2];
+					}
+					$queryGenerator->setFields($newFields);
+					$query = $queryGenerator->getQuery();
+				}
+				$count_result = $adb->query(mkCountWithFullQuery($query));
 				$noofrows = $adb->query_result($count_result,0,"count");
 				$navigation_array = getNavigationValues(1, $noofrows, $maxval);
 
@@ -288,47 +288,47 @@ class Homestuff{
 
 				$list_result = $adb->query($query. " LIMIT 0,".$maxval);
 
-                if($modname == "Calendar"){
-                    for($l=0;$l < $column_count;$l++){
-                        $fieldinfo = $adb->query_result($resultcvid,$l,"fieldname");
-                        list($tabname,$colname,$fldname,$fieldmodlabel) = explode(":",$fieldinfo);
+				if($modname == "Calendar"){
+					for($l=0;$l < $column_count;$l++){
+						$fieldinfo = $adb->query_result($resultcvid,$l,"fieldname");
+						list($tabname,$colname,$fldname,$fieldmodlabel) = explode(":",$fieldinfo);
 
-                        $fieldheader=explode("_",$fieldmodlabel,2);
-                        $fldlabel=$fieldheader[1];
-                        $pos=strpos($fldlabel,"_");
-                        if($pos==true){
-                            $fldlabel=str_replace("_"," ",$fldlabel);
-                        }
-                        $field_label = isset($app_strings[$fldlabel])?$app_strings[$fldlabel]:(isset($fieldmod_strings[$fldlabel])?$fieldmod_strings[$fldlabel]:$fldlabel);
-                        $cv_presence = $adb->pquery("SELECT * from vtiger_cvcolumnlist WHERE cvid = ? and columnname LIKE '%".$fldname."%'", array($cvid));
-                        if($is_admin == false){
-                            $fld_permission = getFieldVisibilityPermission($modname,$current_user->id,$fldname);
-                        }
-                        if($fld_permission == 0 && $adb->num_rows($cv_presence)){
-                            $field_query = $adb->pquery("SELECT fieldlabel FROM vtiger_field WHERE fieldname = ? AND tablename = ? and vtiger_field.presence in (0,2)", array($fldname,$tabname));
-                            $field_label = $adb->query_result($field_query,0,'fieldlabel');
-                            $header[] = $field_label;
-                        }
-                        $fieldcolumns[$fldlabel] = Array($tabname=>$colname);
-                    }
-                    $listview_entries = getListViewEntries($focus,$modname,$list_result,$navigation_array,"","","EditView","Delete",$oCustomView,'HomePage',$fieldcolumns);
-                }else{
-                    $controller = new ListViewController($adb, $current_user, $queryGenerator);
-                    $controller->setHeaderSorting(false);
-                    $header = $controller->getListViewHeader($focus,$modname,'','','', true);
-                    $listview_entries = $controller->getListViewEntries($focus,$modname,$list_result,$navigation_array, true);
-                }
-                $return_value =Array('ModuleName'=>$modname,'cvid'=>$cvid,'Maxentries'=>$maxval,'Header'=>$header,'Entries'=>$listview_entries);
-                if(sizeof($header)!=0){
-                    return $return_value;
-                }else{
-                    return array('Entries'=>"Fields not found in Selected Filter");
-                }
+						$fieldheader=explode("_",$fieldmodlabel,2);
+						$fldlabel=$fieldheader[1];
+						$pos=strpos($fldlabel,"_");
+						if($pos==true){
+							$fldlabel=str_replace("_"," ",$fldlabel);
+						}
+						$field_label = isset($app_strings[$fldlabel])?$app_strings[$fldlabel]:(isset($fieldmod_strings[$fldlabel])?$fieldmod_strings[$fldlabel]:$fldlabel);
+						$cv_presence = $adb->pquery("SELECT * from vtiger_cvcolumnlist WHERE cvid = ? and columnname LIKE '%".$fldname."%'", array($cvid));
+						if($is_admin == false){
+							$fld_permission = getFieldVisibilityPermission($modname,$current_user->id,$fldname);
+						}
+						if($fld_permission == 0 && $adb->num_rows($cv_presence)){
+							$field_query = $adb->pquery("SELECT fieldlabel FROM vtiger_field WHERE fieldname = ? AND tablename = ? and vtiger_field.presence in (0,2)", array($fldname,$tabname));
+							$field_label = $adb->query_result($field_query,0,'fieldlabel');
+							$header[] = $field_label;
+						}
+						$fieldcolumns[$fldlabel] = Array($tabname=>$colname);
+					}
+					$listview_entries = getListViewEntries($focus,$modname,$list_result,$navigation_array,"","","EditView","Delete",$oCustomView,'HomePage',$fieldcolumns);
+				}else{
+					$controller = new ListViewController($adb, $current_user, $queryGenerator);
+					$controller->setHeaderSorting(false);
+					$header = $controller->getListViewHeader($focus,$modname,'','','', true);
+					$listview_entries = $controller->getListViewEntries($focus,$modname,$list_result,$navigation_array, true);
+				}
+				$return_value =Array('ModuleName'=>$modname,'cvid'=>$cvid,'Maxentries'=>$maxval,'Header'=>$header,'Entries'=>$listview_entries);
+				if(sizeof($header)!=0){
+					return $return_value;
+				}else{
+					return array('Entries'=>"Fields not found in Selected Filter");
+				}
 			}
 			else{
 				return array('Entries'=>"<font color='red'>Filter You have Selected is Not Found</font>");
 			}
- 		}
+		}
 		else{
 			return array('Entries'=>"<font color='red'>Permission Denied</font>");
 		}
@@ -376,7 +376,6 @@ class Homestuff{
 		}else{
 			return $dash;
 		}
-
 	}
 
 	/**
@@ -388,24 +387,24 @@ class Homestuff{
 		return $return_dash;
 	}
 
-    function getReportChartDetails($stuffId,$skipChart=''){
-        global $adb;
-        $qry="select * from vtiger_homereportchart where stuffid=?";
-        $result=$adb->pquery($qry, array($stuffId));
-        $reportId=$adb->query_result($result,0,"reportid");
-        $chartType=$adb->query_result($result,0,"reportcharttype");
-        $reportDetails=Array('ReportId'=>$reportId,'Chart'=>$chartType);
-        $this->reportdetails[$stuffId] = $reportDetails;
+	function getReportChartDetails($stuffId,$skipChart=''){
+		global $adb;
+		$qry="select * from vtiger_homereportchart where stuffid=?";
+		$result=$adb->pquery($qry, array($stuffId));
+		$reportId=$adb->query_result($result,0,"reportid");
+		$chartType=$adb->query_result($result,0,"reportcharttype");
+		$reportDetails=Array('ReportId'=>$reportId,'Chart'=>$chartType);
+		$this->reportdetails[$stuffId] = $reportDetails;
 		if($skipChart == '') {
 			return $this->getDisplayReportChart($reportId, $chartType);
 		} else {
 			return $reportDetails;
 		}
-    }
+	}
 
 	function getDisplayReportChart($reportId, $chartType) {
-        require_once('modules/Reports/CustomReportUtils.php');
-        return CustomReportUtils::getReportChart($reportId,$chartType);
+		require_once('modules/Reports/CustomReportUtils.php');
+		return CustomReportUtils::getReportChart($reportId,$chartType);
 	}
 
 	/**
@@ -489,7 +488,7 @@ class Homestuff{
 	 * @param integer $notebookid - the notebookid
 	 * @return - contents of the notebook for a user
 	 */
- 	function getNotebookContents($notebookid){
+	function getNotebookContents($notebookid){
 		global $adb, $current_user;
 
 		$sql = "select * from vtiger_notebook_contents where notebookid=? and userid=?";
@@ -600,9 +599,9 @@ function getGroupTaskLists($maxval,$calCnt){
 
 		if(vtlib_isModuleActive("Contacts") && isPermitted('Contacts','index') =='yes'){
 			if($query != ''){
-            	$query .=" union all ";
+				$query .=" union all ";
 			}
-            //Get the Contacts assigned to group
+			//Get the Contacts assigned to group
 			$query .= "(select vtiger_contactdetails.contactid as id, vtiger_contactdetails.lastname as name ,vtiger_groups.groupname as groupname, 'Contacts ' as Type from vtiger_contactdetails inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_contactdetails.contactid inner join vtiger_groups on vtiger_crmentity.smownerid = vtiger_groups.groupid where vtiger_crmentity.deleted=0 and vtiger_contactdetails.contactid > 0";
 			if (count($groupids) > 0) {
 				$query .= " and vtiger_groups.groupid in (". generateQuestionMarks($groupids). ")";
@@ -641,8 +640,8 @@ function getGroupTaskLists($maxval,$calCnt){
 			if($query != ''){
 				$query .=" union all ";
 			}
-            //Get the Sales Order assigned to group
-            $query .="(select vtiger_salesorder.salesorderid as id, vtiger_salesorder.subject as name,vtiger_groups.groupname as groupname,'SalesOrder ' as Type from vtiger_salesorder inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_salesorder.salesorderid inner join vtiger_groups on vtiger_crmentity.smownerid = vtiger_groups.groupid where vtiger_crmentity.deleted=0 and vtiger_salesorder.salesorderid > 0";
+			//Get the Sales Order assigned to group
+			$query .="(select vtiger_salesorder.salesorderid as id, vtiger_salesorder.subject as name,vtiger_groups.groupname as groupname,'SalesOrder ' as Type from vtiger_salesorder inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_salesorder.salesorderid inner join vtiger_groups on vtiger_crmentity.smownerid = vtiger_groups.groupid where vtiger_crmentity.deleted=0 and vtiger_salesorder.salesorderid > 0";
 			if (count($groupids) > 0){
 				$query .= " and vtiger_groups.groupid in (". generateQuestionMarks($groupids). ")";
 				array_push($params, $groupids);

@@ -11,14 +11,11 @@ require_once('include/utils/utils.php');
 include("modules/Dashboard/horizontal_bargraph.php");
 include("modules/Dashboard/vertical_bargraph.php");
 include_once("modules/Dashboard/pie_graph.php");
-//To get the vtiger_account names
 
 /* Function to get the Account name for a given vtiger_account id
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________..
  */
-
 function get_account_name($acc_id)
 {
 	global $adb;
@@ -35,7 +32,7 @@ function get_account_name($acc_id)
 		$name=$name_val;
 	}
 	else
-		$name="";	
+		$name="";
 	return $name;
 }
 
@@ -92,7 +89,7 @@ function module_Chart_HomePageDashboard($userinfo) {
 	}
 
 	// Get count for module that needs special conditions
-	$query = "SELECT setype, count(setype) setype_count FROM vtiger_crmentity se WHERE 
+	$query = "SELECT setype, count(setype) setype_count FROM vtiger_crmentity se WHERE
 		se.deleted = 0 AND se.smownerid=$user_id AND se.setype in ($inmodulestr) GROUP BY se.setype";
 	$queryres = $adb->query($query);
 	while($resrow = $adb->fetch_array($queryres)) {
@@ -122,7 +119,7 @@ function module_Chart_HomePageDashboard($userinfo) {
 			if($modrec_count > 0) {
 				if($name_val != '') $name_val .= '::';
 				$name_val .= $modulename;
-				
+
 				if($cnt_val != '') $cnt_val .= '::';
 				$cnt_val .= $modrec_count;
 
@@ -153,26 +150,20 @@ function module_Chart_HomePageDashboard($userinfo) {
 
 	return $graph_details;
 }
-/** END **/
 
-/* Function returns the values to render the graph for a particular type 
+/* Function returns the values to render the graph for a particular type
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- * Contributor(s): ______________________________________..
 */
-
-// TO get the Values for a particular graph type 
 function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$query,$graph_for,$title,$added_qry="",$module="",$graph_type)
 {
-	 
-	global $adb,$current_user,$mod_strings, $default_charset;
-	global $days,$date_array,$period_type;
+	global $adb,$current_user,$mod_strings, $default_charset, $days,$date_array,$period_type;
 
 	if($added_qry!="")
 		$query.=$added_qry;
 
 	$result=$adb->query($query);
-	
+
 	$no_of_rows=$adb->num_rows($result);
 	$mod_count_array=array();
 	$search_str_array=array();
@@ -192,19 +183,19 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 		{
 			if($graph_for == 'sostatus'||$graph_for == 'leadsource'||$graph_for == 'leadstatus'||$graph_for == 'industry'||$graph_for == 'productcategory'||$graph_for =='postatus'||$graph_for == 'invoicestatus'||$graph_for == 'ticketstatus'||$graph_for == 'priority'||$graph_for == 'category'||$graph_for == 'quotestage'||$graph_for == 'salesstage')
 			{
-                                $mod_name= getTranslatedString($row[$graph_for]);
-                                $search_str = $row[$graph_for];
-                       	}
-                      	else
-                       	{
-                               $mod_name= $row[$graph_for];
-                               $search_str = $row[$graph_for];
-                       	}
+				$mod_name= getTranslatedString($row[$graph_for]);
+				$search_str = $row[$graph_for];
+			}
+			else
+			{
+				$mod_name= $row[$graph_for];
+				$search_str = $row[$graph_for];
+			}
 			if($mod_name=="")
-                        {
-                                $mod_name=$mod_strings["Un Assigned"];
-                                $search_str = " ";
-                        }
+			{
+				$mod_name=$mod_strings["Un Assigned"];
+				$search_str = " ";
+			}
 			$crtd_time=$row['createdtime'];
 			$crtd_time_array=explode(" ",$crtd_time);
 			$crtd_date=$crtd_time_array[0];
@@ -213,33 +204,32 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 
 			$mod_tot_cnt_array[$crtd_date]+=1;
 
-			if (in_array($mod_name,$mod_name_array) == false)
-			{       $uniqueid[$mod_name]='0';
-			        array_push($mod_name_array,$mod_name); // getting all the unique Names into the array
-			        if($graph_for == "productname")
-				{
+			if (in_array($mod_name,$mod_name_array) == false) {
+				$uniqueid[$mod_name]='0';
+				array_push($mod_name_array,$mod_name); // getting all the unique Names into the array
+				if($graph_for == "productname") {
 					if($row['qtyinstock'] =='')
 						$mod_count_array[$mod_name] = 1;
 					else
-					        $mod_count_array[$mod_name]=$row['qtyinstock'];
+						$mod_count_array[$mod_name]=$row['qtyinstock'];
 				}
 			}
 			else
-			{		
-				if($graph_for == "productname")
-			        {
-					$uniqueid[$mod_name]=$uniqueid[$mod_name]+1;					                                     	     $mod_name=$mod_name.'['.$uniqueid[$mod_name].']';					                                          array_push($mod_name_array,$mod_name); // getting all the unique Names into the array
-					
+			{
+				if($graph_for == "productname") {
+					$uniqueid[$mod_name]=$uniqueid[$mod_name]+1;
+					$mod_name=$mod_name.'['.$uniqueid[$mod_name].']';
+					array_push($mod_name_array,$mod_name); // getting all the unique Names into the array
 					if($row['qtyinstock'] =='')
 						$mod_count_array[$mod_name] = 1;
 					else
-					        $mod_count_array[$mod_name]=$row['qtyinstock'];
+						$mod_count_array[$mod_name]=$row['qtyinstock'];
 				}
 			}
 			if (in_array($search_str,$search_str_array) == false)
 			{
-				array_push($search_str_array,$search_str); 
-			}	
+				array_push($search_str_array,$search_str);
+			}
 
 			//Counting the number of values for a type of graph
 			if($graph_for == "productname")
@@ -248,7 +238,6 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 					$mod_count_array[$mod_name] = 1;
 				else
 					$mod_count_array[$mod_name]=$row['qtyinstock'];
-
 			}
 			else
 			{
@@ -272,7 +261,7 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 			$mod_cnt_table="<table border=0 cellspacing=1 cellpadding=3><tr>
 				<th>  Status </th>";
 
-			//Assigning the Header values to the vtiger_table and giving the dates as graphformat 
+			//Assigning the Header values to the vtiger_table and giving the dates as graphformat
 			for($i=0; $i<$days; $i++)
 			{
 				$tdate=$date_array[$i];
@@ -283,7 +272,7 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 			}
 			$mod_cnt_table .= "<th>Total</th></tr>" ;
 
-			//For all type of the array 
+			//For all type of the array
 			for ($i=0;$i<count($mod_name_array); $i++)
 			{
 				$search_str = $search_str_array[$i];
@@ -292,7 +281,7 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 				if($mod_name=="Un Assigned"){
 					$mod_name=$mod_strings["Un Assigned"];
 					$search_str = " ";
-			        }	
+				}
 
 				if($graph_for =="accountid")
 				{
@@ -361,7 +350,7 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 					{
 						$mod_name=$name_val;
 						$search_str=$name_val;
-					}	
+					}
 				}
 				if($graph_for =="product_id" || $graph_for =="productid")
 				{
@@ -372,7 +361,7 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 					{
 						$mod_name=$name_val;
 						$search_str=$name_val;
-					}	
+					}
 				}
 				if($graph_for =="purchaseorderid")
 				{
@@ -384,7 +373,7 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 					{
 						$mod_name=$name_val;
 						$search_str=$name_val;
-					}	
+					}
 				}
 				if($graph_for =="quoteid")
 				{
@@ -396,7 +385,7 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 					{
 						$mod_name=$name_val;
 						$search_str=$name_val;
-					}	
+					}
 				}
 				if($graph_for =="invoiceid")
 				{
@@ -408,7 +397,7 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 					{
 						$mod_name=$name_val;
 						$search_str=$name_val;
-					}	
+					}
 				}
 				if($graph_for =="campaignid")
 				{
@@ -421,7 +410,7 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 					{
 						$mod_name=$name_val;
 						$search_str=$name_val;
-					}	
+					}
 				}
 				if($graph_for =="parent_id" || $graph_for =="related_to")
 				{
@@ -456,10 +445,10 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 
 				//Passing count to graph
 				if($mod_cnt_val!="") $mod_cnt_val.="::$mod_count_val";
-				else $mod_cnt_val="$mod_count_val";	
+				else $mod_cnt_val="$mod_count_val";
 				if($module!="")
 				{
-					//Check for Ticket Priority 
+					//Check for Ticket Priority
 					if(($graph_type=="ticketsbypriority"))
 					{
 						$graph_for="ticketpriorities";
@@ -489,9 +478,9 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 						$esc_search_str = urlencode($search_str);
 						//$esc_search_str = htmlentities($search_str, ENT_QUOTES, $default_charset);
 						$link_val="index.php?module=".$module."&action=index&from_dashboard=true&search_text=".$esc_search_str."&search_field=".$searchField."&searchtype=BasicSearch&query=true&type=entchar&operator=e&viewname=".$cvid;
-					}	
+					}
 
-					//Adding the links to the graph	
+					//Adding the links to the graph
 					$link_val = str_replace(':', '&#58;', $link_val);
 					if($i==0)
 						$bar_target_val .=$link_val;
@@ -510,7 +499,7 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 					$test_target_val.="K".$link_val;
 			}
 			$mod_cnt_table .="</tr><tr><td class=\"$class\">Total</td>";
-			//For all Days getting the vtiger_table 
+			//For all Days getting the vtiger_table
 			for($k=0; $k<$days;$k++)
 			{
 				$tdate=$date_array[$k];
@@ -536,7 +525,7 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 			$test_target_val=urlencode($test_target_val);
 
 
-			$Prod_mod_val=array($mod_name_val,$mod_cnt_val,$title_of_graph,$bar_target_val,$mod_graph_date,$urlstring,$mod_cnt_table,$test_target_val);	
+			$Prod_mod_val=array($mod_name_val,$mod_cnt_val,$title_of_graph,$bar_target_val,$mod_graph_date,$urlstring,$mod_cnt_table,$test_target_val);
 			return $Prod_mod_val;
 		}
 		else
@@ -554,19 +543,13 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 	return $data;
 }
 
-
 /** Saving the images of the graph in the /cache/images
   * otherwise it will render the graph with the given details
   * Portions created by vtiger are Copyright (C) vtiger.
   * All Rights Reserved.
-  * Contributor(s): ______________________________________..
 */
-
-
 function save_image_map($filename,$image_map)
 {
-
-
 	global $log;
 
 	if (!$handle = fopen($filename, 'w')) {
@@ -603,7 +586,7 @@ function get_graph_by_type($graph_by,$graph_title,$module,$where,$query,$width=9
 		$urlstring=$graph_details[5];
 		$cnt_table=$graph_details[6];
 		$test_target_val=$graph_details[7];
-		
+
 		if(isset($_REQUEST['display_view']) && $_REQUEST['display_view'] == 'MATRIX')
 		{
 			$width = 250;
@@ -611,19 +594,18 @@ function get_graph_by_type($graph_by,$graph_title,$module,$where,$query,$width=9
 		}else
 		{
 			$width = 850;
-			$height = 500;	
-		}		
+			$height = 500;
+		}
 
 		$top=20;
 		$left=140;
 		$bottom=120;
 		$title=$graph_title;
-       if($frompage != '')
+		if($frompage != '')
 		{
 			//echo $width.'------'.$height.'------'.$left.'------'.$right.'------'.$top.'------'.$bottom.'------'.$title.'------'.$test_target_val.'------'.$date_start.'------'.$end_date;
 			//die;
 			return get_graph_homepg($cache_file_name,$html_imagename,$cnt_val,$name_val,280,285,$left,$right,$top,$bottom,$title,$target_val,$graph_date,$urlstring,$test_target_val,$date_start,$end_date);
-			
 		}else
 		{
 			return get_graph($cache_file_name,$html_imagename,$cnt_val,$name_val,$width,$height,$left,$right,$top,$bottom,$title,$target_val,$graph_date,$urlstring,$test_target_val,$date_start,$end_date);
@@ -631,21 +613,15 @@ function get_graph_by_type($graph_by,$graph_title,$module,$where,$query,$width=9
 	}
 	else
 	{
-		 sleep(1);
-                 echo '<h3>'.$mod_strings['LBL_NO_DATA'].'</h3>';
+		sleep(1);
+		echo '<h3>'.$mod_strings['LBL_NO_DATA'].'</h3>';
 	}
-	
 }
 
-/** Returns  the Horizontal,vertical, pie graphs and Accumulated Graphs
-for the details
+/** Returns  the Horizontal,vertical, pie graphs and Accumulated Graphs for the details
 * Portions created by vtiger are Copyright (C) vtiger.
 * All Rights Reserved.
-* Contributor(s): ______________________________________..
 */
-
-
-// Function for get graphs
 function get_graph($cache_file_name,$html_imagename,$cnt_val,$name_val,$width,$height,$left,$right,$top,$bottom,$title,$target_val,$graph_date,$urlstring,$test_target_val,$date_start,$end_date)
 {
 
@@ -660,7 +636,7 @@ function get_graph($cache_file_name,$html_imagename,$cnt_val,$name_val,$width,$h
 
 	if(isset($_REQUEST['display_view']) && $_REQUEST['display_view'] == 'MATRIX')
 	{
-		$sHTML .="<tr><td width=50%><table width=100%  border=0 cellspacing=0 cellpadding=0 align=left>"; 
+		$sHTML .="<tr><td width=50%><table width=100%  border=0 cellspacing=0 cellpadding=0 align=left>";
 	}
 
 $sHTML .= "<tr>
@@ -675,12 +651,10 @@ $sHTML .= "<tr>
 		</table>
 	   </td>
 	   <td align='right'>";
-	 if(isset($_REQUEST['display_view']) && $_REQUEST['display_view'] == 'MATRIX')
-	 {  
+	if(isset($_REQUEST['display_view']) && $_REQUEST['display_view'] == 'MATRIX')
+	{
 		$sHTML .= "&nbsp;";
-		 
-	 }else
-	 {		 
+	} else {
 		$sHTML .= "<table cellpadding='0' cellspacing='0' border='0' class='small'>
 		<tr>
 			<td class='small'>".$mod_strings['VIEWCHART']." :&nbsp;</td>
@@ -689,14 +663,13 @@ $sHTML .= "<tr>
 			<td class='dash_switch'><a href='#top'><img align='absmiddle' src='". vtiger_imageurl('dash_scroll_up.jpg', $theme)."' border='0'></a></td>
 		</tr>
 		</table>";
-	 }	
+	 }
 	$sHTML .="</td>
 	</tr>
 	<tr>
-           <td colspan='2'>";
-   
+	<td colspan='2'>";
 
-	   $sHTML .= render_graph($tmp_dir."hor_".$cache_file_name,$html_imagename."_hor",$cnt_val,$name_val,$width,$height,$left,$right,$top,$bottom,$title,$target_val,"horizontal");
+	$sHTML .= render_graph($tmp_dir."hor_".$cache_file_name,$html_imagename."_hor",$cnt_val,$name_val,$width,$height,$left,$right,$top,$bottom,$title,$target_val,"horizontal");
 //Commented by Minnie -- same content displayed in two graphs
 /*$sHTML .= "</td>
 	</tr>
@@ -726,7 +699,7 @@ $sHTML .= "</td>
 
 	if(isset($_REQUEST['display_view']) && $_REQUEST['display_view'] == 'MATRIX')
 	{
-		$sHTML .="</table></td><td width=50%><table width=100%  border=0 cellspacing=0 cellpadding=0 align=left>"; 
+		$sHTML .="</table></td><td width=50%><table width=100%  border=0 cellspacing=0 cellpadding=0 align=left>";
 	}else
 	{
 		$sHTML .= "<tr><td colspan='2' class='dash_chart_btm'>&nbsp;</td></tr>";
@@ -744,12 +717,10 @@ $sHTML .= "<tr>
 	        </table>
 	   </td>
 	     <td align='right'>";
-	 if(isset($_REQUEST['display_view']) && $_REQUEST['display_view'] == 'MATRIX')
-	 {  
+	if(isset($_REQUEST['display_view']) && $_REQUEST['display_view'] == 'MATRIX')
+	{
 		$sHTML .= "&nbsp;";
-		 
-	 }else
-	 {		 
+	} else {
 		$sHTML .= "<table cellpadding='0' cellspacing='0' border='0' class='small'>
 		<tr>
 			<td class='small'>".$mod_strings['VIEWCHART']." :&nbsp;</td>
@@ -758,20 +729,20 @@ $sHTML .= "<tr>
 			<td class='dash_switch'><a href='#top'><img align='absmiddle' src='". vtiger_imageurl('dash_scroll_up.jpg', $theme)."' border='0'></a></td>
 		</tr>
 		</table>";
-	 }	
+	 }
 	$sHTML .="</td>
 	</tr>
 	<tr>
 	   <td colspan='2'>";
 
-	   $sHTML .= render_graph($tmp_dir."pie_".$cache_file_name,$html_imagename."_pie",$cnt_val,$name_val,$width,$height,$left,$right,$top,$bottom,$title,$target_val,"pie");
+	$sHTML .= render_graph($tmp_dir."pie_".$cache_file_name,$html_imagename."_pie",$cnt_val,$name_val,$width,$height,$left,$right,$top,$bottom,$title,$target_val,"pie");
 
 $sHTML .= "</td>
 	</tr>";
 
 if(isset($_REQUEST['display_view']) && $_REQUEST['display_view'] == 'MATRIX')
 {
-	$sHTML .="</table></td></tr>"; 
+	$sHTML .="</table></td></tr>";
 }
 $sHTML .= "<tr><td colspan='2' class='dash_chart_btm'>&nbsp;</td></tr>";
 
@@ -779,17 +750,12 @@ $sHTML .= "<tr><td colspan='2' class='dash_chart_btm'>&nbsp;</td></tr>";
 return $sHTML;
 }
 
-/** Returns graph, if the cached image is present it'll display that image,
-otherwise it will render the graph with the given details
+/** Returns graph, if the cached image is present it'll display that image, otherwise it will render the graph with the given details
 * Portions created by vtiger are Copyright (C) vtiger.
 * All Rights Reserved.
-* Contributor(s): ______________________________________..
 */
-
-// Function to get the chached image if exists
 function render_graph($cache_file_name,$html_imagename,$cnt_val,$name_val,$width,$height,$left,$right,$top,$bottom,$title,$target_val,$graph_type)
 {
-
 	//Checks whether the cached image is present or not
 	if(file_exists($cache_file_name))
 	{
@@ -813,7 +779,6 @@ function render_graph($cache_file_name,$html_imagename,$cnt_val,$name_val,$width
 		else if($graph_type=="pie")
 		{
 			return pie_chart($cnt_val,$name_val,$width,$height,$left,$right,$top,$bottom,$title,$target_val,$cache_file_name,$html_imagename);
-
 		}
 	}
 	else
@@ -841,11 +806,11 @@ function get_graph_homepg($cache_file_name,$html_imagename,$cnt_val,$name_val,$w
 	$display_title=$val[0];
 	$type = $_REQUEST[Chart_Type];
 	if($type == 'horizontalbarchart')
-	   $sHTML .= render_graph($tmp_dir."hor_".$cache_file_name,$html_imagename."_hor",$cnt_val,$name_val,$width,$height,$left,$right,$top,$bottom,$title,$target_val,"horizontal");
+		$sHTML .= render_graph($tmp_dir."hor_".$cache_file_name,$html_imagename."_hor",$cnt_val,$name_val,$width,$height,$left,$right,$top,$bottom,$title,$target_val,"horizontal");
 	elseif($type == 'verticalbarchart')
-	   $sHTML .= render_graph($tmp_dir."vert_".$cache_file_name,$html_imagename."_vert",$cnt_val,$name_val,$width,$height,$left,$right,$top,$bottom,$title,$target_val,"vertical");
+		$sHTML .= render_graph($tmp_dir."vert_".$cache_file_name,$html_imagename."_vert",$cnt_val,$name_val,$width,$height,$left,$right,$top,$bottom,$title,$target_val,"vertical");
 	elseif($type == 'piechart')
-	   $sHTML .= render_graph($tmp_dir."pie_".$cache_file_name,$html_imagename."_pie",$cnt_val,$name_val,$width,$height,$left,$right,$top,$bottom,$title,$target_val,"pie");
+		$sHTML .= render_graph($tmp_dir."pie_".$cache_file_name,$html_imagename."_pie",$cnt_val,$name_val,$width,$height,$left,$right,$top,$bottom,$title,$target_val,"pie");
 	 return $sHTML;
 }
 ?>
