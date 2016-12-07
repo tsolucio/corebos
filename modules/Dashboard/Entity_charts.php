@@ -588,8 +588,8 @@ function get_graph_by_type($graph_by,$graph_title,$module,$where,$query,$width=9
 
 		if(isset($_REQUEST['display_view']) && $_REQUEST['display_view'] == 'MATRIX')
 		{
-			$width = 250;
-			$height = 250;
+			$width = 450;
+			$height = 350;
 		}
 
 		$top=20;
@@ -621,7 +621,7 @@ function get_graph_by_type($graph_by,$graph_title,$module,$where,$query,$width=9
 			return DashboardCharts::getChartHTML($labels, $values, $graph_title, $target_values,$html_imagename, $width, $height, $left, $right, $top, $bottom, $Chart_Type, $Chart_position);
 		}else
 		{
-			return get_graph($cache_file_name,$html_imagename,$cnt_val,$name_val,$width,$height,$left,$right,$top,$bottom,$title,$target_val,$graph_date,$urlstring,$test_target_val,$date_start,$end_date);
+			return DashboardCharts::getChartHTML($labels, $values, $graph_title, $target_values,$html_imagename, $width, $height, $left, $right, $top, $bottom, $Chart_Type, $Chart_position, false);
 		}
 	}
 	else

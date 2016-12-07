@@ -91,6 +91,16 @@ if(GlobalVariable::getVariable('Application_Display_Calculator',1,$currentModule
 <br>
 
 <script type="text/javascript" src="include/js/smoothscroll.js"></script>
+<script src="include/chart.js/Chart.bundle.min.js"></script>
+<script src="include/chart.js/randomColor.js"></script>
+<script type="text/javascript">
+function getRandomColor() {
+	return randomColor({
+		luminosity: 'dark',
+		hue: 'random'
+	});
+}
+</script>
 <a name="top"></a>
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
 	<tr>
@@ -283,12 +293,10 @@ function loadDashBoard(oSelect)
 			method:"POST",
 			url:'index.php?'+ url
 		}).done(function(response) {
-				document.getElementById("dashChart").innerHTML=response;
-				document.getElementById("dashChart").style.display='none';
-				jQuery("#dashChart").fadeIn(500);
-				var dashst = document.getElementById('dash_script');
-				eval(dashst.innerHTML);
-				document.getElementById("dashTitle_div").innerHTML = oCombo.options[oCombo.selectedIndex].text;
+			document.getElementById("dashChart").innerHTML=response;
+			vtlib_executeJavascriptInElement(document.getElementById("dashChart"))
+			jQuery("#dashChart").fadeIn(500);
+			document.getElementById("dashTitle_div").innerHTML = oCombo.options[oCombo.selectedIndex].text;
 		});
 }
 
@@ -314,6 +322,5 @@ function changeView(displaytype)
 			url = 'index.php?module=Dashboard&action=index&display_view=NORMAL&type='+type;
 	}
 	window.document.location.href = url+time;
-
 }
 </script>

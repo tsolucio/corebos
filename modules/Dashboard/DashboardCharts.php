@@ -20,7 +20,7 @@
 
 class DashboardCharts {
 
-	static public function getChartHTML($labels, $values, $graph_title, $target_values, $html_imagename, $width, $height, $left, $right, $top, $bottom, $graph_type, $legend_position='right') {
+	static public function getChartHTML($labels, $values, $graph_title, $target_values, $html_imagename, $width, $height, $left, $right, $top, $bottom, $graph_type, $legend_position='right', $responsive=true) {
 		$lbls = implode(',',$labels);
 		$vals = str_replace('::',',',$values);
 		$lnks = array();
@@ -48,6 +48,11 @@ class DashboardCharts {
 		if ($legend_position!='') {
 			$legend_position = 'position: "'.$legend_position.'",';
 		}
+		if ($responsive) {
+			$respproperty = 'true';
+		} else {
+			$respproperty = 'false';
+		}
 		$sHTML = <<<EOF
 <canvas id="$html_imagename" style="width:{$width}px;height:{$height}px;margin:auto;padding:10px;"></canvas>
 <script type="text/javascript">
@@ -66,7 +71,7 @@ window.doChart{$html_imagename} = function(charttype) {
 		type: '{$graph_type}',
 		data: chartDataObject,
 		options: {
-			responsive: true,
+			responsive: $respproperty,
 			legend: {
 				$legend_position
 				$display
@@ -94,6 +99,7 @@ EOF;
 	}
 
 	static public function convertToArray($values,$translate=false,$withquotes=false) {
+		if (strpos($values,'::')===false) $values = urldecode($values);
 		$vals = explode('::',$values);
 		if ($translate) {
 			$vals = array_map(function($v) {
