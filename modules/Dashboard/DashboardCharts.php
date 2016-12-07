@@ -20,7 +20,7 @@
 
 class DashboardCharts {
 
-	static public function getChartHTML($labels, $values, $graph_title, $target_values,$html_imagename, $width, $height, $left, $right, $top, $bottom, $graph_type) {
+	static public function getChartHTML($labels, $values, $graph_title, $target_values, $html_imagename, $width, $height, $left, $right, $top, $bottom, $graph_type, $legend_position='right') {
 		$lbls = implode(',',$labels);
 		$vals = str_replace('::',',',$values);
 		$lnks = array();
@@ -35,6 +35,19 @@ class DashboardCharts {
 			$bcolor[] = 'getRandomColor()';
 		}
 		$bcolor = implode(',',$bcolor);
+		if ($graph_title!='') {
+			$gtitle = 'label:"'.$graph_title.'",';
+			$display = 'display:true,';
+		} else {
+			$gtitle = '';
+			$display = 'display:false,';
+		}
+		if ($graph_title=='pie') {
+			$display = 'display:true,';
+		}
+		if ($legend_position!='') {
+			$legend_position = 'position: "'.$legend_position.'",';
+		}
 		$sHTML = <<<EOF
 <canvas id="$html_imagename" style="width:{$width}px;height:{$height}px;margin:auto;padding:10px;"></canvas>
 <script type="text/javascript">
@@ -45,6 +58,7 @@ window.doChart{$html_imagename} = function(charttype) {
 		labels: [{$lbls}],
 		datasets: [{
 			data: [ $vals ],
+			$gtitle
 			backgroundColor: [ $bcolor ]
 		}]
 	};
@@ -54,8 +68,8 @@ window.doChart{$html_imagename} = function(charttype) {
 		options: {
 			responsive: true,
 			legend: {
-				position: "right",
-				display: ('{$graph_type}'=='pie'),
+				$legend_position
+				$display
 				labels: {
 					fontSize: 11,
 					boxWidth: 18

@@ -143,7 +143,7 @@
 	<table border=0 cellspacing=0 cellpadding=5 width=100%>
 		<tr>
 			<td align="left">
-			<canvas id="homechart{$HOME_STUFFID}" style="width:300px;height:300px;margin:auto;padding:10px;"></canvas>
+			<canvas id="homechart{$HOME_STUFFID}" style="width:500px;height:250px;margin:auto;padding:10px;"></canvas>
 <script type="text/javascript">
 window.doChart{$HOME_STUFFID} = function(charttype) {ldelim}
 	let stuffchart = document.getElementById('homechart{$HOME_STUFFID}');

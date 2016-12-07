@@ -33,7 +33,7 @@ if (!empty($graph_details) && $graph_details[1] != 0) {
 	$right=0;
 	$bottom=120;
 	$html_imagename='setype';
-	$sHTML = DashboardCharts::getChartHTML($labels, $values, $graph_title, $target_values,$html_imagename, $width, $height, $left, $right, $top, $bottom, 'bar');
+	$sHTML = DashboardCharts::getChartHTML($labels, $values, $graph_title, $target_values,$html_imagename, $width, $height, $left, $right, $top, $bottom, 'bar', 'top');
 	echo $sHTML;
 }else{
 	echo $mod_strings['LBL_NO_DATA'];
