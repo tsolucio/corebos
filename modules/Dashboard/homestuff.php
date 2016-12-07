@@ -10,12 +10,7 @@
 
 function dashboardDisplayCall($type,$Chart_Type,$from_page)
 {
-	global $app_strings, $app_list_strings, $mod_strings;
-
-	global $currentModule, $theme;
-	$theme_path="themes/".$theme."/";
-	$image_path=$theme_path."images/";
-	require_once('modules/Vtiger/layout_utils.php');
+	global $app_strings, $mod_strings;
 	require_once('include/logging.php');
 
 	$graph_array = Array(
@@ -51,12 +46,6 @@ function dashboardDisplayCall($type,$Chart_Type,$from_page)
 	);
 
 	$log = LoggerManager::getLogger('dashboard');
-	if(isset($type) && $type != '') {
-		$dashboard_type = $type;
-	} else {
-		$dashboard_type = 'DashboardHome';
-	}
-
 	if(isset($type)) {
 		require_once('modules/Dashboard/display_charts.php');
 		$_REQUEST['type'] = $type;
@@ -65,6 +54,7 @@ function dashboardDisplayCall($type,$Chart_Type,$from_page)
 		$dashval=dashBoardDisplayChart();
 		return $dashval;
 	}
+	return '';
 }
 
 ?>

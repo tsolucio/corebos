@@ -16,8 +16,8 @@ global $tmp_dir,$adb, $mod_strings,$app_strings, $current_user, $current_languag
 require('user_privileges/user_privileges_'.$current_user->id.'.php');
 $mod_strings = return_module_language($current_language, 'Dashboard');
 
-$period=($_REQUEST['period'])?$_REQUEST['period']:"tmon"; // Period >> lmon- Last Month, tmon- This Month, lweek-LastWeek, tweek-ThisWeek; lday- Last Day
-$type=($_REQUEST['type'])?$_REQUEST['type']:"leadsource";
+$period=(!empty($_REQUEST['period']))?$_REQUEST['period']:"tmon"; // Period >> lmon- Last Month, tmon- This Month, lweek-LastWeek, tweek-ThisWeek; lday- Last Day
+$type=(!empty($_REQUEST['type']))?$_REQUEST['type']:"leadsource";
 $dates_values=start_end_dates($period); //To get the stating and End dates for a given period
 $date_start=$dates_values[0]; //Starting date
 $end_date=$dates_values[1]; // Ending Date
@@ -33,7 +33,6 @@ $user_id=$current_user->id;
 
 // Query for Leads
 $leads_query="select vtiger_crmentity.crmid,vtiger_crmentity.createdtime, vtiger_leaddetails.*, vtiger_crmentity.smownerid, vtiger_leadscf.* from vtiger_leaddetails inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_leaddetails.leadid inner join vtiger_leadsubdetails on vtiger_leadsubdetails.leadsubscriptionid=vtiger_leaddetails.leadid inner join vtiger_leadaddress on vtiger_leadaddress.leadaddressid=vtiger_leadsubdetails.leadsubscriptionid inner join vtiger_leadscf on vtiger_leaddetails.leadid = vtiger_leadscf.leadid left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid where vtiger_crmentity.deleted=0 and vtiger_leaddetails.converted=0 ";
-
 
 //Query for Accounts
 $account_query="select vtiger_crmentity.*, vtiger_account.*, vtiger_accountscf.* from vtiger_account inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_account.accountid inner join vtiger_accountbillads on vtiger_account.accountid=vtiger_accountbillads.accountaddressid inner join vtiger_accountshipads on vtiger_account.accountid=vtiger_accountshipads.accountaddressid inner join vtiger_accountscf on vtiger_account.accountid = vtiger_accountscf.accountid left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid left join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid where vtiger_crmentity.deleted=0 ";
@@ -56,9 +55,7 @@ $potential_query= "select  vtiger_crmentity.*,vtiger_account.accountname, vtiger
 //Query for Sales Order
 $so_query="select vtiger_crmentity.*,vtiger_salesorder.*,vtiger_account.accountid,vtiger_quotes.quoteid from vtiger_salesorder inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_salesorder.salesorderid inner join vtiger_sobillads on vtiger_salesorder.salesorderid=vtiger_sobillads.sobilladdressid inner join vtiger_soshipads on vtiger_salesorder.salesorderid=vtiger_soshipads.soshipaddressid left join vtiger_salesordercf on vtiger_salesordercf.salesorderid = vtiger_salesorder.salesorderid left outer join vtiger_quotes on vtiger_quotes.quoteid=vtiger_salesorder.quoteid left outer join vtiger_account on vtiger_account.accountid=vtiger_salesorder.accountid left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid left join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid where vtiger_crmentity.deleted=0 ";
 
-
 //Query for Purchase Order
-
 $po_query="select vtiger_crmentity.*,vtiger_purchaseorder.* from vtiger_purchaseorder inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_purchaseorder.purchaseorderid left outer join vtiger_vendor on vtiger_purchaseorder.vendorid=vtiger_vendor.vendorid inner join vtiger_pobillads on vtiger_purchaseorder.purchaseorderid=vtiger_pobillads.pobilladdressid inner join vtiger_poshipads on vtiger_purchaseorder.purchaseorderid=vtiger_poshipads.poshipaddressid left join vtiger_purchaseordercf on vtiger_purchaseordercf.purchaseorderid = vtiger_purchaseorder.purchaseorderid left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid left join vtiger_users on vtiger_users.id=vtiger_crmentity.smownerid where vtiger_crmentity.deleted=0 ";
 
 // Query for Quotes
@@ -69,7 +66,6 @@ $invoice_query="select vtiger_crmentity.*,vtiger_invoice.* from vtiger_invoice i
 
 //Query for tickets
 $helpdesk_query=" select vtiger_troubletickets.status AS ticketstatus, vtiger_groups.groupname AS ticketgroupname, vtiger_troubletickets.*,vtiger_crmentity.* from vtiger_troubletickets inner join vtiger_ticketcf on vtiger_ticketcf.ticketid = vtiger_troubletickets.ticketid inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_troubletickets.ticketid left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid left join vtiger_contactdetails on vtiger_troubletickets.parent_id=vtiger_contactdetails.contactid left join vtiger_account on vtiger_account.accountid=vtiger_troubletickets.parent_id left join vtiger_users on vtiger_crmentity.smownerid=vtiger_users.id and vtiger_troubletickets.ticketid = vtiger_ticketcf.ticketid where vtiger_crmentity.deleted=0";
-
 
 //Query for Contacts by Campaign
 $contByCampaign = "select crmid from vtiger_contactdetails inner join vtiger_campaigncontrel on vtiger_campaigncontrel.contactid = vtiger_contactdetails.contactid inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_contactdetails.contactid left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid left join vtiger_users on vtiger_crmentity.smownerid=vtiger_users.id where vtiger_crmentity.deleted=0 ";
@@ -97,7 +93,6 @@ $tickets_by_account="select vtiger_troubletickets.*, vtiger_groups.groupname AS 
 $tickets_by_contact="select vtiger_troubletickets.*, vtiger_groups.groupname AS ticketgroupname, vtiger_crmentity.*, vtiger_contactdetails.* from vtiger_troubletickets inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_troubletickets.ticketid inner join vtiger_contactdetails on vtiger_contactdetails.contactid=vtiger_troubletickets.parent_id left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid left join vtiger_users on vtiger_crmentity.smownerid=vtiger_users.id where vtiger_crmentity.deleted=0";
 
 //Query for product by category
-
 $product_category = "select vtiger_products.*,vtiger_crmentity.deleted from vtiger_products inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_products.productid where vtiger_crmentity.deleted=0";
 
 	$graph_array = Array(
