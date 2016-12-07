@@ -658,8 +658,8 @@ function fetch_homeDB(stuffid){
 		method: 'POST',
 		url: 'index.php?module=Dashboard&action=DashboardAjax&file=HomepageDB'
 	}).done(function (response) {
-				document.getElementById('stuffcont_'+stuffid).style.display = 'none';
 				document.getElementById('stuffcont_'+stuffid).innerHTML=response;
+				vtlib_executeJavascriptInElement(document.getElementById('stuffcont_'+stuffid));
 				document.getElementById('refresh_'+stuffid).innerHTML='';
 				jQuery('#stuffcont_'+stuffid).fadeIn();
 			}
