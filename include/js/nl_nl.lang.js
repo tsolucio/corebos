@@ -339,5 +339,12 @@ var alert_arr = {
 	'Products' : 'Products',
 	'Services' : 'Services',
 	'LBL_Hide' : 'Verberg',
-	'LBL_Show' : 'Toon'
+	'LBL_Show' : 'Toon',
+	'ERR_INVALID_DATE_FORMAT' : 'De datum moet van het formaat:  dd-mm-jjjj zijn',
+	'ERR_INVALID_MONTH' : 'Een geldige maand aub.',
+	'ERR_INVALID_DAY' : 'Een geldige dag aub.',
+	'ERR_INVALID_YEAR' : 'Een geldig jaartal aub.',
+	'ERR_INVALID_DATE' : 'Een geldige datum aub.',
+	'ERR_INVALID_HOUR' : 'Een geldig uur aub.',
+	'ERR_INVALID_TIME' : 'Een geldige tijd aub.'
 };

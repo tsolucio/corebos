@@ -10,7 +10,7 @@
 require_once('include/utils/utils.php');
 require_once('include/logging.php');
 require_once("modules/Potentials/Charts.php");
-require_once("modules/Dashboard/Forms.php");
+require_once("modules/Dashboard/DashboardCharts.php");
 global $app_list_strings, $current_language, $tmp_dir, $currentModule, $action, $theme;
 $current_module_strings = return_module_language($current_language, 'Dashboard');
 require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
@@ -165,17 +165,9 @@ Calendar.setup ({
 
 <?php } 
 else {
-	if (file_exists($tmp_dir.$cache_file_name)) {
-		$date = new DateTimeField(date('Y-m-d H:i', filemtime($tmp_dir.$cache_file_name)));
-		$file_date = $date->getDBInsertDateValue();
-	}
-	else {
-		$file_date = '';
-	}
 ?>
 <div align=right><FONT size='1'>
-<em><?php  echo $current_module_strings['LBL_CREATED_ON'].' '.$file_date; ?> 
-</em>[<a href="javascript:;" onClick="changeView('<?php echo vtlib_purify($_REQUEST['display_view']);?>');"><?php echo $current_module_strings['LBL_REFRESH'];?></a>]
+[<a href="javascript:;" onClick="changeView('<?php echo vtlib_purify($_REQUEST['display_view']);?>');"><?php echo $current_module_strings['LBL_REFRESH'];?></a>]
 [<a href="index.php?module=<?php echo $currentModule;?>&action=index&obm_edit=true&display_view=<?php echo vtlib_purify($_REQUEST['display_view']);?>"><?php echo $current_module_strings['LBL_EDIT'];?></a>]
 </FONT></div>
 <?php } 
@@ -184,5 +176,4 @@ else
 {
 	echo $mod_strings['LBL_NO_PERMISSION'];	
 }
-echo get_validate_chart_js();
 ?>

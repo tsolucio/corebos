@@ -375,5 +375,12 @@ var alert_arr = {
 	'Products' : 'Products',
 	'Services' : 'Services',
 	'LBL_Hide' : 'Cacher',
-	'LBL_Show' : 'Montrer'
+	'LBL_Show' : 'Montrer',
+	'ERR_INVALID_DATE_FORMAT' : 'Le format de la date doit être: dd-mm-yyyy',
+	'ERR_INVALID_MONTH' : 'Veuillez saisir un mois correct.',
+	'ERR_INVALID_DAY' : 'Veuillez saisir un jour correct.',
+	'ERR_INVALID_YEAR' : 'Veuillez saisir une année correcte sur 4 chiffres.',
+	'ERR_INVALID_DATE' : 'Veuillez saisir une date correcte.',
+	'ERR_INVALID_HOUR' : 'Veuillez saisir une heure correcte.',
+	'ERR_INVALID_TIME' : 'Veuillez saisir un horaire correct.'
 };

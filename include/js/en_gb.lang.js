@@ -345,5 +345,12 @@ var alert_arr = {
 	'Products' : 'Products',
 	'Services' : 'Services',
 	'LBL_Hide' : 'Hide',
-	'LBL_Show' : 'Show'
+	'LBL_Show' : 'Show',
+	'ERR_INVALID_DATE_FORMAT'  :  'The date format must be: yyyy-mm-dd',
+	'ERR_INVALID_MONTH'  :  'Please enter a valid month.',
+	'ERR_INVALID_DAY'  :  'Please enter a valid day.',
+	'ERR_INVALID_YEAR'  :  'Please enter a valid 4 digit year.',
+	'ERR_INVALID_DATE'  :  'Please enter a valid date.',
+	'ERR_INVALID_HOUR'  :  'Please enter a valid hour.',
+	'ERR_INVALID_TIME'  :  'Please enter a valid time.'
 };

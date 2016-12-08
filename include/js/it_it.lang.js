@@ -373,5 +373,12 @@ var alert_arr = {
 	'Products' : 'Products',
 	'Services' : 'Services',
 	'LBL_Hide' : 'Nascondi',
-	'LBL_Show' : 'Mostra'
+	'LBL_Show' : 'Mostra',
+	'ERR_INVALID_DATE_FORMAT' : 'Il formato della data deve essere: aaaa-mm-gg',
+	'ERR_INVALID_MONTH' : 'Prego inserire un mese valido.',
+	'ERR_INVALID_DAY' : 'Prego inserire un giorno valido.',
+	'ERR_INVALID_YEAR' : 'Prego inserire un anno in 4 cifre.',
+	'ERR_INVALID_DATE' : 'Prego inserire una data valida.',
+	'ERR_INVALID_HOUR' : 'Prego inserire un`ora valida.',
+	'ERR_INVALID_TIME' : 'Prego inserire un tempo valido.'
 };

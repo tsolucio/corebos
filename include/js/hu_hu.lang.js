@@ -359,5 +359,12 @@ var alert_arr = {
 	'Products' : 'Products',
 	'Services' : 'Services',
 	'LBL_Hide' : 'Részletek elrejtése',
-	'LBL_Show' : 'Részletek mutatása'
+	'LBL_Show' : 'Részletek mutatása',
+	'ERR_INVALID_DATE_FORMAT' : 'A dátum formátuma legyen: éééé-hh-nn',
+	'ERR_INVALID_MONTH' : 'Adj meg létező hónapot.',
+	'ERR_INVALID_DAY' : 'Adj meg létező napot.',
+	'ERR_INVALID_YEAR' : 'Adj meg létező évet 4 számjeggyel.',
+	'ERR_INVALID_DATE' : 'Adj meg létező dátumot.',
+	'ERR_INVALID_HOUR' : 'Adj meg létező órát.',
+	'ERR_INVALID_TIME' : 'Adj meg létező időt.'
 };

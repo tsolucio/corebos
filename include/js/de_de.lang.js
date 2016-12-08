@@ -387,5 +387,12 @@ var alert_arr = {
 	'Products' : 'Products',
 	'Services' : 'Services',
 	'LBL_Hide' : 'Verbergen',
-	'LBL_Show' : 'Anzeigen'
+	'LBL_Show' : 'Anzeigen',
+	'ERR_INVALID_DATE_FORMAT' : 'Das Datumsformat muss lauten: jj-mm-tt',
+	'ERR_INVALID_MONTH' : 'Bitte einen gültigen Monat eingeben.',
+	'ERR_INVALID_DAY' : 'Bitte einen gültigen Tag eingeben.',
+	'ERR_INVALID_YEAR' : 'Bitte ein gültiges 4-stelliges Jahr eingeben.',
+	'ERR_INVALID_DATE' : 'Bitte geben Sie ein gültiges Datum an.',
+	'ERR_INVALID_HOUR' : 'Bitte geben Sie eine gültige Stunde an.',
+	'ERR_INVALID_TIME' : 'Bitte geben Sie eine gültige Zeit ein.'
 };
