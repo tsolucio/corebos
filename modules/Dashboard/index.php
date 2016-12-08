@@ -93,14 +93,7 @@ if(GlobalVariable::getVariable('Application_Display_Calculator',1,$currentModule
 <script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <script src="include/chart.js/Chart.bundle.min.js"></script>
 <script src="include/chart.js/randomColor.js"></script>
-<script type="text/javascript">
-function getRandomColor() {
-	return randomColor({
-		luminosity: 'dark',
-		hue: 'random'
-	});
-}
-</script>
+<script type="text/javascript" src="modules/Dashboard/Dashboard.js"></script>
 <a name="top"></a>
 <table border=0 cellspacing=0 cellpadding=0 width=98% align=center>
 	<tr>
@@ -276,51 +269,3 @@ function getRandomColor() {
 
 </body>
 </html>
-<script>
-function loadDashBoard(oSelect)
-{
-	jQuery("#dashChart").fadeOut();
-	var oCombo = document.getElementById('dashboard_combo');
-	var oCombo1 = document.getElementById('dashboard_combo1');
-	oCombo.selectedIndex = oSelect.selectedIndex;
-	oCombo1.selectedIndex = oSelect.selectedIndex;
-	var type = oSelect.options[oSelect.selectedIndex].value;
-	if(type != 'DashboardHome')
-		url = 'module=Dashboard&action=DashboardAjax&display_view='+gdash_display_type+'&file=loadDashBoard&type='+type;
-	else
-		url = 'module=Dashboard&action=DashboardAjax&file=DashboardHome&display_view='+gdash_display_type;
-		jQuery.ajax({
-			method:"POST",
-			url:'index.php?'+ url
-		}).done(function(response) {
-			document.getElementById("dashChart").innerHTML=response;
-			vtlib_executeJavascriptInElement(document.getElementById("dashChart"))
-			jQuery("#dashChart").fadeIn(500);
-			document.getElementById("dashTitle_div").innerHTML = oCombo.options[oCombo.selectedIndex].text;
-		});
-}
-
-function changeView(displaytype)
-{
-	gdash_displaytype = displaytype;
-	var oCombo = document.getElementById('dashboard_combo');
-	var type = oCombo.options[oCombo.selectedIndex].value;
-	var currenttime = new Date();
-	var time="&time="+currenttime.getTime();
-	if(type == 'DashboardHome')
-	{
-		if(displaytype == 'MATRIX')
-			url = 'index.php?module=Dashboard&action=index&display_view=MATRIX';
-		else
-			url = 'index.php?module=Dashboard&action=index&display_view=NORMAL';
-	}
-	else
-	{
-		if(displaytype == 'MATRIX')
-			url = 'index.php?module=Dashboard&action=index&display_view=MATRIX&type='+type;
-		else
-			url = 'index.php?module=Dashboard&action=index&display_view=NORMAL&type='+type;
-	}
-	window.document.location.href = url+time;
-}
-</script>
