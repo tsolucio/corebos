@@ -58,7 +58,6 @@ class DashboardCharts {
 <script type="text/javascript">
 window.doChart{$html_imagename} = function(charttype) {
 	let stuffchart = document.getElementById('{$html_imagename}');
-	let stuffcontext = stuffchart.getContext('2d');
 	let chartDataObject = {
 		labels: [{$lbls}],
 		datasets: [{
@@ -84,6 +83,7 @@ window.doChart{$html_imagename} = function(charttype) {
 	});
 	stuffchart.addEventListener('click',function(evt) {
 		let activePoint = schart{$html_imagename}.getElementAtEvent(evt);
+		if (activePoint.length == 0) return;
 		let clickzone = { $lnks };
 		let a = document.createElement("a");
 		a.target = "_blank";
@@ -93,6 +93,36 @@ window.doChart{$html_imagename} = function(charttype) {
 	});
 }
 doChart{$html_imagename}('{$graph_type}');
+</script>
+EOF;
+		return $sHTML;
+	}
+
+	static public function getChartHTMLwithObject($chartObject, $targetObject, $html_imagename, $width, $height, $left, $right, $top, $bottom) {
+		$tgt = reset(json_decode($targetObject,true));
+		if (is_array($tgt)) {
+			$czone = 'clickzone[activePoint[0]._datasetIndex][activePoint[0]._index]';
+		} else {
+			$czone = 'clickzone[activePoint[0]._index]';
+		}
+		$sHTML = <<<EOF
+<canvas id="$html_imagename" style="width:{$width}px;height:{$height}px;margin:auto;padding:10px;"></canvas>
+<script type="text/javascript">
+window.doChart{$html_imagename} = function() {
+	let stuffchart = document.getElementById('{$html_imagename}');
+	window.schart{$html_imagename} = new Chart(stuffchart,$chartObject);
+	stuffchart.addEventListener('click',function(evt) {
+		let activePoint = schart{$html_imagename}.getElementAtEvent(evt);
+		if (activePoint.length == 0) return;
+		let clickzone = $targetObject;
+		let a = document.createElement("a");
+		a.target = "_blank";
+		a.href = $czone;
+		document.body.appendChild(a);
+		a.click();
+	});
+}
+doChart{$html_imagename}();
 </script>
 EOF;
 		return $sHTML;
@@ -113,6 +143,128 @@ EOF;
 			}, $vals);
 		}
 		return $vals;
+	}
+
+	static public function pipeline_by_sales_stage($datax, $date_start, $date_end, $user_id, $width, $height){
+		global $log,$current_user,$adb;
+		$log->debug("Entering pipeline_by_sales_stage(".$datax.",".$date_start.",".$date_end.",".$user_id.",".$width.",".$height.") method ...");
+		global $app_strings,$lang_crm, $mod_strings, $charset, $tmp_dir, $theme;
+
+		$where=' deleted = 0 ';
+		$labels = array();
+		//build the where clause for the query that matches $datax
+		$count = count($datax);
+		if ($count>0) {
+			$where .= " and sales_stage in ( ";
+			$ss_i = 0;
+			foreach ($datax as $key=>$value) {
+				if($ss_i != 0) {
+					$where .= ', ';
+				}
+				$where .= "'".addslashes($key)."'";
+				$labels[] = getTranslatedString($key,'Potentials');
+				$ss_i++;
+			}
+			$where .= ")";
+		}
+
+		$count = count($user_id);
+		if ($count>0) {
+			$where .= ' and smownerid in ( ';
+			$ss_i = 0;
+			foreach ($user_id as $key=>$value) {
+				if($ss_i != 0) $where .= ", ";
+				$where .= "'".addslashes($value)."'";
+				$ss_i++;
+			}
+			$where .= ")";
+		}
+
+		$date = new DateTimeField($date_start);
+		$endDate = new DateTimeField($date_end);
+		//build the where clause for the query that matches $date_start and $date_end
+		$where .= " AND closingdate >= '$date_start' AND closingdate <= '$date_end'";
+		$subtitle = $mod_strings['LBL_DATE_RANGE']." ".$date->getDisplayDate()." ".$mod_strings['LBL_DATE_RANGE_TO']." ".$endDate->getDisplayDate();
+
+		$sql = 'SELECT `sales_stage`,smownerid,count(*) as potcnt,sum(amount) as potsum
+			FROM `vtiger_potential`
+			INNER JOIN vtiger_crmentity on crmid=potentialid '.
+			getNonAdminAccessControlQuery('Potentials', $current_user).
+			" WHERE $where
+			GROUP BY `sales_stage`,smownerid
+			ORDER BY sales_stage,smownerid";
+		$rs = $adb->pquery($sql,array());
+		//build pipeline by sales stage data
+		$total = 0;
+		$count = array();
+		$sum = array();
+		while ($row = $adb->fetch_array($rs)) {
+			$amount = CurrencyField::convertFromMasterCurrency($row['potsum'],$current_user->conv_rate);
+			$sum[$row['sales_stage']][$row['smownerid']] = $amount;
+			$count[$row['sales_stage']][$row['smownerid']] = $row['potcnt'];
+			$total = $total + $amount;
+		}
+		$titlestr = $mod_strings['LBL_TOTAL_PIPELINE'].html_to_utf8($current_user->currency_symbol).$total;
+		$datay = array();
+		$aTargets = array();
+		$aAlts = array();
+		$cvid = getCvIdOfAll("Potentials");
+		$dsetidx = 0;
+		foreach ($user_id as $the_id) {
+			$the_user = getEntityName('Users', $the_id);
+			$the_user = $the_user[$the_id];
+			$dset = array(
+				'label' => $the_user,
+				'backgroundColor' => sprintf('#%02X%02X%02X', rand(50,255), rand(50,255), rand(50,255) ),
+				'data' => array(),
+			);
+			$lnkidx = 0;
+			foreach ($datax as $stage_key=>$stage_translation) {
+				$dset['data'][] = (isset($sum[$stage_key][$the_id]) ? $sum[$stage_key][$the_id] : 0);
+				if (!isset($aAlts[$the_id])) {
+					$aAlts[$the_id] = array();
+				}
+				if (isset($sum[$stage_key][$the_id])) {
+					array_push($aAlts[$the_id], $the_user.' - '.$count[$stage_key][$the_id]." ".$mod_strings['LBL_OPPS_IN_STAGE']." $stage_translation");
+				} else {
+					array_push($aAlts[$the_id], '');
+				}
+				if (!isset($aTargets[$dsetidx])) {
+					$aTargets[$dsetidx] = array();
+				}
+				$aTargets[$dsetidx][$lnkidx++] = 'index.php?module=Potentials&action=ListView&sales_stage='.urlencode($stage_key).'&closingdate_start='.urlencode($date_start).'&closingdate_end='.urlencode($date_end).'&query=true&type=dbrd&owner='.$the_user.'&viewname='.$cvid;
+			}
+			$dsetidx++;
+			$datay[] = $dset;
+		}
+		$dataChartObject = array(
+			'labels' => $labels,
+			'datasets' => $datay,
+		);
+		$chartobject = array(
+			'type' => 'bar',
+			'data' => $dataChartObject,
+			'options' => array(
+				'responsive' => false,
+				'title' => array(
+					'display' => true,
+					'text' => $titlestr.' - '.$subtitle,
+				),
+				'legend' => array(
+					'position' => 'top',
+					'display' => true,
+					'labels' => array(
+						'fontSize' => 11,
+						'boxWidth' => 18,
+					),
+				),
+				'scales' => array(
+					'xAxes' => array(array('stacked' => false))
+				)
+			)
+		);
+		$log->debug("Exiting pipeline_by_sales_stage method ...");
+		return self::getChartHTMLwithObject(json_encode($chartobject), json_encode($aTargets), 'pipeline_by_sales_stage', 1100, 600, 0, 0, 0, 0);
 	}
 
 }
