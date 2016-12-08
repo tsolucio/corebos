@@ -28,7 +28,7 @@ include_once('vtlib/Vtiger/Module.php');
 require_once('vtlib/Vtiger/Cron.php');
 require_once('modules/Emails/mail.php');
 require_once('modules/Emails/Emails.php');
-global $site_URL, $currentModule,$current_user;
+global $site_URL, $currentModule;
 
 // i18n
 //$i18nInactive = getTranslatedString('LBL_INACTIVE','CronTasks');
@@ -67,7 +67,7 @@ $currentModule = $holdCM;
 //Send email with error.
 $auser = Users::getActiveAdminUser();
 $mailto = $auser->column_fields['email1'];
-$mailtoDefined = GlobalVariable::getVariable('CronTasks_cronWatcher_mailto', '', 'CronTasks', $current_user->id);
+$mailtoDefined = GlobalVariable::getVariable('CronTasks_cronWatcher_mailto', '', 'CronTasks', $auser->id);
 if($mailto != ''){
 	$mailto .= ','.$mailtoDefined;
 }else {
