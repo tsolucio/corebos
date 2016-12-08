@@ -149,7 +149,7 @@ class Activity extends CRMEntity {
 		global $adb;
 
 		$cbrecord = $this->id;
-		unset($_SESSION['next_reminder_time']);
+		coreBOS_Session::delete('next_reminder_time');
 		if(isset($cbmodule) && isset($cbrecord)) {
 			$cbdate = getValidDBInsertDateValue($this->column_fields['date_start']);
 			$cbtime = $this->column_fields['time_start'];
@@ -186,7 +186,7 @@ class Activity extends CRMEntity {
 		$log->info("in insertIntoReminderTable ".$table_name." module is ".$module);
 		if(isset($_REQUEST['set_reminder']) and $_REQUEST['set_reminder'] == 'Yes')
 		{
-			unset($_SESSION['next_reminder_time']);
+			coreBOS_Session::delete('next_reminder_time');
 			$log->debug("set reminder is set");
 			$rem_days = $_REQUEST['remdays'];
 			$log->debug("rem_days is ".$rem_days);
@@ -289,7 +289,7 @@ function insertIntoRecurringTable(& $recurObj)
 		$recurring_insert = "insert into vtiger_recurringevents values (?,?,?,?,?,?)";
 		$rec_params = array($current_id, $this->id, $st_date, $type, $recur_freq, $recurringinfo);
 		$adb->pquery($recurring_insert, $rec_params);
-		unset($_SESSION['next_reminder_time']);
+		coreBOS_Session::delete('next_reminder_time');
 		if($_REQUEST['set_reminder'] == 'Yes') {
 			$this->insertIntoReminderTable("vtiger_activity_reminder",$module,$current_id,'');
 		}

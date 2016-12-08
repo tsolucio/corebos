@@ -7,26 +7,20 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
-global $app_strings, $currentModule,$image_path,$theme,$adb, $current_user;
-
-$theme_path="themes/".$theme."/";
-$image_path=$theme_path."images/";
-
-require_once("data/Tracker.php");
-require_once('modules/Vtiger/layout_utils.php');
 require_once('include/utils/utils.php');
+global $app_strings, $currentModule,$adb, $current_user;
 
 $log = LoggerManager::getLogger('Activity_Reminder');
 
-$cbaction = vtlib_purify($_REQUEST['cbaction']);
-$cbmodule = vtlib_purify($_REQUEST['cbmodule']);
-$cbrecord = vtlib_purify($_REQUEST['cbrecord']);
+$cbaction = isset($_REQUEST['cbaction']) ? vtlib_purify($_REQUEST['cbaction']) : '';
+$cbmodule = isset($_REQUEST['cbmodule']) ? vtlib_purify($_REQUEST['cbmodule']) : '';
+$cbrecord = isset($_REQUEST['cbrecord']) ? vtlib_purify($_REQUEST['cbrecord']) : '';
 
 if($cbaction == 'POSTPONE') {
-	if(isset($cbmodule) && isset($cbrecord)) {
-		$reminderid = $_REQUEST['cbreminderid'];
+	if(!empty($cbmodule) && !empty($cbrecord)) {
+		$reminderid = isset($_REQUEST['cbreminderid']) ? vtlib_purify($_REQUEST['cbreminderid']) : '';
 		if(!empty($reminderid) ) {
-			unset($_SESSION['next_reminder_time']);
+			coreBOS_Session::delete('next_reminder_time');
 			$reminder_query = "UPDATE vtiger_activity_reminder_popup set status = 0 WHERE reminderid = ? AND semodule = ? AND recordid = ?";
 			$adb->pquery($reminder_query, array($reminderid, $cbmodule, $cbrecord));
 			echo ":#:SUCCESS";
