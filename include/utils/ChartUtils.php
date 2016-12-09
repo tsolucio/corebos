@@ -10,7 +10,7 @@
 require_once('include/utils/utils.php');
 require_once 'include/utils/CommonUtils.php';
 
-Class ChartUtils {
+class ChartUtils {
 
 	//Generates Chart Data in form of an array from the Query Result of reports
 	public static function generateChartDataFromReports($queryResult, $groupbyField, $fieldDetails='', $reportid='') {

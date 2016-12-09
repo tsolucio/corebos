@@ -8,10 +8,7 @@
  * All Rights Reserved.
  ********************************************************************************/
 require_once('include/utils/utils.php');
-include("modules/Dashboard/horizontal_bargraph.php");
-include("modules/Dashboard/vertical_bargraph.php");
-include_once("modules/Dashboard/pie_graph.php");
-require_once("modules/Dashboard/DashboardCharts.php");
+require_once("include/utils/ChartUtils.php");
 
 /* Function to get the Account name for a given vtiger_account id
  * Portions created by vtiger are Copyright (C) vtiger.
@@ -36,7 +33,6 @@ function get_account_name($acc_id)
 		$name="";
 	return $name;
 }
-
 
 /**
  * Performance Optimization: Module Chart for Home Page Dashboard
@@ -259,8 +255,7 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 		{
 			$url_string="";
 
-			$mod_cnt_table="<table border=0 cellspacing=1 cellpadding=3><tr>
-				<th>  Status </th>";
+			$mod_cnt_table = '<table border=0 cellspacing=1 cellpadding=3><tr><th>  '.getTranslatedString('LBL_STATUS').'  </th>';
 
 			//Assigning the Header values to the vtiger_table and giving the dates as graphformat
 			for($i=0; $i<$days; $i++)
@@ -271,7 +266,7 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 				$table_format=$values[1];
 				$mod_cnt_table.= "<th>$table_format</th>";
 			}
-			$mod_cnt_table .= "<th>Total</th></tr>" ;
+			$mod_cnt_table .= '<th>'.getTranslatedString('LBL_TOTAL').'</th></tr>';
 
 			//For all type of the array
 			for ($i=0;$i<count($mod_name_array); $i++)
@@ -292,7 +287,6 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 				{
 					$name_val_table=$mod_name;
 				}
-
 
 				$mod_cnt_table .= "<tr><td>$name_val_table</td>";
 				$mod_cnt_crtd_date="";
@@ -499,7 +493,7 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 				else
 					$test_target_val.="K".$link_val;
 			}
-			$mod_cnt_table .="</tr><tr><td class=\"$class\">Total</td>";
+			$mod_cnt_table .="</tr><tr><td class=\"$class\">".getTranslatedString('LBL_TOTAL').'</td>';
 			//For all Days getting the vtiger_table
 			for($k=0; $k<$days;$k++)
 			{
@@ -534,7 +528,6 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 			$data=0;
 
 		}
-
 	}
 	else
 	{
@@ -542,30 +535,6 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 		return "<h3> The data is not available with the specified time period</h3>";
 	}
 	return $data;
-}
-
-/** Saving the images of the graph in the /cache/images
-  * otherwise it will render the graph with the given details
-  * Portions created by vtiger are Copyright (C) vtiger.
-  * All Rights Reserved.
-*/
-function save_image_map($filename,$image_map)
-{
-	global $log;
-
-	if (!$handle = fopen($filename, 'w')) {
-		$log->debug(" Cannot open file ($filename)");
-		return;
-	}
-
-	// Write $somecontent to our opened file.
-	if (fwrite($handle, $image_map) === FALSE) {
-		$log->debug(" Cannot write to file ($filename)");
-		return false;
-	}
-
-	fclose($handle);
-	return true;
 }
 
 function get_graph_by_type($graph_by,$graph_title,$module,$where,$query,$width=900,$height=900,$frompage='')
@@ -577,10 +546,10 @@ function get_graph_by_type($graph_by,$graph_title,$module,$where,$query,$width=9
 	$graph_details=module_Chart($user_id,$date_start,$end_date,$query,$graph_by,$graph_title,$where,$module,$type);
 	if($graph_details!=0)
 	{
-		$labels = DashboardCharts::convertToArray($graph_details[0],true,true);
+		$labels = ChartUtils::convertToArray($graph_details[0],true,true);
 		$values = $graph_details[1];
 		$graph_title = $graph_details[2];
-		$target_values = DashboardCharts::convertToArray($graph_details[3],false,true);
+		$target_values = ChartUtils::convertToArray($graph_details[3],false,true);
 		$graph_date = $graph_details[4];
 		$urlstring = $graph_details[5];
 		$cnt_table = $graph_details[6];
@@ -618,10 +587,10 @@ function get_graph_by_type($graph_by,$graph_title,$module,$where,$query,$width=9
 
 		if($frompage != '')
 		{
-			return DashboardCharts::getChartHTML($labels, $values, $graph_title, $target_values,$html_imagename, $width, $height, $left, $right, $top, $bottom, $Chart_Type, $Chart_position);
+			return ChartUtils::getChartHTML($labels, $values, $graph_title, $target_values,$html_imagename, $width, $height, $left, $right, $top, $bottom, $Chart_Type, $Chart_position);
 		}else
 		{
-			return DashboardCharts::getChartHTML($labels, $values, $graph_title, $target_values,$html_imagename, $width, $height, $left, $right, $top, $bottom, $Chart_Type, $Chart_position, false);
+			return ChartUtils::getChartHTML($labels, $values, $graph_title, $target_values,$html_imagename, $width, $height, $left, $right, $top, $bottom, $Chart_Type, $Chart_position, false);
 		}
 	}
 	else
@@ -631,199 +600,4 @@ function get_graph_by_type($graph_by,$graph_title,$module,$where,$query,$width=9
 	}
 }
 
-/** Returns  the Horizontal,vertical, pie graphs and Accumulated Graphs for the details
-* Portions created by vtiger are Copyright (C) vtiger.
-* All Rights Reserved.
-*/
-function get_graph($cache_file_name,$html_imagename,$cnt_val,$name_val,$width,$height,$left,$right,$top,$bottom,$title,$target_val,$graph_date,$urlstring,$test_target_val,$date_start,$end_date)
-{
-
-	global $tmp_dir;
-	global $graph_title, $mod_strings;
-	global $theme;
-	$theme_path="themes/".$theme."/";
-	$image_path=$theme_path."images/";
-
-	$val=explode(":",$title);
-	$display_title=$val[0];
-
-	if(isset($_REQUEST['display_view']) && $_REQUEST['display_view'] == 'MATRIX')
-	{
-		$sHTML .="<tr><td width=50%><table width=100%  border=0 cellspacing=0 cellpadding=0 align=left>";
-	}
-
-$sHTML .= "<tr>
-	   <td><a name='1'></a><table width=20%  border=0 cellspacing=12 cellpadding=0 align=left>
-	         <tr>
-	    	   <td rowspan=2 valign=top><span class=\"dash_count\">1</span></td>
-	           <td nowrap><span class=genHeaderSmall>".$display_title."</span></td>
-		 </tr>
-		 <tr>
-		   <td nowrap><span class=big>".$mod_strings['LBL_HORZ_BAR_CHART']."</span> </td>
-		 </tr>
-		</table>
-	   </td>
-	   <td align='right'>";
-	if(isset($_REQUEST['display_view']) && $_REQUEST['display_view'] == 'MATRIX')
-	{
-		$sHTML .= "&nbsp;";
-	} else {
-		$sHTML .= "<table cellpadding='0' cellspacing='0' border='0' class='small'>
-		<tr>
-			<td class='small'>".$mod_strings['VIEWCHART']." :&nbsp;</td>
-			<td class='dash_row_sel'>1</td>
-			<td class='dash_row_unsel'><a class='dash_href' href='#2'>2</a></td>
-			<td class='dash_switch'><a href='#top'><img align='absmiddle' src='". vtiger_imageurl('dash_scroll_up.jpg', $theme)."' border='0'></a></td>
-		</tr>
-		</table>";
-	 }
-	$sHTML .="</td>
-	</tr>
-	<tr>
-	<td colspan='2'>";
-
-	$sHTML .= render_graph($tmp_dir."hor_".$cache_file_name,$html_imagename."_hor",$cnt_val,$name_val,$width,$height,$left,$right,$top,$bottom,$title,$target_val,"horizontal");
-//Commented by Minnie -- same content displayed in two graphs
-/*$sHTML .= "</td>
-	</tr>
-	<tr>
-	   <td><hr noshade='noshade' size='1' /></td>
-	</tr>";
-
-$sHTML .= "<tr>
-	   <td><table width=20%  border=0 cellspacing=0 cellpadding=0 align=left>
-	   	 <tr>
-		   <td rowspan=2 valign=top><span class=dashSerial>2</span></td>
-		   <td nowrap><span class=genHeaderSmall>".$graph_title."</span></td>
-		 </tr>
-		 <tr>
-		   <td><span class=big>Vertical Bar Chart</span> </td>
-		 </tr>
-	        </table>
-	   </td>
-	</tr>
-	<tr>
-	   <td height=200>";
-
-	   $sHTML .= render_graph($tmp_dir."vert_".$cache_file_name,$html_imagename."_vert",$cnt_val,$name_val,$width,$height,$left,$right,$top,$bottom,$title,$target_val,"vertical");*/
-
-$sHTML .= "</td>
-	</tr>";
-
-	if(isset($_REQUEST['display_view']) && $_REQUEST['display_view'] == 'MATRIX')
-	{
-		$sHTML .="</table></td><td width=50%><table width=100%  border=0 cellspacing=0 cellpadding=0 align=left>";
-	}else
-	{
-		$sHTML .= "<tr><td colspan='2' class='dash_chart_btm'>&nbsp;</td></tr>";
-	}
-
-$sHTML .= "<tr>
-	   <td><a name='2'></a><table width=20%  border=0 cellspacing=12 cellpadding=0 align=left>
-           	 <tr>
-	           <td rowspan=2 valign=top><span class=\"dash_count\">2</span></td>
-	           <td nowrap><span class=genHeaderSmall>".$graph_title."</span></td>
-	         </tr>
-	         <tr>
-	           <td><span class=big>".$mod_strings['LBL_PIE_CHART']."</span> </td>
-	         </tr>
-	        </table>
-	   </td>
-	     <td align='right'>";
-	if(isset($_REQUEST['display_view']) && $_REQUEST['display_view'] == 'MATRIX')
-	{
-		$sHTML .= "&nbsp;";
-	} else {
-		$sHTML .= "<table cellpadding='0' cellspacing='0' border='0' class='small'>
-		<tr>
-			<td class='small'>".$mod_strings['VIEWCHART']." :&nbsp;</td>
-			<td class='dash_row_unsel'><a class='dash_href' href='#1'>1</a></td>
-			<td class='dash_row_sel'>2</td>
-			<td class='dash_switch'><a href='#top'><img align='absmiddle' src='". vtiger_imageurl('dash_scroll_up.jpg', $theme)."' border='0'></a></td>
-		</tr>
-		</table>";
-	 }
-	$sHTML .="</td>
-	</tr>
-	<tr>
-	   <td colspan='2'>";
-
-	$sHTML .= render_graph($tmp_dir."pie_".$cache_file_name,$html_imagename."_pie",$cnt_val,$name_val,$width,$height,$left,$right,$top,$bottom,$title,$target_val,"pie");
-
-$sHTML .= "</td>
-	</tr>";
-
-if(isset($_REQUEST['display_view']) && $_REQUEST['display_view'] == 'MATRIX')
-{
-	$sHTML .="</table></td></tr>";
-}
-$sHTML .= "<tr><td colspan='2' class='dash_chart_btm'>&nbsp;</td></tr>";
-
-
-return $sHTML;
-}
-
-/** Returns graph, if the cached image is present it'll display that image, otherwise it will render the graph with the given details
-* Portions created by vtiger are Copyright (C) vtiger.
-* All Rights Reserved.
-*/
-function render_graph($cache_file_name,$html_imagename,$cnt_val,$name_val,$width,$height,$left,$right,$top,$bottom,$title,$target_val,$graph_type)
-{
-	//Checks whether the cached image is present or not
-	if(file_exists($cache_file_name))
-	{
-		@unlink($cache_file_name);
-	}
-	if(file_exists($cache_file_name.'.map'))
-	{
-		@unlink($cache_file_name.'.map');
-	}
-	if (!file_exists($cache_file_name) || !file_exists($cache_file_name.'.map'))
-	{
-		//If the Cached image is not present
-		if($graph_type=="horizontal")
-		{
-			return horizontal_graph($cnt_val,$name_val,$width,$height,$left,$right,$top,$bottom,$title,$target_val,$cache_file_name,$html_imagename);
-		}
-		else if($graph_type=="vertical")
-		{
-			return vertical_graph($cnt_val,$name_val,$width,$height,$left,$right,$top,$bottom,$title,$target_val,$cache_file_name,$html_imagename);
-		}
-		else if($graph_type=="pie")
-		{
-			return pie_chart($cnt_val,$name_val,$width,$height,$left,$right,$top,$bottom,$title,$target_val,$cache_file_name,$html_imagename);
-		}
-	}
-	else
-	{
-		//Getting the cached image
-		$imgMap_fp = fopen($cache_file_name.'.map', "rb");
-		$imgMap = fread($imgMap_fp, filesize($cache_file_name.'.map'));
-		fclose($imgMap_fp);
-		$base_name_cache_file=basename($cache_file_name);
-		$ccc="cache/images/".$base_name_cache_file;
-		$return = "\n$imgMap\n";
-		$return .= "<img src=$ccc ismap usemap=#$html_imagename border='0'>";
-		return $return;
-	}
-}
-function get_graph_homepg($cache_file_name,$html_imagename,$cnt_val,$name_val,$width,$height,$left,$right,$top,$bottom,$title,$target_val,$graph_date,$urlstring,$test_target_val,$date_start,$end_date)
-{
-	global $tmp_dir;
-	global $graph_title, $mod_strings;
-	global $theme;
-	$theme_path="themes/".$theme."/";
-	$image_path=$theme_path."images/";
-
-	$val=explode(":",$title);
-	$display_title=$val[0];
-	$type = $_REQUEST[Chart_Type];
-	if($type == 'horizontalbarchart')
-		$sHTML .= render_graph($tmp_dir."hor_".$cache_file_name,$html_imagename."_hor",$cnt_val,$name_val,$width,$height,$left,$right,$top,$bottom,$title,$target_val,"horizontal");
-	elseif($type == 'verticalbarchart')
-		$sHTML .= render_graph($tmp_dir."vert_".$cache_file_name,$html_imagename."_vert",$cnt_val,$name_val,$width,$height,$left,$right,$top,$bottom,$title,$target_val,"vertical");
-	elseif($type == 'piechart')
-		$sHTML .= render_graph($tmp_dir."pie_".$cache_file_name,$html_imagename."_pie",$cnt_val,$name_val,$width,$height,$left,$right,$top,$bottom,$title,$target_val,"pie");
-	 return $sHTML;
-}
 ?>
