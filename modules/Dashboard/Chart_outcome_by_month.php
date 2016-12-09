@@ -9,7 +9,6 @@
  ********************************************************************************/
 require_once('include/utils/utils.php');
 require_once('include/logging.php');
-require_once("modules/Potentials/Charts.php");
 require_once("modules/Dashboard/DashboardCharts.php");
 global $app_list_strings, $current_language, $tmp_dir, $currentModule, $action, $theme;
 $current_module_strings = return_module_language($current_language, 'Dashboard');
@@ -23,10 +22,8 @@ else { $refresh = false; }
 
 // added for auto refresh
 $refresh = true;
-//
 
 $date_start = array();
-$datax = array();
 //get the dates to display
 //added to fix the issue4307
 if(isset($_REQUEST['obm_date_start']) && $_REQUEST['obm_date_start'] == '')
@@ -95,21 +92,8 @@ else {
 	$ids = array_keys($ids);
 }
 
-//create unique prefix based on selected users for image files
-$id_hash = '';
-if (isset($ids)) {
-	sort($ids);
-	$id_hash = crc32(implode('',$ids));
-}
-$log->debug("ids is:");
-$log->debug($ids);
-
-$cache_file_name = $id_hash."_outcome_by_month_".$current_language."_".crc32($date_start.$date_end).".png";
-$log->debug("cache file name is: $cache_file_name");
-
 if(isPermitted('Potentials','index')=="yes")
 {
-$draw_this = new jpgraph();
 $width = 850;
 $height = 500;
 if(isset($_REQUEST['display_view']) && $_REQUEST['display_view'] == 'MATRIX')
@@ -118,7 +102,7 @@ if(isset($_REQUEST['display_view']) && $_REQUEST['display_view'] == 'MATRIX')
 	$height = 250;
 }
 
-echo $draw_this->outcome_by_month($date_start, $date_end, $ids, $tmp_dir.$cache_file_name, $refresh,$width,$height);
+echo DashboardCharts::outcome_by_month($date_start, $date_end, $ids, $width, $height);
 echo "<P><font size='1'><em>".$current_module_strings['LBL_MONTH_BY_OUTCOME_DESC']."</em></font></P>";
 if (isset($_REQUEST['obm_edit']) && $_REQUEST['obm_edit'] == 'true') {
 	$cal_lang = "en";

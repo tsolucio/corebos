@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ********************************************************************************/
-
 global $theme;
 $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
@@ -22,9 +21,6 @@ $image_path=$theme_path."images/";
 				<tr>
 					<td rowspan="2"><span class="dash_count">1</span>&nbsp;&nbsp;</td>
 					<td nowrap><span class="genHeaderSmall"><?php echo $mod_strings['LBL_SALES_STAGE_FORM_TITLE']; ?></span></td>
-				</tr>
-				<tr>
-					<td><span class="big"><?php echo $mod_strings['LBL_HORZ_BAR_CHART'];?></span> </td>
 				</tr>
 				</table>
 			</td>
@@ -70,9 +66,6 @@ $image_path=$theme_path."images/";
 					<td rowspan="2"><span class="dash_count">3</span>&nbsp;&nbsp;</td>
 					<td nowrap><span class="genHeaderSmall"><?php echo $mod_strings['LBL_LEAD_SOURCE_BY_OUTCOME'];?></span></td>
 				</tr>
-				<tr>
-					<td><span class="big"><?php echo $mod_strings['LBL_HORZ_BAR_CHART'];?></span> </td>
-				</tr>
 				</table>
 			</td>
 		</tr>
@@ -91,9 +84,6 @@ $image_path=$theme_path."images/";
 				<tr>
 					<td rowspan="2"><span class="dash_count">4</span>&nbsp;&nbsp;</td>
 					<td nowrap><span class="genHeaderSmall"><?php echo $mod_strings['LBL_LEAD_SOURCE_FORM_TITLE'];?></span></td>
-				</tr>
-				<tr>
-					<td><span class="big"><?php echo $mod_strings['LBL_PIE_CHART'];?></span> </td>
 				</tr>
 				</table>
 			</td>

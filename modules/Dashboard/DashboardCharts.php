@@ -85,6 +85,7 @@ window.doChart{$html_imagename} = function(charttype) {
 		let activePoint = schart{$html_imagename}.getElementAtEvent(evt);
 		if (activePoint.length == 0) return;
 		let clickzone = { $lnks };
+		if (clickzone == undefined || clickzone == {} || clickzone.length == 0) return;
 		let a = document.createElement("a");
 		a.target = "_blank";
 		a.href = clickzone[activePoint[0]._index];
@@ -115,6 +116,7 @@ window.doChart{$html_imagename} = function() {
 		let activePoint = schart{$html_imagename}.getElementAtEvent(evt);
 		if (activePoint.length == 0) return;
 		let clickzone = $targetObject;
+		if (clickzone == undefined || clickzone == {} || clickzone.length == 0) return;
 		let a = document.createElement("a");
 		a.target = "_blank";
 		a.href = $czone;
@@ -146,9 +148,8 @@ EOF;
 	}
 
 	static public function pipeline_by_sales_stage($datax, $date_start, $date_end, $user_id, $width, $height){
-		global $log,$current_user,$adb;
+		global $log, $current_user, $adb, $mod_strings;
 		$log->debug("Entering pipeline_by_sales_stage(".$datax.",".$date_start.",".$date_end.",".$user_id.",".$width.",".$height.") method ...");
-		global $app_strings,$lang_crm, $mod_strings, $charset, $tmp_dir, $theme;
 
 		$where=' deleted = 0 ';
 		$labels = array();
@@ -265,6 +266,182 @@ EOF;
 		);
 		$log->debug("Exiting pipeline_by_sales_stage method ...");
 		return self::getChartHTMLwithObject(json_encode($chartobject), json_encode($aTargets), 'pipeline_by_sales_stage', 1100, 600, 0, 0, 0, 0);
+	}
+
+	static public function outcome_by_month($date_start, $date_end, $user_id, $width, $height){
+		global $log, $current_user, $adb, $current_language, $mod_strings;
+		$log->debug("Entering outcome_by_month(".$date_start.",".$date_end.",".$user_id.",".$width.",".$height.") method ...");
+		$report_strings = return_module_language($current_language, 'Reports');
+		$months = $report_strings['MONTH_STRINGS'];
+
+		$where=' deleted = 0 ';
+
+		$count = count($user_id);
+		if ($count>0) {
+			$where .= ' and smownerid in ( ';
+			$ss_i = 0;
+			foreach ($user_id as $key=>$value) {
+				if($ss_i != 0) $where .= ", ";
+				$where .= "'".addslashes($value)."'";
+				$ss_i++;
+			}
+			$where .= ")";
+		}
+
+		$date = new DateTimeField($date_start);
+		$endDate = new DateTimeField($date_end);
+		//build the where clause for the query that matches $date_start and $date_end
+		$where .= " AND closingdate >= '$date_start' AND closingdate <= '$date_end'";
+		$subtitle = $mod_strings['LBL_DATE_RANGE']." ".$date->getDisplayDate()." ".$mod_strings['LBL_DATE_RANGE_TO']." ".$endDate->getDisplayDate();
+
+		$total = 0;
+		$realwhere = $where." and sales_stage='Closed Won' ";
+		$sql = 'SELECT MONTH(closingdate) as potmonth,count(*) as potcnt,sum(amount) as potsum
+			FROM `vtiger_potential`
+			INNER JOIN vtiger_crmentity on crmid=potentialid '.
+			getNonAdminAccessControlQuery('Potentials', $current_user).
+			" WHERE $realwhere
+			GROUP BY potmonth
+			ORDER BY potmonth";
+		$rs = $adb->pquery($sql,array());
+		$closedWon = array();
+		while ($row = $adb->fetch_array($rs)) {
+			$closedWon[$row['potmonth']]['count'] = $row['potcnt'];
+			$amount = CurrencyField::convertFromMasterCurrency($row['potsum'],$current_user->conv_rate);
+			$closedWon[$row['potmonth']]['sum'] = $amount;
+			$total = $total + $amount;
+		}
+		$realwhere = $where." and sales_stage='Closed Lost' ";
+		$sql = 'SELECT MONTH(closingdate) as potmonth,count(*) as potcnt,sum(amount) as potsum
+			FROM `vtiger_potential`
+			INNER JOIN vtiger_crmentity on crmid=potentialid '.
+			getNonAdminAccessControlQuery('Potentials', $current_user).
+			" WHERE $realwhere
+			GROUP BY potmonth
+			ORDER BY potmonth";
+		$rs = $adb->pquery($sql,array());
+		$closedLost = array();
+		while ($row = $adb->fetch_array($rs)) {
+			$closedLost[$row['potmonth']]['count'] = $row['potcnt'];
+			$amount = CurrencyField::convertFromMasterCurrency($row['potsum'],$current_user->conv_rate);
+			$closedLost[$row['potmonth']]['sum'] = $amount;
+			$total = $total + $amount;
+		}
+		$realwhere = $where." and sales_stage!='Closed Lost' and sales_stage!='Closed Won' ";
+		$sql = 'SELECT MONTH(closingdate) as potmonth,count(*) as potcnt,sum(amount) as potsum
+			FROM `vtiger_potential`
+			INNER JOIN vtiger_crmentity on crmid=potentialid '.
+			getNonAdminAccessControlQuery('Potentials', $current_user).
+			" WHERE $realwhere
+			GROUP BY potmonth
+			ORDER BY potmonth";
+		$rs = $adb->pquery($sql,array());
+		$notClosed = array();
+		$labels = array();
+		while ($row = $adb->fetch_array($rs)) {
+			$notClosed[$row['potmonth']]['count'] = $row['potcnt'];
+			$amount = CurrencyField::convertFromMasterCurrency($row['potsum'],$current_user->conv_rate);
+			$notClosed[$row['potmonth']]['sum'] = $amount;
+			$labels[$row['potmonth']-1] = $months[$row['potmonth']-1];
+			$total = $total + $amount;
+		}
+
+		$titlestr = $mod_strings['LBL_TOTAL_PIPELINE'].html_to_utf8($current_user->currency_symbol).$total;
+		$datay = array();
+		$aTargets = array();
+		$aAlts = array(
+			'closedWon' => array(),
+			'closedLost' => array(),
+			'notClosed' => array(),
+		);
+		// 'Closed Won'
+		$the_state = getTranslatedString('Closed Won','Potentials');
+		$dset = array(
+			'label' => $the_state,
+			'backgroundColor' => '#009933',
+			'data' => array(),
+		);
+		$lnkidx = 0;
+		foreach ($labels as $mes => $mes_translation) {
+			$m = $mes+1;
+			if (isset($closedWon[$m]['sum'])) {
+				$dset['data'][] = $closedWon[$m]['sum'];
+				array_push($aAlts['Closed Won'], $mes_translation.' - '.$closedWon[$m]['sum']);
+			} else {
+				$dset['data'][] = 0;
+				array_push($aAlts['Closed Won'], '');
+			}
+		}
+		$datay[] = $dset;
+
+		// 'Closed Lost'
+		$the_state = getTranslatedString('Closed Lost','Potentials');
+		$dset = array(
+			'label' => $the_state,
+			'backgroundColor' => '#FF9900',
+			'data' => array(),
+		);
+		$lnkidx = 0;
+		foreach ($labels as $mes => $mes_translation) {
+			$m = $mes+1;
+			if (isset($closedLost[$m]['sum'])) {
+				$dset['data'][] = $closedLost[$m]['sum'];
+				array_push($aAlts['Closed Lost'], $mes_translation.' - '.$closedLost[$m]['sum']);
+			} else {
+				$dset['data'][] = 0;
+				array_push($aAlts['Closed Lost'], '');
+			}
+		}
+		$datay[] = $dset;
+
+		// 'Not Closed'
+		$the_state = getTranslatedString('LBL_LEAD_SOURCE_OTHER','Dashboard');
+		$dset = array(
+			'label' => $the_state,
+			'backgroundColor' => '#0066CC',
+			'data' => array(),
+		);
+		$lnkidx = 0;
+		foreach ($labels as $mes => $mes_translation) {
+			$m = $mes+1;
+			if (isset($notClosed[$m]['sum'])) {
+				$dset['data'][] = $notClosed[$m]['sum'];
+				array_push($aAlts['notClosed'], $mes_translation.' - '.$notClosed[$m]['sum']);
+			} else {
+				$dset['data'][] = 0;
+				array_push($aAlts['notClosed'], '');
+			}
+		}
+		$datay[] = $dset;
+
+		$dataChartObject = array(
+			'labels' => $labels,
+			'datasets' => $datay,
+		);
+		$chartobject = array(
+			'type' => 'bar',
+			'data' => $dataChartObject,
+			'options' => array(
+				'responsive' => false,
+				'title' => array(
+					'display' => true,
+					'text' => $titlestr.' - '.$subtitle,
+				),
+				'legend' => array(
+					'position' => 'top',
+					'display' => true,
+					'labels' => array(
+						'fontSize' => 11,
+						'boxWidth' => 18,
+					),
+				),
+				'scales' => array(
+					'xAxes' => array(array('stacked' => false))
+				)
+			)
+		);
+		$log->debug("Exiting outcome_by_month method ...");
+		return self::getChartHTMLwithObject(json_encode($chartobject), json_encode(array()), 'outcome_by_month', 1100, 600, 0, 0, 0, 0);
 	}
 
 }
