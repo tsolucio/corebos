@@ -83,7 +83,7 @@ if($numOfRows > 0) {
 		$list_report_form->assign('THEME', $theme);
 		if($showCharts == true){
 			require_once 'modules/Reports/CustomReportUtils.php';
-			require_once 'include/ChartUtils.php';
+			require_once 'include/utils/ChartUtils.php';
 
 			$groupBy = $oReportRun->getGroupingList($reportid);
 			if(!empty($groupBy)){
@@ -98,7 +98,6 @@ if($numOfRows > 0) {
 				//$groupByField = $oReportRun->GetFirstSortByField($reportid);
 				$queryReports = CustomReportUtils::getCustomReportsQuery($Report_ID,$filtersql);
 				$queryResult = $adb->pquery($queryReports,array());
-				//ChartUtils::generateChartDataFromReports($queryResult, strtolower($groupByNew[1]));
 				if($adb->num_rows($queryResult)){
 					$ChartDetails = ChartUtils::generateChartDataFromReports($queryResult, strtolower($module_field), $fieldDetails, $reportid);
 					$list_report_form->assign('CHARTDATA',$ChartDetails);
