@@ -104,7 +104,11 @@ $log->debug($datax);
 
 $ids = array();
 //get list of user ids for which to display data
-if (isset($_SESSION['pbss_ids']) && count($_SESSION['pbss_ids']) != 0 && !isset($_REQUEST['pbss_ids'])) {
+if (isset($_REQUEST['showmypipeline'])) {
+	$ids = array($current_user->id);
+} elseif (isset($_REQUEST['showpipelineof']) and is_numeric($_REQUEST['showpipelineof'])) {
+	$ids = array($_REQUEST['showpipelineof']);
+} elseif (isset($_SESSION['pbss_ids']) && count($_SESSION['pbss_ids']) != 0 && !isset($_REQUEST['pbss_ids'])) {
 	$ids = $_SESSION['pbss_ids'];
 	$log->debug("_SESSION['pbss_ids'] is:");
 	$log->debug($_SESSION['pbss_ids']);

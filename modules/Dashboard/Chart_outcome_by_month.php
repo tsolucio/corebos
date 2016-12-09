@@ -74,7 +74,11 @@ else {
 
 $ids = array();
 //get list of user ids for which to display data
-if (isset($_SESSION['obm_ids']) && count($_SESSION['obm_ids']) != 0 && !isset($_REQUEST['obm_ids'])) {
+if (isset($_REQUEST['showmypipeline'])) {
+	$ids = array($current_user->id);
+} elseif (isset($_REQUEST['showpipelineof']) and is_numeric($_REQUEST['showpipelineof'])) {
+	$ids = array($_REQUEST['showpipelineof']);
+} elseif (isset($_SESSION['obm_ids']) && count($_SESSION['obm_ids']) != 0 && !isset($_REQUEST['obm_ids'])) {
 	$ids = $_SESSION['obm_ids'];
 	$log->debug("_SESSION['obm_ids'] is:");
 	$log->debug($_SESSION['obm_ids']);
