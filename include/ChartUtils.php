@@ -7,329 +7,10 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-
 require_once('include/utils/utils.php');
 require_once 'include/utils/CommonUtils.php';
 
 Class ChartUtils {
-
-	// Function to generate Bar Chart
-	public static function getBarChart($xaxisData, $yaxisData, $title='', $width='', $height='', $charttype='vertical', $cachedFileName=false, $target=false, $color='') {
-
-		global $log, $lang_crm, $default_charset;
-
-		require_once('include/utils/utils.php');
-		require_once('include/utils/GraphUtils.php');
-		include_once ('Image/Graph.php');
-		include_once ('Image/Canvas.php');
-
-		$barwidth = '70';
-		if ($cachedFileName === false) {
-			$cache_file_name = 'cache/images/bar_chart_' . microtime() . '.png';
-		} else {
-			$cache_file_name = $cachedFileName;
-		}
-		if (empty($width))
-			$width = '400';
-		if (empty($height))
-			$height = '300';
-		if ($target === false)
-			$target = array();
-		if (empty($color))
-			$color = 'black';
-
-		$alts = array();
-		$temp = array();
-		for ($i = 0; $i < count($xaxisData); $i++) {
-			$name = html_entity_decode($xaxisData[$i], ENT_QUOTES, $default_charset);
-			$pos = substr_count($name, " ");
-			$alts[] = $name;
-			//If the daatx value of a string is greater, adding '\n' to it so that it'll cme inh 2nd line
-			if (strlen($name) >= 14)
-				$name = substr($name, 0, 44);
-			if ($pos >= 2) {
-				$val = explode(" ", $name);
-				$n = count($val) - 1;
-				$x = "";
-				for ($j = 0; $j < count($val); $j++) {
-					if ($j != $n) {
-						$x .=" " . $val[$j];
-					} else {
-						$x .= "@#" . $val[$j];
-					}
-				}
-				$name = $x;
-			}
-			$name = str_replace("@#", " ", $name);
-			$temp[] = html_entity_decode($name, ENT_QUOTES, $default_charset);
-		}
-		$xaxisData = $temp;
-
-		// Set the basic parameters of the graph
-		$canvas = & Image_Canvas::factory('png', array('width' => $width, 'height' => $height, 'usemap' => true));
-		$imagemap = $canvas->getImageMap();
-		$graph = & Image_Graph::factory('graph', $canvas);
-
-		$font = & $graph->addNew('font', calculate_font_name($lang_crm));
-		$font->setSize(8);
-		$font_color = "#000000";
-		$font->setColor($font_color);
-		$graph->setFont($font);
-
-		$titlestr = & Image_Graph::factory('title', array($title, 8));
-		$plotarea = & Image_Graph::factory('plotarea', array(
-					'axis',
-					'axis',
-					$charttype
-				));
-		$graph->add(Image_Graph::vertical($titlestr, $plotarea, 5));
-
-		// Now create a bar plot
-		$max = 0;
-		// To create unique lables we need to keep track of lable name and its count
-		$uniquex = array();
-
-		$xlabels = array();
-		$dataset = & Image_Graph::factory('dataset');
-		if ($charttype == 'horizontal') {
-			$fill = & Image_Graph::factory('gradient', array(IMAGE_GRAPH_GRAD_VERTICAL_MIRRORED, $color, 'white'));
-		} else {
-			$fill = & Image_Graph::factory('gradient', array(IMAGE_GRAPH_GRAD_HORIZONTAL_MIRRORED, $color, 'white'));
-		}
-
-		for ($i = 0; $i < count($yaxisData); $i++) {
-			$x = 1 + $i;
-			if ($yaxisData[$i] >= $max)
-				$max = $yaxisData[$i];
-			$dataset->addPoint(
-					$x,
-					$yaxisData[$i],
-					array(
-						'url' => $target[$i],
-						'alt' => $alts[$i] . '=' . $yaxisData[$i]
-					)
-			);
-			$xlabels[$x] = $xaxisData[$i];
-
-			// To have unique names even in case of duplicates let us add the id
-			$xaxisData_appearance = $uniquex[$xaxisData[$i]];
-			if ($xaxisData_appearance == null) {
-				$uniquex[$xaxisData[$i]] = 1;
-			} else {
-				$xlabels[$x] = $xaxisData[$i] . ' [' . $xaxisData_appearance . ']';
-				$uniquex[$xaxisData[$i]] = $xaxisData_appearance + 1;
-			}
-		}
-		$bplot = & $plotarea->addNew('bar', $dataset);
-		$bplot->setFillStyle($fill);
-
-		//You can change the width of the bars if you like
-		if (!empty($xaxisData))
-			$bplot->setBarWidth($barwidth / count($xaxisData), "%");
-		//$bplot->setPadding(array('top'=>10));
-		$bplot->setBackground(Image_Graph::factory('gradient', array(IMAGE_GRAPH_GRAD_HORIZONTAL, 'white', 'white')));
-		$xaxis = & $plotarea->getAxis(IMAGE_GRAPH_AXIS_X);
-		$yaxis = & $plotarea->getAxis(IMAGE_GRAPH_AXIS_Y);
-		$yaxis->setFontSize(8);
-		$xaxis->setFontSize(8);
-
-		if ($charttype == 'horizontal') { // Invert X-axis and put Y-axis at bottom
-			$xaxis->setInverted(false);
-			$yaxis->setAxisIntersection('max');
-		}
-
-		// set grid
-		$gridY = & $plotarea->addNew('line_grid', IMAGE_GRAPH_AXIS_Y);
-		$gridY->setLineColor('#FFFFFF@0.5');
-		$gridY2 = & $plotarea->addNew('bar_grid', null, IMAGE_GRAPH_AXIS_Y);
-		$gridY2->setFillColor('#FFFFFF@0.2');
-
-
-		// Add some grace to y-axis so the bars doesn't go all the way to the end of the plot area
-		$yaxis->forceMaximum(round(($max * 1.1) + 0.5));
-		$ticks = get_tickspacing(round(($max * 1.1) + 0.5));
-
-		// First make the labels look right
-		if ($charttype == 'horizontal')
-			$yaxis->setFontAngle('vertical');
-		$yaxis->setLabelInterval($ticks[0]);
-		$yaxis->setTickOptions(-5, 0);
-		$yaxis->setLabelInterval($ticks[1], 2);
-		$yaxis->setTickOptions(-2, 0, 2);
-
-		// Create the xaxis labels
-		$array_data = & Image_Graph::factory('Image_Graph_DataPreprocessor_Array',
-						array($xlabels)
-		);
-
-		// The fix the tick marks
-		$xaxis->setDataPreprocessor($array_data);
-		$xaxis->forceMinimum(0.5);
-		$xaxis->forceMaximum(0.5 + count($yaxisData));
-		if ($charttype == 'vertical')
-			$xaxis->setFontAngle('vertical');
-		$xaxis->setLabelInterval(1);
-		$xaxis->setTickOptions(0, 0);
-		$xaxis->setLabelInterval(2, 2);
-
-		// set markers
-		if ($width > 400 && $height > 400) {
-			$marker = & $graph->addNew('value_marker', IMAGE_GRAPH_VALUE_Y);
-			$marker->setFillColor('000000@0.0');
-			$marker->setBorderColor('000000@0.0');
-			$marker->setFontSize(8);
-			// shift markers 20 pix right
-			if ($charttype == 'horizontal') {
-				$marker_pointing = & $graph->addNew('Image_Graph_Marker_Pointing', array(10, 0, & $marker));
-			} else {
-				$marker_pointing = & $graph->addNew('Image_Graph_Marker_Pointing', array(0, -10, & $marker));
-			}
-			$marker_pointing->setLineColor('000000@0.0');
-			$bplot->setMarker($marker_pointing);
-		}
-
-		//Getting the graph in the form of html page
-		$img = $graph->done(
-						array(
-							'tohtml' => true,
-							'border' => 0,
-							'filename' => $cache_file_name,
-							'filepath' => '',
-							'urlpath' => ''
-				));
-
-		return $img;
-	}
-
-	// Function to generate Pie Chart
-	public static function getPieChart($xaxisData, $yaxisData, $title='', $width='', $height='', $charttype='vertical', $cachedFileName=false, $target=false, $color='') {
-
-		global $log, $lang_crm, $default_charset;
-
-		require_once('include/utils/utils.php');
-		require_once('include/utils/GraphUtils.php');
-		include_once ('Image/Graph.php');
-		include_once ('Image/Canvas.php');
-
-		if ($cachedFileName === false) {
-			$cache_file_name = 'cache/images/pie_chart_' . time() . '.png';
-		} else {
-			$cache_file_name = $cachedFileName;
-		}
-
-		if (empty($width))
-			$width = '500';
-		if (empty($height))
-			$height = '400';
-		if ($target === false)
-			$target = array();
-
-		$alts = array();
-		$temp = array();
-		for ($i = 0; $i < count($xaxisData); $i++) {
-			$name = html_entity_decode($xaxisData[$i], ENT_QUOTES, $default_charset);
-			$pos = substr_count($name, " ");
-			$alts[] = $name;
-			//If the datax value of a string is greater, adding '\n' to it so that it'll come in 2nd line
-			if (strlen($name) >= 14)
-				$name = substr($name, 0, 34);
-			if ($pos >= 2) {
-				$val = explode(" ", $name);
-				$n = count($val) - 1;
-				$x = "";
-				for ($j = 0; $j < count($val); $j++) {
-					if ($j != $n) {
-						$x .=" " . $val[$j];
-					} else {
-						$x .= "@#" . $val[$j];
-					}
-				}
-				$name = $x;
-			}
-			$name = str_replace("@#", "\n", $name);
-			$temp[] = $name;
-		}
-		$xaxisData = $temp;
-		$width = $width + ($width / 5);
-
-		$canvas = & Image_Canvas::factory('png', array('width' => $width, 'height' => $height, 'usemap' => true));
-		$imagemap = $canvas->getImageMap();
-		$graph = & Image_Graph::factory('graph', $canvas);
-		$font = & $graph->addNew('font', calculate_font_name($lang_crm));
-		$font->setSize(8);
-		$font->setColor($color);
-		$graph->setFont($font);
-		// create the plotarea layout
-		$title = & Image_Graph::factory('title', array($title, 10));
-		$plotarea = & Image_Graph::factory('plotarea', array(
-					'category',
-					'axis'
-				));
-		$graph->add(Image_Graph::vertical($title, $plotarea, 5));
-		// To create unique lables we need to keep track of lable name and its count
-		$uniquex = array();
-		// Generate colours
-		$colors = color_generator(count($yaxisData), '#33DDFF', '#3322FF');
-		$dataset = & Image_Graph::factory('dataset');
-		$fills = & Image_Graph::factory('Image_Graph_Fill_Array');
-		$sum = 0;
-		$pcvalues = array();
-		for ($i = 0; $i < count($yaxisData); $i++) {
-			$sum += $yaxisData[$i];
-		}
-		for ($i = 0; $i < count($yaxisData); $i++) {
-			// To have unique names even in case of duplicates let us add the id
-			$datalabel = $xaxisData[$i];
-			$xaxisData_appearance = $uniquex[$xaxisData[$i]];
-			if ($xaxisData_appearance == null) {
-				$uniquex[$xaxisData[$i]] = 1;
-			} else {
-				$datalabel = $xaxisData[$i] . ' [' . $xaxisData_appearance . ']';
-				$uniquex[$xaxisData[$i]] = $xaxisData_appearance + 1;
-			}
-			$dataset->addPoint(
-					$datalabel,
-					$yaxisData[$i],
-					array(
-						'url' => $target[$i],
-						'alt' => $alts[$i] . '=' . sprintf('%0.1f%%', 100 * $yaxisData[$i] / $sum)
-					)
-			);
-			$pcvalues[$yaxisData[$i]] = sprintf('%0.1f%%', 100 * $yaxisData[$i] / $sum);
-			$fills->addColor($colors[$i]);
-		}
-		if ($sum == 0)
-			return null;
-		// create the pie chart and associate the filling colours
-		$gbplot = & $plotarea->addNew('pie', $dataset);
-		$plotarea->setPadding(array('top' => 0, 'bottom' => 0, 'left' => 0, 'right' => ($width / 20)));
-		$plotarea->hideAxis();
-		$gbplot->setFillStyle($fills);
-		// format the data values
-		$marker_array = & Image_Graph::factory('Image_Graph_DataPreprocessor_Array', array($pcvalues));
-		// set markers
-		$marker = & $graph->addNew('value_marker', IMAGE_GRAPH_VALUE_Y);
-		$marker->setDataPreprocessor($marker_array);
-		$marker->setFillColor('#FFFFFF');
-		$marker->setBorderColor($color);
-		$marker->setFontColor($color);
-		$marker->setFontSize(8);
-		$pointingMarker = & $graph->addNew('Image_Graph_Marker_Pointing_Angular', array(20, &$marker));
-		$gbplot->setMarker($pointingMarker);
-		$legend_box = & $plotarea->addNew('legend');
-		$legend_box->setPadding(array('top' => 20, 'bottom' => 0, 'left' => 0, 'right' => 0));
-		$legend_box->setFillColor('#F5F5F5');
-		$legend_box->showShadow();
-
-		$img = $graph->done(array(
-					'tohtml' => true,
-					'border' => 0,
-					'filename' => $cache_file_name,
-					'filepath' => '',
-					'urlpath' => ''
-				));
-		return $img;
-	}
 
 	//Generates Chart Data in form of an array from the Query Result of reports
 	public static function generateChartDataFromReports($queryResult, $groupbyField, $fieldDetails='', $reportid='') {
@@ -481,43 +162,131 @@ Class ChartUtils {
 		return $ChartDataArray;
 	}
 
-	public static function getReportBarChart($queryResult, $groupbyField, $fieldDetails, $reportid, $charttype='horizontal') {
-		global $theme;
-		$BarChartDetails = self::generateChartDataFromReports($queryResult, $groupbyField, $fieldDetails, $reportid);
-		$groupbyFields = $BarChartDetails['xaxisData'];
-		$yaxisArray = $BarChartDetails['yaxisData'];
-		$targerLinks = $BarChartDetails['targetLink'];
-		if ($theme == "softed") {
-			$font_color = "#212473";
-		} else {
-			$font_color = "#000000";
+	static public function getChartHTML($labels, $values, $graph_title, $target_values, $html_imagename, $width, $height, $left, $right, $top, $bottom, $graph_type, $legend_position='right', $responsive=true) {
+		$lbls = implode(',',$labels);
+		$vals = str_replace('::',',',$values);
+		$lnks = array();
+		$cnt=0;
+		foreach ($target_values as $value) {
+			$lnks[] = $cnt.':'.$value;
+			$cnt++;
 		}
-		if(!empty($BarChartDetails['error'])) {
-			return $BarChartDetails['error'];
-		} else {
-			$barChart = ChartUtils::getBarChart($groupbyFields, $yaxisArray, '', '350', '300', $charttype, false, $targerLinks, $font_color);
-			return $barChart;
+		$lnks = implode(',',$lnks);
+		$bcolor = array();
+		for ($cnt=1;$cnt<count($labels);$cnt++) {
+			$bcolor[] = 'getRandomColor()';
 		}
+		$bcolor = implode(',',$bcolor);
+		if ($graph_title!='') {
+			$gtitle = 'label:"'.$graph_title.'",';
+			$display = 'display:true,';
+		} else {
+			$gtitle = '';
+			$display = 'display:false,';
+		}
+		if ($graph_title=='pie') {
+			$display = 'display:true,';
+		}
+		if ($legend_position!='') {
+			$legend_position = 'position: "'.$legend_position.'",';
+		}
+		if ($responsive) {
+			$respproperty = 'true';
+		} else {
+			$respproperty = 'false';
+		}
+		$sHTML = <<<EOF
+<canvas id="$html_imagename" style="width:{$width}px;height:{$height}px;margin:auto;padding:10px;"></canvas>
+<script type="text/javascript">
+window.doChart{$html_imagename} = function(charttype) {
+	let stuffchart = document.getElementById('{$html_imagename}');
+	let chartDataObject = {
+		labels: [{$lbls}],
+		datasets: [{
+			data: [ $vals ],
+			$gtitle
+			backgroundColor: [ $bcolor ]
+		}]
+	};
+	window.schart{$html_imagename} = new Chart(stuffchart,{
+		type: '{$graph_type}',
+		data: chartDataObject,
+		options: {
+			responsive: $respproperty,
+			legend: {
+				$legend_position
+				$display
+				labels: {
+					fontSize: 11,
+					boxWidth: 18
+				}
+			}
+		}
+	});
+	stuffchart.addEventListener('click',function(evt) {
+		let activePoint = schart{$html_imagename}.getElementAtEvent(evt);
+		if (activePoint.length == 0) return;
+		let clickzone = { $lnks };
+		if (clickzone == undefined || clickzone == {} || clickzone.length == 0) return;
+		let a = document.createElement("a");
+		a.target = "_blank";
+		a.href = clickzone[activePoint[0]._index];
+		document.body.appendChild(a);
+		a.click();
+	});
+}
+doChart{$html_imagename}('{$graph_type}');
+</script>
+EOF;
+		return $sHTML;
 	}
 
-	public static function getReportPieChart($queryResult, $groupbyField, $fieldDetails, $reportid) {
-		global $theme;
-		$PieChartDetails = self::generateChartDataFromReports($queryResult, $groupbyField, $fieldDetails, $reportid);
-		$groupbyFields = $PieChartDetails['xaxisData'];
-		$yaxisArray = $PieChartDetails['yaxisData'];
-		$targerLinks = $PieChartDetails['targetLink'];
-		$charttype = 'vertical';
-		if ($theme == "softed") {
-			$font_color = "#212473";
+	static public function getChartHTMLwithObject($chartObject, $targetObject, $html_imagename, $width, $height, $left, $right, $top, $bottom) {
+		$tgt = reset(json_decode($targetObject,true));
+		if (is_array($tgt)) {
+			$czone = 'clickzone[activePoint[0]._datasetIndex][activePoint[0]._index]';
 		} else {
-			$font_color = "#000000";
+			$czone = 'clickzone[activePoint[0]._index]';
 		}
-		if(!empty($PieChartDetails['error'])) {
-			return $PieChartDetails['error'];
-		} else {
-			$pieChart = ChartUtils::getPieChart($groupbyFields, $yaxisArray, '', '350', '300', $charttype, false, $targerLinks, $font_color);
-			return $pieChart;
+		$sHTML = <<<EOF
+<canvas id="$html_imagename" style="width:{$width}px;height:{$height}px;margin:auto;padding:10px;"></canvas>
+<script type="text/javascript">
+window.doChart{$html_imagename} = function() {
+	let stuffchart = document.getElementById('{$html_imagename}');
+	window.schart{$html_imagename} = new Chart(stuffchart,$chartObject);
+	stuffchart.addEventListener('click',function(evt) {
+		let activePoint = schart{$html_imagename}.getElementAtEvent(evt);
+		if (activePoint.length == 0) return;
+		let clickzone = $targetObject;
+		if (clickzone == undefined || clickzone == {} || clickzone.length == 0) return;
+		let a = document.createElement("a");
+		a.target = "_blank";
+		a.href = $czone;
+		document.body.appendChild(a);
+		a.click();
+	});
+}
+doChart{$html_imagename}();
+</script>
+EOF;
+		return $sHTML;
+	}
+
+	static public function convertToArray($values,$translate=false,$withquotes=false) {
+		if (strpos($values,'::')===false) $values = urldecode($values);
+		$vals = explode('::',$values);
+		if ($translate) {
+			$vals = array_map(function($v) {
+				return getTranslatedString($v,$v);
+			}, $vals);
 		}
+		$ud = $urldecode;
+		if ($withquotes) {
+			$vals = array_map(function($v) {
+				return '"'.urldecode($v).'"';
+			}, $vals);
+		}
+		return $vals;
 	}
 
 }

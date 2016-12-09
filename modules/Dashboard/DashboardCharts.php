@@ -17,135 +17,9 @@
  *  Version      : 1.0
  *  Author       : JPL TSolucio, S. L.
  *************************************************************************************************/
+require_once 'include/utils/ChartUtils.php';
 
 class DashboardCharts {
-
-	static public function getChartHTML($labels, $values, $graph_title, $target_values, $html_imagename, $width, $height, $left, $right, $top, $bottom, $graph_type, $legend_position='right', $responsive=true) {
-		$lbls = implode(',',$labels);
-		$vals = str_replace('::',',',$values);
-		$lnks = array();
-		$cnt=0;
-		foreach ($target_values as $value) {
-			$lnks[] = $cnt.':'.$value;
-			$cnt++;
-		}
-		$lnks = implode(',',$lnks);
-		$bcolor = array();
-		for ($cnt=1;$cnt<count($labels);$cnt++) {
-			$bcolor[] = 'getRandomColor()';
-		}
-		$bcolor = implode(',',$bcolor);
-		if ($graph_title!='') {
-			$gtitle = 'label:"'.$graph_title.'",';
-			$display = 'display:true,';
-		} else {
-			$gtitle = '';
-			$display = 'display:false,';
-		}
-		if ($graph_title=='pie') {
-			$display = 'display:true,';
-		}
-		if ($legend_position!='') {
-			$legend_position = 'position: "'.$legend_position.'",';
-		}
-		if ($responsive) {
-			$respproperty = 'true';
-		} else {
-			$respproperty = 'false';
-		}
-		$sHTML = <<<EOF
-<canvas id="$html_imagename" style="width:{$width}px;height:{$height}px;margin:auto;padding:10px;"></canvas>
-<script type="text/javascript">
-window.doChart{$html_imagename} = function(charttype) {
-	let stuffchart = document.getElementById('{$html_imagename}');
-	let chartDataObject = {
-		labels: [{$lbls}],
-		datasets: [{
-			data: [ $vals ],
-			$gtitle
-			backgroundColor: [ $bcolor ]
-		}]
-	};
-	window.schart{$html_imagename} = new Chart(stuffchart,{
-		type: '{$graph_type}',
-		data: chartDataObject,
-		options: {
-			responsive: $respproperty,
-			legend: {
-				$legend_position
-				$display
-				labels: {
-					fontSize: 11,
-					boxWidth: 18
-				}
-			}
-		}
-	});
-	stuffchart.addEventListener('click',function(evt) {
-		let activePoint = schart{$html_imagename}.getElementAtEvent(evt);
-		if (activePoint.length == 0) return;
-		let clickzone = { $lnks };
-		if (clickzone == undefined || clickzone == {} || clickzone.length == 0) return;
-		let a = document.createElement("a");
-		a.target = "_blank";
-		a.href = clickzone[activePoint[0]._index];
-		document.body.appendChild(a);
-		a.click();
-	});
-}
-doChart{$html_imagename}('{$graph_type}');
-</script>
-EOF;
-		return $sHTML;
-	}
-
-	static public function getChartHTMLwithObject($chartObject, $targetObject, $html_imagename, $width, $height, $left, $right, $top, $bottom) {
-		$tgt = reset(json_decode($targetObject,true));
-		if (is_array($tgt)) {
-			$czone = 'clickzone[activePoint[0]._datasetIndex][activePoint[0]._index]';
-		} else {
-			$czone = 'clickzone[activePoint[0]._index]';
-		}
-		$sHTML = <<<EOF
-<canvas id="$html_imagename" style="width:{$width}px;height:{$height}px;margin:auto;padding:10px;"></canvas>
-<script type="text/javascript">
-window.doChart{$html_imagename} = function() {
-	let stuffchart = document.getElementById('{$html_imagename}');
-	window.schart{$html_imagename} = new Chart(stuffchart,$chartObject);
-	stuffchart.addEventListener('click',function(evt) {
-		let activePoint = schart{$html_imagename}.getElementAtEvent(evt);
-		if (activePoint.length == 0) return;
-		let clickzone = $targetObject;
-		if (clickzone == undefined || clickzone == {} || clickzone.length == 0) return;
-		let a = document.createElement("a");
-		a.target = "_blank";
-		a.href = $czone;
-		document.body.appendChild(a);
-		a.click();
-	});
-}
-doChart{$html_imagename}();
-</script>
-EOF;
-		return $sHTML;
-	}
-
-	static public function convertToArray($values,$translate=false,$withquotes=false) {
-		if (strpos($values,'::')===false) $values = urldecode($values);
-		$vals = explode('::',$values);
-		if ($translate) {
-			$vals = array_map(function($v) {
-				return getTranslatedString($v,$v);
-			}, $vals);
-		}
-		$ud = $urldecode;
-		if ($withquotes) {
-			$vals = array_map(function($v) {
-				return '"'.urldecode($v).'"';
-			}, $vals);
-		}
-		return $vals;
-	}
 
 	static public function pipeline_by_sales_stage($datax, $date_start, $date_end, $user_id, $width, $height){
 		global $log, $current_user, $adb, $mod_strings;
@@ -265,7 +139,7 @@ EOF;
 			)
 		);
 		$log->debug("Exiting pipeline_by_sales_stage method ...");
-		return self::getChartHTMLwithObject(json_encode($chartobject), json_encode($aTargets), 'pipeline_by_sales_stage', $width, $height, 0, 0, 0, 0);
+		return ChartUtils::getChartHTMLwithObject(json_encode($chartobject), json_encode($aTargets), 'pipeline_by_sales_stage', $width, $height, 0, 0, 0, 0);
 	}
 
 	static public function outcome_by_month($date_start, $date_end, $user_id, $width, $height){
@@ -441,7 +315,7 @@ EOF;
 			)
 		);
 		$log->debug("Exiting outcome_by_month method ...");
-		return self::getChartHTMLwithObject(json_encode($chartobject), json_encode(array()), 'outcome_by_month', $width, $height, 0, 0, 0, 0);
+		return ChartUtils::getChartHTMLwithObject(json_encode($chartobject), json_encode(array()), 'outcome_by_month', $width, $height, 0, 0, 0, 0);
 	}
 
 	static public function lead_source_by_outcome($datax, $user_id, $width, $height){
@@ -556,7 +430,7 @@ EOF;
 			)
 		);
 		$log->debug("Exiting lead_source_by_outcome method ...");
-		return self::getChartHTMLwithObject(json_encode($chartobject), json_encode($aTargets), 'lead_source_by_outcome', $width, $height, 0, 0, 0, 0);
+		return ChartUtils::getChartHTMLwithObject(json_encode($chartobject), json_encode($aTargets), 'lead_source_by_outcome', $width, $height, 0, 0, 0, 0);
 	}
 
 
@@ -646,7 +520,7 @@ EOF;
 			)
 		);
 		$log->debug("Exiting pipeline_by_lead_source method ...");
-		return self::getChartHTMLwithObject(json_encode($chartobject), json_encode($aTargets), 'pipeline_by_lead_source', $width, $height, 0, 0, 0, 0);
+		return ChartUtils::getChartHTMLwithObject(json_encode($chartobject), json_encode($aTargets), 'pipeline_by_lead_source', $width, $height, 0, 0, 0, 0);
 	}
 
 }
