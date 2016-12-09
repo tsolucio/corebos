@@ -265,7 +265,7 @@ EOF;
 			)
 		);
 		$log->debug("Exiting pipeline_by_sales_stage method ...");
-		return self::getChartHTMLwithObject(json_encode($chartobject), json_encode($aTargets), 'pipeline_by_sales_stage', 1100, 600, 0, 0, 0, 0);
+		return self::getChartHTMLwithObject(json_encode($chartobject), json_encode($aTargets), 'pipeline_by_sales_stage', $width, $height, 0, 0, 0, 0);
 	}
 
 	static public function outcome_by_month($date_start, $date_end, $user_id, $width, $height){
@@ -441,7 +441,7 @@ EOF;
 			)
 		);
 		$log->debug("Exiting outcome_by_month method ...");
-		return self::getChartHTMLwithObject(json_encode($chartobject), json_encode(array()), 'outcome_by_month', 1100, 600, 0, 0, 0, 0);
+		return self::getChartHTMLwithObject(json_encode($chartobject), json_encode(array()), 'outcome_by_month', $width, $height, 0, 0, 0, 0);
 	}
 
 	static public function lead_source_by_outcome($datax, $user_id, $width, $height){
@@ -556,7 +556,7 @@ EOF;
 			)
 		);
 		$log->debug("Exiting lead_source_by_outcome method ...");
-		return self::getChartHTMLwithObject(json_encode($chartobject), json_encode($aTargets), 'lead_source_by_outcome', 1100, 600, 0, 0, 0, 0);
+		return self::getChartHTMLwithObject(json_encode($chartobject), json_encode($aTargets), 'lead_source_by_outcome', $width, $height, 0, 0, 0, 0);
 	}
 
 
@@ -646,7 +646,7 @@ EOF;
 			)
 		);
 		$log->debug("Exiting pipeline_by_lead_source method ...");
-		return self::getChartHTMLwithObject(json_encode($chartobject), json_encode($aTargets), 'pipeline_by_lead_source', 1100, 600, 0, 0, 0, 0);
+		return self::getChartHTMLwithObject(json_encode($chartobject), json_encode($aTargets), 'pipeline_by_lead_source', $width, $height, 0, 0, 0, 0);
 	}
 
 }

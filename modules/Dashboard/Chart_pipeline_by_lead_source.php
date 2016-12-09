@@ -76,12 +76,12 @@ else {
 
 if(isPermitted('Potentials','index')=="yes")
 {
-$width = 850;
-$height = 500;
+$width = 1100;
+$height = 600;
 if(isset($_REQUEST['display_view']) && $_REQUEST['display_view'] == 'MATRIX')
 {
-	$width = 350;
-	$height = 250;
+	$width = 500;
+	$height = 300;
 }
 
 echo DashboardCharts::pipeline_by_lead_source($datax, $date_start, $date_end, $ids, $width, $height);

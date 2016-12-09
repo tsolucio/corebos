@@ -94,8 +94,8 @@ else {
 
 if(isPermitted('Potentials','index')=="yes")
 {
-$width = 850;
-$height = 500;
+$width = 1100;
+$height = 600;
 if(isset($_REQUEST['display_view']) && $_REQUEST['display_view'] == 'MATRIX')
 {
 	$width = 350;
