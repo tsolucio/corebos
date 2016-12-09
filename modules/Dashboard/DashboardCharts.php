@@ -444,4 +444,209 @@ EOF;
 		return self::getChartHTMLwithObject(json_encode($chartobject), json_encode(array()), 'outcome_by_month', 1100, 600, 0, 0, 0, 0);
 	}
 
+	static public function lead_source_by_outcome($datax, $user_id, $width, $height){
+		global $log, $current_user, $adb, $mod_strings;
+		$log->debug("Entering lead_source_by_outcome(".$datax.",".$user_id.",".$width.",".$height.") method ...");
+
+		$where=' deleted = 0 ';
+		$labels = array();
+		//build the where clause for the query that matches $datax
+		$count = count($datax);
+		if ($count>0) {
+			$where .= " and leadsource in ( ";
+			$ss_i = 0;
+			foreach ($datax as $key=>$value) {
+				if($ss_i != 0) {
+					$where .= ', ';
+				}
+				$where .= "'".addslashes($key)."'";
+				$labels[] = getTranslatedString($key,'Potentials');
+				$ss_i++;
+			}
+			$where .= ")";
+		}
+
+		$count = count($user_id);
+		if ($count>0) {
+			$where .= ' and smownerid in ( ';
+			$ss_i = 0;
+			foreach ($user_id as $key=>$value) {
+				if($ss_i != 0) $where .= ", ";
+				$where .= "'".addslashes($value)."'";
+				$ss_i++;
+			}
+			$where .= ")";
+		}
+
+		$sql = 'SELECT `leadsource`,smownerid,count(*) as potcnt,sum(amount) as potsum
+			FROM `vtiger_potential`
+			INNER JOIN vtiger_crmentity on crmid=potentialid '.
+			getNonAdminAccessControlQuery('Potentials', $current_user).
+			" WHERE $where
+			GROUP BY `leadsource`,smownerid
+			ORDER BY leadsource,smownerid";
+		$rs = $adb->pquery($sql,array());
+		//build pipeline by sales stage data
+		$total = 0;
+		$count = array();
+		$sum = array();
+		while ($row = $adb->fetch_array($rs)) {
+			$amount = CurrencyField::convertFromMasterCurrency($row['potsum'],$current_user->conv_rate);
+			$sum[$row['leadsource']][$row['smownerid']] = $amount;
+			$count[$row['leadsource']][$row['smownerid']] = $row['potcnt'];
+			$total = $total + $amount;
+		}
+		$titlestr = $mod_strings['LBL_TOTAL_PIPELINE'].html_to_utf8($current_user->currency_symbol).$total;
+		$datay = array();
+		$aTargets = array();
+		$aAlts = array();
+		$cvid = getCvIdOfAll("Potentials");
+		$dsetidx = 0;
+		foreach ($user_id as $the_id) {
+			$the_user = getEntityName('Users', $the_id);
+			$the_user = $the_user[$the_id];
+			$dset = array(
+				'label' => $the_user,
+				'backgroundColor' => sprintf('#%02X%02X%02X', rand(50,255), rand(50,255), rand(50,255) ),
+				'data' => array(),
+			);
+			$lnkidx = 0;
+			foreach ($datax as $stage_key=>$stage_translation) {
+				$dset['data'][] = (isset($sum[$stage_key][$the_id]) ? $sum[$stage_key][$the_id] : 0);
+				if (!isset($aAlts[$the_id])) {
+					$aAlts[$the_id] = array();
+				}
+				if (isset($sum[$stage_key][$the_id])) {
+					array_push($aAlts[$the_id], $the_user.' - '.$count[$stage_key][$the_id]." ".$mod_strings['LBL_OPPS_OUTCOME']." $stage_translation");
+				} else {
+					array_push($aAlts[$the_id], '');
+				}
+				if (!isset($aTargets[$dsetidx])) {
+					$aTargets[$dsetidx] = array();
+				}
+				$aTargets[$dsetidx][$lnkidx++] = 'index.php?module=Potentials&action=ListView&leadsource='.urlencode($stage_key).'&query=true&type=dbrd&owner='.$the_user.'&viewname='.$cvid;
+			}
+			$dsetidx++;
+			$datay[] = $dset;
+		}
+		$dataChartObject = array(
+			'labels' => $labels,
+			'datasets' => $datay,
+		);
+		$chartobject = array(
+			'type' => 'bar',
+			'data' => $dataChartObject,
+			'options' => array(
+				'responsive' => false,
+				'title' => array(
+					'display' => true,
+					'text' => $titlestr,
+				),
+				'legend' => array(
+					'position' => 'top',
+					'display' => true,
+					'labels' => array(
+						'fontSize' => 11,
+						'boxWidth' => 18,
+					),
+				),
+				'scales' => array(
+					'xAxes' => array(array('stacked' => false))
+				)
+			)
+		);
+		$log->debug("Exiting lead_source_by_outcome method ...");
+		return self::getChartHTMLwithObject(json_encode($chartobject), json_encode($aTargets), 'lead_source_by_outcome', 1100, 600, 0, 0, 0, 0);
+	}
+
+
+	static public function pipeline_by_lead_source($datax, $date_start, $date_end, $user_id, $width, $height){
+		global $log, $current_user, $adb, $mod_strings;
+		$log->debug("Entering pipeline_by_lead_source(".$datax.",".$date_start.",".$date_end.",".$user_id.",".$width.",".$height.") method ...");
+
+		$where=' deleted = 0 ';
+		$labels = array();
+		//build the where clause for the query that matches $datax
+		$count = count($datax);
+		if ($count>0) {
+			$where .= " and leadsource in ( ";
+			$ss_i = 0;
+			foreach ($datax as $key=>$value) {
+				if($ss_i != 0) {
+					$where .= ', ';
+				}
+				$where .= "'".addslashes($key)."'";
+				$labels[] = getTranslatedString($key,'Potentials');
+				$ss_i++;
+			}
+			$where .= ")";
+		}
+
+		$count = count($user_id);
+		if ($count>0) {
+			$where .= ' and smownerid in ( ';
+			$ss_i = 0;
+			foreach ($user_id as $key=>$value) {
+				if($ss_i != 0) $where .= ", ";
+				$where .= "'".addslashes($value)."'";
+				$ss_i++;
+			}
+			$where .= ")";
+		}
+
+		$sql = 'SELECT `leadsource`,count(*) as potcnt,sum(amount) as potsum
+			FROM `vtiger_potential`
+			INNER JOIN vtiger_crmentity on crmid=potentialid '.
+			getNonAdminAccessControlQuery('Potentials', $current_user).
+			" WHERE $where
+			GROUP BY `leadsource`
+			ORDER BY leadsource";
+		$rs = $adb->pquery($sql,array());
+		//build pipeline by sales stage data
+		$total = 0;
+		$count = array();
+		$sum = array();
+		while ($row = $adb->fetch_array($rs)) {
+			$amount = CurrencyField::convertFromMasterCurrency($row['potsum'],$current_user->conv_rate);
+			$sum[$row['leadsource']] = $amount;
+			$count[$row['leadsource']] = $row['potcnt'];
+			$total = $total + $amount;
+		}
+		$titlestr = $mod_strings['LBL_TOTAL_PIPELINE'].html_to_utf8($current_user->currency_symbol).$total;
+		$aTargets = array();
+		$cvid = getCvIdOfAll("Potentials");
+		$dset = array();
+		$lnkidx = 0;
+		foreach ($datax as $stage_key=>$stage_translation) {
+			$dset['data'][] = (isset($sum[$stage_key]) ? $sum[$stage_key] : 0);
+			$dset['backgroundColor'][] = sprintf('#%02X%02X%02X', rand(50,255), rand(50,255), rand(50,255));
+			$aTargets[$lnkidx++] = 'index.php?module=Potentials&action=ListView&leadsource='.urlencode($stage_key).'&query=true&type=dbrd&viewname='.$cvid;
+		}
+		$dataChartObject = array(
+			'labels' => $labels,
+			'datasets' => array($dset),
+		);
+		$chartobject = array(
+			'type' => 'pie',
+			'data' => $dataChartObject,
+			'options' => array(
+				'responsive' => false,
+				'title' => array(
+					'display' => true,
+					'text' => $titlestr,
+				),
+				'legend' => array(
+					'position' => 'right',
+					'display' => true,
+					'labels' => array(
+						'fontSize' => 11,
+						'boxWidth' => 18,
+					),
+				)
+			)
+		);
+		$log->debug("Exiting pipeline_by_lead_source method ...");
+		return self::getChartHTMLwithObject(json_encode($chartobject), json_encode($aTargets), 'pipeline_by_lead_source', 1100, 600, 0, 0, 0, 0);
+	}
+
 }
