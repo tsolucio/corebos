@@ -88,11 +88,11 @@ class VtigerDocumentOperation extends VtigerModuleOperation {
 		return DataTransform::filterAndSanitize($crmObject->getFields(),$this->meta);
 	}
 
-	public function retrieve($id){
+	public function retrieve($id,$deleted=false){
 		global $adb,$default_charset,$site_URL;
 		$ids = vtws_getIdComponents($id);
 		$elemid = $ids[1];
-		$doc = parent::retrieve($id);
+		$doc = parent::retrieve($id,$deleted);
 		// Add relations
 		$relsrs=$adb->pquery("SELECT crmid FROM vtiger_senotesrel where notesid=?",Array($elemid));
 		$rels=array();
