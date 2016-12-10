@@ -125,6 +125,7 @@ function add_data_to_relatedlist(entity_id,recordid,mod, popupmode, callback) {
 	if (mod == 'Documents' && return_module == 'Emails') {
 		var attachment = document.getElementById('document_attachment_' + entity_id).value;
 		window.opener.addOption(entity_id, attachment);
+		if (document.getElementById("closewindow").value=="true") window.close();
 		return;
 	}
 	if(popupmode == 'ajax') {
@@ -201,7 +202,7 @@ function set_focus() {ldelim}
 								<input name="recordid" id="recordid" type="hidden" value="{$RECORDID}">
 								<input name="record_id" id="record_id" type="hidden" value="{$RECORD_ID}">
 								<input name="return_module" id="return_module" type="hidden" value="{$RETURN_MODULE}">
-								<input name="from_link" id="from_link" type="hidden" value="{$smarty.request.fromlink|@vtlib_purify}">
+								<input name="from_link" id="from_link" type="hidden" value="{if isset($smarty.request.fromlink)}{$smarty.request.fromlink|@vtlib_purify}{/if}">
 								<input name="maintab" id="maintab" type="hidden" value="{$MAINTAB}">
 								<input type="hidden" id="relmod" name="{$mod_var_name}" value="{$mod_var_value}">
 								<input type="hidden" id="relrecord_id" name="{$recid_var_name}" value="{$recid_var_value}">
@@ -212,10 +213,9 @@ function set_focus() {ldelim}
 									<input name="srcmodule" id="srcmodule" type="hidden" value="{$smarty.request.srcmodule|@vtlib_purify}">
 									<input name="forrecord" id="forrecord" type="hidden" value="{$smarty.request.forrecord|@vtlib_purify}">
 								{/if}
-								{if $smarty.request.currencyid neq ''}
+								{if !empty($smarty.request.currencyid)}
 									<input type="hidden" name="currencyid" id="currencyid" value="{$smarty.request.currencyid|@vtlib_purify}">
 								{/if}
-								{* END *}
 							</td>
 							<td width="18%" class="dvtCellLabel">
 								<input type="button" name="search" value=" &nbsp;{$APP.LBL_SEARCH_NOW_BUTTON}&nbsp; " onClick="callSearch('Basic');" class="crmbutton small create">
