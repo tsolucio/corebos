@@ -36,6 +36,10 @@
 		{if $ERROR_MSG eq ''}
 			<div class="rptContainer">
 				<datatable url="index.php?module=Reports&action=ReportsAjax&file=getJSON&record={$REPORTID}" template="report_row_template">
+					<footer>
+						<pagination limit="12" outer></pagination>
+						<stats></stats>
+					</footer>
 					<table class="rptTable">
 						<tr>
 						{foreach item=dtheader from=$TABLEHEADERS}
@@ -43,10 +47,6 @@
 						{/foreach}
 						</tr>
 					</table>
-					<footer>
-						<pagination limit="12" outer></pagination>
-						<stats></stats>
-					</footer>
 				</datatable>
 			</div>
 			<table id="report_row_template" hidden>

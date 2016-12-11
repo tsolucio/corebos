@@ -183,6 +183,11 @@
 <script src="include/bunnyjs/template.min.js"></script>
 <script src="include/bunnyjs/pagination.min.js"></script>
 <script src="include/bunnyjs/url.min.js"></script>
+<script src="include/bunnyjs/utils.svg.min.js"></script>
+<script src="include/bunnyjs/spinner.min.js"></script>
+<script src="include/bunnyjs/datatable.icons.min.js"></script>
+<script src="include/bunnyjs/element.min.js"></script>
+<script src="include/bunnyjs/datatable.scrolltop.min.js"></script>
 <script src="include/bunnyjs/datatable.min.js"></script>
 <script type="text/javascript">
 Template.define('report_row_template', {});
@@ -193,6 +198,7 @@ Pagination._config.langPrevious = "< {$APP.LNK_LIST_PREVIOUS}";
 Pagination._config.langNext = "{$APP.LNK_LIST_NEXT} >";
 {literal}
 Pagination._config.langStats = "{from}-{to} {/literal}{$APP.LBL_LIST_OF}{literal} {total} ({/literal}{$APP.Page}{literal} {currentPage} {/literal}{$APP.LBL_LIST_OF}{literal} {lastPage})";
+DataTableConfig.loadingImg = 'themes/images/loading.svg';
 DataTable.onRedraw(document.getElementsByTagName('datatable')[0], (data) => {
 	if(document.getElementById('_reportrun_total')) document.getElementById('_reportrun_total').innerHTML=data.total;
 });
