@@ -607,7 +607,7 @@ class Leads extends CRMEntity {
 			$permitted_field_lists[] = $adb->query_result($result1,$i,'columnname');
 		}
 
-		$result =& $this->db->query($query,true,"Error retrieving $this->object_name list: ");
+		$result =& $this->db->query($query,true,"Error retrieving $currentModule list: ");
 		$list = Array();
 		$rows_found =  $this->db->getRowCount($result);
 		if($rows_found != 0)

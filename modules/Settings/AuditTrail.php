@@ -31,8 +31,6 @@ class AuditTrail{
 	var $module_name = "Settings";
 	var $table_name = "vtiger_audit_trial";
 
-	var $object_name = "AuditTrail";
-
 	function __construct() {
 		$this->log = LoggerManager::getLogger('audit_trial');
 		$this->db = PearDatabase::getInstance();

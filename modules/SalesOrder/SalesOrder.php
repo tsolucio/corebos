@@ -30,8 +30,6 @@ class SalesOrder extends CRMEntity {
 	var $customFieldTable = Array('vtiger_salesordercf', 'salesorderid');
 	var $entity_table = 'vtiger_crmentity';
 
-	var $object_name = 'SalesOrder';
-
 	var $update_product_array = Array();
 
 	var $sortby_fields = Array('subject','smownerid','accountname','lastname');
