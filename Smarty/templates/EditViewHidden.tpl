@@ -26,7 +26,6 @@
 	<input type="hidden" name="contact_id" value="{$CONTACT_ID}">
 	<input type="hidden" name="user_id" value="{$USER_ID}">
 	<input type="hidden" name="filename" value="{$FILENAME}">
-	<input type="hidden" name="old_id" value="{$OLD_ID}">
 
 {elseif $MODULE eq 'Contacts'}
 	<input type="hidden" name="activity_mode" value="{$ACTIVITY_MODE}">
@@ -51,23 +50,23 @@
 	<input type="hidden" name="email_id" value="{$EMAILID}">
 	<input type="hidden" name="ticket_id" value="{$TICKETID}">
 	<input type="hidden" name="fileid" value="{$FILEID}">
-	<input type="hidden" name="old_id" value="{$OLD_ID}">
 	<input type="hidden" name="parentid" value="{$PARENTID}">
 
 {elseif $MODULE eq 'Products'}
 	<input type="hidden" name="activity_mode" value="{$ACTIVITY_MODE}">
 {/if}
 
-<input type="hidden" name="pagenumber" value="{$smarty.request.start|@vtlib_purify}">
+<input type="hidden" name="pagenumber" value="{if isset($smarty.request.start)}{$smarty.request.start|@vtlib_purify}{/if}">
 <input type="hidden" name="module" value="{$MODULE}">
 <input type="hidden" name="record" value="{$ID}">
 <input type="hidden" name="mode" value="{$MODE}">
 <input type="hidden" name="action">
 <input type="hidden" name="parenttab" value="{$CATEGORY}">
-<input type="hidden" name="return_module" value="{$RETURN_MODULE}">
-<input type="hidden" name="return_id" value="{$RETURN_ID}">
-<input type="hidden" name="return_action" value="{$RETURN_ACTION}">
-<input type="hidden" name="return_viewname" value="{$RETURN_VIEWNAME}">
+<input type="hidden" name="return_module" value="{if isset($RETURN_MODULE)}{$RETURN_MODULE}{/if}">
+<input type="hidden" name="return_id" value="{if isset($RETURN_ID)}{$RETURN_ID}{/if}">
+<input type="hidden" name="return_action" value="{if isset($RETURN_ACTION)}{$RETURN_ACTION}{/if}">
+<input type="hidden" name="return_viewname" value="{if isset($RETURN_VIEWNAME)}{$RETURN_VIEWNAME}{/if}">
 <input type="hidden" name="createmode" value="{$CREATEMODE}" />
-<input type="hidden" name="cbcustominfo1" value="{$smarty.request.cbcustominfo1|@urlencode}" />
-<input type="hidden" name="cbcustominfo2" value="{$smarty.request.cbcustominfo2|@urlencode}" />
+<input type="hidden" name="cbcustominfo1" value="{if isset($smarty.request.cbcustominfo1)}{$smarty.request.cbcustominfo1|@urlencode}{/if}" />
+<input type="hidden" name="cbcustominfo2" value="{if isset($smarty.request.cbcustominfo2)}{$smarty.request.cbcustominfo2|@urlencode}{/if}" />
+

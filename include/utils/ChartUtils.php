@@ -242,7 +242,8 @@ EOF;
 	}
 
 	static public function getChartHTMLwithObject($chartObject, $targetObject, $html_imagename, $width, $height, $left, $right, $top, $bottom) {
-		$tgt = reset(json_decode($targetObject,true));
+		$tgtarray = json_decode($targetObject,true);
+		$tgt = reset($tgtarray);
 		if (is_array($tgt)) {
 			$czone = 'clickzone[activePoint[0]._datasetIndex][activePoint[0]._index]';
 		} else {
@@ -280,7 +281,6 @@ EOF;
 				return getTranslatedString($v,$v);
 			}, $vals);
 		}
-		$ud = $urldecode;
 		if ($withquotes) {
 			$vals = array_map(function($v) {
 				return '"'.urldecode($v).'"';

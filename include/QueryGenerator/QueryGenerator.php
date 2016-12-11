@@ -1278,7 +1278,7 @@ class QueryGenerator {
 
 	public function addUserSearchConditions($input) {
 		global $log,$default_charset;
-		if($input['searchtype']=='advance') {
+		if(isset($input['searchtype']) and $input['searchtype']=='advance') {
 
 			$advft_criteria = (empty($input['advft_criteria']) ? $_REQUEST['advft_criteria'] : $input['advft_criteria']);
 			if(!empty($advft_criteria)) $advft_criteria = json_decode($advft_criteria,true);

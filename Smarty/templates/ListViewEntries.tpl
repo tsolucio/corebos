@@ -22,7 +22,7 @@
 	<input name="step" type="hidden">
 	<input name="excludedRecords" type="hidden" id="excludedRecords" value="">
 	<input name="numOfRows" id="numOfRows" type="hidden" value="">
-	<input name="allids" type="hidden" id="allids" value="{$ALLIDS}">
+	<input name="allids" type="hidden" id="allids" value="{if isset($ALLIDS)}{$ALLIDS}{/if}">
 	<input name="selectedboxes" id="selectedboxes" type="hidden" value="{$SELECTEDIDS}">
 	<input name="allselectedboxes" id="allselectedboxes" type="hidden" value="{$ALLSELECTEDIDS}">
 	<input name="current_page_boxes" id="current_page_boxes" type="hidden" value="{$CURRENT_PAGE_BOXES}">
@@ -38,7 +38,7 @@
 								<tr>
 									<td>
 										<!-- Filters -->
-										{if $HIDE_CUSTOM_LINKS neq '1'}
+										{if empty($HIDE_CUSTOM_LINKS) || $HIDE_CUSTOM_LINKS neq '1'}
 										<table cellpadding="5" cellspacing="0" class="small">
 											<tr>
 												<td style="padding-left:5px;padding-right:5px" align="center">
@@ -199,7 +199,7 @@
 				<td align="right" width=40%>
 					<table border=0 cellspacing=0 cellpadding=0 class="small">
 					<tr>
-						{if $WORDTEMPLATES neq ''}
+						{if !empty($WORDTEMPLATES)}
 							{if $WORDTEMPLATES|@count gt 0}
 								<td>{'LBL_SELECT_TEMPLATE_TO_MAIL_MERGE'|@getTranslatedString:$MODULE}</td>
 								<td style="padding-left:5px;padding-right:5px">

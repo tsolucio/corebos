@@ -109,10 +109,9 @@ function getAllPickListValues($fieldName,$lang = Array() ){
 	$arr = array();
 	for($i=0;$i<$count;$i++){
 		$pick_val = $adb->query_result($result, $i, $fieldName);
-		if($lang[$pick_val] != ''){
+		if (!empty($lang[$pick_val])) {
 			$arr[$pick_val] = $lang[$pick_val];
-		}
-		else{
+		} else {
 			$arr[$pick_val] = $pick_val;
 		}
 	}

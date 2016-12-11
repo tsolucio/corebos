@@ -356,11 +356,11 @@ class Reports extends CRMEntity{
 					$details = Array();
 					$details['state'] = $reportfldrow["state"];
 					$details['id'] = $reportfldrow["folderid"];
-					$details['name'] = ($mod_strings[$reportfldrow["foldername"]] == '' ) ? $reportfldrow["foldername"]:$mod_strings[$reportfldrow["foldername"]];
+					$details['name'] = getTranslatedString($reportfldrow["foldername"], 'Reports');
 					$details['description'] = $reportfldrow["description"];
 					$details['fname'] = popup_decode_html($details['name']);
 					$details['fdescription'] = popup_decode_html($reportfldrow["description"]);
-					$details['details'] = $reportsInAllFolders[$reportfldrow["folderid"]];
+					$details['details'] = isset($reportsInAllFolders[$reportfldrow["folderid"]]) ? $reportsInAllFolders[$reportfldrow["folderid"]] : array();
 					$returndata[] = $details;
 				}
 			} while($reportfldrow = $adb->fetch_array($result));
@@ -386,6 +386,7 @@ class Reports extends CRMEntity{
 	 */
 	function sgetRptsforFldr($rpt_fldr_id) {
 		global $adb, $log, $mod_strings,$current_user;
+		$current_user_parent_role_seq='';
 		$returndata = Array();
 
 		require_once('include/utils/UserInfoUtil.php');
@@ -406,6 +407,7 @@ class Reports extends CRMEntity{
 		$userGroups = new GetUserGroups();
 		$userGroups->getAllUserGroups($current_user->id);
 		$user_groups = $userGroups->user_groups;
+		$user_group_query = '';
 		if(!empty($user_groups) && $is_admin==false){
 			$user_group_query = " (shareid IN (".generateQuestionMarks($user_groups).") AND setype='groups') OR";
 			array_push($params, $user_groups);

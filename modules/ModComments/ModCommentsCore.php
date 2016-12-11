@@ -133,11 +133,12 @@ class ModCommentsCore extends CRMEntity {
 		$relto = $this->column_fields['related_to'];
 		if (!empty($relto)) {
 			// update related assigned to email read only field
-			$relemail = $adb->query_result($adb->pquery('SELECT email1
+			$rs = $adb->pquery('SELECT email1
 				FROM vtiger_modcomments
 				INNER JOIN vtiger_crmentity on crmid=related_to
 				INNER JOIN vtiger_users on id = smownerid
-				WHERE modcommentsid=?',array($this->id)),0,0);
+				WHERE modcommentsid=?',array($this->id));
+			$relemail = $adb->query_result($rs,0,0);
 			$this->column_fields['relatedassignedemail'] = $relemail;
 			$adb->pquery('UPDATE vtiger_modcomments SET relatedassignedemail=? WHERE modcommentsid=?',array($relemail,$this->id));
 		}

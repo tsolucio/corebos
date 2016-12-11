@@ -641,7 +641,7 @@ function DeleteTag(id,recordid)
 				<td><div id="tagdiv" style="display:visible;"><form method="POST" action="javascript:void(0);" onsubmit="return tagvalidate();"><input class="textbox"  type="text" id="txtbox_tagfields" name="textbox_First Name" value="" style="width:100px;margin-left:5px;"></input>&nbsp;&nbsp;<input name="button_tagfileds" type="submit" class="crmbutton small save" value="{$APP.LBL_TAG_IT}" /></form></div></td>
 			</tr>
 			<tr>
-				<td class="tagCloudDisplay" valign=top> <span id="tagfields">{$ALL_TAG}</span></td>
+				<td class="tagCloudDisplay" valign=top> <span id="tagfields"></span></td>
 			</tr>
 		</table>
 		<!-- End Tag cloud display -->

@@ -21,5 +21,5 @@
 include_once 'include/utils/VtlibUtils.php';
 
 function smarty_function_process_widget($params, $template) {
-	return vtlib_process_widget($params['widgetLinkInfo'], $template->_tpl_vars);
+	return vtlib_process_widget($params['widgetLinkInfo'], $template->smarty->tpl_vars);
 }

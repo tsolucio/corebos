@@ -10,7 +10,7 @@
 require_once('include/utils/utils.php');
 require_once('include/logging.php');
 require_once("modules/Dashboard/DashboardCharts.php");
-global $current_language, $tmp_dir, $currentModule, $action;
+global $current_language, $currentModule, $action;
 $current_module_strings = return_module_language($current_language, 'Dashboard');
 require('user_privileges/sharing_privileges_'.$current_user->id.'.php');
 require('user_privileges/user_privileges_'.$current_user->id.'.php');
@@ -116,8 +116,8 @@ if (isset($_REQUEST['lsbo_edit']) && $_REQUEST['lsbo_edit'] == 'true') {
 else {
 ?>
 <div align=right><FONT size='1'>
-[<a href="javascript:;" onClick="changeView('<?php echo vtlib_purify($_REQUEST['display_view']);?>');"><?php echo $current_module_strings['LBL_REFRESH'];?></a>]
-[<a href="index.php?module=<?php echo $currentModule;?>&action=index&lsbo_edit=true&display_view=<?php echo vtlib_purify($_REQUEST['display_view']);?>"><?php echo $current_module_strings['LBL_EDIT'];?></a>]
+[<a href="javascript:;" onClick="changeView('<?php echo isset($_REQUEST['display_view']) ? vtlib_purify($_REQUEST['display_view']) : '';?>');"><?php echo $current_module_strings['LBL_REFRESH'];?></a>]
+[<a href="index.php?module=<?php echo $currentModule;?>&action=index&lsbo_edit=true&display_view=<?php echo isset($_REQUEST['display_view']) ? vtlib_purify($_REQUEST['display_view']) : '';?>"><?php echo $current_module_strings['LBL_EDIT'];?></a>]
 </FONT></div>
 <?php }
 }

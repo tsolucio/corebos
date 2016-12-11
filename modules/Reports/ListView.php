@@ -27,32 +27,42 @@ $list_report_form = new vtigerCRM_Smarty;
 $list_report_form->assign("MOD", $mod_strings);
 $list_report_form->assign("APP", $app_strings);
 $list_report_form->assign("APPLIST", $app_list_strings);
+$tool_buttons = array(
+'EditView' => 'no',
+'CreateView' => 'no',
+'index' => 'no',
+'Import' => 'no',
+'Export' => 'no',
+'Merge' => 'no',
+'DuplicatesHandling' => 'no',
+'Calendar' => 'no',
+'moduleSettings' => 'no',
+);
+$list_report_form->assign('CHECK', $tool_buttons);
+$list_report_form->assign('CUSTOM_MODULE', false);
 $list_report_form->assign("THEME", $theme);
 $list_report_form->assign("IMAGE_PATH", $image_path);
-
 $list_report_form->assign("CATEGORY",getParentTab());
 $list_report_form->assign("MODULE",$currentModule);
-$list_report_form->assign("NEWRPT_BUTTON",$newrpt_button);
-$list_report_form->assign("NEWRPT_FLDR_BUTTON",$newrpt_fldr_button);
 $repObj = new Reports();
 $list_report_form->assign("REPT_FLDR",$repObj->sgetRptFldr('SAVED'));
 $cusFldrDtls = Array();
 $cusFldrDtls = $repObj->sgetRptFldr('CUSTOMIZED');
 $list_report_form->assign("REPT_CUSFLDR",$cusFldrDtls);
+$fldrids_lists = array();
 foreach($cusFldrDtls as $entries)
 {
-	$fldrids_lists [] =$entries['id'];
+	$fldrids_lists[] =$entries['id'];
 }
 
-if(count($fldrids_lists) > 0)
-	$list_report_form->assign("FOLDE_IDS",implode(',',$fldrids_lists));
+$list_report_form->assign("FOLDE_IDS",implode(',',$fldrids_lists));
 $list_report_form->assign("REPT_MODULES",getReportsModuleList($repObj));
 $list_report_form->assign("REPT_FOLDERS",$repObj->sgetRptFldr());
-$list_report_form->assign("DEL_DENIED",vtlib_purify($_REQUEST['del_denied']));
+$list_report_form->assign("DEL_DENIED",isset($_REQUEST['del_denied']) ? vtlib_purify($_REQUEST['del_denied']) : '');
 
 $list_report_form->assign('ISADMIN',is_admin($current_user));
 
-if($_REQUEST['mode'] == 'ajax' or $_REQUEST['mode'] == 'ajaxdelete')
+if(isset($_REQUEST['mode']) and ($_REQUEST['mode'] == 'ajax' or $_REQUEST['mode'] == 'ajaxdelete'))
 	$list_report_form->display("ReportContents.tpl");
 else
 	$list_report_form->display("Reports.tpl");

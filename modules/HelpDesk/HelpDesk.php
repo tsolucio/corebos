@@ -379,15 +379,15 @@ class HelpDesk extends CRMEntity {
 	**/
 	function getCommentInformation($ticketid)
 	{
-		global $log;
+		global $log, $adb, $mod_strings, $default_charset;
 		$log->debug("Entering getCommentInformation(".$ticketid.") method ...");
-		global $adb;
-		global $mod_strings, $default_charset;
+
 		$sql = "select * from vtiger_ticketcomments where ticketid=?";
 		$result = $adb->pquery($sql, array($ticketid));
 		$noofrows = $adb->num_rows($result);
 
 		//In ajax save we should not add this div
+		$list = '';
 		if($_REQUEST['action'] != 'HelpDeskAjax')
 		{
 			$list .= '<div id="comments_div" style="overflow: auto;height:200px;width:100%;">';

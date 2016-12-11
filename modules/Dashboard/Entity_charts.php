@@ -173,6 +173,8 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 	$target_val="";
 	$bar_target_val="";
 	$test_target_val="";
+	$urlstring = '';
+	$mod_graph_date = '';
 
 	if($no_of_rows!=0)
 	{
@@ -193,7 +195,7 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 				$mod_name=$mod_strings["Un Assigned"];
 				$search_str = " ";
 			}
-			$crtd_time=$row['createdtime'];
+			$crtd_time= isset($row['createdtime']) ? $row['createdtime'] : date('Y-m-d H:i:s');
 			$crtd_time_array=explode(" ",$crtd_time);
 			$crtd_date=$crtd_time_array[0];
 			if(!isset($mod_tot_cnt_array[$crtd_date]))
@@ -439,7 +441,7 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 
 
 				//Passing count to graph
-				if($mod_cnt_val!="") $mod_cnt_val.="::$mod_count_val";
+				if(!empty($mod_cnt_val)) $mod_cnt_val.="::$mod_count_val";
 				else $mod_cnt_val="$mod_count_val";
 				if($module!="")
 				{
@@ -493,7 +495,7 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 				else
 					$test_target_val.="K".$link_val;
 			}
-			$mod_cnt_table .="</tr><tr><td class=\"$class\">".getTranslatedString('LBL_TOTAL').'</td>';
+			$mod_cnt_table .="</tr><tr><td>".getTranslatedString('LBL_TOTAL').'</td>';
 			//For all Days getting the vtiger_table
 			for($k=0; $k<$days;$k++)
 			{
@@ -513,12 +515,11 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 				$cnt_total=array_sum($mod_tot_cnt_array);
 			}
 
-			$mod_cnt_table.="<td align=\"center\" class=\"$class\">$cnt_total</td></tr></table>";
+			$mod_cnt_table.="<td align=\"center\">$cnt_total</td></tr></table>";
 			$mod_cnt_table.="</table>";
 			$title_of_graph="$title : $cnt_total";
 			$bar_target_val=urlencode($bar_target_val);
 			$test_target_val=urlencode($test_target_val);
-
 
 			$Prod_mod_val=array($mod_name_val,$mod_cnt_val,$title_of_graph,$bar_target_val,$mod_graph_date,$urlstring,$mod_cnt_table,$test_target_val);
 			return $Prod_mod_val;
@@ -526,7 +527,6 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 		else
 		{
 			$data=0;
-
 		}
 	}
 	else
@@ -562,6 +562,7 @@ function get_graph_by_type($graph_by,$graph_title,$module,$where,$query,$width=9
 		}
 
 		$top=20;
+		$right=20;
 		$left=140;
 		$bottom=120;
 		if (isset($_REQUEST['Chart_Type'])) {

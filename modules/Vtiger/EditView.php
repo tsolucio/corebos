@@ -12,10 +12,12 @@ require_once('Smarty_setup.php');
 
 $focus = CRMEntity::getInstance($currentModule);
 $smarty = new vtigerCRM_Smarty();
+// Identify this module as custom module.
+$smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
 
 $category = getParentTab($currentModule);
-$record = vtlib_purify($_REQUEST['record']);
-$isduplicate = vtlib_purify($_REQUEST['isDuplicate']);
+$record = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : null;
+$isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : null;
 
 //added to fix the issue4600
 $searchurl = getBasic_Advance_SearchURL();
@@ -75,7 +77,7 @@ if (!empty($_REQUEST['save_error']) and $_REQUEST['save_error'] == "true") {
 } elseif($focus->mode != 'edit'){
 	setObjectValuesFromRequest($focus);
 }
-
+$smarty->assign('MASS_EDIT','0');
 $disp_view = getView($focus->mode);
 $blocks = getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields);
 $smarty->assign('BLOCKS', $blocks);
@@ -92,7 +94,6 @@ $smarty->assign('OP_MODE',$disp_view);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
-// TODO: Update Single Module Instance name here.
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('CATEGORY', $category);
 $smarty->assign("THEME", $theme);

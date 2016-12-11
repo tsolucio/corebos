@@ -1750,9 +1750,9 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$slashes_temp_val = popup_from_html($temp_val);
 					$slashes_temp_val = htmlspecialchars($slashes_temp_val, ENT_QUOTES, $default_charset);
 
-					$focus->record_id = $_REQUEST['recordid'];
-					$popupMode = $_REQUEST['popupmode'];
-					$callBack = $_REQUEST['callback'];
+					$focus->record_id = isset($_REQUEST['recordid']) ? vtlib_purify($_REQUEST['recordid']) : 0;
+					$popupMode = isset($_REQUEST['popupmode']) ? vtlib_purify($_REQUEST['popupmode']) : '';
+					$callBack = isset($_REQUEST['callback']) ? vtlib_purify($_REQUEST['callback']) : '';
 					if ($_REQUEST['return_module'] == "Calendar") {
 						$count = counterValue();
 						$value = '<a href="javascript:if (document.getElementById(\'closewindow\').value==\'true\') {window.close();}" id="calendarCont' . $entity_id . '" onclick=\'add_data_to_relatedlist_incal("' . $entity_id . '","' . decode_html($slashes_temp_val) . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
@@ -2200,7 +2200,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$slashes_temp_val = htmlspecialchars($slashes_temp_val, ENT_QUOTES, $default_charset);
 
 					$log->debug("Exiting getValue method ...");
-					if ($_REQUEST['maintab'] == 'Calendar') {
+					if (isset($_REQUEST['maintab']) and $_REQUEST['maintab'] == 'Calendar') {
 						$count = counterValue();
 						$value = '<a href="javascript:window.close();" onclick=\'set_return_todo("' . $entity_id . '", "' . nl2br(decode_html($slashes_temp_val)) . '");\'id = ' . $count . '>' . textlength_check($temp_val) . '</a>';
 					} else {

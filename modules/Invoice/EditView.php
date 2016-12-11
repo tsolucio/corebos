@@ -18,10 +18,12 @@ require_once ('include/utils/utils.php');
 
 $focus = CRMEntity::getInstance($currentModule);
 $smarty = new vtigerCRM_Smarty();
+// Identify this module as custom module.
+$smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
 
 $category = getParentTab($currentModule);
-$record = vtlib_purify($_REQUEST['record']);
-$isduplicate = vtlib_purify($_REQUEST['isDuplicate']);
+$record = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : null;
+$isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : null;
 
 //added to fix the issue4600
 $searchurl = getBasic_Advance_SearchURL();
@@ -31,7 +33,9 @@ $smarty->assign("SEARCH", $searchurl);
 $currencyid = fetchCurrency($current_user->id);
 $rate_symbol = getCurrencySymbolandCRate($currencyid);
 $rate = $rate_symbol['rate'];
-if (isset ($_REQUEST['record']) && $_REQUEST['record'] != '') {
+$associated_prod = array();
+$smarty->assign('CONVERT_MODE', '');
+if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
 	if (isset ($_REQUEST['convertmode']) && $_REQUEST['convertmode'] == 'quotetoinvoice') {
 		$quoteid = $record;
 		$quote_focus = new Quotes();
@@ -139,7 +143,7 @@ if (isset ($_REQUEST['record']) && $_REQUEST['record'] != '') {
 		$rate = $so_focus->column_fields['conversion_rate'];
 
 		//Added to display the SO's associated products -- when we select SO in New Invoice page
-		if (isset ($_REQUEST['salesorder_id']) && $_REQUEST['salesorder_id'] != '') {
+		if (isset($_REQUEST['salesorder_id']) && $_REQUEST['salesorder_id'] != '') {
 			$associated_prod = getAssociatedProducts("SalesOrder", $so_focus, $focus->column_fields['salesorder_id']);
 		}
 
@@ -149,10 +153,11 @@ if (isset ($_REQUEST['record']) && $_REQUEST['record'] != '') {
 		$smarty->assign("AVAILABLE_PRODUCTS", 'true');
 
 	}
-	elseif (isset ($_REQUEST['convertmode']) && $_REQUEST['convertmode'] == 'potentoinvoice') {
+	elseif (isset($_REQUEST['convertmode']) && $_REQUEST['convertmode'] == 'potentoinvoice') {
 		$focus->mode = '';
 		$_REQUEST['opportunity_id'] = $_REQUEST['return_id'];
-		$relpot = $adb->query_result($adb->pquery('select related_to from vtiger_potential where potentialid=?',array($_REQUEST['return_id'])),0,0);
+		$relrs = $adb->pquery('select related_to from vtiger_potential where potentialid=?',array($_REQUEST['return_id']));
+		$relpot = $adb->query_result($relrs,0,0);
 		$reltype = getSalesEntityType($relpot);
 		if ($reltype=='Accounts') {
 			$_REQUEST['account_id'] = $relpot;
@@ -283,7 +288,7 @@ if (isset ($_REQUEST['contact_id']) && $_REQUEST['contact_id'] != '' && ($_REQUE
 	$focus->column_fields['bill_pobox'] = $cto_focus->column_fields['mailingpobox'];
 	$focus->column_fields['ship_pobox'] = $cto_focus->column_fields['otherpobox'];
 }
-
+$smarty->assign('MASS_EDIT','0');
 $disp_view = getView($focus->mode);
 $smarty->assign('BLOCKS', getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields));
 $smarty->assign('BASBLOCKS', getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields, 'BAS'));
@@ -297,7 +302,6 @@ $smarty->assign('OP_MODE',$disp_view);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
-// TODO: Update Single Module Instance name here.
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('CATEGORY', $category);
 $smarty->assign("THEME", $theme);
@@ -429,7 +433,7 @@ if ($focus->mode == 'edit') {
 	$smarty->assign("INV_CURRENCY_ID", $currencyid);
 }
 
-$smarty->assign('CREATEMODE', vtlib_purify($_REQUEST['createmode']));
+$smarty->assign('CREATEMODE', isset($_REQUEST['createmode']) ? vtlib_purify($_REQUEST['createmode']) : '');
 
 // Gather the help information associated with fields
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));

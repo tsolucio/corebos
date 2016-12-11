@@ -44,8 +44,8 @@ if(isPermitted('Accounts','Merge','') == 'yes') {
 	$wordTemplateResult = fetchWordTemplateList('Accounts');
 	$tempCount = $adb->num_rows($wordTemplateResult);
 	$tempVal = $adb->fetch_array($wordTemplateResult);
-	for($templateCount=0;$templateCount<$tempCount;$templateCount++)
-	{
+	$optionString = array();
+	for($templateCount=0;$templateCount<$tempCount;$templateCount++) {
 		$optionString[$tempVal['templateid']]=$tempVal['filename'];
 		$tempVal = $adb->fetch_array($wordTemplateResult);
 	}

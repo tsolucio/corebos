@@ -25,10 +25,6 @@
 	<td class="showPanelBg" valign=top width=100%>
 		{*<!-- PUBLIC CONTENTS STARTS-->*}
 		<div class="small" style="padding:20px">
-			{* vtlib customization: use translated label if available *}
-			{assign var="SINGLE_MOD_LABEL" value=$SINGLE_MOD}
-			{if $APP.$SINGLE_MOD} {assign var="SINGLE_MOD_LABEL" value=$APP.SINGLE_MOD} {/if}
-				
 			{if $OP_MODE eq 'edit_view'}
 				{assign var="USE_ID_VALUE" value=$MOD_SEQ_ID}
 				{if $USE_ID_VALUE eq ''} {assign var="USE_ID_VALUE" value=$ID} {/if}
@@ -37,22 +33,15 @@
 			{/if}
 			{if $OP_MODE eq 'create_view'}
 				{if $DUPLICATE neq 'true'}
-					{assign var=create_new value="LBL_CREATING_NEW_"|cat:$SINGLE_MOD}
-					{* vtlib customization: use translation only if present *}
-					{assign var="create_newlabel" value=$APP.$create_new}
-					{if $create_newlabel neq ''}
-						<span class="lvtHeaderText">{$create_newlabel}</span> <br>
-					{else}
-						<span class="lvtHeaderText">{$APP.LBL_CREATING} {$APP.LBL_NEW} {$SINGLE_MOD|@getTranslatedString:$MODULE}</span> <br>
-					{/if}
+					<span class="lvtHeaderText">{$APP.LBL_CREATING} {$APP.LBL_NEW} {$SINGLE_MOD|@getTranslatedString:$MODULE}</span> <br>
 				{else}
 					<span class="lvtHeaderText">{$APP.LBL_DUPLICATING} "{$NAME}" </span> <br>
 				{/if}
 			{/if}
 
 			<hr noshade size=1>
-			<br> 
-		
+			<br>
+
 			{include file='EditViewHidden.tpl'}
 
 			{*<!-- Account details tabs -->*}
@@ -99,11 +88,11 @@
 									   {foreach key=header item=data from=$BLOCKS}
 
 							<!-- This is added to display the existing comments -->
-							{if $header eq $MOD.LBL_COMMENTS || $header eq $MOD.LBL_COMMENT_INFORMATION}
+							{if $header eq $MOD.LBL_COMMENTS || (isset($MOD.LBL_COMMENT_INFORMATION) && $header eq $MOD.LBL_COMMENT_INFORMATION)}
 							   <tr><td>&nbsp;</td></tr>
 							   <tr>
 								<td colspan=4 class="dvInnerHeader">
-							        	<b>{$MOD.LBL_COMMENT_INFORMATION}</b>
+									<b>{if isset($MOD.LBL_COMMENT_INFORMATION)}{$MOD.LBL_COMMENT_INFORMATION}{else}{$APP.LBL_COMMENTS}{/if}</b>
 								</td>
 							   </tr>
 							   <tr>
@@ -113,14 +102,14 @@
 							{/if}
 
 										<tr id="tbl{$header|replace:' ':''}Head">
-										{if $header== $MOD.LBL_ADDRESS_INFORMATION && ($MODULE == 'Accounts' || $MODULE == 'Quotes' || $MODULE == 'PurchaseOrder' || $MODULE == 'SalesOrder'|| $MODULE == 'Invoice') && $SHOW_COPY_ADDRESS eq 'yes'}
+										{if isset($MOD.LBL_ADDRESS_INFORMATION) && $header==$MOD.LBL_ADDRESS_INFORMATION && ($MODULE == 'Accounts' || $MODULE == 'Quotes' || $MODULE == 'PurchaseOrder' || $MODULE == 'SalesOrder'|| $MODULE == 'Invoice') && $SHOW_COPY_ADDRESS eq 'yes'}
                                                                                 <td colspan=2 class="detailedViewHeader">
                                                                                 <b>{$header}</b></td>
                                                                                 <td class="detailedViewHeader">
                                                                                 <input name="cpy" onclick="return copyAddressLeft(EditView)" type="radio"><b>{$APP.LBL_RCPY_ADDRESS}</b></td>
                                                                                 <td class="detailedViewHeader">
                                                                                 <input name="cpy" onclick="return copyAddressRight(EditView)" type="radio"><b>{$APP.LBL_LCPY_ADDRESS}</b></td>
-										{elseif $header== $MOD.LBL_ADDRESS_INFORMATION && $MODULE == 'Contacts' && $SHOW_COPY_ADDRESS eq 'yes'}
+										{elseif isset($MOD.LBL_ADDRESS_INFORMATION) && $header== $MOD.LBL_ADDRESS_INFORMATION && $MODULE == 'Contacts' && $SHOW_COPY_ADDRESS eq 'yes'}
 										<td colspan=2 class="detailedViewHeader">
                                                                                 <b>{$header}</b></td>
                                                                                 <td class="detailedViewHeader">

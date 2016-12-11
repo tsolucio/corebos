@@ -627,7 +627,8 @@ function get_to_emailids($module) {
 				   WHERE vtiger_crmentity.deleted=0 AND vtiger_vendor.vendorid IN ('.generateQuestionMarks($idlist).')';
 	}
 	$result = $adb->pquery($query,$idlist);
-	
+
+	$idlists = $mailids = '';
 	if($adb->num_rows($result)>0){
 		while($entityvalue = $adb->fetchByAssoc($result)){
 			$vtwsid = $entityvalue['id'];

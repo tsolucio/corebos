@@ -190,8 +190,8 @@ function Search($module, $input = '')
 	if(empty($input)) {
 		$input = $_REQUEST;
 	}
-	
-    $log->debug("Entering Search(".$module.") method ...");
+
+	$log->debug("Entering Search(".$module.") method ...");
 	$url_string='';
 	if(isset($input['search_field']) && $input['search_field'] !="") {
 		$search_column=vtlib_purify($input['search_field']);
@@ -203,11 +203,11 @@ function Search($module, $input = '')
 		$search_string=trim($stringConvert);
 	}
 	if(isset($input['searchtype']) && $input['searchtype']!="") {
-        $search_type=vtlib_purify($input['searchtype']);
-    	if($search_type == "BasicSearch") {
-            $where=BasicSearch($module,$search_column,$search_string,$input);
-    	} else if ($search_type == "AdvanceSearch") {
-    	} else { //Global Search
+		$search_type=vtlib_purify($input['searchtype']);
+		if($search_type == "BasicSearch") {
+			$where=BasicSearch($module,$search_column,$search_string,$input);
+		} else if ($search_type == "AdvanceSearch") {
+		} else { //Global Search
 		}
 		$url_string = "&search_field=".$search_column."&search_text=".urlencode($search_string)."&searchtype=BasicSearch";
 		if(isset($input['type']) && $input['type'] != '')
@@ -246,10 +246,9 @@ function get_usersid($table_name,$column_name,$search_string)
 
 function getValuesforColumns($column_name,$search_string,$criteria='cts',$input='')
 {
-	global $log, $current_user;
+	global $log, $current_user, $column_array,$table_col_array;
 	$log->debug("Entering getValuesforColumns(".$column_name.",".$search_string.") method ...");
-	global $column_array,$table_col_array;
-	
+
 	if(empty($input)) {
 		$input = $_REQUEST;
 	}
@@ -826,15 +825,13 @@ function getSearch_criteria($criteria,$searchstring,$searchfield)
 
 function getWhereCondition($currentModule, $input = '')
 {
-	global $log,$default_charset,$adb;
-	global $column_array,$table_col_array,$mod_strings,$current_user;
-	
+	global $log,$default_charset,$adb, $column_array,$table_col_array,$mod_strings,$current_user;
 	$log->debug("Entering getWhereCondition(".$currentModule.") method ...");
 
 	if(empty($input)) {
 		$input = $_REQUEST;
 	}
-	
+
 	if($input['searchtype']=='advance')
 	{
 		$advft_criteria = $input['advft_criteria'];
@@ -853,17 +850,16 @@ function getWhereCondition($currentModule, $input = '')
 	}
 	else
 	{
- 		$where = Search($currentModule, $input);
+		$where = Search($currentModule, $input);
 	}
 	$log->debug("Exiting getWhereCondition method ...");
 	return $where;
-
 }
 
 function getSearchURL($input) {
 	global $log,$default_charset;
 	$urlString='';
-	if($input['searchtype']=='advance') {
+	if(isset($input['searchtype']) and $input['searchtype']=='advance') {
 		$advft_criteria = vtlib_purify($input['advft_criteria']);
 		if(empty($advft_criteria))	return $urlString;
 		$advft_criteria_groups = vtlib_purify($input['advft_criteria_groups']);
@@ -908,20 +904,18 @@ function getSearchURL($input) {
 			$purchaseOrderId = vtlib_purify($input['purchaseorderid']);
 			$urlString .= "&purchaseorderid=".$purchaseOrderId;
 		}
-
 		if(isset($input['from_homepagedb']) && $input['from_homepagedb'] != '') {
-			$url_string .= "&from_homepagedb=".vtlib_purify($input['from_homepagedb']);
+			$urlString .= "&from_homepagedb=".vtlib_purify($input['from_homepagedb']);
 		}
 		if(isset($input['type']) && $input['type'] != '') {
-			$url_string .= "&type=".vtlib_purify($input['type']);
+			$urlString .= "&type=".vtlib_purify($input['type']);
 		}
 	} else {
 		$value = vtlib_purify($input['search_text']);
-		$stringConvert = function_exists(iconv) ? @iconv("UTF-8",$default_charset,$value) :
-				$value;
+		$stringConvert = function_exists(iconv) ? @iconv("UTF-8",$default_charset,$value) : $value;
 		$value=trim($stringConvert);
 		$field=vtlib_purify($input['search_field']);
- 		$urlString = "&search_field=$field&search_text=".urlencode($value)."&searchtype=BasicSearch";
+		$urlString = "&search_field=$field&search_text=".urlencode($value)."&searchtype=BasicSearch";
 		if(!empty($input['type'])) {
 			$urlString .= "&type=".vtlib_purify($input['type']);
 		}
@@ -936,7 +930,6 @@ function getSearchURL($input) {
 *Takes no parameter, process the values got from the html request object
 *Returns the search criteria option (where condition) to be added in list query
 */
-
 function getdashboardcondition($input = '')
 {
 	global $adb;
@@ -944,7 +937,7 @@ function getdashboardcondition($input = '')
 	if(empty($input)) {
 		$input = $_REQUEST;
 	}
-	
+
 	$where_clauses = Array();
 	$url_string = "";
 
@@ -1138,7 +1131,7 @@ function getAdvancedSearchCriteriaList($advft_criteria, $advft_criteria_groups, 
 		if (is_object($fieldObj))
 		{
 			$fieldType = $fieldObj->getFieldDataType();
-	
+
 			if($fieldType == 'currency') {
 				// Some of the currency fields like Unit Price, Total, Sub-total etc of Inventory modules, do not need currency conversion
 				if($fieldObj->getUIType() == '72') {

@@ -44,6 +44,7 @@ if (isPermitted('Leads', 'Merge', '') == 'yes') {
 	$wordTemplateResult = fetchWordTemplateList('Leads');
 	$tempCount = $adb->num_rows($wordTemplateResult);
 	$tempVal = $adb->fetch_array($wordTemplateResult);
+	$optionString = array();
 	for ($templateCount = 0; $templateCount < $tempCount; $templateCount++) {
 		$optionString[$tempVal['templateid']] = $tempVal['filename'];
 		$tempVal = $adb->fetch_array($wordTemplateResult);

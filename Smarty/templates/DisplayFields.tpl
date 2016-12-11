@@ -17,7 +17,7 @@
 		<tr name="tbl{$header|replace:' ':''}Content" style="height:25px" class="createview_field_row">
 	{/if}
 	{foreach key=mainlabel item=maindata from=$subdata}
-		{include file='EditViewUI.tpl'}
+		{if count($maindata)>0}{include file='EditViewUI.tpl'}{/if}
 	{/foreach}
 	</tr>
 {/foreach}

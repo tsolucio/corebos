@@ -23,7 +23,7 @@ class DashboardCharts {
 
 	static public function pipeline_by_sales_stage($datax, $date_start, $date_end, $user_id, $width, $height){
 		global $log, $current_user, $adb, $mod_strings;
-		$log->debug("Entering pipeline_by_sales_stage(".$datax.",".$date_start.",".$date_end.",".$user_id.",".$width.",".$height.") method ...");
+		$log->debug("Entering pipeline_by_sales_stage(".print_r($datax,true).",".$date_start.",".$date_end.",".print_r($user_id,true).",".$width.",".$height.") method ...");
 
 		$where=' deleted = 0 ';
 		$labels = array();
@@ -144,7 +144,7 @@ class DashboardCharts {
 
 	static public function outcome_by_month($date_start, $date_end, $user_id, $width, $height){
 		global $log, $current_user, $adb, $current_language, $mod_strings;
-		$log->debug("Entering outcome_by_month(".$date_start.",".$date_end.",".$user_id.",".$width.",".$height.") method ...");
+		$log->debug("Entering outcome_by_month(".$date_start.",".$date_end.",".print_r($user_id,true).",".$width.",".$height.") method ...");
 		$report_strings = return_module_language($current_language, 'Reports');
 		$months = $report_strings['MONTH_STRINGS'];
 
@@ -240,10 +240,10 @@ class DashboardCharts {
 			$m = $mes+1;
 			if (isset($closedWon[$m]['sum'])) {
 				$dset['data'][] = $closedWon[$m]['sum'];
-				array_push($aAlts['Closed Won'], $mes_translation.' - '.$closedWon[$m]['sum']);
+				array_push($aAlts['closedWon'], $mes_translation.' - '.$closedWon[$m]['sum']);
 			} else {
 				$dset['data'][] = 0;
-				array_push($aAlts['Closed Won'], '');
+				array_push($aAlts['closedWon'], '');
 			}
 		}
 		$datay[] = $dset;
@@ -260,10 +260,10 @@ class DashboardCharts {
 			$m = $mes+1;
 			if (isset($closedLost[$m]['sum'])) {
 				$dset['data'][] = $closedLost[$m]['sum'];
-				array_push($aAlts['Closed Lost'], $mes_translation.' - '.$closedLost[$m]['sum']);
+				array_push($aAlts['closedLost'], $mes_translation.' - '.$closedLost[$m]['sum']);
 			} else {
 				$dset['data'][] = 0;
-				array_push($aAlts['Closed Lost'], '');
+				array_push($aAlts['closedLost'], '');
 			}
 		}
 		$datay[] = $dset;
@@ -320,7 +320,7 @@ class DashboardCharts {
 
 	static public function lead_source_by_outcome($datax, $user_id, $width, $height){
 		global $log, $current_user, $adb, $mod_strings;
-		$log->debug("Entering lead_source_by_outcome(".$datax.",".$user_id.",".$width.",".$height.") method ...");
+		$log->debug("Entering lead_source_by_outcome(".print_r($datax,true).",".print_r($user_id,true).",".$width.",".$height.") method ...");
 
 		$where=' deleted = 0 ';
 		$labels = array();
@@ -436,7 +436,7 @@ class DashboardCharts {
 
 	static public function pipeline_by_lead_source($datax, $date_start, $date_end, $user_id, $width, $height){
 		global $log, $current_user, $adb, $mod_strings;
-		$log->debug("Entering pipeline_by_lead_source(".$datax.",".$date_start.",".$date_end.",".$user_id.",".$width.",".$height.") method ...");
+		$log->debug("Entering pipeline_by_lead_source(".print_r($datax,true).",".$date_start.",".$date_end.",".print_r($user_id,true).",".$width.",".$height.") method ...");
 
 		$where=' deleted = 0 ';
 		$labels = array();

@@ -26,13 +26,12 @@
 <form name="EditView" method="POST" ENCTYPE="multipart/form-data" action="index.php" onSubmit="if(email_validate(this.form,'')) { VtigerJS_DialogBox.block();} else { return false; }">
 {/literal}
 <input type="hidden" name="send_mail" >
-<input type="hidden" name="contact_id" value="{$CONTACT_ID}">
-<input type="hidden" name="user_id" value="{$USER_ID}">
+<input type="hidden" name="contact_id" value="{if isset($CONTACT_ID)}{$CONTACT_ID}{/if}">
+<input type="hidden" name="user_id" value="{if isset($USER_ID)}{$USER_ID}{/if}">
 <input type="hidden" name="filename" value="{$FILENAME}">
-<input type="hidden" name="old_id" value="{$OLD_ID}">
 <input type="hidden" name="module" value="{$MODULE}">
 <input type="hidden" name="record" value="{$ID}">
-<input type="hidden" name="mode" value="{$MODE}">
+<input type="hidden" name="mode" value="{if isset($MODE)}{$MODE}{/if}">
 <input type="hidden" name="action">
 <input type="hidden" name="popupaction" value="create">
 <input type="hidden" name="hidden_toid" id="hidden_toid">
@@ -51,13 +50,13 @@
 	<tr>
 	<td class="mailSubHeader" align="right"><font color="red">*</font><b>{$MOD.LBL_FROM}</b></td>
 	<td class="cellText" style="padding: 5px;">
-		<input name="from_email" id="from_email" class="txtBox" type="text" value="{$EMAIL_FROM}" style="width: 525px;" placeholder="{'LeaveEmptyForUserEmail'|@getTranslatedString:'Settings'}">
+		<input name="from_email" id="from_email" class="txtBox" type="text" value="{if isset($EMAIL_FROM)}{$EMAIL_FROM}{/if}" style="width: 525px;" placeholder="{'LeaveEmptyForUserEmail'|@getTranslatedString:'Settings'}">
 	</td>
 	<td class="cellText" style="padding: 5px;" align="left" nowrap></td>
 	</tr>
 {foreach item=row from=$BLOCKS}
 {foreach item=elements from=$row}
-	{if $elements.2.0 eq 'parent_id'}
+	{if isset($elements.2) && isset($elements.2.0) && $elements.2.0 eq 'parent_id'}
 	<tr>
 	<td class="mailSubHeader" align="right"><font color="red">*</font><b>{$MOD.LBL_TO}</b></td>
 	<td class="cellText" style="padding: 5px;">
@@ -89,7 +88,7 @@
 	{if 'ccmail'|@emails_checkFieldVisiblityPermission:'readwrite' eq '0'}
 	<td class="mailSubHeader" style="padding: 5px;" align="right">{$MOD.LBL_CC}</td>
 	<td class="cellText" style="padding: 5px;">
-		<input name="ccmail" id ="cc_name" class="txtBox" type="text" value="{$CC_MAIL}" style="width:525px">&nbsp;
+		<input name="ccmail" id ="cc_name" class="txtBox" type="text" value="{if isset($CC_MAIL)}{$CC_MAIL}{/if}" style="width:525px">&nbsp;
 		<span class="mailClientCSSButton">
 			<img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails&email_field=cc_name","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
 		</span>
@@ -107,7 +106,7 @@
 	<tr>
 	<td class="mailSubHeader" style="padding: 5px;" align="right">{$MOD.LBL_BCC}</td>
 	<td class="cellText" style="padding: 5px;">
-		<input name="bccmail" id="bcc_name" class="txtBox" type="text" value="{$BCC_MAIL}" style="width:525px">&nbsp;
+		<input name="bccmail" id="bcc_name" class="txtBox" type="text" value="{if isset($BCC_MAIL)}{$BCC_MAIL}{/if}" style="width:525px">&nbsp;
 		<span class="mailClientCSSButton">
 			<img src="{'select.gif'|@vtiger_imageurl:$THEME}" alt="{$APP.LBL_SELECT}" title="{$APP.LBL_SELECT}" onclick='return window.open("index.php?module="+ document.EditView.parent_type.value +"&action=Popup&html=Popup_picker&form=HelpDeskEditView&popuptype=set_return_emails&email_field=bcc_name","test","width=640,height=602,resizable=0,scrollbars=0,top=150,left=200");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
 		</span>
@@ -117,16 +116,16 @@
 	</td>
 	</tr>
 	{/if}
-	{elseif $elements.2.0 eq 'subject'}
+	{elseif isset($elements.2) && isset($elements.2.0) && $elements.2.0 eq 'subject'}
 	<tr>
 	<td class="mailSubHeader" style="padding: 5px;" align="right" nowrap><font color="red">*</font>{$elements.1.0} :</td>
-		{if $WEBMAIL eq 'true' or $RET_ERROR eq 1}
+		{if (isset($WEBMAIL) && $WEBMAIL eq 'true') or (isset($RET_ERROR) && $RET_ERROR eq 1)}
 			<td class="cellText" style="padding: 5px;"><input type="text" class="txtBox" name="{$elements.2.0}" value="{$SUBJECT}" id="{$elements.2.0}" style="width:99%"></td>
 		{else}
 			<td class="cellText" style="padding: 5px;"><input type="text" class="txtBox" name="{$elements.2.0}" value="{$elements.3.0}" id="{$elements.2.0}" style="width:99%"></td>
 		{/if}
 	</tr>
-	{elseif $elements.2.0 eq 'filename'}
+	{elseif isset($elements.2) && isset($elements.2.0) && $elements.2.0 eq 'filename'}
 	<tr>
 	<td class="mailSubHeader" style="padding: 5px;" align="right" nowrap>{$elements.1.0} :</td>
 	<td class="cellText" style="padding: 5px;">
@@ -144,7 +143,7 @@
 		</script>
 		<div id="attach_temp_cont" style="display:none;">
 		<table class="small" width="100% ">
-			{if $smarty.request.attachment != ''}
+			{if !empty($smarty.request.attachment)}
 				<tr>
 				<td width="100%" colspan="2">{$smarty.request.attachment|@vtlib_purify}<input type="hidden" value="{$smarty.request.attachment|@vtlib_purify}" name="pdf_attachment"></td>
 				</tr>
@@ -157,14 +156,14 @@
 				{/foreach}
 				<input type='hidden' name='att_id_list' value='{$ATT_ID_LIST}' />
 			{/if}
-			{if $WEBMAIL eq 'true'}
+			{if isset($WEBMAIL) && $WEBMAIL eq 'true'}
 				{foreach item="attach_files" from=$webmail_attachments}
 					<tr ><td width="90%">{$attach_files}</td></tr>
 				{/foreach}
 			{/if}
 		</table>
 		</div>
-		{$elements.3.0}
+		{if isset($elements.3) && isset($elements.3.0)}{$elements.3.0}{/if}
 	</td>
 	</tr>
 	<tr>
@@ -176,17 +175,17 @@
 		<input name="{$APP.LBL_CANCEL_BUTTON_TITLE}" accessKey="{$APP.LBL_CANCEL_BUTTON_KEY}" value=" {$APP.LBL_CANCEL_BUTTON_LABEL} " class="crmbutton small cancel" type="button" onClick="window.close()">
 	</td>
 	</tr>
-	{elseif $elements.2.0 eq 'description'}
+	{elseif isset($elements.2) && isset($elements.2.0) && $elements.2.0 eq 'description'}
 	<tr>
 	<td colspan="3" align="center" valign="top" height="320">
-	{if $WEBMAIL eq 'true' or $RET_ERROR eq 1}
+	{if (isset($WEBMAIL) && $WEBMAIL eq 'true') or (isset($RET_ERROR) && $RET_ERROR eq 1)}
 		<input type="hidden" name="from_add" value="{$from_add}">
 		<input type="hidden" name="att_module" value="Webmails">
 		<input type="hidden" name="mailid" value="{$mailid}">
 		<input type="hidden" name="mailbox" value="{$mailbox}">
 		<textarea style="display: none;" class="detailedViewTextBox" id="description" name="description" cols="90" rows="8">{$DESCRIPTION}</textarea>
 	{else}
-		<textarea style="display: none;" class="detailedViewTextBox" id="description" name="description" cols="90" rows="16">{$elements.3.0}</textarea>
+		<textarea style="display: none;" class="detailedViewTextBox" id="description" name="description" cols="90" rows="16">{if isset($elements.3) && isset($elements.3.0)}{$elements.3.0}{/if}</textarea>
 	{/if}
 	</td>
 	</tr>

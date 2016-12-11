@@ -1,16 +1,12 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- ********************************************************************************/
+ ************************************************************************************/
 require_once('include/utils/Session.php');
 require_once('include/database/PearDatabase.php');
 require_once('include/events/include.inc');
@@ -1997,9 +1993,7 @@ function getEmailParentsList($module,$id,$focus = false)
 
 	$fieldid = 0;
 	$fieldname = 'email';
-	if($focus->column_fields['email'] == '' && $focus->column_fields['yahooid'] != '' )
-		$fieldname = 'yahooid';
-	elseif($focus->column_fields['email'] == '' && $focus->column_fields['secondaryemail'] != '' )
+	if($focus->column_fields['email'] == '' && $focus->column_fields['secondaryemail'] != '' )
 		$fieldname='secondaryemail';
 	$res = $adb->pquery("select * from vtiger_field where tabid = ? and fieldname= ? and vtiger_field.presence in (0,2)", array(getTabid($module), $fieldname));
 	$fieldid = $adb->query_result($res,0,'fieldid');

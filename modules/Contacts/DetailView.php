@@ -125,8 +125,7 @@ if(isPermitted('Contacts','Merge','') == 'yes') {
 	$tempCount = $adb->num_rows($wordTemplateResult);
 	$tempVal = $adb->fetch_array($wordTemplateResult);
 	$optionString = array();
-	for($templateCount=0;$templateCount<$tempCount;$templateCount++)
-	{
+	for($templateCount=0;$templateCount<$tempCount;$templateCount++) {
 		$optionString[$tempVal["templateid"]]=$tempVal["filename"];
 		$tempVal = $adb->fetch_array($wordTemplateResult);
 	}

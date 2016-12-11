@@ -1,16 +1,12 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- ********************************************************************************/
+ ************************************************************************************/
 require_once('include/database/PearDatabase.php');
 require_once('include/ComboUtil.php');
 require_once('include/utils/CommonUtils.php');
@@ -327,22 +323,26 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 
 		if($fieldname == 'assigned_user_id' && $is_admin==false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid($module_name)] == 3 or $defaultOrgSharingPermission[getTabid($module_name)] == 0))
 		{
-			$users_combo = get_select_options_array(get_user_array(FALSE, "Active", $assigned_user_id,'private'), $assigned_user_id);
+			$ua = get_user_array(FALSE, "Active", $assigned_user_id,'private');
+			$users_combo = get_select_options_array($ua, $assigned_user_id);
 		}
 		else
 		{
-			$users_combo = get_select_options_array(get_user_array(FALSE, "Active", $assigned_user_id), $assigned_user_id);
+			$ua = get_user_array(FALSE, "Active", $assigned_user_id);
+			$users_combo = get_select_options_array($ua, $assigned_user_id);
 		}
 
 		if($noof_group_rows!=0)
 		{
 			if($fieldname == 'assigned_user_id' && $is_admin==false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid($module_name)] == 3 or $defaultOrgSharingPermission[getTabid($module_name)] == 0))
 			{
-				$groups_combo = get_select_options_array(get_group_array(FALSE, "Active", $assigned_user_id,'private'), $assigned_user_id);
+				$ga = get_group_array(FALSE, "Active", $assigned_user_id,'private');
+				$groups_combo = get_select_options_array($ga, $assigned_user_id);
 			}
 			else
 			{
-				$groups_combo = get_select_options_array(get_group_array(FALSE, "Active", $assigned_user_id), $assigned_user_id);
+				$ga = get_group_array(FALSE, "Active", $assigned_user_id);
+				$groups_combo = get_select_options_array($ga, $assigned_user_id);
 			}
 		}
 		$fieldvalue[]=$users_combo;
@@ -357,9 +357,11 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		}
 		if($value != '') {
 			$account_name = getAccountName($value);
+		} else {
+			$account_name = '';
 		}
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
-		$fieldvalue[]=$account_name;
+		$fieldvalue[] = $account_name;
 		$fieldvalue[] = $value;
 	}
 	elseif($uitype == 54)
@@ -426,15 +428,17 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	}elseif($uitype == 59){
 		if($_REQUEST['module'] == 'HelpDesk')
 		{
-			if(isset($_REQUEST['product_id']) & $_REQUEST['product_id'] != '')
+			if(isset($_REQUEST['product_id']) && $_REQUEST['product_id'] != '')
 				$value = $_REQUEST['product_id'];
 		}
-		elseif(isset($_REQUEST['parent_id']) & $_REQUEST['parent_id'] != '')
+		elseif(isset($_REQUEST['parent_id']) && $_REQUEST['parent_id'] != '')
 			$value = vtlib_purify($_REQUEST['parent_id']);
 
 		if($value != '')
 		{
 			$product_name = getProductName($value);
+		} else {
+			$product_name = '';
 		}
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue[]=$product_name;
@@ -485,6 +489,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		$fieldvalue[] = $value;
 	}
 	elseif($uitype == 57){
+		$contact_name = '';
 		if($value != ''){
 			$displayValueArray = getEntityName('Contacts', $value);
 			if (!empty($displayValueArray)) {
@@ -506,11 +511,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 					$contact_name='';
 				}
 			}
-
 		}
-
-		//Checking for contacts duplicate
-
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue[] = $contact_name;
 		$fieldvalue[] = $value;
@@ -526,7 +527,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		{
 			$assigned_user_id = $current_user->id;
 		}
-		if($module_name == 'Emails' && $col_fields['record_id'] != '')
+		if($module_name == 'Emails' && !empty($col_fields['record_id']))
 		{
 			$attach_result = $adb->pquery("select * from vtiger_seattachmentsrel where crmid = ?", array($col_fields['record_id']));
 			//to fix the issue in mail attachment on forwarding mails
@@ -547,7 +548,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			}
 		}else
 		{
-			if($col_fields['record_id'] != '')
+			if(!empty($col_fields['record_id']))
 			{
 				$attachmentid=$adb->query_result($adb->pquery("select * from vtiger_seattachmentsrel where crmid = ?", array($col_fields['record_id'])),0,'attachmentsid');
 				if($col_fields[$fieldname] == '' && $attachmentid != '')
@@ -559,7 +560,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			if($value!='')
 				$filename=' [ '.$value. ' ]';
 
-			if($filename != '')
+			if(!empty($filename))
 				$fieldvalue[] = $filename;
 			if($value != '')
 				$fieldvalue[] = $value;
@@ -933,11 +934,12 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		}
 		else
 		{
-			if($_REQUEST['record'] != '' && $_REQUEST['record'] != NULL)
+			$contact_selected = $account_selected = $vendor_selected = $lead_selected = $user_selected = '';
+			$parent_name='';
+			$parent_id='';
+			if(!empty($_REQUEST['record']))
 			{
-				$parent_name='';
-				$parent_id='';
-				$myemailid= $_REQUEST['record'];
+				$myemailid= vtlib_purify($_REQUEST['record']);
 				$mysql = "select crmid from vtiger_seactivityrel where activityid=?";
 				$myresult = $adb->pquery($mysql, array($myemailid));
 				$mycount=$adb->num_rows($myresult);
@@ -1006,7 +1008,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 					'Leads'=>$lead_selected,
 					'Users'=>$user_selected
 					);
-			$fieldvalue[] =$parent_name;
+			$fieldvalue[] = $parent_name;
 			$fieldvalue[] = $parent_id;
 		}
 	}
@@ -1016,6 +1018,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		if(empty($value) && isset($_REQUEST['parent_id']) && $_REQUEST['parent_id'] != '')
 			$value = vtlib_purify($_REQUEST['parent_id']);
 
+		$account_selected = $contact_selected = $parent_name = '';
 		if($value != '')
 		{
 			$parent_module = getSalesEntityType($value);
@@ -1028,7 +1031,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 					}
 				}
 				$contact_selected = "selected";
-
 			}
 			elseif($parent_module == "Accounts")
 			{
@@ -1036,7 +1038,6 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 				$result = $adb->pquery($sql, array($value));
 				$parent_name = $adb->query_result($result,0,"accountname");
 				$account_selected = "selected";
-
 			}
 			else
 			{
@@ -1166,6 +1167,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	}
 	elseif($uitype == 80)
 	{
+		$salesorder_name = '';
 		if($value != '')
 		{
 			$salesorder_name = getSoName($value);
@@ -1350,7 +1352,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 	else
 	{
 		//Added condition to set the subject if click Reply All from web mail
-		if($_REQUEST['module'] == 'Emails' && $_REQUEST['mg_subject'] != '')
+		if($_REQUEST['module'] == 'Emails' && !empty($_REQUEST['mg_subject']))
 		{
 			$value = $_REQUEST['mg_subject'];
 		}
@@ -1700,7 +1702,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 			}
 		}
 
-		if($module != 'PurchaseOrder' && $focus->object_name != 'Order')
+		if($module != 'PurchaseOrder')
 		{
 			$product_Detail[$i]['qtyInStock'.$i]=$qtyinstock;
 		}
@@ -1761,6 +1763,8 @@ function getAssociatedProducts($module,$focus,$seid='')
 				//Add the tax with product total and assign to netprice
 				$netPrice = $netPrice+$taxTotal;
 			}
+		} else {
+			$taxtype = GlobalVariable::getVariable('Tax_Type_Default', 'individual', $currentModule);
 		}
 		$product_Detail[$i]['netPrice'.$i] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($netPrice, null, true), null, true);
 
@@ -1788,10 +1792,16 @@ function getAssociatedProducts($module,$focus,$seid='')
 			$product_Detail[$i]['taxes'][$tax_count]['taxlabel'] = $tax_label;
 			$product_Detail[$i]['taxes'][$tax_count]['percentage'] = $tax_value;
 		}
-
 	}
+	if ($num_rows==0) {
+		$product_Detail[1] = array();
+	}
+	$product_Detail[1]['final_details'] = array();
 
 	//set the taxtype
+	if (!isset($taxtype)) {
+		$taxtype = GlobalVariable::getVariable('Tax_Type_Default', 'individual', $currentModule);
+	}
 	$product_Detail[1]['final_details']['taxtype'] = $taxtype;
 
 	//Get the Final Discount, S&H charge, Tax for S&H and Adjustment values
@@ -1799,17 +1809,17 @@ function getAssociatedProducts($module,$focus,$seid='')
 	$finalDiscount = '0.00';
 	$product_Detail[1]['final_details']['discount_type_final'] = 'zero';
 
-	$subTotal = ($focus->column_fields['hdnSubTotal'] != '')?$focus->column_fields['hdnSubTotal']:'0.00';
+	$subTotal = (!empty($focus->column_fields['hdnSubTotal']))?$focus->column_fields['hdnSubTotal']:'0.00';
 
 	$product_Detail[1]['final_details']['hdnSubTotal'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($subTotal, null, true), null, true);
-	$discountPercent = ($focus->column_fields['hdnDiscountPercent'] != '')?$focus->column_fields['hdnDiscountPercent']:'0.00';
-	$discountAmount = ($focus->column_fields['hdnDiscountAmount'] != '')?$focus->column_fields['hdnDiscountAmount']:'0.00';
+	$discountPercent = (!empty($focus->column_fields['hdnDiscountPercent']))?$focus->column_fields['hdnDiscountPercent']:'0.00';
+	$discountAmount = (!empty($focus->column_fields['hdnDiscountAmount']))?$focus->column_fields['hdnDiscountAmount']:'0.00';
 
 	//To avoid NaN javascript error, here we assign 0 initially to' %of price' and 'Direct Price reduction'(For Final Discount)
 	$product_Detail[1]['final_details']['discount_percentage_final'] = 0;
 	$product_Detail[1]['final_details']['discount_amount_final'] = 0;
 
-	if($focus->column_fields['hdnDiscountPercent'] != '0')
+	if(!empty($focus->column_fields['hdnDiscountPercent']) and $focus->column_fields['hdnDiscountPercent'] != '0')
 	{
 		$finalDiscount = ($subTotal*$discountPercent/100);
 		$product_Detail[1]['final_details']['discount_type_final'] = 'percentage';
@@ -1818,7 +1828,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 		$product_Detail[1]['final_details']['style_discount_percentage_final'] = ' style="visibility:visible"';
 		$product_Detail[1]['final_details']['style_discount_amount_final'] = ' style="visibility:hidden"';
 	}
-	elseif($focus->column_fields['hdnDiscountAmount'] != '0')
+	elseif(!empty($focus->column_fields['hdnDiscountAmount']) and $focus->column_fields['hdnDiscountAmount'] != '0')
 	{
 		$finalDiscount = $focus->column_fields['hdnDiscountAmount'];
 		$product_Detail[1]['final_details']['discount_type_final'] = 'amount';
@@ -1865,7 +1875,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 	$product_Detail[1]['final_details']['tax_totalamount'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($taxtotal, null, true), null, true);
 
 	//To set the Shipping & Handling charge
-	$shCharge = ($focus->column_fields['hdnS_H_Amount'] != '')?$focus->column_fields['hdnS_H_Amount']:'0.00';
+	$shCharge = (!empty($focus->column_fields['hdnS_H_Amount']))?$focus->column_fields['hdnS_H_Amount']:'0.00';
 	$product_Detail[1]['final_details']['shipping_handling_charge'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($shCharge, null, true), null, true);
 
 	//To set the Shipping & Handling tax values
@@ -1895,17 +1905,15 @@ function getAssociatedProducts($module,$focus,$seid='')
 	$product_Detail[1]['final_details']['shtax_totalamount'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($shtaxtotal, null, true), null, true);
 
 	//To set the Adjustment value
-	$adjustment = ($focus->column_fields['txtAdjustment'] != '')?$focus->column_fields['txtAdjustment']:'0.00';
+	$adjustment = (!empty($focus->column_fields['txtAdjustment']))?$focus->column_fields['txtAdjustment']:'0.00';
 	$product_Detail[1]['final_details']['adjustment'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($adjustment, null, true), null, true);
 
 	//To set the grand total
-	$grandTotal = ($focus->column_fields['hdnGrandTotal'] != '')?$focus->column_fields['hdnGrandTotal']:'0.00';
+	$grandTotal = (!empty($focus->column_fields['hdnGrandTotal']))?$focus->column_fields['hdnGrandTotal']:'0.00';
 	$product_Detail[1]['final_details']['grandTotal'] = CurrencyField::convertToDBFormat(CurrencyField::convertToUserFormat($grandTotal, null, true), null, true);
 
 	$log->debug("Exiting getAssociatedProducts method ...");
-
 	return $product_Detail;
-
 }
 
 /** This function returns the no of vtiger_products associated to the given entity or a record.
@@ -1967,7 +1975,7 @@ function getNoOfAssocProducts($module,$focus,$seid='')
 function getBlockInformation($module, $result, $col_fields,$tabid,$block_label,$mode) {
 	global $log, $adb, $current_user, $mod_strings;
 	$log->debug("Entering getBlockInformation(".$module.",". print_r($col_fields,true).",".$tabid.",".print_r($block_label,true).") method ...");
-	$isduplicate = vtlib_purify($_REQUEST['isDuplicate']);
+	$isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : false;
 	$editview_arr = Array();
 
 	$noofrows = $adb->num_rows($result);
@@ -1994,7 +2002,7 @@ function getBlockInformation($module, $result, $col_fields,$tabid,$block_label,$
 		for ($i=0,$j=0;$i<count($editview_value);$j++)
 		{
 			$key1=$editview_value[$i];
-			if(is_array($editview_value[$i+1]) && ($key1[0][0]!=19 && $key1[0][0]!=20))
+			if(isset($editview_value[$i+1]) && is_array($editview_value[$i+1]) && ($key1[0][0]!=19 && $key1[0][0]!=20))
 			{
 				$key2=$editview_value[$i+1];
 			}
@@ -2014,15 +2022,21 @@ function getBlockInformation($module, $result, $col_fields,$tabid,$block_label,$
 		$editview_arr[$headerid] = $editview_data;
 	}
 	$returndata = array();
+	$curBlock = '';
 	foreach($block_label as $blockid=>$label) {
 		if(isset($editview_arr[$blockid]) and $editview_arr[$blockid] != null) {
 			if($label == '') {
-				$returndata[getTranslatedString($curBlock,$module)]=array_merge((array)$returndata[getTranslatedString($curBlock,$module)],(array)$editview_arr[$blockid]);
+				$i18nidx = getTranslatedString($curBlock,$module);
+				if (!isset($returndata[$i18nidx])) $returndata[$i18nidx] = array();
+				$returndata[$i18nidx]=array_merge((array)$returndata[$i18nidx],(array)$editview_arr[$blockid]);
 			}
 			else {
 				$curBlock = $label;
-				if(is_array($editview_arr[$blockid]))
-					$returndata[getTranslatedString($curBlock,$module)]=array_merge((array)$returndata[getTranslatedString($curBlock,$module)],(array)$editview_arr[$blockid]);
+				if(is_array($editview_arr[$blockid])) {
+					$i18nidx = getTranslatedString($curBlock,$module);
+					if (!isset($returndata[$i18nidx])) $returndata[$i18nidx] = array();
+					$returndata[$i18nidx]=array_merge((array)$returndata[$i18nidx],(array)$editview_arr[$blockid]);
+				}
 			}
 		} elseif (file_exists("Smarty/templates/modules/$module/{$label}_edit.tpl")) {
 			$returndata[getTranslatedString($label,$module)]=array_merge((array)$returndata[getTranslatedString($label,$module)],array($label=>array()));

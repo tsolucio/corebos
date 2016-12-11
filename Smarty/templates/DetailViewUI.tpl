@@ -95,7 +95,7 @@
                                                                 {assign var=fontval value=''}
 							{/if}
 						{/foreach}
-							<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'><span id="dtlview_{$keyfldname}"><font color="{$fontval}">{if $APP.$keyval!=''}{$APP.$keyval}{elseif $MOD.$keyval!=''}{$MOD.$keyval}{else}{$keyval}{/if}</font></span>
+							<td width=25% class="dvtCellInfo" align="left" id="mouseArea_{$keyfldname}" onmouseover="hndMouseOver({$keyid},'{$keyfldname}');" onmouseout="fnhide('crmspanid');" onclick='handleEdit(event);'><span id="dtlview_{$keyfldname}"><font color="{$fontval}">{$keyval|@getTranslatedString:$MODULE}</font></span>
                                               		<div id="editarea_{$keyfldname}" style="display:none;">
                     							   <select id="txtbox_{$keyfldname}" name="{$keyfldname}" class="small" style="width:280px;">
                     								{foreach item=arr from=$keyoptions}
@@ -180,7 +180,7 @@
                                                   </td>
                                              {elseif $keyid eq '19' || $keyid eq '20'} <!--TextArea/Description-->
 						<!-- we will empty the value of ticket and faq comment -->
-						{if $label eq $MOD.LBL_ADD_COMMENT}
+						{if isset($MOD.LBL_ADD_COMMENT) && $label eq $MOD.LBL_ADD_COMMENT}
 							{assign var=keyval value=''}
 						{/if}
 							<!--{assign var="DESCRIPTION_SEPARATOR_STRING" value=" "}  {* Separates Description *}-->
@@ -397,7 +397,7 @@
 							{/if}
 							<input id="txtbox_{$keyfldname}" name="{$keyfldname}" type="hidden" value="{$data.extendedfieldinfo.entityid}">
 							<input id="{$keyfldname}_display" name="{$keyfldname}_display" readonly type="text" style="border:1px solid #bababa;" value="{$data.extendedfieldinfo.displayvalue}">&nbsp;
-							<img src="{'select.gif'|@vtiger_imageurl:$THEME}" tabindex="{$vt_tab}"
+							<img src="{'select.gif'|@vtiger_imageurl:$THEME}"
 								alt="{'LBL_SELECT'|@getTranslatedString}" title="{'LBL_SELECT'|@getTranslatedString}" onclick='return {$vtui10func}("DetailView","{$keyfldname}","{$MODULE}","{$ID}");' align="absmiddle" style='cursor:hand;cursor:pointer'>&nbsp;
 							<input type="image" src="{'clear_field.gif'|@vtiger_imageurl:$THEME}"
 								alt="{'LBL_CLEAR'|@getTranslatedString}" title="{'LBL_CLEAR'|@getTranslatedString}" onClick="document.getElementById('txtbox_{$keyfldname}').value='0'; document.getElementById('{$keyfldname}_display').value=''; return false;" align="absmiddle" style='cursor:hand;cursor:pointer'>

@@ -252,7 +252,7 @@ class Documents extends CRMEntity {
 		if(isset($_REQUEST['sorder']))
 			$sorder = $this->db->sql_escape_string($_REQUEST['sorder']);
 		else
-			$sorder = (($_SESSION['NOTES_SORT_ORDER'] != '')?($_SESSION['NOTES_SORT_ORDER']):($this->default_sort_order));
+			$sorder = (!empty($_SESSION['NOTES_SORT_ORDER']) ? $_SESSION['NOTES_SORT_ORDER'] : $this->default_sort_order);
 		$log->debug("Exiting getSortOrder() method ...");
 		return $sorder;
 	}
@@ -275,7 +275,7 @@ class Documents extends CRMEntity {
 		else if(isset($_SESSION[$currentModule.'_Order_By']))
 			$order_by = $_SESSION[$currentModule.'_Order_By'];
 		else
-			$order_by = (($_SESSION['NOTES_ORDER_BY'] != '')?($_SESSION['NOTES_ORDER_BY']):($use_default_order_by));
+			$order_by = (!empty($_SESSION['NOTES_ORDER_BY']) ? $_SESSION['NOTES_ORDER_BY'] : $use_default_order_by);
 		$log->debug("Exiting getOrderBy method ...");
 		return $order_by;
 	}

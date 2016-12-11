@@ -141,7 +141,7 @@
      <input name="change_status" type="hidden">
 	 <input name="numOfRows" id="numOfRows" type="hidden" value="{$NUMOFROWS}">
 	 <input name="excludedRecords" type="hidden" id="excludedRecords" value="{$excludedRecords}">
-     <input name="allids" type="hidden" value="{$ALLIDS}">
+     <input name="allids" id="allids" type="hidden" value="{if isset($ALLIDS)}{$ALLIDS}{/if}">
      <input name="selectedboxes" id="selectedboxes" type="hidden" value="{$SELECTEDIDS}">
      <input name="allselectedboxes" id="allselectedboxes" type="hidden" value="{$ALLSELECTEDIDS}">
      <input name="current_page_boxes" id="current_page_boxes" type="hidden" value="{$CURRENT_PAGE_BOXES}">

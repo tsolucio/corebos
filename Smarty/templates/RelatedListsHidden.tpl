@@ -10,7 +10,7 @@
 -->*}
 <form border="0" action="index.php" method="post" name="form{$RELLISTID}" id="form{$RELLISTID}">
 <input type="hidden" name="module">
-<input name="maxrecords" type="hidden" value="{$MAX_RECORDS}" id='maxrecords'>
+<input name="maxrecords" type="hidden" value="{if isset($MAX_RECORDS)}{$MAX_RECORDS}{/if}" id='maxrecords'>
 <input id="recordid" type="hidden" value="{$RECORDID}">
 <input type="hidden" name="mode">
 <input type="hidden" name="return_module" id="return_module" value="{$MODULE}">

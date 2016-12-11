@@ -1,16 +1,12 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+***********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- ********************************************************************************/
+ *************************************************************************************/
 require_once('Smarty_setup.php');
 require_once("data/Tracker.php");
 require_once('include/logging.php');
@@ -87,7 +83,11 @@ if(isset($_REQUEST['popupmode']) && isset($_REQUEST['callback'])) {
 }
 
 $focus = CRMEntity::getInstance($currentModule);
-
+$smarty->assign('CURR_ROW', 0);
+$smarty->assign('FIELDNAME', '');
+$smarty->assign('PRODUCTID', 0);
+$smarty->assign('RECORDID', 0);
+$smarty->assign('SELECT', '');
 switch($currentModule)
 {
 	case 'Contacts':
@@ -302,6 +302,12 @@ else
 		$smarty->assign("recid_var_name", "task_relmod_id");
 		$smarty->assign("recid_var_value",vtlib_purify($_REQUEST['task_relmod_id']));
 		$where_relquery.= getPopupCheckquery($currentModule, vtlib_purify($_REQUEST['task_parent_module']),  vtlib_purify($_REQUEST['task_relmod_id']));
+	} else {
+		$smarty->assign('recid_var_value', '');
+		$smarty->assign('mod_var_name', '');
+		$smarty->assign('mod_var_value', '');
+		$smarty->assign('recid_var_name', '');
+		$smarty->assign('recid_var_value', 0);
 	}
 	if($currentModule == 'Products' && !$_REQUEST['record_id'] && ($popuptype == 'inventory_prod' || $popuptype == 'inventory_prod_po')){
 		$showSubproducts = GlobalVariable::getVariable('Product_Show_Subproducts_Popup', 'no');
@@ -338,25 +344,25 @@ else
 	}
 
 	//Avoiding Current Record to show up in the popups When editing.
-	if($currentModule == 'Accounts' && $_REQUEST['recordid']!=''){
+	if($currentModule == 'Accounts' && !empty($_REQUEST['recordid'])){
 		$where_relquery .=" and vtiger_account.accountid!=".$adb->sql_escape_string($_REQUEST['recordid']);
 		$smarty->assign("RECORDID",vtlib_purify($_REQUEST['recordid']));
 	}
 
-	if($currentModule == 'Contacts' && $_REQUEST['recordid']!=''){
+	if($currentModule == 'Contacts' && !empty($_REQUEST['recordid'])){
 		$where_relquery .=" and vtiger_contactdetails.contactid!=".$adb->sql_escape_string($_REQUEST['recordid']);
 		$smarty->assign("RECORDID",vtlib_purify($_REQUEST['recordid']));
 	}
 
-	if($currentModule == 'Users' && $_REQUEST['recordid']!=''){
+	if($currentModule == 'Users' && !empty($_REQUEST['recordid'])){
 		$where_relquery .=" and vtiger_users.id!=".$adb->sql_escape_string($_REQUEST['recordid']);
 		$smarty->assign("RECORDID",vtlib_purify($_REQUEST['recordid']));
 	}
 
 	$query = getListQuery($currentModule,$where_relquery);
 }
-
-if($currentModule == 'Products' && $_REQUEST['record_id'] && ($popuptype == 'inventory_prod' || $popuptype == 'inventory_prod_po'))
+$smarty->assign('RECORD_ID', 0);
+if($currentModule == 'Products' && !empty($_REQUEST['record_id']) && ($popuptype == 'inventory_prod' || $popuptype == 'inventory_prod_po'))
 {
 	$product_name = getProductName(vtlib_purify($_REQUEST['record_id']));
 	$smarty->assign("PRODUCT_NAME", $product_name);
@@ -394,14 +400,14 @@ if(isset($order_by) && $order_by != '')
 // vtlib customization: To override module specific popup query for a given field
 $override_query = false;
 if(method_exists($focus, 'getQueryByModuleField')) {
-	$srcmodule = vtlib_purify($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : vtlib_purify($_REQUEST['return_module']);
-	$forrecord = vtlib_purify($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : vtlib_purify($_REQUEST['recordid']);
-	$override_query = $focus->getQueryByModuleField($srcmodule, vtlib_purify($_REQUEST['forfield']), $forrecord, $query);
+	$srcmodule = isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : vtlib_purify($_REQUEST['return_module']);
+	$forrecord = isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : isset($_REQUEST['recordid']) ? vtlib_purify($_REQUEST['recordid']) : 0;
+	$forfield = isset($_REQUEST['forfield']) ? vtlib_purify($_REQUEST['forfield']) : '';
+	$override_query = $focus->getQueryByModuleField($srcmodule, $forfield, $forrecord, $query);
 	if($override_query) {
 		$query = $override_query;
 	}
 }
-// END
 
 $count_result = $adb->pquery(mkCountQuery($query), array());
 $noofrows = $adb->query_result($count_result,0,'count');
@@ -465,7 +471,7 @@ $smarty->assign("HEADERCOUNT",count($listview_header)+1);
 $listview_entries = getSearchListViewEntries($focus,"$currentModule",$list_result,$navigation_array,$form);
 $smarty->assign("LISTENTITY", $listview_entries);
 if(PerformancePrefs::getBoolean('LISTVIEW_COMPUTE_PAGE_COUNT', false) === true){
-	$record_string = getRecordRangeMessage($list_result, $start_rec, $noofrows);
+	$record_string = getRecordRangeMessage($list_result, $limstart, $noofrows);
 } else {
 	$record_string = '';
 }

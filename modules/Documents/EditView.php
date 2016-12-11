@@ -184,7 +184,6 @@ if (isset($_REQUEST['record'])) {
 } else {
 	$smarty->assign('CANCELACTION', 'index');
 }
-$smarty->assign('OLD_ID', $old_id );
 if($_REQUEST['upload_error'] == true)
 {
 	echo '<br><b><font color="red"> '.$mod_strings['FILE_HAS_NO_DATA'].'.</font></b><br>';

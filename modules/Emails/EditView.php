@@ -18,13 +18,13 @@ $focus = CRMEntity::getInstance($currentModule);
 $smarty = new vtigerCRM_Smarty();
 $upload_maxsize = GlobalVariable::getVariable('Application_Upload_MaxSize',3000000,$currentModule);
 $smarty->assign("UPLOADSIZE", $upload_maxsize/1000000); // Convert to MB
-if($_REQUEST['upload_error'] == true)
+if(isset($_REQUEST['upload_error']) and $_REQUEST['upload_error'] == true)
 {
 	echo '<br><b><font color="red"> The selected file has no data or a invalid file.</font></b><br>';
 }
 
 //Email Error handling
-if($_REQUEST['mail_error'] != '') {
+if(!empty($_REQUEST['upload_error'])) {
 	require_once("modules/Emails/mail.php");
 	echo parseEmailErrorString($_REQUEST['mail_error']);
 }
@@ -58,6 +58,7 @@ if(isset($_REQUEST['record']) && $_REQUEST['record'] !='') {
 elseif(isset($_REQUEST['sendmail']) && $_REQUEST['sendmail'] !='')
 {
 	$mailids = get_to_emailids($_REQUEST['pmodule']);
+	$to_add = '';
 	if($mailids['mailds'] != '')
 		$to_add = trim($mailids['mailds'],",").",";
 	$smarty->assign('TO_MAIL',$to_add);
@@ -102,6 +103,7 @@ elseif(!empty($_REQUEST['invmodid'])) {
 	}
 	$_REQUEST["idlist"]=$emailcrmid;
 	$mailids = get_to_emailids($pmodule);
+	$to_add = '';
 	if($mailids['mailds'] != '')
 		$to_add = trim($mailids['mailds'],",").",";
 	$smarty->assign('TO_MAIL',$to_add);
@@ -111,7 +113,7 @@ elseif(!empty($_REQUEST['invmodid'])) {
 }
 
 // INTERNAL MAILER
-if($_REQUEST["internal_mailer"] == "true") {
+if(isset($_REQUEST["internal_mailer"]) and $_REQUEST["internal_mailer"] == "true") {
 	$smarty->assign('INT_MAILER',"true");
 	$rec_type = vtlib_purify($_REQUEST['type']);
 	$rec_id = vtlib_purify($_REQUEST['rec_id']);
@@ -140,7 +142,7 @@ if($_REQUEST["internal_mailer"] == "true") {
 }
 
 //handled for replying emails
-if($_REQUEST['reply'] == "true")
+if(isset($_REQUEST['reply']) and $_REQUEST['reply'] == "true")
 {
 		$fromadd = $_REQUEST['record'];
 		$query = "select from_email,idlists,cc_email,bcc_email from vtiger_emaildetails where emailid =?";
@@ -257,11 +259,11 @@ $image_path=$theme_path."images/";
 
 $disp_view = getView($focus->mode);
 $details = getBlocks($currentModule,$disp_view,$focus->mode,$focus->column_fields);
-//changed this below line to view description in all language - bharath
-$smarty->assign("BLOCKS",$details[$mod_strings['LBL_EMAIL_INFORMATION']]);
+$smarty->assign("BLOCKS",isset($details[$mod_strings['LBL_EMAIL_INFORMATION']]) ? $details[$mod_strings['LBL_EMAIL_INFORMATION']] : $details);
 $smarty->assign("MODULE",$currentModule);
 $smarty->assign("SINGLE_MOD",$app_strings['Email']);
 //id list of attachments while forwarding
+global $att_id_list;
 $smarty->assign("ATT_ID_LIST",$att_id_list);
 
 //needed when creating a new email with default values passed in
@@ -283,8 +285,8 @@ if (isset($_REQUEST['parent_type'])) {
 if (isset($_REQUEST['filename']) && $_REQUEST['isDuplicate'] != 'true') {
 	$focus->filename = vtlib_purify($_REQUEST['filename']);
 }
-elseif (is_null($focus->parent_type)) {
-	$focus->parent_type = $app_list_strings['record_type_default_key'];
+elseif (empty($focus->parent_type)) {
+	$focus->parent_type = 'Accounts'; ///$app_list_strings['record_type_default_key'];
 }
 
 $log->info("Email detail view");
@@ -326,9 +328,8 @@ if (isset($_REQUEST['return_viewname'])) $smarty->assign("RETURN_VIEWNAME", vtli
 $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH", $image_path);
 $smarty->assign("ID", $focus->id);
-$smarty->assign("ENTITY_ID", vtlib_purify($_REQUEST["record"]));
-$smarty->assign("ENTITY_TYPE",vtlib_purify($_REQUEST["email_directing_module"]));
-$smarty->assign("OLD_ID", $old_id );
+$smarty->assign('ENTITY_ID', isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : '');
+$smarty->assign('ENTITY_TYPE', isset($_REQUEST['email_directing_module']) ? vtlib_purify($_REQUEST['email_directing_module']) : '');
 $USE_RTE = vt_hasRTE();
 $smarty->assign("USE_RTE",$USE_RTE);
 
@@ -342,7 +343,7 @@ else
 	$smarty->assign("FILENAME_TEXT", "(".$focus->filename.")");
 	$smarty->assign("FILENAME", $focus->filename);
 }
-if($ret_error == 1) {
+if(isset($ret_error) and $ret_error == 1) {
 	require_once('modules/Webmails/MailBox.php');
 	$smarty->assign("RET_ERROR",$ret_error);
 	if($ret_parentid != ''){

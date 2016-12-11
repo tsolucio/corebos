@@ -27,7 +27,7 @@ if($_REQUEST['check']== 'reportCheck')
 }
 else if($_REQUEST['check']== 'folderCheck')
 {
-	$folderName = function_exists(iconv) ? @iconv("UTF-8",$default_charset, $_REQUEST['folderName']) : $_REQUEST['folderName'];
+	$folderName = function_exists('iconv') ? @iconv('UTF-8',$default_charset, $_REQUEST['folderName']) : $_REQUEST['folderName'];
 	$folderName =str_replace(array("'",'"'),'',$folderName);
 	if($folderName == "" || !$folderName)
 	{

@@ -42,7 +42,7 @@ class RelatedListViewSession {
 		global $currentModule;
 		$allRelatedModuleList = isPresentRelatedLists($currentModule);
 		$moduleList = array();
-		if(is_array($_SESSION['relatedlist'][$currentModule])){
+		if(isset($_SESSION['relatedlist']) and isset($_SESSION['relatedlist'][$currentModule]) and is_array($_SESSION['relatedlist'][$currentModule])){
 			foreach ($allRelatedModuleList as $relationId=>$label) {
 				if(array_key_exists($relationId, $_SESSION['relatedlist'][$currentModule])){
 					$moduleList[] = $_SESSION['relatedlist'][$currentModule][$relationId];

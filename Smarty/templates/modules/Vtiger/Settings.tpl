@@ -6,22 +6,20 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 <br />
 <table align="center" border="0" cellpadding="0" cellspacing="0" width="98%">
 	<tr>
 		<td valign="top"><img src="{'showPanelTopLeft.gif'|@vtiger_imageurl:$THEME}"></td>
-	    <td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
-	    	<br />
-	    	<div align=center>
+		<td class="showPanelBg" style="padding: 10px;" valign="top" width="100%">
+			<br />
+			<div align=center>
 			{include file='SetMenu.tpl'}
 
 			<table class="settingsSelUITopLine" align="center" border="0" cellpadding="5" cellspacing="0" width="100%">
 				<tr>
-			    	
-					<td rowspan="2" valign="top" width="50"><img src="{'vtlib_modmng.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.LBL_MODULE_MANAGER}" title="{$MOD.LBL_MODULE_MANAGER}" border="0" height="48" width="48"></td>
+					<td rowspan="2" valign="top" width="50"><img src="{'vtlib_modmng.gif'|@vtiger_imageurl:$THEME}" alt="{$MOD.VTLIB_LBL_MODULE_MANAGER}" title="{$MOD.VTLIB_LBL_MODULE_MANAGER}" border="0" height="48" width="48"></td>
 					<td class="heading2" valign="bottom"> <b><a href="index.php?module=Settings&action=ModuleManager&parenttab=Settings">{$MOD.VTLIB_LBL_MODULE_MANAGER}</a> &gt; {$MODULE_LBL} </td>
 				</tr>
 				<tr>

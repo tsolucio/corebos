@@ -19,12 +19,12 @@ $image_path=$theme_path."images/";
 require_once('modules/Vtiger/layout_utils.php');
 $smarty=new vtigerCRM_Smarty;
 
-$subMode = vtlib_purify($_REQUEST['sub_mode']);
+$subMode = isset($_REQUEST['sub_mode']) ? vtlib_purify($_REQUEST['sub_mode']) : '';
 $smarty->assign("MOD",$mod_strings);
 $smarty->assign("APP",$app_strings);
 $smarty->assign("THEME", $theme);
 $smarty->assign("JS_DATEFORMAT",parse_calendardate($app_strings['NTC_DATE_FORMAT']));
-
+$duplicate = 'no';
 if ($subMode == 'updateFieldProperties')
 	updateFieldProperties();
 elseif($subMode == 'deleteCustomField')
@@ -85,7 +85,7 @@ $smarty->assign("MODULES",$module_array);
 $smarty->assign("CFTEXTCOMBO",$cftextcombo);
 $smarty->assign("CFIMAGECOMBO",$cfimagecombo);
 
-if($_REQUEST['formodule'] !='')
+if(!empty($_REQUEST['formodule']))
 	$fld_module = vtlib_purify($_REQUEST['formodule']);
 elseif($_REQUEST['fld_module'] != '') {
 	$fld_module = vtlib_purify($_REQUEST['fld_module']);
@@ -135,12 +135,10 @@ if($duplicate == 'LENGTH_ERROR') {
 	echo "LENGTH_ERROR";
 	exit;
 }
-if($_REQUEST['mode'] !='')
-	$mode = vtlib_purify($_REQUEST['mode']);
-
+$mode = isset($_REQUEST['mode']) ? vtlib_purify($_REQUEST['mode']) : '';
 $smarty->assign("MODE", $mode);
 
-if($_REQUEST['ajax'] != 'true') {
+if(!isset($_REQUEST['ajax']) or $_REQUEST['ajax'] != 'true') {
 	$smarty->display('Settings/LayoutBlockList.tpl');
 }
 elseif(($subMode == 'getRelatedInfoOrder' || $subMode == 'changeRelatedInfoOrder' || $subMode == 'createRelatedList' || $subMode == 'deleteRelatedList') &&  $_REQUEST['ajax'] == 'true') {
@@ -149,7 +147,6 @@ elseif(($subMode == 'getRelatedInfoOrder' || $subMode == 'changeRelatedInfoOrder
 else {
 	$smarty->display('Settings/LayoutBlockEntries.tpl');
 }
-
 
 function InStrCount($String,$Find,$CaseSensitive = false) {
 	global $log;
@@ -169,7 +166,6 @@ function InStrCount($String,$Find,$CaseSensitive = false) {
 	$log->debug("In InStrCount function".$String,$Find);
 	return $x;
 }
-
 
 /**
  * Function to get customfield entries
@@ -209,6 +205,8 @@ function getFieldListEntries($module) {
 			}
 			if($row["blocklabel"] == 'LBL_RELATED_PRODUCTS' ) {
 				$smarty->assign("RELPRODUCTSECTIONID",$row["blockid"]);
+			} else {
+				$smarty->assign('RELPRODUCTSECTIONID','');
 			}
 			if($row["blocklabel"] == 'LBL_COMMENTS' || $row['blocklabel'] == 'LBL_COMMENT_INFORMATION' ) {
 				$smarty->assign("COMMENTSECTIONID",$row["blockid"]);
@@ -251,9 +249,9 @@ function getFieldListEntries($module) {
 
 			$result_field = $adb->pquery($sql_field,$sql_field_params);
 			$row_field= $adb->fetch_array($result_field);
+			$cf_element = Array();
+			$cf_hidden_element = Array();
 			if($row_field!='') {
-				$cf_element=Array();
-				$cf_hidden_element=Array();
 				$count=0;
 				$hiddencount=0;
 				do {
@@ -466,7 +464,6 @@ function getCustomFieldSupportedModules() {
 	return $modulelist;
 }
 
-
 function getModuleBlocks($module) {
 	global $adb;
 	$tabid = getTabid($module);
@@ -598,6 +595,7 @@ function changeFieldOrder() {
 		}
 	}
 }
+
 /**
  *
  */
@@ -676,7 +674,6 @@ function updateFieldProperties() {
 		}
 	}
 
-
 	if(isset($focus->mandatory_fields) && (!empty($focus->mandatory_fields)) && in_array($fieldname, $focus->mandatory_fields)) {
 		$fieldtype[1] = 'M';
 	} elseif($mandatory_checked == 'true' || $mandatory_checked == '') {
@@ -747,8 +744,6 @@ function updateFieldProperties() {
 
 }
 
-
-
 function deleteCustomField() {
 	global $adb;
 
@@ -802,7 +797,6 @@ function deleteCustomField() {
 	$adb->pquery("delete from vtiger_reportdatefilter where datecolumnname = ?", array($column_cvstdfilter));
 	$adb->pquery("delete from vtiger_reportsummary where columnname like ?", array('%'.$reportsummary_column.'%'));
 
-
 	//Deleting from convert lead mapping vtiger_table- Jaguar
 	if($fld_module=="Leads") {
 		$deletequery = 'delete from vtiger_convertleadmapping where leadfid=?';
@@ -827,7 +821,6 @@ function deleteCustomField() {
 		$adb->pquery('DELETE FROM vtiger_fieldmodulerel WHERE fieldid=?',array($id));
 	}
 }
-
 
 function addblock() {
 	global $mod_strings,$log,$adb;
