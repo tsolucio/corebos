@@ -32,8 +32,6 @@ class LoginHistory {
 
 	var $table_name = "vtiger_loginhistory";
 
-	var $object_name = "LoginHistory";
-	
 	var $column_fields = Array("id"
 		,"login_id"
 		,"user_name"
@@ -58,7 +56,7 @@ class LoginHistory {
 			'Signout Time'=>Array('vtiger_loginhistory'=>'logout_time'),
 			'Status'=>Array('vtiger_loginhistory'=>'status'),
 		);
-	
+
 	var $list_fields_name = Array(
 		'User Name'=>'user_name',
 		'User IP'=>'user_ip',
@@ -102,28 +100,25 @@ class LoginHistory {
 		$result = $adb->pquery($list_query, array($username));
 		$entries_list = array();
 
-	if($navigation_array['end_val'] != 0)
-	{
-		$in = getTranslatedString('Signed in');
-		$out = getTranslatedString('Signed off');
-		for($i = $navigation_array['start']; $i <= $navigation_array['end_val']; $i++)
-		{
-			$entries = array();
-			$loginid = $adb->query_result($result, $i-1, 'login_id');
-
-			$entries[] = $adb->query_result($result, $i-1, 'user_name');
-			$entries[] = $adb->query_result($result, $i-1, 'user_ip');
-			$entries[] = $adb->query_result($result, $i-1, 'login_time');
-			$entries[] = $adb->query_result($result, $i-1, 'logout_time');
-			$entries[] = ($adb->query_result($result, $i-1, 'status')=='Signed in' ? $in : $out);
-
-			$entries_list[] = $entries;
-		}	
-		$log->debug("Exiting getHistoryListViewEntries() method ...");
-		return $entries_list;
+		if($navigation_array['end_val'] != 0) {
+			$in = getTranslatedString('Signed in');
+			$out = getTranslatedString('Signed off');
+			for($i = $navigation_array['start']; $i <= $navigation_array['end_val']; $i++)
+			{
+				$entries = array();
+				$loginid = $adb->query_result($result, $i-1, 'login_id');
+				$entries[] = $adb->query_result($result, $i-1, 'user_name');
+				$entries[] = $adb->query_result($result, $i-1, 'user_ip');
+				$entries[] = $adb->query_result($result, $i-1, 'login_time');
+				$entries[] = $adb->query_result($result, $i-1, 'logout_time');
+				$entries[] = ($adb->query_result($result, $i-1, 'status')=='Signed in' ? $in : $out);
+				$entries_list[] = $entries;
+			}
+			$log->debug("Exiting getHistoryListViewEntries() method ...");
+			return $entries_list;
+		}
 	}
-	}
-	
+
 	/** Function that Records the Login info of the User
 	 *  @param ref variable $usname :: Type varchar
 	 *  @param ref variable $usip :: Type varchar
@@ -138,7 +133,7 @@ class LoginHistory {
 		$result = $adb->pquery($query, $params);
 		return $result;
 	}
-	
+
 	/** Function that Records the Logout info of the User
 	 *  @param ref variable $usname :: Type varchar
 	 *  @param ref variable $usip :: Type varchar
@@ -159,54 +154,23 @@ class LoginHistory {
 		$result = $adb->pquery($query, array($this->db->formatDate($outtime, true), 'Signed off', $loginid));
 	}
 
-	/** Function to create list query 
-	* @param reference variable - order by is passed when the query is executed
-	* @param reference variable - where condition is passed when the query is executed
-	* Returns Query.
-	*/
-	function create_list_query(&$order_by, &$where) {
-		// Determine if the vtiger_account name is present in the where clause.
-		global $current_user, $adb;
-		$query = "SELECT user_name,user_ip, status,
-				".$this->db->getDBDateString("login_time")." AS login_time,
-				".$this->db->getDBDateString("logout_time")." AS logout_time
-			FROM ".$this->table_name;
-		if($where != "")
-		{
-			if(!is_admin($current_user))
-			$where .=" AND user_name = '". $adb->sql_escape_string($current_user->user_name) ."'";
-			$query .= " WHERE ($where)";
-		}
-		else
-		{
-			if(!is_admin($current_user))
-			$query .= " WHERE user_name = '". $adb->sql_escape_string($current_user->user_name) ."'";
-		}
-		
-		if(!empty($order_by))
-			$query .= " ORDER BY ". $adb->sql_escape_string($order_by);
-
-		return $query;
-	}
-
 	/**
 	 * Determine if the user has logged-in first
 	 * @param accept_delay_seconds Allow the delay (in seconds) between login_time recorded and current time as first time.
 	 * This will be helpful if login is performed and client is redirected for home page where this function is invoked.
 	 */
 	static function firstTimeLoggedIn($user_name, $accept_delay_seconds=10) {
-		$firstTimeLoginStatus = false;
-		
 		global $adb;
-		
+		$firstTimeLoginStatus = false;
+
 		// Search for at-least two records.
 		$query = 'SELECT login_time, logout_time FROM vtiger_loginhistory WHERE user_name=? ORDER BY login_id DESC LIMIT 2';
 		$result= $adb->pquery($query, array($user_name));
 		$recordCount = $result? $adb->num_rows($result) : 0;
-		
+
 		if ($recordCount === 0) {
 			$firstTimeLoginStatus = true;
-		} else {		
+		} else {
 			if ($recordCount == 1) { // Only first time?
 				$row = $adb->fetch_array($result);
 				$login_delay = time() - strtotime($row['login_time']);

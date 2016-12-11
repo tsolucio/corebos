@@ -146,7 +146,7 @@ class Contacts extends CRMEntity {
 	 *  Returns the results of query in array format
 	 */
 	function plugin_process_list_query($query) {
-		global $log, $adb, $current_user;
+		global $log, $adb, $current_user,$currentModule;
 		$log->debug("Entering plugin_process_list_query(" . $query . ") method ...");
 		$permitted_field_lists = Array();
 		require ('user_privileges/user_privileges_' . $current_user->id . '.php');
@@ -167,7 +167,7 @@ class Contacts extends CRMEntity {
 			$permitted_field_lists[] = $adb->query_result($result1, $i, 'columnname');
 		}
 
-		$result = &$this->db->query($query, true, "Error retrieving $this->object_name list: ");
+		$result = &$this->db->query($query, true, "Error retrieving $currentModule list: ");
 		$list = Array();
 		$rows_found = $this->db->getRowCount($result);
 		if ($rows_found != 0) {

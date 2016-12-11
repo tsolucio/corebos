@@ -44,7 +44,6 @@ class Users extends CRMEntity {
 
 	var $module_name = "Users";
 
-	var $object_name = "User";
 	var $user_preferences;
 	var $homeorder_array = array('HDB'=>'', 'ALVT'=>'', 'PLVT'=>'', 'QLTQ'=>'', 'CVLVT'=>'', 'HLT'=>'', 'GRT'=>'', 'OLTSO'=>'', 'ILTI'=>'', 'MNL'=>'', 'OLTPO'=>'', 'LTFAQ'=>'', 'UA'=>'', 'PA'=>'');
 

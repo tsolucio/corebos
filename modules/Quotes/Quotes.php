@@ -31,8 +31,6 @@ class Quotes extends CRMEntity {
 	var $customFieldTable = Array('vtiger_quotescf', 'quoteid');
 	var $entity_table = 'vtiger_crmentity';
 
-	var $object_name = 'Quote';
-
 	var $sortby_fields = Array('subject','crmid','smownerid','accountname','lastname');
 
 	// This is used to retrieve related vtiger_fields from form posts.
