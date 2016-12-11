@@ -90,7 +90,7 @@ $cnorg=$adb->getColumnNames('vtiger_organizationdetails');
 if (!in_array('faviconlogo', $cnorg)) {
 	$adb->query('ALTER TABLE `vtiger_organizationdetails` ADD `frontlogo` VARCHAR(150) NOT NULL, ADD `faviconlogo` VARCHAR(150) NOT NULL');
 }
-$sql="select * from vtiger_organizationdetails";
+$sql='select * from vtiger_organizationdetails limit 1';
 $result = $adb->pquery($sql, array());
 //Handle for allowed organization logo/logoname likes UTF-8 Character
 // $organization_logo = decode_html($adb->query_result($result,0,'logoname'));

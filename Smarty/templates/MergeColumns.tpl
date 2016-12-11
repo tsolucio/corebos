@@ -105,8 +105,8 @@
 						<span>&nbsp;</span>
 						<span align="right" onClick="mergeshowhide('mergeDup')" onmouseover="this.style.cursor='pointer';"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0"></span><br>
 					</td>
-			   </tr>
-			   <tr><td colspan="3"></td></tr>
+				</tr>
+				<tr><td colspan="3"></td></tr>
 				<tr>
 					<td><b>{$APP.LBL_AVAILABLE_FIELDS}</b></td>
 					<td></td>

@@ -12,7 +12,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset={$APP.LBL_CHARSET}">
-	<title>{$USER} - {$MODULE_NAME|@getTranslatedString:$MODULE_NAME} - {$APP.LBL_BROWSER_TITLE}</title>
+	<title>{$USER} - {$MODULE_NAME|@getTranslatedString:$MODULE_NAME} - {$coreBOS_app_name}</title>
 	<link REL="SHORTCUT ICON" HREF="{$FAVICON}">
 	<style type="text/css">@import url("themes/{$THEME}/style.css?v={$VERSION}");</style>
 	{if $PRELOAD_JSCALENDAR neq 'false'}<link rel="stylesheet" type="text/css" media="all" href="jscalendar/calendar-win2k-cold-1.css">{/if}

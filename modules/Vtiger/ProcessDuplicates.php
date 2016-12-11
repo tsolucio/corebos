@@ -102,6 +102,16 @@ if ($mode == 'mergesave') {
 
 	$no_existing = ($record_count == $count ? 1 : 0);
 
+	$sql='select faviconlogo from vtiger_organizationdetails limit 1';
+	$result = $adb->pquery($sql, array());
+	$favicon = decode_html($adb->query_result($result,0,'faviconlogo'));
+	if($favicon=='') $favicon='themes/images/favicon.ico';
+	else $favicon='test/logo/'.$favicon;
+	$smarty->assign('FAVICON',$favicon);
+	$userName = getFullNameFromArray('Users', $current_user->column_fields);
+	$smarty->assign('USER',$userName);
+	$smarty->assign('coreBOS_app_name', GlobalVariable::getVariable('Application_UI_Name','coreBOS'));
+
 	// Pass on the authenticated user language
 	global $current_language;
 	$smarty->assign('LANGUAGE', $current_language);

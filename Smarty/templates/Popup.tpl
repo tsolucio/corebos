@@ -12,7 +12,7 @@
 <html>
 <head>
 	<meta http-equiv="Content-Type" content="text/html; charset={$APP.LBL_CHARSET}">
-	<title>{$MODULE|@getTranslatedString:$MODULE} - {$APP.LBL_BROWSER_TITLE}</title>
+	<title>{$MODULE|@getTranslatedString:$MODULE} - {$coreBOS_uiapp_name}</title>
 	<link REL="SHORTCUT ICON" HREF="themes/images/blank.gif">
 <script type="text/javascript">
 var gVTModule = '{$smarty.request.module|@vtlib_purify}';
