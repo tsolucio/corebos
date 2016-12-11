@@ -993,76 +993,86 @@ function doModuleValidation(edit_type,editForm,callback) {
 	} else {
 		var formName = editForm;
 	}
-	if((formName == 'QcEditView' && QCformValidate()) || (doformValidation(edit_type))) { //base function which validates form data
-		VtigerJS_DialogBox.block();
-		if (edit_type=='mass_edit') {
-			var action = 'MassEditSave';
-		} else {
-			var action = 'Save';
-		}
-		//Testing if a Validation file exists
-		jQuery.ajax({
-			url: "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationExists&valmodule="+gVTModule,
-			type:'get'
-		}).fail(function (jqXHR, textStatus) { //Validation file does not exist
-				if (typeof callback == 'function') {
-					callback('submit');
-				} else {
-					submitFormForAction(formName, action);
-				}
-		}).done(function(data) { //Validation file exists
-				if (data == 'yes') {
-					// Create object which gets the values of all input, textarea, select and button elements from the form
-					var myFields = document.forms[formName].elements;
-					var sentForm = new Object();
-					for (f=0; f<myFields.length; f++){
-						if(myFields[f].type=='checkbox')
-							sentForm[myFields[f].name] = myFields[f].checked;
-						else
-							sentForm[myFields[f].name] = myFields[f].value;
-					}
-					//JSONize form data
-					sentForm = JSON.stringify(sentForm);
-					jQuery.ajax({
-						type : 'post',
-						data : {structure: sentForm},
-						url : "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule="+gVTModule
-					}).done(function(msg) {  //Validation file answers
-							if (msg.search("%%%CONFIRM%%%") > -1) { //Allow to use confirm alert
-								//message to display
-								var display = msg.split("%%%CONFIRM%%%");
-								if(confirm(display[1])) { //If you click on OK
-									if (typeof callback == 'function') {
-										callback('submit');
-									} else {
-										submitFormForAction(formName, action);
-									}
-								} else {
-									VtigerJS_DialogBox.unblock();
-								}
-							} else if (msg.search("%%%OK%%%") > -1) { //No error
-								if (typeof callback == 'function') {
-									callback('submit');
-								} else {
-									submitFormForAction(formName, action);
-								}
-							} else { //Error
-								alert(msg);
-								VtigerJS_DialogBox.unblock();
-							}
-					}).fail(function() {  //Error while asking file
-							alert('Error with AJAX');
-							VtigerJS_DialogBox.unblock();
-					});
-				} else { // no validation we send form
-					if (typeof callback == 'function') {
-						callback('submit');
-					} else {
-						submitFormForAction(formName, action);
-					}
-				}
-			});
+	if (formName == 'QcEditView') {
+		var isvalid = QCformValidate();
+	} else {
+		var isvalid = doformValidation(edit_type);
 	}
+	if (isvalid) {
+		doServerValidation(edit_type,formName,callback);
+	}
+	return false;
+}
+
+function doServerValidation(edit_type,formName,callback) {
+	VtigerJS_DialogBox.block();
+	if (edit_type=='mass_edit') {
+		var action = 'MassEditSave';
+	} else {
+		var action = 'Save';
+	}
+	//Testing if a Validation file exists
+	jQuery.ajax({
+		url: "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationExists&valmodule="+gVTModule,
+		type:'get'
+	}).fail(function (jqXHR, textStatus) { //Validation file does not exist
+		if (typeof callback == 'function') {
+			callback('submit');
+		} else {
+			submitFormForAction(formName, action);
+		}
+	}).done(function(data) { //Validation file exists
+		if (data == 'yes') {
+			// Create object which gets the values of all input, textarea, select and button elements from the form
+			var myFields = document.forms[formName].elements;
+			var sentForm = new Object();
+			for (f=0; f<myFields.length; f++){
+				if(myFields[f].type=='checkbox')
+					sentForm[myFields[f].name] = myFields[f].checked;
+				else
+					sentForm[myFields[f].name] = myFields[f].value;
+			}
+			//JSONize form data
+			sentForm = JSON.stringify(sentForm);
+			jQuery.ajax({
+				type : 'post',
+				data : {structure: sentForm},
+				url : "index.php?module=Utilities&action=UtilitiesAjax&file=ExecuteFunctions&functiontocall=ValidationLoad&valmodule="+gVTModule
+			}).done(function(msg) {  //Validation file answers
+					if (msg.search("%%%CONFIRM%%%") > -1) { //Allow to use confirm alert
+						//message to display
+						var display = msg.split("%%%CONFIRM%%%");
+						if(confirm(display[1])) { //If you click on OK
+							if (typeof callback == 'function') {
+								callback('submit');
+							} else {
+								submitFormForAction(formName, action);
+							}
+						} else {
+							VtigerJS_DialogBox.unblock();
+						}
+					} else if (msg.search("%%%OK%%%") > -1) { //No error
+						if (typeof callback == 'function') {
+							callback('submit');
+						} else {
+							submitFormForAction(formName, action);
+						}
+					} else { //Error
+						alert(msg);
+						VtigerJS_DialogBox.unblock();
+					}
+			}).fail(function() {  //Error while asking file
+					alert('Error with AJAX');
+					VtigerJS_DialogBox.unblock();
+			});
+		} else { // no validation we send form
+			if (typeof callback == 'function') {
+				callback('submit');
+			} else {
+				submitFormForAction(formName, action);
+			}
+		}
+	});
 	return false;
 }
 
