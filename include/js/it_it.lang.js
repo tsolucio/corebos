@@ -316,6 +316,9 @@ var alert_arr = {
 	'ERR_MAP_NAME_ALREADY_EXISTS' :'Nome della mappatura gia in uso. Scegliere un altro nome',
 	'ERR_MAP_NAME_CANNOT_BE_EMPTY' :'Il nome della mappatura non puo essere vuoto',
 	'ERR_FIELDS_MAPPED_MORE_THAN_ONCE' :'Il seguente campo viene mappato piu volte. Verificare la mappatura.',
+	'LBL_MERGE_SHOULDHAVE_INFO' : 'Inserire almeno un Campo su cui effettuare il controllo',
+	'MAP_NAME_EXISTS' : 'Questa mappa esiste gi&agrave;. Vuoi sovrascrivere?',
+	'MAP_DELETED_INFO' : 'Questa mappa &egrave; stata cancellata. Non puoi utilizzarla nuovamente',
 
 	//arror messages for lead conversion
 	'ERR_SELECT_EITHER':'Selezionare se si intende convertire in Lead in Azienda o in Contatto',

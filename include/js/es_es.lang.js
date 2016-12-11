@@ -327,6 +327,9 @@ var alert_arr = {
 	'ERR_MAP_NAME_ALREADY_EXISTS' : 'Nombre de vinculación ya existe. Introduce un nombre distinto',
 	'ERR_MAP_NAME_CANNOT_BE_EMPTY' : 'Nombre de vinculación no puede quedar vacío',
 	'ERR_FIELDS_MAPPED_MORE_THAN_ONCE' : 'El siguiente campo se ha vinculado más de una vez. Verifica la vinculación.',
+	'LBL_MERGE_SHOULDHAVE_INFO' : 'Selecciona al menos un campo como criterio de combinación',
+	'MAP_NAME_EXISTS' : 'Ya existe una Asignación con este nombre. ¿Sobrescribir?',
+	'MAP_DELETED_INFO' : 'Se ha eliminado este mapeo. No se puede volver a utilizar',
 	
 	//arror messages for lead conversion
 	'ERR_SELECT_EITHER':'Selecciona Cuenta o Contacto para convertir el PreContacto',

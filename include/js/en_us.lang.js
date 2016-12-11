@@ -331,6 +331,9 @@ var alert_arr = {
 	'ERR_MAP_NAME_ALREADY_EXISTS' : 'Map name already exists. Please give a different name',
 	'ERR_MAP_NAME_CANNOT_BE_EMPTY' : 'Map name cannot be empty',
 	'ERR_FIELDS_MAPPED_MORE_THAN_ONCE' : 'Following field is mapped more than once. Please check the mapping.',
+	'LBL_MERGE_SHOULDHAVE_INFO' : 'Select at least one field for merge criteria',
+	'MAP_NAME_EXISTS' : 'This map name already exists. \n Do you want to overwrite it?',
+	'MAP_DELETED_INFO' : 'This map has been deleted. You cannot use this map again',
 
 	//arror messages for lead conversion
 	'ERR_SELECT_EITHER':'Select either Organization or Contact to convert the lead',

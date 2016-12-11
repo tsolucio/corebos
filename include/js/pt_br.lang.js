@@ -328,6 +328,9 @@ var alert_arr = {
 	'ERR_MAP_NAME_ALREADY_EXISTS' : 'O nome do mapeamento já existe. Por favor, dê um nome diferente',
 	'ERR_MAP_NAME_CANNOT_BE_EMPTY' : 'O nome do mapeamento não pode estar vazio',
 	'ERR_FIELDS_MAPPED_MORE_THAN_ONCE' : 'Os seguintes campos estão mapeados mais de um vez. Por favor, verifique o mapeamento.',
+	'LBL_MERGE_SHOULDHAVE_INFO' : 'Selecionar pelo menos um campo para o critério de mesclagem',
+	'MAP_NAME_EXISTS' : 'Este nome de mapa já existe. \n Você quer sobrescrever?',
+	'MAP_DELETED_INFO' : 'Este mapa foi deletado. Você não pode utilizar este map novamente',
 
 	//arror messages for lead conversion
 	'ERR_SELECT_EITHER':'Selecione uma Organização ou Contato para converter o Lead',

@@ -330,6 +330,9 @@ var alert_arr = {
 	'ERR_MAP_NAME_ALREADY_EXISTS' : 'Eine Zuweisung mit dieser Bezeichnung existiert bereits. Bitte wählen Sie eine andere Bezeichnung.',
 	'ERR_MAP_NAME_CANNOT_BE_EMPTY' : 'Bitte vergeben Sie eine Bezeichnung für die Zuweisung.',
 	'ERR_FIELDS_MAPPED_MORE_THAN_ONCE' : 'Das gewählte Felde wurde mehrfach zugewiesen. Bitte überprüfen Sie die Zuweisungen.',
+	'LBL_MERGE_SHOULDHAVE_INFO' : 'Bitte wenigstens ein Feld ausählen',
+	'MAP_NAME_EXISTS' : 'Dieser Name . \n Do you want to overwrite it?',
+	'MAP_DELETED_INFO' : 'Dieser Bezug wurde gelöscht.',
 
 	//arror messages for lead conversion
 	'ERR_SELECT_EITHER':'Wählen Sie eine Organisation oder eine Person um den Lead umzuwandeln',
