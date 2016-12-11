@@ -24,7 +24,6 @@ $mode = vtlib_purify($_REQUEST['mergemode']);
 
 if ($mode == 'mergesave') {
 	$return_module = vtlib_purify($_REQUEST['return_module']);
-	$action        = vtlib_purify($_REQUEST['action']);
 	$return_action = vtlib_purify($_REQUEST['return_action']);
 	$parenttab     = vtlib_purify($_REQUEST['parent']);
 	$merge_id      = vtlib_purify($_REQUEST['record']);
@@ -36,6 +35,7 @@ if ($mode == 'mergesave') {
 	if($count > 0) {
 		// First, save the primary record
 		$focus->mode="edit";
+		$focus->id = $merge_id;
 		setObjectValuesFromRequest($focus);
 		$focus->save($module);
 		$rec_values=$focus->column_fields;

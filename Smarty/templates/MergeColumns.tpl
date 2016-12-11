@@ -8,6 +8,8 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
+<script type="text/javascript" src="include/jquery/jquery.js"></script>
+<script type="text/javascript" src="include/jquery/jquery-ui.js"></script>
 <script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <script type="text/javaScript" src="include/js/dedup.js"></script>
 

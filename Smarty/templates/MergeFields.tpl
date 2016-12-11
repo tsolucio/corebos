@@ -27,6 +27,8 @@
 <body leftmargin=0 topmargin=0 marginheight=0 marginwidth=0 class=small>
 
 {if $EDIT_DUPLICATE eq 'permitted'}
+<script type="text/javascript" src="include/jquery/jquery.js"></script>
+<script type="text/javascript" src="include/jquery/jquery-ui.js"></script>
 <script type="text/javascript" src="include/js/smoothscroll.js"></script>
 <script type="text/javascript" src="include/js/menu.js"></script>
 <script src="include/js/general.js" type="text/javascript"></script>
