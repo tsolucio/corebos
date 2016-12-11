@@ -139,8 +139,8 @@ class Faq extends CRMEntity {
 
 		if($comment != '')
 		{
-			$params = array('', $this->id, from_html($comment), $current_time);
-			$sql = "insert into vtiger_faqcomments values(?, ?, ?, ?)";
+			$params = array($this->id, from_html($comment), $current_time);
+			$sql = "insert into vtiger_faqcomments (faqid, comments, createdtime) values(?, ?, ?)";
 			$adb->pquery($sql, $params);
 		}
 	}
