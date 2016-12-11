@@ -15,7 +15,7 @@ global $mod_strings, $app_strings, $currentModule, $current_user, $theme, $log;
 $category = getParentTab();
 $action = vtlib_purify($_REQUEST['action']);
 $record = vtlib_purify($_REQUEST['record']);
-$isduplicate = vtlib_purify($_REQUEST['isDuplicate']);
+$isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : false;
 
 if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	echo "<script>document.location='index.php?action=DetailView&module=$currentModule&record=$record&parenttab=$category';</script>";
@@ -34,7 +34,7 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 
 	if($isduplicate == 'true') $focus->id = '';
 	if(isset($_REQUEST['mode']) && $_REQUEST['mode'] != ' ') $smarty->assign("OP_MODE",vtlib_purify($_REQUEST['mode']));
-	if(!$_SESSION['rlvs'][$currentModule]) coreBOS_Session::delete('rlvs');
+	if(empty($_SESSION['rlvs'][$currentModule])) coreBOS_Session::delete('rlvs');
 
 	// Identify this module as custom module.
 	$smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
@@ -42,7 +42,6 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	$smarty->assign('APP', $app_strings);
 	$smarty->assign('MOD', $mod_strings);
 	$smarty->assign('MODULE', $currentModule);
-	// TODO: Update Single Module Instance name here.
 	$smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule, $currentModule));
 	$smarty->assign('CATEGORY', $category);
 	$smarty->assign('IMAGE_PATH', "themes/$theme/images/");

@@ -61,7 +61,7 @@ if($singlepane_view == 'true' && $action == 'CallRelatedList') {
 	if(isset($_REQUEST['mode']) && $_REQUEST['mode'] != ' ') {
 		$smarty->assign("OP_MODE",vtlib_purify($_REQUEST['mode']));
 	}
-	if(!$_SESSION['rlvs'][$module]) {
+	if(empty($_SESSION['rlvs'][$module])) {
 		coreBOS_Session::delete('rlvs');
 	}
 

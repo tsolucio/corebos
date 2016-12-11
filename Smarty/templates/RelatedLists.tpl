@@ -34,7 +34,7 @@
 			<table border=0 cellspacing=0 cellpadding=0 width=95% align=center>
 			<tr>
 				<td>
-					{if $OP_MODE eq 'edit_view'}
+					{if isset($OP_MODE) && $OP_MODE eq 'edit_view'}
 						{assign var="action" value="EditView"}
 					{else}
 						{assign var="action" value="DetailView"}
@@ -42,7 +42,7 @@
 					<div class="small detailview_utils_table_top">
 						<div class="detailview_utils_table_tabs">
 							<div class="detailview_utils_table_tab detailview_utils_table_tab_unselected detailview_utils_table_tab_unselected_top"><a href="index.php?action={$action}&module={$MODULE}&record={$ID}&parenttab={$CATEGORY}">{$SINGLE_MOD} {$APP.LBL_INFORMATION}</a></div>
-							{if $HASRELATEDPANES eq 'true'}
+							{if isset($HASRELATEDPANES) && $HASRELATEDPANES eq 'true'}
 								{include file='RelatedPanes.tpl' tabposition='top'}
 							{else}
 								<div class="detailview_utils_table_tab detailview_utils_table_tab_selected detailview_utils_table_tab_selected_top">{$APP.LBL_MORE} {$APP.LBL_INFORMATION}</div>
@@ -72,7 +72,7 @@
 									</tr>
 								</table>
 							</td>
-							{if $HASRELATEDPANESACTIONS eq 'true'}
+							{if isset($HASRELATEDPANESACTIONS) && $HASRELATEDPANESACTIONS eq 'true'}
 								{include file='RelatedPaneActions.tpl'}
 							{/if}
 						</tr>

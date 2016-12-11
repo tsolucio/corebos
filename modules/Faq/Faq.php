@@ -151,17 +151,17 @@ class Faq extends CRMEntity {
 	 **/
 	function getFAQComments($faqid)
 	{
-		global $log, $default_charset;
+		global $log, $default_charset, $mod_strings;
 		$log->debug("Entering getFAQComments(".$faqid.") method ...");
-		global $mod_strings;
+
 		$sql = "select * from vtiger_faqcomments where faqid=?";
 		$result = $this->db->pquery($sql, array($faqid));
 		$noofrows = $this->db->num_rows($result);
-
+		$list = '';
 		//In ajax save we should not add this div
 		if($_REQUEST['action'] != 'FaqAjax')
 		{
-			$list .= '<div id="comments_div" style="overflow: auto;height:200px;width:100%;">';
+			$list = '<div id="comments_div" style="overflow: auto;height:200px;width:100%;">';
 			$enddiv = '</div>';
 		}
 
@@ -238,7 +238,7 @@ class Faq extends CRMEntity {
 
 		$fields_list = getFieldsListFromQuery($sql);
 
-		$query = "SELECT $fields_list, vtiger_users.user_name AS user_name 
+		$query = "SELECT $fields_list, vtiger_users.user_name AS user_name
 				FROM vtiger_crmentity INNER JOIN $this->table_name ON vtiger_crmentity.crmid=$this->table_name.$this->table_index";
 
 		if(!empty($this->customFieldTable)) {

@@ -8,15 +8,18 @@
  * All Rights Reserved.
  ********************************************************************************/
 -->*}
+{if empty($RELLISTID)}
+	{assign var='RELLISTID' value=''}
+{/if}
 <form border="0" action="index.php" method="post" name="form{$RELLISTID}" id="form{$RELLISTID}">
 <input type="hidden" name="module">
 <input name="maxrecords" type="hidden" value="{if isset($MAX_RECORDS)}{$MAX_RECORDS}{/if}" id='maxrecords'>
-<input id="recordid" type="hidden" value="{$RECORDID}">
+<input id="recordid" type="hidden" value="{if isset($RECORDID)}{$RECORDID}{/if}">
 <input type="hidden" name="mode">
 <input type="hidden" name="return_module" id="return_module" value="{$MODULE}">
 <input type="hidden" name="RLreturn_module" id="RLreturn_module" value="{$MODULE}">
 <input type="hidden" name="allselectedboxes"  id="allselectedboxes">
-{if $SinglePane_View eq 'true'|| $IS_RELBLOCK_LIST}
+{if (isset($SinglePane_View) && $SinglePane_View eq 'true')|| (isset($IS_RELBLOCK_LIST) && $IS_RELBLOCK_LIST)}
 	<input type="hidden" name="return_action" value="DetailView">
 {else}
 	<input type="hidden" name="return_action" value="CallRelatedList">

@@ -37,7 +37,6 @@ $smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
-// TODO: Update Single Module Instance name here.
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('CATEGORY', $category);
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");
@@ -73,6 +72,9 @@ $smarty->assign('CHECK', $tool_buttons);
 if(PerformancePrefs::getBoolean('DETAILVIEW_RECORD_NAVIGATION', true) && isset($_SESSION[$currentModule.'_listquery'])){
 	$recordNavigationInfo = ListViewSession::getListViewNavigation($focus->id);
 	VT_detailViewNavigation($smarty,$recordNavigationInfo,$focus->id);
+} else {
+	$smarty->assign('privrecord', '');
+	$smarty->assign('nextrecord', '');
 }
 
 $smarty->assign('IS_REL_LIST', isPresentRelatedLists($currentModule));

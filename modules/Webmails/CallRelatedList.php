@@ -67,7 +67,6 @@ $smarty = new vtigerCRM_Smarty;
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
-// TODO: Update Single Module Instance name here.
 $smarty->assign('SINGLE_MOD', 'Webmails');
 $smarty->assign('CATEGORY', 'My Home Page');
 $smarty->assign('IMAGE_PATH', "themes/$theme/images/");

@@ -13,7 +13,7 @@ if($ajaxaction == "LOADRELATEDLIST") {
 	$relationId = vtlib_purify($_REQUEST['relation_id']);
 	if(!empty($relationId) && ((int)$relationId) > 0) {
 		$recordid = vtlib_purify($_REQUEST['record']);
-		if($_SESSION['rlvs'][$currentModule][$relationId]['currentRecord'] != $recordid) {
+		if(empty($_SESSION['rlvs'][$currentModule][$relationId]['currentRecord']) or $_SESSION['rlvs'][$currentModule][$relationId]['currentRecord'] != $recordid) {
 			$resetCookie = true;
 		} else {
 			$resetCookie = false;

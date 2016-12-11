@@ -35,7 +35,6 @@ $isduplicate = vtlib_purify($_REQUEST['isDuplicate']);
 	$smarty->assign('APP', $app_strings);
 	$smarty->assign('MOD', $mod_strings);
 	$smarty->assign('MODULE', $currentModule);
-	// TODO: Update Single Module Instance name here.
 	$smarty->assign('SINGLE_MOD', getTranslatedString('SINGLE_'.$currentModule, $currentModule));
 	$smarty->assign('CATEGORY', $category);
 	$smarty->assign('IMAGE_PATH', "themes/$theme/images/");

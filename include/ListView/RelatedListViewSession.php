@@ -66,7 +66,7 @@ class RelatedListViewSession {
 	}
 
 	public static function getRequestStartPage(){
-		$relstart = $_REQUEST['relstart'];
+		$relstart = isset($_REQUEST['relstart']) ? $_REQUEST['relstart'] : 1;
 		if(!is_numeric($relstart)){
 			$relstart = 1;
 		}

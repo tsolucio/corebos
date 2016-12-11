@@ -37,7 +37,6 @@ $c_mod_strings = return_specified_module_language($current_language, "Calendar")
 $smarty->assign('CMOD', $c_mod_strings);
 
 $smarty->assign('MODULE', $currentModule);
-// TODO: Update Single Module Instance name here.
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('CATEGORY', $category);
 $smarty->assign("THEME", $theme);
