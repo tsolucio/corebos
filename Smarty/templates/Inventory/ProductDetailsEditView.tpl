@@ -107,22 +107,21 @@ function displayCoords(currObj,obj,mode,curr_row)
 		{/foreach}
 		</select>
 	</td>
-	
 	<td class="dvInnerHeader" align="center" colspan="2">
 		<b>{$APP.LBL_TAX_MODE}</b>&nbsp;&nbsp;
-		
+		{assign var="group_selected" value=""}
+		{assign var="individual_selected" value=""}
 		{if $ASSOCIATEDPRODUCTS.1.final_details.taxtype eq 'group'}
 			{assign var="group_selected" value="selected"}
 		{else}
 			{assign var="individual_selected" value="selected"}
 		{/if}
-
 		<select class="small" id="taxtype" name="taxtype" onchange="decideTaxDiv(); calcTotal();">
 			<OPTION value="individual" {$individual_selected}>{$APP.LBL_INDIVIDUAL}</OPTION>
 			<OPTION value="group" {$group_selected}>{$APP.LBL_GROUP}</OPTION>
 		</select>
 	</td>
-   </tr>
+	</tr>
 
    <!-- Header for the Product Details -->
    <tr valign="top">
@@ -186,7 +185,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 	<!-- column 2 - Product Name - starts -->
 	<td class="crmTableRow small lineOnTop">
 		<!-- Product Re-Ordering Feature Code Addition Starts -->
-		<input type="hidden" name="hidtax_row_no{$row_no}" id="hidtax_row_no{$row_no}" value="{$tax_row_no}"/>
+		<input type="hidden" name="hidtax_row_no{$row_no}" id="hidtax_row_no{$row_no}" value="{if isset($tax_row_no)}{$tax_row_no}{/if}"/>
 		<!-- Product Re-Ordering Feature Code Addition ends -->
 		<table width="100%"  border="0" cellspacing="0" cellpadding="1">
 			<tr>
@@ -223,9 +222,11 @@ function displayCoords(currObj,obj,mode,curr_row)
 		{if ($MODULE eq 'Quotes' || $MODULE eq 'SalesOrder' || $MODULE eq 'Invoice' || $MODULE eq 'Issuecards')  && 'Products'|vtlib_isModuleActive}
 		{$APP.LBL_QTY_IN_STOCK}:&nbsp;<span id="{$qtyInStock}">{$data.$qtyInStock}</span><br>
 		{/if}
+		{if isset($data.$moreinfo)}
 		{foreach item=maindata from=$data.$moreinfo}
 			{include file='Inventory/EditViewUI.tpl'}
 		{/foreach}
+		{/if}
 	</td>
 	<!-- column 3 - Quantity in Stock - ends -->
 

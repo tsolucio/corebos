@@ -3227,12 +3227,16 @@ function getActivityType($id) {
 
 /** Function to get owner name either user or group */
 function getOwnerName($id) {
-	global $adb, $log;
-	$log->debug("Entering getOwnerName(" . $id . ") method ...");
-	$log->info("in getOwnerName " . $id);
-
-	$ownerList = getOwnerNameList(array($id));
-	return $ownerList[$id];
+	global $log;
+	$log->debug("Entering getOwnerName( $id ) method ...");
+	$oname = '';
+	if (is_numeric($id) and $id>0) {
+		$ownerList = getOwnerNameList(array($id));
+		if (isset($ownerList[$id])) {
+			$oname = $ownerList[$id];
+		}
+	}
+	return $oname;
 }
 
 /** Function to get owner name either user or group */
@@ -3253,8 +3257,7 @@ function getOwnerNameList($idList) {
 	}
 	$groupIdList = array_diff($idList, array_keys($nameList));
 	if (count($groupIdList) > 0) {
-		$sql = "select groupname,groupid from vtiger_groups where groupid in (" .
-				generateQuestionMarks($groupIdList) . ")";
+		$sql = "select groupname,groupid from vtiger_groups where groupid in (" . generateQuestionMarks($groupIdList) . ")";
 		$result = $db->pquery($sql, $groupIdList);
 		$it = new SqlResultIterator($db, $result);
 		foreach ($it as $row) {

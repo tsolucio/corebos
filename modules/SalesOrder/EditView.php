@@ -16,10 +16,12 @@ require_once ('include/utils/utils.php');
 
 $focus = CRMEntity::getInstance($currentModule);
 $smarty = new vtigerCRM_Smarty();
+// Identify this module as custom module.
+$smarty->assign('CUSTOM_MODULE', $focus->IsCustomModule);
 
 $category = getParentTab($currentModule);
-$record = vtlib_purify($_REQUEST['record']);
-$isduplicate = vtlib_purify($_REQUEST['isDuplicate']);
+$record = isset($_REQUEST['record']) ? vtlib_purify($_REQUEST['record']) : null;
+$isduplicate = isset($_REQUEST['isDuplicate']) ? vtlib_purify($_REQUEST['isDuplicate']) : null;
 
 //added to fix the issue4600
 $searchurl = getBasic_Advance_SearchURL();
@@ -29,6 +31,8 @@ $smarty->assign("SEARCH", $searchurl);
 $currencyid = fetchCurrency($current_user->id);
 $rate_symbol = getCurrencySymbolandCRate($currencyid);
 $rate = $rate_symbol['rate'];
+$associated_prod = array();
+$smarty->assign('CONVERT_MODE', '');
 if (isset ($_REQUEST['record']) && $_REQUEST['record'] != '') {
 	if (isset ($_REQUEST['convertmode']) && $_REQUEST['convertmode'] == 'quotetoso') {
 		$quoteid = $_REQUEST['record'];
@@ -239,11 +243,14 @@ if ((isset ($_REQUEST['account_id'])) && ($_REQUEST['record'] == '') && ($_REQUE
 	$focus->column_fields['bill_country'] = $acct_focus->column_fields['bill_country'];
 	$focus->column_fields['ship_country'] = $acct_focus->column_fields['ship_country'];
 }
-
+$smarty->assign('MASS_EDIT','0');
 $disp_view = getView($focus->mode);
-$smarty->assign('BLOCKS', getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields));
-$smarty->assign('BASBLOCKS', getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields, 'BAS'));
-$smarty->assign('ADVBLOCKS',getBlocks($currentModule,$disp_view,$focus->mode,$focus->column_fields,'ADV'));
+$blocks = getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields);
+$smarty->assign('BLOCKS', $blocks);
+$basblocks = getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields, 'BAS');
+$smarty->assign('BASBLOCKS', $basblocks);
+$advblocks = getBlocks($currentModule,$disp_view,$focus->mode,$focus->column_fields,'ADV');
+$smarty->assign('ADVBLOCKS', $advblocks);
 
 $custom_blocks = getCustomBlocks($currentModule,$disp_view);
 $smarty->assign('CUSTOMBLOCKS', $custom_blocks);
@@ -253,7 +260,6 @@ $smarty->assign('OP_MODE',$disp_view);
 $smarty->assign('APP', $app_strings);
 $smarty->assign('MOD', $mod_strings);
 $smarty->assign('MODULE', $currentModule);
-// TODO: Update Single Module Instance name here.
 $smarty->assign('SINGLE_MOD', 'SINGLE_'.$currentModule);
 $smarty->assign('CATEGORY', $category);
 $smarty->assign("THEME", $theme);
@@ -376,7 +382,7 @@ if ($focus->mode == 'edit') {
 	$smarty->assign("INV_CURRENCY_ID", $currencyid);
 }
 
-$smarty->assign('CREATEMODE', vtlib_purify($_REQUEST['createmode']));
+$smarty->assign('CREATEMODE', isset($_REQUEST['createmode']) ? vtlib_purify($_REQUEST['createmode']) : '');
 
 // Gather the help information associated with fields
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));

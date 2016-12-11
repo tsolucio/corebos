@@ -290,9 +290,12 @@ if (isset ($_REQUEST['contact_id']) && $_REQUEST['contact_id'] != '' && ($_REQUE
 }
 $smarty->assign('MASS_EDIT','0');
 $disp_view = getView($focus->mode);
-$smarty->assign('BLOCKS', getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields));
-$smarty->assign('BASBLOCKS', getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields, 'BAS'));
-$smarty->assign('ADVBLOCKS',getBlocks($currentModule,$disp_view,$focus->mode,$focus->column_fields,'ADV'));
+$blocks = getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields);
+$smarty->assign('BLOCKS', $blocks);
+$basblocks = getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields, 'BAS');
+$smarty->assign('BASBLOCKS', $basblocks);
+$advblocks = getBlocks($currentModule,$disp_view,$focus->mode,$focus->column_fields,'ADV');
+$smarty->assign('ADVBLOCKS', $advblocks);
 
 $custom_blocks = getCustomBlocks($currentModule,$disp_view);
 $smarty->assign('CUSTOMBLOCKS', $custom_blocks);

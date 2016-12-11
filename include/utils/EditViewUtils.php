@@ -296,12 +296,13 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		//Control will come here only for Products - Handler and Quotes - Inventory Manager
 		if($is_admin==false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid($module_name)] == 3 or $defaultOrgSharingPermission[getTabid($module_name)] == 0))
 		{
-			$users_combo = get_select_options_array(get_user_array(FALSE, "Active", $assigned_user_id,'private'), $assigned_user_id);
+			$ua = get_user_array(FALSE, "Active", $assigned_user_id,'private');
 		}
 		else
 		{
-			$users_combo = get_select_options_array(get_user_array(FALSE, "Active", $assigned_user_id), $assigned_user_id);
+			$ua = get_user_array(FALSE, "Active", $assigned_user_id);
 		}
+		$users_combo = get_select_options_array($ua, $assigned_user_id);
 		$fieldvalue [] = $users_combo;
 	}
 	elseif($uitype == 53)
@@ -324,26 +325,24 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		if($fieldname == 'assigned_user_id' && $is_admin==false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid($module_name)] == 3 or $defaultOrgSharingPermission[getTabid($module_name)] == 0))
 		{
 			$ua = get_user_array(FALSE, "Active", $assigned_user_id,'private');
-			$users_combo = get_select_options_array($ua, $assigned_user_id);
 		}
 		else
 		{
 			$ua = get_user_array(FALSE, "Active", $assigned_user_id);
-			$users_combo = get_select_options_array($ua, $assigned_user_id);
 		}
+		$users_combo = get_select_options_array($ua, $assigned_user_id);
 
 		if($noof_group_rows!=0)
 		{
 			if($fieldname == 'assigned_user_id' && $is_admin==false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid($module_name)] == 3 or $defaultOrgSharingPermission[getTabid($module_name)] == 0))
 			{
 				$ga = get_group_array(FALSE, "Active", $assigned_user_id,'private');
-				$groups_combo = get_select_options_array($ga, $assigned_user_id);
 			}
 			else
 			{
 				$ga = get_group_array(FALSE, "Active", $assigned_user_id);
-				$groups_combo = get_select_options_array($ga, $assigned_user_id);
 			}
+			$groups_combo = get_select_options_array($ga, $assigned_user_id);
 		}
 		$fieldvalue[]=$users_combo;
 		$fieldvalue[] = $groups_combo;
