@@ -8,6 +8,12 @@
  * All Rights Reserved.
  * Modified by crm-now GmbH, www.crm-now.com
  ************************************************************************************/
+if ($_SERVER['QUERY_STRING']=='module=Mobile&action=index') {
+?>
+<script type="text/javascript">gotourl('modules/Mobile/index.php');</script>
+<?php
+die();
+}
 header('Content-Type: text/html;charset=utf-8');
 chdir (dirname(__FILE__) . '/../../');
 
