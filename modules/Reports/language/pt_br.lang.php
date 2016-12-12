@@ -272,7 +272,7 @@ $mod_strings = Array(
 
 'LBL_AUTO_GENERATED_REPORT_EMAIL' => 'Este é um email auto-gerado enviado a partir de um relatório agendado.',
 'LBL_TIME_FORMAT_MSG' => 'hh:mm (Formato 24 horas)',
-
+'LBL_RELOAD_REPORT' => 'Reload Report',
 'LBL_SAVE_REPORT' => 'Salvar',
 'LBL_SAVE_REPORT_AS' => 'Salvar Relatório como...',
 

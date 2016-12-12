@@ -6,14 +6,12 @@
  * The Initial Developer of the Original Code is vtiger.
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
-*
  ********************************************************************************/
 require_once('Smarty_setup.php');
 require_once("modules/Reports/ReportRun.php");
 require_once("modules/Reports/Reports.php");
 
-global $app_strings;
-global $mod_strings;
+global $app_strings, $mod_strings;
 $oPrint_smarty=new vtigerCRM_Smarty;
 $reportid = vtlib_purify($_REQUEST["record"]);
 $oReport = new Reports($reportid);

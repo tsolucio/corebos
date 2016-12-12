@@ -278,7 +278,7 @@ $mod_strings = Array(
 
 'LBL_AUTO_GENERATED_REPORT_EMAIL' => 'Dit is een automatisch gegenereerde e-mail die is verzonden middels een gepland rapport.',
 'LBL_TIME_FORMAT_MSG' => 'hh:mm (24 uurs formaat)',
-
+'LBL_RELOAD_REPORT' => 'Reload Report',
 'LBL_SAVE_REPORT' => 'Opslaan',
 'LBL_SAVE_REPORT_AS' => 'Sla Rapport op als...',
 'Add ReportCharts' => 'Add Report Charts',

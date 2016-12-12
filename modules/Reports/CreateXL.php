@@ -18,10 +18,8 @@ $fname = tempnam($root_directory.$tmp_dir, 'merge2.xls');
 # Write out the data
 $reportid = vtlib_purify($_REQUEST['record']);
 $oReportRun = new ReportRun($reportid);
-$filtercolumn = $_REQUEST['stdDateFilterField'];
-$startdate = ($_REQUEST['startdate']);
-$enddate = ($_REQUEST['enddate']);
-if(!empty($startdate) && !empty($enddate) && $startdate != '0000-00-00' && $enddate != '0000-00-00') {
+if(!empty($_REQUEST['startdate']) && !empty($_REQUEST['enddate']) && $_REQUEST['startdate'] != '0000-00-00' && $_REQUEST['enddate'] != '0000-00-00') {
+	$filtercolumn = $_REQUEST['stdDateFilterField'];
 	$filter = $_REQUEST['stdDateFilter'];
 	$date = new DateTimeField($_REQUEST['startdate']);
 	$endDate = new DateTimeField($_REQUEST['enddate']);

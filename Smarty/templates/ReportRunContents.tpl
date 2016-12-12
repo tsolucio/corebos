@@ -17,23 +17,17 @@
 	<table cellpadding="0" cellspacing="0" width="100%">
 		<tbody><tr>
 		<td align="left" width="75%">
-		<span class="genHeaderGray">
-		{if $MOD.$REPORTNAME neq ''}
-			{$MOD.$REPORTNAME}
-		{else}
-			{$REPORTNAME}
-		{/if}
-		</span><br>
+		<span class="genHeaderGray">{$REPORTNAME|@getTranslatedString:'Reports'}</span><br>
 		</td>
 		<td align="right" width="25%">
-		<span class="genHeaderGray">{$APP.LBL_TOTAL} : <span id='_reportrun_total'>{$REPORTHTML.1}</span>  {$APP.LBL_RECORDS}</span>
+		<span class="genHeaderGray">{$APP.LBL_TOTAL} : <span id='_reportrun_total'></span>  {$APP.LBL_RECORDS}</span>
 		</td>
 		</tr>
 		<tr><td id="report_info" align="left" colspan="2">&nbsp;</td></tr>
 		<tr><td colspan="2">&nbsp;</td></tr>
 		<tr>
 		<td colspan="2">
-		{if $ERROR_MSG eq ''}
+		{if empty($ERROR_MSG)}
 			<div class="rptContainer">
 				<datatable url="index.php?module=Reports&action=ReportsAjax&file=getJSON&record={$REPORTID}" template="report_row_template">
 					<footer>

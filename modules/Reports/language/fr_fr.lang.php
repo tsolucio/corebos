@@ -245,7 +245,7 @@ $mod_strings = array (
 
 	'LBL_AUTO_GENERATED_REPORT_EMAIL' => 'Cet email automatique contient un rapport planifié depuis votre CRM.',
 	'LBL_TIME_FORMAT_MSG' => 'hh:mm (heure:minutes)',
-
+	'LBL_RELOAD_REPORT' => 'Reload Report',
 	'LBL_SAVE_REPORT' => 'Enregistrer',
 	'LBL_SAVE_REPORT_AS' => 'Enregistrer le rapport en tant que...',
 	

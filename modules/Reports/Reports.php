@@ -1575,7 +1575,7 @@ function getEscapedColumns($selectedfields) {
 	 */
 	public static function getAdvCriteriaHTML($selected="") {
 		global $adv_filter_options;
-
+		$shtml = '';
 		foreach($adv_filter_options as $key=>$value) {
 			if($selected == $key) {
 				$shtml .= "<option selected value=\"".$key."\">".$value."</option>";

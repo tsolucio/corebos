@@ -267,7 +267,7 @@ $mod_strings = Array(
 
 'LBL_AUTO_GENERATED_REPORT_EMAIL' => 'Email auto-generado para entregar informe.',
 'LBL_TIME_FORMAT_MSG' => 'hh:mm (formato 24 horas)',
-
+'LBL_RELOAD_REPORT' => 'Actualizar Informe',
 'LBL_SAVE_REPORT' => 'Guardar',
 'LBL_SAVE_REPORT_AS' => 'Guardar como...',
 

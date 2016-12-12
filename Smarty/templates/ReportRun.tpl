@@ -41,13 +41,7 @@
 	<tbody>
 	<tr>
 	<td style="padding: 10px; text-align: left;" width="70%">
-		<span class="moduleName">
-		{if $MOD.$REPORTNAME neq ''}
-			{$MOD.$REPORTNAME}
-		{else}
-			{$REPORTNAME}
-		{/if}
-		</span>&nbsp;&nbsp;
+		<span class="moduleName">{$REPORTNAME|@getTranslatedString:$MODULE}</span>&nbsp;&nbsp;
 		{if $IS_EDITABLE eq 'true'}
 		<input type="button" name="custReport" value="{$MOD.LBL_CUSTOMIZE_REPORT}" class="crmButton small edit" onClick="editReport('{$REPORTID}');">
 		{/if}
@@ -58,19 +52,7 @@
 		<b>{$MOD.LBL_SELECT_ANOTHER_REPORT} : </b><br>
 		<select name="another_report" class="detailedViewTextBox" onChange="selectReport()">
 		{foreach key=report_in_fld_id item=report_in_fld_name from=$REPINFOLDER}
-		{if $MOD.$report_in_fld_name neq ''} 
-			{if $report_in_fld_id neq $REPORTID}
-				<option value={$report_in_fld_id}>{$MOD.$report_in_fld_name}</option>
-			{else}	
-				<option value={$report_in_fld_id} selected>{$MOD.$report_in_fld_name}</option>
-			{/if}
-		{else}
-			{if $report_in_fld_id neq $REPORTID}
-				<option value={$report_in_fld_id}>{$report_in_fld_name}</option>
-			{else}	
-				<option value={$report_in_fld_id} selected>{$report_in_fld_name}</option>
-			{/if}
-		{/if}
+			<option value={$report_in_fld_id} {if $report_in_fld_id eq $REPORTID}selected{/if}>{$report_in_fld_name|@getTranslatedString:$MODULE}</option>
 		{/foreach}
 		</select>&nbsp;&nbsp;
 	</td>
@@ -99,7 +81,7 @@
 <table class="small reportGenHdr mailClient mailClientBg" align="center" border="0" cellpadding="0" cellspacing="0" width="100%">
 	<tr>
 		<td align="right" valign="bottom" style="padding:5px">
-			<a href="javascript:void(0);" onclick="location.href='index.php?module=Reports&action=SaveAndRun&record={$REPORTID}&folderid={$FOLDERID}'"><img src="{'revert.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{$MOD.LBL_RELOAD_REPORT}" title="{$MOD.LBL_RELOAD_REPORT}" border="0"></a>
+			<a href="javascript:void(0);" onclick="location.href='index.php?module=Reports&action=SaveAndRun&record={$REPORTID}&folderid={$FOLDERID}'"><img src="{'revert.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{'LBL_RELOAD_REPORT'|@getTranslatedString:$MODULE}" title="{'LBL_RELOAD_REPORT'|@getTranslatedString:$MODULE}" border="0"></a>
 			&nbsp;
 			{if $SHOWCHARTS eq 'true'}
 				<a href="javascript:void(0);" onclick="window.location.href = '#viewcharts'"><img src="{'chart_60.png'|@vtiger_imageurl:$THEME}" align="abmiddle" alt="{'LBL_VIEW_CHARTS'|@getTranslatedString:$MODULE}" title="{'LBL_VIEW_CHARTS'|@getTranslatedString:$MODULE}" border="0" width="24px"></a>
@@ -207,7 +189,6 @@ function CrearEnlace(tipo,id){
 	if(!checkAdvancedFilter()) return false;
 	var advft_criteria = encodeURIComponent(document.getElementById('advft_criteria').value);
 	var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
-
 	return "index.php?module=Reports&action=ReportsAjax&file="+tipo+"&record="+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups;
 }
 
@@ -350,10 +331,6 @@ function SaveAsReport(id) {
 		}).done(function (response) {
 					if(response.indexOf('Error')!=-1 ||response.indexOf('error')!=-1 )
 					getObj('Generate').innerHTML = response;
-					// Performance Optimization: To update record count of the report result 
-					var __reportrun_directoutput_recordcount_scriptnode = document.getElementById('__reportrun_directoutput_recordcount_script');
-					if(__reportrun_directoutput_recordcount_scriptnode) { eval(__reportrun_directoutput_recordcount_scriptnode.innerHTML); }
-					// END
 					VtigerJS_DialogBox.unblock();
 				}
 		);
@@ -366,7 +343,6 @@ function goToPrintReport(id) {ldelim}
 	if(!checkAdvancedFilter()) return false;
 	var advft_criteria = document.getElementById('advft_criteria').value;
 	var advft_criteria_groups = document.getElementById('advft_criteria_groups').value;
-	
 	window.open("index.php?module=Reports&action=ReportsAjax&file=PrintReport&record="+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups,"{$MOD.LBL_PRINT_REPORT}","width=800,height=650,resizable=1,scrollbars=1,left=100");
 {rdelim}
 </script>

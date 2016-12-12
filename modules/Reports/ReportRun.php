@@ -605,7 +605,7 @@ class ReportRun extends CRMEntity {
 		$advfiltersql = "";
 
 		foreach($advfilterlist as $groupindex => $groupinfo) {
-			$groupcondition = $groupinfo['condition'];
+			$groupcondition = isset($groupinfo['condition']) ? $groupinfo['condition'] : '';
 			$groupcolumns = $groupinfo['columns'];
 
 			if(count($groupcolumns) > 0) {
@@ -895,7 +895,7 @@ class ReportRun extends CRMEntity {
 		$adb = PearDatabase::getInstance();
 
 		$advfilterlist = array();
-
+		$advfiltersql = null;
 		if(!empty($advft_criteria)) {
 			foreach($advft_criteria as $column_index => $column_condition) {
 
@@ -959,6 +959,7 @@ class ReportRun extends CRMEntity {
 				$advfilterlist[$adv_filter_groupid]['columns'][] = $criteria;
 			}
 
+			if (is_array($advft_criteria_groups))
 			foreach($advft_criteria_groups as $group_index => $group_condition_info) {
 				if(empty($group_condition_info)) continue;
 				if(empty($advfilterlist[$group_index])) continue;

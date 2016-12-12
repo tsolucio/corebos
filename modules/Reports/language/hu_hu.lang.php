@@ -257,6 +257,7 @@ $mod_strings = array(
 	'MONTH_STRINGS' => array('Január','Február','Március','Április','Május','Június','Júlis','Augusztus','Szeptember','Október','November','December'),
 	'LBL_AUTO_GENERATED_REPORT_EMAIL' => 'Ez egy automatikusan generált, időzített CRM jelentések e-mail.',
 	'LBL_TIME_FORMAT_MSG' => 'hh:mm (24 órás formátum)',
+	'LBL_RELOAD_REPORT' => 'Reload Report',
 	'LBL_SAVE_REPORT' => 'Mentés',
 	'LBL_SAVE_REPORT_AS' => '(Jelentés) Mentése másként...',
 	'LBL_VIEW_CHARTS' => 'Grafikonok megtekintése',

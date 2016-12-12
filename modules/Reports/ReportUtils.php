@@ -124,9 +124,9 @@ function getReportFieldValue ($report, $picklistArray, $dbField, $valueArray, $f
 		$fieldvalue = $date->getDisplayTime();
 	} elseif( $fieldType == "picklist" && !empty($value) ) {
 		if(is_array($picklistArray)) {
-			if(is_array($picklistArray[$dbField->name]) &&
-					$field->getFieldName() != 'activitytype' && !in_array(
-					$value, $picklistArray[$dbField->name])){
+			if(isset($picklistArray[$dbField->name]) && is_array($picklistArray[$dbField->name])
+					&& $field->getFieldName() != 'activitytype'
+					&& !in_array($value, $picklistArray[$dbField->name])) {
 				$fieldvalue =$app_strings['LBL_NOT_ACCESSIBLE'];
 			} else {
 				$fieldvalue = getTranslatedString($value, $module);
