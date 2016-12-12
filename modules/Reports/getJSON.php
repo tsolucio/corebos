@@ -56,6 +56,12 @@ if($res and $adb->num_rows($res) > 0) {
 
 	if(isPermitted($primarymodule,'index') == 'yes' && $modules_permitted == true) {
 		$oReportRun = new ReportRun($reportid);
+		$advft_criteria = coreBOS_Session::get('ReportAdvCriteria'.$_COOKIE['corebos_browsertabID'], '');
+		if(!empty($advft_criteria)) $advft_criteria = json_decode($advft_criteria,true);
+		$advft_criteria_groups = coreBOS_Session::get('ReportAdvCriteriaGrp'.$_COOKIE['corebos_browsertabID'], '');
+		if(!empty($advft_criteria_groups)) $advft_criteria_groups = json_decode($advft_criteria_groups,true);
+
+		$filtersql = $oReportRun->RunTimeAdvFilter($advft_criteria,$advft_criteria_groups);
 		if (isset($_REQUEST['page'])) {
 			$oReportRun->page = vtlib_purify($_REQUEST['page']);
 			$output = 'JSONPAGED';
@@ -63,7 +69,7 @@ if($res and $adb->num_rows($res) > 0) {
 			$oReportRun->page = 1;
 			$output = 'JSON';
 		}
-		$response = $oReportRun->GenerateReport($output, false);
+		$response = $oReportRun->GenerateReport($output, $filtersql, false);
 	} else {
 		$response['error_message'] = getTranslatedString('LBL_NO_ACCESS', 'Reports');
 		$response = json_encode($response);

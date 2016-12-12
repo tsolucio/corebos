@@ -69,8 +69,10 @@ if($numOfRows > 0) {
 		$oReportRun = new ReportRun($reportid);
 
 		$advft_criteria = $_REQUEST['advft_criteria'];
+		coreBOS_Session::set('ReportAdvCriteria'.$_COOKIE['corebos_browsertabID'], $advft_criteria);
 		if(!empty($advft_criteria)) $advft_criteria = json_decode($advft_criteria,true);
 		$advft_criteria_groups = $_REQUEST['advft_criteria_groups'];
+		coreBOS_Session::set('ReportAdvCriteriaGrp'.$_COOKIE['corebos_browsertabID'], $advft_criteria_groups);
 		if(!empty($advft_criteria_groups)) $advft_criteria_groups = json_decode($advft_criteria_groups,true);
 
 		if($_REQUEST['submode'] == 'saveCriteria') {
@@ -112,7 +114,6 @@ if($numOfRows > 0) {
 		}
 		$list_report_form->assign("SHOWCHARTS",$showCharts);
 
-		// Performance Optimization: Direct output of the report result
 		if($_REQUEST['submode'] == 'generateReport' && empty($advft_criteria)) {
 			$filtersql = '';
 		}

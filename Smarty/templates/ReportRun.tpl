@@ -295,6 +295,10 @@ function generateReport(id) {
 							DataTable.onRedraw(document.getElementsByTagName('datatable')[0], (data) => {
 								if(document.getElementById('_reportrun_total')) document.getElementById('_reportrun_total').innerHTML=data.total;
 							});
+							setTimeout(function(){
+								let firstPageLink = document.querySelector('pagination li a');
+								if (firstPageLink) firstPageLink.click();
+							}, 1000);
 							VtigerJS_DialogBox.unblock();
 					}
 		);
