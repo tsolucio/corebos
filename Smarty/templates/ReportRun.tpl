@@ -183,12 +183,12 @@
 <script src="include/bunnyjs/template.min.js"></script>
 <script src="include/bunnyjs/pagination.min.js"></script>
 <script src="include/bunnyjs/url.min.js"></script>
-<script src="include/bunnyjs/utils.svg.min.js"></script>
+<script src="include/bunnyjs/utils-svg.min.js"></script>
 <script src="include/bunnyjs/spinner.min.js"></script>
-<script src="include/bunnyjs/datatable.icons.min.js"></script>
 <script src="include/bunnyjs/element.min.js"></script>
-<script src="include/bunnyjs/datatable.scrolltop.min.js"></script>
 <script src="include/bunnyjs/datatable.min.js"></script>
+<script src="include/bunnyjs/datatable.icons.min.js"></script>
+<script src="include/bunnyjs/datatable.scrolltop.min.js"></script>
 <script type="text/javascript">
 Template.define('report_row_template', {});
 {/literal}
@@ -289,10 +289,12 @@ function generateReport(id) {
 			url: 'index.php?action=ReportsAjax&file=SaveAndRun&mode=ajax&module=Reports&submode=generateReport&record='+id,
 	}).done(function (response) {
 							getObj('Generate').innerHTML = response;
-							// Performance Optimization: To update record count of the report result 
-							var __reportrun_directoutput_recordcount_scriptnode = document.getElementById('__reportrun_directoutput_recordcount_script');
-							if(__reportrun_directoutput_recordcount_scriptnode) { eval(__reportrun_directoutput_recordcount_scriptnode.innerHTML); }
-							// END
+							vtlib_executeJavascriptInElement(getObj('Generate'));
+							Template.define('report_row_template', {});
+							DataTable.initAll();
+							DataTable.onRedraw(document.getElementsByTagName('datatable')[0], (data) => {
+								if(document.getElementById('_reportrun_total')) document.getElementById('_reportrun_total').innerHTML=data.total;
+							});
 							VtigerJS_DialogBox.unblock();
 					}
 		);
@@ -312,10 +314,12 @@ function saveReportAdvFilter(id) {
 			url: 'index.php?action=ReportsAjax&file=SaveAndRun&mode=ajax&module=Reports&submode=saveCriteria&record='+id+'&advft_criteria='+advft_criteria+'&advft_criteria_groups='+advft_criteria_groups
 	}).done(function (response) {
 							getObj('Generate').innerHTML = response;
-							// Performance Optimization: To update record count of the report result 
-							var __reportrun_directoutput_recordcount_scriptnode = document.getElementById('__reportrun_directoutput_recordcount_script');
-							if(__reportrun_directoutput_recordcount_scriptnode) { eval(__reportrun_directoutput_recordcount_scriptnode.innerHTML); }
-							// END
+							vtlib_executeJavascriptInElement(getObj('Generate'));
+							Template.define('report_row_template', {});
+							DataTable.initAll();
+							DataTable.onRedraw(document.getElementsByTagName('datatable')[0], (data) => {
+								if(document.getElementById('_reportrun_total')) document.getElementById('_reportrun_total').innerHTML=data.total;
+							});
 							VtigerJS_DialogBox.unblock();
 					}
 			);
