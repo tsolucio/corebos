@@ -7,8 +7,5 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  ************************************************************************************/
-$skipAction=true;
-
-require_once('modules/Vtiger/ListView.php');
-
+include_once('modules/Vtiger/ListView.php');
 ?>

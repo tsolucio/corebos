@@ -26,6 +26,11 @@ if(!is_admin($current_user)) {
 
 	$menu_array = Array();
 
+	$menu_array['LayoutEditor']['location'] = 'index.php?module=Settings&action=LayoutBlockList&parenttab=Settings&formodule='.$module;
+	$menu_array['LayoutEditor']['image_src'] = 'themes/images/orgshar.gif';
+	$menu_array['LayoutEditor']['desc'] = getTranslatedString('LBL_LAYOUT_EDITOR_DESCRIPTION');
+	$menu_array['LayoutEditor']['label'] = getTranslatedString('LBL_LAYOUT_EDITOR');
+
 	$menu_array['CONFIGURATION']['location'] = 'index.php?module=ModComments&action=BasicSettings&parenttab=Settings&formodule=ModComments';
 	$menu_array['CONFIGURATION']['image_src']= 'modules/ModComments/ModComments.png';
 	$menu_array['CONFIGURATION']['desc'] = getTranslatedString('LBL_CONFIGURATION_DESCRIPTION', 'ModComments');
