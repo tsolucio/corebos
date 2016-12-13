@@ -24,7 +24,7 @@ class addCreatedByField extends cbupdaterWorker {
 			$this->sendMsg ( 'Changeset ' . get_class ( $this ) . ' already applied!' );
 		} else {
 			global $adb;
-			$sql = "SELECT tabid,name FROM vtiger_tab WHERE name not in ('Calendar','Events','PBXManager','Webmails','Emails','Integration','Dashboard') and isentitytype=1";
+			$sql = "SELECT tabid,name FROM vtiger_tab WHERE name not in ('Calendar','Events','PBXManager','Webmails','Emails','Integration','Dashboard','ModComments') and isentitytype=1";
 			$rs = $adb->pquery($sql, array());
 			while ($tab=$adb->fetch_array($rs)) {
 				$module = $tab['name'];
@@ -34,6 +34,10 @@ class addCreatedByField extends cbupdaterWorker {
 					$block = $adb->query_result($result, 0, 'blocklabel');
 					if ($block) {
 						$blockInstance = Vtiger_Block::getInstance($block, $moduleInstance);
+						$field = Vtiger_Field::getInstance('created_user_id',$moduleInstance);
+						if ($field) {
+							$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid='.$field->id);
+						} else {
 						$field = new Vtiger_Field ();
 						$field->name = 'created_user_id';
 						$field->label = 'Created By';
@@ -45,6 +49,7 @@ class addCreatedByField extends cbupdaterWorker {
 						$field->quickcreate = 3;
 						$field->masseditable = 0;
 						$blockInstance->addField($field);
+						}
 						$this->sendMsg("Creator field added for $module <br>");
 					}
 				} else {
