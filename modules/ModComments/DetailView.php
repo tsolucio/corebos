@@ -15,9 +15,5 @@ $smarty = new vtigerCRM_Smarty();
 
 require_once 'modules/Vtiger/DetailView.php';
 
-$smarty->assign('EDIT_DUPLICATE', 'notpermitted');
-$smarty->assign('DELETE', 'notpermitted');
-$smarty->assign('DETAILVIEW_AJAX_EDIT', PerformancePrefs::getBoolean('DETAILVIEW_AJAX_EDIT', false));
-
 $smarty->display('DetailView.tpl');
 ?>

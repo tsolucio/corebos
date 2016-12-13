@@ -9,7 +9,6 @@
  ************************************************************************************/
 global $currentModule;
 $modObj = CRMEntity::getInstance($currentModule);
-
 $ajaxaction = $_REQUEST["ajxaction"];
 
 if($ajaxaction == 'WIDGETADDCOMMENT') {

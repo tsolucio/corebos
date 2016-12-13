@@ -96,49 +96,33 @@ class ModCommentsCore extends CRMEntity {
 	var $mandatory_fields = Array('createdtime', 'modifiedtime', 'commentcontent');
 
 	function __construct() {
-		global $log, $currentModule;
-		$this->column_fields = getColumnFields($currentModule);
+		global $log;
+		$this_module = get_class($this);
+		$this->column_fields = getColumnFields($this_module);
 		$this->db = PearDatabase::getInstance();
 		$this->log = $log;
-	}
-
-	function getSortOrder() {
-		global $currentModule;
-
-		$sortorder = $this->default_sort_order;
-		if($_REQUEST['sorder']) $sortorder = $this->db->sql_escape_string($_REQUEST['sorder']);
-		else if($_SESSION[$currentModule.'_Sort_Order'])
-			$sortorder = $_SESSION[$currentModule.'_Sort_Order'];
-
-		return $sortorder;
-	}
-
-	function getOrderBy() {
-		global $currentModule;
-
-		$use_default_order_by = '';
-		if(PerformancePrefs::getBoolean('LISTVIEW_DEFAULT_SORTING', true)) {
-			$use_default_order_by = $this->default_order_by;
+		$sql = 'SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid = ? limit 1';
+		$tabid = getTabid($this_module);
+		$result = $this->db->pquery($sql, array($tabid));
+		if ($result and $this->db->num_rows($result)==1) {
+			$this->HasDirectImageField = true;
 		}
-
-		$orderby = $use_default_order_by;
-		if($_REQUEST['order_by']) $orderby = $this->db->sql_escape_string($_REQUEST['order_by']);
-		else if($_SESSION[$currentModule.'_Order_By'])
-			$orderby = $_SESSION[$currentModule.'_Order_By'];
-		return $orderby;
 	}
 
 	function save_module($module) {
 		global $adb;
+		if ($this->HasDirectImageField) {
+			$this->insertIntoAttachment($this->id,$module);
+		}
 		$relto = $this->column_fields['related_to'];
 		if (!empty($relto)) {
 			// update related assigned to email read only field
-			$rs = $adb->pquery('SELECT email1
+			$relemailrs = $adb->pquery('SELECT email1
 				FROM vtiger_modcomments
 				INNER JOIN vtiger_crmentity on crmid=related_to
 				INNER JOIN vtiger_users on id = smownerid
 				WHERE modcommentsid=?',array($this->id));
-			$relemail = $adb->query_result($rs,0,0);
+			$relemail = $adb->query_result($relemailrs,0,0);
 			$this->column_fields['relatedassignedemail'] = $relemail;
 			$adb->pquery('UPDATE vtiger_modcomments SET relatedassignedemail=? WHERE modcommentsid=?',array($relemail,$this->id));
 		}
@@ -155,7 +139,7 @@ class ModCommentsCore extends CRMEntity {
 	/**
 	 * Get list view query (send more WHERE clause condition if required)
 	 */
-	function getListQuery($module, $usewhere=false) {
+	function getListQuery($module, $usewhere='') {
 		$query = "SELECT vtiger_crmentity.*, $this->table_name.*";
 
 		// Keep track of tables joined to avoid duplicates
