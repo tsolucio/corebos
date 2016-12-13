@@ -181,7 +181,7 @@ class Vtiger_FieldBasic {
 			self::log("Creating Field $this->name ... DONE");
 			self::log("Module language mapping for $this->label ... CHECK");
 		} else {
-			self::log("Creating Field $this->name ... <span style='color:red'>**ERROR**</span>");
+			self::log("Creating Field $this->name on $moduleInstance->name ... <span style='color:red'>**ERROR**</span>");
 			self::log("Module language mapping for $this->label ... <span style='color:red'>**ERROR**</span>");
 		}
 	}
