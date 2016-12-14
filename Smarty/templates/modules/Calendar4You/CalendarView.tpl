@@ -41,8 +41,9 @@ Events_color['{$typeid}_title_color'] = '{$typedata.title_color}';
 {/foreach}
 
 Calendar_Event_Types = {literal}{
-        events: function(start, end, callback){
-
+        events: function(start1, end1, timezone,callback){
+                 var start=start1._d;
+                 var end=end1._d;
                  var loggeduser = jQuery('#logged_user').val();
 
                  var user_view_type = jQuery('#user_view_type :selected').val();
@@ -99,9 +100,7 @@ Calendar_Event_Types = {literal}{
                  {literal}
                  
                  var view_val = jQuery('#calendar_div').fullCalendar('getView'); 
-
                  document.getElementById("status").style.display="inline";
-                 
                  jQuery.ajax({
                             url: 'index.php',
                             dataType: 'json',
@@ -117,11 +116,10 @@ Calendar_Event_Types = {literal}{
                                 task_status: task_status, 
                                 task_priority: task_priority,
                                 save: loggeduser,
-                                start: Math.round(start.getTime() / 1000),
-                                end: Math.round(end.getTime() / 1000)
+                                start: Math.round(new Date(start).getTime() / 1000),
+                                end: Math.round(new Date(end).getTime() / 1000)
                             },
                             success: function(data){
-
                                 var events = [];
                                  
                                 for (var i = 0; i < data.length; i++){
@@ -170,30 +168,22 @@ Calendar_Event_Types = {literal}{
 jQuery(document).ready(function(){
 		
 	var lastView;
-    var date = new Date();
+        var date = new Date();
 	var d = date.getDate();
 	var m = date.getMonth();
 	var y = date.getFullYear();
 
     var config = {
         
-        weekMode : 'liquid',
-		columnFormat: {
-			month: 'ddd',
-			week: 'ddd {/literal}{$CALENDAR_DAYMONTHFORMAT}{literal}',
-			day: 'dddd {/literal}{$CALENDAR_DAYMONTHFORMAT}{literal}'
-		},
+        fixedWeekCount :false,
         theme: true,
-        defaultView: '{/literal}{$DEFAULTVIEW}{literal}',
-        year: '{/literal}{$DATE_DATA.year}{literal}',
-        month: '{/literal}{$DATE_DATA.fc_month}{literal}',
-        date: '{/literal}{$DATE_DATA.day}{literal}',
-        
+        defaultView: '{/literal}{$DEFAULTVIEW}{literal}',     
         allDayText: {/literal}'{$MOD.LBL_ALL_DAY}'{literal},
         
         weekends: {/literal}{$CALENDAR_SETTINGS.show_weekends}{literal},
-        firstHour: {/literal}{$CALENDAR_SETTINGS.start_hour}{literal},   
-        slotMinutes: {/literal}{$Calendar_Slot_Minutes}{literal},
+        minTime:  "{/literal}{$CALENDAR_SETTINGS.start_hour}{literal}",   
+        maxTime:  "{/literal}{$CALENDAR_SETTINGS.end_hour}{literal}", 
+        slotDuration: "{/literal}{$Calendar_Slot_Minutes}{literal}",
         
         header: {
 			left: 'prev,next today ',
@@ -205,11 +195,11 @@ jQuery(document).ready(function(){
         {/literal} 
         
         {if $IS_24 eq "true"}
-            timeFormat: 'H:mm {ldelim} - H:mm{rdelim}',
-            axisFormat: 'H(:mm)', 
+            timeFormat: 'H:mm',
+            slotLabelFormat: 'H(:mm)', 
         {else}
-            timeFormat: 'h:mmtt {ldelim} - h:mmtt {rdelim}',
-            axisFormat: 'h(:mm)tt',
+            timeFormat: 'h:mma',
+            slotLabelFormat: 'h(:mm)a',
         {/if}
 
         monthNames: ['{$CMOD.cal_month_long.1|escape}', '{$CMOD.cal_month_long.2|escape}', '{$CMOD.cal_month_long.3|escape}', '{$CMOD.cal_month_long.4|escape}', '{$CMOD.cal_month_long.5|escape}', '{$CMOD.cal_month_long.6|escape}', '{$CMOD.cal_month_long.7|escape}', '{$CMOD.cal_month_long.8|escape}', '{$CMOD.cal_month_long.9|escape}', '{$CMOD.cal_month_long.10|escape}', '{$CMOD.cal_month_long.11|escape}', '{$CMOD.cal_month_long.12|escape}'],
@@ -236,33 +226,33 @@ jQuery(document).ready(function(){
 			else jQuery('#loading').hide();
 		},
         
-        dayClick : function(date, allDay, jsEvent, view){
-            if (allDay) {
+        dayClick : function(date, jsEvent, view){
+            if(date._ambigTime==true){
                 argg1 = 'createTodo';
                 type = 'todo'; 
-            } else {
+            }
+            else{
                 argg1 = 'addITSEvent';
                 type = '0';
             }
             {/literal}
             if ('{$CREATE_PERMISSION}'!='permitted') return false;
-            var formated_date = jQuery.fullCalendar.formatDate(date, '{$USER_DATE_FORMAT}');
-            
+            var formated_date = date.format('{$USER_DATE_FORMAT|upper}');
             {if $IS_24 eq "true"}
-            starthr = jQuery.fullCalendar.formatDate(date, 'HH');
+            starthr = date.format('HH');
             startfmt = '';
             
-            endhr = jQuery.fullCalendar.formatDate(date, 'HH');
+            endhr = date.format('HH');
             endfmt =  '';
             {else}
-            starthr = jQuery.fullCalendar.formatDate(date, 'hh');
-            startfmt = jQuery.fullCalendar.formatDate(date, 'tt');
+            starthr = date.format('hh');
+            startfmt = date.format('a');
             
-            endhr = jQuery.fullCalendar.formatDate(date, 'hh');
-            endfmt = jQuery.fullCalendar.formatDate(date, 'tt');
+            endhr = date.format('hh');
+            endfmt = date.format('a');
             {/if}
-            startmin = jQuery.fullCalendar.formatDate(date, 'mm');
-            endmin = jQuery.fullCalendar.formatDate(date, 'mm');
+            startmin = date.format('mm');
+            endmin = date.format('mm');
             
             var viewOption = 'hourview';
             var subtab = '';
@@ -372,8 +362,7 @@ jQuery(document).ready(function(){
             hideITSEventInfo();
         },
         
-        eventDrop: function(event,dayDelta,minuteDelta,allDay,revertFunc){
-
+        eventDrop: function(event,dayDelta,revertFunc){
               if (confirm("{/literal}{$MOD.MOVE_EVENT_QUESTION}{literal}")){
                 jQuery.ajax({
                             url: 'index.php',
@@ -383,11 +372,10 @@ jQuery(document).ready(function(){
                                         action: 'SaveEvent',
                                         mode: 'event_drop',
                                         record: event.id,
-                                        day: dayDelta,
-                                        minute: minuteDelta,
+                                        day: dayDelta._days,
+                                        minute: dayDelta._milliseconds/60000,
                                     },
                                     success: function(data) {
-                                        
                                     }
                              });
             } else {
@@ -399,7 +387,7 @@ jQuery(document).ready(function(){
             hideITSEventInfo();
         },
         
-        eventResize: function(event,dayDelta,minuteDelta,revertFunc) {
+        eventResize: function(event,dayDelta,revertFunc) {
 
             if (confirm("{/literal}{$MOD.RESIZE_EVENT_QUESTION}{literal}")){
                 jQuery.ajax({
@@ -410,8 +398,8 @@ jQuery(document).ready(function(){
                                         action: 'SaveEvent',
                                         mode: 'event_resize',
                                         record: event.id,
-                                        day: dayDelta,
-                                        minute: minuteDelta,
+                                        day: dayDelta._days,
+                                        minute: dayDelta._milliseconds/60000,
                                     },
                                     success: function(data) {
   
@@ -425,26 +413,15 @@ jQuery(document).ready(function(){
         },
         
         eventRender: function (event, element){
-            element.find('.fc-event-title').html(event.title);
-            
+            element.find('.fc-title').html(event.title);
             element.bind('dblclick', function(){
                 if (event.visibility == "public" && event.id.substr(0,1) != "g"){
                     fnHideDrop('event_info');
                     window.location.href = "index.php?action=EventDetailView&module=Calendar4You&record="+ event.id + "&activity_mode="+ event.activity_mode + "&parenttab={/literal}{$CATEGORY}{literal}";
                 }
             });
-        },
-        
-        viewDisplay: function(view) {
-            if (lastView == undefined) { lastView = 'firstRun';  }
-
-            if (view.name != lastView && lastView != 'firstRun'){
-                jQuery('#calendar_div').fullCalendar( 'refetchEvents' );
-            }
-            
-            lastView = view.name;
-        }
-	}
+        },     
+ }
 
     jQuery('#calendar_div').fullCalendar(config);
 });

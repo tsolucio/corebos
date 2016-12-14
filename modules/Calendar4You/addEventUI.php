@@ -1117,8 +1117,9 @@ function c4y_eventsave() {
 			ghide('addITSEvent');
 			VtigerJS_DialogBox.unblock();
 			if (return_data[0] != "undefined" && return_data[1] != "undefined" && return_data[2] != "undefined"){
-				go_to_month = (return_data[1] * 1) - 1;
-				jQuery('#calendar_div').fullCalendar('gotoDate', return_data[0] * 1, go_to_month, return_data[2] * 1);
+				go_to_month = (return_data[1] * 1); 
+                                var date=return_data[0] * 1+'-'+go_to_month+'-'+return_data[2] * 1;
+				jQuery('#calendar_div').fullCalendar('gotoDate', date);
 				alert(return_data[3]);
 			} else {
 				alert(data);
@@ -1149,8 +1150,9 @@ function c4y_todosave(val_result) {
 			ghide('createTodo');
 			VtigerJS_DialogBox.unblock();
 			if (return_data[0] != "undefined" && return_data[1] != "undefined" && return_data[2] != "undefined"){
-				go_to_month = (return_data[1] * 1) - 1;
-				jQuery('#calendar_div').fullCalendar('gotoDate', return_data[0] * 1, go_to_month, return_data[2] * 1);
+				go_to_month = (return_data[1] * 1);
+                                var date=return_data[0] * 1+'-'+go_to_month+'-'+return_data[2] * 1;
+				jQuery('#calendar_div').fullCalendar('gotoDate',date);
 				alert(return_data[3]);
 			} else {
 				alert("error:"+data);
