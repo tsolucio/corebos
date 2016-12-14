@@ -357,11 +357,11 @@ public function setgoogleaccessparams($userid){
         global $adb,$current_user;
     
         $Settings = array();
-        
+        var_dump($current_user);
         $Settings["hour_format"] = $current_user->hour_format;
-        
-        $Settings["start_hour"] = round($current_user->start_hour);
-
+        echo 'fdsfdsfds'.$current_user->start_hour;
+        $Settings["start_hour"] = round($current_user->start_hour).":00:00";
+        $Settings["end_hour"] = round(24).":00:00";
         $Settings["dayoftheweek"] = "Sunday";
         $Settings["number_dayoftheweek"] = "0";
         

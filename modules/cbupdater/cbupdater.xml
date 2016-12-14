@@ -976,4 +976,11 @@
 	<classname>updateMobileModuleToCrmNow2</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>loridacito</author>
+	<description>Add files on header for calendar4you</description>
+	<filename>build/changeSets/addlinksforcalendar.php</filename>
+	<classname>addlinksforcalendar</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
