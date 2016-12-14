@@ -100,7 +100,6 @@ Calendar_Event_Types = {literal}{
                  {literal}
                  
                  var view_val = jQuery('#calendar_div').fullCalendar('getView'); 
-                 var st=Math.round(new Date(end).getTime() / 1000);
                  document.getElementById("status").style.display="inline";
                  jQuery.ajax({
                             url: 'index.php',
