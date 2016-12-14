@@ -165,12 +165,12 @@ function getITSCalURL(){
 	var view_val = jQuery('#calendar_div').fullCalendar( 'getView' );
 	url += "&view="+view_val.name;
 	var cal_date = jQuery('#calendar_div').fullCalendar('getDate');
-	var year_val = cal_date.getFullYear();
+	var year_val = new Date(cal_date).getFullYear();
 	url += "&year="+year_val;
-	var month_val = cal_date.getMonth();
+	var month_val = new Date(cal_date).getMonth();
 	month_val = (month_val * 1) + 1 ;
 	url += "&month="+month_val;
-	var day_val = cal_date.getDate();
+	var day_val = new Date(cal_date).getDate();
 	url += "&day="+day_val;
 	return url;
 }

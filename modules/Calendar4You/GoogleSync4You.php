@@ -120,8 +120,7 @@ class GoogleSync4You {
 
 	public function getAuthURL($force=false) {
 		set_include_path($this->root_directory.'modules/Calendar4You/');
-		require_once 'gcal/src/Google/Client.php';
-		require_once 'gcal/src/Google/Service/Calendar.php';
+		require_once 'gcal/vendor/autoload.php';
 		$CLIENT_ID = $this->clientid;
 		$KEY_FILE = $this->keyfile;
 		$client = new Google_Client();
@@ -145,81 +144,48 @@ class GoogleSync4You {
        
     }
     
-    private function connectToGoogleViaZend() {
-		
-        set_include_path($this->root_directory. "modules/Calendar4You/");
-        
-        require_once 'Zend/Loader.php';
-        Zend_Loader::loadClass('Zend_Gdata');
-        Zend_Loader::loadClass('Zend_Gdata_AuthSub');
-        Zend_Loader::loadClass('Zend_Gdata_ClientLogin');
-        Zend_Loader::loadClass('Zend_Gdata_Calendar');
-        
-        if ($this->user_login != "" && $this->user_password != "") {
-            try {
-               $service = Zend_Gdata_Calendar::AUTH_SERVICE_NAME;
-               $this->gClient = Zend_Gdata_ClientLogin::getHttpClient($this->user_login, $this->user_password, $service);
-               $this->status = $this->mod_strings["LBL_OK"];
-               $this->is_logged = true;
-                
-            } catch (Zend_Gdata_App_CaptchaRequiredException $cre) {
-               $this->status = $this->mod_strings["LBL_URL_CAPTCHA_IMAGE"].': ' . $cre->getCaptchaUrl() . ', '.$this->mod_strings["LBL_TOKEN_ID"].': ' . $cre->getCaptchaToken();
-            } catch (Zend_Gdata_App_AuthException $ae) {
-               $this->status = $this->mod_strings["LBL_AUTH_PROBLEM"].': ' . $ae->exception() . "\n";
-            }
-        } else {
-            $this->status = $this->mod_strings["LBL_MISSING_AUTH_DATA"];
-        }
-        
-        if ($this->is_logged) {
-            $this->gService = new Zend_Gdata_Calendar($this->gClient);
-            
-            try {
-                $this->gListFeed = $this->gService->getCalendarListFeed();
-            } catch (Zend_Gdata_App_Exception $e) {
-                $this->gListFeed = array();
-            }
-        }
-        
-        set_include_path($this->root_directory);
-       
-	}
    //new method for API v.3
     private function connectToGoogleViaAPI3() {
 		
         set_include_path($this->root_directory. "modules/Calendar4You/");
         
-        require_once 'gcal/src/Google/Client.php';
-        require_once 'gcal/src/Google/Service/Calendar.php';
-        if ($this->refresh_token!='' && $this->user_clientsecret != "" && $this->apikey != "" && $this->clientid!="" && $this->keyfile!="") {
-            try {
-             $CLIENT_ID = $this->clientid;
-             $KEY_FILE = $this->keyfile;
-             $client = new Google_Client();
-             $client->setApplicationName("corebos");
+        require_once 'gcal/vendor/autoload.php';
+        if ($this->user_clientsecret != "" && $this->apikey != "" && $this->clientid!="" && $this->keyfile!="") {
+            try{
+            $CLIENT_ID = $this->clientid;
+            $KEY_FILE = $this->keyfile;
+            $client = new Google_Client();
+            $client->setApplicationName("corebos");
             $client->setClientSecret($this->user_clientsecret);
             $client->setRedirectUri($KEY_FILE);
             $client->setClientId($CLIENT_ID);
             $client->setDeveloperKey($this->apikey);
             $client->setAccessType("offline");
             $client->setScopes(array("https://www.googleapis.com/auth/calendar","https://www.googleapis.com/auth/calendar.readonly"));
-
-    if (isset($_SESSION['token']) && !$client->isAccessTokenExpired()) {
-    $client->setAccessToken($_SESSION['token']);}
-  
-    else if(!isset($_SESSION['token']) || $_SESSION['token']=='' || $client->isAccessTokenExpired())
-   {
-     $reftoken=$this->refresh_token;
-     try{
-     $ref=$client->refreshToken($reftoken);
-      $_SESSION['token'] = $client->getAccessToken();
-     }
-     catch(Exception $e){
-     $this->status =$e->getMessage();  
-     $authUrl = $client->createAuthUrl();
-     echo "<a class='login' href='$authUrl'>".$this->mod_strings["LBL_CONNECT"]."</a><br>";
-     }
-   }
+            if (isset($_SESSION['token'])) {
+            $client->setAccessToken($_SESSION['token']);
+            $reftoken=$client->getRefreshToken();
+            $this->db->pquery("update its4you_googlesync4you_access set refresh_token=? where refresh_token='' or refresh_token is null",array($reftoken));
+            }
+            else if($client->isAccessTokenExpired())
+            {
+             $reftoken=$this->refresh_token;
+             try{
+             $ref=$client->refreshToken($reftoken);
+             if($ref['error']==null)
+             $_SESSION['token'] = $client->getAccessToken();
+             else {
+             $authUrl = $client->createAuthUrl();
+             $this->status="No refresh token";
+             echo "<a class='login' href='$authUrl'>".$this->mod_strings["LBL_CONNECT"]."</a><br>";
+             }
+             }
+             catch(Exception $e){
+             $this->status =$e->getMessage();  
+             $authUrl = $client->createAuthUrl();
+             echo "<a class='login' href='$authUrl'>".$this->mod_strings["LBL_CONNECT"]."</a><br>";
+             }
+            }
             if($client->getAccessToken()){
             $this->gService =  new Google_Service_Calendar($client);
             //a fast way to check if the login parameters work
@@ -232,22 +198,22 @@ class GoogleSync4You {
                 echo "<a class='login' href='$authUrl'>".$this->mod_strings["LBL_CONNECT"]."</a><br>";
         } 
         }
-        else if($this->refresh_token=='' && $this->user_clientsecret != "" && $this->apikey != "" && $this->clientid!="" && $this->keyfile!=""){
-             $CLIENT_ID = $this->clientid;
-             $KEY_FILE = $this->keyfile;
-             $client = new Google_Client();
-             $client->setApplicationName("corebos");
-            $client->setClientSecret($this->user_clientsecret);
-            $client->setRedirectUri($KEY_FILE);
-            $client->setClientId($CLIENT_ID);
-            $client->setDeveloperKey($this->apikey);
-            $client->setAccessType("offline");
-            $client->setScopes(array("https://www.googleapis.com/auth/calendar","https://www.googleapis.com/auth/calendar.readonly"));
-            $authUrl = $client->createAuthUrl();
-			if(isset($_REQUEST['type']) && ($_REQUEST['type'] == 'event_settings' || $_REQUEST['type'] == 'settings'))
-                   echo "<a class='login' href='$authUrl'>".$this->mod_strings["LBL_CONNECT"]."</a><br>";
-         
-        }
+//        else if($this->refresh_token=='' && $this->user_clientsecret != "" && $this->apikey != "" && $this->clientid!="" && $this->keyfile!=""){
+//             $CLIENT_ID = $this->clientid;
+//             $KEY_FILE = $this->keyfile;
+//             $client = new Google_Client();
+//             $client->setApplicationName("corebos");
+//            $client->setClientSecret($this->user_clientsecret);
+//            $client->setRedirectUri($KEY_FILE);
+//            $client->setClientId($CLIENT_ID);
+//            $client->setDeveloperKey($this->apikey);
+//            $client->setAccessType("offline");
+//            $client->setScopes(array("https://www.googleapis.com/auth/calendar","https://www.googleapis.com/auth/calendar.readonly"));
+//            $authUrl = $client->createAuthUrl();
+//			if(isset($_REQUEST['type']) && ($_REQUEST['type'] == 'event_settings' || $_REQUEST['type'] == 'settings'))
+//                   echo "<a class='login' href='$authUrl'>".$this->mod_strings["LBL_CONNECT"]."</a><br>";
+//         
+//        }
         else {
             $this->status = $this->mod_strings["LBL_MISSING_AUTH_DATA"];
         }
