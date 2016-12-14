@@ -392,16 +392,14 @@ function return_app_list_strings_language($language)
 {
 	global $log;
 	$log->debug("Entering return_app_list_strings_language(".$language.") method ...");
-	global $app_list_strings, $default_language, $log, $translation_string_prefix;
+	global $app_list_strings, $default_language, $log;
 	$temp_app_list_strings = $app_list_strings;
-	$language_used = $language;
 
 	@include("include/language/$language.lang.php");
 	if(!isset($app_list_strings))
 	{
 		$log->warn("Unable to find the application language file for language: ".$language);
 		require("include/language/$default_language.lang.php");
-		$language_used = $default_language;
 	}
 
 	if(!isset($app_list_strings))
@@ -424,7 +422,7 @@ function return_app_list_strings_language($language)
 function return_app_currency_strings_language($language) {
 	global $log;
 	$log->debug("Entering return_app_currency_strings_language(".$language.") method ...");
-	global $app_currency_strings, $default_language, $log, $translation_string_prefix;
+	global $app_currency_strings, $default_language, $log;
 	// Backup the value first
 	$temp_app_currency_strings = $app_currency_strings;
 	@include("include/language/$language.lang.php");
@@ -432,7 +430,6 @@ function return_app_currency_strings_language($language) {
 	{
 		$log->warn("Unable to find the application language file for language: ".$language);
 		require("include/language/$default_language.lang.php");
-		$language_used = $default_language;
 	}
 	if(!isset($app_currency_strings))
 	{
@@ -457,9 +454,8 @@ function return_application_language($language)
 {
 	global $log;
 	$log->debug("Entering return_application_language(".$language.") method ...");
-	global $app_strings, $default_language, $log, $translation_string_prefix;
+	global $app_strings, $default_language, $log;
 	$temp_app_strings = $app_strings;
-	$language_used = $language;
 
 	checkFileAccessForInclusion("include/language/$language.lang.php");
 	@include("include/language/$language.lang.php");
@@ -467,7 +463,6 @@ function return_application_language($language)
 	{
 		$log->warn("Unable to find the application language file for language: ".$language);
 		require("include/language/$default_language.lang.php");
-		$language_used = $default_language;
 	}
 
 	if(!isset($app_strings))
@@ -475,15 +470,6 @@ function return_application_language($language)
 		$log->fatal("Unable to load the application language file for the selected language($language) or the default language($default_language)");
 		$log->debug("Exiting return_application_language method ...");
 		return null;
-	}
-
-	// If we are in debug mode for translating, turn on the prefix now!
-	if($translation_string_prefix)
-	{
-		foreach($app_strings as $entry_key=>$entry_value)
-		{
-			$app_strings[$entry_key] = $language_used.' '.$entry_value;
-		}
 	}
 
 	$return_value = $app_strings;
@@ -498,7 +484,7 @@ function return_application_language($language)
  * All Rights Reserved.
  * If you are in the current module, do not call this function unless you are loading it for the first time */
 function return_module_language($language, $module) {
-	global $mod_strings, $default_language, $log, $currentModule, $translation_string_prefix;
+	global $mod_strings, $default_language, $log, $currentModule;
 	$log->debug("Entering return_module_language(".$language.",". $module.") method ...");
 	if ($module == 'Events') $module = 'Calendar';
 	static $cachedModuleStrings = array();
@@ -509,7 +495,6 @@ function return_module_language($language, $module) {
 	}
 
 	$temp_mod_strings = $mod_strings;
-	$language_used = $language;
 
 	@include("modules/$module/language/$language.lang.php");
 	if(!isset($mod_strings))
@@ -517,14 +502,11 @@ function return_module_language($language, $module) {
 		$log->warn("Unable to find the module language file for language: ".$language." and module: ".$module);
 		if($default_language == 'en_us') {
 			require("modules/$module/language/$default_language.lang.php");
-			$language_used = $default_language;
 		} else {
 			@include("modules/$module/language/$default_language.lang.php");
 			if(!isset($mod_strings)) {
 				require("modules/$module/language/en_us.lang.php");
-				$language_used = 'en_us';
 			} else {
-				$language_used = $default_language;
 			}
 		}
 	}
@@ -534,15 +516,6 @@ function return_module_language($language, $module) {
 		$log->fatal("Unable to load the module($module) language file for the selected language($language) or the default language($default_language)");
 		$log->debug("Exiting return_module_language method ...");
 		return null;
-	}
-
-	// If we are in debug mode for translating, turn on the prefix now!
-	if($translation_string_prefix)
-	{
-		foreach($mod_strings as $entry_key=>$entry_value)
-		{
-			$mod_strings[$entry_key] = $language_used.' '.$entry_value;
-		}
 	}
 
 	$return_value = $mod_strings;
@@ -556,14 +529,13 @@ function return_module_language($language, $module) {
 /*This function returns the mod_strings for the current language and the specified module */
 function return_specified_module_language($language, $module)
 {
-	global $log, $default_language, $translation_string_prefix;
+	global $log, $default_language;
 
 	@include("modules/$module/language/$language.lang.php");
 	if(!isset($mod_strings))
 	{
 		$log->warn("Unable to find the module language file for language: ".$language." and module: ".$module);
 		require("modules/$module/language/$default_language.lang.php");
-		$language_used = $default_language;
 	}
 
 	if(!isset($mod_strings))
@@ -587,16 +559,13 @@ function return_theme_language($language, $theme)
 {
 	global $log;
 	$log->debug("Entering return_theme_language(".$language.",". $theme.") method ...");
-	global $mod_strings, $default_language, $log, $currentModule, $translation_string_prefix;
-
-	$language_used = $language;
+	global $mod_strings, $default_language, $log, $currentModule;
 
 	@include("themes/$theme/language/$current_language.lang.php");
 	if(!isset($theme_strings))
 	{
 		$log->warn("Unable to find the theme file for language: ".$language." and theme: ".$theme);
 		require("themes/$theme/language/$default_language.lang.php");
-		$language_used = $default_language;
 	}
 
 	if(!isset($theme_strings))
@@ -604,15 +573,6 @@ function return_theme_language($language, $theme)
 		$log->fatal("Unable to load the theme($theme) language file for the selected language($language) or the default language($default_language)");
 		$log->debug("Exiting return_theme_language method ...");
 		return null;
-	}
-
-	// If we are in debug mode for translating, turn on the prefix now!
-	if($translation_string_prefix)
-	{
-		foreach($theme_strings as $entry_key=>$entry_value)
-		{
-			$theme_strings[$entry_key] = $language_used.' '.$entry_value;
-		}
 	}
 
 	$log->debug("Exiting return_theme_language method ...");
