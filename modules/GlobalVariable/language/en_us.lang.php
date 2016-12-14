@@ -42,5 +42,6 @@ $mod_strings = Array(
 	'product_service_default' => 'Productos or Services by default in Product Lines',
 	'Users_ReplyTo_SecondEmail' => 'Reply to user\'s secondary Email',
 	'GVarDefinitions' => 'Variable Definitions',
+	'cbMap' => 'Business Map',
 );
 ?>

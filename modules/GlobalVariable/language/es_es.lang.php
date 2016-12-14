@@ -43,7 +43,7 @@ $mod_strings = Array(
 	'Show_Copy_Adress_Header' => 'Mostrar Copiar Dirección',
 	'Users_ReplyTo_SecondEmail' => 'Responder al Email Secundario del usuario',
 	'GVarDefinitions' => 'Definiciones de Variables',
-
+	'cbMap' => 'Mapa de Negocio',
 );
 
 ?>

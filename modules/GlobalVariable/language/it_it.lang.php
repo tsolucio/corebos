@@ -38,6 +38,6 @@ $mod_strings = Array(
 	'Other' => 'Other',
 	'product_service_default' => 'Productos or Services by default in Product Lines',
 	'GVarDefinitions' => 'Variable Definitions',
-
+	'cbMap' => 'Business Map',
 );
 ?>

@@ -13,6 +13,7 @@
 	.gvdefstable table tbody tr:last-child td { border-bottom: none; }
 </style>
 {/literal}
+<div class="cb-alert-info">{$GlobalVariableDefinitonsHeader.UseDescriptionMessage}</div>
 <div class='gvdefstable'>
 <table id="gvdefstable">
 <thead>

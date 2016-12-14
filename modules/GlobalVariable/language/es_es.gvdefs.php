@@ -32,6 +32,7 @@ $GlobalVariableDefinitonsHeader = array(
 	'category' => 'Categoría',
 	'values' => 'Valores',
 	'definition' => 'Definición',
+	'UseDescriptionMessage' => 'Todas las variables globales aceptan el valor especial: <b>[[Use Description]]</b>. Si el valor de la variable global se establece a [[Use Description]] se devolverá el contenido del campo descripción como resultado de la variable. Esto es especialmente útil para valores muy largos como listas de Emails o IPs, haciendo la visualización y el mantenimiento del valor más sencillo.',
 );
 $GlobalVariableDefinitons = array(
 'Application_AdminLoginIPs' => array(
@@ -695,20 +696,6 @@ $GlobalVariableDefinitons = array(
 ),
 'Report.Excel.Export.RowHeight' => array(
 	'status' => 'Implemented',
-	'valuetype' => '',
-	'category' => '',
-	'values' => '',
-	'definition' => '',
-),
-'default_language' => array(
-	'status' => 'Not Implemented',
-	'valuetype' => '',
-	'category' => '',
-	'values' => '',
-	'definition' => '',
-),
-'translation_string_prefix' => array(
-	'status' => 'Not Implemented',
 	'valuetype' => '',
 	'category' => '',
 	'values' => '',

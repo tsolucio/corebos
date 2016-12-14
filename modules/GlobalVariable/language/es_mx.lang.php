@@ -42,7 +42,7 @@ $mod_strings = Array(
 	'product_service_default' => 'Productos o Servicios por defecto en las líneas de productos',
 	'Users_ReplyTo_SecondEmail' => 'Responder al Email Secundario del usuario',
 	'GVarDefinitions' => 'Definiciones de Variables',
-
+	'cbMap' => 'Mapa de Negocio',
 );
 
 ?>
