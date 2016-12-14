@@ -408,9 +408,9 @@ class Accounts extends CRMEntity {
 		 onchange="loadRelatedListBlock(\'module=Accounts&action=AccountsAjax&file=DetailViewAjax&record='.$id.'&ajxaction=LOADRELATEDLIST&header=Emails&relation_id='.$relid.'&email_filter=\'+this.options[this.options.selectedIndex].value+\'&actions=add&parenttab=Support\',\'tbl_Accounts_Emails\',\'Accounts_Emails\');">
 		<option value="all">'.getTranslatedString('LBL_ALL').'</option>';
 		$accname = getEntityName('Accounts',$id);
-		$button .= '<option value="'.$id.'" '.($_REQUEST['email_filter']==$id ? 'selected' : '').'>'.$accname[$id].'</option>';
+		$button .= '<option value="'.$id.'" '.((isset($_REQUEST['email_filter']) and $_REQUEST['email_filter']==$id) ? 'selected' : '').'>'.$accname[$id].'</option>';
 		while($cnt=$adb->fetch_array($accountContacts)) {
-			$button .= '<option value="'.$cnt['contactid'].'" '.($_REQUEST['email_filter']==$cnt['contactid'] ? 'selected' : '').'>'.$cnt['firstname'].' '.$cnt['lastname'].'</option>';
+			$button .= '<option value="'.$cnt['contactid'].'" '.((isset($_REQUEST['email_filter']) and $_REQUEST['email_filter']==$cnt['contactid']) ? 'selected' : '').'>'.$cnt['firstname'].' '.$cnt['lastname'].'</option>';
 		}
 		$button .= '</select>&nbsp;';
 

@@ -248,12 +248,11 @@ function getAllowedPicklistModules() {
 }
 
 function getPicklistValuesSpecialUitypes($uitype,$fieldname,$value,$action='EditView'){
-	global $adb,$log,$current_user;
+	global $adb,$log,$current_user, $default_charset;
 
 	$fieldname = $adb->sql_escape_string($fieldname);
 	$picklistValues = getAllowedPicklistModules();
 	$options = array();
-	$options[] = "";
 	$pickcount = 0;
 	if($uitype == "1613"){
 		$found = false;

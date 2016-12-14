@@ -1860,7 +1860,9 @@ function getDetailBlockInformation($module, $result, $col_fields, $tabid, $block
 				if (!isset($returndata[$i18nidx])) $returndata[$i18nidx] = array();
 				$returndata[$i18nidx]=array_merge((array)$returndata[$i18nidx],(array)$label_data[$blockid]);
 			} elseif (file_exists("Smarty/templates/modules/$module/{$label}_detail.tpl")) {
-				$returndata[getTranslatedString($curBlock,$module)]=array_merge((array)$returndata[getTranslatedString($curBlock,$module)],array($label=>array()));
+				$i18nidx = getTranslatedString($curBlock,$module);
+				if (!isset($returndata[$i18nidx])) $returndata[$i18nidx] = array();
+				$returndata[$i18nidx]=array_merge((array)$returndata[$i18nidx],array($label=>array()));
 			} else {
 				$brs = $adb->pquery('select isrelatedlist from vtiger_blocks where blockid=?',array($blockid));
 				if ($brs and $adb->num_rows($brs)>0) {

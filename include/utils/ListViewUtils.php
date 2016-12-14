@@ -434,7 +434,7 @@ function getNavigationValues($display, $noofrows, $limit) {
  * Returns an array type
  */
 function getListViewEntries($focus, $module, $list_result, $navigation_array, $relatedlist = '', $returnset = '', $edit_action = 'EditView', $del_action = 'Delete', $oCv = '', $page = '', $selectedfields = '', $contRelatedfields = '', $skipActions = false) {
-	global $log, $mod_strings, $adb, $current_user, $app_strings, $theme;
+	global $log, $mod_strings, $adb, $current_user, $app_strings, $theme,$default_charset;
 	$log->debug("Entering getListViewEntries(" . get_class($focus) . "," . $module . "," . $list_result . "," . $relatedlist . "," . $returnset . "," . $edit_action . "," . $del_action . "," . (is_object($oCv) ? get_class($oCv) : $oCv) . ") method ...");
 	$tabname = getParentTab();
 	$noofrows = $adb->num_rows($list_result);
@@ -3042,6 +3042,8 @@ function getRelatedTo($module, $list_result, $rset) {
 	if ($module == 'HelpDesk' && ($parent_module == 'Accounts' || $parent_module == 'Contacts')) {
 		global $theme;
 		$module_icon = '<img src="themes/images/' . $parent_module . '.gif" alt="' . $app_strings[$parent_module] . '" title="' . $app_strings[$parent_module] . '" border=0 align=center> ';
+	} else {
+		$module_icon = '';
 	}
 
 	$action = "DetailView";

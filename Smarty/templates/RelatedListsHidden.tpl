@@ -36,18 +36,17 @@
 	<input type="hidden" name="record" value="{$ID}">
 {elseif $MODULE eq 'Accounts'}
 	<input type="hidden" name="account_id" value="{$ID}">
-	{$HIDDEN_PARENTS_LIST}
 {elseif $MODULE eq 'Contacts'}
 	<input type="hidden" name="contact_id" value="{$ID}">
 	<input type="hidden" name="account_id" value="{$accountid}">
 	<input type="hidden" name="campaignid" value="{$campaignid}">
-	{$HIDDEN_PARENTS_LIST}
+	{if isset($HIDDEN_PARENTS_LIST)}{$HIDDEN_PARENTS_LIST}{/if}
 {elseif $MODULE eq 'Campaigns'}
 	<input type="hidden" name="campaignid" value="{$ID}">
 {elseif $MODULE eq 'Leads'}
 	<input type="hidden" name="lead_id" value="{$ID}">
 	<input type="hidden" name="campaignid" value="{$campaignid}">
-	{$HIDDEN_PARENTS_LIST}
+	{if isset($HIDDEN_PARENTS_LIST)}{$HIDDEN_PARENTS_LIST}{/if}
 {elseif $MODULE eq 'Potentials'}
 	<input type="hidden" name="potential_id" value="{$ID}">
 {elseif $MODULE eq 'Quotes'}

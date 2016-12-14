@@ -78,6 +78,7 @@ class ListViewSession {
 			}else{
 				$recordList = array();
 				$recordPageMapping = array();
+				$searchKey = 0;
 				foreach ($recordNavigationInfo as $start=>$recordIdList){
 					foreach ($recordIdList as $index=>$recordId) {
 						$recordList[] = $recordId;

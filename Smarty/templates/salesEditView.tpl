@@ -88,7 +88,7 @@
 									   {foreach key=header item=data from=$BLOCKS}
 
 							<!-- This is added to display the existing comments -->
-							{if $header eq $MOD.LBL_COMMENTS || (isset($MOD.LBL_COMMENT_INFORMATION) && $header eq $MOD.LBL_COMMENT_INFORMATION)}
+							{if $header eq $APP.LBL_COMMENTS || (isset($MOD.LBL_COMMENT_INFORMATION) && $header eq $MOD.LBL_COMMENT_INFORMATION)}
 							   <tr><td>&nbsp;</td></tr>
 							   <tr>
 								<td colspan=4 class="dvInnerHeader">

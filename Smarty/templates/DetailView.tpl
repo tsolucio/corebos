@@ -289,7 +289,7 @@ function sendfile_email()
 																						<tr><td>&nbsp;</td></tr>
 																					{/if}
 
-																					{if $header neq 'Comments' && isset($BLOCKS.$header.relatedlist) && $BLOCKS.$header.relatedlist eq 0}
+																					{if $header neq 'Comments' && (!isset($BLOCKS.$header.relatedlist) || $BLOCKS.$header.relatedlist eq 0)}
 
 																						<tr class="detailview_block_header">{strip}
 																							<td colspan=4 class="dvInnerHeader">

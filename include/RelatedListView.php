@@ -83,7 +83,7 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 		$query .= ' and '.$where;
 	}
 
-	if(!$_SESSION['rlvs'][$module][$relatedmodule])
+	if(empty($_SESSION['rlvs'][$module][$relatedmodule]))
 	{
 		$modObj = new ListViewSession();
 		$modObj->sortby = $focus->default_order_by;

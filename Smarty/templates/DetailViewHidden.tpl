@@ -6,7 +6,6 @@
    * The Initial Developer of the Original Code is vtiger.
    * Portions created by vtiger are Copyright (C) vtiger.
    * All Rights Reserved.
-  *
  ********************************************************************************/
 -->*}
 {*//Hidden fields for modules DetailView//  *}
@@ -32,7 +31,6 @@
 	<input type="hidden" name="email_id">
 	<input type="hidden" name="source_module">
 	<input type="hidden" name="entity_id">
-	{$HIDDEN_PARENTS_LIST}
 
 {elseif $MODULE eq 'Contacts'}
 	<input type="hidden" name="module" value="{$MODULE}">
@@ -53,7 +51,7 @@
 	<input type="hidden" name="case_id">
 	<input type="hidden" name="new_reports_to_id">
 	<input type="hidden" name="email_directing_module">
-	{$HIDDEN_PARENTS_LIST}
+	{if isset($HIDDEN_PARENTS_LIST)}{$HIDDEN_PARENTS_LIST}{/if}
 {elseif $MODULE eq 'Potentials'}
 	<input type="hidden" name="module" value="{$MODULE}">
         <input type="hidden" name="record" value="{$ID}">
@@ -84,7 +82,7 @@
 	<input type="hidden" name="lead_id" value="{$ID}">
 	<input type="hidden" name="parent_id" value="{$ID}">
 	<input type="hidden" name="email_directing_module">
-	{$HIDDEN_PARENTS_LIST}
+	{if isset($HIDDEN_PARENTS_LIST)}{$HIDDEN_PARENTS_LIST}{/if}
 {elseif $MODULE eq 'Products' || $MODULE eq 'Vendors' || $MODULE eq 'PriceBooks' || $MODULE eq 'Services'}
 	{if $MODULE eq 'Products'}
 		<input type="hidden" name="product_id" value="{$id}">

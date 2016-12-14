@@ -2038,7 +2038,9 @@ function getBlockInformation($module, $result, $col_fields,$tabid,$block_label,$
 				}
 			}
 		} elseif (file_exists("Smarty/templates/modules/$module/{$label}_edit.tpl")) {
-			$returndata[getTranslatedString($label,$module)]=array_merge((array)$returndata[getTranslatedString($label,$module)],array($label=>array()));
+			$i18nidx = getTranslatedString($label,$module);
+			if (!isset($returndata[$i18nidx])) $returndata[$i18nidx] = array();
+			$returndata[$i18nidx]=array_merge((array)$returndata[$i18nidx],array($label=>array()));
 		}
 	}
 	$log->debug("Exiting getBlockInformation method ...");
