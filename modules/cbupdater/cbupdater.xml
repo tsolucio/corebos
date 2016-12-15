@@ -990,4 +990,11 @@
 	<classname>addlinksforcalendar</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>kikojover</author>
+	<description>Set vtiger_activity sunject field to 250 chars</description>
+	<filename>build/changeSets/grow_activity_subject.php</filename>
+	<classname>grow_activity_subject</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
