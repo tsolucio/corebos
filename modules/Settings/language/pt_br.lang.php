@@ -997,6 +997,7 @@ $mod_strings = Array(
 'LBL_ACTION'=>'Ação',
 'LBL_CREATE'=>'Criar',
 'LBL_TICKET'=>'Ticket',
+'LBL_PROJECT'=>'Project',
 'LBL_ADD'=>'Adicionar',
 
 'LBL_CONTACT'=>'Contato',

@@ -800,6 +800,7 @@ $mod_strings = Array(
 'LBL_ACTION'=>'Actie',
 'LBL_CREATE'=>'Maak',
 'LBL_TICKET'=>'Ticket',
+'LBL_PROJECT'=>'Project',
 'LBL_ADD'=>'Toevoegen',
 
 'LBL_CONTACT'=>'Contact',

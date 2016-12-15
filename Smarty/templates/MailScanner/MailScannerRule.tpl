@@ -138,6 +138,7 @@
                             <td nowrap class="small cellText" width="80%" colspan=2>
 								{if $SCANNERRULE->useaction->actiontext eq 'CREATE,HelpDesk,FROM'} {$MOD.LBL_CREATE} {$MOD.LBL_TICKET}
 								{elseif $SCANNERRULE->useaction->actiontext eq 'UPDATE,HelpDesk,SUBJECT'} {$MOD.LBL_UPDATE} {$MOD.LBL_TICKET}
+								{elseif $SCANNERRULE->useaction->actiontext eq 'UPDATE,Project,SUBJECT'} {$MOD.LBL_UPDATE} {$MOD.LBL_PROJECT}
 								{elseif $SCANNERRULE->useaction->actiontext eq 'LINK,Contacts,FROM'}{$MOD.LBL_ADD} {$MOD.LBL_TO} {$MOD.LBL_CONTACT} [{$MOD.LBL_FROM_CAPS}]
 								{elseif $SCANNERRULE->useaction->actiontext eq 'LINK,Contacts,TO'}{$MOD.LBL_ADD} {$MOD.LBL_TO} {$MOD.LBL_CONTACT} [{$MOD.LBL_TO_CAPS}]
 								{elseif $SCANNERRULE->useaction->actiontext eq 'LINK,Accounts,FROM'}{$MOD.LBL_ADD} {$MOD.LBL_TO} {$MOD.LBL_ACCOUNT} [{$MOD.LBL_FROM_CAPS}]

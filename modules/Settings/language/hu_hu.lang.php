@@ -679,6 +679,7 @@ $mod_strings = array(
 	'LBL_ACTION' => 'Akció',
 	'LBL_CREATE' => 'Létrehozás',
 	'LBL_TICKET' => 'Kérés',
+        'LBL_PROJECT'=>'Project',
 	'LBL_ADD' => 'Hozzáadás',
 	'LBL_CONTACT' => 'Kapcsolat',
 	'LBL_ACCOUNT' => 'Cég',

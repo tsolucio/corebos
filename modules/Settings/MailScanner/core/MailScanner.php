@@ -224,11 +224,133 @@ class Vtiger_MailScanner {
 	/** Lookup functionality. */
 	var $_cachedContactIds = Array();
 	var $_cachedAccountIds = Array();
+	var $_cachedUserIds = Array();
+	var $_cachedEmployeeIds = Array();
 	var $_cachedTicketIds  = Array();
+	var $_cachedProjectIds  = Array();
 
 	var $_cachedAccounts = Array();
 	var $_cachedContacts = Array();
 	var $_cachedTickets  = Array();
+	var $_cachedProjects  = Array();
+	
+	var $linkedid;
+	var $linkedtype;
+
+	function getUserList($crmobj){
+	    global $adb;
+	    $module = get_class($crmobj);
+	    $tickettab = getTabid($module);
+	    $usrfldssel = "SELECT * FROM vtiger_field WHERE tabid=? AND uitype IN (53,101,52)";
+	    $fldres = $adb->pquery($usrfldssel,array($tickettab));
+	    $retusr = array();
+	    while($row = $adb->fetch_array($fldres)){
+		if(!empty($crmobj->column_fields[$row['fieldname']])){
+		    $retusr[]  = $crmobj->column_fields[$row['fieldname']];
+		}
+	    }
+	    return $retusr;
+	}
+
+	function getEmployeeList($crmobj){
+	    global $adb;
+	    $retemp = array();
+	    if(vtlib_isModuleActive("cbEmployee")){
+		$module = get_class($crmobj);
+		$modtab = getTabid($module);
+		$emptab = getTabid('cbEmployee');
+		$empfldssel = "SELECT * FROM vtiger_field fld "
+			. "LEFT JOIN vtiger_fieldmodulerel fr ON fld.fieldid=fr.fieldid "
+			. "WHERE fld.tabid=? AND fld.uitype=10 AND fr.relmodule=?";
+		$fldres = $adb->pquery($empfldssel,array($modtab,'cbEmployee'));
+		while($row = $adb->fetch_array($fldres)){
+		    if(!empty($crmobj->column_fields[$row['fieldname']]) &&
+			    getSalesEntityType($crmobj->column_fields[$row['fieldname']]) == 'cbEmployee'){
+			$retemp[]  = $crmobj->column_fields[$row['fieldname']];
+		    }
+		}
+		$rel = $crmobj->get_related_list($crmobj->id,$modtab,$emptab);
+		$dep = $crmobj->get_dependents_list($crmobj->id,$modtab,$emptab);
+		$relids = (!is_null(array_keys($rel['entries'])) ? array_keys($rel['entries']) : array());
+		$depids = (!is_null(array_keys($dep['entries'])) ? array_keys($dep['entries']) : array());
+		$retemp = array_merge($retemp,$relids,$depids);
+		
+	    }
+	    return $retemp;
+	}
+
+	/**
+	 * Lookup User record based on the email given.
+	 */
+	function LookupUser($email, $checkWithId=false) {
+		global $adb;
+		if($this->_cachedUserIds[$email]) {
+			$this->log("Reusing Cached User Id for email: $email");
+			return $this->_cachedUserIds[$email];
+		}
+		$userid = false;
+		$userres = $adb->pquery("SELECT id FROM vtiger_users  WHERE deleted=0 and (email1=? or email2=? or secondaryemail=?)", Array($email,$email,$email));
+		if($adb->num_rows($userres)) {
+			$userid = $adb->query_result($userres, 0, 'id');
+		}
+		if($userid) {
+			if($checkWithId !== false && !is_array($checkWithId)){
+			    $checkWithId = array($checkWithId);
+			}
+			if($checkWithId && !in_array($userid,$checkWithId)) {
+			    $userid = false;
+			    $this->log("Matching User found for email: $email, but not implied.");
+			}else{
+			    $this->log("Caching User Id found for email: $email");
+			    $this->_cachedUserIds[$email] = $userid;
+			}
+		} else {
+			$this->log("No matching User found for email: $email");
+		}
+		if($userid){
+		    $this->linkedid = $userid;
+		    $this->linkedtype = 'user';
+		}
+		return $userid;
+	}
+
+	/**
+	 * Lookup Employee record based on the email given.
+	 */
+	function LookupEmployee($email, $checkWithId=false) {
+	    global $adb;
+	    $empid = false;
+	    if(vtlib_isModuleActive("cbEmployee")){
+		if($this->_cachedEmployeeIds[$email]) {
+			$this->log("Reusing Cached Employee Id for email: $email");
+			return $this->_cachedEmployeeIds[$email];
+		}
+		$empres = $adb->pquery("SELECT cbemployeeid,userid FROM vtiger_cbemployee inner join vtiger_crmentity on crmid=cbemployeeid WHERE deleted=0 and (personal_email=? or work_email=?)", Array($email,$email));
+		if($adb->num_rows($empres)) {
+			$empid = $adb->query_result($empres, 0, 'empid');
+			$userid = $adb->query_result($empres, 0, 'userid');
+		}
+		if($empid) {
+			if($checkWithId !== false && !is_array($checkWithId)){
+			    $checkWithId = array($checkWithId);
+			}
+			if($checkWithId && !in_array($empid,$checkWithId)) {
+			    $empid = false;
+			    $this->log("Matching Employee found for email: $email, but not implied");
+			}else{
+			    $this->log("Caching Employee Id found for email: $email");
+			    $this->_cachedEmployeeIds[$email] = $empid;
+			}
+		} else {
+			$this->log("No matching Employee found for email: $email");
+		}
+	    }
+	    if(!empty($userid)){
+		$this->linkedid = $userid;
+		$this->linkedtype = 'user';
+	    }
+	    return $empid;
+	}
 
 	/**
 	 * Lookup Contact record based on the email given.
@@ -252,8 +374,13 @@ class Vtiger_MailScanner {
 		} else {
 			$this->log("No matching Contact found for email: $email");
 		}
+		if($contactid){
+		    $this->linkedid = $contactid;
+		    $this->linkedtype = 'customer';
+		}
 		return $contactid;
 	}
+
 	/**
 	 * Lookup Account record based on the email given.
 	 */
@@ -276,6 +403,10 @@ class Vtiger_MailScanner {
 			$this->_cachedAccountIds[$email] = $accountid;
 		} else {
 			$this->log("No matching Account found for email: $email");
+		}
+		if($accountid){
+		    $this->linkedid = $accountid;
+		    $this->linkedtype = 'customer';
 		}
 		return $accountid;
 	}
@@ -319,6 +450,47 @@ class Vtiger_MailScanner {
 			$this->log("No matching Ticket found for: $subjectOrId");
 		}
 		return $ticketid;
+	}
+		
+	/**
+	 * Lookup Ticket record based on the subject or id given.
+	 */
+	function LookupProject($subjectOrId) {
+		global $adb;
+		$checkProjectId = $this->__toInteger($subjectOrId);
+		if(!$checkProjectId) {
+			$projectres = $adb->pquery("SELECT projectid FROM vtiger_project WHERE projectname = ? OR project_no = ?", Array($subjectOrId, $subjectOrId));
+			if($adb->num_rows($projectres)) $checkProjectId = $adb->query_result($projectres, 0, 'projectid');
+		}
+		// Try with ticket_no before CRMID (case where ticket_no is also just number)
+		if(!$checkProjectId) {
+			$projectres = $adb->pquery("SELECT projectid FROM vtiger_project WHERE project_no = ?", Array($subjectOrId));
+			if($adb->num_rows($projectres)) $checkProjectId = $adb->query_result($projectres, 0, 'projectid');
+		}
+		// Nothing found?
+		if(!$checkProjectId) return false;
+
+		if($this->_cachedProjectIds[$checkProjectId]) {
+			$this->log("Reusing Cached Ticket Id for: $subjectOrId");
+			return $this->_cachedProjectIds[$checkProjectId];
+		}
+		
+		// Verify ticket is not deleted
+		$projectid = false;
+		if($checkProjectId) {
+			$crmres = $adb->pquery("SELECT setype, deleted FROM vtiger_crmentity WHERE crmid=?", Array($checkProjectId));
+			if($adb->num_rows($crmres)) {
+				if($adb->query_result($crmres, 0, 'setype') == 'Project' &&
+					$adb->query_result($crmres, 0, 'deleted') == '0') $projectid = $checkProjectId;
+			}
+		}
+		if($projectid) {
+			$this->log("Caching Project Id found for: $subjectOrId");
+			$this->_cachedProjectIds[$checkProjectId] = $ticketid;
+		} else {
+			$this->log("No matching Project found for: $subjectOrId");
+		}
+		return $projectid;
 	}
 		
 	/**
@@ -388,10 +560,15 @@ class Vtiger_MailScanner {
 		$ticketid = $this->LookupTicket($subjectOrId);
 		$ticket_focus = false;
 		if($ticketid) {
+			
 			if($this->_cachedTickets[$ticketid]) {
 				$ticket_focus = $this->_cachedTickets[$ticketid];
+				$usrlist = $this->getUserlist($ticket_focus);
+				$employeelist = $this->getEmployeeList($ticket_focus);
 				// Check the parentid association if specified.
-				if($fromemail && !$this->LookupContactOrAccount($fromemail, $ticket_focus->column_fields[parent_id])) {
+				if($fromemail && !$this->LookupContactOrAccount($fromemail, $ticket_focus->column_fields[parent_id]) &&
+					!$this->LookupUser($fromemail,$usrlist) && 
+					!$this->LookupEmployee($fromemail, $employeelist)) {
 					$ticket_focus = false;
 				}
 				if($ticket_focus) {
@@ -401,8 +578,12 @@ class Vtiger_MailScanner {
 				$ticket_focus = new HelpDesk();
 				$ticket_focus->retrieve_entity_info($ticketid, 'HelpDesk');
 				$ticket_focus->id = $ticketid;
+				$usrlist = $this->getUserlist($ticket_focus);
+				$employeelist = $this->getEmployeeList($ticket_focus);
 				// Check the parentid association if specified.
-				if($fromemail && !$this->LookupContactOrAccount($fromemail, $ticket_focus->column_fields[parent_id])) {
+				if($fromemail && !$this->LookupContactOrAccount($fromemail, $ticket_focus->column_fields[parent_id]) &&
+					!$this->LookupUser($fromemail,$usrlist) && 
+					!$this->LookupEmployee($fromemail, $employeelist)) {
 					$ticket_focus = false;
 				}
 				if($ticket_focus) {
@@ -412,6 +593,48 @@ class Vtiger_MailScanner {
 			}
 		}
 		return $ticket_focus;
+	}
+
+	/**
+	 * Get Project record information based on subject or id.
+	 */
+	function GetProjectRecord($subjectOrId, $fromemail=false) {
+		$projectid = $this->LookupProject($subjectOrId);
+		$project_focus = false;
+		if($projectid) {
+			
+			if($this->_cachedProjects[$projectid]) {
+				$project_focus = $this->_cachedProjects[$projectid];
+				$usrlist = $this->getUserlist($project_focus);
+				$employeelist = $this->getEmployeeList($project_focus);
+				// Check the parentid association if specified.
+				if($fromemail && !$this->LookupContactOrAccount($fromemail, $project_focus->column_fields['linktoaccountscontacts']) &&
+					!$this->LookupUser($fromemail,$usrlist) && 
+					!$this->LookupEmployee($fromemail, $employeelist)) {
+					$ticket_focus = false;
+				}
+				if($project_focus) {
+					$this->log("Reusing Cached Project [" . $project_focus->column_fields['project_name'] ."]");
+				}
+			} else {
+				$project_focus = CRMEntity::getInstance('Project');
+				$project_focus->retrieve_entity_info($projectid, 'Project');
+				$project_focus->id = $projectid;
+				$usrlist = $this->getUserlist($project_focus);
+				$employeelist = $this->getEmployeeList($project_focus);
+				// Check the parentid association if specified.
+				if($fromemail && !$this->LookupContactOrAccount($fromemail, $project_focus->column_fields['linktoaccountscontacts']) &&
+					!$this->LookupUser($fromemail,$usrlist) && 
+					!$this->LookupEmployee($fromemail, $employeelist)) {
+					$project_focus = false;
+				}
+				if($project_focus) {
+					$this->log("Caching Project [" . $project_focus->column_fields['project_name'] . "]");
+					$this->_cachedProject[$projectid] = $project_focus;
+				}
+			}
+		}
+		return $project_focus;
 	}
 }
 

@@ -205,6 +205,8 @@
 									>{$MOD.LBL_CREATE} {$MOD.LBL_TICKET}</option>
 									<option value="UPDATE,HelpDesk,SUBJECT" {if $RULEACTIONTEXT eq 'UPDATE,HelpDesk,SUBJECT'}selected=true{/if}
 									>{$MOD.LBL_UPDATE} {$MOD.LBL_TICKET}</option>
+									<option value="UPDATE,Project,SUBJECT" {if $RULEACTIONTEXT eq 'UPDATE,Project,SUBJECT'}selected=true{/if}
+									>{$MOD.LBL_UPDATE} {$MOD.LBL_PROJECT}</option>
 									<option value="LINK,Contacts,FROM" {if $RULEACTIONTEXT eq 'LINK,Contacts,FROM'}selected=true{/if}
 									>{$MOD.LBL_ADD} {$MOD.LBL_TO_SMALL} {$MOD.LBL_CONTACT} [{$MOD.LBL_FROM_CAPS}]</option>
 									<option value="LINK,Contacts,TO" {if $RULEACTIONTEXT eq 'LINK,Contacts,TO'}selected=true{/if}

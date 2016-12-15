@@ -668,6 +668,7 @@ $mod_strings = array(
 	'LBL_ACTION' => 'Action',
 	'LBL_CREATE' => 'Create',
 	'LBL_TICKET' => 'Ticket',
+	'LBL_PROJECT'=>'Project',
 	'LBL_ADD' => 'Add',
 	'LBL_CONTACT' => 'Contact',
 	'LBL_ACCOUNT' => 'Organisation',
