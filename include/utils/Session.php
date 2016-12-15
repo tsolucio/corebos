@@ -62,7 +62,7 @@ class coreBOS_Session {
 		}
 		if (empty($URL)) $URL = $site_URL;
 		$purl = parse_url($URL);
-		$sn = preg_replace('/[^A-Za-z0-9]/', '', $purl['host'].$purl['path'].(isset($purl['port'])?$purl['port']:''));
+		$sn = preg_replace('/[^A-Za-z0-9]/', '', $purl['host'].(isset($purl['path'])?$purl['path']:'').(isset($purl['port'])?$purl['port']:''));
 		if (is_numeric($sn)) $sn = 'cb'.$sn;
 		self::$session_name = $sn;
 		return $sn;

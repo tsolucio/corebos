@@ -18,9 +18,9 @@ require_once('modules/Calendar/Activity.php');
 $cur_time = time();
 coreBOS_Session::set('last_reminder_check_time', $cur_time);
 coreBOS_Session::set('next_reminder_interval', 60);
-if($_SESSION['next_reminder_time'] == 'None') {
+if(isset($_SESSION['next_reminder_time']) && $_SESSION['next_reminder_time'] == 'None') {
 	return;
-} elseif(isset($_SESSION['next_reminder_interval']) && (($_SESSION['next_reminder_time'] - $_SESSION['next_reminder_interval']) > $cur_time)) {
+} elseif(isset($_SESSION['next_reminder_interval']) && isset($_SESSION['next_reminder_time']) && (($_SESSION['next_reminder_time'] - $_SESSION['next_reminder_interval']) > $cur_time)) {
 	echo "<script type='text/javascript' id='_vtiger_activityreminder_callback_interval_'>".($_SESSION['next_reminder_interval'] * 1000)."</script>";
 	return;
 }
@@ -83,13 +83,14 @@ if(isPermitted('Calendar','index') == 'yes'){
 					$cbtime = $cbtimeArr['starthour'].':'.$cbtimeArr['startmin'].''.$cbtimeArr['startfmt'];
 				}
 
-				if($cbactivitytype=='Task')
-					$cbstatus   = $focus->column_fields["taskstatus"];
-				else
-					$cbstatus   = $focus->column_fields["eventstatus"];
+				if($cbactivitytype=='Task'){
+					$cbstatus = $focus->column_fields["taskstatus"];
+				} else {
+					$cbstatus = $focus->column_fields["eventstatus"];
 
 				$cbstatus = getTranslatedString($cbstatus, $currentModule);
-				$actType = $adb->query_result($adb->pquery('select activitytype from vtiger_activity where activityid=?', array($cbrecord)),0,'activitytype');
+				$atrs = $adb->pquery('select activitytype from vtiger_activity where activityid=?', array($cbrecord));
+				$actType = $adb->query_result($atrs,0,'activitytype');
 				$smarty->assign("activityimage", $actType);
 				$cbactivitytype = getTranslatedString($cbactivitytype, $currentModule);
 
@@ -118,6 +119,7 @@ if(isPermitted('Calendar','index') == 'yes'){
 				$adb->pquery($mark_reminder_as_read, array($reminderid));
 				echo "<script type='text/javascript'>window.top.document.title= '".
 					$app_strings['LBL_NEW_BUTTON_LABEL'].$app_strings['LBL_Reminder']."';</script>";
+				}
 			}
 		} else {
 			$callback_query =

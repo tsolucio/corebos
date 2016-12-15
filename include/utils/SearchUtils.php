@@ -1114,7 +1114,7 @@ function getAdvancedSearchCriteriaList($advft_criteria, $advft_criteria_groups, 
 	$moduleHandler = vtws_getModuleHandlerFromName($module,$current_user);
 	$moduleMeta = $moduleHandler->getMeta();
 	$moduleFields = $moduleMeta->getModuleFields();
-
+	if (is_array($advft_criteria))
 	foreach($advft_criteria as $column_index => $column_condition) {
 		if(empty($column_condition)) continue;
 
@@ -1153,7 +1153,7 @@ function getAdvancedSearchCriteriaList($advft_criteria, $advft_criteria_groups, 
 
 		$advfilterlist[$adv_filter_groupid]['columns'][] = $criteria;
 	}
-
+	if (is_array($advft_criteria_groups))
 	foreach($advft_criteria_groups as $group_index => $group_condition_info) {
 		if(empty($group_condition_info)) continue;
 		if(empty($advfilterlist[$group_index])) continue;
