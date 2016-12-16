@@ -502,7 +502,7 @@
 	jQuery(document).ready(function() {
 		var evvtmenu={/literal}{$MENU}{literal};
 
-
+		var t0 = performance.now();
 
 		function buildMainMenu(object){ //main menu
 			for (var i in object) {
@@ -596,6 +596,8 @@
 			});
 		});
 
+		var t1 = performance.now();
+		console.log("Call to ldsmenu took " + (t1 - t0) + " milliseconds.")
 
 
 	});
