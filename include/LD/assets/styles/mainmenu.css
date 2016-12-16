@@ -1,0 +1,19 @@
+.moreMenu{
+    display: none;
+    margin-left: 100%;
+    margin-top: -35%;
+    position: absolute;
+    background-color:white;
+    border: 1px solid #d8dde6;
+    border-radius: 0.25rem;
+}
+
+.moreMenu2{
+    display: none;
+    margin-left: 90%;
+    margin-top: -7%;
+    position: absolute;
+    background-color:white;
+    border: 1px solid #d8dde6;
+    border-radius: 0.25rem;
+}
