@@ -3654,7 +3654,7 @@ function getmail_contents_portalUser($request_array,$password,$type='')
 
 	//here id is hardcoded with 5. it is for support start notification in vtiger_notificationscheduler
 
-	$query='select vtiger_emailtemplates.subject,vtiger_emailtemplates.body from vtiger_notificationscheduler inner join vtiger_emailtemplates on vtiger_emailtemplates.templateid=vtiger_notificationscheduler.notificationbody where schedulednotificationid=5';
+	$query='SELECT subject,body FROM vtiger_emailtemplates WHERE templateid=10';
 
 	$result = $adb->pquery($query, array());
 	$body=$adb->query_result($result,0,'body');

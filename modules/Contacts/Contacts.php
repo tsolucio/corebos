@@ -1252,10 +1252,9 @@ function get_contactsforol($user_name)
 		$portalURL = '<a href="'.$PORTAL_URL.'" style="font-family:Arial, Helvetica, sans-serif;font-size:12px; font-weight:bolder;text-decoration:none;color: #4242FD;">'.getTranslatedString('Please Login Here', $moduleName).'</a>';
 
 		//here id is hardcoded with 5. it is for support start notification in vtiger_notificationscheduler
-		$query='SELECT vtiger_emailtemplates.subject,vtiger_emailtemplates.body
-				FROM vtiger_notificationscheduler
-				INNER JOIN vtiger_emailtemplates ON vtiger_emailtemplates.templateid=vtiger_notificationscheduler.notificationbody
-				WHERE schedulednotificationid=5';
+		$query='SELECT subject,body
+				FROM vtiger_emailtemplates
+				WHERE templateid=10';
 
 		$result = $adb->pquery($query, array());
 		$body=$adb->query_result($result,0,'body');
