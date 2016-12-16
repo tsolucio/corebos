@@ -1,6 +1,6 @@
 <?php
 /*************************************************************************************************
- * Copyright 2014 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Copyright 2016 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
  * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
  * file except in compliance with the License. You can redistribute it and/or modify it
  * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
@@ -16,37 +16,27 @@
 
 class ldMenu extends cbupdaterWorker {
 
-    function applyChange() {
-        if ($this->hasError()) $this->sendError();
-        if ($this->isApplied()) {
-            $this->sendMsg('Changeset '.get_class($this).' already applied!');
-        } else {
-            $toinstall = array('evvtMenu');
-            foreach ($toinstall as $module) {
-                if ($this->isModuleInstalled($module)) {
-                    vtlib_toggleModuleAccess($module,true);
-                    $this->sendMsg("$module activated!");
-                } else {
-                    $this->installManifestModule($module);
-                }
-            }
-            $this->sendMsg('Changeset '.get_class($this).' applied!');
-            $this->markApplied();
-        }
-        $this->finishExecution();
-    }
-
-    function undoChange() {
-        if ($this->hasError()) $this->sendError();
-        if ($this->isApplied()) {
-            vtlib_toggleModuleAccess('evvtMenu',false);
-            $this->sendMsg('CobroPago deactivated!');
-            $this->markUndone(false);
-            $this->sendMsg('Changeset '.get_class($this).' undone!');
-        } else {
-            $this->sendMsg('Changeset '.get_class($this).' not applied, it cannot be undone!');
-        }
-        $this->finishExecution();
-    }
-
+	function applyChange() {
+		if ($this->hasError ())
+			$this->sendError ();
+		if ($this->isApplied ()) {
+			$this->sendMsg('Changeset ' . get_class($this) . ' already applied!');
+		} else {
+			$toinstall = array('evvtMenu');
+			foreach ( $toinstall as $module ) {
+				if ($this->isModuleInstalled($module)) {
+					vtlib_toggleModuleAccess( $module, true );
+					$this->sendMsg( "$module activated!" );
+				} else {
+					$this->installManifestModule( $module );
+				}
+			}
+			$this->sendMsg('This changeset eliminates the Menu Settings section');
+			$this->sendMsg("From now on you must go to Menu Editor link either in the Settings Menu or on the administrator's quick access dropdown menu");
+			$this->ExecuteQuery('UPDATE vtiger_settings_field SET active=? WHERE vtiger_settings_field.name = ?', array('1', 'LBL_MENU_EDITOR'));
+			$this->sendMsg('Changeset ' . get_class ( $this ) . ' applied!');
+			$this->markApplied ();
+		}
+		$this->finishExecution ();
+	}
 }
