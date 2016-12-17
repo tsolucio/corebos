@@ -64,7 +64,6 @@ function getMenuBranch($mparent) {
  *
  * @return string
  */
-
 function getMenuJSON2() {
 	global $adb;
 	$menustructure = array(array('id'=>0, 'parent'=>'#', 'text' => 'Menu'));
@@ -95,7 +94,6 @@ function getMenuJSON2() {
 	return json_encode($menustructure);
 }
 
-
 function getMenuElements(){
 	global $adb;
 	$menustructure = array();
@@ -107,7 +105,6 @@ function getMenuElements(){
 	}
 	return $menustructure;
 }
-
 
 function getMenuArray($mparent) {
 	global $adb,$current_user;
@@ -228,4 +225,23 @@ function getAdminevvtMenu() {
 	}
 	return $rdo;
 }
+
+function checkevvtMenuInstalled() {
+	global $log;
+	if(!vtlib_isModuleActive('evvtMenu')) {
+		global $current_user;
+		$holduser = $current_user;
+		ob_start();
+		include 'modules/cbupdater/getupdatescli.php';
+		$rsup = $adb->query("select cbupdaterid from vtiger_cbupdater where classname='ldMenu'");
+		$updid = $adb->query_result($rsup,0,0);
+		$argv[0] = 'doworkcli';
+		$argv[1] = 'apply';
+		$argv[2] = $updid;
+		include 'modules/cbupdater/doworkcli.php';
+		ob_end_clean();
+		$current_user = $holduser;
+	}
+}
+checkevvtMenuInstalled();
 ?>
