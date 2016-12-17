@@ -1902,54 +1902,6 @@ function ActivateCheckBox()
 	}
 }
 
-//wipe for Convert Lead
-
-function fnSlide2(obj,inner)
-{
-	var buff = document.getElementById(obj).height;
-	closeLimit = buff.substring(0,buff.length);
-	menu_max = eval(closeLimit);
-	var tagName = document.getElementById(inner);
-	document.getElementById(obj).style.height=0 + "px";
-	menu_i=0;
-	if (tagName.style.display == 'none')
-		fnexpanLay2(obj,inner);
-	else
-		fncloseLay2(obj,inner);
-}
-
-function fnexpanLay2(obj,inner)
-{
-	// document.getElementById(obj).style.display = 'run-in';
-	var setText = eval(closeLimit) - 1;
-	if (menu_i<=eval(closeLimit))
-	{
-		if (menu_i>setText){
-			document.getElementById(inner).style.display='block';
-		}
-		document.getElementById(obj).style.height=menu_i + "px";
-		setTimeout(function() {
-			fnexpanLay2(obj,inner);
-		},5);
-		menu_i=menu_i+5;
-	}
-}
-
-function fncloseLay2(obj,inner)
-{
-	if (menu_max >= eval(openLimit))
-	{
-		if (menu_max<eval(closeLimit)){
-			document.getElementById(inner).style.display='none';
-		}
-		document.getElementById(obj).style.height=menu_max +"px";
-		setTimeout(function() {
-			fncloseLay2(obj,inner);
-		}, 5);
-		menu_max = menu_max -5;
-	}
-}
-
 function addOnloadEvent(fnc){
 	if ( typeof window.addEventListener != "undefined" )
 		window.addEventListener( "load", fnc, false );
@@ -2228,11 +2180,11 @@ function fnDropDown(obj,Lay){
 	if(getVal > document.body.clientWidth ){
 		leftSide = eval(leftSide) - eval(widthM);
 		tagName.style.left = leftSide + 34 + 'px';
-	}
-	else
+	} else {
 		tagName.style.left= leftSide + 'px';
-		tagName.style.top= topSide + obj.clientHeight +'px';
-		tagName.style.display = 'block';
+	}
+	tagName.style.top= topSide + obj.clientHeight +'px';
+	tagName.style.display = 'block';
 }
 
 function fnShowDrop(obj){
