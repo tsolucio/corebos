@@ -55,3 +55,6 @@ background-image: url("coloricons-sprite.png");
 	display:none;
 }
 
+.evvtmenu-label {
+	width: 75px;
+}

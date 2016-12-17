@@ -9,10 +9,10 @@
  ************************************************************************************/
 
 $mod_strings = Array(
-	'evvtMenu' => 'Editor Menú coreBOS',
-	'SINGLE_evvtMenu' => 'Editor Menú coreBOS',
-	'evvtMenu ID' => 'ID Editor Menú coreBOS',
-	'evvtMenuTitle' => 'Editor Menú coreBOS',
+	'evvtMenu' => 'Editor Menú',
+	'SINGLE_evvtMenu' => 'Editor Menú',
+	'evvtMenu ID' => 'ID Editor Menú',
+	'evvtMenuTitle' => 'Editor Menú',
 	'evvtMenuLayout' => 'Distribución Menú',
 	'evvtMenuItemInfo' => 'Información Elemento Menú',
 	'MenuType' => 'Tipo',
@@ -27,7 +27,8 @@ $mod_strings = Array(
 	'MarkVisibleAndSort' => 'Marca elementos visibles o no y ordenalos directamente en la vista de árbol.',
 	'SelectToEditDelete' => 'Selecciona cualquier elemento para actualizarlo o eliminarlo desde el formulario superior.',
 	'AddNewItem' => 'Añade nuevos elementos utilizando el formulario superior. Los nuevos elementos se añadirán al final del primer menú desde donde podrás moverlo y/o adaptarlo.',
-	'MenuItemPermissions' => 'Cuando se definen permisos de perfil a un elemento de menú, tendrán preferencia sobre los permisos de coreBOS.',
+	'MenuItemPermissions' => 'Cuando se definen permisos de perfil a un elemento de menú, tendrán preferencia sobre los permisos de la aplicación.',
+	'MenuParent' => 'Superior',
 );
 
 ?>
