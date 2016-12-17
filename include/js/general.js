@@ -2180,11 +2180,11 @@ function fnDropDown(obj,Lay){
 	if(getVal > document.body.clientWidth ){
 		leftSide = eval(leftSide) - eval(widthM);
 		tagName.style.left = leftSide + 34 + 'px';
-	}
-	else
+	} else {
 		tagName.style.left= leftSide + 'px';
-		tagName.style.top= topSide + obj.clientHeight +'px';
-		tagName.style.display = 'block';
+	}
+	tagName.style.top= topSide + obj.clientHeight +'px';
+	tagName.style.display = 'block';
 }
 
 function fnShowDrop(obj){

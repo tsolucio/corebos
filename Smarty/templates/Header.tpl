@@ -164,13 +164,9 @@
 				<td valign="bottom" nowrap style="padding-bottom: 1em;" class="small" nowrap><a href="{$HELP_URL}" target="_blank"><img src="{$IMAGEPATH}info.PNG" border=0 style="padding: 0px;padding-left:5px" title="{$APP.LNK_HELP}"></a></td>
 				{/if}
 				{if $ADMIN_LINK neq ''}
-					{foreach key=maintabs item=detail from=$HEADERS}
-						{if $maintabs eq "Settings"}
-							<td  valign="bottom" nowrap style="padding-bottom: 1em;" class="small" onmouseout="fnHideDrop('mainsettings');" onmouseover="fnDropDown(this,'mainsettings');" nowrap><a href="index.php?module=Settings&action=index&parenttab=" id="settingslink"><img src="{$IMAGEPATH}mainSettings.PNG" border=0 style="padding: 0px;padding-left:5px"></a></td>
-						{/if}
-					{/foreach}
+					<td valign="bottom" nowrap style="padding-bottom: 1em;" class="small" onmouseout="fnHideDrop('mainsettings');" onmouseover="fnDropDown(this,'mainsettings');" nowrap><a href="index.php?module=Settings&action=index&parenttab=" id="settingslink"><img src="{$IMAGEPATH}mainSettings.PNG" border=0 style="padding: 0px;padding-left:5px"></a></td>
 				{/if}
-				<td  valign="bottom" nowrap style="padding-bottom: 1em;" class="small" nowrap><a href="index.php?module=Users&action=Logout"> <img src="themes/images/logout.png" border=0 style="padding: 0px;padding-left:5px " title="{$APP.LBL_LOGOUT}" alt="{$APP.LBL_LOGOUT}"></a></td>
+				<td valign="bottom" nowrap style="padding-bottom: 1em;" class="small" nowrap><a href="index.php?module=Users&action=Logout"> <img src="themes/images/logout.png" border=0 style="padding: 0px;padding-left:5px " title="{$APP.LBL_LOGOUT}" alt="{$APP.LBL_LOGOUT}"></a></td>
 			</tr>
 			</table>
         </td>
@@ -470,15 +466,21 @@
 	jQuery('#tracker').draggable({ldelim} handle: "#Track_Handle" {rdelim});
 </script>
 
-<div  id="mainsettings" class="drop_mnu_user" onmouseout="fnHideDrop('mainsettings');" onmouseover="fnvshNrm('mainsettings');" style="width:110px;left:1226px;" >
-	<table border=0 width="100%" border="0" cellpadding="0" cellspacing="0" >
-		{foreach key=maintabs item=detail from=$HEADERS}
-			{if $maintabs eq "Settings"}
-			<tr><td style="padding-left:0px;padding-right:10px font-weight:bold"  nowrap><a href="index.php?module={$detail[0]}&action=index&parenttab=" class="drop_down_usersettings">{$detail[0]|@getTranslatedString:$detail[0]}</a></td></tr>
-			{/if}
+<div id="mainsettings" class="drop_mnu_user" onmouseout="fnHideDrop('mainsettings');" onmouseover="fnvshNrm('mainsettings');" style="width:180px;">
+	<ul>
+		{foreach key=actionlabel item=actionlink from=$HEADERS}
+			<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true">
+				<a href="{$actionlink}" class="slds-context-bar__label-action" title="{$actionlabel}">
+						<span class="slds-truncate">{$actionlabel}</span>
+				</a>
+			</li>
 		{/foreach}
-		<tr><td style="padding-left:0px;padding-right:10px font-weight:bold"  nowrap><a href="index.php?module=Settings&action=index&parenttab=" class="drop_down_usersettings">{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}</a></td></tr>
-	</table>
+		<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true">
+			<a href="index.php?module=Settings&action=index&parenttab=" class="slds-context-bar__label-action" title="{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}">
+					<span class="slds-truncate">{'LBL_CRM_SETTINGS'|@getTranslatedString:$MODULE_NAME}</span>
+			</a>
+		</li>
+	</ul>
 </div>
 <script type="text/javascript">
 {literal}

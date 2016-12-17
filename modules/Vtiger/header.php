@@ -22,7 +22,10 @@ $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 $userName = getFullNameFromArray('Users', $current_user->column_fields);
 $smarty = new vtigerCRM_Smarty;
-$header_array = getHeaderArray();
+require_once('modules/evvtMenu/evvtMenu.inc');
+$smarty->assign('MENU', getMenuJSON(getMenuArray(0)));
+$smarty->assign('evvtAdminMenu', getAdminevvtMenu());
+$header_array = getAdminevvtMenu();
 $smarty->assign("HEADERS",$header_array);
 $smarty->assign("THEME",$theme);
 $smarty->assign("IMAGEPATH",$image_path);
@@ -71,10 +74,6 @@ $COMMONHDRLINKS = Vtiger_Link::getAllByType(Vtiger_Link::IGNORE_MODULE, Array('H
 $smarty->assign('HEADERLINKS', $COMMONHDRLINKS['HEADERLINK']);
 $smarty->assign('HEADERSCRIPTS', $COMMONHDRLINKS['HEADERSCRIPT']);
 $smarty->assign('HEADERCSS', $COMMONHDRLINKS['HEADERCSS']);
-
-require_once('modules/evvtMenu/evvtMenu.inc');
-$smarty->assign('MENU', getMenuJSON(getMenuArray(0)));
-$smarty->assign('evvtAdminMenu', getAdminevvtMenu());
 
 // Pass on the version information
 global $vtiger_current_version;
