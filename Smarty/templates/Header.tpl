@@ -210,7 +210,7 @@
 								<input class="small" type='radio' name='exportCalendar' value = 'iCal' onclick="jQuery('#ics_filename').removeAttr('disabled');" checked /> iCal Format
 							</td>
 							<td align="left">
-								<input class="small" type='text' name='ics_filename' id='ics_filename' size='25' value='{$coreBOS_app_name}.calendar'/>
+								<input class="small" type='text' name='ics_filename' id='ics_filename' size='25' value='export.calendar'/>
 							</td>
 						</tr>
 					</table>
@@ -281,8 +281,8 @@
 				</a>
 			</div>
 			<span class="slds-context-bar__label-action slds-context-bar__app-name">
-        <span class="slds-truncate" title="{$APP.LBL_BROWSER_TITLE}">{$APP.LBL_BROWSER_TITLE}</span>
-      </span>
+				<span class="slds-truncate" title="{$coreBOS_app_name}">{$coreBOS_app_name}</span>
+			</span>
 		</div>
 	</div>
 	<nav class="slds-context-bar__secondary" role="navigation">
@@ -301,7 +301,6 @@
 					</div>
 				</div>
 			</div>
-
 		</div>
 	</nav>
 </div>
@@ -471,20 +470,6 @@
 	jQuery('#tracker').draggable({ldelim} handle: "#Track_Handle" {rdelim});
 </script>
 
-<!--for admin users-->
-<div class="drop_mnu_user" id="ondemand_sub" onmouseout="fnHideDrop('ondemand_sub')" onmouseover="fnShowDrop('ondemand_sub')" >
-	<table border="0" cellpadding="0" cellspacing="0" border="0" cellpadding="0" cellspacing="0">
-		<tr><td style="padding-left:0px;padding-right:10px font-weight:bold"  nowrap> <a id="_my_preferences_" href="index.php?module=Users&action=DetailView&record={$CURRENT_USER_ID}&modechk=prefview" class="drop_down_usersettings" >{$APP.LBL_MY_PREFERENCES}</a></td></tr>
-		<tr><td style="padding-left:0px;padding-right:10px font-weight:bold"  nowrap> <a href="index.php?module=Users&action=Logout" class="drop_down_usersettings" >{$APP.LBL_LOGOUT}</a> </td></tr>
-	</table>
-</div>
-<div  id="usersettings" class="drop_mnu_user" onmouseout="fnHideDrop('usersettings');" onmouseover="fnvshNrm('usersettings');"  style="width:110px;left:1226px;">
-	<table border=0 width="100%" border="0" cellpadding="0" cellspacing="0" >
-		<tr>
-			<td style="padding-left:0px;padding-right:10px font-weight:bold"  nowrap> <a href="{$smarty.const.MAIN_HELP_PAGE}" target="_blank" class="drop_down_usersettings">{$APP.LNK_HELP}</a> </td>
-		</tr>
-	</table>
-</div>
 <div  id="mainsettings" class="drop_mnu_user" onmouseout="fnHideDrop('mainsettings');" onmouseover="fnvshNrm('mainsettings');" style="width:110px;left:1226px;" >
 	<table border=0 width="100%" border="0" cellpadding="0" cellspacing="0" >
 		{foreach key=maintabs item=detail from=$HEADERS}
@@ -496,11 +481,9 @@
 	</table>
 </div>
 <script type="text/javascript">
-	{literal}
+{literal}
 	jQuery(document).ready(function() {
 		var evvtmenu={/literal}{$MENU}{literal};
-
-		var t0 = performance.now();
 
 		function buildMainMenu(object){ //main menu
 			for (var i in object) {
@@ -599,20 +582,13 @@
 				$(this).find('#' + id).toggle();
 			});
 		});
-
-		var t1 = performance.now();
-		console.log("Call to ldsmenu took " + (t1 - t0) + " milliseconds.")
-
-
 	});
-	{/literal}
+{/literal}
 </script>
 </div>
 <!-- ActivityReminder Customization for callback -->
-{*<link type="text/css" rel="stylesheet" href="include/PendingTasks.css">*}
-{*<audio id="newEvents" src="themes/media/new_event.mp3" preload="auto"></audio>*}
-{*<h3 id="todolist-label" onclick="ActivityReminderCallback(true);" class="noprint"><a href="#" class="noprint">{'ToDo'|@getTranslatedString:'Calendar'}</a><div id="new-todo" class="noprint"></div></h3>*}
-{*<div id="todolist" class="noprint"></div>*}
+<div class="lvtCol fixedLay1" id="ActivityRemindercallback" style="border: 0; right: 0px; bottom: 2px; display:none; padding: 2px; z-index: 10; font-weight: normal;" align="left">
+</div>
 <!-- End -->
 
 <!-- divs for asterisk integration -->
