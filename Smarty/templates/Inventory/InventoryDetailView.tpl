@@ -342,7 +342,7 @@ function DeleteTag(id,recordid)
 <br>
 
 										<!-- Product Details informations -->
-										{$ASSOCIATED_PRODUCTS}
+										{if isset($ASSOCIATED_PRODUCTS)}{$ASSOCIATED_PRODUCTS}{/if}
 									</td>
 <!-- The following table is used to display the buttons -->
 								<table border=0 cellspacing=0 cellpadding=0 width=100%>

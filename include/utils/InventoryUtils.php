@@ -777,6 +777,7 @@ function getPriceDetailsForProduct($productid, $unit_price, $available='availabl
 {
 	global $log, $adb;
 	$log->debug("Entering into function getPriceDetailsForProduct($productid)");
+	$price_details = array();
 	if($productid != '')
 	{
 		$product_currency_id = getProductBaseCurrency($productid, $itemtype);

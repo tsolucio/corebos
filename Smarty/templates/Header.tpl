@@ -311,7 +311,7 @@
 <!-- Unified Search module selection feature -->
 <div id="UnifiedSearch_moduleformwrapper" style="position:absolute;width:417px;z-index:100002;display:none;"></div>
 <script type='text/javascript'>
-	{literal}
+{literal}
 	function UnifiedSearch_SelectModuleForm(obj) {
 		if(jQuery('#UnifiedSearch_moduleform').length) {
 			// If we have loaded the form already.
@@ -352,38 +352,27 @@
 		);
 		UnifiedSearch_SelectModuleCancel();
 	}
-	{/literal}
-</script>
-<!-- End -->
 
-<script>
-	function fetch_clock()
-	{ldelim}
-		jQuery.ajax({ldelim}
+	function fetch_clock() {
+		jQuery.ajax({
 			method:"POST",
 			url:'index.php?module=Utilities&action=UtilitiesAjax&file=Clock'
-			{rdelim}).done(function(response) {ldelim}
+		}).done(function(response) {
 			jQuery("#clock_cont").html(response);
 			execJS(jQuery('#clock_cont'));
-			{rdelim}
-		);
-		{rdelim}
+		});
+	}
 
-	function fetch_calc()
-	{ldelim}
-		jQuery.ajax({ldelim}
+	function fetch_calc() {
+		jQuery.ajax({
 			method:"POST",
 			url:'index.php?module=Utilities&action=UtilitiesAjax&file=Calculator'
-			{rdelim}).done(function(response) {ldelim}
+		}).done(function(response) {
 			jQuery("#calculator_cont").html(response);
 			execJS(jQuery('#calculator_cont'));
-			{rdelim}
-		);
-		{rdelim}
-</script>
+		});
+	}
 
-<script type="text/javascript">
-	{literal}
 	function QCreate(qcoptions){
 		var module = qcoptions.options[qcoptions.options.selectedIndex].value;
 		if(module != 'none'){

@@ -1129,6 +1129,8 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		{
 			$value = $_REQUEST['potental_id'];
 			$potential_name = getPotentialName($value);
+		} else {
+			$potential_name = '';
 		}
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue[] = $potential_name;
@@ -1143,7 +1145,9 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		elseif(isset($_REQUEST['quote_id']) && $_REQUEST['quote_id'] != '')
 		{
 			$value = $_REQUEST['quote_id'];
-			$potential_name = getQuoteName($value);
+			$quote_name = getQuoteName($value);
+		} else {
+			$quote_name = '';
 		}
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue[] = $quote_name;
@@ -1159,6 +1163,8 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		{
 			$value = $_REQUEST['purchaseorder_id'];
 			$purchaseorder_name = getPoName($value);
+		} else {
+			$purchaseorder_name = '';
 		}
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue[] = $purchaseorder_name;
@@ -1175,6 +1181,8 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 		{
 			$value = $_REQUEST['salesorder_id'];
 			$salesorder_name = getSoName($value);
+		} else {
+			$salesorder_name = '';
 		}
 		$editview_label[]=getTranslatedString($fieldlabel, $module_name);
 		$fieldvalue[] = $salesorder_name;
@@ -1537,7 +1545,7 @@ function getAssociatedProducts($module,$focus,$seid='')
 	$theme_path="themes/".$theme."/";
 	$image_path=$theme_path."images/";
 	$product_Detail = Array();
-
+	$acvid = 0;
 	if (in_array($module, getInventoryModules()))
 	{
 		$query="SELECT

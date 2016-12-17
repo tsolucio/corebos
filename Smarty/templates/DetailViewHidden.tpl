@@ -85,18 +85,18 @@
 	{if isset($HIDDEN_PARENTS_LIST)}{$HIDDEN_PARENTS_LIST}{/if}
 {elseif $MODULE eq 'Products' || $MODULE eq 'Vendors' || $MODULE eq 'PriceBooks' || $MODULE eq 'Services'}
 	{if $MODULE eq 'Products'}
-		<input type="hidden" name="product_id" value="{$id}">
+		<input type="hidden" name="product_id" value="{$ID}">
 	{elseif $MODULE eq 'Vendors'}
-		<input type="hidden" name="vendor_id" value="{$id}">
+		<input type="hidden" name="vendor_id" value="{$ID}">
 	{/if}
-	<input type="hidden" name="parent_id" value="{$id}">
+	<input type="hidden" name="parent_id" value="{$ID}">
 	<input type="hidden" name="module" value="{$MODULE}">
         <input type="hidden" name="action">
         <input type="hidden" name="isDuplicate" value=false>
         <input type="hidden" name="mode">
         <input type="hidden" name="record" value="{$ID}">
-        <input type="hidden" name="return_module" value="{$RETURN_MODULE}">
-        <input type="hidden" name="return_id" value="{$RETURN_ID}">
+        <input type="hidden" name="return_module" value="{if isset($RETURN_MODULE)}{$RETURN_MODULE}{/if}">
+        <input type="hidden" name="return_id" value="{if isset($RETURN_ID)}{$RETURN_ID}{/if}">
         <input type="hidden" name="return_action" value="">
 {elseif $MODULE eq 'Documents'}
 	<input type="hidden" name="module" value="{$MODULE}">
