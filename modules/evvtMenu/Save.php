@@ -68,10 +68,10 @@ switch ($do) {
 			if ($mtype=='module') {
 				$mvalue = vtlib_purify($_REQUEST['modname']);
 			}
-			$mpermission = vtlib_purify($_REQUEST['mpermission']);
-			$adb->pquery('update vtiger_evvtmenu
+			$mpermission = isset($_REQUEST['mpermission']) ? implode(',',vtlib_purify($_REQUEST['mpermission'])) : '';
+			$updrs = $adb->pquery('update vtiger_evvtmenu
 				set mtype=?,mvalue=?,mlabel=?, mparent=?,mpermission=? where evvtmenuid=?',
-				array($mtype,$mvalue,$mlabel,$mparent, implode(',',$mpermission),$evvtmenuid));
+				array($mtype,$mvalue,$mlabel,$mparent, $mpermission,$evvtmenuid));
 		}
 		break;
 	case 'doDel':

@@ -87,6 +87,8 @@
                           <option value="menu">{'mt_menu'|getTranslatedString:$MODULE}</option>
                           <option value="module">{'mt_module'|getTranslatedString:$MODULE}</option>
                           <option value="url">{'mt_url'|getTranslatedString:$MODULE}</option>
+                          <option value="headtop">{'mt_headertop'|getTranslatedString:$MODULE}</option>
+                          <option value="headbottom">{'mt_headerbottom'|getTranslatedString:$MODULE}</option>
                           <option value="sep">{'mt_separator'|getTranslatedString:$MODULE}</option>
                       </select>
                   </div>

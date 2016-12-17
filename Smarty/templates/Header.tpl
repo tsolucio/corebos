@@ -519,8 +519,13 @@
 			var menuid = 'menu'+index;
 			for (var i in object){
 				if (object[i].type == 'sep') {
+					$('#' + menuid).append('<li class="slds-dropdown__header slds-has-divider--top-space" role="separator"></li>');
+				} else if (object[i].type == 'headtop') {
 					$('#' + menuid).append('<li class="slds-dropdown__header slds-has-divider--top-space" role="separator">\
-							</li>');
+						<span class="slds-text-title--caps">' + object[i].text + '</span></li>');
+				} else if (object[i].type == 'headbottom') {
+					$('#' + menuid).append('<li class="slds-dropdown__header slds-has-divider--bottom-space" role="separator">\
+						<span class="slds-text-title--caps">' + object[i].text + '</span></li>');
 				} else {
 					if (object[i].items === undefined || object[i].items === null) {
 						$('#' + menuid).append('<li class="slds-dropdown__item" role="presentation">\

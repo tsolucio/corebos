@@ -22,15 +22,15 @@ function getMenuBranch($mparent) {
 	$menustructure = array();
 	$menurs = $adb->query("select * from vtiger_evvtmenu where mparent = $mparent order by mseq");
 	if ($menurs and $adb->num_rows($menurs)>0) {
-	  while ($menu = $adb->fetch_array($menurs)) {
-	  	switch ($menu['mtype']) {
-	  		case 'menu':
-	  		case 'separator':
-	  			$icon = 'folder';
-	  			break;
-	  		default:
-	  			$icon = 'html';
-	  	}
+		while ($menu = $adb->fetch_array($menurs)) {
+		switch ($menu['mtype']) {
+			case 'menu':
+			case 'separator':
+				$icon = 'folder';
+				break;
+			default:
+				$icon = 'html';
+		}
 		$menustructure[] = array(
 			'evvtmenuid' => $menu['evvtmenuid'],
 			'mparent' =>$menu['mparent'],
@@ -52,7 +52,7 @@ function getMenuBranch($mparent) {
 					'mpermission' => $menu['mpermission'],
 			)),
 		);
-	  }
+		}
 	}
 	return $menustructure;
 }
@@ -128,6 +128,8 @@ function getMenuArray($mparent) {
 			switch ($menu['mtype']) {
 				case 'menu':
 				case 'url':
+				case 'headtop':
+				case 'headbottom':
 					$label = getTranslatedString($menu['mlabel'],'evvtMenu');
 					break;
 				case 'separator':
@@ -183,6 +185,10 @@ function getMenuJSON($marray) {
 				break;
 			case 'sep':
 				$menubranch.= '{text:"<hr/>",encoded:false';
+				break;
+			case 'headtop':
+			case 'headbottom':
+				$menubranch.= '{text:"'.decode_html($item['mlabel']).'"';
 				break;
 		}
 		$menubranch .= ',type:"' . $item['mtype'] . '"';
