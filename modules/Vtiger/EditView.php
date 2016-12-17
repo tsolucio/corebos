@@ -105,7 +105,7 @@ $smarty->assign('CREATEMODE', isset($_REQUEST['createmode']) ? vtlib_purify($_RE
 $smarty->assign('CHECK', Button_Check($currentModule));
 $smarty->assign('DUPLICATE', $isduplicate);
 
-if($focus->mode == 'edit' || $isduplicate) {
+if($focus->mode == 'edit' || $isduplicate == 'true') {
 	$recordName = array_values(getEntityName($currentModule, $record));
 	$recordName = $recordName[0];
 	$smarty->assign('NAME', $recordName);
