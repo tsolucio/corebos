@@ -48,7 +48,6 @@ $smarty->assign("CURRENT_USER_ID", $current_user->id);
 $smarty->assign("MODULELISTS",$app_list_strings['moduleList']);
 $smarty->assign("CATEGORY",getParentTab());
 $smarty->assign("CALC",get_calc($image_path));
-$smarty->assign("MENUSTRUCTURE",getMenuStructure($currentModule));
 $smarty->assign("ANNOUNCEMENT",get_announcements());
 $smarty->assign("USE_ASTERISK", get_use_asterisk($current_user->id));
 

@@ -421,31 +421,9 @@
 </script>
 {/literal}
 
-{* More menu items *}
-<div id="allMenu" onmouseout="fnHide_Event('allMenu');" onMouseOver="fnvshNrm('allMenu');" style="z-index: 2147483647;visibility:hidden;display:block;overflow-x:auto;">
-	<table border=0 cellpadding="0" cellspacing="0" class="allMnuTable" padding="0" style="width:20px;">
-		<tr>
-			{foreach name=modulelist key=more item=childmodules from=$MENUSTRUCTURE}
-				{if $more eq 'more'}
-					{foreach key = parent item = childs from = $childmodules}
-						<td valign="top"><table stye="width:20px;">
-								<tr><th><a class="drop_downnew_parent"> {$APP[$parent]}</a></th></tr>
-								{foreach key = number item = modules from = $childs}
-									{assign var="modulelabel" value=$modules[1]|@getTranslatedString:$modules[0]}
-									<tr><td><a id = "more" name = "{$modulelabel}"  href="index.php?module={$modules.0}&action=index"  class="drop_downnew">{$modulelabel}</a></td></tr>
-								{/foreach}
-							</table></td>
-					{/foreach}
-				{/if}
-			{/foreach}
-		</tr>
-	</table>
-</div>
-
 <div id="status" style="position:absolute;display:none;left:850px;top:95px;height:27px;white-space:nowrap;"><img src="{'status.gif'|@vtiger_imageurl:$THEME}"></div>
 
 <div id="tracker" style="display:none;position:absolute;z-index:100000001;" class="layerPopup">
-
 	<table border="0" cellpadding="5" cellspacing="0" width="200">
 		<tr style="cursor:move;">
 			<td colspan="2" class="mailClientBg small" id="Track_Handle"><strong>{$APP.LBL_LAST_VIEWED}</strong></td>
