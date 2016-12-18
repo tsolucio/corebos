@@ -160,16 +160,17 @@
 	</table>
 </div>
 {literal}
-<script src="include/bunnyjs/utils_dom.min.js"></script>
+<link rel="stylesheet" href="include/bunnyjs/css/svg-icons.css">
+<script src="include/bunnyjs/utils-dom.min.js"></script>
 <script src="include/bunnyjs/ajax.min.js"></script>
 <script src="include/bunnyjs/template.min.js"></script>
 <script src="include/bunnyjs/pagination.min.js"></script>
 <script src="include/bunnyjs/url.min.js"></script>
 <script src="include/bunnyjs/utils-svg.min.js"></script>
 <script src="include/bunnyjs/spinner.min.js"></script>
-<script src="include/bunnyjs/element.min.js"></script>
 <script src="include/bunnyjs/datatable.min.js"></script>
 <script src="include/bunnyjs/datatable.icons.min.js"></script>
+<script src="include/bunnyjs/element.min.js"></script>
 <script src="include/bunnyjs/datatable.scrolltop.min.js"></script>
 <script type="text/javascript">
 Template.define('report_row_template', {});
