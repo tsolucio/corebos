@@ -31,6 +31,7 @@ if(!empty($_REQUEST['blockstufftype'])){
 	$stufftype = $_REQUEST['blockstufftype'];
 }
 $dashdet = '';
+$homestuff_values = '';
 if($stufftype=='Tag Cloud'){
 	$freetag = new freetag();
 	$smarty->assign("ALL_TAG",$freetag->get_tag_cloud_html("",$current_user->id));

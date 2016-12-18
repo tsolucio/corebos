@@ -29,6 +29,7 @@ function getTopQuotes($maxval,$calCnt)
 
 	$url_string = '';
 	$sorder = '';
+	$order_by = '';
 	$oCustomView = new CustomView("Quotes");
 	$customviewcombo_html = $oCustomView->getCustomViewCombo();
 	if(isset($_REQUEST['viewname']) == false || $_REQUEST['viewname']=='')
@@ -138,8 +139,8 @@ function getTopQuotes($maxval,$calCnt)
 	$entries = $controller->getListViewEntries($focus,$currentModule,$list_result,$navigation_array, true);
 
 	$values=Array('ModuleName'=>'Quotes','Title'=>$title,'Header'=>$header,'Entries'=>$entries,'search_qry'=>$search_qry);
-
-	if ( ($noofrows == 0 ) || ($noofrows>0) )
+	$display_empty_home_blocks = GlobalVariable::getVariable('Home_Display_Empty_Blocks',0);
+	if ( ($display_empty_home_blocks && $noofrows == 0 ) || ($noofrows>0) )
 		return $values;
 }
 
@@ -153,47 +154,47 @@ function getTopQuotesSearch($output) {
 	$advft_criteria_groups = array('1' => array('groupcondition' => null));
 	$advft_criteria = array(
 		array (
-            'groupid' => 1,
-            'columnname' => 'vtiger_quotes:quotestage:quotestage:Quotes_Quote_Stage:V',
-            'comparator' => 'n',
-            'value' => 'Accepted',
-            'columncondition' => 'and'
-        ),
+			'groupid' => 1,
+			'columnname' => 'vtiger_quotes:quotestage:quotestage:Quotes_Quote_Stage:V',
+			'comparator' => 'n',
+			'value' => 'Accepted',
+			'columncondition' => 'and'
+		),
 		array (
-            'groupid' => 1,
-            'columnname' => 'vtiger_quotes:quotestage:quotestage:Quotes_Quote_Stage:V',
-            'comparator' => 'n',
-            'value' => 'Rejected',
-            'columncondition' => 'and'
-        ),
+			'groupid' => 1,
+			'columnname' => 'vtiger_quotes:quotestage:quotestage:Quotes_Quote_Stage:V',
+			'comparator' => 'n',
+			'value' => 'Rejected',
+			'columncondition' => 'and'
+		),
 		array (
-            'groupid' => 1,
-            'columnname' => 'vtiger_quotes:quotestage:quotestage:Quotes_Quote_Stage:V',
-            'comparator' => 'n',
-            'value' => getTranslatedString('Accepted', 'Quotes'),
-            'columncondition' => 'and'
-        ),
+			'groupid' => 1,
+			'columnname' => 'vtiger_quotes:quotestage:quotestage:Quotes_Quote_Stage:V',
+			'comparator' => 'n',
+			'value' => getTranslatedString('Accepted', 'Quotes'),
+			'columncondition' => 'and'
+		),
 		array (
-            'groupid' => 1,
-            'columnname' => 'vtiger_quotes:quotestage:quotestage:Quotes_Quote_Stage:V',
-            'comparator' => 'n',
-            'value' => getTranslatedString('Rejected', 'Quotes'),
-            'columncondition' => 'and'
-        ),
+			'groupid' => 1,
+			'columnname' => 'vtiger_quotes:quotestage:quotestage:Quotes_Quote_Stage:V',
+			'comparator' => 'n',
+			'value' => getTranslatedString('Rejected', 'Quotes'),
+			'columncondition' => 'and'
+		),
 		array (
-            'groupid' => 1,
-            'columnname' => 'vtiger_quotes:validtill:validtill:Quotes_Valid_Till:D',
-            'comparator' => 'h',
-            'value' => $currentDateTime->getDisplayDate(),
-            'columncondition' => 'and'
-        ),
+			'groupid' => 1,
+			'columnname' => 'vtiger_quotes:validtill:validtill:Quotes_Valid_Till:D',
+			'comparator' => 'h',
+			'value' => $currentDateTime->getDisplayDate(),
+			'columncondition' => 'and'
+		),
 		array (
-            'groupid' => 1,
-            'columnname' => 'vtiger_crmentity:smownerid:assigned_user_id:Quotes_Assigned_To:V',
-            'comparator' => 'e',
-            'value' => getFullNameFromArray('Users', $current_user->column_fields),
-            'columncondition' => null
-        )
+			'groupid' => 1,
+			'columnname' => 'vtiger_crmentity:smownerid:assigned_user_id:Quotes_Assigned_To:V',
+			'comparator' => 'e',
+			'value' => getFullNameFromArray('Users', $current_user->column_fields),
+			'columncondition' => null
+		)
 	);
 
 	$output['advft_criteria'] = json_encode($advft_criteria);

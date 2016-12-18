@@ -28,6 +28,7 @@ function getTopSalesOrder($maxval,$calCnt)
 
 	$url_string = '';
 	$sorder = '';
+	$order_by = '';
 	$oCustomView = new CustomView("SalesOrder");
 	$customviewcombo_html = $oCustomView->getCustomViewCombo();
 	if(isset($_REQUEST['viewname']) == false || $_REQUEST['viewname']=='')
@@ -153,19 +154,19 @@ function getTopSalesOrderSearch($output) {
 	$advft_criteria_groups = array('1' => array('groupcondition' => null));
 	$advft_criteria = array(
 		array (
-            'groupid' => 1,
-            'columnname' => 'vtiger_salesorder:duedate:duedate:SalesOrder_Due_Date:D',
-            'comparator' => 'h',
-            'value' => $currentDateTime->getDisplayDate(),
-            'columncondition' => 'and'
-        ),
+			'groupid' => 1,
+			'columnname' => 'vtiger_salesorder:duedate:duedate:SalesOrder_Due_Date:D',
+			'comparator' => 'h',
+			'value' => $currentDateTime->getDisplayDate(),
+			'columncondition' => 'and'
+		),
 		array (
-            'groupid' => 1,
-            'columnname' => 'vtiger_crmentity:smownerid:assigned_user_id:SalesOrder_Assigned_To:V',
-            'comparator' => 'e',
-            'value' => getFullNameFromArray('Users', $current_user->column_fields),
-            'columncondition' => null
-        )
+			'groupid' => 1,
+			'columnname' => 'vtiger_crmentity:smownerid:assigned_user_id:SalesOrder_Assigned_To:V',
+			'comparator' => 'e',
+			'value' => getFullNameFromArray('Users', $current_user->column_fields),
+			'columncondition' => null
+		)
 	);
 
 	$output['advft_criteria'] = json_encode($advft_criteria);

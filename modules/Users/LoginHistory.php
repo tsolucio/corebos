@@ -67,10 +67,10 @@ class LoginHistory {
 	var $default_order_by = "login_time";
 	var $default_sort_order = 'DESC';
 
-/**
- * Function to get the Header values of Login History.
- * Returns Header Values like UserName, IP, LoginTime etc in an array format.
-**/
+	/**
+	 * Function to get the Header values of Login History.
+	 * Returns Header Values like UserName, IP, LoginTime etc in an array format.
+	**/
 	function getHistoryListViewHeader()
 	{
 		global $log,$app_strings;
@@ -80,13 +80,13 @@ class LoginHistory {
 		return $header_array;
 	}
 
-/**
-  * Function to get the Login History values of the User.
-  * @param $navigation_array - Array values to navigate through the number of entries.
-  * @param $sortorder - DESC
-  * @param $orderby - login_time
-  * Returns the login history entries in an array format.
-**/
+	/**
+	  * Function to get the Login History values of the User.
+	  * @param $navigation_array - Array values to navigate through the number of entries.
+	  * @param $sortorder - DESC
+	  * @param $orderby - login_time
+	  * Returns the login history entries in an array format.
+	**/
 	function getHistoryListViewEntries($username, $navigation_array, $sorder='', $orderby='')
 	{
 		global $log, $adb, $current_user;

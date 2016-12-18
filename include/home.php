@@ -412,6 +412,7 @@ class Homestuff{
 	 */
 	private function getDefaultDetails($dfid,$calCnt){
 		global $adb;
+		$details = array('ModuleName'=>'','Title'=>'','Header'=>'','Entries'=>array(),'search_qry'=>'');
 		$qry="select * from vtiger_homedefault where stuffid=?";
 		$result=$adb->pquery($qry, array($dfid));
 		$maxval=$adb->query_result($result,0,"maxentries");
@@ -419,18 +420,22 @@ class Homestuff{
 
 		if($hometype=="ALVT" && vtlib_isModuleActive("Accounts")){
 			include_once("modules/Accounts/ListViewTop.php");
+			$details['ModuleName'] = 'Accounts';
 			$home_values = getTopAccounts($maxval,$calCnt);
 		}elseif($hometype=="PLVT" && vtlib_isModuleActive("Potentials")){
+			$details['ModuleName'] = 'Potentials';
 			if(isPermitted('Potentials','index') == "yes"){
 				 include_once("modules/Potentials/ListViewTop.php");
 				 $home_values=getTopPotentials($maxval,$calCnt);
 			}
 		}elseif($hometype=="QLTQ" && vtlib_isModuleActive("Quotes")){
+			$details['ModuleName'] = 'Quotes';
 			if(isPermitted('Quotes','index') == "yes"){
 				require_once('modules/Quotes/ListTopQuotes.php');
 				$home_values=getTopQuotes($maxval,$calCnt);
 			}
 		}elseif($hometype=="HLT" && vtlib_isModuleActive("HelpDesk")){
+			$details['ModuleName'] = 'HelpDesk';
 			if(isPermitted('HelpDesk','index') == "yes"){
 				require_once('modules/HelpDesk/ListTickets.php');
 				$home_values=getMyTickets($maxval,$calCnt);
@@ -438,26 +443,31 @@ class Homestuff{
 		}elseif($hometype=="GRT"){
 			$home_values = getGroupTaskLists($maxval,$calCnt);
 		}elseif($hometype=="OLTSO" && vtlib_isModuleActive("SalesOrder")){
+			$details['ModuleName'] = 'SalesOrder';
 			if(isPermitted('SalesOrder','index') == "yes"){
 				require_once('modules/SalesOrder/ListTopSalesOrder.php');
 				$home_values=getTopSalesOrder($maxval,$calCnt);
 			}
 		}elseif($hometype=="ILTI" && vtlib_isModuleActive("Invoice")){
+			$details['ModuleName'] = 'Invoice';
 			if(isPermitted('Invoice','index') == "yes"){
 				require_once('modules/Invoice/ListTopInvoice.php');
 				$home_values=getTopInvoice($maxval,$calCnt);
 			}
 		}elseif($hometype=="MNL" && vtlib_isModuleActive("Leads")){
+			$details['ModuleName'] = 'Leads';
 			if(isPermitted('Leads','index') == "yes"){
 				 include_once("modules/Leads/ListViewTop.php");
 				 $home_values=getNewLeads($maxval,$calCnt);
 			}
 		}elseif($hometype=="OLTPO" && vtlib_isModuleActive("PurchaseOrder")){
+			$details['ModuleName'] = 'PurchaseOrder';
 			if(isPermitted('PurchaseOrder','index') == "yes"){
 				require_once('modules/PurchaseOrder/ListTopPurchaseOrder.php');
 				$home_values=getTopPurchaseOrder($maxval,$calCnt);
 			}
 		}elseif($hometype=="LTFAQ" && vtlib_isModuleActive("Faq")){
+			$details['ModuleName'] = 'Faq';
 			if(isPermitted('Faq','index') == "yes"){
 				require_once('modules/Faq/ListFaq.php');
 				$home_values=getMyFaq($maxval,$calCnt);
@@ -466,9 +476,11 @@ class Homestuff{
 			include_once("modules/CustomView/ListViewTop.php");
 			$home_values = getKeyMetrics($maxval,$calCnt);
 		}elseif($hometype == 'UA' && vtlib_isModuleActive("Calendar")){
+			$details['ModuleName'] = 'Calendar';
 			require_once "modules/Home/HomeUtils.php";
 			$home_values = homepage_getUpcomingActivities($maxval, $calCnt);
 		}elseif($hometype == 'PA' && vtlib_isModuleActive("Calendar")){
+			$details['ModuleName'] = 'Calendar';
 			require_once "modules/Home/HomeUtils.php";
 			$home_values = homepage_getPendingActivities($maxval, $calCnt);
 		}
@@ -476,7 +488,7 @@ class Homestuff{
 		if($calCnt == 'calculateCnt'){
 			return $home_values;
 		}
-		$return_value = Array();
+		$return_value = Array('Maxentries'=>0,'Details'=>$details);
 		if(count($home_values) > 0){
 			$return_value=Array('Maxentries'=>$maxval,'Details'=>$home_values);
 		}
@@ -525,10 +537,7 @@ class Homestuff{
  */
 function getGroupTaskLists($maxval,$calCnt){
 	//get all the group relation tasks
-	global $current_user;
-	global $adb;
-	global $log;
-	global $app_strings;
+	global $current_user, $adb, $log, $app_strings;
 	$userid= $current_user->id;
 	$groupids = explode(",", fetchUserGroupids($userid));
 
@@ -731,7 +740,7 @@ function getGroupTaskLists($maxval,$calCnt){
 			}
 		}
 
-		$values=Array('Title'=>$title,'Header'=>$header,'Entries'=>$entries);
+		$values=Array('Title'=>$title,'Header'=>$header,'Entries'=>$entries,'search_qry'=>'');
 		if(count($entries)>0){
 			return $values;
 		}

@@ -592,6 +592,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			$images = array();
 			$query = 'select productname, vtiger_attachments.path, vtiger_attachments.attachmentsid, vtiger_attachments.name,vtiger_crmentity.setype from vtiger_products left join vtiger_seattachmentsrel on vtiger_seattachmentsrel.crmid=vtiger_products.productid inner join vtiger_attachments on vtiger_attachments.attachmentsid=vtiger_seattachmentsrel.attachmentsid inner join vtiger_crmentity on vtiger_crmentity.crmid = vtiger_attachments.attachmentsid where vtiger_crmentity.setype="Products Image" and productid=?';
 			$result_image = $adb->pquery($query, array($col_fields['record_id']));
+			$image_array = array();
 			for ($image_iter = 0; $image_iter < $adb->num_rows($result_image); $image_iter++) {
 				$image_id_array[] = $adb->query_result($result_image, $image_iter, 'attachmentsid');
 

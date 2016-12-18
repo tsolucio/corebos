@@ -24,6 +24,7 @@ function getTopInvoice($maxval,$calCnt)
 
 	$url_string = '';
 	$sorder = '';
+	$order_by = '';
 	$oCustomView = new CustomView("Invoice");
 	$customviewcombo_html = $oCustomView->getCustomViewCombo();
 	if(isset($_REQUEST['viewname']) == false || $_REQUEST['viewname']=='')
@@ -136,33 +137,33 @@ function getTopInvoice($maxval,$calCnt)
 	$navigation_array, true);
 
 	$values=Array('ModuleName'=>'Invoice','Title'=>$title,'Header'=>$header,'Entries'=>$entries,'search_qry'=>$search_qry);
-
-	if ( ($noofrows == 0 ) || ($noofrows>0) )
+	$display_empty_home_blocks = GlobalVariable::getVariable('Home_Display_Empty_Blocks',0);
+	if ( ($display_empty_home_blocks && $noofrows == 0 ) || ($noofrows>0) )
 		return $values;
 }
 
 function getTopInvoiceSearch($output) {
 	global $current_user;
-	
+
 	$output['query'] = 'true';
 	$output['searchtype'] = 'advance';
 
 	$advft_criteria_groups = array('1' => array('groupcondition' => null));
 	$advft_criteria = array(
 		array (
-            'groupid' => 1,
-            'columnname' => 'vtiger_invoice:invoicestatus:invoicestatus:Invoice_Status:V',
-            'comparator' => 'n',
-            'value' => 'Paid',
-            'columncondition' => 'and'
-        ),
+			'groupid' => 1,
+			'columnname' => 'vtiger_invoice:invoicestatus:invoicestatus:Invoice_Status:V',
+			'comparator' => 'n',
+			'value' => 'Paid',
+			'columncondition' => 'and'
+		),
 		array (
-            'groupid' => 1,
-            'columnname' => 'vtiger_crmentity:smownerid:assigned_user_id:Invoice_Assigned_To:V',
-            'comparator' => 'e',
-            'value' => getFullNameFromArray('Users', $current_user->column_fields),
-            'columncondition' => null
-        )
+			'groupid' => 1,
+			'columnname' => 'vtiger_crmentity:smownerid:assigned_user_id:Invoice_Assigned_To:V',
+			'comparator' => 'e',
+			'value' => getFullNameFromArray('Users', $current_user->column_fields),
+			'columncondition' => null
+		)
 	);
 
 	$output['advft_criteria'] = json_encode($advft_criteria);

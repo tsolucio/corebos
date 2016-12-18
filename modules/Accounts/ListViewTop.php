@@ -29,8 +29,7 @@ function getTopAccounts($maxval,$calCnt)
 	"vtiger_account.tickersymbol, sum(vtiger_potential.amount) as amount from vtiger_potential ".
 	"inner join vtiger_crmentity on (vtiger_potential.potentialid=vtiger_crmentity.crmid) ".
 	"inner join vtiger_account on (vtiger_potential.related_to=vtiger_account.accountid) ";
-	$list_query .= " WHERE vtiger_crmentity.deleted = 0 ".$where.
-		" AND vtiger_potential.potentialid>0";
+	$list_query .= " WHERE vtiger_crmentity.deleted = 0  AND vtiger_potential.potentialid>0";
 	$list_query .= " AND vtiger_crmentity.smownerid='".$current_user->id."' ".
 	"and vtiger_potential.sales_stage not in ('Closed Won', 'Closed Lost','".
 			$app_strings['LBL_CLOSE_WON']."','".$app_strings['LBL_CLOSE_LOST']."')";

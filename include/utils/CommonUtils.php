@@ -2958,7 +2958,7 @@ function getBasic_Advance_SearchURL() {
 	}
 	if ($_REQUEST['searchtype'] == 'advance') {
 		$url .= (isset($_REQUEST['query'])) ? '&query=' . vtlib_purify($_REQUEST['query']) : '';
-		$count = $_REQUEST['search_cnt'];
+		$count = empty($_REQUEST['search_cnt']) ? 0 : vtlib_purify($_REQUEST['search_cnt']);
 		for ($i = 0; $i < $count; $i++) {
 			$url .= (isset($_REQUEST['Fields' . $i])) ? '&Fields' . $i . '=' . stripslashes(str_replace("'", "", vtlib_purify($_REQUEST['Fields' . $i]))) : '';
 			$url .= (isset($_REQUEST['Condition' . $i])) ? '&Condition' . $i . '=' . vtlib_purify($_REQUEST['Condition' . $i]) : '';
