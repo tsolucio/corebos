@@ -282,7 +282,7 @@
 		</div>
 	</div>
 	<nav class="slds-context-bar__secondary" role="navigation">
-		<ul class="slds-grid">
+		<ul class="slds-grid" id="cbmenu">
 		</ul>
 		<div class="slds-context-bar__tertiary" style="float:left; margin-top:auto; margin-bottom:auto;">
 			<div class="slds-form-element">
@@ -457,7 +457,7 @@
 		function buildMainMenu(object){ //main menu
 			for (var i in object) {
 				if(object[i].items != null) {
-					$('.slds-grid').append('<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true"> \
+					$('#cbmenu').append('<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true"> \
 						<a href="javascript:void(0);" class="slds-context-bar__label-action" title="' + object[i].text + '">\
 						<span class="slds-truncate">' + object[i].text + '</span>\
 				</a>\
@@ -472,7 +472,7 @@
 				</div>\
 				</li>');
 				} else {
-					$('.slds-grid').append('<li class="slds-context-bar__item">\
+					$('#cbmenu').append('<li class="slds-context-bar__item">\
 							<a href="'+object[i].url+ '" class="slds-context-bar__label-action" title="'+object[i].text+'">\
 							<span class="slds-truncate">'+object[i].text+'</span>\
 							</a>\
