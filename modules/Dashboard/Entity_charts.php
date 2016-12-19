@@ -10,7 +10,7 @@
 require_once('include/utils/utils.php');
 require_once("include/utils/ChartUtils.php");
 
-/* Function to get the Account name for a given vtiger_account id
+/* Function to get the Account name for a given account id
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  */
@@ -175,7 +175,7 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 	$test_target_val="";
 	$urlstring = '';
 	$mod_graph_date = '';
-
+	$max_label_length = GlobalVariable::getVariable('Application_ListView_Max_Text_Length',40,$currentModule);
 	if($no_of_rows!=0)
 	{
 		while($row = $adb->fetch_array($result))
@@ -195,6 +195,7 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 				$mod_name=$mod_strings["Un Assigned"];
 				$search_str = " ";
 			}
+			if (strlen($mod_name)>$max_label_length) $mod_name = substr($mod_name, 0, $max_label_length);
 			$crtd_time= isset($row['createdtime']) ? $row['createdtime'] : date('Y-m-d H:i:s');
 			$crtd_time_array=explode(" ",$crtd_time);
 			$crtd_date=$crtd_time_array[0];
@@ -204,26 +205,7 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 			$mod_tot_cnt_array[$crtd_date]+=1;
 
 			if (in_array($mod_name,$mod_name_array) == false) {
-				$uniqueid[$mod_name]='0';
-				array_push($mod_name_array,$mod_name); // getting all the unique Names into the array
-				if($graph_for == "productname") {
-					if($row['qtyinstock'] =='')
-						$mod_count_array[$mod_name] = 1;
-					else
-						$mod_count_array[$mod_name]=$row['qtyinstock'];
-				}
-			}
-			else
-			{
-				if($graph_for == "productname") {
-					$uniqueid[$mod_name]=$uniqueid[$mod_name]+1;
-					$mod_name=$mod_name.'['.$uniqueid[$mod_name].']';
-					array_push($mod_name_array,$mod_name); // getting all the unique Names into the array
-					if($row['qtyinstock'] =='')
-						$mod_count_array[$mod_name] = 1;
-					else
-						$mod_count_array[$mod_name]=$row['qtyinstock'];
-				}
+				array_push($mod_name_array,$mod_name);
 			}
 			if (in_array($search_str,$search_str_array) == false)
 			{
@@ -259,7 +241,7 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 
 			$mod_cnt_table = '<table border=0 cellspacing=1 cellpadding=3><tr><th>  '.getTranslatedString('LBL_STATUS').'  </th>';
 
-			//Assigning the Header values to the vtiger_table and giving the dates as graphformat
+			//Assigning the Header values to the table and giving the dates as graph format
 			for($i=0; $i<$days; $i++)
 			{
 				$tdate=$date_array[$i];
@@ -496,7 +478,7 @@ function module_Chart($user_id,$date_start="2000-01-01",$end_date="2017-01-01",$
 					$test_target_val.="K".$link_val;
 			}
 			$mod_cnt_table .="</tr><tr><td>".getTranslatedString('LBL_TOTAL').'</td>';
-			//For all Days getting the vtiger_table
+			//For all Days getting the table
 			for($k=0; $k<$days;$k++)
 			{
 				$tdate=$date_array[$k];
