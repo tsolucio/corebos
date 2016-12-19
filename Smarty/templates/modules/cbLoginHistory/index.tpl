@@ -28,6 +28,7 @@
 <script src="include/bunnyjs/element.min.js"></script>
 <script src="include/bunnyjs/datatable.scrolltop.min.js"></script>
 <style>
+{literal}
 	.arrow-up:after,
 	.arrow-down:after {
 		margin-left: 5px;
@@ -49,6 +50,7 @@
 		content: " ";
 		background-image: url('include/LD/assets/icons/utility/chevrondown_60.png');
 	}
+{/literal}
 </style>
 <div class="slds-page-header" role="banner">
 	<div class="slds-grid">
