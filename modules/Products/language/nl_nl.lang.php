@@ -242,6 +242,9 @@ $mod_strings = Array(
 'LBL_NO_TAXES_ASSOCIATED'=>'Er is geen BTW-tarief aan dit product gekoppeld',
 
 'Parent Product' => 'Hoofdproduct',
+'Divisible' => 'Deelbaar',
+'DIVISIBLE_WARNING' => 'kan alleen in veelvouden van een verkocht worden',
+'DIVISIBLE_WARNING_PURCHASE' => 'kan alleen in veelvouden van een ingekocht worden'
 );
 
 ?>
