@@ -53,7 +53,7 @@ define("RB_RECORD_UPDATED", 'update');
  * @returns array with the variables
  */
 function getBrowserVariables(&$smarty) {
-	global $currentModule,$current_user,$default_charset,$theme,$adb;
+	global $currentModule,$current_user,$default_charset,$theme,$adb,$current_language;
 	$vars = array();
 	$vars['gVTModule'] = $currentModule;
 	$vars['gVTTheme']  = $theme;
@@ -93,6 +93,7 @@ function getBrowserVariables(&$smarty) {
 		$smarty->assign('USER_CURRENCY_SEPARATOR', $vars['userCurrencySeparator']);
 		$smarty->assign('USER_DECIMAL_FORMAT', $vars['userDecimalSeparator']);
 		$smarty->assign('USER_NUMBER_DECIMALS', $vars['userNumberOfDecimals']);
+		$smarty->assign('USER_LANGUAGE', $current_language);
 	}
 }
 
