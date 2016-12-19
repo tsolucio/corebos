@@ -29,7 +29,7 @@
 		<td colspan="2">
 		{if empty($ERROR_MSG)}
 			<div class="rptContainer">
-				<datatable url="index.php?module=Reports&action=ReportsAjax&file=getJSON&record={$REPORTID}" template="report_row_template">
+				<datatable id="rptDatatable" url="index.php?module=Reports&action=ReportsAjax&file=getJSON&record={$REPORTID}" template="report_row_template">
 					<footer>
 						<pagination limit="12" outer></pagination>
 						<stats></stats>

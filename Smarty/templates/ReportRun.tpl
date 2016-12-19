@@ -278,9 +278,8 @@ function generateReport(id) {
 								if(document.getElementById('_reportrun_total')) document.getElementById('_reportrun_total').innerHTML=data.total;
 							});
 							setTimeout(function(){
-								let firstPageLink = document.querySelector('pagination li a');
-								if (firstPageLink) firstPageLink.click();
-							}, 1000);
+								DataTable.changePage(document.getElementById('rptDatatable'),1);
+							}, 500);
 							VtigerJS_DialogBox.unblock();
 					}
 		);
