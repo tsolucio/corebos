@@ -33,7 +33,12 @@
 			{if $_MODULE->active() && $_MODULE->name() neq 'Events'}
 			<li id={$_MODULE->name()}>
 				<a href="index.php?_operation=listModuleRecords&module={$_MODULE->name()}" target="_self">{$_MODULE->label()}</a>
-				<a href="?_operation=create&module={$_MODULE->name()}&record=''&quickcreate=1" class="ui-btn ui-icon-plus ui-btn-icon-notext" alt="{$MOD.LBL_QUICKCREATE}" data-transition="turn">{$MOD.LBL_QUICKCREATE}</a>
+				{if $_MODULE->name() neq 'Calendar' AND $_MODULE->name() neq 'Quotes' AND  $_MODULE->name() neq 'SalesOrder' AND  $_MODULE->name() neq 'Invoice' AND  $_MODULE->name() neq 'PurchaseOrder' AND  $_MODULE->name() neq 'Products'}
+					<a href="?_operation=create&module={$_MODULE->name()}&record=''&quickcreate=1" class="ui-btn ui-icon-plus ui-btn-icon-notext" alt="{$MOD.LBL_QUICKCREATE}" data-transition="turn">{$MOD.LBL_QUICKCREATE}</a>
+				{/if}
+				{if $_MODULE->name() eq 'Calendar'}
+					<a href="?_operation=createActivity&lang={$LANGUAGE}" class="ui-btn ui-icon-plus ui-btn-icon-notext" data-transition="turn">{$MOD.LBL_NEW}</a>
+				{/if}
 			</li>
 			{/if}
 		{/foreach}
