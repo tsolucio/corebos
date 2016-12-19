@@ -1,16 +1,18 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
- * All Rights Reserved.
- ********************************************************************************/
+/*************************************************************************************************
+ * Copyright 2016 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
+ * file except in compliance with the License. You can redistribute it and/or modify it
+ * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
+ * granted by the License. coreBOS distributed by JPL TSolucio S.L. is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. Unless required by
+ * applicable law or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT ANY WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language governing
+ * permissions and limitations under the License. You may obtain a copy of the License
+ * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
+ *************************************************************************************************/
 global $entityDel, $display, $category;
 
 if(version_compare(phpversion(), '5.2.0') < 0 or version_compare(phpversion(), '6.0.0') >= 0) {
@@ -421,7 +423,6 @@ $log->info("current page is $currentModuleFile current module is $currentModule 
 $module = (isset($_REQUEST['module'])) ? vtlib_purify($_REQUEST['module']) : "";
 $action = (isset($_REQUEST['action'])) ? vtlib_purify($_REQUEST['action']) : "";
 $record = (isset($_REQUEST['record'])) ? vtlib_purify($_REQUEST['record']) : "";
-$lang_crm = (isset($_SESSION['authenticated_user_language'])) ? $_SESSION['authenticated_user_language'] : "";
 
 $current_user = new Users();
 
@@ -532,14 +533,6 @@ $siteURLParts = parse_url($site_URL); $cookieDomain = $siteURLParts['host'];
 if (isset($_SESSION['authenticated_user_id'])) {
 	$log->debug("setting cookie ck_login_id_vtiger to ".$_SESSION['authenticated_user_id']);
 	setcookie('ck_login_id_vtiger', $_SESSION['authenticated_user_id'],0,null,$cookieDomain,false,true);
-}
-if (isset($_SESSION['vtiger_authenticated_user_theme'])) {
-	$log->debug("setting cookie ck_login_theme_vtiger to ".$_SESSION['vtiger_authenticated_user_theme']);
-	setcookie('ck_login_theme_vtiger', $_SESSION['vtiger_authenticated_user_theme'],0,null,$cookieDomain,false,true);
-}
-if (isset($_SESSION['authenticated_user_language'])) {
-	$log->debug("setting cookie ck_login_language_vtiger to ".$_SESSION['authenticated_user_language']);
-	setcookie('ck_login_language_vtiger', $_SESSION['authenticated_user_language'],0,null,$cookieDomain,false,true);
 }
 
 if($_REQUEST['module'] == 'Documents' && $action == 'DownloadFile')

@@ -111,7 +111,6 @@ function getTopSalesOrder($maxval,$calCnt)
 		{
 			$end_rec = $noofrows;
 		}
-
 	}
 	else
 	{
@@ -135,8 +134,7 @@ function getTopSalesOrder($maxval,$calCnt)
 	$controller->setHeaderSorting(false);
 	$header = $controller->getListViewHeader($focus,$currentModule,$url_string,$sorder,$order_by, true);
 
-	$entries = $controller->getListViewEntries($focus,$currentModule,$list_result,
-	$navigation_array, true);
+	$entries = $controller->getListViewEntries($focus,$currentModule,$list_result,$navigation_array, true);
 
 	$values=Array('ModuleName'=>'SalesOrder','Title'=>$title,'Header'=>$header,'Entries'=>$entries,'search_qry'=>$search_qry);
 	$display_empty_home_blocks = GlobalVariable::getVariable('Home_Display_Empty_Blocks',0);
