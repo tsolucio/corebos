@@ -48,12 +48,14 @@ class cbTermConditions extends CRMEntity {
 		// tablename should not have prefix 'vtiger_'
 		'TandC No'  => Array('cbtandc' => 'cbtandcno'),
 		'Reference' => Array('cbtandc' => 'reference'),
+		'formodule' => Array('cbtandc' => 'formodule'),
 		'Is Default'=> Array('cbtandc' => 'isdefault')
 	);
 	var $list_fields_name = Array(
 		/* Format: Field Label => fieldname */
 		'TandC No'  => 'cbtandcno',
 		'Reference' => 'reference',
+		'formodule' => 'formodule',
 		'Is Default'=> 'isdefault'
 	);
 
@@ -66,12 +68,14 @@ class cbTermConditions extends CRMEntity {
 		// tablename should not have prefix 'vtiger_'
 		'TandC No'  => Array('cbtandc' => 'cbtandcno'),
 		'Reference' => Array('cbtandc' => 'reference'),
+		'formodule' => Array('cbtandc' => 'formodule'),
 		'Is Default'=> Array('cbtandc' => 'isdefault')
 	);
 	var $search_fields_name = Array(
 		/* Format: Field Label => fieldname */
 		'TandC No'  => 'cbtandcno',
 		'Reference' => 'reference',
+		'formodule' => 'formodule',
 		'Is Default'=> 'isdefault'
 	);
 

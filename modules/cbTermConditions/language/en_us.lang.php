@@ -15,6 +15,11 @@ $mod_strings = Array(
 	'Reference' => 'Reference',
 	'Is Default' => 'Is Default',
 	'Terms and Conditions' => 'Terms and Conditions',
+	'formodule' => 'For Module',
+	'Quotes' => 'Quotes',
+	'SalesOrder' => 'SalesOrder',
+	'PurchaseOrder' => 'PurchaseOrder',
+	'Invoice' => 'Invoice',
 
 	'LBL_CBTERMCONDITIONS_INFORMATION' => 'Terms and Conditions Information',
 	'LBL_TERMANDCONDITIONS' => 'Terms and Conditions',

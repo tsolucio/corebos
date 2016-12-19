@@ -36,6 +36,7 @@
   `cbtandcid` int(11) NOT NULL,
   `cbtandcno` varchar(100) default NULL,
   `reference` varchar(100) default NULL,
+  `formodule` varchar(20) default NULL,
   `isdefault`  varchar(3) default NULL,
   `tandc` text default NULL,
     index (`cbtandcid`),
@@ -179,6 +180,32 @@
 <helpinfo><![CDATA[]]></helpinfo>
 <masseditable>1</masseditable>
 </field>
+<field>
+<fieldname>formodule</fieldname>
+<uitype>15</uitype>
+<columnname>formodule</columnname>
+<tablename>vtiger_cbtandc</tablename>
+<generatedtype>1</generatedtype>
+<fieldlabel>formodule</fieldlabel>
+<readonly>1</readonly>
+<presence>0</presence>
+<selected>0</selected>
+<sequence>7</sequence>
+<maximumlength>20</maximumlength>
+<typeofdata>V~O</typeofdata>
+<quickcreate>3</quickcreate>
+<quickcreatesequence>8</quickcreatesequence>
+<displaytype>1</displaytype>
+<info_type>BAS</info_type>
+<helpinfo><![CDATA[]]></helpinfo>
+<masseditable>1</masseditable>
+<picklistvalues>
+	<picklistvalue>Quotes</picklistvalue>
+	<picklistvalue>SalesOrder</picklistvalue>
+	<picklistvalue>PurchaseOrder</picklistvalue>
+	<picklistvalue>Invoice</picklistvalue>
+</picklistvalues>
+</field>
 </fields>
 </block>
 <block>
@@ -247,8 +274,12 @@
 <columnindex>1</columnindex>
 </field>
 <field>
-<fieldname>isdefault</fieldname>
+<fieldname>formodule</fieldname>
 <columnindex>2</columnindex>
+</field>
+<field>
+<fieldname>isdefault</fieldname>
+<columnindex>3</columnindex>
 </field>
 </fields>
 </customview>
