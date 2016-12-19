@@ -60,6 +60,7 @@ class crmtogo_WS_Describe extends crmtogo_WS_Controller {
 						}
 						if (isset($describeField['type']) && $describeField['type']!='') {
 							$field['quickcreate'] = $describeField['quickcreate'];
+							$field['displaytype'] = $describeField['displaytype'];
 						}
 					}
 				}

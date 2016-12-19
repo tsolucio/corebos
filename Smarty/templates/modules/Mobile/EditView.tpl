@@ -65,6 +65,7 @@
 					<h3>{$_BLOCKLABEL|@getTranslatedString:$_MODULE->name()}</h3>
 					<p>
 					{foreach item=_FIELD from=$_FIELDS}
+						{if $_FIELD->displaytype() eq '1'}
 							<div>   
 								{if $_FIELD->uitype() eq '1' || $_FIELD->uitype() eq '2' || $_FIELD->uitype() eq '55' || $_FIELD->uitype() eq '255' || $_FIELD->uitype() eq '11'  || $_FIELD->uitype() eq '13'  || $_FIELD->uitype() eq '17' || $_FIELD->uitype() eq '72' || $_FIELD->uitype() eq '22'  || $_FIELD->uitype() eq '20'}
 									{if $_MODULE->name() eq 'Calendar' && $_FIELD->name() eq 'location'}
@@ -281,7 +282,8 @@
 										<input  type="text" name="{$_FIELD->name()}" id="{$_FIELD->label()}" value="{$_FIELD->valueLabel()}" {if $_FIELD->ismandatory() eq 'M'}class="required"{/if} />
 								    </div>
 							    {/if}
-                          </div>								
+                          </div>
+						{/if}
 					{/foreach}
 					</p>
 				</div>

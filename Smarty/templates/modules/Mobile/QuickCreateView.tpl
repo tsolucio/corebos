@@ -55,7 +55,7 @@
 			{assign var=_FIELDS value=$_BLOCK->fields()}
 				<div data-mini="true">
 					{foreach item=_FIELD from=$_FIELDS}
-							{if $_FIELD->quickcreate() || $_FIELD->typeofdata() eq 'M'}
+							{if $_FIELD->displaytype() eq '1' && ($_FIELD->quickcreate() || $_FIELD->typeofdata() eq 'M')}
 								<div>
 									{if $_FIELD->uitype() eq '1' || $_FIELD->uitype() eq '2' || $_FIELD->uitype() eq '55' || $_FIELD->uitype() eq '255' || $_FIELD->uitype() eq '11'  || $_FIELD->uitype() eq '13'  || $_FIELD->uitype() eq '17' || $_FIELD->uitype() eq '72' || $_FIELD->uitype() eq '22'  || $_FIELD->uitype() eq '20'}
 										{if $_MODULE->name() eq 'Calendar' && $_FIELD->name() eq 'location'}

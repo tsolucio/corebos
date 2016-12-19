@@ -112,4 +112,8 @@ class crmtogo_UI_FieldModel {
 	function quickcreate() {
 		return $this->data['quickcreate'];
 	}
+
+	function displaytype() {
+		return $this->data['displaytype'];
+	}
 }
