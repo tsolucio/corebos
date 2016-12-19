@@ -136,8 +136,8 @@ class Potentials extends CRMEntity {
 			$date_var = date("Y-m-d H:i:s");
 			$closingDateField = new DateTimeField($this->column_fields['closingdate']);
 			$closingdate = ($_REQUEST['ajxaction'] == 'DETAILVIEW') ? $this->column_fields['closingdate'] : $closingDateField->getDBInsertDateValue();
-			$sql = "insert into vtiger_potstagehistory values(?,?,?,?,?,?,?,?)";
-			$params = array('', $this->id, $this->column_fields['amount'], decode_html($this->sales_stage), $this->column_fields['probability'], $this->column_fields['expectedrevenue'], $adb->formatDate($closingdate, true), $adb->formatDate($date_var, true));
+			$sql = "insert into vtiger_potstagehistory (potentialid, amount, stage, probability, expectedrevenue, closedate, lastmodified) values (?,?,?,?,?,?,?)";
+			$params = array($this->id, $this->column_fields['amount'], decode_html($this->sales_stage), $this->column_fields['probability'], $this->column_fields['expectedrevenue'], $adb->formatDate($closingdate, true), $adb->formatDate($date_var, true));
 			$adb->pquery($sql, $params);
 		}
 		$relModule = getSalesEntityType($this->column_fields['related_to']);
