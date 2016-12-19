@@ -15,7 +15,7 @@
 	<td class="small" align=right>&nbsp;</td>
 </tr>
 </table>
-					
+
 <table border=0 cellspacing=0 cellpadding=5 width=100% class="listTableTopButtons">
 <tr>
 	<td class="small" nowrap align="left">
@@ -26,17 +26,17 @@
 		<table border=0 cellspacing=0 cellpadding=0 class="small">
 			<tr>{$NAVIGATION}</tr>
 		</table>
-    </td>
+	</td>
 	<td class=small width="30%" align="right"><input title="{$CMOD.LBL_NEW_USER_BUTTON_TITLE}" accessyKey="{$CMOD.LBL_NEW_USER_BUTTON_KEY}" type="submit" name="button" value="{$CMOD.LBL_NEW_USER_BUTTON_LABEL}" class="crmButton create small"></td>
 </tr>
 
-{if $ERROR_MSG neq ''}
+{if !empty($ERROR_MSG)}
 <tr>
 	{$ERROR_MSG}
 </tr>
 {/if}
 </table>
-						
+
 <table border=0 cellspacing=0 cellpadding=5 width=100% class="listTable">
 <tr>
 	<td class="colHeader small" valign=top>#</td>

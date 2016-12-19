@@ -1450,6 +1450,7 @@ function getParentTabFromModule($module) {
 		include('parent_tabdata.php');
 		if (!isset($tab_info_array[$module])) return $module;
 		$tabid = $tab_info_array[$module];
+		$parent_tabname = '';
 		foreach ($parent_child_tab_rel_array as $parid => $childArr) {
 			if (in_array($tabid, $childArr)) {
 				$parent_tabname = $parent_tab_info_array[$parid];

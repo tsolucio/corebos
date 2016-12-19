@@ -100,6 +100,7 @@ $mod_strings = array(
 	'ERR_PASSWORD_CHANGE_FAILED_2' => 'failed. The new password must be set.',
 	'ERR_PASSWORD_INCORRECT_OLD' => 'Incorrect old password specified. Re-enter password information.',
 	'ERR_PASSWORD_NOT_CHANGED' => 'Old and New Passwords are the same. Please use a different password.',
+	'ERR_USER_DOESNOT_EXISTS'=>'User does not exist.',
 	'ERR_USER_NAME_EXISTS_1' => 'The username ',
 	'ERR_USER_NAME_EXISTS_2' => 'already exists. Duplicate usernames are not allowed.<br />Change the username to be unique.',
 	'ERR_LAST_ADMIN_1' => 'The user name ',

@@ -252,7 +252,6 @@
 			</table>
 
 <br>
-{$JAVASCRIPT}
 <div id="tempdiv" style="display:block;position:absolute;left:350px;top:200px;"></div>
 <!-- added for validation -->
 <script>
@@ -286,7 +285,6 @@ function fetchUserGroups(id)
 					jQuery('#user_group_cont').fadeIn();
 			}
 		);
-
 }
 
 function deleteUser(userid)
