@@ -1004,4 +1004,11 @@
 	<classname>ldMenu</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Delete Audit Trail and Login History from Settings: use cbAuditTrail and cbLoginHistory</description>
+	<filename>build/changeSets/delSettingsAuditLogin.php</filename>
+	<classname>delSettingsAuditLogin</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
