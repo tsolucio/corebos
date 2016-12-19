@@ -24,6 +24,9 @@ class crmtogo_WS_FetchRecord extends crmtogo_WS_Controller {
 	}
 	
 	protected function processRetrieve(crmtogo_API_Request $request,$module) {
+		global $current_language;
+		if(empty($current_language))
+			$current_language = crmtogo_WS_Controller::sessionGet('language');
 		$current_user = $this->getActiveUser();
 		$recordid = $request->get('record');
 		$record = vtws_retrieve($recordid, $current_user);

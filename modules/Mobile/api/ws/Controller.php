@@ -114,6 +114,9 @@ class crmtogo_WS_Controller  {
 	}
 
 	function getUserModule() {
+		global $current_user,$current_language;
+		if(empty($current_language))
+			$current_language = self::sessionGet('language');
 		//vtws_listtypes class is used to get permitted modules and set the language
 		$listresult = vtws_listtypes(null,self::getActiveUser());
 		$modulewsids = crmtogo_WS_Utils::getEntityModuleWSIds();
