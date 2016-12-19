@@ -1107,16 +1107,33 @@ function getCurrencySymbolandCRate($id) {
 	return $rate_symbol;
 }
 
-/** This function returns the terms and condition from the database.
- * Takes no param and the return type is text.
+/** This function returns the default terms and condition from the database.
+ * @param string module name
+ * @return text
  */
-function getTermsandConditions() {
-	global $log;
-	$log->debug("Entering getTermsandConditions() method ...");
-	global $adb;
-	$sql1 = "select * from vtiger_inventory_tandc";
-	$result = $adb->pquery($sql1, array());
-	$tandc = $adb->query_result($result, 0, "tandc");
+function getTermsandConditions($module='') {
+	global $log, $adb, $currentModule;
+	if (empty($module)) $module = $currentModule;
+	$log->debug("Entering getTermsandConditions($module) method ...");
+	if (vtlib_isModuleActive('cbTermConditions')) {
+		$result = $adb->pquery('select tandc
+			from vtiger_cbtandc
+			inner join vtiger_crmentity on crmid=cbtandcid
+			where deleted=0 and formodule=? and isdefault=?
+			limit 1', array($module,'1'));
+		if ($result and $adb->num_rows($result)>0) {
+			$tandc = $adb->query_result($result, 0, 'tandc');
+		} else {
+			$tandc = '';
+		}
+	} else {
+		$result = $adb->pquery('select tandc from vtiger_inventory_tandc limit 1', array());
+		if ($result and $adb->num_rows($result)>0) {
+			$tandc = $adb->query_result($result, 0, 'tandc');
+		} else {
+			$tandc = '';
+		}
+	}
 	$log->debug("Exiting getTermsandConditions method ...");
 	return $tandc;
 }

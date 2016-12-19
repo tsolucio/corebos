@@ -270,7 +270,9 @@ function DeleteTag(id,recordid)
             {else}
                {foreach item=detailInfo from=$detail}
 				<tr style="height:25px" class="detailview_row">
+					{assign var=numfieldspainted value=0}
                     {foreach key=label item=data from=$detailInfo}
+                    		{assign var=numfieldspainted value=$numfieldspainted+1}
                             {assign var=keyid value=$data.ui}
                             {assign var=keyval value=$data.value}
                             {assign var=keytblname value=$data.tablename}
@@ -314,6 +316,7 @@ function DeleteTag(id,recordid)
                                             {/if}
                                     {/if}
                     {/foreach}
+                    {if $numfieldspainted eq 1 && $keyid neq 19 && $keyid neq 20}<td colspan=2></td>{/if}
                </tr>
                {/foreach}
            {/if}

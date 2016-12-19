@@ -1011,4 +1011,11 @@
 	<classname>delSettingsAuditLogin</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>kevinduqi</author>
+	<description>Install Terms and Conditions Module</description>
+	<filename>build/changeSets/installcbTermConditions.php</filename>
+	<classname>installcbTermConditions</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
