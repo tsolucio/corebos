@@ -38,7 +38,7 @@ class crmtogo_UI_getRelatedFieldAjax extends crmtogo_WS_Controller{
 			$modulename = $db->query_result($res_fmrel,$i,'relmodule');
 			$query = "SELECT fieldname FROM vtiger_entityname WHERE modulename = ?";
 			$result = $db->pquery($query, array($modulename));
-			$fieldname = $db->query_result($result,0,'fieldname');$log->fatal(" mod: ".$modulename." field: ".$fieldname);
+			$fieldname = $db->query_result($result,0,'fieldname');
 			$config = crmtogo_WS_Controller::getUserConfigSettings();
 			$limit = $config['NavigationLimit'];
 			//START DATABASE SEARCH
