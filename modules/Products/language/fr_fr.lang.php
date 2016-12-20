@@ -184,5 +184,8 @@ $mod_strings = array (
 	'LBL_NO_TAXES_ASSOCIATED'=>'Aucune taxe associée à ce produit',
 	'Parent Product' => 'Produit parent',
 	'Products ID' => 'Produit ID',
+	'Divisible' => 'Divisible',
+	'DIVISIBLE_WARNING' => 'can only be sold in multiplies of one',
+	'DIVISIBLE_WARNING_PURCHASE' => 'can only be purchased in multiplies of one',
 );
 ?>

@@ -189,6 +189,9 @@ $mod_strings = array(
 	'LBL_MERGE_DATA_IN' => 'Adatok összefűzése ebben:',
 	'LBL_ACTION' => 'Műveletek',
 	'LBL_FIELDLISTS' => 'Mezőlista',
-	'LBL_RECORD' => 'Rekord'
+	'LBL_RECORD' => 'Rekord',
+	'Divisible' => 'Divisible',
+	'DIVISIBLE_WARNING' => 'can only be sold in multiplies of one',
+	'DIVISIBLE_WARNING_PURCHASE' => 'can only be purchased in multiplies of one',
 );
 ?>

@@ -125,6 +125,7 @@ $mod_strings = Array(
 
 'LBL_NO_TAXES_ASSOCIATED'=>'No hay impuestos asociados a este servicio',
 'Services ID'=>'Id Servicio',
+'Divisible'=>'Divisible',
 );
 
 ?>
