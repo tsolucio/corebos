@@ -107,8 +107,12 @@ class DatabaseBackup {
 	private $target = null;
 	private $skipStages = null;
 	public static $langString = null;
+<<<<<<< HEAD
 
 	function __construct($source, $target,$skipStages = array()) {
+=======
+	function __construct($source, $target,$skipStages = array()){
+>>>>>>> compatibility(PHP7) class constructor
 		if(!is_array(DatabaseBackup::$langString)){
 			DatabaseBackup::$langString = getLanguageStrings();
 		}

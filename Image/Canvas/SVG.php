@@ -107,7 +107,7 @@ class Image_Canvas_SVG extends Image_Canvas
      *
      * @return void
      */
-    function Image_Canvas_SVG($params)
+    function __construct($params)
     {
         parent::Image_Canvas($params);
         $this->_reset();

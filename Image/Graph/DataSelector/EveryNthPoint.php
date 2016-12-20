@@ -73,7 +73,7 @@ class Image_Graph_DataSelector_EveryNthPoint extends Image_Graph_DataSelector
      * @param int $pointInterval The number of points between every 'show',
      *   default: 10
      */
-    function Image_Graph_DataSelector_EveryNthPoint($pointInterval = 10)
+    function __construct($pointInterval = 10)
     {
         parent::__construct();
         $this->_pointInterval = $pointInterval;

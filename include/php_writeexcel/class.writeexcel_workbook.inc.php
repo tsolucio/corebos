@@ -57,7 +57,7 @@ class writeexcel_workbook extends writeexcel_biffwriter {
 #
 # Constructor. Creates a new Workbook object from a BIFFwriter object.
 #
-function writeexcel_workbook($filename) {
+function __construct($filename) {
 
     $this->writeexcel_biffwriter();
 

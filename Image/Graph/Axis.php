@@ -269,7 +269,7 @@ class Image_Graph_Axis extends Image_Graph_Plotarea_Element
      * for an X-axis (default, may be omitted) and IMAGE_GRAPH_AXIS_Y for Y-
      * axis)
      */
-    function Image_Graph_Axis($type = IMAGE_GRAPH_AXIS_X)
+    function __construct($type = IMAGE_GRAPH_AXIS_X)
     {
         parent::__construct();
         $this->_type = $type;

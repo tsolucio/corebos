@@ -150,7 +150,7 @@ class Image_Canvas
      *
      * @abstract
      */
-    function Image_Canvas($params)
+    function __construct($params)
     {
         if (isset($params['left'])) {
             $this->_left = $params['left'];

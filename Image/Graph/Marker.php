@@ -64,7 +64,7 @@ class Image_Graph_Marker extends Image_Graph_Plotarea_Element
     /**
      * Constructor
      */
-    function Image_Graph_Marker() {
+    function __construct() {
         parent::__construct();
     }
 

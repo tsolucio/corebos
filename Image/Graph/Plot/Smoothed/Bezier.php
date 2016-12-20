@@ -72,9 +72,9 @@ class Image_Graph_Plot_Smoothed_Bezier extends Image_Graph_Plot
      * @param string  $title    The title of the plot (used for legends, {@link
      *   Image_Graph_Legend})
      */
-    function Image_Graph_Plot_Smoothed_Bezier(& $dataset, $title = '')
+    function __construct(& $dataset, $title = '')
     {
-        parent::Image_Graph_Plot($dataset, 'normal', $title);
+        parent::__construct($dataset, 'normal', $title);
     }
 
     /**

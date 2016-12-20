@@ -153,7 +153,7 @@ class Image_Graph_Element extends Image_Graph_Common
     /**
      * Constructor
      */
-    function Image_Graph_Element() {
+    function __construct() {
         parent::__construct();
     }
 

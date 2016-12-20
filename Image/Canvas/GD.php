@@ -151,11 +151,11 @@ class Image_Canvas_GD extends Image_Canvas_WithMap
      *
      * @param array $param Parameter array
      */
-    function Image_Canvas_GD($param)
+    function __construct($param)
     {
         include_once 'Image/Canvas/Color.php';
 
-        parent::Image_Canvas_WithMap($param);
+        parent::__construct($param);
         
         $this->_gd2 = ($this->_version() == 2);
         $this->_pxToPtFactor = ($this->_gd2 ? (72/96) : 1);
