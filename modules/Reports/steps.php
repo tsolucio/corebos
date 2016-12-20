@@ -24,7 +24,7 @@ if(isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 		if(isset($recordid)) {
 			$secondarymodule = '';
 
-			// GET SECONDARY MODULES 
+			// GET SECONDARY MODULES
 			$get_secondmodules = get_Secondmodules($oReport,$primarymodule);
 			$permission = $get_secondmodules[0];
 			$secondarymodule = $get_secondmodules[1];
@@ -50,7 +50,7 @@ if(isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 			echo json_encode(array("permission"=>0,"primarymodule" => $primarymodule,"secondarymodule"=>$secondarymodule));
 		}
 	}
-	
+
 	//  ======== STEP 4 ==========
 	elseif($step == 4) {
 		if(isset($recordid)) {
@@ -123,7 +123,7 @@ if(isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 			$secondarymodule = $get_secondmodules[1];
 			if($secondarymodule!='')
 				$oReport->secmodule = $secondarymodule;
-			
+
 			$BLOCK1 = getPrimaryStdFilterHTML($oReport->primodule,$oReport->stdselectedcolumn);
 			$BLOCK1 =array_merge((array)$BLOCK1,(array)getSecondaryStdFilterHTML($oReport->secmodule,$oReport->stdselectedcolumn));
 			//added to fix the ticket #5117
@@ -159,7 +159,7 @@ if(isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 			if(!empty($ogReport->related_modules[$primarymodule])) {
 				foreach($ogReport->related_modules[$primarymodule] as $key=>$value)
 					$BLOCK1 = array_merge((array)$BLOCK1,(array)getSecondaryStdFilterHTML($_REQUEST["secondarymodule_".$value] ));
-					
+
 					$COLUMNS_BLOCK = array_merge((array)$COLUMNS_BLOCK, (array)getSecondaryColumns_AdvFilterHTML($_REQUEST["secondarymodule_".$value]));
 			}
 			$BLOCKCRITERIA = $oReport->getSelectedStdFilterCriteria();
@@ -189,7 +189,7 @@ if(isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
 					$userIdStr .= ",";
 					$userNameStr .= ",";
 				}
-				$userIdStr .= $userid; 
+				$userIdStr .= $userid;
 				$userNameStr .="'".addslashes(decode_html($username))."'";
 				$m++;
 			}
@@ -304,8 +304,7 @@ if(isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
  * @return array
  */
 
-function get_Secondmodules($oReport,$primarymodule) 
-{
+function get_Secondmodules($oReport,$primarymodule) {
 	$permission = true;
 	$secondarymodules =Array();
 	if(!empty($oReport->related_modules[$primarymodule])) {
@@ -328,8 +327,7 @@ function get_Secondmodules($oReport,$primarymodule)
  *  the fields for the primary module as an HTML Combo values
  */
 
-function getPrimaryColumnsHTML($module,$secondmodule)
-{
+function getPrimaryColumnsHTML($module,$secondmodule) {
 	$id_added=false;
 	$ogReport = new Reports();
 	$ogReport->getPriModuleColumnsList($module);
@@ -371,8 +369,7 @@ function getPrimaryColumnsHTML($module,$secondmodule)
  *  a HTML Combo values
  */
 
-function getSecondaryColumnsHTML($module)
-{	
+function getSecondaryColumnsHTML($module) {
 	global $app_list_strings, $app_strings, $current_language;
 	
 	$module_columslist = array();
@@ -417,8 +414,7 @@ function getSecondaryColumnsHTML($module)
  *  and return a HTML string
  */
 
-function getPrimaryColumns_GroupingHTML($module,$selected="")
-{
+function getPrimaryColumns_GroupingHTML($module,$selected="") {
 	global $oReport, $app_list_strings, $current_language;
 	$id_added=false;
 	$mod_strings = return_module_language($current_language,$module);
@@ -482,8 +478,7 @@ function getPrimaryColumns_GroupingHTML($module,$selected="")
  *  This function generates the combo values for the columns for the given module
  *  and return a HTML string
  */
-function getSecondaryColumns_GroupingHTML($module,$selected="")
-{
+function getSecondaryColumns_GroupingHTML($module,$selected="") {
 	global $oReport;
 	global $app_list_strings;
 	global $current_language;
@@ -538,8 +533,7 @@ function getSecondaryColumns_GroupingHTML($module,$selected="")
  * @param  string $reportid
  * @return array
  */
-function getGroupByTimeDiv($sortid,$reportid='')
-{	
+function getGroupByTimeDiv($sortid,$reportid='') {
 	require_once 'include/utils/CommonUtils.php';
 	global $adb, $mod_strings;
 	$query = "select * from vtiger_reportgroupbycolumn where reportid=? and sortid=?";
@@ -613,8 +607,7 @@ function getOrderGrouping($sortorder="") {
  * @param $selected : Type String(optional)
  *  This Returns a HTML combo srings
  */
-function getPrimaryStdFilterHTML($module,$selected="")
-{
+function getPrimaryStdFilterHTML($module,$selected="") {
 	global $app_list_strings;
 	global $current_language;
 	$ogReport = new Reports();
@@ -650,8 +643,7 @@ function getPrimaryStdFilterHTML($module,$selected="")
  * @param $selected : Type String(optional)
  *  This Returns a HTML combo srings for the secondary modules
  */
-function getSecondaryStdFilterHTML($module,$selected="")
-{
+function getSecondaryStdFilterHTML($module,$selected="") {
 	global $app_list_strings;
 	global $current_language;
 	$ogReport = new Reports();
@@ -665,7 +657,7 @@ function getSecondaryStdFilterHTML($module,$selected="")
 			$result = $ogReport->oCustomView->getStdCriteriaByModule($secmodule[$i]);
 			$mod_strings = return_module_language($current_language,$secmodule[$i]);
 			if(isset($result))
-			{	
+			{
 				foreach($result as $key=>$value) {
 					if(isset($mod_strings[$value])) {
 						if($key == $selected)
@@ -687,14 +679,13 @@ function getSecondaryStdFilterHTML($module,$selected="")
 	return $filters;
 }
 
-/** 
+/**
  *  Function to get primary columns for an advanced filter
  *  This function accepts The module as an argument
  *  This generate columns of the primary modules for the advanced filter
  *  It returns a HTML string of combo values
  */
-function getPrimaryColumns_AdvFilterHTML($module,$selected="")
-{
+function getPrimaryColumns_AdvFilterHTML($module,$selected="") {
 	global $app_list_strings;
 	$selected = decode_html($selected);
 	$block_listed = array();
@@ -728,8 +719,7 @@ function getPrimaryColumns_AdvFilterHTML($module,$selected="")
  *  This generate columns of the secondary module for the advanced filter
  *  It returns a HTML string of combo values
  */
-function getSecondaryColumns_AdvFilterHTML($module,$selected="")
-{
+function getSecondaryColumns_AdvFilterHTML($module,$selected="") {
 	global $app_list_strings;
 	$ogReport = new Reports();
 	$filters = array();
@@ -771,7 +761,7 @@ function getSecondaryColumns_AdvFilterHTML($module,$selected="")
  * @param  string $selected [description]
  * @return [type]           [description]
  */
-function getRelatedColumns($selected=""){
+function getRelatedColumns($selected="") {
 	$ogReport = new Reports();
 	$rel_colums = array();
 	$rel_fields = $ogReport->adv_rel_fields;
@@ -801,7 +791,7 @@ function getRelatedColumns($selected=""){
  * @param  string $selected [description]
  * @return [type]           [description]
  */
-function getRelatedFieldColumns($selected=""){
+function getRelatedFieldColumns($selected="") {
 	global $oReport;
 	$ogReport = new Reports();
 	$ogReport->getPriModuleColumnsList($oReport->primodule);
@@ -816,7 +806,7 @@ function getRelatedFieldColumns($selected=""){
  *  It returns a array of selected option of sharing along with other options
  */
 function getVisibleCriteria($recordid='') {
-	global $mod_strings; 
+	global $mod_strings;
 	global $app_strings;
 	global $adb,$current_user;
 
@@ -860,7 +850,7 @@ function getVisibleCriteria($recordid='') {
 			$shtml['selected'] = false;
 		}
 		$filter[] = $shtml;
-	}		
+	}
 	return $filter;
 }
 
@@ -881,7 +871,7 @@ function getShareInfo($recordid='') {
 			$member_data[] = Array('id'=>$setype."::".$userid,'name'=>$setype."::".$username);
 		}
 	}
-	
+
 	$member_query = $adb->pquery("SELECT vtiger_reportsharing.setype,vtiger_groups.groupid,vtiger_groups.groupname FROM vtiger_reportsharing INNER JOIN vtiger_groups on vtiger_groups.groupid = vtiger_reportsharing.shareid WHERE vtiger_reportsharing.setype='groups' AND vtiger_reportsharing.reportid = ?",array($recordid));
 	$noofrows = $adb->num_rows($member_query);
 	if($noofrows > 0) {
