@@ -708,7 +708,7 @@ function getGroupTaskLists($maxval,$calCnt){
 		$header[]=$app_strings['LBL_ENTITY_NAME'];
 		$header[]=$app_strings['LBL_GROUP_NAME'];
 		$header[]=$app_strings['LBL_ENTITY_TYPE'];
-
+		$entries = array();
 		if(count($groupids) > 0){
 			$i=1;
 			while($row = $adb->fetch_array($result)){

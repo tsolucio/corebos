@@ -8,7 +8,7 @@
  *********************************************************************************/
 -->
 <style>
-	.layerPopup {ldelim}
+	.layerPopup {
 		border: 0;
 		position: absolute;
 		z-index: 50;
@@ -18,19 +18,19 @@
 		background:transparent;
 		top: 0 !important;
 		left:0 !important
-	{rdelim}
+	}
 
-	.layerPopupBlock {ldelim}
+	.layerPopupBlock {
 		width: 300px;
 		position: absolute;
 		top: 50%;
 		left: 0;
 		right: 0;
-	{rdelim}
+	}
 </style>
 <script src="include/js/json.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript" src="include/js/advancefilter.js"></script>
-{if $JS_DATEFORMAT eq ''}
+{if empty($JS_DATEFORMAT)}
 	{assign var="JS_DATEFORMAT" value=$APP.NTC_DATE_FORMAT|@parse_calendardate}
 {/if}
 <input type="hidden" id="jscal_dateformat" name="jscal_dateformat" value="{$JS_DATEFORMAT}" />
@@ -157,8 +157,7 @@ function addConditionRow(groupIndex) {ldelim}
 	node5.setAttribute('width', '30px');
 	newNode.appendChild(node5);
 	node5.innerHTML = '<a onclick="deleteColumnRow('+groupIndex+','+columnIndex+');" href="javascript:;">'+
-							'<img src="themes/images/delete.gif" align="absmiddle" title="{$MOD.LBL_DELETE}..." border="0">'+
-						'</a>';
+					'<img src="themes/images/delete.gif" align="absmiddle" title="{$APP.LBL_DELETE}..." border="0"></a>';
 
 	if(document.getElementById('fcol'+columnIndex)) updatefOptions(document.getElementById('fcol'+columnIndex), 'fop'+columnIndex);
 	if(typeof(column_index_array[groupIndex]) == 'undefined') column_index_array[groupIndex] = [];
