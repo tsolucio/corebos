@@ -65,7 +65,6 @@
 		<input type="hidden" name="action" value="Save">
 		<input type="hidden" name='saveashidden' value='saveas'/>
 		<input type="hidden" name='newreportname' id='newreportname' value=''/>
-		<input type="submit" value="SEND">
 		<div id="report-steps" class="jquery-steps">
 
 			<!-- STEP 1 -->
