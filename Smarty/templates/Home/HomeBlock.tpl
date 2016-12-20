@@ -201,5 +201,5 @@ doChart{$HOME_STUFFID}(charttype);
 	</table>
 {/if}
 {if isset($HOME_STUFF.Details) && $HOME_STUFF.Details|@is_array == 'true'}
-<input id='search_qry_{$HOME_STUFFID}' name='search_qry_{$HOME_STUFFID}' type='hidden' value='{$HOME_STUFF.Details.search_qry}' />
+<input id='search_qry_{$HOME_STUFFID}' name='search_qry_{$HOME_STUFFID}' type='hidden' value='{if isset($HOME_STUFF.Details.search_qry)}{$HOME_STUFF.Details.search_qry}{/if}' />
 {/if}
