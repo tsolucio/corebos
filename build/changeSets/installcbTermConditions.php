@@ -41,8 +41,6 @@ class installcbTermConditions extends cbupdaterWorker {
 			} else {
 				$tac = '';
 			}
-			$this->ExecuteQuery('DROP TABLE vtiger_inventory_tandc');
-			$this->ExecuteQuery('DROP TABLE vtiger_inventory_tandc_seq');
 			$values =  array(
 				'isdefault' => '1',
 				'reference' => 'Default T&C',
@@ -53,33 +51,48 @@ class installcbTermConditions extends cbupdaterWorker {
 
 			$cbtandc = Vtiger_Module::getInstance('cbTermConditions');
 			$toaddfield = array('Invoice', 'SalesOrder', 'Quotes', 'PurchaseOrder');
+			$created = false;
 			foreach ($toaddfield as $module) {
 				$values['formodule'] = $module;
-				vtws_create('cbTermConditions', $values, $current_user);
-				$mod = Vtiger_Module::getInstance($module);
-				$modblock = Vtiger_Block::getInstance('LBL_TERMS_INFORMATION', $mod);
-				$field1 = Vtiger_Field::getInstance('tandc', $mod);
-				if ($field1) {
-					$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid='.$field1->id);
-				} else {
-					$field1 = new Vtiger_Field();
-					$field1->name = 'tandc';
-					$field1->label = 'Terms and Conditions';
-					$field1->table = 'vtiger_invoice';
-					$field1->column = 'tandc';
-					$field1->columntype = 'int(11)';
-					$field1->typeofdata = 'I~O';
-					$field1->displaytype = '1';
-					$field1->uitype = '10';
-					$field1->masseditable = '0';
-					$modblock->addField($field1);
-					$field1->setRelatedModules(Array('cbTermConditions'));
+				try {
+					$id = vtws_create('cbTermConditions', $values, $current_user);
+					$created = true;
+				} catch (Exception $e) {
+					$id = false;
+					break;
 				}
-				$cbtandc->setRelatedList($mod, $module, Array('ADD'), 'get_dependents_list');
+				if ($id) {
+					$mod = Vtiger_Module::getInstance($module);
+					$modblock = Vtiger_Block::getInstance('LBL_TERMS_INFORMATION', $mod);
+					$field1 = Vtiger_Field::getInstance('tandc', $mod);
+					if ($field1) {
+						$this->ExecuteQuery('update vtiger_field set presence=2 where fieldid='.$field1->id);
+					} else {
+						$field1 = new Vtiger_Field();
+						$field1->name = 'tandc';
+						$field1->label = 'Terms and Conditions';
+						$field1->table = 'vtiger_invoice';
+						$field1->column = 'tandc';
+						$field1->columntype = 'int(11)';
+						$field1->typeofdata = 'I~O';
+						$field1->displaytype = '1';
+						$field1->uitype = '10';
+						$field1->masseditable = '0';
+						$modblock->addField($field1);
+						$field1->setRelatedModules(Array('cbTermConditions'));
+					}
+					$cbtandc->setRelatedList($mod, $module, Array('ADD'), 'get_dependents_list');
+				}
 			}
 
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
-			$this->markApplied(false);
+			if ($created) {
+				$this->markApplied(false);
+				$this->ExecuteQuery('DROP TABLE vtiger_inventory_tandc');
+				$this->ExecuteQuery('DROP TABLE vtiger_inventory_tandc_seq');
+			} else {
+				$this->sendMsgError('Changeset '.get_class($this).' has produced an error crearing, please try applying once more.');
+			}
 		}
 		$this->finishExecution();
 	}
