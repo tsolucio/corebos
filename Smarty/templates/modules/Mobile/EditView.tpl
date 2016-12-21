@@ -86,7 +86,7 @@
 										{if $_FIELD->name() neq 'time_start' &&  $_FIELD->name() neq 'time_end'}
 											{if $_FIELD->name() eq 'date_start'}
 												<input type="hidden" name="dateformat" id="dateformat" value="{$DATEFORMAT}" />
-												<label for="{$_FIELD->name()}">{'Start Date & Time'|@getTranslatedString:$_MODULE->name()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
+												<label for="{$_FIELD->name()}">{'Start Date'|@getTranslatedString:$_MODULE->name()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
 											{else}
 												<label for="{$_FIELD->name()}">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
 											{/if}
@@ -94,17 +94,15 @@
 											<div id="format_note_{$_FIELD->name()}" style="margin-bottom:25px;font-style:italic;font-size:10px;display:none;">Format: YYYY-MM-DD</div>
 										{/if}
 										{if $_FIELD->uitype() eq '252' && $_FIELD->name() eq 'time_start'}
+											<label for="{$_FIELD->name()}">{$_FIELD->label()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
 											<input type="hidden" name="startformat" id="startformat" value="{$dateStr}" />
 											<input type="time" name="time_start" id="time_start" value="{$_FIELD->value()}" class="required" />
 											<div id="format_note_{$_FIELD->name()}" style="margin-bottom:25px;font-style:italic;font-size:10px;display:none;">Format: HH:MM (24 H)</div>
 										{/if}
 										{if $_FIELD->uitype() eq '252' && $_FIELD->name() eq 'time_end' && $ORIGMODULE eq 'Events'}
-											{if $mode eq 'create'}
-											<input type="hidden" name="time_end" id="time_end" value=""  />
-											{else}
+											<label for="{$_FIELD->name()}">{$_FIELD->label()|@getTranslatedString:$_MODULE->name()}{if $_FIELD->ismandatory() eq 'M'}*{/if}:</label>
 											<input type="time" name="time_end" id="time_end" value="{$_FIELD->value()}" />
 											<div id="format_note_time_end" style="margin-bottom:25px;font-style:italic;font-size:10px;display:none;">Format: HH:MM (24 H)</div>
-											{/if}
 										{/if}
 								{/if}	
 								{if $_FIELD->uitype() eq '4'}
