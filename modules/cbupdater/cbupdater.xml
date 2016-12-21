@@ -1018,4 +1018,11 @@
 	<classname>installcbTermConditions</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>albertxhani</author>
+	<description>Remove Calendar4You Link for moment.mn.js</description>
+	<filename>build/changeSets/RemoveMomentjs.php</filename>
+	<classname>RemoveMomentLink</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
