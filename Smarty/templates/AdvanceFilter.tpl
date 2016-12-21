@@ -37,7 +37,15 @@
 <input type="hidden" id="image_path" name="image_path" value="{$IMAGE_PATH}" />
 <input type="hidden" name="advft_criteria" id="advft_criteria" value="" />
 <input type="hidden" name="advft_criteria_groups" id="advft_criteria_groups" value="" />
-
+<script>
+	{if $SOURCE neq 'reports'}
+		var BLOCKJS = "";
+		var BLOCKCRITERIA = "";
+		var COL_BLOCK =  "{$COLUMNS_BLOCK}";
+		var FOPTION_ADV = "";
+		var MOMENT = "";
+	{/if}
+</script>
 <script type="text/JavaScript">
 function addColumnConditionGlue(columnIndex) {ldelim}
 
@@ -157,7 +165,7 @@ function addConditionRow(groupIndex) {ldelim}
 	node5.setAttribute('width', '30px');
 	newNode.appendChild(node5);
 	node5.innerHTML = '<a onclick="deleteColumnRow('+groupIndex+','+columnIndex+');" href="javascript:;">'+
-					'<img src="themes/images/delete.gif" align="absmiddle" title="{$APP.LBL_DELETE}..." border="0"></a>';
+					'<img src="themes/images/delete.gif" align="absmiddle" border="0"></a>';
 
 	if(document.getElementById('fcol'+columnIndex)) updatefOptions(document.getElementById('fcol'+columnIndex), 'fop'+columnIndex);
 	if(typeof(column_index_array[groupIndex]) == 'undefined') column_index_array[groupIndex] = [];
@@ -230,5 +238,9 @@ function addConditionGroup(parentNodeId) {ldelim}
 			</td>
 		</tr>
 	</table>
-
+<script>
+	{if $SOURCE neq 'reports'}
+		addNewConditionGroup('adv_filter_div');
+	{/if}
+</script>
 </div>
