@@ -91,7 +91,7 @@ class installcbTermConditions extends cbupdaterWorker {
 				$this->ExecuteQuery('DROP TABLE vtiger_inventory_tandc');
 				$this->ExecuteQuery('DROP TABLE vtiger_inventory_tandc_seq');
 			} else {
-				$this->sendMsgError('Changeset '.get_class($this).' has produced an error crearing, please try applying once more.');
+				$this->sendMsgError('Changeset '.get_class($this).' has produced an error creating records, please try applying once more.');
 			}
 		}
 		$this->finishExecution();

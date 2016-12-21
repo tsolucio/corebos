@@ -22,8 +22,6 @@ function c_toggleAssignType(currType){
 	}
 }
 
-var gValidationCall='';
-
 if (document.all)
 	var browser_ie=true;
 
@@ -1077,9 +1075,8 @@ function doServerValidation(edit_type,formName,callback) {
 }
 
 function doformValidation(edit_type) {
-	//Validation for Portal User
-	if(gVTModule == 'Contacts' && gValidationCall != 'tabchange')
-	{
+	if(gVTModule == 'Contacts') {
+		//Validation for Portal User
 		//if existing portal value = 0, portal checkbox = checked, ( email field is not available OR  email is empty ) then we should not allow -- OR --
 		//if existing portal value = 1, portal checkbox = checked, ( email field is available     AND email is empty ) then we should not allow
 		if(edit_type=='')
@@ -1599,44 +1596,6 @@ function hide(divId) {
 function fnhide(divId) {
 	var id = document.getElementById(divId);
 	id.style.display = 'none';
-}
-
-function fnLoadValues(obj1,obj2,SelTab,unSelTab,moduletype,module){
-	var oform = document.forms['EditView'];
-	oform.action.value='Save';
-	//global variable to check the validation calling function to avoid validating when tab change
-	gValidationCall = 'tabchange';
-
-	/*var tabName1 = document.getElementById(obj1);
-	var tabName2 = document.getElementById(obj2);
-	var tagName1 = document.getElementById(SelTab);
-	var tagName2 = document.getElementById(unSelTab);
-	if(tabName1.className == "dvtUnSelectedCell")
-		tabName1.className = "dvtSelectedCell";
-	if(tabName2.className == "dvtSelectedCell")
-		tabName2.className = "dvtUnSelectedCell";
-
-	tagName1.style.display='block';
-	tagName2.style.display='none';*/
-	gValidationCall = 'tabchange';
-
-	// if((moduletype == 'inventory' && validateInventory(module)) ||(moduletype == 'normal') && formValidate())
-	// if(formValidate())
-	// {
-	var tabName1 = document.getElementById(obj1);
-	var tabName2 = document.getElementById(obj2);
-	var tagName1 = document.getElementById(SelTab);
-	var tagName2 = document.getElementById(unSelTab);
-	if(tabName1.className == "dvtUnSelectedCell")
-		tabName1.className = "dvtSelectedCell";
-
-	if(tabName2.className == "dvtSelectedCell")
-		tabName2.className = "dvtUnSelectedCell";
-
-	tagName1.style.display='block';
-	tagName2.style.display='none';
-	// }
-	gValidationCall = '';
 }
 
 function fnCopy(source,design){
