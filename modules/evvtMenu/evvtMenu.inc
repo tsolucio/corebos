@@ -136,16 +136,19 @@ function getMenuArray($mparent) {
 					$label = getTranslatedString($menu['mvalue'],$menu['mvalue']);
 					break;
 			}
-			$menustructure[] = array(
-				'evvtmenuid' => $menu['evvtmenuid'],
-				'mparent' => $menu['mparent'],
-				'mtype' => $menu['mtype'],
-				'mvalue' => $menu['mvalue'],
-				'mlabel' => $label,
-				'mseq' => $menu['mseq'],
-				'mvisible' => $menu['mvisible'],
-				'submenu' => getMenuArray($menu['evvtmenuid']),
-			);
+			$submenu = getMenuArray($menu['evvtmenuid']);
+			if ($menu['mparent']>0 or count($submenu)>0) {
+				$menustructure[] = array(
+					'evvtmenuid' => $menu['evvtmenuid'],
+					'mparent' => $menu['mparent'],
+					'mtype' => $menu['mtype'],
+					'mvalue' => $menu['mvalue'],
+					'mlabel' => $label,
+					'mseq' => $menu['mseq'],
+					'mvisible' => $menu['mvisible'],
+					'submenu' => $submenu,
+				);
+			}
 		}
 	}
 	return $menustructure;
