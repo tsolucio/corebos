@@ -226,10 +226,6 @@ function addConditionGroup(parentNodeId) {ldelim}
 	advft_group_index_count++;
 {rdelim}
 
-/**
- * [add_grouping_criteria description]
- * @param {Object} $grouping_criteria
- */
 function add_grouping_criteria(grouping_criteria) {ldelim}
 	if(grouping_criteria == null)
 		return false;
