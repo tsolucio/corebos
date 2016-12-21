@@ -49,8 +49,9 @@ class crmtogo_WS_SaveRecord extends crmtogo_WS_FetchRecord {
 		
 			if ($module == 'Events' || $module == 'Calendar') {
 				//Start Date and Time values
-				$values["time_start"] = $values["time_start"].":00";
-				$values["date_start"] = $values["date_start"];
+				$date = new DateTimeField($values["date_start"]. ' ' . $values["time_start"].":00");
+				$values["time_start"] = $date->getDBInsertTimeValue();
+				$values["date_start"] = $date->getDBInsertDateValue();
 				//End Date and Time values
 				if (isset ($values["time_end"])) {
 					$endTime = $values["time_end"].":00";
@@ -58,8 +59,9 @@ class crmtogo_WS_SaveRecord extends crmtogo_WS_FetchRecord {
 				else {
 					$endTime = '00:00:00';
 				}
-				$values["due_date"] = $values["due_date"];
-				$values["time_end"] = $endTime;
+				$date = new DateTimeField($values["due_date"]. ' ' . $endTime);
+				$values["due_date"] = $date->getDBInsertDateValue();
+				$values["time_end"] = $date->getDBInsertTimeValue();;
 			}
 			// Set the modified values
 			foreach($values as $name => $value) {
