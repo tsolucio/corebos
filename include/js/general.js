@@ -73,6 +73,10 @@ function getObj(n,d) {
 		if(x && x.id != n) x = false;
 	}
 
+	if (!x && d.getElementById) {
+		x=d.getElementById('txtbox_'+n); // for detail view edit fields
+	}
+
 	for(i=0;!x && i<d.forms.length;i++) {
 		x=d.forms[i][n];
 	}
