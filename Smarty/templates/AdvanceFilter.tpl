@@ -225,6 +225,54 @@ function addConditionGroup(parentNodeId) {ldelim}
 	group_index_array.push(groupIndex);
 	advft_group_index_count++;
 {rdelim}
+
+/**
+ * [add_grouping_criteria description]
+ * @param {Object} $grouping_criteria
+ */
+function add_grouping_criteria(grouping_criteria) {ldelim}
+	if(grouping_criteria == null)
+		return false;
+	var grouping_criteria_length = Object.keys(grouping_criteria).length;
+
+	if(grouping_criteria_length > 0) {
+		for(var i = 1;i <= grouping_criteria_length; i++) {
+			var group_columns = grouping_criteria[i].columns;
+			addConditionGroup('adv_filter_div');
+			for (var key in group_columns) {
+				if (group_columns.hasOwnProperty(key)) {
+
+					addConditionRow(i);
+					var conditionColumnRowElement = document.getElementById('fcol'+advft_column_index_count);
+
+					conditionColumnRowElement.value = group_columns[key].columnname;
+					updatefOptions(conditionColumnRowElement, 'fop'+advft_column_index_count);
+					document.getElementById('fop'+advft_column_index_count).value = group_columns[key].comparator;
+					addRequiredElements(advft_column_index_count);
+					{if $SOURCE eq 'reports'}
+						updateRelFieldOptions(conditionColumnRowElement, 'fval_'+advft_column_index_count);
+					{/if}
+					var columnvalue = group_columns[key].value;
+					if(group_columns[key].comparator == 'bw' && columnvalue != '') {
+						var values = columnvalue.split(",");
+						document.getElementById('fval'+advft_column_index_count).value = values[0];
+						if(values.length == 2 && document.getElementById('fval_ext'+advft_column_index_count))
+							document.getElementById('fval_ext'+advft_column_index_count).value = values[1];
+					} else {
+						document.getElementById('fval'+advft_column_index_count).value = columnvalue;
+					}
+
+					if(document.getElementById('fcon'+key))
+						document.getElementById('fcon'+key).value = group_columns[key].column_condition;
+				}
+			}
+			if(document.getElementById('gpcon'+i))
+				document.getElementById('gpcon'+i).value = grouping_criteria[i].condition;
+		}
+	} else {
+		addNewConditionGroup('adv_filter_div');
+	}
+{rdelim}
 </script>
 
 <div style="overflow:auto;margin-top: 30px;" id='adv_filter_div' name='adv_filter_div'>
@@ -240,7 +288,7 @@ function addConditionGroup(parentNodeId) {ldelim}
 	</table>
 <script>
 	{if $SOURCE neq 'reports'}
-		addNewConditionGroup('adv_filter_div');
+		add_grouping_criteria({json_encode($CRITERIA_GROUPS)});
 	{/if}
 </script>
 </div>
