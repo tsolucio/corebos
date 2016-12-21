@@ -64,7 +64,7 @@
 <table class="small reportGenerateTable" align="center" cellpadding="5" cellspacing="0" width="95%" border=0>
 	<tr>
 		<td align="left" style="padding:5px" width="80%">
-			{include file='AdvanceFilter.tpl' SOURCE='reports'}
+			{include file='AdvanceFilter.tpl' SOURCE='reports1'}
 		</td>
 	</tr>
 	<tr>
