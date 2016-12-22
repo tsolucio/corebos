@@ -130,37 +130,29 @@
 					<td class="small" valign="bottom" nowrap style="padding-bottom: 1em;"><a href="index.php?module=Users&action=DetailView&record={$CURRENT_USER_ID}&modechk=prefview"><img src="{$IMAGEPATH}user.PNG" border=0 style="padding: 0px;padding-left:5px" title="{$APP.LBL_MY_PREFERENCES}" alt="{$APP.LBL_MY_PREFERENCES}"></a></td>
 					{* vtlib customization: Header links on the top panel *}
 					{if $HEADERLINKS}
-						<td style="padding-bottom:1em;padding-left:10px;padding-right:5px" class=small nowrap valign="bottom">
+						<td valign="bottom" nowrap style="padding-bottom: 1em;" class="small" nowrap>
 							<a href="javascript:;" onmouseover="fnvshobj(this,'vtlib_headerLinksLay');" onclick="fnvshobj(this,'vtlib_headerLinksLay');"><img src="{'menu_more.png'|@vtiger_imageurl:$THEME}" border=0 style="padding: 0px;padding-left:5px"></a>
-							<div style="display: none; left: 193px; top: 106px;width:155px; position:absolute;" id="vtlib_headerLinksLay"
+							<div class="drop_mnu_user" style="display: none; width:155px;" id="vtlib_headerLinksLay"
 								 onmouseout="fninvsh('vtlib_headerLinksLay')" onmouseover="fnvshNrm('vtlib_headerLinksLay')">
-								<table bgcolor="#ffffff" border="0" cellpadding="0" cellspacing="0" width="100%">
-									<tr>
-										<td style="border-bottom: 1px solid rgb(204, 204, 204); padding: 5px;"><b>{$APP.LBL_MORE}</b></td>
-									</tr>
-									<tr>
-										<td>
-											{foreach item=HEADERLINK from=$HEADERLINKS}
-												{assign var="headerlink_href" value=$HEADERLINK->linkurl}
-												{assign var="headerlink_label" value=$HEADERLINK->linklabel}
-												{if $headerlink_label eq ''}
-													{assign var="headerlink_label" value=$headerlink_href}
-												{else}
-													{* Pickup the translated label provided by the module *}
-													{assign var="headerlink_label" value=$headerlink_label|@getTranslatedString:$HEADERLINK->module()}
-												{/if}
-												<a href="{$headerlink_href}" class="drop_down">{$headerlink_label}</a>
-											{/foreach}
-										</td>
-									</tr>
-								</table>
+								<ul>
+									{foreach key=actionlabel item=HEADERLINK from=$HEADERLINKS}
+										{assign var="headerlink_href" value=$HEADERLINK->linkurl}
+										{assign var="headerlink_label" value=$HEADERLINK->linklabel}
+										{if $headerlink_label eq ''}
+											{assign var="headerlink_label" value=$headerlink_href}
+										{else}
+											{assign var="headerlink_label" value=$headerlink_label|@getTranslatedString:$HEADERLINK->module()}
+										{/if}
+										<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true">
+											<a href="{$headerlink_href}" class="slds-context-bar__label-action" title="{$headerlink_label}">
+													<span class="slds-truncate">{$headerlink_label}</span>
+											</a>
+										</li>
+									{/foreach}
+								</ul>
 							</div>
 						</td>
-					</tr>
-					</table>
-					</div>
-				</td>
-				{/if}
+					{/if}
 				{if $HELP_URL}
 				<td valign="bottom" nowrap style="padding-bottom: 1em;" class="small" nowrap><a href="{$HELP_URL}" target="_blank"><img src="{$IMAGEPATH}info.PNG" border=0 style="padding: 0px;padding-left:5px" title="{$APP.LNK_HELP}"></a></td>
 				{/if}
