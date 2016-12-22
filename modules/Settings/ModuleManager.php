@@ -10,7 +10,7 @@
 
 include_once('vtlib/Vtiger/Utils.php');
 
-if(vtlib_purify($_REQUEST['module_settings']) == 'true') {
+if(isset($_REQUEST['module_settings']) and $_REQUEST['module_settings'] == 'true') {
 	$targetmodule = vtlib_purify($_REQUEST['formodule']);
 
 	$targetSettingPage = "modules/$targetmodule/Settings.php";
@@ -22,21 +22,21 @@ if(vtlib_purify($_REQUEST['module_settings']) == 'true') {
 else{
 	$modulemanager_uploaddir = 'test/vtlib';
 	
-	if(vtlib_purify($_REQUEST['module_import']) != '') {
+	if(!empty($_REQUEST['module_import'])) {
 		require_once('modules/Settings/ModuleManager/Import.php');
 		exit;
-	} else if(vtlib_purify ($_REQUEST['module_update']) != '') {
+	} else if(!empty($_REQUEST['module_update'])) {
 		require_once('modules/Settings/ModuleManager/Update.php');
 		exit;
-	} else if(vtlib_purify ($_REQUEST['module_import_cancel']) == 'true') {
+	} else if(isset($_REQUEST['module_import_cancel']) and $_REQUEST['module_import_cancel'] == 'true') {
 		$uploadfile = vtlib_purify($_REQUEST['module_import_file']);
 		$uploadfilename = "$modulemanager_uploaddir/$uploadfile";
 		checkFileAccess($uploadfilename);
 		if(file_exists($uploadfilename)) unlink($uploadfilename);
 	}
-	
+
 	require_once('Smarty_setup.php');
-	
+
 	global $mod_strings,$app_strings,$theme;
 	$smarty = new vtigerCRM_Smarty;
 	$smarty->assign("MOD",$mod_strings);
@@ -44,10 +44,10 @@ else{
 	$smarty->assign("THEME", $theme);
 	$smarty->assign("IMAGE_PATH", "themes/$theme/images/");
 	
-	$module_disable = vtlib_purify($_REQUEST['module_disable']);
-	$module_name = vtlib_purify($_REQUEST['module_name']);
-	$module_enable = vtlib_purify($_REQUEST['module_enable']);
-	$module_type = vtlib_purify($_REQUEST['module_type']);
+	$module_disable = isset($_REQUEST['module_disable']) ? vtlib_purify($_REQUEST['module_disable']) : '';
+	$module_name = isset($_REQUEST['module_name']) ? vtlib_purify($_REQUEST['module_name']) : '';
+	$module_enable = isset($_REQUEST['module_enable']) ? vtlib_purify($_REQUEST['module_enable']) : '';
+	$module_type = isset($_REQUEST['module_type']) ? vtlib_purify($_REQUEST['module_type']) : '';
 	
 	if($module_name != '') {
 		if($module_type == 'language') {
@@ -72,10 +72,13 @@ else{
 	$smarty->assign("TOGGLE_MODINFO", vtlib_getToggleModuleInfo());
 	$smarty->assign("TOGGLE_LANGINFO", vtlib_getToggleLanguageInfo());
 	
-	if($_REQUEST['mode'] !='') $mode = $_REQUEST['mode'];
-	$smarty->assign("MODE", vtlib_purify($mode));
+	$mode = !empty($_REQUEST['mode']) ? vtlib_purify($_REQUEST['mode']) : '';
+	$smarty->assign('MODE', $mode);
 	
-	if($_REQUEST['ajax'] != 'true')	$smarty->display('Settings/ModuleManager/ModuleManager.tpl');	
-	else $smarty->display('Settings/ModuleManager/ModuleManagerAjax.tpl');
-}	
+	if(empty($_REQUEST['ajax']) or $_REQUEST['ajax'] != 'true') {
+		$smarty->display('Settings/ModuleManager/ModuleManager.tpl');
+	} else {
+		$smarty->display('Settings/ModuleManager/ModuleManagerAjax.tpl');
+	}
+}
 ?>

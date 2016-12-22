@@ -16,7 +16,7 @@
 				<script type="text/javascript" src="include/js/general.js"></script>
 				<table class="listTable" border="0" cellpadding="3" cellspacing="0" width="100%">
 					{foreach item=entries key=id from=$CFENTRIES name=outer}
-						{if $entries.blockid ne $RELPRODUCTSECTIONID && $entries.blocklabel neq '' }
+						{if isset($entries.blockid) && $entries.blockid ne $RELPRODUCTSECTIONID && isset($entries.blocklabel) && $entries.blocklabel neq '' }
 							{if $entries.blockid eq $COMMENTSECTIONID || $entries.blockid eq $SOLUTIONBLOCKID || $entries.isrelatedlist > 0}
 								{assign var='showactionbuttons' value=false}
 							{else}
