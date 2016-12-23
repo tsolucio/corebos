@@ -32,7 +32,6 @@ class Vtiger_LanguageImport extends Vtiger_LanguageExport {
 	 */
 	function initImport($zipfile, $overwrite) {
 		$this->__initSchema();
-
 		$name = $this->getModuleNameFromZip($zipfile);
 	}
 
@@ -92,7 +91,7 @@ class Vtiger_LanguageImport extends Vtiger_LanguageExport {
 							}
 					}
 					// Case handling for phpmailer
-				   	else if(stripos($targetdir, 'modules/Emails/language') === 0
+					else if(stripos($targetdir, 'modules/Emails/language') === 0
 						&& stripos($targetfile, "phpmailer.lang-$prefix.php")===0) {
 
 							if(file_exists("$targetdir/phpmailer.lang-en_us.php")) {
@@ -115,7 +114,7 @@ class Vtiger_LanguageImport extends Vtiger_LanguageExport {
 					}
 				}
 
-				if($dounzip) {					
+				if($dounzip) {
 					if($unzip->unzip($filename, $filename) !== false) {
 						self::log("Copying file $filename ... DONE");
 					} else {
@@ -129,10 +128,9 @@ class Vtiger_LanguageImport extends Vtiger_LanguageExport {
 		if($unzip) $unzip->close();
 
 		self::register($prefix, $label, $name);
-		
 		self::log("Importing $label [$prefix] ... DONE");
 
 		return;
 	}
-}			
+}
 ?>

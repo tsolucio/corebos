@@ -295,8 +295,12 @@ class Vtiger_PackageImport extends Vtiger_PackageExport {
 				)
 			);
 
-
 			@rename('manifest.xml',"modules/$module/manifest.xml");
+			// eliminate temporary directories
+			@rmdir("modules/$module/modules/$module");
+			@rmdir("modules/$module/modules/");
+			@rmdir("Smarty/templates/modules/$module/templates");
+			@rmdir("cron/modules/$module/cron");
 			if($unzip) $unzip->close();
 		}
 		return $module;
