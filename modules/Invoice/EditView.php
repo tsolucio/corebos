@@ -446,6 +446,7 @@ $smarty->assign("PICKIST_DEPENDENCY_DATASOURCE", json_encode($picklistDependency
 
 //Get Service or Product by default when create
 $smarty->assign('PRODUCT_OR_SERVICE', GlobalVariable::getVariable('product_service_default', 'Products', $currentModule, $current_user->id));
+$smarty->assign('Inventory_ListPrice_ReadOnly', GlobalVariable::getVariable('Inventory_ListPrice_ReadOnly', '0', $currentModule, $current_user->id));
 //Set taxt type group or individual by default when create
 $smarty->assign('TAX_TYPE', GlobalVariable::getVariable('Tax_Type_Default', 'individual', $currentModule, $current_user->id));
 //Show or not the Header to copy address to left or right

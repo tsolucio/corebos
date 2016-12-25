@@ -121,6 +121,8 @@ class DefineGlobalVariables extends cbupdaterWorker {
 				'Report_ListView_PageSize',
 				'Report_MaxRows_OnScreen',
 
+				'Inventory_ListPrice_ReadOnly',
+
 				'Maximum_Scheduled_Workflows', // rename to Workflow_Maximum_Scheduled_Workflows
 				'Billing_Address_Checked', // rename to Application_Billing_Address_Checked
 				'Shipping_Address_Checked', // rename to Application_Shipping_Address_Checked
