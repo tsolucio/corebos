@@ -378,6 +378,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		}
 		$users_combo = get_select_options_array($user_array, $assigned_user_id);
 
+		$groups_combo = '';
 		if ($noof_group_rows != 0) {
 			if ($fieldname == 'assigned_user_id' && $is_admin == false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid($module)] == 3 or $defaultOrgSharingPermission[getTabid($module)] == 0)) {
 				$group_array = get_group_array(FALSE, "Active", $current_user->id, 'private');
@@ -386,7 +387,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			}
 			$groups_combo = get_select_options_array($group_array, $current_user->id);
 		}
-
+		if (GlobalVariable::getVariable('Application_Group_Selection_Permitted',1)!=1) $groups_combo = '';
 		$label_fld ["options"][] = $users_combo;
 		$label_fld ["options"][] = $groups_combo;
 	} elseif ($uitype == 55 || $uitype == 255) {

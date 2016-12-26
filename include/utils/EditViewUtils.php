@@ -331,7 +331,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			$ua = get_user_array(FALSE, "Active", $assigned_user_id);
 		}
 		$users_combo = get_select_options_array($ua, $assigned_user_id);
-
+		$groups_combo = '';
 		if($noof_group_rows!=0)
 		{
 			if($fieldname == 'assigned_user_id' && $is_admin==false && $profileGlobalPermission[2] == 1 && ($defaultOrgSharingPermission[getTabid($module_name)] == 3 or $defaultOrgSharingPermission[getTabid($module_name)] == 0))
@@ -344,6 +344,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 			}
 			$groups_combo = get_select_options_array($ga, $assigned_user_id);
 		}
+		if (GlobalVariable::getVariable('Application_Group_Selection_Permitted',1)!=1) $groups_combo = '';
 		$fieldvalue[]=$users_combo;
 		$fieldvalue[] = $groups_combo;
 	}
