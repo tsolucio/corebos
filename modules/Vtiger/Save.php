@@ -99,5 +99,7 @@ if(isset($_REQUEST['activity_mode'])) {
 	$return_action .= '&activity_mode='.vtlib_purify($_REQUEST['activity_mode']);
 }
 
+if (!isset($__cbSaveSendHeader) || $__cbSaveSendHeader) {
 header("Location: index.php?action=$return_action&module=$return_module&record=$return_id&parenttab=$parenttab&viewname=$return_viewname&start=".vtlib_purify($_REQUEST['pagenumber']).$search);
+}
 ?>
