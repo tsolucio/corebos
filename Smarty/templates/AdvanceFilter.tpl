@@ -8,19 +8,19 @@
  *********************************************************************************/
 -->
 <style>
-	.layerPopup {
-		/* border: 0; */
+	.wizard .layerPopup {
+		border: 0;
 		position: absolute;
 		z-index: 50;
 		display: none;
 		width: 100%;
-		/* height:100%; */
-		/* background:transparent; */
-		/* top: 0 !important; */
-		/* left:0 !important; */
+		height:100%;
+		background:transparent;
+		top: 0 !important;
+		left:0 !important;
 	}
 
-	.layerPopupBlock {
+	.wizard .layerPopupBlock {
 		width: 300px;
 		position: absolute;
 		top: 50%;
