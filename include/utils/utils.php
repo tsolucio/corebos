@@ -3155,6 +3155,7 @@ function getDuplicateQuery($module,$field_values,$ui_type_arr)
 	}
 	else if($module == 'Leads')
 	{
+		$val_conv = ($_COOKIE['LeadConv'] == 'true' ? 1 : 0);
 		$nquery = "SELECT vtiger_leaddetails.leadid AS recordid, vtiger_users_last_import.deleted,$table_cols
 				FROM vtiger_leaddetails
 				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_leaddetails.leadid
@@ -3172,10 +3173,10 @@ function getDuplicateQuery($module,$field_values,$ui_type_arr)
 						LEFT JOIN vtiger_leadscf ON vtiger_leadscf.leadid=vtiger_leaddetails.leadid
 						LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 						LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
-						WHERE vtiger_crmentity.deleted=0 AND vtiger_leaddetails.converted = 0 $sec_parameter
+						WHERE vtiger_crmentity.deleted=0 AND vtiger_leaddetails.converted = $val_conv $sec_parameter
 						GROUP BY $table_cols HAVING COUNT(*)>1) as temp
 				ON ".get_on_clause($field_values,$ui_type_arr,$module) ."
-				WHERE vtiger_crmentity.deleted=0  AND vtiger_leaddetails.converted = 0 $sec_parameter ORDER BY $table_cols,vtiger_leaddetails.leadid ASC";
+				WHERE vtiger_crmentity.deleted=0  AND vtiger_leaddetails.converted = $val_conv $sec_parameter ORDER BY $table_cols,vtiger_leaddetails.leadid ASC";
 
 	}
 	else if($module == 'Products')

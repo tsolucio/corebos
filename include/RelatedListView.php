@@ -75,7 +75,8 @@ function GetRelatedListBase($module,$relatedmodule,$focus,$query,$button,$return
 		}
 	}
 	if($relatedmodule == 'Leads') {
-		$query .= " AND vtiger_leaddetails.converted = 0";
+		$val_conv = ($_COOKIE['LeadConv'] == 'true' ? 1 : 0);
+		$query .= " AND vtiger_leaddetails.converted = $val_conv";
 	}
 
 	if(isset($where) && $where != '')

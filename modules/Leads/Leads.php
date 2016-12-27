@@ -134,7 +134,8 @@ class Leads extends CRMEntity {
 				LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
 				LEFT JOIN vtiger_users ON vtiger_crmentity.smownerid = vtiger_users.id and vtiger_users.status='Active'";
 		$query .= $this->getNonAdminAccessControlQuery('Leads',$current_user);
-		$where_auto = " vtiger_crmentity.deleted=0 AND vtiger_leaddetails.converted =0";
+		$val_conv = ($_COOKIE['LeadConv'] == 'true' ? 1 : 0);
+		$where_auto = " vtiger_crmentity.deleted=0 AND vtiger_leaddetails.converted =$val_conv";
 
 		if($where != "")
 			$query .= " where ($where) AND ".$where_auto;

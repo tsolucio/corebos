@@ -2112,7 +2112,8 @@ class CRMEntity {
 			if($secmodule == 'Calendar'){
 				$condition .= " AND $table_name.activitytype != 'Emails'";
 			}else if($secmodule == 'Leads'){
-				$condition .= " AND $table_name.converted = 0";
+				$val_conv = ($_COOKIE['LeadConv'] == 'true' ? 1 : 0);
+				$condition .= " AND $table_name.converted = $val_conv";
 			}
 		}
 

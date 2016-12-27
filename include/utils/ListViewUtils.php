@@ -2369,6 +2369,7 @@ function getListQuery($module, $where = '') {
 			break;
 
 		Case "Leads":
+			$val_conv = ($_COOKIE['LeadConv'] == 'true' ? 1 : 0);
 			$query = "SELECT vtiger_crmentity.crmid, vtiger_crmentity.smownerid,
 			vtiger_leaddetails.firstname, vtiger_leaddetails.lastname,
 			vtiger_leaddetails.company, vtiger_leadaddress.phone,
@@ -2388,7 +2389,7 @@ function getListQuery($module, $where = '') {
 			LEFT JOIN vtiger_users
 				ON vtiger_users.id = vtiger_crmentity.smownerid";
 			$query .= getNonAdminAccessControlQuery($module, $current_user);
-			$query .= "WHERE vtiger_crmentity.deleted = 0 AND vtiger_leaddetails.converted = 0 " . $where;
+			$query .= "WHERE vtiger_crmentity.deleted = 0 AND vtiger_leaddetails.converted = $val_conv " . $where;
 			break;
 		Case "Products":
 			$query = "SELECT vtiger_crmentity.crmid, vtiger_crmentity.smownerid, vtiger_crmentity.description, vtiger_products.*, vtiger_productcf.*
@@ -2764,13 +2765,13 @@ function getReadEntityIds($module) {
 	$tab_id = getTabid($module);
 
 	if ($module == "Leads") {
+		$val_conv = ($_COOKIE['LeadConv'] == 'true' ? 1 : 0);
 		$query = "SELECT vtiger_crmentity.crmid
 			FROM vtiger_leaddetails
 			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_leaddetails.leadid
 			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
 		$query .= getNonAdminAccessControlQuery($module, $current_user);
-		$query .= "WHERE vtiger_crmentity.deleted = 0
-			AND vtiger_leaddetails.converted = 0 ";
+		$query .= "WHERE vtiger_crmentity.deleted = 0 AND vtiger_leaddetails.converted = $val_conv ";
 	} elseif ($module == "Accounts") {
 		//Query modified to sort by assigned to
 		$query = "SELECT vtiger_crmentity.crmid

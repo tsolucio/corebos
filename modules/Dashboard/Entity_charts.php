@@ -52,8 +52,9 @@ function module_Chart_HomePageDashboard($userinfo) {
 	$spl_modules = Array('Leads', 'HelpDesk', 'Potentials', 'Calendar');
 
 	// Leads module
+	$val_conv = ($_COOKIE['LeadConv'] == 'true' ? 'le.converted = 1' : 'le.converted = 0 OR le.converted IS NULL');
 	$leadcountres = $adb->query("SELECT count(*) as count FROM vtiger_crmentity se INNER JOIN vtiger_leaddetails le on le.leadid = se.crmid
-		WHERE se.deleted = 0 AND se.smownerid = $user_id AND (le.converted = 0 OR le.converted IS NULL)");
+		WHERE se.deleted = 0 AND se.smownerid = $user_id AND ($val_conv)");
 	$modrecords['Leads'] = $adb->query_result($leadcountres, 0, 'count');
 
 	// HelpDesk module

@@ -1451,6 +1451,7 @@ class ReportRun extends CRMEntity {
 
 		if($module == "Leads")
 		{
+			$val_conv = ($_COOKIE['LeadConv'] == 'true' ? 1 : 0);
 			$query = "from vtiger_leaddetails
 				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_leaddetails.leadid
 				inner join vtiger_leadsubdetails on vtiger_leadsubdetails.leadsubscriptionid=vtiger_leaddetails.leadid
@@ -1463,7 +1464,7 @@ class ReportRun extends CRMEntity {
 				left join vtiger_users as vtiger_lastModifiedByLeads on vtiger_lastModifiedByLeads.id = vtiger_crmentity.modifiedby
 				".$this->getRelatedModulesQuery($module,$this->secondarymodule,$type,$where_condition).
 						getNonAdminAccessControlQuery($this->primarymodule,$current_user)."
-				where vtiger_crmentity.deleted=0 and vtiger_leaddetails.converted=0";
+				where vtiger_crmentity.deleted=0 and vtiger_leaddetails.converted=$val_conv";
 		}
 		else if($module == "Accounts")
 		{

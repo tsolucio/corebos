@@ -1025,4 +1025,11 @@
 	<classname>RemoveMomentLink</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Feature: See Converted Leads</description>
+	<filename>build/changeSets/FeatureSeeConvertedLeads.php</filename>
+	<classname>FeatureSeeConvertedLeads</classname>
+	<systemupdate>false</systemupdate>
+</changeSet>
 </updatesChangeLog>
