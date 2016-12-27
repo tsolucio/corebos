@@ -511,7 +511,7 @@ function CreateReport(element)
 	fnPopupWin(arg);
 }
 function fnPopupWin(winName){
-	window.open(winName, "ReportWindow","width=790px,height=630px,scrollbars=yes");
+	window.open(winName, "ReportWindow","width=790px,height=680px,scrollbars=yes");
 }
 function re_dateValidate(fldval,fldLabel,type) {
 	if(re_patternValidate(fldval,fldLabel,"DATE")==false)

@@ -144,7 +144,6 @@ $app_strings = array(
 	'LBL_LIST_OF' => 'van',
 	'LNK_PRINT' => 'Print',
 	'LNK_HELP' => 'Help',
-	'LNK_VTDOCS' => 'Documenten',
 	'LNK_ABOUT' => 'Over',
 	'LNK_OUTLOOK' => './include/images/outlook_download.gif',
 	'SINGLE_Accounts' => 'Account',

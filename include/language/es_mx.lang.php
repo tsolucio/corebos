@@ -133,7 +133,6 @@ $app_strings = array (
       'LBL_LIST_OF' => 'de',
       'LNK_PRINT' => 'Imprimir',
       'LNK_HELP' => 'Ayuda',
-      'LNK_VTDOCS' => 'Documentación de coreBOS',
       'LNK_ABOUT' => 'Acerca de...',
       'LNK_OUTLOOK' => './include/images/outlook_download.gif',
       'Task' => 'Tarea',

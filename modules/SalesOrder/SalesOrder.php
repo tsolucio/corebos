@@ -39,7 +39,7 @@ class SalesOrder extends CRMEntity {
 
 	// This is the list of vtiger_fields that are in the lists.
 	var $list_fields = Array(
-		'Order No'=>Array('salesorder','salesorder_no'),
+		'Order No'=>Array('salesorder' => 'salesorder_no'),
 		'Subject'=>Array('salesorder'=>'subject'),
 		'Account Name'=>Array('account'=>'accountid'),
 		'Quote Name'=>Array('quotes'=>'quoteid'),

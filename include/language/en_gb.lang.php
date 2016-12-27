@@ -132,7 +132,6 @@ $app_strings = array(
 	'LBL_LIST_OF' => 'of',
 	'LNK_PRINT' => 'Print',
 	'LNK_HELP' => 'Help',
-	'LNK_VTDOCS' => 'coreBOS Docs',
 	'LNK_ABOUT' => 'About',
 	'LNK_OUTLOOK' => './include/images/outlook_download.gif',
 	'SINGLE_Accounts' => 'Organisation',

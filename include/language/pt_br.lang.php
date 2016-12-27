@@ -136,7 +136,6 @@ $app_strings = array (
 'LBL_LIST_OF' => 'de',
 'LNK_PRINT' => 'Imprimir',
 'LNK_HELP' => 'Ajuda',
-'LNK_VTDOCS' => 'Docs vtiger',
 'LNK_ABOUT' => 'Sobre',
 'LNK_OUTLOOK' => './include/images/outlook_download.gif',
 'SINGLE_Accounts' => 'Organização',

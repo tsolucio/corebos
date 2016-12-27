@@ -136,7 +136,6 @@ $app_strings = array(
 	'LBL_LIST_OF' => '-',
 	'LNK_PRINT' => 'Nyomtat',
 	'LNK_HELP' => 'Súgó',
-	'LNK_VTDOCS' => 'vtiger Dokumentumok',
 	'LNK_ABOUT' => 'Névjegy',
 	'LNK_OUTLOOK' => './include/images/outlook_download.gif',
 	'SINGLE_Accounts' => 'Cég',
