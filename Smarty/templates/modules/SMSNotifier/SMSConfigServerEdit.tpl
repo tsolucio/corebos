@@ -16,7 +16,7 @@
 			{$CMOD.LBL_ADDNEW}
 		{else}
 			{$CMOD.LBL_UPDATE}
-			<input type="hidden" name="smsserver_id" value={$SMSSERVERINFO.id}">
+			<input type="hidden" name="smsserver_id" value="{$SMSSERVERINFO.id}">
 		{/if}
 	</td>
 	<td align="right" class="small"><img onClick="hide('editdiv');" style="cursor:pointer;" src="{'close.gif'|@vtiger_imageurl:$THEME}" align="middle" border="0"></td>
