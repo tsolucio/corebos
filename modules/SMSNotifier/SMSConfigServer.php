@@ -58,11 +58,11 @@ if(!is_admin($current_user)) {
 				$requiredparameters = $smsprovider->getRequiredParams();
 				if(!empty($requiredparameters)) {
 					$smsproviderparams[$smsprovidername] = $requiredparameters;
-					$smshelpinfo[] = array(
-						'url' => $smsprovider->helpURL,
-						'label' => $smsprovider->helpLink,
-					);
 				}
+				$smshelpinfo[] = array(
+					'url' => $smsprovider->helpURL,
+					'label' => $smsprovider->helpLink,
+				);
 			}
 		}
 		$smarty->assign('SMSPROVIDERS', $smsproviders);
