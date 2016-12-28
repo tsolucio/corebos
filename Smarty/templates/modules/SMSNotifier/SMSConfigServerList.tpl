@@ -49,7 +49,7 @@
 			<br/>
 			<table width="100%" border="0" cellpadding="5" cellspacing="0" class="tableHeading">
 				<tr>
-					<td style="padding-left:5px;" class="big">{$MOD.SMS_SERVER_CONFIGURATION}</td>
+					<td style="padding-left:5px;" class="big">{$CMOD.SERVER_CONFIGURATION_DESCRIPTION}</td>
 					<td valign=top class="small" align="right">
 					<input id="_smsserver_add_button_" type="button" class="small create" value="{$CMOD.LBL_ADDNEW}" onclick="_SMSConfigServerFetchEdit('');fnvshobj(this,'editdiv');">
 					</td>

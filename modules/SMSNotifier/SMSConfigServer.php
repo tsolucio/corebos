@@ -15,6 +15,7 @@ $theme_path="themes/".$theme."/";
 $image_path=$theme_path."images/";
 
 $smarty = new vtigerCRM_Smarty();
+$smarty->assign("THEME", $theme);
 $smarty->assign("MOD", return_module_language($current_language,'Settings'));
 $smarty->assign("IMAGE_PATH",$image_path);
 $smarty->assign("APP", $app_strings);
@@ -24,7 +25,7 @@ $smarty->assign("MODULE_LBL",$currentModule);
 if(!is_admin($current_user)) {
 	$smarty->display(vtlib_getModuleTemplate('Vtiger','OperationNotPermitted.tpl'));
 } else {
-	$mode = $_REQUEST['mode'];
+	$mode = empty($_REQUEST['mode']) ? '' : vtlib_purify($_REQUEST['mode']);
 	if(empty($mode)) {
 		$smarty->assign('SMSSERVERS', SMSNotifierManager::listConfiguredServers());
 		$smarty->display(vtlib_getModuleTemplate($currentModule, 'SMSConfigServerList.tpl'));
@@ -32,6 +33,7 @@ if(!is_admin($current_user)) {
 		$record = vtlib_purify($_REQUEST['record']);
 		$smarty->assign('smsHIurl', '');
 		$smarty->assign('smsHIlabel', '');
+		$smsserverparams = array();
 		if(empty($record)) {
 			$smarty->assign('SMSSERVERINFO', array());
 			$smarty->assign('SMSSERVERPARAMS', $smsserverparams);
@@ -40,7 +42,6 @@ if(!is_admin($current_user)) {
 			$smsprovider = SMSProvider::getInstance($smsserverinfo['providertype']);
 			$smarty->assign('smsHIurl', $smsprovider->helpURL);
 			$smarty->assign('smsHIlabel', $smsprovider->helpLink);
-			$smsserverparams = array();
 			if(!empty($smsserverinfo['parameters'])) {
 				$smsserverparams = json_decode($smsserverinfo['parameters'],true);
 			}
