@@ -15,6 +15,7 @@ class MyProvider implements ISMSProvider {
 	private $_username;
 	private $_password;
 	private $_parameters = array();
+	public $helpURL = '';
 
 	const SERVICE_URI = 'http://localhost:9898';
 	private static $REQUIRED_PARAMETERS = array('app_id');

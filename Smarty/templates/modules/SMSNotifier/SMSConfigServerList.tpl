@@ -99,17 +99,20 @@ POSITION: absolute;
 <script type="text/javascript">
 	function _SMSCongiServerShowReqParams(selectBox) {
 		var providers = selectBox.options;
+		var selectedIndex = 0;
 		for (var index = 0; index < providers.length; ++index) {
 			var provideropt = providers[index];
 
 			if (document.getElementById('paramrows_' + provideropt.value)) {
 				if (provideropt.selected) {
+					selectedIndex = index-1;
 					document.getElementById('paramrows_' + provideropt.value).style.display = "block";
 				} else {
 					document.getElementById('paramrows_' + provideropt.value).style.display = "none";
 				}
 			}
 		}
+		document.getElementById('_smshelpinfospan').innerHTML = '<a href="' + __smsHelpInfo[selectedIndex].url + '" target="_blank">' + __smsHelpInfo[selectedIndex].label + '</a>';
 	}
 
 	function _SMSConfigServerSaveForm(form) {
@@ -166,6 +169,7 @@ POSITION: absolute;
 		}).done(function(response) {
 			document.getElementById("status").style.display = "none";
 			document.getElementById("editdiv").innerHTML = response;
+			vtlib_executeJavascriptInElement(document.getElementById("editdiv"));
 			document.getElementById("editdiv").style.display = "block";
 		});
 	}

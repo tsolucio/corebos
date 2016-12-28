@@ -21,6 +21,8 @@ class SmsHosting implements ISMSProvider {
 	private $_username;
 	private $_password;
 	private $_parameters = array();
+	public $helpURL = 'https://www.smshosting.it/en';
+	public $helpLink = 'SmsHosting';
 
 	const SERVICE_URI = 'https://api.smshosting.it/rest/api';
 	private static $REQUIRED_PARAMETERS = array ( 'from', 'prefix' );

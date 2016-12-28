@@ -25,7 +25,7 @@ define ('SMS_TYPE_CLASSIC_PLUS', 'classic_plus');
 define ('SMS_TYPE_BASIC', 'basic');
 
 /**
- *	Skebby Implementation on vtiger plugin
+ *	Skebby Implementation on corebos plugin
  *
  * Type: classic OR classic_plus OR basic
  * Prefix: 39 for italy, is valid only for recipient, not sender
@@ -37,6 +37,8 @@ class Skebby implements ISMSProvider {
 	private $_username;
 	private $_password;
 	private $_parameters = array();
+	public $helpURL = 'http://www.skebby.com/';
+	public $helpLink = 'Skebby';
 
 	private $_enableLogging = false;
 	

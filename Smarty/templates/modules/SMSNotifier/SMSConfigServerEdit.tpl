@@ -8,6 +8,9 @@
    * All Rights Reserved.
  ********************************************************************************/
 -->*}
+<script type="text/javascript">
+window.__smsHelpInfo = {$SMSHELPINFO};
+</script>
 <div id="EditInv" class="layerPopup">
 <table border=0 cellspacing=0 cellpadding=5 width=100% class=layerHeadingULine>
 <tr>
@@ -22,7 +25,7 @@
 	<td align="right" class="small"><img onClick="hide('editdiv');" style="cursor:pointer;" src="{'close.gif'|@vtiger_imageurl:$THEME}" align="middle" border="0"></td>
 </tr>
 </table>
-<table border=0 cellspacing=0 cellpadding=5 width=95% align=center> 
+<table border=0 cellspacing=0 cellpadding=5 width=95% align=center>
 <tr>
 	<td class="small">
 	<table border=0 cellspacing=0 cellpadding=5 width=100% align=center bgcolor=white>
@@ -30,14 +33,17 @@
 		<td width="33%" nowrap="nowrap" align="right" class="cellLabel small"><b>{$CMOD.LBL_PROVIDER}</b></td>
 		<td align="left" class="cellText small">
 			<select name="smsserver_provider" class="small" onchange="_SMSCongiServerShowReqParams(this);">
-				<option value="">-- {$CMOD.LBL_SELECT_ONE} --</option>	
+				<option value="">-- {$CMOD.LBL_SELECT_ONE} --</option>
 				{foreach item=SMSPROVIDER from=$SMSPROVIDERS}
 				<option {if $SMSSERVERINFO.providertype eq $SMSPROVIDER}selected="true"{/if} value="{$SMSPROVIDER}">{$SMSPROVIDER}</option>
 				{/foreach}
 			</select>
 		</td>
 	</tr>
-	
+	<tr>
+		<td width="33%" nowrap="nowrap" align="right" class="cellLabel small"><b>{$APP.LNK_HELP}</b></td>
+		<td align="left" class="cellText small"><span id="_smshelpinfospan"><a href="{$smsHIurl}" target="_blank">{$smsHIlabel}</a></span></td>
+	</tr>
 	<tr>
 		<td width="33%" nowrap="nowrap" align="right" class="cellLabel small"><b>{$APP.Active}</b></td>
 		<td align="left" class="cellText small">

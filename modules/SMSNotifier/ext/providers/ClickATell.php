@@ -15,6 +15,8 @@ class ClickATell implements ISMSProvider {
 	private $_username;
 	private $_password;
 	private $_parameters = array();
+	public $helpURL = 'https://archive.clickatell.com/developers/2015/10/08/http/s/';
+	public $helpLink = 'ClickATell HTTP';
 
 	const SERVICE_URI = 'http://api.clickatell.com';
 	private static $REQUIRED_PARAMETERS = array('api_id', 'from', 'mo');

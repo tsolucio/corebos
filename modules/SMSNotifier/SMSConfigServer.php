@@ -30,11 +30,16 @@ if(!is_admin($current_user)) {
 		$smarty->display(vtlib_getModuleTemplate($currentModule, 'SMSConfigServerList.tpl'));
 	} else if($mode == 'Edit') {
 		$record = vtlib_purify($_REQUEST['record']);
+		$smarty->assign('smsHIurl', '');
+		$smarty->assign('smsHIlabel', '');
 		if(empty($record)) {
 			$smarty->assign('SMSSERVERINFO', array());
 			$smarty->assign('SMSSERVERPARAMS', $smsserverparams);
 		} else {
 			$smsserverinfo = SMSNotifierManager::listConfiguredServer($record);
+			$smsprovider = SMSProvider::getInstance($smsserverinfo['providertype']);
+			$smarty->assign('smsHIurl', $smsprovider->helpURL);
+			$smarty->assign('smsHIlabel', $smsprovider->helpLink);
 			$smsserverparams = array();
 			if(!empty($smsserverinfo['parameters'])) {
 				$smsserverparams = json_decode($smsserverinfo['parameters'],true);
@@ -45,18 +50,23 @@ if(!is_admin($current_user)) {
 		$smsproviders = SMSNotifierManager::listAvailableProviders();
 
 		// Collect required parameters to be made available in the EditForm
-		$smsproviderparams = array();
+		$smsproviderparams = $smshelpinfo = array();
 		if(!empty($smsproviders)) {
 			foreach($smsproviders as $smsprovidername) {
 				$smsprovider = SMSProvider::getInstance($smsprovidername);
 				$requiredparameters = $smsprovider->getRequiredParams();
 				if(!empty($requiredparameters)) {
 					$smsproviderparams[$smsprovidername] = $requiredparameters;
+					$smshelpinfo[] = array(
+						'url' => $smsprovider->helpURL,
+						'label' => $smsprovider->helpLink,
+					);
 				}
 			}
 		}
 		$smarty->assign('SMSPROVIDERS', $smsproviders);
 		$smarty->assign('SMSPROVIDERSPARAMS', $smsproviderparams);
+		$smarty->assign('SMSHELPINFO', json_encode($smshelpinfo));
 		$smarty->display(vtlib_getModuleTemplate($currentModule, 'SMSConfigServerEdit.tpl'));
 	} else if($mode == 'Save') {
 		SMSNotifierManager::updateConfiguredServer($_REQUEST['smsserver_id'], $_REQUEST);

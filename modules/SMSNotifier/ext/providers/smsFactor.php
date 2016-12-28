@@ -15,6 +15,8 @@ class smsFactor implements ISMSProvider
 	private $_username;
 	private $_password;
 	private $_parameters = array();
+	public $helpURL = 'https://www.smsfactor.com/';
+	public $helpLink = 'smsFactor';
 
 	const SERVICE_URI = 'http://gateway.oms-smsfactor.com/httpservice.aspx';
 	private static $REQUIRED_PARAMETERS = array('Originator');

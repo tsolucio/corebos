@@ -9,12 +9,14 @@
  ************************************************************************************/
 include_once dirname(__FILE__) . '/../ISMSProvider.php';
 include_once 'vtlib/Vtiger/Net/Client.php';
-// https://www.telefacil.com/wiki/index.php/Integraci%C3%B3n_con_Mensajer%C3%ADa_SMS_(SMSNotifier)
+
 class DuocomSMS implements ISMSProvider {
 
 	private $_username;
 	private $_password;
 	private $_parameters = array();
+	public $helpURL = 'https://www.telefacil.com/wiki/index.php/Integraci%C3%B3n_con_Mensajer%C3%ADa_SMS_(SMSNotifier)';
+	public $helpLink = 'TeleFacil';
 
 	const SERVICE_URI = 'https://scgi.duocom.es/cgi-bin/telefacil2/apisms';
 	private static $REQUIRED_PARAMETERS = array('mascara');
