@@ -43,6 +43,14 @@ class Vtiger_Net_Client {
 	}
 
 	/**
+	 * Set the body of the request
+	 * $param String body to be sent
+	 */
+	function setBody($body) {
+		$this->client->setBody($body);
+	}
+
+	/**
 	 * Set custom HTTP Headers
 	 * @param Map HTTP Header and Value Pairs
 	 */
