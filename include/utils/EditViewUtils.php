@@ -1285,7 +1285,7 @@ function getOutputHtml($uitype, $fieldname, $fieldlabel, $maxlength, $col_fields
 				$image_path_array[] = $adb->query_result($result_image,$image_iter,'path');
 			}
 		}
-		if(is_array($image_array))
+		if(isset($image_array) && is_array($image_array))
 			for($img_itr=0;$img_itr<count($image_array);$img_itr++)
 			{
 				$fieldvalue[] = array('name'=>$image_array[$img_itr],'path'=>$image_path_array[$img_itr]);

@@ -1,23 +1,19 @@
 <?php
-/*********************************************************************************
- * The contents of this file are subject to the SugarCRM Public License Version 1.1.2
- * ("License"); You may not use this file except in compliance with the 
- * License. You may obtain a copy of the License at http://www.sugarcrm.com/SPL
- * Software distributed under the License is distributed on an  "AS IS"  basis,
- * WITHOUT WARRANTY OF ANY KIND, either express or implied. See the License for
- * the specific language governing rights and limitations under the License.
- * The Original Code is:  SugarCRM Open Source
- * The Initial Developer of the Original Code is SugarCRM, Inc.
- * Portions created by SugarCRM are Copyright (C) SugarCRM, Inc.;
+/*+**********************************************************************************
+ * The contents of this file are subject to the vtiger CRM Public License Version 1.0
+ * ("License"); You may not use this file except in compliance with the License
+ * The Original Code is:  vtiger CRM Open Source
+ * The Initial Developer of the Original Code is vtiger.
+ * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
- ********************************************************************************/
+ ************************************************************************************/
 require_once('modules/Users/Users.php');
 require_once('include/logging.php');
 require_once('include/utils/UserInfoUtil.php');
-$log =& LoggerManager::getLogger('index');
+$log = LoggerManager::getLogger('index');
 
 global $adb;
-$user_name = vtlib_purify($_REQUEST['userName']);
+$user_name = empty($_REQUEST['userName']) ? '' : vtlib_purify($_REQUEST['userName']);
 if(isset($_REQUEST['status']) && $_REQUEST['status'] != '')
 	$_REQUEST['status']= vtlib_purify ($_REQUEST['status']);
 else
@@ -81,14 +77,14 @@ else
 	$focus->mode='';
 }
 
-if($_REQUEST['deleteImage'] == 'true') {
+if(isset($_REQUEST['deleteImage']) && $_REQUEST['deleteImage'] == 'true') {
 	$focus->id = vtlib_purify($_REQUEST['recordid']);
 	$focus->deleteImage();
 	echo "SUCCESS";
 	exit;
 }
 
-if($_REQUEST['changepassword'] == 'true') {
+if(isset($_REQUEST['changepassword']) && $_REQUEST['changepassword'] == 'true') {
 	$focus->retrieve_entity_info($_REQUEST['record'],'Users');
 	$focus->id = vtlib_purify($_REQUEST['record']);
 	if (isset($_REQUEST['new_password'])) {
@@ -100,7 +96,7 @@ if($_REQUEST['changepassword'] == 'true') {
 }
 
 //save user Image
-if(! $_REQUEST['changepassword'] == 'true')
+if(empty($_REQUEST['changepassword']) || $_REQUEST['changepassword'] != 'true')
 {
 	if(strtolower($current_user->is_admin) == 'off' && $current_user->id != $focus->id)
 	{
@@ -157,16 +153,16 @@ else $return_module = "Users";
 if(isset($_POST['return_action']) && $_POST['return_action'] != "") $return_action = vtlib_purify($_REQUEST['return_action']);
 else $return_action = "DetailView";
 if(isset($_POST['return_id']) && $_POST['return_id'] != "") $return_id = vtlib_purify($_REQUEST['return_id']);
-if(isset($_REQUEST['activity_mode']))   $activitymode = '&activity_mode='.vtlib_purify($_REQUEST['activity_mode']);
 if(isset($_POST['parenttab'])) $parenttab = getParentTab();
 
 $log->debug("Saved record with id of ".$return_id);
 
-//Asha: Added Check to see if the mode is User Creation and if yes, then sending the email notification to the User with Login details.
+// Check to see if the mode is User Creation and if yes, then sending the email notification to the User with Login details.
+$error_str = '';
 if($_REQUEST['mode'] == 'create') {
 	global $app_strings, $mod_strings, $default_charset;
 	require_once('modules/Emails/mail.php');
-    $user_emailid = $focus->column_fields['email1'];
+	$user_emailid = $focus->column_fields['email1'];
 	// send email on Create user only if NOTIFY_OWNER_EMAILS is set to true
 
 	$subject = $mod_strings['User Login Details'];
@@ -189,7 +185,7 @@ if($_REQUEST['mode'] == 'create') {
 }
 $location = "Location: index.php?action=".vtlib_purify($return_action)."&module=".vtlib_purify($return_module)."&record=".vtlib_purify($return_id);
 
-if($_REQUEST['modechk'] != 'prefview') {
+if(empty($_REQUEST['modechk']) || $_REQUEST['modechk'] != 'prefview') {
 	$location .= "&parenttab=".vtlib_purify($parenttab);
 }
 

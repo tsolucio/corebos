@@ -498,13 +498,16 @@ class Campaigns extends CRMEntity {
 	function add_status_popup($related_list, $status_column = 7, $related_module)
 	{
 		global $adb;
-
-		if(!$this->campaignrelstatus)
-		{
+		if (empty($this->campaignrelstatus)) {
+			$this->campaignrelstatus = array();
+		}
+		if (count($this->campaignrelstatus)==0) {
 			$result = $adb->query('SELECT * FROM vtiger_campaignrelstatus;');
 			while($row = $adb->fetchByAssoc($result))
 			{
-				$this->campaignrelstatus[$row['campaignrelstatus']] = $row;
+				$r = $row;
+				$r['campaignrelstatusi18n'] = getTranslatedString($row['campaignrelstatus'],'Campaigns');
+				$this->campaignrelstatus[$row['campaignrelstatus']] = $r;
 			}
 		}
 		foreach($related_list['entries'] as $key => &$entry)
@@ -512,14 +515,13 @@ class Campaigns extends CRMEntity {
 			$popupitemshtml = '';
 			foreach($this->campaignrelstatus as $campaingrelstatus)
 			{
-				$camprelstatus = getTranslatedString($campaingrelstatus[campaignrelstatus],'Campaigns');
-				$popupitemshtml .= "<a onmouseover=\"javascript: showBlock('campaignstatus_popup_$key')\" href=\"javascript:updateCampaignRelationStatus('$related_module', '".$this->id."', '$key', '$campaingrelstatus[campaignrelstatusid]', '".addslashes($camprelstatus)."');\">$camprelstatus</a><br />";
+				$camprelstatus = $campaingrelstatus['campaignrelstatusi18n'];
+				$popupitemshtml .= "<a onmouseover=\"javascript: showBlock('campaignstatus_popup_$key')\" href=\"javascript:updateCampaignRelationStatus('$related_module', '".$this->id."', '$key', '".$campaingrelstatus['campaignrelstatusid']."', '".addslashes($camprelstatus)."');\">$camprelstatus</a><br />";
 			}
 			$popuphtml = '<div onmouseover="javascript:clearTimeout(statusPopupTimer);" onmouseout="javascript:closeStatusPopup(\'campaignstatus_popup_'.$key.'\');" style="margin-top: -14px; width: 200px;" id="campaignstatus_popup_'.$key.'" class="calAction"><div style="background-color: #FFFFFF; padding: 8px;">'.$popupitemshtml.'</div></div>';
 
 			$entry[$status_column] = "<a href=\"javascript: showBlock('campaignstatus_popup_$key');\">[+]</a> <span id='campaignstatus_$key'>".$entry[$status_column]."</span>".$popuphtml;
 		}
-
 		return $related_list;
 	}
 

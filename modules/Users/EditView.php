@@ -52,7 +52,6 @@ $image_path=$theme_path."images/";
 
 $log->info("User edit view");
 
-
 $smarty->assign("JAVASCRIPT", get_validate_record_js());
 $smarty->assign("UMOD", $mod_strings);
 global $current_language;
@@ -64,24 +63,25 @@ $smarty->assign("APP", $app_strings);
 if (isset($_REQUEST['error_string'])) $smarty->assign("ERROR_STRING", "<font class='error'>Error: ".vtlib_purify($_REQUEST['error_string'])."</font>");
 if (isset($_REQUEST['return_module']))
 {
-        $smarty->assign("RETURN_MODULE", vtlib_purify($_REQUEST['return_module']));
-        $RETURN_MODULE=vtlib_purify($_REQUEST['return_module']);
+	$smarty->assign("RETURN_MODULE", vtlib_purify($_REQUEST['return_module']));
+	$RETURN_MODULE=vtlib_purify($_REQUEST['return_module']);
 }
 if (isset($_REQUEST['return_action']))
 {
-        $smarty->assign("RETURN_ACTION", vtlib_purify($_REQUEST['return_action']));
-        $RETURN_ACTION = vtlib_purify($_REQUEST['return_action']);
+	$smarty->assign("RETURN_ACTION", vtlib_purify($_REQUEST['return_action']));
+	$RETURN_ACTION = vtlib_purify($_REQUEST['return_action']);
 }
 if ($_REQUEST['isDuplicate'] != 'true' && isset($_REQUEST['return_id']))
 {
-        $smarty->assign("RETURN_ID", vtlib_purify($_REQUEST['return_id']));
-        $RETURN_ID = vtlib_purify($_REQUEST['return_id']);
+	$smarty->assign("RETURN_ID", vtlib_purify($_REQUEST['return_id']));
+	$RETURN_ID = vtlib_purify($_REQUEST['return_id']);
 }
 $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH", $image_path);
 $focus->mode = $mode;
 $disp_view = getView($focus->mode);
 $smarty->assign("IMAGENAME",$focus->imagename);
+$smarty->assign('MASS_EDIT','0');
 $smarty->assign("BLOCKS",getBlocks($currentModule,$disp_view,$mode,$focus->column_fields));
 $smarty->assign("MODULE", 'Settings');
 $smarty->assign("MODE",$focus->mode);
@@ -91,7 +91,6 @@ if ($_REQUEST['Edit'] == ' Edit ')
 {
 	$smarty->assign("READONLY", "readonly");
 	$smarty->assign("USERNAME_READONLY", "readonly");
-
 }
 if(isset($_REQUEST['record']) && $_REQUEST['isDuplicate'] != 'true')
 {
@@ -121,5 +120,4 @@ $smarty->assign('FORM_TOKEN', $_SESSION['Users_FORM_TOKEN']);
 $smarty->assign('FIELDHELPINFO', vtlib_getFieldHelpInfo($currentModule));
 
 $smarty->display('UserEditView.tpl');
-
 ?>

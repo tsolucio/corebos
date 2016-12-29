@@ -83,7 +83,6 @@ function check_duplicate()
 		<input type="hidden" name="record" value="{$ID}">
 		<input type="hidden" name="mode" value="{$MODE}">
 		<input type='hidden' name='parenttab' value='{$PARENTTAB}'>
-		<input type="hidden" name="activity_mode" value="{$ACTIVITYMODE}">
 		<input type="hidden" name="action">
 		<input type="hidden" name="return_module" value="{$RETURN_MODULE}">
 		<input type="hidden" name="return_id" value="{$RETURN_ID}">
