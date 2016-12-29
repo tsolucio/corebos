@@ -193,7 +193,7 @@ class ListViewSession {
 			$start = $_SESSION['lvs'][$currentModule][$viewid]['start'];
 		}
 		if(!$queryMode) {
-			$_SESSION['lvs'][$currentModule][$viewid]['start'] = intval($start);
+			coreBOS_Session::set('lvs^'.$currentModule.'^'.$viewid.'^'.'start', intval($start));
 		}
 		return $start;
 	}
@@ -201,7 +201,7 @@ class ListViewSession {
 	public static function setSessionQuery($currentModule,$query,$viewid){
 		if(isset($_SESSION[$currentModule.'_listquery'])){
 			if($_SESSION[$currentModule.'_listquery'] != $query){
-				unset($_SESSION[$currentModule.'_DetailView_Navigation'.$viewid]);
+				coreBOS_Session::delete($currentModule.'_DetailView_Navigation'.$viewid);
 			}
 		}
 		coreBOS_Session::set($currentModule.'_listquery',$query);
