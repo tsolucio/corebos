@@ -18,7 +18,7 @@ class SMSNotifierBase extends CRMEntity {
 
 	/** Indicator if this is a custom module or standard module */
 	var $IsCustomModule = true;
-
+	var $HasDirectImageField = false;
 	/**
 	 * Mandatory table for supporting custom fields.
 	 */
@@ -72,9 +72,6 @@ class SMSNotifierBase extends CRMEntity {
 	// Allow sorting on the following (field column names)
 	var $sortby_fields = Array ('message');
 
-	// Should contain field labels
-	//var $detailview_links = Array ('Message');
-
 	// For Alphabetical search
 	var $def_basicsearch_col = 'message';
 
@@ -89,7 +86,6 @@ class SMSNotifierBase extends CRMEntity {
 
 	var $default_order_by = 'crmid';
 	var $default_sort_order='DESC';
-
 	// Used when enabling/disabling the mandatory fields for the module.
 	// Refers to vtiger_field.fieldname values.
 	var $mandatory_fields = Array('createdtime', 'modifiedtime', 'message');
@@ -100,28 +96,18 @@ class SMSNotifierBase extends CRMEntity {
 		$this->column_fields = getColumnFields($this_module);
 		$this->db = PearDatabase::getInstance();
 		$this->log = $log;
-	}
-
-	function getSortOrder() {
-		global $currentModule;
-
-		$sortorder = $this->default_sort_order;
-		if($_REQUEST['sorder']) $sortorder = $_REQUEST['sorder'];
-		else if($_SESSION[$currentModule.'_Sort_Order']) 
-			$sortorder = $_SESSION[$currentModule.'_Sort_Order'];
-
-		return $sortorder;
-	}
-
-	function getOrderBy() {
-		$orderby = $this->default_order_by;
-		if($_REQUEST['order_by']) $orderby = $_REQUEST['order_by'];
-		else if($_SESSION[$currentModule.'_Order_By'])
-			$orderby = $_SESSION[$currentModule.'_Order_By'];
-		return $orderby;
+		$sql = 'SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid = ? limit 1';
+		$tabid = getTabid($this_module);
+		$result = $this->db->pquery($sql, array($tabid));
+		if ($result and $this->db->num_rows($result)==1) {
+			$this->HasDirectImageField = true;
+		}
 	}
 
 	function save_module($module) {
+		if ($this->HasDirectImageField) {
+			$this->insertIntoAttachment($this->id,$module);
+		}
 	}
 
 	/**
