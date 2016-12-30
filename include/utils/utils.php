@@ -3487,10 +3487,9 @@ function getDuplicateRecordsArr($module)
 	$gro="group";
 	for($i=0;$i<$no_rows;$i++)
 	{
-		$ii=0;
-		$dis_group[]=$fld_values[$gro.$i][$ii];
+		if (empty($fld_values[$gro.$i])) continue;
+		$dis_group[]=$fld_values[$gro.$i][0];
 		$count_group[$i]=count($fld_values[$gro.$i]);
-		$ii++;
 		$new_group[]=$dis_group[$i];
 	}
 	$fld_nam=$new_group[0];
@@ -3639,11 +3638,11 @@ function getFieldValues($module)
 		$table_col = $tablename.".".$column_name;
 		if(getFieldVisibilityPermission($module,$current_user->id,$field_name) == 0)
 		{
-			$fld_name = ($special_fld_arr[$field_name] != '')?$special_fld_arr[$field_name]:$field_name;
+			$fld_name = (!empty($special_fld_arr[$field_name]))?$special_fld_arr[$field_name]:$field_name;
 
 			$fld_arr[] = $fld_name;
 			$col_arr[] = $column_name;
-			if($fld_table_arr[$table_col] != '')
+			if(!empty($fld_table_arr[$table_col]))
 				$table_col = $fld_table_arr[$table_col];
 
 			$field_values_array['fieldnames_list'][] = $table_col . "." . $fld_name;

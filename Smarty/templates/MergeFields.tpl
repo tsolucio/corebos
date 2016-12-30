@@ -44,11 +44,7 @@
 		<table class="small" border="0" cellspacing=0 cellpadding=4 width="98%">
 		<tr>
 			<td align="left" colspan="2" class="moduleName" nowrap="nowrap">
-			{assign var="MODULELABEL" value=$MODULENAME}
-			{if $APP.$MODULENAME neq ''}
-				{assign var="MODULELABEL" value=$APP.$MODULENAME}
-			{/if}
-			{$APP.LBL_MERGE_DATA_IN} &gt; <span class="hdrLink">{$MODULELABEL}</span>
+			{$APP.LBL_MERGE_DATA_IN} &gt; <span class="hdrLink">{$MODULENAME|getTranslatedString:$MODULENAME}</span>
 			</td>
 		</tr>
 		<tr>
@@ -101,7 +97,7 @@
 			{foreach item=data key=cnt from=$ALLVALUES}
 			{foreach item=fld_array key=label from=$data}
 		<tr class="IvtColdata" onmouseover="this.className='lvtColDataHover';" onmouseout="this.className='lvtColData';" bgcolor="white">
-					<td ><b>{$label|@getTranslatedString:$MODULE}</b>
+					<td ><b>{$label|@getTranslatedString:$MODULENAME}</b>
 					</td>
 					{foreach item=fld_value key=cnt2 from=$fld_array}
 						{if $fld_value.disp_value neq ''}

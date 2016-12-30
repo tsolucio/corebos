@@ -815,7 +815,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 							if ($module == 'Accounts') {
 								$account_id = $adb->query_result($list_result, $i - 1, "crmid");
 								$account_name = $adb->query_result($list_result, $i - 1, 'accountname');
-							} elseif ($module == 'Potentials' || $module == 'Contacts' || $module == 'Invoice' || $module == 'SalesOrder' || $module == 'Quotes') { //Potential,Contacts,Invoice,SalesOrder & Quotes  records   sort by Account Name
+							} elseif ($module == 'Potentials' || $module == 'Contacts' || $module == 'Invoice' || $module == 'SalesOrder' || $module == 'Quotes') { //Potential,Contacts,Invoice,SalesOrder & Quotes records sort by Account Name
 								$account_name = $adb->query_result($list_result, $i - 1, 'accountname');
 								$account_id = $adb->query_result($list_result, $i - 1, "accountid");
 							} else {
@@ -889,7 +889,7 @@ function getListViewEntries($focus, $module, $list_result, $navigation_array, $r
 							if ($uitype == 71 or $uitype == 72) {
 								if (!isset($totals[$fieldname])) $totals[$fieldname]=0;
 								$field_val = $adb->query_result($list_result, $list_result_count, $colname);
-								$totals[$fieldname] =  $totals[$fieldname] + $field_val;
+								$totals[$fieldname] = $totals[$fieldname] + $field_val;
 							}
 						}
 					}
@@ -1865,7 +1865,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$slashes_desc = str_replace(array("\r", "\n"), array('\r', '\n'), $slashes_temp_desc);
 					$tmp_arr = array("entityid" => $entity_id, "prodname" => "" . stripslashes(decode_html(nl2br($slashes_temp_val))) . "", "unitprice" => "$unitprice", "qtyinstk" => "$qty_stock", "taxstring" => "$tax_str", "rowid" => "$row_id", "desc" => "$slashes_desc", "subprod_ids" => "$sub_det");
 					$prod_arr = json_encode($tmp_arr);
-					$value = '<a href="javascript:window.close();" id=\'popup_product_' . $entity_id . '\' onclick=\'set_return_inventory_po("' . $entity_id . '", "' . decode_html(nl2br($slashes_temp_val)) . '", "' . $unitprice . '", "' . $tax_str . '","' . $row_id . '","' . $slashes_desc . '","' . $sub_det . '"); \'  vt_prod_arr=\'' . $prod_arr . '\' >' . textlength_check($temp_val) . '</a>';
+					$value = '<a href="javascript:window.close();" id=\'popup_product_' . $entity_id . '\' onclick=\'set_return_inventory_po("' . $entity_id . '", "' . decode_html(nl2br($slashes_temp_val)) . '", "' . $unitprice . '", "' . $tax_str . '","' . $row_id . '","' . $slashes_desc . '","' . $sub_det . '"); \' vt_prod_arr=\'' . $prod_arr . '\' >' . textlength_check($temp_val) . '</a>';
 				}
 				elseif ($popuptype == "inventory_service") {
 					$row_id = $_REQUEST['curr_row'];
@@ -1897,7 +1897,7 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 					$tmp_arr = array("entityid" => $entity_id, "prodname" => "" . stripslashes(decode_html(nl2br($slashes_temp_val))) . "", "unitprice" => "$unitprice", "taxstring" => "$tax_str", "rowid" => "$row_id", "desc" => "$slashes_desc");
 					$prod_arr = json_encode($tmp_arr);
 
-					$value = '<a href="javascript:window.close();" id=\'popup_product_' . $entity_id . '\' onclick=\'set_return_inventory("' . $entity_id . '", "' . decode_html(nl2br($slashes_temp_val)) . '", "' . $unitprice . '", "' . $tax_str . '","' . $row_id . '","' . $slashes_desc . '");\'  vt_prod_arr=\'' . $prod_arr . '\' >' . textlength_check($temp_val) . '</a>';
+					$value = '<a href="javascript:window.close();" id=\'popup_product_' . $entity_id . '\' onclick=\'set_return_inventory("' . $entity_id . '", "' . decode_html(nl2br($slashes_temp_val)) . '", "' . $unitprice . '", "' . $tax_str . '","' . $row_id . '","' . $slashes_desc . '");\' vt_prod_arr=\'' . $prod_arr . '\' >' . textlength_check($temp_val) . '</a>';
 				} elseif ($popuptype == "inventory_pb") {
 
 					$prod_id = $_REQUEST['productid'];
@@ -2072,90 +2072,67 @@ function getValue($field_result, $list_result, $fieldname, $focus, $module, $ent
 						$count = counterValue();
 						$value = '<a href="javascript:if (document.getElementById(\'closewindow\').value==\'true\') {window.close()};" onclick=\'return set_return_emails(' . $entity_id . ',' . $fieldid . ',"' . decode_html($slashes_name) . '","' . $emailaddress . '","' . $emailaddress2 . '","' . $email_check . '"'.$sre_param.'); \'id = ' . $count . '>' . $name . '</a>';
 					}
-					elseif ($module=='Project')
-                                        {
-                                                $name = $adb->query_result($list_result,$list_result_count,'projectname');
-                                                $projid =$adb->query_result($list_result,$list_result_count,'projectid');
-                                                if(CheckFieldPermission('email',$module) == "true")
-                                                {
-                                                        $emailaddress=$adb->query_result($list_result,$list_result_count,"email");
-                                                        $email_check = 1;
-                                                }
-                                                else
-                                                        $email_check = 0;
-                                                $querystr="SELECT fieldid,fieldlabel,columnname FROM vtiger_field WHERE tabid=? and uitype=13 and vtiger_field.presence in (0,2)";
-                                                $queryres = $adb->pquery($querystr, array(getTabid($module)));
-                                                //Change this index 0 - to get the vtiger_fieldid based on email1 or email2
-                                                $fieldid = $adb->query_result($queryres,0,'fieldid');
-
-                                                $slashes_name = popup_from_html($name);
-                                                $slashes_name = htmlspecialchars($slashes_name,ENT_QUOTES,$default_charset);
-                                                
-                                                $value = '<a href="javascript:if (document.getElementById(\'closewindow\').value==\'true\') {window.close();}" onclick=\'return set_return_emails('.$entity_id.','.$fieldid.',"'.decode_html($slashes_name).'","'.$emailaddress.'","'.$emailaddress2.'","'.$email_check.'"'.$sre_param.'); \'>'.textlength_check($name).'</a>';
-                                        }
-					elseif ($module=='ProjectTask')
-                                        {
-                                                $name = $adb->query_result($list_result,$list_result_count,'projecttaskname');
-                                                $projid =$adb->query_result($list_result,$list_result_count,'projecttaskid');
-                                                if(CheckFieldPermission('email',$module) == "true")
-                                                {
-                                                        $emailaddress=$adb->query_result($list_result,$list_result_count,"email");
-                                                        $email_check = 1;
-                                                }
-                                                else
-                                                        $email_check = 0;
-                                                $querystr="SELECT fieldid,fieldlabel,columnname FROM vtiger_field WHERE tabid=? and uitype=13 and vtiger_field.presence in (0,2)";
-                                                $queryres = $adb->pquery($querystr, array(getTabid($module)));
-                                                //Change this index 0 - to get the vtiger_fieldid based on email1 or email2
-                                                $fieldid = $adb->query_result($queryres,0,'fieldid');
-
-                                                $slashes_name = popup_from_html($name);
-                                                $slashes_name = htmlspecialchars($slashes_name,ENT_QUOTES,$default_charset);
-                                                
-                                                $value = '<a href="javascript:if (document.getElementById(\'closewindow\').value==\'true\') {window.close();}" onclick=\'return set_return_emails('.$entity_id.','.$fieldid.',"'.decode_html($slashes_name).'","'.$emailaddress.'","'.$emailaddress2.'","'.$email_check.'"'.$sre_param.'); \'>'.textlength_check($name).'</a>';
-                                        }
-					elseif ($module=='Potentials')
-                                        {
-                                                $name = $adb->query_result($list_result,$list_result_count,'potentialname');
-                                                $potid =$adb->query_result($list_result,$list_result_count,'potentialid');
-                                                if(CheckFieldPermission('email',$module) == "true")
-                                                {
-                                                        $emailaddress=$adb->query_result($list_result,$list_result_count,"email");
-                                                        $email_check = 1;
-                                                }
-                                                else
-                                                        $email_check = 0;
-                                                $querystr="SELECT fieldid,fieldlabel,columnname FROM vtiger_field WHERE tabid=? and uitype=13 and vtiger_field.presence in (0,2)";
-                                                $queryres = $adb->pquery($querystr, array(getTabid($module)));
-                                                //Change this index 0 - to get the vtiger_fieldid based on email1 or email2
-                                                $fieldid = $adb->query_result($queryres,0,'fieldid');
-
-                                                $slashes_name = popup_from_html($name);
-                                                $slashes_name = htmlspecialchars($slashes_name,ENT_QUOTES,$default_charset);
-                                                
-                                                $value = '<a href="javascript:if (document.getElementById(\'closewindow\').value==\'true\') {window.close();}" onclick=\'return set_return_emails('.$entity_id.','.$fieldid.',"'.decode_html($slashes_name).'","'.$emailaddress.'","'.$emailaddress2.'","'.$email_check.'"'.$sre_param.'); \'>'.textlength_check($name).'</a>';
-                                        }
-					elseif ($module=='HelpDesk')
-                                        {
-                                                $name = $adb->query_result($list_result,$list_result_count,'title');
-                                                $potid =$adb->query_result($list_result,$list_result_count,'ticketid');
-                                                if(CheckFieldPermission('email',$module) == "true")
-                                                {
-                                                        $emailaddress=$adb->query_result($list_result,$list_result_count,"email");
-                                                        $email_check = 1;
-                                                }
-                                                else
-                                                 $email_check = 0;
-                                                $querystr="SELECT fieldid,fieldlabel,columnname FROM vtiger_field WHERE tabid=? and uitype=13 and vtiger_field.presence in (0,2)";
-                                                $queryres = $adb->pquery($querystr, array(getTabid($module)));
-                                                //Change this index 0 - to get the vtiger_fieldid based on email1 or email2
-                                                $fieldid = $adb->query_result($queryres,0,'fieldid');
-
-                                                $slashes_name = popup_from_html($name);
-                                                $slashes_name = htmlspecialchars($slashes_name,ENT_QUOTES,$default_charset);
-                                                
-                                                $value = '<a href="javascript:if (document.getElementById(\'closewindow\').value==\'true\') {window.close();}" onclick=\'return set_return_emails('.$entity_id.','.$fieldid.',"'.decode_html($slashes_name).'","'.$emailaddress.'","'.$emailaddress2.'","'.$email_check.'"'.$sre_param.'); \'>'.textlength_check($name).'</a>';
-                                        }					
+					elseif ($module=='Project') {
+						$name = $adb->query_result ( $list_result, $list_result_count, 'projectname' );
+						$projid = $adb->query_result ( $list_result, $list_result_count, 'projectid' );
+						if (CheckFieldPermission ( 'email', $module ) == "true") {
+							$emailaddress = $adb->query_result ( $list_result, $list_result_count, "email" );
+							$email_check = 1;
+						} else
+							$email_check = 0;
+						$querystr = "SELECT fieldid,fieldlabel,columnname FROM vtiger_field WHERE tabid=? and uitype=13 and vtiger_field.presence in (0,2)";
+						$queryres = $adb->pquery( $querystr, array( getTabid ( $module ) ));
+						// Change this index 0 - to get the vtiger_fieldid based on email1 or email2
+						$fieldid = $adb->query_result ( $queryres, 0, 'fieldid' );
+						$slashes_name = popup_from_html ( $name );
+						$slashes_name = htmlspecialchars ( $slashes_name, ENT_QUOTES, $default_charset );
+						$value = '<a href="javascript:if (document.getElementById(\'closewindow\').value==\'true\') {window.close();}" onclick=\'return set_return_emails(' . $entity_id . ',' . $fieldid . ',"' . decode_html ( $slashes_name ) . '","' . $emailaddress . '","' . $emailaddress2 . '","' . $email_check . '"' . $sre_param . '); \'>' . textlength_check ( $name ) . '</a>';
+					} elseif ($module == 'ProjectTask') {
+						$name = $adb->query_result ( $list_result, $list_result_count, 'projecttaskname' );
+						$projid = $adb->query_result ( $list_result, $list_result_count, 'projecttaskid' );
+						if (CheckFieldPermission ( 'email', $module ) == "true") {
+							$emailaddress = $adb->query_result ( $list_result, $list_result_count, "email" );
+							$email_check = 1;
+						} else
+							$email_check = 0;
+						$querystr = "SELECT fieldid,fieldlabel,columnname FROM vtiger_field WHERE tabid=? and uitype=13 and vtiger_field.presence in (0,2)";
+						$queryres = $adb->pquery( $querystr, array( getTabid ( $module )));
+						// Change this index 0 - to get the vtiger_fieldid based on email1 or email2
+						$fieldid = $adb->query_result ( $queryres, 0, 'fieldid' );
+						$slashes_name = popup_from_html ( $name );
+						$slashes_name = htmlspecialchars ( $slashes_name, ENT_QUOTES, $default_charset );
+						$value = '<a href="javascript:if (document.getElementById(\'closewindow\').value==\'true\') {window.close();}" onclick=\'return set_return_emails(' . $entity_id . ',' . $fieldid . ',"' . decode_html ( $slashes_name ) . '","' . $emailaddress . '","' . $emailaddress2 . '","' . $email_check . '"' . $sre_param . '); \'>' . textlength_check ( $name ) . '</a>';
+					} elseif ($module == 'Potentials') {
+						$name = $adb->query_result ( $list_result, $list_result_count, 'potentialname' );
+						$potid = $adb->query_result ( $list_result, $list_result_count, 'potentialid' );
+						if (CheckFieldPermission ( 'email', $module ) == "true") {
+							$emailaddress = $adb->query_result ( $list_result, $list_result_count, "email" );
+							$email_check = 1;
+						} else
+							$email_check = 0;
+						$querystr = "SELECT fieldid,fieldlabel,columnname FROM vtiger_field WHERE tabid=? and uitype=13 and vtiger_field.presence in (0,2)";
+						$queryres = $adb->pquery( $querystr, array( getTabid( $module )));
+						// Change this index 0 - to get the vtiger_fieldid based on email1 or email2
+						$fieldid = $adb->query_result ( $queryres, 0, 'fieldid' );
+						$slashes_name = popup_from_html ( $name );
+						$slashes_name = htmlspecialchars ( $slashes_name, ENT_QUOTES, $default_charset );
+						$value = '<a href="javascript:if (document.getElementById(\'closewindow\').value==\'true\') {window.close();}" onclick=\'return set_return_emails(' . $entity_id . ',' . $fieldid . ',"' . decode_html ( $slashes_name ) . '","' . $emailaddress . '","' . $emailaddress2 . '","' . $email_check . '"' . $sre_param . '); \'>' . textlength_check ( $name ) . '</a>';
+					} elseif ($module == 'HelpDesk') {
+						$name = $adb->query_result ( $list_result, $list_result_count, 'title' );
+						$potid = $adb->query_result ( $list_result, $list_result_count, 'ticketid' );
+						if (CheckFieldPermission ( 'email', $module ) == "true") {
+							$emailaddress = $adb->query_result ( $list_result, $list_result_count, "email" );
+							$email_check = 1;
+						} else
+							$email_check = 0;
+						$querystr = "SELECT fieldid,fieldlabel,columnname FROM vtiger_field WHERE tabid=? and uitype=13 and vtiger_field.presence in (0,2)";
+						$queryres = $adb->pquery( $querystr, array( getTabid( $module )));
+						// Change this index 0 - to get the vtiger_fieldid based on email1 or email2
+						$fieldid = $adb->query_result ( $queryres, 0, 'fieldid' );
+						$slashes_name = popup_from_html ( $name );
+						$slashes_name = htmlspecialchars ( $slashes_name, ENT_QUOTES, $default_charset );
+						$value = '<a href="javascript:if (document.getElementById(\'closewindow\').value==\'true\') {window.close();}" onclick=\'return set_return_emails(' . $entity_id . ',' . $fieldid . ',"' . decode_html ( $slashes_name ) . '","' . $emailaddress . '","' . $emailaddress2 . '","' . $email_check . '"' . $sre_param . '); \'>' . textlength_check ( $name ) . '</a>';
+					}
 					else {
 						$name = getFullNameFromQResult($list_result, $list_result_count, $module);
 						$emailaddress = $adb->query_result($list_result, $list_result_count, "email1");
@@ -2995,35 +2972,35 @@ function getRelatedTo($module, $list_result, $rset) {
 	if ($module == "Documents") {
 		$notesid = $adb->query_result($list_result, $rset, "notesid");
 		$action = "DetailView";
-		$evt_query = "SELECT vtiger_senotesrel.crmid, vtiger_crmentity.setype
+		$evt_query = 'SELECT vtiger_senotesrel.crmid, vtiger_crmentity.setype
 					FROM vtiger_senotesrel
 					INNER JOIN vtiger_crmentity
-					ON  vtiger_senotesrel.crmid = vtiger_crmentity.crmid
-				WHERE vtiger_senotesrel.notesid = ?";
+					ON vtiger_senotesrel.crmid = vtiger_crmentity.crmid
+				WHERE vtiger_senotesrel.notesid = ?';
 		$params = array($notesid);
 	} else if ($module == "Products") {
 		$productid = $adb->query_result($list_result, $rset, "productid");
 		$action = "DetailView";
-		$evt_query = "SELECT vtiger_seproductsrel.crmid, vtiger_crmentity.setype
+		$evt_query = 'SELECT vtiger_seproductsrel.crmid, vtiger_crmentity.setype
 					FROM vtiger_seproductsrel
 					INNER JOIN vtiger_crmentity
 					ON vtiger_seproductsrel.crmid = vtiger_crmentity.crmid
-					WHERE vtiger_seproductsrel.productid =?";
+					WHERE vtiger_seproductsrel.productid =?';
 		$params = array($productid);
 	} else {
 		$activity_id = $adb->query_result($list_result, $rset, "activityid");
 		$action = "DetailView";
-		$evt_query = "SELECT vtiger_seactivityrel.crmid, vtiger_crmentity.setype
+		$evt_query = 'SELECT vtiger_seactivityrel.crmid, vtiger_crmentity.setype
 			FROM vtiger_seactivityrel
 			INNER JOIN vtiger_crmentity
-				ON  vtiger_seactivityrel.crmid = vtiger_crmentity.crmid
-			WHERE vtiger_seactivityrel.activityid=?";
+				ON vtiger_seactivityrel.crmid = vtiger_crmentity.crmid
+			WHERE vtiger_seactivityrel.activityid=?';
 		$params = array($activity_id);
 
 		if ($module == 'HelpDesk') {
 			$activity_id = $adb->query_result($list_result, $rset, "parent_id");
 			if ($activity_id != '') {
-				$evt_query = "SELECT crmid, setype FROM vtiger_crmentity WHERE crmid=?";
+				$evt_query = 'SELECT crmid, setype FROM vtiger_crmentity WHERE crmid=?';
 				$params = array($activity_id);
 			}
 		}
@@ -3155,9 +3132,8 @@ function getRelatedTo($module, $list_result, $rset) {
  * Returns an string value
  */
 function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $action_val = 'index', $viewid = '') {
-	global $log, $app_strings;
-	$log->debug("Entering getTableHeaderNavigation(" . $navigation_array . "," . $url_qry . "," . $module . "," . $action_val . "," . $viewid . ") method ...");
-	global $theme, $current_user;
+	global $log, $app_strings, $theme, $current_user;
+	$log->debug('Entering getTableHeaderNavigation(' . print_r($navigation_array,true) . ',' . $url_qry . ',' . $module . ',' . $action_val . ',' . $viewid . ') method ...');
 	$theme_path = "themes/" . $theme . "/";
 	$image_path = $theme_path . "images/";
 	if ($module == 'Documents' and GlobalVariable::getVariable('Document_Folder_View',1,'Documents')) {
@@ -3169,7 +3145,10 @@ function getTableHeaderNavigation($navigation_array, $url_qry, $module = '', $ac
 
 	$url_string = '';
 
-	$url_string .= '&form='.vtlib_purify($_REQUEST['form']).'&forfield=' . vtlib_purify($_REQUEST['forfield']) . '&srcmodule=' . vtlib_purify($_REQUEST['srcmodule']) . '&forrecord=' . vtlib_purify($_REQUEST['forrecord']);
+	$url_string .= '&form='.(isset($_REQUEST['form']) ? vtlib_purify($_REQUEST['form']) : '').
+		'&forfield=' . (isset($_REQUEST['forfield']) ? vtlib_purify($_REQUEST['forfield']) : '').
+		'&srcmodule=' . (isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : '') .
+		'&forrecord=' . (isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : '');
 
 	if ($module == 'Calendar' && $action_val == 'index') {
 		if ($_REQUEST['view'] == '') {
@@ -3619,8 +3598,8 @@ function getRelCheckquery($currentmodule, $returnmodule, $recordid) {
 	if ($reltable != null) {
 		$query = "SELECT " . $selectfield . " FROM " . $reltable . " " . $condition;
 	} elseif ($currentmodule != $returnmodule && $returnmodule != "") { // If none of the above relation matches, then the relation is assumed to be stored in vtiger_crmentityrel
-		$query = "SELECT relcrmid AS relatedid FROM vtiger_crmentityrel WHERE  crmid = ? and module = ? and relmodule = ?
-					UNION SELECT crmid AS relatedid FROM vtiger_crmentityrel WHERE relcrmid = ? and relmodule = ? and module = ?";
+		$query = 'SELECT relcrmid AS relatedid FROM vtiger_crmentityrel WHERE crmid = ? and module = ? and relmodule = ?
+					UNION SELECT crmid AS relatedid FROM vtiger_crmentityrel WHERE relcrmid = ? and relmodule = ? and module = ?';
 		array_push($params, $recordid, $returnmodule, $currentmodule, $recordid, $returnmodule, $currentmodule);
 
 		$focus_obj = CRMEntity::getInstance($currentmodule);

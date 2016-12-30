@@ -44,7 +44,7 @@
 												<td style="padding-left:5px;padding-right:5px" align="center">
 													<b><font size=2>{$APP.LBL_VIEW}</font></b> <SELECT NAME="viewname" id="viewname" class="small" style="max-width:240px;" onchange="showDefaultCustomView(this,'{$MODULE}','{$CATEGORY}')">{$CUSTOMVIEW_OPTION}</SELECT>
 												</td>
-												{if $ALL eq 'All'}
+												{if isset($ALL) && $ALL eq 'All'}
 												<td style="padding-left:5px;padding-right:5px" align="center"><a href="index.php?module={$MODULE}&action=CustomView&parenttab={$CATEGORY}">{$APP.LNK_CV_CREATEVIEW}</a>
 													<span class="small">|</span>
 													<span class="small" disabled>{$APP.LNK_CV_EDIT}</span>

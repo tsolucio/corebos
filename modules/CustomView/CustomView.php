@@ -1077,7 +1077,7 @@ class CustomView extends CRMEntity {
 		}
 
 		if (isset($stdfilterlist)) {
-
+			$startDateTime = $endDateTime = '';
 			foreach ($stdfilterlist as $columnname => $value) {
 
 				if ($columnname == "columnname") {

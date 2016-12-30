@@ -45,7 +45,7 @@ class CobroPago extends CRMEntity {
 	 * Mandatory for Listing (Related listview)
 	 */
 	var $list_fields = Array (
-                'CyP No'=>Array('cobropago'=>'cyp_no'),
+		'CyP No'=>Array('cobropago'=>'cyp_no'),
 		'Reference'=>Array('cobropago'=>'reference'),
 		'PaymentMode'=>Array('cobropago'=>'paymentmode'),
 		'Amount'=>Array('cobropago'=>'amount'),
@@ -53,7 +53,7 @@ class CobroPago extends CRMEntity {
 		'Assigned To' => Array('crmentity' => 'smownerid')
 	);
 	var $list_fields_name = Array(
-                'CyP No'=>'cyp_no',
+		'CyP No'=>'cyp_no',
 		'Reference'=>'reference',
 		'PaymentMode'=>'paymentmode',
 		'Amount'=>'amount',
@@ -73,7 +73,7 @@ class CobroPago extends CRMEntity {
 		'DueDate'=>Array('cobropago'=>'duedate')
 	);
 	var $search_fields_name = Array(
-                'CyP No'=>'cyp_no',
+		'CyP No'=>'cyp_no',
 		'Reference'=>'reference',
 		'PaymentMode'=>'paymentmode',
 		'Amount'=>'amount',
@@ -147,30 +147,42 @@ class CobroPago extends CRMEntity {
 	  global $adb;
 	  $parent_module = getSalesEntityType($pid);
 	  if ($parent_module=='Accounts' and self::account_control_installed()) {
-		$sumamountcredit =$adb->query_result($adb->pquery("select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=1 and parent_id=?",array($pid)),0,0);
-		$sumamountdebit =$adb->query_result($adb->pquery("select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=0 and parent_id=?",array($pid)),0,0);
-		$sumpendingcredit=$adb->query_result($adb->pquery("select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=1 and paid='0' and parent_id=?",array($pid)),0,0);
-		$sumpendingdebit=$adb->query_result($adb->pquery("select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=0 and paid='0' and parent_id=?",array($pid)),0,0);
+		$rs = $adb->pquery('select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=1 and parent_id=?',array($pid));
+		$sumamountcredit =$adb->query_result($rs,0,0);
+		$rs = $adb->pquery('select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=0 and parent_id=?',array($pid));
+		$sumamountdebit =$adb->query_result($rs,0,0);
+		$rs = $adb->pquery("select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=1 and paid='0' and parent_id=?",array($pid));
+		$sumpendingcredit=$adb->query_result($rs,0,0);
+		$rs = $adb->pquery("select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=0 and paid='0' and parent_id=?",array($pid));
+		$sumpendingdebit=$adb->query_result($rs,0,0);
 		$sumamount=$sumamountcredit-$sumamountdebit;
 		$sumpending=$sumpendingcredit-$sumpendingdebit;
 		$balance=$sumamount-$sumpending;
 		$adb->pquery("update vtiger_account set balance=?,totalamount=?,totalpending=? where accountid=?",array($balance,$sumamount,$sumpending,$pid));
 	  }
 	  if ($parent_module=='Contacts' and self::contact_control_installed()) {
-		$sumamountcredit =$adb->query_result($adb->pquery("select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=1 and parent_id=?",array($pid)),0,0);
-		$sumamountdebit =$adb->query_result($adb->pquery("select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=0 and parent_id=?",array($pid)),0,0);
-		$sumpendingcredit=$adb->query_result($adb->pquery("select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=1 and paid='0' and parent_id=?",array($pid)),0,0);
-		$sumpendingdebit=$adb->query_result($adb->pquery("select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=0 and paid='0' and parent_id=?",array($pid)),0,0);
+		$rs = $adb->pquery('select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=1 and parent_id=?',array($pid));
+		$sumamountcredit =$adb->query_result($rs,0,0);
+		$rs = $adb->pquery('select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=0 and parent_id=?',array($pid));
+		$sumamountdebit =$adb->query_result($rs,0,0);
+		$rs = $adb->pquery("select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=1 and paid='0' and parent_id=?",array($pid));
+		$sumpendingcredit=$adb->query_result($rs,0,0);
+		$rs = $adb->pquery("select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=0 and paid='0' and parent_id=?",array($pid));
+		$sumpendingdebit=$adb->query_result($rs,0,0);
 		$sumamount=$sumamountcredit-$sumamountdebit;
 		$sumpending=$sumpendingcredit-$sumpendingdebit;
 		$balance=$sumamount-$sumpending;
 		$adb->pquery("update vtiger_contactdetails set balance=?,totalamount=?,totalpending=? where contactid=?",array($balance,$sumamount,$sumpending,$pid));
 	  }
 	  if ($parent_module=='Vendors' and self::vendor_control_installed()) {
-		$sumamountcredit =$adb->query_result($adb->pquery("select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=1 and parent_id=?",array($pid)),0,0);
-		$sumamountdebit =$adb->query_result($adb->pquery("select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=0 and parent_id=?",array($pid)),0,0);
-		$sumpendingcredit=$adb->query_result($adb->pquery("select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=1 and paid='0' and parent_id=?",array($pid)),0,0);
-		$sumpendingdebit=$adb->query_result($adb->pquery("select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=0 and paid='0' and parent_id=?",array($pid)),0,0);
+		$rs = $adb->pquery('select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=1 and parent_id=?',array($pid));
+		$sumamountcredit =$adb->query_result($rs,0,0);
+		$rs = $adb->pquery('select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=0 and parent_id=?',array($pid));
+		$sumamountdebit =$adb->query_result($rs,0,0);
+		$rs = $adb->pquery("select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=1 and paid='0' and parent_id=?",array($pid));
+		$sumpendingcredit=$adb->query_result($rs,0,0);
+		$rs = $adb->pquery("select sum(amount) as suma from vtiger_cobropago inner join vtiger_crmentity on crmid=cobropagoid where deleted=0 and credit=0 and paid='0' and parent_id=?",array($pid));
+		$sumpendingdebit=$adb->query_result($rs,0,0);
 		$sumamount=$sumamountcredit-$sumamountdebit;
 		$sumpending=$sumpendingcredit-$sumpendingdebit;
 		$balance=$sumamount-$sumpending;
@@ -768,7 +780,8 @@ class CobroPago extends CRMEntity {
 		$log->debug("Entering permissiontoedit() method ...");
 
 		require('user_privileges/user_privileges_'.$current_user->id.'.php');
-		$Block_paid = $adb->query_result($adb->query("select block_paid from vtiger_cobropagoconfig"),0,0);
+		$res = $adb->pquery("select block_paid from vtiger_cobropagoconfig",array());
+		$Block_paid = $adb->query_result($res,0,'block_paid');
 
 		if ($is_admin or $Block_paid!='on') return true;
 

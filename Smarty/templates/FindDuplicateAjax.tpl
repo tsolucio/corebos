@@ -1,7 +1,7 @@
 <table width='100%' border='0' cellpadding='5' cellspacing='0' class='tableHeading'>
 	<tr>
 		<td class='big' align='left'>
-			<b>{$APP.LBL_DUPLICATE_DATA_IN} {$MOD.LBL_MODULE_NAME}</b>
+			<b>{$APP.LBL_DUPLICATE_DATA_IN} {$MODULE|getTranslatedString:$MODULE}</b>
 		</td>
 	</tr>
 </table>
@@ -17,7 +17,7 @@
 		<td nowrap >
 			<table border=0 cellspacing=0 cellpadding=0 class="small">
 				<tr>{$NAVIGATION}</tr>
-			</table>	
+			</table>
         </td>
 	</tr>
 </table>
