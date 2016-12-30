@@ -1034,7 +1034,7 @@ class CRMEntity {
 		$select_clause = "SELECT ". $this->table_name .".".$this->table_index ." AS recordid, vtiger_users_last_import.deleted,".$table_cols;
 
 		// Select Custom Field Table Columns if present
-		if(isset($this->customFieldTable)) $query .= ", " . $this->customFieldTable[0] . ".* ";
+		if(isset($this->customFieldTable)) $select_clause .= ", " . $this->customFieldTable[0] . ".* ";
 
 		$from_clause = " FROM $this->table_name";
 		$from_clause .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
