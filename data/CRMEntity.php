@@ -1110,7 +1110,7 @@ class CRMEntity {
 			$other = CRMEntity::getInstance($related_module);
 			vtlib_setup_modulevars($related_module, $other);
 
-			if($rel_mods[$other->table_name]) {
+			if(!empty($rel_mods[$other->table_name])) {
 				$rel_mods[$other->table_name] = $rel_mods[$other->table_name] + 1;
 				$alias = $other->table_name.$rel_mods[$other->table_name];
 				$query_append = "as $alias";
