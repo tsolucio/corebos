@@ -57,7 +57,11 @@ function hndMouseOver(uitype,fieldLabel)
 		var assigntype = document.getElementsByName('assigntype');
 		if(assigntype.length > 0) {
 			var assign_type_U = assigntype[0].checked;
-			var assign_type_G = assigntype[1].checked;
+			if (assigntype[1]!=undefined) {
+				var assign_type_G = assigntype[1].checked;
+			} else {
+				var assign_type_G = false;
+			}
 			if(assign_type_U == true)
 				globaltxtboxid= 'txtbox_U'+fieldLabel;
 			else if(assign_type_G == true)
@@ -159,7 +163,11 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 		var assigntype = document.getElementsByName('assigntype');
 		if(assigntype.length > 0) {
 			var assign_type_U = assigntype[0].checked;
-			var assign_type_G = assigntype[1].checked;
+			if (assigntype[1]!=undefined) {
+				var assign_type_G = assigntype[1].checked;
+			} else {
+				var assign_type_G = false;
+			}
 		} else {
 			var assign_type_U = assigntype[0].checked;
 		}
@@ -341,7 +349,11 @@ function dtlViewAjaxFinishSave(fieldLabel,module,uitype,tableName,fieldName,crmI
 		var assigntype = document.getElementsByName('assigntype');
 		if(assigntype.length > 0) {
 			var assign_type_U = assigntype[0].checked;
-			var assign_type_G = assigntype[1].checked;
+			if (assigntype[1]!=undefined) {
+				var assign_type_G = assigntype[1].checked;
+			} else {
+				var assign_type_G = false;
+			}
 		} else {
 			var assign_type_U = assigntype[0].checked;
 		}
@@ -556,7 +568,11 @@ function setSelectValue(fieldLabel)
 		var assigntype = document.getElementsByName('assigntype');
 		if(assigntype.length > 0) {
 			var assign_type_U = assigntype[0].checked;
-			var assign_type_G = assigntype[1].checked;
+			if (assigntype[1]!=undefined) {
+				var assign_type_G = assigntype[1].checked;
+			} else {
+				var assign_type_G = false;
+			}
 			if(assign_type_U == true)
 				var selCombo= 'txtbox_U'+fieldLabel;
 			else if(assign_type_G == true)
