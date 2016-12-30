@@ -7,7 +7,7 @@
 *  Author       : ABOnline solutions http://www.vtiger-crm.fr
 ***********************************************************/
 
-if ($_COOKIE['LeadConv'] == 'true') {
+if ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true')) {
 	$toggle_historicos = 'See Non Converted Prospects';
 	$toggle_name = 'Converted Prospects';
 } else {

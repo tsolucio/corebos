@@ -1451,7 +1451,7 @@ class ReportRun extends CRMEntity {
 
 		if($module == "Leads")
 		{
-			$val_conv = ($_COOKIE['LeadConv'] == 'true' ? 1 : 0);
+			$val_conv = ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true') ? 1 : 0);
 			$query = "from vtiger_leaddetails
 				inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_leaddetails.leadid
 				inner join vtiger_leadsubdetails on vtiger_leadsubdetails.leadsubscriptionid=vtiger_leaddetails.leadid

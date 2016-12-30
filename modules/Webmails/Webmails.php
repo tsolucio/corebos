@@ -208,7 +208,7 @@ class Webmails extends CRMEntity {
 
     function find_relationships() {
 	// leads search
-	$val_conv = ($_COOKIE['LeadConv'] == 'true' ? 1 : 0);
+	$val_conv = ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true') ? 1 : 0);
 	$sql = "SELECT * from vtiger_leaddetails left join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_leaddetails.leadid where vtiger_leaddetails.email = ? AND vtiger_crmentity.deleted='0' and converted=$val_conv";
 	$res = $this->db->pquery($sql,array(trim($this->from)),true,"Error: "."<BR>$query");
 	$numRows = $this->db->num_rows($res);

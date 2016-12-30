@@ -15,7 +15,7 @@
  * Contributor(s): Istvan Holbok,  e-mail: holbok@gmail.com , mobil: +3670-3420900 , Skype: holboki
  ********************************************************************************/
 
-if ($_COOKIE['LeadConv'] == 'true') {
+if ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true')) {
 	$toggle_historicos = 'See Non Converted Jelöltek';
 	$toggle_name = 'Converted Jelöltek';
 } else {

@@ -27,7 +27,7 @@
  * @license	vtiger CRM Public License Version 1.0 (by definition)
  ********************************************************************************/
 
-if ($_COOKIE['LeadConv'] == 'true') {
+if ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true')) {
 	$toggle_historicos = 'See Non Converted Leads';
 	$toggle_name = 'Converted Leads';
 } else {

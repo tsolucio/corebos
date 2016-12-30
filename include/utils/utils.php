@@ -3155,7 +3155,7 @@ function getDuplicateQuery($module,$field_values,$ui_type_arr)
 	}
 	else if($module == 'Leads')
 	{
-		$val_conv = ($_COOKIE['LeadConv'] == 'true' ? 1 : 0);
+		$val_conv = ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true') ? 1 : 0);
 		$nquery = "SELECT vtiger_leaddetails.leadid AS recordid, vtiger_users_last_import.deleted,$table_cols
 				FROM vtiger_leaddetails
 				INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid=vtiger_leaddetails.leadid

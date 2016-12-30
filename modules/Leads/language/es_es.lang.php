@@ -15,7 +15,7 @@
 *  Author       : Joe Bordes JPL TSolucio, S.L.
  ********************************************************************************/
 
-if ($_COOKIE['LeadConv'] == 'true') {
+if ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true')) {
 	$toggle_historicos = 'Ver Pre-Contactos SIN Convertir';
 	$toggle_name = 'Pre-Contactos Convertidos';
 } else {

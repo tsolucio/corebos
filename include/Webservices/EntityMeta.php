@@ -232,7 +232,7 @@ abstract class EntityMeta{
 
 	public function getEntityDeletedQuery(){
 		if($this->getEntityName() == 'Leads') {
-			$val_conv = ($_COOKIE['LeadConv'] == 'true' ? 1 : 0);
+			$val_conv = ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true') ? 1 : 0);
 			return "vtiger_crmentity.deleted=0 and vtiger_leaddetails.converted=$val_conv";
 		}
 		if($this->getEntityName() != "Users"){

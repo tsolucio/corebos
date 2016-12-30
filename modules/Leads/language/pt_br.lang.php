@@ -9,7 +9,7 @@
  * Contributor(s): Valmir Carlos Trindade/Translate to Brazilian Portuguese| 03/03/2012 |Curitiba/Paraná/Brasil.|www.ttcasolucoes.com.br
  ********************************************************************************/
 
-if ($_COOKIE['LeadConv'] == 'true') {
+if ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true')) {
 	$toggle_historicos = 'See Non Converted Leads';
 	$toggle_name = 'Converted Leads';
 } else {

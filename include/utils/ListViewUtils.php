@@ -2369,7 +2369,7 @@ function getListQuery($module, $where = '') {
 			break;
 
 		Case "Leads":
-			$val_conv = ($_COOKIE['LeadConv'] == 'true' ? 1 : 0);
+			$val_conv = ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true') ? 1 : 0);
 			$query = "SELECT vtiger_crmentity.crmid, vtiger_crmentity.smownerid,
 			vtiger_leaddetails.firstname, vtiger_leaddetails.lastname,
 			vtiger_leaddetails.company, vtiger_leadaddress.phone,
@@ -2765,7 +2765,7 @@ function getReadEntityIds($module) {
 	$tab_id = getTabid($module);
 
 	if ($module == "Leads") {
-		$val_conv = ($_COOKIE['LeadConv'] == 'true' ? 1 : 0);
+		$val_conv = ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true') ? 1 : 0);
 		$query = "SELECT vtiger_crmentity.crmid
 			FROM vtiger_leaddetails
 			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = vtiger_leaddetails.leadid

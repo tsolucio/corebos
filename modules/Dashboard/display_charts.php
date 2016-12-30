@@ -31,7 +31,7 @@ $date_array=$no_days_dates[1]; //Array containig all the dates
 $user_id=$current_user->id;
 
 // Query for Leads
-$val_conv = ($_COOKIE['LeadConv'] == 'true' ? 1 : 0);
+$val_conv = ((isset($_COOKIE['LeadConv']) && $_COOKIE['LeadConv'] == 'true') ? 1 : 0);
 $leads_query="select vtiger_crmentity.crmid,vtiger_crmentity.createdtime, vtiger_leaddetails.*, vtiger_crmentity.smownerid, vtiger_leadscf.* from vtiger_leaddetails inner join vtiger_crmentity on vtiger_crmentity.crmid=vtiger_leaddetails.leadid inner join vtiger_leadsubdetails on vtiger_leadsubdetails.leadsubscriptionid=vtiger_leaddetails.leadid inner join vtiger_leadaddress on vtiger_leadaddress.leadaddressid=vtiger_leadsubdetails.leadsubscriptionid inner join vtiger_leadscf on vtiger_leaddetails.leadid = vtiger_leadscf.leadid left join vtiger_groups on vtiger_groups.groupid=vtiger_crmentity.smownerid where vtiger_crmentity.deleted=0 and vtiger_leaddetails.converted=$val_conv ";
 
 //Query for Accounts

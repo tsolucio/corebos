@@ -356,6 +356,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 				//$module = $col_fields["record_module"];
 				$label_fld ["options"][] = 'Group';
 				$assigned_group_id = $owner_id;
+				$assigned_user_id = '';
 				$user_checked = '';
 				$team_checked = 'checked';
 				$user_style = 'display:none';
