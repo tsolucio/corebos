@@ -20,9 +20,24 @@ class CRMEntity {
 	var $mode;
 	var $id;
 	var $DirectImageFieldValues = array();
+	var $HasDirectImageField = false;
 	static protected $methods = array();
 	static protected $dbvalues = array();
 	static protected $todvalues = array();
+
+	function __construct() {
+		global $log;
+		$this_module = get_class($this);
+		$this->column_fields = getColumnFields($this_module);
+		$this->db = PearDatabase::getInstance();
+		$this->log = $log;
+		$sql = 'SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid = ? limit 1';
+		$tabid = getTabid($this_module);
+		$result = $this->db->pquery($sql, array($tabid));
+		if ($result and $this->db->num_rows($result)==1) {
+			$this->HasDirectImageField = true;
+		}
+	}
 
 	public static function registerMethod($method) {
 		self::$methods[] = $method;
@@ -1072,6 +1087,69 @@ class CRMEntity {
 	}
 
 	/**
+	 * Return query to use based on given modulename, fieldname
+	 * Useful to handle specific case handling for Popup
+	 * $srcrecord could be empty
+	 */
+	function getQueryByModuleField($module, $fieldname, $srcrecord, $query='') {
+		return false;
+	}
+
+	/**
+	 * Get list view query (send more WHERE clause condition if required)
+	 */
+	function getListQuery($module, $usewhere='') {
+		global $current_user;
+		$query = "SELECT vtiger_crmentity.*, $this->table_name.*";
+
+		// Keep track of tables joined to avoid duplicates
+		$joinedTables = array();
+
+		// Select Custom Field Table Columns if present
+		if(!empty($this->customFieldTable)) $query .= ", " . $this->customFieldTable[0] . ".* ";
+
+		$query .= " FROM $this->table_name";
+		$query .= "	INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
+
+		$joinedTables[] = $this->table_name;
+		$joinedTables[] = 'vtiger_crmentity';
+
+		// Consider custom table join as well.
+		if(!empty($this->customFieldTable)) {
+			$query .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] . " = $this->table_name.$this->table_index";
+			$joinedTables[] = $this->customFieldTable[0];
+		}
+		$query .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid";
+		$query .= " LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
+
+		$joinedTables[] = 'vtiger_users';
+		$joinedTables[] = 'vtiger_groups';
+
+		$linkedModulesQuery = $this->db->pquery("SELECT distinct fieldname, columnname, relmodule FROM vtiger_field" .
+			" INNER JOIN vtiger_fieldmodulerel ON vtiger_fieldmodulerel.fieldid = vtiger_field.fieldid" .
+			" WHERE uitype='10' AND vtiger_fieldmodulerel.module=?", array($module));
+		$linkedFieldsCount = $this->db->num_rows($linkedModulesQuery);
+
+		for($i=0; $i<$linkedFieldsCount; $i++) {
+			$related_module = $this->db->query_result($linkedModulesQuery, $i, 'relmodule');
+			$fieldname = $this->db->query_result($linkedModulesQuery, $i, 'fieldname');
+			$columnname = $this->db->query_result($linkedModulesQuery, $i, 'columnname');
+
+			$other = CRMEntity::getInstance($related_module);
+			vtlib_setup_modulevars($related_module, $other);
+
+			if(!in_array($other->table_name, $joinedTables)) {
+				$query .= " LEFT JOIN $other->table_name ON $other->table_name.$other->table_index = $this->table_name.$columnname";
+				$joinedTables[] = $other->table_name;
+			}
+		}
+
+		$query .= $this->getNonAdminAccessControlQuery($module,$current_user);
+		$query .= "	WHERE vtiger_crmentity.deleted = 0 ".$usewhere;
+		return $query;
+	}
+
+	/**
 	 * Create query to export the records.
 	 */
 	function create_export_query($where) {
@@ -1130,6 +1208,54 @@ class CRMEntity {
 		else $query .= " WHERE $where_auto";
 
 		return $query;
+	}
+
+	/**
+	 * Initialize this instance for importing.
+	 */
+	function initImport($module) {
+		$this->db = PearDatabase::getInstance();
+		$this->initImportableFields($module);
+	}
+
+	/**
+	 * Create list query to be shown at the last step of the import.
+	 * Called From: modules/Import/UserLastImport.php
+	 */
+	function create_import_query($module) {
+		global $current_user;
+		$query = "SELECT vtiger_crmentity.crmid, case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name, $this->table_name.* FROM $this->table_name
+			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index
+			LEFT JOIN vtiger_users_last_import ON vtiger_users_last_import.bean_id=vtiger_crmentity.crmid
+			LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
+			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
+			WHERE vtiger_users_last_import.assigned_user_id='$current_user->id'
+			AND vtiger_users_last_import.bean_type='$module'
+			AND vtiger_users_last_import.deleted=0";
+		return $query;
+	}
+
+	/**
+	 * Function which will set the assigned user id for import record.
+	 */
+	function set_import_assigned_user()
+	{
+		global $current_user, $adb;
+		$record_user = $this->column_fields["assigned_user_id"];
+
+		if($record_user != $current_user->id){
+			$sqlresult = $adb->pquery('select id from vtiger_users where id = ? union select groupid as id from vtiger_groups where groupid = ?', array($record_user, $record_user));
+			if($this->db->num_rows($sqlresult)!= 1) {
+				$this->column_fields["assigned_user_id"] = $current_user->id;
+			} else {
+				$row = $adb->fetchByAssoc($sqlresult, -1, false);
+				if (isset($row['id']) && $row['id'] != -1) {
+					$this->column_fields["assigned_user_id"] = $row['id'];
+				} else {
+					$this->column_fields["assigned_user_id"] = $current_user->id;
+				}
+			}
+		}
 	}
 
 	/**
