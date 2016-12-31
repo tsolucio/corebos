@@ -86,7 +86,7 @@ class Import_ListView_Controller {
 		$viewer->assign('recordListRange',$recordListRangeMsg);
 
 		$controller = new ListViewController($adb, $user, $queryGenerator);
-		$listview_header = $controller->getListViewHeader($focus,$moduleName,$url_string,$sorder,$order_by,true);
+		$listview_header = $controller->getListViewHeader($focus,$moduleName,'','','',true);
 		$listview_entries = $controller->getListViewEntries($focus,$moduleName,$list_result,$navigation_array,true);
 
 		$viewer->assign('CURRENT_PAGE', $start);

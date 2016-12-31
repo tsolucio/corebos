@@ -401,7 +401,7 @@ if(isset($order_by) && $order_by != '')
 $override_query = false;
 if(method_exists($focus, 'getQueryByModuleField')) {
 	$srcmodule = isset($_REQUEST['srcmodule']) ? vtlib_purify($_REQUEST['srcmodule']) : vtlib_purify($_REQUEST['return_module']);
-	$forrecord = isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : isset($_REQUEST['recordid']) ? vtlib_purify($_REQUEST['recordid']) : 0;
+	$forrecord = isset($_REQUEST['forrecord']) ? vtlib_purify($_REQUEST['forrecord']) : (isset($_REQUEST['recordid']) ? vtlib_purify($_REQUEST['recordid']) : 0);
 	$forfield = isset($_REQUEST['forfield']) ? vtlib_purify($_REQUEST['forfield']) : '';
 	$override_query = $focus->getQueryByModuleField($srcmodule, $forfield, $forrecord, $query);
 	if($override_query) {

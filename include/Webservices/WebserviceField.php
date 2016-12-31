@@ -428,7 +428,7 @@ class WebserviceField{
 			for($i=0;$i<sizeof($details);++$i){
 				$elem = array();
 				$picklistValue = decode_html($details[$i]);
-				$trans_str = ($temp_mod_strings[$picklistValue] != '') ? $temp_mod_strings[$picklistValue] : (($app_strings[$picklistValue] != '') ? $app_strings[$picklistValue] : $picklistValue);
+				$trans_str = (!empty($temp_mod_strings[$picklistValue])) ? $temp_mod_strings[$picklistValue] : ((!empty($app_strings[$picklistValue])) ? $app_strings[$picklistValue] : $picklistValue);
 				while ($trans_str != preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str)) $trans_str = preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str);
 				$elem["label"] = $trans_str;
 				$elem["value"] = $picklistValue;

@@ -704,7 +704,7 @@ class ListViewController {
 		if($isCustomModule && (!in_array($requestAction, Array('index','ListView')) &&
 				($requestAction == $requestModule.'Ajax' && !in_array($requestFile, Array('index','ListView'))))) {
 			$link = "index.php?module=$requestModule&action=updateRelations&parentid=$requestRecord";
-			$link .= "&destination_module=$module&idlist=$entity_id&mode=delete&parenttab=$parenttab";
+			$link .= "&destination_module=$module&idlist=$recordId&mode=delete&parenttab=$parenttab";
 		}
 		// END
 		return $link;

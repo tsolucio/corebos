@@ -103,8 +103,10 @@ function redirectWhenNoRelatedRecordsFound()
 <script type="text/javascript" src="include/js/search.js"></script>
 <script type="text/javascript" src="include/js/vtlib.js"></script>
 <script type="text/javascript" src="modules/Tooltip/TooltipHeaderScript.js"></script>
-{if $RETURN_MODULE != ''}
+{if !empty($RETURN_MODULE)}
 <script type="text/javascript" src="modules/{$RETURN_MODULE}/{$RETURN_MODULE}.js"></script>
+{else}
+{assign var="RETURN_MODULE" value=""}
 {/if}
 <script type="text/javascript" src="modules/{$MODULE}/{$MODULE}.js"></script>
 
