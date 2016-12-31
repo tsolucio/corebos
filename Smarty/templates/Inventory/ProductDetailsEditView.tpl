@@ -252,7 +252,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 			<td align="right" style="padding:5px;" nowrap>
 				(-)&nbsp;<b><a href="javascript:doNothing();" onClick="displayCoords(this,'discount_div{$row_no}','discount','{$row_no}')" >{$APP.LBL_DISCOUNT}</a> : </b>
 				<div class="discountUI" id="discount_div{$row_no}">
-					<input type="hidden" id="discount_type{$row_no}" name="discount_type{$row_no}" value="{$data.$discount_type}">
+					<input type="hidden" id="discount_type{$row_no}" name="discount_type{$row_no}" value="{if isset($data.$discount_type)}{$data.$discount_type}{/if}">
 					<table width="100%" border="0" cellpadding="5" cellspacing="0" class="small">
 					   <tr>
 						<td id="discount_div_title{$row_no}" nowrap align="left" ></td>
@@ -290,7 +290,7 @@ function displayCoords(currObj,obj,mode,curr_row)
 						<td>&nbsp;</td>
 						<td align="right"><img src="{'close.gif'|@vtiger_imageurl:$THEME}" border="0" onClick="fnHidePopDiv('tax_div{$row_no}')" style="cursor:pointer;"></td>
 					   </tr>
-
+					{if isset($data.taxes)}
 					{foreach key=tax_row_no item=tax_data from=$data.taxes}
 					   {assign var="taxname" value=$tax_data.taxname|cat:"_percentage"|cat:$row_no}
 					   {assign var="taxlinerowno" value=$tax_row_no+1}
@@ -307,9 +307,8 @@ function displayCoords(currObj,obj,mode,curr_row)
 							<input type="text" class="small" size="6" name="{$popup_tax_rowname}" id="{$popup_tax_rowname}" style="cursor:pointer;" value="0.0" readonly>
 						</td>
 					   </tr>
-
 					{/foreach}
-
+					{/if}
 					</table>
 				</div>
 				<!-- This above div is added to display the tax informations -->
@@ -496,16 +495,17 @@ so we will get that array, parse that array and fill the details
 
 {foreach key=row_no item=data from=$ASSOCIATEDPRODUCTS}
 	<!-- This is added to call the function calcCurrentTax which will calculate the tax amount from percentage -->
+	{if isset($data.taxes)}
 	{foreach key=tax_row_no item=tax_data from=$data.taxes}
 		{assign var="taxname" value=$tax_data.taxname|cat:"_percentage"|cat:$row_no}
 			<script>calcCurrentTax('{$taxname}',{$row_no},{$tax_row_no});</script>
 	{/foreach}
+	{/if}
 	{assign var="entityIndentifier" value='entityType'|cat:$row_no}
 	{if $MODULE eq 'Invoice' && $data.$entityIndentifier neq 'Services'}
 		<script>stock_alert('{$row_no}');</script>
 	{/if}
 {/foreach}
-
 
 <!-- Added to calculate the tax and total values when page loads -->
 <script>
@@ -517,5 +517,4 @@ so we will get that array, parse that array and fill the details
  calcSHTax();
 </script>
 <!-- This above div is added to display the tax informations --> 
-
 

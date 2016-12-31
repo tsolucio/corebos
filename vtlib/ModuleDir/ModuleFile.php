@@ -119,7 +119,7 @@ class ModuleClass extends CRMEntity {
 						INNER JOIN vtiger_users ON vtiger_users.id=vtiger_user2role.userid
 						INNER JOIN vtiger_role ON vtiger_role.roleid=vtiger_user2role.roleid
 						WHERE vtiger_role.parentrole LIKE '".$current_user_parent_role_seq."::%'
-					) 
+					)
 					OR vtiger_crmentity.smownerid IN
 					(
 						SELECT shareduserid FROM vtiger_tmp_read_user_sharing_per
