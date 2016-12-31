@@ -98,20 +98,6 @@ class Faq extends CRMEntity {
 	// Refers to vtiger_field.fieldname values.
 	var $mandatory_fields = Array('question','faq_answer','createdtime' ,'modifiedtime');
 
-	function __construct() {
-		global $log;
-		$this_module = get_class($this);
-		$this->column_fields = getColumnFields($this_module);
-		$this->db = PearDatabase::getInstance();
-		$this->log = $log;
-		$sql = 'SELECT 1 FROM vtiger_field WHERE uitype=69 and tabid = ? limit 1';
-		$tabid = getTabid($this_module);
-		$result = $this->db->pquery($sql, array($tabid));
-		if ($result and $this->db->num_rows($result)==1) {
-			$this->HasDirectImageField = true;
-		}
-	}
-
 	function save_module($module) {
 		if ($this->HasDirectImageField) {
 			$this->insertIntoAttachment($this->id,$module);
@@ -281,106 +267,6 @@ class Faq extends CRMEntity {
 
 		if($where != '') $query .= " WHERE ($where) AND $where_auto";
 		else $query .= " WHERE $where_auto";
-
-		return $query;
-	}
-
-	/**
-	 * Initialize this instance for importing.
-	 */
-	function initImport($module) {
-		$this->db = PearDatabase::getInstance();
-		$this->initImportableFields($module);
-	}
-
-	/**
-	 * Create list query to be shown at the last step of the import.
-	 * Called From: modules/Import/UserLastImport.php
-	 */
-	function create_import_query($module) {
-		global $current_user;
-		$query = "SELECT vtiger_crmentity.crmid, case when (vtiger_users.user_name not like '') then vtiger_users.user_name else vtiger_groups.groupname end as user_name, $this->table_name.* FROM $this->table_name
-			INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index
-			LEFT JOIN vtiger_users_last_import ON vtiger_users_last_import.bean_id=vtiger_crmentity.crmid
-			LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
-			LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid
-			WHERE vtiger_users_last_import.assigned_user_id='$current_user->id'
-			AND vtiger_users_last_import.bean_type='$module'
-			AND vtiger_users_last_import.deleted=0";
-		return $query;
-	}
-
-	/**
-	 * Transform the value while exporting
-	 */
-	function transform_export_value($key, $value) {
-		return parent::transform_export_value($key, $value);
-	}
-
-	/**
-	 * Function which will set the assigned user id for import record.
-	 */
-	function set_import_assigned_user()
-	{
-		global $current_user, $adb;
-		$record_user = $this->column_fields["assigned_user_id"];
-
-		if($record_user != $current_user->id){
-			$sqlresult = $adb->pquery("select id from vtiger_users where id = ? union select groupid as id from vtiger_groups where groupid = ?", array($record_user, $record_user));
-			if($this->db->num_rows($sqlresult)!= 1) {
-				$this->column_fields["assigned_user_id"] = $current_user->id;
-			} else {
-				$row = $adb->fetchByAssoc($sqlresult, -1, false);
-				if (isset($row['id']) && $row['id'] != -1) {
-					$this->column_fields["assigned_user_id"] = $row['id'];
-				} else {
-					$this->column_fields["assigned_user_id"] = $current_user->id;
-				}
-			}
-		}
-	}
-
-	/**
-	 * Function which will give the basic query to find duplicates
-	 */
-	function getDuplicatesQuery($module,$table_cols,$field_values,$ui_type_arr,$select_cols='') {
-		$select_clause = "SELECT ". $this->table_name .".".$this->table_index ." AS recordid, vtiger_users_last_import.deleted,".$table_cols;
-
-		// Select Custom Field Table Columns if present
-		if(isset($this->customFieldTable)) $query .= ", " . $this->customFieldTable[0] . ".* ";
-
-		$from_clause = " FROM $this->table_name";
-
-		$from_clause .= " INNER JOIN vtiger_crmentity ON vtiger_crmentity.crmid = $this->table_name.$this->table_index";
-
-		// Consider custom table join as well.
-		if(isset($this->customFieldTable)) {
-			$from_clause .= " INNER JOIN ".$this->customFieldTable[0]." ON ".$this->customFieldTable[0].'.'.$this->customFieldTable[1] .
-				" = $this->table_name.$this->table_index";
-		}
-		$from_clause .= " LEFT JOIN vtiger_users ON vtiger_users.id = vtiger_crmentity.smownerid
-						LEFT JOIN vtiger_groups ON vtiger_groups.groupid = vtiger_crmentity.smownerid";
-
-		$where_clause = " WHERE vtiger_crmentity.deleted = 0";
-		$where_clause .= $this->getListViewSecurityParameter($module);
-
-		if (isset($select_cols) && trim($select_cols) != '') {
-			$sub_query = "SELECT $select_cols FROM $this->table_name AS t " .
-				" INNER JOIN vtiger_crmentity AS crm ON crm.crmid = t.".$this->table_index;
-			// Consider custom table join as well.
-			if(isset($this->customFieldTable)) {
-				$sub_query .= " LEFT JOIN ".$this->customFieldTable[0]." tcf ON tcf.".$this->customFieldTable[1]." = t.$this->table_index";
-			}
-			$sub_query .= " WHERE crm.deleted=0 GROUP BY $select_cols HAVING COUNT(*)>1";
-		} else {
-			$sub_query = "SELECT $table_cols $from_clause $where_clause GROUP BY $table_cols HAVING COUNT(*)>1";
-		}
-
-		$query = $select_clause . $from_clause .
-					" LEFT JOIN vtiger_users_last_import ON vtiger_users_last_import.bean_id=" . $this->table_name .".".$this->table_index .
-					" INNER JOIN (" . $sub_query . ") AS temp ON ".get_on_clause($field_values,$ui_type_arr,$module) .
-					$where_clause .
-					" ORDER BY $table_cols,". $this->table_name .".".$this->table_index ." ASC";
 
 		return $query;
 	}
