@@ -49,8 +49,8 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
 
 		//Added to display the Quote's associated vtiger_products -- when we create vtiger_invoice from Quotes DetailView
 		$associated_prod = getAssociatedProducts("Quotes", $quote_focus);
-		$txtTax = (($quote_focus->column_fields['txtTax'] != '') ? $quote_focus->column_fields['txtTax'] : '0.000');
-		$txtAdj = (($quote_focus->column_fields['txtAdjustment'] != '') ? $quote_focus->column_fields['txtAdjustment'] : '0.000');
+		$txtTax = ((isset($quote_focus->column_fields['txtTax']) && $quote_focus->column_fields['txtTax'] != '') ? $quote_focus->column_fields['txtTax'] : '0.000');
+		$txtAdj = ((isset($quote_focus->column_fields['txtAdjustment']) && $quote_focus->column_fields['txtAdjustment'] != '') ? $quote_focus->column_fields['txtAdjustment'] : '0.000');
 
 		$smarty->assign("CONVERT_MODE", vtlib_purify($_REQUEST['convertmode']));
 		$smarty->assign("ASSOCIATEDPRODUCTS", $associated_prod);
@@ -74,8 +74,8 @@ if (isset($_REQUEST['record']) && $_REQUEST['record'] != '') {
 
 		//Added to display the SalesOrder's associated vtiger_products -- when we create vtiger_invoice from SO DetailView
 		$associated_prod = getAssociatedProducts("SalesOrder", $so_focus);
-		$txtTax = (($so_focus->column_fields['txtTax'] != '') ? $so_focus->column_fields['txtTax'] : '0.000');
-		$txtAdj = (($so_focus->column_fields['txtAdjustment'] != '') ? $so_focus->column_fields['txtAdjustment'] : '0.000');
+		$txtTax = ((isset($so_focus->column_fields['txtTax']) && $so_focus->column_fields['txtTax'] != '') ? $so_focus->column_fields['txtTax'] : '0.000');
+		$txtAdj = ((isset($so_focus->column_fields['txtAdjustment']) && $so_focus->column_fields['txtAdjustment'] != '') ? $so_focus->column_fields['txtAdjustment'] : '0.000');
 
 		$smarty->assign("CONVERT_MODE", vtlib_purify($_REQUEST['convertmode']));
 		$smarty->assign("ASSOCIATEDPRODUCTS", $associated_prod);
@@ -323,22 +323,7 @@ if($focus->mode == 'edit' || $isduplicate == 'true') {
 	$smarty->assign('UPDATEINFO',updateInfo($record));
 }
 
-if (isset ($_REQUEST['convertmode']) && $_REQUEST['convertmode'] == 'quotetoinvoice') {
-	$smarty->assign("MODE", $quote_focus->mode);
-	$se_array = getProductDetailsBlockInfo($quote_focus->mode, "Quotes", $quote_focus);
-}
-elseif (isset ($_REQUEST['convertmode']) && ($_REQUEST['convertmode'] == 'sotoinvoice' || $_REQUEST['convertmode'] == 'update_so_val')) {
-	$smarty->assign('MODE', $focus->mode);
-	$se_array = getProductDetailsBlockInfo($focus->mode, "SalesOrder", $so_focus);
-
-	$txtTax = (($so_focus->column_fields['txtTax'] != '') ? $so_focus->column_fields['txtTax'] : '0.000');
-	$txtAdj = (($so_focus->column_fields['txtAdjustment'] != '') ? $so_focus->column_fields['txtAdjustment'] : '0.000');
-
-	$associated_prod = getAssociatedProducts('SalesOrder', $so_focus);
-	$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
-	$smarty->assign('MODE', $focus->mode);
-}
-elseif ($focus->mode == 'edit') {
+if ($focus->mode == 'edit') {
 	$smarty->assign('UPDATEINFO', updateInfo($focus->id));
 	$associated_prod = getAssociatedProducts('Invoice', $focus);
 	$smarty->assign('ASSOCIATEDPRODUCTS', $associated_prod);
