@@ -300,7 +300,7 @@ function getPrimaryColumns_AdvFilter_HTML($module, $ogReport, $selected='') {
 	foreach($ogReport->module_list[$module] as $key=>$value) {
 		if(isset($ogReport->pri_module_columnslist[$module][$value]) && empty($block_listed[$value])) {
 			$block_listed[$value] = true;
-			$shtml .= "<optgroup label=\"".$app_list_strings['moduleList'][$module]." ".getTranslatedString($value)."\" class=\"select\" style=\"border:none\">";
+			$shtml .= '<optgroup label="'.getTranslatedString($module,$module).' '.getTranslatedString($value).'" class="select" style="border:none">';
 			foreach($ogReport->pri_module_columnslist[$module][$value] as $field=>$fieldlabel)
 			{
 				if(isset($mod_strings[$fieldlabel]))
@@ -342,9 +342,9 @@ function getSecondaryColumns_AdvFilter_HTML($module, $ogReport, $selected="") {
 			if(vtlib_isModuleActive($secmodule[$i])){
 				$block_listed = array();
 				foreach($ogReport->module_list[$secmodule[$i]] as $key=>$value) {
-					if(isset($ogReport->sec_module_columnslist[$secmodule[$i]][$value]) && !$block_listed[$value]) {
+					if(isset($ogReport->sec_module_columnslist[$secmodule[$i]][$value]) && empty($block_listed[$value])) {
 						$block_listed[$value] = true;
-						$shtml .= "<optgroup label=\"".$app_list_strings['moduleList'][$secmodule[$i]]." ".getTranslatedString($value)."\" class=\"select\" style=\"border:none\">";
+						$shtml .= '<optgroup label="'.getTranslatedString($secmodule[$i],$secmodule[$i]).' '.getTranslatedString($value).'" class="select" style="border:none">';
 						foreach($ogReport->sec_module_columnslist[$secmodule[$i]][$value] as $field=>$fieldlabel) {
 							if(isset($mod_strings[$fieldlabel]))
 							{
