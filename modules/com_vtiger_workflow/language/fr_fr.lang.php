@@ -32,6 +32,7 @@ $mod_strings = array(
 	'LBL_WORKFLOW_LIST'=>'Liste des flux',
 	'LBL_AVAILABLE_WORKLIST_LIST'=>'Flux disponibles',
 	'LBL_LOADING'=>'Chargement...',
+	'LBL_REEVALCONDITIONS' => 'Evaluate conditions on execution',
 	'LBL_VALIDATION_ERROR'=>'Erreur de validation',
 	'LBL_SELECT_OPTION_DOTDOTDOT'=>'Sélectionnez une option...',
 	'LBL_WORKFLOW_NOTE_CRON_CONFIG'=>'NOTE: Vous devez avoir un script d\'exécution valide et configuré.',

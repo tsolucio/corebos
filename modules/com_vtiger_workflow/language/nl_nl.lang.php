@@ -54,6 +54,7 @@ $mod_strings = array(
 'LBL_WORKFLOW_LIST'=>'Werkstroom Lijst',
 'LBL_AVAILABLE_WORKLIST_LIST'=>'Beschikbare Werkstromen',
 'LBL_LOADING'=>'Laden...',
+'LBL_REEVALCONDITIONS' => 'Evaluate conditions on execution',
 'LBL_VALIDATION_ERROR'=>'Validatie Fout',
 'LBL_SELECT_OPTION_DOTDOTDOT'=>'Selecteer Optie...',
 'LBL_WORKFLOW_NOTE_CRON_CONFIG'=>'NOTE: U moet het Werkstroom cron script geconfigureerd hebben.',
