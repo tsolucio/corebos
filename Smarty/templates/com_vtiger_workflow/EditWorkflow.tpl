@@ -19,7 +19,7 @@
 		<br>
 		{include file='com_vtiger_workflow/EditWorkflowTriggerTypes.tpl'}
 		<br>
-		{include file='com_vtiger_workflow/ListConditions.tpl'}
+		{include file='com_vtiger_workflow/ListConditions.tpl' showreeval='false'}
 	</form>
 
 	{if $saveType eq "edit"}
