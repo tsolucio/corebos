@@ -416,7 +416,7 @@ class WebserviceField{
 				$elem = array();
 				$picklistValue = $this->pearDB->query_result($result,$i,$fieldName);
 				$picklistValue = decode_html($picklistValue);
-				$trans_str = ($temp_mod_strings[$picklistValue] != '') ? $temp_mod_strings[$picklistValue] : (($app_strings[$picklistValue] != '') ? $app_strings[$picklistValue] : $picklistValue);
+				$trans_str = (!empty($temp_mod_strings[$picklistValue])) ? $temp_mod_strings[$picklistValue] : ((!empty($app_strings[$picklistValue])) ? $app_strings[$picklistValue] : $picklistValue);
 				while ($trans_str != preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str)) $trans_str = preg_replace('/(.*) {.+}(.*)/', '$1$2', $trans_str);
 				$elem["label"] = $trans_str;
 				$elem["value"] = $picklistValue;

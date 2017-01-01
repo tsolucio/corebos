@@ -308,18 +308,4 @@ function transferUser(del_userid)
 }
 {/literal}
 </script>
-<script>
-function getListViewEntries_js(module,url)
-{ldelim}
-	document.getElementById("status").style.display="inline";
-	jQuery.ajax({ldelim}
-				method:"POST",
-				url:"index.php?module="+module+"&action="+module+"Ajax&file=ShowHistory&record={$ID}&ajax=true&"+url
-		{rdelim}).done(function(response) {ldelim}
-					document.getElementById("status").style.display="none";
-					document.getElementById("login_history_cont").innerHTML= response;
-		{rdelim}
-		);
-{rdelim}
-</script>
 

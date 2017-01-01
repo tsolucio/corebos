@@ -62,7 +62,7 @@ require_once("VTWorkflowUtils.php");
 		$smarty->assign("returnUrl", $request["return_url"]);
 		$smarty->assign("task", $task);
 		$smarty->assign("taskType", $taskClass);
-		$smarty->assign("saveType", $request['save_type']);
+		$smarty->assign('saveType', isset($request['save_type']) ? $request['save_type'] : '');
 
 		$taskTypeInstance = VTTaskType::getInstanceFromTaskType($taskClass);
 		$taskTemplateClass = $tm->retrieveTemplatePath($module->name, $taskTypeInstance);
@@ -71,9 +71,9 @@ require_once("VTWorkflowUtils.php");
 		$smarty->assign("entityType", $et);
 		$smarty->assign('entityName', $workflow->moduleName);
 		$smarty->assign("fieldNames", $et->getFieldNames());
-		$repeat_date = $task->calendar_repeat_limit_date;
-		if(!empty ($repeat_date)){
-		    $repeat_date = DateTimeField::convertToUserFormat($repeat_date);
+		$repeat_date = isset($task->calendar_repeat_limit_date) ? $task->calendar_repeat_limit_date : '';
+		if(!empty($repeat_date)){
+			$repeat_date = DateTimeField::convertToUserFormat($repeat_date);
 		}
 		$smarty->assign('REPEAT_DATE',$repeat_date);
 		$dateFields = array();
@@ -96,15 +96,13 @@ require_once("VTWorkflowUtils.php");
 			}else{
 				$direction = 'after';
 			}
-			$smarty->assign('trigger', array('days'=>$days, 'direction'=>$direction,
-			  'field'=>$trigger['field']));
+			$smarty->assign('trigger', array('days'=>$days, 'direction'=>$direction,  'field'=>$trigger['field']));
 		}
 		$metaVariables = $task->getMetaVariables();
 
 		$date = new DateTimeField(null);
 		$time = substr($date->getDisplayTime(), 0, 5);
 		$smarty->assign("META_VARIABLES",$metaVariables);
-		$smarty->assign("SYSTEM_TIMEZONE",$db_timezone);
 		$smarty->assign("USER_TIME",$task->formatTimeForTimePicker($time));
 		$smarty->assign("USER_DATE", $date->getDisplayDate());
 		$smarty->assign("MOD", array_merge(

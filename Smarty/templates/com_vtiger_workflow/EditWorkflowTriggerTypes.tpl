@@ -137,11 +137,11 @@
 				{* show minutes interval*}
 				<div id="minutesinterval" class='wfsclear' style='padding:5px 0px;display:{if $workflow->schtypeid neq 8}none{else}block{/if};'>
 					<div class="wfslabel">{'LBL_EVERY_MINUTEINTERVAL'|@getTranslatedString:$MODULE_NAME}</div>
-						<select style='width:50px;'  name='schminuteinterval' id='schminuteinterval'>
-							{html_options options=$interval_range selected=$selected_minute_interval} 
+						<select style='width:50px;' name='schminuteinterval' id='schminuteinterval'>
+							{html_options options=$interval_range selected=$selected_minute_interval}
 						</select>
-					   {'LBL_MINUTES'|@getTranslatedString:$MODULE_NAME}
-				</div>	
+						{'LBL_MINUTES'|@getTranslatedString:$MODULE_NAME}
+				</div>
 				{if $workflow->nexttrigger_time}
 					<div class='wfsclear'>
 						<div class="wfslabel" style="width: 100%;">{'LBL_NEXT_TRIGGER_TIME'|@getTranslatedString:$MODULE_NAME}:&nbsp;{$wfnexttrigger_time}</div>

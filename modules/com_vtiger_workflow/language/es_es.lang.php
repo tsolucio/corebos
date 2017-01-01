@@ -117,7 +117,7 @@ $mod_strings = array(
 'LBL_START_DATE' => 'Fecha de inicio',
 'LBL_END_TIME' => 'Hora de finalización',
 'LBL_END_DATE' => 'Fecha de finalización',
-
+'LBL_SET_DATE'=>'Set Date',
 'LBL_AFTER' => 'Después',
 'LBL_BEFORE' => 'Antes',
 'LBL_DAYS' => 'días',

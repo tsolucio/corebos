@@ -7,7 +7,6 @@
  * Portions created by vtiger are Copyright (C) vtiger.
  * All Rights Reserved.
  *************************************************************************************/
-
 require_once 'include/Webservices/Utils.php';
 require_once("modules/Users/Users.php");
 require_once("include/Webservices/VtigerCRMObject.php");
@@ -25,34 +24,32 @@ require_once 'include/Webservices/VtigerWebserviceObject.php';
  * An implementation of VTEntityType that uses the webservices api to reflect on vtiger's types.
  */
 class VTWSEntityType{
-	
+
 	function __construct($entityTypeName, $user){
 		$describeResult = vtws_describe($entityTypeName, $user);
 		//print_r($describeResult);
 		$this->entityTypeName = $entityTypeName;
 		$this->description = $describeResult;
 	}
-	
-	function usingGlobalCurrentUser($entityTypeName){
+
+	public static function usingGlobalCurrentUser($entityTypeName){
 		global $current_user;
 		return new VTWSEntityType($entityTypeName, $current_user);
-		
-		
 	}
-	
+
 	function forUser($entityTypeName, $user){
 		return new VTWSEntityType($entityTypeName, $user);
 	}
+
 	function getTabId(){
 		global $adb;
 		if(!isset($this->tabId)){
-			$result = $adb->pquery("select tabid from vtiger_tab where name=?", 
-				array($this->entityTypeName));
+			$result = $adb->pquery("select tabid from vtiger_tab where name=?", array($this->entityTypeName));
 			$this->tabId = $adb->query_result($result,0,"tabid");
 		}
 		return $this->tabId;
 	}
-	
+
 	function getModuleName(){
 		return $this->moduleName;
 	}
@@ -68,16 +65,14 @@ class VTWSEntityType{
 		}
 		return $this->fieldNames;
 	}
-	
-	
-	
+
 	function getFieldLabel($fieldName){
 		if(!isset($this->fieldLabels)){
 			$this->getFieldLabels();
 		}
 		return $this->fieldLabels[$fieldName];
 	}
-	
+
 	function getFieldLabels(){
 		if(!isset($this->fieldLabels)){
 			$fields = $this->description['fields'];
@@ -87,7 +82,7 @@ class VTWSEntityType{
 		}
 		return $this->fieldLabels;
 	}
-	
+
 	function getFieldType($fieldName){
 		if(!isset($this->fieldTypes[$fieldName])){
 			$fields = $this->description['fields'];
@@ -169,7 +164,7 @@ class VTWSEntityType{
 							$et->type = 'Number';
 							$et->format = 'Decimal';
 							break;
-						default:	
+						default:
 							print_r($type);
 							throw new Exception($type["name"]." is not supported yet.");
 					}
@@ -177,13 +172,11 @@ class VTWSEntityType{
 					break;
 				}
 			}
-		
 		}
 		return $this->fieldTypes[$fieldName];
 	}
-	
+
 	function getFieldTypes(){
-		$adb = $this->adb;
 		$fieldNames = $this->getFieldNames();
 		$fieldTypes = array();
 		foreach($fieldNames as $fieldName){
@@ -191,10 +184,8 @@ class VTWSEntityType{
 		}
 		return $fieldTypes;
 	}
-	
+
 }
-
-
 
 class VTWSFieldType{
 	function toArray(){
@@ -205,6 +196,6 @@ class VTWSFieldType{
 			$arr[$prop->getName()]=$prop->getValue($this);
 		}
 		return $arr;
-	}	
+	}
 }
 ?>

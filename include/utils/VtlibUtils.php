@@ -599,7 +599,9 @@ function vtlib_purify($input, $ignore=false) {
 		}
 	}
 	$value = str_replace('&amp;','&',$value);
-	$purified_cache[$md5OfInput] = $value;
+	if (!is_array($input)) {
+		$purified_cache[$md5OfInput] = $value;
+	}
 	return $value;
 }
 

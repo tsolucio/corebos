@@ -120,7 +120,7 @@ $mod_strings = array(
 'LBL_START_DATE' => 'Start Date',
 'LBL_END_TIME' => 'End Time',
 'LBL_END_DATE' => 'End Date',
-
+'LBL_SET_DATE'=>'Set Date',
 'LBL_AFTER' => 'After',
 'LBL_BEFORE' => 'Before',
 'LBL_DAYS' => 'days',

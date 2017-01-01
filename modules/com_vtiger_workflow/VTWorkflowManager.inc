@@ -276,7 +276,6 @@
 
 		}
 
-
 		/**
 		 * Export a workflow as a json encoded string
 		 *
