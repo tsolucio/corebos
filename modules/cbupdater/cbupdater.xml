@@ -1032,4 +1032,11 @@
 	<classname>FeatureSeeConvertedLeads</classname>
 	<systemupdate>false</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Increment module Name/Label size and add missing indexes on SMS</description>
+	<filename>build/changeSets/cleanoptimizedatabase_170.php</filename>
+	<classname>cleanoptimizedatabase_170</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
