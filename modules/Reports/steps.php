@@ -558,7 +558,7 @@ function getGroupByTimeDiv($sortid,$reportid='') {
 
 		foreach($options as $key => $option) {
 			if(strtolower($option["value"]) == strtolower($selected_groupby) ) {
-				$options[$key]["selected"] == true;
+				$options[$key]["selected"] = true;
 			}
 		}
 

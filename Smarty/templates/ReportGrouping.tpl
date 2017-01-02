@@ -22,7 +22,6 @@
 			<td  align="left" width="33%">
 				{$MOD.LBL_GROUPING_SUMMARIZE}
 				<select id="Group1" name="Group1" class="txtBox" onchange="getDateFieldGrouping('Group1')">
-					<option value="none">{$MOD.LBL_NONE}</option>
 				</select>
 			</td>
 			<td id='Group1time'  align="left" width="33%">
@@ -43,7 +42,6 @@
 			<td  align="left">
 				{$MOD.LBL_GROUPING_THEN_BY}<br>
 				<select id="Group2" name="Group2" class="txtBox" onchange="getDateFieldGrouping('Group2')">
-					<option value="none">{$MOD.LBL_NONE}</option>
 				</select>
 			</td>
 			<td id='Group2time'  align="left">
@@ -64,7 +62,6 @@
 			<td  align="left">
 				{$MOD.LBL_GROUPING_FINALLY_BY}<br>
 				<select id="Group3" name="Group3" class="txtBox" onchange="getDateFieldGrouping('Group3')">
-					<option value="none">{$MOD.LBL_NONE}</option>
 					{$BLOCK3}
 				</select>
 			</td>

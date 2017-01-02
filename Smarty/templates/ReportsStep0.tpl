@@ -434,7 +434,6 @@
 						url: 'index.php?action=ReportsAjax&file=steps&module=Reports',
 						dataType: "json",
 					}).done(function(response) {
-
 						//Summarize information lists
 						fillFullList(response.BLOCK1,"Group1",true,LBL_NONE);
 						fillFullList(response.BLOCK2,"Group2",true,LBL_NONE);
@@ -444,9 +443,9 @@
 						$("#Group1time").css("display",response.GRBYTIME1.display);
 						fillList(response.GRBYTIME1.options,"groupbytime1");
 						$("#Group2time").css("display",response.GRBYTIME2.display);
-						fillList(response.GRBYTIME1.options,"groupbytime2");
+						fillList(response.GRBYTIME2.options,"groupbytime2");
 						$("#Group3time").css("display",response.GRBYTIME3.display);
-						fillList(response.GRBYTIME1.options,"groupbytime3");
+						fillList(response.GRBYTIME3.options,"groupbytime3");
 
 						// Group Order
 						fillList(response.ORDER1,"Sort1");

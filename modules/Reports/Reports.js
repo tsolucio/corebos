@@ -1003,7 +1003,6 @@ function ScheduleEmail() {
  * @return {bool}
  */
 function setReportType(response) {
-	console.log(response);
 	if(response.permission == 1) {
 		document.NewReport.secondarymodule.value = response.secondarymodule;
 		var selected_report_type = response.selectedreporttype;
