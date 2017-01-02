@@ -29,6 +29,10 @@ class cleanoptimizedatabase_170 extends cbupdaterWorker {
 			// SMS optimizations
 			$this->ExecuteQuery('ALTER TABLE `vtiger_smsnotifier_status` ADD INDEX(`smsnotifierid`)', array());
 			$this->ExecuteQuery('ALTER TABLE `vtiger_smsnotifier` ADD PRIMARY KEY(`smsnotifierid`)', array());
+			// Audit table
+			$this->ExecuteQuery('ALTER TABLE `vtiger_audit_trial` ADD INDEX(`actiondate`)', array());
+			$this->ExecuteQuery('ALTER TABLE `vtiger_audit_trial` ADD INDEX(`module`)', array());
+			$this->ExecuteQuery('ALTER TABLE `vtiger_audit_trial` ADD INDEX(`recordid`)', array());
 			$this->sendMsg('Changeset '.get_class($this).' applied!');
 			$this->markApplied();
 		}
