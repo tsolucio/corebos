@@ -49,6 +49,14 @@ class Skebby implements ISMSProvider {
 	function __construct() {
 	}
 
+	/**
+	 * Function to get provider name
+	 * @return <String> provider name
+	 */
+	public function getName() {
+		return $this->helpLink;
+	}
+
 	public function setAuthParameters($username, $password) {
 		$this->_username = $username;
 		$this->_password = $password;
