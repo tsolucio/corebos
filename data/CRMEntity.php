@@ -529,7 +529,7 @@ class CRMEntity {
 					} else {
 						$fldvalue = '0';
 					}
-				} elseif ($uitype == 15 || $uitype == 16 || $uitype == 1613) {
+				} elseif ($uitype == 15 || $uitype == 16 || $uitype == 1613 || $uitype == 1614) {
 
 					if ($this->column_fields[$fieldname] == $app_strings['LBL_NOT_ACCESSIBLE']) {
 
@@ -541,7 +541,7 @@ class CRMEntity {
 					} else {
 						$fldvalue = $this->column_fields[$fieldname];
 					}
-				} elseif ($uitype == 33 || $uitype == 3313 || $uitype == 1024) {
+				} elseif ($uitype == 33 || $uitype == 3313 || $uitype == 3314 || $uitype == 1024) {
 					if (empty($this->column_fields[$fieldname])) {
 						$fldvalue = '';
 					} else {
@@ -561,7 +561,7 @@ class CRMEntity {
 						$currentvalues = array_map('trim', explode('|##|', decode_html($vlera)));
 					}
 					$selectedvalues = $this->column_fields[$fieldname];
-					if ($uitype == 3313) {
+					if ($uitype == 3313 || $uitype == 3314) {
 						$uservalues = getAllowedPicklistModules();
 					} elseif ($uitype == 1024){
 						$roleid = $current_user->roleid;

@@ -132,7 +132,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 		}
 
 		$label_fld ["options"] = $options;
-	} elseif ($uitype == 1613) {
+	} elseif ($uitype == 1613 || $uitype == 1614) {
 		require_once 'modules/PickList/PickListUtils.php';
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$label_fld[] = getTranslatedString($col_fields[$fieldname], $module);
@@ -233,7 +233,7 @@ function getDetailViewOutputHtml($uitype, $fieldname, $fieldlabel, $col_fields, 
 			}
 		}
 		$label_fld ["options"] = $options;
-	}elseif ($uitype == 3313) {
+	}elseif ($uitype == 3313 || $uitype == 3314) {
 		require_once 'modules/PickList/PickListUtils.php';
 		$label_fld[] = getTranslatedString($fieldlabel, $module);
 		$label_fld[] = str_ireplace(' |##| ', ', ', $col_fields[$fieldname]);

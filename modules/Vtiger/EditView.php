@@ -61,6 +61,7 @@ if (!empty($_REQUEST['save_error']) and $_REQUEST['save_error'] == "true") {
 						break;
 					case '33':
 					case '3313':
+					case '3314':
 						if (is_array($field_value)) {
 							$field_value = implode(' |##| ', $field_value);
 						}

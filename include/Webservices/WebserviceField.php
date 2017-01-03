@@ -382,7 +382,9 @@ class WebserviceField{
 		$uitype = $this->getUIType();
 		switch ($uitype) {
 			case '1613':
+			case '1614':
 			case '3313':
+			case '3314':
 			case '1024':
 				return $this->getPickListOptionsSpecialUitypes($uitype);
 				break;
