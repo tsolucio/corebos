@@ -1039,4 +1039,11 @@
 	<classname>cleanoptimizedatabase_170</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Change GlobalVariable Module-List UIType to 3314</description>
+	<filename>build/changeSets/2017/GlobalVarUITypeModuleList3314.php</filename>
+	<classname>GlobalVarUITypeModuleList3314</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>

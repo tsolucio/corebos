@@ -188,7 +188,7 @@
 </field>
 <field>
 <fieldname>module_list</fieldname>
-<uitype>3313</uitype>
+<uitype>3314</uitype>
 <columnname>module_list</columnname>
 <tablename>vtiger_globalvariable</tablename>
 <generatedtype>1</generatedtype>
