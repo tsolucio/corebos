@@ -450,7 +450,7 @@
 		function buildMainMenu(object){ //main menu
 			for (var i in object) {
 				if(object[i].items != null) {
-					$('#cbmenu').append('<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true"> \
+					jQuery('#cbmenu').append('<li class="slds-context-bar__item slds-context-bar__dropdown-trigger slds-dropdown-trigger slds-dropdown-trigger--hover" aria-haspopup="true"> \
 						<a href="javascript:void(0);" class="slds-context-bar__label-action" title="' + object[i].text + '">\
 						<span class="slds-truncate">' + object[i].text + '</span>\
 				</a>\
@@ -465,7 +465,7 @@
 				</div>\
 				</li>');
 				} else {
-					$('#cbmenu').append('<li class="slds-context-bar__item">\
+					jQuery('#cbmenu').append('<li class="slds-context-bar__item">\
 							<a href="'+object[i].url+ '" class="slds-context-bar__label-action" title="'+object[i].text+'">\
 							<span class="slds-truncate">'+object[i].text+'</span>\
 							</a>\
@@ -481,22 +481,22 @@
 			var menuid = 'menu'+index;
 			for (var i in object){
 				if (object[i].type == 'sep') {
-					$('#' + menuid).append('<li class="slds-dropdown__header slds-has-divider--top-space" role="separator"></li>');
+					jQuery('#' + menuid).append('<li class="slds-dropdown__header slds-has-divider--top-space" role="separator"></li>');
 				} else if (object[i].type == 'headtop') {
-					$('#' + menuid).append('<li class="slds-dropdown__header slds-has-divider--top-space" role="separator">\
+					jQuery('#' + menuid).append('<li class="slds-dropdown__header slds-has-divider--top-space" role="separator">\
 						<span class="slds-text-title--caps">' + object[i].text + '</span></li>');
 				} else if (object[i].type == 'headbottom') {
-					$('#' + menuid).append('<li class="slds-dropdown__header slds-has-divider--bottom-space" role="separator">\
+					jQuery('#' + menuid).append('<li class="slds-dropdown__header slds-has-divider--bottom-space" role="separator">\
 						<span class="slds-text-title--caps">' + object[i].text + '</span></li>');
 				} else {
 					if (object[i].items === undefined || object[i].items === null) {
-						$('#' + menuid).append('<li class="slds-dropdown__item" role="presentation">\
+						jQuery('#' + menuid).append('<li class="slds-dropdown__item" role="presentation">\
 							<a href="' + object[i].url + '" role="menuitem" tabindex="-1">\
 							<span class="slds-truncate">' + object[i].text + '</span>\
 							</a>\
 							</li>');
 					} else {
-						$('#' + menuid).append('<li class="slds-dropdown__item" role="presentation">\
+						jQuery('#' + menuid).append('<li class="slds-dropdown__item" role="presentation">\
 							<a href="' + object[i].url + '" role="menuitem" tabindex="-1">\
 							<span class="slds-truncate" style="padding-right:20px">' + object[i].text + '</span>\
 							<svg aria-hidden="true" class="slds-button__icon">\
@@ -517,13 +517,13 @@
 			var subMenuId = 'submenu' +index;
 			for (var i in object) {
 				if (object[i].items === undefined || object[i].items === null) {
-					$('#' + subMenuId).append('<li class="slds-dropdown__item" role="presentation">\
+					jQuery('#' + subMenuId).append('<li class="slds-dropdown__item" role="presentation">\
 							<a href="' + object[i].url + '" role="menuitem" tabindex="-1">\
 							<span class="slds-truncate">' + object[i].text + '</span>\
 							</a>\
 							</li>');
 				} else {
-					$('#' + subMenuId).append('<li class="slds-dropdown__item" role="presentation" id="test">\
+					jQuery('#' + subMenuId).append('<li class="slds-dropdown__item" role="presentation" id="test">\
 							<a href="' + object[i].url + '" role="menuitem" tabindex="-1" id="test">\
 							<span class="slds-truncate" style="padding-right:20px">' + object[i].text + '</span>\
 							<svg aria-hidden="true" class="slds-button__icon">\
@@ -540,13 +540,13 @@
 		}
 		buildMainMenu(evvtmenu);
 
-		$(function () {
-			$(".slds-dropdown__item").hover(function () {
-				var id = $(this).children('ul').attr('id');
+		jQuery(function () {
+			jQuery(".slds-dropdown__item").hover(function () {
+				var id = jQuery(this).children('ul').attr('id');
 				if (id === undefined || id === null) {
-					id = $(this).find('ul').attr('id');
+					id = jQuery(this).find('ul').attr('id');
 				}
-				$(this).find('#' + id).toggle();
+				jQuery(this).find('#' + id).toggle();
 			});
 		});
 	});
