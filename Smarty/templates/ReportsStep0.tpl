@@ -46,7 +46,7 @@
 	<script type="text/javascript" src="include/jquery/jquery.steps.min.js"></script>
 	{include file='BrowserVariables.tpl'}
 	<script type="text/javascript" src="include/js/general.js"></script>
-	<script type="text/javascript" src="include/js/{$LANGUAGE}.lang.js?{$VERSION}"></script>
+	<script type="text/javascript" src="include/js/{$LANGUAGE}.lang.js"></script>
 	<script type="text/javascript" src="include/js/json.js"></script>
 	<script type="text/javascript" src="modules/Reports/Reports.js"></script>
 
@@ -129,7 +129,7 @@
 								<td style="padding-left: 5px; " align="left" width="100%">
 									<div class="small relmodscolumns">
 									{foreach item=relmod from=$RELATEDMODULES}
-										<input type='checkbox' class="secondarymodule" name="secondarymodule_{$relmod}" {if $SEC_MODULE.$relmod eq 1}checked {/if}value="{$relmod}" />&nbsp;{$relmod|@getTranslatedString:$relmod}<br>
+										<input type='checkbox' class="secondarymodule" name="secondarymodule_{$relmod}" {if isset($SEC_MODULE.$relmod) && $SEC_MODULE.$relmod eq 1}checked {/if}value="{$relmod}" />&nbsp;{$relmod|@getTranslatedString:$relmod}<br>
 									{/foreach}
 									</div>
 								</td>

@@ -62,7 +62,7 @@
 			<td  align="left">
 				{$MOD.LBL_GROUPING_FINALLY_BY}<br>
 				<select id="Group3" name="Group3" class="txtBox" onchange="getDateFieldGrouping('Group3')">
-					{$BLOCK3}
+					{if isset($BLOCK3)}{$BLOCK3}{/if}
 				</select>
 			</td>
 			<td id='Group3time' align="left">

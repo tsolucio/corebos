@@ -1228,7 +1228,6 @@ function getEscapedColumns($selectedfields) {
 				{
 					$permitted_fields = $this->getaccesfield($module);
 				}
-				$querycolumns = $this->getEscapedColumns($selectedfields);
 				$fieldlabel = trim(str_replace($module," ",$module_field));
 				$mod_arr=explode('_',$fieldlabel);
 				$mod = ($mod_arr[0] == '')?$module:$mod_arr[0];

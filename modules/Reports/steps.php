@@ -1,4 +1,18 @@
 <?php
+/*************************************************************************************************
+ * Copyright 2017 JPL TSolucio, S.L. -- This file is a part of TSOLUCIO coreBOS Customizations.
+ * Licensed under the vtiger CRM Public License Version 1.1 (the "License"); you may not use this
+ * file except in compliance with the License. You can redistribute it and/or modify it
+ * under the terms of the License. JPL TSolucio, S.L. reserves all rights not expressly
+ * granted by the License. coreBOS distributed by JPL TSolucio S.L. is distributed in
+ * the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied
+ * warranty of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. Unless required by
+ * applicable law or agreed to in writing, software distributed under the License is
+ * distributed on an "AS IS" BASIS, WITHOUT ANY WARRANTIES OR CONDITIONS OF ANY KIND,
+ * either express or implied. See the License for the specific language governing
+ * permissions and limitations under the License. You may obtain a copy of the License
+ * at <http://corebos.org/documentation/doku.php?id=en:devel:vpl11>
+ *************************************************************************************************/
 require_once('include/utils/utils.php');
 require_once('modules/Reports/Reports.php');
 
@@ -303,7 +317,6 @@ if(isset($_REQUEST['step']) && !empty($_REQUEST['step'])) {
  * @param  $primarymodule
  * @return array
  */
-
 function get_Secondmodules($oReport,$primarymodule) {
 	$permission = true;
 	$secondarymodules =Array();
@@ -326,8 +339,8 @@ function get_Secondmodules($oReport,$primarymodule) {
  *  This function accepts the module name as an argument and generates
  *  the fields for the primary module as an HTML Combo values
  */
-
 function getPrimaryColumnsHTML($module,$secondmodule) {
+	global $current_language;
 	$id_added=false;
 	$ogReport = new Reports();
 	$ogReport->getPriModuleColumnsList($module);
@@ -336,9 +349,9 @@ function getPrimaryColumnsHTML($module,$secondmodule) {
 	$mod_strings = return_module_language($current_language,$module);
 	$block_listed = array();
 	$modules_list = array();
-	foreach($ogReport->module_list[$module] as $key=>$value) {	
+	foreach($ogReport->module_list[$module] as $key=>$value) {
 		$modules_optgroup = array();
-		if(isset($ogReport->pri_module_columnslist[$module][$value]) && !$block_listed[$value]) {
+		if(isset($ogReport->pri_module_columnslist[$module][$value]) && !isset($block_listed[$value])) {
 			$block_listed[$value] = true;
 			if($id_added==false) {
 				$v = "vtiger_crmentity:crmid:".$module."_ID:crmid:I";
@@ -352,7 +365,7 @@ function getPrimaryColumnsHTML($module,$secondmodule) {
 				else
 					$modules_optgroup[] = array("value"=>$field,"label"=>$fieldlabel);
 			}
-			$modules_list[] = array( 
+			$modules_list[] = array(
 				"label" => getTranslatedString($module, $module)." ".getTranslatedString($value),
 				"options" => $modules_optgroup,
 				"class" => "select"
@@ -368,10 +381,9 @@ function getPrimaryColumnsHTML($module,$secondmodule) {
  *  as arguments and generates the vtiger_fields for the secondary module as
  *  a HTML Combo values
  */
-
 function getSecondaryColumnsHTML($module) {
-	global $app_list_strings, $app_strings, $current_language;
-	
+	global $app_strings, $current_language;
+
 	$module_columslist = array();
 	if($module != "")
 	{
@@ -380,10 +392,11 @@ function getSecondaryColumnsHTML($module) {
 
 		$secmodule = explode(":",$module);
 		for($i=0;$i < count($secmodule) ;$i++) {
-			$mod_strings = return_module_language($current_language,$secmodule[$i]);
 			if(vtlib_isModuleActive($secmodule[$i])){
+				$i18nModule = getTranslatedString($secmodule[$i],$secmodule[$i]);
+				$mod_strings = return_module_language($current_language,$secmodule[$i]);
 				$block_listed = array();
-				foreach($ogReport->module_list[$secmodule[$i]] as $key=>$value) {	
+				foreach($ogReport->module_list[$secmodule[$i]] as $key=>$value) {
 					if(isset($ogReport->sec_module_columnslist[$secmodule[$i]][$value]) && !$block_listed[$value]) {
 						$block_listed[$value] = true;
 						$optgroup = array();
@@ -394,8 +407,8 @@ function getSecondaryColumnsHTML($module) {
 								$optgroup[] = array("value"=>$field,"label"=>$fieldlabel);
 						}
 
-						$module_columslist[] = array( 
-							"label"   => $app_list_strings['moduleList'][$secmodule[$i]]." ".getTranslatedString($value),
+						$module_columslist[] = array(
+							"label"   => $i18nModule." ".getTranslatedString($value,$secmodule[$i]),
 							"options" => $optgroup,
 							"class"   => "select"
 						);
@@ -413,9 +426,8 @@ function getSecondaryColumnsHTML($module) {
  *  This function generates the combo values for the columns  for the given module
  *  and return a HTML string
  */
-
 function getPrimaryColumns_GroupingHTML($module,$selected="") {
-	global $oReport, $app_list_strings, $current_language;
+	global $oReport, $current_language;
 	$id_added=false;
 	$mod_strings = return_module_language($current_language,$module);
 
@@ -425,22 +437,21 @@ function getPrimaryColumns_GroupingHTML($module,$selected="") {
 	$oReport->getPriModuleColumnsList($module);
 	$list = array();
 	foreach($oReport->module_list[$module] as $key=>$value) {
-		if(isset($oReport->pri_module_columnslist[$module][$value]) && !$block_listed[$value]) {
+		if(isset($oReport->pri_module_columnslist[$module][$value]) && !isset($block_listed[$value])) {
 
 			$block_listed[$value] = true;
-			// $shtml .= "<optgroup label=\"".$app_list_strings['moduleList'][$module]." ".getTranslatedString($value, $module)."\" class=\"select\" style=\"border:none\">";
 
 			$optgroup = array(
-				"label" => $app_list_strings['moduleList'][$module]." ".getTranslatedString($value, $module),
+				"label" => getTranslatedString($module, $module)." ".getTranslatedString($value, $module),
 				"class" => "select",
-				"style" => "border:none" 
+				"style" => "border:none"
 			);
 
 			if($id_added==false) {
 
 				$option = array(
 					"value" => "vtiger_crmentity:crmid:".$module."_ID:crmid:I",
-					"label" => getTranslatedString($module, $module).' '.getTranslatedString('ID', $module) 
+					"label" => getTranslatedString($module, $module).' '.getTranslatedString('ID', $module)
 				);
 
 				if($selected == "vtiger_crmentity:crmid:".$module."_ID:crmid:I")
@@ -460,7 +471,7 @@ function getPrimaryColumns_GroupingHTML($module,$selected="") {
 
 				if($selected == decode_html($field))
 					$option["selected"] = true;
-				
+
 				$optgroup["options"][] = $option;
 			}
 			$list[] = $optgroup;
@@ -471,7 +482,7 @@ function getPrimaryColumns_GroupingHTML($module,$selected="") {
 	return $list;
 }
 
-/** 
+/**
  * Function to get the combo values for the Secondary module Columns
  *  @param $module(module name) :: Type String
  *  @param $selected (<selected or ''>) :: Type String
@@ -479,9 +490,7 @@ function getPrimaryColumns_GroupingHTML($module,$selected="") {
  *  and return a HTML string
  */
 function getSecondaryColumns_GroupingHTML($module,$selected="") {
-	global $oReport;
-	global $app_list_strings;
-	global $current_language;
+	global $oReport, $current_language;
 	$oReport->getPriModuleColumnsList($module);
 
 	$selected = decode_html($selected);
@@ -489,20 +498,19 @@ function getSecondaryColumns_GroupingHTML($module,$selected="") {
 	if($module != "") {
 		$secmodule = explode(":",$module);
 		$secmodule_length = count($secmodule);
-
 		for($i=0;$i < $secmodule_length ;$i++) {
-			$mod_strings = return_module_language($current_language,$secmodule[$i]);
-
 			if(vtlib_isModuleActive($secmodule[$i])) {
+				$i18nModule = getTranslatedString($secmodule[$i],$secmodule[$i]);
+				$mod_strings = return_module_language($current_language,$secmodule[$i]);
 				$block_listed = array();
 				foreach($oReport->module_list[$secmodule[$i]] as $key=>$value) {
 					if(isset($oReport->sec_module_columnslist[$secmodule[$i]][$value]) && !$block_listed[$value]) {
 						$block_listed[$value] = true;
 
 						$optgroup = array(
-							"label" => $app_list_strings['moduleList'][$secmodule[$i]]." ".getTranslatedString($value),
+							"label" => $i18nModule." ".getTranslatedString($value,$secmodule[$i]),
 							"class" => "select",
-							"style" => "border:none" 
+							"style" => "border:none"
 						);
 
 						foreach($oReport->sec_module_columnslist[$secmodule[$i]][$value] as $field=>$fieldlabel) {
@@ -528,7 +536,6 @@ function getSecondaryColumns_GroupingHTML($module,$selected="") {
 }
 
 /**
- * 
  * @param  int $sortid
  * @param  string $reportid
  * @return array
@@ -542,7 +549,7 @@ function getGroupByTimeDiv($sortid,$reportid='') {
 	$yearselected = '';
 	$monthselected = '';
 	$quarterselected = '';
-    $noneselected='';
+	$noneselected='';
 
 	$options = array(
 		array("value" => "None","label" => $mod_strings['LBL_NONE']),
@@ -592,7 +599,7 @@ function getOrderGrouping($sortorder="") {
 		$ascending,
 		array_merge($descending,$selected)
 	);
-	
+
 	if($sortorder != "Descending")
 		$ASCDESC = $ascending_order;
 	else
@@ -601,14 +608,13 @@ function getOrderGrouping($sortorder="") {
 	return $ASCDESC;
 }
 
-/** 
+/**
  * Function to get the HTML strings for the primarymodule standard filters
  * @param $module : Type String
  * @param $selected : Type String(optional)
  *  This Returns a HTML combo srings
  */
 function getPrimaryStdFilterHTML($module,$selected="") {
-	global $app_list_strings;
 	global $current_language;
 	$ogReport = new Reports();
 
@@ -634,17 +640,16 @@ function getPrimaryStdFilterHTML($module,$selected="") {
 			}
 		}
 	}
-	return $filters;	
+	return $filters;
 }
 
-/** 
- * Function to get the HTML strings for the secondary  standard filters
+/**
+ * Function to get the HTML strings for the secondary standard filters
  * @param $module : Type String
  * @param $selected : Type String(optional)
  *  This Returns a HTML combo srings for the secondary modules
  */
 function getSecondaryStdFilterHTML($module,$selected="") {
-	global $app_list_strings;
 	global $current_language;
 	$ogReport = new Reports();
 	$ogReport->oCustomView=new CustomView();
@@ -655,21 +660,22 @@ function getSecondaryStdFilterHTML($module,$selected="") {
 		for($i=0;$i < count($secmodule) ;$i++)
 		{
 			$result = $ogReport->oCustomView->getStdCriteriaByModule($secmodule[$i]);
-			$mod_strings = return_module_language($current_language,$secmodule[$i]);
 			if(isset($result))
 			{
+				$mod_strings = return_module_language($current_language,$secmodule[$i]);
+				$i18nModule = getTranslatedString($secmodule[$i],$secmodule[$i]);
 				foreach($result as $key=>$value) {
 					if(isset($mod_strings[$value])) {
 						if($key == $selected)
-							$filters[] = array("selected"=>true,"value"=>$key, "label"=>getTranslatedString($secmodule[$i],$secmodule[$i])." - ".getTranslatedString($value,$secmodule[$i]));
+							$filters[] = array("selected"=>true,"value"=>$key, "label"=>$i18nModule." - ".getTranslatedString($value,$secmodule[$i]));
 						else
-							$filters[] = array("value"=>$key, "label"=>getTranslatedString($secmodule[$i],$secmodule[$i])." - ".getTranslatedString($value,$secmodule[$i]));
+							$filters[] = array("value"=>$key, "label"=>$i18nModule." - ".getTranslatedString($value,$secmodule[$i]));
 					}
 					else {
 						if($key == $selected)
-							$filters[] = array("selected"=>true, "value"=>$key, "label"=>getTranslatedString($secmodule[$i],$secmodule[$i])." - ".$value);
+							$filters[] = array("selected"=>true, "value"=>$key, "label"=>$i18nModule." - ".$value);
 						else
-							$filters[] = array("value"=>$key, "label"=>getTranslatedString($secmodule[$i],$secmodule[$i])." - ".$value);
+							$filters[] = array("value"=>$key, "label"=>$i18nModule." - ".$value);
 					}
 				}
 			}
@@ -686,7 +692,6 @@ function getSecondaryStdFilterHTML($module,$selected="") {
  *  It returns a HTML string of combo values
  */
 function getPrimaryColumns_AdvFilterHTML($module,$selected="") {
-	global $app_list_strings;
 	$selected = decode_html($selected);
 	$block_listed = array();
 	$ogReport = new Reports();
@@ -696,7 +701,7 @@ function getPrimaryColumns_AdvFilterHTML($module,$selected="") {
 		if(isset($ogReport->pri_module_columnslist[$module][$value]) && !$block_listed[$value]) {
 			$block_listed[$value] = true;
 			$optgroup = array(
-				"label"=>$app_list_strings['moduleList'][$module]." ".getTranslatedString($value),
+				"label"=>getTranslatedString($module,$module)." ".getTranslatedString($value,$module),
 				"class"=>"select",
 				"style"=>"border:none");
 			foreach($ogReport->pri_module_columnslist[$module][$value] as $field=>$fieldlabel)
@@ -720,7 +725,6 @@ function getPrimaryColumns_AdvFilterHTML($module,$selected="") {
  *  It returns a HTML string of combo values
  */
 function getSecondaryColumns_AdvFilterHTML($module,$selected="") {
-	global $app_list_strings;
 	$ogReport = new Reports();
 	$filters = array();
 	if($module != '') {
@@ -729,12 +733,13 @@ function getSecondaryColumns_AdvFilterHTML($module,$selected="") {
 		for($i=0;$i < count($secmodule) ;$i++) {
 			if(vtlib_isModuleActive($secmodule[$i])){
 				$block_listed = array();
+				$i18nModule = getTranslatedString($secmodule[$i],$secmodule[$i]);
 				foreach($ogReport->module_list[$secmodule[$i]] as $key=>$value) {
 					if(isset($ogReport->sec_module_columnslist[$secmodule[$i]][$value]) && !$block_listed[$value])
 					{
 						$block_listed[$value] = true;
 						$optgroup = array(
-							"label"=>$app_list_strings['moduleList'][$secmodule[$i]]." ".getTranslatedString($value,$secmodule[$i]),
+							"label"=>$i18nModule." ".getTranslatedString($value,$secmodule[$i]),
 							"class"=>"select",
 							"style"=>"border:none"
 						);
@@ -795,7 +800,7 @@ function getRelatedFieldColumns($selected="") {
 	global $oReport;
 	$ogReport = new Reports();
 	$ogReport->getPriModuleColumnsList($oReport->primodule);
-    $ogReport->getSecModuleColumnsList($oReport->secmodule);
+	$ogReport->getSecModuleColumnsList($oReport->secmodule);
 
 	$rel_fields = $ogReport->adv_rel_fields;
 	return $rel_fields;
@@ -806,9 +811,7 @@ function getRelatedFieldColumns($selected="") {
  *  It returns a array of selected option of sharing along with other options
  */
 function getVisibleCriteria($recordid='') {
-	global $mod_strings;
-	global $app_strings;
-	global $adb,$current_user;
+	global $mod_strings, $app_strings, $adb, $current_user;
 
 	$filter = array();
 	$selcriteria = "";

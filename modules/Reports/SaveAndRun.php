@@ -100,7 +100,7 @@ if($numOfRows > 0) {
 				//$groupByField = $oReportRun->GetFirstSortByField($reportid);
 				$queryReports = CustomReportUtils::getCustomReportsQuery($Report_ID,$filtersql);
 				$queryResult = $adb->pquery($queryReports,array());
-				if($adb->num_rows($queryResult)){
+				if($queryResult and $adb->num_rows($queryResult)){
 					$ChartDetails = ChartUtils::generateChartDataFromReports($queryResult, strtolower($module_field), $fieldDetails, $reportid);
 					$list_report_form->assign('CHARTDATA',$ChartDetails);
 				}
