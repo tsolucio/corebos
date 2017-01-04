@@ -168,6 +168,19 @@ function getMenuHTML($marray) {
 	return $menubranch;
 }
 
+function getMenuPicklist($mparent,$level) {
+	global $adb;
+	$menustructure = array();
+	$menurs = $adb->pquery("SELECT `evvtmenuid`, `mlabel` FROM `vtiger_evvtmenu` where mparent=? order by mseq",array($mparent));
+	if ($menurs and $adb->num_rows($menurs)>0) {
+		while ($menu = $adb->fetch_array($menurs)) {
+			$menustructure[$menu['evvtmenuid']] = ($level ? str_repeat('>', $level) : '').' '.$menu['mlabel'];
+			$menustructure = $menustructure + getMenuPicklist($menu['evvtmenuid'],$level+1);
+		}
+	}
+	return $menustructure;
+}
+
 function getMenuJSON($marray) {
 	$menubranch = '[';
 	foreach ($marray as $item) {

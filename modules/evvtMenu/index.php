@@ -25,7 +25,7 @@ $category = getParentTab();
 $smarty = new vtigerCRM_Smarty();
 
 $menu_structure = getMenuBranch(0);
-$elements = getMenuElements();
+$elements = getMenuPicklist(0,0);
 $json = getMenuJSON2();
 
 $smarty->assign("PARENTS", $elements);
