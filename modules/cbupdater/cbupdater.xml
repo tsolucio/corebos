@@ -1046,4 +1046,11 @@
 	<classname>GlobalVarUITypeModuleList3314</classname>
 	<systemupdate>true</systemupdate>
 </changeSet>
+<changeSet>
+	<author>joebordes</author>
+	<description>Add database indexes while studying MySQL queries with no index for a few hours</description>
+	<filename>build/changeSets/2017/cleanoptimizedatabase_180.php</filename>
+	<classname>cleanoptimizedatabase_180</classname>
+	<systemupdate>true</systemupdate>
+</changeSet>
 </updatesChangeLog>
