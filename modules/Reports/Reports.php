@@ -1518,7 +1518,7 @@ function getEscapedColumns($selectedfields) {
 					$options []= getTranslatedString($columntototalrow['tablabel'],$columntototalrow['tablabel']).' - '.getTranslatedString($columntototalrow['fieldlabel'],$columntototalrow['tablabel']);
 					if($selectedcolumn1[2] == "cb:".$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel']."_SUM:2")
 					{
-						$filters["checkboxes"][] = array("name"=>'cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_SUM:2');
+						$filters["checkboxes"][] = array("name"=>'cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_SUM:2',"checked"=>true);
 					}else
 					{
 						$filters["checkboxes"][] = array("name"=>'cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_SUM:2');
@@ -1533,7 +1533,7 @@ function getEscapedColumns($selectedfields) {
 
 					if($selectedcolumn1[4] == "cb:".$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel']."_MIN:4")
 					{
-						$filters["checkboxes"][] = array('name'=>'cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_MIN:4');
+						$filters["checkboxes"][] = array('name'=>'cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_MIN:4',"checked"=>true);
 					}else
 					{
 						$filters["checkboxes"][] = array('name'=>'cb:'.$columntototalrow['tablename'].':'.$columntototalrow['columnname'].':'.$columntototalrow['fieldlabel'].'_MIN:4');

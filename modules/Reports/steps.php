@@ -871,7 +871,7 @@ function getShareInfo($recordid='') {
 			$userid = $adb->query_result($member_query,$i,'id');
 			$username = $adb->query_result($member_query,$i,'user_name');
 			$setype = $adb->query_result($member_query,$i,'setype');
-			$member_data[] = Array('id'=>$setype."::".$userid,'name'=>$setype."::".$username);
+			$member_data[] = Array('value'=>$setype."::".$userid,'label'=>$setype."::".$username);
 		}
 	}
 
