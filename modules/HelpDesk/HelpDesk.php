@@ -314,28 +314,26 @@ class HelpDesk extends CRMEntity {
 	{
 		global $log;
 		$log->debug("Entering get_ticket_comments_list(".$ticketid.") method ...");
-		 $sql = "select * from vtiger_ticketcomments where ticketid=? order by createdtime DESC";
-		 $result = $this->db->pquery($sql, array($ticketid));
-		 $noofrows = $this->db->num_rows($result);
-		 for($i=0;$i<$noofrows;$i++)
-		 {
-			 $ownerid = $this->db->query_result($result,$i,"ownerid");
-			 $ownertype = $this->db->query_result($result,$i,"ownertype");
-			 if($ownertype == 'user')
-				 $name = getUserFullName($ownerid);
-			 elseif($ownertype == 'customer')
-			 {
-				 $sql1 = 'select * from vtiger_portalinfo where id=?';
-				 $name = $this->db->query_result($this->db->pquery($sql1, array($ownerid)),0,'user_name');
-			 }
+		$sql = 'select * from vtiger_ticketcomments where ticketid=? order by createdtime DESC';
+		$result = $this->db->pquery($sql, array($ticketid));
+		$noofrows = $this->db->num_rows($result);
+		for($i=0;$i<$noofrows;$i++) {
+			$ownerid = $this->db->query_result($result,$i,'ownerid');
+			$ownertype = $this->db->query_result($result,$i,'ownertype');
+			if($ownertype == 'user') {
+				$name = getUserFullName($ownerid);
+			} elseif($ownertype == 'customer') {
+				$sql1 = 'select * from vtiger_portalinfo where id=?';
+				$name = $this->db->query_result($this->db->pquery($sql1, array($ownerid)),0,'user_name');
+			}
 
-			 $output[$i]['comments'] = nl2br($this->db->query_result($result,$i,"comments"));
-			 $output[$i]['owner'] = $name;
-			 $output[$i]['createdtime'] = $this->db->query_result($result,$i,"createdtime");
-		 }
-		$log->debug("Exiting get_ticket_comments_list method ...");
-		 return $output;
-	 }
+			$output[$i]['comments'] = nl2br($this->db->query_result($result,$i,'comments'));
+			$output[$i]['owner'] = $name;
+			$output[$i]['createdtime'] = $this->db->query_result($result,$i,'createdtime');
+		}
+		$log->debug('Exiting get_ticket_comments_list method...');
+		return $output;
+	}
 
 	/**	Function to get the HelpDesk field labels in caps letters without space
 	 *	@return array $mergeflds - array(	key => val	)    where   key=0,1,2..n & val = ASSIGNEDTO,RELATEDTO, .,etc
@@ -699,7 +697,7 @@ class HelpDesk extends CRMEntity {
 	}
 
 	public static function getTicketEmailContents($entityData) {
-	 $adb = PearDatabase::getInstance();
+		$adb = PearDatabase::getInstance();
 		$moduleName = $entityData->getModuleName();
 		$wsId = $entityData->getId();
 		$parts = explode('x', $wsId);
