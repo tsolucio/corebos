@@ -712,6 +712,14 @@ function get_tickets_list($input_array) {
 
 	$focus = new HelpDesk();
 	$focus->filterInactiveFields('HelpDesk');
+	$bmapname = 'HelpDesk_ListColumns';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapLC = $cbMap->ListColumns();
+		$focus->list_fields = $cbMapLC->getListFieldsFor('CustomerPortal');
+		$focus->list_fields_name = $cbMapLC->getListFieldsNameFor('CustomerPortal');
+	}
 	foreach ($focus->list_fields as $fieldlabel => $values){
 		foreach($values as $table => $fieldname){
 			$fields_list[$fieldlabel] = $fieldname;
@@ -1564,6 +1572,14 @@ function get_list_values($id,$module,$sessionid,$only_mine='true')
 	$current_user = $user->retrieveCurrentUserInfoFromFile($userid);
 	$focus = new $module();
 	$focus->filterInactiveFields($module);
+	$bmapname = $module.'_ListColumns';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapLC = $cbMap->ListColumns();
+		$focus->list_fields = $cbMapLC->getListFieldsFor('CustomerPortal');
+		$focus->list_fields_name = $cbMapLC->getListFieldsNameFor('CustomerPortal');
+	}
 	foreach ($focus->list_fields as $fieldlabel => $values){
 		foreach($values as $table => $fieldname){
 			$fields_list[$fieldlabel] = $fieldname;
@@ -2134,6 +2150,14 @@ function get_product_list_values($id,$modulename,$sessionid,$only_mine='true')
 
 	$focus = new Products();
 	$focus->filterInactiveFields('Products');
+	$bmapname = 'Products_ListColumns';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapLC = $cbMap->ListColumns();
+		$focus->list_fields = $cbMapLC->getListFieldsFor('CustomerPortal');
+		$focus->list_fields_name = $cbMapLC->getListFieldsNameFor('CustomerPortal');
+	}
 	foreach ($focus->list_fields as $fieldlabel => $values){
 		foreach($values as $table => $fieldname){
 			$fields_list[$fieldlabel] = $fieldname;
@@ -2862,7 +2886,14 @@ function get_project_components($id,$module,$customerid,$sessionid) {
 	$focus->filterInactiveFields($module);
 	$componentfieldVisibilityByColumn = array();
 	$fields_list = array();
-
+	$bmapname = $module.'_ListColumns';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapLC = $cbMap->ListColumns();
+		$focus->list_fields = $cbMapLC->getListFieldsFor('CustomerPortal');
+		$focus->list_fields_name = $cbMapLC->getListFieldsNameFor('CustomerPortal');
+	}
 	foreach ($focus->list_fields as $fieldlabel => $values){
 		foreach($values as $table => $fieldname){
 			$fields_list[$fieldlabel] = $fieldname;
@@ -2932,6 +2963,14 @@ function get_project_tickets($id,$module,$customerid,$sessionid) {
 	$focus->filterInactiveFields('HelpDesk');
 	$TicketsfieldVisibilityByColumn = array();
 	$fields_list = array();
+	$bmapname = 'HelpDesk_ListColumns';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapLC = $cbMap->ListColumns();
+		$focus->list_fields = $cbMapLC->getListFieldsFor('CustomerPortal');
+		$focus->list_fields_name = $cbMapLC->getListFieldsNameFor('CustomerPortal');
+	}
 	foreach ($focus->list_fields as $fieldlabel => $values){
 		foreach($values as $table => $fieldname){
 			$fields_list[$fieldlabel] = $fieldname;
@@ -3034,6 +3073,14 @@ function get_service_list_values($id,$modulename,$sessionid,$only_mine='true')
 
 	$focus = new Services();
 	$focus->filterInactiveFields('Services');
+	$bmapname = 'Services_ListColumns';
+	$cbMapid = GlobalVariable::getVariable('BusinessMapping_'.$bmapname, cbMap::getMapIdByName($bmapname));
+	if ($cbMapid) {
+		$cbMap = cbMap::getMapByID($cbMapid);
+		$cbMapLC = $cbMap->ListColumns();
+		$focus->list_fields = $cbMapLC->getListFieldsFor('CustomerPortal');
+		$focus->list_fields_name = $cbMapLC->getListFieldsNameFor('CustomerPortal');
+	}
 	foreach ($focus->list_fields as $fieldlabel => $values){
 		foreach($values as $table => $fieldname){
 			$fields_list[$fieldlabel] = $fieldname;
