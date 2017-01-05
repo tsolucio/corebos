@@ -79,10 +79,12 @@ if ($_REQUEST['isDuplicate'] != 'true' && isset($_REQUEST['return_id']))
 $smarty->assign("THEME", $theme);
 $smarty->assign("IMAGE_PATH", $image_path);
 $focus->mode = $mode;
+$smarty->assign('MASS_EDIT','0');
 $disp_view = getView($focus->mode);
 $smarty->assign("IMAGENAME",$focus->imagename);
 $smarty->assign('MASS_EDIT','0');
-$smarty->assign("BLOCKS",getBlocks($currentModule,$disp_view,$mode,$focus->column_fields));
+$blocks = getBlocks($currentModule, $disp_view, $focus->mode, $focus->column_fields);
+$smarty->assign('BLOCKS', $blocks);
 $smarty->assign("MODULE", 'Settings');
 $smarty->assign("MODE",$focus->mode);
 $smarty->assign("HOUR_FORMAT",$focus->hour_format);
